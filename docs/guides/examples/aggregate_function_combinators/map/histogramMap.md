@@ -7,7 +7,7 @@ sidebar_label: 'histogramMap'
 
 # histogramMap example
 
-The [Map](/sql-reference/aggregate-functions/combinators#-map) combinator can be applied to the `histogram` function to generate histogram data for each key in the map separately using the `histogramMap` function.
+The [`Map`](/sql-reference/aggregate-functions/combinators#-map) combinator can be applied to the `histogram` function to generate histogram data for each key in the map separately using the `histogramMap` function.
 
 ## Example Usage
 

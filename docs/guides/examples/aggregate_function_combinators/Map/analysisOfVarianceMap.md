@@ -7,7 +7,7 @@ sidebar_label: 'analysisOfVarianceMap'
 
 # analysisOfVarianceMap example
 
-The [Map](/sql-reference/aggregate-functions/combinators#-map) combinator can be applied to the [`analysisOfVariance`](/sql-reference/aggregate-functions/reference/analysis_of_variance) function to perform analysis of variance for each key in the map separately using the `analysisOfVarianceMap` function.
+The [`Map`](/sql-reference/aggregate-functions/combinators#-map) combinator can be applied to the [`analysisOfVariance`](/sql-reference/aggregate-functions/reference/analysis_of_variance) function to perform analysis of variance for each key in the map separately using the `analysisOfVarianceMap` function.
 
 ## Example Usage
 

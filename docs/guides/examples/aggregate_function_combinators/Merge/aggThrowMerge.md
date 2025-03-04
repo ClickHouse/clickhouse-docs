@@ -7,7 +7,7 @@ sidebar_label: 'aggThrowMerge'
 
 # aggThrowMerge example
 
-The [Merge](/sql-reference/aggregate-functions/combinators#-merge) combinator can be applied to the `aggThrow` function to combine intermediate states to determine if an exception should be thrown using the `aggThrowMerge` function.
+The [`Merge`](/sql-reference/aggregate-functions/combinators#-merge) combinator can be applied to the `aggThrow` function to combine intermediate states to determine if an exception should be thrown using the `aggThrowMerge` function.
 
 ## Example Usage
 

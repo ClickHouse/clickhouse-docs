@@ -7,7 +7,7 @@ sidebar_label: 'analysisOfVarianceResample'
 
 # analysisOfVarianceResample example
 
-The [Resample](/sql-reference/aggregate-functions/combinators#-resample) combinator can be applied to the [`analysisOfVariance`](/sql-reference/aggregate-functions/reference/analysis_of_variance) function to perform analysis of variance on resampled data using the `analysisOfVarianceResample` function.
+The [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) combinator can be applied to the [`analysisOfVariance`](/sql-reference/aggregate-functions/reference/analysis_of_variance) function to perform analysis of variance on resampled data using the `analysisOfVarianceResample` function.
 
 ## Example Usage
 

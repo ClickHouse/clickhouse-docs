@@ -7,7 +7,7 @@ sidebar_label: aggThrowIf
 
 # aggThrowIf example
 
-The [If](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`aggThrow`](/sql-reference/aggregate-functions/reference/aggthrow) function to throw an exception with the specified probability only for rows that match the given condition using the `aggThrowIf` function.
+The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`aggThrow`](/sql-reference/aggregate-functions/reference/aggthrow) function to throw an exception with the specified probability only for rows that match the given condition using the `aggThrowIf` function.
 
 ## Example Usage
 

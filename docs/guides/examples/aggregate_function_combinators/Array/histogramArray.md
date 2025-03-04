@@ -7,7 +7,7 @@ sidebar_label: 'histogramArray'
 
 # histogramArray example
 
-The [Array](/sql-reference/aggregate-functions/combinators#-array) combinator can be applied to the `histogram` function to generate histogram data for elements in the array using the `histogramArray` function.
+The [`Array`](/sql-reference/aggregate-functions/combinators#-array) combinator can be applied to the `histogram` function to generate histogram data for elements in the array using the `histogramArray` function.
 
 ## Example Usage
 

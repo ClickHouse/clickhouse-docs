@@ -7,7 +7,7 @@ sidebar_label: aggThrowMergeState
 
 # aggThrowMergeState example
 
-The [MergeState](/sql-reference/aggregate-functions/combinators#-mergestate) combinator can be applied to the [`aggThrow`](/sql-reference/aggregate-functions/reference/aggthrow) function to combine intermediate states but returns an intermediate state using the `aggThrowMergeState` function.
+The [`MergeState`](/sql-reference/aggregate-functions/combinators#-mergestate) combinator can be applied to the [`aggThrow`](/sql-reference/aggregate-functions/reference/aggthrow) function to combine intermediate states but returns an intermediate state using the `aggThrowMergeState` function.
 
 ## Example Usage
 

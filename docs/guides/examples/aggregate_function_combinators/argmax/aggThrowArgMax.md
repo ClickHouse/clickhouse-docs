@@ -7,7 +7,7 @@ sidebar_label: aggThrowArgMax
 
 # aggThrowArgMax example
 
-The [ArgMax](/sql-reference/aggregate-functions/combinators#-argmax) combinator can be applied to the [`aggThrow`](/sql-reference/aggregate-functions/reference/aggthrow) function to throw an exception with the specified probability only for rows that have the maximum value for the specified expression using the `aggThrowArgMax` function.
+The [`ArgMax`](/sql-reference/aggregate-functions/combinators#-argmax) combinator can be applied to the [`aggThrow`](/sql-reference/aggregate-functions/reference/aggthrow) function to throw an exception with the specified probability only for rows that have the maximum value for the specified expression using the `aggThrowArgMax` function.
 
 ## Example Usage
 

@@ -7,7 +7,7 @@ sidebar_label: 'histogramMerge'
 
 # histogramMerge example
 
-The [Merge](/sql-reference/aggregate-functions/combinators#-merge) combinator can be applied to the `histogram` function to combine intermediate states to get the final histogram using the `histogramMerge` function.
+The [`Merge`](/sql-reference/aggregate-functions/combinators#-merge) combinator can be applied to the `histogram` function to combine intermediate states to get the final histogram using the `histogramMerge` function.
 
 ## Example Usage
 

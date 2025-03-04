@@ -7,7 +7,7 @@ sidebar_label: 'analysisOfVarianceArgMin'
 
 # analysisOfVarianceArgMin example
 
-The [ArgMin](/sql-reference/aggregate-functions/combinators#-argmin) combinator can be applied to the [`analysisOfVariance`](/sql-reference/aggregate-functions/reference/analysis_of_variance) function to perform analysis of variance only for rows that have the minimum value for the specified expression using the `analysisOfVarianceArgMin` function.
+The [`ArgMin`](/sql-reference/aggregate-functions/combinators#-argmin) combinator can be applied to the [`analysisOfVariance`](/sql-reference/aggregate-functions/reference/analysis_of_variance) function to perform analysis of variance only for rows that have the minimum value for the specified expression using the `analysisOfVarianceArgMin` function.
 
 ## Example Usage
 

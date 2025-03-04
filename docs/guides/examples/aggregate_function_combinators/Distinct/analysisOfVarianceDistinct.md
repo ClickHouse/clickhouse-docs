@@ -7,7 +7,7 @@ sidebar_label: 'analysisOfVarianceDistinct'
 
 # analysisOfVarianceDistinct example
 
-The [Distinct](/sql-reference/aggregate-functions/combinators#-distinct) combinator can be applied to the [`analysisOfVariance`](/sql-reference/aggregate-functions/reference/analysis_of_variance) function to perform analysis of variance using distinct values only using the `analysisOfVarianceDistinct` function.
+The [`Distinct`](/sql-reference/aggregate-functions/combinators#-distinct) combinator can be applied to the [`analysisOfVariance`](/sql-reference/aggregate-functions/reference/analysis_of_variance) function to perform analysis of variance using distinct values only using the `analysisOfVarianceDistinct` function.
 
 ## Example Usage
 

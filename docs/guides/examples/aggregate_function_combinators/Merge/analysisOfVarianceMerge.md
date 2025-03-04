@@ -7,7 +7,7 @@ sidebar_label: 'analysisOfVarianceMerge'
 
 # analysisOfVarianceMerge example
 
-The [Merge](/sql-reference/aggregate-functions/combinators#-merge) combinator can be applied to the [`analysisOfVariance`](/sql-reference/aggregate-functions/reference/analysis_of_variance) function to combine intermediate states to get the final ANOVA results using the `analysisOfVarianceMerge` function.
+The [`Merge`](/sql-reference/aggregate-functions/combinators#-merge) combinator can be applied to the [`analysisOfVariance`](/sql-reference/aggregate-functions/reference/analysis_of_variance) function to combine intermediate states to get the final ANOVA results using the `analysisOfVarianceMerge` function.
 
 ## Example Usage
 

@@ -7,7 +7,7 @@ sidebar_label: 'analysisOfVarianceIf'
 
 # analysisOfVarianceIf example
 
-The [If](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`analysisOfVariance`](/sql-reference/aggregate-functions/reference/analysis_of_variance) function to perform analysis of variance only for rows that match the given condition using the `analysisOfVarianceIf` function.
+The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`analysisOfVariance`](/sql-reference/aggregate-functions/reference/analysis_of_variance) function to perform analysis of variance only for rows that match the given condition using the `analysisOfVarianceIf` function.
 
 ## Example Usage
 

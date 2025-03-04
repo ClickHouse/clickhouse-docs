@@ -7,7 +7,7 @@ sidebar_label: 'histogramIf'
 
 # histogramIf example
 
-The [If](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the `histogram` function to generate histogram data only for rows that match the given condition using the `histogramIf` function.
+The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the `histogram` function to generate histogram data only for rows that match the given condition using the `histogramIf` function.
 
 ## Example Usage
 

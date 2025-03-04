@@ -7,7 +7,7 @@ sidebar_label: 'histogramArgMin'
 
 # histogramArgMin example
 
-The [ArgMin](/sql-reference/aggregate-functions/combinators#-argmin) combinator can be applied to the [`histogram`](/sql-reference/aggregate-functions/parametric-functions#histogram) function to generate histogram data only for rows that have the minimum value for the specified expression using the `histogramArgMin` function.
+The [`ArgMin`](/sql-reference/aggregate-functions/combinators#-argmin) combinator can be applied to the [`histogram`](/sql-reference/aggregate-functions/parametric-functions#histogram) function to generate histogram data only for rows that have the minimum value for the specified expression using the `histogramArgMin` function.
 
 ## Example Usage
 

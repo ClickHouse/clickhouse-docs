@@ -7,7 +7,7 @@ sidebar_label: aggThrowState
 
 # aggThrowState example
 
-The [State](/sql-reference/aggregate-functions/combinators#-state) combinator can be applied to the [`aggThrow`](/sql-reference/aggregate-functions/reference/aggthrow) function to return the intermediate state of throw probability calculation using the `aggThrowState` function.
+The [`State`](/sql-reference/aggregate-functions/combinators#-state) combinator can be applied to the [`aggThrow`](/sql-reference/aggregate-functions/reference/aggthrow) function to return the intermediate state of throw probability calculation using the `aggThrowState` function.
 
 ## Example Usage
 

@@ -7,7 +7,7 @@ sidebar_label: 'analysisOfVarianceArgMax'
 
 # analysisOfVarianceArgMax example
 
-The [ArgMax](/sql-reference/aggregate-functions/combinators#-argmax) combinator can be applied to the [`analysisOfVariance`](/sql-reference/aggregate-functions/reference/analysis_of_variance) function to perform analysis of variance only for rows that have the maximum value for the specified expression using the `analysisOfVarianceArgMax` function.
+The [`ArgMax`](/sql-reference/aggregate-functions/combinators#-argmax) combinator can be applied to the [`analysisOfVariance`](/sql-reference/aggregate-functions/reference/analysis_of_variance) function to perform analysis of variance only for rows that have the maximum value for the specified expression using the `analysisOfVarianceArgMax` function.
 
 ## Example Usage
 

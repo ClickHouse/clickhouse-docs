@@ -7,7 +7,7 @@ sidebar_label: 'histogramArgMax'
 
 # histogramArgMax example
 
-The [ArgMax](/sql-reference/aggregate-functions/combinators#-argmax) combinator can be applied to the [`histogram`](/sql-reference/aggregate-functions/parametric-functions#histogram) function to generate histogram data only for rows that have the maximum value for the specified expression using the `histogramArgMax` function.
+The [`ArgMax`](/sql-reference/aggregate-functions/combinators#-argmax) combinator can be applied to the [`histogram`](/sql-reference/aggregate-functions/parametric-functions#histogram) function to generate histogram data only for rows that have the maximum value for the specified expression using the `histogramArgMax` function.
 
 ## Example Usage
 
