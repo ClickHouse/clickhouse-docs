@@ -21,11 +21,15 @@ To avoid that too many parts accumulate, ClickHouse runs a [merge](/merges) oper
 
 This approach has several advantages: All data processing can be [offloaded to background part merges](/concepts/why-clickhouse-is-so-fast#storage-layer-merge-time-computation), keeping data writes lightweight and highly efficient. Individual inserts are "local" in the sense that they do not need to update global, i.e. per-table data structures. As a result, multiple simultaneous inserts need no mutual synchronization or synchronization with existing table data, and thus inserts can be performed almost at the speed of disk I/O.
 
+🤿 Deep dive into this [here](/docs/academic_overview#3-1-on-disk-format).
+
 ## Storage Layer: Concurrent inserts and selects are isolated {#storage-layer-concurrent-inserts-and-selects-are-isolated}
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/dvGlPh2bJFo?si=F3MSALPpe0gAoq5k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Inserts are fully isolated from SELECT queries, and merging inserted data parts happens in the background without affecting concurrent queries.
+
+🤿 Deep dive into this [here](/docs/academic_overview#3-7-acid-compliance).
 
 ## Storage Layer: Merge-time computation {#storage-layer-merge-time-computation}
 
@@ -45,6 +49,8 @@ On the one hand, user queries may become significantly faster, sometimes by 1000
 
 On the other hand, the majority of the runtime of merges is consumed by loading the input parts and saving the output part. The additional effort to transform the data during merge does usually not impact the runtime of merges too much. All of this magic is completely transparent and does not affect the result of queries (besides their performance).
 
+🤿 Deep dive into this [here](/docs/academic_overview#3-3-merge-time-data-transformation).
+
 ## Storage Layer: Data pruning {#storage-layer-data-pruning}
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/UJpVAx7o1aY?si=w-AfhBcRIO-e3Ysj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -59,6 +65,8 @@ In practice, many queries are repetitive, i.e., run unchanged or only with sligh
 
 All three techniques aim to skip as many rows during full-column reads as possible because the fastest way to read data is to not read it at all.
 
+🤿 Deep dive into this [here](/docs/academic_overview#3-2-data-pruning).
+
 ## Storage Layer: Data compression {#storage-layer-data-compression}
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/MH10E3rVvnM?si=duWmS_OatCLx-akH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -71,6 +79,8 @@ Users can [specify](https://clickhouse.com/blog/optimize-clickhouse-codecs-compr
 
 Data compression not only reduces the storage size of the database tables, but in many cases, it also improves query performance as local disks and network I/O are often constrained by low throughput.
 
+🤿 Deep dive into this [here](/docs/academic_overview#3-1-on-disk-format).
+
 ## State-of-the-art query processing layer {#state-of-the-art-query-processing-layer}
 
 Finally, ClickHouse uses a vectorized query processing layer that parallelizes query execution as much as possible to utilize all resources for maximum speed and efficiency.
@@ -80,6 +90,8 @@ Finally, ClickHouse uses a vectorized query processing layer that parallelizes q
 Modern systems have dozens of CPU cores. To utilize all cores, ClickHouse unfolds the query plan into multiple lanes, typically one per core. Each lane processes a disjoint range of the table data. That way, the performance of the database scales "vertically" with the number of available cores.
 
 If a single node becomes too small to hold the table data, further nodes can be added to form a cluster. Tables can be split ("sharded") and distributed across the nodes. ClickHouse will run queries on all nodes that store table data and thereby scale "horizontally" with the number of available nodes.
+
+🤿 Deep dive into this [here](/academic_overview#4-query-processing-layer).
 
 ## Meticulous attention to detail {#meticulous-attention-to-detail}
 
@@ -109,6 +121,7 @@ The [hash table implementation in ClickHouse](https://clickhouse.com/blog/hash-t
 
 Algorithms that rely on data characteristics often perform better than their generic counterparts. If the data characteristics are not known in advance, the system can try various implementations and choose the one that works best at runtime. For an example, see the [article on how LZ4 decompression is implemented in ClickHouse](https://habr.com/en/company/yandex/blog/457612/).
 
+🤿 Deep dive into this [here](/academic_overview#4-4-holistic-performance-optimization).
 
 ## VLDB 2024 paper {#vldb-2024-paper}
 
@@ -116,7 +129,7 @@ In August 2024, we had our first research paper accepted and published at VLDB.
 VLDB in an international conference on very large databases, and is widely regarded as one of the leading conferences in the field of data management. 
 Among the hundreds of submissions, VLDB generally has an acceptance rate of ~20%.
 
-You can read a [PDF of the paper](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf), which gives a concise description of ClickHouse's most interesting architectural and system design components that make it so fast.
+You can read a [PDF of the paper](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf) or our [web version](/docs/academic_overview) of it, which gives a concise description of ClickHouse's most interesting architectural and system design components that make it so fast.
 
 Alexey Milovidov, our CTO and the creator of ClickHouse, presented the paper (slides [here](https://raw.githubusercontent.com/ClickHouse/clickhouse-presentations/master/2024-vldb/VLDB_2024_presentation.pdf)), followed by a Q&A (that quickly ran out of time!). 
 You can catch the recorded presentation here: 
