@@ -357,6 +357,8 @@ ybtm
 asia
 australia
 europe
+Montréal
+northamerica
 --docs/cloud/reference/byoc.md--
 Acceptor
 Autoscaler
