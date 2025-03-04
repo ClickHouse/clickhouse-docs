@@ -986,7 +986,8 @@ const sidebars = {
         "managing-data/core-concepts/partitions",
         "managing-data/core-concepts/merges",
         "managing-data/core-concepts/shards",
-        "guides/best-practices/sparse-primary-indexes"
+        "guides/best-practices/sparse-primary-indexes",
+        "managing-data/core-concepts/academic_overview"
       ]
     },
     {
