@@ -38,9 +38,13 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - us-east1 (South Carolina)
 
 **Under Consideration:**
-- australia-southeast1 (Sydney)
-- us-west-1 (Oregon)
-- eu-west-1 (Belgium)
+
+- us-west1 (Oregon)
+- australia-southeast1(Sydney)
+- asia-northeast1 (Tokyo)
+- europe-west3 (Frankfurt)
+- europe-west6 (Zurich)
+- northamerica-northeast1 (Montréal)
 
 ## Azure regions {#azure-regions}
 
