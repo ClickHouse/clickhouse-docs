@@ -8,7 +8,6 @@ title: Security Shared Responsibility Model
 
 ClickHouse Cloud offers three service types: Basic, Scale and Enterprise. For more information, review our [Service Types](/cloud/manage/cloud-tiers) page.
 
-
 ## Cloud architecture {#cloud-architecture}
 
 The Cloud architecture consists of the control plane and the data plane. The control plane is responsible for organization creation, user management within the control plane, service management, API key management, and billing. The data plane runs tooling for orchestration and management, and houses customer services. For more information, review our [ClickHouse Cloud Architecture](/cloud/reference/architecture) diagram.
@@ -58,9 +57,9 @@ The model below generally addresses ClickHouse responsibilities and shows respon
   | Setting                                                                                              | Status    | Cloud             | Service level           |  
   |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
   | [Standard role-based access](/cloud/security/cloud-access-management) in control plane | Available | AWS, GCP, Azure | All               | 
-  | [Multi-factor authentication (MFA)](/cloud/security/cloud-authentication#multi-factor-authhentication) available | Available | AWS, GCP, Azure | All   |
+  | [Multi-factor authentication (MFA)](/cloud/security/cloud-authentication#multi-factor-authentication) available | Available | AWS, GCP, Azure | All   |
   | [SAML Single Sign-On](/cloud/security/saml-setup) to control plane available                 | Preview   | AWS, GCP, Azure   | Enterprise              |
-  | Granular [role-based access control](/cloud/security/cloud-access-management#database-roles) in databases | Available | AWS, GCP, Azure | All          |
+  | Granular [role-based access control](/cloud/security/cloud-access-management/overview#database-roles) in databases | Available | AWS, GCP, Azure | All          |
   
 </details>
 <details>
@@ -69,8 +68,8 @@ The model below generally addresses ClickHouse responsibilities and shows respon
   | Setting                                                                                              | Status    | Cloud             | Service level           |  
   |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
   | [Cloud provider and region](/cloud/reference/supported-regions) selections                   | Available | AWS, GCP, Azure   | All                     |
-  | Limited [free daily backups](/cloud/manage/backups#default-backup-policy)                    | Available | AWS, GCP, Azure   | All                     |
-  | [Custom backup configurations](/cloud/manage/backups#configurable-backups) available         | Available | GCP, AWS, Azure   | Scale or Enterprise     |
+  | Limited [free daily backups](/cloud/manage/backups/overview#default-backup-policy)                    | Available | AWS, GCP, Azure   | All                     |
+  | [Custom backup configurations](/cloud/manage/backups/overview#configurable-backups) available         | Available | GCP, AWS, Azure   | Scale or Enterprise     |
   | [Customer managed encryption keys (CMEK)](/cloud/security/cmek) for transparent<br/> data encryption available  | Available | AWS | Scale or Enterprise |
   | [Field level encryption](/sql-reference/functions/encryption-functions) with manual key management for granular encryption | Available | GCP, AWS, Azure | All  |
 

@@ -5,6 +5,9 @@ description: How to use denormalization to improve query performance
 keywords: [data denormalization, denormalize, query optimization]
 ---
 
+import denormalizationDiagram from '@site/static/images/data-modeling/denormalization-diagram.png';
+import denormalizationSchema from '@site/static/images/data-modeling/denormalization-schema.png';
+
 # Denormalizing Data
 
 Data denormalization is a technique in ClickHouse to use flattened tables to help minimize query latency by avoiding joins.
@@ -15,10 +18,7 @@ Denormalizing data involves intentionally reversing the normalization process to
 
 This process reduces the need for complex joins at query time and can significantly speed up read operations, making it ideal for applications with heavy read requirements and complex queries. However, it can increase the complexity of write operations and maintenance, as any changes to the duplicated data must be propagated across all instances to maintain consistency.
 
-<img src={require('./images/denormalization-diagram.png').default}
-  class='image'
-  alt='Denormalization in ClickHouse'
-  style={{width: '100%', background: 'none' }} />
+<img src={denormalizationDiagram} class="image" alt="Denormalization in ClickHouse" style={{width: '100%', background: 'none'}} />
 
 <br />
 
@@ -131,10 +131,7 @@ The main observation here is that aggregated vote statistics for each post would
 
 Now let's consider our `Users` and `Badges`:
 
-<img src={require('./images/denormalization-schema.png').default}
-  class='image'
-  alt='Users and Badges schema'
-  style={{width: '100%', background: 'none' }} />
+<img src={denormalizationSchema} class="image" alt="Users and Badges schema" style={{width: '100%', background: 'none'}} />
 
 <p></p>
 We first insert the data with the following command:

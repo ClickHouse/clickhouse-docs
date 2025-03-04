@@ -340,6 +340,7 @@ const sidebars = {
               collapsed: true,
               link: {type: "doc", id: "cloud/reference/release-notes-index"},
               items: [
+                "cloud/changelogs/changelog-24-12",
                 "cloud/changelogs/changelog-24-10",
                 "cloud/changelogs/changelog-24-8",
                 "cloud/changelogs/changelog-24-6",
@@ -984,7 +985,9 @@ const sidebars = {
         "managing-data/core-concepts/parts",
         "managing-data/core-concepts/partitions",
         "managing-data/core-concepts/merges",
-        "guides/best-practices/sparse-primary-indexes"
+        "managing-data/core-concepts/shards",
+        "guides/best-practices/sparse-primary-indexes",
+        "managing-data/core-concepts/academic_overview"
       ]
     },
     {

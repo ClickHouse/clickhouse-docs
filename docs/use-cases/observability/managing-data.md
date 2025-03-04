@@ -5,6 +5,8 @@ slug: /observability/managing-data
 keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 ---
 
+import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
+
 # Managing Data
 
 Deployments of ClickHouse for Observability invariably involve large datasets, which need to be managed. ClickHouse offers a number of features to assist with data management. 
@@ -15,7 +17,7 @@ Partitioning in ClickHouse allows data to be logically separated on disk accordi
 
 Partitioning is specified on a table when it is initially defined via the `PARTITION BY` clause. This clause can contain a SQL expression on any column/s, the results of which will define which partition a row is sent to. 
 
-<img src={require('./images/observability-14.png').default}    
+<img src={observability_14}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />

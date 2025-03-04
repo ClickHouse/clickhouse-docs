@@ -217,7 +217,7 @@ See also: [Keep-Alive configuration](./js.md#keep-alive-configuration-nodejs-onl
 ### Query ID {#query-id}
 
 Every method that sends a query or a statement (`command`, `exec`, `insert`, `select`) will provide `query_id` in the result. This unique identifier is assigned by the client per query, and might be useful to fetch the data from `system.query_log`,
-if it is enabled in the [server configuration](/operations/server-configuration-parameters/settings#server_configuration_parameters-query-log), or cancel long-running queries (see [the example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/cancel_query.ts)). If necessary, `query_id` can be overridden by the user in `command`/`query`/`exec`/`insert` methods params.
+if it is enabled in the [server configuration](/operations/server-configuration-parameters/settings), or cancel long-running queries (see [the example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/cancel_query.ts)). If necessary, `query_id` can be overridden by the user in `command`/`query`/`exec`/`insert` methods params.
 
 :::tip
 If you are overriding the `query_id` parameter, you need to ensure its uniqueness for every call. A random UUID is a good choice.

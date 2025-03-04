@@ -5,6 +5,7 @@ slug: /integrations/kafka/cloud/confluent/custom-connector
 description: Using ClickHouse Connector Sink with Kafka Connect and ClickHouse
 ---
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import AddCustomConnectorPlugin from '@site/static/images/integrations/data-ingestion/kafka/confluent/AddCustomConnectorPlugin.png';
 
 # Integrating Confluent Cloud with ClickHouse
 
@@ -50,7 +51,7 @@ Navigate to "Connector Plugins" -> "Add plugin" and using the following settings
 'Sensitive properties' - 'password'. This will ensure entries of the ClickHouse password are masked during configuration.
 ```
 Example:
-<img src={require('./images/AddCustomConnectorPlugin.png').default} class="image" alt="Settings for adding a custom connector" style={{width: '50%'}}/>
+<img src={AddCustomConnectorPlugin} class="image" alt="Settings for adding a custom connector" style={{width: '50%'}}/>
 
 #### Gather your connection details {#gather-your-connection-details}
 <ConnectionDetails />

@@ -19,7 +19,7 @@ If you've run up against one of these guardrails, it's possible that you are imp
 - **Services**: 20 (soft)
 - **Low cardinality**: 10k or less
 - **Primary keys in a table**: 4-5 that sufficiently filter down the data
-- **Concurrency**: default 100, can be increased to 1000 per node
+- **Query Concurrency**: 1000
 - **Batch ingest**: anything > 1M will be split by the system in 1M row blocks
 
 :::note

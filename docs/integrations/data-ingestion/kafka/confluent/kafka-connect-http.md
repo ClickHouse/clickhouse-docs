@@ -5,6 +5,11 @@ slug: /integrations/kafka/cloud/confluent/http
 description: Using HTTP Connector Sink with Kafka Connect and ClickHouse
 ---
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import createHttpSink from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_http_sink.png';
+import httpAuth from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_auth.png';
+import httpAdvanced from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_advanced.png';
+import createMessageInTopic from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_message_in_topic.png';
+
 
 # Confluent HTTP Sink Connector
 The HTTP Sink Connector is data type agnostic and thus does not need a Kafka schema as well as supporting ClickHouse specific data types such as Maps and Arrays. This additional flexibility comes at a slight increase in configuration complexity.
@@ -53,7 +58,7 @@ ORDER BY tuple()
 
 #### 4. Configure HTTP Sink {#4-configure-http-sink}
 Create a Kafka topic and an instance of HTTP Sink Connector:
-<img src={require('./images/create_http_sink.png').default} class="image" alt="Create HTTP Sink" style={{width: '50%'}}/>
+<img src={createHttpSink} class="image" alt="Create HTTP Sink" style={{width: '50%'}}/>
 
 <br />
 
@@ -69,7 +74,7 @@ Configure HTTP Sink Connector:
   This HTTP Url is error-prone. Ensure escaping is precise to avoid issues.
 :::
 
-<img src={require('./images/http_auth.png').default} class="image" alt="Auth options for Confluent HTTP Sink" style={{width: '70%'}}/>
+<img src={httpAuth} class="image" alt="Auth options for Confluent HTTP Sink" style={{width: '70%'}}/>
 <br/>
 
 * Configuration
@@ -82,11 +87,11 @@ Configure HTTP Sink Connector:
         * `Retry on HTTP codes` - 400-500 but adapt as required e.g. this may change if you have an HTTP proxy in front of ClickHouse.
         * `Maximum Reties` - the default (10) is appropriate but feel to adjust for more robust retries.
 
-<img src={require('./images/http_advanced.png').default} class="image" alt="Advanced options for Confluent HTTP Sink" style={{width: '50%'}}/>
+<img src={httpAdvanced} class="image" alt="Advanced options for Confluent HTTP Sink" style={{width: '50%'}}/>
 
 #### 5. Testing the connectivity {#5-testing-the-connectivity}
 Create an message in a topic configured by your HTTP Sink
-<img src={require('./images/create_message_in_topic.png').default} class="image" alt="Create a message in the topic" style={{width: '50%'}}/>
+<img src={createMessageInTopic} class="image" alt="Create a message in the topic" style={{width: '50%'}}/>
 
 <br/>
 
@@ -137,7 +142,7 @@ The following additional parameters are relevant to using the HTTP Sink with Cli
 * `ssl.enabled` - set to true if using SSL.
 * `connection.user` - username for ClickHouse.
 * `connection.password` - password for ClickHouse.
-* `batch.max.size` - The number of rows to send in a single batch. Ensure this set is to an appropriately large number. Per ClickHouse [recommendations](../../../../concepts/why-clickhouse-is-so-fast.md#performance-when-inserting-data) a value of 1000 is should be considered a minimum.
+* `batch.max.size` - The number of rows to send in a single batch. Ensure this set is to an appropriately large number. Per ClickHouse [recommendations](/sql-reference/statements/insert-into#performance-considerations) a value of 1000 should be considered a minimum.
 * `tasks.max` - The HTTP Sink connector supports running one or more tasks. This can be used to increase performance. Along with batch size this represents your primary means of improving performance.
 * `key.converter` - set according to the types of your keys.
 * `value.converter` - set based on the type of data on your topic. This data does not need a schema. The format here must be consistent with the FORMAT specified in the parameter `http.api.url`. The simplest here is to use JSON and the org.apache.kafka.connect.json.JsonConverter converter. Treating the value as a string, via the converter org.apache.kafka.connect.storage.StringConverter, is also possible - although this will require the user to extract a value in the insert statement using functions. [Avro format](../../../../interfaces/formats.md#data-format-avro) is also supported in ClickHouse if using the io.confluent.connect.avro.AvroConverter converter.

@@ -5,6 +5,14 @@ slug: /integrations/clickpipes/postgres
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
+import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
+import postgres_tile from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-tile.jpg'
+import postgres_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-connection-details.jpg'
+import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
+import select_replication_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-replication-slot.jpg'
+import select_destination_db from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-destination-db.jpg'
+import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 
 # Ingesting Data from Postgres to ClickHouse (using CDC)
 
@@ -52,15 +60,15 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 [//]: # (   TODO update image here)
 1. In the ClickHouse Cloud Console, navigate to your ClickHouse Cloud Service.
 
-   ![ClickPipes service](./../images/cp_service.png)
+<img src={cp_service} alt="ClickPipes service" />
 
 2. Select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
 
-   ![Select imports](./../images/cp_step0.png)
+<img src={cp_step0} alt="Select imports" />
 
 3. Select the `Postgres CDC` tile
 
-   ![Select Postgres](./images/postgres-tile.jpg)
+   <img src={postgres_tile} alt="Select Postgres" />
 
 ### Adding your source Postgres database connection {#adding-your-source-postgres-database-connection}
 
@@ -73,16 +81,17 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 
    :::
 
-   ![Fill in connection details](./images/postgres-connection-details.jpg)
+   <img src={postgres_connection_details} alt="Fill in connection details" />
 
 #### (Optional) Setting up SSH Tunneling {#optional-setting-up-ssh-tunneling}
 
 You can specify SSH tunneling details if your source Postgres database is not publicly accessible.
 
+
 1. Enable the "Use SSH Tunnelling" toggle.
 2. Fill in the SSH connection details.
 
-   ![SSH tunneling](./images/ssh-tunnel.jpg)
+   <img src={ssh_tunnel} alt="SSH tunneling" />
 
 3. To use Key-based authentication, click on "Revoke and generate key pair" to generate a new key pair and copy the generated public key to your SSH server under `~/.ssh/authorized_keys`.
 4. Click on "Verify Connection" to verify the connection.
@@ -99,7 +108,7 @@ Once the connection details are filled in, click on "Next".
 
 5. Make sure to select the replication slot from the dropdown list you created in the prerequisites step.
 
-   ![Select replication slot](./images/select-replication-slot.jpg)
+   <img src={select_replication_slot} alt="Select replication slot" />
 
 #### Advanced Settings {#advanced-settings}
 
@@ -116,8 +125,8 @@ You can configure the Advanced settings if needed. A brief description of each s
 
 6. Here you can select the destination database for your ClickPipe. You can either select an existing database or create a new one.
 
-   ![Select destination database](./images/select-destination-db.jpg)
-
+   <img src={select_destination_db} alt="Select destination database" />
+   
 7. You can select the tables you want to replicate from the source Postgres database. While selecting the tables, you can also choose to rename the tables in the destination ClickHouse database as well as exclude specific columns.
 
    :::warning
@@ -130,8 +139,7 @@ You can configure the Advanced settings if needed. A brief description of each s
 
 8. Select the "Full access" role from the permissions dropdown and click "Complete Setup".
 
-   ![Review permissions](./images/ch-permissions.jpg)
-
+   <img src={ch_permissions} alt="Review permissions" />
 
 ## What's next? {#whats-next}
 

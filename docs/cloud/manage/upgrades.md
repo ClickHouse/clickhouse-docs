@@ -5,20 +5,24 @@ slug: /manage/updates
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
+import fast_release from '@site/static/images/cloud/manage/fast_release.png';
+import enroll_fast_release from '@site/static/images/cloud/manage/enroll_fast_release.png';
+import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgrades.png';
+import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
 
 # Upgrades
 
 With ClickHouse Cloud you never have to worry about patching and upgrades. We roll out upgrades that include fixes, new features and performance improvements on a periodic basis. For the full list of what is new in ClickHouse refer to our [Cloud changelog](/cloud/reference/changelog.md).
 
-:::note	
-We are introducing a new upgrade mechanism, a concept we call "make before break" (or MBB). With this new approach, we add updated replica(s) before removing the old one(s) during the upgrade operation. This results in more seamless upgrades that are less disruptive to running workloads.	
+:::note
+We are introducing a new upgrade mechanism, a concept we call "make before break" (or MBB). With this new approach, we add updated replica(s) before removing the old one(s) during the upgrade operation. This results in more seamless upgrades that are less disruptive to running workloads.
 
 As part of this change, historical system table data will be retained for up to a maximum of 30 days as part of upgrade events. In addition, any system table data older than December 19, 2024, for services on AWS or GCP and older than January 14, 2025, for services on Azure will not be retained as part of the migration to the new organization tiers.
-:::	
+:::
 
 ## Version compatibility {#version-compatibility}
 
-When you create a service, the [`compatibility`](/operations/settings/settings#compatibility) setting is set to the most up-to-date ClickHouse version offered on ClickHouse Cloud at the time your service is initially provisioned. 
+When you create a service, the [`compatibility`](/operations/settings/settings#compatibility) setting is set to the most up-to-date ClickHouse version offered on ClickHouse Cloud at the time your service is initially provisioned.
 
 The `compatibility` setting allows you to use default values of settings from previous versions. When your service is upgraded to a new version, the version specified for the `compatibility` setting does not change. This means that default values for settings that existed when you first created your service will not change (unless you have already overridden those default values, in which case they will persist after the upgrade).
 
@@ -26,7 +30,7 @@ You cannot manage the `compatibility` setting for your service. You must [contac
 
 ## Maintenance mode {#maintenance-mode}
 
-At times, it may be necessary for us to update your service, which could require us to disable certain features such as scaling or idling. In rare cases, we may need to take action on a service that is experiencing issues and bring it back to a healthy state. During such maintenance, you will see a banner on the service page that says _"Maintenance in progress"_. You may still be able to use the service for queries during this time. 
+At times, it may be necessary for us to update your service, which could require us to disable certain features such as scaling or idling. In rare cases, we may need to take action on a service that is experiencing issues and bring it back to a healthy state. During such maintenance, you will see a banner on the service page that says _"Maintenance in progress"_. You may still be able to use the service for queries during this time.
 
 You will not be charged for the time that the service is under maintenance. _Maintenance mode_ is a rare occurrence and should not be confused with regular service upgrades.
 
@@ -38,7 +42,7 @@ You are able to specify the upgrade schedule for your ClickHouse Cloud service b
 
 <ScalePlanFeatureBadge feature="The fast release channel"/>
 
-Besides the regular upgrade schedule, we offer a **Fast release** channel if you would like your services to receive updates ahead of the regular release schedule. 
+Besides the regular upgrade schedule, we offer a **Fast release** channel if you would like your services to receive updates ahead of the regular release schedule.
 
 Specifically, services will:
 
@@ -48,12 +52,12 @@ Specifically, services will:
 You can modify the release schedule of the service in the Cloud console as shown below:
 
 <div class="eighty-percent">
-![Select Plan](./images/fast_release.png)
+    <img alt="Select Plan" src={fast_release} />
 </div>
 <br/>
 
 <div class="eighty-percent">
-![Select Plan](./images/enroll_fast_release.png)
+    <img alt="Select Plan" src={enroll_fast_release} />
 </div>
 <br/>
 
@@ -73,19 +77,19 @@ Basic tier services are upgraded soon after the Fast release channel.
 
 <EnterprisePlanFeatureBadge feature="Scheduled upgrades" linking_verb_are="true"/>
 
-Users can configure an upgrade window for services in the Enterprise tier. 
+Users can configure an upgrade window for services in the Enterprise tier.
 
-Select the service for which you wish to specify an upgrade scheduled, followed by `Settings` from the left menu. Scroll to `Scheduled upgrades`. 
+Select the service for which you wish to specify an upgrade scheduled, followed by `Settings` from the left menu. Scroll to `Scheduled upgrades`.
 
 <div class="eighty-percent">
-![Scheduled upgrades](./images/scheduled_upgrades.png)
+    <img alt="Scheduled upgrades" src={scheduled_upgrades} />
 </div>
 <br/>
 
 Selecting this option will allow users to select the day of the week/time window for database and cloud upgrades.
 
 <div class="eighty-percent">
-![Scheduled upgrades](./images/scheduled_upgrade_window.png)
+    <img alt="Scheduled upgrade window" src={scheduled_upgrade_window} />
 </div>
 <br/>
 :::note

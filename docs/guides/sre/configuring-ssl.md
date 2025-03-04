@@ -4,6 +4,7 @@ sidebar_label: Configuring SSL-TLS
 sidebar_position: 20
 ---
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
+import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
 
 # Configuring SSL-TLS
 
@@ -450,7 +451,8 @@ The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-c
 
 5. Log into the Play UI using the `https` interface at `https://chnode1.marsnet.local:8443/play`.
 
-    ![Play UI](images/configuring-ssl_01.png)
+    <img src={configuringSsl01}
+      alt="Configuring SSL" />
 
     :::note
     the browser will show an untrusted certificate since it is being reached from a workstation and the certificates are not in the root CA stores on the client machine.

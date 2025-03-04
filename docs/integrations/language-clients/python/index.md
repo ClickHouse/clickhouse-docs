@@ -765,8 +765,8 @@ where each column contains an equal number of data values of the specified data 
 in a similar form.)  The size of a block returned from a query is governed by two user settings that can be set at several levels
 (user profile, user, session, or query).  They are:
 
-- [max_block_size](/operations/settings/settings.md/#setting-max_block_size) -- Limit on the size of the block in rows.  Default 65536.
-- [preferred_block_size_bytes](/operations/settings/settings.md/#preferred-block-size-bytes) -- Soft limit on the size of the block in bytes.  Default 1,000,0000.
+- [max_block_size](/operations/settings/settings#max_block_size) -- Limit on the size of the block in rows.  Default 65536.
+- [preferred_block_size_bytes](/operations/settings/settings#preferred_block_size_bytes) -- Soft limit on the size of the block in bytes.  Default 1,000,0000.
 
 Regardless of the `preferred_block_size_setting`, each block will never be more than `max_block_size` rows.  Depending on the
 type of query, the actual blocks returned can be of any size.  For example, queries to a distributed table covering many shards

@@ -10,5 +10,4 @@ import DeltaLakeFunction from '@site/docs/sql-reference/table-functions/deltalak
 
 Users can integrate with the Delta lake table format via the table function. 
 
-
 <DeltaLakeFunction/>

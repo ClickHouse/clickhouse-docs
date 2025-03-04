@@ -5,13 +5,25 @@ description: How to migrate your data from BigQuery to ClickHouse Cloud
 keywords: [migrate, migration, migrating, data, etl, elt, BigQuery]
 ---
 
+import bigquery_2 from '@site/static/images/migrations/bigquery-2.png';
+import bigquery_3 from '@site/static/images/migrations/bigquery-3.png';
+import bigquery_4 from '@site/static/images/migrations/bigquery-4.png';
+import bigquery_5 from '@site/static/images/migrations/bigquery-5.png';
+import bigquery_6 from '@site/static/images/migrations/bigquery-6.png';
+import bigquery_7 from '@site/static/images/migrations/bigquery-7.png';
+import bigquery_8 from '@site/static/images/migrations/bigquery-8.png';
+import bigquery_9 from '@site/static/images/migrations/bigquery-9.png';
+import bigquery_10 from '@site/static/images/migrations/bigquery-10.png';
+import bigquery_11 from '@site/static/images/migrations/bigquery-11.png';
+import bigquery_12 from '@site/static/images/migrations/bigquery-12.png';
+
 ## Why use ClickHouse Cloud over BigQuery? {#why-use-clickhouse-cloud-over-bigquery}
 
 TLDR: Because ClickHouse is faster, cheaper, and more powerful than BigQuery for modern data analytics:
 
 <br />
 
-<img src={require('../images/bigquery-2.png').default}    
+<img src={bigquery_2}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -26,7 +38,7 @@ As an example dataset to show a typical migration from BigQuery to ClickHouse Cl
 
 <br />
 
-<img src={require('../images/bigquery-3.png').default}    
+<img src={bigquery_3}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '1000px'}} />
@@ -52,7 +64,7 @@ BigQuery supports exporting data to Google's object store (GCS). For our example
 
 <br />
 
-<img src={require('../images/bigquery-4.png').default}    
+<img src={bigquery_4}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '600px'}} />
@@ -157,11 +169,11 @@ Similar to clustering in BigQuery, a ClickHouse table's data is stored on disk o
 In contrast to BigQuery, ClickHouse automatically creates [a (sparse) primary index](/guides/best-practices/sparse-primary-indexes) based on the primary key column values. This index is used to speed up all queries that contain filters on the primary key columns. Specifically:
 
 - Memory and disk efficiency are paramount to the scale at which ClickHouse is often used. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, then the merged part's primary indexes are also merged. Not that these indexes are not built for each row. Instead, the primary index for a part has one index entry per group of rows - this technique is called sparse indexing.
-- Sparse indexing is possible because ClickHouse stores the rows for a part on disk ordered by a specified key. Instead of directly locating single rows (like a B-Tree-based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows are then, in parallel, streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it completely fits into the main memory) while still significantly speeding up query execution times, especially for range queries that are typical in data analytics use cases. For more details, we recommend [this in-depth guide](/optimize/sparse-primary-indexes).
+- Sparse indexing is possible because ClickHouse stores the rows for a part on disk ordered by a specified key. Instead of directly locating single rows (like a B-Tree-based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows are then, in parallel, streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it completely fits into the main memory) while still significantly speeding up query execution times, especially for range queries that are typical in data analytics use cases. For more details, we recommend [this in-depth guide](/guides/best-practices/sparse-primary-indexes).
 
 <br />
 
-<img src={require('../images/bigquery-5.png').default}    
+<img src={bigquery_5}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -190,7 +202,7 @@ In ClickHouse, partitioning is specified on a table when it is initially defined
 
 <br />
 
-<img src={require('../images/bigquery-6.png').default}    
+<img src={bigquery_6}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -259,11 +271,11 @@ Ok.
 
 #### Recommendations {#recommendations}
 
-Users should consider partitioning a data management technique. It is ideal when data needs to be expired from the cluster when operating with time series data e.g. the oldest partition can [simply be dropped](/sql-reference/statements/alter/partition#alter_drop-partition). 
+Users should consider partitioning a data management technique. It is ideal when data needs to be expired from the cluster when operating with time series data e.g. the oldest partition can [simply be dropped](/sql-reference/statements/alter/partition#drop-partitionpart). 
 
 Important: Ensure your partitioning key expression does not result in a high cardinality set i.e. creating more than 100 partitions should be avoided. For example, do not partition your data by high cardinality columns such as client identifiers or names. Instead, make a client identifier or name the first column in the `ORDER BY` expression. 
 
-> Internally, ClickHouse [creates parts](/optimize/sparse-primary-indexes#clickhouse-index-design) for inserted data. As more data is inserted, the number of parts increases. In order to prevent an excessively high number of parts, which will degrade query performance (because there are more files to read), parts are merged together in a background asynchronous process. If the number of parts exceeds a [pre-configured limit](/operations/settings/merge-tree-settings#parts-to-throw-insert), then ClickHouse will throw an exception on insert as a ["too many parts" error](/knowledgebase/exception-too-many-parts). This should not happen under normal operation and only occurs if ClickHouse is misconfigured or used incorrectly e.g. many small inserts. Since parts are created per partition in isolation, increasing the number of partitions causes the number of parts to increase i.e. it is a multiple of the number of partitions. High cardinality partitioning keys can, therefore, cause this error and should be avoided.
+> Internally, ClickHouse [creates parts](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design) for inserted data. As more data is inserted, the number of parts increases. In order to prevent an excessively high number of parts, which will degrade query performance (because there are more files to read), parts are merged together in a background asynchronous process. If the number of parts exceeds a [pre-configured limit](/operations/settings/merge-tree-settings#parts-to-throw-insert), then ClickHouse will throw an exception on insert as a ["too many parts" error](/knowledgebase/exception-too-many-parts). This should not happen under normal operation and only occurs if ClickHouse is misconfigured or used incorrectly e.g. many small inserts. Since parts are created per partition in isolation, increasing the number of partitions causes the number of parts to increase i.e. it is a multiple of the number of partitions. High cardinality partitioning keys can, therefore, cause this error and should be avoided.
 
 ## Materialized views vs projections {#materialized-views-vs-projections}
 
@@ -381,7 +393,7 @@ Projections are an appealing feature for new users as they are automatically mai
 
 <br />
 
-<img src={require('../images/bigquery-7.png').default}    
+<img src={bigquery_7}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -412,7 +424,7 @@ The following provides example queries comparing BigQuery to ClickHouse. This li
 
 _BigQuery_
 
-<img src={require('../images/bigquery-8.png').default}    
+<img src={bigquery_8}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '500px'}} />
@@ -450,7 +462,7 @@ _BigQuery_
 
 <br />
 
-<img src={require('../images/bigquery-9.png').default}    
+<img src={bigquery_9}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '400px'}} />
@@ -490,14 +502,14 @@ _BigQuery_
 
 <br />
 
-<img src={require('../images/bigquery-10.png').default}    
+<img src={bigquery_10}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '500px'}} />
 
 <br />
 
-<img src={require('../images/bigquery-11.png').default}    
+<img src={bigquery_11}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '500px'}} />
@@ -557,7 +569,7 @@ _BigQuery_
 
 <br />
 
-<img src={require('../images/bigquery-12.png').default}    
+<img src={bigquery_12}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '500px'}} />

@@ -21,7 +21,7 @@ Latest JDBC (0.7.2) version uses Client-V1
 ### Setup {#setup}
 
 <Tabs groupId="client-v1-compression-deps">
-<TabItem value="maven" label="Maven" >
+<TabItem value="maven" label="Maven">
 
 ```xml 
 <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
@@ -371,7 +371,7 @@ properties.setProperty("socket_keepalive", "true");
 ```
 
 :::note
-Currently, you must use Apache HTTP Client library when setting the socket keep-alive, as the other two HTTP client libraries supported by `clickhouse-java` do not allow setting socket options. For a detailed guide, see [Configuring HTTP library](/integrations/java#configuring-http-library).
+Currently, you must use Apache HTTP Client library when setting the socket keep-alive, as the other two HTTP client libraries supported by `clickhouse-java` do not allow setting socket options. For a detailed guide, see [Configuring HTTP library](/integrations/language-clients/java/jdbc-v1#configuring-http-library).
 :::
 
 Alternatively, you can add equivalent parameters to the JDBC URL.

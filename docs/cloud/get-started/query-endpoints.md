@@ -5,6 +5,13 @@ description: Easily spin up REST API endpoints from your saved queries
 keywords: [api, query api endpoints, query endpoints, query rest api]
 ---
 
+import endpoints_testquery from '@site/static/images/cloud/sqlconsole/endpoints-testquery.png';
+import endpoints_savequery from '@site/static/images/cloud/sqlconsole/endpoints-savequery.png';
+import endpoints_configure from '@site/static/images/cloud/sqlconsole/endpoints-configure.png';
+import endpoints_completed from '@site/static/images/cloud/sqlconsole/endpoints-completed.png';
+import endpoints_curltest from '@site/static/images/cloud/sqlconsole/endpoints-curltest.png';
+import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints-monitoring.png';
+
 # Query API Endpoints
 
 The **Query API Endpoints** feature allows you to create an API endpoint directly from any saved SQL query in the ClickHouse Cloud console. You'll be able to access API endpoints via HTTP to execute your saved queries without needing to connect to your ClickHouse Cloud service via a native driver.
@@ -38,11 +45,11 @@ limit 10
 
 Note that this query contains a parameter (`year`). The SQL console query editor automatically detects ClickHouse query parameter expressions and provides an input for each parameter. Let's quickly run this query to make sure that it works:
 
-![Test the example query](@site/docs/cloud/images/sqlconsole/endpoints-testquery.png)
+<img src={endpoints_testquery} alt="Test the example query"/>
 
 Next step, we'll go ahead and save the query:
 
-![Save example query](@site/docs/cloud/images/sqlconsole/endpoints-savequery.png)
+<img src={endpoints_savequery} alt="Save example query"/>
 
 More documentation around saved queries can be found [here](/cloud/get-started/sql-console#saving-a-query).
 
@@ -50,11 +57,11 @@ More documentation around saved queries can be found [here](/cloud/get-started/s
 
 Query API endpoints can be configured directly from query view by clicking the **Share** button and selecting `API Endpoint`. You'll be prompted to specify which API key(s) should be able to access the endpoint:
 
-![Configure query endpoint](@site/docs/cloud/images/sqlconsole/endpoints-configure.png)
+<img src={endpoints_configure} alt="Configure query endpoint"/>
 
 After selecting an API key, the query API endpoint will automatically be provisioned. An example `curl` command will be displayed so you can send a test request:
 
-![Endpoint curl command](@site/docs/cloud/images/sqlconsole/endpoints-completed.png)
+<img src={endpoints_completed} alt="Endpoint curl command"/>
 
 ### Query API parameters {#query-api-parameters}
 
@@ -63,11 +70,14 @@ Query parameters in a query can be specified with the syntax `{parameter_name: t
 ### Testing and monitoring {#testing-and-monitoring}
 
 Once a Query API endpoint is created, you can test that it works by using `curl` or any other HTTP client:
-<img src={require('@site/docs/cloud/images/sqlconsole/endpoints-curltest.png').default} class="image" alt="endpoint curl test" style={{width: '80%', background:'none'}} />
+
+
+<img src={endpoints_curltest} class="image" alt="endpoint curl test" style={{width: '80%', background:'none'}} />
 
 After you've sent your first request, a new button should appear immediately to the right of the **Share** button. Clicking it will open a flyout containing monitoring data about the query:
 
-![Endpoint monitoring](@site/docs/cloud/images/sqlconsole/endpoints-monitoring.png)
+<img src={endpoints_monitoring} alt="Endpoint monitoring"/>
+
 
 ## Implementation Details {#implementation-details}
 
