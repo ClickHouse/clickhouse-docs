@@ -27,7 +27,7 @@ ignores:
   - "docs/cloud/manage/api"
 customRules:
   # add custom rules here
-  - "./markdownlint/rules/links_url_type.js"
-  - "./markdownlint/rules/headings_have_custom_anchors.js"
+  - "./markdownlint/custom_rules/links_url_type.js"
+  - "./markdownlint/custom_rules/headings_have_custom_anchors.js"
 
 
