@@ -28,8 +28,8 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - af-south-1 (South Africa)
 - eu-north-1 (Stockholm)
 - sa-east-1 (South America)
+- ap-northeast-2 (South Korea, Seoul)
  
-
 ## Google Cloud regions {#google-cloud-regions}
 
 - asia-southeast1 (Singapore)
