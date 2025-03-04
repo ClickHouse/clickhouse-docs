@@ -90,13 +90,13 @@ SETTINGS describe_compact_output = 1
 └────────────────┴─────────────────────────────────────────────────────────────────────────┘
 ```
 :::note Avoid nulls
-You can see a lot of the columns are detected as Nullable. We [do not recommend using the Nullable](/sql-reference/data-types/nullable#storage-features) type when not absolutely needed. You can use [schema_inference_make_columns_nullable](/interfaces/schema-inference#schema_inference_make_columns_nullable) to control the behavior of when Nullable is applied.
+You can see a lot of the columns are detected as Nullable. We [do not recommend using the Nullable](/sql-reference/data-types/nullable#storage-features) type when not absolutely needed. You can use [schema_inference_make_columns_nullable](/operations/settings/formats#schema_inference_make_columns_nullable) to control the behavior of when Nullable is applied.
 :::
 
 We can see that most columns have automatically been detected as `String`, with `update_date` column correctly detected as a `Date`. The `versions` column has been created as an `Array(Tuple(created String, version String))` to store a list of objects, with `authors_parsed` being defined as `Array(Array(String))` for nested arrays.
 
 :::note Controlling type detection
-The auto-detection of dates and datetimes can be controlled through the settings [`input_format_try_infer_dates`](/interfaces/schema-inference#input_format_try_infer_dates) and [`input_format_try_infer_datetimes`](/interfaces/schema-inference#input_format_try_infer_datetimes) respectively (both enabled by default). The inference of objects as tuples is controlled by the setting [`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects). Other settings which control schema inference for JSON, such as the auto-detection of numbers, can be found [here](/interfaces/schema-inference#text-formats).
+The auto-detection of dates and datetimes can be controlled through the settings [`input_format_try_infer_dates`](/operations/settings/formats#input_format_try_infer_dates) and [`input_format_try_infer_datetimes`](/operations/settings/formats#input_format_try_infer_datetimes) respectively (both enabled by default). The inference of objects as tuples is controlled by the setting [`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects). Other settings which control schema inference for JSON, such as the auto-detection of numbers, can be found [here](/interfaces/schema-inference#text-formats).
 :::
 
 ## Querying JSON {#querying-json}
@@ -183,7 +183,7 @@ ORDER BY update_date
 SETTINGS index_granularity = 8192
 ```
 
-The above is the correct schema for this data. Schema inference is based on sampling the data and reading the data row by row. Column values are extracted according to the format, with recursive parsers and heuristics used to determine the type for each value. The maximum number of rows and bytes read from the data in schema inference is controlled by the settings [`input_format_max_rows_to_read_for_schema_inference`](/interfaces/schema-inference#input_format_max_rows_to_read_for_schema_inferenceinput_format_max_bytes_to_read_for_schema_inference) (25000 by default) and [`input_format_max_bytes_to_read_for_schema_inference`](/interfaces/schema-inference#input_format_max_rows_to_read_for_schema_inferenceinput_format_max_bytes_to_read_for_schema_inference) (32MB by default). In the event detection is not correct, users can provide hints as described [here](/interfaces/schema-inference#schema_inference_hints).
+The above is the correct schema for this data. Schema inference is based on sampling the data and reading the data row by row. Column values are extracted according to the format, with recursive parsers and heuristics used to determine the type for each value. The maximum number of rows and bytes read from the data in schema inference is controlled by the settings [`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) (25000 by default) and [`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference) (32MB by default). In the event detection is not correct, users can provide hints as described [here](/operations/settings/formats#schema_inference_make_columns_nullable).
 
 ### Creating tables from snippets {#creating-tables-from-snippets}
 
@@ -272,7 +272,7 @@ FORMAT PrettyJSONEachRow
 
 ## Handling errors {#handling-errors}
 
-Sometimes, you might have bad data. For example, specific columns that do not have the right type or an improperly formatted JSON. For this, you can use the setting [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio) to allow a certain number of rows to be ignored if the data is triggering insert errors. Additionally, [hints](/interfaces/schema-inference#schema_inference_hints) can be provided to assist inference.
+Sometimes, you might have bad data. For example, specific columns that do not have the right type or an improperly formatted JSON. For this, you can use the setting [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio) to allow a certain number of rows to be ignored if the data is triggering insert errors. Additionally, [hints](/operations/settings/formats#schema_inference_hints) can be provided to assist inference.
 
 ## Further reading {#further-reading}
 

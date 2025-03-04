@@ -94,7 +94,7 @@ input_format_parquet_case_insensitive_column_matching = 1 -- Column matching bet
 :::note Note on nested column structures
 The `VARIANT` and `OBJECT` columns in the original Snowflake table schema will be output as JSON strings by default, forcing us to cast these when inserting them into ClickHouse.
 
-Nested structures such as `some_file` are converted to JSON strings on copy by Snowflake. Importing this data requires us to transform these structures to Tuples at insert time in ClickHouse, using the [JSONExtract function](/sql-reference/functions/json-functions#jsonextractjson-indices_or_keys-return_type) as shown above.
+Nested structures such as `some_file` are converted to JSON strings on copy by Snowflake. Importing this data requires us to transform these structures to Tuples at insert time in ClickHouse, using the [JSONExtract function](/sql-reference/functions/json-functions#jsonextract) as shown above.
 :::
 
 ## 3. Testing successful data export {#3-testing-successful-data-export}
