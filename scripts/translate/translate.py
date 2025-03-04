@@ -1,8 +1,10 @@
 import glob
-import os
+import re
 import sys
 import time
-
+import xxhash
+import argparse
+import os
 from llama_index.core import Document
 from llama_index.core.node_parser import MarkdownNodeParser
 import json
@@ -12,7 +14,7 @@ from openai import OpenAI
 from concurrent.futures import ThreadPoolExecutor
 
 TRANSLATE_EXCLUDED_FILES = {"about-us/adopters.md", "index.md", "integrations/language-clients/java/jdbc-v1.md"}
-TRANSLATE_EXCLUDED_FOLDERS = {"whats-new", "changelogs"}
+TRANSLATE_EXCLUDED_FOLDERS = {"whats-new", "changelogs", "ru", "zh"}
 
 client = OpenAI(
     api_key=os.environ.get("OPENAI_API_KEY"),
@@ -31,7 +33,6 @@ def load_config(file_path):
                 config["lang_code"] = config["languages"][:2].lower()
             if "glossary" not in config:
                 config["glossary"] = {}
-            else:
                 print("warning: no glossary in config file - continuing without glossary.")
             return config
     except FileNotFoundError as e:
@@ -42,6 +43,30 @@ def load_config(file_path):
 def format_glossary_prompt(glossary):
     glossary_text = "\n".join([f"- {key}: {value}" for key, value in glossary.items()])
     return f"Use the following glossary for specific translations:\n{glossary_text}\n"
+
+
+def hash_file(input_path, chunk_size=65536):
+    hasher = xxhash.xxh64()
+    with open(input_path, "rb") as f:
+        for chunk in iter(lambda: f.read(chunk_size), b""):
+            hasher.update(chunk)
+    return hasher.hexdigest()
+
+
+def write_file_hash(input_path, output_path, chunk_size=65536):
+    """Compute a fast hash of a file using xxHash64."""
+    hash = hash_file(input_path, chunk_size)
+    with open(output_path, "w") as f:
+        f.write(hash + "\n")
+
+
+def read_file_hash(input_path):
+    """Reads a previously written hash from a file."""
+    try:
+        with open(input_path, "r") as f:
+            return f.readline().strip()
+    except FileNotFoundError:
+        return ""
 
 
 def translate_text(config, text, model="gpt-4o-mini"):
@@ -74,7 +99,9 @@ def translate_text(config, text, model="gpt-4o-mini"):
         return None
 
 
-def split_text(text, max_chunk_size=MAX_CHUNK_SIZE):
+def split_text(text, input_file_path, max_chunk_size=MAX_CHUNK_SIZE):
+    if len(text) <= max_chunk_size:
+        return [text]
     parser = MarkdownNodeParser()
     document = Document(text=text)
     nodes = parser.get_nodes_from_node(document)
@@ -86,6 +113,8 @@ def split_text(text, max_chunk_size=MAX_CHUNK_SIZE):
         node_text = node.text
         if len(current_chunk) + len(node_text) > max_chunk_size:
             chunks.append(current_chunk.strip())
+            if len(node_text)  > max_chunk_size:
+                print(f"WARNING: too long text for ${input_file_path} and no clear split")
             current_chunk = node_text
         else:
             current_chunk += "\n" + node_text
@@ -94,7 +123,6 @@ def split_text(text, max_chunk_size=MAX_CHUNK_SIZE):
         chunks.append(current_chunk.strip())
 
     return chunks
-
 
 def translate_file(config, input_file_path, output_file_path, model):
     print(f"start translation: input[{input_file_path}], output[{output_file_path}]")
@@ -108,7 +136,7 @@ def translate_file(config, input_file_path, output_file_path, model):
         num_chunk = math.ceil(len(original_text) / MAX_CHUNK_SIZE)
         count = 1
         translated_text = ""
-        for chunk in split_text(original_text, MAX_CHUNK_SIZE):
+        for chunk in split_text(original_text, input_file_path, MAX_CHUNK_SIZE):
             print(f" - start [{count}/{num_chunk}], [{input_file_path}]")
             translated_chunk = translate_text(config, chunk, model)
             if translated_chunk:
@@ -123,11 +151,13 @@ def translate_file(config, input_file_path, output_file_path, model):
         with open(output_file_path, "w", encoding="utf-8") as output_file:
             for line in translated_text.splitlines():
                 if line.startswith("# "):
-                    output_file.write("\n") # ensures import statements have a new line after them
-                output_file.write(line+"\n")
+                    output_file.write("\n")  # ensures import statements have a new line after them
+                output_file.write(line + "\n")
 
         # Rename output file with .translate suffix to .translated
         os.rename(output_file_path, f"{output_file_path}d")
+        # generate hash file
+        write_file_hash(input_file_path, output_file_path.removesuffix(".translate") + ".hash", chunk_size=65536)
 
     except FileNotFoundError:
         print(f"no file: {input_file_path}")
@@ -147,16 +177,21 @@ def translate_docs_folder(config, input_folder, output_folder, model="gpt-4o-min
             relative_folder_path = os.path.relpath(root, input_folder)
             if any(excluded in relative_folder_path for excluded in TRANSLATE_EXCLUDED_FOLDERS):
                 print(f"Skipping translation due to excluded folder target: {relative_folder_path}")
-                shutil.copytree(os.path.join(input_folder, relative_folder_path), os.path.join(output_folder, relative_folder_path),dirs_exist_ok=True)
+                shutil.copytree(os.path.join(input_folder, relative_folder_path),
+                                os.path.join(output_folder, relative_folder_path), dirs_exist_ok=True)
                 continue
 
             for file in files:
                 input_file_path = os.path.join(root, file)
                 relative_path = os.path.relpath(input_file_path, input_folder)
                 if file.endswith((".md", ".mdx")):
+                    current_hash = hash_file(input_file_path)
+                    if os.path.exists(os.path.join(output_folder, relative_path)):
+                        new_hash = read_file_hash(f"{os.path.join(output_folder, relative_path)}.hash")
+                        if not overwrite and new_hash == current_hash:
+                            print(f"Skipping translation as file hasn't changed: {input_file_path}")
+                            continue
                     # Skip files that are in the excluded files set
-                    if os.path.exists(os.path.join(output_folder, relative_path)) and not overwrite:
-                        continue
                     if relative_path in TRANSLATE_EXCLUDED_FILES:
                         output_file_path = os.path.join(output_folder, relative_path)
                         print(f"Skipping translation due to exclusion target: {input_file_path}")
@@ -174,20 +209,21 @@ def translate_docs_folder(config, input_folder, output_folder, model="gpt-4o-min
                     os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
                     # Submit the translation task to be run in parallel
                     futures.append(executor.submit(translate_file, config, input_file_path, output_file_path, model))
-                else:
+                elif not file.endswith(".DS_Store"):
+                    print(f"WARNING: Copying file {relative_path}")
                     # symlink these files as we want to update in a single place
                     try:
                         output_file_path = os.path.join(output_folder, relative_path)
-                        if os.path.exists(output_file_path) or os.path.islink(output_file_path):
+                        if os.path.exists(output_file_path):
                             if overwrite:
                                 os.remove(output_file_path)  # Remove existing file/link before creating symlink
                             else:
                                 continue
                         os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
-                        os.symlink(input_file_path, output_file_path)
-                        print(f" - Created symlink: {output_file_path} -> {input_file_path}")
+                        shutil.copy(input_file_path, output_file_path)
+                        print(f" - Copied file: {output_file_path} -> {input_file_path}")
                     except OSError as e:
-                        print(f" - Failed to create symlink: {output_file_path} -> {input_file_path}, Error: {e}")
+                        print(f" - Failed to copy file: {input_file_path} -> {output_file_path}, Error: {e}")
 
         # Wait for all futures to complete
         for future in futures:
@@ -250,9 +286,6 @@ def translate_plugin_data(output_folder, config, model="gpt-4o-mini"):
 script_dir = os.path.dirname(os.path.abspath(__file__))
 default_input_folder = os.path.abspath(os.path.join(script_dir, "../../docs/"))
 
-import argparse
-import os
-
 
 def main():
     parser = argparse.ArgumentParser(description="Translate Markdown files in a folder.")
@@ -266,15 +299,16 @@ def main():
     parser.add_argument("--output-folder", required=True,
                         help="Path to the output folder where translated files will be saved")
     parser.add_argument("--model", default="gpt-4o-mini", help="Specify the OpenAI model to use for translation")
-    parser.add_argument("--overwrite", action="store_true", help="Overwrite existing translated files if specified")
+    parser.add_argument("--force_overwrite", action="store_true",
+                        help="Overwrite existing translated files even if not changed")
 
     args = parser.parse_args()
 
     config = load_config(args.config)
-    #translate_plugin_data(args.output_folder, config, model=args.model)
+    # translate_plugin_data(args.output_folder, config, model=args.model)
     translate_docs_folder(config, args.input_folder,
                           os.path.join(args.output_folder, "docusaurus-plugin-content-docs/current"),
-                          args.model, overwrite=args.overwrite)
+                          args.model, overwrite=args.force_overwrite)
     rename_translated_files(args.output_folder)
 
 
