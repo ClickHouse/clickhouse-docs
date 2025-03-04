@@ -70,7 +70,7 @@ The model below generally addresses ClickHouse responsibilities and shows respon
   |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
   | [Cloud provider and region](/cloud/reference/supported-regions) selections                   | Available | AWS, GCP, Azure   | All                     |
   | Limited [free daily backups](/cloud/manage/backups#default-backup-policy)                    | Available | AWS, GCP, Azure   | All                     |
-  | [Custom backup configurations](/cloud/manage/backups#configurable-backups) available         | Available | GCP, AWS, Azure   | Scale or Enterprise     |
+  | [Custom backup configurations](/cloud/manage/backups/configurable-backups) available         | Available | GCP, AWS, Azure   | Scale or Enterprise     |
   | [Customer managed encryption keys (CMEK)](/cloud/security/cmek) for transparent<br/> data encryption available  | Available | AWS | Scale or Enterprise |
   | [Field level encryption](/sql-reference/functions/encryption-functions) with manual key management for granular encryption | Available | GCP, AWS, Azure | All  |
 
