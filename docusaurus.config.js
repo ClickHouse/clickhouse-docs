@@ -46,7 +46,7 @@ const config = {
 	onBrokenLinks: 'warn',
 	onBrokenMarkdownLinks: 'warn',
 	onDuplicateRoutes: 'throw',
-	// onBrokenAnchors: 'throw',
+	onBrokenAnchors: 'warn',
 	favicon: 'img/docs_favicon.ico',
 	organizationName: 'ClickHouse',
 	trailingSlash: false,
