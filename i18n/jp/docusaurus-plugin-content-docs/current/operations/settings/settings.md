@@ -3,7 +3,7 @@ title: セッション設定
 sidebar_label: セッション設定
 slug: /operations/settings/settings
 toc_max_heading_level: 2
-description: テーブルに見られる設定。 
+description: テーブルに見られる設定。
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
@@ -27,7 +27,7 @@ HTTP CORS ヘッダーを追加します。
 
 タイプ: String
 
-デフォルト値: 
+デフォルト値:
 
 `SELECT` クエリの結果に適用する追加のフィルター式です。この設定は、サブクエリには適用されません。
 
@@ -1553,7 +1553,7 @@ Cloudで許可されているエンジンファミリー。0 - すべてを許�
 
 Type: String
 
-Default value: 
+Default value:
 
 現在のサーバーが位置するシャードのクラスタです。
 ## collect_hash_table_stats_during_aggregation {#collect_hash_table_stats_during_aggregation}
@@ -1574,7 +1574,7 @@ Default value: 1
 
 Type: String
 
-Default value: 
+Default value:
 
 `compatibility`設定により、ClickHouseは指定された以前のバージョンのClickHouseのデフォルト設定を使用します。
 
@@ -3105,7 +3105,7 @@ Default value: 137438953472
 
 Type: String
 
-Default value: 
+Default value:
 
 ステートレステーブルエンジンまたはデータレイクに使用されるファイルシステムキャッシュ名。
 
@@ -3307,7 +3307,7 @@ Default value: 0
 
 Type: String
 
-Default value: 
+Default value:
 
 指定されたデータスキッピングインデックスが使用されなかった場合、クエリの実行を無効にします。
 
@@ -3370,7 +3370,7 @@ Possible values:
 
 Type: String
 
-Default value: 
+Default value:
 
 非空の文字列に設定されている場合、このプロジェクションがクエリで少なくとも一度使用されていることを確認します。
 
@@ -3472,7 +3472,7 @@ Default value: 1
 
 Type: String
 
-Default value: 
+Default value:
 
 特定のターゲットまたはバリアント（実験的）用の関数実装を選択します。空の場合はすべてが有効になります。
 
@@ -3632,18 +3632,18 @@ Type: Bool
 
 Default value: 0
 
-[GROUP BY句](/docs/en/sql-reference/statements/select/group-by.md) が集約キーの型を扱う方法を変更します。
+[GROUP BY句](/docs/sql-reference/statements/select/group-by.md) が集約キーの型を扱う方法を変更します。
 `ROLLUP`、`CUBE`、または `GROUPING SETS` 指定子が使用されるとき、一部の集約キーは結果行を生成するために使用されないことがあります。
 これらのキーに対する列は、この設定に応じて該当する行にデフォルト値または `NULL` で埋められます。
 
 Possible values:
 
 - 0 — 集約キータイプのデフォルト値が不足している値の生成に使用されます。
-- 1 — ClickHouse は SQL 標準のように `GROUP BY` を実行します。集約キーの型は[Nullable](/docs/en/sql-reference/data-types/nullable.md/#data_type-nullable)に変換され、対応する集約キーの列は、使用しなかった行に対して[NULL](/docs/en/sql-reference/syntax.md)で埋められます。
+- 1 — ClickHouse は SQL 標準のように `GROUP BY` を実行します。集約キーの型は[Nullable](/docs/sql-reference/data-types/nullable.md/#data_type-nullable)に変換され、対応する集約キーの列は、使用しなかった行に対して[NULL](/docs/sql-reference/syntax.md)で埋められます。
 
 さらに詳しい情報は:
 
-- [GROUP BY 句](/docs/en/sql-reference/statements/select/group-by.md)を参照してください。
+- [GROUP BY 句](/docs/sql-reference/statements/select/group-by.md)を参照してください。
 
 ## h3togeo_lon_lat_result_order {#h3togeo_lon_lat_result_order}
 
@@ -3990,7 +3990,7 @@ ClickHouse Cloudでのみ利用可能。新しいデータパーツをSELECTク�
 
 Type: String
 
-Default value: 
+Default value:
 
 クエリによって使用される場合、指定されたスキッピングインデックスを無視します。
 
@@ -4178,7 +4178,7 @@ Default value: 1
 
 Type: String
 
-Default value: 
+Default value:
 
 この設定により、ユーザーはMergeTree/ReplicatedMergeTreeで独自の重複削除セマンティクスを提供できます。たとえば、各INSERTステートメントでこの設定の一意の値を提供することにより、重複削除を避けることができます。
 
@@ -4313,7 +4313,7 @@ Type: UInt64Auto
 Default value: 0
 
 :::note
-この設定はSharedMergeTreeには適用されません。詳細は[SharedMergeTreeの整合性](/docs/en/cloud/reference/shared-merge-tree/#consistency)を参照してください。
+この設定はSharedMergeTreeには適用されません。詳細は[SharedMergeTreeの整合性](/docs/cloud/reference/shared-merge-tree/#consistency)を参照してください。
 :::
 
 クオーラム書き込みを有効にします。
@@ -4344,7 +4344,7 @@ Type: Bool
 Default value: 1
 
 :::note
-この設定はSharedMergeTreeには適用されません。詳細は[SharedMergeTreeの整合性](/docs/en/cloud/reference/shared-merge-tree/#consistency)を参照してください。
+この設定はSharedMergeTreeには適用されません。詳細は[SharedMergeTreeの整合性](/docs/cloud/reference/shared-merge-tree/#consistency)を参照してください。
 :::
 
 クオーラム`INSERT`クエリの並列性を有効または無効にします。有効な場合、以前のクエリがまだ完了していない間に追加の`INSERT`クエリを送信できます。無効な場合、同じテーブルへの追加の書き込みは拒否されます。
@@ -4455,7 +4455,7 @@ Default value: direct,parallel_hash,hash
 
  [Grace hash join](https://en.wikipedia.org/wiki/Hash_join#Grace_hash_join)が使用されます。 Grace hashは、メモリ使用量を制限しながら高性能の複雑な結合を提供するアルゴリズムオプションを提供します。
 
-Grace joinの最初のフェーズは、右テーブルを読み込み、キー列のハッシュ値に応じてNバケットに分割します（最初は、Nは`grace_hash_join_initial_buckets`です）。これは、各バケットが独立して処理できることを確保する方法で行われます。最初のバケットからの行は、メモリ内のハッシュテーブルに追加され、他はディスクに保存されます。ハッシュテーブルがメモリ制限（例: [`max_bytes_in_join`](/docs/en/operations/settings/query-complexity.md/#max_bytes_in_join)によって設定された制限）を超えると、バケットの数が増加し、各行に割り当てられたバケットも変更されます。現在のバケットに属さない行はフラッシュされ、再割り当てされます。
+Grace joinの最初のフェーズは、右テーブルを読み込み、キー列のハッシュ値に応じてNバケットに分割します（最初は、Nは`grace_hash_join_initial_buckets`です）。これは、各バケットが独立して処理できることを確保する方法で行われます。最初のバケットからの行は、メモリ内のハッシュテーブルに追加され、他はディスクに保存されます。ハッシュテーブルがメモリ制限（例: [`max_bytes_in_join`](/docs/operations/settings/query-complexity.md/#max_bytes_in_join)によって設定された制限）を超えると、バケットの数が増加し、各行に割り当てられたバケットも変更されます。現在のバケットに属さない行はフラッシュされ、再割り当てされます。
 
  `INNER/LEFT/RIGHT/FULL ALL/ANY JOIN`をサポートします。
 
@@ -5323,7 +5323,7 @@ GLOBAL IN/JOINセクションが実行されるときに伝達される外部テ
 
 **参照**
 
-- [max_concurrent_queries](/docs/en/operations/server-configuration-parameters/settings.md/#max_concurrent_queries)
+- [max_concurrent_queries](/docs/operations/server-configuration-parameters/settings.md/#max_concurrent_queries)
 
 ## max_concurrent_queries_for_user {#max_concurrent_queries_for_user}
 
@@ -5770,7 +5770,7 @@ Default value: 50000000000
 Cloud default value: 1 TB。
 
 :::note
-このクエリ設定は、サーバー設定の同等の設定を上書きします。詳しくは、[max_partition_size_to_drop](/docs/en/operations/server-configuration-parameters/settings.md/#max-partition-size-to-drop)を参照してください。
+このクエリ設定は、サーバー設定の同等の設定を上書きします。詳しくは、[max_partition_size_to_drop](/docs/operations/server-configuration-parameters/settings.md/#max-partition-size-to-drop)を参照してください。
 :::
 
 ## max_partitions_per_insert_block {#max_partitions_per_insert_block}
@@ -6037,7 +6037,7 @@ Default value: 50000000000
 Cloud default value: 1 TB。
 
 :::note
-このクエリ設定は、サーバー設定の同等の設定を上書きします。詳しくは、[max_table_size_to_drop](/docs/en/operations/server-configuration-parameters/settings.md/#max-table-size-to-drop)を参照してください。
+このクエリ設定は、サーバー設定の同等の設定を上書きします。詳しくは、[max_table_size_to_drop](/docs/operations/server-configuration-parameters/settings.md/#max-table-size-to-drop)を参照してください。
 :::
 
 ## max_temporary_columns {#max_temporary_columns}
@@ -6376,7 +6376,7 @@ Default value: 0
 
 Type: String
 
-Default value: 
+Default value:
 
 コンマ区切りのパフォーマンスメトリックリストで、クエリの実行中に測定されます。空はすべてのイベントを意味します。利用可能なイベントのためにソース内のPerfEventInfoを参照してください。
 
@@ -6683,7 +6683,7 @@ true の場合、スカラのサブクエリはイニシエータ上で実行さ
 
 タイプ: MySQLDataTypesSupport
 
-デフォルト値: 
+デフォルト値:
 
 MySQL タイプが対応する ClickHouse タイプにどのように変換されるかを定義します。 `decimal`, `datetime64`, `date2Date32` または `date2String` の任意の組み合わせのカンマ区切りリスト。
 
@@ -7581,7 +7581,7 @@ trueの場合、INに対するサブクエリがすべてのフォロワーレ�
 
 タイプ: String
 
-デフォルト値: 
+デフォルト値:
 
 特定のテーブル間で作業を分割するために使用できる任意の整数式。
 値は任意の整数式とすることができます。
@@ -7946,7 +7946,7 @@ ClickHouse Cloudでのみ利用可能です。マージされていないパー�
 
 タイプ: String
 
-デフォルト値: 
+デフォルト値:
 
 空でない文字列に設定されている場合、ClickHouseはクエリ内に指定された投影を適用しようとします。
 
@@ -8135,7 +8135,7 @@ a   Tuple(
 
 タイプ: String
 
-デフォルト値: 
+デフォルト値:
 
 [クエリキャッシュ](../query-cache.md)エントリのラベルとして機能する文字列。
 異なるタグを持つ同じクエリは、クエリキャッシュによって異なるものと見なされます。
@@ -8756,7 +8756,7 @@ Default value: 4194304
 
 Type: String
 
-Default value: 
+Default value:
 
 - **Type:** String
 
@@ -9216,7 +9216,7 @@ Type: UInt64
 Default value: 0
 
 :::note
-この設定は SharedMergeTree と ReplicatedMergeTree で動作が異なるため、[SharedMergeTree 一貫性](/docs/en/cloud/reference/shared-merge-tree/#consistency)を参照して、SharedMergeTree における `select_sequential_consistency` の動作についての詳細を確認してください。
+この設定は SharedMergeTree と ReplicatedMergeTree で動作が異なるため、[SharedMergeTree 一貫性](/docs/cloud/reference/shared-merge-tree/#consistency)を参照して、SharedMergeTree における `select_sequential_consistency` の動作についての詳細を確認してください。
 :::
 
 `SELECT` クエリのための選択的一貫性を有効または無効にします。`insert_quorum_parallel` が無効である必要があります（デフォルトでは有効です）。
@@ -9250,7 +9250,7 @@ Default value: fatal
 
 Type: String
 
-Default value: 
+Default value:
 
 指定された正規表現に合致するログソース名を持つサーバーテキストログを送信します。空である場合、すべてのソースが対象です。
 
@@ -9282,7 +9282,7 @@ Default value: 300
 
 Type: Timezone
 
-Default value: 
+Default value:
 
 現在のセッションまたはクエリの暗黙のタイムゾーンを設定します。
 暗黙のタイムゾーンは、明示的に指定されたタイムゾーンがない DateTime/DateTime64 型の値に適用されます。
@@ -9601,7 +9601,7 @@ Kafka、RabbitMQ、FileLog、Redis Streams、およびNATSエンジンに対し�
 
 Type: String
 
-Default value: 
+Default value:
 
 ストリームライクエンジンが複数のキューからデータを読み取る場合、書き込み時に挿入するキューを選択する必要があります。Redis StreamsとNATSによって使用されます。
 
@@ -9711,7 +9711,7 @@ Type: Bool
 
 Default value: 1
 
-空のINSERTを許可するかどうかを制御します。デフォルトでは有効（空の挿入でエラーをスローします）。これは、[`clickhouse-client`](/docs/en/interfaces/cli)または[gRPCインターフェース](/docs/en/interfaces/grpc)を使用するINSERTにのみ適用されます。
+空のINSERTを許可するかどうかを制御します。デフォルトでは有効（空の挿入でエラーをスローします）。これは、[`clickhouse-client`](/docs/interfaces/cli)または[gRPCインターフェース](/docs/interfaces/grpc)を使用するINSERTにのみ適用されます。
 
 ## throw_on_error_from_cache_on_write_operations {#throw_on_error_from_cache_on_write_operations}
 
@@ -9873,7 +9873,7 @@ Default value: 0
 
 Type: SetOperationMode
 
-Default value: 
+Default value:
 
 `SELECT`クエリ結果を結合するためのモードを設定します。この設定は、`UNION ALL`または`UNION DISTINCT`を明示的に指定せずに[`UNION`](../../sql-reference/statements/select/union.md)で使用される時のみ使用されます。
 
