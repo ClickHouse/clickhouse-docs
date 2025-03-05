@@ -79,6 +79,7 @@ def translate_text(config, text, model="gpt-4o-mini"):
             - Ensure that no content, links, explicit heading ids (denoted by {{#my-explicit-id}}), or references are omitted or altered during translation, preserving the same amount of information as the original text. 
             - Do not translate code, URLs, or any links within markdown. Mark down links must be preserved and never modified. Urls in text should be surrounded by white space and have never have adjacent {language} characters.
             - Ensure the markdown is MDX 3 compatible - escaping < and > with &lt; and &gt; and avoiding the creation of unclosed xml tags.
+            - Do not add new code delimiters which are not present in the original content e.g. '```html', even if the content appears to contain this type.
             - Do not translate terms which indicate setting names. These are denoted by lower case and underscore e.g. live_view_heartbeat_interval.
             - This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. 
             - Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}.
@@ -108,14 +109,15 @@ def split_text(text, input_file_path, max_chunk_size=MAX_CHUNK_SIZE):
 
     chunks = []
     current_chunk = ""
-
     for node in nodes:
         node_text = node.text
         if len(current_chunk) + len(node_text) > max_chunk_size:
             chunks.append(current_chunk.strip())
-            if len(node_text)  > max_chunk_size:
-                print(f"WARNING: too long text for ${input_file_path} and no clear split")
-            current_chunk = node_text
+            if len(node_text)  > max_chunk_size: # can happen if no obvious header splits
+                print(f"Error: unable to split ${input_file_path} - no clear split")
+                os.exit(1)
+            else:
+                current_chunk = node_text
         else:
             current_chunk += "\n" + node_text
 
@@ -136,8 +138,9 @@ def translate_file(config, input_file_path, output_file_path, model):
         num_chunk = math.ceil(len(original_text) / MAX_CHUNK_SIZE)
         count = 1
         translated_text = ""
-        for chunk in split_text(original_text, input_file_path, MAX_CHUNK_SIZE):
-            print(f" - start [{count}/{num_chunk}], [{input_file_path}]")
+        chunks = split_text(original_text, input_file_path, MAX_CHUNK_SIZE)
+        for chunk in chunks:
+            print(f" - start [{count}/{len(chunks)}], [{input_file_path}]")
             translated_chunk = translate_text(config, chunk, model)
             if translated_chunk:
                 if translated_chunk.startswith("```markdown"):
@@ -167,7 +170,7 @@ def translate_file(config, input_file_path, output_file_path, model):
     end_time = time.time()
     duration = end_time - start_time
     print(
-        f"finished translation: input[{input_file_path}], output[{output_file_path}], duration seconds[{duration:.2f}]")
+        f"finished translation: input[{input_file_path}], output[{output_file_path}d], duration seconds[{duration:.2f}]")
 
 
 def translate_docs_folder(config, input_folder, output_folder, model="gpt-4o-mini", overwrite=False):
