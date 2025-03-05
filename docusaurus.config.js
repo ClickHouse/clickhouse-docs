@@ -48,10 +48,16 @@ const config = {
   // url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
   baseUrl: "/docs/",
   baseUrlIssueBanner: true,
-  onBrokenLinks: "warn",
+  onBrokenLinks:
+      process.env.DOCUSAURUS_CURRENT_LOCALE !== 'en'
+          ? 'warn'
+          : 'throw',
   onBrokenMarkdownLinks: "warn",
   onDuplicateRoutes: "throw",
-  onBrokenAnchors: "warn",
+  onBrokenAnchors:
+      process.env.DOCUSAURUS_CURRENT_LOCALE !== 'en'
+          ? 'warn'
+          : 'throw',
   favicon: "img/docs_favicon.ico",
   organizationName: "ClickHouse",
   trailingSlash: false,
