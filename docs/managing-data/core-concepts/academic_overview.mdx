@@ -4,7 +4,7 @@ title: Architecture Overview
 description: Docs version of our 2024 VLDB paper
 keywords: [architecture]
 ---
-
+import useBrokenLinks from "@docusaurus/useBrokenLinks";
 import image_01 from '@site/static/images/managing-data/core-concepts/_vldb2024_1_Figure_0.png'
 import image_02 from '@site/static/images/managing-data/core-concepts/_vldb2024_2_Figure_0.png'
 import image_03 from '@site/static/images/managing-data/core-concepts/_vldb2024_2_Figure_5.png'
@@ -18,6 +18,12 @@ import image_10 from '@site/static/images/managing-data/core-concepts/_vldb2024_
 import image_11 from '@site/static/images/managing-data/core-concepts/_vldb2024_10_Figure_0.png'
 import image_12 from '@site/static/images/managing-data/core-concepts/_vldb2024_10_Figure_12.png'
 import image_13 from '@site/static/images/managing-data/core-concepts/_vldb2024_10_Figure_13.png'
+
+<!-- needed as docusaurus cannot resolve links to span ids, we need a custom span -->
+export function Anchor(props) {
+    useBrokenLinks().collectAnchor(props.id);
+    return <span style={{scrollMarginTop: "var(--ifm-navbar-height)"}} {...props}/>;
+}
 
 This is the web version of our [VLDB 2024 scientific paper](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf). We also [blogged](https://clickhouse.com/blog/first-clickhouse-research-paper-vldb-lightning-fast-analytics-for-everyone) about its background and journey, and recommend watching the VLDB 2024 presentation by ClickHouse CTO and creator, Alexey Milovidov:
 
@@ -45,13 +51,13 @@ ClickHouse is designed to address fve key challenges of modern analytical data m
 
 5. **Industry-grade robustness and versatile deployment**. As commodity hardware is unreliable, databases must provide data replication for robustness against node failures. Also, databases should run on any hardware, from old laptops to powerful servers. Finally, to avoid the overhead of garbage collection in JVM-based programs and enable bare-metal performance (e.g. SIMD), databases are ideally deployed as native binaries for the target platform.
 
-<span id="page-1-0"></span><img src={image_01}/>
+<Anchor id="page-1-0"/><img src={image_01}/>
 
 Figure 1: ClickHouse timeline.
 
 ## 2 ARCHITECTURE {#2-architecture}
 
-<span id="page-2-0"></span><img src={image_02}/>
+<Anchor id="page-2-0"/><img src={image_02}/>
 
 Figure 2: The high-level architecture of the ClickHouse database engine.
 
@@ -69,18 +75,18 @@ ClickHouse supports sharding and replication of tables across multiple cluster n
 
 Finally, the ClickHouse database engine can be operated in on-premise, cloud, standalone, or in-process modes. In the on-premise mode, users set up ClickHouse locally as a single server or multinode cluster with sharding and/or replication. Clients communicate with the database over the native, MySQL's, PostgreSQL's binary wire protocols, or an HTTP REST API. The cloud mode is represented by ClickHouse Cloud, a fully managed and autoscaling DBaaS offering. While this paper focuses on the on-premise mode, we plan to describe the architecture of ClickHouse Cloud in a follow-up publication. The [standalone mode](https://clickhou.se/local-fastest-tool) turns ClickHouse into a command line utility for analyzing and transforming files, making it a SQL-based alternative to Unix tools like cat and grep. While this requires no prior configuration, the standalone mode is restricted to a single server. Recently, an in-process mode called chDB [\[15\]](#page-12-3) has been developed for interactive data analysis use cases like Jupyter notebooks [\[37\]](#page-12-4) with Pandas dataframes [\[61\]](#page-13-5). Inspired by DuckDB [\[67\]](#page-13-6), [chDB](https://clickhou.se/chdb-rocket-engine) embeds ClickHouse as a high-performance OLAP engine into a host process. Compared to the other modes, this allows to pass source and result data between the database engine and the application efficiently without copying as they run in the same address space.
 
-## <span id="page-1-1"></span>3 STORAGE LAYER {#3-storage-layer}
+## <Anchor id="page-1-1"/>3 STORAGE LAYER {#3-storage-layer}
 
 This section discusses MergeTree* table engines as ClickHouse's native storage format. We describe their on-disk representation and discuss three data pruning techniques in ClickHouse. Afterwards, we present merge strategies which continuously transform data without impacting simultaneous inserts. Finally, we explain how updates and deletes are implemented, as well as data deduplication, data replication, and ACID compliance.
 
 
-### <span id="page-2-2"></span>3.1 On-Disk Format {#3-1-on-disk-format}
+### <Anchor id="page-2-2"/>3.1 On-Disk Format {#3-1-on-disk-format}
 
 Each table in the MergeTree* table engine is organized as a collection of immutable table parts. A part is created whenever a set of rows is inserted into the table. Parts are self-contained in the sense that they include all metadata required to interpret their content without additional lookups to a central catalog. To keep the number of parts per table low, a background merge job periodically combines multiple smaller parts into a larger part until a configurable part size is reached (150 GB by default). Since parts are sorted by the table's primary key columns (see Section [3.2)](#page-3-0), efficient k-way merge sort [\[40\]](#page-12-5) is used for merging. The source parts are marked as inactive and eventually deleted as soon as their reference count drops to zero, i.e. no further queries read from them.
 
 Rows can be inserted in two modes: In synchronous insert mode, each INSERT statement creates a new part and appends it to the table. To minimize the overhead of merges, database clients are encouraged to insert tuples in bulk, e.g. 20,000 rows at once. However, delays caused by client-side batching are often unacceptable if the data should be analyzed in real-time. For example, observability use cases frequently involve thousands of monitoring agents continuously sending small amounts of event and metrics data. Such scenarios can utilize the asynchronous insert mode, in which ClickHouse buffers rows from multiple incoming INSERTs into the same table and creates a new part only after the buffer size exceeds a configurable threshold or a timeout expires.
 
-<span id="page-2-1"></span><img src={image_03}/>
+<Anchor id="page-2-1"/><img src={image_03}/>
 
 Figure 3: Inserts and merges for MergeTree*-engine tables.
 
@@ -94,7 +100,7 @@ Columns can further be dictionary-encoded [\[2,](#page-12-10) [77,](#page-13-11)
 
 Finally, tables can be range, hash, or round-robin partitioned using arbitrary partitioning expressions. To enable partition pruning, ClickHouse additionally stores the partitioning expression's minimum and maximum values for each partition. Users can optionally create more advanced column statistics (e.g., HyperLogLog [\[30\]](#page-12-11) or t-digest [\[28\]](#page-12-12) statistics) that also provide cardinality estimates.
 
-### <span id="page-3-0"></span>3.2 Data Pruning {#3-2-data-pruning}
+### <Anchor id="page-3-0"/>3.2 Data Pruning {#3-2-data-pruning}
 
 In most use cases, scanning petabytes of data just to answer a single query is too slow and expensive. ClickHouse supports three data pruning techniques that allow skipping the majority of rows during searches and therefore speed up queries significantly.
 
@@ -102,7 +108,7 @@ First, users can define a **primary key index** for a table. The primary key col
 
 [Figure 4](#page-3-1) shows a primary key index on column EventTime for a table with page impression statistics. Granules that match the range predicate in the query can be found by binary searching the primary key index instead of scanning EventTime sequentially.
 
-<span id="page-3-1"></span><img src={image_04}/>
+<Anchor id="page-3-1"/><img src={image_04}/>
 
 Figure 4: Evaluating filters with a primary key index.
 
@@ -110,7 +116,7 @@ Second, users can create **table projections**, i.e., alternative versions of a 
 
 Third, **skipping indices** provide a lightweight alternative to projections. The idea of skipping indices is to store small amounts of metadata at the level of multiple consecutive granules which allows to avoid scanning irrelevant rows. Skipping indices can be created for arbitrary index expressions and using a configurable granularity, i.e. number of granules in a skipping index block. Available skipping index types include: 1. Min-max indices [\[51\]](#page-13-14), storing the minimum and maximum values of the index expression for each index block. This index type works well for locally clustered data with small absolute ranges, e.g. loosely sorted data. 2. Set indices, storing a configurable number of unique index block values. These indexes are best used with data with a small local cardinality, i.e. "clumped together" values. 3. Bloom filter indices [\[9\]](#page-12-14) build for row, token, or n-gram values with a configurable false positive rate. These indices support text search [\[73\]](#page-13-15), but unlike min-max and set indices, they cannot be used for range or negative predicates.
 
-### <span id="page-4-3"></span>3.3 Merge-time Data Transformation {#3-3-merge-time-data-transformation}
+### <Anchor id="page-4-3"/>3.3 Merge-time Data Transformation {#3-3-merge-time-data-transformation}
 
 Business intelligence and observability use cases often need to handle data generated at constantly high rates or in bursts. Also, recently generated data is typically more relevant for meaningful real-time insights than historical data. Such use cases require databases to sustain high data ingestion rates while continuously reducing the volume of historical data through techniques like aggregation or data aging. ClickHouse allows a continuous incremental transformation of existing data using different merge strategies. Merge-time data transformation does not compromise the performance of INSERT statements, but it cannot guarantee that tables never contain unwanted (e.g. outdated or non-aggregated) values. If necessary, all merge-time transformations can be applied at query time by specifying the keyword FINAL in SELECT statements.
 
@@ -120,14 +126,14 @@ Business intelligence and observability use cases often need to handle data gene
 
 [Figure 5](#page-4-1) shows a materialized view defined on a table with page impression statistics. For new parts inserted into the source table, the transformation query computes the maximum and average latencies, grouped by region, and inserts the result into a materialized view. Aggregation functions avg() and max() with extension -State return partial aggregation states instead of actual results. An aggregating merge defined for the materialized view continuously combines partial aggregation states in different parts. To obtain the final result, users consolidate the partial aggregation states in the materialized view using avg() and max()) with -Merge extension.
 
-<span id="page-4-1"></span><img src={image_05}/>
+<Anchor id="page-4-1"/><img src={image_05}/>
 
 Figure 5: Aggregating merges in materialized views.
 
 **TTL (time-to-live) merges** provide aging for historical data. Unlike deleting and aggregating merges, TTL merges process only one part at a time. TTL merges are defined in terms of rules with triggers and actions. A trigger is an expression computing a timestamp for every row, which is compared against the time at which the TTL merge runs. While this allows users to control actions at row granularity, we found it sufficient to check whether all rows satisfy a given condition and run the action on the entire part. Possible actions include 1. move the part to another volume (e.g. cheaper and slower storage), 2. re-compress the part (e.g. with a more heavy-weight codec), 3. delete the part, and 4. roll-up, i.e. aggregate the rows using a grouping key and aggregate functions.
 
 As an example, consider the logging table definition in [Listing 1.](#page-4-2) ClickHouse will move parts with timestamp column values older than one week to slow but inexpensive S3 object storage.
-<span id="page-4-2"></span>
+<Anchor id="page-4-2"/>
 ```
 1 CREATE TABLE tab ( ts DateTime , msg String )
 2 ENGINE MergeTree PRIMARY KEY ts
@@ -135,7 +141,7 @@ As an example, consider the logging table definition in [Listing 1.](#page-4-2) 
 ```
 Listing 1: Move part to object storage after one week.
 
-### <span id="page-4-0"></span>3.4 Updates and Deletes {#3-4-updates-and-deletes}
+### <Anchor id="page-4-0"/>3.4 Updates and Deletes {#3-4-updates-and-deletes}
 
 The design of the MergeTree* table engines favors append-only workloads, yet some use cases require to modify existing data occasionally, e.g. for regulatory compliance. Two approaches for updating or deleting data exist, neither of which block parallel inserts.
 
@@ -145,13 +151,13 @@ As an alternative, **lightweight deletes** only update an internal bitmap column
 
 Update and delete operations performed on the same table are expected to be rare and serialized to avoid logical conflicts.
 
-### <span id="page-5-2"></span>3.5 Idempotent Inserts {#3-5-idempotent-inserts}
+### <Anchor id="page-5-2"/>3.5 Idempotent Inserts {#3-5-idempotent-inserts}
 
 A problem that frequently occurs in practice is how clients should handle connection timeouts after sending data to the server for insertion into a table. In this situation, it is difficult for clients to distinguish between whether the data was successfully inserted or not. The problem is traditionally solved by re-sending the data from the client to the server and relying on primary key or unique constraints to reject duplicate inserts. Databases perform the required point lookups quickly using index structures based on binary trees [\[39,](#page-12-15) [68\]](#page-13-16), radix trees [\[45\]](#page-13-17), or hash tables [\[29\]](#page-12-16). Since these data structures index every tuple, their space and update overhead becomes prohibitive for large data sets and high ingest rates.
 
 ClickHouse provides a more light-weight alternative based on the fact that each insert eventually creates a part. More specifically, the server maintains hashes of the N last inserted parts (e.g. N=100) and ignores re-inserts of parts with a known hash. Hashes for non-replicated and replicated tables are stored locally, respectively, in Keeper. As a result, inserts become idempotent, i.e. clients can simply re-send the same batch of rows after a timeout and assume that the server takes care of deduplication. For more control over the deduplication process, clients can optionally provide an insert token that acts as a part hash. While hash-based deduplication incurs an overhead associated with hashing the new rows, the cost of storing and comparing hashes is negligible.
 
-### <span id="page-5-0"></span>3.6 Data Replication {#3-6-data-replication}
+### <Anchor id="page-5-0"/>3.6 Data Replication {#3-6-data-replication}
 
 Replication is a prerequisite for high availability (tolerance against node failures), but also used for load balancing and zero-downtime upgrades [\[14\]](#page-12-17). In ClickHouse, replication is based on the notion of table states which consist of a set of table parts (Section [3.1)](#page-2-2) and table metadata, such as column names and types. Nodes advance the state of a table using three operations: 1. Inserts add a new part to the state, 2. merges add a new part and delete existing parts to/from the state, 3. mutations and DDL statements add parts, and/or delete parts, and/or change table metadata, depending on the concrete operation. Operations are performed locally on a single node and recorded as a sequence of state transition in a global replication log.
 
@@ -159,23 +165,23 @@ The replication log is maintained by an ensemble of typically three ClickHouse K
 
 As an example, [Figure 6](#page-5-3) shows an initially empty replicated table in a cluster of three ClickHouse nodes. Node 1 first receives two insert statements and records them ( 1 2 ) in the replication log stored in the Keeper ensemble. Next, Node 2 replays the first log entry by fetching it ( 3 ) and downloading the new part from Node 1 ( 4 ), whereas Node 3 replays both log entries ( 3 4 5 6 ). Finally, Node 3 merges both parts to a new part, deletes the input parts, and records a merge entry in the replication log ( 7 ).
 
-<span id="page-5-3"></span><img src={image_06}/>
+<Anchor id="page-5-3"/><img src={image_06}/>
 
 Figure 6: Replication in a cluster of three nodes.
 
 Three optimizations to speed up synchronization exist: First, new nodes added to the cluster do replay the replication log from scratch, instead they simply copy the state of the node which wrote the last replication log entry. Second, merges are replayed by repeating them locally or by fetching the result part from another node. The exact behavior is configurable and allows to balance CPU consumption and network I/O. For example, cross-data-center replication typically prefers local merges to minimize operating costs. Third, nodes replay mutually independent replication log entries in parallel. This includes, for example, fetches of new parts inserted consecutively into the same table, or operations on different tables.
 
-### <span id="page-5-1"></span>3.7 ACID Compliance {#3-7-acid-compliance}
+### <Anchor id="page-5-1"/>3.7 ACID Compliance {#3-7-acid-compliance}
 
 To maximize the performance of concurrent read and write operations, ClickHouse avoids latching as much as possible. Queries are executed against a snapshot of all parts in all involved tables created at the beginning of the query. This ensures that new parts inserted by parallel INSERTs or merges (Section [3.1)](#page-2-2) do not participate in execution. To prevent parts from being modified or removed simultaneously (Section [3.4)](#page-4-0), the reference count of the processed parts is incremented for the duration of the query. Formally, this corresponds to snapshot isolation realized by an MVCC variant [\[6\]](#page-12-18) based on versioned parts. As a result, statements are generally not ACID-compliant except for the rare case that concurrent writes at the time the snapshot is taken each affect only a single part.
 
 In practice, most of ClickHouse's write-heavy decision making use cases even tolerate a small risk of losing new data in case of a power outage. The database takes advantage of this by not forcing a commit (fsync) of newly inserted parts to disk by default, allowing the kernel to batch writes at the cost of forgoing atomicity.
 
 
-## <span id="page-6-0"></span>4 QUERY PROCESSING LAYER {#4-query-processing-layer}
+## <Anchor id="page-6-0"/>4 QUERY PROCESSING LAYER {#4-query-processing-layer}
 
 
-<span id="page-6-1"></span><img src={image_07}/>
+<Anchor id="page-6-1"/><img src={image_07}/>
 
 Figure 7: Parallelization across SIMD units, cores and nodes.
 
@@ -189,7 +195,7 @@ Passing multiple rows between operators creates an opportunity for vectorization
 
 ### 4.2 Multi-Core Parallelization {#4-2-multi-core-parallelization}
 
-<span id="page-7-1"></span><img src={image_08}/>
+<Anchor id="page-7-1"/><img src={image_08}/>
 
 Figure 8: A physical operator plan with three lanes.
 
@@ -211,7 +217,7 @@ If the source table of a query is sharded, the query optimizer on the node that 
 
 Node 2 ... N in [Figure 8](#page-7-1) show plan fragments executed on other nodes holding shards of the hits table. These nodes filter and group the local data and send the result to the initiator node. The GroupStateMerge operator on node 1 merges the local and remote results before the results groups are finally sorted.
 
-### <span id="page-7-0"></span>4.4 Holistic Performance Optimization {#4-4-holistic-performance-optimization}
+### <Anchor id="page-7-0"/>4.4 Holistic Performance Optimization {#4-4-holistic-performance-optimization}
 
 This section presents selected key performance optimizations applied to different stages of query execution.
 
@@ -238,11 +244,11 @@ This section presents selected key performance optimizations applied to differen
 
 Since joins are among the most expensive database operations, it is important to provide parallel variants of the classic join algorithms, ideally with configurable space/time trade-ofs. For hash joins, ClickHouse implements the non-blocking, shared partition algorithm from [\[7\]](#page-12-23). For example, the query in [Figure 9](#page-8-3) computes how users move between URLs via a self-join on a page hit statistics table. The build phase of the join is split into three lanes, covering three disjoint ranges of the source table. Instead of a global hash table, a partitioned hash table is used. The (typically three) worker threads determine the target partition for each input row of the build side by computing the modulo of a hash function. Access to the hash table partitions is synchronized using Gather exchange operators. The probe phase finds the target partition of its input tuples similarly. While this algorithm introduces two additional hash calculations per tuple, it greatly reduces latch contention in the build phase, depending on the number of hash table partitions.
 
-<span id="page-8-3"></span><img src={image_09}/>
+<Anchor id="page-8-3"/><img src={image_09}/>
 
 Figure 9: Parallel hash join with three hash table partitions.
 
-### <span id="page-9-1"></span>4.5 Workload Isolation {#4-5-workload-isolation}
+### <Anchor id="page-9-1"/>4.5 Workload Isolation {#4-5-workload-isolation}
 
 ClickHouse offers concurrency control, memory usage limits, and I/O scheduling, enabling users to isolate queries into workload classes. By setting limits on shared resources (CPU cores, DRAM, disk and network I/O) for specific workload classes, it ensures these queries do not affect other critical business queries.
 
@@ -252,7 +258,7 @@ ClickHouse tracks byte sizes of memory allocations at the server, user, and quer
 
 Lastly, I/O scheduling allows users to restrict local and remote disk accesses for workload classes based on a maximum bandwidth, in-fight requests, and policy (e.g. FIFO, SFC [\[32\]](#page-12-24)).
 
-### <span id="page-9-0"></span>5 INTEGRATION LAYER {#5-integration-layer}
+### <Anchor id="page-9-0"/>5 INTEGRATION LAYER {#5-integration-layer}
 
 Real-time decision-making applications often depend on efficient and low-latency access to data in multiple locations. Two approaches exist to make external data available in an OLAP database. With push-based data access, a third-party component bridges the database with external data stores. One example of this are specialized extract-transform-load (ETL) tools which push remote data to the destination system. In the pull-based model, the database itself connects to remote data sources and pulls data for querying into local tables or exports data to remote systems. While push-based approaches are more versatile and common, they entail a larger architectural footprint and scalability bottleneck. In contrast, remote connectivity directly in the database offers interesting capabilities, such as joins between local and remote data, while keeping the overall architecture simple and reducing the time to insight.
 
@@ -260,7 +266,7 @@ The rest of the section explores pull-based data integration methods in ClickHou
 
 External Connectivity. ClickHouse provides [50+](https://clickhou.se/query-integrations) integration table functions and engines for connectivity with external systems and storage locations, including ODBC, MySQL, PostgreSQL, SQLite, Kafka, Hive, MongoDB, Redis, S3/GCP/Azure object stores and various data lakes. We break them further down into categories shown by the following bonus figure (not part of the original vldb paper).
 
-<span id="bonus-figure"></span><img src={image_10}/>
+<Anchor id="bonus-figure"/><img src={image_10}/>
 
 Bonus Figure: Interoperability options of ClickBench.
 
@@ -306,7 +312,7 @@ Filter and aggregation queries on denormalized fact tables historically represen
 
 [Figure 10](#page-10-0) shows the total relative cold and hot runtimes for sequentially executing all ClickBench queries in databases frequently used for analytics. The measurements were taken on a single-node AWS EC2 c6a.4xlarge instance with 16 vCPUs, 32 GB RAM, and 5000 IOPS / 1000 MiB/s disk. Comparable systems were used for Redshift ([ra3.4xlarge](https://clickhou.se/redshift-sizes), 12 vCPUs, 96 GB RAM) and Snowfake ([warehouse size S](https://clickhou.se/snowflake-sizes): 2x8 vCPUs, 2x16 GB RAM). The physical database design is tuned only lightly, for example, we specify primary keys, but do not change the compression of individual columns, create projections, or skipping indexes. We also flush the Linux page cache prior to each cold query run, but do not adjust database or operating system knobs. For every query, the fastest runtime across databases is used as a baseline. Relative query runtimes for other databases are calculated as ( + 10)/(_ + 10). The total relative runtime for a database is the geometric mean of the per-query ratios. While the research database Umbra [\[54\]](#page-13-25) achieves the best overall hot runtime, ClickHouse outperforms all other production-grade databases for hot and cold runtimes.
 
-<span id="page-10-0"></span><img src={image_11}/>
+<Anchor id="page-10-0"/><img src={image_11}/>
 
 Figure 10: Relative cold and hot runtimes of ClickBench.
 
@@ -315,7 +321,7 @@ To track the performance of SELECTs in more diverse workloads over time, we [use
 
 [Figure 11](#page-10-5) shows the development of the VersionsBench runtimes for 77 ClickHouse versions between March 2018 and March 2024. To compensate for differences in the relative runtime of individual queries, we normalize the runtimes using a geometric mean with the ratio to the minimum query runtime across all versions as weight. The performance of VersionBench improved by 1.72 × over the past six years. Dates for releases with long-term support (LTS) are marked on the x-axis. Although performance deteriorated temporarily in some periods, LTS releases generally have comparable or better performance than the previous LTS version. The significant improvement in August 2022 was caused by the column-by-column filter evaluation technique described in Section [4.4.](#page-7-0)
 
-<span id="page-10-5"></span><img src={image_12}/>
+<Anchor id="page-10-5"/><img src={image_12}/>
 
 Figure 11: Relative hot runtimes of VersionsBench 2018-2024.
 
@@ -324,7 +330,7 @@ Figure 11: Relative hot runtimes of VersionsBench 2018-2024.
 
 In classical warehousing, data is often modeled using star or snowfake schemas. We present runtimes of TPC-H queries (scale factor 100) but remark that normalized tables are an emerging use case for ClickHouse. [Figure 12](#page-10-6) shows the hot runtimes of the TPC-H queries based on the parallel hash join algorithm described in Section [4.4.](#page-7-0) The measurements were taken on a single-node AWS EC2 c6i.16xlarge instance with 64 vCPUs, 128 GB RAM, and 5000 IOPS / 1000 MiB/s disk. The fastest of fve runs was recorded. For reference, we performed the same measurements in a Snowfake system of comparable size (warehouse size L, 8x8 vCPUs, 8x16 GB RAM). The results of eleven queries are excluded from the table: Queries Q2, Q4, Q13, Q17, and Q20-22 include correlated subqueries which are not supported as of ClickHouse v24.6. Queries Q7-Q9 and Q19 depend on extended plan-level optimizations for joins such as join reordering and join predicate pushdown (both missing as of ClickHouse v24.6.) to achieve viable runtimes. Automatic subquery decorrelation and better optimizer support for joins are planned for implementation in 2024 [\[18\]](#page-12-33). Out of the remaining 11 queries, 5 (6) queries executed faster in ClickHouse (Snowfake). As aforementioned optimizations are known to be critical for performance [\[27\]](#page-12-34), we expect them to improve runtimes of these queries further once implemented.
 
-<span id="page-10-6"></span><img src={image_13}/>
+<Anchor id="page-10-6"/><img src={image_13}/>
 
 Figure 12: Hot runtimes (in seconds) for TPC-H queries.
 
@@ -354,83 +360,83 @@ As per version 24.6, SELECT * FROM system.contributors returns 1994 individuals 
 
 ## REFERENCES {#references}
 
-- <span id="page-12-35"></span>[1] Daniel Abadi, Peter Boncz, Stavros Harizopoulos, Stratos Idreaos, and Samuel Madden. 2013. The Design and Implementation of Modern Column-Oriented Database Systems. https://doi.org/10.1561/9781601987556
-- <span id="page-12-10"></span>[2] Daniel Abadi, Samuel Madden, and Miguel Ferreira. 2006. Integrating Compression and Execution in Column-Oriented Database Systems. In Proceedings of the 2006 ACM SIGMOD International Conference on Management of Data (SIGMOD '06). 671–682.https://doi.org/10.1145/1142473.1142548
-- <span id="page-12-41"></span>[3] Anastassia Ailamaki, David J. DeWitt, Mark D. Hill, and Marios Skounakis. 2001. Weaving Relations for Cache Performance. In Proceedings of the 27th International Conference on Very Large Data Bases (VLDB '01). Morgan Kaufmann Publishers Inc., San Francisco, CA, USA, 169–180.
-- <span id="page-12-38"></span>[4] Nikos Armenatzoglou, Sanuj Basu, Naga Bhanoori, Mengchu Cai, Naresh Chainani, Kiran Chinta, Venkatraman Govindaraju, Todd J. Green, Monish Gupta, Sebastian Hillig, Eric Hotinger, Yan Leshinksy, Jintian Liang, Michael McCreedy, Fabian Nagel, Ippokratis Pandis, Panos Parchas, Rahul Pathak, Orestis Polychroniou, Foyzur Rahman, Gaurav Saxena, Gokul Soundararajan, Sriram Subramanian, and Doug Terry. 2022. Amazon Redshift Re-Invented. In Proceedings of the 2022 International Conference on Management of Data (Philadelphia, PA, USA) (SIGMOD '22). Association for Computing Machinery, New York, NY, USA, 2205–2217. https://doi.org/10.1145/3514221.3526045
-- <span id="page-12-39"></span>[5] Alexander Behm, Shoumik Palkar, Utkarsh Agarwal, Timothy Armstrong, David Cashman, Ankur Dave, Todd Greenstein, Shant Hovsepian, Ryan Johnson, Arvind Sai Krishnan, Paul Leventis, Ala Luszczak, Prashanth Menon, Mostafa Mokhtar, Gene Pang, Sameer Paranjpye, Greg Rahn, Bart Samwel, Tom van Bussel, Herman van Hovell, Maryann Xue, Reynold Xin, and Matei Zaharia. 2022. Photon: A Fast Query Engine for Lakehouse Systems (SIGMOD '22). Association for Computing Machinery, New York, NY, USA, 2326–2339. [https://doi.org/10.1145/3514221.](https://doi.org/10.1145/3514221.3526054) [3526054](https://doi.org/10.1145/3514221.3526054)
-- <span id="page-12-18"></span>[6] Philip A. Bernstein and Nathan Goodman. 1981. Concurrency Control in Distributed Database Systems. ACM Computing Survey 13, 2 (1981), 185–221. https://doi.org/10.1145/356842.356846
-- <span id="page-12-23"></span>[7] Spyros Blanas, Yinan Li, and Jignesh M. Patel. 2011. Design and evaluation of main memory hash join algorithms for multi-core CPUs. In Proceedings of the 2011 ACM SIGMOD International Conference on Management of Data (Athens, Greece) (SIGMOD '11). Association for Computing Machinery, New York, NY, USA, 37–48. https://doi.org/10.1145/1989323.1989328
-- <span id="page-12-26"></span><span id="page-12-14"></span>[8] Daniel Gomez Blanco. 2023. Practical OpenTelemetry. Springer Nature.
+- <Anchor id="page-12-35"/>[1] Daniel Abadi, Peter Boncz, Stavros Harizopoulos, Stratos Idreaos, and Samuel Madden. 2013. The Design and Implementation of Modern Column-Oriented Database Systems. https://doi.org/10.1561/9781601987556
+- <Anchor id="page-12-10"/>[2] Daniel Abadi, Samuel Madden, and Miguel Ferreira. 2006. Integrating Compression and Execution in Column-Oriented Database Systems. In Proceedings of the 2006 ACM SIGMOD International Conference on Management of Data (SIGMOD '06). 671–682.https://doi.org/10.1145/1142473.1142548
+- <Anchor id="page-12-41"/>[3] Anastassia Ailamaki, David J. DeWitt, Mark D. Hill, and Marios Skounakis. 2001. Weaving Relations for Cache Performance. In Proceedings of the 27th International Conference on Very Large Data Bases (VLDB '01). Morgan Kaufmann Publishers Inc., San Francisco, CA, USA, 169–180.
+- <Anchor id="page-12-38"/>[4] Nikos Armenatzoglou, Sanuj Basu, Naga Bhanoori, Mengchu Cai, Naresh Chainani, Kiran Chinta, Venkatraman Govindaraju, Todd J. Green, Monish Gupta, Sebastian Hillig, Eric Hotinger, Yan Leshinksy, Jintian Liang, Michael McCreedy, Fabian Nagel, Ippokratis Pandis, Panos Parchas, Rahul Pathak, Orestis Polychroniou, Foyzur Rahman, Gaurav Saxena, Gokul Soundararajan, Sriram Subramanian, and Doug Terry. 2022. Amazon Redshift Re-Invented. In Proceedings of the 2022 International Conference on Management of Data (Philadelphia, PA, USA) (SIGMOD '22). Association for Computing Machinery, New York, NY, USA, 2205–2217. https://doi.org/10.1145/3514221.3526045
+- <Anchor id="page-12-39"/>[5] Alexander Behm, Shoumik Palkar, Utkarsh Agarwal, Timothy Armstrong, David Cashman, Ankur Dave, Todd Greenstein, Shant Hovsepian, Ryan Johnson, Arvind Sai Krishnan, Paul Leventis, Ala Luszczak, Prashanth Menon, Mostafa Mokhtar, Gene Pang, Sameer Paranjpye, Greg Rahn, Bart Samwel, Tom van Bussel, Herman van Hovell, Maryann Xue, Reynold Xin, and Matei Zaharia. 2022. Photon: A Fast Query Engine for Lakehouse Systems (SIGMOD '22). Association for Computing Machinery, New York, NY, USA, 2326–2339. [https://doi.org/10.1145/3514221.](https://doi.org/10.1145/3514221.3526054) [3526054](https://doi.org/10.1145/3514221.3526054)
+- <Anchor id="page-12-18"/>[6] Philip A. Bernstein and Nathan Goodman. 1981. Concurrency Control in Distributed Database Systems. ACM Computing Survey 13, 2 (1981), 185–221. https://doi.org/10.1145/356842.356846
+- <Anchor id="page-12-23"/>[7] Spyros Blanas, Yinan Li, and Jignesh M. Patel. 2011. Design and evaluation of main memory hash join algorithms for multi-core CPUs. In Proceedings of the 2011 ACM SIGMOD International Conference on Management of Data (Athens, Greece) (SIGMOD '11). Association for Computing Machinery, New York, NY, USA, 37–48. https://doi.org/10.1145/1989323.1989328
+- <Anchor id="page-12-26"/><Anchor id="page-12-14"/>[8] Daniel Gomez Blanco. 2023. Practical OpenTelemetry. Springer Nature.
 - [9] Burton H. Bloom. 1970. Space/Time Trade-Ofs in Hash Coding with Allowable Errors. Commun. ACM 13, 7 (1970), 422–426. [https://doi.org/10.1145/362686.](https://doi.org/10.1145/362686.362692) [362692](https://doi.org/10.1145/362686.362692)
-- <span id="page-12-27"></span>[10] Peter Boncz, Thomas Neumann, and Orri Erling. 2014. TPC-H Analyzed: Hidden Messages and Lessons Learned from an Infuential Benchmark. In Performance Characterization and Benchmarking. 61–76. [https://doi.org/10.1007/978-3-319-](https://doi.org/10.1007/978-3-319-04936-6_5) [04936-6_5](https://doi.org/10.1007/978-3-319-04936-6_5)
-- <span id="page-12-0"></span>[11] Peter Boncz, Marcin Zukowski, and Niels Nes. 2005. MonetDB/X100: Hyper-Pipelining Query Execution. In CIDR.
-- <span id="page-12-8"></span>[12] Martin Burtscher and Paruj Ratanaworabhan. 2007. High Throughput Compression of Double-Precision Floating-Point Data. In Data Compression Conference (DCC). 293–302. https://doi.org/10.1109/DCC.2007.44
-- <span id="page-12-6"></span>[13] Jef Carpenter and Eben Hewitt. 2016. Cassandra: The Defnitive Guide (2nd ed.). O'Reilly Media, Inc.
-- <span id="page-12-17"></span>[14] Bernadette Charron-Bost, Fernando Pedone, and André Schiper (Eds.). 2010. Replication: Theory and Practice. Springer-Verlag.
-- <span id="page-12-3"></span>[15] chDB. 2024. chDB - an embedded OLAP SQL Engine. Retrieved 2024-06-20 from https://github.com/chdb-io/chdb
-- <span id="page-12-29"></span>[16] ClickHouse. 2024. ClickBench: a Benchmark For Analytical Databases. Retrieved 2024-06-20 from https://github.com/ClickHouse/ClickBench
-- <span id="page-12-28"></span>[17] ClickHouse. 2024. ClickBench: Comparative Measurements. Retrieved 2024-06-20 from https://benchmark.clickhouse.com
-- <span id="page-12-33"></span>[18] ClickHouse. 2024. ClickHouse Roadmap 2024 (GitHub). Retrieved 2024-06-20 from https://github.com/ClickHouse/ClickHouse/issues/58392
-- <span id="page-12-30"></span>[19] ClickHouse. 2024. ClickHouse Versions Benchmark. Retrieved 2024-06-20 from https://github.com/ClickHouse/ClickBench/tree/main/versions
-- <span id="page-12-31"></span>[20] ClickHouse. 2024. ClickHouse Versions Benchmark Results. Retrieved 2024-06-20 from https://benchmark.clickhouse.com/versions/
-- <span id="page-12-32"></span>[21] Andrew Crotty. 2022. MgBench. Retrieved 2024-06-20 from [https://github.com/](https://github.com/andrewcrotty/mgbench) [andrewcrotty/mgbench](https://github.com/andrewcrotty/mgbench)
-- <span id="page-12-37"></span>[22] Benoit Dageville, Thierry Cruanes, Marcin Zukowski, Vadim Antonov, Artin Avanes, Jon Bock, Jonathan Claybaugh, Daniel Engovatov, Martin Hentschel, Jiansheng Huang, Allison W. Lee, Ashish Motivala, Abdul Q. Munir, Steven Pelley, Peter Povinec, Greg Rahn, Spyridon Triantafyllis, and Philipp Unterbrunner. 2016. The Snowfake Elastic Data Warehouse. In Proceedings of the 2016 International Conference on Management of Data (San Francisco, California, USA) (SIGMOD '16). Association for Computing Machinery, New York, NY, USA, 215–226. [https:](https://doi.org/10.1145/2882903.2903741) [//doi.org/10.1145/2882903.2903741](https://doi.org/10.1145/2882903.2903741)
-- <span id="page-12-9"></span>[23] Patrick Damme, Annett Ungethüm, Juliana Hildebrandt, Dirk Habich, and Wolfgang Lehner. 2019. From a Comprehensive Experimental Survey to a Cost-Based Selection Strategy for Lightweight Integer Compression Algorithms. ACM Trans. Database Syst. 44, 3, Article 9 (2019), 46 pages. https://doi.org/10.1145/3323991
-- <span id="page-12-1"></span>[24] Philippe Dobbelaere and Kyumars Sheykh Esmaili. 2017. Kafka versus RabbitMQ: A Comparative Study of Two Industry Reference Publish/Subscribe Implementations: Industry Paper (DEBS '17). Association for Computing Machinery, New York, NY, USA, 227–238. https://doi.org/10.1145/3093742.3093908
-- <span id="page-12-19"></span>[25] LLVM documentation. 2024. Auto-Vectorization in LLVM. Retrieved 2024-06-20 from https://llvm.org/docs/Vectorizers.html
-- <span id="page-12-7"></span>[26] Siying Dong, Andrew Kryczka, Yanqin Jin, and Michael Stumm. 2021. RocksDB: Evolution of Development Priorities in a Key-value Store Serving Large-scale Applications. ACM Transactions on Storage 17, 4, Article 26 (2021), 32 pages. https://doi.org/10.1145/3483840
-- <span id="page-12-34"></span>[27] Markus Dreseler, Martin Boissier, Tilmann Rabl, and Matthias Ufacker. 2020. Quantifying TPC-H choke points and their optimizations. Proc. VLDB Endow. 13, 8 (2020), 1206–1220. https://doi.org/10.14778/3389133.3389138
-- <span id="page-12-12"></span>[28] Ted Dunning. 2021. The t-digest: efficient estimates of distributions. Software Impacts 7 (2021). https://doi.org/10.1016/j.simpa.2020.100049
-- <span id="page-12-16"></span>[29] Martin Faust, Martin Boissier, Marvin Keller, David Schwalb, Holger Bischof, Katrin Eisenreich, Franz Färber, and Hasso Plattner. 2016. Footprint Reduction and Uniqueness Enforcement with Hash Indices in SAP HANA. In Database and Expert Systems Applications. 137–151. [https://doi.org/10.1007/978-3-319-44406-](https://doi.org/10.1007/978-3-319-44406-2_11) [2_11](https://doi.org/10.1007/978-3-319-44406-2_11)
-- <span id="page-12-11"></span>[30] Philippe Flajolet, Eric Fusy, Olivier Gandouet, and Frederic Meunier. 2007. HyperLogLog: the analysis of a near-optimal cardinality estimation algorithm. In AofA: Analysis of Algorithms, Vol. DMTCS Proceedings vol. AH, 2007 Conference on Analysis of Algorithms (AofA 07). Discrete Mathematics and Theoretical Computer Science, 137–156. https://doi.org/10.46298/dmtcs.3545
-- <span id="page-12-13"></span>[31] Hector Garcia-Molina, Jefrey D. Ullman, and Jennifer Widom. 2009. Database Systems - The Complete Book (2. Ed.).
-- <span id="page-12-24"></span>[32] Pawan Goyal, Harrick M. Vin, and Haichen Chen. 1996. Start-time fair queueing: a scheduling algorithm for integrated services packet switching networks. 26, 4 (1996), 157–168. https://doi.org/10.1145/248157.248171
-- <span id="page-12-21"></span>[33] Goetz Graefe. 1993. Query Evaluation Techniques for Large Databases. ACM Comput. Surv. 25, 2 (1993), 73–169. https://doi.org/10.1145/152610.152611
-- <span id="page-12-40"></span>[34] Jean-François Im, Kishore Gopalakrishna, Subbu Subramaniam, Mayank Shrivastava, Adwait Tumbde, Xiaotian Jiang, Jennifer Dai, Seunghyun Lee, Neha Pawar, Jialiang Li, and Ravi Aringunram. 2018. Pinot: Realtime OLAP for 530 Million Users. In Proceedings of the 2018 International Conference on Management of Data (Houston, TX, USA) (SIGMOD '18). Association for Computing Machinery, New York, NY, USA, 583–594. https://doi.org/10.1145/3183713.3190661
-- <span id="page-12-25"></span>[35] ISO/IEC 9075-9:2001 2001. Information technology — Database language — SQL — Part 9: Management of External Data (SQL/MED). Standard. International Organization for Standardization.
-- <span id="page-12-2"></span>[36] Paras Jain, Peter Kraft, Conor Power, Tathagata Das, Ion Stoica, and Matei Zaharia. 2023. Analyzing and Comparing Lakehouse Storage Systems. CIDR.
-- <span id="page-12-4"></span>[37] Project Jupyter. 2024. Jupyter Notebooks. Retrieved 2024-06-20 from [https:](https://jupyter.org/) [//jupyter.org/](https://jupyter.org/)
-- <span id="page-12-22"></span>[38] Timo Kersten, Viktor Leis, Alfons Kemper, Thomas Neumann, Andrew Pavlo, and Peter Boncz. 2018. Everything You Always Wanted to Know about Compiled and Vectorized Queries but Were Afraid to Ask. Proc. VLDB Endow. 11, 13 (sep 2018), 2209–2222. https://doi.org/10.14778/3275366.3284966
-- <span id="page-12-15"></span>[39] Changkyu Kim, Jatin Chhugani, Nadathur Satish, Eric Sedlar, Anthony D. Nguyen, Tim Kaldewey, Victor W. Lee, Scott A. Brandt, and Pradeep Dubey. 2010. FAST: fast architecture sensitive tree search on modern CPUs and GPUs. In Proceedings of the 2010 ACM SIGMOD International Conference on Management of Data (Indianapolis, Indiana, USA) (SIGMOD '10). Association for Computing Machinery, New York, NY, USA, 339–350. https://doi.org/10.1145/1807167.1807206
-- <span id="page-12-5"></span>[40] Donald E. Knuth. 1973. The Art of Computer Programming, Volume III: Sorting and Searching. Addison-Wesley.
-- <span id="page-12-42"></span>[41] André Kohn, Viktor Leis, and Thomas Neumann. 2018. Adaptive Execution of Compiled Queries. In 2018 IEEE 34th International Conference on Data Engineering (ICDE). 197–208. https://doi.org/10.1109/ICDE.2018.00027
-- <span id="page-12-36"></span>[42] Andrew Lamb, Matt Fuller, Ramakrishna Varadarajan, Nga Tran, Ben Vandiver, Lyric Doshi, and Chuck Bear. 2012. The Vertica Analytic Database: C-Store 7 Years Later. Proc. VLDB Endow. 5, 12 (aug 2012), 1790–1801. [https://doi.org/10.](https://doi.org/10.14778/2367502.2367518) [14778/2367502.2367518](https://doi.org/10.14778/2367502.2367518)
-- <span id="page-12-43"></span>[43] Harald Lang, Tobias Mühlbauer, Florian Funke, Peter A. Boncz, Thomas Neumann, and Alfons Kemper. 2016. Data Blocks: Hybrid OLTP and OLAP on Compressed Storage using both Vectorization and Compilation. In Proceedings of the 2016 International Conference on Management of Data (San Francisco, California, USA) (SIGMOD '16). Association for Computing Machinery, New York, NY, USA, 311–326. https://doi.org/10.1145/2882903.2882925
-- <span id="page-12-20"></span>[44] Viktor Leis, Peter Boncz, Alfons Kemper, and Thomas Neumann. 2014. Morseldriven parallelism: a NUMA-aware query evaluation framework for the manycore age. In Proceedings of the 2014 ACM SIGMOD International Conference on Management of Data (Snowbird, Utah, USA) (SIGMOD '14). Association for Computing Machinery, New York, NY, USA, 743–754. [https://doi.org/10.1145/2588555.](https://doi.org/10.1145/2588555.2610507) [2610507](https://doi.org/10.1145/2588555.2610507)
-- <span id="page-13-17"></span>[45] Viktor Leis, Alfons Kemper, and Thomas Neumann. 2013. The adaptive radix tree: ARTful indexing for main-memory databases. In 2013 IEEE 29th International Conference on Data Engineering (ICDE). 38–49. [https://doi.org/10.1109/ICDE.](https://doi.org/10.1109/ICDE.2013.6544812) [2013.6544812](https://doi.org/10.1109/ICDE.2013.6544812)
-- <span id="page-13-34"></span>[46] Chunwei Liu, Anna Pavlenko, Matteo Interlandi, and Brandon Haynes. 2023. A Deep Dive into Common Open Formats for Analytical DBMSs. 16, 11 (jul 2023), 3044–3056. https://doi.org/10.14778/3611479.3611507
-- <span id="page-13-30"></span>[47] Zhenghua Lyu, Huan Hubert Zhang, Gang Xiong, Gang Guo, Haozhou Wang, Jinbao Chen, Asim Praveen, Yu Yang, Xiaoming Gao, Alexandra Wang, Wen Lin, Ashwin Agrawal, Junfeng Yang, Hao Wu, Xiaoliang Li, Feng Guo, Jiang Wu, Jesse Zhang, and Venkatesh Raghavan. 2021. Greenplum: A Hybrid Database for Transactional and Analytical Workloads (SIGMOD '21). Association for Computing Machinery, New York, NY, USA, 2530–2542. [https:](https://doi.org/10.1145/3448016.3457562) [//doi.org/10.1145/3448016.3457562](https://doi.org/10.1145/3448016.3457562)
-- <span id="page-13-28"></span>[48] Roger MacNicol and Blaine French. 2004. Sybase IQ Multiplex - Designed for Analytics. In Proceedings of the Thirtieth International Conference on Very Large Data Bases - Volume 30 (Toronto, Canada) (VLDB '04). VLDB Endowment, 1227–1230.
-- <span id="page-13-31"></span>[49] Sergey Melnik, Andrey Gubarev, Jing Jing Long, Geofrey Romer, Shiva Shivakumar, Matt Tolton, Theo Vassilakis, Hossein Ahmadi, Dan Delorey, Slava Min, Mosha Pasumansky, and Jef Shute. 2020. Dremel: A Decade of Interactive SQL Analysis at Web Scale. Proc. VLDB Endow. 13, 12 (aug 2020), 3461–3472. https://doi.org/10.14778/3415478.3415568
-- <span id="page-13-2"></span>[50] Microsoft. 2024. Kusto Query Language. Retrieved 2024-06-20 from [https:](https://github.com/microsoft/Kusto-Query-Language) [//github.com/microsoft/Kusto-Query-Language](https://github.com/microsoft/Kusto-Query-Language)
-- <span id="page-13-14"></span>[51] Guido Moerkotte. 1998. Small Materialized Aggregates: A Light Weight Index Structure for Data Warehousing. In Proceedings of the 24rd International Conference on Very Large Data Bases (VLDB '98). 476–487.
-- <span id="page-13-22"></span>[52] Jalal Mostafa, Sara Wehbi, Suren Chilingaryan, and Andreas Kopmann. 2022. SciTS: A Benchmark for Time-Series Databases in Scientifc Experiments and Industrial Internet of Things. In Proceedings of the 34th International Conference on Scientifc and Statistical Database Management (SSDBM '22). Article 12. [https:](https://doi.org/10.1145/3538712.3538723) [//doi.org/10.1145/3538712.3538723](https://doi.org/10.1145/3538712.3538723)
-- <span id="page-13-0"></span>[53] Thomas Neumann. 2011. efficiently Compiling efficient Query Plans for Modern Hardware. Proc. VLDB Endow. 4, 9 (jun 2011), 539–550. [https://doi.org/10.14778/](https://doi.org/10.14778/2002938.2002940) [2002938.2002940](https://doi.org/10.14778/2002938.2002940)
-- <span id="page-13-25"></span>[54] Thomas Neumann and Michael J. Freitag. 2020. Umbra: A Disk-Based System with In-Memory Performance. In 10th Conference on Innovative Data Systems Research, CIDR 2020, Amsterdam, The Netherlands, January 12-15, 2020, Online Proceedings. www.cidrdb.org. [http://cidrdb.org/cidr2020/papers/p29-neumann](http://cidrdb.org/cidr2020/papers/p29-neumann-cidr20.pdf)[cidr20.pdf](http://cidrdb.org/cidr2020/papers/p29-neumann-cidr20.pdf)
-- <span id="page-13-35"></span>[55] Thomas Neumann, Tobias Mühlbauer, and Alfons Kemper. 2015. Fast Serializable Multi-Version Concurrency Control for Main-Memory Database Systems. In Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data (Melbourne, Victoria, Australia) (SIGMOD '15). Association for Computing Machinery, New York, NY, USA, 677–689. [https://doi.org/10.1145/2723372.](https://doi.org/10.1145/2723372.2749436) [2749436](https://doi.org/10.1145/2723372.2749436)
-- <span id="page-13-8"></span>[56] LevelDB on GitHub. 2024. LevelDB. Retrieved 2024-06-20 from [https://github.](https://github.com/google/leveldb) [com/google/leveldb](https://github.com/google/leveldb)
-- <span id="page-13-26"></span>[57] Patrick O'Neil, Elizabeth O'Neil, Xuedong Chen, and Stephen Revilak. 2009. The Star Schema Benchmark and Augmented Fact Table Indexing. In Performance Evaluation and Benchmarking. Springer Berlin Heidelberg, 237–252. [https:](https://doi.org/10.1007/978-3-642-10424-4_17) [//doi.org/10.1007/978-3-642-10424-4_17](https://doi.org/10.1007/978-3-642-10424-4_17)
-- <span id="page-13-7"></span>[58] Patrick E. O'Neil, Edward Y. C. Cheng, Dieter Gawlick, and Elizabeth J. O'Neil. 1996. The log-structured Merge-Tree (LSM-tree). Acta Informatica 33 (1996), 351–385. https://doi.org/10.1007/s002360050048
-- <span id="page-13-4"></span>[59] Diego Ongaro and John Ousterhout. 2014. In Search of an Understandable Consensus Algorithm. In Proceedings of the 2014 USENIX Conference on USENIX Annual Technical Conference (USENIX ATC'14). 305–320. [https://doi.org/doi/10.](https://doi.org/doi/10.5555/2643634.2643666) [5555/2643634.2643666](https://doi.org/doi/10.5555/2643634.2643666)
-- <span id="page-13-3"></span>[60] Patrick O'Neil, Edward Cheng, Dieter Gawlick, and Elizabeth O'Neil. 1996. The Log-Structured Merge-Tree (LSM-Tree). Acta Inf. 33, 4 (1996), 351–385. [https:](https://doi.org/10.1007/s002360050048) [//doi.org/10.1007/s002360050048](https://doi.org/10.1007/s002360050048)
-- <span id="page-13-5"></span>[61] Pandas. 2024. Pandas Dataframes. Retrieved 2024-06-20 from [https://pandas.](https://pandas.pydata.org/) [pydata.org/](https://pandas.pydata.org/)
-- <span id="page-13-32"></span>[62] Pedro Pedreira, Orri Erling, Masha Basmanova, Kevin Wilfong, Laith Sakka, Krishna Pai, Wei He, and Biswapesh Chattopadhyay. 2022. Velox: Meta's Unified Execution Engine. Proc. VLDB Endow. 15, 12 (aug 2022), 3372–3384. [https:](https://doi.org/10.14778/3554821.3554829) [//doi.org/10.14778/3554821.3554829](https://doi.org/10.14778/3554821.3554829)
-- <span id="page-13-10"></span>[63] Tuomas Pelkonen, Scott Franklin, Justin Teller, Paul Cavallaro, Qi Huang, Justin Meza, and Kaushik Veeraraghavan. 2015. Gorilla: A Fast, Scalable, in-Memory Time Series Database. Proceedings of the VLDB Endowment 8, 12 (2015), 1816–1827. https://doi.org/10.14778/2824032.2824078
-- <span id="page-13-18"></span>[64] Orestis Polychroniou, Arun Raghavan, and Kenneth A. Ross. 2015. Rethinking SIMD Vectorization for In-Memory Databases. In Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data (SIGMOD '15). 1493–1508. https://doi.org/10.1145/2723372.2747645
-- <span id="page-13-21"></span>[65] PostgreSQL. 2024. PostgreSQL - Foreign Data Wrappers. Retrieved 2024-06-20 from https://wiki.postgresql.org/wiki/Foreign_data_wrappers
-- <span id="page-13-23"></span>[66] Mark Raasveldt, Pedro Holanda, Tim Gubner, and Hannes Mühleisen. 2018. Fair Benchmarking Considered difficult: Common Pitfalls In Database Performance Testing. In Proceedings of the Workshop on Testing Database Systems (Houston, TX, USA) (DBTest'18). Article 2, 6 pages. https://doi.org/10.1145/3209950.3209955
-- <span id="page-13-6"></span>[67] Mark Raasveldt and Hannes Mühleisen. 2019. DuckDB: An Embeddable Analytical Database (SIGMOD '19). Association for Computing Machinery, New York, NY, USA, 1981–1984. https://doi.org/10.1145/3299869.3320212
-- <span id="page-13-16"></span>[68] Jun Rao and Kenneth A. Ross. 1999. Cache Conscious Indexing for Decision-Support in Main Memory. In Proceedings of the 25th International Conference on Very Large Data Bases (VLDB '99). San Francisco, CA, USA, 78–89.
-- <span id="page-13-36"></span>[69] Navin C. Sabharwal and Piyush Kant Pandey. 2020. Working with Prometheus Query Language (PromQL). In Monitoring Microservices and Containerized Applications. https://doi.org/10.1007/978-1-4842-6216-0_5
-- <span id="page-13-27"></span>[70] Todd W. Schneider. 2022. New York City Taxi and For-Hire Vehicle Data. Retrieved 2024-06-20 from https://github.com/toddwschneider/nyc-taxi-data
-- <span id="page-13-13"></span>[71] Mike Stonebraker, Daniel J. Abadi, Adam Batkin, Xuedong Chen, Mitch Cherniack, Miguel Ferreira, Edmond Lau, Amerson Lin, Sam Madden, Elizabeth O'Neil, Pat O'Neil, Alex Rasin, Nga Tran, and Stan Zdonik. 2005. C-Store: A Column-Oriented DBMS. In Proceedings of the 31st International Conference on Very Large Data Bases (VLDB '05). 553–564.
-- <span id="page-13-29"></span>[72] Teradata. 2024. Teradata Database. Retrieved 2024-06-20 from [https://www.](https://www.teradata.com/resources/datasheets/teradata-database) [teradata.com/resources/datasheets/teradata-database](https://www.teradata.com/resources/datasheets/teradata-database)
-- <span id="page-13-15"></span>[73] Frederik Transier. 2010. Algorithms and Data Structures for In-Memory Text Search Engines. Ph.D. Dissertation. https://doi.org/10.5445/IR/1000015824
-- <span id="page-13-24"></span>[74] Adrian Vogelsgesang, Michael Haubenschild, Jan Finis, Alfons Kemper, Viktor Leis, Tobias Muehlbauer, Thomas Neumann, and Manuel Then. 2018. Get Real: How Benchmarks Fail to Represent the Real World. In Proceedings of the Workshop on Testing Database Systems (Houston, TX, USA) (DBTest'18). Article 1, 6 pages. https://doi.org/10.1145/3209950.3209952
-- <span id="page-13-9"></span>[75] LZ4 website. 2024. LZ4. Retrieved 2024-06-20 from https://lz4.org/
-- <span id="page-13-11"></span><span id="page-13-1"></span>[76] PRQL website. 2024. PRQL. Retrieved 2024-06-20 from https://prql-lang.org [77] Till Westmann, Donald Kossmann, Sven Helmer, and Guido Moerkotte. 2000. The Implementation and Performance of Compressed Databases. SIGMOD Rec.
-- <span id="page-13-33"></span>29, 3 (sep 2000), 55–67. https://doi.org/10.1145/362084.362137 [78] Fangjin Yang, Eric Tschetter, Xavier Léauté, Nelson Ray, Gian Merlino, and Deep Ganguli. 2014. Druid: A Real-Time Analytical Data Store. In Proceedings of the 2014 ACM SIGMOD International Conference on Management of Data (Snowbird, Utah, USA) (SIGMOD '14). Association for Computing Machinery, New York, NY, USA, 157–168. https://doi.org/10.1145/2588555.2595631
-- <span id="page-13-20"></span>[79] Tianqi Zheng, Zhibin Zhang, and Xueqi Cheng. 2020. SAHA: A String Adaptive Hash Table for Analytical Databases. Applied Sciences 10, 6 (2020). [https:](https://doi.org/10.3390/app10061915) [//doi.org/10.3390/app10061915](https://doi.org/10.3390/app10061915)
-- <span id="page-13-19"></span>[80] Jingren Zhou and Kenneth A. Ross. 2002. Implementing Database Operations Using SIMD Instructions. In Proceedings of the 2002 ACM SIGMOD International Conference on Management of Data (SIGMOD '02). 145–156. [https://doi.org/10.](https://doi.org/10.1145/564691.564709) [1145/564691.564709](https://doi.org/10.1145/564691.564709)
-- <span id="page-13-12"></span>[81] Marcin Zukowski, Sandor Heman, Niels Nes, and Peter Boncz. 2006. Super-Scalar RAM-CPU Cache Compression. In Proceedings of the 22nd International Conference on Data Engineering (ICDE '06). 59. [https://doi.org/10.1109/ICDE.](https://doi.org/10.1109/ICDE.2006.150) [2006.150](https://doi.org/10.1109/ICDE.2006.150)
+- <Anchor id="page-12-27"/>[10] Peter Boncz, Thomas Neumann, and Orri Erling. 2014. TPC-H Analyzed: Hidden Messages and Lessons Learned from an Infuential Benchmark. In Performance Characterization and Benchmarking. 61–76. [https://doi.org/10.1007/978-3-319-](https://doi.org/10.1007/978-3-319-04936-6_5) [04936-6_5](https://doi.org/10.1007/978-3-319-04936-6_5)
+- <Anchor id="page-12-0"/>[11] Peter Boncz, Marcin Zukowski, and Niels Nes. 2005. MonetDB/X100: Hyper-Pipelining Query Execution. In CIDR.
+- <Anchor id="page-12-8"/>[12] Martin Burtscher and Paruj Ratanaworabhan. 2007. High Throughput Compression of Double-Precision Floating-Point Data. In Data Compression Conference (DCC). 293–302. https://doi.org/10.1109/DCC.2007.44
+- <Anchor id="page-12-6"/>[13] Jef Carpenter and Eben Hewitt. 2016. Cassandra: The Defnitive Guide (2nd ed.). O'Reilly Media, Inc.
+- <Anchor id="page-12-17"/>[14] Bernadette Charron-Bost, Fernando Pedone, and André Schiper (Eds.). 2010. Replication: Theory and Practice. Springer-Verlag.
+- <Anchor id="page-12-3"/>[15] chDB. 2024. chDB - an embedded OLAP SQL Engine. Retrieved 2024-06-20 from https://github.com/chdb-io/chdb
+- <Anchor id="page-12-29"/>[16] ClickHouse. 2024. ClickBench: a Benchmark For Analytical Databases. Retrieved 2024-06-20 from https://github.com/ClickHouse/ClickBench
+- <Anchor id="page-12-28"/>[17] ClickHouse. 2024. ClickBench: Comparative Measurements. Retrieved 2024-06-20 from https://benchmark.clickhouse.com
+- <Anchor id="page-12-33"/>[18] ClickHouse. 2024. ClickHouse Roadmap 2024 (GitHub). Retrieved 2024-06-20 from https://github.com/ClickHouse/ClickHouse/issues/58392
+- <Anchor id="page-12-30"/>[19] ClickHouse. 2024. ClickHouse Versions Benchmark. Retrieved 2024-06-20 from https://github.com/ClickHouse/ClickBench/tree/main/versions
+- <Anchor id="page-12-31"/>[20] ClickHouse. 2024. ClickHouse Versions Benchmark Results. Retrieved 2024-06-20 from https://benchmark.clickhouse.com/versions/
+- <Anchor id="page-12-32"/>[21] Andrew Crotty. 2022. MgBench. Retrieved 2024-06-20 from [https://github.com/](https://github.com/andrewcrotty/mgbench) [andrewcrotty/mgbench](https://github.com/andrewcrotty/mgbench)
+- <Anchor id="page-12-37"/>[22] Benoit Dageville, Thierry Cruanes, Marcin Zukowski, Vadim Antonov, Artin Avanes, Jon Bock, Jonathan Claybaugh, Daniel Engovatov, Martin Hentschel, Jiansheng Huang, Allison W. Lee, Ashish Motivala, Abdul Q. Munir, Steven Pelley, Peter Povinec, Greg Rahn, Spyridon Triantafyllis, and Philipp Unterbrunner. 2016. The Snowfake Elastic Data Warehouse. In Proceedings of the 2016 International Conference on Management of Data (San Francisco, California, USA) (SIGMOD '16). Association for Computing Machinery, New York, NY, USA, 215–226. [https:](https://doi.org/10.1145/2882903.2903741) [//doi.org/10.1145/2882903.2903741](https://doi.org/10.1145/2882903.2903741)
+- <Anchor id="page-12-9"/>[23] Patrick Damme, Annett Ungethüm, Juliana Hildebrandt, Dirk Habich, and Wolfgang Lehner. 2019. From a Comprehensive Experimental Survey to a Cost-Based Selection Strategy for Lightweight Integer Compression Algorithms. ACM Trans. Database Syst. 44, 3, Article 9 (2019), 46 pages. https://doi.org/10.1145/3323991
+- <Anchor id="page-12-1"/>[24] Philippe Dobbelaere and Kyumars Sheykh Esmaili. 2017. Kafka versus RabbitMQ: A Comparative Study of Two Industry Reference Publish/Subscribe Implementations: Industry Paper (DEBS '17). Association for Computing Machinery, New York, NY, USA, 227–238. https://doi.org/10.1145/3093742.3093908
+- <Anchor id="page-12-19"/>[25] LLVM documentation. 2024. Auto-Vectorization in LLVM. Retrieved 2024-06-20 from https://llvm.org/docs/Vectorizers.html
+- <Anchor id="page-12-7"/>[26] Siying Dong, Andrew Kryczka, Yanqin Jin, and Michael Stumm. 2021. RocksDB: Evolution of Development Priorities in a Key-value Store Serving Large-scale Applications. ACM Transactions on Storage 17, 4, Article 26 (2021), 32 pages. https://doi.org/10.1145/3483840
+- <Anchor id="page-12-34"/>[27] Markus Dreseler, Martin Boissier, Tilmann Rabl, and Matthias Ufacker. 2020. Quantifying TPC-H choke points and their optimizations. Proc. VLDB Endow. 13, 8 (2020), 1206–1220. https://doi.org/10.14778/3389133.3389138
+- <Anchor id="page-12-12"/>[28] Ted Dunning. 2021. The t-digest: efficient estimates of distributions. Software Impacts 7 (2021). https://doi.org/10.1016/j.simpa.2020.100049
+- <Anchor id="page-12-16"/>[29] Martin Faust, Martin Boissier, Marvin Keller, David Schwalb, Holger Bischof, Katrin Eisenreich, Franz Färber, and Hasso Plattner. 2016. Footprint Reduction and Uniqueness Enforcement with Hash Indices in SAP HANA. In Database and Expert Systems Applications. 137–151. [https://doi.org/10.1007/978-3-319-44406-](https://doi.org/10.1007/978-3-319-44406-2_11) [2_11](https://doi.org/10.1007/978-3-319-44406-2_11)
+- <Anchor id="page-12-11"/>[30] Philippe Flajolet, Eric Fusy, Olivier Gandouet, and Frederic Meunier. 2007. HyperLogLog: the analysis of a near-optimal cardinality estimation algorithm. In AofA: Analysis of Algorithms, Vol. DMTCS Proceedings vol. AH, 2007 Conference on Analysis of Algorithms (AofA 07). Discrete Mathematics and Theoretical Computer Science, 137–156. https://doi.org/10.46298/dmtcs.3545
+- <Anchor id="page-12-13"/>[31] Hector Garcia-Molina, Jefrey D. Ullman, and Jennifer Widom. 2009. Database Systems - The Complete Book (2. Ed.).
+- <Anchor id="page-12-24"/>[32] Pawan Goyal, Harrick M. Vin, and Haichen Chen. 1996. Start-time fair queueing: a scheduling algorithm for integrated services packet switching networks. 26, 4 (1996), 157–168. https://doi.org/10.1145/248157.248171
+- <Anchor id="page-12-21"/>[33] Goetz Graefe. 1993. Query Evaluation Techniques for Large Databases. ACM Comput. Surv. 25, 2 (1993), 73–169. https://doi.org/10.1145/152610.152611
+- <Anchor id="page-12-40"/>[34] Jean-François Im, Kishore Gopalakrishna, Subbu Subramaniam, Mayank Shrivastava, Adwait Tumbde, Xiaotian Jiang, Jennifer Dai, Seunghyun Lee, Neha Pawar, Jialiang Li, and Ravi Aringunram. 2018. Pinot: Realtime OLAP for 530 Million Users. In Proceedings of the 2018 International Conference on Management of Data (Houston, TX, USA) (SIGMOD '18). Association for Computing Machinery, New York, NY, USA, 583–594. https://doi.org/10.1145/3183713.3190661
+- <Anchor id="page-12-25"/>[35] ISO/IEC 9075-9:2001 2001. Information technology — Database language — SQL — Part 9: Management of External Data (SQL/MED). Standard. International Organization for Standardization.
+- <Anchor id="page-12-2"/>[36] Paras Jain, Peter Kraft, Conor Power, Tathagata Das, Ion Stoica, and Matei Zaharia. 2023. Analyzing and Comparing Lakehouse Storage Systems. CIDR.
+- <Anchor id="page-12-4"/>[37] Project Jupyter. 2024. Jupyter Notebooks. Retrieved 2024-06-20 from [https:](https://jupyter.org/) [//jupyter.org/](https://jupyter.org/)
+- <Anchor id="page-12-22"/>[38] Timo Kersten, Viktor Leis, Alfons Kemper, Thomas Neumann, Andrew Pavlo, and Peter Boncz. 2018. Everything You Always Wanted to Know about Compiled and Vectorized Queries but Were Afraid to Ask. Proc. VLDB Endow. 11, 13 (sep 2018), 2209–2222. https://doi.org/10.14778/3275366.3284966
+- <Anchor id="page-12-15"/>[39] Changkyu Kim, Jatin Chhugani, Nadathur Satish, Eric Sedlar, Anthony D. Nguyen, Tim Kaldewey, Victor W. Lee, Scott A. Brandt, and Pradeep Dubey. 2010. FAST: fast architecture sensitive tree search on modern CPUs and GPUs. In Proceedings of the 2010 ACM SIGMOD International Conference on Management of Data (Indianapolis, Indiana, USA) (SIGMOD '10). Association for Computing Machinery, New York, NY, USA, 339–350. https://doi.org/10.1145/1807167.1807206
+- <Anchor id="page-12-5"/>[40] Donald E. Knuth. 1973. The Art of Computer Programming, Volume III: Sorting and Searching. Addison-Wesley.
+- <Anchor id="page-12-42"/>[41] André Kohn, Viktor Leis, and Thomas Neumann. 2018. Adaptive Execution of Compiled Queries. In 2018 IEEE 34th International Conference on Data Engineering (ICDE). 197–208. https://doi.org/10.1109/ICDE.2018.00027
+- <Anchor id="page-12-36"/>[42] Andrew Lamb, Matt Fuller, Ramakrishna Varadarajan, Nga Tran, Ben Vandiver, Lyric Doshi, and Chuck Bear. 2012. The Vertica Analytic Database: C-Store 7 Years Later. Proc. VLDB Endow. 5, 12 (aug 2012), 1790–1801. [https://doi.org/10.](https://doi.org/10.14778/2367502.2367518) [14778/2367502.2367518](https://doi.org/10.14778/2367502.2367518)
+- <Anchor id="page-12-43"/>[43] Harald Lang, Tobias Mühlbauer, Florian Funke, Peter A. Boncz, Thomas Neumann, and Alfons Kemper. 2016. Data Blocks: Hybrid OLTP and OLAP on Compressed Storage using both Vectorization and Compilation. In Proceedings of the 2016 International Conference on Management of Data (San Francisco, California, USA) (SIGMOD '16). Association for Computing Machinery, New York, NY, USA, 311–326. https://doi.org/10.1145/2882903.2882925
+- <Anchor id="page-12-20"/>[44] Viktor Leis, Peter Boncz, Alfons Kemper, and Thomas Neumann. 2014. Morseldriven parallelism: a NUMA-aware query evaluation framework for the manycore age. In Proceedings of the 2014 ACM SIGMOD International Conference on Management of Data (Snowbird, Utah, USA) (SIGMOD '14). Association for Computing Machinery, New York, NY, USA, 743–754. [https://doi.org/10.1145/2588555.](https://doi.org/10.1145/2588555.2610507) [2610507](https://doi.org/10.1145/2588555.2610507)
+- <Anchor id="page-13-17"/>[45] Viktor Leis, Alfons Kemper, and Thomas Neumann. 2013. The adaptive radix tree: ARTful indexing for main-memory databases. In 2013 IEEE 29th International Conference on Data Engineering (ICDE). 38–49. [https://doi.org/10.1109/ICDE.](https://doi.org/10.1109/ICDE.2013.6544812) [2013.6544812](https://doi.org/10.1109/ICDE.2013.6544812)
+- <Anchor id="page-13-34"/>[46] Chunwei Liu, Anna Pavlenko, Matteo Interlandi, and Brandon Haynes. 2023. A Deep Dive into Common Open Formats for Analytical DBMSs. 16, 11 (jul 2023), 3044–3056. https://doi.org/10.14778/3611479.3611507
+- <Anchor id="page-13-30"/>[47] Zhenghua Lyu, Huan Hubert Zhang, Gang Xiong, Gang Guo, Haozhou Wang, Jinbao Chen, Asim Praveen, Yu Yang, Xiaoming Gao, Alexandra Wang, Wen Lin, Ashwin Agrawal, Junfeng Yang, Hao Wu, Xiaoliang Li, Feng Guo, Jiang Wu, Jesse Zhang, and Venkatesh Raghavan. 2021. Greenplum: A Hybrid Database for Transactional and Analytical Workloads (SIGMOD '21). Association for Computing Machinery, New York, NY, USA, 2530–2542. [https:](https://doi.org/10.1145/3448016.3457562) [//doi.org/10.1145/3448016.3457562](https://doi.org/10.1145/3448016.3457562)
+- <Anchor id="page-13-28"/>[48] Roger MacNicol and Blaine French. 2004. Sybase IQ Multiplex - Designed for Analytics. In Proceedings of the Thirtieth International Conference on Very Large Data Bases - Volume 30 (Toronto, Canada) (VLDB '04). VLDB Endowment, 1227–1230.
+- <Anchor id="page-13-31"/>[49] Sergey Melnik, Andrey Gubarev, Jing Jing Long, Geofrey Romer, Shiva Shivakumar, Matt Tolton, Theo Vassilakis, Hossein Ahmadi, Dan Delorey, Slava Min, Mosha Pasumansky, and Jef Shute. 2020. Dremel: A Decade of Interactive SQL Analysis at Web Scale. Proc. VLDB Endow. 13, 12 (aug 2020), 3461–3472. https://doi.org/10.14778/3415478.3415568
+- <Anchor id="page-13-2"/>[50] Microsoft. 2024. Kusto Query Language. Retrieved 2024-06-20 from [https:](https://github.com/microsoft/Kusto-Query-Language) [//github.com/microsoft/Kusto-Query-Language](https://github.com/microsoft/Kusto-Query-Language)
+- <Anchor id="page-13-14"/>[51] Guido Moerkotte. 1998. Small Materialized Aggregates: A Light Weight Index Structure for Data Warehousing. In Proceedings of the 24rd International Conference on Very Large Data Bases (VLDB '98). 476–487.
+- <Anchor id="page-13-22"/>[52] Jalal Mostafa, Sara Wehbi, Suren Chilingaryan, and Andreas Kopmann. 2022. SciTS: A Benchmark for Time-Series Databases in Scientifc Experiments and Industrial Internet of Things. In Proceedings of the 34th International Conference on Scientifc and Statistical Database Management (SSDBM '22). Article 12. [https:](https://doi.org/10.1145/3538712.3538723) [//doi.org/10.1145/3538712.3538723](https://doi.org/10.1145/3538712.3538723)
+- <Anchor id="page-13-0"/>[53] Thomas Neumann. 2011. efficiently Compiling efficient Query Plans for Modern Hardware. Proc. VLDB Endow. 4, 9 (jun 2011), 539–550. [https://doi.org/10.14778/](https://doi.org/10.14778/2002938.2002940) [2002938.2002940](https://doi.org/10.14778/2002938.2002940)
+- <Anchor id="page-13-25"/>[54] Thomas Neumann and Michael J. Freitag. 2020. Umbra: A Disk-Based System with In-Memory Performance. In 10th Conference on Innovative Data Systems Research, CIDR 2020, Amsterdam, The Netherlands, January 12-15, 2020, Online Proceedings. www.cidrdb.org. [http://cidrdb.org/cidr2020/papers/p29-neumann](http://cidrdb.org/cidr2020/papers/p29-neumann-cidr20.pdf)[cidr20.pdf](http://cidrdb.org/cidr2020/papers/p29-neumann-cidr20.pdf)
+- <Anchor id="page-13-35"/>[55] Thomas Neumann, Tobias Mühlbauer, and Alfons Kemper. 2015. Fast Serializable Multi-Version Concurrency Control for Main-Memory Database Systems. In Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data (Melbourne, Victoria, Australia) (SIGMOD '15). Association for Computing Machinery, New York, NY, USA, 677–689. [https://doi.org/10.1145/2723372.](https://doi.org/10.1145/2723372.2749436) [2749436](https://doi.org/10.1145/2723372.2749436)
+- <Anchor id="page-13-8"/>[56] LevelDB on GitHub. 2024. LevelDB. Retrieved 2024-06-20 from [https://github.](https://github.com/google/leveldb) [com/google/leveldb](https://github.com/google/leveldb)
+- <Anchor id="page-13-26"/>[57] Patrick O'Neil, Elizabeth O'Neil, Xuedong Chen, and Stephen Revilak. 2009. The Star Schema Benchmark and Augmented Fact Table Indexing. In Performance Evaluation and Benchmarking. Springer Berlin Heidelberg, 237–252. [https:](https://doi.org/10.1007/978-3-642-10424-4_17) [//doi.org/10.1007/978-3-642-10424-4_17](https://doi.org/10.1007/978-3-642-10424-4_17)
+- <Anchor id="page-13-7"/>[58] Patrick E. O'Neil, Edward Y. C. Cheng, Dieter Gawlick, and Elizabeth J. O'Neil. 1996. The log-structured Merge-Tree (LSM-tree). Acta Informatica 33 (1996), 351–385. https://doi.org/10.1007/s002360050048
+- <Anchor id="page-13-4"/>[59] Diego Ongaro and John Ousterhout. 2014. In Search of an Understandable Consensus Algorithm. In Proceedings of the 2014 USENIX Conference on USENIX Annual Technical Conference (USENIX ATC'14). 305–320. [https://doi.org/doi/10.](https://doi.org/doi/10.5555/2643634.2643666) [5555/2643634.2643666](https://doi.org/doi/10.5555/2643634.2643666)
+- <Anchor id="page-13-3"/>[60] Patrick O'Neil, Edward Cheng, Dieter Gawlick, and Elizabeth O'Neil. 1996. The Log-Structured Merge-Tree (LSM-Tree). Acta Inf. 33, 4 (1996), 351–385. [https:](https://doi.org/10.1007/s002360050048) [//doi.org/10.1007/s002360050048](https://doi.org/10.1007/s002360050048)
+- <Anchor id="page-13-5"/>[61] Pandas. 2024. Pandas Dataframes. Retrieved 2024-06-20 from [https://pandas.](https://pandas.pydata.org/) [pydata.org/](https://pandas.pydata.org/)
+- <Anchor id="page-13-32"/>[62] Pedro Pedreira, Orri Erling, Masha Basmanova, Kevin Wilfong, Laith Sakka, Krishna Pai, Wei He, and Biswapesh Chattopadhyay. 2022. Velox: Meta's Unified Execution Engine. Proc. VLDB Endow. 15, 12 (aug 2022), 3372–3384. [https:](https://doi.org/10.14778/3554821.3554829) [//doi.org/10.14778/3554821.3554829](https://doi.org/10.14778/3554821.3554829)
+- <Anchor id="page-13-10"/>[63] Tuomas Pelkonen, Scott Franklin, Justin Teller, Paul Cavallaro, Qi Huang, Justin Meza, and Kaushik Veeraraghavan. 2015. Gorilla: A Fast, Scalable, in-Memory Time Series Database. Proceedings of the VLDB Endowment 8, 12 (2015), 1816–1827. https://doi.org/10.14778/2824032.2824078
+- <Anchor id="page-13-18"/>[64] Orestis Polychroniou, Arun Raghavan, and Kenneth A. Ross. 2015. Rethinking SIMD Vectorization for In-Memory Databases. In Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data (SIGMOD '15). 1493–1508. https://doi.org/10.1145/2723372.2747645
+- <Anchor id="page-13-21"/>[65] PostgreSQL. 2024. PostgreSQL - Foreign Data Wrappers. Retrieved 2024-06-20 from https://wiki.postgresql.org/wiki/Foreign_data_wrappers
+- <Anchor id="page-13-23"/>[66] Mark Raasveldt, Pedro Holanda, Tim Gubner, and Hannes Mühleisen. 2018. Fair Benchmarking Considered difficult: Common Pitfalls In Database Performance Testing. In Proceedings of the Workshop on Testing Database Systems (Houston, TX, USA) (DBTest'18). Article 2, 6 pages. https://doi.org/10.1145/3209950.3209955
+- <Anchor id="page-13-6"/>[67] Mark Raasveldt and Hannes Mühleisen. 2019. DuckDB: An Embeddable Analytical Database (SIGMOD '19). Association for Computing Machinery, New York, NY, USA, 1981–1984. https://doi.org/10.1145/3299869.3320212
+- <Anchor id="page-13-16"/>[68] Jun Rao and Kenneth A. Ross. 1999. Cache Conscious Indexing for Decision-Support in Main Memory. In Proceedings of the 25th International Conference on Very Large Data Bases (VLDB '99). San Francisco, CA, USA, 78–89.
+- <Anchor id="page-13-36"/>[69] Navin C. Sabharwal and Piyush Kant Pandey. 2020. Working with Prometheus Query Language (PromQL). In Monitoring Microservices and Containerized Applications. https://doi.org/10.1007/978-1-4842-6216-0_5
+- <Anchor id="page-13-27"/>[70] Todd W. Schneider. 2022. New York City Taxi and For-Hire Vehicle Data. Retrieved 2024-06-20 from https://github.com/toddwschneider/nyc-taxi-data
+- <Anchor id="page-13-13"/>[71] Mike Stonebraker, Daniel J. Abadi, Adam Batkin, Xuedong Chen, Mitch Cherniack, Miguel Ferreira, Edmond Lau, Amerson Lin, Sam Madden, Elizabeth O'Neil, Pat O'Neil, Alex Rasin, Nga Tran, and Stan Zdonik. 2005. C-Store: A Column-Oriented DBMS. In Proceedings of the 31st International Conference on Very Large Data Bases (VLDB '05). 553–564.
+- <Anchor id="page-13-29"/>[72] Teradata. 2024. Teradata Database. Retrieved 2024-06-20 from [https://www.](https://www.teradata.com/resources/datasheets/teradata-database) [teradata.com/resources/datasheets/teradata-database](https://www.teradata.com/resources/datasheets/teradata-database)
+- <Anchor id="page-13-15"/>[73] Frederik Transier. 2010. Algorithms and Data Structures for In-Memory Text Search Engines. Ph.D. Dissertation. https://doi.org/10.5445/IR/1000015824
+- <Anchor id="page-13-24"/>[74] Adrian Vogelsgesang, Michael Haubenschild, Jan Finis, Alfons Kemper, Viktor Leis, Tobias Muehlbauer, Thomas Neumann, and Manuel Then. 2018. Get Real: How Benchmarks Fail to Represent the Real World. In Proceedings of the Workshop on Testing Database Systems (Houston, TX, USA) (DBTest'18). Article 1, 6 pages. https://doi.org/10.1145/3209950.3209952
+- <Anchor id="page-13-9"/>[75] LZ4 website. 2024. LZ4. Retrieved 2024-06-20 from https://lz4.org/
+- <Anchor id="page-13-11"/><Anchor id="page-13-1"/>[76] PRQL website. 2024. PRQL. Retrieved 2024-06-20 from https://prql-lang.org [77] Till Westmann, Donald Kossmann, Sven Helmer, and Guido Moerkotte. 2000. The Implementation and Performance of Compressed Databases. SIGMOD Rec.
+- <Anchor id="page-13-33"/>29, 3 (sep 2000), 55–67. https://doi.org/10.1145/362084.362137 [78] Fangjin Yang, Eric Tschetter, Xavier Léauté, Nelson Ray, Gian Merlino, and Deep Ganguli. 2014. Druid: A Real-Time Analytical Data Store. In Proceedings of the 2014 ACM SIGMOD International Conference on Management of Data (Snowbird, Utah, USA) (SIGMOD '14). Association for Computing Machinery, New York, NY, USA, 157–168. https://doi.org/10.1145/2588555.2595631
+- <Anchor id="page-13-20"/>[79] Tianqi Zheng, Zhibin Zhang, and Xueqi Cheng. 2020. SAHA: A String Adaptive Hash Table for Analytical Databases. Applied Sciences 10, 6 (2020). [https:](https://doi.org/10.3390/app10061915) [//doi.org/10.3390/app10061915](https://doi.org/10.3390/app10061915)
+- <Anchor id="page-13-19"/>[80] Jingren Zhou and Kenneth A. Ross. 2002. Implementing Database Operations Using SIMD Instructions. In Proceedings of the 2002 ACM SIGMOD International Conference on Management of Data (SIGMOD '02). 145–156. [https://doi.org/10.](https://doi.org/10.1145/564691.564709) [1145/564691.564709](https://doi.org/10.1145/564691.564709)
+- <Anchor id="page-13-12"/>[81] Marcin Zukowski, Sandor Heman, Niels Nes, and Peter Boncz. 2006. Super-Scalar RAM-CPU Cache Compression. In Proceedings of the 22nd International Conference on Data Engineering (ICDE '06). 59. [https://doi.org/10.1109/ICDE.](https://doi.org/10.1109/ICDE.2006.150) [2006.150](https://doi.org/10.1109/ICDE.2006.150)
