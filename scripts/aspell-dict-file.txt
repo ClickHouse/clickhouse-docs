@@ -328,6 +328,9 @@ intra
 clickpipesPricingFaq
 --docs/cloud/manage/backups.md--
 slideout
+--docs/integrations/data-ingestion/clickpipes/postgres/table_resync.md--
+Resyncing
+resyncing
 --docs/integrations/data-ingestion/google-dataflow/templates/bigquery-to-clickhouse.md--
 DataFlow
 Dataflow
