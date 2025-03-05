@@ -5,9 +5,9 @@ sidebar_label: DICTIONARY
 title: "CREATE DICTIONARY"
 ---
 
-指定された[構造](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields)、[ソース](../../../sql-reference/dictionaries/index.md#dictionary-sources)、[レイアウト](../../../sql-reference/dictionaries/index.md#storig-dictionaries-in-memory)および[有効期限](../../../sql-reference/dictionaries/index.md#dictionary-updates)を持つ新しい[dictionary](../../../sql-reference/dictionaries/index.md)を作成します。
+指定された[構造](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields)、[ソース](../../../sql-reference/dictionaries/index.md#dictionary-sources)、[レイアウト](/sql-reference/dictionaries#storing-dictionaries-in-memory) および [有効期限](../../../sql-reference/dictionaries/index.md#dictionary-updates)で新しい[dictionary](../../../sql-reference/dictionaries/index.md)を作成します。
 
-## 構文 {#syntax}
+## Syntax {#syntax}
 
 ``` sql
 CREATE [OR REPLACE] DICTIONARY [IF NOT EXISTS] [db.]dictionary_name [ON CLUSTER cluster]
@@ -25,23 +25,23 @@ SETTINGS(setting_name = setting_value, setting_name = setting_value, ...)
 COMMENT 'Comment'
 ```
 
-辞書の構造は属性で構成されています。辞書属性はテーブルカラムと同様に指定します。必要な属性プロパティはその型のみであり、他のすべてのプロパティはデフォルト値を持つ場合があります。
+辞書の構造は属性で構成されます。辞書の属性はテーブルのカラムと同様に指定されます。必要な属性プロパティはそのタイプだけで、他のすべてのプロパティはデフォルト値を持つ場合があります。
 
-`ON CLUSTER`句は、クラスタ上に辞書を作成することを許可します。詳細は[Distributed DDL](../../../sql-reference/distributed-ddl.md)を参照してください。
+`ON CLUSTER`句はクラスター上に辞書を作成することを可能にします。詳細については[Distributed DDL](../../../sql-reference/distributed-ddl.md)を参照してください。
 
-辞書の[レイアウト](../../../sql-reference/dictionaries/index.md#storig-dictionaries-in-memory)によっては、1つ以上の属性を辞書キーとして指定することができます。
+辞書の[レイアウト](/sql-reference/dictionaries#storing-dictionaries-in-memory)に応じて、1つ以上の属性を辞書のキーとして指定できます。
 
 ## SOURCE {#source}
 
-辞書のソースは以下のいずれかです：
+辞書のソースは次のいずれかです：
 - 現在のClickHouseサービス内のテーブル
 - リモートClickHouseサービス内のテーブル
-- HTTP(S)で入手可能なファイル
+- HTTP(S)で利用可能なファイル
 - 別のデータベース
 
 ### 現在のClickHouseサービスのテーブルから辞書を作成する {#create-a-dictionary-from-a-table-in-the-current-clickhouse-service}
 
-入力テーブル`source_table`：
+入力テーブル `source_table`:
 
 ``` text
 ┌─id─┬─value──┐
@@ -50,7 +50,7 @@ COMMENT 'Comment'
 └────┴────────┘
 ```
 
-辞書を作成する：
+辞書の作成:
 
 ``` sql
 CREATE DICTIONARY id_value_dictionary
@@ -64,7 +64,7 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
 ```
 
-辞書を出力する：
+辞書の出力:
 
 ``` sql
 SHOW CREATE DICTIONARY id_value_dictionary;
@@ -83,7 +83,7 @@ LAYOUT(FLAT())
 ```
 
 :::note
-[ClickHouse Cloud](https://clickhouse.com)のSQLコンソールを使用する場合、辞書を作成する際にはユーザー（`default`または`default_role`の役割を持つ他のユーザー）とパスワードを指定する必要があります。
+[ClickHouse Cloud](https://clickhouse.com)でSQLコンソールを使用する場合、辞書を作成するときにはユーザー（`default`または`default_role`の役割を持つ他のユーザー）とパスワードを指定する必要があります。
 :::note
 
 ```sql
@@ -113,7 +113,7 @@ LIFETIME(MIN 0 MAX 1000);
 
 ### リモートClickHouseサービスのテーブルから辞書を作成する {#create-a-dictionary-from-a-table-in-a-remote-clickhouse-service}
 
-入力テーブル（リモートClickHouseサービス）`source_table`：
+入力テーブル（リモートClickHouseサービス内） `source_table`:
 
 ``` text
 ┌─id─┬─value──┐
@@ -122,7 +122,7 @@ LIFETIME(MIN 0 MAX 1000);
 └────┴────────┘
 ```
 
-辞書を作成する：
+辞書の作成:
 
 ``` sql
 CREATE DICTIONARY id_value_dictionary
@@ -136,7 +136,7 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
 ```
 
-### HTTP(S)で入手可能なファイルから辞書を作成する {#create-a-dictionary-from-a-file-available-by-https}
+### HTTP(S)で利用可能なファイルから辞書を作成する {#create-a-dictionary-from-a-file-available-by-https}
 
 ```sql
 CREATE DICTIONARY default.taxi_zone_dictionary
@@ -154,9 +154,9 @@ LAYOUT(HASHED())
 
 ### 別のデータベースから辞書を作成する {#create-a-dictionary-from-another-database}
 
-詳細については、[Dictionary sources](/sql-reference/dictionaries/index.md#dictionary-sources/#dbms)を参照してください。
+詳細は[Dictionary sources](/sql-reference/dictionaries/index.md#dictionary-sources/#dbms)をご覧ください。
 
-**関連記事**
+**See Also**
 
 - 詳細については、[Dictionaries](../../../sql-reference/dictionaries/index.md)セクションを参照してください。
-- [system.dictionaries](../../../operations/system-tables/dictionaries.md) — このテーブルには、[Dictionaries](../../../sql-reference/dictionaries/index.md)に関する情報が含まれています。
+- [system.dictionaries](../../../operations/system-tables/dictionaries.md) — このテーブルには[辞書](../../../sql-reference/dictionaries/index.md)に関する情報が含まれています。

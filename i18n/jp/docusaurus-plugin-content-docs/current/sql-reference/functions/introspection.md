@@ -1,33 +1,33 @@
 ---
 slug: /sql-reference/functions/introspection
 sidebar_position: 100
-sidebar_label: 内部調査
+sidebar_label: 内部視察
 ---
 
 
-# 内部調査関数
+# 内部視察関数
 
-この章で説明する関数を使用して、クエリプロファイリングのために[ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format)および[DWARF](https://en.wikipedia.org/wiki/DWARF)を調査できます。
+この章で説明する関数を使用して、クエリプロファイリングのための [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) と [DWARF](https://en.wikipedia.org/wiki/DWARF) を内部視察できます。
 
 :::note    
-これらの関数は遅く、セキュリティ上の考慮が必要です。
+これらの関数は遅く、安全性に関する考慮が必要な場合があります。
 :::
 
-内部調査関数の適切な動作には次の設定が必要です：
+内部視察関数の正常な操作のためには：
 
-- `clickhouse-common-static-dbg`パッケージをインストールします。
+- `clickhouse-common-static-dbg` パッケージをインストールします。
 
-- [allow_introspection_functions](../../operations/settings/settings.md#allow_introspection_functions)設定を1に設定します。
+- [allow_introspection_functions](../../operations/settings/settings.md#allow_introspection_functions) 設定を 1 に設定します。
 
-        セキュリティの理由から、内部調査関数はデフォルトで無効になっています。
+        セキュリティ上の理由から、内部視察関数はデフォルトで無効です。
 
-ClickHouseはプロファイラーレポートを[trace_log](/operations/system-tables/trace_log)システムテーブルに保存します。テーブルとプロファイラが適切に構成されていることを確認してください。
+ClickHouse はプロファイラレポートを [trace_log](/operations/system-tables/trace_log) システムテーブルに保存します。テーブルとプロファイラが正しく構成されていることを確認してください。
 
 ## addressToLine {#addresstoline}
 
-ClickHouseサーバープロセス内の仮想メモリアドレスを、ClickHouseソースコード内のファイル名と行番号に変換します。
+ClickHouse サーバプロセス内の仮想メモリアドレスを ClickHouse ソースコード内のファイル名と行番号に変換します。
 
-公式のClickHouseパッケージを使用している場合は、`clickhouse-common-static-dbg`パッケージをインストールする必要があります。
+公式の ClickHouse パッケージを使用している場合、`clickhouse-common-static-dbg` パッケージをインストールする必要があります。
 
 **構文**
 
@@ -39,24 +39,24 @@ addressToLine(address_of_binary_instruction)
 
 - `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — 実行中のプロセス内の命令のアドレス。
 
-**返される値**
+**戻り値**
 
-- ソースコードのファイル名と、このファイル内の行番号（コロンで区切られている）。
+- コロンで区切られたソースコードファイル名とこのファイル内の行番号。
         例えば、`/build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199` のように、ここで `199` は行番号です。
-- デバッグ情報が見つからなかった場合のバイナリの名前。
+- デバッグ情報が見つからない場合のバイナリの名前。
 - アドレスが無効な場合は空の文字列。
 
 タイプ: [String](../../sql-reference/data-types/string.md)。
 
 **例**
 
-内部調査関数を有効にする：
+内部視察関数を有効にする：
 
 ``` sql
 SET allow_introspection_functions=1;
 ```
 
-`trace_log`システムテーブルから最初の行を選択：
+`trace_log` システムテーブルから最初の行を選択：
 
 ``` sql
 SELECT * FROM system.trace_log LIMIT 1 \G;
@@ -74,9 +74,9 @@ query_id:                421b6855-1858-45a5-8f37-f383409d6d72
 trace:                   [140658411141617,94784174532828,94784076370703,94784076372094,94784076361020,94784175007680,140658411116251,140658403895439]
 ```
 
-`trace`フィールドにはサンプリング時のスタックトレースが含まれています。
+`trace` フィールドには、サンプリング時点でのスタックトレースが含まれています。
 
-単一アドレスのソースコードのファイル名と行番号を取得：
+単一のアドレスについてのソースコードファイル名と行番号を取得：
 
 ``` sql
 SELECT addressToLine(94784076370703) \G;
@@ -88,7 +88,7 @@ Row 1:
 addressToLine(94784076370703): /build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199
 ```
 
-スタックトレース全体に関数を適用：
+関数を全スタックトレースに適用：
 
 ``` sql
 SELECT
@@ -98,7 +98,7 @@ LIMIT 1
 \G
 ```
 
-[ arrayMap](../../sql-reference/functions/array-functions.md#array-map)関数は、`trace`配列の各要素を`addressToLine`関数で処理することができます。この処理の結果は出力の`trace_source_code_lines`列に表示されます。
+[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 関数は、`trace` 配列の各要素を `addressToLine` 関数で処理することを可能にします。この処理の結果は出力の `trace_source_code_lines` 列に表示されます。
 
 ``` text
 Row 1:
@@ -115,10 +115,10 @@ trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 
 ## addressToLineWithInlines {#addresstolinewithinlines}
 
-`addressToLine`に類似していますが、すべてのインライン関数を含む配列を返します。そのため、`addressToLine`よりも遅くなります。
+`addressToLine` に似ていますが、すべてのインライン関数を含む配列を返します。その結果、`addressToLine` よりも遅くなります。
 
 :::note
-公式のClickHouseパッケージを使用している場合は、`clickhouse-common-static-dbg`パッケージをインストールする必要があります。
+公式の ClickHouse パッケージを使用している場合、`clickhouse-common-static-dbg` パッケージをインストールする必要があります。
 :::
 
 **構文**
@@ -131,13 +131,13 @@ addressToLineWithInlines(address_of_binary_instruction)
 
 - `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — 実行中のプロセス内の命令のアドレス。
 
-**返される値**
+**戻り値**
 
-- 最初の要素はソースコードのファイル名と行番号（コロンで区切られている）で、2番目以降の要素にはインライン関数のソースコードのファイル名、行番号、関数名がリストされます。デバッグ情報が見つからなかった場合にはバイナリの名前と等しい単一要素の配列が返され、アドレスが無効な場合には空の配列が返されます。[Array(String)](../data-types/array.md)。
+- 最初の要素がコロンで区切られたソースコードファイル名と行番号の配列。2 番目以降の要素として、インライン関数のソースコードファイル名、行番号、関数名が列挙されます。デバッグ情報が見つからない場合は、単一要素がバイナリの名前と等しい配列が返され、アドレスが無効な場合は空の配列が返されます。 [Array(String)](../data-types/array.md)。
 
 **例**
 
-内部調査関数を有効にする：
+内部視察関数を有効にする：
 
 ``` sql
 SET allow_introspection_functions=1;
@@ -155,7 +155,7 @@ SELECT addressToLineWithInlines(531055181::UInt64);
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-スタックトレース全体に関数を適用：
+全スタックトレースに関数を適用：
 
 ``` sql
 SELECT
@@ -165,7 +165,7 @@ WHERE
     query_id = '5e173544-2020-45de-b645-5deebe2aae54';
 ```
 
-[ arrayJoin](../../sql-reference/functions/array-functions.md#array-functions-join)関数は配列を行に分割します。
+[ arrayJoin](../../sql-reference/functions/array-functions.md#array-functions-join) 関数は配列を行に分割します。
 
 ``` text
 ┌────────ta─┬─addressToLineWithInlines(arrayJoin(trace))───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -215,7 +215,7 @@ WHERE
 
 ## addressToSymbol {#addresstosymbol}
 
-ClickHouseサーバープロセス内の仮想メモリアドレスを、ClickHouseオブジェクトファイルからのシンボルに変換します。
+ClickHouse サーバプロセス内の仮想メモリアドレスを ClickHouse オブジェクトファイルのシンボルに変換します。
 
 **構文**
 
@@ -227,20 +227,20 @@ addressToSymbol(address_of_binary_instruction)
 
 - `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — 実行中のプロセス内の命令のアドレス。
 
-**返される値**
+**戻り値**
 
-- ClickHouseオブジェクトファイルからのシンボル。[String](../data-types/string.md)。
-- アドレスが無効な場合は空の文字列。[String](../data-types/string.md)。
+- ClickHouse オブジェクトファイルからのシンボル。 [String](../data-types/string.md)。
+- アドレスが無効な場合は空の文字列。 [String](../data-types/string.md)。
 
 **例**
 
-内部調査関数を有効にする：
+内部視察関数を有効にする：
 
 ``` sql
 SET allow_introspection_functions=1;
 ```
 
-`trace_log`システムテーブルから最初の行を選択：
+`trace_log` システムテーブルから最初の行を選択：
 
 ``` sql
 SELECT * FROM system.trace_log LIMIT 1 \G;
@@ -258,9 +258,9 @@ query_id:      724028bf-f550-45aa-910d-2af6212b94ac
 trace:         [94138803686098,94138815010911,94138815096522,94138815101224,94138815102091,94138814222988,94138806823642,94138814457211,94138806823642,94138814457211,94138806823642,94138806795179,94138806796144,94138753770094,94138753771646,94138753760572,94138852407232,140399185266395,140399178045583]
 ```
 
-`trace`フィールドにはサンプリング時のスタックトレースが含まれています。
+`trace` フィールドには、サンプリング時点でのスタックトレースが含まれています。
 
-単一アドレスのシンボルを取得：
+単一のアドレスのシンボルを取得：
 
 ``` sql
 SELECT addressToSymbol(94138803686098) \G;
@@ -272,7 +272,7 @@ Row 1:
 addressToSymbol(94138803686098): _ZNK2DB24IAggregateFunctionHelperINS_20AggregateFunctionSumImmNS_24AggregateFunctionSumDataImEEEEE19addBatchSinglePlaceEmPcPPKNS_7IColumnEPNS_5ArenaE
 ```
 
-スタックトレース全体に関数を適用：
+関数を全スタックトレースに適用：
 
 ``` sql
 SELECT
@@ -282,7 +282,7 @@ LIMIT 1
 \G
 ```
 
-[ arrayMap](../../sql-reference/functions/array-functions.md#array-map)関数は、`trace`配列の各要素を`addressToSymbols`関数で処理することができます。この処理の結果は出力の`trace_symbols`列に表示されます。
+[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 関数は、`trace` 配列の各要素を `addressToSymbol` 関数で処理することを可能にします。この処理の結果は出力の `trace_symbols` 列に表示されます。
 
 ``` text
 Row 1:
@@ -310,7 +310,7 @@ clone
 
 ## demangle {#demangle}
 
-[addressToSymbol](#addresstosymbol)関数で取得したシンボルをC++の関数名に変換します。
+[ addressToSymbol](#addresstosymbol) 関数を使用して取得したシンボルを C++ 関数名に変換します。
 
 **構文**
 
@@ -322,19 +322,19 @@ demangle(symbol)
 
 - `symbol` ([String](../data-types/string.md)) — オブジェクトファイルからのシンボル。
 
-**返される値**
+**戻り値**
 
-- C++の関数名、またはシンボルが無効な場合は空の文字列。[String](../data-types/string.md)。
+- C++ 関数の名前、またはシンボルが無効な場合は空の文字列。 [String](../data-types/string.md)。
 
 **例**
 
-内部調査関数を有効にする：
+内部視察関数を有効にする：
 
 ``` sql
 SET allow_introspection_functions=1;
 ```
 
-`trace_log`システムテーブルから最初の行を選択：
+`trace_log` システムテーブルから最初の行を選択：
 
 ``` sql
 SELECT * FROM system.trace_log LIMIT 1 \G;
@@ -352,9 +352,9 @@ query_id:      724028bf-f550-45aa-910d-2af6212b94ac
 trace:         [94138803686098,94138815010911,94138815096522,94138815101224,94138815102091,94138814222988,94138806823642,94138814457211,94138806823642,94138814457211,94138806823642,94138806795179,94138806796144,94138753770094,94138753771646,94138753760572,94138852407232,140399185266395,140399178045583]
 ```
 
-`trace`フィールドにはサンプリング時のスタックトレースが含まれています。
+`trace` フィールドには、サンプリング時点でのスタックトレースが含まれています。
 
-単一アドレスの関数名を取得：
+単一のアドレスの関数名を取得：
 
 ``` sql
 SELECT demangle(addressToSymbol(94138803686098)) \G;
@@ -366,7 +366,7 @@ Row 1:
 demangle(addressToSymbol(94138803686098)): DB::IAggregateFunctionHelper<DB::AggregateFunctionSum<unsigned long, unsigned long, DB::AggregateFunctionSumData<unsigned long> > >::addBatchSinglePlace(unsigned long, char*, DB::IColumn const**, DB::Arena*) const
 ```
 
-スタックトレース全体に関数を適用：
+関数を全スタックトレースに適用：
 
 ``` sql
 SELECT
@@ -376,7 +376,7 @@ LIMIT 1
 \G
 ```
 
-[ arrayMap](../../sql-reference/functions/array-functions.md#array-map)関数は、`trace`配列の各要素を`demangle`関数で処理することができます。この処理の結果は出力の`trace_functions`列に表示されます。
+[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 関数は、`trace` 配列の各要素を `demangle` 関数で処理することを可能にします。この処理の結果は出力の `trace_functions` 列に表示されます。
 
 ``` text
 Row 1:
@@ -401,9 +401,10 @@ execute_native_thread_routine
 start_thread
 clone
 ```
+
 ## tid {#tid}
 
-現在の[Block](/development/architecture/#block)が処理されているスレッドのIDを返します。
+現在の [Block](/development/architecture/#block) が処理されているスレッドの ID を返します。
 
 **構文**
 
@@ -411,9 +412,9 @@ clone
 tid()
 ```
 
-**返される値**
+**戻り値**
 
-- 現在のスレッドID。[Uint64](../data-types/int-uint.md#uint-ranges)。
+- 現在のスレッド ID。 [Uint64](/sql-reference/data-types/int-uint#integer-ranges)。
 
 **例**
 
@@ -433,7 +434,7 @@ SELECT tid();
 
 ## logTrace {#logtrace}
 
-各[Block](/development/architecture/#block)に対して、サーバーログにトレースログメッセージを出力します。
+各 [Block](/development/architecture/#block) に対して、サーバーログにトレースログメッセージを出力します。
 
 **構文**
 
@@ -443,11 +444,11 @@ logTrace('message')
 
 **引数**
 
-- `message` — サーバーログに出力されるメッセージ。[String](../data-types/string.md#string)。
+- `message` — サーバーログに出力されるメッセージ。 [String](../data-types/string.md#string)。
 
-**返される値**
+**戻り値**
 
-- 常に0を返します。
+- 常に 0 を返します。
 
 **例**
 

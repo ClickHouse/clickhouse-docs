@@ -1,5 +1,5 @@
 ---
-description: "ユーザーのメモリ使用状況と ProfileEvents の概要に役立つシステムテーブル。"
+description: "メモリ使用状況とユーザーのProfileEventsの概要に役立つ情報を含むシステムテーブル。"
 slug: /operations/system-tables/user_processes
 title: "system.user_processes"
 keywords: ["システムテーブル", "user_processes"]
@@ -9,14 +9,14 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-このシステムテーブルは、ユーザーのメモリ使用状況と ProfileEvents の概要を取得するために使用できます。
+このシステムテーブルは、メモリ使用状況とユーザーのProfileEventsの概要を取得するために使用できます。
 
 カラム:
 
 - `user` ([String](../../sql-reference/data-types/string.md)) — ユーザー名。
-- `memory_usage` ([Int64](../../sql-reference/data-types/int-uint#int-ranges)) – ユーザーのすべてのプロセスによって使用される RAM の合計。専用のメモリの一部は含まれない場合があります。[max_memory_usage](../../operations/settings/query-complexity.md#settings_max_memory_usage) 設定を参照してください。
-- `peak_memory_usage` ([Int64](../../sql-reference/data-types/int-uint#int-ranges)) — ユーザーのメモリ使用量のピーク。ユーザーにクエリが実行されていないときにリセットされる可能性があります。
-- `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map)) – ユーザーのさまざまなメトリクスを測定する ProfileEvents の要約。これらの説明はテーブル [system.events](/operations/system-tables/events) に記載されています。
+- `memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) – ユーザーのすべてのプロセスによって使用されるRAMの合計。専用メモリのいくつかのタイプは含まれていない可能性があります。[max_memory_usage](../../operations/settings/query-complexity.md#settings_max_memory_usage)設定を参照してください。
+- `peak_memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) — ユーザーのメモリ使用のピーク。ユーザーがクエリを実行していないときにリセットされる可能性があります。
+- `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map)) – ユーザーの異なるメトリックを測定するProfileEventsの概要。これらの説明は、[system.events](/operations/system-tables/events)テーブルにあります。
 
 ```sql
 SELECT * FROM system.user_processes LIMIT 10 FORMAT Vertical;

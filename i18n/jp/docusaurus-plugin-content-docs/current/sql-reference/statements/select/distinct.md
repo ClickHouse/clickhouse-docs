@@ -6,11 +6,11 @@ sidebar_label: DISTINCT
 
 # DISTINCT 句
 
-`SELECT DISTINCT` が指定されている場合、クエリ結果にはユニークな行のみが残ります。したがって、完全に一致する行のセットからは、単一の行のみが残ります。
+`SELECT DISTINCT` が指定されると、クエリ結果にはユニークな行のみが残ります。したがって、結果内の完全に一致する行のセットの中から唯一の行が残ります。
 
-ユニークな値を持つ必要があるカラムのリストを指定できます: `SELECT DISTINCT ON (column1, column2,...)` 。カラムが指定されていない場合は、すべてが考慮されます。
+ユニークな値を持つカラムのリストを指定することもできます: `SELECT DISTINCT ON (column1, column2,...)`。カラムが指定されていない場合は、すべてのカラムが考慮されます。
 
-次のテーブルを考えてみましょう:
+テーブルを考慮してください:
 
 ```text
 ┌─a─┬─b─┬─c─┐
@@ -23,7 +23,7 @@ sidebar_label: DISTINCT
 └───┴───┴───┘
 ```
 
-カラムを指定せずに `DISTINCT` を使用する場合:
+カラムを指定せずに `DISTINCT` を使用:
 
 ```sql
 SELECT DISTINCT * FROM t1;
@@ -38,7 +38,7 @@ SELECT DISTINCT * FROM t1;
 └───┴───┴───┘
 ```
 
-指定されたカラムで `DISTINCT` を使用する場合:
+指定したカラムで `DISTINCT` を使用:
 
 ```sql
 SELECT DISTINCT ON (a,b) * FROM t1;
@@ -54,9 +54,9 @@ SELECT DISTINCT ON (a,b) * FROM t1;
 
 ## DISTINCT と ORDER BY {#distinct-and-order-by}
 
-ClickHouse は、1 つのクエリ内で異なるカラムに対して `DISTINCT` および `ORDER BY` 句を使用することをサポートしています。 `DISTINCT` 句は、`ORDER BY` 句の前に実行されます。
+ClickHouse は、1つのクエリ内で異なるカラムに対して `DISTINCT` と `ORDER BY` 句を使用することをサポートしています。`DISTINCT` 句は `ORDER BY` 句の前に実行されます。
 
-次のテーブルを考えてみましょう:
+テーブルを考慮してください:
 
 ``` text
 ┌─a─┬─b─┐
@@ -67,7 +67,7 @@ ClickHouse は、1 つのクエリ内で異なるカラムに対して `DISTINCT
 └───┴───┘
 ```
 
-データを選択する:
+データの選択:
 
 ```sql
 SELECT DISTINCT a FROM t1 ORDER BY b ASC;
@@ -80,7 +80,7 @@ SELECT DISTINCT a FROM t1 ORDER BY b ASC;
 │ 3 │
 └───┘
 ```
-異なるソート方向でデータを選択する:
+異なるソート方向でデータを選択:
 
 ```sql
 SELECT DISTINCT a FROM t1 ORDER BY b DESC;
@@ -96,16 +96,16 @@ SELECT DISTINCT a FROM t1 ORDER BY b DESC;
 
 行 `2, 4` はソート前にカットされました。
 
-クエリをプログラミングする際には、この実装の特性を考慮してください。
+クエリをプログラミングする際にはこの実装の特性を考慮してください。
 
 ## NULL 処理 {#null-processing}
 
-`DISTINCT` は [NULL](/sql-reference/syntax#null) を特定の値として扱い、`NULL==NULL` として機能します。言い換えれば、`DISTINCT` の結果では、`NULL` を含む異なる組み合わせが一度だけ現れます。これは他の多くの文脈における `NULL` の処理とは異なります。
+`DISTINCT` は [NULL](/sql-reference/syntax#null) を特定の値であるかのように扱い、`NULL==NULL` と見なします。言い換えれば、`DISTINCT` の結果において、`NULL` を含む異なる組み合わせは一度だけ現れます。これは他の多くの文脈における `NULL` 処理とは異なります。
 
-## 代替 {#alternatives}
+## 代替手段 {#alternatives}
 
-同じ結果を得るために、指定された `SELECT` 句の同じ値セットに対して [GROUP BY](../../../sql-reference/statements/select/group-by.md) を適用することができますが、集約関数を使用せずに。 ただし、`GROUP BY` アプローチとはいくつかの違いがあります:
+同じ結果を得るために [GROUP BY](/sql-reference/statements/select/group-by) を使用して、`SELECT` 句で指定した同じ値セットを適用することもできますが、集約関数を使用しない必要があります。ただし、`GROUP BY` アプローチとはいくつかの違いがあります:
 
-- `DISTINCT` は `GROUP BY` とともに適用できます。
-- [ORDER BY](../../../sql-reference/statements/select/order-by.md) が省略され、[LIMIT](../../../sql-reference/statements/select/limit.md) が定義されている場合、クエリは必要な数の異なる行が読み取られた後すぐに停止します。
-- データブロックは、クエリが完了するのを待つことなく処理されるとして出力されます。
+- `DISTINCT` は `GROUP BY` と一緒に適用できます。
+- [ORDER BY](../../../sql-reference/statements/select/order-by.md) を省略し、[LIMIT](../../../sql-reference/statements/select/limit.md) が定義されている場合、必要な異なる行数が読み込まれ次第、クエリの実行が直ちに停止します。
+- データブロックは、クエリ全体の処理が完了するのを待たずに、処理される際にそのまま出力されます。

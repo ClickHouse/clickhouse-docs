@@ -2,24 +2,24 @@
 slug: /operations/settings/settings-users
 sidebar_position: 63
 sidebar_label: ユーザー設定
-description: "ユーザーとロールの設定を構成するための設定。"
+description: "ユーザーおよびロールを構成するための設定。"
 title: "ユーザーとロールの設定"
 ---
 
 
 # ユーザーとロールの設定
 
-`users` セクションは `users.xml` 構成ファイル内のユーザー設定を含みます。
+`users.xml` 設定ファイルの `users` セクションにはユーザー設定が含まれています。
 
 :::note
-ClickHouse は [SQL駆動型ワークフロー](/operations/access-rights#access-control-usage) をサポートしており、ユーザー管理に推奨しています。
+ClickHouse はユーザー管理のための [SQL駆動型ワークフロー](/operations/access-rights#access-control-usage) もサポートしています。使用をお勧めします。
 :::
 
 `users` セクションの構造:
 
 ``` xml
 <users>
-    <!-- ユーザー名が指定されていない場合は、'default'ユーザーが使用されます。 -->
+    <!-- ユーザー名が指定されていない場合は、デフォルトユーザーが使用されます。 -->
     <user_name>
         <password></password>
         <!-- または -->
@@ -61,25 +61,25 @@ ClickHouse は [SQL駆動型ワークフロー](/operations/access-rights#access
             <query>GRANT SELECT ON system.*</query>
         </grants>
     </user_name>
-    <!-- その他のユーザー設定 -->
+    <!-- 他のユーザー設定 -->
 </users>
 ```
 
 ### user_name/password {#user-namepassword}
 
-パスワードはプレーンテキストまたはSHA256（16進形式）で指定できます。
+パスワードはプレーンテキストまたはSHA256（16進数形式）で指定できます。
 
-- プレーンテキストでパスワードを割り当てるには、`password`要素に置きます (**推奨されません**)。
+- プレーンテキストでパスワードを指定するには（**推奨されません**）、`password` 要素において指定します。
 
-    例: `<password>qwerty</password>`。パスワードは空白のままにすることもできます。
+    例: `<password>qwerty</password>`。パスワードは空白でもかまいません。
 
 <a id="password_sha256_hex"></a>
 
-- SHA256ハッシュを使用してパスワードを割り当てるには、`password_sha256_hex`要素に置きます。
+- SHA256ハッシュを使用してパスワードを指定するには、`password_sha256_hex` 要素において指定します。
 
     例: `<password_sha256_hex>65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5</password_sha256_hex>`。
 
-    シェルからのパスワード生成の例:
+    シェルからパスワードを生成する方法の例:
 
           PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha256sum | tr -d '-'
 
@@ -87,25 +87,25 @@ ClickHouse は [SQL駆動型ワークフロー](/operations/access-rights#access
 
 <a id="password_double_sha1_hex"></a>
 
-- MySQLクライアントとの互換性のために、パスワードはダブルSHA1ハッシュで指定できます。`password_double_sha1_hex`要素に置きます。
+- MySQLクライアントとの互換性のために、パスワードを二重SHA1ハッシュで指定することもできます。それは`password_double_sha1_hex` 要素に指定します。
 
     例: `<password_double_sha1_hex>08b4a0f1de6ad37da17359e592c8d74788a83eb0</password_double_sha1_hex>`。
 
-    シェルからのパスワード生成の例:
+    シェルからパスワードを生成する方法の例:
 
           PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
 
-    結果の最初の行がパスワードで、2行目が対応するダブルSHA1ハッシュです。
+    結果の最初の行がパスワードで、2行目が対応する二重SHA1ハッシュです。
 
 ### username/ssh-key {#user-sshkey}
 
-この設定はSSHキーを使用した認証を可能にします。
+この設定はSSHキーでの認証を可能にします。
 
-`ssh-keygen`で生成されたSSHキーの場合、次のようになります。
+`ssh-keygen` によって生成されたSSHキーが次のようであるとします:
 ```text
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj john@example.com
 ```
-`ssh_key`要素は次のようになります。
+`ssh_key` 要素は次のようであることが期待されます:
 ```xml
 <ssh_key>
      <type>ssh-ed25519</type>
@@ -113,13 +113,13 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
  </ssh_key>
 ```
 
-他のサポートされているアルゴリズムには、`ssh-rsa`や`ecdsa-sha2-nistp256`を使用します。
+他のサポートされているアルゴリズムの場合、`ssh-ed25519` を `ssh-rsa` または `ecdsa-sha2-nistp256` に置き換えてください。
 
 ### access_management {#access_management-user-setting}
 
-この設定はユーザーのSQL駆動型 [アクセス制御およびアカウント管理](/operations/access-rights#access-control-usage) の使用を有効または無効にします。
+この設定は、ユーザーに対してSQL駆動型の [アクセス制御およびアカウント管理](/operations/access-rights#access-control-usage) を使用するかどうかを有効または無効にします。
 
-可能な値：
+可能な値:
 
 - 0 — 無効。
 - 1 — 有効。
@@ -128,8 +128,8 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 
 ### grants {#grants-user-setting}
 
-この設定は選択したユーザーにいかなる権利も付与することを可能にします。
-リストの各要素は、指定された権利なしで `GRANT` クエリである必要があります。
+この設定は、選択されたユーザーにさまざまな権利を付与することを可能にします。
+リストの各要素は、指定されたグランティーなしの `GRANT` クエリである必要があります。
 
 例:
 
@@ -143,13 +143,13 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 </user1>
 ```
 
-この設定は、`dictionaries`、`access_management`、`named_collection_control`、`show_named_collections_secrets`および`allow_databases`設定と同時に指定できません。
+この設定は、`dictionaries`、`access_management`、`named_collection_control`、`show_named_collections_secrets` 、および `allow_databases` 設定と同時に指定することはできません。
 
 ### user_name/networks {#user-namenetworks}
 
-ユーザーがClickHouseサーバーに接続できるネットワークのリストです。
+ユーザーがClickHouseサーバーに接続できるネットワークのリスト。
 
-リストの各要素は次のいずれかの形式を取ることができます。
+リストの各要素は次のいずれかの形式を持つことができます:
 
 - `<ip>` — IPアドレスまたはネットマスク。
 
@@ -159,29 +159,29 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 
     例: `example01.host.ru`。
 
-    アクセスを確認するために、DNSクエリが実行され、すべての返されたIPアドレスがピアアドレスと比較されます。
+    アクセスを確認するためにDNSクエリが実行され、返されたすべてのIPアドレスがピアアドレスと比較されます。
 
 - `<host_regexp>` — ホスト名用の正規表現。
 
-    例: `^example\d\d-\d\d-\d\.host\.ru$`
+    例: `^example\d\d-\d\d-\d\.host\.ru$`。
 
-    アクセス確認のために、ピアアドレスに対して [DNS PTRクエリ](https://en.wikipedia.org/wiki/Reverse_DNS_lookup) が実行され、指定された正規表現が適用されます。その後、PTRクエリの結果に対してもう一度DNSクエリが実行され、すべての受信したアドレスがピアアドレスと比較されます。正規表現は $ で終わることを強くお勧めします。
+    アクセスを確認するためには、ピアアドレスに対して [DNS PTR クエリ](https://en.wikipedia.org/wiki/Reverse_DNS_lookup) が実行され、その後指定された正規表現が適用されます。次に、PTRクエリの結果に対して別のDNSクエリが実行され、受信したすべてのアドレスがピアアドレスと比較されます。正規表現の末尾に $ が来ることを強く推奨します。
 
 DNSリクエストのすべての結果は、サーバーが再起動するまでキャッシュされます。
 
 **例**
 
-どのネットワークからでもユーザーへのアクセスを開くには、次のように指定します。
+任意のネットワークからのユーザーへのアクセスを開放するには、次のように指定します:
 
 ``` xml
 <ip>::/0</ip>
 ```
 
 :::note
-適切に構成されたファイアウォールがない限り、またはサーバーが直接インターネットに接続されていない限り、任意のネットワークからのアクセスを開くのは安全ではありません。
+ファイアウォールが正しく構成されていない限り、またはサーバーがインターネットに直接接続されていない限り、任意のネットワークからのアクセスを開放するのは安全でありません。
 :::
 
-ローカルホストからのみアクセスを開くには、次のように指定します。
+ローカルホストからのみアクセスを開放するには、次のように指定します:
 
 ``` xml
 <ip>::1</ip>
@@ -190,21 +190,21 @@ DNSリクエストのすべての結果は、サーバーが再起動するま�
 
 ### user_name/profile {#user-nameprofile}
 
-ユーザーに設定プロファイルを割り当てることができます。設定プロファイルは `users.xml`ファイルの別のセクションで構成されています。詳細については、 [設定プロファイル](../../operations/settings/settings-profiles.md)を参照してください。
+ユーザーに設定プロファイルを割り当てることができます。設定プロファイルは `users.xml` ファイルの別のセクションに設定されています。詳細については、[設定プロファイル](../../operations/settings/settings-profiles.md)を参照してください。
 
 ### user_name/quota {#user-namequota}
 
-クォータは、一定の期間内のリソース使用量を追跡または制限することを可能にします。クォータは `quotas` セクションで構成され、 `users.xml` 構成ファイルに含まれます。
+クォータは、特定の期間にわたるリソース使用率を追跡または制限できるようにします。クォータは `users.xml` 設定ファイルの `quotas` セクションで設定されます。
 
-ユーザーに対してクォータセットを割り当てることができます。クォータの構成に関する詳細は [クォータ](../../operations/quotas.md#quotas)を参照してください。
+ユーザーに対してクォータセットを割り当てることができます。クォータ設定の詳細な説明については、[クォータ](/operations/quotas)を参照してください。
 
 ### user_name/databases {#user-namedatabases}
 
-このセクションでは、現在のユーザーによって行われた `SELECT` クエリに対してClickHouseが返す行を制限し、基本的な行レベルのセキュリティを実装することができます。
+このセクションでは、現在のユーザーが行う `SELECT` クエリに対してClickHouseが返す行を制限し、基本的な行レベルのセキュリティを実装できます。
 
 **例**
 
-次の構成では、ユーザー `user1` が `table1` の行を `SELECT` クエリの結果としてのみ、`id` フィールドの値が1000である場合に見ることができます。
+以下の設定により、ユーザー `user1` は `SELECT` クエリの結果として `table1` の行を `id` フィールドの値が 1000 の場合のみ見ることができます。
 
 ``` xml
 <user1>
@@ -218,11 +218,11 @@ DNSリクエストのすべての結果は、サーバーが再起動するま�
 </user1>
 ```
 
-`filter` は、 [UInt8](../../sql-reference/data-types/int-uint.md)-型の値を返す任意の式である必要があります。通常、比較や論理演算子を含みます。フィルタが0を返す `database_name.table1` の行は、このユーザーに対して返されません。フィルタリングは `PREWHERE` 操作と互換性がなく、`WHERE→PREWHERE` 最適化を無効にします。
+`filter` は [UInt8](../../sql-reference/data-types/int-uint.md) 型の値を返す任意の式であり、大抵は比較演算子と論理演算子を含みます。フィルターの結果が 0 となる `database_name.table1` の行は、このユーザーには返されません。フィルタリングは `PREWHERE` 操作と互換性がなく、`WHERE→PREWHERE` 最適化を無効にします。
 
 ## ロール {#roles}
 
-`user.xml` 構成ファイルの `roles` セクションを使用して、任意の定義済みロールを作成することができます。
+`user.xml` 設定ファイルの `roles` セクションを使用して、任意のプリセットのロールを作成できます。
 
 `roles` セクションの構造:
 
@@ -238,7 +238,7 @@ DNSリクエストのすべての結果は、サーバーが再起動するま�
 </roles>
 ```
 
-これらのロールは `users` セクションのユーザーにも付与することができます。
+これらのロールは `users` セクションからユーザーに付与することもできます:
 
 ```xml
 <users>

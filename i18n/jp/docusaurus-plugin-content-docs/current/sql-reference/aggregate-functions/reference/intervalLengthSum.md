@@ -3,10 +3,10 @@ slug: /sql-reference/aggregate-functions/reference/intervalLengthSum
 sidebar_position: 155
 sidebar_label: intervalLengthSum
 title: intervalLengthSum
-description: "全範囲（数値軸上のセグメント）の合併の総長を計算します。"
+description: "すべての範囲（数値軸上のセグメント）の和の合計を計算します。"
 ---
 
-全範囲（数値軸上のセグメント）の合併の総長を計算します。
+すべての範囲（数値軸上のセグメント）の和の合計を計算します。
 
 **構文**
 
@@ -16,16 +16,16 @@ intervalLengthSum(start, end)
 
 **引数**
 
-- `start` — インターバルの開始値。 [Int32](../../../sql-reference/data-types/int-uint.md#uint8-uint16-uint32-uint64-int8-int16-int32-int64), [Int64](../../../sql-reference/data-types/int-uint.md#uint8-uint16-uint32-uint64-int8-int16-int32-int64), [UInt32](../../../sql-reference/data-types/int-uint.md#uint8-uint16-uint32-uint64-int8-int16-int32-int64), [UInt64](../../../sql-reference/data-types/int-uint.md#uint8-uint16-uint32-uint64-int8-int16-int32-int64), [Float32](../../../sql-reference/data-types/float.md#float32-float64), [Float64](../../../sql-reference/data-types/float.md#float32-float64), [DateTime](../../../sql-reference/data-types/datetime.md#data_type-datetime) または [Date](../../../sql-reference/data-types/date.md#data_type-date)。
-- `end` — インターバルの終了値。 [Int32](../../../sql-reference/data-types/int-uint.md#uint8-uint16-uint32-uint64-int8-int16-int32-int64), [Int64](../../../sql-reference/data-types/int-uint.md#uint8-uint16-uint32-uint64-int8-int16-int32-int64), [UInt32](../../../sql-reference/data-types/int-uint.md#uint8-uint16-uint32-uint64-int8-int16-int32-int64), [UInt64](../../../sql-reference/data-types/int-uint.md#uint8-uint16-uint32-uint64-int8-int16-int32-int64), [Float32](../../../sql-reference/data-types/float.md#float32-float64), [Float64](../../../sql-reference/data-types/float.md#float32-float64), [DateTime](../../../sql-reference/data-types/datetime.md#data_type-datetime) または [Date](../../../sql-reference/data-types/date.md#data_type-date)。
+- `start` — インターバルの開始値。[Int32](/sql-reference/data-types/int-uint#integer-ranges)、[Int64](/sql-reference/data-types/int-uint#integer-ranges)、[UInt32](/sql-reference/data-types/int-uint#integer-ranges)、[UInt64](/sql-reference/data-types/int-uint#integer-ranges)、[Float32](/sql-reference/data-types/float)、[Float64](/sql-reference/data-types/float)、[DateTime](/sql-reference/data-types/datetime) または [Date](/sql-reference/data-types/date)。
+- `end` — インターバルの終了値。[Int32](/sql-reference/data-types/int-uint#integer-ranges)、[Int64](/sql-reference/data-types/int-uint#integer-ranges)、[UInt32](/sql-reference/data-types/int-uint#integer-ranges)、[UInt64](/sql-reference/data-types/int-uint#integer-ranges)、[Float32](/sql-reference/data-types/float)、[Float64](/sql-reference/data-types/float)、[DateTime](/sql-reference/data-types/datetime) または [Date](/sql-reference/data-types/date)。
 
 :::note
-引数は同じデータ型である必要があります。そうでない場合、例外がスローされます。
+引数は同じデータ型でなければなりません。そうでない場合は例外がスローされます。
 :::
 
-**戻り値**
+**返される値**
 
-- 全範囲（数値軸上のセグメント）の合併の総長。引数の型に応じて、戻り値は [UInt64](../../../sql-reference/data-types/int-uint.md#uint8-uint16-uint32-uint64-int8-int16-int32-int64) または [Float64](../../../sql-reference/data-types/float.md#float32-float64) 型になります。
+- すべての範囲（数値軸上のセグメント）の和の合計。引数の型に応じて、返される値は [UInt64](/sql-reference/data-types/int-uint#integer-ranges) または [Float64](/sql-reference/data-types/float) 型とすることができます。
 
 **例**
 
@@ -39,9 +39,9 @@ intervalLengthSum(start, end)
 └────┴───────┴─────┘
 ```
 
-この例では、Float32 型の引数が使用されます。この関数は Float64 型の値を返します。
+この例では、Float32 型の引数が使用されています。この関数は Float64 型の値を返します。
 
-結果はインターバル `[1.1, 3.2]` の長さの合計（`[1.1, 2.9]` と `[2.5, 3.2]` の合併）と `[4, 5]` の合計です。
+結果は、区間 `[1.1, 3.2]` の長さの合計（`[1.1, 2.9]` と `[2.5, 3.2]` の和）と `[4, 5]` です。
 
 クエリ:
 
@@ -67,7 +67,7 @@ SELECT id, intervalLengthSum(start, end), toTypeName(intervalLengthSum(start, en
 └────┴─────────────────────┴─────────────────────┘
 ```
 
-この例では、DateTime 型の引数が使用されます。この関数は秒数で値を返します。
+この例では、DateTime 型の引数が使用されています。この関数は秒単位の値を返します。
 
 クエリ:
 
@@ -92,7 +92,7 @@ SELECT id, intervalLengthSum(start, end), toTypeName(intervalLengthSum(start, en
 └────┴────────────┴────────────┘
 ```
 
-この例では、Date 型の引数が使用されます。この関数は日数で値を返します。
+この例では、Date 型の引数が使用されています。この関数は日数単位の値を返します。
 
 クエリ:
 

@@ -15,22 +15,22 @@ groupArrayMovingAvg(numbers_for_summing)
 groupArrayMovingAvg(window_size)(numbers_for_summing)
 ```
 
-この関数は、ウィンドウサイズをパラメータとして受け取ることができます。指定がない場合、関数はカラム内の行数と等しいウィンドウサイズを使用します。
+この関数は、ウィンドウサイズをパラメータとして受け取ることができます。指定しない場合、関数はカラム内の行数と同じウィンドウサイズを使用します。
 
 **引数**
 
-- `numbers_for_summing` — 数値データ型の値を生成する[式](../../../sql-reference/syntax.md#syntax-expressions)。
+- `numbers_for_summing` — [式](/sql-reference/syntax#expressions) の結果が数値データ型の値となる。
 - `window_size` — 計算ウィンドウのサイズ。
 
 **返される値**
 
 - 入力データと同じサイズおよび型の配列。
 
-この関数は[ゼロに向けての丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。結果のデータ型に対して重要でない小数点以下を切り捨てます。
+この関数は、[ゼロに向かって丸める](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。結果のデータ型に対して重要でない小数点以下の桁数を切り捨てます。
 
 **例**
 
-サンプルテーブル `b`：
+サンプルテーブル `b`:
 
 ``` sql
 CREATE TABLE t
@@ -51,7 +51,7 @@ ENGINE = TinyLog
 └─────┴───────┴──────┘
 ```
 
-クエリ：
+クエリ:
 
 ``` sql
 SELECT

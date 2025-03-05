@@ -8,9 +8,9 @@ description: "シーケンスのサンプル尖度を計算します。"
 
 # kurtSamp
 
-シーケンスの[サンプル尖度](https://ja.wikipedia.org/wiki/%E5%B0%96%E5%BA%A6)を計算します。
+シーケンスの[サンプル尖度](https://en.wikipedia.org/wiki/Kurtosis)を計算します。
 
-これは、渡された値がそのサンプルを形成する場合、確率変数の尖度のバイアスのない推定値を表します。
+値がサンプルを形成する場合、これはランダム変数の尖度の無偏推定値を表します。
 
 ``` sql
 kurtSamp(expr)
@@ -18,11 +18,11 @@ kurtSamp(expr)
 
 **引数**
 
-`expr` — 数値を返す[式](../../../sql-reference/syntax.md#syntax-expressions)。
+`expr` — [数値を返す式](/sql-reference/syntax#expressions)。
 
 **返される値**
 
-指定された分布の尖度。型 — [Float64](../../../sql-reference/data-types/float.md)。`n <= 1` の場合（`n` はサンプルのサイズ）、関数は `nan` を返します。
+指定された分布の尖度。型 — [Float64](../../../sql-reference/data-types/float.md)。もし `n <= 1`（`n` はサンプルサイズ）であれば、関数は `nan` を返します。
 
 **例**
 

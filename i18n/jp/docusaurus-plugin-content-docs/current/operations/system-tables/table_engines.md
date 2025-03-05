@@ -1,13 +1,13 @@
 ---
-description: "サーバーがサポートするテーブルエンジンの説明と、それらがサポートする機能に関するシステムテーブル。"
+description: "サーバーによってサポートされているテーブルエンジンの説明と、それらがサポートする機能の情報を含むシステムテーブル。"
 slug: /operations/system-tables/table_engines
 title: "system.table_engines"
-keywords: ["システムテーブル", "テーブルエンジン"]
+keywords: ["system table", "table_engines"]
 ---
 
-サーバーがサポートするテーブルエンジンと、その機能サポート情報の説明が含まれています。
+サーバーによってサポートされているテーブルエンジンとその機能サポート情報の説明を含みます。
 
-このテーブルには以下のカラムが含まれています（カラムの型は括弧内に示されています）：
+このテーブルには以下のカラムが含まれています（カラムの型はカッコ内に示されています）：
 
 - `name` (String) — テーブルエンジンの名前。
 - `supports_settings` (UInt8) — テーブルエンジンが `SETTINGS` 句をサポートしているかどうかを示すフラグ。
@@ -15,8 +15,8 @@ keywords: ["システムテーブル", "テーブルエンジン"]
 - `supports_ttl` (UInt8) — テーブルエンジンが [TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) をサポートしているかどうかを示すフラグ。
 - `supports_sort_order` (UInt8) — テーブルエンジンが `PARTITION_BY`、`PRIMARY_KEY`、`ORDER_BY` および `SAMPLE_BY` 句をサポートしているかどうかを示すフラグ。
 - `supports_replication` (UInt8) — テーブルエンジンが [データレプリケーション](../../engines/table-engines/mergetree-family/replication.md) をサポートしているかどうかを示すフラグ。
-- `supports_duduplication` (UInt8) — テーブルエンジンがデータ重複排除をサポートしているかどうかを示すフラグ。
-- `supports_parallel_insert` (UInt8) — テーブルエンジンが並列挿入をサポートしているかどうかを示すフラグ（[`max_insert_threads`](../../operations/settings/settings.md#max-insert-threads) 設定を参照）。
+- `supports_deduplication` (UInt8) — テーブルエンジンがデータの重複排除をサポートしているかどうかを示すフラグ。
+- `supports_parallel_insert` (UInt8) — テーブルエンジンが並列挿入をサポートしているかどうかを示すフラグ（[max_insert_threads](/operations/settings/settings#max_insert_threads) 設定を参照）。
 
 例：
 
@@ -34,8 +34,8 @@ WHERE name in ('Kafka', 'MergeTree', 'ReplicatedCollapsingMergeTree')
 └───────────────────────────────┴───────────────────┴───────────────────────────┴─────────────────────┴──────────────┴──────────────────────┴────────────────────────┴──────────────────────────┘
 ```
 
-**関連情報**
+**参照**
 
 - MergeTreeファミリーの [クエリ句](../../engines/table-engines/mergetree-family/mergetree.md#mergetree-query-clauses)
-- Kafka の [設定](../../engines/table-engines/integrations/kafka.md#table_engine-kafka-creating-a-table)
-- ジョインの [設定](../../engines/table-engines/special/join.md#join-limitations-and-settings)
+- Kafka [設定](/engines/table-engines/integrations/kafka#creating-a-table)
+- ジョイン [設定](../../engines/table-engines/special/join.md#join-limitations-and-settings)

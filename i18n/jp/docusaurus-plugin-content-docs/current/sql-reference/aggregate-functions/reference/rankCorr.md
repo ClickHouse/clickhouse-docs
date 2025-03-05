@@ -2,13 +2,13 @@
 slug: /sql-reference/aggregate-functions/reference/rankCorr
 sidebar_position: 182
 title: "rankCorr"
-description: "ランク相関係数を計算します。"
+description: "順位相関係数を計算します。"
 ---
 
 
 # rankCorr
 
-ランク相関係数を計算します。
+順位相関係数を計算します。
 
 **構文**
 
@@ -18,14 +18,14 @@ rankCorr(x, y)
 
 **引数**
 
-- `x` — 任意の値。[Float32](../../../sql-reference/data-types/float.md#float32-float64) または [Float64](../../../sql-reference/data-types/float.md#float32-float64)。
-- `y` — 任意の値。[Float32](../../../sql-reference/data-types/float.md#float32-float64) または [Float64](../../../sql-reference/data-types/float.md#float32-float64)。
+- `x` — 任意の値。[Float32](/sql-reference/data-types/float) または [Float64](/sql-reference/data-types/float) です。
+- `y` — 任意の値。[Float32](/sql-reference/data-types/float) または [Float64](/sql-reference/data-types/float) です。
 
 **返される値**
 
-- x と y のランクのランク相関係数を返します。相関係数の値は -1 から +1 の範囲です。2 つ未満の引数が渡された場合、関数は例外を返します。+1 に近い値は高い線形関係を示しあり、1 つのランダム変数の増加に伴い、2 つ目のランダム変数も増加します。-1 に近い値は高い線形関係を示しあり、1 つのランダム変数の増加に伴い、2 つ目のランダム変数は減少します。0 に近いまたは等しい値は、2 つのランダム変数間に関係がないことを示します。
+- x と y の順位の順位相関係数を返します。相関係数の値は -1 から +1 の範囲です。引数が二つ未満の場合、この関数は例外を返します。+1 に近い値は高い線形関係を示し、一つのランダム変数が増加すると、二つ目のランダム変数も増加します。-1 に近い値は高い線形関係を示し、一つのランダム変数が増加すると、二つ目のランダム変数は減少します。0 に近い、または0に等しい値は、二つのランダム変数の間に関係がないことを示します。
 
-型: [Float64](../../../sql-reference/data-types/float.md#float32-float64)。
+タイプ: [Float64](/sql-reference/data-types/float)。
 
 **例**
 
@@ -56,6 +56,6 @@ SELECT roundBankers(rankCorr(exp(number), sin(number)), 3) FROM numbers(100);
 │                                              -0.037 │
 └─────────────────────────────────────────────────────┘
 ```
-**関連項目**
+**関連情報**
 
-- [スピアマンのランク相関係数](https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient)
+- [スピアマンの順位相関係数](https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient)

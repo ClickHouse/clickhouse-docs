@@ -15,20 +15,20 @@ groupArrayMovingSum(numbers_for_summing)
 groupArrayMovingSum(window_size)(numbers_for_summing)
 ```
 
-この関数は、ウィンドウサイズをパラメーターとして受け取ることができます。指定しない場合、関数はカラム内の行数と等しいウィンドウサイズを使用します。
+この関数は、ウィンドウサイズをパラメータとして受け取ることができます。指定されていない場合、関数はカラム内の行数と等しいウィンドウサイズを取ります。
 
 **引数**
 
-- `numbers_for_summing` — [式](../../../sql-reference/syntax.md#syntax-expressions)で、数値データ型の値を生成します。
-- `window_size` — 計算ウィンドウのサイズです。
+- `numbers_for_summing` — 数値データ型の値を返す[式](/sql-reference/syntax#expressions)。
+- `window_size` — 計算ウィンドウのサイズ。
 
 **返される値**
 
-- 入力データと同じサイズ、型の配列です。
+- 入力データと同じサイズおよび型の配列。
 
 **例**
 
-サンプルテーブル:
+サンプルテーブル：
 
 ``` sql
 CREATE TABLE t
@@ -49,7 +49,7 @@ ENGINE = TinyLog
 └─────┴───────┴──────┘
 ```
 
-クエリ:
+クエリ：
 
 ``` sql
 SELECT

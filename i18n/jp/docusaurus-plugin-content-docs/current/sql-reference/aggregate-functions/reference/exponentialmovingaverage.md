@@ -2,12 +2,12 @@
 slug: /sql-reference/aggregate-functions/reference/exponentialMovingAverage
 sidebar_position: 132
 title: "exponentialMovingAverage"
-description: "指定された時間の値の指数移動平均を計算します。"
+description: "指定された時間に対する値の指数移動平均を計算します。"
 ---
 
 ## exponentialMovingAverage {#exponentialmovingaverage}
 
-指定された時間の値の指数移動平均を計算します。
+指定された時間に対する値の指数移動平均を計算します。
 
 **構文**
 
@@ -15,22 +15,22 @@ description: "指定された時間の値の指数移動平均を計算します
 exponentialMovingAverage(x)(value, timeunit)
 ```
 
-各 `value` は決定された `timeunit` に対応します。半減期 `x` は、指数の重みが半分に減衰する時間遅延です。この関数は重み付け平均を返します：時間点が古くなるほど、対応する値の重みは小さくなります。
+各 `value` は指定された `timeunit` に対応します。半減期 `x` は、指数的な重みが半分になる時間遅延です。この関数は重み付き平均を返します：時間が経つにつれて、対応する値の重みは少なくなります。
 
 **引数**
 
-- `value` — 値。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)。
-- `timeunit` — 時間単位。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)。時間単位はタイムスタンプ（秒）ではなく、時間間隔のインデックスです。これは [intDiv](../../functions/arithmetic-functions.md#intdiva-b) を使用して計算できます。
+- `value` — 値。[整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md)または[小数](../../../sql-reference/data-types/decimal.md)。
+- `timeunit` — 時間単位。[整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md)または[小数](../../../sql-reference/data-types/decimal.md)。時間単位はタイムスタンプ（秒）ではなく、時間間隔のインデックスです。[intDiv](/sql-reference/functions/arithmetic-functions#intdiv)を使用して計算できます。
 
 **パラメータ**
 
-- `x` — 半減期。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)。
+- `x` — 半減期。[整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md)または[小数](../../../sql-reference/data-types/decimal.md)。
 
 **戻り値**
 
-- 過去 `x` 時間の値の [指数的に平滑化された移動平均](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average) を、最新の時間点で返します。
+- 過去 `x` 時間の値の[指数的に平滑化された移動平均](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average)を、最新の時間点で返します。
 
-タイプ: [Float64](../../../sql-reference/data-types/float.md#float32-float64)。
+タイプ: [Float64](/sql-reference/data-types/float)。
 
 **例**
 

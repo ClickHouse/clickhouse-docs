@@ -11,7 +11,7 @@ description: "連続する行の算術的な差を合計します。"
 連続する行の算術的な差を合計します。差が負の場合は無視されます。
 
 :::note
-この関数が正しく機能するには、基になるデータがソートされている必要があります。この関数を [materialized view](../../../sql-reference/statements/create/view.md#materialized) で使用したい場合は、おそらく [deltaSumTimestamp](../../../sql-reference/aggregate-functions/reference/deltasumtimestamp.md#agg_functions-deltasumtimestamp) メソッドを代わりに使用することをお勧めします。
+この関数が正しく動作するためには、基底データがソートされている必要があります。この関数を [materialized view](/sql-reference/statements/create/view#materialized-view) で使用したい場合、ほとんどの場合、[deltaSumTimestamp](/sql-reference/aggregate-functions/reference/deltasumtimestamp) メソッドを使用することをお勧めします。
 :::
 
 **構文**
@@ -22,11 +22,11 @@ deltaSum(value)
 
 **引数**
 
-- `value` — 入力値、[Integer](../../data-types/int-uint.md) または [Float](../../data-types/float.md) 型でなければなりません。
+- `value` — 入力値、[Integer](../../data-types/int-uint.md) か [Float](../../data-types/float.md) 型でなければなりません。
 
 **返される値**
 
-- `Integer` または `Float` 型の算術的な差の合計。
+- `Integer` または `Float` 型の算術的差の合計。
 
 **例**
 
@@ -72,6 +72,6 @@ SELECT deltaSum(arrayJoin([2.25, 3, 4.5]));
 └─────────────────────────────────────┘
 ```
 
-## 関連情報 {#see-also}
+## 関連項目 {#see-also}
 
-- [runningDifference](../../functions/other-functions.md#other_functions-runningdifference)
+- [runningDifference](/sql-reference/functions/other-functions#runningDifference)

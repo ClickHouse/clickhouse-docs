@@ -2,19 +2,19 @@
 slug: /sql-reference/aggregate-functions/reference/quantile
 sidebar_position: 170
 title: "quantile"
-description: "数値データシーケンスの近似量子を計算します。"
+description: "数値データシーケンスの近似量（quantile）を計算します。"
 ---
 
 
 # quantile
 
-数値データシーケンスの近似[量子](https://ja.wikipedia.org/wiki/%E9%87%8F%E5%AD%90)を計算します。
+数値データシーケンスの近似[量（quantile）](https://en.wikipedia.org/wiki/Quantile)を計算します。
 
-この関数は、最大8192のリザーバサイズとサンプリング用の乱数生成器を用いて[リザーバサンプリング](https://ja.wikipedia.org/wiki/%E3%83%AA%E3%82%B6%E3%83%BC%E3%83%90%E3%83%BC%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AA%E3%83%B3%E3%82%B0)を適用します。結果は決定論的ではありません。正確な量子を得るには、[quantileExact](../../../sql-reference/aggregate-functions/reference/quantileexact.md#quantileexact)関数を使用してください。
+この関数は、最大8192のリザーバサイズとサンプリング用の乱数生成器を用いた[リザーバサンプリング](https://en.wikipedia.org/wiki/Reservoir_sampling)を適用します。結果は決定論的ではありません。正確な量を得るには、[quantileExact](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact)関数を使用してください。
 
-クエリ内で異なるレベルの`quantile*`関数を複数使用する場合、内部状態は結合されません（つまり、クエリは可能なよりも効率的に動作しません）。この場合は、[quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)関数を使用してください。
+異なるレベルの複数の`quantile*`関数をクエリ内で使用する場合、内部状態は結合されません（つまり、クエリは効率的に動作しません）。この場合は、[quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)関数を使用してください。
 
-空の数値シーケンスの場合、`quantile`はNaNを返しますが、その`quantile*`のバリアントは、バリアントに応じてNaNまたはシーケンスタイプのデフォルト値を返します。
+空の数値シーケンスの場合、`quantile`はNaNを返しますが、その`quantile*`バリアントは、バリアントに応じてNaNまたはシーケンスタイプのデフォルト値を返します。
 
 **構文**
 
@@ -22,22 +22,22 @@ description: "数値データシーケンスの近似量子を計算します。
 quantile(level)(expr)
 ```
 
-エイリアス: `median`.
+エイリアス: `median`。
 
 **引数**
 
-- `level` — 量子のレベル。オプションのパラメータ。0から1の範囲の定数浮動小数点数です。`level`の値は`[0.01, 0.99]`の範囲を使用することをお勧めします。デフォルト値: 0.5。`level=0.5`では、関数は[中央値](https://ja.wikipedia.org/wiki/%E4%B8%AD%E5%BD%95)を計算します。
-- `expr` — 数値の[データ型](../../../sql-reference/data-types/index.md#data_types)、[Date](../../../sql-reference/data-types/date.md)または[DateTime](../../../sql-reference/data-types/datetime.md)の結果を生成するカラム値に対する式。
+- `level` — 量のレベル。オプションのパラメータ。0から1の範囲の定数浮動小数点数。`level`の値は`[0.01, 0.99]`の範囲を推奨します。デフォルト値: 0.5。`level=0.5`の場合、この関数は[中央値](https://en.wikipedia.org/wiki/Median)を計算します。
+- `expr` — 数値[データ型](/sql-reference/data-types)、[Date](/sql-reference/data-types/date)または[DateTime](/sql-reference/data-types/datetime)を生成するカラム値に対する式。
 
 **返される値**
 
-- 指定されたレベルの近似量子。
+- 指定されたレベルの近似量。
 
-型:
+タイプ:
 
-- 数値データ型入力の場合は[Float64](../../../sql-reference/data-types/float.md)。
-- 入力値が`Date`型の場合は[Date](../../../sql-reference/data-types/date.md)。
-- 入力値が`DateTime`型の場合は[DateTime](../../../sql-reference/data-types/datetime.md)。
+- 入力が数値データ型の場合は[Float64](/sql-reference/data-types/float)。
+- 入力値が`Date`型の場合は[Date](/sql-reference/data-types/date)。
+- 入力値が`DateTime`型の場合は[DateTime](/sql-reference/data-types/datetime)。
 
 **例**
 
@@ -66,7 +66,7 @@ SELECT quantile(val) FROM t
 └───────────────┘
 ```
 
-**参照**
+**関連項目**
 
-- [median](../../../sql-reference/aggregate-functions/reference/median.md#median)
-- [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)
+- [median](/sql-reference/aggregate-functions/reference/median)
+- [quantiles](/sql-reference/aggregate-functions/reference/quantiles#quantiles)

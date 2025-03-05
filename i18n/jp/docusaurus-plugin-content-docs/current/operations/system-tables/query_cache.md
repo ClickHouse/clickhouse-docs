@@ -8,19 +8,19 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-[クエリキャッシュ](../query-cache.md)の内容を示します。
+[クエリキャッシュ](../query-cache.md)の内容を表示します。
 
-カラム：
+カラム:
 
 - `query` ([String](../../sql-reference/data-types/string.md)) — クエリ文字列。
 - `query_id` ([String](../../sql-reference/data-types/string.md)) — クエリのID。
-- `result_size` ([UInt64](../../sql-reference/data-types/int-uint.md#uint-ranges)) — クエリキャッシュエントリのサイズ。
+- `result_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — クエリキャッシュエントリのサイズ。
 - `tag` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — クエリキャッシュエントリのタグ。
-- `stale` ([UInt8](../../sql-reference/data-types/int-uint.md)) — クエリキャッシュエントリが古くなっているかどうか。
+- `stale` ([UInt8](../../sql-reference/data-types/int-uint.md)) — クエリキャッシュエントリが古いかどうか。
 - `shared` ([UInt8](../../sql-reference/data-types/int-uint.md)) — クエリキャッシュエントリが複数のユーザー間で共有されているかどうか。
 - `compressed` ([UInt8](../../sql-reference/data-types/int-uint.md)) — クエリキャッシュエントリが圧縮されているかどうか。
 - `expires_at` ([DateTime](../../sql-reference/data-types/datetime.md)) — クエリキャッシュエントリが古くなる時刻。
-- `key_hash` ([UInt64](../../sql-reference/data-types/int-uint.md#uint-ranges)) — クエリ文字列のハッシュ、クエリキャッシュエントリを見つけるためのキーとして使用。
+- `key_hash` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — クエリ文字列のハッシュで、クエリキャッシュエントリを見つけるためのキーとして使用されます。
 
 **例**
 
