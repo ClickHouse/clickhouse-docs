@@ -122,4 +122,41 @@ search. E.g don't search `/docs/observability/schema-design#using-maps` but `/ob
 reported by the failing broken link checker, the link is most likely found in a snippet which is
 imported by that page. Find the snippet location from the import statement at the top of the page.
 
+## Broken anchors
+
+Docusaurus also has a built-in broken anchor checker. Unfortunately it sometimes
+can give false positives.
+
+### linking to spans
+
+Sometimes you want to link to something other than a header. It is logical to 
+use a span for this purpose. For instance if you want to link to an image.
+
+```
+<span id="page-2-0"></span><img src={image_02}/>
+
+As shown by [Figure 2,](#page-2-0)...
+```
+
+Unfortunately, docusaurus' anchor checker will throw an error on this link:
+
+```response
+- Broken anchor on source page path = /docs/academic_overview:
+   -> linking to #page-1-0 (resolved as: /docs/academic_overview#page-1-0)
+```
+
+Follow the steps below for the workaround:
+
+- change the file from `.md` to `.mdx`
+- import `useBrokenLinks` hook with `import useBrokenLinks from "@docusaurus/useBrokenLinks";`
+- add the following component to the page:
+
+```
+export function Anchor(props) {
+    useBrokenLinks().collectAnchor(props.id);
+    return <span style={{scrollMarginTop: "var(--ifm-navbar-height)"}} {...props}/>;
+}
+```
+- Replace `<span id="some-id"></span>` with `Anchor id="some-id"/>`
+
 
