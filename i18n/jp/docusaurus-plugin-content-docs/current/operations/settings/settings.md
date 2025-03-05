@@ -1,4 +1,3 @@
-
 ---
 title: セッション設定
 sidebar_label: セッション設定
@@ -2975,7 +2974,7 @@ Default value: 1
 Possible values:
 
 - 0 - 無効
-- 1 - 有効 
+- 1 - 有効
 
 ## enable_s3_requests_logging {#enable_s3_requests_logging}
 
@@ -3046,7 +3045,7 @@ Default value: 1
 Possible values:
 
 - 0 - 無効
-- 1 - 有効 
+- 1 - 有効
 
 ## enable_zstd_qat_codec {#enable_zstd_qat_codec}
 
@@ -6769,7 +6768,7 @@ trueの場合、スカラーサブクエリはイニシエーターで実行さ�
 
 - 0 - 変異は非同期に実行されます。
 - 1 - クエリは現在のサーバー上ですべての変異が完了するのを待ちます。
-- 2 - クエリはすべてのレプリカ上でのすべての変異が完了するのを待ちます（存在する場合）。 
+- 2 - クエリはすべてのレプリカ上でのすべての変異が完了するのを待ちます（存在する場合）。
 
 ## mysql_datatypes_support_level {#mysql_datatypes_support_level}
 
@@ -8975,7 +8974,7 @@ Type: UInt64
 
 Default value: 1024
 
-サーバーごとの最大接続数。 
+サーバーごとの最大接続数。
 ## s3_max_get_burst {#s3_max_get_burst}
 
 Type: UInt64
@@ -9003,7 +9002,7 @@ Type: UInt64
 
 Default value: 10000
 
-s3 アップロードパーツの最大パート番号です。 
+s3 アップロードパーツの最大パート番号です。
 ## s3_max_put_burst {#s3_max_put_burst}
 
 Type: UInt64
@@ -9656,7 +9655,7 @@ Default value: 1000
 
 可能な値：
 
-- 正の整数。 
+- 正の整数。
 
 ## tcp_keep_alive_timeout {#tcp_keep_alive_timeout}
 
