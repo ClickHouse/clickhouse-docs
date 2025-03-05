@@ -223,7 +223,6 @@ def translate_docs_folder(config, input_folder, output_folder, model="gpt-4o-min
                     # Submit the translation task to be run in parallel
                     futures.append(executor.submit(translate_file, config, input_file_path, output_file_path, model))
                 elif not file.endswith(".DS_Store"):
-                    print(f"WARNING: Copying file {relative_path}")
                     # symlink these files as we want to update in a single place
                     try:
                         output_file_path = os.path.join(output_folder, relative_path)
@@ -234,6 +233,7 @@ def translate_docs_folder(config, input_folder, output_folder, model="gpt-4o-min
                             else:
                                 continue
                         os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
+                        print(f"WARNING: Copying file {relative_path}")
                         shutil.copy(input_file_path, output_file_path)
                         print(f" - Copied file: {output_file_path} -> {input_file_path}")
                     except OSError as e:
