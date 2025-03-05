@@ -5,7 +5,7 @@ title: Accessing S3 Data Securely
 ---
 
 import secure_s3 from '@site/static/images/cloud/security/secures3.jpg';
-import s3_info from '@site/static/images/cloud/security/secures3_arn.jpg';
+import s3_info from '@site/static/images/cloud/security/secures3_arn.png';
 import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 This article demonstrates how ClickHouse Cloud customers can leverage role-based access to authenticate with Amazon Simple Storage Service(S3) and access their data securely.
@@ -28,9 +28,9 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 3 - Select the **Settings** tab
 
-4 - Scroll down to the **About this service** section at the bottom of the page
+4 - Scroll down to the **Network security information** section at the bottom of the page
 
-5 - Copy the **IAM Role** value belong to the service as shown below.
+5 - Copy the **Service role ID (IAM)** value belong to the service as shown below.
 
 <img src={s3_info} alt="Obtaining ClickHouse service IAM Role ARN" />
 

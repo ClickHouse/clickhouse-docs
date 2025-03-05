@@ -5,7 +5,7 @@ title: Kinesis Role-Based Access
 ---
 
 import secure_kinesis from '@site/static/images/integrations/data-ingestion/clickpipes/securekinesis.jpg';
-import secures3_arn from '@site/static/images/cloud/security/secures3_arn.jpg';
+import secures3_arn from '@site/static/images/cloud/security/secures3_arn.png';
 
 This article demonstrates how ClickPipes customers can leverage role-based access to authenticate with Amazon Kinesis and access their data streams securely.
 
@@ -27,9 +27,9 @@ Using this approach, customers can manage all access to their Kinesis data strea
 
 3 - Select the **Settings** tab
 
-4 - Scroll down to the **About this service** section at the bottom of the page
+4 - Scroll down to the **Network security information** section at the bottom of the page
 
-5 - Copy the **IAM Role** value belong to the service as shown below.
+5 - Copy the **Service role ID (IAM)** value belong to the service as shown below.
 
 <img src={secures3_arn} alt="Secure S3 ARN" />
 
