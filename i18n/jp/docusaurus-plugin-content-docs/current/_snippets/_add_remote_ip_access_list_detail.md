@@ -1,4 +1,3 @@
-
 import ip_allow_list_check_list from '@site/static/images/_snippets/ip-allow-list-check-list.png';
 import ip_allow_list_add_current_ip from '@site/static/images/_snippets/ip-allow-list-add-current-ip.png';
 
@@ -14,4 +13,3 @@ ClickHouse Cloud サービスのリストから作業するサービスを選択
 <img src={ip_allow_list_add_current_ip} class="image" alt="現在の IP アドレスを追加する" />
 
 </details>
-```

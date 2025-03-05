@@ -1,4 +1,3 @@
-
 import cloud_connect_to_sql_console from '@site/static/images/_snippets/cloud-connect-to-sql-console.png';
 import createservice8 from '@site/static/images/_snippets/createservice8.png';
 
@@ -18,4 +17,3 @@ SQLクライアント接続が必要な場合、あなたのClickHouse Cloudサ�
 <img src={createservice8} class="image" alt="SQLコンソール" />
 
 </details>
-```

@@ -152,10 +152,19 @@ def translate_file(config, input_file_path, output_file_path, model):
                 print(f"failed to translate a chunk: [{input_file_path}]")
                 return
 
+        c=0
+        bt = False
         with open(output_file_path, "w", encoding="utf-8") as output_file:
-            for line in translated_text.splitlines():
+            lines = translated_text.splitlines()
+            for line in lines:
+                c += 1
+                if c == 1 and line.startswith("```"): # llm can add backticks
+                    bt = True
+                    continue
                 if line.startswith("# "):
                     output_file.write("\n")  # ensures import statements have a new line after them
+                if c == len(lines) and line == "```" and bt: # drop ending bts
+                    continue
                 output_file.write(line + "\n")
 
         # Rename output file with .translate suffix to .translated

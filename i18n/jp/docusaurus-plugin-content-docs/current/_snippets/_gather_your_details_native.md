@@ -1,4 +1,3 @@
-
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_native from '@site/static/images/_snippets/connection-details-native.png';
 
@@ -19,4 +18,3 @@ ClickHouse Cloudサービスの詳細は、ClickHouse Cloudコンソールで確
 <img src={connection_details_native} class="image" alt="ClickHouse Cloud ネイティブTCP接続の詳細" />
 
 セルフマネージドのClickHouseを使用している場合は、接続の詳細はClickHouse管理者によって設定されます。
-```

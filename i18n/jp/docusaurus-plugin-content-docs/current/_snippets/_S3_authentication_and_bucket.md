@@ -1,4 +1,3 @@
-
 import s3_1 from '@site/static/images/_snippets/s3/s3-1.png';
 import s3_2 from '@site/static/images/_snippets/s3/s3-2.png';
 import s3_3 from '@site/static/images/_snippets/s3/s3-3.png';
@@ -150,4 +149,3 @@ https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-ove
 13. ポリシー設定を保存します。
 
 </details>
-```
