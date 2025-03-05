@@ -49,7 +49,7 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>clickhouse-jdbc</artifactId>
-    <version>0.8.1</version>
+    <version>0.8.2</version>
     <classifier>shaded-all</classifier>    
 </dependency>
 ```
@@ -59,14 +59,14 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
 
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-implementation("com.clickhouse:clickhouse-jdbc:0.8.1:shaded-all")
+implementation("com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-implementation 'com.clickhouse:clickhouse-jdbc:0.8.1:shaded-all'
+implementation 'com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all'
 ```
 
 </TabItem>
