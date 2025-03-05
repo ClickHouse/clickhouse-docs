@@ -313,6 +313,8 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
 
 </details>
 
+### Configure Duo SAML {#configure-duo-saml}
+
 <details>
    <summary> Create a Generic SAML Service Provider for Duo </summary>
    1. Follow the instructions for [Duo Single Sign-On for Generic SAML Service Providers](https://duo.com/docs/sso-generic). 
@@ -321,7 +323,7 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
 
    |  Bridge Attribute  |  ClickHouse Attribute  | 
    |:-------------------|:-----------------------|
-   | <Email Address>    | email                  |
+   | Email Address      | email                  |
    
    3. Use the following values to update your Cloud Application in Duo:
 
