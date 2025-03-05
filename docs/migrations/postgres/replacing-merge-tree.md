@@ -5,6 +5,7 @@ description: Using the ReplacingMergeTree engine in ClickHouse
 keywords: [replacingmergetree, inserts, deduplication]
 ---
 
+import postgres_replacingmergetree from '@site/static/images/migrations/postgres-replacingmergetree.png';
 
 While transactional databases are optimized for transactional update and delete workloads, OLAP databases offer reduced guarantees for such operations. Instead, they optimize for immutable data inserted in batches for the benefit of significantly faster analytical queries. While ClickHouse offers update operations through mutations, as well as a lightweight means of deleting rows, its column-orientated structure means these operations should be scheduled with care, as described above. These operations are handled asynchronously, processed with a single thread, and require (in the case of updates) data to be rewritten on disk. They should thus not be used for high numbers of small changes.
 In order to process a stream of update and delete rows while avoiding the above usage patterns, we can use the ClickHouse table engine ReplacingMergeTree.
@@ -27,10 +28,7 @@ As a result of this merge process, we have four rows representing the final stat
 
 <br />
 
-<img src={require('../images/postgres-replacingmergetree.png').default}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px', background: 'none'}} />
+<img src={postgres_replacingmergetree} class="image" alt="ReplacingMergeTree process" style={{width: '800px', background: 'none'}} />
 
 <br />
 
@@ -49,14 +47,14 @@ We recommend pausing inserts once (1) is guaranteed and until this command and t
 
 > Handling deletes with the ReplacingMergeTree is only recommended for tables with a low to moderate number of deletes (less than 10%) unless periods can be scheduled for cleanup with the above conditions.
 
-> Tip: Users may also be able to issue `OPTIMIZE FINAL CLEANUP` against selective partitions no longer subject to changes. 
+> Tip: Users may also be able to issue `OPTIMIZE FINAL CLEANUP` against selective partitions no longer subject to changes.
 
 ## Choosing a primary/deduplication key {#choosing-a-primarydeduplication-key}
 
 Above, we highlighted an important additional constraint that must also be satisfied in the case of the ReplacingMergeTree: the values of columns of the `ORDER BY` uniquely identify a row across changes. If migrating from a transactional database like Postgres, the original Postgres primary key should thus be included in the Clickhouse `ORDER BY` clause.
 
-Users of ClickHouse will be familiar with choosing the columns in their tables `ORDER BY` clause to [optimize for query performance](/data-modeling/schema-design#choosing-an-ordering-key). Generally, these columns should be selected based on your [frequent queries and listed in order of increasing cardinality](/optimize/sparse-primary-indexes). Importantly, the ReplacingMergeTree imposes an additional constraint - these columns must be immutable, i.e., if replicating from Postgres, only add columns to this clause if they do not change in the underlying Postgres data. While other columns can change, these are required to be consistent for unique row identification.
-For analytical workloads, the Postgres primary key is generally of little use as users will rarely perform point row lookups. Given we recommend that columns be ordered in order of increasing cardinality, as well as the fact that matches on [columns listed earlier in the ORDER BY will usually be faster](/optimize/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient), the Postgres primary key should be appended to the end of the `ORDER BY` (unless it has analytical value). In the case that multiple columns form a primary key in Postgres, they should be appended to the `ORDER BY`, respecting cardinality and the likelihood of query value. Users may also wish to generate a unique primary key using a concatenation of values via a `MATERIALIZED` column.
+Users of ClickHouse will be familiar with choosing the columns in their tables `ORDER BY` clause to [optimize for query performance](/data-modeling/schema-design#choosing-an-ordering-key). Generally, these columns should be selected based on your [frequent queries and listed in order of increasing cardinality](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales). Importantly, the ReplacingMergeTree imposes an additional constraint - these columns must be immutable, i.e., if replicating from Postgres, only add columns to this clause if they do not change in the underlying Postgres data. While other columns can change, these are required to be consistent for unique row identification.
+For analytical workloads, the Postgres primary key is generally of little use as users will rarely perform point row lookups. Given we recommend that columns be ordered in order of increasing cardinality, as well as the fact that matches on [columns listed earlier in the ORDER BY will usually be faster](/guides/best-practices/sparse-primary-indexes#ordering-key-columns-efficiently), the Postgres primary key should be appended to the end of the `ORDER BY` (unless it has analytical value). In the case that multiple columns form a primary key in Postgres, they should be appended to the `ORDER BY`, respecting cardinality and the likelihood of query value. Users may also wish to generate a unique primary key using a concatenation of values via a `MATERIALIZED` column.
 
 Consider the posts table from the Stack Overflow dataset.
 
@@ -229,7 +227,7 @@ If the `WHERE` condition does not use a key column, ClickHouse does not currentl
 
 Merging of data in ClickHouse occurs at a partition level. When using ReplacingMergeTree, we recommend users partition their table according to best practices, provided users can ensure this **partitioning key does not change for a row**. This will ensure updates pertaining to the same row will be sent to the same ClickHouse partition. You may reuse the same partition key as Postgres provided you adhere to the best practices outlined here.
 
-Assuming this is the case, users can use the setting `do_not_merge_across_partitions_select_final=1` to improve `FINAL` query performance. This setting causes partitions to be merged and processed independently when using FINAL. 
+Assuming this is the case, users can use the setting `do_not_merge_across_partitions_select_final=1` to improve `FINAL` query performance. This setting causes partitions to be merged and processed independently when using FINAL.
 
 Consider the following posts table, where we use no partitioning:
 

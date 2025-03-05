@@ -4,6 +4,10 @@ sidebar_label: Asynchronous Inserts
 title: Asynchronous Inserts (async_insert)
 ---
 
+import asyncInsert01 from '@site/static/images/cloud/bestpractices/async-01.png';
+import asyncInsert02 from '@site/static/images/cloud/bestpractices/async-02.png';
+import asyncInsert03 from '@site/static/images/cloud/bestpractices/async-03.png';
+
 Inserting data into ClickHouse in large batches is a best practice.  It saves compute cycles and disk I/O, and therefore it saves money.  If your use case allows you to batch your inserts external to ClickHouse, then that is one option.  If you would like ClickHouse to create the batches, then you can use the asynchronous INSERT mode described here.
 
 Use asynchronous inserts as an alternative to both batching data on the client-side and keeping the insert rate at around one insert query per second by enabling the [async_insert](/operations/settings/settings.md/#async_insert) setting. This causes ClickHouse to handle the batching on the server-side.
@@ -12,7 +16,10 @@ By default, ClickHouse is writing data synchronously.
 Each insert sent to ClickHouse causes ClickHouse to immediately create a part containing the data from the insert.
 This is the default behavior when the async_insert setting is set to its default value of 0:
 
-![compression block diagram](images/async-01.png)
+<img src={asyncInsert01}
+  class="image"
+  alt="Asynchronous insert process - default synchronous inserts"
+  style={{width: '100%', background: 'none'}} />
 
 By setting async_insert to 1, ClickHouse first stores the incoming inserts into an in-memory buffer before flushing them regularly to disk.
 
@@ -30,10 +37,15 @@ With the [wait_for_async_insert](/operations/settings/settings.md/#wait_for_asyn
 
 The following two diagrams illustrate the two settings for async_insert and wait_for_async_insert:
 
-![compression block diagram](images/async-02.png)
+<img src={asyncInsert02}
+  class="image"
+  alt="Asynchronous insert process - async_insert=1, wait_for_async_insert=1"
+  style={{width: '100%', background: 'none'}} />
 
-![compression block diagram](images/async-03.png)
-
+<img src={asyncInsert03}
+  class="image"
+  alt="Asynchronous insert process - async_insert=1, wait_for_async_insert=0"
+  style={{width: '100%', background: 'none'}} />
 
 ### Enabling asynchronous inserts {#enabling-asynchronous-inserts}
 

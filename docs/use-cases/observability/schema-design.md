@@ -4,6 +4,11 @@ description: Designing a schema design for observability
 keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 ---
 
+import observability_10 from '@site/static/images/use-cases/observability/observability-10.png';
+import observability_11 from '@site/static/images/use-cases/observability/observability-11.png';
+import observability_12 from '@site/static/images/use-cases/observability/observability-12.png';
+import observability_13 from '@site/static/images/use-cases/observability/observability-13.png';
+
 # Designing a schema for observability
 
 We recommend users always create their own schema for logs and traces for the following reasons:
@@ -215,11 +220,11 @@ Materialized columns will, by default, not be returned in a `SELECT *`.  This is
 
 ## Materialized views {#materialized-views}
 
-[Materialized views](/materialized-view) provide a more powerful means of applying SQL filtering and transformations to logs and traces. 
+[Materialized views](/materialized-views) provide a more powerful means of applying SQL filtering and transformations to logs and traces. 
 
 Materialized Views allow users to shift the cost of computation from query time to insert time. A ClickHouse Materialized View is just a trigger that runs a query on blocks of data as they are inserted into a table. The results of this query are inserted into a second "target" table.
 
-<img src={require('./images/observability-10.png').default}    
+<img src={observability_10}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '600px'}} />
@@ -376,7 +381,7 @@ FROM otel_logs
 
 This above is visualized below:
 
-<img src={require('./images/observability-11.png').default}    
+<img src={observability_11}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -463,7 +468,7 @@ Some simple rules can be applied to help choose an ordering key. The following c
 
 <br />
 
-On identifying the subset of columns for the ordering key, they must be declared in a specific order. This order can significantly influence both the efficiency of the filtering on secondary key columns in queries and the compression ratio for the table's data files. In general, it is **best to order the keys in ascending order of cardinality**. This should be balanced against the fact that filtering on columns that appear later in the ordering key will be less efficient than filtering on those that appear earlier in the tuple. Balance these behaviors and consider your access patterns. Most importantly, test variants. For further understanding of ordering keys and how to optimize them, we recommend [this article](/optimize/sparse-primary-indexes).
+On identifying the subset of columns for the ordering key, they must be declared in a specific order. This order can significantly influence both the efficiency of the filtering on secondary key columns in queries and the compression ratio for the table's data files. In general, it is **best to order the keys in ascending order of cardinality**. This should be balanced against the fact that filtering on columns that appear later in the ordering key will be less efficient than filtering on those that appear earlier in the tuple. Balance these behaviors and consider your access patterns. Most importantly, test variants. For further understanding of ordering keys and how to optimize them, we recommend [this article](/guides/best-practices/sparse-primary-indexes).
 
 :::note Structure first
 We recommend deciding on your ordering keys once you have structured your logs. Do not use keys in attribute maps for the ordering key or JSON extraction expressions. Ensure you have your ordering keys as root columns in your table.
@@ -586,7 +591,7 @@ Furthermore, timestamps, while benefiting from delta encoding with respect to co
 
 [Dictionaries](/sql-reference/dictionaries) are a [key feature](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse) of ClickHouse providing in-memory [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) representation of data from various internal and external [sources](/sql-reference/dictionaries#dictionary-sources), optimized for super-low latency lookup queries.
 
-<img src={require('./images/observability-12.png').default}    
+<img src={observability_12}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -1281,7 +1286,7 @@ PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SpanName, toUnixTimestamp(Timestamp), TraceId)
 ```
 
-This schema is optimized for filtering by `ServiceName`, `SpanName`, and `Timestamp`. In tracing, users also need the ability to perform lookups by a specific `TraceId` and retrieving the associated trace's spans. While this is present in the ordering key, its position at the end means [filtering will not be as efficient](/optimize/sparse-primary-indexes#ordering-key-columns-efficiently) and likely means significant amounts of data will need to be scanned when retrieving a single trace.
+This schema is optimized for filtering by `ServiceName`, `SpanName`, and `Timestamp`. In tracing, users also need the ability to perform lookups by a specific `TraceId` and retrieving the associated trace's spans. While this is present in the ordering key, its position at the end means [filtering will not be as efficient](/guides/best-practices/sparse-primary-indexes#ordering-key-columns-efficiently) and likely means significant amounts of data will need to be scanned when retrieving a single trace.
 
 The OTel collector also installs a materialized view and associated table to address this challenge. The table and view are shown below:
 
@@ -1343,7 +1348,7 @@ LIMIT 1000
 
 The CTE here identifies the minimum and maximum timestamp for the trace id `ae9226c78d1d360601e6383928e4d22d`, before using this to filter the main `otel_traces` for its associated spans.
 
-This same approach can be applied for similar access patterns. We explore a similar example in Data Modeling [here](/materialized-view#lookup-table).
+This same approach can be applied for similar access patterns. We explore a similar example in Data Modeling [here](/materialized-view/incremental-materialized-view#lookup-table).
 
 ### Using Projections {#using-projections}
 
@@ -1361,7 +1366,7 @@ In theory, this capability can be used to provide multiple ordering keys for a t
 Projections offer many of the same capabilities as materialized views, but should be used sparingly with the latter often preferred. Users should understand the drawbacks and when they are appropriate. For example, while projections can be used for pre-computing aggregations we recommend users use Materialized views for this.
 :::
 
-<img src={require('./images/observability-13.png').default}    
+<img src={observability_13}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -1565,7 +1570,7 @@ The above is for illustrative purposes only. We recommend users extract structur
 
 Some general guidelines around using bloom filters:
 
-The objective of the bloom is to filter [granules](/optimize/sparse-primary-indexes#clickhouse-index-design), thus avoiding the need to load all values for a column and perform a linear scan. The `EXPLAIN` clause, with the parameter `indexes=1`, can be used to identify the number of granules that have been skipped. Consider the responses below for the original table `otel_logs_v2` and the table `otel_logs_bloom` with an ngram bloom filter.
+The objective of the bloom is to filter [granules](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design), thus avoiding the need to load all values for a column and perform a linear scan. The `EXPLAIN` clause, with the parameter `indexes=1`, can be used to identify the number of granules that have been skipped. Consider the responses below for the original table `otel_logs_v2` and the table `otel_logs_bloom` with an ngram bloom filter.
 
 ```sql
 EXPLAIN indexes = 1

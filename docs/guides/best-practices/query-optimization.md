@@ -5,6 +5,8 @@ title: Guide for Query optimization
 description: A simple guide for query optimization that describe common path to improve query performance
 ---
 
+import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';
+
 # A simple guide for query optimization
 
 This section aims to illustrate through common scenarios how to use different performance and optimization techniques, such as [analyzer](/operations/analyzer), [query profiling](/operations/optimizing-performance/sampling-query-profiler) or [avoid Nullable Columns](/optimize/avoid-nullable-columns), in order to improve your ClickHouse query performances. 
@@ -405,8 +407,7 @@ Start by identifying your slow queries from query logs, then investigate potenti
 
 Once you have identified potential optimizations, it is recommended that you implement them one by one to better track how they affect performance. Below is a diagram describing the general approach.
 
-<img src={require('./images/query_optimization_diagram_1.png').default} class="image" />
-
+<img src={queryOptimizationDiagram1} class="image" />
 
 _Finally, be cautious of outliers; it’s pretty common that a query might run slowly, either because a user tried an ad-hoc expensive query or the system was under stress for another reason. You can group by the field normalized_query_hash to identify expensive queries that are being executed regularly. Those are probably the ones you want to investigate._
 
@@ -585,7 +586,7 @@ The new table is considerably smaller than the previous one. We see a reduction 
 
 Primary keys in ClickHouse work differently than in most traditional database systems. In those systems, primary keys enforce uniqueness and data integrity. Any attempt to insert duplicate primary key values is rejected, and a B-tree or hash-based index is usually created for fast lookup. 
 
-In ClickHouse, the primary key's [objective](/optimize/sparse-primary-indexes#a-table-with-a-primary-key) is different; it does not enforce uniqueness or help with data integrity. Instead, it is designed to optimize query performance. The primary key defines the order in which the data is stored on disk and is implemented as a sparse index that stores pointers to the first row of each granule.
+In ClickHouse, the primary key's [objective](/guides/best-practices/sparse-primary-indexes#a-table-with-a-primary-key) is different; it does not enforce uniqueness or help with data integrity. Instead, it is designed to optimize query performance. The primary key defines the order in which the data is stored on disk and is implemented as a sparse index that stores pointers to the first row of each granule.
 
 > Granules in ClickHouse are the smallest units of data read during query execution. They contain up to a fixed number of rows, determined by index_granularity, with a default value of 8192 rows. Granules are stored contiguously and sorted by the primary key. 
 

@@ -579,7 +579,7 @@ return batch.Send()
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/batch.go)
 
-Recommendations for ClickHouse apply [here](/about-us/performance/#performance-when-inserting-data). Batches should not be shared across go-routines - construct a separate batch per routine.
+Recommendations for ClickHouse apply [here](/guides/inserting-data#best-practices-for-inserts). Batches should not be shared across go-routines - construct a separate batch per routine.
 
 From the above example, note the need for variable types to align with the column type when appending rows. While the mapping is usually obvious, this interface tries to be flexible, and types will be converted provided no precision loss is incurred. For example, the following demonstrates inserting a string into a datetime64.
 
@@ -657,7 +657,7 @@ Finally, note the ability to pass a `Context` to the `Query` and `QueryRow` meth
 
 ### Async Insert {#async-insert}
 
-Asynchronous inserts are supported through the Async method. This allows the user to specify whether the client should wait for the server to complete the insert or respond once the data has been received. This effectively controls the parameter [wait_for_async_insert](/operations/settings/settings/#wait-for-async-insert).
+Asynchronous inserts are supported through the Async method. This allows the user to specify whether the client should wait for the server to complete the insert or respond once the data has been received. This effectively controls the parameter [wait_for_async_insert](/operations/settings/settings#wait_for_async_insert).
 
 ```go
 conn, err := GetNativeConnection(nil, nil, nil)
@@ -970,7 +970,7 @@ Note: typed slices and maps are supported, provide the sub-columns in the named 
 
 #### Nested {#nested}
 
-A Nested field is equivalent to an Array of named Tuples. Usage depends on whether the user has set [flatten_nested](/operations/settings/settings/#flatten-nested) to 1 or 0.
+A Nested field is equivalent to an Array of named Tuples. Usage depends on whether the user has set [flatten_nested](/operations/settings/settings#flatten_nested) to 1 or 0.
 
 By setting flatten_nested to 0, Nested columns stay as a single array of tuples. This allows users to use slices of maps for insertion and retrieval and arbitrary levels of nesting. The map's key must equal the column's name, as shown in the example below.
 
@@ -2189,7 +2189,7 @@ for rows.Next() {
 
 ### Async Insert {#async-insert-1}
 
-Asynchronous inserts can be achieved by executing an insert via the `ExecContext` method. This should be passed a context with asynchronous mode enabled, as shown below. This allows the user to specify whether the client should wait for the server to complete the insert or respond once the data has been received. This effectively controls the parameter [wait_for_async_insert](/operations/settings/settings/#wait-for-async-insert).
+Asynchronous inserts can be achieved by executing an insert via the `ExecContext` method. This should be passed a context with asynchronous mode enabled, as shown below. This allows the user to specify whether the client should wait for the server to complete the insert or respond once the data has been received. This effectively controls the parameter [wait_for_async_insert](/operations/settings/settings#wait_for_async_insert).
 
 ```go
 const ddl = `

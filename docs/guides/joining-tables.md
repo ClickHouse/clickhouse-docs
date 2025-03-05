@@ -4,6 +4,12 @@ description: How to join tables in ClickHouse
 keywords: [joins, join tables]
 ---
 
+import joins_1 from '@site/static/images/guides/joins-1.png';
+import joins_2 from '@site/static/images/guides/joins-2.png';
+import joins_3 from '@site/static/images/guides/joins-3.png';
+import joins_4 from '@site/static/images/guides/joins-4.png';
+import joins_5 from '@site/static/images/guides/joins-5.png';
+
 ClickHouse has [full `JOIN` support](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1), with a wide selection of join algorithms. To maximize performance, we recommend following the join optimization suggestions listed in this guide.
 
 - For optimal performance, users should aim to reduce the number of `JOIN`s in queries, especially for real-time analytical workloads where millisecond performance is required. Aim for a maximum of 3 to 4 joins in a query. We detail a number of changes to minimize joins in the [data modeling section](/data-modeling/schema-design), including denormalization, dictionaries, and materialized views.
@@ -12,14 +18,14 @@ ClickHouse has [full `JOIN` support](https://clickhouse.com/blog/clickhouse-full
 
 <br />
 
-<img src={require('./images/joins-1.png').default}
-    alt='NEEDS ALT'
-    class='image'
+<img src={joins_1}
+    alt="NEEDS ALT"
+    class="image"
     style={{width: '250px'}}
 />
 
 <br />
-	
+
 
 - If performing inner joins, it is often more optimal to write these as sub-queries using the `IN` clause. Consider the following queries, which are functionally equivalent. Both find the number of `posts` that don't mention ClickHouse in the question but do in the `comments`.
 
@@ -56,9 +62,9 @@ WHERE (Title != '') AND (Title NOT ILIKE '%clickhouse%') AND (Body NOT ILIKE '%c
 1 row in set. Elapsed: 2.284 sec. Processed 150.20 million rows, 16.61 GB (65.76 million rows/s., 7.27 GB/s.)
 Peak memory usage: 323.52 MiB.
 ```
-	
+
 Although ClickHouse makes attempts to push down conditions to all join clauses and subqueries, we recommend users always manually apply conditions to all sub-clauses where possible - thus minimizing the size of the data to `JOIN`. Consider the following example below, where we want to compute the number of up-votes for Java-related posts since 2020.
-	
+
 A naive query, with the larger table on the left side, completes in 56s:
 
 ```sql
@@ -73,7 +79,7 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 
 1 row in set. Elapsed: 56.642 sec. Processed 252.30 million rows, 1.62 GB (4.45 million rows/s., 28.60 MB/s.)
 ```
-	
+
 Re-ordering this join improves performance dramatically to 1.5s:
 
 ```sql
@@ -130,7 +136,7 @@ ClickHouse supports a number of [join algorithms](https://clickhouse.com/blog/cl
 
 <br />
 
-<img src={require('./images/joins-2.png').default}
+<img src={joins_2}
     alt='NEEDS ALT'
     class='image'
     style={{width: '500px'}}
@@ -144,7 +150,7 @@ The supported `JOIN` types for each join algorithm are shown below and should be
 
 <br />
 
-<img src={require('./images/joins-3.png').default}
+<img src={joins_3}
     alt='NEEDS ALT'
     class='image'
     style={{width: '600px'}}
@@ -162,7 +168,7 @@ If your key optimization metric is performance and you are looking to execute th
 
 <br />
 
-<img src={require('./images/joins-4.png').default}
+<img src={joins_4}
     alt='NEEDS ALT'
     class='image'
     style={{width: '600px'}}
@@ -172,7 +178,7 @@ If your key optimization metric is performance and you are looking to execute th
 
 - **(1)** If the data from the right-hand side table can be pre-loaded into an in-memory low-latency key-value data structure, e.g. a dictionary, and if the join key matches the key attribute of the underlying key-value storage, and if `LEFT ANY JOIN` semantics are adequate - then the **direct join** is applicable and offers the fastest approach.
 
-- **(2)** If your table's [physical row order](/optimize/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) matches the join key sort order, then it depends. In this case, the **full sorting merge join** [skips](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3#utilizing-physical-row-order) the sorting phase resulting in significantly reduced memory usage plus, depending on data size and join key value distribution, faster execution times than some of the hash join algorithms.
+- **(2)** If your table's [physical row order](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) matches the join key sort order, then it depends. In this case, the **full sorting merge join** [skips](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3#utilizing-physical-row-order) the sorting phase resulting in significantly reduced memory usage plus, depending on data size and join key value distribution, faster execution times than some of the hash join algorithms.
 
 - **(3)** If the right table fits into memory, even with the [additional memory usage overhead](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2#summary) of the **parallel hash join**, then this algorithm or the hash join can be faster. This depends on data size, data types, and value distribution of the join key columns.
 
@@ -190,7 +196,7 @@ If you want to optimize a join for the lowest memory usage instead of the fastes
 
 <br />
 
-<img src={require('./images/joins-5.png').default}
+<img src={joins_5}
     alt='NEEDS ALT'
     class='image'
     style={{width: '400px'}}

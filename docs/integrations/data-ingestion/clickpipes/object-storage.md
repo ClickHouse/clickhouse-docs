@@ -3,8 +3,20 @@ sidebar_label: ClickPipes for Object Storage
 description: Seamlessly connect your object storage to ClickHouse Cloud.
 slug: /integrations/clickpipes/object-storage
 ---
-import S3SVG from "../../images/logos/amazon_s3_logo.svg";
-import GCSSVG from "../../images/logos/gcs.svg";
+import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
+import Gcssvg from '@site/static/images/integrations/logos/gcs.svg';
+import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
+import cp_step1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step1.png';
+import cp_step2_object_storage from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step2_object_storage.png';
+import cp_step3_object_storage from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step3_object_storage.png';
+import cp_step4a from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step4a.png';
+import cp_step4a3 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step4a3.png';
+import cp_step4b from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step4b.png';
+import cp_step5 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step5.png';
+import cp_success from '@site/static/images/integrations/data-ingestion/clickpipes/cp_success.png';
+import cp_remove from '@site/static/images/integrations/data-ingestion/clickpipes/cp_remove.png';
+import cp_destination from '@site/static/images/integrations/data-ingestion/clickpipes/cp_destination.png';
+import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
 
 # Integrating Object Storage with ClickHouse Cloud
 Object Storage ClickPipes provide a simple and resilient way to ingest data from Amazon S3 and Google Cloud Storage into ClickHouse Cloud. Both one-time and continuous ingestion are supported with exactly-once semantics.
@@ -17,31 +29,31 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 
 1. In the cloud console, select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
 
-  ![Select imports](./images/cp_step0.png)
+<img src={cp_step0} alt="Select imports" />
 
 2. Select your data source.
 
-  ![Select data source type](./images/cp_step1.png)
+<img src={cp_step1} alt="Select data source type" />
 
 3. Fill out the form by providing your ClickPipe with a name, a description (optional), your IAM role or credentials, and bucket URL. You can specify multiple files using bash-like wildcards. For more information, [see the documentation on using wildcards in path](#limitations).
 
-  ![Fill out connection details](./images/cp_step2_object_storage.png)
+<img src={cp_step2_object_storage} alt="Fill out connection details" />
 
 4. The UI will display a list of files in the specified bucket. Select your data format (we currently support a subset of ClickHouse formats) and if you want to enable continuous ingestion [More details below](#continuous-ingest).
 
-  ![Set data format and topic](./images/cp_step3_object_storage.png)
+<img src={cp_step3_object_storage} alt="Set data format and topic" />
 
 5. In the next step, you can select whether you want to ingest data into a new ClickHouse table or reuse an existing one. Follow the instructions in the screen to modify your table name, schema, and settings. You can see a real-time preview of your changes in the sample table at the top.
 
-  ![Set table, schema, and settings](./images/cp_step4a.png)
+<img src={cp_step4a} alt="Set table, schema, and settings" />
 
   You can also customize the advanced settings using the controls provided
 
-  ![Set advanced controls](./images/cp_step4a3.png)
+<img src={cp_step4a3} alt="Set advanced controls" />
 
 6. Alternatively, you can decide to ingest your data in an existing ClickHouse table. In that case, the UI will allow you to map fields from the source to the ClickHouse fields in the selected destination table.
 
-  ![Use and existing table](./images/cp_step4b.png)
+<img src={cp_step4b} alt="Use an existing table" />
 
 :::info
 You can also map [virtual columns](../../sql-reference/table-functions/s3#virtual-columns), like `_path` or `_size`, to fields.
@@ -53,39 +65,39 @@ You can also map [virtual columns](../../sql-reference/table-functions/s3#virtua
     - `Full access`: with the full access to the cluster. Required if you use Materialized View or Dictionary with the destination table.
     - `Only destination table`: with the `INSERT` permissions to the destination table only.
 
-  ![permissions](./images/cp_step5.png)
+<img src={cp_step5} alt="Permissions" />
 
 8. By clicking on "Complete Setup", the system will register you ClickPipe, and you'll be able to see it listed in the summary table.
 
-  ![Success notice](./images/cp_success.png)
+<img src={cp_success} alt="Success notice" />
 
-  ![Remove notice](./images/cp_remove.png)
+<img src={cp_remove} alt="Remove notice" />
 
   The summary table provides controls to display sample data from the source or the destination table in ClickHouse
 
-  ![View destination](./images/cp_destination.png)
+<img src={cp_destination} alt="View destination" />
 
   As well as controls to remove the ClickPipe and display a summary of the ingest job.
 
-  ![View overview](./images/cp_overview.png)
+<img src={cp_overview} alt="View overview" />
 
 9. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
 
 ## Supported Data Sources {#supported-data-sources}
 
-|Name|Logo|Type|Status|Description|
-|----|----|----|------|-----------|
-|Amazon S3|<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage.|
-|Google Cloud Storage|<GCSSVG style={{width: '3rem', height: 'auto'}} />|Object Storage|Beta|Configure ClickPipes to ingest large volumes of data from object storage.|
+| Name                 |Logo|Type| Status          | Description                                                                                          |
+|----------------------|----|----|-----------------|------------------------------------------------------------------------------------------------------|
+| Amazon S3            |<S3svg class="image" alt="Amazon S3 logo" style={{width: '3rem', height: 'auto'}}/>|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
+| Google Cloud Storage |<Gcssvg class="image" alt="Google Cloud Storage logo" style={{width: '3rem', height: 'auto'}}/>|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ## Supported Data Formats {#supported-data-formats}
 
 The supported formats are:
-- [JSON](../../../interfaces/formats.md/#json)
-- [CSV](../../../interfaces/formats.md/#csv)
-- [Parquet](../../../interfaces/formats.md/#parquet)
+- [JSON](/interfaces/formats/JSON)
+- [CSV](/interfaces/formats/CSV)
+- [Parquet](/interfaces/formats/Parquet)
 
 ## Exactly-Once Semantics {#exactly-once-semantics}
 
@@ -107,7 +119,7 @@ To increase the throughput on large ingest jobs, we recommend scaling the ClickH
 - There are limitations on the types of views that are supported. Please read the section on [exactly-once semantics](#exactly-once-semantics) and [view support](#view-support) for more information.
 - Role authentication is not available for S3 ClickPipes for ClickHouse Cloud instances deployed into GCP or Azure. It is only supported for AWS ClickHouse Cloud instances.
 - ClickPipes will only attempt to ingest objects at 10GB or smaller in size. If a file is greater than 10GB an error will be appended to the ClickPipes dedicated error table.
-- S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](/sql-reference/table-functions/file#globs_in_path).
+- S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](/sql-reference/table-functions/s3).
   - `?` — Substitutes any single character
   - `*` — Substitutes any number of any characters except / including empty string
   - `**` — Substitutes any number of any character include / including empty string

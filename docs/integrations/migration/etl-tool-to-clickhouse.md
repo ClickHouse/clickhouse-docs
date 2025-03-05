@@ -5,9 +5,11 @@ keywords: [clickhouse, migrate, migration, migrating, data, etl, elt, clickhouse
 slug: '/cloud/migration/etl-tool-to-clickhouse'
 ---
 
+import third_party_01 from '@site/static/images/integrations/migration/third-party-01.png';
+
 # Using a 3rd-party ETL Tool
 
-<img src={require('./images/third-party-01.png').default} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '40%', padding: '30px'}}/>
+<img src={third_party_01} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '40%', padding: '30px'}} />
 
 A great option for moving data from an external data source into ClickHouse is to use one of the many popular ETL and ELT. We have docs that cover the following:
 

@@ -4,6 +4,8 @@ title: Comparing PostgreSQL and ClickHouse
 keywords: [postgres, postgresql, comparison]
 ---
 
+import postgresReplicas from '@site/static/images/integrations/data-ingestion/dbms/postgres-replicas.png';
+
 ## Postgres vs ClickHouse: Equivalent and different concepts {#postgres-vs-clickhouse-equivalent-and-different-concepts}
 
 Users coming from OLTP systems who are used to ACID transactions should be aware that ClickHouse makes deliberate compromises in not fully providing these in exchange for performance. ClickHouse semantics can deliver high durability guarantees and high write throughput if well understood. We highlight some key concepts below that users should be familiar with prior to working with ClickHouse from Postgres.
@@ -32,7 +34,7 @@ The replication process in ClickHouse (1) starts when data is inserted into any 
 
 <br />
 
-<img src={require('../images/postgres-replicas.png').default}    
+<img src={postgresReplicas}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '500px'}} />
@@ -79,7 +81,7 @@ When you have only one shard and replicas (common since ClickHouse vertically sc
 
 While topologies with multiple shards and replicas are possible without a distributed table, these advanced deployments typically have their own routing infrastructure. We therefore assume deployments with more than one shard are using a Distributed table (distributed tables can be used with single shard deployments but are usually unnecessary).
 
-In this case, users should ensure consistent node routing is performed based on a property e.g. `session_id` or `user_id`. The settings [`prefer_localhost_replica=0`](/operations/settings/settings#prefer-localhost-replica), [`load_balancing=in_order`](/operations/settings/settings#load_balancing) should be [set in the query](/operations/settings/query-level). This will ensure any local replicas of shards are preferred, with replicas preferred as listed in the configuration otherwise - provided they have the same number of errors - failover will occur with random selection if errors are higher. [`load_balancing=nearest_hostname`](/operations/settings/settings#load_balancing) can also be used as an alternative for this deterministic shard selection.
+In this case, users should ensure consistent node routing is performed based on a property e.g. `session_id` or `user_id`. The settings [`prefer_localhost_replica=0`](/operations/settings/settings#prefer_localhost_replica), [`load_balancing=in_order`](/operations/settings/settings#load_balancing) should be [set in the query](/operations/settings/query-level). This will ensure any local replicas of shards are preferred, with replicas preferred as listed in the configuration otherwise - provided they have the same number of errors - failover will occur with random selection if errors are higher. [`load_balancing=nearest_hostname`](/operations/settings/settings#load_balancing) can also be used as an alternative for this deterministic shard selection.
 
 > When creating a Distributed table, users will specify a cluster. This cluster definition, specified in config.xml, will list the shards (and their replicas) - thus allowing users to control the order in which they are used from each node. Using this, users can ensure selection is deterministic.
 

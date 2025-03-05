@@ -5,14 +5,16 @@ description: How to use materialized views to speed up queries
 keywords: [refreshable materialized view, refresh, materialized views, speed up queries, query optimization]
 ---
 
-[Refreshable materialized views](/sql-reference/statements/create/view#refreshable-materialized-view) are conceptually similar to materialized views in traditional OLTP databases, storing the result of a specified query for quick retrieval and reducing the need to repeatedly execute resource-intensive queries. Unlike ClickHouse’s [incremental materialized views](/materialized-view), this requires the periodic execution of the query over the full dataset - the results of which are stored in a target table for querying. This result set should, in theory, be smaller than the original dataset, allowing the subsequent query to execute faster.
+import refreshableMaterializedViewDiagram from '@site/static/images/materialized-view/refreshable-materialized-view-diagram.png';
+
+[Refreshable materialized views](/sql-reference/statements/create/view#refreshable-materialized-view) are conceptually similar to materialized views in traditional OLTP databases, storing the result of a specified query for quick retrieval and reducing the need to repeatedly execute resource-intensive queries. Unlike ClickHouse’s [incremental materialized views](/materialized-view/incremental-materialized-view), this requires the periodic execution of the query over the full dataset - the results of which are stored in a target table for querying. This result set should, in theory, be smaller than the original dataset, allowing the subsequent query to execute faster.
 
 The diagram explains how Refreshable Materialized Views work:
 
-<img src={require('./images/refreshable-materialized-view-diagram.png').default}
-  class='image'
-  alt='Refreshable materialized view diagram'
-  style={{width: '100%', background: 'none' }} />
+<img src={refreshableMaterializedViewDiagram}
+  class="image"
+  alt="Refreshable materialized view diagram"
+  style={{width: '100%', background: 'none'}} />
 
 You can also see the following video:
 
@@ -44,7 +46,7 @@ If you want to force refresh a materialized view, you can use the `SYSTEM REFRES
 SYSTEM REFRESH VIEW table_name_mv;
 ```
 
-You can also cancel, stop, or start a view. 
+You can also cancel, stop, or start a view.
 For more details, see the [managing refreshable materialized views](/sql-reference/statements/system#refreshable-materialized-views) documentation.
 
 ## When was a refreshable materialized view last refreshed? {#when-was-a-refreshable-materialized-view-last-refreshed}
@@ -52,7 +54,7 @@ For more details, see the [managing refreshable materialized views](/sql-referen
 To find out when a refreshable materialized view was last refreshed, you can query the [`system.view_refreshes`](/operations/system-tables/view_refreshes) system table, as shown below:
 
 ```sql
-SELECT database, view, status, 
+SELECT database, view, status,
        last_success_time, last_refresh_time, next_refresh_time,
        read_rows, written_rows
 FROM system.view_refreshes;
@@ -140,8 +142,8 @@ CREATE TABLE events_snapshot (
     ts DateTime32,
     uuid String,
     count UInt64
-) 
-ENGINE = MergeTree 
+)
+ENGINE = MergeTree
 ORDER BY uuid;
 ```
 
@@ -240,7 +242,7 @@ In the [dbt and ClickHouse integration guide](/integrations/dbt#dbt) we populate
 We can then write the following query can be used to compute a summary of each actor, ordered by the most movie appearances.
 
 ```sql
-SELECT 
+SELECT
   id, any(actor_name) AS name, uniqExact(movie_id) AS movies,
   round(avg(rank), 2) AS avg_rank, uniqExact(genre) AS genres,
   uniqExact(director_name) AS directors, max(created_at) AS updated_at
@@ -248,8 +250,8 @@ FROM (
   SELECT
     imdb.actors.id AS id,
     concat(imdb.actors.first_name, ' ', imdb.actors.last_name) AS actor_name,
-    imdb.movies.id AS movie_id, imdb.movies.rank AS rank, genre, 
-    concat(imdb.directors.first_name, ' ', imdb.directors.last_name) AS director_name, 
+    imdb.movies.id AS movie_id, imdb.movies.rank AS rank, genre,
+    concat(imdb.directors.first_name, ' ', imdb.directors.last_name) AS director_name,
     created_at
   FROM imdb.actors
   INNER JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id

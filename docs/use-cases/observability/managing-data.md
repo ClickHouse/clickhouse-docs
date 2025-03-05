@@ -5,6 +5,8 @@ slug: /observability/managing-data
 keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 ---
 
+import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
+
 # Managing Data
 
 Deployments of ClickHouse for Observability invariably involve large datasets, which need to be managed. ClickHouse offers a number of features to assist with data management. 
@@ -15,7 +17,7 @@ Partitioning in ClickHouse allows data to be logically separated on disk accordi
 
 Partitioning is specified on a table when it is initially defined via the `PARTITION BY` clause. This clause can contain a SQL expression on any column/s, the results of which will define which partition a row is sent to. 
 
-<img src={require('./images/observability-14.png').default}    
+<img src={observability_14}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -274,7 +276,7 @@ Columns can be added to the schema using [`DEFAULT` values](/sql-reference/state
 
 Schema changes can be made prior to modifying any materialized view transformation logic or OTel collector configuration, which causes these new columns to be sent.
 
-Once the schema has been changed, users can reconfigure OTel collectors. Assuming users are using the recommended process outlined in ["Extracting structure with SQL"](/observability/schema-design/#extracting-structure-with-sql), where OTel collectors send their data to a Null table engine with a materialized view responsible for extracting the target schema and sending the results to a target table for storage, the view can be modified using the [`ALTER TABLE ... MODIFY QUERY` syntax](/sql-reference/statements/alter/view). Suppose we have the target table below with its corresponding materialized view (similar to that used in "Extracting structure with SQL") to extract the target schema from the OTel structured logs:
+Once the schema has been changed, users can reconfigure OTel collectors. Assuming users are using the recommended process outlined in ["Extracting structure with SQL"](/docs/use-cases/observability/schema-design#extracting-structure-with-sql), where OTel collectors send their data to a Null table engine with a materialized view responsible for extracting the target schema and sending the results to a target table for storage, the view can be modified using the [`ALTER TABLE ... MODIFY QUERY` syntax](/sql-reference/statements/alter/view). Suppose we have the target table below with its corresponding materialized view (similar to that used in "Extracting structure with SQL") to extract the target schema from the OTel structured logs:
 
 ```sql
 CREATE TABLE default.otel_logs_v2

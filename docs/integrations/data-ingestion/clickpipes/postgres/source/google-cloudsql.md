@@ -4,6 +4,15 @@ description: Set up Google Cloud SQL Postgres instance as a source for ClickPipe
 slug: /integrations/clickpipes/postgres/source/google-cloudsql
 ---
 
+import edit_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/edit.png';
+import cloudsql_logical_decoding1 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding1.png';
+import cloudsql_logical_decoding2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding2.png';
+import cloudsql_logical_decoding3 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding3.png';
+import connections from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/connections.png';
+import connections_networking from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/connections_networking.png';
+import firewall1 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall1.png';
+import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall2.png';
+
 # Google Cloud SQL Postgres Source Setup Guide
 
 :::info
@@ -23,14 +32,13 @@ Anything on or after Postgres 12
 
 1. Click on **Edit** button on the Overview page.
 
-   ![Edit Button in Cloud SQL Postgres](images/setup/google-cloudsql/edit.png)
-
+<img src={edit_button} alt="Edit Button in Cloud SQL Postgres" />
 
 2. Go to Flags and change `cloudsql.logical_decoding` to on and `wal_sender_timeout` to 0. These changes will need restarting your Postgres server.
 
-   ![Change `cloudsql.logical_decoding` to on](images/setup/google-cloudsql/cloudsql_logical_decoding1.png)
-   ![Changed `cloudsql.logical_decoding` and `wal_sender_timeout`](images/setup/google-cloudsql/cloudsql_logical_decoding2.png)
-   ![Restart Server](images/setup/google-cloudsql/cloudsql_logical_decoding3.png)
+<img src={cloudsql_logical_decoding1} alt="Change cloudsql.logical_decoding to on" />
+<img src={cloudsql_logical_decoding2} alt="Changed cloudsql.logical_decoding and wal_sender_timeout" />
+<img src={cloudsql_logical_decoding3} alt="Restart Server" />
 
 
 ## Creating ClickPipes User and Granting permissions {#creating-clickpipes-user-and-granting-permissions}
@@ -78,16 +86,16 @@ If your are using SSH Tunneling, then you need to add the [ClickPipes IPs](../..
 
 1. Go to **Connections** section
 
-   ![Connections Section](images/setup/google-cloudsql/connections.png)
+<img src={connections} alt="Connections Section in Cloud SQL" />
 
 2. Go to the Networking subsection
 
-   ![Networking Subsection](images/setup/google-cloudsql/connections_networking.png)
+<img src={connections_networking} alt="Networking Subsection in Cloud SQL" />
 
 3. Add the [public IPs of ClickPipes](../../index.md#list-of-static-ips)
 
-   ![Add ClickPipes Networks](images/setup/google-cloudsql/firewall1.png)
-   ![ClickPipes Networks Added](images/setup/google-cloudsql/firewall2.png) 
+<img src={firewall1} alt="Add ClickPipes Networks to Firewall" />
+<img src={firewall2} alt="ClickPipes Networks Added to Firewall" />
 
 
 ## What's next? {#whats-next}

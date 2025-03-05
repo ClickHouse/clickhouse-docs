@@ -11,8 +11,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Java Clients Overview
 
-- [Client 0.8+](./client-v2.md)
-- [JDBC 0.8+](./jdbc-v2.md)
+- [Client 0.8+](./client.md)
+- [JDBC 0.8+](./jdbc.md)
 - [R2DBC Driver](./r2dbc.md)
 
 ## ClickHouse Client {#clickhouse-client}
@@ -108,7 +108,7 @@ Table of features of the clients:
 | Session timezone                             |✔       |✔      | |
 
 
-JDBC Drive inherits same features as underlying client implementation. Other JDBC features are listed on its [page](/integrations/java/jdbc-driver#features).
+JDBC Drive inherits same features as underlying client implementation. Other JDBC features are listed on its [page](/integrations/language-clients/java/jdbc).
 
 ### Compatibility {#compatibility}
 

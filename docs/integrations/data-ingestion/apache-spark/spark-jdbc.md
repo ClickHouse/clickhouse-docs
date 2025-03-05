@@ -12,8 +12,7 @@ import TOCInline from '@theme/TOCInline';
 # Spark JDBC
 JDBC is one of the most commonly used data sources in Spark.
 In this section, we will provide details on how to
-use the [ClickHouse official JDBC connector](/integrations/java/jdbc-driver) with Spark.
-
+use the [ClickHouse official JDBC connector](/integrations/language-clients/java/jdbc) with Spark.
 
 <TOCInline toc={toc}></TOCInline>
 

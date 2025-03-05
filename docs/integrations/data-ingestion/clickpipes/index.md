@@ -4,15 +4,18 @@ description: Seamlessly connect your external data sources to ClickHouse Cloud.
 slug: /integrations/clickpipes
 ---
 
-import KafkaSVG from "../../images/logos/kafka.svg";
-import ConfluentSVG from "../../images/logos/confluent.svg";
-import MskSVG from "../../images/logos/msk.svg";
-import AzureEventHubsSVG from "../../images/logos/azure_event_hubs.svg";
-import WarpStreamSVG from "../../images/logos/warpstream.svg";
-import S3SVG from "../../images/logos/amazon_s3_logo.svg";
-import AmazonKinesis from "../../images/logos/amazon_kinesis_logo.svg";
-import GCSSVG from "../../images/logos/gcs.svg";
-import PostgresSVG from "../../images/logos/postgresql.svg";
+import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
+import Confluentsvg from '@site/static/images/integrations/logos/confluent.svg';
+import Msksvg from '@site/static/images/integrations/logos/msk.svg';
+import Azureeventhubssvg from '@site/static/images/integrations/logos/azure_event_hubs.svg';
+import Warpstreamsvg from '@site/static/images/integrations/logos/warpstream.svg';
+import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
+import Amazonkinesis from '@site/static/images/integrations/logos/amazon_kinesis_logo.svg';
+import Gcssvg from '@site/static/images/integrations/logos/gcs.svg';
+import Postgressvg from '@site/static/images/integrations/logos/postgresql.svg';
+import redpanda_logo from '@site/static/images/integrations/logos/logo_redpanda.png';
+import clickpipes_stack from '@site/static/images/integrations/data-ingestion/clickpipes/clickpipes_stack.png';
+import cp_custom_role from '@site/static/images/integrations/data-ingestion/clickpipes/cp_custom_role.png';
 
 # Integrating with ClickHouse Cloud
 
@@ -20,22 +23,22 @@ import PostgresSVG from "../../images/logos/postgresql.svg";
 
 [ClickPipes](/integrations/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. ClickPipes can be used for long-term streaming needs or one-time data loading job.
 
-![ClickPipes stack](./images/clickpipes_stack.png)
+<img src={clickpipes_stack} alt="ClickPipes stack" />
 
 ## Supported Data Sources {#supported-data-sources}
 
 | Name                 |Logo|Type| Status          | Description                                                                                          |
 |----------------------|----|----|-----------------|------------------------------------------------------------------------------------------------------|
-| Apache Kafka         |<KafkaSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.     |
-| Confluent Cloud      |<ConfluentSVG style={{width: '3rem'}} />|Streaming| Stable          | Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.          |
-| Redpanda             |<img src={require('../../images/logos/logo_redpanda.png').default} class="image" alt="Redpanda logo" style={{width: '2.5rem', 'background-color': 'transparent'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Redpanda into ClickHouse Cloud.         |
-| AWS MSK              |<MskSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.          |
-| Azure Event Hubs     |<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud. |
-| WarpStream           |<WarpStreamSVG style={{width: '3rem'}} />|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.       |
-| Amazon S3            |<S3SVG style={{width: '3rem', height: 'auto'}} />|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
-| Google Cloud Storage |<GCSSVG style={{width: '3rem', height: 'auto'}} />|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
-| Amazon Kinesis       |<AmazonKinesis style={{width: '3rem', height: 'auto'}} />|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Amazon Kinesis into ClickHouse cloud.   |
-| Postgres             |<PostgresSVG style={{width: '3rem', height: 'auto'}} />|DBMS| Public Beta | Configure ClickPipes and start ingesting data from Postgres into ClickHouse Cloud.                   |
+| Apache Kafka         |<Kafkasvg class="image" alt="Apache Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.     |
+| Confluent Cloud      |<Confluentsvg class="image" alt="Confluent Cloud logo" style={{width: '3rem'}}/>|Streaming| Stable          | Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.          |
+| Redpanda             |<img src={redpanda_logo} class="image" alt="Redpanda logo" style={{width: '2.5rem', 'background-color': 'transparent'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Redpanda into ClickHouse Cloud.         |
+| AWS MSK              |<Msksvg class="image" alt="AWS MSK logo" style={{width: '3rem', 'height': '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.          |
+| Azure Event Hubs     |<Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud. |
+| WarpStream           |<Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.       |
+| Amazon S3            |<S3svg class="image" alt="Amazon S3 logo" style={{width: '3rem', height: 'auto'}}/>|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
+| Google Cloud Storage |<Gcssvg class="image" alt="Google Cloud Storage logo" style={{width: '3rem', height: 'auto'}}/>|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
+| Amazon Kinesis       |<Amazonkinesis class="image" alt="Amazon Kenesis logo" style={{width: '3rem', height: 'auto'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Amazon Kinesis into ClickHouse cloud.   |
+| Postgres             |<Postgressvg class="image" alt="Postgres logo" style={{width: '3rem', height: 'auto'}}/>|DBMS| Public Beta | Configure ClickPipes and start ingesting data from Postgres into ClickHouse Cloud.                   |
 
 More connectors will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
@@ -61,7 +64,8 @@ ClickHouse Cloud provides sensible defaults for most of the use cases. However, 
 Steps:
 1. create a custom role `CREATE ROLE my_clickpipes_role SETTINGS ...`. See [CREATE ROLE](/sql-reference/statements/create/role.md) syntax for details.
 2. add the custom role to ClickPipes user on step `Details and Settings` during the ClickPipes creation.
-![Assign a custom role](./images/cp_custom_role.png)
+
+<img src={cp_custom_role} alt="Assign a custom role" />
 
 ## Error reporting {#error-reporting}
 ClickPipes will create a table next to your destination table with the postfix `<destination_table_name>_clickpipes_error`. This table will contain any errors from the operations of your ClickPipe (network, connectivity, etc.) and also any data that don't conform to the schema. The error table has a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
@@ -78,7 +82,7 @@ If ClickPipes cannot connect to a data source or destination after 15min., Click
 
 - **Does using ClickPipes incur an additional cost?**
 
-  ClickPipes is billed on two dimensions: Ingested Data and Compute. The full details of the pricing are available on [this page](/cloud/manage/jan-2025-faq/pricing-dimensions#clickpipes-pricing). Running ClickPipes might also generate an indirect compute and storage cost on the destination ClickHouse Cloud service similar to any ingest workload.
+  ClickPipes is billed on two dimensions: Ingested Data and Compute. The full details of the pricing are available on [this page](/cloud/manage/jan-2025-faq/pricing-dimensions#clickpipes-pricing-faq). Running ClickPipes might also generate an indirect compute and storage cost on the destination ClickHouse Cloud service similar to any ingest workload.
 
 - **Is there a way to handle errors or failures when using ClickPipes for Kafka?**
 

@@ -5,6 +5,21 @@ description: Subscribe to ClickHouse Cloud through the Azure Marketplace (PAYG).
 keywords: [azure, marketplace, billing, PAYG]
 ---
 
+import azure_marketplace_payg_1 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-1.png';
+import azure_marketplace_payg_2 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-2.png';
+import azure_marketplace_payg_3 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-3.png';
+import azure_marketplace_payg_4 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-4.png';
+import azure_marketplace_payg_5 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-5.png';
+import azure_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-6.png';
+import azure_marketplace_payg_7 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-7.png';
+import azure_marketplace_payg_8 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-8.png';
+import azure_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-9.png';
+import azure_marketplace_payg_10 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-10.png';
+import aws_marketplace_payg_8 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-8.png';
+import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-9.png';
+import azure_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-11.png';
+import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-12.png';
+
 Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) via a PAYG (Pay-as-you-go) Public Offer.
 
 ## Prerequisites {#prerequisites}
@@ -16,7 +31,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={require('./images/azure-marketplace-payg-1.png').default}
+<img src={azure_marketplace_payg_1}
     alt='ClickHouse Cloud sign up info form'
     class='image'
     style={{width: '300px'}}
@@ -28,7 +43,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={require('./images/azure-marketplace-payg-2.png').default}
+<img src={azure_marketplace_payg_2}
     alt='ClickHouse Cloud sign up info form'
     class='image'
     style={{width: '500px'}}
@@ -40,7 +55,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={require('./images/azure-marketplace-payg-3.png').default}
+<img src={azure_marketplace_payg_3}
     alt='ClickHouse Cloud sign up info form'
     class='image'
     style={{width: '400px'}}
@@ -52,7 +67,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={require('./images/azure-marketplace-payg-4.png').default}
+<img src={azure_marketplace_payg_4}
     alt='ClickHouse Cloud sign up info form'
     class='image'
     style={{width: '400px'}}
@@ -64,7 +79,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={require('./images/azure-marketplace-payg-5.png').default}
+<img src={azure_marketplace_payg_5}
     alt='ClickHouse Cloud sign up info form'
     class='image'
     style={{width: '500px'}}
@@ -76,7 +91,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={require('./images/azure-marketplace-payg-6.png').default}
+<img src={azure_marketplace_payg_6}
     alt='ClickHouse Cloud sign up info form'
     class='image'
     style={{width: '500px'}}
@@ -90,7 +105,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={require('./images/azure-marketplace-payg-7.png').default}
+<img src={azure_marketplace_payg_7}
     alt='ClickHouse Cloud sign up info form'
     class='image'
     style={{width: '400px'}}
@@ -102,7 +117,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={require('./images/azure-marketplace-payg-8.png').default}
+<img src={azure_marketplace_payg_8}
     alt='ClickHouse Cloud sign up info form'
     class='image'
     style={{width: '500px'}}
@@ -114,7 +129,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={require('./images/azure-marketplace-payg-9.png').default}
+<img src={azure_marketplace_payg_9}
     alt='ClickHouse Cloud sign up info form'
     class='image'
     style={{width: '400px'}}
@@ -130,7 +145,7 @@ You will receive an email like the one below with details on configuring your ac
 
 <br />
 
-<img src={require('./images/azure-marketplace-payg-10.png').default}
+<img src={azure_marketplace_payg_10}
     alt='ClickHouse Cloud sign up info form'
     class='image'
     style={{width: '400px'}}
@@ -144,7 +159,7 @@ You will receive an email like the one below with details on configuring your ac
 
 <br />
 
-<img src={require('./images/aws-marketplace-payg-8.png').default}
+<img src={aws_marketplace_payg_8}
     alt='ClickHouse Cloud sign up info form'
     class='image'
     style={{width: '400px'}}
@@ -152,7 +167,7 @@ You will receive an email like the one below with details on configuring your ac
 
 <br />
 
-<img src={require('./images/aws-marketplace-payg-9.png').default}
+<img src={aws_marketplace_payg_9}
     alt='ClickHouse Cloud sign up info form 2'
     class='image'
     style={{width: '400px'}}
@@ -166,7 +181,7 @@ You will receive an email like the one below with details on configuring your ac
 
 <br />
 
-<img src={require('./images/azure-marketplace-payg-11.png').default}
+<img src={azure_marketplace_payg_11}
     alt='ClickHouse Cloud sign up info form'
     class='image'
     style={{width: '300px'}}
@@ -176,7 +191,7 @@ You will receive an email like the one below with details on configuring your ac
 
 <br />
 
-<img src={require('./images/azure-marketplace-payg-12.png').default}
+<img src={azure_marketplace_payg_12}
     alt='ClickHouse Cloud sign up info form'
     class='image'
     style={{width: '500px'}}

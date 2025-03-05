@@ -5,6 +5,15 @@ slug: /observability/integrating-opentelemetry
 keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 ---
 
+import observability_3 from '@site/static/images/use-cases/observability/observability-3.png';
+import observability_4 from '@site/static/images/use-cases/observability/observability-4.png';
+import observability_5 from '@site/static/images/use-cases/observability/observability-5.png';
+import observability_6 from '@site/static/images/use-cases/observability/observability-6.png';
+import observability_7 from '@site/static/images/use-cases/observability/observability-7.png';
+import observability_8 from '@site/static/images/use-cases/observability/observability-8.png';
+import observability_9 from '@site/static/images/use-cases/observability/observability-9.png';
+
+
 # Integrating OpenTelemetry for Data Collection
 
 Any Observability solution requires a means of collecting and exporting logs and traces. For this purpose, ClickHouse recommends [the OpenTelemetry (OTel) project](https://opentelemetry.io/).
@@ -51,7 +60,7 @@ The principal advantage of using a collector is it allows your services to offlo
 
 The Collector uses the terms [receiver](https://opentelemetry.io/docs/collector/configuration/#receivers), [processor](https://opentelemetry.io/docs/collector/configuration/#processors), and [exporter](https://opentelemetry.io/docs/collector/configuration/#exporters) for its three main processing stages. Receivers are used for data collection and can either be pull or push-based. Processors provide the ability to perform transformations and enrichment of messages. Exporters are responsible for sending the data to a downstream service. While this service can, in theory, be another collector, we assume all data is sent directly to ClickHouse for the initial discussion below.
 
-<img src={require('./images/observability-3.png').default}    
+<img src={observability_3}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -64,7 +73,7 @@ The collector provides two principal receivers for collecting logs:
 
 **Via OTLP** - In this case, logs are sent (pushed) directly to the collector from OpenTelemetry SDKs via the OTLP protocol. The [OpenTelemetry demo](https://opentelemetry.io/docs/demo/) employs this approach, with the OTLP exporters in each language assuming a local collector endpoint. The collector must be configured with the OTLP receiver in this case —see the above [demo for a configuration](https://github.com/ClickHouse/opentelemetry-demo/blob/main/src/otelcollector/otelcol-config.yml#L5-L12). The advantage of this approach is that log data will automatically contain Trace Ids, allowing users to later identify the traces for a specific log and vice versa.
 
-<img src={require('./images/observability-4.png').default}    
+<img src={observability_4}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -75,7 +84,7 @@ This approach requires users to instrument their code with their [appropriate la
 
 - **Scraping via Filelog receiver** - This receiver tails files on disk and formulates log messages, sending these to ClickHouse. This receiver handles complex tasks such as detecting multi-line messages, handling log rollovers, checkpointing for robustness to restart, and extracting structure. This receiver is additionally able to tail Docker and Kubernetes container logs, deployable as a helm chart, [extracting the structure from these](https://opentelemetry.io/blog/2024/otel-collector-container-log-parser/) and enriching them with the pod details.
 
-<img src={require('./images/observability-5.png').default}    
+<img src={observability_5}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -127,7 +136,7 @@ We use the structured dataset for the example below. Ensure this file is downloa
 The following represents a simple configuration for the OTel Collector which reads these files on disk, using the filelog receiver, and outputs the resulting messages to stdout. We use the [`json_parser`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/json_parser.md) operator since our logs are structured. Modify the path to the access-structured.log file.
 
 :::note Consider ClickHouse for parsing
-The below example extracts the timestamp from the log. This requires the use of the `json_parser` operator, which converts the entire log line to a JSON string, placing the result in `LogAttributes`. This can be computationally expensive and [can be done more efficiently in ClickHouse](https://clickhouse.com/blog/worlds-fastest-json-querying-tool-clickhouse-local) - [Extracting structure with SQL](/observability/schema-design#extracting-structure-with-sql). An equivalent unstructured example, which uses the [`regex_parser`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/regex_parser.md) to achieve this, can be found [here](https://pastila.nl/?01da7ee2/2ffd3ba8124a7d6e4ddf39422ad5b863#swBkiAXvGP7mRPgbuzzHFA==).
+The below example extracts the timestamp from the log. This requires the use of the `json_parser` operator, which converts the entire log line to a JSON string, placing the result in `LogAttributes`. This can be computationally expensive and [can be done more efficiently in ClickHouse](https://clickhouse.com/blog/worlds-fastest-json-querying-tool-clickhouse-local) - [Extracting structure with SQL](/use-cases/observability/schema-design#extracting-structure-with-sql). An equivalent unstructured example, which uses the [`regex_parser`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/regex_parser.md) to achieve this, can be found [here](https://pastila.nl/?01da7ee2/2ffd3ba8124a7d6e4ddf39422ad5b863#swBkiAXvGP7mRPgbuzzHFA==).
 :::
 
 **[config-structured-logs.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N*N*Nprocessors%3A*N__batch%3A*N____timeout%3A_5s*N____send*_batch*_size%3A_1*N*N*Nexporters%3A*N_logging%3A*N___loglevel%3A_debug*N*N*Nservice%3A*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Blogging%5D%7E)**
@@ -209,7 +218,7 @@ For users needing to collect local or Kubernetes log files, we recommend users b
 
 ## Collecting Kubernetes Logs {#collecting-kubernetes-logs}
 
-For the collection of Kubernetes logs, we recommend the [Open Telemetry documentation guide](https://opentelemetry.io/docs/kubernetes/). The [Kubernetes Attributes Processor](https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor) is recommended for enriching logs and metrics with pod metadata. This can potentially produce dynamic metadata e.g. labels, stored in the column `ResourceAttributes`. ClickHouse currently uses the type `Map(String, String)` for this column. See [Using Maps](/observability/schema-design#using-maps) and [Extracting from maps](/observability/schema-design#extracting-from-maps) for further details on handling and optimizing this type.
+For the collection of Kubernetes logs, we recommend the [Open Telemetry documentation guide](https://opentelemetry.io/docs/kubernetes/). The [Kubernetes Attributes Processor](https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor) is recommended for enriching logs and metrics with pod metadata. This can potentially produce dynamic metadata e.g. labels, stored in the column `ResourceAttributes`. ClickHouse currently uses the type `Map(String, String)` for this column. See [Using Maps](/use-cases/observability/schema-design#using-maps) and [Extracting from maps](/use-cases/observability/schema-design#extracting-from-maps) for further details on handling and optimizing this type.
 
 ## Collecting traces {#collecting-traces}
 
@@ -293,7 +302,7 @@ As demonstrated in the earlier example of setting the timestamp for a log event,
 
 - **Operators** - [Operators](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) provide the most basic unit of processing available at the receiver. Basic parsing is supported, allowing fields such as the Severity and Timestamp to be set. JSON and regex parsing are supported here along with event filtering and basic transformations. We recommend performing event filtering here. 
 
-We recommend users avoid doing excessive event processing using operators or [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md). These can incur considerable memory and CPU overhead, especially JSON parsing.  It is possible to do all processing in ClickHouse at insert time with materialized views and columns with some exceptions - specifically, context-aware enrichment e.g. adding of k8s metadata. For more details see [Extracting structure with SQL](/observability/schema-design#extracting-structure-with-sql).
+We recommend users avoid doing excessive event processing using operators or [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md). These can incur considerable memory and CPU overhead, especially JSON parsing.  It is possible to do all processing in ClickHouse at insert time with materialized views and columns with some exceptions - specifically, context-aware enrichment e.g. adding of k8s metadata. For more details see [Extracting structure with SQL](/use-cases/observability/schema-design#extracting-structure-with-sql).
 
 If processing is done using the OTel collector, we recommend doing transformations at gateway instances and minimizing any work done at agent instances. This will ensure the resources required by agents at the edge, running on servers, are as minimal as possible. Typically, we see users only performing filtering (to minimize unnecessary network usage), timestamp setting (via operators), and enrichment, which requires context in agents. For example, if gateway instances reside in a different Kubernetes cluster, k8s enrichment will need to occur in the agent.
 
@@ -539,13 +548,13 @@ The columns here correlate with the OTel official specification for logs documen
 A few important notes on this schema:
 
 - By default, the table is partitioned by date via `PARTITION BY toDate(Timestamp)`. This makes it efficient to drop data that expires.
-- The TTL is set via `TTL toDateTime(Timestamp) + toIntervalDay(3)` and corresponds to the value set in the collector configuration. [`ttl_only_drop_parts=1`](/operations/settings/settings#ttl_only_drop_parts) means only whole parts are dropped when all the contained rows have expired. This is more efficient than dropping rows within parts, which incurs an expensive delete. We recommend this always be set. See [Data management with TTL](/observability/managing-data#data-management-with-ttl-time-to-live) for more details.
+- The TTL is set via `TTL toDateTime(Timestamp) + toIntervalDay(3)` and corresponds to the value set in the collector configuration. [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) means only whole parts are dropped when all the contained rows have expired. This is more efficient than dropping rows within parts, which incurs an expensive delete. We recommend this always be set. See [Data management with TTL](/observability/managing-data#data-management-with-ttl-time-to-live) for more details.
 - The table uses the classic [`MergeTree` engine](/engines/table-engines/mergetree-family/mergetree). This is recommended for logs and traces and should not need to be changed.
-- The table is ordered by `ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)`. This means queries will be optimized for filters on `ServiceName`, `SeverityText`, `Timestamp` and `TraceId` - earlier columns in the list will filter faster than later ones e.g. filtering by `ServiceName` will be significantly faster than filtering by `TraceId`. Users should modify this ordering according to their expected access patterns - see [Choosing a primary key](/observability/schema-design#choosing-a-primary-ordering-key).
+- The table is ordered by `ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)`. This means queries will be optimized for filters on `ServiceName`, `SeverityText`, `Timestamp` and `TraceId` - earlier columns in the list will filter faster than later ones e.g. filtering by `ServiceName` will be significantly faster than filtering by `TraceId`. Users should modify this ordering according to their expected access patterns - see [Choosing a primary key](/use-cases/observability/schema-design#choosing-a-primary-ordering-key).
 - The above schema applies `ZSTD(1)` to columns. This offers the best compression for logs. Users can increase the ZSTD compression level (above the default of 1) for better compression, although this is rarely beneficial.  Increasing this value will incur greater CPU overhead at insert time (during compression), although decompression (and thus queries) should remain comparable. See [here](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema) for further details. Additional [delta encoding](/sql-reference/statements/create/table#delta) is applied to the Timestamp with the aim of reducing its size on disk.
-- Note how [`ResourceAttributes`](https://opentelemetry.io/docs/specs/otel/resource/sdk/), [`LogAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-attributes) and [`ScopeAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-instrumentationscope) are maps. Users should familiarize themselves with the difference between these. For how to access these maps and optimize accessing keys within them, see [Using maps](/observability/schema-design#using-maps). 
+- Note how [`ResourceAttributes`](https://opentelemetry.io/docs/specs/otel/resource/sdk/), [`LogAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-attributes) and [`ScopeAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-instrumentationscope) are maps. Users should familiarize themselves with the difference between these. For how to access these maps and optimize accessing keys within them, see [Using maps](/use-cases/observability/integrating-opentelemetry.md). 
 - Most other types here e.g. `ServiceName` as LowCardinality, are optimized.  Note the Body, although JSON in our example logs, is stored as a String.
-- Bloom filters are applied to map keys and values, as well as the Body column. These aim to improve query times on accessing these columns but are typically not required. See [Secondary/Data skipping indices](/observability/schema-design#secondarydata-skipping-indices).
+- Bloom filters are applied to map keys and values, as well as the Body column. These aim to improve query times on accessing these columns but are typically not required. See [Secondary/Data skipping indices](/use-cases/observability/schema-design#secondarydata-skipping-indices).
 
 ```sql
 CREATE TABLE default.otel_traces
@@ -588,7 +597,7 @@ SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
 
 Again, this will correlate with the columns corresponding to OTel official specification for traces documented [here](https://opentelemetry.io/docs/specs/otel/trace/api/). The schema here employs many of the same settings as the above logs schema with additional Link columns specific to spans.
 
-We recommend users disable auto schema creation and create their tables manually. This allows modification of the primary and secondary keys, as well as the opportunity to introduce additional columns for optimizing query performance. For further details see [Schema design](/observability/schema-design).
+We recommend users disable auto schema creation and create their tables manually. This allows modification of the primary and secondary keys, as well as the opportunity to introduce additional columns for optimizing query performance. For further details see [Schema design](/use-cases/observability/schema-design).
 
 ## Optimizing inserts {#optimizing-inserts}
 
@@ -613,24 +622,24 @@ Typically, users are forced to send smaller batches when the throughput of a col
 
 If large batches cannot be guaranteed, users can delegate batching to ClickHouse using [Asynchronous Inserts](/cloud/bestpractices/asynchronous-inserts). With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later or asynchronously respectively.
 
-<img src={require('./images/observability-6.png').default}    
+<img src={observability_6}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
 
 <br />
 
-With [enabled asynchronous inserts](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), when ClickHouse ① receives an insert query, the query's data is ② immediately written into an in-memory buffer first. When ③ the next buffer flush takes place, the buffer's data is [sorted](/optimize/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) and written as a part to the database storage. Note, that the data is not searchable by queries before being flushed to the database storage; the buffer flush is [configurable](/optimize/asynchronous-inserts).
+With [enabled asynchronous inserts](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), when ClickHouse ① receives an insert query, the query's data is ② immediately written into an in-memory buffer first. When ③ the next buffer flush takes place, the buffer's data is [sorted](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) and written as a part to the database storage. Note, that the data is not searchable by queries before being flushed to the database storage; the buffer flush is [configurable](/optimize/asynchronous-inserts).
 
 To enable asynchronous inserts for the collector, add `async_insert=1` to the connection string. We recommend users use `wait_for_async_insert=1` (the default) to get delivery guarantees - see [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) for further details.
 
-Data from an async insert is inserted once the ClickHouse buffer is flushed. This occurs either after the [`async_insert_max_data_size`](/operations/settings/settings#async-insert-max-data-size) is exceeded or after [`async_insert_busy_timeout_ms`](/operations/settings/settings#async-insert-busy-timeout-ms) milliseconds since the first INSERT query. If the `async_insert_stale_timeout_ms` is set to a non-zero value, the data is inserted after `async_insert_stale_timeout_ms milliseconds` since the last query. Users can tune these settings to control the end-to-end latency of their pipeline. Further settings which can be used to tune buffer flushing are documented [here](/operations/settings/settings#asynchronous-insert-settings). Generally, defaults are appropriate.
+Data from an async insert is inserted once the ClickHouse buffer is flushed. This occurs either after the [`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) is exceeded or after [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) milliseconds since the first INSERT query. If the `async_insert_stale_timeout_ms` is set to a non-zero value, the data is inserted after `async_insert_stale_timeout_ms milliseconds` since the last query. Users can tune these settings to control the end-to-end latency of their pipeline. Further settings which can be used to tune buffer flushing are documented [here](/operations/settings/settings#async_insert). Generally, defaults are appropriate.
 
 :::note Consider Adaptive Asynchronous Inserts
 In cases where a low number of agents are in use, with low throughput but strict end-to-end latency requirements, [adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) may be useful. Generally, these are not applicable to high throughput Observability use cases, as seen with ClickHouse.
 :::
 
-Finally, the previous deduplication behavior associated with synchronous inserts into ClickHouse is not enabled by default when using asynchronous inserts. If required, see the setting [`async_insert_deduplicate`](/operations/settings/settings#async-insert-deduplicate).
+Finally, the previous deduplication behavior associated with synchronous inserts into ClickHouse is not enabled by default when using asynchronous inserts. If required, see the setting [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate).
 
 Full details on configuring this feature can be found [here](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), with a deep dive [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse).
 
@@ -642,7 +651,7 @@ Several deployment architectures are possible when using the OTel collector with
 
 In an agent only architecture, users deploy the OTel collector as agents to the edge. These receive traces from local applications (e.g. as a sidecar container) and collect logs from servers and Kubernetes nodes. In this mode, agents send their data directly to ClickHouse.
 
-<img src={require('./images/observability-7.png').default}    
+<img src={observability_7}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '600px'}} />
@@ -661,7 +670,7 @@ Users should consider migrating to a Gateway-based architecture once the number 
 
 OTel collectors can be deployed as Gateway instances to address the above limitations. These provide a standalone service, typically per data center or per region. These receive events from applications (or other collectors in the agent role) via a single OTLP endpoint. Typically a set of gateway instances are deployed, with an out-of-the-box load balancer used to distribute the load amongst them.
 
-<img src={require('./images/observability-8.png').default}    
+<img src={observability_8}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -760,7 +769,7 @@ However, ClickHouse can handle inserting data very quickly - millions of rows pe
 
 However, if you require high delivery guarantees or the ability to replay data (potentially to multiple sources), Kafka can be a useful architectural addition.
 
-<img src={require('./images/observability-9.png').default}    
+<img src={observability_9}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />

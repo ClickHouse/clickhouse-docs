@@ -5,6 +5,9 @@ slug: /use-cases/observability/introduction
 keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
 ---
 
+import observability_1 from '@site/static/images/use-cases/observability/observability-1.png';
+import observability_2 from '@site/static/images/use-cases/observability/observability-2.png';
+
 # Using ClickHouse for Observability
 
 ## Introduction {#introduction}
@@ -13,7 +16,7 @@ This guide is designed for users looking to build their own SQL-based Observabil
 
 ClickHouse alone is not an out-of-the-box solution for Observability. It can, however, be used as a highly efficient storage engine for Observability data, capable of unrivaled compression rates and lightning-fast query response times. In order for users to use ClickHouse within an Observability solution, both a user interface and data collection framework are required. We currently recommend using **Grafana** for visualization of Observability signals and **OpenTelemetry** for data collection (both are officially supported integrations).
 
-<img src={require('./images/observability-1.png').default}    
+<img src={observability_1}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -90,7 +93,7 @@ Each trace consists of several spans, with the initial span associated with the 
 
 Most observability vendors visualize this information as a waterfall, with relative timing shown using horizontal bars of proportional size. For example, in Grafana:
 
-<img src={require('./images/observability-2.png').default}    
+<img src={observability_2}    
   class="image"
   alt="NEEDS ALT"
   style={{width: '1000px'}} />

@@ -49,7 +49,7 @@ Consider the [arXiv dataset](https://www.kaggle.com/datasets/Cornell-University/
 }
 ```
 
-Suppose we wish to make the first value of `versions.created` the main ordering key - ideally under a name `published_date`. This should be either extracted prior to insertion or at insert time using ClickHouse [materialized views](/guides/developer/cascading-materialized-views) or [materialized columns](/sql-reference/statements/alter/column#materialize-column).
+Suppose we wish to make the first value of `versions.created` the main ordering key - ideally under a name `published_date`. This should be either extracted prior to insertion or at insert time using ClickHouse [materialized views](/docs/materialized-view/incremental-materialized-view) or [materialized columns](/sql-reference/statements/alter/column#materialize-column).
 
 Materialized columns represent the simplest means of extracting data at query time and are preferred if the extraction logic can be captured as a simple SQL expression. As an example, the `published_date` can be added to the arXiv schema as a materialized column and defined as an ordering key as follows:
 
@@ -103,7 +103,7 @@ LIMIT 2
 Values of materialized columns are always calculated at insert time and cannot be specified in `INSERT` queries. Materialized columns will, by default, not be returned in a `SELECT *`.  This is to preserve the invariant that the result of a `SELECT *` can always be inserted back into the table using INSERT. This behavior can be disabled by setting `asterisk_include_materialized_columns=1`.
 :::
 
-For more complex filtering and transformation tasks, we recommend using [materialized views](/materialized-view).
+For more complex filtering and transformation tasks, we recommend using [materialized views](/materialized-view/incremental-materialized-view).
 
 ## Static vs dynamic JSON {#static-vs-dynamic-json}
 
@@ -508,7 +508,7 @@ SELECT JSONExtractString(tags, 'holidays') as holidays FROM people
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-Notice how the functions require both a reference to the `String` column `tags` and a path in the JSON to extract. Nested paths require functions to be nested e.g. `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')` which extracts the column `tags.car.year`. The extraction of nested paths can be simplified through the functions [JSON_QUERY](/sql-reference/functions/json-functions.md/#json_queryjson-path) AND [JSON_VALUE](/sql-reference/functions/json-functions.md/#json_valuejson-path).
+Notice how the functions require both a reference to the `String` column `tags` and a path in the JSON to extract. Nested paths require functions to be nested e.g. `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')` which extracts the column `tags.car.year`. The extraction of nested paths can be simplified through the functions [JSON_QUERY](/sql-reference/functions/json-functions#json_query) AND [JSON_VALUE](/sql-reference/functions/json-functions#json_value).
 
 Consider the extreme case with the `arxiv` dataset where we consider the entire body to be a `String`.
 

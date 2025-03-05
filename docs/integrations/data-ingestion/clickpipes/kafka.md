@@ -5,11 +5,25 @@ slug: /integrations/clickpipes/kafka
 sidebar_position: 1
 ---
 
-import KafkaSVG from "../../images/logos/kafka.svg";
-import ConfluentSVG from "../../images/logos/confluent.svg";
-import MskSVG from "../../images/logos/msk.svg";
-import AzureEventHubsSVG from "../../images/logos/azure_event_hubs.svg";
-import WarpStreamSVG from "../../images/logos/warpstream.svg";
+import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
+import Confluentsvg from '@site/static/images/integrations/logos/confluent.svg';
+import Msksvg from '@site/static/images/integrations/logos/msk.svg';
+import Azureeventhubssvg from '@site/static/images/integrations/logos/azure_event_hubs.svg';
+import Warpstreamsvg from '@site/static/images/integrations/logos/warpstream.svg';
+import redpanda_logo from '@site/static/images/integrations/logos/logo_redpanda.png';
+import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
+import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
+import cp_step1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step1.png';
+import cp_step2 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step2.png';
+import cp_step3 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step3.png';
+import cp_step4a from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step4a.png';
+import cp_step4a3 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step4a3.png';
+import cp_step4b from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step4b.png';
+import cp_step5 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step5.png';
+import cp_success from '@site/static/images/integrations/data-ingestion/clickpipes/cp_success.png';
+import cp_remove from '@site/static/images/integrations/data-ingestion/clickpipes/cp_remove.png';
+import cp_destination from '@site/static/images/integrations/data-ingestion/clickpipes/cp_destination.png';
+import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
 
 # Integrating Kafka with ClickHouse Cloud
 ## Prerequisite {#prerequisite}
@@ -19,19 +33,20 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 
 1. Access the SQL Console for your ClickHouse Cloud Service.
 
-  ![ClickPipes service](./images/cp_service.png)
+<img src={cp_service} alt="ClickPipes service" />
+
 
 2. Select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
 
-  ![Select imports](./images/cp_step0.png)
+<img src={cp_step0} alt="Select imports" />
 
 3. Select your data source.
 
-  ![Select data source type](./images/cp_step1.png)
+<img src={cp_step1} alt="Select data source type" />
 
 4. Fill out the form by providing your ClickPipe with a name, a description (optional), your credentials, and other connection details.
 
-  ![Fill out connection details](./images/cp_step2.png)
+<img src={cp_step2} alt="Fill out connection details" />
 
 5. Configure the schema registry. A valid schema is required for Avro streams and optional for JSON. This schema will be used to parse [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent) or validate JSON messages on the selected topic.
 - Avro messages that cannot be parsed or JSON messages that fail validation will generate an error.
@@ -46,19 +61,19 @@ without an embedded schema id, then the specific schema ID or subject must be sp
 
 6. Select your topic and the UI will display a sample document from the topic.
 
-  ![Set data format and topic](./images/cp_step3.png)
+<img src={cp_step3} alt="Set data format and topic" />
 
 7. In the next step, you can select whether you want to ingest data into a new ClickHouse table or reuse an existing one. Follow the instructions in the screen to modify your table name, schema, and settings. You can see a real-time preview of your changes in the sample table at the top.
 
-  ![Set table, schema, and settings](./images/cp_step4a.png)
+<img src={cp_step4a} alt="Set table, schema, and settings" />
 
   You can also customize the advanced settings using the controls provided
 
-  ![Set advanced controls](./images/cp_step4a3.png)
+<img src={cp_step4a3} alt="Set advanced controls" />
 
 8. Alternatively, you can decide to ingest your data in an existing ClickHouse table. In that case, the UI will allow you to map fields from the source to the ClickHouse fields in the selected destination table.
 
-  ![Use and existing table](./images/cp_step4b.png)
+<img src={cp_step4b} alt="Use an existing table" />
 
 9. Finally, you can configure permissions for the internal ClickPipes user.
 
@@ -66,34 +81,34 @@ without an embedded schema id, then the specific schema ID or subject must be sp
     - `Full access`: with the full access to the cluster. It might be useful if you use Materialized View or Dictionary with the destination table.
     - `Only destination table`: with the `INSERT` permissions to the destination table only.
 
-  ![permissions](./images/cp_step5.png)
+<img src={cp_step5} alt="Permissions" />
 
 10. By clicking on "Complete Setup", the system will register you ClickPipe, and you'll be able to see it listed in the summary table.
 
-  ![Success notice](./images/cp_success.png)
+<img src={cp_success} alt="Success notice" />
 
-  ![Remove notice](./images/cp_remove.png)
+<img src={cp_remove} alt="Remove notice" />
 
   The summary table provides controls to display sample data from the source or the destination table in ClickHouse
 
-  ![View destination](./images/cp_destination.png)
+<img src={cp_destination} alt="View destination" />
 
   As well as controls to remove the ClickPipe and display a summary of the ingest job.
 
-  ![View overview](./images/cp_overview.png)
+<img src={cp_overview} alt="View overview" />
 
 11. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source.
 
 ## Supported Data Sources {#supported-data-sources}
 
-|Name|Logo|Type|Status|Description|
-|----|----|----|------|-----------|
-|Apache Kafka|<KafkaSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.|
-|Confluent Cloud|<ConfluentSVG style={{width: '3rem'}} />|Streaming|Stable|Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.|
-|Redpanda|<img src={require('../../images/logos/logo_redpanda.png').default} class="image" alt="Redpanda logo" style={{width: '2.5rem', 'background-color': 'transparent'}}/>|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Redpanda into ClickHouse Cloud.|
-|AWS MSK|<MskSVG style={{width: '3rem', 'height': '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.|
-|Azure Event Hubs|<AzureEventHubsSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud.|
-|WarpStream|<WarpStreamSVG style={{width: '3rem'}} />|Streaming|Stable|Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.|
+| Name                 |Logo|Type| Status          | Description                                                                                          |
+|----------------------|----|----|-----------------|------------------------------------------------------------------------------------------------------|
+| Apache Kafka         |<Kafkasvg class="image" alt="Apache Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.     |
+| Confluent Cloud      |<Confluentsvg class="image" alt="Confluent Cloud logo" style={{width: '3rem'}}/>|Streaming| Stable          | Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.          |
+| Redpanda             |<img src={redpanda_logo} class="image" alt="Redpanda logo" style={{width: '2.5rem', 'background-color': 'transparent'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Redpanda into ClickHouse Cloud.         |
+| AWS MSK              |<Msksvg class="image" alt="AWS MSK logo" style={{width: '3rem', 'height': '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.          |
+| Azure Event Hubs     |<Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud. |
+| WarpStream           |<Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.       |
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
@@ -127,7 +142,7 @@ The following ClickHouse data types are currently supported in ClickPipes:
 ### Avro {#avro}
 #### Supported Avro Data Types {#supported-avro-data-types}
 
-ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `time-millis`, `time-micros`, `local-timestamp-millis`, `local_timestamp-micros`, and `duration`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](../../../interfaces/formats.md#data-types-matching) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes does not check for overflow or precision loss on type conversion.
+ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `time-millis`, `time-micros`, `local-timestamp-millis`, `local_timestamp-micros`, and `duration`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](/interfaces/formats/Avro#data-types-matching) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes does not check for overflow or precision loss on type conversion.
 
 #### Nullable Types and Avro Unions {#nullable-types-and-avro-unions}
 

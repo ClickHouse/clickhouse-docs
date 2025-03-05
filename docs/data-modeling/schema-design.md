@@ -5,6 +5,10 @@ description: Optimizing ClickHouse schema for query performance
 keywords: [schema, schema design, query optimization]
 ---
 
+import stackOverflowSchema from '@site/static/images/data-modeling/stackoverflow-schema.png';
+import schemaDesignTypes from '@site/static/images/data-modeling/schema-design-types.png';
+import schemaDesignIndices from '@site/static/images/data-modeling/schema-design-indices.png';
+
 Understanding effective schema design is key to optimizing ClickHouse performance and includes choices that often involve trade-offs, with the optimal approach depending on the queries being served as well as factors such as data update frequency, latency requirements, and data volume. This guide provides an overview of schema design best practices and data modeling techniques for optimizing ClickHouse performance.
 
 ## Stack Overflow dataset {#stack-overflow-dataset}
@@ -13,21 +17,18 @@ For the examples in this guide, we use a subset of the Stack Overflow dataset. T
 
 > The primary keys and relationships indicated are not enforced through constraints (Parquet is file not table format) and purely indicate how the data is related and the unique keys it possesses.
 
-<img src={require('./images/stackoverflow-schema.png').default}    
-  class='image'
-  alt='Stack Overflow Schema'
-  style={{width: '800px', background: 'none'}} />
+<img src={stackOverflowSchema} class="image" alt="Stack Overflow Schema" style={{width: '800px', background: 'none'}} />
 
 <br />
 
-The Stack Overflow dataset contains a number of related tables. In any data modeling task, we recommend users focus on loading their primary table first. This may not necessarily be the largest table but rather the one on which you expect to receive most analytical queries. This will allow you to familiarize yourself with the main ClickHouse concepts and types, especially important if coming from a predominantly OLTP background. This table may require remodeling as additional tables are added to fully exploit ClickHouse features and obtain optimal performance. 
+The Stack Overflow dataset contains a number of related tables. In any data modeling task, we recommend users focus on loading their primary table first. This may not necessarily be the largest table but rather the one on which you expect to receive most analytical queries. This will allow you to familiarize yourself with the main ClickHouse concepts and types, especially important if coming from a predominantly OLTP background. This table may require remodeling as additional tables are added to fully exploit ClickHouse features and obtain optimal performance.
 
 The above schema is intentionally not optimal for the purposes of this guide.
 
 
 ## Establish initial schema {#establish-initial-schema}
 
-Since the `posts` table will be the target for most analytics queries, we focus on establishing a schema for this table. This data is available in the public S3 bucket `s3://datasets-documentation/stackoverflow/parquet/posts/*.parquet` with a file per year. 
+Since the `posts` table will be the target for most analytics queries, we focus on establishing a schema for this table. This data is available in the public S3 bucket `s3://datasets-documentation/stackoverflow/parquet/posts/*.parquet` with a file per year.
 
 > Loading data from S3 in Parquet format represents the most common and preferred way to load data into ClickHouse. ClickHouse is optimized for processing Parquet and can potentially read and insert 10s of millions of rows from S3 per second.
 
@@ -127,7 +128,7 @@ INSERT INTO posts SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.
 
 ## Optimizing Types {#optimizing-types}
 
-One of the secrets to ClickHouse query performance is compression. 
+One of the secrets to ClickHouse query performance is compression.
 
 Less data on disk means less I/O and thus faster queries and inserts. The overhead of any compression algorithm with respect to CPU will in most cases be out weighted by the reduction in IO. Improving the compression of the data should therefore be the first focus when working on ensuring ClickHouse queries are fast.
 
@@ -141,18 +142,15 @@ The largest initial improvement in compression and query performance can be obta
 - **Avoid Nullable Columns** - By default the above columns have been assumed to be Null. The Nullable type allows queries to determine the difference between an empty and Null value. This creates a separate column of UInt8 type. This additional column has to be processed every time a user works with a nullable column. This leads to additional storage space used and almost always negatively affects query performance. Only use Nullable if there is a difference between the default empty value for a type and Null. For example, a value of 0 for empty values in the `ViewCount` column will likely be sufficient for most queries and not impact results. If empty values should be treated differently, they can often also be excluded from queries with a filter.
 Use the minimal precision for numeric types - ClickHouse has a number of numeric types designed for different numeric ranges and precision. Always aim to minimize the number of bits used to represent a column. As well as integers of different size e.g. Int16, ClickHouse offers unsigned variants whose minimum value is 0. These can allow fewer bits to be used for a column e.g. UInt16 has a maximum value of 65535, twice that of an Int16. Prefer these types over larger signed variants if possible.
 - **Minimal precision for date types** - ClickHouse supports a number of date and datetime types. Date and Date32 can be used for storing pure dates, with the latter supporting a larger date range at the expense of more bits. DateTime and DateTime64 provide support for date times. DateTime is limited to second granularity and uses 32 bits. DateTime64, as the name suggests, uses 64 bits but provides support up to nanosecond granularity. As ever, choose the more coarse version acceptable for queries, minimizing the number of bits needed.
-- **Use LowCardinality** - Numbers, strings, Date or DateTime columns with a low number of unique values can potentially be encoded using the LowCardinality type. This dictionary encodes values, reducing the size on disk. Consider this for columns with less than 10k unique values. 
+- **Use LowCardinality** - Numbers, strings, Date or DateTime columns with a low number of unique values can potentially be encoded using the LowCardinality type. This dictionary encodes values, reducing the size on disk. Consider this for columns with less than 10k unique values.
 FixedString for special cases - Strings which have a fixed length can be encoded with the FixedString type e.g. language and currency codes.  This is efficient when data has the length of precisely N bytes. In all other cases, it is likely to reduce efficiency and LowCardinality is preferred.
-- **Enums for data validation** - The Enum type can be used to efficiently encode enumerated types. Enums can either be 8 or 16 bits, depending on the number of unique values they are required to store. Consider using this if you need either the associated validation at insert time (undeclared values will be rejected) or wish to perform queries which exploit a natural ordering in the Enum values e.g. imagine a feedback column containing user responses `Enum(':(' = 1, ':|' = 2, ':)' = 3)`. 
+- **Enums for data validation** - The Enum type can be used to efficiently encode enumerated types. Enums can either be 8 or 16 bits, depending on the number of unique values they are required to store. Consider using this if you need either the associated validation at insert time (undeclared values will be rejected) or wish to perform queries which exploit a natural ordering in the Enum values e.g. imagine a feedback column containing user responses `Enum(':(' = 1, ':|' = 2, ':)' = 3)`.
 
 > Tip: To find the range of all columns, and the number of distinct values, users can use the simple query `SELECT * APPLY min, * APPLY  max, * APPLY uniq FROM table FORMAT Vertical`. We recommend performing this over a smaller subset of the data as this can be expensive. This query requires numerics to be at least defined as such for an accurate result i.e. not a String.
 
 By applying these simple rules to our posts table, we can identify an optimal type for each column:
 
-<img src={require('./images/schema-design-types.png').default}    
-  class='image'
-  alt='Stack Overflow Schema'
-  style={{width: '1000px'}} />
+<img src={schemaDesignTypes} class="image" alt="Schema Design - Optimized Types" style={{width: '1000px', background: 'none'}} />
 
 <br />
 
@@ -205,14 +203,11 @@ Users coming from OLTP databases often look for the equivalent concept in ClickH
 
 At the scale at which ClickHouse is often used, memory and disk efficiency are paramount. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, then the merged part's primary indexes are also merged. The primary index for a part has one index entry per group of rows - this technique is called sparse indexing.
 
-<img src={require('./images/schema-design-indices.png').default}    
-  class='image'
-  alt='Sparse Indexing in ClickHouse'
-  style={{width: '600px'}} />
+<img src={schemaDesignIndices} class="image" alt="Sparse Indexing in ClickHouse" style={{width: '600px', background: 'none'}} />
 
 <br />
 
-The selected key in ClickHouse will determine not only the index, but also order in which data is written on disk. Because of this, it can dramatically impact compression levels which can in turn affect query performance. An ordering key which causes the values of most columns to be written in contiguous order will allow the selected compression algorithm (and codecs) to compress the data more effectively. 
+The selected key in ClickHouse will determine not only the index, but also order in which data is written on disk. Because of this, it can dramatically impact compression levels which can in turn affect query performance. An ordering key which causes the values of most columns to be written in contiguous order will allow the selected compression algorithm (and codecs) to compress the data more effectively.
 
 > All columns in a table will be sorted based on the value of the specified ordering key, regardless of whether they are included in the key itself. For instance, if `CreationDate` is used as the key, the order of values in all other columns will correspond to the order of values in the `CreationDate` column. Multiple ordering keys can be specified - this will order with the same semantics as an `ORDER BY` clause in a `SELECT` query.
 
@@ -315,7 +310,7 @@ For users interested in the compression improvements achieved by using specific 
 
 ## Next: Data Modelling Techniques {#next-data-modelling-techniques}
 
-Until now, we've migrated only a single table. While this has allowed us to introduce some core ClickHouse concepts, most schemas are unfortunately not this simple. 
+Until now, we've migrated only a single table. While this has allowed us to introduce some core ClickHouse concepts, most schemas are unfortunately not this simple.
 
 In the other guides listed below, we will explore a number of techniques to restructure our wider schema for optimal ClickHouse querying. Throughout this process we aim for `Posts` to remain our central table through which most analytical queries are performed. While other tables can still be queried in isolation, we assume most analytics want to be performed in the context of `posts`.
 
@@ -329,7 +324,7 @@ In order to minimize the use of Joins at query time, users have several tools/ap
 
 - [**Denormalizing data**](/data-modeling/denormalization) - Denormalize data by combining tables and using complex types for non 1:1 relationships. This often involves moving any joins from query time to insert time.
 - [**Dictionaries**](/dictionary) - A ClickHouse specific feature for handling direct joins and key value lookups.
-- [**Incremental Materialized Views**](/materialized-view) - A ClickHouse feature for shifting the cost of a computation from query time to insert time, including the ability to incrementally compute aggregate values.
+- [**Incremental Materialized Views**](/materialized-view/incremental-materialized-view) - A ClickHouse feature for shifting the cost of a computation from query time to insert time, including the ability to incrementally compute aggregate values.
 - [**Refreshable Materialized Views**](/materialized-view/refreshable-materialized-view) - Similar to materialized views used in other database products, this allows the results of a query to be periodically computed and the result cached.
 
 We explore each of these approaches in each guide, highlighting when each is appropriate with an example showing how it can be applied to solving questions for the Stack Overflow dataset.

@@ -1,3 +1,6 @@
+import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
+import connection_details_native from '@site/static/images/_snippets/connection-details-native.png';
+
 To connect to ClickHouse with native TCP you need this information:
 
 - The HOST and PORT: typically, the port is 9440 when using TLS, or 9000 when not using TLS.
@@ -8,10 +11,10 @@ To connect to ClickHouse with native TCP you need this information:
 
 The details for your ClickHouse Cloud service are available in the ClickHouse Cloud console.  Select the service that you will connect to and click **Connect**:
 
-![ClickHouse Cloud service connect button](@site/docs/_snippets/images/cloud-connect-button.png)
+<img src={cloud_connect_button} class="image" alt="ClickHouse Cloud service connect button" />
 
-Choose **Native**, and the details are available in an example `clickhouse-client` command. 
+Choose **Native**, and the details are available in an example `clickhouse-client` command.
 
-![ClickHouse Cloud Native TCP connection details](@site/docs/_snippets/images/connection-details-native.png)
+<img src={connection_details_native} class="image" alt="ClickHouse Cloud Native TCP connection details" />
 
 If you are using self-managed ClickHouse, the connection details are set by your ClickHouse administrator.

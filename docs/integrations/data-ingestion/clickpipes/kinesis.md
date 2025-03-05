@@ -4,6 +4,20 @@ description: Seamlessly connect your Amazon Kinesis data sources to ClickHouse C
 slug: /integrations/clickpipes/kinesis
 ---
 
+import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
+import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
+import cp_step1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step1.png';
+import cp_step2_kinesis from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step2_kinesis.png';
+import cp_step3_kinesis from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step3_kinesis.png';
+import cp_step4a from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step4a.png';
+import cp_step4a3 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step4a3.png';
+import cp_step4b from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step4b.png';
+import cp_step5 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step5.png';
+import cp_success from '@site/static/images/integrations/data-ingestion/clickpipes/cp_success.png';
+import cp_remove from '@site/static/images/integrations/data-ingestion/clickpipes/cp_remove.png';
+import cp_destination from '@site/static/images/integrations/data-ingestion/clickpipes/cp_destination.png';
+import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
+
 # Integrating Amazon Kinesis with ClickHouse Cloud
 ## Prerequisite {#prerequisite}
 You have familiarized yourself with the [ClickPipes intro](./index.md) and setup [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). Follow the [Kinesis Role-Based Access guide](./secure-kinesis.md) for information on how to setup a role that works with ClickHouse Cloud.
@@ -12,35 +26,35 @@ You have familiarized yourself with the [ClickPipes intro](./index.md) and setup
 
 1. Access the SQL Console for your ClickHouse Cloud Service.
 
-  ![ClickPipes service](./images/cp_service.png)
+<img src={cp_service} alt="ClickPipes service" />
 
 2. Select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
 
-  ![Select imports](./images/cp_step0.png)
+<img src={cp_step0} alt="Select imports" />
 
 3. Select your data source.
 
-  ![Select data source type](./images/cp_step1.png)
+<img src={cp_step1} alt="Select data source type" />
 
 4. Fill out the form by providing your ClickPipe with a name, a description (optional), your IAM role or credentials, and other connection details.
 
-  ![Fill out connection details](./images/cp_step2_kinesis.png)
+<img src={cp_step2_kinesis} alt="Fill out connection details" />
 
 5. Select Kinesis Stream and starting offset. The UI will display a sample document from the selected source (Kafka topic, etc). You can also enable Enhanced Fan-out for Kinesis streams to improve the performance and stability of your ClickPipe (More information on Enhanced Fan-out can be found [here](https://aws.amazon.com/blogs/aws/kds-enhanced-fanout))
 
-  ![Set data format and topic](./images/cp_step3_kinesis.png)
+<img src={cp_step3_kinesis} alt="Set data format and topic" />
 
 6. In the next step, you can select whether you want to ingest data into a new ClickHouse table or reuse an existing one. Follow the instructions in the screen to modify your table name, schema, and settings. You can see a real-time preview of your changes in the sample table at the top.
 
-  ![Set table, schema, and settings](./images/cp_step4a.png)
+<img src={cp_step4a} alt="Set table, schema, and settings" />
 
   You can also customize the advanced settings using the controls provided
 
-  ![Set advanced controls](./images/cp_step4a3.png)
+<img src={cp_step4a3} alt="Set advanced controls" />
 
 7. Alternatively, you can decide to ingest your data in an existing ClickHouse table. In that case, the UI will allow you to map fields from the source to the ClickHouse fields in the selected destination table.
 
-  ![Use and existing table](./images/cp_step4b.png)
+<img src={cp_step4b} alt="Use an existing table" />
 
 8. Finally, you can configure permissions for the internal ClickPipes user.
 
@@ -48,21 +62,21 @@ You have familiarized yourself with the [ClickPipes intro](./index.md) and setup
     - `Full access`: with the full access to the cluster. It might be useful if you use Materialized View or Dictionary with the destination table.
     - `Only destination table`: with the `INSERT` permissions to the destination table only.
 
-  ![permissions](./images/cp_step5.png)
+<img src={cp_step5} alt="Permissions" />
 
 9. By clicking on "Complete Setup", the system will register you ClickPipe, and you'll be able to see it listed in the summary table.
 
-  ![Success notice](./images/cp_success.png)
+<img src={cp_success} alt="Success notice" />
 
-  ![Remove notice](./images/cp_remove.png)
+<img src={cp_remove} alt="Remove notice" />
 
   The summary table provides controls to display sample data from the source or the destination table in ClickHouse
 
-  ![View destination](./images/cp_destination.png)
+<img src={cp_destination} alt="View destination" />
 
   As well as controls to remove the ClickPipe and display a summary of the ingest job.
 
-  ![View overview](./images/cp_overview.png)
+<img src={cp_overview} alt="View overview" />
 
 10. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
 

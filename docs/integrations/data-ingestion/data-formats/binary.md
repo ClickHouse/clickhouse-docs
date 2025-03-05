@@ -222,7 +222,7 @@ FORMAT CapnProto
 SETTINGS format_schema = 'schema:PathStats'
 ```
 
-Note that we had to cast the `Date` column as `UInt32` to [match corresponding types](/interfaces/formats.md/#data_types-matching-capnproto).
+Note that we had to cast the `Date` column as `UInt32` to [match corresponding types](/interfaces/formats/CapnProto#data_types-matching-capnproto).
 
 ## Other formats {#other-formats}
 

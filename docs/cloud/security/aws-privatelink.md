@@ -5,6 +5,15 @@ slug: /manage/security/aws-privatelink
 ---
 
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
+import aws_private_link_pecreate from '@site/static/images/cloud/security/aws-privatelink-pe-create.png';
+import aws_private_link_endpoint_settings from '@site/static/images/cloud/security/aws-privatelink-endpoint-settings.png';
+import aws_private_link_select_vpc from '@site/static/images/cloud/security/aws-privatelink-select-vpc-and-subnets.png';
+import aws_private_link_vpc_endpoint_id from '@site/static/images/cloud/security/aws-privatelink-vpc-endpoint-id.png';
+import aws_private_link_endpoints_menu from '@site/static/images/cloud/security/aws-privatelink-endpoints-menu.png';
+import aws_private_link_modify_dnsname from '@site/static/images/cloud/security/aws-privatelink-modify-dns-name.png';
+import pe_remove_private_endpoint from '@site/static/images/cloud/security/pe-remove-private-endpoint.png';
+import aws_private_link_pe_filters from '@site/static/images/cloud/security/aws-privatelink-pe-filters.png';
+import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-privatelink-pe-dns-name.png';
 
 # AWS PrivateLink
 
@@ -43,9 +52,7 @@ Follow these steps to connect your ClickHouse Cloud to your AWS PrivateLink.
 
 In the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink, then open the **Settings** menu. Click on the **Set up private endpoint** button. Copy the **Service name** for which will be used for setting up Private Link.
 
-
-![Private Endpoints](./images/aws-privatelink-pe-create.png)
-
+<img src={aws_private_link_pecreate} alt="Private Endpoints" />
 
 #### Option 2: API {#option-2-api}
 
@@ -90,19 +97,19 @@ Make a note of the `endpointServiceId` and [move onto step 2](#create-a-service-
 
 ### Create a service endpoint {#create-a-service-endpoint}
 
-Next, you need to create a service endpoint using the `endpointServiceId` from previous step. 
+Next, you need to create a service endpoint using the `endpointServiceId` from previous step.
 
 #### Option 1: AWS console {#option-1-aws-console}
 
-Open the the AWS console and Go to **VPC** → **Endpoints** → **Create endpoints**. 
+Open the the AWS console and Go to **VPC** → **Endpoints** → **Create endpoints**.
 
 Select **Other endpoint services** and use the `endpointServiceId` you got from the previous step. Once you're done, click **Verify service**:
 
-![](./images/aws-privatelink-endpoint-settings.png)
+<img src={aws_private_link_endpoint_settings} alt="AWS PrivateLink Endpoint Settings" />
 
 Next, select your VPC and subnets:
 
-![Select VPC and subnets](./images/aws-privatelink-select-vpc-and-subnets.png)
+<img src={aws_private_link_select_vpc} alt="Select VPC and subnets" />
 
 As an optional step, assign Security groups/Tags:
 
@@ -112,7 +119,7 @@ Make sure that ports `8443` and `9440` are allowed in the security group.
 
 After creating the VPC Endpoint, make a note of the `Endpoint ID` value; you'll need it for an upcoming step.
 
-![VPC endpoint ID](@site/docs/cloud/security/images/aws-privatelink-vpc-endpoint-id.png)
+<img src={aws_private_link_vpc_endpoint_id} alt="VPC Endpoint ID" />
 
 #### Option 2: AWS CloudFormation {#option-2-aws-cloudformation}
 
@@ -164,11 +171,11 @@ If you use own DNS resolver, create a `<region code>.vpce.aws.clickhouse.cloud` 
 
 Navigate to **VPC Endpoints**, right click the VPC Endpoint, then select **Modify private DNS name**:
 
-![Endpoints menu](@site/docs/cloud/security/images/aws-privatelink-endpoints-menu.png)
+<img src={aws_private_link_endpoints_menu} alt="AWS PrivateLink Endpoints Menu" />
 
 On the page that opens, select **Enable private DNS names**:
 
-![Modify DNS names](@site/docs/cloud/security/images/aws-privatelink-modify-dns-name.png)
+<img src={aws_private_link_modify_dnsname} alt="Modify DNS Names" />
 
 #### Option 2: AWS CloudFormation {#option-2-aws-cloudformation-1}
 
@@ -198,8 +205,7 @@ To add an endpoint to organization, proceed to the [Add Endpoint ID to service(s
 
 To remove an endpoint, open **Organization details -> Private Endpoints** and click the delete button to remove the endpoint.
 
-![endpoints](./images/pe-remove-private-endpoint.png)
-
+<img src={pe_remove_private_endpoint} alt="Remove Private Endpoint" />
 
 #### Option 2: API {#option-2-api-1}
 
@@ -273,7 +279,7 @@ In the ClickHouse Cloud console, open the service that you would like to connect
 If you want to allow access from an existing PrivateLink connection, use the existing endpoint drop-down menu.
 :::
 
-![Private Endpoints](./images/aws-privatelink-pe-filters.png)
+<img src={aws_private_link_pe_filters} alt="Private Endpoints Filter" />
 
 ### Option 2: API {#option-2-api-2}
 
@@ -342,7 +348,7 @@ The private DNS hostname is only available from your AWS VPC. Do not try to reso
 
 In the ClickHouse Cloud console, navigate to **Settings**. Click on the **Set up private endpoint** button. In the opened flyout, copy the **DNS Name**.
 
-![Private Endpoints](./images/aws-privatelink-pe-dns-name.png)
+<img src={aws_private_link_ped_nsname} alt="Private Endpoint DNS Name" />
 
 ##### Option 2: API {#option-2-api-3}
 

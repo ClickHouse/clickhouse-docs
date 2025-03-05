@@ -1,8 +1,9 @@
 // Important note: When linking to pages, you must link to the file path
+// and NOT the URL slug
+
+// The top bar nav links are defined in src/theme/Navbar/Content/index.js
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
-
-
 const sidebars = {
   docs: [
     {
@@ -309,6 +310,7 @@ const sidebars = {
             "cloud/manage/api/members-api-reference",
             "cloud/manage/api/organizations-api-reference",
             "cloud/manage/api/services-api-reference",
+            "cloud/manage/api/usageCost-api-reference",
           ],
         },
       ],
@@ -338,6 +340,7 @@ const sidebars = {
               collapsed: true,
               link: {type: "doc", id: "cloud/reference/release-notes-index"},
               items: [
+                "cloud/changelogs/changelog-24-12",
                 "cloud/changelogs/changelog-24-10",
                 "cloud/changelogs/changelog-24-8",
                 "cloud/changelogs/changelog-24-6",
@@ -626,8 +629,8 @@ const sidebars = {
               id: "integrations/language-clients/java/index"
             },
             // "integrations/language-clients/java/index",
-            "integrations/language-clients/java/client-v2",
-            "integrations/language-clients/java/jdbc-v2",
+            "integrations/language-clients/java/client",
+            "integrations/language-clients/java/jdbc",
             "integrations/language-clients/java/r2dbc"
           ]
         },
@@ -982,7 +985,9 @@ const sidebars = {
         "managing-data/core-concepts/parts",
         "managing-data/core-concepts/partitions",
         "managing-data/core-concepts/merges",
-        "guides/best-practices/sparse-primary-indexes"
+        "managing-data/core-concepts/shards",
+        "guides/best-practices/sparse-primary-indexes",
+        "managing-data/core-concepts/academic_overview"
       ]
     },
     {
@@ -1170,6 +1175,7 @@ const sidebars = {
       label: "FAQ",
       collapsed: true,
       collapsible: true,
+      link: {type: "doc", id: "about-us/about-faq-index"},
       items: [
         "faq/general/columnar-database",
         "faq/general/dbms-naming",
@@ -1204,6 +1210,7 @@ const sidebars = {
             "deployment-guides/terminology",
             "deployment-guides/horizontal-scaling",
             "deployment-guides/replicated",
+            "deployment-guides/parallel-replicas",
             "architecture/cluster-deployment",
           ]
         },
@@ -1238,6 +1245,7 @@ const sidebars = {
       collapsible: false,
       link: {type: "doc", id: "operations/settings/index"},
       items: [
+        "operations/settings/overview",
         "operations/server-configuration-parameters/settings",
         "operations/settings/composable-protocols",
         "operations/settings/constraints-on-settings",
@@ -1262,6 +1270,7 @@ const sidebars = {
       collapsible: true,
       link: {type: "doc", id: "operations/system-tables/index"},
       items: [
+        "operations/system-tables/overview",
         "operations/system-tables/asynchronous_insert_log",
         "operations/system-tables/asynchronous_inserts",
         "operations/system-tables/asynchronous_loader",

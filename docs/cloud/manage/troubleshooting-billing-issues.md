@@ -4,6 +4,8 @@ slug: /manage/troubleshooting-billing-issues
 title: Troubleshooting Billing Issues
 ---
 
+import trial_expired from '@site/static/images/cloud/manage/trial-expired.png';
+
 # Troubleshooting Billing Issues
 
 ## Fixing non-working payment details {#fixing-non-working-payment-details}
@@ -16,4 +18,4 @@ If you are experiencing issues with your payment details or are unable to add a 
 
 <br />
 
-<img alt='Trial expired' style={{width: '400px'}} src={require('./images/trial-expired.png').default} />
+<img alt='Trial expired' style={{width: '400px'}} src={trial_expired} />

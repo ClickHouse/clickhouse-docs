@@ -7,12 +7,24 @@ description: Tableau can use ClickHouse databases and tables as a data source.
 ---
 import TOCInline from '@theme/TOCInline';
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import tableau_connecttoserver from '@site/static/images/integrations/data-visualization/tableau_connecttoserver.png';
+import tableau_connector_details from '@site/static/images/integrations/data-visualization/tableau_connector_details.png';
+import tableau_connector_dialog from '@site/static/images/integrations/data-visualization/tableau_connector_dialog.png';
+import tableau_newworkbook from '@site/static/images/integrations/data-visualization/tableau_newworkbook.png';
+import tableau_tpcdschema from '@site/static/images/integrations/data-visualization/tableau_tpcdschema.png';
+import tableau_workbook1 from '@site/static/images/integrations/data-visualization/tableau_workbook1.png';
+import tableau_workbook2 from '@site/static/images/integrations/data-visualization/tableau_workbook2.png';
+import tableau_workbook3 from '@site/static/images/integrations/data-visualization/tableau_workbook3.png';
+import tableau_workbook4 from '@site/static/images/integrations/data-visualization/tableau_workbook4.png';
+import tableau_workbook5 from '@site/static/images/integrations/data-visualization/tableau_workbook5.png';
+import tableau_workbook6 from '@site/static/images/integrations/data-visualization/tableau_workbook6.png';
+import tableau_workbook7 from '@site/static/images/integrations/data-visualization/tableau_workbook7.png';
 
 # Connecting Tableau to ClickHouse
 
 ClickHouse offers an official Tableau Connector, featured on
 the [Tableau Exchange](https://exchange.tableau.com/products/1064).
-The connector is based on ClickHouse's advanced [JDBC driver](/integrations/java/jdbc-driver).
+The connector is based on ClickHouse's advanced [JDBC driver](/integrations/language-clients/java/jdbc).
 
 With this connector, Tableau integrates ClickHouse databases and tables as data sources. To enable this functionality,
 follow the setup guide bellow.
@@ -49,7 +61,7 @@ source in Tableau that connects to the **TPCD** database in ClickHouse.
 
 2. From the left-side menu, click on **More** under the **To a Server** section. Search for **ClickHouse by ClickHouse** in the available connectors list:
 
-   ![ClickHouse JDBC](../images/tableau_connecttoserver.png)
+<img alt="ClickHouse JDBC" src={tableau_connecttoserver}/>
 <br/>
 
 :::note
@@ -59,12 +71,14 @@ To solve that, consider upgrading your Tableau Desktop application, or [install 
 
 3. Click on **ClickHouse by ClickHouse**  and the following dialog will pop up:
 
-   ![ClickHouse JDBC Connector Details](../images/tableau_connector_details.png)
+<img alt="ClickHouse JDBC Connector Details" src={tableau_connector_details}/>
+<br/>
  
 4. Click **Install and Restart Tableau**. Restart the application.
 5. After restarting, the connector will have its full name: `ClickHouse JDBC by ClickHouse, Inc.`. When clicking it the following dialog will pop up:
 
-   ![ClickHouse JDBC Connector Details Details](../images/tableau_connector_dialog.png)  
+<img alt="ClickHouse JDBC Connector Details Details" src={tableau_connector_dialog}/>
+<br/>
 
 6. Enter your connection details:
 
@@ -90,11 +104,13 @@ could change, but for now you must use **default** as the database.)
 
 7. Click the **Sign In** button and you should see a new Tableau workbook:
 
-   !["New Workbook"](../images/tableau_newworkbook.png)
+<img alt="New Workbook" src={tableau_newworkbook}/>
+<br/>
 
 8. Select **TPCD** from the **Schema** dropdown and you should see the list of tables in **TPCD**:
 
-   !["Select TPCD for the Schema"](../images/tableau_tpcdschema.png)
+<img alt="Select TPCD for the Schema" src={tableau_tpcdschema}/>
+<br/>
 
 You are now ready to build some visualizations in Tableau!
 
@@ -104,26 +120,29 @@ Now that have a ClickHouse data source configured in Tableau, let's visualize th
 
 1. Drag the **CUSTOMER** table onto the workbook. Notice the columns appear, but the data table is empty:
 
-   ![""](../images/tableau_workbook1.png)
+<img alt="Tableau workbook" src={tableau_workbook1}/>
+<br/>
 
 2. Click the **Update Now** button and 100 rows from **CUSTOMER** will populate the table.
 
 
 3. Drag the **ORDERS** table into the workbook, then set **Custkey** as the relationship field between the two tables:
 
-   ![""](../images/tableau_workbook2.png)
+<img alt="Tableau workbook" src={tableau_workbook2}/>
+<br/>
 
 4. You now have the **ORDERS** and **LINEITEM** tables associated with each other as your data source, so you can use
    this relationship to answer questions about the data. Select the **Sheet 1** tab at the bottom of the workbook.
 
-   ![""](../images/tableau_workbook3.png)
-
+<img alt="Tableau workbook" src={tableau_workbook3}/>
+<br/>
 
 5. Suppose you want to know how many specific items were ordered each year. Drag **OrderDate** from **ORDERS** into the
    **Columns** section (the horizontal field), then drag **Quantity** from **LINEITEM** into the **Rows**. Tableau will
    generate the following line chart:
 
-   ![""](../images/tableau_workbook4.png)
+<img alt="Tableau workbook" src={tableau_workbook4}/>
+<br/>
 
 Not a very exciting line chart, but the dataset was generated by a script and built for testing query performance, so
 you will notice there is not a lot of variations in the simulated orders of the TCPD data.
@@ -137,17 +156,20 @@ you will notice there is not a lot of variations in the simulated orders of the 
 
 You should see the following:
 
-![""](../images/tableau_workbook5.png)
+<img alt="Tableau workbook" src={tableau_workbook5}/>
+<br/>
 
 7. The **Abc** values are just filling in the space until you drag a metric onto the table. Drag **Totalprice** from *
    *ORDERS** onto the table. Notice the default calculation is to **SUM** the **Totalprices**:
 
-   ![""](../images/tableau_workbook6.png)
+<img alt="Tableau workbook" src={tableau_workbook6}/>
+<br/>
 
 8. Click on **SUM** and change the **Measure** to **Average**. From the same dropdown menu, select **Format** change the
    **Numbers** to **Currency (Standard)**:
 
-   ![""](../images/tableau_workbook7.png)
+<img alt="Tableau workbook" src={tableau_workbook7}/>
+<br/>
 
 Well done! You have successfully connected Tableau to ClickHouse, and you have opened up a whole world of possibilities
 for analyzing and visualizing your ClickHouse data.
@@ -167,10 +189,8 @@ In case you use an outdated Tableau Desktop version that doesn't include the con
 For more guidance on optimizing your Tableau-ClickHouse integration, 
 please visit [Connection Tips](/integrations/tableau/connection-tips) and [Analysis Tips](/integrations/tableau/analysis-tips).
 
-
 ## Tests {#tests}
 The connector is being tested with the [TDVT framework](https://tableau.github.io/connector-plugin-sdk/docs/tdvt) and currently maintains a 97% coverage ratio.
-
 
 ## Summary {#summary}
 You can connect Tableau to ClickHouse using the generic ODBC/JDBC ClickHouse driver. However, this

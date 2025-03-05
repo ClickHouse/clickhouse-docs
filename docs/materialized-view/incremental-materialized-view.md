@@ -3,7 +3,10 @@ slug: /materialized-view/incremental-materialized-view
 title: Incremental Materialized View
 description: How to use incremental materialized views to speed up queries
 keywords: [incremental materialized views, speed up queries, query optimization]
+score: 10000
 ---
+
+import materializedViewDiagram from '@site/static/images/materialized-view/materialized-view-diagram.png';
 
 # Incremental Materialized Views
 
@@ -15,11 +18,10 @@ The principal motivation for materialized views is that the results inserted int
 
 Materialized views in ClickHouse are updated in real time as data flows into the table they are based on, functioning more like continually updating indexes. This is in contrast to other databases where materialized views are typically static snapshots of a query that must be refreshed (similar to ClickHouse [refreshable materialized views](/sql-reference/statements/create/view#refreshable-materialized-view)).
 
-
-<img src={require('./images/materialized-view-diagram.png').default}    
-class='image'
-alt='Materialized view diagram'
-style={{width: '500px'}} />
+<img src={materializedViewDiagram}
+     class="image"
+     alt="Materialized view diagram"
+     style={{width: '500px'}} />
 
 ## Example {#example}
 
@@ -409,7 +411,7 @@ In this example, our materialized view can be very simple, selecting only the `P
 CREATE TABLE comments_posts_users (
   PostId UInt32,
   UserId Int32
-) ENGINE = MergeTree ORDER BY UserId 
+) ENGINE = MergeTree ORDER BY UserId
 
 
 CREATE TABLE comments_null AS comments

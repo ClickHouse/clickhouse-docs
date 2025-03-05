@@ -30,6 +30,8 @@ python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/getting-started/example-datasets" --md="docs/getting-started/index.md" --ignore images
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/sql-reference/aggregate-functions/reference" --md="docs/sql-reference/aggregate-functions/reference/index.md"
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/sql-reference/table-functions" --md="docs/sql-reference/table-functions/index.md"
+python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/chdb/guides" --md="docs/chdb/guides/index.md" --ignore images
+python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/cloud/manage/jan2025_faq" --md="docs/cloud/manage/jan2025_faq/index.md" --ignore images
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/cloud/changelogs" --md="docs/cloud/reference/release-notes-index.md"
 deactivate
 rm -r venv

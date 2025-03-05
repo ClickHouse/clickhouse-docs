@@ -5,6 +5,9 @@ description: Data modeling for migrating from PostgreSQL to ClickHouse
 keywords: [postgres, postgresql, migrate, migration, data modeling]
 ---
 
+import postgres_partitions from '@site/static/images/migrations/postgres-partitions.png';
+import postgres_projections from '@site/static/images/migrations/postgres-projections.png';
+
 > This is **Part 3** of a guide on migrating from PostgreSQL to ClickHouse. This content can be considered introductory, with the aim of helping users deploy an initial functional system that adheres to ClickHouse best practices. It avoids complex topics and will not result in a fully optimized schema; rather, it provides a solid foundation for users to build a production system and base their learning.
 
 We recommend users migrating from Postgres read [the guide for modeling data in ClickHouse](/data-modeling/schema-design). This guide uses the same Stack Overflow dataset and explores multiple approaches using ClickHouse features.
@@ -17,10 +20,7 @@ In ClickHouse, partitioning is specified on a table when it is initially defined
 
 <br />
 
-<img src={require('../images/postgres-partitions.png').default}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '600px'}} />
+<img src={postgres_partitions} class="image" alt="PostgreSQL partitions to ClickHouse partitions" style={{width: '600px'}} />
 
 <br />
 
@@ -73,7 +73,7 @@ WHERE `table` = 'posts'
 └───────────┘
 
 17 rows in set. Elapsed: 0.002 sec.
-	
+
 	ALTER TABLE posts
 	(DROP PARTITION '2008')
 
@@ -86,11 +86,11 @@ Ok.
 
 ## Recommendations for Partitions {#recommendations-for-partitions}
 
-Users should consider partitioning a data management technique. It is ideal when data needs to be expired from the cluster when operating with time series data e.g. the oldest partition can [simply be dropped](/sql-reference/statements/alter/partition#alter_drop-partition).
+Users should consider partitioning a data management technique. It is ideal when data needs to be expired from the cluster when operating with time series data e.g. the oldest partition can [simply be dropped](/sql-reference/statements/alter/partition#drop-partitionpart).
 
-**Important:** Ensure your partitioning key expression does not result in a high cardinality set i.e. creating more than 100 partitions should be avoided. For example, do not partition your data by high cardinality columns such as client identifiers or names. Instead, make a client identifier or name the first column in the ORDER BY expression. 
+**Important:** Ensure your partitioning key expression does not result in a high cardinality set i.e. creating more than 100 partitions should be avoided. For example, do not partition your data by high cardinality columns such as client identifiers or names. Instead, make a client identifier or name the first column in the ORDER BY expression.
 
-> Internally, ClickHouse [creates parts](/optimize/sparse-primary-indexes#clickhouse-index-design) for inserted data. As more data is inserted, the number of parts increases. In order to prevent an excessively high number of parts, which will degrade query performance (more files to read), parts are merged together in a background asynchronous process. If the number of parts exceeds a pre-configured limit, then ClickHouse will throw an exception on insert - as a "too many parts" error. This should not happen under normal operation and only occurs if ClickHouse is misconfigured or used incorrectly e.g. many small inserts.
+> Internally, ClickHouse [creates parts](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design) for inserted data. As more data is inserted, the number of parts increases. In order to prevent an excessively high number of parts, which will degrade query performance (more files to read), parts are merged together in a background asynchronous process. If the number of parts exceeds a pre-configured limit, then ClickHouse will throw an exception on insert - as a "too many parts" error. This should not happen under normal operation and only occurs if ClickHouse is misconfigured or used incorrectly e.g. many small inserts.
 
 > Since parts are created per partition in isolation, increasing the number of partitions causes the number of parts to increase i.e. it is a multiple of the number of partitions. High cardinality partitioning keys can, therefore, cause this error and should be avoided.
 
@@ -98,9 +98,9 @@ Users should consider partitioning a data management technique. It is ideal when
 
 Postgres allows for the creation of multiple indices on a single table, enabling optimization for a variety of access patterns. This flexibility allows administrators and developers to tailor database performance to specific queries and operational needs. ClickHouse’s concept of projections, while not fully analogous to this, allows users to specify multiple `ORDER BY` clauses for a table.
 
-In ClickHouse [data modeling docs](/data-modeling/schema-design), we explore how materialized views can be used in ClickHouse to pre-compute aggregations, transform rows, and optimize queries for different access patterns.  
+In ClickHouse [data modeling docs](/data-modeling/schema-design), we explore how materialized views can be used in ClickHouse to pre-compute aggregations, transform rows, and optimize queries for different access patterns.
 
-For the latter of these, we provided [an example](/materialized-view#lookup-table) where the materialized view sends rows to a target table with a different ordering key than the original table receiving inserts.
+For the latter of these, we provided [an example](/materialized-view/incremental-materialized-view#lookup-table) where the materialized view sends rows to a target table with a different ordering key than the original table receiving inserts.
 
 For example, consider the following query:
 
@@ -208,14 +208,11 @@ WHERE UserId = 8592047
 
 ## When to use projections {#when-to-use-projections}
 
-Projections are an appealing feature for new users as they are automatically maintained as data is inserted. Furthermore, queries can just be sent to a single table where the projections are exploited where possible to speed up the response time. 
+Projections are an appealing feature for new users as they are automatically maintained as data is inserted. Furthermore, queries can just be sent to a single table where the projections are exploited where possible to speed up the response time.
 
 <br />
 
-<img src={require('../images/postgres-projections.png').default}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '600px'}} />
+<img src={postgres_projections} class="image" alt="PostgreSQL projections in ClickHouse" style={{width: '600px'}} />
 
 <br />
 
