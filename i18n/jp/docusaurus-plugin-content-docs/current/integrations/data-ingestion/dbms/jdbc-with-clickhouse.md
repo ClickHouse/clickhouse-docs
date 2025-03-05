@@ -48,7 +48,7 @@ ClickHouse JDBCブリッジを使用する最も簡単な方法は、ClickHouse�
 mkdir ~/clickhouse-jdbc-bridge
 ```
 
-次に、そのフォルダーに< a href="https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/" target="_blank">現在のバージョン</a>のClickHouse JDBCブリッジをダウンロードします：
+次に、そのフォルダーに <a href="https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/" target="_blank">現在のバージョン</a> のClickHouse JDBCブリッジをダウンロードします：
 
 ```bash
 cd ~/clickhouse-jdbc-bridge

@@ -5,7 +5,7 @@ keywords: [clickhouse, python, client, connect, integrate]
 slug: /integrations/python
 description: ClickHouseにPythonを接続するためのClickHouse Connectプロジェクトスイート
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 # PythonとClickHouse Connectの統合
 ## はじめに {#introduction}

@@ -7,7 +7,7 @@ slug: /integrations/go
 description: Goクライアントは、Goの標準database/sqlインターフェースまたは最適化されたネイティブインターフェースを使用してClickHouseに接続することを可能にします。
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 
 # ClickHouse Go
 ## シンプルな例 {#a-simple-example}

@@ -5,7 +5,7 @@ keywords: [clickhouse, js, JavaScript, NodeJS, web, browser, Cloudflare, workers
 slug: /integrations/javascript
 description: ClickHouseに接続するための公式JSクライアント。
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 # ClickHouse JS

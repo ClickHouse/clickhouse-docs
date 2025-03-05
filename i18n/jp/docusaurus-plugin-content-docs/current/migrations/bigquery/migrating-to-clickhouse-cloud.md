@@ -16,13 +16,14 @@ import bigquery_9 from '@site/static/images/migrations/bigquery-9.png';
 import bigquery_10 from '@site/static/images/migrations/bigquery-10.png';
 import bigquery_11 from '@site/static/images/migrations/bigquery-11.png';
 import bigquery_12 from '@site/static/images/migrations/bigquery-12.png';
+
 ## なぜClickHouse Cloudを選ぶべきか？ {#why-use-clickhouse-cloud-over-bigquery}
 
 TL;DR: ClickHouseは、現代のデータ分析においてBigQueryよりも速く、安価で、より強力だからです。
 
 <br />
 
-<img src={bigquery_2}    
+<img src={bigquery_2}
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -35,7 +36,7 @@ BigQueryからClickHouse Cloudへの典型的な移行を示すためのサン�
 
 <br />
 
-<img src={bigquery_3}    
+<img src={bigquery_3}
   class="image"
   alt="NEEDS ALT"
   style={{width: '1000px'}} />
@@ -59,7 +60,7 @@ BigQueryは、Googleのオブジェクトストレージ（GCS）へのデータ
 
 <br />
 
-<img src={bigquery_4}    
+<img src={bigquery_4}
   class="image"
   alt="NEEDS ALT"
   style={{width: '600px'}} />
@@ -164,7 +165,7 @@ BigQueryとは異なり、ClickHouseは主キー列値に基づいて[sparseな�
 
 <br />
 
-<img src={bigquery_5}    
+<img src={bigquery_5}
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -190,7 +191,7 @@ ClickHouseでは、テーブルが最初に定義される際に[`PARTITION BY`]
 
 <br />
 
-<img src={bigquery_6}    
+<img src={bigquery_6}
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -245,7 +246,7 @@ WHERE `table` = 'posts'
 └───────────┘
 
 17 rows in set. Elapsed: 0.002 sec.
-	
+
 	ALTER TABLE posts
 	(DROP PARTITION '2008')
 
@@ -377,7 +378,7 @@ WHERE UserId = 8592047
 
 <br />
 
-<img src={bigquery_7}    
+<img src={bigquery_7}
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -407,7 +408,7 @@ WHERE UserId = 8592047
 
 _BigQuery_
 
-<img src={bigquery_8}    
+<img src={bigquery_8}
   class="image"
   alt="NEEDS ALT"
   style={{width: '500px'}} />
@@ -445,7 +446,7 @@ _BigQuery_
 
 <br />
 
-<img src={bigquery_9}    
+<img src={bigquery_9}
   class="image"
   alt="NEEDS ALT"
   style={{width: '400px'}} />
@@ -484,14 +485,14 @@ _BigQuery_
 
 <br />
 
-<img src={bigquery_10}    
+<img src={bigquery_10}
   class="image"
   alt="NEEDS ALT"
   style={{width: '500px'}} />
 
 <br />
 
-<img src={bigquery_11}    
+<img src={bigquery_11}
   class="image"
   alt="NEEDS ALT"
   style={{width: '500px'}} />
@@ -550,7 +551,7 @@ _BigQuery_
 
 <br />
 
-<img src={bigquery_12}    
+<img src={bigquery_12}
   class="image"
   alt="NEEDS ALT"
   style={{width: '500px'}} />
