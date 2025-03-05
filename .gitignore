@@ -55,3 +55,5 @@ docs/whats-new/changelog/index.md
 
 # Don't ignore generated table of contents files
 !toc.json
+**.translated
+**.translate

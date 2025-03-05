@@ -14,7 +14,8 @@ from openai import OpenAI
 from concurrent.futures import ThreadPoolExecutor
 
 TRANSLATE_EXCLUDED_FILES = {"about-us/adopters.md", "index.md", "integrations/language-clients/java/jdbc-v1.md"}
-TRANSLATE_EXCLUDED_FOLDERS = {"whats-new", "changelogs", "ru", "zh"}
+TRANSLATE_EXCLUDED_FOLDERS = {"whats-new", "changelogs"}
+IGNORE_FOLDERS = {"ru", "zh"}
 
 client = OpenAI(
     api_key=os.environ.get("OPENAI_API_KEY"),
@@ -79,6 +80,7 @@ def translate_text(config, text, model="gpt-4o-mini"):
             - Ensure that no content, links, explicit heading ids (denoted by {{#my-explicit-id}}), or references are omitted or altered during translation, preserving the same amount of information as the original text. 
             - Do not translate code, URLs, or any links within markdown. Mark down links must be preserved and never modified. Urls in text should be surrounded by white space and have never have adjacent {language} characters.
             - Ensure the markdown is MDX 3 compatible - escaping < and > with &lt; and &gt; and avoiding the creation of unclosed xml tags.
+            - Do not add new code delimiters which are not present in the original content e.g. '```html', even if the content appears to contain this type.
             - Do not translate terms which indicate setting names. These are denoted by lower case and underscore e.g. live_view_heartbeat_interval.
             - This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. 
             - Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}.
@@ -108,14 +110,15 @@ def split_text(text, input_file_path, max_chunk_size=MAX_CHUNK_SIZE):
 
     chunks = []
     current_chunk = ""
-
     for node in nodes:
         node_text = node.text
         if len(current_chunk) + len(node_text) > max_chunk_size:
             chunks.append(current_chunk.strip())
-            if len(node_text)  > max_chunk_size:
-                print(f"WARNING: too long text for ${input_file_path} and no clear split")
-            current_chunk = node_text
+            if len(node_text)  > max_chunk_size: # can happen if no obvious header splits
+                print(f"Error: unable to split ${input_file_path} - no clear split")
+                os.exit(1)
+            else:
+                current_chunk = node_text
         else:
             current_chunk += "\n" + node_text
 
@@ -136,8 +139,9 @@ def translate_file(config, input_file_path, output_file_path, model):
         num_chunk = math.ceil(len(original_text) / MAX_CHUNK_SIZE)
         count = 1
         translated_text = ""
-        for chunk in split_text(original_text, input_file_path, MAX_CHUNK_SIZE):
-            print(f" - start [{count}/{num_chunk}], [{input_file_path}]")
+        chunks = split_text(original_text, input_file_path, MAX_CHUNK_SIZE)
+        for chunk in chunks:
+            print(f" - start [{count}/{len(chunks)}], [{input_file_path}]")
             translated_chunk = translate_text(config, chunk, model)
             if translated_chunk:
                 if translated_chunk.startswith("```markdown"):
@@ -148,10 +152,19 @@ def translate_file(config, input_file_path, output_file_path, model):
                 print(f"failed to translate a chunk: [{input_file_path}]")
                 return
 
+        c=0
+        bt = False
         with open(output_file_path, "w", encoding="utf-8") as output_file:
-            for line in translated_text.splitlines():
+            lines = translated_text.splitlines()
+            for line in lines:
+                c += 1
+                if c == 1 and line.startswith("```"): # llm can add backticks
+                    bt = True
+                    continue
                 if line.startswith("# "):
                     output_file.write("\n")  # ensures import statements have a new line after them
+                if c == len(lines) and line == "```" and bt: # drop ending bts
+                    continue
                 output_file.write(line + "\n")
 
         # Rename output file with .translate suffix to .translated
@@ -167,24 +180,33 @@ def translate_file(config, input_file_path, output_file_path, model):
     end_time = time.time()
     duration = end_time - start_time
     print(
-        f"finished translation: input[{input_file_path}], output[{output_file_path}], duration seconds[{duration:.2f}]")
+        f"finished translation: input[{input_file_path}], output[{output_file_path}d], duration seconds[{duration:.2f}]")
 
 
 def translate_docs_folder(config, input_folder, output_folder, model="gpt-4o-mini", overwrite=False):
+    # tracks all the files which should have translations
+    files_translated = set()
     with ThreadPoolExecutor(max_workers=5) as executor:
         futures = []
         for root, _, files in os.walk(input_folder):
             relative_folder_path = os.path.relpath(root, input_folder)
+            if any(relative_folder_path.startswith(ignore) for ignore in IGNORE_FOLDERS):
+                print(f"Ignoring folder: {relative_folder_path}")
+                continue
             if any(excluded in relative_folder_path for excluded in TRANSLATE_EXCLUDED_FOLDERS):
                 print(f"Skipping translation due to excluded folder target: {relative_folder_path}")
                 shutil.copytree(os.path.join(input_folder, relative_folder_path),
                                 os.path.join(output_folder, relative_folder_path), dirs_exist_ok=True)
+                for file in files:
+                    input_file_path = os.path.join(root, file)
+                    relative_path = os.path.relpath(input_file_path, input_folder)
+                    files_translated.add(os.path.join(output_folder, relative_path))
                 continue
-
             for file in files:
                 input_file_path = os.path.join(root, file)
                 relative_path = os.path.relpath(input_file_path, input_folder)
                 if file.endswith((".md", ".mdx")):
+                    files_translated.add(os.path.join(output_folder, relative_path))
                     current_hash = hash_file(input_file_path)
                     if os.path.exists(os.path.join(output_folder, relative_path)):
                         new_hash = read_file_hash(f"{os.path.join(output_folder, relative_path)}.hash")
@@ -210,16 +232,17 @@ def translate_docs_folder(config, input_folder, output_folder, model="gpt-4o-min
                     # Submit the translation task to be run in parallel
                     futures.append(executor.submit(translate_file, config, input_file_path, output_file_path, model))
                 elif not file.endswith(".DS_Store"):
-                    print(f"WARNING: Copying file {relative_path}")
                     # symlink these files as we want to update in a single place
                     try:
                         output_file_path = os.path.join(output_folder, relative_path)
+                        files_translated.add(output_file_path)
                         if os.path.exists(output_file_path):
                             if overwrite:
                                 os.remove(output_file_path)  # Remove existing file/link before creating symlink
                             else:
                                 continue
                         os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
+                        print(f"WARNING: Copying file {relative_path}")
                         shutil.copy(input_file_path, output_file_path)
                         print(f" - Copied file: {output_file_path} -> {input_file_path}")
                     except OSError as e:
@@ -228,6 +251,7 @@ def translate_docs_folder(config, input_folder, output_folder, model="gpt-4o-min
         # Wait for all futures to complete
         for future in futures:
             future.result()
+    return files_translated
 
 
 def rename_translated_files(output_folder):
@@ -287,6 +311,24 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 default_input_folder = os.path.abspath(os.path.join(script_dir, "../../docs/"))
 
 
+#removes files which no longer exist in source
+def remove_old_files(files_translated, output_folder):
+    current_files = set()
+    for root, _, files in os.walk(output_folder):
+        for file in files:
+            input_file_path = os.path.join(root, file)
+            relative_path = os.path.relpath(input_file_path, output_folder)
+            if not file.endswith(".DS_Store") and not file.endswith(".hash"):
+                current_files.add(os.path.join(output_folder, relative_path))
+    files_to_remove = current_files - files_translated
+    # Remove the unnecessary files
+    for file_path in files_to_remove:
+        try:
+            os.remove(file_path)
+            print(f"Removed old file: {file_path}")
+        except OSError as e:
+            print(f"Error removing file {file_path}: {e}")
+
 def main():
     parser = argparse.ArgumentParser(description="Translate Markdown files in a folder.")
     parser.add_argument(
@@ -301,15 +343,18 @@ def main():
     parser.add_argument("--model", default="gpt-4o-mini", help="Specify the OpenAI model to use for translation")
     parser.add_argument("--force_overwrite", action="store_true",
                         help="Overwrite existing translated files even if not changed")
+    parser.add_argument("--keep_old_files", action="store_true",
+                        help="Keep translated files even if the original no longer exists")
 
     args = parser.parse_args()
 
     config = load_config(args.config)
     # translate_plugin_data(args.output_folder, config, model=args.model)
-    translate_docs_folder(config, args.input_folder,
+    files_translated = translate_docs_folder(config, args.input_folder,
                           os.path.join(args.output_folder, "docusaurus-plugin-content-docs/current"),
                           args.model, overwrite=args.force_overwrite)
     rename_translated_files(args.output_folder)
+    remove_old_files(files_translated, os.path.join(args.output_folder, "docusaurus-plugin-content-docs/current"))
 
 
 if __name__ == "__main__":
