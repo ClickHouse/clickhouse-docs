@@ -1018,7 +1018,7 @@ ClickHouse selected only 39 index marks, instead of 1076 when generic exclusion 
 Note that the additional table is optimized for speeding up the execution of our example query filtering on URLs.
 
 
-Similar to the [bad performance](/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient) of that query with our [original table](#a-table-with-a-primary-key), our [example query filtering on `UserIDs`](#the-primary-index-is-used-for-selecting-granules) will not run very effectively with the new additional table, because UserID is now the second key column in the primary index of that table and therefore ClickHouse will use generic exclusion search for granule selection, which is [not very effective for similarly high cardinality](/guides/best-practices/sparse-primary-indexes#generic-exclusion-search-algorithm) of UserID and URL.
+Similar to the [bad performance](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient) of that query with our [original table](#a-table-with-a-primary-key), our [example query filtering on `UserIDs`](#the-primary-index-is-used-for-selecting-granules) will not run very effectively with the new additional table, because UserID is now the second key column in the primary index of that table and therefore ClickHouse will use generic exclusion search for granule selection, which is [not very effective for similarly high cardinality](/guides/best-practices/sparse-primary-indexes#generic-exclusion-search-algorithm) of UserID and URL.
 Open the details box for specifics.
 
 <details>
