@@ -1,12 +1,12 @@
 ---
-title: Parquetファイルのクエリの仕方
+title: Parquetファイルのクエリ方法
 sidebar_label: Parquetファイルのクエリ
 slug: /chdb/guides/querying-parquet
 description: chDBを使用してParquetファイルをクエリする方法を学びます。
 keywords: [chdb, parquet]
 ---
 
-世界のデータの多くはAmazon S3バケットに保存されています。
+世界中のデータの多くはAmazon S3バケットに存在しています。
 このガイドでは、chDBを使用してそのデータをクエリする方法を学びます。
 
 ## セットアップ {#setup}
@@ -19,37 +19,37 @@ source .venv/bin/activate
 ```
 
 次に、chDBをインストールします。
-バージョン2.0.2以上を持っていることを確認してください：
+バージョン2.0.2以上であることを確認してください：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-次はIPythonをインストールします：
+次に、IPythonをインストールします：
 
 ```bash
 pip install ipython
 ```
 
-このガイドの残りの部分でコマンドを実行するために、`ipython`を使用します。起動するには次のコマンドを実行します：
+これからのガイドのコマンドを実行するために、`ipython`を使用します。以下のように実行して起動できます：
 
 ```bash
 ipython
 ```
 
-また、Pythonスクリプトや好みのノートブックでコードを使用することもできます。
+また、Pythonスクリプトやお気に入りのノートブックでコードを使用することも可能です。
 
-## Parquetメタデータの探査 {#exploring-parquet-metadata}
+## Parquetメタデータの探索 {#exploring-parquet-metadata}
 
-[Amazonレビュー](/getting-started/example-datasets/amazon-reviews)データセットからParquetファイルを探査してみましょう。
-まず、`chDB`をインストールしましょう：
+まず、[Amazonレビュー](/getting-started/example-datasets/amazon-reviews)データセットのParquetファイルを探索します。
+その前に、`chDB`をインストールしましょう：
 
 ```python
 import chdb
 ```
 
-Parquetファイルをクエリする際、[`ParquetMetadata`](/interfaces/formats#parquetmetadata-data-format-parquet-metadata)入力フォーマットを使用することで、ファイルの内容ではなくParquetメタデータを返すことができます。
-このフォーマットを使用して返されるフィールドを見るために、`DESCRIBE`句を使ってみましょう：
+Parquetファイルをクエリするときは、ファイルの内容ではなくParquetメタデータを返すために、[`ParquetMetadata`](/interfaces/formats/ParquetMetadata)入力フォーマットを使用できます。
+このフォーマットを使用したときに返されるフィールドを見るために`DESCRIBE`句を使いましょう：
 
 ```python
 query = """
@@ -76,7 +76,7 @@ row_groups	Array(Tuple(num_columns UInt64, num_rows UInt64, total_uncompressed_s
 ```
 
 このファイルのメタデータを見てみましょう。
-`columns`と`row_groups`には多くの属性を含むタプルの配列が含まれているため、今のところそれらは除外します。
+`columns`と`row_groups`は多くのプロパティを含むタプルの配列を含んでいるため、今はそれらを除外します。
 
 ```python
 query = """
@@ -102,11 +102,10 @@ total_uncompressed_size: 14615827169
 total_compressed_size:   9272262304
 ```
 
-この出力から、このParquetファイルには4,000万行以上があり、42の行グループに分かれており、各行に15のカラムがあります。
-行グループはデータを行に水平に論理的にパーティション分けしたものです。
-各行グループには関連するメタデータがあり、クエリツールはそのメタデータを利用してファイルを効率的にクエリできます。
+この出力から、このParquetファイルには4,000万以上の行があり、42の行グループに分かれていることがわかります。各行には15のカラムのデータがあります。
+行グループはデータの論理的な水平方向のパーティショニングであり、各行グループには関連するメタデータがあり、クエリツールはそのメタデータを利用してファイルを効率的にクエリできます。
 
-行グループの1つを見てみましょう：
+行グループの一つを見てみましょう：
 
 ```python
 query = """
@@ -152,7 +151,7 @@ chdb.query(query, 'DataFrame')
 ## Parquetファイルのクエリ {#querying-parquet-files}
 
 次に、ファイルの内容をクエリしてみましょう。
-上記のクエリを調整して`ParquetMetadata`を削除し、すべてのレビューの中で最も人気のある`star_rating`を計算してみます：
+上記のクエリを調整して`ParquetMetadata`を取り除き、全レビューの中で最も人気のある`star_rating`を計算します：
 
 ```python
 query = """
@@ -176,5 +175,5 @@ chdb.query(query, 'DataFrame')
 4            5  27078664                   27.08 million
 ```
 
-興味深いことに、5つ星のレビューは他のすべての評価を合わせたよりも多く存在します！
-どうやら人々はAmazonの製品が好きなようです、または、もしそうでなければ、評価を提出しないだけのようです。
+興味深いことに、5つ星のレビューは他の評価の合計よりも多いですね！
+アマゾンの製品が好きな人が多いのか、それとも嫌いな場合は評価を投稿しないだけなのかもしれません。

@@ -110,11 +110,11 @@ We are introducing a new vertical scaling mechanism for compute replicas, which 
 
 ### Horizontal scaling (GA) {#horizontal-scaling-ga}
 
-Horizontal scaling is now Generally Available. Users can add additional replicas to scale out their service through the APIs and the cloud console. Please refer to the [documentation](/manage/scaling#self-serve-horizontal-scaling) for information.
+Horizontal scaling is now Generally Available. Users can add additional replicas to scale out their service through the APIs and the cloud console. Please refer to the [documentation](/manage/scaling#manual-horizontal-scaling) for information.
 
 ### Configurable backups {#configurable-backups}
 
-We now support the ability for customers to export backups to their own cloud account; please refer to the [documentation](/cloud/manage/backups#configurable-backups) for additional information.
+We now support the ability for customers to export backups to their own cloud account; please refer to the [documentation](/cloud/manage/backups/configurable-backups) for additional information.
 
 ### Managed upgrade improvements {#managed-upgrade-improvements}
 
@@ -417,7 +417,7 @@ Perhaps one of our most requested features: you can now export [Prometheus](http
   src={prometheous} />
 
 ### Other features: {#other-features}
-- [Configurable backups](/cloud/manage/backups#configurable-backups) to configure custom backup policies like frequency, retention, and schedule are now Generally Available.
+- [Configurable backups](/cloud/manage/backups/configurable-backups) to configure custom backup policies like frequency, retention, and schedule are now Generally Available.
 
 ## June 13, 2024 {#june-13-2024}
 
@@ -446,7 +446,7 @@ The Fast release channel allows your services to receive updates ahead of the re
 
 ### Terraform support for horizontal scaling {#terraform-support-for-horizontal-scaling}
 
-ClickHouse Cloud supports [horizontal scaling](/manage/scaling#vertical-and-horizontal-scaling), or the ability to add additional replicas of the same size to your services. Horizontal scaling improves performance and parallelization to support concurrent queries. Previously, adding more replicas required either using the ClickHouse Cloud console or the API. You can now use Terraform to add or remove replicas from your service, allowing you to programmatically scale your ClickHouse services as needed.
+ClickHouse Cloud supports [horizontal scaling](/manage/scaling#how-scaling-works-in-clickhouse-cloud), or the ability to add additional replicas of the same size to your services. Horizontal scaling improves performance and parallelization to support concurrent queries. Previously, adding more replicas required either using the ClickHouse Cloud console or the API. You can now use Terraform to add or remove replicas from your service, allowing you to programmatically scale your ClickHouse services as needed.
 
 Please see the [ClickHouse Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) for more information.
 
@@ -934,7 +934,7 @@ This release brings the public release of the ClickHouse Cloud Programmatic API 
 - S3 access using IAM roles. You can now leverage IAM roles to securely access your private Amazon Simple Storage Service (S3) buckets (please contact support to set it up)
 
 ### Scaling changes {#scaling-changes}
-- [Horizontal scaling](/manage/scaling#adding-more-nodes-horizontal-scaling). Workloads that require more parallelization can now be configured with up to 10 replicas (please contact support to set it up)
+- [Horizontal scaling](/manage/scaling#manual-horizontal-scaling). Workloads that require more parallelization can now be configured with up to 10 replicas (please contact support to set it up)
 - [CPU based autoscaling](/manage/scaling). CPU-bound workloads can now benefit from additional triggers for autoscaling policies
 
 ### Console changes {#console-changes-17}
@@ -1109,7 +1109,7 @@ Adds support for a subset of features in ClickHouse 23.1, for example:
 - New functions, including `age()`, `quantileInterpolatedWeighted()`, `quantilesInterpolatedWeighted()`
 - Ability to use structure from insertion table in `generateRandom` without arguments
 - Improved database creation and rename logic that allows the reuse of previous names
-- See the 23.1 release [webinar slides](https://presentations.clickhouse.com/release_23.1/#cover) and [23.1 release changelog](/whats-new/changelog/index.md#clickhouse-release-231) for more details
+- See the 23.1 release [webinar slides](https://presentations.clickhouse.com/release_23.1/#cover) and [23.1 release changelog](/whats-new/cloud#clickhouse-231-version-upgrade) for more details
 
 ### Integrations changes {#integrations-changes-23}
 - [Kafka-Connect](/integrations/data-ingestion/kafka/index.md): Added support for Amazon MSK
@@ -1172,7 +1172,7 @@ This release updates the ClickHouse version to 22.12, enables dictionaries for m
 - Added Binary JSON (BSON) support for reading files
 - Added support for GROUP BY ALL standard SQL syntax
 - New mathematical functions for decimal operations with fixed precision
-- See the [22.12 release blog](https://clickhouse.com/blog/clickhouse-release-22-12) and [detailed 22.12 changelog](/whats-new/changelog/2022.md/#-clickhouse-release-2212-2022-12-15) for the complete list of changes
+- See the [22.12 release blog](https://clickhouse.com/blog/clickhouse-release-22-12) and [detailed 22.12 changelog](/whats-new/cloud#clickhouse-2212-version-upgrade) for the complete list of changes
 
 ### Console changes {#console-changes-26}
 - Improved auto-complete capabilities in SQL Console
@@ -1192,7 +1192,7 @@ This release updates the ClickHouse version to 22.12, enables dictionaries for m
 
 ### Reliability and performance {#reliability-and-performance-2}
 - Improved read performance for queries that fetch a large number of small files on object store
-- Set the [compatibility](/cloud/manage/upgrades.md/#use-the-default-settings-of-a-clickhouse-release) setting to the version with which the service is initially launched, for newly launched services
+- Set the [compatibility](/operations/settings/settings#compatibility) setting to the version with which the service is initially launched, for newly launched services
 
 ### Bug fixes {#bug-fixes-4}
 Using the Advanced Scaling slider to reserve resources now takes effect right away.
@@ -1269,7 +1269,7 @@ This release brings SOC2 Type II compliance, updates the ClickHouse version to 2
 - Improved recursive directory traversal for S3
 - Added support for composite time interval syntax
 - Improved insert reliability with retries on insert
-- See the [detailed 22.11 changelog](/whats-new/changelog/2022.md/#-clickhouse-release-2211-2022-11-17) for the complete list of changes
+- See the [detailed 22.11 changelog](/whats-new/cloud#clickhouse-2211-version-upgrade) for the complete list of changes
 
 ### Integrations {#integrations-1}
 
@@ -1337,7 +1337,7 @@ This release removes read & write units from pricing (see the [pricing page](htt
 - Improved control over merging with the `min_age_to_force_merge_seconds` setting, to merge after a certain time threshold.
 - Added MySQL-compatible syntax to reset settings `SET setting_name = DEFAULT`.
 - Added functions for Morton curve encoding, Java integer hashing, and random number generation.
-- See the [detailed 22.10 changelog](/whats-new/changelog/2022.md/#-clickhouse-release-2210-2022-10-25) for the complete list of changes.
+- See the [detailed 22.10 changelog](/whats-new/cloud#clickhouse-2210-version-upgrade) for the complete list of changes.
 
 
 ## October 25, 2022 {#october-25-2022}

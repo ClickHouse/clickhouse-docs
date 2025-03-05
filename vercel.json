@@ -2884,7 +2884,7 @@
     },
     {
       "source": "/docs/integrations/java/jdbc-driver",
-      "destination": "/docs/integrations/java/jdbc-v2",
+      "destination": "/docs/integrations/language-clients/java/jdbc",
       "permanent": true
     },
     {
@@ -3160,6 +3160,31 @@
     {
       "source": "/docs/integrations/redshift/redshift-push-to-clickhouse",
       "destination": "/docs/integrations/redshift",
+      "permanent": true
+    },
+    {
+      "source": "/docs/guides/developer/lightweght-delete",
+      "destination": "/docs/guides/developer/lightweight-delete",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/java/jdbc-v2",
+      "destination": "/docs/integrations/language-clients/java/jdbc",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/java/client-v2",
+      "destination": "/docs/integrations/language-clients/java/jdbc",
+      "permanent": true
+    },
+    {
+      "source": "/docs/interfaces/formats/Protobuf/Protobuf",
+      "destination": "/docs/interfaces/formats/Protobuf",
+      "permanent": true
+    },
+    {
+      "source": "/docs/get-started/query-endpoints",
+      "destination": "/docs/cloud/get-started/query-endpoints",
       "permanent": true
     }
   ]

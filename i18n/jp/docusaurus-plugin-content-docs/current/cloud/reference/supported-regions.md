@@ -2,7 +2,7 @@
 title: サポートされているクラウドリージョン
 sidebar_label: サポートされているクラウドリージョン
 keywords: [aws, gcp, google cloud, azure, cloud, regions]
-description: ClickHouse Cloudのサポートされているリージョン
+description: ClickHouse Cloud のサポートされているリージョン
 ---
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
@@ -21,17 +21,17 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - eu-west-2 (ロンドン)
 - me-central-1 (UAE)
 - us-east-1 (バージニア州北部)
-- us-east-2 (オハイオ州)
-- us-west-2 (オレゴン州)
+- us-east-2 (オハイオ)
+- us-west-2 (オレゴン)
 
 **検討中:**
 - ca-central-1 (カナダ)
 - af-south-1 (南アフリカ)
 - eu-north-1 (ストックホルム)
 - sa-east-1 (南アメリカ)
- 
+- ap-northeast-2 (韓国、ソウル)
 
-## Google Cloudリージョン {#google-cloud-regions}
+## Google Cloud リージョン {#google-cloud-regions}
 
 - asia-southeast1 (シンガポール)
 - europe-west4 (オランダ)
@@ -40,48 +40,48 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 **検討中:**
 - australia-southeast1 (シドニー)
-- us-west-1 (オレゴン州)
+- us-west-1 (オレゴン)
 - eu-west-1 (ベルギー)
 
-## Azureリージョン {#azure-regions}
+## Azure リージョン {#azure-regions}
 
 - West US 3 (アリゾナ)
 - East US 2 (バージニア)
 - Germany West Central (フランクフルト)
 
 :::note 
-現在リストにないリージョンにデプロイする必要がありますか？ [リクエストを送信](https://clickhouse.com/pricing?modal=open)。 
+現在リストにないリージョンにデプロイする必要がありますか？ [リクエストを提出する](https://clickhouse.com/pricing?modal=open)。 
 :::
 
 ## プライベートリージョン {#private-regions}
 
 <EnterprisePlanFeatureBadge feature="プライベートリージョン機能"/>
 
-エンタープライズプランのサービス向けにプライベートリージョンを提供しています。プライベートリージョンのリクエストについては、[お問い合わせ](https://clickhouse.com/company/contact)ください。
+エンタープライズプランサービス向けにプライベートリージョンを提供しています。プライベートリージョンリクエストについては、[お問い合わせ](https://clickhouse.com/company/contact)ください。
 
-プライベートリージョンに関する重要事項:
+プライベートリージョンの主な考慮事項:
 - サービスは自動スケーリングされません。
-- サービスを停止またはアイドル状態にはできません。
-- マニュアルスケーリング（垂直と水平方向の両方）はサポートチケットで有効にできます。
-- サービスがCMEKでの構成を必要とする場合、顧客はサービス開始時にAWS KMSキーを提供する必要があります。
-- 新しいサービスや追加のサービスを立ち上げるには、サポートチケットを通じてリクエストが必要です。
-  
-HIPAAコンプライアンスに対しては追加の要件が適用される場合があります（BAAへの署名を含む）。HIPAAは現在エンタープライズプランのサービスにのみ提供されています。
+- サービスは停止またはアイドル状態にできません。
+- 手動スケーリング（縦方向および横方向の両方）は、サポートチケットで有効にできます。
+- サービスがCMEKでの設定を必要とする場合、サービス開始時に顧客がAWS KMSキーを提供する必要があります。
+- 新しい追加サービスの開始には、サポートチケットを通じてリクエストする必要があります。
 
-## HIPAA準拠のリージョン {#hipaa-compliant-regions}
+HIPAAコンプライアンスに関する追加要件が適用される場合があります（BAAの署名を含む）。なお、HIPAAは現在エンタープライズプランサービスのみで利用可能です。
+
+## HIPAA準拠リージョン {#hipaa-compliant-regions}
 
 <EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
 
-顧客はビジネスアソシエイト契約（BAA）に署名し、営業またはサポートを通じてオンボーディングをリクエストする必要があります。HIPAA準拠のリージョンは以下の通りです:
+顧客はビジネスアソシエイト契約（BAA）に署名し、HIPAA準拠リージョンでサービスを設定するために営業またはサポートを通じてオンボーディングをリクエストする必要があります。次のリージョンはHIPAAコンプライアンスをサポートしています:
 - AWS us-east-1
 - AWS us-west-2
 - GCP us-central1
 - GCP us-east1
 
-## PCI準拠のリージョン {#pci-compliant-regions}
+## PCI準拠リージョン {#pci-compliant-regions}
 
 <EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
 
-顧客は営業またはサポートを通じてオンボーディングをリクエストする必要があります。PCI準拠のリージョンは以下の通りです:
+顧客はPCI準拠リージョンでサービスを設定するために営業またはサポートを通じてオンボーディングをリクエストする必要があります。次のリージョンはPCIコンプライアンスをサポートしています:
 - AWS us-east-1
 - AWS us-west-2

@@ -2,7 +2,7 @@
 slug: /shards
 title: テーブルシャード
 description: ClickHouseにおけるテーブルシャードとは
-keywords: [shard, shards, sharding]
+keywords: [シャード, シャード, シャーディング]
 ---
 
 import image_01 from '@site/static/images/managing-data/core-concepts/shards_01.png'
@@ -12,25 +12,25 @@ import image_04 from '@site/static/images/managing-data/core-concepts/shards_04.
 
 ## ClickHouseにおけるテーブルシャードとは？ {#what-are-table-shards-in-clickhouse}
 
-> このトピックは、同じ目的を果たす [Parallel Replicas](/docs/deployment-guides/parallel-replicas) がある ClickHouse Cloud には適用されません。
+> このトピックはClickHouse Cloudには適用されません。[Parallel Replicas](/docs/deployment-guides/parallel-replicas)が同じ目的を果たします。
 
 <br/>
 
-ClickHouse OSS では、シャーディングは ① データが単一サーバーでは大きすぎる場合、または ② 単一サーバーの処理が遅すぎる場合に使用されます。次の図は、[uk_price_paid_simple](/parts) テーブルが単一のマシンのキャパシティを超えているケース ① を示しています：
+ClickHouse OSSでは、シャーディングは①データが単一のサーバーに対して大きすぎる場合、または②単一のサーバーが処理に対して遅すぎる場合に使用されます。次の図は、[uk_price_paid_simple](/parts)テーブルが単一のマシンの容量を超える①のケースを示しています：
 
 <img src={image_01} alt='SHARDS' class='image' />
 <br/>
 
-この場合、データはテーブルシャードの形で複数の ClickHouse サーバーに分割することができます：
+この場合、データは複数のClickHouseサーバーにテーブルシャードの形で分割できます：
 
 <img src={image_02} alt='SHARDS' class='image' />
 <br/>
 
-各シャードはデータのサブセットを保持し、独立してクエリを実行できる通常の ClickHouse テーブルとして機能します。ただし、クエリはそのサブセットのみを処理します。これはデータの分配に応じて有効かもしれません。一般的には、[distributed table](/docs/engines/table-engines/special/distributed)（通常はサーバーごとに）によって、完全なデータセットの統一ビューが提供されます。このテーブルはデータを直接保存するのではなく、すべてのシャードに **SELECT** クエリを転送し、結果を集約し、データを均等に分配するために **INSERTS** をルーティングします。
+各シャードはデータのサブセットを保持し、独立してクエリできる通常のClickHouseテーブルのように機能します。ただし、クエリはそのサブセットのみを処理し、データの分布によってはそれが有効である場合があります。通常、[分散テーブル](/docs/engines/table-engines/special/distributed)（通常はサーバーごとに）全データセットの統一ビューを提供します。自体はデータを保存せず、**SELECT**クエリをすべてのシャードに転送し、結果を集約し、**INSERTS**を均等にデータを分配するためにルーティングします。
 
 ## 分散テーブルの作成 {#distributed-table-creation}
 
-**SELECT** クエリの転送と **INSERT** ルーティングを示すために、2つの ClickHouse サーバーに分割された [What are table parts](/parts) の例テーブルを考えます。まず、この設定のための対応する **Distributed table** を作成するための DDL ステートメントを示します：
+**SELECT**クエリの転送と**INSERT**ルーティングを示すために、[What are table parts](/parts)の例において、二つのClickHouseサーバーにまたがる二つのシャードに分割されたテーブルを考えます。まず、このセットアップに対応する**分散テーブル**を作成するためのDDLステートメントを示します：
 
 ```sql
 CREATE TABLE uk.uk_price_paid_simple_dist ON CLUSTER test_cluster
@@ -43,40 +43,40 @@ CREATE TABLE uk.uk_price_paid_simple_dist ON CLUSTER test_cluster
 ENGINE = Distributed('test_cluster', 'uk', 'uk_price_paid_simple', rand())
 ```
 
-`ON CLUSTER` 句は DDL ステートメントを [distributed DDL statement](/docs/sql-reference/distributed-ddl) にし、ClickHouse に `test_cluster` [クラスター定義](/docs/architecture/horizontal-scaling#replication-and-sharding-configuration) にリストされたすべてのサーバー上にテーブルを作成するよう指示します。分散 DDL には、[cluster architecture](/docs/architecture/horizontal-scaling#architecture-diagram) における追加の [Keeper](https://clickhouse.com/clickhouse/keeper) コンポーネントが必要です。
+`ON CLUSTER`句は、DDLステートメントを[分散DDLステートメント](/docs/sql-reference/distributed-ddl)にし、ClickHouseに`test_cluster`のリストにあるすべてのサーバーにテーブルを作成するよう指示します。分散DDLには、[クラスターアーキテクチャ](/docs/architecture/horizontal-scaling#architecture-diagram)に追加の[Keeper](https://clickhouse.com/clickhouse/keeper)コンポーネントが必要です。
 
-[distributed engine parameters](/docs/engines/table-engines/special/distributed#distributed-parameters) では、シャーディング対象テーブルのためのクラスター名（`test_cluster`）、データベース名（`uk`）、シャーディング対象テーブルの名前（`uk_price_paid_simple`）、および **sharding key** を指定します。この例では、行をシャードにランダムに割り当てるために [rand]((/docs/sql-reference/functions/random-functions#rand)) 関数を使用します。ただし、使用ケースに応じて、任意の式—even complex ones—をシャーディングキーとして使用できます。次のセクションでは、INSERT ルーティングがどのように機能するかを示します。
+[分散エンジンパラメータ](/docs/engines/table-engines/special/distributed#distributed-parameters)について、クラスター名（`test_cluster`）、シャードターゲットテーブルのデータベース名（`uk`）、シャードターゲットテーブルの名前（`uk_price_paid_simple`）、およびINSERTルーティングのための**シャーディングキー**を指定します。この例では、[rand]((/sql-reference/functions/random-functions#rand))関数を使用して行をシャードにランダムに割り当てます。ただし、使用ケースに応じて、任意の式—複雑なものでも—をシャーディングキーとして使用できます。次のセクションでは、INSERTルーティングがどのように機能するかを説明します。
 
-## INSERT ルーティング {#insert-routing}
+## INSERTルーティング {#insert-routing}
 
-以下の図は、分散テーブルへの INSERT が ClickHouse でどのように処理されるかを示しています：
+次の図は、分散テーブルへのINSERTがClickHouseでどのように処理されるかを示しています：
 
 <img src={image_03} alt='SHARDS' class='image' />
 <br/>
 
-① 分散テーブルを対象とした INSERT （単一行）が、直接またはロードバランサーを介して、テーブルをホストしている ClickHouse サーバーに送信されます。
+① 分散テーブルを対象としたINSERT（単一行）が、直接的にまたはロードバランサー経由で、テーブルをホストするClickHouseサーバーに送信されます。
 
-② INSERT の各行（例では1行）のために、ClickHouse はシャーディングキー（ここでは rand()）を評価し、結果をシャードサーバーの数で割った余りを取得し、それをターゲットサーバー ID として使用します（ID は 0 から始まり 1 ずつ増加します）。その後、行は転送され、③ 対応するサーバーのテーブルシャードに挿入されます。
+② INSERTからの各行に対して（例では1つだけ）、ClickHouseはシャーディングキー（ここではrand()）を評価し、その結果をシャードサーバー数で割った余りを取り、これをターゲットサーバーIDとして使用します（IDは0から始まり、1ずつ増加します）。行はその後転送され、③ 対応するサーバーのテーブルシャードに挿入されます。
 
-次のセクションでは、SELECT 転送がどのように機能するかを説明します。
+次のセクションでは、SELECT転送がどのように機能するかを説明します。
 
-## SELECT 転送 {#select-forwarding}
+## SELECT転送 {#select-forwarding}
 
-この図は、ClickHouse における分散テーブルでの SELECT クエリの処理方法を示しています：
+この図は、ClickHouseで分散テーブルを使用してSELECTクエリがどのように処理されるかを示しています：
 
 <img src={image_04} alt='SHARDS' class='image' />
 <br/>
 
-① 分散テーブルを対象とした SELECT 集計クエリが、直接またはロードバランサーを介して、対応する ClickHouse サーバーに送信されます。
+① 分散テーブルを対象としたSELECT集約クエリが、直接的にまたはロードバランサー経由で、対応するClickHouseサーバーに送信されます。
 
-② 分散テーブルは、ターゲットテーブルのシャードをホストしているすべてのサーバーにクエリを転送し、各 ClickHouse サーバーは **並列** にローカル集計結果を計算します。
+② 分散テーブルは、ターゲットテーブルのシャードをホストするすべてのサーバーにクエリを転送し、各ClickHouseサーバーが**並列**にローカル集約結果を計算します。
 
-その後、最初に対象となった分散テーブルをホストしている ClickHouse サーバーは ③ すべてのローカル結果を集め、④ 最終的なグローバル結果にマージし、⑤ クエリ送信者に返します。
+その後、当初ターゲットとされた分散テーブルをホストするClickHouseサーバーは、③ すべてのローカル結果を収集し、④ 最終的なグローバル結果にマージし、⑤ クエリ送信者に返します。
 
-## さらなる情報を見つけるには {#where-to-find-more-information}
+## さらなる情報を得るにはどこを参考にすればよいか {#where-to-find-more-information}
 
-テーブルシャードに関するこの高レベルな紹介を超える詳細については、[deployment and scaling guide](/docs/architecture/horizontal-scaling) をご覧ください。
+テーブルシャードに関するこの高レベルの紹介を超えた詳細については、[デプロイメントとスケーリングガイド](/docs/architecture/horizontal-scaling)をご覧ください。
 
-ClickHouse シャードのより深い理解のために、このチュートリアルビデオも強くお勧めします：
+また、ClickHouseのシャードについての深掘りを行うためのこのチュートリアルビデオを強くお勧めします：
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/vBjCJtw_Ei0?si=WqopTrnti6usCMRs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

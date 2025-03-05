@@ -6,26 +6,26 @@ slug: /integrations/data-formats/binary-native
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# ClickHouseにおけるネイティブおよびバイナリフォーマットの使用
+# ClickHouseにおけるネイティブおよびバイナリ形式の使用
 
-ClickHouseは複数のバイナリフォーマットをサポートしており、これによりパフォーマンスとスペース効率が向上します。バイナリフォーマットは、データがバイナリ形式で保存されるため、文字エンコーディングに対しても安全です。
+ClickHouseは複数のバイナリ形式をサポートしており、これによりパフォーマンスとスペース効率が向上します。バイナリ形式は、データがバイナリ形式で保存されるため、文字エンコーディングにおいても安全です。
 
-デモ用に some_data [テーブル](assets/some_data.sql) と [データ](assets/some_data.tsv) を使用しますので、あなたのClickHouseインスタンスで再現してみてください。
+デモンストレーションのために、some_data [テーブル](assets/some_data.sql) と [データ](assets/some_data.tsv) を使用しますので、あなたのClickHouseインスタンスで再現してみてください。
 
-## ネイティブClickHouseフォーマットでのエクスポート {#exporting-in-a-native-clickhouse-format}
+## ネイティブClickHouse形式でのエクスポート {#exporting-in-a-native-clickhouse-format}
 
-ClickHouseノード間でデータをエクスポートおよびインポートするための最も効率的なデータフォーマットは [Native](/interfaces/formats.md/#native) フォーマットです。エクスポートは `INTO OUTFILE` 句を使用して行います：
+ClickHouseノード間でデータをエクスポートおよびインポートするための最も効率的なデータ形式は [Native](/interfaces/formats.md/#native) 形式です。エクスポートは `INTO OUTFILE` 句を使用して行います：
 
 ```sql
 SELECT * FROM some_data
 INTO OUTFILE 'data.clickhouse' FORMAT Native
 ```
 
-これにより、ネイティブフォーマットの [data.clickhouse](assets/data.clickhouse) ファイルが作成されます。
+これにより、ネイティブ形式の [data.clickhouse](assets/data.clickhouse) ファイルが作成されます。
 
-### ネイティブフォーマットからのインポート {#importing-from-a-native-format}
+### ネイティブ形式からのインポート {#importing-from-a-native-format}
 
-データをインポートするには、[file()](/sql-reference/table-functions/file.md) を使用できます。ただし、これは小さいファイルや探索目的の場合に適しています：
+データをインポートするには、小さなファイルや探索目的の場合、[file()](/sql-reference/table-functions/file.md) を使用できます：
 
 ```sql
 DESCRIBE file('data.clickhouse', Native);
@@ -39,7 +39,7 @@ DESCRIBE file('data.clickhouse', Native);
 ```
 
 :::tip
-`file()` 関数を使用する場合、ClickHouse Cloudでは、ファイルが存在するマシン上の `clickhouse client` でコマンドを実行する必要があります。別のオプションとして [`clickhouse-local`](/operations/utilities/clickhouse-local.md) を使用してローカルでファイルを探索することもできます。
+`file()` 関数を使用する場合、ClickHouse Cloud では、ファイルが存在するマシンの `clickhouse client` でコマンドを実行する必要があります。別のオプションは、[`clickhouse-local`](/operations/utilities/clickhouse-local.md) を使用してローカルでファイルを探索することです。
 :::
 
 本番環境では、データをインポートするために `FROM INFILE` を使用します：
@@ -50,9 +50,9 @@ FROM INFILE 'data.clickhouse'
 FORMAT Native
 ```
 
-### ネイティブフォーマットの圧縮 {#native-format-compression}
+### ネイティブ形式の圧縮 {#native-format-compression}
 
-データをネイティブフォーマットにエクスポートする際に圧縮を有効にすることもできます（他の多くのフォーマットでも同様です）。これには `COMPRESSION` 句を使用します：
+ネイティブ形式（およびほとんどの他の形式）にデータをエクスポートする際に圧縮を有効にすることもできます。`COMPRESSION` 句を使用します：
 
 ```sql
 SELECT * FROM some_data
@@ -61,7 +61,7 @@ COMPRESSION 'lz4'
 FORMAT Native
 ```
 
-エクスポートにはLZ4圧縮を使用しました。データをインポートする際にも指定する必要があります：
+エクスポートにはLZ4圧縮を使用しました。データをインポートする際にもこれを指定する必要があります：
 
 ```sql
 INSERT INTO sometable
@@ -72,7 +72,7 @@ FORMAT Native
 
 ## RowBinaryへのエクスポート {#exporting-to-rowbinary}
 
-別のバイナリフォーマットとして [RowBinary](/interfaces/formats.md/#rowbinary) がサポートされています。これにより、バイナリ形式で表現された行としてデータをインポートおよびエクスポートできます：
+別のサポートされているバイナリ形式は [RowBinary](/interfaces/formats.md/#rowbinary) で、バイナリ表現の行にデータをインポートおよびエクスポートすることができます：
 
 ```sql
 SELECT * FROM some_data
@@ -82,8 +82,7 @@ INTO OUTFILE 'data.binary' FORMAT RowBinary
 これにより、バイナリ行形式の [data.binary](assets/data.binary) ファイルが生成されます。
 
 ### RowBinaryファイルの探索 {#exploring-rowbinary-files}
-
-このフォーマットでは自動スキーマ推論がサポートされていないため、ロードする前にスキーマを明示的に定義する必要があります：
+この形式では自動的なスキーマ推論はサポートされていないため、ロードする前にスキーマを明示的に定義する必要があります：
 
 ```sql
 SELECT *
@@ -100,11 +99,10 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
-[RowBinaryWithNames](/interfaces/formats.md/#rowbinarywithnames) を使用することを考慮してください。これにより、カラムのリストを含むヘッダー行も追加されます。[RowBinaryWithNamesAndTypes](/interfaces/formats.md/#rowbinarywithnamesandtypes) は、カラムタイプを含む追加のヘッダー行も追加します。
+[RowBinaryWithNames](/interfaces/formats.md/#rowbinarywithnames) の使用を検討してください。これはカラムリストを含むヘッダー行も追加します。[RowBinaryWithNamesAndTypes](/interfaces/formats.md/#rowbinarywithnamesandtypes) はカラムの型を含む追加のヘッダー行も追加します。
 
 ### RowBinaryファイルからのインポート {#importing-from-rowbinary-files}
-
-RowBinaryファイルからデータをロードするには、`FROM INFILE` 句を使用します：
+RowBinaryファイルからデータをロードするには、`FROM INFILE` 句を使用できます：
 
 ```sql
 INSERT INTO sometable
@@ -114,19 +112,20 @@ FORMAT RowBinary
 
 ## RawBLOBを使用した単一バイナリ値のインポート {#importing-single-binary-value-using-rawblob}
 
-完全なバイナリファイルを読み込み、テーブル内のフィールドに保存したいとします。この場合、[RawBLOBフォーマット](/interfaces/formats.md/#rawblob) を使用できます。このフォーマットは、単一カラムテーブルでのみ直接使用できます：
+例えば、完全なバイナリファイルを読み込み、テーブルのフィールドに保存したいとします。
+この場合、[RawBLOB形式](/interfaces/formats.md/#rawblob)を使用できます。この形式は、単一列のテーブルと直接使用することができます：
 
 ```sql
 CREATE TABLE images(data String) Engine = Memory
 ```
 
-画像ファイルを `images` テーブルに保存してみましょう：
+画像ファイルを `images` テーブルに保存しましょう：
 
 ```bash
 cat image.jpg | clickhouse-client -q "INSERT INTO images FORMAT RawBLOB"
 ```
 
-`data` フィールドの長さを確認すると、元のファイルサイズと等しくなります：
+`data`フィールドの長さをチェックすると、元のファイルサイズと等しくなります：
 
 ```sql
 SELECT length(data) FROM images
@@ -139,7 +138,7 @@ SELECT length(data) FROM images
 
 ### RawBLOBデータのエクスポート {#exporting-rawblob-data}
 
-このフォーマットは、`INTO OUTFILE` 句を使用してデータをエクスポートするためにも使用できます：
+この形式は、`INTO OUTFILE` 句を使用してデータをエクスポートするためにも使用できます：
 
 ```sql
 SELECT * FROM images LIMIT 1
@@ -147,11 +146,11 @@ INTO OUTFILE 'out.jpg'
 FORMAT RawBLOB
 ```
 
-複数の値をエクスポートするとファイルが破損するため、`LIMIT 1` を使用する必要があることに注意してください。
+単一の値以上をエクスポートするとファイルが壊れるため、`LIMIT 1` を使用する必要がありました。
 
 ## MessagePack {#messagepack}
 
-ClickHouseは、[MessagePack](https://msgpack.org/) へのインポートおよびエクスポートを [MsgPack](/interfaces/formats.md/#msgpack) を使用してサポートしています。MessagePackフォーマットにエクスポートするには：
+ClickHouseは、[MessagePack](https://msgpack.org/) に対するインポートおよびエクスポートを [MsgPack](/interfaces/formats.md/#msgpack) を使用してサポートしています。MessagePack形式にエクスポートするには：
 
 ```sql
 SELECT *
@@ -168,11 +167,11 @@ FROM INFILE 'data.msgpk'
 FORMAT MsgPack
 ```
 
-## プロトコルバッファー {#protocol-buffers}
+## プロトコルバッファ {#protocol-buffers}
 
 <CloudNotSupportedBadge/>
 
-[Protocol Buffers](/interfaces/formats.md/#protobuf) を使用するには、まず [スキーマファイル](assets/schema.proto) を定義する必要があります：
+[プロトコルバッファ](/interfaces/formats.md/#protobuf)で作業するには、最初に[スキーマファイル](assets/schema.proto)を定義する必要があります：
 
 ```protobuf
 syntax = "proto3";
@@ -184,7 +183,7 @@ message MessageType {
 };
 ```
 
-このスキーマファイルへのパス（この場合は `schema.proto`）は、[Protobuf](/interfaces/formats.md/#protobuf) フォーマットのための `format_schema` 設定オプションで設定します：
+このスキーマファイルへのパス（私たちの例では `schema.proto`）は、[Protobuf](/interfaces/formats.md/#protobuf)形式の `format_schema` 設定オプションで設定されます：
 
 ```sql
 SELECT * FROM some_data
@@ -193,13 +192,13 @@ FORMAT Protobuf
 SETTINGS format_schema = 'schema:MessageType'
 ```
 
-これにより、[proto.bin](assets/proto.bin) ファイルにデータが保存されます。ClickHouseは、Protobufデータのインポートやネストされたメッセージのサポートも行っています。単一のProtocol Bufferメッセージを扱うには、[ProtobufSingle](/interfaces/formats.md/#protobufsingle) を使用してください（この場合は長さの区切りが省略されます）。
+これにより、[proto.bin](assets/proto.bin) ファイルにデータが保存されます。ClickHouseは、Protobufデータのインポートやネストされたメッセージもサポートしています。単一のプロトコルバッファメッセージで作業するには、[ProtobufSingle](/interfaces/formats.md/#protobufsingle)を使用することを検討してください（この場合、長さの区切りは省略されます）。
 
 ## Cap’n Proto {#capn-proto}
 
 <CloudNotSupportedBadge/>
 
-ClickHouseがサポートする別の人気のバイナリシリアル化フォーマットは [Cap’n Proto](https://capnproto.org/) です。`Protobuf`フォーマットと同様に、今回の例ではスキーマファイル（[`schema.capnp`](assets/schema.capnp)）を定義する必要があります：
+ClickHouseがサポートする別の人気のあるバイナリシリアライズ形式は [Cap’n Proto](https://capnproto.org/) です。`Protobuf`形式と同様に、私たちの例ではスキーマファイル（[`schema.capnp`](assets/schema.capnp)）を定義する必要があります：
 
 ```response
 @0xec8ff1a10aa10dbe;
@@ -211,7 +210,7 @@ struct PathStats {
 }
 ```
 
-次に、このスキーマを使用して [CapnProto](/interfaces/formats.md/#capnproto) フォーマットでインポートおよびエクスポートします：
+このスキーマを使用して、[CapnProto](/interfaces/formats.md/#capnproto)形式でインポートおよびエクスポートできます：
 
 ```sql
 SELECT
@@ -224,17 +223,17 @@ FORMAT CapnProto
 SETTINGS format_schema = 'schema:PathStats'
 ```
 
-`Date` カラムを `UInt32` にキャストする必要があったことに注意してください。これは [データ型の対応](/interfaces/formats.md/#data_types-matching-capnproto) のためです。
+[対応する型に一致させる](/interfaces/formats/CapnProto#data_types-matching-capnproto)ために、`Date`カラムを`UInt32`としてキャストする必要があることに注意してください。
 
-## その他のフォーマット {#other-formats}
+## その他の形式 {#other-formats}
 
-ClickHouseは、さまざまなシナリオやプラットフォームをカバーするために、多くのテキストおよびバイナリフォーマットのサポートを導入しています。その他のフォーマットやそれらの扱い方については、以下の記事を参照してください：
+ClickHouseは、さまざまなシナリオやプラットフォームをカバーするために、多くの形式（テキスト形式およびバイナリ形式）のサポートを追加しています。次の文書で、より多くの形式やそれらとの作業方法を探求してください：
 
-- [CSVおよびTSVフォーマット](csv-tsv.md)
+- [CSVおよびTSV形式](csv-tsv.md)
 - [Parquet](parquet.md)
-- [JSONフォーマット](/integrations/data-ingestion/data-formats/json/intro.md)
+- [JSON形式](/integrations/data-ingestion/data-formats/json/intro.md)
 - [正規表現とテンプレート](templates-regex.md)
-- **ネイティブおよびバイナリフォーマット**
-- [SQLフォーマット](sql.md)
+- **ネイティブおよびバイナリ形式**
+- [SQL形式](sql.md)
 
-また、[clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) もチェックしてください。これは、ClickHouseサーバーを起動せずにローカル/リモートファイルを扱うためのポータブルでフル機能のツールです。
+そして、[clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) をもチェックしてください - ClickHouseサーバーを起動することなく、ローカル/リモートファイルで作業するための完全機能のポータブルツールです。

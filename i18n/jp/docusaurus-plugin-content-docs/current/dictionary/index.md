@@ -2,7 +2,7 @@
 slug: /dictionary
 title: Dictionary
 keywords: [dictionary, dictionaries]
-description: 辞書はデータのキーバリュー表現を提供し、高速な検索を実現します。
+description: ディクショナリーは、データのキーと値の表現を提供し、高速なルックアップを実現します。
 ---
 
 import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-cases.png';
@@ -11,38 +11,38 @@ import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-lef
 
 # Dictionary
 
-ClickHouseにおける辞書は、さまざまな [内部および外部ソース](/sql-reference/dictionaries#dictionary-sources) からのデータのインメモリ [キーバリュー](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 表現を提供し、超低遅延の検索クエリに最適化されています。
+ClickHouse のディクショナリーは、さまざまな [内部および外部ソース](/sql-reference/dictionaries#dictionary-sources) からのデータのインメモリ [キーと値](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 表現を提供し、超低遅延のルックアップクエリを最適化します。
 
-辞書は以下の目的に便利です：
-- 特に `JOIN` を使用したクエリのパフォーマンスを向上させる
-- 取り込まれたデータをリアルタイムで強化し、取り込みプロセスを遅延させない
+ディクショナリーは以下の用途に役立ちます：
+- 特に `JOIN` と併用したときのクエリパフォーマンスを向上させる
+- データの取り込みプロセスを遅延させずに、取り込まれたデータをその場でリッチ化する
 
 <img src={dictionaryUseCases}
   class="image"
-  alt="ClickHouseにおける辞書の利用ケース"
+  alt="ClickHouseにおけるディクショナリーの使用ケース"
   style={{width: '100%', background: 'none'}} />
 
-## 辞書を利用したJOINの高速化 {#speeding-up-joins-using-a-dictionary}
+## Speeding up joins using a Dictionary {#speeding-up-joins-using-a-dictionary}
 
-辞書は特定のタイプの `JOIN` を高速化するために使用できます：[`LEFT ANY` タイプ](/sql-reference/statements/select/join#supported-types-of-join) で、JOINキーが基盤となるキーバリュー・ストレージのキー属性と一致する必要があります。
+ディクショナリーは、特定のタイプの `JOIN` を高速化するために使用できます： [`LEFT ANY` タイプ](/sql-reference/statements/select/join#supported-types-of-join) で、結合キーは基となるキーと値のストレージのキー属性と一致する必要があります。
 
 <img src={dictionaryLeftAnyJoin}
   class="image"
-  alt="LEFT ANY JOINを用いた辞書の活用"
+  alt="LEFT ANY JOINでのディクショナリーの使用"
   style={{width: '300px', background: 'none'}} />
 
-この場合、ClickHouseは辞書を活用して [Direct Join](https://clickhouse.com/blog/clickhouse-fully-supports-joins-direct-join-part4#direct-join) を実行することができます。これはClickHouseの最も高速なJOINアルゴリズムであり、右側のテーブルエンジンが低遅延のキーバリュー要求をサポートする場合に適用されます。ClickHouseにはこれを提供する3つのテーブルエンジンがあります：[Join](/engines/table-engines/special/join) （基本的には事前計算されたハッシュテーブル）、[EmbeddedRocksDB](/engines/table-engines/integrations/embedded-rocksdb)、[Dictionary](/engines/table-engines/special/dictionary)。ここでは辞書ベースのアプローチについて説明しますが、メカニズムは3つのエンジンすべてに共通です。
+この場合、ClickHouse はディクショナリーを活用して [Direct Join](https://clickhouse.com/blog/clickhouse-fully-supports-joins-direct-join-part4#direct-join) を実行できます。これはClickHouseの最速の結合アルゴリズムであり、右側のテーブルが低遅延のキーと値のリクエストをサポートするテーブルエンジンを使用している場合に適用されます。ClickHouse には、この機能を提供する3つのテーブルエンジンがあります：[Join](/engines/table-engines/special/join)（基本的に事前計算されたハッシュテーブル）、[EmbeddedRocksDB](/engines/table-engines/integrations/embedded-rocksdb)、および [Dictionary](/engines/table-engines/special/dictionary) です。ここではディクショナリーに基づくアプローチを説明しますが、メカニズムはすべての3つのエンジンで同じです。
 
-ダイレクトJOINアルゴリズムは、右側のテーブルが辞書でサポートされており、JOINされたデータがすでにメモリ内に低遅延のキーバリューデータ構造の形で存在することを必要とします。
+直接結合アルゴリズムでは、右側のテーブルがディクショナリーにバックアップされている必要があり、そのテーブルから結合するデータがすでにメモリ内に低遅延のキーと値のデータ構造の形で存在している必要があります。
 
-### 例 {#example}
+### Example {#example}
 
-Stack Overflowのデータセットを使用して、次の質問に答えます：
-*Hacker Newsに関するSQLについて最も論争のある投稿は何ですか？*
+Stack Overflow データセットを使用して、次の質問に答えます：
+*Hacker News の SQL に関する最も物議を醸す投稿は何ですか？*
 
-私たちは、投稿が類似のアップ票とダウン票の数を持つ場合を論争的と定義します。この絶対差を計算し、0に近い値がより多くの論争を意味します。投稿には少なくとも10のアップ票とダウン票が必要であると仮定します。投票されていない投稿はあまり論争的ではありません。
+物議を醸すとは、投稿のアップおよびダウン投票の数が類似している場合と定義します。私たちはこの絶対的な差を計算し、0 に近い値がより物議を醸すことを意味します。投稿は少なくとも10のアップとダウンの投票が必要だと仮定します - 投票されない投稿はあまり物議を醸しません。
 
-データが正規化されると、このクエリは現在 `posts` テーブルと `votes` テーブルを使用した `JOIN` を必要とします：
+データが正規化されている場合、このクエリは現在 `posts` テーブルと `votes` テーブルを使用して `JOIN` を必要とします：
 
 ```sql
 WITH PostIds AS
@@ -85,13 +85,13 @@ Controversial_ratio: 0
 Peak memory usage: 3.18 GiB.
 ```
 
->**`JOIN` の右側には小さなデータセットを使用する**: このクエリは、PostIdに関するフィルタリングが外部およびサブクエリの両方で行われるため、必要以上に冗長に見えるかもしれません。これは、クエリの応答時間を速くするためのパフォーマンス最適化です。最適なパフォーマンスを得るためには、常に `JOIN` の右側が小さなセットであり、可能な限り小さくするようにしてください。JOINのパフォーマンスを最適化し、利用可能なアルゴリズムを理解するためのヒントについては、[この一連のブログ記事](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1) をお勧めします。
+>**右側の `JOIN` で小さなデータセットを使用する**：このクエリは、必要以上に冗長に見えるかもしれません。`PostId` でのフィルタリングが外側のクエリとサブクエリの両方で発生します。これは、クエリの応答時間を迅速にするためのパフォーマンス最適化です。最適なパフォーマンスを得るためには、常に `JOIN` の右側が小さいセットで、可能な限り小さいことを確認してください。`JOIN` のパフォーマンスを最適化し、利用可能なアルゴリズムを理解するためのヒントについては、[この一連のブログ記事](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)をお勧めします。
 
-このクエリは速いですが、良好なパフォーマンスを得るためには私たちが `JOIN` を注意深く記述する必要があります。理想的には、「SQL」を含む投稿をフィルタリングした後、そのサブセットのブログの `UpVote` と `DownVote` のカウントを考慮してメトリックを計算するだけで済みます。
+このクエリは迅速ですが、良好なパフォーマンスを達成するためには、`JOIN` を慎重に記述する必要があります。理想的には、`UpVote` と `DownVote` のカウントを計算するために、`SQL` を含む投稿をフィルタリングするだけで済むはずです。
 
-#### 辞書の適用 {#applying-a-dictionary}
+#### Applying a dictionary {#applying-a-dictionary}
 
-これらの概念を示すために、私たちは投票データに辞書を使用します。辞書は通常メモリ内に保持され、[ssd_cache](/sql-reference/dictionaries#ssd_cache) は例外ですので、ユーザーはデータのサイズに留意する必要があります。我々の `votes` テーブルのサイズを確認します：
+これらの概念を示すために、私たちは投票データにディクショナリーを使用します。ディクショナリーは通常メモリ内に保持されますが、[ssd_cache](/sql-reference/dictionaries#ssd_cache) が例外ですので、ユーザーはデータのサイズに注意する必要があります。`votes` テーブルのサイズを確認します：
 
 ```sql
 SELECT table,
@@ -107,11 +107,11 @@ GROUP BY table
 └─────────────────┴─────────────────┴───────────────────┴───────┘
 ```
 
-データは辞書内で非圧縮形式で保存されるため、もし全てのカラムを辞書内に保存する場合には、少なくとも4GBのメモリが必要です（実際には保存しません）。辞書はクラスター全体にレプリケートされるため、この量のメモリは*ノードごと*に確保する必要があります。
+データはディクショナリー内で非圧縮で保存されるため、すべてのカラム（私たちはそうしませんが）をディクショナリーに保存する場合、少なくとも4GBのメモリが必要です。ディクショナリーはクラスタ全体にレプリケートされるため、このメモリ量は *各ノードごと* に確保する必要があります。
 
-> 以下の例では、我々の辞書のデータはClickHouseのテーブルから取得されます。これは辞書の最も一般的なソースを表していますが、[さまざまなソース](/sql-reference/dictionaries#dictionary-sources)がサポートされています。ファイル、HTTP、Postgresなどのデータベースも含まれます。我々が示すように、辞書は自動的に更新可能であり、頻繁に変更される小規模データセットを直接JOIN可能に保つ理想的な方法を提供します。
+> 以下の例では、ディクショナリーのデータは ClickHouse テーブルから派生しています。これはディクショナリーの最も一般的なソースですが、ファイル、http、[Postgres](/sql-reference/dictionaries#postgresql) などのデータベースを含む [多くのソース](/sql-reference/dictionaries#dictionary-sources) がサポートされています。例示するように、ディクショナリーは自動的に更新され、小さいデータセットが頻繁に変更される場合に直接結合に利用できる理想的な方法を提供します。
 
-我々の辞書には、検索が行われるプライマリキーが必要です。これは概念的にトランザクショナルデータベースの主キーに相当し、ユニークである必要があります。上記のクエリは、JOINキーに対して検索を必要とします - `PostId`。辞書は、`votes` テーブルからの `PostId` ごとのアップ票とダウン票の合計で満たされる必要があります。辞書データを取得するためのクエリは以下の通りです：
+私たちのディクショナリーは、ルックアップを実行するための主キーが必要です。これは、トランザクショナルデータベースの主キーと概念的に同じで、ユニークである必要があります。上記のクエリは、結合キー - `PostId` のルックアップを必要とします。ディクショナリーは、`votes` テーブルからの各 `PostId` に対するアップ票とダウン票の合計で構成される必要があります。このディクショナリーのデータを取得するためのクエリは次の通りです：
 
 ```sql
 SELECT PostId,
@@ -121,7 +121,7 @@ FROM votes
 GROUP BY PostId
 ```
 
-辞書を作成するには、次のDDLが必要です - 上記のクエリを使用することに注意してください：
+ディクショナリーを作成するには、次の DDL が必要です - 上記のクエリを使用しています：
 
 ```sql
 CREATE DICTIONARY votes_dict
@@ -138,9 +138,9 @@ LAYOUT(HASHED())
 0 rows in set. Elapsed: 36.063 sec.
 ```
 
-> セルフマネージドのOSSでは、上記のコマンドはすべてのノードで実行する必要があります。ClickHouse Cloudでは、辞書は自動的にすべてのノードにレプリケートされます。上記は、36秒でロードされた64GBのRAMを持つClickHouse Cloudノードで実行されました。
+> セルフマネージド OSS では、上記のコマンドはすべてのノードで実行する必要があります。ClickHouse Cloud では、ディクショナリーがすべてのノードに自動的にレプリケートされます。上記は、64GBのRAMを搭載したClickHouse Cloudノードで実行され、36秒でロードされました。
 
-我々の辞書が消費したメモリを確認します：
+ディクショナリーによって消費されるメモリを確認します：
 
 ```sql
 SELECT formatReadableSize(bytes_allocated) AS size
@@ -152,7 +152,7 @@ WHERE name = 'votes_dict'
 └──────────┘
 ```
 
-特定の `PostId` に対してアップ票とダウン票を取得することは、単純な `dictGet` 関数を用いて今や達成できます。以下では、投稿 `11227902` の値を取得します：
+特定の `PostId` のアップ票とダウン票を取得するためには、シンプルな `dictGet` 関数を使用できます。以下に、投稿 `11227902` の値を取得します：
 
 ```sql
 SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
@@ -161,8 +161,7 @@ SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
 │ (34999,32) │
 └────────────┘
 
-
-これを先ほどのクエリに活用すると、`JOIN` を削除できます：
+以前のクエリにこれを活用することで、`JOIN` を削除できます：
 
 WITH PostIds AS
 (
@@ -175,7 +174,7 @@ SELECT Id, Title,
 	dictGet('votes_dict', 'DownVotes', Id) AS DownVotes,
 	abs(UpVotes - DownVotes) AS Controversial_ratio
 FROM posts
-WHERE (Id IN (PostIds)) AND (UpVotes > 10) AND (UpVotes > 10)
+WHERE (Id IN (PostIds)) AND (UpVotes > 10) AND (DownVotes > 10)
 ORDER BY Controversial_ratio ASC
 LIMIT 3
 
@@ -183,11 +182,11 @@ LIMIT 3
 Peak memory usage: 552.26 MiB.
 ```
 
-このクエリは、単純であるだけでなく、二倍以上速いです！さらに、ダウン票とアップ票の両方が10以上の投稿のみを辞書にロードして、事前に計算された論争値を保存することでもっと最適化できる可能性があります。
+このクエリは非常にシンプルであるだけでなく、実行速度も2倍以上向上しています！さらに最適化するためには、10票以上のアップ票とダウン票を持つ投稿のみをディクショナリーにロードし、予め計算された物議の値を保存することが可能です。
 
-## クエリ時間でのデータ強化 {#query-time-enrichment}
+## Query time enrichment {#query-time-enrichment}
 
-辞書はクエリ時間に値を検索するために使用できます。これらの値は結果に返されるか、集約に使用される可能性があります。ユーザーIDをその場所にマッピングする辞書を作成するとします：
+ディクショナリーは、クエリ時に値をルックアップするために使用できます。これらの値は結果に返されるか、集計に使用されます。たとえば、ユーザーIDをその場所にマッピングするディクショナリーを作成しましょう：
 
 ```sql
 CREATE DICTIONARY users_dict
@@ -201,7 +200,7 @@ LIFETIME(MIN 600 MAX 900)
 LAYOUT(HASHED())
 ```
 
-この辞書を使用して、投稿結果を強化することができます：
+このディクショナリーを使用して、投稿結果をリッチ化できます：
 
 ```sql
 SELECT
@@ -212,8 +211,6 @@ FROM posts
 WHERE Title ILIKE '%clickhouse%'
 LIMIT 5
 FORMAT PrettyCompactMonoBlock
-
-
 
 ┌───────Id─┬─Title─────────────────────────────────────────────────────────┬─Location──────────────┐
 │ 52296928 │ Comparision between two Strings in ClickHouse             	│ Spain             	│
@@ -227,7 +224,7 @@ FORMAT PrettyCompactMonoBlock
 Peak memory usage: 249.32 MiB.
 ```
 
-上記のJOINの例と同様に、同じ辞書を使用して、どの場所から投稿が最も多く発生するかを効率的に判断できます：
+上記の結合の例と同様に、同じディクショナリーを使用して、投稿の多くがどこから来ているのかを効率的に特定できます：
 
 ```sql
 SELECT
@@ -251,13 +248,13 @@ LIMIT 5
 Peak memory usage: 248.84 MiB.
 ```
 
-## インデックス時間でのデータ強化 {#index-time-enrichment}
+## Index time enrichment {#index-time-enrichment}
 
-上記の例では、我々はクエリ時間に辞書を使用してJOINを削除しました。辞書はまた、挿入時間に行を強化するためにも使用できます。これは、強化された値が変更されず、辞書を構成するために使用できる外部ソースに存在する場合に通常適切です。この場合、挿入時間に行を強化することで、辞書へのクエリ時間の検索を回避します。
+上の例では、クエリ時にディクショナリーを使用して結合を削除しました。ディクショナリーは、挿入時に行をリッチ化するためにも使用できます。これは通常、強化値が変更せず、外部ソースに存在していてディクショナリーをポピュレートするために使用できる場合に適しています。この場合、挿入時に行をリッチ化することで、ディクショナリーへのクエリ時のルックアップを回避します。
 
-Stack Overflowのユーザーの`Location`が決して変わらないと仮定しましょう（実際には変わります）。特に、`users` テーブルの `Location` カラムです。投稿テーブルをロケーション別に分析するクエリを実行したいとします。これには `UserId` が含まれています。
+Stack Overflow のユーザーの `Location` が変更されないと仮定します（実際には変更されます） - 特に `users` テーブルの `Location` カラムです。投稿テーブルを場所別に分析したいとしましょう。このテーブルには `UserId` が含まれています。
 
-辞書は、ユーザーIDを場所にマッピングし、`users` テーブルによってサポートされます：
+ディクショナリーは、ユーザーIDを場所にマッピングするもので、`users` テーブルによってバックアップされています：
 
 ```sql
 CREATE DICTIONARY users_dict
@@ -271,9 +268,9 @@ LIFETIME(MIN 600 MAX 900)
 LAYOUT(HASHED())
 ```
 
-> `Id < 0` のユーザーは省略しており、これにより `Hashed` 辞書タイプを使用することができます。`Id < 0` のユーザーはシステムユーザーです。
+> `Id < 0` のユーザーは除外します。これにより、`Hashed` ディクショナリータイプを使用できます。`Id < 0` のユーザーはシステムユーザーです。
 
-投稿テーブルでこの辞書を挿入時間に活用するには、スキーマを変更する必要があります：
+このディクショナリーを利用して挿入時に投稿テーブルを強化するには、スキーマを変更する必要があります：
 
 ```sql
 CREATE TABLE posts_with_location
@@ -289,9 +286,9 @@ ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 
 上記の例では、`Location` が `MATERIALIZED` カラムとして宣言されています。これは、値が `INSERT` クエリの一部として提供され、常に計算されることを意味します。
 
-> ClickHouseはまた、[`DEFAULT` カラム](/sql-reference/statements/create/table#default_values)（値が提供されていない場合に挿入または計算される可能性があるカラム）をサポートします。
+> ClickHouse は、提供されない場合に値を挿入または計算できる [`DEFAULT` カラム](/sql-reference/statements/create/table#default_values) もサポートしています。
 
-テーブルをpopulationするには、通常の `INSERT INTO SELECT` を使用してS3から取得できます：
+テーブルをポピュレートするには、S3 から通常の `INSERT INTO SELECT` を使用できます：
 
 ```sql
 INSERT INTO posts_with_location SELECT Id, PostTypeId::UInt8, AcceptedAnswerId, CreationDate, Score, ViewCount, Body, OwnerUserId, OwnerDisplayName, LastEditorUserId, LastEditorDisplayName, LastEditDate, LastActivityDate, Title, Tags, AnswerCount, CommentCount, FavoriteCount, ContentLicense, ParentId, CommunityOwnedDate, ClosedDate FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
@@ -299,7 +296,7 @@ INSERT INTO posts_with_location SELECT Id, PostTypeId::UInt8, AcceptedAnswerId, 
 0 rows in set. Elapsed: 36.830 sec. Processed 238.98 million rows, 2.64 GB (6.49 million rows/s., 71.79 MB/s.)
 ```
 
-これで、最も多くの投稿が発生する場所の名前を取得できます：
+これで、ほとんどの投稿がどこから来ているのかを示す場所の名前を取得できます：
 
 ```sql
 SELECT Location, count() AS c
@@ -320,22 +317,24 @@ LIMIT 4
 Peak memory usage: 666.82 MiB.
 ```
 
-## 高度な辞書トピック {#advanced-dictionary-topics}
+## Advanced Dictionary Topics {#advanced-dictionary-topics}
 
-### 辞書の`LAYOUT`を選択する {#choosing-the-dictionary-layout}
+### Choosing the Dictionary `LAYOUT` {#choosing-the-dictionary-layout}
 
-`LAYOUT` 句は、辞書の内部データ構造を制御します。いくつかのオプションが存在し、[ここ](/sql-reference/dictionaries#ways-to-store-dictionaries-in-memory) に記載されています。正しいレイアウトを選択するためのヒントは[こちら](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout) にあります。
+`LAYOUT` 句は、ディクショナリーの内部データ構造を制御します。いくつかのオプションが存在し、[ここ](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout) に文書化されています。正しいレイアウトを選択するためのいくつかのヒントは [ここ](/sql-reference/dictionaries#ways-to-store-dictionaries-in-memory) にあります。
 
-### 辞書の更新 {#refreshing-dictionaries}
+### Refreshing dictionaries {#refreshing-dictionaries}
 
-我々は辞書に対して `LIFETIME` として `MIN 600 MAX 900` を指定しました。LIFETIMEは辞書の更新間隔であり、ここでの値により600秒から900秒の間でランダムな間隔で定期的にリロードが行われます。このランダムな間隔は、多数のサーバーで更新する際の辞書ソースへの負荷を分散させるために必要です。更新中は、辞書の古いバージョンに対してクエリを実行できますが、最初のロードのみがクエリをブロックします。`(LIFETIME(0))`を設定すると、辞書の更新を防ぎます。
-データベースソース（ClickHouseやPostgresなど）に対しては、辞書を実際に変更された場合のみ更新するクエリを設定できます（クエリの応答がこれを決定します）。さらなる詳細は[こちら](https://sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime) に記載されています。
+ディクショナリーに `LIFETIME` を `MIN 600 MAX 900` と指定しています。LIFETIME はディクショナリーの更新間隔であり、ここでの値は600秒から900秒の間のランダムな間隔での定期的なリロードを引き起こします。このランダムな間隔は、大量のサーバーで更新する際にディクショナリーソースへの負荷を分散させるために必要です。更新中、ディクショナリーの古いバージョンはまだクエリでき、初回のロードのみがクエリをブロックします。`(LIFETIME(0))`を設定すると、ディクショナリーが更新されないことに注意してください。
+ディクショナリーは `SYSTEM RELOAD DICTIONARY` コマンドを使用して強制的にリロードできます。
 
-### その他の辞書タイプ {#other-dictionary-types}
+ClickHouse や Postgres などのデータベースソースでは、ディクショナリーを更新するためのクエリを設定して、定期的な間隔で更新されるのではなく、実際に変更があった場合のみ更新することができます。これについての詳細は [ここ](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime) にあります。
 
-ClickHouseはまた、[階層的](/sql-reference/dictionaries#hierarchical-dictionaries)、[ポリゴン](/sql-reference/dictionaries#polygon-dictionaries)、[正規表現](/sql-reference/dictionaries#regexp-tree-dictionary) 辞書をサポートしています。
+### Other dictionary types {#other-dictionary-types}
 
-### さらなる情報 {#more-reading}
+ClickHouse は、[階層型](/sql-reference/dictionaries#hierarchical-dictionaries)、[ポリゴン](/sql-reference/dictionaries#polygon-dictionaries)、および [正規表現](/sql-reference/dictionaries#regexp-tree-dictionary) ディクショナリーもサポートしています。
 
-- [辞書を使用してクエリを加速する](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [辞書の高度な設定](/sql-reference/dictionaries)
+### More reading {#more-reading}
+
+- [ディクショナリーを使用してクエリを高速化する](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
+- [ディクショナリーの高度な設定](/sql-reference/dictionaries)

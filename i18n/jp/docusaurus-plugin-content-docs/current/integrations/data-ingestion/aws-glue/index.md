@@ -2,7 +2,7 @@
 sidebar_label: Amazon Glue
 sidebar_position: 1
 slug: /integrations/glue
-description: Integrate ClickHouse and Amazon Glue
+description: ClickHouseとAmazon Glueの統合
 keywords: [ clickhouse, amazon, aws, glue, migrating, data ]
 ---
 
@@ -10,11 +10,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Amazon Glue と ClickHouse の統合
+# Amazon GlueとClickHouseの統合
 
-[Amazon Glue](https://aws.amazon.com/glue/) は、Amazon Web Services (AWS) によって提供される完全に管理されたサーバーレスのデータ統合サービスです。これは、分析、機械学習、アプリケーション開発のためにデータを発見、準備、変換するプロセスを簡素化します。
+[Amazon Glue](https://aws.amazon.com/glue/) は、Amazon Web Services (AWS) によって提供される完全に管理されたサーバーレスのデータ統合サービスです。これは、分析、機械学習、およびアプリケーション開発のためにデータを発見、準備、変換するプロセスを簡素化します。
 
-現時点では Glue ClickHouse コネクタは利用できませんが、公式の JDBC コネクタを使用して ClickHouse と接続し、統合できます。
+まだGlue ClickHouseコネクタは提供されていませんが、公式のJDBCコネクタを利用してClickHouseとの接続および統合を行うことができます。
 
 <Tabs>
 <TabItem value="Java" label="Java" default>
@@ -30,7 +30,7 @@ import scala.collection.JavaConverters._
 import com.amazonaws.services.glue.log.GlueLogger
 
 
-// Glue ジョブの初期化
+// Glueジョブの初期化
 object GlueJob {
   def main(sysArgs: Array[String]) {
     val sc: SparkContext = new SparkContext()
@@ -42,17 +42,17 @@ object GlueJob {
     val args = GlueArgParser.getResolvedOptions(sysArgs, Seq("JOB_NAME").toArray)
     Job.init(args("JOB_NAME"), glueContext, args.asJava)
 
-    // JDBC 接続の詳細
+    // JDBC接続の詳細
     val jdbcUrl = "jdbc:ch://{host}:{port}/{schema}"
     val jdbcProperties = new java.util.Properties()
     jdbcProperties.put("user", "default")
     jdbcProperties.put("password", "*******")
     jdbcProperties.put("driver", "com.clickhouse.jdbc.ClickHouseDriver")
 
-    // ClickHouse からテーブルをロード
+    // ClickHouseからテーブルをロード
     val df: DataFrame = spark.read.jdbc(jdbcUrl, "my_table", jdbcProperties)
 
-    // Spark df を表示するか、お好きなように利用
+    // Spark dfを表示するか、任意の用途で使用する
     df.show()
 
     // ジョブをコミット
@@ -84,7 +84,7 @@ job.init(args['JOB_NAME'], args)
 jdbc_url = "jdbc:ch://{host}:{port}/{schema}"
 query = "select * from my_table"
 
-# クラウド使用時には SSL オプションを追加してください
+# クラウド使用の場合、SSLオプションを追加してください
 df = (spark.read.format("jdbc")
     .option("driver", 'com.clickhouse.jdbc.ClickHouseDriver')
     .option("url", jdbc_url)
@@ -105,4 +105,4 @@ job.commit()
 </TabItem>
 </Tabs>
 
-詳細については、弊社の [Spark & JDBC ドキュメント](/integrations/apache-spark#read-data) をご覧ください。
+詳細については、[Spark & JDBCドキュメント](/integrations/apache-spark/spark-jdbc#read-data)をご覧ください。

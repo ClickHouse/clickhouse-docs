@@ -7,12 +7,13 @@ keywords: [json, clickhouse, inserting, loading, formats, schema]
 
 # スキーマの設計
 
-[schema inference](/integrations/data-formats/json/inference) を使用して、JSONデータの初期スキーマを確立し、S3などの場所にあるJSONデータファイルをクエリすることができますが、ユーザーは自分のデータの最適化されたバージョン付きスキーマを確立することを目指すべきです。以下にJSON構造をモデリングする選択肢について説明します。
-## 可能な限りの抽出 {#extract-where-possible}
+[schema inference](/integrations/data-formats/json/inference) を使用して、JSONデータの最初のスキーマを確立し、S3などの場所でJSONデータファイルをクエリすることは可能ですが、ユーザーはデータの最適化されたバージョン管理スキーマを確立することを目指すべきです。以下に、JSON構造をモデリングするためのオプションを説明します。
 
-可能な限り、ユーザーは頻繁にクエリされるJSONキーをスキーマのルートにあるカラムに抽出することを推奨します。これにより、クエリの構文が単純化され、必要に応じてこれらのカラムを `ORDER BY` 句で使用したり、[secondary index](/optimize/skipping-indexes)を指定したりできます。
+## 抽出可能な場合は抽出する {#extract-where-possible}
 
-例として、[arXivデータセット](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download)を考えてみましょう。これはガイド[**JSON schema inference**](/integrations/data-formats/json/inference)で探求されています：
+可能な限り、ユーザーは頻繁にクエリするJSONキーをスキーマのルートにあるカラムに抽出することを推奨します。これにより、クエリ構文が単純化されるだけでなく、必要に応じてこれらのカラムを `ORDER BY` 句で使用したり、[secondary index](/optimize/skipping-indexes)を指定したりできます。
+
+以下は、ガイド [**JSONスキーマ推論**](/integrations/data-formats/json/inference) で探求された [arXiv データセット](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download) の例です：
 
 ```json
 {
@@ -48,9 +49,9 @@ keywords: [json, clickhouse, inserting, loading, formats, schema]
 }
 ```
 
-`versions.created` の最初の値を主な順序付けキー（理想的には `published_date` という名前）にしたいとします。これは、挿入前に抽出するか、挿入時にClickHouseの[materialized views](/docs/materialized-view/incremental-materialized-view)または[materialized columns](/sql-reference/statements/alter/column#materialize-column)を使用して行う必要があります。
+`versions.created` の最初の値をメインのオーダリングキーにしたいと考えているとします。理想的には、これは挿入前に抽出されるか、挿入時に ClickHouse の [materialized views](/docs/materialized-view/incremental-materialized-view) または [materialized columns](/sql-reference/statements/alter/column#materialize-column) を使用して行われるべきです。
 
-物理カラムは、クエリ時に データを抽出する最も簡単な手段を表し、抽出ロジックが単純なSQL式としてキャッチできる場合は推奨されます。たとえば、`published_date` はarXivスキーマに物理カラムとして追加され、以下のように順序付けキーとして定義されることができます：
+Materialized columns は、クエリ時にデータを抽出する最も簡単な手段を表し、抽出ロジックが単純な SQL 式として捉えられる場合は好まれます。たとえば、`published_date` を arXiv スキーマに materialized column として追加し、オーダリングキーとして以下のように定義できます：
 
 ```sql
 CREATE TABLE arxiv
@@ -76,11 +77,11 @@ ORDER BY published_date
 ```
 
 <!--TODO: Find a better way-->
-:::note ネストされたカラムの表現
-上記は、位置に基づいて `created` カラムを参照するために `versions[1].1` の記法を使用する必要があります。これは、推奨される構文である `versions.created_at[1]` ではありません。
+:::note ネストされたカラムの式
+上記では、タプルに `versions[1].1` という表記法を使用し、位置によって `created` カラムにアクセスする必要があります。これは、好ましい構文である `versions.created_at[1]` とは異なります。
 :::
 
-データをロードすると、カラムが抽出されます：
+データを読み込むと、カラムが抽出されます：
 
 ```sql
 INSERT INTO arxiv SELECT *
@@ -98,23 +99,24 @@ LIMIT 2
 2 rows in set. Elapsed: 0.001 sec.
 ```
 
-:::note 物理カラムの動作
-物理カラムの値は常に挿入時に計算され、`INSERT` クエリに指定することはできません。物理カラムはデフォルトでは `SELECT *` に含まれません。これは、`SELECT *` の結果は常にINSERTを使用してテーブルに戻すことができるという不変性を保持するためです。この動作は、`asterisk_include_materialized_columns=1`を設定することで無効にできます。
+:::note Materialized columnの動作
+Materialized columns の値は常に挿入時に計算され、`INSERT` クエリで指定することはできません。デフォルトでは、materialized columns は `SELECT *` に返されません。これは、`SELECT *` の結果が常に INSERT を使用してテーブルに戻されることを保持するためです。この動作は、`asterisk_include_materialized_columns=1` を設定することで無効化できます。
 :::
 
-より複雑なフィルタリングと変換タスクには、[materialized views](/materialized-view/incremental-materialized-view)の使用を推奨します。
-## 静的JSONと動的JSON {#static-vs-dynamic-json}
+より複雑なフィルタリングや変換タスクについては、[materialized views](/materialized-view/incremental-materialized-view) の使用を推奨します。
 
-JSONのスキーマを定義する上での主なタスクは、各キーの値に適切なタイプを決定することです。ユーザーは、各キーに対して適切なタイプを決定するために、以下のルールを再帰的に適用することを推奨します。
+## 静的 vs 動的 JSON {#static-vs-dynamic-json}
 
-1. **原始タイプ** - キーの値が原始タイプである場合、サブオブジェクトの一部であろうとなかろうと、一般的なスキーマの[設計ベストプラクティス](/data-modeling/schema-design)や[タイプ最適化ルール](/data-modeling/schema-design#optimizing-types)に従ってそのタイプを選択してください。たとえば、以下の`phone_numbers`のような原始の配列は`Array(<type>)`、つまり `Array(String)` としてモデル化できます。
-2. **静的 vs 動的** - キーの値が複雑なオブジェクト（すなわち、オブジェクトまたはオブジェクトの配列）である場合、そのオブジェクトが変更の対象であるかどうかを確認します。新しいキーが追加されることがほとんどないオブジェクトや、新しいキーの追加が予測でき、[`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column)を通じてスキーマの変更を行うことができる場合、それを **静的** とみなすことができます。不完全なJSONドキュメントでは、提供されるキーのサブセットのみが存在するオブジェクトを含めます。新しいキーが頻繁に追加される、または予測できないオブジェクトは、**動的**として考慮する必要があります。値が **静的** か **動的** かを確定するには、以下の関連セクション[**Handling static objects**](/integrations/data-formats/json/schema#handling-static-objects)と[**Handling dynamic objects**](/integrations/data-formats/json/schema#handling-dynamic-objects)を参照してください。
+JSON のスキーマを定義する主なタスクは、各キーの値に対する適切なタイプを決定することです。ユーザーは、各キーに対して適切なタイプを決定するために、JSON 階層内の各キーに次のルールを再帰的に適用することを推奨します。
+
+1. **プリミティブタイプ** - キーの値がプリミティブタイプである場合（それがサブオブジェクトの一部かルートにあるかにかかわらず）、一般的なスキーマの [設計ベストプラクティス](/data-modeling/schema-design) および [タイプ最適化ルール](/data-modeling/schema-design#optimizing-types) に従ってそのタイプを選択するようにしてください。以下の `phone_numbers` のようなプリミティブの配列は、`Array(<type>)` 例えば、`Array(String)` としてモデル化できます。
+2. **静的 vs 動的** - キーの値が複雑なオブジェクト、すなわちオブジェクトまたはオブジェクトの配列である場合、それが変更される可能性があるかどうかを確立します。新しいキーがほとんど追加されないオブジェクトでは、新しいキーの追加が予測可能であり、[`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column) によるスキーマ変更で処理できる場合は、これを **静的** と見なすことができます。これは、いくつかの JSON ドキュメントでのみキーのサブセットが提供されるオブジェクトを含みます。新しいキーが頻繁に追加され、または予測できないオブジェクトは **動的** と見なされるべきです。その値が **静的** か **動的** かを判断するために、以下の関連セクション [**静的オブジェクトの処理**](/integrations/data-formats/json/schema#handling-static-objects) および [**動的オブジェクトの処理**](/integrations/data-formats/json/schema#handling-dynamic-objects) を参照してください。
 
 <p></p>
 
-**重要:** 上記のルールは再帰的に適用すべきです。キーの値が動的であると判断された場合、さらなる評価は必要なく[**Handling dynamic objects**](/integrations/data-formats/json/schema#handling-dynamic-objects) のガイドラインに従うことができます。オブジェクトが静的な場合は、サブキーを評価し続けて、どちらかのキーが原始的であるか、動的なキーが見つかるまで評価します。
+**重要:** 上記のルールは再帰的に適用されるべきです。キーの値が動的であると判断された場合、それ以上の評価は必要なく、[**動的オブジェクトの処理**](/integrations/data-formats/json/schema#handling-dynamic-objects) ガイドラインに従うことができます。オブジェクトが静的である場合は、サブキーを評価し続け、キーの値がプリミティブであるか動的キーに遭遇するまで評価を続けます。
 
-これらのルールを示すために、以下のJSON例を使用して人を表します：
+これらのルールを示すために、以下のJSON例を使用して人を表現します：
 
 ```json
 {
@@ -163,15 +165,16 @@ JSONのスキーマを定義する上での主なタスクは、各キーの値�
 
 これらのルールを適用すると：
 
-- ルートキー `name`、`username`、`email`、`website` は `String` タイプで表現できます。カラム `phone_numbers` は `Array(String)` の原始の配列であり、`dob` と `id` はそれぞれ `Date` と `UInt32` 型です。
-- `address` オブジェクトには新しいキーが追加されないため（新しいアドレスオブジェクトのみ）、これを **静的** と見ることができます。再帰的に評価すると、すべてのサブカラムは原始的（タイプ `String`）と考えることができ、`geo` だけが静的構造で2つの `Float32` カラム、`lat` と `lng` を持ちます。
-- `tags` カラムは **動的** です。このオブジェクトに新しい任意のタグが追加できると仮定します。
-- `company` オブジェクトは **静的** で、常に指定された3つのキーのうちの最大を含みます。サブキー `name` と `catchPhrase` は `String` 型です。キー `labels` は **動的** です。このオブジェクトに新しい任意のタグが追加されると仮定します。値は常に文字列のキーと値のペアです。
-## 静的オブジェクトの扱い {#handling-static-objects}
+- ルートキー `name`, `username`, `email`, `website` は、タイプ `String` として表されます。カラム `phone_numbers` は型 `Array(String)` のプリミティブの配列で、`dob` と `id` はそれぞれ型 `Date` と `UInt32` です。
+- `address` オブジェクトには新しいキーが追加されないため（新しい住所オブジェクトのみ）、これは **静的** と見なすことができます。再帰的に評価すると、`geo` を除くすべてのサブカラムはプリミティブ（型 `String`）と見なすことができます。これは、`lat` と `lng` の2つの `Float32` カラムを持つ静的な構造でもあります。
+- `tags` カラムは **動的** です。このオブジェクトには任意のタイプと構造の新しいタグを追加できると仮定します。
+- `company` オブジェクトは **静的** で、常に指定された3つのキーのうちの最大数を含むことになります。サブキー `name` と `catchPhrase` はタイプ `String` です。キー `labels` は **動的** です。このオブジェクトには新しい任意のタグが追加されると仮定します。値は常に文字列のキーと値のペアになります。
 
-静的オブジェクトは、名前付きタプルすなわち `Tuple` を使用して扱うことを推奨します。オブジェクトの配列は、タプルの配列すなわち `Array(Tuple)` を使用して保持できます。タプル内では、カラムとそれぞれのタイプに対して同じルールを適用する必要があります。これにより、ネストされたオブジェクトを表現するためのネストされたタプルを作成できます。
+## 静的オブジェクトの処理 {#handling-static-objects}
 
-具体例として、先ほどのJSON人の例を使用し、動的なオブジェクトを省略します：
+静的オブジェクトは、名前付きタプル、すなわち `Tuple` を使用して処理されることを推奨します。オブジェクトの配列は、すなわち `Array(Tuple)` を使用して保持できます。タプル内では、カラムとそれに対応するタイプも同じルールを使用して定義されるべきです。これは、ネストされたオブジェクトを表すためのネストされたタプルを生成する可能性があります。
+
+これを説明するために、以前のJSON人の例を使用し、動的オブジェクトを省略します：
 
 ```json
 {
@@ -220,16 +223,16 @@ ENGINE = MergeTree
 ORDER BY username
 ```
 
-`company` カラムが `Tuple(catchPhrase String, name String)` として定義されている様子に注意してください。`address` フィールドは `Array(Tuple)` を使用し、`geo` カラムを表すためにネストされたタプルを使用しています。
+`company` カラムは `Tuple(catchPhrase String, name String)` として定義されていることに注意してください。`address` フィールドは `Array(Tuple)` を使用し、`geo` カラムを表すためにネストされた `Tuple` を使用しています。
 
-この構造のJSONは次のようにこのテーブルに挿入できます：
+JSON はこの構造のテーブルに挿入できます：
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
 ```
 
-上記の例では、データが最小限になりますが、以下のように、タプルフィールドをドット区切りの名前でクエリすることができます。
+上記の例ではデータが最小限ですが、以下のように期間区切りの名前でタプルフィールドをクエリできます。
 
 ```sql
 SELECT
@@ -242,7 +245,7 @@ FROM people
 └───────────────────┴──────────────┘
 ```
 
-`address.street` カラムが `Array` として返される様子に注意してください。位置によって配列内の特定のオブジェクトをクエリするには、列名の後に配列オフセットを指定する必要があります。たとえば、最初の住所から通りを取得するには：
+`address.street` カラムが `Array` として返されることに注意してください。配列内の特定のオブジェクトに位置によってクエリするには、カラム名の後に配列オフセットを指定する必要があります。たとえば、最初の住所から通りにアクセスするには：
 
 ```sql
 SELECT address.street[1] AS street
@@ -255,7 +258,7 @@ FROM people
 1 row in set. Elapsed: 0.001 sec.
 ```
 
-タプルの主な欠点は、サブカラムを順序キーとして使用できないことです。したがって、次は失敗します：
+タプルの主な欠点は、サブカラムをオーダリングキーに使用できないことです。したがって、以下は失敗します：
 
 ```sql
 CREATE TABLE people
@@ -276,14 +279,15 @@ ORDER BY company.name
 Code: 47. DB::Exception: Missing columns: 'company.name' while processing query: 'company.name', required columns: 'company.name' 'company.name'. (UNKNOWN_IDENTIFIER)
 ```
 
-:::note 順序キーにおけるタプル
-タプルカラムは順序キーとして使用できませんが、全体のタプルは使用可能です。しかし、これは通常あまり意味を成しません。
+:::note オーダリングキーのタプル
+タプル列はオーダリングキーで使用できませんが、全体のタプルは使用できます。可能ではありますが、これは稀にしか意味を持ちません。
 :::
-### デフォルト値の扱い {#handling-default-values}
 
-JSONオブジェクトは構造化されている場合でも、知られているキーのサブセットのみが提供され、しばしばスパースです。幸運なことに、`Tuple` 型ではJSONペイロード中のすべてのカラムが必要なわけではありません。提供されない場合は、デフォルト値が使用されます。
+### デフォルト値の処理 {#handling-default-values}
 
-先ほどの `people` テーブルと、次のスパースJSON（`suite`、`geo`、`phone_numbers`、`catchPhrase`のキーが欠落）を考えてみましょう。
+JSONオブジェクトが構造化されている場合であっても、提供されるキーのサブセットのみでスパースであることがよくあります。幸いなことに、`Tuple`タイプはJSONペイロード内のすべてのカラムを必要としません。提供されていない場合は、デフォルト値が使用されます。
+
+以前の `people` テーブルと次のスパースなJSONを考慮し、`suite`、`geo`、`phone_numbers`、および `catchPhrase` キーが欠けています。
 
 ```json
 {
@@ -306,7 +310,7 @@ JSONオブジェクトは構造化されている場合でも、知られてい�
 }
 ```
 
-以下のようにこの行を正常に挿入できることがわかります：
+以下のように、この行が正常に挿入されることが確認できます：
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow
@@ -317,7 +321,7 @@ Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-この1行をクエリすると、省略されたカラム（サブオブジェクトを含む）にはデフォルト値が使用されていることがわかります：
+この単一行をクエリすると、省略されたカラム（サブオブジェクトを含む）にデフォルト値が使用されることが確認できます：
 
 ```sql
 SELECT *
@@ -353,14 +357,15 @@ FORMAT PrettyJSONEachRow
 1 row in set. Elapsed: 0.001 sec.
 ```
 
-:::note 空とヌルの区別
-値が空であることと提供されていないことの区別が必要な場合は、[Nullable](/sql-reference/data-types/nullable)型を使用できます。この場合、[は避けるべきです](/cloud/bestpractices/avoid-nullable-columns)が、絶対に必要でない限り、これを使用することは推奨されません。なぜなら、これがストレージとクエリパフォーマンスに悪影響を及ぼすためです。
+:::note 空とnullの区別
+ユーザーが、値が空であることと提供されていないことを区別する必要がある場合は、[Nullable](/sql-reference/data-types/nullable) タイプを使用できます。この [avoid nullable columns](https://cloud.bestpractices/avoid-nullable-columns) で明示的に回避するべきです。そうでないと、これらのカラムでのストレージとクエリパフォーマンスに悪影響を及ぼします。
 :::
-### 新しいカラムの扱い {#handling-new-columns}
 
-スキーマの変更を計画できる場合は、静的キーのスキーマに構造化されたアプローチを用いることができます。すなわち、新しいキーが事前に知られており、スキーマをそれに応じて変更できる場合です。
+### 新しいカラムの処理 {#handling-new-columns}
 
-注意すべき点は、ClickHouseはデフォルトでペイロード内で提供され、スキーマに存在しないJSONキーを無視することです。以下のように、`nickname` キーが追加された修正されたJSONペイロードを考えてみましょう：
+静的なJSONキーに対して構造化されたアプローチが最も簡単ですが、スキーマ変更が計画できる場合でもこのアプローチを使用できます。つまり、新しいキーが事前に知られており、そのスキーマを適宜変更できる場合です。
+
+ClickHouseは、デフォルトでペイロード内に提供されているJSONキーを無視し、スキーマに存在しないものに対して無視します。たとえば、`nickname`キーの追加を伴う次の修正されたJSONペイロードを考えてください：
 
 ```json
 {
@@ -391,7 +396,7 @@ FORMAT PrettyJSONEachRow
 }
 ```
 
-このJSONは、`nickname` キーが無視された状態で正常に挿入できます：
+このJSONは正常に挿入され、`nickname`キーは無視されます：
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow
@@ -402,20 +407,20 @@ Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-スキーマへのカラムを追加するには、[`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column) コマンドを使用します。デフォルトは `DEFAULT` 句経由で指定でき、その指定が次の挿入時に存在しない場合に使用されます。この値が存在しない行（作成前に挿入されたもの）も、このデフォルト値が返されます。デフォルト値が指定されていない場合は、そのタイプのデフォルト値が使用されます。
+カラムは [`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column) コマンドを使用してスキーマに追加できます。デフォルトは `DEFAULT` 句を介して指定でき、変更後の挿入時に指定されていない場合に使用されます。この値が存在しない行（それが作成された前に挿入されたため）もこのデフォルト値を返します。デフォルト値が指定されていない場合は、タイプのデフォルト値が使用されます。
 
-例えば：
+たとえば：
 
 ```sql
--- 初期行挿入 (ニックネームは無視される)
+-- 最初の行を挿入（nicknameは無視される）
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","nickname":"Clicky","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
 
--- カラムの追加
+-- カラムを追加
 ALTER TABLE people
     (ADD COLUMN `nickname` String DEFAULT 'no_nickname')
 
--- 新しい行を挿入 (同じデータ異なるID)
+-- 新しい行を挿入（同じデータ異なるid）
 INSERT INTO people FORMAT JSONEachRow
 {"id":2,"name":"Clicky McCliickHouse","nickname":"Clicky","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
 
@@ -429,28 +434,30 @@ SELECT id, nickname FROM people
 
 2 rows in set. Elapsed: 0.001 sec.
 ```
-## 動的オブジェクトの扱い {#handling-dynamic-objects}
 
-動的オブジェクトを扱うために推奨されるアプローチは2つあります：
+## 動的オブジェクトの処理 {#handling-dynamic-objects}
+
+動的オブジェクトを処理するための推奨される2つのアプローチがあります：
 
 - [Map(String,V)](/sql-reference/data-types/map) タイプ
-- [String](/sql-reference/data-types/string) とJSON関数
+- [String](/sql-reference/data-types/string) と JSON 関数
 
-これらを検討し、最も適切なものを決定するためのルールを適用できます。
+最も適切なものを決定するために、以下のルールを適用できます。
 
-1. オブジェクトが予測可能な構造を持たず、任意のネストされたオブジェクトを含む、高度に動的な場合、ユーザーは `String` タイプを使用するべきです。値は、以下に示すJSON関数を使用してクエリ時に抽出できます。
-2. オブジェクトが主に1つのタイプの任意のキーを格納するために使用される場合は、`Map` タイプの使用を検討してください。理想的には、一意のキーの数が数百を超えてはいけません。`Map` タイプは、サブオブジェクトを持つオブジェクトにも考慮されますが、その場合はそのタイプに均一性が必要です。一般的に、`Map` タイプはラベルやタグに使用することを推奨しています。例えば、ログデータ内のKubernetesポッドラベル。
+1. オブジェクトが非常に動的であり、予測可能な構造がなく、任意のネストされたオブジェクトを含む場合は、`String` タイプを使用すべきです。値は、以下に示すように、クエリ時にJSON関数を使用して抽出できます。
+2. オブジェクトが主に同じタイプの任意のキーを格納するために使用される場合は、`Map` タイプを使用することを考慮してください。理想的には、一意のキーの数は数百を超えないべきです。また、サブオブジェクトに一貫性がある場合も、`Map` タイプを考慮できます。一般に、ラベルやタグ用に `Map` タイプを使用することを推奨します。たとえば、ログデータにおけるKubernetesポッドのラベルなどです。
 
 <br />
 
-:::note オブジェクトレベルのアプローチを適用
-同じスキーマ内の異なるオブジェクトに対して異なる技術を適用できます。いくつかのオブジェクトは `String` で、他のオブジェクトは `Map` で最良の解決策です。`String` タイプが使用されると、以降のスキーマの決定は必要ありません。逆に、以下のように `Map` キー内にサブオブジェクトをネストすることは可能です。
+:::note オブジェクトレベルアプローチを適用
+同じスキーマ内の異なるオブジェクトに異なる手法を適用できます。一部のオブジェクトは `String` で最もよく解決できるかもしれませんが、他のオブジェクトは `Map` で最も適しています。`String` タイプを使用すると、それ以上のスキーマ決定は必要ありません。逆に、以下に示すように、`Map` キー内にネストされたサブオブジェクトを配置することも可能です。
 :::
-### Stringを使用する {#using-string}
 
-上記で説明した構造化アプローチを用いてデータを扱うことは、変更対象であるか、スキーマが十分に理解されていない動的JSONを持つユーザーにはしばしば実現不可能です。絶対的な柔軟性を持たせるために、ユーザーは単にJSONを `String` として格納し、必要に応じて関数を使用してフィールドを抽出できます。これは、JSONを構造化されたオブジェクトとして扱うことの極端な反対を示しています。この柔軟性は、クエリ構文の複雑さの増加とパフォーマンスの低下という明確なコストを伴います。
+### Stringの使用 {#using-string}
 
-前述の通り、[元の人物オブジェクト](/integrations/data-formats/json/schema#static-vs-dynamic-json)では `tags` カラムの構造を保証できません。元の行を挿入します（`company.labels` も含めますが、今回は無視します）：
+上記のように構造化されたアプローチを使用したデータ管理は、動的なJSONを持つユーザーにとっては実行可能でないことが多いです。これは変更の対象であるか、スキーマが十分に理解されていないものです。絶対的な柔軟性を求める場合、ユーザーは単にJSONを `String` として格納し、その後必要に応じてフィールドを抽出するための関数を使用できます。これは、JSONを構造化されたオブジェクトとして扱うことの極端な反対を表しています。この柔軟性は、クエリ構文の複雑さとパフォーマンスの低下を招くという大きなコストがかかります。
+
+前述のように、[元の人オブジェクト](/integrations/data-formats/json/schema#static-vs-dynamic-json) において、`tags` カラムの構造を保証することはできません。元の行を挿入します（ここでは `company.labels` も含めますが、ここでは無視します）。`Tags` カラムを `String` と宣言します：
 
 ```sql
 CREATE TABLE people
@@ -476,7 +483,7 @@ Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-`tags` カラムを選択してJSONが文字列として挿入されたことを確認します：
+`tags` カラムを選択すると、JSONが文字列として挿入されたことがわかります：
 
 ```sql
 SELECT tags
@@ -489,7 +496,7 @@ FROM people
 1 row in set. Elapsed: 0.001 sec.
 ```
 
-[JSONExtract](/sql-reference/functions/json-functions#jsonextract-functions) 関数を使用してこのJSONから値を取得できます。以下は単純な例です：
+このJSONから値を取得するために、[JSONExtract](/sql-reference/functions/json-functions#jsonextract-functions) 関数を使用できます。以下の単純な例を考えてみましょう：
 
 ```sql
 SELECT JSONExtractString(tags, 'holidays') as holidays FROM people
@@ -501,9 +508,9 @@ SELECT JSONExtractString(tags, 'holidays') as holidays FROM people
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-関数は、`String` カラム `tags` への参照と、抽出するJSON内のパスの両方を必要とします。ネストされたパスは、例えば `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')` のように、関数がネストされる必要があります。ネストされたパスの抽出は、[JSON_QUERY](/sql-reference/functions/json-functions.md/#json_queryjson-path) と [JSON_VALUE](/sql-reference/functions/json-functions.md/#json_valuejson-path) 関数を使って簡素化できます。
+関数は `tags` という `String` カラムへの参照と、抽出するJSON内のパスを両方とも必要とします。ネストされたパスは関数をネストする必要があり、たとえば、`JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')` のように、カラム `tags.car.year` を抽出します。ネストされたパスの抽出は、[JSON_QUERY](/sql-reference/functions/json-functions#json_query) および [JSON_VALUE](/sql-reference/functions/json-functions#json_value) 関数を介して簡略化できます。
 
-arXivデータセットの極端なケースを考えてみましょう。全体を `String` と見なします。
+`arxiv` データセットの極端なケースを考えてみましょう。この場合、全体のボディを `String` と見なします。
 
 ```sql
 CREATE TABLE arxiv (
@@ -512,7 +519,7 @@ CREATE TABLE arxiv (
 ENGINE = MergeTree ORDER BY ()
 ```
 
-このスキーマに挿入するには、`JSONAsString` フォーマットを使用する必要があります：
+このスキーマに挿入するには、`JSONAsString` 形式を使用する必要があります：
 
 ```sql
 INSERT INTO arxiv SELECT *
@@ -521,10 +528,10 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.j
 0 rows in set. Elapsed: 25.186 sec. Processed 2.52 million rows, 1.38 GB (99.89 thousand rows/s., 54.79 MB/s.)
 ```
 
-リリースされた論文の数を年ごとに数えたいとしましょう。スキーマの[構造化版](/integrations/data-formats/json/inference#creating-tables)と、単に文字列を使用した場合のクエリを対比してみましょう：
+年ごとの公開論文数をカウントしたいとします。次のように、[構造化されたバージョン](/integrations/data-formats/json/inference#creating-tables) のスキーマと文字列のみを使用した場合のクエリを対比します：
 
 ```sql
--- 構造化スキーマを使用する
+-- 構造化されたスキーマを使用
 SELECT
     toYear(parseDateTimeBestEffort(versions.created[1])) AS published_year,
     count() AS c
@@ -548,7 +555,8 @@ LIMIT 10
 
 10 rows in set. Elapsed: 0.264 sec. Processed 2.31 million rows, 153.57 MB (8.75 million rows/s., 582.58 MB/s.)
 
--- 構造化されていない文字列を使用する
+-- 非構造化された文字列を使用
+
 SELECT
     toYear(parseDateTimeBestEffort(JSON_VALUE(body, '$.versions[0].created'))) AS published_year,
     count() AS c
@@ -574,35 +582,36 @@ LIMIT 10
 Peak memory usage: 205.98 MiB.
 ```
 
-ここでは、JSONをフィルタリングするためにXPath式を使用していることに注意してください。すなわち、`JSON_VALUE(body, '$.versions[0].created')`。
+ここで、`JSON_VALUE(body, '$.versions[0].created')` のXPath式を使用して、JSONをメソッドでフィルタリングしていることに注意してください。
 
-文字列関数は、明らかに遅く（> 10倍）なり、インデックスによる明示的な型変換よりも遅くなります。これらのクエリは常にフルテーブルスキャンが必要であり、すべての行を処理します。このようなクエリは、このような小さなデータセットではまだ迅速ですが、データセットが大きくなるにつれてパフォーマンスが低下します。
+文字列関数は明示的な型変換よりもかなり遅く（> 10倍）なります。上記のクエリは常にテーブルスキャンとすべての行の処理を必要とします。これらのクエリは、このような小さなデータセットでは依然として速くなりますが、大きなデータセットではパフォーマンスが低下します。
 
-このアプローチの柔軟性は、明確なパフォーマンスと構文のコストを伴い、スキーマ内の高度に動的なオブジェクトのみに使用するべきです。
-#### シンプルなJSON関数 {#simple-json-functions}
+このアプローチの柔軟性は、明確なパフォーマンスと構文のコストと引き換えであり、高度に動的なオブジェクトのスキーマにのみ使用するべきです。
 
-上記の例では、JSON*ファミリーの関数を使用しています。これらは、[simdjson](https://github.com/simdjson/simdjson) に基づくフルJSONパーサーを使用しており、厳密な解析を行い、異なるレベルにネストされている同じフィールドを区別します。これらの関数は、文法的には正しいが整形が不十分なJSON（例：キー間の二重スペース）を扱うことができます。
+#### 簡単なJSON関数 {#simple-json-functions}
 
-より高速で厳密なセットの関数も利用可能です。`simpleJSON*`関数は、主にJSONの構造とフォーマットにおいて厳密な仮定を行うことにより、優れたパフォーマンスを提供します。具体的には：
+上記の例では、JSON*関数のファミリーを使用しています。これらは[simdjson](https://github.com/simdjson/simdjson) に基づく完全なJSONパーサーを利用しており、その解析は厳格で、異なるレベルにネストされた同じフィールドを区別します。これらの関数は、構文的には正しいが、整形が不十分なJSONにも対処できます。例えば、キーの間に余分な空白がある場合などです。
 
-* フィールド名は定数でなければなりません。
-* フィールド名の一貫したエンコーディング（例： `simpleJSONHas('{"abc":"def"}', 'abc') = 1` ただし、`visitParamHas('{"\\u0061\\u0062\\u0063":"def"}', 'abc') = 0`）
-* フィールド名はすべてのネストされた構造の間でユニークである必要があります。ネストレベルを区別せず、一致は無 discriminated です。複数の一致するフィールドがある場合、最初の出現が使用されます。
-* 文字列リテラル以外の特殊文字（空白を含む）は使用できません。以下は無効であり、パースされません。
+より速く、さらに厳密な機能セットが利用可能です。これらの `simpleJSON*` 関数は、主にJSONの構造とフォーマットに関する厳格な仮定を行うことによって、優れたパフォーマンスを提供します。具体的には：
+
+* フィールド名は定数である必要があります
+* フィールド名の一貫したエンコーディングが必要です。たとえば、`simpleJSONHas('{"abc":"def"}', 'abc') = 1` ですが、`visitParamHas('{"\\u0061\\u0062\\u0063":"def"}', 'abc') = 0` です。
+* フィールド名はすべてのネストされた構造内でユニークでなければなりません。ネストレベル間の区別は行わず、マッチングは無差別です。複数の一致するフィールドがある場合は、最初の出現を使用します。
+* 文字列リテラルの外に特別な文字を含めることはできません。これには空白が含まれます。以下は無効であり、解析されません。
 
     ```json
     {"@timestamp": 893964617, "clientip": "40.135.0.0", "request": {"method": "GET",
     "path": "/images/hm_bg.jpg", "version": "HTTP/1.0"}, "status": 200, "size": 24736}
     ```
 
-    これに対し、以下は正常にパースされます：
+    以下は、正しく解析されます。
 
     ```json
     {"@timestamp":893964617,"clientip":"40.135.0.0","request":{"method":"GET",
     "path":"/images/hm_bg.jpg","version":"HTTP/1.0"},"status":200,"size":24736}
     ```
 
-パフォーマンスが重要で、JSONが上記の要件を満たす場合、これらは適切な選択肢となる場合があります。先ほどのクエリの例を、`simpleJSON*` 関数を使って書き換えたものは以下のようになります：
+パフォーマンスが重要な場合で、JSONが上記の要件を満たす場合、これらを使用することが適切な場合があります。以下に、前のクエリを `simpleJSON*` 関数を使用して書き換えた例を示します：
 
 ```sql
 SELECT
@@ -627,27 +636,26 @@ LIMIT 10
 └────────────────┴───────┘
 
 10 rows in set. Elapsed: 0.964 sec. Processed 2.48 million rows, 4.21 GB (2.58 million rows/s., 4.36 GB/s.)
-Peak memory usage: 211.49 MiB.
 ```
 
-上記では、`simpleJSONExtractString` を使用して `created` キーを抽出し、最初の値しか必要としないことを活用しています。この場合、`simpleJSON*` 関数の制限はパフォーマンス向上のために容認できます。
-### Mapを使用する {#using-map}
+上記は、`simpleJSONExtractString` を使用して `created` キーを抽出します。ここでは、公開日には最初の値のみが必要であることを利用しています。この場合、`simpleJSON*` 関数の制限は、パフォーマンス上の利点として受け入れるべきです。
 
-オブジェクトが主に1つのタイプの任意のキーを格納するために使用される場合は、`Map` タイプを使用してください。理想的には、一意のキーの数は数百を超えてはいけません。`Map` タイプは、ラベルやタグに使用することが推奨されています。ログデータのKubernetesポッドラベルなど、ネストされた構造を表現する簡単な方法として、`Map`にはいくつかの顕著な制限があります。
+### Mapの使用 {#using-map}
+
+オブジェクトが主に同じタイプの任意のキーを格納するために使用される場合は、`Map` タイプの使用を考慮してください。理想的には、一意のキーの数は数百を超えないように設計してください。`Map` タイプはタグやラベル用に使用することをお勧めします。例えば、ログデータにおけるKubernetesポッドのラベルなどです。`Map`はネストされた構造を表現するシンプルな方法ですが、いくつかの顕著な制限があります：
 
 - フィールドはすべて同じタイプでなければなりません。
-- サブカラムにアクセスするには特別なマップ構文が必要です。フィールドがカラムとして存在しないため、オブジェクト全体がカラムとなります。
-- サブカラムにアクセスすると、全ての兄弟兄妹とそれぞれの値をロードします。大きなマップでは、これにより大幅なパフォーマンスペナルティが生じる可能性があります。
+- サブカラムにアクセスするには特別なマップ構文が必要です。フィールドはカラムとして存在せず、オブジェクト全体がカラムです。
+- サブカラムへのアクセスは、全体の `Map` 値（すべての兄弟およびそれぞれの値を含む）をロードします。大きなマップの場合、これにより大幅なパフォーマンスのペナルティが発生する可能性があります。
 
 :::note 文字列キー
-オブジェクトを `Map` としてモデル化する際には、JSONキー名を格納するために `String` キーが使用されます。したがって、マップは常に `Map(String, T)` となります。ここで、`T` はデータによって異なります。
+オブジェクトを `Map` としてモデル化する際は、JSONキー名を保存するために `String` キーが使用されます。マップはしたがって常に `Map(String, T)` で、ここで `T` はデータに応じます。
 :::
-
 #### プリミティブ値 {#primitive-values}
 
-`Map`の最も単純な適用は、オブジェクトが同じプリミティブ型を値として含む場合です。ほとんどの場合、これは値 `T` に `String` 型を使用することを含みます。
+`Map`の最も単純な適用は、オブジェクトが値として同じプリミティブ型を含む場合です。ほとんどの場合、これは値 `T` に対して `String` 型を使用することが含まれます。
 
-私たちの[以前の人物JSON](/integrations/data-formats/json/schema#static-vs-dynamic-json)を考えてみましょう。ここで `company.labels` オブジェクトは動的であると判断されました。重要なことは、このオブジェクトにはタイプが `String` のキー-バリューペアのみが追加されることを期待していることです。このため、これを `Map(String, String)` として宣言できます。
+以前の[人のJSON](/integrations/data-formats/json/schema#static-vs-dynamic-json)を考えてみましょう。ここで `company.labels` オブジェクトは動的であると判断されました。重要なのは、私たちがこのオブジェクトに追加されることを期待しているのは、String 型のキーとバリューのペアだけであるということです。したがって、これを `Map(String, String)` と宣言することができます：
 
 ```sql
 CREATE TABLE people
@@ -675,10 +683,10 @@ INSERT INTO people FORMAT JSONEachRow
 
 Ok.
 
-1 行がセットされました。 経過時間: 0.002 秒。
+1 row in set. Elapsed: 0.002 sec.
 ```
 
-リクエストオブジェクト内でこれらのフィールドをクエリするには、マップ構文が必要です。例えば：
+リクエストオブジェクト内のこれらのフィールドをクエリするには、マップの構文が必要です。例：
 
 ```sql
 SELECT company.labels FROM people
@@ -687,7 +695,7 @@ SELECT company.labels FROM people
 │ {'type':'database systems','founded':'2021'} │
 └──────────────────────────────────────────────┘
 
-1 行がセットされました。 経過時間: 0.001 秒。
+1 row in set. Elapsed: 0.001 sec.
 
 SELECT company.labels['type'] AS type FROM people
 
@@ -695,16 +703,16 @@ SELECT company.labels['type'] AS type FROM people
 │ database systems │
 └──────────────────┘
 
-1 行がセットされました。 経過時間: 0.001 秒。
+1 row in set. Elapsed: 0.001 sec.
 ```
 
-この時にクエリを実行するための `Map` 関数の完全なセットが利用可能で、[こちらで説明されています](/sql-reference/functions/tuple-map-functions.md)。データが一貫した型でない場合、[必要な型の強制変換](/sql-reference/functions/type-conversion-functions)を行うための関数が存在します。
+この時点での `Map` 関数の完全なセットは、[こちら](/sql-reference/functions/tuple-map-functions.md)で説明されています。データが一貫性のある型でない場合は、[必要な型強制](/sql-reference/functions/type-conversion-functions)を実行するための関数が存在します。
 
 #### オブジェクト値 {#object-values}
 
-`Map`型は、サブオブジェクトがあるオブジェクトにも考慮できます。ただし、後者がその型において一貫性を持つ場合に限ります。
+`Map`型は、サブオブジェクトを持つオブジェクトにも考慮される場合があります。ただし、後者はその型に一貫性が必要です。
 
-私たちの `persons` オブジェクトの `tags` キーが、一貫した構造を必要とし、それぞれの `tag` に対してのサブオブジェクトが `name` と `time` カラムを持つと仮定します。このようなJSONドキュメントの簡略化された例は次のようになります：
+たとえば、`persons`オブジェクトの `tags` キーが一貫した構造を必要とし、各 `tag` のサブオブジェクトが `name` および `time` カラムを持つ場合を考えます。このようなJSONドキュメントの簡略化された例は次のようになります：
 
 ```json
 {
@@ -725,7 +733,7 @@ SELECT company.labels['type'] AS type FROM people
 }
 ```
 
-これは、次のように `Map(String, Tuple(name String, time DateTime))` でモデル化できます：
+これは次のように `Map(String, Tuple(name String, time DateTime))` でモデル化できます：
 
 ```sql
 CREATE TABLE people
@@ -744,7 +752,7 @@ INSERT INTO people FORMAT JSONEachRow
 
 Ok.
 
-1 行がセットされました。 経過時間: 0.002 秒。
+1 row in set. Elapsed: 0.002 sec.
 
 SELECT tags['hobby'] AS hobby
 FROM people
@@ -752,10 +760,10 @@ FORMAT JSONEachRow
 
 {"hobby":{"name":"Diving","time":"2024-07-11 14:18:01"}}
 
-1 行がセットされました。 経過時間: 0.001 秒。
+1 row in set. Elapsed: 0.001 sec.
 ```
 
-この場合のマップの適用は通常稀であり、データは動的なキー名がサブオブジェクトを持たないように再モデル化されるべきことを示唆しています。例えば、上記は次のようにモデル化され、 `Array(Tuple(key String, name String, time DateTime))` の使用が可能になります。
+この場合におけるマップの適用は通常稀であり、データが動的なキー名を持ってサブオブジェクトを持たないように再モデル化されるべきであることを示唆しています。たとえば、上記は以下のように再モデル化され、`Array(Tuple(key String, name String, time DateTime))`の使用を可能にします。
 
 ```json
 {

@@ -8,7 +8,7 @@ config:
   MD040:                  false  # Fenced code blocks should have a language specified
   links-url-type:         false  # Disallow relative links to a .md or .mdx file
   custom-anchor-headings: true  # Headings must have a custom anchor which is unique per page eg. # A Heading {#a-heading}
-
+  no-markdown-image-tags: false
   # Keep this item last due to length
   proper-names:                     # MD044
     code_blocks: false
@@ -27,7 +27,7 @@ ignores:
   - "docs/cloud/manage/api"
 customRules:
   # add custom rules here
-  - "./markdownlint/rules/links_url_type.js"
-  - "./markdownlint/rules/headings_have_custom_anchors.js"
+  - "./markdownlint/custom_rules/links_url_type.js"
+  - "./markdownlint/custom_rules/headings_have_custom_anchors.js"
 
 

@@ -1,10 +1,10 @@
 ---
-sidebar_label: Confluent Platform 用 HTTP Sink Connector
+sidebar_label: Confluent PlatformのHTTP Sink Connector
 sidebar_position: 3
 slug: /integrations/kafka/cloud/confluent/http
-description: Kafka Connect と ClickHouse を使用した HTTP Connector Sink
+description: Kafka ConnectとClickHouseを使用したHTTP Connector Sink
 ---
-import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import createHttpSink from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_http_sink.png';
 import httpAuth from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_auth.png';
 import httpAdvanced from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_advanced.png';
@@ -13,36 +13,36 @@ import createMessageInTopic from '@site/static/images/integrations/data-ingestio
 
 
 # Confluent HTTP Sink Connector
-HTTP Sink Connector はデータ型に依存せず、Kafka スキーマを必要とせず、Maps や Arrays など ClickHouse 特有のデータ型もサポートします。この追加の柔軟性には、わずかな設定の複雑さの増加が伴います。
+HTTP Sink Connectorはデータ型に依存せず、Kafkaスキーマを必要としないため、MapsやArraysなどのClickHouse特有のデータ型をサポートしています。この追加の柔軟性は、構成の複雑さがわずかに増すという点でのトレードオフがあります。
 
-以下では、単一の Kafka トピックからメッセージを取得し、ClickHouse テーブルに行を挿入するシンプルなインストール手順を説明します。
+以下に、単一のKafkaトピックからメッセージを取得し、ClickHouseテーブルに行を挿入するシンプルなインストール手順を説明します。
 
 :::note
-  HTTP Connector は [Confluent Enterprise License](https://docs.confluent.io/kafka-connect-http/current/overview.html#license) の下で配布されています。
+  HTTP Connectorは[Confluent Enterprise License](https://docs.confluent.io/kafka-connect-http/current/overview.html#license)の下で配布されています。
 :::
 
 ### クイックスタート手順 {#quick-start-steps}
 
-#### 1. 接続詳細を集める {#1-gather-your-connection-details}
+#### 1. 接続詳細を収集する {#1-gather-your-connection-details}
 <ConnectionDetails />
 
 
-#### 2. Kafka Connect と HTTP Sink Connector を実行する {#2-run-kafka-connect-and-the-http-sink-connector}
+#### 2. Kafka ConnectとHTTP Sink Connectorを実行する {#2-run-kafka-connect-and-the-http-sink-connector}
 
-2 つのオプションがあります。
+以下の2つのオプションがあります:
 
-* **セルフマネージド:** Confluent パッケージをダウンロードしてローカルにインストールします。接続のインストール方法については、[こちら](https://docs.confluent.io/kafka-connect-http/current/overview.html) に文書化された手順に従ってください。
-confluent-hub インストール方法を使用する場合、ローカル設定ファイルが更新されます。
+* **セルフマネージド:** Confluentパッケージをダウンロードし、ローカルにインストールします。コネクタのインストールに関する手順は、[こちら](https://docs.confluent.io/kafka-connect-http/current/overview.html)に記載されています。
+confluent-hubインストールメソッドを使用する場合、ローカルの設定ファイルが更新されます。
 
-* **Confluent Cloud:** Confluent Cloud を使用して Kafka ホスティングを行うユーザー向けに、完全に管理された HTTP Sink のバージョンが利用可能です。これには、ClickHouse 環境が Confluent Cloud からアクセス可能である必要があります。
+* **Confluent Cloud:** Confluent CloudでKafkaホスティングを使用している場合、HTTP Sinkの完全に管理されたバージョンが利用可能です。この場合、あなたのClickHouse環境がConfluent Cloudからアクセスできる必要があります。
 
 :::note
-  以下の例は、Confluent Cloud を使用しています。
+  以下の例はConfluent Cloudを使用しています。
 :::
 
-#### 3. ClickHouse に宛先テーブルを作成する {#3-create-destination-table-in-clickhouse}
+#### 3. ClickHouseに宛先テーブルを作成する {#3-create-destination-table-in-clickhouse}
 
-接続テストの前に、ClickHouse Cloud にデータを受信するテストテーブルを作成しましょう:
+接続テストの前に、ClickHouse Cloudにテスト用テーブルを作成しましょう。このテーブルはKafkaからデータを受け取ります:
 
 ```sql
 CREATE TABLE default.my_table
@@ -57,75 +57,75 @@ CREATE TABLE default.my_table
 ORDER BY tuple()
 ```
 
-#### 4. HTTP Sink を設定する {#4-configure-http-sink}
-Kafka トピックと HTTP Sink Connector のインスタンスを作成します:
+#### 4. HTTP Sinkを構成する {#4-configure-http-sink}
+KafkaトピックとHTTP Sink Connectorのインスタンスを作成します:
 <img src={createHttpSink} class="image" alt="Create HTTP Sink" style={{width: '50%'}}/>
 
 <br />
 
-HTTP Sink Connector を設定します:
-* 作成したトピック名を指定します
+HTTP Sink Connectorを構成します:
+* あなたが作成したトピック名を提供します
 * 認証
-    * `HTTP Url` - `INSERT` クエリが指定された ClickHouse Cloud URL `<protocol>://<clickhouse_host>:<clickhouse_port>?query=INSERT%20INTO%20<database>.<table>%20FORMAT%20JSONEachRow`。 **注意**: クエリはエンコードされている必要があります。
+    * `HTTP Url` - `INSERT`クエリを指定したClickHouse Cloud URL `<protocol>://<clickhouse_host>:<clickhouse_port>?query=INSERT%20INTO%20<database>.<table>%20FORMAT%20JSONEachRow`。 **注意**: クエリはエンコードされている必要があります。
     * `Endpoint Authentication type` - BASIC
-    * `Auth username` - ClickHouse ユーザー名
-    * `Auth password` - ClickHouse パスワード
+    * `Auth username` - ClickHouseユーザー名
+    * `Auth password` - ClickHouseパスワード
 
 :::note
-  この HTTP Url はエラーが発生しやすいです。問題を避けるためにエスケープを正確に行ってください。
+  このHTTP Urlはエラーが発生しやすいです。問題を避けるためにエスケープが正確であることを確認してください。
 :::
 
 <img src={httpAuth} class="image" alt="Auth options for Confluent HTTP Sink" style={{width: '70%'}}/>
 <br/>
 
-* 設定
-    * `Input Kafka record value format` - ソースデータに依存しますが、ほとんどの場合 JSON または Avro です。以下の設定では `JSON` を仮定します。
-    * `advanced configurations` セクションで:
-        * `HTTP Request Method` - POST に設定
+* 構成
+    * `Input Kafka record value format` - ソースデータに応じますが、ほとんどの場合JSONまたはAvroです。以下の設定では`JSON`を想定しています。
+    * `advanced configurations`セクションで:
+        * `HTTP Request Method` - POSTに設定
         * `Request Body Format` - json
-        * `Batch batch size` - ClickHouse の推奨に従い、**少なくとも 1000** に設定します。
+        * `Batch batch size` - ClickHouseの推奨に従い、**少なくとも1000**に設定します。
         * `Batch json as array` - true
-        * `Retry on HTTP codes` - 400-500 ですが、必要に応じて適応してください。例: ClickHouse の前に HTTP プロキシがある場合は変更が必要です。
-        * `Maximum Reties` - デフォルト (10) が適切ですが、より堅牢な再試行のために調整してください。
+        * `Retry on HTTP codes` - 400-500に設定しますが、必要に応じて調整してください。例えば、ClickHouseの前にHTTPプロキシがある場合は変わるかもしれません。
+        * `Maximum Reties` - デフォルト（10）は適切ですが、より堅牢なリトライのために調整してください。
 
 <img src={httpAdvanced} class="image" alt="Advanced options for Confluent HTTP Sink" style={{width: '50%'}}/>
 
-#### 5. 接続テストをする {#5-testing-the-connectivity}
-HTTP Sink に構成されたトピックでメッセージを作成します
+#### 5. 接続のテスト {#5-testing-the-connectivity}
+HTTP Sinkで構成されたトピックでメッセージを作成します
 <img src={createMessageInTopic} class="image" alt="Create a message in the topic" style={{width: '50%'}}/>
 
 <br/>
 
-作成したメッセージが ClickHouse インスタンスに書き込まれたことを確認します。
+作成したメッセージがあなたのClickHouseインスタンスに書き込まれたことを確認します。
 
 ### トラブルシューティング {#troubleshooting}
-#### HTTP Sink がメッセージをバッチ処理しない {#http-sink-doesnt-batch-messages}
+#### HTTP Sinkがメッセージをバッチ処理しない {#http-sink-doesnt-batch-messages}
 
-[Sink ドキュメント](https://docs.confluent.io/kafka-connectors/http/current/overview.html#http-sink-connector-for-cp)から:
-> HTTP Sink connector は、異なる Kafka ヘッダー値を含むメッセージのリクエストをバッチ処理しません。
+[Sinkドキュメント](https://docs.confluent.io/kafka-connectors/http/current/overview.html#http-sink-connector-for-cp)からの引用:
+> HTTP Sinkコネクタは、異なるKafkaヘッダー値を含むメッセージのリクエストをバッチ処理しません。
 
-1. Kafka レコードが同じキーを持っていることを確認します。
-2. HTTP API URL にパラメータを追加すると、各レコードがユニークな URL になる可能性があります。このため、追加の URL パラメータを使用するとバッチ処理が無効になります。
+1. Kafkaレコードに同じキーがあることを確認します。
+2. HTTP API URLにパラメータを追加すると、各レコードがユニークなURLを生成する可能性があります。このため、追加のURLパラメータを使用する際にはバッチ処理が無効になります。
 
 #### 400 Bad Request {#400-bad-request}
 ##### CANNOT_PARSE_QUOTED_STRING {#cannot_parse_quoted_string}
-HTTP Sink が `String` カラムに JSON オブジェクトを挿入する際に次のメッセージで失敗した場合:
+HTTP Sinkが`String`カラムにJSONオブジェクトを挿入する際に次のメッセージで失敗した場合:
 
 ```response
 Code: 26. DB::ParsingException: Cannot parse JSON string: expected opening quote: (while reading the value of key key_name): While executing JSONEachRowRowInputFormat: (at row 1). (CANNOT_PARSE_QUOTED_STRING)
 ```
 
-URL にエンコードされた文字列 `SETTINGS%20input_format_json_read_objects_as_strings%3D1` で `input_format_json_read_objects_as_strings=1` 設定を追加します。
+URLにエンコードされた文字列`SETTINGS%20input_format_json_read_objects_as_strings%3D1`として`input_format_json_read_objects_as_strings=1`設定を追加します。
 
-### GitHub データセットをロードする (オプション) {#load-the-github-dataset-optional}
+### GitHubデータセットをロードする (オプション) {#load-the-github-dataset-optional}
 
-この例では、Github データセットの Array フィールドを保持します。例では空の github トピックを持っていると仮定し、メッセージ挿入には [kcat](https://github.com/edenhill/kcat) を使用します。
+この例はGithubデータセットのArrayフィールドを保持しています。例では空のgithubトピックがあると仮定し、Kafkaへのメッセージ挿入には[kcat](https://github.com/edenhill/kcat)を使用します。
 
-##### 1. 設定を準備する {#1-prepare-configuration}
+##### 1. 構成を準備する {#1-prepare-configuration}
 
-接続の設定に関して、インストールタイプに応じた [これらの手順](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install) に従ってください。スタンドアロンと分散クラスタの違いに注意してください。Confluent Cloud を使用する場合は、分散セットアップが該当します。
+[これらの手順](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install)に従って、設置タイプに関連するConnectを設定します。スタンドアロンと分散クラスタの違いに注意してください。Confluent Cloudを使用する場合、分散設定が関連します。
 
-最も重要なパラメータは `http.api.url` です。ClickHouse の [HTTP インターフェース](../../../../interfaces/http.md) は、挿入ステートメントを URL のパラメータとしてエンコードする必要があります。これには、フォーマット（この場合は `JSONEachRow`）とターゲットデータベースが含まれている必要があります。フォーマットは Kafka データと一貫している必要があり、HTTP ペイロードで文字列に変換されます。これらのパラメータは URL エスケープされなければなりません。Github データセットに対するこのフォーマットの例は、以下の通りです（ClickHouse をローカルで実行していると仮定）:
+最も重要なパラメータは`http.api.url`です。ClickHouseの[HTTPインターフェース](../../../../interfaces/http.md)では、URLのパラメータとしてINSERT文をエンコードする必要があります。これにはフォーマット（この場合は`JSONEachRow`）とターゲットデータベースを含める必要があります。フォーマットはKafkaデータと一貫している必要があり、HTTPペイロードで文字列に変換されます。これらのパラメータはURLエスケープする必要があります。Githubデータセットのためのこのフォーマットの例（ClickHouseをローカルで実行していると仮定）を以下に示します:
 
 ```response
 <protocol>://<clickhouse_host>:<clickhouse_port>?query=INSERT%20INTO%20<database>.<table>%20FORMAT%20JSONEachRow
@@ -133,30 +133,28 @@ URL にエンコードされた文字列 `SETTINGS%20input_format_json_read_obje
 http://localhost:8123?query=INSERT%20INTO%20default.github%20FORMAT%20JSONEachRow
 ```
 
-HTTP Sink を ClickHouse と共に使用するために関連する追加パラメータは以下の通りです。すべてのパラメータの完全なリストは [こちら](https://docs.confluent.io/kafka-connect-http/current/connector_config.html) にあります。
+HTTP SinkをClickHouseで使用する際に関連する以下の追加パラメータがあります。完全なパラメータリストは[こちら](https://docs.confluent.io/kafka-connect-http/current/connector_config.html)にあります:
 
 
+* `request.method` - **POST**に設定
+* `retry.on.status.codes` - エラーコードに対して再試行するために400-500に設定します。データの期待されるエラーに基づいて洗練されます。
+* `request.body.format` - ほとんどの場合これはJSONになります。
+* `auth.type` - ClickHouseのセキュリティを考慮してBASICに設定します。他のClickHouse対応の認証メカニズムは現在サポートされていません。
+* `ssl.enabled` - SSLを使用している場合はtrueに設定。
+* `connection.user` - ClickHouseのユーザー名。
+* `connection.password` - ClickHouseのパスワード。
+* `batch.max.size` - 単一バッチで送信する行数。適切に大きな数に設定することを確認してください。ClickHouseの[推奨](https://sql-reference/statements/insert-into#performance-considerations)に従い、1000を最低値として考慮すべきです。
+* `tasks.max` - HTTP Sinkコネクタは一つ以上のタスクを実行することをサポートしています。これはパフォーマンスを向上させるために使用できます。バッチサイズとともに、パフォーマンスを向上させる主な手段を表します。
+* `key.converter` - キーのタイプに応じて設定。
+* `value.converter` - トピックのデータタイプに基づいて設定。このデータはスキーマを必要としません。ここでのフォーマットは`http.api.url`パラメータに指定されたFORMATと整合性がなければなりません。最も簡単なのはJSONを使用し、org.apache.kafka.connect.json.JsonConverterコンバータを使用することです。値を文字列として扱うために、org.apache.kafka.connect.storage.StringConverterを介しても可能ですが、これにはユーザーが関数を使用して挿入文で値を抽出する必要があります。[Avroフォーマット](../../../../interfaces/formats.md#data-format-avro)もClickHouseでサポートされています。
 
-* `request.method` - **POST** に設定
-* `retry.on.status.codes` - エラーコードのあらゆるリトライのために 400-500 に設定。データの期待されるエラーに基づいて洗練させてください。
-* `request.body.format` - ほとんどの場合、これは JSON になります。
-* `auth.type` - ClickHouse でのセキュリティに応じて BASIC に設定。その他の ClickHouse 互換認証メカニズムは現在サポートされていません。
-* `ssl.enabled` - SSL を使用する場合は true に設定。
-* `connection.user` - ClickHouse のユーザー名。
-* `connection.password` - ClickHouse のパスワード。
-* `batch.max.size` - 単一バッチで送信する行の数。適切に大きな数値に設定してください。ClickHouse の [推奨](../../../../concepts/why-clickhouse-is-so-fast.md#performance-when-inserting-data) では、1000 を最小値とすることを推奨します。
-* `tasks.max` - HTTP Sink connector は 1 つ以上のタスクを実行することをサポートします。これはパフォーマンスを向上させるために使用できます。バッチサイズと共に、パフォーマンスを改善する主な手段を表します。
-* `key.converter` - キーの型に応じて設定。
-* `value.converter` - トピック上のデータの型に基づいて設定。このデータはスキーマを必要としません。ここでのフォーマットは、`http.api.url` パラメータで指定された FORMAT と一貫している必要があります。最も簡単な方法は JSON および org.apache.kafka.connect.json.JsonConverter コンバーターを使用することです。コンバーター org.apache.kafka.connect.storage.StringConverter を介して値を文字列として扱うことも可能ですが、これにはユーザーが関数を使用して挿入ステートメント内で値を抽出する必要があります。ClickHouse では、io.confluent.connect.avro.AvroConverter コンバーターを使用した場合に Avro フォーマット（../../../../interfaces/formats.md#data-format-avro）もサポートされています。
+プロキシの設定、リトライ、SSLの高度な設定を含む設定リストの完全なリストは[こちら](https://docs.confluent.io/kafka-connect-http/current/connector_config.html)にあります。
 
-プロキシ、再試行、および高度な SSL の設定を含む完全な設定リストは [こちら](https://docs.confluent.io/kafka-connect-http/current/connector_config.html) で確認できます。
+Githubサンプルデータに対する設定ファイルの例は、[こちら](https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/integrations/data-ingestion/kafka/code/connectors/http_sink)で見つけることができます。Connectがスタンドアロンモードで実行され、KafkaがConfluent Cloudにホストされていると仮定します。
 
-Github サンプルデータ用の設定ファイルの例は [こちら](https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/integrations/data-ingestion/kafka/code/connectors/http_sink) にあります。Connect がスタンドアロンモードで実行され、Kafka が Confluent Cloud にホスティングされていると仮定しています。
+##### 2. ClickHouseテーブルを作成する {#2-create-the-clickhouse-table}
 
-##### 2. ClickHouse テーブルを作成する {#2-create-the-clickhouse-table}
-
-テーブルが作成されていることを確認します。標準的な MergeTree を使用した最小限の github データセットの例は以下の通りです。
-
+テーブルが作成されていることを確認します。標準のMergeTreeを使用した最小限のgithubデータセットの例を以下に示します。
 
 ```sql
 CREATE TABLE github
@@ -190,15 +188,15 @@ CREATE TABLE github
 
 ```
 
-##### 3. Kafka にデータを追加する {#3-add-data-to-kafka}
+##### 3. Kafkaにデータを追加する {#3-add-data-to-kafka}
 
-Kafka にメッセージを挿入します。以下では [kcat](https://github.com/edenhill/kcat) を使用して 1 万件のメッセージを挿入します。
+Kafkaにメッセージを挿入します。以下では[kcat](https://github.com/edenhill/kcat)を使用して10,000件のメッセージを挿入します。
 
 ```bash
-head -n 10000 github_all_columns.ndjson | kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username> -X sasl.password=<password> -t github
+head -n 10000 github_all_columns.ndjson | kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username>  -X sasl.password=<password> -t github
 ```
 
-ターゲットテーブル「Github」に対する簡単な読み取りはデータの挿入を確認するべきです。
+ターゲットテーブル「Github」にデータが挿入されたことを確認するために簡単な読み取りを行います。
 
 
 ```sql

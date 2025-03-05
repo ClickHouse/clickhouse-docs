@@ -4,13 +4,14 @@ sidebar_position: 57
 sidebar_label: Nested(Name1 Type1, Name2 Type2, ...)
 ---
 
+
 # Nested
 
 ## Nested(name1 Type1, Name2 Type2, ...) {#nestedname1-type1-name2-type2-}
 
-A nested data structure is like a table inside a cell. The parameters of a nested data structure – the column names and types – are specified the same way as in a [CREATE TABLE](../../../sql-reference/statements/create/table.md) query. Each table row can correspond to any number of rows in a nested data structure.
+ネストされたデータ構造は、セルの中のテーブルのようなものです。ネストされたデータ構造のパラメータ – カラム名とタイプ – は、[CREATE TABLE](../../../sql-reference/statements/create/table.md) クエリと同じ方法で指定されます。各テーブルの行は、ネストされたデータ構造内の任意の数の行に対応することができます。
 
-Example:
+例:
 
 ``` sql
 CREATE TABLE test.visits
@@ -35,13 +36,13 @@ CREATE TABLE test.visits
 ) ENGINE = CollapsingMergeTree(StartDate, intHash32(UserID), (CounterID, StartDate, intHash32(UserID), VisitID), 8192, Sign)
 ```
 
-This example declares the `Goals` nested data structure, which contains data about conversions (goals reached). Each row in the 'visits' table can correspond to zero or any number of conversions.
+この例では、`Goals` ネストされたデータ構造が宣言されており、コンバージョン（達成された目標）に関するデータが含まれています。'visits' テーブルの各行は、ゼロまたは任意の数のコンバージョンに対応することができます。
 
-When [flatten_nested](../../../operations/settings/settings.md#flatten-nested) is set to `0` (which is not by default), arbitrary levels of nesting are supported.
+[flatten_nested](../../../operations/settings/settings.md#flatten-nested) が `0` に設定されている場合（デフォルトではそうではありません）、任意のネストレベルがサポートされます。
 
-In most cases, when working with a nested data structure, its columns are specified with column names separated by a dot. These columns make up an array of matching types. All the column arrays of a single nested data structure have the same length.
+ネストされたデータ構造を扱う場合、ほとんどの場合、そのカラムはドットで区切られたカラム名で指定されます。これらのカラムは、一致するタイプの配列を構成します。単一のネストされたデータ構造のすべてのカラム配列は、同じ長さを持っています。
 
-Example:
+例:
 
 ``` sql
 SELECT
@@ -67,9 +68,9 @@ LIMIT 10
 └────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-It is easiest to think of a nested data structure as a set of multiple column arrays of the same length.
+ネストされたデータ構造を考える際、同じ長さの複数のカラム配列のセットとして考えるのが最も簡単です。
 
-The only place where a SELECT query can specify the name of an entire nested data structure instead of individual columns is the ARRAY JOIN clause. For more information, see "ARRAY JOIN clause". Example:
+SELECT クエリが個々のカラムではなく、ネストされたデータ構造全体の名前を指定できる唯一の場所は、ARRAY JOIN 句です。詳細については、「ARRAY JOIN 句」を参照してください。例:
 
 ``` sql
 SELECT
@@ -96,10 +97,10 @@ LIMIT 10
 └─────────┴─────────────────────┘
 ```
 
-You can't perform SELECT for an entire nested data structure. You can only explicitly list individual columns that are part of it.
+ネストされたデータ構造全体に対してSELECTを行うことはできません。構成要素である個々のカラムを明示的にリストアップする必要があります。
 
-For an INSERT query, you should pass all the component column arrays of a nested data structure separately (as if they were individual column arrays). During insertion, the system checks that they have the same length.
+INSERT クエリの場合、ネストされたデータ構造のすべての構成カラム配列を別々に渡す必要があります（それぞれが個々のカラム配列であるかのように）。挿入時に、システムはそれらが同じ長さであることを確認します。
 
-For a DESCRIBE query, the columns in a nested data structure are listed separately in the same way.
+DESCRIBE クエリの場合、ネストされたデータ構造内のカラムは同様の方法で個別にリストされます。
 
-The ALTER query for elements in a nested data structure has limitations.
+ネストされたデータ構造の要素に対するALTER クエリには制限があります。

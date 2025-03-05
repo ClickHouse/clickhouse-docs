@@ -6,9 +6,9 @@ sidebar_position: 2
 
 # ローカルファイルの挿入
 
-`clickhouse-client`を使用して、ローカルファイルをClickHouseサービスにストリーミングすることができます。これにより、強力で便利なClickHouse機能を使用してデータを前処理することができます。例を見てみましょう...
+`clickhouse-client`を使用してローカルファイルをClickHouseサービスにストリームできます。これにより、ClickHouseの多くの強力で便利な関数を使用してデータを前処理することができます。例を見てみましょう...
 
-1. `comments.tsv`という名前のTSVファイルがあり、Hacker Newsのコメントが含まれており、ヘッダー行にはカラム名が含まれていると仮定します。データを挿入する際には、[入力フォーマット](/interfaces/formats)を指定する必要があります。この場合は`TabSeparatedWithNames`です：
+1. `comments.tsv`という名前のTSVファイルがあり、そこにはいくつかのHacker Newsのコメントが含まれており、ヘッダ行にはカラム名が含まれています。データを挿入する際には[入力形式](/interfaces/formats)を指定する必要があり、私たちの場合は`TabSeparatedWithNames`です：
 
 ```text
 id	type	author	timestamp	comment	children
@@ -21,7 +21,7 @@ id	type	author	timestamp	comment	children
 19467048	comment	karambahh	2019-03-22 21:15:41	"I think you&#x27;re comparing apples to oranges here.<p>If you reclaim a parking space for another use (such as building accommodation for families or an animal shelter), you&#x27;re not depriving the car of anything, it&#x27;s an expensive, large piece of metal and is not sentient.<p>Next, you&#x27;ll say that you&#x27;re depriving car owners from the practicality of parking their vehicles anywhere they like. I&#x27;m perfectly fine with depriving car owners from this convenience to allow a human being to have a roof over their head. (speaking from direct experience as I&#x27;ve just minutes ago had to park my car 1km away from home because the city is currently building housing and has restricted parking space nearby)<p>Then, some might argue that one should be ashamed of helping animals while humans are suffering. That&#x27;s the exact same train of thought with «we can&#x27;t allow more migrants in, we have to take care of our &quot;own&quot; homeless people».<p>This is a false dichotomy. Western societies inequalities are growing larger and larger. Me trying to do my part is insignificant. Me donating to human or animal causes is a small dent into the mountains of inequalities we live on top of. Us collectively, we do make a difference, by donating, voting and generally keeping our eyes open about the world we live in...<p>Finally, an entirely anecdotal pov: I&#x27;ve witnessed several times extremely poor people going out of their ways to show solidarity to animals or humans. I&#x27;ve also witnessed an awful lot of extremely wealthy individuals complaining about the poor inconveniencing them by just being there, whose wealth was a direct consequences of their ancestors exploiting whose very same poor people."	[19467512]
 ```
 
-2. Hacker Newsデータ用のテーブルを作成しましょう：
+2. Hacker Newsデータ用のテーブルを作成します：
 
 ```sql
 CREATE TABLE hackernews (
@@ -37,7 +37,7 @@ ENGINE = MergeTree
 ORDER BY toYYYYMMDD(timestamp)
 ```
 
-3. `author`カラムを小文字にしたいので、これは[`lower`関数](/sql-reference/functions/string-functions/#lower-lcase)を使用して簡単に行うことができます。また、`comment`文字列をトークンに分割し、結果を`tokens`カラムに保存したいので、これには[`extractAll`関数](/sql-reference/functions/string-search-functions/#extractallhaystack-pattern)を使用します。これらのすべてを1つの`clickhouse-client`コマンドで行います - `comments.tsv`ファイルが`<`演算子を使用して`clickhouse-client`にパイプされていることに注意してください：
+3. `author`カラムの小文字化を行いたいと思いますが、これは[`lower`関数](/sql-reference/functions/string-functions#lower)を使うことで簡単に行えます。また、`comment`文字列をトークンに分割し、その結果を`tokens`カラムに格納したいと思いますが、これは[`extractAll`関数](/sql-reference/functions/string-search-functions#extractall)を使用して行えます。これらすべてを1つの`clickhouse-client`コマンドで行います - `comments.tsv`ファイルが`<`オペレーターを使用して`clickhouse-client`にパイプで渡される点に注意してください：
 
 ```bash
 clickhouse-client \
@@ -61,10 +61,10 @@ clickhouse-client \
 ```
 
 :::note
-`input`関数は、`hackernews`テーブルにデータを挿入する際にデータを変換できるため、ここで便利です。`input`への引数は、受信する生データのフォーマットであり、多くの他のテーブル関数でもこれが見られます（受信するデータのスキーマを指定する場所）。
+`input`関数は、データを`hackernews`テーブルに挿入する際に変換するために便利です。`input`への引数は、受信生データの形式であり、これは多くの他のテーブル関数でも見ることができます（受信データのスキーマを指定する場所）。
 :::
 
-4. 以上です！データはClickHouseにアップロードされました：
+4. これで、データはClickHouseにアップロードされています：
 
 ```sql
 SELECT *
@@ -72,7 +72,7 @@ FROM hackernews
 LIMIT 7
 ```
 
-結果は以下の通りです：
+結果は次のとおりです：
 
 ```response
 
@@ -86,7 +86,7 @@ LIMIT 7
 
 ```
 
-5. 別の方法として、`cat`のようなツールを使用して、ファイルを`clickhouse-client`にストリーミングすることもできます。例えば、次のコマンドは`<`演算子を使用した場合と同じ結果を得ます：
+5. 別のオプションとして、`cat`のようなツールを使用してファイルを`clickhouse-client`にストリーミングすることもできます。たとえば、次のコマンドは`<`オペレーターを使用した場合と同じ結果を得られます：
 
 ```bash
 cat comments.tsv | clickhouse-client \
@@ -109,9 +109,9 @@ cat comments.tsv | clickhouse-client \
 "
 ```
 
-[clickhouse-client](/interfaces/cli)に関する詳細は、ローカルオペレーティングシステムに`clickhouse-client`をインストールする方法についてのドキュメントページをご覧ください。
+[clickhouse-clientに関するドキュメントページ](/interfaces/cli)を訪問して、ローカルオペレーティングシステムに`clickhouse-client`をインストールする方法の詳細を確認してください。
 
 ## 関連コンテンツ {#related-content}
 
-- ブログ: [ClickHouseへのデータの取り込み - パート1](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1)
-- ブログ: [巨大な実世界のデータセットを探求する: ClickHouseにおける100年以上の気象記録](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
+- ブログ: [ClickHouseへのデータ投入 - パート1](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1)
+- ブログ: [大規模な実世界のデータセットの探検: ClickHouseにおける100年以上の気象記録](https://clickhouse.com/blog/real-world-data-noaa-climate-data)

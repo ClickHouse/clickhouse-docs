@@ -1,24 +1,24 @@
 ---
-title: JSONスキーマ推論
+title: JSON スキーマの推測
 slug: /integrations/data-formats/json/inference
-description: JSONスキーマ推論の使用方法
-keywords: [json, スキーマ, 推論, スキーマ推論]
+description: JSON スキーマの推測の使用方法
+keywords: [json, schema, inference, schema inference]
 ---
 
-ClickHouseは、JSONデータの構造を自動的に判断することができます。これは、`clickhouse-local`やS3バケットにあるディスク上のJSONデータを直接クエリするために使用したり、データをClickHouseにロードする前にスキーマを自動的に作成するために使用できます。
+ClickHouseは、JSONデータの構造を自動的に特定できます。これを使用して、`clickhouse-local`やS3バケット上のディスクでJSONデータを直接クエリしたり、データをClickHouseにロードする前にスキーマを自動的に作成することができます。
 
-## 型推論を使用するタイミング {#when-to-use-type-inference}
+## 型推測を使用するタイミング {#when-to-use-type-inference}
 
-* **一貫した構造** - 型を推論するためのデータには、興味のあるすべてのカラムが含まれている必要があります。型推論の後に追加されたカラムを持つデータは無視され、クエリを実行することができません。
-* **一貫した型** - 特定のカラムのデータ型は互換性が必要です。
+* **一貫した構造** - 型を推測するデータには、あなたが興味を持つすべてのカラムが含まれている必要があります。型推測後に追加されたカラムを含むデータは無視され、クエリを実行できません。
+* **一貫した型** - 特定のカラムのデータ型は互換性がある必要があります。
 
 :::note 重要
-動的なJSONがあり、新しいキーがスキーマを変更する十分な警告なしに追加される場合（例：Kubernetesのログ内のラベル）、[**JSONスキーマの設計**](/integrations/data-formats/json/schema)を読むことをお勧めします。
+より動的なJSON(例えば、Kubernetesのログで十分な通知なしに新しいキーが追加される場合)をお持ちの場合は、[**JSONスキーマの設計**](/integrations/data-formats/json/schema)を読むことをお勧めします。
 :::
 
 ## 型の検出 {#detecting-types}
 
-以前の例では、NDJSON形式の[Python PyPIデータセット](https://clickpy.clickhouse.com/)の簡単なバージョンを使用しました。このセクションでは、ネストされた構造を持つより複雑なデータセット、すなわち250万件の学術論文を含む[arXivデータセット](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download)を探ります。このデータセットの各行は、公開された学術論文を表します。以下に例となる行を示します。
+以前の例では、NDJSON形式の[Python PyPIデータセット](https://clickpy.clickhouse.com/)のシンプルなバージョンを使用しました。このセクションでは、ネストされた構造を持つより複雑なデータセット - 250万件の学術論文を含む[arXivデータセット](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download)を探ります。このデータセットの各行は、公開された学術論文を表します。以下に例となる行を示します:
 
 ```json
 {
@@ -54,17 +54,17 @@ ClickHouseは、JSONデータの構造を自動的に判断することができ
 }
 ```
 
-このデータには、以前の例よりもはるかに複雑なスキーマが必要です。以下に、このスキーマを定義するプロセスを概説し、`Tuple`や`Array`といった複雑な型を紹介します。
+このデータは、以前の例よりもはるかに複雑なスキーマを必要とします。以下に、このスキーマを定義するプロセスを示し、`Tuple`や`Array`のような複雑な型を導入します。
 
-このデータセットは、`s3://datasets-documentation/arxiv/arxiv.json.gz`という公共のS3バケットに保存されています。
+このデータセットは、`s3://datasets-documentation/arxiv/arxiv.json.gz`の公共S3バケットに保存されています。
 
-上記のデータセットには、ネストされたJSONオブジェクトが含まれていることがわかります。ユーザーはスキーマを草案し、バージョン管理を行うべきですが、推論によりデータから型が推測されるため、スキーマDDLを自動生成することができます。これにより、手動で構築する必要がなくなり、開発プロセスが加速されます。
+上記のデータセットには、ネストされたJSONオブジェクトが含まれています。ユーザーはスキーマをドラフトしてバージョン管理する必要がありますが、推測によりデータから型を推測できます。これにより、スキーマDDLが自動生成され、手動でスキーマを構築する必要がなくなり、開発プロセスが加速します。
 
 :::note 自動フォーマット検出
-スキーマを検出するだけでなく、JSONスキーマ推論はファイルの拡張子と内容からデータのフォーマットを自動的に推測します。上記のファイルは、自動的にNDJSONとして検出されます。
+スキーマを検出するだけでなく、JSONスキーマ推測はファイル拡張子と内容からデータのフォーマットを自動的に推測します。上記のファイルは、その結果NDJSONとして自動的に検出されます。
 :::
 
-[s3関数](/sql-reference/table-functions/s3)を使用して`DESCRIBE`コマンドを実行すると、推論される型が表示されます。
+[s3 function](/sql-reference/table-functions/s3)を使用し、`DESCRIBE`コマンドを実行すると、推測される型が表示されます。
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.json.gz')
@@ -88,19 +88,19 @@ SETTINGS describe_compact_output = 1
 │ authors_parsed │ Array(Array(Nullable(String)))                                          │
 └────────────────┴─────────────────────────────────────────────────────────────────────────┘
 ```
-:::note Nullを避ける
-多くのカラムがNullableとして検出されていることがわかります。絶対に必要でない限り、[Nullable](/sql-reference/data-types/nullable#storage-features)型の使用は推奨されません。Nullableが適用される際の挙動を制御するために、[schema_inference_make_columns_nullable](/interfaces/schema-inference#schema_inference_make_columns_nullable)を使用できます。
+:::note NULLを避ける
+多くのカラムがNullableとして検出されているのがわかります。絶対に必要でない限り、[Nullable](/sql-reference/data-types/nullable#storage-features)型の使用はお勧めできません。[schema_inference_make_columns_nullable](/operations/settings/formats#schema_inference_make_columns_nullable)を使用して、Nullableが適用される状況を制御できます。
 :::
 
-ほとんどのカラムが自動的に`String`として検出され、`update_date`カラムが`Date`として正しく検出されています。`versions`カラムは、オブジェクトのリストを格納するために`Array(Tuple(created String, version String))`として作成され、`authors_parsed`はネストされた配列のために`Array(Array(String))`として定義されています。
+ほとんどのカラムが自動的に`String`として検出され、`update_date`カラムは正しく`Date`として検出されています。`versions`カラムはオブジェクトのリストを格納するために`Array(Tuple(created String, version String))`として作成され、`authors_parsed`はネストされた配列のために`Array(Array(String))`として定義されています。
 
 :::note 型検出の制御
-日付と日時の自動検出は、設定[`input_format_try_infer_dates`](/interfaces/schema-inference#input_format_try_infer_dates)および[`input_format_try_infer_datetimes`](/interfaces/schema-inference#input_format_try_infer_datetimes)で制御できます（どちらもデフォルトで有効）。オブジェクトをタプルとして推論することは、設定[`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects)で制御されます。数字の自動検出など、JSONのスキーマ推論を制御するその他の設定は[こちら](/interfaces/schema-inference#text-formats)にあります。
+日付や日時の自動検出は、設定[`input_format_try_infer_dates`](/operations/settings/formats#input_format_try_infer_dates)および[`input_format_try_infer_datetimes`](/operations/settings/formats#input_format_try_infer_datetimes)を通じて制御できます（どちらもデフォルトで有効）。オブジェクトをタプルとして推測することは、設定[`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects)によって制御されます。数字の自動検出など、JSONのスキーマ推測を制御する他の設定に関しては、[こちら](/interfaces/schema-inference#text-formats)で確認できます。
 :::
 
 ## JSONのクエリ {#querying-json}
 
-私たちは、スキーマ推論を使用してJSONデータをその場でクエリできます。以下に、日付と配列が自動的に検出されることを利用して、各年のトップ著者を見つけるクエリを示します。
+スキーマ推測を使用して、JSONデータをそのままクエリできます。以下では、日付と配列が自動的に検出されることを利用して、各年の主要な著者を見つけます。
 
 ```sql
 SELECT
@@ -137,14 +137,14 @@ LIMIT 1 BY year
 │ 2024 │ ATLAS Collaboration                        │ 120 │
 └──────┴────────────────────────────────────────────┴─────┘
 
-18件の行がセットにあります。経過時間: 20.172秒。処理した行数: 252万、サイズ: 1.39GB (124.72千行/秒、68.76MB/秒)。
+18行のセット。経過時間: 20.172秒。2.52百万行を処理しました。1.39 GB (124.72千行/s、68.76 MB/s)
 ```
 
-スキーマ推論を利用することで、スキーマを指定することなくJSONファイルをクエリでき、アドホックデータ分析タスクを加速します。
+スキーマ推測により、スキーマを指定することなくJSONファイルをクエリでき、アドホックデータ分析のタスクを加速します。
 
 ## テーブルの作成 {#creating-tables}
 
-スキーマ推論に基づいてテーブルのスキーマを作成できます。次の`CREATE AS EMPTY`コマンドを実行すると、テーブルのDDLが推測され、テーブルが作成されます。これにより、データはロードされません：
+スキーマ推測を利用してテーブルのスキーマを作成できます。以下の`CREATE AS EMPTY`コマンドは、テーブルのDDLを推測し、テーブルを作成します。これはデータをロードしません:
 
 ```sql
 CREATE TABLE arxiv
@@ -155,7 +155,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.j
 SETTINGS schema_inference_make_columns_nullable = 0
 ```
 
-テーブルスキーマを確認するために、`SHOW CREATE TABLE`コマンドを使用します：
+テーブルスキーマを確認するには、`SHOW CREATE TABLE`コマンドを使用します:
 
 ```sql
 SHOW CREATE TABLE arxiv
@@ -182,11 +182,11 @@ ORDER BY update_date
 SETTINGS index_granularity = 8192
 ```
 
-上記はこのデータの正しいスキーマです。スキーマ推論は、データをサンプリングし、行を逐次的に読み取ることに基づいています。カラム値はフォーマットに応じて抽出され、再帰的パーサーとヒューリスティックを使用して各値の型を決定します。スキーマ推論でデータから読み取る最大行数とバイト数は、設定[`input_format_max_rows_to_read_for_schema_inference`](/interfaces/schema-inference#input_format_max_rows_to_read_for_schema_inferenceinput_format_max_bytes_to_read_for_schema_inference)（デフォルトは25000）と[`input_format_max_bytes_to_read_for_schema_inference`](/interfaces/schema-inference#input_format_max_rows_to_read_for_schema_inferenceinput_format_max_bytes_to_read_for_schema_inference)（デフォルトは32MB）によって制御されます。検出が正しくない場合、ユーザーは[こちら](/interfaces/schema-inference#schema_inference_hints)に記載されたヒントを提供できます。
+上記は、このデータに対する正しいスキーマです。スキーマ推測は、データをサンプリングし、行ごとにデータを読み取ることに基づいています。カラム値はフォーマットに応じて抽出され、再帰的なパーサーとヒューリスティックスを使用して各値の型を決定します。スキーマ推測で読み取る最大行数とバイト数は、それぞれの設定[`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)（デフォルト25000行）および[`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)（デフォルト32MB）によって制御されます。検出が正しくない場合、ユーザーは[こちら](/operations/settings/formats#schema_inference_make_columns_nullable)で説明されているヒントを提供できます。
 
 ### スニペットからのテーブル作成 {#creating-tables-from-snippets}
 
-上記の例では、S3のファイルを使用してテーブルスキーマを作成しました。ユーザーは単一行のスニペットからスキーマを作成したい場合があります。これを達成するために、[format](/sql-reference/table-functions/format)関数を使用して次のように実行します：
+上記の例では、S3上のファイルを使用してテーブルスキーマを作成しました。ユーザーは、1行のスニペットからスキーマを作成したい場合があります。これは、以下のように[format](/sql-reference/table-functions/format)関数を使用することで実現できます:
 
 ```sql
 CREATE TABLE arxiv
@@ -219,19 +219,19 @@ ORDER BY update_date
 
 ## JSONデータのロード {#loading-json-data}
 
-前のコマンドでデータをロードできるテーブルを作成しました。次に、次の`INSERT INTO SELECT`を使用してテーブルにデータを挿入できます：
+前述のコマンドでデータをロードできるテーブルが作成されました。次に、以下の`INSERT INTO SELECT`を使用して、テーブルにデータを挿入できます:
 
 ```sql
 INSERT INTO arxiv SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.json.gz')
 
-0 行がセットにあります。経過時間: 38.498秒。処理した行数: 252万、サイズ: 1.39GB (65.35千行/秒、36.03MB/秒)。
+0行のセット。経過時間: 38.498秒。2.52百万行を処理しました。1.39 GB (65.35千行/s、36.03 MB/s)
 ピークメモリ使用量: 870.67 MiB。
 ```
 
-他のソースからデータをロードする例（ファイルなど）は[こちら](/sql-reference/statements/insert-into)で確認できます。
+他のソースからデータをロードする例（例えばファイルなど）については、[こちら](/sql-reference/statements/insert-into)を参照してください。
 
-データをロードしたら、オプションで`PrettyJSONEachRow`フォーマットを使用して元の構造で行を表示できます：
+データがロードされたら、クエリを実行でき、オプションで`PrettyJSONEachRow`形式を使用して、元の構造のまま行を表示できます:
 
 ```sql
 SELECT *
@@ -266,13 +266,13 @@ FORMAT PrettyJSONEachRow
     ]
 }
 
-1 行がセットにあります。経過時間: 0.009秒。
+1行のセット。経過時間: 0.009秒。
 ```
 
 ## エラー処理 {#handling-errors}
 
-時には、悪いデータが含まれることがあります。特定のカラムが正しい型を持っていない場合や、正しくフォーマットされたJSONでない場合です。このような場合、設定[`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio)を使用して、データが挿入エラーを引き起こす場合に無視する行数を一定数許可できます。また、推論を助けるために[ヒント](/interfaces/schema-inference#schema_inference_hints)を提供することも可能です。
+時には、悪いデータが存在することがあります。特定のカラムが正しい型を持っていないか、不適切にフォーマットされたJSONがあります。この場合、設定[`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio)を使用して、データが挿入エラーを引き起こす場合に無視される行数を許可できます。さらに、推測を補助するために[ヒント](/operations/settings/formats#schema_inference_hints)を提供できます。
 
-## さらなる学習 {#further-reading}
+## さらなる読み物 {#further-reading}
 
-データ型推論について詳しく学ぶには、[こちら](/interfaces/schema-inference)のドキュメントページを参照してください。
+データ型推測について詳しく学びたい場合は、[こちら](/interfaces/schema-inference)のドキュメントページを参照してください。

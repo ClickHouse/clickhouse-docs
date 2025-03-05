@@ -1,27 +1,27 @@
 ---
-sidebar_label: Kafkaとのベクター
+sidebar_label: KafkaとのVector
 sidebar_position: 3
 slug: /integrations/kafka/kafka-vector
-description: KafkaとClickHouseを使ったVectorの利用
+description: KafkaとClickHouseを使用したVector
 ---
-import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
-## KafkaとClickHouseを使ったVectorの利用 {#using-vector-with-kafka-and-clickhouse}
+## KafkaとClickHouseを使用したVector {#using-vector-with-kafka-and-clickhouse}
 
-Vectorは、Kafkaからデータを読み取り、ClickHouseにイベントを送信する能力を持つ、ベンダーに依存しないデータパイプラインです。
+Vectorは、Kafkaから読み込み、ClickHouseにイベントを送信する能力を持つベンダーに依存しないデータパイプラインです。
 
-[始めに](../etl-tools/vector-to-clickhouse.md)のガイドでは、ClickHouseを使用してログのユースケースに焦点を当て、ファイルからのイベントを読み取ります。Kafkaトピックに保存されたイベントを使用して、[Githubのサンプルデータセット](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson)を活用します。
+[はじめに](../etl-tools/vector-to-clickhouse.md)のガイドでは、ClickHouseを使用したVectorについて、ログのユースケースとファイルからのイベントの読み取りに焦点を当てています。私たちは、Kafkaトピックに保管されているイベントを持つ[Githubのサンプルデータセット](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson)を利用します。
 
-Vectorは、プッシュまたはプルモデルを介してデータを取得するために[ソース](https://vector.dev/docs/about/concepts/#sources)を利用します。一方、[シンク](https://vector.dev/docs/about/concepts/#sinks)はイベントの送信先を提供します。そのため、KafkaソースとClickHouseシンクを利用します。Kafkaがシンクとしてサポートされている一方で、ClickHouseソースは利用できないことに注意してください。したがって、ClickHouseからKafkaにデータを転送したいユーザーにはVectorは適していません。
+Vectorは、プッシュまたはプルモデルを通じてデータを取得するために[ソース](https://vector.dev/docs/about/concepts/#sources)を利用します。一方、[シンク](https://vector.dev/docs/about/concepts/#sinks)は、イベントの出力先を提供します。したがって、KafkaソースとClickHouseシンクを利用します。Kafkaはシンクとしてサポートされていますが、ClickHouseソースは利用できません。そのため、ClickHouseからKafkaにデータを転送したいユーザーにはVectorは適していません。
 
-Vectorはデータの[変換](https://vector.dev/docs/reference/configuration/transforms/)もサポートしていますが、これはこのガイドの範囲を超えています。データセットに対してこの機能が必要な場合は、Vectorのドキュメントを参照してください。
+また、Vectorはデータの[変換](https://vector.dev/docs/reference/configuration/transforms/)をサポートしていますが、これはこのガイドの範囲を超えています。そのため, 必要な場合はVectorドキュメントを参照してください。
 
-現在のClickHouseシンクの実装はHTTPインターフェースを利用しています。現時点ではClickHouseシンクはJSONスキーマの使用をサポートしていません。データはプレーンJSON形式または文字列としてKafkaに公開される必要があります。
+現在のClickHouseシンクの実装はHTTPインターフェースを利用しています。現時点では、ClickHouseシンクはJSONスキーマの使用をサポートしていません。データはプレーンJSON形式または文字列としてKafkaに公開する必要があります。
 
 ### ライセンス {#license}
 Vectorは[MPL-2.0ライセンス](https://github.com/vectordotdev/vector/blob/master/LICENSE)の下で配布されています。
 
-### 接続の詳細を収集する {#gather-your-connection-details}
+### 接続の詳細を集める {#gather-your-connection-details}
 <ConnectionDetails />
 
 ### 手順 {#steps}
@@ -34,7 +34,7 @@ cat /opt/data/github/github_all_columns.ndjson | kcat -b <host>:<port> -X securi
 
 このデータセットは、`ClickHouse/ClickHouse`リポジトリに焦点を当てた200,000行で構成されています。
 
-2. ターゲットテーブルが作成されていることを確認してください。以下では、デフォルトデータベースを使用します。
+2. 対象テーブルが作成されていることを確認します。以下ではデフォルトデータベースを使用します。
 
 ```sql
 CREATE TABLE github
@@ -68,7 +68,7 @@ CREATE TABLE github
 ) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at);
 ```
 
-3. [Vectorをダウンロードしてインストール](https://vector.dev/docs/setup/quickstart/)します。`kafka.toml`設定ファイルを作成し、KafkaおよびClickHouseインスタンス用の値を変更します。
+3. [Vectorをダウンロードしてインストール](https://vector.dev/docs/setup/quickstart/)します。`kafka.toml`という構成ファイルを作成し、KafkaとClickHouseインスタンスの値を変更します。
 
 ```toml
 [sources.github]
@@ -98,15 +98,15 @@ buffer.max_events = 10000
 batch.timeout_secs = 1
 ```
 
-この設定およびVectorの動作に関するいくつかの重要な注意事項：
+この構成およびVectorの動作についてのいくつかの重要な注意点：
 
-- この例はConfluent Cloudでテストされています。そのため、`sasl.*`および`ssl.enabled`のセキュリティオプションは、セルフマネージドのケースでは適切でない場合があります。
-- `bootstrap_servers`構成パラメータにはプロトコルプレフィックスを指定する必要はありません。例：`pkc-2396y.us-east-1.aws.confluent.cloud:9092`
-- ソースパラメータ`decoding.codec = "json"`は、メッセージがClickHouseシンクに単一のJSONオブジェクトとして渡されることを保証します。メッセージを文字列として処理し、デフォルトの`bytes`値を使用する場合、メッセージの内容は`message`フィールドに追加されます。ほとんどのケースでは、これは[Vectorの始めに](../etl-tools/vector-to-clickhouse.md#4-parse-the-logs)ガイドに記載されたようにClickHouseでの処理を必要とします。
-- Vectorはメッセージにいくつかのフィールドを[追加](https://vector.dev/docs/reference/configuration/sources/kafka/#output-data)します。この例では、`skip_unknown_fields = true`という構成パラメータを介してClickHouseシンクでこれらのフィールドを無視します。これは、ターゲットテーブルスキーマの一部でないフィールドを無視します。これらのメタフィールド（例えば`offset`）を追加するためにスキーマを調整しても構いません。
-- シンクの設定は、イベントのソースのパラメータ`inputs`を介して参照されることに注意してください。
-- ClickHouseシンクの動作に関しては、[こちら](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#buffers-and-batches)を参照してください。最適なスループットのために、ユーザーは`buffer.max_events`、`batch.timeout_secs`および`batch.max_bytes`パラメータを調整することを検討するかもしれません。ClickHouseの[推奨](../../../concepts/why-clickhouse-is-so-fast.md#performance-when-inserting-data)に従い、単一バッチのイベント数は1000を最小値とする必要があります。均一な高スループットのユースケースでは、ユーザーは`buffer.max_events`のパラメータを増加させることができます。変動のあるスループットには`batch.timeout_secs`パラメータの変更が必要な場合があります。
-- パラメータ`auto_offset_reset = "smallest"`は、Kafkaソースがトピックの先頭から始まることを強制し、ステップ（1）で発行されたメッセージを確実に消費できます。ユーザーは異なる動作を必要とする場合があります。詳細については[こちら](https://vector.dev/docs/reference/configuration/sources/kafka/#auto_offset_reset)を参照してください。
+- この例はConfluent Cloudに対してテストされています。そのため、`sasl.*`および`ssl.enabled`セキュリティオプションはセルフマネージドの場合には適切でないかもしれません。
+- `bootstrap_servers`の構成パラメータにプロトコルプレフィックスは必要ありません。例：`pkc-2396y.us-east-1.aws.confluent.cloud:9092`
+- ソースパラメータ`decoding.codec = "json"`は、メッセージがClickHouseシンクに単一のJSONオブジェクトとして渡されることを保証します。メッセージを文字列として処理し、デフォルトの`bytes`値を使用している場合、メッセージの内容は`message`フィールドに追加されます。ほとんどの場合、これは[Vectorのはじめに](../etl-tools/vector-to-clickhouse.md#4-parse-the-logs)ガイドで説明されているようにClickHouseで処理する必要があります。
+- Vectorはメッセージにいくつかのフィールドを[追加](https://vector.dev/docs/reference/configuration/sources/kafka/#output-data)します。この例では、ClickHouseシンクでは`skip_unknown_fields = true`の構成パラメータを介してこれらのフィールドを無視します。これは、ターゲットテーブルスキーマの一部でないフィールドを無視します。必要に応じて、これらのメタフィールド（例えば`offset`）が追加されるようにスキーマを調整してください。
+- シンクがイベントのソースをパラメータ`inputs`を介して参照していることに注意してください。
+- ClickHouseシンクの動作は[こちら](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#buffers-and-batches)に説明されています。最適なスループットを得るために、ユーザーは`buffer.max_events`、`batch.timeout_secs`、および`batch.max_bytes`パラメータの調整を希望するかもしれません。ClickHouseの[推奨](https://sql-reference/statements/insert-into#performance-considerations)では、単一バッチ内のイベント数の最小値として1000を考慮すべきです。均一な高スループットのユースケースでは、ユーザーは`buffer.max_events`パラメータを増加させることができます。変動が大きいスループットでは、`batch.timeout_secs`パラメータの変更が必要になるかもしれません。
+- `auto_offset_reset = "smallest"`パラメータは、Kafkaソースがトピックの先頭から開始することを強制します。これにより、ステップ(1)で発行されたメッセージを消費します。ユーザーには異なる動作が必要になる場合があります。詳細については[こちら](https://vector.dev/docs/reference/configuration/sources/kafka/#auto_offset_reset)を参照してください。
 
 4. Vectorを起動します。
 
@@ -114,7 +114,7 @@ batch.timeout_secs = 1
 vector --config ./kafka.toml
 ```
 
-デフォルトでは、[ヘルスチェック](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#healthcheck)がClickHouseへの挿入の前に必要です。これにより、接続可能かどうかを確認し、スキーマが読み取られます。問題が発生した場合は、`VECTOR_LOG=debug`を追加して詳細なログを取得できます。
+デフォルトでは、[ヘルスチェック](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#healthcheck)がClickHouseへの挿入が始まる前に必要です。これにより、接続が確立できていることとスキーマが読み取れることが確認されます。問題が発生した場合に役立つ追加のログを得るには、`VECTOR_LOG=debug`を前に付けてください。
 
 5. データの挿入を確認します。
 
