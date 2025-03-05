@@ -317,6 +317,7 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
 
 <details>
    <summary> Create a Generic SAML Service Provider for Duo </summary>
+   
    1. Follow the instructions for [Duo Single Sign-On for Generic SAML Service Providers](https://duo.com/docs/sso-generic). 
    
    2. Use the following Bridge Attribute mapping:
