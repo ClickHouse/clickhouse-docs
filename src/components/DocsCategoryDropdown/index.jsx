@@ -1,14 +1,18 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import Link from '@docusaurus/Link';
-import {useDocsSidebar} from '@docusaurus/plugin-content-docs/client';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import React, { useState, useRef, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import Link from "@docusaurus/Link";
+import { useDocsSidebar } from "@docusaurus/plugin-content-docs/client";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import { translate } from "@docusaurus/Translate";
 
-import styles from './styles.module.css';
+import styles from "./styles.module.css";
 
 function DocsCategoryDropdown({ dropdownCategory }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [dropdownStyles, setDropdownStyles] = useState({ top: '0px', left: '0px' });
+  const [dropdownStyles, setDropdownStyles] = useState({
+    top: "0px",
+    left: "0px",
+  });
   const dropdownMenuRef = useRef(null);
   const triggerRef = useRef(null); // Reference for the individual menu item trigger
 
@@ -36,15 +40,19 @@ function DocsCategoryDropdown({ dropdownCategory }) {
         left = triggerRect.right - dropdownRect.width;
       } else {
         // Align to center
-        left = triggerRect.left + (triggerRect.width / 2) - (dropdownRect.width / 2);
+        left =
+          triggerRect.left + triggerRect.width / 2 - dropdownRect.width / 2;
       }
 
       // Ensure the dropdown doesn't go off-screen
-      left = Math.max(10, Math.min(left, viewportWidth - dropdownRect.width - 10));
+      left = Math.max(
+        10,
+        Math.min(left, viewportWidth - dropdownRect.width - 10),
+      );
 
       setDropdownStyles({
         top: `${triggerRect.bottom}px`, // Align the dropdown below the menu item
-        left: `${left}px`               // Align the dropdown with the menu item
+        left: `${left}px`, // Align the dropdown with the menu item
       });
     }
   }, [isOpen]); // This runs when the dropdown is opened
@@ -54,13 +62,13 @@ function DocsCategoryDropdown({ dropdownCategory }) {
   // Safely call useDocsSidebar
   try {
     sidebar = useDocsSidebar();
-  } catch (e) {
-  }
+  } catch (e) {}
 
   // Guard against undefined sidebar
-  const isSelected = sidebar && sidebar.name && dropdownCategory
-    ? sidebar.name === dropdownCategory.customProps.sidebar
-    : false;
+  const isSelected =
+    sidebar && sidebar.name && dropdownCategory
+      ? sidebar.name === dropdownCategory.customProps.sidebar
+      : false;
 
   return (
     <div
@@ -72,9 +80,18 @@ function DocsCategoryDropdown({ dropdownCategory }) {
         className={styles.docsNavDropdownToolbarLink}
         ref={triggerRef} // Attach the ref to the individual link that triggers the dropdown
       >
-        <Link className={`${styles.docsNavDropdownToolbarTopLevelLink} ${
-            isSelected ? styles.docsNavSelected : ''
-          }`} href={dropdownCategory.customProps.href}>{dropdownCategory.label}</Link> <DropdownCaret />
+        <Link
+          className={`${styles.docsNavDropdownToolbarTopLevelLink} ${
+            isSelected ? styles.docsNavSelected : ""
+          }`}
+          href={dropdownCategory.customProps.href}
+        >
+          {translate({
+            id: `sidebar.dropdownCategories.category.${dropdownCategory.label}`,
+            message: dropdownCategory.label,
+          })}
+        </Link>{" "}
+        <DropdownCaret />
       </span>
       {isOpen && (
         <DropdownContent
@@ -91,51 +108,63 @@ function DocsCategoryDropdown({ dropdownCategory }) {
 export const DocsCategoryDropdownLinkOnly = ({ title, link }) => {
   return (
     <div className={styles.docsNavDropdownContainer}>
-      <Link href={link} className={styles.docsNavDropdownToolbarTopLevelLink}><span>{title}</span></Link>
+      <Link href={link} className={styles.docsNavDropdownToolbarTopLevelLink}>
+        <span>{title}</span>
+      </Link>
     </div>
   );
-}
+};
 
-const DropdownContent = ({ dropdownCategory, handleMouseLeave, dropdownStyles, dropdownMenuRef }) => {
+const DropdownContent = ({
+  dropdownCategory,
+  handleMouseLeave,
+  dropdownStyles,
+  dropdownMenuRef,
+}) => {
   const [hovered, setHovered] = useState(null);
 
   return (
     <div
       ref={dropdownMenuRef}
       className={styles.docsNavDropdownMenu}
-      style={{ position: 'fixed', ...dropdownStyles }}
+      style={{ position: "fixed", ...dropdownStyles }}
     >
-      <div key={99}
-            className={`${styles.docsNavMenuItem} ${hovered === 99 ? styles.docsNavHovered : ''}`}
-            onMouseEnter={() => setHovered(99)}
-            onMouseLeave={() => setHovered(null)}
+      <div
+        key={99}
+        className={`${styles.docsNavMenuItem} ${hovered === 99 ? styles.docsNavHovered : ""}`}
+        onMouseEnter={() => setHovered(99)}
+        onMouseLeave={() => setHovered(null)}
       >
         <Link
-          to={dropdownCategory.customProps.href} 
+          to={dropdownCategory.customProps.href}
           className={styles.docsNavMenuHeader}
-          onClick={handleMouseLeave} 
+          onClick={handleMouseLeave}
         >
           {dropdownCategory.label}
         </Link>
-        <div className={styles.docsNavMenuDescription}>{dropdownCategory.description}</div>
+        <div className={styles.docsNavMenuDescription}>
+          {dropdownCategory.description}
+        </div>
       </div>
       <hr className={styles.docsNavMenuDivider} />
       <div className={styles.docsNavMenuItems}>
         {dropdownCategory.items.map((item, index) => (
           <div
             key={index}
-            className={`${styles.docsNavMenuItem} ${hovered === index ? styles.docsNavHovered : ''}`}
+            className={`${styles.docsNavMenuItem} ${hovered === index ? styles.docsNavHovered : ""}`}
             onMouseEnter={() => setHovered(index)}
             onMouseLeave={() => setHovered(null)}
           >
             <Link
-              to={item.href} 
+              to={item.href}
               className={styles.docsNavItemTitle}
-              onClick={handleMouseLeave} 
+              onClick={handleMouseLeave}
             >
               {item.label}
             </Link>
-            <div className={styles.docsNavItemDescription}>{item.description}</div>
+            <div className={styles.docsNavItemDescription}>
+              {item.description}
+            </div>
           </div>
         ))}
       </div>
@@ -145,20 +174,20 @@ const DropdownContent = ({ dropdownCategory, handleMouseLeave, dropdownStyles, d
 
 const DropdownCaret = () => {
   const commonStyle = {
-    width: '6px',
-    height: '10px',
-    fill: 'none',
-    transition: 'all 0.3s ease',
-    color: '#6B7280',
+    width: "6px",
+    height: "10px",
+    fill: "none",
+    transition: "all 0.3s ease",
+    color: "#6B7280",
   };
 
   const rotatedIconStyle = {
     ...commonStyle,
-    transform: 'rotate(90deg)',
+    transform: "rotate(90deg)",
   };
 
   return (
-    <span style={{ marginLeft: '8px' }}>
+    <span style={{ marginLeft: "8px" }}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="6"
