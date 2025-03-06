@@ -322,17 +322,17 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
    
    2. Use the following Bridge Attribute mapping:
 
-   |  Bridge Attribute  |  ClickHouse Attribute  | 
-   |:-------------------|:-----------------------|
-   | Email Address      | email                  |
+      |  Bridge Attribute  |  ClickHouse Attribute  | 
+      |:-------------------|:-----------------------|
+      | Email Address      | email                  |
    
    3. Use the following values to update your Cloud Application in Duo:
 
-   |  Field    |  Value                                     |
-   |:----------|:-------------------------------------------|
-   | Entity ID | `urn:auth0:ch-production:{organizationid}` |
-   | Assertion Consumer Service (ACS) URL | `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` |
-   | Service Provider Login URL |  `https://console.clickhouse.cloud/?connection={organizationid}` |
+      |  Field    |  Value                                     |
+      |:----------|:-------------------------------------------|
+      | Entity ID | `urn:auth0:ch-production:{organizationid}` |
+      | Assertion Consumer Service (ACS) URL | `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` |
+      | Service Provider Login URL |  `https://console.clickhouse.cloud/?connection={organizationid}` |
 
    4. Gather these two items and go to Submit a Support Case above to complete the process:
       - Single Sign-On URL
