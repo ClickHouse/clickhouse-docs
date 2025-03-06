@@ -9,15 +9,19 @@ sidebar_label: 'sumIf'
 
 ## Description
 
-The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`sum`](/sql-reference/aggregate-functions/reference/sum) function to calculate the sum only for rows that match the given condition using the `sumIf` function.
+The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`sum`](/sql-reference/aggregate-functions/reference/sum) function to 
+calculate the sum only for rows that match the given condition using the `sumIf`
+function.
 
-This is useful when you want to calculate conditional sums without having to use a subquery or `CASE` statements.
+This is useful when you want to calculate conditional sums without having to use
+a subquery or `CASE` statements.
 
 ## Example Usage
 
 ### Calculate trading volume by price direction
 
-In this example we'll use the `stock` table available at [ClickHouse playground](https://sql.clickhouse.com/) to calculate trading volume by price direction in the first half of the year 2002.
+In this example we'll use the `stock` table available at [ClickHouse playground](https://sql.clickhouse.com/)
+to calculate trading volume by price direction in the first half of the year 2002.
 
 ```sql title="Query"
 SELECT 
@@ -51,8 +55,9 @@ ORDER BY month;
 
 ### Calculate trading volume by stock symbol
 
-In this example we'll use the `stock` table available at [ClickHouse playground](https://sql.clickhouse.com/) to calculate trading volume by stock symbol in 2006 for three
-of the largest tech companies at the time.
+In this example we'll use the `stock` table available at [ClickHouse playground](https://sql.clickhouse.com/)
+to calculate trading volume by stock symbol in 2006 for three of the largest tech
+companies at the time.
 
 ```sql title="Query"
 SELECT 
