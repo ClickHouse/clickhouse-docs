@@ -486,5 +486,74 @@
   },
   "sidebar.dropdownCategories.category.About": {
     "message": "について"
+  },
+  "topNav.navItems.Products": {
+    "message": "製品"
+  },
+  "topNav.navItems.Use cases": {
+    "message": "ユースケース"
+  },
+  "topNav.navItems.Pricing": {
+    "message": "料金"
+  },
+  "topNav.navItems.Resources": {
+    "message": "リソース"
+  },
+  "topNav.navItems.Docs": {
+    "message": "ドキュメント"
+  },
+  "topNav.navItems.Contact us": {
+    "message": "お問合せ"
+  },
+  "topNav.navItems.products.clickhouse_cloud_1": {
+    "message": "ClickHouseを使用する最良の方法。"
+  },
+  "topNav.navItems.products.clickhouse_cloud_2": {
+    "message": "AWS、GCP、Azureで利用可能。"
+  },
+  "topNav.navItems.products.byoc_1": {
+    "message": "BYOC（お客様クラウド利用）"
+  },
+  "topNav.navItems.products.byoc_2": {
+    "message": "完全マネージド型の ClickHouse クラウドサービス、"
+  },
+  "topNav.navItems.products.byoc_3": {
+    "message": "お客様の AWS アカウント内にデプロイ可能。"
+  },
+  "topNav.navItems.products.oss": {
+    "message": "オープンソースのClickHouseでデータベースを立ち上げる。"
+  },
+  "topNav.navItems.products.oss_2": {
+    "message": ""
+  },
+  "topNav.navItems.products.integrations": {
+    "message": "100を超えるインテグレーションを紹介します。"
+  },
+  "topNav.navItems.use_cases.Real-time analytics": {
+    "message": "リアルタイム分析"
+  },
+  "topNav.navItems.use_cases.Machine learning and GenAI": {
+    "message": "機械学習 & 生成AI"
+  },
+  "topNav.navItems.use_cases.Business intelligence": {
+    "message": "ビジネスインテリジェンス"
+  },
+  "topNav.navItems.use_cases.Logs, events, and traces": {
+    "message": "ログ、イベント、トレース"
+  },
+  "topNav.navItems.use_cases.All use cases": {
+    "message": "すべてのユースケース"
+  },
+  "topNav.navItems.resources.Blog": {
+    "message": "ブログ"
+  },
+  "topNav.navItems.resources.Comparisons": {
+    "message": "比較情報"
+  },
+  "topNav.navItems.resources.Videos": {
+    "message": "ビデオ"
+  },
+  "topNav.navItems.resources.Demos": {
+    "message": "デモ"
   }
 }
