@@ -58,7 +58,7 @@ We recommend setting up a **direct link to your organization** in addition to yo
 
    - Attribute mapping: `email = user.email`
 
-   - Direct link to access your organization: `https://console.clickhouse.cloud?connection={organizationid}` 
+   - Direct link to access your organization: `https://console.clickhouse.cloud/?connection={organizationid}` 
 
 
    For specific configuration steps, refer to your specific identity provider below.
@@ -149,7 +149,7 @@ You will configure two App Integrations in Okta for each ClickHouse organization
    
    5. Select a label for the app.
    
-   6. Enter the URL as `https://console.clickhouse.cloud?connection={organizationid}`
+   6. Enter the URL as `https://console.clickhouse.cloud/?connection={organizationid}`
    
    7. Go to the **Assignments** tab and add the group you created above.
    
@@ -206,7 +206,7 @@ You will configure two App Integrations in Okta for each ClickHouse organization
 
 ### Configure Google SAML {#configure-google-saml}
 
-You will configure one SAML app in Google for each organization and must provide your users the direct link (`https://console.clickhouse.cloud?connection={organizationId}`) to bookmark if using multi-org SSO.
+You will configure one SAML app in Google for each organization and must provide your users the direct link (`https://console.clickhouse.cloud/?connection={organizationId}`) to bookmark if using multi-org SSO.
 
 <details>
    <summary>  Create a Google Web App  </summary>
@@ -290,7 +290,7 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
       |---------------------------|-------|
       | Identifier (Entity ID)    | `urn:auth0:ch-production:{organizationid}` |
       | Reply URL (Assertion Consumer Service URL) | `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` |
-      | Sign on URL               | `https://console.clickhouse.cloud?connection={organizationid}` |
+      | Sign on URL               | `https://console.clickhouse.cloud/?connection={organizationid}` |
       | Relay State               | Blank |
       | Logout URL                | Blank |
    
@@ -313,6 +313,33 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
 
 </details>
 
+### Configure Duo SAML {#configure-duo-saml}
+
+<details>
+   <summary> Create a Generic SAML Service Provider for Duo </summary>
+   
+   1. Follow the instructions for [Duo Single Sign-On for Generic SAML Service Providers](https://duo.com/docs/sso-generic). 
+   
+   2. Use the following Bridge Attribute mapping:
+
+      |  Bridge Attribute  |  ClickHouse Attribute  | 
+      |:-------------------|:-----------------------|
+      | Email Address      | email                  |
+   
+   3. Use the following values to update your Cloud Application in Duo:
+
+      |  Field    |  Value                                     |
+      |:----------|:-------------------------------------------|
+      | Entity ID | `urn:auth0:ch-production:{organizationid}` |
+      | Assertion Consumer Service (ACS) URL | `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` |
+      | Service Provider Login URL |  `https://console.clickhouse.cloud/?connection={organizationid}` |
+
+   4. Gather these two items and go to Submit a Support Case above to complete the process:
+      - Single Sign-On URL
+      - Certificate
+   
+</details>
+
 
 ## How It Works {#how-it-works}
 
@@ -322,11 +349,11 @@ We only utilize service provider initiated SSO. This means users go to `https://
 
 ### Assigning User Roles {#assigning-user-roles}
 
-Users will appear in your ClickHouse Cloud console after they are assigned to your IdP application and log in for the first time. At least one SSO user should be assigned the Admin role in your organization. Use social login or `https://console.clickhouse.cloud?with=email` to log in with your original authentication method to update your SSO role.
+Users will appear in your ClickHouse Cloud console after they are assigned to your IdP application and log in for the first time. At least one SSO user should be assigned the Admin role in your organization. Use social login or `https://console.clickhouse.cloud/?with=email` to log in with your original authentication method to update your SSO role.
 
 ### Removing Non-SSO Users {#removing-non-sso-users}
 
-Once you have SSO users set up and have assigned at least one user the Admin role, the Admin can remove users using other methods (e.g. social authentication or user ID + password). Google authentication will continue to work after SSO is set up. User ID + password users will be automatically redirected to SSO based on their email domain unless users use `https://console.clickhouse.cloud?with=email`.
+Once you have SSO users set up and have assigned at least one user the Admin role, the Admin can remove users using other methods (e.g. social authentication or user ID + password). Google authentication will continue to work after SSO is set up. User ID + password users will be automatically redirected to SSO based on their email domain unless users use `https://console.clickhouse.cloud/?with=email`.
 
 ### Managing Users {#managing-users}
 
@@ -334,7 +361,7 @@ ClickHouse Cloud currently implements SAML for SSO. We have not yet implemented 
 
 ### Multi-Org SSO {#multi-org-sso}
 
-ClickHouse Cloud supports multi-organization SSO by providing a separate connection for each organization. Use the direct link (`https://console.clickhouse.cloud?connection={organizationid}`) to log in to each respective organization. Be sure to log out of one organization before logging into another.
+ClickHouse Cloud supports multi-organization SSO by providing a separate connection for each organization. Use the direct link (`https://console.clickhouse.cloud/?connection={organizationid}`) to log in to each respective organization. Be sure to log out of one organization before logging into another.
 
 ## Additional Information {#additional-information}
 

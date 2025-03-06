@@ -111,7 +111,7 @@ export default function NavbarContent() {
           {sidebars.dropdownCategories.map((dropdownCategory, index) => {
             return <DocsCategoryDropdown key={index} dropdownCategory={dropdownCategory} />
           })}
-          <DocsCategoryDropdownLinkOnly title='Knowledge Base' link='/docs/knowledgebase' />
+          <DocsCategoryDropdownLinkOnly title='Knowledge Base' link='/knowledgebase' />
         </div>
         <div
           className={`${styles.secondaryMenuRight} secondary-nav--items-right`}

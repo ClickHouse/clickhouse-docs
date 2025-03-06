@@ -3186,6 +3186,31 @@
       "source": "/docs/get-started/query-endpoints",
       "destination": "/docs/cloud/get-started/query-endpoints",
       "permanent": true
+    },
+    {
+      "source": "/docs/integrations/jdbc",
+      "destination": "/docs/integrations/language-clients/java/jdbc",
+      "permanent": true
+    },
+    {
+      "source": "/docs/guides/improving-query-performance/sparse-primary-indexes/sparse-primary-indexes-multiple",
+      "destination": "/docs/guides/best-practices/sparse-primary-indexes#using-multiple-primary-indexes",
+      "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/table-functions/generateSeries",
+      "destination": "/docs/sql-reference/table-functions/generate_series",
+      "permanent": true
+    },
+    {
+      "source": "/docs/migrations/en/migrations",
+      "destination": "/docs/migrations/migrations",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/data-ingestion",
+      "destination": "/docs/integrations/data-ingestion-overview",
+      "permanent": true
     }
   ]
 }
