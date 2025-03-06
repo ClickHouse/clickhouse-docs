@@ -46,7 +46,7 @@ const config = {
     "ドキュメント、クイックスタートガイド、ユーザーガイド、技術リファレンス、FAQ など、多様な情報をご提供します。",
   url: "https://clickhouse.com",
   // url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
-  baseUrl: "/jp-docs/",
+  baseUrl: "/docs/jp/",
   baseUrlIssueBanner: true,
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
@@ -139,17 +139,16 @@ const config = {
         },
         blog: {
           path: "knowledgebase",
-          blogTitle: "ClickHouse Knowledge Base",
-          blogDescription: "Knowledge Base",
-          blogSidebarTitle: "All KB articles",
+          blogTitle: "ClickHouse ナレッジベース",
+          blogDescription: "ナレッジベース",
+          blogSidebarTitle: "すべてのKB記事",
           routeBasePath: "/knowledgebase",
           postsPerPage: 10,
           blogSidebarCount: "ALL",
           feedOptions: {
             type: "all",
-            title: "ClickHouse Knowledge Base Feed",
-            description:
-              "Feed of articles posted to the ClickHouse Knowledge Base",
+            title: "ClickHouse ナレッジベースフィード",
+            description: "ClickHouse ナレッジベースに投稿された記事のフィード",
             copyright: `Copyright &copy; 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA 4.0 license. ClickHouse&reg; is a registered trademark of ClickHouse, Inc.`,
             language: "en",
             createFeedItems: async (params) => {

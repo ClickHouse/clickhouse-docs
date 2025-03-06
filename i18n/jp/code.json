@@ -139,6 +139,10 @@
     "message": "先頭へ戻る",
     "description": "The ARIA label for the back to top button"
   },
+  "theme.blog.title": {
+    "message": "ナレッジベース",
+    "description": "The title of the blog - Knowledge Base by default"
+  },
   "theme.blog.archive.title": {
     "message": "アーカイブ",
     "description": "The page & hero title of the blog archive page"

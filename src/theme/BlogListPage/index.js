@@ -14,6 +14,9 @@ import BlogListPageStructuredData from '@theme/BlogListPage/StructuredData';
 import ButtonGroup from "../../components/ButtonGroup/ButtonGroup";
 import BlogBreadcrumbs from "../../components/BlogBreadcrumbs/BlogBreadcrumbs";
 import { useHistory } from 'react-router-dom';
+import Translate from "@docusaurus/Translate";
+
+
 import styles from './styles.module.css';
 function BlogListPageMetadata(props) {
   const {metadata} = props;
@@ -36,7 +39,9 @@ function BlogListPageContent(props) {
   return (
     <BlogLayout sidebar={sidebar}>
       <BlogBreadcrumbs/>
-      <h1 className={styles.kbTitle}>Knowledge Base</h1>
+      <h1 className={styles.kbTitle}>
+        <Translate id={`theme.blog.title`} description={`Translation for Knowledge Base`}>Knowledge Base</Translate>
+      </h1>
       <ButtonGroup
           onClick={function Nav(value){if (typeof window !== 'undefined'){ value === 'recent' ? history.push('/docs/knowledgebase') : history.push('/docs/knowledgebase/tags') }}}
           options={[
