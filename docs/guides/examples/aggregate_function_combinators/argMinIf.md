@@ -48,4 +48,5 @@ The `argMinIf` function will return the product name that has the lowest price a
 ## See also
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
+- [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if) 
