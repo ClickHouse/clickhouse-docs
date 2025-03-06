@@ -7,6 +7,8 @@ sidebar_label: 'countIf'
 
 # countIf
 
+## Description
+
 The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`count`](/sql-reference/aggregate-functions/reference/count) function to count
 only the rows that match the given condition using the `countIf` function.
 

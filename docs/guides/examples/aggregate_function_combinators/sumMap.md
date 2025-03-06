@@ -7,6 +7,8 @@ sidebar_label: 'sumMap'
 
 # sumMap
 
+## Description
+
 The [`Map`](/sql-reference/aggregate-functions/combinators#-map) combinator can be applied to the [`sum`](/sql-reference/aggregate-functions/reference/sum) function to calculate the sum of values for each key in a map using the `sumMap` function.
 
 This is useful when you want to aggregate values by key in a map structure.

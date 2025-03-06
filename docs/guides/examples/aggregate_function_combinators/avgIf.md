@@ -7,6 +7,8 @@ sidebar_label: 'avgIf'
 
 # avgIf
 
+## Description
+
 The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`avg`](/sql-reference/aggregate-functions/reference/avg) function to 
 calculate the average only for rows that match the given condition using the 
 `avgIf` function.

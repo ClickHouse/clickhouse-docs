@@ -7,6 +7,8 @@ sidebar_label: 'uniqArray'
 
 # uniqArray
 
+## Description
+
 The [`Array`](/sql-reference/aggregate-functions/combinators#-array) combinator can be applied to the [`uniq`](/sql-reference/aggregate-functions/reference/uniq) function to count the number of unique elements in an array using the `uniqArray` function.
 
 This is useful when you want to count unique elements in an array without having to use `arrayJoin`.

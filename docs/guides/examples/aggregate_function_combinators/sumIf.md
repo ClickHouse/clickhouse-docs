@@ -7,6 +7,8 @@ sidebar_label: 'sumIf'
 
 # sumIf
 
+## Description
+
 The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`sum`](/sql-reference/aggregate-functions/reference/sum) function to calculate the sum only for rows that match the given condition using the `sumIf` function.
 
 This is useful when you want to calculate conditional sums without having to use a subquery or `CASE` statements.
