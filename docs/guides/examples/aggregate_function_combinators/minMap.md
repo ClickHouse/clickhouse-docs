@@ -5,13 +5,15 @@ keywords: ['min', 'map', 'combinator', 'examples', 'minMap']
 sidebar_label: 'minMap'
 ---
 
-# minMap
+# minMap {#minmap}
+
+## Description {#description}
 
 The [`Map`](/sql-reference/aggregate-functions/combinators#-map) combinator can be applied to the [`min`](/sql-reference/aggregate-functions/reference/min)
 function to calculate the minimum value in a Map according to each key, using the `minMap` 
 aggregate combinator function.
 
-## Example Usage
+## Example Usage {#example-usage}
 
 In this example, we'll create a table that stores status codes and their counts for different timeslots,
 where each row contains a Map of status codes to their corresponding counts. We'll use 
@@ -57,6 +59,6 @@ The `minMap` function will find the minimum count for each status code within ea
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
-## See also
+## See also {#see-also}
 - [`min`](/sql-reference/aggregate-functions/reference/min)
 - [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map) 

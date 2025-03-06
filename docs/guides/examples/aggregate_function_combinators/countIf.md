@@ -5,47 +5,50 @@ keywords: ['count', 'if', 'combinator', 'examples', 'countIf']
 sidebar_label: 'countIf'
 ---
 
-# countIf
+# countIf {#countif}
 
-## Description
+## Description {#description}
 
-The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`count`](/sql-reference/aggregate-functions/reference/count) function to count
-only the rows that match the given condition using the `countIf` function.
+The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`count`](/sql-reference/aggregate-functions/reference/count)
+function to count the number of rows where the condition is true,
+using the `countIf` aggregate combinator function.
 
-This is useful when you want to count rows based on specific conditions without 
-having to use a subquery or `CASE` statements.
+## Example Usage {#example-usage}
 
-## Example Usage
-
-In this example we'll use the [UK price paid](/getting-started/example-datasets/uk-price-paid) 
-dataset and the `countIf` aggregate combinator function to figure out what 
-percentage of properties are detached properties versus flats for the top 10
-largest cities in the UK.
+In this example, we'll create a table that stores user login attempts,
+and we'll use `countIf` to count the number of successful logins.
 
 ```sql title="Query"
+CREATE TABLE login_attempts(
+    user_id UInt32,
+    timestamp DateTime,
+    is_successful UInt8
+) ENGINE = Log;
+
+INSERT INTO login_attempts VALUES
+    (1, '2024-01-01 10:00:00', 1),
+    (1, '2024-01-01 10:05:00', 0),
+    (1, '2024-01-01 10:10:00', 1),
+    (2, '2024-01-01 11:00:00', 1),
+    (2, '2024-01-01 11:05:00', 1),
+    (2, '2024-01-01 11:10:00', 0);
+
 SELECT
-    town,
-    count(*) AS total_properties,
-    round((countIf(type = 'detached') / count(*)) * 100, 2) AS detached_percentage,
-    round((countIf(type = 'flat') / count(*)) * 100, 2) AS flat_percentage
-FROM uk_price_paid
-WHERE date >= '2023-01-01'
-GROUP BY town
-ORDER BY total_properties DESC
-LIMIT 10
+    user_id,
+    countIf(is_successful = 1) as successful_logins
+FROM login_attempts
+GROUP BY user_id;
 ```
 
+The `countIf` function will count only the rows where `is_successful = 1` for each user.
+
 ```response title="Response"
-    ┌─town───────┬─total_properties─┬─detached_percentage─┬─flat_percentage─┐
- 1. │ LONDON     │           103519 │                1.81 │           62.42 │
- 2. │ MANCHESTER │            25210 │                8.01 │           22.21 │
- 3. │ BRISTOL    │            23265 │               15.07 │           23.59 │
- 4. │ BIRMINGHAM │            20934 │                7.66 │           17.64 │
- 5. │ NOTTINGHAM │            20841 │               28.45 │            9.28 │
- 6. │ LIVERPOOL  │            18845 │                9.17 │           20.04 │
- 7. │ LEEDS      │            17496 │               13.92 │           14.71 │
- 8. │ SHEFFIELD  │            15534 │               16.37 │            13.5 │
- 9. │ LEICESTER  │            12340 │               25.41 │            8.15 │
-10. │ NORWICH    │            11469 │               32.97 │           12.38 │
-    └────────────┴──────────────────┴─────────────────────┴─────────────────┘
+   ┌─user_id─┬─successful_logins─┐
+1. │       1 │                 2 │
+2. │       2 │                 2 │
+   └────────┴──────────────────┘
 ```
+
+## See also {#see-also}
+- [`count`](/sql-reference/aggregate-functions/reference/count)
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

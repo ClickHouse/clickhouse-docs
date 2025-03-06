@@ -5,9 +5,9 @@ keywords: ['uniq', 'array', 'combinator', 'examples', 'uniqArray']
 sidebar_label: 'uniqArray'
 ---
 
-# uniqArray
+# uniqArray {#uniqarray}
 
-## Description
+## Description {#description}
 
 The [`Array`](/sql-reference/aggregate-functions/combinators#-array) combinator 
 can be applied to the [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
@@ -18,7 +18,7 @@ The `uniqArray` function is useful when you need to count unique elements across
 multiple arrays in a dataset. It's equivalent to using `uniq(arrayJoin())`, where 
 `arrayJoin` first flattens the arrays and then `uniq` counts the unique elements.
 
-## Example Usage
+## Example Usage {#example-usage}
 
 In this example, we'll use a sample dataset of user interests across different 
 categories to demonstrate how `uniqArray` works. We'll compare it with 
@@ -53,7 +53,7 @@ In this example:
    └──────────────────────┴────────────────────────────┘
 ```
 
-## See also
+## See also {#see-also}
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
 - [`arrayJoin`](/sql-reference/functions/array-functions#arrayjoin)
 - [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)

@@ -5,37 +5,48 @@ keywords: ['avg', 'if', 'combinator', 'examples', 'avgIf']
 sidebar_label: 'avgIf'
 ---
 
-# avgIf
+# avgIf {#avgif}
 
-## Description
+## Description {#description}
 
-The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`avg`](/sql-reference/aggregate-functions/reference/avg) function to 
-calculate the average only for rows that match the given condition using the 
-`avgIf` function.
+The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`avg`](/sql-reference/aggregate-functions/reference/avg)
+function to calculate the arithmetic mean of values for rows where the condition is true,
+using the `avgIf` aggregate combinator function.
 
-This is useful when you want to calculate conditional averages without having to
-use a subquery or `CASE` statements.
+## Example Usage {#example-usage}
 
-## Example Usage
+In this example, we'll create a table that stores sales data with success flags,
+and we'll use `avgIf` to calculate the average sale amount for successful transactions.
 
-In this example we'll use the [UK price paid](/getting-started/example-datasets/uk-price-paid)
-dataset and the `avgIf` aggregate combinator function to figure out what the 
-average price is, of the ten most expensive districts in the UK.
+```sql title="Query"
+CREATE TABLE sales(
+    transaction_id UInt32,
+    amount Decimal(10,2),
+    is_successful UInt8
+) ENGINE = Log;
 
-```sql
-WITH price_stats AS (
-    SELECT
-        district,
-        avgIf(price, type = 'flat') AS avg_price_raw,
-        formatReadableQuantity(avgIf(price, type = 'flat')) AS avg_flat_price
-    FROM uk_price_paid
-    WHERE date BETWEEN '2022-01-01' AND '2022-12-31'
-    GROUP BY district
-)
+INSERT INTO sales VALUES
+    (1, 100.50, 1),
+    (2, 200.75, 1),
+    (3, 150.25, 0),
+    (4, 300.00, 1),
+    (5, 250.50, 0),
+    (6, 175.25, 1);
+
 SELECT
-    district,
-    avg_flat_price
-FROM price_stats
-ORDER BY avg_price_raw DESC
-LIMIT 10;
+    avgIf(amount, is_successful = 1) as avg_successful_sale
+FROM sales;
 ```
+
+The `avgIf` function will calculate the average amount only for rows where `is_successful = 1`.
+In this case, it will average the amounts: 100.50, 200.75, 300.00, and 175.25.
+
+```response title="Response"
+   ┌─avg_successful_sale─┐
+1. │              193.88 │
+   └────────────────────┘
+```
+
+## See also {#see-also}
+- [`avg`](/sql-reference/aggregate-functions/reference/avg)
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

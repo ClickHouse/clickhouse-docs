@@ -5,54 +5,79 @@ keywords: ['quantilesTiming', 'if', 'combinator', 'examples', 'quantilesTimingIf
 sidebar_label: 'quantilesTimingIf'
 ---
 
-# quantilesTimingIf
+# quantilesTimingIf {#quantilestimingif}
 
-## Description
+## Description {#description}
 
 The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-function to calculate the quantile of a numeric data sequence only for rows that
-match the given condition, using the `quantilesTimingIf` aggregate combinator 
-function.
+function to calculate quantiles of timing values for rows where the condition is true,
+using the `quantilesTimingIf` aggregate combinator function.
 
-The `quantilesTimingIf` function is optimized for analyzing timing-related metrics
-conditionally.
+## Example Usage {#example-usage}
 
-## Example Usage
-
-In this example, we'll use the Metrica dataset available on 
-[ClickHouse Playground](https://sql.clickhouse.com/?query_id=GEFQJZTCMQPSB8ZMDCHJWK).
-More specifically, we'll be using the `hits` table which contains web analytics
-data. We'll use the `quantilesTiming` aggregate function to calculate
-the 99th, 95th, 90th, 75th and 50th percentiles of end response times which are
-in milliseconds. As there are many rows with a `ResponseEndTiming` of `0`, we 
-will use the `if` combinator together with `quantilesTiming` to calculate the
-quantiles only for non-zero `ResponseEndTiming` values. We'll group by `isMobile`
-so we can compare the performance across mobile and desktop.
+In this example, we'll create a table that stores API response times for different endpoints,
+and we'll use `quantilesTimingIf` to calculate response time quantiles for successful requests.
 
 ```sql title="Query"
+CREATE TABLE api_responses(
+    endpoint String,
+    response_time_ms UInt32,
+    is_successful UInt8
+) ENGINE = Log;
+
+INSERT INTO api_responses VALUES
+    ('orders', 82, 1),
+    ('orders', 94, 1),
+    ('orders', 98, 1),
+    ('orders', 87, 1),
+    ('orders', 103, 1),
+    ('orders', 92, 1),
+    ('orders', 89, 1),
+    ('orders', 105, 1),
+    ('products', 45, 1),
+    ('products', 52, 1),
+    ('products', 48, 1),
+    ('products', 51, 1),
+    ('products', 49, 1),
+    ('products', 53, 1),
+    ('products', 47, 1),
+    ('products', 50, 1),
+    ('users', 120, 0),
+    ('users', 125, 0),
+    ('users', 118, 0),
+    ('users', 122, 0),
+    ('users', 121, 0),
+    ('users', 119, 0),
+    ('users', 123, 0),
+    ('users', 124, 0);
+
 SELECT
-    IsMobile,
-    quantilesTimingIf(0.5, 0.75, 0.9, 0.95, 0.99)(ResponseEndTiming, ResponseEndTiming > 0) AS response_quantiles
-FROM hits
-WHERE (EventDate >= '2013-07-02') AND (EventDate <= '2013-07-31')
-GROUP BY IsMobile
+    endpoint,
+    quantilesTimingIf(0, 0.25, 0.5, 0.75, 0.95, 0.99, 1.0)(response_time_ms, is_successful = 1) as response_time_quantiles
+FROM api_responses
+GROUP BY endpoint;
 ```
 
-The `quantilesTimingIf` function gives us back an array `response_quantiles`
-with the computed values for each quantile beginning with the 50th quantile in
-the first position of the array. We can see that across all quantiles, mobile
-devices have substantially higher response times.
+The `quantilesTimingIf` function will calculate quantiles only for successful requests (is_successful = 1).
+The returned array contains the following quantiles in order:
+- 0 (minimum)
+- 0.25 (first quartile)
+- 0.5 (median)
+- 0.75 (third quartile)
+- 0.95 (95th percentile)
+- 0.99 (99th percentile)
+- 1.0 (maximum)
 
 ```response title="Response"
-   ┌─IsMobile─┬─response_quantiles─────────┐
-1. │        0 │ [62,215,542,995,4657]      │
-2. │        1 │ [729,1883,4846,8089,29110] │
-   └──────────┴────────────────────────────┘
+   ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
+1. │ orders   │ [82, 87, 92, 98, 103, 104, 105]                                    │
+2. │ products │ [45, 47, 49, 51, 52, 52, 53]                                       │
+3. │ users    │ [nan, nan, nan, nan, nan, nan, nan]                               │
+   └──────────┴────────────────────────────────────────────────────────────────────┘
 ```
 
-## See also
+## See also {#see-also}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-- [`quantilesTimingWeighted`](/sql-reference/aggregate-functions/reference/quantiletimingweighted)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
 
 

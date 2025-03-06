@@ -5,13 +5,15 @@ keywords: ['max', 'map', 'combinator', 'examples', 'maxMap']
 sidebar_label: 'maxMap'
 ---
 
-# maxMap
+# maxMap {#maxmap}
+
+## Description {#description}
 
 The [`Map`](/sql-reference/aggregate-functions/combinators#-map) combinator can be applied to the [`max`](/sql-reference/aggregate-functions/reference/max)
 function to calculate the maximum value in a Map according to each key, using the `maxMap` 
 aggregate combinator function.
 
-## Example Usage
+## Example Usage {#example-usage}
 
 In this example, we'll create a table that stores status codes and their counts for different timeslots,
 where each row contains a Map of status codes to their corresponding counts. We'll use 
@@ -57,6 +59,6 @@ The `maxMap` function will find the maximum count for each status code within ea
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
-## See also
+## See also {#see-also}
 - [`max`](/sql-reference/aggregate-functions/reference/max)
 - [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map) 

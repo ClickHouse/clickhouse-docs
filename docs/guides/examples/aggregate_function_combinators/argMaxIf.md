@@ -5,20 +5,19 @@ keywords: ['argMax', 'if', 'combinator', 'examples', 'argMaxIf']
 sidebar_label: 'argMaxIf'
 ---
 
-# argMaxIf
+# argMaxIf {#argmaxif}
 
-## Description
+## Description {#description}
 
 The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
-function to find the value of the first argument that corresponds to the maximum
-value of the second argument, only for rows that match the given condition, using
-the `argMaxIf` aggregate combinator function.
+function to find the value of `arg` that corresponds to the maximum value of `val` for rows where the condition is true,
+using the `argMaxIf` aggregate combinator function.
 
 The `argMaxIf` function is useful when you need to find the value associated with
 the maximum value in a dataset, but only for rows that satisfy a specific 
 condition.
 
-## Example Usage
+## Example Usage {#example-usage}
 
 In this example, we'll use a sample dataset of product sales to demonstrate how 
 `argMaxIf` works. We'll find the product name that has the highest price, but 
@@ -54,7 +53,7 @@ among the popular products.
    └──────────────────────────┘
 ```
 
-## See also
+## See also {#see-also}
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 - [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)

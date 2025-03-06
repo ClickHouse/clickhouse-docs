@@ -5,58 +5,40 @@ keywords: ['quantilesTiming', 'array', 'if', 'combinator', 'examples', 'quantile
 sidebar_label: 'quantilesTimingArrayIf'
 ---
 
-# quantilesTimingArrayIf
+# quantilesTimingArrayIf {#quantilestimingarrayif}
 
-## Description
+## Description {#description}
 
-The [`Array`](/sql-reference/aggregate-functions/combinators#-array) and [`If`](/sql-reference/aggregate-functions/combinators#-if) combinators can be applied to the [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-function to calculate quantiles of numeric data sequences in arrays, but only for
-elements that match a given condition, using the `quantilesTimingArrayIf` 
-aggregate combinator function.
+The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`quantilesTimingArray`](/sql-reference/aggregate-functions/reference/quantilestimingarray)
+function to calculate quantiles of timing values in arrays for rows where the condition is true,
+using the `quantilesTimingArrayIf` aggregate combinator function.
 
-:::note
--`If` and -`Array` can be combined. However, `Array` must come first, then `If`.
-:::
-
-The `quantilesTimingArrayIf` function is optimized for analyzing timing-related 
-metrics in arrays conditionally, such as when you need to calculate response time
-quantiles only for successful requests.
-
-## Example Usage
+## Example Usage {#example-usage}
 
 In this example, we'll create a table that stores API response times for different endpoints,
-where each row contains an array of response times from multiple regions. We'll use 
-`quantilesTimingArrayIf` to calculate various percentiles of response times, 
-but only for users that visited the endpoint using a mobile device.
+and we'll use `quantilesTimingArrayIf` to calculate response time quantiles for successful requests.
 
 ```sql title="Query"
-CREATE TABLE api_responses
-(
+CREATE TABLE api_responses(
     endpoint String,
     response_times_ms Array(UInt32),
-    isMobile UInt8
-) ENGINE = Memory;
+    success_rate Float32
+) ENGINE = Log;
 
 INSERT INTO api_responses VALUES
-    ('users', [127, 156, 234, 187, 142, 198, 167, 189], 0),
-    ('orders', [312, 245, 278, 324, 291, 267, 289, 301], 1),
-    ('products', [82, 94, 98, 87, 103, 92, 89, 105], 1)
+    ('orders', [82, 94, 98, 87, 103, 92, 89, 105], 0.98),
+    ('products', [45, 52, 48, 51, 49, 53, 47, 50], 0.95),
+    ('users', [120, 125, 118, 122, 121, 119, 123, 124], 0.92);
 
 SELECT
     endpoint,
-    response_times_ms,
-    isMobile,
-    quantilesTimingArrayIf(0, 0.25, 0.5, 0.75, 0.95, 0.99, 1.0)(
-        response_times_ms,
-        isMobile = 1
-    ) as response_quantiles_ms
+    quantilesTimingArrayIf(0, 0.25, 0.5, 0.75, 0.95, 0.99, 1.0)(response_times_ms, success_rate >= 0.95) as response_time_quantiles
 FROM api_responses
-GROUP BY endpoint, response_times_ms, isMobile
+GROUP BY endpoint;
 ```
 
-The `quantilesTimingArrayIf` function will calculate quantiles only for mobile users 
-(isMobile = 1). In this case, it will process the 'orders' and 'products' endpoints since 
-they have mobile traffic. The returned array contains the following quantiles in order:
+The `quantilesTimingArrayIf` function will calculate quantiles only for endpoints with a success rate above 95%.
+The returned array contains the following quantiles in order:
 - 0 (minimum)
 - 0.25 (first quartile)
 - 0.5 (median)
@@ -66,15 +48,13 @@ they have mobile traffic. The returned array contains the following quantiles in
 - 1.0 (maximum)
 
 ```response title="Response"
-   ┌─endpoint─┬─response_times_ms─────────────────┬─isMobile─┬─response_quantiles_ms─────────┐
-1. │ users    │ [127,156,234,187,142,198,167,189] │        0 │ [nan,nan,nan,nan,nan,nan,nan] │
-2. │ orders   │ [312,245,278,324,291,267,289,301] │        1 │ [245,278,291,312,324,324,324] │
-3. │ products │ [82,94,98,87,103,92,89,105]       │        1 │ [82,89,94,103,105,105,105]    │
-   └──────────┴───────────────────────────────────┴──────────┴───────────────────────────────┘
+   ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
+1. │ orders   │ [82, 87, 92, 98, 103, 104, 105]                                    │
+2. │ products │ [45, 47, 49, 51, 52, 52, 53]                                       │
+3. │ users    │ [nan, nan, nan, nan, nan, nan, nan]                               │
+   └──────────┴────────────────────────────────────────────────────────────────────┘
 ```
 
-## See also
-- [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-- [`quantilesTimingIf`](/examples/aggregate-function-combinators/quantilesTimingIf)
-- [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
+## See also {#see-also}
+- [`quantilesTimingArray`](/sql-reference/aggregate-functions/reference/quantilestimingarray)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if) 

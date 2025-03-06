@@ -5,11 +5,13 @@ keywords: ['uniq', 'array', 'if', 'combinator', 'examples', 'uniqArrayIf']
 sidebar_label: 'uniqArrayIf'
 ---
 
-# uniqArrayIf
+# uniqArrayIf {#uniqarrayif}
 
-## Description
+## Description {#description}
 
-The [`Array`](/sql-reference/aggregate-functions/combinators#-array) and [`If`](/sql-reference/aggregate-functions/combinators#-if) combinators can be applied to the [`uniq`](/sql-reference/aggregate-functions/reference/uniq) function to count the number of unique elements in an array that match a given condition using the `uniqArrayIf` function.
+The [`Array`](/sql-reference/aggregate-functions/combinators#-array) and [`If`](/sql-reference/aggregate-functions/combinators#-if) combinators can be applied to the [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+function to count the number of unique values in arrays for rows where the condition is true,
+using the `uniqArrayIf` aggregate combinator function.
 
 :::note
 -`If` and -`Array` can be combined. However, `Array` must come first, then `If`.
@@ -17,7 +19,7 @@ The [`Array`](/sql-reference/aggregate-functions/combinators#-array) and [`If`](
 
 This is useful when you want to count unique elements in an array based on specific conditions without having to use `arrayJoin`.
 
-## Example Usage
+## Example Usage {#example-usage}
 
 ### Count unique products viewed by segment type and engagement level
 
@@ -70,3 +72,8 @@ new_customer⋯ed_products:    2
 returning_customer_products: 2
 total_unique_products:       7
 ```
+
+## See also {#see-also}
+- [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+- [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

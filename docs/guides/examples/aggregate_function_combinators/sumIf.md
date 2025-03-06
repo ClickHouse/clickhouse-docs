@@ -5,18 +5,51 @@ keywords: ['sum', 'if', 'combinator', 'examples', 'sumIf']
 sidebar_label: 'sumIf'
 ---
 
-# sumIf
+# sumIf {#sumif}
 
-## Description
+## Description {#description}
 
-The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`sum`](/sql-reference/aggregate-functions/reference/sum) function to 
-calculate the sum only for rows that match the given condition using the `sumIf`
-function.
+The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`sum`](/sql-reference/aggregate-functions/reference/sum)
+function to calculate the sum of values for rows where the condition is true,
+using the `sumIf` aggregate combinator function.
 
-This is useful when you want to calculate conditional sums without having to use
-a subquery or `CASE` statements.
+## Example Usage {#example-usage}
 
-## Example Usage
+In this example, we'll create a table that stores sales data with success flags,
+and we'll use `sumIf` to calculate the total sales amount for successful transactions.
+
+```sql title="Query"
+CREATE TABLE sales(
+    transaction_id UInt32,
+    amount Decimal(10,2),
+    is_successful UInt8
+) ENGINE = Log;
+
+INSERT INTO sales VALUES
+    (1, 100.50, 1),
+    (2, 200.75, 1),
+    (3, 150.25, 0),
+    (4, 300.00, 1),
+    (5, 250.50, 0),
+    (6, 175.25, 1);
+
+SELECT
+    sumIf(amount, is_successful = 1) as total_successful_sales
+FROM sales;
+```
+
+The `sumIf` function will sum only the amounts where `is_successful = 1`.
+In this case, it will sum: 100.50 + 200.75 + 300.00 + 175.25.
+
+```response title="Response"
+   ┌─total_successful_sales─┐
+1. │                  776.50 │
+   └───────────────────────┘
+```
+
+## See also {#see-also}
+- [`sum`](/sql-reference/aggregate-functions/reference/sum)
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
 
 ### Calculate trading volume by price direction
 
