@@ -17,7 +17,7 @@ import MobileSideBarMenu from "../../../components/MobileSideBarMenu";
 import Navigation from "../../../components/Navigation";
 import sidebars from "../../../../sidebars";
 import {useDocsSidebar} from '@docusaurus/plugin-content-docs/client';
-
+import { translate } from "@docusaurus/Translate";
 
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
@@ -111,7 +111,10 @@ export default function NavbarContent() {
           {sidebars.dropdownCategories.map((dropdownCategory, index) => {
             return <DocsCategoryDropdown key={index} dropdownCategory={dropdownCategory} />
           })}
-          <DocsCategoryDropdownLinkOnly title='Knowledge Base' link='/knowledgebase' />
+          <DocsCategoryDropdownLinkOnly title={translate({
+              id: 'theme.blog.title',
+              message: 'Knowledge Base',
+          })} link='/knowledgebase' />
         </div>
         <div
           className={`${styles.secondaryMenuRight} secondary-nav--items-right`}
