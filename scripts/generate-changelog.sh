@@ -9,9 +9,13 @@ if grep -q "^# $(date +%Y) Changelog" "$parent_dir/tmp/CHANGELOG.md"; then
   echo "Generating $(date +%Y) Changelog..."
     sed "/^# $(date +%Y) Changelog/d" "$parent_dir/tmp/CHANGELOG.md" > temp.txt
     echo "Changelog copied to temp.txt"
+    # Changelog has <a id="252"/></a> in it which docusaurus onBrokenAnchor will fail on
+    # This line is to swap them out for explicit anchor ids rather
+    sed -i.bak -E 's/### <a id="([0-9]+)"><\/a> (.*)/### \2 {#\1}/g' temp.txt
     cat temp.txt >> "$parent_dir/../docs/whats-new/changelog/index.md"
     echo "Changelog written to docs/en/whats-new/changelog/index.md"
     rm -f temp.txt
+    rm -f temp.txt.bak
     echo "$(date +%Y) Changelog was updated."
 else
     current_year="$(date +%Y)"
