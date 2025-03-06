@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 function parse_args() {
   config_file=""  # Default: No config specified
   out_dir=""      # Default: No custom output directory
