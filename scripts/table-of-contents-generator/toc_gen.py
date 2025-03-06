@@ -97,7 +97,7 @@ def write_md_to_file(json_items, path_to_md_file):
                 title = item.get('title', '')
                 slug = item.get('slug', '')
                 description = item.get('description','')
-                link = f"[{title}](/docs{slug})" if slug else title
+                link = f"[{title}]({slug})" if slug else title
                 f.write(f"| {link} | {description} |\n")
 
         print(f"Markdown table appended to {path_to_md_file}")
