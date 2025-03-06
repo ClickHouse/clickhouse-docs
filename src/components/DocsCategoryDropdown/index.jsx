@@ -4,6 +4,7 @@ import Link from "@docusaurus/Link";
 import { useDocsSidebar } from "@docusaurus/plugin-content-docs/client";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { translate } from "@docusaurus/Translate";
+import Translate from "@docusaurus/Translate";
 
 import styles from "./styles.module.css";
 
@@ -86,10 +87,12 @@ function DocsCategoryDropdown({ dropdownCategory }) {
           }`}
           href={dropdownCategory.customProps.href}
         >
-          {translate({
-            id: `sidebar.dropdownCategories.category.${dropdownCategory.label}`,
-            message: dropdownCategory.label,
-          })}
+          <Translate
+            id={`sidebar.dropdownCategories.category.${dropdownCategory.label}`}
+            description={`Translation for ${dropdownCategory.label}`}
+          >
+            {dropdownCategory.label}
+          </Translate>
         </Link>{" "}
         <DropdownCaret />
       </span>
