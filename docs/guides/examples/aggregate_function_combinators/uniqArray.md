@@ -9,42 +9,52 @@ sidebar_label: 'uniqArray'
 
 ## Description
 
-The [`Array`](/sql-reference/aggregate-functions/combinators#-array) combinator can be applied to the [`uniq`](/sql-reference/aggregate-functions/reference/uniq) function to count the number of unique elements in an array using the `uniqArray` function.
+The [`Array`](/sql-reference/aggregate-functions/combinators#-array) combinator 
+can be applied to the [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+function to calculate the approximate number of unique elements across all arrays, 
+using the `uniqArray` aggregate combinator function.
 
-This is useful when you want to count unique elements in an array without having to use `arrayJoin`.
+The `uniqArray` function is useful when you need to count unique elements across 
+multiple arrays in a dataset. It's equivalent to using `uniq(arrayJoin())`, where 
+`arrayJoin` first flattens the arrays and then `uniq` counts the unique elements.
 
 ## Example Usage
 
-### Count unique product views per user across sessions
+In this example, we'll use a sample dataset of user interests across different 
+categories to demonstrate how `uniqArray` works. We'll compare it with 
+`uniq(arrayJoin())` to show the difference in counting unique elements.
 
-In this example we'll use a table containing user shopping session data to count the number of unique products viewed by users across sessions.
-
-```sql
-CREATE TABLE user_interactions
+```sql title="Query"
+CREATE TABLE user_interests
 (
-    user_id String,
-    session_id String,
-    viewed_products Array(String)
+    user_id UInt32,
+    interests Array(String)
 ) ENGINE = Memory;
 
-INSERT INTO user_interactions VALUES
-    ('john_doe', 'session_1234', ['iphone_13', 'airpods_pro', 'iphone_13']),
-    ('john_doe', 'session_5678', ['macbook_air', 'ipad_mini', 'macbook_air']),
-    ('sarah_smith', 'session_9012', ['samsung_s22', 'macbook_air', 'sony_headphones']),
-    ('sarah_smith', 'session_3456', ['airpods_pro', 'ipad_mini', 'apple_watch']);
+INSERT INTO user_interests VALUES
+    (1, ['reading', 'gaming', 'music']),
+    (2, ['gaming', 'sports', 'music']),
+    (3, ['reading', 'cooking']);
 
--- Count unique product views per user across all sessions
 SELECT 
-    user_id,
-    uniqArray(viewed_products) AS unique_product_count
-FROM user_interactions
-GROUP BY user_id
-ORDER BY user_id;
+    uniqArray(interests) as unique_interests_total,
+    uniq(arrayJoin(interests)) as unique_interests_arrayJoin
+FROM user_interests;
 ```
 
-```response
-   ┌─user_id─────┬─unique_product_count─┐
-1. │ john_doe    │                    4 │
-2. │ sarah_smith │                    6 │
-   └─────────────┴──────────────────────┘
+The `uniqArray` function counts unique elements across all arrays combined, similar to `uniq(arrayJoin())`. 
+In this example:
+- `uniqArray` returns 5 because there are 5 unique interests across all users: 'reading', 'gaming', 'music', 'sports', 'cooking'
+- `uniq(arrayJoin())` also returns 5, showing that both functions count unique elements across all arrays
+
+```response title="Response"
+   ┌─unique_interests_total─┬─unique_interests_arrayJoin─┐
+1. │                     5 │                          5 │
+   └──────────────────────┴────────────────────────────┘
 ```
+
+## See also
+- [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+- [`arrayJoin`](/sql-reference/functions/array-functions#arrayjoin)
+- [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
+- [`uniqCombined`](/sql-reference/aggregate-functions/reference/uniqcombined)

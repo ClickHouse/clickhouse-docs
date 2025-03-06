@@ -11,6 +11,10 @@ sidebar_label: 'uniqArrayIf'
 
 The [`Array`](/sql-reference/aggregate-functions/combinators#-array) and [`If`](/sql-reference/aggregate-functions/combinators#-if) combinators can be applied to the [`uniq`](/sql-reference/aggregate-functions/reference/uniq) function to count the number of unique elements in an array that match a given condition using the `uniqArrayIf` function.
 
+:::note
+-`If` and -`Array` can be combined. However, `Array` must come first, then `If`.
+:::
+
 This is useful when you want to count unique elements in an array based on specific conditions without having to use `arrayJoin`.
 
 ## Example Usage
