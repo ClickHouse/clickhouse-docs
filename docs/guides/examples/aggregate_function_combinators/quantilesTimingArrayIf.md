@@ -24,39 +24,53 @@ quantiles only for successful requests.
 
 ## Example Usage
 
-In this example, we'll use a sample dataset of API response times (in milliseconds)
-across different endpoints to demonstrate how `quantilesTimingArrayIf` works. 
-We'll calculate the 95th and 99th percentiles of response times, but only for 
-successful requests (status_code = 200).
+In this example, we'll create a table that stores API response times for different endpoints,
+where each row contains an array of response times from multiple regions. We'll use 
+`quantilesTimingArrayIf` to calculate various percentiles of response times, 
+but only for users that visited the endpoint using a mobile device.
 
 ```sql title="Query"
 CREATE TABLE api_responses
 (
     endpoint String,
-    response_times_ms Array(UInt16),
-    status_codes Array(UInt16)
+    response_times_ms Array(UInt32),
+    isMobile UInt8
 ) ENGINE = Memory;
 
 INSERT INTO api_responses VALUES
-    ('users', [127, 156, 234, 187, 142, 198, 167, 189], [200, 200, 404, 200, 200, 200, 200, 200]),
-    ('orders', [312, 245, 278, 324, 291, 267, 289, 301], [200, 200, 200, 200, 200, 200, 200, 200]),
-    ('products', [82, 94, 98, 87, 103, 92, 89, 105], [200, 404, 200, 200, 500, 200, 200, 200]);
+    ('users', [127, 156, 234, 187, 142, 198, 167, 189], 0),
+    ('orders', [312, 245, 278, 324, 291, 267, 289, 301], 1),
+    ('products', [82, 94, 98, 87, 103, 92, 89, 105], 1)
 
-SELECT 
+SELECT
     endpoint,
     response_times_ms,
-    status_codes,
-    quantilesTimingArrayIf(0.95, 0.99)(response_times_ms, status_codes = 200) as response_quantiles_ms
+    isMobile,
+    quantilesTimingArrayIf(0, 0.25, 0.5, 0.75, 0.95, 0.99, 1.0)(
+        response_times_ms,
+        isMobile = 1
+    ) as response_quantiles_ms
 FROM api_responses
+GROUP BY endpoint, response_times_ms, isMobile
 ```
 
-The `quantilesTimingArrayIf` function will calculate quantiles only for response
-times where the corresponding status code is 200. For example, in the 'users' 
-endpoint, it will only consider [127, 156, 187, 142, 198, 167, 189] (skipping 234
-because its status code is 404).
+The `quantilesTimingArrayIf` function will calculate quantiles only for mobile users 
+(isMobile = 1). In this case, it will process the 'orders' and 'products' endpoints since 
+they have mobile traffic. The returned array contains the following quantiles in order:
+- 0 (minimum)
+- 0.25 (first quartile)
+- 0.5 (median)
+- 0.75 (third quartile)
+- 0.95 (95th percentile)
+- 0.99 (99th percentile)
+- 1.0 (maximum)
 
 ```response title="Response"
-
+   ┌─endpoint─┬─response_times_ms─────────────────┬─isMobile─┬─response_quantiles_ms─────────┐
+1. │ users    │ [127,156,234,187,142,198,167,189] │        0 │ [nan,nan,nan,nan,nan,nan,nan] │
+2. │ orders   │ [312,245,278,324,291,267,289,301] │        1 │ [245,278,291,312,324,324,324] │
+3. │ products │ [82,94,98,87,103,92,89,105]       │        1 │ [82,89,94,103,105,105,105]    │
+   └──────────┴───────────────────────────────────┴──────────┴───────────────────────────────┘
 ```
 
 ## See also
