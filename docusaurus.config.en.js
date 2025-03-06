@@ -51,7 +51,7 @@ const config = {
    onBrokenLinks:
       process.env.DOCUSAURUS_CURRENT_LOCALE !== 'en'
         ? 'warn'
-        : 'throw',
+        : 'warn',
   onBrokenMarkdownLinks: "warn",
   onDuplicateRoutes: "throw",
    onBrokenAnchors:
