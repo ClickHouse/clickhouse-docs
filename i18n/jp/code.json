@@ -458,5 +458,29 @@
   "theme.tags.tagsPageTitle": {
     "message": "タグ",
     "description": "The title of the tag list page"
+  },
+  "sidebar.dropdownCategories.category.Cloud": {
+    "message": "クラウド"
+  },
+  "sidebar.dropdownCategories.category.Getting Started": {
+    "message": "始める"
+  },
+  "sidebar.dropdownCategories.category.Manage Data": {
+    "message": "データ管理"
+  },
+  "sidebar.dropdownCategories.category.Server Admin": {
+    "message": "サーバー管理"
+  },
+  "sidebar.dropdownCategories.category.Reference": {
+    "message": "リファレンス"
+  },
+  "sidebar.dropdownCategories.category.Integrations": {
+    "message": "統合"
+  },
+  "sidebar.dropdownCategories.category.chDB": {
+    "message": "chDB"
+  },
+  "sidebar.dropdownCategories.category.About": {
+    "message": "について"
   }
 }
