@@ -78,7 +78,7 @@ Then, the ClickHouse server hosting the initially targeted distributed table ③
 
 ## What are table replicas in ClickHouse? {#what-are-table-replicas-in-clickhouse}
 
-Replication in ClickHouse ensures **data integrity** and **failover** by maintaining **copies of shard data** across multiple servers. Since hardware failures are inevitable, replication prevents data loss by ensuring that each shard has multiple replicas. Writes can be directed to any replica, either directly or via a [distributed table](#distributed-table-creation), which selects a replica for the operation. Changes are automatically propagated to other replicas. In case of a failure or maintenance, data remains available on other replicas, and once a failed host recovers, it resynchronizes automatically to stay up to date.
+Replication in ClickHouse ensures **data integrity** and **failover** by maintaining **copies of shard data** across multiple servers. Since hardware failures are inevitable, replication prevents data loss by ensuring that each shard has multiple replicas. Writes can be directed to any replica, either directly or via a [distributed table](#distributed-table-creation), which selects a replica for the operation. Changes are automatically propagated to other replicas. In case of a failure or maintenance, data remains available on other replicas, and once a failed host recovers, it synchronizes automatically to stay up to date.
 
 Note that replication requires a [Keeper](https://clickhouse.com/clickhouse/keeper) component in the [cluster architecture](/docs/architecture/horizontal-scaling#architecture-diagram).
 
