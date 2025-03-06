@@ -43,10 +43,10 @@ const config = {
   },
   title: "ClickHouse Docs",
   tagline:
-    "Documentation, quick starts, user guides, technical references, FAQs and more...",
+    "ドキュメント、クイックスタートガイド、ユーザーガイド、技術リファレンス、FAQ など、多様な情報をご提供します。",
   url: "https://clickhouse.com",
   // url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
-  baseUrl: "/docs/",
+  baseUrl: "/jp/docs/",
   baseUrlIssueBanner: true,
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
@@ -56,10 +56,14 @@ const config = {
   organizationName: "ClickHouse",
   trailingSlash: false,
   i18n: {
-    defaultLocale: "en",
-    locales: ["en"],
+    defaultLocale: "jp",
+    locales: ["jp", "en"],
     path: "i18n",
     localeConfigs: {
+      jp: {
+        htmlLang: "jp",
+        path: "jp",
+      },
       en: {
         htmlLang: "en",
         path: "en",
@@ -269,15 +273,6 @@ const config = {
         respectPrefersColorScheme: true,
         defaultMode: "dark",
       },
-      /*      announcementBar: {
-			  id: 'support_us',
-			  content:
-				'Check out our new 25-minute video on <a href="https://clickhouse.com/company/events/getting-started-with-clickhouse/" target="_blank"> Getting Started with ClickHouse</a>',
-			  backgroundColor: '#0057b7',
-			  textColor: '#ffffff',
-			  isCloseable: false,
-			},
-	  */
     }),
 
   plugins: [
@@ -293,12 +288,6 @@ const config = {
         },
       };
     },
-    // [
-    // N.B - If you need to redirect a page please do so from vercel.json
-    // 	'@docusaurus/plugin-client-redirects',
-    // 	{
-    // 	},
-    // ],
     [
       "vercel-analytics",
       {
@@ -325,14 +314,6 @@ const config = {
           {
             label: "English",
             to: "/",
-          },
-          {
-            label: "Russian",
-            to: "/ru",
-          },
-          {
-            label: "Chinese",
-            to: "/zh",
           },
         ],
       },
