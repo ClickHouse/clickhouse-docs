@@ -1,22 +1,23 @@
 ---
 slug: /shards
-title: Table shards
-description: What are table shards in ClickHouse
-keywords: [shard, shards, sharding]
+title: Table shards and replicas
+description: What are table shards and replicas in ClickHouse
+keywords: [shard, shards, sharding, replica, replicas]
 ---
 
 import image_01 from '@site/static/images/managing-data/core-concepts/shards_01.png'
 import image_02 from '@site/static/images/managing-data/core-concepts/shards_02.png'
 import image_03 from '@site/static/images/managing-data/core-concepts/shards_03.png'
 import image_04 from '@site/static/images/managing-data/core-concepts/shards_04.png'
+import image_05 from '@site/static/images/managing-data/core-concepts/shards_replicas_01.png'
 
 ## What are table shards in ClickHouse? {#what-are-table-shards-in-clickhouse}
 
-> This topic doesn’t apply to ClickHouse Cloud, where [Parallel Replicas](/docs/deployment-guides/parallel-replicas) serve the same purpose.
+> This topic doesn’t apply to ClickHouse Cloud, where [Parallel Replicas](/docs/deployment-guides/parallel-replicas) serve the same purpose as multiple shard in traditional shared-nothing ClickHouse clusters.
 
 <br/>
 
-In ClickHouse OSS, sharding is used when ① the data is too large for a single server or ② a single server is too slow for processing. The next figure illustrates case ①, where the [uk_price_paid_simple](/parts) table exceeds a single machine’s capacity:  
+in traditional [shared-nothing](https://en.wikipedia.org/wiki/Shared-nothing_architecture) ClickHouse clusters, sharding is used when ① the data is too large for a single server or ② a single server is too slow for processing. The next figure illustrates case ①, where the [uk_price_paid_simple](/parts) table exceeds a single machine’s capacity:  
 
 <img src={image_01} alt='SHARDS' class='image' />
 <br/>
@@ -75,11 +76,36 @@ This diagram shows how SELECT queries are processed with a distributed table in 
 
 Then, the ClickHouse server hosting the initially targeted distributed table ③ collects all local results, ④ merges them into the final global result, and ⑤ returns it to the query sender.
 
+## What are table replicas in ClickHouse? {#what-are-table-replicas-in-clickhouse}
+
+Replication in ClickHouse ensures **data integrity** and **failover** by maintaining **copies of shard data** across multiple servers. Since hardware failures are inevitable, replication prevents data loss by ensuring that each shard has multiple replicas. Writes can be directed to any replica, either directly or via a [distributed table](#distributed-table-creation), which selects a replica for the operation. Changes are automatically propagated to other replicas. In case of a failure or maintenance, data remains available on other replicas, and once a failed host recovers, it resynchronizes automatically to stay up to date.
+
+Note that replication requires a [Keeper](https://clickhouse.com/clickhouse/keeper) component in the [cluster architecture](/docs/architecture/horizontal-scaling#architecture-diagram).
+
+The following diagram illustrates a ClickHouse cluster with six servers, where the two table shards `Shard-1` and `Shard-2` introduced earlier each have three replicas. A query is sent to this cluster:
+
+<img src={image_05} alt='SHARDS' class='image' />
+<br/>
+
+Query processing works similarly to setups without replicas, with only a single replica from each shard executing the query.
+
+> Replicas not only ensure data integrity and failover but also improve query processing throughput by allowing multiple queries to run in parallel across different replicas.
+
+① A query targeting the distributed table is sent to corresponding ClickHouse server, either directly or via a load balancer.
+
+② The Distributed table forwards the query to a one replica from each shard, where each ClickHouse server hosting the selected replica computes its local aggregation result in parallel.
+
+The rest works the [same](#select-forwarding) as in setups without replicas and is not shown in the diagram above. The ClickHouse server hosting the initially targeted distributed table collects all local results, merges them into the final global result, and returns it to the query sender.
+
+Note that ClickHouse allows configuring the query forwarding strategy for ②. By default—unlike in the diagram above—the distributed table [prefers](/docs/operations/settings/settings#prefer_localhost_replica) a local replica if available, but other load balancing [strategies](/docs/operations/settings/settings#load_balancing) can be used.
+
+
+
 ## Where to find more information {#where-to-find-more-information}
 
-For more details beyond this high-level introduction to table shards, check out our [deployment and scaling guide](/docs/architecture/horizontal-scaling). 
+For more details beyond this high-level introduction to table shards and replicas, check out our [deployment and scaling guide](/docs/architecture/horizontal-scaling). 
 
-We also highly recommend this tutorial video for a deeper dive into ClickHouse shards:
+We also highly recommend this tutorial video for a deeper dive into ClickHouse shards and replicas:
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/vBjCJtw_Ei0?si=WqopTrnti6usCMRs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
