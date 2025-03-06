@@ -93,7 +93,7 @@ Query processing works similarly to setups without replicas, with only a single 
 
 ① A query targeting the distributed table is sent to corresponding ClickHouse server, either directly or via a load balancer.
 
-② The Distributed table forwards the query to one replica from each shard, where each ClickHouse server hosting the selected replica computes its local aggregation result in parallel.
+② The Distributed table forwards the query to one replica from each shard, where each ClickHouse server hosting the selected replica computes its local query result in parallel.
 
 The rest works the [same](#select-forwarding) as in setups without replicas and is not shown in the diagram above. The ClickHouse server hosting the initially targeted distributed table collects all local results, merges them into the final global result, and returns it to the query sender.
 
