@@ -359,6 +359,7 @@ australia
 europe
 Montréal
 northamerica
+JapanEast
 --docs/cloud/reference/byoc.md--
 Acceptor
 Autoscaler

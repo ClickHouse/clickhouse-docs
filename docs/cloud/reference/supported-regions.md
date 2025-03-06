@@ -52,6 +52,9 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - East US 2 (Virginia)
 - Germany West Central (Frankfurt)
 
+**Under Consideration:**
+
+JapanEast
 :::note 
 Need to deploy to a region not currently listed? [Submit a request](https://clickhouse.com/pricing?modal=open). 
 :::
