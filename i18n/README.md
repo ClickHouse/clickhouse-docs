@@ -18,13 +18,13 @@ python3 /opt/clickhouse-docs/scripts/translate/translate.py --input-folder /opt/
 
 3. Replace imports
 
-For example, for `jp`
+For example, for `jp`.
 
 ```bash
 # osx
-LC_ALL=C.UTF-8 find . -type f -exec sed -i '' 's|@site/docs|@site/i18n/jp/docusaurus-plugin-content-docs/current|g' {} +
+LC_ALL=C.UTF-8 find ./i18n/jp -type f -exec sed -i '' 's|@site/docs|@site/i18n/jp/docusaurus-plugin-content-docs/current|g' {} +
 # ubuntu
-LC_ALL=C.UTF-8 find . -type f -exec sed -i 's|@site/docs|@site/i18n/jp/docusaurus-plugin-content-docs/current|g' {} +
+LC_ALL=C.UTF-8 find ./i18n/jp -type f -exec sed -i 's|@site/docs|@site/i18n/jp/docusaurus-plugin-content-docs/current|g' {} +
 ```
 
 4. Build
@@ -111,6 +111,10 @@ Update the `i18n` in this config file to include the translation e.g.
   },
 ```
 
+Update any english phrases to your target language.
+
+7. Build
+
 Build and fix issues. Not all issues are detected with a `yarn start` so build! i.e.:
 
 ```bash
@@ -132,10 +136,11 @@ This allows each language to be deployed independently.
 ## Known issues
 
 - translations can modify links in rare cases, causing issues.
-- text splitting is not perfect for markdown
+- text splitting is not perfect for markdown - sometime it can't split due to large sections e.g. code blocks and errors. All threads will terminate - user must fix source.
 - Translation may introduce invalid spacing on imports
 - JSON files not translated which control tables
 
 # Possible improvements
 
 - Don't split on tables `|`
+- Introduce <!-- translate split--> we can use to identify split
