@@ -3,8 +3,10 @@ slug: '/sql-reference/dictionaries'
 sidebar_label: '辞書の定義'
 sidebar_position: 35
 ---
-```
 
+import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import CloudDetails from '@site/docs/sql-reference/dictionaries/_snippet_dictionary_in_cloud.md';
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # 辞書
 

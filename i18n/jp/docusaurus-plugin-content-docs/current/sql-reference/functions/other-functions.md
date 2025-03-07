@@ -1,8 +1,9 @@
+---
 title: 'その他の関数'
 sidebar_label: 'その他'
 keywords: ['ClickHouse', '関数', 'SQL', 'データベース']
 description: 'ClickHouseの他の関数についての詳細な説明'
-```
+---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
