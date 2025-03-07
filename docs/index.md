@@ -87,12 +87,12 @@ export const ConnectToClickHouse = ({ children, color}) => {
                 <div className='home-page-button-container'>
                     <HomePageOptionButton svgIcon={<IconTerminal iconWidth='28px' />} link='/docs/interfaces/cli'>ClickHouse CLI</HomePageOptionButton>
                     <HomePageOptionButton svgIcon={<IconSQLConsole iconWidth='28px' />} link='/docs/cloud/get-started/sql-console'>Cloud SQL Console</HomePageOptionButton>
-                    <HomePageOptionButton icon='/docs/images/logo-nodejs.svg' link='/docs/integrations/javascript'>Node.js</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-nodejs.svg' link='/docs/images/logo-nodejs.svg'>Node.js</HomePageOptionButton>
                 </div>
                 <div className='home-page-button-container'>
-                    <HomePageOptionButton icon='/docs/images/logo-java.svg' link='/docs/integrations/java'>Java</HomePageOptionButton>
-                    <HomePageOptionButton icon='/docs/images/logo-python.svg' link='/docs/integrations/python'>Python</HomePageOptionButton>
-                    <HomePageOptionButton icon='/docs/images/logo-go.svg' link='/docs/integrations/go'>Go</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-java.svg' link='/docs/images/logo-java.svg'>Java</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-python.svg' link='/docs/images/logo-python.svg'>Python</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-go.svg' link='/docs/images/logo-go.svg'>Go</HomePageOptionButton>
                 </div>
             </div>
         </div>
