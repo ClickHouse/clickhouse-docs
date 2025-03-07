@@ -1,12 +1,12 @@
 ---
-slug: /sql-reference/statements/select/join
-sidebar_label: テーブルの結合
+slug: '/sql-reference/statements/select/join'
+sidebar_label: 'テーブルの結合'
 ---
 
 
 # JOIN句
 
-JOINは、1つまたは複数のテーブルからのカラムを、各テーブルで共通の値を用いて結合することによって新しいテーブルを生成します。これはSQLをサポートするデータベースにおける一般的な操作であり、[関係代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)の結合に対応します。1つのテーブルの結合の特別なケースは、「自己結合」と呼ばれることがよくあります。
+JOINは、1つまたは複数のテーブルから共通の値を使用してカラムを結合することで新しいテーブルを生成します。これは、SQLをサポートするデータベースにおける一般的な操作であり、[関係代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)のJOINに相当します。1つのテーブルのJOINの特別なケースは、一般的に「自己結合」と呼ばれます。
 
 **構文**
 
@@ -17,72 +17,71 @@ FROM <left_table>
 (ON <expr_list>)|(USING <column_list>) ...
 ```
 
-`ON`句からの式および`USING`句からのカラムは「結合キー」と呼ばれます。特に記載がない限り、結合は「結合キー」が一致する行からの[デカルト積](https://en.wikipedia.org/wiki/Cartesian_product)を生成し、これにより元のテーブルよりも多くの行を持つ結果が生成されることがあります。
+`ON`句の式および`USING`句のカラムは「結合キー」と呼ばれます。特に指定がない限り、JOINは「結合キー」が一致する行からの[デカルト積](https://en.wikipedia.org/wiki/Cartesian_product)を生成し、これによりソーステーブルよりもはるかに多くの行を持つ結果が生成される可能性があります。
 
 ## 関連コンテンツ {#related-content}
 
-- ブログ: [ClickHouse: A Blazingly Fast DBMS with Full SQL Join Support - Part 1](https://clickhouse.com/blog/clickhouse-fully-supports-joins)
-- ブログ: [ClickHouse: A Blazingly Fast DBMS with Full SQL Join Support - Under the Hood - Part 2](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2)
-- ブログ: [ClickHouse: A Blazingly Fast DBMS with Full SQL Join Support - Under the Hood - Part 3](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3)
-- ブログ: [ClickHouse: A Blazingly Fast DBMS with Full SQL Join Support - Under the Hood - Part 4](https://clickhouse.com/blog/clickhouse-fully-supports-joins-direct-join-part4)
+- ブログ: [ClickHouse: 完全SQL JOINサポートの驚異的に高速なDBMS - パート1](https://clickhouse.com/blog/clickhouse-fully-supports-joins)
+- ブログ: [ClickHouse: 完全SQL JOINサポートの驚異的に高速なDBMS - 内部の仕組み - パート2](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2)
+- ブログ: [ClickHouse: 完全SQL JOINサポートの驚異的に高速なDBMS - 内部の仕組み - パート3](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3)
+- ブログ: [ClickHouse: 完全SQL JOINサポートの驚異的に高速なDBMS - 内部の仕組み - パート4](https://clickhouse.com/blog/clickhouse-fully-supports-joins-direct-join-part4)
 
 ## サポートされているJOINの種類 {#supported-types-of-join}
 
-すべての標準[SQL JOIN](https://en.wikipedia.org/wiki/Join_(SQL))タイプがサポートされています:
+すべての標準[SQL JOIN](https://en.wikipedia.org/wiki/Join_(SQL))タイプがサポートされています：
 
-- `INNER JOIN`: 一致する行のみが返されます。
-- `LEFT OUTER JOIN`: 一致する行に加え、左テーブルからの非一致る行も返されます。
-- `RIGHT OUTER JOIN`: 一致する行に加え、右テーブルからの非一致る行も返されます。
-- `FULL OUTER JOIN`: 両方のテーブルからの非一致る行に加え、一致する行も返されます。
-- `CROSS JOIN`: 全テーブルのデカルト積を生成し、「結合キー」は**指定されません**。
+- `INNER JOIN`、一致する行のみが返されます。
+- `LEFT OUTER JOIN`、左テーブルから一致する行に加えて、非一致の行も返されます。
+- `RIGHT OUTER JOIN`、右テーブルから一致する行に加えて、非一致の行も返されます。
+- `FULL OUTER JOIN`、両方のテーブルから一致する行に加えて、非一致の行も返されます。
+- `CROSS JOIN`、全テーブルのデカルト積を生成し、「結合キー」は**指定されません**。
 
-指定されたタイプなしの`JOIN`は、`INNER`を意味します。キーワード`OUTER`は安全に省略できます。`CROSS JOIN`の代替構文は、[FROM句](../../../sql-reference/statements/select/from.md)でカンマで区切られた複数のテーブルを指定することです。
+指定されたタイプなしの`JOIN`は`INNER`を意味します。キーワード`OUTER`は安全に省略できます。`CROSS JOIN`の代替構文は、[FROM句](../../../sql-reference/statements/select/from.md)でカンマで区切った複数のテーブルを指定することです。
 
-ClickHouseで使用可能な追加の結合タイプ:
+ClickHouseで使用可能な追加のJOINタイプ：
 
-- `LEFT SEMI JOIN`および`RIGHT SEMI JOIN`: 「結合キー」のホワイトリストで、デカルト積を生成しません。
-- `LEFT ANTI JOIN`および`RIGHT ANTI JOIN`: 「結合キー」のブラックリストで、デカルト積を生成しません。
-- `LEFT ANY JOIN`、`RIGHT ANY JOIN`および`INNER ANY JOIN`: 標準の`JOIN`タイプのデカルト積を部分的に（`LEFT`および`RIGHT`の両側のため）または完全に無効にします（`INNER`および`FULL`のため）。
-- `ASOF JOIN`および`LEFT ASOF JOIN`: 非正確な一致を持つシーケンスを結合します。`ASOF JOIN`の使用は下記に記載されています。
-- `PASTE JOIN`: 2つのテーブルの水平方向の連結を実行します。
+- `LEFT SEMI JOIN`および`RIGHT SEMI JOIN`、デカルト積を生成せずに「結合キー」のホワイトリスト。
+- `LEFT ANTI JOIN`および`RIGHT ANTI JOIN`、デカルト積を生成せずに「結合キー」のブラックリスト。
+- `LEFT ANY JOIN`、`RIGHT ANY JOIN`および`INNER ANY JOIN`、デカルト積を部分的（`LEFT`と`RIGHT`の反対側の場合）または完全に（`INNER`と`FULL`の場合）無効にします。
+- `ASOF JOIN`および`LEFT ASOF JOIN`、厳密には一致しないシーケンスを結合します。`ASOF JOIN`の使用は以下に示されています。
+- `PASTE JOIN`、二つのテーブルの水平方向の連結を行います。
 
 :::note
-[join_algorithm](../../../operations/settings/settings.md#join_algorithm)が`partial_merge`に設定されているとき、`RIGHT JOIN`および`FULL JOIN`は`ALL`厳密性に対してのみサポートされます（`SEMI`、`ANTI`、`ANY`、および`ASOF`はサポートされません）。
+[join_algorithm](../../../operations/settings/settings.md#join_algorithm)が`partial_merge`に設定されている場合、`RIGHT JOIN`および`FULL JOIN`は`ALL`の厳密度でのみサポートされています（`SEMI`、`ANTI`、`ANY`および`ASOF`はサポートされていません）。
 :::
 
 ## 設定 {#settings}
 
-デフォルトの結合タイプは[join_default_strictness](../../../operations/settings/settings.md#join_default_strictness)設定を使用して上書きできます。
+デフォルトのJOINタイプは、[join_default_strictness](../../../operations/settings/settings.md#join_default_strictness)設定を使用してオーバーライドできます。
 
-`ANY JOIN`操作に対するClickHouseサーバーの動作は、[any_join_distinct_right_table_keys](../../../operations/settings/settings.md#any_join_distinct_right_table_keys)設定によって決まります。
+`ANY JOIN`操作におけるClickHouseサーバーの動作は、[any_join_distinct_right_table_keys](../../../operations/settings/settings.md#any_join_distinct_right_table_keys)設定に依存します。
 
-**参照**
+**参考**
 
 - [join_algorithm](../../../operations/settings/settings.md#join_algorithm)
 - [join_any_take_last_row](../../../operations/settings/settings.md#join_any_take_last_row)
 - [join_use_nulls](../../../operations/settings/settings.md#join_use_nulls)
-- [partial_merge_join_optimizations](../../../operations/settings/settings.md#partial_merge_join_optimizations)
 - [partial_merge_join_rows_in_right_blocks](../../../operations/settings/settings.md#partial_merge_join_rows_in_right_blocks)
 - [join_on_disk_max_files_to_merge](../../../operations/settings/settings.md#join_on_disk_max_files_to_merge)
 - [any_join_distinct_right_table_keys](../../../operations/settings/settings.md#any_join_distinct_right_table_keys)
 
-`cross_to_inner_join_rewrite`設定を使用して、ClickHouseが`CROSS JOIN`を`INNER JOIN`に書き換えられない場合の動作を定義します。デフォルト値は`1`であり、結合を続行することを許可しますが、遅くなります。`cross_to_inner_join_rewrite`を`0`に設定するとエラーがスローされ、`2`に設定するとカンマ/クロス結合をすべて書き換えることを強制します。値が`2`のときに書き換えが失敗すると、「`WHERE`セクションを簡素化してください」というエラーメッセージが表示されます。
+`cross_to_inner_join_rewrite`設定を使用して、ClickHouseが`CROSS JOIN`を`INNER JOIN`として書き換えられなかった場合の動作を定義します。デフォルト値は`1`で、これによりJOINが続行されますが、遅くなります。エラーをスローさせたい場合は`cross_to_inner_join_rewrite`を`0`に設定し、全てのカンマ/CROSS JOINの書き換えを強制するには`2`に設定します。値が`2`のときに書き換えが失敗すると、「`WHERE`セクションを簡素化してください」というエラーメッセージが表示されます。
 
-## ONセクションの条件 {#on-section-conditions}
+## ONセクション条件 {#on-section-conditions}
 
-`ON`セクションには、`AND`および`OR`演算子を使用して結合された複数の条件を含めることができます。結合キーを指定する条件は両方の左および右テーブルを参照する必要があり、等式演算子を使用しなければなりません。他の条件は他の論理演算子を使用できますが、クエリの左または右テーブルのいずれかを参照しなければなりません。
+`ON`セクションには、`AND`および`OR`演算子を使用して結合された複数の条件を含めることができます。結合キーを指定する条件は、左側と右側の両方のテーブルを参照しなければならず、等号演算子を使用する必要があります。他の条件は別の論理演算子を使用できますが、クエリの左側または右側のテーブルのいずれかを参照する必要があります。
 
-複雑な条件全体が満たされる場合に行が結合されます。条件が満たされない場合でも、`JOIN`タイプによっては結果に行が含まれたままとなります。同じ条件が`WHERE`セクションに置かれ、満たされない場合は、行が結果から常にフィルタリングされることに注意してください。
+複合条件全体が満たされている場合に行が結合されます。条件が満たされない場合でも、`JOIN`タイプに応じて結果に行が含まれる場合があります。同じ条件が`WHERE`セクションに配置されていて、満たされない場合は、行は常に結果からフィルタリングされます。
 
-`ON`句内の`OR`演算子はハッシュ結合アルゴリズムを使用して動作します。結合に対する各`OR`引数に対して結合キーを持つために、別々のハッシュテーブルが作成されるため、`ON`句の`OR`式の数の増加に伴い、メモリ消費とクエリ実行時間が線形に増加します。
+`ON`句内の`OR`演算子は、ハッシュ結合アルゴリズムを使用して機能します。`JOIN`の結合キーに対する各`OR`引数に対して別々のハッシュテーブルが作成されるため、メモリ消費量とクエリ実行時間は、`ON`句の`OR`表現の数の増加に伴って線形に増加します。
 
 :::note
-異なるテーブルからカラムを参照する条件がある場合、現在は等式演算子（`=`）のみがサポートされています。
+異なるテーブルからカラムを参照する条件がある場合、現時点では等号演算子（`=`）のみがサポートされています。
 :::
 
 **例**
 
-`table_1`と`table_2`を考えます:
+`table_1`と`table_2`を考えます：
 
 ```response
 ┌─Id─┬─name─┐     ┌─Id─┬─text───────────┬─scores─┐
@@ -92,14 +91,14 @@ ClickHouseで使用可能な追加の結合タイプ:
 └────┴──────┘     └────┴────────────────┴────────┘
 ```
 
-1つの結合キー条件および`table_2`に対する追加の条件を用いたクエリ:
+1つの結合キー条件と`table_2`に対する追加条件を持つクエリ：
 
 ``` sql
 SELECT name, text FROM table_1 LEFT OUTER JOIN table_2
     ON table_1.Id = table_2.Id AND startsWith(table_2.text, 'Text');
 ```
 
-結果には名前が`C`でテキストが空の行が含まれている点に注意してください。これは`OUTER`タイプの結合が使用されているため、結果に含まれたのです。
+結果には、名前が`C`でテキストカラムが空の行が含まれます。これは、`OUTER`タイプのJOINが使用されているため、結果に含まれます。
 
 ```response
 ┌─name─┬─text───┐
@@ -109,22 +108,21 @@ SELECT name, text FROM table_1 LEFT OUTER JOIN table_2
 └──────┴────────┘
 ```
 
-`INNER`タイプの結合および複数の条件を用いたクエリ:
+`INNER`タイプのJOINと複数の条件を持つクエリ：
 
 ``` sql
 SELECT name, text, scores FROM table_1 INNER JOIN table_2
     ON table_1.Id = table_2.Id AND table_2.scores > 10 AND startsWith(table_2.text, 'Text');
 ```
 
-結果:
+結果：
 
 ```sql
 ┌─name─┬─text───┬─scores─┐
 │ B    │ Text B │     15 │
 └──────┴────────┴────────┘
 ```
-
-`INNER`タイプの結合および`OR`を用いた条件でのクエリ:
+`INNER`タイプのJOINおよび`OR`を含む条件のクエリ：
 
 ``` sql
 CREATE TABLE t1 (`a` Int64, `b` Int64) ENGINE = MergeTree() ORDER BY a;
@@ -138,7 +136,7 @@ INSERT INTO t2 SELECT if(number % 2 == 0, toInt64(number), -number) as key, numb
 SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 ```
 
-結果:
+結果：
 
 ```response
 ┌─a─┬──b─┬─val─┐
@@ -150,13 +148,13 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 └───┴────┴─────┘
 ```
 
-`INNER`タイプの結合および`OR`および`AND`条件を用いたクエリ:
+`INNER`タイプのJOINおよび`OR`および`AND`を含む条件のクエリ：
 
 :::note
 
-デフォルトでは、同じテーブルのカラムを使用している限り、不等式条件もサポートされています。
-例えば、`t1.a = t2.key AND t1.b > 0 AND t2.b > t2.c`、なぜなら`t1.b > 0`は`t1`のみのカラムを使用し、`t2.b > t2.c`は`t2`のみのカラムを使用しているからです。
-ただし、`t1.a = t2.key AND t1.b > t2.key`のような条件の実験的サポートを試すことができます。詳細は以下のセクションを確認してください。
+デフォルトでは、非等条件は同じテーブルのカラムを使用する限りサポートされています。
+たとえば、`t1.a = t2.key AND t1.b > 0 AND t2.b > t2.c`、`t1.b > 0`は`t1`だけのカラムを使用し、`t2.b > t2.c`は`t2`だけのカラムを使用します。
+ただし、`t1.a = t2.key AND t1.b > t2.key`のような条件の実験的なサポートを試すことができます。詳細は以下のセクションを確認してください。
 
 :::
 
@@ -164,7 +162,7 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.val > 3;
 ```
 
-結果:
+結果：
 
 ```response
 ┌─a─┬──b─┬─val─┐
@@ -174,9 +172,9 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.
 └───┴────┴─────┘
 ```
 
-## 異なるテーブルのカラムに対する不等式条件での結合 {#join-with-inequality-conditions-for-columns-from-different-tables}
+## 異なるテーブルからのカラムに対する不等条件を持つJOIN {#join-with-inequality-conditions-for-columns-from-different-tables}
 
-ClickHouseは、現在、`ALL/ANY/SEMI/ANTI INNER/LEFT/RIGHT/FULL JOIN`を、等式条件に加え、不等式条件でもサポートしています。 不等式条件は`hash`および`grace_hash`結合アルゴリズムのみに対してサポートされています。 不等式条件は`join_use_nulls`ではサポートされていません。
+ClickHouseでは、現時点で`ALL/ANY/SEMI/ANTI INNER/LEFT/RIGHT/FULL JOIN`を不等条件でサポートしています。これに加えて等号条件がサポートされます。不等条件は、`hash`および`grace_hash`結合アルゴリズムでのみサポートされています。`join_use_nulls`では不等条件はサポートされていません。
 
 **例**
 
@@ -224,9 +222,10 @@ key2	a2	1	1	1			0	0	\N
 key4	f	2	3	4			0	0	\N
 ```
 
+
 ## JOINキーのNULL値 {#null-values-in-join-keys}
 
-NULLは、どの値とも等しくありません。つまり、JOINキーが一方のテーブルでNULL値を持つ場合、もう一方のテーブルでNULL値と一致しません。
+NULLは任意の値、自己すら等しくありません。これは、JOINキーが一方のテーブルにNULLの値を持っている場合、他方のテーブルのNULL値と一致しないことを意味します。
 
 **例**
 
@@ -262,9 +261,9 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON A.id = B.id
 └─────────┴───────┘
 ```
 
-テーブル`A`の`Charlie`とテーブル`B`のスコア88の行が結果に含まれていないことに注意してください。これは、JOINキーのNULL値によるものです。
+JOINキーにNULL値があるため、テーブル`A`の`Charlie`の行とテーブル`B`のスコア88の行は結果に含まれていないことに注意してください。
 
-NULL値を一致させたい場合は、`isNotDistinctFrom`関数を使用してJOINキーを比較します。
+NULL値を一致させたい場合は、`isNotDistinctFrom`関数を使用してJOINキーを比較してください。
 
 ```sql
 SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
@@ -282,13 +281,13 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 
 `ASOF JOIN`は、正確な一致がないレコードを結合する必要がある場合に便利です。
 
-このアルゴリズムは、テーブル内に特別なカラムを必要とします。このカラムは:
+このアルゴリズムには、テーブル内の特別なカラムが必要です。このカラムは：
 
-- 整列されたシーケンスを含む必要があります。
-- 次のいずれかの型にすることができます: [Int, UInt](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、[Date](../../../sql-reference/data-types/date.md)、[DateTime](../../../sql-reference/data-types/datetime.md)、[Decimal](../../../sql-reference/data-types/decimal.md)。
-- `hash`結合アルゴリズムのためには、`JOIN`句内の唯一のカラムではあってはいけません。
+- 順序されたシーケンスを含む必要があります。
+- 以下のいずれかのタイプであることができます： [Int, UInt](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、[Date](../../../sql-reference/data-types/date.md)、[DateTime](../../../sql-reference/data-types/datetime.md)、[Decimal](../../../sql-reference/data-types/decimal.md)。
+- `hash`結合アルゴリズムの場合、`JOIN`句における唯一のカラムであってはなりません。
 
-`ASOF JOIN ... ON`の構文:
+構文 `ASOF JOIN ... ON`：
 
 ``` sql
 SELECT expressions_list
@@ -297,11 +296,11 @@ ASOF LEFT JOIN table_2
 ON equi_cond AND closest_match_cond
 ```
 
-任意の数の等式条件と、正確に1つの最接近一致条件を使用できます。例えば、`SELECT count() FROM table_1 ASOF LEFT JOIN table_2 ON table_1.a == table_2.b AND table_2.t <= table_1.t`。
+等号条件を任意の数使用できますが、最も近い一致条件は1つだけ使用できます。たとえば、`SELECT count() FROM table_1 ASOF LEFT JOIN table_2 ON table_1.a == table_2.b AND table_2.t <= table_1.t`のようにします。
 
-最接近一致に対してサポートされる条件: `>`、`>=`、`<`、`<=`。
+最も近い一致のためにサポートされている条件：`>`、`>=`、`<`、`<=`。
 
-`ASOF JOIN ... USING`の構文:
+構文 `ASOF JOIN ... USING`：
 
 ``` sql
 SELECT expressions_list
@@ -310,9 +309,9 @@ ASOF JOIN table_2
 USING (equi_column1, ... equi_columnN, asof_column)
 ```
 
-`ASOF JOIN`は、`equi_columnX`を等式に使用し、`asof_column`を最接近一致に使用します。この場合の条件は、`table_1.asof_column >= table_2.asof_column`です。`USING`句内の`asof_column`カラムは常に最後のカラムです。
+`ASOF JOIN`は、等号のために`equi_columnX`を使用し、最も近い一致のために`asof_column`を使用します。この場合、`table_1.asof_column >= table_2.asof_column`条件が必要です。`asof_column`カラムは常に`USING`句の最後にあります。
 
-次のテーブルを考えてみてください:
+以下のテーブルを考えてみましょう：
 
          table_1                           table_2
       event   | ev_time | user_id       event   | ev_time | user_id
@@ -323,18 +322,20 @@ USING (equi_column1, ... equi_columnN, asof_column)
     event_1_2 |  13:00  |  42         event_2_3 |  13:00  |   42
                   ...                               ...
 
-`ASOF JOIN`は、`table_1`のユーザーイベントのタイムスタンプを取得し、最接近一致条件に基づいて`table_2`のイベントを見つけることができます。タイムスタンプが等しい値は、利用可能な場合に最接近一致です。ここで、`user_id`カラムは、等式に対する結合に使用でき、`ev_time`カラムは最接近一致に使用できます。私たちの例では、`event_1_1`は`event_2_1`と結合され、`event_1_2`は`event_2_3`と結合されますが、`event_2_2`は結合できません。
+`ASOF JOIN`は、`table_1`のユーザーイベントのタイムスタンプを取り、最も近い一致条件に該当する`table_1`のタイムスタンプに最も近い`table_2`のイベントを見つけます。等しいタイムスタンプの値は、利用可能であれば最も近いものです。ここで、`user_id`カラムは等号のための結合に使用でき、`ev_time`カラムは最も近い一致のために使用できます。この例では、`event_1_1`は`event_2_1`と結合され、`event_1_2`は`event_2_3`と結合できますが、`event_2_2`は結合できません。
 
 :::note
-`ASOF JOIN`は`hash`および`full_sorting_merge`結合アルゴリズムのみによってサポートされます。
-これは、[Join](../../../engines/table-engines/special/join.md)テーブルエンジンでは**サポートされていません**。
+`ASOF JOIN`は、`hash`および`full_sorting_merge`結合アルゴリズムでのみサポートされています。
+[Join](../../../engines/table-engines/special/join.md)テーブルエンジンではサポートされていません。
 :::
 
 ## PASTE JOINの使用法 {#paste-join-usage}
 
-`PASTE JOIN`の結果は、左サブクエリのすべてのカラムの後に右サブクエリのすべてのカラムを含むテーブルです。行は元のテーブル内での位置に基づいてマッチングされます（行の順序は定義されている必要があります）。サブクエリが異なる数の行を返す場合は、余分な行がカットされます。
+`PASTE JOIN`の結果は、左側のサブクエリからのすべてのカラムの後に、右側のサブクエリからのすべてのカラムを含むテーブルです。
+行は、元のテーブルにおける位置に基づいて一致します（行の順序は定義する必要があります）。
+サブクエリが異なる行数を返す場合、余分な行は切り取られます。
 
-例:
+例：
 ```sql
 SELECT *
 FROM
@@ -354,7 +355,7 @@ PASTE JOIN
 │ 1 │    0 │
 └───┴──────┘
 ```
-注意: この場合、結果は並行読み取りの場合非決定的になる可能性があります。例:
+注意: この場合、結果は並行読み取りされると非決定的な場合があります。例：
 ```sql
 SELECT *
 FROM
@@ -385,27 +386,27 @@ SETTINGS max_block_size = 2;
 
 ## 分散JOIN {#distributed-join}
 
-分散テーブルを用いた結合を実行するには、2つの方法があります:
+分散テーブルに関連するJOINを実行する方法は2つあります：
 
-- 通常の`JOIN`を使用すると、クエリはリモートサーバーに送信されます。サブクエリは各サーバーで実行され、右テーブルが生成され、そのテーブルと結合が行われます。言い換えれば、右テーブルは各サーバーで別々に形成されます。
-- `GLOBAL ... JOIN`を使用すると、最初にリクエスタサーバーがサブクエリを実行して右テーブルを計算します。この一時テーブルが各リモートサーバーに渡され、一時データを使用してクエリが実行されます。
+- 通常の`JOIN`を使用すると、クエリはリモートサーバーに送信されます。サブクエリは、右側のテーブルを作成するために各サーバーで実行され、そのテーブルとJOINが実行されます。言い換えれば、右側のテーブルは各サーバーでそれぞれ形成されます。
+- `GLOBAL ... JOIN`を使用すると、最初にリクエスタサーバーがサブクエリを実行して右側のテーブルを計算します。この一時テーブルは各リモートサーバーに渡され、送信された一時データを使用してクエリが実行されます。
 
-`GLOBAL`を使用する際は注意が必要です。詳細については、[分散サブクエリ](/sql-reference/operators/in#distributed-subqueries)セクションを参照してください。
+`GLOBAL`を使用する際には注意が必要です。詳細については、[分散サブクエリ](/sql-reference/operators/in#distributed-subqueries)セクションを参照してください。
 
-## 暗黙の型変換 {#implicit-type-conversion}
+## 暗黙的型変換 {#implicit-type-conversion}
 
-`INNER JOIN`、`LEFT JOIN`、`RIGHT JOIN`、および`FULL JOIN`クエリは、「結合キー」に対する暗黙の型変換をサポートします。ただし、左および右テーブルからの結合キーが単一の型に変換できない場合、クエリは実行できません（例えば、`UInt64`と`Int64`、または`String`と`Int32`の両方からのすべての値を保持できるデータ型が存在しないため）。
+`INNER JOIN`、`LEFT JOIN`、`RIGHT JOIN`、および`FULL JOIN`クエリは、「結合キー」に対して暗黙的な型変換をサポートしています。ただし、左側と右側のテーブルの結合キーを単一のタイプに変換できない場合、クエリは実行できません（たとえば、`UInt64`と`Int64`、または`String`と`Int32`の両方のすべての値を保持できるデータ型は存在しません）。
 
 **例**
 
-テーブル`t_1`を考えます:
+テーブル`t_1`を考えます：
 ```response
 ┌─a─┬─b─┬─toTypeName(a)─┬─toTypeName(b)─┐
 │ 1 │ 1 │ UInt16        │ UInt8         │
 │ 2 │ 2 │ UInt16        │ UInt8         │
 └───┴───┴───────────────┴───────────────┘
 ```
-そしてテーブル`t_2`:
+およびテーブル`t_2`：
 ```response
 ┌──a─┬────b─┬─toTypeName(a)─┬─toTypeName(b)───┐
 │ -1 │    1 │ Int16         │ Nullable(Int64) │
@@ -418,7 +419,7 @@ SETTINGS max_block_size = 2;
 ```sql
 SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 ```
-が戻すセットは:
+は次のセットを返します：
 ```response
 ┌──a─┬────b─┬─toTypeName(a)─┬─toTypeName(b)───┐
 │  1 │    1 │ Int32         │ Nullable(Int64) │
@@ -428,56 +429,56 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 └────┴──────┴───────────────┴─────────────────┘
 ```
 
-## 使用上の推奨 {#usage-recommendations}
+## 使用の推奨 {#usage-recommendations}
 
 ### 空またはNULLセルの処理 {#processing-of-empty-or-null-cells}
 
-テーブルを結合する際、空のセルが発生することがあります。設定[join_use_nulls](../../../operations/settings/settings.md#join_use_nulls)は、ClickHouseがこれらのセルをどのように埋めるかを定義します。
+テーブルを結合すると、空のセルが発生する場合があります。[join_use_nulls](../../../operations/settings/settings.md#join_use_nulls)設定は、ClickHouseがこれらのセルをどのように埋めるかを定義します。
 
-結合キーが[Nullable](../../../sql-reference/data-types/nullable.md)フィールドである場合、少なくとも1つのキーが[NULL](/sql-reference/syntax#null)値を持つ行は結合されません。
+`JOIN`キーが[Nullable](../../../sql-reference/data-types/nullable.md)フィールドである場合、キーのうち少なくとも1つが[NULL](/sql-reference/syntax#null)値を持つ行は結合されません。
 
 ### 構文 {#syntax}
 
-`USING`で指定されたカラムは、両方のサブクエリで同じ名前である必要があり、他のカラムは異なる名前でなければなりません。エイリアスを使用してサブクエリ内のカラムの名前を変更できます。
+`USING`で指定されたカラムは、両方のサブクエリで同じ名前を持っている必要があり、他のカラムは異なる名前でなければなりません。エイリアスを使用してサブクエリ内のカラムの名前を変更できます。
 
-`USING`句は、結合する1つ以上のカラムを指定し、これらのカラムの等式を確立します。カラムのリストは括弧なしで設定されます。より複雑な結合条件はサポートされていません。
+`USING`句は、結合に複数のカラムを指定し、これによりこれらのカラムの等式を確立します。カラムのリストは括弧なしで設定されます。より複雑な結合条件はサポートされていません。
 
-### 構文制限 {#syntax-limitations}
+### 構文の制限 {#syntax-limitations}
 
-単一の`SELECT`クエリ内の複数の`JOIN`句に対して:
+単一の`SELECT`クエリ内で複数の`JOIN`句がある場合：
 
-- `*`を使用してすべてのカラムを取得することは、テーブルが結合された場合のみ利用可能です、サブクエリには適用されません。
+- `*`を介してすべてのカラムを取得することは、テーブルが結合されている場合のみ利用できます。サブクエリは含まれません。
 - `PREWHERE`句は利用できません。
 - `USING`句は利用できません。
 
-`ON`、`WHERE`、および`GROUP BY`句については:
+`ON` 、 `WHERE` 、および `GROUP BY` 句の場合：
 
-- 任意の式は`ON`、`WHERE`、および`GROUP BY`句で使用できませんが、`SELECT`句で式を定義し、それをエイリアスを介してこれらの句で使用することはできます。
+- `ON`、`WHERE`、および`GROUP BY`句で任意の表現を使用できませんが、`SELECT`句で表現を定義し、エイリアスを介してそれをこれらの句で使用できます。
 
 ### パフォーマンス {#performance}
 
-`JOIN`を実行する際、クエリの他の段階に対する実行順序の最適化は行われません。結合（右テーブルの検索）は、`WHERE`におけるフィルタリングや集約の前に実行されます。
+`JOIN`を実行するとき、他のクエリステージに対する実行順序の最適化は行われません。JOIN（右側のテーブルの検索）は、`WHERE`でのフィルタリングおよび集約の前に実行されます。
 
-同じ`JOIN`を用いたクエリが実行されるたびに、サブクエリは再度実行されます。なぜなら、その結果はキャッシュされないからです。これを回避するため、常にRAMに存在する結合用の準備された配列である[Join](../../../engines/table-engines/special/join.md)テーブルエンジンを使用してください。
+同じ`JOIN`でクエリが実行されるたびに、サブクエリは再度実行されます。結果はキャッシュされません。これを避けるには、常にRAM内にあるJOIN用の準備された配列である特別な[Join](../../../engines/table-engines/special/join.md)テーブルエンジンを使用してください。
 
-場合によっては、`JOIN`の代わりに[IN](../../../sql-reference/operators/in.md)を使用する方が効率的です。
+場合によっては、`JOIN`ではなく、[IN](../../../sql-reference/operators/in.md)を使用する方が効率的です。
 
-次元テーブル（これらは比較的小さなテーブルであり、広告キャンペーンの名前などの次元特性を含む）との結合に`JOIN`が必要な場合、右テーブルが各クエリで再アクセスされるため、`JOIN`はあまり便利ではないかもしれません。そのような場合、`JOIN`の代わりに「辞書」機能を使用すべきです。詳細については、[辞書](../../../sql-reference/dictionaries/index.md)セクションを参照してください。
+次元テーブル（これらは、広告キャンペーンの名前などの次元特性を含む比較的小さなテーブル）との結合に`JOIN`が必要な場合、右側のテーブルがすべてのクエリに対して再アクセスされるため、`JOIN`はそれほど便利ではないかもしれません。そのような場合には、`JOIN`の代わりに「辞書」機能を使用することをお勧めします。詳細については、[辞書](../../../sql-reference/dictionaries/index.md)セクションを参照してください。
 
 ### メモリ制限 {#memory-limitations}
 
-デフォルトでは、ClickHouseは[ハッシュ結合](https://en.wikipedia.org/wiki/Hash_join)アルゴリズムを使用します。ClickHouseは`right_table`を取得し、そのためのハッシュテーブルをRAMに作成します。`join_algorithm = 'auto'`が有効な場合、メモリ消費のしきい値を超えると、ClickHouseは[マージ結合](https://en.wikipedia.org/wiki/Sort-merge_join)アルゴリズムにフォールバックします。`JOIN`アルゴリズムの説明については、[join_algorithm](../../../operations/settings/settings.md#join_algorithm)設定を参照してください。
+デフォルトでは、ClickHouseは[ハッシュJOIN](https://en.wikipedia.org/wiki/Hash_join)アルゴリズムを使用します。ClickHouseは右側のテーブルを取り、それに対してRAM内にハッシュテーブルを作成します。`join_algorithm = 'auto'`が有効になっている場合、一部のメモリ消費の閾値を超えると、ClickHouseは[マージ](https://en.wikipedia.org/wiki/Sort-merge_join)結合アルゴリズムに戻ります。`JOIN`アルゴリズムの説明については、[join_algorithm](../../../operations/settings/settings.md#join_algorithm)設定を参照してください。
 
-`JOIN`操作のメモリ消費量を制限する必要がある場合、次の設定を使用します:
+`JOIN`操作のメモリ消費を制限する必要がある場合は、次の設定を使用してください：
 
-- [max_rows_in_join](../../../operations/settings/query-complexity.md#settings-max_rows_in_join) — ハッシュテーブルの行数の制限。
+- [max_rows_in_join](../../../operations/settings/query-complexity.md#settings-max_rows_in_join) — ハッシュテーブル内の行数の制限。
 - [max_bytes_in_join](../../../operations/settings/query-complexity.md#settings-max_bytes_in_join) — ハッシュテーブルのサイズの制限。
 
-これらの制限のいずれかに達すると、ClickHouseは[join_overflow_mode](../../../operations/settings/query-complexity.md#settings-join_overflow_mode)設定に従います。
+これらのいずれかの制限に達すると、ClickHouseは[join_overflow_mode](../../../operations/settings/settings.md#settings-join_overflow_mode)設定に従って動作します。
 
 ## 例 {#examples}
 
-例:
+例：
 
 ``` sql
 SELECT

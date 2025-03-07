@@ -1,8 +1,8 @@
 ---
-sidebar_label: JDBC 0.8+
+sidebar_label: 'JDBC 0.8+'
 sidebar_position: 4
 keywords: [clickhouse, java, jdbc, driver, integrate]
-description: ClickHouse JDBCドライバー
+description: 'ClickHouse JDBC ドライバー'
 slug: /integrations/language-clients/java/jdbc
 ---
 
@@ -11,27 +11,29 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 
-# JDBC ドライバー (0.8+)
 
-`clickhouse-jdbc` は、最新の [java client](/integrations/language-clients/java/client.md) を使用して標準 JDBC インターフェースを実装しています。パフォーマンスや直接接続が重要な場合は、最新の [java client](/integrations/language-clients/java/client.md) を直接使用することをお勧めします。
+# JDBC Driver (0.8+)
+
+`clickhouse-jdbc` は最新の [java client](/integrations/language-clients/java/client.md) を使用して標準的なJDBCインターフェースを実装しています。
+パフォーマンスや直接アクセスが重要な場合は、最新の [java client](/integrations/language-clients/java/client.md) を直接使用することをお勧めします。
 
 :::note
-JDBCドライバの以前のバージョンのドキュメントを探している場合は、[こちら](/integrations/language-clients/java/jdbc-v1.md)をご覧ください。
+以前のバージョンのJDBCドライバーのドキュメントをお探しの場合は、[こちら](/integrations/language-clients/java/jdbc-v1.md)をご覧ください。
 :::
 
-## 0.7.x からの変更 {#changes-from-07x}
-0.8ではドライバーがJDBC仕様により厳密に準拠するようにしたため、削除された機能がいくつかあり、影響を受ける可能性があります：
+## Changes from 0.7.x {#changes-from-07x}
+0.8では、ドライバーをJDBC仕様により厳密に従うようにしました。そのため、いくつかの機能が削除されており、あなたに影響を及ぼす可能性があります：
 
-| 古い機能                             | 注意点                                                                                                                                                                                                                                                                                                        |
-|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| トランザクションサポート              | ドライバーの初期バージョンでは、トランザクションサポートは**シミュレーション**されており、予期しない結果を招く可能性がありました。                                                                                                                                                                          |
-| レスポンスカラムのリネーム           | `ResultSet` は可変だったため、効率を考慮して現在は読み取り専用です。                                                                                                                                                                                                                                           |
-| マルチステートメントSQL              | マルチステートメントサポートは**シミュレーション**されていただけで、現在は厳密に1:1に準拠しています。                                                                                                                                                                                                             |
-| 名前付きパラメータ                  | JDBC仕様の一部ではありません。                                                                                                                                                                                                                                                                               |
-| ストリームベースの `PreparedStatement` | ドライバーの初期バージョンでは、`PreparedStatement` の非jdbc使用を許可していました。こういったオプションが必要な場合は、[Java Client](/integrations/language-clients/java/client.md) とその[例](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)を検討することをお勧めします。 |
+| 古い機能                       | 注釈                                                                                                                                                                                                                                                                                                           |
+|--------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| トランザクションサポート      | 初期バージョンのドライバーはトランザクションサポートを **シミュレート** していただけで、予期しない結果を引き起こす可能性がありました。                                                                                                                                                                       |
+| レスポンスカラムのリネーム    | `ResultSet` は可変でした - 効率のために現在は読み取り専用です。                                                                                                                                                                                                                                             |
+| マルチステートメントSQL       | マルチステートメントサポートは **シミュレート** されていただけで、現在は1:1に厳密に従います。                                                                                                                                                                                                                  |
+| 名前付きパラメータ            | JDBC仕様の一部ではありません。                                                                                                                                                                                                                                                                               |
+| ストリームベースの `PreparedStatement` | 初期バージョンのドライバーでは `PreparedStatement` の非jdbc使用が許可されていました - このようなオプションが必要な場合は、[Java Client](/integrations/language-clients/java/client.md) とその [例](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) を確認することをお勧めします。 |
 
 :::note
-`Date` はタイムゾーンなしで保存され、`DateTime` はタイムゾーン付きで保存されます。注意しないと予期しない結果を招く可能性があります。
+`Date` はタイムゾーンなしで保存され、`DateTime` はタイムゾーン付きで保存されます。注意しないと予期しない結果を引き起こす可能性があります。
 :::
 
 ## 環境要件 {#environment-requirements}
@@ -41,14 +43,14 @@ JDBCドライバの以前のバージョンのドキュメントを探してい�
 ### セットアップ {#setup}
 
 <Tabs groupId="jdbc-base-dependencies">
-<TabItem value="maven" label="Maven">
+<TabItem value="maven" label="Maven" >
 
-```xml
+```xml 
 <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>clickhouse-jdbc</artifactId>
-    <version>0.8.1</version>
+    <version>0.8.2</version>
     <classifier>shaded-all</classifier>    
 </dependency>
 ```
@@ -58,14 +60,14 @@ JDBCドライバの以前のバージョンのドキュメントを探してい�
 
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-implementation("com.clickhouse:clickhouse-jdbc:0.8.1:shaded-all")
+implementation("com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-implementation 'com.clickhouse:clickhouse-jdbc:0.8.1:shaded-all'
+implementation 'com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all'
 ```
 
 </TabItem>
@@ -75,28 +77,28 @@ implementation 'com.clickhouse:clickhouse-jdbc:0.8.1:shaded-all'
 
 **ドライバークラス**: `com.clickhouse.jdbc.ClickHouseDriver`
 
-**URL 構文**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`、例えば:
+**URL構文**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`、例えば:
 
 - `jdbc:clickhouse:http://localhost:8123`
 - `jdbc:clickhouse:https://localhost:8443?ssl=true`
 
 **接続プロパティ**:
 
-標準のJDBCプロパティに加えて、ドライバーは基盤となる [java client](/integrations/language-clients/java/client.md) が提供するClickHouse特有のプロパティをサポートしています。可能な場合、サポートされていない機能については `SQLFeatureNotSupportedException` を返します。他のカスタムプロパティには次のものがあります：
+標準JDBCプロパティの他に、ドライバーは基盤の [java client](/integrations/language-clients/java/client.md) が提供するClickHouse特有のプロパティもサポートします。サポートされていない機能がある場合、可能な限り `SQLFeatureNotSupportedException` が返されます。他のカスタムプロパティには以下が含まれます：
 
-| プロパティ                             | デフォルト   | 説明                                                       |
-|----------------------------------------|--------------|----------------------------------------------------------|
-| `disable_frameworks_detection`         | `true`       | User-Agentのためのフレームワーク検出を無効にします       |
-| `jdbc_ignore_unsupported_values`       | `false`      | `SQLFeatureNotSupportedException`を抑制します             |
-| `clickhouse.jdbc.v1`                   | `false`      | 新しいJDBCではなく古いJDBC実装を使用します                 |
-| `default_query_settings`               | `null`       | クエリ操作と共にデフォルトのクエリ設定を渡すことを許可します |
+| プロパティ                        | デフォルト | 説明                                                            |
+|----------------------------------|---------|-----------------------------------------------------------------|
+| `disable_frameworks_detection`   | `true`  | User-Agentのフレームワーク検出を無効にする                     |
+| `jdbc_ignore_unsupported_values` | `false` | `SQLFeatureNotSupportedException` を抑制                      |
+| `clickhouse.jdbc.v1`             | `false` | 新しいJDBCの代わりに古いJDBC実装を使用する                    |
+| `default_query_settings`         | `null`  | クエリ操作にデフォルトのクエリ設定を渡すことを可能にする      |
 
-## サポートされるデータ型 {#supported-data-types}
+## サポートされているデータ型 {#supported-data-types}
 
-JDBC ドライバーは、基盤となる [java client](/integrations/language-clients/java/client.md) と同じデータ形式をサポートしています。
+JDBCドライバーは、基盤の [java client](/integrations/language-clients/java/client.md) と同じデータ形式をサポートしています。
 
-### 日付、時刻、タイムゾーンの処理 {#handling-dates-times-and-timezones}
-`java.sql.Date`、`java.sql.Time`、および `java.sql.Timestamp` はタイムゾーンの計算を複雑にする可能性がありますが、もちろんサポートされています。`java.time` (https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) パッケージの使用を検討することをお勧めします。`ZonedDateTime` と `OffsetDateTime` は、`java.sql.Timestamp`、`java.sql.Date`、および `java.sql.Time` の優れた代替品です。
+### 日付、時間、タイムゾーンの取り扱い {#handling-dates-times-and-timezones}
+`java.sql.Date`、`java.sql.Time`、および `java.sql.Timestamp` は、タイムゾーンの計算を複雑にする可能性があります - これらはもちろんサポートされていますが、[java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) パッケージの使用を検討することをお勧めします。`ZonedDateTime` と `OffsetDateTime` は、java.sql.Timestamp、java.sql.Date、および java.sql.Timeの素晴らしい代替品です。
 
 ## 接続の作成 {#creating-connection}
 
@@ -104,10 +106,9 @@ JDBC ドライバーは、基盤となる [java client](/integrations/language-c
 String url = "jdbc:ch://my-server:8123/system";
 
 Properties properties = new Properties();
-DataSource dataSource = new DataSource(url, properties); // DataSource または DriverManager が主なエントリポイントです
+DataSource dataSource = new DataSource(url, properties); // DataSource または DriverManager が主なエントリーポイント
 try (Connection conn = dataSource.getConnection()) {
-    ... // 接続を使って何かを行う
-}
+    ... // 接続で何かをする
 ```
 
 ## 資格情報と設定の提供 {#supplying-credentials-and-settings}
@@ -120,25 +121,26 @@ info.put("user", "default");
 info.put("password", "password");
 info.put("database", "some_db");
 
-// DataSource を使用して接続を作成
+// DataSourceを用いて接続を作成
 DataSource dataSource = new DataSource(url, info);
 try (Connection conn = dataSource.getConnection()) {
-    ... // 接続を使って何かを行う
+    ... // 接続で何かをする
 }
 
-// DriverManagerを使用した別のアプローチ
+// DriverManagerを使用した代替アプローチ
 try (Connection conn = DriverManager.getConnection(url, info)) {
-    ... // 接続を使って何かを行う
+    ... // 接続で何かをする
 }
 ```
 
 ## シンプルステートメント {#simple-statement}
 
 ```java showLineNumbers
+
 try (Connection conn = dataSource.getConnection(...);
     Statement stmt = conn.createStatement()) {
     ResultSet rs = stmt.executeQuery("select * from numbers(50000)");
-    while(rs.next()) {
+    while (rs.next()) {
         // ...
     }
 }
@@ -152,16 +154,16 @@ try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable VALUES (?
     ps.setObject(2, LocalDateTime.now()); // タイムスタンプ
     ps.addBatch();
     ...
-    ps.executeBatch(); // 手元のすべてを ClickHouse にストリーム送信
+    ps.executeBatch(); // ClickHouseにすべてをストリーム
 }
 ```
 
 ## `HikariCP` {#hikaricp}
     
 ```java showLineNumbers
-// 接続プールはパフォーマンスの面であまり役立ちません
-// 基盤となる実装には独自のプールがあります。
-// 例えば: HttpURLConnection にはソケット用のプールがあります
+// コネクションプーリングは性能面であまり役に立たないでしょう、
+// なぜなら基盤の実装が独自のプールを持っているからです。
+// 例えば: HttpURLConnection はソケット用のプールがあります
 HikariConfig poolConfig = new HikariConfig();
 poolConfig.setConnectionTimeout(5000L);
 poolConfig.setMaximumPoolSize(20);
@@ -173,31 +175,31 @@ try (HikariDataSource ds = new HikariDataSource(poolConfig);
      Statement s = conn.createStatement();
      ResultSet rs = s.executeQuery("SELECT * FROM system.numbers LIMIT 3")) {
     while (rs.next()) {
-        // 行を処理
-        log.info("Integer: {}, String: {}", rs.getInt(1), rs.getString(1)); // 同じカラムでも異なる型
+        // 行を処理する
+        log.info("Integer: {}, String: {}", rs.getInt(1), rs.getString(1)); // 同じカラムですが異なる型
     }
 }
 ```
 
 ## その他の情報 {#more-information}
-詳細については、[GitHubリポジトリ](https://github.com/ClickHouse/clickhouse-java) と [Java Client ドキュメント](/integrations/language-clients/java/client.md)をご覧ください。
+詳細については、[GitHubリポジトリ](https://github.com/ClickHouse/clickhouse-java) と [Java Client ドキュメント](/integrations/language-clients/java/client.md) をご覧ください。
 
 ## トラブルシューティング {#troubleshooting}
 ### ロギング {#logging}
-このドライバーは [slf4j](https://www.slf4j.org/) を使用してロギングを行い、`classpath` 上で最初に見つかった実装を使用します。
+ドライバーは [slf4j](https://www.slf4j.org/) を使用してロギングを行い、`classpath` 上の最初の利用可能な実装を使用します。
 
-### 大規模な挿入時の JDBC タイムアウトの解決 {#resolving-jdbc-timeout-on-large-inserts}
+### 大規模な挿入時のJDBCタイムアウトの解決 {#resolving-jdbc-timeout-on-large-inserts}
 
-長い実行時間の大規模なデータ挿入を行うと、次のようなJDBCタイムアウトエラーが発生する場合があります：
+長時間実行される大規模な挿入をClickHouseで行う場合、次のようなJDBCタイムアウトエラーに遭遇することがあります：
 
 ```plaintext
 Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https://hostname.aws.clickhouse.cloud:8443]
 ```
-これらのエラーは、データ挿入プロセスを中断させ、システムの安定性に影響を与える可能性があります。この問題を解決するには、クライアントのOS内のいくつかのタイムアウト設定を調整する必要があります。
+これらのエラーはデータ挿入プロセスを中断させ、システムの安定性に影響を与える可能性があります。この問題を解決するには、クライアントのOSでいくつかのタイムアウト設定を調整する必要があります。
 
 #### Mac OS {#mac-os}
 
-Mac OSでは、次の設定を調整して問題を解決することができます：
+Mac OSでは、次の設定を調整して問題を解決できます。
 
 - `net.inet.tcp.keepidle`: 60000
 - `net.inet.tcp.keepintvl`: 45000
@@ -207,9 +209,9 @@ Mac OSでは、次の設定を調整して問題を解決することができ�
 
 #### Linux {#linux}
 
-Linuxでは、同等の設定だけでは問題を解決できないことがあります。Linuxがソケットのキープアライブ設定を扱う方法の違いにより、追加の手順が必要です。次の手順に従ってください：
+Linuxでは、同等の設定だけでは問題が解決しない場合があります。Linuxがソケットのキープアライブ設定を処理する方法の違いにより、追加の手順が必要です。次の手順に従ってください。
 
-1. `/etc/sysctl.conf` または関連する設定ファイルで、以下のLinuxカーネルパラメータを調整します：
+1. `/etc/sysctl.conf` または関連する設定ファイルで次のLinuxカーネルパラメータを調整します：
 
     - `net.inet.tcp.keepidle`: 60000
     - `net.inet.tcp.keepintvl`: 45000
@@ -218,7 +220,7 @@ Linuxでは、同等の設定だけでは問題を解決できないことがあ
     - `net.inet.tcp.always_keepalive`: 1
     - `net.ipv4.tcp_keepalive_intvl`: 75
     - `net.ipv4.tcp_keepalive_probes`: 9
-    - `net.ipv4.tcp_keepalive_time`: 60 (この値をデフォルトの300秒から低くすることを検討するかもしれません)
+    - `net.ipv4.tcp_keepalive_time`: 60 (デフォルトの300秒からこの値を下げることを検討します)
 
 2. カーネルパラメータを変更した後、次のコマンドを実行して変更を適用します：
 
@@ -226,7 +228,7 @@ Linuxでは、同等の設定だけでは問題を解決できないことがあ
 sudo sysctl -p
 ```
 
-設定を行った後、クライアントがソケットのKeep Aliveオプションを有効にすることを確認する必要があります：
+これらの設定を行った後、クライアントがソケットのキープアライブオプションを有効にすることを確認する必要があります：
 
 ```java
 properties.setProperty("socket_keepalive", "true");
