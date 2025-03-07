@@ -5,7 +5,6 @@ sidebar_label: 'Системные'
 keywords: ['системные команды', 'ClickHouse', 'запросы', 'инструменты администрирования']
 description: 'Справочник системных команд ClickHouse для управления базами данных, таблицами и репликацией.'
 ---
-```
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
@@ -611,5 +610,4 @@ SYSTEM CANCEL VIEW [db.]name
 
 ```sql
 SYSTEM WAIT VIEW [db.]name
-```  
-
+```

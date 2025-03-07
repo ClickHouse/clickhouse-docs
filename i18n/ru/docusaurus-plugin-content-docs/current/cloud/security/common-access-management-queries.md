@@ -1,10 +1,10 @@
+---
 sidebar_label: 'Запросы управления доступом'
 title: 'Запросы управления доступом'
 slug: '/cloud/security/common-access-management-queries'
-```
+---
 
 import CommonUserRolesContent from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
-
 
 # Запросы управления доступом
 
