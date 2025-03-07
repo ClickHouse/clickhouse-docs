@@ -332,14 +332,6 @@ const config = {
             label: "English",
             to: "/",
           },
-          {
-            label: "Russian",
-            to: "/ru",
-          },
-          {
-            label: "Chinese",
-            to: "/zh",
-          },
         ],
       },
     ],
