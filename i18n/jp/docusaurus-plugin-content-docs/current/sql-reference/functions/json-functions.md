@@ -1,25 +1,26 @@
 ---
-slug: /sql-reference/functions/json-functions
+slug: '/sql-reference/functions/json-functions'
 sidebar_position: 105
-sidebar_label: JSON
+sidebar_label: 'JSON'
 ---
 
-JSONを解析するための2つの関数セットがあります:
-   - [`simpleJSON*` (`visitParam*`)](#simplejson-visitparam-functions) - 限定されたJSONのサブセットを非常に高速に解析するためのものです。
-   - [`JSONExtract*`](#jsonextract-functions) - 普通のJSONを解析するためのものです。
+JSONを解析するための関数セットが2つあります：
+   - [`simpleJSON*` (`visitParam*`)](#simplejson-visitparam-functions)は、限定されたJSONサブセットを非常に高速で解析するために作られています。
+   - [`JSONExtract*`](#jsonextract-functions)は、通常のJSONを解析するために作られています。
 ## simpleJSON (visitParam) 関数 {#simplejson-visitparam-functions}
 
-ClickHouseには、簡易JSONを操作するための特別な関数があります。これらのJSON関数は、JSONがどのようであるかについての強い仮定に基づいています。可能な限り迅速に作業を完了させるために、できるだけ少ない処理を試みます。
+ClickHouseには簡略化されたJSONを操作するための特別な関数があります。これらのすべてのJSON関数は、JSONがどのようなものであるかについて強い前提に基づいています。できるだけ少ない処理で、できるだけ早く仕事を完了させようとします。
 
-以下の仮定がされています:
+以下の前提があります：
 
-1. フィールド名（関数引数）は定数でなければなりません。
-2. フィールド名はJSON内で何らかの標準的な形式でエンコードされています。例えば: `simpleJSONHas('{"abc":"def"}', 'abc') = 1` ですが、 `simpleJSONHas('{"\\u0061\\u0062\\u0063":"def"}', 'abc') = 0` となります。
-3. フィールドはあらゆるネストレベルで無差別に検索されます。複数の一致するフィールドがある場合、最初の出現が使用されます。
-4. JSONでは、文字列リテラルの外にスペース文字が存在しません。
+1.  フィールド名（関数の引数）は定数でなければなりません。
+2.  フィールド名は何らかの形でJSONで正規化されている必要があります。例えば：`simpleJSONHas('{"abc":"def"}', 'abc') = 1` ですが、 `simpleJSONHas('{"\\u0061\\u0062\\u0063":"def"}', 'abc') = 0` です。
+3.  フィールドは任意のネストレベルで無差別に検索されます。複数の一致するフィールドがある場合、最初の出現が使用されます。
+4.  JSONに文字列リテラルの外にスペース文字はありません。
+
 ### simpleJSONHas {#simplejsonhas}
 
-`field_name`という名前のフィールドが存在するかどうかを確認します。結果は`UInt8`です。
+`field_name`という名前のフィールドが存在するかどうかを確認します。結果は `UInt8` です。
 
 **構文**
 
@@ -27,20 +28,20 @@ ClickHouseには、簡易JSONを操作するための特別な関数がありま
 simpleJSONHas(json, field_name)
 ```
 
-エイリアス: `visitParamHas`.
+エイリアス： `visitParamHas`。
 
 **パラメータ**
 
-- `json` — フィールドが検索されるJSON。 [String](../data-types/string.md#string)
-- `field_name` — 検索するフィールドの名前。 [String literal](../syntax#string)
+- `json` — フィールドを検索するJSON。 [String](/sql-reference/data-types/string)
+- `field_name` — 検索するフィールドの名前。 [String literal](/sql-reference/syntax#string)
 
 **返される値**
 
-- フィールドが存在する場合は`1`、そうでない場合は`0`を返します。 [UInt8](../data-types/int-uint.md)。
+- フィールドが存在すれば `1` を、そうでなければ `0` を返します。 [UInt8](../data-types/int-uint.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 CREATE TABLE jsons
@@ -55,15 +56,16 @@ SELECT simpleJSONHas(json, 'foo') FROM jsons;
 SELECT simpleJSONHas(json, 'bar') FROM jsons;
 ```
 
-結果:
+結果：
 
 ```response
 1
 0
 ```
+
 ### simpleJSONExtractUInt {#simplejsonextractuint}
 
-`field_name`という名前のフィールドの値から`UInt64`を解析します。このフィールドが文字列フィールドである場合、文字列の先頭から数字を解析しようとします。フィールドが存在しない場合、または存在するが数字を含まない場合は`0`を返します。
+`field_name`という名前のフィールドの値から `UInt64` を解析します。これは文字列フィールドであれば、文字列の始めから数字を解析しようとします。フィールドが存在しないか、存在するが数値を含まない場合は `0` を返します。
 
 **構文**
 
@@ -71,20 +73,20 @@ SELECT simpleJSONHas(json, 'bar') FROM jsons;
 simpleJSONExtractUInt(json, field_name)
 ```
 
-エイリアス: `visitParamExtractUInt`.
+エイリアス： `visitParamExtractUInt`。
 
 **パラメータ**
 
-- `json` — フィールドが検索されるJSON。 [String](../data-types/string.md#string)
-- `field_name` — 検索するフィールドの名前。 [String literal](../syntax#string)
+- `json` — フィールドを検索するJSON。 [String](/sql-reference/data-types/string)
+- `field_name` — 検索するフィールドの名前。 [String literal](/sql-reference/syntax#string)
 
 **返される値**
 
-- フィールドが存在し、数字を含む場合は解析された数字を返し、そうでない場合は`0`を返します。 [UInt64](../data-types/int-uint.md)。
+- フィールドが存在し、数値を含んでいれば、フィールドから解析された数値を返します。そうでなければ `0` を返します。 [UInt64](../data-types/int-uint.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 CREATE TABLE jsons
@@ -102,7 +104,7 @@ INSERT INTO jsons VALUES ('{"baz":2}');
 SELECT simpleJSONExtractUInt(json, 'foo') FROM jsons ORDER BY json;
 ```
 
-結果:
+結果：
 
 ```response
 0
@@ -111,9 +113,10 @@ SELECT simpleJSONExtractUInt(json, 'foo') FROM jsons ORDER BY json;
 3
 5
 ```
+
 ### simpleJSONExtractInt {#simplejsonextractint}
 
-`field_name`という名前のフィールドの値から`Int64`を解析します。このフィールドが文字列フィールドである場合、文字列の先頭から数字を解析しようとします。フィールドが存在しない場合、または存在するが数字を含まない場合は`0`を返します。
+`field_name`という名前のフィールドの値から `Int64` を解析します。これは文字列フィールドであれば、文字列の始めから数字を解析しようとします。フィールドが存在しないか、存在するが数値を含まない場合は `0` を返します。
 
 **構文**
 
@@ -121,20 +124,20 @@ SELECT simpleJSONExtractUInt(json, 'foo') FROM jsons ORDER BY json;
 simpleJSONExtractInt(json, field_name)
 ```
 
-エイリアス: `visitParamExtractInt`.
+エイリアス： `visitParamExtractInt`。
 
 **パラメータ**
 
-- `json` — フィールドが検索されるJSON。 [String](../data-types/string.md#string)
-- `field_name` — 検索するフィールドの名前。 [String literal](../syntax#string)
+- `json` — フィールドを検索するJSON。 [String](/sql-reference/data-types/string)
+- `field_name` — 検索するフィールドの名前。 [String literal](/sql-reference/syntax#string)
 
 **返される値**
 
-- フィールドが存在し、数字を含む場合は解析された数字を返し、そうでない場合は`0`を返します。 [Int64](../data-types/int-uint.md)。
+- フィールドが存在し、数値を含んでいれば、フィールドから解析された数値を返します。そうでなければ `0` を返します。 [Int64](../data-types/int-uint.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 CREATE TABLE jsons
@@ -152,7 +155,7 @@ INSERT INTO jsons VALUES ('{"baz":2}');
 SELECT simpleJSONExtractInt(json, 'foo') FROM jsons ORDER BY json;
 ```
 
-結果:
+結果：
 
 ```response
 0
@@ -161,9 +164,10 @@ SELECT simpleJSONExtractInt(json, 'foo') FROM jsons ORDER BY json;
 -3
 5
 ```
+
 ### simpleJSONExtractFloat {#simplejsonextractfloat}
 
-`field_name`という名前のフィールドの値から`Float64`を解析します。このフィールドが文字列フィールドである場合、文字列の先頭から数字を解析しようとします。フィールドが存在しない場合、または存在するが数字を含まない場合は`0`を返します。
+`field_name`という名前のフィールドの値から `Float64` を解析します。これは文字列フィールドであれば、文字列の始めから数字を解析しようとします。フィールドが存在しないか、存在するが数値を含まない場合は `0` を返します。
 
 **構文**
 
@@ -171,20 +175,20 @@ SELECT simpleJSONExtractInt(json, 'foo') FROM jsons ORDER BY json;
 simpleJSONExtractFloat(json, field_name)
 ```
 
-エイリアス: `visitParamExtractFloat`.
+エイリアス： `visitParamExtractFloat`。
 
 **パラメータ**
 
-- `json` — フィールドが検索されるJSON。 [String](../data-types/string.md#string)
-- `field_name` — 検索するフィールドの名前。 [String literal](../syntax#string)
+- `json` — フィールドを検索するJSON。 [String](/sql-reference/data-types/string)
+- `field_name` — 検索するフィールドの名前。 [String literal](/sql-reference/syntax#string)
 
 **返される値**
 
-- フィールドが存在し、数字を含む場合は解析された数字を返し、そうでない場合は`0`を返します。 [Float64](../data-types/float.md/#float32-float64)。
+- フィールドが存在し、数値を含んでいれば、フィールドから解析された数値を返します。そうでなければ `0` を返します。 [Float64](/sql-reference/data-types/float)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 CREATE TABLE jsons
@@ -202,7 +206,7 @@ INSERT INTO jsons VALUES ('{"baz":2}');
 SELECT simpleJSONExtractFloat(json, 'foo') FROM jsons ORDER BY json;
 ```
 
-結果:
+結果：
 
 ```response
 0
@@ -211,9 +215,10 @@ SELECT simpleJSONExtractFloat(json, 'foo') FROM jsons ORDER BY json;
 -3.4
 5
 ```
+
 ### simpleJSONExtractBool {#simplejsonextractbool}
 
-`field_name`という名前のフィールドの値から真偽値を解析します。結果は`UInt8`です。
+`field_name`という名前のフィールドから真偽値を解析します。結果は `UInt8` です。
 
 **構文**
 
@@ -221,23 +226,23 @@ SELECT simpleJSONExtractFloat(json, 'foo') FROM jsons ORDER BY json;
 simpleJSONExtractBool(json, field_name)
 ```
 
-エイリアス: `visitParamExtractBool`.
+エイリアス： `visitParamExtractBool`。
 
 **パラメータ**
 
-- `json` — フィールドが検索されるJSON。 [String](../data-types/string.md#string)
-- `field_name` — 検索するフィールドの名前。 [String literal](../syntax#string)
+- `json` — フィールドを検索するJSON。 [String](/sql-reference/data-types/string)
+- `field_name` — 検索するフィールドの名前。 [String literal](/sql-reference/syntax#string)
 
 **返される値**
 
-フィールドの値が`true`であれば`1`を返し、そうでない場合は`0`を返します。この関数は以下のようなケースでも`0`を返します:
- - フィールドが存在しない場合。
- - フィールドが文字列の`true`を含む場合、例えば: `{"field":"true"}`。
- - フィールドが数値の`1`を含む場合。
+フィールドの値が `true` であれば `1` を、それ以外は `0` を返します。この関数は以下のケースを含め（かつそれだけでなく） `0` を返します：
+ - フィールドが存在しない。
+ - フィールドが文字列として `true` を含む、例えば: `{"field":"true"}`。
+ - フィールドが数値として `1` を含む。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 CREATE TABLE jsons
@@ -253,7 +258,7 @@ SELECT simpleJSONExtractBool(json, 'bar') FROM jsons ORDER BY json;
 SELECT simpleJSONExtractBool(json, 'foo') FROM jsons ORDER BY json;
 ```
 
-結果:
+結果：
 
 ```response
 0
@@ -261,9 +266,10 @@ SELECT simpleJSONExtractBool(json, 'foo') FROM jsons ORDER BY json;
 0
 0
 ```
+
 ### simpleJSONExtractRaw {#simplejsonextractraw}
 
-`field_name`という名前のフィールドの値を`String`として、その区切りを含めて返します。
+`field_name`という名前のフィールドの値を区切りを含めて `String` として返します。
 
 **構文**
 
@@ -271,20 +277,20 @@ SELECT simpleJSONExtractBool(json, 'foo') FROM jsons ORDER BY json;
 simpleJSONExtractRaw(json, field_name)
 ```
 
-エイリアス: `visitParamExtractRaw`.
+エイリアス： `visitParamExtractRaw`。
 
 **パラメータ**
 
-- `json` — フィールドが検索されるJSON。 [String](../data-types/string.md#string)
-- `field_name` — 検索するフィールドの名前。 [String literal](../syntax#string)
+- `json` — フィールドを検索するJSON。 [String](/sql-reference/data-types/string)
+- `field_name` — 検索するフィールドの名前。 [String literal](/sql-reference/syntax#string)
 
 **返される値**
 
-- フィールドが存在する場合、その値を区切りも含めて文字列として返し、存在しない場合は空の文字列を返します。 [`String`](../data-types/string.md#string)
+- フィールドが存在すればその値を文字列として返し、区切りも含まれます。そうでなければ空の文字列を返します。 [`String`](/sql-reference/data-types/string)
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 CREATE TABLE jsons
@@ -302,7 +308,7 @@ INSERT INTO jsons VALUES ('{"baz":2}');
 SELECT simpleJSONExtractRaw(json, 'foo') FROM jsons ORDER BY json;
 ```
 
-結果:
+結果：
 
 ```response
 
@@ -311,9 +317,10 @@ SELECT simpleJSONExtractRaw(json, 'foo') FROM jsons ORDER BY json;
 5
 {"def":[1,2,3]}
 ```
+
 ### simpleJSONExtractString {#simplejsonextractstring}
 
-`field_name`という名前のフィールドの値から二重引用符で囲まれた`String`を解析します。
+`field_name`という名前のフィールドの値から、二重引用符で囲まれた `String` を解析します。
 
 **構文**
 
@@ -321,24 +328,24 @@ SELECT simpleJSONExtractRaw(json, 'foo') FROM jsons ORDER BY json;
 simpleJSONExtractString(json, field_name)
 ```
 
-エイリアス: `visitParamExtractString`.
+エイリアス： `visitParamExtractString`。
 
 **パラメータ**
 
-- `json` — フィールドが検索されるJSON。 [String](../data-types/string.md#string)
-- `field_name` — 検索するフィールドの名前。 [String literal](../syntax#string)
+- `json` — フィールドを検索するJSON。 [String](/sql-reference/data-types/string)
+- `field_name` — 検索するフィールドの名前。 [String literal](/sql-reference/syntax#string)
 
 **返される値**
 
-- フィールドの未エスケープ値を文字列として返し、区切りを含めます。フィールドが二重引用符の文字列を含まない場合、未エスケープが失敗する場合、または存在しない場合は空の文字列を返します。 [String](../data-types/string.md)。
+- フィールドのアンエスケープされた値を文字列として返します。フィールドが二重引用符の文字列を含まない、アンエスケープが失敗した、またはフィールドが存在しない場合は空の文字列を返します。 [String](../data-types/string.md)。
 
 **実装の詳細**
 
-現在、基本多言語面にない形式`\uXXXX\uYYYY`のコードポイントはサポートされておらず（UTF-8ではなくCESU-8に変換されます）。
+現在、基本多言語プレーン以外の形式 `\uXXXX\uYYYY` のコードポイントはサポートされていません（それらはUTF-8の代わりにCESU-8に変換されます）。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 CREATE TABLE jsons
@@ -355,7 +362,7 @@ INSERT INTO jsons VALUES ('{"foo":"hello}');
 SELECT simpleJSONExtractString(json, 'foo') FROM jsons ORDER BY json;
 ```
 
-結果:
+結果：
 
 ```response
 \n\0
@@ -365,10 +372,10 @@ SELECT simpleJSONExtractString(json, 'foo') FROM jsons ORDER BY json;
 ```
 ## JSONExtract 関数 {#jsonextract-functions}
 
-以下の関数は [simdjson](https://github.com/lemire/simdjson) に基づいており、より複雑なJSON解析要件のために設計されています。
+次の関数は、[simdjson](https://github.com/lemire/simdjson)に基づいており、より複雑なJSON解析要求に対応するために設計されています。
 ### isValidJSON {#isvalidjson}
 
-渡された文字列が有効なJSONであるか確認します。
+渡された文字列が有効なJSONであるかを確認します。
 
 **構文**
 
@@ -384,7 +391,7 @@ SELECT isValidJSON('not a json') = 0
 ```
 ### JSONHas {#jsonhas}
 
-JSONドキュメントに値が存在する場合は`1`が返されます。存在しない場合は`0`が返されます。
+JSON文書にその値が存在する場合、`1`が返されます。値が存在しない場合は `0` が返されます。
 
 **構文**
 
@@ -395,27 +402,27 @@ JSONHas(json [, indices_or_keys]...)
 **パラメータ**
 
 - `json` — 解析するJSON文字列。 [String](../data-types/string.md)。
-- `indices_or_keys` — 0個以上の引数のリストで、それぞれが文字列または整数であることができます。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 零個以上の引数のリストで、各引数は文字列または整数のいずれかです。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
 
-`indices_or_keys`のタイプ:
-- 文字列 = キーでオブジェクトメンバーにアクセスします。
-- 正の整数 = 開始からn番目のメンバー/キーにアクセスします。
-- 負の整数 = 終わりからn番目のメンバー/キーにアクセスします。
+`indices_or_keys`型：
+- 文字列 = キーによるオブジェクトメンバーへのアクセス。
+- 正の整数 = 開始からn番目のメンバー/キーへのアクセス。
+- 負の整数 = 終わりからn番目のメンバー/キーへのアクセス。
 
 **返される値**
 
-- `json`に値が存在する場合は`1`を返し、そうでない場合は`0`を返します。 [UInt8](../data-types/int-uint.md)。
+- `json`内に値が存在すれば `1` を、それ以外の場合は `0` を返します。 [UInt8](../data-types/int-uint.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ``` sql
 SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 1
 SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 4) = 0
 ```
 
-要素の最小インデックスは1です。したがって、要素0は存在しません。整数を使用してJSON配列とJSONオブジェクトの両方にアクセスできます。例えば:
+要素の最小インデックスは1です。したがって、要素0は存在しません。整数を使用してJSON配列およびJSONオブジェクトの両方にアクセスできます。例えば：
 
 ``` sql
 SELECT JSONExtractKey('{"a": "hello", "b": [-100, 200.0, 300]}', 1) = 'a'
@@ -426,7 +433,7 @@ SELECT JSONExtractString('{"a": "hello", "b": [-100, 200.0, 300]}', 1) = 'hello'
 ```
 ### JSONLength {#jsonlength}
 
-JSON配列またはJSONオブジェクトの長さを返します。値が存在しない場合、または型が間違っている場合は`0`が返されます。
+JSON配列またはJSONオブジェクトの長さを返します。値が存在しない場合や、型が間違っている場合は `0` が返されます。
 
 **構文**
 
@@ -437,16 +444,16 @@ JSONLength(json [, indices_or_keys]...)
 **パラメータ**
 
 - `json` — 解析するJSON文字列。 [String](../data-types/string.md)。
-- `indices_or_keys` — 0個以上の引数のリストで、それぞれが文字列または整数であることができます。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 零個以上の引数のリストで、各引数は文字列または整数のいずれかです。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
 
-`indices_or_keys`のタイプ:
-- 文字列 = キーでオブジェクトメンバーにアクセスします。
-- 正の整数 = 開始からn番目のメンバー/キーにアクセスします。
-- 負の整数 = 終わりからn番目のメンバー/キーにアクセスします。
+`indices_or_keys`型：
+- 文字列 = キーによるオブジェクトメンバーへのアクセス。
+- 正の整数 = 開始からn番目のメンバー/キーへのアクセス。
+- 負の整数 = 終わりからn番目のメンバー/キーへのアクセス。
 
 **返される値**
 
-- JSON配列またはJSONオブジェクトの長さを返します。値が存在しない場合や型が間違っている場合は`0`を返します。 [UInt64](../data-types/int-uint.md)。
+- JSON配列またはJSONオブジェクトの長さを返します。値が存在しない場合や、型が間違っている場合は `0` を返します。 [UInt64](../data-types/int-uint.md)。
 
 **例**
 
@@ -456,7 +463,7 @@ SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}') = 2
 ```
 ### JSONType {#jsontype}
 
-JSON値の型を返します。値が存在しない場合は`Null=0`が返されます（通常の [Null](../data-types/nullable.md) ではなく、`Enum8('Null' = 0, 'String' = 34,...` の `Null=0` です）。
+JSON値の型を返します。値が存在しない場合は `Null=0` が返されます（通常の[Null](../data-types/nullable.md)ではなく、`Enum8('Null' = 0, 'String' = 34,...）の `Null=0` です）。
 
 **構文**
 
@@ -467,16 +474,16 @@ JSONType(json [, indices_or_keys]...)
 **パラメータ**
 
 - `json` — 解析するJSON文字列。 [String](../data-types/string.md)。
-- `indices_or_keys` — 0個以上の引数のリストで、それぞれが文字列または整数であることができます。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 零個以上の引数のリストで、各引数は文字列または整数のいずれかです。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
 
-`indices_or_keys`のタイプ:
-- 文字列 = キーでオブジェクトメンバーにアクセスします。
-- 正の整数 = 開始からn番目のメンバー/キーにアクセスします。
-- 負の整数 = 終わりからn番目のメンバー/キーにアクセスします。
+`indices_or_keys`型：
+- 文字列 = キーによるオブジェクトメンバーへのアクセス。
+- 正の整数 = 開始からn番目のメンバー/キーへのアクセス。
+- 負の整数 = 終わりからn番目のメンバー/キーへのアクセス。
 
 **返される値**
 
-- JSON値の型を文字列として返し、存在しない場合は`Null=0`を返します。 [Enum](../data-types/enum.md)。
+- JSON値の型を文字列として返します。値が存在しない場合は `Null=0` を返します。 [Enum](../data-types/enum.md)。
 
 **例**
 
@@ -498,26 +505,26 @@ JSONExtractUInt(json [, indices_or_keys]...)
 **パラメータ**
 
 - `json` — 解析するJSON文字列。 [String](../data-types/string.md)。
-- `indices_or_keys` — 0個以上の引数のリストで、それぞれが文字列または整数であることができます。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 零個以上の引数のリストで、各引数は文字列または整数のいずれかです。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
 
-`indices_or_keys`のタイプ:
-- 文字列 = キーでオブジェクトメンバーにアクセスします。
-- 正の整数 = 開始からn番目のメンバー/キーにアクセスします。
-- 負の整数 = 終わりからn番目のメンバー/キーにアクセスします。
+`indices_or_keys`型：
+- 文字列 = キーによるオブジェクトメンバーへのアクセス。
+- 正の整数 = 開始からn番目のメンバー/キーへのアクセス。
+- 負の整数 = 終わりからn番目のメンバー/キーへのアクセス。
 
 **返される値**
 
-- 存在すればUInt値を返し、そうでなければ`0`を返します。 [UInt64](../data-types/int-uint.md)。
+- 存在すればUInt値を返します。そうでなければ `0` を返します。 [UInt64](../data-types/int-uint.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ``` sql
 SELECT JSONExtractUInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', -1) as x, toTypeName(x);
 ```
 
-結果:
+結果：
 
 ```response
 ┌───x─┬─toTypeName(x)─┐
@@ -537,26 +544,26 @@ JSONExtractInt(json [, indices_or_keys]...)
 **パラメータ**
 
 - `json` — 解析するJSON文字列。 [String](../data-types/string.md)。
-- `indices_or_keys` — 0個以上の引数のリストで、それぞれが文字列または整数であることができます。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 零個以上の引数のリストで、各引数は文字列または整数のいずれかです。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
 
-`indices_or_keys`のタイプ:
-- 文字列 = キーでオブジェクトメンバーにアクセスします。
-- 正の整数 = 開始からn番目のメンバー/キーにアクセスします。
-- 負の整数 = 終わりからn番目のメンバー/キーにアクセスします。
+`indices_or_keys`型：
+- 文字列 = キーによるオブジェクトメンバーへのアクセス。
+- 正の整数 = 開始からn番目のメンバー/キーへのアクセス。
+- 負の整数 = 終わりからn番目のメンバー/キーへのアクセス。
 
 **返される値**
 
-- 存在すればInt値を返し、そうでなければ`0`を返します。 [Int64](../data-types/int-uint.md)。
+- 存在すればInt値を返します。そうでなければ `0` を返します。 [Int64](../data-types/int-uint.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ``` sql
 SELECT JSONExtractInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', -1) as x, toTypeName(x);
 ```
 
-結果:
+結果：
 
 ```response
 ┌───x─┬─toTypeName(x)─┐
@@ -576,26 +583,26 @@ JSONExtractFloat(json [, indices_or_keys]...)
 **パラメータ**
 
 - `json` — 解析するJSON文字列。 [String](../data-types/string.md)。
-- `indices_or_keys` — 0個以上の引数のリストで、それぞれが文字列または整数であることができます。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 零個以上の引数のリストで、各引数は文字列または整数のいずれかです。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
 
-`indices_or_keys`のタイプ:
-- 文字列 = キーでオブジェクトメンバーにアクセスします。
-- 正の整数 = 開始からn番目のメンバー/キーにアクセスします。
-- 負の整数 = 終わりからn番目のメンバー/キーにアクセスします。
+`indices_or_keys`型：
+- 文字列 = キーによるオブジェクトメンバーへのアクセス。
+- 正の整数 = 開始からn番目のメンバー/キーへのアクセス。
+- 負の整数 = 終わりからn番目のメンバー/キーへのアクセス。
 
 **返される値**
 
-- 存在すればFloat値を返し、そうでなければ`0`を返します。 [Float64](../data-types/float.md)。
+- 存在すればFloat値を返します。そうでなければ `0` を返します。 [Float64](../data-types/float.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ``` sql
 SELECT JSONExtractFloat('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 2) as x, toTypeName(x);
 ```
 
-結果:
+結果：
 
 ```response
 ┌───x─┬─toTypeName(x)─┐
@@ -604,37 +611,37 @@ SELECT JSONExtractFloat('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 2) as x,
 ```
 ### JSONExtractBool {#jsonextractbool}
 
-JSONを解析し、ブール値を抽出します。値が存在しない場合や型が間違っている場合は`0`が返されます。
+JSONを解析し、ブール値を抽出します。値が存在しない場合や型が間違っている場合は `0` が返されます。
 
 **構文**
 
 ```sql
-JSONExtractBool(json\[, indices_or_keys\]...)
+JSONExtractBool(json[, indices_or_keys]...)
 ```
 
 **パラメータ**
 
 - `json` — 解析するJSON文字列。 [String](../data-types/string.md)。
-- `indices_or_keys` — 0個以上の引数のリストで、それぞれが文字列または整数であることができます。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 零個以上の引数のリストで、各引数は文字列または整数のいずれかです。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
 
-`indices_or_keys`のタイプ:
-- 文字列 = キーでオブジェクトメンバーにアクセスします。
-- 正の整数 = 開始からn番目のメンバー/キーにアクセスします。
-- 負の整数 = 終わりからn番目のメンバー/キーにアクセスします。
+`indices_or_keys`型：
+- 文字列 = キーによるオブジェクトメンバーへのアクセス。
+- 正の整数 = 開始からn番目のメンバー/キーへのアクセス。
+- 負の整数 = 終わりからn番目のメンバー/キーへのアクセス。
 
 **返される値**
 
-- 存在すればブール値を返し、そうでなければ`0`を返します。 [Bool](../data-types/boolean.md)。
+- 存在すればブール値を返します。そうでなければ `0` を返します。 [Bool](../data-types/boolean.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ``` sql
 SELECT JSONExtractBool('{"passed": true}', 'passed');
 ```
 
-結果:
+結果：
 
 ```response
 ┌─JSONExtractBool('{"passed": true}', 'passed')─┐
@@ -643,7 +650,7 @@ SELECT JSONExtractBool('{"passed": true}', 'passed');
 ```
 ### JSONExtractString {#jsonextractstring}
 
-JSONを解析し、文字列を抽出します。この関数は [`visitParamExtractString`](#simplejsonextractstring) 関数に似ています。値が存在しない場合や型が間違っている場合は空の文字列が返されます。
+JSONを解析し、文字列を抽出します。この関数は、[`visitParamExtractString`](#simplejsonextractstring)関数と似ています。値が存在しない場合や型が間違っている場合は、空の文字列が返されます。
 
 **構文**
 
@@ -654,16 +661,16 @@ JSONExtractString(json [, indices_or_keys]...)
 **パラメータ**
 
 - `json` — 解析するJSON文字列。 [String](../data-types/string.md)。
-- `indices_or_keys` — 0個以上の引数のリストで、それぞれが文字列または整数であることができます。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 零個以上の引数のリストで、各引数は文字列または整数のいずれかです。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
 
-`indices_or_keys`のタイプ:
-- 文字列 = キーでオブジェクトメンバーにアクセスします。
-- 正の整数 = 開始からn番目のメンバー/キーにアクセスします。
-- 負の整数 = 終わりからn番目のメンバー/キーにアクセスします。
+`indices_or_keys`型：
+- 文字列 = キーによるオブジェクトメンバーへのアクセス。
+- 正の整数 = 開始からn番目のメンバー/キーへのアクセス。
+- 負の整数 = 終わりからn番目のメンバー/キーへのアクセス。
 
 **返される値**
 
-- `json`から未エスケープ文字列を返します。未エスケープが失敗した場合、値が存在しない場合、または型が間違っている場合は空の文字列を返します。 [String](../data-types/string.md)。
+- `json`からのアンエスケープされた文字列を返します。アンエスケープが失敗した場合、値が存在しない場合、または型が間違っている場合は空の文字列が返されます。 [String](../data-types/string.md)。
 
 **例**
 
@@ -676,10 +683,10 @@ SELECT JSONExtractString('{"abc":"hello}', 'abc') = ''
 ```
 ### JSONExtract {#jsonextract}
 
-JSONを解析し、指定されたClickHouseデータ型の値を抽出します。この関数は、以前の`JSONExtract<型>`関数の一般化されたバージョンです。意味は次の通りです:
+JSONを解析し、指定されたClickHouseデータ型の値を抽出します。この関数は、前述の `JSONExtract<type>` 関数の一般化バージョンです。意味するところ:
 
-`JSONExtract(..., 'String')`は正確に`JSONExtractString()`と同じ結果を返し、
-`JSONExtract(..., 'Float64')`は正確に`JSONExtractFloat()`と同じ結果を返します。
+`JSONExtract(..., 'String')` は `JSONExtractString()` と完全に同じものを返し、
+`JSONExtract(..., 'Float64')` は `JSONExtractFloat()` と完全に同じものを返します。
 
 **構文**
 
@@ -690,17 +697,17 @@ JSONExtract(json [, indices_or_keys...], return_type)
 **パラメータ**
 
 - `json` — 解析するJSON文字列。 [String](../data-types/string.md)。
-- `indices_or_keys` — 0個以上の引数のリストで、それぞれが文字列または整数であることができます。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 零個以上の引数のリストで、各引数は文字列または整数のいずれかです。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
 - `return_type` — 抽出する値の型を指定する文字列。 [String](../data-types/string.md)。 
 
-`indices_or_keys`のタイプ:
-- 文字列 = キーでオブジェクトメンバーにアクセスします。
-- 正の整数 = 開始からn番目のメンバー/キーにアクセスします。
-- 負の整数 = 終わりからn番目のメンバー/キーにアクセスします。
+`indices_or_keys`型：
+- 文字列 = キーによるオブジェクトメンバーへのアクセス。
+- 正の整数 = 開始からn番目のメンバー/キーへのアクセス。
+- 負の整数 = 終わりからn番目のメンバー/キーへのアクセス。
 
 **返される値**
 
-- 指定された返却型の値が存在すればそれを返し、そうでなければ`0`、`Null`、または空文字列を返します。 [UInt64](../data-types/int-uint.md)、[Int64](../data-types/int-uint.md)、[Float64](../data-types/float.md)、[Bool](../data-types/boolean.md)または[String](../data-types/string.md)。
+- 指定された型の値が存在すればその値を返し、そうでなければ `0`、`Null`、または空文字列を返します。 [UInt64](../data-types/int-uint.md)、[Int64](../data-types/int-uint.md)、[Float64](../data-types/float.md)、[Bool](../data-types/boolean.md) または [String](../data-types/string.md)。
 
 **例**
 
@@ -715,11 +722,11 @@ SELECT JSONExtract('{"day": "Thursday"}', 'day', 'Enum8(\'Sunday\' = 0, \'Monday
 SELECT JSONExtract('{"day": 5}', 'day', 'Enum8(\'Sunday\' = 0, \'Monday\' = 1, \'Tuesday\' = 2, \'Wednesday\' = 3, \'Thursday\' = 4, \'Friday\' = 5, \'Saturday\' = 6)') = 'Friday'
 ```
 
-複数の`indices_or_keys`パラメータを渡してネストされた値を参照します:
+複数の `indices_or_keys` パラメータを渡してネストされた値を参照する：
 ```sql
 SELECT JSONExtract('{"a":{"b":"hello","c":{"d":[1,2,3],"e":[1,3,7]}}}','a','c','Map(String, Array(UInt8))') AS val, toTypeName(val), val['d'];
 ```
-結果:
+結果：
 ```response
 ┌─val───────────────────────┬─toTypeName(val)───────────┬─arrayElement(val, 'd')─┐
 │ {'d':[1,2,3],'e':[1,3,7]} │ Map(String, Array(UInt8)) │ [1,2,3]                │
@@ -727,7 +734,7 @@ SELECT JSONExtract('{"a":{"b":"hello","c":{"d":[1,2,3],"e":[1,3,7]}}}','a','c','
 ```
 ### JSONExtractKeysAndValues {#jsonextractkeysandvalues}
 
-指定されたClickHouseデータ型のキーと値のペアをJSONから解析して抽出します。
+JSONからキー-値ペアを解析し、値が指定されたClickHouseデータ型であるものを抽出します。
 
 **構文**
 
@@ -738,17 +745,17 @@ JSONExtractKeysAndValues(json [, indices_or_keys...], value_type)
 **パラメータ**
 
 - `json` — 解析するJSON文字列。 [String](../data-types/string.md)。
-- `indices_or_keys` — 0個以上の引数のリストで、それぞれが文字列または整数であることができます。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 零個以上の引数のリストで、各引数は文字列または整数のいずれかです。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
 - `value_type` — 抽出する値の型を指定する文字列。 [String](../data-types/string.md)。 
 
-`indices_or_keys`のタイプ:
-- 文字列 = キーでオブジェクトメンバーにアクセスします。
-- 正の整数 = 開始からn番目のメンバー/キーにアクセスします。
-- 負の整数 = 終わりからn番目のメンバー/キーにアクセスします。
+`indices_or_keys`型：
+- 文字列 = キーによるオブジェクトメンバーへのアクセス。
+- 正の整数 = 開始からn番目のメンバー/キーへのアクセス。
+- 負の整数 = 終わりからn番目のメンバー/キーへのアクセス。
 
 **返される値**
 
-- パースされたキーと値のペアの配列を返します。 [Array](../data-types/array.md)([Tuple](../data-types/tuple.md)(`value_type`)). 
+- 解析されたキー-値ペアの配列を返します。 [Array](../data-types/array.md)([Tuple](../data-types/tuple.md)(`value_type`))。 
 
 **例**
 
@@ -767,8 +774,8 @@ JSONExtractKeys(json[, a, b, c...])
 
 **パラメータ**
 
-- `json` — 有効なJSONを含む [String](../data-types/string.md)。
-- `a, b, c...` — ネストされたJSONオブジェクト内の内部フィールドへのパスを指定するために、コンマ区切りのインデックスまたはキー。各引数は、キーによってフィールドを取得するための[String](../data-types/string.md)またはN番目のフィールドを取得するための[Int](../data-types/int-uint.md)であることができます（1からインデックス、負の整数は終わりからカウント）。設定しない場合は、全体のJSONがトップレベルのオブジェクトとして解析されます。オプションのパラメータです。
+- `json` — 有効なJSONを含む[String](../data-types/string.md)。
+- `a, b, c...` — ネストされたJSONオブジェクト内の内部フィールドへのパスを指定するコンマ区切りインデックスまたはキー。各引数は、キーによってフィールドを取得するための[String](../data-types/string.md)か、N番目のフィールドを取得するための[Integer](../data-types/int-uint.md)のいずれかです（1からインデックス、負の整数は末尾からカウント）。設定されていない場合、全体のJSONが最上級オブジェクトとして解析されます。オプションのパラメータ。
 
 **返される値**
 
@@ -776,13 +783,13 @@ JSONExtractKeys(json[, a, b, c...])
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT JSONExtractKeys('{"a": "hello", "b": [-100, 200.0, 300]}');
 ```
 
-結果:
+結果：
 
 ```response
 ┌─JSONExtractKeys('{"a": "hello", "b": [-100, 200.0, 300]}')─┐
@@ -791,7 +798,7 @@ SELECT JSONExtractKeys('{"a": "hello", "b": [-100, 200.0, 300]}');
 ```
 ### JSONExtractRaw {#jsonextractraw}
 
-JSONの一部を未解析の文字列として返します。その部分が存在しない場合または型が間違っている場合は、空の文字列が返されます。
+JSONの一部を未解析の文字列として返します。部分が存在しないか型が間違っている場合は空の文字列が返されます。
 
 **構文**
 
@@ -802,16 +809,16 @@ JSONExtractRaw(json [, indices_or_keys]...)
 **パラメータ**
 
 - `json` — 解析するJSON文字列。 [String](../data-types/string.md)。
-- `indices_or_keys` — 0個以上の引数のリストで、それぞれが文字列または整数であることができます。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 零個以上の引数のリストで、各引数は文字列または整数のいずれかです。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
 
-`indices_or_keys`のタイプ:
-- 文字列 = キーでオブジェクトメンバーにアクセスします。
-- 正の整数 = 開始からn番目のメンバー/キーにアクセスします。
-- 負の整数 = 終わりからn番目のメンバー/キーにアクセスします。
+`indices_or_keys`型：
+- 文字列 = キーによるオブジェクトメンバーへのアクセス。
+- 正の整数 = 開始からn番目のメンバー/キーへのアクセス。
+- 負の整数 = 終わりからn番目のメンバー/キーへのアクセス。
 
 **返される値**
 
-- JSONの一部を未解析の文字列として返します。その部分が存在しない場合や型が間違っている場合は、空の文字列が返されます。 [String](../data-types/string.md)。
+- JSONの一部を未解析の文字列として返します。部分が存在しないか型が間違っている場合、空の文字列が返されます。 [String](../data-types/string.md)。
 
 **例**
 
@@ -820,7 +827,7 @@ SELECT JSONExtractRaw('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = '[-100, 
 ```
 ### JSONExtractArrayRaw {#jsonextractarrayraw}
 
-JSON配列の要素を未解析の文字列として表現した配列を返します。その部分が存在しない場合や配列でない場合は、空の配列が返されます。
+JSON配列の要素を、各要素が未解析の文字列として表された配列を返します。部分が存在しないか、配列でない場合は空の配列が返されます。
 
 **構文**
 
@@ -831,16 +838,16 @@ JSONExtractArrayRaw(json [, indices_or_keys...])
 **パラメータ**
 
 - `json` — 解析するJSON文字列。 [String](../data-types/string.md)。
-- `indices_or_keys` — 0個以上の引数のリストで、それぞれが文字列または整数であることができます。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 零個以上の引数のリストで、各引数は文字列または整数のいずれかです。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
 
-`indices_or_keys`のタイプ:
-- 文字列 = キーでオブジェクトメンバーにアクセスします。
-- 正の整数 = 開始からn番目のメンバー/キーにアクセスします。
-- 負の整数 = 終わりからn番目のメンバー/キーにアクセスします。
+`indices_or_keys`型：
+- 文字列 = キーによるオブジェクトメンバーへのアクセス。
+- 正の整数 = 開始からn番目のメンバー/キーへのアクセス。
+- 負の整数 = 終わりからn番目のメンバー/キーへのアクセス。
 
 **返される値**
 
-- JSON配列の要素を未解析の文字列として表現した配列を返します。存在しない場合または配列でない場合は空の配列が返されます。 [Array](../data-types/array.md)([String](../data-types/string.md))。
+- JSON配列の要素を、各要素が未解析の文字列として表した配列を返します。そうでない場合、部分が存在しない場合や配列でない場合は空の配列が返されます。 [Array](../data-types/array.md)([String](../data-types/string.md))。
 
 **例**
 
@@ -859,23 +866,23 @@ JSONExtractKeysAndValuesRaw(json[, p, a, t, h])
 
 **引数**
 
-- `json` — 有効なJSONを含む [String](../data-types/string.md)。
-- `p, a, t, h` — ネストされたJSONオブジェクト内の内部フィールドへのパスを指定するために、コンマ区切りのインデックスまたはキー。各引数は、キーによってフィールドを取得するための[string](../data-types/string.md)またはN番目のフィールドを取得するための[integer](../data-types/int-uint.md)であることができます（1からインデックス、負の整数は終わりからカウント）。設定しない場合は、全体のJSONがトップレベルのオブジェクトとして解析されます。オプションのパラメータです。
+- `json` — [String](../data-types/string.md)で有効なJSON。
+- `p, a, t, h` — ネストされたJSONオブジェクト内の内部フィールドへのパスを指定するコンマ区切りインデックスまたはキー。各引数は、キーによってフィールドを取得するための[文字列](../data-types/string.md)か、N番目のフィールドを取得するための[整数](../data-types/int-uint.md)のいずれかです（設定されていない場合、全体のJSONが最上級オブジェクトとして解析されます）。オプションです。
 
 **返される値**
 
-- `('key', 'value')`のタプルを含む配列。タプルの両メンバーは文字列です。 [Array](../data-types/array.md)([Tuple](../data-types/tuple.md)([String](../data-types/string.md), [String](../data-types/string.md)))。
-- 要求されたオブジェクトが存在しない場合、または入力JSONが無効な場合は空の配列。 [Array](../data-types/array.md)([Tuple](../data-types/tuple.md)([String](../data-types/string.md), [String](../data-types/string.md)))。
+- `('key', 'value')`のタプルを含む配列。両方のタプルメンバーは文字列です。 [Array](../data-types/array.md)([Tuple](../data-types/tuple.md)([String](../data-types/string.md), [String](../data-types/string.md)))。
+- 要求されたオブジェクトが存在しない場合や、入力JSONが無効な場合は空の配列が返されます。 [Array](../data-types/array.md)([Tuple](../data-types/tuple.md)([String](../data-types/string.md), [String](../data-types/string.md)))。
 
 **例**
 
-クエリ:
+クエリ：
 
 ``` sql
 SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}');
 ```
 
-結果:
+結果：
 
 ``` text
 ┌─JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}')─┐
@@ -883,13 +890,13 @@ SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello"
 └──────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-クエリ:
+クエリ：
 
 ``` sql
 SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}', 'b');
 ```
 
-結果:
+結果：
 
 ``` text
 ┌─JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}', 'b')─┐
@@ -897,13 +904,13 @@ SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello"
 └───────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-クエリ:
+クエリ：
 
 ``` sql
 SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}', -1, 'c');
 ```
 
-結果:
+結果：
 
 ``` text
 ┌─JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello", "f": "world"}}}', -1, 'c')─┐
@@ -912,7 +919,7 @@ SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello"
 ```
 ### JSON_EXISTS {#json_exists}
 
-JSONドキュメントに値が存在する場合は`1`が返されます。存在しない場合は`0`が返されます。
+JSON文書にその値が存在するなら `1` が返されます。値が存在しない場合は `0` が返されます。
 
 **構文**
 
@@ -926,12 +933,12 @@ JSON_EXISTS(json, path)
 - `path` — パスを表す文字列。 [String](../data-types/string.md)。
 
 :::note
-バージョン21.11以前では引数の順序が間違っていました、すなわち `JSON_EXISTS(path, json)` が正しいものでした。
+バージョン21.11以前では、引数の順序が間違っていました。つまり、JSON_EXISTS(path, json)
 :::
 
 **返される値**
 
-- JSONドキュメントに値が存在する場合は`1`、そうでない場合は`0`を返します。
+- JSON文書にその値が存在すれば `1` を、それ以外の場合は `0` が返されます。
 
 **例**
 
@@ -943,7 +950,7 @@ SELECT JSON_EXISTS('{"hello":["world"]}', '$.hello[0]');
 ```
 ### JSON_QUERY {#json_query}
 
-JSONを解析し、JSON配列またはJSONオブジェクトとして値を抽出します。値が存在しない場合は空の文字列が返されます。
+JSONを解析し、JSON配列またはJSONオブジェクトとして値を抽出します。値が存在しない場合、空の文字列が返されます。
 
 **構文**
 
@@ -957,16 +964,16 @@ JSON_QUERY(json, path)
 - `path` — パスを表す文字列。 [String](../data-types/string.md)。
 
 :::note
-バージョン21.11以前では引数の順序が間違っていました、すなわち `JSON_EXISTS(path, json)` が正しいものでした。
+バージョン21.11以前では、引数の順序が間違っていました。つまり、JSON_QUERY(path, json)
 :::
 
 **返される値**
 
-- 抽出した値をJSON配列やJSONオブジェクトとして返します。存在しない場合は空の文字列を返します。 [String](../data-types/string.md)。
+- 抽出した値をJSON配列またはJSONオブジェクトとして返します。存在しない場合は空の文字列を返します。 [String](../data-types/string.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ``` sql
 SELECT JSON_QUERY('{"hello":"world"}', '$.hello');
@@ -975,7 +982,7 @@ SELECT JSON_QUERY('{"hello":2}', '$.hello');
 SELECT toTypeName(JSON_QUERY('{"hello":2}', '$.hello'));
 ```
 
-結果:
+結果：
 
 ``` text
 ["world"]
@@ -983,13 +990,20 @@ SELECT toTypeName(JSON_QUERY('{"hello":2}', '$.hello'));
 [2]
 String
 ```
+```yaml
+title: 'JSON 関数'
+sidebar_label: 'JSON 関数'
+keywords: 'ClickHouse, JSON, 関数'
+description: 'ClickHouseのJSON関数についての文書です。'
+```
+
 ### JSON_VALUE {#json_value}
 
-JSONを解析し、値をJSONスカラーとして抽出します。値が存在しない場合、デフォルトで空の文字列が返されます。
+JSONを解析し、スカラ値としての値を抽出します。値が存在しない場合、デフォルトでは空文字列が返されます。
 
-この関数は以下の設定によって制御されます：
+この関数は以下の設定で制御されます：
 
-- `function_json_value_return_type_allow_nullable` を `true` に設定すると、`NULL` が返されます。値が複雑な型（例：構造体、配列、マップ）である場合、デフォルトで空の文字列が返されます。
+- `function_json_value_return_type_allow_nullable` を `true` に設定すると、 `NULL` が返されます。値が複雑な型（構造体、配列、マップなど）の場合、デフォルトでは空文字列が返されます。
 - `function_json_value_return_type_allow_complex` を `true` に設定すると、複雑な値が返されます。
 
 **構文**
@@ -1000,107 +1014,105 @@ JSON_VALUE(json, path)
 
 **パラメータ**
 
-- `json` — 有効なJSONを持つ文字列。 [String](../data-types/string.md)。 
-- `path` — パスを表す文字列。 [String](../data-types/string.md)。
+- `json` — 有効なJSONを含む文字列。 [String](../data-types/string.md). 
+- `path` — パスを表す文字列。 [String](../data-types/string.md).
 
 :::note
-バージョン21.11以前は引数の順序が正しくありませんでした。つまり、JSON_EXISTS(path, json)。
+バージョン21.11以前は、引数の順序が逆でした。すなわち、 JSON_EXISTS(path, json) です。
 :::
 
 **返される値**
 
-- 抽出された値が存在する場合はJSONスカラーとして返され、存在しない場合は空の文字列が返されます。 [String](../data-types/string.md)。
+- 抽出された値が存在する場合はJSONスカラとして返され、それ以外の場合は空文字列が返されます。 [String](../data-types/string.md).
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT JSON_VALUE('{"hello":"world"}', '$.hello');
 SELECT JSON_VALUE('{"array":[[0, 1, 2, 3, 4, 5], [0, -1, -2, -3, -4, -5]]}', '$.array[*][0 to 2, 4]');
 SELECT JSON_VALUE('{"hello":2}', '$.hello');
 SELECT toTypeName(JSON_VALUE('{"hello":2}', '$.hello'));
-select JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_return_type_allow_nullable=true;
-select JSON_VALUE('{"hello":{"world":"!"}}', '$.hello') settings function_json_value_return_type_allow_complex=true;
+SELECT JSON_VALUE('{"hello":"world"}', '$.b') SETTINGS function_json_value_return_type_allow_nullable=true;
+SELECT JSON_VALUE('{"hello":{"world":"!"}}', '$.hello') SETTINGS function_json_value_return_type_allow_complex=true;
 ```
 
-結果：
+結果:
 
-```text
+``` text
 world
 0
 2
 String
 ```
-
 ### toJSONString {#tojsonstring}
 
-値をそのJSON表現にシリアライズします。さまざまなデータ型や入れ子構造がサポートされています。
-64ビットの [整数](../data-types/int-uint.md) またはそれ以上（`UInt64` や `Int128` のような）は、デフォルトで引用符で囲まれます。[output_format_json_quote_64bit_integers](../../operations/settings/settings.md#session_settings-output_format_json_quote_64bit_integers) がこの動作を制御します。
-特別な値 `NaN` および `inf` は `null` に置き換えられます。これらを表示するには、[output_format_json_quote_denormals](../../operations/settings/settings.md#settings-output_format_json_quote_denormals) 設定を有効にします。
-[Enum](../data-types/enum.md) 値をシリアライズする際には、関数はその名前を出力します。
+値をJSON表現にシリアライズします。さまざまなデータ型やネストされた構造がサポートされています。
+64ビット [整数](../data-types/int-uint.md) またはそれ以上（ `UInt64` や `Int128` のような）は、デフォルトで引用符で囲まれます。 [output_format_json_quote_64bit_integers](/operations/settings/formats#output_format_json_quote_64bit_integers) がこの動作を制御します。
+特別な値 `NaN` および `inf` は `null` に置き換えられます。表示するには [output_format_json_quote_denormals](/operations/settings/formats#output_format_json_quote_denormals) 設定を有効にします。
+[Enum](../data-types/enum.md) 値をシリアライズする場合、関数はその名前を出力します。
 
 **構文**
 
-```sql
+``` sql
 toJSONString(value)
 ```
 
 **引数**
 
-- `value` — シリアライズする値。値は任意のデータ型である可能性があります。
+- `value` — シリアライズする値。値は任意のデータ型を持つことができます。
 
 **返される値**
 
-- 値のJSON表現。 [String](../data-types/string.md)。
+- 値のJSON表現。 [String](../data-types/string.md).
 
 **例**
 
 最初の例は [Map](../data-types/map.md) のシリアライズを示しています。
-2番目の例は、いくつかの特別な値が [Tuple](../data-types/tuple.md) にラップされていることを示しています。
+2番目の例は、特別な値を [Tuple](../data-types/tuple.md) でラップしたものを示しています。
 
-クエリ：
+クエリ:
 
-```sql
+``` sql
 SELECT toJSONString(map('key1', 1, 'key2', 2));
 SELECT toJSONString(tuple(1.25, NULL, NaN, +inf, -inf, [])) SETTINGS output_format_json_quote_denormals = 1;
 ```
 
-結果：
+結果:
 
-```text
+``` text
 {"key1":1,"key2":2}
 [1.25,null,"nan","inf","-inf",[]]
 ```
 
 **関連情報**
 
-- [output_format_json_quote_64bit_integers](../../operations/settings/settings.md#session_settings-output_format_json_quote_64bit_integers)
-- [output_format_json_quote_denormals](../../operations/settings/settings.md#settings-output_format_json_quote_denormals)
-
+- [output_format_json_quote_64bit_integers](/operations/settings/formats#output_format_json_quote_64bit_integers)
+- [output_format_json_quote_denormals](/operations/settings/formats#output_format_json_quote_denormals)
 ### JSONArrayLength {#jsonarraylength}
 
-最も外側のJSON配列の要素数を返します。入力JSON文字列が無効な場合、この関数はNULLを返します。
+最も外側のJSON配列の要素数を返します。入力JSON文字列が無効な場合、関数はNULLを返します。
 
 **構文**
 
-```sql
+``` sql
 JSONArrayLength(json)
 ```
 
-エイリアス: `JSON_ARRAY_LENGTH(json)`。
+別名: `JSON_ARRAY_LENGTH(json)`.
 
 **引数**
 
-- `json` — 有効なJSONを持つ [String](../data-types/string.md)。
+- `json` — 有効なJSONを含む [String](../data-types/string.md).
 
 **返される値**
 
-- `json` が有効なJSON配列文字列である場合、配列の要素数を返し、そうでない場合はNULLを返します。 [Nullable(UInt64)](../data-types/int-uint.md)。
+- `json` が有効なJSON配列文字列の場合、配列要素の数を返します。それ以外の場合はNULLを返します。 [Nullable(UInt64)](../data-types/int-uint.md).
 
 **例**
 
-```sql
+``` sql
 SELECT
     JSONArrayLength(''),
     JSONArrayLength('[1,2,3]')
@@ -1109,56 +1121,54 @@ SELECT
 │                ᴺᵁᴸᴸ │                          3 │
 └─────────────────────┴────────────────────────────┘
 ```
-
 ### jsonMergePatch {#jsonmergepatch}
 
-複数のJSONオブジェクトをマージすることによって形成されるマージされたJSONオブジェクト文字列を返します。
+複数のJSONオブジェクトをマージして形成されたマージされたJSONオブジェクト文字列を返します。
 
 **構文**
 
-```sql
+``` sql
 jsonMergePatch(json1, json2, ...)
 ```
 
 **引数**
 
-- `json` — 有効なJSONを持つ [String](../data-types/string.md)。
+- `json` — 有効なJSONを含む [String](../data-types/string.md).
 
 **返される値**
 
-- JSONオブジェクト文字列が有効であれば、マージされたJSONオブジェクト文字列を返します。 [String](../data-types/string.md)。
+- JSONオブジェクト文字列が有効な場合、マージされたJSONオブジェクト文字列を返します。 [String](../data-types/string.md).
 
 **例**
 
-```sql
+``` sql
 SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res
 
 ┌─res───────────────────┐
 │ {"a":1,"name":"zoey"} │
 └───────────────────────┘
 ```
-
 ### JSONAllPaths {#jsonallpaths}
 
-各行の [JSON](../data-types/newjson.md) カラムに保存されているすべてのパスのリストを返します。
+各行に格納されているすべてのパスのリストを返します [JSON](../data-types/newjson.md) カラムで。
 
 **構文**
 
-```sql
+``` sql
 JSONAllPaths(json)
 ```
 
 **引数**
 
-- `json` — [JSON](../data-types/newjson.md)。
+- `json` — [JSON](../data-types/newjson.md).
 
 **返される値**
 
-- パスの配列。 [Array(String)](../data-types/array.md)。
+- パスの配列。 [Array(String)](../data-types/array.md).
 
 **例**
 
-```sql
+``` sql
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
 INSERT INTO test FORMAT JSONEachRow {"json" : {"a" : 42}}, {"json" : {"b" : "Hello"}}, {"json" : {"a" : [1, 2, 3], "c" : "2020-01-01"}}
 SELECT json, JSONAllPaths(json) FROM test;
@@ -1171,28 +1181,27 @@ SELECT json, JSONAllPaths(json) FROM test;
 │ {"a":["1","2","3"],"c":"2020-01-01"} │ ['a','c']          │
 └──────────────────────────────────────┴────────────────────┘
 ```
-
 ### JSONAllPathsWithTypes {#jsonallpathswithtypes}
 
-各行の [JSON](../data-types/newjson.md) カラムに保存されているすべてのパスとそのデータ型のマップを返します。
+各行に格納されているすべてのパスとそのデータ型のマップを返します [JSON](../data-types/newjson.md) カラムで。
 
 **構文**
 
-```sql
+``` sql
 JSONAllPathsWithTypes(json)
 ```
 
 **引数**
 
-- `json` — [JSON](../data-types/newjson.md)。
+- `json` — [JSON](../data-types/newjson.md).
 
 **返される値**
 
-- パスの配列。 [Map(String, String)](../data-types/array.md)。
+- パスの配列。 [Map(String, String)](../data-types/array.md).
 
 **例**
 
-```sql
+``` sql
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
 INSERT INTO test FORMAT JSONEachRow {"json" : {"a" : 42}}, {"json" : {"b" : "Hello"}}, {"json" : {"a" : [1, 2, 3], "c" : "2020-01-01"}}
 SELECT json, JSONAllPathsWithTypes(json) FROM test;
@@ -1205,28 +1214,27 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 │ {"a":["1","2","3"],"c":"2020-01-01"} │ {'a':'Array(Nullable(Int64))','c':'Date'} │
 └──────────────────────────────────────┴───────────────────────────────────────────┘
 ```
-
 ### JSONDynamicPaths {#jsondynamicpaths}
 
-[JSON](../data-types/newjson.md) カラムに保存されている別のサブカラムとして格納されている動的パスのリストを返します。
+[JSON](../data-types/newjson.md) カラムで、各行に格納されている動的パスのリストを返します。
 
 **構文**
 
-```sql
+``` sql
 JSONDynamicPaths(json)
 ```
 
 **引数**
 
-- `json` — [JSON](../data-types/newjson.md)。
+- `json` — [JSON](../data-types/newjson.md).
 
 **返される値**
 
-- パスの配列。 [Array(String)](../data-types/array.md)。
+- パスの配列。 [Array(String)](../data-types/array.md).
 
 **例**
 
-```sql
+``` sql
 CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
 INSERT INTO test FORMAT JSONEachRow {"json" : {"a" : 42}}, {"json" : {"b" : "Hello"}}, {"json" : {"a" : [1, 2, 3], "c" : "2020-01-01"}}
 SELECT json, JSONDynamicPaths(json) FROM test;
@@ -1234,29 +1242,28 @@ SELECT json, JSONDynamicPaths(json) FROM test;
 
 ```response
 ┌─json─────────────────────────────────┬─JSONDynamicPaths(json)─┐
-| {"a":"42"}                           │ ['a']                  │
+│ {"a":"42"}                           │ ['a']                  │
 │ {"b":"Hello"}                        │ []                     │
 │ {"a":["1","2","3"],"c":"2020-01-01"} │ ['a']                  │
 └──────────────────────────────────────┴────────────────────────┘
 ```
-
 ### JSONDynamicPathsWithTypes {#jsondynamicpathswithtypes}
 
-各行の [JSON](../data-types/newjson.md) カラムに保存されている別のサブカラムとして格納されている動的パスとそのタイプのマップを返します。
+個々の行に格納されている動的パスとその型のマップを返します [JSON](../data-types/newjson.md) カラムで。
 
 **構文**
 
-```sql
+``` sql
 JSONAllPathsWithTypes(json)
 ```
 
 **引数**
 
-- `json` — [JSON](../data-types/newjson.md)。
+- `json` — [JSON](../data-types/newjson.md).
 
 **返される値**
 
-- パスの配列。 [Map(String, String)](../data-types/array.md)。
+- パスの配列。 [Map(String, String)](../data-types/array.md).
 
 **例**
 
@@ -1273,10 +1280,9 @@ SELECT json, JSONDynamicPathsWithTypes(json) FROM test;
 │ {"a":["1","2","3"],"c":"2020-01-01"} │ {'a':'Array(Nullable(Int64))'}  │
 └──────────────────────────────────────┴─────────────────────────────────┘
 ```
-
 ### JSONSharedDataPaths {#jsonshareddatapaths}
 
-共有データ構造に保存されているパスのリストを返します [JSON](../data-types/newjson.md) カラム。
+[JSON](../data-types/newjson.md) カラムで、共有データ構造に格納されているパスのリストを返します。
 
 **構文**
 
@@ -1286,11 +1292,11 @@ JSONSharedDataPaths(json)
 
 **引数**
 
-- `json` — [JSON](../data-types/newjson.md)。
+- `json` — [JSON](../data-types/newjson.md).
 
 **返される値**
 
-- パスの配列。 [Array(String)](../data-types/array.md)。
+- パスの配列。 [Array(String)](../data-types/array.md).
 
 **例**
 
@@ -1307,10 +1313,9 @@ SELECT json, JSONSharedDataPaths(json) FROM test;
 │ {"a":["1","2","3"],"c":"2020-01-01"} │ ['c']                     │
 └──────────────────────────────────────┴───────────────────────────┘
 ```
-
 ### JSONSharedDataPathsWithTypes {#jsonshareddatapathswithtypes}
 
-共有データ構造に保存されているパスとそのタイプのマップを各行の [JSON](../data-types/newjson.md) カラムで返します。
+[JSON](../data-types/newjson.md) カラムで、共有データ構造に格納されているパスとそれらの型のマップを各行に返します。
 
 **構文**
 
@@ -1320,11 +1325,11 @@ JSONSharedDataPathsWithTypes(json)
 
 **引数**
 
-- `json` — [JSON](../data-types/newjson.md)。
+- `json` — [JSON](../data-types/newjson.md).
 
 **返される値**
 
-- パスの配列。 [Map(String, String)](../data-types/array.md)。
+- パスの配列。 [Map(String, String)](../data-types/array.md).
 
 **例**
 

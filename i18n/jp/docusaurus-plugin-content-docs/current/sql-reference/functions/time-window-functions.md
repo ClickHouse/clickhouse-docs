@@ -1,7 +1,7 @@
 ---
-slug: /sql-reference/functions/time-window-functions
+slug: '/sql-reference/functions/time-window-functions'
 sidebar_position: 175
-sidebar_label: 時間ウィンドウ
+sidebar_label: '時間ウィンドウ'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
@@ -14,11 +14,11 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
-時間ウィンドウ関数は、対応するウィンドウの含まれる下限と排他的上限を返します。[WindowView](../statements/create/view.md/#window-view-experimental) に関する関数は以下の通りです。
+時間ウィンドウ関数は、対応するウィンドウの包含的下限と排他的上限を返します。[WindowView](/sql-reference/statements/create/view#window-view)で作業するための関数は以下に示されています。
 
 ## tumble {#tumble}
 
-ティンバリング時間ウィンドウは、固定の長さ (`interval`) を持つ非重複の連続ウィンドウにレコードを割り当てます。
+チューニング時間ウィンドウは、到達的で連続したウィンドウにレコードを割り当て、固定の期間（`interval`）を持ちます。
 
 **構文**
 
@@ -28,12 +28,12 @@ tumble(time_attr, interval [, timezone])
 
 **引数**
 - `time_attr` — 日付と時刻。[DateTime](../data-types/datetime.md)。
-- `interval` — [Interval](../data-types/special-data-types/interval.md) におけるウィンドウの間隔。
-- `timezone` — [タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone) （オプション）。
+- `interval` — ウィンドウインターバルの[Interval](../data-types/special-data-types/interval.md)。
+- `timezone` — [タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。
 
 **返される値**
 
-- 対応するティンバリングウィンドウの含まれる下限と排他的上限。[Tuple](../data-types/tuple.md)([DateTime](../data-types/datetime.md), [DateTime](../data-types/datetime.md))。
+- 対応するチューニングウィンドウの包含的下限と排他的上限。[タプル](../data-types/tuple.md)([DateTime](../data-types/datetime.md), [DateTime](../data-types/datetime.md))。
 
 **例**
 
@@ -53,7 +53,7 @@ SELECT tumble(now(), toIntervalDay('1'));
 
 ## tumbleStart {#tumblestart}
 
-対応する [ティンバリングウィンドウ](#tumble) の含まれる下限を返します。
+対応する[tumbling window](#tumble)の包含的下限を返します。
 
 **構文**
 
@@ -64,12 +64,12 @@ tumbleStart(time_attr, interval [, timezone]);
 **引数**
 
 - `time_attr` — 日付と時刻。[DateTime](../data-types/datetime.md)。
-- `interval` — [Interval](../data-types/special-data-types/interval.md) におけるウィンドウの間隔。
-- `timezone` — [タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone) （オプション）。
+- `interval` — ウィンドウインターバルの[Interval](../data-types/special-data-types/interval.md)。
+- `timezone` — [タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。
 
 **返される値**
 
-- 対応するティンバリングウィンドウの含まれる下限。[DateTime](../data-types/datetime.md)、[Tuple](../data-types/tuple.md) または [UInt32](../data-types/int-uint.md)。
+- 対応するチューニングウィンドウの包含的下限。[DateTime](../data-types/datetime.md)、[タプル](../data-types/tuple.md)または[UInt32](../data-types/int-uint.md)。
 
 **例**
 
@@ -89,7 +89,7 @@ SELECT tumbleStart(now(), toIntervalDay('1'));
 
 ## tumbleEnd {#tumbleend}
 
-対応する [ティンバリングウィンドウ](#tumble) の排他的上限を返します。
+対応する[tumbling window](#tumble)の排他的上限を返します。
 
 **構文**
 
@@ -100,12 +100,12 @@ tumbleEnd(time_attr, interval [, timezone]);
 **引数**
 
 - `time_attr` — 日付と時刻。[DateTime](../data-types/datetime.md)。
-- `interval` — [Interval](../data-types/special-data-types/interval.md) におけるウィンドウの間隔。
-- `timezone` — [タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone) （オプション）。
+- `interval` — ウィンドウインターバルの[Interval](../data-types/special-data-types/interval.md)。
+- `timezone` — [タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。
 
 **返される値**
 
-- 対応するティンバリングウィンドウの含まれる下限。[DateTime](../data-types/datetime.md)、[Tuple](../data-types/tuple.md) または [UInt32](../data-types/int-uint.md)。
+- 対応するチューニングウィンドウの包含的下限。[DateTime](../data-types/datetime.md)、[タプル](../data-types/tuple.md)または[UInt32](../data-types/int-uint.md)。
 
 **例**
 
@@ -125,7 +125,7 @@ SELECT tumbleEnd(now(), toIntervalDay('1'));
 
 ## hop {#hop}
 
-ホッピング時間ウィンドウは、固定の長さ (`window_interval`) を持ち、指定されたホップ間隔 (`hop_interval`) によって移動します。`hop_interval` が `window_interval` より小さい場合、ホッピングウィンドウは重複します。したがって、レコードは複数のウィンドウに割り当てられることができます。
+ホッピング時間ウィンドウは固定の期間（`window_interval`）を持ち、指定されたホップ間隔（`hop_interval`）によってホップします。`hop_interval`が`window_interval`より小さい場合、ホッピングウィンドウは重複します。したがって、レコードは複数のウィンドウに割り当てられることがあります。
 
 ``` sql
 hop(time_attr, hop_interval, window_interval [, timezone])
@@ -136,14 +136,14 @@ hop(time_attr, hop_interval, window_interval [, timezone])
 - `time_attr` — 日付と時刻。[DateTime](../data-types/datetime.md)。
 - `hop_interval` — 正のホップ間隔。[Interval](../data-types/special-data-types/interval.md)。
 - `window_interval` — 正のウィンドウ間隔。[Interval](../data-types/special-data-types/interval.md)。
-- `timezone` — [タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone) （オプション）。
+- `timezone` — [タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。
 
 **返される値**
 
-- 対応するホッピングウィンドウの含まれる下限と排他的上限。[Tuple](../data-types/tuple.md)([DateTime](../data-types/datetime.md), [DateTime](../data-types/datetime.md))。
+- 対応するホッピングウィンドウの包含的下限と排他的上限。[タプル](../data-types/tuple.md)([DateTime](../data-types/datetime.md), [DateTime](../data-types/datetime.md))。
 
 :::note
-1つのレコードが複数のホップウィンドウに割り当てられる可能性があるため、関数は `WINDOW VIEW` なしでホップ関数が使用された場合、**最初の**ウィンドウの境界のみを返します。
+1つのレコードが複数のホップウィンドウに割り当てられる可能性があるため、ホップ関数が`WINDOW VIEW`なしで使用される場合、関数は**最初**のウィンドウの境界のみを返します。
 :::
 
 **例**
@@ -164,27 +164,26 @@ SELECT hop(now(), INTERVAL '1' DAY, INTERVAL '2' DAY);
 
 ## hopStart {#hopstart}
 
-対応する [ホッピングウィンドウ](#hop) の含まれる下限を返します。
+対応する[ホッピングウィンドウ](#hop)の包含的下限を返します。
 
 **構文**
 
 ``` sql
 hopStart(time_attr, hop_interval, window_interval [, timezone]);
 ```
-
 **引数**
 
 - `time_attr` — 日付と時刻。[DateTime](../data-types/datetime.md)。
 - `hop_interval` — 正のホップ間隔。[Interval](../data-types/special-data-types/interval.md)。
 - `window_interval` — 正のウィンドウ間隔。[Interval](../data-types/special-data-types/interval.md)。
-- `timezone` — [タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone) （オプション）。
+- `timezone` — [タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。
 
 **返される値**
 
-- 対応するホッピングウィンドウの含まれる下限。[DateTime](../data-types/datetime.md)、[Tuple](../data-types/tuple.md) または [UInt32](../data-types/int-uint.md)。
+- 対応するホッピングウィンドウの包含的下限。[DateTime](../data-types/datetime.md)、[タプル](../data-types/tuple.md)または[UInt32](../data-types/int-uint.md)。
 
 :::note
-1つのレコードが複数のホップウィンドウに割り当てられる可能性があるため、関数は `WINDOW VIEW` なしでホップ関数が使用された場合、**最初の**ウィンドウの境界のみを返します。
+1つのレコードが複数のホップウィンドウに割り当てられる可能性があるため、ホップ関数が`WINDOW VIEW`なしで使用される場合、関数は**最初**のウィンドウの境界のみを返します。
 :::
 
 **例**
@@ -205,27 +204,26 @@ SELECT hopStart(now(), INTERVAL '1' DAY, INTERVAL '2' DAY);
 
 ## hopEnd {#hopend}
 
-対応する [ホッピングウィンドウ](#hop) の排他的上限を返します。
+対応する[ホッピングウィンドウ](#hop)の排他的上限を返します。
 
 **構文**
 
 ``` sql
 hopEnd(time_attr, hop_interval, window_interval [, timezone]);
 ```
-
 **引数**
 
 - `time_attr` — 日付と時刻。[DateTime](../data-types/datetime.md)。
 - `hop_interval` — 正のホップ間隔。[Interval](../data-types/special-data-types/interval.md)。
 - `window_interval` — 正のウィンドウ間隔。[Interval](../data-types/special-data-types/interval.md)。
-- `timezone` — [タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone) （オプション）。
+- `timezone` — [タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。
 
 **返される値**
 
-- 対応するホッピングウィンドウの排他的上限。[DateTime](../data-types/datetime.md)、[Tuple](../data-types/tuple.md) または [UInt32](../data-types/int-uint.md)。
+- 対応するホッピングウィンドウの排他的上限。[DateTime](../data-types/datetime.md)、[タプル](../data-types/tuple.md)または[UInt32](../data-types/int-uint.md)。
 
 :::note
-1つのレコードが複数のホップウィンドウに割り当てられる可能性があるため、関数は `WINDOW VIEW` なしでホップ関数が使用された場合、**最初の**ウィンドウの境界のみを返します。
+1つのレコードが複数のホップウィンドウに割り当てられる可能性があるため、ホップ関数が`WINDOW VIEW`なしで使用される場合、関数は**最初**のウィンドウの境界のみを返します。
 :::
 
 **例**
@@ -247,4 +245,4 @@ SELECT hopEnd(now(), INTERVAL '1' DAY, INTERVAL '2' DAY);
 
 ## 関連コンテンツ {#related-content}
 
-- ブログ: [ClickHouseにおける時系列データの操作](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+- Blog: [ClickHouseでの時系列データの操作](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

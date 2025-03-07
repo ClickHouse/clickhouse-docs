@@ -82,7 +82,7 @@ def translate_text(config, text, model="gpt-4o-mini"):
             - Ensure the markdown is MDX 3 compatible - escaping < and > with &lt; and &gt; and avoiding the creation of unclosed xml tags.
             - Do not add new code delimiters which are not present in the original content e.g. '```html', even if the content appears to contain this type.
             - Do not translate terms which indicate setting names. These are denoted by lower case and underscore e.g. live_view_heartbeat_interval.
-            - Translate the title, sidebar_label, keywords and description in metadata blocks. Ensure these are wrapped in single quotes.
+            - Translate the title, sidebar_label, keywords (list of single quoted strings) and description in yaml metadata blocks if they exist. Ensure these are wrapped in single quotes. Do not add entries.
             - This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. 
             - Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}.
         """
@@ -168,9 +168,10 @@ def translate_file(config, input_file_path, output_file_path, model):
                     continue
                 output_file.write(line + "\n")
 
-        # Rename output file with .translate suffix to .translated
+        # Rename output file with .translate suffix to .translated - do this to help with debugging during a translation and if updating
+        # Note: this could be removed and we just rename the file to the target, write the hash
         os.rename(output_file_path, f"{output_file_path}d")
-        # generate hash file
+        # generate hash file - TODO: This should probably happen after the files being renamed.
         write_file_hash(input_file_path, output_file_path.removesuffix(".translate") + ".hash", chunk_size=65536)
 
     except FileNotFoundError:

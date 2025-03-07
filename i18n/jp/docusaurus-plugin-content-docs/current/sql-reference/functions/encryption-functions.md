@@ -1,20 +1,23 @@
 ---
-slug: /sql-reference/functions/encryption-functions
+slug: '/sql-reference/functions/encryption-functions'
 sidebar_position: 70
-sidebar_label: 暗号化
+sidebar_label: '暗号化'
 ---
 
-これらの関数は、AES (高度な暗号化規格) アルゴリズムを使用してデータの暗号化と復号化を実装します。
 
-鍵の長さは暗号化モードによって異なり、`-128-` モードは16バイト、 `-196-` モードは24バイト、`-256-` モードは32バイトです。
+# 暗号化関数
 
-初期化ベクトルの長さは常に16バイトです（16バイトを超えるバイトは無視されます）。
+これらの関数は、AES（Advanced Encryption Standard）アルゴリズムを用いてデータの暗号化と復号化を実装します。
 
-これらの関数は ClickHouse 21.1 以前では遅く動作することに注意してください。
+キーの長さは暗号化モードによって異なります。`-128-`、`-196-`、`-256-` モードでは、それぞれ16、24、32バイトです。
+
+初期化ベクトルの長さは常に16バイト（16バイトを超えるバイトは無視されます）です。
+
+これらの関数は、ClickHouse 21.1まで遅く動作することに注意してください。
 
 ## encrypt {#encrypt}
 
-この関数は以下のモードを使用してデータを暗号化します：
+この関数は、以下のモードを使用してデータを暗号化します。
 
 - aes-128-ecb, aes-192-ecb, aes-256-ecb
 - aes-128-cbc, aes-192-cbc, aes-256-cbc
@@ -31,21 +34,21 @@ encrypt('mode', 'plaintext', 'key' [, iv, aad])
 
 **引数**
 
-- `mode` — 暗号化モード。 [String](../data-types/string.md#string).
-- `plaintext` — 暗号化するテキスト。 [String](../data-types/string.md#string).
-- `key` — 暗号化鍵。 [String](../data-types/string.md#string).
-- `iv` — 初期化ベクトル。 `-gcm` モードでは必須、他のモードではオプション。 [String](../data-types/string.md#string).
-- `aad` — 追加の認証データ。 暗号化されませんが、復号化に影響を与えます。 `-gcm` モードでのみ機能し、他のモードでは例外をスローします。 [String](../data-types/string.md#string).
+- `mode` — 暗号化モード。 [String](/sql-reference/data-types/string).
+- `plaintext` — 暗号化する必要のあるテキスト。 [String](/sql-reference/data-types/string).
+- `key` — 暗号化キー。 [String](/sql-reference/data-types/string).
+- `iv` — 初期化ベクトル。`-gcm` モードでは必須、他のモードではオプション。 [String](/sql-reference/data-types/string).
+- `aad` — 追加の認証データ。暗号化されませんが、復号化に影響します。`-gcm` モードでのみ機能し、その他のモードでは例外をスローします。 [String](/sql-reference/data-types/string).
 
-**戻り値**
+**返される値**
 
-- 暗号文のバイナリ文字列。 [String](../data-types/string.md#string).
+- 暗号文のバイナリ文字列。 [String](/sql-reference/data-types/string).
 
 **例**
 
-このテーブルを作成します：
+このテーブルを作成します:
 
-クエリ：
+クエリ:
 
 ``` sql
 CREATE TABLE encryption_test
@@ -56,9 +59,9 @@ CREATE TABLE encryption_test
 ENGINE = Memory;
 ```
 
-いくつかのデータを挿入します（暗号化の概念を損なうため、鍵や初期化ベクトルをデータベースに保存しないでください）。「ヒント」を保存することも安全ではなく、あくまで示例目的で使用します：
+データを挿入します（この鍵/ ivをデータベースに保存することは安全ではありません）。また、「ヒント」を保存することも安全ではなく、説明目的のみで使用されます:
 
-クエリ：
+クエリ:
 
 ``` sql
 INSERT INTO encryption_test VALUES('aes-256-ofb no IV', encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212')),\
@@ -67,13 +70,13 @@ INSERT INTO encryption_test VALUES('aes-256-ofb no IV', encrypt('aes-256-ofb', '
 ('aes-256-cbc no IV', encrypt('aes-256-cbc', 'Secret', '12345678910121314151617181920212'));
 ```
 
-クエリ：
+クエリ:
 
 ``` sql
 SELECT comment, hex(secret) FROM encryption_test;
 ```
 
-結果：
+結果:
 
 ``` text
 ┌─comment──────────────────────────┬─hex(secret)──────────────────────┐
@@ -84,9 +87,9 @@ SELECT comment, hex(secret) FROM encryption_test;
 └──────────────────────────────────┴──────────────────────────────────┘
 ```
 
-`-gcm` の例：
+`-gcm` を使用した例:
 
-クエリ：
+クエリ:
 
 ``` sql
 INSERT INTO encryption_test VALUES('aes-256-gcm', encrypt('aes-256-gcm', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv')), \
@@ -95,7 +98,7 @@ INSERT INTO encryption_test VALUES('aes-256-gcm', encrypt('aes-256-gcm', 'Secret
 SELECT comment, hex(secret) FROM encryption_test WHERE comment LIKE '%gcm%';
 ```
 
-結果：
+結果:
 
 ``` text
 ┌─comment──────────────┬─hex(secret)──────────────────────────────────┐
@@ -106,9 +109,9 @@ SELECT comment, hex(secret) FROM encryption_test WHERE comment LIKE '%gcm%';
 
 ## aes_encrypt_mysql {#aes_encrypt_mysql}
 
-MySQL の暗号化と互換性があり、結果の暗号文は [AES_DECRYPT](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-decrypt) 関数で復号化できます。
+MySQLの暗号化と互換性があり、暗号文は [AES_DECRYPT](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-decrypt) 関数で復号化できます。
 
-同じ入力に対して `encrypt` と同じ暗号文を生成します。しかし、`key` や `iv` が通常より長い場合、`aes_encrypt_mysql` は MySQL の `aes_encrypt` が行うように、鍵を「折り返して」初期化ベクトルの余分なビットを無視します。
+同じ入力に対して `encrypt` と同じ暗号文を生成します。しかし、`key` または `iv` が通常の長さを超える場合、`aes_encrypt_mysql` はMySQLの `aes_encrypt` が行うことに従って、`key` を「折り畳み」、余分なビットの `iv` を無視します。
 
 サポートされている暗号化モード：
 
@@ -124,26 +127,26 @@ aes_encrypt_mysql('mode', 'plaintext', 'key' [, iv])
 
 **引数**
 
-- `mode` — 暗号化モード。 [String](../data-types/string.md#string).
-- `plaintext` — 暗号化するテキスト。 [String](../data-types/string.md#string).
-- `key` — 暗号化鍵。 モードで要求されるより長い場合は、MySQL 特有の鍵の折り返しが行われます。 [String](../data-types/string.md#string).
-- `iv` — 初期化ベクトル。 オプション。最初の16バイトのみが考慮されます。 [String](../data-types/string.md#string).
+- `mode` — 暗号化モード。 [String](/sql-reference/data-types/string).
+- `plaintext` — 暗号化する必要のあるテキスト。 [String](/sql-reference/data-types/string).
+- `key` — 暗号化キー。モードごとに必要な長さより長い場合、MySQL特有のキーの折り畳みが行われます。 [String](/sql-reference/data-types/string).
+- `iv` — 初期化ベクトル。オプションですが、最初の16バイトのみが考慮されます。 [String](/sql-reference/data-types/string).
 
-**戻り値**
+**返される値**
 
-- 暗号文のバイナリ文字列。 [String](../data-types/string.md#string).
+- 暗号文のバイナリ文字列。 [String](/sql-reference/data-types/string).
 
 **例**
 
-同じ入力に対して `encrypt` と `aes_encrypt_mysql` は同じ暗号文を生成します：
+入力が等しい場合、`encrypt` と `aes_encrypt_mysql` は同じ暗号文を生成します:
 
-クエリ：
+クエリ:
 
 ``` sql
 SELECT encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv') = aes_encrypt_mysql('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv') AS ciphertexts_equal;
 ```
 
-結果：
+結果:
 
 ```response
 ┌─ciphertexts_equal─┐
@@ -151,30 +154,30 @@ SELECT encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'ivi
 └───────────────────┘
 ```
 
-しかし、`key` または `iv` が期待以上に長い場合 `encrypt` は失敗します：
+しかし、`key` または `iv` が予想より長い場合、`encrypt` は失敗します:
 
-クエリ：
+クエリ:
 
 ``` sql
 SELECT encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123');
 ```
 
-結果：
+結果:
 
 ``` text
 Received exception from server (version 22.6.1):
 Code: 36. DB::Exception: Received from localhost:9000. DB::Exception: Invalid key size: 33 expected 32: While processing encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123').
 ```
 
-一方、`aes_encrypt_mysql` は MySQL 互換の出力を生成します：
+一方、`aes_encrypt_mysql` はMySQL互換の出力を生成します:
 
-クエリ：
+クエリ:
 
 ``` sql
 SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123')) AS ciphertext;
 ```
 
-結果：
+結果:
 
 ```response
 ┌─ciphertext───┐
@@ -182,15 +185,15 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 └──────────────┘
 ```
 
-`IV` をさらに長く指定しても同じ結果が得られることに注意してください。
+さらに長い `IV` を指定しても同じ結果が得られます。
 
-クエリ：
+クエリ:
 
 ``` sql
 SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123456')) AS ciphertext
 ```
 
-結果：
+結果:
 
 ``` text
 ┌─ciphertext───┐
@@ -198,7 +201,7 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 └──────────────┘
 ```
 
-これは、MySQL が同じ入力に対して生成するものとバイナリ的に等しいです：
+これは、同じ入力でMySQLが生成するものと同じバイナリです:
 
 ``` sql
 mysql> SET  block_encryption_mode='aes-256-ofb';
@@ -215,7 +218,7 @@ mysql> SELECT aes_encrypt('Secret', '123456789101213141516171819202122', 'iviviv
 
 ## decrypt {#decrypt}
 
-この関数は以下のモードを使用して暗号文を平文に復号化します：
+この関数は、以下のモードを使用して暗号文を平文に復号化します。
 
 - aes-128-ecb, aes-192-ecb, aes-256-ecb
 - aes-128-cbc, aes-192-cbc, aes-256-cbc
@@ -232,27 +235,27 @@ decrypt('mode', 'ciphertext', 'key' [, iv, aad])
 
 **引数**
 
-- `mode` — 復号化モード。 [String](../data-types/string.md#string).
-- `ciphertext` — 復号化する必要がある暗号化されたテキスト。 [String](../data-types/string.md#string).
-- `key` — 復号化鍵。 [String](../data-types/string.md#string).
-- `iv` — 初期化ベクトル。 `-gcm` モードでは必須、他のモードではオプション。 [String](../data-types/string.md#string).
-- `aad` — 追加の認証データ。この値が不正確な場合は復号化しません。 `-gcm` モードでのみ機能し、他のモードでは例外をスローします。 [String](../data-types/string.md#string).
+- `mode` — 復号化モード。 [String](/sql-reference/data-types/string).
+- `ciphertext` — 復号化する必要のある暗号化されたテキスト。 [String](/sql-reference/data-types/string).
+- `key` — 復号化キー。 [String](/sql-reference/data-types/string).
+- `iv` — 初期化ベクトル。`-gcm` モードでは必須、他のモードではオプション。 [String](/sql-reference/data-types/string).
+- `aad` — 追加の認証データ。この値が誤っている場合は復号化しません。`-gcm` モードでのみ機能し、他のモードでは例外をスローします。 [String](/sql-reference/data-types/string).
 
-**戻り値**
+**返される値**
 
-- 復号化された文字列。 [String](../data-types/string.md#string).
+- 復号化された文字列。 [String](/sql-reference/data-types/string).
 
 **例**
 
-[encrypt](#encrypt) のテーブルを再利用します。
+[encrypt](#encrypt) からテーブルを再利用します。
 
-クエリ：
+クエリ:
 
 ``` sql
 SELECT comment, hex(secret) FROM encryption_test;
 ```
 
-結果：
+結果:
 
 ``` text
 ┌─comment──────────────┬─hex(secret)──────────────────────────────────┐
@@ -267,15 +270,15 @@ SELECT comment, hex(secret) FROM encryption_test;
 └──────────────────────────────────┴──────────────────────────────────┘
 ```
 
-では、これらのすべてのデータを復号化してみましょう。
+では、すべてのデータを復号化してみましょう。
 
-クエリ：
+クエリ:
 
 ``` sql
 SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920212') as plaintext FROM encryption_test
 ```
 
-結果：
+結果:
 
 ``` text
 ┌─comment──────────────┬─plaintext──┐
@@ -293,15 +296,15 @@ SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920
 └──────────────────────────────────┴───────────┘
 ```
 
-データの一部が正しく復号化されたことに注意してください。他の部分は暗号化時に `mode`、`key`、または `iv` が異なっていたため、意味のあるデータではありませんでした。
+どのデータが正しく復号化されたか、そして残りがなぜ異常になるのかに注意してください。`mode`、`key`、または `iv` のいずれかが暗号化時に異なっていたためです。
 
 ## tryDecrypt {#trydecrypt}
 
-`decrypt` に似ていますが、復号化に失敗した場合は NULL を返します。
+`decrypt` と似ていますが、復号化に失敗した場合はNULLを返します。
 
 **例**
 
-以下のようなテーブルを作成します。`user_id` は一意のユーザー ID、`encrypted` は暗号化された文字列フィールド、`iv` は復号化/暗号化用の初期ベクトルです。ユーザーは自分の ID と暗号化されたフィールドを復号化するための鍵を知っていると仮定します：
+`user_id` が一意なユーザーIDで、`encrypted` が暗号化された文字列フィールド、`iv` が復号化/暗号化の初期ベクトルであるテーブルを作成します。ユーザーは自分のIDと復号化に使用するキーを知っていると仮定します。
 
 ```sql
 CREATE TABLE decrypt_null (
@@ -312,7 +315,7 @@ CREATE TABLE decrypt_null (
 ) ENGINE = Memory;
 ```
 
-いくつかのデータを挿入します：
+データを挿入します:
 
 ```sql
 INSERT INTO decrypt_null VALUES
@@ -321,7 +324,7 @@ INSERT INTO decrypt_null VALUES
     ('2022-09-02 00:00:01', 3, encrypt('aes-256-gcm', 'value3', 'keykeykeykeykeykeykeykeykeykey03', 'iv3'), 'iv3');
 ```
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT
@@ -332,7 +335,7 @@ FROM decrypt_null
 ORDER BY user_id ASC
 ```
 
-結果：
+結果:
 
 ```response
 ┌──────────────────dt─┬─user_id─┬─value──┐
@@ -344,9 +347,9 @@ ORDER BY user_id ASC
 
 ## aes_decrypt_mysql {#aes_decrypt_mysql}
 
-MySQL の暗号化と互換性があり、[AES_ENCRYPT](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-encrypt) 関数で暗号化されたデータを復号化します。
+MySQLの暗号化と互換性があり、[AES_ENCRYPT](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-encrypt) 関数で暗号化されたデータを復号化します。
 
-同じ入力に対して `decrypt` と同じ平文を生成します。しかし、`key` や `iv` が通常より長い場合、`aes_decrypt_mysql` は MySQL の `aes_decrypt` が行うように、鍵を「折り返して」初期化ベクトルの余分なビットを無視します。
+同じ入力で `decrypt` と同じ平文を生成します。しかし、`key` または `iv` が通常の長さを超える場合、`aes_decrypt_mysql` はMySQLの `aes_decrypt` が行うことに従って、`key` を「折り畳み」、余分なビットの `IV` を無視します。
 
 サポートされている復号化モード：
 
@@ -363,18 +366,18 @@ aes_decrypt_mysql('mode', 'ciphertext', 'key' [, iv])
 
 **引数**
 
-- `mode` — 復号化モード。 [String](../data-types/string.md#string).
-- `ciphertext` — 復号化する必要がある暗号化されたテキスト。 [String](../data-types/string.md#string).
-- `key` — 復号化鍵。 [String](../data-types/string.md#string).
-- `iv` — 初期化ベクトル。 オプション。 [String](../data-types/string.md#string).
+- `mode` — 復号化モード。 [String](/sql-reference/data-types/string).
+- `ciphertext` — 復号化する必要のある暗号化されたテキスト。 [String](/sql-reference/data-types/string).
+- `key` — 復号化キー。 [String](/sql-reference/data-types/string).
+- `iv` — 初期化ベクトル。オプション。 [String](/sql-reference/data-types/string).
 
-**戻り値**
+**返される値**
 
-- 復号化された文字列。 [String](../data-types/string.md#string).
+- 復号化された文字列。 [String](/sql-reference/data-types/string).
 
 **例**
 
-以前に MySQL で暗号化されたデータを復号化してみましょう：
+MySQLで以前に暗号化したデータを復号化してみましょう。
 
 ``` sql
 mysql> SET  block_encryption_mode='aes-256-ofb';
@@ -389,13 +392,13 @@ mysql> SELECT aes_encrypt('Secret', '123456789101213141516171819202122', 'iviviv
 1 row in set (0.00 sec)
 ```
 
-クエリ：
+クエリ:
 
 ``` sql
 SELECT aes_decrypt_mysql('aes-256-ofb', unhex('24E9E4966469'), '123456789101213141516171819202122', 'iviviviviviviviv123456') AS plaintext
 ```
 
-結果：
+結果:
 
 ``` text
 ┌─plaintext─┐

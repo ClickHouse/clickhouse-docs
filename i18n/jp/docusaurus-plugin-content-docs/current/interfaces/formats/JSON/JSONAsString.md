@@ -1,30 +1,29 @@
 ---
-title: JSONAsString
-slug: /interfaces/formats/JSONAsString
-keywords: [JSONAsString]
+title: 'JSONAsString'
+slug: '/interfaces/formats/JSONAsString'
+keywords: ['JSONAsString']
 input_format: true
 output_format: false
 alias: []
 ---
 
-| 入力 | 出力  | エイリアス |
+| Input | Output  | Alias |
 |-------|---------|-------|
 | ✔     | ✗       |       |
 
 
 ## 説明 {#description}
 
-この形式では、単一の JSON オブジェクトが単一の値として解釈されます。 
-入力に複数の JSON オブジェクト（カンマで区切られている場合）が含まれている場合、それらは別々の行として解釈されます。 
-入力データが角括弧で囲まれている場合、それは JSON オブジェクトの配列として解釈されます。
+このフォーマットでは、単一のJSONオブジェクトは単一の値として解釈されます。
+入力に複数のJSONオブジェクト（カンマで区切られたもの）が含まれている場合、それらは別々の行として解釈されます。
+入力データが角括弧で囲まれている場合、それはJSONオブジェクトの配列として解釈されます。
 
 :::note
-この形式は、[String](/sql-reference/data-types/string.md) 型の単一フィールドを持つテーブルに対してのみ解析できます。 
-残りのカラムは [`DEFAULT`](/sql-reference/statements/create/table.md/#default) または [`MATERIALIZED`](/sql-reference/statements/create/table.md/#materialized) に設定する必要があり、 
-または省略することも可能です。 
+このフォーマットは、[String](/sql-reference/data-types/string.md) 型の単一フィールドを持つテーブルに対してのみ解析可能です。
+残りのカラムは、[`DEFAULT`](/sql-reference/statements/create/table.md/#default) または [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) に設定するか、省略する必要があります。
 :::
 
-JSON オブジェクト全体を文字列としてシリアライズした後は、[JSON 関数](/sql-reference/functions/json-functions.md) を使用して処理できます。
+全体のJSONオブジェクトをStringにシリアライズした後、[JSON関数](/sql-reference/functions/json-functions.md) を使用して処理できます。
 
 ## 使用例 {#example-usage}
 
@@ -45,7 +44,7 @@ SELECT * FROM json_as_string;
 └───────────────────────────────────┘
 ```
 
-### JSON オブジェクトの配列 {#an-array-of-json-objects}
+### JSONオブジェクトの配列 {#an-array-of-json-objects}
 
 ```sql title="クエリ"
 CREATE TABLE json_square_brackets (field String) ENGINE = Memory;
@@ -61,4 +60,4 @@ SELECT * FROM json_square_brackets;
 └────────────────────────────┘
 ```
 
-## 形式設定 {#format-settings}
+## フォーマット設定 {#format-settings}
