@@ -107,29 +107,8 @@ const config = {
             const sidebarItems = await defaultSidebarItemsGenerator(args);
             return skipIndex(sidebarItems);
           },
-          editCurrentVersion: true,
+          editCurrentVersion: false,
           breadcrumbs: true,
-          editUrl: ({ docPath }) => {
-            if (docPath === "index.md") return false;
-            if (
-              docPath.includes("development") ||
-              docPath.includes("engines") ||
-              docPath.includes("getting-started") ||
-              docPath.includes("interfaces") ||
-              docPath.includes("operations") ||
-              docPath.includes("sql-reference")
-            ) {
-              return (
-                "https://github.com/ClickHouse/ClickHouse/tree/master/docs/en/" +
-                docPath
-              );
-            } else {
-              return (
-                "https://github.com/ClickHouse/clickhouse-docs/blob/main/docs/" +
-                docPath
-              );
-            }
-          },
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: "/",
