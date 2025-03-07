@@ -279,7 +279,7 @@ def translate_plugin_data(output_folder, config, model="gpt-4o-mini"):
     language = config["language"]
     glossary = config["glossary"]
     prompt = f"""
-    Translate the following Docusaurus translation file from English to {language}. This content is JSON. Please preserve the structure and only translate values for the  message keys. Ensure the response is JSON only and preserve any translated values.  Do not translate description values.
+    Translate the following Docusaurus translation file from English to {language}. This content is JSON. Please preserve the structure and only translate values for the  message keys. Ensure the response is JSON only and preserve any translated values.  Do not translate description values. If values are already translated preserve them.
 
     This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}.
     """
