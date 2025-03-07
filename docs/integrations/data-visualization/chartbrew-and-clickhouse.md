@@ -37,7 +37,7 @@ If you do not have a dataset to work with, you can add one of the examples. This
 
 ## 2. Connect Chartbrew to ClickHouse {#2-connect-chartbrew-to-clickhouse}
 
-1. Log in to [Chartbrew](https://chartbrew.com) and go to the **Connections** tab.
+1. Log in to [Chartbrew](https://chartbrew.com/login) and go to the **Connections** tab.
 2. Click **Create connection** and select **ClickHouse** from the available database options.
 
    <img src={chartbrew_02} class="image" alt="Select ClickHouse connection in Chartbrew" />
