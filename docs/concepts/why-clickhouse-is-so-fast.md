@@ -85,6 +85,8 @@ Data compression not only reduces the storage size of the database tables, but i
 
 ## State-of-the-art query processing layer {#state-of-the-art-query-processing-layer}
 
+<iframe width="768" height="432" src="https://www.youtube.com/embed/O5qecdQ7Y18?si=XVtOIuVd8NLbqyox" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 Finally, ClickHouse uses a vectorized query processing layer that parallelizes query execution as much as possible to utilize all resources for maximum speed and efficiency.
 
 "Vectorization" means that query plan operators pass intermediate result rows in batches instead of single rows. This leads to better utilization of CPU caches and allows operators to apply SIMD instructions to process multiple values at once. In fact, many operators come in multiple versions \- one per SIMD instruction set generation. ClickHouse will automatically select the most recent and fastest version based on the capabilities of the hardware it runs on.
@@ -96,6 +98,8 @@ If a single node becomes too small to hold the table data, further nodes can be 
 🤿 Deep dive into this in the [Query Processing Layer](/academic_overview#4-query-processing-layer) section of the web version of our VLDB 2024 paper.
 
 ## Meticulous attention to detail {#meticulous-attention-to-detail}
+
+<iframe width="768" height="432" src="https://www.youtube.com/embed/dccGLSuYWy0?si=rQ-Jp-z5Ik_-Rb8S" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 > **"ClickHouse is a freak system - you guys have 20 versions of a hash table. You guys have all these amazing things where most systems will have one hash table** **…** **ClickHouse has this amazing performance because it has all these specialized components"** [Andy Pavlo, Database Professor at CMU](https://www.youtube.com/watch?v=Vy2t_wZx4Is&t=3579s)
 
