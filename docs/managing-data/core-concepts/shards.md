@@ -11,14 +11,12 @@ import image_03 from '@site/static/images/managing-data/core-concepts/shards_03.
 import image_04 from '@site/static/images/managing-data/core-concepts/shards_04.png'
 import image_05 from '@site/static/images/managing-data/core-concepts/shards_replicas_01.png'
 
-## What are table shards in ClickHouse? {#what-are-table-shards-in-clickhouse}
 <br/>
-
 :::note
-This topic doesn’t apply to ClickHouse Cloud, where [Parallel Replicas](/docs/deployment-guides/parallel-replicas) serve the same purpose as multiple shards in traditional shared-nothing ClickHouse clusters.
+This topic doesn’t apply to ClickHouse Cloud, where [Parallel Replicas](/docs/deployment-guides/parallel-replicas) function like multiple shards in traditional shared-nothing ClickHouse clusters, and object storage [replaces](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates#shared-object-storage-for-data-availability) replicas, ensuring high availability and fault tolerance.
 :::
 
-
+## What are table shards in ClickHouse? {#what-are-table-shards-in-clickhouse}
 
 In traditional [shared-nothing](https://en.wikipedia.org/wiki/Shared-nothing_architecture) ClickHouse clusters, sharding is used when ① the data is too large for a single server or ② a single server is too slow for processing the data. The next figure illustrates case ①, where the [uk_price_paid_simple](/parts) table exceeds a single machine’s capacity:  
 
