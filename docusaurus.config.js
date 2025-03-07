@@ -3,6 +3,7 @@ import jpConfig from "./docusaurus.config.jp.js";
 
 const env = process.env.DOCUSUARUS_LOCALE || "en"; // Default to "en"
 
+
 const configMap = {
   en: enConfig,
   jp: jpConfig,
