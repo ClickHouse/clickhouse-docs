@@ -27,6 +27,12 @@ Build and fix issues.
 
 > Note: translation is incremental unless `--force_overwrite` is passed
 
+4. Add the re-write to vercel.json e.g.
+
+```json
+{ "source": "/docs/jp/:path*", "destination": "/:path*" }
+```
+
 ## Known issues
 
 - Deleted files currently not detected (we should track files translated and diff against list in output, cleaning up)
