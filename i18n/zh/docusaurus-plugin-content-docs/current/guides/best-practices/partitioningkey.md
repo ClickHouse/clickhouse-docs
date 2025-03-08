@@ -6,6 +6,6 @@ description: 对于您的表，使用低基数分区键或避免使用任何分�
 ---
 ```
 
-import Content from '@site/docs/cloud/bestpractices/partitioningkey.md';
+import Content from '@site/i18n/zh/docusaurus-plugin-content-docs/current/cloud/bestpractices/partitioningkey.md';
 
 <Content />

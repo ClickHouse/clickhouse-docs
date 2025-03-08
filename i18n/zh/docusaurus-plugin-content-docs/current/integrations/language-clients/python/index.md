@@ -6,7 +6,7 @@ slug: /integrations/python
 description: 'ClickHouse Connect项目套件，用于将Python连接到ClickHouse'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
 # Python与ClickHouse Connect的集成

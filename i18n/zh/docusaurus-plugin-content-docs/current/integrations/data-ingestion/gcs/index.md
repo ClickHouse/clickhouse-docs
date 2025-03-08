@@ -4,7 +4,7 @@ sidebar_position: 4
 slug: '/integrations/gcs'
 description: 'Google Cloud Storage (GCS) 支持的 MergeTree'
 ---
-import BucketDetails from '@site/docs/_snippets/_GCS_authentication_and_bucket.md';
+import BucketDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_GCS_authentication_and_bucket.md';
 import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';
 import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-2.png';
 

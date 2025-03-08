@@ -5,7 +5,7 @@ slug: /integrations/draxlr
 keywords: ['clickhouse', 'Draxlr', 'connect', 'integrate', 'ui']
 description: 'Draxlr 是一个具有数据可视化和分析功能的商业智能工具。'
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import draxlr_01 from '@site/static/images/integrations/data-visualization/draxlr_01.png';
 import draxlr_02 from '@site/static/images/integrations/data-visualization/draxlr_02.png';
 import draxlr_03 from '@site/static/images/integrations/data-visualization/draxlr_03.png';

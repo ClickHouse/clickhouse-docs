@@ -5,7 +5,7 @@ keywords: ['clickhouse', 'NiFi', '连接', '集成', 'etl', '数据集成']
 slug: '/integrations/nifi'
 description: '使用 NiFi 数据管道将数据流入 ClickHouse'
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import nifi01 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_01.png';
 import nifi02 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_02.png';
 import nifi03 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_03.png';

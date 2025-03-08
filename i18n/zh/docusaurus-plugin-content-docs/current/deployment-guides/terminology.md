@@ -4,7 +4,7 @@ sidebar_label: 引言
 title: 引言
 sidebar_position: 1
 ---
-import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
+import ReplicationShardingTerminology from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_replication-sharding-terminology.md';
 
 这些部署示例基于 ClickHouse 支持与服务组织向 ClickHouse 用户提供的建议。这些是可用的示例，我们建议您尝试它们并根据需要进行调整。您可能会在这里找到完全符合您要求的示例。或者，如果您有要求需要将数据复制三次而不是两次，您应该能够按照这里呈现的模式添加另一个副本。
 

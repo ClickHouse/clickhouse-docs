@@ -2,7 +2,7 @@
 sidebar_position: 54
 sidebar_label: '基于 Profiling 的优化 (PGO)'
 ---
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 
 # 基于 Profiling 的优化

@@ -10,7 +10,7 @@ import deepnote_01 from '@site/static/images/integrations/data-visualization/dee
 import deepnote_02 from '@site/static/images/integrations/data-visualization/deepnote_02.png';
 import deepnote_03 from '@site/static/images/integrations/data-visualization/deepnote_03.png';
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
 # 将 ClickHouse 连接到 Deepnote

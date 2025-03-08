@@ -5,6 +5,6 @@ description: 分布式 DDL 的页面
 sidebar_label: 分布式 DDL
 ---
 
-import Content from '@site/docs/sql-reference/distributed-ddl.md';
+import Content from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/distributed-ddl.md';
 
 <Content/>

@@ -4,7 +4,7 @@ slug: '/integrations/luzmo'
 keywords: ['clickhouse', 'Luzmo', 'connect', 'integrate', 'ui', 'embedded']
 description: 'Luzmo 是一个嵌入式分析平台，具有原生的 ClickHouse 集成，专为软件和 SaaS 应用程序而设计。'
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import luzmo_01 from '@site/static/images/integrations/data-visualization/luzmo_01.png';
 import luzmo_02 from '@site/static/images/integrations/data-visualization/luzmo_02.png';
 import luzmo_03 from '@site/static/images/integrations/data-visualization/luzmo_03.png';

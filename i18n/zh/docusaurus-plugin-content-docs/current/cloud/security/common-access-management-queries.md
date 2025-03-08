@@ -5,7 +5,7 @@ title: '常见的访问管理查询'
 slug: '/cloud/security/common-access-management-queries'
 ---
 
-import CommonUserRolesContent from '@site/docs/_snippets/_users-and-roles-common.md';
+import CommonUserRolesContent from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
 
 
 # 常见的访问管理查询

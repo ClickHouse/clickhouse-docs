@@ -4,7 +4,7 @@ sidebar_position: 1
 slug: /integrations/grafana
 description: '使用 ClickHouse 和 Grafana 的简介'
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 import search from '@site/static/images/integrations/data-visualization/grafana/search.png';
 import install from '@site/static/images/integrations/data-visualization/grafana/install.png';
 import add_new_ds from '@site/static/images/integrations/data-visualization/grafana/add_new_ds.png';

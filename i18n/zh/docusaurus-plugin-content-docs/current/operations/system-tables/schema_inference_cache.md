@@ -4,7 +4,7 @@ slug: /operations/system-tables/schema_inference_cache
 title: 'system.schema_inference_cache'
 keywords: ['system table', 'schema_inference_cache']
 ---
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 

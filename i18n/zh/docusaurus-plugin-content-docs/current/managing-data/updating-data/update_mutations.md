@@ -11,6 +11,6 @@ hide_title: false
 对于更新，可以通过使用专门的表引擎，例如 [ReplacingMergeTree](/guides/replacing-merge-tree) 或 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)，来避免这些大量的写请求，而不是使用默认的 MergeTree 表引擎。
 :::
 
-import UpdateMutations from '@site/docs/sql-reference/statements/alter/update.md';
+import UpdateMutations from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/statements/alter/update.md';
 
 <UpdateMutations/>

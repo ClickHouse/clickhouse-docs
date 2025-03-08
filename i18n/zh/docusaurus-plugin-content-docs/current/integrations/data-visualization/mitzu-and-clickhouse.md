@@ -5,7 +5,7 @@ keywords: [clickhouse, Mitzu, connect, integrate, ui]
 description: Mitzu 是一款无代码的仓库原生产品分析应用程序。
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import mitzu_01 from '@site/static/images/integrations/data-visualization/mitzu_01.png';
 import mitzu_02 from '@site/static/images/integrations/data-visualization/mitzu_02.png';
 import mitzu_03 from '@site/static/images/integrations/data-visualization/mitzu_03.png';

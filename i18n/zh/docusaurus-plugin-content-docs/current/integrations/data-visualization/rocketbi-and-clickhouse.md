@@ -5,7 +5,7 @@ slug: /integrations/rocketbi
 keywords: [clickhouse, RocketBI, connect, integrate, ui]
 description: RocketBI 是一个自服务商业智能平台，帮助您快速分析数据，构建拖放可视化，并直接在您的网络浏览器中与同事协作。
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import rocketbi_01 from '@site/static/images/integrations/data-visualization/rocketbi_01.gif';
 import rocketbi_02 from '@site/static/images/integrations/data-visualization/rocketbi_02.gif';
 import rocketbi_03 from '@site/static/images/integrations/data-visualization/rocketbi_03.png';

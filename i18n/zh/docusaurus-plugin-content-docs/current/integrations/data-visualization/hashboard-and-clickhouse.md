@@ -5,7 +5,7 @@ slug: /integrations/hashboard
 keywords: ['clickhouse', 'Hashboard', 'connect', 'integrate', 'ui', 'analytics']
 description: 'Hashboard 是一个强大的分析平台，可以轻松与 ClickHouse 集成以实现实时数据分析。'
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 import hashboard_01 from '@site/static/images/integrations/data-visualization/hashboard_01.png';
 
 

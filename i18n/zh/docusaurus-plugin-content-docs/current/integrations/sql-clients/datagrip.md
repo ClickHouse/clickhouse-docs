@@ -4,7 +4,7 @@ slug: '/integrations/datagrip'
 description: 'DataGrip 是一个数据库 IDE，开箱即用支持 ClickHouse。'
 ---
 ```
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import datagrip_1 from '@site/static/images/integrations/sql-clients/datagrip-1.png';
 import datagrip_5 from '@site/static/images/integrations/sql-clients/datagrip-5.png';
 import datagrip_6 from '@site/static/images/integrations/sql-clients/datagrip-6.png';

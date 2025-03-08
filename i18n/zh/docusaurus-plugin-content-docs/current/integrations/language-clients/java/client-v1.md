@@ -2,7 +2,6 @@ title: '客户端 (0.7.x 及更早版本)'
 sidebar_label: '客户端 (0.7.x 及更早版本)'
 keywords: ['Java', '客户端', 'ClickHouse']
 description: '与数据库服务器通过其协议进行通信的 Java 客户端库。'
-```
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -4,7 +4,7 @@ slug: /operations/system-tables/dns_cache
 title: 'system.dns_cache'
 keywords: ['系统表', 'dns_cache']
 ---
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 

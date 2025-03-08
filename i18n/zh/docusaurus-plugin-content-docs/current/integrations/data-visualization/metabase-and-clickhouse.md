@@ -5,7 +5,7 @@ slug: '/integrations/metabase'
 keywords: ['ClickHouse', 'Metabase', 'connect', 'integrate', 'ui']
 description: 'Metabase 是一个易于使用的开源 UI 工具，用于询问您的数据。'
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import metabase_01 from '@site/static/images/integrations/data-visualization/metabase_01.png';
 import metabase_02 from '@site/static/images/integrations/data-visualization/metabase_02.png';
 import metabase_03 from '@site/static/images/integrations/data-visualization/metabase_03.png';

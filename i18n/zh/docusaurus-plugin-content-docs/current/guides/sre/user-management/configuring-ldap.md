@@ -3,7 +3,7 @@ sidebar_label: '配置 LDAP'
 sidebar_position: 2
 slug: /guides/sre/configuring-ldap
 ---
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 
 # 配置 ClickHouse 使用 LDAP 进行认证和角色映射

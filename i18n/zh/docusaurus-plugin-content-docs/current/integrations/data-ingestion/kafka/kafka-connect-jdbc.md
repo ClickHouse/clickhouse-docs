@@ -4,7 +4,7 @@ sidebar_position: 4
 slug: /integrations/kafka/kafka-connect-jdbc
 description: 使用 Kafka Connect 和 ClickHouse 的 JDBC 连接器接收器
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
 # JDBC 连接器

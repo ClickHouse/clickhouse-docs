@@ -5,7 +5,7 @@ keywords: [clickhouse, aws, amazon, QuickSight, mysql, connect, integrate, ui]
 description: Amazon QuickSight 支持以统一的商业智能 (BI) 赋能以数据驱动的组织。
 ---
 
-import MySQLOnPremiseSetup from '@site/docs/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
+import MySQLOnPremiseSetup from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
 import quicksight_01 from '@site/static/images/integrations/data-visualization/quicksight_01.png';
 import quicksight_02 from '@site/static/images/integrations/data-visualization/quicksight_02.png';
 import quicksight_03 from '@site/static/images/integrations/data-visualization/quicksight_03.png';
@@ -113,7 +113,7 @@ Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 
 ## 将 QuickSight 连接到 ClickHouse {#connecting-quicksight-to-clickhouse}
 
-首先，访问 https://quicksight.aws.amazon.com，导航到数据集并点击“新建数据集”：
+首先，访问 [quicksight.aws.amazon.com](https://quicksight.aws.amazon.com)，导航到数据集并点击“新建数据集”：
 
 <img src={quicksight_01} class="image" alt="Creating a new dataset" style={{width: '75%', 'background-color': 'transparent'}}/>
 <br/>

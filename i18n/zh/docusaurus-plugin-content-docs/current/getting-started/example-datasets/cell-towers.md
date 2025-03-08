@@ -6,14 +6,14 @@ sidebar_position: 3
 title: '使用基站数据集的地理数据'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import ActionsMenu from '@site/docs/_snippets/_service_actions_menu.md';
-import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
-import SupersetDocker from '@site/docs/_snippets/_add_superset_detail.md';
+import ActionsMenu from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_service_actions_menu.md';
+import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
+import SupersetDocker from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_add_superset_detail.md';
 import cloud_load_data_sample from '@site/static/images/_snippets/cloud-load-data-sample.png';
 
 ## 目标 {#goal}
@@ -25,7 +25,7 @@ import cloud_load_data_sample from '@site/static/images/_snippets/cloud-load-dat
 
 以下是本指南中创建的仪表板的预览：
 
-![MCC 204 中按无线电类型划分的基站仪表板](@site/docs/getting-started/example-datasets/images/superset-cell-tower-dashboard.png)
+![MCC 204 中按无线电类型划分的基站仪表板](@site/i18n/zh/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-cell-tower-dashboard.png)
 
 ## 获取数据集 {#get-the-dataset}
 
@@ -287,11 +287,11 @@ Superset 可以快速通过 Docker 运行。如果您已经在运行 Superset，
 
 在 Superset 中，可以通过选择数据库类型，然后提供连接详细信息来添加数据库。打开 Superset，寻找 **+**，它带有 **Data** 菜单，然后选择 **Connect database** 选项。
 
-![添加数据库](@site/docs/getting-started/example-datasets/images/superset-add.png)
+![添加数据库](@site/i18n/zh/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-add.png)
 
 从列表中选择 **ClickHouse Connect**：
 
-![选择 ClickHouse Connect 作为数据库类型](@site/docs/getting-started/example-datasets/images/superset-choose-a-database.png)
+![选择 ClickHouse Connect 作为数据库类型](@site/i18n/zh/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-choose-a-database.png)
 
 :::note
 如果 **ClickHouse Connect** 不是您的选项之一，您需要安装它。命令是 `pip install clickhouse-connect`，更多信息 [请参见此处](https://pypi.org/project/clickhouse-connect/)。
@@ -303,19 +303,19 @@ Superset 可以快速通过 Docker 运行。如果您已经在运行 Superset，
 确保在连接到 ClickHouse Cloud 或其他强制使用 SSL 的 ClickHouse 系统时，设置 **SSL** 为开启。
 :::
 
-![将 ClickHouse 添加为 Superset 数据源](@site/docs/getting-started/example-datasets/images/superset-connect-a-database.png)
+![将 ClickHouse 添加为 Superset 数据源](@site/i18n/zh/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-connect-a-database.png)
 
 ### 将 **cell_towers** 表添加为 Superset **数据集** {#add-the-table-cell_towers-as-a-superset-dataset}
 
 在 Superset 中，**数据集** 映射到数据库中的一张表。点击添加一个数据集，选择您的 ClickHouse 服务，包含您的表的数据库（`default`），然后选择 `cell_towers` 表：
 
-![将 cell_towers 表添加为数据集](@site/docs/getting-started/example-datasets/images/superset-add-dataset.png)
+![将 cell_towers 表添加为数据集](@site/i18n/zh/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-add-dataset.png)
 
 ### 创建一些 **图表** {#create-some-charts}
 
 当您选择在 Superset 中添加图表时，必须指定数据集（`cell_towers`）和图表类型。由于 OpenCelliD 数据集提供了基站的经度和纬度坐标，因此我们将创建一个 **地图** 图表。**deck.gl 散点图** 类型适合此数据集，因为它适用于地图上密集的数据点。
 
-![在 Superset 中创建地图](@site/docs/getting-started/example-datasets/images/superset-create-map.png)
+![在 Superset 中创建地图](@site/i18n/zh/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-create-map.png)
 
 #### 指定用于地图的查询 {#specify-the-query-used-for-the-map}
 
@@ -323,19 +323,19 @@ deck.gl 散点图需要经度和纬度，同时也可以对查询施加一个或
 
 字段 `lon` 和 `lat` 包含经度和纬度：
 
-![指定经度和纬度字段](@site/docs/getting-started/example-datasets/images/superset-lon-lat.png)
+![指定经度和纬度字段](@site/i18n/zh/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-lon-lat.png)
 
 添加过滤器 `mcc` = `204`（或替换为任何其他 `mcc` 值）：
 
-![针对 MCC 204 进行过滤](@site/docs/getting-started/example-datasets/images/superset-mcc-204.png)
+![针对 MCC 204 进行过滤](@site/i18n/zh/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-mcc-204.png)
 
 添加过滤器 `radio` = `'UMTS'`（或替换为任何其他 `radio` 值，您可以在 `DESCRIBE TABLE cell_towers` 的输出中查看选项）：
 
-![过滤器为 radio = UMTS](@site/docs/getting-started/example-datasets/images/superset-radio-umts.png)
+![过滤器为 radio = UMTS](@site/i18n/zh/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-radio-umts.png)
 
 这是针对 `radio = 'UMTS'` 和 `mcc = 204` 过滤器的图表完整配置：
 
-![MCC 204 中 UMTS 无线电的图表](@site/docs/getting-started/example-datasets/images/superset-umts-netherlands.png)
+![MCC 204 中 UMTS 无线电的图表](@site/i18n/zh/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-umts-netherlands.png)
 
 点击 **UPDATE CHART** 来渲染可视化。
 
@@ -343,7 +343,7 @@ deck.gl 散点图需要经度和纬度，同时也可以对查询施加一个或
 
 此屏幕截图显示了带有 LTE、UMTS 和 GSM 无线电的基站位置。所有图表都是以相同的方式创建，并添加到仪表板中。
 
-![MCC 204 中按无线电类型划分的基站仪表板](@site/docs/getting-started/example-datasets/images/superset-cell-tower-dashboard.png)
+![MCC 204 中按无线电类型划分的基站仪表板](@site/i18n/zh/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-cell-tower-dashboard.png)
 
 :::tip
 数据也可用于在 [Playground](https://sql.clickhouse.com) 中进行交互式查询。

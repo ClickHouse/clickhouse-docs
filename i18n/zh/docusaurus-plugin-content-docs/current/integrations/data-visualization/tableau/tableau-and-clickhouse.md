@@ -6,7 +6,7 @@ keywords: [ 'clickhouse', 'tableau', 'connect', 'integrate', 'ui' ]
 description: 'Tableau可以使用ClickHouse数据库和表作为数据源。'
 ---
 import TOCInline from '@theme/TOCInline';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import tableau_connecttoserver from '@site/static/images/integrations/data-visualization/tableau_connecttoserver.png';
 import tableau_connector_details from '@site/static/images/integrations/data-visualization/tableau_connector_details.png';
 import tableau_connector_dialog from '@site/static/images/integrations/data-visualization/tableau_connector_dialog.png';

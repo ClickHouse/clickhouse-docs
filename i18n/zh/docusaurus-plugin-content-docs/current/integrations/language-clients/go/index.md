@@ -6,7 +6,7 @@ slug: /integrations/go
 description: 'Go客户端用来连接ClickHouse, 提供Go标准的数据库/sql接口或优化过的本地接口。'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 
 # ClickHouse Go
 ## 一个简单的例子 {#a-simple-example}

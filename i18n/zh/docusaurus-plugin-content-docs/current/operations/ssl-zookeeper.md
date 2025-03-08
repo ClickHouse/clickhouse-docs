@@ -7,7 +7,7 @@ description: '关于 ClickHouse 与 Zookeeper 之间的可选安全通信的说�
 
 
 # 与 Zookeeper 的可选安全通信
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 

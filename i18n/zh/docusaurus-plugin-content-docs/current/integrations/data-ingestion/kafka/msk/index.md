@@ -5,7 +5,7 @@ slug: /integrations/kafka/cloud/amazon-msk/
 description: ClickHouse 与 Amazon MSK 的官方 Kafka 连接器
 keywords: [integration, kafka, amazon msk, sink, connector]
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
 # 将 Amazon MSK 与 ClickHouse 集成

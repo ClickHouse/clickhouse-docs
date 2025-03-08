@@ -4,7 +4,7 @@ slug: /operations/system-tables/processors_profile_log
 title: 'system.processors_profile_log'
 keywords: ['system table', 'processors_profile_log', 'EXPLAIN PIPELINE']
 ---
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 

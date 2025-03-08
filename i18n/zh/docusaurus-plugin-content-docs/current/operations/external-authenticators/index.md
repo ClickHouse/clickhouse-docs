@@ -5,7 +5,7 @@ sidebar_label: 外部用户认证器和目录
 title: '外部用户认证器和目录'
 pagination_next: 'operations/external-authenticators/kerberos'
 ---
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 

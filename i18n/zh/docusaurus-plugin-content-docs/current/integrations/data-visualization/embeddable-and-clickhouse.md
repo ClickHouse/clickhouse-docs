@@ -5,7 +5,7 @@ keywords: [clickhouse, 可嵌入的, 连接, 集成, ui]
 description: 可嵌入的是一个开发者工具包，用于直接在您的应用中构建快速、交互式和完全自定义的分析体验。
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
 # 连接可嵌入的到 ClickHouse

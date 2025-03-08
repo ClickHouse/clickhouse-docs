@@ -5,7 +5,7 @@ slug: '/integrations/superset'
 keywords: ['clickhouse', 'superset', 'connect', 'integrate', 'ui']
 description: 'Apache Superset 是一个开源数据探索和可视化平台。'
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import superset_01 from '@site/static/images/integrations/data-visualization/superset_01.png';
 import superset_02 from '@site/static/images/integrations/data-visualization/superset_02.png';
 import superset_03 from '@site/static/images/integrations/data-visualization/superset_03.png';

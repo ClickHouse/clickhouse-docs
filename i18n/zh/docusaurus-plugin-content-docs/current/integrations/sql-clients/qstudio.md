@@ -3,7 +3,7 @@ slug: /integrations/qstudio
 sidebar_label: QStudio
 description: QStudio 是一个免费的 SQL 工具。
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import qstudio_add_connection from '@site/static/images/integrations/sql-clients/qstudio-add-connection.png';
 import qstudio_running_query from '@site/static/images/integrations/sql-clients/qstudio-running-query.png';
 

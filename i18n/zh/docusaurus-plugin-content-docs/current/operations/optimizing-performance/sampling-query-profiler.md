@@ -3,7 +3,7 @@ slug: /operations/optimizing-performance/sampling-query-profiler
 sidebar_position: 54
 sidebar_label: 查询分析
 ---
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 
 # 采样查询分析器

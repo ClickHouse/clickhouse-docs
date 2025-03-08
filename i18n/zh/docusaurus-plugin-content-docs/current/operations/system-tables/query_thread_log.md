@@ -4,7 +4,7 @@ slug: /operations/system-tables/query_thread_log
 title: 'system.query_thread_log'
 keywords: ['system table', 'query_thread_log']
 ---
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 

@@ -5,6 +5,6 @@ title: 'RabbitMQ'
 hide_title: true
 ---
 
-import RabbitMQEngine from '@site/docs/engines/table-engines/integrations/rabbitmq.md';
+import RabbitMQEngine from '@site/i18n/zh/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/rabbitmq.md';
 
 <RabbitMQEngine/>

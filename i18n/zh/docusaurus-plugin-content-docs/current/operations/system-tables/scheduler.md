@@ -4,7 +4,7 @@ slug: /operations/system-tables/scheduler
 title: 'system.scheduler'
 keywords: ['system table', 'scheduler']
 ---
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 

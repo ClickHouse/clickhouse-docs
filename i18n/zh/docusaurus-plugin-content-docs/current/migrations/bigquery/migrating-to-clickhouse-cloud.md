@@ -4,7 +4,6 @@ slug: /migrations/bigquery/migrating-to-clickhouse-cloud
 description: '如何将数据从 BigQuery 迁移到 ClickHouse Cloud'
 keywords: ['migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'BigQuery']
 ---
-```
 
 import bigquery_2 from '@site/static/images/migrations/bigquery-2.png';
 import bigquery_3 from '@site/static/images/migrations/bigquery-3.png';

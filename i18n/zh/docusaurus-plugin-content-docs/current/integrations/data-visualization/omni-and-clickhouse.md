@@ -5,7 +5,7 @@ keywords: ['clickhouse', 'Omni', 'connect', 'integrate', 'ui']
 description: 'Omni 是一个企业平台，专注于 BI、数据应用和嵌入式分析，帮助您实时探索和分享洞察。'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import omni_01 from '@site/static/images/integrations/data-visualization/omni_01.png';
 import omni_02 from '@site/static/images/integrations/data-visualization/omni_02.png';
 

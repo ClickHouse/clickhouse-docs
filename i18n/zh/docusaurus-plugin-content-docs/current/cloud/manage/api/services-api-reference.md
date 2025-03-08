@@ -1,3 +1,4 @@
+---
 sidebar_label: '服务'
 title: '服务'
 ---
@@ -1052,7 +1053,7 @@ description: '响应架构的详细信息'
 | updatedAt | string | ClickPipe 的最后更新日期. |
 #### 示例响应
 
-```
+```json
 {
   "id": "uuid",
   "serviceId": "uuid",

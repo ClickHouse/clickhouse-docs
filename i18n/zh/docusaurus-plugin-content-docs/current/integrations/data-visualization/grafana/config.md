@@ -4,7 +4,7 @@ sidebar_position: 3
 slug: /integrations/grafana/config
 description: 'Grafana 中 ClickHouse 数据源插件的配置选项'
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 import config_common from '@site/static/images/integrations/data-visualization/grafana/config_common.png';
 import config_http from '@site/static/images/integrations/data-visualization/grafana/config_http.png';
 import config_additional from '@site/static/images/integrations/data-visualization/grafana/config_additional.png';

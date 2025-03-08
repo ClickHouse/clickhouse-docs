@@ -3,7 +3,7 @@ sidebar_position: 1
 sidebar_label: 存储与计算的分离
 slug: /guides/separation-storage-compute
 ---
-import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
+import BucketDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
 
 

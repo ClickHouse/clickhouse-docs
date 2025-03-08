@@ -5,7 +5,7 @@ slug: /integrations/kafka/clickhouse-kafka-connect-sink
 description: ClickHouse 的官方 Kafka 连接器。
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
 # ClickHouse Kafka 连接器 Sink

@@ -8,7 +8,7 @@ description: '数据传输和 ClickPipes 的定价维度'
 import clickpipesPricingFaq1 from '@site/static/images/cloud/manage/jan2025_faq/external_clickpipes_pricing_faq_1.png';
 import clickpipesPricingFaq2 from '@site/static/images/cloud/manage/jan2025_faq/external_clickpipes_pricing_faq_2.png';
 import clickpipesPricingFaq3 from '@site/static/images/cloud/manage/jan2025_faq/external_clickpipes_pricing_faq_3.png';
-import NetworkPricing from '@site/docs/cloud/manage/_snippets/_network_transfer_rates.md';
+import NetworkPricing from '@site/i18n/zh/docusaurus-plugin-content-docs/current/cloud/manage/_snippets/_network_transfer_rates.md';
 
 以下维度已添加到新的 ClickHouse Cloud 定价中。
 

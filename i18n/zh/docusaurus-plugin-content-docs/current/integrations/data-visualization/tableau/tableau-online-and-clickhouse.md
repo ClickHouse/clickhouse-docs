@@ -6,8 +6,8 @@ keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', '
 description: 'Tableau Online streamlines the power of data to make people faster and more confident decision makers from anywhere.'
 ---
 
-import MySQLCloudSetup from '@site/docs/_snippets/_clickhouse_mysql_cloud_setup.mdx';
-import MySQLOnPremiseSetup from '@site/docs/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
+import MySQLCloudSetup from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_cloud_setup.mdx';
+import MySQLOnPremiseSetup from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
 import tableau_online_01 from '@site/static/images/integrations/data-visualization/tableau_online_01.png';
 import tableau_online_02 from '@site/static/images/integrations/data-visualization/tableau_online_02.png';
 import tableau_online_03 from '@site/static/images/integrations/data-visualization/tableau_online_03.png';

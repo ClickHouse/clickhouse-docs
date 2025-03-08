@@ -4,7 +4,7 @@ slug: /integrations/powerbi
 keywords: [ 'clickhouse', 'Power BI', 'connect', 'integrate', 'ui' ]
 description: 'Microsoft Power BI 是由微软开发的互动数据可视化软件产品，主要专注于商业智能。'
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import powerbi_odbc_install from '@site/static/images/integrations/data-visualization/powerbi_odbc_install.png';
 import powerbi_odbc_search from '@site/static/images/integrations/data-visualization/powerbi_odbc_search.png';
 import powerbi_odbc_verify from '@site/static/images/integrations/data-visualization/powerbi_odbc_verify.png';

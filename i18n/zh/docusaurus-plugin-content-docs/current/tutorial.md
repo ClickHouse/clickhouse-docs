@@ -4,7 +4,7 @@ sidebar_label: 高级教程
 sidebar_position: 0.5
 keywords: ['clickhouse', '安装', '教程', '字典', '字典表']
 ---
-import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
+import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
 
 
 # 高级教程

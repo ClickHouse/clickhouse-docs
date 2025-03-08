@@ -23,7 +23,7 @@
   },
   "theme.admonition.note": {
     "message": "备注",
-    "description": "用于Note警告的默认标签（:::note"
+    "description": "用于Note警告的默认标签（:::note）"
   },
   "theme.admonition.tip": {
     "message": "提示",
@@ -43,11 +43,11 @@
   },
   "theme.admonition.experimental": {
     "message": "实验性",
-    "description": "用于实验性警告的默认标签 (:::experimental)"
+    "description": "用于实验性警告的默认标签（:::experimental)"
   },
   "theme.admonition.obsolete": {
     "message": "已过时",
-    "description": "用于已过时警告的默认标签 (:::obsolete)"
+    "description": "用于已过时警告的默认标签（:::obsolete)"
   },
   "theme.blog.title": {
     "message": "知识库"
@@ -68,11 +68,11 @@
     "message": "查看全部 {count} 个结果"
   },
   "theme.SearchPage.documentsFound.plurals": {
-    "message": "找到 {count} 份文件",
+    "message": "找到 {count} 份文档",
     "description": "Pluralized label for \"{count} documents found\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
   },
   "theme.SearchPage.existingResultsTitle": {
-    "message": "「{query}」的搜索结果",
+    "message": "“{query}”的搜索结果",
     "description": "The search page title for non-empty query"
   },
   "theme.SearchPage.emptyResultsTitle": {
@@ -80,7 +80,7 @@
     "description": "The search page title for empty query"
   },
   "theme.SearchPage.inputPlaceholder": {
-    "message": "在此输入搜索字词",
+    "message": "在此输入搜索关键词",
     "description": "The placeholder for search page input"
   },
   "theme.SearchPage.inputLabel": {
@@ -115,7 +115,7 @@
     "message": "部署在您自己的 AWS 账户中"
   },
   "topNav.navItems.products.oss": {
-    "message": "使用开源版本启动数据库"
+    "message": "使用开源版本启动数据仓库"
   },
   "topNav.navItems.products.oss_2": {
     "message": "ClickHouse"
@@ -136,7 +136,7 @@
     "message": "ClickHouse 学院"
   },
   "topNav.navItems.resources.Free live training": {
-    "message": "免费在线培训"
+    "message": "免费的在线培训"
   },
   "topNav.navItems.resources.ClickHouse Certification": {
     "message": "ClickHouse 认证"
@@ -169,23 +169,23 @@
     "message": "实时分析"
   },
   "topNav.navItems.use_cases.Machine learning and GenAI": {
-    "message": "机器学习和生成式AI"
+    "message": "机器学习与生成AI"
   },
   "topNav.navItems.use_cases.Business intelligence": {
     "message": "商业智能"
   },
   "topNav.navItems.use_cases.Logs, events, and traces": {
-    "message": "日志、事件和追踪"
+    "message": "日志、事件与追踪"
   },
   "topNav.navItems.use_cases.All use cases": {
     "message": "所有使用案例"
   },
   "theme.blog.sidebar.navAriaLabel": {
-    "message": "最近博文导航",
+    "message": "最近博客导航",
     "description": "The ARIA label for recent posts in the blog sidebar"
   },
   "theme.DocSidebarItem.toggleCollapsedCategoryAriaLabel": {
-    "message": "Toggle the collapsible sidebar category '{label}'",
+    "message": "切换可折叠的侧边栏类别 '{label}'",
     "description": "The ARIA label to toggle the collapsible sidebar category"
   },
   "theme.NavBar.navAriaLabel": {
@@ -205,7 +205,7 @@
     "description": "The ARIA label for the link to full blog posts from excerpts"
   },
   "theme.docs.breadcrumbs.home": {
-    "message": "主页面",
+    "message": "主页",
     "description": "The ARIA label for the home page in the breadcrumbs"
   },
   "theme.blog.post.readingTime.plurals": {
@@ -229,7 +229,7 @@
     "description": "The ARIA label for close button of mobile sidebar"
   },
   "theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel": {
-    "message": "← 回到主菜单",
+    "message": "← 返回主菜单",
     "description": "The label of the back button to return to main menu, inside the mobile navbar sidebar secondary menu (notably used to display the docs sidebar)"
   },
   "theme.ErrorPageContent.title": {
@@ -245,11 +245,11 @@
     "description": "The page & hero description of the blog archive page"
   },
   "theme.BackToTopButton.buttonAriaLabel": {
-    "message": "回到顶部",
+    "message": "返回顶部",
     "description": "The ARIA label for the back to top button"
   },
   "theme.blog.paginator.navAriaLabel": {
-    "message": "博文列表分页导航",
+    "message": "博客列表分页导航",
     "description": "The ARIA label for the blog pagination"
   },
   "theme.blog.paginator.newerEntries": {
@@ -277,11 +277,11 @@
     "description": "The label of the link targeting the tag list page"
   },
   "theme.colorToggle.ariaLabel": {
-    "message": "切换浅色/暗黑模式（当前为{mode}）",
+    "message": "切换浅色/深色模式（当前为{mode}）",
     "description": "The ARIA label for the navbar color mode toggle"
   },
   "theme.colorToggle.ariaLabel.mode.dark": {
-    "message": "暗黑模式",
+    "message": "深色模式",
     "description": "The name for the dark color mode"
   },
   "theme.colorToggle.ariaLabel.mode.light": {
@@ -293,7 +293,7 @@
     "description": "The default description for a category card in the generated index about how many items this category includes"
   },
   "theme.docs.paginator.navAriaLabel": {
-    "message": "文件选项卡",
+    "message": "文档选项卡",
     "description": "The ARIA label for the docs pagination"
   },
   "theme.docs.paginator.previous": {
@@ -309,7 +309,7 @@
     "description": "Pluralized label for \"{count} docs tagged\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
   },
   "theme.docs.tagDocListPageTitle": {
-    "message": "{nDocsTagged}「{tagName}」",
+    "message": "{nDocsTagged}“{tagName}”",
     "description": "The title of the page for a docs tag"
   },
   "theme.docs.versions.unreleasedVersionLabel": {
@@ -317,7 +317,7 @@
     "description": "The label used to tell the user that he's browsing an unreleased doc version"
   },
   "theme.docs.versions.unmaintainedVersionLabel": {
-    "message": "此为 {siteTitle} {versionLabel} 版的文档，现已不再积极维护。",
+    "message": "此为 {siteTitle} {versionLabel} 版的文档，目前已不再积极维护。",
     "description": "The label used to tell the user that he's browsing an unmaintained doc version"
   },
   "theme.docs.versions.latestVersionSuggestionLabel": {
@@ -392,7 +392,7 @@
     "description": "The first paragraph of the 404 page"
   },
   "theme.NotFound.p2": {
-    "message": "请联系原始链接来源网站的所有者，并告知他们链接已损坏。",
+    "message": "请联系原始链接的所有者，并告知他们链接已损坏。",
     "description": "The 2nd paragraph of the 404 page"
   },
   "theme.TOCCollapsible.toggleButtonLabel": {
@@ -452,11 +452,11 @@
     "description": "The title for error screen of search modal"
   },
   "theme.SearchModal.errorScreen.helpText": {
-    "message": "你可能需要检查网络连接。",
+    "message": "您可能需要检查网络连接。",
     "description": "The help text for error screen of search modal"
   },
   "theme.SearchModal.footer.selectText": {
-    "message": "选中",
+    "message": "选择",
     "description": "The explanatory text of the action for the enter key"
   },
   "theme.SearchModal.footer.selectKeyAriaLabel": {
@@ -496,7 +496,7 @@
     "description": "The text for the suggested query when no results are found for the following search"
   },
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": {
-    "message": "认为这个查询应该有结果？",
+    "message": "认为这个查询应该有结果吗？",
     "description": "The text for the question where the user thinks there are missing results"
   },
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": {
@@ -512,7 +512,7 @@
     "description": "Pluralized label for \"{count} posts\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
   },
   "theme.blog.tagTitle": {
-    "message": "{nPosts} 含有标签「{tagName}」",
+    "message": "{nPosts} 包含标签“{tagName}”",
     "description": "The title of the page for a blog tag"
   },
   "theme.blog.author.pageTitle": {
@@ -532,7 +532,7 @@
     "description": "对于没有博客文章的作者显示的文本"
   },
   "theme.contentVisibility.unlistedBanner.title": {
-    "message": "未列出页",
+    "message": "未列出页面",
     "description": "The unlisted content banner title"
   },
   "theme.contentVisibility.unlistedBanner.message": {
@@ -544,7 +544,7 @@
     "description": "草稿内容横幅标题"
   },
   "theme.contentVisibility.draftBanner.message": {
-    "message": "此页面是草稿。它只在开发环境中可见，并将在生产构建中被排除。",
+    "message": "此页面是草稿。它仅在开发环境中可见，并将从生产环境中排除。",
     "description": "草稿内容横幅消息"
   },
   "theme.ErrorPageContent.tryAgain": {

@@ -4,7 +4,7 @@ sidebar_position: 58
 sidebar_label: '使用建议'
 title: '使用建议'
 ---
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 

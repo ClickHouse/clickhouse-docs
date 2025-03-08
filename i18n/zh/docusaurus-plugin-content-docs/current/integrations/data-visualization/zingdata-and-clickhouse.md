@@ -5,7 +5,7 @@ slug: /integrations/zingdata
 keywords: ['clickhouse', 'Zing Data', '连接', '集成', '用户界面']
 description: 'Zing Data 是为 ClickHouse 提供的简单社交商业智能，适用于 iOS、Android 和网页。'
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import zing_01 from '@site/static/images/integrations/data-visualization/zing_01.png';
 import zing_02 from '@site/static/images/integrations/data-visualization/zing_02.png';
 import zing_03 from '@site/static/images/integrations/data-visualization/zing_03.png';

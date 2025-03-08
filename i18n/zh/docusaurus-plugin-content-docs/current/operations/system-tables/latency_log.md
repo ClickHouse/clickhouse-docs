@@ -4,7 +4,7 @@ title: "system.latency_log"
 description: "包含所有延迟桶的历史记录，定期刷新到磁盘。"
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
 # latency_log

@@ -4,7 +4,7 @@ sidebar_label: '冰山'
 title: '冰山'
 ---
 
-import IcebergFunction from '@site/docs/sql-reference/table-functions/iceberg.md';
+import IcebergFunction from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/table-functions/iceberg.md';
 
 
 # 冰山集成

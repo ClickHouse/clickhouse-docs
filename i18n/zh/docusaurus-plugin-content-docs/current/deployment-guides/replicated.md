@@ -5,9 +5,9 @@ sidebar_position: 10
 title: 故障容忍的复制
 ---
 
-import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
-import ConfigFileNote from '@site/docs/_snippets/_config-files.md';
-import KeeperConfigFileNote from '@site/docs/_snippets/_keeper-config-files.md';
+import ReplicationShardingTerminology from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_replication-sharding-terminology.md';
+import ConfigFileNote from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_config-files.md';
+import KeeperConfigFileNote from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_keeper-config-files.md';
 import ReplicationArchitecture from '@site/static/images/deployment-guides/architecture_1s_2r_3_nodes.png';
 
 ## 描述 {#description}

@@ -8,7 +8,7 @@ keywords: [全局服务器设置]
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import SystemLogParameters from '@site/docs/operations/server-configuration-parameters/_snippets/_system-log-parameters.md'
+import SystemLogParameters from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations/server-configuration-parameters/_snippets/_system-log-parameters.md'
 
 # 全局服务器设置
 

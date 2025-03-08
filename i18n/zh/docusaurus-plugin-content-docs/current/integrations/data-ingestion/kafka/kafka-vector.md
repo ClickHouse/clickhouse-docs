@@ -4,7 +4,7 @@ sidebar_position: 3
 slug: /integrations/kafka/kafka-vector
 description: 使用 Vector 与 Kafka 和 ClickHouse
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 ## 使用 Vector 与 Kafka 和 ClickHouse {#using-vector-with-kafka-and-clickhouse}
 

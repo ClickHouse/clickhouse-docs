@@ -3,7 +3,7 @@ sidebar_label: 'DbVisualizer'
 slug: '/integrations/dbvisualizer'
 description: 'DbVisualizer 是一个具有对 ClickHouse 扩展支持的数据库工具。'
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import dbvisualizer_driver_manager from '@site/static/images/integrations/sql-clients/dbvisualizer-driver-manager.png';
 
 

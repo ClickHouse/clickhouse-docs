@@ -4,7 +4,7 @@ slug: /integrations/retool
 keywords: [clickhouse, retool, connect, integrate, ui, admin, panel, dashboard, nocode, no-code]
 description: 快速构建具有丰富用户界面的web和移动应用程序，自动化复杂任务，并集成AI——一切都由您的数据驱动。
 ---
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import retool_01 from '@site/static/images/integrations/tools/data-integration/retool/retool_01.png';
 import retool_02 from '@site/static/images/integrations/tools/data-integration/retool/retool_02.png';
 import retool_03 from '@site/static/images/integrations/tools/data-integration/retool/retool_03.png';

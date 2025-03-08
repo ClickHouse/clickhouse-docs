@@ -5,7 +5,6 @@ slug: /operations/settings/formats
 toc_max_heading_level: 2
 description: 控制输入和输出格式的设置。
 ---
-```
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import BetaBadge from '@theme/badges/BetaBadge';
@@ -314,7 +313,7 @@ CSV 格式中的自定义 NULL 表示。
 
 [Common Mark](https://spec.commonmark.org/0.30/#example-12) 定义了以下可以使用 \ 转义的特殊字符：
 
-```
+```markdown
 ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
 ```
 
