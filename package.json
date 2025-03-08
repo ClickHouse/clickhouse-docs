@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "config": {
-    "clickhouse_repo_folders": "docs/en/development docs/en/engines docs/en/getting-started docs/en/interfaces docs/en/operations docs/en/sql-reference docs/ru docs/zh",
+    "clickhouse_repo_folders": "docs/en/development docs/en/engines docs/en/getting-started docs/en/interfaces docs/en/operations docs/en/sql-reference docs/zh",
     "autogen_needed_files": "src/Core/FormatFactorySettings.h src/Core/Settings.cpp CHANGELOG.md"
   },
   "scripts": {
