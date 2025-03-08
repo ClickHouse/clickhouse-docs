@@ -1,56 +1,56 @@
 {
   "theme.NotFound.title": {
     "message": "找不到页面",
-    "description": "The title of the 404 page"
+    "description": "404页面的标题"
   },
   "topNav.navItems.Products": {
-    "message": "Products"
+    "message": "产品"
   },
   "topNav.navItems.Use cases": {
-    "message": "Use cases"
+    "message": "使用案例"
   },
   "topNav.navItems.Docs": {
-    "message": "Docs"
+    "message": "文档"
   },
   "topNav.navItems.Resources": {
-    "message": "Resources"
+    "message": "资源"
   },
   "topNav.navItems.Pricing": {
-    "message": "Pricing"
+    "message": "定价"
   },
   "topNav.navItems.Contact us": {
-    "message": "Contact us"
+    "message": "联系我们"
   },
   "theme.admonition.note": {
     "message": "备注",
-    "description": "The default label used for the Note admonition (:::note)"
+    "description": "用于Note警告的默认标签（:::note"
   },
   "theme.admonition.tip": {
     "message": "提示",
-    "description": "The default label used for the Tip admonition (:::tip)"
+    "description": "用于Tip警告的默认标签（:::tip)"
   },
   "theme.admonition.danger": {
     "message": "危险",
-    "description": "The default label used for the Danger admonition (:::danger)"
+    "description": "用于Danger警告的默认标签（:::danger)"
   },
   "theme.admonition.info": {
     "message": "信息",
-    "description": "The default label used for the Info admonition (:::info)"
+    "description": "用于Info警告的默认标签（:::info)"
   },
   "theme.admonition.caution": {
     "message": "警告",
-    "description": "The default label used for the Caution admonition (:::caution)"
+    "description": "用于Caution警告的默认标签（:::caution)"
   },
   "theme.admonition.experimental": {
-    "message": "EXPERIMENTAL",
-    "description": "The default label used for the Experimental admonition (:::experimental)"
+    "message": "实验性",
+    "description": "用于实验性警告的默认标签 (:::experimental)"
   },
   "theme.admonition.obsolete": {
-    "message": "OBSOLETE",
-    "description": "The default label used for the Obsolete admonition (:::obsolete)"
+    "message": "已过时",
+    "description": "用于已过时警告的默认标签 (:::obsolete)"
   },
   "theme.blog.title": {
-    "message": "Knowledge Base"
+    "message": "知识库"
   },
   "theme.docs.breadcrumbs.navAriaLabel": {
     "message": "页面路径",
@@ -100,49 +100,49 @@
     "description": "The paragraph for fetching new search results"
   },
   "topNav.navItems.products.clickhouse_cloud_1": {
-    "message": "The best way to use ClickHouse."
+    "message": "使用 ClickHouse 的最佳方式"
   },
   "topNav.navItems.products.clickhouse_cloud_2": {
-    "message": "Available on AWS, GCP, and Azure."
+    "message": "可在 AWS、GCP 和 Azure 上使用"
   },
   "topNav.navItems.products.byoc_1": {
-    "message": "Bring Your Own Cloud"
+    "message": "自带云服务"
   },
   "topNav.navItems.products.byoc_2": {
-    "message": "A fully managed ClickHouse Cloud service,"
+    "message": "完全托管的 ClickHouse Cloud 服务"
   },
   "topNav.navItems.products.byoc_3": {
-    "message": "deployed in your own AWS account."
+    "message": "部署在您自己的 AWS 账户中"
   },
   "topNav.navItems.products.oss": {
-    "message": "Spin up a database with open-source"
+    "message": "使用开源版本启动数据库"
   },
   "topNav.navItems.products.oss_2": {
     "message": "ClickHouse"
   },
   "topNav.navItems.products.integrations": {
-    "message": "View 100+ integrations"
+    "message": "查看100多个集成"
   },
   "topNav.navItems.resources.User stories": {
-    "message": "User stories"
+    "message": "用户案例"
   },
   "topNav.navItems.resources.Blog": {
-    "message": "Blog"
+    "message": "博客"
   },
   "topNav.navItems.resources.Learning and Certification": {
-    "message": "Learning and Certification"
+    "message": "学习与认证"
   },
   "topNav.navItems.resources.ClickHouse Academy": {
-    "message": "ClickHouse Academy"
+    "message": "ClickHouse 学院"
   },
   "topNav.navItems.resources.Free live training": {
-    "message": "Free live training"
+    "message": "免费在线培训"
   },
   "topNav.navItems.resources.ClickHouse Certification": {
-    "message": "ClickHouse Certification"
+    "message": "ClickHouse 认证"
   },
   "topNav.navItems.resources.Comparisons": {
-    "message": "Comparisons"
+    "message": "对比"
   },
   "topNav.navItems.resources.BigQuery": {
     "message": "BigQuery"
@@ -160,25 +160,25 @@
     "message": "Snowflake"
   },
   "topNav.navItems.resources.Videos": {
-    "message": "Videos"
+    "message": "视频"
   },
   "topNav.navItems.resources.Demos": {
-    "message": "Demos"
+    "message": "演示"
   },
   "topNav.navItems.use_cases.Real-time analytics": {
-    "message": "Real-time analytics"
+    "message": "实时分析"
   },
   "topNav.navItems.use_cases.Machine learning and GenAI": {
-    "message": "Machine learning and GenAI"
+    "message": "机器学习和生成式AI"
   },
   "topNav.navItems.use_cases.Business intelligence": {
-    "message": "Business intelligence"
+    "message": "商业智能"
   },
   "topNav.navItems.use_cases.Logs, events, and traces": {
-    "message": "Logs, events, and traces"
+    "message": "日志、事件和追踪"
   },
   "topNav.navItems.use_cases.All use cases": {
-    "message": "All use cases"
+    "message": "所有使用案例"
   },
   "theme.blog.sidebar.navAriaLabel": {
     "message": "最近博文导航",
@@ -520,16 +520,16 @@
     "description": "The title of the page for a blog author"
   },
   "theme.blog.authorsList.pageTitle": {
-    "message": "Authors",
-    "description": "The title of the authors page"
+    "message": "作者",
+    "description": "作者页面的标题"
   },
   "theme.blog.authorsList.viewAll": {
-    "message": "View All Authors",
-    "description": "The label of the link targeting the blog authors page"
+    "message": "查看所有作者",
+    "description": "指向博客作者页面的链接标签"
   },
   "theme.blog.author.noPosts": {
-    "message": "This author has not written any posts yet.",
-    "description": "The text for authors with 0 blog post"
+    "message": "该作者尚未发布任何文章。",
+    "description": "对于没有博客文章的作者显示的文本"
   },
   "theme.contentVisibility.unlistedBanner.title": {
     "message": "未列出页",
@@ -540,12 +540,12 @@
     "description": "The unlisted content banner message"
   },
   "theme.contentVisibility.draftBanner.title": {
-    "message": "Draft page",
-    "description": "The draft content banner title"
+    "message": "草稿页面",
+    "description": "草稿内容横幅标题"
   },
   "theme.contentVisibility.draftBanner.message": {
-    "message": "This page is a draft. It will only be visible in dev and be excluded from the production build.",
-    "description": "The draft content banner message"
+    "message": "此页面是草稿。它只在开发环境中可见，并将在生产构建中被排除。",
+    "description": "草稿内容横幅消息"
   },
   "theme.ErrorPageContent.tryAgain": {
     "message": "重试",

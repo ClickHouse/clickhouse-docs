@@ -1,0 +1,23 @@
+title: '通过 HTTP(S) 连接 ClickHouse'
+sidebar_label: '通过 HTTP(S) 连接'
+keywords: ['ClickHouse', '连接', 'HTTP', 'HTTPS']
+description: '获取通过 HTTP(S) 连接 ClickHouse 所需的信息。'
+```
+
+要通过 HTTP(S) 连接到 ClickHouse，您需要以下信息：
+
+- HOST 和 PORT：通常，当使用 TLS 时，端口为 8443；当不使用 TLS 时，端口为 8123。
+
+- 数据库名称：开箱即用时，有一个名为 `default` 的数据库，请使用您要连接的数据库名称。
+
+- 用户名和密码：开箱即用时，用户名为 `default`。请使用适合您用例的用户名。
+
+您的 ClickHouse Cloud 服务详细信息可在 ClickHouse Cloud 控制台中找到。 选择您要连接的服务并点击 **Connect**：
+
+<img src={cloud_connect_button} class="image" alt="ClickHouse Cloud 服务连接按钮" />
+
+选择 **HTTPS**，详细信息会在示例 `curl` 命令中提供。
+
+<img src={connection_details_https} class="image" alt="ClickHouse Cloud HTTPS 连接详细信息" />
+
+如果您使用的是自管理的 ClickHouse，连接详细信息由您的 ClickHouse 管理员设置。
