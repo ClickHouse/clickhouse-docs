@@ -2,7 +2,7 @@
   "rewrites": [
     { "source": "/docs/jp/:path*", "destination": "/:path*" },
     { "source": "/docs/:path*", "destination": "/:path*" },
-    { "source": "/docs/zh/:path*", "destination": "/:path*" },
+    { "source": "/docs/zh/:path*", "destination": "/:path*" }
   ],
   "trailingSlash": false,
   "cleanUrls": true,
