@@ -180,7 +180,7 @@ def translate_file(config, input_file_path, output_file_path, model):
     except FileNotFoundError:
         print(f"no file: {input_file_path}")
     except Exception as e:
-       raise e
+        raise e
 
     end_time = time.time()
     duration = end_time - start_time
@@ -374,8 +374,8 @@ def main():
     config = load_config(args.config)
     translate_plugin_data(args.output_folder, config, model=args.model)
     files_translated = translate_docs_folder(config, args.input_folder,
-                          os.path.join(args.output_folder, "docusaurus-plugin-content-docs/current"),
-                          args.model, overwrite=args.force_overwrite)
+                                             os.path.join(args.output_folder, "docusaurus-plugin-content-docs/current"),
+                                             args.model, overwrite=args.force_overwrite)
     rename_translated_files(args.output_folder)
     remove_old_files(files_translated, os.path.join(args.output_folder, "docusaurus-plugin-content-docs/current"))
 

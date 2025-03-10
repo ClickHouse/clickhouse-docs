@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  useNavbarMobileSidebar,
+    useNavbarMobileSidebar,
 } from '@docusaurus/theme-common/internal';
 import Translate from '@docusaurus/Translate';
 import SearchBar from "@theme/SearchBar";
@@ -12,15 +12,15 @@ import DocSidebarItems from '@theme/DocSidebarItems'
 import sidebars from '../../../../../sidebars';
 
 function SecondaryMenuBackButton(props) {
-  return (
-    <button {...props} type="button" className="clean-btn navbar-sidebar__back">
-      <Translate
-        id="theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel"
-        description="The label of the back button to return to main menu, inside the mobile navbar sidebar secondary menu (notably used to display the docs sidebar)">
-        ← Back to main menu
-      </Translate>
-    </button>
-  );
+    return (
+        <button {...props} type="button" className="clean-btn navbar-sidebar__back">
+            <Translate
+                id="theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel"
+                description="The label of the back button to return to main menu, inside the mobile navbar sidebar secondary menu (notably used to display the docs sidebar)">
+                ← Back to main menu
+            </Translate>
+        </button>
+    );
 }
 
 // The secondary menu slides from the right and shows the top nav items. This is alittle unusual - we use this to show the drop down items
