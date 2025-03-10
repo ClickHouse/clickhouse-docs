@@ -1,4 +1,3 @@
-
 ---
 sidebar_label: 'Go'
 sidebar_position: 1
