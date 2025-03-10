@@ -57,23 +57,28 @@ const config = {
   trailingSlash: false,
   i18n: {
     defaultLocale: "zh",
-    locales: ["zh", "en"],
+    locales: ["zh", "en", "jp", "ru"],
     path: "i18n",
     localeConfigs: {
+     en: {
+        label: "English",
+        htmlLang: "en",
+        path: "en",
+      },
       ru: {
         label: "Russian",
         htmlLang: "ru",
         path: "ru",
       },
-      en: {
-        label: "English",
-        htmlLang: "en",
-        path: "en",
-      },
       jp: {
         label: "Japanese",
         htmlLang: "jp",
         path: "jp",
+      },
+      zh: {
+        label: "Chinese",
+        htmlLang: "zh",
+        path: "zh",
       },
     },
   },
