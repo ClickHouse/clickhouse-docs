@@ -1,5 +1,5 @@
 ---
-title: 'SQL插入'
+title: 'SQLInsert'
 slug: /interfaces/formats/SQLInsert
 keywords: ['SQLInsert']
 input_format: false

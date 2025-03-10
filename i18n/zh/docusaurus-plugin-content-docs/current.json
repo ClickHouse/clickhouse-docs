@@ -304,11 +304,11 @@
     "description": "The label for category CSV in sidebar integrations"
   },
   "sidebar.integrations.category.CustomSeparated": {
-    "message": "自定义分隔符",
+    "message": "CustomSeparated",
     "description": "The label for category CustomSeparated in sidebar integrations"
   },
   "sidebar.integrations.category.LineAsString": {
-    "message": "行作为字符串",
+    "message": "LineAsString",
     "description": "The label for category LineAsString in sidebar integrations"
   },
   "sidebar.integrations.category.Parquet": {
@@ -316,7 +316,7 @@
     "description": "The label for category Parquet in sidebar integrations"
   },
   "sidebar.integrations.category.Pretty": {
-    "message": "漂亮",
+    "message": "Pretty",
     "description": "The label for category Pretty in sidebar integrations"
   },
   "sidebar.integrations.category.Protobuf": {
@@ -324,15 +324,15 @@
     "description": "The label for category Protobuf in sidebar integrations"
   },
   "sidebar.integrations.category.RowBinary": {
-    "message": "行二进制",
+    "message": "RowBinary",
     "description": "The label for category RowBinary in sidebar integrations"
   },
   "sidebar.integrations.category.TabSeparated": {
-    "message": "制表符分隔",
+    "message": "TabSeparated",
     "description": "The label for category TabSeparated in sidebar integrations"
   },
   "sidebar.integrations.category.Template": {
-    "message": "模板",
+    "message": "Template",
     "description": "The label for category Template in sidebar integrations"
   },
   "sidebar.integrations.category.Data Ingestion": {

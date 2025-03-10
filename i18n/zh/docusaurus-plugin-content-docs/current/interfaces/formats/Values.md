@@ -1,5 +1,5 @@
 ---
-title: '值'
+title: 'Values'
 slug: /interfaces/formats/Values
 keywords: ['值']
 input_format: true

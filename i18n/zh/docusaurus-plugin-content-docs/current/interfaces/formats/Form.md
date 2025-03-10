@@ -1,5 +1,5 @@
 ---
-title: 表单
+title: Form
 slug: /interfaces/formats/Form
 keywords: ['表单']
 input_format: true
