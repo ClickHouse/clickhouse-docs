@@ -76,7 +76,6 @@ const config = {
         path: "zh",
       },
     },
-    },
   },
   staticDirectories: ["static"],
   projectName: "clickhouse-docs",
