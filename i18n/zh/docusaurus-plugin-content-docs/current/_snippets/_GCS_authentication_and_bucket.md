@@ -1,8 +1,11 @@
-title: '创建 GCS 存储桶和 HMAC 密钥'
-sidebar_label: '创建 GCS 存储桶和 HMAC 密钥'
-keywords: ['GCS', 'HMAC', '存储桶', '密钥']
-description: '本指南包含如何创建 GCS 存储桶以及生成 HMAC 密钥的步骤。'
-```
+import GCS_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-bucket-1.png';
+import GCS_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-bucket-2.png';
+import GCS_create_service_account_key from '@site/static/images/integrations/data-ingestion/s3/GCS-create-a-service-account-key.png';
+import GCS_create_service_account_0 from '@site/static/images/integrations/data-ingestion/s3/GCS-create-service-account-0.png';
+import GCS_create_service_account_a from '@site/static/images/integrations/data-ingestion/s3/GCS-create-service-account-a.png';
+import GCS_create_service_account_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-create-service-account-2.png';
+import GCS_create_service_account_3 from '@site/static/images/integrations/data-ingestion/s3/GCS-create-service-account-3.png';
+import GCS_guide_key from '@site/static/images/integrations/data-ingestion/s3/GCS-guide-key.png';
 
 <details>
     <summary>创建 GCS 存储桶和 HMAC 密钥</summary>

@@ -4,7 +4,6 @@ title: 'v24.2 更新日志'
 description: 'v24.2 快速发布更新日志'
 keywords: ['changelog']
 ---
-```
 
 ### ClickHouse release tag: 24.2.2.15987 {#clickhouse-release-tag-242215987}
 #### Backward Incompatible Change {#backward-incompatible-change}

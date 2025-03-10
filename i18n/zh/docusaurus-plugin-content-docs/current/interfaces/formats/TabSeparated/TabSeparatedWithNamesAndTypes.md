@@ -1,5 +1,5 @@
 ---
-title: '带名称和类型的制表符分隔'
+title: 'TabSeparatedWithNamesAndTypes'
 slug: '/interfaces/formats/TabSeparatedWithNamesAndTypes'
 keywords: ['TabSeparatedWithNamesAndTypes']
 ---

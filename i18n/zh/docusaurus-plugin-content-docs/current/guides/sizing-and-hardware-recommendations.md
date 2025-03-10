@@ -4,7 +4,6 @@ sidebar_label: '硬件规模与推荐'
 sidebar_position: 4
 ---
 
-
 # 硬件规模与推荐
 
 本指南讨论我们对开源用户的硬件、计算、内存和磁盘配置的一般建议。如果您想简化设置，我们建议使用 [ClickHouse Cloud](https://clickhouse.com/cloud)，因为它能够自动扩展并适应您的工作负载，同时最小化与基础设施管理相关的成本。
@@ -49,8 +48,6 @@ sidebar_position: 4
 **数据仓库用例**
 
 对于数据仓库工作负载和临时分析查询，我们建议使用 AWS 的 [R 型系列](https://aws.amazon.com/ec2/instance-types/#Memory_Optimized) 或云提供商的等效产品，因为它们经过内存优化。
-
----
 
 ### CPU 利用率应是多少？ {#what-should-cpu-utilization-be}
 

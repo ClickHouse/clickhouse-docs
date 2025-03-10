@@ -202,7 +202,5 @@ title: '服务类型'
 不允许降级分层。
 :::
 
----
-
 如果您对服务类型有任何疑问，请参阅 [定价页面](https://clickhouse.com/pricing) 或联系 support@clickhouse.com。
 

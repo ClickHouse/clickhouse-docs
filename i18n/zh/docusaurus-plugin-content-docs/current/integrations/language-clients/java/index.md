@@ -4,7 +4,6 @@ keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
 description: '连接 ClickHouse 的 Java 选项'
 slug: '/integrations/java'
 ---
-```
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -16,7 +16,6 @@ slug: /chdb/guides/clickhouse-local
 description: Learn how to use a clickhouse-local database with chDB
 keywords: [chdb, clickhouse-local]
 ---
-```
 
 ## Explicit header tags
 

@@ -9,7 +9,7 @@ import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';
 
 ## 基本示例 {#basic-example}
 
-您可以使用熟悉的 `INSERT INTO TABLE` 命令来操作 ClickHouse。我们来将一些数据插入到我们在入门指南 ["在 ClickHouse 中创建表"]（./creating-tables）中创建的表中。
+您可以使用熟悉的 `INSERT INTO TABLE` 命令来操作 ClickHouse。我们来将一些数据插入到我们在入门指南 ["在 ClickHouse 中创建表"](./creating-tables）中创建的表中。
 
 ```sql
 INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES

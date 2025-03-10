@@ -1,10 +1,11 @@
+---
 slug: /sql-reference/statements/check-table
 sidebar_position: 41
 sidebar_label: CHECK TABLE
 title: "CHECK TABLE 语句"
 keywords: ['CHECK TABLE', 'ClickHouse', 'SQL', '数据完整性']
 description: '了解 ClickHouse 中的 CHECK TABLE 语句及其用法，以验证表的完整性和状态。'
-```
+---
 
 The `CHECK TABLE` 查询在 ClickHouse 中用于对特定表或其分区进行验证检查。它通过验证校验和和其他内部数据结构来确保数据的完整性。
 

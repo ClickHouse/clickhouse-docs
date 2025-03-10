@@ -1,5 +1,5 @@
 ---
-title: '带名称的制表符分隔'
+title: 'TabSeparatedWithNames'
 slug: /interfaces/formats/TabSeparatedWithNames
 keywords: ['TabSeparatedWithNames']
 input_format: true

@@ -1,3 +1,4 @@
+---
 slug: '/sql-reference/functions/string-functions'
 sidebar_position: 170
 sidebar_label: '字符串'

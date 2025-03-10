@@ -1,5 +1,5 @@
 ---
-title: '带元数据的JSON列'
+title: 'JSONColumnsWithMetadata'
 slug: /interfaces/formats/JSONColumnsWithMetadata
 keywords: ['JSONColumnsWithMetadata']
 input_format: true

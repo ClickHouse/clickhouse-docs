@@ -3,7 +3,6 @@ sidebar_label: 'EMQX'
 sidebar_position: 1
 slug: '/integrations/emqx'
 description: 'Introduction to EMQX with ClickHouse'
-
 ---
 
 import emqx_cloud_artitecture from '@site/static/images/integrations/data-ingestion/emqx/emqx-cloud-artitecture.png';

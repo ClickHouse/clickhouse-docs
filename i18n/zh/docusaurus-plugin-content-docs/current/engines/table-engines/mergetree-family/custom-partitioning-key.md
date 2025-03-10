@@ -6,7 +6,6 @@ title: '自定义分区键'
 description: '了解如何为 MergeTree 表添加自定义分区键。'
 ---
 
-
 # 自定义分区键
 
 :::note

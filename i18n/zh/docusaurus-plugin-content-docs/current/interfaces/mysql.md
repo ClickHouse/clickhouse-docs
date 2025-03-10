@@ -5,7 +5,6 @@ sidebar_label: 'MySQL 接口'
 keywords: ['MySQL', 'ClickHouse', '数据库接口', '数据分析']
 description: 'ClickHouse 支持 MySQL 接口，其中包括与多种商业智能工具的集成。'
 ---
-```
 
 import mysql0 from '@site/static/images/interfaces/mysql0.png';
 import mysql1 from '@site/static/images/interfaces/mysql1.png';

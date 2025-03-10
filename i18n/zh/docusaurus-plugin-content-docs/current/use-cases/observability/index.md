@@ -4,7 +4,6 @@ title: '可观察性'
 pagination_prev: null
 pagination_next: null
 ---
-```
 
 欢迎来到我们的可观察性用例指南。在本指南中，您将学习如何设置并使用 ClickHouse 进行可观察性。
 

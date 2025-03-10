@@ -1,9 +1,10 @@
+---
 slug: /cloud/reference/shared-merge-tree
 sidebar_label: SharedMergeTree
 title: 'SharedMergeTree'
 keywords: ['shared merge tree', 'SharedMergeTree engine']
 description: 'SharedMergeTree 引擎，专为云环境优化，提供更高的插入吞吐量和更好的存储计算分离。'
-```
+---
 
 import shared_merge_tree from '@site/static/images/cloud/reference/shared-merge-tree-1.png';
 import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merge-tree-2.png';

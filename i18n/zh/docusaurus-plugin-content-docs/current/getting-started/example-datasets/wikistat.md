@@ -1,8 +1,9 @@
+---
 description: '探索包含 0.5 万亿条记录的 WikiStat 数据集。'
 sidebar_label: 'WikiStat'
 title: 'WikiStat'
 slug: /getting-started/example-datasets/wikistat
-```
+---
 
 数据集包含 0.5 万亿条记录。
 

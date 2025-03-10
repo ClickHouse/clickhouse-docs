@@ -1,5 +1,5 @@
 ---
-title: '自定义分隔格式'
+title: 'CustomSeparated'
 slug: /interfaces/formats/CustomSeparated
 keywords: ['CustomSeparated']
 input_format: true

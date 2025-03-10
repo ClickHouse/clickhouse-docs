@@ -1,10 +1,10 @@
+---
 slug: /operations/settings/settings-profiles
 sidebar_position: 61
 sidebar_label: '设置配置文件'
 description: '一组以相同名称分组的设置。'
 title: '设置配置文件'
-```
-
+---
 
 # 设置配置文件
 

@@ -1,5 +1,5 @@
 ---
-title: 正则表达式
+title: Regexp
 slug: /interfaces/formats/Regexp
 keywords: ['Regexp']
 input_format: true

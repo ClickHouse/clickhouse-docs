@@ -1,5 +1,5 @@
 ---
-title: 垂直
+title: Vertical
 slug: /interfaces/formats/Vertical
 keywords: ['Vertical']
 input_format: false

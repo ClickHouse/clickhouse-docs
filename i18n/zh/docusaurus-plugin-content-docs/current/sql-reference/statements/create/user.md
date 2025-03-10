@@ -1,4 +1,3 @@
-
 ---
 slug: /sql-reference/statements/create/user
 sidebar_position: 39

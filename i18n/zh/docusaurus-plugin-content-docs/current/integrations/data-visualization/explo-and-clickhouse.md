@@ -5,7 +5,6 @@ slug: /integrations/explo
 keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
 description: 'Explo 是一个易于使用的开源 UI 工具，用于对您的数据进行提问。'
 ---
-```
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import explo_01 from '@site/static/images/integrations/data-visualization/explo_01.png';

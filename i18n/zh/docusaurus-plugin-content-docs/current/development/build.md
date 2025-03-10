@@ -5,7 +5,6 @@ sidebar_label: 在 Linux 上构建
 keywords: ['ClickHouse', '构建', 'Linux']
 description: '了解如何在 Linux 系统上构建 ClickHouse，满足开发人员的需求。'
 ---
-```
 
 
 # 如何在 Linux 上构建 ClickHouse

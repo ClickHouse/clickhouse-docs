@@ -1,3 +1,4 @@
+---
 slug: '/cloud/reference/changelogs/release-notes'
 title: '云发布说明'
 sidebar_label: '云发布说明'
@@ -6,7 +7,7 @@ keywords:
   - 'Release Notes'
   - 'Cloud'
 description: '有关 ClickHouse 云服务的发布说明和更新的详细信息。'
-```
+---
 
 <!-- 
 以下目录是通过 https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh 

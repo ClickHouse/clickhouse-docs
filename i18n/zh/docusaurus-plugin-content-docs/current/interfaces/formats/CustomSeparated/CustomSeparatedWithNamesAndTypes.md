@@ -1,5 +1,5 @@
 ---
-title: '自定义分隔符与名称和类型'
+title: 'CustomSeparatedWithNamesAndTypes'
 slug: /interfaces/formats/CustomSeparatedWithNamesAndTypes
 keywords: ['CustomSeparatedWithNamesAndTypes']
 input_format: true

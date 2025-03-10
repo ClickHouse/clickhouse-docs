@@ -1,5 +1,5 @@
 ---
-title: '美观'
+title: 'Pretty'
 slug: /interfaces/formats/Pretty
 keywords: ['美观']
 input_format: false

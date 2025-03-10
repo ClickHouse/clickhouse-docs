@@ -1,4 +1,3 @@
-
 ---
 slug: /operations/storing-data
 sidebar_position: 68

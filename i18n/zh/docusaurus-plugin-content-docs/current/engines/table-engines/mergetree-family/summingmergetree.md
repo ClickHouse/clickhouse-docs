@@ -1,4 +1,3 @@
-
 ---
 slug: /engines/table-engines/mergetree-family/summingmergetree
 sidebar_position: 50

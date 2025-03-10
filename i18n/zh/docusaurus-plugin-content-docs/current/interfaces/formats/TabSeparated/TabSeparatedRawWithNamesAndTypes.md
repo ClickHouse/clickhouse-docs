@@ -1,5 +1,5 @@
 ---
-title: '带名称和类型的制表符分隔原始格式'
+title: 'TabSeparatedRawWithNamesAndTypes'
 slug: '/interfaces/formats/TabSeparatedRawWithNamesAndTypes'
 keywords: ['带名称和类型的制表符分隔原始格式', '带名称和类型的TSV原始格式', '带名称和类型的原始格式']
 input_format: true

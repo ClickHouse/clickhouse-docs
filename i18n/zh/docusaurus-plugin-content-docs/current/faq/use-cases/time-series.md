@@ -1,9 +1,9 @@
+---
 slug: /faq/use-cases/time-series
 title: 我可以将 ClickHouse 用作时间序列数据库吗？
 toc_hidden: true
 toc_priority: 101
-```
-
+---
 
 # 我可以将 ClickHouse 用作时间序列数据库吗？ {#can-i-use-clickhouse-as-a-time-series-database}
 

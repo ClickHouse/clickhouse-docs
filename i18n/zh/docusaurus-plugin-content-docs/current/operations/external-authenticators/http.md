@@ -4,7 +4,7 @@ title: 'HTTP'
 ---
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-<SelfManaged />
+<SelfManaged/>
 
 HTTP 服务器可用于对 ClickHouse 用户进行身份验证。HTTP 身份验证只能作为外部身份验证器用于在 `users.xml` 中或本地访问控制路径中定义的现有用户。目前，仅支持使用 GET 方法的 [Basic](https://datatracker.ietf.org/doc/html/rfc7617) 身份验证方案。
 

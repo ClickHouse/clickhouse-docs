@@ -1,4 +1,3 @@
-
 ---
 slug: /sql-reference/functions/date-time-functions
 sidebar_position: 45

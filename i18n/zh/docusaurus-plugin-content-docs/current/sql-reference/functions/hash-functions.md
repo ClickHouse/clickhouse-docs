@@ -1,4 +1,3 @@
-
 ---
 slug: /sql-reference/functions/hash-functions
 sidebar_position: 85

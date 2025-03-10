@@ -186,7 +186,6 @@ BYOC 设置是通过 [CloudFormation stack](https://s3.us-east-2.amazonaws.com/c
 
 <br />
 
----
 ClickHouse 服务现在应该可以从对等 VPC 访问。
 
 要私下访问 ClickHouse，将为用户的对等 VPC 提供私有负载均衡器和端点以确保安全连接。私有端点遵循公共端点格式，并带有 `-private` 后缀。例如：

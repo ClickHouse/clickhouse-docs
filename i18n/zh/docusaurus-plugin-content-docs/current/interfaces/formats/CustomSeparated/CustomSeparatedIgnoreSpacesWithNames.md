@@ -1,5 +1,5 @@
 ---
-title: 自定义分隔符忽略空格与名称
+title: CustomSeparatedIgnoreSpacesWithNames
 slug: /interfaces/formats/CustomSeparatedIgnoreSpacesWithNames
 keywords: ['CustomSeparatedIgnoreSpacesWithNames']
 ---

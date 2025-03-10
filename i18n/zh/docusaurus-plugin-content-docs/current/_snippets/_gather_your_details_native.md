@@ -1,4 +1,3 @@
-
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_native from '@site/static/images/_snippets/connection-details-native.png';
 
@@ -19,4 +18,4 @@ import connection_details_native from '@site/static/images/_snippets/connection-
 <img src={connection_details_native} class="image" alt="ClickHouse Cloud Native TCP connection details" />
 
 如果您使用的是自管理的 ClickHouse，连接详细信息由您的 ClickHouse 管理员设置。
-```
+

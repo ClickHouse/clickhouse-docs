@@ -112,8 +112,6 @@ curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} https://api.clickhouse.cloud/v1
 
 <img src={azure_private_link_center} alt="打开 Azure Private Center" />
 
----
-
 在以下屏幕中，指定以下选项：
 
 - **订阅** / **资源组**：请选择用于私有终结点的 Azure 订阅和资源组。
@@ -124,8 +122,6 @@ curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} https://api.clickhouse.cloud/v1
 
 <img src={azure_pe_create_basic} alt="创建私有终结点基本设置" />
 
----
-
 选择 **通过资源 ID 或别名连接到 Azure 资源** 选项。
 
 对于 **资源 ID 或别名**，使用您从 [获取 Azure 连接别名以进行 Private Link](#obtain-azure-connection-alias-for-private-link) 步骤中获得的 `endpointServiceId`。
@@ -133,8 +129,6 @@ curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} https://api.clickhouse.cloud/v1
 单击 **下一步：虚拟网络** 按钮。
 
 <img src={azure_pe_resource} alt="选择私有终结点资源" />
-
----
 
 - **虚拟网络**：选择您希望通过 Private Link 连接到 ClickHouse Cloud 的 VNet
 - **子网**：选择将创建私有终结点的子网
@@ -149,15 +143,11 @@ curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} https://api.clickhouse.cloud/v1
 
 单击 **下一步：标签** 按钮。
 
----
-
 <img src={azure_pe_create_dns} alt="私有终结点 DNS 配置" />
 
 可选地，您可以为您的私有终结点添加标签。
 
 单击 **下一步：查看 + 创建** 按钮。
-
----
 
 <img src={azure_pe_create_tags} alt="私有终结点标签" />
 

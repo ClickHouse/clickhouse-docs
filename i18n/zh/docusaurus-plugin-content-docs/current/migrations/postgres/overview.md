@@ -17,6 +17,4 @@ OLAP，或在线分析处理数据库，旨在满足这些需求——管理分�
 
 要查看 ClickHouse 和 Postgres 在分析查询上的潜在性能差异，请查看 [在 ClickHouse 中重写 PostgreSQL 查询](/migrations/postgresql/rewriting-queries)。
 
----
-
 **[在这里开始 PostgreSQL 迁移指南](/migrations/postgresql/dataset).**
