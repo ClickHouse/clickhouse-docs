@@ -460,22 +460,404 @@
     "message": "Теги",
     "description": "The title of the tag list page"
   },
-  "sidebar.dropdownCategories.category.About": {
-    "message": "О нас"
+  "sidebar.dropdownCategories.category.Getting Started": {
+    "message": "Начало работы",
+    "description": "Getting Started"
+  },
+  "sidebar.dropdownCategories.category.description.Getting Started": {
+    "message": "Изучите, как использовать ClickHouse",
+    "description": "Learn how to use ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Introduction": {
+    "message": "Введение",
+    "description": "Introduction"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Introduction.description": {
+    "message": "Введение в ClickHouse",
+    "description": "An introduction to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Starter Guides": {
+    "message": "Руководства для начинающих",
+    "description": "Starter Guides"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Starter Guides.description": {
+    "message": "Начните изучение ClickHouse здесь",
+    "description": "Start here when learning ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Concepts": {
+    "message": "Основные концепции",
+    "description": "Concepts"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Concepts.description": {
+    "message": "Ключевые концепции, которые необходимо знать",
+    "description": "Core concepts to know"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Migration Guides": {
+    "message": "Руководства по миграции",
+    "description": "Migration Guides"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Migration Guides.description": {
+    "message": "Перенесите свою базу данных в ClickHouse",
+    "description": "Migrate your database to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides": {
+    "message": "Руководства по использованию",
+    "description": "Use Case Guides"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides.description": {
+    "message": "Типичные сценарии использования ClickHouse",
+    "description": "Common use case guides for ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Example datasets": {
+    "message": "Примеры наборов данных",
+    "description": "Example datasets"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Example datasets.description": {
+    "message": "Полезные наборы данных и учебные материалы",
+    "description": "Helpful datasets and tutorials"
   },
   "sidebar.dropdownCategories.category.Cloud": {
-    "message": "Облако"
+    "message": "Облако",
+    "description": "Cloud"
   },
-  "sidebar.dropdownCategories.category.Getting Started": {
-    "message": "Начало работы"
+  "sidebar.dropdownCategories.category.description.Cloud": {
+    "message": "Самый быстрый способ развернуть ClickHouse",
+    "description": "The fastest way to deploy ClickHouse"
   },
-  "sidebar.dropdownCategories.category.Integrations": {
-    "message": "Интеграции"
+  "sidebar.dropdownCategories.category.Cloud.Get Started": {
+    "message": "Начало работы",
+    "description": "Get Started"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Get Started.description": {
+    "message": "Быстрое начало работы с ClickHouse Cloud",
+    "description": "Start quickly with ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Managing Cloud": {
+    "message": "Управление облаком",
+    "description": "Managing Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Managing Cloud.description": {
+    "message": "Управляйте вашими сервисами ClickHouse Cloud",
+    "description": "Manage your ClickHouse Cloud services"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud API": {
+    "message": "Облачный API",
+    "description": "Cloud API"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud API.description": {
+    "message": "Автоматизируйте управление ClickHouse Cloud",
+    "description": "Automate your ClickHouse Cloud services"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud Reference": {
+    "message": "Справочник по облаку",
+    "description": "Cloud Reference"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud Reference.description": {
+    "message": "Как работает ClickHouse Cloud",
+    "description": "Understanding how ClickHouse Cloud works"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Best Practices": {
+    "message": "Лучшие практики",
+    "description": "Best Practices"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Best Practices.description": {
+    "message": "Как максимально эффективно использовать ClickHouse Cloud",
+    "description": "How to get the most out of ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Security": {
+    "message": "Безопасность",
+    "description": "Security"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Security.description": {
+    "message": "Защитите свои сервисы ClickHouse Cloud",
+    "description": "Secure your ClickHouse Cloud services"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud": {
+    "message": "Миграция в облако",
+    "description": "Migrating to Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud.description": {
+    "message": "Перенесите свою базу данных в ClickHouse Cloud",
+    "description": "Migrate your database to ClickHouse Cloud"
   },
   "sidebar.dropdownCategories.category.Manage Data": {
-    "message": "Управление данными"
+    "message": "Управление данными",
+    "description": "Manage Data"
+  },
+  "sidebar.dropdownCategories.category.description.Manage Data": {
+    "message": "Как управлять данными в ClickHouse",
+    "description": "How to manage data in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Core Data Concepts": {
+    "message": "Основные концепции данных",
+    "description": "Core Data Concepts"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Core Data Concepts.description": {
+    "message": "Понимание внутренних концепций ClickHouse",
+    "description": "Understand internal concepts in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Updating Data": {
+    "message": "Обновление данных",
+    "description": "Updating Data"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Updating Data.description": {
+    "message": "Обновление и замена данных в ClickHouse",
+    "description": "Updating and replacing data in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Deleting data": {
+    "message": "Удаление данных",
+    "description": "Deleting data"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Deleting data.description": {
+    "message": "Удаление данных в ClickHouse",
+    "description": "Deleting data in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Data Modeling": {
+    "message": "Моделирование данных",
+    "description": "Data Modeling"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Data Modeling.description": {
+    "message": "Оптимизация схемы и модели данных",
+    "description": "Optimize your schema and data model"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Performance and Optimizations": {
+    "message": "Производительность и оптимизация",
+    "description": "Performance and Optimizations"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Performance and Optimizations.description": {
+    "message": "Руководства по оптимизации ClickHouse",
+    "description": "Guides to help you optimize ClickHouse"
   },
   "sidebar.dropdownCategories.category.Server Admin": {
-    "message": "Администрирование сервера"
+    "message": "Администрирование сервера",
+    "description": "Server Admin"
+  },
+  "sidebar.dropdownCategories.category.description.Server Admin": {
+    "message": "Управление и развертывание ClickHouse",
+    "description": "Manage and deploy ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Deployments and Scaling": {
+    "message": "Развертывание и масштабирование",
+    "description": "Deployments and Scaling"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Deployments and Scaling.description": {
+    "message": "Как развернуть ClickHouse",
+    "description": "How to deploy ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Security and Authentication": {
+    "message": "Безопасность и аутентификация",
+    "description": "Security and Authentication"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Security and Authentication.description": {
+    "message": "Защитите развертывание ClickHouse",
+    "description": "Secure your ClickHouse deployment"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Settings": {
+    "message": "Настройки",
+    "description": "Settings"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Settings.description": {
+    "message": "Настройка ClickHouse",
+    "description": "Configure ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Tools and Utilities": {
+    "message": "Инструменты и утилиты",
+    "description": "Tools and Utilities"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Tools and Utilities.description": {
+    "message": "Инструменты для управления ClickHouse",
+    "description": "Tools to help you manage ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.System Tables": {
+    "message": "Системные таблицы",
+    "description": "System Tables"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.System Tables.description": {
+    "message": "Метаданные для управления ClickHouse",
+    "description": "Metadata tables to help you manage ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Reference": {
+    "message": "Справочник",
+    "description": "Reference"
+  },
+  "sidebar.dropdownCategories.category.description.Reference": {
+    "message": "Справочная документация по функциям ClickHouse",
+    "description": "Reference documentation for ClickHouse features"
+  },
+  "sidebar.dropdownCategories.category.Reference.Introduction": {
+    "message": "Введение",
+    "description": "Introduction"
+  },
+  "sidebar.dropdownCategories.category.Reference.Introduction.description": {
+    "message": "Изучите синтаксис ClickHouse",
+    "description": "Learn ClickHouse syntax"
+  },
+  "sidebar.dropdownCategories.category.Reference.Functions": {
+    "message": "Функции",
+    "description": "Functions"
+  },
+  "sidebar.dropdownCategories.category.Reference.Functions.description": {
+    "message": "Сотни встроенных функций для анализа данных",
+    "description": "Hundreds of built-in functions to help you analyze your data"
+  },
+  "sidebar.dropdownCategories.category.Reference.Engines": {
+    "message": "Движки",
+    "description": "Engines"
+  },
+  "sidebar.dropdownCategories.category.Reference.Engines.description": {
+    "message": "Выберите подходящий движок таблиц и баз данных",
+    "description": "Use the right table and database engines for your data"
+  },
+  "sidebar.dropdownCategories.category.Reference.Other Features": {
+    "message": "Другие возможности",
+    "description": "Other Features"
+  },
+  "sidebar.dropdownCategories.category.Reference.Other Features.description": {
+    "message": "Дополнительные функции ClickHouse",
+    "description": "Learn about other features in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations": {
+    "message": "Интеграции",
+    "description": "Integrations"
+  },
+  "sidebar.dropdownCategories.category.description.Integrations": {
+    "message": "Интеграции, клиенты и драйверы для ClickHouse",
+    "description": "Integrations, clients, and drivers to use with ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All Integrations": {
+    "message": "Все интеграции",
+    "description": "All Integrations"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All Integrations.description": {
+    "message": "Интеграция ClickHouse с другими базами данных и приложениями",
+    "description": "Integrate ClickHouse with other databases and applications"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language Clients": {
+    "message": "Клиенты для языков программирования",
+    "description": "Language Clients"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language Clients.description": {
+    "message": "Используйте ваш любимый язык для работы с ClickHouse",
+    "description": "Use your favorite language to work with ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.ClickPipes": {
+    "message": "ClickPipes",
+    "description": "ClickPipes"
+  },
+  "sidebar.dropdownCategories.category.Integrations.ClickPipes.description": {
+    "message": "Самый простой способ загрузки данных в ClickHouse",
+    "description": "The easiest way to ingest data into ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native Clients & Interfaces": {
+    "message": "Нативные клиенты и интерфейсы",
+    "description": "Native Clients & Interfaces"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native Clients & Interfaces.description": {
+    "message": "Выберите клиент и интерфейс для подключения к ClickHouse",
+    "description": "Choose a client and interface to connect to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Sources": {
+    "message": "Источники данных",
+    "description": "Data Sources"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Sources.description": {
+    "message": "Загрузка данных в ClickHouse из различных источников",
+    "description": "Load data into ClickHouse from your preferred source"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Visualization": {
+    "message": "Визуализация данных",
+    "description": "Data Visualization"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Visualization.description": {
+    "message": "Подключите ClickHouse к вашему инструменту визуализации",
+    "description": "Connect ClickHouse to your favorite visualization tool"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Formats": {
+    "message": "Форматы данных",
+    "description": "Data Formats"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Formats.description": {
+    "message": "Исследуйте форматы данных, поддерживаемые ClickHouse",
+    "description": "Explore data formats supported by ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Ingestion": {
+    "message": "Загрузка данных",
+    "description": "Data Ingestion"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Ingestion.description": {
+    "message": "Загружайте данные в ClickHouse с помощью различных инструментов ELT",
+    "description": "Ingest data into ClickHouse with a range of ELT tools"
+  },
+  "sidebar.dropdownCategories.category.chDB": {
+    "message": "chDB",
+    "description": "chDB"
+  },
+  "sidebar.dropdownCategories.category.description.chDB": {
+    "message": "chDB — встроенная версия ClickHouse",
+    "description": "chDB is an embedded version of ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.chDB.Learn chDB": {
+    "message": "Изучение chDB",
+    "description": "Learn chDB"
+  },
+  "sidebar.dropdownCategories.category.chDB.Learn chDB.description": {
+    "message": "Как использовать chDB",
+    "description": "Learn how to use chDB"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language Integrations": {
+    "message": "Интеграция с языками программирования",
+    "description": "Language Integrations"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language Integrations.description": {
+    "message": "Подключение к chDB с помощью клиента для языка программирования",
+    "description": "Connect to chDB using a language client"
+  },
+  "sidebar.dropdownCategories.category.chDB.Guides": {
+    "message": "Руководства",
+    "description": "Guides"
+  },
+  "sidebar.dropdownCategories.category.chDB.Guides.description": {
+    "message": "Руководства по использованию chDB",
+    "description": "Guides to help you use chDB"
+  },
+  "sidebar.dropdownCategories.category.About": {
+    "message": "О проекте",
+    "description": "About"
+  },
+  "sidebar.dropdownCategories.category.description.About": {
+    "message": "Узнайте больше о ClickHouse",
+    "description": "Learn more about ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.About.Adopters": {
+    "message": "Компании, использующие ClickHouse",
+    "description": "Adopters"
+  },
+  "sidebar.dropdownCategories.category.About.Adopters.description": {
+    "message": "Компании, использующие ClickHouse",
+    "description": "ClickHouse adopters"
+  },
+  "sidebar.dropdownCategories.category.About.Changelogs": {
+    "message": "Список изменений",
+    "description": "Changelogs"
+  },
+  "sidebar.dropdownCategories.category.About.Changelogs.description": {
+    "message": "Просмотр последних изменений в ClickHouse",
+    "description": "View the latest changes in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.About.Support": {
+    "message": "Поддержка",
+    "description": "Support"
+  },
+  "sidebar.dropdownCategories.category.About.Support.description": {
+    "message": "Получите поддержку от инженеров ClickHouse",
+    "description": "Get support from ClickHouse engineers"
+  },
+  "sidebar.dropdownCategories.category.About.Development and Contributing": {
+    "message": "Разработка и вклад",
+    "description": "Development and Contributing"
+  },
+  "sidebar.dropdownCategories.category.About.Development and Contributing.description": {
+    "message": "Как внести вклад в ClickHouse",
+    "description": "Learn how to contribute to ClickHouse"
   }
 }
