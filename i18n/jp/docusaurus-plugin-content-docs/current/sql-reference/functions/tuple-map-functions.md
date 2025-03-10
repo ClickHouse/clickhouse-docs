@@ -1,10 +1,11 @@
+---
 slug: '/sql-reference/functions/tuple-map-functions'
 sidebar_position: 120
-sidebar_label: 'マップ'
+sidebar_label: 'マップ関数'
 title: 'マップ関数'
-keywords: 'ClickHouse, マップ関数'
+keywords: ['ClickHouse', 'マップ関数']
 description: 'ClickHouseのマップ関数に関する文書'
-```
+---
 
 ## map {#map}
 
@@ -115,10 +116,10 @@ SELECT mapFromArrays(map('a', 1, 'b', 2, 'c', 3), [1, 2, 3])
 
 ## extractKeyValuePairs {#extractkeyvaluepairs}
 
-キーと値のペアの文字列を[Map(String, String)](../data-types/map.md)に変換します。  
-解析はノイズ（例：ログファイル）に対して耐性があります。  
-入力文字列のキー-バリューペアは、キーの後にキー-バリュー区切り文字が続き、その後に値が続きます。  
-キー-バリューペアはペアの区切りで分けられます。  
+キーと値のペアの文字列を[Map(String, String)](../data-types/map.md)に変換します。
+解析はノイズ（例：ログファイル）に対して耐性があります。
+入力文字列のキー-バリューペアは、キーの後にキー-バリュー区切り文字が続き、その後に値が続きます。
+キー-バリューペアはペアの区切りで分けられます。
 キーと値は引用符で囲むことができます。
 
 **構文**
@@ -140,7 +141,7 @@ extractKeyValuePairs(data[, key_value_delimiter[, pair_delimiter[, quoting_chara
 
 **返される値**
 
-- キー-バリューペアの配列。タイプ: [Map(String, String)](../data-types/map.md) 
+- キー-バリューペアの配列。タイプ: [Map(String, String)](../data-types/map.md)
 
 **例**
 
@@ -210,13 +211,13 @@ map_restored:   {'John':'33','Paula':'31'}
 
 `extractKeyValuePairs` と同じですが、エスケープのサポートがあります。
 
-サポートされているエスケープシーケンス: `\x`, `\N`, `\a`, `\b`, `\e`, `\f`, `\n`, `\r`, `\t`, `\v` および `\0`。  
+サポートされているエスケープシーケンス: `\x`, `\N`, `\a`, `\b`, `\e`, `\f`, `\n`, `\r`, `\t`, `\v` および `\0`。
 非標準のエスケープシーケンスは、そのままの形（バックスラッシュを含む）で返されますが、以下のいずれかの場合を除きます: `\\`, `'`, `"`, `バックティック`, `/`, `=` または ASCII 制御文字 (c &lt;= 31)。
 
-この関数は、事前のエスケープおよび後のエスケープが適さない使用ケースを満たします。  
+この関数は、事前のエスケープおよび後のエスケープが適さない使用ケースを満たします。
 例えば、次の入力文字列を考えます: `a: "aaaa\"bbb"`。期待される出力は: `a: aaaa\"bbbb` です。
 - 事前エスケープ: 事前エスケープすると出力は: `a: "aaaa"bbb` となり、`extractKeyValuePairs` の出力は: `a: aaaa`。
-- 後エスケープ: `extractKeyValuePairs` の出力は `a: aaaa\` となり、後エスケープはそのままです。  
+- 後エスケープ: `extractKeyValuePairs` の出力は `a: aaaa\` となり、後エスケープはそのままです。
 
 キー内の先頭エスケープシーケンスはスキップされ、値に対して無効とみなされます。
 
@@ -248,8 +249,8 @@ mapAdd(arg1, arg2 [, ...])
 
 **引数**
 
-引数は、[map](../data-types/map.md) または、2つの [arrays](/sql-reference/data-types/array) の[tuple](/sql-reference/data-types/tuple)です。  
-最初の配列の項目はキーを表し、2番目の配列は各キーに対する値を含みます。すべてのキー配列は同じタイプである必要があり、すべての値配列は、同じ型([Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges) または [Float64](/sql-reference/data-types/float))に昇格される項目を含む必要があります。  
+引数は、[map](../data-types/map.md) または、2つの [arrays](/sql-reference/data-types/array) の[tuple](/sql-reference/data-types/tuple)です。
+最初の配列の項目はキーを表し、2番目の配列は各キーに対する値を含みます。すべてのキー配列は同じタイプである必要があり、すべての値配列は、同じ型([Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges) または [Float64](/sql-reference/data-types/float))に昇格される項目を含む必要があります。
 共通の昇格されたタイプが結果配列の型として使用されます。
 
 **返される値**
@@ -298,8 +299,8 @@ mapSubtract(Tuple(Array, Array), Tuple(Array, Array) [, ...])
 
 **引数**
 
-引数は、[map](../data-types/map.md) または、2つの [arrays](/sql-reference/data-types/array) の[tuple](/sql-reference/data-types/tuple)です。  
-最初の配列の項目はキーを表し、2番目の配列は各キーに対する値を含みます。すべてのキー配列は同じタイプである必要があり、すべての値配列は、同じ型([Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges) または [Float64](/sql-reference/data-types/float))に昇格される項目を含む必要があります。  
+引数は、[map](../data-types/map.md) または、2つの [arrays](/sql-reference/data-types/array) の[tuple](/sql-reference/data-types/tuple)です。
+最初の配列の項目はキーを表し、2番目の配列は各キーに対する値を含みます。すべてのキー配列は同じタイプである必要があり、すべての値配列は、同じ型([Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges) または [Float64](/sql-reference/data-types/float))に昇格される項目を含む必要があります。
 共通の昇格されたタイプが結果配列の型として使用されます。
 
 **返される値**
@@ -338,10 +339,10 @@ SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt3
 
 ## mapPopulateSeries {#mappopulateseries}
 
-整数キーのマップで欠落しているキー-バリューペアを埋めます。  
-キーを最大値を超えて拡張できるようにするために、最大キーを指定できます。  
-より具体的には、この関数は、最小キーから最大キーまで（または指定された場合は`max`引数）のキーをステップサイズ1で形成するマップを返し、対応する値も返します。  
-キーの値が指定されていない場合は、デフォルト値が使用されます。  
+整数キーのマップで欠落しているキー-バリューペアを埋めます。
+キーを最大値を超えて拡張できるようにするために、最大キーを指定できます。
+より具体的には、この関数は、最小キーから最大キーまで（または指定された場合は`max`引数）のキーをステップサイズ1で形成するマップを返し、対応する値も返します。
+キーの値が指定されていない場合は、デフォルト値が使用されます。
 キーが繰り返される場合は、最初の値のみ（出現順）にそのキーが関連付けられます。
 
 **構文**
@@ -446,8 +447,8 @@ SELECT mapContains(a, 'name') FROM tab;
 
 指定されたマップのキーを返します。
 
-この関数は、設定 [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) を有効にすることで最適化できます。  
-設定が有効な場合、この関数はマップ全体ではなく、[keys](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムのみを読み取ります。  
+この関数は、設定 [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) を有効にすることで最適化できます。
+設定が有効な場合、この関数はマップ全体ではなく、[keys](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムのみを読み取ります。
 クエリ `SELECT mapKeys(m) FROM table` は `SELECT m.keys FROM table` に変換されます。
 
 **構文**
@@ -489,8 +490,8 @@ SELECT mapKeys(a) FROM tab;
 
 指定されたマップの値を返します。
 
-この関数は、設定 [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) を有効にすることで最適化できます。  
-設定が有効な場合、この関数はマップ全体ではなく、[values](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムのみを読み取ります。  
+この関数は、設定 [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) を有効にすることで最適化できます。
+設定が有効な場合、この関数はマップ全体ではなく、[values](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムのみを読み取ります。
 クエリ `SELECT mapValues(m) FROM table` は `SELECT m.values FROM table` に変換されます。
 
 **構文**
@@ -724,7 +725,7 @@ SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10)) AS map;
 
 ## mapConcat {#mapconcat}
 
-キーの等価性に基づいて複数のマップを結合します。  
+キーの等価性に基づいて複数のマップを結合します。
 同じキーを持つ要素が複数の入力マップに存在する場合、すべての要素が結果マップに追加されますが、オペレーター `[]` を介してアクセスできるのは最初のものだけです。
 
 **構文**
@@ -776,7 +777,7 @@ SELECT mapConcat(map('key1', 1, 'key2', 2), map('key1', 3)) AS map, map['key1'];
 `map` に少なくとも 1 つのキー-バリュー ペアが存在し、`func(key, value)` が 0 以外の何かを返す場合は 1 を返します。そうでなければ 0 を返します。
 
 :::note
-`mapExists` は[高階関数](/sql-reference/functions/overview#higher-order-functions)です。  
+`mapExists` は[高階関数](/sql-reference/functions/overview#higher-order-functions)です。
 最初の引数にラムダ関数を渡すことができます。
 :::
 
@@ -801,7 +802,7 @@ SELECT mapExists((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 すべてのキー-バリューペアに対して、`func(key, value)` が 0 以外の何かを返す場合は 1 を返します。そうでなければ 0 を返します。
 
 :::note
-`mapAll` は[高階関数](/sql-reference/functions/overview#higher-order-functions)です。  
+`mapAll` は[高階関数](/sql-reference/functions/overview#higher-order-functions)です。
 最初の引数にラムダ関数を渡すことができます。
 :::
 
@@ -823,7 +824,7 @@ SELECT mapAll((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 
 ## mapSort(\[func,\], map) {#mapsortfunc-map}
 
-マップの要素を昇順にソートします。  
+マップの要素を昇順にソートします。
 `func` 関数が指定されている場合、ソート順は、マップのキーと値に `func` 関数を適用した結果によって決まります。
 
 **例**
@@ -852,7 +853,7 @@ SELECT mapSort((k, v) -> v, map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
 
 ## mapPartialSort {#mappartialsort}
 
-追加の `limit` 引数を使って、マップの要素を昇順にソートし、部分的なソートを可能にします。  
+追加の `limit` 引数を使って、マップの要素を昇順にソートし、部分的なソートを可能にします。
 `func` 関数が指定されている場合、ソート順は、マップのキーと値に `func` 関数を適用した結果によって決まります。
 
 **構文**
@@ -885,7 +886,7 @@ SELECT mapPartialSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
 
 ## mapReverseSort(\[func,\], map) {#mapreversesortfunc-map}
 
-マップの要素を降順にソートします。  
+マップの要素を降順にソートします。
 `func` 関数が指定されている場合、ソート順は、マップのキーと値に `func` 関数を適用した結果によって決まります。
 
 **例**
@@ -914,7 +915,7 @@ SELECT mapReverseSort((k, v) -> v, map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
 
 ## mapPartialReverseSort {#mappartialreversesort}
 
-追加の `limit` 引数を持ち、降順でマップの要素をソートし、部分的なソートを可能にします。  
+追加の `limit` 引数を持ち、降順でマップの要素をソートし、部分的なソートを可能にします。
 `func` 関数が指定されている場合、ソート順は、マップのキーと値に `func` 関数を適用した結果によって決まります。
 
 **構文**

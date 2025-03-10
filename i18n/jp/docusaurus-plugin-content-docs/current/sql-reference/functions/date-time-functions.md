@@ -1,7 +1,8 @@
+---
 slug: '/sql-reference/functions/date-time-functions'
 sidebar_position: 45
 sidebar_label: '日付と時間'
-keywords: 'ClickHouse, SQL, 日付, 時間, 関数'
+keywords: ['ClickHouse', 'SQL', '日付', '時間', '関数']
 description: '日付と時間を扱うための関数のリファレンス'
 ---
 

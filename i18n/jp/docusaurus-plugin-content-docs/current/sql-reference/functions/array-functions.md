@@ -1,10 +1,8 @@
-
 ---
 slug: /sql-reference/functions/array-functions
 sidebar_position: 10
 sidebar_label: '配列'
 ---
-
 
 # 配列関数
 ## empty {#empty}
@@ -1433,7 +1431,7 @@ arrayShuffle(arr[, seed])
 
 **実装の詳細**
 
-:::note 
+:::note
 この関数は定数を物質化しません。
 :::
 
@@ -1490,7 +1488,7 @@ arrayPartialShuffle(arr[, limit[, seed]])
 
 **実装の詳細**
 
-:::note 
+:::note
 この関数は定数を物質化しません。
 
 `limit` の値は範囲 `[1..N]` に収められるべきです。その範囲外の値は完全な [arrayShuffle](#arrayshuffle) を実行するのと等価です。
@@ -1524,7 +1522,7 @@ SELECT arrayPartialShuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 2);
 
 要素の順序は保持されます（`[4, 5, 6, 7, 8], [10]`）が、シャッフルされた要素 `[1, 2, 3, 9]` だけが変更されます。
 
-結果： 
+結果：
 ```response
 [3,9,1,4,5,6,7,8,2,10]
 ```

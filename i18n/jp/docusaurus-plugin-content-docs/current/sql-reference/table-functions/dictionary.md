@@ -1,7 +1,7 @@
 ---
 slug: '/sql-reference/table-functions/dictionary'
 sidebar_position: 47
-sidebar_label: '辞書'
+sidebar_label: 'dictionary'
 title: '辞書'
 description: 'ClickHouse テーブルとして辞書データを表示します。Dictionary エンジンと同様に機能します。'
 ---
