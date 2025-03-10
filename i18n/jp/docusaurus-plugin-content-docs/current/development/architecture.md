@@ -1,10 +1,10 @@
+---
 slug: '/development/architecture'
 sidebar_label: 'アーキテクチャの概要'
 sidebar_position: 50
 keywords: 'ClickHouse,アーキテクチャ,DBMS,カラム指向'
 description: 'ClickHouseのアーキテクチャに関する詳細な概要です。'
-```
-
+---
 
 # アーキテクチャの概要
 
