@@ -1,7 +1,8 @@
+---
 sidebar_label: 'Приглашение новых пользователей'
 slug: /cloud/security/inviting-new-users
 title: 'Приглашение новых пользователей'
-```
+---
 
 import users_and_roles from '@site/static/images/cloud/security/users_and_roles.png';
 import invite_user from '@site/static/images/cloud/security/invite-user.png';

@@ -143,6 +143,8 @@ This allows each language to be deployed independently.
 # Possible improvements
 
 - Don't split on tables `|`
+- Custom code to metadata block (all pages need metadata so we can enforce)
 - Introduce <!-- translate split--> we can use to identify split
+- Specify translate overrides + don't translate
 - Dont translate titles on certain pages - formats and functions.
-- Check no empty line before meta (all pages need metadata so we can enforce)
+- Linter to check for unclosed ```. Lint checks on translations

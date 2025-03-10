@@ -1,10 +1,10 @@
+---
 slug: '/sql-reference/aggregate-functions/parametric-functions'
 sidebar_position: 38
 sidebar_label: 'Параметрические'
 keywords: ['параметрические', 'агрегатные функции', 'ClickHouse']
 description: 'Параметрические агрегатные функции в ClickHouse.'
-```
-
+---
 
 # Параметрические агрегатные функции
 
@@ -272,7 +272,7 @@ sequenceMatchEvents(pattern)(timestamp, cond1, cond2, ...)
 └──────┴────────┘
 ```
 
-Возвращаем временные метки событий для самой длинной цепочки 
+Возвращаем временные метки событий для самой длинной цепочки
 
 ``` sql
 SELECT sequenceMatchEvents('(?1).*(?2).*(?1)(?3)')(time, number = 1, number = 2, number = 4) FROM t
@@ -921,4 +921,4 @@ SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, ref = 'ref2', pa
  1970-01-01 09:00:02    1   A      ref3 // Результат
  1970-01-01 09:00:03    1   B      ref2 // Базовая точка
  1970-01-01 09:00:04    1   B      ref1 // Эта строка не может быть базовой точкой, потому что колонка ref не совпадает с 'ref2'.
-```  
+```

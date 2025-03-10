@@ -1,10 +1,10 @@
+---
 slug: /whats-new/cloud-compatibility
 sidebar_label: 'Совместимость с облаком'
 title: 'Совместимость с облаком'
 keywords: ['cloud', 'compatibility', 'ClickHouse']
 description: 'Руководство по совместимости ClickHouse Cloud.'
-```
-
+---
 
 # ClickHouse Cloud — Руководство по совместимости
 

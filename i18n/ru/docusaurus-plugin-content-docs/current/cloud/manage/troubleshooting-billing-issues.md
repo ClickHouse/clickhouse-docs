@@ -1,10 +1,10 @@
+---
 sidebar_label: 'Устранение проблем с платежами'
 slug: '/manage/troubleshooting-billing-issues'
 title: 'Устранение проблем с платежами'
-```
+---
 
 import trial_expired from '@site/static/images/cloud/manage/trial-expired.png';
-
 
 # Устранение проблем с платежами
 

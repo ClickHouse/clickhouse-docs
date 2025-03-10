@@ -1,8 +1,9 @@
+---
 title: 'Обработка других форматов JSON'
 slug: /integrations/data-formats/json/other-formats
 description: 'Обработка других форматов JSON'
 keywords: ['json', 'форматы', 'json форматы']
-```
+---
 
 
 # Обработка других форматов

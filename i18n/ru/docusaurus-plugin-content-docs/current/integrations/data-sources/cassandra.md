@@ -1,8 +1,8 @@
+---
 slug: /integrations/cassandra
 sidebar_label: 'Cassandra'
 title: 'Cassandra'
-```
-
+---
 
 # Интеграция с Cassandra
 

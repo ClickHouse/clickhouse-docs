@@ -1,4 +1,3 @@
-
 ---
 slug: /sql-reference/dictionaries
 sidebar_label: Определение Словарей
