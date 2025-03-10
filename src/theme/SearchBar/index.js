@@ -1,20 +1,20 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {DocSearchButton, useDocSearchKeyboardEvents} from '@docsearch/react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { DocSearchButton, useDocSearchKeyboardEvents } from '@docsearch/react';
 import Head from '@docusaurus/Head';
 import Link from '@docusaurus/Link';
-import {useHistory} from '@docusaurus/router';
-import {isRegexpStringMatch, useSearchLinkCreator} from '@docusaurus/theme-common';
+import { useHistory } from '@docusaurus/router';
+import { isRegexpStringMatch, useSearchLinkCreator } from '@docusaurus/theme-common';
 import {
   useAlgoliaContextualFacetFilters,
   useSearchResultUrlProcessor,
 } from '@docusaurus/theme-search-algolia/client';
 import Translate from '@docusaurus/Translate';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import {createPortal} from 'react-dom';
+import { createPortal } from 'react-dom';
 import translations from '@theme/SearchTranslations';
 import aa from 'search-insights';
-import {useEffect} from 'react';
-import {getGoogleAnalyticsUserIdFromBrowserCookie} from '../../lib/google/google'
+import { useEffect } from 'react';
+import { getGoogleAnalyticsUserIdFromBrowserCookie } from '../../lib/google/google'
 
 let DocSearchModal = null;
 
@@ -24,22 +24,22 @@ function Hit({ hit, children }) {
       aa('clickedObjectIDsAfterSearch', {
         eventName: 'Search Result Clicked',
         index: hit.__autocomplete_indexName,
-        queryID: hit.queryID, 
+        queryID: hit.queryID,
         objectIDs: [hit.objectID],
-        positions: [hit.index+1], // algolia indexes from 1
+        positions: [hit.index + 1], // algolia indexes from 1
       });
     }
   };
   return <Link onClick={handleClick} to={hit.url}>{children}</Link>;
 }
 
-function ResultsFooter({state, onClose}) {
+function ResultsFooter({ state, onClose }) {
   const generateSearchPageLink = useSearchLinkCreator();
   return (
     <Link to={generateSearchPageLink(state.query)} onClick={onClose}>
       <Translate
         id="theme.SearchBar.seeAll"
-        values={{count: state.context.nbHits}}>
+        values={{ count: state.context.nbHits }}>
         {'See all {count} results'}
       </Translate>
     </Link>
@@ -51,18 +51,18 @@ function mergeFacetFilters(f1, f2) {
   return [...normalize(f1), ...normalize(f2)];
 }
 
-function DocSearch({contextualSearch, externalUrlRegex, ...props}) {
+function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const queryIDRef = useRef(null);
 
-  const {siteMetadata} = useDocusaurusContext();
+  const { siteMetadata } = useDocusaurusContext();
   const processSearchResultUrl = useSearchResultUrlProcessor();
   const contextualSearchFacetFilters = useAlgoliaContextualFacetFilters();
   const configFacetFilters = props.searchParameters?.facetFilters ?? [];
   const facetFilters = contextualSearch
     ? // Merge contextual search filters with config filters
-      mergeFacetFilters(contextualSearchFacetFilters, configFacetFilters)
+    mergeFacetFilters(contextualSearchFacetFilters, configFacetFilters)
     : // ... or use config facetFilters
-      configFacetFilters;
+    configFacetFilters;
   // We add clickAnalyics here
   const searchParameters = {
     ...props.searchParameters,
@@ -74,7 +74,7 @@ function DocSearch({contextualSearch, externalUrlRegex, ...props}) {
   const searchButtonRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [initialQuery, setInitialQuery] = useState(undefined);
-	
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const userToken = getGoogleAnalyticsUserIdFromBrowserCookie('_ga');
@@ -94,7 +94,7 @@ function DocSearch({contextualSearch, externalUrlRegex, ...props}) {
       import('@docsearch/react/modal'),
       import('@docsearch/react/style'),
       import('./styles.css'),
-    ]).then(([{DocSearchModal: Modal}]) => {
+    ]).then(([{ DocSearchModal: Modal }]) => {
       DocSearchModal = Modal;
     });
   }, []);
@@ -126,7 +126,7 @@ function DocSearch({contextualSearch, externalUrlRegex, ...props}) {
   );
 
   const navigator = useRef({
-    navigate({itemUrl}) {
+    navigate({ itemUrl }) {
       // Algolia results could contain URL's from other domains which cannot
       // be served through history and should navigate with window.location
       if (isRegexpStringMatch(externalUrlRegex, itemUrl)) {
@@ -137,19 +137,20 @@ function DocSearch({contextualSearch, externalUrlRegex, ...props}) {
     },
   }).current;
 
-  const transformItems = useRef((items, state) => {  
+  const transformItems = useRef((items, state) => {
     return props.transformItems
       ? props.transformItems(items)
       : items.map((item, index) => {
-          return {
-            ...item,
-            url: processSearchResultUrl(item.url),
-            index, // Adding the index property - needed for click metrics
-            queryID: queryIDRef.current
-          };
-        });
+        return {
+          ...item,
+          url: item.url, //TODO: temporary - all search results to english for now
+          // url: processSearchResultUrl(item.url),
+          index, // Adding the index property - needed for click metrics
+          queryID: queryIDRef.current
+        };
+      });
   }).current;
-  
+
   const resultsFooterComponent = useMemo(
     () =>
       // eslint-disable-next-line react/no-unstable-nested-components
@@ -230,6 +231,6 @@ function DocSearch({contextualSearch, externalUrlRegex, ...props}) {
 }
 
 export default function SearchBar() {
-  const {siteConfig} = useDocusaurusContext();
+  const { siteConfig } = useDocusaurusContext();
   return <DocSearch {...siteConfig.themeConfig.algolia} />;
 }

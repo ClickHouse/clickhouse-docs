@@ -7,7 +7,7 @@ sidebar_position: 30
 
 ClickHouseは、ClickHouse Cloudユーザーおよびお客様向けにサポートサービスを提供しています。当社の目的は、ClickHouse製品を代表するサポートサービスチームを構築することであり、比類のないパフォーマンス、使いやすさ、そして exceptionally fast, high-quality results を提供することです。詳細については、[サポートサービス](https://clickhouse.com/support/program/) ページをご覧ください。
 
-[Cloudコンソールにログイン](https://console.clickhouse.cloud/support)し、メニューオプションから**ヘルプ -> サポート**を選択して、新しいサポートケースを開き、提出したケースのステータスを表示できます。
+[Cloudコンソールにログイン](https://console.clickhouse.cloud/support)し、メニューオプションから**Help -> Support**を選択して、新しいサポートケースを開き、提出したケースのステータスを表示できます。
 
 **サービスレベルアグリーメント（"SLA"）**
 報告された問題の severity levels の分類と応答時間。
@@ -15,8 +15,8 @@ ClickHouseは、ClickHouse Cloudユーザーおよびお客様向けにサポー
 | Severity Level  | Trial                 | Basic                    | Scale                      | Enterprise                                                                             |
 |-----------------|-----------------------|--------------------------|----------------------------|----------------------------------------------------------------------------------------|
 | Severity 1      | 利用不可              | 利用不可                 | 1時間 24時間年中無休      | 30分 24時間年中無休                                                                    |
-| Severity 2      | 利用不可              | 利用不可                 | 4営業日                   | 2営業日                                                                                |
-| Severity 3      | 1営業日               | 1営業日                  | 1営業日                   | 1営業日                                                                                | 
+| Severity 2      | 利用不可              | 利用不可                 | 4営業時間                   | ２営業時間                                                                              |
+| Severity 3      | 1営業日               | 1営業日                  | 1営業日                   | 1営業日                                                                                |
 
 (*) 営業時間は月曜日の00:00 UTCから土曜日の00:00 UTCまでです。
 

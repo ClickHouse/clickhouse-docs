@@ -1,6 +1,5 @@
-
 ---
-title: OpenTelemetryの統合
+title: 'OpenTelemetryの統合'
 description: 視認性のためのOpenTelemetryとClickHouseの統合
 slug: /observability/integrating-opentelemetry
 keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
@@ -59,7 +58,7 @@ OpenTelemetryコレクターには[多数のディストリビューション](h
 
 コレクターは、[受信者](https://opentelemetry.io/docs/collector/configuration/#receivers)、[プロセッサー](https://opentelemetry.io/docs/collector/configuration/#processors)、および[エクスポーター](https://opentelemetry.io/docs/collector/configuration/#exporters)という3つの主要な処理段階のための用語を使用します。受信者はデータ収集に使用され、プルまたはプッシュベースのいずれかになります。プロセッサーはメッセージの変換や強化を実行する能力を提供します。エクスポーターは、データを下流サービスに送信する役割を担っています。このサービスは理論的には別のコレクターである可能性がありますが、以下の最初の議論では、すべてのデータが直接ClickHouseに送信されると仮定します。
 
-<img src={observability_3}    
+<img src={observability_3}
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -72,7 +71,7 @@ OpenTelemetryコレクターには[多数のディストリビューション](h
 
 **OTLP経由** - この場合、ログはOTLPプロトコルを介してOpenTelemetry SDKからコレクターに直接（プッシュ）されます。[OpenTelemetryデモ](https://opentelemetry.io/docs/demo/)は、このアプローチを採用しており、各言語のOTLPエクスポーターはローカルのコレクターエンドポイントを想定しています。この場合、コレクターはOTLP受信者で構成する必要があります。—上記の[デモの設定を参照](https://github.com/ClickHouse/opentelemetry-demo/blob/main/src/otelcollector/otelcol-config.yml#L5-L12)。このアプローチの利点は、ログデータに自動的にトレースIDが含まれ、ユーザーが特定のログのトレースやその逆を後で識別できることです。
 
-<img src={observability_4}    
+<img src={observability_4}
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -83,7 +82,7 @@ OpenTelemetryコレクターには[多数のディストリビューション](h
 
 - **Filelog受信者を介したスクレイピング** - この受信者は、ディスク上のファイルをトレースし、ログメッセージを形成してClickHouseに送信します。この受信者は、マルチラインメッセージの検出、ログのロールオーバー、再起動時の堅牢性のためのチェックポイント、および構造の抽出などの複雑なタスクを処理します。この受信者は、DockerやKubernetesコンテナログをトレースすることもでき、helmチャートとしてデプロイ可能で、これらから構造を[抽出し](https://opentelemetry.io/blog/2024/otel-collector-container-log-parser/)、ポッドの詳細で強化します。
 
-<img src={observability_5}    
+<img src={observability_5}
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -502,7 +501,7 @@ Links.Attributes:   []
 
 デフォルトでは、ClickHouseエクスポータは、ログとトレースの両方に対してターゲットログテーブルを作成します。これは`create_schema`設定を介して無効にできます。さらに、ログテーブルとトレーステーブルの名前は、上記の設定に従ってデフォルトの`otel_logs`と`otel_traces`から変更できます。
 
-:::note 
+:::note
 以下のスキーマでは、TTLが72hとして有効であると仮定します。
 :::
 
@@ -618,7 +617,7 @@ ClickHouseを介して観測データを挿入する際に高い挿入性能を�
 
 大きなバッチが保証できない場合、ユーザーは[非同期挿入](/cloud/bestpractices/asynchronous-inserts)を使用してClickHouseにバッチ処理を委託できます。非同期挿入を使用すると、データは最初にバッファに挿入され、その後データベースストレージに書き込まれます。
 
-<img src={observability_6}    
+<img src={observability_6}
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -645,7 +644,7 @@ OTelコレクタを使用してClickHouseを利用する際に、いくつかの
 
 エージェントのみのアーキテクチャでは、ユーザーはOTelコレクタをエッジにエージェントとしてデプロイします。これらはローカルアプリケーションからトレースを受け取り（例：サイドカーコンテナとして）、サーバーやKubernetesノードからログを収集します。このモードでは、エージェントはデータをClickHouseに直接送信します。
 
-<img src={observability_7}    
+<img src={observability_7}
   class="image"
   alt="NEEDS ALT"
   style={{width: '600px'}} />
@@ -664,7 +663,7 @@ OTelコレクタを使用してClickHouseを利用する際に、いくつかの
 
 OTelコレクタは、上記の制限に対処するためにGatewayインスタンスとして展開できます。これにより、データセンターまたは地域ごとに独立したサービスが提供されます。これらは、アプリケーション（またはエージェント役の他のコレクタ）から単一のOTLPエンドポイントを介してイベントを受信します。通常、ゲートウェイインスタンスのセットが展開され、ロードバランサーが使用されて負荷が分散されます。
 
-<img src={observability_8}    
+<img src={observability_8}
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />
@@ -763,7 +762,7 @@ service:
 
 ただし、高い配信保証やデータのリプレイ機能（潜在的には複数のソースへの）を必要とする場合、Kafkaは有用なアーキテクチャの追加となる可能性があります。
 
-<img src={observability_9}    
+<img src={observability_9}
   class="image"
   alt="NEEDS ALT"
   style={{width: '800px'}} />

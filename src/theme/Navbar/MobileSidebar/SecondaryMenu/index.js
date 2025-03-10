@@ -6,7 +6,7 @@ import Translate from '@docusaurus/Translate';
 import SearchBar from "@theme/SearchBar";
 import clsx from 'clsx'
 import { ThemeClassNames } from '@docusaurus/theme-common'
-import {useNavbarSecondaryMenu} from '@docusaurus/theme-common/internal';
+import { useNavbarSecondaryMenu } from '@docusaurus/theme-common/internal';
 import styles from './styles.module.css'
 import DocSidebarItems from '@theme/DocSidebarItems'
 import sidebars from '../../../../../sidebars';
@@ -27,17 +27,32 @@ function SecondaryMenuBackButton(props) {
 export default function NavbarMobileSidebarSecondaryMenu() {
   const secondaryMenu = useNavbarSecondaryMenu();
   const mobileSidebar = useNavbarMobileSidebar();
-  
+
   return (
     <>
       <SecondaryMenuBackButton onClick={() => secondaryMenu.hide()} />
       <div className={clsx(styles.docsMobileMenu)}>
         <div className={styles.searchBar}>
-          <SearchBar/>
+          <SearchBar />
         </div>
       </div>
       <ul className={clsx(ThemeClassNames.docs.docSidebarMenu, 'menu__list', styles.docsMobileMenuItems)}>
-        <DocSidebarItems items={sidebars.dropdownCategories} activePath={'path'} level={1} onItemClick={() => mobileSidebar.toggle()}/>
+        <DocSidebarItems items={sidebars.dropdownCategories.map(item => ({
+          ...item,
+          label: (
+            <Translate id={`sidebar.dropdownCategories.category.${item.label}`}>
+              {item.label}
+            </Translate>
+          ),
+          items: item.items?.map(subItem => ({
+            ...subItem,
+            label: (
+              <Translate id={`sidebar.dropdownCategories.category.${item.label}.${subItem.label}`}>
+                {subItem.label}
+              </Translate>
+            )
+          }))
+        }))} activePath={'path'} level={1} onItemClick={() => mobileSidebar.toggle()} />
       </ul>
     </>
   );

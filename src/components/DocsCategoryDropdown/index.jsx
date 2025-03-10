@@ -63,7 +63,7 @@ function DocsCategoryDropdown({ dropdownCategory }) {
   // Safely call useDocsSidebar
   try {
     sidebar = useDocsSidebar();
-  } catch (e) {}
+  } catch (e) { }
 
   // Guard against undefined sidebar
   const isSelected =
@@ -82,9 +82,8 @@ function DocsCategoryDropdown({ dropdownCategory }) {
         ref={triggerRef} // Attach the ref to the individual link that triggers the dropdown
       >
         <Link
-          className={`${styles.docsNavDropdownToolbarTopLevelLink} ${
-            isSelected ? styles.docsNavSelected : ""
-          }`}
+          className={`${styles.docsNavDropdownToolbarTopLevelLink} ${isSelected ? styles.docsNavSelected : ""
+            }`}
           href={dropdownCategory.customProps.href}
         >
           <Translate
@@ -143,10 +142,20 @@ const DropdownContent = ({
           className={styles.docsNavMenuHeader}
           onClick={handleMouseLeave}
         >
-          {dropdownCategory.label}
+          <Translate
+            id={`sidebar.dropdownCategories.category.${dropdownCategory.label}`}
+            description={`Translation for ${dropdownCategory.label}`}
+          >
+            {dropdownCategory.label}
+          </Translate>
         </Link>
         <div className={styles.docsNavMenuDescription}>
-          {dropdownCategory.description}
+          <Translate
+            id={`sidebar.dropdownCategories.category.description.${dropdownCategory.label}`}
+            description={`Translation for ${dropdownCategory.label} description`}
+          >
+            {dropdownCategory.description}
+          </Translate>
         </div>
       </div>
       <hr className={styles.docsNavMenuDivider} />
@@ -163,10 +172,22 @@ const DropdownContent = ({
               className={styles.docsNavItemTitle}
               onClick={handleMouseLeave}
             >
-              {item.label}
+              <Translate
+                id={`sidebar.dropdownCategories.category.${dropdownCategory.label}.${item.label}`}
+                description={`Translation for ${dropdownCategory.label}.${item.label}`}
+              >
+                {item.label}
+              </Translate>
+
             </Link>
             <div className={styles.docsNavItemDescription}>
-              {item.description}
+              <Translate
+                id={`sidebar.dropdownCategories.category.${dropdownCategory.label}.${item.label}.description`}
+                description={`Translation for ${dropdownCategory.label}.${item.label} description`}
+              >
+                {item.description}
+              </Translate>
+
             </div>
           </div>
         ))}
