@@ -5,7 +5,7 @@ title: S3データへの安全なアクセス
 ---
 
 import secure_s3 from '@site/static/images/cloud/security/secures3.jpg';
-import s3_info from '@site/static/images/cloud/security/secures3_arn.jpg';
+import s3_info from '@site/static/images/cloud/security/secures3_arn.png';
 import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 この記事では、ClickHouse Cloudの顧客が役割ベースのアクセスを利用して、Amazon Simple Storage Service(S3)に認証し、安全にデータにアクセスする方法を示します。
