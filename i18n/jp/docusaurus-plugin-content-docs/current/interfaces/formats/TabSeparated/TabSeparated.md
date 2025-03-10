@@ -1,4 +1,3 @@
-
 ---
 title: TabSeparated
 slug: /interfaces/formats/TabSeparated

@@ -132,7 +132,7 @@ def split_text(text, input_file_path, max_chunk_size=MAX_CHUNK_SIZE):
     return chunks
 
 def translate_file(config, input_file_path, output_file_path, model):
-    print(f"start translation: input[{input_file_path}], output[{output_file_path}]")
+    print(f"Starting translation: input[{input_file_path}], output[{output_file_path}]")
     start_time = time.time()
 
     try:
@@ -185,7 +185,7 @@ def translate_file(config, input_file_path, output_file_path, model):
     end_time = time.time()
     duration = end_time - start_time
     print(
-        f"finished translation: input[{input_file_path}], output[{output_file_path}d], duration seconds[{duration:.2f}]")
+        f"Finished translation: input[{input_file_path}], output[{output_file_path}d], duration seconds[{duration:.2f}]")
 
 
 def translate_docs_folder(config, input_folder, output_folder, model="gpt-4o-mini", overwrite=False):

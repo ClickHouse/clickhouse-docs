@@ -7,7 +7,6 @@ keywords: ['ClickHouse', '演算子', 'SQL', 'データベース']
 description: 'ClickHouseのSQL演算子のリストとその使い方についての説明。'
 ---
 
-
 # 演算子
 
 ClickHouseは、クエリの解析段階で、優先度、優先順位、および結合性に従って演算子を対応する関数に変換します。

@@ -83,9 +83,9 @@ function DocsCategoryDropdown({ dropdownCategory }) {
           ref={triggerRef} // Attach the ref to the individual link that triggers the dropdown
       >
         <Link
-            className={`${styles.docsNavDropdownToolbarTopLevelLink} ${isSelected ? styles.docsNavSelected : ""
+          className={`${styles.docsNavDropdownToolbarTopLevelLink} ${isSelected ? styles.docsNavSelected : ""
             }`}
-            href={dropdownCategory.customProps.href}
+          href={dropdownCategory.customProps.href}
         >
           <Translate
               id={`sidebar.dropdownCategories.category.${dropdownCategory.label}`}
@@ -132,10 +132,34 @@ const DropdownContent = ({
           className={styles.docsNavDropdownMenu}
           style={{ position: "fixed", ...dropdownStyles }}
       >
-        <div
-            key={99}
-            className={`${styles.docsNavMenuItem} ${hovered === 99 ? styles.docsNavHovered : ""}`}
-            onMouseEnter={() => setHovered(99)}
+        <Link
+          to={dropdownCategory.customProps.href}
+          className={styles.docsNavMenuHeader}
+          onClick={handleMouseLeave}
+        >
+          <Translate
+            id={`sidebar.dropdownCategories.category.${dropdownCategory.label}`}
+            description={`Translation for ${dropdownCategory.label}`}
+          >
+            {dropdownCategory.label}
+          </Translate>
+        </Link>
+        <div className={styles.docsNavMenuDescription}>
+          <Translate
+            id={`sidebar.dropdownCategories.category.description.${dropdownCategory.label}`}
+            description={`Translation for ${dropdownCategory.label} description`}
+          >
+            {dropdownCategory.description}
+          </Translate>
+        </div>
+      </div>
+      <hr className={styles.docsNavMenuDivider} />
+      <div className={styles.docsNavMenuItems}>
+        {dropdownCategory.items.map((item, index) => (
+          <div
+            key={index}
+            className={`${styles.docsNavMenuItem} ${hovered === index ? styles.docsNavHovered : ""}`}
+            onMouseEnter={() => setHovered(index)}
             onMouseLeave={() => setHovered(null)}
         >
           <Link
@@ -155,8 +179,23 @@ const DropdownContent = ({
                 id={`sidebar.dropdownCategories.category.description.${dropdownCategory.label}`}
                 description={`Translation for ${dropdownCategory.label} description`}
             >
-              {dropdownCategory.description}
-            </Translate>
+              <Translate
+                id={`sidebar.dropdownCategories.category.${dropdownCategory.label}.${item.label}`}
+                description={`Translation for ${dropdownCategory.label}.${item.label}`}
+              >
+                {item.label}
+              </Translate>
+
+            </Link>
+            <div className={styles.docsNavItemDescription}>
+              <Translate
+                id={`sidebar.dropdownCategories.category.${dropdownCategory.label}.${item.label}.description`}
+                description={`Translation for ${dropdownCategory.label}.${item.label} description`}
+              >
+                {item.description}
+              </Translate>
+
+            </div>
           </div>
         </div>
         <hr className={styles.docsNavMenuDivider} />

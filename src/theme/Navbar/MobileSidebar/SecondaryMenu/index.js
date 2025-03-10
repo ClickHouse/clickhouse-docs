@@ -25,35 +25,35 @@ function SecondaryMenuBackButton(props) {
 
 // The secondary menu slides from the right and shows the top nav items. This is alittle unusual - we use this to show the drop down items
 export default function NavbarMobileSidebarSecondaryMenu() {
-    const secondaryMenu = useNavbarSecondaryMenu();
-    const mobileSidebar = useNavbarMobileSidebar();
+  const secondaryMenu = useNavbarSecondaryMenu();
+  const mobileSidebar = useNavbarMobileSidebar();
 
-    return (
-        <>
-            <SecondaryMenuBackButton onClick={() => secondaryMenu.hide()} />
-            <div className={clsx(styles.docsMobileMenu)}>
-                <div className={styles.searchBar}>
-                    <SearchBar />
-                </div>
-            </div>
-            <ul className={clsx(ThemeClassNames.docs.docSidebarMenu, 'menu__list', styles.docsMobileMenuItems)}>
-                <DocSidebarItems items={sidebars.dropdownCategories.map(item => ({
-                    ...item,
-                    label: (
-                        <Translate id={`sidebar.dropdownCategories.category.${item.label}`}>
-                            {item.label}
-                        </Translate>
-                    ),
-                    items: item.items?.map(subItem => ({
-                        ...subItem,
-                        label: (
-                            <Translate id={`sidebar.dropdownCategories.category.${item.label}.${subItem.label}`}>
-                                {subItem.label}
-                            </Translate>
-                        )
-                    }))
-                }))} activePath={'path'} level={1} onItemClick={() => mobileSidebar.toggle()} />
-            </ul>
-        </>
-    );
+  return (
+    <>
+      <SecondaryMenuBackButton onClick={() => secondaryMenu.hide()} />
+      <div className={clsx(styles.docsMobileMenu)}>
+        <div className={styles.searchBar}>
+          <SearchBar />
+        </div>
+      </div>
+      <ul className={clsx(ThemeClassNames.docs.docSidebarMenu, 'menu__list', styles.docsMobileMenuItems)}>
+        <DocSidebarItems items={sidebars.dropdownCategories.map(item => ({
+          ...item,
+          label: (
+            <Translate id={`sidebar.dropdownCategories.category.${item.label}`}>
+              {item.label}
+            </Translate>
+          ),
+          items: item.items?.map(subItem => ({
+            ...subItem,
+            label: (
+              <Translate id={`sidebar.dropdownCategories.category.${item.label}.${subItem.label}`}>
+                {subItem.label}
+              </Translate>
+            )
+          }))
+        }))} activePath={'path'} level={1} onItemClick={() => mobileSidebar.toggle()} />
+      </ul>
+    </>
+  );
 }
