@@ -149,8 +149,8 @@ const config = {
         theme: {
           customCss: [require.resolve("./src/css/custom.scss")],
         },
-        gtag: {
-          trackingID: "G-KF1LLRTQ5Q",
+        googleTagManager: {
+          containerId: 'GTM-WTNTDT7W',
         },
       }),
     ],
