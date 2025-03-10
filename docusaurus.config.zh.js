@@ -60,13 +60,25 @@ const config = {
     locales: ["zh", "en"],
     path: "i18n",
     localeConfigs: {
-      zh: {
-        htmlLang: "zh",
-        path: "zh",
+      ru: {
+        label: "Russian",
+        htmlLang: "ru",
+        path: "ru",
       },
       en: {
+        label: "English",
         htmlLang: "en",
         path: "en",
+      },
+      jp: {
+        label: "Japanese",
+        htmlLang: "jp",
+        path: "jp",
+      },
+      zh: {
+        label: "Chinese",
+        htmlLang: "zh",
+        path: "zh",
       },
     },
   },
