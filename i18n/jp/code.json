@@ -463,30 +463,6 @@
     "message": "タグ",
     "description": "The title of the tag list page"
   },
-  "sidebar.dropdownCategories.category.Cloud": {
-    "message": "クラウド"
-  },
-  "sidebar.dropdownCategories.category.Getting Started": {
-    "message": "始める"
-  },
-  "sidebar.dropdownCategories.category.Manage Data": {
-    "message": "データ管理"
-  },
-  "sidebar.dropdownCategories.category.Server Admin": {
-    "message": "サーバー管理"
-  },
-  "sidebar.dropdownCategories.category.Reference": {
-    "message": "リファレンス"
-  },
-  "sidebar.dropdownCategories.category.Integrations": {
-    "message": "統合"
-  },
-  "sidebar.dropdownCategories.category.chDB": {
-    "message": "chDB"
-  },
-  "sidebar.dropdownCategories.category.About": {
-    "message": "について"
-  },
   "topNav.navItems.Products": {
     "message": "製品"
   },
@@ -555,5 +531,405 @@
   },
   "topNav.navItems.resources.Demos": {
     "message": "デモ"
+  },
+  "sidebar.dropdownCategories.category.Getting Started": {
+    "message": "はじめに",
+    "description": "Getting Started"
+  },
+  "sidebar.dropdownCategories.category.description.Getting Started": {
+    "message": "ClickHouse の使い方を学ぶ",
+    "description": "Learn how to use ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Introduction": {
+    "message": "導入",
+    "description": "Introduction"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Introduction.description": {
+    "message": "ClickHouse の概要",
+    "description": "An introduction to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Starter Guides": {
+    "message": "スターターガイド",
+    "description": "Starter Guides"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Starter Guides.description": {
+    "message": "ClickHouse を学ぶ際の出発点",
+    "description": "Start here when learning ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Concepts": {
+    "message": "基本概念",
+    "description": "Concepts"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Concepts.description": {
+    "message": "知っておくべき基本概念",
+    "description": "Core concepts to know"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Migration Guides": {
+    "message": "移行ガイド",
+    "description": "Migration Guides"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Migration Guides.description": {
+    "message": "データベースを ClickHouse に移行する",
+    "description": "Migrate your database to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides": {
+    "message": "ユースケースガイド",
+    "description": "Use Case Guides"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides.description": {
+    "message": "ClickHouse の代表的なユースケースガイド",
+    "description": "Common use case guides for ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Example datasets": {
+    "message": "サンプルデータセット",
+    "description": "Example datasets"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Example datasets.description": {
+    "message": "役立つデータセットとチュートリアル",
+    "description": "Helpful datasets and tutorials"
+  },
+  "sidebar.dropdownCategories.category.Cloud": {
+    "message": "クラウド",
+    "description": "Cloud"
+  },
+  "sidebar.dropdownCategories.category.description.Cloud": {
+    "message": "ClickHouse を最速でデプロイする方法",
+    "description": "The fastest way to deploy ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Get Started": {
+    "message": "はじめに",
+    "description": "Get Started"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Get Started.description": {
+    "message": "ClickHouse Cloud をすぐに始める",
+    "description": "Start quickly with ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Managing Cloud": {
+    "message": "クラウド管理",
+    "description": "Managing Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Managing Cloud.description": {
+    "message": "ClickHouse Cloud サービスの管理",
+    "description": "Manage your ClickHouse Cloud services"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud API": {
+    "message": "クラウド API",
+    "description": "Cloud API"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud API.description": {
+    "message": "ClickHouse Cloud サービスの自動化",
+    "description": "Automate your ClickHouse Cloud services"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud Reference": {
+    "message": "クラウドリファレンス",
+    "description": "Cloud Reference"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud Reference.description": {
+    "message": "ClickHouse Cloud の仕組みを理解する",
+    "description": "Understanding how ClickHouse Cloud works"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Best Practices": {
+    "message": "ベストプラクティス",
+    "description": "Best Practices"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Best Practices.description": {
+    "message": "ClickHouse Cloud を最大限活用する方法",
+    "description": "How to get the most out of ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Security": {
+    "message": "セキュリティ",
+    "description": "Security"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Security.description": {
+    "message": "ClickHouse Cloud サービスのセキュリティを確保する",
+    "description": "Secure your ClickHouse Cloud services"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud": {
+    "message": "クラウドへの移行",
+    "description": "Migrating to Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud.description": {
+    "message": "データベースを ClickHouse Cloud に移行する",
+    "description": "Migrate your database to ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Manage Data": {
+    "message": "データ管理",
+    "description": "Manage Data"
+  },
+  "sidebar.dropdownCategories.category.description.Manage Data": {
+    "message": "ClickHouse でのデータ管理方法",
+    "description": "How to manage data in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Core Data Concepts": {
+    "message": "データの基本概念",
+    "description": "Core Data Concepts"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Core Data Concepts.description": {
+    "message": "ClickHouse の内部概念を理解する",
+    "description": "Understand internal concepts in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Updating Data": {
+    "message": "データの更新",
+    "description": "Updating Data"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Updating Data.description": {
+    "message": "ClickHouse でデータを更新・置換する",
+    "description": "Updating and replacing data in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Deleting data": {
+    "message": "データの削除",
+    "description": "Deleting data"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Deleting data.description": {
+    "message": "ClickHouse でデータを削除する",
+    "description": "Deleting data in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Data Modeling": {
+    "message": "データモデリング",
+    "description": "Data Modeling"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Data Modeling.description": {
+    "message": "スキーマとデータモデルを最適化する",
+    "description": "Optimize your schema and data model"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Performance and Optimizations": {
+    "message": "パフォーマンスと最適化",
+    "description": "Performance and Optimizations"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Performance and Optimizations.description": {
+    "message": "ClickHouse の最適化ガイド",
+    "description": "Guides to help you optimize ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server Admin": {
+    "message": "サーバー管理",
+    "description": "Server Admin"
+  },
+  "sidebar.dropdownCategories.category.description.Server Admin": {
+    "message": "ClickHouse の管理とデプロイ",
+    "description": "Manage and deploy ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Deployments and Scaling": {
+    "message": "デプロイとスケーリング",
+    "description": "Deployments and Scaling"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Deployments and Scaling.description": {
+    "message": "ClickHouse をデプロイする方法",
+    "description": "How to deploy ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Security and Authentication": {
+    "message": "セキュリティと認証",
+    "description": "Security and Authentication"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Security and Authentication.description": {
+    "message": "ClickHouse のデプロイを保護する",
+    "description": "Secure your ClickHouse deployment"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Settings": {
+    "message": "設定",
+    "description": "Settings"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Settings.description": {
+    "message": "ClickHouse を設定する",
+    "description": "Configure ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Tools and Utilities": {
+    "message": "ツールとユーティリティ",
+    "description": "Tools and Utilities"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Tools and Utilities.description": {
+    "message": "ClickHouse を管理するためのツール",
+    "description": "Tools to help you manage ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.System Tables": {
+    "message": "システムテーブル",
+    "description": "System Tables"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.System Tables.description": {
+    "message": "ClickHouse の管理に役立つメタデータテーブル",
+    "description": "Metadata tables to help you manage ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Reference": {
+    "message": "リファレンス",
+    "description": "Reference"
+  },
+  "sidebar.dropdownCategories.category.description.Reference": {
+    "message": "ClickHouse の機能に関するリファレンスドキュメント",
+    "description": "Reference documentation for ClickHouse features"
+  },
+  "sidebar.dropdownCategories.category.Reference.Introduction": {
+    "message": "導入",
+    "description": "Introduction"
+  },
+  "sidebar.dropdownCategories.category.Reference.Introduction.description": {
+    "message": "ClickHouse の構文を学ぶ",
+    "description": "Learn ClickHouse syntax"
+  },
+  "sidebar.dropdownCategories.category.Reference.Functions": {
+    "message": "関数",
+    "description": "Functions"
+  },
+  "sidebar.dropdownCategories.category.Reference.Functions.description": {
+    "message": "データ分析に役立つ数百の組み込み関数",
+    "description": "Hundreds of built-in functions to help you analyze your data"
+  },
+  "sidebar.dropdownCategories.category.Reference.Engines": {
+    "message": "エンジン",
+    "description": "Engines"
+  },
+  "sidebar.dropdownCategories.category.Reference.Engines.description": {
+    "message": "データに適したテーブルおよびデータベースエンジンを使用する",
+    "description": "Use the right table and database engines for your data"
+  },
+  "sidebar.dropdownCategories.category.Reference.Other Features": {
+    "message": "その他の機能",
+    "description": "Other Features"
+  },
+  "sidebar.dropdownCategories.category.Reference.Other Features.description": {
+    "message": "ClickHouse のその他の機能について学ぶ",
+    "description": "Learn about other features in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations": {
+    "message": "インテグレーション",
+    "description": "Integrations"
+  },
+  "sidebar.dropdownCategories.category.description.Integrations": {
+    "message": "ClickHouse と連携する統合、クライアント、およびドライバー",
+    "description": "Integrations, clients, and drivers to use with ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All Integrations": {
+    "message": "すべてのインテグレーション",
+    "description": "All Integrations"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All Integrations.description": {
+    "message": "ClickHouse を他のデータベースやアプリケーションと統合する",
+    "description": "Integrate ClickHouse with other databases and applications"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language Clients": {
+    "message": "言語クライアント",
+    "description": "Language Clients"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language Clients.description": {
+    "message": "お気に入りのプログラミング言語で ClickHouse を操作する",
+    "description": "Use your favorite language to work with ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.ClickPipes": {
+    "message": "ClickPipes",
+    "description": "ClickPipes"
+  },
+  "sidebar.dropdownCategories.category.Integrations.ClickPipes.description": {
+    "message": "ClickHouse へのデータ取り込みを最も簡単に行う方法",
+    "description": "The easiest way to ingest data into ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native Clients & Interfaces": {
+    "message": "ネイティブクライアントとインターフェース",
+    "description": "Native Clients & Interfaces"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native Clients & Interfaces.description": {
+    "message": "ClickHouse へ接続するクライアントとインターフェースを選択する",
+    "description": "Choose a client and interface to connect to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Sources": {
+    "message": "データソース",
+    "description": "Data Sources"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Sources.description": {
+    "message": "お好みのデータソースから ClickHouse へデータをロードする",
+    "description": "Load data into ClickHouse from your preferred source"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Visualization": {
+    "message": "データ可視化",
+    "description": "Data Visualization"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Visualization.description": {
+    "message": "ClickHouse をお気に入りの可視化ツールに接続する",
+    "description": "Connect ClickHouse to your favorite visualization tool"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Formats": {
+    "message": "データフォーマット",
+    "description": "Data Formats"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Formats.description": {
+    "message": "ClickHouse がサポートするデータフォーマットを探る",
+    "description": "Explore data formats supported by ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Ingestion": {
+    "message": "データ取り込み",
+    "description": "Data Ingestion"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Ingestion.description": {
+    "message": "さまざまな ELT ツールを使用して ClickHouse にデータを取り込む",
+    "description": "Ingest data into ClickHouse with a range of ELT tools"
+  },
+  "sidebar.dropdownCategories.category.chDB": {
+    "message": "chDB",
+    "description": "chDB"
+  },
+  "sidebar.dropdownCategories.category.description.chDB": {
+    "message": "chDB は ClickHouse の組み込みバージョンです",
+    "description": "chDB is an embedded version of ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.chDB.Learn chDB": {
+    "message": "chDB を学ぶ",
+    "description": "Learn chDB"
+  },
+  "sidebar.dropdownCategories.category.chDB.Learn chDB.description": {
+    "message": "chDB の使い方を学ぶ",
+    "description": "Learn how to use chDB"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language Integrations": {
+    "message": "言語統合",
+    "description": "Language Integrations"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language Integrations.description": {
+    "message": "言語クライアントを使用して chDB に接続する",
+    "description": "Connect to chDB using a language client"
+  },
+  "sidebar.dropdownCategories.category.chDB.Guides": {
+    "message": "ガイド",
+    "description": "Guides"
+  },
+  "sidebar.dropdownCategories.category.chDB.Guides.description": {
+    "message": "chDB の使用をサポートするガイド",
+    "description": "Guides to help you use chDB"
+  },
+  "sidebar.dropdownCategories.category.About": {
+    "message": "概要",
+    "description": "About"
+  },
+  "sidebar.dropdownCategories.category.description.About": {
+    "message": "ClickHouse について詳しく学ぶ",
+    "description": "Learn more about ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.About.Adopters": {
+    "message": "導入事例",
+    "description": "Adopters"
+  },
+  "sidebar.dropdownCategories.category.About.Adopters.description": {
+    "message": "ClickHouse の導入企業",
+    "description": "ClickHouse adopters"
+  },
+  "sidebar.dropdownCategories.category.About.Changelogs": {
+    "message": "変更履歴",
+    "description": "Changelogs"
+  },
+  "sidebar.dropdownCategories.category.About.Changelogs.description": {
+    "message": "ClickHouse の最新の変更を確認する",
+    "description": "View the latest changes in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.About.Support": {
+    "message": "サポート",
+    "description": "Support"
+  },
+  "sidebar.dropdownCategories.category.About.Support.description": {
+    "message": "ClickHouse のエンジニアからサポートを受ける",
+    "description": "Get support from ClickHouse engineers"
+  },
+  "sidebar.dropdownCategories.category.About.Development and Contributing": {
+    "message": "開発と貢献",
+    "description": "Development and Contributing"
+  },
+  "sidebar.dropdownCategories.category.About.Development and Contributing.description": {
+    "message": "ClickHouse に貢献する方法を学ぶ",
+    "description": "Learn how to contribute to ClickHouse"
   }
 }
