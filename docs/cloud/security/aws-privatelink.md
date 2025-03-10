@@ -22,9 +22,8 @@ import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-
 You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to provide connectivity between VPCs, AWS services, your on-premises systems, and ClickHouse Cloud without having your traffic go across the internet. This document describes how to connect to ClickHouse Cloud using AWS PrivateLink.  To disable access to your ClickHouse Cloud services from addresses other than AWS PrivateLink addresses use ClickHouse Cloud [IP Access Lists](/cloud/security/setting-ip-filters).
 
 :::note
-ClickHouse Cloud currently does not support [cross-region PrivateLink](https://aws.amazon.com/about-aws/whats-new/2024/11/aws-privatelink-across-region-connectivity/). However, you can [connect to PrivateLink using VPC peering](https://aws.amazon.com/about-aws/whats-new/2019/03/aws-privatelink-now-supports-access-over-vpc-peering/). For more information and configuration guidance, please refer to AWS documentation.
+ClickHouse Cloud currently supports [cross-region PrivateLink](https://aws.amazon.com/about-aws/whats-new/2024/11/aws-privatelink-across-region-connectivity/) in beta mode. You may need to request an extension for supported regions. Please reach out to customer support if you cannot establish a PrivateLink connection from your region.
 :::
-
 
 Please complete the following steps to enable AWS Private Link:
 1. Obtain Endpoint Service name.
@@ -107,6 +106,10 @@ Select **Other endpoint services** and use the `endpointServiceId` you got from 
 
 <img src={aws_private_link_endpoint_settings} alt="AWS PrivateLink Endpoint Settings" />
 
+If you want to establish a cross-regional connection via PrivateLink, enable the "Cross region endpoint" checkbox and specify the service region. The service region is where the ClickHouse instance is running.
+
+If you get a "Service name could not be verified." error, please contact Customer Support to request adding the necessary regions to the supported region list.
+
 Next, select your VPC and subnets:
 
 <img src={aws_private_link_select_vpc} alt="Select VPC and subnets" />
@@ -156,6 +159,7 @@ resource "aws_vpc_endpoint" "this" {
   ]
   subnet_ids          = [var.subnet_id1,var.subnet_id2,var.subnet_id3]
   private_dns_enabled = false
+  service_region      = "(Optional) If specified, the VPC endpoint will connect to the service in the provided region. Define it for multi-regional PrivateLink connections."
 }
 ```
 
