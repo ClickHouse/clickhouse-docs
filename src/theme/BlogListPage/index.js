@@ -15,15 +15,16 @@ import ButtonGroup from "../../components/ButtonGroup/ButtonGroup";
 import BlogBreadcrumbs from "../../components/BlogBreadcrumbs/BlogBreadcrumbs";
 import { useHistory } from 'react-router-dom';
 import Translate from "@docusaurus/Translate";
-
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 import styles from './styles.module.css';
+
 function BlogListPageMetadata(props) {
-  const {metadata} = props;
+  const { metadata } = props;
   const {
-    siteConfig: {title: siteTitle},
+    siteConfig: { title: siteTitle },
   } = useDocusaurusContext();
-  const {blogDescription, blogTitle, permalink} = metadata;
+  const { blogDescription, blogTitle, permalink } = metadata;
   const isBlogOnlyMode = permalink === '/';
   const title = isBlogOnlyMode ? siteTitle : blogTitle;
   return (
@@ -33,29 +34,39 @@ function BlogListPageMetadata(props) {
     </>
   );
 }
+
 function BlogListPageContent(props) {
+
   const history = useHistory()
-  const {metadata, items, sidebar} = props;
+  const { metadata, items, sidebar } = props;
+  const {
+    i18n: { currentLocale },
+  } = useDocusaurusContext();
+
   return (
     <BlogLayout sidebar={sidebar}>
-      <BlogBreadcrumbs/>
+      <BlogBreadcrumbs />
       <h1 className={styles.kbTitle}>
         <Translate id={`theme.blog.title`} description={`Translation for Knowledge Base`}>Knowledge Base</Translate>
       </h1>
       <ButtonGroup
-          onClick={function Nav(value){if (typeof window !== 'undefined'){ value === 'recent' ? history.push('/docs/knowledgebase') : history.push('/docs/knowledgebase/tags') }}}
-          options={[
-              {
-                  label: 'Recent',
-                  value: 'recent'
-              },
-              {
-                  label: 'Grouped by tags',
-                  value: 'grouped_by_tags'
-              },
-          ]}
-          selected="recent"
-          type="default"
+        onClick={function Nav(value) {
+          if (typeof window !== 'undefined') {
+            value === 'recent' ? history.push(`/docs/${currentLocale}/knowledgebase`) : history.push(`/docs/${currentLocale}/knowledgebase/tags`)
+          }
+        }}
+        options={[
+          {
+            label: 'Recent',
+            value: 'recent'
+          },
+          {
+            label: 'Grouped by tags',
+            value: 'grouped_by_tags'
+          },
+        ]}
+        selected="recent"
+        type="default"
       />
       <BlogPostItems items={items} />
       <BlogListPaginator metadata={metadata} />

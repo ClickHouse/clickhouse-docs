@@ -1,5 +1,5 @@
 ---
-title: 値
+title: Values
 slug: /interfaces/formats/Values
 keywords: [Values]
 input_format: true
@@ -22,7 +22,7 @@ alias: []
 - 文字列、日付、日時のある日付は引用符内に出力されます。
 - エスケープルールとパースは [TabSeparated](TabSeparated/TabSeparated.md) フォーマットに似ています。
 
-フォーマット中に余分なスペースは挿入されませんが、パース中は許可され、スキップされます（ただし、配列値内のスペースは許可されません）。 
+フォーマット中に余分なスペースは挿入されませんが、パース中は許可され、スキップされます（ただし、配列値内のスペースは許可されません）。
 [`NULL`](/sql-reference/syntax.md) は `NULL` として表現されます。
 
 `Values` フォーマットでデータを渡す際にエスケープする必要がある最小限の文字セット:
