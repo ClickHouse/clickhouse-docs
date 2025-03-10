@@ -75,7 +75,7 @@ const config = {
         htmlLang: "jp",
         path: "jp",
       },
-      zu: {
+      zh: {
         label: "Chinese",
         htmlLang: "zh",
         path: "zh",
