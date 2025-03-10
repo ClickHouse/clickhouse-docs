@@ -22,7 +22,7 @@ import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-
 You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to provide connectivity between VPCs, AWS services, your on-premises systems, and ClickHouse Cloud without having your traffic go across the internet. This document describes how to connect to ClickHouse Cloud using AWS PrivateLink.  To disable access to your ClickHouse Cloud services from addresses other than AWS PrivateLink addresses use ClickHouse Cloud [IP Access Lists](/cloud/security/setting-ip-filters).
 
 :::note
-ClickHouse Cloud currently supports [cross-region PrivateLink](https://aws.amazon.com/about-aws/whats-new/2024/11/aws-privatelink-across-region-connectivity/) in beta mode. You may need to request an extension for supported regions. Please reach out to customer support if you cannot establish a PrivateLink connection from your region.
+ClickHouse Cloud currently supports [cross-region PrivateLink](https://aws.amazon.com/about-aws/whats-new/2024/11/aws-privatelink-across-region-connectivity/) in beta mode.
 :::
 
 Please complete the following steps to enable AWS Private Link:
@@ -108,7 +108,7 @@ Select **Other endpoint services** and use the `endpointServiceId` you got from 
 
 If you want to establish a cross-regional connection via PrivateLink, enable the "Cross region endpoint" checkbox and specify the service region. The service region is where the ClickHouse instance is running.
 
-If you get a "Service name could not be verified." error, please contact Customer Support to request adding the necessary regions to the supported region list.
+If you get a "Service name could not be verified." error, please contact Customer Support to request adding new regions to the supported regions list.
 
 Next, select your VPC and subnets:
 
