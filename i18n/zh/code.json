@@ -465,7 +465,8 @@
     "description": "The title of the tag list page"
   },
   "sidebar.dropdownCategories.category.Cloud": {
-    "message": "云"
+    "message": "云服务",
+    "description": "Cloud"
   },
   "sidebar.dropdownCategories.category.Getting Started": {
     "message": "入门指南",
@@ -475,346 +476,231 @@
     "message": "管理数据"
   },
   "sidebar.dropdownCategories.category.Server Admin": {
-    "message": "服务器管理员"
-  },
-  "sidebar.dropdownCategories.category.Reference": {
-    "message": "参考"
-  },
-  "sidebar.dropdownCategories.category.Integrations": {
-    "message": "集成"
-  },
-  "sidebar.dropdownCategories.category.chDB": {
-    "message": "chDB 数据库"
-  },
-  "sidebar.dropdownCategories.category.About": {
-    "message": "关于"
-  },
-  "sidebar.dropdownCategories.category.Getting Started": {
-    "message": "入门指南",
-    "description": "Getting Started"
-  },
-  "sidebar.dropdownCategories.category.description.Getting Started": {
-    "message": "学习如何使用 ClickHouse",
-    "description": "Learn how to use ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Introduction": {
-    "message": "简介",
-    "description": "Introduction"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Introduction.description": {
-    "message": "ClickHouse 简介",
-    "description": "An introduction to ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Starter Guides": {
-    "message": "入门指南",
-    "description": "Starter Guides"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Starter Guides.description": {
-    "message": "从这里开始学习 ClickHouse",
-    "description": "Start here when learning ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Concepts": {
-    "message": "核心概念",
-    "description": "Concepts"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Concepts.description": {
-    "message": "需要了解的核心概念",
-    "description": "Core concepts to know"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Migration Guides": {
-    "message": "迁移指南",
-    "description": "Migration Guides"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Migration Guides.description": {
-    "message": "将数据库迁移至 ClickHouse",
-    "description": "Migrate your database to ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides": {
-    "message": "使用案例指南",
-    "description": "Use Case Guides"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides.description": {
-    "message": "ClickHouse 常见使用案例指南",
-    "description": "Common use case guides for ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Example datasets": {
-    "message": "示例数据集",
-    "description": "Example datasets"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Example datasets.description": {
-    "message": "实用的数据集和教程",
-    "description": "Helpful datasets and tutorials"
-  },
-  "sidebar.dropdownCategories.category.Cloud": {
-    "message": "云服务",
-    "description": "Cloud"
-  },
-  "sidebar.dropdownCategories.category.description.Cloud": {
-    "message": "部署 ClickHouse 的最快方式",
-    "description": "The fastest way to deploy ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Get Started": {
-    "message": "开始使用",
-    "description": "Get Started"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Get Started.description": {
-    "message": "快速开始使用 ClickHouse Cloud",
-    "description": "Start quickly with ClickHouse Cloud"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Managing Cloud": {
-    "message": "云服务管理",
-    "description": "Managing Cloud"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Managing Cloud.description": {
-    "message": "管理您的 ClickHouse Cloud 服务",
-    "description": "Manage your ClickHouse Cloud services"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Cloud API": {
-    "message": "云服务 API",
-    "description": "Cloud API"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Cloud API.description": {
-    "message": "自动化管理您的 ClickHouse Cloud 服务",
-    "description": "Automate your ClickHouse Cloud services"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Cloud Reference": {
-    "message": "云服务参考",
-    "description": "Cloud Reference"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Cloud Reference.description": {
-    "message": "了解 ClickHouse Cloud 的工作原理",
-    "description": "Understanding how ClickHouse Cloud works"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Best Practices": {
-    "message": "最佳实践",
-    "description": "Best Practices"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Best Practices.description": {
-    "message": "如何充分利用 ClickHouse Cloud",
-    "description": "How to get the most out of ClickHouse Cloud"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Security": {
-    "message": "安全",
-    "description": "Security"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Security.description": {
-    "message": "保护您的 ClickHouse Cloud 服务",
-    "description": "Secure your ClickHouse Cloud services"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud": {
-    "message": "迁移至云服务",
-    "description": "Migrating to Cloud"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud.description": {
-    "message": "将数据库迁移至 ClickHouse Cloud",
-    "description": "Migrate your database to ClickHouse Cloud"
-  },
-  "sidebar.dropdownCategories.category.Manage Data": {
-    "message": "数据管理",
-    "description": "Manage Data"
-  },
-  "sidebar.dropdownCategories.category.description.Manage Data": {
-    "message": "如何在 ClickHouse 中管理数据",
-    "description": "How to manage data in ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Core Data Concepts": {
-    "message": "核心数据概念",
-    "description": "Core Data Concepts"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Core Data Concepts.description": {
-    "message": "了解 ClickHouse 内部概念",
-    "description": "Understand internal concepts in ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Updating Data": {
-    "message": "更新数据",
-    "description": "Updating Data"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Updating Data.description": {
-    "message": "在 ClickHouse 中更新和替换数据",
-    "description": "Updating and replacing data in ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Deleting data": {
-    "message": "删除数据",
-    "description": "Deleting data"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Deleting data.description": {
-    "message": "在 ClickHouse 中删除数据",
-    "description": "Deleting data in ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Data Modeling": {
-    "message": "数据建模",
-    "description": "Data Modeling"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Data Modeling.description": {
-    "message": "优化您的数据模型和架构",
-    "description": "Optimize your schema and data model"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Performance and Optimizations": {
-    "message": "性能与优化",
-    "description": "Performance and Optimizations"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Performance and Optimizations.description": {
-    "message": "帮助您优化 ClickHouse 的指南",
-    "description": "Guides to help you optimize ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Server Admin": {
     "message": "服务器管理",
     "description": "Server Admin"
-  },
-  "sidebar.dropdownCategories.category.description.Server Admin": {
-    "message": "管理和部署 ClickHouse",
-    "description": "Manage and deploy ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.Deployments and Scaling": {
-    "message": "部署和扩展",
-    "description": "Deployments and Scaling"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.Deployments and Scaling.description": {
-    "message": "如何部署 ClickHouse",
-    "description": "How to deploy ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.Security and Authentication": {
-    "message": "安全和认证",
-    "description": "Security and Authentication"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.Security and Authentication.description": {
-    "message": "保护您的 ClickHouse 部署",
-    "description": "Secure your ClickHouse deployment"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.Settings": {
-    "message": "设置",
-    "description": "Settings"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.Settings.description": {
-    "message": "配置 ClickHouse",
-    "description": "Configure ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.Tools and Utilities": {
-    "message": "工具和实用程序",
-    "description": "Tools and Utilities"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.Tools and Utilities.description": {
-    "message": "帮助您管理 ClickHouse 的工具",
-    "description": "Tools to help you manage ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.System Tables": {
-    "message": "系统表",
-    "description": "System Tables"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.System Tables.description": {
-    "message": "帮助您管理 ClickHouse 的元数据表",
-    "description": "Metadata tables to help you manage ClickHouse"
   },
   "sidebar.dropdownCategories.category.Reference": {
     "message": "参考",
     "description": "Reference"
   },
-  "sidebar.dropdownCategories.category.description.Reference": {
-    "message": "ClickHouse 功能参考文档",
-    "description": "Reference documentation for ClickHouse features"
+  "sidebar.dropdownCategories.category.Integrations": {
+    "message": "集成",
+    "description": "Integrations"
+  },
+  "sidebar.dropdownCategories.category.chDB": {
+    "message": "chDB",
+    "description": "chDB"
+  },
+  "sidebar.dropdownCategories.category.About": {
+    "message": "关于",
+    "description": "About"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Introduction": {
+    "message": "简介",
+    "description": "Introduction"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Starter Guides": {
+    "message": "入门指南",
+    "description": "Starter Guides"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Concepts": {
+    "message": "核心概念",
+    "description": "Concepts"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Migration Guides": {
+    "message": "迁移指南",
+    "description": "Migration Guides"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides": {
+    "message": "使用案例指南",
+    "description": "Use Case Guides"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Example datasets": {
+    "message": "示例数据集",
+    "description": "Example datasets"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Updating Data": {
+    "message": "更新数据",
+    "description": "Updating Data"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Core Data Concepts": {
+    "message": "核心数据概念",
+    "description": "Core Data Concepts"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Deleting data": {
+    "message": "删除数据",
+    "description": "Deleting data"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Data Modeling": {
+    "message": "数据建模",
+    "description": "Data Modeling"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Performance and Optimizations": {
+    "message": "性能与优化",
+    "description": "Performance and Optimizations"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Deployments and Scaling": {
+    "message": "部署和扩展",
+    "description": "Deployments and Scaling"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Security and Authentication": {
+    "message": "安全和认证",
+    "description": "Security and Authentication"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Settings": {
+    "message": "设置",
+    "description": "Settings"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Tools and Utilities": {
+    "message": "工具和实用程序",
+    "description": "Tools and Utilities"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.System Tables": {
+    "message": "系统表",
+    "description": "System Tables"
   },
   "sidebar.dropdownCategories.category.Reference.Introduction": {
     "message": "简介",
     "description": "Introduction"
   },
-  "sidebar.dropdownCategories.category.Reference.Introduction.description": {
-    "message": "学习 ClickHouse 语法",
-    "description": "Learn ClickHouse syntax"
-  },
   "sidebar.dropdownCategories.category.Reference.Functions": {
     "message": "函数",
     "description": "Functions"
-  },
-  "sidebar.dropdownCategories.category.Reference.Functions.description": {
-    "message": "数百个内置函数帮助您分析数据",
-    "description": "Hundreds of built-in functions to help you analyze your data"
   },
   "sidebar.dropdownCategories.category.Reference.Engines": {
     "message": "引擎",
     "description": "Engines"
   },
-  "sidebar.dropdownCategories.category.Reference.Engines.description": {
-    "message": "为您的数据选择合适的表引擎和数据库引擎",
-    "description": "Use the right table and database engines for your data"
-  },
   "sidebar.dropdownCategories.category.Reference.Other Features": {
     "message": "其他功能",
     "description": "Other Features"
-  },
-  "sidebar.dropdownCategories.category.Reference.Other Features.description": {
-    "message": "了解 ClickHouse 的其他功能",
-    "description": "Learn about other features in ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Integrations": {
-    "message": "集成",
-    "description": "Integrations"
-  },
-  "sidebar.dropdownCategories.category.description.Integrations": {
-    "message": "可与 ClickHouse 一起使用的集成、客户端和驱动程序",
-    "description": "Integrations, clients, and drivers to use with ClickHouse"
   },
   "sidebar.dropdownCategories.category.Integrations.All Integrations": {
     "message": "所有集成",
     "description": "All Integrations"
   },
-  "sidebar.dropdownCategories.category.Integrations.All Integrations.description": {
-    "message": "将 ClickHouse 与其他数据库和应用程序集成",
-    "description": "Integrate ClickHouse with other databases and applications"
-  },
   "sidebar.dropdownCategories.category.Integrations.Language Clients": {
     "message": "语言客户端",
     "description": "Language Clients"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Language Clients.description": {
-    "message": "使用您喜欢的编程语言操作 ClickHouse",
-    "description": "Use your favorite language to work with ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Integrations.ClickPipes": {
-    "message": "ClickPipes",
-    "description": "ClickPipes"
-  },
-  "sidebar.dropdownCategories.category.Integrations.ClickPipes.description": {
-    "message": "向 ClickHouse 导入数据的最简单方式",
-    "description": "The easiest way to ingest data into ClickHouse"
   },
   "sidebar.dropdownCategories.category.Integrations.Native Clients & Interfaces": {
     "message": "原生客户端和接口",
     "description": "Native Clients & Interfaces"
   },
-  "sidebar.dropdownCategories.category.Integrations.Native Clients & Interfaces.description": {
-    "message": "选择客户端和接口连接 ClickHouse",
-    "description": "Choose a client and interface to connect to ClickHouse"
-  },
   "sidebar.dropdownCategories.category.Integrations.Data Sources": {
     "message": "数据源",
     "description": "Data Sources"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data Sources.description": {
-    "message": "从您首选的数据源加载数据到 ClickHouse",
-    "description": "Load data into ClickHouse from your preferred source"
   },
   "sidebar.dropdownCategories.category.Integrations.Data Visualization": {
     "message": "数据可视化",
     "description": "Data Visualization"
   },
-  "sidebar.dropdownCategories.category.Integrations.Data Visualization.description": {
-    "message": "将 ClickHouse 连接到您喜欢的可视化工具",
-    "description": "Connect ClickHouse to your favorite visualization tool"
-  },
   "sidebar.dropdownCategories.category.Integrations.Data Formats": {
     "message": "数据格式",
     "description": "Data Formats"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data Formats.description": {
-    "message": "探索 ClickHouse 支持的数据格式",
-    "description": "Explore data formats supported by ClickHouse"
   },
   "sidebar.dropdownCategories.category.Integrations.Data Ingestion": {
     "message": "数据摄入",
     "description": "Data Ingestion"
   },
-  "sidebar.dropdownCategories.category.Integrations.Data Ingestion.description": {
-    "message": "使用各种 ELT 工具将数据导入 ClickHouse",
-    "description": "Ingest data into ClickHouse with a range of ELT tools"
+  "sidebar.dropdownCategories.category.chDB": {
+    "message": "chDB",
+    "description": "chDB"
+  },
+  "sidebar.dropdownCategories.category.description.chDB": {
+    "message": "chDB 是 ClickHouse 的嵌入式版本",
+    "description": "chDB is an embedded version of ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.chDB.Learn chDB": {
+    "message": "学习 chDB",
+    "description": "Learn chDB"
+  },
+  "sidebar.dropdownCategories.category.chDB.Learn chDB.description": {
+    "message": "学习如何使用 chDB",
+    "description": "Learn how to use chDB"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language Integrations": {
+    "message": "语言集成",
+    "description": "Language Integrations"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language Integrations.description": {
+    "message": "使用语言客户端连接 chDB",
+    "description": "Connect to chDB using a language client"
+  },
+  "sidebar.dropdownCategories.category.chDB.Guides": {
+    "message": "指南",
+    "description": "Guides"
+  },
+  "sidebar.dropdownCategories.category.chDB.Guides.description": {
+    "message": "帮助您使用 chDB 的指南",
+    "description": "Guides to help you use chDB"
+  },
+  "sidebar.dropdownCategories.category.About": {
+    "message": "关于",
+    "description": "About"
+  },
+  "sidebar.dropdownCategories.category.description.About": {
+    "message": "了解更多关于 ClickHouse 的信息",
+    "description": "Learn more about ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.About.Adopters": {
+    "message": "采用者",
+    "description": "Adopters"
+  },
+  "sidebar.dropdownCategories.category.About.Adopters.description": {
+    "message": "ClickHouse 采用者",
+    "description": "ClickHouse adopters"
+  },
+  "sidebar.dropdownCategories.category.About.Changelogs": {
+    "message": "更新日志",
+    "description": "Changelogs"
+  },
+  "sidebar.dropdownCategories.category.About.Changelogs.description": {
+    "message": "查看 ClickHouse 的最新变更",
+    "description": "View the latest changes in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.About.Support": {
+    "message": "支持",
+    "description": "Support"
+  },
+  "sidebar.dropdownCategories.category.About.Support.description": {
+    "message": "获取 ClickHouse 工程师的支持",
+    "description": "Get support from ClickHouse engineers"
+  },
+  "sidebar.dropdownCategories.category.About.Development and Contributing": {
+    "message": "开发与贡献",
+    "description": "Development and Contributing"
+  },
+  "sidebar.dropdownCategories.category.About.Development and Contributing.description": {
+    "message": "了解如何为 ClickHouse 做贡献",
+    "description": "Learn how to contribute to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Get Started": {
+    "message": "开始使用",
+    "description": "Get Started"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Managing Cloud": {
+    "message": "云服务管理",
+    "description": "Managing Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud API": {
+    "message": "云服务 API",
+    "description": "Cloud API"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud Reference": {
+    "message": "云服务参考",
+    "description": "Cloud Reference"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Best Practices": {
+    "message": "最佳实践",
+    "description": "Best Practices"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Security": {
+    "message": "安全",
+    "description": "Security"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud": {
+    "message": "迁移至云服务",
+    "description": "Migrating to Cloud"
   }
 }
