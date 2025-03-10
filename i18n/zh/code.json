@@ -558,5 +558,102 @@
   "theme.tags.tagsPageTitle": {
     "message": "标签",
     "description": "The title of the tag list page"
+  },
+  "theme.tags.tagsPageTitle": {
+    "message": "タグ",
+    "description": "The title of the tag list page"
+  },
+  "sidebar.dropdownCategories.category.Cloud": {
+    "message": "云"
+  },
+  "sidebar.dropdownCategories.category.Getting Started": {
+    "message": "入门"
+  },
+  "sidebar.dropdownCategories.category.Manage Data": {
+    "message": "管理数据"
+  },
+  "sidebar.dropdownCategories.category.Server Admin": {
+    "message": "服务器管理员"
+  },
+  "sidebar.dropdownCategories.category.Reference": {
+    "message": "参考"
+  },
+  "sidebar.dropdownCategories.category.Integrations": {
+    "message": "集成"
+  },
+  "sidebar.dropdownCategories.category.chDB": {
+    "message": "chDB 数据库"
+  },
+  "sidebar.dropdownCategories.category.About": {
+    "message": "关于"
+  },
+  "topNav.navItems.Products": {
+    "message": "产品"
+  },
+  "topNav.navItems.Use cases": {
+    "message": "使用"
+  },
+  "topNav.navItems.Pricing": {
+    "message": "定价"
+  },
+  "topNav.navItems.Resources": {
+    "message": "资源"
+  },
+  "topNav.navItems.Docs": {
+    "message": "文档"
+  },
+  "topNav.navItems.Contact us": {
+    "message": "联系我们"
+  },
+  "topNav.navItems.products.clickhouse_cloud_1": {
+    "message": "使用ClickHouse的最佳方法。"
+  },
+  "topNav.navItems.products.clickhouse_cloud_2": {
+    "message": "在AWS、GCP、Azure上可用。"
+  },
+  "topNav.navItems.products.byoc_1": {
+    "message": "BYOC（客户使用云）"
+  },
+  "topNav.navItems.products.byoc_2": {
+    "message": "完全托管型的 ClickHouse 云服务"
+  },
+  "topNav.navItems.products.byoc_3": {
+    "message": "可以部署在客户的 AWS 账户内。"
+  },
+  "topNav.navItems.products.oss": {
+    "message": "在开源的ClickHouse上搭建数据库。"
+  },
+  "topNav.navItems.products.oss_2": {
+    "message": ""
+  },
+  "topNav.navItems.products.integrations": {
+    "message": "介绍超过100个集成。"
+  },
+  "topNav.navItems.use_cases.Real-time analytics": {
+    "message": "实时分析"
+  },
+  "topNav.navItems.use_cases.Machine learning and GenAI": {
+    "message": "机器学习 & 生成AI"
+  },
+  "topNav.navItems.use_cases.Business intelligence": {
+    "message": "商业智能"
+  },
+  "topNav.navItems.use_cases.Logs, events, and traces": {
+    "message": "日志、事件、追踪"
+  },
+  "topNav.navItems.use_cases.All use cases": {
+    "message": "所有的使用案例"
+  },
+  "topNav.navItems.resources.Blog": {
+    "message": "博客"
+  },
+  "topNav.navItems.resources.Comparisons": {
+    "message": "比较信息"
+  },
+  "topNav.navItems.resources.Videos": {
+    "message": "视频"
+  },
+  "topNav.navItems.resources.Demos": {
+    "message": "演示"
   }
 }
