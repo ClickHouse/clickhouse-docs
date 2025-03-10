@@ -75,6 +75,11 @@ const config = {
         htmlLang: "jp",
         path: "jp",
       },
+      zh: {
+        label: "Chinese",
+        htmlLang: "zh",
+        path: "zh",
+      },
     },
   },
   staticDirectories: ["static"],
