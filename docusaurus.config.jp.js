@@ -70,11 +70,6 @@ const config = {
         htmlLang: "en",
         path: "en",
       },
-      jp: {
-        label: "Japanese",
-        htmlLang: "jp",
-        path: "jp",
-      },
       zh: {
         label: "Chinese",
         htmlLang: "zh",
