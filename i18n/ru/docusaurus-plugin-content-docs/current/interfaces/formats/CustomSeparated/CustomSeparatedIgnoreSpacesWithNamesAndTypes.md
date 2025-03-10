@@ -1,8 +1,9 @@
+---
 title: 'CustomSeparatedIgnoreSpacesWithNamesAndTypes'
 sidebar_label: 'CustomSeparatedIgnoreSpacesWithNamesAndTypes'
 keywords: ['CustomSeparatedIgnoreSpacesWithNamesAndTypes']
 description: 'Описание для CustomSeparatedIgnoreSpacesWithNamesAndTypes'
-```
+---
 
 ## Описание {#description}
 

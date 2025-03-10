@@ -1,5 +1,5 @@
 ---
-title: 'PrettyCompactNoEscapesMonoBlock'
+title: PrettyCompactNoEscapesMonoBlock
 slug: '/interfaces/formats/PrettyCompactNoEscapesMonoBlock'
 keywords: ['PrettyCompactNoEscapesMonoBlock']
 input_format: false
@@ -15,7 +15,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## Описание {#description}
 
-Отличается от формата [`PrettyCompactNoEscapes`](./PrettyCompactNoEscapes.md) тем, что буферизуются до `10,000` строк, 
+Отличается от формата [`PrettyCompactNoEscapes`](./PrettyCompactNoEscapes.md) тем, что буферизуются до `10,000` строк,
 а затем выводятся как одна таблица, а не по [блокам](/development/architecture#block).
 
 ## Пример использования {#example-usage}

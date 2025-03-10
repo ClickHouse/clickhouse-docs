@@ -304,11 +304,11 @@
     "description": "The label for category CSV in sidebar integrations"
   },
   "sidebar.integrations.category.CustomSeparated": {
-    "message": "Пользовательский разделитель",
+    "message": "CustomSeparated",
     "description": "The label for category CustomSeparated in sidebar integrations"
   },
   "sidebar.integrations.category.LineAsString": {
-    "message": "Строка как строка",
+    "message": "LineAsString",
     "description": "The label for category LineAsString in sidebar integrations"
   },
   "sidebar.integrations.category.Parquet": {
@@ -316,7 +316,7 @@
     "description": "The label for category Parquet in sidebar integrations"
   },
   "sidebar.integrations.category.Pretty": {
-    "message": "Красивый",
+    "message": "Pretty",
     "description": "The label for category Pretty in sidebar integrations"
   },
   "sidebar.integrations.category.Protobuf": {
@@ -332,7 +332,7 @@
     "description": "The label for category TabSeparated in sidebar integrations"
   },
   "sidebar.integrations.category.Template": {
-    "message": "Шаблон",
+    "message": "Template",
     "description": "The label for category Template in sidebar integrations"
   },
   "sidebar.integrations.category.Data Ingestion": {

@@ -1,7 +1,7 @@
 ---
-title: Значения
+title: Values
 slug: /interfaces/formats/Values
-keywords: ['Значения']
+keywords: ['Values']
 input_format: true
 output_format: true
 alias: []

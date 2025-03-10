@@ -1,7 +1,7 @@
 ---
-title: Шаблон
+title: Template
 slug: /interfaces/formats/Template
-keywords: ['Шаблон']
+keywords: ['Template']
 input_format: true
 output_format: true
 alias: []
@@ -22,7 +22,7 @@ alias: []
 | [`format_template_row`](#format_template_row)                                                                | Указывает путь к файлу, содержащему строки формата для строк.                                                         |
 | [`format_template_resultset`](#format_template_resultset)                                                    | Указывает путь к файлу, содержащему строки формата для строк                                                          |
 | [`format_template_rows_between_delimiter`](#format_template_rows_between_delimiter)                          | Указывает разделитель между строками, который выводится (или ожидается) после каждой строки, кроме последней (`\n` по умолчанию) |
-| `format_template_row_format`                                                                                 | Указывает строку формата для строк [in-line](#inline_specification).                                                  |                                                                           
+| `format_template_row_format`                                                                                 | Указывает строку формата для строк [in-line](#inline_specification).                                                  |
 | `format_template_resultset_format`                                                                           | Указывает строку формата для результирующего набора [in-line](#inline_specification).                                 |
 | Некоторые настройки других форматов (например, `output_format_json_quote_64bit_integers` при использовании `JSON` экранирования) |                                                                                                                       |
 
@@ -51,7 +51,7 @@ delimiter_1${column_1:serializeAs_1}delimiter_2${column_2:serializeAs_2} ... del
 | `CSV`, `JSON`, `XML`   | Похоже на форматы с теми же именами    |
 | `Escaped`              | Похоже на `TSV`                         |
 | `Quoted`               | Похоже на `Values`                      |
-| `Raw`                  | Без экранирования, похоже на `TSVRaw`   |   
+| `Raw`                  | Без экранирования, похоже на `TSVRaw`   |
 | `None`                 | Нет правила экранирования - см. примечание ниже |
 
 :::note
@@ -74,7 +74,7 @@ delimiter_1${column_1:serializeAs_1}delimiter_2${column_2:serializeAs_2} ... del
 Например:
 
 - Если вставляется, строка ниже соответствует ожидаемому шаблону и будет считывать значения `дизайн ванной комнаты`, `2166`, `$3` в колонки `Поисковая фраза`, `количество`, `цена объявления`.
-- Если выбирается, строка ниже является выводом, если значения `дизайн ванной комнаты`, `2166`, `$3` уже хранятся в таблице в колонках `Поисковая фраза`, `количество`, `цена объявления`.  
+- Если выбирается, строка ниже является выводом, если значения `дизайн ванной комнаты`, `2166`, `$3` уже хранятся в таблице в колонках `Поисковая фраза`, `количество`, `цена объявления`.
 
 ```yaml
 Поисковая фраза: 'дизайн ванной комнаты', количество: 2166, цена объявления: $3;
@@ -111,7 +111,7 @@ delimiter_1${column_1:serializeAs_1}delimiter_2${column_2:serializeAs_2} ... del
 
 ### In-line спецификация {#inline_specification}
 
-Часто настройки формата (установленные с помощью `format_template_row`, `format_template_resultset`) трудно или невозможно развернуть для формата шаблона в каталоге на всех узлах кластера. 
+Часто настройки формата (установленные с помощью `format_template_row`, `format_template_resultset`) трудно или невозможно развернуть для формата шаблона в каталоге на всех узлах кластера.
 Более того, формат может быть настолько тривиальным, что его не требуется размещать в файле.
 
 Для этих случаев могут быть использованы `format_template_row_format` (для `format_template_row`) и `format_template_resultset_format` (для `format_template_resultset`), чтобы задать строку шаблона непосредственно в запросе,

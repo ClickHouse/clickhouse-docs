@@ -144,3 +144,5 @@ This allows each language to be deployed independently.
 
 - Don't split on tables `|`
 - Introduce <!-- translate split--> we can use to identify split
+- Dont translate titles on certain pages - formats and functions.
+- Check no empty line before meta (all pages need metadata so we can enforce)

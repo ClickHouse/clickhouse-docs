@@ -1,5 +1,5 @@
 ---
-title: Регулярные выражения
+title: Regexp
 slug: /interfaces/formats/Regexp
 keywords: ['Regexp']
 input_format: true
