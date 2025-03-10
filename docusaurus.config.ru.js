@@ -60,11 +60,6 @@ const config = {
     locales: ["ru", "en", "jp"],
     path: "i18n",
     localeConfigs: {
-      ru: {
-        label: "Russian",
-        htmlLang: "ru",
-        path: "ru",
-      },
       en: {
         label: "English",
         htmlLang: "en",
