@@ -6,7 +6,6 @@ displayed_sidebar: sqlreference
 keywords: ['ClickHouse', '演算子', 'SQL', 'データベース']
 description: 'ClickHouseのSQL演算子のリストとその使い方についての説明。'
 ---
-```
 
 
 # 演算子
