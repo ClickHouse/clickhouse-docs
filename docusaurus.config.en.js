@@ -66,17 +66,17 @@ const config = {
         path: "en",
       },
       ru: {
-        label: "Russian",
+        label: "Русский",
         htmlLang: "ru",
         path: "ru",
       },
       jp: {
-        label: "Japanese",
+        label: "日本語",
         htmlLang: "jp",
         path: "jp",
       },
       zh: {
-        label: "Chinese",
+        label: "中文",
         htmlLang: "zh",
         path: "zh",
       },
