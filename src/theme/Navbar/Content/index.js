@@ -16,8 +16,9 @@ import DocsCategoryDropdown, { DocsCategoryDropdownLinkOnly } from "../../../com
 import MobileSideBarMenu from "../../../components/MobileSideBarMenu";
 import Navigation from "../../../components/Navigation";
 import sidebars from "../../../../sidebars";
-import {useDocsSidebar} from '@docusaurus/plugin-content-docs/client';
+import { useDocsSidebar } from '@docusaurus/plugin-content-docs/client';
 import { translate } from "@docusaurus/Translate";
+import LocaleDropdownNavbarItem from "@theme/NavbarItem/LocaleDropdownNavbarItem"
 
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
@@ -33,7 +34,7 @@ function NavbarItems({ items }) {
   return (
     <>
       {items.map((item, i) => (
-        <NavbarItem {...item} key={i} />
+        <NavbarItem  {...item} key={i} />
       ))}
     </>
   );
@@ -46,7 +47,7 @@ export default function NavbarContent() {
   try {
     const sidebar = useDocsSidebar();
     items = sidebar.items;
-  } catch {}
+  } catch { }
   const {
     github_stars,
     menuItems,
@@ -112,19 +113,18 @@ export default function NavbarContent() {
             return <DocsCategoryDropdown key={index} dropdownCategory={dropdownCategory} />
           })}
           <DocsCategoryDropdownLinkOnly title={translate({
-              id: 'theme.blog.title',
-              message: 'Knowledge Base',
+            id: 'theme.blog.title',
+            message: 'Knowledge Base',
           })} link='/knowledgebase' />
         </div>
         <div
           className={`${styles.secondaryMenuRight} secondary-nav--items-right`}
         >
-          <NavbarItems items={secondaryItems} />
+          <LocaleDropdownNavbarItem />
           <ColorModeToggle className="navbar-color-toggle" />
         </div>
-        <MobileSideBarMenu sidebar={items}/>   
+        <MobileSideBarMenu sidebar={items} />
       </div>
     </div>
   );
 }
-

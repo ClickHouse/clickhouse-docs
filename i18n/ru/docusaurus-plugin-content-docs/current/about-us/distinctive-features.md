@@ -4,8 +4,6 @@ sidebar_label: Почему ClickHouse уникален?
 sidebar_position: 50
 description: Поймите, что делает ClickHouse отличительным от других систем управления базами данных
 ---
-```
-
 
 # Уникальные особенности ClickHouse
 
