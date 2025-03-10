@@ -3,24 +3,6 @@
     "message": "Страница не найдена",
     "description": "The title of the 404 page"
   },
-  "topNav.navItems.Products": {
-    "message": "Продукты"
-  },
-  "topNav.navItems.Use cases": {
-    "message": "Сценарии использования"
-  },
-  "topNav.navItems.Docs": {
-    "message": "Документация"
-  },
-  "topNav.navItems.Resources": {
-    "message": "Ресурсы"
-  },
-  "topNav.navItems.Pricing": {
-    "message": "Цены"
-  },
-  "topNav.navItems.Contact us": {
-    "message": "Связаться с нами"
-  },
   "theme.admonition.note": {
     "message": "примечание",
     "description": "The default label used for the Note admonition (:::note)"
@@ -98,87 +80,6 @@
   "theme.SearchPage.fetchingNewResults": {
     "message": "Загрузка новых результатов поиска...",
     "description": "The paragraph for fetching new search results"
-  },
-  "topNav.navItems.products.clickhouse_cloud_1": {
-    "message": "Лучший способ использовать ClickHouse."
-  },
-  "topNav.navItems.products.clickhouse_cloud_2": {
-    "message": "Доступно на AWS, GCP и Azure."
-  },
-  "topNav.navItems.products.byoc_1": {
-    "message": "Используйте облако на вашей стороне"
-  },
-  "topNav.navItems.products.byoc_2": {
-    "message": "Полностью управляемый сервис ClickHouse Cloud,"
-  },
-  "topNav.navItems.products.byoc_3": {
-    "message": "развернутый в вашем собственном аккаунте AWS."
-  },
-  "topNav.navItems.products.oss": {
-    "message": "Создайте базу данных с использованием открытого кода"
-  },
-  "topNav.navItems.products.oss_2": {
-    "message": "ClickHouse"
-  },
-  "topNav.navItems.products.integrations": {
-    "message": "Посмотреть более 100 интеграций"
-  },
-  "topNav.navItems.resources.User stories": {
-    "message": "Истории пользователей"
-  },
-  "topNav.navItems.resources.Blog": {
-    "message": "Блог"
-  },
-  "topNav.navItems.resources.Learning and Certification": {
-    "message": "Обучение и сертификация"
-  },
-  "topNav.navItems.resources.ClickHouse Academy": {
-    "message": "ClickHouse Academy"
-  },
-  "topNav.navItems.resources.Free live training": {
-    "message": "Бесплатное живое обучение"
-  },
-  "topNav.navItems.resources.ClickHouse Certification": {
-    "message": "Сертификация ClickHouse"
-  },
-  "topNav.navItems.resources.Comparisons": {
-    "message": "Сравнения"
-  },
-  "topNav.navItems.resources.BigQuery": {
-    "message": "BigQuery"
-  },
-  "topNav.navItems.resources.PostgreSQL": {
-    "message": "PostgreSQL"
-  },
-  "topNav.navItems.resources.Redshift": {
-    "message": "Redshift"
-  },
-  "topNav.navItems.resources.Rockset": {
-    "message": "Rockset"
-  },
-  "topNav.navItems.resources.Snowflake": {
-    "message": "Snowflake"
-  },
-  "topNav.navItems.resources.Videos": {
-    "message": "Видеоматериалы"
-  },
-  "topNav.navItems.resources.Demos": {
-    "message": "Демо"
-  },
-  "topNav.navItems.use_cases.Real-time analytics": {
-    "message": "Аналитика в реальном времени"
-  },
-  "topNav.navItems.use_cases.Machine learning and GenAI": {
-    "message": "Машинное обучение и GenAI"
-  },
-  "topNav.navItems.use_cases.Business intelligence": {
-    "message": "Бизнес-аналитика"
-  },
-  "topNav.navItems.use_cases.Logs, events, and traces": {
-    "message": "Логи, события и трассировки"
-  },
-  "topNav.navItems.use_cases.All use cases": {
-    "message": "Все сценарии использования"
   },
   "theme.blog.sidebar.navAriaLabel": {
     "message": "Навигация по последним постам в блоге",
@@ -558,5 +459,23 @@
   "theme.tags.tagsPageTitle": {
     "message": "Теги",
     "description": "The title of the tag list page"
+  },
+  "sidebar.dropdownCategories.category.About": {
+    "message": "О нас"
+  },
+  "sidebar.dropdownCategories.category.Cloud": {
+    "message": "Облако"
+  },
+  "sidebar.dropdownCategories.category.Getting Started": {
+    "message": "Начало работы"
+  },
+  "sidebar.dropdownCategories.category.Integrations": {
+    "message": "Интеграции"
+  },
+  "sidebar.dropdownCategories.category.Manage Data": {
+    "message": "Управление данными"
+  },
+  "sidebar.dropdownCategories.category.Server Admin": {
+    "message": "Администрирование сервера"
   }
 }
