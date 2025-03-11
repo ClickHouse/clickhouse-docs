@@ -6,6 +6,9 @@ import yaml
 import argparse
 from pathlib import Path
 
+from networkx.algorithms.connectivity import node_disjoint_paths
+
+
 def parse_error_log(log_file):
     """
     Parse the validation error log file and extract the errors for each file.
@@ -35,21 +38,44 @@ def fix_single_quotes_error(content, error_line):
     """Fix errors related to single quotes in frontmatter values."""
     match = re.search(r'value should use single quotes in line: "(.*?)"', error_line)
     if match:
-        line_to_fix = match.group(1)
-        # Split the line into key and value
-        key_value_pattern = r'([^:]+):\s*(.*)'
-        key_value_match = re.search(key_value_pattern, line_to_fix)
+        # Extract just the key from the error message
+        partial_line = match.group(1)
+        key_match = re.search(r'([^:]+):', partial_line)
 
-        if key_value_match:
-            key = key_value_match.group(1).strip()
-            value = key_value_match.group(2).strip()
+        if key_match:
+            key = key_match.group(1).strip()
 
-            # Create replacement with single quotes
-            replacement = f"{key}: '{value}'"
+            # Find the full line in the frontmatter
+            frontmatter_match = re.search(r'---\s*(.*?)\s*---', content, re.DOTALL)
+            if frontmatter_match:
+                frontmatter = frontmatter_match.group(1)
 
-            # Replace in content (being careful with regex special characters)
-            escaped_line = re.escape(line_to_fix)
-            content = re.sub(escaped_line, replacement, content)
+                # Find the line with this key in the frontmatter
+                frontmatter_lines = frontmatter.split('\n')
+                for i, line in enumerate(frontmatter_lines):
+                    if line.strip().startswith(f"{key}:"):
+                        # Extract the full key and value
+                        key_value_pattern = r'([^:]+):\s*(.*)'
+                        key_value_match = re.search(key_value_pattern, line)
+
+                        if key_value_match:
+                            key = key_value_match.group(1).strip()
+                            value = key_value_match.group(2).strip()
+
+                            # Remove any existing quotes
+                            if value.startswith('"') and value.endswith('"'):
+                                value = value[1:-1]
+
+                            # Create replacement with single quotes
+                            replacement = f"{key}: '{value}'"
+
+                            # Replace just this line in the frontmatter
+                            frontmatter_lines[i] = replacement
+
+                            # Rebuild the frontmatter and content
+                            new_frontmatter = '\n'.join(frontmatter_lines)
+                            content = re.sub(r'---\s*(.*?)\s*---', f'---\n{new_frontmatter}\n---', content, flags=re.DOTALL)
+                            break
 
     return content
 
@@ -128,20 +154,51 @@ def fix_markdown_file(file_path, errors, root_dir):
 
         original_content = content  # Save the original content
 
+        # Extract frontmatter and content separately to avoid modifying markdown tables
+        frontmatter_match = re.search(r'^---\s*(.*?)\s*---', content, re.DOTALL)
+        if not frontmatter_match:
+            print(f"No frontmatter found in {file_path}, skipping.")
+            return False
+
+        frontmatter = frontmatter_match.group(1)
+        main_content = content[frontmatter_match.end():]
+
+        # Only apply fixes to the frontmatter
+        modified_frontmatter = frontmatter
+
         for error in errors:
             if 'value should use single quotes in line' in error:
-                content = fix_single_quotes_error(content, error)
+                # Create a temporary content with just the frontmatter for processing
+                temp_content = f"---\n{modified_frontmatter}\n---"
+                temp_content = fix_single_quotes_error(temp_content, error)
+                # Extract the modified frontmatter
+                temp_match = re.search(r'^---\s*(.*?)\s*---', temp_content, re.DOTALL)
+                if temp_match:
+                    modified_frontmatter = temp_match.group(1)
             elif 'keywords array item' in error and 'should be wrapped in single quotes' in error:
-                content = fix_array_item_quotes(content, error)
+                # Similar approach for keywords
+                temp_content = f"---\n{modified_frontmatter}\n---"
+                temp_content = fix_array_item_quotes(temp_content, error)
+                temp_match = re.search(r'^---\s*(.*?)\s*---', temp_content, re.DOTALL)
+                if temp_match:
+                    modified_frontmatter = temp_match.group(1)
             elif 'missing required field' in error:
-                content = add_missing_field(content, error)
+                # Similar approach for missing fields
+                temp_content = f"---\n{modified_frontmatter}\n---"
+                temp_content = add_missing_field(temp_content, error)
+                temp_match = re.search(r'^---\s*(.*?)\s*---', temp_content, re.DOTALL)
+                if temp_match:
+                    modified_frontmatter = temp_match.group(1)
             else:
                 print(f"Unhandled error type: {error}")
 
+        # Reconstruct the file with modified frontmatter and original content
+        modified_content = f"---\n{modified_frontmatter}\n---{main_content}"
+
         # Only write the file if changes were made
-        if content != original_content:
+        if modified_content != original_content:
             with open(full_path, 'w', encoding='utf-8') as f:
-                f.write(content)
+                f.write(modified_content)
             return True
 
         return False
