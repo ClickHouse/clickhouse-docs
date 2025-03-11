@@ -213,8 +213,7 @@ function SearchPageContent() {
           );
           return {
             title: titles.pop(),
-            //url: processSearchResultUrl(url), // TEMP: All search results currently go to english
-            url: url,
+            url: currentLocale == 'en' ? processSearchResultUrl(url) : url, //TODO: temporary - all search results to english for now
             summary: snippet.content
               ? `${sanitizeValue(snippet.content.value)}...`
               : '',
