@@ -50,7 +50,7 @@ async function customParseFrontMatter(params) {
     }
 
     try {
-        // Use Docusaurus's default parser to get the frontmatter data (async)
+        // Use Docusaurus's default parser to get the frontmatter data
         const parsedData = await defaultParseFrontMatter(params);
         // Check for required fields
         const requiredFields = ['title', 'slug', 'description'];
@@ -78,20 +78,36 @@ async function customParseFrontMatter(params) {
                     issues.push(`incorrect spacing in line: "${line.trim()}"`);
                 }
 
-                // Check for single quotes on string values
-                if (line.includes(': "') || (line.includes(': ') &&
-                    !line.includes(': \'') &&
-                    !line.includes(': [') &&
-                    !line.includes(': {') &&
-                    !line.includes(': true') &&
-                    !line.includes(': false') &&
-                    !/: \d+/.test(line))) {
+                // Special check for keywords array - items should be in single quotes
+                if (line.trim().startsWith('keywords:') && line.includes('[')) {
+                    const arrayContent = line.substring(line.indexOf('[') + 1, line.lastIndexOf(']'));
+                    if (arrayContent.trim()) { // Only check if array is not empty
+                        const items = arrayContent.split(',').map(item => item.trim());
+                        for (const item of items) {
+                            // Check if the item is not wrapped in single quotes
+                            if (item && !item.startsWith("'") || !item.endsWith("'")) {
+                                issues.push(`keywords array item '${item}' should be wrapped in single quotes`);
+                            }
+                        }
+                    }
+                }
+
+                const lineStart = line.trim();
+                const isExcludedField = lineStart.startsWith('slug:') || lineStart.startsWith('id:');
+                if (!isExcludedField && (
+                    line.includes(': "') || (line.includes(': ') &&
+                        !line.includes(': \'') &&
+                        !line.includes(': [') &&
+                        !line.includes(': {') &&
+                        !line.includes(': true') &&
+                        !line.includes(': false') &&
+                        !/: \d+/.test(line)))) {
                     issues.push(`value should use single quotes in line: "${line.trim()}"`);
                 }
             }
         }
 
-        // If there are issues, add to our tracking list
+        // If there are issues, add to the tracking list
         if (issues.length > 0) {
             filesWithIssues.push({
                 filePath: relativePath,
