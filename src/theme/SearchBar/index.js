@@ -53,8 +53,7 @@ function mergeFacetFilters(f1, f2) {
 
 function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const queryIDRef = useRef(null);
-
-  const { siteMetadata } = useDocusaurusContext();
+  const { siteMetadata, i18n: { currentLocale } } = useDocusaurusContext();
   const processSearchResultUrl = useSearchResultUrlProcessor();
   const contextualSearchFacetFilters = useAlgoliaContextualFacetFilters();
   const configFacetFilters = props.searchParameters?.facetFilters ?? [];
@@ -143,7 +142,7 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
       : items.map((item, index) => {
         return {
           ...item,
-          url: item.url, //TODO: temporary - all search results to english for now
+          url: currentLocale == 'en' ? processSearchResultUrl(item.url) : item.url, //TODO: temporary - all search results to english for now
           // url: processSearchResultUrl(item.url),
           index, // Adding the index property - needed for click metrics
           queryID: queryIDRef.current

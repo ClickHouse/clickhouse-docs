@@ -133,6 +133,16 @@ DOCUSUARUS_LOCALE=jp yarn build
 
 This allows each language to be deployed independently.
 
+Ensure you only build if the languages folder changes e.g.
+
+```text
+git diff HEAD^ HEAD --quiet -- ./i18n/jp
+```
+
+Example [here](https://vercel.com/clickhouse/clickhouse-docs-jp/settings/git).
+
+9. Add the route to the website worker - [example PR](https://github.com/ClickHouse/clickhouse-website-worker/pull/285/files)
+
 ## Known issues
 
 - translations can modify links in rare cases, causing issues.
