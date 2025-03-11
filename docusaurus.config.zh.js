@@ -259,7 +259,7 @@ const config = {
         defaultMode: "dark",
       },
       announcementBar: {
-        id: 'announcement-bar',
+        id: 'announcement-bar-zh',
         content:
             '本文档采用人工智能技术进行翻译。如果您发现错误，请在此报告。<a href="https://github.com/ClickHouse/clickhouse-docs/issues">Github</a>',
         isCloseable: true,
