@@ -21,7 +21,7 @@ def parse_error_log(log_file):
             # Check if this line is a file path
             if line.endswith(':') and not line.startswith('  •'):
                 current_file = line[:-1]  # Remove the trailing colon
-                current_file = current_file[4:]
+                current_file = current_file[5:] # Remove docs/
                 errors_by_file[current_file] = []
 
             # Check if this line is an error message
