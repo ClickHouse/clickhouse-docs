@@ -258,6 +258,12 @@ const config = {
         respectPrefersColorScheme: true,
         defaultMode: "dark",
       },
+      announcementBar: {
+        id: 'announcement-bar',
+        content:
+            'このドキュメントはAIを使用して翻訳されています。エラーを発見した場合は、<a href="https://github.com/ClickHouse/clickhouse-docs/issues">こちら</a> に報告してください。',
+        isCloseable: true,
+      }
     }),
 
   plugins: [
