@@ -3217,6 +3217,11 @@
       "source": "/docs/migrations/postgres/en/migrations/postgresql",
       "destination": "/docs/migrations/postgresql/overview",
       "permanent": true
+    },
+    {
+      "source": "/docs/faq/general/why-clickhouse-is-so-fast",
+      "destination": "/docs/concepts/why-clickhouse-is-so-fast",
+      "permanent": true
     }
   ]
 }
