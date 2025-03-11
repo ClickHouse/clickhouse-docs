@@ -136,7 +136,7 @@ This allows each language to be deployed independently.
 Ensure you only build if the languages folder changes e.g.
 
 ```text
-git diff HEAD^ HEAD --quiet -- ./i18n/jp
+git diff HEAD^ HEAD --quiet -- ./i18n/jp && git diff HEAD^ HEAD --quiet -- docusaurus.config.jp.js && exit 0 || exit 1
 ```
 
 Example [here](https://vercel.com/clickhouse/clickhouse-docs-jp/settings/git).
