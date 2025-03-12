@@ -4,7 +4,7 @@ sidebar_label: 'Automatic Scaling'
 slug: /manage/scaling
 description: 'Configuring automatic scaling in ClickHouse Cloud'
 keywords: ['autoscaling', 'auto scaling', 'scaling', 'horizontal', 'vertical', 'bursts']
-title: 'TODO: Add title'
+title: 'Automatic Scaling'
 ---
 
 import auto_scaling from '@site/static/images/cloud/manage/AutoScaling.png';

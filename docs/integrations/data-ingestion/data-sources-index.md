@@ -2,7 +2,7 @@
 slug: /integrations/index
 keywords: ['AWS S3', 'PostgreSQL', 'Kafka', 'Apache Spark', 'MySQL', 'Cassandra', 'Redis', 'RabbitMQ', 'MongoDB', 'Google Cloud Storage', 'Hive', 'Hudi', 'Iceberg', 'MinIO', 'Delta Lake', 'RocksDB', 'Splunk', 'SQLite', 'NATS', 'EMQX', 'local files', 'JDBC', 'ODBC']
 description: 'Datasources overview page'
-title: 'TODO: Add title'
+title: 'Data Sources'
 ---
 
 # Data Sources

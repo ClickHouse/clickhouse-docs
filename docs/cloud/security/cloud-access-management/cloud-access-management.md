@@ -2,7 +2,7 @@
 sidebar_label: 'Overview'
 slug: /cloud/security/cloud-access-management/overview
 title: 'Cloud access management'
-description: 'TODO: Add description'
+description: 'Describes how access control in ClickHouse cloud works, including information on role types'
 ---
 
 # Access Control in ClickHouse Cloud

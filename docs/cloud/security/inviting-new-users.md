@@ -2,7 +2,7 @@
 sidebar_label: 'Inviting new users'
 slug: /cloud/security/inviting-new-users
 title: 'Inviting New Users'
-description: 'TODO: Add description'
+description: 'This page describes how administrators can invite new users to their organisation and assign roles to them'
 ---
 
 import users_and_roles from '@site/static/images/cloud/security/users_and_roles.png';

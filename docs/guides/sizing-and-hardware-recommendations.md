@@ -2,8 +2,8 @@
 slug: /guides/sizing-and-hardware-recommendations
 sidebar_label: 'Sizing and Hardware Recommendations'
 sidebar_position: 4
-title: 'TODO: Add title'
-description: 'TODO: Add description'
+title: 'Sizing and Hardware Recommendations'
+description: 'This guide discusses our general recommendations regarding hardware, compute, memory, and disk configurations for open-source users.'
 ---
 
 # Sizing and Hardware Recommendations

@@ -3,7 +3,7 @@ slug: /guides/developer/lightweight-update
 sidebar_label: 'Lightweight Update'
 title: 'Lightweight Update'
 keywords: ['lightweight update']
-description: 'TODO: Add description'
+description: 'Provides a description of lightweight updates'
 ---
 
 ## Lightweight Update {#lightweight-update}

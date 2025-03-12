@@ -3,7 +3,7 @@ slug: /architecture/replication
 sidebar_label: 'Replication for fault tolerance'
 sidebar_position: 10
 title: 'Replication for fault tolerance'
-description: 'TODO: Add description'
+description: 'Page describing an example architecture with five servers configured. Two are used to host copies of the data and the rest are used to coordinate the replication of data'
 ---
 
 import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';

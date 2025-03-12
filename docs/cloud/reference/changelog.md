@@ -2,7 +2,7 @@
 slug: /whats-new/cloud
 sidebar_label: 'Cloud Changelog'
 title: 'Cloud Changelog'
-description: 'TODO: Add description'
+description: 'ClickHouse Cloud changelog providing descriptions of what is new in each ClickHouse Cloud release'
 ---
 
 import add_marketplace from '@site/static/images/cloud/reference/add_marketplace.png';

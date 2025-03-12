@@ -4,7 +4,7 @@ sidebar_position: 20
 slug: /migrations/snowflake
 description: 'Migrating from Snowflake to ClickHouse'
 keywords: ['migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'snowflake']
-title: 'TODO: Add title'
+title: 'Migrating from Snowflake to ClickHouse'
 ---
 
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';

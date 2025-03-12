@@ -3,8 +3,8 @@ sidebar_label: 'Overview'
 sidebar_position: 1
 slug: /integrations/migration/overview
 keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data']
-title: 'TODO: Add title'
-description: 'TODO: Add description'
+title: 'Migrating Data into ClickHouse'
+description: 'Page describing the options available for migrating data into ClickHouse'
 ---
 
 # Migrating Data into ClickHouse

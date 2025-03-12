@@ -4,7 +4,7 @@ title: 'What does “не тормозит” mean?'
   \u201D mean?"
 toc_hidden: true
 toc_priority: 11
-description: 'TODO: Add description'
+description: 'This page explains what "Не тормозит" means'
 ---
 
 # What Does "Не тормозит" Mean? {#what-does-ne-tormozit-mean}

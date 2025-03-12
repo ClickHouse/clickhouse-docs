@@ -2,7 +2,7 @@
 sidebar_label: 'Troubleshooting Billing Issues'
 slug: /manage/troubleshooting-billing-issues
 title: 'Troubleshooting Billing Issues'
-description: 'TODO: Add description'
+description: 'Troubleshooting article for common billing issues'
 ---
 
 import trial_expired from '@site/static/images/cloud/manage/trial-expired.png';

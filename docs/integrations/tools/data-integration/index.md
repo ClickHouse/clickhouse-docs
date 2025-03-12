@@ -1,7 +1,7 @@
 ---
 slug: /integrations/tools/data-integrations
 keywords: ['Retool', 'Easypanel', 'Splunk']
-title: 'TODO: Add title'
+title: 'Data Integrations'
 description: 'TODO: Add description'
 ---
 

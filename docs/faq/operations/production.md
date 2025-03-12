@@ -3,7 +3,7 @@ slug: /faq/operations/production
 title: 'Which ClickHouse version to use in production?'
 toc_hidden: true
 toc_priority: 10
-description: 'TODO: Add description'
+description: 'This page provides guidance on which ClickHouse version to use in production'
 ---
 
 # Which ClickHouse Version to Use in Production? {#which-clickhouse-version-to-use-in-production}

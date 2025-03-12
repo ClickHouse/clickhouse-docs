@@ -3,7 +3,7 @@ slug: /optimize/skipping-indexes
 sidebar_label: 'Data Skipping Indexes'
 sidebar_position: 2
 description: 'Skip indexes enable ClickHouse to skip reading significant chunks of data that are guaranteed to have no matching values.'
-title: 'TODO: Add title'
+title: 'Understanding ClickHouse Data Skipping Indexes'
 ---
 
 import SimpleSkip from '@site/static/images/guides/best-practices/simple_skip.svg';

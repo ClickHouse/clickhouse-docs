@@ -2,8 +2,8 @@
 slug: /guides/sre/configuring-ssl
 sidebar_label: 'Configuring SSL-TLS'
 sidebar_position: 20
-title: 'TODO: Add title'
-description: 'TODO: Add description'
+title: 'Configuring SSL-TLS'
+description: 'This guide provides simple and minimal settings to configure ClickHouse to use OpenSSL certificates to validate connections.'
 ---
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';

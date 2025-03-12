@@ -1,13 +1,13 @@
 ---
 slug: /faq/integration/
 sidebar_position: 1
-sidebar_label: 'Integrating ClickHouse with Other Systems'
+sidebar_label: 'Integrating ClickHouse with other systems'
 keywords: ['clickhouse', 'faq', 'questions', 'integrations']
-title: 'TODO: Add title'
-description: 'TODO: Add description'
+title: 'Questions about integrating ClickHouse and other systems'
+description: 'Landing page listing questions related to integrating ClickHouse with other systems'
 ---
 
-# Questions About Integrating ClickHouse and Other Systems
+# Questions about integrating ClickHouse and other systems
 
 - [How do I export data from ClickHouse to a file?](https://clickhouse.com/docs/knowledgebase/file-export)
 - [How to import JSON into ClickHouse?](/integrations/data-ingestion/data-formats/json/intro.md)

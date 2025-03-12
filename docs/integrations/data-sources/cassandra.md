@@ -2,7 +2,7 @@
 slug: /integrations/cassandra
 sidebar_label: 'Cassandra'
 title: 'Cassandra'
-description: 'TODO: Add description'
+description: 'Page describing how users can integrate with Cassandra via a dictionary.'
 ---
 
 # Cassandra integration

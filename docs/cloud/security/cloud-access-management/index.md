@@ -1,8 +1,7 @@
 ---
 slug: /cloud/security/cloud-access-management
 title: 'Cloud Access Management'
-Description: 'Cloud Access Management Table Of Contents'
-description: 'TODO: Add description'
+description: 'Cloud Access Management Table Of Contents'
 ---
 
 | Page                                                                                         | Description                                                                                                                                       |

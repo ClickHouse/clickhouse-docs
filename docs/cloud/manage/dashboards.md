@@ -2,7 +2,7 @@
 sidebar_label: 'Dashboards'
 slug: /cloud/manage/dashboards
 title: 'Dashboards'
-description: 'TODO: Add description'
+description: 'The SQL Console’s dashboards feature allows you to collect and share visualizations from saved queries.'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

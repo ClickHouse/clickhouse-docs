@@ -1,8 +1,9 @@
 ---
 sidebar_position: 1
 sidebar_label: 'Cloud'
-title: 'TODO: Add title'
+title: 'Cloud Changelog'
 ---
+
 # Cloud Changelog
 
 import CloudChangelog from '@site/docs/cloud/reference/changelog.md';

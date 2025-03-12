@@ -3,7 +3,7 @@ sidebar_label: 'Confluent Platform'
 sidebar_position: 1
 slug: /integrations/kafka/cloud/confluent
 description: 'Kafka Connectivity with Confluent Cloud'
-title: 'TODO: Add title'
+title: 'Integrating Confluent Cloud with ClickHouse'
 ---
 
 # Integrating Confluent Cloud with ClickHouse

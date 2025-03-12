@@ -13,7 +13,7 @@ keywords:
   - clickhouse-keeper
   - replication
 description: 'ClickHouse Keeper, or clickhouse-keeper, replaces ZooKeeper and provides replication and coordination.'
-title: 'TODO: Add title'
+title: 'ClickHouse Keeper'
 ---
 
 # ClickHouse Keeper (clickhouse-keeper)

@@ -4,7 +4,7 @@ sidebar_position: 198
 slug: /integrations/splunk
 keywords: ['Splunk', 'integration', 'data visualization']
 description: 'Connect Splunk dashboards to ClickHouse'
-title: 'TODO: Add title'
+title: 'Connecting Splunk to ClickHouse'
 ---
 
 import splunk_1 from '@site/static/images/integrations/splunk/splunk-1.png';

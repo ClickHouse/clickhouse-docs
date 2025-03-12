@@ -2,8 +2,8 @@
 slug: /faq/use-cases/
 sidebar_position: 2
 sidebar_label: 'Questions about ClickHouse use cases'
-title: 'TODO: Add title'
-description: 'TODO: Add description'
+title: 'Questions About ClickHouse Use Cases'
+description: 'Landing page listing common questions about ClickHouse use cases'
 ---
 
 # Questions About ClickHouse Use Cases

@@ -2,7 +2,7 @@
 sidebar_label: 'Integrations'
 slug: /manage/integrations
 title: 'Integrations'
-description: 'TODO: Add description'
+description: 'Integrations for ClickHouse'
 ---
 
 To see a full list of integrations for ClickHouse, please see [this page](/integrations).

@@ -3,8 +3,9 @@ sidebar_label: 'dbt'
 slug: /integrations/dbt
 sidebar_position: 1
 description: 'Users can transform and model their data in ClickHouse using dbt'
-title: 'TODO: Add title'
+title: 'Integrating dbt and ClickHouse'
 ---
+
 import TOCInline from '@theme/TOCInline';
 import dbt_01 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_01.png';
 import dbt_02 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_02.png';

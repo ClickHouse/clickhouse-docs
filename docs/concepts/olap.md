@@ -2,7 +2,7 @@
 sidebar_position: 2
 sidebar_label: 'What is OLAP?'
 description: 'OLAP stands for Online Analytical Processing. It is a broad term that can be looked at from two perspectives: technical and business.'
-title: 'TODO: Add title'
+title: 'What is OLAP?'
 ---
 
 # What is OLAP?

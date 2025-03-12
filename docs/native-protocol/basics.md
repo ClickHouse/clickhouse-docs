@@ -1,8 +1,8 @@
 ---
 slug: /native-protocol/basics
 sidebar_position: 1
-title: 'TODO: Add title'
-description: 'TODO: Add description'
+title: 'Basics'
+description: 'Native protocol basics'
 ---
 
 # Basics

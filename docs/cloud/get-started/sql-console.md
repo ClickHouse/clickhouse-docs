@@ -3,7 +3,7 @@ sidebar_title: 'SQL Console'
 slug: /cloud/get-started/sql-console
 description: 'Run queries and create visualizations using the SQL Console.'
 keywords: ['sql console', 'sql client', 'cloud console', 'console']
-title: 'TODO: Add title'
+title: 'SQL Console'
 ---
 
 import table_list_and_schema from '@site/static/images/cloud/sqlconsole/table-list-and-schema.png';

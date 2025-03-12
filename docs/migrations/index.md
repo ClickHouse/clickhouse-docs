@@ -3,7 +3,7 @@ slug: migrations
 title: 'Migrations'
 pagination_prev: null
 pagination_next: null
-description: 'TODO: Add description'
+description: 'Landing page for the migrations section'
 ---
 
 | Page                                                              | Description                    |

@@ -2,7 +2,7 @@
 sidebar_label: 'Generic Postgres'
 description: 'Set up any Postgres instance as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/generic
-title: 'TODO: Add title'
+title: 'Generic Postgres Source Setup Guide'
 ---
 
 # Generic Postgres Source Setup Guide

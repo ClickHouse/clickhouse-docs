@@ -3,7 +3,7 @@ sidebar_label: 'Vector'
 sidebar_position: 220
 slug: /integrations/vector
 description: 'How to tail a log file into ClickHouse using Vector'
-title: 'TODO: Add title'
+title: 'Integrating Vector with ClickHouse'
 ---
 
 import vector01 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_01.png';

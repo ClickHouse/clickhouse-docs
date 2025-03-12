@@ -2,7 +2,7 @@
 slug: /whats-new/cloud-compatibility
 sidebar_label: 'Cloud Compatibility'
 title: 'Cloud Compatibility'
-description: 'TODO: Add description'
+description: 'This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud.'
 ---
 
 # ClickHouse Cloud — Compatibility Guide

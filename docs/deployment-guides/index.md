@@ -1,7 +1,7 @@
 ---
 slug: /deployment-guides/index
 title: 'Deployment Guides Overview'
-description: 'TODO: Add description'
+description: 'Landing page for the deployment and scaling section'
 ---
 
 # Deployment and Scaling

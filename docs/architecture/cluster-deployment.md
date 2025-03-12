@@ -3,7 +3,7 @@ slug: /architecture/cluster-deployment
 sidebar_label: 'Cluster Deployment'
 sidebar_position: 100
 title: 'Cluster Deployment'
-description: 'TODO: Add description'
+description: 'By going through this tutorial, you’ll learn how to set up a simple ClickHouse cluster.'
 ---
 
 This tutorial assumes you've already set up a [local ClickHouse server](../getting-started/install.md)

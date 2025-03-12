@@ -4,7 +4,7 @@ sidebar_position: 131
 slug: /integrations/astrato
 keywords: ['clickhouse', 'Power BI', 'connect', 'integrate', 'ui', 'data apps', 'data viz', 'embedded analytics', 'Astrato']
 description: 'Astrato brings true Self-Service BI to Enterprises & Data Businesses by putting analytics in the hands of every user, enabling them to build their own dashboards, reports and data apps, enabling the answering of data questions without IT help. Astrato accelerates adoption, speeds up decision-making, and unifies analytics, embedded analytics, data input, and data apps in one platform. Astrato unites action and analytics in one,  introduce live write-back, interact with ML models, accelerate your analytics with AI – go beyond dashboarding, thanks to pushdown SQL support in Astrato.'
-title: 'TODO: Add title'
+title: 'Connecting Astrato to ClickHouse'
 ---
 
 import astrato_1_dataconnection from '@site/static/images/integrations/data-visualization/astrato_1_dataconnection.png';

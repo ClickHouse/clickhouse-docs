@@ -3,7 +3,7 @@ sidebar_label: 'Integrating Kafka with ClickHouse'
 sidebar_position: 1
 slug: /integrations/kafka
 description: 'Introduction to Kafka with ClickHouse'
-title: 'TODO: Add title'
+title: 'Integrating Kafka with ClickHouse'
 ---
 
 # Integrating Kafka with ClickHouse

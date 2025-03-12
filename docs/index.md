@@ -8,7 +8,7 @@ keywords: ['clickhouse', 'docs', 'knowledge base']
 pagination_next: null
 hide_title: true
 id: home-page
-description: 'TODO: Add description'
+description: 'Docs homepage'
 ---
 
 import ClickHouseLogo from '@site/src/icons/ClickHouseLogo';

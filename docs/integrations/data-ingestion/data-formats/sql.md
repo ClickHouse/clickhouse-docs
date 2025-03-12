@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'SQL Dumps'
 slug: /integrations/data-formats/sql
-title: 'TODO: Add title'
+title: 'Inserting and dumping SQL data in ClickHouse'
 description: 'TODO: Add description'
 ---
 

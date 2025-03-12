@@ -4,7 +4,7 @@ sidebar_position: 3
 slug: /integrations/tableau/connection-tips
 keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
 description: 'Tableau connection tips when using ClickHouse official connector.'
-title: 'TODO: Add title'
+title: 'Connection tips'
 ---
 
 # Connection tips

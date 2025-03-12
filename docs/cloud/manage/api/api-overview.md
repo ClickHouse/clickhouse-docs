@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Overview'
 sidebar_position: 1
-title: 'TODO: Add title'
+title: 'ClickHouse Cloud API'
 ---
 
 # ClickHouse Cloud API

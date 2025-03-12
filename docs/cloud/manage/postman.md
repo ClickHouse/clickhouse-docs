@@ -2,7 +2,7 @@
 slug: /cloud/manage/postman
 sidebar_label: 'Programmatic API access with Postman'
 title: 'Programmatic API access with Postman'
-description: 'TODO: Add description'
+description: 'This guide will help you test the ClickHouse Cloud API using Postman'
 ---
 
 import postman1 from '@site/static/images/cloud/manage/postman/postman1.png';

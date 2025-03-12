@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Upgrades'
 slug: /manage/updates
-title: 'TODO: Add title'
-description: 'TODO: Add description'
+title: 'Upgrades'
+description: 'With ClickHouse Cloud you never have to worry about patching and upgrades. We roll out upgrades that include fixes, new features and performance improvements on a periodic basis.'
 ---
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'

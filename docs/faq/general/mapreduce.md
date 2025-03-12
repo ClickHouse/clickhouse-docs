@@ -3,7 +3,7 @@ slug: /faq/general/mapreduce
 title: 'Why not use something like MapReduce?'
 toc_hidden: true
 toc_priority: 110
-description: 'TODO: Add description'
+description: 'This page explains why you would use ClickHouse over MapReduce'
 ---
 
 # Why Not Use Something Like MapReduce? {#why-not-use-something-like-mapreduce}

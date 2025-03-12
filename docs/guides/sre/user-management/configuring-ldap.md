@@ -2,8 +2,8 @@
 sidebar_label: 'Configuring LDAP'
 sidebar_position: 2
 slug: /guides/sre/configuring-ldap
-title: 'TODO: Add title'
-description: 'TODO: Add description'
+title: 'Configuring ClickHouse to Use LDAP for Authentication and Role Mapping'
+description: 'Describes how to configure ClickHouse to use LDAP for authentication and role mapping'
 ---
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 

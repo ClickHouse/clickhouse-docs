@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Architecture'
 slug: /cloud/reference/architecture
-title: 'TODO: Add title'
-description: 'TODO: Add description'
+title: 'ClickHouse Cloud Architecture'
+description: 'This page describes the architecture of ClickHouse Cloud'
 ---
 
 import architecture from '@site/static/images/cloud/reference/architecture.svg';

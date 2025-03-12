@@ -2,7 +2,7 @@
 slug: /integrations/s3
 sidebar_position: 1
 sidebar_label: 'Integrating S3 with ClickHouse'
-title: 'TODO: Add title'
+title: 'Integrating S3 with ClickHouse'
 description: 'TODO: Add description'
 ---
 import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';

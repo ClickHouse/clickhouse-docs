@@ -1,8 +1,8 @@
 ---
 slug: /integrations/tools
 keywords: ['Retool', 'Easypanel', 'Splunk']
-title: 'TODO: Add title'
-description: 'TODO: Add description'
+title: 'Tools'
+description: 'Landing page for the tools section'
 ---
 
 # Tools

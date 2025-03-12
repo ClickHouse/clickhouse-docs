@@ -4,7 +4,7 @@ sidebar_position: 2
 slug: /integrations/apache-spark/spark-native-connector
 description: 'Introduction to Apache Spark with ClickHouse'
 keywords: ['clickhouse', 'Apache Spark', 'migrating', 'data']
-title: 'TODO: Add title'
+title: 'Spark Connector'
 ---
 
 import Tabs from '@theme/Tabs';

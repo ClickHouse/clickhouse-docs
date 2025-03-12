@@ -4,7 +4,7 @@ sidebar_position: 11
 keywords: ['clickhouse', 'Airbyte', 'connect', 'integrate', 'etl', 'data integration']
 slug: /integrations/airbyte
 description: 'Stream data into ClickHouse using Airbyte data pipelines'
-title: 'TODO: Add title'
+title: 'Connect Airbyte to ClickHouse'
 ---
 
 import airbyte01 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_01.png';

@@ -3,7 +3,7 @@ sidebar_label: 'QuickSight'
 slug: /integrations/quicksight
 keywords: ['clickhouse', 'aws', 'amazon', 'QuickSight', 'mysql', 'connect', 'integrate', 'ui']
 description: 'Amazon QuickSight powers data-driven organizations with unified business intelligence (BI).'
-title: 'TODO: Add title'
+title: 'QuickSight'
 ---
 
 import MySQLOnPremiseSetup from '@site/docs/_snippets/_clickhouse_mysql_on_premise_setup.mdx';

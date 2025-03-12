@@ -3,7 +3,7 @@ slug: /architecture/introduction
 sidebar_label: 'Introduction'
 title: 'Introduction'
 sidebar_position: 1
-description: 'TODO: Add description'
+description: 'Page with deployment examples that are based on the advice provided to ClickHouse users by the ClickHouse Support and Services organization'
 ---
 import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
 

@@ -3,8 +3,9 @@ sidebar_label: 'Retool'
 slug: /integrations/retool
 keywords: ['clickhouse', 'retool', 'connect', 'integrate', 'ui', 'admin', 'panel', 'dashboard', 'nocode', 'no-code']
 description: 'Quickly build web and mobile apps with rich user interfaces, automate complex tasks, and integrate AI—all powered by your data.'
-title: 'TODO: Add title'
+title: 'Connecting Retool to ClickHouse'
 ---
+
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import retool_01 from '@site/static/images/integrations/tools/data-integration/retool/retool_01.png';
 import retool_02 from '@site/static/images/integrations/tools/data-integration/retool/retool_02.png';

@@ -1,7 +1,7 @@
 ---
 title: 'Cloud API'
 slug: /cloud/manage/api/
-description: 'TODO: Add description'
+description: 'Landing page for Cloud API'
 ---
 
 | Page                                                           | Description                      |

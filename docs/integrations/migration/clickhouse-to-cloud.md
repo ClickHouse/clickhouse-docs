@@ -2,9 +2,10 @@
 sidebar_position: 10
 sidebar_label: 'ClickHouse to ClickHouse Cloud'
 slug: /cloud/migration/clickhouse-to-cloud
-title: 'TODO: Add title'
-description: 'TODO: Add description'
+title: 'Migrating between self-managed ClickHouse and ClickHouse Cloud'
+description: 'Page describing how to migrate between self-managed ClickHouse and ClickHouse Cloud'
 ---
+
 import AddARemoteSystem from '@site/docs/_snippets/_add_remote_ip_access_list_detail.md';
 import self_managed_01 from '@site/static/images/integrations/migration/self-managed-01.png';
 import self_managed_02 from '@site/static/images/integrations/migration/self-managed-02.png';

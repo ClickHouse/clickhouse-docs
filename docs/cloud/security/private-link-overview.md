@@ -2,7 +2,7 @@
 sidebar_label: 'Private Link Overview'
 slug: /cloud/security/private-link-overview
 title: 'Private Link Overview'
-description: 'TODO: Add description'
+description: 'Landing page for Private Link'
 ---
 
 # Private Link Overview

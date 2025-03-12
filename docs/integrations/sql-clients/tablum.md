@@ -2,7 +2,7 @@
 sidebar_label: 'TABLUM.IO'
 slug: /integrations/tablumio
 description: 'TABLUM.IO is a data management SaaS that supports ClickHouse out of the box.'
-title: 'TODO: Add title'
+title: 'Connecting TABLUM.IO to ClickHouse'
 ---
 
 import tablum_ch_0 from '@site/static/images/integrations/sql-clients/tablum-ch-0.png';

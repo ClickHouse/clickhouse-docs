@@ -2,7 +2,7 @@
 sidebar_label: 'Personal Data Access'
 slug: /cloud/security/personal-data-access
 title: 'Personal Data Access'
-description: 'TODO: Add description'
+description: 'As a registered user, ClickHouse allows you to view and manage your personal account data, including contact information.'
 ---
 
 import support_case_form from '@site/static/images/cloud/security/support-case-form.png';

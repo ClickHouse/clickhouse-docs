@@ -3,7 +3,7 @@ sidebar_title: 'Query API Endpoints'
 slug: /cloud/get-started/query-endpoints
 description: 'Easily spin up REST API endpoints from your saved queries'
 keywords: ['api', 'query api endpoints', 'query endpoints', 'query rest api']
-title: 'TODO: Add title'
+title: 'Query API Endpoints'
 ---
 
 import endpoints_testquery from '@site/static/images/cloud/sqlconsole/endpoints-testquery.png';

@@ -1,7 +1,9 @@
 ---
+title: 'JDBC Driver'
+description: 'Page describing the JDBC driver for ClickHouse'
+---
 
-title: 'TODO: Add title'
----import Tabs from '@theme/Tabs';
+import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 

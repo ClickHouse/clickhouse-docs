@@ -3,7 +3,7 @@ sidebar_label: 'ClickHouse Kafka Connect Sink'
 sidebar_position: 2
 slug: /integrations/kafka/clickhouse-kafka-connect-sink
 description: 'The official Kafka connector from ClickHouse.'
-title: 'TODO: Add title'
+title: 'ClickHouse Kafka Connect Sink'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

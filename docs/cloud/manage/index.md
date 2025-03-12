@@ -3,7 +3,7 @@ slug: /cloud/manage
 keywords: ['AWS', 'Cloud', 'serverless', 'management']
 title: 'Overview'
 hide_title: true
-description: 'TODO: Add description'
+description: 'Overview page for Managing Cloud'
 ---
 
 # Managing Cloud 

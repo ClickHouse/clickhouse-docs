@@ -3,7 +3,7 @@ sidebar_title: 'Query Insights'
 slug: /cloud/get-started/query-insights
 description: 'Visualize system.query_log data to simplify query debugging and performance optimization'
 keywords: ['query insights', 'query log', 'query log ui', 'system.query_log insights']
-title: 'TODO: Add title'
+title: 'Query Insights'
 ---
 
 import insights_overview from '@site/static/images/cloud/sqlconsole/insights_overview.png';

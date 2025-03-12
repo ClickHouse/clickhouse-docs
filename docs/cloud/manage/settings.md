@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Configuring Settings'
 slug: /manage/settings
-title: 'TODO: Add title'
-description: 'TODO: Add description'
+title: 'Configuring Settings'
+description: 'How to configure settings for your ClickHouse Cloud service for a specific user or role'
 ---
 
 import cloud_settings_sidebar from '@site/static/images/cloud/manage/cloud-settings-sidebar.png';

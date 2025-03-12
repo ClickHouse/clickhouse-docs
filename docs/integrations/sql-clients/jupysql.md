@@ -2,7 +2,7 @@
 slug: /integrations/jupysql
 sidebar_label: 'Jupyter notebooks'
 description: 'JupySQL is a multi-platform database tool for Jupyter.'
-title: 'TODO: Add title'
+title: 'Using JupySQL with ClickHouse'
 ---
 
 import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql-plot-1.png';

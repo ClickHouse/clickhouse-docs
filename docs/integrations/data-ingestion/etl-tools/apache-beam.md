@@ -2,7 +2,7 @@
 sidebar_label: 'Apache Beam'
 slug: /integrations/apache-beam
 description: 'Users can ingest data into ClickHouse using Apache Beam'
-title: 'TODO: Add title'
+title: 'Integrating Apache Beam and ClickHouse'
 ---
 
 # Integrating Apache Beam and ClickHouse

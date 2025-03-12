@@ -2,7 +2,7 @@
 sidebar_label: 'Delete Account'
 slug: /cloud/manage/close_account
 title: 'Account Close & Deletion'
-description: 'TODO: Add description'
+description: 'We know there are circumstances that sometimes necessitate account closure. This guide will help you through the process.'
 ---
 
 ## Account Close & Deletion {#account-close--deletion}

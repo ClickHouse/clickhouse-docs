@@ -3,7 +3,7 @@ sidebar_label: 'Mitzu'
 slug: /integrations/mitzu
 keywords: ['clickhouse', 'Mitzu', 'connect', 'integrate', 'ui']
 description: 'Mitzu is a no-code warehouse-native product analytics application.'
-title: 'TODO: Add title'
+title: 'Connecting Mitzu to ClickHouse'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

@@ -2,8 +2,8 @@
 slug: /cloud/reference/shared-merge-tree
 sidebar_label: 'SharedMergeTree'
 title: 'SharedMergeTree'
-keywords: ['shared merge tree SharedMergeTree engine']
-description: 'TODO: Add description'
+keywords: ['SharedMergeTree']
+description: 'Describes the SharedMergeTree table engine'
 ---
 
 import shared_merge_tree from '@site/static/images/cloud/reference/shared-merge-tree-1.png';

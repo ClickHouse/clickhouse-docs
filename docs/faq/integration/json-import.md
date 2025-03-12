@@ -3,7 +3,7 @@ slug: /faq/integration/json-import
 title: 'How to import JSON into ClickHouse?'
 toc_hidden: true
 toc_priority: 11
-description: 'TODO: Add description'
+description: 'This page shows you how to import JSON into ClickHouse'
 ---
 
 # How to Import JSON Into ClickHouse? {#how-to-import-json-into-clickhouse}

@@ -2,7 +2,7 @@
 slug: /operations/utilities/static-files-disk-uploader
 title: 'clickhouse-static-files-disk-uploader'
 keywords: ['clickhouse-static-files-disk-uploader', 'utility', 'disk', 'uploader']
-description: 'TODO: Add description'
+description: 'Provides a description of the clickhouse-static-files-disk-uploader utility'
 ---
 
 # clickhouse-static-files-disk-uploader

@@ -3,7 +3,7 @@ sidebar_label: 'Looker Studio'
 slug: /integrations/lookerstudio
 keywords: ['clickhouse', 'looker', 'studio', 'connect', 'mysql', 'integrate', 'ui']
 description: 'Looker Studio, formerly Google Data Studio, is an online tool for converting data into customizable informative reports and dashboards.'
-title: 'TODO: Add title'
+title: 'Looker Studio'
 ---
 
 import MySQLCloudSetup from '@site/docs/_snippets/_clickhouse_mysql_cloud_setup.mdx';

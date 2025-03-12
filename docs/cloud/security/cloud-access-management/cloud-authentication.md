@@ -2,7 +2,7 @@
 sidebar_label: 'Cloud Authentication'
 slug: /cloud/security/cloud-authentication
 title: 'Cloud Authentication'
-description: 'TODO: Add description'
+description: 'This guide explains some good practices for configuring your authentication.'
 ---
 
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'

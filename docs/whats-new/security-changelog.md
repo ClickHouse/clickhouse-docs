@@ -2,8 +2,8 @@
 slug: /whats-new/security-changelog
 sidebar_position: 20
 sidebar_label: 'Security Changelog'
-title: 'TODO: Add title'
-description: 'TODO: Add description'
+title: 'Security Changelog'
+description: 'Security changelog detailing security related updates and changes'
 ---
 
 # Security Changelog

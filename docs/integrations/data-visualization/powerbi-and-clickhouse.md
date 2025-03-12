@@ -3,7 +3,7 @@ sidebar_label: 'Power BI'
 slug: /integrations/powerbi
 keywords: ['clickhouse', 'Power BI', 'connect', 'integrate', 'ui']
 description: 'Microsoft Power BI is an interactive data visualization software product developed by Microsoft with a primary focus on business intelligence.'
-title: 'TODO: Add title'
+title: 'Power BI'
 ---
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import powerbi_odbc_install from '@site/static/images/integrations/data-visualization/powerbi_odbc_install.png';

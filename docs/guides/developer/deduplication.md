@@ -3,7 +3,7 @@ slug: /guides/developer/deduplication
 sidebar_label: 'Deduplication Strategies'
 sidebar_position: 3
 description: 'Use deduplication when you need to perform frequent upserts, updates and deletes.'
-title: 'TODO: Add title'
+title: 'Deduplication Strategies'
 ---
 
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';

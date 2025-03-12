@@ -4,7 +4,7 @@ sidebar_label: 'TTL (Time To Live)'
 sidebar_position: 2
 keywords: ['ttl', 'time to live', 'clickhouse', 'old', 'data']
 description: 'TTL (time-to-live) refers to the capability of having rows or columns moved, deleted, or rolled up after a certain interval of time has passed.'
-title: 'TODO: Add title'
+title: 'Manage Data with TTL (Time-to-live)'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

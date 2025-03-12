@@ -4,7 +4,7 @@ sidebar_position: 1
 slug: /integrations/glue
 description: 'Integrate ClickHouse and Amazon Glue'
 keywords: ['clickhouse', 'amazon', 'aws', 'glue', 'migrating', 'data']
-title: 'TODO: Add title'
+title: 'Integrating Amazon Glue with ClickHouse'
 ---
 
 import Tabs from '@theme/Tabs';
