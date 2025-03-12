@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import clsx from 'clsx';
 import {useWindowSize} from '@docusaurus/theme-common';
 import {useDoc} from '@docusaurus/plugin-content-docs/client';
@@ -12,6 +12,9 @@ import DocItemContent from '@theme/DocItem/Content';
 import DocBreadcrumbs from '@theme/DocBreadcrumbs';
 import EditThisPage from '@theme/EditThisPage';
 import styles from './styles.module.css';
+import Translate from "@docusaurus/Translate";
+import IconClose from "@theme/Icon/Close";
+import {useLocation} from "@docusaurus/router";
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
  */
@@ -31,10 +34,51 @@ function useDocTOC() {
     desktop,
   };
 }
+
+
 export default function DocItemLayout({children}) {
   const docTOC = useDocTOC();
   const {metadata} = useDoc();
   const {editUrl} = metadata;
+
+  const location = useLocation();
+  const [showPopup, setShowPopup] = useState(false)
+  useEffect(() => {
+
+    const userClosed = window.localStorage.getItem('doc-translate-card-banner')
+    let isDocsHome = false;
+
+    if (
+        location.pathname.endsWith('/docs/jp/') ||
+        location.pathname.endsWith('/docs/ru/') ||
+        location.pathname.endsWith('/docs/zh/')
+    ) {
+      isDocsHome = true
+    }
+
+    const locales = ['/ru/', '/jp/', '/zh/']
+    let isEnglish = true;
+    console.log(location.pathname)
+    locales.forEach((locale)=>{
+      if (location.pathname.includes(locale)) {
+        isEnglish = false;
+      }
+    })
+    console.log('isEnglish', isEnglish)
+
+    if (isEnglish) {
+      setShowPopup(false);
+    } else {
+      if ((isDocsHome && !userClosed)) {
+        setShowPopup(false);
+      } else if (!isDocsHome && !userClosed) {
+        setShowPopup(true);
+      } else if (!isDocsHome && userClosed==='closed') {
+        setShowPopup(false);
+      }
+    }
+  }, [])
+
   return (
     <div className="row" style={{flexWrap: 'nowrap'}}>
       <div className={clsx('col', !docTOC.hidden && styles.docItemCol)}>
@@ -46,6 +90,24 @@ export default function DocItemLayout({children}) {
               <DocBreadcrumbs />
               {editUrl && <EditThisPage editUrl={editUrl} />}
             </div>
+            {showPopup && (<div className={styles.docCloudCard}>
+              <div className={styles.docCloudCardHeader}>
+                <h6><Translate>This documentation is translated with the help of AI</Translate></h6>
+                <button
+                    className={styles.docCloudClose}
+                    onClick={() => {
+                      setShowPopup(false)
+                      window.localStorage.setItem('doc-translate-card-banner', 'closed')
+                    }}>
+                  <IconClose color="var(--ifm-color-emphasis-600)" width={10} height={10}/>
+                </button>
+              </div>
+              <p className={styles.docCloudCardContent}><Translate>Spotted a translation issue? Help us to improve it by reporting translation
+                issues.</Translate>
+              </p>
+              <a href='https://console.clickhouse.cloud/signUp?loc=doc-card-banner'
+                 className={clsx(styles.docCloudCardLink, 'click-button primary-btn')}><Translate>Report an issue</Translate></a>
+            </div>)}
             
             <DocVersionBadge />
             
