@@ -1,5 +1,6 @@
 ---
 title: 'Troubleshooting'
+description: 'Installation troubleshooting guide'
 ---
 
 ## Installation {#installation}
