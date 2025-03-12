@@ -105,7 +105,7 @@ export default function DocItemLayout({children}) {
               <p className={styles.docCloudCardContent}><Translate>Spotted a translation issue? Help us to improve it by reporting translation
                 issues.</Translate>
               </p>
-              <a href='https://console.clickhouse.cloud/signUp?loc=doc-card-banner'
+              <a href='https://github.com/ClickHouse/clickhouse-docs/issues/new?template=translation_issue.yaml'
                  className={clsx(styles.docCloudCardLink, 'click-button primary-btn')}><Translate>Report an issue</Translate></a>
             </div>)}
             
