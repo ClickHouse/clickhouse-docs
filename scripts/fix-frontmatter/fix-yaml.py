@@ -159,8 +159,14 @@ def preserve_original_format(original_frontmatter: str, fixed_content: Dict) -> 
                     value = fixed_content[key]
 
                     # For certain common fields that should always have quotes in markdown frontmatter
-                    always_quote_fields = ['title', 'description', 'sidebar_label', 'sidebar_position', 'slug', 'label']
-                    if key in always_quote_fields or re.search(r'[:#\[\]{}]', value) or value.strip() != value or ' ' in value:
+                    # Explicitly excluding slug from the always_quote_fields list
+                    always_quote_fields = ['title', 'description', 'sidebar_label', 'sidebar_position', 'label']
+                    never_quote_fields = ['slug']
+
+                    if key in never_quote_fields:
+                        # Never add quotes to these fields
+                        result_lines.append(f"{key}: {value}")
+                    elif key in always_quote_fields or re.search(r'[:#\[\]{}]', value) or value.strip() != value or ' ' in value:
                         # Add single quotes
                         if (value.startswith("'") and value.endswith("'")) or (value.startswith('"') and value.endswith('"')):
                             value = value[1:-1]  # Remove existing quotes
@@ -198,8 +204,13 @@ def preserve_original_format(original_frontmatter: str, fixed_content: Dict) -> 
                 result_lines.append(f"{key}: [{', '.join(quoted_items)}]")
             elif isinstance(value, str):
                 # Check if the value needs quotes
-                always_quote_fields = ['title', 'description', 'sidebar_label', 'sidebar_position', 'slug', 'label']
-                if key in always_quote_fields or re.search(r'[:#\[\]{}]', value) or value.strip() != value or ' ' in value:
+                always_quote_fields = ['title', 'description', 'sidebar_label', 'sidebar_position', 'label']
+                never_quote_fields = ['slug']
+
+                if key in never_quote_fields:
+                    # Never add quotes to these fields
+                    result_lines.append(f"{key}: {value}")
+                elif key in always_quote_fields or re.search(r'[:#\[\]{}]', value) or value.strip() != value or ' ' in value:
                     # Remove any existing quotes
                     if (value.startswith("'") and value.endswith("'")) or (value.startswith('"') and value.endswith('"')):
                         value = value[1:-1]
@@ -239,6 +250,10 @@ def fix_single_quotes_error(frontmatter: str, error_line: str) -> str:
 
     key = key_match.group(1).strip()
 
+    # Never quote slugs
+    if key == 'slug':
+        return frontmatter
+
     # Try direct line replacement first (more precise)
     frontmatter_lines = frontmatter.split('\n')
     for i, line in enumerate(frontmatter_lines):
@@ -249,6 +264,10 @@ def fix_single_quotes_error(frontmatter: str, error_line: str) -> str:
             if key_value_match:
                 key_found = key_value_match.group(1).strip()
                 value = key_value_match.group(2).strip()
+
+                # Never quote slugs
+                if key_found == 'slug':
+                    continue
 
                 # Remove any existing quotes
                 if (value.startswith('"') and value.endswith('"')) or (value.startswith("'") and value.endswith("'")):
@@ -263,6 +282,10 @@ def fix_single_quotes_error(frontmatter: str, error_line: str) -> str:
         fm_dict = yaml.safe_load(frontmatter) or {}
 
         if key in fm_dict and isinstance(fm_dict[key], str):
+            # Skip if it's a slug
+            if key == 'slug':
+                return frontmatter
+
             # Create a new dictionary with just this key for precise yaml dump
             fixed_value = fm_dict[key]
 
@@ -490,9 +513,14 @@ def add_missing_field(frontmatter: str, error_line: str) -> str:
             else:
                 # For strings, add single quotes
                 if isinstance(value, str):
-                    # Always add quotes to common frontmatter fields
-                    always_quote_fields = ['title', 'description', 'sidebar_label', 'sidebar_position', 'slug', 'label']
-                    if key in always_quote_fields or re.search(r'[:#\[\]{}]', value) or value.strip() != value or ' ' in value:
+                    # Define fields that should always have quotes and those that should never have quotes
+                    always_quote_fields = ['title', 'description', 'sidebar_label', 'sidebar_position', 'label']
+                    never_quote_fields = ['slug']
+
+                    if key in never_quote_fields:
+                        # Never add quotes to these fields
+                        lines.append(f"{key}: {value}")
+                    elif key in always_quote_fields or re.search(r'[:#\[\]{}]', value) or value.strip() != value or ' ' in value:
                         # Remove any existing quotes
                         if (value.startswith("'") and value.endswith("'")) or (value.startswith('"') and value.endswith('"')):
                             value = value[1:-1]
