@@ -6,6 +6,7 @@ keywords: ['clickhouse', 'install', 'tutorial', 'dictionary', 'dictionaries']
 title: 'Advanced Tutorial'
 description: 'In this tutorial, you will create a table and insert a large dataset. Then you will run queries on the dataset, including an example of how to create a dictionary and use it to perform a JOIN.'
 ---
+
 import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
 # Advanced Tutorial

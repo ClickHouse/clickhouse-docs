@@ -106,7 +106,10 @@ async function customParseFrontMatter(params) {
                 }
 
                 const lineStart = line.trim();
-                const isExcludedField = lineStart.startsWith('slug:') || lineStart.startsWith('id:');
+                const isExcludedField = lineStart.startsWith('slug:') ||
+                    lineStart.startsWith('id:') ||
+                    lineStart.startsWith('pagination_next:') ||
+                    lineStart.startsWith('pagination_prev:');
                 if (!isExcludedField && (
                     line.includes(': "') || (line.includes(': ') &&
                         !line.includes(': \'') &&
