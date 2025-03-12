@@ -29,7 +29,7 @@ yarn.lock
 yarn.error-log
 .comments
 yarn-error.log
-frontmatter-validation-errors.log
+frontmatter-validation-errors_1.log
 
 # Output files used by scripts to verify links
 sidebar_links.txt
@@ -59,3 +59,7 @@ docs/whats-new/changelog/index.md
 **.translated
 **.translate
 ClickHouse/
+
+#Ignore table of contents files
+docs/cloud/reference/release-notes-index.md
+docs/whats-new/changelog/index.md
