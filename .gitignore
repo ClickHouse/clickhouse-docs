@@ -29,7 +29,7 @@ yarn.lock
 yarn.error-log
 .comments
 yarn-error.log
-frontmatter-validation-errors_1.log
+frontmatter-validation-errors.log
 
 # Output files used by scripts to verify links
 sidebar_links.txt
