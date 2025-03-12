@@ -1,9 +1,10 @@
 ---
-sidebar_label: Analysis Tips
+sidebar_label: 'Analysis Tips'
 sidebar_position: 4
 slug: /integrations/tableau/analysis-tips
-keywords: [clickhouse, tableau, online, mysql, connect, integrate, ui]
-description: Tableau analysis tips when using ClickHouse official connector.
+keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
+description: 'Tableau analysis tips when using ClickHouse official connector.'
+title: 'TODO: Add title'
 ---
 
 # Analysis tips

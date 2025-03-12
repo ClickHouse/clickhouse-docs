@@ -1,6 +1,8 @@
 ---
-sidebar_label: Upgrades
+sidebar_label: 'Upgrades'
 slug: /manage/updates
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'

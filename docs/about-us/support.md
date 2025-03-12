@@ -1,8 +1,9 @@
 ---
 slug: /about-us/support
-sidebar_label: Support
-title: ClickHouse Cloud Support Services
+sidebar_label: 'Support'
+title: 'ClickHouse Cloud Support Services'
 sidebar_position: 30
+description: 'TODO: Add description'
 ---
 
 # ClickHouse Cloud Support Services

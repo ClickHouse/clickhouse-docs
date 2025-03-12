@@ -1,7 +1,8 @@
 ---
 slug: /integrations/postgresql/data-type-mappings
-title: Data Type Mappings for PostgreSQL
-keywords: [postgres, postgresql, data types, types]
+title: 'Data Type Mappings for PostgreSQL'
+keywords: ['postgres', 'postgresql', 'data types', 'types']
+description: 'TODO: Add description'
 ---
 
 The following table shows the equivalent ClickHouse data types for Postgres.

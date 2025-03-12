@@ -1,7 +1,8 @@
 ---
 slug: /integrations/postgresql/inserting-data
-title: How to insert data from PostgreSQL
-keywords: [postgres, postgresql, inserts]
+title: 'How to insert data from PostgreSQL'
+keywords: ['postgres', 'postgresql', 'inserts']
+description: 'TODO: Add description'
 ---
 
 We recommend reading [this guide](/guides/inserting-data) to learn best practices on inserting data to ClickHouse to optimize for insert performance.

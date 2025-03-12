@@ -1,8 +1,9 @@
 ---
-sidebar_label: Looker
+sidebar_label: 'Looker'
 slug: /integrations/looker
-keywords: [clickhouse, looker, connect, integrate, ui]
-description: Looker is an enterprise platform for BI, data applications, and embedded analytics that helps you explore and share insights in real time.
+keywords: ['clickhouse', 'looker', 'connect', 'integrate', 'ui']
+description: 'Looker is an enterprise platform for BI, data applications, and embedded analytics that helps you explore and share insights in real time.'
+title: 'TODO: Add title'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

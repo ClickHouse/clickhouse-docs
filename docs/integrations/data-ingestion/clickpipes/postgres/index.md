@@ -1,7 +1,8 @@
 ---
-sidebar_label: ClickPipes for Postgres
-description: Seamlessly connect your Postgres to ClickHouse Cloud.
+sidebar_label: 'ClickPipes for Postgres'
+description: 'Seamlessly connect your Postgres to ClickHouse Cloud.'
 slug: /integrations/clickpipes/postgres
+title: 'TODO: Add title'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

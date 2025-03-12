@@ -1,8 +1,10 @@
 ---
-sidebar_label: Using a 3rd-party ETL Tool
+sidebar_label: 'Using a 3rd-party ETL Tool'
 sidebar_position: 20
-keywords: [clickhouse, migrate, migration, migrating, data, etl, elt, clickhouse-local, clickhouse-client]
-slug: '/cloud/migration/etl-tool-to-clickhouse'
+keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'clickhouse-local', 'clickhouse-client']
+slug: /cloud/migration/etl-tool-to-clickhouse
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 import third_party_01 from '@site/static/images/integrations/migration/third-party-01.png';

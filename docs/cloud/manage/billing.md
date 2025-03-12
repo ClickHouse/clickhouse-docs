@@ -1,7 +1,8 @@
 ---
-sidebar_label: Overview
+sidebar_label: 'Overview'
 slug: /cloud/manage/billing/overview
-title: Pricing
+title: 'Pricing'
+description: 'TODO: Add description'
 ---
 
 For pricing information, see the [ClickHouse Cloud Pricing](https://clickhouse.com/pricing#pricing-calculator) page.

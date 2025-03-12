@@ -1,7 +1,8 @@
 ---
-sidebar_label: Redshift
+sidebar_label: 'Redshift'
 slug: /integrations/redshift
-description: Migrating Data from Redshift to ClickHouse
+description: 'Migrating Data from Redshift to ClickHouse'
+title: 'TODO: Add title'
 ---
 ---
 

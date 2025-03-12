@@ -1,7 +1,9 @@
 ---
 slug: /faq/use-cases/
 sidebar_position: 2
-sidebar_label:  Questions about ClickHouse use cases
+sidebar_label: 'Questions about ClickHouse use cases'
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 # Questions About ClickHouse Use Cases

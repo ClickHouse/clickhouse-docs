@@ -1,8 +1,9 @@
 ---
-sidebar_label: Plugin Configuration
+sidebar_label: 'Plugin Configuration'
 sidebar_position: 3
 slug: /integrations/grafana/config
-description: Configuration options for the ClickHouse data source plugin in Grafana
+description: 'Configuration options for the ClickHouse data source plugin in Grafana'
+title: 'TODO: Add title'
 ---
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
 import config_common from '@site/static/images/integrations/data-visualization/grafana/config_common.png';

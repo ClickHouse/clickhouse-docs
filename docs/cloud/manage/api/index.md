@@ -1,6 +1,7 @@
 ---
-title: Cloud API
+title: 'Cloud API'
 slug: /cloud/manage/cloud-api
+description: 'TODO: Add description'
 ---
 
 This section contains reference documentation for Cloud API and contains the following pages:

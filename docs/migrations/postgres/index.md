@@ -2,7 +2,8 @@
 slug: migrations/postgresql
 pagination_prev: null
 pagination_next: null
-title: PostgreSQL
+title: 'PostgreSQL'
+description: 'TODO: Add description'
 ---
 
 | Page                                                                                                                 | Description                                                                                                                                                             |

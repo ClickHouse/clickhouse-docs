@@ -1,7 +1,8 @@
 ---
 slug: /whats-new/cloud
-sidebar_label: Cloud Changelog
-title: Cloud Changelog
+sidebar_label: 'Cloud Changelog'
+title: 'Cloud Changelog'
+description: 'TODO: Add description'
 ---
 
 import add_marketplace from '@site/static/images/cloud/reference/add_marketplace.png';

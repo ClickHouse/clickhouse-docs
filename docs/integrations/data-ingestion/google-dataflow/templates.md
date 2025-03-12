@@ -1,8 +1,9 @@
 ---
-sidebar_label: Templates
+sidebar_label: 'Templates'
 slug: /integrations/google-dataflow/templates
 sidebar_position: 3
-description: Users can ingest data into ClickHouse using Google Dataflow Templates
+description: 'Users can ingest data into ClickHouse using Google Dataflow Templates'
+title: 'TODO: Add title'
 ---
 
 # Google Dataflow Templates

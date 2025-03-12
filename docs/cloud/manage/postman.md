@@ -1,7 +1,8 @@
 ---
 slug: /cloud/manage/postman
-sidebar_label: Programmatic API access with Postman
-title: Programmatic API access with Postman
+sidebar_label: 'Programmatic API access with Postman'
+title: 'Programmatic API access with Postman'
+description: 'TODO: Add description'
 ---
 
 import postman1 from '@site/static/images/cloud/manage/postman/postman1.png';

@@ -1,7 +1,8 @@
 ---
 slug: /integrations/iceberg
-sidebar_label: Iceberg
-title: Iceberg
+sidebar_label: 'Iceberg'
+title: 'Iceberg'
+description: 'TODO: Add description'
 ---
 
 import IcebergFunction from '@site/docs/sql-reference/table-functions/iceberg.md';

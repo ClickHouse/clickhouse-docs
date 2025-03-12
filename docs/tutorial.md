@@ -1,8 +1,10 @@
 ---
 slug: /tutorial
-sidebar_label: Advanced Tutorial
+sidebar_label: 'Advanced Tutorial'
 sidebar_position: 0.5
-keywords: [clickhouse, install, tutorial, dictionary, dictionaries]
+keywords: ['clickhouse', 'install', 'tutorial', 'dictionary', 'dictionaries']
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 

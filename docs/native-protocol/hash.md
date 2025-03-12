@@ -1,6 +1,8 @@
 ---
 slug: /native-protocol/hash
 sidebar_position: 5
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 # CityHash

@@ -1,8 +1,8 @@
 ---
-title: Other JSON approaches
+title: 'Other JSON approaches'
 slug: /integrations/data-formats/json/other-approaches
-description: Other approaches to modeling JSON
-keywords: [json, formats]
+description: 'Other approaches to modeling JSON'
+keywords: ['json', 'formats']
 ---
 
 # Other approaches to modeling JSON

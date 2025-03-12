@@ -1,7 +1,8 @@
 ---
 slug: /integrations/cassandra
-sidebar_label: Cassandra
-title: Cassandra
+sidebar_label: 'Cassandra'
+title: 'Cassandra'
+description: 'TODO: Add description'
 ---
 
 # Cassandra integration

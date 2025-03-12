@@ -1,7 +1,8 @@
 ---
 sidebar_position: 1
-sidebar_label: Why is ClickHouse so Fast?
-description: "It was designed to be fast. Query execution performance has always been a top priority during the development process, but other important characteristics like user-friendliness, scalability, and security were also considered so ClickHouse could become a real production system."
+sidebar_label: 'Why is ClickHouse so Fast?'
+description: 'It was designed to be fast. Query execution performance has always been a top priority during the development process, but other important characteristics like user-friendliness, scalability, and security were also considered so ClickHouse could become a real production system.'
+title: 'TODO: Add title'
 ---
 
 # Why is ClickHouse so fast? {#why-clickhouse-is-so-fast}

@@ -1,6 +1,8 @@
 ---
 slug: /native-protocol/client
 sidebar_position: 2
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 # Client packets

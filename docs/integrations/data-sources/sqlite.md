@@ -1,8 +1,9 @@
 ---
 slug: /integrations/sqlite
-sidebar_label: SQLite
-title: SQLite
+sidebar_label: 'SQLite'
+title: 'SQLite'
 hide_title: true
+description: 'TODO: Add description'
 ---
 
 import SQLiteEngine from '@site/docs/engines/table-engines/integrations/sqlite.md';

@@ -1,8 +1,9 @@
 ---
 slug: /cloud/bestpractices/avoid-optimize-final
-sidebar_label: Avoid Optimize Final
-title: Avoid Optimize Final
+sidebar_label: 'Avoid Optimize Final'
+title: 'Avoid Optimize Final'
 keywords: ['OPTIMIZE TABLE', 'FINAL', 'unscheduled merge']
+description: 'TODO: Add description'
 ---
 
 Using the [`OPTIMIZE TABLE ... FINAL`](/sql-reference/statements/optimize/) query initiates an unscheduled merge of data parts for a specific table into one single data part. 

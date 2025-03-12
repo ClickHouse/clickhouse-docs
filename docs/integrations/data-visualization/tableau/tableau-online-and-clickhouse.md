@@ -1,9 +1,10 @@
 ---
-sidebar_label: Tableau Online
+sidebar_label: 'Tableau Online'
 sidebar_position: 2
 slug: /integrations/tableau-online
-keywords: [clickhouse, tableau, online, mysql, connect, integrate, ui]
-description: Tableau Online streamlines the power of data to make people faster and more confident decision makers from anywhere.
+keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
+description: 'Tableau Online streamlines the power of data to make people faster and more confident decision makers from anywhere.'
+title: 'TODO: Add title'
 ---
 
 import MySQLCloudSetup from '@site/docs/_snippets/_clickhouse_mysql_cloud_setup.mdx';

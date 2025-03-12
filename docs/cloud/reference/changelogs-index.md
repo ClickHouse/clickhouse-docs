@@ -1,6 +1,7 @@
 ---
 slug: /cloud/reference/changelogs
-title: Changelogs
+title: 'Changelogs'
+description: 'TODO: Add description'
 ---
 
 | Page                                                          | Description                                     |

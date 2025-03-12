@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
-sidebar_label: Creating Tables
+sidebar_label: 'Creating Tables'
+title: 'TODO: Add title'
 ---
 
 # Creating Tables in ClickHouse

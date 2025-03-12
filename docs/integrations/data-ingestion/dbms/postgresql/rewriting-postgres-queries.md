@@ -1,7 +1,8 @@
 ---
 slug: /migrations/postgresql/rewriting-queries
-title: Rewriting PostgreSQL Queries
-keywords: [postgres, postgresql, rewriting queries, rewrite query]
+title: 'Rewriting PostgreSQL Queries'
+keywords: ['postgres', 'postgresql', 'rewriting queries', 'rewrite query']
+description: 'TODO: Add description'
 ---
 
 # Rewriting PostgreSQL queries in ClickHouse

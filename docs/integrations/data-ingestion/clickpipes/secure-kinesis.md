@@ -1,7 +1,8 @@
 ---
 slug: /integrations/clickpipes/secure-kinesis
-sidebar_label: Kinesis Role-Based Access
-title: Kinesis Role-Based Access
+sidebar_label: 'Kinesis Role-Based Access'
+title: 'Kinesis Role-Based Access'
+description: 'TODO: Add description'
 ---
 
 import secure_kinesis from '@site/static/images/integrations/data-ingestion/clickpipes/securekinesis.jpg';

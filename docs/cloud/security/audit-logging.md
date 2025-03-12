@@ -1,7 +1,8 @@
 ---
-sidebar_label: Audit Logging
+sidebar_label: 'Audit Logging'
 slug: /cloud/security/audit-logging
-title: Audit Logging
+title: 'Audit Logging'
+description: 'TODO: Add description'
 ---
 
 import activity_log_1 from '@site/static/images/cloud/security/activity_log1.png';

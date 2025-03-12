@@ -1,7 +1,8 @@
 ---
 slug: /integrations/deltalake
-sidebar_label: Delta Lake
-title: Delta Lake
+sidebar_label: 'Delta Lake'
+title: 'Delta Lake'
+description: 'TODO: Add description'
 ---
 
 import DeltaLakeFunction from '@site/docs/sql-reference/table-functions/deltalake.md';

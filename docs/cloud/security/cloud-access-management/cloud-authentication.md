@@ -1,7 +1,8 @@
 ---
-sidebar_label: Cloud Authentication
+sidebar_label: 'Cloud Authentication'
 slug: /cloud/security/cloud-authentication
-title: Cloud Authentication
+title: 'Cloud Authentication'
+description: 'TODO: Add description'
 ---
 
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'

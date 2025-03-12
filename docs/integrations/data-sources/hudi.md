@@ -1,8 +1,9 @@
 ---
 slug: /integrations/hudi
-sidebar_label: Hudi
-title: Hudi
+sidebar_label: 'Hudi'
+title: 'Hudi'
 hide_title: true
+description: 'TODO: Add description'
 ---
 
 import HudiTableEngine from '@site/docs/engines/table-engines/integrations/hudi.md';

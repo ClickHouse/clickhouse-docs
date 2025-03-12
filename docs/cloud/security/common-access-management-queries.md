@@ -1,7 +1,8 @@
 ---
-sidebar_label: "Common Access Management Queries"
-title: "Common Access Management Queries"
-slug: "/cloud/security/common-access-management-queries"
+sidebar_label: 'Common Access Management Queries'
+title: 'Common Access Management Queries'
+slug: /cloud/security/common-access-management-queries
+description: 'TODO: Add description'
 ---
 
 import CommonUserRolesContent from '@site/docs/_snippets/_users-and-roles-common.md';

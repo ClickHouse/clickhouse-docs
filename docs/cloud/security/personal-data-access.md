@@ -1,7 +1,8 @@
 ---
-sidebar_label: Personal Data Access
+sidebar_label: 'Personal Data Access'
 slug: /cloud/security/personal-data-access
-title: Personal Data Access
+title: 'Personal Data Access'
+description: 'TODO: Add description'
 ---
 
 import support_case_form from '@site/static/images/cloud/security/support-case-form.png';

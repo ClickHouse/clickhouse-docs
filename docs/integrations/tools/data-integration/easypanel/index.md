@@ -1,8 +1,9 @@
 ---
-sidebar_label: Easypanel
+sidebar_label: 'Easypanel'
 slug: /integrations/easypanel
-keywords: [clickhouse, Easypanel, deployment, integrate, install]
-description: You can use it to deploy ClickHouse on your own server.
+keywords: ['clickhouse', 'Easypanel', 'deployment', 'integrate', 'install']
+description: 'You can use it to deploy ClickHouse on your own server.'
+title: 'TODO: Add title'
 ---
 # Deploying ClickHouse on Easypanel
 

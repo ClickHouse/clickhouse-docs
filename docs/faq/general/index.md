@@ -1,8 +1,10 @@
 ---
 slug: /faq/general/
 sidebar_position: 1
-sidebar_label: General Questions about ClickHouse
-keywords: [clickhouse, faq, questions, what is]
+sidebar_label: 'General Questions about ClickHouse'
+keywords: ['clickhouse', 'faq', 'questions', 'what is']
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 # General Questions About ClickHouse

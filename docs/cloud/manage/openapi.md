@@ -1,7 +1,8 @@
 ---
-sidebar_label: Managing API Keys
+sidebar_label: 'Managing API Keys'
 slug: /cloud/manage/openapi
-title: Managing API Keys
+title: 'Managing API Keys'
+description: 'TODO: Add description'
 ---
 
 import image_01 from '@site/static/images/cloud/manage/openapi1.png';

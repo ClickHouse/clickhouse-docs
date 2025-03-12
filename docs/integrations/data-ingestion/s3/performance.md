@@ -1,9 +1,9 @@
 ---
 slug: /integrations/s3/performance
 sidebar_position: 2
-sidebar_label: Optimizing for Performance
-title: Optimizing for S3 Insert and Read Performance
-description: Optimizing the performance of S3 read and insert
+sidebar_label: 'Optimizing for Performance'
+title: 'Optimizing for S3 Insert and Read Performance'
+description: 'Optimizing the performance of S3 read and insert'
 ---
 
 import InsertMechanics from '@site/static/images/integrations/data-ingestion/s3/insert_mechanics.png';

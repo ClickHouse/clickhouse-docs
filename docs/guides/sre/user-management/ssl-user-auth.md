@@ -1,7 +1,9 @@
 ---
-sidebar_label: SSL User Certificate Authentication
+sidebar_label: 'SSL User Certificate Authentication'
 sidebar_position: 3
 slug: /guides/sre/ssl-user-auth
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 # Configuring SSL User Certificate for Authentication

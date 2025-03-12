@@ -1,8 +1,9 @@
 ---
 slug: /architecture/introduction
-sidebar_label: Introduction
-title: Introduction
+sidebar_label: 'Introduction'
+title: 'Introduction'
 sidebar_position: 1
+description: 'TODO: Add description'
 ---
 import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
 

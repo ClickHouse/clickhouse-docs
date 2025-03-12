@@ -1,7 +1,8 @@
 ---
-sidebar_label: Overview
+sidebar_label: 'Overview'
 slug: /cloud/security/cloud-access-management/overview
-title: Cloud access management
+title: 'Cloud access management'
+description: 'TODO: Add description'
 ---
 
 # Access Control in ClickHouse Cloud

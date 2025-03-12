@@ -1,6 +1,7 @@
 ---
-title: "Postgres Generated Columns: Gotchas and Best Practices"
+title: 'Postgres Generated Columns: Gotchas and Best Practices'
 slug: /integrations/clickpipes/postgres/generated_columns
+description: 'TODO: Add description'
 ---
 
 When using PostgreSQL's generated columns in tables that are being replicated, there are some important considerations to keep in mind. These gotchas can affect the replication process and data consistency in your destination systems.

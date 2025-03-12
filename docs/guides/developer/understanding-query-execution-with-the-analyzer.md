@@ -1,7 +1,8 @@
 ---
 slug: /guides/developer/understanding-query-execution-with-the-analyzer
-sidebar_label: Understanding Query Execution with the Analyzer
-title: Understanding Query Execution with the Analyzer
+sidebar_label: 'Understanding Query Execution with the Analyzer'
+title: 'Understanding Query Execution with the Analyzer'
+description: 'TODO: Add description'
 ---
 
 import analyzer1 from '@site/static/images/guides/developer/analyzer1.png';

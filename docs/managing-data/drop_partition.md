@@ -1,8 +1,9 @@
 ---
 slug: /managing-data/drop_partition
-sidebar_label: Drop Partition
-title: Dropping Partitions
+sidebar_label: 'Drop Partition'
+title: 'Dropping Partitions'
 hide_title: false
+description: 'TODO: Add description'
 ---
 
 ## Background {#background}

@@ -1,7 +1,9 @@
 ---
 slug: /guides/sre/configuring-ssl
-sidebar_label: Configuring SSL-TLS
+sidebar_label: 'Configuring SSL-TLS'
 sidebar_position: 20
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';

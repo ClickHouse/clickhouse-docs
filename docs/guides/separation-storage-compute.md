@@ -1,7 +1,9 @@
 ---
 sidebar_position: 1
-sidebar_label: Separation of Storage and Compute
+sidebar_label: 'Separation of Storage and Compute'
 slug: /guides/separation-storage-compute
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';

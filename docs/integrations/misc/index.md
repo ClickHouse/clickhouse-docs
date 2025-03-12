@@ -1,6 +1,8 @@
 ---
 slug: /integrations/misc
-keywords: [Retool, Easypanel, Splunk]
+keywords: ['Retool', 'Easypanel', 'Splunk']
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 # Tools

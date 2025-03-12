@@ -1,9 +1,10 @@
 ---
-sidebar_label: DynamoDB
+sidebar_label: 'DynamoDB'
 sidebar_position: 10
 slug: /integrations/dynamodb
-description: ClickPipes allows you to connect ClickHouse to DynamoDB.
-keywords: [clickhouse, DynamoDB, connect, integrate, table]
+description: 'ClickPipes allows you to connect ClickHouse to DynamoDB.'
+keywords: ['clickhouse', 'DynamoDB', 'connect', 'integrate', 'table']
+title: 'TODO: Add title'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

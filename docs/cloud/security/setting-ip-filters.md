@@ -1,7 +1,8 @@
 ---
-sidebar_label: Setting IP Filters
+sidebar_label: 'Setting IP Filters'
 slug: /cloud/security/setting-ip-filters
-title: Setting IP Filters
+title: 'Setting IP Filters'
+description: 'TODO: Add description'
 ---
 
 import ip_filtering_after_provisioning from '@site/static/images/cloud/security/ip-filtering-after-provisioning.png';

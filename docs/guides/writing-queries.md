@@ -1,7 +1,7 @@
 ---
 sidebar_position: 3
-sidebar_label: Selecting data
-title: Selecting ClickHouse Data
+sidebar_label: 'Selecting data'
+title: 'Selecting ClickHouse Data'
 ---
 
 ClickHouse is a SQL database, and you query your data by writing the same type of `SELECT` queries you are already familiar with. For example:

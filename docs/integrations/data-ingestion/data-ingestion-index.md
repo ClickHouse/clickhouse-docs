@@ -1,6 +1,8 @@
 ---
 slug: /integrations/data-ingestion-overview
-keywords: [Airbyte, Amazon Glue, Apache Beam, dbt, Fivetran, NiFi, dlt, Vector]
+keywords: ['Airbyte', 'Amazon Glue', 'Apache Beam', 'dbt', 'Fivetran', 'NiFi', 'dlt', 'Vector']
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 # Data Ingestion

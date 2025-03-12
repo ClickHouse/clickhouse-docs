@@ -1,7 +1,8 @@
 ---
 slug: /cloud/bestpractices/low-cardinality-partitioning-key
-sidebar_label: Choose a Low Cardinality Partitioning Key
-title: Choose a Low Cardinality Partitioning Key
+sidebar_label: 'Choose a Low Cardinality Partitioning Key'
+title: 'Choose a Low Cardinality Partitioning Key'
+description: 'TODO: Add description'
 ---
 
 import partitioning01 from '@site/static/images/cloud/bestpractices/partitioning-01.png';

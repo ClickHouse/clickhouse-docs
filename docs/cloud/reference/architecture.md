@@ -1,6 +1,8 @@
 ---
-sidebar_label: Architecture
+sidebar_label: 'Architecture'
 slug: /cloud/reference/architecture
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 import architecture from '@site/static/images/cloud/reference/architecture.svg';

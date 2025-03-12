@@ -1,7 +1,8 @@
 ---
-sidebar_label: Service Uptime and SLA
+sidebar_label: 'Service Uptime and SLA'
 slug: /cloud/manage/service-uptime
-title: Service Uptime
+title: 'Service Uptime'
+description: 'TODO: Add description'
 ---
 
 ## Uptime Alerts {#uptime-alerts}

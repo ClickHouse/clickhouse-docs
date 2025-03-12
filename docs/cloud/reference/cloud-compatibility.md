@@ -1,7 +1,8 @@
 ---
 slug: /whats-new/cloud-compatibility
-sidebar_label: Cloud Compatibility
-title: Cloud Compatibility
+sidebar_label: 'Cloud Compatibility'
+title: 'Cloud Compatibility'
+description: 'TODO: Add description'
 ---
 
 # ClickHouse Cloud — Compatibility Guide

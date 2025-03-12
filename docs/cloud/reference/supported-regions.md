@@ -1,8 +1,8 @@
 ---
-title: Supported Cloud Regions
-sidebar_label: Supported Cloud Regions
-keywords: [aws, gcp, google cloud, azure, cloud, regions]
-description: Supported regions for ClickHouse Cloud
+title: 'Supported Cloud Regions'
+sidebar_label: 'Supported Cloud Regions'
+keywords: ['aws', 'gcp', 'google cloud', 'azure', 'cloud', 'regions']
+description: 'Supported regions for ClickHouse Cloud'
 ---
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'

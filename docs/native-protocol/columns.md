@@ -1,6 +1,8 @@
 ---
 slug: /native-protocol/columns
 sidebar_position: 4
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 # Column Types

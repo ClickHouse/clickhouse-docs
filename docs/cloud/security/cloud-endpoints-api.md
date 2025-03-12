@@ -1,7 +1,8 @@
 ---
 slug: /manage/security/cloud-endpoints-api
-sidebar_label: Cloud IP Addresses
-title: Cloud IP Addresses
+sidebar_label: 'Cloud IP Addresses'
+title: 'Cloud IP Addresses'
+description: 'TODO: Add description'
 ---
 
 import aws_rds_mysql from '@site/static/images/_snippets/aws-rds-mysql.png';

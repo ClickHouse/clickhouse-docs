@@ -1,9 +1,10 @@
 ---
-sidebar_label: JDBC
+sidebar_label: 'JDBC'
 sidebar_position: 2
-keywords: [clickhouse, jdbc, connect, integrate]
+keywords: ['clickhouse', 'jdbc', 'connect', 'integrate']
 slug: /integrations/jdbc/jdbc-with-clickhouse
-description: The ClickHouse JDBC Bridge allows ClickHouse to access data from any external data source for which a JDBC driver is available
+description: 'The ClickHouse JDBC Bridge allows ClickHouse to access data from any external data source for which a JDBC driver is available'
+title: 'TODO: Add title'
 ---
 
 import Tabs from '@theme/Tabs';

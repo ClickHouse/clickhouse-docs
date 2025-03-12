@@ -1,10 +1,13 @@
 ---
 slug: /about-us/history
-sidebar_label: ClickHouse History
+sidebar_label: 'ClickHouse History'
 sidebar_position: 40
-description: History of ClickHouse development
-tags: ['history', 'development', 'Metrica']
-title: ClickHouse History
+description: 'History of ClickHouse development'
+tags:
+- history
+- development
+- Metrica
+title: 'ClickHouse History'
 ---
 
 # ClickHouse History {#clickhouse-history}

@@ -1,7 +1,8 @@
 ---
-sidebar_label: Dashboards
+sidebar_label: 'Dashboards'
 slug: /cloud/manage/dashboards
-title: Dashboards
+title: 'Dashboards'
+description: 'TODO: Add description'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

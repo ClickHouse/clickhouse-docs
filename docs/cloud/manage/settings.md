@@ -1,6 +1,8 @@
 ---
-sidebar_label: Configuring Settings
+sidebar_label: 'Configuring Settings'
 slug: /manage/settings
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 import cloud_settings_sidebar from '@site/static/images/cloud/manage/cloud-settings-sidebar.png';

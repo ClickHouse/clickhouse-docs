@@ -1,8 +1,8 @@
 ---
-title: Notifications
+title: 'Notifications'
 slug: /cloud/notifications
-description: Notifications for your ClickHouse Cloud service
-keywords: [cloud, notifications]
+description: 'Notifications for your ClickHouse Cloud service'
+keywords: ['cloud', 'notifications']
 ---
 
 import notifications_1 from '@site/static/images/cloud/manage/notifications-1.png';

@@ -1,9 +1,10 @@
 ---
-sidebar_label: Overview
+sidebar_label: 'Overview'
 sidebar_position: 0
 slug: /cloud/manage/backups/overview
-title: Overview
-keywords: [backups, cloud backups, restore]
+title: 'Overview'
+keywords: ['backups', 'cloud backups', 'restore']
+description: 'TODO: Add description'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

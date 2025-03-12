@@ -1,7 +1,8 @@
 ---
-sidebar_label: DataGrip
+sidebar_label: 'DataGrip'
 slug: /integrations/datagrip
-description: DataGrip is a database IDE that supports ClickHouse out of the box.
+description: 'DataGrip is a database IDE that supports ClickHouse out of the box.'
+title: 'TODO: Add title'
 ---
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import datagrip_1 from '@site/static/images/integrations/sql-clients/datagrip-1.png';

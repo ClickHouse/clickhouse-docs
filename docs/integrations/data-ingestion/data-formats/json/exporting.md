@@ -1,8 +1,8 @@
 ---
-title: Exporting JSON
+title: 'Exporting JSON'
 slug: /integrations/data-formats/json/exporting
-description: How to export JSON data from ClickHouse
-keywords: [json, clickhouse, formats, exporting]
+description: 'How to export JSON data from ClickHouse'
+keywords: ['json', 'clickhouse', 'formats', 'exporting']
 ---
 
 # Exporting JSON

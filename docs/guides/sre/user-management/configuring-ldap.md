@@ -1,7 +1,9 @@
 ---
-sidebar_label: Configuring LDAP
+sidebar_label: 'Configuring LDAP'
 sidebar_position: 2
 slug: /guides/sre/configuring-ldap
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 

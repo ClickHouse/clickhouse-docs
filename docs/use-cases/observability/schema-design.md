@@ -1,7 +1,7 @@
 ---
-title: Schema design
-description: Designing a schema design for observability
-keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
+title: 'Schema design'
+description: 'Designing a schema design for observability'
+keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
 ---
 
 import observability_10 from '@site/static/images/use-cases/observability/observability-10.png';

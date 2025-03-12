@@ -1,7 +1,8 @@
 ---
-sidebar_label: Privacy and Compliance Overview
+sidebar_label: 'Privacy and Compliance Overview'
 slug: /cloud/security/privacy-compliance-overview
-title: Privacy Compliance Overview
+title: 'Privacy Compliance Overview'
+description: 'TODO: Add description'
 ---
 
 # Privacy and Compliance

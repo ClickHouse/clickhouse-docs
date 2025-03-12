@@ -1,9 +1,9 @@
 ---
-sidebar_label: Overview
+sidebar_label: 'Overview'
 sidebar_position: 1
-keywords: [clickhouse, migrate, migration, migrating, data]
-description: Migrating To Cloud Table Of Contents
-title: Migrating To Cloud
+keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data']
+description: 'Migrating To Cloud Table Of Contents'
+title: 'Migrating To Cloud'
 ---
 
 This section of the docs explores how you can migrate from ClickHouse to ClickHouse Cloud.

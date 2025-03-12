@@ -1,6 +1,8 @@
 ---
 slug: /guides/sre/network-ports
-sidebar_label: Network ports
+sidebar_label: 'Network ports'
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 # Network ports

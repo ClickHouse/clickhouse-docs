@@ -1,7 +1,8 @@
 ---
-sidebar_label: Enhanced Encryption
+sidebar_label: 'Enhanced Encryption'
 slug: /cloud/security/cmek
-title: Customer Managed Encryption Keys (CMEK)
+title: 'Customer Managed Encryption Keys (CMEK)'
+description: 'TODO: Add description'
 ---
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'

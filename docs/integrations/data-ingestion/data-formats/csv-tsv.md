@@ -1,6 +1,8 @@
 ---
-sidebar_label: CSV and TSV
+sidebar_label: 'CSV and TSV'
 slug: /integrations/data-formats/csv-tsv
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 # Working with CSV and TSV data in ClickHouse

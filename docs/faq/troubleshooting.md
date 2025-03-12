@@ -1,7 +1,7 @@
 ---
-title: "Troubleshooting"
+title: 'Troubleshooting'
 slug: /faq/troubleshooting
-description: "How to troubleshoot common ClickHouse Cloud error messages."
+description: 'How to troubleshoot common ClickHouse Cloud error messages.'
 ---
 
 ## ClickHouse Cloud Troubleshooting {#clickhouse-cloud-troubleshooting}

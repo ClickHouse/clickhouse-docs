@@ -1,6 +1,7 @@
 ---
-sidebar_label: "Glossary"
-description: "This page contains a list of commonly used words and phrases regarding ClickHouse, as well as their definitions."
+sidebar_label: 'Glossary'
+description: 'This page contains a list of commonly used words and phrases regarding ClickHouse, as well as their definitions.'
+title: 'TODO: Add title'
 ---
 
 # Glossary

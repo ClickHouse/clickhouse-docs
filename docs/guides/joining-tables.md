@@ -1,7 +1,7 @@
 ---
-title: Using JOINs in ClickHouse
-description: How to join tables in ClickHouse
-keywords: [joins, join tables]
+title: 'Using JOINs in ClickHouse'
+description: 'How to join tables in ClickHouse'
+keywords: ['joins', 'join tables']
 ---
 
 import joins_1 from '@site/static/images/guides/joins-1.png';

@@ -1,7 +1,8 @@
 ---
-sidebar_label: Inviting new users
+sidebar_label: 'Inviting new users'
 slug: /cloud/security/inviting-new-users
-title: Inviting New Users
+title: 'Inviting New Users'
+description: 'TODO: Add description'
 ---
 
 import users_and_roles from '@site/static/images/cloud/security/users_and_roles.png';

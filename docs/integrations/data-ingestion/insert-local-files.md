@@ -1,6 +1,7 @@
 ---
-sidebar_label: Insert Local Files
+sidebar_label: 'Insert Local Files'
 sidebar_position: 2
+title: 'TODO: Add title'
 ---
 
 # Insert Local Files

@@ -1,7 +1,8 @@
 ---
 slug: /guides/developer/overview
-sidebar_label: Advanced Guides Overview
-description: Overview of the advanced guides
+sidebar_label: 'Advanced Guides Overview'
+description: 'Overview of the advanced guides'
+title: 'TODO: Add title'
 ---
 
 # Advanced Guides

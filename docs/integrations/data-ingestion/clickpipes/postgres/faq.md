@@ -1,8 +1,9 @@
 ---
-sidebar_label: ClickPipes for Postgres FAQ
-description: Frequently asked questions about ClickPipes for Postgres.
+sidebar_label: 'ClickPipes for Postgres FAQ'
+description: 'Frequently asked questions about ClickPipes for Postgres.'
 slug: /integrations/clickpipes/postgres/faq
 sidebar_position: 2
+title: 'TODO: Add title'
 ---
 
 # ClickPipes for Postgres FAQ

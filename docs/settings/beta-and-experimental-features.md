@@ -1,8 +1,8 @@
 ---
 sidebar_position: 1
-sidebar_label: Beta Features and Experimental
-title: Beta and Experimental Features
-description: "ClickHouse has beta and experimental features. This documentation page discusses definition."
+sidebar_label: 'Beta Features and Experimental'
+title: 'Beta and Experimental Features'
+description: 'ClickHouse has beta and experimental features. This documentation page discusses definition.'
 slug: /beta-and-experimental-features
 ---
 

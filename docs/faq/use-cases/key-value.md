@@ -1,8 +1,9 @@
 ---
 slug: /faq/use-cases/key-value
-title: Can I use ClickHouse as a key-value storage?
+title: 'Can I use ClickHouse as a key-value storage?'
 toc_hidden: true
 toc_priority: 101
+description: 'TODO: Add description'
 ---
 
 # Can I Use ClickHouse As a Key-Value Storage? {#can-i-use-clickhouse-as-a-key-value-storage}

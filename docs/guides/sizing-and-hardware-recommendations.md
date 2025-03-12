@@ -1,7 +1,9 @@
 ---
 slug: /guides/sizing-and-hardware-recommendations
-sidebar_label: Sizing and Hardware Recommendations
+sidebar_label: 'Sizing and Hardware Recommendations'
 sidebar_position: 4
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 # Sizing and Hardware Recommendations

@@ -1,6 +1,7 @@
 ---
 slug: /cloud/security/connectivity
-title: connectivity overview
+title: 'connectivity overview'
+description: 'TODO: Add description'
 ---
 
 # Connectivity

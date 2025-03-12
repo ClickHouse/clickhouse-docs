@@ -1,8 +1,8 @@
 ---
-title: New Pricing Dimensions
+title: 'New Pricing Dimensions'
 slug: /cloud/manage/jan-2025-faq/pricing-dimensions
-keywords: [new pricing, dimensions]
-description: Pricing dimensions for data transfer and ClickPipes
+keywords: ['new pricing', 'dimensions']
+description: 'Pricing dimensions for data transfer and ClickPipes'
 ---
 
 import clickpipesPricingFaq1 from '@site/static/images/cloud/manage/jan2025_faq/external_clickpipes_pricing_faq_1.png';

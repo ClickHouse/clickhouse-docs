@@ -1,6 +1,7 @@
 ---
-sidebar_label: SQL Console
+sidebar_label: 'SQL Console'
 sidebar_position: 1
+title: 'TODO: Add title'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

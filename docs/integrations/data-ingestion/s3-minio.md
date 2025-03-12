@@ -1,8 +1,9 @@
 ---
-sidebar_label: MinIO
+sidebar_label: 'MinIO'
 sidebar_position: 6
 slug: /integrations/minio
-description: Using MinIO
+description: 'Using MinIO'
+title: 'TODO: Add title'
 ---
 
 # Using MinIO

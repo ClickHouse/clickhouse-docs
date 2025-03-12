@@ -1,8 +1,9 @@
 ---
-sidebar_label: Embeddable
+sidebar_label: 'Embeddable'
 slug: /integrations/embeddable
-keywords: [clickhouse, Embeddable, connect, integrate, ui]
-description: Embeddable is a developer toolkit for building fast, interactive, fully-custom analytics experiences directly into your app.
+keywords: ['clickhouse', 'Embeddable', 'connect', 'integrate', 'ui']
+description: 'Embeddable is a developer toolkit for building fast, interactive, fully-custom analytics experiences directly into your app.'
+title: 'TODO: Add title'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

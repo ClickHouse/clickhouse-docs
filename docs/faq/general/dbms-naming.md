@@ -1,5 +1,5 @@
 ---
-title: What does "ClickHouse" mean?
+title: 'What does "ClickHouse" mean?'
 toc_hidden: true
 toc_priority: 10
 ---

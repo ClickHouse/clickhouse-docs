@@ -1,8 +1,9 @@
 ---
 slug: /architecture/horizontal-scaling
-sidebar_label: Scaling out
+sidebar_label: 'Scaling out'
 sidebar_position: 10
-title: Scaling out
+title: 'Scaling out'
+description: 'TODO: Add description'
 ---
 import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
 import ConfigFileNote from '@site/docs/_snippets/_config-files.md';

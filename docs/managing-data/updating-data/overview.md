@@ -1,8 +1,8 @@
 ---
 slug: /updating-data/overview
-title: Overview
-description: How to update data in ClickHouse
-keywords: [update, updating data]
+title: 'Overview'
+description: 'How to update data in ClickHouse'
+keywords: ['update', 'updating data']
 ---
 
 ## Differences between updating data in ClickHouse and OLTP databases {#differences-between-updating-data-in-clickhouse-and-oltp-databases}

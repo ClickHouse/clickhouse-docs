@@ -1,7 +1,8 @@
 ---
-sidebar_label: Delete Account
+sidebar_label: 'Delete Account'
 slug: /cloud/manage/close_account
-title: Account Close & Deletion
+title: 'Account Close & Deletion'
+description: 'TODO: Add description'
 ---
 
 ## Account Close & Deletion {#account-close--deletion}

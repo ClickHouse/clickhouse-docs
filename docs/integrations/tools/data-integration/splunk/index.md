@@ -1,8 +1,9 @@
 ---
-sidebar_label: Splunk
+sidebar_label: 'Splunk'
 slug: /integrations/audit-splunk
-keywords: [clickhouse, Splunk, audit, cloud]
-description: Store ClickHouse Cloud audit logs into Splunk.
+keywords: ['clickhouse', 'Splunk', 'audit', 'cloud']
+description: 'Store ClickHouse Cloud audit logs into Splunk.'
+title: 'TODO: Add title'
 ---
 
 import splunk_001 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_001.png';

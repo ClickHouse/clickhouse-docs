@@ -1,9 +1,10 @@
 ---
-sidebar_label: R2DBC Driver
+sidebar_label: 'R2DBC Driver'
 sidebar_position: 5
-keywords: [clickhouse, java, driver, integrate, r2dbc]
-description: ClickHouse R2DBC Driver
+keywords: ['clickhouse', 'java', 'driver', 'integrate', 'r2dbc']
+description: 'ClickHouse R2DBC Driver'
 slug: /integrations/java/r2dbc
+title: 'TODO: Add title'
 ---
 
 import Tabs from '@theme/Tabs';

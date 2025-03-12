@@ -1,9 +1,9 @@
 ---
-title: How to query Apache Arrow with chDB
-sidebar_label: Querying Apache Arrow
+title: 'How to query Apache Arrow with chDB'
+sidebar_label: 'Querying Apache Arrow'
 slug: /chdb/guides/apache-arrow
-description: In this guide, we'll learn how to query Apache Arrow tables with chDB
-keywords: [chdb, Apache Arrow]
+description: 'In this guide, we'll learn how to query Apache Arrow tables with chDB'
+keywords: ['chdb', 'Apache Arrow']
 ---
 
 [Apache Arrow](https://arrow.apache.org/) is a standardized column-oriented memory format that's gained popularity in the data community.

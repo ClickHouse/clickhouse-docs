@@ -1,8 +1,9 @@
 ---
 slug: /faq/operations/multi-region-replication
-title: Does ClickHouse support multi-region replication?
+title: 'Does ClickHouse support multi-region replication?'
 toc_hidden: true
 toc_priority: 30
+description: 'TODO: Add description'
 ---
 
 # Does ClickHouse support multi-region replication? {#does-clickhouse-support-multi-region-replication}

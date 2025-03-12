@@ -1,8 +1,9 @@
 ---
 slug: /integrations/postgresql
-sidebar_label: PostgreSQL
-title: PostgreSQL
+sidebar_label: 'PostgreSQL'
+title: 'PostgreSQL'
 hide_title: false
+description: 'TODO: Add description'
 ---
 
 import PostgreSQL from '@site/docs/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md';

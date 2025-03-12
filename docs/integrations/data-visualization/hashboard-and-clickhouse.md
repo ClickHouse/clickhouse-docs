@@ -1,9 +1,10 @@
 ---
-sidebar_label: Hashboard
+sidebar_label: 'Hashboard'
 sidebar_position: 132
 slug: /integrations/hashboard
-keywords: [clickhouse, Hashboard, connect, integrate, ui, analytics]
-description: Hashboard is a robust analytics platform that can be easily integrated with ClickHouse for real-time data analysis.
+keywords: ['clickhouse', 'Hashboard', 'connect', 'integrate', 'ui', 'analytics']
+description: 'Hashboard is a robust analytics platform that can be easily integrated with ClickHouse for real-time data analysis.'
+title: 'TODO: Add title'
 ---
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
 import hashboard_01 from '@site/static/images/integrations/data-visualization/hashboard_01.png';

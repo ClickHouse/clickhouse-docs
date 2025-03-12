@@ -1,7 +1,9 @@
 ---
-sidebar_label: Parquet
+sidebar_label: 'Parquet'
 sidebar_position: 3
 slug: /integrations/data-formats/parquet
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 # Working with Parquet in ClickHouse

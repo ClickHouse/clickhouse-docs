@@ -1,6 +1,8 @@
 ---
 slug: /native-protocol/server
 sidebar_position: 3
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 # Server packets

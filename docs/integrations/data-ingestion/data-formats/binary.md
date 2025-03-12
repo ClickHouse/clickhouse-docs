@@ -1,6 +1,8 @@
 ---
-sidebar_label: Binary and Native
+sidebar_label: 'Binary and Native'
 slug: /integrations/data-formats/binary-native
+title: 'TODO: Add title'
+description: 'TODO: Add description'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

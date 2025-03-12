@@ -1,7 +1,8 @@
 ---
 slug: /integrations/postgresql/connecting-to-postgresql
-title: Connecting to PostgreSQL
-keywords: [clickhouse, postgres, postgresql, connect, integrate, table, engine]
+title: 'Connecting to PostgreSQL'
+keywords: ['clickhouse', 'postgres', 'postgresql', 'connect', 'integrate', 'table', 'engine']
+description: 'TODO: Add description'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

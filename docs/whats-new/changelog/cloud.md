@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
-sidebar_label: Cloud
+sidebar_label: 'Cloud'
+title: 'TODO: Add title'
 ---
 # Cloud Changelog
 

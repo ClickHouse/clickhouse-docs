@@ -1,8 +1,9 @@
 ---
-sidebar_label: Quick Start
+sidebar_label: 'Quick Start'
 sidebar_position: 1
 slug: /integrations/grafana
-description: Introduction to using ClickHouse with Grafana
+description: 'Introduction to using ClickHouse with Grafana'
+title: 'TODO: Add title'
 ---
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
 import search from '@site/static/images/integrations/data-visualization/grafana/search.png';
