@@ -157,7 +157,13 @@ def preserve_original_format(original_frontmatter: str, fixed_content: Dict) -> 
                 if isinstance(fixed_content[key], str):
                     # Check if the value needs quotes
                     value = fixed_content[key]
-                    if re.search(r'[:#\[\]{}]', value) or value.strip() != value:
+
+                    # For certain common fields that should always have quotes in markdown frontmatter
+                    always_quote_fields = ['title', 'description', 'sidebar_label', 'sidebar_position', 'slug', 'label']
+                    if key in always_quote_fields or re.search(r'[:#\[\]{}]', value) or value.strip() != value or ' ' in value:
+                        # Add single quotes
+                        if (value.startswith("'") and value.endswith("'")) or (value.startswith('"') and value.endswith('"')):
+                            value = value[1:-1]  # Remove existing quotes
                         result_lines.append(f"{key}: '{value}'")
                     else:
                         result_lines.append(f"{key}: {value}")
@@ -192,7 +198,11 @@ def preserve_original_format(original_frontmatter: str, fixed_content: Dict) -> 
                 result_lines.append(f"{key}: [{', '.join(quoted_items)}]")
             elif isinstance(value, str):
                 # Check if the value needs quotes
-                if re.search(r'[:#\[\]{}]', value) or value.strip() != value:
+                always_quote_fields = ['title', 'description', 'sidebar_label', 'sidebar_position', 'slug', 'label']
+                if key in always_quote_fields or re.search(r'[:#\[\]{}]', value) or value.strip() != value or ' ' in value:
+                    # Remove any existing quotes
+                    if (value.startswith("'") and value.endswith("'")) or (value.startswith('"') and value.endswith('"')):
+                        value = value[1:-1]
                     result_lines.append(f"{key}: '{value}'")
                 else:
                     result_lines.append(f"{key}: {value}")
@@ -229,28 +239,40 @@ def fix_single_quotes_error(frontmatter: str, error_line: str) -> str:
 
     key = key_match.group(1).strip()
 
-    # Parse the frontmatter
+    # Try direct line replacement first (more precise)
+    frontmatter_lines = frontmatter.split('\n')
+    for i, line in enumerate(frontmatter_lines):
+        if line.strip().startswith(f"{key}:"):
+            key_value_pattern = r'([^:]+):\s*(.*)'
+            key_value_match = re.search(key_value_pattern, line)
+
+            if key_value_match:
+                key_found = key_value_match.group(1).strip()
+                value = key_value_match.group(2).strip()
+
+                # Remove any existing quotes
+                if (value.startswith('"') and value.endswith('"')) or (value.startswith("'") and value.endswith("'")):
+                    value = value[1:-1]
+
+                # Create replacement with single quotes
+                frontmatter_lines[i] = f"{key_found}: '{value}'"
+                return '\n'.join(frontmatter_lines)
+
+    # If direct replacement didn't work, try YAML parsing approach
     try:
         fm_dict = yaml.safe_load(frontmatter) or {}
 
-        # Reconstruct the frontmatter with proper quotes
-        # We'll use the round-trip method to preserve formatting for other fields
-        frontmatter_lines = frontmatter.split('\n')
-        for i, line in enumerate(frontmatter_lines):
-            if line.strip().startswith(f"{key}:"):
-                key_value_pattern = r'([^:]+):\s*(.*)'
-                key_value_match = re.search(key_value_pattern, line)
+        if key in fm_dict and isinstance(fm_dict[key], str):
+            # Create a new dictionary with just this key for precise yaml dump
+            fixed_value = fm_dict[key]
 
-                if key_value_match:
-                    key_found = key_value_match.group(1).strip()
-                    value = key_value_match.group(2).strip()
-
-                    # Remove any existing quotes
-                    if (value.startswith('"') and value.endswith('"')) or (value.startswith("'") and value.endswith("'")):
-                        value = value[1:-1]
-
-                    # Create replacement with single quotes
-                    frontmatter_lines[i] = f"{key_found}: '{value}'"
+            # Apply the fix by looking for the key and directly replacing the line
+            for i, line in enumerate(frontmatter_lines):
+                if line.strip().startswith(f"{key}:"):
+                    # Create replacement with single quotes, preserving indentation
+                    indent_match = re.match(r'^(\s*)', line)
+                    indentation = indent_match.group(1) if indent_match else ''
+                    frontmatter_lines[i] = f"{indentation}{key}: '{fixed_value}'"
                     break
 
         return '\n'.join(frontmatter_lines)
@@ -468,8 +490,9 @@ def add_missing_field(frontmatter: str, error_line: str) -> str:
             else:
                 # For strings, add single quotes
                 if isinstance(value, str):
-                    # Check if the value needs quotes
-                    if re.search(r'[:#\[\]{}]', value) or value.strip() != value:
+                    # Always add quotes to common frontmatter fields
+                    always_quote_fields = ['title', 'description', 'sidebar_label', 'sidebar_position', 'slug', 'label']
+                    if key in always_quote_fields or re.search(r'[:#\[\]{}]', value) or value.strip() != value or ' ' in value:
                         # Remove any existing quotes
                         if (value.startswith("'") and value.endswith("'")) or (value.startswith('"') and value.endswith('"')):
                             value = value[1:-1]
