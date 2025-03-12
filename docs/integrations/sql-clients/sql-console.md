@@ -2,7 +2,7 @@
 sidebar_label: 'SQL Console'
 sidebar_position: 1
 title: 'SQL Console'
-slug: /cloud/get-started/sql-console
+slug: /integrations/sql-clients/sql-console
 description: 'Learn about SQL Console'
 ---
 
