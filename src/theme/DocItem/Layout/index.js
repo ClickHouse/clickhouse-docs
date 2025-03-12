@@ -15,6 +15,7 @@ import styles from './styles.module.css';
 import Translate from "@docusaurus/Translate";
 import IconClose from "@theme/Icon/Close";
 import {useLocation} from "@docusaurus/router";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
  */
@@ -42,6 +43,8 @@ export default function DocItemLayout({children}) {
   const {editUrl} = metadata;
 
   const location = useLocation();
+  const context = useDocusaurusContext();
+
   const [showPopup, setShowPopup] = useState(false)
   useEffect(() => {
 
@@ -56,17 +59,7 @@ export default function DocItemLayout({children}) {
       isDocsHome = true
     }
 
-    const locales = ['/ru/', '/jp/', '/zh/']
-    let isEnglish = true;
-    console.log(location.pathname)
-    locales.forEach((locale)=>{
-      if (location.pathname.includes(locale)) {
-        isEnglish = false;
-      }
-    })
-    console.log('isEnglish', isEnglish)
-
-    if (isEnglish) {
+    if (context.i18n.currentLocale === 'en') {
       setShowPopup(false);
     } else {
       if ((isDocsHome && !userClosed)) {
