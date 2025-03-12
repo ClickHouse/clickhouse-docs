@@ -2,7 +2,7 @@
 slug: /integrations/data-ingestion-overview
 keywords: ['Airbyte', 'Amazon Glue', 'Apache Beam', 'dbt', 'Fivetran', 'NiFi', 'dlt', 'Vector']
 title: 'Data Ingestion'
-description: 'TODO: Add description'
+description: 'Landing page for the data ingestion section'
 ---
 
 # Data Ingestion

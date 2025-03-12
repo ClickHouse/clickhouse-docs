@@ -2,7 +2,7 @@
 slug: /integrations/postgresql/postgres-vs-clickhouse
 title: 'Comparing PostgreSQL and ClickHouse'
 keywords: ['postgres', 'postgresql', 'comparison']
-description: 'TODO: Add description'
+description: 'Page which explores the similarities and differences between PostgreSQL and CLickHouse'
 ---
 
 import postgresReplicas from '@site/static/images/integrations/data-ingestion/dbms/postgres-replicas.png';

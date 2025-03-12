@@ -2,7 +2,7 @@
 slug: /integrations/clickpipes/secure-kinesis
 sidebar_label: 'Kinesis Role-Based Access'
 title: 'Kinesis Role-Based Access'
-description: 'TODO: Add description'
+description: 'This article demonstrates how ClickPipes customers can leverage role-based access to authenticate with Amazon Kinesis and access their data streams securely.'
 ---
 
 import secure_kinesis from '@site/static/images/integrations/data-ingestion/clickpipes/securekinesis.jpg';
