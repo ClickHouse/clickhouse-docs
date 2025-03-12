@@ -269,12 +269,6 @@ const config = {
         respectPrefersColorScheme: true,
         defaultMode: "dark",
       },
-      announcementBar: {
-        id: 'announcement-bar-ru',
-        content:
-            'Эта документация переведена искусственным интеллектом. Если вы нашли ошибку, пожалуйста, сообщите о ней <a href="https://github.com/ClickHouse/clickhouse-docs/issues">здесь.</a>',
-        isCloseable: true,
-      }
     }),
 
   plugins: [

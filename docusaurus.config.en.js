@@ -279,7 +279,7 @@ const config = {
         disableSwitch: false,
         respectPrefersColorScheme: true,
         defaultMode: "dark",
-      }
+      },
     }),
 
   plugins: [
