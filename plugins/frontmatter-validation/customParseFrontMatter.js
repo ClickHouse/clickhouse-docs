@@ -47,6 +47,19 @@ async function customParseFrontMatter(params) {
         if (posAfterFrontmatter < fileContent.length && fileContent[posAfterFrontmatter] !== '\n') {
             issues.push('missing newline after frontmatter closing ---');
         }
+
+        // Check if the line after frontmatter and newline is empty or has space
+        if (posAfterFrontmatter + 1 < fileContent.length) {
+            const nextChar = fileContent[posAfterFrontmatter + 1];
+            const nextLine = fileContent.substring(posAfterFrontmatter + 1).split('\n')[0];
+
+            // Check for problematic content after frontmatter
+            if (nextLine.startsWith('```')) {
+                issues.push('backticks (```) immediately after frontmatter without space');
+            } else if (nextLine !== '' && !nextLine.startsWith(' ') && !nextLine.startsWith('\t')) {
+                issues.push('missing space or empty line after frontmatter');
+            }
+        }
     }
 
     try {
