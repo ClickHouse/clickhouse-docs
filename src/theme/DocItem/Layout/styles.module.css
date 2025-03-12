@@ -46,12 +46,19 @@
 /* Translation popup */
 
 .docCloudCard {
-  background: var(--click-cloud-card-background);
   display: flex;
   flex-direction: column;
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 24px;
+}
+
+[data-theme='dark'] .docCloudCard {
+  background: var(--click-cloud-card-background);
+}
+
+[data-theme='light'] .docCloudCard {
+  background: var(--ifm-table-head-background);
 }
 
 .docCloudCardHeader {
@@ -70,14 +77,19 @@
 .docCloudCardContent {
   font-weight: 400;
   font-size: 14px;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 
 .docCloudCardLink {
   width: fit-content;
-  padding: 0 16px;
+  padding: 0 12px;
   white-space: nowrap;
 }
+
+[data-theme='light'] .docCloudCardLink {
+  background-color: var(--palette_info_300);
+}
+
 .docCloudCardLink:hover {
   text-decoration: none;
 }
