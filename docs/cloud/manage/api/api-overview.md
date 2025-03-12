@@ -2,6 +2,8 @@
 sidebar_label: 'Overview'
 sidebar_position: 1
 title: 'ClickHouse Cloud API'
+slug: /cloud/manage/api/api-overview
+description: 'Learn about ClickHouse Cloud API'
 ---
 
 # ClickHouse Cloud API

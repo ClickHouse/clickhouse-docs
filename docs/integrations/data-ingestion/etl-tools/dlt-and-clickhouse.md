@@ -3,13 +3,12 @@ sidebar_label: 'dlt'
 keywords: ['clickhouse', 'dlt', 'connect', 'integrate', 'etl', 'data integration']
 description: 'Load data into Clickhouse using dlt integration'
 title: 'Connect dlt to ClickHouse'
+slug: /integrations/data-ingestion/etl-tools/dlt-and-clickhouse
 ---
 
 # Connect dlt to ClickHouse
 
 <a href="https://dlthub.com/docs/intro" target="_blank">dlt</a>  is an open-source library that you can add to your Python scripts to load data from various and often messy data sources into well-structured, live datasets.
-
-
 
 ## Install dlt with ClickHouse {#install-dlt-with-clickhouse}
 

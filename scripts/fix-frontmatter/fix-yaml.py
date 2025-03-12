@@ -473,7 +473,23 @@ def add_missing_field(frontmatter: str, error_line: str) -> str:
 
         # Add the missing field with a placeholder value
         if field_name not in fm_dict:
-            fm_dict[field_name] = f'TODO: Add {field_name}'
+            # Use a better default value for specific fields
+            if field_name == 'slug':
+                # Extract the filename from the file path if available
+                if 'original_file_path' in fm_dict and fm_dict['original_file_path']:
+                    base_name = os.path.basename(fm_dict['original_file_path'])
+                    slug = os.path.splitext(base_name)[0]
+                    fm_dict[field_name] = slug
+                else:
+                    fm_dict[field_name] = 'TODO-add-slug'
+            elif field_name == 'description':
+                # Use title as a basis for description if available
+                if 'title' in fm_dict and fm_dict['title']:
+                    fm_dict[field_name] = f"Learn about {fm_dict['title']}"
+                else:
+                    fm_dict[field_name] = 'TODO: Add description'
+            else:
+                fm_dict[field_name] = f'TODO: Add {field_name}'
 
         # Handle special cases for known field types
         if field_name == 'keywords' and not isinstance(fm_dict[field_name], list):
@@ -544,6 +560,39 @@ def add_missing_field(frontmatter: str, error_line: str) -> str:
         return frontmatter
 
 
+def fix_missing_space_after_frontmatter(content: str) -> str:
+    """
+    Fix missing space or empty line after frontmatter.
+
+    Args:
+        content: The full file content
+
+    Returns:
+        Modified content with proper spacing after frontmatter
+    """
+    # Look for the frontmatter pattern: ---\n...\n---
+    frontmatter_pattern = r'^---\s*(.*?)\s*---'
+    frontmatter_match = re.search(frontmatter_pattern, content, re.DOTALL)
+
+    if not frontmatter_match:
+        return content
+
+    end_pos = frontmatter_match.end()
+
+    # Check if there's content after the frontmatter
+    if end_pos < len(content):
+        # Check if there's already a newline after the frontmatter
+        if content[end_pos:end_pos+1] != '\n':
+            # Insert a newline after the frontmatter
+            return content[:end_pos] + '\n' + content[end_pos:]
+        # Check if there's only one newline and not an empty line
+        elif end_pos + 1 < len(content) and content[end_pos:end_pos+2] == '\n' and content[end_pos+1:end_pos+2] != '\n':
+            # Insert another newline to create an empty line
+            return content[:end_pos] + '\n\n' + content[end_pos+1:]
+
+    return content
+
+
 def fix_markdown_file(file_path: str, errors: List[str], root_dir: str, dry_run: bool = False) -> bool:
     """
     Fix frontmatter validation errors in a markdown file.
@@ -565,6 +614,9 @@ def fix_markdown_file(file_path: str, errors: List[str], root_dir: str, dry_run:
 
         original_content = content  # Save the original content
 
+        # Check if we need to fix missing space after frontmatter
+        need_space_fix = any("missing space or empty line after frontmatter" in error for error in errors)
+
         # Extract frontmatter and content separately
         frontmatter, main_content, end_position = extract_frontmatter(content)
 
@@ -575,15 +627,17 @@ def fix_markdown_file(file_path: str, errors: List[str], root_dir: str, dry_run:
         # Start with original frontmatter
         modified_frontmatter = frontmatter
 
-        # Keep track of compact array format
-        compact_format = is_compact_array_format(frontmatter)
-
-        # First parse the original frontmatter to a dict
+        # Save file path to help with generating slug
+        file_info = {'original_file_path': file_path}
         try:
             fm_dict = yaml.safe_load(modified_frontmatter) or {}
+            fm_dict.update(file_info)
         except yaml.YAMLError:
             logger.warning(f"Error parsing original frontmatter YAML in {file_path}, using empty dict")
-            fm_dict = {}
+            fm_dict = file_info
+
+        # Keep track of compact array format
+        compact_format = is_compact_array_format(frontmatter)
 
         # Apply fixes one by one
         was_modified = False
@@ -598,7 +652,9 @@ def fix_markdown_file(file_path: str, errors: List[str], root_dir: str, dry_run:
 
                     # Update the dict to reflect changes
                     try:
-                        fm_dict = yaml.safe_load(modified_frontmatter) or {}
+                        temp_dict = yaml.safe_load(modified_frontmatter) or {}
+                        temp_dict.update(file_info)
+                        fm_dict = temp_dict
                     except yaml.YAMLError:
                         # If parsing fails, keep the previous dict
                         fm_dict = original_dict
@@ -611,7 +667,9 @@ def fix_markdown_file(file_path: str, errors: List[str], root_dir: str, dry_run:
 
                     # Update the dict to reflect changes
                     try:
-                        fm_dict = yaml.safe_load(modified_frontmatter) or {}
+                        temp_dict = yaml.safe_load(modified_frontmatter) or {}
+                        temp_dict.update(file_info)
+                        fm_dict = temp_dict
                     except yaml.YAMLError:
                         # If parsing fails, keep the previous dict
                         fm_dict = original_dict
@@ -624,20 +682,34 @@ def fix_markdown_file(file_path: str, errors: List[str], root_dir: str, dry_run:
 
                     # Update the dict to reflect changes
                     try:
-                        fm_dict = yaml.safe_load(modified_frontmatter) or {}
+                        temp_dict = yaml.safe_load(modified_frontmatter) or {}
+                        temp_dict.update(file_info)
+                        fm_dict = temp_dict
                     except yaml.YAMLError:
                         # If parsing fails, keep the previous dict
                         fm_dict = original_dict
+
+            # Skip the space error here as we'll handle it separately
+            elif 'missing space or empty line after frontmatter' in error:
+                continue
 
             else:
                 logger.warning(f"Unhandled error type: {error}")
 
         # If we made changes, ensure proper formatting by regenerating with original style preservation
         if was_modified:
+            # Remove the temporary file_info key before formatting
+            if 'original_file_path' in fm_dict:
+                del fm_dict['original_file_path']
             modified_frontmatter = preserve_original_format(frontmatter, fm_dict)
 
         # Reconstruct the file with modified frontmatter and original content
         modified_content = f"---\n{modified_frontmatter}\n---{main_content}"
+
+        # Now check if we need to fix spacing after frontmatter
+        if need_space_fix:
+            modified_content = fix_missing_space_after_frontmatter(modified_content)
+            was_modified = True
 
         # Only write the file if changes were made
         if modified_content != original_content:
@@ -659,6 +731,8 @@ def main():
     parser.add_argument('root_dir', help='Root directory containing the markdown files')
     parser.add_argument('--dry-run', action='store_true', help='Print changes without modifying files')
     parser.add_argument('--verbose', '-v', action='store_true', help='Enable verbose output')
+    parser.add_argument('--errors', help='Comma-separated error list to fix directly without a log file')
+    parser.add_argument('--files', help='Comma-separated file list to fix with the direct error list')
 
     args = parser.parse_args()
 
@@ -666,8 +740,72 @@ def main():
     if args.verbose:
         logger.setLevel(logging.DEBUG)
 
-    # Parse the error log
-    errors_by_file = parse_error_log(args.log_file)
+    # Handle direct errors list if provided
+    if args.errors and args.files:
+        errors_list = [e.strip() for e in args.errors.split(',')]
+        files_list = [f.strip() for f in args.files.split(',')]
+
+        errors_by_file = {}
+        for file_path in files_list:
+            errors_by_file[file_path] = errors_list
+    else:
+        # Parse the error log
+        errors_by_file = parse_error_log(args.log_file)
+
+    # Force add any specified errors for problem files mentioned in code comments
+    # This allows fixing known issues that might not be in the log file
+    problem_files = {
+        'cloud/support.md': [
+            'missing space or empty line after frontmatter',
+            'missing required field: slug',
+            'missing required field: description'
+        ],
+        'concepts/glossary.md': [
+            'missing required field: slug'
+        ],
+        'concepts/olap.md': [
+            'missing required field: slug'
+        ],
+        'concepts/why-clickhouse-is-so-fast.md': [
+            'missing required field: slug'
+        ],
+        'deployment-guides/horizontal-scaling.md': [
+            'missing space or empty line after frontmatter'
+        ],
+        'deployment-guides/terminology.md': [
+            'missing space or empty line after frontmatter'
+        ]
+    }
+
+    # Add these problem files to our errors_by_file dictionary
+    for file_path, error_list in problem_files.items():
+        full_path = file_path
+        if full_path.startswith('docs/'):
+            full_path = full_path
+        else:
+            full_path = f"docs/{file_path}"
+
+        # Check if file exists in root_dir
+        if os.path.exists(os.path.join(args.root_dir, full_path)):
+            # Add errors for this file, merging with any existing errors
+            if full_path in errors_by_file:
+                # Add any errors not already present
+                for error in error_list:
+                    if error not in errors_by_file[full_path]:
+                        errors_by_file[full_path].append(error)
+            else:
+                # Add new file with its errors
+                errors_by_file[full_path] = error_list
+        elif os.path.exists(os.path.join(args.root_dir, file_path)):
+            # Try without docs/ prefix
+            if file_path in errors_by_file:
+                # Add any errors not already present
+                for error in error_list:
+                    if error not in errors_by_file[file_path]:
+                        errors_by_file[file_path].append(error)
+            else:
+                # Add new file with its errors
+                errors_by_file[file_path] = error_list
 
     # Fix each file
     fixed_files = 0

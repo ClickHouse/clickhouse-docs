@@ -2,6 +2,8 @@
 title: 'What does "ClickHouse" mean?'
 toc_hidden: true
 toc_priority: 10
+slug: /faq/general/dbms-naming
+description: 'Learn about What does "ClickHouse" mean?'
 ---
 
 # What Does "ClickHouse" Mean? {#what-does-clickhouse-mean}

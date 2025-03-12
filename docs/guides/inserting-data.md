@@ -3,6 +3,7 @@ title: 'Inserting ClickHouse data'
 description: 'How to insert data into ClickHouse'
 keywords: ['insert', 'insert data', 'insert into table']
 sidebar_label: 'Inserting ClickHouse data'
+slug: /guides/inserting-data
 ---
 
 import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';

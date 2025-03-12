@@ -1,6 +1,7 @@
 ---
 title: 'Manage and Deploy Overview'
 description: 'Overview page for Manage and Deploy'
+slug: /guides/manage-and-deploy-index
 ---
 
 # Manage and Deploy
