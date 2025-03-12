@@ -1,7 +1,6 @@
 ---
 slug: /faq/general/ne-tormozit
 title: 'What does “не тормозит” mean?'
-  \u201D mean?"
 toc_hidden: true
 toc_priority: 11
 description: 'This page explains what "Не тормозит" means'
