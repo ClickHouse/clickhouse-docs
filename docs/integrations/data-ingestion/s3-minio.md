@@ -2,7 +2,7 @@
 sidebar_label: 'MinIO'
 sidebar_position: 6
 slug: /integrations/minio
-description: 'Page describing how to use MinIO with CLickHouse'
+description: 'Page describing how to use MinIO with ClickHouse'
 title: 'Using MinIO'
 ---
 
