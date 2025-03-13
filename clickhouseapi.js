@@ -87,7 +87,7 @@ function generateDocusaurusMarkdown(spec, groupedEndpoints, prefix) {
       if (operation.responses && operation.responses['200'].content["application/json"]) {
         const rawSchema = operation.responses['200'].content["application/json"].schema
         const result = rawSchema.properties.result
-
+        
         if (result) {
           markdownContent += `\n### Response\n\n`;
 
@@ -96,54 +96,77 @@ function generateDocusaurusMarkdown(spec, groupedEndpoints, prefix) {
           const schema = rawSchema.properties.result.type === 'array' ?
             result.items['$ref'].split('/').pop() : result['$ref'].split('/').pop()
 
-          const bodyParamAttrs = spec.components.schemas[schema].properties
-          const bodyParams = Object.keys(bodyParamAttrs)
-          const sampleResponseObj = {}
-
+          const extractedFields = extractFields(result, spec.components.schemas, undefined);
           markdownContent += `| Name | Type | Description |\n`
           markdownContent += `| :--- | :--- | :---------- |\n`
-
-          for (const parameter of bodyParams) {
-            const paramType = bodyParamAttrs[parameter].format || bodyParamAttrs[parameter].type
-            markdownContent += `| ${parameter} | ${paramType || ''} | ${bodyParamAttrs[parameter].description || ''} | \n`
-            
-            switch (paramType) {
-              case 'uuid':
-                sampleResponseObj[parameter] = 'uuid';
-                break;
-              case 'string':
-                sampleResponseObj[parameter] = 'string';
-                break;
-              case 'number':
-                sampleResponseObj[parameter] = 0;
-                break;
-              case 'array':
-                sampleResponseObj[parameter] = 'Array';
-                break;
-              case 'boolean':
-                sampleResponseObj[parameter] = 'boolean';
-                break;
-              case 'date-time':
-                sampleResponseObj[parameter] = 'date-time';
-                break;
-              case 'email':
-                sampleResponseObj[parameter] = 'email';
-                break;
-            }
-          }
-
+          markdownContent += extractedFields.markdown
+          markdownContent += '\n'
           markdownContent += `\n#### Sample response\n\n`;
           markdownContent += '```\n'
-          markdownContent += `${JSON.stringify(sampleResponseObj, 0, 2)}`
+          markdownContent += `${JSON.stringify(extractedFields.json, 0, 2)}`
           markdownContent += '\n```\n'
-        }
-
-        
       }
+    }
     }
   }
 
   return markdownContent;
+}
+
+function extractFields(result, schemas, fieldPrefix) {
+  const schemaRef = result.type === 'array' ? result.items['$ref'].split('/').pop() : result['$ref'].split('/').pop();
+  const bodyParamAttrs = schemas[schemaRef].properties;
+  const bodyParams = Object.keys(bodyParamAttrs);
+  const resObj = {
+    markdown: '',
+    json: {}
+  }
+  for (const parameter of bodyParams) {
+      const newPrefix = fieldPrefix ? `${fieldPrefix}.${parameter}` : parameter;
+    if (bodyParamAttrs[parameter]['$ref']) {
+  
+      const nestedObj = extractFields(bodyParamAttrs[parameter], schemas, newPrefix)
+      resObj.markdown += nestedObj.markdown
+      resObj.json[parameter] = nestedObj.json
+    }
+    else {
+      const paramType = bodyParamAttrs[parameter].format || bodyParamAttrs[parameter].type;
+      resObj.markdown +=  `| ${newPrefix} | ${paramType || ''} | ${bodyParamAttrs[parameter].description || ''} | \n`;
+      resObj.json[parameter] = returnParamTypeSample(bodyParamAttrs[parameter].format || bodyParamAttrs[parameter].type);
+    }
+  }
+  return resObj;
+}
+
+function returnParamTypeSample(paramType) {
+  let result;
+  switch(paramType) {
+    case 'uuid':
+                result = 'uuid';
+                break;
+              case 'string':
+                result = 'string';
+                break;
+              case 'number':
+                result = 0;
+                break;
+              case 'array':
+                result = 'Array';
+                break;
+              case 'boolean':
+                result = 'boolean';
+                break;
+              case 'date-time':
+                result = 'date-time';
+                break;
+              case 'date':
+                result = 'date';
+                break;
+              case 'email':
+                result = 'email';
+                break;
+  }
+  return result;
 }
 
 async function main() {
@@ -158,7 +181,7 @@ async function main() {
 
   for (const prefix in groupedEndpoints) {
     const markdownContent = generateDocusaurusMarkdown(openAPISpec, groupedEndpoints[prefix], prefix);
-    fs.writeFileSync(`docs/en/cloud/manage/api/${prefix}-api-reference.md`, markdownContent);
+    fs.writeFileSync(`docs/cloud/manage/api/${prefix}-api-reference.md`, markdownContent);
   }
 
   console.log('Markdown files generated successfully.');

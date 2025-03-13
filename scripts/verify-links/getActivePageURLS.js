@@ -21,8 +21,8 @@ function getAllDocsFromContent() {
         const normalizedPath = relativePath.replace(/\\/g, '/'); // Normalize slashes for cross-platform
 
         if (
-          normalizedPath.startsWith('/en/_placeholders/') ||
-          normalizedPath.startsWith('/en/_snippets/') ||
+          normalizedPath.startsWith('/_placeholders/') ||
+          normalizedPath.startsWith('/_snippets/') ||
           normalizedPath.startsWith('/_clients/')
         ) {
           return;

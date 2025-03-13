@@ -10,11 +10,11 @@ keywords: ['ClickHouse Keeper', 'ZooKeeper']
 {/* truncate */}
 ---
 
-## Question
+## Question {#question}
 
 ClickHouse Keeper provides the coordination system for data replication and distributed DDL queries execution. ClickHouse Keeper is compatible with ZooKeeper, but it might not be obvious why you should use ClickHouse Keeper instead of ZooKeeper. This article discusses some of the benefits of Keeper.
 
-## Answer
+## Answer {#answer}
 
 [ClickHouse Cloud](https://console.clickhouse.cloud/) uses `clickhouse-keeper` at large scale for thousands of services in a multi-tenant environment. We designed and built Keeper so that we could remove our dependency on the Java-based ZooKeeper implementation. ClickHouse Keeper solves many well-known drawbacks of ZooKeeper and makes additional improvements, including:
 
@@ -29,4 +29,4 @@ ClickHouse Keeper provides the coordination system for data replication and dist
 
 In addition, ClickHouse Support has observed a massive decrease in cluster problems in cases with sites who use `clickhouse-keeper` rather than ZooKeeper.
 
-Check out the [Keeper docs page](https://clickhouse.com/docs/en/guides/sre/keeper/clickhouse-keeper) for more details on how to configure and run ClickHouse Keeper.
+Check out the [Keeper docs page](https://clickhouse.com/docs/guides/sre/keeper/clickhouse-keeper) for more details on how to configure and run ClickHouse Keeper.
