@@ -31,7 +31,7 @@ If you're looking for a prior version of the java client docs, please see [here]
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>client-v2</artifactId>
-    <version>0.8.1</version>
+    <version>0.8.2</version>
 </dependency>
 ```
 
@@ -40,14 +40,14 @@ If you're looking for a prior version of the java client docs, please see [here]
 
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation("com.clickhouse:client-v2:0.8.1")
+implementation("com.clickhouse:client-v2:0.8.2")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation 'com.clickhouse:client-v2:0.8.1'
+implementation 'com.clickhouse:client-v2:0.8.2'
 ```
 
 </TabItem>

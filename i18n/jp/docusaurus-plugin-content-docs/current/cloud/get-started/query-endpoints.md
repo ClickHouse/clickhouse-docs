@@ -1,4 +1,3 @@
-
 ---
 sidebar_title: クエリ API エンドポイント
 slug: /cloud/get-started/query-endpoints

@@ -2,14 +2,14 @@
 slug: /sql-reference/table-functions/format
 sidebar_position: 65
 sidebar_label: format
-title: "format"
-description: "引数から指定された入力フォーマットに従ってデータを解析します。構造引数が指定されていない場合、データから抽出されます。"
+title: 'format'
+description: '引数から指定された入力形式に従ってデータを解析します。構造体引数が指定されていない場合、データから抽出されます。'
 ---
 
 
 # format テーブル関数
 
-引数から指定された入力フォーマットに従ってデータを解析します。構造引数が指定されていない場合、データから抽出されます。
+引数から指定された入力形式に従ってデータを解析します。構造体引数が指定されていない場合、データから抽出されます。
 
 **構文**
 
@@ -19,17 +19,17 @@ format(format_name, [structure], data)
 
 **パラメータ**
 
-- `format_name` — データの[フォーマット](../../interfaces/formats.md#formats)。
-- `structure` - テーブルの構造。オプション。フォーマット 'column1_name column1_type, column2_name column2_type, ...'。
-- `data` — 指定されたフォーマットのデータを含む文字列を返す文字列リテラルまたは定数式。
+- `format_name` — データの[形式](/sql-reference/formats)。
+- `structure` - テーブルの構造。オプション。形式 'column1_name column1_type, column2_name column2_type, ...'。
+- `data` — 指定された形式のデータを含む文字列リテラルまたは定数式。
 
 **返される値**
 
-指定されたフォーマットおよび指定または抽出された構造に従って、`data` 引数から解析されたデータを持つテーブル。
+指定された形式および指定されたまたは抽出された構造に従って、`data` 引数から解析されたデータを持つテーブル。
 
 **例**
 
-`structure` 引数なしの場合:
+`structure` 引数なし:
 
 **クエリ:**
 ``` sql
@@ -73,7 +73,7 @@ $$)
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-`structure` 引数ありの場合:
+`structure` 引数あり:
 
 **クエリ:**
 ```sql
@@ -96,6 +96,6 @@ $$)
 └───────┴─────┘
 ```
 
-**参照:**
+**関連情報**
 
-- [フォーマット](../../interfaces/formats.md)
+- [Formats](../../interfaces/formats.md)

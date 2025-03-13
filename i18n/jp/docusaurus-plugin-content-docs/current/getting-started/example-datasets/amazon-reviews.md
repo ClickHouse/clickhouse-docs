@@ -1,18 +1,18 @@
 ---
 slug: /getting-started/example-datasets/amazon-reviews
-sidebar_label: Amazon カスタマーレビュー
-title: Amazon カスタマーレビュー
-description: 1億5000万件以上のAmazon製品のカスタマーレビュー
+sidebar_label: Amazon お客様のレビュー
+title: Amazon お客様のレビュー
+description: 1.5億件以上のAmazon製品に関するお客様のレビュー
 ---
 
-このデータセットには、1億5000万件を超えるAmazon製品のカスタマーレビューが含まれています。データは、AWS S3にあるスナッピー圧縮されたParquetファイルに保存されており、サイズは49GB（圧縮済み）です。それをClickHouseに挿入する手順を見ていきましょう。
+このデータセットには、Amazon製品に関する1.5億件以上の顧客レビューが含まれています。データはAWS S3のsnappy圧縮されたParquetファイルにあり、合計サイズは49GB（圧縮後）です。これをClickHouseに挿入する手順を見ていきましょう。
 
 :::note
-以下のクエリは、**Production** インスタンスの [ClickHouse Cloud](https://clickhouse.cloud) で実行されました。
+以下のクエリは、**Production**インスタンスで実行されました [ClickHouse Cloud](https://clickhouse.cloud)。
 :::
 ## データセットの読み込み {#loading-the-dataset}
 
-1. データをClickHouseに挿入することなく、データをそのままクエリすることができます。いくつかの行を取得して、その見た目を確認してみましょう：
+1. データをClickHouseに挿入せずに、インプレースでクエリを実行できます。いくつかの行を取得して、どのような内容か確認しましょう：
 
 ```sql
 SELECT *
@@ -20,7 +20,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_review
 LIMIT 10
 ```
 
-行は次のようになります：
+行の内容は以下のようになります：
 
 ```response
 ┌─review_date─┬─marketplace─┬─customer_id─┬─review_id──────┬─product_id─┬─product_parent─┬─product_title────────────────────────────────────────────────┬─product_category───────┬─star_rating─┬─helpful_votes─┬─total_votes─┬─vine──┬─verified_purchase─┬─review_headline─────────────────────────────────────────────────────────────┬─review_body────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -37,7 +37,7 @@ LIMIT 10
 └─────────────┴─────────────┴─────────────┴────────────────┴────────────┴────────────────┴──────────────────────────────────────────────────────────────┴────────────────────────┴─────────────┴───────────────┴─────────────┴───────┴───────────────────┴─────────────────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-2. ClickHouseにこのデータを保存するために、新しい `MergeTree` テーブル `amazon_reviews` を定義します：
+2. ClickHouseにこのデータを保存するために、新しい `MergeTree` テーブル `amazon_reviews` を定義しましょう：
 
 ```sql
 CREATE TABLE amazon_reviews
@@ -62,7 +62,7 @@ ENGINE = MergeTree
 ORDER BY (review_date, product_category);
 ```
 
-3. 次の `INSERT` コマンドでは、複数のS3ファイルをクラスターのすべてのノードを使用して並行処理できる `s3Cluster` テーブル関数を使用しています。また、`https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet` という名前で始まるすべてのファイルを挿入するためにワイルドカードを使用しています：
+3. 次の `INSERT` コマンドは、`s3Cluster` テーブル関数を使用して、クラスタのすべてのノードで複数のS3ファイルを並行処理します。また、ワイルドカードを使用して、`https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet` で始まる任意のファイルを挿入します：
 
 ```sql
 INSERT INTO amazon_reviews
@@ -75,10 +75,10 @@ FROM s3Cluster(
 ```
 
 :::tip
-ClickHouse Cloudでは、クラスターの名前は `default` です。クラスターの名前に `default` を変更するか、クラスターがない場合は `s3` テーブル関数を使用してください（`s3Cluster` の代わりに）。
+ClickHouse Cloudでは、クラスタの名前は `default` です。自分のクラスタの名前に `default` を変更するか、クラスタがない場合は `s3` テーブル関数を使用してください（`s3Cluster` の代わりに）。
 :::
 
-5. このクエリはあまり時間がかかりません - 平均約30万行/秒で、約5分以内にすべての行が挿入されるはずです：
+5. このクエリは長くかからず、平均して約300,000行/秒の速度で実行されます。5分以内にすべての行が挿入されるはずです：
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -90,10 +90,10 @@ FROM amazon_reviews;
 │ 150.96 million                  │
 └─────────────────────────────────┘
 
-1 row in set. Elapsed: 0.005 sec.
+1行のセット。経過時間: 0.005秒。
 ```
 
-6. データがどれだけのスペースを使用しているか見てみましょう：
+6. データがどれだけのスペースを使用しているか確認してみましょう：
 
 ```sql
 SELECT
@@ -108,16 +108,17 @@ WHERE (active = 1) AND (table = 'amazon_reviews')
 GROUP BY disk_name
 ORDER BY size DESC;
 ```
-元のデータは約70Gでしたが、ClickHouseでは圧縮されて約30Gを占めます：
+元のデータは約70GBでしたが、ClickHouseでは約30GBに圧縮されています：
 
 ```response
 ┌─disk_name─┬─compressed─┬─uncompressed─┬─compr_rate─┬──────rows─┬─part_count─┐
 │ s3disk    │ 30.05 GiB  │ 70.47 GiB    │       2.35 │ 150957260 │         14 │
 └───────────┴────────────┴──────────────┴────────────┴───────────┴────────────┘
 ```
-## 例のクエリ {#example-queries}
 
-7. いくつかのクエリを実行してみましょう...データセット内で最も役に立つレビューの上位10件を示します:
+## 例題クエリ {#example-queries}
+
+7. いくつかのクエリを実行してみましょう...データセット内の最も役立つレビュー上位10件を示します:
 
 ```sql
 SELECT
@@ -128,26 +129,26 @@ ORDER BY helpful_votes DESC
 LIMIT 10;
 ```
 
-クエリは151M 行すべてを処理する必要がありますが、1秒未満で完了します！
+クエリは151M行すべてを処理する必要がありますが、1秒未満で完了します！
 
 ```response
 ┌─product_title────────────────────────────────────────────────────────────────────────────┬─review_headline───────────────────────────────────────────────────────┐
-│ Kindle: Amazonのオリジナルワイヤレスリーディングデバイス（第1世代）                           │ Kindleがすべてを変える理由とその方法                               │
-│ BIC Cristal For Her ボールペン, 1.0mm, ブラック, 16個入り (MSLP16-Blk)                          │ ついに！                                                           │
-│ The Mountain Kids 100% Cotton Three Wolf Moon T-Shirt                                    │ 二重機能デザイン                                                 │
-│ Kindle Keyboard 3G, 無料3G + Wi-Fi, 6インチE Inkディスプレイ                              │ Kindle vs. Nook（更新版）                                        │
-│ Kindle Fire HD 7インチ, Dolby Audio, デュアルバンドWi-Fi                                  │ 払うべき金額の価値が得られます                                    │
-│ Kindle Fire (前の世代 - 第1世代)                                                        │ 価格と機能を考慮すれば素晴らしいデバイスですが、いくつかの欠点があります │
-│ Fifty Shades of Grey: Book One of the Fifty Shades Trilogy (Fifty Shades of Grey Series) │ ティーンエイジャーが書いたのか???                                 │
-│ Wheelmate Laptop ハンドルデスク                                                             │ スターフリートの操縦士にぴったり                                 │
-│ Kindle Wireless Reading Device (6インチディスプレイ, アメリカ無線)                       │ Kindle 1とKindle 2の間に著しい違いがあることに注意してください！           │
-│ Tuscan Dairy Whole Vitamin D Milk, gallon, 128 oz                                        │ これを唯一の在庫にして保存してください                           │
+│ Kindle: Amazon's Original Wireless Reading Device (1st generation)                       │ Why and how the Kindle changes everything                             │
+│ BIC Cristal For Her Ball Pen, 1.0mm, Black, 16ct (MSLP16-Blk)                            │ FINALLY!                                                              │
+│ The Mountain Kids 100% Cotton Three Wolf Moon T-Shirt                                    │ Dual Function Design                                                  │
+│ Kindle Keyboard 3G, Free 3G + Wi-Fi, 6" E Ink Display                                    │ Kindle vs. Nook (updated)                                             │
+│ Kindle Fire HD 7", Dolby Audio, Dual-Band Wi-Fi                                          │ You Get What You Pay For                                              │
+│ Kindle Fire (Previous Generation - 1st)                                                  │ A great device WHEN you consider price and function, with a few flaws │
+│ Fifty Shades of Grey: Book One of the Fifty Shades Trilogy (Fifty Shades of Grey Series) │ Did a teenager write this???                                          │
+│ Wheelmate Laptop Steering Wheel Desk                                                     │ Perfect for an Starfleet Helmsman                                     │
+│ Kindle Wireless Reading Device (6" Display, U.S. Wireless)                               │ BEWARE of the SIGNIFICANT DIFFERENCES between Kindle 1 and Kindle 2!  │
+│ Tuscan Dairy Whole Vitamin D Milk, Gallon, 128 oz                                        │ Make this your only stock and store                                   │
 └──────────────────────────────────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────┘
 
-セット内の行数: 10。経過時間: 0.897秒。処理した行数: 150.96百万行, 15.36 GB (168.36百万行/秒, 17.13 GB/秒)
+10 行がセットにあります。経過時間: 0.897 秒。150.96百万行を処理し、15.36 GB (168.36百万行/s., 17.13 GB/s.)。
 ```
 
-8. Amazonでレビューが最も多い上位10製品は次のとおりです:
+8. 口コミ数が最も多いAmazonの商品上位10件を示します:
 
 ```sql
 SELECT
@@ -173,10 +174,10 @@ LIMIT 10;
 │ Crossy Road                                   │   28111 │
 └───────────────────────────────────────────────┴─────────┘
 
-セット内の行数: 10。経過時間: 20.059秒。処理した行数: 150.96百万行, 12.78 GB (7.53百万行/秒, 637.25 MB/秒)
+10 行がセットにあります。経過時間: 20.059 秒。150.96百万行を処理し、12.78 GB (7.53百万行/s., 637.25 MB/s.)。
 ```
 
-9. 各製品の月ごとの平均レビュー評価は次のとおりです（実際の [Amazonの就職面接の質問](https://datalemur.com/questions/sql-avg-review-ratings)!）:
+9. 各商品の月ごとのレビュー評価の平均を示します（実際の [Amazonの就職面接質問](https://datalemur.com/questions/sql-avg-review-ratings)!）:
 
 ```sql
 SELECT
@@ -193,7 +194,7 @@ ORDER BY
 LIMIT 20;
 ```
 
-各製品の月ごとの平均を計算しますが、20行のみを返しました:
+各商品の月ごとの平均を計算しますが、20行だけを返します:
 
 ```response
 ┌──────month─┬─any(product_title)──────────────────────────────────────────────────────────────────────┬─avg_stars─┐
@@ -219,11 +220,11 @@ LIMIT 20;
 │ 2015-08-01 │ The Birds of West Africa (Collins Field Guides)                                         │         4 │
 └────────────┴─────────────────────────────────────────────────────────────────────────────────────────┴───────────┘
 
-セット内の行数: 20。経過時間: 43.055秒。処理した行数: 150.96百万行, 13.24 GB (3.51百万行/秒, 307.41 MB/秒)
-最大メモリ使用量: 41.73 GiB
+20 行がセットにあります。経過時間: 43.055 秒。150.96百万行を処理し、13.24 GB (3.51百万行/s., 307.41 MB/s.)。
+ピークメモリ使用量: 41.73 GiB。
 ```
 
-10. 各製品カテゴリーごとの投票総数を見てみましょう。このクエリは速いです。なぜなら`product_category`が主キーに含まれているからです:
+10. 各商品カテゴリーごとの投票数の合計を示します。このクエリは `product_category` が主キーに含まれているため早いです:
 
 ```sql
 SELECT
@@ -279,13 +280,13 @@ FORMAT PrettyCompactMonoBlock;
 │           348990 │ Personal_Care_Appliances │
 │           321372 │ Digital_Software         │
 │           169585 │ Mobile_Electronics       │
-│            72970 │ ギフトカード                │
+│            72970 │ Gift Card                │
 └──────────────────┴──────────────────────────┘
 
-セット内の行数: 43。経過時間: 0.201秒。処理した行数: 150.96百万行, 754.79 MB (750.85百万行/秒, 3.75 GB/秒)
+43 行がセットにあります。経過時間: 0.201 秒。150.96百万行を処理し、754.79 MB (750.85百万行/s., 3.75 GB/s.)。
 ```
 
-11. レビュー内で最も頻繁に**"awful"**という単語が出現する製品を見てみましょう。これは大きな作業です - 151M以上の文字列を一単語を探しながら解析しなければなりません:
+11. レビューで最も頻繁に「**awful**」と記載された商品を見つけましょう。これは大きなタスクです - 151M文字列を解析して単一の単語を探す必要があります:
 
 ```sql
 SELECT
@@ -300,7 +301,7 @@ ORDER BY count DESC
 LIMIT 50;
 ```
 
-このクエリはわずか4秒かかります - これは印象的です - そして結果は面白い読み物です:
+クエリはわずか4秒で完了します - インプレッシブですね - 結果は面白い読書です:
 
 ```response
 ┌─product_id─┬─any(product_title)───────────────────────────────────────────────────────────────────────┬───avg(star_rating)─┬─count─┐
@@ -356,11 +357,11 @@ LIMIT 50;
 │ B0052QYLUM │ Infant Optics DXR-5 Portable Video Baby Monitor                                          │ 2.1463414634146343 │    41 │
 └────────────┴──────────────────────────────────────────────────────────────────────────────────────────┴────────────────────┴───────┘
 
-セット内の行数: 50。経過時間: 4.072秒。処理した行数: 150.96百万行, 68.93 GB (37.07百万行/秒, 16.93 GB/秒)
-最大メモリ使用量: 1.82 GiB
+50 行がセットにあります。経過時間: 4.072 秒。150.96百万行を処理し、68.93 GB (37.07百万行/s., 16.93 GB/s.)。
+ピークメモリ使用量: 1.82 GiB。
 ```
 
-12. 同じクエリを再実行できますが、今回はレビュー内で**"awesome"**を検索します:
+12. 同じクエリを再度実行しますが、今度はレビューで「**awesome**」を検索します:
 
 ```sql
 SELECT
@@ -376,6 +377,7 @@ LIMIT 50;
 ```
 
 ```response
+
 ┌─product_id─┬─any(product_title)────────────────────────────────────────────────────┬───avg(star_rating)─┬─count─┐
 │ B00992CF6W │ Minecraft                                                             │  4.848130353039482 │  4787 │
 │ B009UX2YAC │ Subway Surfers                                                        │  4.866720955483171 │  3684 │
@@ -429,6 +431,6 @@ LIMIT 50;
 │ B00G6ZTM3Y │ Terraria                                                              │  4.728421052631579 │   475 │
 └────────────┴───────────────────────────────────────────────────────────────────────┴────────────────────┴───────┘
 
-セット内の行数: 50。経過時間: 4.079秒。処理した行数: 150.96百万行, 68.95 GB (37.01百万行/秒, 16.90 GB/秒)
-最大メモリ使用量: 2.18 GiB
+50 行がセットにあります。経過時間: 4.079 秒。150.96百万行を処理し、68.95 GB (37.01百万行/s., 16.90 GB/s.)。
+ピークメモリ使用量: 2.18 GiB。
 ```

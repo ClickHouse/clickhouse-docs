@@ -1,15 +1,15 @@
 ---
-slug: /sql-reference/table-functions/mysql
+slug: '/sql-reference/table-functions/mysql'
 sidebar_position: 137
-sidebar_label: mysql
-title: "mysql"
-description: "リモートMySQLサーバーに保存されたデータに対して`SELECT`および`INSERT`クエリを実行することを許可します。"
+sidebar_label: 'mysql'
+title: 'mysql'
+description: 'リモートのMySQLサーバーに保存されているデータに対して `SELECT` および `INSERT` クエリを実行できるようにします。'
 ---
 
 
 # mysql テーブル関数
 
-リモートMySQLサーバーに保存されたデータに対して`SELECT`および`INSERT`クエリを実行することを許可します。
+リモートのMySQLサーバーに保存されているデータに対して `SELECT` および `INSERT` クエリを実行できるようにします。
 
 **構文**
 
@@ -19,25 +19,25 @@ mysql({host:port, database, table, user, password[, replace_query, on_duplicate_
 
 **パラメータ**
 
-- `host:port` — MySQLサーバーアドレス。
+- `host:port` — MySQLサーバーのアドレス。
 - `database` — リモートデータベース名。
 - `table` — リモートテーブル名。
 - `user` — MySQLユーザー。
 - `password` — ユーザーパスワード。
-- `replace_query` — `INSERT INTO`クエリを`REPLACE INTO`に変換するフラグ。可能な値:
-    - `0` - クエリは`INSERT INTO`として実行される。
-    - `1` - クエリは`REPLACE INTO`として実行される。
-- `on_duplicate_clause` — `INSERT`クエリに追加される`ON DUPLICATE KEY on_duplicate_clause`式。`replace_query = 0`の時のみ指定可能です（同時に`replace_query = 1`と`on_duplicate_clause`を渡すと、ClickHouseは例外を生成します）。
+- `replace_query` — `INSERT INTO` クエリを `REPLACE INTO` に変換するフラグ。可能な値：
+    - `0` - クエリは `INSERT INTO` として実行されます。
+    - `1` - クエリは `REPLACE INTO` として実行されます。
+- `on_duplicate_clause` — `INSERT` クエリに追加される `ON DUPLICATE KEY on_duplicate_clause` 式。`replace_query = 0` の場合のみ指定できます（同時に `replace_query = 1` と `on_duplicate_clause` を渡すと、ClickHouseは例外を生成します）。
     例: `INSERT INTO t (c1,c2) VALUES ('a', 2) ON DUPLICATE KEY UPDATE c2 = c2 + 1;`
-    ここで`on_duplicate_clause`は`UPDATE c2 = c2 + 1`です。どの`on_duplicate_clause`が`ON DUPLICATE KEY`句で使用できるかはMySQLのドキュメントを参照してください。
+    ここでの `on_duplicate_clause` は `UPDATE c2 = c2 + 1` です。使用できる `on_duplicate_clause` についてはMySQLのドキュメントを参照してください。
 
-引数は、[named collections](operations/named-collections.md)を使用しても渡すことができます。この場合、`host`と`port`は別々に指定する必要があります。このアプローチはプロダクション環境で推奨されます。
+引数は [named collections](operations/named-collections.md) を使用して渡すこともできます。この場合、`host` と `port` は別々に指定する必要があります。このアプローチは本番環境で推奨されます。
 
-`=, !=, >, >=, <, <=`などのシンプルな`WHERE`句は現在MySQLサーバー上で実行されます。
+`=, !=, >, >=, <, <=` のようなシンプルな `WHERE` 条件は現在MySQLサーバー上で実行されます。
 
-残りの条件や`LIMIT`サンプリング制約は、クエリがMySQLに終わった後にClickHouseでのみ実行されます。
+残りの条件と `LIMIT` サンプリング制約は、MySQLへのクエリが終了した後にClickHouseでのみ実行されます。
 
-複数のレプリカをサポートしており、`|`でリストする必要があります。例:
+複数のレプリカをサポートしており、それらは `|` で列挙する必要があります。例えば：
 
 ```sql
 SELECT name FROM mysql(`mysql{1|2|3}:3306`, 'mysql_database', 'mysql_table', 'user', 'password');
@@ -51,19 +51,19 @@ SELECT name FROM mysql(`mysql1:3306|mysql2:3306|mysql3:3306`, 'mysql_database', 
 
 **返される値**
 
-元のMySQLテーブルと同じカラムを持つテーブルオブジェクト。
+オリジナルのMySQLテーブルと同じカラムを持つテーブルオブジェクト。
 
 :::note
-MySQLの一部のデータ型は異なるClickHouseのデータ型にマッピングできる - これはクエリレベル設定[mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level)で対応されます。
+MySQLの一部のデータ型は異なるClickHouseの型にマッピングされる可能性があります - これはクエリレベルの設定 [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level) で対処されています。
 :::
 
 :::note
-`INSERT`クエリにおいて、テーブル関数`mysql(...)`とカラム名のリストを持つテーブル名を区別するために、`FUNCTION`または`TABLE FUNCTION`のキーワードを使用しなければなりません。以下の例を参照してください。
+`INSERT` クエリでは、テーブル関数 `mysql(...)` とカラム名のリストを持つテーブル名を区別するために、キーワード `FUNCTION` または `TABLE FUNCTION` を使用する必要があります。以下の例を参照してください。
 :::
 
 **例**
 
-MySQLでのテーブル:
+MySQL内のテーブル：
 
 ``` text
 mysql> CREATE TABLE `test`.`test` (
@@ -81,13 +81,13 @@ mysql> SELECT * FROM test;
 +--------+-------+
 ```
 
-ClickHouseからデータを選択:
+ClickHouseからデータを選択：
 
 ``` sql
 SELECT * FROM mysql('localhost:3306', 'test', 'test', 'bayonet', '123');
 ```
 
-または[named collections](operations/named-collections.md)を使用:
+または [named collections](operations/named-collections.md) を使用：
 
 ```sql
 CREATE NAMED COLLECTION creds AS
@@ -105,7 +105,7 @@ SELECT * FROM mysql(creds, table='test');
 └────────┴───────┘
 ```
 
-置き換えと挿入:
+置換および挿入：
 
 ```sql
 INSERT INTO FUNCTION mysql('localhost:3306', 'test', 'test', 'bayonet', '123', 1) (int_id, float) VALUES (1, 3);
@@ -120,7 +120,7 @@ SELECT * FROM mysql('localhost:3306', 'test', 'test', 'bayonet', '123');
 └────────┴───────┘
 ```
 
-MySQLテーブルからClickHouseテーブルへデータをコピー:
+MySQLのテーブルからClickHouseのテーブルにデータをコピー：
 
 ```sql
 CREATE TABLE mysql_copy
@@ -136,7 +136,7 @@ INSERT INTO mysql_copy
 SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');
 ```
 
-または、現在の最大idに基づいてMySQLからインクリメンタルバッチのみをコピーする場合:
+または、現在の最大IDに基づいてMySQLから増分バッチのみをコピーする場合：
 
 ```sql
 INSERT INTO mysql_copy
@@ -144,10 +144,10 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password')
 WHERE id > (SELECT max(id) from mysql_copy);
 ```
 
-**関連情報**
+**関連項目**
 
-- [ 'MySQL' テーブルエンジン](../../engines/table-engines/integrations/mysql.md)
-- [MySQLを辞書ソースとして使用](../../sql-reference/dictionaries/index.md#dictionary-sources#dicts-external_dicts_dict_sources-mysql)
+- [MySQL テーブルエンジン](../../engines/table-engines/integrations/mysql.md)
+- [MySQLを辞書ソースとして使用する](/sql-reference/dictionaries#mysql)
 - [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level)
 - [mysql_map_fixed_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_fixed_string_to_text_in_show_columns)
 - [mysql_map_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_string_to_text_in_show_columns)

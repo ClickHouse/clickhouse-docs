@@ -1,16 +1,16 @@
 ---
-title: サポートされているクラウドリージョン
-sidebar_label: サポートされているクラウドリージョン
+title: 'サポートされているクラウドリジョン'
+sidebar_label: 'サポートされているクラウドリジョン'
 keywords: [aws, gcp, google cloud, azure, cloud, regions]
-description: ClickHouse Cloud のサポートされているリージョン
+description: 'ClickHouse Cloudのサポートリジョン'
 ---
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 
-# サポートされているクラウドリージョン
+# サポートされているクラウドリジョン
 
-## AWS リージョン {#aws-regions}
+## AWS リジョン {#aws-regions}
 
 - ap-northeast-1 (東京)
 - ap-south-1 (ムンバイ)
@@ -20,7 +20,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - eu-west-1 (アイルランド)
 - eu-west-2 (ロンドン)
 - me-central-1 (UAE)
-- us-east-1 (バージニア州北部)
+- us-east-1 (ノースバージニア)
 - us-east-2 (オハイオ)
 - us-west-2 (オレゴン)
 
@@ -31,7 +31,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - sa-east-1 (南アメリカ)
 - ap-northeast-2 (韓国、ソウル)
 
-## Google Cloud リージョン {#google-cloud-regions}
+## Google Cloud リジョン {#google-cloud-regions}
 
 - asia-southeast1 (シンガポール)
 - europe-west4 (オランダ)
@@ -39,49 +39,56 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - us-east1 (サウスカロライナ)
 
 **検討中:**
-- australia-southeast1 (シドニー)
-- us-west-1 (オレゴン)
-- eu-west-1 (ベルギー)
 
-## Azure リージョン {#azure-regions}
+- us-west1 (オレゴン)
+- australia-southeast1 (シドニー)
+- asia-northeast1 (東京)
+- europe-west3 (フランクフルト)
+- europe-west6 (チューリッヒ)
+- northamerica-northeast1 (モントリオール)
+
+## Azure リジョン {#azure-regions}
 
 - West US 3 (アリゾナ)
 - East US 2 (バージニア)
 - Germany West Central (フランクフルト)
 
+**検討中:**
+
+JapanEast
 :::note 
-現在リストにないリージョンにデプロイする必要がありますか？ [リクエストを提出する](https://clickhouse.com/pricing?modal=open)。 
+現在リストに載っていないリジョンにデプロイする必要がありますか？ [リクエストを送信](https://clickhouse.com/pricing?modal=open)。 
 :::
 
-## プライベートリージョン {#private-regions}
+## プライベートリジョン {#private-regions}
 
-<EnterprisePlanFeatureBadge feature="プライベートリージョン機能"/>
+<EnterprisePlanFeatureBadge feature="プライベートリジョン機能"/>
 
-エンタープライズプランサービス向けにプライベートリージョンを提供しています。プライベートリージョンリクエストについては、[お問い合わせ](https://clickhouse.com/company/contact)ください。
+当社はエンタープライズプランサービス向けにプライベートリジョンを提供しています。プライベートリジョンのリクエストについては、[お問い合わせ](https://clickhouse.com/company/contact)ください。
 
-プライベートリージョンの主な考慮事項:
+プライベートリジョンの重要な考慮事項:
 - サービスは自動スケーリングされません。
 - サービスは停止またはアイドル状態にできません。
-- 手動スケーリング（縦方向および横方向の両方）は、サポートチケットで有効にできます。
-- サービスがCMEKでの設定を必要とする場合、サービス開始時に顧客がAWS KMSキーを提供する必要があります。
-- 新しい追加サービスの開始には、サポートチケットを通じてリクエストする必要があります。
+- マニュアルスケーリング（縦横両方）はサポートチケットで有効にできます。
+- サービスがCMEKでの構成を必要とする場合、顧客はサービス開始時にAWS KMSキーを提供しなければなりません。
+- 新しいサービスや追加のサービスを開始するには、サポートチケットを通じてリクエストを行う必要があります。
 
-HIPAAコンプライアンスに関する追加要件が適用される場合があります（BAAの署名を含む）。なお、HIPAAは現在エンタープライズプランサービスのみで利用可能です。
+HIPAAコンプライアンスに関して追加要件が適用される場合があります（BAAへの署名を含む）。HIPAAは現在、エンタープライズプランサービスにのみ利用可能であることに留意してください。
 
-## HIPAA準拠リージョン {#hipaa-compliant-regions}
+## HIPAA準拠のリジョン {#hipaa-compliant-regions}
 
 <EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
 
-顧客はビジネスアソシエイト契約（BAA）に署名し、HIPAA準拠リージョンでサービスを設定するために営業またはサポートを通じてオンボーディングをリクエストする必要があります。次のリージョンはHIPAAコンプライアンスをサポートしています:
+顧客はビジネスアソシエイト契約（BAA）に署名し、HIPAA準拠のリジョンでサービスを設定するために営業またはサポートを通じてオンボーディングをリクエストする必要があります。以下のリジョンはHIPAAコンプライアンスをサポートしています:
 - AWS us-east-1
 - AWS us-west-2
 - GCP us-central1
 - GCP us-east1
 
-## PCI準拠リージョン {#pci-compliant-regions}
+## PCI準拠のリジョン {#pci-compliant-regions}
 
 <EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
 
-顧客はPCI準拠リージョンでサービスを設定するために営業またはサポートを通じてオンボーディングをリクエストする必要があります。次のリージョンはPCIコンプライアンスをサポートしています:
+顧客はPCI準拠のリジョンでサービスを設定するために営業またはサポートを通じてオンボーディングをリクエストする必要があります。以下のリジョンはPCIコンプライアンスをサポートしています:
 - AWS us-east-1
 - AWS us-west-2

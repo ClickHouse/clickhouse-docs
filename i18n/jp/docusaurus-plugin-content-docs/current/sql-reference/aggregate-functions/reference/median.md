@@ -1,12 +1,12 @@
 ---
 slug: /sql-reference/aggregate-functions/reference/median
 sidebar_position: 167
-title: "中央値"
+title: "median"
 description: "`median*` 関数は対応する `quantile*` 関数のエイリアスです。数値データサンプルの中央値を計算します。"
 ---
 
 
-# 中央値
+# median
 
 `median*` 関数は対応する `quantile*` 関数のエイリアスです。数値データサンプルの中央値を計算します。
 

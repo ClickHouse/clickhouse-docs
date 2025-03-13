@@ -1,7 +1,7 @@
 ---
-title: フォーム
+title: Form
 slug: /interfaces/formats/Form
-keywords: [フォーム]
+keywords: [Form]
 input_format: true
 output_format: false
 alias: []
@@ -14,7 +14,7 @@ alias: []
 
 ## 説明 {#description}
 
-`Form` フォーマットは、データが `key1=value1&key2=value2` 形式でフォーマットされた 
+`Form` フォーマットは、データが `key1=value1&key2=value2` 形式でフォーマットされた
 application/x-www-form-urlencoded フォーマットの単一レコードを読み取るために使用できます。
 
 ## 使用例 {#example-usage}

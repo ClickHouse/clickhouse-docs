@@ -1,4 +1,3 @@
-
 ---
 slug: /architecture/replication
 sidebar_label: フォールトトレランスのためのレプリケーション

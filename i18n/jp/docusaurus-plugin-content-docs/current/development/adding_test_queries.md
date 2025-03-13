@@ -1,55 +1,55 @@
 ---
-slug: /development/adding_test_queries
-sidebar_label: テストクエリの追加
+slug: '/development/adding_test_queries'
+sidebar_label: 'テストクエリの追加'
 sidebar_position: 63
-title: ClickHouse CIにテストクエリを追加する方法
-description: ClickHouseの継続的インテグレーションにテストケースを追加する方法
+title: 'ClickHouse CIにテストクエリを追加する方法'
+description: 'ClickHouse継続的インテグレーションにテストケースを追加する手順'
 ---
 
-ClickHouseには数百（あるいは数千）の機能があります。すべてのコミットは、多数のテストケースを含む複雑なテストセットによってチェックされます。
+ClickHouseには何百、あるいは何千もの機能があります。すべてのコミットには、何千ものテストケースを含む複雑なテストセットがチェックされます。
 
-コア機能は非常によくテストされていますが、一部のコーナーケースや異なる機能の組み合わせは、ClickHouse CIで発見される可能性があります。
+コア機能は非常によくテストされていますが、ClickHouse CIを使用することで隅々まで確認されるコーナーケースや異なる機能の組み合わせがあります。
 
-私たちが目にするバグやリグレッションの大部分は、テストカバレッジが不十分な「グレーエリア」で発生します。
+私たちが見るバグ/リグレッションのほとんどは、テストカバレッジが不十分な「グレーゾーン」で発生します。
 
-私たちは、実際に使用される可能性のあるシナリオや機能の組み合わせをテストでカバーしたいと考えています。
+私たちは、実際の使用状況で使われる可能性のあるシナリオや機能の組み合わせをほとんど網羅するテストをカバーすることに非常に興味があります。
 
 ## なぜテストを追加するのか {#why-adding-tests}
 
-ClickHouseのコードにテストケースを追加するべき理由/タイミング：
-1) 複雑なシナリオや機能の組み合わせを使用している、または広く使用されていないコーナーケースがある
-2) バージョン間で特定の挙動が変更されているのを見た（変更ログで通知なし）
-3) ClickHouseの品質向上を助けたい、または自分が使う機能が今後のリリースで壊れないことを確保したい
-4) テストが追加/承認されると、確認したコーナーケースが偶発的に壊れることはない
-5) 素晴らしいオープンソースコミュニティの一部になれる
-6) あなたの名前が `system.contributors` テーブルに表示される！
-7) 世界を少しでも良くする :)
+ClickHouseのコードにテストケースを追加すべき理由/タイミング：
+1) 複雑なシナリオ/機能の組み合わせを使用する場合/広く使われていない可能性のあるコーナーケースがある場合
+2) バージョン間で特定の動作が変わることに気付いた場合、変更ログに通知がない場合
+3) ClickHouseの品質向上を手助けしたいと思っている場合、将来のリリースで使用する機能が壊れないことを保証したい場合
+4) テストが追加/承認されると、確認しているコーナーケースが偶然壊れることがないと確信できます。
+5) 優れたオープンソースコミュニティの一部となります
+6) あなたの名前が`system.contributors`テーブルに表示されます！
+7) 世界を少し良くします :)
 
-### 実施手順 {#steps-to-do}
+### 手順 {#steps-to-do}
 
 #### 前提条件 {#prerequisite}
 
-Linuxマシンを運用していると仮定します（他のOSでdockerや仮想マシンを使用できます）し、現代的なブラウザ/インターネット接続があり、基本的なLinuxとSQLのスキルを持っている必要があります。
+Linuxマシンを実行していると仮定します（他のOS上でdocker / 仮想マシンを使用できます）し、現代的なブラウザとインターネット接続があり、基礎的なLinuxとSQLのスキルがあります。
 
-特に専門的な知識は必要ありません（C++についてやClickHouse CIの仕組みを知っている必要はありません）。
+高度に専門的な知識は必要ありません（C++を知っている必要はありませんし、ClickHouse CIの動作について何かを知っている必要もありません）。
 
 #### 準備 {#preparation}
 
-1) [GitHubアカウントを作成](https://github.com/join)（まだ持っていない場合）
-2) [gitをセットアップ](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/set-up-git)
+1) [GitHubアカウントを作成する](https://github.com/join)（まだ持っていない場合）
+2) [gitをセットアップする](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/set-up-git)
 ```bash
 
 # Ubuntuの場合
 sudo apt-get update
 sudo apt-get install git
 
-git config --global user.name "John Doe" # あなたの名前を入力
-git config --global user.email "email@example.com" # あなたのメールを入力
+git config --global user.name "John Doe" # あなたの名前に置き換えてください
+git config --global user.email "email@example.com" # あなたのメールアドレスに置き換えてください
 ```
-3) [ClickHouseプロジェクトをフォーク](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo) - [https://github.com/ClickHouse/ClickHouse](https://github.com/ClickHouse/ClickHouse)を開き、右上のフォークボタンを押します：
-![repoをフォークする](https://github-images.s3.amazonaws.com/help/bootcamp/Bootcamp-Fork.png)
+3) [ClickHouseプロジェクトをフォークする](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo) - ただし、[https://github.com/ClickHouse/ClickHouse](https://github.com/ClickHouse/ClickHouse)を開いて、右上のフォークボタンを押します：
+![fork repo](https://github-images.s3.amazonaws.com/help/bootcamp/Bootcamp-Fork.png)
 
-4) あなたのフォークをPCのフォルダにクローンします。例えば `~/workspace/ClickHouse` のように。
+4) フォークをPCのフォルダにクローンします。たとえば、`~/workspace/ClickHouse`
 ```
 mkdir ~/workspace && cd ~/workspace
 git clone https://github.com/<あなたのGitHubユーザー名>/ClickHouse
@@ -68,86 +68,86 @@ git checkout -b name_for_a_branch_with_my_test upstream/master
 
 #### ClickHouseのインストールと実行 {#install--run-clickhouse}
 
-1) `clickhouse-server`をインストールします（[公式ドキュメント](https://clickhouse.com/docs/zh/getting-started/install/)に従ってください）
-2) テスト設定をインストールします（Zookeeperのモック実装を使用し、いくつかの設定を調整します）
+1) `clickhouse-server`をインストールする（[公式ドキュメント](/getting-started/install)に従ってください）
+2) テスト設定をインストールする（Zookeeperモック実装を使用し、いくつかの設定を調整します）
 ```
 cd ~/workspace/ClickHouse/tests/config
 sudo ./install.sh
 ```
-3) clickhouse-serverを実行します
+3) `clickhouse-server`を起動します
 ```
 sudo systemctl restart clickhouse-server
 ```
 
 #### テストファイルの作成 {#creating-the-test-file}
 
-1) テスト番号を見つけます - `tests/queries/0_stateless/`内の最大の番号のファイルを探します
+1) あなたのテスト番号を見つける - `tests/queries/0_stateless/`内で最も大きな番号のファイルを見つけます
 
 ```sh
 $ cd ~/workspace/ClickHouse
 $ ls tests/queries/0_stateless/[0-9]*.reference | tail -n 1
 tests/queries/0_stateless/01520_client_print_query_id.reference
 ```
-現在、テストの最後の番号は `01520` なので、私のテストは `01521` になります。
+現在、テストの最後の番号は`01520`ですので、私のテストの番号は`01521`になります。
 
-2) 次の番号とテストする機能の名前を持つSQLファイルを作成します
+2) 次の番号とテストする機能の名前のSQLファイルを作成します
 
 ```sh
 touch tests/queries/0_stateless/01521_dummy_test.sql
 ```
 
-3) お好みのエディタでSQLファイルを編集します（以下のテスト作成のヒントを参照）
+3) お気に入りのエディタでSQLファイルを編集します（以下のテストの作成に関するヒントを参照してください）
 ```sh
 vim tests/queries/0_stateless/01521_dummy_test.sql
 ```
 
-4) テストを実行し、その結果をリファレンスファイルに格納します：
+4) テストを実行し、その結果を参照ファイルに記録します：
 ```
 clickhouse-client -nm < tests/queries/0_stateless/01521_dummy_test.sql | tee tests/queries/0_stateless/01521_dummy_test.reference
 ```
 
-5) すべてが正しいか確認し、テスト出力が間違っている場合（例えばバグによる）には、テキストエディタを使用してリファレンスファイルを調整します。
+5) すべてが正しいことを確認します。出力が不正確な場合（たとえば、バグによって）、テキストエディタを使用して参照ファイルを調整します。
 
-#### 良いテストを作成する方法 {#how-to-create-a-good-test}
+#### 良いテストの作成方法 {#how-to-create-a-good-test}
 
-- テストは以下の特性を持つべきです：
-	- 最小限 - テストする機能に関連するテーブルのみを作成し、無関係なカラムやクエリの部分を削除します
-	- 高速 - 数秒（できればミリ秒）以内に完了するべきです
-	- 正確 - 機能が動作していない場合は失敗します
-        - 決定論的
-	- アイソレート / ステートレス
-		- 環境に依存しないこと
-		- 可能な限りタイミングに依存しないこと
-- コーナーケース（ゼロ / Null / 空のセット / 例外を投げる）をカバーすることを心がけます
-- クエリがエラーを返すことをテストするために、クエリの後に特別なコメントを入れることができます： `-- { serverError 60 }` または `-- { clientError 20 }`
-- データベースを切り替えてはいけません（必要ない限り）
-- 必要に応じて、同じノードに複数のテーブルレプリカを作成できます
-- 必要な場合にテストクラスタ定義のいずれかを使用できます（system.clustersを参照）
-- 適用可能な場合は `number` / `numbers_mt` / `zeros` / `zeros_mt` などをクエリやデータの初期化に使用します
-- テスト後およびテスト前に作成されたオブジェクトをクリーンアップ（DROP IF EXISTS）します - 汚れた状態を防ぐため
-- 操作の同期モード（ミューテーション、マージなど）を優先します
-- `0_stateless` フォルダ内の他のSQLファイルを例として使用します
-- テストしたい機能/機能の組み合わせに対する既存のテストがないことを確認します
+- テストは以下の条件を満たすべきです
+	- 最小限である - テスト機能に関連するテーブルのみを作成し、無関係なカラムやクエリの部分を削除します。
+	- 迅速である - 数秒（それより短い方が良い）以上かかるべきではありません。
+	- 正当である - 動作しない場合はテストが失敗する。
+        - 決定論的である
+	- 隔離された/ステートレスである
+		- 環境に依存しない
+		- 可能な場合はタイミングに依存しない
+- コーナーケースをカバーするように努める（ゼロ/ Null / 空のセット / 例外をスローする）
+- クエリがエラーを返すことをテストするには、クエリの後に特別なコメントを追加します：`-- { serverError 60 }`または`-- { clientError 20 }`
+- データベースを切り替えない（必要な場合を除いて）
+- 必要に応じて同じノード上に複数のテーブルレプリカを作成できます
+- 必要に応じてテストクラスタ定義の1つを使用します（system.clustersを参照）
+- 該当する場合は、`number` / `numbers_mt` / `zeros` / `zeros_mt`などをクエリに使用してデータを初期化します。
+- テストによって作成されたオブジェクトをクリーンアップします（テスト前にDROP IF EXISTS） - ダーティーな状態がある場合に備えて
+- 操作の同期モードを優先します（変異、マージなど）
+- `0_stateless`フォルダ内の他のSQLファイルを例として使用します。
+- テストしたい機能や機能の組み合わせが既存のテストでカバーされていないことを確認します。
 
-#### テスト名のルール {#test-naming-rules}
+#### テスト命名規則 {#test-naming-rules}
 
-テストを正しく命名することは重要です。そうすれば、clickhouse-testの実行時にいくつかのテストのサブセットをオフにすることができます。
+テストに適切な名前を付けることは重要であり、特定のテストのサブセットをclickhouse-testの呼び出しでオフにできるようにするためです。
 
-| テスター フラグ | テスト名に含めるべき内容 | フラグを追加するタイミング |
+| テスターフラグ | テスト名に含めるべき内容 | フラグを追加するタイミング |
 |---|---|---|
-| `--[no-]zookeeper` | "zookeeper"または"replica" | テストが `ReplicatedMergeTree` ファミリーのテーブルを使用する場合 |
-| `--[no-]shard` | "shard"または"distributed"または"global"| テストが127.0.0.2などへの接続を使用する場合 |
-| `--[no-]long` | "long"または"deadlock"または"race" | テストが60秒以上実行される場合 |
+| `--[no-]zookeeper` | "zookeeper"または"replica" | テストが`ReplicatedMergeTree`ファミリーのテーブルを使用する場合 |
+| `--[no-]shard` | "shard"または"distributed"または"global" | テストが127.0.0.2などへの接続を使用する場合 |
+| `--[no-]long` | "long"または"deadlock"または"race" | テストが60秒を超えて実行される場合 |
 
-#### コミット / プッシュ / PRを作成 {#commit--push--create-pr}
+#### コミット / プッシュ / PRを作成する {#commit--push--create-pr}
 
-1) 変更をコミット＆プッシュします
+1) 変更をコミットしてプッシュします
 ```sh
 cd ~/workspace/ClickHouse
 git add tests/queries/0_stateless/01521_dummy_test.sql
 git add tests/queries/0_stateless/01521_dummy_test.reference
-git commit # 可能な限り適切なコミットメッセージを使用
+git commit # 可能であれば、良いコミットメッセージを使用してください
 git push origin HEAD
 ```
-2) プッシュ中に示されたリンクを使用して、メインリポジトリにPRを作成します
-3) PRのタイトルと内容を調整し、 `Changelog category (leave one)` には `Build/Testing/Packaging Improvement` を保持し、他のフィールドを埋めます。
+2) プッシュ中に表示されたリンクを使用して、メインリポジトリへのPRを作成します。
+3) PRのタイトルと内容を調整し、`Changelog category (leave one)`には`Build/Testing/Packaging Improvement`を維持し、他のフィールドは必要に応じて記入します。

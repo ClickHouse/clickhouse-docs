@@ -1,16 +1,16 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/topk
+slug: '/sql-reference/aggregate-functions/reference/topk'
 sidebar_position: 202
-title: "topK"
-description: "指定されたカラムでおおよそ最も頻繁に出現する値の配列を返します。結果の配列は値自体ではなく、値のおおよその頻度の降順でソートされています。"
+title: 'topK'
+description: '指定されたカラム内の約最も頻繁に出現する値の配列を返します。結果の配列は、値自体ではなく、値の近似頻度の降順にソートされます。'
 ---
 
 
 # topK
 
-指定されたカラムでおおよそ最も頻繁に出現する値の配列を返します。結果の配列は値自体ではなく、値のおおよその頻度の降順でソートされています。
+指定されたカラム内の約最も頻繁に出現する値の配列を返します。結果の配列は、値自体ではなく、値の近似頻度の降順にソートされます。
 
-[Filtered Space-Saving](https://doi.org/10.1016/j.ins.2010.08.024)アルゴリズムを使用してTopKを分析します。このアルゴリズムは、[Parallel Space Saving](https://doi.org/10.1016/j.ins.2015.09.003)からのreduce-and-combineアルゴリズムに基づいています。
+[Filtered Space-Saving](https://doi.org/10.1016/j.ins.2010.08.024) アルゴリズムを実装しており、[Parallel Space Saving](https://doi.org/10.1016/j.ins.2015.09.003) からの reduce-and-combine アルゴリズムに基づいて TopK を分析します。
 
 ``` sql
 topK(N)(column)
@@ -18,15 +18,15 @@ topK(N, load_factor)(column)
 topK(N, load_factor, 'counts')(column)
 ```
 
-この関数は、保証された結果を提供しません。特定の状況では、エラーが発生し、最も頻繁な値ではない頻繁な値を返す可能性があります。
+この関数は、保証された結果を提供しません。特定の状況では、エラーが発生する可能性があり、最も頻繁な値ではない頻繁に出現する値が返されることがあります。
 
-`N < 10`の値を使用することを推奨します。大きな`N`の値ではパフォーマンスが低下します。`N`の最大値は`65536`です。
+`N < 10` の値を使用することをお勧めします。大きな `N` 値ではパフォーマンスが低下します。最大値は `N = 65536` です。
 
 **パラメータ**
 
-- `N` — 返す要素の数。オプショナル。デフォルト値: 10。
-- `load_factor` — 値のために予約されたセルの数を定義します。もしuniq(column) > N * load_factorの場合、topK関数の結果は近似値になります。オプショナル。デフォルト値: 3。
-- `counts` — 結果に近似カウントとエラー値を含めるべきかを定義します。
+- `N` — 返す要素の数。オプション。デフォルト値: 10。
+- `load_factor` — 値のために予約されたセルの数を定義します。もし uniq(column) > N * load_factor の場合、topK 関数の結果は近似値になります。オプション。デフォルト値: 3。
+- `counts` — 結果に近似カウントと誤差値を含めるかどうかを定義します。
 
 **引数**
 
@@ -34,7 +34,7 @@ topK(N, load_factor, 'counts')(column)
 
 **例**
 
-[OnTime](../../../getting-started/example-datasets/ontime.md)データセットを使用し、`AirlineID`カラムで最も頻繁に出現する3つの値を選択します。
+[OnTime](../../../getting-started/example-datasets/ontime.md) データセットを取得し、`AirlineID` カラムで最も頻繁に出現する値のうちの3つを選択します。
 
 ``` sql
 SELECT topK(3)(AirlineID) AS res

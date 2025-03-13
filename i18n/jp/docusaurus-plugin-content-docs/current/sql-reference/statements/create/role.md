@@ -1,11 +1,11 @@
 ---
-slug: /sql-reference/statements/create/role
+slug: '/sql-reference/statements/create/role'
 sidebar_position: 40
-sidebar_label: ROLE
-title: "CREATE ROLE"
+sidebar_label: 'ROLE'
+title: 'CREATE ROLE'
 ---
 
-新しい [ロール](../../../guides/sre/user-management/index.md#role-management)を作成します。ロールは一連の [権限](../../../sql-reference/statements/grant.md#grant-privileges)です。ロールが割り当てられた [ユーザー](../../../sql-reference/statements/create/user.md) は、そのロールのすべての権限を取得します。
+新しい [役割](../../../guides/sre/user-management/index.md#role-management) を作成します。役割は一連の [特権](/sql-reference/statements/grant#granting-privilege-syntax) です。役割が割り当てられた [ユーザー](../../../sql-reference/statements/create/user.md) は、この役割のすべての特権を取得します。
 
 構文:
 
@@ -15,15 +15,15 @@ CREATE ROLE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
     [SETTINGS variable [= value] [MIN [=] min_value] [MAX [=] max_value] [CONST|READONLY|WRITABLE|CHANGEABLE_IN_READONLY] | PROFILE 'profile_name'] [,...]
 ```
 
-## ロールの管理 {#managing-roles}
+## 役割の管理 {#managing-roles}
 
-ユーザーは複数のロールを割り当てられることがあります。ユーザーは [SET ROLE](../../../sql-reference/statements/set-role.md) 文を使用して、割り当てられたロールを任意の組み合わせで適用できます。最終的な権限の範囲は、適用されたすべてのロールの権限の組み合わせとなります。ユーザーアカウントに直接付与された権限がある場合、それもロールによって付与された権限と組み合わされます。
+ユーザーは複数の役割を割り当てられることができます。ユーザーは [SET ROLE](../../../sql-reference/statements/set-role.md) ステートメントを使用して、割り当てられた役割を任意の組み合わせで適用できます。最終的な特権の範囲は、適用されたすべての役割の特権の結合セットです。ユーザーアカウントに直接付与された特権がある場合、それも役割によって付与された特権と組み合わされます。
 
-ユーザーはログイン時に適用されるデフォルトのロールを持つことができます。デフォルトのロールを設定するには、[SET DEFAULT ROLE](../../../sql-reference/statements/set-role.md#set-default-role-statement) 文または [ALTER USER](/sql-reference/statements/alter/user) 文を使用します。
+ユーザーには、ログイン時に適用されるデフォルトの役割を持つことができます。デフォルトの役割を設定するには、[SET DEFAULT ROLE](/sql-reference/statements/set-role#set-default-role) ステートメントまたは [ALTER USER](/sql-reference/statements/alter/user) ステートメントを使用します。
 
-ロールを取り消すには、[REVOKE](../../../sql-reference/statements/revoke.md) 文を使用します。
+役割を取り消すには、[REVOKE](../../../sql-reference/statements/revoke.md) ステートメントを使用します。
 
-ロールを削除するには、[DROP ROLE](../../../sql-reference/statements/drop.md#drop-role-statement) 文を使用します。削除されたロールは、自動的にすべてのユーザーおよびロールから取り消されます。
+役割を削除するには、[DROP ROLE](/sql-reference/statements/drop#drop-role) ステートメントを使用します。削除された役割は、自動的にその役割が割り当てられたすべてのユーザーと役割から取り消されます。
 
 ## 例 {#examples}
 
@@ -32,15 +32,15 @@ CREATE ROLE accountant;
 GRANT SELECT ON db.* TO accountant;
 ```
 
-この一連のクエリは、`db` データベースからデータを読み取る権限を持つロール `accountant` を作成します。
+このクエリのシーケンスは、`db` データベースからデータを読み取る特権を持つ役割 `accountant` を作成します。
 
-ロールをユーザー `mira` に割り当てるには:
+役割をユーザー `mira` に割り当てる:
 
 ``` sql
 GRANT accountant TO mira;
 ```
 
-ロールが割り当てられた後、ユーザーはそれを適用し、許可されたクエリを実行できます。例えば:
+役割が割り当てられた後、ユーザーはそれを適用し、許可されたクエリを実行できます。例えば:
 
 ``` sql
 SET ROLE accountant;

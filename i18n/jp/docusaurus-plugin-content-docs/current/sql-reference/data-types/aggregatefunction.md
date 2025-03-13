@@ -1,23 +1,25 @@
 ---
-slug: /sql-reference/data-types/aggregatefunction
+slug: '/sql-reference/data-types/aggregatefunction'
 sidebar_position: 46
-sidebar_label: AggregateFunction
+sidebar_label: 'AggregateFunction'
+keywords: ['AggregateFunction', 'ClickHouse', 'SQL', 'データベース']
+description: 'Aggregate functions in ClickHouse provide a method for calculating and storing intermediate states.'
 ---
 
 
 # AggregateFunction
 
-集約関数は、実装によって定義された中間状態を持ち、これを `AggregateFunction(...)` データ型にシリアライズしてテーブルに保存することができ、通常は [マテリアライズドビュー](../../sql-reference/statements/create/view.md) を介して行われます。
-集約関数の状態を生成する一般的な方法は、`-State` 接尾辞を付けて集約関数を呼び出すことです。
-将来、集約の最終結果を得るには、同じ集約関数に `-Merge` 接尾辞を使用する必要があります。
+集約関数は、`AggregateFunction(...)` データ型にシリアライズされ、通常は [マテリアライズドビュー](../../sql-reference/statements/create/view.md) を介してテーブルに格納できる実装依存の中間状態を持ちます。
+集約関数の状態を生成する一般的な方法は、`-State` サフィックスを付けて集約関数を呼び出すことです。
+将来的に集約の最終結果を得るには、同じ集約関数を `-Merge` サフィックスを付けて使用する必要があります。
 
-`AggregateFunction(name, types_of_arguments...)` — パラメトリックデータ型です。
+`AggregateFunction(name, types_of_arguments...)` — パラメトリックデータ型。
 
-**パラメーター**
+**パラメータ**
 
-- 集約関数の名前。関数がパラメトリックの場合、パラメーターも指定してください。
+- 集約関数の名前。関数がパラメトリックである場合は、そのパラメータも指定します。
 
-- 集約関数引数の型。
+- 集約関数の引数の型。
 
 **例**
 
@@ -30,13 +32,13 @@ CREATE TABLE t
 ) ENGINE = ...
 ```
 
-[uniq](../../sql-reference/aggregate-functions/reference/uniq.md#agg_function-uniq)、anyIf ([any](../../sql-reference/aggregate-functions/reference/any.md#agg_function-any)+[If](../../sql-reference/aggregate-functions/combinators.md#agg-functions-combinator-if)) および [quantiles](../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles) は ClickHouse でサポートされている集約関数です。
+[uniq](/sql-reference/aggregate-functions/reference/uniq)、anyIf ([any](/sql-reference/aggregate-functions/reference/any)+[If](/sql-reference/aggregate-functions/combinators#-if)) および [quantiles](../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles) は、ClickHouse でサポートされている集約関数です。
 
 ## 使用方法 {#usage}
 
 ### データ挿入 {#data-insertion}
 
-データを挿入するには、集約 `-State` 関数を使用して `INSERT SELECT` を利用します。
+データを挿入するには、集約 `-State` 関数を使って `INSERT SELECT` を使用します。
 
 **関数の例**
 
@@ -45,17 +47,17 @@ uniqState(UserID)
 quantilesState(0.5, 0.9)(SendTiming)
 ```
 
-対応する関数 `uniq` および `quantiles` と対照的に、`-State` 関数は最終値ではなく、状態を返します。言い換えれば、これらは `AggregateFunction` 型の値を返します。
+対応する関数 `uniq` および `quantiles` に対して、`-State` 関数は最終値の代わりに状態を返します。言い換えれば、これらは `AggregateFunction` 型の値を返します。
 
-`SELECT` クエリの結果において、`AggregateFunction` 型の値は ClickHouse の出力形式のすべてに対して実装依存のバイナリ表現を持っています。たとえば、`SELECT` クエリで `TabSeparated` 形式にダンプデータを出力すると、次に `INSERT` クエリを使用してそのダンプを再び読み込むことができます。
+`SELECT` クエリの結果において、`AggregateFunction` 型の値は、すべての ClickHouse 出力形式に対して実装特有のバイナリ表現を持ちます。例えば、`TabSeparated` 形式にダンプされたデータは、`SELECT` クエリを通じて、後で `INSERT` クエリを使用して再ロードできます。
 
 ### データ選択 {#data-selection}
 
-`AggregatingMergeTree` テーブルからデータを選択する際には、`GROUP BY` 句を使用し、データ挿入時と同じ集約関数を、`-Merge` 接尾辞を付けて使用してください。
+`AggregatingMergeTree` テーブルからデータを選択する際は、挿入時に使用したのと同じ集約関数を使用して、`GROUP BY` 句を使いますが、`-Merge` サフィックスを使用します。
 
-`-Merge` 接尾辞付きの集約関数は、状態のセットを受け取り、それらを結合し、完全なデータ集約の結果を返します。
+`-Merge` サフィックス付きの集約関数は、一連の状態を取り、それらを組み合わせて、完全なデータ集約の結果を返します。
 
-たとえば、次の2つのクエリは同じ結果を返します：
+例えば、次の2つのクエリは、同じ結果を返します：
 
 ``` sql
 SELECT uniq(UserID) FROM table
@@ -69,4 +71,4 @@ SELECT uniqMerge(state) FROM (SELECT uniqState(UserID) AS state FROM table GROUP
 
 ## 関連コンテンツ {#related-content}
 
-- ブログ: [ClickHouse における集約コンビネータの使用](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+- ブログ: [ClickHouseにおける集約コンビネータの使用](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

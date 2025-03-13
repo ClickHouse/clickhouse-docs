@@ -1,18 +1,18 @@
 ---
 slug: /sql-reference/aggregate-functions/reference/quantiletimingweighted
 sidebar_position: 181
-title: "quantileTimingWeighted"
-description: "指定された精度で、各シーケンスメンバーの重みを考慮して数値データシーケンスの分位点を計算します。"
+title: 'quantileTimingWeighted'
+description: '指定された精度で、各シーケンスメンバーの重みを考慮して数値データのシーケンスの分位数を計算します。'
 ---
 
 
 # quantileTimingWeighted
 
-指定された精度で、各シーケンスメンバーの重みを考慮して[分位点](https://en.wikipedia.org/wiki/Quantile)を計算します。
+指定された精度で、各シーケンスメンバーの重みを考慮して[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 
-結果は決定論的であり（クエリ処理の順序には依存しません）、ウェブページの読み込み時間やバックエンドの応答時間のような分布を記述するシーケンスの処理に最適化されています。
+結果は決定的です（クエリ処理の順序に依存しません）。この関数は、ウェブページの読み込み時間やバックエンドの応答時間のような分布を表すシーケンスでの作業に最適化されています。
 
-異なるレベルの`quantile*`関数を複数使用する場合、内部状態は結合されません（すなわち、クエリは最適な効率で動作しません）。この場合、[quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)関数を使用してください。
+異なるレベルの`quantile*`関数をクエリで使用する場合、内部状態は結合されません（つまり、クエリは本来よりも効率が悪くなります）。この場合は、[quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)関数を使用してください。
 
 **構文**
 
@@ -20,45 +20,45 @@ description: "指定された精度で、各シーケンスメンバーの重み
 quantileTimingWeighted(level)(expr, weight)
 ```
 
-エイリアス: `medianTimingWeighted`.
+エイリアス: `medianTimingWeighted`。
 
 **引数**
 
-- `level` — 分位点のレベル。オプションのパラメーター。0から1の範囲の定数浮動小数点数。`level`の値は`[0.01, 0.99]`の範囲を推奨します。デフォルト値: 0.5。`level=0.5`では、[中央値](https://en.wikipedia.org/wiki/Median)を計算します。
+- `level` — 分位数のレベル。オプションのパラメーター。0から1の間の定数浮動小数点数。`level`の値は`[0.01, 0.99]`の範囲で使用することを推奨します。デフォルト値: 0.5。`level=0.5`の時に関数は[中央値](https://en.wikipedia.org/wiki/Median)を計算します。
 
-- `expr` — [式](/sql-reference/syntax#expressions)で、カラムの値に対して[Float\*](../../../sql-reference/data-types/float.md)-型の数値を返します。
+- `expr` — [式](/sql-reference/syntax#expressions)で、カラム値の上に浮動小数点数[Float\*](../../../sql-reference/data-types/float.md)-型を返します。
 
-        - 負の値が関数に渡された場合、その動作は未定義です。
-        - 値が30,000を超える場合（ページの読み込み時間が30秒を超える）、30,000として扱われます。
+        - 負の値が関数に渡されると、動作は未定義です。
+        - 値が30,000（ページの読み込み時間が30秒以上）の場合、30,000と見なされます。
 
-- `weight` — シーケンス要素の重みを持つカラム。重みは値の出現回数です。
+- `weight` — シーケンス要素の重さを持つカラム。重さは値の出現回数を表します。
 
 **精度**
 
-計算は次の条件で正確です：
+計算は次の場合に正確です：
 
 - 値の合計数が5670を超えない。
 - 値の合計数が5670を超えるが、ページの読み込み時間が1024ms未満である。
 
-それ以外の場合、計算結果は最も近い16 msの倍数に丸められます。
+それ以外の場合、計算結果は最寄りの16msの倍数に丸められます。
 
 :::note    
-ページ読み込み時間の分位点を計算するために、この関数は[quantile](../../../sql-reference/aggregate-functions/reference/quantile.md#quantile)よりも効果的で正確です。
+ページの読み込み時間の分位数を計算するために、この関数は[quantile](/sql-reference/aggregate-functions/reference/quantile)よりも効果的かつ正確です。
 :::
 
 **戻り値**
 
-- 指定されたレベルの分位点。
+- 指定されたレベルの分位数。
 
-型: `Float32`.
+タイプ: `Float32`。
 
 :::note    
-関数に値が渡されない場合（`quantileTimingIf`を使用する場合）、[NaN](../../../sql-reference/data-types/float.md#data_type-float-nan-inf)が返されます。これは、ゼロになるケースと区別するためのものです。[ORDER BY句](../../../sql-reference/statements/select/order-by.md#select-order-by)には、`NaN`値のソートに関する注意があります。
+関数に値が渡されない場合（`quantileTimingIf`を使用している場合）、[NaN](/sql-reference/data-types/float#nan-and-inf)が返されます。これはゼロとなるケースからこれらのケースを区別するための目的があります。`NaN`値のソートに関する注意は[ORDER BY句](/sql-reference/statements/select/order-by)を参照してください。
 :::
 
 **例**
 
-入力テーブル:
+入力テーブル：
 
 ``` text
 ┌─response_time─┬─weight─┐
@@ -71,13 +71,13 @@ quantileTimingWeighted(level)(expr, weight)
 └───────────────┴────────┘
 ```
 
-クエリ:
+クエリ：
 
 ``` sql
 SELECT quantileTimingWeighted(response_time, weight) FROM t
 ```
 
-結果:
+結果：
 
 ``` text
 ┌─quantileTimingWeighted(response_time, weight)─┐
@@ -88,11 +88,11 @@ SELECT quantileTimingWeighted(response_time, weight) FROM t
 
 # quantilesTimingWeighted
 
-`quantileTimingWeighted`と同じですが、分位点レベルの複数のパラメータを受け取り、複数の分位点値で満たされた配列を返します。
+`quantileTimingWeighted`と同じですが、複数の分位レベルをパラメーターとして受け取り、それらの分位数の多くの値で満たされた配列を返します。
 
 **例**
 
-入力テーブル:
+入力テーブル：
 
 ``` text
 ┌─response_time─┬─weight─┐
@@ -105,13 +105,13 @@ SELECT quantileTimingWeighted(response_time, weight) FROM t
 └───────────────┴────────┘
 ```
 
-クエリ:
+クエリ：
 
 ``` sql
 SELECT quantilesTimingWeighted(0,5, 0.99)(response_time, weight) FROM t
 ```
 
-結果:
+結果：
 
 ``` text
 ┌─quantilesTimingWeighted(0.5, 0.99)(response_time, weight)─┐
@@ -119,7 +119,7 @@ SELECT quantilesTimingWeighted(0,5, 0.99)(response_time, weight) FROM t
 └───────────────────────────────────────────────────────────┘
 ```
 
-**参照**
+**関連項目**
 
-- [median](../../../sql-reference/aggregate-functions/reference/median.md#median)
+- [median](/sql-reference/aggregate-functions/reference/median)
 - [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)

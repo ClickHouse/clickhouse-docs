@@ -1,16 +1,17 @@
 ---
-slug: /guides/developer/debugging-memory-issues
-sidebar_label: メモリ問題のデバッグ
+slug: '/guides/developer/debugging-memory-issues'
+sidebar_label: 'メモリ問題のデバッグ'
 sidebar_position: 1
-description: メモリ問題をデバッグするためのクエリ。
+description: 'メモリの問題をデバッグするためのクエリ。'
+keywords: ['メモリの問題']
 ---
 
 
-# メモリ問題のデバッグ
+# メモリ問題のデバッグ {#debugging-memory-issues}
 
-メモリ問題やメモリリークに遭遇した際、どのクエリやリソースが大量のメモリを消費しているかを把握することが役立ちます。以下は、どのクエリ、データベース、テーブルが最適化できるかを見つけるためのデバッグに役立つクエリです。
+メモリの問題やメモリリークに遭遇した場合、どのクエリやリソースが大量のメモリを消費しているかを知ることは有益です。以下には、最適化できるクエリ、データベース、テーブルを見つけることでメモリ問題をデバッグするのに役立つクエリがまとめられています。
 
-**ピークメモリ使用量別に現在実行中のプロセスをリスト**
+## ピークメモリ使用量で現在実行中のプロセスをリスト表示 {#list-currently-running-processes-by-peak-memory}
 
 ```sql
 SELECT
@@ -24,7 +25,7 @@ ORDER BY peak_memory_usage DESC
 LIMIT 100;
 ```
 
-**メモリ使用量のメトリックをリスト**
+## メモリ使用量のメトリクスをリスト表示 {#list-metrics-for-memory-usage}
 
 ```sql
 SELECT
@@ -38,7 +39,7 @@ order by
     value desc;
 ```
 
-**現在のメモリ使用量別にテーブルをリスト**
+## 現在のメモリ使用量でテーブルをリスト表示 {#list-tables-by-current-memory-usage}
 
 ```sql
 SELECT
@@ -49,25 +50,25 @@ FROM system.tables
 WHERE engine IN ('Memory','Set','Join');
 ```
 
-**マージによって使用される合計メモリを出力**
+## マージによって使用される合計メモリを出力 {#output-total-memory-used-by-merges}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.merges;
 ```
 
-**現在実行中のプロセスによって使用される合計メモリを出力**
+## 現在実行中のプロセスによって使用される合計メモリを出力 {#output-total-memory-used-by-currently-running-processes}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.processes;
 ```
 
-**辞書によって使用される合計メモリを出力**
+## 辞書によって使用される合計メモリを出力 {#output-total-memory-used-by-dictionaries}
 
 ```sql
 SELECT formatReadableSize(sum(bytes_allocated)) FROM system.dictionaries;
 ```
 
-**主キーによって使用される合計メモリを出力**
+## 主キーによって使用される合計メモリを出力 {#output-total-memory-used-by-primary-keys}
 
 ```sql
 SELECT

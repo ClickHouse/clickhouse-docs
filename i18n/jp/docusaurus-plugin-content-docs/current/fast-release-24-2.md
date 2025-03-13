@@ -1,11 +1,12 @@
-
 ---
 slug: /whats-new/changelog/24.2-fast-release
 title: v24.2 チェンジログ
 description: v24.2 のファストリリースチェンジログ
 keywords: [チェンジログ]
 ---
+
 ### ClickHouse リリースタグ: 24.2.2.15987 {#clickhouse-release-tag-242215987}
+
 #### 互換性のない変更 {#backward-incompatible-change}
 * ネストされた型における疑わしい/実験的な型を検証します。以前は、Array/Tuple/Mapのようなネストされた型内でそのような型（JSONを除く）を検証していませんでした。[#59385](https://github.com/ClickHouse/ClickHouse/pull/59385) ([Kruglov Pavel](https://github.com/Avogar)).
 * ソート句 `ORDER BY ALL` (v23.12で導入)は `ORDER BY *` に置き換えられました。以前の構文は、列 `all` を持つテーブルに対してエラーが発生しやすすぎました。[#59450](https://github.com/ClickHouse/ClickHouse/pull/59450) ([Robert Schulze](https://github.com/rschu1ze)).

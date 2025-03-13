@@ -3,7 +3,6 @@ sidebar_label: Redshift
 slug: /integrations/redshift
 description: RedshiftからClickHouseへのデータ移行
 ---
----
 
 import redshiftToClickhouse from '@site/static/images/integrations/data-ingestion/redshift/redshift-to-clickhouse.png';
 import push from '@site/static/images/integrations/data-ingestion/redshift/push.png';

@@ -1,22 +1,21 @@
 ---
-slug: /sql-reference/functions/uniqtheta-functions
+slug: '/sql-reference/functions/uniqtheta-functions'
 sidebar_position: 210
-sidebar_label: uniqTheta
+sidebar_label: 'uniqTheta'
 ---
 
 
 # uniqTheta 関数
 
-uniqTheta 関数は、2つの uniqThetaSketch オブジェクトに対して集合演算の計算（∪ / ∩ / ×）を行い、結果を含む新しい uniqThetaSketch オブジェクトを返します。
+`uniqTheta` 関数は、2つの `uniqThetaSketch` オブジェクトに対して集合演算（∪ / ∩ / ×）を行い、新しい `uniqThetaSketch` オブジェクトを返します。
 
-uniqThetaSketch オブジェクトは、集約関数 uniqTheta と -State によって構築されます。
+`uniqThetaSketch` オブジェクトは、集約関数 `uniqTheta` を使って構築されます。
 
-UniqThetaSketch は近似値の集合を保存するデータ構造です。  
-RoaringBitmap に関する詳細は、[Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html) を参照してください。
+`UniqThetaSketch` は近似値の集合を格納するデータ構造です。RoaringBitmap の詳細については、[Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html) を参照してください。
 
 ## uniqThetaUnion {#uniqthetaunion}
 
-2つの uniqThetaSketch オブジェクトに対して和集合計算（集合演算 ∪）を行い、結果として新しい uniqThetaSketch を返します。
+2つの `uniqThetaSketch` オブジェクトに対して和集合計算（集合演算 ∪）を行い、結果は新しい `uniqThetaSketch` です。
 
 ``` sql
 uniqThetaUnion(uniqThetaSketch,uniqThetaSketch)
@@ -24,7 +23,7 @@ uniqThetaUnion(uniqThetaSketch,uniqThetaSketch)
 
 **引数**
 
-- `uniqThetaSketch` – uniqThetaSketch オブジェクト。
+- `uniqThetaSketch` – `uniqThetaSketch` オブジェクト。
 
 **例**
 
@@ -42,7 +41,7 @@ from
 
 ## uniqThetaIntersect {#uniqthetaintersect}
 
-2つの uniqThetaSketch オブジェクトに対して積集合計算（集合演算 ∩）を行い、結果として新しい uniqThetaSketch を返します。
+2つの `uniqThetaSketch` オブジェクトに対して交差計算（集合演算 ∩）を行い、結果は新しい `uniqThetaSketch` です。
 
 ``` sql
 uniqThetaIntersect(uniqThetaSketch,uniqThetaSketch)
@@ -50,7 +49,7 @@ uniqThetaIntersect(uniqThetaSketch,uniqThetaSketch)
 
 **引数**
 
-- `uniqThetaSketch` – uniqThetaSketch オブジェクト。
+- `uniqThetaSketch` – `uniqThetaSketch` オブジェクト。
 
 **例**
 
@@ -68,7 +67,7 @@ from
 
 ## uniqThetaNot {#uniqthetanot}
 
-2つの uniqThetaSketch オブジェクトに対して a_not_b 計算（集合演算 ×）を行い、結果として新しい uniqThetaSketch を返します。
+2つの `uniqThetaSketch` オブジェクトに対して a_not_b 計算（集合演算 ×）を行い、結果は新しい `uniqThetaSketch` です。
 
 ``` sql
 uniqThetaNot(uniqThetaSketch,uniqThetaSketch)
@@ -76,7 +75,7 @@ uniqThetaNot(uniqThetaSketch,uniqThetaSketch)
 
 **引数**
 
-- `uniqThetaSketch` – uniqThetaSketch オブジェクト。
+- `uniqThetaSketch` – `uniqThetaSketch` オブジェクト。
 
 **例**
 
@@ -92,6 +91,6 @@ from
 └─────────┴───────────────┴───────────────┘
 ```
 
-**参照**
+**関連項目**
 
-- [uniqThetaSketch](../../sql-reference/aggregate-functions/reference/uniqthetasketch.md#agg_function-uniqthetasketch)
+- [uniqThetaSketch](/sql-reference/aggregate-functions/reference/uniqthetasketch)

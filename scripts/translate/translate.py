@@ -1,5 +1,5 @@
 import glob
-import re
+from datetime import datetime
 import sys
 import time
 import xxhash
@@ -11,7 +11,7 @@ import json
 import math
 import shutil
 from openai import OpenAI
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 TRANSLATE_EXCLUDED_FILES = {"about-us/adopters.md", "index.md", "integrations/language-clients/java/jdbc-v1.md"}
 TRANSLATE_EXCLUDED_FOLDERS = {"whats-new", "changelogs"}
@@ -69,6 +69,10 @@ def read_file_hash(input_path):
     except FileNotFoundError:
         return ""
 
+def write_complete_file(output_path):
+    timestamp = datetime.utcnow().isoformat()  #
+    with open(output_path, "w") as f:
+        f.write(timestamp + "\n")
 
 def translate_text(config, text, model="gpt-4o-mini"):
     language = config["language"]
@@ -82,6 +86,7 @@ def translate_text(config, text, model="gpt-4o-mini"):
             - Ensure the markdown is MDX 3 compatible - escaping < and > with &lt; and &gt; and avoiding the creation of unclosed xml tags.
             - Do not add new code delimiters which are not present in the original content e.g. '```html', even if the content appears to contain this type.
             - Do not translate terms which indicate setting names. These are denoted by lower case and underscore e.g. live_view_heartbeat_interval.
+            - Translate the title, sidebar_label, keywords (list of single quoted strings) and description in yaml metadata blocks if they exist. Ensure these are wrapped in single quotes. Do not add entries.
             - This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. 
             - Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}.
         """
@@ -115,8 +120,7 @@ def split_text(text, input_file_path, max_chunk_size=MAX_CHUNK_SIZE):
         if len(current_chunk) + len(node_text) > max_chunk_size:
             chunks.append(current_chunk.strip())
             if len(node_text)  > max_chunk_size: # can happen if no obvious header splits
-                print(f"Error: unable to split ${input_file_path} - no clear split")
-                os.exit(1)
+                raise Exception(f"Error: unable to split ${input_file_path} - no clear split")
             else:
                 current_chunk = node_text
         else:
@@ -128,7 +132,7 @@ def split_text(text, input_file_path, max_chunk_size=MAX_CHUNK_SIZE):
     return chunks
 
 def translate_file(config, input_file_path, output_file_path, model):
-    print(f"start translation: input[{input_file_path}], output[{output_file_path}]")
+    print(f"Starting translation: input[{input_file_path}], output[{output_file_path}]")
     start_time = time.time()
 
     try:
@@ -167,92 +171,108 @@ def translate_file(config, input_file_path, output_file_path, model):
                     continue
                 output_file.write(line + "\n")
 
-        # Rename output file with .translate suffix to .translated
+        # Rename output file with .translate suffix to .translated - do this to help with debugging during a translation and if updating
+        # Note: this could be removed and we just rename the file to the target, write the hash
         os.rename(output_file_path, f"{output_file_path}d")
-        # generate hash file
+        # generate hash file - TODO: This should probably happen after the files being renamed.
         write_file_hash(input_file_path, output_file_path.removesuffix(".translate") + ".hash", chunk_size=65536)
 
     except FileNotFoundError:
         print(f"no file: {input_file_path}")
     except Exception as e:
-        print(f"error occurred: {e}")
+        raise e
 
     end_time = time.time()
     duration = end_time - start_time
     print(
-        f"finished translation: input[{input_file_path}], output[{output_file_path}d], duration seconds[{duration:.2f}]")
+        f"Finished translation: input[{input_file_path}], output[{output_file_path}d], duration seconds[{duration:.2f}]")
 
 
 def translate_docs_folder(config, input_folder, output_folder, model="gpt-4o-mini", overwrite=False):
-    # tracks all the files which should have translations
+    """Translates Markdown and MDX files in the input folder while handling exclusions and errors safely."""
     files_translated = set()
+
     with ThreadPoolExecutor(max_workers=5) as executor:
         futures = []
-        for root, _, files in os.walk(input_folder):
-            relative_folder_path = os.path.relpath(root, input_folder)
-            if any(relative_folder_path.startswith(ignore) for ignore in IGNORE_FOLDERS):
-                print(f"Ignoring folder: {relative_folder_path}")
-                continue
-            if any(excluded in relative_folder_path for excluded in TRANSLATE_EXCLUDED_FOLDERS):
-                print(f"Skipping translation due to excluded folder target: {relative_folder_path}")
-                shutil.copytree(os.path.join(input_folder, relative_folder_path),
-                                os.path.join(output_folder, relative_folder_path), dirs_exist_ok=True)
+        try:
+            for root, _, files in os.walk(input_folder):
+                relative_folder_path = os.path.relpath(root, input_folder)
+
+                if any(relative_folder_path.startswith(ignore) for ignore in IGNORE_FOLDERS):
+                    print(f"Ignoring folder: {relative_folder_path}")
+                    continue
+
+                if any(excluded in relative_folder_path for excluded in TRANSLATE_EXCLUDED_FOLDERS):
+                    print(f"Skipping translation due to excluded folder target: {relative_folder_path}")
+                    shutil.copytree(
+                        os.path.join(input_folder, relative_folder_path),
+                        os.path.join(output_folder, relative_folder_path),
+                        dirs_exist_ok=True
+                    )
+                    for file in files:
+                        input_file_path = os.path.join(root, file)
+                        relative_path = os.path.relpath(input_file_path, input_folder)
+                        files_translated.add(os.path.join(output_folder, relative_path))
+                    continue
+
                 for file in files:
                     input_file_path = os.path.join(root, file)
                     relative_path = os.path.relpath(input_file_path, input_folder)
-                    files_translated.add(os.path.join(output_folder, relative_path))
-                continue
-            for file in files:
-                input_file_path = os.path.join(root, file)
-                relative_path = os.path.relpath(input_file_path, input_folder)
-                if file.endswith((".md", ".mdx")):
-                    files_translated.add(os.path.join(output_folder, relative_path))
-                    current_hash = hash_file(input_file_path)
-                    if os.path.exists(os.path.join(output_folder, relative_path)):
-                        new_hash = read_file_hash(f"{os.path.join(output_folder, relative_path)}.hash")
-                        if not overwrite and new_hash == current_hash:
-                            print(f"Skipping translation as file hasn't changed: {input_file_path}")
-                            continue
-                    # Skip files that are in the excluded files set
-                    if relative_path in TRANSLATE_EXCLUDED_FILES:
-                        output_file_path = os.path.join(output_folder, relative_path)
-                        print(f"Skipping translation due to exclusion target: {input_file_path}")
-                        shutil.copy(input_file_path, output_file_path)
-                        continue
-                    # Skip files that already have the translated suffix - allows continuing from failed point
-                    if os.path.exists(os.path.join(output_folder, relative_path + ".translated")):
-                        print(f"Skipping ${input_file_path} translation due to already translated file")
-                        continue
-                    # re-do files partially through translation
-                    if os.path.exists(os.path.join(output_folder, relative_path + ".translate")):
-                        os.remove(os.path.join(output_folder, relative_path + ".translate"))
 
-                    output_file_path = os.path.join(output_folder, relative_path + ".translate")
-                    os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
-                    # Submit the translation task to be run in parallel
-                    futures.append(executor.submit(translate_file, config, input_file_path, output_file_path, model))
-                elif not file.endswith(".DS_Store"):
-                    # symlink these files as we want to update in a single place
-                    try:
+                    if file.endswith((".md", ".mdx")):
+                        files_translated.add(os.path.join(output_folder, relative_path))
+                        current_hash = hash_file(input_file_path)
                         output_file_path = os.path.join(output_folder, relative_path)
-                        files_translated.add(output_file_path)
+
                         if os.path.exists(output_file_path):
-                            if overwrite:
-                                os.remove(output_file_path)  # Remove existing file/link before creating symlink
-                            else:
+                            new_hash = read_file_hash(output_file_path + ".hash")
+                            if not overwrite and new_hash == current_hash:
+                                print(f"Skipping unchanged file: {input_file_path}")
                                 continue
+
+                        if relative_path in TRANSLATE_EXCLUDED_FILES:
+                            print(f"Skipping translation due to exclusion: {input_file_path}")
+                            shutil.copy(input_file_path, output_file_path)
+                            continue
+
+                        if os.path.exists(output_file_path + ".translated"):
+                            print(f"Skipping already translated file: {input_file_path}")
+                            continue
+
+                        if os.path.exists(output_file_path + ".translate"):
+                            os.remove(output_file_path + ".translate")
+
                         os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
-                        print(f"WARNING: Copying file {relative_path}")
-                        shutil.copy(input_file_path, output_file_path)
-                        print(f" - Copied file: {output_file_path} -> {input_file_path}")
-                    except OSError as e:
-                        print(f" - Failed to copy file: {input_file_path} -> {output_file_path}, Error: {e}")
+                        futures.append(
+                            executor.submit(translate_file, config, input_file_path, output_file_path + ".translate",
+                                            model))
 
-        # Wait for all futures to complete
-        for future in futures:
-            future.result()
+                    elif not file.endswith(".DS_Store"):
+                        try:
+                            output_file_path = os.path.join(output_folder, relative_path)
+                            files_translated.add(output_file_path)
+                            if os.path.exists(output_file_path) and not overwrite:
+                                continue
+                            os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
+                            print(f"WARNING: Copying file {relative_path}")
+                            shutil.copy(input_file_path, output_file_path)
+                            print(f" - Copied file: {output_file_path} -> {input_file_path}")
+                        except OSError as e:
+                            print(f" - Failed to copy file: {input_file_path} -> {output_file_path}, Error: {e}")
+
+            # Monitor futures and exit if any thread fails
+            for future in as_completed(futures):
+                try:
+                    future.result()
+                except Exception as e:
+                    print(f"Error occurred: {e}", file=sys.stderr)
+                    executor.shutdown(wait=False)
+                    sys.exit(1)  # Exit immediately
+
+        finally:
+            executor.shutdown(wait=True)  # Ensure cleanup before exiting
+
     return files_translated
-
 
 def rename_translated_files(output_folder):
     for root, _, files in os.walk(output_folder):
@@ -277,7 +297,7 @@ def translate_plugin_data(output_folder, config, model="gpt-4o-mini"):
     language = config["language"]
     glossary = config["glossary"]
     prompt = f"""
-    Translate the following Docusaurus translation file from English to {language}. This content is JSON. Please preserve the structure and only translate values for the  message keys. Ensure the response is JSON only and preserve any translated values.  Do not translate description values.
+    Translate the following Docusaurus translation file from English to {language}. This content is JSON. Please preserve the structure and only translate values for the  message keys. Ensure the response is JSON only and preserve any translated values.  Do not translate description values. If values are already translated preserve them.
 
     This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}.
     """
@@ -285,27 +305,30 @@ def translate_plugin_data(output_folder, config, model="gpt-4o-mini"):
     glossary_prompt = format_glossary_prompt(glossary)
     prompt_content = f"{glossary_prompt}\n{prompt}"
     for file_path in json_files:
-        print(f"processing config {file_path}")
-        with open(file_path, "r", encoding="utf-8") as f:
-            text = json.load(f)
-            try:
-                completion = client.chat.completions.create(
-                    model=model,
-                    messages=[
-                        {"role": "system", "content": prompt_content},
-                        {"role": "user", "content": json.dumps(text)},
-                    ],
-                    response_format={"type": "json_object"}
-                )
-                translated_text = completion.choices[0].message.content
-                translated_config = json.loads(translated_text)
-                with open(file_path + ".translated", "w", encoding="utf-8") as output_file:
-                    output_file.write(json.dumps(translated_config, indent=2, ensure_ascii=False))
-                os.rename(file_path + ".translated", file_path)
-            except Exception as e:
-                print(f"failed to translate: {e}")
-                raise e
-
+        if not os.path.exists(file_path + ".done"):
+            print(f"processing config {file_path}")
+            with open(file_path, "r", encoding="utf-8") as f:
+                text = json.load(f)
+                try:
+                    completion = client.chat.completions.create(
+                        model=model,
+                        messages=[
+                            {"role": "system", "content": prompt_content},
+                            {"role": "user", "content": json.dumps(text)},
+                        ],
+                        response_format={"type": "json_object"}
+                    )
+                    translated_text = completion.choices[0].message.content
+                    translated_config = json.loads(translated_text)
+                    with open(file_path + ".translated", "w", encoding="utf-8") as output_file:
+                        output_file.write(json.dumps(translated_config, indent=2, ensure_ascii=False))
+                    os.rename(file_path + ".translated", file_path)
+                    write_complete_file(file_path + ".done")
+                except Exception as e:
+                    print(f"failed to translate: {e}")
+                    raise e
+        else:
+            print(f"skipping config {file_path} as .done exists")
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 default_input_folder = os.path.abspath(os.path.join(script_dir, "../../docs/"))
@@ -349,10 +372,10 @@ def main():
     args = parser.parse_args()
 
     config = load_config(args.config)
-    # translate_plugin_data(args.output_folder, config, model=args.model)
+    translate_plugin_data(args.output_folder, config, model=args.model)
     files_translated = translate_docs_folder(config, args.input_folder,
-                          os.path.join(args.output_folder, "docusaurus-plugin-content-docs/current"),
-                          args.model, overwrite=args.force_overwrite)
+                                             os.path.join(args.output_folder, "docusaurus-plugin-content-docs/current"),
+                                             args.model, overwrite=args.force_overwrite)
     rename_translated_files(args.output_folder)
     remove_old_files(files_translated, os.path.join(args.output_folder, "docusaurus-plugin-content-docs/current"))
 

@@ -1,7 +1,7 @@
 ---
-title: BYOC (Bring Your Own Cloud) for AWS
+title: AWS向けBYOC（Bring Your Own Cloud）
 slug: /cloud/reference/byoc
-sidebar_label: BYOC (Bring Your Own Cloud)
+sidebar_label: BYOC（お客様クラウド環境の活用）
 keywords: [BYOC, cloud, bring your own cloud]
 description: ClickHouseを独自のクラウドインフラストラクチャにデプロイします
 ---
@@ -26,7 +26,7 @@ BYOC (Bring Your Own Cloud) は、独自のクラウドインフラストラク�
 
 BYOCは現在、AWSのみでサポートされており、GCPとMicrosoft Azureは開発中です。
 
-:::note 
+:::note
 BYOCは大規模なデプロイメント専用に設計されており、顧客には契約の締結が求められます。
 :::
 

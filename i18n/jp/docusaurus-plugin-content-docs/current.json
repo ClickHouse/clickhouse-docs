@@ -228,28 +228,28 @@
     "message": "CSV"
   },
   "sidebar.integrations.category.CustomSeparated": {
-    "message": "カスタム区切り"
+    "message": "CustomSeparated"
   },
   "sidebar.integrations.category.LineAsString": {
-    "message": "行として文字列"
+    "message": "LineAsString"
   },
   "sidebar.integrations.category.Parquet": {
     "message": "Parquet"
   },
   "sidebar.integrations.category.Pretty": {
-    "message": "整形"
+    "message": "Pretty"
   },
   "sidebar.integrations.category.Protobuf": {
     "message": "Protobuf"
   },
   "sidebar.integrations.category.RowBinary": {
-    "message": "行バイナリ"
+    "message": "RowBinary"
   },
   "sidebar.integrations.category.TabSeparated": {
-    "message": "タブ区切り"
+    "message": "TabSeparated"
   },
   "sidebar.integrations.category.Template": {
-    "message": "テンプレート"
+    "message": "Template"
   },
   "sidebar.integrations.category.Data Ingestion": {
     "message": "データ取り込み"

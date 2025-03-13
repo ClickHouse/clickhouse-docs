@@ -5,7 +5,7 @@ title: Kinesis ロールベースのアクセス
 ---
 
 import secure_kinesis from '@site/static/images/integrations/data-ingestion/clickpipes/securekinesis.jpg';
-import secures3_arn from '@site/static/images/cloud/security/secures3_arn.jpg';
+import secures3_arn from '@site/static/images/cloud/security/secures3_arn.png';
 
 この記事では、ClickPipes の顧客がロールベースのアクセスを利用して Amazon Kinesis に認証し、安全にデータストリームにアクセスする方法を示します。
 

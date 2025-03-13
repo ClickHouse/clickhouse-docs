@@ -1,4 +1,3 @@
-
 ---
 sidebar_label:  ゴー
 sidebar_position: 1

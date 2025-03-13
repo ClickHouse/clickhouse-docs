@@ -9,7 +9,7 @@ import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';
 
 ## 基本的な例 {#basic-example}
 
-ClickHouseでは、馴染みのある `INSERT INTO TABLE` コマンドを使用できます。最初のガイド ["Creating Tables in ClickHouse"](./creating-tables) で作成したテーブルにデータを挿入してみましょう。
+ClickHouseでは、馴染みのある `INSERT INTO TABLE` コマンドを使用できます。最初のガイド ["ClickHouseでのテーブルの作成"](./creating-tables) で作成したテーブルにデータを挿入してみましょう。
 
 ```sql
 INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES

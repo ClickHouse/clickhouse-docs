@@ -9,8 +9,6 @@ fi
 # otherwise it will fail not being able to find the files it needs which
 # are copied to scripts/tmp and configured in package.json -> "autogen_settings_needed_files"
 
-set -x
-
 if command -v curl >/dev/null 2>&1; then
   echo "curl is installed"
 else
@@ -33,7 +31,7 @@ script_path="$tmp_dir/$script_filename"
 # Install ClickHouse
 if [ ! -f "$script_path" ]; then
   echo -e "[$SCRIPT_NAME] Installing ClickHouse binary\n"
-  curl https://clickhouse.com/ | sh
+  curl -s https://clickhouse.com/ | sh &> /dev/null
 fi
 
 if [[ ! -f "$script_path" ]]; then
@@ -106,7 +104,7 @@ title: Session Settings
 sidebar_label: Session Settings
 slug: /operations/settings/settings
 toc_max_heading_level: 2
-description: Settings which are found in the `system.settings` table. 
+description: Settings which are found in the ``system.settings`` table.
 ---
 
 import ExperimentalBadge from \'@theme/badges/ExperimentalBadge\';
@@ -130,4 +128,3 @@ echo "[$SCRIPT_NAME] Auto-generation of settings markdown pages completed succes
 rm -rf "$tmp_dir"/{settings-formats.md,settings.md,FormatFactorySettings.h,Settings.cpp,clickhouse}
 
 echo "[$SCRIPT_NAME] Autogenerating settings completed"
-

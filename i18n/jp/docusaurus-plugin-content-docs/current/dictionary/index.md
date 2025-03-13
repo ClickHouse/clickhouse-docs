@@ -1,7 +1,7 @@
 ---
 slug: /dictionary
-title: Dictionary
-keywords: [dictionary, dictionaries]
+title: 辞書
+keywords: [辞書, 辞書]
 description: ディクショナリーは、データのキーと値の表現を提供し、高速なルックアップを実現します。
 ---
 
@@ -9,7 +9,7 @@ import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-ca
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 
 
-# Dictionary
+# 辞書
 
 ClickHouse のディクショナリーは、さまざまな [内部および外部ソース](/sql-reference/dictionaries#dictionary-sources) からのデータのインメモリ [キーと値](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 表現を提供し、超低遅延のルックアップクエリを最適化します。
 
