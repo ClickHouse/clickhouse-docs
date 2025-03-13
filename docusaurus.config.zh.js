@@ -15,6 +15,10 @@ function skipIndex(items) {
 const config = {
   scripts: [
     {
+      src: "/docs/zh/js/kapa_config.js",
+      async: false,
+    },
+    {
       src: "https://widget.kapa.ai/kapa-widget.bundle.js",
       "data-website-id": "c0b5f156-1e92-49df-8252-adacc9feb21b",
       "data-project-name": "ClickHouse",
@@ -43,7 +47,7 @@ const config = {
   },
   title: "ClickHouse Docs",
   tagline:
-      "我们提供文档、快速入门指南、用户指南、技术参考、常见问题解答等多种信息。",
+    "我们提供文档、快速入门指南、用户指南、技术参考、常见问题解答等多种信息。",
   url: "https://clickhouse.com",
   // url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
   baseUrl: "/docs/zh/",
