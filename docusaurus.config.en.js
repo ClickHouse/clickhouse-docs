@@ -15,6 +15,10 @@ function skipIndex(items) {
 const config = {
   scripts: [
     {
+      src: "/docs/js/kapa_config.js",
+      async: false,
+    },
+    {
       src: "https://widget.kapa.ai/kapa-widget.bundle.js",
       "data-website-id": "c0b5f156-1e92-49df-8252-adacc9feb21b",
       "data-project-name": "ClickHouse",
