@@ -931,5 +931,14 @@
   "sidebar.dropdownCategories.category.About.Development and Contributing.description": {
     "message": "ClickHouse に貢献する方法を学ぶ",
     "description": "Learn how to contribute to ClickHouse"
+  },
+  "This documentation is translated with the help of AI": {
+    "message": "このドキュメントはAIの助けを借りて翻訳されています。"
+  },
+  "Spotted a translation issue? Help us to improve it by reporting translation issues.": {
+    "message": "翻訳の問題を発見しましたか？翻訳問題を報告して、改善にご協力ください。"
+  },
+  "Report an issue": {
+    "message": "問題を報告する"
   }
 }

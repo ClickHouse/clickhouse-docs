@@ -7,3 +7,4 @@ title: Cloud Release Notes
      using https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh
      If you've spotted an error, please edit the frontmatter of the pages themselves.
 -->
+
