@@ -2,8 +2,6 @@ name: Translation Issue Report
 description: File a report for translated documentation.
 title: "[translation issue]: "
 labels: ["translation issue"]
-assignees:
-  - @ClickHouse/docs
 body:
   - type: markdown
     attributes:

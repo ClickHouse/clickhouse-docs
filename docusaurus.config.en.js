@@ -49,27 +49,22 @@ const config = {
   // url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
   baseUrl: "/docs/",
   baseUrlIssueBanner: true,
-  onBrokenLinks: "warn",
+  onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   onDuplicateRoutes: "throw",
-  onBrokenAnchors: "warn",
+  onBrokenAnchors: "throw",
   favicon: "img/docs_favicon.ico",
   organizationName: "ClickHouse",
   trailingSlash: false,
   i18n: {
     defaultLocale: "en",
-    locales: ["ru", "en", "jp", "zh"],
+    locales: ["en", "jp", "zh"],
     path: "i18n",
     localeConfigs: {
       en: {
         label: "English",
         htmlLang: "en",
         path: "en",
-      },
-      ru: {
-        label: "Русский",
-        htmlLang: "ru",
-        path: "ru",
       },
       jp: {
         label: "日本語",
@@ -289,15 +284,6 @@ const config = {
         respectPrefersColorScheme: true,
         defaultMode: "dark",
       },
-      /*      announcementBar: {
-        id: 'support_us',
-        content:
-        'Check out our new 25-minute video on <a href="https://clickhouse.com/company/events/getting-started-with-clickhouse/" target="_blank"> Getting Started with ClickHouse</a>',
-        backgroundColor: '#0057b7',
-        textColor: '#ffffff',
-        isCloseable: false,
-      },
-    */
     }),
 
   plugins: [
