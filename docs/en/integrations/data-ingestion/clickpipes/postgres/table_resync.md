@@ -1,7 +1,7 @@
 ---
 title: Resyncing Specific Tables
 description: Resyncing specific tables in a Postgres ClickPipe
-slug: /en/integrations/clickpipes/postgres/table_resync
+slug: /integrations/clickpipes/postgres/table_resync
 ---
 
 # Resyncing specific tables {#resync-tables}
