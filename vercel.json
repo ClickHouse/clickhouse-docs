@@ -12,10 +12,6 @@
   },
   "redirects": [
     {
-      "source": "/docs/en/:path*",
-      "destination": "/docs/:path*"
-    },
-    {
       "source": "/docs/en/docs/en/cloud/manage/service-types",
       "destination": "/docs/cloud/manage/cloud-tiers",
       "permanent": true
@@ -3224,6 +3220,10 @@
       "source": "/docs/faq/general/why-clickhouse-is-so-fast",
       "destination": "/docs/concepts/why-clickhouse-is-so-fast",
       "permanent": true
+    },
+    {
+      "source": "/docs/en/:path*",
+      "destination": "/docs/:path*"
     }
   ]
 }
