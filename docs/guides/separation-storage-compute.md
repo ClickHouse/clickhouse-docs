@@ -5,6 +5,7 @@ slug: /guides/separation-storage-compute
 title: 'Separation of Storage and Compute'
 description: 'This guide explores how you can use ClickHouse and S3 to implement an architecture with separated storage and compute.'
 ---
+
 import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
 
