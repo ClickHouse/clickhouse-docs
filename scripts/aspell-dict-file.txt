@@ -828,3 +828,7 @@ Gcssvg
 nifi
 --docs/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md--
 airbyte
+--docs/use-cases/time-series/query-performance.md--
+subproject
+--docs/use-cases/time-series/analysis-functions.md--
+Yankovic's
