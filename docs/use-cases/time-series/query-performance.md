@@ -8,11 +8,13 @@ keywords: [time-series]
 
 # Time-Series query performance
 
+After optimizing storage, the next step is improving query performance. 
+This section explores two key techniques: optimizing `ORDER BY` keys and using materialized views. 
+We'll see how these approaches can reduce query times from seconds to milliseconds.
 
 ## Optimize ORDER BY keys
 
-
-Before attempting other optimizations, users should optimize their ordering key to ensure ClickHouse produces the fastest possible results. 
+Before attempting other optimizations, you should optimize their ordering key to ensure ClickHouse produces the fastest possible results. 
 Choosing the key right largely depends on the queries you’re going to run. Suppose most of our queries filter by `project` and `subproject` columns. 
 In this case, its a good idea to add them to the ordering key - as well as the time column since we query on time as well:
 
