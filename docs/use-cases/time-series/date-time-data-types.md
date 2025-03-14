@@ -66,7 +66,7 @@ precise_datetime:      2025-03-12 11:39:07.196
 very_precise_datetime: 2025-03-12 11:39:07.196724000
 ```
 
-## Timezones
+## Timezones {#time-series-timezones}
 
 Many use cases require having timezones stored as well. We can set the timezone as the last argument to the `DateTime` or `DateTime64` types:
 
@@ -134,7 +134,7 @@ In the second row, we inserted all the values without a timezone, so the server'
 As in the first row, `dt_1` and `dt_3` are converted to `Europe/Berlin`, while `dt_2` and `dt64_2` use the server's local time zone.
 
 
-## Date and time functions
+## Date and time functions {#time-series-date-time-functions}
 
 ClickHouse also comes with a set of functions that let us convert between the different data types.
 

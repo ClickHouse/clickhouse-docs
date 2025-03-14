@@ -18,7 +18,7 @@ When working with time series data, you'll typically encounter three main types 
 Common analysis patterns for these metrics include comparing values between periods, calculating cumulative totals, determining rates of change, and analyzing distributions. 
 These can all be achieved through combinations of aggregations, window functions like `sum() OVER`, and specialized functions like `histogram()`.
 
-## Period-over-period changes
+## Period-over-period changes {#time-series-period-over-period-changes}
 
 When analyzing time series data, we often need to understand how values change between time periods. 
 This is essential for both gauge and counter metrics. 
@@ -54,7 +54,7 @@ LIMIT 10;
 └────────────┴──────┴──────┴───────┘
 ```
 
-## Cumulative values
+## Cumulative values {#time-series-cumulative-values}
 
 Counter metrics naturally accumulate over time. 
 To analyze this cumulative growth, we can calculate running totals using window functions.
@@ -89,7 +89,7 @@ LIMIT 10;
 └────────────┴──────┴───────┴───────────────────┘
 ```
 
-## Rate calculations
+## Rate calculations {#time-series-rate-calculations}
 
 When analyzing time series data, it's often useful to understand the rate of events per unit of time. 
 This query calculates the rate of page views per second by dividing hourly totals by the number of seconds in an hour (3600). 
@@ -124,7 +124,7 @@ LIMIT 10;
 └─────────────────────┴─────┴──────┴───────┘
 ```
 
-## Histograms
+## Histograms {#time-series-histograms}
 
 A popular use case for time series data is to build histograms based on tracked events. 
 Suppose we wanted to understand the distribution of a number of pages based on their total hits, only including pages that have over 10,000 hits.

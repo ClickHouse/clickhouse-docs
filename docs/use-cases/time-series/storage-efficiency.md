@@ -11,7 +11,7 @@ keywords: [time-series]
 After exploring how to query our Wikipedia statistics dataset, let's focus on optimizing its storage efficiency in ClickHouse. 
 This section demonstrates practical techniques to reduce storage requirements while maintaining query performance.
 
-## Type optimization
+## Type optimization {#time-series-type-optimization}
 
 The general approach to optimizing storage efficiency is using optimal data types. 
 Let’s take the `project` and `subproject` columns. These columns are of type String, but have a relatively small amount of unique values:
@@ -60,7 +60,7 @@ MODIFY COLUMN `hits` UInt32;
 
 This will reduce the size of this column in memory by at least 2 times. Note that the size on disk will remain unchanged due to compression. But be careful, pick data types that are not too small!
 
-## Specialized codecs
+## Specialized codecs {#time-series-specialized-codecs}
 
 When we deal with sequential data, like time-series, we can further improve storage efficiency by using special codecs. 
 The general idea is to store changes between values instead of absolute values themselves, which results in much less space needed when dealing with slowly changing data:

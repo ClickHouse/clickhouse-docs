@@ -12,7 +12,7 @@ After optimizing storage, the next step is improving query performance.
 This section explores two key techniques: optimizing `ORDER BY` keys and using materialized views. 
 We'll see how these approaches can reduce query times from seconds to milliseconds.
 
-## Optimize ORDER BY keys
+## Optimize ORDER BY keys {#time-series-optimize-order-by}
 
 Before attempting other optimizations, you should optimize their ordering key to ensure ClickHouse produces the fastest possible results. 
 Choosing the key right largely depends on the queries you’re going to run. Suppose most of our queries filter by `project` and `subproject` columns. 
@@ -107,8 +107,7 @@ LIMIT 10;
     </tbody>
 </table>
 
-## Materialized views
-
+## Materialized views {#time-series-materialized-views}
 
 Another option is to use materialized views to aggregate and store the results of popular queries. These results can be queried instead of the original table. Suppose the following query is executed quite often in our case:
 

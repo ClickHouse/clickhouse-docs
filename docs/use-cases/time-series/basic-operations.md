@@ -38,7 +38,7 @@ FROM s3('https://ClickHouse-public-datasets.s3.amazonaws.com/wikistat/partitione
 LIMIT 1e9;
 ```
 
-## Aggregating by time bucket
+## Aggregating by time bucket  {#time-series-aggregating-time-bucket}
 
 The most popular requirement is to aggregate data based on periods, e.g. get the total amount of hits for each day:
 
@@ -89,7 +89,7 @@ LIMIT 5;
 The [`toStartOfHour()`](/docs/sql-reference/functions/date-time-functions#tostartofhour) function used here converts the given time to the start of the hour. 
 You can also group by year, quarter, month, or day.
 
-## Custom grouping intervals
+## Custom grouping intervals {#time-series-custom-grouping-intervals}
 
 We can even arbitrary intervals, e.g., 5 minutes using the [`toStartOfInterval()`](/docs/sql-reference/functions/date-time-functions#tostartofinterval) function. 
 
@@ -133,9 +133,7 @@ Either way, we get the following results:
 └─────────────────────┴─────────┘
 ```
 
-
-
-## Filling empty groups
+## Filling empty groups {#time-series-filling-empty-groups}
 
 In a lot of cases we deal with sparse data with some absent intervals. This results in empty buckets. Let’s take the following example where we group data by 1-hour intervals. This will out the following stats with some hours missing values:
 
@@ -215,7 +213,7 @@ ORDER BY hour ASC WITH FILL STEP toIntervalHour(1);
 └─────────────────────┴───────────┘
 ```
 
-## Rolling time windows
+## Rolling time windows {#time-series-rolling-time-windows}
 
 Sometimes, we don’t want to deal with the start of intervals (like the start of the day or an hour) but window intervals. 
 Let’s say we want to understand the total hits for a window, not based on days but on a 24-hour period offset from 6 pm. 
