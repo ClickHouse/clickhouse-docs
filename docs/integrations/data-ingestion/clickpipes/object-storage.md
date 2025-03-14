@@ -4,6 +4,7 @@ description: 'Seamlessly connect your object storage to ClickHouse Cloud.'
 slug: /integrations/clickpipes/object-storage
 title: 'Integrating Object Storage with ClickHouse Cloud'
 ---
+
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
 import Gcssvg from '@site/static/images/integrations/logos/gcs.svg';
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
