@@ -42,8 +42,8 @@ function frontmatterValidatorPlugin() {
                 );
                 console.log('See frontmatter-validation-errors.log (when running locally)')
 
-                // Fail the build
-                process.exit(1);
+                // Fail the build by throwing an error
+                throw new Error('Frontmatter validation failed. See frontmatter-validation-errors.log for details.');
             } else {
                 console.log('✅ All markdown files passed frontmatter validation.');
             }
