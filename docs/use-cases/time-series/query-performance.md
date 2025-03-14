@@ -139,7 +139,7 @@ LIMIT 10
 Peak memory usage: 1.50 GiB.
 ```
 
-### Create materialized view
+### Create materialized view  {#time-series-create-materialized-view}
 
 We can create the following materialized view:
 
@@ -166,7 +166,7 @@ FROM wikistat
 GROUP BY path, month;
 ```
 
-### Backfilling destination table
+### Backfilling destination table {#time-series-backfill-destination-table}
 
 This destination table will only be populated when new records are inserted into the `wikistat` table, so we need to do some [backfilling](/docs/data-modeling/backfilling).
 
