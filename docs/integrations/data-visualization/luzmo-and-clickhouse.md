@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'Luzmo', 'connect', 'integrate', 'ui', 'embedded']
 description: 'Luzmo is an embedded analytics platform with a native ClickHouse integration, purpose-built for Software and SaaS applications.'
 title: 'Integrating Luzmo with ClickHouse'
 ---
+
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import luzmo_01 from '@site/static/images/integrations/data-visualization/luzmo_01.png';
 import luzmo_02 from '@site/static/images/integrations/data-visualization/luzmo_02.png';
