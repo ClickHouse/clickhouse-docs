@@ -2,7 +2,7 @@
 const path = require('path');
 
 // List to track files with issues
-const filesWithIssues = [];
+let filesWithIssues = [];
 
 /**
  * Custom frontmatter parser that enforces specific formatting rules
@@ -254,19 +254,37 @@ async function customParseFrontMatter(params) {
 
         // If there are issues, add to the tracking list
         if (issues.length > 0) {
-            filesWithIssues.push({
-                filePath: relativePath,
-                issues
-            });
+            // Check if we already have an entry for this file path
+            const existingIndex = filesWithIssues.findIndex(item => item.filePath === relativePath);
+            if (existingIndex !== -1) {
+                // Update existing entry instead of adding a duplicate
+                filesWithIssues[existingIndex].issues = issues;
+            } else {
+                // Add new entry
+                filesWithIssues.push({
+                    filePath: relativePath,
+                    issues
+                });
+            }
         }
 
         return parsedData;
     } catch (error) {
         console.error(`Error parsing frontmatter in ${relativePath}:`, error);
-        filesWithIssues.push({
-            filePath: relativePath,
-            issues: [`parsing error: ${error.message}`]
-        });
+
+        // Check if we already have an entry for this file path
+        const existingIndex = filesWithIssues.findIndex(item => item.filePath === relativePath);
+        if (existingIndex !== -1) {
+            // Update existing entry instead of adding a duplicate
+            filesWithIssues[existingIndex].issues = [`parsing error: ${error.message}`];
+        } else {
+            // Add new entry
+            filesWithIssues.push({
+                filePath: relativePath,
+                issues: [`parsing error: ${error.message}`]
+            });
+        }
+
         return await defaultParseFrontMatter(params);
     }
 }
@@ -274,8 +292,8 @@ async function customParseFrontMatter(params) {
 // Export the function and the issue tracker for use in the build plugin
 module.exports = {
     customParseFrontMatter,
-    getFilesWithIssues: () => filesWithIssues,
+    getFilesWithIssues: () => [...filesWithIssues], // Return a copy to prevent external modifications
     resetIssues: () => {
-        filesWithIssues.length = 0;
+        filesWithIssues = []; // Replace the array instead of modifying it
     }
 };
