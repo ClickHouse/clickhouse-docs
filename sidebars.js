@@ -83,6 +83,20 @@ const sidebars = {
             "use-cases/observability/demo-application",
           ]
         },
+        {
+          type: "category",
+          label: "Time-Series",
+          collapsed: true,
+          collapsible: true,
+          link: { type: "doc", id: "use-cases/time-series/index" },
+          items: [
+            "use-cases/time-series/date-time-data-types",
+            "use-cases/time-series/basic-operations",
+            "use-cases/time-series/analysis-functions",
+            "use-cases/time-series/storage-efficiency",
+            "use-cases/time-series/query-performance"
+          ]
+        },
       ]
     },
     {
