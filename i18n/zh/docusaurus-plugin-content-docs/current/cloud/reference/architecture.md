@@ -3,12 +3,12 @@ sidebar_label: 架构
 slug: /cloud/reference/architecture
 ---
 
-import architecture from '@site/static/images/cloud/reference/architecture.svg';
+import Architecture from '@site/static/images/cloud/reference/architecture.svg';
 
 
 # ClickHouse Cloud 架构
 
-<architecture alt='ClickHouse Cloud 架构' class='image' />
+<Architecture alt='ClickHouse Cloud 架构' class='image' />
 
 ## 基于对象存储的存储 {#storage-backed-by-object-store}
 - 实际上无限的存储

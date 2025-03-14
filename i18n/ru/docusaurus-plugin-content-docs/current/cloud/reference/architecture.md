@@ -3,12 +3,12 @@ sidebar_label: Архитектура
 slug: /cloud/reference/architecture
 ---
 
-import architecture from '@site/static/images/cloud/reference/architecture.svg';
+import Architecture from '@site/static/images/cloud/reference/architecture.svg';
 
 
 # Архитектура ClickHouse Cloud
 
-<architecture alt='Архитектура ClickHouse Cloud' class='image' />
+<Architecture alt='Архитектура ClickHouse Cloud' class='image' />
 
 ## Хранилище на основе объектного хранилища {#storage-backed-by-object-store}
 - Практически неограниченное хранилище
