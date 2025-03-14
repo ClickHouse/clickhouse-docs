@@ -317,6 +317,14 @@ const config = {
       },
     ],
     chHeader,
+    [
+      '@docusaurus/plugin-ideal-image',
+      {
+        quality: 85,
+        sizes: [300, 600, 1024, 2048],
+        disableInDev: false,
+      },
+    ],
     './plugins/frontmatter-validation/frontmatterValidatorPlugin'
   ],
   customFields: {
