@@ -13,7 +13,7 @@ keywords: [time-series]
 
 
 Before attempting other optimizations, users should optimize their ordering key to ensure ClickHouse produces the fastest possible results. 
-Choosing the key right largely depends on the queries you’re going to run. Suppose most of our queries filter by project and subproject columns. 
+Choosing the key right largely depends on the queries you’re going to run. Suppose most of our queries filter by `project` and `subproject` columns. 
 In this case, its a good idea to add them to the ordering key - as well as the time column since we query on time as well:
 
 Let's create another version of the table that has the same column types as `wikistat`, but is ordered by `(project, subproject, time)`.

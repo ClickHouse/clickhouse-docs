@@ -14,7 +14,7 @@ This section demonstrates practical techniques to reduce storage requirements wh
 ## Type optimization
 
 The general approach to optimizing storage efficiency is using optimal data types. 
-Let’s take the project and subprojects columns. These columns are of type String, but have a relatively small amount of unique values:
+Let’s take the `project` and `subproject` columns. These columns are of type String, but have a relatively small amount of unique values:
 
 ```sql
 SELECT
