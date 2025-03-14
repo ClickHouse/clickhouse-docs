@@ -2,7 +2,7 @@
 title: 'Roadmap'
 slug: /whats-new/roadmap
 sidebar_position: 50
-description: 'Present and past ClickHouse roadmaps'
+description: 'Present and past ClickHouse road maps'
 ---
 
 ## Current Roadmap {#current-roadmap}

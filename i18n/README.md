@@ -133,13 +133,22 @@ DOCUSUARUS_LOCALE=jp yarn build
 
 This allows each language to be deployed independently.
 
-Ensure you only build if the languages folder changes e.g.
+Ensure you only build if the languages folder or the docusaurus config file 
+changes e.g.
 
 ```text
-git diff HEAD^ HEAD --quiet -- ./i18n/jp
+git diff HEAD^ HEAD --quiet -- ./i18n/jp && git diff HEAD^ HEAD --quiet -- docusaurus.config.jp.js && exit 0 || exit 1
 ```
 
 Example [here](https://vercel.com/clickhouse/clickhouse-docs-jp/settings/git).
+
+**Note:** Only your last commit is checked, so if you make commits which don't 
+touch those folders, you'll need to make a change in the appropriate i18n folder
+or the config file for translations to be deployed.
+
+There is a `README.md` file in each `i18n/locale` folder for this purpose. 
+Simply change the date in that file and commit the changes to get the translations
+to redeploy on vercel.
 
 9. Add the route to the website worker - [example PR](https://github.com/ClickHouse/clickhouse-website-worker/pull/285/files)
 
