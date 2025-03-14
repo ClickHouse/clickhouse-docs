@@ -6,6 +6,7 @@ const filesWithIssues = [];
 
 /**
  * Custom frontmatter parser that enforces specific formatting rules
+ * with support for multi-line values
  *
  * @param {Object} params - The parameters provided by Docusaurus
  * @param {string} params.filePath - Path to the markdown file
@@ -83,42 +84,170 @@ async function customParseFrontMatter(params) {
             const yamlContent = frontmatterMatch[1];
             const yamlLines = yamlContent.split('\n');
 
-            for (const line of yamlLines) {
+            // Track multi-line values
+            let inMultiLineValue = false;
+            let currentFieldName = '';
+
+            for (let i = 0; i < yamlLines.length; i++) {
+                const line = yamlLines[i];
                 if (line.trim() === '') continue;
 
-                // Check for single space between key and value
-                if (!/^[a-zA-Z_]+: /.test(line) && !line.includes(': [')) {
-                    issues.push(`incorrect spacing in line: "${line.trim()}"`);
-                }
+                // Check if this line starts a new field
+                const fieldMatch = line.match(/^([a-zA-Z_]+):/);
 
-                // Special check for keywords array - items should be in single quotes
-                if (line.trim().startsWith('keywords:') && line.includes('[')) {
-                    const arrayContent = line.substring(line.indexOf('[') + 1, line.lastIndexOf(']'));
-                    if (arrayContent.trim()) { // Only check if array is not empty
-                        const items = arrayContent.split(',').map(item => item.trim());
-                        for (const item of items) {
-                            // Check if the item is not wrapped in single quotes
-                            if (item && !item.startsWith("'") || !item.endsWith("'")) {
-                                issues.push(`keywords array item '${item}' should be wrapped in single quotes`);
+                if (fieldMatch) {
+                    // This is a new field, not a continuation
+                    inMultiLineValue = false;
+                    currentFieldName = fieldMatch[1];
+
+                    // Check for single space between key and value
+                    if (!/^[a-zA-Z_]+: /.test(line) && !line.includes(': [')) {
+                        issues.push(`incorrect spacing in line: "${line.trim()}"`);
+                    }
+
+                    // Check for block style arrays (should be flow style with brackets)
+                    if (line.trim().match(/^[a-zA-Z_]+: ?$/)) {
+                        // This field has no value on the same line, check if next line starts with a dash
+                        const nextLine = (i + 1 < yamlLines.length) ? yamlLines[i + 1].trim() : '';
+                        if (nextLine.startsWith('-')) {
+                            issues.push(`field '${currentFieldName}' should use flow style array with square brackets`);
+                        }
+                    }
+
+                    // Check for single quotes on regular single-line values
+                    const fieldValue = line.substring(line.indexOf(':') + 1).trim();
+
+                    // Check if this might be the start of a multi-line value
+                    if (fieldValue.startsWith("'") && !fieldValue.endsWith("'")) {
+                        inMultiLineValue = true;
+                        continue;
+                    }
+
+                    // Special check for keywords array - items should be in single quotes
+                    if (currentFieldName === 'keywords' && line.includes('[')) {
+                        // Check if this is the start of a multi-line array
+                        if (line.includes('[') && !line.includes(']')) {
+                            // This is the start of a multi-line array
+                            inMultiLineValue = true;
+                            continue;
+                        }
+
+                        // For single-line arrays
+                        if (line.includes('[') && line.includes(']')) {
+                            const arrayContent = line.substring(line.indexOf('[') + 1, line.lastIndexOf(']'));
+                            if (arrayContent.trim()) { // Only check if array is not empty
+                                const items = arrayContent.split(',').map(item => item.trim());
+                                for (const item of items) {
+                                    // Check if the item is not wrapped in single quotes
+                                    if (item && (!item.startsWith("'") || !item.endsWith("'"))) {
+                                        issues.push(`keywords array item '${item}' should be wrapped in single quotes`);
+                                    }
+                                }
                             }
                         }
                     }
-                }
 
-                const lineStart = line.trim();
-                const isExcludedField = lineStart.startsWith('slug:') ||
-                    lineStart.startsWith('id:') ||
-                    lineStart.startsWith('pagination_next:') ||
-                    lineStart.startsWith('pagination_prev:');
-                if (!isExcludedField && (
-                    line.includes(': "') || (line.includes(': ') &&
-                        !line.includes(': \'') &&
-                        !line.includes(': [') &&
-                        !line.includes(': {') &&
-                        !line.includes(': true') &&
-                        !line.includes(': false') &&
-                        !/: \d+/.test(line)))) {
-                    issues.push(`value should use single quotes in line: "${line.trim()}"`);
+                    const isExcludedField = currentFieldName === 'slug' ||
+                        currentFieldName === 'id' ||
+                        currentFieldName === 'pagination_next' ||
+                        currentFieldName === 'pagination_prev';
+
+                    if (!isExcludedField && !inMultiLineValue && (
+                        line.includes(': "') || (
+                            line.includes(': ') &&
+                            !line.includes(': \'') &&
+                            !line.includes(': [') &&
+                            !line.includes(': {') &&
+                            !line.includes(': true') &&
+                            !line.includes(': false') &&
+                            !/: \d+/.test(line)
+                        )
+                    )) {
+                        issues.push(`value should use single quotes in line: "${line.trim()}"`);
+                    }
+                } else if (inMultiLineValue) {
+                    // This is a continuation of a multi-line value
+
+                    // For multi-line arrays (keywords)
+                    if (currentFieldName === 'keywords') {
+                        // Check individual array items if this is a line in a multi-line array
+                        const trimmedLine = line.trim();
+
+                        // Handle closing bracket properly
+                        if (trimmedLine === ']') {
+                            inMultiLineValue = false;
+                            continue;
+                        }
+
+                        // Parse items carefully to handle the closing bracket
+                        let items = [];
+                        let currentItem = '';
+                        let inQuotes = false;
+
+                        for (let j = 0; j < trimmedLine.length; j++) {
+                            const char = trimmedLine[j];
+
+                            if (char === "'" && (j === 0 || trimmedLine[j-1] !== '\\')) {
+                                inQuotes = !inQuotes;
+                                currentItem += char;
+                            } else if (char === ',' && !inQuotes) {
+                                items.push(currentItem.trim());
+                                currentItem = '';
+                            } else if (char === ']' && !inQuotes) {
+                                // End of array - don't include the closing bracket in the item
+                                if (currentItem.trim()) {
+                                    items.push(currentItem.trim());
+                                }
+                                inMultiLineValue = false;
+                                break;
+                            } else {
+                                currentItem += char;
+                            }
+                        }
+
+                        // Add the last item if we didn't end with a bracket
+                        if (currentItem.trim() && !trimmedLine.endsWith(']')) {
+                            items.push(currentItem.trim());
+                        }
+
+                        // Check items for proper quoting
+                        for (const item of items) {
+                            if (item && item !== ']') {
+                                if (!item.startsWith("'") || !item.endsWith("'")) {
+                                    issues.push(`keywords array item '${item}' should be wrapped in single quotes`);
+                                }
+                            }
+                        }
+
+                        // Array end is now handled in the item parsing loop above
+                    }
+                    // For regular multi-line strings
+                    else if (line.trim().endsWith("'")) {
+                        inMultiLineValue = false;
+                    }
+                } else {
+                    // This is not a new field nor a continuation of a multi-line value
+
+                    // Check for block style array items that should be flow style
+                    if (line.trim().startsWith('-')) {
+                        // Find the previous field to associate with this block array item
+                        let j = i - 1;
+                        while (j >= 0) {
+                            const prevLine = yamlLines[j].trim();
+                            if (prevLine.match(/^[a-zA-Z_]+: ?$/)) {
+                                const fieldName = prevLine.split(':')[0].trim();
+                                // Only report once per field to avoid multiple errors
+                                if (!issues.some(issue => issue.includes(`field '${fieldName}'`) && issue.includes('flow style array'))) {
+                                    issues.push(`field '${fieldName}' should use flow style array with square brackets`);
+                                }
+                                break;
+                            } else if (prevLine.match(/^[a-zA-Z_]+:/)) {
+                                // Found a different field, so stop looking
+                                break;
+                            }
+                            j--;
+                        }
+                    }
                 }
             }
         }
