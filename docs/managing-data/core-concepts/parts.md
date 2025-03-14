@@ -5,8 +5,10 @@ description: What are data parts in ClickHouse
 keywords: [part]
 ---
 
+
 import merges from '@site/static/images/managing-data/core-concepts/merges.png';
 import part from '@site/static/images/managing-data/core-concepts/part.png';
+import Image from '@theme/IdealImage';
 
 ## What are table parts in ClickHouse? {#what-are-table-parts-in-clickhouse}
 
@@ -33,7 +35,8 @@ You can [query this table](https://sql.clickhouse.com/?query=U0VMRUNUICogRlJPTSB
 
 A data part is created whenever a set of rows is inserted into the table. The following diagram sketches this:
 
-<img src={part} alt='INSERT PROCESSING' class='image' />
+<Image img={part} size="lg"/>
+
 <br/>
 
 When a ClickHouse server processes the example insert with 4 rows (e.g., via an [INSERT INTO statement](/sql-reference/statements/insert-into)) sketched in the diagram above, it performs several steps:
