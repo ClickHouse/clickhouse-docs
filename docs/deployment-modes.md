@@ -1,7 +1,8 @@
 ---
-sidebar_label: Deployment modes
-description: "ClickHouse offers four deployment options that all use the same powerful database engine, just packaged differently to suit your specific needs."
-title: Deployment modes
+slug: /deployment-modes
+sidebar_label: 'Deployment modes'
+description: 'ClickHouse offers four deployment options that all use the same powerful database engine, just packaged differently to suit your specific needs.'
+title: 'Deployment modes'
 ---
 
 import chServer from '@site/static/images/deployment-modes/ch-server.png';

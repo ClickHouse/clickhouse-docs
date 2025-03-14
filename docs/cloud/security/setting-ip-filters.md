@@ -1,7 +1,8 @@
 ---
-sidebar_label: Setting IP Filters
+sidebar_label: 'Setting IP Filters'
 slug: /cloud/security/setting-ip-filters
-title: Setting IP Filters
+title: 'Setting IP Filters'
+description: 'This page explains how to set IP filters in ClickHouse Cloud to control access to ClickHouse services.'
 ---
 
 import ip_filtering_after_provisioning from '@site/static/images/cloud/security/ip-filtering-after-provisioning.png';

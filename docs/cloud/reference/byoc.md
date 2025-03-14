@@ -1,9 +1,9 @@
 ---
-title: BYOC (Bring Your Own Cloud) for AWS
+title: 'BYOC (Bring Your Own Cloud) for AWS'
 slug: /cloud/reference/byoc
-sidebar_label: BYOC (Bring Your Own Cloud)
-keywords: [BYOC, cloud, bring your own cloud]
-description: Deploy ClickHouse on your own cloud infrastructure
+sidebar_label: 'BYOC (Bring Your Own Cloud)'
+keywords: ['BYOC', 'cloud', 'bring your own cloud']
+description: 'Deploy ClickHouse on your own cloud infrastructure'
 ---
 
 import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';

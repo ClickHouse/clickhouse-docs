@@ -1,8 +1,9 @@
 ---
 slug: /cloud/security
-keywords: [Cloud, Security]
-title: Overview
+keywords: ['Cloud', 'Security']
+title: 'Overview'
 hide_title: true
+description: 'Landing page for ClickHouse Cloud Security'
 ---
 
 # ClickHouse Cloud Security

@@ -1,7 +1,8 @@
 ---
 slug: /cloud/security/secure-s3
-sidebar_label: Accessing S3 Data Securely
-title: Accessing S3 Data Securely
+sidebar_label: 'Accessing S3 Data Securely'
+title: 'Accessing S3 Data Securely'
+description: 'This article demonstrates how ClickHouse Cloud customers can leverage role-based access to authenticate with Amazon Simple Storage Service(S3) and access their data securely.'
 ---
 
 import secure_s3 from '@site/static/images/cloud/security/secures3.jpg';

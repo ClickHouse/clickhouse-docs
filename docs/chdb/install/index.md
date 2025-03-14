@@ -1,8 +1,8 @@
 ---
-title: Language Integrations Index
+title: 'Language Integrations Index'
 slug: /chdb/install
-description: Index page for chDB language integrations
-keywords: [python, NodeJS, Go, Rust, Bun, C, C++]
+description: 'Index page for chDB language integrations'
+keywords: ['python', 'NodeJS', 'Go', 'Rust', 'Bun', 'C', 'C++']
 ---
 
 Instructions for how to get setup with chDB are available below for the following languages and runtimes:

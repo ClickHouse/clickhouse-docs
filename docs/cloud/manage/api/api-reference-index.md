@@ -1,6 +1,7 @@
 ---
-title: Cloud API
+title: 'Cloud API'
 slug: /cloud/manage/api/
+description: 'Landing page for Cloud API'
 ---
 
 | Page                                                           | Description                      |

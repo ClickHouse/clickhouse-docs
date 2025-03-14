@@ -1,8 +1,8 @@
 ---
 slug: /parts
-title: Table parts
-description: What are data parts in ClickHouse
-keywords: [part]
+title: 'Table parts'
+description: 'What are data parts in ClickHouse'
+keywords: ['part']
 ---
 
 

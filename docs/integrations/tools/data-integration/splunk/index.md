@@ -1,8 +1,9 @@
 ---
-sidebar_label: Splunk
+sidebar_label: 'Splunk'
 slug: /integrations/audit-splunk
-keywords: [clickhouse, Splunk, audit, cloud]
-description: Store ClickHouse Cloud audit logs into Splunk.
+keywords: ['clickhouse', 'Splunk', 'audit', 'cloud']
+description: 'Store ClickHouse Cloud audit logs into Splunk.'
+title: 'Storing ClickHouse Cloud Audit logs into Splunk'
 ---
 
 import splunk_001 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_001.png';
@@ -17,7 +18,6 @@ import splunk_009 from '@site/static/images/integrations/tools/data-integration/
 import splunk_010 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_010.png';
 import splunk_011 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_011.png';
 import splunk_012 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_012.png';
-
 
 # Storing ClickHouse Cloud Audit logs into Splunk
 

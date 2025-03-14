@@ -1,8 +1,8 @@
 ---
 slug: /cloud/marketplace/marketplace-billing
-title: Marketplace Billing
-description: Subscribe to ClickHouse Cloud through the AWS, GCP, and Azure marketplace.
-keywords: [aws, azure, gcp, google cloud, marketplace, billing]
+title: 'Marketplace Billing'
+description: 'Subscribe to ClickHouse Cloud through the AWS, GCP, and Azure marketplace.'
+keywords: ['aws', 'azure', 'gcp', 'google cloud', 'marketplace', 'billing']
 ---
 
 You can subscribe to ClickHouse Cloud through the AWS, GCP, and Azure marketplaces. This allows you to pay for ClickHouse Cloud through your existing cloud provider billing.

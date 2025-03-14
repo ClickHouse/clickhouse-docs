@@ -1,7 +1,8 @@
 ---
 slug: /cloud/bestpractices/asynchronous-inserts
-sidebar_label: Asynchronous Inserts
-title: Asynchronous Inserts (async_insert)
+sidebar_label: 'Asynchronous Inserts'
+title: 'Asynchronous Inserts (async_insert)'
+description: 'Describes how to use asynchronous inserts into ClickHouse as an alternative best practice to batching'
 ---
 
 import asyncInsert01 from '@site/static/images/cloud/bestpractices/async-01.png';

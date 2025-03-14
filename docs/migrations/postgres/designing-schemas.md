@@ -1,8 +1,8 @@
 ---
 slug: /migrations/postgresql/designing-schemas
-title: Designing Schemas
-description: Designing schemas when migrating from PostgreSQL to ClickHouse
-keywords: [postgres, postgresql, migrate, migration, schema]
+title: 'Designing Schemas'
+description: 'Designing schemas when migrating from PostgreSQL to ClickHouse'
+keywords: ['postgres', 'postgresql', 'migrate', 'migration', 'schema']
 ---
 
 import postgres_b_tree from '@site/static/images/migrations/postgres-b-tree.png';

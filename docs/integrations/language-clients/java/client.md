@@ -1,9 +1,10 @@
 ---
-sidebar_label: Client 0.8+
+sidebar_label: 'Client 0.8+'
 sidebar_position: 2
-keywords: [clickhouse, java, client, integrate]
-description: Java ClickHouse Connector 0.8+
+keywords: ['clickhouse', 'java', 'client', 'integrate']
+description: 'Java ClickHouse Connector 0.8+'
 slug: /integrations/language-clients/java/client
+title: 'Java Client (0.8+)'
 ---
 
 import Tabs from '@theme/Tabs';

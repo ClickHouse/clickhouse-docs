@@ -1,8 +1,8 @@
 ---
 slug: /cloud/billing/marketplace/gcp-marketplace-committed-contract
-title: GCP Marketplace Committed Contract
-description: Subscribe to ClickHouse Cloud through the GCP Marketplace (Committed Contract)
-keywords: [gcp, google, marketplace, billing, committed, committed contract]
+title: 'GCP Marketplace Committed Contract'
+description: 'Subscribe to ClickHouse Cloud through the GCP Marketplace (Committed Contract)'
+keywords: ['gcp', 'google', 'marketplace', 'billing', 'committed', 'committed contract']
 ---
 
 import gcp_marketplace_committed_1 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-committed-1.png';

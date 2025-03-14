@@ -3,6 +3,7 @@ import math from "remark-math";
 import katex from "rehype-katex";
 import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
+const { customParseFrontMatter } = require('./plugins/frontmatter-validation/customParseFrontMatter');
 
 // Helper function to skip over index.md files.
 function skipIndex(items) {
@@ -85,6 +86,9 @@ const config = {
   projectName: "clickhouse-docs",
   markdown: {
     mermaid: true,
+    parseFrontMatter: async (params) => {
+      return await customParseFrontMatter(params);
+    }
   },
   themes: ["@docusaurus/theme-mermaid"],
   presets: [
@@ -321,6 +325,7 @@ const config = {
         disableInDev: false,
       },
     ],
+    './plugins/frontmatter-validation/frontmatterValidatorPlugin'
   ],
   customFields: {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page
