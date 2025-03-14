@@ -1,8 +1,8 @@
 ---
-title: Migrating from BigQuery to ClickHouse Cloud
+title: 'Migrating from BigQuery to ClickHouse Cloud'
 slug: /migrations/bigquery/migrating-to-clickhouse-cloud
-description: How to migrate your data from BigQuery to ClickHouse Cloud
-keywords: [migrate, migration, migrating, data, etl, elt, BigQuery]
+description: 'How to migrate your data from BigQuery to ClickHouse Cloud'
+keywords: ['migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'BigQuery']
 ---
 
 import bigquery_2 from '@site/static/images/migrations/bigquery-2.png';

@@ -1,8 +1,8 @@
 ---
-title: JSON schema inference
+title: 'JSON schema inference'
 slug: /integrations/data-formats/json/inference
-description: How to use JSON schema inference
-keywords: [json, schema, inference, schema inference]
+description: 'How to use JSON schema inference'
+keywords: ['json', 'schema', 'inference', 'schema inference']
 ---
 
 ClickHouse can automatically determine the structure of JSON data. This can be used to query JSON data directly e.g. on disk with `clickhouse-local` or S3 buckets, and/or automatically create schemas prior to loading the data into ClickHouse.

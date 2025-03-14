@@ -1,8 +1,8 @@
 ---
-sidebar_label: SAML SSO Setup
+sidebar_label: 'SAML SSO Setup'
 slug: /cloud/security/saml-setup
-title: SAML SSO Setup
-description: How to set up SAML SSO with ClickHouse Cloud
+title: 'SAML SSO Setup'
+description: 'How to set up SAML SSO with ClickHouse Cloud'
 ---
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge' 

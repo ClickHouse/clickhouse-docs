@@ -1,8 +1,8 @@
 ---
-title: Scaling
+title: 'Scaling'
 slug: /cloud/manage/jan-2025-faq/scaling
-keywords: [new pricing, faq, scaling]
-description: Scaling behavior in new pricing tiers
+keywords: ['new pricing', 'faq', 'scaling']
+description: 'Scaling behavior in new pricing tiers'
 ---
 
 ClickHouse Cloud allows scaling in both directions - vertical (increasing replica size) and horizontal (adding more replicas).

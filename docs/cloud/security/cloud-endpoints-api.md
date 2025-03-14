@@ -1,7 +1,8 @@
 ---
 slug: /manage/security/cloud-endpoints-api
-sidebar_label: Cloud IP Addresses
-title: Cloud IP Addresses
+sidebar_label: 'Cloud IP Addresses'
+title: 'Cloud IP Addresses'
+description: 'This page documents the Cloud Endpoints API security features within ClickHouse. It details how to secure your ClickHouse deployments by managing access through authentication and authorization mechanisms.'
 ---
 
 import aws_rds_mysql from '@site/static/images/_snippets/aws-rds-mysql.png';

@@ -1,8 +1,8 @@
 ---
 slug: /dictionary
-title: Dictionary
-keywords: [dictionary, dictionaries]
-description: A dictionary provides a key-value representation of data for fast lookups.
+title: 'Dictionary'
+keywords: ['dictionary', 'dictionaries']
+description: 'A dictionary provides a key-value representation of data for fast lookups.'
 ---
 
 import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-cases.png';

@@ -1,5 +1,7 @@
 ---
-title: "Upload a CSV File"
+title: 'Upload a CSV File'
+slug: /integrations/migration/upload-a-csv-file
+description: 'Learn about Upload a CSV File'
 ---
 
 import uploadcsv1 from '@site/static/images/integrations/migration/uploadcsv1.png';

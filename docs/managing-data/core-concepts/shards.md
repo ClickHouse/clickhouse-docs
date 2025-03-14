@@ -1,8 +1,8 @@
 ---
 slug: /shards
-title: Table shards and replicas
-description: What are table shards and replicas in ClickHouse
-keywords: [shard, shards, sharding, replica, replicas]
+title: 'Table shards and replicas'
+description: 'What are table shards and replicas in ClickHouse'
+keywords: ['shard', 'shards', 'sharding', 'replica', 'replicas']
 ---
 
 import image_01 from '@site/static/images/managing-data/core-concepts/shards_01.png'

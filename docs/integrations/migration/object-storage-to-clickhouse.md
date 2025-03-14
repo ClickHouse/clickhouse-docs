@@ -1,7 +1,8 @@
 ---
-title: Object Storage to ClickHouse Cloud
-description: Moving data from object storage to ClickHouse Cloud
-keywords: [object storage, s3, azure blob, gcs, migration]
+title: 'Object Storage to ClickHouse Cloud'
+description: 'Moving data from object storage to ClickHouse Cloud'
+keywords: ['object storage', 's3', 'azure blob', 'gcs', 'migration']
+slug: /integrations/migration/object-storage-to-clickhouse
 ---
 
 import object_storage_01 from '@site/static/images/integrations/migration/object-storage-01.png';

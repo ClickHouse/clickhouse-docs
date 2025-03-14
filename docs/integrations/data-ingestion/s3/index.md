@@ -1,9 +1,11 @@
 ---
 slug: /integrations/s3
 sidebar_position: 1
-sidebar_label: Integrating S3 with ClickHouse
-
+sidebar_label: 'Integrating S3 with ClickHouse'
+title: 'Integrating S3 with ClickHouse'
+description: 'Page describing how to integrate S3 with ClickHouse'
 ---
+
 import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
 import S3J from '@site/static/images/integrations/data-ingestion/s3/s3-j.png';
 import Bucket1 from '@site/static/images/integrations/data-ingestion/s3/bucket1.png';

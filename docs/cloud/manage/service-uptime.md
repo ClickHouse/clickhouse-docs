@@ -1,7 +1,8 @@
 ---
-sidebar_label: Service Uptime and SLA
+sidebar_label: 'Service Uptime and SLA'
 slug: /cloud/manage/service-uptime
-title: Service Uptime
+title: 'Service Uptime'
+description: 'Users can now see regional uptimes on the status page and subscribe to alerts on service disruptions.'
 ---
 
 ## Uptime Alerts {#uptime-alerts}

@@ -1,8 +1,8 @@
 ---
 slug: /cloud/billing/marketplace/gcp-marketplace-payg
-title: GCP Marketplace PAYG
-description: Subscribe to ClickHouse Cloud through the GCP Marketplace (PAYG).
-keywords: [gcp, marketplace, billing, PAYG]
+title: 'GCP Marketplace PAYG'
+description: 'Subscribe to ClickHouse Cloud through the GCP Marketplace (PAYG).'
+keywords: ['gcp', 'marketplace', 'billing', 'PAYG']
 ---
 
 import gcp_marketplace_payg_1 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-1.png';

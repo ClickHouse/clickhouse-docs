@@ -1,8 +1,9 @@
 ---
-sidebar_label: Fivetran
+sidebar_label: 'Fivetran'
 slug: /integrations/fivetran
 sidebar_position: 2
-description: Users can transform and model their data in ClickHouse using dbt
+description: 'Users can transform and model their data in ClickHouse using dbt'
+title: 'Fivetran and ClickHouse Cloud'
 ---
 
 # Fivetran and ClickHouse Cloud

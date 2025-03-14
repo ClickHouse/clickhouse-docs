@@ -1,7 +1,7 @@
 ---
 slug: /concepts/faq
-title: FAQ
-description: Landing page for FAQ
+title: 'FAQ'
+description: 'Landing page for FAQ'
 pagination_prev: null
 pagination_next: null
 ---

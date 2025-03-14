@@ -1,7 +1,7 @@
 ---
-title: "Native Clients and Interfaces"
+title: 'Native Clients and Interfaces'
 slug: /interfaces
-description: "Landing page for Native Clients and Interfaces"
+description: 'Landing page for Native Clients and Interfaces'
 ---
 
 | Page                                                      | Description                                                                                                               |

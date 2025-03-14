@@ -1,8 +1,9 @@
 ---
 slug: /cloud/bestpractices/bulk-inserts
 sidebar_position: 63
-sidebar_label: Use Bulk Inserts
-title: Bulk Inserts
+sidebar_label: 'Use Bulk Inserts'
+title: 'Bulk Inserts'
+description: 'Page describing why you should ingest data in bulk in ClickHouse'
 ---
 
 

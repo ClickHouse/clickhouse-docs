@@ -1,13 +1,14 @@
 ---
-sidebar_label: Home
-displayed_sidebar: docs
+sidebar_label: 'Home'
+displayed_sidebar: 'docs'
 slug: /
 sidebar_position: 1
-title: ClickHouse Docs
-keywords: [clickhouse, docs, knowledge base]
+title: 'ClickHouse Docs'
+keywords: ['clickhouse', 'docs', 'knowledge base']
 pagination_next: null
 hide_title: true
-id: home-page
+id: 'home-page'
+description: 'Docs homepage'
 ---
 
 import ClickHouseLogo from '@site/src/icons/ClickHouseLogo';

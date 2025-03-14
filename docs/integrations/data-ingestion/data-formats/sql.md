@@ -1,6 +1,8 @@
 ---
-sidebar_label: SQL Dumps
+sidebar_label: 'SQL Dumps'
 slug: /integrations/data-formats/sql
+title: 'Inserting and dumping SQL data in ClickHouse'
+description: 'Page describing how to transfer data between other databases and ClickHouse using SQL dumps.'
 ---
 
 # Inserting and dumping SQL data in ClickHouse

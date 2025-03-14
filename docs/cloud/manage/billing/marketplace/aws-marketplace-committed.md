@@ -1,8 +1,8 @@
 ---
 slug: /cloud/billing/marketplace/aws-marketplace-committed-contract
-title: AWS Marketplace Committed Contract
-description: Subscribe to ClickHouse Cloud through the AWS Marketplace (Committed Contract)
-keywords: [aws, amazon, marketplace, billing, committed, committed contract]
+title: 'AWS Marketplace Committed Contract'
+description: 'Subscribe to ClickHouse Cloud through the AWS Marketplace (Committed Contract)'
+keywords: ['aws', 'amazon', 'marketplace', 'billing', 'committed', 'committed contract']
 ---
 
 import aws_marketplace_committed_1 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-committed-1.png';

@@ -1,6 +1,8 @@
 ---
 slug: /native-protocol/columns
 sidebar_position: 4
+title: 'Column types'
+description: 'Column types for the native protocol'
 ---
 
 # Column Types
