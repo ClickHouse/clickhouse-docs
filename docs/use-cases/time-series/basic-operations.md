@@ -220,7 +220,7 @@ ORDER BY hour ASC WITH FILL STEP toIntervalHour(1);
 Sometimes, we don’t want to deal with the start of intervals (like the start of the day or an hour) but window intervals. 
 Let’s say we want to understand the total hits for a window, not based on days but on a 24-hour period offset from 6 pm. 
 
-We can use the [`date_diff()`](/docs/sql-reference/functions/date-time-functions#date_diff) function to calculate the difference between a basepoint time and each record’s time. 
+We can use the [`date_diff()`](/docs/sql-reference/functions/date-time-functions#date_diff) function to calculate the difference between a reference time and each record’s time. 
 In this case, the `day` column will represent the difference in days (e.g., 1 day ago, 2 days ago, etc.):
 
 ```sql
