@@ -170,7 +170,7 @@ GROUP BY path, month;
 
 This destination table will only be populated when new records are inserted into the `wikistat` table, so we need to do some [backfilling](/docs/data-modeling/backfilling).
 
-The easiest way to do this is using an [`INSERT INTO SELECT`](/docs/en/sql-reference/statements/insert-into#inserting-the-results-of-select) statement to insert directly into the materialized view’s target table [using](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query) the view's SELECT query (transformation) :
+The easiest way to do this is using an [`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) statement to insert directly into the materialized view’s target table [using](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query) the view's SELECT query (transformation) :
 
 ```sql
 INSERT INTO wikistat_top
