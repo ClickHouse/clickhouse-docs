@@ -30,10 +30,10 @@ Which returns:
 
 ```response
 user_id message                                             timestamp           metric
-101	    Hello, ClickHouse!	                                2024-11-13 20:01:22	-1
-101	    Granules are the smallest chunks of data read	    2024-11-13 20:01:27	3.14159
-102	    Insert a lot of rows per batch	                    2024-11-12 00:00:00	1.41421
-102	    Sort your data based on your commonly-used queries	2024-11-13 00:00:00	2.718
+101         Hello, ClickHouse!                                  2024-11-13 20:01:22     -1
+101         Granules are the smallest chunks of data read           2024-11-13 20:01:27 3.14159
+102         Insert a lot of rows per batch                          2024-11-12 00:00:00 1.41421
+102         Sort your data based on your commonly-used queries  2024-11-13 00:00:00     2.718
 ```
 
 ## Inserting into ClickHouse vs. OLTP Databases {#inserting-into-clickhouse-vs-oltp-databases}

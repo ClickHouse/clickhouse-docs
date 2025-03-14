@@ -44,7 +44,7 @@ FORMAT Vertical
 
 Row 1:
 ──────
-Body:      	{"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
+Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
 LogAttributes: {'status':'200','log.file.name':'access-structured.log','request_protocol':'HTTP/1.1','run_time':'0','time_local':'2019-01-22 00:26:14.000','size':'30577','user_agent':'Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)','referer':'-','remote_user':'-','request_type':'GET','request_path':'/filter/27|13 ,27|  5 ,p53','remote_addr':'54.36.149.41'}
 ```
 
@@ -59,9 +59,9 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─path─────────────────────┬─────c─┐
-│ /m/updateVariation   	   │ 12182 │
-│ /site/productCard    	   │ 11080 │
-│ /site/productPrice   	   │ 10876 │
+│ /m/updateVariation       │ 12182 │
+│ /site/productCard        │ 11080 │
+│ /site/productPrice       │ 10876 │
 │ /site/productModelImages │ 10866 │
 │ /site/productAdditives   │ 10866 │
 └──────────────────────────┴───────┘
@@ -87,9 +87,9 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─path─────────────────────┬─────c─┐
-│ /m/updateVariation   	   │ 12182 │
-│ /site/productCard    	   │ 11080 │
-│ /site/productPrice   	   │ 10876 │
+│ /m/updateVariation       │ 12182 │
+│ /site/productCard        │ 11080 │
+│ /site/productPrice       │ 10876 │
 │ /site/productAdditives   │ 10866 │
 │ /site/productModelImages │ 10866 │
 └──────────────────────────┴───────┘
@@ -108,7 +108,7 @@ FORMAT Vertical
 
 Row 1:
 ──────
-Body:      	151.233.185.144 - - [22/Jan/2019:19:08:54 +0330] "GET /image/105/brand HTTP/1.1" 200 2653 "https://www.zanbil.ir/filter/b43,p56" "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36" "-"
+Body:           151.233.185.144 - - [22/Jan/2019:19:08:54 +0330] "GET /image/105/brand HTTP/1.1" 200 2653 "https://www.zanbil.ir/filter/b43,p56" "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36" "-"
 LogAttributes: {'log.file.name':'access-unstructured.log'}
 ```
 
@@ -116,22 +116,22 @@ A similar query for the unstructured logs requires the use of regular expression
 
 ```sql
 SELECT
-	path((groups[1])[2]) AS path,
-	count() AS c
+        path((groups[1])[2]) AS path,
+        count() AS c
 FROM
 (
-	SELECT extractAllGroupsVertical(Body, '(\\w+)\\s([^\\s]+)\\sHTTP/\\d\\.\\d') AS groups
-	FROM otel_logs
-	WHERE ((groups[1])[1]) = 'POST'
+        SELECT extractAllGroupsVertical(Body, '(\\w+)\\s([^\\s]+)\\sHTTP/\\d\\.\\d') AS groups
+        FROM otel_logs
+        WHERE ((groups[1])[1]) = 'POST'
 )
 GROUP BY path
 ORDER BY c DESC
 LIMIT 5
 
 ┌─path─────────────────────┬─────c─┐
-│ /m/updateVariation   	   │ 12182 │
-│ /site/productCard    	   │ 11080 │
-│ /site/productPrice   	   │ 10876 │
+│ /m/updateVariation       │ 12182 │
+│ /site/productCard        │ 11080 │
+│ /site/productPrice       │ 10876 │
 │ /site/productModelImages │ 10866 │
 │ /site/productAdditives   │ 10866 │
 └──────────────────────────┴───────┘
@@ -167,24 +167,24 @@ We recommend materialized columns for basic processing. They are especially usef
 ```sql
 CREATE TABLE otel_logs
 (
-	`Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-	`TraceId` String CODEC(ZSTD(1)),
-	`SpanId` String CODEC(ZSTD(1)),
-	`TraceFlags` UInt32 CODEC(ZSTD(1)),
-	`SeverityText` LowCardinality(String) CODEC(ZSTD(1)),
-	`SeverityNumber` Int32 CODEC(ZSTD(1)),
-	`ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
-	`Body` String CODEC(ZSTD(1)),
-	`ResourceSchemaUrl` String CODEC(ZSTD(1)),
-	`ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`ScopeSchemaUrl` String CODEC(ZSTD(1)),
-	`ScopeName` String CODEC(ZSTD(1)),
-	`ScopeVersion` String CODEC(ZSTD(1)),
-	`ScopeAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`LogAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`RequestPage` String MATERIALIZED path(LogAttributes['request_path']),
-	`RequestType` LowCardinality(String) MATERIALIZED LogAttributes['request_type'],
-	`RefererDomain` String MATERIALIZED domain(LogAttributes['referer'])
+        `Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
+        `TraceId` String CODEC(ZSTD(1)),
+        `SpanId` String CODEC(ZSTD(1)),
+        `TraceFlags` UInt32 CODEC(ZSTD(1)),
+        `SeverityText` LowCardinality(String) CODEC(ZSTD(1)),
+        `SeverityNumber` Int32 CODEC(ZSTD(1)),
+        `ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
+        `Body` String CODEC(ZSTD(1)),
+        `ResourceSchemaUrl` String CODEC(ZSTD(1)),
+        `ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `ScopeSchemaUrl` String CODEC(ZSTD(1)),
+        `ScopeName` String CODEC(ZSTD(1)),
+        `ScopeVersion` String CODEC(ZSTD(1)),
+        `ScopeAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `LogAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `RequestPage` String MATERIALIZED path(LogAttributes['request_path']),
+        `RequestType` LowCardinality(String) MATERIALIZED LogAttributes['request_type'],
+        `RefererDomain` String MATERIALIZED domain(LogAttributes['referer'])
 )
 ENGINE = MergeTree
 PARTITION BY toDate(Timestamp)
@@ -204,9 +204,9 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─path─────────────────────┬─────c─┐
-│ /m/updateVariation   	   │ 12182 │
-│ /site/productCard    	   │ 11080 │
-│ /site/productPrice   	   │ 10876 │
+│ /m/updateVariation       │ 12182 │
+│ /site/productCard        │ 11080 │
+│ /site/productPrice       │ 10876 │
 │ /site/productAdditives   │ 10866 │
 │ /site/productModelImages │ 10866 │
 └──────────────────────────┴───────┘
@@ -247,21 +247,21 @@ In order to ensure we don't persist the data twice (in the source and target tab
 ```sql
 CREATE TABLE otel_logs
 (
-	`Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-	`TraceId` String CODEC(ZSTD(1)),
-	`SpanId` String CODEC(ZSTD(1)),
-	`TraceFlags` UInt32 CODEC(ZSTD(1)),
-	`SeverityText` LowCardinality(String) CODEC(ZSTD(1)),
-	`SeverityNumber` Int32 CODEC(ZSTD(1)),
-	`ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
-	`Body` String CODEC(ZSTD(1)),
-	`ResourceSchemaUrl` String CODEC(ZSTD(1)),
-	`ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`ScopeSchemaUrl` String CODEC(ZSTD(1)),
-	`ScopeName` String CODEC(ZSTD(1)),
-	`ScopeVersion` String CODEC(ZSTD(1)),
-	`ScopeAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`LogAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1))
+        `Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
+        `TraceId` String CODEC(ZSTD(1)),
+        `SpanId` String CODEC(ZSTD(1)),
+        `TraceFlags` UInt32 CODEC(ZSTD(1)),
+        `SeverityText` LowCardinality(String) CODEC(ZSTD(1)),
+        `SeverityNumber` Int32 CODEC(ZSTD(1)),
+        `ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
+        `Body` String CODEC(ZSTD(1)),
+        `ResourceSchemaUrl` String CODEC(ZSTD(1)),
+        `ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `ScopeSchemaUrl` String CODEC(ZSTD(1)),
+        `ScopeName` String CODEC(ZSTD(1)),
+        `ScopeVersion` String CODEC(ZSTD(1)),
+        `ScopeAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `LogAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1))
 ) ENGINE = Null
 ```
 
@@ -272,44 +272,44 @@ Consider the following query. This transforms our rows into a format we wish to 
 ```sql
 SELECT
         Body, 
-	Timestamp::DateTime AS Timestamp,
-	ServiceName,
-	LogAttributes['status'] AS Status,
-	LogAttributes['request_protocol'] AS RequestProtocol,
-	LogAttributes['run_time'] AS RunTime,
-	LogAttributes['size'] AS Size,
-	LogAttributes['user_agent'] AS UserAgent,
-	LogAttributes['referer'] AS Referer,
-	LogAttributes['remote_user'] AS RemoteUser,
-	LogAttributes['request_type'] AS RequestType,
-	LogAttributes['request_path'] AS RequestPath,
-	LogAttributes['remote_addr'] AS RemoteAddr,
-	domain(LogAttributes['referer']) AS RefererDomain,
-	path(LogAttributes['request_path']) AS RequestPage,
-	multiIf(Status::UInt64 > 500, 'CRITICAL', Status::UInt64 > 400, 'ERROR', Status::UInt64 > 300, 'WARNING', 'INFO') AS SeverityText,
-	multiIf(Status::UInt64 > 500, 20, Status::UInt64 > 400, 17, Status::UInt64 > 300, 13, 9) AS SeverityNumber
+        Timestamp::DateTime AS Timestamp,
+        ServiceName,
+        LogAttributes['status'] AS Status,
+        LogAttributes['request_protocol'] AS RequestProtocol,
+        LogAttributes['run_time'] AS RunTime,
+        LogAttributes['size'] AS Size,
+        LogAttributes['user_agent'] AS UserAgent,
+        LogAttributes['referer'] AS Referer,
+        LogAttributes['remote_user'] AS RemoteUser,
+        LogAttributes['request_type'] AS RequestType,
+        LogAttributes['request_path'] AS RequestPath,
+        LogAttributes['remote_addr'] AS RemoteAddr,
+        domain(LogAttributes['referer']) AS RefererDomain,
+        path(LogAttributes['request_path']) AS RequestPage,
+        multiIf(Status::UInt64 > 500, 'CRITICAL', Status::UInt64 > 400, 'ERROR', Status::UInt64 > 300, 'WARNING', 'INFO') AS SeverityText,
+        multiIf(Status::UInt64 > 500, 20, Status::UInt64 > 400, 17, Status::UInt64 > 300, 13, 9) AS SeverityNumber
 FROM otel_logs
 LIMIT 1
 FORMAT Vertical
 
 Row 1:
 ──────
-Body:        	{"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
-Timestamp:   	2019-01-22 00:26:14
+Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
+Timestamp:      2019-01-22 00:26:14
 ServiceName:
-Status:      	200
+Status:         200
 RequestProtocol: HTTP/1.1
-RunTime:     	0
-Size:        	30577
-UserAgent:   	Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)
-Referer:     	-
-RemoteUser:  	-
-RequestType: 	GET
-RequestPath: 	/filter/27|13 ,27|  5 ,p53
-RemoteAddr: 	54.36.149.41
+RunTime:        0
+Size:           30577
+UserAgent:      Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)
+Referer:        -
+RemoteUser:     -
+RequestType:    GET
+RequestPath:    /filter/27|13 ,27|  5 ,p53
+RemoteAddr:     54.36.149.41
 RefererDomain:
-RequestPage: 	/filter/27|13 ,27|  5 ,p53
-SeverityText:	INFO
+RequestPage:    /filter/27|13 ,27|  5 ,p53
+SeverityText:   INFO
 SeverityNumber:  9
 
 1 row in set. Elapsed: 0.027 sec.
@@ -326,23 +326,23 @@ We require a table to receive these results. The below target table matches the 
 ```sql
 CREATE TABLE otel_logs_v2
 (
-	`Body` String,
-	`Timestamp` DateTime,
-	`ServiceName` LowCardinality(String),
-	`Status` UInt16,
-	`RequestProtocol` LowCardinality(String),
-	`RunTime` UInt32,
-	`Size` UInt32,
-	`UserAgent` String,
-	`Referer` String,
-	`RemoteUser` String,
-	`RequestType` LowCardinality(String),
-	`RequestPath` String,
-	`RemoteAddress` IPv4,
-	`RefererDomain` String,
-	`RequestPage` String,
-	`SeverityText` LowCardinality(String),
-	`SeverityNumber` UInt8
+        `Body` String,
+        `Timestamp` DateTime,
+        `ServiceName` LowCardinality(String),
+        `Status` UInt16,
+        `RequestProtocol` LowCardinality(String),
+        `RunTime` UInt32,
+        `Size` UInt32,
+        `UserAgent` String,
+        `Referer` String,
+        `RemoteUser` String,
+        `RequestType` LowCardinality(String),
+        `RequestPath` String,
+        `RemoteAddress` IPv4,
+        `RefererDomain` String,
+        `RequestPage` String,
+        `SeverityText` LowCardinality(String),
+        `SeverityNumber` UInt8
 )
 ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
@@ -361,22 +361,22 @@ Below, we create a materialized view `otel_logs_mv`, which executes the above se
 CREATE MATERIALIZED VIEW otel_logs_mv TO otel_logs_v2 AS
 SELECT
         Body, 
-	Timestamp::DateTime AS Timestamp,
-	ServiceName,
-	LogAttributes['status']::UInt16 AS Status,
-	LogAttributes['request_protocol'] AS RequestProtocol,
-	LogAttributes['run_time'] AS RunTime,
-	LogAttributes['size'] AS Size,
-	LogAttributes['user_agent'] AS UserAgent,
-	LogAttributes['referer'] AS Referer,
-	LogAttributes['remote_user'] AS RemoteUser,
-	LogAttributes['request_type'] AS RequestType,
-	LogAttributes['request_path'] AS RequestPath,
-	LogAttributes['remote_addr'] AS RemoteAddress,
-	domain(LogAttributes['referer']) AS RefererDomain,
-	path(LogAttributes['request_path']) AS RequestPage,
-	multiIf(Status::UInt64 > 500, 'CRITICAL', Status::UInt64 > 400, 'ERROR', Status::UInt64 > 300, 'WARNING', 'INFO') AS SeverityText,
-	multiIf(Status::UInt64 > 500, 20, Status::UInt64 > 400, 17, Status::UInt64 > 300, 13, 9) AS SeverityNumber
+        Timestamp::DateTime AS Timestamp,
+        ServiceName,
+        LogAttributes['status']::UInt16 AS Status,
+        LogAttributes['request_protocol'] AS RequestProtocol,
+        LogAttributes['run_time'] AS RunTime,
+        LogAttributes['size'] AS Size,
+        LogAttributes['user_agent'] AS UserAgent,
+        LogAttributes['referer'] AS Referer,
+        LogAttributes['remote_user'] AS RemoteUser,
+        LogAttributes['request_type'] AS RequestType,
+        LogAttributes['request_path'] AS RequestPath,
+        LogAttributes['remote_addr'] AS RemoteAddress,
+        domain(LogAttributes['referer']) AS RefererDomain,
+        path(LogAttributes['request_path']) AS RequestPage,
+        multiIf(Status::UInt64 > 500, 'CRITICAL', Status::UInt64 > 400, 'ERROR', Status::UInt64 > 300, 'WARNING', 'INFO') AS SeverityText,
+        multiIf(Status::UInt64 > 500, 20, Status::UInt64 > 400, 17, Status::UInt64 > 300, 13, 9) AS SeverityNumber
 FROM otel_logs
 ```
 
@@ -399,22 +399,22 @@ FORMAT Vertical
 
 Row 1:
 ──────
-Body:        	{"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
-Timestamp:   	2019-01-22 00:26:14
+Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
+Timestamp:      2019-01-22 00:26:14
 ServiceName:
-Status:      	200
+Status:         200
 RequestProtocol: HTTP/1.1
-RunTime:     	0
-Size:        	30577
-UserAgent:   	Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)
-Referer:     	-
-RemoteUser:  	-
-RequestType: 	GET
-RequestPath: 	/filter/27|13 ,27|  5 ,p53
-RemoteAddress: 	54.36.149.41
+RunTime:        0
+Size:           30577
+UserAgent:      Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)
+Referer:        -
+RemoteUser:     -
+RequestType:    GET
+RequestPath:    /filter/27|13 ,27|  5 ,p53
+RemoteAddress:  54.36.149.41
 RefererDomain:
-RequestPage: 	/filter/27|13 ,27|  5 ,p53
-SeverityText:	INFO
+RequestPage:    /filter/27|13 ,27|  5 ,p53
+SeverityText:   INFO
 SeverityNumber:  9
 
 1 row in set. Elapsed: 0.010 sec.
@@ -425,22 +425,22 @@ An equivalent Materialized view, which relies on extracting columns from the `Bo
 ```sql
 CREATE MATERIALIZED VIEW otel_logs_mv TO otel_logs_v2 AS
 SELECT  Body, 
-	Timestamp::DateTime AS Timestamp,
-	ServiceName,
-	JSONExtractUInt(Body, 'status') AS Status,
-	JSONExtractString(Body, 'request_protocol') AS RequestProtocol,
-	JSONExtractUInt(Body, 'run_time') AS RunTime,
-	JSONExtractUInt(Body, 'size') AS Size,
-	JSONExtractString(Body, 'user_agent') AS UserAgent,
-	JSONExtractString(Body, 'referer') AS Referer,
-	JSONExtractString(Body, 'remote_user') AS RemoteUser,
-	JSONExtractString(Body, 'request_type') AS RequestType,
-	JSONExtractString(Body, 'request_path') AS RequestPath,
-	JSONExtractString(Body, 'remote_addr') AS remote_addr,
-	domain(JSONExtractString(Body, 'referer')) AS RefererDomain,
-	path(JSONExtractString(Body, 'request_path')) AS RequestPage,
-	multiIf(Status::UInt64 > 500, 'CRITICAL', Status::UInt64 > 400, 'ERROR', Status::UInt64 > 300, 'WARNING', 'INFO') AS SeverityText,
-	multiIf(Status::UInt64 > 500, 20, Status::UInt64 > 400, 17, Status::UInt64 > 300, 13, 9) AS SeverityNumber
+        Timestamp::DateTime AS Timestamp,
+        ServiceName,
+        JSONExtractUInt(Body, 'status') AS Status,
+        JSONExtractString(Body, 'request_protocol') AS RequestProtocol,
+        JSONExtractUInt(Body, 'run_time') AS RunTime,
+        JSONExtractUInt(Body, 'size') AS Size,
+        JSONExtractString(Body, 'user_agent') AS UserAgent,
+        JSONExtractString(Body, 'referer') AS Referer,
+        JSONExtractString(Body, 'remote_user') AS RemoteUser,
+        JSONExtractString(Body, 'request_type') AS RequestType,
+        JSONExtractString(Body, 'request_path') AS RequestPath,
+        JSONExtractString(Body, 'remote_addr') AS remote_addr,
+        domain(JSONExtractString(Body, 'referer')) AS RefererDomain,
+        path(JSONExtractString(Body, 'request_path')) AS RequestPage,
+        multiIf(Status::UInt64 > 500, 'CRITICAL', Status::UInt64 > 400, 'ERROR', Status::UInt64 > 300, 'WARNING', 'INFO') AS SeverityText,
+        multiIf(Status::UInt64 > 500, 20, Status::UInt64 > 400, 17, Status::UInt64 > 300, 13, 9) AS SeverityNumber
 FROM otel_logs
 ```
 
@@ -508,25 +508,25 @@ ALIAS columns are calculated at query time and are not stored in the table. Ther
 ```sql
 CREATE TABLE otel_logs
 (
-	`Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-	`TraceId` String CODEC(ZSTD(1)),
-	`SpanId` String CODEC(ZSTD(1)),
-	`TraceFlags` UInt32 CODEC(ZSTD(1)),
-	`SeverityText` LowCardinality(String) CODEC(ZSTD(1)),
-	`SeverityNumber` Int32 CODEC(ZSTD(1)),
-	`ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
-	`Body` String CODEC(ZSTD(1)),
-	`ResourceSchemaUrl` String CODEC(ZSTD(1)),
-	`ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`ScopeSchemaUrl` String CODEC(ZSTD(1)),
-	`ScopeName` String CODEC(ZSTD(1)),
-	`ScopeVersion` String CODEC(ZSTD(1)),
-	`ScopeAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`LogAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`RequestPath` String MATERIALIZED path(LogAttributes['request_path']),
-	`RequestType` LowCardinality(String) MATERIALIZED LogAttributes['request_type'],
-	`RefererDomain` String MATERIALIZED domain(LogAttributes['referer']),
-	`RemoteAddr` IPv4 ALIAS LogAttributes['remote_addr']
+        `Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
+        `TraceId` String CODEC(ZSTD(1)),
+        `SpanId` String CODEC(ZSTD(1)),
+        `TraceFlags` UInt32 CODEC(ZSTD(1)),
+        `SeverityText` LowCardinality(String) CODEC(ZSTD(1)),
+        `SeverityNumber` Int32 CODEC(ZSTD(1)),
+        `ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
+        `Body` String CODEC(ZSTD(1)),
+        `ResourceSchemaUrl` String CODEC(ZSTD(1)),
+        `ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `ScopeSchemaUrl` String CODEC(ZSTD(1)),
+        `ScopeName` String CODEC(ZSTD(1)),
+        `ScopeVersion` String CODEC(ZSTD(1)),
+        `ScopeAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `LogAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `RequestPath` String MATERIALIZED path(LogAttributes['request_path']),
+        `RequestType` LowCardinality(String) MATERIALIZED LogAttributes['request_type'],
+        `RefererDomain` String MATERIALIZED domain(LogAttributes['referer']),
+        `RemoteAddr` IPv4 ALIAS LogAttributes['remote_addr']
 )
 ENGINE = MergeTree
 PARTITION BY toDate(Timestamp)
@@ -555,7 +555,7 @@ Furthermore, adding `ALIAS` is trivial via the `ALTER TABLE` command. These colu
 
 ```sql
 ALTER TABLE default.otel_logs
-	(ADD COLUMN `Size` String ALIAS LogAttributes['size'])
+        (ADD COLUMN `Size` String ALIAS LogAttributes['size'])
 
 SELECT Size
 FROM default.otel_logs_v3
@@ -634,7 +634,7 @@ Given this structure, let's start by taking a peek at the data using the [url()]
 
 ```sql
 SELECT *
-FROM url('https://raw.githubusercontent.com/sapics/ip-location-db/master/dbip-city/dbip-city-ipv4.csv.gz', 'CSV', '\n    	\tip_range_start IPv4, \n    	\tip_range_end IPv4, \n    	\tcountry_code Nullable(String), \n    	\tstate1 Nullable(String), \n    	\tstate2 Nullable(String), \n    	\tcity Nullable(String), \n    	\tpostcode Nullable(String), \n    	\tlatitude Float64, \n    	\tlongitude Float64, \n    	\ttimezone Nullable(String)\n	\t')
+FROM url('https://raw.githubusercontent.com/sapics/ip-location-db/master/dbip-city/dbip-city-ipv4.csv.gz', 'CSV', '\n           \tip_range_start IPv4, \n       \tip_range_end IPv4, \n         \tcountry_code Nullable(String), \n     \tstate1 Nullable(String), \n           \tstate2 Nullable(String), \n           \tcity Nullable(String), \n     \tpostcode Nullable(String), \n         \tlatitude Float64, \n          \tlongitude Float64, \n         \ttimezone Nullable(String)\n   \t')
 LIMIT 1
 FORMAT Vertical
 Row 1:
@@ -642,29 +642,29 @@ Row 1:
 ip_range_start: 1.0.0.0
 ip_range_end:   1.0.0.255
 country_code:   AU
-state1:     	Queensland
-state2:     	ᴺᵁᴸᴸ
-city:       	South Brisbane
-postcode:   	ᴺᵁᴸᴸ
-latitude:   	-27.4767
-longitude:  	153.017
-timezone:   	ᴺᵁᴸᴸ
+state1:         Queensland
+state2:         ᴺᵁᴸᴸ
+city:           South Brisbane
+postcode:       ᴺᵁᴸᴸ
+latitude:       -27.4767
+longitude:      153.017
+timezone:       ᴺᵁᴸᴸ
 ```
 
 To make our lives easier, let's use the [`URL()`](/engines/table-engines/special/url) table engine to create a ClickHouse table object with our field names and confirm the total number of rows:
 
 ```sql
 CREATE TABLE geoip_url(
-	ip_range_start IPv4,
-	ip_range_end IPv4,
-	country_code Nullable(String),
-	state1 Nullable(String),
-	state2 Nullable(String),
-	city Nullable(String),
-	postcode Nullable(String),
-	latitude Float64,
-	longitude Float64,
-	timezone Nullable(String)
+        ip_range_start IPv4,
+        ip_range_end IPv4,
+        country_code Nullable(String),
+        state1 Nullable(String),
+        state2 Nullable(String),
+        city Nullable(String),
+        postcode Nullable(String),
+        latitude Float64,
+        longitude Float64,
+        timezone Nullable(String)
 ) engine=URL('https://raw.githubusercontent.com/sapics/ip-location-db/master/dbip-city/dbip-city-ipv4.csv.gz', 'CSV')
 
 select count() from geoip_url;
@@ -680,23 +680,23 @@ This CIDR for each range can be succinctly computed with the following query:
 
 ```sql
 with
-	bitXor(ip_range_start, ip_range_end) as xor,
-	if(xor != 0, ceil(log2(xor)), 0) as unmatched,
-	32 - unmatched as cidr_suffix,
-	toIPv4(bitAnd(bitNot(pow(2, unmatched) - 1), ip_range_start)::UInt64) as cidr_address
+        bitXor(ip_range_start, ip_range_end) as xor,
+        if(xor != 0, ceil(log2(xor)), 0) as unmatched,
+        32 - unmatched as cidr_suffix,
+        toIPv4(bitAnd(bitNot(pow(2, unmatched) - 1), ip_range_start)::UInt64) as cidr_address
 select
-	ip_range_start,
-	ip_range_end,
-	concat(toString(cidr_address),'/',toString(cidr_suffix)) as cidr    
+        ip_range_start,
+        ip_range_end,
+        concat(toString(cidr_address),'/',toString(cidr_suffix)) as cidr    
 from
-	geoip_url
+        geoip_url
 limit 4;
 
 ┌─ip_range_start─┬─ip_range_end─┬─cidr───────┐
-│ 1.0.0.0    	 │ 1.0.0.255	│ 1.0.0.0/24 │
-│ 1.0.1.0    	 │ 1.0.3.255	│ 1.0.0.0/22 │
-│ 1.0.4.0    	 │ 1.0.7.255	│ 1.0.4.0/22 │
-│ 1.0.8.0    	 │ 1.0.15.255   │ 1.0.8.0/21 │
+│ 1.0.0.0        │ 1.0.0.255    │ 1.0.0.0/24 │
+│ 1.0.1.0        │ 1.0.3.255    │ 1.0.0.0/22 │
+│ 1.0.4.0        │ 1.0.7.255    │ 1.0.4.0/22 │
+│ 1.0.8.0        │ 1.0.15.255   │ 1.0.8.0/21 │
 └────────────────┴──────────────┴────────────┘
 
 4 rows in set. Elapsed: 0.259 sec.
@@ -711,25 +711,25 @@ For our purposes, we'll only need the IP range, country code, and coordinates, s
 ```sql
 CREATE TABLE geoip
 (
-	`cidr` String,
-	`latitude` Float64,
-	`longitude` Float64,
-	`country_code` String
+        `cidr` String,
+        `latitude` Float64,
+        `longitude` Float64,
+        `country_code` String
 )
 ENGINE = MergeTree
 ORDER BY cidr
 
 INSERT INTO geoip
 WITH
-	bitXor(ip_range_start, ip_range_end) as xor,
-	if(xor != 0, ceil(log2(xor)), 0) as unmatched,
-	32 - unmatched as cidr_suffix,
-	toIPv4(bitAnd(bitNot(pow(2, unmatched) - 1), ip_range_start)::UInt64) as cidr_address
+        bitXor(ip_range_start, ip_range_end) as xor,
+        if(xor != 0, ceil(log2(xor)), 0) as unmatched,
+        32 - unmatched as cidr_suffix,
+        toIPv4(bitAnd(bitNot(pow(2, unmatched) - 1), ip_range_start)::UInt64) as cidr_address
 SELECT
-	concat(toString(cidr_address),'/',toString(cidr_suffix)) as cidr,
-	latitude,
-	longitude,
-	country_code    
+        concat(toString(cidr_address),'/',toString(cidr_suffix)) as cidr,
+        latitude,
+        longitude,
+        country_code    
 FROM geoip_url
 ```
 
@@ -754,9 +754,9 @@ We can select rows from the dictionary and confirm this dataset is available for
 SELECT * FROM ip_trie LIMIT 3
 
 ┌─cidr───────┬─latitude─┬─longitude─┬─country_code─┐
-│ 1.0.0.0/22 │  26.0998 │   119.297 │ CN       	   │
-│ 1.0.0.0/24 │ -27.4767 │   153.017 │ AU       	   │
-│ 1.0.4.0/22 │ -38.0267 │   145.301 │ AU       	   │
+│ 1.0.0.0/22 │  26.0998 │   119.297 │ CN           │
+│ 1.0.0.0/24 │ -27.4767 │   153.017 │ AU           │
+│ 1.0.4.0/22 │ -38.0267 │   145.301 │ AU           │
 └────────────┴──────────┴───────────┴──────────────┘
 
 3 rows in set. Elapsed: 4.662 sec.
@@ -784,7 +784,7 @@ Returning to our original logs dataset, we can use the above to aggregate our lo
 
 ```sql
 SELECT dictGet('ip_trie', 'country_code', tuple(RemoteAddress)) AS country,
-	formatReadableQuantity(count()) AS num_requests
+        formatReadableQuantity(count()) AS num_requests
 FROM default.otel_logs_v2
 WHERE country != ''
 GROUP BY country
@@ -792,11 +792,11 @@ ORDER BY count() DESC
 LIMIT 5
 
 ┌─country─┬─num_requests────┐
-│ IR  	  │ 7.36 million	│
-│ US  	  │ 1.67 million	│
-│ AE  	  │ 526.74 thousand │
-│ DE  	  │ 159.35 thousand │
-│ FR  	  │ 109.82 thousand │
+│ IR      │ 7.36 million        │
+│ US      │ 1.67 million        │
+│ AE      │ 526.74 thousand │
+│ DE      │ 159.35 thousand │
+│ FR      │ 109.82 thousand │
 └─────────┴─────────────────┘
 
 5 rows in set. Elapsed: 0.140 sec. Processed 20.73 million rows, 82.92 MB (147.79 million rows/s., 591.16 MB/s.)
@@ -808,23 +808,23 @@ Since an IP to geographical location mapping may change, users are likely to wan
 ```sql
 CREATE TABLE otel_logs_v2
 (
-	`Body` String,
-	`Timestamp` DateTime,
-	`ServiceName` LowCardinality(String),
-	`Status` UInt16,
-	`RequestProtocol` LowCardinality(String),
-	`RunTime` UInt32,
-	`Size` UInt32,
-	`UserAgent` String,
-	`Referer` String,
-	`RemoteUser` String,
-	`RequestType` LowCardinality(String),
-	`RequestPath` String,
-	`RemoteAddress` IPv4,
-	`RefererDomain` String,
-	`RequestPage` String,
-	`SeverityText` LowCardinality(String),
-	`SeverityNumber` UInt8,
+        `Body` String,
+        `Timestamp` DateTime,
+        `ServiceName` LowCardinality(String),
+        `Status` UInt16,
+        `RequestProtocol` LowCardinality(String),
+        `RunTime` UInt32,
+        `Size` UInt32,
+        `UserAgent` String,
+        `Referer` String,
+        `RemoteUser` String,
+        `RequestType` LowCardinality(String),
+        `RequestPath` String,
+        `RemoteAddress` IPv4,
+        `RefererDomain` String,
+        `RequestPage` String,
+        `SeverityText` LowCardinality(String),
+        `SeverityNumber` UInt8,
         `Country` String MATERIALIZED dictGet('ip_trie', 'country_code', tuple(RemoteAddress)),
         `Latitude` Float32 MATERIALIZED dictGet('ip_trie', 'latitude', tuple(RemoteAddress)),
         `Longitude` Float32 MATERIALIZED dictGet('ip_trie', 'longitude', tuple(RemoteAddress))
@@ -854,29 +854,29 @@ Create the following Memory tables. These hold our regular expressions for parsi
 ```sql
 CREATE TABLE regexp_os
 (
-	id UInt64,
-	parent_id UInt64,
-	regexp String,
-	keys   Array(String),
-	values Array(String)
+        id UInt64,
+        parent_id UInt64,
+        regexp String,
+        keys   Array(String),
+        values Array(String)
 ) ENGINE=Memory;
 
 CREATE TABLE regexp_browser
 (
-	id UInt64,
-	parent_id UInt64,
-	regexp String,
-	keys   Array(String),
-	values Array(String)
+        id UInt64,
+        parent_id UInt64,
+        regexp String,
+        keys   Array(String),
+        values Array(String)
 ) ENGINE=Memory;
 
 CREATE TABLE regexp_device
 (
-	id UInt64,
-	parent_id UInt64,
-	regexp String,
-	keys   Array(String),
-	values Array(String)
+        id UInt64,
+        parent_id UInt64,
+        regexp String,
+        keys   Array(String),
+        values Array(String)
 ) ENGINE=Memory;
 ```
 
@@ -895,12 +895,12 @@ With our memory tables populated, we can load our Regular Expression dictionarie
 ```sql
 CREATE DICTIONARY regexp_os_dict
 (
-	regexp String,
-	os_replacement String default 'Other',
-	os_v1_replacement String default '0',
-	os_v2_replacement String default '0',
-	os_v3_replacement String default '0',
-	os_v4_replacement String default '0'
+        regexp String,
+        os_replacement String default 'Other',
+        os_v1_replacement String default '0',
+        os_v2_replacement String default '0',
+        os_v3_replacement String default '0',
+        os_v4_replacement String default '0'
 )
 PRIMARY KEY regexp
 SOURCE(CLICKHOUSE(TABLE 'regexp_os'))
@@ -909,10 +909,10 @@ LAYOUT(REGEXP_TREE);
 
 CREATE DICTIONARY regexp_device_dict
 (
-	regexp String,
-	device_replacement String default 'Other',
-	brand_replacement String,
-	model_replacement String
+        regexp String,
+        device_replacement String default 'Other',
+        brand_replacement String,
+        model_replacement String
 )
 PRIMARY KEY(regexp)
 SOURCE(CLICKHOUSE(TABLE 'regexp_device'))
@@ -921,10 +921,10 @@ LAYOUT(regexp_tree);
 
 CREATE DICTIONARY regexp_browser_dict
 (
-	regexp String,
-	family_replacement String default 'Other',
-	v1_replacement String default '0',
-	v2_replacement String default '0'
+        regexp String,
+        family_replacement String default 'Other',
+        v1_replacement String default '0',
+        v2_replacement String default '0'
 )
 PRIMARY KEY(regexp)
 SOURCE(CLICKHOUSE(TABLE 'regexp_browser'))
@@ -937,9 +937,9 @@ With these dictionaries loaded we can provide a sample user-agent and test our n
 ```sql
 WITH 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:127.0) Gecko/20100101 Firefox/127.0' AS user_agent
 SELECT
-	dictGet('regexp_device_dict', ('device_replacement', 'brand_replacement', 'model_replacement'), user_agent) AS device,
-	dictGet('regexp_browser_dict', ('family_replacement', 'v1_replacement', 'v2_replacement'), user_agent) AS browser,
-	dictGet('regexp_os_dict', ('os_replacement', 'os_v1_replacement', 'os_v2_replacement', 'os_v3_replacement'), user_agent) AS os
+        dictGet('regexp_device_dict', ('device_replacement', 'brand_replacement', 'model_replacement'), user_agent) AS device,
+        dictGet('regexp_browser_dict', ('family_replacement', 'v1_replacement', 'v2_replacement'), user_agent) AS browser,
+        dictGet('regexp_os_dict', ('os_replacement', 'os_v1_replacement', 'os_v2_replacement', 'os_v3_replacement'), user_agent) AS os
 
 ┌─device────────────────┬─browser───────────────┬─os─────────────────────────┐
 │ ('Mac','Apple','Mac') │ ('Firefox','127','0') │ ('Mac OS X','10','15','0') │
@@ -955,26 +955,26 @@ We can either perform this work using a materialized column or using a materiali
 ```sql
 CREATE MATERIALIZED VIEW otel_logs_mv TO otel_logs_v2
 AS SELECT
-	Body,
-	CAST(Timestamp, 'DateTime') AS Timestamp,
-	ServiceName,
-	LogAttributes['status'] AS Status,
-	LogAttributes['request_protocol'] AS RequestProtocol,
-	LogAttributes['run_time'] AS RunTime,
-	LogAttributes['size'] AS Size,
-	LogAttributes['user_agent'] AS UserAgent,
-	LogAttributes['referer'] AS Referer,
-	LogAttributes['remote_user'] AS RemoteUser,
-	LogAttributes['request_type'] AS RequestType,
-	LogAttributes['request_path'] AS RequestPath,
-	LogAttributes['remote_addr'] AS RemoteAddress,
-	domain(LogAttributes['referer']) AS RefererDomain,
-	path(LogAttributes['request_path']) AS RequestPage,
-	multiIf(CAST(Status, 'UInt64') > 500, 'CRITICAL', CAST(Status, 'UInt64') > 400, 'ERROR', CAST(Status, 'UInt64') > 300, 'WARNING', 'INFO') AS SeverityText,
-	multiIf(CAST(Status, 'UInt64') > 500, 20, CAST(Status, 'UInt64') > 400, 17, CAST(Status, 'UInt64') > 300, 13, 9) AS SeverityNumber,
-	dictGet('regexp_device_dict', ('device_replacement', 'brand_replacement', 'model_replacement'), UserAgent) AS Device,
-	dictGet('regexp_browser_dict', ('family_replacement', 'v1_replacement', 'v2_replacement'), UserAgent) AS Browser,
-	dictGet('regexp_os_dict', ('os_replacement', 'os_v1_replacement', 'os_v2_replacement', 'os_v3_replacement'), UserAgent) AS Os
+        Body,
+        CAST(Timestamp, 'DateTime') AS Timestamp,
+        ServiceName,
+        LogAttributes['status'] AS Status,
+        LogAttributes['request_protocol'] AS RequestProtocol,
+        LogAttributes['run_time'] AS RunTime,
+        LogAttributes['size'] AS Size,
+        LogAttributes['user_agent'] AS UserAgent,
+        LogAttributes['referer'] AS Referer,
+        LogAttributes['remote_user'] AS RemoteUser,
+        LogAttributes['request_type'] AS RequestType,
+        LogAttributes['request_path'] AS RequestPath,
+        LogAttributes['remote_addr'] AS RemoteAddress,
+        domain(LogAttributes['referer']) AS RefererDomain,
+        path(LogAttributes['request_path']) AS RequestPage,
+        multiIf(CAST(Status, 'UInt64') > 500, 'CRITICAL', CAST(Status, 'UInt64') > 400, 'ERROR', CAST(Status, 'UInt64') > 300, 'WARNING', 'INFO') AS SeverityText,
+        multiIf(CAST(Status, 'UInt64') > 500, 20, CAST(Status, 'UInt64') > 400, 17, CAST(Status, 'UInt64') > 300, 13, 9) AS SeverityNumber,
+        dictGet('regexp_device_dict', ('device_replacement', 'brand_replacement', 'model_replacement'), UserAgent) AS Device,
+        dictGet('regexp_browser_dict', ('family_replacement', 'v1_replacement', 'v2_replacement'), UserAgent) AS Browser,
+        dictGet('regexp_os_dict', ('os_replacement', 'os_v1_replacement', 'os_v2_replacement', 'os_v3_replacement'), UserAgent) AS Os
 FROM otel_logs
 ```
 
@@ -1020,7 +1020,7 @@ Row 1:
 ──────
 Device:  ('Spider','Spider','Desktop')
 Browser: ('AhrefsBot','6','1')
-Os:  	('Other','0','0','0')
+Os:     ('Other','0','0','0')
 ```
 
 :::note Tuples for complex structures
@@ -1049,7 +1049,7 @@ Consider the following query, where we compute the total traffic per hour using 
 
 ```sql
 SELECT toStartOfHour(Timestamp) AS Hour,
-	sum(toUInt64OrDefault(LogAttributes['size'])) AS TotalBytes
+        sum(toUInt64OrDefault(LogAttributes['size'])) AS TotalBytes
 FROM otel_logs
 GROUP BY Hour
 ORDER BY Hour DESC
@@ -1107,7 +1107,7 @@ FROM bytes_per_hour
 FINAL
 
 ┌─count()─┐
-│ 	113 │
+│       113 │
 └─────────┘
 
 1 row in set. Elapsed: 0.039 sec.
@@ -1124,8 +1124,8 @@ Typically, the second option is more efficient and flexible (the table can be us
 
 ```sql
 SELECT
-	Hour,
-	sum(TotalBytes) AS TotalBytes
+        Hour,
+        sum(TotalBytes) AS TotalBytes
 FROM bytes_per_hour
 GROUP BY Hour
 ORDER BY Hour DESC
@@ -1142,8 +1142,8 @@ LIMIT 5
 5 rows in set. Elapsed: 0.008 sec.
 
 SELECT
-	Hour,
-	TotalBytes
+        Hour,
+        TotalBytes
 FROM bytes_per_hour
 FINAL
 ORDER BY Hour DESC
@@ -1179,9 +1179,9 @@ GROUP BY Hour
 ORDER BY Hour DESC
 
 ┌────────────────Hour─┬─UniqueUsers─┐
-│ 2019-01-26 16:00:00 │   	4763    │
+│ 2019-01-26 16:00:00 │         4763    │
 …
-│ 2019-01-22 00:00:00 │    	536     │
+│ 2019-01-22 00:00:00 │         536     │
 └─────────────────────┴─────────────┘
 
 113 rows in set. Elapsed: 0.667 sec. Processed 10.37 million rows, 4.73 GB (15.53 million rows/s., 7.09 GB/s.)
@@ -1206,7 +1206,7 @@ The associated materialized view uses the earlier query:
 ```sql
 CREATE MATERIALIZED VIEW unique_visitors_per_hour_mv TO unique_visitors_per_hour AS
 SELECT toStartOfHour(Timestamp) AS Hour,
-	uniqState(LogAttributes['remote_addr']::IPv4) AS UniqueUsers
+        uniqState(LogAttributes['remote_addr']::IPv4) AS UniqueUsers
 FROM otel_logs
 GROUP BY Hour
 ORDER BY Hour DESC
@@ -1221,7 +1221,7 @@ SELECT count()
 FROM unique_visitors_per_hour
 FINAL
 ┌─count()─┐
-│ 	113   │
+│       113   │
 └─────────┘
 
 1 row in set. Elapsed: 0.009 sec.
@@ -1236,9 +1236,9 @@ GROUP BY Hour
 ORDER BY Hour DESC
 
 ┌────────────────Hour─┬─UniqueUsers─┐
-│ 2019-01-26 16:00:00 │   	 4763   │
+│ 2019-01-26 16:00:00 │          4763   │
 
-│ 2019-01-22 00:00:00 │		 536    │
+│ 2019-01-22 00:00:00 │          536    │
 └─────────────────────┴─────────────┘
 
 113 rows in set. Elapsed: 0.027 sec.
@@ -1253,34 +1253,34 @@ Users should consider their access patterns when choosing the ClickHouse orderin
 ```sql
 CREATE TABLE otel_traces
 (
-	`Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-	`TraceId` String CODEC(ZSTD(1)),
-	`SpanId` String CODEC(ZSTD(1)),
-	`ParentSpanId` String CODEC(ZSTD(1)),
-	`TraceState` String CODEC(ZSTD(1)),
-	`SpanName` LowCardinality(String) CODEC(ZSTD(1)),
-	`SpanKind` LowCardinality(String) CODEC(ZSTD(1)),
-	`ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
-	`ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`ScopeName` String CODEC(ZSTD(1)),
-	`ScopeVersion` String CODEC(ZSTD(1)),
-	`SpanAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`Duration` Int64 CODEC(ZSTD(1)),
-	`StatusCode` LowCardinality(String) CODEC(ZSTD(1)),
-	`StatusMessage` String CODEC(ZSTD(1)),
-	`Events.Timestamp` Array(DateTime64(9)) CODEC(ZSTD(1)),
-	`Events.Name` Array(LowCardinality(String)) CODEC(ZSTD(1)),
-	`Events.Attributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
-	`Links.TraceId` Array(String) CODEC(ZSTD(1)),
-	`Links.SpanId` Array(String) CODEC(ZSTD(1)),
-	`Links.TraceState` Array(String) CODEC(ZSTD(1)),
-	`Links.Attributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
-	INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1,
-	INDEX idx_res_attr_key mapKeys(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_res_attr_value mapValues(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_span_attr_key mapKeys(SpanAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_span_attr_value mapValues(SpanAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_duration Duration TYPE minmax GRANULARITY 1
+        `Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
+        `TraceId` String CODEC(ZSTD(1)),
+        `SpanId` String CODEC(ZSTD(1)),
+        `ParentSpanId` String CODEC(ZSTD(1)),
+        `TraceState` String CODEC(ZSTD(1)),
+        `SpanName` LowCardinality(String) CODEC(ZSTD(1)),
+        `SpanKind` LowCardinality(String) CODEC(ZSTD(1)),
+        `ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
+        `ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `ScopeName` String CODEC(ZSTD(1)),
+        `ScopeVersion` String CODEC(ZSTD(1)),
+        `SpanAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `Duration` Int64 CODEC(ZSTD(1)),
+        `StatusCode` LowCardinality(String) CODEC(ZSTD(1)),
+        `StatusMessage` String CODEC(ZSTD(1)),
+        `Events.Timestamp` Array(DateTime64(9)) CODEC(ZSTD(1)),
+        `Events.Name` Array(LowCardinality(String)) CODEC(ZSTD(1)),
+        `Events.Attributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
+        `Links.TraceId` Array(String) CODEC(ZSTD(1)),
+        `Links.SpanId` Array(String) CODEC(ZSTD(1)),
+        `Links.TraceState` Array(String) CODEC(ZSTD(1)),
+        `Links.Attributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
+        INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1,
+        INDEX idx_res_attr_key mapKeys(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_res_attr_value mapValues(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_span_attr_key mapKeys(SpanAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_span_attr_value mapValues(SpanAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_duration Duration TYPE minmax GRANULARITY 1
 )
 ENGINE = MergeTree
 PARTITION BY toDate(Timestamp)
@@ -1294,10 +1294,10 @@ The OTel collector also installs a materialized view and associated table to add
 ```sql
 CREATE TABLE otel_traces_trace_id_ts
 (
-	`TraceId` String CODEC(ZSTD(1)),
-	`Start` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-	`End` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-	INDEX idx_trace_id TraceId TYPE bloom_filter(0.01) GRANULARITY 1
+        `TraceId` String CODEC(ZSTD(1)),
+        `Start` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
+        `End` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
+        INDEX idx_trace_id TraceId TYPE bloom_filter(0.01) GRANULARITY 1
 )
 ENGINE = MergeTree
 ORDER BY (TraceId, toUnixTimestamp(Start))
@@ -1305,14 +1305,14 @@ ORDER BY (TraceId, toUnixTimestamp(Start))
 
 CREATE MATERIALIZED VIEW otel_traces_trace_id_ts_mv TO otel_traces_trace_id_ts
 (
-	`TraceId` String,
-	`Start` DateTime64(9),
-	`End` DateTime64(9)
+        `TraceId` String,
+        `Start` DateTime64(9),
+        `End` DateTime64(9)
 )
 AS SELECT
-	TraceId,
-	min(Timestamp) AS Start,
-	max(Timestamp) AS End
+        TraceId,
+        min(Timestamp) AS Start,
+        max(Timestamp) AS End
 FROM otel_traces
 WHERE TraceId != ''
 GROUP BY TraceId
@@ -1322,26 +1322,26 @@ The view effectively ensures the table `otel_traces_trace_id_ts` has the minimum
 
 ```sql
 WITH 'ae9226c78d1d360601e6383928e4d22d' AS trace_id,
-	(
-    	SELECT min(Start)
-    	  FROM default.otel_traces_trace_id_ts
-    	  WHERE TraceId = trace_id
-	) AS trace_start,
-	(
-    	SELECT max(End) + 1
-    	  FROM default.otel_traces_trace_id_ts
-    	  WHERE TraceId = trace_id
-	) AS trace_end
+        (
+        SELECT min(Start)
+          FROM default.otel_traces_trace_id_ts
+          WHERE TraceId = trace_id
+        ) AS trace_start,
+        (
+        SELECT max(End) + 1
+          FROM default.otel_traces_trace_id_ts
+          WHERE TraceId = trace_id
+        ) AS trace_end
 SELECT
-	TraceId AS traceID,
-	SpanId AS spanID,
-	ParentSpanId AS parentSpanID,
-	ServiceName AS serviceName,
-	SpanName AS operationName,
-	Timestamp AS startTime,
-	Duration * 0.000001 AS duration,
-	arrayMap(key -> map('key', key, 'value', SpanAttributes[key]), mapKeys(SpanAttributes)) AS tags,
-	arrayMap(key -> map('key', key, 'value', ResourceAttributes[key]), mapKeys(ResourceAttributes)) AS serviceTags
+        TraceId AS traceID,
+        SpanId AS spanID,
+        ParentSpanId AS parentSpanID,
+        ServiceName AS serviceName,
+        SpanName AS operationName,
+        Timestamp AS startTime,
+        Duration * 0.000001 AS duration,
+        arrayMap(key -> map('key', key, 'value', SpanAttributes[key]), mapKeys(SpanAttributes)) AS tags,
+        arrayMap(key -> map('key', key, 'value', ResourceAttributes[key]), mapKeys(ResourceAttributes)) AS serviceTags
 FROM otel_traces
 WHERE (traceID = trace_id) AND (startTime >= trace_start) AND (startTime <= trace_end)
 LIMIT 1000
@@ -1410,28 +1410,28 @@ Note we have to first create the projection and then materialize it. This latter
 ```sql
 CREATE TABLE otel_logs_v2
 (
-	`Body` String,
-	`Timestamp` DateTime,
-	`ServiceName` LowCardinality(String),
-	`Status` UInt16,
-	`RequestProtocol` LowCardinality(String),
-	`RunTime` UInt32,
-	`Size` UInt32,
-	`UserAgent` String,
-	`Referer` String,
-	`RemoteUser` String,
-	`RequestType` LowCardinality(String),
-	`RequestPath` String,
-	`RemoteAddress` IPv4,
-	`RefererDomain` String,
-	`RequestPage` String,
-	`SeverityText` LowCardinality(String),
-	`SeverityNumber` UInt8,
+        `Body` String,
+        `Timestamp` DateTime,
+        `ServiceName` LowCardinality(String),
+        `Status` UInt16,
+        `RequestProtocol` LowCardinality(String),
+        `RunTime` UInt32,
+        `Size` UInt32,
+        `UserAgent` String,
+        `Referer` String,
+        `RemoteUser` String,
+        `RequestType` LowCardinality(String),
+        `RequestPath` String,
+        `RemoteAddress` IPv4,
+        `RefererDomain` String,
+        `RequestPage` String,
+        `SeverityText` LowCardinality(String),
+        `SeverityNumber` UInt8,
         PROJECTION status
-	(
-    	   SELECT Timestamp, RequestPath, Status, RemoteAddress, UserAgent
-   	   ORDER BY Status
-	)
+        (
+           SELECT Timestamp, RequestPath, Status, RemoteAddress, UserAgent
+           ORDER BY Status
+        )
 )
 ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
@@ -1445,7 +1445,7 @@ FROM system.mutations
 WHERE (`table` = 'otel_logs_v2') AND (command LIKE '%MATERIALIZE%')
 
 ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
-│       	0 │   	1   │                	 │
+│               0 │     1   │                    │
 └─────────────┴─────────┴────────────────────┘
 
 1 row in set. Elapsed: 0.008 sec.
@@ -1526,24 +1526,24 @@ Here we need to match on an ngram size of 3. We therefore create an `ngrambf_v1`
 ```sql
 CREATE TABLE otel_logs_bloom
 (
-	`Body` String,
-	`Timestamp` DateTime,
-	`ServiceName` LowCardinality(String),
-	`Status` UInt16,
-	`RequestProtocol` LowCardinality(String),
-	`RunTime` UInt32,
-	`Size` UInt32,
-	`UserAgent` String,
-	`Referer` String,
-	`RemoteUser` String,
-	`RequestType` LowCardinality(String),
-	`RequestPath` String,
-	`RemoteAddress` IPv4,
-	`RefererDomain` String,
-	`RequestPage` String,
-	`SeverityText` LowCardinality(String),
-	`SeverityNumber` UInt8,
-	INDEX idx_span_attr_value Referer TYPE ngrambf_v1(3, 10000, 3, 7) GRANULARITY 1
+        `Body` String,
+        `Timestamp` DateTime,
+        `ServiceName` LowCardinality(String),
+        `Status` UInt16,
+        `RequestProtocol` LowCardinality(String),
+        `RunTime` UInt32,
+        `Size` UInt32,
+        `UserAgent` String,
+        `Referer` String,
+        `RemoteUser` String,
+        `RequestType` LowCardinality(String),
+        `RequestPath` String,
+        `RemoteAddress` IPv4,
+        `RefererDomain` String,
+        `RequestPage` String,
+        `SeverityText` LowCardinality(String),
+        `SeverityNumber` UInt8,
+        INDEX idx_span_attr_value Referer TYPE ngrambf_v1(3, 10000, 3, 7) GRANULARITY 1
 )
 ENGINE = MergeTree
 ORDER BY (Timestamp)
@@ -1558,7 +1558,7 @@ SELECT count()
 FROM otel_logs_bloom
 WHERE Referer LIKE '%ultra%'
 ┌─count()─┐
-│ 	182   │
+│       182   │
 └─────────┘
 
 1 row in set. Elapsed: 0.077 sec. Processed 4.22 million rows, 375.29 MB (54.81 million rows/s., 4.87 GB/s.)
@@ -1580,16 +1580,16 @@ FROM otel_logs_v2
 WHERE Referer LIKE '%ultra%'
 
 ┌─explain────────────────────────────────────────────────────────────┐
-│ Expression ((Project names + Projection))                      	 │
-│   Aggregating                                                  	 │
-│ 	Expression (Before GROUP BY)                               	     │
-│   	Filter ((WHERE + Change column names to column identifiers)) │
-│     	ReadFromMergeTree (default.otel_logs_v2)               	     │
-│     	Indexes:                                               	     │
-│       	PrimaryKey                                           	 │
-│         	Condition: true                                    	     │
-│         	Parts: 9/9                                         	     │
-│         	Granules: 1278/1278                                	     │
+│ Expression ((Project names + Projection))                              │
+│   Aggregating                                                          │
+│       Expression (Before GROUP BY)                                         │
+│       Filter ((WHERE + Change column names to column identifiers)) │
+│       ReadFromMergeTree (default.otel_logs_v2)                     │
+│       Indexes:                                                     │
+│               PrimaryKey                                               │
+│               Condition: true                                              │
+│               Parts: 9/9                                                   │
+│               Granules: 1278/1278                                          │
 └────────────────────────────────────────────────────────────────────┘
 
 10 rows in set. Elapsed: 0.016 sec.
@@ -1601,21 +1601,21 @@ FROM otel_logs_bloom
 WHERE Referer LIKE '%ultra%'
 
 ┌─explain────────────────────────────────────────────────────────────┐
-│ Expression ((Project names + Projection))                      	 │
-│   Aggregating                                                  	 │
-│ 	Expression (Before GROUP BY)                               	     │
-│   	Filter ((WHERE + Change column names to column identifiers)) │
-│     	ReadFromMergeTree (default.otel_logs_bloom)            	     │
-│     	Indexes:                                               	     │
-│       	PrimaryKey                                           	 │ 
-│         	Condition: true                                    	     │
-│         	Parts: 8/8                                         	     │
-│         	Granules: 1276/1276                                 	 │
-│       	Skip                                                 	 │
-│         	Name: idx_span_attr_value                          	     │
-│         	Description: ngrambf_v1 GRANULARITY 1              	     │
-│         	Parts: 8/8                                         	     │
-│         	Granules: 517/1276                                 	     │
+│ Expression ((Project names + Projection))                              │
+│   Aggregating                                                          │
+│       Expression (Before GROUP BY)                                         │
+│       Filter ((WHERE + Change column names to column identifiers)) │
+│       ReadFromMergeTree (default.otel_logs_bloom)                  │
+│       Indexes:                                                     │
+│               PrimaryKey                                               │ 
+│               Condition: true                                              │
+│               Parts: 8/8                                                   │
+│               Granules: 1276/1276                                      │
+│               Skip                                                     │
+│               Name: idx_span_attr_value                                    │
+│               Description: ngrambf_v1 GRANULARITY 1                        │
+│               Parts: 8/8                                                   │
+│               Granules: 517/1276                                           │
 └────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1623,31 +1623,31 @@ The bloom filter will typically only be faster if it's smaller than the column i
 
 ```sql
 SELECT
-	name,
-	formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
-	formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
-	round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+        name,
+        formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+        formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+        round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
 FROM system.columns
 WHERE (`table` = 'otel_logs_bloom') AND (name = 'Referer')
 GROUP BY name
 ORDER BY sum(data_compressed_bytes) DESC
 
 ┌─name────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ Referer │ 56.16 MiB   	│ 789.21 MiB    	│ 14.05 │
+│ Referer │ 56.16 MiB           │ 789.21 MiB            │ 14.05 │
 └─────────┴─────────────────┴───────────────────┴───────┘
 
 1 row in set. Elapsed: 0.018 sec.
 
 
 SELECT
-	`table`,
-	formatReadableSize(data_compressed_bytes) AS compressed_size,
-	formatReadableSize(data_uncompressed_bytes) AS uncompressed_size
+        `table`,
+        formatReadableSize(data_compressed_bytes) AS compressed_size,
+        formatReadableSize(data_uncompressed_bytes) AS uncompressed_size
 FROM system.data_skipping_indices
 WHERE `table` = 'otel_logs_bloom'
 
 ┌─table───────────┬─compressed_size─┬─uncompressed_size─┐
-│ otel_logs_bloom │ 12.03 MiB   	│ 12.17 MiB     	│
+│ otel_logs_bloom │ 12.03 MiB           │ 12.17 MiB             │
 └─────────────────┴─────────────────┴───────────────────┘
 
 1 row in set. Elapsed: 0.004 sec.

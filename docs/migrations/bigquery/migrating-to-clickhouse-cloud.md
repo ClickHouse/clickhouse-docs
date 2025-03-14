@@ -214,12 +214,12 @@ The data parts are logically associated with each partition on disk and can be q
 ```sql
 CREATE TABLE posts
 (
-	`Id` Int32 CODEC(Delta(4), ZSTD(1)),
-	`PostTypeId` Enum8('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
-	`AcceptedAnswerId` UInt32,
-	`CreationDate` DateTime64(3, 'UTC'),
+        `Id` Int32 CODEC(Delta(4), ZSTD(1)),
+        `PostTypeId` Enum8('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
+        `AcceptedAnswerId` UInt32,
+        `CreationDate` DateTime64(3, 'UTC'),
 ...
-	`ClosedDate` DateTime64(3, 'UTC')
+        `ClosedDate` DateTime64(3, 'UTC')
 )
 ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CreationDate)
@@ -238,29 +238,29 @@ FROM system.parts
 WHERE `table` = 'posts'
 
 ┌─partition─┐
-│ 2008  	│
-│ 2009  	│
-│ 2010  	│
-│ 2011  	│
-│ 2012  	│
-│ 2013  	│
-│ 2014  	│
-│ 2015  	│
-│ 2016  	│
-│ 2017  	│
-│ 2018  	│
-│ 2019  	│
-│ 2020  	│
-│ 2021  	│
-│ 2022  	│
-│ 2023  	│
-│ 2024  	│
+│ 2008          │
+│ 2009          │
+│ 2010          │
+│ 2011          │
+│ 2012          │
+│ 2013          │
+│ 2014          │
+│ 2015          │
+│ 2016          │
+│ 2017          │
+│ 2018          │
+│ 2019          │
+│ 2020          │
+│ 2021          │
+│ 2022          │
+│ 2023          │
+│ 2024          │
 └───────────┘
 
 17 rows in set. Elapsed: 0.002 sec.
-	
-	ALTER TABLE posts
-	(DROP PARTITION '2008')
+        
+        ALTER TABLE posts
+        (DROP PARTITION '2008')
 
 Ok.
 
@@ -313,18 +313,18 @@ Note that we have to first create the projection and then materialize it. This l
 ```sql
 CREATE TABLE comments
 (
-	`Id` UInt32,
-	`PostId` UInt32,
-	`Score` UInt16,
-	`Text` String,
-	`CreationDate` DateTime64(3, 'UTC'),
-	`UserId` Int32,
-	`UserDisplayName` LowCardinality(String),
-	PROJECTION comments_user_id
-	(
-    	SELECT *
-    	ORDER BY UserId
-	)
+        `Id` UInt32,
+        `PostId` UInt32,
+        `Score` UInt16,
+        `Text` String,
+        `CreationDate` DateTime64(3, 'UTC'),
+        `UserId` Int32,
+        `UserDisplayName` LowCardinality(String),
+        PROJECTION comments_user_id
+        (
+        SELECT *
+        ORDER BY UserId
+        )
 )
 ENGINE = MergeTree
 ORDER BY PostId
@@ -334,14 +334,14 @@ If the projection is created via an `ALTER` command, the creation is asynchronou
 
 ```sql
 SELECT
-	parts_to_do,
-	is_done,
-	latest_fail_reason
+        parts_to_do,
+        is_done,
+        latest_fail_reason
 FROM system.mutations
 WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
 
    ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
-1. │       	1 │   	0 │                	│
+1. │            1 │     0 │                     │
    └─────────────┴─────────┴────────────────────┘
 
 1 row in set. Elapsed: 0.003 sec.
@@ -370,19 +370,19 @@ SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
 
-	┌─explain─────────────────────────────────────────────┐
- 1. │ Expression ((Projection + Before ORDER BY))     	│
- 2. │   Aggregating                                   	│
- 3. │ 	Filter                                      	│
- 4. │   	ReadFromMergeTree (comments_user_id)      	│
- 5. │   	Indexes:                                  	│
- 6. │     	PrimaryKey                              	│
- 7. │       	Keys:                                 	│
- 8. │         	UserId                              	│
- 9. │       	Condition: (UserId in [8592047, 8592047]) │
-10. │       	Parts: 2/2                            	│
-11. │       	Granules: 2/11360                     	│
-	└─────────────────────────────────────────────────────┘
+        ┌─explain─────────────────────────────────────────────┐
+ 1. │ Expression ((Projection + Before ORDER BY))       │
+ 2. │   Aggregating                                     │
+ 3. │   Filter                                          │
+ 4. │           ReadFromMergeTree (comments_user_id)            │
+ 5. │           Indexes:                                        │
+ 6. │           PrimaryKey                                      │
+ 7. │           Keys:                                   │
+ 8. │           UserId                                  │
+ 9. │           Condition: (UserId in [8592047, 8592047]) │
+10. │           Parts: 2/2                              │
+11. │           Granules: 2/11360                       │
+        └─────────────────────────────────────────────────────┘
 
 11 rows in set. Elapsed: 0.004 sec.
 ```

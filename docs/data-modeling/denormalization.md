@@ -69,12 +69,12 @@ Votes for posts are represented as separate tables. The optimized schema for thi
 ```sql
 CREATE TABLE votes
 (
-	`Id` UInt32,
-	`PostId` Int32,
-	`VoteTypeId` UInt8,
-	`CreationDate` DateTime64(3, 'UTC'),
-	`UserId` Int32,
-	`BountyAmount` UInt8
+        `Id` UInt32,
+        `PostId` Int32,
+        `VoteTypeId` UInt8,
+        `CreationDate` DateTime64(3, 'UTC'),
+        `UserId` Int32,
+        `BountyAmount` UInt8
 )
 ENGINE = MergeTree
 ORDER BY (VoteTypeId, CreationDate, PostId)
@@ -92,16 +92,16 @@ Votes are added frequently to posts. While this might diminish per post over tim
 SELECT round(avg(c)) AS avg_votes_per_hr, round(avg(posts)) AS avg_posts_per_hr
 FROM
 (
-	SELECT
-    	toStartOfHour(CreationDate) AS hr,
-    	count() AS c,
-    	uniq(PostId) AS posts
-	FROM votes
-	GROUP BY hr
+        SELECT
+        toStartOfHour(CreationDate) AS hr,
+        count() AS c,
+        uniq(PostId) AS posts
+        FROM votes
+        GROUP BY hr
 )
 
 ┌─avg_votes_per_hr─┬─avg_posts_per_hr─┐
-│        	41759 │        	33322 │
+│               41759 │         33322 │
 └──────────────────┴──────────────────┘
 ```
 
@@ -252,7 +252,7 @@ FROM
 )
 
 ┌─avg_votes_per_hr─┬─avg_posts_per_hr─┐
-│      		 54 │      		 44	│
+│                54 │                    44     │
 └──────────────────┴──────────────────┘
 ```
 
@@ -325,8 +325,8 @@ SELECT
 FROM posts
 LEFT JOIN (
     SELECT
-   	 PostId,
-   	 groupArray((CreationDate, RelatedPostId, LinkTypeId)) AS Related
+         PostId,
+         groupArray((CreationDate, RelatedPostId, LinkTypeId)) AS Related
     FROM postlinks
     GROUP BY PostId
 ) AS postlinks ON posts.Id = postlinks.PostId
@@ -350,7 +350,7 @@ FORMAT Vertical
 
 Row 1:
 ──────
-LinkedPosts:	[('2017-04-11 11:53:09.583',3404508),('2017-04-11 11:49:07.680',3922739),('2017-04-11 11:48:33.353',33058004)]
+LinkedPosts:    [('2017-04-11 11:53:09.583',3404508),('2017-04-11 11:49:07.680',3922739),('2017-04-11 11:48:33.353',33058004)]
 DuplicatePosts: [('2017-04-11 12:18:37.260',3922739),('2017-04-11 12:18:37.260',33058004)]
 ```
 

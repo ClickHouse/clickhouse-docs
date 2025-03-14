@@ -185,18 +185,18 @@ SeverityText:
 SeverityNumber: Unspecified(0)
 Body: Str({"remote_addr":"66.249.66.195","remote_user":"-","run_time":"0","time_local":"2019-01-22 01:12:53.000","request_type":"GET","request_path":"\/product\/7564","request_protocol":"HTTP\/1.1","status":"301","size":"178","referer":"-","user_agent":"Mozilla\/5.0 (Linux; Android 6.0.1; Nexus 5X Build\/MMB29P) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/41.0.2272.96 Mobile Safari\/537.36 (compatible; Googlebot\/2.1; +http:\/\/www.google.com\/bot.html)"})
 Attributes:
- 	-> remote_user: Str(-)
- 	-> request_protocol: Str(HTTP/1.1)
- 	-> time_local: Str(2019-01-22 01:12:53.000)
- 	-> user_agent: Str(Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.96 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html))
- 	-> log.file.name: Str(access.log)
- 	-> status: Str(301)
- 	-> size: Str(178)
- 	-> referer: Str(-)
- 	-> remote_addr: Str(66.249.66.195)
- 	-> request_type: Str(GET)
- 	-> request_path: Str(/product/7564)
- 	-> run_time: Str(0)
+        -> remote_user: Str(-)
+        -> request_protocol: Str(HTTP/1.1)
+        -> time_local: Str(2019-01-22 01:12:53.000)
+        -> user_agent: Str(Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.96 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html))
+        -> log.file.name: Str(access.log)
+        -> status: Str(301)
+        -> size: Str(178)
+        -> referer: Str(-)
+        -> remote_addr: Str(66.249.66.195)
+        -> request_type: Str(GET)
+        -> request_path: Str(/product/7564)
+        -> run_time: Str(0)
 Trace ID:
 Span ID:
 Flags: 0
@@ -270,18 +270,18 @@ This will result in trace messages similar to the example below, being output to
 
 ```response
 Span #86
-	Trace ID   	: 1bb5cdd2c9df5f0da320ca22045c60d9
-	Parent ID  	: ce129e5c2dd51378
-	ID         	: fbb14077b5e149a0
-	Name       	: okey-dokey-0
-	Kind       	: Server
-	Start time 	: 2024-06-19 18:03:41.603868 +0000 UTC
-	End time   	: 2024-06-19 18:03:41.603991 +0000 UTC
-	Status code	: Unset
-	Status message :
+        Trace ID        : 1bb5cdd2c9df5f0da320ca22045c60d9
+        Parent ID       : ce129e5c2dd51378
+        ID              : fbb14077b5e149a0
+        Name            : okey-dokey-0
+        Kind            : Server
+        Start time      : 2024-06-19 18:03:41.603868 +0000 UTC
+        End time        : 2024-06-19 18:03:41.603991 +0000 UTC
+        Status code     : Unset
+        Status message :
 Attributes:
- 	-> net.peer.ip: Str(1.2.3.4)
- 	-> peer.service: Str(telemetrygen-client)
+        -> net.peer.ip: Str(1.2.3.4)
+        -> peer.service: Str(telemetrygen-client)
 ```
 
 The above represents a single trace message as produced by the OTel collector. We ingest these same messages into ClickHouse in later sections.
@@ -446,21 +446,21 @@ FORMAT Vertical
 
 Row 1:
 ──────
-Timestamp:      	2019-01-22 06:46:14.000000000
+Timestamp:              2019-01-22 06:46:14.000000000
 TraceId:
 SpanId:
-TraceFlags:     	0
+TraceFlags:             0
 SeverityText:
-SeverityNumber: 	0
+SeverityNumber:         0
 ServiceName:
-Body:           	{"remote_addr":"109.230.70.66","remote_user":"-","run_time":"0","time_local":"2019-01-22 06:46:14.000","request_type":"GET","request_path":"\/image\/61884\/productModel\/150x150","request_protocol":"HTTP\/1.1","status":"200","size":"1684","referer":"https:\/\/www.zanbil.ir\/filter\/p3%2Cb2","user_agent":"Mozilla\/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko\/20100101 Firefox\/64.0"}
+Body:                   {"remote_addr":"109.230.70.66","remote_user":"-","run_time":"0","time_local":"2019-01-22 06:46:14.000","request_type":"GET","request_path":"\/image\/61884\/productModel\/150x150","request_protocol":"HTTP\/1.1","status":"200","size":"1684","referer":"https:\/\/www.zanbil.ir\/filter\/p3%2Cb2","user_agent":"Mozilla\/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko\/20100101 Firefox\/64.0"}
 ResourceSchemaUrl:
 ResourceAttributes: {}
 ScopeSchemaUrl:
 ScopeName:
 ScopeVersion:
-ScopeAttributes:	{}
-LogAttributes:  	{'referer':'https://www.zanbil.ir/filter/p3%2Cb2','log.file.name':'access-structured.log','run_time':'0','remote_user':'-','request_protocol':'HTTP/1.1','size':'1684','user_agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0','remote_addr':'109.230.70.66','request_path':'/image/61884/productModel/150x150','status':'200','time_local':'2019-01-22 06:46:14.000','request_type':'GET'}
+ScopeAttributes:        {}
+LogAttributes:          {'referer':'https://www.zanbil.ir/filter/p3%2Cb2','log.file.name':'access-structured.log','run_time':'0','remote_user':'-','request_protocol':'HTTP/1.1','size':'1684','user_agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0','remote_addr':'109.230.70.66','request_path':'/image/61884/productModel/150x150','status':'200','time_local':'2019-01-22 06:46:14.000','request_type':'GET'}
 
 1 row in set. Elapsed: 0.012 sec. Processed 5.04 thousand rows, 4.62 MB (414.14 thousand rows/s., 379.48 MB/s.)
 Peak memory usage: 5.41 MiB.
@@ -475,26 +475,26 @@ FORMAT Vertical
 
 Row 1:
 ──────
-Timestamp:      	2024-06-20 11:36:41.181398000
-TraceId:        	00bba81fbd38a242ebb0c81a8ab85d8f
-SpanId:         	beef91a2c8685ace
+Timestamp:              2024-06-20 11:36:41.181398000
+TraceId:                00bba81fbd38a242ebb0c81a8ab85d8f
+SpanId:                 beef91a2c8685ace
 ParentSpanId:
 TraceState:
-SpanName:       	lets-go
-SpanKind:       	SPAN_KIND_CLIENT
-ServiceName:    	telemetrygen
+SpanName:               lets-go
+SpanKind:               SPAN_KIND_CLIENT
+ServiceName:            telemetrygen
 ResourceAttributes: {'service.name':'telemetrygen'}
-ScopeName:      	telemetrygen
+ScopeName:              telemetrygen
 ScopeVersion:
-SpanAttributes: 	{'peer.service':'telemetrygen-server','net.peer.ip':'1.2.3.4'}
-Duration:       	123000
-StatusCode:     	STATUS_CODE_UNSET
+SpanAttributes:         {'peer.service':'telemetrygen-server','net.peer.ip':'1.2.3.4'}
+Duration:               123000
+StatusCode:             STATUS_CODE_UNSET
 StatusMessage:
 Events.Timestamp:   []
-Events.Name:    	[]
+Events.Name:            []
 Events.Attributes:  []
-Links.TraceId:  	[]
-Links.SpanId:   	[]
+Links.TraceId:          []
+Links.SpanId:           []
 Links.TraceState:   []
 Links.Attributes:   []
 ```
@@ -512,29 +512,29 @@ The default schema for logs is shown below (`otelcol-contrib v0.102.1`):
 ```sql
 CREATE TABLE default.otel_logs
 (
-	`Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-	`TraceId` String CODEC(ZSTD(1)),
-	`SpanId` String CODEC(ZSTD(1)),
-	`TraceFlags` UInt32 CODEC(ZSTD(1)),
-	`SeverityText` LowCardinality(String) CODEC(ZSTD(1)),
-	`SeverityNumber` Int32 CODEC(ZSTD(1)),
-	`ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
-	`Body` String CODEC(ZSTD(1)),
-	`ResourceSchemaUrl` String CODEC(ZSTD(1)),
-	`ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`ScopeSchemaUrl` String CODEC(ZSTD(1)),
-	`ScopeName` String CODEC(ZSTD(1)),
-	`ScopeVersion` String CODEC(ZSTD(1)),
-	`ScopeAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`LogAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1,
-	INDEX idx_res_attr_key mapKeys(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_res_attr_value mapValues(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_scope_attr_key mapKeys(ScopeAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_scope_attr_value mapValues(ScopeAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_log_attr_key mapKeys(LogAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_log_attr_value mapValues(LogAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_body Body TYPE tokenbf_v1(32768, 3, 0) GRANULARITY 1
+        `Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
+        `TraceId` String CODEC(ZSTD(1)),
+        `SpanId` String CODEC(ZSTD(1)),
+        `TraceFlags` UInt32 CODEC(ZSTD(1)),
+        `SeverityText` LowCardinality(String) CODEC(ZSTD(1)),
+        `SeverityNumber` Int32 CODEC(ZSTD(1)),
+        `ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
+        `Body` String CODEC(ZSTD(1)),
+        `ResourceSchemaUrl` String CODEC(ZSTD(1)),
+        `ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `ScopeSchemaUrl` String CODEC(ZSTD(1)),
+        `ScopeName` String CODEC(ZSTD(1)),
+        `ScopeVersion` String CODEC(ZSTD(1)),
+        `ScopeAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `LogAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1,
+        INDEX idx_res_attr_key mapKeys(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_res_attr_value mapValues(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_scope_attr_key mapKeys(ScopeAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_scope_attr_value mapValues(ScopeAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_log_attr_key mapKeys(LogAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_log_attr_value mapValues(LogAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_body Body TYPE tokenbf_v1(32768, 3, 0) GRANULARITY 1
 )
 ENGINE = MergeTree
 PARTITION BY toDate(Timestamp)
@@ -559,34 +559,34 @@ A few important notes on this schema:
 ```sql
 CREATE TABLE default.otel_traces
 (
-	`Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-	`TraceId` String CODEC(ZSTD(1)),
-	`SpanId` String CODEC(ZSTD(1)),
-	`ParentSpanId` String CODEC(ZSTD(1)),
-	`TraceState` String CODEC(ZSTD(1)),
-	`SpanName` LowCardinality(String) CODEC(ZSTD(1)),
-	`SpanKind` LowCardinality(String) CODEC(ZSTD(1)),
-	`ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
-	`ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`ScopeName` String CODEC(ZSTD(1)),
-	`ScopeVersion` String CODEC(ZSTD(1)),
-	`SpanAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`Duration` Int64 CODEC(ZSTD(1)),
-	`StatusCode` LowCardinality(String) CODEC(ZSTD(1)),
-	`StatusMessage` String CODEC(ZSTD(1)),
-	`Events.Timestamp` Array(DateTime64(9)) CODEC(ZSTD(1)),
-	`Events.Name` Array(LowCardinality(String)) CODEC(ZSTD(1)),
-	`Events.Attributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
-	`Links.TraceId` Array(String) CODEC(ZSTD(1)),
-	`Links.SpanId` Array(String) CODEC(ZSTD(1)),
-	`Links.TraceState` Array(String) CODEC(ZSTD(1)),
-	`Links.Attributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
-	INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1,
-	INDEX idx_res_attr_key mapKeys(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_res_attr_value mapValues(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_span_attr_key mapKeys(SpanAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_span_attr_value mapValues(SpanAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_duration Duration TYPE minmax GRANULARITY 1
+        `Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
+        `TraceId` String CODEC(ZSTD(1)),
+        `SpanId` String CODEC(ZSTD(1)),
+        `ParentSpanId` String CODEC(ZSTD(1)),
+        `TraceState` String CODEC(ZSTD(1)),
+        `SpanName` LowCardinality(String) CODEC(ZSTD(1)),
+        `SpanKind` LowCardinality(String) CODEC(ZSTD(1)),
+        `ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
+        `ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `ScopeName` String CODEC(ZSTD(1)),
+        `ScopeVersion` String CODEC(ZSTD(1)),
+        `SpanAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `Duration` Int64 CODEC(ZSTD(1)),
+        `StatusCode` LowCardinality(String) CODEC(ZSTD(1)),
+        `StatusMessage` String CODEC(ZSTD(1)),
+        `Events.Timestamp` Array(DateTime64(9)) CODEC(ZSTD(1)),
+        `Events.Name` Array(LowCardinality(String)) CODEC(ZSTD(1)),
+        `Events.Attributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
+        `Links.TraceId` Array(String) CODEC(ZSTD(1)),
+        `Links.SpanId` Array(String) CODEC(ZSTD(1)),
+        `Links.TraceState` Array(String) CODEC(ZSTD(1)),
+        `Links.Attributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
+        INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1,
+        INDEX idx_res_attr_key mapKeys(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_res_attr_value mapValues(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_span_attr_key mapKeys(SpanAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_span_attr_value mapValues(SpanAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_duration Duration TYPE minmax GRANULARITY 1
 )
 ENGINE = MergeTree
 PARTITION BY toDate(Timestamp)
@@ -787,13 +787,13 @@ Resource requirements for the OTel collector will depend on the event throughput
 For agent instances responsible for shipping events to a gateway, and only setting the timestamp on the event, we recommend users size based on the anticipated logs per second. The following represent approximate numbers users can use as a starting point:
 
 Logging rate
-Resources to collector agent	
+Resources to collector agent    
 1k/second
-0.2CPU, 0.2GiB	
+0.2CPU, 0.2GiB  
 5k/second
-0.5 CPU, 0.5GiB	
+0.5 CPU, 0.5GiB 
 10k/second
-1 CPU, 1GiB	
+1 CPU, 1GiB     
 
 | Logging rate | Resources to collector agent |
 |--------------|------------------------------|

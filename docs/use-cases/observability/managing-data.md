@@ -42,7 +42,7 @@ As an example, suppose our `otel_logs` table is partitioned by day. If populated
 
 ```sql
 SELECT Timestamp::Date AS day,
-	 count() AS c
+         count() AS c
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
@@ -83,11 +83,11 @@ We may have another table, `otel_logs_archive`, which we use to store older data
 CREATE TABLE otel_logs_archive AS otel_logs
 --move data to archive table
 ALTER TABLE otel_logs
-	(MOVE PARTITION tuple('2019-01-26') TO TABLE otel_logs_archive
+        (MOVE PARTITION tuple('2019-01-26') TO TABLE otel_logs_archive
 --confirm data has been moved
 SELECT
-	Timestamp::Date AS day,
-	count() AS c
+        Timestamp::Date AS day,
+        count() AS c
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
@@ -103,7 +103,7 @@ ORDER BY c DESC
 Peak memory usage: 4.40 MiB.
 
 SELECT Timestamp::Date AS day,
-	count() AS c
+        count() AS c
 FROM otel_logs_archive
 GROUP BY day
 ORDER BY c DESC
@@ -126,11 +126,11 @@ Furthermore, data can be efficiently deleted by partition. This is far more reso
 
 ```sql
 ALTER TABLE otel_logs
-	(DROP PARTITION tuple('2019-01-25'))
+        (DROP PARTITION tuple('2019-01-25'))
 
 SELECT
-	Timestamp::Date AS day,
-	count() AS c
+        Timestamp::Date AS day,
+        count() AS c
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
@@ -202,9 +202,9 @@ Below, we show how the `Body` column can be dropped after 30 days.
 ```sql
 CREATE TABLE otel_logs_v2
 (
-	`Body` String TTL Timestamp + INTERVAL 30 DAY,
-	`Timestamp` DateTime,
-	...
+        `Body` String TTL Timestamp + INTERVAL 30 DAY,
+        `Timestamp` DateTime,
+        ...
 )
 ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
@@ -223,23 +223,23 @@ An example of this is shown below, where we compress the data using `ZSTD(3)` af
 ```sql
 CREATE TABLE default.otel_logs_v2
 (
-	`Body` String,
-	`Timestamp` DateTime,
-	`ServiceName` LowCardinality(String),
-	`Status` UInt16,
-	`RequestProtocol` LowCardinality(String),
-	`RunTime` UInt32,
-	`Size` UInt32,
-	`UserAgent` String,
-	`Referer` String,
-	`RemoteUser` String,
-	`RequestType` LowCardinality(String),
-	`RequestPath` String,
-	`RemoteAddress` IPv4,
-	`RefererDomain` String,
-	`RequestPage` String,
-	`SeverityText` LowCardinality(String),
-	`SeverityNumber` UInt8,
+        `Body` String,
+        `Timestamp` DateTime,
+        `ServiceName` LowCardinality(String),
+        `Status` UInt16,
+        `RequestProtocol` LowCardinality(String),
+        `RunTime` UInt32,
+        `Size` UInt32,
+        `UserAgent` String,
+        `Referer` String,
+        `RemoteUser` String,
+        `RequestType` LowCardinality(String),
+        `RequestPath` String,
+        `RemoteAddress` IPv4,
+        `RefererDomain` String,
+        `RequestPage` String,
+        `SeverityText` LowCardinality(String),
+        `SeverityNumber` UInt8,
 )
 ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
@@ -281,22 +281,22 @@ Once the schema has been changed, users can reconfigure OTel collectors. Assumin
 ```sql
 CREATE TABLE default.otel_logs_v2
 (
-	`Body` String,
-	`Timestamp` DateTime,
-	`ServiceName` LowCardinality(String),
-	`Status` UInt16,
-	`RequestProtocol` LowCardinality(String),
-	`RunTime` UInt32,
-	`UserAgent` String,
-	`Referer` String,
-	`RemoteUser` String,
-	`RequestType` LowCardinality(String),
-	`RequestPath` String,
-	`RemoteAddress` IPv4,
-	`RefererDomain` String,
-	`RequestPage` String,
-	`SeverityText` LowCardinality(String),
-	`SeverityNumber` UInt8
+        `Body` String,
+        `Timestamp` DateTime,
+        `ServiceName` LowCardinality(String),
+        `Status` UInt16,
+        `RequestProtocol` LowCardinality(String),
+        `RunTime` UInt32,
+        `UserAgent` String,
+        `Referer` String,
+        `RemoteUser` String,
+        `RequestType` LowCardinality(String),
+        `RequestPath` String,
+        `RemoteAddress` IPv4,
+        `RefererDomain` String,
+        `RequestPage` String,
+        `SeverityText` LowCardinality(String),
+        `SeverityNumber` UInt8
 )
 ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
@@ -304,21 +304,21 @@ ORDER BY (ServiceName, Timestamp)
 CREATE MATERIALIZED VIEW otel_logs_mv TO otel_logs_v2 AS
 SELECT
         Body, 
-	Timestamp::DateTime AS Timestamp,
-	ServiceName,
-	LogAttributes['status']::UInt16 AS Status,
-	LogAttributes['request_protocol'] AS RequestProtocol,
-	LogAttributes['run_time'] AS RunTime,
-	LogAttributes['user_agent'] AS UserAgent,
-	LogAttributes['referer'] AS Referer,
-	LogAttributes['remote_user'] AS RemoteUser,
-	LogAttributes['request_type'] AS RequestType,
-	LogAttributes['request_path'] AS RequestPath,
-	LogAttributes['remote_addr'] AS RemoteAddress,
-	domain(LogAttributes['referer']) AS RefererDomain,
-	path(LogAttributes['request_path']) AS RequestPage,
-	multiIf(Status::UInt64 > 500, 'CRITICAL', Status::UInt64 > 400, 'ERROR', Status::UInt64 > 300, 'WARNING', 'INFO') AS SeverityText,
-	multiIf(Status::UInt64 > 500, 20, Status::UInt64 > 400, 17, Status::UInt64 > 300, 13, 9) AS SeverityNumber
+        Timestamp::DateTime AS Timestamp,
+        ServiceName,
+        LogAttributes['status']::UInt16 AS Status,
+        LogAttributes['request_protocol'] AS RequestProtocol,
+        LogAttributes['run_time'] AS RunTime,
+        LogAttributes['user_agent'] AS UserAgent,
+        LogAttributes['referer'] AS Referer,
+        LogAttributes['remote_user'] AS RemoteUser,
+        LogAttributes['request_type'] AS RequestType,
+        LogAttributes['request_path'] AS RequestPath,
+        LogAttributes['remote_addr'] AS RemoteAddress,
+        domain(LogAttributes['referer']) AS RefererDomain,
+        path(LogAttributes['request_path']) AS RequestPage,
+        multiIf(Status::UInt64 > 500, 'CRITICAL', Status::UInt64 > 400, 'ERROR', Status::UInt64 > 300, 'WARNING', 'INFO') AS SeverityText,
+        multiIf(Status::UInt64 > 500, 20, Status::UInt64 > 400, 17, Status::UInt64 > 300, 13, 9) AS SeverityNumber
 FROM otel_logs
 ```
 
@@ -326,7 +326,7 @@ Suppose we wish to extract a new column `Size` from the `LogAttributes`. We can 
 
 ```sql
 ALTER TABLE otel_logs_v2
-	(ADD COLUMN `Size` UInt64 DEFAULT JSONExtractUInt(Body, 'size'))
+        (ADD COLUMN `Size` UInt64 DEFAULT JSONExtractUInt(Body, 'size'))
 ```
 
 In the above example, we specify the default as the `size` key in `LogAttributes` (this will be 0 if it doesn't exist). This means queries that access this column for rows that do not have the value inserted must access the Map and will, therefore, be slower. We could easily also specify this as a constant, e.g. 0, reducing the cost of subsequent queries against rows that do not have the value. Querying this table shows the value is populated as expected from the Map:
@@ -350,9 +350,9 @@ To ensure this value is inserted for all future data, we can modify our material
 
 ```sql
 ALTER TABLE otel_logs_mv
-	MODIFY QUERY
+        MODIFY QUERY
 SELECT
-    	Body,
+        Body,
         Timestamp::DateTime AS Timestamp,
         ServiceName,
         LogAttributes['status']::UInt16 AS Status,
@@ -388,11 +388,11 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─Status─┬────────c─┐
-│	200  │ 38319300 │
-│	304  │  1360912 │
-│	302  │   799340 │
-│	404  │   420044 │
-│	301  │   270212 │
+│       200  │ 38319300 │
+│       304  │  1360912 │
+│       302  │   799340 │
+│       404  │   420044 │
+│       301  │   270212 │
 └────────┴──────────┘
 
 5 rows in set. Elapsed: 0.137 sec. Processed 41.46 million rows, 82.92 MB (302.43 million rows/s., 604.85 MB/s.)
@@ -411,11 +411,11 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─Status─┬────────c─┐
-│	200  │ 38319300 │
-│	304  │  1360912 │
-│	302  │   799340 │
-│	404  │   420044 │
-│	301  │   270212 │
+│       200  │ 38319300 │
+│       304  │  1360912 │
+│       302  │   799340 │
+│       404  │   420044 │
+│       301  │   270212 │
 └────────┴──────────┘
 
 5 rows in set. Elapsed: 0.073 sec. Processed 41.46 million rows, 82.92 MB (565.43 million rows/s., 1.13 GB/s.)
@@ -436,11 +436,11 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─Status─┬────────c─┐
-│	200  │ 39259996 │
-│	304  │  1378564 │
-│	302  │   820118 │
-│	404  │   429220 │
-│	301  │   276960 │
+│       200  │ 39259996 │
+│       304  │  1378564 │
+│       302  │   820118 │
+│       404  │   429220 │
+│       301  │   276960 │
 └────────┴──────────┘
 
 5 rows in set. Elapsed: 0.068 sec. Processed 42.46 million rows, 84.92 MB (620.45 million rows/s., 1.24 GB/s.)

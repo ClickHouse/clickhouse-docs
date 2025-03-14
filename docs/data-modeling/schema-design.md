@@ -39,28 +39,28 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/sta
 SETTINGS describe_compact_output = 1
 
 ┌─name──────────────────┬─type───────────────────────────┐
-│ Id                	│ Nullable(Int64)            	│
-│ PostTypeId        	│ Nullable(Int64)            	│
-│ AcceptedAnswerId  	│ Nullable(Int64)            	│
-│ CreationDate      	│ Nullable(DateTime64(3, 'UTC')) │
-│ Score             	│ Nullable(Int64)            	│
-│ ViewCount         	│ Nullable(Int64)            	│
-│ Body              	│ Nullable(String)           	│
-│ OwnerUserId       	│ Nullable(Int64)            	│
-│ OwnerDisplayName  	│ Nullable(String)           	│
-│ LastEditorUserId  	│ Nullable(Int64)            	│
-│ LastEditorDisplayName │ Nullable(String)           	│
-│ LastEditDate      	│ Nullable(DateTime64(3, 'UTC')) │
-│ LastActivityDate  	│ Nullable(DateTime64(3, 'UTC')) │
-│ Title             	│ Nullable(String)           	│
-│ Tags              	│ Nullable(String)           	│
-│ AnswerCount       	│ Nullable(Int64)            	│
-│ CommentCount      	│ Nullable(Int64)            	│
-│ FavoriteCount     	│ Nullable(Int64)            	│
-│ ContentLicense    	│ Nullable(String)           	│
-│ ParentId          	│ Nullable(String)           	│
-│ CommunityOwnedDate	│ Nullable(DateTime64(3, 'UTC')) │
-│ ClosedDate        	│ Nullable(DateTime64(3, 'UTC')) │
+│ Id                    │ Nullable(Int64)               │
+│ PostTypeId            │ Nullable(Int64)               │
+│ AcceptedAnswerId      │ Nullable(Int64)               │
+│ CreationDate          │ Nullable(DateTime64(3, 'UTC')) │
+│ Score                 │ Nullable(Int64)               │
+│ ViewCount             │ Nullable(Int64)               │
+│ Body                  │ Nullable(String)              │
+│ OwnerUserId           │ Nullable(Int64)               │
+│ OwnerDisplayName      │ Nullable(String)              │
+│ LastEditorUserId      │ Nullable(Int64)               │
+│ LastEditorDisplayName │ Nullable(String)              │
+│ LastEditDate          │ Nullable(DateTime64(3, 'UTC')) │
+│ LastActivityDate      │ Nullable(DateTime64(3, 'UTC')) │
+│ Title                 │ Nullable(String)              │
+│ Tags                  │ Nullable(String)              │
+│ AnswerCount           │ Nullable(Int64)               │
+│ CommentCount          │ Nullable(Int64)               │
+│ FavoriteCount         │ Nullable(Int64)               │
+│ ContentLicense        │ Nullable(String)              │
+│ ParentId              │ Nullable(String)              │
+│ CommunityOwnedDate    │ Nullable(DateTime64(3, 'UTC')) │
+│ ClosedDate            │ Nullable(DateTime64(3, 'UTC')) │
 └───────────────────────┴────────────────────────────────┘
 ```
 
@@ -89,28 +89,28 @@ SHOW CREATE TABLE posts
 
 CREATE TABLE posts
 (
-	`Id` Nullable(Int64),
-	`PostTypeId` Nullable(Int64),
-	`AcceptedAnswerId` Nullable(Int64),
-	`CreationDate` Nullable(DateTime64(3, 'UTC')),
-	`Score` Nullable(Int64),
-	`ViewCount` Nullable(Int64),
-	`Body` Nullable(String),
-	`OwnerUserId` Nullable(Int64),
-	`OwnerDisplayName` Nullable(String),
-	`LastEditorUserId` Nullable(Int64),
-	`LastEditorDisplayName` Nullable(String),
-	`LastEditDate` Nullable(DateTime64(3, 'UTC')),
-	`LastActivityDate` Nullable(DateTime64(3, 'UTC')),
-	`Title` Nullable(String),
-	`Tags` Nullable(String),
-	`AnswerCount` Nullable(Int64),
-	`CommentCount` Nullable(Int64),
-	`FavoriteCount` Nullable(Int64),
-	`ContentLicense` Nullable(String),
-	`ParentId` Nullable(String),
-	`CommunityOwnedDate` Nullable(DateTime64(3, 'UTC')),
-	`ClosedDate` Nullable(DateTime64(3, 'UTC'))
+        `Id` Nullable(Int64),
+        `PostTypeId` Nullable(Int64),
+        `AcceptedAnswerId` Nullable(Int64),
+        `CreationDate` Nullable(DateTime64(3, 'UTC')),
+        `Score` Nullable(Int64),
+        `ViewCount` Nullable(Int64),
+        `Body` Nullable(String),
+        `OwnerUserId` Nullable(Int64),
+        `OwnerDisplayName` Nullable(String),
+        `LastEditorUserId` Nullable(Int64),
+        `LastEditorDisplayName` Nullable(String),
+        `LastEditDate` Nullable(DateTime64(3, 'UTC')),
+        `LastActivityDate` Nullable(DateTime64(3, 'UTC')),
+        `Title` Nullable(String),
+        `Tags` Nullable(String),
+        `AnswerCount` Nullable(Int64),
+        `CommentCount` Nullable(Int64),
+        `FavoriteCount` Nullable(Int64),
+        `ContentLicense` Nullable(String),
+        `ParentId` Nullable(String),
+        `CommunityOwnedDate` Nullable(DateTime64(3, 'UTC')),
+        `ClosedDate` Nullable(DateTime64(3, 'UTC'))
 )
 ENGINE = MergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 ORDER BY tuple()
@@ -239,9 +239,9 @@ ORDER BY CommentCount DESC
 LIMIT 3
 
 ┌───────Id─┬─Title─────────────────────────────────────────────────────────────┬─CommentCount─┐
-│ 78203063 │ How to avoid default initialization of objects in std::vector?	│       	74 │
-│ 78183948 │ About memory barrier                                          	│       	52 │
-│ 77900279 │ Speed Test for Buffer Alignment: IBM's PowerPC results vs. my CPU │       	49 │
+│ 78203063 │ How to avoid default initialization of objects in std::vector?     │               74 │
+│ 78183948 │ About memory barrier                                               │               52 │
+│ 77900279 │ Speed Test for Buffer Alignment: IBM's PowerPC results vs. my CPU │        49 │
 └──────────┴───────────────────────────────────────────────────────────────────┴──────────────
 
 10 rows in set. Elapsed: 0.070 sec. Processed 59.82 million rows, 569.21 MB (852.55 million rows/s., 8.11 GB/s.)
@@ -257,28 +257,28 @@ Maybe in our case, we expect users to always filter by `PostTypeId`. This has a 
 ```sql
 CREATE TABLE posts_v3
 (
-	`Id` Int32,
-	`PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
-	`AcceptedAnswerId` UInt32,
-	`CreationDate` DateTime,
-	`Score` Int32,
-	`ViewCount` UInt32,
-	`Body` String,
-	`OwnerUserId` Int32,
-	`OwnerDisplayName` String,
-	`LastEditorUserId` Int32,
-	`LastEditorDisplayName` String,
-	`LastEditDate` DateTime,
-	`LastActivityDate` DateTime,
-	`Title` String,
-	`Tags` String,
-	`AnswerCount` UInt16,
-	`CommentCount` UInt8,
-	`FavoriteCount` UInt8,
-	`ContentLicense` LowCardinality(String),
-	`ParentId` String,
-	`CommunityOwnedDate` DateTime,
-	`ClosedDate` DateTime
+        `Id` Int32,
+        `PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
+        `AcceptedAnswerId` UInt32,
+        `CreationDate` DateTime,
+        `Score` Int32,
+        `ViewCount` UInt32,
+        `Body` String,
+        `OwnerUserId` Int32,
+        `OwnerDisplayName` String,
+        `LastEditorUserId` Int32,
+        `LastEditorDisplayName` String,
+        `LastEditDate` DateTime,
+        `LastActivityDate` DateTime,
+        `Title` String,
+        `Tags` String,
+        `AnswerCount` UInt16,
+        `CommentCount` UInt8,
+        `FavoriteCount` UInt8,
+        `ContentLicense` LowCardinality(String),
+        `ParentId` String,
+        `CommunityOwnedDate` DateTime,
+        `ClosedDate` DateTime
 )
 ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)

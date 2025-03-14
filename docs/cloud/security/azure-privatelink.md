@@ -278,11 +278,11 @@ Any record within the `westus3.privatelink.azure.clickhouse.cloud` domain should
 
 ```bash
 nslookup instance-id.westus3.privatelink.azure.clickhouse.cloud.
-Server:		127.0.0.53
-Address:	127.0.0.53#53
+Server:         127.0.0.53
+Address:        127.0.0.53#53
 
 Non-authoritative answer:
-Name:	instance-id.westus3.privatelink.azure.clickhouse.cloud
+Name:   instance-id.westus3.privatelink.azure.clickhouse.cloud
 Address: 10.0.0.4
 ```
 
@@ -479,7 +479,7 @@ You should receive the following response:
 
 ```response
 Non-authoritative answer:
-Name:	abcd.westus3.privatelink.azure.clickhouse.cloud
+Name:   abcd.westus3.privatelink.azure.clickhouse.cloud
 Address: 10.0.0.4
 ```
 

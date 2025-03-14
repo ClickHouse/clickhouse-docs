@@ -54,28 +54,28 @@ SETTINGS describe_compact_output = 1
 
 ```response title="Response"
 ┌─name──────────────────┬─type────────────────────┐
-│ id           		│ Int32                   │
-│ posttypeid   		│ Nullable(Int32)	  │
-│ acceptedanswerid 	│ Nullable(String)   	  │
-│ creationdate 		│ Nullable(DateTime64(6)) │
-│ score        		│ Nullable(Int32)	  │
-│ viewcount    		│ Nullable(Int32)	  │
-│ body         		│ Nullable(String)   	  │
-│ owneruserid  		│ Nullable(Int32)	  │
-│ ownerdisplayname 	│ Nullable(String)   	  │
-│ lasteditoruserid 	│ Nullable(String)   	  │
-│ lasteditordisplayname │ Nullable(String)   	  │
-│ lasteditdate 		│ Nullable(DateTime64(6)) │
-│ lastactivitydate 	│ Nullable(DateTime64(6)) │
-│ title        		│ Nullable(String)   	  │
-│ tags         		│ Nullable(String)   	  │
-│ answercount  		│ Nullable(Int32)	  │
-│ commentcount 		│ Nullable(Int32)	  │
-│ favoritecount		│ Nullable(Int32)	  │
-│ contentlicense   	│ Nullable(String)   	  │
-│ parentid     		│ Nullable(String)   	  │
+│ id                    │ Int32                   │
+│ posttypeid            │ Nullable(Int32)         │
+│ acceptedanswerid      │ Nullable(String)        │
+│ creationdate          │ Nullable(DateTime64(6)) │
+│ score                 │ Nullable(Int32)         │
+│ viewcount             │ Nullable(Int32)         │
+│ body                  │ Nullable(String)        │
+│ owneruserid           │ Nullable(Int32)         │
+│ ownerdisplayname      │ Nullable(String)        │
+│ lasteditoruserid      │ Nullable(String)        │
+│ lasteditordisplayname │ Nullable(String)        │
+│ lasteditdate          │ Nullable(DateTime64(6)) │
+│ lastactivitydate      │ Nullable(DateTime64(6)) │
+│ title                 │ Nullable(String)        │
+│ tags                  │ Nullable(String)        │
+│ answercount           │ Nullable(Int32)         │
+│ commentcount          │ Nullable(Int32)         │
+│ favoritecount         │ Nullable(Int32)         │
+│ contentlicense        │ Nullable(String)        │
+│ parentid              │ Nullable(String)        │
 │ communityowneddate    │ Nullable(DateTime64(6)) │
-│ closeddate   		│ Nullable(DateTime64(6)) │
+│ closeddate            │ Nullable(DateTime64(6)) │
 └───────────────────────┴─────────────────────────┘
 
 22 rows in set. Elapsed: 0.478 sec.
@@ -216,8 +216,8 @@ WHERE
 
 ```sql title="Query (ClickHouse)"
 SELECT
-	`table`,
-	formatReadableSize(sum(data_compressed_bytes)) AS compressed_size
+        `table`,
+        formatReadableSize(sum(data_compressed_bytes)) AS compressed_size
 FROM system.parts
 WHERE (database = 'stackoverflow') AND active
 GROUP BY `table`
@@ -225,13 +225,13 @@ GROUP BY `table`
 
 ```response title="Response"
 ┌─table───────┬─compressed_size─┐
-│ posts       │ 25.17 GiB  	│
-│ users       │ 846.57 MiB 	│
-│ badges      │ 513.13 MiB 	│
-│ comments    │ 7.11 GiB   	│
-│ votes       │ 1.28 GiB   	│
-│ posthistory │ 40.44 GiB  	│
-│ postlinks   │ 79.22 MiB  	│
+│ posts       │ 25.17 GiB       │
+│ users       │ 846.57 MiB      │
+│ badges      │ 513.13 MiB      │
+│ comments    │ 7.11 GiB        │
+│ votes       │ 1.28 GiB        │
+│ posthistory │ 40.44 GiB       │
+│ postlinks   │ 79.22 MiB       │
 └─────────────┴─────────────────┘
 ```
 
