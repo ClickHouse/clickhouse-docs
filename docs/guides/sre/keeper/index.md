@@ -3,15 +3,7 @@ slug: /guides/sre/keeper/clickhouse-keeper
 
 sidebar_label: 'Configuring ClickHouse Keeper'
 sidebar_position: 10
-keywords:
-- Keeper
-- ZooKeeper
-- clickhouse-keeper
-- replication
-  - Keeper
-  - ZooKeeper
-  - clickhouse-keeper
-  - replication
+keywords: ['Keeper', 'ZooKeeper', 'clickhouse-keeper']
 description: 'ClickHouse Keeper, or clickhouse-keeper, replaces ZooKeeper and provides replication and coordination.'
 title: 'ClickHouse Keeper'
 ---
