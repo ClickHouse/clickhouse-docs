@@ -17,7 +17,7 @@ export default function BlogPostItem({children, className}) {
   const containerClassName = useContainerClassName();
   return (
     <BlogPostItemContainer className={clsx(containerClassName, className)}>
-      {location.pathname === '/docs/knowledgebase' || location.pathname.includes('/docs/knowledgebase/tags/') ? <div></div> : <BlogBreadcrumbs/>}
+      {location.pathname.includes('/knowledgebase') || location.pathname.includes('/knowledgebase/tags/') ? <div></div> : <BlogBreadcrumbs/>}
       <BlogPostItemHeader />
       <BlogPostItemContent>{children}</BlogPostItemContent>
       <BlogPostItemFooter />
