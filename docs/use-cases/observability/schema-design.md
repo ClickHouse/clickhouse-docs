@@ -792,8 +792,8 @@ ORDER BY count() DESC
 LIMIT 5
 
 ┌─country─┬─num_requests────┐
-│ IR      │ 7.36 million        │
-│ US      │ 1.67 million        │
+│ IR      │ 7.36 million    │
+│ US      │ 1.67 million    │
 │ AE      │ 526.74 thousand │
 │ DE      │ 159.35 thousand │
 │ FR      │ 109.82 thousand │
@@ -1107,7 +1107,7 @@ FROM bytes_per_hour
 FINAL
 
 ┌─count()─┐
-│       113 │
+│     113 │
 └─────────┘
 
 1 row in set. Elapsed: 0.039 sec.
@@ -1179,9 +1179,8 @@ GROUP BY Hour
 ORDER BY Hour DESC
 
 ┌────────────────Hour─┬─UniqueUsers─┐
-│ 2019-01-26 16:00:00 │         4763    │
-…
-│ 2019-01-22 00:00:00 │         536     │
+│ 2019-01-26 16:00:00 │     4763    │
+│ 2019-01-22 00:00:00 │     536     │
 └─────────────────────┴─────────────┘
 
 113 rows in set. Elapsed: 0.667 sec. Processed 10.37 million rows, 4.73 GB (15.53 million rows/s., 7.09 GB/s.)
@@ -1221,7 +1220,7 @@ SELECT count()
 FROM unique_visitors_per_hour
 FINAL
 ┌─count()─┐
-│       113   │
+│   113   │
 └─────────┘
 
 1 row in set. Elapsed: 0.009 sec.
@@ -1236,9 +1235,8 @@ GROUP BY Hour
 ORDER BY Hour DESC
 
 ┌────────────────Hour─┬─UniqueUsers─┐
-│ 2019-01-26 16:00:00 │          4763   │
-
-│ 2019-01-22 00:00:00 │          536    │
+│ 2019-01-26 16:00:00 │      4763   │
+│ 2019-01-22 00:00:00 │      536    │
 └─────────────────────┴─────────────┘
 
 113 rows in set. Elapsed: 0.027 sec.
@@ -1445,7 +1443,7 @@ FROM system.mutations
 WHERE (`table` = 'otel_logs_v2') AND (command LIKE '%MATERIALIZE%')
 
 ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
-│               0 │     1   │                    │
+│           0 │     1   │                    │
 └─────────────┴─────────┴────────────────────┘
 
 1 row in set. Elapsed: 0.008 sec.
@@ -1558,7 +1556,7 @@ SELECT count()
 FROM otel_logs_bloom
 WHERE Referer LIKE '%ultra%'
 ┌─count()─┐
-│       182   │
+│   182   │
 └─────────┘
 
 1 row in set. Elapsed: 0.077 sec. Processed 4.22 million rows, 375.29 MB (54.81 million rows/s., 4.87 GB/s.)
@@ -1580,16 +1578,16 @@ FROM otel_logs_v2
 WHERE Referer LIKE '%ultra%'
 
 ┌─explain────────────────────────────────────────────────────────────┐
-│ Expression ((Project names + Projection))                              │
-│   Aggregating                                                          │
-│       Expression (Before GROUP BY)                                         │
+│ Expression ((Project names + Projection))                          │
+│   Aggregating                                                      │
+│       Expression (Before GROUP BY)                                 │
 │       Filter ((WHERE + Change column names to column identifiers)) │
 │       ReadFromMergeTree (default.otel_logs_v2)                     │
 │       Indexes:                                                     │
-│               PrimaryKey                                               │
-│               Condition: true                                              │
-│               Parts: 9/9                                                   │
-│               Granules: 1278/1278                                          │
+│               PrimaryKey                                           │
+│               Condition: true                                      │
+│               Parts: 9/9                                           │
+│               Granules: 1278/1278                                  │
 └────────────────────────────────────────────────────────────────────┘
 
 10 rows in set. Elapsed: 0.016 sec.
@@ -1601,21 +1599,21 @@ FROM otel_logs_bloom
 WHERE Referer LIKE '%ultra%'
 
 ┌─explain────────────────────────────────────────────────────────────┐
-│ Expression ((Project names + Projection))                              │
-│   Aggregating                                                          │
-│       Expression (Before GROUP BY)                                         │
+│ Expression ((Project names + Projection))                          │
+│   Aggregating                                                      │
+│       Expression (Before GROUP BY)                                 │
 │       Filter ((WHERE + Change column names to column identifiers)) │
 │       ReadFromMergeTree (default.otel_logs_bloom)                  │
 │       Indexes:                                                     │
-│               PrimaryKey                                               │ 
-│               Condition: true                                              │
-│               Parts: 8/8                                                   │
-│               Granules: 1276/1276                                      │
-│               Skip                                                     │
-│               Name: idx_span_attr_value                                    │
-│               Description: ngrambf_v1 GRANULARITY 1                        │
-│               Parts: 8/8                                                   │
-│               Granules: 517/1276                                           │
+│               PrimaryKey                                           │ 
+│               Condition: true                                      │
+│               Parts: 8/8                                           │
+│               Granules: 1276/1276                                  │
+│               Skip                                                 │
+│               Name: idx_span_attr_value                            │
+│               Description: ngrambf_v1 GRANULARITY 1                │
+│               Parts: 8/8                                           │
+│               Granules: 517/1276                                   │
 └────────────────────────────────────────────────────────────────────┘
 ```
 
