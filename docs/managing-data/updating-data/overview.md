@@ -30,7 +30,7 @@ Here is a summary of the different ways to update data in ClickHouse:
 
 ## Update Mutations {#update-mutations}
 
-Update mutations can be issued through a `ALTER TABLE … UPDATE` command e.g.
+Update mutations can be issued through a `ALTER TABLE ... UPDATE` command e.g.
 
 ```sql
 ALTER TABLE posts_temp

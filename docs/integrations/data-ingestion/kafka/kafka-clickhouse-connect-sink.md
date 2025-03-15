@@ -144,9 +144,9 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 | BOOLEAN                                 | Boolean               | ✅        | Yes       |
 | ARRAY                                   | Array(T)              | ✅        | No        |
 | MAP                                     | Map(Primitive, T)     | ✅        | No        |
-| STRUCT                                  | Variant(T1, T2, …)    | ✅        | No        |
-| STRUCT                                  | Tuple(a T1, b T2, …)  | ✅        | No        |
-| STRUCT                                  | Nested(a T1, b T2, …) | ✅        | No        |
+| STRUCT                                  | Variant(T1, T2, ...)    | ✅        | No        |
+| STRUCT                                  | Tuple(a T1, b T2, ...)  | ✅        | No        |
+| STRUCT                                  | Nested(a T1, b T2, ...) | ✅        | No        |
 | BYTES                                   | String                | ✅        | No        |
 | org.apache.kafka.connect.data.Time      | Int64 / DateTime64    | ✅        | No        |
 | org.apache.kafka.connect.data.Timestamp | Int32 / Date32        | ✅        | No        |

@@ -35,7 +35,7 @@ Read more about [lightweight deletes](/guides/developer/lightweight-delete).
 
 ## Delete Mutations {#delete-mutations}
 
-Delete mutations can be issued through a `ALTER TABLE … DELETE` command e.g. 
+Delete mutations can be issued through a `ALTER TABLE ... DELETE` command e.g. 
 
 ```sql
 -- delete all data from 2018 with a mutation. Not recommended.

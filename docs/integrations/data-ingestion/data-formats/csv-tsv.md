@@ -217,7 +217,7 @@ FORMAT CSVWithNames
 
 ### Saving exported data to a CSV file {#saving-exported-data-to-a-csv-file}
 
-To save exported data to a file, we can use the [INTO…OUTFILE](/sql-reference/statements/select/into-outfile.md) clause:
+To save exported data to a file, we can use the [INTO...OUTFILE](/sql-reference/statements/select/into-outfile.md) clause:
 
 ```sql
 SELECT *

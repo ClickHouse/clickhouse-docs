@@ -1043,7 +1043,7 @@ This release brings an API for retrieving cloud endpoints, an advanced scaling c
   - Fixed server-side parameter binding of the NULL value for Nullable types
 
 ### Bug fixes {#bug-fixes-1}
-* Fixed behavior where running `INSERT INTO … SELECT …` from the SQL console incorrectly applied the same row limit as select queries
+* Fixed behavior where running `INSERT INTO ... SELECT ...` from the SQL console incorrectly applied the same row limit as select queries
 
 
 ## March 23, 2023 {#march-23-2023}

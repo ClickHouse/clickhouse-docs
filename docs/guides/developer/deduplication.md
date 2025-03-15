@@ -103,7 +103,7 @@ FINAL
 The result only has 2 rows, and the last row inserted is the row that gets returned.
 
 :::note
-Using `FINAL` works OK if you have a small amount of data. If you are dealing with a large amount of data, using `FINAL` is probably not the best option. Let's discuss a better option for finding the latest value of a column…
+Using `FINAL` works OK if you have a small amount of data. If you are dealing with a large amount of data, using `FINAL` is probably not the best option. Let's discuss a better option for finding the latest value of a column...
 :::
 
 ### Avoiding FINAL {#avoiding-final}
@@ -164,7 +164,7 @@ Our [Deleting and Updating Data training module](https://learn.clickhouse.com/vi
 
 ## Using CollapsingMergeTree for Updating Columns Frequently {#using-collapsingmergetree-for-updating-columns-frequently}
 
-Updating a column involves deleting an existing row and replacing it with new values. As you have already seen, this type of mutation in ClickHouse happens _eventually_ - during merges. If you have a lot of rows to update, it can actually be more efficient to avoid `ALTER TABLE..UPDATE` and instead just insert the new data alongside the existing data. We could add a column that denotes whether or not the data is stale or new… and there is actually a table engine that already implements this behavior very nicely, especially considering that it deletes the stale data automatically for you. Let's see how it works.
+Updating a column involves deleting an existing row and replacing it with new values. As you have already seen, this type of mutation in ClickHouse happens _eventually_ - during merges. If you have a lot of rows to update, it can actually be more efficient to avoid `ALTER TABLE..UPDATE` and instead just insert the new data alongside the existing data. We could add a column that denotes whether or not the data is stale or new... and there is actually a table engine that already implements this behavior very nicely, especially considering that it deletes the stale data automatically for you. Let's see how it works.
 
 Suppose we track the number of views that a Hacker News comment has using an external system and every few hours, we push the data into ClickHouse. We want the old rows deleted and the new rows to represent the new state of each Hacker News comment. We can use a `CollapsingMergeTree` to implement this behavior.
 

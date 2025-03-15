@@ -210,7 +210,7 @@ FROM posts_updateable
 FINAL
 
 ┌─count()─┐
-│       9000 │
+│    9000 │
 └─────────┘
 
 1 row in set. Elapsed: 0.006 sec. Processed 11.81 thousand rows, 212.54 KB (2.14 million rows/s., 38.61 MB/s.)
@@ -237,7 +237,7 @@ CREATE TABLE stackoverflow.posts_no_part
         `Version` UInt32,
         `Deleted` UInt8,
         `Id` Int32 CODEC(Delta(4), ZSTD(1)),
-        …
+        ...
 )
 ENGINE = ReplacingMergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
@@ -267,7 +267,7 @@ ORDER BY year ASC
 
 ┌─year─┬─total_answers─┐
 │ 2008 │        371480 │
-…
+...
 │ 2024 │        127765 │
 └──────┴───────────────┘
 

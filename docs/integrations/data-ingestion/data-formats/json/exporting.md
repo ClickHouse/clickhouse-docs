@@ -68,7 +68,7 @@ SELECT * FROM sometable FORMAT JSON
                         "name": "path",
                         "type": "String"
                 },
-                …
+                ...
         ],
 
         "data":
@@ -78,7 +78,7 @@ SELECT * FROM sometable FORMAT JSON
                         "month": "2016-11-01",
                         "hits": 245
                 },
-                …
+                ...
         ],
 
         "rows": 3,
@@ -105,7 +105,7 @@ SELECT * FROM sometable FORMAT JSONCompact
                         "name": "path",
                         "type": "String"
                 },
-                …
+                ...
         ],
 
         "data":

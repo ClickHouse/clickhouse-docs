@@ -543,7 +543,7 @@ Year:                    2009
 MostViewedQuestionTitle: How do I undo the most recent local commits in Git?
 MaxViewCount:            13962748
 
-…
+...
 
 Row 16:
 ───────
