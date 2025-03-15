@@ -102,7 +102,7 @@ WHERE table IN ('votes')
 GROUP BY table
 
 ┌─table───────────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ votes │ 1.25 GiB      │ 3.79 GiB              │  3.04 │
+│ votes           │ 1.25 GiB        │ 3.79 GiB          │  3.04 │
 └─────────────────┴─────────────────┴───────────────────┴───────┘
 ```
 
@@ -215,11 +215,11 @@ FORMAT PrettyCompactMonoBlock
 
 
 ┌───────Id─┬─Title─────────────────────────────────────────────────────────┬─Location──────────────┐
-│ 52296928 │ Comparision between two Strings in ClickHouse              │ Spain                 │
-│ 52345137 │ How to use a file to migrate data from mysql to a clickhouse? │ 中国江苏省Nanjing Shi │
-│ 61452077 │ How to change PARTITION in clickhouse                      │ Guangzhou, 广东省中国 │
-│ 55608325 │ Clickhouse select last record without max() on all table   │ Moscow, Russia        │
-│ 55758594 │ ClickHouse create temporary table                          │ Perm', Russia         │
+│ 52296928 │ Comparision between two Strings in ClickHouse                 │ Spain                 │
+│ 52345137 │ How to use a file to migrate data from mysql to a clickhouse? │ 中国江苏省Nanjing Shi   │
+│ 61452077 │ How to change PARTITION in clickhouse                         │ Guangzhou, 广东省中国   │
+│ 55608325 │ Clickhouse select last record without max() on all table      │ Moscow, Russia        │
+│ 55758594 │ ClickHouse create temporary table                             │ Perm', Russia         │
 └──────────┴───────────────────────────────────────────────────────────────┴───────────────────────┘
 
 5 rows in set. Elapsed: 0.033 sec. Processed 4.25 million rows, 82.84 MB (130.62 million rows/s., 2.55 GB/s.)
@@ -239,11 +239,11 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─location───────────────┬──────c─┐
-│ India                 │ 787814 │
-│ Germany               │ 685347 │
-│ United States         │ 595818 │
+│ India                  │ 787814 │
+│ Germany                │ 685347 │
+│ United States          │ 595818 │
 │ London, United Kingdom │ 538738 │
-│ United Kingdom        │ 537699 │
+│ United Kingdom         │ 537699 │
 └────────────────────────┴────────┘
 
 5 rows in set. Elapsed: 0.763 sec. Processed 59.82 million rows, 239.28 MB (78.40 million rows/s., 313.60 MB/s.)
