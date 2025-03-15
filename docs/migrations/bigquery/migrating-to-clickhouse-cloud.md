@@ -238,23 +238,23 @@ FROM system.parts
 WHERE `table` = 'posts'
 
 ┌─partition─┐
-│ 2008          │
-│ 2009          │
-│ 2010          │
-│ 2011          │
-│ 2012          │
-│ 2013          │
-│ 2014          │
-│ 2015          │
-│ 2016          │
-│ 2017          │
-│ 2018          │
-│ 2019          │
-│ 2020          │
-│ 2021          │
-│ 2022          │
-│ 2023          │
-│ 2024          │
+│ 2008      │
+│ 2009      │
+│ 2010      │
+│ 2011      │
+│ 2012      │
+│ 2013      │
+│ 2014      │
+│ 2015      │
+│ 2016      │
+│ 2017      │
+│ 2018      │
+│ 2019      │
+│ 2020      │
+│ 2021      │
+│ 2022      │
+│ 2023      │
+│ 2024      │
 └───────────┘
 
 17 rows in set. Elapsed: 0.002 sec.
@@ -291,8 +291,8 @@ FROM comments
 WHERE UserId = 8592047
 
    ┌──────────avg(Score)─┐
-   │ 0.18181818181818182  │
-   └────────────────────┘
+   │ 0.18181818181818182 │
+   └─────────────────────┘
 
 1 row in set. Elapsed: 0.040 sec. Processed 90.38 million rows, 361.59 MB (2.25 billion rows/s., 9.01 GB/s.)
 Peak memory usage: 201.93 MiB.
@@ -341,7 +341,7 @@ FROM system.mutations
 WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
 
    ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
-1. │            1 │     0 │                     │
+1. │           1 │       0 │                    │
    └─────────────┴─────────┴────────────────────┘
 
 1 row in set. Elapsed: 0.003 sec.
@@ -370,19 +370,19 @@ SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
 
-        ┌─explain─────────────────────────────────────────────┐
- 1. │ Expression ((Projection + Before ORDER BY))       │
- 2. │   Aggregating                                     │
- 3. │   Filter                                          │
- 4. │           ReadFromMergeTree (comments_user_id)            │
- 5. │           Indexes:                                        │
- 6. │           PrimaryKey                                      │
- 7. │           Keys:                                   │
- 8. │           UserId                                  │
+    ┌─explain─────────────────────────────────────────────┐
+ 1. │ Expression ((Projection + Before ORDER BY))         │
+ 2. │   Aggregating                                       │
+ 3. │   Filter                                            │
+ 4. │           ReadFromMergeTree (comments_user_id)      │
+ 5. │           Indexes:                                  │
+ 6. │           PrimaryKey                                │
+ 7. │           Keys:                                     │
+ 8. │           UserId                                    │
  9. │           Condition: (UserId in [8592047, 8592047]) │
-10. │           Parts: 2/2                              │
-11. │           Granules: 2/11360                       │
-        └─────────────────────────────────────────────────────┘
+10. │           Parts: 2/2                                │
+11. │           Granules: 2/11360                         │
+    └─────────────────────────────────────────────────────┘
 
 11 rows in set. Elapsed: 0.004 sec.
 ```
@@ -592,11 +592,11 @@ ORDER BY percent_change DESC
 LIMIT 5
 
 ┌─tag─────────┬─count_2023─┬─count_2022─┬──────percent_change─┐
-│ next.js   │   13788 │     10520 │   31.06463878326996 │
-│ spring-boot │     16573 │     17721 │  -6.478189718413183 │
-│ .net      │   11458 │     12968 │ -11.644046884639112 │
-│ azure     │   11996 │     14049 │ -14.613139725247349 │
-│ docker    │   13885 │     16877 │  -17.72826924216389 │
+│ next.js     │      13788 │      10520 │   31.06463878326996 │
+│ spring-boot │      16573 │      17721 │  -6.478189718413183 │
+│ .net        │      11458 │      12968 │ -11.644046884639112 │
+│ azure       │      11996 │      14049 │ -14.613139725247349 │
+│ docker      │      13885 │      16877 │  -17.72826924216389 │
 └─────────────┴────────────┴────────────┴─────────────────────┘
 
 5 rows in set. Elapsed: 0.096 sec. Processed 5.08 million rows, 155.73 MB (53.10 million rows/s., 1.63 GB/s.)
