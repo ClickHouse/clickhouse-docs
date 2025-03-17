@@ -31,6 +31,7 @@ function bytesToSize(bytes: number) {
 
 // Define the available sizes
 const MAX_SIZE_FILTERS = {
+  xs: 128,
   sm: 300,
   md: 600,
   lg: 1024,

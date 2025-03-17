@@ -6,6 +6,7 @@ keywords: ['materialized views', 'backfilling', 'inserting data', 'resilient dat
 ---
 
 import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
+import Image from '@theme/IdealImage';
 
 # Backfilling Data
 
@@ -420,7 +421,7 @@ The [Null table engine](/engines/table-engines/special/null) provides a storage 
 
 Importantly, any materialized views attached to the table engine still execute over blocks of data as its inserted - sending their results to a target table. These blocks are of a configurable size. While larger blocks can potentially be more efficient (and faster to process), they consume more resources (principally memory). Use of this table engine means we can build our materialized view incrementally i.e. a block at a time, avoiding the need to hold the entire aggregation in memory.
 
-<img src={nullTableMV} class="image" alt="Denormalization in ClickHouse" style={{width: '50%', background: 'none'}} />
+<Image img={nullTableMV} size="md" alt="Denormalization in ClickHouse"/>
 
 <br />
 
