@@ -5,7 +5,7 @@ slug: /chdb/guides/jupysql
 description: 'How to install chDB for Bun'
 keywords: ['chdb', 'JupySQL']
 ---
-
+import Image from '@theme/IdealImage';
 import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png';
 
 [JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) is a Python library that lets you run SQL in Jupyter notebooks and the IPython shell.
@@ -424,4 +424,5 @@ plot = (
 )
 ```
 
-<img src={PlayersPerRank} alt="Histogram of player rankings in ATP dataset" class="image" style={{width: '90%', padding: '30px'}} />
+<Image img={PlayersPerRank} size="md" alt="Histogram of player rankings in ATP dataset" />
+
