@@ -464,7 +464,7 @@ Notice our memory usage here is `639.47 MiB`.
 
 ##### Tuning performance & resources {#tuning-performance--resources}
 
-Several factors will determine the performance and resources used in the above scenario. We recommend readers understand insert mechanics documented in detail [here](/integrations/s3/performance#using-threads-for-reads) prior to attempting to tune. In summary:
+Several factors will determine the performance and resources used in the above scenario. Before attempting to tune, we recommend readers understand the insert mechanics documented in detail in the [Using Threads for Reads](/integrations/s3/performance#using-threads-for-reads) section of the [Optimizing for S3 Insert and Read Performance guide](/integrations/s3/performance). In summary:
 
 - **Read Parallelism** - The number of threads used to read. Controlled through [`max_threads`](/operations/settings/settings#max_threads). In ClickHouse Cloud this is determined by the instance size with it defaulting to the number of vCPUs. Increasing this value may improve read performance at the expense of greater memory usage.
 - **Insert Parallelism** - The number of insert threads used to insert. Controlled through [`max_insert_threads`](/operations/settings/settings#max_insert_threads). In ClickHouse Cloud this is determined by the instance size (between 2 and 4) and is set to 1 in OSS. Increasing this value may improve performance at the expense of greater memory usage.
