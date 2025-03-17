@@ -155,7 +155,7 @@ CREATE TABLE trips_gcs
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
-# highlight-next-line
+-- highlight-next-line
 SETTINGS storage_policy='gcs_main'
 ```
 
@@ -468,10 +468,10 @@ zk_synced_followers     2
 # highlight-end
 ```
 
-
 ### Start ClickHouse server {#start-clickhouse-server}
 
 On `chnode1` and `chnode` run:
+
 ```bash
 sudo service clickhouse-server start
 ```
@@ -546,7 +546,7 @@ cache_path:
 ```
 #### Verify that tables created on the cluster are created on both nodes {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
 ```sql
-# highlight-next-line
+-- highlight-next-line
 create table trips on cluster 'cluster_1S_2R' (
  `trip_id` UInt32,
  `pickup_date` Date,
@@ -564,7 +564,7 @@ create table trips on cluster 'cluster_1S_2R' (
 ENGINE = ReplicatedMergeTree
 PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
-# highlight-next-line
+-- highlight-next-line
 SETTINGS storage_policy='gcs_main'
 ```
 ```response
