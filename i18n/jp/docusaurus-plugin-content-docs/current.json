@@ -1,0 +1,551 @@
+{
+  "version.label": {
+    "message": "次"
+  },
+  "sidebar.docs.category.Introduction": {
+    "message": "イントロダクション"
+  },
+  "sidebar.docs.category.Concepts": {
+    "message": "概念"
+  },
+  "sidebar.docs.category.FAQ": {
+    "message": "FAQ"
+  },
+  "sidebar.docs.category.Starter Guides": {
+    "message": "スターターガイド"
+  },
+  "sidebar.docs.category.Use Case Guides": {
+    "message": "ユースケースガイド"
+  },
+  "sidebar.docs.category.Observability": {
+    "message": "可観測性"
+  },
+  "sidebar.docs.category.Migration Guides": {
+    "message": "移行ガイド"
+  },
+  "sidebar.docs.category.BigQuery": {
+    "message": "BigQuery"
+  },
+  "sidebar.docs.category.PostgreSQL": {
+    "message": "PostgreSQL"
+  },
+  "sidebar.docs.category.Example Datasets": {
+    "message": "サンプルデータセット"
+  },
+  "sidebar.docs.doc.Introduction": {
+    "message": "イントロダクション"
+  },
+  "sidebar.docs.doc.Rockset": {
+    "message": "Rockset"
+  },
+  "sidebar.cloud.category.Get Started": {
+    "message": "始める"
+  },
+  "sidebar.cloud.category.Managing Cloud": {
+    "message": "クラウド管理"
+  },
+  "sidebar.cloud.category.Backups": {
+    "message": "バックアップ"
+  },
+  "sidebar.cloud.category.Monitoring": {
+    "message": "監視"
+  },
+  "sidebar.cloud.category.Billing": {
+    "message": "請求"
+  },
+  "sidebar.cloud.category.Marketplace": {
+    "message": "マーケットプレイス"
+  },
+  "sidebar.cloud.category.Jan 2025 Changes FAQ": {
+    "message": "2025年1月の変更に関するFAQ"
+  },
+  "sidebar.cloud.category.Cloud API": {
+    "message": "クラウドAPI"
+  },
+  "sidebar.cloud.category.API Reference": {
+    "message": "APIリファレンス"
+  },
+  "sidebar.cloud.category.Cloud Reference ": {
+    "message": "クラウドリファレンス"
+  },
+  "sidebar.cloud.category.Changelogs": {
+    "message": "変更履歴"
+  },
+  "sidebar.cloud.category.Release Notes": {
+    "message": "リリースノート"
+  },
+  "sidebar.cloud.category.Best Practices": {
+    "message": "ベストプラクティス"
+  },
+  "sidebar.cloud.category.Security": {
+    "message": "セキュリティ"
+  },
+  "sidebar.cloud.category.Cloud Access Management": {
+    "message": "クラウドアクセス管理"
+  },
+  "sidebar.cloud.category.Connectivity": {
+    "message": "接続性"
+  },
+  "sidebar.cloud.category.Private Networking": {
+    "message": "プライベートネットワーク"
+  },
+  "sidebar.cloud.category.Privacy and Compliance": {
+    "message": "プライバシーとコンプライアンス"
+  },
+  "sidebar.cloud.category.Migrating to Cloud": {
+    "message": "クラウドへの移行"
+  },
+  "sidebar.cloud.link.Rockset": {
+    "message": "Rockset"
+  },
+  "sidebar.sqlreference.category.Introduction": {
+    "message": "イントロダクション"
+  },
+  "sidebar.sqlreference.category.Data Types": {
+    "message": "データ型"
+  },
+  "sidebar.sqlreference.category.Special Data Types": {
+    "message": "特殊データ型"
+  },
+  "sidebar.sqlreference.category.Statements": {
+    "message": "ステートメント"
+  },
+  "sidebar.sqlreference.category.SELECT": {
+    "message": "SELECT"
+  },
+  "sidebar.sqlreference.category.CREATE": {
+    "message": "CREATE"
+  },
+  "sidebar.sqlreference.category.ALTER": {
+    "message": "ALTER"
+  },
+  "sidebar.sqlreference.category.Engines": {
+    "message": "エンジン"
+  },
+  "sidebar.sqlreference.category.Database Engines": {
+    "message": "データベースエンジン"
+  },
+  "sidebar.sqlreference.category.Table Engines": {
+    "message": "テーブルエンジン"
+  },
+  "sidebar.sqlreference.category.MergeTree Family": {
+    "message": "MergeTreeファミリー"
+  },
+  "sidebar.sqlreference.category.Log Family": {
+    "message": "ログファミリー"
+  },
+  "sidebar.sqlreference.category.Integrations": {
+    "message": "統合"
+  },
+  "sidebar.sqlreference.category.Special": {
+    "message": "特殊"
+  },
+  "sidebar.sqlreference.category.Functions": {
+    "message": "関数"
+  },
+  "sidebar.sqlreference.category.Regular Functions": {
+    "message": "通常の関数"
+  },
+  "sidebar.sqlreference.category.Geo": {
+    "message": "地理"
+  },
+  "sidebar.sqlreference.category.Aggregate Functions": {
+    "message": "集約関数"
+  },
+  "sidebar.sqlreference.category.Table Functions": {
+    "message": "テーブル関数"
+  },
+  "sidebar.sqlreference.category.Window Functions": {
+    "message": "ウィンドウ関数"
+  },
+  "sidebar.sqlreference.category.Other Features": {
+    "message": "その他の機能"
+  },
+  "sidebar.sqlreference.category.Operators": {
+    "message": "演算子"
+  },
+  "sidebar.integrations.category.Language Clients": {
+    "message": "言語クライアント"
+  },
+  "sidebar.integrations.category.Java": {
+    "message": "Java"
+  },
+  "sidebar.integrations.category.Third-party Clients": {
+    "message": "サードパーティクライアント"
+  },
+  "sidebar.integrations.category.ClickPipes": {
+    "message": "ClickPipes"
+  },
+  "sidebar.integrations.category.ClickPipes for Postgres": {
+    "message": "Postgres用ClickPipes"
+  },
+  "sidebar.integrations.category.Source": {
+    "message": "ソース"
+  },
+  "sidebar.integrations.category.Native Clients & Interfaces": {
+    "message": "ネイティブクライアントとインターフェース"
+  },
+  "sidebar.integrations.category.Drivers and Interfaces": {
+    "message": "ドライバとインターフェース"
+  },
+  "sidebar.integrations.category.Data Sources": {
+    "message": "データソース"
+  },
+  "sidebar.integrations.category.AWS S3": {
+    "message": "AWS S3"
+  },
+  "sidebar.integrations.category.Kafka": {
+    "message": "Kafka"
+  },
+  "sidebar.integrations.category.Apache Spark": {
+    "message": "Apache Spark"
+  },
+  "sidebar.integrations.category.Data Visualization": {
+    "message": "データ視覚化"
+  },
+  "sidebar.integrations.category.Grafana": {
+    "message": "Grafana"
+  },
+  "sidebar.integrations.category.Tableau": {
+    "message": "Tableau"
+  },
+  "sidebar.integrations.category.Data Formats": {
+    "message": "データフォーマット"
+  },
+  "sidebar.integrations.category.JSON": {
+    "message": "JSON"
+  },
+  "sidebar.integrations.category.View All Formats": {
+    "message": "すべてのフォーマットを表示"
+  },
+  "sidebar.integrations.category.Arrow": {
+    "message": "Arrow"
+  },
+  "sidebar.integrations.category.Avro": {
+    "message": "Avro"
+  },
+  "sidebar.integrations.category.CSV": {
+    "message": "CSV"
+  },
+  "sidebar.integrations.category.CustomSeparated": {
+    "message": "CustomSeparated"
+  },
+  "sidebar.integrations.category.LineAsString": {
+    "message": "LineAsString"
+  },
+  "sidebar.integrations.category.Parquet": {
+    "message": "Parquet"
+  },
+  "sidebar.integrations.category.Pretty": {
+    "message": "Pretty"
+  },
+  "sidebar.integrations.category.Protobuf": {
+    "message": "Protobuf"
+  },
+  "sidebar.integrations.category.RowBinary": {
+    "message": "RowBinary"
+  },
+  "sidebar.integrations.category.TabSeparated": {
+    "message": "TabSeparated"
+  },
+  "sidebar.integrations.category.Template": {
+    "message": "Template"
+  },
+  "sidebar.integrations.category.Data Ingestion": {
+    "message": "データ取り込み"
+  },
+  "sidebar.integrations.category.Google Dataflow": {
+    "message": "Google Dataflow"
+  },
+  "sidebar.integrations.category.Dataflow Templates": {
+    "message": "Dataflowテンプレート"
+  },
+  "sidebar.integrations.category.Tools": {
+    "message": "ツール"
+  },
+  "sidebar.integrations.category.SQL Clients": {
+    "message": "SQLクライアント"
+  },
+  "sidebar.integrations.category.Data Integrations": {
+    "message": "データ統合"
+  },
+  "sidebar.integrations.category.Misc": {
+    "message": "その他"
+  },
+  "sidebar.integrations.doc.Overview": {
+    "message": "概要"
+  },
+  "sidebar.integrations.doc.Third-party Libraries": {
+    "message": "サードパーティライブラリ"
+  },
+  "sidebar.managingData.category.Core Concepts": {
+    "message": "コア概念"
+  },
+  "sidebar.managingData.category.Updating Data": {
+    "message": "データの更新"
+  },
+  "sidebar.managingData.category.Deleting Data": {
+    "message": "データの削除"
+  },
+  "sidebar.managingData.category.Data Modeling": {
+    "message": "データモデリング"
+  },
+  "sidebar.managingData.category.Dictionary": {
+    "message": "辞書"
+  },
+  "sidebar.managingData.category.Materialized Views": {
+    "message": "マテリアライズドビュー"
+  },
+  "sidebar.managingData.category.Data Compression": {
+    "message": "データ圧縮"
+  },
+  "sidebar.managingData.category.Advanced Guides": {
+    "message": "高度なガイド"
+  },
+  "sidebar.managingData.category.Performance and Optimizations": {
+    "message": "パフォーマンスと最適化"
+  },
+  "sidebar.managingData.doc.Lightweight Updates": {
+    "message": "軽量更新"
+  },
+  "sidebar.managingData.doc.ReplacingMergeTree": {
+    "message": "ReplacingMergeTree"
+  },
+  "sidebar.managingData.doc.Lightweight Deletes": {
+    "message": "軽量削除"
+  },
+  "sidebar.aboutClickHouse.category.About ClickHouse": {
+    "message": "ClickHouseについて"
+  },
+  "sidebar.aboutClickHouse.category.Changelogs": {
+    "message": "変更履歴"
+  },
+  "sidebar.aboutClickHouse.category.Changelog": {
+    "message": "変更ログ"
+  },
+  "sidebar.aboutClickHouse.category.Changelog.link.generated-index.title": {
+    "message": "変更ログ"
+  },
+  "sidebar.aboutClickHouse.category.Development and Contributing": {
+    "message": "開発と貢献"
+  },
+  "sidebar.aboutClickHouse.category.Native Protocol": {
+    "message": "ネイティブプロトコル"
+  },
+  "sidebar.aboutClickHouse.category.FAQ": {
+    "message": "FAQ"
+  },
+  "sidebar.serverAdmin.category.Manage and Deploy": {
+    "message": "管理と展開"
+  },
+  "sidebar.serverAdmin.category.Deployment and Scaling": {
+    "message": "展開とスケーリング"
+  },
+  "sidebar.serverAdmin.category.Settings": {
+    "message": "設定"
+  },
+  "sidebar.serverAdmin.category.System Tables": {
+    "message": "システムテーブル"
+  },
+  "sidebar.serverAdmin.category.Security and Authentication": {
+    "message": "セキュリティと認証"
+  },
+  "sidebar.serverAdmin.category.External Authenticators": {
+    "message": "外部認証システム"
+  },
+  "sidebar.serverAdmin.category.SSL": {
+    "message": "SSL"
+  },
+  "sidebar.serverAdmin.category.LDAP": {
+    "message": "LDAP"
+  },
+  "sidebar.serverAdmin.category.Tools and Utilities": {
+    "message": "ツールとユーティリティ"
+  },
+  "sidebar.chdb.category.chDB": {
+    "message": "chDB"
+  },
+  "sidebar.chdb.category.Language Integrations": {
+    "message": "言語統合"
+  },
+  "sidebar.chdb.category.Developer Guides": {
+    "message": "開発者ガイド"
+  },
+  "sidebar.chdb.category.Technical Reference": {
+    "message": "技術リファレンス"
+  },
+  "sidebar.chdb.category.Integrations": {
+    "message": "統合"
+  },
+  "sidebar.chdb.category.About chDB": {
+    "message": "chDBについて"
+  },
+  "sidebar.chdb.link.JupySQL": {
+    "message": "JupySQL"
+  },
+  "sidebar.chdb.link.chdb-lambda": {
+    "message": "chdb-lambda"
+  },
+  "sidebar.chdb.link.chdb-cli": {
+    "message": "chdb-cli"
+  },
+  "sidebar.chdb.link.Discord": {
+    "message": "Discord"
+  },
+  "sidebar.chdb.link.Birth of chDB": {
+    "message": "chDBの誕生"
+  },
+  "sidebar.chdb.link.Joining ClickHouse, Inc.": {
+    "message": "ClickHouse, Inc.への参加"
+  },
+  "sidebar.chdb.link.Team and Contributors": {
+    "message": "チームと貢献者"
+  },
+  "sidebar.dropdownCategories.category.Getting Started": {
+    "message": "始める"
+  },
+  "sidebar.dropdownCategories.category.Cloud": {
+    "message": "クラウド"
+  },
+  "sidebar.dropdownCategories.category.Manage Data": {
+    "message": "データ管理"
+  },
+  "sidebar.dropdownCategories.category.Server Admin": {
+    "message": "サーバー管理"
+  },
+  "sidebar.dropdownCategories.category.Reference": {
+    "message": "リファレンス"
+  },
+  "sidebar.dropdownCategories.category.Integrations": {
+    "message": "統合"
+  },
+  "sidebar.dropdownCategories.category.chDB": {
+    "message": "chDB"
+  },
+  "sidebar.dropdownCategories.category.About": {
+    "message": "について"
+  },
+  "sidebar.dropdownCategories.link.Introduction": {
+    "message": "イントロダクション"
+  },
+  "sidebar.dropdownCategories.link.Starter Guides": {
+    "message": "スターターガイド"
+  },
+  "sidebar.dropdownCategories.link.Concepts": {
+    "message": "概念"
+  },
+  "sidebar.dropdownCategories.link.Migration Guides": {
+    "message": "移行ガイド"
+  },
+  "sidebar.dropdownCategories.link.Use Case Guides": {
+    "message": "ユースケースガイド"
+  },
+  "sidebar.dropdownCategories.link.Example datasets": {
+    "message": "サンプルデータセット"
+  },
+  "sidebar.dropdownCategories.link.Get Started": {
+    "message": "始める"
+  },
+  "sidebar.dropdownCategories.link.Managing Cloud": {
+    "message": "クラウド管理"
+  },
+  "sidebar.dropdownCategories.link.Cloud API": {
+    "message": "クラウドAPI"
+  },
+  "sidebar.dropdownCategories.link.Cloud Reference": {
+    "message": "クラウドリファレンス"
+  },
+  "sidebar.dropdownCategories.link.Best Practices": {
+    "message": "ベストプラクティス"
+  },
+  "sidebar.dropdownCategories.link.Security": {
+    "message": "セキュリティ"
+  },
+  "sidebar.dropdownCategories.link.Migrating to Cloud": {
+    "message": "クラウドへの移行"
+  },
+  "sidebar.dropdownCategories.link.Core Data Concepts": {
+    "message": "コアデータ概念"
+  },
+  "sidebar.dropdownCategories.link.Updating Data": {
+    "message": "データの更新"
+  },
+  "sidebar.dropdownCategories.link.Deleting data": {
+    "message": "データの削除"
+  },
+  "sidebar.dropdownCategories.link.Data Modeling": {
+    "message": "データモデリング"
+  },
+  "sidebar.dropdownCategories.link.Performance and Optimizations": {
+    "message": "パフォーマンスと最適化"
+  },
+  "sidebar.dropdownCategories.link.Deployments and Scaling": {
+    "message": "展開とスケーリング"
+  },
+  "sidebar.dropdownCategories.link.Security and Authentication": {
+    "message": "セキュリティと認証"
+  },
+  "sidebar.dropdownCategories.link.Settings": {
+    "message": "設定"
+  },
+  "sidebar.dropdownCategories.link.Tools and Utilities": {
+    "message": "ツールとユーティリティ"
+  },
+  "sidebar.dropdownCategories.link.System Tables": {
+    "message": "システムテーブル"
+  },
+  "sidebar.dropdownCategories.link.Functions": {
+    "message": "関数"
+  },
+  "sidebar.dropdownCategories.link.Engines": {
+    "message": "エンジン"
+  },
+  "sidebar.dropdownCategories.link.Other Features": {
+    "message": "その他の機能"
+  },
+  "sidebar.dropdownCategories.link.All Integrations": {
+    "message": "すべての統合"
+  },
+  "sidebar.dropdownCategories.link.Language Clients": {
+    "message": "言語クライアント"
+  },
+  "sidebar.dropdownCategories.link.ClickPipes": {
+    "message": "ClickPipes"
+  },
+  "sidebar.dropdownCategories.link.Native Clients & Interfaces": {
+    "message": "ネイティブクライアントとインターフェース"
+  },
+  "sidebar.dropdownCategories.link.Data Sources": {
+    "message": "データソース"
+  },
+  "sidebar.dropdownCategories.link.Data Visualization": {
+    "message": "データ視覚化"
+  },
+  "sidebar.dropdownCategories.link.Data Formats": {
+    "message": "データフォーマット"
+  },
+  "sidebar.dropdownCategories.link.Data Ingestion": {
+    "message": "データ取り込み"
+  },
+  "sidebar.dropdownCategories.link.Learn chDB": {
+    "message": "chDBを学ぶ"
+  },
+  "sidebar.dropdownCategories.link.Language Integrations": {
+    "message": "言語統合"
+  },
+  "sidebar.dropdownCategories.link.Guides": {
+    "message": "ガイド"
+  },
+  "sidebar.dropdownCategories.link.Adopters": {
+    "message": "採用者"
+  },
+  "sidebar.dropdownCategories.link.Changelogs": {
+    "message": "変更履歴"
+  },
+  "sidebar.dropdownCategories.link.Support": {
+    "message": "サポート"
+  },
+  "sidebar.dropdownCategories.link.Development and Contributing": {
+    "message": "開発と貢献"
+  }
+}

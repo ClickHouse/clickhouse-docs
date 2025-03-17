@@ -1,8 +1,8 @@
 ---
-title: Handling other JSON formats
+title: 'Handling other JSON formats'
 slug: /integrations/data-formats/json/other-formats
-description: Handling other JSON formats
-keywords: [json, formats, json formats]
+description: 'Handling other JSON formats'
+keywords: ['json', 'formats', 'json formats']
 ---
 
 # Handling other formats

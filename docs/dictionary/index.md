@@ -1,8 +1,8 @@
 ---
 slug: /dictionary
-title: Dictionary
-keywords: [dictionary, dictionaries]
-description: A dictionary provides a key-value representation of data for fast lookups.
+title: 'Dictionary'
+keywords: ['dictionary', 'dictionaries']
+description: 'A dictionary provides a key-value representation of data for fast lookups.'
 ---
 
 import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-cases.png';
@@ -174,7 +174,7 @@ SELECT Id, Title,
 	dictGet('votes_dict', 'DownVotes', Id) AS DownVotes,
 	abs(UpVotes - DownVotes) AS Controversial_ratio
 FROM posts
-WHERE (Id IN (PostIds)) AND (UpVotes > 10) AND (UpVotes > 10)
+WHERE (Id IN (PostIds)) AND (UpVotes > 10) AND (DownVotes > 10)
 ORDER BY Controversial_ratio ASC
 LIMIT 3
 

@@ -1,8 +1,10 @@
 ---
-sidebar_label: DbVisualizer
+sidebar_label: 'DbVisualizer'
 slug: /integrations/dbvisualizer
-description: DbVisualizer is a database tool with extended support for ClickHouse.
+description: 'DbVisualizer is a database tool with extended support for ClickHouse.'
+title: 'Connecting DbVisualizer to ClickHouse'
 ---
+
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import dbvisualizer_driver_manager from '@site/static/images/integrations/sql-clients/dbvisualizer-driver-manager.png';
 

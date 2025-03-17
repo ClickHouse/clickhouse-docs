@@ -1,10 +1,16 @@
+---
+title: 'Client (0.7.x and earlier)'
+description: 'Java client library to communicate with a DB server through its protocols.'
+slug: /integrations/language-clients/java/client-v1
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 # Client (0.7.x and earlier)
 
-Java client library to communicate with a DB server thru its protocols. Current implementation supports only [HTTP interface](/interfaces/http). The library provides own API to send requests to a server.  
+Java client library to communicate with a DB server through its protocols. Current implementation supports only [HTTP interface](/interfaces/http). The library provides own API to send requests to a server.
 
 :::warning Deprecation
 This library will be deprecated soon. Use the latest [Java Client](/integrations/language-clients/java/client.md) for new projects
@@ -13,9 +19,9 @@ This library will be deprecated soon. Use the latest [Java Client](/integrations
 ## Setup {#setup}
 
 <Tabs groupId="client-v1-setup">
-<TabItem value="maven" label="Maven" >
+<TabItem value="maven" label="Maven">
 
-```xml 
+```xml
 <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client -->
 <dependency>
     <groupId>com.clickhouse</groupId>
@@ -46,9 +52,9 @@ Since version `0.5.0`, the driver uses a new client http library that needs to b
 
 
 <Tabs groupId="client-v1-http-client">
-<TabItem value="maven" label="Maven" >
+<TabItem value="maven" label="Maven">
 
-```xml 
+```xml
 <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 -->
 <dependency>
     <groupId>org.apache.httpcomponents.client5</groupId>
@@ -147,7 +153,7 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 }
 ```
 
-See [complete code example](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L39) in the [repo](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client). 
+See [complete code example](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L39) in the [repo](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client).
 
 **RowBinary Encoding**
 
@@ -164,7 +170,7 @@ The client will by default use LZ4 compression, which requires this dependency:
 <Tabs groupId="client-v1-compression-deps">
 <TabItem value="maven" label="Maven" >
 
-```xml 
+```xml
 <!-- https://mvnrepository.com/artifact/org.lz4/lz4-java -->
 <dependency>
     <groupId>org.lz4</groupId>
@@ -343,4 +349,3 @@ options.put("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=t
 ```java
 properties.setProperty("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
 ```
-

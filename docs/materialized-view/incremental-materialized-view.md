@@ -1,8 +1,8 @@
 ---
 slug: /materialized-view/incremental-materialized-view
-title: Incremental Materialized View
-description: How to use incremental materialized views to speed up queries
-keywords: [incremental materialized views, speed up queries, query optimization]
+title: 'Incremental Materialized View'
+description: 'How to use incremental materialized views to speed up queries'
+keywords: ['incremental materialized views', 'speed up queries', 'query optimization']
 score: 10000
 ---
 

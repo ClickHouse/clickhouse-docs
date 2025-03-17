@@ -1,7 +1,7 @@
 ---
 slug: /security-and-authentication
-title: "Security and Authentication"
-description: "Landing page for Security and Authentication"
+title: 'Security and Authentication'
+description: 'Landing page for Security and Authentication'
 ---
 
 | Page                                                                   | Description                                                                                             |

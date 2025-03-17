@@ -1,9 +1,9 @@
 ---
-title: Installing chDB for C and C++
-sidebar_label: C and C++
+title: 'Installing chDB for C and C++'
+sidebar_label: 'C and C++'
 slug: /chdb/install/c
-description: How to install chDB for C and C++
-keywords: [chdb, embedded, clickhouse-lite, install]
+description: 'How to install chDB for C and C++'
+keywords: ['chdb', 'embedded', 'clickhouse-lite', 'install']
 ---
 
 # Installing chDB for C and C++

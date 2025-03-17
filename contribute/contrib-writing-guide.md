@@ -265,6 +265,7 @@ slug: /integrations/sql-clients/clickhouse-client-local
 sidebar_label: clickhouse-client
 title: clickhouse-client and clickhouse-local
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 

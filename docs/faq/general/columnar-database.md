@@ -1,8 +1,9 @@
 ---
 slug: /faq/general/columnar-database
-title: What is a columnar database?
+title: 'What is a columnar database?'
 toc_hidden: true
 toc_priority: 101
+description: 'This page describes what a columnar database is'
 ---
 
 import RowOriented from '@site/static/images/row-oriented.gif';

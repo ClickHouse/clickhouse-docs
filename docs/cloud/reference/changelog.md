@@ -1,7 +1,8 @@
 ---
 slug: /whats-new/cloud
-sidebar_label: Cloud Changelog
-title: Cloud Changelog
+sidebar_label: 'Cloud Changelog'
+title: 'Cloud Changelog'
+description: 'ClickHouse Cloud changelog providing descriptions of what is new in each ClickHouse Cloud release'
 ---
 
 import add_marketplace from '@site/static/images/cloud/reference/add_marketplace.png';
@@ -28,6 +29,11 @@ import query_endpoints from '@site/static/images/cloud/reference/may-17-query-en
 
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
+## March 7, 2025 {#march-7-2025}
+
+- New `UsageCost` API endpoint: The API specification now supports a new endpoint for retrieving usage information. This is an organization endpoint and usage costs can be queried for a maximum of 31 days. The metrics that can be retrieved include Storage, Compute, Data Transfer and ClickPipes. Please refer to the [documentation](https://clickhouse.com/docs/cloud/manage/api/usageCost-api-reference) for details.
+
+- Terraform provider [v2.1.0](https://registry.terraform.io/providers/ClickHouse/clickhouse/2.1.0/docs/resources/service#nestedatt--endpoints_configuration) release supports enabling the MySQL endpoint.
 
 ## February 21, 2025 {#february-21-2025}
 

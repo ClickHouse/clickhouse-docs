@@ -1,9 +1,10 @@
 ---
-sidebar_label: JDBC 0.8+
+sidebar_label: 'JDBC 0.8+'
 sidebar_position: 4
-keywords: [clickhouse, java, jdbc, driver, integrate]
-description: ClickHouse JDBC driver
+keywords: ['clickhouse', 'java', 'jdbc', 'driver', 'integrate']
+description: 'ClickHouse JDBC driver'
 slug: /integrations/language-clients/java/jdbc
+title: 'JDBC Driver (0.8+)'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -49,7 +50,7 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>clickhouse-jdbc</artifactId>
-    <version>0.8.1</version>
+    <version>0.8.2</version>
     <classifier>shaded-all</classifier>    
 </dependency>
 ```
@@ -59,14 +60,14 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
 
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-implementation("com.clickhouse:clickhouse-jdbc:0.8.1:shaded-all")
+implementation("com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-implementation 'com.clickhouse:clickhouse-jdbc:0.8.1:shaded-all'
+implementation 'com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all'
 ```
 
 </TabItem>

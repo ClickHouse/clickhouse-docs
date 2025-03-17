@@ -1,7 +1,8 @@
 ---
-title: Schema design
-description: Designing a schema design for observability
-keywords: [observability, logs, traces, metrics, OpenTelemetry, Grafana, OTel]
+title: 'Schema design'
+description: 'Designing a schema design for observability'
+keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
+slug: /use-cases/observability/schema-design
 ---
 
 import observability_10 from '@site/static/images/use-cases/observability/observability-10.png';
@@ -447,7 +448,7 @@ FROM otel_logs
 
 The above materialized views rely on implicit casting - especially in the case of using the `LogAttributes` map. ClickHouse will often transparently cast the extracted value to the target table type, reducing the syntax required. However, we recommend users always test their views by using the views `SELECT` statement with an [`INSERT INTO`](/sql-reference/statements/insert-into) statement with a target table using the same schema. This should confirm that types are correctly handled. Special attention should be given to the following cases:
 
-- If a key doesn't exist in a map, an empty string will be returned. In the case of numerics, users will need to map these to an appropriate value. This can be achieved with [conditionals](/sql-reference/functions/conditional-functions) e.g. `if(LogAttributes['status'] = ", 200, LogAttributes['status'])` or [cast functions](/sql-reference/functions/type-conversion-functions#touint8163264256ordefault) if default values are acceptable e.g. `toUInt8OrDefault(LogAttributes['status'] )`
+- If a key doesn't exist in a map, an empty string will be returned. In the case of numerics, users will need to map these to an appropriate value. This can be achieved with [conditionals](/sql-reference/functions/conditional-functions) e.g. `if(LogAttributes['status'] = ", 200, LogAttributes['status'])` or [cast functions](/sql-reference/functions/type-conversion-functions) if default values are acceptable e.g. `toUInt8OrDefault(LogAttributes['status'] )`
 - Some types will not always be cast e.g. string representations of numerics will not be cast to enum values.
 - JSON extract functions return default values for their type if a value is not found. Ensure these values make sense!
 

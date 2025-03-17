@@ -1,6 +1,8 @@
 ---
 slug: /native-protocol/client
 sidebar_position: 2
+title: 'Native client packets'
+description: 'Native protocol client'
 ---
 
 # Client packets

@@ -1,7 +1,8 @@
 ---
-sidebar_label: What is ClickHouse?
-description: "ClickHouse® is a column-oriented SQL database management system (DBMS) for online analytical processing (OLAP). It is available as both an open-source software and a cloud offering."
-title: What is ClickHouse?
+slug: /intro
+sidebar_label: 'What is ClickHouse?'
+description: 'ClickHouse® is a column-oriented SQL database management system (DBMS) for online analytical processing (OLAP). It is available as both an open-source software and a cloud offering.'
+title: 'What is ClickHouse?'
 ---
 
 import RowOrientedExample from '@site/static/images/column-oriented-example-query.png';

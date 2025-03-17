@@ -1,8 +1,9 @@
 ---
-sidebar_label: Query Builder
+sidebar_label: 'Query Builder'
 sidebar_position: 2
 slug: /integrations/grafana/query-builder
-description: Using the Query Builder in the ClickHouse Grafana plugin
+description: 'Using the Query Builder in the ClickHouse Grafana plugin'
+title: 'Query Builder'
 ---
 
 import demo_table_query from '@site/static/images/integrations/data-visualization/grafana/demo_table_query.png';

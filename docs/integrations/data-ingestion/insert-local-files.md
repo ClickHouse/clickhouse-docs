@@ -1,6 +1,9 @@
 ---
-sidebar_label: Insert Local Files
+sidebar_label: 'Insert Local Files'
 sidebar_position: 2
+title: 'Insert Local Files'
+slug: /integrations/data-ingestion/insert-local-files
+description: 'Learn about Insert Local Files'
 ---
 
 # Insert Local Files

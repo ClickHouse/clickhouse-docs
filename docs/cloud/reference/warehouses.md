@@ -1,8 +1,8 @@
 ---
-title: Warehouses
+title: 'Warehouses'
 slug: /cloud/reference/warehouses
-keywords: [compute separation, cloud, architecture, compute-compute, warehouse, warehouses, hydra]
-description: Compute-compute separation in ClickHouse Cloud
+keywords: ['compute separation', 'cloud', 'architecture', 'compute-compute', 'warehouse', 'warehouses', 'hydra']
+description: 'Compute-compute separation in ClickHouse Cloud'
 ---
 
 import compute_1 from '@site/static/images/cloud/reference/compute-compute-1.png';

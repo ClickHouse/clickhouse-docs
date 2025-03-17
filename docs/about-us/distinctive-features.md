@@ -1,8 +1,9 @@
 ---
 slug: /about-us/distinctive-features
-sidebar_label: Why is ClickHouse unique?
+sidebar_label: 'Why is ClickHouse unique?'
 sidebar_position: 50
-description: Understand what makes ClickHouse stand apart from other database management systems
+description: 'Understand what makes ClickHouse stand apart from other database management systems'
+title: 'Distinctive Features of ClickHouse'
 ---
 
 # Distinctive Features of ClickHouse

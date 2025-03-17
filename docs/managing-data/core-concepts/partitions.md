@@ -1,8 +1,8 @@
 ---
 slug: /partitions
-title: Table partitions
-description: What are table partitions in ClickHouse
-keywords: [partitions, partition by]
+title: 'Table partitions'
+description: 'What are table partitions in ClickHouse'
+keywords: ['partitions', 'partition by']
 ---
 
 import partitions from '@site/static/images/managing-data/core-concepts/partitions.png';

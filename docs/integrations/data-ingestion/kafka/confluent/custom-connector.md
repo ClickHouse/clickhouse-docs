@@ -1,9 +1,11 @@
 ---
-sidebar_label: Kafka Connector Sink on Confluent Platform
+sidebar_label: 'Kafka Connector Sink on Confluent Platform'
 sidebar_position: 2
 slug: /integrations/kafka/cloud/confluent/custom-connector
-description: Using ClickHouse Connector Sink with Kafka Connect and ClickHouse
+description: 'Using ClickHouse Connector Sink with Kafka Connect and ClickHouse'
+title: 'Integrating Confluent Cloud with ClickHouse'
 ---
+
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import AddCustomConnectorPlugin from '@site/static/images/integrations/data-ingestion/kafka/confluent/AddCustomConnectorPlugin.png';
 

@@ -1,8 +1,8 @@
 ---
 slug: /optimize/query-optimization
-sidebar_label: Query optimization
-title: Guide for Query optimization
-description: A simple guide for query optimization that describe common path to improve query performance
+sidebar_label: 'Query optimization'
+title: 'Guide for Query optimization'
+description: 'A simple guide for query optimization that describe common path to improve query performance'
 ---
 
 import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';

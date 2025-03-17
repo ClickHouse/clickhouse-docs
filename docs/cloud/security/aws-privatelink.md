@@ -1,6 +1,6 @@
 ---
-title: "AWS PrivateLink"
-description: "This document describes how to connect to ClickHouse Cloud using AWS PrivateLink."
+title: 'AWS PrivateLink'
+description: 'This document describes how to connect to ClickHouse Cloud using AWS PrivateLink.'
 slug: /manage/security/aws-privatelink
 ---
 

@@ -1,8 +1,9 @@
 ---
 slug: /use-cases
-title: Use Case Guides
+title: 'Use Case Guides'
 pagination_prev: null
 pagination_next: null
+description: 'Landing page for use case guides'
 ---
 
 In this section of the docs you can find our use case guides.

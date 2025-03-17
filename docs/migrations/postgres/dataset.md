@@ -1,8 +1,8 @@
 ---
 slug: /migrations/postgresql/dataset
-title: Loading data from PostgreSQL to ClickHouse
-description: Dataset example to migrate from PostgreSQL to ClickHouse
-keywords: [postgres, postgresql, migrate, migration]
+title: 'Loading data from PostgreSQL to ClickHouse'
+description: 'Dataset example to migrate from PostgreSQL to ClickHouse'
+keywords: ['postgres', 'postgresql', 'migrate', 'migration']
 ---
 
 import postgres_stackoverflow_schema from '@site/static/images/migrations/postgres-stackoverflow-schema.png';

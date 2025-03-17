@@ -1,8 +1,9 @@
 ---
-title: Supported Cloud Regions
-sidebar_label: Supported Cloud Regions
-keywords: [aws, gcp, google cloud, azure, cloud, regions]
-description: Supported regions for ClickHouse Cloud
+title: 'Supported Cloud Regions'
+sidebar_label: 'Supported Cloud Regions'
+keywords: ['aws', 'gcp', 'google cloud', 'azure', 'cloud', 'regions']
+description: 'Supported regions for ClickHouse Cloud'
+slug: /cloud/reference/supported-regions
 ---
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
@@ -38,9 +39,13 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - us-east1 (South Carolina)
 
 **Under Consideration:**
-- australia-southeast1 (Sydney)
-- us-west-1 (Oregon)
-- eu-west-1 (Belgium)
+
+- us-west1 (Oregon)
+- australia-southeast1(Sydney)
+- asia-northeast1 (Tokyo)
+- europe-west3 (Frankfurt)
+- europe-west6 (Zurich)
+- northamerica-northeast1 (Montréal)
 
 ## Azure regions {#azure-regions}
 
@@ -48,6 +53,9 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - East US 2 (Virginia)
 - Germany West Central (Frankfurt)
 
+**Under Consideration:**
+
+JapanEast
 :::note 
 Need to deploy to a region not currently listed? [Submit a request](https://clickhouse.com/pricing?modal=open). 
 :::

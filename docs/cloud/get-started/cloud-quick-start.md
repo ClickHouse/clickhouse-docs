@@ -1,10 +1,13 @@
 ---
 sidebar_position: 1
 slug: /cloud/get-started/cloud-quick-start
-sidebar_label: Cloud Quick Start
-keywords: [clickhouse, install, getting started, quick start]
+sidebar_label: 'Cloud Quick Start'
+keywords: ['clickhouse', 'install', 'getting started', 'quick start']
 pagination_next: cloud/get-started/sql-console
+title: 'ClickHouse Cloud Quick Start'
+description: 'Quick start guide for ClickHouse Cloud'
 ---
+
 import signup_page from '@site/static/images/_snippets/signup_page.png';
 import select_plan from '@site/static/images/_snippets/select_plan.png';
 import createservice1 from '@site/static/images/_snippets/createservice1.png';

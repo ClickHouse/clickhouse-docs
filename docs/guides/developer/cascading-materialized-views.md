@@ -1,8 +1,8 @@
 ---
 slug: /guides/developer/cascading-materialized-views
-title: Cascading Materialized Views
-description: How to use multiple materialized views from a source table.
-keywords: [materialized view, aggregation]
+title: 'Cascading Materialized Views'
+description: 'How to use multiple materialized views from a source table.'
+keywords: ['materialized view', 'aggregation']
 ---
 
 # Cascading Materialized Views

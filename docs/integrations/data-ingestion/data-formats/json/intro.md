@@ -1,10 +1,10 @@
 ---
-sidebar_label: Overview
+sidebar_label: 'Overview'
 sidebar_position: 10
-title: Working with JSON
+title: 'Working with JSON'
 slug: /integrations/data-formats/json/overview
-description: Working with JSON in ClickHouse
-keywords: [json, clickhouse]
+description: 'Working with JSON in ClickHouse'
+keywords: ['json', 'clickhouse']
 ---
 
 # Overview

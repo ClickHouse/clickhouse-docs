@@ -1,9 +1,11 @@
 ---
 slug: /architecture/horizontal-scaling
-sidebar_label: Scaling out
+sidebar_label: 'Scaling out'
 sidebar_position: 10
-title: Scaling out
+title: 'Scaling out'
+description: 'Page describing an example architecture designed to provide scalability'
 ---
+
 import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
 import ConfigFileNote from '@site/docs/_snippets/_config-files.md';
 import scalingOut1 from '@site/static/images/deployment-guides/scaling-out-1.png';

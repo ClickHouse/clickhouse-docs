@@ -1,10 +1,12 @@
 ---
-sidebar_label:  NiFi
+sidebar_label: 'NiFi'
 sidebar_position: 12
-keywords: [clickhouse, NiFi, connect, integrate, etl, data integration]
+keywords: ['clickhouse', 'NiFi', 'connect', 'integrate', 'etl', 'data integration']
 slug: /integrations/nifi
-description: Stream data into ClickHouse using NiFi data pipelines
+description: 'Stream data into ClickHouse using NiFi data pipelines'
+title: 'Connect Apache NiFi to ClickHouse'
 ---
+
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import nifi01 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_01.png';
 import nifi02 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_02.png';
