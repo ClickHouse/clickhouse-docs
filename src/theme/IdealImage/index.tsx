@@ -105,9 +105,10 @@ export default function IdealImage(
     alt: string;
     background?: "white" | "black";
     border?: boolean;
+    force?: boolean;
   },
 ): ReactNode {
-  const { img, size, alt, background, border, ...propsRest } = props;
+  const { img, size, alt, background, border, force, ...propsRest } = props;
 
   // In dev env just use regular img with original file
   if (typeof img === "string" || "default" in img) {
@@ -176,6 +177,24 @@ export default function IdealImage(
     marginBottom: "16px",
   };
 
+  const img_component = force ? (
+    <img width={currentImage.width ?? 100} alt={alt} src={currentImage.path} />
+  ) : (
+    <ReactIdealImage
+      {...propsRest}
+      height={currentImage.height ?? 100}
+      alt={alt}
+      width={currentImage.width ?? 100}
+      placeholder={{ lqip: img.preSrc }}
+      src={currentImage.path}
+      srcSet={filteredSet.map((image) => ({
+        ...image,
+        src: image.path,
+      }))}
+      style={imageStyles}
+    />
+  );
+
   return (
     <div style={containerStyles}>
       {/* Zoomed Image */}
@@ -207,19 +226,7 @@ export default function IdealImage(
           visibility: isZoomed ? "hidden" : "visible",
         }}
       >
-        <ReactIdealImage
-          {...propsRest}
-          height={currentImage.height ?? 100}
-          alt={alt}
-          width={currentImage.width ?? 100}
-          placeholder={{ lqip: img.preSrc }}
-          src={currentImage.path}
-          srcSet={filteredSet.map((image) => ({
-            ...image,
-            src: image.path,
-          }))}
-          style={imageStyles}
-        />
+        {img_component}
       </div>
     </div>
   );
