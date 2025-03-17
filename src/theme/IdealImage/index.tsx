@@ -173,7 +173,9 @@ export default function IdealImage(
 
   const containerStyles: React.CSSProperties = {
     position: "relative",
-    ...(background ? { backgroundColor: background } : {}),
+    ...(background
+      ? { backgroundColor: background == "white" ? "white" : "rgb(31 31 28)" }
+      : {}),
     marginBottom: "16px",
   };
 
