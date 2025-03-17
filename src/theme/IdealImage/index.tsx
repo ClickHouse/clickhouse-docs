@@ -31,7 +31,7 @@ function bytesToSize(bytes: number) {
 
 // Define the available sizes
 const MAX_SIZE_FILTERS = {
-  xs: 128,
+  logo: 48,
   sm: 300,
   md: 600,
   lg: 1024,
@@ -162,14 +162,19 @@ export default function IdealImage(
             ? "0px 1px 8px -1px rgba(21, 21, 21, 0.20)"
             : "none",
         }
-      : {
-          width: `${MAX_SIZE_FILTERS[size]}px`,
-          margin: "0 auto",
-          display: "block",
-          boxShadow: border
-            ? "0px 1px 8px -1px rgba(21, 21, 21, 0.20)"
-            : "none",
-        };
+      : size == "logo"
+        ? {
+            width: `${MAX_SIZE_FILTERS[size]}px`,
+            display: "block",
+          }
+        : {
+            width: `${MAX_SIZE_FILTERS[size]}px`,
+            margin: "0 auto",
+            display: "block",
+            boxShadow: border
+              ? "0px 1px 8px -1px rgba(21, 21, 21, 0.20)"
+              : "none",
+          };
 
   const containerStyles: React.CSSProperties = {
     position: "relative",
@@ -177,6 +182,7 @@ export default function IdealImage(
       ? { backgroundColor: background == "white" ? "white" : "rgb(31 31 28)" }
       : {}),
     marginBottom: "16px",
+    marginTop: "16px",
   };
 
   const img_component = force ? (
