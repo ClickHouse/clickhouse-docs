@@ -181,7 +181,7 @@ export default function IdealImage(
       <ControlledZoom
         isZoomed={isZoomed}
         onZoomChange={handleZoomChange}
-        classDialog={`${styles.customZoom} ${styles.customWhiteZoom}`}
+        classDialog={`${styles.customZoom} ${background == "white" ? styles.customWhiteZoom : ""}`}
       >
         {isLoaded && (
           <img

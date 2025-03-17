@@ -7,6 +7,7 @@ score: 10000
 ---
 
 import materializedViewDiagram from '@site/static/images/materialized-view/materialized-view-diagram.png';
+import Image from '@theme/IdealImage';
 
 # Incremental Materialized Views
 
@@ -18,10 +19,7 @@ The principal motivation for materialized views is that the results inserted int
 
 Materialized views in ClickHouse are updated in real time as data flows into the table they are based on, functioning more like continually updating indexes. This is in contrast to other databases where materialized views are typically static snapshots of a query that must be refreshed (similar to ClickHouse [refreshable materialized views](/sql-reference/statements/create/view#refreshable-materialized-view)).
 
-<img src={materializedViewDiagram}
-     class="image"
-     alt="Materialized view diagram"
-     style={{width: '500px'}} />
+<Image img={materializedViewDiagram} size="md" alt="Materialized view diagram"/>
 
 ## Example {#example}
 
