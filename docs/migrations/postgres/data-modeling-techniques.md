@@ -7,6 +7,7 @@ keywords: ['postgres', 'postgresql', 'migrate', 'migration', 'data modeling']
 
 import postgres_partitions from '@site/static/images/migrations/postgres-partitions.png';
 import postgres_projections from '@site/static/images/migrations/postgres-projections.png';
+import Image from '@theme/IdealImage';
 
 > This is **Part 3** of a guide on migrating from PostgreSQL to ClickHouse. This content can be considered introductory, with the aim of helping users deploy an initial functional system that adheres to ClickHouse best practices. It avoids complex topics and will not result in a fully optimized schema; rather, it provides a solid foundation for users to build a production system and base their learning.
 
@@ -18,11 +19,7 @@ Postgres users will be familiar with the concept of table partitioning for enhan
 
 In ClickHouse, partitioning is specified on a table when it is initially defined via the `PARTITION BY` clause. This clause can contain a SQL expression on any columns, the results of which will define which partition a row is sent to.
 
-<br />
-
-<img src={postgres_partitions} class="image" alt="PostgreSQL partitions to ClickHouse partitions" style={{width: '600px'}} />
-
-<br />
+<Image img={postgres_partitions} size="md" alt="PostgreSQL partitions to ClickHouse partitions"/>
 
 The data parts are logically associated with each partition on disk and can be queried in isolation. For the example below, we partition the `posts` table by year using the expression `toYear(CreationDate)`. As rows are inserted into ClickHouse, this expression will be evaluated against each row and routed to the resulting partition if it exists (if the row is the first for a year, the partition will be created).
 
@@ -210,11 +207,7 @@ WHERE UserId = 8592047
 
 Projections are an appealing feature for new users as they are automatically maintained as data is inserted. Furthermore, queries can just be sent to a single table where the projections are exploited where possible to speed up the response time.
 
-<br />
-
-<img src={postgres_projections} class="image" alt="PostgreSQL projections in ClickHouse" style={{width: '600px'}} />
-
-<br />
+<Image img={postgres_projections} size="md" alt="PostgreSQL projections in ClickHouse"/>
 
 This is in contrast to materialized views, where the user has to select the appropriate optimized target table or rewrite their query, depending on the filters. This places greater emphasis on user applications and increases client-side complexity.
 
