@@ -1,9 +1,9 @@
 ---
-title: Analysis functions- Time-series
-sidebar_label: Analysis functions
-description: Functions for analyzing time-series data in ClickHouse.
+title: 'Analysis functions - Time-series'
+sidebar_label: 'Analysis functions'
+description: 'Functions for analyzing time-series data in ClickHouse.'
 slug: /use-cases/time-series/analysis-functions
-keywords: [time-series]
+keywords: ['time-series']
 ---
 
 # Time-Series analysis functions
