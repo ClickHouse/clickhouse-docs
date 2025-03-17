@@ -10,6 +10,7 @@ import analyzer2 from '@site/static/images/guides/developer/analyzer2.png';
 import analyzer3 from '@site/static/images/guides/developer/analyzer3.png';
 import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
+import Image from '@theme/IdealImage';
 
 # Understanding Query Execution with the Analyzer
 
@@ -33,7 +34,7 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
 
 Now that we have some data in ClickHouse, we want to run some queries and understand their execution. The execution of a query is decomposed into many steps. Each step of the query execution can be analyzed and troubleshooted using the corresponding `EXPLAIN` query. These steps are summarized in the chart below:
 
-<img src={analyzer1} class="image" alt="Explain query steps" style={{width: '600px'}} />
+<Image img={analyzer1} alt="Explain query steps" size="md"/>
 
 Let’s look at each entity in action during query execution. We are going to take a few queries and then examine them using the `EXPLAIN` statement.
 
@@ -64,7 +65,7 @@ EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
 
 The output is an Abstract Syntax Tree that can be visualized as shown below:
 
-<img src={analyzer2} class="image" alt="AST output" style={{width: '600px'}} />
+<Image img={analyzer2} alt="AST output" size="md"/>
 
 Each node has corresponding children and the overall tree represents the overall structure of your query. This is a logical structure to help processing a query. From an end-user standpoint (unless interested in query execution), it is not super useful; this tool is mainly used by developers.
 
@@ -334,7 +335,7 @@ digraph
 
 You can then copy this output and paste it [here](https://dreampuf.github.io/GraphvizOnline) and that will generate the following graph:
 
-<img src={analyzer3} class="image" alt="Graph output" style={{width: '600px'}} />
+<Image img={analyzer3} alt="Graph output" size="md"/>
 
 A white rectangle corresponds to a pipeline node, the gray rectangle corresponds to the query plan steps, and the `x` followed by a number corresponds to the number of inputs/outputs that are being used. If you do not want to see them in a compact form, you can always add `compact=0`:
 
