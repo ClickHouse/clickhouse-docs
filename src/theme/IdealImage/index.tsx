@@ -182,6 +182,7 @@ export default function IdealImage(
       ? { backgroundColor: background == "white" ? "white" : "rgb(31 31 28)" }
       : {}),
     marginBottom: "16px",
+    marginTop: "16px",
   };
 
   const img_component = force ? (
