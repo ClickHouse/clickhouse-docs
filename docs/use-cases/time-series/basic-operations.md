@@ -91,7 +91,7 @@ You can also group by year, quarter, month, or day.
 
 ## Custom grouping intervals {#time-series-custom-grouping-intervals}
 
-We can even arbitrary intervals, e.g., 5 minutes using the [`toStartOfInterval()`](/docs/sql-reference/functions/date-time-functions#tostartofinterval) function. 
+We can even group by arbitrary intervals, e.g., 5 minutes using the [`toStartOfInterval()`](/docs/sql-reference/functions/date-time-functions#tostartofinterval) function. 
 
 Let’s say we want to group by 4-hour intervals.
 We can specify the grouping interval using the [`INTERVAL`](/docs/sql-reference/data-types/special-data-types/interval) clause:
