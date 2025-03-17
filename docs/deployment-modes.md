@@ -23,7 +23,7 @@ This guide explores the four main ways to deploy and use ClickHouse:
 
 Each deployment mode has its own strengths and ideal use cases, which we'll explore in detail below.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/EOXEW_-r10A?si=6IanDSJlRzN8f9Mo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/EOXEW_-r10A?si=6IanDSJlRzN8f9Mo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## ClickHouse Server {#clickhouse-server}
 
@@ -41,9 +41,7 @@ This deployment mode is the go-to choice for production environments where relia
 
 [ClickHouse Cloud](/cloud/overview) is a fully managed version of ClickHouse that removes the operational overhead of running your own deployment. While it maintains all the core capabilities of ClickHouse Server, it enhances the experience with additional features designed to streamline development and operations.
 
-<img src={chCloud} alt="ClickHouse Cloud" class="image" style={{width: '50%'}} />
-<br/>
-
+<Image img={chCloud} alt="ClickHouse Cloud" size="sm"/>
 
 A key advantage of ClickHouse Cloud is its integrated tooling. [ClickPipes](/cloud/get-started/cloud-quick-start#clickpipes) provides a robust data ingestion framework, allowing you to easily connect and stream data from various sources without managing complex ETL pipelines. The platform also offers a dedicated [querying API](/cloud/get-started/query-endpoints), making it significantly easier to build applications.
 
@@ -57,8 +55,7 @@ The managed nature of the service means you don't need to worry about updates, b
 
 [clickhouse-local](/operations/utilities/clickhouse-local) is a powerful command-line tool that provides the complete functionality of ClickHouse in a standalone executable. It's essentially the same database as ClickHouse Server, but packaged in a way that lets you harness all of ClickHouse's capabilities directly from the command line without running a server instance.
 
-<img src={chLocal} alt="clickhouse-local" class="image" style={{width: '50%'}} />
-<br/>
+<Image img={chLocal} alt="clickHouse-local" size="sm"/>
 
 This tool excels at ad-hoc data analysis, particularly when working with local files or data stored in cloud storage services. You can directly query files in various formats (CSV, JSON, Parquet, etc.) using ClickHouse's SQL dialect, making it an excellent choice for quick data exploration or one-off analysis tasks.
 
@@ -70,9 +67,7 @@ The combination of remote table functions and access to the local file system ma
 
 [chDB](/chdb) is ClickHouse embedded as an in-process database engine,, with Python being the primary implementation, though it's also available for Go, Rust, NodeJS, and Bun. This deployment option brings ClickHouse's powerful OLAP capabilities directly into your application's process, eliminating the need for a separate database installation.
 
-<img src={chDB} alt="chDB - Embedded ClickHouse" class="image" style={{width: '50%'}} />
-<br/>
-
+<Image img={chDB} alt="chDB - Embedded ClickHouse" size="sm"/>
 
 chDB provides seamless integration with your application's ecosystem. In Python, for example, it's optimized to work efficiently with common data science tools like Pandas and Arrow, minimizing data copying overhead through Python memoryview. This makes it particularly valuable for data scientists and analysts who want to leverage ClickHouse's query performance within their existing workflows.
 

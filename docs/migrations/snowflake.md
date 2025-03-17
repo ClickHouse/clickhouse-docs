@@ -8,6 +8,7 @@ title: 'Migrating from Snowflake to ClickHouse'
 ---
 
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';
+import Image from '@theme/IdealImage';
 
 # Migrating from Snowflake to ClickHouse
 
@@ -17,7 +18,7 @@ Migrating data between Snowflake and ClickHouse requires the use of an object st
 
 ## 1. Exporting data from Snowflake {#1-exporting-data-from-snowflake}
 
-<img src={migrate_snowflake_clickhouse} class="image" alt="Migrating from Snowflake to ClickHouse" style={{width: '600px', marginBottom: '20px', textAlign: 'left'}} />
+<Image img={migrate_snowflake_clickhouse} size="md" alt="Migrating from Snowflake to ClickHouse"/>
 
 Exporting data from Snowflake requires the use of an external stage, as shown in the diagram above.
 
