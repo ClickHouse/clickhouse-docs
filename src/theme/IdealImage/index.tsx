@@ -127,7 +127,7 @@ export default function IdealImage(
   const highestResSrc = img.src.images[img.src.images.length - 1];
 
   const [isZoomed, setIsZoomed] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
   const imageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
