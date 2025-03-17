@@ -92,6 +92,38 @@ Code blocks:
 - Have a title (optional) such as 'Query' or 'Response'
 - Use language `response` if it is for the result of a query.
 
+### Highlighting
+
+You can highlight lines in a code block using the following keywords:
+
+- `highlight-next-line` 
+- `highlight-start`
+- `highlight-end`
+
+These keywords should be added as comments in the codeblock with the appropriate
+escape symbol for the codeblock language. 
+
+For example, if the codeblock is SQL:
+
+```text
+SELECT UserID, count(UserID) AS Count
+-- highlight-next-line
+FROM mv_hits_URL_UserID
+WHERE URL = 'http://public_search'
+GROUP BY UserID
+ORDER BY Count DESC
+LIMIT 10;
+```
+
+If the codeblock is a response: 
+
+```text
+10 rows in set. Elapsed: 0.026 sec.
+# highlight-next-line
+Processed 335.87 thousand rows,
+13.54 MB (12.91 million rows/s., 520.38 MB/s.)
+```
+
 ### Associated markdown rule or CI check
 
 - [`MD040` enforces that codeblocks have a language specified](/scripts/.markdownlint-cli2.yaml)

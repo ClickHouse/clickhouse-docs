@@ -13,7 +13,7 @@ To avoid `Nullable` columns, consider setting a default value for that column.  
 CREATE TABLE default.sample
 (
     `x` Int8,
-    # highlight-next-line
+    -- highlight-next-line
     `y` Nullable(Int8)
 )
 ENGINE = MergeTree
@@ -25,7 +25,7 @@ use
 CREATE TABLE default.sample2
 (
     `x` Int8,
-    # highlight-next-line
+    -- highlight-next-line
     `y` Int8 DEFAULT 0
 )
 ENGINE = MergeTree
