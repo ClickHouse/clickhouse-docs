@@ -1,6 +1,7 @@
 ---
+description: 'Index page for the time-series use-case guide.'
 slug: /use-cases/time-series
-title: Time-Series
+title: 'Time-Series'
 pagination_prev: null
 pagination_next: null
 ---
