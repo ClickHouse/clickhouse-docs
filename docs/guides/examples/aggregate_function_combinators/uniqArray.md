@@ -49,8 +49,8 @@ In this example:
 
 ```response title="Response"
    ┌─unique_interests_total─┬─unique_interests_arrayJoin─┐
-1. │                     5 │                          5 │
-   └──────────────────────┴────────────────────────────┘
+1. │                      5 │                          5 │
+   └────────────────────────┴────────────────────────────┘
 ```
 
 ## See also {#see-also}

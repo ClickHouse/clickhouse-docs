@@ -54,7 +54,7 @@ but only considering rows where `in_stock = 1`. For example:
    ┌─product_id─┬─lowest_price_when_in_stock─┐
 1. │          1 │                      10.99 │
 2. │          2 │                      20.99 │
-   └───────────┴────────────────────────────┘
+   └────────────┴────────────────────────────┘
 ```
 
 ## See also {#see-also}

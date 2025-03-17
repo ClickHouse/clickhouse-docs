@@ -47,11 +47,7 @@ In this case, it will sum: 100.50 + 200.75 + 300.00 + 175.25.
    └───────────────────────┘
 ```
 
-## See also {#see-also}
-- [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
-
-### Calculate trading volume by price direction
+### Calculate trading volume by price direction {#calculate-trading-vol-orce-direction}
 
 In this example we'll use the `stock` table available at [ClickHouse playground](https://sql.clickhouse.com/)
 to calculate trading volume by price direction in the first half of the year 2002.
@@ -86,7 +82,7 @@ ORDER BY month;
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### Calculate trading volume by stock symbol
+### Calculate trading volume by stock symbol {#calculate-trading-volume}
 
 In this example we'll use the `stock` table available at [ClickHouse playground](https://sql.clickhouse.com/)
 to calculate trading volume by stock symbol in 2006 for three of the largest tech
@@ -123,3 +119,6 @@ ORDER BY month;
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
 ```
 
+## See also {#see-also}
+- [`sum`](/sql-reference/aggregate-functions/reference/sum)
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

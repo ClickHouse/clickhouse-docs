@@ -21,7 +21,7 @@ This is useful when you want to count unique elements in an array based on speci
 
 ## Example Usage {#example-usage}
 
-### Count unique products viewed by segment type and engagement level
+### Count unique products viewed by segment type and engagement level {#count-unique-products}
 
 In this example we'll use a table with user shopping session data to count the number of unique products viewed by users of a specific user segment and with an engagement metric of time spent in the session.
 
