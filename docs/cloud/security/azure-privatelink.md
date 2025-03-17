@@ -6,6 +6,7 @@ description: 'How to set up Azure Private Link'
 keywords: ['azure', 'private link', 'privatelink']
 ---
 
+import Image from '@theme/IdealImage';
 import azure_pe from '@site/static/images/cloud/security/azure-pe.png';
 import azure_privatelink_pe_create from '@site/static/images/cloud/security/azure-privatelink-pe-create.png';
 import azure_private_link_center from '@site/static/images/cloud/security/azure-private-link-center.png';
@@ -31,7 +32,7 @@ Azure Private Link can be enabled only on ClickHouse Cloud **Production** servic
 
 This guide shows how to use Azure Private Link to provide private connectivity via a virtual network between Azure (including customer-owned and Microsoft Partner services) and ClickHouse Cloud. Azure Private Link simplifies the network architecture and secures the connection between endpoints in Azure by eliminating data exposure to the public internet.
 
-<img src={azure_pe} alt="Overview of PrivateLink" />
+<Image img={azure_pe} size="lg" alt="Overview of PrivateLink" background='white' />
 
 Unlike AWS and GCP, Azure supports cross-region connectivity via Private Link. This enables you to establish connections between VNets located in different regions where you have ClickHouse services deployed.
 
@@ -56,7 +57,7 @@ Find complete Terraform example for Azure Private Link [here](https://github.com
 
 In the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink, then open the **Settings** menu. Click on the **Set up private endpoint** button. Copy the **Service name** which will be used for setting up Private Link.
 
-<img src={azure_privatelink_pe_create} alt="Private Endpoints" />
+<Image img={azure_privatelink_pe_create} size="lg" alt="Private Endpoints" border />
 
 ### Option 2: API {#option-2-api}
 
@@ -106,11 +107,11 @@ In this section, we're going to create a Private Endpoint in Azure. You can use 
 
 In the Azure Portal, open **Private Link Center → Private Endpoints**.
 
-<img src={azure_private_link_center} alt="Open Azure Private Center" />
+<Image img={azure_private_link_center} size="lg" alt="Open Azure Private Center" border />
 
 Open the Private Endpoint creation dialog by clicking on the **Create** button.
 
-<img src={azure_private_link_center} alt="Open Azure Private Center" />
+<Image img={azure_private_link_center} size="lg" alt="Open Azure Private Center" border />
 
 ---
 
@@ -122,7 +123,7 @@ In the following screen, specify the following options:
 
 After you have completed the above steps, click the **Next: Resource** button.
 
-<img src={azure_pe_create_basic} alt="Create Private Endpoint Basic" />
+<Image img={azure_pe_create_basic} size="md" alt="Create Private Endpoint Basic" border />
 
 ---
 
@@ -132,7 +133,7 @@ For the **Resource ID or alias**, use the `endpointServiceId` you have obtained 
 
 Click **Next: Virtual Network** button.
 
-<img src={azure_pe_resource} alt="Private Endpoint Resource Selection" />
+<Image img={azure_pe_resource} size="md" alt="Private Endpoint Resource Selection" border />
 
 ---
 
@@ -145,13 +146,13 @@ Optional:
 
 Click **Next: DNS** button.
 
-<img src={azure_pe_create_vnet} alt="Private Endpoint Virtual Network Selection" />
+<Image img={azure_pe_create_vnet} size="md" alt="Private Endpoint Virtual Network Selection" border />
 
 Click the **Next: Tags** button.
 
 ---
 
-<img src={azure_pe_create_dns} alt="Private Endpoint DNS Configuration" />
+<Image img={azure_pe_create_dns} size="md" alt="Private Endpoint DNS Configuration" border />
 
 Optionally, you can attach tags to your Private Endpoint.
 
@@ -159,17 +160,17 @@ Click the **Next: Review + create** button.
 
 ---
 
-<img src={azure_pe_create_tags} alt="Private Endpoint Tags" />
+<Image img={azure_pe_create_tags} size="md" alt="Private Endpoint Tags" border />
 
 Finally, click the **Create** button.
 
-<img src={azure_pe_create_review} alt="Private Endpoint Review" />
+<Image img={azure_pe_create_review} size="md" alt="Private Endpoint Review" border />
 
 The **Connection status** of the created Private Endpoint will be in **Pending** state. It will change to **Approved** state once you add this Private Endpoint to the service allow list.
 
 Open the network interface associated with Private Endpoint and copy the **Private IPv4 address**(10.0.0.4 in this example), you will need this information in the next steps.
 
-<img src={azure_pe_ip} alt="Private Endpoint IP Address" />
+<Image img={azure_pe_ip} size="lg" alt="Private Endpoint IP Address" border />
 
 ### Option 2: Using Terraform to create a Private Endpoint in Azure {#option-2-using-terraform-to-create-a-private-endpoint-in-azure}
 
@@ -196,11 +197,11 @@ In order to use Private Link, you need to add the Private Endpoint connection GU
 
 The Private Endpoint resource GUID is only exposed in the Azure Portal. Open the Private Endpoint created in previous step and click **JSON View**:
 
-<img src={azure_pe_view} alt="Private Endpoint View" />
+<Image img={azure_pe_view} size="lg" alt="Private Endpoint View" border />
 
 Under properties, find `resourceGuid` field and copy this value:
 
-<img src={azure_pe_resource_guid} alt="Private Endpoint Resource GUID" />
+<Image img={azure_pe_resource_guid} size="lg" alt="Private Endpoint Resource GUID" border />
 
 ## Setting up DNS for Private Link {#setting-up-dns-for-private-link}
 
@@ -235,7 +236,7 @@ Create a wildcard record and point to your Private Endpoint:
 4. For IP Address, type the IP address you see for Private Endpoint.
 5. Select **OK**.
 
-<img src={azure_pl_dns_wildcard} alt="Private Link DNS Wildcard Setup" />
+<Image img={azure_pl_dns_wildcard} size="lg" alt="Private Link DNS Wildcard Setup" border />
 
 **Option 2: Using Terraform**
 
@@ -294,7 +295,7 @@ To add an endpoint to organization, proceed to the [Add the Private Endpoint GUI
 
 To remove an endpoint, open **Organization details -> Private Endpoints** and click the delete button to remove the endpoint.
 
-<img src={azure_pe_remove_private_endpoint} alt="Remove Private Endpoint" />
+<Image img={azure_pe_remove_private_endpoint} size="lg" alt="Remove Private Endpoint" border />
 
 ### Option 2: API {#option-2-api-1}
 
@@ -366,7 +367,7 @@ In the ClickHouse Cloud console, open the service that you would like to connect
 If you want to allow access from an existing PrivateLink connection, use the existing endpoint drop-down menu.
 :::
 
-<img src={azure_privatelink_pe_filter} alt="Private Endpoints Filter" />
+<Image img={azure_privatelink_pe_filter} size="lg" alt="Private Endpoints Filter" border />
 
 ### Option 2: API {#option-2-api-2}
 
@@ -431,7 +432,7 @@ Private DNS hostname is only available from your Azure VNet. Do not try to resol
 
 In the ClickHouse Cloud console, navigate to **Settings**. Click on the **Set up private endpoint** button. In the opened flyout, copy the **DNS Name**.
 
-<img src={azure_privatelink_pe_dns} alt="Private Endpoint DNS Name" />
+<Image img={azure_privatelink_pe_dns} size="lg" alt="Private Endpoint DNS Name" border />
 
 #### Option 2: API {#option-2-api-3}
 

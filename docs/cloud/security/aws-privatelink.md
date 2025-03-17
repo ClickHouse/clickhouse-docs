@@ -4,6 +4,7 @@ description: 'This document describes how to connect to ClickHouse Cloud using A
 slug: /manage/security/aws-privatelink
 ---
 
+import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 import aws_private_link_pecreate from '@site/static/images/cloud/security/aws-privatelink-pe-create.png';
 import aws_private_link_endpoint_settings from '@site/static/images/cloud/security/aws-privatelink-endpoint-settings.png';
@@ -52,7 +53,7 @@ Follow these steps to connect your ClickHouse Cloud to your AWS PrivateLink.
 
 In the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink, then open the **Settings** menu. Click on the **Set up private endpoint** button. Copy the **Service name** for which will be used for setting up Private Link.
 
-<img src={aws_private_link_pecreate} alt="Private Endpoints" />
+<Image img={aws_private_link_pecreate} size="md" alt="Private Endpoints" border />
 
 #### Option 2: API {#option-2-api}
 
@@ -105,11 +106,11 @@ Open the the AWS console and Go to **VPC** → **Endpoints** → **Create endpoi
 
 Select **Other endpoint services** and use the `endpointServiceId` you got from the previous step. Once you're done, click **Verify service**:
 
-<img src={aws_private_link_endpoint_settings} alt="AWS PrivateLink Endpoint Settings" />
+<Image img={aws_private_link_endpoint_settings} size="md" alt="AWS PrivateLink Endpoint Settings" border/>
 
 Next, select your VPC and subnets:
 
-<img src={aws_private_link_select_vpc} alt="Select VPC and subnets" />
+<Image img={aws_private_link_select_vpc} size="md" alt="Select VPC and subnets" border />
 
 As an optional step, assign Security groups/Tags:
 
@@ -119,7 +120,7 @@ Make sure that ports `8443` and `9440` are allowed in the security group.
 
 After creating the VPC Endpoint, make a note of the `Endpoint ID` value; you'll need it for an upcoming step.
 
-<img src={aws_private_link_vpc_endpoint_id} alt="VPC Endpoint ID" />
+<Image img={aws_private_link_vpc_endpoint_id} size="md" alt="VPC Endpoint ID" border/>
 
 #### Option 2: AWS CloudFormation {#option-2-aws-cloudformation}
 
@@ -171,11 +172,11 @@ If you use own DNS resolver, create a `<region code>.vpce.aws.clickhouse.cloud` 
 
 Navigate to **VPC Endpoints**, right click the VPC Endpoint, then select **Modify private DNS name**:
 
-<img src={aws_private_link_endpoints_menu} alt="AWS PrivateLink Endpoints Menu" />
+<Image img={aws_private_link_endpoints_menu} size="sm" alt="AWS PrivateLink Endpoints Menu" border />
 
 On the page that opens, select **Enable private DNS names**:
 
-<img src={aws_private_link_modify_dnsname} alt="Modify DNS Names" />
+<Image img={aws_private_link_modify_dnsname} size="md" alt="Modify DNS Names" border/>
 
 #### Option 2: AWS CloudFormation {#option-2-aws-cloudformation-1}
 
@@ -205,7 +206,7 @@ To add an endpoint to organization, proceed to the [Add Endpoint ID to service(s
 
 To remove an endpoint, open **Organization details -> Private Endpoints** and click the delete button to remove the endpoint.
 
-<img src={pe_remove_private_endpoint} alt="Remove Private Endpoint" />
+<Image img={pe_remove_private_endpoint} size="md" alt="Remove Private Endpoint" border/>
 
 #### Option 2: API {#option-2-api-1}
 
@@ -279,7 +280,7 @@ In the ClickHouse Cloud console, open the service that you would like to connect
 If you want to allow access from an existing PrivateLink connection, use the existing endpoint drop-down menu.
 :::
 
-<img src={aws_private_link_pe_filters} alt="Private Endpoints Filter" />
+<Image img={aws_private_link_pe_filters} size="md" alt="Private Endpoints Filter" border/>
 
 ### Option 2: API {#option-2-api-2}
 
@@ -348,7 +349,7 @@ The private DNS hostname is only available from your AWS VPC. Do not try to reso
 
 In the ClickHouse Cloud console, navigate to **Settings**. Click on the **Set up private endpoint** button. In the opened flyout, copy the **DNS Name**.
 
-<img src={aws_private_link_ped_nsname} alt="Private Endpoint DNS Name" />
+<Image img={aws_private_link_ped_nsname} size="md" alt="Private Endpoint DNS Name" border />
 
 ##### Option 2: API {#option-2-api-3}
 
