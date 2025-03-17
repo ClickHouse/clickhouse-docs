@@ -1,9 +1,9 @@
 ---
-title: Basic operations - Time-series
-sidebar_label: Basic operations
-description: Basic time-series operations in ClickHouse.
+title: 'Basic operations - Time-series'
+sidebar_label: 'Basic operations'
+description: 'Basic time-series operations in ClickHouse.'
 slug: /use-cases/time-series/basic-operations
-keywords: [time-series]
+keywords: ['time-series']
 ---
 
 # Basic time-series operations
