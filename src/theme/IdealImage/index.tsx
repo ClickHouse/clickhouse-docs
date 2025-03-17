@@ -156,17 +156,23 @@ export default function IdealImage(
           height: "auto",
           maxWidth: "100%",
           marginBottom: "-4px",
+          boxShadow: border
+            ? "0px 1px 8px -1px rgba(21, 21, 21, 0.20)"
+            : "none",
         }
       : {
           width: `${MAX_SIZE_FILTERS[size]}px`,
           margin: "0 auto",
           display: "block",
+          boxShadow: border
+            ? "0px 1px 8px -1px rgba(21, 21, 21, 0.20)"
+            : "none",
         };
 
   const containerStyles: React.CSSProperties = {
     position: "relative",
     ...(background ? { backgroundColor: background } : {}),
-    boxShadow: border ? "0px 1px 8px -1px rgba(21, 21, 21, 0.20)" : "none",
+    marginBottom: "16px",
   };
 
   return (

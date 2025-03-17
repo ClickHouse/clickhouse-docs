@@ -333,11 +333,7 @@ ClickHouse is a <a href="https://clickhouse.com/docs/introduction/distinctive-fe
 
 <Image img={sparsePrimaryIndexes01} size="lg" alt="Sparse Primary Indices 01" background="white"/>
 
-<br/>
-
 `UserID.bin`, `URL.bin`, and `EventTime.bin` are the data files on disk where the values of the `UserID`, `URL`, and `EventTime` columns are stored.
-
-<br/>
 
 :::note
 - As the primary key defines the lexicographical order of the rows on disk, a table can only have one primary key.
@@ -359,7 +355,7 @@ Column values are not physically stored inside granules: granules are just a log
 The following diagram shows how the (column values of) 8.87 million rows of our table
 are organized into 1083 granules, as a result of the table's DDL statement containing the setting `index_granularity` (set to its default value of 8192).
 
-<Image img={sparsePrimaryIndexes02} size="lg" alt="Sparse Primary Indices 02"/>
+<Image img={sparsePrimaryIndexes02} size="lg" alt="Sparse Primary Indices 02" background="white"/>
 
 The first (based on physical order on disk) 8192 rows (their column values) logically belong to granule 0, then the next 8192 rows (their column values) belong to granule 1 and so on.
 
@@ -390,11 +386,11 @@ For example
 - the first index entry (‘mark 0’ in the diagram below) is storing the key column values of the first row of granule 0 from the diagram above,
 - the second index entry (‘mark 1’ in the diagram below) is storing the key column values of the first row of granule 1 from the diagram above, and so on.
 
-<img src={sparsePrimaryIndexes03a} class="image"/>
+<Image img={sparsePrimaryIndexes03a} size="lg" alt="Sparse Primary Indices 03a" background="white"/>
 
 In total the index has 1083 entries for our table with 8.87 million rows and 1083 granules:
 
-<img src={sparsePrimaryIndexes03b} class="image"/>
+<Image img={sparsePrimaryIndexes03b} size="lg" alt="Sparse Primary Indices 03b" background="white"/>
 
 :::note
 - For tables with [adaptive index granularity](/whats-new/changelog/2019.md/#experimental-features-1), there is also one "final" additional mark stored in the primary index that records the values of the primary key columns of the last table row, but because we disabled adaptive index granularity (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible), the index of our example table doesn't include this final mark.
