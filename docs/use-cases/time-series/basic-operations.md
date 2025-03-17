@@ -135,7 +135,7 @@ Either way, we get the following results:
 
 ## Filling empty groups {#time-series-filling-empty-groups}
 
-In a lot of cases we deal with sparse data with some absent intervals. This results in empty buckets. Let’s take the following example where we group data by 1-hour intervals. This will out the following stats with some hours missing values:
+In a lot of cases we deal with sparse data with some absent intervals. This results in empty buckets. Let’s take the following example where we group data by 1-hour intervals. This will output the following stats with some hours missing values:
 
 ```sql
 SELECT
