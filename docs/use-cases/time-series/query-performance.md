@@ -1,9 +1,9 @@
 ---
-title: Query performance - Time-series
-sidebar_label: Query performance
-description: Improving time-series query performance
+title: 'Query performance - Time-series'
+sidebar_label: 'Query performance'
+description: 'Improving time-series query performance'
 slug: /use-cases/time-series/query-performance
-keywords: [time-series]
+keywords: ['time-series']
 ---
 
 # Time-Series query performance
