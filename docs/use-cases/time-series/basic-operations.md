@@ -62,7 +62,7 @@ LIMIT 5;
 └────────────┴──────────┘
 ```
 
-We’ve used the `toDate()` function here, which converts the specified time to a date type. Alternatively, we can batch by an hour and filter on the specific date:
+We’ve used the [`toDate()`](/sql-reference/functions/type-conversion-functions#todate) function here, which converts the specified time to a date type. Alternatively, we can batch by an hour and filter on the specific date:
 
 
 ```sql
