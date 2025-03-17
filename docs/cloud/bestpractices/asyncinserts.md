@@ -5,10 +5,10 @@ title: 'Asynchronous Inserts (async_insert)'
 description: 'Describes how to use asynchronous inserts into ClickHouse as an alternative best practice to batching'
 ---
 
+import Image from '@theme/IdealImage';
 import asyncInsert01 from '@site/static/images/cloud/bestpractices/async-01.png';
 import asyncInsert02 from '@site/static/images/cloud/bestpractices/async-02.png';
 import asyncInsert03 from '@site/static/images/cloud/bestpractices/async-03.png';
-import Image from '@theme/IdealImage';
 
 Inserting data into ClickHouse in large batches is a best practice.  It saves compute cycles and disk I/O, and therefore it saves money.  If your use case allows you to batch your inserts external to ClickHouse, then that is one option.  If you would like ClickHouse to create the batches, then you can use the asynchronous INSERT mode described here.
 

@@ -16,6 +16,7 @@ import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/mar
 import gcp_marketplace_payg_5 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-5.png';
 import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-11.png';
 import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-6.png';
+import Image from '@theme/IdealImage';
 
 Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud.google.com/marketplace) via a PAYG (Pay-as-you-go) Public Offer.
 
@@ -30,11 +31,7 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 
 <br />
 
-<img src={gcp_marketplace_payg_1}
-    alt='GCP Marketplace home page'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={gcp_marketplace_payg_1} size="md" alt="GCP Marketplace home page" border/>
 
 <br />
 
@@ -42,11 +39,7 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 
 <br />
 
-<img src={gcp_marketplace_payg_2}
-    alt='ClickHouse Cloud in GCP Marketplace'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={gcp_marketplace_payg_2} size="md" alt="ClickHouse Cloud in GCP Marketplace" border/>
 
 <br />
 
@@ -59,11 +52,7 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 
 <br />
 
-<img src={gcp_marketplace_payg_3}
-    alt='Configure subscription in GCP Marketplace'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={gcp_marketplace_payg_3} size="sm" alt="Configure subscription in GCP Marketplace" border/>
 
 <br />
 
@@ -71,11 +60,7 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 
 <br />
 
-<img src={gcp_marketplace_payg_4}
-    alt='GCP Marketplace sign up modal'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={gcp_marketplace_payg_4} size="md" alt="GCP Marketplace sign up modal" border/>
 
 <br />
 
@@ -85,11 +70,7 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 
 <br />
 
-<img src={aws_marketplace_payg_6}
-    alt='ClickHouse Cloud sign in page'
-    class='image'
-    style={{width: '300px'}}
-/>
+<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud sign in page" border/>
 
 <br />
 
@@ -97,11 +78,7 @@ If you are a new ClickHouse Cloud user, click **Register** at the bottom of the 
 
 <br />
 
-<img src={aws_marketplace_payg_7}
-    alt='ClickHouse Cloud sign up page'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud sign up page" border/>
 
 <br />
 
@@ -109,19 +86,11 @@ Note that if you are a new user, you will also need to provide some basic inform
 
 <br />
 
-<img src={aws_marketplace_payg_8}
-    alt='ClickHouse Cloud sign up info form'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud sign up info form" border/>
 
 <br />
 
-<img src={aws_marketplace_payg_9}
-    alt='ClickHouse Cloud sign up info form 2'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud sign up info form 2" border/>
 
 <br />
 
@@ -133,19 +102,11 @@ If you are an existing ClickHouse Cloud user, simply log in using your credentia
 
 <br />
 
-<img src={gcp_marketplace_payg_5}
-    alt='ClickHouse Cloud sign in page'
-    class='image'
-    style={{width: '300px'}}
-/>
+<Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloud sign in page" border/>
 
 <br />
 
-<img src={aws_marketplace_payg_11}
-    alt='ClickHouse Cloud new services page'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud new services page" border/>
 
 <br />
 
@@ -154,11 +115,7 @@ If you are an existing ClickHouse Cloud user, simply log in using your credentia
 <br />
 <br />
 
-<img src={gcp_marketplace_payg_6}
-    alt='GCP Marketplace confirmation email'
-    class='image'
-    style={{width: '300px'}}
-/>
+<Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace confirmation email" border/>
 
 <br />
 

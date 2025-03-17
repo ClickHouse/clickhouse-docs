@@ -7,6 +7,7 @@ keywords: ['autoscaling', 'auto scaling', 'scaling', 'horizontal', 'vertical', '
 title: 'Automatic Scaling'
 ---
 
+import Image from '@theme/IdealImage';
 import auto_scaling from '@site/static/images/cloud/manage/AutoScaling.png';
 import scaling_patch_request from '@site/static/images/cloud/manage/scaling-patch-request.png';
 import scaling_patch_response from '@site/static/images/cloud/manage/scaling-patch-response.png';
@@ -57,12 +58,7 @@ The scaling of ClickHouse Cloud Scale or Enterprise services can be adjusted by 
 Single replica services cannot be scaled for all tiers.
 :::
 
-<div class="eighty-percent">
-<img src={auto_scaling}
-    alt="Scaling settings page"
-    class="image"
-/>
-</div>
+<Image img={auto_scaling} size="lg" alt="Scaling settings page" border/>
 
 Set the **Maximum memory** for your replicas at a higher value than the **Minimum memory**. The service will then scale as needed within those bounds. These settings are also available during the initial service creation flow. Each replica in your service will be allocated the same memory and CPU resources.
 
@@ -92,15 +88,11 @@ Services can scale horizontally to a maximum of 20 replicas. If you need additio
 
 To horizontally scale a cluster, issue a `PATCH` request via the API to adjust the number of replicas. The screenshots below show an API call to scale out a `3` replica cluster to `6` replicas, and the corresponding response.
 
-<img alt="Scaling PATCH request"
-    style={{width: '500px', marginLeft: 0}}
-    src={scaling_patch_request} />
+<Image img={scaling_patch_request} size="lg" alt="Scaling PATCH request" border/>
 
 *`PATCH` request to update `numReplicas`*
 
-<img alt="Scaling PATCH response"
-    style={{width: '450px', marginLeft: 0}}
-    src={scaling_patch_response} />
+<Image img={scaling_patch_response} size="md" alt="Scaling PATCH response" border/>
 
 *Response from `PATCH` request*
 
@@ -110,17 +102,13 @@ If you issue a new scaling request or multiple requests in succession, while one
 
 To scale a service horizontally from the UI, you can adjust the number of replicas for the service on the **Settings** page.
 
-<img alt="Scaling configuration settings"
-    style={{width: '500px', marginLeft: 0}}
-    src={scaling_configure} />
+<Image img={scaling_configure} size="md" alt="Scaling configuration settings" border/>
 
 *Service scaling settings from the ClickHouse Cloud console*
 
 Once the service has scaled, the metrics dashboard in the cloud console should show the correct allocation to the service. The screenshot below shows the cluster having scaled to total memory of `96 GiB`, which is `6` replicas, each with `16 GiB` memory allocation.
 
-<img alt="Scaling memory allocation"
-    style={{width: '500px', marginLeft: 0}}
-    src={scaling_memory_allocation} />
+<Image img={scaling_memory_allocation} size="md" alt="Scaling memory allocation" border />
 
 ## Automatic Idling {#automatic-idling}
 In the **Settings** page, you can also choose whether or not to allow automatic idling of your service when it is inactive as shown in the image above (i.e. when the service is not executing any user-submitted queries).  Automatic idling reduces the cost of your service, as you are not billed for compute resources when the service is paused.
