@@ -1,9 +1,9 @@
 ---
-title: Storage efficiency - Time-series
-sidebar_label: Storage efficiency
-description: Improving time-series storage efficiency
+title: 'Storage efficiency - Time-series'
+sidebar_label: 'Storage efficiency'
+description: 'Improving time-series storage efficiency'
 slug: /use-cases/time-series/storage-efficiency
-keywords: [time-series]
+keywords: ['time-series']
 ---
 
 # Time-Series storage efficiency
