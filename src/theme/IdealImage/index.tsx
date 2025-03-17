@@ -12,6 +12,7 @@ import ReactIdealImage, {
 import { translate } from "@docusaurus/Translate";
 import { Controlled as ControlledZoom } from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import styles from "./styles.module.css";
 
 import type { Props, SrcType } from "@theme/IdealImage";
 
@@ -98,9 +99,14 @@ function getMessage(icon: IconKey, state: State) {
 }
 
 export default function IdealImage(
-  props: Props & { size: keyof typeof MAX_SIZE_FILTERS; alt: string },
+  props: Props & {
+    size: keyof typeof MAX_SIZE_FILTERS;
+    alt: string;
+    background?: "white" | "black";
+    border?: boolean;
+  },
 ): ReactNode {
-  const { img, ...propsRest } = props;
+  const { img, size, alt, background, border, ...propsRest } = props;
 
   // In dev env just use regular img with original file
   if (typeof img === "string" || "default" in img) {
@@ -111,7 +117,7 @@ export default function IdealImage(
   }
 
   // Filter images based on selected size
-  const filteredSet = filterSrcSet(img.src.images, props.size);
+  const filteredSet = filterSrcSet(img.src.images, size);
   const currentImage =
     filteredSet.length > 0
       ? filteredSet[filteredSet.length - 1]
@@ -144,7 +150,7 @@ export default function IdealImage(
 
   // Apply conditional styles based on the `size`
   const imageStyles: React.CSSProperties =
-    props.size === "lg"
+    size === "lg"
       ? {
           width: "100%",
           height: "auto",
@@ -152,23 +158,29 @@ export default function IdealImage(
           marginBottom: "-4px",
         }
       : {
-          width: `${MAX_SIZE_FILTERS[props.size]}px`,
+          width: `${MAX_SIZE_FILTERS[size]}px`,
           margin: "0 auto",
           display: "block",
         };
 
+  const containerStyles: React.CSSProperties = {
+    position: "relative",
+    ...(background ? { backgroundColor: background } : {}),
+    boxShadow: border ? "0px 1px 8px -1px rgba(21, 21, 21, 0.20)" : "none",
+  };
+
   return (
-    <div style={{ position: "relative" }}>
+    <div style={containerStyles}>
       {/* Zoomed Image */}
       <ControlledZoom
         isZoomed={isZoomed}
         onZoomChange={handleZoomChange}
-        classDialog="custom-zoom"
+        classDialog={`${styles.customZoom} ${styles.customWhiteZoom}`}
       >
         {isLoaded && (
           <img
             src={highestResSrc.path}
-            alt={`${props.alt} - Zoomed`}
+            alt={`${alt} - Zoomed`}
             loading="lazy"
             width={highestResSrc.width}
             style={{
@@ -191,7 +203,7 @@ export default function IdealImage(
         <ReactIdealImage
           {...propsRest}
           height={currentImage.height ?? 100}
-          alt={props.alt}
+          alt={alt}
           width={currentImage.width ?? 100}
           placeholder={{ lqip: img.preSrc }}
           src={currentImage.path}
@@ -202,23 +214,6 @@ export default function IdealImage(
           style={imageStyles}
         />
       </div>
-
-      <style jsx global>{`
-        .custom-zoom [data-rmiz-modal-overlay],
-        .custom-zoom [data-rmiz-modal-img] {
-          transition-duration: 0.2s;
-          transition-timing-function: linear;
-        }
-        .custom-zoom [data-rmiz-modal-overlay="hidden"] {
-          background-color: rgb(0, 0, 0);
-        }
-        .custom-zoom [data-rmiz-modal-overlay="visible"] {
-          background-color: rgb(0, 0, 0);
-        }
-        .custom-zoom [data-rmiz-btn-unzoom] {
-          display: none;
-        }
-      `}</style>
     </div>
   );
 }

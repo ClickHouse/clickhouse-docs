@@ -30,6 +30,7 @@ import sparsePrimaryIndexes14a from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes14b from '@site/static/images/guides/best-practices/sparse-primary-indexes-14b.png';
 import sparsePrimaryIndexes15a from '@site/static/images/guides/best-practices/sparse-primary-indexes-15a.png';
 import sparsePrimaryIndexes15b from '@site/static/images/guides/best-practices/sparse-primary-indexes-15b.png';
+import Image from '@theme/IdealImage';
 
 # A Practical Introduction to Primary Indexes in ClickHouse
 
@@ -330,13 +331,13 @@ ClickHouse is a <a href="https://clickhouse.com/docs/introduction/distinctive-fe
   - then by `URL`,
   - and lastly by `EventTime`:
 
-<img src={sparsePrimaryIndexes01} class="image"/>
+<Image img={sparsePrimaryIndexes01} size="lg" alt="Sparse Primary Indices 01" background="white"/>
+
+<br/>
 
 `UserID.bin`, `URL.bin`, and `EventTime.bin` are the data files on disk where the values of the `UserID`, `URL`, and `EventTime` columns are stored.
 
 <br/>
-<br/>
-
 
 :::note
 - As the primary key defines the lexicographical order of the rows on disk, a table can only have one primary key.
@@ -358,7 +359,7 @@ Column values are not physically stored inside granules: granules are just a log
 The following diagram shows how the (column values of) 8.87 million rows of our table
 are organized into 1083 granules, as a result of the table's DDL statement containing the setting `index_granularity` (set to its default value of 8192).
 
-<img src={sparsePrimaryIndexes02} class="image"/>
+<Image img={sparsePrimaryIndexes02} size="lg" alt="Sparse Primary Indices 02"/>
 
 The first (based on physical order on disk) 8192 rows (their column values) logically belong to granule 0, then the next 8192 rows (their column values) belong to granule 1 and so on.
 
