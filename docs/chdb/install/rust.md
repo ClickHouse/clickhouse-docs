@@ -1,9 +1,9 @@
 ---
-title: Installing chDB for Rust
-sidebar_label: Rust
+title: 'Installing chDB for Rust'
+sidebar_label: 'Rust'
 slug: /chdb/install/rust
-description: How to install chDB for Rust
-keywords: [chdb, embedded, clickhouse-lite, bun, install]
+description: 'How to install chDB for Rust'
+keywords: ['chdb', 'embedded', 'clickhouse-lite', 'bun', 'install']
 ---
 
 ## Requirements {#requirements}

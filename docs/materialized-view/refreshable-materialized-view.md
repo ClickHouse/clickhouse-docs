@@ -1,8 +1,8 @@
 ---
 slug: /materialized-view/refreshable-materialized-view
-title: Refreshable Materialized View
-description: How to use materialized views to speed up queries
-keywords: [refreshable materialized view, refresh, materialized views, speed up queries, query optimization]
+title: 'Refreshable Materialized View'
+description: 'How to use materialized views to speed up queries'
+keywords: ['refreshable materialized view', 'refresh', 'materialized views', 'speed up queries', 'query optimization']
 ---
 
 import refreshableMaterializedViewDiagram from '@site/static/images/materialized-view/refreshable-materialized-view-diagram.png';

@@ -1,8 +1,8 @@
 ---
 slug: /data-modeling/denormalization
-title: Denormalizing Data
-description: How to use denormalization to improve query performance
-keywords: [data denormalization, denormalize, query optimization]
+title: 'Denormalizing Data'
+description: 'How to use denormalization to improve query performance'
+keywords: ['data denormalization', 'denormalize', 'query optimization']
 ---
 
 import denormalizationDiagram from '@site/static/images/data-modeling/denormalization-diagram.png';

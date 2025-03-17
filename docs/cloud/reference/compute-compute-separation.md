@@ -1,8 +1,8 @@
 ---
-title: Warehouses, or Compute-Compute Separation
+title: 'Warehouses, or Compute-Compute Separation'
 slug: /cloud/reference/compute-compute-separation
-keywords: [compute separation, cloud, architecture, compute-compute, warehouse, warehouses]
-description: Use ClickHouse Cloud with multiple, separated node groups
+keywords: ['compute separation', 'cloud', 'architecture', 'compute-compute', 'warehouse', 'warehouses']
+description: 'Use ClickHouse Cloud with multiple, separated node groups'
 ---
 
 # Warehouses, or Compute-Compute Separation (Private Preview)

@@ -1,7 +1,7 @@
 ---
-title: Java
-keywords: [clickhouse, java, jdbc, client, integrate, r2dbc]
-description: Options for connecting to ClickHouse from Java
+title: 'Java'
+keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
+description: 'Options for connecting to ClickHouse from Java'
 slug: /integrations/java
 ---
 

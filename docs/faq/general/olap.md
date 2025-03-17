@@ -1,8 +1,9 @@
 ---
 slug: /faq/general/olap
-title: What is OLAP?
+title: 'What is OLAP?'
 toc_hidden: true
 toc_priority: 100
+description: 'An explainer on what Online Analytical Processing is'
 ---
 
 # What Is OLAP? {#what-is-olap}

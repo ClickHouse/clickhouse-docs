@@ -1,10 +1,12 @@
 ---
-sidebar_label: Explo
+sidebar_label: 'Explo'
 sidebar_position: 131
 slug: /integrations/explo
-keywords: [clickhouse, Explo, connect, integrate, ui]
-description: Explo is an easy-to-use, open source UI tool for asking questions about your data.
+keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
+description: 'Explo is an easy-to-use, open source UI tool for asking questions about your data.'
+title: 'Connecting Explo to ClickHouse'
 ---
+
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import explo_01 from '@site/static/images/integrations/data-visualization/explo_01.png';
 import explo_02 from '@site/static/images/integrations/data-visualization/explo_02.png';

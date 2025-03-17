@@ -1,8 +1,10 @@
 ---
-sidebar_label: Using clickhouse-local
+sidebar_label: 'Using clickhouse-local'
 sidebar_position: 20
-keywords: [clickhouse, migrate, migration, migrating, data, etl, elt, clickhouse-local, clickhouse-client]
-slug: '/cloud/migration/clickhouse-local'
+keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'clickhouse-local', 'clickhouse-client']
+slug: /cloud/migration/clickhouse-local
+title: 'Migrating to ClickHouse using clickhouse-local'
+description: 'Guide showing how to migrate to ClickHouse using clickhouse-local'
 ---
 
 import Tabs from '@theme/Tabs';

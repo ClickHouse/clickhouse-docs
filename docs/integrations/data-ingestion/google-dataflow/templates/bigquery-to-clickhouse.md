@@ -1,8 +1,9 @@
 ---
-sidebar_label: BigQuery To ClickHouse
+sidebar_label: 'BigQuery To ClickHouse'
 sidebar_position: 1
 slug: /integrations/google-dataflow/templates/bigquery-to-clickhouse
-description: Users can ingest data from BigQuery into ClickHouse using Google Dataflow Template
+description: 'Users can ingest data from BigQuery into ClickHouse using Google Dataflow Template'
+title: 'Dataflow BigQuery to ClickHouse template'
 ---
 
 import TOCInline from '@theme/TOCInline';

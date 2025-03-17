@@ -1,8 +1,9 @@
 ---
 slug: /faq/integration/oracle-odbc
-title: What if I have a problem with encodings when using Oracle via ODBC?
+title: 'What if I have a problem with encodings when using Oracle via ODBC?'
 toc_hidden: true
 toc_priority: 20
+description: 'This page provides guidance on what to do if you have a problem with encodings when using Oracle via ODBC'
 ---
 
 # What If I Have a Problem with Encodings When Using Oracle Via ODBC? {#oracle-odbc-encodings}

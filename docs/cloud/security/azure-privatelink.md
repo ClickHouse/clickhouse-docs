@@ -1,9 +1,9 @@
 ---
-title: Azure Private Link
-sidebar_label: Azure Private Link
+title: 'Azure Private Link'
+sidebar_label: 'Azure Private Link'
 slug: /cloud/security/azure-privatelink
-description: How to set up Azure Private Link
-keywords: [azure, private link, privatelink]
+description: 'How to set up Azure Private Link'
+keywords: ['azure', 'private link', 'privatelink']
 ---
 
 import azure_pe from '@site/static/images/cloud/security/azure-pe.png';

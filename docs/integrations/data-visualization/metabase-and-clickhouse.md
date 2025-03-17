@@ -1,10 +1,12 @@
 ---
-sidebar_label: Metabase
+sidebar_label: 'Metabase'
 sidebar_position: 131
 slug: /integrations/metabase
-keywords: [ClickHouse, Metabase, connect, integrate, ui]
-description: Metabase is an easy-to-use, open source UI tool for asking questions about your data.
+keywords: ['ClickHouse', 'Metabase', 'connect', 'integrate', 'ui']
+description: 'Metabase is an easy-to-use, open source UI tool for asking questions about your data.'
+title: 'Connecting Metabase to ClickHouse'
 ---
+
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import metabase_01 from '@site/static/images/integrations/data-visualization/metabase_01.png';
 import metabase_02 from '@site/static/images/integrations/data-visualization/metabase_02.png';

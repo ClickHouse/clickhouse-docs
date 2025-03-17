@@ -1,9 +1,10 @@
 ---
 slug: /guides/developer/alternative-query-languages
-sidebar_label: Alternative Query Languages
-title: Alternative Query Languages
-description: Use alternative query languages in ClickHouse
+sidebar_label: 'Alternative Query Languages'
+title: 'Alternative Query Languages'
+description: 'Use alternative query languages in ClickHouse'
 ---
+
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 Besides standard SQL, ClickHouse supports various alternative query languages for querying data.

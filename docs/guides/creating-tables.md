@@ -1,6 +1,9 @@
 ---
 sidebar_position: 1
-sidebar_label: Creating Tables
+sidebar_label: 'Creating Tables'
+title: 'Creating Tables in ClickHouse'
+slug: /guides/creating-tables
+description: 'Learn about Creating Tables in ClickHouse'
 ---
 
 # Creating Tables in ClickHouse

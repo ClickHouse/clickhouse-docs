@@ -1,6 +1,9 @@
 ---
-sidebar_label: SQL Console
+sidebar_label: 'SQL Console'
 sidebar_position: 1
+title: 'SQL Console'
+slug: /integrations/sql-clients/sql-console
+description: 'Learn about SQL Console'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

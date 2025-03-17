@@ -1,7 +1,7 @@
 ---
-title: FAQ
+title: 'FAQ'
 slug: /about-us/faq
-description: Landing page
+description: 'Landing page'
 ---
 
 | FAQ                                                                                                                           |

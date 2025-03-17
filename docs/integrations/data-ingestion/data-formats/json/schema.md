@@ -1,8 +1,8 @@
 ---
-title: Designing JSON schema
+title: 'Designing JSON schema'
 slug: /integrations/data-formats/json/schema
-description: How to optimally design JSON schema
-keywords: [json, clickhouse, inserting, loading, formats, schema]
+description: 'How to optimally design JSON schema'
+keywords: ['json', 'clickhouse', 'inserting', 'loading', 'formats', 'schema']
 ---
 
 # Designing your schema

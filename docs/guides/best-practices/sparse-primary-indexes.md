@@ -1,7 +1,9 @@
 ---
-sidebar_label: Primary Indexes
+sidebar_label: 'Primary Indexes'
 sidebar_position: 1
-description: In this guide we are going to do a deep dive into ClickHouse indexing.
+description: 'In this guide we are going to do a deep dive into ClickHouse indexing.'
+title: 'A Practical Introduction to Primary Indexes in ClickHouse'
+slug: /guides/best-practices/sparse-primary-indexes
 ---
 
 import sparsePrimaryIndexes01 from '@site/static/images/guides/best-practices/sparse-primary-indexes-01.png';

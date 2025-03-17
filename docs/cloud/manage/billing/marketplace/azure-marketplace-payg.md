@@ -1,8 +1,8 @@
 ---
 slug: /cloud/billing/marketplace/azure-marketplace-payg
-title: Azure Marketplace PAYG
-description: Subscribe to ClickHouse Cloud through the Azure Marketplace (PAYG).
-keywords: [azure, marketplace, billing, PAYG]
+title: 'Azure Marketplace PAYG'
+description: 'Subscribe to ClickHouse Cloud through the Azure Marketplace (PAYG).'
+keywords: ['azure', 'marketplace', 'billing', 'PAYG']
 ---
 
 import azure_marketplace_payg_1 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-1.png';

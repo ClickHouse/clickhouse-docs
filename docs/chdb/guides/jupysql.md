@@ -1,9 +1,9 @@
 ---
-title: JupySQL and chDB
-sidebar_label: JupySQL
+title: 'JupySQL and chDB'
+sidebar_label: 'JupySQL'
 slug: /chdb/guides/jupysql
-description: How to install chDB for Bun
-keywords: [chdb, JupySQL]
+description: 'How to install chDB for Bun'
+keywords: ['chdb', 'JupySQL']
 ---
 
 import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png';

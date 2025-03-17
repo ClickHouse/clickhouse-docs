@@ -1,8 +1,8 @@
 ---
 slug: /merges
-title: Part merges
-description: What are part merges in ClickHouse
-keywords: [merges]
+title: 'Part merges'
+description: 'What are part merges in ClickHouse'
+keywords: ['merges']
 ---
 
 import merges_01 from '@site/static/images/managing-data/core-concepts/merges_01.png';

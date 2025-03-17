@@ -1,8 +1,9 @@
 ---
 slug: /integrations/postgresql
-sidebar_label: PostgreSQL
-title: PostgreSQL
+sidebar_label: 'PostgreSQL'
+title: 'PostgreSQL'
 hide_title: false
+description: 'Page describing how to integrate Postgres with ClickHouse'
 ---
 
 import PostgreSQL from '@site/docs/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md';

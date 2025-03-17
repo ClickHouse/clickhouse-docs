@@ -1,7 +1,7 @@
 ---
-title: Concepts
+title: 'Concepts'
 slug: /concepts
-description: Landing page for concepts
+description: 'Landing page for concepts'
 pagination_next: null
 pagination_prev: null
 ---

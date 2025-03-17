@@ -1,7 +1,8 @@
 ---
 slug: /integrations/dbeaver
-sidebar_label: DBeaver
-description: DBeaver is a multi-platform database tool.
+sidebar_label: 'DBeaver'
+description: 'DBeaver is a multi-platform database tool.'
+title: 'Connect DBeaver to ClickHouse'
 ---
 
 import dbeaver_add_database from '@site/static/images/integrations/sql-clients/dbeaver-add-database.png';

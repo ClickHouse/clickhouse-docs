@@ -1,8 +1,8 @@
 ---
 slug: /migrations/postgresql/data-modeling-techniques
-title: Data modeling techniques
-description: Data modeling for migrating from PostgreSQL to ClickHouse
-keywords: [postgres, postgresql, migrate, migration, data modeling]
+title: 'Data modeling techniques'
+description: 'Data modeling for migrating from PostgreSQL to ClickHouse'
+keywords: ['postgres', 'postgresql', 'migrate', 'migration', 'data modeling']
 ---
 
 import postgres_partitions from '@site/static/images/migrations/postgres-partitions.png';

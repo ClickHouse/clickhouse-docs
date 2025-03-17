@@ -1,5 +1,7 @@
 ---
-title: "Troubleshooting"
+title: 'Troubleshooting'
+description: 'Installation troubleshooting guide'
+slug: /guides/troubleshooting
 ---
 
 ## Installation {#installation}
