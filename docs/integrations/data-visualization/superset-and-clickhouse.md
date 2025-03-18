@@ -8,6 +8,7 @@ title: 'Connect Superset to ClickHouse'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import Image from '@theme/IdealImage';
 import superset_01 from '@site/static/images/integrations/data-visualization/superset_01.png';
 import superset_02 from '@site/static/images/integrations/data-visualization/superset_02.png';
 import superset_03 from '@site/static/images/integrations/data-visualization/superset_03.png';
@@ -28,7 +29,7 @@ import superset_12 from '@site/static/images/integrations/data-visualization/sup
 
 In this guide you will build a dashboard in Superset with data from a ClickHouse database. The dashboard will look like this:
 
-<img alt="New Dashboard" src={superset_12}/>
+<Image size="md" img={superset_12} alt="Superset dashboard showing UK property prices with multiple visualizations including pie charts and tables" border />
 <br/>
 
 :::tip Add some data
@@ -52,12 +53,12 @@ If you do not have a dataset to work with you can add one of the examples. This 
 
 1. Within Superset, select **Data** from the top menu and then **Databases** from the drop-down menu. Add a new database by clicking the **+ Database** button:
 
-<img alt="Add a new database" src={superset_01}/>
+<Image size="lg" img={superset_01} alt="Superset interface showing the Database menu with + Database button highlighted" border />
 <br/>
 
 2. In the first step, select **ClickHouse Connect** as the type of database:
 
-<img alt="Select Clickhouse" src={superset_02}/>
+<Image size="sm" img={superset_02} alt="Superset database connection wizard showing ClickHouse Connect option selected" border />
 <br/>
 
 3. In the second step:
@@ -65,7 +66,7 @@ If you do not have a dataset to work with you can add one of the examples. This 
   - Enter the connection information that you collected earlier
   - Specify the **DISPLAY NAME**: this can be any name you prefer. If you will be connecting to multiple ClickHouse databases then make the name more descriptive.
 
-<img alt="Test the connection" src={superset_03}/>
+<Image size="sm" img={superset_03} alt="Superset connection configuration form showing ClickHouse connection parameters" border />
 <br/>
 
 4. Click the **CONNECT** and then **FINISH** buttons to complete the setup wizard, and you should see your database in the list of databases.
@@ -76,7 +77,7 @@ If you do not have a dataset to work with you can add one of the examples. This 
 
 2. Click the button for adding a dataset. Select your new database as the datasource and you should see the tables defined in your database:
 
-<img alt="New dataset" src={superset_04}/>
+<Image size="sm" img={superset_04} alt="Superset dataset creation dialog showing available tables from ClickHouse database" border />
 <br/>
 
 3. Click the **ADD** button at the bottom of the dialog window and your table appears in the list of datasets. You are ready to build a dashboard and analyze your ClickHouse data!
@@ -88,33 +89,33 @@ If you are familiar with Superset, then you will feel right at home with this ne
 
 1. You start with a dashboard. From the top menu in Superset, select **Dashboards**. Click the button in the upper-right to add a new dashboard. The following dashboard is named **UK property prices**:
 
-<img alt="New dashboard" src={superset_05}/>
+<Image size="md" img={superset_05} alt="Empty Superset dashboard named UK property prices ready for charts to be added" border />
 <br/>
 
 2. To create a new chart, select **Charts** from the top menu and click the button to add a new chart. You will be shown a lot of options. The following example shows a **Pie Chart** chart using the **uk_price_paid** dataset from the **CHOOSE A DATASET** drop-down:
 
-<img alt="New chart" src={superset_06}/>
+<Image size="md" img={superset_06} alt="Superset chart creation interface with Pie Chart visualization type selected" border />
 <br/>
 
 3. Superset pie charts need a **Dimension** and a **Metric**, the rest of the settings are optional. You can pick your own fields for the dimension and metric, this example uses the ClickHouse field `district` as the dimension and `AVG(price)` as the metric.
 
-<img alt="The SUM metric" src={superset_08}/>
-<img alt="The SUM metric" src={superset_09}/>
+<Image size="md" img={superset_08} alt="Dimension configuration showing district field selected for pie chart" border />
+<Image size="md" img={superset_09} alt="Metric configuration showing AVG(price) aggregate function for pie chart" border />
 <br/>
 
 5. If you prefer doughnut charts over pie, then you can set that and other options  under **CUSTOMIZE**:
 
-<img alt="Add Chart to Dashboard" src={superset_10}/>
+<Image size="sm" img={superset_10} alt="Customize panel showing doughnut chart option and other pie chart configuration settings" border />
 <br/>
 
 6. Click the **SAVE** button to save the chart, then select **UK property prices** under the **ADD TO DASHBOARD** drop-down, then **SAVE & GO TO DASHBOARD** saves the chart and adds it to the dashboard:
 
-<img alt="Add Chart to Dashboard" src={superset_11}/>
+<Image size="md" img={superset_11} alt="Save chart dialog with dashboard selection dropdown and Save & Go to Dashboard button" border />
 <br/>
 
 7. That's it. Building dashboards in Superset based on data in ClickHouse opens up a whole world of blazing fast data analytics!
 
-<img alt="New Dashboard" src={superset_12}/>
+<Image size="md" img={superset_12} alt="Completed Superset dashboard with multiple visualizations of UK property price data from ClickHouse" border />
 <br/>
 
 ## Related Content {#related-content}
