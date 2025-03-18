@@ -4,7 +4,8 @@ import katex from "rehype-katex";
 import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
 const { customParseFrontMatter } = require('./plugins/frontmatter-validation/customParseFrontMatter');
-
+const checkFloatingPages = require('./plugins/checkFloatingPages');
+const frontmatterValidator = require('./plugins/frontmatter-validation/frontmatterValidatorPlugin');
 // Helper function to skip over index.md files.
 function skipIndex(items) {
   return items.filter(({ type, id }) => {
@@ -317,13 +318,25 @@ const config = {
       },
     ],
     chHeader,
-    './plugins/frontmatter-validation/frontmatterValidatorPlugin'
+    [
+      frontmatterValidator,
+      {
+        failBuild: true,
+      },
+    ],
+    [
+        checkFloatingPages,
+        {
+          failBuild: true,
+        },
+    ]
   ],
   customFields: {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page
     galaxyApiEndpoint:
       process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || "http://localhost:3000",
   },
+
 };
 
 module.exports = config;
