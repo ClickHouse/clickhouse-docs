@@ -357,7 +357,7 @@ ORG_ID=<Your ClickHouse organization ID>
 INSTANCE_ID=<Your ClickHouse service name>
 ```
 
-You can retrive `INSTANCE_ID` from [step](#option-2-api).
+You can retrieve `INSTANCE_ID` from [step](#option-2-api).
 
 ```bash
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
