@@ -51,7 +51,7 @@ Additional charges may be applied to inter-region traffic. Please check latest A
 ClickHouse attempts to group your services to reuse the same published [Private Link service](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) within the Azure region. However, this grouping is not guaranteed, especially if you spread your services across multiple ClickHouse organizations.
 If you already have Private Link configured for other services in your ClickHouse organization, you can often skip most of the steps because of that grouping and proceed directly to the final step: [Add the Private Endpoint GUID to your service(s) allow list](#add-private-endpoint-guid-to-services-allow-list).
 
-Find Terraform examples [here](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/).
+Find Terraform examples at the ClickHouse [Terraform Provider repository](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/).
 
 ## Obtain Azure connection alias for Private Link {#obtain-azure-connection-alias-for-private-link}
 
