@@ -6,6 +6,8 @@ import fixLinks from "./src/hooks/fixLinks.js";
 const { customParseFrontMatter } = require('./plugins/frontmatter-validation/customParseFrontMatter');
 const checkFloatingPages = require('./plugins/checkFloatingPages');
 const frontmatterValidator = require('./plugins/frontmatter-validation/frontmatterValidatorPlugin');
+const path = require('path');
+
 // Helper function to skip over index.md files.
 function skipIndex(items) {
   return items.filter(({ type, id }) => {
@@ -328,6 +330,7 @@ const config = {
         checkFloatingPages,
         {
           failBuild: true,
+          exceptionsFile: path.resolve(__dirname, 'plugins/floating-pages-exceptions.txt')
         },
     ]
   ],
