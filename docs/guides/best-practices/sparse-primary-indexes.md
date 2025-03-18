@@ -147,7 +147,7 @@ The response is:
 └────────────────────────────────┴───────┘
 
 10 rows in set. Elapsed: 0.022 sec.
-// highlight-next-line
+# highlight-next-line
 Processed 8.87 million rows,
 70.45 MB (398.53 million rows/s., 3.17 GB/s.)
 ```
@@ -184,7 +184,7 @@ CREATE TABLE hits_UserID_URL
     `EventTime` DateTime
 )
 ENGINE = MergeTree
-// highlight-next-line
+-- highlight-next-line
 PRIMARY KEY (UserID, URL)
 ORDER BY (UserID, URL, EventTime)
 SETTINGS index_granularity = 8192, index_granularity_bytes = 0, compress_primary_key = 0;
@@ -519,7 +519,7 @@ The response is:
 └────────────────────────────────┴───────┘
 
 10 rows in set. Elapsed: 0.005 sec.
-// highlight-next-line
+# highlight-next-line
 Processed 8.19 thousand rows,
 740.18 KB (1.53 million rows/s., 138.59 MB/s.)
 ```
@@ -530,13 +530,13 @@ The output for the ClickHouse client is now showing that instead of doing a full
 If <a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-logger" target="_blank">trace logging</a> is enabled then the ClickHouse server log file shows that ClickHouse was running a <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">binary search</a> over the 1083 UserID index marks, in order to identify granules that possibly can contain rows with a UserID column value of `749927693`. This requires 19 steps with an average time complexity of `O(log2 n)`:
 ```response
 ...Executor): Key condition: (column 0 in [749927693, 749927693])
-// highlight-next-line
+# highlight-next-line
 ...Executor): Running binary search on index range for part all_1_9_2 (1083 marks)
 ...Executor): Found (LEFT) boundary mark: 176
 ...Executor): Found (RIGHT) boundary mark: 177
 ...Executor): Found continuous range in 19 steps
 ...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-// highlight-next-line
+# highlight-next-line
               1/1083 marks by primary key, 1 marks to read from 1 ranges
 ...Reading ...approx. 8192 rows starting from 1441792
 ```
@@ -584,7 +584,7 @@ The response looks like:
 │                       UserID                                                          │
 │                     Condition: (UserID in [749927693, 749927693])                     │
 │                     Parts: 1/1                                                        │
-// highlight-next-line
+# highlight-next-line
 │                     Granules: 1/1083                                                  │
 └───────────────────────────────────────────────────────────────────────────────────────┘
 
@@ -753,7 +753,7 @@ The response is: <a name="query-on-url-slow"></a>
 └────────────┴───────┘
 
 10 rows in set. Elapsed: 0.086 sec.
-// highlight-next-line
+# highlight-next-line
 Processed 8.81 million rows,
 799.69 MB (102.11 million rows/s., 9.27 GB/s.)
 ```
@@ -764,11 +764,11 @@ If [trace_logging](/operations/server-configuration-parameters/settings#logger) 
 ```response
 ...Executor): Key condition: (column 1 in ['http://public_search',
                                            'http://public_search'])
-// highlight-next-line
+# highlight-next-line
 ...Executor): Used generic exclusion search over index for part all_1_9_2
               with 1537 steps
 ...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-// highlight-next-line
+# highlight-next-line
               1076/1083 marks by primary key, 1076 marks to read from 5 ranges
 ...Executor): Reading approx. 8814592 rows with 10 streams
 ```
@@ -917,7 +917,7 @@ CREATE TABLE hits_URL_UserID
     `EventTime` DateTime
 )
 ENGINE = MergeTree
-// highlight-next-line
+-- highlight-next-line
 PRIMARY KEY (URL, UserID)
 ORDER BY (URL, UserID, EventTime)
 SETTINGS index_granularity = 8192, index_granularity_bytes = 0, compress_primary_key = 0;
@@ -954,7 +954,7 @@ This is the resulting primary key:
 That can now be used to significantly speed up the execution of our example query filtering on the URL column in order to calculate the top 10 users that most frequently clicked on the URL "http://public_search":
 ```sql
 SELECT UserID, count(UserID) AS Count
-// highlight-next-line
+-- highlight-next-line
 FROM hits_URL_UserID
 WHERE URL = 'http://public_search'
 GROUP BY UserID
@@ -980,7 +980,7 @@ The response is:
 └────────────┴───────┘
 
 10 rows in set. Elapsed: 0.017 sec.
-// highlight-next-line
+# highlight-next-line
 Processed 319.49 thousand rows,
 11.38 MB (18.41 million rows/s., 655.75 MB/s.)
 ```
@@ -994,13 +994,13 @@ The corresponding trace log in the ClickHouse server log file confirms that:
 ```response
 ...Executor): Key condition: (column 0 in ['http://public_search',
                                            'http://public_search'])
-// highlight-next-line
+# highlight-next-line
 ...Executor): Running binary search on index range for part all_1_9_2 (1083 marks)
 ...Executor): Found (LEFT) boundary mark: 644
 ...Executor): Found (RIGHT) boundary mark: 683
 ...Executor): Found continuous range in 19 steps
 ...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-// highlight-next-line
+# highlight-next-line
               39/1083 marks by primary key, 39 marks to read from 1 ranges
 ...Executor): Reading approx. 319488 rows with 2 streams
 ```
@@ -1045,7 +1045,7 @@ The response is:
 └────────────────────────────────┴───────┘
 
 10 rows in set. Elapsed: 0.024 sec.
-// highlight-next-line
+# highlight-next-line
 Processed 8.02 million rows,
 73.04 MB (340.26 million rows/s., 3.10 GB/s.)
 ```
@@ -1053,11 +1053,11 @@ Processed 8.02 million rows,
 Server Log:
 ```response
 ...Executor): Key condition: (column 1 in [749927693, 749927693])
-// highlight-next-line
+# highlight-next-line
 ...Executor): Used generic exclusion search over index for part all_1_9_2
               with 1453 steps
 ...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-// highlight-next-line
+# highlight-next-line
               980/1083 marks by primary key, 980 marks to read from 23 ranges
 ...Executor): Reading approx. 8028160 rows with 10 streams
 ```
@@ -1108,7 +1108,7 @@ ClickHouse is storing the [column data files](#data-is-stored-on-disk-ordered-by
 The implicitly created table (and its primary index) backing the materialized view can now be used to significantly speed up the execution of our example query filtering on the URL column:
 ```sql
 SELECT UserID, count(UserID) AS Count
-// highlight-next-line
+-- highlight-next-line
 FROM mv_hits_URL_UserID
 WHERE URL = 'http://public_search'
 GROUP BY UserID
@@ -1133,7 +1133,7 @@ The response is:
 └────────────┴───────┘
 
 10 rows in set. Elapsed: 0.026 sec.
-// highlight-next-line
+# highlight-next-line
 Processed 335.87 thousand rows,
 13.54 MB (12.91 million rows/s., 520.38 MB/s.)
 ```
@@ -1145,11 +1145,11 @@ The corresponding trace log in the ClickHouse server log file confirms that Clic
 ```response
 ...Executor): Key condition: (column 0 in ['http://public_search',
                                            'http://public_search'])
-// highlight-next-line
+# highlight-next-line
 ...Executor): Running binary search on index range ...
 ...
 ...Executor): Selected 4/4 parts by partition key, 4 parts by primary key,
-// highlight-next-line
+# highlight-next-line
               41/1083 marks by primary key, 41 marks to read from 4 ranges
 ...Executor): Reading approx. 335872 rows with 4 streams
 ```
@@ -1193,7 +1193,7 @@ ClickHouse is storing the [column data files](#data-is-stored-on-disk-ordered-by
 The hidden table (and its primary index) created by the projection can now be (implicitly) used to significantly speed up the execution of our example query filtering on the URL column. Note that the query is syntactically targeting the source table of the projection.
 ```sql
 SELECT UserID, count(UserID) AS Count
-// highlight-next-line
+-- highlight-next-line
 FROM hits_UserID_URL
 WHERE URL = 'http://public_search'
 GROUP BY UserID
@@ -1218,7 +1218,7 @@ The response is:
 └────────────┴───────┘
 
 10 rows in set. Elapsed: 0.029 sec.
-// highlight-next-line
+# highlight-next-line
 Processed 319.49 thousand rows, 1
 1.38 MB (11.05 million rows/s., 393.58 MB/s.)
 ```
@@ -1231,14 +1231,14 @@ The corresponding trace log in the ClickHouse server log file confirms that Clic
 ```response
 ...Executor): Key condition: (column 0 in ['http://public_search',
                                            'http://public_search'])
-// highlight-next-line
+# highlight-next-line
 ...Executor): Running binary search on index range for part prj_url_userid (1083 marks)
 ...Executor): ...
-// highlight-next-line
+# highlight-next-line
 ...Executor): Choose complete Normal projection prj_url_userid
 ...Executor): projection required columns: URL, UserID
 ...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-// highlight-next-line
+# highlight-next-line
               39/1083 marks by primary key, 39 marks to read from 1 ranges
 ...Executor): Reading approx. 319488 rows with 2 streams
 ```
@@ -1317,7 +1317,7 @@ CREATE TABLE hits_URL_UserID_IsRobot
     `IsRobot` UInt8
 )
 ENGINE = MergeTree
-// highlight-next-line
+-- highlight-next-line
 PRIMARY KEY (URL, UserID, IsRobot);
 ```
 
@@ -1345,7 +1345,7 @@ CREATE TABLE hits_IsRobot_UserID_URL
     `IsRobot` UInt8
 )
 ENGINE = MergeTree
-// highlight-next-line
+-- highlight-next-line
 PRIMARY KEY (IsRobot, UserID, URL);
 ```
 And populate it with the same 8.87 million rows that we used to populate the previous table:
@@ -1385,7 +1385,7 @@ The response is:
 └─────────┘
 
 1 row in set. Elapsed: 0.026 sec.
-// highlight-next-line
+# highlight-next-line
 Processed 7.92 million rows,
 31.67 MB (306.90 million rows/s., 1.23 GB/s.)
 ```
@@ -1403,7 +1403,7 @@ The response is:
 └─────────┘
 
 1 row in set. Elapsed: 0.003 sec.
-// highlight-next-line
+# highlight-next-line
 Processed 20.32 thousand rows,
 81.28 KB (6.61 million rows/s., 26.44 MB/s.)
 ```

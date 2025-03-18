@@ -51,7 +51,7 @@ function BlogListPageContent(props) {
       <ButtonGroup
         onClick={function Nav(value) {
           if (typeof window !== 'undefined') {
-            value === 'recent' ? history.push(`/docs/${currentLocale}/knowledgebase`) : history.push(`/docs/${currentLocale}/knowledgebase/tags`)
+            value === 'recent' ? history.push(`/docs/knowledgebase`) : history.push(`/docs/knowledgebase/tags`)
           }
         }}
         options={[
