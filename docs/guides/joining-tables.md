@@ -5,12 +5,12 @@ keywords: ['joins', 'join tables']
 slug: /guides/joining-tables
 ---
 
+import Image from '@theme/IdealImage';
 import joins_1 from '@site/static/images/guides/joins-1.png';
 import joins_2 from '@site/static/images/guides/joins-2.png';
 import joins_3 from '@site/static/images/guides/joins-3.png';
 import joins_4 from '@site/static/images/guides/joins-4.png';
 import joins_5 from '@site/static/images/guides/joins-5.png';
-import Image from '@theme/IdealImage';
 
 ClickHouse has [full `JOIN` support](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1), with a wide selection of join algorithms. To maximize performance, we recommend following the join optimization suggestions listed in this guide.
 
@@ -129,7 +129,7 @@ ClickHouse supports a number of [join algorithms](https://clickhouse.com/blog/cl
 
 <br />
 
-<Image img={joins_2} size="md" alt="speed by memory for joins"/>
+<Image img={joins_2} size="lg" alt="speed by memory for joins"/>
 
 <br />
 
@@ -139,7 +139,7 @@ The supported `JOIN` types for each join algorithm are shown below and should be
 
 <br />
 
-<Image img={joins_3} size="md" alt="join features"/>
+<Image img={joins_3} size="lg" alt="join features"/>
 
 <br />
 
@@ -153,7 +153,7 @@ If your key optimization metric is performance and you are looking to execute th
 
 <br />
 
-<Image img={joins_4} size="md" alt="join flowchart"/>
+<Image img={joins_4} size="lg" alt="join flowchart"/>
 
 <br />
 
@@ -177,11 +177,7 @@ If you want to optimize a join for the lowest memory usage instead of the fastes
 
 <br />
 
-<img src={joins_5}
-    alt='NEEDS ALT'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={joins_5} size="lg" alt="Join memory optimization decision tree" />
 
 <br />
 

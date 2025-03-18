@@ -14,7 +14,7 @@ import Image from '@theme/IdealImage';
 
 # Understanding Query Execution with the Analyzer
 
-ClickHouse processes queries extremely quickly, but the execution of a query is not a simple story. Let’s try to understand how a `SELECT` query gets executed. To illustrate it, let’s add some data in a table in ClickHouse:
+ClickHouse processes queries extremely quickly, but the execution of a query is not a simple story. Let's try to understand how a `SELECT` query gets executed. To illustrate it, let's add some data in a table in ClickHouse:
 
 ```sql
 CREATE TABLE session_events(
@@ -36,7 +36,7 @@ Now that we have some data in ClickHouse, we want to run some queries and unders
 
 <Image img={analyzer1} alt="Explain query steps" size="md"/>
 
-Let’s look at each entity in action during query execution. We are going to take a few queries and then examine them using the `EXPLAIN` statement.
+Let's look at each entity in action during query execution. We are going to take a few queries and then examine them using the `EXPLAIN` statement.
 
 ## Parser {#parser}
 
@@ -77,7 +77,7 @@ ClickHouse currently has two architectures for the Analyzer. You can use the old
 The new architecture should provide us with a better framework to improve ClickHouse's performance. However, given it is a fundamental component of the query processing steps, it also might have a negative impact on some queries and there are [known incompatibilities](/operations/analyzer#known-incompatibilities). You can revert back to the old analyzer by changing the `enable_analyzer` setting at the query or user level.
 :::
 
-The analyzer is an important step of the query execution. It takes an AST and transforms it into a query tree. The main benefit of a query tree over an AST is that a lot of the components will be resolved, like the storage for instance. We also know from which table to read, aliases are also resolved, and the tree knows the different data types used. With all these benefits, the analyzer can apply optimizations. The way these optimizations work is via “passes”. Every pass is going to look for different optimizations. You can see all the passes [here](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249), let’s see it in practice with our previous query:
+The analyzer is an important step of the query execution. It takes an AST and transforms it into a query tree. The main benefit of a query tree over an AST is that a lot of the components will be resolved, like the storage for instance. We also know from which table to read, aliases are also resolved, and the tree knows the different data types used. With all these benefits, the analyzer can apply optimizations. The way these optimizations work is via "passes". Every pass is going to look for different optimizations. You can see all the passes [here](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249), let's see it in practice with our previous query:
 
 
 ```sql
@@ -243,7 +243,7 @@ You can now see all the inputs, functions, aliases, and data types that are bein
 
 ## Query Pipeline {#query-pipeline}
 
-A query pipeline is generated from the query plan. The query pipeline is very similar to the query plan, with the difference that it’s not a tree but a graph. It highlights how ClickHouse is going to execute a query and what resources are going to be used. Analyzing the query pipeline is very useful to see where the bottleneck is in terms of inputs/outputs. Let’s take our previous query and look at the query pipeline execution:
+A query pipeline is generated from the query plan. The query pipeline is very similar to the query plan, with the difference that it's not a tree but a graph. It highlights how ClickHouse is going to execute a query and what resources are going to be used. Analyzing the query pipeline is very useful to see where the bottleneck is in terms of inputs/outputs. Let's take our previous query and look at the query pipeline execution:
 
 ```sql
 EXPLAIN PIPELINE
@@ -375,7 +375,7 @@ digraph
 }
 ```
 
-<img src={analyzer4} class="image" alt="Compact graph output" style={{width: '600px'}} />
+<Image img={analyzer4} alt="Compact graph output" size="md" />
 
 Why does ClickHouse not read from the table using multiple threads? Let's try to add more data to our table:
 
@@ -434,7 +434,7 @@ digraph
 }
 ```
 
-<img src={analyzer5} class="image" alt="Parallel graph output" style={{width: '600px'}} />
+<Image img={analyzer5} alt="Parallel graph output" size="md" />
 
 So the executor decided not to parallelize operations because the volume of data was not high enough. By adding more rows, the executor then decided to use multiple threads as shown in the graph.
 
