@@ -1,12 +1,12 @@
 # ClickHouse docs style guide
 
-In this document, you will find a number of style guidelines for writing documentation.
-The rules in this guide are intended to assist in helping us to create a high
-quality documentation offering on par with the quality of ClickHouse itself.
+In this document, you will find a number of style guidelines for writing ClickHouse
+documentation. As documentation is a collective effort, these guidelines are 
+intended to help all of us ensure quality and consistency across our documentation.
 
 ## YAML front matter
 
-Begin every new markdown document with YAML front-matter:
+Begin every new Markdown document with YAML front-matter:
 
 ```markdown
 ---
