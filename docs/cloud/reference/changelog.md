@@ -22,7 +22,7 @@ import latency_insights from '@site/static/images/cloud/reference/oct-4-latency-
 import cloud_console_2 from '@site/static/images/cloud/reference/aug-15-compute-compute.png';
 import compute_compute from '@site/static/images/cloud/reference/july-18-table-inspector.png';
 import query_insights from '@site/static/images/cloud/reference/june-28-query-insights.png';
-import prometheous from '@site/static/images/cloud/reference/june-28-prometheus.png';
+import prometheus from '@site/static/images/cloud/reference/june-28-prometheus.png';
 import kafka_config from '@site/static/images/cloud/reference/june-13-kafka-config.png';
 import fast_releases from '@site/static/images/cloud/reference/june-13-fast-releases.png';
 import share_queries from '@site/static/images/cloud/reference/may-30-share-queries.png';
@@ -397,7 +397,7 @@ Our new Query Insights UI in the Cloud Console makes ClickHouse's built-in query
 
 Perhaps one of our most requested features: you can now export [Prometheus](https://prometheus.io/) metrics from ClickHouse Cloud to [Grafana](https://grafana.com/) and [Datadog](https://www.datadoghq.com/) for visualization. Prometheus provides an open-source solution to monitor ClickHouse and set up custom alerts. Access to Prometheus metrics for your ClickHouse Cloud service is available via the [ClickHouse Cloud API](/integrations/prometheus). This feature is currently in Private Preview. Please reach out to the [support team](https://clickhouse.com/support/program) to enable this feature for your organization.
 
-<Image img={prometheous} size="lg" alt="Grafana dashboard showing Prometheus metrics from ClickHouse Cloud" border />
+<Image img={prometheus} size="lg" alt="Grafana dashboard showing Prometheus metrics from ClickHouse Cloud" border />
 
 ### Other features: {#other-features}
 - [Configurable backups](/cloud/manage/backups/configurable-backups) to configure custom backup policies like frequency, retention, and schedule are now Generally Available.
@@ -433,7 +433,7 @@ Please see the [ClickHouse Terraform provider](https://registry.terraform.io/pro
 
 ### Share queries with your teammates {#share-queries-with-your-teammates}
 
-When you write a SQL query, there's a good chance that other people on your team would also find that query useful. Previously, you'd have to send a query over Slack or email and there'd be no way for a teammate to automatically receive updates for that query if you edit it.
+When you write a SQL query, there's a good chance that other people on your team would also find that query useful. Previously, you'd have to send a query over Slack or email and there would be no way for a teammate to automatically receive updates for that query if you edit it.
 
 We're happy to announce that you can now easily share queries via the ClickHouse Cloud console. From the query editor, you can share a query directly with your entire team or a specific team member. You can also specify whether they have read or write only access. Click on the **Share** button in the query editor to try out the new shared queries feature.
 

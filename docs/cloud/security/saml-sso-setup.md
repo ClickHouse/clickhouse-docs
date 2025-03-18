@@ -234,7 +234,7 @@ You will configure one SAML app in Google for each organization and must provide
    
    8. Check the box for **Signed response**.
    
-   9. Select **EMAIL** for the Name ID Format and leave the Name ID as **Basic Inforamtion > Primary email.**
+   9. Select **EMAIL** for the Name ID Format and leave the Name ID as **Basic Information > Primary email.**
    
    10. Click **Continue**.
    
