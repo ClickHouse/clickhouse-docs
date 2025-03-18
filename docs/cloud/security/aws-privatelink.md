@@ -107,8 +107,10 @@ Make a note of the `endpointServiceId` and `privateDnsHostname` [move onto next 
 ### Create AWS Endpoint {#create-aws-endpoint}
 
 :::important
-This section covers ClickHouse-specific details for configuring ClickHouse via AWS PrivateLink. AWS-specific steps are provided as a reference to guide you on where to look, but they may change over time without notice from the AWS cloud provider. Please consider AWS configuration based on your specific use case.
-Please note that ClickHouse is not responsible for configuring the required AWS VPC endpoints, security group rules or DNS records.
+This section covers ClickHouse-specific details for configuring ClickHouse via AWS PrivateLink. AWS-specific steps are provided as a reference to guide you on where to look, but they may change over time without notice from the AWS cloud provider. Please consider AWS configuration based on your specific use case.  
+
+Please note that ClickHouse is not responsible for configuring the required AWS VPC endpoints, security group rules or DNS records.  
+
 If you previously enabled "private DNS names" while setting up PrivateLink and are experiencing difficulties configuring new services via PrivateLink, please contact ClickHouse support. For any other issues related to AWS configuration tasks, contact AWS Support directly.
 :::
 
