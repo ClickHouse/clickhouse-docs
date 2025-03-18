@@ -5,6 +5,7 @@ slug: /chdb/guides/jupysql
 description: 'How to install chDB for Bun'
 keywords: ['chdb', 'JupySQL']
 ---
+
 import Image from '@theme/IdealImage';
 import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png';
 
