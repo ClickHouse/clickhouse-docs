@@ -73,7 +73,7 @@ Head over to your Supabase Project's `Project Settings` -> `Database` (under `Co
 
 **Important**: Disable `Display connection pooler` on this page and head over to the `Connection parameters` section and note/copy the parameters.
 
-<img src={supabase_connection_details} alt="Locate Supabase Connection Details"/>
+<Image img={supabase_connection_details} size="lg" border alt="Locate Supabase Connection Details"/>
 
 :::info
 
