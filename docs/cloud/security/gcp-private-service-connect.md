@@ -120,8 +120,11 @@ Make a note of the `endpointServiceId` and `privateDnsHostname`. You'll use them
 ## Create service endpoint {#create-service-endpoint}
 
 :::important
-This section covers ClickHouse-specific details for configuring ClickHouse via GCP PSC(Private Service Connect). GCP-specific steps are provided as a reference to guide you on where to look, but they may change over time without notice from the GCP cloud provider. Please consider GCP configuration based on your specific use case.
-Please note that ClickHouse is not responsible for configuring the required GCP PSC endpoints, DNS records. For any issues related to GCP configuration tasks, contact GCP Support directly.
+This section covers ClickHouse-specific details for configuring ClickHouse via GCP PSC(Private Service Connect). GCP-specific steps are provided as a reference to guide you on where to look, but they may change over time without notice from the GCP cloud provider. Please consider GCP configuration based on your specific use case.  
+
+Please note that ClickHouse is not responsible for configuring the required GCP PSC endpoints, DNS records.  
+
+For any issues related to GCP configuration tasks, contact GCP Support directly.
 :::
 
 In this section, we're going to create a service endpoint.

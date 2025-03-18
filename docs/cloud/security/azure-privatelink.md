@@ -101,8 +101,11 @@ Make a note of the `endpointServiceId`. You'll use it in the next step.
 ## Create a Private Endpoint in Azure {#create-private-endpoint-in-azure}
 
 :::important
-This section covers ClickHouse-specific details for configuring ClickHouse via Azure Private Link. Azure-specific steps are provided as a reference to guide you on where to look, but they may change over time without notice from the Azure cloud provider. Please consider Azure configuration based on your specific use case.
-Please note that ClickHouse is not responsible for configuring the required Azure private endpoints, DNS records. For any issues related to Azure configuration tasks, contact Azure Support directly.
+This section covers ClickHouse-specific details for configuring ClickHouse via Azure Private Link. Azure-specific steps are provided as a reference to guide you on where to look, but they may change over time without notice from the Azure cloud provider. Please consider Azure configuration based on your specific use case.  
+
+Please note that ClickHouse is not responsible for configuring the required Azure private endpoints, DNS records.  
+
+For any issues related to Azure configuration tasks, contact Azure Support directly.
 :::
 
 In this section, we're going to create a Private Endpoint in Azure. You can use either the Azure Portal or Terraform.
