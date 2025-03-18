@@ -921,3 +921,7 @@ pecreate
 drilldown
 --docs/cloud/get-started/cloud-quick-start.md--
 createservice
+--docs/use-cases/time-series/query-performance.md--
+subproject
+--docs/use-cases/time-series/analysis-functions.md--
+Yankovic's
