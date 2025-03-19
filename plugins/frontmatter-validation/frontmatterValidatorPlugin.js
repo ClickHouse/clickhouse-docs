@@ -44,7 +44,7 @@ function frontmatterValidatorPlugin(context, options) {
                     console.log('See frontmatter-validation-errors.log (when running locally)')
 
                     // Fail the build by throwing an error
-                    throw new Error('🚨Frontmatter validation failed. See frontmatter-validation-errors.log for details.');
+                    throw new Error('🚨Frontmatter validation failed. For more details see https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/style-guide.md');
                 } else {
                     console.log(`⚠️ Warning: Found ${filesWithIssues.length} files containing problems with frontmatter`)
                 }
