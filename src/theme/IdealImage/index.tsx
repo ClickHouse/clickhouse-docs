@@ -127,7 +127,7 @@ export default function IdealImage(
   const highestResSrc = img.src.images[img.src.images.length - 1];
 
   const [isZoomed, setIsZoomed] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -135,7 +135,7 @@ export default function IdealImage(
 
     const observer = new MutationObserver(() => {
       const imgElement = imageRef.current?.querySelector("img");
-      if (imgElement && imgElement.complete) {
+      if (imgElement && imgElement.src.endsWith(currentImage.path!)) {
         setIsLoaded(true);
         observer.disconnect();
       }
@@ -202,16 +202,22 @@ export default function IdealImage(
       style={imageStyles}
     />
   );
-
+  let connection = null;
+  if ("connection" in navigator) {
+    connection =
+      navigator.connection ||
+      navigator.mozConnection ||
+      navigator.webkitConnection;
+  }
   return (
     <div style={containerStyles}>
       {/* Zoomed Image */}
-      <ControlledZoom
-        isZoomed={isZoomed}
-        onZoomChange={handleZoomChange}
-        classDialog={`${styles.customZoom} ${background == "white" ? styles.customWhiteZoom : ""}`}
-      >
-        {isLoaded && (
+      {connection && connection.effectiveType == "4g" && (
+        <ControlledZoom
+          isZoomed={isZoomed}
+          onZoomChange={handleZoomChange}
+          classDialog={`${styles.customZoom} ${background == "white" ? styles.customWhiteZoom : ""}`}
+        >
           <img
             src={highestResSrc.path}
             alt={`${alt} - Zoomed`}
@@ -222,16 +228,21 @@ export default function IdealImage(
               visibility: isZoomed ? "visible" : "hidden",
             }}
           />
-        )}
-      </ControlledZoom>
-
-      {/* Clickable IdealImage (Hidden when zoomed) */}
+        </ControlledZoom>
+      )}
       <div
         ref={imageRef}
-        onClick={() => isLoaded && setIsZoomed(true)}
+        onClick={() =>
+          connection &&
+          connection.effectiveType == "4g" &&
+          isLoaded &&
+          setIsZoomed(true)
+        }
         style={{
-          cursor: isLoaded ? "zoom-in" : "default",
-          visibility: isZoomed ? "hidden" : "visible",
+          cursor:
+            connection && connection.effectiveType == "4g" && isLoaded
+              ? "zoom-in"
+              : "default",
         }}
       >
         {img_component}
