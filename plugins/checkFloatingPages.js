@@ -94,13 +94,13 @@ async function checkFloatingPages(context, options = {}) {
                 if (options && options.failBuild) {
                     console.error('\x1b[31m%s\x1b[0m', `${floatingPages.length} floating pages found:`);
                     floatingPages.forEach(page => console.error(`  - ${page}`));
-                    throw new Error('🚨 Floating pages found. See above for details.');
+                    throw new Error('Error: Found "floating" pages without sidebars. For further details see: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/style-guide.md/');
                 } else {
-                    console.log('⚠️', 'Found floating pages:');
+                    console.log('Warning:', 'Found floating pages:');
                     floatingPages.forEach(page => console.log(`  - ${page}`));
                 }
             } else {
-                console.log('✅', 'No floating pages found.');
+                console.log('Passed:', 'No floating pages found.');
             }
         }
     }
