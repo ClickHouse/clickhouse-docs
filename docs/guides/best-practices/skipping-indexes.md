@@ -99,7 +99,7 @@ Instead of processing 100 million rows of 800 megabytes, ClickHouse has only rea
 In a more visual form, this is how the 4096 rows with a `my_value` of 125 were read and selected, and how the following rows
 were skipped without reading from disk:
 
-<Image img={simple_skip} size="lg" alt="Simple Skip"/>
+<Image img={simple_skip} size="md" alt="Simple Skip"/>
 
 Users can access detailed information about skip index usage by enabling the trace when executing queries.  From
 clickhouse-client, set the `send_logs_level`:
@@ -176,7 +176,7 @@ Skip indexes are not intuitive, especially for users accustomed to secondary row
 
 Consider the following data distribution:
 
-<Image img={bad_skip} size="lg" alt="Bad Skip"/>
+<Image img={bad_skip} size="md" alt="Bad Skip"/>
 
 Assume the primary/order by key is `timestamp`, and there is an index on `visitor_id`.  Consider the following query:
 

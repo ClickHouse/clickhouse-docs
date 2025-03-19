@@ -18,7 +18,7 @@ By default, ClickHouse is writing data synchronously.
 Each insert sent to ClickHouse causes ClickHouse to immediately create a part containing the data from the insert.
 This is the default behavior when the async_insert setting is set to its default value of 0:
 
-<Image img={asyncInsert01} size="lg" alt="Asynchronous insert process - default synchronous inserts" background="white"/>
+<Image img={asyncInsert01} size="md" alt="Asynchronous insert process - default synchronous inserts" background="white"/>
 
 By setting async_insert to 1, ClickHouse first stores the incoming inserts into an in-memory buffer before flushing them regularly to disk.
 
@@ -36,9 +36,9 @@ With the [wait_for_async_insert](/operations/settings/settings.md/#wait_for_asyn
 
 The following two diagrams illustrate the two settings for async_insert and wait_for_async_insert:
 
-<Image img={asyncInsert02} size="lg" alt="Asynchronous insert process - async_insert=1, wait_for_async_insert=1" background="white"/>
+<Image img={asyncInsert02} size="md" alt="Asynchronous insert process - async_insert=1, wait_for_async_insert=1" background="white"/>
 
-<Image img={asyncInsert03} size="lg" alt="Asynchronous insert process - async_insert=1, wait_for_async_insert=0" background="white"/>
+<Image img={asyncInsert03} size="md" alt="Asynchronous insert process - async_insert=1, wait_for_async_insert=0" background="white"/>
 
 ### Enabling asynchronous inserts {#enabling-asynchronous-inserts}
 
