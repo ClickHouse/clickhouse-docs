@@ -1,13 +1,14 @@
 ---
 slug: /data-modeling/schema-design
-title: Schema Design
-description: Optimizing ClickHouse schema for query performance
-keywords: [schema, schema design, query optimization]
+title: 'Schema Design'
+description: 'Optimizing ClickHouse schema for query performance'
+keywords: ['schema', 'schema design', 'query optimization']
 ---
 
 import stackOverflowSchema from '@site/static/images/data-modeling/stackoverflow-schema.png';
 import schemaDesignTypes from '@site/static/images/data-modeling/schema-design-types.png';
 import schemaDesignIndices from '@site/static/images/data-modeling/schema-design-indices.png';
+import Image from '@theme/IdealImage';
 
 Understanding effective schema design is key to optimizing ClickHouse performance and includes choices that often involve trade-offs, with the optimal approach depending on the queries being served as well as factors such as data update frequency, latency requirements, and data volume. This guide provides an overview of schema design best practices and data modeling techniques for optimizing ClickHouse performance.
 
@@ -17,7 +18,7 @@ For the examples in this guide, we use a subset of the Stack Overflow dataset. T
 
 > The primary keys and relationships indicated are not enforced through constraints (Parquet is file not table format) and purely indicate how the data is related and the unique keys it possesses.
 
-<img src={stackOverflowSchema} class="image" alt="Stack Overflow Schema" style={{width: '800px', background: 'none'}} />
+<Image img={stackOverflowSchema} size="lg" alt="Stack Overflow Schema"/>
 
 <br />
 
@@ -150,7 +151,7 @@ FixedString for special cases - Strings which have a fixed length can be encoded
 
 By applying these simple rules to our posts table, we can identify an optimal type for each column:
 
-<img src={schemaDesignTypes} class="image" alt="Schema Design - Optimized Types" style={{width: '1000px', background: 'none'}} />
+<Image img={schemaDesignTypes} size="lg" alt="Schema Design - Optimized Types"/>
 
 <br />
 
@@ -203,9 +204,7 @@ Users coming from OLTP databases often look for the equivalent concept in ClickH
 
 At the scale at which ClickHouse is often used, memory and disk efficiency are paramount. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, then the merged part's primary indexes are also merged. The primary index for a part has one index entry per group of rows - this technique is called sparse indexing.
 
-<img src={schemaDesignIndices} class="image" alt="Sparse Indexing in ClickHouse" style={{width: '600px', background: 'none'}} />
-
-<br />
+<Image img={schemaDesignIndices} size="md" alt="Sparse Indexing in ClickHouse"/>
 
 The selected key in ClickHouse will determine not only the index, but also order in which data is written on disk. Because of this, it can dramatically impact compression levels which can in turn affect query performance. An ordering key which causes the values of most columns to be written in contiguous order will allow the selected compression algorithm (and codecs) to compress the data more effectively.
 

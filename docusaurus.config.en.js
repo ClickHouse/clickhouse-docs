@@ -3,6 +3,10 @@ import math from "remark-math";
 import katex from "rehype-katex";
 import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
+const { customParseFrontMatter } = require('./plugins/frontmatter-validation/customParseFrontMatter');
+const checkFloatingPages = require('./plugins/checkFloatingPages');
+const frontmatterValidator = require('./plugins/frontmatter-validation/frontmatterValidatorPlugin');
+const path = require('path');
 
 // Helper function to skip over index.md files.
 function skipIndex(items) {
@@ -14,6 +18,10 @@ function skipIndex(items) {
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   scripts: [
+    {
+      src: "/docs/js/kapa_config.js",
+      async: false,
+    },
     {
       src: "https://widget.kapa.ai/kapa-widget.bundle.js",
       "data-website-id": "c0b5f156-1e92-49df-8252-adacc9feb21b",
@@ -81,6 +89,9 @@ const config = {
   projectName: "clickhouse-docs",
   markdown: {
     mermaid: true,
+    parseFrontMatter: async (params) => {
+      return await customParseFrontMatter(params);
+    }
   },
   themes: ["@docusaurus/theme-mermaid"],
   presets: [
@@ -178,8 +189,8 @@ const config = {
         theme: {
           customCss: [require.resolve("./src/css/custom.scss")],
         },
-        gtag: {
-          trackingID: "G-KF1LLRTQ5Q",
+        googleTagManager: {
+          containerId: 'GTM-WTNTDT7W',
         },
       }),
     ],
@@ -309,12 +320,34 @@ const config = {
       },
     ],
     chHeader,
+    [
+      '@docusaurus/plugin-ideal-image',
+      {
+        quality: 85,
+        sizes: [48, 300, 600, 1024, 2048],
+        disableInDev: false,
+      },
+    ],
+    [
+      frontmatterValidator,
+      {
+        failBuild: true,
+      },
+    ],
+    [
+      checkFloatingPages,
+      {
+        failBuild: true,
+        exceptionsFile: path.resolve(__dirname, 'plugins/floating-pages-exceptions.txt')
+      },
+    ]
   ],
   customFields: {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page
     galaxyApiEndpoint:
       process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || "http://localhost:3000",
   },
+
 };
 
 module.exports = config;

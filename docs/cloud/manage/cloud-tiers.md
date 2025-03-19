@@ -1,7 +1,8 @@
 ---
-sidebar_label: ClickHouse Cloud Tiers
+sidebar_label: 'ClickHouse Cloud Tiers'
 slug: /cloud/manage/cloud-tiers
-title: Service Types
+title: 'ClickHouse Cloud Tiers'
+description: 'Cloud tiers available in ClickHouse Cloud'
 ---
 
 # ClickHouse Cloud Tiers

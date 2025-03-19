@@ -1,8 +1,8 @@
 ---
 slug: /cloud/manage/billing
-title: Billing
-description: Table of contents page for billing.
-keywords: [billing, payment thresholds, trouble shooting, marketplace]
+title: 'Billing'
+description: 'Table of contents page for billing.'
+keywords: ['billing', 'payment thresholds', 'trouble shooting', 'marketplace']
 ---
 
 This section of the documentation covers topics related to billing, and contains the following pages:

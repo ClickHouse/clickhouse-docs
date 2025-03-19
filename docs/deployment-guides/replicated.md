@@ -1,10 +1,12 @@
 ---
 slug: /architecture/replication
-sidebar_label: Replication for fault tolerance
+sidebar_label: 'Replication for fault tolerance'
 sidebar_position: 10
-title: Replication for fault tolerance
+title: 'Replication for fault tolerance'
+description: 'Page describing an example architecture with five servers configured. Two are used to host copies of the data and the rest are used to coordinate the replication of data'
 ---
 
+import Image from '@theme/IdealImage';
 import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
 import ConfigFileNote from '@site/docs/_snippets/_config-files.md';
 import KeeperConfigFileNote from '@site/docs/_snippets/_keeper-config-files.md';
@@ -20,7 +22,7 @@ In this architecture, there are five servers configured. Two are used to host co
 ## Environment {#environment}
 ### Architecture Diagram {#architecture-diagram}
 
-<img src={ReplicationArchitecture} alt="Architecture diagram for 1 shard and 2 replicas with ReplicatedMergeTree" />
+<Image img={ReplicationArchitecture} size="md" alt="Architecture diagram for 1 shard and 2 replicas with ReplicatedMergeTree" />
 
 |Node|Description|
 |----|-----------|

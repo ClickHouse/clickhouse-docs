@@ -1,9 +1,9 @@
 ---
 slug: /about-us/cloud
-sidebar_label: Cloud Service
+sidebar_label: 'Cloud Service'
 sidebar_position: 10
-description: ClickHouse Cloud
-title: ClickHouse Cloud
+description: 'ClickHouse Cloud'
+title: 'ClickHouse Cloud'
 ---
 
 # ClickHouse Cloud

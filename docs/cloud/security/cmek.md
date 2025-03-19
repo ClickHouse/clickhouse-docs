@@ -1,9 +1,11 @@
 ---
-sidebar_label: Enhanced Encryption
+sidebar_label: 'Enhanced Encryption'
 slug: /cloud/security/cmek
-title: Customer Managed Encryption Keys (CMEK)
+title: 'Customer Managed Encryption Keys (CMEK)'
+description: 'Learn more about customer managed encryption keys'
 ---
 
+import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import cmek_performance from '@site/static/images/_snippets/cmek-performance.png';
 
@@ -105,4 +107,4 @@ As specified in this page, we use ClickHouse's built-in [Virtual File System for
 
 The algorithm in use for this feature is `AES_256_CTR`, which is expected to have a performance penalty of 5-15% depending on the workload:
 
-<img src={cmek_performance} class="image" alt="CMEK Performance Penalty" />
+<Image img={cmek_performance} size="lg" alt="CMEK Performance Penalty" />

@@ -1,10 +1,12 @@
 ---
-sidebar_label: Troubleshooting Billing Issues
+sidebar_label: 'Troubleshooting Billing Issues'
 slug: /manage/troubleshooting-billing-issues
-title: Troubleshooting Billing Issues
+title: 'Troubleshooting Billing Issues'
+description: 'Troubleshooting article for common billing issues'
 ---
 
 import trial_expired from '@site/static/images/cloud/manage/trial-expired.png';
+import Image from '@theme/IdealImage';
 
 # Troubleshooting Billing Issues
 
@@ -18,4 +20,4 @@ If you are experiencing issues with your payment details or are unable to add a 
 
 <br />
 
-<img alt='Trial expired' style={{width: '400px'}} src={trial_expired} />
+<Image img={trial_expired} size="md" alt="Trial expired" border/>

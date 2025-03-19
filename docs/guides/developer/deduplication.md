@@ -1,11 +1,14 @@
 ---
 slug: /guides/developer/deduplication
-sidebar_label: Deduplication Strategies
+sidebar_label: 'Deduplication Strategies'
 sidebar_position: 3
-description: Use deduplication when you need to perform frequent upserts, updates and deletes.
+description: 'Use deduplication when you need to perform frequent upserts, updates and deletes.'
+title: 'Deduplication Strategies'
 ---
 
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
+import Image from '@theme/IdealImage';
+
 
 # Deduplication Strategies
 
@@ -21,7 +24,7 @@ ClickHouse is built for speed when it comes to data insertion. The storage files
 
 |||
 |------|----|
-|<img src={deduplication} class="image" alt="Cassandra logo" style={{width: '16rem', 'background-color': 'transparent'}}/>|ClickHouse provides free training on deduplication and many other topics.  The [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) is a good place to start.|
+|<Image img={deduplication}  alt="Deduplication Logo" size="sm"/>|ClickHouse provides free training on deduplication and many other topics.  The [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) is a good place to start.|
 
 </div>
 

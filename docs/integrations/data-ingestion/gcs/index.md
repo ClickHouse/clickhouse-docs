@@ -1,10 +1,13 @@
 ---
-sidebar_label: Google Cloud Storage (GCS)
+sidebar_label: 'Google Cloud Storage (GCS)'
 sidebar_position: 4
 slug: /integrations/gcs
-description: "Google Cloud Storage (GCS) Backed MergeTree"
+description: 'Google Cloud Storage (GCS) Backed MergeTree'
+title: 'Integrate Google Cloud Storage with ClickHouse'
 ---
+
 import BucketDetails from '@site/docs/_snippets/_GCS_authentication_and_bucket.md';
+import Image from '@theme/IdealImage';
 import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';
 import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-2.png';
 
@@ -153,7 +156,7 @@ CREATE TABLE trips_gcs
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
-# highlight-next-line
+-- highlight-next-line
 SETTINGS storage_policy='gcs_main'
 ```
 
@@ -466,10 +469,10 @@ zk_synced_followers	2
 # highlight-end
 ```
 
-
 ### Start ClickHouse server {#start-clickhouse-server}
 
 On `chnode1` and `chnode` run:
+
 ```bash
 sudo service clickhouse-server start
 ```
@@ -544,7 +547,7 @@ cache_path:
 ```
 #### Verify that tables created on the cluster are created on both nodes {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
 ```sql
-# highlight-next-line
+-- highlight-next-line
 create table trips on cluster 'cluster_1S_2R' (
  `trip_id` UInt32,
  `pickup_date` Date,
@@ -562,7 +565,7 @@ create table trips on cluster 'cluster_1S_2R' (
 ENGINE = ReplicatedMergeTree
 PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
-# highlight-next-line
+-- highlight-next-line
 SETTINGS storage_policy='gcs_main'
 ```
 ```response
@@ -626,8 +629,8 @@ formatReadableSize(total_bytes): 36.42 MiB
 Looking at the buckets you will see that a folder was created in each bucket with the name that was used in the `storage.xml` configuration file.  Expand the folders and you will see many files, representing the data partitions.
 #### Bucket for replica one {#bucket-for-replica-one}
 
-<img src={GCS_examine_bucket_1} alt="Replica one bucket in Google Cloud Storage" />
+<Image img={GCS_examine_bucket_1} size="lg" border alt="Replica one bucket in Google Cloud Storage showing folder structure with data partitions" />
 
 #### Bucket for replica two {#bucket-for-replica-two}
 
-<img src={GCS_examine_bucket_2} alt="Replica two bucket in Google Cloud Storage" />
+<Image img={GCS_examine_bucket_2} size="lg" border alt="Replica two bucket in Google Cloud Storage showing folder structure with data partitions" />

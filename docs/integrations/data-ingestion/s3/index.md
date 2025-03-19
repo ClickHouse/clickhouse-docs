@@ -1,13 +1,16 @@
 ---
 slug: /integrations/s3
 sidebar_position: 1
-sidebar_label: Integrating S3 with ClickHouse
-
+sidebar_label: 'Integrating S3 with ClickHouse'
+title: 'Integrating S3 with ClickHouse'
+description: 'Page describing how to integrate S3 with ClickHouse'
 ---
+
 import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
 import S3J from '@site/static/images/integrations/data-ingestion/s3/s3-j.png';
 import Bucket1 from '@site/static/images/integrations/data-ingestion/s3/bucket1.png';
 import Bucket2 from '@site/static/images/integrations/data-ingestion/s3/bucket2.png';
+import Image from '@theme/IdealImage';
 
 # Integrating S3 with ClickHouse
 
@@ -815,7 +818,7 @@ SELECT * FROM s3_table1;
 6.  In the AWS console, navigate to the buckets, and select the new one and the folder.
 You should see something like the following:
 
-<img src={S3J} alt="S3 bucket view in AWS console" />
+<Image img={S3J} size="lg" border alt="S3 bucket view in AWS console showing ClickHouse data files stored in S3" />
 
 ## Replicating a single shard across two AWS regions using S3 Object Storage {#s3-multi-region}
 
@@ -1219,9 +1222,9 @@ These tests will verify that data is being replicated across the two servers, an
 
   Check the S3 data in each S3 Bucket (the totals are not shown, but both buckets have approximately 36 MiB stored after the inserts):
 
-<img src={Bucket1} alt="Size of data in first S3 bucket" />
+<Image img={Bucket1} size="lg" border alt="Size of data in first S3 bucket showing storage usage metrics" />
 
-<img src={Bucket2} alt="Size of data in second S3 bucket" />
+<Image img={Bucket2} size="lg" border alt="Size of data in second S3 bucket showing storage usage metrics" />
 
 ## S3Express {#s3express}
 

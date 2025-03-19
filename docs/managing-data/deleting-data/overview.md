@@ -1,8 +1,8 @@
 ---
 slug: /deletes/overview
-title: Delete Overview
-description: How to delete data in ClickHouse
-keywords: [delete, truncate, drop, lightweight delete]
+title: 'Delete Overview'
+description: 'How to delete data in ClickHouse'
+keywords: ['delete', 'truncate', 'drop', 'lightweight delete']
 ---
 
 There are several ways to delete data in ClickHouse, each with its own advantages and performance characteristics. You should select the appropriate method based on your data model and the amount of data you intend to delete.

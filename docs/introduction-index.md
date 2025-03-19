@@ -1,7 +1,7 @@
 ---
 slug: /introduction-clickhouse
-title: Introduction
-description: Landing page for Introduction
+title: 'Introduction'
+description: 'Landing page for Introduction'
 pagination_next: null
 ---
 

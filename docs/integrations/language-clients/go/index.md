@@ -1,9 +1,10 @@
 ---
-sidebar_label:  Go
+sidebar_label: 'Go'
 sidebar_position: 1
-keywords: [clickhouse, go, client, golang]
+keywords: ['clickhouse', 'go', 'client', 'golang']
 slug: /integrations/go
-description: The Go clients for ClickHouse allows users to connect to ClickHouse using either the Go standard database/sql interface or an optimized native interface.
+description: 'The Go clients for ClickHouse allows users to connect to ClickHouse using either the Go standard database/sql interface or an optimized native interface.'
+title: 'ClickHouse Go'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
@@ -11,9 +12,11 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.
 # ClickHouse Go
 
 ## A simple example {#a-simple-example}
+
 Let's Go with a simple example.  This will connect to ClickHouse and select from the system database.  To get started you will need your connection details.
 
 ### Connection Details {#connection-details}
+
 <ConnectionDetails />
 
 ### Initialize a module {#initialize-a-module}

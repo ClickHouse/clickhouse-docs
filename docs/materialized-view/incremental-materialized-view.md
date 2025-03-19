@@ -1,12 +1,13 @@
 ---
 slug: /materialized-view/incremental-materialized-view
-title: Incremental Materialized View
-description: How to use incremental materialized views to speed up queries
-keywords: [incremental materialized views, speed up queries, query optimization]
+title: 'Incremental Materialized View'
+description: 'How to use incremental materialized views to speed up queries'
+keywords: ['incremental materialized views', 'speed up queries', 'query optimization']
 score: 10000
 ---
 
 import materializedViewDiagram from '@site/static/images/materialized-view/materialized-view-diagram.png';
+import Image from '@theme/IdealImage';
 
 # Incremental Materialized Views
 
@@ -18,10 +19,7 @@ The principal motivation for materialized views is that the results inserted int
 
 Materialized views in ClickHouse are updated in real time as data flows into the table they are based on, functioning more like continually updating indexes. This is in contrast to other databases where materialized views are typically static snapshots of a query that must be refreshed (similar to ClickHouse [refreshable materialized views](/sql-reference/statements/create/view#refreshable-materialized-view)).
 
-<img src={materializedViewDiagram}
-     class="image"
-     alt="Materialized view diagram"
-     style={{width: '500px'}} />
+<Image img={materializedViewDiagram} size="md" alt="Materialized view diagram"/>
 
 ## Example {#example}
 
@@ -57,16 +55,16 @@ ORDER BY day ASC
 LIMIT 10
 
 ┌─────────────────day─┬─UpVotes─┬─DownVotes─┐
-│ 2008-07-31 00:00:00 │   	6 │     	0 │
-│ 2008-08-01 00:00:00 │ 	182 │    	50 │
-│ 2008-08-02 00:00:00 │ 	436 │   	107 │
-│ 2008-08-03 00:00:00 │ 	564 │   	100 │
-│ 2008-08-04 00:00:00 │	1306 │   	259 │
-│ 2008-08-05 00:00:00 │	1368 │   	269 │
-│ 2008-08-06 00:00:00 │	1701 │   	211 │
-│ 2008-08-07 00:00:00 │	1544 │   	211 │
-│ 2008-08-08 00:00:00 │	1241 │   	212 │
-│ 2008-08-09 00:00:00 │ 	576 │    	46 │
+│ 2008-07-31 00:00:00 │       6 │     	  0 │
+│ 2008-08-01 00:00:00 │     182 │    	 50 │
+│ 2008-08-02 00:00:00 │     436 │   	107 │
+│ 2008-08-03 00:00:00 │     564 │   	100 │
+│ 2008-08-04 00:00:00 │	   1306 │   	259 │
+│ 2008-08-05 00:00:00 │	   1368 │   	269 │
+│ 2008-08-06 00:00:00 │	   1701 │   	211 │
+│ 2008-08-07 00:00:00 │	   1544 │   	211 │
+│ 2008-08-08 00:00:00 │	   1241 │   	212 │
+│ 2008-08-09 00:00:00 │     576 │    	 46 │
 └─────────────────────┴─────────┴───────────┘
 
 10 rows in set. Elapsed: 0.133 sec. Processed 238.98 million rows, 2.15 GB (1.79 billion rows/s., 16.14 GB/s.)
@@ -121,7 +119,7 @@ FROM up_down_votes_per_day
 FINAL
 
 ┌─count()─┐
-│	5723 │
+│    5723 │
 └─────────┘
 ```
 
@@ -151,16 +149,16 @@ GROUP BY Day
 ORDER BY Day ASC
 LIMIT 10
 ┌────────Day─┬─UpVotes─┬─DownVotes─┐
-│ 2008-07-31 │   	6 │     	0 │
-│ 2008-08-01 │ 	182 │    	50 │
-│ 2008-08-02 │ 	436 │   	107 │
-│ 2008-08-03 │ 	564 │   	100 │
-│ 2008-08-04 │	1306 │   	259 │
-│ 2008-08-05 │	1368 │   	269 │
-│ 2008-08-06 │	1701 │   	211 │
-│ 2008-08-07 │	1544 │   	211 │
-│ 2008-08-08 │	1241 │   	212 │
-│ 2008-08-09 │ 	576 │    	46 │
+│ 2008-07-31 │       6 │     	 0 │
+│ 2008-08-01 │ 	   182 │    	50 │
+│ 2008-08-02 │ 	   436 │       107 │
+│ 2008-08-03 │ 	   564 │       100 │
+│ 2008-08-04 │	  1306 │       259 │
+│ 2008-08-05 │	  1368 │       269 │
+│ 2008-08-06 │	  1701 │       211 │
+│ 2008-08-07 │	  1544 │       211 │
+│ 2008-08-08 │	  1241 │       212 │
+│ 2008-08-09 │ 	   576 │    	46 │
 └────────────┴─────────┴───────────┘
 
 10 rows in set. Elapsed: 0.010 sec. Processed 8.97 thousand rows, 89.68 KB (907.32 thousand rows/s., 9.07 MB/s.)
@@ -189,18 +187,18 @@ GROUP BY Day
 ORDER BY Day DESC
 LIMIT 10
 
-	┌─────────────────Day─┬────────Score_99th─┬────AvgCommentCount─┐
+    ┌─────────────────Day─┬────────Score_99th─┬────AvgCommentCount─┐
  1. │ 2024-03-31 00:00:00 │  5.23700000000008 │ 1.3429811866859624 │
- 2. │ 2024-03-30 00:00:00 │             	5 │ 1.3097158891616976 │
+ 2. │ 2024-03-30 00:00:00 │                 5 │ 1.3097158891616976 │
  3. │ 2024-03-29 00:00:00 │  5.78899999999976 │ 1.2827635327635327 │
- 4. │ 2024-03-28 00:00:00 │             	7 │  1.277746158224246 │
+ 4. │ 2024-03-28 00:00:00 │                 7 │  1.277746158224246 │
  5. │ 2024-03-27 00:00:00 │ 5.738999999999578 │ 1.2113264918282023 │
- 6. │ 2024-03-26 00:00:00 │             	6 │ 1.3097536945812809 │
- 7. │ 2024-03-25 00:00:00 │             	6 │ 1.2836721018539201 │
+ 6. │ 2024-03-26 00:00:00 │                 6 │ 1.3097536945812809 │
+ 7. │ 2024-03-25 00:00:00 │                 6 │ 1.2836721018539201 │
  8. │ 2024-03-24 00:00:00 │ 5.278999999999996 │ 1.2931667891256429 │
  9. │ 2024-03-23 00:00:00 │ 6.253000000000156 │  1.334061135371179 │
 10. │ 2024-03-22 00:00:00 │ 9.310999999999694 │ 1.2388059701492538 │
-	└─────────────────────┴───────────────────┴────────────────────┘
+    └─────────────────────┴───────────────────┴────────────────────┘
 
 10 rows in set. Elapsed: 0.113 sec. Processed 59.82 million rows, 777.65 MB (528.48 million rows/s., 6.87 GB/s.)
 Peak memory usage: 658.84 MiB.

@@ -1,9 +1,11 @@
 ---
-title: Using JOINs in ClickHouse
-description: How to join tables in ClickHouse
-keywords: [joins, join tables]
+title: 'Using JOINs in ClickHouse'
+description: 'How to join tables in ClickHouse'
+keywords: ['joins', 'join tables']
+slug: /guides/joining-tables
 ---
 
+import Image from '@theme/IdealImage';
 import joins_1 from '@site/static/images/guides/joins-1.png';
 import joins_2 from '@site/static/images/guides/joins-2.png';
 import joins_3 from '@site/static/images/guides/joins-3.png';
@@ -16,16 +18,7 @@ ClickHouse has [full `JOIN` support](https://clickhouse.com/blog/clickhouse-full
 - Currently, ClickHouse does not reorder joins. Always ensure the smallest table is on the right-hand side of the Join. This will be held in memory for most join algorithms and will ensure the lowest memory overhead for the query.
 - If your query requires a direct join i.e. a `LEFT ANY JOIN` - as shown below, we recommend using [Dictionaries](/dictionary) where possible.
 
-<br />
-
-<img src={joins_1}
-    alt="NEEDS ALT"
-    class="image"
-    style={{width: '250px'}}
-/>
-
-<br />
-
+<Image img={joins_1} size="sm" alt="Left any join"/>
 
 - If performing inner joins, it is often more optimal to write these as sub-queries using the `IN` clause. Consider the following queries, which are functionally equivalent. Both find the number of `posts` that don't mention ClickHouse in the question but do in the `comments`.
 
@@ -136,11 +129,7 @@ ClickHouse supports a number of [join algorithms](https://clickhouse.com/blog/cl
 
 <br />
 
-<img src={joins_2}
-    alt='NEEDS ALT'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={joins_2} size="lg" alt="speed by memory for joins"/>
 
 <br />
 
@@ -150,11 +139,7 @@ The supported `JOIN` types for each join algorithm are shown below and should be
 
 <br />
 
-<img src={joins_3}
-    alt='NEEDS ALT'
-    class='image'
-    style={{width: '600px'}}
-/>
+<Image img={joins_3} size="lg" alt="join features"/>
 
 <br />
 
@@ -168,11 +153,7 @@ If your key optimization metric is performance and you are looking to execute th
 
 <br />
 
-<img src={joins_4}
-    alt='NEEDS ALT'
-    class='image'
-    style={{width: '600px'}}
-/>
+<Image img={joins_4} size="lg" alt="join flowchart"/>
 
 <br />
 
@@ -196,11 +177,7 @@ If you want to optimize a join for the lowest memory usage instead of the fastes
 
 <br />
 
-<img src={joins_5}
-    alt='NEEDS ALT'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={joins_5} size="lg" alt="Join memory optimization decision tree" />
 
 <br />
 

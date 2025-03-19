@@ -1,8 +1,8 @@
 ---
-title: chDB Guides
+title: 'chDB Guides'
 slug: /chdb/guides
-description: Index page for chDB guides
-keywords: [chdb, guides]
+description: 'Index page for chDB guides'
+keywords: ['chdb', 'guides']
 ---
 
 Take a look at our chDB developer guides below:

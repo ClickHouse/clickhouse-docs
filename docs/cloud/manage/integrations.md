@@ -1,7 +1,8 @@
 ---
-sidebar_label: Integrations
+sidebar_label: 'Integrations'
 slug: /manage/integrations
-title: Integrations
+title: 'Integrations'
+description: 'Integrations for ClickHouse'
 ---
 
 To see a full list of integrations for ClickHouse, please see [this page](/integrations).

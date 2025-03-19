@@ -1,10 +1,11 @@
 ---
-title: Notifications
+title: 'Notifications'
 slug: /cloud/notifications
-description: Notifications for your ClickHouse Cloud service
-keywords: [cloud, notifications]
+description: 'Notifications for your ClickHouse Cloud service'
+keywords: ['cloud', 'notifications']
 ---
 
+import Image from '@theme/IdealImage';
 import notifications_1 from '@site/static/images/cloud/manage/notifications-1.png';
 import notifications_2 from '@site/static/images/cloud/manage/notifications-2.png';
 import notifications_3 from '@site/static/images/cloud/manage/notifications-3.png';
@@ -22,19 +23,11 @@ Notifications can be received via various channels. For now, ClickHouse Cloud su
 
 <br />
 
-<img src={notifications_1}
-    alt="ClickHouse Cloud notifications flyout"
-    class="image"
-    style={{width: '600px'}}
-/>
+<Image img={notifications_1} size="md" alt="ClickHouse Cloud notifications flyout" border/>
 
 <br />
 
-<img src={notifications_2}
-    alt="ClickHouse Cloud notifications activity log"
-    class="image"
-    style={{width: '600px'}}
-/>
+<Image img={notifications_2} size="md" alt="ClickHouse Cloud notifications activity log" border/>
 
 ## Customizing Notifications {#customizing-notifications}
 
@@ -44,20 +37,11 @@ To configure delivery for a specific notification, click on the pencil icon to m
 
 <br />
 
-<img src={notifications_3}
-    alt="ClickHouse Cloud notifications settings screen"
-    class="image"
-    style={{width: '600px'}}
-/>
-
+<Image img={notifications_3} size="md" alt="ClickHouse Cloud notifications settings screen" border/>
 
 <br />
 
-<img src={notifications_4}
-    alt="ClickHouse Cloud notification delivery settings"
-    class="image"
-    style={{width: '600px'}}
-/>
+<Image img={notifications_4} size="md" alt="ClickHouse Cloud notification delivery settings" border/>
 
 <br />
 

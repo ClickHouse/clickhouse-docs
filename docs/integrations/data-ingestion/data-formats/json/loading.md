@@ -1,10 +1,10 @@
 ---
-sidebar_label: Loading JSON
+sidebar_label: 'Loading JSON'
 sidebar_position: 20
-title: Working with JSON
+title: 'Working with JSON'
 slug: /integrations/data-formats/json/loading
-description: Loading JSON
-keywords: [json, clickhouse, inserting, loading]
+description: 'Loading JSON'
+keywords: ['json', 'clickhouse', 'inserting', 'loading']
 ---
 
 # Loading JSON

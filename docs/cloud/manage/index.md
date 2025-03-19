@@ -1,8 +1,9 @@
 ---
 slug: /cloud/manage
-keywords: [AWS, Cloud, serverless, management]
-title: Overview
+keywords: ['AWS', 'Cloud', 'serverless', 'management']
+title: 'Overview'
 hide_title: true
+description: 'Overview page for Managing Cloud'
 ---
 
 # Managing Cloud 

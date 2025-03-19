@@ -1,9 +1,10 @@
 ---
 slug: /operations/access-rights
 sidebar_position: 1
-sidebar_label: Users and Roles
-title: Access Control and Account Management
-keywords: [ClickHouse Cloud, Access Control, User Management, RBAC, Security]
+sidebar_label: 'Users and Roles'
+title: 'Access Control and Account Management'
+keywords: ['ClickHouse Cloud', 'Access Control', 'User Management', 'RBAC', 'Security']
+description: 'Describes access control and account management in ClickHouse Cloud'
 ---
 
 # Creating Users and Roles in ClickHouse

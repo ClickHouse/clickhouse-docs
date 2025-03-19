@@ -1,11 +1,14 @@
 ---
 slug: /integrations/qstudio
-sidebar_label: QStudio
-description: QStudio is a free SQL tool.
+sidebar_label: 'QStudio'
+description: 'QStudio is a free SQL tool.'
+title: 'Connect QStudio to ClickHouse'
 ---
+
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import qstudio_add_connection from '@site/static/images/integrations/sql-clients/qstudio-add-connection.png';
 import qstudio_running_query from '@site/static/images/integrations/sql-clients/qstudio-running-query.png';
+import Image from '@theme/IdealImage';
 
 QStudio is a free SQL GUI, it allows running SQL scripts, easy browsing of tables, charting and exporting of results. It works on every operating system, with every database.
 
@@ -33,7 +36,7 @@ QStudio is available at https://www.timestored.com/qstudio/download/
 - When you first open QStudio click on the menu options **Server->Add Server** or on the add server button on the toolbar.
 - Then set the details:
 
-<img src={qstudio_add_connection} alt="Configure a new database" />
+<Image img={qstudio_add_connection} size="lg" border alt="QStudio database connection configuration screen showing ClickHouse connection settings" />
 
 1.   Server Type: Clickhouse.com
 2.    Note for Host you MUST include https://
@@ -53,7 +56,7 @@ If QStudio detects that you do not have the ClickHouse JDBC driver installed, it
 
 - An example query:
 
-<img src={qstudio_running_query} alt="A sample query" />
+<Image img={qstudio_running_query} size="lg" border alt="QStudio interface showing sample SQL query execution against ClickHouse database" />
 
 ## Next Steps {#next-steps}
 
