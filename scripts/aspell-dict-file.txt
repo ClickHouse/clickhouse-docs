@@ -832,3 +832,6 @@ airbyte
 subproject
 --docs/use-cases/time-series/analysis-functions.md--
 Yankovic's
+--docs/cloud/security/aws-privatelink.md--
+GWLBs
+NLBs
