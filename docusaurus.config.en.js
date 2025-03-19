@@ -328,18 +328,19 @@ const config = {
         disableInDev: false,
       },
     ],
-    './plugins/frontmatter-validation/frontmatterValidatorPlugin'
+    [
+      './plugins/frontmatter-validation/frontmatterValidatorPlugin'
       frontmatterValidator,
       {
         failBuild: true,
       },
     ],
     [
-        checkFloatingPages,
-        {
-          failBuild: true,
-          exceptionsFile: path.resolve(__dirname, 'plugins/floating-pages-exceptions.txt')
-        },
+      checkFloatingPages,
+      {
+        failBuild: true,
+        exceptionsFile: path.resolve(__dirname, 'plugins/floating-pages-exceptions.txt')
+      },
     ]
   ],
   customFields: {
