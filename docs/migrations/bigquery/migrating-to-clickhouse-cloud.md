@@ -384,7 +384,7 @@ The following provides example queries comparing BigQuery to ClickHouse. This li
 
 _BigQuery_
 
-<Image img={bigquery_8} size="md" alt="Rewriting BigQuery queries"/>
+<Image img={bigquery_8} size="sm" alt="Rewriting BigQuery queries" border/>
 
 _ClickHouse_
 
@@ -417,7 +417,7 @@ _BigQuery_
 
 <br />
 
-<Image img={bigquery_9} size="md" alt="BigQuery 1"/>
+<Image img={bigquery_9} size="sm" alt="BigQuery 1" border/>
 
 _ClickHouse_
 
@@ -450,9 +450,9 @@ Where possible, users should exploit ClickHouse aggregate functions. Below, we s
 
 _BigQuery_
 
-<Image img={bigquery_10} size="md" alt="Aggregate functions 1"/>
+<Image img={bigquery_10} border size="sm" alt="Aggregate functions 1"/>
 
-<Image img={bigquery_11} size="md" alt="Aggregate functions 2"/>
+<Image img={bigquery_11} border size="sm" alt="Aggregate functions 2"/>
 
 _ClickHouse_
 
@@ -505,7 +505,7 @@ Conditional and array functions make queries significantly simpler. The followin
 
 _BigQuery_
 
-<Image img={bigquery_12} size="md" alt="Conditionals and Arrays"/>
+<Image img={bigquery_12} size="sm" border alt="Conditionals and Arrays"/>
 
 _ClickHouse_
 

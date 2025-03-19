@@ -129,6 +129,7 @@ export default function IdealImage(
   const [isZoomed, setIsZoomed] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
+  const [networkType, setNetworkType] = useState<string | null>(null);
 
   useEffect(() => {
     if (!imageRef.current) return;
@@ -186,7 +187,12 @@ export default function IdealImage(
   };
 
   const img_component = force ? (
-    <img width={currentImage.width ?? 100} alt={alt} src={currentImage.path} />
+    <img
+      width={currentImage.width ?? 100}
+      alt={alt}
+      src={currentImage.path}
+      style={imageStyles}
+    />
   ) : (
     <ReactIdealImage
       {...propsRest}
@@ -202,17 +208,66 @@ export default function IdealImage(
       style={imageStyles}
     />
   );
-  let connection = null;
-  if ("connection" in navigator) {
-    connection =
-      navigator.connection ||
-      navigator.mozConnection ||
-      navigator.webkitConnection;
-  }
+
+  useEffect(() => {
+    if ("connection" in navigator) {
+      const connection =
+        navigator.connection ||
+        navigator.mozConnection ||
+        navigator.webkitConnection;
+      setNetworkType(connection.effectiveType);
+    } else {
+      const controller = new AbortController();
+      const signal = controller.signal;
+      const timeout = setTimeout(() => {
+        console.log("Timeout reached, aborting fetch...");
+        controller.abort();
+        setNetworkType("3g");
+      }, 1000); // 1 second timeout
+
+      const testSpeed = async () => {
+        console.log("Downloading...");
+        const url = currentImage.path!;
+        const startTime = performance.now();
+
+        try {
+          const response = await fetch(url, { signal, cache: "force-cache" });
+          const endTime = performance.now();
+          const duration = (endTime - startTime) / 1000;
+
+          clearTimeout(timeout);
+
+          if (duration > 1) {
+            console.log("Took too long, setting as 3g");
+            setNetworkType("3g");
+          } else {
+            console.log("Loaded quickly, setting as 4g");
+            setNetworkType("4g");
+          }
+        } catch (error) {
+          if (error.name === "AbortError") {
+            console.log("Fetch aborted due to timeout.");
+            setNetworkType("3g");
+          } else {
+            console.error("Fetch failed:", error);
+            setNetworkType("3g");
+          }
+        }
+      };
+
+      testSpeed();
+
+      return () => {
+        clearTimeout(timeout);
+        controller.abort();
+      };
+    }
+  }, [currentImage.path]);
+
   return (
     <div style={containerStyles}>
       {/* Zoomed Image */}
-      {connection && connection.effectiveType == "4g" && (
+      {networkType == "4g" && (
         <ControlledZoom
           isZoomed={isZoomed}
           onZoomChange={handleZoomChange}
@@ -232,17 +287,9 @@ export default function IdealImage(
       )}
       <div
         ref={imageRef}
-        onClick={() =>
-          connection &&
-          connection.effectiveType == "4g" &&
-          isLoaded &&
-          setIsZoomed(true)
-        }
+        onClick={() => networkType == "4g" && isLoaded && setIsZoomed(true)}
         style={{
-          cursor:
-            connection && connection.effectiveType == "4g" && isLoaded
-              ? "zoom-in"
-              : "default",
+          cursor: networkType == "4g" && isLoaded ? "zoom-in" : "default",
         }}
       >
         {img_component}

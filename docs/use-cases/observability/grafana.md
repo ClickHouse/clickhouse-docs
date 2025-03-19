@@ -49,7 +49,7 @@ If adhering to the Grafana requirements for logs, users can select `Query Type: 
 SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as traceID FROM "default"."otel_logs" WHERE ( timestamp >= $__fromTime AND timestamp <= $__toTime ) ORDER BY timestamp DESC LIMIT 1000
 ```
 
-<Image img={observability_16} alt="Connector logs config" size="lg"/>
+<Image img={observability_16} alt="Connector logs config" size="lg" border/>
 
 The query builder provides a simple means of modifying the query, avoiding the need for users to write SQL. Filtering, including finding logs containing keywords, can be performed from the query builder. Users wishing to write more complex queries can switch to the SQL editor. Provided the appropriate columns are returned, and `logs` selected as the Query Type, the results will be rendered as logs. The required columns for log rendering are listed [here](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format).
 
@@ -57,7 +57,7 @@ The query builder provides a simple means of modifying the query, avoiding the n
 
 If logs contain trace Ids, users can benefit from being able to navigate through to a trace for a specific log line.
 
-<Image img={observability_17} alt="Logs to traces" size="lg"/>
+<Image img={observability_17} alt="Logs to traces" size="lg" border/>
 
 ## Traces {#traces}
 
@@ -78,7 +78,7 @@ WHERE ( Timestamp >= $__fromTime AND Timestamp <= $__toTime )
 
 This query returns the column names expected by Grafana, rendering a table of traces as shown below. Filtering on duration or other columns can be performed without needing to write SQL.
 
-<Image img={observability_18} alt="Traces" size="lg"/>
+<Image img={observability_18} alt="Traces" size="lg" border/>
 
 Users wishing to write more complex queries can switch to the `SQL Editor`.
 
@@ -114,7 +114,7 @@ LIMIT 1000
 Note how the above query uses the materialized view `otel_traces_trace_id_ts` to perform the trace id lookup. See [Accelerating Queries - Using Materialized views for lookups](/use-cases/observability/schema-design#using-materialized-views-incremental--for-fast-lookups) for further details.
 :::
 
-<Image img={observability_19} alt="Trace Details" size="lg"/>
+<Image img={observability_19} alt="Trace Details" size="lg" border/>
 
 ### Traces to logs {#traces-to-logs}
 
@@ -128,7 +128,7 @@ WHERE ( traceID = '<trace_id>' )
 ORDER BY timestamp ASC LIMIT 1000
 ```
 
-<Image img={observability_20} alt="Traces to logs" size="lg"/>
+<Image img={observability_20} alt="Traces to logs" size="lg" border/>
 
 ## Dashboards {#dashboards}
 
@@ -136,7 +136,7 @@ Users can build dashboards in Grafana using the ClickHouse data source. We recom
 
 The plugin provides several out-of-the-box dashboards, including an example dashboard, "Simple ClickHouse OTel dashboarding," for logging and tracing data conforming to the OTel specification. This requires users to conform to the default column names for OTel and can be installed from the data source configuration.
 
-<Image img={observability_21} alt="Dashboards" size="lg"/>
+<Image img={observability_21} alt="Dashboards" size="lg" border/>
 
 We provide some simple tips for building visualizations below.
 
@@ -157,7 +157,7 @@ ORDER BY time ASC
 LIMIT 100000
 ```
 
-<Image img={observability_22} alt="Time series" size="lg"/>
+<Image img={observability_22} alt="Time series" size="lg" border/>
 
 ### Multi-line charts {#multi-line-charts}
 
@@ -182,7 +182,7 @@ ORDER BY time ASC
 LIMIT 100000
 ```
 
-<Image img={observability_23} alt="Multi-line charts" size="lg"/>
+<Image img={observability_23} alt="Multi-line charts" size="lg" border/>
 
 ### Visualizing geo data {#visualizing-geo-data}
 
@@ -206,4 +206,4 @@ FROM coords
 GROUP BY hash
 ```
 
-<Image img={observability_24} alt="Visualizing geo data" size="lg"/>
+<Image img={observability_24} alt="Visualizing geo data" size="lg" border/>

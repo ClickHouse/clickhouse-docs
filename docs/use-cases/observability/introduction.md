@@ -91,6 +91,6 @@ Each trace consists of several spans, with the initial span associated with the 
 
 Most observability vendors visualize this information as a waterfall, with relative timing shown using horizontal bars of proportional size. For example, in Grafana:
 
-<Image img={observability_2} alt="Example trace" size="lg"/>
+<Image img={observability_2} alt="Example trace" size="lg" border/>
 
 For users needing to familiarize themselves deeply with the concepts of logs and traces, we highly recommend the [OpenTelemetry documentation](https://opentelemetry.io/docs/concepts/).
