@@ -12,6 +12,7 @@ import prometheus_grafana_chart from '@site/static/images/integrations/prometheu
 import prometheus_grafana_alloy from '@site/static/images/integrations/prometheus-grafana-alloy.png';
 import prometheus_grafana_metrics_explorer from '@site/static/images/integrations/prometheus-grafana-metrics-explorer.png';
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
+import Image from '@theme/IdealImage';
 
 
 # Prometheus Integration
@@ -153,35 +154,23 @@ We provide instructions on using these options below, focusing on the details sp
 - Configure the Scrape URL to point to the Prometheus endpoint and use basic auth to configure your connection with the API key/secret
 - Test the connection to ensure you are able to connect
 
-<img src={prometheus_grafana_metrics_endpoint}
-  class='image'
-  alt='Configure Grafana Metrics Endpoint'
-  style={{width: '600px'}} />
+<Image img={prometheus_grafana_metrics_endpoint} size="md" alt="Configure Grafana Metrics Endpoint" border/>
 
 <br />
 
 Once configured, you should see the metrics in the drop-down that you can select to configure dashboards:
 
-<img src={prometheus_grafana_dropdown}
-  class='image'
-  alt='Grafana Metrics Explorer Drop-down'
-  style={{width: '400px'}} />
+<Image img={prometheus_grafana_dropdown} size="md" alt="Grafana Metrics Explorer Drop-down" border/>
 
 <br />
 
-<img src={prometheus_grafana_chart}
-  class='image'
-  alt='Grafana Metrics Explorer Chart'
-  style={{width: '800px'}} />
+<Image img={prometheus_grafana_chart} size="md" alt="Grafana Metrics Explorer Chart" border/>
 
 ### Grafana Cloud with Alloy {#grafana-cloud-with-alloy}
 
 If you are using Grafana Cloud, Alloy can be installed by navigating to the Alloy menu in Grafana and following the onscreen instructions:
 
-<img src={prometheus_grafana_alloy}
-  class='image'
-  alt='Grafana Alloy'
-  style={{width: '600px'}} />
+<Image img={prometheus_grafana_alloy} size="md" alt="Grafana Alloy" border/>
 
 <br />
 
@@ -247,10 +236,7 @@ prometheus.scrape "clickhouse_cloud" {
 
 Once configured, you should see ClickHouse related metrics in your metrics explorer:
 
-<img src={prometheus_grafana_metrics_explorer}
-  class='image'
-  alt='Grafana Metrics Explorer'
-  style={{width: '800px'}} />
+<Image img={prometheus_grafana_metrics_explorer} size="md" alt="Grafana Metrics Explorer" border/>
 
 <br />
 
@@ -274,7 +260,4 @@ instances:
 
 <br />
 
-<img src={prometheus_datadog}
-  class='image'
-  alt='Prometheus Datadog Integration'
-  style={{width: '600px'}} />
+<Image img={prometheus_datadog} size="md" alt="Prometheus Datadog Integration" />

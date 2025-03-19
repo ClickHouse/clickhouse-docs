@@ -5,6 +5,7 @@ title: 'Configuring Settings'
 description: 'How to configure settings for your ClickHouse Cloud service for a specific user or role'
 ---
 
+import Image from '@theme/IdealImage';
 import cloud_settings_sidebar from '@site/static/images/cloud/manage/cloud-settings-sidebar.png';
 
 # Configuring Settings
@@ -15,4 +16,4 @@ Please note that XML-based Settings Profiles and [configuration files](/operatio
 
 To learn more about the settings you can specify for your ClickHouse Cloud service, please see all possible settings by category in [our docs](/operations/settings).
 
-<img src={cloud_settings_sidebar} class="image" style={{width: 300, float: "left"}} />
+<Image img={cloud_settings_sidebar} size="sm" alt="Cloud settings sidebar" border/>

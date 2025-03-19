@@ -321,17 +321,25 @@ const config = {
     ],
     chHeader,
     [
+      '@docusaurus/plugin-ideal-image',
+      {
+        quality: 85,
+        sizes: [48, 300, 600, 1024, 2048],
+        disableInDev: false,
+      },
+    ],
+    [
       frontmatterValidator,
       {
         failBuild: true,
       },
     ],
     [
-        checkFloatingPages,
-        {
-          failBuild: true,
-          exceptionsFile: path.resolve(__dirname, 'plugins/floating-pages-exceptions.txt')
-        },
+      checkFloatingPages,
+      {
+        failBuild: true,
+        exceptionsFile: path.resolve(__dirname, 'plugins/floating-pages-exceptions.txt')
+      },
     ]
   ],
   customFields: {

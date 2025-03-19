@@ -6,6 +6,12 @@ tags: ['Native Clients and Interfaces']
 keywords: ['Docker', 'ODBC', 'Microsoft SQL Server', 'MSSQL']
 ---
 
+import Image from "@theme/IdealImage";
+import mssql_table from "@site/static/images/knowledgebase/ikb273/c8a5492f-5910-4454-bfbc-5c6ceda15ccd.png";
+import mssql_login from "@site/static/images/knowledgebase/ikb273/568f1143-475e-422f-a26a-2c23ac324771.png";
+import mssql_roles from "@site/static/images/knowledgebase/ikb273/63992978-7078-4985-b661-a3c095099ea7.png";
+import mssql_user from "@site/static/images/knowledgebase/ikb273/15a407ca-53c1-45b1-9beb-ddd8eedde64a.png";
+
 {frontMatter.description}
 {/* truncate */}
 
@@ -27,19 +33,19 @@ How do I set up ClickHouse with a Docker image to connect to Microsoft SQL Serve
 
 Database and table created in MSSQL:  
 
-![Screenshot 2024-01-01 at 8 25 50 PM](./images/ikb273/c8a5492f-5910-4454-bfbc-5c6ceda15ccd.png)  
+<Image img={mssql_table} size="md" alt="MSSQL database and table structure" border />
 
 MSSQL Login User, `sql_user`:  
 
-![Screenshot 2024-01-01 at 8 27 11 PM](./images/ikb273/568f1143-475e-422f-a26a-2c23ac324771.png)  
+<Image img={mssql_login} size="md" alt="MSSQL login user configuration" border />
 
 Database membership roles for `sql_user`:
 
-![Screenshot 2024-01-01 at 8 27 35 PM](./images/ikb273/63992978-7078-4985-b661-a3c095099ea7.png)  
+<Image img={mssql_roles} size="md" alt="MSSQL database membership roles" border />
 
 Database User with Login:  
 
-![Screenshot 2024-01-01 at 8 35 34 PM](./images/ikb273/15a407ca-53c1-45b1-9beb-ddd8eedde64a.png)  
+<Image img={mssql_user} size="md" alt="MSSQL database user with login" border />
 
 ### Configuring ClickHouse with ODBC {#configuring-clickhouse-with-odbc}
 

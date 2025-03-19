@@ -9,17 +9,7 @@ keywords: ['materialized view', 'aggregation']
 
 This example demonstrates how to create a Materialized View, and then how to cascade a second Materialized View on to the first. In this page, you will see how to do it, many of the possibilities, and the limitations. Different use cases can be answered by creating a Materialized view using a second Materialized view as the source.
 
-<div style={{width:'640px', height: '360px'}}>
-  <iframe src="//www.youtube.com/embed/QDAJTKZT8y4"
-    width="640"
-    height="360"
-    frameborder="0"
-    allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
-</div>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/QDAJTKZT8y4?si=1KqPNHHfaKfxtPat" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 <br />
 
@@ -301,13 +291,13 @@ Create two materialized views pointing to the same `Target` table. You don't nee
 ```sql
 CREATE MATERIALIZED VIEW analytics.daily_impressions_mv
 TO analytics.daily_overview
-AS                                                
+AS
 SELECT
     toDate(event_time) AS on_date,
     domain_name,
     count() AS impressions,
     0 clicks         ---<<<--- if you omit this, it will be the same 0
-FROM                                              
+FROM
     analytics.impressions
 GROUP BY
     toDate(event_time) AS on_date,

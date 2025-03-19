@@ -5,6 +5,7 @@ description: 'Subscribe to ClickHouse Cloud through the Azure Marketplace (Commi
 keywords: ['Microsoft', 'Azure', 'marketplace', 'billing', 'committed', 'committed contract']
 ---
 
+import Image from '@theme/IdealImage';
 import azure_marketplace_committed_1 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-committed-1.png';
 import azure_marketplace_committed_2 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-committed-2.png';
 import azure_marketplace_committed_3 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-committed-3.png';
@@ -32,11 +33,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={azure_marketplace_committed_1}
-    alt='Azure Marketplace private offer email'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={azure_marketplace_committed_1} size="md" alt="Azure Marketplace private offer email" border/>
 
 <br />
 
@@ -44,11 +41,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={azure_marketplace_committed_2}
-    alt='Azure Marketplace private offer details'
-    class='image'
-    style={{width: '600px'}}
-/>
+<Image img={azure_marketplace_committed_2} size="md" alt="Azure Marketplace private offer details" border/>
 
 <br />
 
@@ -56,19 +49,11 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={azure_marketplace_committed_3}
-    alt='Azure Marketplace Private Offer Management page'
-    class='image'
-    style={{width: '600px'}}
-/>
+<Image img={azure_marketplace_committed_3} size="md" alt="Azure Marketplace Private Offer Management page" border/>
 
 <br />
 
-<img src={azure_marketplace_committed_4}
-    alt='Azure Marketplace Private Offer Management page loading'
-    class='image'
-    style={{width: '600px'}}
-/>
+<Image img={azure_marketplace_committed_4} size="md" alt="Azure Marketplace Private Offer Management page loading" border/>
 
 <br />
 
@@ -76,11 +61,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={azure_marketplace_committed_5}
-    alt='Azure Marketplace Private Offer Management page purchase enabled'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={azure_marketplace_committed_5} size="md" alt="Azure Marketplace Private Offer Management page purchase enabled" border/>
 
 <br />
 
@@ -96,11 +77,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={azure_marketplace_committed_6}
-    alt='Azure Marketplace subscription form'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={azure_marketplace_committed_6} size="md" alt="Azure Marketplace subscription form" border/>
 
 <br />
 
@@ -108,11 +85,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={azure_marketplace_committed_7}
-    alt='Azure Marketplace subscription confirmation'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={azure_marketplace_committed_7} size="md" alt="Azure Marketplace subscription confirmation" border/>
 
 <br />
 
@@ -120,11 +93,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={azure_marketplace_committed_8}
-    alt='Azure Marketplace subscription submitting page'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={azure_marketplace_committed_8} size="md" alt="Azure Marketplace subscription submitting page" border/>
 
 <br />
 
@@ -132,11 +101,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={azure_marketplace_committed_9}
-    alt='Azure Marketplace configure account now button'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={azure_marketplace_committed_9} size="md" alt="Azure Marketplace configure account now button" border/>
 
 <br />
 
@@ -146,19 +111,11 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={aws_marketplace_payg_8}
-    alt='ClickHouse Cloud sign up info form'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud sign up info form" border/>
 
 <br />
 
-<img src={aws_marketplace_payg_9}
-    alt='ClickHouse Cloud sign up info form 2'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud sign up info form 2" border/>
 
 <br />
 
@@ -168,21 +125,13 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-<img src={azure_marketplace_payg_11}
-    alt='ClickHouse Cloud sign up info form'
-    class='image'
-    style={{width: '300px'}}
-/>
+<Image img={azure_marketplace_payg_11} size="sm" alt="ClickHouse Cloud sign up info form" border/>
 
 <br />
 
 <br />
 
-<img src={azure_marketplace_payg_12}
-    alt='ClickHouse Cloud sign up info form'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud sign up info form" border/>
 
 <br />
 

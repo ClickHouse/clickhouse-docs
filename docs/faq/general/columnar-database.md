@@ -6,6 +6,7 @@ toc_priority: 101
 description: 'This page describes what a columnar database is'
 ---
 
+import Image from '@theme/IdealImage';
 import RowOriented from '@site/static/images/row-oriented.gif';
 import ColumnOriented from '@site/static/images/column-oriented.gif';
 
@@ -22,10 +23,10 @@ Key columnar database advantages are:
 Here is the illustration of the difference between traditional row-oriented systems and columnar databases when building reports:
 
 **Traditional row-oriented**
-<img src={RowOriented} alt="Traditional row-oriented database" />
+<Image img={RowOriented} alt="Traditional row-oriented database" size="md" border />
 
 **Columnar**
-<img src={ColumnOriented} alt="Columnar database" />
+<Image img={ColumnOriented} alt="Columnar database" size="md" border />
 
 A columnar database is the preferred choice for analytical applications because it allows having many columns in a table just in case, but to not pay the cost for unused columns on read query execution time (a traditional OLTP database reads all of the data during queries as the data is stored in rows and not columns). Column-oriented databases are designed for big data processing and data warehousing, they often natively scale using distributed clusters of low-cost hardware to increase throughput. ClickHouse does it with combination of [distributed](../../engines/table-engines/special/distributed.md) and [replicated](../../engines/table-engines/mergetree-family/replication.md) tables.
 

@@ -4,6 +4,7 @@ description: 'This document describes how to connect to ClickHouse Cloud using A
 slug: /manage/security/aws-privatelink
 ---
 
+import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 import aws_private_link_pecreate from '@site/static/images/cloud/security/aws-privatelink-pe-create.png';
 import aws_private_link_endpoint_settings from '@site/static/images/cloud/security/aws-privatelink-endpoint-settings.png';
@@ -60,7 +61,7 @@ Follow these steps to connect your ClickHouse Cloud services via AWS PrivateLink
 
 In the ClickHouse Cloud console, open the service you want to connect via PrivateLink, then navigate to the **Settings** menu.
 
-<img src={aws_private_link_pecreate} alt="Private Endpoints" />
+<Image img={aws_private_link_pecreate} size="md" alt="Private Endpoints" border />
 
 Make a note of the `Service name` and `DNS name`, then [move onto next step](#create-aws-endpoint).
 
@@ -120,7 +121,7 @@ Open the AWS console and Go to **VPC** → **Endpoints** → **Create endpoints*
 
 Select **Endpoint services that use NLBs and GWLBs** and use `Service name`<sup>console</sup> or `endpointServiceId`<sup>API</sup> you got from [Obtain Endpoint "Service name" ](#obtain-endpoint-service-info) step in **Service Name** field. Click **Verify service**:
 
-<img src={aws_private_link_endpoint_settings} alt="AWS PrivateLink Endpoint Settings" />
+<Image img={aws_private_link_endpoint_settings} size="md" alt="AWS PrivateLink Endpoint Settings" border/>
 
 If you want to establish a cross-regional connection via PrivateLink, enable the "Cross region endpoint" checkbox and specify the service region. The service region is where the ClickHouse instance is running.
 
@@ -128,7 +129,7 @@ If you get a "Service name could not be verified." error, please contact Custome
 
 Next, select your VPC and subnets:
 
-<img src={aws_private_link_select_vpc} alt="Select VPC and subnets" />
+<Image img={aws_private_link_select_vpc} size="md" alt="Select VPC and subnets" border />
 
 As an optional step, assign Security groups/Tags:
 
@@ -138,7 +139,7 @@ Make sure that ports `443`, `8443`, `9440`, `3306` are allowed in the security g
 
 After creating the VPC Endpoint, make a note of the `Endpoint ID` value; you'll need it for an upcoming step.
 
-<img src={aws_private_link_vpc_endpoint_id} alt="VPC Endpoint ID" />
+<Image img={aws_private_link_vpc_endpoint_id} size="md" alt="VPC Endpoint ID" border/>
 
 #### Option 2: AWS CloudFormation {#option-2-aws-cloudformation}
 
@@ -202,7 +203,7 @@ To add an endpoint to organization, proceed to the [Add Endpoint ID to service(s
 
 To remove an endpoint, open **Organization details -> Private Endpoints** and click the delete button to remove the endpoint.
 
-<img src={pe_remove_private_endpoint} alt="Remove Private Endpoint" />
+<Image img={pe_remove_private_endpoint} size="md" alt="Remove Private Endpoint" border/>
 
 #### Option 2: API {#option-2-api-1}
 
@@ -276,7 +277,7 @@ To add please navigate to the ClickHouse Cloud console, open the service that yo
 If you want to allow access from an existing PrivateLink connection, use the existing endpoint drop-down menu.
 :::
 
-<img src={aws_private_link_pe_filters} alt="Private Endpoints Filter" />
+<Image img={aws_private_link_pe_filters} size="md" alt="Private Endpoints Filter" border/>
 
 To remove please navigate to the ClickHouse Cloud console, find the service, then navigate to **Settings** of the service, find endpoint you would like to remove.Remove it from the list of endpoints. 
 
@@ -346,7 +347,7 @@ Each service with Private Link enabled has a public and private endpoint. In ord
 
 In the ClickHouse Cloud console, navigate to **Settings**. Click on the **Set up private endpoint** button. In the opened flyout, copy the **DNS Name**.
 
-<img src={aws_private_link_ped_nsname} alt="Private Endpoint DNS Name" />
+<Image img={aws_private_link_ped_nsname} size="md" alt="Private Endpoint DNS Name" border />
 
 ##### Option 2: API {#option-2-api-3}
 

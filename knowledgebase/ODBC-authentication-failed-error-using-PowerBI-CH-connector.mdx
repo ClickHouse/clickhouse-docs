@@ -6,6 +6,9 @@ tags: ['Native Clients and Interfaces', 'Errors and Exceptions']
 keywords: ['ODBC', 'Power BI Connector', 'Authentication Failed']
 ---
 
+import Image from "@theme/IdealImage";
+import powerbi_error from "@site/static/images/knowledgebase/powerbi_odbc_authentication_error.png";
+
 {frontMatter.description}
 {/* truncate */}
 
@@ -25,7 +28,7 @@ The password for default user is typically located at /etc/clickhouse-server/use
 See also /etc/clickhouse-server/users.ml on the server where
 ClickHouse is installed.
 ```
-![Power BI Error](./images/powerbi_odbc_authentication_error.png)
+<Image img={powerbi_error} size="md" alt="Power BI ODBC authentication error dialog" border />
 
 ## Answer {#answer}
 
