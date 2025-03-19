@@ -220,7 +220,6 @@ export default function IdealImage(
       const controller = new AbortController();
       const signal = controller.signal;
       const timeout = setTimeout(() => {
-        console.log("Timeout reached, aborting fetch...");
         controller.abort();
         setNetworkType("3g");
       }, 1000); // 1 second timeout
@@ -239,18 +238,14 @@ export default function IdealImage(
           clearTimeout(timeout);
 
           if (duration > 1) {
-            console.log("Took too long, setting as 3g");
             setNetworkType("3g");
           } else {
-            console.log(`Loaded ${url} quickly in ${duration}, setting as 4g`);
             setNetworkType("4g");
           }
         } catch (error) {
           if (error.name === "AbortError") {
-            console.log("Fetch aborted due to timeout.");
             setNetworkType("3g");
           } else {
-            console.error("Fetch failed:", error);
             setNetworkType("3g");
           }
         }
