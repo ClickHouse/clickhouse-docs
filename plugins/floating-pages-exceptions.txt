@@ -6,9 +6,7 @@
 # - With /docs/ prefix: /docs/integrations/language-clients/java/client-v1
 # - With /docs/ prefix and .md extension: /docs/integrations/language-clients/java/client-v1.md
 
-# Root index page
 /docs/index.md
-
-# Java client documentation
 integrations/language-clients/java/client-v1
 integrations/language-clients/java/jdbc-v1
+operations/query-condition-cache
