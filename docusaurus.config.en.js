@@ -329,7 +329,6 @@ const config = {
       },
     ],
     [
-      './plugins/frontmatter-validation/frontmatterValidatorPlugin'
       frontmatterValidator,
       {
         failBuild: true,
