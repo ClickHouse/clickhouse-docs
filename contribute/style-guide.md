@@ -1,22 +1,37 @@
 # ClickHouse docs style guide
 
-In this document, you will find a number of style guidelines for writing documentation.
-The rules in this guide are intended to assist in helping us to create a high
-quality documentation offering on par with the quality of ClickHouse itself.
+In this document, you will find a number of style guidelines for writing ClickHouse
+documentation. As documentation is a collective effort, these guidelines are 
+intended to help all of us ensure quality and consistency across our documentation.
 
 ## YAML front matter
 
-Begin every new markdown document with YAML front-matter:
+Begin every new Markdown document with YAML front-matter:
 
 ```markdown
 ---
-title: Using a clickhouse-local database
-sidebar_label: Using clickhouse-local database
+title: 'Using a clickhouse-local database'
+sidebar_label: 'Using clickhouse-local database'
 slug: /chdb/guides/clickhouse-local
-description: Learn how to use a clickhouse-local database with chDB
-keywords: [chdb, clickhouse-local]
+description: 'Learn how to use a clickhouse-local database with chDB'
+keywords: ['chdb', 'clickhouse-local']
 ---
 ```
+
+### Associated markdown rule or CI check
+
+#### front-matter validation 
+
+There is a custom Docusaurus plugin which runs on build that makes the following
+checks on front-matter:
+
+- title, description and slug are specified.
+- keywords use flow style arrays with single quoted items e.g. 
+  `keywords: ['integrations']`
+- single quotes are used for title, description, slug, sidebar_label
+- there is an empty line after the YAML frontmatter block
+
+For implementation details see [plugins/frontmatter-validation](https://github.com/ClickHouse/clickhouse-docs/tree/main/plugins/frontmatter-validation)
 
 ## Explicit header tags
 
@@ -191,4 +206,12 @@ export function Anchor(props) {
 ```
 - Replace `<span id="some-id"></span>` with `Anchor id="some-id"/>`
 
+### Dangling pages
+
+In order to prevent pages from becoming 'floating' or 'orphaned' it is
+necessary that you add a newly created page to `sidebars.js`. We have a [custom
+docusaurus plugin](plugins/checkFloatingPages.js) to catch dangling pages.
+
+If there is some specific reason that you need to bypass this check, you can
+add an exception to `floating-pages-exceptions.txt` in the plugins directory.
 
