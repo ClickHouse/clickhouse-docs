@@ -231,7 +231,8 @@ export default function IdealImage(
         const startTime = performance.now();
 
         try {
-          const response = await fetch(url, { signal, cache: "force-cache" });
+          const response = await fetch(url, { cache: "no-store" });
+          await response.blob(); // Ensures full download
           const endTime = performance.now();
           const duration = (endTime - startTime) / 1000;
 
@@ -241,7 +242,7 @@ export default function IdealImage(
             console.log("Took too long, setting as 3g");
             setNetworkType("3g");
           } else {
-            console.log("Loaded quickly, setting as 4g");
+            console.log(`Loaded ${url} quickly in ${duration}, setting as 4g`);
             setNetworkType("4g");
           }
         } catch (error) {
