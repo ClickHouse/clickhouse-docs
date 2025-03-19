@@ -49,18 +49,18 @@ For example:
 
 ## Images
 
-In all cases images get added to the `static/images` directory of the repository.
-Under the images directory you should place the images according to the folder
-structure of the docs.
+In all cases images get added to the `static/images` directory of the repository
+when working on the ClickHouse/clickhouse-docs repo. You should place the images
+according to the folder structure of the docs in `static/images`.
 
 For example, if you wanted to add images to `clickhouse-local.md` which is 
 located at `/docs/chdb/guides/clickhouse-local.md`. You should add the 
 images at `/static/images/chdb/guides/`.
 
 Try to use descriptive names in lower case. For example:
-- `clickhouse-local-1.png`
-- `clickhouse-local-2.png`
-- `clickhouse-local-3.png` etc.
+- `clickhouse_local_1.png`
+- `clickhouse_local_2.png`
+- `clickhouse_local_3.png` etc.
 
 In the markdown document import the images under the YAML frontmatter:
 
@@ -73,23 +73,42 @@ description: Learn how to use a clickhouse-local database with chDB
 keywords: [chdb, clickhouse-local]
 ---
 
-import clickhouse-local-1 from '@site/static/images/chdb/guides/clickhouse-local-1.png'
-import clickhouse-local-2 from '@site/static/images/chdb/guides/clickhouse-local-2.png'
-import clickhouse-local-3 from '@site/static/images/chdb/guides/clickhouse-local-3.png'
+import Image from '@theme/IdealImage';
+import clickhouse_local_1 from '@site/static/images/chdb/guides/clickhouse-local-1.png'
+import clickhouse_local_2 from '@site/static/images/chdb/guides/clickhouse-local-2.png'
+import clickhouse_local_3 from '@site/static/images/chdb/guides/clickhouse-local-3.png'
 ```
 
-Use the `<img/>` tag to place your image in the appropriate place:
+Use the `<Image/>` component for images rather than `<img></img>` tags. To do so
+fir import the image component:
+
+```
+import Image from '@theme/IdealImage';
+```
+
+You can then add the `<Image/>` component where you want the image to appear.
 
 ```markdown
 Here is some example text which refers to the image below:
 
-<img src={clickhouse-local-1}
-    alt='DESCRIPTION OF THE IMAGE'
-    style={{width: '800px'}} // optional
+<Image
+  img={clickhouse-local-1}
+  size="md"
+  alt="DESCRIPTION OF THE IMAGE"
 />
 
 Here is another paragraph...
 ```
+
+The `<Image/>` component has the following parameters:
+- `img` : named import of the image in the `@site/static/images` folder
+- size : the size to display the image
+  - `sm` : small -  300px width 
+  - `md` : medium - 600px width
+  - `lg` : large - 1024px width
+- `border` : displays a drop shadow on the image (recommended for screenshots)
+- `background` : the color to display the background for transparent images, either
+  `background="white"` or `background="black"`
 
 ## Codeblocks
 
