@@ -926,6 +926,7 @@ createservice
 subproject
 --docs/use-cases/time-series/analysis-functions.md--
 Yankovic's
+<<<<<<< HEAD
 --docs/migrations/bigquery/migrating-to-clickhouse-cloud.md--
 bigquery
 --docs/integrations/data-ingestion/clickpipes/index.md--
@@ -941,3 +942,6 @@ kinesis
 --docs/integrations/data-ingestion/dbms/dynamodb/index.md--
 dynamodb
 kinesis
+--docs/cloud/security/aws-privatelink.md--
+GWLBs
+NLBs

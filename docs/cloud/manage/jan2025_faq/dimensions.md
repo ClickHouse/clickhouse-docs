@@ -106,6 +106,7 @@ For example, ingesting 1 TB of data over 24 hours using the Kafka connector usin
 $$
 (0.25 \times 0.20 \times 24) + (0.04 \times 1000) = \$41.2
 $$
+<br/>
 
 For object storage connectors (S3 and GCS),
 only the ClickPipes compute cost is incurred since the ClickPipes pod is not processing data

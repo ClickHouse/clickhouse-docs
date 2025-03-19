@@ -28,7 +28,6 @@ import fast_releases from '@site/static/images/cloud/reference/june-13-fast-rele
 import share_queries from '@site/static/images/cloud/reference/may-30-share-queries.png';
 import query_endpoints from '@site/static/images/cloud/reference/may-17-query-endpoints.png';
 
-
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
 ## March 7, 2025 {#march-7-2025}
 
@@ -292,7 +291,7 @@ Services are available in GCP `us-central-1` to customers with the **Dedicated**
 
 We recently announced the Private Preview for Compute-Compute Separation for AWS. We're happy to announce that it is now available for GCP and Azure.
 
-Compute-compute separation allows you to designate specific services as read-write or read-only services, allowing you to design the optimal compute configuration for your application to optimize cost and performance. Please [read the docs](/cloud/reference/compute-compute-separation) for more details.
+Compute-compute separation allows you to designate specific services as read-write or read-only services, allowing you to design the optimal compute configuration for your application to optimize cost and performance. Please [read the docs](/cloud/reference/warehouses) for more details.
 
 ### Self-service MFA recovery codes {#self-service-mfa-recovery-codes}
 
@@ -342,7 +341,7 @@ Please also check out our [Trust Center](https://trust.clickhouse.com/) for secu
 
 For existing ClickHouse Cloud services, replicas handle both reads and writes, and there is no way to configure a certain replica to handle only one kind of operation. We have an upcoming new feature called Compute-compute separation that allows you to designate specific services as read-write or read-only services, allowing you to design the optimal compute configuration for your application to optimize cost and performance.
 
-Our new compute-compute separation feature enables you to create multiple compute node groups, each with its own endpoint, that are using the same object storage folder, and thus, with the same tables, views, etc. Read more about [Compute-compute separation here](/cloud/reference/compute-compute-separation). Please [contact support](https://clickhouse.com/support/program) if you would like access to this feature in Private Preview.
+Our new compute-compute separation feature enables you to create multiple compute node groups, each with its own endpoint, that are using the same object storage folder, and thus, with the same tables, views, etc. Read more about [Compute-compute separation here](/cloud/reference/warehouses). Please [contact support](https://clickhouse.com/support/program) if you would like access to this feature in Private Preview.
 
 <Image img={cloud_console_2} size="lg" alt="Diagram showing example architecture for compute-compute separation with read-write and read-only service groups" border />
 
