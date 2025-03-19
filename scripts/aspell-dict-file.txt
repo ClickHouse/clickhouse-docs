@@ -114,6 +114,7 @@ KafkaSVG
 MskSVG
 PostgresSVG
 WarpStreamSVG
+clickpipes
 --docs/integrations/tools/data-integration/retool/index.md--
 nocode
 --docs/integrations/data-visualization/hashboard-and-clickhouse.md--
@@ -925,3 +926,18 @@ createservice
 subproject
 --docs/use-cases/time-series/analysis-functions.md--
 Yankovic's
+--docs/migrations/bigquery/migrating-to-clickhouse-cloud.md--
+bigquery
+--docs/integrations/data-ingestion/clickpipes/index.md--
+clickpipes
+--docs/integrations/data-ingestion/clickpipes/kinesis.md--
+kinesis
+--docs/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql.md--
+cloudsql
+--docs/integrations/data-ingestion/clickpipes/postgres/source/neon-postgres.md--
+conn
+--docs/integrations/data-ingestion/clickpipes/secure-kinesis.md--
+kinesis
+--docs/integrations/data-ingestion/dbms/dynamodb/index.md--
+dynamodb
+kinesis
