@@ -39,14 +39,14 @@ This part of the configuration is shown in the highlighted section and specifies
     <storage_configuration>
         <disks>
             <gcs>
-	    <!--highlight-start-->
+            <!--highlight-start-->
                 <support_batch_delete>false</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
                 <secret_access_key>SERVICE ACCOUNT HMAC SECRET</secret_access_key>
                 <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
-	    <!--highlight-end-->
+            <!--highlight-end-->
             </gcs>
         </disks>
         <policies>
@@ -77,14 +77,14 @@ The example configuration highlighted below enables a 10Gi memory cache for the 
                 <secret_access_key>SERVICE ACCOUNT HMAC SECRET</secret_access_key>
                 <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
             </gcs>
-	    <!--highlight-start-->
-	    <gcs_cache>
+            <!--highlight-start-->
+            <gcs_cache>
                 <type>cache</type>
                 <disk>gcs</disk>
                 <path>/var/lib/clickhouse/disks/gcs_cache/</path>
                 <max_size>10Gi</max_size>
             </gcs_cache>
-	    <!--highlight-end-->
+            <!--highlight-end-->
         </disks>
         <policies>
             <gcs_main>
@@ -116,7 +116,7 @@ Storage configuration policies allow choosing where data is stored.  The policy 
             </gcs>
         </disks>
         <policies>
-	    <!--highlight-start-->
+            <!--highlight-start-->
             <gcs_main>
                 <volumes>
                     <main>
@@ -124,7 +124,7 @@ Storage configuration policies allow choosing where data is stored.  The policy 
                     </main>
                 </volumes>
             </gcs_main>
-	    <!--highlight-end-->
+            <!--highlight-end-->
         </policies>
     </storage_configuration>
 </clickhouse>
@@ -406,7 +406,7 @@ These substitutions are common across the two nodes:
                 <secret_access_key>SERVICE ACCOUNT HMAC SECRET</secret_access_key>
                 <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
             </gcs>
-	    <cache>
+            <cache>
                 <type>cache</type>
                 <disk>gcs</disk>
                 <path>/var/lib/clickhouse/disks/gcs_cache/</path>
@@ -444,28 +444,28 @@ Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr` retur
 echo mntr | nc localhost 9181
 ```
 ```response
-zk_version	v22.7.2.15-stable-f843089624e8dd3ff7927b8a125cf3a7a769c069
-zk_avg_latency	0
-zk_max_latency	11
-zk_min_latency	0
-zk_packets_received	1783
-zk_packets_sent	1783
+zk_version      v22.7.2.15-stable-f843089624e8dd3ff7927b8a125cf3a7a769c069
+zk_avg_latency  0
+zk_max_latency  11
+zk_min_latency  0
+zk_packets_received     1783
+zk_packets_sent 1783
 # highlight-start
-zk_num_alive_connections	2
-zk_outstanding_requests	0
-zk_server_state	leader
+zk_num_alive_connections        2
+zk_outstanding_requests 0
+zk_server_state leader
 # highlight-end
-zk_znode_count	135
-zk_watch_count	8
-zk_ephemerals_count	3
-zk_approximate_data_size	42533
-zk_key_arena_size	28672
-zk_latest_snapshot_size	0
-zk_open_file_descriptor_count	182
-zk_max_file_descriptor_count	18446744073709551615
+zk_znode_count  135
+zk_watch_count  8
+zk_ephemerals_count     3
+zk_approximate_data_size        42533
+zk_key_arena_size       28672
+zk_latest_snapshot_size 0
+zk_open_file_descriptor_count   182
+zk_max_file_descriptor_count    18446744073709551615
 # highlight-start
-zk_followers	2
-zk_synced_followers	2
+zk_followers    2
+zk_synced_followers     2
 # highlight-end
 ```
 

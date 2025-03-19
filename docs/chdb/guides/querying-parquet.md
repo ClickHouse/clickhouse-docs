@@ -64,15 +64,15 @@ chdb.query(query, 'TabSeparated')
 ```
 
 ```text
-num_columns	UInt64
-num_rows	UInt64
-num_row_groups	UInt64
-format_version	String
-metadata_size	UInt64
-total_uncompressed_size	UInt64
-total_compressed_size	UInt64
-columns	Array(Tuple(name String, path String, max_definition_level UInt64, max_repetition_level UInt64, physical_type String, logical_type String, compression String, total_uncompressed_size UInt64, total_compressed_size UInt64, space_saved String, encodings Array(String)))
-row_groups	Array(Tuple(num_columns UInt64, num_rows UInt64, total_uncompressed_size UInt64, total_compressed_size UInt64, columns Array(Tuple(name String, path String, total_compressed_size UInt64, total_uncompressed_size UInt64, have_statistics Bool, statistics Tuple(num_values Nullable(UInt64), null_count Nullable(UInt64), distinct_count Nullable(UInt64), min Nullable(String), max Nullable(String))))))
+num_columns     UInt64
+num_rows        UInt64
+num_row_groups  UInt64
+format_version  String
+metadata_size   UInt64
+total_uncompressed_size UInt64
+total_compressed_size   UInt64
+columns Array(Tuple(name String, path String, max_definition_level UInt64, max_repetition_level UInt64, physical_type String, logical_type String, compression String, total_uncompressed_size UInt64, total_compressed_size UInt64, space_saved String, encodings Array(String)))
+row_groups      Array(Tuple(num_columns UInt64, num_rows UInt64, total_uncompressed_size UInt64, total_compressed_size UInt64, columns Array(Tuple(name String, path String, total_compressed_size UInt64, total_uncompressed_size UInt64, have_statistics Bool, statistics Tuple(num_values Nullable(UInt64), null_count Nullable(UInt64), distinct_count Nullable(UInt64), min Nullable(String), max Nullable(String))))))
 ```
 
 Let's have now have a look at the metadata for this file.

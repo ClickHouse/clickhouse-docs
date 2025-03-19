@@ -182,15 +182,15 @@ The following shows an example configuration for Alloy with a `prometheus.scrape
 prometheus.scrape "clickhouse_cloud" {
   // Collect metrics from the default listen address.
   targets = [{
-	__address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
+        __address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
 // e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
   }]
 
   honor_labels = true
 
   basic_auth {
-  	username = "KEY_ID"
-  	password = "KEY_SECRET"
+        username = "KEY_ID"
+        password = "KEY_SECRET"
   }
 
   forward_to = [prometheus.remote_write.metrics_service.receiver]
@@ -199,10 +199,10 @@ prometheus.scrape "clickhouse_cloud" {
 
 prometheus.remote_write "metrics_service" {
   endpoint {
-	url = "https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push"
-	basic_auth {
-  	  username = "<Grafana API username>"
-  	  password = "<grafana API token>"
+        url = "https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push"
+        basic_auth {
+          username = "<Grafana API username>"
+          password = "<grafana API token>"
     }
   }
 }
@@ -218,15 +218,15 @@ Self-managed users of Grafana can find the instructions for installing the Alloy
 prometheus.scrape "clickhouse_cloud" {
   // Collect metrics from the default listen address.
   targets = [{
-	__address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
+        __address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
 // e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
   }]
 
   honor_labels = true
 
   basic_auth {
-  	username = "KEY_ID"
-  	password = "KEY_SECRET"
+        username = "KEY_ID"
+        password = "KEY_SECRET"
   }
 
   forward_to = [prometheus.remote_write.metrics_service.receiver]

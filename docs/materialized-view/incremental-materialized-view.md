@@ -55,16 +55,16 @@ ORDER BY day ASC
 LIMIT 10
 
 ┌─────────────────day─┬─UpVotes─┬─DownVotes─┐
-│ 2008-07-31 00:00:00 │       6 │     	  0 │
-│ 2008-08-01 00:00:00 │     182 │    	 50 │
-│ 2008-08-02 00:00:00 │     436 │   	107 │
-│ 2008-08-03 00:00:00 │     564 │   	100 │
-│ 2008-08-04 00:00:00 │	   1306 │   	259 │
-│ 2008-08-05 00:00:00 │	   1368 │   	269 │
-│ 2008-08-06 00:00:00 │	   1701 │   	211 │
-│ 2008-08-07 00:00:00 │	   1544 │   	211 │
-│ 2008-08-08 00:00:00 │	   1241 │   	212 │
-│ 2008-08-09 00:00:00 │     576 │    	 46 │
+│ 2008-07-31 00:00:00 │       6 │         0 │
+│ 2008-08-01 00:00:00 │     182 │        50 │
+│ 2008-08-02 00:00:00 │     436 │       107 │
+│ 2008-08-03 00:00:00 │     564 │       100 │
+│ 2008-08-04 00:00:00 │    1306 │       259 │
+│ 2008-08-05 00:00:00 │    1368 │       269 │
+│ 2008-08-06 00:00:00 │    1701 │       211 │
+│ 2008-08-07 00:00:00 │    1544 │       211 │
+│ 2008-08-08 00:00:00 │    1241 │       212 │
+│ 2008-08-09 00:00:00 │     576 │        46 │
 └─────────────────────┴─────────┴───────────┘
 
 10 rows in set. Elapsed: 0.133 sec. Processed 238.98 million rows, 2.15 GB (1.79 billion rows/s., 16.14 GB/s.)
@@ -132,9 +132,9 @@ Since the merging of rows is asynchronous, there may be more than one vote per d
 
 ```sql
 SELECT
-	Day,
-	UpVotes,
-	DownVotes
+        Day,
+        UpVotes,
+        DownVotes
 FROM up_down_votes_per_day
 FINAL
 ORDER BY Day ASC
@@ -149,16 +149,16 @@ GROUP BY Day
 ORDER BY Day ASC
 LIMIT 10
 ┌────────Day─┬─UpVotes─┬─DownVotes─┐
-│ 2008-07-31 │       6 │     	 0 │
-│ 2008-08-01 │ 	   182 │    	50 │
-│ 2008-08-02 │ 	   436 │       107 │
-│ 2008-08-03 │ 	   564 │       100 │
-│ 2008-08-04 │	  1306 │       259 │
-│ 2008-08-05 │	  1368 │       269 │
-│ 2008-08-06 │	  1701 │       211 │
-│ 2008-08-07 │	  1544 │       211 │
-│ 2008-08-08 │	  1241 │       212 │
-│ 2008-08-09 │ 	   576 │    	46 │
+│ 2008-07-31 │       6 │         0 │
+│ 2008-08-01 │     182 │        50 │
+│ 2008-08-02 │     436 │       107 │
+│ 2008-08-03 │     564 │       100 │
+│ 2008-08-04 │    1306 │       259 │
+│ 2008-08-05 │    1368 │       269 │
+│ 2008-08-06 │    1701 │       211 │
+│ 2008-08-07 │    1544 │       211 │
+│ 2008-08-08 │    1241 │       212 │
+│ 2008-08-09 │     576 │        46 │
 └────────────┴─────────┴───────────┘
 
 10 rows in set. Elapsed: 0.010 sec. Processed 8.97 thousand rows, 89.68 KB (907.32 thousand rows/s., 9.07 MB/s.)
@@ -179,9 +179,9 @@ Suppose we wish to compute some statistics for posts for each day: the 99.9th pe
 
 ```sql
 SELECT
-	toStartOfDay(CreationDate) AS Day,
-	quantile(0.999)(Score) AS Score_99th,
-	avg(CommentCount) AS AvgCommentCount
+        toStartOfDay(CreationDate) AS Day,
+        quantile(0.999)(Score) AS Score_99th,
+        avg(CommentCount) AS AvgCommentCount
 FROM posts
 GROUP BY Day
 ORDER BY Day DESC
@@ -259,9 +259,9 @@ Our final query needs to utilize the `Merge` suffix for our functions (as the co
 
 ```sql
 SELECT
-	Day,
-	quantileMerge(0.999)(Score_quantiles),
-	avgMerge(AvgCommentCount)
+        Day,
+        quantileMerge(0.999)(Score_quantiles),
+        avgMerge(AvgCommentCount)
 FROM post_stats_per_day
 GROUP BY Day
 ORDER BY Day DESC
@@ -360,7 +360,7 @@ Our materialized view for this transformation is shown below:
 
 ```sql
 CREATE MATERIALIZED VIEW posts_mv TO posts AS
-   	SELECT * EXCEPT Tags, arrayFilter(t -> (t != ''), splitByChar('|', Tags)) as Tags FROM posts_null
+        SELECT * EXCEPT Tags, arrayFilter(t -> (t != ''), splitByChar('|', Tags)) as Tags FROM posts_null
 ```
 
 ### Lookup table {#lookup-table}
@@ -370,13 +370,13 @@ Users should consider their access patterns when choosing the ClickHouse orderin
 ```sql
 CREATE TABLE comments
 (
-	`Id` UInt32,
-	`PostId` UInt32,
-	`Score` UInt16,
-	`Text` String,
-	`CreationDate` DateTime64(3, 'UTC'),
-	`UserId` Int32,
-	`UserDisplayName` LowCardinality(String)
+        `Id` UInt32,
+        `PostId` UInt32,
+        `Score` UInt16,
+        `Text` String,
+        `CreationDate` DateTime64(3, 'UTC'),
+        `UserId` Int32,
+        `UserDisplayName` LowCardinality(String)
 )
 ENGINE = MergeTree
 ORDER BY PostId
@@ -429,9 +429,9 @@ We can now use this view in a subquery to accelerate our previous query:
 SELECT avg(Score)
 FROM comments
 WHERE PostId IN (
-	SELECT PostId
-	FROM comments_posts_users
-	WHERE UserId = 8592047
+        SELECT PostId
+        FROM comments_posts_users
+        WHERE UserId = 8592047
 ) AND UserId = 8592047
 
 

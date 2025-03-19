@@ -26,7 +26,7 @@ ClickHouse Cloud provides access to a curated set of capabilities in the open so
 ### DDL syntax {#ddl-syntax}
 For the most part, the DDL syntax of ClickHouse Cloud should match what is available in self-managed installs. A few notable exceptions:
   - Support for `CREATE AS SELECT`, which is currently not available. As a workaround, we suggest using `CREATE ... EMPTY ... AS SELECT` and then inserting into that table (see [this blog](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1) for an example).
-  - Some experimental syntax may be disabled, for instance, `ALTER TABLE … MODIFY QUERY` statement.
+  - Some experimental syntax may be disabled, for instance, `ALTER TABLE ... MODIFY QUERY` statement.
   - Some introspection functionality may be disabled for security purposes, for example, the `addressToLine` SQL function.
   - Do not use `ON CLUSTER` parameters in ClickHouse Cloud - these are not needed. While these are mostly no-op functions, they can still cause an error if you are trying to use [macros](/operations/server-configuration-parameters/settings#macros). Macros often do not work and are not needed in ClickHouse Cloud.
 

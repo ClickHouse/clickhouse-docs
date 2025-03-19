@@ -132,7 +132,7 @@ In a row-oriented DBMS, data is stored in this order:
 | #0 | 89354350662 | 1          | Investor Relations | 1         | 2016-05-18 05:19:20 |
 | #1 | 90329509958 | 0          | Contact us         | 1         | 2016-05-18 08:10:20 |
 | #2 | 89953706054 | 1          | Mission            | 1         | 2016-05-18 07:38:00 |
-| #N | …           | …          | …                  | …         | …                   |
+| #N | ...           | ...          | ...                  | ...         | ...                   |
 
 In other words, all the values related to a row are physically stored next to each other.
 
@@ -142,11 +142,11 @@ In a column-oriented DBMS, data is stored like this:
 
 | Row:        | #0                 | #1                 | #2                 | #N |
 |-------------|---------------------|---------------------|---------------------|-----|
-| WatchID:    | 89354350662         | 90329509958         | 89953706054         | …   |
-| JavaEnable: | 1                   | 0                   | 1                   | …   |
-| Title:      | Investor Relations  | Contact us          | Mission             | …   |
-| GoodEvent:  | 1                   | 1                   | 1                   | …   |
-| EventTime:  | 2016-05-18 05:19:20 | 2016-05-18 08:10:20 | 2016-05-18 07:38:00 | …   |
+| WatchID:    | 89354350662         | 90329509958         | 89953706054         | ...   |
+| JavaEnable: | 1                   | 0                   | 1                   | ...   |
+| Title:      | Investor Relations  | Contact us          | Mission             | ...   |
+| GoodEvent:  | 1                   | 1                   | 1                   | ...   |
+| EventTime:  | 2016-05-18 05:19:20 | 2016-05-18 08:10:20 | 2016-05-18 07:38:00 | ...   |
 
 These examples only show the order that data is arranged in. The values from different columns are stored separately, and data from the same column is stored together.
 

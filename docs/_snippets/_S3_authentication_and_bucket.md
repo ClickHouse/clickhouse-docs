@@ -111,22 +111,22 @@ The bucket name must be unique across AWS, not just the organization, or it will
 12. Add a bucket policy, example below:
 ```json
 {
-	"Version": "2012-10-17",
-	"Id": "Policy123456",
-	"Statement": [
-		{
-			"Sid": "abc123",
-			"Effect": "Allow",
-			"Principal": {
-				"AWS": "arn:aws:iam::921234567898:user/mars-s3-user"
-			},
-			"Action": "s3:*",
-			"Resource": [
-				"arn:aws:s3:::mars-doc-test",
-				"arn:aws:s3:::mars-doc-test/*"
-			]
-		}
-	]
+  "Version" : "2012-10-17",
+  "Id" : "Policy123456",
+  "Statement" : [
+    {
+      "Sid" : "abc123",
+      "Effect" : "Allow",
+      "Principal" : {
+        "AWS" : "arn:aws:iam::921234567898:user/mars-s3-user"
+      },
+      "Action" : "s3:*",
+      "Resource" : [
+        "arn:aws:s3:::mars-doc-test",
+        "arn:aws:s3:::mars-doc-test/*"
+      ]
+    }
+  ]
 }
 ```
 

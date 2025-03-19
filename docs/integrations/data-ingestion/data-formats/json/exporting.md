@@ -62,33 +62,33 @@ SELECT * FROM sometable FORMAT JSON
 ```
 ```response
 {
-	"meta":
-	[
-		{
-			"name": "path",
-			"type": "String"
-		},
-		…
-	],
+        "meta":
+        [
+                {
+                        "name": "path",
+                        "type": "String"
+                },
+                ...
+        ],
 
-	"data":
-	[
-		{
-			"path": "Bob_Dolman",
-			"month": "2016-11-01",
-			"hits": 245
-		},
-		…
-	],
+        "data":
+        [
+                {
+                        "path": "Bob_Dolman",
+                        "month": "2016-11-01",
+                        "hits": 245
+                },
+                ...
+        ],
 
-	"rows": 3,
+        "rows": 3,
 
-	"statistics":
-	{
-		"elapsed": 0.000497457,
-		"rows_read": 3,
-		"bytes_read": 87
-	}
+        "statistics":
+        {
+                "elapsed": 0.000497457,
+                "rows_read": 3,
+                "bytes_read": 87
+        }
 }
 ```
 
@@ -99,30 +99,30 @@ SELECT * FROM sometable FORMAT JSONCompact
 ```
 ```response
 {
-	"meta":
-	[
-		{
-			"name": "path",
-			"type": "String"
-		},
-		…
-	],
+        "meta":
+        [
+                {
+                        "name": "path",
+                        "type": "String"
+                },
+                ...
+        ],
 
-	"data":
-	[
-		["Bob_Dolman", "2016-11-01", 245],
-		["1-krona", "2017-01-01", 4],
-		["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", 3]
-	],
+        "data":
+        [
+                ["Bob_Dolman", "2016-11-01", 245],
+                ["1-krona", "2017-01-01", 4],
+                ["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", 3]
+        ],
 
-	"rows": 3,
+        "rows": 3,
 
-	"statistics":
-	{
-		"elapsed": 0.00074981,
-		"rows_read": 3,
-		"bytes_read": 87
-	}
+        "statistics":
+        {
+                "elapsed": 0.00074981,
+                "rows_read": 3,
+                "bytes_read": 87
+        }
 }
 ```
 
@@ -168,6 +168,6 @@ SELECT * FROM sometable INTO OUTFILE 'out.json.gz' FORMAT JSONEachRow
 It takes more time to accomplish, but generates a much smaller compressed file:
 
 ```bash
-2.2G	out.json
-576M	out.json.gz
+2.2G    out.json
+576M    out.json.gz
 ```

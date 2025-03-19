@@ -29,7 +29,7 @@ ANY INNER `JOIN` stackoverflow.comments AS c ON p.Id = c.PostId
 WHERE (p.Title != '') AND (p.Title NOT ILIKE '%clickhouse%') AND (p.Body NOT ILIKE '%clickhouse%') AND (c.Text ILIKE '%clickhouse%')
 
 ┌─count()─┐
-│  	86 │
+│       86 │
 └─────────┘
 
 1 row in set. Elapsed: 8.209 sec. Processed 150.20 million rows, 56.05 GB (18.30 million rows/s., 6.83 GB/s.)
@@ -44,12 +44,12 @@ This join can be rewritten using a subquery, improving performance significantly
 SELECT count()
 FROM stackoverflow.posts
 WHERE (Title != '') AND (Title NOT ILIKE '%clickhouse%') AND (Body NOT ILIKE '%clickhouse%') AND (Id IN (
-	SELECT PostId
-	FROM stackoverflow.comments
-	WHERE Text ILIKE '%clickhouse%'
+        SELECT PostId
+        FROM stackoverflow.comments
+        WHERE Text ILIKE '%clickhouse%'
 ))
 ┌─count()─┐
-│  	86 │
+│       86 │
 └─────────┘
 
 1 row in set. Elapsed: 2.284 sec. Processed 150.20 million rows, 16.61 GB (65.76 million rows/s., 7.27 GB/s.)
@@ -110,9 +110,9 @@ This query can be improved even more by moving the `INNER JOIN` to a subquery, a
 SELECT count() AS upvotes
 FROM stackoverflow.votes
 WHERE (VoteTypeId = 2) AND (PostId IN (
-	SELECT Id
-	FROM stackoverflow.posts
-	WHERE (CreationDate >= '2020-01-01') AND has(arrayFilter(t -> (t != ''), splitByChar('|', Tags)), 'java')
+        SELECT Id
+        FROM stackoverflow.posts
+        WHERE (CreationDate >= '2020-01-01') AND has(arrayFilter(t -> (t != ''), splitByChar('|', Tags)), 'java')
 ))
 
 ┌─upvotes─┐

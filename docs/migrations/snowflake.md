@@ -64,10 +64,10 @@ Assuming the following table target schema:
 ```sql
 CREATE TABLE default.mydataset
 (
-	`timestamp` DateTime64(6),
-	`some_text` String,
-	`some_file` Tuple(filename String, version String),
-	`complex_data` Tuple(name String, description String),
+        `timestamp` DateTime64(6),
+        `some_text` String,
+        `some_file` Tuple(filename String, version String),
+        `complex_data` Tuple(name String, description String),
 )
 ENGINE = MergeTree
 ORDER BY (timestamp)
@@ -78,16 +78,16 @@ We can then use the `INSERT INTO SELECT` command to insert the data from S3 into
 ```sql
 INSERT INTO mydataset
 SELECT
-	timestamp,
-	some_text,
-	JSONExtract(
-		ifNull(some_file, '{}'),
-		'Tuple(filename String, version String)'
-	) AS some_file,
-	JSONExtract(
-		ifNull(complex_data, '{}'),
-		'Tuple(filename String, description String)'
-	) AS complex_data,
+        timestamp,
+        some_text,
+        JSONExtract(
+                ifNull(some_file, '{}'),
+                'Tuple(filename String, version String)'
+        ) AS some_file,
+        JSONExtract(
+                ifNull(complex_data, '{}'),
+                'Tuple(filename String, description String)'
+        ) AS complex_data,
 FROM s3('https://mybucket.s3.amazonaws.com/mydataset/mydataset*.parquet')
 SETTINGS input_format_null_as_default = 1, -- Ensure columns are inserted as default if values are null
 input_format_parquet_case_insensitive_column_matching = 1 -- Column matching between source data and target table should be case insensitive

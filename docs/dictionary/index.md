@@ -41,9 +41,9 @@ With our data normalized, this query currently requires a `JOIN` using the `post
 ```sql
 WITH PostIds AS
 (
-   	 SELECT Id
-   	 FROM posts
-   	 WHERE Title ILIKE '%SQL%'
+         SELECT Id
+         FROM posts
+         WHERE Title ILIKE '%SQL%'
 )
 SELECT
     Id,
@@ -55,9 +55,9 @@ FROM posts
 INNER JOIN
 (
     SELECT
-   	 PostId,
-   	 countIf(VoteTypeId = 2) AS UpVotes,
-   	 countIf(VoteTypeId = 3) AS DownVotes
+         PostId,
+         countIf(VoteTypeId = 2) AS UpVotes,
+         countIf(VoteTypeId = 3) AS DownVotes
     FROM votes
     WHERE PostId IN (PostIds)
     GROUP BY PostId
@@ -69,10 +69,10 @@ LIMIT 1
 
 Row 1:
 ──────
-Id:              	25372161
-Title:           	How to add exception handling to SqlDataSource.UpdateCommand
-UpVotes:         	13
-DownVotes:       	13
+Id:                     25372161
+Title:                  How to add exception handling to SqlDataSource.UpdateCommand
+UpVotes:                13
+DownVotes:              13
 Controversial_ratio: 0
 
 1 rows in set. Elapsed: 1.283 sec. Processed 418.44 million rows, 7.23 GB (326.07 million rows/s., 5.63 GB/s.)
@@ -89,15 +89,15 @@ To demonstrate these concepts, we use a dictionary for our vote data. Since dict
 
 ```sql
 SELECT table,
-	formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
-	formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
-	round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+        formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+        formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+        round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
 FROM system.columns
 WHERE table IN ('votes')
 GROUP BY table
 
 ┌─table───────────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ votes │ 1.25 GiB    	│ 3.79 GiB      	│  3.04 │
+│ votes           │ 1.25 GiB        │ 3.79 GiB          │  3.04 │
 └─────────────────┴─────────────────┴───────────────────┴───────┘
 ```
 
@@ -160,14 +160,14 @@ Exploiting this in our earlier query, we can remove the JOIN:
 
 WITH PostIds AS
 (
-    	SELECT Id
-    	FROM posts
-    	WHERE Title ILIKE '%SQL%'
+        SELECT Id
+        FROM posts
+        WHERE Title ILIKE '%SQL%'
 )
 SELECT Id, Title,
-	dictGet('votes_dict', 'UpVotes', Id) AS UpVotes,
-	dictGet('votes_dict', 'DownVotes', Id) AS DownVotes,
-	abs(UpVotes - DownVotes) AS Controversial_ratio
+        dictGet('votes_dict', 'UpVotes', Id) AS UpVotes,
+        dictGet('votes_dict', 'DownVotes', Id) AS DownVotes,
+        abs(UpVotes - DownVotes) AS Controversial_ratio
 FROM posts
 WHERE (Id IN (PostIds)) AND (UpVotes > 10) AND (DownVotes > 10)
 ORDER BY Controversial_ratio ASC
@@ -199,9 +199,9 @@ We can use this dictionary to enrich post results:
 
 ```sql
 SELECT
-	Id,
-	Title,
-	dictGet('users_dict', 'Location', CAST(OwnerUserId, 'UInt64')) AS location
+        Id,
+        Title,
+        dictGet('users_dict', 'Location', CAST(OwnerUserId, 'UInt64')) AS location
 FROM posts
 WHERE Title ILIKE '%clickhouse%'
 LIMIT 5
@@ -210,11 +210,11 @@ FORMAT PrettyCompactMonoBlock
 
 
 ┌───────Id─┬─Title─────────────────────────────────────────────────────────┬─Location──────────────┐
-│ 52296928 │ Comparision between two Strings in ClickHouse             	│ Spain             	│
-│ 52345137 │ How to use a file to migrate data from mysql to a clickhouse? │ 中国江苏省Nanjing Shi │
-│ 61452077 │ How to change PARTITION in clickhouse                     	│ Guangzhou, 广东省中国 │
-│ 55608325 │ Clickhouse select last record without max() on all table  	│ Moscow, Russia    	│
-│ 55758594 │ ClickHouse create temporary table                         	│ Perm', Russia     	│
+│ 52296928 │ Comparision between two Strings in ClickHouse                 │ Spain                 │
+│ 52345137 │ How to use a file to migrate data from mysql to a clickhouse? │ 中国江苏省Nanjing Shi   │
+│ 61452077 │ How to change PARTITION in clickhouse                         │ Guangzhou, 广东省中国   │
+│ 55608325 │ Clickhouse select last record without max() on all table      │ Moscow, Russia        │
+│ 55758594 │ ClickHouse create temporary table                             │ Perm', Russia         │
 └──────────┴───────────────────────────────────────────────────────────────┴───────────────────────┘
 
 5 rows in set. Elapsed: 0.033 sec. Processed 4.25 million rows, 82.84 MB (130.62 million rows/s., 2.55 GB/s.)
@@ -225,8 +225,8 @@ Similar to our above join example, we can use the same dictionary to efficiently
 
 ```sql
 SELECT
-	dictGet('users_dict', 'Location', CAST(OwnerUserId, 'UInt64')) AS location,
-	count() AS c
+        dictGet('users_dict', 'Location', CAST(OwnerUserId, 'UInt64')) AS location,
+        count() AS c
 FROM posts
 WHERE location != ''
 GROUP BY location
@@ -234,11 +234,11 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─location───────────────┬──────c─┐
-│ India              	│ 787814 │
-│ Germany            	│ 685347 │
-│ United States      	│ 595818 │
+│ India                  │ 787814 │
+│ Germany                │ 685347 │
+│ United States          │ 595818 │
 │ London, United Kingdom │ 538738 │
-│ United Kingdom     	│ 537699 │
+│ United Kingdom         │ 537699 │
 └────────────────────────┴────────┘
 
 5 rows in set. Elapsed: 0.763 sec. Processed 59.82 million rows, 239.28 MB (78.40 million rows/s., 313.60 MB/s.)
@@ -274,7 +274,7 @@ CREATE TABLE posts_with_location
 (
     `Id` UInt32,
     `PostTypeId` Enum8('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
-     …
+     ...
     `Location` MATERIALIZED dictGet(users_dict, 'Location', OwnerUserId::'UInt64')
 )
 ENGINE = MergeTree
