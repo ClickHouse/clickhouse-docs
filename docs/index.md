@@ -54,7 +54,6 @@ export const Hero = ({ children, color}) => {
                     </div>
                     <div>Install guides for every platform</div>
                 </a>
-                
             </div>
         </div>
     )
