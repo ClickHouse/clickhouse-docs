@@ -29,19 +29,12 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 
 1. Go to the [GCP Marketplace](https://cloud.google.com/marketplace) and search for ClickHouse Cloud. Make sure you have the correct project chosen.
 
-<br />
 
 <Image img={gcp_marketplace_payg_1} size="md" alt="GCP Marketplace home page" border/>
 
-<br />
-
 2. Click on the [listing](https://console.cloud.google.com/marketplace/product/clickhouse-public/clickhouse-cloud) and then on **Subscribe**.
 
-<br />
-
 <Image img={gcp_marketplace_payg_2} size="md" alt="ClickHouse Cloud in GCP Marketplace" border/>
-
-<br />
 
 3. On the next screen, configure the subscription:
 
