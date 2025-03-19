@@ -76,20 +76,30 @@ keywords: [chdb, clickhouse-local]
 import clickhouse-local-1 from '@site/static/images/chdb/guides/clickhouse-local-1.png'
 import clickhouse-local-2 from '@site/static/images/chdb/guides/clickhouse-local-2.png'
 import clickhouse-local-3 from '@site/static/images/chdb/guides/clickhouse-local-3.png'
+import Image from '@theme/IdealImage';
 ```
 
-Use the `<img/>` tag to place your image in the appropriate place:
+To render images we use a fork of the IdealImage plugin. This generates multiple variants of an image, [asynchronously loading them as well as selecting the most appropriate based on the network connection](https://github.com/stereobooster/react-ideal-image/blob/master/introduction.md).
+
+Ensure you import the `Image` component as shown above.
+
+Use the `<Image/>` tag to place your image in the appropriate place:
 
 ```markdown
 Here is some example text which refers to the image below:
 
-<img src={clickhouse-local-1}
-    alt='DESCRIPTION OF THE IMAGE'
-    style={{width: '800px'}} // optional
-/>
+<Image img={clickhouse-local-1} alt='DESCRIPTION OF THE IMAGE' size="md" border background="black"/>
 
 Here is another paragraph...
 ```
+
+This component takes a number of props:
+
+1. `img` - the imported image
+2. `alt` - mandatory alternate text specified
+3. `size` - either `lg` (width 1024px), `md` (width 600px), `sm` (width 300px) or `logo` (48x). This sets the maximum image size. Lower resolutions maybe used on smaller screens or slower connections.
+4. `border` - Applies a border. **Use for screenshots only.**
+5. `background` - either `white` or `black`. Applicable if your image is transparent. All new images must use `black`.
 
 ## Codeblocks
 
