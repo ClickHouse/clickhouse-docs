@@ -33,7 +33,14 @@ export const Hero = ({ children, color}) => {
                 <div style={{fontSize: '16px', lineHeight: '1.4'}}>Learn how to use ClickHouse through guides, reference documentation, and videos</div>
             </div>
             <div className='home-page-hero-right'>
-                <a href='/docs/getting-started/quick-start' className='home-page-hero-button'>
+                <a href='/docs/cloud/overview' className='home-page-hero-button'>
+                    <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '12px', display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                        <div style={{ display: 'flex', float: 'left', margin: 0, marginRight: '8px'}}><IconCloud iconWidth={'24px'}/></div>
+                        <div>Cloud</div>
+                    </div>
+                    <div>The fastest way to get started with ClickHouse</div>
+                </a>
+                <a href='/docs/cloud/get-started/cloud-quick-start' className='home-page-hero-button'>
                     <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '12px', display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                         <div style={{ display: 'flex', float: 'left', margin: 0, marginRight: '8px'}}><IconLightning iconWidth={'24px'}/></div>
                         <div>Quick Start</div>
@@ -47,13 +54,7 @@ export const Hero = ({ children, color}) => {
                     </div>
                     <div>Install guides for every platform</div>
                 </a>
-                <a href='https://clickhouse.com/cloud' className='home-page-hero-button'>
-                    <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '12px', display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                        <div style={{ display: 'flex', float: 'left', margin: 0, marginRight: '8px'}}><IconCloud iconWidth={'24px'}/></div>
-                        <div>Cloud</div>
-                    </div>
-                    <div>The fastest way to get started with ClickHouse</div>
-                </a>
+                
             </div>
         </div>
     )
