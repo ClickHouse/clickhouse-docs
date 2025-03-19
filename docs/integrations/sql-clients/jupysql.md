@@ -5,10 +5,15 @@ description: 'JupySQL is a multi-platform database tool for Jupyter.'
 title: 'Using JupySQL with ClickHouse'
 ---
 
+import Image from '@theme/IdealImage';
 import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql-plot-1.png';
 import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql-plot-2.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Using JupySQL with ClickHouse
+
+<CommunityMaintainedBadge/>
+
 In this guide we'll show an integration with ClickHouse.
 
 We will use JupySQL to run queries on top of ClickHouse.
@@ -23,7 +28,6 @@ The integration between JupySQL and ClickHouse is made possible by the use of th
 ```
 
     Note: you may need to restart the kernel to use updated packages.
-
 
 
 ```python
@@ -405,7 +409,7 @@ WHERE trip_distance < 6.3
 ```response
 <AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
 ```
-<img src={jupysql_plot_1} alt="histogram example" />
+<Image img={jupysql_plot_1} size="md" alt="Histogram showing distribution of trip distances with 10 bins from the short-trips dataset" border />
 
 
 ```python
@@ -415,4 +419,4 @@ ax.set_title("Trip distance from trips < 6.3")
 _ = ax.set_xlabel("Trip distance")
 ```
 
-<img src={jupysql_plot_2} alt="histogram second example" />
+<Image img={jupysql_plot_2} size="md" alt="Histogram showing distribution of trip distances with 50 bins and grid, titled 'Trip distance from trips < 6.3'" border />

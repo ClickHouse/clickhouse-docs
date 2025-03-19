@@ -7,6 +7,7 @@ description: 'A dictionary provides a key-value representation of data for fast 
 
 import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-cases.png';
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
+import Image from '@theme/IdealImage';
 
 # Dictionary
 
@@ -16,19 +17,13 @@ Dictionaries are useful for:
 - Improving the performance of queries, especially when used with `JOIN`s
 - Enriching ingested data on the fly without slowing down the ingestion process
 
-<img src={dictionaryUseCases}
-  class="image"
-  alt="Use cases for Dictionary in ClickHouse"
-  style={{width: '100%', background: 'none'}} />
+<Image img={dictionaryUseCases} size="lg" alt="Use cases for Dictionary in ClickHouse"/>
 
 ## Speeding up joins using a Dictionary {#speeding-up-joins-using-a-dictionary}
 
 Dictionaries can be used to speed up a specific type of `JOIN`: the [`LEFT ANY` type](/sql-reference/statements/select/join#supported-types-of-join) where the join key needs to match the key attribute of the underlying key-value storage.
 
-<img src={dictionaryLeftAnyJoin}
-  class="image"
-  alt="Using Dictionary with LEFT ANY JOIN"
-  style={{width: '300px', background: 'none'}} />
+<Image img={dictionaryLeftAnyJoin} size="sm" alt="Using Dictionary with LEFT ANY JOIN"/>
 
 If this is the case, ClickHouse can exploit the dictionary to perform a [Direct Join](https://clickhouse.com/blog/clickhouse-fully-supports-joins-direct-join-part4#direct-join). This is ClickHouse's fastest join algorithm and is applicable when the underlying [table engine](/engines/table-engines) for the right-hand side table supports low-latency key-value requests. ClickHouse has three table engines providing this: [Join](/engines/table-engines/special/join) (that is basically a pre-calculated hash table), [EmbeddedRocksDB](/engines/table-engines/integrations/embedded-rocksdb) and [Dictionary](/engines/table-engines/special/dictionary). We will describe the dictionary-based approach, but the mechanics are the same for all three engines.
 

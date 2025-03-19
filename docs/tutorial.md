@@ -89,6 +89,7 @@ The New York City taxi data contains the details of millions of taxi rides, with
 Now that you have a table created, let's add the NYC taxi data. It is in CSV files in S3, and you can load the data from there.
 
 1. The following command inserts ~2,000,000 rows into your `trips` table from two different files in S3: `trips_1.tsv.gz` and `trips_2.tsv.gz`:
+
     ```sql
     INSERT INTO trips
     SELECT * FROM s3(
@@ -499,4 +500,3 @@ Well done - you made it through the tutorial, and hopefully you have a better un
 - [Connect your favorite UI/BI tool](./integrations/data-visualization/index.md) to ClickHouse
 - Check out the [SQL Reference](./sql-reference/index.md) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
 - Learn more about [Dictionaries](/sql-reference/dictionaries/index.md)
-

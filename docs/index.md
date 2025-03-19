@@ -22,6 +22,7 @@ import IconSingleNode from '@site/src/icons/IconSingleNode';
 import IconSQLConsole from '@site/src/icons/IconSQLConsole';
 import IconLightning from '@site/src/icons/IconLightning';
 import IconDownload from '@site/src/icons/IconDownload';
+import Image from '@theme/IdealImage';
 
 export const Hero = ({ children, color}) => {
     return (
@@ -67,7 +68,7 @@ export const HomePageOptionButton = ({ children, icon, iconWidth, svgIcon, link 
             <div className='home-page-option-icon'>
                 {
                     svgIcon ? svgIcon : (
-                        <img className='home-svg' src={icon} style={{width: iconWidth || '28px'}} />
+                        <Image img={icon} size="small" alt={`${children} logo`} style={{width: iconWidth || '28px'}} border />
                     )
                 }
             </div>

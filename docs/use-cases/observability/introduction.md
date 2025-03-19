@@ -7,19 +7,17 @@ keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafa
 
 import observability_1 from '@site/static/images/use-cases/observability/observability-1.png';
 import observability_2 from '@site/static/images/use-cases/observability/observability-2.png';
+import Image from '@theme/IdealImage';
 
 # Using ClickHouse for Observability
 
 ## Introduction {#introduction}
 
-This guide is designed for users looking to build their own SQL-based Observability solution using ClickHouse, focusing on logs and traces. This covers all aspects of building your own solution including considerations for ingestion, optimizing schemas for your access patterns and extracting structure from unstructured logs. 
+This guide is designed for users looking to build their own SQL-based Observability solution using ClickHouse, focusing on logs and traces. This covers all aspects of building your own solution including considerations for ingestion, optimizing schemas for your access patterns and extracting structure from unstructured logs.
 
 ClickHouse alone is not an out-of-the-box solution for Observability. It can, however, be used as a highly efficient storage engine for Observability data, capable of unrivaled compression rates and lightning-fast query response times. In order for users to use ClickHouse within an Observability solution, both a user interface and data collection framework are required. We currently recommend using **Grafana** for visualization of Observability signals and **OpenTelemetry** for data collection (both are officially supported integrations).
 
-<img src={observability_1}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
+<Image img={observability_1} alt="Simple OTel" size="md"/>
 
 <br />
 
@@ -93,11 +91,6 @@ Each trace consists of several spans, with the initial span associated with the 
 
 Most observability vendors visualize this information as a waterfall, with relative timing shown using horizontal bars of proportional size. For example, in Grafana:
 
-<img src={observability_2}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '1000px'}} />
-
-<br />
+<Image img={observability_2} alt="Example trace" size="lg" border/>
 
 For users needing to familiarize themselves deeply with the concepts of logs and traces, we highly recommend the [OpenTelemetry documentation](https://opentelemetry.io/docs/concepts/).

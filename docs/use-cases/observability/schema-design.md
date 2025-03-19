@@ -9,6 +9,7 @@ import observability_10 from '@site/static/images/use-cases/observability/observ
 import observability_11 from '@site/static/images/use-cases/observability/observability-11.png';
 import observability_12 from '@site/static/images/use-cases/observability/observability-12.png';
 import observability_13 from '@site/static/images/use-cases/observability/observability-13.png';
+import Image from '@theme/IdealImage';
 
 # Designing a schema for observability
 
@@ -139,23 +140,23 @@ LIMIT 5
 5 rows in set. Elapsed: 1.953 sec. Processed 10.37 million rows, 3.59 GB (5.31 million rows/s., 1.84 GB/s.)
 ```
 
-The increased complexity and cost of queries for parsing unstructured logs (notice performance difference) is why we recommend users always use structured logs where possible. 
+The increased complexity and cost of queries for parsing unstructured logs (notice performance difference) is why we recommend users always use structured logs where possible.
 
-:::note Consider dictionaries 
-The above query could be optimized to exploit regular expression dictionaries. See [Using Dictionaries](#using-dictionaries) for more detail. 
+:::note Consider dictionaries
+The above query could be optimized to exploit regular expression dictionaries. See [Using Dictionaries](#using-dictionaries) for more detail.
 :::
 
 Both of these use cases can be satisfied using ClickHouse by moving the above query logic to insert time. We explore several approaches below, highlighting when each is appropriate.
 
-:::note OTel or ClickHouse for processing? 
+:::note OTel or ClickHouse for processing?
 Users may also perform processing using OTel Collector processors and operators as described [here](/observability/integrating-opentelemetry#processing---filtering-transforming-and-enriching). In most cases, users will find ClickHouse is significantly more resource-efficient and faster than the collector's processors. The principal downside of performing all event processing in SQL is the coupling of your solution to ClickHouse. For example, users may wish to send processed logs to alternative destinations from the OTel collector e.g. S3.
 :::
 
 ### Materialized columns {#materialized-columns}
 
-Materialized columns offer the simplest solution to extract structure from other columns. Values of such columns are always calculated at insert time and cannot be specified in INSERT queries. 
+Materialized columns offer the simplest solution to extract structure from other columns. Values of such columns are always calculated at insert time and cannot be specified in INSERT queries.
 
-:::note Overhead 
+:::note Overhead
 Materialized columns incur additional storage overhead as the values are extracted to new columns on disk at insert time.
 :::
 
@@ -221,24 +222,18 @@ Materialized columns will, by default, not be returned in a `SELECT *`.  This is
 
 ## Materialized views {#materialized-views}
 
-[Materialized views](/materialized-views) provide a more powerful means of applying SQL filtering and transformations to logs and traces. 
+[Materialized views](/materialized-views) provide a more powerful means of applying SQL filtering and transformations to logs and traces.
 
 Materialized Views allow users to shift the cost of computation from query time to insert time. A ClickHouse Materialized View is just a trigger that runs a query on blocks of data as they are inserted into a table. The results of this query are inserted into a second "target" table.
 
-<img src={observability_10}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '600px'}} />
-
-<br />
-
+<Image img={observability_10} alt="Materialized view" size="md"/>
 
 :::note Real-time updates
 Materialized views in ClickHouse are updated in real time as data flows into the table they are based on, functioning more like continually updating indexes. In contrast, in other databases materialized views are typically static snapshots of a query that must be refreshed (similar to ClickHouse Refreshable Materialized Views).
 :::
 
 
-The query associated with the materialized view can theoretically be any query, including an aggregation although [limitations exist with Joins](https://clickhouse.com/blog/using-materialized-views-in-clickhouse#materialized-views-and-joins). For the transformations and filtering workloads required for logs and traces, users can consider any `SELECT` statement to be possible. 
+The query associated with the materialized view can theoretically be any query, including an aggregation although [limitations exist with Joins](https://clickhouse.com/blog/using-materialized-views-in-clickhouse#materialized-views-and-joins). For the transformations and filtering workloads required for logs and traces, users can consider any `SELECT` statement to be possible.
 
 Users should remember the query is just a trigger executing over the rows being inserted into a table (the source table), with the results sent to a new table (the target table).
 
@@ -382,12 +377,7 @@ FROM otel_logs
 
 This above is visualized below:
 
-<img src={observability_11}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
-
-<br />
+<Image img={observability_11} alt="Otel MV" size="md"/>
 
 If we now restart the collector config used in ["Exporting to ClickHouse"](/observability/integrating-opentelemetry#exporting-to-clickhouse) data will appear in `otel_logs_v2` in our desired format. Note the use of typed JSON extract functions.
 
@@ -495,7 +485,7 @@ Peak memory usage: 71.90 MiB.
 ```
 
 :::note Avoid dots
-We don't recommend using dots in Map column names and may deprecate its use. Use an `_`. 
+We don't recommend using dots in Map column names and may deprecate its use. Use an `_`.
 :::
 
 
@@ -592,12 +582,7 @@ Furthermore, timestamps, while benefiting from delta encoding with respect to co
 
 [Dictionaries](/sql-reference/dictionaries) are a [key feature](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse) of ClickHouse providing in-memory [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) representation of data from various internal and external [sources](/sql-reference/dictionaries#dictionary-sources), optimized for super-low latency lookup queries.
 
-<img src={observability_12}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
-
-<br />
+<Image img={observability_12} alt="Observability and dictionaries" size="md"/>
 
 This is handy in various scenarios, from enriching ingested data on the fly without slowing down the ingestion process and improving the performance of queries in general, with JOINs particularly benefiting.
 While joins are rarely required in Observability use cases, dictionaries can still be handy for enrichment purposes - at both insert and query time. We provide examples of both below.
@@ -1118,7 +1103,7 @@ We've effectively reduced the number of rows here from 10m (in `otel_logs`) to 1
 Since the merging of rows is asynchronous, there may be more than one row per hour when a user queries. To ensure any outstanding rows are merged at query time, we have two options:
 
 - Use the [`FINAL` modifier](/sql-reference/statements/select/from#final-modifier) on the table name (which we did for the count query above).
-- Aggregate by the ordering key used in our final table i.e. Timestamp and sum the metrics. 
+- Aggregate by the ordering key used in our final table i.e. Timestamp and sum the metrics.
 
 Typically, the second option is more efficient and flexible (the table can be used for other things), but the first can be simpler for some queries. We show both below:
 
@@ -1168,7 +1153,7 @@ These savings can be even greater on larger datasets with more complex queries. 
 
 #### A more complex example {#a-more-complex-example}
 
-The above example aggregates a simple count per hour using the [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree). Statistics beyond simple sums require a different target table engine: the [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree). 
+The above example aggregates a simple count per hour using the [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree). Statistics beyond simple sums require a different target table engine: the [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree).
 
 Suppose we wish to compute the number of unique IP addresses (or unique users) per day. The query for this:
 
@@ -1211,7 +1196,7 @@ GROUP BY Hour
 ORDER BY Hour DESC
 ```
 
-Note how we append the suffix `State` to the end of our aggregate functions. This ensures the aggregate state of the function is returned instead of the final result. This will contain additional information to allow this partial state to merge with other states. 
+Note how we append the suffix `State` to the end of our aggregate functions. This ensures the aggregate state of the function is returned instead of the final result. This will contain additional information to allow this partial state to merge with other states.
 
 Once the data has been reloaded, through a Collector restart, we can confirm 113 rows are available in the `unique_visitors_per_hour` table.
 
@@ -1353,7 +1338,7 @@ This same approach can be applied for similar access patterns. We explore a simi
 
 ClickHouse projections allow users to specify multiple `ORDER BY` clauses for a table.
 
-In previous sections, we explore how materialized views can be used in ClickHouse to pre-compute aggregations, transform rows and optimize Observability queries for different access patterns. 
+In previous sections, we explore how materialized views can be used in ClickHouse to pre-compute aggregations, transform rows and optimize Observability queries for different access patterns.
 
 We provided an example where the materialized view sends rows to a target table with a different ordering key than the original table receiving inserts in order to optimize for lookups by trace id.
 
@@ -1365,12 +1350,7 @@ In theory, this capability can be used to provide multiple ordering keys for a t
 Projections offer many of the same capabilities as materialized views, but should be used sparingly with the latter often preferred. Users should understand the drawbacks and when they are appropriate. For example, while projections can be used for pre-computing aggregations we recommend users use Materialized views for this.
 :::
 
-<img src={observability_13}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
-
-<br />
+<Image img={observability_13} alt="Observability and projections" size="md"/>
 
 Consider the following query, which filters our `otel_logs_v2` table by 500 error codes. This is likely a common access pattern for logging with users wanting to filter by error codes:
 
@@ -1390,7 +1370,7 @@ Peak memory usage: 56.54 MiB.
 We don't print results here using `FORMAT Null`. This forces all results to be read but not returned, thus preventing an early termination of the query due to a LIMIT. This is just to show the time taken to scan all 10m rows.
 :::
 
-The above query requires a linear scan with our chosen ordering key `(ServiceName, Timestamp)`. While we could add `Status` to the end of the ordering key, improving performance for the above query, we can also add a projection. 
+The above query requires a linear scan with our chosen ordering key `(ServiceName, Timestamp)`. While we could add `Status` to the end of the ordering key, improving performance for the above query, we can also add a projection.
 
 ```sql
 ALTER TABLE otel_logs_v2 (
@@ -1467,9 +1447,9 @@ In the above example, we specify the columns used in the earlier query in the pr
 
 No matter how well the primary key is tuned in ClickHouse, some queries will inevitably require full table scans. While this can be mitigated using Materialized views (and projections for some queries), these require additional maintenance and users to be aware of their availability in order to ensure they are exploited.  While traditional relational databases solve this with secondary indexes, these are ineffective in column-oriented databases like ClickHouse. Instead, ClickHouse uses "Skip" indexes, which can significantly improve query performance by allowing the database to skip over large data chunks with no matching values.
 
-The default OTel schemas use secondary indices in an attempt to accelerate access to map access. While we find these to be generally ineffective and do not recommend copying them into your custom schema, skipping indices can still be useful. 
+The default OTel schemas use secondary indices in an attempt to accelerate access to map access. While we find these to be generally ineffective and do not recommend copying them into your custom schema, skipping indices can still be useful.
 
-Users should read and understand the [guide to secondary indices](/optimize/skipping-indexes) before attempting to apply them. 
+Users should read and understand the [guide to secondary indices](/optimize/skipping-indexes) before attempting to apply them.
 
 **In general, they are effective when a strong correlation exists between the primary key and the targeted, non-primary column/expression and users are looking up rare values i.e. those which do not occur in many granules.**
 
@@ -1519,7 +1499,7 @@ WHERE Referer LIKE '%ultra%'
 1 row in set. Elapsed: 0.177 sec. Processed 10.37 million rows, 908.49 MB (58.57 million rows/s., 5.13 GB/s.)
 ```
 
-Here we need to match on an ngram size of 3. We therefore create an `ngrambf_v1` index. 
+Here we need to match on an ngram size of 3. We therefore create an `ngrambf_v1` index.
 
 ```sql
 CREATE TABLE otel_logs_bloom
@@ -1631,7 +1611,7 @@ GROUP BY name
 ORDER BY sum(data_compressed_bytes) DESC
 
 ┌─name────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ Referer │ 56.16 MiB           │ 789.21 MiB            │ 14.05 │
+│ Referer │ 56.16 MiB       │ 789.21 MiB        │ 14.05 │
 └─────────┴─────────────────┴───────────────────┴───────┘
 
 1 row in set. Elapsed: 0.018 sec.
@@ -1645,7 +1625,7 @@ FROM system.data_skipping_indices
 WHERE `table` = 'otel_logs_bloom'
 
 ┌─table───────────┬─compressed_size─┬─uncompressed_size─┐
-│ otel_logs_bloom │ 12.03 MiB           │ 12.17 MiB             │
+│ otel_logs_bloom │ 12.03 MiB       │ 12.17 MiB         │
 └─────────────────┴─────────────────┴───────────────────┘
 
 1 row in set. Elapsed: 0.004 sec.
@@ -1653,13 +1633,13 @@ WHERE `table` = 'otel_logs_bloom'
 
 In the examples above, we can see the secondary bloom filter index is 12MB - almost 5x smaller than the compressed size of the column itself at 56MB.
 
-Bloom filters can require significant tuning. We recommend following the notes [here](/engines/table-engines/mergetree-family/mergetree#bloom-filter) which can be useful in identifying optimal settings. Bloom filters can also be expensive at insert and merge time. Users should evaluate the impact on insert performance prior to adding bloom filters to production. 
+Bloom filters can require significant tuning. We recommend following the notes [here](/engines/table-engines/mergetree-family/mergetree#bloom-filter) which can be useful in identifying optimal settings. Bloom filters can also be expensive at insert and merge time. Users should evaluate the impact on insert performance prior to adding bloom filters to production.
 
 Further details on secondary skip indices can be found [here](/optimize/skipping-indexes#skip-index-functions).
 
 ### Extracting from maps {#extracting-from-maps}
 
-The Map type is prevalent in the OTel schemas. This type requires the values and keys to have the same type - sufficient for metadata such as Kubernetes labels. Be aware that when querying a subkey of a Map type, the entire parent column is loaded. If the map has many keys, this can incur a significant query penalty as more data needs to be read from disk than if the key existed as a column. 
+The Map type is prevalent in the OTel schemas. This type requires the values and keys to have the same type - sufficient for metadata such as Kubernetes labels. Be aware that when querying a subkey of a Map type, the entire parent column is loaded. If the map has many keys, this can incur a significant query penalty as more data needs to be read from disk than if the key existed as a column.
 
 If you frequently query a specific key, consider moving it into its own dedicated column at the root. This is typically a task that happens in response to common access patterns and after deployment and may be difficult to predict before production. See ["Managing schema changes"](/observability/managing-data#managing-schema-changes) for how to modify your schema post-deployment.
 

@@ -18,8 +18,12 @@ import astrato_5a_clickhouse_build_chart from '@site/static/images/integrations/
 import astrato_5b_clickhouse_view_sql from '@site/static/images/integrations/data-visualization/astrato_5b_clickhouse_view_sql.png';
 import astrato_5c_clickhouse_complete_dashboard from '@site/static/images/integrations/data-visualization/astrato_5c_clickhouse_complete_dashboard.png';
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import Image from '@theme/IdealImage';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Connecting Astrato to ClickHouse
+
+<CommunityMaintainedBadge/>
 
 Astrato uses Pushdown SQL to query ClickHouse Cloud or on-premise deployments directly. This means you can access all of the data you need, powered by the industry-leading performance of ClickHouse.
 
@@ -35,27 +39,26 @@ When setting up your data connection, you'll need to know:
 
 ## Creating the data connection to ClickHouse {#creating-the-data-connection-to-clickhouse}
 
-- Select **Data** in the sidebar, and select the **Data Connection** tab 
+- Select **Data** in the sidebar, and select the **Data Connection** tab
 (or, navigate to this link: https://app.astrato.io/data/sources)
 ​
 - Click on the **New Data Connection** button in the top right side of the screen.
 
-<img  src={astrato_1_dataconnection}  class="image"  alt="Astrato Data Connection"  style={{width:'50%',  'background-color':  'transparent'}}/>
+<Image size="sm" img={astrato_1_dataconnection} alt="Astrato Data Connection" border />
 
-<br/>
+- Select **ClickHouse**.
 
-- Select **ClickHouse**. 
-<img  src={astrato_2a_clickhouse_connection}  class="image"  alt="Astrato ClickHouse Data Connection"  style={{width:'50%',  'background-color':  'transparent'}}/>
+<Image size="sm" img={astrato_2a_clickhouse_connection} alt="Astrato ClickHouse Data Connection" border />
 
-- Complete the required fields in the connection dialogue box 
+- Complete the required fields in the connection dialogue box
 
-<img  src={astrato_2b_clickhouse_connection}  class="image"  alt="Astrato connect to ClickHouse required fields"  style={{width:'50%',  'background-color':  'transparent'}}/>
+<Image size="sm" img={astrato_2b_clickhouse_connection} alt="Astrato connect to ClickHouse required fields" border />
 
 - Click **Test Connection**. If the connection is successful, give the data connection a **name** and click **Next.**
 
-- Set the **user access** to the data connection and click **connect.**  
-​
-<img  src={astrato_3_user_access}  class="image"  alt="Astrato connect to ClickHouse User Access"  style={{width:'50%',  'background-color':  'transparent'}}/>
+- Set the **user access** to the data connection and click **connect.**
+
+<Image size="md" img={astrato_3_user_access} alt="Astrato connect to ClickHouse User Access" border />
 
 -   A connection is created and a dataview is created.
 
@@ -67,19 +70,17 @@ if a duplicate is created, a timestamp is added to the data source name.
 
 In our Data View editor, you will see all of your Tables and Schemas in ClickHouse, select some to get started.
 
-<img  src={astrato_4a_clickhouse_data_view}  class="image"  alt="Astrato connect to ClickHouse User Access"  style={{width:'75%',  'background-color':  'transparent'}}/>
-<br/>
+<Image size="lg" img={astrato_4a_clickhouse_data_view} alt="Astrato connect to ClickHouse User Access" border />
 
 Now that you have your data selected, go to define the **data view**. Click define on the top right of the webpage.
 
-In here, you are able to join data, as well as, **create governed dimensions and measures** - ideal for driving consistency in business logic across various teams. 
+In here, you are able to join data, as well as, **create governed dimensions and measures** - ideal for driving consistency in business logic across various teams.
 
-<img  src={astrato_4b_clickhouse_data_view_joins}  class="image"  alt="Astrato connect to ClickHouse User Access"  style={{width:'75%',  'background-color':  'transparent'}}/>
-<br/>
+<Image size="lg" img={astrato_4b_clickhouse_data_view_joins} alt="Astrato connect to ClickHouse User Access" border />
 
 **Astrato intelligently suggests joins** using your meta data, including leveraging the keys in ClickHouse. Our suggested joins make it easy for you to gets started, working from your well-governed ClickHouse data, without reinventing the wheel. We also show you **join quality** so that you have the option to review all suggestions, in detail, from Astrato.
-<br/>
-<img  src={astrato_4c_clickhouse_completed_data_view}  class="image"  alt="Astrato connect to ClickHouse User Access"  style={{width:'75%',  'background-color':  'transparent'}}/><br/>
+
+<Image size="lg" img={astrato_4c_clickhouse_completed_data_view} alt="Astrato connect to ClickHouse User Access" border />
 
 ## Creating a dashboard {#creating-a-dashboard}
 
@@ -89,18 +90,18 @@ In just a few steps, you can build your first chart in Astrato.
 3. Add dimension(s)
 4. Add measure(s)
 
-<img  src={astrato_5a_clickhouse_build_chart}  class="image"  alt="Astrato connect to ClickHouse User Access"  style={{width:'75%',  'background-color':  'transparent'}}/><br/>
+<Image size="lg" img={astrato_5a_clickhouse_build_chart} alt="Astrato connect to ClickHouse User Access" border />
 
 
 ### View generated SQL supporting each visualization {#view-generated-sql-supporting-each-visualization}
 
 Transparency and accuracy are at the heart of Astrato. We ensure that every query generated is visible, letting you keep full control. All compute happens directly in ClickHouse, taking advantage of its speed while maintaining robust security and governance.
 
-<img  src={astrato_5b_clickhouse_view_sql}  class="image"  alt="Astrato connect to ClickHouse User Access"  style={{width:'75%',  'background-color':  'transparent'}}/><br/>
+<Image size="lg" img={astrato_5b_clickhouse_view_sql} alt="Astrato connect to ClickHouse User Access" border />
 
 
 ### Example completed dashboard {#example-completed-dashboard}
 
 A beautiful complete dashboard or data app isn't far away now. To see more of what we've built, head to our demo gallery on our website. https://astrato.io/gallery
 
-<img  src={astrato_5c_clickhouse_complete_dashboard}  class="image"  alt="Astrato connect to ClickHouse User Access"  style={{width:'75%',  'background-color':  'transparent'}}/>
+<Image size="lg" img={astrato_5c_clickhouse_complete_dashboard} alt="Astrato connect to ClickHouse User Access" border />

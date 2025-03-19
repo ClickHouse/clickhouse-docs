@@ -4,28 +4,29 @@ slug: /integrations/luzmo
 keywords: ['clickhouse', 'Luzmo', 'connect', 'integrate', 'ui', 'embedded']
 description: 'Luzmo is an embedded analytics platform with a native ClickHouse integration, purpose-built for Software and SaaS applications.'
 title: 'Integrating Luzmo with ClickHouse'
+sidebar: 'integrations'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import Image from '@theme/IdealImage';
 import luzmo_01 from '@site/static/images/integrations/data-visualization/luzmo_01.png';
 import luzmo_02 from '@site/static/images/integrations/data-visualization/luzmo_02.png';
 import luzmo_03 from '@site/static/images/integrations/data-visualization/luzmo_03.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Integrating Luzmo with ClickHouse
+
+<CommunityMaintainedBadge/>
 
 ## 1. Setup a ClickHouse connection {#1-setup-a-clickhouse-connection}
 
 To make a connection to ClickHouse, navigate to the **Connections page**, select **New Connection**, then select the ClickHouse from the New Connection modal.
 
-<p>
-  <img src={luzmo_01} class="image" alt="Create a ClickHouse connection" />
-</p>
+<Image img={luzmo_01} size="md" alt="Luzmo interface showing the Create a New Connection dialog with ClickHouse selected" border />
 
 You'll be asked to provide a **host**, **username** and **password**:
 
-<p>
-  <img src={luzmo_02} class="image" alt="Provide ClickHouse connection details" />
-</p>
+<Image img={luzmo_02} size="md" alt="Luzmo connection configuration form showing fields for ClickHouse host, username and password" border />
 
 *   **Host**: this is the host where your ClickHouse database is exposed. Note that only `https` is allowed here in order to securely transfer data over the wire. The structure of the host url expects: `https://url-to-clickhouse-db:port/database`
     By default, the plugin will connect to the 'default' database and the 443 port. By providing a database after the '/' you can configure which database to connect to.
@@ -42,9 +43,7 @@ To find out how to add datasets using our API, please refer to [this example in 
 
 You can now use your datasets to build beautiful (embedded) dashboards, or even power an AI Data Analyst ([Luzmo IQ](https://luzmo.com/iq)) that can answer your clients' questions.
 
-<p>
-  <img src={luzmo_03} class="image" alt="Luzmo dashboard example" />
-</p>
+<Image img={luzmo_03} size="md" alt="Luzmo dashboard example showing multiple visualizations of data from ClickHouse" border />
 
 ## Usage notes {#usage-notes}
 

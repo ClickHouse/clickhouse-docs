@@ -7,6 +7,7 @@ keywords: ['postgres', 'postgresql', 'migrate', 'migration', 'schema']
 
 import postgres_b_tree from '@site/static/images/migrations/postgres-b-tree.png';
 import postgres_sparse_index from '@site/static/images/migrations/postgres-sparse-index.png';
+import Image from '@theme/IdealImage';
 
 > This is **Part 2** of a guide on migrating from PostgreSQL to ClickHouse. This content can be considered introductory, with the aim of helping users deploy an initial functional system that adheres to ClickHouse best practices. It avoids complex topics and will not result in a fully optimized schema; rather, it provides a solid foundation for users to build a production system and base their learning.
 
@@ -180,15 +181,9 @@ To understand why using your OLTP primary key in ClickHouse is not appropriate, 
 - Memory and disk efficiency are paramount to the scale at which ClickHouse is often used. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, the merged part's primary indexes are also merged. Unlike Postgres, these indexes are not built for each row. Instead, the primary index for a part has one index entry per group of rows - this technique is called **sparse indexing**.
 - **Sparse indexing** is possible because ClickHouse stores the rows for a part on disk ordered by a specified key. Instead of directly locating single rows (like a B-Tree-based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows are then, in parallel, streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it completely fits into the main memory) whilst still significantly speeding up query execution times, especially for range queries that are typical in data analytics use cases. For more details, we recommend this [in-depth guide](/guides/best-practices/sparse-primary-indexes).
 
-<br />
+<Image img={postgres_b_tree} size="lg" alt="PostgreSQL B-Tree Index"/>
 
-<img src={postgres_b_tree} class="image" alt="PostgreSQL B-Tree Index" style={{width: '800px'}} />
-
-<br />
-
-<img src={postgres_sparse_index} class="image" alt="PostgreSQL Sparse Index" style={{width: '800px'}} />
-
-<br />
+<Image img={postgres_sparse_index} size="lg" alt="PostgreSQL Sparse Index"/>
 
 The selected key in ClickHouse will determine not only the index but also the order in which data is written on disk. Because of this, it can dramatically impact compression levels, which can, in turn, affect query performance. An ordering key that causes the values of most columns to be written in a contiguous order will allow the selected compression algorithm (and codecs) to compress the data more effectively.
 

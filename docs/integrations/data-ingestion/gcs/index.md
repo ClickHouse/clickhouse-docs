@@ -7,6 +7,7 @@ title: 'Integrate Google Cloud Storage with ClickHouse'
 ---
 
 import BucketDetails from '@site/docs/_snippets/_GCS_authentication_and_bucket.md';
+import Image from '@theme/IdealImage';
 import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';
 import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-2.png';
 
@@ -628,8 +629,8 @@ formatReadableSize(total_bytes): 36.42 MiB
 Looking at the buckets you will see that a folder was created in each bucket with the name that was used in the `storage.xml` configuration file.  Expand the folders and you will see many files, representing the data partitions.
 #### Bucket for replica one {#bucket-for-replica-one}
 
-<img src={GCS_examine_bucket_1} alt="Replica one bucket in Google Cloud Storage" />
+<Image img={GCS_examine_bucket_1} size="lg" border alt="Replica one bucket in Google Cloud Storage showing folder structure with data partitions" />
 
 #### Bucket for replica two {#bucket-for-replica-two}
 
-<img src={GCS_examine_bucket_2} alt="Replica two bucket in Google Cloud Storage" />
+<Image img={GCS_examine_bucket_2} size="lg" border alt="Replica two bucket in Google Cloud Storage showing folder structure with data partitions" />

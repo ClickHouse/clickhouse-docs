@@ -7,10 +7,14 @@ title: 'Omni'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import Image from '@theme/IdealImage';
 import omni_01 from '@site/static/images/integrations/data-visualization/omni_01.png';
 import omni_02 from '@site/static/images/integrations/data-visualization/omni_02.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Omni
+
+<CommunityMaintainedBadge/>
 
 Omni can connect to ClickHouse Cloud or on-premise deployment via the official ClickHouse data source.
 
@@ -22,12 +26,12 @@ Omni can connect to ClickHouse Cloud or on-premise deployment via the official C
 
 Navigate to Admin -> Connections and click the "Add Connection" button in the top right corner.
 
-<img src={omni_01} class="image" alt="Adding a new connection" style={{width: '80%', 'background-color': 'transparent'}}/>
+<Image size="lg" img={omni_01} alt="Omni admin interface showing the Add Connection button in the Connections section" border />
 <br/>
 
 Select `ClickHouse`. Enter your credentials in the form.
 
-<img src={omni_02} class="image" alt="Specifying your credentials" style={{width: '80%', 'background-color': 'transparent'}}/>
+<Image size="lg" img={omni_02} alt="Omni connection configuration interface for ClickHouse showing credential form fields" border />
 <br/>
 
 Now you should can query and visualize data from ClickHouse in Omni.

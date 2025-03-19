@@ -6,6 +6,7 @@ keywords: ['replacingmergetree', 'inserts', 'deduplication']
 ---
 
 import postgres_replacingmergetree from '@site/static/images/migrations/postgres-replacingmergetree.png';
+import Image from '@theme/IdealImage';
 
 While transactional databases are optimized for transactional update and delete workloads, OLAP databases offer reduced guarantees for such operations. Instead, they optimize for immutable data inserted in batches for the benefit of significantly faster analytical queries. While ClickHouse offers update operations through mutations, as well as a lightweight means of deleting rows, its column-orientated structure means these operations should be scheduled with care, as described above. These operations are handled asynchronously, processed with a single thread, and require (in the case of updates) data to be rewritten on disk. They should thus not be used for high numbers of small changes.
 In order to process a stream of update and delete rows while avoiding the above usage patterns, we can use the ClickHouse table engine ReplacingMergeTree.
@@ -28,7 +29,7 @@ As a result of this merge process, we have four rows representing the final stat
 
 <br />
 
-<img src={postgres_replacingmergetree} class="image" alt="ReplacingMergeTree process" style={{width: '800px', background: 'none'}} />
+<Image img={postgres_replacingmergetree} size="md" alt="ReplacingMergeTree process"/>
 
 <br />
 

@@ -14,6 +14,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 import select_replication_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-replication-slot.jpg'
 import select_destination_db from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-destination-db.jpg'
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
+import Image from '@theme/IdealImage';
 
 # Ingesting Data from Postgres to ClickHouse (using CDC)
 
@@ -61,15 +62,15 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 [//]: # (   TODO update image here)
 1. In the ClickHouse Cloud Console, navigate to your ClickHouse Cloud Service.
 
-<img src={cp_service} alt="ClickPipes service" />
+<Image img={cp_service} alt="ClickPipes service" size="lg" border/>
 
 2. Select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
 
-<img src={cp_step0} alt="Select imports" />
+<Image img={cp_step0} alt="Select imports" size="lg" border/>
 
 3. Select the `Postgres CDC` tile
 
-   <img src={postgres_tile} alt="Select Postgres" />
+   <Image img={postgres_tile} alt="Select Postgres" size="lg" border/>
 
 ### Adding your source Postgres database connection {#adding-your-source-postgres-database-connection}
 
@@ -82,7 +83,7 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 
    :::
 
-   <img src={postgres_connection_details} alt="Fill in connection details" />
+   <Image img={postgres_connection_details} alt="Fill in connection details" size="lg" border/>
 
 #### (Optional) Setting up SSH Tunneling {#optional-setting-up-ssh-tunneling}
 
@@ -92,7 +93,7 @@ You can specify SSH tunneling details if your source Postgres database is not pu
 1. Enable the "Use SSH Tunnelling" toggle.
 2. Fill in the SSH connection details.
 
-   <img src={ssh_tunnel} alt="SSH tunneling" />
+   <Image img={ssh_tunnel} alt="SSH tunneling" size="lg" border/>
 
 3. To use Key-based authentication, click on "Revoke and generate key pair" to generate a new key pair and copy the generated public key to your SSH server under `~/.ssh/authorized_keys`.
 4. Click on "Verify Connection" to verify the connection.
@@ -109,7 +110,7 @@ Once the connection details are filled in, click on "Next".
 
 5. Make sure to select the replication slot from the dropdown list you created in the prerequisites step.
 
-   <img src={select_replication_slot} alt="Select replication slot" />
+   <Image img={select_replication_slot} alt="Select replication slot" size="lg" border/>
 
 #### Advanced Settings {#advanced-settings}
 
@@ -126,21 +127,21 @@ You can configure the Advanced settings if needed. A brief description of each s
 
 6. Here you can select the destination database for your ClickPipe. You can either select an existing database or create a new one.
 
-   <img src={select_destination_db} alt="Select destination database" />
-   
+   <Image img={select_destination_db} alt="Select destination database" size="lg" border/>
+
 7. You can select the tables you want to replicate from the source Postgres database. While selecting the tables, you can also choose to rename the tables in the destination ClickHouse database as well as exclude specific columns.
 
    :::warning
 
    If you are defining a Ordering Key in ClickHouse differently from the Primary Key in Postgres, please don’t forget to read all the [considerations](https://docs.peerdb.io/mirror/ordering-key-different) around it!
-   
+
    :::
 
 ### Review permissions and start the ClickPipe {#review-permissions-and-start-the-clickpipe}
 
 8. Select the "Full access" role from the permissions dropdown and click "Complete Setup".
 
-   <img src={ch_permissions} alt="Review permissions" />
+   <Image img={ch_permissions} alt="Review permissions" size="lg" border/>
 
 ## What's next? {#whats-next}
 
@@ -153,4 +154,3 @@ Also, please refer to the [ClickPipes for Postgres FAQ](./postgres/faq) for more
 [This](https://docs.peerdb.io/bestpractices/clickhouse_datamodeling) is especially important as ClickHouse differs from Postgres, and you might encounter some surprises. This guide helps address potential pitfalls and ensures you can take full advantage of ClickHouse.
 
 :::
-

@@ -5,6 +5,7 @@ keywords: ['new pricing', 'dimensions']
 description: 'Pricing dimensions for data transfer and ClickPipes'
 ---
 
+import Image from '@theme/IdealImage';
 import clickpipesPricingFaq1 from '@site/static/images/cloud/manage/jan2025_faq/external_clickpipes_pricing_faq_1.png';
 import clickpipesPricingFaq2 from '@site/static/images/cloud/manage/jan2025_faq/external_clickpipes_pricing_faq_2.png';
 import clickpipesPricingFaq3 from '@site/static/images/cloud/manage/jan2025_faq/external_clickpipes_pricing_faq_3.png';
@@ -52,14 +53,14 @@ The diagrams below show a simplified architecture.
 For streaming ClickPipes, ClickPipes replicas access the remote data sources (e.g., a Kafka broker),
 pull the data, process and ingest it into the destination ClickHouse service.
 
-<img src={clickpipesPricingFaq1} alt="ClickPipes Replicas - Streaming ClickPipes" />
+<Image img={clickpipesPricingFaq1} size="lg" alt="ClickPipes Replicas - Streaming ClickPipes" border/>
 
 In the case of object storage ClickPipes,
 the ClickPipes replica orchestrates the data loading task
 (identifying files to copy, maintaining the state, and moving partitions),
 while the data is pulled directly from the ClickHouse service.
 
-<img src={clickpipesPricingFaq2} alt="ClickPipes Replicas - Object Storage ClickPipes" />
+<Image img={clickpipesPricingFaq2} size="lg" alt="ClickPipes Replicas - Object Storage ClickPipes" border/>
 
 ### What is the default number of replicas and their size? {#what-is-the-default-number-of-replicas-and-their-size}
 
@@ -77,9 +78,9 @@ Vertical scaling is also available on demand for specific use cases (adding more
 It depends on the workload throughput and latency requirements.
 We recommend starting with the default value of 1 replica, measuring your latency, and adding replicas if needed.
 Keep in mind that for Kafka ClickPipes, you also have to scale the Kafka broker partitions accordingly.
-The scaling controls are available under “settings” for each streaming ClickPipe.
+The scaling controls are available under "settings" for each streaming ClickPipe.
 
-<img src={clickpipesPricingFaq3} alt="ClickPipes Replicas - How many ClickPipes replicas do I need?" />
+<Image img={clickpipesPricingFaq3} size="lg" alt="ClickPipes Replicas - How many ClickPipes replicas do I need?" border/>
 
 ### What does the ClickPipes pricing structure look like? {#what-does-the-clickpipes-pricing-structure-look-like}
 
@@ -105,6 +106,7 @@ For example, ingesting 1 TB of data over 24 hours using the Kafka connector usin
 $$
 (0.25 \times 0.20 \times 24) + (0.04 \times 1000) = \$41.2
 $$
+<br/>
 
 For object storage connectors (S3 and GCS),
 only the ClickPipes compute cost is incurred since the ClickPipes pod is not processing data

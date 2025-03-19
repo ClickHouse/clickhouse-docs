@@ -5,6 +5,7 @@ title: 'Cloud IP Addresses'
 description: 'This page documents the Cloud Endpoints API security features within ClickHouse. It details how to secure your ClickHouse deployments by managing access through authentication and authorization mechanisms.'
 ---
 
+import Image from '@theme/IdealImage';
 import aws_rds_mysql from '@site/static/images/_snippets/aws-rds-mysql.png';
 import gcp_authorized_network from '@site/static/images/_snippets/gcp-authorized-network.png';
 
@@ -39,8 +40,8 @@ For example, to allow access from a ClickHouse Cloud service hosted on AWS in th
 
 For example, an AWS RDS instance running in `us-east-2` that needs to connect to a ClickHouse cloud service should have the following Inbound security group rules:
 
-<img src={aws_rds_mysql} class="image" alt="AWS Security group rules" />
+<Image img={aws_rds_mysql} size="lg" alt="AWS Security group rules" border />
 
 For the same ClickHouse Cloud service running in `us-east-2`, but this time connected to an MySQL in GCP, the `Authorized networks` should look like this:
 
-<img src={gcp_authorized_network} class="image" alt="GCP Authorized networks" />
+<Image img={gcp_authorized_network} size="md" alt="GCP Authorized networks" border />

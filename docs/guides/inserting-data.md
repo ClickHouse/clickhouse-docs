@@ -7,6 +7,7 @@ slug: /guides/inserting-data
 ---
 
 import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';
+import Image from '@theme/IdealImage';
 
 ## Basic Example {#basic-example}
 
@@ -90,15 +91,7 @@ If large batches cannot be inserted, users can delegate batching to ClickHouse u
 
 With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later in 3 steps, as illustrated by the diagram below:
 
-<br />
-
-<img src={postgres_inserts}
-     className="image"
-     alt="NEEDS ALT"
-     style={{width: '600px'}}
-/>
-
-<br />
+<Image img={postgres_inserts} size="md" alt="Postgres inserts"/>
 
 With asynchronous inserts enabled, ClickHouse:
 
