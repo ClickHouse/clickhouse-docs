@@ -23,17 +23,20 @@ import powerbi_select_odbc from '@site/static/images/integrations/data-visualiza
 import powerbi_select_dsn from '@site/static/images/integrations/data-visualization/powerbi_select_dsn.png';
 import powerbi_dsn_credentials from '@site/static/images/integrations/data-visualization/powerbi_dsn_credentials.png';
 import powerbi_16 from '@site/static/images/integrations/data-visualization/powerbi_16.png';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Power BI
+
+<ClickHouseSupportedBadge/>
 
 Microsoft Power BI can query or load into memory data from [ClickHouse Cloud](https://clickhouse.com/cloud) or a self-managed deployment.
 
 There are several flavours of Power BI that you can use to visualise your data:
 
 * Power BI Desktop: A Windows desktop application for creating Dashboards and Visualisations
-* Power BI Service: Available within Azure as a SaaS to host the Dashboards created on Power BI Desktop 
+* Power BI Service: Available within Azure as a SaaS to host the Dashboards created on Power BI Desktop
 
-Power BI requires you to create your dashboards within the Desktop version and publish them to Power BI Service. 
+Power BI requires you to create your dashboards within the Desktop version and publish them to Power BI Service.
 
 This tutorial will guide you through the process of:
 
@@ -54,10 +57,10 @@ We recommend updating to the latest version of Power BI. The ClickHouse Connecto
 
 You'll need the following details for connecting to your ClickHouse instance:
 
-* Hostname - ClickHouse 
+* Hostname - ClickHouse
 * Username - User credentials
 * Password - Password of the user
-* Database - Name of the database on the instance you want to connect to 
+* Database - Name of the database on the instance you want to connect to
 
 ## Power BI Desktop {#power-bi-desktop}
 
@@ -126,7 +129,7 @@ Select the connector, and enter in the ClickHouse instance credentials:
 <br/>
 
 :::note
-We advise selecting DirectQuery for querying ClickHouse directly. 
+We advise selecting DirectQuery for querying ClickHouse directly.
 
 If you have a use case that has a small amount of data, you can choose import mode, and the entire data will be loaded to Power BI.
 :::
@@ -176,14 +179,14 @@ Choose the Unicode version of the ODBC driver.
 <Image size="md" img={powerbi_select_unicode} alt="Create New Data Source dialog showing ClickHouse Unicode Driver selection" border />
 <br/>
 
-Fill in the connection details. 
+Fill in the connection details.
 
 
 <Image size="sm" img={powerbi_connection_details} alt="ClickHouse ODBC Driver configuration dialog with connection parameters" border />
 <br/>
 
 :::note
-If you are using a deployment that has SSL enabled (e.g. ClickHouse Cloud or a self-managed instance), in the `SSLMode` field you should supply `require`. 
+If you are using a deployment that has SSL enabled (e.g. ClickHouse Cloud or a self-managed instance), in the `SSLMode` field you should supply `require`.
 
 - `Host` should always have the protocol (i.e. `http://` or `https://`) omitted.
 - `Timeout` is an integer representing seconds. Default value: `30 seconds`.

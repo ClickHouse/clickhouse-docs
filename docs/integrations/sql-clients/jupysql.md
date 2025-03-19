@@ -8,8 +8,12 @@ title: 'Using JupySQL with ClickHouse'
 import Image from '@theme/IdealImage';
 import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql-plot-1.png';
 import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql-plot-2.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Using JupySQL with ClickHouse
+
+<CommunityMaintainedBadge/>
+
 In this guide we'll show an integration with ClickHouse.
 
 We will use JupySQL to run queries on top of ClickHouse.

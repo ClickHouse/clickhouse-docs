@@ -27,8 +27,11 @@ import rocketbi_15 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_16 from '@site/static/images/integrations/data-visualization/rocketbi_16.png';
 import rocketbi_17 from '@site/static/images/integrations/data-visualization/rocketbi_17.png';
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # GOAL: BUILD YOUR 1ST DASHBOARD
+
+<CommunityMaintainedBadge/>
 
 In this guide, you will install and build a simple dashboard using Rocket.BI .
 This is the dashboard:

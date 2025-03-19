@@ -10,9 +10,11 @@ import tablum_ch_0 from '@site/static/images/integrations/sql-clients/tablum-ch-
 import tablum_ch_1 from '@site/static/images/integrations/sql-clients/tablum-ch-1.png';
 import tablum_ch_2 from '@site/static/images/integrations/sql-clients/tablum-ch-2.png';
 import tablum_ch_3 from '@site/static/images/integrations/sql-clients/tablum-ch-3.png';
-
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Connecting TABLUM.IO to ClickHouse
+
+<CommunityMaintainedBadge/>
 
 ## Open the TABLUM.IO startup page {#open-the-tablumio-startup-page}
 

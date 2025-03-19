@@ -9,12 +9,15 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 import qstudio_add_connection from '@site/static/images/integrations/sql-clients/qstudio-add-connection.png';
 import qstudio_running_query from '@site/static/images/integrations/sql-clients/qstudio-running-query.png';
 import Image from '@theme/IdealImage';
-
-QStudio is a free SQL GUI, it allows running SQL scripts, easy browsing of tables, charting and exporting of results. It works on every operating system, with every database.
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Connect QStudio to ClickHouse
 
-QStudio connects to ClickHouse using JDBC. 
+<CommunityMaintainedBadge/>
+
+QStudio is a free SQL GUI, it allows running SQL scripts, easy browsing of tables, charting and exporting of results. It works on every operating system, with every database.
+
+QStudio connects to ClickHouse using JDBC.
 
 ## 1. Gather your ClickHouse details {#1-gather-your-clickhouse-details}
 
@@ -50,7 +53,7 @@ If QStudio detects that you do not have the ClickHouse JDBC driver installed, it
 
 ## 4. Query ClickHouse {#4-query-clickhouse}
 
-- Open a query editor and run a query. You can run queries by 
+- Open a query editor and run a query. You can run queries by
 - Ctrl + e - Runs highlighted text
 - Ctrl + Enter - Runs the current line
 

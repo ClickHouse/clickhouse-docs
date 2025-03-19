@@ -18,8 +18,11 @@ import splunk_7 from '@site/static/images/integrations/splunk/splunk-7.png';
 import splunk_8 from '@site/static/images/integrations/splunk/splunk-8.png';
 import splunk_9 from '@site/static/images/integrations/splunk/splunk-9.png';
 import splunk_10 from '@site/static/images/integrations/splunk/splunk-10.png';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Connecting Splunk to ClickHouse
+
+<ClickHouseSupportedBadge/>
 
 Splunk is a popular technology for security and observability. It is also a powerful search and dashboarding engine. There are hundreds of Splunk apps available to address different use cases.
 
@@ -65,7 +68,7 @@ If you're having issues installing the DB Connect App, please see [this link](ht
 
 Once you've verified that the DB Connect App is installed, add the java_home path  to the DB Connect App in Configuration -> Settings, and click save then reset.
 
-<Image img={splunk_2} size="lg" border alt="Splunk DB Connect settings page showing Java Home configuration" />
+<Image img={splunk_2} size="md" border alt="Splunk DB Connect settings page showing Java Home configuration" />
 
 ## Configure JDBC for ClickHouse {#configure-jdbc-for-clickhouse}
 
@@ -107,7 +110,7 @@ Create a new Connection to ClickHouse from Configuration -> Databases -> Connect
 
 Add ClickHouse host details and ensure "Enable SSL" is ticked:
 
-<Image img={splunk_5} size="mdw" border alt="Splunk connection configuration page for ClickHouse" />
+<Image img={splunk_5} size="md" border alt="Splunk connection configuration page for ClickHouse" />
 
 After saving the connection, you will have successfully connected to ClickHouse to Splunk!
 
@@ -121,11 +124,11 @@ We will now run a SQL query to test that everything works.
 
 Select your connection details in the SQL Explorer from the DataLab section of the DB Connect App. We are using the  `trips` table for this demo:
 
-<Image img={splunk_6} size="lg" border alt="Splunk SQL Explorer selecting connection to ClickHouse" />
+<Image img={splunk_6} size="md" border alt="Splunk SQL Explorer selecting connection to ClickHouse" />
 
 Execute a SQL query on the `trips` table that returns the count of all the records in the table:
 
-<Image img={splunk_7} size="lg" border alt="Splunk SQL query execution showing count of records in trips table" />
+<Image img={splunk_7} size="md" border alt="Splunk SQL query execution showing count of records in trips table" />
 
 If your query is successful, you should see the results.
 

@@ -18,10 +18,13 @@ import zing_06 from '@site/static/images/integrations/data-visualization/zing_06
 import zing_07 from '@site/static/images/integrations/data-visualization/zing_07.png';
 import zing_08 from '@site/static/images/integrations/data-visualization/zing_08.png';
 import zing_09 from '@site/static/images/integrations/data-visualization/zing_09.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Connect Zing Data to ClickHouse
 
-<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> is a data exploration and visualization platform. Zing Data connects to ClickHouse using the JS driver provided by ClickHouse. 
+<CommunityMaintainedBadge/>
+
+<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> is a data exploration and visualization platform. Zing Data connects to ClickHouse using the JS driver provided by ClickHouse.
 
 ## How to connect {#how-to-connect}
 1. Gather your connection details.
@@ -30,7 +33,7 @@ import zing_09 from '@site/static/images/integrations/data-visualization/zing_09
 2. Download or visit Zing Data
 
     * To use Clickhouse with Zing Data on mobile, download the Zing data app on [Google Play Store](https://play.google.com/store/apps/details?id=com.getzingdata.android) or the [Apple App Store](https://apps.apple.com/us/app/zing-data-collaborative-bi/id1563294091).
-    
+
     * To use Clickhouse with Zing Data on the web, visit the [Zing web console](https://console.getzingdata.com/) and create an account.
 
 3. Add a datasource
@@ -38,7 +41,7 @@ import zing_09 from '@site/static/images/integrations/data-visualization/zing_09
     * To interact with your ClickHouse data with Zing Data, you need to define a **_datasource_**. On the mobile app menu in Zing Data, select **Sources**, then click on **Add a Datasource**.
 
     * To add a datasource on web, click on **Data Sources** on the top menu, click on **New Datasource** and select **Clickhouse** from the dropdown menu
-    
+
     <Image size="md" img={zing_01} alt="Zing Data interface showing New Datasource button and ClickHouse option in the dropdown menu" border />
     <br/>
 

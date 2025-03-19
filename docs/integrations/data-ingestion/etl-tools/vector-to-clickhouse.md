@@ -9,8 +9,11 @@ title: 'Integrating Vector with ClickHouse'
 import Image from '@theme/IdealImage';
 import vector01 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_01.png';
 import vector02 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_02.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Integrating Vector with ClickHouse
+
+<CommunityMaintainedBadge/>
 
 Being able to analyze your logs in real time is critical for production applications. Have you ever wondered if ClickHouse is good at storing and analyzing log data? Just checkout <a href="https://eng.uber.com/logging/" target="_blank">Uber's experience</a> with converting their logging infrastructure from ELK to ClickHouse.
 

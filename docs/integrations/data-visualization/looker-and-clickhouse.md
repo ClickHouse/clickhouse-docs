@@ -12,8 +12,11 @@ import looker_01 from '@site/static/images/integrations/data-visualization/looke
 import looker_02 from '@site/static/images/integrations/data-visualization/looker_02.png';
 import looker_03 from '@site/static/images/integrations/data-visualization/looker_03.png';
 import looker_04 from '@site/static/images/integrations/data-visualization/looker_04.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Looker
+
+<CommunityMaintainedBadge/>
 
 Looker can connect to ClickHouse Cloud or on-premise deployment via the official ClickHouse data source.
 

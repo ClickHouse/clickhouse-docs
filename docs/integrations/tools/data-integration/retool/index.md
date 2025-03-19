@@ -13,8 +13,11 @@ import retool_02 from '@site/static/images/integrations/tools/data-integration/r
 import retool_03 from '@site/static/images/integrations/tools/data-integration/retool/retool_03.png';
 import retool_04 from '@site/static/images/integrations/tools/data-integration/retool/retool_04.png';
 import retool_05 from '@site/static/images/integrations/tools/data-integration/retool/retool_05.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Connecting Retool to ClickHouse
+
+<CommunityMaintainedBadge/>
 
 ## 1. Gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
@@ -36,7 +39,7 @@ In the setup wizard, make sure you select `com.clickhouse.jdbc.ClickHouseDriver`
 <Image img={retool_03} size="lg" border alt="Selecting the right driver" />
 <br/>
 
-Fill in your ClickHouse credentials in the following format: `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD`. 
+Fill in your ClickHouse credentials in the following format: `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD`.
 If your instance requires SSL or you are using ClickHouse Cloud, add `&ssl=true` to the connection string, so it looks like `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD&ssl=true`
 
 <Image img={retool_04} size="lg" border alt="Specifying your credentials" />

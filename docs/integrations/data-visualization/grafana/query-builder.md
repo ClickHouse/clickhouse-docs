@@ -16,8 +16,11 @@ import demo_raw_sql_query from '@site/static/images/integrations/data-visualizat
 import trace_id_in_table from '@site/static/images/integrations/data-visualization/grafana/trace_id_in_table.png';
 import trace_id_in_logs from '@site/static/images/integrations/data-visualization/grafana/trace_id_in_logs.png';
 import demo_data_links from '@site/static/images/integrations/data-visualization/grafana/demo_data_links.png';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Query Builder
+
+<ClickHouseSupportedBadge/>
 
 Any query can be run with the ClickHouse plugin.
 The query builder is a convenient option for simpler queries, but for complicated queries you will need to use the [SQL Editor](#sql-editor).

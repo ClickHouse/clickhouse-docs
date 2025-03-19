@@ -17,8 +17,11 @@ import looker_studio_05 from '@site/static/images/integrations/data-visualizatio
 import looker_studio_06 from '@site/static/images/integrations/data-visualization/looker_studio_06.png';
 import looker_studio_enable_mysql from '@site/static/images/integrations/data-visualization/looker_studio_enable_mysql.png';
 import looker_studio_mysql_cloud from '@site/static/images/integrations/data-visualization/looker_studio_mysql_cloud.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Looker Studio
+
+<CommunityMaintainedBadge/>
 
 Looker Studio can connect to ClickHouse via the MySQL interface using the official Google MySQL data source.
 
@@ -40,7 +43,7 @@ Search for the official MySQL connector provided by Google (named just **MySQL**
 <Image size="md" img={looker_studio_02} alt="MySQL connector search in Looker Studio connectors list" border />
 <br/>
 
-Specify your connection details. Please note that MySQL interface port is 9004 by default, 
+Specify your connection details. Please note that MySQL interface port is 9004 by default,
 and it might be different depending on your server configuration.
 
 <Image size="md" img={looker_studio_03} alt="Specifying the ClickHouse MySQL connection details in Looker Studio" border />
@@ -56,12 +59,12 @@ Alternatively, you could specify a custom query to fetch your data:
 <Image size="md" img={looker_studio_05} alt="Using a custom SQL query to fetch data from ClickHouse in Looker Studio" border />
 <br/>
 
-Finally, you should be able to see the introspected table structure and adjust the data types if necessary. 
+Finally, you should be able to see the introspected table structure and adjust the data types if necessary.
 
 <Image size="md" img={looker_studio_06} alt="Viewing the introspected ClickHouse table structure in Looker Studio" border />
 <br/>
 
-Now you can proceed with exploring your data or creating a new report! 
+Now you can proceed with exploring your data or creating a new report!
 
 ## Using Looker Studio with ClickHouse Cloud {#using-looker-studio-with-clickhouse-cloud}
 
