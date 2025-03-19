@@ -6,7 +6,11 @@ description: 'Users can ingest data into ClickHouse using Google Dataflow'
 title: 'Integrating Google Dataflow with ClickHouse'
 ---
 
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+
 # Integrating Google Dataflow with ClickHouse
+
+<ClickHouseSupportedBadge/>
 
 [Google Dataflow](https://cloud.google.com/dataflow) is a fully managed stream and batch data processing service. It supports pipelines written in Java or Python and is built on the Apache Beam SDK.
 
@@ -29,4 +33,4 @@ ClickHouse offers [predefined templates](./templates) designed for specific use 
 - Quick and easy setup for simple use cases.
 - Suitable also for users with minimal programming expertise.
 
-Both approaches are fully compatible with Google Cloud and the ClickHouse ecosystem, offering flexibility depending on your technical expertise and project requirements.  
+Both approaches are fully compatible with Google Cloud and the ClickHouse ecosystem, offering flexibility depending on your technical expertise and project requirements.

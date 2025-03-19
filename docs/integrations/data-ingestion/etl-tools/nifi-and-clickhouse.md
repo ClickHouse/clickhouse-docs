@@ -24,8 +24,11 @@ import nifi12 from '@site/static/images/integrations/data-ingestion/etl-tools/ni
 import nifi13 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_13.png';
 import nifi14 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_14.png';
 import nifi15 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_15.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Connect Apache NiFi to ClickHouse
+
+<CommunityMaintainedBadge/>
 
 <a href="https://nifi.apache.org/" target="_blank">Apache NiFi</a> is an open-source workflow management software designed to automate data flow between software systems. It allows the creation of ETL data pipelines and is shipped with more than 300 data processors. This step-by-step tutorial shows how to connect Apache NiFi to ClickHouse as both a source and destination, and to load a sample dataset.
 

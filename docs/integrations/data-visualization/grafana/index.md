@@ -13,8 +13,11 @@ import add_new_ds from '@site/static/images/integrations/data-visualization/graf
 import quick_config from '@site/static/images/integrations/data-visualization/grafana/quick_config.png';
 import valid_ds from '@site/static/images/integrations/data-visualization/grafana/valid_ds.png';
 import Image from '@theme/IdealImage';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # ClickHouse data source plugin for Grafana
+
+<ClickHouseSupportedBadge/>
 
 With Grafana you can explore and share all of your data through dashboards.
 Grafana requires a plugin to connect to ClickHouse, which is easily installed within their UI.

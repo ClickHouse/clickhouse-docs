@@ -25,8 +25,11 @@ import explo_13 from '@site/static/images/integrations/data-visualization/explo_
 import explo_14 from '@site/static/images/integrations/data-visualization/explo_14.png';
 import explo_15 from '@site/static/images/integrations/data-visualization/explo_15.png';
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Connecting Explo to ClickHouse
+
+<CommunityMaintainedBadge/>
 
 Customer-facing analytics for any platform. Designed for beautiful visualization. Engineered for simplicity.
 
@@ -65,7 +68,7 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
 <Image img={explo_04} size="md" alt="Clickhouse" border />
 
-6. Enter your **Clickhouse Credentials**. 
+6. Enter your **Clickhouse Credentials**.
 
 <Image img={explo_05} size="md" alt="Credentials" border />
 

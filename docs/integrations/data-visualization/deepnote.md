@@ -11,10 +11,13 @@ import deepnote_01 from '@site/static/images/integrations/data-visualization/dee
 import deepnote_02 from '@site/static/images/integrations/data-visualization/deepnote_02.png';
 import deepnote_03 from '@site/static/images/integrations/data-visualization/deepnote_03.png';
 import Image from '@theme/IdealImage';
-
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
 # Connect ClickHouse to Deepnote
+
+<CommunityMaintainedBadge/>
+
 
 <a href="https://www.deepnote.com/" target="_blank">Deepnote</a> is a collaborative data notebook built for teams to discover and share insights. In addition to being Jupyter-compatible, it works in the cloud and provides you with one central place to collaborate and work on data science projects efficiently.
 

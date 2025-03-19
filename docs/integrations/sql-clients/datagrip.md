@@ -11,8 +11,11 @@ import datagrip_1 from '@site/static/images/integrations/sql-clients/datagrip-1.
 import datagrip_5 from '@site/static/images/integrations/sql-clients/datagrip-5.png';
 import datagrip_6 from '@site/static/images/integrations/sql-clients/datagrip-6.png';
 import datagrip_7 from '@site/static/images/integrations/sql-clients/datagrip-7.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Connecting DataGrip to ClickHouse
+
+<CommunityMaintainedBadge/>
 
 ## Start or download DataGrip {#start-or-download-datagrip}
 

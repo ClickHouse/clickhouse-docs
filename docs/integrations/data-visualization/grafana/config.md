@@ -15,8 +15,11 @@ import config_logs from '@site/static/images/integrations/data-visualization/gra
 import config_traces from '@site/static/images/integrations/data-visualization/grafana/config_traces.png';
 import alias_table_config_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_config_example.png';
 import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Configuring ClickHouse data source in Grafana
+
+<ClickHouseSupportedBadge/>
 
 The easiest way to modify a configuration is in the Grafana UI on the plugin configuration page, but data sources can also be [provisioned with a YAML file](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources).
 
@@ -298,7 +301,7 @@ datasources:
         spanIdColumn: <string>
         operationNameColumn: <string>
         parentSpanIdColumn: <string>
-        serviceNameColumn: <string>  
+        serviceNameColumn: <string>
         durationTimeColumn: <string>
         durationUnitColumn: <time unit>
         startTimeColumn: <string>

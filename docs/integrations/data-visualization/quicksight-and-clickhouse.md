@@ -15,8 +15,11 @@ import quicksight_04 from '@site/static/images/integrations/data-visualization/q
 import quicksight_05 from '@site/static/images/integrations/data-visualization/quicksight_05.png';
 import quicksight_06 from '@site/static/images/integrations/data-visualization/quicksight_06.png';
 import quicksight_07 from '@site/static/images/integrations/data-visualization/quicksight_07.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # QuickSight
+
+<CommunityMaintainedBadge/>
 
 QuickSight can connect to on-premise ClickHouse setup (23.11+) via MySQL interface using the official MySQL data source and Direct Query mode.
 
@@ -84,11 +87,11 @@ QuickSight requires several additional settings in the MySQL user's profile.
 
 However, it is recommended to assign it to a different profile that can be used by your MySQL user instead of the default one.
 
-Finally, configure the Clickhouse Server to listen on the desired IP address(es). 
+Finally, configure the Clickhouse Server to listen on the desired IP address(es).
 In `config.xml`, uncomment out the following to listen on all addresses:
 
 ```bash
-<listen_host>::</listen_host> 
+<listen_host>::</listen_host>
 ```
 
 If you have the `mysql` binary available, you can test the connection from the command line.
@@ -148,9 +151,9 @@ By clicking "Edit/Preview data", you should be able to see the introspected tabl
 Make sure you have "Direct Query" mode selected in the bottom left corner of the UI:
 
 <Image size="md" img={quicksight_07} alt="QuickSight interface with Direct Query mode option highlighted in bottom corner" border />
-<br/>                                                                                                      
+<br/>
 
-Now you can proceed with publishing your dataset and creating a new visualization! 
+Now you can proceed with publishing your dataset and creating a new visualization!
 
 ## Known limitations {#known-limitations}
 
