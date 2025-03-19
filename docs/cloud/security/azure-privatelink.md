@@ -225,7 +225,7 @@ You need to point "DNS name", taken from [Obtain Azure connection alias for Priv
 
 ```bash
 nslookup xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud.
-Server:	127.0.0.53
+Server: 127.0.0.53
 Address: 127.0.0.53#53
 
 Non-authoritative answer:
@@ -422,7 +422,7 @@ You should receive the following response:
 
 ```response
 Non-authoritative answer:
-Name:	<dns name>
+Name: <dns name>
 Address: 10.0.0.4
 ```
 
