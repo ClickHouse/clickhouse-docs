@@ -40,7 +40,7 @@ Here, we can run the following SQL commands:
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 
-<Image img={supabase_commands} alt="User and publication commands" size="large"/>
+<Image img={supabase_commands} alt="User and publication commands" size="large" border/>
 
 
 Click on **Run** to have a publication and a user ready.
@@ -73,7 +73,7 @@ Head over to your Supabase Project's `Project Settings` -> `Database` (under `Co
 
 **Important**: Disable `Display connection pooler` on this page and head over to the `Connection parameters` section and note/copy the parameters.
 
-<Image img={supabase_connection_details} size="lg" border alt="Locate Supabase Connection Details"/>
+<Image img={supabase_connection_details} size="lg" border alt="Locate Supabase Connection Details" border/>
 
 :::info
 

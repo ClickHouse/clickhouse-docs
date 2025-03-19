@@ -34,13 +34,13 @@ Anything on or after Postgres 12
 
 1. Click on **Edit** button on the Overview page.
 
-<Image img={edit_button} alt="Edit Button in Cloud SQL Postgres" size="lg"/>
+<Image img={edit_button} alt="Edit Button in Cloud SQL Postgres" size="lg" border/>
 
 2. Go to Flags and change `cloudsql.logical_decoding` to on and `wal_sender_timeout` to 0. These changes will need restarting your Postgres server.
 
-<Image img={cloudsql_logical_decoding1} alt="Change cloudsql.logical_decoding to on" size="lg"/>
-<Image img={cloudsql_logical_decoding2} alt="Changed cloudsql.logical_decoding and wal_sender_timeout" size="lg"/>
-<Image img={cloudsql_logical_decoding3} alt="Restart Server" size="lg"/>
+<Image img={cloudsql_logical_decoding1} alt="Change cloudsql.logical_decoding to on" size="lg" border/>
+<Image img={cloudsql_logical_decoding2} alt="Changed cloudsql.logical_decoding and wal_sender_timeout" size="lg" border/>
+<Image img={cloudsql_logical_decoding3} alt="Restart Server" size="lg" border/>
 
 
 ## Creating ClickPipes User and Granting permissions {#creating-clickpipes-user-and-granting-permissions}
@@ -88,16 +88,16 @@ If your are using SSH Tunneling, then you need to add the [ClickPipes IPs](../..
 
 1. Go to **Connections** section
 
-<Image img={connections} alt="Connections Section in Cloud SQL" size="lg"/>
+<Image img={connections} alt="Connections Section in Cloud SQL" size="lg" border/>
 
 2. Go to the Networking subsection
 
-<Image img={connections_networking} alt="Networking Subsection in Cloud SQL" size="lg"/>
+<Image img={connections_networking} alt="Networking Subsection in Cloud SQL" size="lg" border/>
 
 3. Add the [public IPs of ClickPipes](../../index.md#list-of-static-ips)
 
-<Image img={firewall1} alt="Add ClickPipes Networks to Firewall" size="lg"/>
-<Image img={firewall2} alt="ClickPipes Networks Added to Firewall" size="lg"/>
+<Image img={firewall1} alt="Add ClickPipes Networks to Firewall" size="lg" border/>
+<Image img={firewall2} alt="ClickPipes Networks Added to Firewall" size="lg" border/>
 
 
 ## What's next? {#whats-next}

@@ -48,19 +48,19 @@ If not already configured, follow these steps:
     - Set `rds.logical_replication` to 1
     - Set `wal_sender_timeout` to 0
 
-<Image img={parameter_group_in_blade} alt="Where to find Parameter groups in RDS?" size="lg" />
+<Image img={parameter_group_in_blade} alt="Where to find Parameter groups in RDS?" size="lg" border/>
 
-<Image img={change_rds_logical_replication} alt="Changing rds.logical_replication" size="lg"/>
+<Image img={change_rds_logical_replication} alt="Changing rds.logical_replication" size="lg" border/>
 
-<Image img={change_wal_sender_timeout} alt="Changing wal_sender_timeout" size="lg"/>
+<Image img={change_wal_sender_timeout} alt="Changing wal_sender_timeout" size="lg" border/>
 
 2. Apply the new parameter group to your RDS Postgres database
 
-<Image img={modify_parameter_group} alt="Modifying RDS Postgres with new parameter group" size="lg"/>
+<Image img={modify_parameter_group} alt="Modifying RDS Postgres with new parameter group" size="lg" border/>
 
 3. Reboot your RDS instance to apply the changes
 
-<Image img={reboot_rds} alt="Reboot RDS Postgres" size="lg"/>
+<Image img={reboot_rds} alt="Reboot RDS Postgres" size="lg" border/>
 
 ## Configure Database User {#configure-database-user}
 
@@ -99,9 +99,9 @@ Connect to your RDS Postgres instance as an admin user and execute the following
 
 If you want to restrict traffic to your RDS instance, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the `Inbound rules` of your RDS security group.
 
-<Image img={security_group_in_rds_postgres} alt="Where to find security group in RDS Postgres?" size="lg"/>
+<Image img={security_group_in_rds_postgres} alt="Where to find security group in RDS Postgres?" size="lg" border/>
 
-<Image img={edit_inbound_rules} alt="Edit inbound rules for the above security group" size="lg"/>
+<Image img={edit_inbound_rules} alt="Edit inbound rules for the above security group" size="lg" border/>
 
 ### Private Access via AWS PrivateLink {#private-access-via-aws-privatelink}
 

@@ -13,10 +13,10 @@ To connect to ClickHouse with native TCP you need this information:
 
 The details for your ClickHouse Cloud service are available in the ClickHouse Cloud console.  Select the service that you will connect to and click **Connect**:
 
-<Image img={cloud_connect_button} size="md" alt="ClickHouse Cloud service connect button" />
+<Image img={cloud_connect_button} size="md" alt="ClickHouse Cloud service connect button" border/>
 
 Choose **Native**, and the details are available in an example `clickhouse-client` command.
 
-<Image img={connection_details_native} size="md" alt="ClickHouse Cloud Native TCP connection details" />
+<Image img={connection_details_native} size="md" alt="ClickHouse Cloud Native TCP connection details" border/>
 
 If you are using self-managed ClickHouse, the connection details are set by your ClickHouse administrator.

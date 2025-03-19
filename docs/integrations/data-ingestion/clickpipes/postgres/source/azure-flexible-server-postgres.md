@@ -21,15 +21,15 @@ ClickPipes supports Postgres version 12 and later.
 
 1. Click on the **Server parameters** section
 
-<Image img={server_parameters} alt="Server Parameters in Azure Flexible Server for Postgres" size="lg"/>
+<Image img={server_parameters} alt="Server Parameters in Azure Flexible Server for Postgres" size="lg" border/>
 
 2. Edit the `wal_level` to `logical`
 
-<Image img={wal_level} alt="Change wal_level to logical in Azure Flexible Server for Postgres" size="lg"/>
+<Image img={wal_level} alt="Change wal_level to logical in Azure Flexible Server for Postgres" size="lg" border/>
 
 3. This change would require a server restart. So restart when requested.
 
-<Image img={restart} alt="Restart server after changing wal_level" size="lg"/>
+<Image img={restart} alt="Restart server after changing wal_level" size="lg" border/>
 
 ## Creating ClickPipes User and Granting permissions {#creating-clickpipes-user-and-granting-permissions}
 

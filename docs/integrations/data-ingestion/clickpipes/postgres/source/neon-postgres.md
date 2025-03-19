@@ -38,7 +38,7 @@ Here, we can run the following SQL commands:
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 
-<Image size="lg" img={neon_commands} alt="User and publication commands"/>
+<Image size="lg" img={neon_commands} alt="User and publication commands" border/>
 
 Click on **Run** to have a publication and a user ready.
 
@@ -46,11 +46,11 @@ Click on **Run** to have a publication and a user ready.
 In Neon, you can enable logical replication through the UI. This is necessary for ClickPipes's CDC to replicate data.
 Head over to the **Settings** tab and then to the **Logical Replication** section.
 
-<Image size="lg" img={neon_enable_replication} alt="Enable logical replication"/>
+<Image size="lg" img={neon_enable_replication} alt="Enable logical replication" border/>
 
 Click on **Enable** to be all set here. You should see the below success message once you enable it.
 
-<Image size="lg" img={neon_enabled_replication} alt="Logical replication enabled"/>
+<Image size="lg" img={neon_enabled_replication} alt="Logical replication enabled" border/>
 
 Let's verify the below settings in your Neon Postgres instance:
 ```sql
@@ -63,14 +63,14 @@ SHOW max_replication_slots; -- should be 10
 If you have Neon Enterprise plan, you can whitelist the [ClickPipes IPs](../../index.md#list-of-static-ips) to allow replication from ClickPipes to your Neon Postgres instance.
 To do this you can click on the **Settings** tab and go to the **IP Allow** section.
 
-<Image size="lg" img={neon_ip_allow} alt="Allow IPs screen"/>
+<Image size="lg" img={neon_ip_allow} alt="Allow IPs screen" border/>
 
 ## Copy Connection Details {#copy-connection-details}
 Now that we have the user, publication ready and replication enabled, we can copy the connection details to create a new ClickPipe.
 Head over to the **Dashboard** and at the text box where it shows the connection string,
 change the view to **Parameters Only**. We will need these parameters for our next step.
 
-<Image size="lg" img={neon_conn_details} alt="Connection details"/>
+<Image size="lg" img={neon_conn_details} alt="Connection details" border/>
 
 ## What's next? {#whats-next}
 

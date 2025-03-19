@@ -25,7 +25,7 @@ import Image from '@theme/IdealImage';
 
 [ClickPipes](/integrations/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. ClickPipes can be used for long-term streaming needs or one-time data loading job.
 
-<Image img={clickpipes_stack} alt="ClickPipes stack" size="lg" />
+<Image img={clickpipes_stack} alt="ClickPipes stack" size="lg" border/>
 
 ## Supported Data Sources {#supported-data-sources}
 
@@ -67,7 +67,7 @@ Steps:
 1. create a custom role `CREATE ROLE my_clickpipes_role SETTINGS ...`. See [CREATE ROLE](/sql-reference/statements/create/role.md) syntax for details.
 2. add the custom role to ClickPipes user on step `Details and Settings` during the ClickPipes creation.
 
-<Image img={cp_custom_role} alt="Assign a custom role" size="lg" />
+<Image img={cp_custom_role} alt="Assign a custom role" size="lg" border/>
 
 ## Error reporting {#error-reporting}
 ClickPipes will create a table next to your destination table with the postfix `<destination_table_name>_clickpipes_error`. This table will contain any errors from the operations of your ClickPipe (network, connectivity, etc.) and also any data that don't conform to the schema. The error table has a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
