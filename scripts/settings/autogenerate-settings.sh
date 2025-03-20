@@ -119,8 +119,84 @@ SELECT prefix || (SELECT groupConcat(*) FROM main_content)
 INTO OUTFILE 'settings.md' TRUNCATE FORMAT LineAsString
 " > /dev/null || { echo "Failed to Autogenerate Core settings"; exit 1; }
 
+./clickhouse -q "
+WITH
+    settings_outside_source AS
+    (
+        SELECT
+            arrayJoin(extractAllGroups(raw_blob, '## (\\w+)(?:\\s[^\n]+)?\n\\s+((?:[^#]|#[^#]|##[^ ])+)')) AS g,
+            g[1] AS name,
+            replaceRegexpAll(replaceRegexpAll(g[2], '\n(Type|Default( value)?): [^\n]+\n', ''), '^\n+|\n+$', '') AS doc
+        FROM file('_server_settings_outside_source.md', RawBLOB)
+    ),
+    settings_in_source AS
+    (
+        SELECT
+	        name,
+	        replaceRegexpAll(description, '(?m)^[ \t]+', '') AS description
+        FROM system.server_settings
+    ),
+    combined_settings AS
+    (
+        SELECT
+            name,
+            description
+        FROM settings_in_source
+        UNION ALL
+        SELECT
+            name,
+            doc AS description
+        FROM settings_outside_source
+    ),
+    formatted_settings AS
+    (
+        SELECT
+            format('## {} {}\n\n{}\n\n', name, '{#'||name||'}', description) AS formatted_text
+        FROM combined_settings
+        ORDER BY name ASC
+    ),
+    prefix_text AS
+    (
+        SELECT
+            '---
+description: ''This section contains descriptions of server settings that cannot be
+  changed at the session or query level.''
+keywords: [''global server settings'']
+sidebar_label: ''Global Server Settings''
+sidebar_position: 57
+slug: /operations/server-configuration-parameters/settings
+title: Global Server Settings
+---
+
+import Tabs from ''@theme/Tabs'';
+import TabItem from ''@theme/TabItem'';
+import SystemLogParameters from ''@site/docs/operations/server-configuration-parameters/_snippets/_system-log-parameters.md''
+
+# Global Server Settings
+
+This section contains descriptions of server settings that cannot be changed at
+the session or query level. These settings are stored in the `config.xml` file
+on the ClickHouse server. For more information on configuration files in
+ClickHouse see [""Configuration Files""](/operations/configuration-files).
+
+Other settings are described in the ""[Settings](/operations/settings/overview)"" section.
+Before studying the settings, we recommend reading the [Configuration files](/operations/configuration-files)
+section and note the use of substitutions (the `incl` and `optional` attributes).
+
+' AS prefix_content
+    )
+SELECT
+    arrayStringConcat([
+        (SELECT prefix_content FROM prefix_text),
+        arrayStringConcat(groupArray(formatted_text), '')
+    ], '')
+FROM formatted_settings
+INTO OUTFILE 'server_settings.md'
+TRUNCATE FORMAT LineAsString" > /dev/null || { echo "Failed to Autogenerate Format settings"; exit 1; }
+
 mv settings-formats.md "$root/docs/operations/settings" || { echo "Failed to move generated settings-format.md"; exit 1; }
 mv settings.md "$root/docs/operations/settings" || { echo "Failed to move generated settings.md"; exit 1; }
+mv server_settings.md "$root/docs/operations/server-configuration-parameters/settings.md" || { echo "Failed to move generated server_settings.md"; exit 1; }
 
 echo "[$SCRIPT_NAME] Auto-generation of settings markdown pages completed successfully"
 
