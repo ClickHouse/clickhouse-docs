@@ -15,7 +15,7 @@ const Icon = () => {
 const CloudAvailableBadge = () => {
     return (
         <div classes className={styles.cloudBadge}>
-            <Icon />{'ClickHouse Cloud only'}
+            <Icon />{'Only available in ClickHouse Cloud'}
         </div>
     )
 }

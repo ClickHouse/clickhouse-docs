@@ -4,7 +4,7 @@ description: "The new setting allow_asynchronous_read_from_io_pool_for_merge_tre
 
 # Synchronous data reading
 
-Normally the [max_threads](/operations/settings/settings#max_threads) setting [controls](https://clickhouse.com/company/events/query-performance-introspection) the number of parallel reading threads and parallel query processing threads:
+Normally the [max_threads](https://clickhouse.com/docs/en/operations/settings/settings/#settings-max_threads) setting [controls](https://clickhouse.com/company/events/query-performance-introspection) the number of parallel reading threads and parallel query processing threads:
 
 ![Untitled scene](https://user-images.githubusercontent.com/97666923/212138072-5410b684-d00d-4218-93c5-6f49523928a5.png)
 
@@ -27,7 +27,7 @@ But in benchmarks it did [not](https://github.com/ClickHouse/product/issues/637#
 
 ### What about optimize_read_in_order?
 
-With the [optimize_read_in_order optimization](https://clickhouse.com/docs/sql-reference/statements/select/order-by/#optimization-of-data-reading), ClickHouse can [skip](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes) resorting data in memory if the queries sort order reflects the physical order of data on disk, **but that requires reading the data in order (in contrast to asynchronous reading)**:
+With the [optimize_read_in_order optimization](https://clickhouse.com/docs/en/sql-reference/statements/select/order-by/#optimization-of-data-reading), ClickHouse can [skip](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes) resorting data in memory if the queries sort order reflects the physical order of data on disk, **but that requires reading the data in order (in contrast to asynchronous reading)**:
 
 ![Untitled scene](https://user-images.githubusercontent.com/97666923/212138180-1a4e29d5-43f1-4bfa-a1d6-df2824417508.png)
 
@@ -37,7 +37,7 @@ When ClickHouse sees that `optimize_read_in_order optimization` can be applied, 
 
 ### Example demonstrating all of the above
 
-- Create and load the [UK Property Price Paid table](https://clickhouse.com/docs/getting-started/example-datasets/uk-price-paid)
+- Create and load the [UK Property Price Paid table](https://clickhouse.com/docs/en/getting-started/example-datasets/uk-price-paid)
 
 - Check set value of max_threads (by default the amount of CPU cores that ClickHouse sees on the node executing the query
 ```

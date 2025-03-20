@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /admin/
-Disallow: /marketo-forms/
-Sitemap: https://clickhouse.com/docs/sitemap.xml

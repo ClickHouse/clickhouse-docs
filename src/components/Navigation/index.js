@@ -4,7 +4,6 @@ import { NavigationItem } from './parts'
 import NavigationSubNavProducts from './sub-navs/NavigationSubNavProducts'
 import NavigationSubNavResources from './sub-navs/NavigationSubNavResources'
 import NavigationSubNavUseCases from './sub-navs/NavigationSubNavUseCases'
-import { translate } from '@docusaurus/Translate';
 import './styles.scss'
 
 export default function Navigation({
@@ -37,28 +36,19 @@ export default function Navigation({
       <div>
         <ul>
           <li>
-            <NavigationItem {...topLevelEvents} label={translate({
-              id: 'topNav.navItems.Products',
-              message: 'Products',
-            })}>
+            <NavigationItem {...topLevelEvents} label='Products'>
               <NavigationSubNavProducts />
             </NavigationItem>
           </li>
           <li>
-            <NavigationItem {...topLevelEvents} label={translate({
-              id: 'topNav.navItems.Use cases',
-              message: 'Use cases',
-            })}>
+            <NavigationItem {...topLevelEvents} label='Use cases'>
               <NavigationSubNavUseCases />
             </NavigationItem>
           </li>
           <li>
             <NavigationItem
               {...topLevelEvents}
-              label={translate({
-                id: 'topNav.navItems.Docs',
-                message: 'Docs',
-              })}
+              label='Docs'
               link={{
                 href: 'https://clickhouse.com/docs',
                 onClick: galaxyOnClick('topNav.navItems.docsSelect')
@@ -66,20 +56,14 @@ export default function Navigation({
             />
           </li>
           <li>
-            <NavigationItem {...topLevelEvents} label={translate({
-              id: 'topNav.navItems.Resources',
-              message: 'Resources',
-            })}>
+            <NavigationItem {...topLevelEvents} label='Resources'>
               <NavigationSubNavResources />
             </NavigationItem>
           </li>
           <li>
             <NavigationItem
               {...topLevelEvents}
-              label={translate({
-                id: 'topNav.navItems.Pricing',
-                message: 'Pricing',
-              })}
+              label='Pricing'
               link={{
                 href: '/pricing',
                 onClick: galaxyOnClick('topNav.navItems.pricingSelect')
@@ -89,10 +73,7 @@ export default function Navigation({
           <li>
             <NavigationItem
               {...topLevelEvents}
-              label={translate({
-                id: 'topNav.navItems.Contact us',
-                message: 'Contact us',
-              })}
+              label='Contact us'
               link={{
                 href: '/company/contact?loc=nav',
                 onClick: galaxyOnClick('topNav.navItems.contactUsSelect')

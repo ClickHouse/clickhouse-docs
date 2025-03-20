@@ -3458,15 +3458,3 @@ zstd
 Okta
 specificities
 reproducibility
-CertManager
-Istio
-LogHouse
-Tailscale
-Thanos
-ReplacingReplicatedMergeTree
-ReplacingSharedMergeTree
-SharedMergeTree
-VersionedCollapsing
-subpath
-AICPA
-restartable

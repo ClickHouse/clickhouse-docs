@@ -16,7 +16,7 @@ const Icon = () => {
 const ExperimentalBadge = () => {
     return (
         <div className={styles.experimentalBadge}>
-            <Icon />Experimental feature.&nbsp;<u><a href='/docs/beta-and-experimental-features#experimental-features'>Learn more.</a></u>
+            <Icon />Experimental feature.&nbsp;<u><a href='/docs/en/beta-and-experimental-features#experimental-features'>Learn more.</a></u>
         </div>
     )
 }

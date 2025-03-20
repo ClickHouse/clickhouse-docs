@@ -4,104 +4,80 @@ import { galaxyOnClick } from '../../../lib/galaxy/galaxy'
 import { NavigationLink } from '../parts'
 import NavigationChevron from '../parts/NavigationChevron'
 import NavigationSubNav from '../parts/NavigationSubNav'
-import { translate } from '@docusaurus/Translate';
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 const SUBNAV_CLOSE_DELAY = 250
 
 export default function NavigationSubNavResources() {
   const [activeSubNav, setActiveSubNav] = useState(null)
-  const { i18n } = useDocusaurusContext();
 
   const isSubNavActive = (name) => activeSubNav === name
-  const currentLocale = i18n.currentLocale;
+
   return (
     <ul className='ch-nav-v2-sub-nav-resources ch-nav-v2-list'>
-      {currentLocale === 'en' && (
-        <li>
-          <NavigationLink
-            href='https://clickhouse.com/user-stories'
-            onClick={galaxyOnClick('topNav.resourcesMenu.userStoriesSelect')}>
-            {translate({
-              id: 'topNav.navItems.resources.User stories',
-              message: 'User stories',
-            })}
-          </NavigationLink>
-        </li>
-      )}
+      <li>
+        <NavigationLink
+          href='https://clickhouse.com/user-stories'
+          onClick={galaxyOnClick('topNav.resourcesMenu.userStoriesSelect')}>
+          User stories
+        </NavigationLink>
+      </li>
       <li>
         <NavigationLink
           href='https://clickhouse.com/blog'
           onClick={galaxyOnClick('topNav.resourcesMenu.blogSelect')}>
-          {translate({
-            id: 'topNav.navItems.resources.Blog',
-            message: 'Blog',
-          })}
+          Blog
         </NavigationLink>
       </li>
-      {currentLocale === 'en' && (
-        <li
-          onMouseEnter={() => {
-            setActiveSubNav('learning')
+      <li
+        onMouseEnter={() => {
+          setActiveSubNav('learning')
+        }}
+        onMouseLeave={() => {
+          setActiveSubNav(null)
+        }}>
+        <NavigationLink
+          onClick={() => {
+            setActiveSubNav(isSubNavActive('learning') ? null : 'learning')
           }}
-          onMouseLeave={() => {
-            setActiveSubNav(null)
-          }}>
-          <NavigationLink
-            onClick={() => {
-              setActiveSubNav(isSubNavActive('learning') ? null : 'learning')
-            }}
-            className={`${isSubNavActive('learning') ? 'active' : ''
-              }`}>
-            <span>{translate({
-              id: 'topNav.navItems.resources.Learning and Certification',
-              message: 'Learning and Certification',
-            })}</span>
-            <NavigationChevron
-              className={
-                isSubNavActive('learning')
-                  ? 'rotate-90 text-primary-300 md-mid:rotate-0'
-                  : 'text-neutral-500'
-              }
-            />
-          </NavigationLink>
-          <NavigationSubNav isOpen={isSubNavActive('learning')}>
-            <li>
-              <NavigationLink
-                href='https://clickhouse.com/learn'
-                onClick={galaxyOnClick('topNav.learnMenu.academySelect')}
-                className='block w-full'>
-                {translate({
-                  id: 'topNav.navItems.resources.ClickHouse Academy',
-                  message: 'ClickHouse Academy',
-                })}
-              </NavigationLink>
-            </li>
-            <li>
-              <NavigationLink
-                href='https://clickhouse.com/company/news-events?category=Free+Training#upcoming-events'
-                onClick={galaxyOnClick('topNav.learnMenu.freeTrainingSelect')}
-                className='block w-full'>
-                {translate({
-                  id: 'topNav.navItems.resources.Free live training',
-                  message: 'Free live training',
-                })}
-              </NavigationLink>
-            </li>
-            <li>
-              <NavigationLink
-                href='https://clickhouse.com/learn/certification'
-                onClick={galaxyOnClick('topNav.learnMenu.certificationSelect')}
-                className='block w-full'>
-                {translate({
-                  id: 'topNav.navItems.resources.ClickHouse Certification',
-                  message: 'ClickHouse Certification',
-                })}
-              </NavigationLink>
-            </li>
-          </NavigationSubNav>
-        </li>
-      )}
+          className={`${
+            isSubNavActive('learning') ? 'active' : ''
+          }`}>
+          <span>Learning and Certification</span>
+          <NavigationChevron
+            className={
+              isSubNavActive('learning')
+                ? 'rotate-90 text-primary-300 md-mid:rotate-0'
+                : 'text-neutral-500'
+            }
+          />
+        </NavigationLink>
+        <NavigationSubNav isOpen={isSubNavActive('learning')}>
+          <li>
+            <NavigationLink
+              href='https://clickhouse.com/learn'
+              onClick={galaxyOnClick('topNav.learnMenu.academySelect')}
+              className='block w-full'>
+              ClickHouse Academy
+            </NavigationLink>
+          </li>
+          <li>
+            <NavigationLink
+              href='https://clickhouse.com/company/news-events?category=Free+Training#upcoming-events'
+              onClick={galaxyOnClick('topNav.learnMenu.freeTrainingSelect')}
+              className='block w-full'>
+              Free live training
+            </NavigationLink>
+          </li>
+          <li>
+            <NavigationLink
+              href='https://clickhouse.com/learn/certification'
+              onClick={galaxyOnClick('topNav.learnMenu.certificationSelect')}
+              className='block w-full'>
+              ClickHouse Certification
+            </NavigationLink>
+          </li>
+        </NavigationSubNav>
+      </li>
       <li
         onMouseEnter={() => {
           setActiveSubNav('comparisons')
@@ -115,12 +91,10 @@ export default function NavigationSubNavResources() {
               isSubNavActive('comparisons') ? null : 'comparisons'
             )
           }}
-          className={`w-full items-center justify-between ${isSubNavActive('comparisons') ? 'active' : ''
-            }`}>
-          <span>{translate({
-            id: 'topNav.navItems.resources.Comparisons',
-            message: 'Comparisons',
-          })}</span>
+          className={`w-full items-center justify-between ${
+            isSubNavActive('comparisons') ? 'active' : ''
+          }`}>
+          <span>Comparisons</span>
           <NavigationChevron
             className={
               isSubNavActive('comparisons')
@@ -135,58 +109,39 @@ export default function NavigationSubNavResources() {
               href='https://clickhouse.com/comparison/bigquery'
               onClick={galaxyOnClick('topNav.comparisonsMenu.bigQuerySelect')}
               className='block w-full'>
-              {translate({
-                id: 'topNav.navItems.resources.BigQuery',
-                message: 'BigQuery',
-              })}
+              BigQuery
             </NavigationLink>
           </li>
-          {currentLocale === 'en' && (
-            <li>
-              <NavigationLink
-                href='https://clickhouse.com/comparison/postgresql'
-                onClick={galaxyOnClick('topNav.comparisonsMenu.postgreSqlSelect')}
-                className='block w-full'>
-                {translate({
-                  id: 'topNav.navItems.resources.PostgreSQL',
-                  message: 'PostgreSQL',
-                })}
-              </NavigationLink>
-            </li>
-          )}
+          <li>
+            <NavigationLink
+              href='https://clickhouse.com/comparison/postgresql'
+              onClick={galaxyOnClick('topNav.comparisonsMenu.postgreSqlSelect')}
+              className='block w-full'>
+              PostgreSQL
+            </NavigationLink>
+          </li>
           <li>
             <NavigationLink
               href='https://clickhouse.com/comparison/redshift'
               onClick={galaxyOnClick('topNav.comparisonsMenu.redshiftSelect')}
               className='block w-full'>
-              {translate({
-                id: 'topNav.navItems.resources.Redshift',
-                message: 'Redshift',
-              })}
+              Redshift
             </NavigationLink>
           </li>
-          {currentLocale === 'en' && (
-            <li>
-              <NavigationLink
-                href='https://clickhouse.com/comparison/rockset'
-                onClick={galaxyOnClick('topNav.comparisonsMenu.rocksetSelect')}
-                className='block w-full'>
-                {translate({
-                  id: 'topNav.navItems.resources.Rockset',
-                  message: 'Rockset',
-                })}
-              </NavigationLink>
-            </li>
-          )}
+          <li>
+            <NavigationLink
+              href='https://clickhouse.com/comparison/rockset'
+              onClick={galaxyOnClick('topNav.comparisonsMenu.rocksetSelect')}
+              className='block w-full'>
+              Rockset
+            </NavigationLink>
+          </li>
           <li>
             <NavigationLink
               href='https://clickhouse.com/comparison/snowflake'
               onClick={galaxyOnClick('topNav.comparisonsMenu.snowflakeSelect')}
               className='block w-full'>
-              {translate({
-                id: 'topNav.navItems.resources.Snowflake',
-                message: 'Snowflake',
-              })}
+              Snowflake
             </NavigationLink>
           </li>
         </NavigationSubNav>
@@ -196,10 +151,7 @@ export default function NavigationSubNavResources() {
           href='https://clickhouse.com/videos'
           onClick={galaxyOnClick('topNav.resourcesMenu.videosSelect')}
           className='block w-full'>
-          {translate({
-            id: 'topNav.navItems.resources.Videos',
-            message: 'Videos',
-          })}
+          Videos
         </NavigationLink>
       </li>
       <li>
@@ -207,10 +159,7 @@ export default function NavigationSubNavResources() {
           href='https://clickhouse.com/demos'
           onClick={galaxyOnClick('topNav.resourcesMenu.demosSelect')}
           className='block w-full'>
-          {translate({
-            id: 'topNav.navItems.resources.Demos',
-            message: 'Demos',
-          })}
+          Demos
         </NavigationLink>
       </li>
     </ul>

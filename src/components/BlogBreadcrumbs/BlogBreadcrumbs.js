@@ -44,41 +44,37 @@ const BlogBreadcrumbs = () => {
     })
     let accumulatedPath = '/docs/';
 
-    if (location.pathname.includes('/page/')) {
-        return(<div className={styles.BlogBreadcrumbsContainer}></div>);
-    } else {
-        return(
+    return(
         <div className={styles.BlogBreadcrumbsContainer}>
-            <HomeBreadcrumbItem/>
-            <div className={styles.BlogBreadcrumbs}>
-                {
-                    cleaned_location_paths.map((path, index) => {
-                        accumulatedPath += path;
-                        const toPath = accumulatedPath;
+        <HomeBreadcrumbItem />
+        <div className={styles.BlogBreadcrumbs}>
+            {
+                cleaned_location_paths.map((path, index)=>{
+                    accumulatedPath += path;
+                    const toPath = accumulatedPath;
 
-                        if (index < cleaned_location_paths.length - 1) { // Check if it's not the last element
-                            accumulatedPath += '/'; // Add a slash if it's not the last element
-                            return (
-                                <div className={styles.breadCrumbLinkItem}>
-                                    <Link className={styles.BreadcrumbLink} key={path} to={toPath}>
-                                        {capitalizeFirstLetter(path)}
-                                    </Link>
-                                    <span className={styles.forwardSlash}>{"/"}</span>
-                                </div>
-                            );
-                        } else { // Last element
-                            return (
-                                <Link className={styles.BreadcrumbLinkBold} key={path} to={toPath}>
-                                    {pretty(path)}
-                                </Link>
-                            );
-                        }
-                    })
-                }
-            </div>
+                    if (index < cleaned_location_paths.length - 1) { // Check if it's not the last element
+                        accumulatedPath += '/'; // Add a slash if it's not the last element
+                        return (
+                            <div className={styles.breadCrumbLinkItem}>
+                            <Link className={styles.BreadcrumbLink} key={path} to={toPath}>
+                                {capitalizeFirstLetter(path)}
+                            </Link>
+                            <span className={styles.forwardSlash}>{"/"}</span>
+                            </div>
+                        );
+                    } else { // Last element
+                        return (
+                            <Link className={styles.BreadcrumbLinkBold} key={path} to={toPath}>
+                                {pretty(path)}
+                            </Link>
+                        );
+                    }
+                })
+            }
         </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default BlogBreadcrumbs
