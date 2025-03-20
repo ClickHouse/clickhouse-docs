@@ -10,3 +10,4 @@
 integrations/language-clients/java/client-v1
 integrations/language-clients/java/jdbc-v1
 operations/query-condition-cache
+operations/userspace-page-cache
