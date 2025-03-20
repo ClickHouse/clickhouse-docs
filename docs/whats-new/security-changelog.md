@@ -18,7 +18,7 @@ Fix has been pushed to the following open-source versions: v24.3.18.6, v24.8.14.
 
 ClickHouse Cloud is unaffected by this vulnerability.
 
-Credits: Arseniy Dugin
+Credits: [Arseniy Dugin](https://github.com/ZerLes)
 
 ## Fixed in ClickHouse v24.5, 2024-08-01 {#fixed-in-clickhouse-release-2024-08-01}
 
