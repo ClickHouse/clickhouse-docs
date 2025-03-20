@@ -525,7 +525,7 @@ ENGINE = MergeTree
 PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)
 TTL toDateTime(Timestamp) + toIntervalDay(3)
-SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
+SETTINGS ttl_only_drop_parts = 1
 ```
 
 The columns here correlate with the OTel official specification for logs documented [here](https://opentelemetry.io/docs/specs/otel/logs/data-model/).
@@ -577,7 +577,7 @@ ENGINE = MergeTree
 PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SpanName, toUnixTimestamp(Timestamp), TraceId)
 TTL toDateTime(Timestamp) + toIntervalDay(3)
-SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
+SETTINGS ttl_only_drop_parts = 1
 ```
 
 Again, this will correlate with the columns corresponding to OTel official specification for traces documented [here](https://opentelemetry.io/docs/specs/otel/trace/api/). The schema here employs many of the same settings as the above logs schema with additional Link columns specific to spans.

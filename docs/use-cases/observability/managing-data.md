@@ -179,7 +179,7 @@ This syntax currently supports [Golang Duration syntax](https://pkg.go.dev/time#
 PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SpanName, toUnixTimestamp(Timestamp), TraceId)
 TTL toDateTime(Timestamp) + toIntervalDay(4)
-SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
+SETTINGS ttl_only_drop_parts = 1
 ```
 
 By default, data with an expired TTL is removed when ClickHouse [merges data parts](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage). When ClickHouse detects that data is expired, it performs an off-schedule merge.
@@ -300,7 +300,7 @@ ORDER BY (ServiceName, Timestamp)
 
 CREATE MATERIALIZED VIEW otel_logs_mv TO otel_logs_v2 AS
 SELECT
-        Body, 
+        Body,
         Timestamp::DateTime AS Timestamp,
         ServiceName,
         LogAttributes['status']::UInt16 AS Status,
