@@ -4,6 +4,9 @@ import katex from "rehype-katex";
 import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
 const { customParseFrontMatter } = require('./plugins/frontmatter-validation/customParseFrontMatter');
+const checkFloatingPages = require('./plugins/checkFloatingPages');
+const frontmatterValidator = require('./plugins/frontmatter-validation/frontmatterValidatorPlugin');
+const path = require('path');
 
 // Helper function to skip over index.md files.
 function skipIndex(items) {
@@ -320,13 +323,34 @@ const config = {
       },
     ],
     chHeader,
-    './plugins/frontmatter-validation/frontmatterValidatorPlugin'
+    [
+      '@docusaurus/plugin-ideal-image',
+      {
+        quality: 85,
+        sizes: [48, 300, 600, 1024, 2048],
+        disableInDev: false,
+      },
+    ],
+    [
+      frontmatterValidator,
+      {
+        failBuild: true,
+      },
+    ],
+    [
+      checkFloatingPages,
+      {
+        failBuild: true,
+        exceptionsFile: path.resolve(__dirname, 'plugins/floating-pages-exceptions.txt')
+      },
+    ]
   ],
   customFields: {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page
     galaxyApiEndpoint:
       process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || "http://localhost:3000",
   },
+
 };
 
 module.exports = config;

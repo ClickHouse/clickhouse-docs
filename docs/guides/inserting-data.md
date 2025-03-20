@@ -7,6 +7,7 @@ slug: /guides/inserting-data
 ---
 
 import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';
+import Image from '@theme/IdealImage';
 
 ## Basic Example {#basic-example}
 
@@ -30,10 +31,10 @@ Which returns:
 
 ```response
 user_id message                                             timestamp           metric
-101	    Hello, ClickHouse!	                                2024-11-13 20:01:22	-1
-101	    Granules are the smallest chunks of data read	    2024-11-13 20:01:27	3.14159
-102	    Insert a lot of rows per batch	                    2024-11-12 00:00:00	1.41421
-102	    Sort your data based on your commonly-used queries	2024-11-13 00:00:00	2.718
+101         Hello, ClickHouse!                                  2024-11-13 20:01:22     -1
+101         Granules are the smallest chunks of data read           2024-11-13 20:01:27 3.14159
+102         Insert a lot of rows per batch                          2024-11-12 00:00:00 1.41421
+102         Sort your data based on your commonly-used queries  2024-11-13 00:00:00     2.718
 ```
 
 ## Inserting into ClickHouse vs. OLTP Databases {#inserting-into-clickhouse-vs-oltp-databases}
@@ -90,15 +91,7 @@ If large batches cannot be inserted, users can delegate batching to ClickHouse u
 
 With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later in 3 steps, as illustrated by the diagram below:
 
-<br />
-
-<img src={postgres_inserts}
-     className="image"
-     alt="NEEDS ALT"
-     style={{width: '600px'}}
-/>
-
-<br />
+<Image img={postgres_inserts} size="md" alt="Postgres inserts"/>
 
 With asynchronous inserts enabled, ClickHouse:
 

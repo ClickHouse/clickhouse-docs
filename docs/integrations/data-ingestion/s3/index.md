@@ -10,6 +10,7 @@ import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md
 import S3J from '@site/static/images/integrations/data-ingestion/s3/s3-j.png';
 import Bucket1 from '@site/static/images/integrations/data-ingestion/s3/bucket1.png';
 import Bucket2 from '@site/static/images/integrations/data-ingestion/s3/bucket2.png';
+import Image from '@theme/IdealImage';
 
 # Integrating S3 with ClickHouse
 
@@ -817,7 +818,7 @@ SELECT * FROM s3_table1;
 6.  In the AWS console, navigate to the buckets, and select the new one and the folder.
 You should see something like the following:
 
-<img src={S3J} alt="S3 bucket view in AWS console" />
+<Image img={S3J} size="lg" border alt="S3 bucket view in AWS console showing ClickHouse data files stored in S3" />
 
 ## Replicating a single shard across two AWS regions using S3 Object Storage {#s3-multi-region}
 
@@ -863,11 +864,11 @@ The configuration files will then be placed in `/etc/clickhouse-server/config.d/
      <disks>
         <s3_disk>
            <type>s3</type>
-	<!--highlight-start-->
+        <!--highlight-start-->
            <endpoint>https://docs-clickhouse-s3.s3.us-east-2.amazonaws.com/clickhouses3/</endpoint>
            <access_key_id>ABCDEFGHIJKLMNOPQRST</access_key_id>
            <secret_access_key>Tjdm4kf5snfkj303nfljnev79wkjn2l3knr81007</secret_access_key>
-	<!--highlight-end-->
+        <!--highlight-end-->
            <metadata_path>/var/lib/clickhouse/disks/s3_disk/</metadata_path>
         </s3_disk>
 
@@ -1063,28 +1064,28 @@ Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr` retur
 echo mntr | nc localhost 9181
 ```
 ```response
-zk_version	v22.7.2.15-stable-f843089624e8dd3ff7927b8a125cf3a7a769c069
-zk_avg_latency	0
-zk_max_latency	11
-zk_min_latency	0
-zk_packets_received	1783
-zk_packets_sent	1783
+zk_version      v22.7.2.15-stable-f843089624e8dd3ff7927b8a125cf3a7a769c069
+zk_avg_latency  0
+zk_max_latency  11
+zk_min_latency  0
+zk_packets_received     1783
+zk_packets_sent 1783
 # highlight-start
-zk_num_alive_connections	2
-zk_outstanding_requests	0
-zk_server_state	leader
+zk_num_alive_connections        2
+zk_outstanding_requests 0
+zk_server_state leader
 # highlight-end
-zk_znode_count	135
-zk_watch_count	8
-zk_ephemerals_count	3
-zk_approximate_data_size	42533
-zk_key_arena_size	28672
-zk_latest_snapshot_size	0
-zk_open_file_descriptor_count	182
-zk_max_file_descriptor_count	18446744073709551615
+zk_znode_count  135
+zk_watch_count  8
+zk_ephemerals_count     3
+zk_approximate_data_size        42533
+zk_key_arena_size       28672
+zk_latest_snapshot_size 0
+zk_open_file_descriptor_count   182
+zk_max_file_descriptor_count    18446744073709551615
 # highlight-start
-zk_followers	2
-zk_synced_followers	2
+zk_followers    2
+zk_synced_followers     2
 # highlight-end
 ```
 
@@ -1216,14 +1217,14 @@ These tests will verify that data is being replicated across the two servers, an
   Check the size of data on the local disk.  From above, the size on disk for the millions of rows stored is 36.42 MiB.  This should be on S3, and not the local disk.  The query above also tells us where on local disk data and metadata is stored.  Check the local data:
   ```response
   root@chnode1:~# du -sh /var/lib/clickhouse/disks/s3_disk/store/551
-  536K	/var/lib/clickhouse/disks/s3_disk/store/551
+  536K  /var/lib/clickhouse/disks/s3_disk/store/551
   ```
 
   Check the S3 data in each S3 Bucket (the totals are not shown, but both buckets have approximately 36 MiB stored after the inserts):
 
-<img src={Bucket1} alt="Size of data in first S3 bucket" />
+<Image img={Bucket1} size="lg" border alt="Size of data in first S3 bucket showing storage usage metrics" />
 
-<img src={Bucket2} alt="Size of data in second S3 bucket" />
+<Image img={Bucket2} size="lg" border alt="Size of data in second S3 bucket showing storage usage metrics" />
 
 ## S3Express {#s3express}
 

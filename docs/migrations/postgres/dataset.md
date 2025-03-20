@@ -6,6 +6,7 @@ keywords: ['postgres', 'postgresql', 'migrate', 'migration']
 ---
 
 import postgres_stackoverflow_schema from '@site/static/images/migrations/postgres-stackoverflow-schema.png';
+import Image from '@theme/IdealImage';
 
 > This is **Part 1** of a guide on migrating from PostgreSQL to ClickHouse. This content can be considered introductory, with the aim of helping users deploy an initial functional system that adheres to ClickHouse best practices. It avoids complex topics and will not result in a fully optimized schema; rather, it provides a solid foundation for users to build a production system and base their learning.
 
@@ -13,11 +14,7 @@ import postgres_stackoverflow_schema from '@site/static/images/migrations/postgr
 
 As an example dataset to show a typical migration from Postgres to ClickHouse, we use the Stack Overflow dataset documented [here](/getting-started/example-datasets/stackoverflow). This contains every `post`, `vote`, `user`, `comment`, and `badge` that has occurred on Stack Overflow from 2008 to Apr 2024. The PostgreSQL schema for this data is shown below:
 
-<br />
-
-<img src={postgres_stackoverflow_schema} class="image" alt="PostgreSQL Stack Overflow schema" style={{width: '1000px', background: 'none'}} />
-
-<br />
+<Image img={postgres_stackoverflow_schema} size="lg" alt="PostgreSQL Stack Overflow schema"/>
 
 *DDL commands to create the tables in PostgreSQL are available [here](https://pastila.nl/?001c0102/eef2d1e4c82aab78c4670346acb74d83#TeGvJWX9WTA1V/5dVVZQjg==).*
 

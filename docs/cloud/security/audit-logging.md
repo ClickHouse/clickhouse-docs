@@ -5,13 +5,14 @@ title: 'Audit Logging'
 description: 'This page describes Audit Logging in ClickHouse Cloud. It explains how to access and interpret the audit logs, which record changes made to a ClickHouse Cloud organization.'
 ---
 
+import Image from '@theme/IdealImage';
 import activity_log_1 from '@site/static/images/cloud/security/activity_log1.png';
 import activity_log_2 from '@site/static/images/cloud/security/activity_log2.png';
 import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png';
 
 In ClickHouse Cloud, navigate to your organization details. 
 
-<img src={activity_log_1} alt="ClickHouse Cloud activity tab" class="image" style={{width: '30%'}}/>
+<Image img={activity_log_1} size="md" alt="ClickHouse Cloud activity tab" border />
 
 <br/>
 
@@ -26,14 +27,14 @@ The **Activity** page displays a table containing a list of events logged about 
 - **IP Address:** When applicable, this flied lists the IP Address of the user that initiated the event
 - **Time:** The timestamp of the event
 
-<img src={activity_log_2} alt="ClickHouse Cloud Activity Table" />
+<Image img={activity_log_2} size="md" alt="ClickHouse Cloud Activity Table" border />
 
 <br/>
 
 You can use the search bar provided to isolate events based on some criteria like for example service name or IP address. You can also export this information in a CSV format for distribution or analysis in an external tool.
 
 <div class="eighty-percent">
-    <img src={activity_log_3} alt="ClickHouse Cloud Activity CSV export" />
+    <Image img={activity_log_3} size="lg" alt="ClickHouse Cloud Activity CSV export" border />
 </div>
 
 ## List of events logged {#list-of-events-logged}

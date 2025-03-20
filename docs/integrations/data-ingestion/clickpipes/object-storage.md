@@ -19,6 +19,7 @@ import cp_success from '@site/static/images/integrations/data-ingestion/clickpip
 import cp_remove from '@site/static/images/integrations/data-ingestion/clickpipes/cp_remove.png';
 import cp_destination from '@site/static/images/integrations/data-ingestion/clickpipes/cp_destination.png';
 import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
+import Image from '@theme/IdealImage';
 
 # Integrating Object Storage with ClickHouse Cloud
 Object Storage ClickPipes provide a simple and resilient way to ingest data from Amazon S3 and Google Cloud Storage into ClickHouse Cloud. Both one-time and continuous ingestion are supported with exactly-once semantics.
@@ -31,31 +32,31 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 
 1. In the cloud console, select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
 
-<img src={cp_step0} alt="Select imports" />
+<Image img={cp_step0} alt="Select imports" size="lg" border/>
 
 2. Select your data source.
 
-<img src={cp_step1} alt="Select data source type" />
+<Image img={cp_step1} alt="Select data source type" size="lg" border/>
 
 3. Fill out the form by providing your ClickPipe with a name, a description (optional), your IAM role or credentials, and bucket URL. You can specify multiple files using bash-like wildcards. For more information, [see the documentation on using wildcards in path](#limitations).
 
-<img src={cp_step2_object_storage} alt="Fill out connection details" />
+<Image img={cp_step2_object_storage} alt="Fill out connection details" size="lg" border/>
 
 4. The UI will display a list of files in the specified bucket. Select your data format (we currently support a subset of ClickHouse formats) and if you want to enable continuous ingestion [More details below](#continuous-ingest).
 
-<img src={cp_step3_object_storage} alt="Set data format and topic" />
+<Image img={cp_step3_object_storage} alt="Set data format and topic" size="lg" border/>
 
 5. In the next step, you can select whether you want to ingest data into a new ClickHouse table or reuse an existing one. Follow the instructions in the screen to modify your table name, schema, and settings. You can see a real-time preview of your changes in the sample table at the top.
 
-<img src={cp_step4a} alt="Set table, schema, and settings" />
+<Image img={cp_step4a} alt="Set table, schema, and settings" size="lg" border/>
 
   You can also customize the advanced settings using the controls provided
 
-<img src={cp_step4a3} alt="Set advanced controls" />
+<Image img={cp_step4a3} alt="Set advanced controls" size="lg" border/>
 
 6. Alternatively, you can decide to ingest your data in an existing ClickHouse table. In that case, the UI will allow you to map fields from the source to the ClickHouse fields in the selected destination table.
 
-<img src={cp_step4b} alt="Use an existing table" />
+<Image img={cp_step4b} alt="Use an existing table" size="lg" border/>
 
 :::info
 You can also map [virtual columns](../../sql-reference/table-functions/s3#virtual-columns), like `_path` or `_size`, to fields.
@@ -67,22 +68,23 @@ You can also map [virtual columns](../../sql-reference/table-functions/s3#virtua
     - `Full access`: with the full access to the cluster. Required if you use Materialized View or Dictionary with the destination table.
     - `Only destination table`: with the `INSERT` permissions to the destination table only.
 
-<img src={cp_step5} alt="Permissions" />
+<Image img={cp_step5} alt="Permissions" size="lg" border/>
 
 8. By clicking on "Complete Setup", the system will register you ClickPipe, and you'll be able to see it listed in the summary table.
 
-<img src={cp_success} alt="Success notice" />
+<Image img={cp_success} alt="Success notice" size="sm" border/>
 
-<img src={cp_remove} alt="Remove notice" />
+<Image img={cp_remove} alt="Remove notice" size="lg" border/>
 
   The summary table provides controls to display sample data from the source or the destination table in ClickHouse
 
-<img src={cp_destination} alt="View destination" />
+<Image img={cp_destination} alt="View destination" size="lg" border/>
 
   As well as controls to remove the ClickPipe and display a summary of the ingest job.
 
-<img src={cp_overview} alt="View overview" />
+<Image img={cp_overview} alt="View overview" size="lg" border/>
 
+Image
 9. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
 
 ## Supported Data Sources {#supported-data-sources}

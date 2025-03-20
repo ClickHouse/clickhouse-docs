@@ -25,6 +25,7 @@ import cp_success from '@site/static/images/integrations/data-ingestion/clickpip
 import cp_remove from '@site/static/images/integrations/data-ingestion/clickpipes/cp_remove.png';
 import cp_destination from '@site/static/images/integrations/data-ingestion/clickpipes/cp_destination.png';
 import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
+import Image from '@theme/IdealImage';
 
 # Integrating Kafka with ClickHouse Cloud
 ## Prerequisite {#prerequisite}
@@ -34,20 +35,20 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 
 1. Access the SQL Console for your ClickHouse Cloud Service.
 
-<img src={cp_service} alt="ClickPipes service" />
+<Image img={cp_service} alt="ClickPipes service" size="md" border/>
 
 
 2. Select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
 
-<img src={cp_step0} alt="Select imports" />
+<Image img={cp_step0} alt="Select imports" size="lg" border/>
 
 3. Select your data source.
 
-<img src={cp_step1} alt="Select data source type" />
+<Image img={cp_step1} alt="Select data source type" size="lg" border/>
 
 4. Fill out the form by providing your ClickPipe with a name, a description (optional), your credentials, and other connection details.
 
-<img src={cp_step2} alt="Fill out connection details" />
+<Image img={cp_step2} alt="Fill out connection details" size="lg" border/>
 
 5. Configure the schema registry. A valid schema is required for Avro streams and optional for JSON. This schema will be used to parse [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent) or validate JSON messages on the selected topic.
 - Avro messages that cannot be parsed or JSON messages that fail validation will generate an error.
@@ -62,19 +63,19 @@ without an embedded schema id, then the specific schema ID or subject must be sp
 
 6. Select your topic and the UI will display a sample document from the topic.
 
-<img src={cp_step3} alt="Set data format and topic" />
+<Image img={cp_step3} alt="Set data format and topic" size="lg" border/>
 
 7. In the next step, you can select whether you want to ingest data into a new ClickHouse table or reuse an existing one. Follow the instructions in the screen to modify your table name, schema, and settings. You can see a real-time preview of your changes in the sample table at the top.
 
-<img src={cp_step4a} alt="Set table, schema, and settings" />
+<Image img={cp_step4a} alt="Set table, schema, and settings" size="lg" border/>
 
   You can also customize the advanced settings using the controls provided
 
-<img src={cp_step4a3} alt="Set advanced controls" />
+<Image img={cp_step4a3} alt="Set advanced controls" size="lg" border/>
 
 8. Alternatively, you can decide to ingest your data in an existing ClickHouse table. In that case, the UI will allow you to map fields from the source to the ClickHouse fields in the selected destination table.
 
-<img src={cp_step4b} alt="Use an existing table" />
+<Image img={cp_step4b} alt="Use an existing table" size="lg" border/>
 
 9. Finally, you can configure permissions for the internal ClickPipes user.
 
@@ -82,21 +83,21 @@ without an embedded schema id, then the specific schema ID or subject must be sp
     - `Full access`: with the full access to the cluster. It might be useful if you use Materialized View or Dictionary with the destination table.
     - `Only destination table`: with the `INSERT` permissions to the destination table only.
 
-<img src={cp_step5} alt="Permissions" />
+<Image img={cp_step5} alt="Permissions" size="lg" border/>
 
 10. By clicking on "Complete Setup", the system will register you ClickPipe, and you'll be able to see it listed in the summary table.
 
-<img src={cp_success} alt="Success notice" />
+<Image img={cp_success} alt="Success notice" size="sm" border/>
 
-<img src={cp_remove} alt="Remove notice" />
+<Image img={cp_remove} alt="Remove notice" size="lg" border/>
 
   The summary table provides controls to display sample data from the source or the destination table in ClickHouse
 
-<img src={cp_destination} alt="View destination" />
+<Image img={cp_destination} alt="View destination" size="lg" border/>
 
   As well as controls to remove the ClickPipe and display a summary of the ingest job.
 
-<img src={cp_overview} alt="View overview" />
+<Image img={cp_overview} alt="View overview" size="lg" border/>
 
 11. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source.
 
@@ -106,7 +107,7 @@ without an embedded schema id, then the specific schema ID or subject must be sp
 |----------------------|----|----|-----------------|------------------------------------------------------------------------------------------------------|
 | Apache Kafka         |<Kafkasvg class="image" alt="Apache Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.     |
 | Confluent Cloud      |<Confluentsvg class="image" alt="Confluent Cloud logo" style={{width: '3rem'}}/>|Streaming| Stable          | Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.          |
-| Redpanda             |<img src={redpanda_logo} class="image" alt="Redpanda logo" style={{width: '2.5rem', 'background-color': 'transparent'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Redpanda into ClickHouse Cloud.         |
+| Redpanda             |<Image img={redpanda_logo} size="logo" alt="Redpanda logo"/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Redpanda into ClickHouse Cloud.         |
 | AWS MSK              |<Msksvg class="image" alt="AWS MSK logo" style={{width: '3rem', 'height': '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.          |
 | Azure Event Hubs     |<Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud. |
 | WarpStream           |<Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.       |

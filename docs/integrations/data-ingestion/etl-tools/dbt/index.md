@@ -7,6 +7,7 @@ title: 'Integrating dbt and ClickHouse'
 ---
 
 import TOCInline from '@theme/TOCInline';
+import Image from '@theme/IdealImage';
 import dbt_01 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_01.png';
 import dbt_02 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_02.png';
 import dbt_03 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_03.png';
@@ -14,8 +15,11 @@ import dbt_04 from '@site/static/images/integrations/data-ingestion/etl-tools/db
 import dbt_05 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_05.png';
 import dbt_06 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_06.png';
 import dbt_07 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_07.png';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Integrating dbt and ClickHouse
+
+<ClickHouseSupportedBadge/>
 
 **dbt** (data build tool) enables analytics engineers to transform data in their warehouses by simply writing select statements. dbt handles materializing these select statements into objects in the database in the form of tables and views - performing the T of [Extract Load and Transform (ELT)](https://en.wikipedia.org/wiki/Extract,_load,_transform). Users can create a model defined by a SELECT statement.
 
@@ -70,7 +74,7 @@ pip install dbt-clickhouse
 dbt excels when modeling highly relational data. For the purposes of example, we provide a small IMDB dataset with the following relational schema. This dataset originates from the[ relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb). This is trivial relative to common schemas used with dbt but represents a manageable sample:
 
 
-<img src={dbt_01} class="image" alt="IMDB table schema" style={{width: '100%'}}/>
+<Image img={dbt_01} size="lg" alt="IMDB table schema" />
 
 We use a subset of these tables as shown.
 
@@ -241,13 +245,13 @@ In the later guides, we will convert this query into a model - materializing it 
 
 3. At this point, you will need the text editor of your choice. In the examples below, we use the popular VS Code. Opening the IMDB directory, you should see a collection of yml and sql files:
 
-    <img src={dbt_02} class="image" alt="New dbt project" style={{width: '100%'}}/>
+    <Image img={dbt_02} size="lg" alt="New dbt project" />
 
 4. Update your `dbt_project.yml` file to specify our first model - `actor_summary` and set profile to `clickhouse_imdb`.
 
-    <img src={dbt_03} class="image" alt="dbt profile" style={{width: '100%'}}/>
+    <Image img={dbt_03} size="lg" alt="dbt profile" />
 
-    <img src={dbt_04} class="image" alt="dbt profile" style={{width: '100%'}}/>
+    <Image img={dbt_04} size="lg" alt="dbt profile" />
 
 5. We next need to provide dbt with the connection details for our ClickHouse instance. Add the following to your `~/.dbt/profiles.yml`.
 
@@ -683,6 +687,7 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
     |45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
     +------+-------------------+----------+------------------+------+---------+-------------------+
     ```
+
 ### Internals {#internals}
 
 We can identify the statements executed to achieve the above incremental update by querying ClickHouse’s query log.
@@ -702,7 +707,7 @@ Adjust the above query to the period of execution. We leave result inspection to
 
 This is visualized below:
 
-<img src={dbt_05} class="image" alt="incremental updates dbt" style={{width: '100%'}}/>
+<Image img={dbt_05} size="lg" alt="incremental updates dbt" />
 
 This strategy may encounter challenges on very large models. For further details see [Limitations](#limitations).
 
@@ -830,7 +835,7 @@ In summary, this approach:
 
 This process is shown below:
 
-<img src={dbt_06} class="image" alt="lightweight delete incremental" style={{width: '100%'}}/>
+<Image img={dbt_06} size="lg" alt="lightweight delete incremental" />
 
 ### insert_overwrite mode (Experimental) {#insert_overwrite-mode-experimental}
 Performs the following steps:
@@ -847,7 +852,7 @@ This approach has the following advantages:
 * It is safer than other strategies because it doesn't modify the original table until the INSERT operation completes successfully: in case of intermediate failure, the original table is not modified.
 * It implements "partitions immutability" data engineering best practice. Which simplifies incremental and parallel data processing, rollbacks, etc.
 
-<img src={dbt_07} class="image" alt="insert overwrite incremental" style={{width: '100%'}}/>
+<Image img={dbt_07} size="lg" alt="insert overwrite incremental" />
 
 ## Creating a Snapshot {#creating-a-snapshot}
 

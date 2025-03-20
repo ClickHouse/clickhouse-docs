@@ -1,5 +1,6 @@
 ---
 sidebar_label: 'Home'
+displayed_sidebar: 'docs'
 slug: /
 sidebar_position: 1
 title: 'ClickHouse Docs'
@@ -21,6 +22,7 @@ import IconSingleNode from '@site/src/icons/IconSingleNode';
 import IconSQLConsole from '@site/src/icons/IconSQLConsole';
 import IconLightning from '@site/src/icons/IconLightning';
 import IconDownload from '@site/src/icons/IconDownload';
+import Image from '@theme/IdealImage';
 
 export const Hero = ({children, color}) => {
     return (
@@ -47,7 +49,7 @@ export const Hero = ({children, color}) => {
                             iconWidth={'24px'}/></div>
                         <div>Cloud</div>
                     </div>
-                    <div>The fastest way to get started with ClickHouse</div>
+                    <div>Read the docs</div>
                 </a>
                 <a href='/docs/cloud/get-started/cloud-quick-start' className='home-page-hero-button'>
                     <div style={{
@@ -62,9 +64,9 @@ export const Hero = ({children, color}) => {
                             iconWidth={'24px'}/></div>
                         <div>Quick Start</div>
                     </div>
-                    <div>Get started with ClickHouse in 5 minutes</div>
+                    <div>Get started with Cloud</div>
                 </a>
-                <a href='/docs/install' className='home-page-hero-button'>
+                <a href='/docs/getting-started/quick-start' className='home-page-hero-button'>
                     <div style={{
                         fontWeight: '600',
                         fontSize: '18px',
@@ -75,9 +77,9 @@ export const Hero = ({children, color}) => {
                     }}>
                         <div style={{display: 'flex', float: 'left', margin: 0, marginRight: '8px'}}><IconDownload
                             iconWidth={'24px'}/></div>
-                        <div>Install</div>
+                        <div>Install locally</div>
                     </div>
-                    <div>Install guides for every platform</div>
+                    <div>Get setup locally</div>
                 </a>
             </div>
         </div>
@@ -92,7 +94,7 @@ export const HomePageOptionButton = ({children, icon, iconWidth, svgIcon, link})
             <div className='home-page-option-icon'>
                 {
                     svgIcon ? svgIcon : (
-                        <img className='home-svg' src={icon} style={{width: iconWidth || '28px'}}/>
+                        <Image img={icon} size="small" alt={`${children} logo`} style={{width: iconWidth || '28px'}} border />
                     )
                 }
             </div>
