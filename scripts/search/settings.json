@@ -53,7 +53,6 @@
       "custom"
     ],
     "customRanking": [
-      "desc(score)",
       "desc(page_rank)"
     ],
     "separatorsToIndex": "_",
@@ -73,7 +72,7 @@
   "rules": [
     {
       "_metadata": {
-        "lastUpdate": 1740676875
+        "lastUpdate": 1738846936
       },
       "conditions": [
         {
@@ -93,7 +92,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1740676875
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
@@ -113,7 +112,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1740676875
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
@@ -133,7 +132,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1740676875
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
@@ -153,7 +152,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1740676875
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
@@ -173,7 +172,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1740676875
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
@@ -193,7 +192,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1740676875
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
@@ -213,7 +212,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1740676875
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
@@ -233,7 +232,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1740676875
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {
@@ -253,7 +252,7 @@
     },
     {
       "_metadata": {
-        "lastUpdate": 1740676875
+        "lastUpdate": 1738782292
       },
       "conditions": [
         {

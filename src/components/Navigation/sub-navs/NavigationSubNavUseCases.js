@@ -2,7 +2,6 @@ import React from 'react'
 import { galaxyOnClick } from '../../../lib/galaxy/galaxy'
 import LinkWithArrow from '../../LinkWithArrow'
 import { NavigationLink } from '../parts'
-import { translate } from '@docusaurus/Translate';
 
 export default function NavigationSubNavUseCases() {
   return (
@@ -14,10 +13,7 @@ export default function NavigationSubNavUseCases() {
             onClick={galaxyOnClick(
               'topNav.useCasesMenu.realTimeAnalyticsSelect'
             )}>
-            {translate({
-              id: 'topNav.navItems.use_cases.Real-time analytics',
-              message: 'Real-time analytics',
-            })}
+            Real-time analytics
           </NavigationLink>
         </li>
         <li>
@@ -26,20 +22,14 @@ export default function NavigationSubNavUseCases() {
             onClick={galaxyOnClick(
               'topNav.useCasesMenu.machineLearningSelect'
             )}>
-            {translate({
-              id: 'topNav.navItems.use_cases.Machine learning and GenAI',
-              message: 'Machine learning and GenAI',
-            })}
+            Machine learning and GenAI
           </NavigationLink>
         </li>
         <li>
           <NavigationLink
             href='https://clickhouse.com/use-cases/business-intelligence'
             onClick={galaxyOnClick('topNav.useCasesMenu.bizIntelSelect')}>
-            {translate({
-              id: 'topNav.navItems.use_cases.Business intelligence',
-              message: 'Business intelligence',
-            })}
+            Business intelligence
           </NavigationLink>
         </li>
         <li>
@@ -48,10 +38,7 @@ export default function NavigationSubNavUseCases() {
             onClick={galaxyOnClick(
               'topNav.useCasesMenu.loggingAndMetricsSelect'
             )}>
-            {translate({
-              id: 'topNav.navItems.use_cases.Logs, events, and traces',
-              message: 'Logs, events, and traces',
-            })}
+            Logs, events, and traces
           </NavigationLink>
         </li>
         <li className='ch-nav-v2-mobile-item'>
@@ -59,10 +46,7 @@ export default function NavigationSubNavUseCases() {
           <NavigationLink
             href='https://clickhouse.com/use-cases'
             onClick={galaxyOnClick('topNav.useCasesMenu.allUseCasesSelect')}>
-            {translate({
-              id: 'topNav.navItems.use_cases.All use cases',
-              message: 'All use cases',
-            })}
+            All use cases
           </NavigationLink>
         </li>
       </ul>
@@ -72,10 +56,7 @@ export default function NavigationSubNavUseCases() {
         href='https://clickhouse.com/use-cases'
         onClick={galaxyOnClick('topNav.useCasesMenu.allUseCasesSelect')}
         className='ch-nav-v2-desktop-item ch-nav-v2-link-with-arrow'>
-        {translate({
-          id: 'topNav.navItems.use_cases.All use cases',
-          message: 'All use cases',
-        })}
+        All use cases
       </LinkWithArrow>
     </>
   )
