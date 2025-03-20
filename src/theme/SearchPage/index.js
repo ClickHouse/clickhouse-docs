@@ -1,20 +1,20 @@
 /* eslint-disable jsx-a11y/no-autofocus */
-import React, {useEffect, useReducer, useRef, useState} from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import clsx from 'clsx';
 import algoliaSearchHelper from 'algoliasearch-helper';
-import {liteClient} from 'algoliasearch/lite';
+import { liteClient } from 'algoliasearch/lite';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import Head from '@docusaurus/Head';
 import Link from '@docusaurus/Link';
-import {useAllDocsData} from '@docusaurus/plugin-content-docs/client';
+import { useAllDocsData } from '@docusaurus/plugin-content-docs/client';
 import {
   HtmlClassNameProvider,
   useEvent,
   usePluralForm,
   useSearchQueryString,
 } from '@docusaurus/theme-common';
-import {useTitleFormatter} from '@docusaurus/theme-common/internal';
-import Translate, {translate} from '@docusaurus/Translate';
+import { useTitleFormatter } from '@docusaurus/theme-common/internal';
+import Translate, { translate } from '@docusaurus/Translate';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {
   useAlgoliaThemeConfig,
@@ -26,7 +26,7 @@ import styles from './styles.module.css';
 
 // Very simple pluralization: probably good enough for now
 function useDocumentsFoundPlural() {
-  const {selectMessage} = usePluralForm();
+  const { selectMessage } = usePluralForm();
   return (count) =>
     selectMessage(
       count,
@@ -37,7 +37,7 @@ function useDocumentsFoundPlural() {
             'Pluralized label for "{count} documents found". Use as much plural forms (separated by "|") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)',
           message: 'One document found|{count} documents found',
         },
-        {count},
+        { count },
       ),
     );
 }
@@ -57,7 +57,7 @@ function useDocsSearchVersionsHelpers() {
   );
   // Set the value of a single select menu
   const setSearchVersion = (pluginId, searchVersion) =>
-    setSearchVersions((s) => ({...s, [pluginId]: searchVersion}));
+    setSearchVersions((s) => ({ ...s, [pluginId]: searchVersion }));
   const versioningEnabled = Object.values(allDocsData).some(
     (docsData) => docsData.versions.length > 1,
   );
@@ -70,7 +70,7 @@ function useDocsSearchVersionsHelpers() {
 }
 
 // We want to display one select per versioned docs plugin instance
-function SearchVersionSelectList({docsSearchVersionsHelpers}) {
+function SearchVersionSelectList({ docsSearchVersionsHelpers }) {
   const versionedPluginEntries = Object.entries(
     docsSearchVersionsHelpers.allDocsData,
   )
@@ -114,10 +114,10 @@ function SearchVersionSelectList({docsSearchVersionsHelpers}) {
 
 function SearchPageContent() {
   const {
-    i18n: {currentLocale},
+    i18n: { currentLocale },
   } = useDocusaurusContext();
   const {
-    algolia: {appId, apiKey, indexName, contextualSearch},
+    algolia: { appId, apiKey, indexName, contextualSearch },
   } = useAlgoliaThemeConfig();
   const processSearchResultUrl = useSearchResultUrlProcessor();
   const documentsFoundPlural = useDocumentsFoundPlural();
@@ -139,7 +139,7 @@ function SearchPageContent() {
           return initialSearchResultState;
         }
         case 'loading': {
-          return {...prevState, loading: true};
+          return { ...prevState, loading: true };
         }
         case 'update': {
           if (searchQuery !== data.value.query) {
@@ -186,22 +186,22 @@ function SearchPageContent() {
       // Parse the `params` string to extract all `query` values
       const urlSearchParams = new URLSearchParams(params);
       const queries = urlSearchParams.getAll('query'); // Extract all `query` parameters
-  
+
       // `queries` will contain an array of query terms (e.g., ["engines", "table engines"])
       const originalQuery = queries.length > 1 ? queries[0] : query; // First query is the original
       const overriddenQuery = query; // Final query processed by Algolia
-  
+
       if (query === '' || !Array.isArray(hits)) {
         searchResultStateDispatcher({ type: 'reset' });
         return;
       }
-  
+
       const sanitizeValue = (value) =>
         value.replace(
           /algolia-docsearch-suggestion--highlight/g,
           'search-result-match',
         );
-  
+
       const items = hits.map(
         ({
           url,
@@ -213,7 +213,7 @@ function SearchPageContent() {
           );
           return {
             title: titles.pop(),
-            url: processSearchResultUrl(url),
+            url: currentLocale == 'en' ? processSearchResultUrl(url) : url, //TODO: temporary - all search results to english for now
             summary: snippet.content
               ? `${sanitizeValue(snippet.content.value)}...`
               : '',
@@ -221,7 +221,7 @@ function SearchPageContent() {
           };
         },
       );
-  
+
       searchResultStateDispatcher({
         type: 'update',
         value: {
@@ -242,39 +242,39 @@ function SearchPageContent() {
   const prevY = useRef(0);
   const observer = useRef(
     ExecutionEnvironment.canUseIntersectionObserver &&
-      new IntersectionObserver(
-        (entries) => {
-          const {
-            isIntersecting,
-            boundingClientRect: {y: currentY},
-          } = entries[0];
-          if (isIntersecting && prevY.current > currentY) {
-            searchResultStateDispatcher({type: 'advance'});
-          }
-          prevY.current = currentY;
-        },
-        {threshold: 1},
-      ),
+    new IntersectionObserver(
+      (entries) => {
+        const {
+          isIntersecting,
+          boundingClientRect: { y: currentY },
+        } = entries[0];
+        if (isIntersecting && prevY.current > currentY) {
+          searchResultStateDispatcher({ type: 'advance' });
+        }
+        prevY.current = currentY;
+      },
+      { threshold: 1 },
+    ),
   );
   const getTitle = () =>
     searchQuery
       ? translate(
-          {
-            id: 'theme.SearchPage.existingResultsTitle',
-            message: 'Search results for "{query}"',
-            description: 'The search page title for non-empty query',
-          },
-          {
-            query: searchQuery,
-          },
-        )
+        {
+          id: 'theme.SearchPage.existingResultsTitle',
+          message: 'Search results for "{query}"',
+          description: 'The search page title for non-empty query',
+        },
+        {
+          query: searchQuery,
+        },
+      )
       : translate({
-          id: 'theme.SearchPage.emptyResultsTitle',
-          message: 'Search the documentation',
-          description: 'The search page title for empty query',
-});
+        id: 'theme.SearchPage.emptyResultsTitle',
+        message: 'Search the documentation',
+        description: 'The search page title for empty query',
+      });
 
-const makeSearch = useEvent((page = 0) => {
+  const makeSearch = useEvent((page = 0) => {
     if (contextualSearch) {
       algoliaHelper.addDisjunctiveFacetRefinement('docusaurus_tag', 'default');
       algoliaHelper.addDisjunctiveFacetRefinement('language', currentLocale);
@@ -302,9 +302,9 @@ const makeSearch = useEvent((page = 0) => {
     return () => true;
   }, [loaderRef]);
   useEffect(() => {
-    searchResultStateDispatcher({type: 'reset'});
+    searchResultStateDispatcher({ type: 'reset' });
     if (searchQuery) {
-      searchResultStateDispatcher({type: 'loading'});
+      searchResultStateDispatcher({ type: 'loading' });
       setTimeout(() => {
         makeSearch();
       }, 300);
@@ -407,38 +407,40 @@ const makeSearch = useEvent((page = 0) => {
         {searchResultState.items.length > 0 ? (
           <main>
             {searchResultState.items.map(
-              ({title, url, summary, breadcrumbs}, i) => (
-                <article key={i} className={styles.searchResultItem}>
+              ({ title, url, summary, breadcrumbs }, i) => (
+                < article key={i} className={styles.searchResultItem} >
                   <Heading as="h2" className={styles.searchResultItemHeading}>
-                    <Link to={url} dangerouslySetInnerHTML={{__html: title}} />
+                    <Link to={url} dangerouslySetInnerHTML={{ __html: title }} />
                   </Heading>
 
-                  {breadcrumbs.length > 0 && (
-                    <nav aria-label="breadcrumbs">
-                      <ul
-                        className={clsx(
-                          'breadcrumbs',
-                          styles.searchResultItemPath,
-                        )}>
-                        {breadcrumbs.map((html, index) => (
-                          <li
-                            key={index}
-                            className="breadcrumbs__item"
-                            // Developer provided the HTML, so assume it's safe.
-                            // eslint-disable-next-line react/no-danger
-                            dangerouslySetInnerHTML={{__html: html}}
-                          />
-                        ))}
-                      </ul>
-                    </nav>
-                  )}
+                  {
+                    breadcrumbs.length > 0 && (
+                      <nav aria-label="breadcrumbs">
+                        <ul
+                          className={clsx(
+                            'breadcrumbs',
+                            styles.searchResultItemPath,
+                          )}>
+                          {breadcrumbs.map((html, index) => (
+                            <li
+                              key={index}
+                              className="breadcrumbs__item"
+                              // Developer provided the HTML, so assume it's safe.
+                              // eslint-disable-next-line react/no-danger
+                              dangerouslySetInnerHTML={{ __html: html }}
+                            />
+                          ))}
+                        </ul>
+                      </nav>
+                    )
+                  }
 
                   {summary && (
                     <p
                       className={styles.searchResultItemSummary}
                       // Developer provided the HTML, so assume it's safe.
                       // eslint-disable-next-line react/no-danger
-                      dangerouslySetInnerHTML={{__html: summary}}
+                      dangerouslySetInnerHTML={{ __html: summary }}
                     />
                   )}
                 </article>
@@ -472,7 +474,7 @@ const makeSearch = useEvent((page = 0) => {
           </div>
         )}
       </div>
-    </Layout>
+    </Layout >
   );
 }
 export default function SearchPage() {

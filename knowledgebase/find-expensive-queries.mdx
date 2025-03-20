@@ -9,7 +9,7 @@ keywords: ['Expensive Queries']
 {frontMatter.description}
 {/* truncate */}
 
-## Answer
+## Answer {#answer}
 
 The `query_log` table in the `system` database keeps track of all your queries, including:
 
@@ -62,7 +62,7 @@ FROM clusterAllReplicas(default, system.query_log)
 WHERE initial_query_id = '7fc488a5-838f-410d-88ee-2f492825a26b'
 ```
 
-It turns out to be the query we used to insert a few billion rows of data into a table named `youtube` (see the [YouTube dislikes dataset](https://clickhouse.com/docs/en/getting-started/example-datasets/youtube-dislikes)):
+It turns out to be the query we used to insert a few billion rows of data into a table named `youtube` (see the [YouTube dislikes dataset](https://clickhouse.com/docs/getting-started/example-datasets/youtube-dislikes)):
 
 ```sql
 INSERT INTO youtube
@@ -91,7 +91,7 @@ SELECT
 FROM s3Cluster('default','https://clickhouse-public-datasets.s3.amazonaws.com/youtube/original/files/*.zst', 'JSONLines')
 ```
 
-## initial_query_id VS query_id
+## initial_query_id VS query_id {#initial_query_id-vs-query_id}
 
 Note that in a clustered ClickHouse environment (like ClickHouse Cloud) `initial_query_id` represents the ID of the initial query for distributed query execution launched from the node receiving the request;
 then `query_id` field will contain the ID of the child query executed on a different node.
@@ -211,4 +211,4 @@ giving:
 └────────────────────────┴─────────────┴─────────────────────┴──────────────────────────────────────┴──────────────────────────────────────┴────────────┴─────────┴───────────┴───────────────────────┘
 ```
 
-As for other System Tables, you can find more details about the meaning of each field in our [docs](https://clickhouse.com/docs/en/operations/system-tables/query_log).
+As for other System Tables, you can find more details about the meaning of each field in our [docs](https://clickhouse.com/docs/operations/system-tables/query_log).

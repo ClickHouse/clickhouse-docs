@@ -6,7 +6,7 @@ import {
   HtmlClassNameProvider,
   ThemeClassNames,
 } from '@docusaurus/theme-common';
-import {useBlogTagsPostsPageTitle} from '@docusaurus/theme-common/internal';
+import { useBlogTagsPostsPageTitle } from '@docusaurus/theme-common/internal';
 import Link from '@docusaurus/Link';
 import BlogLayout from '@theme/BlogLayout';
 import BlogListPaginator from '@theme/BlogListPaginator';
@@ -18,8 +18,9 @@ import ButtonGroup from "../../components/ButtonGroup/ButtonGroup";
 import styles from './styles.module.css';
 import BlogBreadcrumbs from "../../components/BlogBreadcrumbs/BlogBreadcrumbs";
 import { useHistory } from 'react-router-dom';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
-function BlogTagsPostsPageMetadata({tag}) {
+function BlogTagsPostsPageMetadata({ tag }) {
   const title = useBlogTagsPostsPageTitle(tag);
   return (
     <>
@@ -28,29 +29,33 @@ function BlogTagsPostsPageMetadata({tag}) {
     </>
   );
 }
-function BlogTagsPostsPageContent({tag, items, sidebar, listMetadata}) {
+function BlogTagsPostsPageContent({ tag, items, sidebar, listMetadata }) {
   const title = useBlogTagsPostsPageTitle(tag);
   const history = useHistory();
+  const {
+    i18n: { currentLocale },
+  } = useDocusaurusContext();
+
   return (
     <BlogLayout sidebar={sidebar}>
       {tag.unlisted && <Unlisted />}
       <header className="margin-bottom--xl">
-        <BlogBreadcrumbs/>
+        <BlogBreadcrumbs />
         <h1 className={styles.kbTitle}>Knowledge Base</h1>
         <ButtonGroup
-            onClick={function Nav(value){value === 'recent' ? history.push('/docs/knowledgebase') : history.push('/docs/knowledgebase/tags') }}
-            options={[
-                {
-                    label: 'Recent',
-                    value: 'recent'
-                },
-                {
-                    label: 'Grouped by tags',
-                    value: 'grouped_by_tags'
-                },
-            ]}
-            selected="grouped_by_tags"
-            type="default"
+          onClick={function Nav(value) { value === 'recent' ? history.push(`/docs/knowledgebase`) : history.push(`/docs/knowledgebase/tags`) }}
+          options={[
+            {
+              label: 'Recent',
+              value: 'recent'
+            },
+            {
+              label: 'Grouped by tags',
+              value: 'grouped_by_tags'
+            },
+          ]}
+          selected="grouped_by_tags"
+          type="default"
         />
         <Heading as="h1" className={styles.postsTagged}>{title}</Heading>
         {tag.description && <p>{tag.description}</p>}
@@ -72,4 +77,3 @@ export default function BlogTagsPostsPage(props) {
     </HtmlClassNameProvider>
   );
 }
-

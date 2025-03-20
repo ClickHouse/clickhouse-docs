@@ -475,17 +475,6 @@ prism-code {
 }
 
 /* Add a drop shadow to images in the user guides and docs */
-img {
-  width: fit-content;
-  /* padding looks bad in dark mode as it adds white space around images that have dark backgrounds */
-  /*padding-bottom: 0.2rem;
-  padding-top: 0.5rem;*/
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  background: var(--clickhouse-img-background-color);
-  box-shadow: 0px 1px 8px -1px rgba(21, 21, 21, 0.20);
-}
 
 .eighty-percent {
   max-width: 80%;
@@ -1282,5 +1271,42 @@ input::-ms-input-placeholder { /* Microsoft Edge */
 
 .blog-list-page .margin-bottom--xl, .blog-tags-post-list-page .margin-bottom--xl {
   margin-bottom: 1rem !important;
+}
+
+/* Used for ordered lists within docs pages */
+.docs-ordered-list {
+  padding-left: 40px;
+  margin-bottom: 15px;
+  list-style: decimal outside;
+  li p {
+    margin: 10px;
+  }
+}
+
+/*announcement bar*/
+.announcementBar_s0pr {
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  left: 0;
+  top: 102px;
+}
+
+[data-theme='dark'] .announcementBar_s0pr {
+  color: white !important;
+  background-color: var(--ifm-background-color) !important;
+
+  .clean-btn {
+    color: white !important;
+  }
+}
+
+[data-theme='light'] .announcementBar_s0pr {
+  color: black !important;
+  background-color: white !important;
+
+  .clean-btn {
+    color: black !important;
+  }
 }
 

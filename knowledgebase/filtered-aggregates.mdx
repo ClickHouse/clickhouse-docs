@@ -9,11 +9,11 @@ keywords: ['Filtered Aggregates']
 {frontMatter.description}
 {/* truncate */}
 
-## Using Filtered Aggregates
+## Using Filtered Aggregates {#using-filtered-aggregates}
 
 ClickHouse provides a simple and intuitive way to write _filtered aggregates_.
 
- For example, compare the standard SQL way to write filtered aggregates (which work fine in ClickHouse) with the shorthand syntax using the `-If` [aggregate function combinator](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/combinators/), which can be appended to any aggregate function:
+ For example, compare the standard SQL way to write filtered aggregates (which work fine in ClickHouse) with the shorthand syntax using the `-If` [aggregate function combinator](https://clickhouse.com/docs/sql-reference/aggregate-functions/combinators/), which can be appended to any aggregate function:
 
 ```sql
 --standard SQL
@@ -51,5 +51,5 @@ SELECT
 WHERE segment1 OR segment2
 ```
 
-Check out the [aggregate function combinator](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/combinators/) page in the docs
+Check out the [aggregate function combinator](https://clickhouse.com/docs/sql-reference/aggregate-functions/combinators/) page in the docs
 for more details.

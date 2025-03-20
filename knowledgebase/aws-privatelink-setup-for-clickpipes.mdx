@@ -9,16 +9,16 @@ keywords: ['AWS PrivateLink', 'Private RDS', 'ClickPipes']
 {frontMatter.description}
 {/* truncate */}
 
-## AWS PrivateLink setup to expose private RDS for ClickPipes
+## AWS PrivateLink setup to expose private RDS for ClickPipes {#aws-privatelink-setup-to-expose-private-rds-for-clickpipes}
 
 Setup steps to expose a private RDS via AWS PrivateLink to ClickPipes.
 
-## Requirements
+## Requirements {#requirements}
 
 The VPC must be located in one of our ClickPipes regions: us-east-1, us-east-2 or eu-central-1, additionally the
 ClickHouse Instance must be in the same region.
 
-## Private link creation
+## Private link creation {#private-link-creation}
 
 Follow these steps to create a **VPC endpoint service** for your RDS instance. Repeat these steps if you have multiple
 RDS instances that require endpoint services (OR you may have different listener ports for different instances):
@@ -57,16 +57,16 @@ RDS instances that require endpoint services (OR you may have different listener
     - If using Terraform, set the `enforce_security_group_inbound_rules_on_private_link_traffic` attribute to `false` for the NLB
     - This setting is **required** to allow traffic from the ClickPipes VPC to the NLB.
 
-## Initiating connection
+## Initiating connection {#initiating-connection}
 
 When it's done, share details such as AWS region, VPC service name and availability zone.
 ClickPipes team will initiate VPC endpoints creation in ClickPipes VPC. This will require [connection request acceptance](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html#accept-reject-connection-requests) on your side.
 
-## Creating ClickPipes
+## Creating ClickPipes {#creating-clickpipes}
 
-ClickPipes team will provide the DNS name to be used in the ClickPipe creation process. You can now [create your ClickPipe](/docs/en/integrations/clickpipes/postgres).
+ClickPipes team will provide the DNS name to be used in the ClickPipe creation process. You can now [create your ClickPipe](/integrations/clickpipes/postgres).
 
-## Dynamically updating the RDS endpoint IP
+## Dynamically updating the RDS endpoint IP {#dynamically-updating-the-rds-endpoint-ip}
 
 When the RDS endpoint IP changes (in case of restarts/failovers/updates), you need to update the NLB target group with
 the new IP. You can automate this process using AWS Lambda functions or other automation tools.

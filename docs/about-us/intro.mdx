@@ -1,0 +1,10 @@
+---
+slug: /about-clickhouse
+sidebar_label: 'What is ClickHouse?'
+title: 'What is ClickHouse?'
+description: 'Page describing what ClickHouse is'
+---
+
+import Content from '@site/docs/intro.md';
+
+<Content />
