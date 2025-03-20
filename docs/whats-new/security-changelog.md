@@ -16,7 +16,7 @@ When the library bridge feature is enabled, the clickhouse-library-bridge expose
 
 Fix has been pushed to the following open-source versions: v24.3.18.6, v24.8.14.27, v24.11.5.34, v24.12.5.65, v25.1.5.5
 
-ClickHouse Cloud is not vulnerable to this vulnerability.
+ClickHouse Cloud is unaffected by this vulnerability.
 
 Credits: Arseniy Dugin
 
