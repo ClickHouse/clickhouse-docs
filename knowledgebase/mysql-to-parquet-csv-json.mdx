@@ -9,11 +9,11 @@ keywords: ['MySQL', 'Parquet', 'CSV', 'JSON']
 {frontMatter.description}
 {/* truncate */}
 
-## Exporting MySQL Data to Parquet, CSV, or JSON Using ClickHouse
+## Exporting MySQL Data to Parquet, CSV, or JSON Using ClickHouse {#exporting-mysql-data-to-parquet-csv-or-json-using-clickhouse}
 
 The `clickhouse-local` tool makes it quick and easy to read data from MySQL and output the data into lots of different formats, including Parquet, CSV, and JSON. We are going to:
 
-- Use the [`mysql` table function](https://clickhouse.com/docs/en/sql-reference/table-functions/mysql) to read the data
+- Use the [`mysql` table function](https://clickhouse.com/docs/sql-reference/table-functions/mysql) to read the data
 - Use the `INTO OUTFILE _filename_ FORMAT` clause and specify the desired output format
 
 The `clickhouse-local` tool is a part of the ClickHouse binary. Download it using the following:
@@ -22,7 +22,7 @@ The `clickhouse-local` tool is a part of the ClickHouse binary. Download it usin
 curl https://clickhouse.com/ | sh
 ```
 
-## Export MySQL to Parquet
+## Export MySQL to Parquet {#export-mysql-to-parquet}
 
 The `mysql` table function creates a table based on the results of a query sent to a MySQL instance. For example:
 
@@ -56,7 +56,7 @@ INTO OUTFILE 'my_output_file.parquet'"
 Because the name of the output file has a `.parquet` extension, ClickHouse assumes we want the Parquet format, so notice we omitted the `FORMAT Parquet` clause.
 :::
 
-## Export MySQL to CSV
+## Export MySQL to CSV {#export-mysql-to-csv}
 
 It's the same as for Parquet, except this time we use a `.csv` extension on the filename. ClickHouse will realize we want a comma-separated output and that's how the data will be written to the file:
 
@@ -72,7 +72,7 @@ It's the same as for Parquet, except this time we use a `.csv` extension on the 
 INTO OUTFILE 'my_output_file.csv'"
 ```
 
-## Export MySQL to JSON
+## Export MySQL to JSON {#export-mysql-to-json}
 
 To go from MySQL to JSON, just change the extension on the filename to `jsonl` or `ndjson`:
 
@@ -88,4 +88,4 @@ To go from MySQL to JSON, just change the extension on the filename to `jsonl` o
 INTO OUTFILE 'my_output_file.ndjson'"
 ```
 
-It's impressive how simple yet powerful the `clickhouse-local` tool really is. You can easily read data from a database like MySQL and output it into [all types of different output formats](https://clickhouse.com/docs/en/sql-reference/formats/).
+It's impressive how simple yet powerful the `clickhouse-local` tool really is. You can easily read data from a database like MySQL and output it into [all types of different output formats](https://clickhouse.com/docs/sql-reference/formats/).

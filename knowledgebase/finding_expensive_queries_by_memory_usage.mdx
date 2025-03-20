@@ -9,7 +9,7 @@ keywords: ['Expensive Queries', 'Memory Usage']
 {frontMatter.description}
 {/* truncate */}
 
-## Using the `system.query_log` table
+## Using the `system.query_log` table {#using-the-systemquery_log-table}
 
 The following useful query shows which of your executed queries used the most memory.
 
@@ -52,7 +52,7 @@ The response looks like:
 ```
 
 :::note
-If you do not have a `system.query_log` table, then you likely do not have query logging enabled. View the details of the [`query_log` setting](https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings#server_configuration_parameters-query-log) for details on how to enable it.
+If you do not have a `system.query_log` table, then you likely do not have query logging enabled. View the details of the [`query_log` setting](https://clickhouse.com/docs/operations/server-configuration-parameters/settings#server_configuration_parameters-query-log) for details on how to enable it.
 :::
 
 If you do not have a cluster, use can just query your one `system.query_log` table directly:
