@@ -1,9 +1,12 @@
 ---
 slug: /tutorial
-sidebar_label: Advanced Tutorial
+sidebar_label: 'Advanced Tutorial'
 sidebar_position: 0.5
-keywords: [clickhouse, install, tutorial, dictionary, dictionaries]
+keywords: ['clickhouse', 'install', 'tutorial', 'dictionary', 'dictionaries']
+title: 'Advanced Tutorial'
+description: 'In this tutorial, you will create a table and insert a large dataset. Then you will run queries on the dataset, including an example of how to create a dictionary and use it to perform a JOIN.'
 ---
+
 import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 
 # Advanced Tutorial
@@ -86,6 +89,7 @@ The New York City taxi data contains the details of millions of taxi rides, with
 Now that you have a table created, let's add the NYC taxi data. It is in CSV files in S3, and you can load the data from there.
 
 1. The following command inserts ~2,000,000 rows into your `trips` table from two different files in S3: `trips_1.tsv.gz` and `trips_2.tsv.gz`:
+
     ```sql
     INSERT INTO trips
     SELECT * FROM s3(
@@ -496,4 +500,3 @@ Well done - you made it through the tutorial, and hopefully you have a better un
 - [Connect your favorite UI/BI tool](./integrations/data-visualization/index.md) to ClickHouse
 - Check out the [SQL Reference](./sql-reference/index.md) and browse through the various functions. ClickHouse has an amazing collection of functions for transforming, processing and analyzing data
 - Learn more about [Dictionaries](/sql-reference/dictionaries/index.md)
-

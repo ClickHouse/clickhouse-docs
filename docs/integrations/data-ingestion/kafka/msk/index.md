@@ -1,10 +1,12 @@
 ---
-sidebar_label: Amazon MSK with Kafka Connector Sink
+sidebar_label: 'Amazon MSK with Kafka Connector Sink'
 sidebar_position: 1
 slug: /integrations/kafka/cloud/amazon-msk/
-description: The official Kafka connector from ClickHouse with Amazon MSK
-keywords: [integration, kafka, amazon msk, sink, connector]
+description: 'The official Kafka connector from ClickHouse with Amazon MSK'
+keywords: ['integration', 'kafka', 'amazon msk', 'sink', 'connector']
+title: 'Integrating Amazon MSK with ClickHouse'
 ---
+
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
 # Integrating Amazon MSK with ClickHouse

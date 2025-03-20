@@ -29,6 +29,7 @@ yarn.lock
 yarn.error-log
 .comments
 yarn-error.log
+frontmatter-validation-errors.log
 
 # Output files used by scripts to verify links
 sidebar_links.txt
@@ -53,8 +54,12 @@ docs/whats-new/changelog/index.md
 .aspell.en.prepl
 *.md.bak
 
-# Don't ignore generated table of contents files
-!toc.json
 **.translated
 **.translate
 ClickHouse/
+
+
+# Ignore table of contents files
+docs/cloud/reference/release-notes-index.md
+docs/whats-new/changelog/index.md
+docs/cloud/manage/api/api-reference-index.md

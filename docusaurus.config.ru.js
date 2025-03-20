@@ -15,6 +15,10 @@ function skipIndex(items) {
 const config = {
   scripts: [
     {
+      src: "/docs/ru/js/kapa_config.js",
+      async: false,
+    },
+    {
       src: "https://widget.kapa.ai/kapa-widget.bundle.js",
       "data-website-id": "c0b5f156-1e92-49df-8252-adacc9feb21b",
       "data-project-name": "ClickHouse",
@@ -269,15 +273,6 @@ const config = {
         respectPrefersColorScheme: true,
         defaultMode: "dark",
       },
-      /*      announcementBar: {
-        id: 'support_us',
-        content:
-        'Check out our new 25-minute video on <a href="https://clickhouse.com/company/events/getting-started-with-clickhouse/" target="_blank"> Getting Started with ClickHouse</a>',
-        backgroundColor: '#0057b7',
-        textColor: '#ffffff',
-        isCloseable: false,
-      },
-    */
     }),
 
   plugins: [

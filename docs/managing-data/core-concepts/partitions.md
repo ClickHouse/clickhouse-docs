@@ -1,13 +1,14 @@
 ---
 slug: /partitions
-title: Table partitions
-description: What are table partitions in ClickHouse
-keywords: [partitions, partition by]
+title: 'Table partitions'
+description: 'What are table partitions in ClickHouse'
+keywords: ['partitions', 'partition by']
 ---
 
 import partitions from '@site/static/images/managing-data/core-concepts/partitions.png';
 import merges_with_partitions from '@site/static/images/managing-data/core-concepts/merges_with_partitions.png';
 import partition_pruning from '@site/static/images/managing-data/core-concepts/partition-pruning.png';
+import Image from '@theme/IdealImage';
 
 
 ## What are table partitions in ClickHouse? {#what-are-table-partitions-in-clickhouse}
@@ -43,7 +44,8 @@ You can [query this table](https://sql.clickhouse.com/?query=U0VMRUNUICogRlJPTSB
 
 Whenever a set of rows is inserted into the table, instead of creating (at [least](/operations/settings/settings#max_insert_block_size)) one single data part containing all the inserted rows (as described [here](/parts)), ClickHouse creates one new data part for each unique partition key value among the inserted rows:
 
-<img src={partitions} alt='INSERT PROCESSING' class='image' />
+<Image img={partitions} size="lg"  alt='INSERT PROCESSING' />
+
 <br/>
 
 The ClickHouse server first splits the rows from the example insert with 4 rows sketched in the diagram above by their partition key value `toStartOfMonth(date)`.
@@ -55,7 +57,8 @@ Note that with partitioning enabled, ClickHouse automatically creates [MinMax in
 
 With partitioning enabled, ClickHouse only [merges](/merges) data parts within, but not across partitions. We sketch that for our example table from above:
 
-<img src={merges_with_partitions} alt='PART MERGES' class='image' />
+<Image img={merges_with_partitions} size="lg"  alt='PART MERGES' />
+
 <br/>
 
 As sketched in the diagram above, parts belonging to different partitions are never merged. If a partition key with high cardinality is chosen, then parts spread across thousands of partitions will never be merge candidates - exceeding preconfigured limits and causing the dreaded `Too many parts` error. Addressing this problem is simple: choose a sensible partition key with [cardinality under 1000..10000](https://github.com/ClickHouse/ClickHouse/blob/ffc5b2c56160b53cf9e5b16cfb73ba1d956f7ce4/src/Storages/MergeTree/MergeTreeDataWriter.cpp#L121).
@@ -169,7 +172,8 @@ The query runs over our example table from above and [calculates](https://sql.cl
 
 ClickHouse processes that query by applying a sequence of pruning techniques to avoid evaluating irrelevant data:
 
-<img src={partition_pruning} alt='PART MERGES' class='image' />
+<Image img={partition_pruning} size="lg"  alt='PART MERGES 2' />
+
 <br/>
 
 ① **Partition pruning**: [MinMax indexes](/partitions#what-are-table-partitions-in-clickhouse) are used to ignore whole partitions (sets of parts) that logically can't match the query's filter on columns used in the table's partition key.
@@ -269,7 +273,7 @@ GROUP BY table;
 As shown further above, the partitioned table `uk_price_paid_simple_partitioned` has 306 partitions, and therefore at least 306 active data parts. Whereas for our non-partitioned table `uk_price_paid_simple` all [initial](/parts) data parts could be merged into a single active part by background merges.
 
 
-When we [check](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgdG93biA9ICdMT05ET04nOw&run_query=true&tab=results) the physical query execution plan with an [EXPLAIN](/sql-reference/statements/explain) clause for our example query from above without the partition filter running over the partitioned table, we can see in row 19 and 20 of the output below that ClickHouse identified 671 out of 3257 existing [granules](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (blocks of rows) spread over 431 out of 436 existing active data parts that potentially contain rows matching the query's filter, and therefore will be scanned and processed by the query engine: 
+When we [check](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgdG93biA9ICdMT05ET04nOw&run_query=true&tab=results) the physical query execution plan with an [EXPLAIN](/sql-reference/statements/explain) clause for our example query from above without the partition filter running over the partitioned table, we can see in row 19 and 20 of the output below that ClickHouse identified 671 out of 3257 existing [granules](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (blocks of rows) spread over 431 out of 436 existing active data parts that potentially contain rows matching the query's filter, and therefore will be scanned and processed by the query engine:
 
 ```sql
 EXPLAIN indexes = 1

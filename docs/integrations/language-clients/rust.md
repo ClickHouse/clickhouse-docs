@@ -1,9 +1,10 @@
 ---
-sidebar_label: Rust
+sidebar_label: 'Rust'
 sidebar_position: 4
-keywords: [clickhouse, rs, rust, cargo, crate, http, client, connect, integrate]
+keywords: ['clickhouse', 'rs', 'rust', 'cargo', 'crate', 'http', 'client', 'connect', 'integrate']
 slug: /integrations/rust
-description: The official Rust client for connecting to ClickHouse.
+description: 'The official Rust client for connecting to ClickHouse.'
+title: 'ClickHouse Rust Client'
 ---
 
 # ClickHouse Rust Client

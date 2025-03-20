@@ -1,8 +1,8 @@
 ---
 slug: /data-modeling/overview
-title: Data Modelling Overview
-description: Overview of Data Modelling
-keywords: [data modelling, schema design, dictionary, materialized view, data compression, denormalizing data]
+title: 'Data Modelling Overview'
+description: 'Overview of Data Modelling'
+keywords: ['data modelling', 'schema design', 'dictionary', 'materialized view', 'data compression', 'denormalizing data']
 ---
 
 # Data Modeling 

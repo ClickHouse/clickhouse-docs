@@ -1,8 +1,8 @@
 ---
 slug: /deletes/overview
-title: Delete Overview
-description: How to delete data in ClickHouse
-keywords: [delete, truncate, drop, lightweight delete]
+title: 'Delete Overview'
+description: 'How to delete data in ClickHouse'
+keywords: ['delete', 'truncate', 'drop', 'lightweight delete']
 ---
 
 There are several ways to delete data in ClickHouse, each with its own advantages and performance characteristics. You should select the appropriate method based on your data model and the amount of data you intend to delete.
@@ -35,7 +35,7 @@ Read more about [lightweight deletes](/guides/developer/lightweight-delete).
 
 ## Delete Mutations {#delete-mutations}
 
-Delete mutations can be issued through a `ALTER TABLE … DELETE` command e.g. 
+Delete mutations can be issued through a `ALTER TABLE ... DELETE` command e.g. 
 
 ```sql
 -- delete all data from 2018 with a mutation. Not recommended.

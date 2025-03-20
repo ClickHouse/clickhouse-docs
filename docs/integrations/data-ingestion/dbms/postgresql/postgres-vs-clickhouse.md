@@ -1,10 +1,12 @@
 ---
 slug: /integrations/postgresql/postgres-vs-clickhouse
-title: Comparing PostgreSQL and ClickHouse
-keywords: [postgres, postgresql, comparison]
+title: 'Comparing PostgreSQL and ClickHouse'
+keywords: ['postgres', 'postgresql', 'comparison']
+description: 'Page which explores the similarities and differences between PostgreSQL and ClickHouse'
 ---
 
 import postgresReplicas from '@site/static/images/integrations/data-ingestion/dbms/postgres-replicas.png';
+import Image from '@theme/IdealImage';
 
 ## Postgres vs ClickHouse: Equivalent and different concepts {#postgres-vs-clickhouse-equivalent-and-different-concepts}
 
@@ -32,22 +34,15 @@ ClickHouse uses ClickHouse Keeper (C++ ZooKeeper implementation, ZooKeeper can a
 
 The replication process in ClickHouse (1) starts when data is inserted into any replica. This data, in its raw insert form, is (2) written to disk along with its checksums. Once written, the replica (3) attempts to register this new data part in Keeper by allocating a unique block number and logging the new part's details. Other replicas, upon (4) detecting new entries in the replication log, (5) download the corresponding data part via an internal HTTP protocol, verifying it against the checksums listed in ZooKeeper. This method ensures that all replicas eventually hold consistent and up-to-date data despite varying processing speeds or potential delays. Moreover, the system is capable of handling multiple operations concurrently, optimizing data management processes, and allowing for system scalability and robustness against hardware discrepancies.
 
-<br />
+<Image img={postgresReplicas} size="md" alt="Eventual consistency"/>
 
-<img src={postgresReplicas}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '500px'}} />
-
-<br />
-
-Note that ClickHouse Cloud uses a [cloud-optimized replication mechanism](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates) adapted to its separation of storage and compute architecture. By storing data in shared object storage, data is automatically available for all compute nodes without the need to physically replicate data between nodes. Instead, Keeper is used to only share metadata (which data exists where in object storage) between compute nodes. 
+Note that ClickHouse Cloud uses a [cloud-optimized replication mechanism](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates) adapted to its separation of storage and compute architecture. By storing data in shared object storage, data is automatically available for all compute nodes without the need to physically replicate data between nodes. Instead, Keeper is used to only share metadata (which data exists where in object storage) between compute nodes.
 
 PostgreSQL employs a different replication strategy compared to ClickHouse, primarily using streaming replication, which involves a primary replica model where data is continuously streamed from the primary to one or more replica nodes. This type of replication ensures near real-time consistency and is synchronous or asynchronous, giving administrators control over the balance between availability and consistency. Unlike ClickHouse, PostgreSQL relies on a WAL (Write-Ahead Logging) with logical replication and decoding to stream data objects and changes between nodes. This approach in PostgreSQL is more straightforward but might not offer the same level of scalability and fault tolerance in highly distributed environments that ClickHouse achieves through its complex use of Keeper for distributed operations coordination and eventual consistency.
 
 ## User implications {#user-implications}
 
-In ClickHouse, the possibility of dirty reads - where users can write data to one replica and then read potentially unreplicated data from another—arises from its eventually consistent replication model managed via Keeper. This model emphasizes performance and scalability across distributed systems, allowing replicas to operate independently and sync asynchronously. As a result, newly inserted data might not be immediately visible across all replicas, depending on the replication lag and the time it takes for changes to propagate through the system. 
+In ClickHouse, the possibility of dirty reads - where users can write data to one replica and then read potentially unreplicated data from another—arises from its eventually consistent replication model managed via Keeper. This model emphasizes performance and scalability across distributed systems, allowing replicas to operate independently and sync asynchronously. As a result, newly inserted data might not be immediately visible across all replicas, depending on the replication lag and the time it takes for changes to propagate through the system.
 
 Conversely, PostgreSQL's streaming replication model typically can prevent dirty reads by employing synchronous replication options where the primary waits for at least one replica to confirm the receipt of data before committing transactions. This ensures that once a transaction is committed, a guarantee exists that the data is available in another replica. In the event of primary failure, the replica will ensure queries see the committed data, thereby maintaining a stricter level of consistency.
 
@@ -87,27 +82,27 @@ In this case, users should ensure consistent node routing is performed based on 
 
 ## Sequential consistency {#sequential-consistency}
 
-In exceptional cases, users may need sequential consistency. 
+In exceptional cases, users may need sequential consistency.
 
-Sequential consistency in databases is where the operations on a database appear to be executed in some sequential order, and this order is consistent across all processes interacting with the database. This means that every operation appears to take effect instantaneously between its invocation and completion, and there is a single, agreed-upon order in which all operations are observed by any process. 
+Sequential consistency in databases is where the operations on a database appear to be executed in some sequential order, and this order is consistent across all processes interacting with the database. This means that every operation appears to take effect instantaneously between its invocation and completion, and there is a single, agreed-upon order in which all operations are observed by any process.
 
 From a user's perspective this typically manifests itself as the need to write data into ClickHouse and when reading data, to guarantee that the latest inserted rows are returned.
 This can be achieved in several ways (in order of preference):
 
 1. **Read/Write to the same node** - If you are using native protocol, or a [session to do your write/read via HTTP](/interfaces/http#default-database), you should then be connected to the same replica: in this scenario you're reading directly from the node where you're writing, then your read will always be consistent.
-1. **Sync replicas manually** - If you write to one replica and read from another, you can use issue `SYSTEM SYNC REPLICA LIGHTWEIGHT` prior to reading. 
+1. **Sync replicas manually** - If you write to one replica and read from another, you can use issue `SYSTEM SYNC REPLICA LIGHTWEIGHT` prior to reading.
 1. **Enable sequential consistency** - via the query setting [`select_sequential_consistency = 1`](/operations/settings/settings#select_sequential_consistency). In OSS, the setting `insert_quorum = 'auto'` must also be specified.
 
 <br />
 
 See [here](/cloud/reference/shared-merge-tree#consistency) for further details on enabling these settings.
 
-> Use of sequential consistency will place a greater load on ClickHouse Keeper.  The result can 
+> Use of sequential consistency will place a greater load on ClickHouse Keeper.  The result can
 mean slower inserts and reads. SharedMergeTree, used in ClickHouse Cloud as the main table engine, sequential consistency [incurs less overhead and will scale better](/cloud/reference/shared-merge-tree#consistency). OSS users should use this approach cautiously and measure Keeper load.
 
 ## Transactional (ACID) support {#transactional-acid-support}
 
-Users migrating from PostgreSQL may be used to its robust support for ACID (Atomicity, Consistency, Isolation, Durability) properties, making it a reliable choice for transactional databases. Atomicity in PostgreSQL ensures that each transaction is treated as a single unit, which either completely succeeds or is entirely rolled back, preventing partial updates. Consistency is maintained by enforcing constraints, triggers, and rules that guarantee that all database transactions lead to a valid state. Isolation levels, from Read Committed to Serializable, are supported in PostgreSQL, allowing fine-tuned control over the visibility of changes made by concurrent transactions. Lastly, Durability is achieved through write-ahead logging (WAL), ensuring that once a transaction is committed, it remains so even in the event of a system failure. 
+Users migrating from PostgreSQL may be used to its robust support for ACID (Atomicity, Consistency, Isolation, Durability) properties, making it a reliable choice for transactional databases. Atomicity in PostgreSQL ensures that each transaction is treated as a single unit, which either completely succeeds or is entirely rolled back, preventing partial updates. Consistency is maintained by enforcing constraints, triggers, and rules that guarantee that all database transactions lead to a valid state. Isolation levels, from Read Committed to Serializable, are supported in PostgreSQL, allowing fine-tuned control over the visibility of changes made by concurrent transactions. Lastly, Durability is achieved through write-ahead logging (WAL), ensuring that once a transaction is committed, it remains so even in the event of a system failure.
 
 These properties are common for OLTP databases that act as a source of truth.
 
@@ -124,6 +119,3 @@ PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to 
 [PeerDB](https://www.peerdb.io/) enables you to seamlessly replicate data from Postgres to ClickHouse. You can use this tool for
 1. continuous replication using CDC, allowing Postgres and ClickHouse to coexist—Postgres for OLTP and ClickHouse for OLAP; and
 2. migrating from Postgres to ClickHouse.
-
-
-

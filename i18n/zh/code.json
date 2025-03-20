@@ -859,5 +859,18 @@
   "sidebar.dropdownCategories.category.About.Development and Contributing.description": {
     "message": "如何为 ClickHouse 做出贡献",
     "description": "Learn how to contribute to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.About.Development and Contributing.description": {
+    "message": "Как внести вклад в ClickHouse",
+    "description": "Learn how to contribute to ClickHouse"
+  },
+  "This documentation is translated with the help of AI": {
+    "message": "本文档在人工智能的帮助下进行翻译"
+  },
+  "Spotted a translation issue? Help us to improve it by reporting translation issues.": {
+    "message": "发现翻译问题？报告翻译问题，帮助我们改进翻译。"
+  },
+  "Report an issue": {
+    "message": "报告问题"
   }
 }

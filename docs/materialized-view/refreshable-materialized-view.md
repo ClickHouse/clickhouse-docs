@@ -1,20 +1,19 @@
 ---
 slug: /materialized-view/refreshable-materialized-view
-title: Refreshable Materialized View
-description: How to use materialized views to speed up queries
-keywords: [refreshable materialized view, refresh, materialized views, speed up queries, query optimization]
+title: 'Refreshable Materialized View'
+description: 'How to use materialized views to speed up queries'
+keywords: ['refreshable materialized view', 'refresh', 'materialized views', 'speed up queries', 'query optimization']
 ---
 
 import refreshableMaterializedViewDiagram from '@site/static/images/materialized-view/refreshable-materialized-view-diagram.png';
+import Image from '@theme/IdealImage';
 
 [Refreshable materialized views](/sql-reference/statements/create/view#refreshable-materialized-view) are conceptually similar to materialized views in traditional OLTP databases, storing the result of a specified query for quick retrieval and reducing the need to repeatedly execute resource-intensive queries. Unlike ClickHouse’s [incremental materialized views](/materialized-view/incremental-materialized-view), this requires the periodic execution of the query over the full dataset - the results of which are stored in a target table for querying. This result set should, in theory, be smaller than the original dataset, allowing the subsequent query to execute faster.
 
 The diagram explains how Refreshable Materialized Views work:
 
-<img src={refreshableMaterializedViewDiagram}
-  class="image"
-  alt="Refreshable materialized view diagram"
-  style={{width: '100%', background: 'none'}} />
+<Image img={refreshableMaterializedViewDiagram} size="lg" alt="Refreshable materialized view diagram"/>
+
 
 You can also see the following video:
 
@@ -199,8 +198,8 @@ SELECT
 FROM posts
 LEFT JOIN (
     SELECT
-   	 PostId,
-   	 groupArray((CreationDate, RelatedPostId, LinkTypeId)) AS Related
+         PostId,
+         groupArray((CreationDate, RelatedPostId, LinkTypeId)) AS Related
     FROM postlinks
     GROUP BY PostId
 ) AS postlinks ON posts_types_codecs_ordered.Id = postlinks.PostId;
@@ -222,8 +221,8 @@ SELECT
 FROM posts
 LEFT JOIN (
     SELECT
-   	 PostId,
-   	 groupArray((CreationDate, RelatedPostId, LinkTypeId)) AS Related
+         PostId,
+         groupArray((CreationDate, RelatedPostId, LinkTypeId)) AS Related
     FROM postlinks
     GROUP BY PostId
 ) AS postlinks ON posts_types_codecs_ordered.Id = postlinks.PostId;
@@ -286,13 +285,13 @@ It's time for a refreshable materialized view, so let's first create a target ta
 ```sql
 CREATE TABLE imdb.actor_summary
 (
-	`id` UInt32,
-	`name` String,
-	`num_movies` UInt16,
-	`avg_rank` Float32,
-	`unique_genres` UInt16,
-	`uniq_directors` UInt16,
-	`updated_at` DateTime
+        `id` UInt32,
+        `name` String,
+        `num_movies` UInt16,
+        `avg_rank` Float32,
+        `unique_genres` UInt16,
+        `uniq_directors` UInt16,
+        `updated_at` DateTime
 )
 ENGINE = MergeTree
 ORDER BY num_movies
@@ -304,24 +303,24 @@ And now we can define the view:
 CREATE MATERIALIZED VIEW imdb.actor_summary_mv
 REFRESH EVERY 1 MINUTE TO imdb.actor_summary AS
 SELECT
-	id,
-	any(actor_name) AS name,
-	uniqExact(movie_id) AS num_movies,
-	avg(rank) AS avg_rank,
-	uniqExact(genre) AS unique_genres,
-	uniqExact(director_name) AS uniq_directors,
-	max(created_at) AS updated_at
+        id,
+        any(actor_name) AS name,
+        uniqExact(movie_id) AS num_movies,
+        avg(rank) AS avg_rank,
+        uniqExact(genre) AS unique_genres,
+        uniqExact(director_name) AS uniq_directors,
+        max(created_at) AS updated_at
 FROM
 (
-	SELECT
-    	imdb.actors.id AS id,
-    	concat(imdb.actors.first_name, ' ', imdb.actors.last_name) AS actor_name,
-    	imdb.movies.id AS movie_id,
-    	imdb.movies.rank AS rank,
-    	genre,
-    	concat(imdb.directors.first_name, ' ', imdb.directors.last_name) AS director_name,
-    	created_at
-	FROM imdb.actors
+        SELECT
+        imdb.actors.id AS id,
+        concat(imdb.actors.first_name, ' ', imdb.actors.last_name) AS actor_name,
+        imdb.movies.id AS movie_id,
+        imdb.movies.rank AS rank,
+        genre,
+        concat(imdb.directors.first_name, ' ', imdb.directors.last_name) AS director_name,
+        created_at
+        FROM imdb.actors
     INNER JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
     LEFT JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
     LEFT JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
@@ -358,10 +357,10 @@ Suppose we add a new actor, "Clicky McClickHouse" to our source data who happens
 ```sql
 INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
 INSERT INTO imdb.roles SELECT
-	845466 AS actor_id,
-	id AS movie_id,
-	'Himself' AS role,
-	now() AS created_at
+        845466 AS actor_id,
+        id AS movie_id,
+        'Himself' AS role,
+        now() AS created_at
 FROM imdb.movies
 LIMIT 10000, 910;
 ```

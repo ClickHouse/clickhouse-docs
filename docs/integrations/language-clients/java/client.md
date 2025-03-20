@@ -1,9 +1,10 @@
 ---
-sidebar_label: Client 0.8+
+sidebar_label: 'Client 0.8+'
 sidebar_position: 2
-keywords: [clickhouse, java, client, integrate]
-description: Java ClickHouse Connector 0.8+
+keywords: ['clickhouse', 'java', 'client', 'integrate']
+description: 'Java ClickHouse Connector 0.8+'
 slug: /integrations/language-clients/java/client
+title: 'Java Client (0.8+)'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -245,7 +246,7 @@ This client version supports:
 | [Prometheus](/interfaces/formats#prometheus)                                                                          | -      | raw     |
 | [Protobuf](/interfaces/formats#protobuf)                                                                              | raw    | raw     |
 | [ProtobufSingle](/interfaces/formats#protobufsingle)                                                                  | raw    | raw     |
-| [ProtobufList](/interfaces/formats#protobuflist)								                                        | raw    | raw     |
+| [ProtobufList](/interfaces/formats#protobuflist)                                                                                                      | raw    | raw     |
 | [Avro](/interfaces/formats#data-format-avro)                                                                          | raw    | raw     |
 | [AvroConfluent](/interfaces/formats#data-format-avro-confluent)                                                       | raw    | -       |
 | [Parquet](/interfaces/formats#data-format-parquet)                                                                    | raw    | raw     |

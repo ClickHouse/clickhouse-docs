@@ -1,9 +1,9 @@
 ---
-title: Installing chDB for Bun
-sidebar_label: Bun
+title: 'Installing chDB for Bun'
+sidebar_label: 'Bun'
 slug: /chdb/install/bun
-description: How to install chDB for Bun
-keywords: [chdb, embedded, clickhouse-lite, bun, install]
+description: 'How to install chDB for Bun'
+keywords: ['chdb', 'embedded', 'clickhouse-lite', 'bun', 'install']
 ---
 
 # Installing chDB for Bun

@@ -859,5 +859,14 @@
   "sidebar.dropdownCategories.category.About.Development and Contributing.description": {
     "message": "Как внести вклад в ClickHouse",
     "description": "Learn how to contribute to ClickHouse"
+  },
+  "This documentation is translated with the help of AI": {
+    "message": "Эта документация переведена с помощью искусственного интеллекта"
+  },
+  "Spotted a translation issue? Help us to improve it by reporting translation issues.": {
+    "message": "Заметили проблему с переводом? Помогите нам улучшить его, сообщив о проблемах перевода."
+  },
+  "Report an issue": {
+    "message": "Сообщите о проблеме"
   }
 }

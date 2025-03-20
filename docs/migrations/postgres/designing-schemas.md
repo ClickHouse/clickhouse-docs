@@ -1,12 +1,13 @@
 ---
 slug: /migrations/postgresql/designing-schemas
-title: Designing Schemas
-description: Designing schemas when migrating from PostgreSQL to ClickHouse
-keywords: [postgres, postgresql, migrate, migration, schema]
+title: 'Designing Schemas'
+description: 'Designing schemas when migrating from PostgreSQL to ClickHouse'
+keywords: ['postgres', 'postgresql', 'migrate', 'migration', 'schema']
 ---
 
 import postgres_b_tree from '@site/static/images/migrations/postgres-b-tree.png';
 import postgres_sparse_index from '@site/static/images/migrations/postgres-sparse-index.png';
+import Image from '@theme/IdealImage';
 
 > This is **Part 2** of a guide on migrating from PostgreSQL to ClickHouse. This content can be considered introductory, with the aim of helping users deploy an initial functional system that adheres to ClickHouse best practices. It avoids complex topics and will not result in a fully optimized schema; rather, it provides a solid foundation for users to build a production system and base their learning.
 
@@ -54,28 +55,28 @@ SETTINGS describe_compact_output = 1
 
 ```response title="Response"
 ┌─name──────────────────┬─type────────────────────┐
-│ id           		│ Int32                   │
-│ posttypeid   		│ Nullable(Int32)	  │
-│ acceptedanswerid 	│ Nullable(String)   	  │
-│ creationdate 		│ Nullable(DateTime64(6)) │
-│ score        		│ Nullable(Int32)	  │
-│ viewcount    		│ Nullable(Int32)	  │
-│ body         		│ Nullable(String)   	  │
-│ owneruserid  		│ Nullable(Int32)	  │
-│ ownerdisplayname 	│ Nullable(String)   	  │
-│ lasteditoruserid 	│ Nullable(String)   	  │
-│ lasteditordisplayname │ Nullable(String)   	  │
-│ lasteditdate 		│ Nullable(DateTime64(6)) │
-│ lastactivitydate 	│ Nullable(DateTime64(6)) │
-│ title        		│ Nullable(String)   	  │
-│ tags         		│ Nullable(String)   	  │
-│ answercount  		│ Nullable(Int32)	  │
-│ commentcount 		│ Nullable(Int32)	  │
-│ favoritecount		│ Nullable(Int32)	  │
-│ contentlicense   	│ Nullable(String)   	  │
-│ parentid     		│ Nullable(String)   	  │
+│ id                    │ Int32                   │
+│ posttypeid            │ Nullable(Int32)         │
+│ acceptedanswerid      │ Nullable(String)        │
+│ creationdate          │ Nullable(DateTime64(6)) │
+│ score                 │ Nullable(Int32)         │
+│ viewcount             │ Nullable(Int32)         │
+│ body                  │ Nullable(String)        │
+│ owneruserid           │ Nullable(Int32)         │
+│ ownerdisplayname      │ Nullable(String)        │
+│ lasteditoruserid      │ Nullable(String)        │
+│ lasteditordisplayname │ Nullable(String)        │
+│ lasteditdate          │ Nullable(DateTime64(6)) │
+│ lastactivitydate      │ Nullable(DateTime64(6)) │
+│ title                 │ Nullable(String)        │
+│ tags                  │ Nullable(String)        │
+│ answercount           │ Nullable(Int32)         │
+│ commentcount          │ Nullable(Int32)         │
+│ favoritecount         │ Nullable(Int32)         │
+│ contentlicense        │ Nullable(String)        │
+│ parentid              │ Nullable(String)        │
 │ communityowneddate    │ Nullable(DateTime64(6)) │
-│ closeddate   		│ Nullable(DateTime64(6)) │
+│ closeddate            │ Nullable(DateTime64(6)) │
 └───────────────────────┴─────────────────────────┘
 
 22 rows in set. Elapsed: 0.478 sec.
@@ -180,15 +181,9 @@ To understand why using your OLTP primary key in ClickHouse is not appropriate, 
 - Memory and disk efficiency are paramount to the scale at which ClickHouse is often used. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, the merged part's primary indexes are also merged. Unlike Postgres, these indexes are not built for each row. Instead, the primary index for a part has one index entry per group of rows - this technique is called **sparse indexing**.
 - **Sparse indexing** is possible because ClickHouse stores the rows for a part on disk ordered by a specified key. Instead of directly locating single rows (like a B-Tree-based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows are then, in parallel, streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it completely fits into the main memory) whilst still significantly speeding up query execution times, especially for range queries that are typical in data analytics use cases. For more details, we recommend this [in-depth guide](/guides/best-practices/sparse-primary-indexes).
 
-<br />
+<Image img={postgres_b_tree} size="lg" alt="PostgreSQL B-Tree Index"/>
 
-<img src={postgres_b_tree} class="image" alt="PostgreSQL B-Tree Index" style={{width: '800px'}} />
-
-<br />
-
-<img src={postgres_sparse_index} class="image" alt="PostgreSQL Sparse Index" style={{width: '800px'}} />
-
-<br />
+<Image img={postgres_sparse_index} size="lg" alt="PostgreSQL Sparse Index"/>
 
 The selected key in ClickHouse will determine not only the index but also the order in which data is written on disk. Because of this, it can dramatically impact compression levels, which can, in turn, affect query performance. An ordering key that causes the values of most columns to be written in a contiguous order will allow the selected compression algorithm (and codecs) to compress the data more effectively.
 
@@ -216,8 +211,8 @@ WHERE
 
 ```sql title="Query (ClickHouse)"
 SELECT
-	`table`,
-	formatReadableSize(sum(data_compressed_bytes)) AS compressed_size
+        `table`,
+        formatReadableSize(sum(data_compressed_bytes)) AS compressed_size
 FROM system.parts
 WHERE (database = 'stackoverflow') AND active
 GROUP BY `table`
@@ -225,13 +220,13 @@ GROUP BY `table`
 
 ```response title="Response"
 ┌─table───────┬─compressed_size─┐
-│ posts       │ 25.17 GiB  	│
-│ users       │ 846.57 MiB 	│
-│ badges      │ 513.13 MiB 	│
-│ comments    │ 7.11 GiB   	│
-│ votes       │ 1.28 GiB   	│
-│ posthistory │ 40.44 GiB  	│
-│ postlinks   │ 79.22 MiB  	│
+│ posts       │ 25.17 GiB       │
+│ users       │ 846.57 MiB      │
+│ badges      │ 513.13 MiB      │
+│ comments    │ 7.11 GiB        │
+│ votes       │ 1.28 GiB        │
+│ posthistory │ 40.44 GiB       │
+│ postlinks   │ 79.22 MiB       │
 └─────────────┴─────────────────┘
 ```
 

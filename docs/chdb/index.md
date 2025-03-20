@@ -1,9 +1,9 @@
 ---
-title: chDB
-sidebar_label: Overview
+title: 'chDB'
+sidebar_label: 'Overview'
 slug: /chdb
-description: chDB is an in-process SQL OLAP Engine powered by ClickHouse
-keywords: [chdb, embedded, clickhouse-lite, in-process, in process]
+description: 'chDB is an in-process SQL OLAP Engine powered by ClickHouse'
+keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
 ---
 
 # chDB

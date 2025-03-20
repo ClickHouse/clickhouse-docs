@@ -1,8 +1,8 @@
 ---
-title: Description of New Tiers
+title: 'Description of New Tiers'
 slug: /cloud/manage/jan-2025-faq/new-tiers
-keywords: [new tiers, features, pricing, description]
-description: Description of new tiers and features
+keywords: ['new tiers', 'features', 'pricing', 'description']
+description: 'Description of new tiers and features'
 ---
 
 ## Summary of key changes {#summary-of-key-changes}

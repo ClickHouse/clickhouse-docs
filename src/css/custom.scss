@@ -1282,3 +1282,31 @@ input::-ms-input-placeholder { /* Microsoft Edge */
     margin: 10px;
   }
 }
+
+/*announcement bar*/
+.announcementBar_s0pr {
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  left: 0;
+  top: 102px;
+}
+
+[data-theme='dark'] .announcementBar_s0pr {
+  color: white !important;
+  background-color: var(--ifm-background-color) !important;
+
+  .clean-btn {
+    color: white !important;
+  }
+}
+
+[data-theme='light'] .announcementBar_s0pr {
+  color: black !important;
+  background-color: white !important;
+
+  .clean-btn {
+    color: black !important;
+  }
+}
+

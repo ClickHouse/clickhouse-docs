@@ -1,9 +1,9 @@
 ---
 slug: /about-us/adopters
-sidebar_label: Adopters
-title: ClickHouse Adopters
+sidebar_label: 'Adopters'
+title: 'ClickHouse Adopters'
 sidebar_position: 60
-description: A list of companies using ClickHouse and their success stories
+description: 'A list of companies using ClickHouse and their success stories'
 ---
 
 The following list of companies using ClickHouse and their success stories is assembled from public sources, thus might differ from current reality. We’d appreciate it if you share the story of adopting ClickHouse in your company and [add it to the list](https://github.com/ClickHouse/clickhouse-docs/blob/main/docs/about-us/adopters.md), but please make sure you won’t have any NDA issues by doing so. Providing updates with publications from other companies is also useful.
@@ -118,7 +118,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Common Room](https://www.commonroom.io/) | Marketing SaaS | Real-Time Analytics | — | — | [Seattle Meetup, March 2024](https://www.youtube.com/watch?v=liTgGiTuhJE) |
 | [Constructor](https://constructor.io/) | E-commerce Search | E-commerce Search | — | — | ClickHouse Cloud user |
 | [Contentsquare](https://contentsquare.com) | Web analytics | Main product | — | — | [Meetup Video, January 2023](https://www.youtube.com/watch?v=zvuCBAl2T0Q&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=5) [Blog Post, October 2022](https://clickhouse.com/blog/contentsquare-migration-from-elasticsearch-to-clickhouse) [Blog post in French, November 2018](http://souslecapot.net/2018/11/21/patrick-chatain-vp-engineering-chez-contentsquare-penser-davantage-amelioration-continue-que-revolution-constante/) |
-| [Coroot](https://coroot.com/) | Software & Technology	 | Observability | — | — | [Twitter, July 2023](https://twitter.com/coroot_com/status/1680993372385804288?s=20) |
+| [Coroot](https://coroot.com/) | Software & Technology  | Observability | — | — | [Twitter, July 2023](https://twitter.com/coroot_com/status/1680993372385804288?s=20) |
 | [Corsearch](https://corsearch.com/) | Marketing SaaS (Brand Protection) | Main Datastore | — | — | [Seattle Meetup, March 2023](https://www.youtube.com/watch?v=BuS8jFL9cvw&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=10) |
 | [Corunet](https://coru.net/) | Analytics | Main product | — | — | [Slides in English, April 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup21/predictive_models.pdf) |
 | [Covalent](https://www.covalenthq.com/) | Financial - Crypto | Blockchain analysis | — | — | ClickHouse Cloud user |
