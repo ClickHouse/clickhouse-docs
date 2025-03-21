@@ -1,6 +1,6 @@
 ---
-title: テンプレート
-slug: /interfaces/formats/テンプレート
+title: Template
+slug: /interfaces/formats/Template
 keywords: [テンプレート]
 input_format: true
 output_format: true

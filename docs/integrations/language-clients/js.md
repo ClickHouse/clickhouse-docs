@@ -1,10 +1,12 @@
 ---
-sidebar_label: JavaScript
+sidebar_label: 'JavaScript'
 sidebar_position: 4
-keywords: [clickhouse, js, JavaScript, NodeJS, web, browser, Cloudflare, workers, client, connect, integrate]
+keywords: ['clickhouse', 'js', 'JavaScript', 'NodeJS', 'web', 'browser', 'Cloudflare', 'workers', 'client', 'connect', 'integrate']
 slug: /integrations/javascript
-description: The official JS client for connecting to ClickHouse.
+description: 'The official JS client for connecting to ClickHouse.'
+title: 'ClickHouse JS'
 ---
+
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 

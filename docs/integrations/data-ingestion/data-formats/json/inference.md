@@ -1,8 +1,8 @@
 ---
-title: JSON schema inference
+title: 'JSON schema inference'
 slug: /integrations/data-formats/json/inference
-description: How to use JSON schema inference
-keywords: [json, schema, inference, schema inference]
+description: 'How to use JSON schema inference'
+keywords: ['json', 'schema', 'inference', 'schema inference']
 ---
 
 ClickHouse can automatically determine the structure of JSON data. This can be used to query JSON data directly e.g. on disk with `clickhouse-local` or S3 buckets, and/or automatically create schemas prior to loading the data into ClickHouse.
@@ -180,7 +180,6 @@ CREATE TABLE arxiv
 )
 ENGINE = MergeTree
 ORDER BY update_date
-SETTINGS index_granularity = 8192
 ```
 
 The above is the correct schema for this data. Schema inference is based on sampling the data and reading the data row by row. Column values are extracted according to the format, with recursive parsers and heuristics used to determine the type for each value. The maximum number of rows and bytes read from the data in schema inference is controlled by the settings [`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) (25000 by default) and [`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference) (32MB by default). In the event detection is not correct, users can provide hints as described [here](/operations/settings/formats#schema_inference_make_columns_nullable).

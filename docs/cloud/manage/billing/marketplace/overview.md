@@ -1,9 +1,12 @@
 ---
 slug: /cloud/marketplace/marketplace-billing
-title: Marketplace Billing
-description: Subscribe to ClickHouse Cloud through the AWS, GCP, and Azure marketplace.
-keywords: [aws, azure, gcp, google cloud, marketplace, billing]
+title: 'Marketplace Billing'
+description: 'Subscribe to ClickHouse Cloud through the AWS, GCP, and Azure marketplace.'
+keywords: ['aws', 'azure', 'gcp', 'google cloud', 'marketplace', 'billing']
 ---
+
+import Image from '@theme/IdealImage';
+import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage/billing/marketplace/marketplace_signup_and_org_linking.png'
 
 You can subscribe to ClickHouse Cloud through the AWS, GCP, and Azure marketplaces. This allows you to pay for ClickHouse Cloud through your existing cloud provider billing.
 
@@ -36,7 +39,7 @@ You can switch between organizations from the bottom left menu of the ClickHouse
 
 You will need to subscribe to ClickHouse Cloud via the cloud provider marketplace. Once you finish subscribing on the marketplace, and redirect to ClickHouse Cloud you will have the option of linking an existing ClickHouse Cloud organization to marketplace billing. From that point on, your existing resources will now get billed via the marketplace. 
 
-![Marketplace signup and org linking](https://github.com/user-attachments/assets/a0939007-320b-4b12-9d6d-fd63bce31864)
+<Image img={marketplace_signup_and_org_linking} size='md' alt='Marketplace signup and org linking' border/>
 
 You can confirm from the organization's billing page that billing is indeed now linked to the marketplace. Please contact [ClickHouse Cloud support](https://clickhouse.com/support/program) if you run into any issues.
 

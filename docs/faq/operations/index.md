@@ -1,10 +1,12 @@
 ---
 slug: /faq/operations/
 sidebar_position: 3
-sidebar_label:  Question about Operating ClickHouse Servers and Clusters
+sidebar_label: 'Question about Operating ClickHouse Servers and Clusters'
+title: 'Question about operating ClickHouse servers and clusters'
+description: 'Landing page for questions about operating ClickHouse servers and clusters'
 ---
 
-# Question About Operating ClickHouse Servers and Clusters
+# Question about operating ClickHouse servers and clusters
 
 - [Which ClickHouse version should I use in production?](/faq/operations/production.md)
 - [Is it possible to deploy ClickHouse with separate storage and compute?](/faq/operations/separate_storage.md)

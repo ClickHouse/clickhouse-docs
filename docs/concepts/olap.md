@@ -1,24 +1,22 @@
 ---
 sidebar_position: 2
-sidebar_label: What is OLAP?
-description: "OLAP stands for Online Analytical Processing. It is a broad term that can be looked at from two perspectives: technical and business."
+sidebar_label: 'What is OLAP?'
+description: 'OLAP stands for Online Analytical Processing. It is a broad term that can be looked at from two perspectives: technical and business.'
+title: 'What is OLAP?'
+slug: /concepts/olap
 ---
 
 # What is OLAP?
 
-<!-- slug: /faq/general/olap -->
-
-
 [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) stands for Online Analytical Processing. It is a broad term that can be looked at from two perspectives: technical and business. At the highest level, you can just read these words backward:
 
-Processing
-:   Some source data is processed…
 
-Analytical
-:   …to produce some analytical reports and insights…
+**Processing** some source data is processed…
 
-Online
-:   …in real-time.
+**Analytical** …to produce some analytical reports and insights…
+
+**Online** …in real-time.
+
 
 ## OLAP from the Business Perspective {#olap-from-the-business-perspective}
 

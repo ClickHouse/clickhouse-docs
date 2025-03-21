@@ -1,11 +1,13 @@
 ---
-sidebar_label: Supabase Postgres
-description: Set up Supabase instance as a source for ClickPipes
+sidebar_label: 'Supabase Postgres'
+description: 'Set up Supabase instance as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/supabase
+title: 'Supabase Source Setup Guide'
 ---
 
 import supabase_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-commands.jpg'
-import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg' 
+import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg'
+import Image from '@theme/IdealImage';
 
 # Supabase Source Setup Guide
 
@@ -38,7 +40,7 @@ Here, we can run the following SQL commands:
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 
-<img src={supabase_commands} alt="User and publication commands"/>
+<Image img={supabase_commands} alt="User and publication commands" size="large" border/>
 
 
 Click on **Run** to have a publication and a user ready.
@@ -71,7 +73,7 @@ Head over to your Supabase Project's `Project Settings` -> `Database` (under `Co
 
 **Important**: Disable `Display connection pooler` on this page and head over to the `Connection parameters` section and note/copy the parameters.
 
-<img src={supabase_connection_details} alt="Locate Supabase Connection Details"/>
+<Image img={supabase_connection_details} size="lg" border alt="Locate Supabase Connection Details" border/>
 
 :::info
 
@@ -84,7 +86,3 @@ The connection pooler is not supported for CDC based replication, hence it needs
 
 You can now [create your ClickPipe](../index.md) and start ingesting data from your Postgres instance into ClickHouse Cloud.
 Make sure to note down the connection details you used while setting up your Postgres instance as you will need them during the ClickPipe creation process.
-
-
-
-

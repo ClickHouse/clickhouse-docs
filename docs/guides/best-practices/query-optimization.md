@@ -1,15 +1,17 @@
 ---
 slug: /optimize/query-optimization
-sidebar_label: Query optimization
-title: Guide for Query optimization
-description: A simple guide for query optimization that describe common path to improve query performance
+sidebar_label: 'Query optimization'
+title: 'Guide for Query optimization'
+description: 'A simple guide for query optimization that describe common path to improve query performance'
 ---
 
 import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';
+import Image from '@theme/IdealImage';
+
 
 # A simple guide for query optimization
 
-This section aims to illustrate through common scenarios how to use different performance and optimization techniques, such as [analyzer](/operations/analyzer), [query profiling](/operations/optimizing-performance/sampling-query-profiler) or [avoid Nullable Columns](/optimize/avoid-nullable-columns), in order to improve your ClickHouse query performances. 
+This section aims to illustrate through common scenarios how to use different performance and optimization techniques, such as [analyzer](/operations/analyzer), [query profiling](/operations/optimizing-performance/sampling-query-profiler) or [avoid Nullable Columns](/optimize/avoid-nullable-columns), in order to improve your ClickHouse query performances.
 
 ## Understand query performance {#understand-query-performance}
 
@@ -67,12 +69,12 @@ AS SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/n
 
 -- Insert data into table with inferred schema
 INSERT INTO trips_small_inferred
-SELECT * 
+SELECT *
 FROM s3Cluster
 ('default','https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/clickhouse-academy/nyc_taxi_2009-2010.parquet');
 ```
 
-Let's have a look to the table schema automatically inferred from the data. 
+Let's have a look to the table schema automatically inferred from the data.
 
 ```sql
 --- Display inferred table schema
@@ -98,7 +100,7 @@ CREATE TABLE nyc_taxi.trips_small_inferred
     `tolls_amount` Nullable(Float64),
     `total_amount` Nullable(Float64)
 )
-ORDER BY tuple() 
+ORDER BY tuple()
 ```
 
 ## Spot the slow queries {#spot-the-slow-queries}
@@ -111,7 +113,7 @@ For each executed query, ClickHouse logs statistics such as query execution time
 
 Therefore, the query log is a good place to start when investigating slow queries. You can easily spot the queries that take a long time to execute and display the resource usage information for each one. 
 
-Let’s find the top five long-running queries on our NYC taxi dataset. 
+Let’s find the top five long-running queries on our NYC taxi dataset.
 
 ```sql
 -- Find top 5 long running queries from nyc_taxi database in the last 1 hour
@@ -153,19 +155,19 @@ Row 2:
 type:              QueryFinish
 event_time:        2024-11-27 11:11:33
 query_duration_ms: 2026
-query:             SELECT 
+query:             SELECT
     payment_type,
     COUNT() AS trip_count,
     formatReadableQuantity(SUM(trip_distance)) AS total_distance,
     AVG(total_amount) AS total_amount_avg,
     AVG(tip_amount) AS tip_amount_avg
-FROM 
+FROM
     nyc_taxi.trips_small_inferred
-WHERE 
+WHERE
     pickup_datetime >= '2009-01-01' AND pickup_datetime < '2009-04-01'
-GROUP BY 
+GROUP BY
     payment_type
-ORDER BY 
+ORDER BY
     trip_count DESC;
 
 read_rows:         329044175
@@ -217,7 +219,7 @@ The field `query_duration_ms` indicates how long it took for that particular que
 You might also want to know which queries are stressing the system by examining the query that consumes the most memory or CPU. 
 
 ```sql
--- Top queries by memory usage 
+-- Top queries by memory usage
 SELECT
     type,
     event_time,
@@ -236,7 +238,7 @@ LIMIT 30
 
 Let’s isolate the long-running queries we found and rerun them a few times to understand the response time. 
 
-At this point, it is essential to turn off the filesystem cache by setting the `enable_filesystem_cache` setting to 0 to improve reproducibility. 
+At this point, it is essential to turn off the filesystem cache by setting the `enable_filesystem_cache` setting to 0 to improve reproducibility.
 
 
 ```sql
@@ -260,22 +262,22 @@ FORMAT JSON
 Peak memory usage: 440.24 MiB.
 
 -- Run query 2
-SELECT 
+SELECT
     payment_type,
     COUNT() AS trip_count,
     formatReadableQuantity(SUM(trip_distance)) AS total_distance,
     AVG(total_amount) AS total_amount_avg,
     AVG(tip_amount) AS tip_amount_avg
-FROM 
+FROM
     nyc_taxi.trips_small_inferred
-WHERE 
+WHERE
     pickup_datetime >= '2009-01-01' AND pickup_datetime < '2009-04-01'
-GROUP BY 
+GROUP BY
     payment_type
-ORDER BY 
+ORDER BY
     trip_count DESC;
 
---- 
+---
 4 rows in set. Elapsed: 1.419 sec. Processed 329.04 million rows, 5.72 GB (231.86 million rows/s., 4.03 GB/s.)
 Peak memory usage: 546.75 MiB.
 
@@ -291,7 +293,7 @@ FORMAT JSON
 Peak memory usage: 451.53 MiB.
 ```
 
-Summarize in the table for easy reading. 
+Summarize in the table for easy reading.
 
 | Name    | Elapsed   | Rows processed | Peak memory |
 | ------- | --------- | -------------- | ----------- |
@@ -308,7 +310,7 @@ Let's understand a bit better what the queries achieve. 
 None of these queries are doing very complex processing, except the first query that calculates the trip time on the fly every time the query executes. However, each of these queries takes more than one second to execute, which, in the ClickHouse world, is a very long time. We can also note the memory usage of these queries; more or less 400 Mb for each query is quite a lot of memory. Also, each query appears to read the same number of rows (i.e., 329.04 million). Let's quickly confirm how many rows are in this table.
 
 ```sql
--- Count number of rows in table 
+-- Count number of rows in table
 SELECT count()
 FROM nyc_taxi.trips_small_inferred
 
@@ -319,7 +321,7 @@ Query id: 733372c5-deaf-4719-94e3-261540933b23
    └───────────┘
 ```
 
-The table contains 329.04 million rows, therefore each query is doing a full scan of the table. 
+The table contains 329.04 million rows, therefore each query is doing a full scan of the table.
 
 ### Explain statement {#explain-statement}
 
@@ -389,7 +391,7 @@ Query id: c7e11e7b-d970-4e35-936c-ecfc24e3b879
 
 Here, we can note the number of threads used to execute the query: 59 threads, which indicates a high parallelization. This speeds up the query, which would take longer to execute on a smaller machine. The number of threads running in parallel can explain the high volume of memory the query uses. 
 
-Ideally, you would investigate all your slow queries the same way to identify unnecessary complex query plans and understand the number of rows read by each query and the resources consumed. 
+Ideally, you would investigate all your slow queries the same way to identify unnecessary complex query plans and understand the number of rows read by each query and the resources consumed.
 
 ## Methodology {#methodology}
 
@@ -407,7 +409,7 @@ Start by identifying your slow queries from query logs, then investigate potenti
 
 Once you have identified potential optimizations, it is recommended that you implement them one by one to better track how they affect performance. Below is a diagram describing the general approach.
 
-<img src={queryOptimizationDiagram1} class="image" />
+<Image img={queryOptimizationDiagram1} size="lg" alt="Optimization workflow"/>
 
 _Finally, be cautious of outliers; it’s pretty common that a query might run slowly, either because a user tried an ad-hoc expensive query or the system was under stress for another reason. You can group by the field normalized_query_hash to identify expensive queries that are being executed regularly. Those are probably the ones you want to investigate._
 
@@ -417,7 +419,7 @@ Now that we have our framework to test, we can start optimizing.
 
 The best place to start is to look at how the data is stored. As for any database, the less data we read, the faster the query will be executed. 
 
-Depending on how you ingested your data, you might have leveraged ClickHouse [capabilities](/interfaces/schema-inference) to infer the table schema based on the ingested data. While this is very practical to get started, if you want to optimize your query performance, you’ll need to review the data schema to best fit your use case. 
+Depending on how you ingested your data, you might have leveraged ClickHouse [capabilities](/interfaces/schema-inference) to infer the table schema based on the ingested data. While this is very practical to get started, if you want to optimize your query performance, you’ll need to review the data schema to best fit your use case.
 
 ### Nullable {#nullable}
 
@@ -426,7 +428,7 @@ As described in the [best practices documentation](/cloud/bestpractices/avoid-nu
 Running an SQL query that counts the rows with a NULL value can easily reveal the columns in your tables that actually need a Nullable value.
 
 ```sql
--- Find non-null values columns 
+-- Find non-null values columns
 SELECT
     countIf(vendor_id IS NULL) AS vendor_id_nulls,
     countIf(pickup_datetime IS NULL) AS pickup_datetime_nulls,
@@ -471,7 +473,7 @@ An easy optimization to apply to Strings is to make best use of the LowCardinali
 
 An easy rule of thumb for determining which columns are good candidates for LowCardinality is that any column with less than 10,000 unique values is a perfect candidate.
 
-You can use the following SQL query to find columns with a low number of unique values. 
+You can use the following SQL query to find columns with a low number of unique values.
 
 ```sql
 -- Identify low cardinality columns
@@ -515,14 +517,14 @@ Query id: 4306a8e1-2a9c-4b06-97b4-4d902d2233eb
    └───────────────────┴───────────────────┘
 ```
 
-For dates, you should pick a precision that matches your dataset and is best suited to answering the queries you’re planning to run. 
+For dates, you should pick a precision that matches your dataset and is best suited to answering the queries you’re planning to run.
 
 ### Apply the optimizations {#apply-the-optimizations}
 
-Let’s create a new table to use the optimized schema and re-ingest the data.  
+Let’s create a new table to use the optimized schema and re-ingest the data.
 
 ```sql
--- Create table with optimized data 
+-- Create table with optimized data
 CREATE TABLE trips_small_no_pk
 (
     `vendor_id` LowCardinality(String),
@@ -543,7 +545,7 @@ CREATE TABLE trips_small_no_pk
 )
 ORDER BY tuple();
 
--- Insert the data 
+-- Insert the data
 INSERT INTO trips_small_no_pk SELECT * FROM trips_small_inferred
 ```
 
@@ -631,7 +633,7 @@ CREATE TABLE trips_small_pk
 )
 PRIMARY KEY (passenger_count, pickup_datetime, dropoff_datetime);
 
--- Insert the data 
+-- Insert the data
 INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
 ```
 
@@ -741,7 +743,7 @@ We then rerun our queries. We compile the results from the three experiments to 
 
 We can see significant improvement across the board in execution time and memory used. 
 
-Query 2 benefits most from the primary key. Let’s have a look at how the query plan generated is different from before. 
+Query 2 benefits most from the primary key. Let’s have a look at how the query plan generated is different from before.
 
 ```sql
 EXPLAIN indexes = 1
@@ -780,6 +782,6 @@ Thanks to the primary key, only a subset of the table granules has been selected
 
 ## Next steps {#next-steps}
 
-Hopefully this guide gets a good understanding on how to investigate slow queries with ClickHouse and how to make them faster. To explore more on this topic, you can read more about [query analyzer](/operations/analyzer) and [profiling](/operations/optimizing-performance/sampling-query-profiler) to understand better how exactly ClickHouse is executing your query. 
+Hopefully this guide gets a good understanding on how to investigate slow queries with ClickHouse and how to make them faster. To explore more on this topic, you can read more about [query analyzer](/operations/analyzer) and [profiling](/operations/optimizing-performance/sampling-query-profiler) to understand better how exactly ClickHouse is executing your query.
 
-As you get more familiar with ClickHouse specificities, I would recommend to read about [partitioning keys](/optimize/partitioning-key) and [data skipping indexes](/optimize/skipping-indexes) to learn about more advanced techniques you can use to accelerate your queries. 
+As you get more familiar with ClickHouse specificities, I would recommend to read about [partitioning keys](/optimize/partitioning-key) and [data skipping indexes](/optimize/skipping-indexes) to learn about more advanced techniques you can use to accelerate your queries.

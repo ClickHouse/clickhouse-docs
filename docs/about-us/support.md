@@ -1,9 +1,12 @@
 ---
 slug: /about-us/support
-sidebar_label: Support
-title: ClickHouse Cloud Support Services
+sidebar_label: 'Support'
+title: 'ClickHouse Cloud Support Services'
 sidebar_position: 30
+description: 'Information on ClickHouse Cloud support services'
 ---
+
+# ClickHouse Cloud Support Services
 
 ClickHouse provides Support Services for our ClickHouse Cloud users and customers. Our objective is a Support Services team that represents the ClickHouse product – unparalleled performance, ease of use, and exceptionally fast, high-quality results. For details, [visit our Support Services](https://clickhouse.com/support/program/) page.
 

@@ -1,8 +1,8 @@
 ---
 slug: /about-us/distinctive-features
-sidebar_label: Why is ClickHouse unique?
+sidebar_label: なぜ ClickHouse はユニークなのか？
 sidebar_position: 50
-description: Understand what makes ClickHouse stand apart from other database management systems
+description: ClickHouse が他のデータベース管理システムと異なる点を理解する
 ---
 
 

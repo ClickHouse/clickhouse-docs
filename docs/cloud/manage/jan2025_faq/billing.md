@@ -1,8 +1,8 @@
 ---
-title: Billing
+title: 'Billing'
 slug: /cloud/manage/jan-2025-faq/billing
-keywords: [new pricing, billing]
-description: Billing details for new pricing tiers
+keywords: ['new pricing', 'billing']
+description: 'Billing details for new pricing tiers'
 ---
 
 ## Billing {#billing}

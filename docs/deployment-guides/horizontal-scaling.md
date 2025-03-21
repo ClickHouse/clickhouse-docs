@@ -1,9 +1,12 @@
 ---
 slug: /architecture/horizontal-scaling
-sidebar_label: Scaling out
+sidebar_label: 'Scaling out'
 sidebar_position: 10
-title: Scaling out
+title: 'Scaling out'
+description: 'Page describing an example architecture designed to provide scalability'
 ---
+
+import Image from '@theme/IdealImage';
 import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
 import ConfigFileNote from '@site/docs/_snippets/_config-files.md';
 import scalingOut1 from '@site/static/images/deployment-guides/scaling-out-1.png';
@@ -18,7 +21,7 @@ This example architecture is designed to provide scalability.  It includes three
 ## Environment {#environment}
 ### Architecture Diagram {#architecture-diagram}
 
-<img src={scalingOut1} alt="Architecture diagram for 2 shards and 1 replica" />
+<Image img={scalingOut1} size='md' alt='Architecture diagram for 2 shards and 1 replica' />
 
 |Node|Description|
 |----|-----------|
@@ -476,6 +479,7 @@ SELECT * FROM db1.table1_dist;
 │  1 │ abc     │
 └────┴─────────┘
 ```
+
 
 ## More information about: {#more-information-about}
 

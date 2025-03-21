@@ -1,11 +1,12 @@
 ---
 slug: /guides/replacing-merge-tree
-title: ReplacingMergeTree
-description: Using the ReplacingMergeTree engine in ClickHouse
-keywords: [replacingmergetree, inserts, deduplication]
+title: 'ReplacingMergeTree'
+description: 'Using the ReplacingMergeTree engine in ClickHouse'
+keywords: ['replacingmergetree', 'inserts', 'deduplication']
 ---
 
 import postgres_replacingmergetree from '@site/static/images/migrations/postgres-replacingmergetree.png';
+import Image from '@theme/IdealImage';
 
 While transactional databases are optimized for transactional update and delete workloads, OLAP databases offer reduced guarantees for such operations. Instead, they optimize for immutable data inserted in batches for the benefit of significantly faster analytical queries. While ClickHouse offers update operations through mutations, as well as a lightweight means of deleting rows, its column-orientated structure means these operations should be scheduled with care, as described above. These operations are handled asynchronously, processed with a single thread, and require (in the case of updates) data to be rewritten on disk. They should thus not be used for high numbers of small changes.
 In order to process a stream of update and delete rows while avoiding the above usage patterns, we can use the ClickHouse table engine ReplacingMergeTree.
@@ -28,7 +29,7 @@ As a result of this merge process, we have four rows representing the final stat
 
 <br />
 
-<img src={postgres_replacingmergetree} class="image" alt="ReplacingMergeTree process" style={{width: '800px', background: 'none'}} />
+<Image img={postgres_replacingmergetree} size="md" alt="ReplacingMergeTree process"/>
 
 <br />
 
@@ -63,28 +64,28 @@ CREATE TABLE stackoverflow.posts_updateable
 (
        `Version` UInt32,
        `Deleted` UInt8,
-	`Id` Int32 CODEC(Delta(4), ZSTD(1)),
-	`PostTypeId` Enum8('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
-	`AcceptedAnswerId` UInt32,
-	`CreationDate` DateTime64(3, 'UTC'),
-	`Score` Int32,
-	`ViewCount` UInt32 CODEC(Delta(4), ZSTD(1)),
-	`Body` String,
-	`OwnerUserId` Int32,
-	`OwnerDisplayName` String,
-	`LastEditorUserId` Int32,
-	`LastEditorDisplayName` String,
-	`LastEditDate` DateTime64(3, 'UTC') CODEC(Delta(8), ZSTD(1)),
-	`LastActivityDate` DateTime64(3, 'UTC'),
-	`Title` String,
-	`Tags` String,
-	`AnswerCount` UInt16 CODEC(Delta(2), ZSTD(1)),
-	`CommentCount` UInt8,
-	`FavoriteCount` UInt8,
-	`ContentLicense` LowCardinality(String),
-	`ParentId` String,
-	`CommunityOwnedDate` DateTime64(3, 'UTC'),
-	`ClosedDate` DateTime64(3, 'UTC')
+        `Id` Int32 CODEC(Delta(4), ZSTD(1)),
+        `PostTypeId` Enum8('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
+        `AcceptedAnswerId` UInt32,
+        `CreationDate` DateTime64(3, 'UTC'),
+        `Score` Int32,
+        `ViewCount` UInt32 CODEC(Delta(4), ZSTD(1)),
+        `Body` String,
+        `OwnerUserId` Int32,
+        `OwnerDisplayName` String,
+        `LastEditorUserId` Int32,
+        `LastEditorDisplayName` String,
+        `LastEditDate` DateTime64(3, 'UTC') CODEC(Delta(8), ZSTD(1)),
+        `LastActivityDate` DateTime64(3, 'UTC'),
+        `Title` String,
+        `Tags` String,
+        `AnswerCount` UInt16 CODEC(Delta(2), ZSTD(1)),
+        `CommentCount` UInt8,
+        `FavoriteCount` UInt8,
+        `ContentLicense` LowCardinality(String),
+        `ParentId` String,
+        `CommunityOwnedDate` DateTime64(3, 'UTC'),
+        `ClosedDate` DateTime64(3, 'UTC')
 )
 ENGINE = ReplacingMergeTree(Version, Deleted)
 PARTITION BY toYear(CreationDate)
@@ -124,30 +125,30 @@ We now update our post-answer statistics. Rather than updating these values, we 
 
 ```sql
 INSERT INTO posts_updateable SELECT
-	Version + 1 AS Version,
-	Deleted,
-	Id,
-	PostTypeId,
-	AcceptedAnswerId,
-	CreationDate,
-	Score,
-	ViewCount,
-	Body,
-	OwnerUserId,
-	OwnerDisplayName,
-	LastEditorUserId,
-	LastEditorDisplayName,
-	LastEditDate,
-	LastActivityDate,
-	Title,
-	Tags,
-	AnswerCount,
-	CommentCount,
-	FavoriteCount,
-	ContentLicense,
-	ParentId,
-	CommunityOwnedDate,
-	ClosedDate
+        Version + 1 AS Version,
+        Deleted,
+        Id,
+        PostTypeId,
+        AcceptedAnswerId,
+        CreationDate,
+        Score,
+        ViewCount,
+        Body,
+        OwnerUserId,
+        OwnerDisplayName,
+        LastEditorUserId,
+        LastEditorDisplayName,
+        LastEditDate,
+        LastActivityDate,
+        Title,
+        Tags,
+        AnswerCount,
+        CommentCount,
+        FavoriteCount,
+        ContentLicense,
+        ParentId,
+        CommunityOwnedDate,
+        ClosedDate
 FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0
 LIMIT 5000
@@ -159,30 +160,30 @@ In addition, we delete 1000 random posts by reinserting the rows but with a dele
 
 ```sql
 INSERT INTO posts_updateable SELECT
-	Version + 1 AS Version,
-	1 AS Deleted,
-	Id,
-	PostTypeId,
-	AcceptedAnswerId,
-	CreationDate,
-	Score,
-	ViewCount,
-	Body,
-	OwnerUserId,
-	OwnerDisplayName,
-	LastEditorUserId,
-	LastEditorDisplayName,
-	LastEditDate,
-	LastActivityDate,
-	Title,
-	Tags,
-	AnswerCount + 1 AS AnswerCount,
-	CommentCount,
-	FavoriteCount,
-	ContentLicense,
-	ParentId,
-	CommunityOwnedDate,
-	ClosedDate
+        Version + 1 AS Version,
+        1 AS Deleted,
+        Id,
+        PostTypeId,
+        AcceptedAnswerId,
+        CreationDate,
+        Score,
+        ViewCount,
+        Body,
+        OwnerUserId,
+        OwnerDisplayName,
+        LastEditorUserId,
+        LastEditorDisplayName,
+        LastEditDate,
+        LastActivityDate,
+        Title,
+        Tags,
+        AnswerCount + 1 AS AnswerCount,
+        CommentCount,
+        FavoriteCount,
+        ContentLicense,
+        ParentId,
+        CommunityOwnedDate,
+        ClosedDate
 FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0 AND AnswerCount > 0
 LIMIT 1000
@@ -210,7 +211,7 @@ FROM posts_updateable
 FINAL
 
 ┌─count()─┐
-│	9000 │
+│    9000 │
 └─────────┘
 
 1 row in set. Elapsed: 0.006 sec. Processed 11.81 thousand rows, 212.54 KB (2.14 million rows/s., 38.61 MB/s.)
@@ -234,10 +235,10 @@ Consider the following posts table, where we use no partitioning:
 ```sql
 CREATE TABLE stackoverflow.posts_no_part
 (
-	`Version` UInt32,
-	`Deleted` UInt8,
-	`Id` Int32 CODEC(Delta(4), ZSTD(1)),
-	…
+        `Version` UInt32,
+        `Deleted` UInt8,
+        `Id` Int32 CODEC(Delta(4), ZSTD(1)),
+        ...
 )
 ENGINE = ReplacingMergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
@@ -266,9 +267,9 @@ GROUP BY year
 ORDER BY year ASC
 
 ┌─year─┬─total_answers─┐
-│ 2008 │    	371480 │
-…
-│ 2024 │    	127765 │
+│ 2008 │        371480 │
+...
+│ 2024 │        127765 │
 └──────┴───────────────┘
 
 17 rows in set. Elapsed: 2.338 sec. Processed 122.94 million rows, 1.84 GB (52.57 million rows/s., 788.58 MB/s.)
@@ -280,10 +281,10 @@ Repeating these same steps for a table partitioning by year, and repeating the a
 ```sql
 CREATE TABLE stackoverflow.posts_with_part
 (
-	`Version` UInt32,
-	`Deleted` UInt8,
-	`Id` Int32 CODEC(Delta(4), ZSTD(1)),
-	...
+        `Version` UInt32,
+        `Deleted` UInt8,
+        `Id` Int32 CODEC(Delta(4), ZSTD(1)),
+        ...
 )
 ENGINE = ReplacingMergeTree
 PARTITION BY toYear(CreationDate)
@@ -298,12 +299,12 @@ GROUP BY year
 ORDER BY year ASC
 
 ┌─year─┬─total_answers─┐
-│ 2008 │    	387832 │
-│ 2009 │   	1165506 │
-│ 2010 │   	1755437 │
+│ 2008 │       387832  │
+│ 2009 │       1165506 │
+│ 2010 │       1755437 │
 ...
-│ 2023 │    	787032 │
-│ 2024 │    	127765 │
+│ 2023 │       787032  │
+│ 2024 │       127765  │
 └──────┴───────────────┘
 
 17 rows in set. Elapsed: 0.994 sec. Processed 64.65 million rows, 983.64 MB (65.02 million rows/s., 989.23 MB/s.)

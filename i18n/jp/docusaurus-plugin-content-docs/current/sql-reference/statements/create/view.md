@@ -1,7 +1,7 @@
 ---
-slug: /sql-reference/statements/create/view
+slug: '/sql-reference/statements/create/view'
 sidebar_position: 37
-sidebar_label: VIEW
+sidebar_label: 'VIEW'
 ---
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
@@ -10,11 +10,11 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # CREATE VIEW
 
-新しいビューを作成します。ビューは、[通常の](#normal-view)、[マテリアライズド](#materialized-view)、[リフレッシュ可能なマテリアライズド](#refreshable-materialized-view)、および[ウィンドウ](/sql-reference/statements/create/view#window-view)（リフレッシュ可能なマテリアライズドビューとウィンドウビューは実験的な機能です）として作成できます。
+新しいビューを作成します。ビューは、[通常の](#normal-view)、[物化つい](#materialized-view)、[リフレッシュ可能な物化ビュー](#refreshable-materialized-view)、および [ウィンドウ](/sql-reference/statements/create/view#window-view)（リフレッシュ可能な物化ビューとウィンドウビューは実験的機能です）として作成できます。
 
 ## Normal View {#normal-view}
 
-構文：
+構文:
 
 ``` sql
 CREATE [OR REPLACE] VIEW [IF NOT EXISTS] [db.]table_name [(alias1 [, alias2 ...])] [ON CLUSTER cluster_name]
@@ -23,21 +23,21 @@ AS SELECT ...
 [COMMENT 'comment']
 ```
 
-通常のビューはデータを保存しません。アクセスのたびに他のテーブルから読み取るだけです。言い換えれば、通常のビューは保存されたクエリにすぎません。ビューから読み取るとき、保存されたクエリが[FROM](../../../sql-reference/statements/select/from.md)句のサブクエリとして使用されます。
+通常のビューはデータを保存していません。アクセスのたびに別のテーブルから読み取るだけです。言い換えれば、通常のビューは保存されたクエリに過ぎません。ビューから読み取るとき、この保存されたクエリが[FROM](../../../sql-reference/statements/select/from.md)句のサブクエリとして使用されます。
 
-例えば、以下のようにビューを作成したとします：
+例として、次のようにビューを作成したと仮定しましょう:
 
 ``` sql
 CREATE VIEW view AS SELECT ...
 ```
 
-そして、次のクエリを書いたとします：
+そして、クエリを次のように書きます:
 
 ``` sql
 SELECT a, b, c FROM view
 ```
 
-このクエリは次のサブクエリを使用するのと完全に同等です：
+このクエリは、サブクエリを使用した場合と完全に同等です:
 
 ``` sql
 SELECT a, b, c FROM (SELECT ...)
@@ -45,12 +45,12 @@ SELECT a, b, c FROM (SELECT ...)
 
 ## Parameterized View {#parameterized-view}
 
-パラメータ化されたビューは通常のビューに似ていますが、即座に解決されないパラメータで作成できます。これらのビューは、関数の名前としてビューの名前を指定し、引数としてパラメータ値を指定するテーブル関数で使用できます。
+パラメータ化されたビューは通常のビューに似ていますが、すぐには解決されないパラメータと共に作成することができます。これらのビューは、テーブル関数と共に使用でき、ビューの名前を関数名として、パラメータ値を引数として指定します。
 
 ``` sql
 CREATE VIEW view AS SELECT * FROM TABLE WHERE Column1={column1:datatype1} and Column2={column2:datatype2} ...
 ```
-上記は、以下のようにパラメータを置き換えることでテーブル関数として使用できるビューを作成します。
+上記は、パラメータを次のように置き換えることで、テーブル関数として使用できるビューを作成します。
 
 ``` sql
 SELECT * FROM view(column1=value1, column2=value2 ...)
@@ -66,75 +66,75 @@ AS SELECT ...
 ```
 
 :::tip
-[マテリアライズドビュー](/guides/developer/cascading-materialized-views.md)の使用についてのステップバイステップガイドがあります。
+[物化ビュー](/guides/developer/cascading-materialized-views.md)の使用に関する手順ガイドです。
 :::
 
-マテリアライズドビューは、対応する[SELECT](../../../sql-reference/statements/select/index.md)クエリによって変換されたデータを保存します。
+物化ビューは、対応する[SELECT](../../../sql-reference/statements/select/index.md)クエリによって変換されたデータを格納します。
 
-`TO [db].[table]`なしでマテリアライズドビューを作成する場合は、データを保存するためのテーブルエンジンである`ENGINE`を指定する必要があります。
+`TO [db].[table]`なしで物化ビューを作成する場合、データを格納するためのテーブルエンジンである`ENGINE`を指定する必要があります。
 
-`TO [db].[table]`を指定してマテリアライズドビューを作成する場合、`POPULATE`を同時に使用することはできません。
+`TO [db].[table]`を使用して物化ビューを作成する場合、`POPULATE`を同時に使用することはできません。
 
-マテリアライズドビューは次のように実装されます：`SELECT`で指定されたテーブルにデータを挿入する際、挿入されたデータの一部がこの`SELECT`クエリによって変換され、その結果がビューに挿入されます。
+物化ビューは次のように実装されます: `SELECT`で指定されたテーブルにデータを挿入するとき、挿入されたデータの一部はこの`SELECT`クエリによって変換され、結果はビューに挿入されます。
 
 :::note
-ClickHouseでは、マテリアライズドビューにおいて、目的のテーブルに挿入されるときに**カラム名**が列の順序の代わりに使用されます。`SELECT`クエリの結果に存在しないいくつかのカラム名がある場合、ClickHouseはデフォルト値を使用します。カラムが[Nullable](../../data-types/nullable.md)でない場合でも同様です。マテリアライズドビューを使用する場合は、すべてのカラムにエイリアスを追加することが安全な慣行です。
+ClickHouseの物化ビューは、データを宛先テーブルに挿入する際に**カラム名**を使用します。`SELECT`クエリの結果に存在しないカラム名がある場合、ClickHouseはデフォルト値を使用します。たとえカラムが[Nullable](../../data-types/nullable.md)でなくても、これは変わりません。物化ビューを使用する際は、各カラムにエイリアスを追加するのが安全な作業です。
 
-ClickHouseのマテリアライズドビューは、挿入トリガーに似た形で実装されています。ビューのクエリに集約が含まれている場合、それは新たに挿入されたデータのバッチに対してのみ適用されます。ソーステーブルの既存データへの変更（更新、削除、パーティションの削除など）は、マテリアライズドビューに影響を与えません。
+ClickHouseの物化ビューは、挿入トリガーとしてより実装されています。ビュークエリに集約が含まれている場合、それは新しく挿入されたデータのバッチにのみ適用されます。基のテーブルの既存のデータに対する変更（更新、削除、パーティションのドロップなど）は、物化ビューを変更しません。
 
-ClickHouseのマテリアライズドビューは、エラーが発生した場合に決定論的な振る舞いを持ちません。これは、すでに書き込まれたブロックが目的のテーブルに保存されるが、エラー後のすべてのブロックは保存されないことを意味します。
+ClickHouseの物化ビューは、エラーが発生した場合に決定的な動作を持ちません。これは、すでに書き込まれたブロックは宛先テーブルに保持されますが、エラー以降のすべてのブロックが保持されないことを意味します。
 
-デフォルトでは、いずれかのビューへのプッシュが失敗した場合、INSERTクエリも失敗し、いくつかのブロックが目的のテーブルに書き込まれない可能性があります。`materialized_views_ignore_errors`設定を使用すると、これを変更できます（`INSERT`クエリにもこの設定を設定する必要があります）。`materialized_views_ignore_errors=true`を設定すると、ビューへのプッシュ中のすべてのエラーが無視され、すべてのブロックが目的のテーブルに書き込まれます。
+デフォルトでは、いずれかのビューへのプシュが失敗すると、INSERTクエリも失敗し、一部のブロックが宛先テーブルに書き込まれない可能性があります。これを`materialized_views_ignore_errors`設定を使用して変更できます（この設定は`INSERT`クエリに対して設定する必要があります）。`materialized_views_ignore_errors=true`を設定すると、ビューへのプッシュ中のすべてのエラーが無視され、すべてのブロックが宛先テーブルに書き込まれます。
 
-また、`materialized_views_ignore_errors`はデフォルトで`system.*_log`テーブルに対して`true`に設定されています。
+また、`materialized_views_ignore_errors`は、デフォルトで`system.*_log`テーブルに対して`true`に設定されています。
 :::
 
-`POPULATE`を指定すると、既存のテーブルデータがビューに挿入され、`CREATE TABLE ... AS SELECT ...`を実行したかのようになります。そうでなければ、クエリにはビューを作成した後にテーブルに挿入されたデータのみが含まれます。`POPULATE`の使用は**推奨しません**。ビュー作成中にテーブルに挿入されたデータはその中に挿入されません。
+`POPULATE`を指定すると、既存のテーブルデータがビューに挿入され、`CREATE TABLE ... AS SELECT ...`を行うかのようになります。そうでない場合、クエリにはビュー作成後にテーブルに挿入されたデータのみが含まれます。データがビュー作成中にテーブルに挿入されるため、`POPULATE`の使用は**推奨しません**。
 
 :::note
-`POPULATE`は`CREATE TABLE ... AS SELECT ...`のように動作するため、制限があります：
-- 複製データベースではサポートされていません
-- ClickHouse Cloudではサポートされていません
+`POPULATE`は`CREATE TABLE ... AS SELECT ...`のように機能するため、制限があります：
+- レプリケーションデータベースではサポートされていません。
+- ClickHouseクラウドではサポートされていません。
 
-その代わりに、別の`INSERT ... SELECT`を使用できます。
+代わりに、別の`INSERT ... SELECT`を使用できます。
 :::
 
-`SELECT`クエリには`DISTINCT`、`GROUP BY`、`ORDER BY`、`LIMIT`を含めることができます。挿入されたデータの各ブロックに対して対応する変換が独立して実行される点に注意してください。例えば、`GROUP BY`が設定されている場合、データは挿入中に集約されますが、唯一の挿入データのパケット内でのみ行われます。データはその後さらに集約されることはありません。例外は、`SummingMergeTree`のようにデータ集約を独立して実行する`ENGINE`を使用する場合です。
+`SELECT`クエリは、`DISTINCT`、`GROUP BY`、`ORDER BY`、`LIMIT`を含めることができます。対応する変換は挿入されたデータの各ブロックに対して独立して実行されることに注意してください。たとえば、`GROUP BY`が設定されている場合、データは挿入中に集約されますが、挿入されたデータの単一のパケット内のみです。データはさらに集約されることはありません。例外は、`SummingMergeTree`のようにデータ集約を独自に実行する`ENGINE`を使用するときです。
 
-[ALTER](/sql-reference/statements/alter/view.md)クエリをマテリアライズドビューに対して実行するには制限があり、例えば`SELECT`クエリを更新することはできません。これは不便な場合があります。マテリアライズドビューが`TO [db.]name`構文を使用している場合、ビューを`DETACH`し、ターゲットテーブルに対して`ALTER`を実行し、その後以前にデタッチした（`DETACH`）ビューを`ATTACH`することができます。
+物化ビューに対する[ALTER](/sql-reference/statements/alter/view.md)クエリの実行には制限があります。たとえば、`SELECT`クエリを更新することはできないため、不便な場合があります。物化ビューが`TO [db.]name`構造を使用している場合、ビューを`DETACH`し、ターゲットテーブルに対して`ALTER`を実行し、その後以前に`DETACH`したビューを`ATTACH`できます。
 
-マテリアライズドビューは[optimize_on_insert](../../../operations/settings/settings.md#optimize-on-insert)設定の影響を受ける点に注意してください。データはビューへの挿入の前にマージされます。
+物化ビューは[optimize_on_insert](/operations/settings/settings#optimize_on_insert)設定の影響を受けることに注意してください。データはビューへの挿入前にマージされます。
 
-ビューは通常のテーブルと同じように見えます。例えば、`SHOW TABLES`クエリの結果にリストされます。
+ビューは通常のテーブルと同様に見えます。たとえば、`SHOW TABLES`クエリの結果にリストされます。
 
-ビューを削除するには、[DROP VIEW](../../../sql-reference/statements/drop.md#drop-view)を使用します。ただし、`DROP TABLE`はビューにも適用されます。
+ビューを削除するには、[DROP VIEW](../../../sql-reference/statements/drop.md#drop-view)を使用します。`DROP TABLE`もビューに対して機能します。
 
 ## SQL security {#sql_security}
 
-`DEFINER`と`SQL SECURITY`を使用すると、ビューの基になるクエリを実行する際に使用するClickHouseユーザーを指定できます。
-`SQL SECURITY`には3つの合法的な値があります：`DEFINER`、`INVOKER`、または`NONE`。`DEFINER`句には、既存のユーザーまたは`CURRENT_USER`を指定できます。
+`DEFINER`および`SQL SECURITY`を使用すると、ビューの基となるクエリを実行する際に使用するClickHouseユーザーを指定できます。
+`SQL SECURITY`には3つの合法的な値があります: `DEFINER`、`INVOKER`、または`NONE`。`DEFINER`句では、任意の既存のユーザーまたは`CURRENT_USER`を指定できます。
 
-以下のテーブルは、ビューから選択するために必要な権利をユーザーごとに説明します。
-SQLセキュリティオプションに関係なく、すべてのケースで`GRANT SELECT ON <view>`を持っていることが必要です。
+以下の表は、ビューから選択するために必要なユーザーごとの権限を説明します。
+SQLセキュリティオプションに関係なく、読み取るには常に`GRANT SELECT ON <view>`が必要であることに注意してください。
 
-| SQL security option | View                                                            | Materialized View                                                                                                 |
-|---------------------|-----------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
-| `DEFINER alice`     | `alice`はビューのソーステーブルに対する`SELECT`権限を持っている必要があります。 | `alice`はビューのソーステーブルに対する`SELECT`権限とビューのターゲットテーブルに対する`INSERT`権限を持っている必要があります。 |
-| `INVOKER`           | ユーザーはビューのソーステーブルに対する`SELECT`権限を持っている必要があります。 | `SQL SECURITY INVOKER`はマテリアライズドビューには指定できません。                                                 |
-| `NONE`              | -                                                               | -                                                                                                                 |
+| SQLセキュリティオプション | ビュー                                                        | 物化ビュー                                                                                                    |
+|--------------------------|------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| `DEFINER alice`          | `alice`はビューのソーステーブルに対して`SELECT`権限を持っている必要があります。 | `alice`はビューのソーステーブルに対して`SELECT`権限を持っていて、ビューのターゲットテーブルに対して`INSERT`権限も必要です。 |
+| `INVOKER`                | ユーザーはビューのソーステーブルに対して`SELECT`権限を持っている必要があります。  | `SQL SECURITY INVOKER`は物化ビューに対して指定できません。                                           |
+| `NONE`                   | -                                                          | -                                                                                                        |
 
 :::note
-`SQL SECURITY NONE`は非推奨のオプションです。`SQL SECURITY NONE`でビューを作成する権限を持つユーザーは、任意のクエリを実行できます。
+`SQL SECURITY NONE`は非推奨のオプションです。`SQL SECURITY NONE`でビューを作成する権限を持つユーザーは、任意のクエリを実行することができます。
 したがって、このオプションでビューを作成するには、`GRANT ALLOW SQL SECURITY NONE TO <user>`が必要です。
 :::
 
-`DEFINER`/`SQL SECURITY`が指定されていない場合、デフォルトの値が使用されます：
-- `SQL SECURITY`: 通常のビューに対しては`INVOKER`、マテリアライズドビューに対しては`DEFINER`（[設定によって構成可能](../../../operations/settings/settings.md#default_normal_view_sql_security)）
+`DEFINER`/`SQL SECURITY`が指定されていない場合、デフォルト値が使用されます：
+- `SQL SECURITY`: 通常のビューのために`INVOKER`、物化ビューのために`DEFINER`（[設定によって構成可能](../../../operations/settings/settings.md#default_normal_view_sql_security)）
 - `DEFINER`: `CURRENT_USER`（[設定によって構成可能](../../../operations/settings/settings.md#default_view_definer)）
 
-ビューが`DEFINER`/`SQL SECURITY`の指定なしでアタッチされる場合、デフォルト値はマテリアライズドビューに対しては`SQL SECURITY NONE`であり、通常のビューに対しては`SQL SECURITY INVOKER`です。
+`DEFINER`/`SQL SECURITY`が指定されていないビューがアタッチされている場合、物化ビューに対するデフォルト値は`SQL SECURITY NONE`、通常のビューに対するデフォルト値は`SQL SECURITY INVOKER`です。
 
-既存のビューのSQLセキュリティを変更するには、次のコマンドを使用します。
+既存のビューのSQLセキュリティを変更するには、次のように使用します。
 ```sql
 ALTER TABLE MODIFY SQL SECURITY { DEFINER | INVOKER | NONE } [DEFINER = { user | CURRENT_USER }]
 ```
@@ -158,7 +158,7 @@ AS SELECT ...
 
 この機能は非推奨であり、将来的に削除される予定です。
 
-旧文書は[こちら](https://pastila.nl/?00f32652/fdf07272a7b54bda7e13b919264e449f.md)にあります。
+お手数ですが、旧ドキュメントは[こちら](https://pastila.nl/?00f32652/fdf07272a7b54bda7e13b919264e449f.md)にあります。
 
 ## Refreshable Materialized View {#refreshable-materialized-view}
 
@@ -174,101 +174,101 @@ REFRESH EVERY|AFTER interval [OFFSET interval]
 AS SELECT ...
 [COMMENT 'comment']
 ```
-ここで、`interval`は単純な間隔のシーケンスです：
+ここで、`interval`は単純なインターバルのシーケンスです：
 ```sql
 number SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
 ```
 
-定期的に対応するクエリを実行し、その結果をテーブルに保存します。
- * クエリが`APPEND`と指定されている場合、各リフレッシュで既存の行を削除せずに行をテーブルに挿入します。挿入は通常のINSERT SELECTのように原子的ではありません。
- * それ以外の場合、各リフレッシュでテーブルの以前の内容が原子的に置き換えられます。
+定期的に対応するクエリを実行し、その結果をテーブルに格納します。
+* クエリが`APPEND`と言った場合、各リフレッシュは既存の行を削除せずにテーブルに行を挿入します。挿入は原子的ではなく、通常のINSERT SELECTと同様です。
+* さもなくば、各リフレッシュはテーブルの以前の内容を原子的に置き換えます。
 
-通常のリフレッシュ不可のマテリアライズドビューとの違い：
- * 挿入トリガーがありません。つまり、`SELECT`で指定されたテーブルに新しいデータが挿入されたとき、それはリフレッシュ可能なマテリアライズドビューに自動的にプッシュされません。定期的なリフレッシュは全体のクエリを実行します。
- * `SELECT`クエリには制限がありません。テーブル関数（例：`url()`）、ビュー、UNION、JOINはすべて許可されます。
+リフレッシュ可能な物化ビューの通常の非リフレッシュ可能な物化ビューとの違い：
+* 挿入トリガーがありません。つまり、`SELECT`で指定されたテーブルに新しいデータが挿入されると、自動的にリフレッシュ可能な物化ビューにプッシュされません。定期的なリフレッシュはクエリ全体を実行します。
+* `SELECT`クエリに制限はありません。テーブル関数（例：`url()`）、ビュー、UNION、JOINがすべて許可されています。
 
 :::note
-`REFRESH ... SETTINGS`クエリの一部の設定はリフレッシュ設定（例：`refresh_retries`）であり、通常の設定（例：`max_threads`）とは異なります。通常の設定は、クエリの末尾で`SETTINGS`を使用して指定できます。
+`REFRESH ... SETTINGS`部分のクエリ内の設定はリフレッシュ設定（例：`refresh_retries`）であり、通常の設定（例：`max_threads`）とは異なります。通常の設定は、クエリの最後に`SETTINGS`を使用して指定できます。
 :::
 
 ### Refresh Schedule {#refresh-schedule}
 
-リフレッシュスケジュールの例：
+リフレッシュスケジュールの例:
 ```sql
-REFRESH EVERY 1 DAY -- 毎日、真夜中（UTC）に
-REFRESH EVERY 1 MONTH -- 毎月1日に、真夜中に
+REFRESH EVERY 1 DAY -- 毎日、真夜中 (UTC)
+REFRESH EVERY 1 MONTH -- 毎月の1日、真夜中に
 REFRESH EVERY 1 MONTH OFFSET 5 DAY 2 HOUR -- 毎月6日の午前2時
-REFRESH EVERY 2 WEEK OFFSET 5 DAY 15 HOUR 10 MINUTE -- 毎週土曜日、午後3時10分に
+REFRESH EVERY 2 WEEK OFFSET 5 DAY 15 HOUR 10 MINUTE -- 隔週土曜日の午後3時10分
 REFRESH EVERY 30 MINUTE -- 00:00、00:30、01:00、01:30など
-REFRESH AFTER 30 MINUTE -- 前回のリフレッシュが完了してから30分後、日中の時間には合わせません
--- REFRESH AFTER 1 HOUR OFFSET 1 MINUTE -- 構文エラー。AFTERにはOFFSETは許可されていません
-REFRESH EVERY 1 WEEK 2 DAYS -- 9日ごと、特定の曜日や月ではない；
-                           -- 特に、日付番号（1969-12-29以降）が9の倍数になるとき
-REFRESH EVERY 5 MONTHS -- 毎5ヶ月、年によって異なる月（12は5で割り切れないため）；
-                       -- 特に、月番号（1970-01以降）が5の倍数になるとき
+REFRESH AFTER 30 MINUTE -- 前のリフレッシュが完了してから30分後
+-- REFRESH AFTER 1 HOUR OFFSET 1 MINUTE -- 構文エラー、OFFSETはAFTERで許可されていません
+REFRESH EVERY 1 WEEK 2 DAYS -- 9日ごと、特定の週または月の日には該当しない；
+                            -- 具体的には、日付番号（1969年12月29日以降）が9で割り切れるとき
+REFRESH EVERY 5 MONTHS -- 5か月ごと、年間で異なる月（12は5で割り切れません）；
+                       -- 具体的には、月番号（1970年1月以降）が5で割り切れるとき
 ```
 
-`RANDOMIZE FOR`は、各リフレッシュの時間をランダムに調整します。例えば：
+`RANDOMIZE FOR`は、各リフレッシュの時間をランダムに調整します。例:
 ```sql
-REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- 毎日01:30から02:30の間のランダムな時間に
+REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- 毎日、01:30と02:30の間のランダムな時間
 ```
 
-リフレッシュは、与えられたビューについて同時に1つだけ実行できます。例：`REFRESH EVERY 1 MINUTE`のビューが2分間かかる場合、それは2分ごとにリフレッシュされます。その後、10秒でリフレッシュを開始するようになると、再び毎分リフレッシュされます（特に、見逃したリフレッシュのバックログについてはリフレッシュを行いません）。
+与えられたビューに対しては、同時に1回だけリフレッシュを実行できます。例えば、`REFRESH EVERY 1 MINUTE`のビューがリフレッシュに2分かかると、リフレッシュは2分ごとに行われます。高速になり、10秒でリフレッシュを開始すると、再度毎分リフレッシュされます（特に、バックログのリフレッシュを追いかけるために毎10秒リフレッシュされるわけではない - そのようなバックログはありません）。
 
-さらに、マテリアライズドビューが作成されると、すぐにリフレッシュが開始されます。`CREATE`クエリで`EMPTY`が指定されている場合を除きます。`EMPTY`が指定されている場合、最初のリフレッシュはスケジュールに従って行われます。
+加えて、物化ビューが作成された直後にリフレッシュが開始されます。`CREATE`クエリに`EMPTY`が指定されている場合、最初のリフレッシュはスケジュールに従って行われます。
 
 ### In Replicated DB {#in-replicated-db}
 
-リフレッシュ可能なマテリアライズドビューが[複製データベース](../../../engines/database-engines/replicated.md)にある場合、複製が互いに調整されて、各スケジュールされた時間に1つの複製だけがリフレッシュを行います。[ReplicatedMergeTree](../../../engines/table-engines/mergetree-family/replication.md)テーブルエンジンが必要で、すべての複製がリフレッシュによって生成されたデータを視認できます。
+リフレッシュ可能な物化ビューが[レプリケートデータベース](../../../engines/database-engines/replicated.md)にある場合、レプリカは調整し合い、毎回のスケジュールで1つのレプリカだけがリフレッシュを実行します。[ReplicatedMergeTree](../../../engines/table-engines/mergetree-family/replication.md)テーブルエンジンが必要であり、すべてのレプリカはリフレッシュで生成されたデータを確認します。
 
-`APPEND`モードでは、`SETTINGS all_replicas = 1`を使用して調整を無効にできます。これにより、複製はそれぞれ独立してリフレッシュを行います。この場合、ReplicatedMergeTreeは必要ありません。
+`APPEND`モードでは、`SETTINGS all_replicas = 1`を使用して調整を無効にできます。これにより、レプリカは互いに独立してリフレッシュを行います。この場合、ReplicatedMergeTreeは必要ありません。
 
-非`APPEND`モードでは、調整されたリフレッシュのみがサポートされます。調整されていない場合は、Atomicデータベースを使用し、すべての複製でリフレッシュ可能なマテリアライズドビューを作成するために`CREATE ... ON CLUSTER`クエリを使用します。
+非`APPEND`モードでは、調整されたリフレッシュのみがサポートされています。非調整の場合は、Atomicデータベースおよび`CREATE ... ON CLUSTER`クエリを使用して、すべてのレプリカにリフレッシュ可能な物化ビューを作成します。
 
-調整はKeeperを通じて行われます。znodeパスは[default_replica_path](../../../operations/server-configuration-parameters/settings.md#default_replica_path)サーバー設定によって決まります。
+調整はKeeperを介して行われます。znodeのパスは[default_replica_path](../../../operations/server-configuration-parameters/settings.md#default_replica_path)サーバー設定によって決定されます。
 
 ### Dependencies {#refresh-dependencies}
 
-`DEPENDS ON`は異なるテーブルのリフレッシュを同期します。例として、2つのリフレッシュ可能なマテリアライズドビューのチェーンがあるとします：
+`DEPENDS ON`は異なるテーブルのリフレッシュを同期させます。例として、次のような2つのリフレッシブルな物化ビューのチェーンを考えてみてください:
 ```sql
 CREATE MATERIALIZED VIEW source REFRESH EVERY 1 DAY AS SELECT * FROM url(...)
 CREATE MATERIALIZED VIEW destination REFRESH EVERY 1 DAY AS SELECT ... FROM source
 ```
-`DEPENDS ON`を指定しない場合、両方のビューは真夜中にリフレッシュを開始し、通常は`destination`は`source`の前日のデータを見ます。依存関係を追加すると：
+`DEPENDS ON`がない場合、両方のビューは真夜中にリフレッシュを開始し、`destination`は通常、`source`の昨日のデータを見ます。依存関係を追加すると:
 ```sql
 CREATE MATERIALIZED VIEW destination REFRESH EVERY 1 DAY DEPENDS ON source AS SELECT ... FROM source
 ```
-`destination`のリフレッシュは、その日の`source`のリフレッシュが終了した後にのみ開始され、従って`destination`は新しいデータに基づくことになります。
+この場合、`destination`のリフレッシュはその日の`source`のリフレッシュが終了した後にのみ開始されるため、`destination`は新しいデータに基づいて更新されます。
 
-また、次のように同じ結果を達成することもできます：
+あるいは、次のように実現できます:
 ```sql
 CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS SELECT ... FROM source
 ```
-ここで、`1 HOUR`は`source`のリフレッシュ期間より短い任意の期間です。依存するテーブルはその依存関係より頻繁にリフレッシュされません。これは、実際のリフレッシュ期間を1回以上指定せずにリフレッシュ可能なビューのチェーンを設定する有効な方法です。
+ここで、`1 HOUR`は`source`のリフレッシュ期間より短い任意の期間で構いません。依存しているテーブルは、その依存関係よりも頻繁にはリフレッシュされません。これは、実際のリフレッシュ期間を1回以上指定することなく、リフレッシュ可能なビューのチェーンを設定するための有効な方法です。
 
-いくつかの追加例：
- * `REFRESH EVERY 1 DAY OFFSET 10 MINUTE`（`destination`）は`REFRESH EVERY 1 DAY`（`source`）に依存しています。<br/>
+他のいくつかの例:
+ * `REFRESH EVERY 1 DAY OFFSET 10 MINUTE`（`destination`）は`REFRESH EVERY 1 DAY`（`source`）に依存します。<br/>
    `source`のリフレッシュが10分以上かかる場合、`destination`はそれを待ちます。
- * `REFRESH EVERY 1 DAY OFFSET 1 HOUR`は`REFRESH EVERY 1 DAY OFFSET 23 HOUR`に依存しています。<br/>
-   上記と同様で、対応するリフレッシュは異なるカレンダーの日に発生しますが、`destination`はX日で`source`のリフレッシュがX日に終了するのを待ちます（もしそれが2時間以上かかる場合）。
- * `REFRESH EVERY 2 HOUR`は`REFRESH EVERY 1 HOUR`に依存しています。<br/>
-   2時間リフレッシュは毎時1時間リフレッシュの後に行われ、たとえば真夜中のリフレッシュの後、次に午前2時のリフレッシュの後に行われます。
- * `REFRESH EVERY 1 MINUTE`は`REFRESH EVERY 2 HOUR`に依存しています。<br/>
-   `REFRESH AFTER 1 MINUTE`は`REFRESH EVERY 2 HOUR`に依存しています。<br/>
-   `REFRESH AFTER 1 MINUTE`は`REFRESH AFTER 2 HOUR`に依存しています。<br/>
-   `destination`は`source`のリフレッシュごとに1回リフレッシュされます。つまり、毎2時間ごとに。この`1 MINUTE`は実際には無視されます。
- * `REFRESH AFTER 1 HOUR`は`REFRESH AFTER 1 HOUR`に依存しています。<br/>
-   現在、これは推奨されていません。
+ * `REFRESH EVERY 1 DAY OFFSET 1 HOUR`は`REFRESH EVERY 1 DAY OFFSET 23 HOUR`に依存します。<br/>
+   上記のように、対応するリフレッシュが異なるカレンダーの日に発生しても、`destination`のリフレッシュはX+1の日で`source`のリフレッシュがXの日（2時間以上かかる場合）の完了を待ちます。
+ * `REFRESH EVERY 2 HOUR`は`REFRESH EVERY 1 HOUR`に依存します。<br/>
+   2 HOURリフレッシュは、毎時リフレッシュした後に行われます（真夜中のリフレッシュ後、次の2時のリフレッシュ後など）。
+ * `REFRESH EVERY 1 MINUTE`は`REFRESH EVERY 2 HOUR`に依存します。<br/>
+   `REFRESH AFTER 1 MINUTE`は`REFRESH EVERY 2 HOUR`に依存します。<br/>
+   `REFRESH AFTER 1 MINUTE`は`REFRESH AFTER 2 HOUR`に依存します。<br/>
+   `destination`は、毎回の`source`リフレッシュの後、すなわち2時間ごとに更新されます。`1 MINUTE`は実質的に無視されます。
+ * `REFRESH AFTER 1 HOUR`は`REFRESH AFTER 1 HOUR`に依存します。<br/>
+   現在これは推奨されていません。
 
 :::note
-`DEPENDS ON`は、リフレッシュ可能なマテリアライズドビュー間でのみ機能します。`DEPENDS ON`リストに通常のテーブルをリストすることは、ビューがリフレッシュされないことを防ぎます（依存関係は`ALTER`で削除できます、以下を参照）。
+`DEPENDS ON`は、リフレッシュ可能な物化ビューの間でのみ機能します。`DEPENDS ON`リストに通常のテーブルを記載すると、そのビューは永遠にリフレッシュしなくなります（依存関係は`ALTER`によって削除できます）。
 :::
 
 ### Settings {#settings}
 
 利用可能なリフレッシュ設定：
- * `refresh_retries` - リフレッシュクエリが例外で失敗した場合に、何回リトライするか。すべてのリトライが失敗した場合、次の予定されたリフレッシュ時間にスキップします。0はリトライなし、-1は無限リトライを意味します。デフォルト：0。
- * `refresh_retry_initial_backoff_ms` - 最初のリトライの前の遅延。`refresh_retries`がゼロでない場合。各リトライの遅延は倍増され、`refresh_retry_max_backoff_ms`まで成長します。デフォルト：100 ms。
+ * `refresh_retries` - リフレッシュクエリが例外で失敗した場合のリトライ回数。すべてのリトライが失敗した場合、次のスケジュールされたリフレッシュ時間にスキップします。0はリトライなし、-1は無限リトライを意味します。デフォルト：0。
+ * `refresh_retry_initial_backoff_ms` - 最初のリトライ前の遅延で、`refresh_retries`がゼロでない場合。各次のリトライが遅延を2倍にし、`refresh_retry_max_backoff_ms`まで成長します。デフォルト：100 ms。
  * `refresh_retry_max_backoff_ms` - リフレッシュ試行間の遅延の指数的成長の制限。デフォルト：60000 ms（1分）。
 
 ### Changing Refresh Parameters {#changing-refresh-parameters}
@@ -279,19 +279,19 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 ```
 
 :::note
-これは、スケジュール、依存関係、設定、APPENDの性質を一度に*すべて*置き換えます。例えば、テーブルに`DEPENDS ON`があった場合、`DEPENDS ON`なしで`MODIFY REFRESH`を行うと、依存関係が削除されます。
+これにより、*すべての*リフレッシュパラメータ（スケジュール、依存関係、設定、およびAPPENDの有無）が一度に置き換えられます。たとえば、テーブルに`DEPENDS ON`があった場合、`DEPENDS ON`なしで`MODIFY REFRESH`を行うと、依存関係が削除されます。
 :::
 
 ### Other operations {#other-operations}
 
-すべてのリフレッシュ可能なマテリアライズドビューのステータスは、[`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md)テーブルで確認できます。特に、リフレッシュの進行状況（実行中の場合）、最後のリフレッシュ時間、および次のリフレッシュ時間が含まれ、リフレッシュが失敗した場合の例外メッセージが表示されます。
+すべてのリフレッシュ可能な物化ビューの状態は、テーブル[`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md)で利用できます。特に、リフレッシュの進行状況（実行中の場合）、最後のリフレッシュ時間、次のリフレッシュ時間、リフレッシュが失敗した場合の例外メッセージが含まれます。
 
-リフレッシュを手動で停止、開始、トリガー、またはキャンセルするには、[`SYSTEM STOP|START|REFRESH|WAIT|CANCEL VIEW`](../system.md#refreshable-materialized-views)を使用します。
+リフレッシュを手動で停止、開始、トリガー、またはキャンセルするには[`SYSTEM STOP|START|REFRESH|WAIT|CANCEL VIEW`](../system.md#refreshable-materialized-views)を使用します。
 
-リフレッシュが完了するまで待つには、[`SYSTEM WAIT VIEW`](../system.md#refreshable-materialized-views)を使用します。特に、ビューの作成後の初期リフレッシュを待つために便利です。
+リフレッシュの完了を待つには[`SYSTEM WAIT VIEW`](../system.md#refreshable-materialized-views)を使用します。特に、ビュー作成後の初期リフレッシュの待機に役立ちます。
 
 :::note
-余談ですが、リフレッシュクエリは、リフレッシュ中のビューから読み取ることが許可されています。これにより、データの前リフレッシュバージョンを確認できます。これを使用すれば、コンウェイのライフゲームを実装できます： https://pastila.nl/?00021a4b/d6156ff819c83d490ad2dcec05676865#O0LGWTO7maUQIA4AcGUtlA==
+面白い事実：リフレッシュクエリは、リフレッシュされているビューから読み取ることが許可されています。つまり、データのリフレッシュ前のバージョンを見ることができます。これにより、コンウェイのライフゲームを実装できます：https://pastila.nl/?00021a4b/d6156ff819c83d490ad2dcec05676865#O0LGWTO7maUQIA4AcGUtlA==
 :::
 
 ## Window View {#window-view}
@@ -300,7 +300,7 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 <CloudNotSupportedBadge/>
 
 :::info
-これは実験的な機能であり、今後のリリースで後方互換性のない方法で変更される可能性があります。ウィンドウビューと`WATCH`クエリの使用を有効にするには、[allow_experimental_window_view](../../../operations/settings/settings.md#allow-experimental-window-view)設定を使用します。コマンド`set allow_experimental_window_view = 1`を入力してください。
+これは実験的な機能であり、将来のリリースで後方互換性のない方法で変更される可能性があります。ウィンドウビューと`WATCH`クエリの使用を有効にするには、[allow_experimental_window_view](/operations/settings/settings#allow_experimental_window_view)設定を使用します。コマンド `set allow_experimental_window_view = 1` を入力してください。
 :::
 
 ``` sql
@@ -310,33 +310,33 @@ GROUP BY time_window_function
 [COMMENT 'comment']
 ```
 
-ウィンドウビューは、時間ウィンドウでデータを集計し、ウィンドウが発火する準備ができたときに結果を出力できます。中間集計結果を内側（または指定の）テーブルに保存してレイテンシを減らし、結果を指定されたテーブルにプッシュしたり、WATCHクエリを使用して通知をプッシュできます。
+ウィンドウビューは、時間ウィンドウでデータを集約し、ウィンドウが発火する準備が整ったときにその結果を出力できます。レイテンシを削減するために中間集約結果を内側（または指定された）テーブルに保存し、指定されたテーブルに処理結果をプッシュしたり、WATCHクエリを使用してプッシュ通知を行ったりできます。
 
-ウィンドウビューの作成は、`MATERIALIZED VIEW`の作成に似ています。ウィンドウビューは中間データを保存するために内側のストレージエンジンが必要です。内側のストレージは`INNER ENGINE`句を使用して指定でき、ウィンドウビューはデフォルトの内側エンジンとして`AggregatingMergeTree`を使用します。
+ウィンドウビューの作成は、`MATERIALIZED VIEW`の作成に似ています。ウィンドウビューには中間データを保存するための内側ストレージエンジンが必要です。内側ストレージは、`INNER ENGINE`句を使用して指定できます。デフォルトの内側エンジンは`AggregatingMergeTree`です。
 
-`TO [db].[table]`なしでウィンドウビューを作成する場合は、データを保存するためのテーブルエンジンである`ENGINE`を指定する必要があります。
+`TO [db].[table]`なしでウィンドウビューを作成する場合、データを格納するためのテーブルエンジンである`ENGINE`を指定する必要があります。
 
 ### Time Window Functions {#time-window-functions}
 
-[時間ウィンドウ関数](../../functions/time-window-functions.md)は、レコードの下限および上限ウィンドウ境界を取得するために使用されます。ウィンドウビューは、時間ウィンドウ関数と共に使用される必要があります。
+[時間ウィンドウ関数](../../functions/time-window-functions.md)は、レコードの下限および上限ウィンドウを取得するために使用されます。ウィンドウビューは、時間ウィンドウ関数と共に使用する必要があります。
 
 ### TIME ATTRIBUTES {#time-attributes}
 
-ウィンドウビューは**処理時間**と**イベント時間**を処理します。
+ウィンドウビューは**処理時間**と**イベント時間**の処理をサポートしています。
 
-**処理時間**は、ウィンドウビューがローカルマシンの時間に基づいて結果を生成することを可能にし、デフォルトで使用されます。これは最も単純な時間の概念ですが、決定論を提供しません。処理時間属性は、時間ウィンドウ関数の`time_attr`をテーブルカラムに設定するか、`now()`関数を使用することで定義できます。次のクエリは、処理時間を使用してウィンドウビューを作成します。
+**処理時間**は、ウィンドウビューがローカルマシンの時間に基づいて結果を生成できるようにし、デフォルトで使用されます。これは最も直接的な時間の定義ですが、決定論的ではありません。処理時間属性は、時間ウィンドウ関数の`time_attr`をテーブルのカラムに設定することによって、または`now()`関数を使用することによって定義できます。以下のクエリは、処理時間でウィンドウビューを作成します。
 
 ``` sql
 CREATE WINDOW VIEW wv AS SELECT count(number), tumbleStart(w_id) as w_start from date GROUP BY tumble(now(), INTERVAL '5' SECOND) as w_id
 ```
 
-**イベント時間**は、各個別のイベントが生成デバイス上で発生した時間です。この時間は、生成されたときにレコード内に埋め込まれていることが通常です。イベント時間処理は、順不同のイベントや遅延イベントがあっても、一貫した結果を提供します。ウィンドウビューは、`WATERMARK`構文を使用してイベント時間処理をサポートします。
+**イベント時間**は、各個別のイベントが生成装置で発生した時刻を指します。この時間は通常、生成されるときにレコードに埋め込まれます。イベント時間処理は、順序が乱れたイベントや遅延イベントが発生した場合でも一貫した結果を可能にします。ウィンドウビューは`WATERMARK`構文を使用することで、イベント時間処理をサポートします。
 
-ウィンドウビューは、3つのウォーターマーク戦略を提供します：
+ウィンドウビューは3つのウォーターマーク戦略を提供します：
 
-* `STRICTLY_ASCENDING`：これまでに観測された最大タイムスタンプのウォーターマークを発信します。最大タイムスタンプより小さいタイムスタンプを持つ行は遅れていません。
-* `ASCENDING`：これまでに観測された最大タイムスタンプから1を引いたウォーターマークを発信します。最大タイムスタンプと同じ、あるいはそれより小さいタイムスタンプを持つ行は遅れていません。
-* `BOUNDED`：WATERMARK=INTERVAL。指定された遅延を引いた最大観測タイムスタンプのウォーターマークを発信します。
+* `STRICTLY_ASCENDING`：これまでに観測された最大のタイムスタンプのウォーターマークを発行します。最大タイムスタンプよりも小さいタイムスタンプを持つ行は遅れたものではありません。
+* `ASCENDING`：これまでに観測された最大のタイムスタンプのウォーターマークを発行しますが、1を引きます。最大タイムスタンプと同じか小さいタイムスタンプを持つ行は遅れたものではありません。
+* `BOUNDED`：WATERMARK=INTERVAL。指定した遅延を引いた最大の観測されたタイムスタンプをウォーターマークとして発行します。
 
 以下のクエリは、`WATERMARK`を使用してウィンドウビューを作成する例です：
 
@@ -346,19 +346,19 @@ CREATE WINDOW VIEW wv WATERMARK=ASCENDING AS SELECT count(number) FROM date GROU
 CREATE WINDOW VIEW wv WATERMARK=INTERVAL '3' SECOND AS SELECT count(number) FROM date GROUP BY tumble(timestamp, INTERVAL '5' SECOND);
 ```
 
-デフォルトでは、ウォーターマークが来るとウィンドウが発火し、ウォーターマークの背後に到着した要素は削除されます。ウィンドウビューは、`ALLOWED_LATENESS=INTERVAL`を設定することで遅延イベント処理をサポートします。遅延処理の一例は次のとおりです：
+デフォルトでは、ウォーターマークが到達したときにウィンドウが発火し、ウォーターマークを超えて到着した要素は破棄されます。ウィンドウビューは、`ALLOWED_LATENESS=INTERVAL`を設定することで遅延イベント処理をサポートします。遅延処理の一例は以下の通りです：
 
 ``` sql
 CREATE WINDOW VIEW test.wv TO test.dst WATERMARK=ASCENDING ALLOWED_LATENESS=INTERVAL '2' SECOND AS SELECT count(a) AS count, tumbleEnd(wid) AS w_end FROM test.mt GROUP BY tumble(timestamp, INTERVAL '5' SECOND) AS wid;
 ```
 
-遅延発火によって発信された要素は、前の計算の更新結果として扱われるべきであることに注意してください。ウィンドウの終わりで発火するのではなく、遅延イベントが到着した時点ですぐにウィンドウビューが発火します。これにより、同じウィンドウに対して複数の出力が生成されます。ユーザーは、これらの重複した結果を考慮するか、重複を解除する必要があります。
+遅れて発生した要素から出力される結果は、以前の計算の更新された結果として処理されるべきです。ウィンドウの終了時ではなく、遅延イベントが到着したときにウィンドウビューは即座に発火します。このため、同じウィンドウに複数の出力が結果として生じます。ユーザーはこれらの重複結果を考慮するか、重複排除を行う必要があります。
 
-ウィンドウビューで指定された`SELECT`クエリを変更するには、`ALTER TABLE ... MODIFY QUERY`ステートメントを使用します。新しい`SELECT`クエリから得られるデータ構造は、`TO [db.]name`句の有無にかかわらず、元の`SELECT`クエリと同じである必要があります。現在のウィンドウ内のデータは失われます。中間状態は再利用できません。
+ウィンドウビューで指定された`SELECT`クエリを変更するには、`ALTER TABLE ... MODIFY QUERY`ステートメントを使用します。更新された`SELECT`クエリから得られるデータ構造は、`TO [db.]name`句の有無にかかわらず元の`SELECT`クエリと同様である必要があります。中間状態が再利用できないため、現在のウィンドウのデータは失われることに注意してください。
 
 ### Monitoring New Windows {#monitoring-new-windows}
 
-ウィンドウビューは、変更を監視するために[WATCH](../../../sql-reference/statements/watch.md)クエリをサポートしているか、`TO`構文を使用して結果をテーブルに出力します。
+ウィンドウビューは、変更を監視するために[WATCH](../../../sql-reference/statements/watch.md)クエリをサポートします。また、結果をテーブルに出力するために`TO`構文を使用できます。
 
 ``` sql
 WATCH [db.]window_view
@@ -367,23 +367,23 @@ WATCH [db.]window_view
 [FORMAT format]
 ```
 
-`WATCH`クエリは、`LIVE VIEW`と同様に動作します。`LIMIT`を指定すると、クエリを終了する前に受け取る更新の数を設定できます。`EVENTS`句を使用すると、クエリ結果の代わりに最新のクエリウォーターマークを取得する短い形式の`WATCH`クエリを取得できます。
+`WATCH`クエリは、`LIVE VIEW`と似た動作をします。受信する更新の数を指定するために`LIMIT`を設定できます。`EVENTS`句を使用すると、クエリの結果の代わりに最新のクエリのウォーターマークのみを取得する短い形式の`WATCH`クエリを取得できます。
 
 ### Settings {#settings-1}
 
-- `window_view_clean_interval`: 古いデータを解放するためのウィンドウビューのクリーン間隔（秒）。システムは、システム時間や`WATERMARK`設定に従って完全にトリガーされていないウィンドウを保持し、他のデータは削除されます。
-- `window_view_heartbeat_interval`: WATCHクエリが生きていることを示すためのハートビート間隔（秒）。
-- `wait_for_window_view_fire_signal_timeout`: イベント時間処理でのウィンドウビューの発信信号を待機するためのタイムアウト。
+- `window_view_clean_interval`: 古いデータを解放するためのウィンドウビューのクリーン間隔（秒単位）。システムは、システム時間または`WATERMARK`設定に従って完全にトリガーされていないウィンドウを保持し、その他のデータは削除されます。
+- `window_view_heartbeat_interval`: ウォッチクエリが生存していることを示すためのハートビート間隔（秒単位）。
+- `wait_for_window_view_fire_signal_timeout`: イベント時間処理におけるウィンドウビューの発火信号を待つためのタイムアウト。
 
 ### Example {#example}
 
-10秒ごとにクリックログの数をカウントする必要がある`data`というログテーブルのテーブル構造が次のようになっているとします：
+クリックログを10秒ごとにカウントする必要があると仮定し、ログテーブルの構造は次のようになります。
 
 ``` sql
 CREATE TABLE data ( `id` UInt64, `timestamp` DateTime) ENGINE = Memory;
 ```
 
-まず、10秒間隔のタンブルウィンドウを持つウィンドウビューを作成します：
+まず、10秒間隔のタンブルウィンドウでウィンドウビューを作成します。
 
 ``` sql
 CREATE WINDOW VIEW wv as select count(id), tumbleStart(w_id) as window_start from data group by tumble(timestamp, INTERVAL '10' SECOND) as w_id
@@ -395,13 +395,13 @@ CREATE WINDOW VIEW wv as select count(id), tumbleStart(w_id) as window_start fro
 WATCH wv
 ```
 
-ログがテーブル`data`に挿入されるとき、
+データテーブルにログが挿入されるとき、
 
 ``` sql
 INSERT INTO data VALUES(1,now())
 ```
 
-`WATCH`クエリは以下のような結果を表示します：
+`WATCH`クエリは、以下の結果を印刷するはずです：
 
 ``` text
 ┌─count(id)─┬────────window_start─┐
@@ -409,22 +409,22 @@ INSERT INTO data VALUES(1,now())
 └───────────┴─────────────────────┘
 ```
 
-あるいは、`TO`構文を使用して出力を別のテーブルにアタッチできます。
+代わりに、`TO`構文を使用して出力を別のテーブルに接続できます。
 
 ``` sql
 CREATE WINDOW VIEW wv TO dst AS SELECT count(id), tumbleStart(w_id) as window_start FROM data GROUP BY tumble(timestamp, INTERVAL '10' SECOND) as w_id
 ```
 
-追加の例は、ClickHouseの状態を持つテストの中にあります（それらは`*window_view*`と名付けられています）。
+追加の例は、ClickHouseのステートフルテスト群の中にあります（それらは`*window_view*`という名前です）。
 
 ### Window View Usage {#window-view-usage}
 
-ウィンドウビューは以下のシナリオで役立ちます：
+ウィンドウビューは、以下のシナリオで役立ちます：
 
-* **監視**：時間ごとにログのメトリックを集計および計算し、対象テーブルに結果を出力します。ダッシュボードは対象テーブルをソーステーブルとして使用できます。
-* **分析**：時間ウィンドウでデータを自動的に集計および前処理します。多くのログを分析する際に役立ちます。前処理により、複数のクエリでの重複計算が排除され、クエリのレイテンシが軽減されます。
+* **監視**: 時間ごとにメトリクスログを集約し計算し、結果をターゲットテーブルに出力します。ダッシュボードはターゲットテーブルをソーステーブルとして使用できます。
+* **分析**: 時間ウィンドウ内でデータを自動的に集約し前処理します。これは、多くのログを分析する際に便利です。前処理は、複数のクエリでの計算の繰り返しを排除し、クエリのレイテンシを削減します。
 
 ## Related Content {#related-content}
 
 - ブログ: [ClickHouseでの時系列データの取り扱い](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
-- ブログ: [ClickHouseを使用した可観測性ソリューションの構築 - パート2 - トレース](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)
+- ブログ: [ClickHouseでの可観測性ソリューションの構築 - パート2 - トレース](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)

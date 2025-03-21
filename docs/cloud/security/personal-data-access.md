@@ -1,9 +1,11 @@
 ---
-sidebar_label: Personal Data Access
+sidebar_label: 'Personal Data Access'
 slug: /cloud/security/personal-data-access
-title: Personal Data Access
+title: 'Personal Data Access'
+description: 'As a registered user, ClickHouse allows you to view and manage your personal account data, including contact information.'
 ---
 
+import Image from '@theme/IdealImage';
 import support_case_form from '@site/static/images/cloud/security/support-case-form.png';
 
 ## Intro {#intro}
@@ -47,7 +49,7 @@ Please be sure to include the following details in your support case:
 | Subject     | Data Subject Access Request (DSAR)                |
 | Description | Detailed description of the information you’d like ClickHouse to look for, collect, and/or provide. |
 
-<img src={support_case_form} alt="Support Case Form in ClickHouse Cloud" style={{width: '30%'}} />
+<Image img={support_case_form} size="sm" alt="Support Case Form in ClickHouse Cloud" border />
 
 ### Individuals Without an Account {#individuals-without-an-account}
 

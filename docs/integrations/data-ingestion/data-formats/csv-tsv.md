@@ -1,6 +1,8 @@
 ---
-sidebar_label: CSV and TSV
+sidebar_label: 'CSV and TSV'
 slug: /integrations/data-formats/csv-tsv
+title: 'Working with CSV and TSV data in ClickHouse'
+description: 'Page describing how to work with CSV and TSV data in ClickHouse'
 ---
 
 # Working with CSV and TSV data in ClickHouse
@@ -215,7 +217,7 @@ FORMAT CSVWithNames
 
 ### Saving exported data to a CSV file {#saving-exported-data-to-a-csv-file}
 
-To save exported data to a file, we can use the [INTO…OUTFILE](/sql-reference/statements/select/into-outfile.md) clause:
+To save exported data to a file, we can use the [INTO...OUTFILE](/sql-reference/statements/select/into-outfile.md) clause:
 
 ```sql
 SELECT *

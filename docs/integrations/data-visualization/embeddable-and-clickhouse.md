@@ -1,13 +1,17 @@
 ---
-sidebar_label: Embeddable
+sidebar_label: 'Embeddable'
 slug: /integrations/embeddable
-keywords: [clickhouse, Embeddable, connect, integrate, ui]
-description: Embeddable is a developer toolkit for building fast, interactive, fully-custom analytics experiences directly into your app.
+keywords: ['clickhouse', 'Embeddable', 'connect', 'integrate', 'ui']
+description: 'Embeddable is a developer toolkit for building fast, interactive, fully-custom analytics experiences directly into your app.'
+title: 'Connecting Embeddable to ClickHouse'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Connecting Embeddable to ClickHouse
+
+<CommunityMaintainedBadge/>
 
 In [Embeddable](https://embeddable.com/) you define [Data Models](https://trevorio.notion.site/Data-modeling-35637bbbc01046a1bc47715456bfa1d8) and [Components](https://trevorio.notion.site/Using-components-761f52ac2d0743b488371088a1024e49) in code (stored in your own code repository) and use our **SDK** to make these available for your team in the powerful Embeddable **no-code builder.**
 
