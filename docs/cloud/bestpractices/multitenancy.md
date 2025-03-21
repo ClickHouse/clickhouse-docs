@@ -5,9 +5,9 @@ title: 'Multi tenancy'
 description: 'Best practices to implement multi tenancy'
 ---
 
-On a SaaS data analytics platform, it is common for multiple tenants, such as organizations, customers, or business units, to share the same database infrastructure while maintaining logical separation of their data. This allows different users to securely access their own data within the same platform
+On a SaaS data analytics platform, it is common for multiple tenants, such as organizations, customers, or business units, to share the same database infrastructure while maintaining logical separation of their data. This allows different users to securely access their own data within the same platform.
 
-Depending on the requirements, they are different ways to implement multi-tenancy. Below is a guide on how to implement them with ClickHouse Cloud.
+Depending on the requirements, there are different ways to implement multi-tenancy. Below is a guide on how to implement them with ClickHouse Cloud.
 
 ## Shared table  {#shared-table}
 
@@ -21,13 +21,13 @@ This method is particularly effective for handling a large number of tenants.
 
 However, alternative approaches may be more suitable if tenants have different data schemas or are expected to diverge over time.
 
-In extreme cases where there is a significant gap in dataset sizes, imagine one tenant with petabytes of data alongside many smaller tenants with only a few gigabytes. Query performance for smaller tenants may be impacted. Note, this issue is largely mitigated by including the tenant field in the primary key.
+In extreme cases where there is a significant gap in dataset sizes query performance for smaller tenants may be impacted - imagine one tenant with petabytes of data alongside many smaller tenants with only a few gigabytes. Note, this issue is largely mitigated by including the tenant field in the primary key.
 
 ### Example {#shared-table-example}
 
 This is an example of a shared table multi-tenancy model implementation. 
 
-First, let's create a shared table with a field `tenant_id` that included in the primary key.
+First, let's create a shared table with a field `tenant_id` included in the primary key.
 
 ```sql
 --- Create table events. Using tenant_id as part of the primary key
@@ -89,7 +89,7 @@ GRANT user_role TO user_1
 GRANT user_role TO user_2
 ```
 
-Now you can connect as `user_1` and run a simple select. Only rows from the tenant 1 are returned. 
+Now you can connect as `user_1` and run a simple select. Only rows from the first tenant are returned. 
 
 ```sql
 -- Logged as user_1
@@ -109,7 +109,7 @@ FROM events
 
 In this approach, each tenant’s data is stored in a separate table within the same database, eliminating the need for a specific field to identify tenants. User access is enforced using a [GRANT statement](/sql-reference/statements/grant), ensuring that each user can access only tables containing their tenants' data.
 
-Using separate tables is good choice when tenants have different data schemas.
+> **Using separate tables is a good choice when tenants have different data schemas.**
 
 For scenarios involving a few tenants with very large datasets where query performance is critical, this approach may outperform a shared table model. Since there is no need to filter out other tenants’ data, queries can be more efficient. Additionally, primary keys can be further optimized, as there is no need to include an extra field (such as a tenant ID) in the primary key.
 
@@ -171,7 +171,7 @@ CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
 
-Then `GRANT SELECT` privileges on the correponding table.
+Then `GRANT SELECT` privileges on the corresponding table.
 
 ```sql
 -- Grant read only to events table.
@@ -179,7 +179,7 @@ GRANT SELECT ON default.events_tenant_1 TO user_1
 GRANT SELECT ON default.events_tenant_2 TO user_2
 ```
 
-Now you can connect as `user_1` and run a simple select on the correct. Only rows from the tenant 1 are returned. 
+Now you can connect as `user_1` and run a simple select from the table corresponding to this user. Only rows from the first tenant are returned. 
 
 ```sql
 -- Logged as user_1
@@ -199,7 +199,7 @@ FROM default.events_tenant_1
 
 Each tenant’s data is stored in a separate database within the same ClickHouse service.
 
-This approach is useful if each tenant requires a large number of tables and possibly materialized views, and has different data schema. However, it may become challenging to manage if the number of tenants is large.
+> **This approach is useful if each tenant requires a large number of tables and possibly materialized views, and has different data schema. However, it may become challenging to manage if the number of tenants is large.**
 
 The implementation is similar to the separate tables approach, but instead of granting privileges at the table level, privileges are granted at the database level.
 
@@ -269,7 +269,7 @@ CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
 
-Then `GRANT SELECT` privileges on the correponding table.
+Then `GRANT SELECT` privileges on the corresponding table.
 
 ```sql
 -- Grant read only to events table.
@@ -277,7 +277,7 @@ GRANT SELECT ON tenant_1.events TO user_1
 GRANT SELECT ON tenant_2.events TO user_2
 ```
 
-Now you can connect as `user_1` and run a simple select on the correct. Only rows from the tenant 1 are returned. 
+Now you can connect as `user_1` and run a simple select on the events table of the appropriate database. Only rows from the first tenant are returned. 
 
 ```sql
 -- Logged as user_1
@@ -297,7 +297,7 @@ FROM tenant_1.events
 
 The most radical approach is to use a different ClickHouse service per tenant. 
 
-This less common method would be a solution if tenants data are required to be stored in different regions - for legal, security or proximity reasons. 
+> **This less common method would be a solution if tenants data are required to be stored in different regions - for legal, security or proximity reasons.**
 
 A user account must be created on each service where the user can access their respective tenant’s data.
 
@@ -348,7 +348,7 @@ Then `GRANT SELECT` privileges on the correponding table.
 GRANT SELECT ON events TO user_1
 ```
 
-Now you can connect as `user_1` on the service for tenant 1 and run a simple select on the correct. Only rows from the tenant 1 are returned. 
+Now you can connect as `user_1` on the service for tenant 1 and run a simple select. Only rows from the first tenant are returned. 
 
 ```sql
 -- Logged as user_1
