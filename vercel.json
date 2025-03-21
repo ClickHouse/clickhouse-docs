@@ -3232,6 +3232,11 @@
       "permanent": true
     },
     {
+      "source": "/docs/introduction/distinctive-features",
+      "destination": "/docs/about-us/distinctive-features",
+      "permanent": true
+    },
+    {
       "source": "/docs/en/:path*",
       "destination": "/docs/:path*"
     }
