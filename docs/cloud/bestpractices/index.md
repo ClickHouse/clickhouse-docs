@@ -1,6 +1,6 @@
 ---
 slug: /cloud/bestpractices
-keywords: ['Cloud', 'Best Practices', 'Bulk Inserts', 'Asynchronous Inserts', 'Avoid Mutations', 'Avoid Nullable Columns', 'Avoid Optimize Final', 'Low Cardinality Partitioning Key']
+keywords: ['Cloud', 'Best Practices', 'Bulk Inserts', 'Asynchronous Inserts', 'Avoid Mutations', 'Avoid Nullable Columns', 'Avoid Optimize Final', 'Low Cardinality Partitioning Key', 'Multi Tenancy']
 title: 'Overview'
 hide_title: true
 description: 'Landing page for Best Practices section in ClickHouse'
@@ -19,3 +19,4 @@ This section provides six best practices you will want to follow to get the most
 | [Avoid Optimize Final](/cloud/bestpractices/avoid-optimize-final)                              | Learn why you should avoid `OPTIMIZE TABLE ... FINAL`                      |
 | [Choose a Low Cardinality Partitioning Key](/cloud/bestpractices/low-cardinality-partitioning-key)         | Learn how to choose a low cardinality partitioning key.                    |
 | [Usage Limits](/cloud/bestpractices/usage-limits)| Explore the limits of ClickHouse.                                          |
+| [Multi tenancy](/cloud/bestpractices/multi-tenancy)| Learn about different strategies to implement multi-tenancy.                                          |

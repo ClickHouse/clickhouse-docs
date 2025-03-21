@@ -381,6 +381,7 @@ const sidebars = {
         "cloud/bestpractices/avoidoptimizefinal",
         "cloud/bestpractices/partitioningkey",
         "cloud/bestpractices/usagelimits",
+        "cloud/bestpractices/multitenancy",
       ],
     },
     {
