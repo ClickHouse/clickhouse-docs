@@ -13,7 +13,7 @@ Depending on the requirements, there are different ways to implement multi-tenan
 
 In this approach, data from all tenants is stored in a single shared table, with a field (or set of fields) used to identify each tenant’s data. To maximize performance, this field should be included in the [primary key](/sql-reference/statements/create/table#primary-key). To ensure that users can only access data belonging to their respective tenants we use [role-based access control](/operations/access-rights), implemented through [row policies](/operations/access-rights#row-policy-management).
 
-> **We recommend this approach as this is the simplest to manage, particularly when all tenants share the same data schema.**
+> **We recommend this approach as this is the simplest to manage, particularly when all tenants share the same data schema and data volumes are moderate (< TBs)**
 
 By consolidating all tenant data into a single table, storage efficiency is improved through optimized data compression and reduced metadata overhead. Additionally, schema updates are simplified since all data is centrally managed.
 
@@ -21,7 +21,7 @@ This method is particularly effective for handling a large number of tenants.
 
 However, alternative approaches may be more suitable if tenants have different data schemas or are expected to diverge over time.
 
-In extreme cases where there is a significant gap in dataset sizes query performance for smaller tenants may be impacted - imagine one tenant with petabytes of data alongside many smaller tenants with only a few gigabytes. Note, this issue is largely mitigated by including the tenant field in the primary key.
+In cases where there is a significant gap in data volume between tenants, smaller tenants may experience unnecessary query performance impacts. Note, this issue is largely mitigated by including the tenant field in the primary key.
 
 ### Example {#shared-table-example}
 
@@ -111,7 +111,9 @@ In this approach, each tenant’s data is stored in a separate table within the 
 
 > **Using separate tables is a good choice when tenants have different data schemas.**
 
-For scenarios involving a few tenants with very large datasets where query performance is critical, this approach may outperform a shared table model. Since there is no need to filter out other tenants’ data, queries can be more efficient. Additionally, primary keys can be further optimized, as there is no need to include an extra field (such as a tenant ID) in the primary key.
+For scenarios involving a few tenants with very large datasets where query performance is critical, this approach may outperform a shared table model. Since there is no need to filter out other tenants’ data, queries can be more efficient. Additionally, primary keys can be further optimized, as there is no need to include an extra field (such as a tenant ID) in the primary key. 
+
+Note this approach doesn't scale for 1000s of tenants. See [usage limits](/cloud/bestpractices/usage-limits).
 
 ### Example {#separate-tables-example}
 
@@ -202,6 +204,8 @@ Each tenant’s data is stored in a separate database within the same ClickHouse
 > **This approach is useful if each tenant requires a large number of tables and possibly materialized views, and has different data schema. However, it may become challenging to manage if the number of tenants is large.**
 
 The implementation is similar to the separate tables approach, but instead of granting privileges at the table level, privileges are granted at the database level.
+
+Note this approach doesn't scale for 1000s of tenants. See [usage limits](/cloud/bestpractices/usage-limits).
 
 ### Example {#separate-databases-example}
 
