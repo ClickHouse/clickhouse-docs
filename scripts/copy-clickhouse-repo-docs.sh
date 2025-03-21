@@ -1,20 +1,25 @@
 #!/bin/bash
 
 function parse_args() {
+  force_pull=false
 
-  while getopts "hl:" opt; do
+  while getopts "hl:f" opt; do
     case "$opt" in
       h)
         # Display the usage information and exit when -h is provided
-        echo "Usage: $0 [-l path_to_local_clickhouse_repo]"
+        echo "Usage: $0 [-l path_to_local_clickhouse_repo] [-f]"
         echo ""
         echo "Options:"
         echo "  -l   Path to a local copy of the ClickHouse repository."
+        echo "  -f  Force pull from GitHub even in CI environment."
         echo "  -h   Display this help message."
         exit 0
         ;;
       l)
         local_path="$OPTARG"
+        ;;
+      f)
+        force_pull=true
         ;;
       \?)
         echo "Invalid option: -$OPTARG" >&2
@@ -22,8 +27,6 @@ function parse_args() {
         ;;
     esac
   done
-
-  echo "$local_path"
 }
 
 # Copy files/folders using rsync (or fallback to cp)
@@ -100,10 +103,14 @@ main() {
 
   if [[ -z "$local_path" ]]; then
 
-    if [[ "$CI" == "true" ]]; then
+    # Check if in CI environment and force_pull is not set
+    if [[ "$CI" == "true" && "$force_pull" == "false" ]]; then
       echo "CI environment detected, expecting /ClickHouse without having to pull the repo"
       copy_docs_locally "/ClickHouse"
     else
+      if [[ "$force_pull" == "true" && "$CI" == "true" ]]; then
+        echo "Force pull enabled, ignoring CI environment and pulling from GitHub"
+      fi
       git clone --depth 1 --branch master https://github.com/ClickHouse/ClickHouse
       # Copy docs from cloned repository
       copy_docs_locally "$(pwd)/ClickHouse"
