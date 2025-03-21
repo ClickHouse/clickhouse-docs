@@ -345,7 +345,7 @@ Then let's create two users `user_1`
 CREATE USER user_1 IDENTIFIED BY '<password>'
 ```
 
-Then `GRANT SELECT` privileges on the correponding table.
+Then `GRANT SELECT` privileges on the corresponding table.
 
 ```sql
 -- Grant read only to events table.
