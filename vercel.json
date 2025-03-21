@@ -3237,6 +3237,11 @@
       "permanent": true
     },
     {
+      "source": "/docs/cloud/reference/compute-compute-separation",
+      "destination": "/docs/cloud/reference/warehouses#what-is-compute-compute-separation",
+      "permanent": true
+    },
+    {
       "source": "/docs/en/:path*",
       "destination": "/docs/:path*"
     }
