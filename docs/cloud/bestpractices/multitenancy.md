@@ -297,6 +297,14 @@ FROM tenant_1.events
    └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
 
+## Compute-compute separation {#compute-compute-separation}
+
+The three approaches described above can also be further isolated by using [Warehouses](/cloud/reference/warehouses#what-is-a-warehouse). Data is shared through a common object storage but each tenant can have its own compute service thanks to [compute-compute separation](/cloud/reference/warehouses#what-is-compute-compute-separation) with different CPU/Memory ratio. 
+
+User management is similar to the approaches described previously, since all services in a warehouse [share access controls](/cloud/reference/warehouses#database-credentials). 
+
+Note the number of child services in a warehouse is limited to a small number. See [Warehouse limitations](/cloud/reference/warehouses#limitations).
+
 ## Separate Cloud service {#separate-service}
 
 The most radical approach is to use a different ClickHouse service per tenant. 
