@@ -69,7 +69,7 @@ As an example, when using M-type CPUs, we recommend provisioning 100GB of memory
 
 ## Memory {#memory}
 
-Like your choice of CPU, your choice of memory to storage ratio and memory to CPU ratio is dependent on your case. In general, however, the more memory you have, the faster your queries will run. If your use case is sensitive to price, lower amounts of memory will work as it is possible to enable settings ([max_bytes_before_external_group_by](/operations/settings/query-complexity#settings-max_bytes_before_external_group_by) and [max_bytes_before_external_sort](/operations/settings/query-complexity#settings-max_bytes_before_external_sort)) to allow spilling data to disk, but note that this may significantly affect query performance.
+Like your choice of CPU, your choice of memory to storage ratio and memory to CPU ratio is dependent on your case. In general, however, the more memory you have, the faster your queries will run. If your use case is sensitive to price, lower amounts of memory will work as it is possible to enable settings ([`max_bytes_before_external_group_by`](/operations/settings/settings#max_bytes_before_external_group_by) and [`max_bytes_before_external_sort`](/operations/settings/settings#max_bytes_before_external_sort)) to allow spilling data to disk, but note that this may significantly affect query performance.
 
 ### What should the memory to storage ratio be? {#what-should-the-memory-to-storage-ratio-be}
 
