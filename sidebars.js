@@ -1603,7 +1603,7 @@ const sidebars = {
       type: "category",
       label: "Server Admin",
       customProps: {
-        href: "/architecture/introduction",
+        href: "/guides/manage-and-deploy-index",
         sidebar: "serverAdmin"
       },
       description: "Manage and deploy ClickHouse",
