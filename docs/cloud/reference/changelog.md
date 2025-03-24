@@ -35,7 +35,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 - Cross-region Private Link connectivity on AWS is now in Beta. Please refer to
   ClickHouse Cloud private link [docs](/manage/security/aws-privatelink) for 
   details of how to set up and list of supported regions.
-- The maximum replica size available for services on AWS is now set to 236 GiB. 
+- The maximum replica size available for services on AWS is now set to 236 GiB RAM. 
   This allows for efficient utilization, while ensuring we have resources 
   allocated to background processes.
 
