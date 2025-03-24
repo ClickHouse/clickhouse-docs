@@ -1761,7 +1761,7 @@ const sidebars = {
       type: "category",
       label: "About",
       customProps: {
-        href: "/about-clickhouse",
+        href: "/about",
         sidebar: "aboutClickHouse"
       },
       description: "Learn more about ClickHouse",
