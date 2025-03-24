@@ -94,8 +94,19 @@ settings_from_cpp AS
 ),
 main_content AS
 (
-    SELECT format('## {} {}\\n{}\\n{}\\n\\nType: {}\\n\\nDefault value: {}\\n\\n{}\\n\\n',
-                  name, '{#'||name||'}', multiIf(tier == 'Experimental', '<ExperimentalBadge/>', tier == 'Beta', '<BetaBadge/>', ''), if(description LIKE '%Only has an effect in ClickHouse Cloud%', '\\n<CloudAvailableBadge/>', ''), type, default, replaceOne(trim(BOTH '\\n' FROM description), ' and [MaterializedMySQL](../../engines/database-engines/materialized-mysql.md)',''))
+    SELECT format(
+      '## {} {}\\n{}\\n{}\\n\\nType: {}\\n\\nDefault value: {}\\n\\n{}\\n\\n',
+      name,
+      '{#'||name||'}',
+      multiIf(tier == 'Experimental', '<ExperimentalBadge/>', tier == 'Beta', '<BetaBadge/>', ''),
+      if(description LIKE '%Only has an effect in ClickHouse Cloud%', '\\n<CloudAvailableBadge/>', ''),
+      type,
+      default,
+      replaceOne(
+        trim(BOTH '\\n' FROM description),
+        ' and [MaterializedMySQL](../../engines/database-engines/materialized-mysql.md)',''
+      )
+    )
     FROM system.settings WHERE name IN settings_from_cpp
     ORDER BY name
 ),
@@ -119,12 +130,35 @@ SELECT prefix || (SELECT groupConcat(*) FROM main_content)
 INTO OUTFILE 'settings.md' TRUNCATE FORMAT LineAsString
 " > /dev/null || { echo "Failed to Autogenerate Core settings"; exit 1; }
 
+# Autogenerate settings
+./clickhouse -q "
+  WITH
+    merge_tree_settings AS
+    (
+      SELECT format(
+          '## {} {} {}  \n{}  \nType: {}  \nDefault value: {}  \n\n{}  \n',
+          name,
+          '{#'||name||'}',
+          multiIf(tier == 'Experimental', '<ExperimentalBadge/>\n', tier == 'Beta', '<BetaBadge/>\n', ''),
+          if(description LIKE '%Only has an effect in ClickHouse Cloud%', '\\n<CloudAvailableBadge/>', ''),
+          type,
+          default,
+          description
+        )
+      FROM system.merge_tree_settings ORDER BY name
+    )
+    SELECT * FROM merge_tree_settings
+    INTO OUTFILE 'generated_merge_tree_settings.md' TRUNCATE FORMAT LineAsString
+" > /dev/null || { echo "Failed to Autogenerate Core settings"; exit 1; }
+
 mv settings-formats.md "$root/docs/operations/settings" || { echo "Failed to move generated settings-format.md"; exit 1; }
 mv settings.md "$root/docs/operations/settings" || { echo "Failed to move generated settings.md"; exit 1; }
+cat generated_merge_tree_settings.md
+cat generated_merge_tree_settings.md >> "$root/docs/operations/settings/merge-tree-settings.md" || { echo "Failed to append MergeTree settings.md"; exit 1; }
 
 echo "[$SCRIPT_NAME] Auto-generation of settings markdown pages completed successfully"
 
 # perform cleanup
-rm -rf "$tmp_dir"/{settings-formats.md,settings.md,FormatFactorySettings.h,Settings.cpp,clickhouse}
+rm -rf "$tmp_dir"/{settings-formats.md,settings.md,FormatFactorySettings.h,Settings.cpp,generated_merge_tree_settings.md,clickhouse}
 
 echo "[$SCRIPT_NAME] Autogenerating settings completed"
