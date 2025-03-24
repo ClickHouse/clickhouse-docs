@@ -98,7 +98,6 @@ CREATE TABLE default.myFirstReplacingMT
 ( `key` Int64, `someCol` String, `eventTime` DateTime )
 ENGINE = SharedReplacingMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 ORDER BY key
-SETTINGS index_granularity = 8192
 ```
 
 ## Settings {#settings}

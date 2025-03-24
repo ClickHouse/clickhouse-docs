@@ -149,7 +149,6 @@ CREATE TABLE trips
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
-SETTINGS index_granularity = 8192
 ```
 
 Note the use of [partitioning](/engines/table-engines/mergetree-family/custom-partitioning-key) on the `pickup_date` field. Usually a partition key is for data management, but later on we will use this key to parallelize writes to S3.
@@ -629,7 +628,7 @@ CREATE TABLE trips_s3
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
-SETTINGS index_granularity = 8192, storage_policy='s3_main'
+SETTINGS storage_policy='s3_main'
 ```
 
 ```sql
@@ -1131,7 +1130,7 @@ When you added the [cluster configuration](#define-a-cluster) a single shard rep
   ENGINE = ReplicatedMergeTree
   PARTITION BY toYYYYMM(pickup_date)
   ORDER BY pickup_datetime
-  SETTINGS index_granularity = 8192, storage_policy='s3_main'
+  SETTINGS storage_policy='s3_main'
   ```
   ```response
   ┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
@@ -1156,7 +1155,7 @@ When you added the [cluster configuration](#define-a-cluster) a single shard rep
   create_table_query: CREATE TABLE default.trips (`trip_id` UInt32, `pickup_date` Date, `pickup_datetime` DateTime, `dropoff_datetime` DateTime, `pickup_longitude` Float64, `pickup_latitude` Float64, `dropoff_longitude` Float64, `dropoff_latitude` Float64, `passenger_count` UInt8, `trip_distance` Float64, `tip_amount` Float32, `total_amount` Float32, `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
   # highlight-next-line
   ENGINE = ReplicatedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
-  PARTITION BY toYYYYMM(pickup_date) ORDER BY pickup_datetime SETTINGS index_granularity = 8192, storage_policy = 's3_main'
+  PARTITION BY toYYYYMM(pickup_date) ORDER BY pickup_datetime SETTINGS storage_policy = 's3_main'
 
   1 row in set. Elapsed: 0.012 sec.
   ```
@@ -1228,9 +1227,9 @@ These tests will verify that data is being replicated across the two servers, an
 
 ## S3Express {#s3express}
 
-[S3Express](https://aws.amazon.com/s3/storage-classes/express-one-zone/) is a new high-performance, single-Availability Zone storage class in Amazon S3. 
+[S3Express](https://aws.amazon.com/s3/storage-classes/express-one-zone/) is a new high-performance, single-Availability Zone storage class in Amazon S3.
 
-You could refer to this [blog](https://aws.amazon.com/blogs/storage/clickhouse-cloud-amazon-s3-express-one-zone-making-a-blazing-fast-analytical-database-even-faster/) to read about our experience testing S3Express with ClickHouse. 
+You could refer to this [blog](https://aws.amazon.com/blogs/storage/clickhouse-cloud-amazon-s3-express-one-zone-making-a-blazing-fast-analytical-database-even-faster/) to read about our experience testing S3Express with ClickHouse.
 
 :::note
   S3Express stores data within a single AZ. It means data will be unavailable in case of AZ outage.

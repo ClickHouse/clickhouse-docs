@@ -483,7 +483,6 @@ In the previous example, our model was materialized as a view. While this might 
     |)
     |ENGINE = MergeTree
     |ORDER BY (id, first_name, last_name)
-    |SETTINGS index_granularity = 8192
     +----------------------------------------
     ```
 
