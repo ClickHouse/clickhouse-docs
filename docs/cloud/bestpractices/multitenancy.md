@@ -313,7 +313,7 @@ The most radical approach is to use a different ClickHouse service per tenant.
 
 A user account must be created on each service where the user can access their respective tenant’s data.
 
-This approach is harder to manage and bring overhead with each service, as they each requires their own infrastructure to run.
+This approach is harder to manage and bring overhead with each service, as they each requires their own infrastructure to run. Services can be managed via the [ClickHouse Cloud API](/cloud/manage/api/api-overview) with orchestration also possible via the [official Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs).
 
 ### Example {#separate-service-example}
 
