@@ -381,6 +381,7 @@ const sidebars = {
         "cloud/bestpractices/avoidoptimizefinal",
         "cloud/bestpractices/partitioningkey",
         "cloud/bestpractices/usagelimits",
+        "cloud/bestpractices/multitenancy",
       ],
     },
     {
@@ -668,6 +669,7 @@ const sidebars = {
               label: "Source",
               items: [
                 "integrations/data-ingestion/clickpipes/postgres/source/rds",
+                "integrations/data-ingestion/clickpipes/postgres/source/aurora",
                 "integrations/data-ingestion/clickpipes/postgres/source/supabase",
                 "integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql",
                 "integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres",
@@ -790,6 +792,7 @@ const sidebars = {
       items: [
         "integrations/data-visualization/deepnote",
         "integrations/data-visualization/astrato-and-clickhouse",
+        "integrations/data-visualization/chartbrew-and-clickhouse",
         "integrations/data-visualization/draxlr-and-clickhouse",
         "integrations/data-visualization/embeddable-and-clickhouse",
         "integrations/data-visualization/explo-and-clickhouse",
@@ -1109,6 +1112,8 @@ const sidebars = {
         "operations/analyzer",
         "operations/optimizing-performance/sampling-query-profiler",
         "operations/query-cache",
+        "operations/query-condition-cache",
+        "operations/userspace-page-cache",
         "operations/performance-test",
       ]
     }

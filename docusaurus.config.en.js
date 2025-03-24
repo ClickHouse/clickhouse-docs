@@ -186,6 +186,9 @@ const config = {
             );
           },
         },
+        pages: {
+
+        },
         theme: {
           customCss: [require.resolve("./src/css/custom.scss")],
         },
