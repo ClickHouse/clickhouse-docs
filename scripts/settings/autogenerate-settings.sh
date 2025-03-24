@@ -121,7 +121,7 @@ INTO OUTFILE 'settings.md' TRUNCATE FORMAT LineAsString
 
 ./clickhouse -q "
 WITH
-    settings_outside_source AS
+    server_settings_outside_source AS
     (
         SELECT
             arrayJoin(extractAllGroups(raw_blob, '## (\\w+)(?:\\s[^\n]+)?\n\\s+((?:[^#]|#[^#]|##[^ ])+)')) AS g,
@@ -129,55 +129,55 @@ WITH
             replaceRegexpAll(replaceRegexpAll(g[2], '\n(Type|Default( value)?): [^\n]+\n', ''), '^\n+|\n+$', '') AS doc
         FROM file('_server_settings_outside_source.md', RawBLOB)
     ),
-    settings_in_source AS
+    server_settings_in_source AS
     (
         SELECT
 	        name,
 	        replaceRegexpAll(description, '(?m)^[ \t]+', '') AS description
         FROM system.server_settings
     ),
-    combined_settings AS
+    combined_server_settings AS
     (
         SELECT
             name,
             description
-        FROM settings_in_source
+        FROM server_settings_in_source
         UNION ALL
         SELECT
             name,
             doc AS description
-        FROM settings_outside_source
+        FROM server_settings_outside_source
     ),
     formatted_settings AS
     (
         SELECT
             format('## {} {}\n\n{}\n\n', name, '{#'||name||'}', description) AS formatted_text
-        FROM combined_settings
+        FROM combined_server_settings
         ORDER BY name ASC
     ),
     prefix_text AS
     (
         SELECT
             '---
-description: ''This section contains descriptions of server settings that cannot be
-  changed at the session or query level.''
+description: ''This section contains descriptions of server settings i.e settings
+  which cannot be changed at the session or query level.''
 keywords: [''global server settings'']
-sidebar_label: ''Global Server Settings''
+sidebar_label: ''Server Settings''
 sidebar_position: 57
 slug: /operations/server-configuration-parameters/settings
-title: Global Server Settings
+title: Server Settings
 ---
 
 import Tabs from ''@theme/Tabs'';
 import TabItem from ''@theme/TabItem'';
 import SystemLogParameters from ''@site/docs/operations/server-configuration-parameters/_snippets/_system-log-parameters.md''
 
-# Global Server Settings
+# Server Settings
 
-This section contains descriptions of server settings that cannot be changed at
-the session or query level. These settings are stored in the `config.xml` file
-on the ClickHouse server. For more information on configuration files in
-ClickHouse see [""Configuration Files""](/operations/configuration-files).
+This section contains descriptions of server settings. These are settings which
+cannot be changed at the session or query level.
+
+For more information on configuration files in ClickHouse see [""Configuration Files""](/operations/configuration-files).
 
 Other settings are described in the ""[Settings](/operations/settings/overview)"" section.
 Before studying the settings, we recommend reading the [Configuration files](/operations/configuration-files)
