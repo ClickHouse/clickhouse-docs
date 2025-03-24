@@ -34,17 +34,19 @@ To get started, you first need to make sure that your Postgres database is set u
 
 1. [Amazon RDS Postgres](./postgres/source/rds)
 
-2. [Supabase Postgres](./postgres/source/supabase)
+2. [Amazon Aurora Postgres](./postgres/source/aurora)
 
-3. [Google Cloud SQL Postgres](./postgres/source/google-cloudsql)
+3. [Supabase Postgres](./postgres/source/supabase)
 
-4. [Azure Flexible Server for Postgres](./postgres/source/azure-flexible-server-postgres)
+4. [Google Cloud SQL Postgres](./postgres/source/google-cloudsql)
 
-5. [Neon Postgres](./postgres/source/neon-postgres)
+5. [Azure Flexible Server for Postgres](./postgres/source/azure-flexible-server-postgres)
 
-6. [Crunchy Bridge Postgres](./postgres/source/crunchy-postgres)
+6. [Neon Postgres](./postgres/source/neon-postgres)
 
-7. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance
+7. [Crunchy Bridge Postgres](./postgres/source/crunchy-postgres)
+
+8. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance
 
 
 :::warning

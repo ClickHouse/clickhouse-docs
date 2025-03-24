@@ -669,6 +669,7 @@ const sidebars = {
               label: "Source",
               items: [
                 "integrations/data-ingestion/clickpipes/postgres/source/rds",
+                "integrations/data-ingestion/clickpipes/postgres/source/aurora",
                 "integrations/data-ingestion/clickpipes/postgres/source/supabase",
                 "integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql",
                 "integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres",
