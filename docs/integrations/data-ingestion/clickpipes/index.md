@@ -70,7 +70,7 @@ Steps:
 <Image img={cp_custom_role} alt="Assign a custom role" size="lg" border/>
 
 ## Error reporting {#error-reporting}
-ClickPipes will create a table next to your destination table with the postfix `<destination_table_name>_clickpipes_error`. This table will contain any errors from malformed data or mismatched schema and will include the entirity of the invalid message. In addition to this, error not related to data will be stored in the `system.clickpipes_log` table, this will store all other errors related to the operation of your ClickPipe (network, connectivity, etc.). Both error tables have a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
+ClickPipes will create a table next to your destination table with the postfix `<destination_table_name>_clickpipes_error`. This table will contain any errors from malformed data or mismatched schema and will include the entirety of the invalid message. In addition to this, error not related to data will be stored in the `system.clickpipes_log` table, this will store all other errors related to the operation of your ClickPipe (network, connectivity, etc.). Both error tables have a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
 If ClickPipes cannot connect to a data source or destination after 15min., ClickPipes instance stops and stores an appropriate message in the system error table (providing the ClickHouse  instance is available).
 
 ## F.A.Q {#faq}
