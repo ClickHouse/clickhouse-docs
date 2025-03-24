@@ -1464,7 +1464,7 @@ const sidebars = {
       label: "Getting Started",
       description: "Learn how to use ClickHouse",
       customProps: {
-        href: "/",
+        href: "/introduction-clickhouse",
         sidebar: "docs"
       },
       items: [
@@ -1604,7 +1604,7 @@ const sidebars = {
       type: "category",
       label: "Server Admin",
       customProps: {
-        href: "/architecture/introduction",
+        href: "/guides/manage-and-deploy-index",
         sidebar: "serverAdmin"
       },
       description: "Manage and deploy ClickHouse",
@@ -1762,7 +1762,7 @@ const sidebars = {
       type: "category",
       label: "About",
       customProps: {
-        href: "/about-clickhouse",
+        href: "/about",
         sidebar: "aboutClickHouse"
       },
       description: "Learn more about ClickHouse",
