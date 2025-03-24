@@ -17,7 +17,7 @@ In this approach, data from all tenants is stored in a single shared table, with
 
 By consolidating all tenant data into a single table, storage efficiency is improved through optimized data compression and reduced metadata overhead. Additionally, schema updates are simplified since all data is centrally managed.
 
-This method is particularly effective for handling a large number of tenants.
+This method is particularly effective for handling a large number of tenants (potentially millions).
 
 However, alternative approaches may be more suitable if tenants have different data schemas or are expected to diverge over time.
 
