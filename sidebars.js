@@ -1463,7 +1463,7 @@ const sidebars = {
       label: "Getting Started",
       description: "Learn how to use ClickHouse",
       customProps: {
-        href: "/",
+        href: "/introduction-clickhouse",
         sidebar: "docs"
       },
       items: [
