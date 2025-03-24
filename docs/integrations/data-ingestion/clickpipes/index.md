@@ -70,8 +70,8 @@ Steps:
 <Image img={cp_custom_role} alt="Assign a custom role" size="lg" border/>
 
 ## Error reporting {#error-reporting}
-ClickPipes will create a table next to your destination table with the postfix `<destination_table_name>_clickpipes_error`. This table will contain any errors from the operations of your ClickPipe (network, connectivity, etc.) and also any data that don't conform to the schema. The error table has a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
-If ClickPipes cannot connect to a data source or destination after 15min., ClickPipes instance stops and  stores an appropriate message in the error table (providing the ClickHouse instance is available).
+ClickPipes will create a table next to your destination table with the postfix `<destination_table_name>_clickpipes_error`. This table will contain any errors from malformed data or mismatched schema and will include the entirity of the invalid message. In addition to this, error not related to data will be stored in the `system.clickpipes_log` table, this will store all other errors related to the operation of your ClickPipe (network, connectivity, etc.). Both error tables have a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
+If ClickPipes cannot connect to a data source or destination after 15min., ClickPipes instance stops and stores an appropriate message in the system error table (providing the ClickHouse  instance is available).
 
 ## F.A.Q {#faq}
 - **What is ClickPipes?**
@@ -88,4 +88,4 @@ If ClickPipes cannot connect to a data source or destination after 15min., Click
 
 - **Is there a way to handle errors or failures when using ClickPipes for Kafka?**
 
-  Yes, ClickPipes for Kafka will automatically retry case of failures when consuming data from Kafka. ClickPipes also supports enabling a dedicated error table that will hold errors and malformed data for 7 days.
+  Yes, ClickPipes for Kafka will automatically retry case of failures when consuming data from Kafka. ClickPipes also creates a dedicated error table that will hold errors and malformed data for 7 days.
