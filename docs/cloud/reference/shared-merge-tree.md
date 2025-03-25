@@ -8,6 +8,7 @@ description: 'Describes the SharedMergeTree table engine'
 
 import shared_merge_tree from '@site/static/images/cloud/reference/shared-merge-tree-1.png';
 import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merge-tree-2.png';
+import Image from '@theme/IdealImage';
 
 
 # SharedMergeTree Table Engine
@@ -26,13 +27,11 @@ The SharedMergeTree table engine family powers ClickHouse Cloud. For an end-user
 
 A significant improvement that the SharedMergeTree brings is that it provides a deeper separation of compute and storage compared to the ReplicatedMergeTree. You can see below how the ReplicatedMergeTree separate the compute and storage:
 
-<img alt="ReplicatedMergeTree Diagram"
-  src={shared_merge_tree} />
+<Image img={shared_merge_tree} alt="ReplicatedMergeTree Diagram" size="md"  />
 
 As you can see, even though the data stored in the ReplicatedMergeTree are in object storage, the metadata still resides on each of the clickhouse-servers. This means that for every replicated operation, metadata also needs to be replicated on all replicas.
 
-<img alt="ReplicatedMergeTree Diagram with Metadata"
-  src={shared_merge_tree_2} />
+<Image img={shared_merge_tree_2} alt="ReplicatedMergeTree Diagram with Metadata" size="md"  />
 
 Unlike ReplicatedMergeTree, SharedMergeTree doesn't require replicas to communicate with each other. Instead, all communication happens through shared storage and clickhouse-keeper. SharedMergeTree implements asynchronous leaderless replication and uses clickhouse-keeper for coordination and metadata storage. This means that metadata doesn’t need to be replicated as your service scales up and down. This leads to faster replication, mutation, merges and scale-up operations. SharedMergeTree allows for hundreds of replicas for each table, making it possible to dynamically scale without shards. A distributed query execution approach is used in ClickHouse Cloud to utilize more compute resources for a query.
 
@@ -99,7 +98,6 @@ CREATE TABLE default.myFirstReplacingMT
 ( `key` Int64, `someCol` String, `eventTime` DateTime )
 ENGINE = SharedReplacingMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 ORDER BY key
-SETTINGS index_granularity = 8192
 ```
 
 ## Settings {#settings}

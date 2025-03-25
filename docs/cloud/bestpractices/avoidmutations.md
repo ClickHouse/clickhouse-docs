@@ -5,7 +5,7 @@ title: 'Avoid Mutations'
 description: 'Page describing why you should avoid mutations, ALTER queries that manipulate table data through deletion or updates'
 ---
 
-Mutations refers to [ALTER](/sql-reference/statements/alter/) queries that manipulate table data through deletion or updates. Most notably they are queries like ALTER TABLE … DELETE, UPDATE, etc. Performing such queries will produce new mutated versions of the data parts. This means that such statements would trigger a rewrite of whole data parts for all data that was inserted before the mutation, translating to a large amount of write requests.
+Mutations refers to [ALTER](/sql-reference/statements/alter/) queries that manipulate table data through deletion or updates. Most notably they are queries like ALTER TABLE ... DELETE, UPDATE, etc. Performing such queries will produce new mutated versions of the data parts. This means that such statements would trigger a rewrite of whole data parts for all data that was inserted before the mutation, translating to a large amount of write requests.
 
 For updates, you can avoid these large amounts of write requests by using specialised table engines like [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree.md) or [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree.md) instead of the default MergeTree table engine.
 

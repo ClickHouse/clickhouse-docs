@@ -6,6 +6,7 @@ description: 'Configuration options for the ClickHouse data source plugin in Gra
 title: 'Configuring ClickHouse data source in Grafana'
 ---
 
+import Image from '@theme/IdealImage';
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
 import config_common from '@site/static/images/integrations/data-visualization/grafana/config_common.png';
 import config_http from '@site/static/images/integrations/data-visualization/grafana/config_http.png';
@@ -14,8 +15,11 @@ import config_logs from '@site/static/images/integrations/data-visualization/gra
 import config_traces from '@site/static/images/integrations/data-visualization/grafana/config_traces.png';
 import alias_table_config_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_config_example.png';
 import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Configuring ClickHouse data source in Grafana
+
+<ClickHouseSupportedBadge/>
 
 The easiest way to modify a configuration is in the Grafana UI on the plugin configuration page, but data sources can also be [provisioned with a YAML file](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources).
 
@@ -26,7 +30,7 @@ For a quick overview of all the options, a full list of config options can be fo
 ## Common Settings {#common-settings}
 
 Example configuration screen:
-<img src={config_common} class="image" alt="Example secure native config" />
+<Image size="sm" img={config_common} alt="Example secure native config" border />
 
 Example configuration YAML for common settings:
 ```yaml
@@ -57,7 +61,7 @@ Note that a `version` property is added when the configuration is saved from the
 
 More settings will be displayed if you choose to connect via the HTTP protocol.
 
-<img src={config_http} class="image" alt="Extra HTTP config options" />
+<Image size="md" img={config_http} alt="Extra HTTP config options" border />
 
 #### HTTP Path {#http-path}
 
@@ -98,7 +102,7 @@ secureJsonData:
 
 These additional settings are optional.
 
-<img src={config_additional} class="image" alt="Example additional settings" />
+<Image size="sm" img={config_additional} alt="Example additional settings" border />
 
 Example YAML:
 ```yaml
@@ -129,7 +133,7 @@ This will automatically override the default columns to use the selected OTel sc
 While OpenTelemetry isn't required for logs, using a single logs/trace dataset helps to enable a smoother observability workflow with [data linking](./query-builder.md#data-links).
 
 Example logs configuration screen:
-<img src={config_logs} class="image" alt="Logs config" />
+<Image size="sm" img={config_logs} alt="Logs config" border />
 
 Example logs config YAML:
 ```yaml
@@ -156,7 +160,7 @@ This will automatically override the default columns to use the selected OTel sc
 While OpenTelemetry isn't required, this feature works best when using its schema for traces.
 
 Example trace configuration screen:
-<img src={config_traces} class="image" alt="Traces config" />
+<Image size="sm" img={config_traces} alt="Traces config" border />
 
 Example trace config YAML:
 ```yaml
@@ -241,10 +245,10 @@ INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
 ```
 
 We can then configure this table to be used in Grafana. Note that the name can be anything, or even defined in a separate database:
-<img src={alias_table_config_example} class="image" alt="Example alias table config" />
+<Image size="md" img={alias_table_config_example} alt="Example alias table config" border />
 
 Now Grafana will see the results of the alias table instead of the results from `DESC example_table`:
-<img src={alias_table_select_example} class="image" alt="Example alias table select" />
+<Image size="md" img={alias_table_select_example} alt="Example alias table select" border />
 
 Both types of aliasing can be used to perform complex type conversions or JSON field extraction.
 
@@ -297,7 +301,7 @@ datasources:
         spanIdColumn: <string>
         operationNameColumn: <string>
         parentSpanIdColumn: <string>
-        serviceNameColumn: <string>  
+        serviceNameColumn: <string>
         durationTimeColumn: <string>
         durationUnitColumn: <time unit>
         startTimeColumn: <string>

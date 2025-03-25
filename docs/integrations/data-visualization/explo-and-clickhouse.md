@@ -7,6 +7,7 @@ description: 'Explo is an easy-to-use, open source UI tool for asking questions 
 title: 'Connecting Explo to ClickHouse'
 ---
 
+import Image from '@theme/IdealImage';
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import explo_01 from '@site/static/images/integrations/data-visualization/explo_01.png';
 import explo_02 from '@site/static/images/integrations/data-visualization/explo_02.png';
@@ -24,15 +25,18 @@ import explo_13 from '@site/static/images/integrations/data-visualization/explo_
 import explo_14 from '@site/static/images/integrations/data-visualization/explo_14.png';
 import explo_15 from '@site/static/images/integrations/data-visualization/explo_15.png';
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Connecting Explo to ClickHouse
+
+<CommunityMaintainedBadge/>
 
 Customer-facing analytics for any platform. Designed for beautiful visualization. Engineered for simplicity.
 
 ## Goal {#goal}
 
 In this guide you will connect your data from ClickHouse to Explo and visualize the results.  The chart will look like this:
-<img src={explo_15} class="image" alt="Explo Dashboard" />
+<Image img={explo_15} size="md" alt="Explo Dashboard" />
 
 <p/>
 
@@ -50,35 +54,27 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
 2. Click on the Explo **data** tab on the left hand sidebar.
 
-
-<img src={explo_01} class="image" alt="Data Tab" />
+<Image img={explo_01} size="sm" alt="Data Tab" border />
 
 3. Click **Connect Data Source** in the upper right hand side.
 
-
-<img src={explo_02} class="image" alt="Connect Data Source" />
+<Image img={explo_02} size="sm" alt="Connect Data Source" border />
 
 4. Fill out the information on the **Getting Started** page
 
-
-<img src={explo_03} class="image" alt="Getting Started" />
+<Image img={explo_03} size="md" alt="Getting Started" border />
 
 5. Select **Clickhouse**
 
+<Image img={explo_04} size="md" alt="Clickhouse" border />
 
-<img src={explo_04} class="image" alt="Clickhouse" />
+6. Enter your **Clickhouse Credentials**.
 
-
-6. Enter your **Clickhouse Credentials**. 
-
-
-<img src={explo_05} class="image" alt="Credentials" />
-
+<Image img={explo_05} size="md" alt="Credentials" border />
 
 7. Configure **Security**
 
-
-<img src={explo_06} class="image" alt="Security" />
+<Image img={explo_06} size="md" alt="Security" border />
 
 8. Within Clickhouse, **Whitelist the Explo IPs**.
 `
@@ -89,21 +85,15 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
 1. Navigate to **Dashboard** tab on the left side nav bar.
 
-
-<img src={explo_07} class="image" alt="Dashboard" />
-
+<Image img={explo_07} size="sm" alt="Dashboard" border />
 
 2. Click **Create Dashboard** in the upper right corner and name your dashboard. You've now created a dashboard!
 
-
-<img src={explo_08} class="image" alt="Create Dashboard" />
-
+<Image img={explo_08} size="sm" alt="Create Dashboard" border />
 
 3. You should now see a screen that is similar to this:
 
-
-<img src={explo_09} class="image" alt="Explo Dashboard" />
-
+<Image img={explo_09} size="md" alt="Explo Dashboard" border />
 
 ## 4. Run a SQL query {#4-run-a-sql-query}
 
@@ -113,46 +103,33 @@ SELECT * FROM YOUR_TABLE_NAME
 LIMIT 100
 `
 
-
-<img src={explo_10} class="image" alt="Explo Dashboard" />
-
+<Image img={explo_10} size="md" alt="Explo Dashboard" border />
 
 2. Now click run and go to the preview tab to see your data.
 
-
-<img src={explo_11} class="image" alt="Explo Dashboard" />
-
+<Image img={explo_11} size="md" alt="Explo Dashboard" border />
 
 ## 5. Build a Chart {#5-build-a-chart}
 
 1. From the left hand side, drag the bar chart icon onto the screen.
 
-
-<img src={explo_16} class="image" alt="Explo Dashboard" />
-
+<Image img={explo_16} size="sm" alt="Explo Dashboard" border />
 
 2. Select the dataset. You should now see a screen like the following:
 
-
-<img src={explo_12} class="image" alt="Explo Dashboard" />
-
+<Image img={explo_12} size="sm" alt="Explo Dashboard" border />
 
 3. Fill out the **county** in the X Axis and **Price** in the Y Axis Section like so:
 
-
-<img src={explo_13} class="image" alt="Explo Dashboard" />
-
+<Image img={explo_13} size="sm" alt="Explo Dashboard" border />
 
 4. Now, change the aggregation to **AVG**.
 
-
-<img src={explo_14} class="image" alt="Explo Dashboard" />
-
+<Image img={explo_14} size="sm" alt="Explo Dashboard" border />
 
 5. We now have average price of homes broken down by price!
 
-
-<img src={explo_15} class="image" alt="Explo Dashboard" />
+<Image img={explo_15} size="md" alt="Explo Dashboard" />
 
 ## Learn more {#learn-more}
 

@@ -6,23 +6,20 @@ keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafa
 ---
 
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
+import Image from '@theme/IdealImage';
+
 
 # Managing Data
 
-Deployments of ClickHouse for Observability invariably involve large datasets, which need to be managed. ClickHouse offers a number of features to assist with data management. 
+Deployments of ClickHouse for Observability invariably involve large datasets, which need to be managed. ClickHouse offers a number of features to assist with data management.
 
 ## Partitions {#partitions}
 
 Partitioning in ClickHouse allows data to be logically separated on disk according to a column or SQL expression. By separating data logically, each partition can be operated on independently e.g. deleted. This allows users to move partitions, and thus subsets, between storage tiers efficiently on time or [expire data/efficiently delete from a cluster](/sql-reference/statements/alter/partition).
 
-Partitioning is specified on a table when it is initially defined via the `PARTITION BY` clause. This clause can contain a SQL expression on any column/s, the results of which will define which partition a row is sent to. 
+Partitioning is specified on a table when it is initially defined via the `PARTITION BY` clause. This clause can contain a SQL expression on any column/s, the results of which will define which partition a row is sent to.
 
-<img src={observability_14}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
-
-<br />
+<Image img={observability_14} alt="Partitions" size="md"/>
 
 The data parts are logically associated (via a common folder name prefix) with each partition on the disk and can be queried in isolation. For the example below, default `otel_logs` schema partitions by day using the expression `toDate(Timestamp)`. As rows are inserted into ClickHouse, this expression will be evaluated against each row and routed to the resulting partition if it exists (if the row is the first for a day, the partition will be created).
 
@@ -42,7 +39,7 @@ As an example, suppose our `otel_logs` table is partitioned by day. If populated
 
 ```sql
 SELECT Timestamp::Date AS day,
-	 count() AS c
+         count() AS c
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
@@ -83,11 +80,11 @@ We may have another table, `otel_logs_archive`, which we use to store older data
 CREATE TABLE otel_logs_archive AS otel_logs
 --move data to archive table
 ALTER TABLE otel_logs
-	(MOVE PARTITION tuple('2019-01-26') TO TABLE otel_logs_archive
+        (MOVE PARTITION tuple('2019-01-26') TO TABLE otel_logs_archive
 --confirm data has been moved
 SELECT
-	Timestamp::Date AS day,
-	count() AS c
+        Timestamp::Date AS day,
+        count() AS c
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
@@ -103,7 +100,7 @@ ORDER BY c DESC
 Peak memory usage: 4.40 MiB.
 
 SELECT Timestamp::Date AS day,
-	count() AS c
+        count() AS c
 FROM otel_logs_archive
 GROUP BY day
 ORDER BY c DESC
@@ -126,11 +123,11 @@ Furthermore, data can be efficiently deleted by partition. This is far more reso
 
 ```sql
 ALTER TABLE otel_logs
-	(DROP PARTITION tuple('2019-01-25'))
+        (DROP PARTITION tuple('2019-01-25'))
 
 SELECT
-	Timestamp::Date AS day,
-	count() AS c
+        Timestamp::Date AS day,
+        count() AS c
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
@@ -182,10 +179,10 @@ This syntax currently supports [Golang Duration syntax](https://pkg.go.dev/time#
 PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SpanName, toUnixTimestamp(Timestamp), TraceId)
 TTL toDateTime(Timestamp) + toIntervalDay(4)
-SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
+SETTINGS ttl_only_drop_parts = 1
 ```
 
-By default, data with an expired TTL is removed when ClickHouse [merges data parts](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage). When ClickHouse detects that data is expired, it performs an off-schedule merge. 
+By default, data with an expired TTL is removed when ClickHouse [merges data parts](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage). When ClickHouse detects that data is expired, it performs an off-schedule merge.
 
 :::note Scheduled TTLs
 TTLs are not applied immediately but rather on a schedule, as noted above. The MergeTree table setting `merge_with_ttl_timeout` sets the minimum delay in seconds before repeating a merge with delete TTL. The default value is 14400 seconds (4 hours). But that is just the minimum delay, it can take longer until a TTL merge is triggered. If the value is too low, it will perform many off-schedule merges that may consume a lot of resources. A TTL expiration can be forced using the command `ALTER TABLE my_table MATERIALIZE TTL`.
@@ -202,15 +199,15 @@ Below, we show how the `Body` column can be dropped after 30 days.
 ```sql
 CREATE TABLE otel_logs_v2
 (
-	`Body` String TTL Timestamp + INTERVAL 30 DAY,
-	`Timestamp` DateTime,
-	...
+        `Body` String TTL Timestamp + INTERVAL 30 DAY,
+        `Timestamp` DateTime,
+        ...
 )
 ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
 ```
 
-:::note 
+:::note
 Specifying a column level TTL requires users to specify their own schema. This cannot be specified in the OTel collector.
 :::
 
@@ -223,23 +220,23 @@ An example of this is shown below, where we compress the data using `ZSTD(3)` af
 ```sql
 CREATE TABLE default.otel_logs_v2
 (
-	`Body` String,
-	`Timestamp` DateTime,
-	`ServiceName` LowCardinality(String),
-	`Status` UInt16,
-	`RequestProtocol` LowCardinality(String),
-	`RunTime` UInt32,
-	`Size` UInt32,
-	`UserAgent` String,
-	`Referer` String,
-	`RemoteUser` String,
-	`RequestType` LowCardinality(String),
-	`RequestPath` String,
-	`RemoteAddress` IPv4,
-	`RefererDomain` String,
-	`RequestPage` String,
-	`SeverityText` LowCardinality(String),
-	`SeverityNumber` UInt8,
+        `Body` String,
+        `Timestamp` DateTime,
+        `ServiceName` LowCardinality(String),
+        `Status` UInt16,
+        `RequestProtocol` LowCardinality(String),
+        `RunTime` UInt32,
+        `Size` UInt32,
+        `UserAgent` String,
+        `Referer` String,
+        `RemoteUser` String,
+        `RequestType` LowCardinality(String),
+        `RequestPath` String,
+        `RemoteAddress` IPv4,
+        `RefererDomain` String,
+        `RequestPage` String,
+        `SeverityText` LowCardinality(String),
+        `SeverityNumber` UInt8,
 )
 ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
@@ -272,7 +269,7 @@ In order to avoid downtime during schema changes, users have several options, wh
 
 ### Use default values {#use-default-values}
 
-Columns can be added to the schema using [`DEFAULT` values](/sql-reference/statements/create/table#default). The specified default will be used if it is not specified during the INSERT. 
+Columns can be added to the schema using [`DEFAULT` values](/sql-reference/statements/create/table#default). The specified default will be used if it is not specified during the INSERT.
 
 Schema changes can be made prior to modifying any materialized view transformation logic or OTel collector configuration, which causes these new columns to be sent.
 
@@ -281,44 +278,44 @@ Once the schema has been changed, users can reconfigure OTel collectors. Assumin
 ```sql
 CREATE TABLE default.otel_logs_v2
 (
-	`Body` String,
-	`Timestamp` DateTime,
-	`ServiceName` LowCardinality(String),
-	`Status` UInt16,
-	`RequestProtocol` LowCardinality(String),
-	`RunTime` UInt32,
-	`UserAgent` String,
-	`Referer` String,
-	`RemoteUser` String,
-	`RequestType` LowCardinality(String),
-	`RequestPath` String,
-	`RemoteAddress` IPv4,
-	`RefererDomain` String,
-	`RequestPage` String,
-	`SeverityText` LowCardinality(String),
-	`SeverityNumber` UInt8
+        `Body` String,
+        `Timestamp` DateTime,
+        `ServiceName` LowCardinality(String),
+        `Status` UInt16,
+        `RequestProtocol` LowCardinality(String),
+        `RunTime` UInt32,
+        `UserAgent` String,
+        `Referer` String,
+        `RemoteUser` String,
+        `RequestType` LowCardinality(String),
+        `RequestPath` String,
+        `RemoteAddress` IPv4,
+        `RefererDomain` String,
+        `RequestPage` String,
+        `SeverityText` LowCardinality(String),
+        `SeverityNumber` UInt8
 )
 ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
 
 CREATE MATERIALIZED VIEW otel_logs_mv TO otel_logs_v2 AS
 SELECT
-        Body, 
-	Timestamp::DateTime AS Timestamp,
-	ServiceName,
-	LogAttributes['status']::UInt16 AS Status,
-	LogAttributes['request_protocol'] AS RequestProtocol,
-	LogAttributes['run_time'] AS RunTime,
-	LogAttributes['user_agent'] AS UserAgent,
-	LogAttributes['referer'] AS Referer,
-	LogAttributes['remote_user'] AS RemoteUser,
-	LogAttributes['request_type'] AS RequestType,
-	LogAttributes['request_path'] AS RequestPath,
-	LogAttributes['remote_addr'] AS RemoteAddress,
-	domain(LogAttributes['referer']) AS RefererDomain,
-	path(LogAttributes['request_path']) AS RequestPage,
-	multiIf(Status::UInt64 > 500, 'CRITICAL', Status::UInt64 > 400, 'ERROR', Status::UInt64 > 300, 'WARNING', 'INFO') AS SeverityText,
-	multiIf(Status::UInt64 > 500, 20, Status::UInt64 > 400, 17, Status::UInt64 > 300, 13, 9) AS SeverityNumber
+        Body,
+        Timestamp::DateTime AS Timestamp,
+        ServiceName,
+        LogAttributes['status']::UInt16 AS Status,
+        LogAttributes['request_protocol'] AS RequestProtocol,
+        LogAttributes['run_time'] AS RunTime,
+        LogAttributes['user_agent'] AS UserAgent,
+        LogAttributes['referer'] AS Referer,
+        LogAttributes['remote_user'] AS RemoteUser,
+        LogAttributes['request_type'] AS RequestType,
+        LogAttributes['request_path'] AS RequestPath,
+        LogAttributes['remote_addr'] AS RemoteAddress,
+        domain(LogAttributes['referer']) AS RefererDomain,
+        path(LogAttributes['request_path']) AS RequestPage,
+        multiIf(Status::UInt64 > 500, 'CRITICAL', Status::UInt64 > 400, 'ERROR', Status::UInt64 > 300, 'WARNING', 'INFO') AS SeverityText,
+        multiIf(Status::UInt64 > 500, 20, Status::UInt64 > 400, 17, Status::UInt64 > 300, 13, 9) AS SeverityNumber
 FROM otel_logs
 ```
 
@@ -326,7 +323,7 @@ Suppose we wish to extract a new column `Size` from the `LogAttributes`. We can 
 
 ```sql
 ALTER TABLE otel_logs_v2
-	(ADD COLUMN `Size` UInt64 DEFAULT JSONExtractUInt(Body, 'size'))
+        (ADD COLUMN `Size` UInt64 DEFAULT JSONExtractUInt(Body, 'size'))
 ```
 
 In the above example, we specify the default as the `size` key in `LogAttributes` (this will be 0 if it doesn't exist). This means queries that access this column for rows that do not have the value inserted must access the Map and will, therefore, be slower. We could easily also specify this as a constant, e.g. 0, reducing the cost of subsequent queries against rows that do not have the value. Querying this table shows the value is populated as expected from the Map:
@@ -350,9 +347,9 @@ To ensure this value is inserted for all future data, we can modify our material
 
 ```sql
 ALTER TABLE otel_logs_mv
-	MODIFY QUERY
+        MODIFY QUERY
 SELECT
-    	Body,
+        Body,
         Timestamp::DateTime AS Timestamp,
         ServiceName,
         LogAttributes['status']::UInt16 AS Status,
@@ -376,7 +373,7 @@ Subsequent rows will have a `Size` column populated at insert time.
 
 ### Create new tables {#create-new-tables}
 
-As an alternative to the above process, users can simply create a new target table with the new schema.  Any materialized views can then be modified to use the new table using the above `ALTER TABLE MODIFY QUERY.` With this approach, users can version their tables e.g. `otel_logs_v3`. 
+As an alternative to the above process, users can simply create a new target table with the new schema.  Any materialized views can then be modified to use the new table using the above `ALTER TABLE MODIFY QUERY.` With this approach, users can version their tables e.g. `otel_logs_v3`.
 
 This approach leaves the users with multiple tables to query. To query across tables, users can use the [`merge` function](/sql-reference/table-functions/merge) which accepts wildcard patterns for the table name. We demonstrate this below by querying a v2 and v3 of the `otel_logs` table:
 
@@ -388,11 +385,11 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─Status─┬────────c─┐
-│	200  │ 38319300 │
-│	304  │  1360912 │
-│	302  │   799340 │
-│	404  │   420044 │
-│	301  │   270212 │
+│   200  │ 38319300 │
+│   304  │  1360912 │
+│   302  │   799340 │
+│   404  │   420044 │
+│   301  │   270212 │
 └────────┴──────────┘
 
 5 rows in set. Elapsed: 0.137 sec. Processed 41.46 million rows, 82.92 MB (302.43 million rows/s., 604.85 MB/s.)
@@ -411,11 +408,11 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─Status─┬────────c─┐
-│	200  │ 38319300 │
-│	304  │  1360912 │
-│	302  │   799340 │
-│	404  │   420044 │
-│	301  │   270212 │
+│   200  │ 38319300 │
+│   304  │  1360912 │
+│   302  │   799340 │
+│   404  │   420044 │
+│   301  │   270212 │
 └────────┴──────────┘
 
 5 rows in set. Elapsed: 0.073 sec. Processed 41.46 million rows, 82.92 MB (565.43 million rows/s., 1.13 GB/s.)
@@ -436,11 +433,11 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─Status─┬────────c─┐
-│	200  │ 39259996 │
-│	304  │  1378564 │
-│	302  │   820118 │
-│	404  │   429220 │
-│	301  │   276960 │
+│   200  │ 39259996 │
+│   304  │  1378564 │
+│   302  │   820118 │
+│   404  │   429220 │
+│   301  │   276960 │
 └────────┴──────────┘
 
 5 rows in set. Elapsed: 0.068 sec. Processed 42.46 million rows, 84.92 MB (620.45 million rows/s., 1.24 GB/s.)

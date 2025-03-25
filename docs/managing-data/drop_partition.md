@@ -15,12 +15,12 @@ The data parts are logically associated with each partition on disk and can be q
 ```sql
  CREATE TABLE posts
 (
-	`Id` Int32 CODEC(Delta(4), ZSTD(1)),
-	`PostTypeId` Enum8('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
-	`AcceptedAnswerId` UInt32,
-	`CreationDate` DateTime64(3, 'UTC'),
+        `Id` Int32 CODEC(Delta(4), ZSTD(1)),
+        `PostTypeId` Enum8('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
+        `AcceptedAnswerId` UInt32,
+        `CreationDate` DateTime64(3, 'UTC'),
 ...
-	`ClosedDate` DateTime64(3, 'UTC')
+        `ClosedDate` DateTime64(3, 'UTC')
 )
 ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CreationDate)
@@ -29,7 +29,7 @@ PARTITION BY toYear(CreationDate)
 
 Read about setting the partition expression in a section [How to set the partition expression](/sql-reference/statements/alter/partition/#how-to-set-partition-expression).
 
-In ClickHouse, users should principally consider partitioning to be a data management feature, not a query optimization technique. By separating data logically based on a key, each partition can be operated on independently e.g. deleted. This allows users to move partitions, and thus subsets, between [storage tiers](/integrations/s3#storage-tiers) efficiently on time or [expire data/efficiently delete from the cluster](/sql-reference/statements/alter/partition). 
+In ClickHouse, users should principally consider partitioning to be a data management feature, not a query optimization technique. By separating data logically based on a key, each partition can be operated on independently e.g. deleted. This allows users to move partitions, and thus subsets, between [storage tiers](/integrations/s3#storage-tiers) efficiently on time or [expire data/efficiently delete from the cluster](/sql-reference/statements/alter/partition).
 
 ## Drop Partitions {#drop-partitions}
 
@@ -49,29 +49,29 @@ FROM system.parts
 WHERE `table` = 'posts'
 
 ┌─partition─┐
-│ 2008  	│
-│ 2009  	│
-│ 2010  	│
-│ 2011  	│
-│ 2012  	│
-│ 2013  	│
-│ 2014  	│
-│ 2015  	│
-│ 2016  	│
-│ 2017  	│
-│ 2018  	│
-│ 2019  	│
-│ 2020  	│
-│ 2021  	│
-│ 2022  	│
-│ 2023  	│
-│ 2024  	│
+│ 2008      │
+│ 2009      │
+│ 2010      │
+│ 2011      │
+│ 2012      │
+│ 2013      │
+│ 2014      │
+│ 2015      │
+│ 2016      │
+│ 2017      │
+│ 2018      │
+│ 2019      │
+│ 2020      │
+│ 2021      │
+│ 2022      │
+│ 2023      │
+│ 2024      │
 └───────────┘
 
 17 rows in set. Elapsed: 0.002 sec.
-	
-	ALTER TABLE posts
-	(DROP PARTITION '2008')
+
+ALTER TABLE posts
+(DROP PARTITION '2008')
 
 0 rows in set. Elapsed: 0.103 sec.
 ```

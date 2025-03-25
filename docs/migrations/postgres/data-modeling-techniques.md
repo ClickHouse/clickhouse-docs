@@ -7,6 +7,7 @@ keywords: ['postgres', 'postgresql', 'migrate', 'migration', 'data modeling']
 
 import postgres_partitions from '@site/static/images/migrations/postgres-partitions.png';
 import postgres_projections from '@site/static/images/migrations/postgres-projections.png';
+import Image from '@theme/IdealImage';
 
 > This is **Part 3** of a guide on migrating from PostgreSQL to ClickHouse. This content can be considered introductory, with the aim of helping users deploy an initial functional system that adheres to ClickHouse best practices. It avoids complex topics and will not result in a fully optimized schema; rather, it provides a solid foundation for users to build a production system and base their learning.
 
@@ -18,23 +19,19 @@ Postgres users will be familiar with the concept of table partitioning for enhan
 
 In ClickHouse, partitioning is specified on a table when it is initially defined via the `PARTITION BY` clause. This clause can contain a SQL expression on any columns, the results of which will define which partition a row is sent to.
 
-<br />
-
-<img src={postgres_partitions} class="image" alt="PostgreSQL partitions to ClickHouse partitions" style={{width: '600px'}} />
-
-<br />
+<Image img={postgres_partitions} size="md" alt="PostgreSQL partitions to ClickHouse partitions"/>
 
 The data parts are logically associated with each partition on disk and can be queried in isolation. For the example below, we partition the `posts` table by year using the expression `toYear(CreationDate)`. As rows are inserted into ClickHouse, this expression will be evaluated against each row and routed to the resulting partition if it exists (if the row is the first for a year, the partition will be created).
 
 ```sql
  CREATE TABLE posts
 (
-	`Id` Int32 CODEC(Delta(4), ZSTD(1)),
-	`PostTypeId` Enum8('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
-	`AcceptedAnswerId` UInt32,
-	`CreationDate` DateTime64(3, 'UTC'),
+        `Id` Int32 CODEC(Delta(4), ZSTD(1)),
+        `PostTypeId` Enum8('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
+        `AcceptedAnswerId` UInt32,
+        `CreationDate` DateTime64(3, 'UTC'),
 ...
-	`ClosedDate` DateTime64(3, 'UTC')
+        `ClosedDate` DateTime64(3, 'UTC')
 )
 ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CreationDate)
@@ -53,29 +50,29 @@ FROM system.parts
 WHERE `table` = 'posts'
 
 ┌─partition─┐
-│ 2008  	│
-│ 2009  	│
-│ 2010  	│
-│ 2011  	│
-│ 2012  	│
-│ 2013  	│
-│ 2014  	│
-│ 2015  	│
-│ 2016  	│
-│ 2017  	│
-│ 2018  	│
-│ 2019  	│
-│ 2020  	│
-│ 2021  	│
-│ 2022  	│
-│ 2023  	│
-│ 2024  	│
+│ 2008          │
+│ 2009          │
+│ 2010          │
+│ 2011          │
+│ 2012          │
+│ 2013          │
+│ 2014          │
+│ 2015          │
+│ 2016          │
+│ 2017          │
+│ 2018          │
+│ 2019          │
+│ 2020          │
+│ 2021          │
+│ 2022          │
+│ 2023          │
+│ 2024          │
 └───────────┘
 
 17 rows in set. Elapsed: 0.002 sec.
 
-	ALTER TABLE posts
-	(DROP PARTITION '2008')
+        ALTER TABLE posts
+        (DROP PARTITION '2008')
 
 Ok.
 
@@ -132,18 +129,18 @@ Note that we have to first create the projection and then materialize it. This l
 ```sql
 CREATE TABLE comments
 (
-	`Id` UInt32,
-	`PostId` UInt32,
-	`Score` UInt16,
-	`Text` String,
-	`CreationDate` DateTime64(3, 'UTC'),
-	`UserId` Int32,
-	`UserDisplayName` LowCardinality(String),
-	PROJECTION comments_user_id
-	(
-    	SELECT *
-    	ORDER BY UserId
-	)
+        `Id` UInt32,
+        `PostId` UInt32,
+        `Score` UInt16,
+        `Text` String,
+        `CreationDate` DateTime64(3, 'UTC'),
+        `UserId` Int32,
+        `UserDisplayName` LowCardinality(String),
+        PROJECTION comments_user_id
+        (
+        SELECT *
+        ORDER BY UserId
+        )
 )
 ENGINE = MergeTree
 ORDER BY PostId
@@ -153,14 +150,14 @@ If the projection is created via an `ALTER`, the creation is asynchronous when t
 
 ```sql
 SELECT
-	parts_to_do,
-	is_done,
-	latest_fail_reason
+        parts_to_do,
+        is_done,
+        latest_fail_reason
 FROM system.mutations
 WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
 
    ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
-1. │       	1 │   	0 │                	│
+1. │            1 │     0 │                     │
    └─────────────┴─────────┴────────────────────┘
 
 1 row in set. Elapsed: 0.003 sec.
@@ -189,19 +186,19 @@ SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
 
-	┌─explain─────────────────────────────────────────────┐
- 1. │ Expression ((Projection + Before ORDER BY))     	│
- 2. │   Aggregating                                   	│
- 3. │ 	Filter                                      	│
- 4. │   	ReadFromMergeTree (comments_user_id)      	│
- 5. │   	Indexes:                                  	│
- 6. │     	PrimaryKey                              	│
- 7. │       	Keys:                                 	│
- 8. │         	UserId                              	│
- 9. │       	Condition: (UserId in [8592047, 8592047]) │
-10. │       	Parts: 2/2                            	│
-11. │       	Granules: 2/11360                     	│
-	└─────────────────────────────────────────────────────┘
+        ┌─explain─────────────────────────────────────────────┐
+ 1. │ Expression ((Projection + Before ORDER BY))       │
+ 2. │   Aggregating                                     │
+ 3. │   Filter                                          │
+ 4. │           ReadFromMergeTree (comments_user_id)            │
+ 5. │           Indexes:                                        │
+ 6. │           PrimaryKey                                      │
+ 7. │           Keys:                                   │
+ 8. │           UserId                                  │
+ 9. │           Condition: (UserId in [8592047, 8592047]) │
+10. │           Parts: 2/2                              │
+11. │           Granules: 2/11360                       │
+        └─────────────────────────────────────────────────────┘
 
 11 rows in set. Elapsed: 0.004 sec.
 ```
@@ -210,11 +207,7 @@ WHERE UserId = 8592047
 
 Projections are an appealing feature for new users as they are automatically maintained as data is inserted. Furthermore, queries can just be sent to a single table where the projections are exploited where possible to speed up the response time.
 
-<br />
-
-<img src={postgres_projections} class="image" alt="PostgreSQL projections in ClickHouse" style={{width: '600px'}} />
-
-<br />
+<Image img={postgres_projections} size="md" alt="PostgreSQL projections in ClickHouse"/>
 
 This is in contrast to materialized views, where the user has to select the appropriate optimized target table or rewrite their query, depending on the filters. This places greater emphasis on user applications and increases client-side complexity.
 

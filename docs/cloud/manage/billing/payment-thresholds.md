@@ -16,4 +16,4 @@ This payment threshold does not apply to customers who have a committed spend co
 
 If your organization reaches 90% of the payment threshold and is on-track to exceed the payment threshold mid-period, the billing email associated with the organization will receive an email notification. You will also receive an email notification as well as an invoice when you exceed the payment threshold.
 
-These payment thresholds can be adjusted. If you have any questions, please contact support@clickhouse.com for more details.
+These payment thresholds can be adjusted below $10,000 as requested by customers or by the ClickHouse Finance team. If you have any questions, please contact support@clickhouse.com for more details.

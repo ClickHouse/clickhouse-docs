@@ -81,8 +81,8 @@ Ok.
 SELECT * FROM pypi LIMIT 2
 
 ┌───────date─┬─country_code─┬─project────────────┐
-│ 2022-05-26 │ CN       	│ clickhouse-connect │
-│ 2022-05-26 │ CN       	│ clickhouse-connect │
+│ 2022-05-26 │ CN               │ clickhouse-connect │
+│ 2022-05-26 │ CN               │ clickhouse-connect │
 └────────────┴──────────────┴────────────────────┘
 
 2 rows in set. Elapsed: 0.005 sec. Processed 8.19 thousand rows, 908.03 KB (1.63 million rows/s., 180.38 MB/s.)

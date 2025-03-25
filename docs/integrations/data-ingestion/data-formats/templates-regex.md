@@ -158,31 +158,31 @@ FORMAT XML
 ```xml
 <?xml version='1.0' encoding='UTF-8' ?>
 <result>
-	<meta>
-		<columns>
-			<column>
-				<name>time</name>
-				<type>DateTime</type>
-			</column>
-			...
-		</columns>
-	</meta>
-	<data>
-		<row>
-			<time>2023-01-15 13:00:01</time>
-			<ip>3.5.9.2</ip>
-			<host>example.com</host>
-			<request>GET /apple-touch-icon-120x120.png HTTP/1.1</request>
-		</row>
-		...
-	</data>
-	<rows>3</rows>
-	<rows_before_limit_at_least>1000</rows_before_limit_at_least>
-	<statistics>
-		<elapsed>0.000745001</elapsed>
-		<rows_read>1000</rows_read>
-		<bytes_read>88184</bytes_read>
-	</statistics>
+        <meta>
+                <columns>
+                        <column>
+                                <name>time</name>
+                                <type>DateTime</type>
+                        </column>
+                        ...
+                </columns>
+        </meta>
+        <data>
+                <row>
+                        <time>2023-01-15 13:00:01</time>
+                        <ip>3.5.9.2</ip>
+                        <host>example.com</host>
+                        <request>GET /apple-touch-icon-120x120.png HTTP/1.1</request>
+                </row>
+                ...
+        </data>
+        <rows>3</rows>
+        <rows_before_limit_at_least>1000</rows_before_limit_at_least>
+        <statistics>
+                <elapsed>0.000745001</elapsed>
+                <rows_read>1000</rows_read>
+                <bytes_read>88184</bytes_read>
+        </statistics>
 </result>
 
 ```

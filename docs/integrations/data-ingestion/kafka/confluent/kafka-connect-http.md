@@ -7,6 +7,7 @@ title: 'Confluent HTTP Sink Connector'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import Image from '@theme/IdealImage';
 import createHttpSink from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_http_sink.png';
 import httpAuth from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_auth.png';
 import httpAdvanced from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_advanced.png';
@@ -60,7 +61,7 @@ ORDER BY tuple()
 
 #### 4. Configure HTTP Sink {#4-configure-http-sink}
 Create a Kafka topic and an instance of HTTP Sink Connector:
-<img src={createHttpSink} class="image" alt="Create HTTP Sink" style={{width: '50%'}}/>
+<Image img={createHttpSink} size="sm" alt="Confluent Cloud interface showing how to create an HTTP Sink connector" border/>
 
 <br />
 
@@ -76,7 +77,7 @@ Configure HTTP Sink Connector:
   This HTTP Url is error-prone. Ensure escaping is precise to avoid issues.
 :::
 
-<img src={httpAuth} class="image" alt="Auth options for Confluent HTTP Sink" style={{width: '70%'}}/>
+<Image img={httpAuth} size="lg" alt="Confluent Cloud interface showing authentication settings for the HTTP Sink connector" border/>
 <br/>
 
 * Configuration
@@ -89,11 +90,11 @@ Configure HTTP Sink Connector:
         * `Retry on HTTP codes` - 400-500 but adapt as required e.g. this may change if you have an HTTP proxy in front of ClickHouse.
         * `Maximum Reties` - the default (10) is appropriate but feel to adjust for more robust retries.
 
-<img src={httpAdvanced} class="image" alt="Advanced options for Confluent HTTP Sink" style={{width: '50%'}}/>
+<Image img={httpAdvanced} size="sm" alt="Confluent Cloud interface showing advanced configuration options for the HTTP Sink connector" border/>
 
 #### 5. Testing the connectivity {#5-testing-the-connectivity}
 Create an message in a topic configured by your HTTP Sink
-<img src={createMessageInTopic} class="image" alt="Create a message in the topic" style={{width: '50%'}}/>
+<Image img={createMessageInTopic} size="md" alt="Confluent Cloud interface showing how to create a test message in a Kafka topic" border/>
 
 <br/>
 

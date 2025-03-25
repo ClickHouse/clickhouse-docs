@@ -73,8 +73,8 @@ SET input_format_parquet_import_nested = 1;
 
 CREATE TABLE default.mytable
 (
-	`timestamp` DateTime64(6),
-	`some_text` String
+        `timestamp` DateTime64(6),
+        `some_text` String
 )
 ENGINE = MergeTree
 ORDER BY (timestamp);
