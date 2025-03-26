@@ -9,32 +9,32 @@ title: 'Семейство движков MergeTree'
 
 # Семейство движков MergeTree
 
-Движки таблиц из семейства MergeTree являются основой возможностей хранения данных ClickHouse. Они предоставляют большинство функций для устойчивости и высокопроизводительного извлечения данных: столбцовое хранение, пользовательское шардирование, разреженный первичный индекс, вторичные индексы пропуска данных и т.д.
+Движки таблиц из семейства MergeTree составляют основу возможностей хранения данных в ClickHouse. Они обеспечивают большинство функций для устойчивости и высокопроизводительного извлечения данных: столбцовое хранение, пользовательское разделение, разреженный первичный индекс, вторичные индексы пропуска данных и т.д.
 
-Базовый [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) можно считать стандартным движком таблиц для однолюдных экземпляров ClickHouse, так как он универсален и практичен для широкого спектра случаев использования.
+Базовый [движок таблиц MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) можно считать движком таблиц по умолчанию для одноузловых экземпляров ClickHouse, потому что он универсален и практичен для множества сценариев использования.
 
-Для производственного применения [ReplicatedMergeTree](../../../engines/table-engines/mergetree-family/replication.md) является оптимальным выбором, поскольку он добавляет высокую доступность ко всем функциям обычного движка MergeTree. Дополнительно обеспечивается автоматическая дедупликация данных при их приеме, что позволяет программному обеспечению безопасно повторно пытаться вставить данные в случае сетевых проблем во время вставки.
+Для использования в продуктивной среде рекомендуется [ReplicatedMergeTree](../../../engines/table-engines/mergetree-family/replication.md), так как он добавляет высокую доступность ко всем функциям обычного движка MergeTree. Дополнительным бонусом является автоматическая дедупликация данных при приеме данных, что позволяет программному обеспечению безопасно повторять попытки, если возникли какие-либо проблемы с сетью во время вставки.
 
-Все остальные движки семейства MergeTree добавляют дополнительный функционал для некоторых специфических случаев использования. Обычно это реализуется в виде дополнительной манипуляции с данными в фоновом режиме.
+Все остальные движки семейства MergeTree добавляют дополнительную функциональность для некоторых специфических случаев использования. Обычно это реализуется как дополнительная обработка данных в фоне.
 
-Основным недостатком движков MergeTree является их высокая "тяжеловесность". Поэтому типичный подход заключается в том, чтобы иметь не так много из них. Если вам нужно много маленьких таблиц, например для временных данных, рассмотрите [систему логов](../../../engines/table-engines/log-family/index.md).
+Основной недостаток движков MergeTree в том, что они довольно тяжелы. Поэтому типичный шаблон заключается в том, чтобы иметь их не так много. Если вам нужно много маленьких таблиц, например, для временных данных, рассмотрите [семейство движков Log](../../../engines/table-engines/log-family/index.md).
 
-<!-- Таблица содержания этой страницы автоматически генерируется 
+<!-- Таблица содержания для этой страницы автоматически генерируется 
 https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh
-из полей YAML front matter: slug, description, title.
+из полей описания в YAML: slug, description, title.
 
-Если вы заметили ошибку, пожалуйста, отредактируйте YML frontmatter самих страниц.
+Если вы заметили ошибку, пожалуйста, отредактируйте YML-фронтматер страниц.
 -->
 | Страница | Описание |
 |-----|-----|
-| [VersionedCollapsingMergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) | Позволяет быстро записывать состояния объектов, которые постоянно изменяются, и удалять старые состояния объектов в фоновом режиме. |
-| [Replication данных](/engines/table-engines/mergetree-family/replication) | Обзор репликации данных в ClickHouse |
-| [MergeTree](/engines/table-engines/mergetree-family/mergetree) | Движки таблиц семейства `MergeTree` предназначены для высоких скоростей приема данных и огромных объемов данных. |
-| [Приближенный поиск соседа с индексами векторного сходства](/engines/table-engines/mergetree-family/annindexes) | Документация для приблизительного поиска ближайшего соседа с индексами векторного сходства |
-| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | Наследует от MergeTree, но добавляет логику для соединения строк в процессе слияния. |
-| [Пользовательский ключ шардирования](/engines/table-engines/mergetree-family/custom-partitioning-key) | Узнайте, как добавить пользовательский ключ шардирования в таблицы MergeTree. |
-| [Поиск по полному тексту с использованием полнотекстовых индексов](/engines/table-engines/mergetree-family/invertedindexes) | Быстро находите поисковые термины в тексте. |
-| [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree) | SummingMergeTree наследует от движка MergeTree. Его ключевая особенность заключается в способности автоматически суммировать числовые данные во время слияния частей. |
-| [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) | Заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) на одну строку (внутри одной части данных), которая хранит комбинацию состояний агрегатных функций. |
-| [GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree) | Предназначен для сжатия и агрегации (rollup) данных Graphite. |
-| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) | отличает от MergeTree тем, что удаляет дублирующие записи с одинаковым значением ключа сортировки (`ORDER BY` секция таблицы, а не `PRIMARY KEY`). |
+| [VersionedCollapsingMergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) | Позволяет быстрое сохранение состояний объектов, которые постоянно изменяются, и удаление старых состояний объектов в фоновом режиме. |
+| [Репликация данных](/engines/table-engines/mergetree-family/replication) | Обзор репликации данных в ClickHouse |
+| [MergeTree](/engines/table-engines/mergetree-family/mergetree) | Семейство движков таблиц `MergeTree` предназначено для высоких скоростей приема данных и больших объемов данных. |
+| [Точный и аппроксимирующий поиск ближайших соседей](/engines/table-engines/mergetree-family/annindexes) | Документация по точному и аппроксимирующему поиску ближайших соседей |
+| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | Наследует от MergeTree, но добавляет логику свертывания строк в процессе слияния. |
+| [Пользовательский ключ разделения](/engines/table-engines/mergetree-family/custom-partitioning-key) | Узнайте, как добавить пользовательский ключ разделения в таблицы MergeTree. |
+| [Полнотекстовый поиск с использованием полнотекстовых индексов](/engines/table-engines/mergetree-family/invertedindexes) | Быстрое нахождение поисковых терминов в тексте. |
+| [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree) | SummingMergeTree наследуется от движка MergeTree. Его ключевая особенность - способность автоматически суммировать числовые данные при слиянии частей. |
+| [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) | Заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) на одну строку (в пределах одной части данных), которая хранит комбинацию состояний агрегатных функций. |
+| [GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree) | Предназначен для утончения и агрегации/усреднения (свёртки) данных Graphite. |
+| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) | отличается от MergeTree тем, что удаляет дублирующиеся записи с одинаковым значением ключа сортировки (`ORDER BY` секция таблицы, не `PRIMARY KEY`). |
