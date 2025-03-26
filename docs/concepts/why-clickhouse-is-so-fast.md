@@ -9,7 +9,7 @@ slug: /concepts/why-clickhouse-is-so-fast
 # Why is ClickHouse so fast? {#why-clickhouse-is-so-fast}
 
 Many other factors contribute to a database's performance besides [its data orientation](/intro#row-oriented-vs-column-oriented-storage).
-We will next explain in more detail what makes ClickHouse so fast, especially compared to other column-oriented databases.
+In this article we'll explain in more detail what makes ClickHouse so fast, especially compared to other column-oriented databases.
 
 From an architectural perspective, databases consist (at least) of a storage layer and a query processing layer. While the storage layer is responsible for saving, loading, and maintaining the table data, the query processing layer executes user queries. Compared to other databases, ClickHouse provides innovations in both layers that enable extremely fast inserts and Select queries.
 
