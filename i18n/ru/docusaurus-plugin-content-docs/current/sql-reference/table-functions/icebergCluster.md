@@ -1,21 +1,22 @@
 ---
-slug: /sql-reference/table-functions/icebergCluster
+description: 'Расширение функции табличного процесса iceberg, которое позволяет обрабатывать файлы
+  из Apache Iceberg параллельно с многих узлов в указанном кластере.'
+sidebar_label: 'icebergCluster'
 sidebar_position: 91
-sidebar_label: icebergCluster
+slug: /sql-reference/table-functions/icebergCluster
 title: 'icebergCluster'
-description: 'Расширение функции таблицы iceberg, которое позволяет обрабатывать файлы из Apache Iceberg параллельно с нескольких узлов в заданном кластере.'
 ---
 
 
-# Функция таблицы icebergCluster
+# Функция табличного процесса icebergCluster
 
-Это расширение функции таблицы [iceberg](/sql-reference/table-functions/iceberg.md).
+Это расширение функции табличного процесса [iceberg](/sql-reference/table-functions/iceberg.md).
 
-Позволяет обрабатывать файлы из Apache [Iceberg](https://iceberg.apache.org/) параллельно с нескольких узлов в заданном кластере. На инициаторе создается соединение со всеми узлами кластера и динамически распределяются все файлы. На рабочем узле он запрашивает у инициатора следующее задание для обработки и обрабатывает его. Это повторяется до завершения всех заданий.
+Позволяет обрабатывать файлы из Apache [Iceberg](https://iceberg.apache.org/) параллельно с многих узлов в указанном кластере. На инициаторе устанавливается соединение со всеми узлами в кластере и динамически распределяются все файлы. На рабочем узле он запрашивает у инициатора следующую задачу для обработки и выполняет ее. Это повторяется, пока все задачи не будут завершены.
 
 **Синтаксис**
 
-``` sql
+```sql
 icebergS3Cluster(cluster_name, url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method])
 icebergS3Cluster(cluster_name, named_collection[, option=value [,..]])
 
@@ -28,9 +29,9 @@ icebergHDFSCluster(cluster_name, named_collection[, option=value [,..]])
 
 **Аргументы**
 
-- `cluster_name` — Имя кластера, который используется для построения набора адресов и параметров соединения с удаленными и локальными серверами.
+- `cluster_name` — Имя кластера, которое используется для построения набора адресов и параметров соединения с удаленными и локальными серверами.
 
-- Описание всех остальных аргументов совпадает с описанием аргументов в эквивалентной функции таблицы [iceberg](/sql-reference/table-functions/iceberg.md).
+- Описание всех остальных аргументов совпадает с описанием аргументов в эквивалентной функции табличного процесса [iceberg](/sql-reference/table-functions/iceberg.md).
 
 **Возвращаемое значение**
 
@@ -42,7 +43,7 @@ icebergHDFSCluster(cluster_name, named_collection[, option=value [,..]])
 SELECT * FROM icebergS3Cluster('cluster_simple', 'http://test.s3.amazonaws.com/clickhouse-bucket/test_table', 'test', 'test')
 ```
 
-**См. также**
+**Смотрите также**
 
-- [Iceberg engine](/engines/table-engines/integrations/iceberg.md)
-- [Iceberg table function](sql-reference/table-functions/iceberg.md)
+- [Движок Iceberg](/engines/table-engines/integrations/iceberg.md)
+- [Функция табличного процесса Iceberg](sql-reference/table-functions/iceberg.md)

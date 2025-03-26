@@ -1,22 +1,23 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/groupbitmap
+description: 'Битовые или агрегатные вычисления из столбца без знака целого числа, возвращают
+  кардинальность типа UInt64, если добавить суффикс -State, то вернуть объект [bitmap](../../../sql-reference/functions/bitmap-functions.md)'
 sidebar_position: 148
-title: "groupBitmap"
-description: "Битовая карта или агрегатные вычисления из колонки без знака, возвращает кардинальность типа UInt64, если добавить суффикс -State, то возвращает [объект битовой карты](../../../sql-reference/functions/bitmap-functions.md)."
+slug: /sql-reference/aggregate-functions/reference/groupbitmap
+title: 'groupBitmap'
 ---
 
 
 # groupBitmap
 
-Битовая карта или агрегатные вычисления из колонки без знака, возвращает кардинальность типа UInt64, если добавить суффикс -State, то возвращает [объект битовой карты](../../../sql-reference/functions/bitmap-functions.md).
+Битовые или агрегатные вычисления из столбца без знака целого числа, возвращают кардинальность типа UInt64, если добавить суффикс -State, то вернуть [объект bitmap](../../../sql-reference/functions/bitmap-functions.md).
 
-``` sql
+```sql
 groupBitmap(expr)
 ```
 
 **Аргументы**
 
-`expr` – Выражение, которое возвращает тип `UInt*`.
+`expr` – Выражение, которое приводит к типу `UInt*`.
 
 **Возвращаемое значение**
 
@@ -26,7 +27,7 @@ groupBitmap(expr)
 
 Тестовые данные:
 
-``` text
+```text
 UserID
 1
 1
@@ -36,13 +37,13 @@ UserID
 
 Запрос:
 
-``` sql
+```sql
 SELECT groupBitmap(UserID) as num FROM t
 ```
 
 Результат:
 
-``` text
+```text
 num
 3
 ```

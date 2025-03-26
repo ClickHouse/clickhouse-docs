@@ -1,15 +1,16 @@
 ---
-title: 'JSONCompactStringsEachRow'
-slug: '/interfaces/formats/JSONCompactStringsEachRow'
-keywords: ['JSONCompactStringsEachRow']
-input_format: true
-output_format: true
 alias: []
+description: 'Документация для формата JSONCompactStringsEachRow'
+input_format: true
+keywords: ['JSONCompactStringsEachRow']
+output_format: true
+slug: /interfaces/formats/JSONCompactStringsEachRow
+title: 'JSONCompactStringsEachRow'
 ---
 
 | Вход | Выход | Псевдоним |
-|-------|--------|-------|
-| ✔     | ✔      |       |
+|------|-------|-----------|
+| ✔    | ✔     |           |
 
 ## Описание {#description}
 

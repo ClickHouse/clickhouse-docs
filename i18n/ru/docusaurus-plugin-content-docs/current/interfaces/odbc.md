@@ -1,7 +1,9 @@
 ---
-slug: /interfaces/odbc
-sidebar_position: 23
+description: 'Документация для ODBC драйвера ClickHouse'
 sidebar_label: 'ODBC Драйвер'
+sidebar_position: 35
+slug: /interfaces/odbc
+title: 'ODBC Драйвер'
 ---
 
 

@@ -1,23 +1,23 @@
 ---
-slug: /engines/database-engines/postgresql
+description: 'Позволяет подключаться к базам данных на удаленном сервере PostgreSQL.'
+sidebar_label: 'PostgreSQL'
 sidebar_position: 40
-sidebar_label: PostgreSQL
-title: "PostgreSQL"
-description: "Позволяет подключаться к базам данных на удаленном сервере PostgreSQL."
+slug: /engines/database-engines/postgresql
+title: 'PostgreSQL'
 ---
 
 
 # PostgreSQL
 
-Позволяет подключаться к базам данных на удаленном [PostgreSQL](https://www.postgresql.org) сервере. Поддерживает операции чтения и записи (запросы `SELECT` и `INSERT`) для обмена данными между ClickHouse и PostgreSQL.
+Позволяет подключаться к базам данных на удаленном [PostgreSQL](https://www.postgresql.org) сервере. Поддерживает операции чтения и записи (`SELECT` и `INSERT` запросы) для обмена данными между ClickHouse и PostgreSQL.
 
-Обеспечивает доступ в реальном времени к списку таблиц и структуре таблиц с удаленного PostgreSQL с помощью запросов `SHOW TABLES` и `DESCRIBE TABLE`.
+Обеспечивает доступ в реальном времени к списку таблиц и структуре таблицы с удаленного PostgreSQL с помощью запросов `SHOW TABLES` и `DESCRIBE TABLE`.
 
-Поддерживает изменения структуры таблиц (`ALTER TABLE ... ADD|DROP COLUMN`). Если параметр `use_table_cache` (см. параметры движка ниже) установлен в `1`, структура таблицы кэшируется и не проверяется на изменения, но может быть обновлена с помощью запросов `DETACH` и `ATTACH`.
+Поддерживает изменения структуры таблицы (`ALTER TABLE ... ADD|DROP COLUMN`). Если параметр `use_table_cache` (см. параметры движка ниже) установлен в `1`, структура таблицы кэшируется и не проверяется на изменение, но может быть обновлена с помощью запросов `DETACH` и `ATTACH`.
 
 ## Создание базы данных {#creating-a-database}
 
-``` sql
+```sql
 CREATE DATABASE test_database
 ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use_table_cache`]);
 ```
@@ -29,7 +29,7 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 - `user` — пользователь PostgreSQL.
 - `password` — пароль пользователя.
 - `schema` — схема PostgreSQL.
-- `use_table_cache` —  Определяет, кэшируется ли структура таблицы базы данных. Опционально. Значение по умолчанию: `0`.
+- `use_table_cache` — определяет, кэшируется ли структура таблицы базы данных или нет. Необязательный. Значение по умолчанию: `0`.
 
 ## Поддержка типов данных {#data_types-support}
 
@@ -49,21 +49,20 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 | INTEGER          | Nullable([Int32](../../sql-reference/data-types/int-uint.md))|
 | ARRAY            | [Array](../../sql-reference/data-types/array.md)             |
 
-
 ## Примеры использования {#examples-of-use}
 
-Создание базы данных в ClickHouse, обмен данными с сервером PostgreSQL:
+База данных в ClickHouse, обменивающаяся данными с сервером PostgreSQL:
 
-``` sql
+```sql
 CREATE DATABASE test_database
 ENGINE = PostgreSQL('postgres1:5432', 'test_database', 'postgres', 'mysecretpassword', 'schema_name',1);
 ```
 
-``` sql
+```sql
 SHOW DATABASES;
 ```
 
-``` text
+```text
 ┌─name──────────┐
 │ default       │
 │ test_database │
@@ -71,11 +70,11 @@ SHOW DATABASES;
 └───────────────┘
 ```
 
-``` sql
+```sql
 SHOW TABLES FROM test_database;
 ```
 
-``` text
+```text
 ┌─name───────┐
 │ test_table │
 └────────────┘
@@ -83,11 +82,11 @@ SHOW TABLES FROM test_database;
 
 Чтение данных из таблицы PostgreSQL:
 
-``` sql
+```sql
 SELECT * FROM test_database.test_table;
 ```
 
-``` text
+```text
 ┌─id─┬─value─┐
 │  1 │     2 │
 └────┴───────┘
@@ -95,44 +94,44 @@ SELECT * FROM test_database.test_table;
 
 Запись данных в таблицу PostgreSQL:
 
-``` sql
+```sql
 INSERT INTO test_database.test_table VALUES (3,4);
 SELECT * FROM test_database.test_table;
 ```
 
-``` text
+```text
 ┌─int_id─┬─value─┐
 │      1 │     2 │
 │      3 │     4 │
 └────────┴───────┘
 ```
 
-Предположим, что структура таблицы была изменена в PostgreSQL:
+Предположим, структура таблицы была изменена в PostgreSQL:
 
-``` sql
+```sql
 postgre> ALTER TABLE test_table ADD COLUMN data Text
 ```
 
-Поскольку параметр `use_table_cache` был установлен в `1` при создании базы данных, структура таблицы в ClickHouse была кэширована и, следовательно, не была изменена:
+Так как параметр `use_table_cache` был установлен в `1` при создании базы данных, структура таблицы в ClickHouse была кэширована и, следовательно, не была изменена:
 
-``` sql
+```sql
 DESCRIBE TABLE test_database.test_table;
 ```
-``` text
+```text
 ┌─name───┬─type──────────────┐
 │ id     │ Nullable(Integer) │
 │ value  │ Nullable(Integer) │
 └────────┴───────────────────┘
 ```
 
-После отсоединения таблицы и повторного соединения, структура была обновлена:
+После отсоединения таблицы и повторного подключения структура была обновлена:
 
-``` sql
+```sql
 DETACH TABLE test_database.test_table;
 ATTACH TABLE test_database.test_table;
 DESCRIBE TABLE test_database.test_table;
 ```
-``` text
+```text
 ┌─name───┬─type──────────────┐
 │ id     │ Nullable(Integer) │
 │ value  │ Nullable(Integer) │
@@ -142,5 +141,5 @@ DESCRIBE TABLE test_database.test_table;
 
 ## Связанный контент {#related-content}
 
-- Блог: [ClickHouse и PostgreSQL - идеальное сочетание в мире данных - часть 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
-- Блог: [ClickHouse и PostgreSQL - идеальное сочетание в мире данных - часть 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)
+- Блог: [ClickHouse и PostgreSQL - идеальная пара для данных - часть 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
+- Блог: [ClickHouse и PostgreSQL - идеальная пара для данных - часть 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)

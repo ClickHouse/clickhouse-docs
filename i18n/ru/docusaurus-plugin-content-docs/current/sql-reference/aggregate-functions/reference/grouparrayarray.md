@@ -1,23 +1,23 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/grouparrayarray
-sidebar_position: 111
-title: 'groupArrayArray'
 description: 'Агрегирует массивы в больший массив этих массивов.'
 keywords: ['groupArrayArray', 'array_concat_agg']
+sidebar_position: 111
+slug: /sql-reference/aggregate-functions/reference/grouparrayarray
+title: 'groupArrayArray'
 ---
 
 
 # groupArrayArray
 
-Агрегирует массивы в больший массив этих массивов.  
+Агрегирует массивы в больший массив этих массивов. 
 Комбинирует функцию [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) с комбинатором [Array](/sql-reference/aggregate-functions/combinators#-array).
 
 Псевдоним: `array_concat_agg`
 
 **Пример**
 
-У нас есть данные, которые фиксируют сессии просмотра пользователей. Каждая сессия записывает последовательность страниц, которые конкретный пользователь посетил.  
-Мы можем использовать функцию `groupArrayArray`, чтобы проанализировать паттерны посещений страниц для каждого пользователя.
+У нас есть данные, которые фиксируют сеансы просмотра пользователей. Каждый сеанс записывает последовательность страниц, которые конкретный пользователь посетил. 
+Мы можем использовать функцию `groupArrayArray`, чтобы проанализировать паттерны посещения страниц для каждого пользователя.
 
 ```sql title="Setup"
 CREATE TABLE website_visits (

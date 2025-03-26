@@ -1,28 +1,29 @@
 ---
-title: XML
-slug: /interfaces/formats/XML
-keywords: ['XML']
-input_format: false
-output_format: true
 alias: []
+description: 'Документация для формата XML'
+input_format: false
+keywords: ['XML']
+output_format: true
+slug: /interfaces/formats/XML
+title: 'XML'
 ---
 
-| Input | Output | Alias |
+| Вход | Выход | Псевдоним |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## Description {#description}
+## Описание {#description}
 
 Формат `XML` подходит только для вывода, а не для разбора. 
 
-Если имя колонки не имеет приемлемого формата, используется 'field' в качестве имени элемента. В целом, структура XML соответствует структуре JSON. 
+Если имя столбца не имеет допустимого формата, используется просто 'field' в качестве имени элемента. В общем, структура XML следует структуре JSON.
 Так же, как и для JSON, недопустимые последовательности UTF-8 заменяются символом замены `�`, так что выходной текст будет состоять из допустимых последовательностей UTF-8.
 
 В строковых значениях символы `<` и `&` экранируются как `<` и `&`.
 
-Массивы выводятся в формате `<array><elem>Hello</elem><elem>World</elem>...</array>`, а кортежи в формате `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`.
+Массивы выводятся как `<array><elem>Hello</elem><elem>World</elem>...</array>`, а кортежи как `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`.
 
-## Example Usage {#example-usage}
+## Пример использования {#example-usage}
 
 Пример:
 
@@ -47,7 +48,7 @@ alias: []
                         <field>8267016</field>
                 </row>
                 <row>
-                        <SearchPhrase>bathroom interior design</SearchPhrase>
+                        <SearchPhrase>дизайн интерьер ванной</SearchPhrase>
                         <field>2166</field>
                 </row>
                 <row>
@@ -55,31 +56,31 @@ alias: []
                         <field>1655</field>
                 </row>
                 <row>
-                        <SearchPhrase>2014 spring fashion</SearchPhrase>
+                        <SearchPhrase>весеннее модное 2014</SearchPhrase>
                         <field>1549</field>
                 </row>
                 <row>
-                        <SearchPhrase>freeform photos</SearchPhrase>
+                        <SearchPhrase>свободные фотографии</SearchPhrase>
                         <field>1480</field>
                 </row>
                 <row>
-                        <SearchPhrase>angelina jolie</SearchPhrase>
+                        <SearchPhrase>анджелина джоли</SearchPhrase>
                         <field>1245</field>
                 </row>
                 <row>
-                        <SearchPhrase>omsk</SearchPhrase>
+                        <SearchPhrase>омск</SearchPhrase>
                         <field>1112</field>
                 </row>
                 <row>
-                        <SearchPhrase>photos of dog breeds</SearchPhrase>
+                        <SearchPhrase>фотографии пород собак</SearchPhrase>
                         <field>1091</field>
                 </row>
                 <row>
-                        <SearchPhrase>curtain designs</SearchPhrase>
+                        <SearchPhrase>дизайны штор</SearchPhrase>
                         <field>1064</field>
                 </row>
                 <row>
-                        <SearchPhrase>baku</SearchPhrase>
+                        <SearchPhrase>баку</SearchPhrase>
                         <field>1000</field>
                 </row>
         </data>
@@ -88,6 +89,6 @@ alias: []
 </result>
 ```
 
-## Format Settings {#format-settings}
+## Настройки формата {#format-settings}
 
 ## XML {#xml}

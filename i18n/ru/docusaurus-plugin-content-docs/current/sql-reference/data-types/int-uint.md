@@ -1,20 +1,22 @@
 ---
-slug: /sql-reference/data-types/int-uint
+description: 'Документация для знаковых и беззнаковых целочисленных типов данных в ClickHouse,
+  варьирующихся от 8-бит до 256-бит'
+sidebar_label: 'Int | UInt'
 sidebar_position: 2
-sidebar_label: Int | UInt
-title: 'Int | UInt Types'
+slug: /sql-reference/data-types/int-uint
+title: 'Типы Int | UInt'
 ---
 
-ClickHouse предлагает несколько целочисленных типов с фиксированной длиной, 
-с знаком (`Int`) или без знака (беззнаковый `UInt`), от одного байта до 32 байт.
+ClickHouse предлагает несколько целочисленных типов фиксированной длины, 
+со знаком (`Int`) или без знака (беззнаковый `UInt`), варьирующихся от одного байта до 32 байт.
 
-При создании таблиц можно установить числовые параметры для целых чисел (например, `TINYINT(8)`, `SMALLINT(16)`, `INT(32)`, `BIGINT(64)`), но ClickHouse игнорирует их.
+При создании таблиц можно установить числовые параметры для целочисленных значений (например, `TINYINT(8)`, `SMALLINT(16)`, `INT(32)`, `BIGINT(64)`), но ClickHouse игнорирует их.
 
 ## Диапазоны целых чисел {#integer-ranges}
 
 Целочисленные типы имеют следующие диапазоны:
 
-| Type     | Range                                                                                                                                                              |
+| Тип      | Диапазон                                                                                                                                                            |
 |----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Int8`   | \[-128 : 127\]                                                                                                                                                     |
 | `Int16`  | \[-32768 : 32767\]                                                                                                                                                 |
@@ -25,7 +27,7 @@ ClickHouse предлагает несколько целочисленных т
 
 Беззнаковые целочисленные типы имеют следующие диапазоны:
 
-| Type      | Range                                                                                  |
+| Тип       | Диапазон                                                                              |
 |-----------|----------------------------------------------------------------------------------------|
 | `UInt8`   | \[0 : 255\]                                                                            |
 | `UInt16`  | \[0 : 65535\]                                                                          |
@@ -38,18 +40,18 @@ ClickHouse предлагает несколько целочисленных т
 
 Целочисленные типы имеют следующие псевдонимы:
 
-| Type    | Alias                                                                             |
-|---------|-----------------------------------------------------------------------------------|
-| `Int8`  | `TINYINT`, `INT1`, `BYTE`, `TINYINT SIGNED`, `INT1 SIGNED`                        |
-| `Int16` | `SMALLINT`, `SMALLINT SIGNED`                                                     |
+| Тип     | Псевдоним                                                                       |
+|---------|---------------------------------------------------------------------------------|
+| `Int8`  | `TINYINT`, `INT1`, `BYTE`, `TINYINT SIGNED`, `INT1 SIGNED`                    |
+| `Int16` | `SMALLINT`, `SMALLINT SIGNED`                                                  |
 | `Int32` | `INT`, `INTEGER`, `MEDIUMINT`, `MEDIUMINT SIGNED`, `INT SIGNED`, `INTEGER SIGNED` |
-| `Int64` | `BIGINT`, `SIGNED`, `BIGINT SIGNED`, `TIME`                                       |
+| `Int64` | `BIGINT`, `SIGNED`, `BIGINT SIGNED`, `TIME`                                    |
 
 Беззнаковые целочисленные типы имеют следующие псевдонимы:
 
-| Type     | Alias                                                    |
-|----------|----------------------------------------------------------|
-| `UInt8`  | `TINYINT UNSIGNED`, `INT1 UNSIGNED`                      |
-| `UInt16` | `SMALLINT UNSIGNED`                                      |
-| `UInt32` | `MEDIUMINT UNSIGNED`, `INT UNSIGNED`, `INTEGER UNSIGNED` |
-| `UInt64` | `UNSIGNED`, `BIGINT UNSIGNED`, `BIT`, `SET`              |
+| Тип      | Псевдоним                                                      |
+|----------|---------------------------------------------------------------|
+| `UInt8`  | `TINYINT UNSIGNED`, `INT1 UNSIGNED`                           |
+| `UInt16` | `SMALLINT UNSIGNED`                                           |
+| `UInt32` | `MEDIUMINT UNSIGNED`, `INT UNSIGNED`, `INTEGER UNSIGNED`     |
+| `UInt64` | `UNSIGNED`, `BIGINT UNSIGNED`, `BIT`, `SET`                   |

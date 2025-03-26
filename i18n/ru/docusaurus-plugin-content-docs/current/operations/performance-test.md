@@ -1,20 +1,21 @@
 ---
-slug: /operations/performance-test
+description: 'Руководство по тестированию и оценке производительности оборудования с помощью ClickHouse'
+sidebar_label: 'Тестирование оборудования'
 sidebar_position: 54
-sidebar_label: Тестирование оборудования
-title: "Как протестировать ваше оборудование с помощью ClickHouse"
+slug: /operations/performance-test
+title: 'Как протестировать ваше оборудование с помощью ClickHouse'
 ---
 
-import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-Вы можете провести базовый тест производительности ClickHouse на любом сервере без установки пакетов ClickHouse.
+Вы можете провести базовое тестирование производительности ClickHouse на любом сервере без установки пакетов ClickHouse.
 
 
-## Автоматизированный запуск {#automated-run}
+## Автоматический запуск {#automated-run}
 
-Вы можете запустить тест с помощью одного скрипта.
+Вы можете запустить бенчмарк с помощью одного скрипта.
 
 1. Скачайте скрипт.
 ```bash

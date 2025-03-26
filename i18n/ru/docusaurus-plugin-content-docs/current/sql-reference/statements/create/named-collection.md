@@ -1,6 +1,8 @@
 ---
+description: 'Документация для CREATE NAMED COLLECTION'
+sidebar_label: 'Именованные коллекции'
 slug: /sql-reference/statements/create/named-collection
-sidebar_label: ИМЕНННАЯ КОЛЛЕКЦИЯ
+title: 'CREATE NAMED COLLECTION'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -8,7 +10,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 <CloudNotSupportedBadge />
 
 
-# СОЗДАТЬ ИМЕННУЮ КОЛЛЕКЦИЮ
+# CREATE NAMED COLLECTION
 
 Создает новую именованную коллекцию.
 

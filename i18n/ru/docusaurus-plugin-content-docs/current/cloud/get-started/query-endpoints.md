@@ -1,10 +1,12 @@
 ---
-sidebar_title: Конечные точки API запросов
+sidebar_title: 'API-конечные точки запросов'
 slug: /cloud/get-started/query-endpoints
-description: Легко создавайте конечные точки REST API из ваших сохраненных запросов
-keywords: [api, конечные точки api запросов, конечные точки запросов, api запросов rest]
+description: 'Легко запускать REST API конечные точки из ваших сохраненных запросов'
+keywords: ['api', 'конечные точки api запроса', 'конечные точки запроса', 'api запросы rest']
+title: 'API-конечные точки запросов'
 ---
 
+import Image from '@theme/IdealImage';
 import endpoints_testquery from '@site/static/images/cloud/sqlconsole/endpoints-testquery.png';
 import endpoints_savequery from '@site/static/images/cloud/sqlconsole/endpoints-savequery.png';
 import endpoints_configure from '@site/static/images/cloud/sqlconsole/endpoints-configure.png';
@@ -13,19 +15,19 @@ import endpoints_curltest from '@site/static/images/cloud/sqlconsole/endpoints-c
 import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints-monitoring.png';
 
 
-# Конечные точки API запросов
+# API-конечные точки запросов
 
-Функция **Конечные точки API запросов** позволяет вам создавать конечную точку API прямо из любого сохраненного SQL-запроса в консоли ClickHouse Cloud. Вы сможете получать доступ к конечным точкам API через HTTP, чтобы выполнять ваши сохраненные запросы без необходимости подключаться к вашему сервису ClickHouse Cloud через нативный драйвер.
+Функция **API-конечные точки запросов** позволяет создавать API концевые точки непосредственно из любого сохраненного SQL-запроса в консоли ClickHouse Cloud. Вы сможете получать доступ к API-конечным точкам через HTTP для выполнения ваших сохраненных запросов без необходимости подключаться к вашему сервису ClickHouse Cloud через нативный драйвер.
 
-## Быстрый старт {#quick-start-guide}
+## Руководство по быстрому старту {#quick-start-guide}
 
-Прежде чем продолжить, убедитесь, что у вас есть API ключ и роль администратора консоли. Вы можете следовать этому руководству, чтобы [создать API ключ](/cloud/manage/openapi).
+Прежде чем продолжить, убедитесь, что у вас есть ключ API и роль администратора консоли. Вы можете следовать этому руководству, чтобы [создать ключ API](/cloud/manage/openapi).
 
 ### Создание сохраненного запроса {#creating-a-saved-query}
 
 Если у вас уже есть сохраненный запрос, вы можете пропустить этот шаг.
 
-Откройте новую вкладку запроса. Для демонстрации мы будем использовать [набор данных youtube](/getting-started/example-datasets/youtube-dislikes), который содержит приблизительно 4,5 миллиарда записей. В качестве примера запроса мы вернем 10 лучших загружающих пользователей по среднему количеству просмотров на видео в параметре `year`, введенном пользователем:
+Откройте новую вкладку запроса. Для демонстрационных целей мы будем использовать [датасет youtube](/getting-started/example-datasets/youtube-dislikes), который содержит примерно 4.5 миллиарда записей. В качестве примерного запроса мы вернем 10 лучших загрузчиков по среднему количеству просмотров на видео в параметре `year`, введенном пользователем:
 
 ```sql
 with sum(view_count) as view_sum,
@@ -44,56 +46,55 @@ order by per_upload desc
 limit 10
 ```
 
-Обратите внимание, что этот запрос содержит параметр (`year`). Редактор запросов SQL консоли автоматически обнаруживает выражения параметров запроса ClickHouse и предоставляет ввод для каждого параметра. Давайте быстро запустим этот запрос, чтобы убедиться, что он работает:
+Обратите внимание, что этот запрос содержит параметр (`year`). Редактор запросов консоли SQL автоматически обнаруживает выражения параметров запроса ClickHouse и предоставляет ввод для каждого параметра. Давайте быстро запустим этот запрос, чтобы убедиться, что он работает:
 
-<img src={endpoints_testquery} alt="Проверить пример запроса"/>
+<Image img={endpoints_testquery} size="md" alt="Проверка примерного запроса" />
 
 Следующий шаг — сохранить запрос:
 
-<img src={endpoints_savequery} alt="Сохранить пример запроса"/>
+<Image img={endpoints_savequery} size="md" alt="Сохранение примерного запроса" />
 
-Дополнительную документацию по сохраненным запросам можно найти [здесь](/cloud/get-started/sql-console#saving-a-query).
+Дополнительную документацию о сохраненных запросах можно найти [здесь](/cloud/get-started/sql-console#saving-a-query).
 
-### Настройка конечной точки API запросов {#configuring-the-query-api-endpoint}
+### Настройка API-конечной точки запроса {#configuring-the-query-api-endpoint}
 
-Конечные точки API запросов могут быть настроены прямо из представления запроса, нажав кнопку **Поделиться** и выбрав `API Endpoint`. Вам будет предложено указать, какие API ключи должны иметь доступ к конечной точке:
+API-конечные точки запросов можно настроить непосредственно из представления запроса, нажав кнопку **Поделиться** и выбрав `API Endpoint`. Вам будет предложено указать, какие ключи API должны иметь доступ к конечной точке:
 
-<img src={endpoints_configure} alt="Настроить конечную точку запроса"/>
+<Image img={endpoints_configure} size="md" alt="Настройка конечной точки запроса" />
 
-После выбора API ключа конечная точка API запроса будет автоматически предоставлена. Будет показан пример команды `curl`, чтобы вы могли отправить тестовый запрос:
+После выбора ключа API конечная точка API-запроса будет автоматически предоставлена. Будет отображена примерная команда `curl`, чтобы вы могли отправить тестовый запрос:
 
-<img src={endpoints_completed} alt="Команда curl для конечной точки"/>
+<Image img={endpoints_completed} size="md" alt="Команда curl для конечной точки" />
 
 ### Параметры API запроса {#query-api-parameters}
 
-Параметры запроса в запросе могут быть указаны с помощью синтаксиса `{parameter_name: type}`. Эти параметры будут автоматически обнаружены, и пример полезной нагрузки запроса будет содержать объект `queryVariables`, через который вы можете передавать эти параметры.
+Параметры запроса в запросе могут быть указаны с использованием синтаксиса `{parameter_name: type}`. Эти параметры будут автоматически обнаружены, и пример полезной нагрузки запроса будет содержать объект `queryVariables`, через который вы можете передать эти параметры.
 
 ### Тестирование и мониторинг {#testing-and-monitoring}
 
-После создания конечной точки API запроса вы можете протестировать, что она работает, используя `curl` или любой другой HTTP-клиент:
+После создания API-конечной точки запроса вы можете протестировать, что она работает, используя `curl` или любой другой HTTP-клиент:
 
-<img src={endpoints_curltest} class="image" alt="тест curl для конечной точки" style={{width: '80%', background:'none'}} />
+<Image img={endpoints_curltest} size="md" alt="Тестирование конечной точки curl" />
 
-После того как вы отправите свой первый запрос, новая кнопка должна немедленно появиться справа от кнопки **Поделиться**. Нажав на нее, вы откроете всплывающее окно с данными мониторинга о запросе:
+После того как вы отправите свой первый запрос, новая кнопка должна сразу же появиться справа от кнопки **Поделиться**. Нажатие на нее откроет всплывающее окно с данными мониторинга о запросе:
 
-<img src={endpoints_monitoring} alt="Мониторинг конечной точки"/>
+<Image img={endpoints_monitoring} size="md" alt="Мониторинг конечной точки" />
 
-
-## Подробности реализации {#implementation-details}
+## Детали реализации {#implementation-details}
 
 ### Описание {#description}
 
-Этот маршрут выполняет запрос на указанной конечной точке запроса. Он поддерживает различные версии, форматы и переменные запроса. Ответ может быть передан как поток (_версия 2 только_) или возвращен как единая полезная нагрузка.
+Этот маршрут выполняет запрос на указанной конечной точке запроса. Он поддерживает различные версии, форматы и переменные запроса. Ответ может быть потоковым (_только версия 2_) или возвращаться в виде единой полезной нагрузки.
 
 ### Аутентификация {#authentication}
 
 - **Обязательно**: Да
-- **Метод**: Основная аутентификация через OpenAPI Key/Secret
-- **Права доступа**: Соответствующие права для конечной точки запроса.
+- **Метод**: Базовая аутентификация через OpenAPI Key/Secret
+- **Разрешения**: Соответствующие разрешения для конечной точки запроса.
 
-### URL Параметры {#url-parameters}
+### URL параметры {#url-parameters}
 
-- `queryEndpointId` (обязательно): Уникальный идентификатор конечной точки запроса, которую необходимо выполнить.
+- `queryEndpointId` (обязательно): Уникальный идентификатор конечной точки запроса для выполнения.
 
 ### Параметры запроса {#query-parameters}
 
@@ -104,18 +105,18 @@ limit 10
 #### V2 {#v2}
 
 - `format` (необязательно): Формат ответа. Поддерживает все форматы, поддерживаемые ClickHouse.
-- `param_:name` Переменные запроса, которые будут использоваться в запросе. `name` должен соответствовать имени переменной в запросе. Это следует использовать только когда тело запроса — это поток.
-- `:clickhouse_setting` Любую поддерживаемую [настройку ClickHouse](/operations/settings/settings) можно передать как параметр запроса.
+- `param_:name` Переменные запроса, которые будут использоваться в запросе. `name` должен соответствовать имени переменной в запросе. Это следует использовать только в том случае, если тело запроса является потоком.
+- `:clickhouse_setting` Любая поддерживаемая [настройка ClickHouse](/operations/settings/settings) может быть передана в качестве параметра запроса.
 
 ### Заголовки {#headers}
 
-- `x-clickhouse-endpoint-version` (необязательно): Версия конечной точки запроса. Поддерживаемые версии: `1` и `2`. Если не предоставлено, версия по умолчанию — последняя сохраненная для конечной точки.
-- `x-clickhouse-endpoint-upgrade` (необязательно): Установите этот заголовок для обновления версии конечной точки. Это работает совместно с заголовком `x-clickhouse-endpoint-version`.
+- `x-clickhouse-endpoint-version` (необязательно): Версия конечной точки запроса. Поддерживаемые версии: `1` и `2`. Если не указано, версия по умолчанию — последняя сохраненная для конечной точки.
+- `x-clickhouse-endpoint-upgrade` (необязательно): Установите этот заголовок, чтобы обновить версию конечной точки. Это работает в связке с заголовком `x-clickhouse-endpoint-version`.
 
 ### Тело запроса {#request-body}
 
 - `queryVariables` (необязательно): Объект, содержащий переменные, которые будут использоваться в запросе.
-- `format` (необязательно): Формат ответа. Если конечная точка API запроса версии 2, любой поддерживаемый формат ClickHouse возможен. Поддерживаемые форматы для версии 1:
+- `format` (необязательно): Формат ответа. Если конечная точка API-запроса версии 2, возможен любой поддерживаемый формат ClickHouse. Поддерживаемые форматы для v1:
   - TabSeparated
   - TabSeparatedWithNames
   - TabSeparatedWithNamesAndTypes
@@ -128,25 +129,25 @@ limit 10
 ### Ответы {#responses}
 
 - **200 OK**: Запрос был успешно выполнен.
-- **400 Bad Request**: Запрос был неправильно сформирован.
-- **401 Unauthorized**: Запрос был сделан без аутентификации или с недостаточными правами.
+- **400 Bad Request**: Запрос был сформирован неправильно.
+- **401 Unauthorized**: Запрос был выполнен без аутентификации или с недостаточными правами.
 - **404 Not Found**: Указанная конечная точка запроса не найдена.
 
 ### Обработка ошибок {#error-handling}
 
-- Убедитесь, что запрос включает действительные учетные данные аутентификации.
-- Проверьте `queryEndpointId` и `queryVariables`, чтобы убедиться, что они корректны.
+- Убедитесь, что запрос включает действительные учетные данные для аутентификации.
+- Проверьте `queryEndpointId` и `queryVariables`, чтобы убедиться, что они правильные.
 - Обрабатывайте любые ошибки сервера корректно, возвращая соответствующие сообщения об ошибках.
 
 ### Обновление версии конечной точки {#upgrading-the-endpoint-version}
 
-Чтобы обновить версию конечной точки с `v1` до `v2`, включите заголовок `x-clickhouse-endpoint-upgrade` в запрос и установите его значение на `1`. Это инициирует процесс обновления и позволит вам использовать функции и улучшения, доступные в `v2`.
+Чтобы обновить версию конечной точки с `v1` на `v2`, включите заголовок `x-clickhouse-endpoint-upgrade` в запрос и установите его в `1`. Это запустит процесс обновления и позволит вам использовать функции и улучшения, доступные в `v2`.
 
 ## Примеры {#examples}
 
-### Основной запрос {#basic-request}
+### Базовый запрос {#basic-request}
 
-**SQL конечной точки API запроса:**
+**SQL API-конечной точки запроса:**
 
 ```sql
 SELECT database, name as num_tables FROM system.tables limit 3;
@@ -181,7 +182,7 @@ fetch(
 )
   .then((response) => response.json())
   .then((data) => console.log(data))
-  .catch((error) => console.error("Error:", error));
+  .catch((error) => console.error("Ошибка:", error));
 ```
 
 **Ответ:**
@@ -235,7 +236,7 @@ fetch(
 )
   .then((response) => response.json())
   .then((data) => console.log(data))
-  .catch((error) => console.error("Error:", error));
+  .catch((error) => console.error("Ошибка:", error));
 ```
 
 **Ответ:**
@@ -246,9 +247,9 @@ fetch(
 {"database":"INFORMATION_SCHEMA","num_tables":"REFERENTIAL_CONSTRAINTS"}
 ```
 
-### Запрос с переменными запроса и версией 2 в формате JSONCompactEachRow {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
+### Запрос с переменными запроса и Версией 2 в формате JSONCompactEachRow {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
 
-**SQL конечной точки API запроса:**
+**SQL API-конечной точки запроса:**
 
 ```sql
 SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: String}) AND database = {database: String};
@@ -286,7 +287,7 @@ fetch(
 )
   .then((response) => response.json())
   .then((data) => console.log(data))
-  .catch((error) => console.error("Error:", error));
+  .catch((error) => console.error("Ошибка:", error));
 ```
 
 **Ответ:**
@@ -310,10 +311,10 @@ ENGINE = MergeTree
 ORDER BY tuple()
 ```
 
-**SQL конечной точки API запроса:**
+**SQL API-конечной точки запроса:**
 
 ```sql
-  INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
+INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
 ```
 
 **cURL:**
@@ -351,7 +352,7 @@ fetch(
 )
   .then((response) => response.json())
   .then((data) => console.log(data))
-  .catch((error) => console.error("Error:", error));
+  .catch((error) => console.error("Ошибка:", error));
 ```
 
 **Ответ:**
@@ -360,9 +361,9 @@ fetch(
 OK
 ```
 
-### Запрос с настройкой ClickHouse max_threads, установленной на 8 {#request-with-clickhouse-settings-max_threads-set-to-8}
+### Запрос с установленной настройкой ClickHouse max_threads на 8 {#request-with-clickhouse-settings-max_threads-set-to-8}
 
-**SQL конечной точки API запроса:**
+**SQL API-конечной точки запроса:**
 
 ```sql
 SELECT * from system.tables;
@@ -393,12 +394,12 @@ fetch(
 )
   .then((response) => response.json())
   .then((data) => console.log(data))
-  .catch((error) => console.error("Error:", error));
+  .catch((error) => console.error("Ошибка:", error));
 ```
 
 ### Запрос и парсинг ответа как поток {#request-and-parse-the-response-as-a-stream}
 
-**SQL конечной точки API запроса:**
+**SQL API-конечной точки запроса:**
 
 ```sql
 SELECT name, database from system.tables;
@@ -428,7 +429,7 @@ async function fetchAndLogChunks(
   });
 
   if (!response.ok) {
-    console.error(`HTTP error! Status: ${response.status}`);
+    console.error(`Ошибка HTTP! Статус: ${response.status}`);
     return;
   }
 
@@ -438,7 +439,7 @@ async function fetchAndLogChunks(
   });
 
   reader.on("end", () => {
-    console.log("Поток закончился.");
+    console.log("Поток завершен.");
   });
 
   reader.on("error", (err) => {
@@ -463,7 +464,7 @@ fetchAndLogChunks(endpointUrl, openApiKeyId, openApiKeySecret).catch((err) =>
 > {"name":"COLUMNS","database":"INFORMATION_SCHEMA"}
 > {"name":"KEY_COLUMN_USAGE","database":"INFORMATION_SCHEMA"}
 ...
-> Поток закончился.
+> Поток завершен.
 ```
 
 ### Вставка потока из файла в таблицу {#insert-a-stream-from-a-file-into-a-table}
@@ -476,7 +477,7 @@ fetchAndLogChunks(endpointUrl, openApiKeyId, openApiKeySecret).catch((err) =>
 "2","{""name"":""Jane"",""age"":25}","Jane"
 ```
 
-**SQL Создания Таблицы:**
+**SQL для создания таблицы:**
 
 ```sql
 create table default.my_first_table
@@ -488,7 +489,7 @@ create table default.my_first_table
 ORDER BY user_id;
 ```
 
-**SQL конечной точки API запроса:**
+**SQL API-конечной точки запроса:**
 
 ```sql
 INSERT INTO default.my_first_table

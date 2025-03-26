@@ -1,29 +1,30 @@
 ---
-title: Regexp
-slug: /interfaces/formats/Regexp
-keywords: ['Regexp']
-input_format: true
-output_format: false
 alias: []
+description: 'Документация для формата Regexp'
+input_format: true
+keywords: ['Regexp']
+output_format: false
+slug: /interfaces/formats/Regexp
+title: 'Regexp'
 ---
 
-| Входные данные | Выходные данные | Псевдоним |
-|----------------|----------------|-----------|
-| ✔              | ✗              |           |
+| Input | Output | Alias |
+|-------|--------|-------|
+| ✔     | ✗      |       |
 
 ## Описание {#description}
 
-Формат `Regex` разбирает каждую строку импортированных данных в соответствии с предоставленным регулярным выражением.
+Формат `Regex` парсит каждую строку импортируемых данных в соответствии с заданным регулярным выражением.
 
 **Использование**
 
-Регулярное выражение из настройки [format_regexp](/operations/settings/settings-formats.md/#format_regexp) применяется к каждой строке импортированных данных. Количество подшаблонов в регулярном выражении должно быть равно количеству колонок в импортированном наборе данных.
+Регулярное выражение из настройки [format_regexp](/operations/settings/settings-formats.md/#format_regexp) применяется ко всем строкам импортируемых данных. Количество подшаблонов в регулярном выражении должно соответствовать количеству столбцов в импортируемом наборе данных.
 
-Строки импортированных данных должны разделяться символом новой строки `'\n'` или новой строкой в стиле DOS `"\r\n"`.
+Строки импортируемых данных должны отделяться символом новой строки `'\n'` или новой строкой в формате DOS `"\r\n"`.
 
-Содержимое каждого совпадающего подшаблона разбирается с помощью метода соответствующего типа данных в соответствии с настройкой [format_regexp_escaping_rule](/operations/settings/settings-formats.md/#format_regexp_escaping_rule).
+Содержимое каждого подходящего подшаблона обрабатывается методом соответствующего типа данных в соответствии с настройкой [format_regexp_escaping_rule](/operations/settings/settings-formats.md/#format_regexp_escaping_rule).
 
-Если регулярное выражение не совпадает со строкой, и [format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) установлено в 1, строка будет молча пропущена. В противном случае будет выброшено исключение.
+Если регулярное выражение не совпадает со строкой и [format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) установлено в 1, строка будет тихо пропущена. В противном случае будет выброшено исключение.
 
 ## Пример использования {#example-usage}
 
@@ -48,11 +49,11 @@ $ cat data.tsv | clickhouse-client  --query "INSERT INTO imp_regex_table SETTING
 
 Теперь мы можем `SELECT` данные из таблицы, чтобы увидеть, как формат `Regex` распарсил данные из файла:
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT * FROM imp_regex_table;
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─id─┬─array───┬─string─┬───────date─┐
 │  1 │ [1,2,3] │ str1   │ 2020-01-01 │
 │  2 │ [1,2,3] │ str2   │ 2020-01-02 │
@@ -67,10 +68,10 @@ SELECT * FROM imp_regex_table;
 - `format_regexp` — [String](/sql-reference/data-types/string.md). Содержит регулярное выражение в формате [re2](https://github.com/google/re2/wiki/Syntax).
 - `format_regexp_escaping_rule` — [String](/sql-reference/data-types/string.md). Поддерживаются следующие правила экранирования:
 
-  - CSV (аналогично [CSV](/interfaces/formats/CSV))
-  - JSON (аналогично [JSONEachRow](/interfaces/formats/JSONEachRow))
-  - Escaped (аналогично [TSV](/interfaces/formats/TabSeparated))
-  - Quoted (аналогично [Values](/interfaces/formats/Values))
-  - Raw (извлекает подшаблоны полностью, без правил экранирования, аналогично [TSVRaw](/interfaces/formats/TabSeparated))
+  - CSV (аналогично [CSV](/interfaces/formats/CSV)
+  - JSON (аналогично [JSONEachRow](/interfaces/formats/JSONEachRow)
+  - Escaped (аналогично [TSV](/interfaces/formats/TabSeparated)
+  - Quoted (аналогично [Values](/interfaces/formats/Values)
+  - Raw (извлекает подшаблоны целиком, без правил экранирования, аналогично [TSVRaw](/interfaces/formats/TabSeparated)
 
-- `format_regexp_skip_unmatched` — [UInt8](/sql-reference/data-types/int-uint.md). Определяет необходимость выбрасывания исключения в случае, если выражение `format_regexp` не совпадает с импортированными данными. Может быть установлено в `0` или `1`.
+- `format_regexp_skip_unmatched` — [UInt8](/sql-reference/data-types/int-uint.md). Определяет необходимость выбрасывания исключения в случае, если выражение `format_regexp` не совпадает с импортируемыми данными. Может быть установлено в `0` или `1`.

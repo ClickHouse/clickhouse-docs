@@ -1,52 +1,52 @@
 ---
-slug: /sql-reference/table-functions/odbc
-sidebar_position: 150
-sidebar_label: odbc
-title: 'odbc'
 description: 'Возвращает таблицу, которая подключена через ODBC.'
+sidebar_label: 'odbc'
+sidebar_position: 150
+slug: /sql-reference/table-functions/odbc
+title: 'odbc'
 ---
 
 
-# odbc Функция Таблицы
+# odbc Табличная Функция
 
 Возвращает таблицу, которая подключена через [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity).
 
-``` sql
+```sql
 odbc(connection_settings, external_database, external_table)
 ```
 
 Параметры:
 
 - `connection_settings` — Имя секции с настройками подключения в файле `odbc.ini`.
-- `external_database` — Имя базы данных во внешней СУБД.
+- `external_database` — Имя базы данных в внешней СУБД.
 - `external_table` — Имя таблицы в `external_database`.
 
-Для безопасной реализации ODBC подключений ClickHouse использует отдельную программу `clickhouse-odbc-bridge`. Если ODBC драйвер загружен напрямую из `clickhouse-server`, проблемы с драйвером могут привести к сбою сервера ClickHouse. ClickHouse автоматически запускает `clickhouse-odbc-bridge`, когда это требуется. Программа ODBC моста устанавливается из того же пакета, что и `clickhouse-server`.
+Для безопасной реализации ODBC подключений ClickHouse использует отдельную программу `clickhouse-odbc-bridge`. Если драйвер ODBC загружается напрямую из `clickhouse-server`, проблемы с драйвером могут привести к падению сервера ClickHouse. ClickHouse автоматически запускает `clickhouse-odbc-bridge`, когда это требуется. Программа моста ODBC устанавливается из того же пакета, что и `clickhouse-server`.
 
-Поля со значениями `NULL` из внешней таблицы преобразуются в значения по умолчанию для базового типа данных. Например, если поле таблицы MySQL на удаленном сервере имеет тип `INT NULL`, оно преобразуется в 0 (значение по умолчанию для типа данных ClickHouse `Int32`).
+Поля со значениями `NULL` из внешней таблицы преобразуются в значения по умолчанию для базового типа данных. Например, если поле таблицы MySQL имеет тип `INT NULL`, оно преобразуется в 0 (значение по умолчанию для типа данных ClickHouse `Int32`).
 
 ## Пример Использования {#usage-example}
 
 **Получение данных из локальной установки MySQL через ODBC**
 
-Этот пример проверен на Ubuntu Linux 18.04 и сервере MySQL 5.7.
+Этот пример проверен на Ubuntu Linux 18.04 и MySQL сервере 5.7.
 
-Убедитесь, что unixODBC и MySQL Connector установлены.
+Убедитесь, что установлен unixODBC и MySQL Connector.
 
-По умолчанию (если установлено из пакетов) ClickHouse запускается как пользователь `clickhouse`. Поэтому вам нужно создать и настроить этого пользователя на сервере MySQL.
+По умолчанию (если установлен из пакетов) ClickHouse запускается как пользователь `clickhouse`. Поэтому вам нужно создать и настроить этого пользователя в сервере MySQL.
 
-``` bash
+```bash
 $ sudo mysql
 ```
 
-``` sql
+```sql
 mysql> CREATE USER 'clickhouse'@'localhost' IDENTIFIED BY 'clickhouse';
 mysql> GRANT ALL PRIVILEGES ON *.* TO 'clickhouse'@'clickhouse' WITH GRANT OPTION;
 ```
 
 Затем настройте подключение в `/etc/odbc.ini`.
 
-``` bash
+```bash
 $ cat /etc/odbc.ini
 [mysqlconn]
 DRIVER = /usr/local/lib/libmyodbc5w.so
@@ -57,19 +57,19 @@ USERNAME = clickhouse
 PASSWORD = clickhouse
 ```
 
-Вы можете проверить подключение с помощью утилиты `isql` из установки unixODBC.
+Вы можете проверить подключение, используя утилиту `isql` из установки unixODBC.
 
-``` bash
+```bash
 $ isql -v mysqlconn
 +-------------------------+
-| Подключено!                           |
+| Подключено!                       |
 |                                       |
 ...
 ```
 
 Таблица в MySQL:
 
-``` text
+```text
 mysql> CREATE TABLE `test`.`test` (
     ->   `int_id` INT NOT NULL AUTO_INCREMENT,
     ->   `int_nullable` INT NULL DEFAULT NULL,
@@ -92,11 +92,11 @@ mysql> select * from test;
 
 Извлечение данных из таблицы MySQL в ClickHouse:
 
-``` sql
+```sql
 SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 ```
 
-``` text
+```text
 ┌─int_id─┬─int_nullable─┬─float─┬─float_nullable─┐
 │      1 │            0 │     2 │              0 │
 └────────┴──────────────┴───────┴────────────────┘
@@ -105,4 +105,4 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 ## См. Также {#see-also}
 
 - [ODBC словари](/sql-reference/dictionaries#dbms)
-- [ODBC движок таблицы](/engines/table-engines/integrations/odbc).
+- [ODBC движок таблиц](/engines/table-engines/integrations/odbc).

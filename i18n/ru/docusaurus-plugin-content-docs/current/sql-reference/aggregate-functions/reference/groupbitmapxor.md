@@ -1,22 +1,22 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/groupbitmapxor
+description: 'Вычисляет XOR для столбца битовой карты и возвращает кардинальность типа UInt64; при использовании суффикса -State возвращает объект битовой карты.'
 sidebar_position: 151
-title: groupBitmapXor
-description: "Вычисляет XOR битмап колонки и возвращает кардинальность типа UInt64. Если используется с суффиксом -State, то возвращает объект битмап."
+slug: /sql-reference/aggregate-functions/reference/groupbitmapxor
+title: 'groupBitmapXor'
 ---
 
 
 # groupBitmapXor
 
-`groupBitmapXor` вычисляет XOR битмап колонки и возвращает кардинальность типа UInt64. Если используется с суффиксом -State, то возвращает [объект битмап](../../../sql-reference/functions/bitmap-functions.md).
+`groupBitmapXor` вычисляет XOR для столбца битовой карты и возвращает кардинальность типа UInt64; если используется суффикс -State, тогда он возвращает [объект битовой карты](../../../sql-reference/functions/bitmap-functions.md).
 
-``` sql
+```sql
 groupBitmapOr(expr)
 ```
 
 **Аргументы**
 
-`expr` – Выражение, которое приводит к типу `AggregateFunction(groupBitmap, UInt*)`.
+`expr` – выражение, которое дает результат типа `AggregateFunction(groupBitmap, UInt*)`.
 
 **Возвращаемое значение**
 
@@ -24,7 +24,7 @@ groupBitmapOr(expr)
 
 **Пример**
 
-``` sql
+```sql
 DROP TABLE IF EXISTS bitmap_column_expr_test2;
 CREATE TABLE bitmap_column_expr_test2
 (

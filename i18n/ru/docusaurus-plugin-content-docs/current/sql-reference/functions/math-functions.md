@@ -1,7 +1,10 @@
+
 ---
-slug: /sql-reference/functions/math-functions
+description: 'Документация по математическим функциям'
+sidebar_label: 'Математические'
 sidebar_position: 125
-sidebar_label: Математические
+slug: /sql-reference/functions/math-functions
+title: 'Математические функции'
 ---
 
 
@@ -118,7 +121,7 @@ intExp2(x)
 
 ## log2 {#log2}
 
-Возвращает двоичный логарифм аргумента.
+Возвращает бинарный логарифм аргумента.
 
 **Синтаксис**
 
@@ -214,7 +217,7 @@ cbrt(x)
 
 ## erf {#erf}
 
-Если `x` неотрицательный, то $erf(\frac{x}{\sigma\sqrt{2}})$ — это вероятность того, что случайная величина с нормальным распределением и стандартным отклонением $\sigma$ примет значение, которое отделено от ожидаемого значения более чем на `x`.
+Если `x` неотрицательный, то $erf(\frac{x}{\sigma\sqrt{2}})$ — это вероятность того, что случайная величина с нормальным распределением со стандартным отклонением $\sigma$ принимает значение, отделённое от ожидаемого значения более чем на `x`.
 
 **Синтаксис**
 
@@ -232,9 +235,9 @@ erf(x)
 
 **Пример**
 
-(правило трех сигм)
+(правило трёх сигм)
 
-``` sql
+```sql
 SELECT erf(3 / sqrt(2));
 ```
 
@@ -366,7 +369,7 @@ tan(x)
 
 ## asin {#asin}
 
-Возвращает арксинус аргумента.
+Возвращает арк*sinus аргумента.
 
 **Синтаксис**
 
@@ -384,7 +387,7 @@ asin(x)
 
 ## acos {#acos}
 
-Возвращает арккосинус аргумента.
+Возвращает арк*cosinus аргумента.
 
 **Синтаксис**
 
@@ -402,7 +405,7 @@ acos(x)
 
 ## atan {#atan}
 
-Возвращает арктангенс аргумента.
+Возвращает арк*tangens аргумента.
 
 **Синтаксис**
 
@@ -445,13 +448,13 @@ pow(x, y)
 
 **Синтаксис**
 
-``` sql
+```sql
 cosh(x)
 ```
 
 **Аргументы**
 
-- `x` — Угол в радианах. Значения из интервала: $-\infty \lt x \lt +\infty$. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
+- `x` — угол в радианах. Значения из интервала: $-\infty \lt x \lt +\infty$. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
 
 **Возвращаемое значение**
 
@@ -461,7 +464,7 @@ cosh(x)
 
 **Пример**
 
-``` sql
+```sql
 SELECT cosh(0);
 ```
 
@@ -479,13 +482,13 @@ SELECT cosh(0);
 
 **Синтаксис**
 
-``` sql
+```sql
 acosh(x)
 ```
 
 **Аргументы**
 
-- `x` — Гиперболический косинус угла. Значения из интервала: $1 \le x \lt +\infty$. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
+- `x` — гиперболический косинус угла. Значения из интервала: $1 \le x \lt +\infty$. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
 
 **Возвращаемое значение**
 
@@ -495,7 +498,7 @@ acosh(x)
 
 **Пример**
 
-``` sql
+```sql
 SELECT acosh(1);
 ```
 
@@ -513,13 +516,13 @@ SELECT acosh(1);
 
 **Синтаксис**
 
-``` sql
+```sql
 sinh(x)
 ```
 
 **Аргументы**
 
-- `x` — Угол в радианах. Значения из интервала: $-\infty \lt x \lt +\infty$. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
+- `x` — угол в радианах. Значения из интервала: $-\infty \lt x \lt +\infty$. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
 
 **Возвращаемое значение**
 
@@ -529,7 +532,7 @@ sinh(x)
 
 **Пример**
 
-``` sql
+```sql
 SELECT sinh(0);
 ```
 
@@ -547,13 +550,13 @@ SELECT sinh(0);
 
 **Синтаксис**
 
-``` sql
+```sql
 asinh(x)
 ```
 
 **Аргументы**
 
-- `x` — Гиперболический синус угла. Значения из интервала: $-\infty \lt x \lt +\infty$. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
+- `x` — гиперболический синус угла. Значения из интервала: $-\infty \lt x \lt +\infty$. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
 
 **Возвращаемое значение**
 
@@ -563,7 +566,7 @@ asinh(x)
 
 **Пример**
 
-``` sql
+```sql
 SELECT asinh(0);
 ```
 
@@ -580,13 +583,13 @@ SELECT asinh(0);
 
 **Синтаксис**
 
-``` sql
+```sql
 tanh(x)
 ```
 
 **Аргументы**
 
-- `x` — Угол в радианах. Значения из интервала: $-\infty \lt x \lt +\infty$. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
+- `x` — угол в радианах. Значения из интервала: $-\infty \lt x \lt +\infty$. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
 
 **Возвращаемое значение**
 
@@ -596,7 +599,7 @@ tanh(x)
 
 **Пример**
 
-``` sql
+```sql
 SELECT tanh(0);
 ```
 
@@ -612,13 +615,13 @@ SELECT tanh(0);
 
 **Синтаксис**
 
-``` sql
+```sql
 atanh(x)
 ```
 
 **Аргументы**
 
-- `x` — Гиперболический тангенс угла. Значения из интервала: $-1 \lt x \lt 1$. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
+- `x` — гиперболический тангенс угла. Значения из интервала: $-1 \lt x \lt 1$. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
 
 **Возвращаемое значение**
 
@@ -628,7 +631,7 @@ atanh(x)
 
 **Пример**
 
-``` sql
+```sql
 SELECT atanh(0);
 ```
 
@@ -646,7 +649,7 @@ SELECT atanh(0);
 
 **Синтаксис**
 
-``` sql
+```sql
 atan2(y, x)
 ```
 
@@ -663,7 +666,7 @@ atan2(y, x)
 
 **Пример**
 
-``` sql
+```sql
 SELECT atan2(1, 1);
 ```
 
@@ -677,18 +680,18 @@ SELECT atan2(1, 1);
 
 ## hypot {#hypot}
 
-Возвращает длину гипотенузы прямоугольного треугольника. [Hypot](https://en.wikipedia.org/wiki/Hypot) избегает проблем, возникающих при возведении в квадрат очень больших или очень маленьких чисел.
+Возвращает длину гипотенузы прямоугольного треугольника. [Hypot](https://en.wikipedia.org/wiki/Hypot) предотвращает проблемы, возникающие при возведении в квадрат очень больших или очень малых чисел.
 
 **Синтаксис**
 
-``` sql
+```sql
 hypot(x, y)
 ```
 
 **Аргументы**
 
-- `x` — Первый катет прямоугольного треугольника. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
-- `y` — Второй катет прямоугольного треугольника. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
+- `x` — первый катет прямоугольного треугольника. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
+- `y` — второй катет прямоугольного треугольника. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
 
 **Возвращаемое значение**
 
@@ -698,7 +701,7 @@ hypot(x, y)
 
 **Пример**
 
-``` sql
+```sql
 SELECT hypot(1, 1);
 ```
 
@@ -716,7 +719,7 @@ SELECT hypot(1, 1);
 
 **Синтаксис**
 
-``` sql
+```sql
 log1p(x)
 ```
 
@@ -732,7 +735,7 @@ log1p(x)
 
 **Пример**
 
-``` sql
+```sql
 SELECT log1p(0);
 ```
 
@@ -750,13 +753,13 @@ SELECT log1p(0);
 
 **Синтаксис**
 
-``` sql
+```sql
 sign(x)
 ```
 
 **Аргументы**
 
-- `x` — Значения от $-\infty$ до $+\infty$. Поддерживает все числовые типы в ClickHouse.
+- `x` — Значения от $-\infty$ до $+\infty$. Поддерживаются все числовые типы в ClickHouse.
 
 **Возвращаемое значение**
 
@@ -768,7 +771,7 @@ sign(x)
 
 Знак для нулевого значения:
 
-``` sql
+```sql
 SELECT sign(0);
 ```
 
@@ -782,7 +785,7 @@ SELECT sign(0);
 
 Знак для положительного значения:
 
-``` sql
+```sql
 SELECT sign(1);
 ```
 
@@ -796,7 +799,7 @@ SELECT sign(1);
 
 Знак для отрицательного значения:
 
-``` sql
+```sql
 SELECT sign(-1);
 ```
 
@@ -823,13 +826,13 @@ sigmoid(x)
 
 **Возвращаемое значение**
 
-- Соответствующее значение вдоль сигмоидальной кривой между 0 и 1. [Float64](../data-types/float.md).
+- Соответствующее значение на сигмоидной кривой между 0 и 1. [Float64](../data-types/float.md).
 
 **Пример**
 
 Запрос:
 
-``` sql
+```sql
 SELECT round(sigmoid(x), 5) FROM (SELECT arrayJoin([-1, 0, 1]) AS x);
 ```
 
@@ -847,14 +850,14 @@ SELECT round(sigmoid(x), 5) FROM (SELECT arrayJoin([-1, 0, 1]) AS x);
 
 **Синтаксис**
 
-``` sql
+```sql
 degrees(x)
 ```
 
 **Аргументы**
 
-- `x` — Вход в радианах. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
-- `x` — Вход в радианах. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).  
+- `x` — Входное значение в радианах. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
+- `x` — Входное значение в радианах. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).  
 
 **Возвращаемое значение**
 
@@ -862,7 +865,7 @@ degrees(x)
 
 **Пример**
 
-``` sql
+```sql
 SELECT degrees(3.141592653589793);
 ```
 
@@ -880,13 +883,13 @@ SELECT degrees(3.141592653589793);
 
 **Синтаксис**
 
-``` sql
+```sql
 radians(x)
 ```
 
 **Аргументы**
 
-- `x` — Вход в градусах. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
+- `x` — Входное значение в градусах. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) или [Decimal*](../data-types/decimal.md).
 
 **Возвращаемое значение**
 
@@ -896,7 +899,7 @@ radians(x)
 
 **Пример**
 
-``` sql
+```sql
 SELECT radians(180);
 ```
 
@@ -910,20 +913,19 @@ SELECT radians(180);
 
 ## factorial {#factorial}
 
-Вычисляет факториал целочисленного значения. Работает с любым родным целым типом, включая UInt(8|16|32|64) и Int(8|16|32|64). Возвращаемый тип — UInt64.
+Вычисляет факториал целочисленного значения. Работает с любым нативным целочисленным типом, включая UInt(8|16|32|64) и Int(8|16|32|64). Возвращаемый тип — UInt64.
 
-Факториал 0 равен 1. Аналогично функция factorial() возвращает 1 для любого отрицательного значения. Максимальное положительное значение для входного аргумента — 20, значение 21 или больше приведет к выбросу исключения.
-
+Факториал 0 равен 1. Аналогично, функция factorial() возвращает 1 для любого отрицательного значения. Максимальное положительное значение для входного аргумента — 20, значение 21 или больше приведет к выбросу исключения.
 
 **Синтаксис**
 
-``` sql
+```sql
 factorial(n)
 ```
 
 **Пример**
 
-``` sql
+```sql
 SELECT factorial(10);
 ```
 
@@ -937,9 +939,9 @@ SELECT factorial(10);
 
 ## width_bucket {#width_bucket}
 
-Возвращает номер ведра, в которое попадает `operand` в гистограмме, имеющей `count` равновесных ведер, охватывающих диапазон от `low` до `high`. Возвращает `0`, если `operand < low`, и возвращает `count+1`, если `operand >= high`.
+Возвращает номер ведра, в которое попадает `operand` в гистограмме с `count` равными по ширине ведрами, охватывающими диапазон от `low` до `high`. Возвращает `0`, если `operand < low`, и возвращает `count+1`, если `operand >= high`.
 
-`operand`, `low`, `high` могут быть любым родным числовым типом. `count` может быть только беззнаковым родным целым числом, и его значение не может быть нулевым.
+`operand`, `low`, `high` могут быть любого нативного числового типа. `count` может быть только беззнаковым нативным целым числом и его значение не может быть равным нулю.
 
 **Синтаксис**
 
@@ -950,7 +952,7 @@ widthBucket(operand, low, high, count)
 
 **Пример**
 
-``` sql
+```sql
 SELECT widthBucket(10.15, -8.6, 23, 18);
 ```
 
@@ -964,7 +966,7 @@ SELECT widthBucket(10.15, -8.6, 23, 18);
 
 ## proportionsZTest {#proportionsztest}
 
-Возвращает статистику теста для двух пропорций Z-теста - статистического теста для сравнения пропорций из двух популяций `x` и `y`.
+Возвращает тестовую статистику для Z-теста двух пропорций - статистического теста для сравнения пропорций из двух популяций `x` и `y`.
 
 **Синтаксис**
 
@@ -974,15 +976,15 @@ proportionsZTest(successes_x, successes_y, trials_x, trials_y, conf_level, pool_
 
 **Аргументы**
 
-- `successes_x`: Число успешных попыток в популяции `x`. [UInt64](../data-types/int-uint.md).
-- `successes_y`: Число успешных попыток в популяции `y`. [UInt64](../data-types/int-uint.md).
-- `trials_x`: Число испытаний в популяции `x`. [UInt64](../data-types/int-uint.md).
-- `trials_y`: Число испытаний в популяции `y`. [UInt64](../data-types/int-uint.md).
+- `successes_x`: Количество удач в популяции `x`. [UInt64](../data-types/int-uint.md).
+- `successes_y`: Количество удач в популяции `y`. [UInt64](../data-types/int-uint.md).
+- `trials_x`: Количество испытаний в популяции `x`. [UInt64](../data-types/int-uint.md).
+- `trials_y`: Количество испытаний в популяции `y`. [UInt64](../data-types/int-uint.md).
 - `conf_level`: Уровень доверия для теста. [Float64](../data-types/float.md).
-- `pool_type`: Выбор объединения (способ, которым оценивается стандартная ошибка). Может быть либо `unpooled`, либо `pooled`. [String](../data-types/string.md). 
+- `pool_type`: Выбор пуллинга (способа, которым оценивается стандартная ошибка). Может быть либо `unpooled`, либо `pooled`. [String](../data-types/string.md). 
 
 :::note
-Для аргумента `pool_type`: В объединенной версии, две пропорции усредняются, и только одна пропорция используется для оценки стандартной ошибки. В не объединенной версии обе пропорции используются отдельно.
+Для аргумента `pool_type`: В варианте с пуллингом две пропорции усредняются, и для оценки стандартной ошибки используется только одна пропорция. В варианте без пуллинга две пропорции используются отдельно.
 :::
 
 **Возвращаемое значение**

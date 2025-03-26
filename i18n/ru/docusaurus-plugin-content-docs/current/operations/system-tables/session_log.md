@@ -1,24 +1,28 @@
 ---
-description: 'Системная таблица, содержащая информацию о всех успешных и неуспешных событиях входа и выхода.'
+description: 'Системная таблица, содержащая информацию обо всех успешных и неудачных событиях входа и выхода.'
+keywords: ['системная таблица', 'session_log']
 slug: /operations/system-tables/session_log
 title: 'system.session_log'
-keywords: ['системная таблица', 'session_log']
 ---
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+
+
+# system.session_log
 
 <SystemTableCloud/>
 
-Содержит информацию о всех успешных и неуспешных событиях входа и выхода.
+Содержит информацию обо всех успешных и неудачных событиях входа и выхода.
 
-Колонки:
+Столбцы:
 
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, который выполняет запрос.
+- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
 - `type` ([Enum8](../../sql-reference/data-types/enum.md)) — Результат входа/выхода. Возможные значения:
     - `LoginFailure` — Ошибка входа.
     - `LoginSuccess` — Успешный вход.
     - `Logout` — Выход из системы.
-- `auth_id` ([UUID](../../sql-reference/data-types/uuid.md)) — Идентификатор аутентификации, который является UUID и автоматически генерируется каждый раз при входе пользователя.
-- `session_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор сеанса, который передается клиентом через [HTTP](../../interfaces/http.md) интерфейс.
+- `auth_id` ([UUID](../../sql-reference/data-types/uuid.md)) — Идентификатор аутентификации, который является UUID и автоматически генерируется каждый раз, когда пользователь входит в систему.
+- `session_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор сессии, который передается клиентом через [HTTP](../../interfaces/http.md) интерфейс.
 - `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата входа/выхода.
 - `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время входа/выхода.
 - `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время начала входа/выхода с точностью до микросекунд.
@@ -32,11 +36,11 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
     - `KERBEROS`
     - `SSL_CERTIFICATE`
 - `profiles` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — Список профилей, установленных для всех ролей и/или пользователей.
-- `roles` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — Список ролей, к которым применяется профиль.
-- `settings` ([Array](../../sql-reference/data-types/array.md)([Tuple](../../sql-reference/data-types/tuple.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md), [String](../../sql-reference/data-types/string.md)))) — Настройки, которые были изменены при входе/выходе клиента.
-- `client_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — IP-адрес, который использовался для входа/выхода.
-- `client_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — Порт клиента, который использовался для входа/выхода.
-- `interface` ([Enum8](../../sql-reference/data-types/enum.md)) — Интерфейс, с которого начат вход. Возможные значения:
+- `roles` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — Список ролей, к которым применим профиль.
+- `settings` ([Array](../../sql-reference/data-types/array.md)([Tuple](../../sql-reference/data-types/tuple.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md), [String](../../sql-reference/data-types/string.md)))) — Настройки, измененные при входе/выходе клиента.
+- `client_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — IP-адрес, использованный для входа/выхода.
+- `client_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — Порт клиента, использованный для входа/выхода.
+- `interface` ([Enum8](../../sql-reference/data-types/enum.md)) — Интерфейс, с которого был инициирован вход. Возможные значения:
     - `TCP`
     - `HTTP`
     - `gRPC`
@@ -46,21 +50,21 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 - `client_name` ([String](../../sql-reference/data-types/string.md)) — Имя `clickhouse-client` или другого TCP-клиента.
 - `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Ревизия `clickhouse-client` или другого TCP-клиента.
 - `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Основная версия `clickhouse-client` или другого TCP-клиента.
-- `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Небольшая версия `clickhouse-client` или другого TCP-клиента.
+- `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Минорная версия `clickhouse-client` или другого TCP-клиента.
 - `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Патч-компонент версии `clickhouse-client` или другого TCP-клиента.
-- `failure_reason` ([String](../../sql-reference/data-types/string.md)) — Сообщение исключения, содержащее причину неудачи входа/выхода.
+- `failure_reason` ([String](../../sql-reference/data-types/string.md)) — Сообщение об исключении, содержащее причину неудачи входа/выхода.
 
 **Пример**
 
 Запрос:
 
-``` sql
+```sql
 SELECT * FROM system.session_log LIMIT 1 FORMAT Vertical;
 ```
 
 Результат:
 
-``` text
+```text
 Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal

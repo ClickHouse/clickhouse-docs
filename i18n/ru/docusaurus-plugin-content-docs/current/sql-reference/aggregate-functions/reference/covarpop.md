@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/covarpop
+description: 'Вычисляет популяционную ковариацию'
 sidebar_position: 121
-title: "covarPop"
-description: "Вычисляет популяционную ковариацию"
+slug: /sql-reference/aggregate-functions/reference/covarpop
+title: 'covarPop'
 ---
 
 
@@ -15,7 +15,7 @@ $$
 $$
 
 :::note
-Эта функция использует численно неустойчивый алгоритм. Если вам нужна [численная стабильность](https://en.wikipedia.org/wiki/Numerical_stability) в расчетах, используйте функцию [`covarPopStable`](../reference/covarpopstable.md). Она работает медленнее, но обеспечивает меньшую вычислительную ошибку.
+Эта функция использует численно нестабильный алгоритм. Если вам нужна [численная стабильность](https://en.wikipedia.org/wiki/Numerical_stability) в вычислениях, используйте функцию [`covarPopStable`](../reference/covarpopstable.md). Она работает медленнее, но обеспечивает меньшую вычислительную ошибку.
 :::
 
 **Синтаксис**

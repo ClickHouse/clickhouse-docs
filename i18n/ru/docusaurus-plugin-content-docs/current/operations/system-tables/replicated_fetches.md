@@ -1,30 +1,35 @@
 ---
-description: 'Системная таблица, содержащая информацию о текущих запущенных фоновых выборках.'
+description: 'Системная таблица, содержащая информацию о текущих фоновых
+  извлечениях.'
+keywords: ['системная таблица', 'replicated_fetches']
 slug: /operations/system-tables/replicated_fetches
 title: 'system.replicated_fetches'
-keywords: ['system table', 'replicated_fetches']
 ---
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+
+
+# system.replicated_fetches
 
 <SystemTableCloud/>
 
-Содержит информацию о текущих запущенных фоновых выборках.
+Содержит информацию о текущих фоновых извлечениях.
 
-Колонки:
+Столбцы:
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — Название базы данных.
+- `database` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных.
 
-- `table` ([String](../../sql-reference/data-types/string.md)) — Название таблицы.
+- `table` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы.
 
-- `elapsed` ([Float64](../../sql-reference/data-types/float.md)) — Время, прошедшее (в секундах) с момента начала отображения текущих запущенных фоновых выборок.
+- `elapsed` ([Float64](../../sql-reference/data-types/float.md)) — Время, прошедшее (в секундах) с момента начала отображения текущих фоновых извлечений.
 
 - `progress` ([Float64](../../sql-reference/data-types/float.md)) — Процент завершенной работы от 0 до 1.
 
-- `result_part_name` ([String](../../sql-reference/data-types/string.md)) — Название части, которая будет сформирована в результате отображения текущих запущенных фоновых выборок.
+- `result_part_name` ([String](../../sql-reference/data-types/string.md)) — Имя части, которая будет сформирована в результате отображения текущих фоновых извлечений.
 
-- `result_part_path` ([String](../../sql-reference/data-types/string.md)) — Абсолютный путь к части, которая будет сформирована в результате отображения текущих запущенных фоновых выборок.
+- `result_part_path` ([String](../../sql-reference/data-types/string.md)) — Абсолютный путь к части, которая будет сформирована в результате отображения текущих фоновых извлечений.
 
-- `partition_id` ([String](../../sql-reference/data-types/string.md)) — ID партиции.
+- `partition_id` ([String](../../sql-reference/data-types/string.md)) — ID раздела.
 
 - `total_size_bytes_compressed` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Общий размер (в байтах) сжатых данных в результирующей части.
 
@@ -36,21 +41,21 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 - `source_replica_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — Номер порта исходной реплики.
 
-- `interserver_scheme` ([String](../../sql-reference/data-types/string.md)) — Название межсерверной схемы.
+- `interserver_scheme` ([String](../../sql-reference/data-types/string.md)) — Имя межсерверной схемы.
 
-- `URI` ([String](../../sql-reference/data-types/string.md)) — Унифицированный идентификатор ресурса.
+- `URI` ([String](../../sql-reference/data-types/string.md)) — Уникальный идентификатор ресурса.
 
-- `to_detached` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, выполняется ли текущая запущенная фоновая выборка с использованием выражения `TO DETACHED`.
+- `to_detached` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, выполняется ли текущее фоновое извлечение с использованием выражения `TO DETACHED`.
 
 - `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Идентификатор потока.
 
 **Пример**
 
-``` sql
+```sql
 SELECT * FROM system.replicated_fetches LIMIT 1 FORMAT Vertical;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 database:                    default
@@ -71,6 +76,6 @@ to_detached:                 0
 thread_id:                   54
 ```
 
-**Смотрите Также**
+**См. также**
 
-- [Управление Таблицами ReplicatedMergeTree](../../sql-reference/statements/system.md/#managing-replicatedmergetree-tables)
+- [Управление таблицами ReplicatedMergeTree](../../sql-reference/statements/system.md/#managing-replicatedmergetree-tables)

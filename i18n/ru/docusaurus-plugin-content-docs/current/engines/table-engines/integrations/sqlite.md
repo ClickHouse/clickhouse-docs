@@ -1,9 +1,9 @@
 ---
-slug: /engines/table-engines/integrations/sqlite
+description: 'Движок позволяет импортировать и экспортировать данные в SQLite и поддерживает запросы к таблицам SQLite напрямую из ClickHouse.'
+sidebar_label: 'SQLite'
 sidebar_position: 185
-sidebar_label: SQLite
-title: "SQLite"
-description: "Движок позволяет импортировать и экспортировать данные в SQLite и поддерживает запросы к таблицам SQLite непосредственно из ClickHouse."
+slug: /engines/table-engines/integrations/sqlite
+title: 'SQLite'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -13,11 +13,11 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
-Движок позволяет импортировать и экспортировать данные в SQLite и поддерживает запросы к таблицам SQLite непосредственно из ClickHouse.
+Движок позволяет импортировать и экспортировать данные в SQLite и поддерживает запросы к таблицам SQLite напрямую из ClickHouse.
 
 ## Создание таблицы {#creating-a-table}
 
-``` sql
+```sql
     CREATE TABLE [IF NOT EXISTS] [db.]table_name
     (
         name1 [type1],
@@ -28,7 +28,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 **Параметры движка**
 
 - `db_path` — Путь к файлу SQLite с базой данных.
-- `table` — Название таблицы в базе данных SQLite.
+- `table` — Имя таблицы в базе данных SQLite.
 
 ## Пример использования {#usage-example}
 
@@ -38,7 +38,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 SHOW CREATE TABLE sqlite_db.table2;
 ```
 
-``` text
+```text
 CREATE TABLE SQLite.table2
 (
     `col1` Nullable(Int32),
@@ -49,7 +49,7 @@ ENGINE = SQLite('sqlite.db','table2');
 
 Возвращает данные из таблицы:
 
-``` sql
+```sql
 SELECT * FROM sqlite_db.table2 ORDER BY col1;
 ```
 
@@ -64,4 +64,4 @@ SELECT * FROM sqlite_db.table2 ORDER BY col1;
 **См. также**
 
 - [SQLite](../../../engines/database-engines/sqlite.md) движок
-- [sqlite](../../../sql-reference/table-functions/sqlite.md) функция таблицы
+- [sqlite](../../../sql-reference/table-functions/sqlite.md) табличная функция

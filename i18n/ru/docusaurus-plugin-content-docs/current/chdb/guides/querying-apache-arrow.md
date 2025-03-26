@@ -1,13 +1,12 @@
 ---
-title: Как запрашивать Apache Arrow с помощью chDB
-sidebar_label: Запросы к Apache Arrow
+title: 'Как выполнять запросы к Apache Arrow с chDB'
+sidebar_label: 'Запросы к Apache Arrow'
 slug: /chdb/guides/apache-arrow
-description: В этом руководстве мы научимся запрашивать таблицы Apache Arrow с помощью chDB
-keywords: [chdb, Apache Arrow]
+description: 'В этом руководстве мы научимся выполнять запросы к таблицам Apache Arrow с помощью chDB'
+keywords: ['chdb', 'Apache Arrow']
 ---
 
-[Apache Arrow](https://arrow.apache.org/) — это стандартизированный колоночный формат памяти, который находит все более широкое применение в области данных. 
-В этом руководстве мы научимся запрашивать Apache Arrow, используя функцию таблицы `Python`.
+[Apache Arrow](https://arrow.apache.org/) — это стандартизированный ориентированный на столбцы формат памяти, который приобрел популярность в сообществе данных. В этом руководстве мы научимся выполнять запросы к Apache Arrow с использованием табличной функции `Python`.
 
 ## Настройка {#setup}
 
@@ -18,30 +17,29 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-Теперь мы установим chDB.
-Убедитесь, что у вас версия 2.0.2 или выше:
+Теперь установим chDB. Убедитесь, что у вас версия 2.0.2 или выше:
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-Затем мы установим PyArrow, pandas и ipython:
+Теперь мы установим PyArrow, pandas и ipython:
 
 ```bash
 pip install pyarrow pandas ipython
 ```
 
-Мы будем использовать `ipython` для выполнения команд в остальной части руководства, который вы можете запустить, выполнив:
+Мы будем использовать `ipython` для выполнения команд в остальной части руководства, который можно запустить, выполнив:
 
 ```bash
 ipython
 ```
 
-Также вы можете использовать код в скрипте Python или в вашем любимом блокноте.
+Вы также можете использовать код в Python скрипте или в вашем любимом ноутбуке.
 
 ## Создание таблицы Apache Arrow из файла {#creating-an-apache-arrow-table-from-a-file}
 
-Сначала давайте загрузим один из файлов Parquet из [набор данных Ookla](https://github.com/teamookla/ookla-open-data), используя [AWS CLI tool](https://aws.amazon.com/cli/):
+Сначала загрузим один из файлов Parquet для [набора данных Ookla](https://github.com/teamookla/ookla-open-data), используя [инструмент AWS CLI](https://aws.amazon.com/cli/):
 
 ```bash
 aws s3 cp \
@@ -50,10 +48,10 @@ aws s3 cp \
 ```
 
 :::note
-Если вы хотите загрузить больше файлов, используйте `aws s3 ls`, чтобы получить список всех файлов, а затем обновите приведенную выше команду.
+Если вы хотите загрузить больше файлов, используйте `aws s3 ls`, чтобы получить список всех файлов, а затем обновите приведённую выше команду.
 :::
 
-Затем мы импортируем модуль Parquet из пакета `pyarrow`:
+Далее мы импортируем модуль Parquet из пакета `pyarrow`:
 
 ```python
 import pyarrow.parquet as pq
@@ -65,7 +63,7 @@ import pyarrow.parquet as pq
 arrow_table = pq.read_table("./2023-04-01_performance_mobile_tiles.parquet")
 ```
 
-Схема показана ниже:
+Схема представлена ниже:
 
 ```python
 arrow_table.schema
@@ -85,7 +83,7 @@ tests: int64
 devices: int64
 ```
 
-Мы также можем получить количество строк и колонок, вызвав атрибут `shape`:
+Мы можем получить количество строк и столбцов, вызвав атрибут `shape`:
 
 ```python
 arrow_table.shape
@@ -97,8 +95,7 @@ arrow_table.shape
 
 ## Запросы к Apache Arrow {#querying-apache-arrow}
 
-Теперь давайте запросим таблицу Arrow из chDB.
-Сначала давайте импортируем chDB:
+Теперь давайте запросим таблицу Arrow из chDB. Сначала импортируем chDB:
 
 ```python
 import chdb
@@ -128,7 +125,7 @@ SETTINGS describe_compact_output=1
 10          devices    Int64
 ```
 
-Мы также можем посчитать количество строк:
+Мы также можем подсчитать количество строк:
 
 ```python
 chdb.query("SELECT count() FROM Python(arrow_table)", "DataFrame")
@@ -139,8 +136,7 @@ chdb.query("SELECT count() FROM Python(arrow_table)", "DataFrame")
 0  3864546
 ```
 
-Теперь давайте сделаем что-то немного более интересное. 
-Следующий запрос исключает колонки `quadkey` и `tile.*`, а затем вычисляет средние и максимальные значения для всех оставшихся колонок:
+Теперь давайте сделаем что-то немного более интересное. Следующий запрос исключает столбцы `quadkey` и `tile.*`, а затем вычисляет средние и максимальные значения для всех оставшихся столбцов:
 
 ```python
 chdb.query("""

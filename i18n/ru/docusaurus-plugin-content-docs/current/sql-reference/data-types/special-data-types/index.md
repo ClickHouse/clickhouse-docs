@@ -1,7 +1,9 @@
 ---
-slug: /sql-reference/data-types/special-data-types/
+description: 'Обзор специальных типов данных в ClickHouse, используемых для промежуточных результатов во время выполнения запросов'
 sidebar_label: 'Специальные типы данных'
 sidebar_position: 55
+slug: /sql-reference/data-types/special-data-types/
+title: 'Специальные типы данных'
 ---
 
 

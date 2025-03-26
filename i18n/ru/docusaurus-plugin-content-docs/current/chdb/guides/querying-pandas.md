@@ -1,48 +1,47 @@
 ---
-title: Как запрашивать DataFrame в Pandas с chDB
-sidebar_label: Запросы к Pandas
+title: 'Как выполнять запросы к Pandas DataFrames с помощью chDB'
+sidebar_label: 'Запросы к Pandas'
 slug: /chdb/guides/pandas
-description: Узнайте, как запрашивать DataFrame в Pandas с chDB
-keywords: [chdb, pandas]
+description: 'Узнайте, как выполнять запросы к Pandas DataFrames с помощью chDB'
+keywords: ['chdb', 'pandas']
 ---
 
 [Pandas](https://pandas.pydata.org/) — популярная библиотека для манипуляции и анализа данных в Python. 
-В версии 2 chDB мы улучшили производительность запросов к DataFrame в Pandas и представили функцию таблицы `Python`. 
-В этом руководстве мы научимся запрашивать данные из Pandas, используя функцию таблицы `Python`.
+В версии 2 chDB мы улучшили производительность запросов к Pandas DataFrames и представили табличную функцию `Python`. 
+В этом руководстве мы научимся выполнять запросы к Pandas, используя табличную функцию `Python`.
 
 ## Настройка {#setup}
 
-Давайте сначала создадим виртуальную среду:
+Сначала создадим виртуальную среду:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-Теперь мы установим chDB. 
-Убедитесь, что у вас версия 2.0.2 или выше:
+А теперь установим chDB. Убедитесь, что у вас установлена версия 2.0.2 или выше:
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-А теперь установим Pandas и несколько других библиотек:
+Теперь мы установим Pandas и несколько других библиотек:
 
 ```bash
 pip install pandas requests ipython
 ```
 
-Мы будем использовать `ipython` для выполнения команд в остальной части руководства, который можно запустить, выполнив:
+Мы будем использовать `ipython` для выполнения команд в остальной части руководства, который вы можете запустить с помощью:
 
 ```bash
 ipython
 ```
 
-Вы также можете использовать этот код в Python-скрипте или в своем любимом блокноте.
+Вы также можете использовать код в скрипте Python или в вашем любимом блокноте.
 
-## Создание DataFrame в Pandas из URL {#creating-a-pandas-dataframe-from-a-url}
+## Создание Pandas DataFrame из URL {#creating-a-pandas-dataframe-from-a-url}
 
-Мы собираемся запросить некоторые данные из [репозитория StatsBomb на GitHub](https://github.com/statsbomb/open-data/tree/master?tab=readme-ov-file). 
+Мы соберем данные из [репозитория StatsBomb на GitHub](https://github.com/statsbomb/open-data/tree/master?tab=readme-ov-file).
 Сначала импортируем requests и pandas:
 
 ```python
@@ -50,7 +49,7 @@ import requests
 import pandas as pd
 ```
 
-Затем загрузим один из файлов JSON матчей в DataFrame:
+Затем загрузим один из файлов JSON с матчами в DataFrame:
 
 ```python
 response = requests.get(
@@ -59,7 +58,7 @@ response = requests.get(
 matches_df = pd.json_normalize(response.json(), sep='_')
 ```
 
-Давайте взглянем на данные, с которыми мы будем работать:
+Давайте посмотрим, с какими данными мы будем работать:
 
 ```python
 matches_df.iloc[0]
@@ -111,7 +110,7 @@ referee_country_name                                                       Brazi
 Name: 0, dtype: object
 ```
 
-Далее мы загрузим один из файлов JSON событий и также добавим колонку с именем `match_id` в этот DataFrame:
+Следующим шагом мы загрузим один из файлов JSON с событиями и добавим столбец под названием `match_id` в этот DataFrame:
 
 ```python
 response = requests.get(
@@ -121,7 +120,7 @@ events_df = pd.json_normalize(response.json(), sep='_')
 events_df["match_id"] = 3943077
 ```
 
-И снова давайте взглянем на первую строку:
+И снова давайте посмотрим на первую строку:
 
 ```python
 with pd.option_context("display.max_rows", None):
@@ -153,23 +152,23 @@ match_id                                                          3943077
 Name: 0, dtype: object
 ```
 
-## Запросы к DataFrame в Pandas {#querying-pandas-dataframes}
+## Запросы к Pandas DataFrames {#querying-pandas-dataframes}
 
-Далее давайте посмотрим, как запрашивать эти DataFrame, используя chDB. 
+Теперь давайте посмотрим, как выполнять запросы к этим DataFrames, используя chDB. 
 Импортируем библиотеку:
 
 ```python
 import chdb
 ```
 
-Мы можем запрашивать DataFrame Pandas, используя функцию таблицы `Python`:
+Мы можем выполнять запросы к Pandas DataFrames, используя табличную функцию `Python`:
 
 ```sql
 SELECT *
-FROM Python(<имя-переменной>)
+FROM Python(<name-of-variable>)
 ```
 
-Итак, если мы хотели бы перечислить колонки в `matches_df`, мы могли бы написать следующее:
+Итак, если мы хотели бы перечислить столбцы в `matches_df`, мы могли бы написать следующее:
 
 ```python
 chdb.query("""
@@ -224,7 +223,7 @@ SETTINGS describe_compact_output=1
 41            referee_country_name  String
 ```
 
-Затем мы можем узнать, какие судьи обслуживали более одного матча, написав следующий запрос:
+Мы можем также выяснить, какие судьи судили более одного матча, написав следующий запрос:
 
 ```python
 chdb.query("""
@@ -277,9 +276,9 @@ LIMIT 10
 9  Carlos Eccehomo Cuesta Figueroa       50
 ```
 
-## Объединение DataFrame в Pandas {#joining-pandas-dataframes}
+## Объединение Pandas DataFrames {#joining-pandas-dataframes}
 
-Мы также можем объединять DataFrame в запросе. 
+Мы также можем объединять DataFrames в запросе. 
 Например, чтобы получить обзор матча, мы могли бы написать следующий запрос:
 
 ```python
@@ -308,10 +307,10 @@ away_shots                         19
 Name: 0, dtype: object
 ```
 
-## Пополнение таблицы из DataFrame {#populating-a-table-from-a-dataframe}
+## Заполнение таблицы из DataFrame {#populating-a-table-from-a-dataframe}
 
-Мы также можем создавать и заполнять таблицы ClickHouse из DataFrame. 
-Если мы хотим создать таблицу в chDB, нам нужно использовать API состояния сессии.
+Мы также можем создавать и заполнять таблицы ClickHouse из DataFrames. 
+Если мы хотим создать таблицу в chDB, нам нужно использовать API управляемых сессий.
 
 Импортируем модуль сессии:
 
@@ -319,19 +318,19 @@ Name: 0, dtype: object
 from chdb import session as chs
 ```
 
-Инициализируем сессию:
+Инициализируйте сессию:
 
 ```python
 sess = chs.Session()
 ```
 
-Далее создадим базу данных:
+Затем создадим базу данных:
 
 ```python
 sess.query("CREATE DATABASE statsbomb")
 ```
 
-Затем создадим таблицу `events`, основанную на `events_df`:
+После этого создадим таблицу `events` на основе `events_df`:
 
 ```python
 sess.query("""
@@ -341,7 +340,7 @@ FROM Python(events_df)
 """)
 ```
 
-Затем мы можем выполнить запрос, который возвращает лучших принимающих пас:
+Теперь мы можем выполнить запрос, который возвращает топовых получателей пасов:
 
 ```python
 sess.query("""
@@ -368,7 +367,7 @@ LIMIT 10
 9  Carlos Eccehomo Cuesta Figueroa       50
 ```
 
-## Объединение DataFrame в Pandas и таблицы {#joining-a-pandas-dataframe-and-table}
+## Объединение Pandas DataFrame с таблицей {#joining-a-pandas-dataframe-and-table}
 
 Наконец, мы также можем обновить наш запрос на объединение, чтобы объединить DataFrame `matches_df` с таблицей `statsbomb.events`:
 

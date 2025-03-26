@@ -1,8 +1,9 @@
 ---
-slug: /sql-reference/statements/alter/sample-by
+description: 'Документация для манипулирования выражением SAMPLE BY'
+sidebar_label: 'SAMPLE BY'
 sidebar_position: 41
-sidebar_label: SAMPLE BY
-title: "Манипулирование выражениями ключа выборки"
+slug: /sql-reference/statements/alter/sample-by
+title: 'Манипулирование выражениями ключа выборки'
 ---
 
 
@@ -12,7 +13,7 @@ title: "Манипулирование выражениями ключа выб�
 
 ## MODIFY {#modify}
 
-``` sql
+```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY SAMPLE BY new_expression
 ```
 
@@ -20,7 +21,7 @@ ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY SAMPLE BY new_expression
 
 ## REMOVE {#remove}
 
-``` sql
+```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] REMOVE SAMPLE BY
 ```
 

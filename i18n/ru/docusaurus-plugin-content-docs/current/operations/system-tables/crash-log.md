@@ -1,42 +1,42 @@
 ---
 description: 'Системная таблица, содержащая информацию о трассировках стека для фатальных ошибок.'
+keywords: ['системная таблица', 'crash_log']
 slug: /operations/system-tables/crash-log
 title: 'system.crash_log'
-keywords: ['system table', 'crash_log']
 ---
 
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
 Содержит информацию о трассировках стека для фатальных ошибок. Таблица по умолчанию не существует в базе данных, она создается только при возникновении фатальных ошибок.
 
-Колонки:
+Столбцы:
 
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
 - `event_date` ([DateTime](../../sql-reference/data-types/datetime.md)) — Дата события.
 - `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время события.
-- `timestamp_ns` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Временная метка события с точностью до наносекунд.
+- `timestamp_ns` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Временная метка события с наносекундами.
 - `signal` ([Int32](../../sql-reference/data-types/int-uint.md)) — Номер сигнала.
 - `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Идентификатор потока.
 - `query_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор запроса.
-- `trace` ([Array](../../sql-reference/data-types/array.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Трассировка стека в момент сбоя. Каждый элемент представляет собой виртуальный адрес памяти внутри процесса сервера ClickHouse.
-- `trace_full` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — Полная трассировка стека в момент сбоя. Каждый элемент содержит вызванный метод внутри процесса сервера ClickHouse.
+- `trace` ([Array](../../sql-reference/data-types/array.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Трассировка стека в момент сбоя. Каждый элемент — это адрес виртуальной памяти внутри процесса сервера ClickHouse.
+- `trace_full` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — Трассировка стека в момент сбоя. Каждый элемент содержит вызываемый метод внутри процесса сервера ClickHouse.
 - `version` ([String](../../sql-reference/data-types/string.md)) — Версия сервера ClickHouse.
 - `revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Ревизия сервера ClickHouse.
-- `build_id` ([String](../../sql-reference/data-types/string.md)) — BuildID, который генерируется компилятором.
+- `build_id` ([String](../../sql-reference/data-types/string.md)) — ID сборки, который генерируется компилятором.
 
 **Пример**
 
 Запрос:
 
-``` sql
+```sql
 SELECT * FROM system.crash_log ORDER BY event_time DESC LIMIT 1;
 ```
 
-Результат (неполный):
+Результат (не полный):
 
-``` text
+```text
 Row 1:
 ──────
 hostname:     clickhouse.eu-central1.internal
@@ -53,5 +53,5 @@ revision:     54442
 build_id:
 ```
 
-**См. также**
+**Смотрите также**
 - [trace_log](../../operations/system-tables/trace_log.md) системная таблица

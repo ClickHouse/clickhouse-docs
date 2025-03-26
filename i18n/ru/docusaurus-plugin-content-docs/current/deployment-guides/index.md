@@ -1,6 +1,7 @@
 ---
 slug: /deployment-guides/index
-title: Обзор руководств по развертыванию
+title: 'Обзор руководств по развертыванию'
+description: 'Целевая страница для раздела развертывания и масштабирования'
 ---
 
 
@@ -11,6 +12,6 @@ title: Обзор руководств по развертыванию
 | Тема                                                            |
 |------------------------------------------------------------------|
 | [Введение](/architecture/introduction)                    |
-| [Горизонтальное масштабирование](/architecture/horizontal-scaling)               |
-| [Репликация для обеспечения устойчивости к сбоям](/architecture/replication)  |
+| [Масштабирование](/architecture/horizontal-scaling)               |
+| [Репликация для отказоустойчивости](/architecture/replication)  |
 | [Развертывание кластера](/architecture/cluster-deployment)        |

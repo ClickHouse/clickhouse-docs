@@ -1,55 +1,52 @@
 ---
-sidebar_label: Настройки сессий на уровне запросов
-title: Настройки сессий на уровне запросов
-description: 'Настройка на уровне запроса'
+description: 'Настройки на уровне запроса'
+sidebar_label: 'Настройки сессии на уровне запроса'
 slug: /operations/settings/query-level
+title: 'Настройки сессии на уровне запроса'
 ---
 
-Существует несколько способов выполнения операторов с определенными настройками.
-Настройки конфигурируются слоями, и каждый последующий слой переопределяет предыдущие значения настройки.
+Существует несколько способов выполнения операторов с определенными настройками. Настройки конфигурируются по слоям, и каждый следующий слой перекрывает предыдущие значения настройки.
 
-Порядок приоритета для определения настройки таков:
+Порядок приоритета для определения настройки:
 
-1. Применение настройки к пользователю напрямую или в профиле настроек
+1. Применение настройки к пользователю напрямую или в рамках профиля настроек
 
     - SQL (рекомендуется)
     - добавление одного или нескольких XML или YAML файлов в `/etc/clickhouse-server/users.d`
 
-2. Сессионные настройки
+2. Настройки сессии
 
-    - Отправьте `SET setting=value` из консоли ClickHouse Cloud SQL или 
-    `clickhouse client` в интерактивном режиме. Аналогично, вы можете использовать 
-    сессии ClickHouse в HTTP-протоколе. Для этого нужно указать 
-    параметр `session_id` в HTTP.
+    - Отправить `SET setting=value` из консоли ClickHouse Cloud SQL или
+    `clickhouse client` в интерактивном режиме. Аналогично, вы можете использовать сессии ClickHouse
+    в HTTP-протоколе. Для этого необходимо указать HTTP-параметр
+    `session_id`.
 
-3. Настройки запроса
+3. Настройки запросов
 
-    - При запуске `clickhouse client` в неинтерактивном режиме, установите 
-    параметр запуска `--setting=value`.
-    - При использовании HTTP API, передайте CGI параметры (`URL?setting_1=value&setting_2=value...`).
+    - При запуске `clickhouse client` в неинтерактивном режиме установите параметр запуска `--setting=value`.
+    - При использовании HTTP API передайте параметры CGI (`URL?setting_1=value&setting_2=value...`).
     - Определите настройки в
     [SETTINGS](../../sql-reference/statements/select/index.md#settings-in-select-query)
-    разделе запроса SELECT. Значение настройки применяется только к этому запросу 
-    и сбрасывается к значению по умолчанию или предыдущему значению после его выполнения.
+    разделе SELECT запроса. Значение настройки применяется только к этому запросу
+    и сбрасывается на значение по умолчанию или предыдущее значение после выполнения запроса.
 
 ## Примеры {#examples}
 
-Эти примеры устанавливают значение настройки `async_insert` в `1`, и 
+Все эти примеры устанавливают значение настройки `async_insert` в `1` и
 показывают, как проверить настройки в работающей системе.
 
 ### Использование SQL для применения настройки к пользователю напрямую {#using-sql-to-apply-a-setting-to-a-user-directly}
 
-Это создает пользователя `ingester` с настройкой `async_insert = 1`:
+Это создает пользователя `ingester` с настройкой `async_inset = 1`:
 
 ```sql
 CREATE USER ingester
 IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f281276aae20f86dc3'
-
-# highlight-next-line
+-- highlight-next-line
 SETTINGS async_insert = 1
 ```
 
-#### Просмотр профиля настроек и назначения {#examine-the-settings-profile-and-assignment}
+#### Проверка профиля настроек и назначения {#examine-the-settings-profile-and-assignment}
 
 ```sql
 SHOW ACCESS
@@ -67,7 +64,7 @@ SHOW ACCESS
 
 ### Использование SQL для создания профиля настроек и назначения его пользователю {#using-sql-to-create-a-settings-profile-and-assign-to-a-user}
 
-Это создает профиль `log_ingest` с настройкой `async_insert = 1`:
+Это создает профиль `log_ingest` с настройкой `async_inset = 1`:
 
 ```sql
 CREATE
@@ -79,8 +76,7 @@ SETTINGS PROFILE log_ingest SETTINGS async_insert = 1
 ```sql
 CREATE USER ingester
 IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f281276aae20f86dc3'
-
-# highlight-next-line
+-- highlight-next-line
 SETTINGS PROFILE log_ingest
 ```
 
@@ -116,7 +112,7 @@ SETTINGS PROFILE log_ingest
 </clickhouse>
 ```
 
-#### Просмотр профиля настроек и назначения {#examine-the-settings-profile-and-assignment-1}
+#### Проверка профиля настроек и назначения {#examine-the-settings-profile-and-assignment-1}
 
 ```sql
 SHOW ACCESS
@@ -154,15 +150,14 @@ SELECT value FROM system.settings where name='async_insert';
 
 ```sql
 INSERT INTO YourTable
-
-# highlight-next-line
+-- highlight-next-line
 SETTINGS async_insert=1
 VALUES (...)
 ```
 
 ## Приведение настройки к значению по умолчанию {#converting-a-setting-to-its-default-value}
 
-Если вы изменили настройку и хотите вернуть ее к значению по умолчанию, установите значение на `DEFAULT`. Синтаксис выглядит следующим образом:
+Если вы изменили настройку и хотите вернуть ее к значению по умолчанию, установите значение в `DEFAULT`. Синтаксис выглядит следующим образом:
 
 ```sql
 SET setting_name = DEFAULT
@@ -192,7 +187,7 @@ SET async_insert = DEFAULT;
 SELECT value FROM system.settings where name='async_insert';
 ```
 
-Настройка теперь возвращена к своему значению по умолчанию:
+Настройка теперь вернулась к своему значению по умолчанию:
 
 ```response
 ┌─value───┐
@@ -202,16 +197,15 @@ SELECT value FROM system.settings where name='async_insert';
 
 ## Пользовательские настройки {#custom_settings}
 
-В дополнение к общим [настройкам](/operations/settings/settings.md), пользователи могут определять пользовательские настройки.
+Кроме общих [настроек](/operations/settings/settings.md), пользователи могут определять пользовательские настройки.
 
-Имя пользовательской настройки должно начинаться с одного из предопределенных префиксов. Список этих префиксов должен быть объявлен в параметре 
-[custom_settings_prefixes](../../operations/server-configuration-parameters/settings.md#custom_settings_prefixes) в конфигурационном файле сервера.
+Имя пользовательской настройки должно начинаться с одного из предопределенных префиксов. Список этих префиксов должен быть объявлен в параметре [custom_settings_prefixes](../../operations/server-configuration-parameters/settings.md#custom_settings_prefixes) в файле конфигурации сервера.
 
 ```xml
 <custom_settings_prefixes>custom_</custom_settings_prefixes>
 ```
 
-Для определения пользовательской настройки используйте команду `SET`:
+Чтобы определить пользовательскую настройку, используйте команду `SET`:
 
 ```sql
 SET custom_a = 123;
@@ -223,7 +217,7 @@ SET custom_a = 123;
 SELECT getSetting('custom_a');
 ```
 
-**См. также**
+**Смотрите также**
 
-- Посмотреть страницу [Настройки](/operations/settings/settings.md) для описания настроек ClickHouse.
-- [Глобальные серверные настройки](/operations/server-configuration-parameters/settings.md)
+- Просмотрите страницу [Настройки](/operations/settings/settings.md) для описания настроек ClickHouse.
+- [Глобальные настройки сервера](/operations/server-configuration-parameters/settings.md)

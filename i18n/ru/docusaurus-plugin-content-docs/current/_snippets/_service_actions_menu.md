@@ -1,7 +1,8 @@
 
+import Image from '@theme/IdealImage';
 import cloud_service_action_menu from '@site/static/images/_snippets/cloud-service-actions-menu.png';
 
-Выберите вашу службу, затем выберите `Data souces` -> `Predefined sample data`.
+Выберите вашу услугу, затем `Источники данных` -> `Предопределенные образцы данных`.
 
-<img src={cloud_service_action_menu} class="image" alt="Меню действий облачной службы" />
+<Image size="md" img={cloud_service_action_menu} alt="Меню действий сервиса ClickHouse Cloud, показывающее параметры Источники данных и Предопределенные образцы данных" border />
 ```

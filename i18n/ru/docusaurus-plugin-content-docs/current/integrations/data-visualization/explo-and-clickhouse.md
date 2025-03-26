@@ -1,11 +1,14 @@
 ---
-sidebar_label: Explo
+sidebar_label: 'Explo'
 sidebar_position: 131
 slug: /integrations/explo
-keywords: [clickhouse, Explo, connect, integrate, ui]
-description: Explo – это простой в использовании инструмент пользовательского интерфейса с открытым исходным кодом для получения ответов на вопросы о ваших данных.
+keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
+description: 'Explo - это простой в использовании инструмент с открытым исходным кодом для получения ответов на вопросы о ваших данных.'
+title: 'Подключение Explo к ClickHouse'
 ---
-import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+
+import Image from '@theme/IdealImage';
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import explo_01 from '@site/static/images/integrations/data-visualization/explo_01.png';
 import explo_02 from '@site/static/images/integrations/data-visualization/explo_02.png';
 import explo_03 from '@site/static/images/integrations/data-visualization/explo_03.png';
@@ -22,125 +25,113 @@ import explo_13 from '@site/static/images/integrations/data-visualization/explo_
 import explo_14 from '@site/static/images/integrations/data-visualization/explo_14.png';
 import explo_15 from '@site/static/images/integrations/data-visualization/explo_15.png';
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
 # Подключение Explo к ClickHouse
 
-Аналитика для клиентов на любой платформе. Разработано для красивой визуализации. Создано для простоты.
+<CommunityMaintainedBadge/>
+
+Аналитика для клиентов для любой платформы. Разработано для красивой визуализации. Создано для простоты.
 
 ## Цель {#goal}
 
-В этом руководстве вы подключите свои данные из ClickHouse к Explo и визуализируете результаты. График будет выглядеть так:
-<img src={explo_15} class="image" alt="Explo Dashboard" />
+В этом руководстве вы подключите свои данные из ClickHouse к Explo и визуализируете результаты. График будет выглядеть следующим образом:
+<Image img={explo_15} size="md" alt="Explo Dashboard" />
 
 <p/>
 
 :::tip Добавьте данные
-Если у вас нет набора данных для работы, вы можете добавить один из примеров. Это руководство использует набор данных [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md), так что можно выбрать его. В той же категории документации есть и другие наборы для изучения.
+Если у вас нет набора данных, с которым можно работать, вы можете добавить один из примеров. Это руководство использует набор данных [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md), так что вы можете выбрать его. В той же категории документации есть несколько других, на которые стоит обратить внимание.
 :::
 
-## 1. Соберите свои данные для подключения {#1-gather-your-connection-details}
+## 1. Соберите ваши данные для подключения {#1-gather-your-connection-details}
 <ConnectionDetails />
+
 
 ## 2. Подключите Explo к ClickHouse {#2--connect-explo-to-clickhouse}
 
-1. Зарегистрируйтесь на Explo.
+1. Зарегистрируйте учетную запись Explo.
 
-2. Нажмите на вкладку **data** в левой боковой панели.
+2. Нажмите на вкладку **data** на боковой панели слева.
 
+<Image img={explo_01} size="sm" alt="Data Tab" border />
 
-<img src={explo_01} class="image" alt="Data Tab" />
+3. Нажмите **Connect Data Source** в правом верхнем углу.
 
-3. Нажмите **Connect Data Source** в верхнем правом углу.
-
-
-<img src={explo_02} class="image" alt="Connect Data Source" />
+<Image img={explo_02} size="sm" alt="Connect Data Source" border />
 
 4. Заполните информацию на странице **Getting Started**.
 
-
-<img src={explo_03} class="image" alt="Getting Started" />
+<Image img={explo_03} size="md" alt="Getting Started" border />
 
 5. Выберите **Clickhouse**.
 
+<Image img={explo_04} size="md" alt="Clickhouse" border />
 
-<img src={explo_04} class="image" alt="Clickhouse" />
+6. Введите свои **Clickhouse Credentials**.
 
-6. Введите свои **Clickhouse Credentials**. 
-
-
-<img src={explo_05} class="image" alt="Credentials" />
+<Image img={explo_05} size="md" alt="Credentials" border />
 
 7. Настройте **Security**.
 
-
-<img src={explo_06} class="image" alt="Security" />
+<Image img={explo_06} size="md" alt="Security" border />
 
 8. В Clickhouse, **Whitelist the Explo IPs**.
 `
 54.211.43.19, 52.55.98.121, 3.214.169.94 и 54.156.141.148
 `
 
-## 3. Создайте панель управления {#3-create-a-dashboard}
+## 3. Создайте панель инструментов {#3-create-a-dashboard}
 
-1. Перейдите на вкладку **Dashboard** в левой боковой панели навигации.
+1. Перейдите на вкладку **Dashboard** на левой панели навигации.
 
+<Image img={explo_07} size="sm" alt="Dashboard" border />
 
-<img src={explo_07} class="image" alt="Dashboard" />
+2. Нажмите **Create Dashboard** в правом верхнем углу и дайте имя вашей панели инструментов. Вы теперь создали панель инструментов!
 
-2. Нажмите **Create Dashboard** в верхнем правом углу и назовите свою панель. Вы только что создали панель управления!
+<Image img={explo_08} size="sm" alt="Create Dashboard" border />
 
+3. Теперь вы должны увидеть экран, который похож на этот:
 
-<img src={explo_08} class="image" alt="Create Dashboard" />
+<Image img={explo_09} size="md" alt="Explo Dashboard" border />
 
-3. Теперь вы должны видеть экран, который похож на следующий:
+## 4. Выполните SQL запрос {#4-run-a-sql-query}
 
-
-<img src={explo_09} class="image" alt="Explo Dashboard" />
-
-## 4. Выполните SQL-запрос {#4-run-a-sql-query}
-
-1. Получите имя своей таблицы из правой боковой панели под заголовком вашей схемы. Затем введите следующую команду в редакторе набора данных:
+1. Получите имя вашей таблицы из правой боковой панели под заголовком вашей схемы. Затем введите следующую команду в редакторе вашего набора данных:
 `
 SELECT * FROM YOUR_TABLE_NAME
 LIMIT 100
 `
 
+<Image img={explo_10} size="md" alt="Explo Dashboard" border />
 
-<img src={explo_10} class="image" alt="Explo Dashboard" />
+2. Теперь нажмите "run" и перейдите на вкладку предварительного просмотра, чтобы увидеть ваши данные.
 
-2. Теперь нажмите выполнить и перейдите на вкладку предварительного просмотра, чтобы увидеть ваши данные.
-
-
-<img src={explo_11} class="image" alt="Explo Dashboard" />
+<Image img={explo_11} size="md" alt="Explo Dashboard" border />
 
 ## 5. Постройте график {#5-build-a-chart}
 
-1. Слева перетащите значок столбчатой диаграммы на экран.
+1. С левой стороны перетащите значок столбчатой диаграммы на экран.
 
+<Image img={explo_16} size="sm" alt="Explo Dashboard" border />
 
-<img src={explo_16} class="image" alt="Explo Dashboard" />
+2. Выберите набор данных. Теперь вы должны увидеть экран, похожий на следующий:
 
-2. Выберите набор данных. Теперь вы должны видеть экран, похожий на следующий:
+<Image img={explo_12} size="sm" alt="Explo Dashboard" border />
 
+3. Заполните **county** по оси X и **Price** в разделе Y Axis следующим образом:
 
-<img src={explo_12} class="image" alt="Explo Dashboard" />
-
-3. Укажите **county** по оси X и **Price** по оси Y следующим образом:
-
-
-<img src={explo_13} class="image" alt="Explo Dashboard" />
+<Image img={explo_13} size="sm" alt="Explo Dashboard" border />
 
 4. Теперь измените агрегацию на **AVG**.
 
+<Image img={explo_14} size="sm" alt="Explo Dashboard" border />
 
-<img src={explo_14} class="image" alt="Explo Dashboard" />
+5. Теперь у нас есть средняя цена домов, разбитая по ценам!
 
-5. Теперь у нас есть средняя цена домов по ценовому сегменту!
-
-
-<img src={explo_15} class="image" alt="Explo Dashboard" />
+<Image img={explo_15} size="md" alt="Explo Dashboard" />
 
 ## Узнайте больше {#learn-more}
 
-Дополнительную информацию об Explo и о том, как создавать панели управления, можно найти, <a href="https://docs.explo.co/" target="_blank">посетив документацию Explo</a>.
+Найдите больше информации о Explo и о том, как создавать панели инструментов, <a href="https://docs.explo.co/" target="_blank">посетив документацию Explo</a>.

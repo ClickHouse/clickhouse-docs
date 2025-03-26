@@ -1,19 +1,20 @@
 ---
-title: PrettyJSONEachRow
-slug: /interfaces/formats/PrettyJSONEachRow
-keywords: ['PrettyJSONEachRow', 'PrettyJSONLines', 'PrettyNDJSON']
-input_format: false
-output_format: true
 alias: ['PrettyJSONLines', 'PrettyNDJSON']
+description: 'Документация для формата PrettyJSONLines'
+input_format: false
+keywords: ['PrettyJSONEachRow', 'PrettyJSONLines', 'PrettyNDJSON']
+output_format: true
+slug: /interfaces/formats/PrettyJSONEachRow
+title: 'PrettyJSONEachRow'
 ---
 
-| Входные данные | Выходные данные | Псевдоним                        |
-|----------------|-----------------|----------------------------------|
-| ✗              | ✔               | `PrettyJSONLines`, `PrettyNDJSON` |
+| Входные данные | Выходные данные | Псевдоним                          |
+|----------------|----------------|------------------------------------|
+| ✗              | ✔              | `PrettyJSONLines`, `PrettyNDJSON` |
 
 ## Описание {#description}
 
-Отличается от [JSONEachRow](./JSONEachRow.md) только тем, что JSON имеет красивое форматирование с разделителями строк и отступами в 4 пробела.
+Отличается от [JSONEachRow](./JSONEachRow.md) лишь тем, что JSON красиво отформатирован с разделителями новой строки и отступами в 4 пробела.
 
 ## Пример использования {#example-usage}
 

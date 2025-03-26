@@ -1,20 +1,27 @@
+title: 'Подключение к ClickHouse через нативный TCP'
+sidebar_label: 'Подключение через нативный TCP'
+keywords: ['ClickHouse', 'TCP', 'подключение', 'база данных']
+description: 'Информация о подключении к ClickHouse через нативный TCP.'
+```
+
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_native from '@site/static/images/_snippets/connection-details-native.png';
+import Image from '@theme/IdealImage';
 
 Чтобы подключиться к ClickHouse с помощью нативного TCP, вам нужна следующая информация:
 
-- ХОСТ и ПОРТ: обычно, порт 9440 при использовании TLS или 9000 при отсутствии TLS.
+- ХОСТ и ПОРТ: как правило, порт 9440 при использовании TLS, или 9000, если TLS не используется.
 
-- ИМЯ БАЗЫ ДАННЫХ: по умолчанию есть база данных с именем `default`, используйте имя базы данных, к которой вы хотите подключиться.
+- ИМЯ БАЗЫ ДАННЫХ: по умолчанию есть база данных с именем `default`, используйте имя базы данных, к которой хотите подключиться.
 
 - ИМЯ ПОЛЬЗОВАТЕЛЯ и ПАРОЛЬ: по умолчанию имя пользователя `default`. Используйте имя пользователя, подходящее для вашего случая.
 
-Данные для вашей службы ClickHouse Cloud доступны в консоли ClickHouse Cloud. Выберите службу, к которой вы хотите подключиться, и нажмите **Подключиться**:
+Детали вашего сервиса ClickHouse Cloud доступны в консоли ClickHouse Cloud. Выберите сервис, к которому хотите подключиться, и нажмите **Подключиться**:
 
-<img src={cloud_connect_button} class="image" alt="Кнопка подключения к службе ClickHouse Cloud" />
+<Image img={cloud_connect_button} size="md" alt="Кнопка подключения к сервису ClickHouse Cloud" border/>
 
-Выберите **Native**, и данные будут доступны в примере команды `clickhouse-client`.
+Выберите **Нативный**, и детали будут доступны в примере команды `clickhouse-client`.
 
-<img src={connection_details_native} class="image" alt="Детали подключения ClickHouse Cloud Native TCP" />
+<Image img={connection_details_native} size="md" alt="Детали подключения ClickHouse Cloud Native TCP" border/>
 
-Если вы используете self-managed ClickHouse, детали подключения задаются вашим администратором ClickHouse.
+Если вы используете самоуправляемый ClickHouse, детали подключения устанавливаются вашим администратором ClickHouse.

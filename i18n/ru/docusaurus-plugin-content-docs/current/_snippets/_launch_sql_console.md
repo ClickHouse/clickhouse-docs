@@ -1,21 +1,23 @@
 
 import cloud_connect_to_sql_console from '@site/static/images/_snippets/cloud-connect-to-sql-console.png';
 import createservice8 from '@site/static/images/_snippets/createservice8.png';
+import Image from '@theme/IdealImage';
+
 
 :::tip SQL консоль
-Если вам нужно подключение клиента SQL, ваша служба ClickHouse Cloud имеет ассоциированную веб-основу SQL консоли; разверните **Подключиться к SQL консоли** ниже для подробностей.
+Если вам необходимо подключение клиента SQL, ваш сервис ClickHouse Cloud имеет связанный веб-основанный SQL консоль; разверните **Подключение к SQL консоли** ниже для получения подробностей.
 :::
 
 <details>
-    <summary>Подключиться к SQL консоли</summary>
+    <summary>Подключение к SQL консоли</summary>
 
-Из вашего списка служб ClickHouse Cloud нажмите на службу.
+Из списка ваших сервисов ClickHouse Cloud щелкните по нужному сервису.
 
-<img src={cloud_connect_to_sql_console} class="image" alt="Подключиться к SQL консоли" />
+<Image img={cloud_connect_to_sql_console}  alt="Подключение к SQL консоли" size="lg" force border/>
 
 Это перенаправит вас в SQL консоль.
 
-<img src={createservice8} class="image" alt="SQL консоль" />
+<Image img={createservice8}  alt="SQL консоль" size="lg" force border/>
 
 </details>
 ```

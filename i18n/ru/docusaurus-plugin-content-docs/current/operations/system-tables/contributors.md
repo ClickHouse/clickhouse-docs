@@ -1,23 +1,23 @@
 ---
 description: 'Таблица системы, содержащая информацию о контрибьюторах.'
+keywords: ['системная таблица', 'контрибьюторы']
 slug: /operations/system-tables/contributors
 title: 'system.contributors'
-keywords: ['system table', 'contributors']
 ---
 
-Содержит информацию о контрибьюторах. Порядок произвольный во время выполнения запроса.
+Содержит информацию о контрибьюторах. Порядок случайный на момент выполнения запроса.
 
-Колонки:
+Столбцы:
 
 - `name` (String) — Имя контрибьютора (автора) из git log.
 
 **Пример**
 
-``` sql
+```sql
 SELECT * FROM system.contributors LIMIT 10
 ```
 
-``` text
+```text
 ┌─name─────────────┐
 │ Olga Khvostikova │
 │ Max Vetrov       │
@@ -34,11 +34,11 @@ SELECT * FROM system.contributors LIMIT 10
 
 Чтобы найти себя в таблице, используйте запрос:
 
-``` sql
+```sql
 SELECT * FROM system.contributors WHERE name = 'Olga Khvostikova'
 ```
 
-``` text
+```text
 ┌─name─────────────┐
 │ Olga Khvostikova │
 └──────────────────┘

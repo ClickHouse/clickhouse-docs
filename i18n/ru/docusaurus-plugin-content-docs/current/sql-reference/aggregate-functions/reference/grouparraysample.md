@@ -1,26 +1,28 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/grouparraysample
+description: 'Создает массив случайных значений аргументов. Размер результирующего
+  массива ограничен элементами `max_size`. Значения аргументов выбираются и добавляются
+  в массив случайным образом.'
 sidebar_position: 145
+slug: /sql-reference/aggregate-functions/reference/grouparraysample
 title: 'groupArraySample'
-description: 'Создает массив выборочных значений аргументов. Размер результирующего массива ограничен элементами `max_size`. Значения аргументов выбираются и добавляются в массив случайным образом.'
 ---
 
 
 # groupArraySample
 
-Создает массив выборочных значений аргументов. Размер результирующего массива ограничен элементами `max_size`. Значения аргументов выбираются и добавляются в массив случайным образом.
+Создает массив случайных значений аргументов. Размер результирующего массива ограничен элементами `max_size`. Значения аргументов выбираются и добавляются в массив случайным образом.
 
 **Синтаксис**
 
-``` sql
+```sql
 groupArraySample(max_size[, seed])(x)
 ```
 
 **Аргументы**
 
 - `max_size` — Максимальный размер результирующего массива. [UInt64](../../data-types/int-uint.md).
-- `seed` — Семя для генератора случайных чисел. Опционально. [UInt64](../../data-types/int-uint.md). Значение по умолчанию: `123456`.
-- `x` — Аргумент (имя колонки или выражение).
+- `seed` — Семя для генератора случайных чисел. Необязательный. [UInt64](../../data-types/int-uint.md). Значение по умолчанию: `123456`.
+- `x` — Аргумент (имя столбца или выражение).
 
 **Возвращаемые значения**
 
@@ -32,7 +34,7 @@ groupArraySample(max_size[, seed])(x)
 
 Рассмотрим таблицу `colors`:
 
-``` text
+```text
 ┌─id─┬─color──┐
 │  1 │ red    │
 │  2 │ blue   │
@@ -42,9 +44,9 @@ groupArraySample(max_size[, seed])(x)
 └────┴────────┘
 ```
 
-Запрос с именем колонки в качестве аргумента:
+Запрос с именем столбца в качестве аргумента:
 
-``` sql
+```sql
 SELECT groupArraySample(3)(color) as newcolors FROM colors;
 ```
 
@@ -56,9 +58,9 @@ SELECT groupArraySample(3)(color) as newcolors FROM colors;
 └────────────────────────────┘
 ```
 
-Запрос с именем колонки и другим семенем:
+Запрос с именем столбца и другим семенем:
 
-``` sql
+```sql
 SELECT groupArraySample(3, 987654321)(color) as newcolors FROM colors;
 ```
 
@@ -72,7 +74,7 @@ SELECT groupArraySample(3, 987654321)(color) as newcolors FROM colors;
 
 Запрос с выражением в качестве аргумента:
 
-``` sql
+```sql
 SELECT groupArraySample(3)(concat('light-', color)) as newcolors FROM colors;
 ```
 

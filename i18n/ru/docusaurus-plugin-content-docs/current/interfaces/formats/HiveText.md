@@ -1,7 +1,8 @@
 ---
-title: HiveText
-slug: /interfaces/formats/HiveText
+description: 'Документация формата HiveText'
 keywords: ['HiveText']
+slug: /interfaces/formats/HiveText
+title: 'HiveText'
 ---
 
 ## Описание {#description}

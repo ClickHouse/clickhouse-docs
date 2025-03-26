@@ -1,38 +1,38 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/grouparraymovingavg
+description: 'Вычисляет скользящее среднее значений на входе.'
 sidebar_position: 144
+slug: /sql-reference/aggregate-functions/reference/grouparraymovingavg
 title: 'groupArrayMovingAvg'
-description: 'Calculates the moving average of input values.'
 ---
 
 
 # groupArrayMovingAvg
 
-Вычисляет скользящее среднее входных значений.
+Вычисляет скользящее среднее значений на входе.
 
-``` sql
+```sql
 groupArrayMovingAvg(numbers_for_summing)
 groupArrayMovingAvg(window_size)(numbers_for_summing)
 ```
 
-Функция может принимать размер окна в качестве параметра. Если он не указан, функция принимает размер окна, равный количеству строк в колонке.
+Функция может принимать размер окна в качестве параметра. Если он не указан, функция принимает размер окна, равный количеству строк в столбце.
 
 **Аргументы**
 
-- `numbers_for_summing` — [Выражение](/sql-reference/syntax#expressions), возвращающее значение числового типа данных.
-- `window_size` — Размер окна для вычисления.
+- `numbers_for_summing` — [Выражение](/sql-reference/syntax#expressions), в результате которого получается значение числового типа данных.
+- `window_size` — Размер окна расчета.
 
 **Возвращаемые значения**
 
-- Массив такого же размера и типа, что и входные данные.
+- Массив того же размера и типа, что и входные данные.
 
-Функция использует [округление к нулю](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero). Она отсекает дробные знаки, незначащие для результирующего типа данных.
+Функция использует [округление к нулю](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero). Она отсекает значащие десятичные знаки для результирующего типа данных.
 
 **Пример**
 
-Таблица `b`:
+Пример таблицы `b`:
 
-``` sql
+```sql
 CREATE TABLE t
 (
     `int` UInt8,
@@ -42,7 +42,7 @@ CREATE TABLE t
 ENGINE = TinyLog
 ```
 
-``` text
+```text
 ┌─int─┬─float─┬──dec─┐
 │   1 │   1.1 │ 1.10 │
 │   2 │   2.2 │ 2.20 │
@@ -53,7 +53,7 @@ ENGINE = TinyLog
 
 Запросы:
 
-``` sql
+```sql
 SELECT
     groupArrayMovingAvg(int) AS I,
     groupArrayMovingAvg(float) AS F,
@@ -61,13 +61,13 @@ SELECT
 FROM t
 ```
 
-``` text
+```text
 ┌─I─────────┬─F───────────────────────────────────┬─D─────────────────────┐
 │ [0,0,1,3] │ [0.275,0.82500005,1.9250001,3.8675] │ [0.27,0.82,1.92,3.86] │
 └───────────┴─────────────────────────────────────┴───────────────────────┘
 ```
 
-``` sql
+```sql
 SELECT
     groupArrayMovingAvg(2)(int) AS I,
     groupArrayMovingAvg(2)(float) AS F,
@@ -75,7 +75,7 @@ SELECT
 FROM t
 ```
 
-``` text
+```text
 ┌─I─────────┬─F────────────────────────────────┬─D─────────────────────┐
 │ [0,1,3,5] │ [0.55,1.6500001,3.3000002,6.085] │ [0.55,1.65,3.30,6.08] │
 └───────────┴──────────────────────────────────┴───────────────────────┘

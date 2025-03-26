@@ -1,8 +1,8 @@
 ---
-title: 'CustomSeparatedIgnoreSpacesWithNamesAndTypes'
-sidebar_label: 'CustomSeparatedIgnoreSpacesWithNamesAndTypes'
+description: 'Документация по формату CustomSeparatedIgnoreSpacesWithNamesAndTypes'
 keywords: ['CustomSeparatedIgnoreSpacesWithNamesAndTypes']
-description: 'Описание для CustomSeparatedIgnoreSpacesWithNamesAndTypes'
+slug: /interfaces/formats/CustomSeparatedIgnoreSpacesWithNamesAndTypes
+title: 'CustomSeparatedIgnoreSpacesWithNamesAndTypes'
 ---
 
 ## Описание {#description}

@@ -1,27 +1,27 @@
 ---
-description:  'Набор данных и запросы Star Schema Benchmark (SSB)'
+description: 'Набор данных и запросы Star Schema Benchmark (SSB)'
+sidebar_label: 'Star Schema Benchmark'
 slug: /getting-started/example-datasets/star-schema
-sidebar_label: Star Schema Benchmark
 title: 'Star Schema Benchmark (SSB, 2009)'
 ---
 
-Star Schema Benchmark в значительной степени основан на таблицах и запросах [TPC-H](tpch.md), но в отличие от TPC-H, использует макет звёздной схемы. Основная часть данных находится в гигантской таблице фактов, окружаемой несколькими небольшими таблицами измерений. Запросы соединяют таблицу фактов с одной или несколькими таблицами измерений, чтобы применить критерии фильтрации, например, `MONTH = 'JANUARY'`.
+Star Schema Benchmark в значительной степени основан на таблицах и запросах [TPC-H](tpch.md), но в отличие от TPC-H, он использует структуру звездной схемы. Основная часть данных располагается в гигантской таблице фактов, окруженной несколькими небольшими таблицами размерностей. Запросы объединяют таблицу фактов с одной или несколькими таблицами размерностей для применения критериев фильтрации, например, `MONTH = 'JANUARY'`.
 
 Ссылки:
-- [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O'Neil et. al), 2009
-- [Вариации Star Schema Benchmark для тестирования влияния сдвига данных на производительность запросов](https://doi.org/10.1145/2479871.2479927) (Rabl et. al.), 2013
+- [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O'Neil и др.), 2009
+- [Variations of the Star Schema Benchmark to Test the Effects of Data Skew on Query Performance](https://doi.org/10.1145/2479871.2479927) (Rabl. и др.), 2013
 
-Сначала ознакомьтесь с репозиторием Star Schema Benchmark и соберите генератор данных:
+Сначала клонируйте репозиторий star schema benchmark и скомпилируйте генератор данных:
 
-``` bash
+```bash
 git clone https://github.com/vadimtk/ssb-dbgen.git
 cd ssb-dbgen
 make
 ```
 
-Затем сгенерируйте данные. Параметр `-s` указывает масштабный коэффициент. Например, с `-s 100` генерируется 600 миллионов строк.
+Затем сгенерируйте данные. Параметр `-s` задает масштабный фактор. Например, с `-s 100` будет сгенерировано 600 миллионов строк.
 
-``` bash
+```bash
 ./dbgen -s 1000 -T c
 ./dbgen -s 1000 -T l
 ./dbgen -s 1000 -T p
@@ -31,7 +31,7 @@ make
 
 Теперь создайте таблицы в ClickHouse:
 
-``` sql
+```sql
 CREATE TABLE customer
 (
         C_CUSTKEY       UInt32,
@@ -116,9 +116,9 @@ CREATE TABLE date
 ENGINE = MergeTree ORDER BY D_DATEKEY;
 ```
 
-Данные можно импортировать следующим образом:
+Данные могут быть импортированы следующим образом:
 
-``` bash
+```bash
 clickhouse-client --query "INSERT INTO customer FORMAT CSV" < customer.tbl
 clickhouse-client --query "INSERT INTO part FORMAT CSV" < part.tbl
 clickhouse-client --query "INSERT INTO supplier FORMAT CSV" < supplier.tbl
@@ -126,9 +126,9 @@ clickhouse-client --query "INSERT INTO lineorder FORMAT CSV" < lineorder.tbl
 clickhouse-client --query "INSERT INTO date FORMAT CSV" < date.tbl
 ```
 
-Во многих случаях использования ClickHouse несколько таблиц конвертируются в одну единую денормализованную плоскую таблицу. Это шаг является необязательным, ниже приведены запросы в их оригинальной форме и в формате, переписанном для денормализованной таблицы.
+Во многих случаях использования ClickHouse несколько таблиц преобразуются в одну денормализованную плоскую таблицу. Этот шаг является необязательным, ниже приведены запросы в их оригинальной форме и в формате, переписанном для денормализованной таблицы.
 
-``` sql
+```sql
 SET max_memory_usage = 20000000000;
 
 CREATE TABLE lineorder_flat
@@ -178,7 +178,7 @@ INNER JOIN supplier AS s ON s.S_SUPPKEY = l.LO_SUPPKEY
 INNER JOIN part AS p ON p.P_PARTKEY = l.LO_PARTKEY;
 ```
 
-Запросы генерируются с помощью `./qgen -s <scaling_factor>`. Примеры запросов для `s = 100`:
+Запросы генерируются с помощью `./qgen -s <масштабный_фактор>`. Пример запросов для `s = 100`:
 
 Q1.1
 
@@ -197,7 +197,7 @@ WHERE
 
 Денормализованная таблица:
 
-``` sql
+```sql
 SELECT
     sum(LO_EXTENDEDPRICE * LO_DISCOUNT) AS revenue
 FROM

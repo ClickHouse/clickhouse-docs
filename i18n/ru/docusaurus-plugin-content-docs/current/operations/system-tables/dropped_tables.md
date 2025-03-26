@@ -1,32 +1,32 @@
 ---
-description: "Системная таблица, содержащая информацию о таблицах, на которых была выполнена команда drop table, но для которых очистка данных еще не была выполнена."
+description: 'Системная таблица, содержащая информацию о таблицах, для которых была выполнена операция drop table, но очистка данных еще не была выполнена'
+keywords: ['системная таблица', 'удаленные таблицы']
 slug: /operations/system-tables/dropped_tables
-title: "system.dropped_tables"
-keywords: ['system table', 'dropped_tables']
+title: 'system.dropped_tables'
 ---
 
-Содержит информацию о таблицах, на которых была выполнена команда drop table, но для которых очистка данных еще не была выполнена.
+Содержит информацию о таблицах, для которых была выполнена операция drop table, но очистка данных еще не была произведена.
 
-Колонки:
+Столбцы:
 
 - `index` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Индекс в очереди marked_dropped_tables.
 - `database` ([String](../../sql-reference/data-types/string.md)) — База данных.
 - `table` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы.
 - `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — UUID таблицы.
-- `engine` ([String](../../sql-reference/data-types/string.md)) — Имя движка таблицы.
+- `engine` ([String](../../sql-reference/data-types/string.md)) — Название движка таблицы.
 - `metadata_dropped_path` ([String](../../sql-reference/data-types/string.md)) — Путь к файлу метаданных таблицы в директории metadata_dropped.
-- `table_dropped_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время, когда запланирована следующая попытка удаления данных таблицы. Обычно это время, когда таблица была удалена, плюс `database_atomic_delay_before_drop_table_sec`.
+- `table_dropped_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время, когда запланирована следующая попытка удалить данные таблицы. Обычно это время удаления таблицы плюс `database_atomic_delay_before_drop_table_sec`.
 
 **Пример**
 
 Следующий пример показывает, как получить информацию о `dropped_tables`.
 
-``` sql
+```sql
 SELECT *
 FROM system.dropped_tables\G
 ```
 
-``` text
+```text
 Row 1:
 ──────
 index:                 0

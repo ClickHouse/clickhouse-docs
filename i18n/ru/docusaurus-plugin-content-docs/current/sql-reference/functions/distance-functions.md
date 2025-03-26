@@ -1,7 +1,9 @@
 ---
-slug: /sql-reference/functions/distance-functions
+description: 'Документация по функциям расстояния'
+sidebar_label: 'Расстояние'
 sidebar_position: 55
-sidebar_label: Distance
+slug: /sql-reference/functions/distance-functions
+title: 'Функции расстояния'
 ---
 
 
@@ -21,11 +23,11 @@ L1Norm(vector)
 
 **Аргументы**
 
-- `vector` — [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
+- `vector` — [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
 
 **Возвращаемое значение**
 
-- L1-норма или расстояние в [таксической геометрии](https://en.wikipedia.org/wiki/Taxicab_geometry). [UInt](../data-types/int-uint.md), [Float](../data-types/float.md) или [Decimal](../data-types/decimal.md).
+- L1-норма или расстояние [таксибуса](https://en.wikipedia.org/wiki/Taxicab_geometry). [UInt](../data-types/int-uint.md), [Float](../data-types/float.md) или [Decimal](../data-types/decimal.md).
 
 **Примеры**
 
@@ -57,11 +59,11 @@ L2Norm(vector)
 
 **Аргументы**
 
-- `vector` — [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
+- `vector` — [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
 
 **Возвращаемое значение**
 
-- L2-норма или [Евклидово расстояние](https://en.wikipedia.org/wiki/Euclidean_distance). [Float](../data-types/float.md).
+- L2-норма или [евклидово расстояние](https://en.wikipedia.org/wiki/Euclidean_distance). [Float](../data-types/float.md).
 
 **Пример**
 
@@ -92,7 +94,7 @@ L2SquaredNorm(vector)
 
 **Аргументы**
 
-- `vector` — [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
+- `vector` — [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
 
 **Возвращаемое значение**
 
@@ -128,7 +130,7 @@ LinfNorm(vector)
 
 **Аргументы**
 
-- `vector` — [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
+- `vector` — [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
 
 **Возвращаемое значение**
 
@@ -152,7 +154,7 @@ SELECT LinfNorm((1, -2));
 
 ## LpNorm {#lpnorm}
 
-Вычисляет корень из `p`-й степени суммы абсолютных значений вектора в степени `p`.
+Вычисляет корень `p`-й степени из суммы абсолютных значений вектора в степени `p`.
 
 **Синтаксис**
 
@@ -164,8 +166,8 @@ LpNorm(vector, p)
 
 **Аргументы**
 
-- `vector` — [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
-- `p` — Степень. Возможные значения: действительное число в `[1; inf)`. [UInt](../data-types/int-uint.md) или [Float](../data-types/float.md).
+- `vector` — [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
+- `p` — Степень. Возможные значения: действительное число в диапазоне `[1; inf)`. [UInt](../data-types/int-uint.md) или [Float](../data-types/float.md).
 
 **Возвращаемое значение**
 
@@ -189,7 +191,7 @@ SELECT LpNorm((1, -2), 2);
 
 ## L1Distance {#l1distance}
 
-Вычисляет расстояние между двумя точками (значения векторов — это координаты) в пространстве `L1` (1-норма ([таксическая геометрия](https://en.wikipedia.org/wiki/Taxicab_geometry) расстояние)).
+Вычисляет расстояние между двумя точками (значения векторов являются координатами) в пространстве `L1` (1-норма ([таксибус](https://en.wikipedia.org/wiki/Taxicab_geometry) расстояние)).
 
 **Синтаксис**
 
@@ -201,8 +203,8 @@ L1Distance(vector1, vector2)
 
 **Аргументы**
 
-- `vector1` — Первый вектор. [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
-- `vector2` — Второй вектор. [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
+- `vector1` — Первый вектор. [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
+- `vector2` — Второй вектор. [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
 
 **Возвращаемое значение**
 
@@ -226,7 +228,7 @@ SELECT L1Distance((1, 2), (2, 3));
 
 ## L2Distance {#l2distance}
 
-Вычисляет расстояние между двумя точками (значения векторов — это координаты) в Евклидовой пространстве ([Евклидово расстояние](https://en.wikipedia.org/wiki/Euclidean_distance)).
+Вычисляет расстояние между двумя точками (значения векторов являются координатами) в евклидова пространстве ([евклидово расстояние](https://en.wikipedia.org/wiki/Euclidean_distance)).
 
 **Синтаксис**
 
@@ -238,8 +240,8 @@ L2Distance(vector1, vector2)
 
 **Аргументы**
 
-- `vector1` — Первый вектор. [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
-- `vector2` — Второй вектор. [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
+- `vector1` — Первый вектор. [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
+- `vector2` — Второй вектор. [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
 
 **Возвращаемое значение**
 
@@ -275,8 +277,8 @@ L2SquaredDistance(vector1, vector2)
 
 **Аргументы**
 
-- `vector1` — Первый вектор. [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
-- `vector2` — Второй вектор. [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
+- `vector1` — Первый вектор. [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
+- `vector2` — Второй вектор. [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
 
 **Возвращаемое значение**
 
@@ -300,7 +302,7 @@ SELECT L2SquaredDistance([1, 2, 3], [0, 0, 0])
 
 ## LinfDistance {#linfdistance}
 
-Вычисляет расстояние между двумя точками (значения векторов — это координаты) в пространстве `L_{inf}` ([максимальная норма](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm))).
+Вычисляет расстояние между двумя точками (значения векторов являются координатами) в пространстве `L_{inf}` ([максимальная норма](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm))).
 
 **Синтаксис**
 
@@ -312,12 +314,12 @@ LinfDistance(vector1, vector2)
 
 **Аргументы**
 
-- `vector1` — Первый вектор. [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
-- `vector1` — Второй вектор. [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
+- `vector1` — Первый вектор. [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
+- `vector1` — Второй вектор. [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
 
 **Возвращаемое значение**
 
-- Расстояние по норме бесконечности. [Float](../data-types/float.md).
+- Расстояние по бесконечной норме. [Float](../data-types/float.md).
 
 **Пример**
 
@@ -337,7 +339,7 @@ SELECT LinfDistance((1, 2), (2, 3));
 
 ## LpDistance {#lpdistance}
 
-Вычисляет расстояние между двумя точками (значения векторов — это координаты) в пространстве `Lp` ([p-нормное расстояние](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)).
+Вычисляет расстояние между двумя точками (значения векторов являются координатами) в пространстве `Lp` ([p-нормное расстояние](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)).
 
 **Синтаксис**
 
@@ -349,8 +351,8 @@ LpDistance(vector1, vector2, p)
 
 **Аргументы**
 
-- `vector1` — Первый вектор. [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
-- `vector2` — Второй вектор. [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
+- `vector1` — Первый вектор. [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
+- `vector2` — Второй вектор. [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
 - `p` — Степень. Возможные значения: действительное число из `[1; inf)`. [UInt](../data-types/int-uint.md) или [Float](../data-types/float.md).
 
 **Возвращаемое значение**
@@ -375,7 +377,7 @@ SELECT LpDistance((1, 2), (2, 3), 3);
 
 ## L1Normalize {#l1normalize}
 
-Вычисляет единичный вектор заданного вектора (значения кортежа — это координаты) в пространстве `L1` ([таксическая геометрия](https://en.wikipedia.org/wiki/Taxicab_geometry)).
+Вычисляет единичный вектор заданного вектора (значения кортежа являются координатами) в пространстве `L1` ([таксибус](https://en.wikipedia.org/wiki/Taxicab_geometry)).
 
 **Синтаксис**
 
@@ -387,11 +389,11 @@ L1Normalize(tuple)
 
 **Аргументы**
 
-- `tuple` — [Tuple](../data-types/tuple.md).
+- `tuple` — [Кортеж](../data-types/tuple.md).
 
 **Возвращаемое значение**
 
-- Единичный вектор. [Tuple](../data-types/tuple.md) из [Float](../data-types/float.md).
+- Единичный вектор. [Кортеж](../data-types/tuple.md) из [Float](../data-types/float.md).
 
 **Пример**
 
@@ -411,7 +413,7 @@ SELECT L1Normalize((1, 2));
 
 ## L2Normalize {#l2normalize}
 
-Вычисляет единичный вектор заданного вектора (значения кортежа — это координаты) в Евклидовой пространстве (с использованием [Евклидового расстояния](https://en.wikipedia.org/wiki/Euclidean_distance)).
+Вычисляет единичный вектор заданного вектора (значения кортежа являются координатами) в евклидова пространстве (используя [евклидово расстояние](https://en.wikipedia.org/wiki/Euclidean_distance)).
 
 **Синтаксис**
 
@@ -423,11 +425,11 @@ L2Normalize(tuple)
 
 **Аргументы**
 
-- `tuple` — [Tuple](../data-types/tuple.md).
+- `tuple` — [Кортеж](../data-types/tuple.md).
 
 **Возвращаемое значение**
 
-- Единичный вектор. [Tuple](../data-types/tuple.md) из [Float](../data-types/float.md).
+- Единичный вектор. [Кортеж](../data-types/tuple.md) из [Float](../data-types/float.md).
 
 **Пример**
 
@@ -447,7 +449,7 @@ SELECT L2Normalize((3, 4));
 
 ## LinfNormalize {#linfnormalize}
 
-Вычисляет единичный вектор заданного вектора (значения кортежа — это координаты) в пространстве `L_{inf}` (с использованием [максимальной нормы](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm))).
+Вычисляет единичный вектор заданного вектора (значения кортежа являются координатами) в пространстве `L_{inf}` (используя [максимальную норму](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm))).
 
 **Синтаксис**
 
@@ -459,11 +461,11 @@ LinfNormalize(tuple)
 
 **Аргументы**
 
-- `tuple` — [Tuple](../data-types/tuple.md).
+- `tuple` — [Кортеж](../data-types/tuple.md).
 
 **Возвращаемое значение**
 
-- Единичный вектор. [Tuple](../data-types/tuple.md) из [Float](../data-types/float.md).
+- Единичный вектор. [Кортеж](../data-types/tuple.md) из [Float](../data-types/float.md).
 
 **Пример**
 
@@ -483,7 +485,7 @@ SELECT LinfNormalize((3, 4));
 
 ## LpNormalize {#lpnormalize}
 
-Вычисляет единичный вектор заданного вектора (значения кортежа — это координаты) в пространстве `Lp` (с использованием [p-нормы](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)).
+Вычисляет единичный вектор заданного вектора (значения кортежа являются координатами) в пространстве `Lp` (используя [p-норму](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)).
 
 **Синтаксис**
 
@@ -495,12 +497,12 @@ LpNormalize(tuple, p)
 
 **Аргументы**
 
-- `tuple` — [Tuple](../data-types/tuple.md).
+- `tuple` — [Кортеж](../data-types/tuple.md).
 - `p` — Степень. Возможные значения: любое число из [1;inf). [UInt](../data-types/int-uint.md) или [Float](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Единичный вектор. [Tuple](../data-types/tuple.md) из [Float](../data-types/float.md).
+- Единичный вектор. [Кортеж](../data-types/tuple.md) из [Float](../data-types/float.md).
 
 **Пример**
 
@@ -520,7 +522,7 @@ SELECT LpNormalize((3, 4),5);
 
 ## cosineDistance {#cosinedistance}
 
-Вычисляет косинусное расстояние между двумя векторами (значения кортежей — это координаты). Чем меньше возвращаемое значение, тем более схожи векторы.
+Вычисляет косинусное расстояние между двумя векторами (значения кортежей являются координатами). Чем меньше возвращаемое значение, тем более схожи векторы.
 
 **Синтаксис**
 
@@ -530,8 +532,8 @@ cosineDistance(vector1, vector2)
 
 **Аргументы**
 
-- `vector1` — Первый кортеж. [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
-- `vector2` — Второй кортеж. [Tuple](../data-types/tuple.md) или [Array](../data-types/array.md).
+- `vector1` — Первый кортеж. [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
+- `vector2` — Второй кортеж. [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
 
 **Возвращаемое значение**
 

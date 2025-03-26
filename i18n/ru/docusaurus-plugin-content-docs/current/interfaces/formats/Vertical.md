@@ -1,19 +1,20 @@
 ---
-title: Vertical
-slug: /interfaces/formats/Vertical
-keywords: ['Vertical']
-input_format: false
-output_format: true
 alias: []
+description: 'Документация для вертикального формата'
+input_format: false
+keywords: ['Vertical']
+output_format: true
+slug: /interfaces/formats/Vertical
+title: 'Вертикальный'
 ---
 
 | Вход | Выход | Псевдоним |
-|------|-------|-----------|
-| ✗    | ✔     |           |
+|-------|--------|-------|
+| ✗     | ✔      |       |
 
 ## Описание {#description}
 
-Выводит каждое значение на отдельной строке с указанным именем колонки. Этот формат удобен для печати всего лишь одной или нескольких строк, если каждая строка состоит из большого количества колонок.
+Выводит каждое значение на отдельной строке с указанным именем столбца. Этот формат удобен для печати всего одной или нескольких строк, если каждая строка состоит из большого количества столбцов. 
 [`NULL`](/sql-reference/syntax.md) выводится как `ᴺᵁᴸᴸ`.
 
 ## Пример использования {#example-usage}
@@ -25,7 +26,7 @@ SELECT * FROM t_null FORMAT Vertical
 ```
 
 ```response
-Строка 1:
+Row 1:
 ──────
 x: 1
 y: ᴺᵁᴸᴸ
@@ -38,7 +39,7 @@ SELECT 'string with \'quotes\' and \t with some special \n characters' AS test F
 ```
 
 ```response
-Строка 1:
+Row 1:
 ──────
 test: string with 'quotes' and      with some special
  characters

@@ -1,14 +1,15 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/maxintersectionsposition
+description: 'Агрегатная функция, которая вычисляет позиции вхождений функции
+  maxIntersections.'
 sidebar_position: 164
-title: maxIntersectionsPosition
-description: "Агрегатная функция, которая вычисляет позиции появлений функции maxIntersections."
+slug: /sql-reference/aggregate-functions/reference/maxintersectionsposition
+title: 'maxIntersectionsPosition'
 ---
 
 
 # maxIntersectionsPosition
 
-Агрегатная функция, которая вычисляет позиции появлений функции [`maxIntersections`](./maxintersections.md).
+Агрегатная функция, которая вычисляет позиции вхождений функции [`maxIntersections`](./maxintersections.md).
 
 Синтаксис:
 
@@ -18,13 +19,13 @@ maxIntersectionsPosition(start_column, end_column)
 
 **Аргументы**
 
-- `start_column` – числовая колонка, представляющая начало каждого интервала. Если `start_column` равно `NULL` или 0, то интервал будет пропущен.
+- `start_column` – числовой столбец, который представляет начало каждого интервала. Если `start_column` равен `NULL` или 0, то интервал будет пропущен.
 
-- `end_column` - числовая колонка, представляющая конец каждого интервала. Если `end_column` равно `NULL` или 0, то интервал будет пропущен.
+- `end_column` - числовой столбец, который представляет конец каждого интервала. Если `end_column` равен `NULL` или 0, то интервал будет пропущен.
 
 **Возвращаемое значение**
 
-Возвращает стартовые позиции максимального числа пересекающихся интервалов.
+Возвращает начальные позиции максимального количества пересекающихся интервалов.
 
 **Пример**
 
@@ -63,4 +64,4 @@ SELECT maxIntersectionsPosition(start, end) FROM my_events;
 2
 ```
 
-Другими словами, строка `(1,6)` является началом 3 интервалов, которые пересекаются, и 3 - это максимальное количество пересекающихся интервалов.
+Другими словами, строка `(1,6)` является началом 3 интервалов, которые пересекаются, и 3 – это максимальное количество пересекающихся интервалов.
