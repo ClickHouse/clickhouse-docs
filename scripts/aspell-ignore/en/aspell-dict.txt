@@ -171,6 +171,8 @@ CertificateHandler
 Chadmin
 ChannelID
 ChartDB
+Chartbrew
+Chartbrew's
 ChatGPT
 Cidr
 Ciphertext
