@@ -58,7 +58,7 @@ settings_from_cpp AS
 ),
 main_content AS
 (
-    SELECT format('## {} {}\\n{}\\n\\nType: {}\\n\\nDefault value: {}\\n\\n{}\\n\\n',
+    SELECT format('## {} {}\\n{}\\n\\nType: \`{}\`\\n\\nDefault: \`{}\`\\n\\n{}\\n\\n',
                   name, '{#'||name||'}', multiIf(tier == 'Experimental', '<ExperimentalBadge/>', tier == 'Beta', '<BetaBadge/>', ''), type, default, trim(BOTH '\\n' FROM description))
     FROM system.settings WHERE name IN settings_from_cpp
     ORDER BY name
@@ -162,8 +162,8 @@ WITH
               '## {} {}\n\n{}{}{}\n\n',
               name,
               lcase('{#'||name||'}'),
-              if(type != '', concat('Type: ', type, '\n\n'), ''),
-              if(default != '', concat('Default: ', default, '\n\n'), ''),
+              if(type != '', concat('Type: \`', type, '\`\n\n'), ''),
+              if(default != '', concat('Default: \`', default, '\`\n\n'), ''),
               description
             ) AS formatted_text
         FROM combined_server_settings
