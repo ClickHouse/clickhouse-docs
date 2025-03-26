@@ -119,6 +119,7 @@ SELECT prefix || (SELECT groupConcat(*) FROM main_content)
 INTO OUTFILE 'settings.md' TRUNCATE FORMAT LineAsString
 " > /dev/null || { echo "Failed to Autogenerate Core settings"; exit 1; }
 
+# Auto generate global server settings
 ./clickhouse -q "
 WITH
     server_settings_outside_source AS
@@ -151,7 +152,7 @@ WITH
     formatted_settings AS
     (
         SELECT
-            format('## {} {}\n\n{}\n\n', name, '{#'||name||'}', description) AS formatted_text
+            format('## {} {}\n\n{}\n\n', name, lcase('{#'||name||'}'), description) AS formatted_text
         FROM combined_server_settings
         ORDER BY name ASC
     ),
