@@ -134,25 +134,38 @@ WITH
     (
         SELECT
 	        name,
-	        replaceRegexpAll(description, '(?m)^[ \t]+', '') AS description
+	        replaceRegexpAll(description, '(?m)^[ \t]+', '') AS description,
+	        type,
+	        default
         FROM system.server_settings
     ),
     combined_server_settings AS
     (
         SELECT
             name,
-            description
+            description,
+            type,
+            default
         FROM server_settings_in_source
         UNION ALL
         SELECT
             name,
-            doc AS description
+            doc AS description,
+            '' AS type,
+            '' AS default
         FROM server_settings_outside_source
     ),
     formatted_settings AS
     (
         SELECT
-            format('## {} {}\n\n{}\n\n', name, lcase('{#'||name||'}'), description) AS formatted_text
+            format(
+              '## {} {}\n\n{}{}{}\n\n',
+              name,
+              lcase('{#'||name||'}'),
+              if(type != '', concat('Type: ', type, '\n\n'), ''),
+              if(default != '', concat('Default: ', default, '\n\n'), ''),
+              description
+            ) AS formatted_text
         FROM combined_server_settings
         ORDER BY name ASC
     ),
