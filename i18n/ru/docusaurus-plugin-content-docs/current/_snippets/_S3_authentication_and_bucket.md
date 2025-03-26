@@ -151,4 +151,3 @@ https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-ove
 13. Сохраните конфигурацию политики.
 
 </details>
-```

@@ -45,7 +45,6 @@ import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-
 import give_a_query_a_name from '@site/static/images/cloud/sqlconsole/give-a-query-a-name.png'
 import save_the_query from '@site/static/images/cloud/sqlconsole/save-the-query.png'
 
-
 # SQL Консоль
 
 SQL консоль — это самый быстрый и простой способ исследовать и выполнять запросы к вашим базам данных в ClickHouse Cloud. Вы можете использовать SQL консоль для:
@@ -404,4 +403,4 @@ SQL консоль позволяет вам делиться запросами
 
 В некоторых случаях может потребоваться изменить масштабы осей для каждого поля независимо. Это также можно сделать в разделе "Дополнительно" панели конфигурации графика, указав минимальные и максимальные значения для диапазона оси. Например, вышеуказанный график выглядит хорошо, но, чтобы продемонстрировать взаимосвязь между нашими полями `trip_total` и `fare_total`, диапазоны осей нуждаются в некоторой корректировке:
 
-<Image img={sql_console_access_queries} size="lg" border alt="Раздел "Поделились со мной" в списке запросов"/>
+<Image img={sql_console_access_queries} size="lg" border alt="Раздел Поделились со мной в списке запросов"/>

@@ -6,7 +6,7 @@ description: 'Amazon QuickSight обеспечивает управление д
 title: 'QuickSight'
 ---
 
-import MySQLOnPremiseSetup from '@site/docs/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
+import MySQLOnPremiseSetup from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
 import Image from '@theme/IdealImage';
 import quicksight_01 from '@site/static/images/integrations/data-visualization/quicksight_01.png';
 import quicksight_02 from '@site/static/images/integrations/data-visualization/quicksight_02.png';

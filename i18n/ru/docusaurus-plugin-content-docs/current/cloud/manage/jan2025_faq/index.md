@@ -12,10 +12,10 @@ in the table of contents, please edit the frontmatter of the files directly.
 -->
 | Страница | Описание |
 |-----|-----|
-| [Резюме](/docs/cloud/manage/jan-2025-faq/summary) | Резюме новых уровней ClickHouse Cloud |
-| [Описание новых уровней](/docs/cloud/manage/jan-2025-faq/new-tiers) | Описание новых уровней и функций |
-| [Счёт](/docs/cloud/manage/jan-2025-faq/billing) | Данные по счёту для новых ценовых уровней |
-| [Новые ценовые параметры](/docs/cloud/manage/jan-2025-faq/pricing-dimensions) | Ценовые параметры для передачи данных и ClickPipes |
-| [Масштабирование](/docs/cloud/manage/jan-2025-faq/scaling) | Поведение масштабирования в новых ценовых уровнях |
-| [Политика резервного копирования](/docs/cloud/manage/jan-2025-faq/backup) | Политика резервного копирования в новых уровнях |
-| [Переход на новые планы](/docs/cloud/manage/jan-2025-faq/plan-migrations) | Переход на новые планы, уровни, ценовые параметры, как принимать решение и оценивать затраты |
+| [Резюме](/cloud/manage/jan-2025-faq/summary) | Резюме новых уровней ClickHouse Cloud |
+| [Описание новых уровней](/cloud/manage/jan-2025-faq/new-tiers) | Описание новых уровней и функций |
+| [Счёт](/cloud/manage/jan-2025-faq/billing) | Данные по счёту для новых ценовых уровней |
+| [Новые ценовые параметры](/cloud/manage/jan-2025-faq/pricing-dimensions) | Ценовые параметры для передачи данных и ClickPipes |
+| [Масштабирование](/cloud/manage/jan-2025-faq/scaling) | Поведение масштабирования в новых ценовых уровнях |
+| [Политика резервного копирования](/cloud/manage/jan-2025-faq/backup) | Политика резервного копирования в новых уровнях |
+| [Переход на новые планы](/cloud/manage/jan-2025-faq/plan-migrations) | Переход на новые планы, уровни, ценовые параметры, как принимать решение и оценивать затраты |

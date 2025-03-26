@@ -6,7 +6,7 @@ description: 'Официальный JS-клиент для подключени
 title: 'ClickHouse JS'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 # ClickHouse JS

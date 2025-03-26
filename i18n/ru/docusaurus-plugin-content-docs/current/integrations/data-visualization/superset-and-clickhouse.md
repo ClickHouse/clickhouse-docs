@@ -7,7 +7,7 @@ description: 'Apache Superset — это платформа для исслед�
 title: 'Подключение Superset к ClickHouse'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import superset_01 from '@site/static/images/integrations/data-visualization/superset_01.png';
 import superset_02 from '@site/static/images/integrations/data-visualization/superset_02.png';

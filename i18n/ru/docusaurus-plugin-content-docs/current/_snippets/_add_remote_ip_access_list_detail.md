@@ -15,4 +15,3 @@ import ip_allow_list_add_current_ip from '@site/static/images/_snippets/ip-allow
 <Image size="md" img={ip_allow_list_add_current_ip} alt="Добавьте свой текущий IP-адрес в список доступа по IP в ClickHouse Cloud" border />
 
 </details>
-```

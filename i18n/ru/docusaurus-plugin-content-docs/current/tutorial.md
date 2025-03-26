@@ -7,7 +7,7 @@ title: 'Расширенное руководство'
 description: 'В этом руководстве вы создадите таблицу и вставите большой набор данных. Затем вы выполните запросы к набору данных, включая пример о том, как создать словарь и использовать его для выполнения JOIN.'
 ---
 
-import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
+import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
 
 
 # Расширенное руководство

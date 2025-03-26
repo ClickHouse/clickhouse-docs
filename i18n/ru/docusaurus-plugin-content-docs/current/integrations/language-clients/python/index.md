@@ -7,7 +7,7 @@ description: 'Сюита проекта ClickHouse Connect для подключ
 title: 'Интеграция Python с ClickHouse Connect'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 # Интеграция Python с ClickHouse Connect
 ## Введение {#introduction}

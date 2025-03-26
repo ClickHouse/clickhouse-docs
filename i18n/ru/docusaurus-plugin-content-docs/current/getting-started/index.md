@@ -1,4 +1,3 @@
-
 ---
 description: 'Начните работу с ClickHouse, используя наши учебники и примеры наборов данных'
 keywords: ['clickhouse', 'установка', 'учебник', 'пример', 'наборы данных']
@@ -57,4 +56,3 @@ https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-tab
 | [Геоданные с использованием набора данных вышек сотовой связи](/getting-started/example-datasets/cell-towers) | Узнайте, как загрузить данные OpenCelliD в ClickHouse, подключить Apache Superset к ClickHouse и создать панель управления на основе данных |
 | [Данные об экологических сенсорах](/getting-started/example-datasets/environmental-sensors) | Более 20 миллиардов записей данных от Sensor.Community, глобальной сети датчиков, работающей на основе вкладов, которая создает Открытые Экологические Данные. |
 | [Анонимизированная веб-аналитика](/getting-started/example-datasets/metrica) | Набор данных, состоящий из двух таблиц, содержащих анонимизированные данные веб-аналитики с попаданиями и визитами |
-```

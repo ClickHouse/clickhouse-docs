@@ -6,7 +6,7 @@ sidebar_position: 1
 description: 'Страница с примерами развертывания, основанными на рекомендациях, предоставленных пользователям ClickHouse организацией поддержки и услуг ClickHouse'
 ---
 
-import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
+import ReplicationShardingTerminology from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_replication-sharding-terminology.md';
 
 Эти примеры развертывания основаны на рекомендациях, предоставленных пользователям ClickHouse организацией поддержки и услуг ClickHouse. Это рабочие примеры, и мы рекомендуем вам попробовать их, а затем адаптировать в соответствии с вашими потребностями. Вы можете найти здесь пример, который соответствует вашим требованиям. Кроме того, если у вас есть требование, чтобы данные реплицировались трижды, а не дважды, вы должны быть в состоянии добавить еще одну реплику, следуя представленным здесь шаблонам.
 

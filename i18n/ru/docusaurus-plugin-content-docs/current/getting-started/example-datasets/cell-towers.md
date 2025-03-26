@@ -7,27 +7,27 @@ slug: /getting-started/example-datasets/cell-towers
 title: 'Геоданные с использованием набора данных вышек сотовой связи'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-import ActionsMenu from '@site/docs/_snippets/_service_actions_menu.md';
-import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
-import SupersetDocker from '@site/docs/_snippets/_add_superset_detail.md';
+import ActionsMenu from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_service_actions_menu.md';
+import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
+import SupersetDocker from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_add_superset_detail.md';
 import cloud_load_data_sample from '@site/static/images/_snippets/cloud-load-data-sample.png';
-import cell_towers_1 from '@site/docs/getting-started/example-datasets/images/superset-cell-tower-dashboard.png'
-import add_a_database from '@site/docs/getting-started/example-datasets/images/superset-add.png'
-import choose_clickhouse_connect from '@site/docs/getting-started/example-datasets/images/superset-choose-a-database.png'
-import add_clickhouse_as_superset_datasource from '@site/docs/getting-started/example-datasets/images/superset-connect-a-database.png'
-import add_cell_towers_table_as_dataset from '@site/docs/getting-started/example-datasets/images/superset-add-dataset.png'
-import create_a_map_in_superset from '@site/docs/getting-started/example-datasets/images/superset-create-map.png'
-import specify_long_and_lat from '@site/docs/getting-started/example-datasets/images/superset-lon-lat.png'
-import superset_mcc_2024 from '@site/docs/getting-started/example-datasets/images/superset-mcc-204.png'
-import superset_radio_umts from '@site/docs/getting-started/example-datasets/images/superset-radio-umts.png'
-import superset_umts_netherlands from '@site/docs/getting-started/example-datasets/images/superset-umts-netherlands.png'
-import superset_cell_tower_dashboard from '@site/docs/getting-started/example-datasets/images/superset-cell-tower-dashboard.png'
+import cell_towers_1 from '@site/i18n/ru/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-cell-tower-dashboard.png'
+import add_a_database from '@site/i18n/ru/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-add.png'
+import choose_clickhouse_connect from '@site/i18n/ru/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-choose-a-database.png'
+import add_clickhouse_as_superset_datasource from '@site/i18n/ru/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-connect-a-database.png'
+import add_cell_towers_table_as_dataset from '@site/i18n/ru/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-add-dataset.png'
+import create_a_map_in_superset from '@site/i18n/ru/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-create-map.png'
+import specify_long_and_lat from '@site/i18n/ru/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-lon-lat.png'
+import superset_mcc_2024 from '@site/i18n/ru/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-mcc-204.png'
+import superset_radio_umts from '@site/i18n/ru/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-radio-umts.png'
+import superset_umts_netherlands from '@site/i18n/ru/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-umts-netherlands.png'
+import superset_cell_tower_dashboard from '@site/i18n/ru/docusaurus-plugin-content-docs/current/getting-started/example-datasets/images/superset-cell-tower-dashboard.png'
 
 ## Цель {#goal}
 

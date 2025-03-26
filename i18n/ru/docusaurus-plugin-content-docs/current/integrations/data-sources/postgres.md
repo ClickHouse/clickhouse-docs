@@ -6,7 +6,7 @@ hide_title: false
 description: 'Страница, описывающая, как интегрировать Postgres с ClickHouse'
 ---
 
-import PostgreSQL from '@site/docs/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md';
+import PostgreSQL from '@site/i18n/ru/docusaurus-plugin-content-docs/current/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md';
 
 Полное руководство по миграции с PostgreSQL на ClickHouse, включая рекомендации по моделированию данных и эквивалентным концепциям, можно найти [здесь](/migrations/postgresql/overview). В следующем разделе описывается, как подключить ClickHouse и PostgreSQL.
 

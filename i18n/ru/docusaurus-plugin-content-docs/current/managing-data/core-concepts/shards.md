@@ -14,7 +14,7 @@ import Image from '@theme/IdealImage';
 
 <br/>
 :::note
-Эта тема не относится к ClickHouse Cloud, где [Параллельные реплики](/docs/deployment-guides/parallel-replicas) функционируют как несколько шардов в традиционных кластерах ClickHouse с распределением нагрузки, а объектное хранилище [заменяет](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates#shared-object-storage-for-data-availability) реплики, обеспечивая высокую доступность и отказоустойчивость.
+Эта тема не относится к ClickHouse Cloud, где [Параллельные реплики](/deployment-guides/parallel-replicas) функционируют как несколько шардов в традиционных кластерах ClickHouse с распределением нагрузки, а объектное хранилище [заменяет](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates#shared-object-storage-for-data-availability) реплики, обеспечивая высокую доступность и отказоустойчивость.
 :::
 
 ## Что такое шарды таблиц в ClickHouse? {#what-are-table-shards-in-clickhouse}
@@ -31,7 +31,7 @@ import Image from '@theme/IdealImage';
 
 <br/>
 
-Каждый шард удерживает подмножество данных и функционирует как обычная таблица ClickHouse, которую можно запрашивать независимо. Однако запросы будут обрабатывать только это подмножество, что может быть допустимым в зависимости от распределения данных. Обычно объединенная таблица [distributed](/docs/engines/table-engines/special/distributed) (часто на сервер) обеспечивает единый обзор полного набора данных. Она не хранит данные, а перенаправляет **SELECT** запросы ко всем шартам, собирает результаты и отправляет **INSERTS** для равномерного распределения данных.
+Каждый шард удерживает подмножество данных и функционирует как обычная таблица ClickHouse, которую можно запрашивать независимо. Однако запросы будут обрабатывать только это подмножество, что может быть допустимым в зависимости от распределения данных. Обычно объединенная таблица [distributed](/engines/table-engines/special/distributed) (часто на сервер) обеспечивает единый обзор полного набора данных. Она не хранит данные, а перенаправляет **SELECT** запросы ко всем шартам, собирает результаты и отправляет **INSERTS** для равномерного распределения данных.
 
 ## Создание распределенной таблицы {#distributed-table-creation}
 
@@ -48,9 +48,9 @@ CREATE TABLE uk.uk_price_paid_simple_dist ON CLUSTER test_cluster
 ENGINE = Distributed('test_cluster', 'uk', 'uk_price_paid_simple', rand())
 ```
 
-Клаузула `ON CLUSTER` делает оператор DDL [распределенным оператором DDL](/docs/sql-reference/distributed-ddl), инструктируя ClickHouse создать таблицу на всех серверах, перечисленных в [определении кластера](/docs/architecture/horizontal-scaling#replication-and-sharding-configuration) `test_cluster`. Распределенный DDL требует дополнительный компонент [Keeper](https://clickhouse.com/clickhouse/keeper) в [архитектуре кластера](/docs/architecture/horizontal-scaling#architecture-diagram).
+Клаузула `ON CLUSTER` делает оператор DDL [распределенным оператором DDL](/sql-reference/distributed-ddl), инструктируя ClickHouse создать таблицу на всех серверах, перечисленных в [определении кластера](/architecture/horizontal-scaling#replication-and-sharding-configuration) `test_cluster`. Распределенный DDL требует дополнительный компонент [Keeper](https://clickhouse.com/clickhouse/keeper) в [архитектуре кластера](/architecture/horizontal-scaling#architecture-diagram).
 
-Для [параметров распределенного движка](/docs/engines/table-engines/special/distributed#distributed-parameters) указываем имя кластера (`test_cluster`), имя базы данных (`uk`) для целевой таблицы с шардингом, имя целевой таблицы с шардингом (`uk_price_paid_simple`) и **ключ шардирования** для маршрутизации INSERT. В этом примере мы используем функцию [rand](/sql-reference/functions/random-functions#rand) для случайного распределения строк по шартам. Однако может быть использовано любое выражение — даже сложные — в качестве ключа шардирования, в зависимости от конкретного случая. В следующем разделе будет иллюстрироваться, как работает маршрутизация INSERT.
+Для [параметров распределенного движка](/engines/table-engines/special/distributed#distributed-parameters) указываем имя кластера (`test_cluster`), имя базы данных (`uk`) для целевой таблицы с шардингом, имя целевой таблицы с шардингом (`uk_price_paid_simple`) и **ключ шардирования** для маршрутизации INSERT. В этом примере мы используем функцию [rand](/sql-reference/functions/random-functions#rand) для случайного распределения строк по шартам. Однако может быть использовано любое выражение — даже сложные — в качестве ключа шардирования, в зависимости от конкретного случая. В следующем разделе будет иллюстрироваться, как работает маршрутизация INSERT.
 
 ## Маршрутизация INSERT {#insert-routing}
 
@@ -84,7 +84,7 @@ ENGINE = Distributed('test_cluster', 'uk', 'uk_price_paid_simple', rand())
 
 Репликация в ClickHouse обеспечивает **целостность данных** и **переключение в случае сбоя**, поддерживая **копии данных шардов** на нескольких серверах. Поскольку аппаратные сбои неизбежны, репликация предотвращает потерю данных, обеспечивая, чтобы каждый шард имел несколько реплик. Записи могут направляться на любую реплику, либо напрямую, либо через [распределенную таблицу](#distributed-table-creation), которая выбирает реплику для операции. Изменения автоматически распространяются на другие реплики. В случае сбоя или обслуживания данные остаются доступными на других репликах, и как только сбойный хост восстанавливается, он автоматически синхронизируется, чтобы оставаться актуальным.
 
-Обратите внимание, что репликация требует компонента [Keeper](https://clickhouse.com/clickhouse/keeper) в [архитектуре кластера](/docs/architecture/horizontal-scaling#architecture-diagram).
+Обратите внимание, что репликация требует компонента [Keeper](https://clickhouse.com/clickhouse/keeper) в [архитектуре кластера](/architecture/horizontal-scaling#architecture-diagram).
 
 Следующая диаграмма иллюстрирует кластер ClickHouse из шести серверов, где два шарда таблицы `Shard-1` и `Shard-2`, представленные ранее, имеют по три реплики. Запрос отправляется в этот кластер:
 
@@ -102,11 +102,11 @@ ENGINE = Distributed('test_cluster', 'uk', 'uk_price_paid_simple', rand())
 
 Остальное работает [так же](#select-forwarding), как и в настройках без реплик, и не показано на диаграмме выше. Сервер ClickHouse, который изначально был нацелен на распределенную таблицу, собирает все локальные результаты, объединяет их в окончательный глобальный результат и возвращает его отправителю запроса.
 
-Обратите внимание, что ClickHouse позволяет настраивать стратегию перенаправления запросов для ②. По умолчанию — в отличие от диаграммы выше — распределенная таблица [предпочитает](/docs/operations/settings/settings#prefer_localhost_replica) локальную реплику, если она доступна, но могут использоваться и другие стратегии балансировки нагрузки [по умолчанию](/docs/operations/settings/settings#load_balancing).
+Обратите внимание, что ClickHouse позволяет настраивать стратегию перенаправления запросов для ②. По умолчанию — в отличие от диаграммы выше — распределенная таблица [предпочитает](/operations/settings/settings#prefer_localhost_replica) локальную реплику, если она доступна, но могут использоваться и другие стратегии балансировки нагрузки [по умолчанию](/operations/settings/settings#load_balancing).
 
 ## Где найти дополнительную информацию {#where-to-find-more-information}
 
-Для получения более подробной информации помимо этого обобщенного введения в шардов и реплик таблиц, ознакомьтесь с нашим [руководством по развертыванию и масштабированию](/docs/architecture/horizontal-scaling).
+Для получения более подробной информации помимо этого обобщенного введения в шардов и реплик таблиц, ознакомьтесь с нашим [руководством по развертыванию и масштабированию](/architecture/horizontal-scaling).
 
 Мы также настоятельно рекомендуем это учебное видео для более глубокого погружения в шардов и реплик ClickHouse:
 

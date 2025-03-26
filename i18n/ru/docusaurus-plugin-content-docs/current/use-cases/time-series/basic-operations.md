@@ -86,15 +86,15 @@ LIMIT 5;
 └─────────────────────┴────────┘
 ```
 
-Функция [`toStartOfHour()`](/docs/sql-reference/functions/date-time-functions#tostartofhour), использованная здесь, преобразует указанное время в начало часа. 
+Функция [`toStartOfHour()`](/sql-reference/functions/date-time-functions#tostartofhour), использованная здесь, преобразует указанное время в начало часа. 
 Вы также можете группировать по году, кварталу, месяцу или дню.
 
 ## Индивидуальные интервалы группировки {#time-series-custom-grouping-intervals}
 
-Мы также можем группировать по произвольным интервалам, например, по 5 минут, используя функцию [`toStartOfInterval()`](/docs/sql-reference/functions/date-time-functions#tostartofinterval). 
+Мы также можем группировать по произвольным интервалам, например, по 5 минут, используя функцию [`toStartOfInterval()`](/sql-reference/functions/date-time-functions#tostartofinterval). 
 
 Предположим, мы хотим группировать по интервалам в 4 часа.
-Мы можем указать интервал группировки, используя клаузу [`INTERVAL`](/docs/sql-reference/data-types/special-data-types/interval):
+Мы можем указать интервал группировки, используя клаузу [`INTERVAL`](/sql-reference/data-types/special-data-types/interval):
 
 ```sql
 SELECT
@@ -107,7 +107,7 @@ ORDER BY interval ASC
 LIMIT 6;
 ```
 
-Или мы можем использовать функцию [`toIntervalHour()`](/docs/sql-reference/functions/type-conversion-functions#tointervalhour):
+Или мы можем использовать функцию [`toIntervalHour()`](/sql-reference/functions/type-conversion-functions#tointervalhour):
 
 ```sql
 SELECT
@@ -172,7 +172,7 @@ ORDER BY hour ASC;
 └─────────────────────┴───────────┘
 ```
 
-ClickHouse предоставляет модификатор [`WITH FILL`](/docs/guides/developer/time-series-filling-gaps#with-fill) для решения этой проблемы. Это позволит заполнить все пустые часы нулями, чтобы мы могли лучше понимать распределение во времени:
+ClickHouse предоставляет модификатор [`WITH FILL`](/guides/developer/time-series-filling-gaps#with-fill) для решения этой проблемы. Это позволит заполнить все пустые часы нулями, чтобы мы могли лучше понимать распределение во времени:
 
 ```sql
 SELECT
@@ -218,7 +218,7 @@ ORDER BY hour ASC WITH FILL STEP toIntervalHour(1);
 Иногда нам не нужно иметь дело с началом интервалов (например, начало дня или часа), а со скользящими интервалами. 
 Предположим, мы хотим понять общее количество хитов за окно, основанное не на днях, а на 24-часовом периоде, смещенном от 18:00. 
 
-Мы можем использовать функцию [`date_diff()`](/docs/sql-reference/functions/date-time-functions#date_diff), чтобы рассчитать разницу между контрольным временем и временем каждой записи. 
+Мы можем использовать функцию [`date_diff()`](/sql-reference/functions/date-time-functions#date_diff), чтобы рассчитать разницу между контрольным временем и временем каждой записи. 
 В этом случае столбец `day` будет представлять разницу в днях (например, 1 день назад, 2 дня назад и т.д.):
 
 ```sql

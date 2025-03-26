@@ -8,7 +8,7 @@ description: 'Этот гид предоставляет простые и ми�
 
 
 # Настройка SSL пользовательского сертификата для аутентификации
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 

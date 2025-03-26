@@ -5,4 +5,4 @@ import cloud_service_action_menu from '@site/static/images/_snippets/cloud-servi
 Выберите вашу услугу, затем `Источники данных` -> `Предопределенные образцы данных`.
 
 <Image size="md" img={cloud_service_action_menu} alt="Меню действий сервиса ClickHouse Cloud, показывающее параметры Источники данных и Предопределенные образцы данных" border />
-```
+

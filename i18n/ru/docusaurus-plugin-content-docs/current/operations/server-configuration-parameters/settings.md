@@ -1,14 +1,15 @@
+---
 description: 'Этот раздел содержит описания настроек сервера, т.е. настроек, которые не могут быть изменены на уровне сессии или запроса.'
 keywords: ['глобальные настройки сервера']
 sidebar_label: 'Настройки сервера'
 sidebar_position: 57
 slug: /operations/server-configuration-parameters/settings
 title: 'Настройки сервера'
-```
+---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import SystemLogParameters from '@site/docs/operations/server-configuration-parameters/_snippets/_system-log-parameters.md'
+import SystemLogParameters from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations/server-configuration-parameters/_snippets/_system-log-parameters.md'
 
 # Настройки сервера
 

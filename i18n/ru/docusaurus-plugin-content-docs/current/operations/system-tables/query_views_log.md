@@ -5,7 +5,7 @@ slug: /operations/system-tables/query_views_log
 title: 'system.query_views_log'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
 # system.query_views_log

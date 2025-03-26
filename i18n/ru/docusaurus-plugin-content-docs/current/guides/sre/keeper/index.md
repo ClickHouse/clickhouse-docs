@@ -10,7 +10,7 @@ title: 'ClickHouse Keeper'
 
 # ClickHouse Keeper (clickhouse-keeper)
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
+import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 

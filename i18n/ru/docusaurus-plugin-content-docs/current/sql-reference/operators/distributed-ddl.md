@@ -5,6 +5,6 @@ slug: /sql-reference/other/distributed-ddl
 title: 'Страница по распределенному DDL'
 ---
 
-import Content from '@site/docs/sql-reference/distributed-ddl.md';
+import Content from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/distributed-ddl.md';
 
 <Content/>

@@ -6,7 +6,7 @@ description: 'Использование JDBC Connector Sink с Kafka Connect и
 title: 'JDBC Connector'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
 # JDBC Connector

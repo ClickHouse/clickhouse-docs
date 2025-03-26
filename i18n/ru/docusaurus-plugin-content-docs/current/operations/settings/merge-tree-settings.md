@@ -1124,4 +1124,3 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 Также позволяет таким слияниям происходить автоматически в фоновом режиме с помощью настроек `min_age_to_force_merge_seconds`, `min_age_to_force_merge_on_partition_only` и `enable_replacing_merge_with_cleanup_for_min_age_to_force_merge`.
 
 Значение по умолчанию: false
-```

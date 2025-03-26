@@ -12,6 +12,6 @@ description: 'Страница, описывающая мутации удале
 Для удалений вы можете избежать этих больших объемов запросов на запись, используя специализированные движки таблиц, такие как [ReplacingMergeTree](/guides/replacing-merge-tree) или [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) вместо стандартного движка таблиц MergeTree.
 :::
 
-import DeleteMutations from '@site/docs/sql-reference/statements/alter/delete.md';
+import DeleteMutations from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/statements/alter/delete.md';
 
 <DeleteMutations/>

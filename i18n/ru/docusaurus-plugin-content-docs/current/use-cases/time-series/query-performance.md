@@ -169,9 +169,9 @@ GROUP BY path, month;
 
 ### Заполнение целевой таблицы {#time-series-backfill-destination-table}
 
-Эта целевая таблица будет заполняться только при добавлении новых записей в таблицу `wikistat`, поэтому нам нужно сделать немного [фоновской подкачки](/docs/data-modeling/backfilling).
+Эта целевая таблица будет заполняться только при добавлении новых записей в таблицу `wikistat`, поэтому нам нужно сделать немного [фоновской подкачки](/data-modeling/backfilling).
 
-Самый простой способ сделать это — использовать оператор [`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) для вставки прямо в целевую таблицу материализованного представления [с помощью](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query) запроса SELECT представления (трансформации):
+Самый простой способ сделать это — использовать оператор [`INSERT INTO SELECT`](/sql-reference/statements/insert-into#inserting-the-results-of-select) для вставки прямо в целевую таблицу материализованного представления [с помощью](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query) запроса SELECT представления (трансформации):
 
 ```sql
 INSERT INTO wikistat_top

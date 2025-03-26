@@ -1,9 +1,3 @@
-title: 'Подключение к ClickHouse через нативный TCP'
-sidebar_label: 'Подключение через нативный TCP'
-keywords: ['ClickHouse', 'TCP', 'подключение', 'база данных']
-description: 'Информация о подключении к ClickHouse через нативный TCP.'
-```
-
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_native from '@site/static/images/_snippets/connection-details-native.png';
 import Image from '@theme/IdealImage';

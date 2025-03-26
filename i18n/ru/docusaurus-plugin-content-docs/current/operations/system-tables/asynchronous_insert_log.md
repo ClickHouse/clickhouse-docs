@@ -5,7 +5,7 @@ slug: /operations/system-tables/asynchronous_insert_log
 title: 'system.asynchronous_insert_log'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
 # system.asynchronous_insert_log

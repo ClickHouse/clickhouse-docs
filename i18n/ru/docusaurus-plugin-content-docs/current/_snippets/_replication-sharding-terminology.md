@@ -8,4 +8,3 @@
 
 ### Распределённая координация {#distributed-coordination}
 ClickHouse Keeper предоставляет систему координации для репликации данных и выполнения распределённых DDL запросов. ClickHouse Keeper совместим с Apache ZooKeeper.
-```

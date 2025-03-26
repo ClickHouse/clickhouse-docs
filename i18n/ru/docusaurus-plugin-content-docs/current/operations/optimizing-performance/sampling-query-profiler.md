@@ -6,7 +6,7 @@ slug: /operations/optimizing-performance/sampling-query-profiler
 title: 'Профилирование выборки запросов'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 
 # Профилирование выборки запросов

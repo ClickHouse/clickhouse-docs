@@ -7,7 +7,7 @@ keywords: ['integration', 'kafka', 'amazon msk', 'sink', 'connector']
 title: 'Интеграция Amazon MSK с ClickHouse'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
 # Интеграция Amazon MSK с ClickHouse

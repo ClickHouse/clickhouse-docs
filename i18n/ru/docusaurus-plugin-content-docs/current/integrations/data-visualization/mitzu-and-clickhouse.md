@@ -6,7 +6,7 @@ description: 'Mitzu — это приложение для аналитики п
 title: 'Подключение Mitzu к ClickHouse'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import mitzu_01 from '@site/static/images/integrations/data-visualization/mitzu_01.png';
 import mitzu_02 from '@site/static/images/integrations/data-visualization/mitzu_02.png';

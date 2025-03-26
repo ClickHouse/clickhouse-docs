@@ -20,4 +20,3 @@ import Image from '@theme/IdealImage';
 <Image img={createservice8}  alt="SQL консоль" size="lg" force border/>
 
 </details>
-```

@@ -10,4 +10,4 @@ title: 'JDBC Драйвер'
 
 # JDBC Драйвер
 
-Используйте [официальный JDBC драйвер](/docs/integrations/language-clients/java/jdbc) (и Java клиент) для доступа к ClickHouse из ваших Java приложений.
+Используйте [официальный JDBC драйвер](/integrations/language-clients/java/jdbc) (и Java клиент) для доступа к ClickHouse из ваших Java приложений.

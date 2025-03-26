@@ -12,6 +12,6 @@ description: 'Страница, описывающая мутации обнов
 Для обновлений вы можете избежать этих больших объемов записей, используя специализированные движки таблиц, такие как [ReplacingMergeTree](/guides/replacing-merge-tree) или [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree), вместо стандартного движка таблиц MergeTree.
 :::
 
-import UpdateMutations from '@site/docs/sql-reference/statements/alter/update.md';
+import UpdateMutations from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/statements/alter/update.md';
 
 <UpdateMutations/>

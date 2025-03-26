@@ -6,7 +6,7 @@ title: 'Интеграция S3 с ClickHouse'
 description: 'Страница, описывающая, как интегрировать S3 с ClickHouse'
 ---
 
-import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
+import BucketDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';
 import S3J from '@site/static/images/integrations/data-ingestion/s3/s3-j.png';
 import Bucket1 from '@site/static/images/integrations/data-ingestion/s3/bucket1.png';
 import Bucket2 from '@site/static/images/integrations/data-ingestion/s3/bucket2.png';

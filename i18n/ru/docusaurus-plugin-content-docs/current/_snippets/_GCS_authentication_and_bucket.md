@@ -51,4 +51,3 @@ import Image from '@theme/IdealImage';
 <Image size="md" img={GCS_guide_key} alt="Получение сгенерированного ключа HMAC для GCS" border />
 
 </details>
-```

@@ -6,7 +6,7 @@ title: 'Настройка ClickHouse для использования LDAP д�
 description: 'Описание процесса настройки ClickHouse для использования LDAP для аутентификации и сопоставления ролей'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 
 # Настройка ClickHouse для использования LDAP для аутентификации и сопоставления ролей
