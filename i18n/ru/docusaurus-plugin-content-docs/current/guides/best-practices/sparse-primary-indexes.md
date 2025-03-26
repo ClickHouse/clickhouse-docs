@@ -1,8 +1,9 @@
+---
 sidebar_label: 'Первичные индексы'
 description: 'В этом руководстве мы подробно рассмотрим индексацию ClickHouse.'
 title: 'Практическое введение в первичные индексы в ClickHouse'
 slug: /guides/best-practices/sparse-primary-indexes
-```
+---
 
 import sparsePrimaryIndexes01 from '@site/static/images/guides/best-practices/sparse-primary-indexes-01.png';
 import sparsePrimaryIndexes02 from '@site/static/images/guides/best-practices/sparse-primary-indexes-02.png';

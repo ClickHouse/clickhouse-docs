@@ -17,6 +17,7 @@ import bigquery_10 from '@site/static/images/migrations/bigquery-10.png';
 import bigquery_11 from '@site/static/images/migrations/bigquery-11.png';
 import bigquery_12 from '@site/static/images/migrations/bigquery-12.png';
 import Image from '@theme/IdealImage';
+
 ## Зачем использовать ClickHouse Cloud вместо BigQuery? {#why-use-clickhouse-cloud-over-bigquery}
 
 TLDR: Потому что ClickHouse быстрее, дешевле и мощнее, чем BigQuery для современных задач аналитики данных:
