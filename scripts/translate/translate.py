@@ -80,12 +80,13 @@ def translate_text(config, text, model="gpt-4o-mini"):
     prompt = config[
         "prompt"] if "prompt" in config else f"""
         Translate the following ClickHouse documentation text from English to {language}. Ensure the following rules are followed:
-            - This content may be part of a document, so maintain the original html tags and markdown formatting used in Docusaurus, including any headings, code blocks, lists, links, and inline formatting like bold or italic text. Code backs should be preserved using ` and ```.
+            - This content may be part of a document, so maintain the original html tags and markdown formatting used in Docusaurus, including any headings, code blocks, lists, links, and inline formatting like bold or italic text. Code blocks should be preserved using ` and ```.
             - Ensure that no content, links, explicit heading ids (denoted by {{#my-explicit-id}}), or references are omitted or altered during translation, preserving the same amount of information as the original text. 
-            - Do not translate code, URLs, or any links within markdown. Mark down links must be preserved and never modified. Urls in text should be surrounded by white space and have never have adjacent {language} characters.
+            - Do not translate code, URLs, or any links within markdown. Mark down links must be preserved and never modified. Urls in text should be surrounded by white space and never have adjacent {language} characters.
             - Ensure the markdown is MDX 3 compatible - escaping < and > with &lt; and &gt; and avoiding the creation of unclosed xml tags.
             - Do not add new code delimiters which are not present in the original content e.g. '```html', even if the content appears to contain this type.
             - Do not translate terms which indicate setting names. These are denoted by lower case and underscore e.g. live_view_heartbeat_interval.
+            - Do not translate terms in all caps which are SQL statements. For example DESCRIBE TABLE, RENAME, SET ROLE etc.
             - Translate the title, sidebar_label, keywords (list of single quoted strings) and description in yaml metadata blocks if they exist. Ensure these are wrapped in single quotes. Do not add entries.
             - This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. 
             - Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}.
