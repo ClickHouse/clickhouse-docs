@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'ClickPipes for Postgres'
+sidebar_label: 'Ingesting Data from Postgres to ClickHouse'
 description: 'Seamlessly connect your Postgres to ClickHouse Cloud.'
 slug: /integrations/clickpipes/postgres
 title: 'Ingesting Data from Postgres to ClickHouse (using CDC)'
