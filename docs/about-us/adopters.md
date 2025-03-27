@@ -79,6 +79,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Bloxy](https://bloxy.info) | Blockchain | Analytics | — | — | [Slides in Russian, August 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup17/4_bloxy.pptx) |
 | [Bonree](https://www.bonree.com/) | Software & Technology | Performance Monitoring & Observability | — | — | ClickHouse Meetup in Hangzhou, May 2024 |
 | [Bonside](https://www.bonside.com/) | FinTech | - | — | — | [Hacker News, July 2023](https://news.ycombinator.com/item?id=36619722) |
+| [BoundaryML](https://www.boundaryml.com/)| Software Development | AI Platform| — | — | [Meetup, March 2025](https://youtu.be/DV-zkQUvuPc) |
 | [Botify](https://www.botify.com/) | SaaS | SEO | — | — | [Blog Article, September 2022](https://tech.marksblogg.com/billion-taxi-rides-doublecloud-clickhouse.html) |
 | [Braintrust](https://www.usebraintrust.com/) | Software & Technology | Real-time Analytics | — | — | [Written Blog from Meetup Video, July 2024](https://clickhouse.com/blog/building-better-ai-products-faster-how-braintrust-uses-clickhouse-for-real-time-data-analysis) |
 | [Buildkite](https://buildkite.com/)| Software & Technology | Real-time analytics | — | — | [Wellington meetup, February 2025](https://clickhouse.com/videos/wellington-meetup-buildkite-clickhouse-test-analytics) |
@@ -268,6 +269,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Kyligence](https://kyligence.io/) | Managed Service | Main Product | — | — | [Website](https://kyligence.io/all-inclusive-olap/) |
 | [LANCOM Systems](https://www.lancom-systems.com/) | Network Solutions | Traffic analysis | - | - | [ClickHouse Operator for Kubernetes](https://www.lancom-systems.com/), [Hacker News post](https://news.ycombinator.com/item?id=29413660) |
 | [Langchain](https://www.langchain.com/) | Software & Technology | LLM Monitoring | - | - | [Blog, Apr 2024](https://clickhouse.com/blog/langchain-why-we-choose-clickhouse-to-power-langchain) |
+| [LangFuse](https://langfuse.com/) | Software & Technology | LLM Monitoring | - | - | [Meetup, March 2025](https://youtu.be/AnghkoucpN0) |
 | [Langtrace AI](https://www.langtrace.ai/) | Software & Technology | LLM Monitoring | - | - | [Twitter, May 2024](https://x.com/karthikkalyan90/status/1790483625743716703) |
 | [Lago](https://www.getlago.com/) | Billing automation | - | — | — | [GitHub Wiki post](https://github.com/getlago/lago/wiki/How-ClickHouse-saved-our-events-engine-problem) |
 | [Lagon](https://lagon.app/) | Software Development | Serverless Functions | — | — | [Twitter, 2023](https://twitter.com/tomlienard/status/1702759256909394010) |
@@ -325,7 +327,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Neocom](https://www.neocom.ai/) | Software & Technology | Sales Platform | — | — | [Hacker News, September 2023](https://news.ycombinator.com/item?id=37359122) |
 | [NeonDB](https://neon.tech/) | Cloud | Postgres management | - | - | [Blog, 2024](https://double.cloud/resources/case-studies/neon-increases-data-granularity-with-managed-clickhouse/) |
 | [NetMeta](https://github.com/monogon-dev/NetMeta/blob/main/README.md) | Observability | Main Product | — | — | [Twitter, December 2022](https://twitter.com/leolukde/status/1605643470239977475) |
-| [Netflix](https://www.netflix.com/) | Software & Technology | Video Streaming | — | — | [Twitter, June 2023](https://twitter.com/clickhousedb/status/1673803621220360193) |
+| [Netflix](https://www.netflix.com/) | Software & Technology | Video Streaming | — | — | [Meetup, March 2025](https://youtu.be/64TFG_Qt5r4) |
 | [Netskope](https://www.netskope.com/) | Network Security | — | — | — | [Job advertisement, March 2021](https://www.mendeley.com/careers/job/senior-software-developer-backend-developer-1346348) |
 | [Nexpath Networks](https://www.nexpath.net/) | Software & Technology | Network Analysis | — | — | [Slides, September 2021](https://opensips.org/events/Summit-2021Distributed/assets/presentations/2021-jon-abrams-big-telco-data-with-clickhouse.pdf) [Video, September 2021](https://www.youtube.com/watch?v=kyu_wDcO0S4&t=3840s) |
 | [NineData](https://www.ninedata.cloud/) | Software & Technology | DMaaS | — | — | ClickHouse Meetup in Hangzhou, May 2024 |
