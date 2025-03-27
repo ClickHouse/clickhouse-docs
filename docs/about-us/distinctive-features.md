@@ -10,7 +10,7 @@ title: 'Distinctive Features of ClickHouse'
 
 ## True Column-Oriented Database Management System {#true-column-oriented-database-management-system}
 
-In a real column-oriented DBMS, no extra data is stored with the values. This means that constant-length values must be supported to avoid storing their length "number" next to the values. For example, a billion UInt8-type values should consume around 1 GB uncompressed, or this strongly affects the CPU use. It is essential to store data compactly (without any "garbage") even when uncompressed since the speed of decompression (CPU usage) depends mainly on the volume of uncompressed data.
+In a real column-oriented DBMS, no extra data is stored with the values. This means that constant-length values must be supported to avoid storing their length "number" next to the values. For example, a billion UInt8-type values should consume around 1 GB uncompressed, or this will strongly affect CPU usage. It is essential to store data compactly (without any "garbage") even when uncompressed since the speed of decompression (CPU usage) depends mainly on the volume of uncompressed data.
 
 This is in contrast to systems that can store values of different columns separately, but that cannot effectively process analytical queries due to their optimization for other scenarios, such as HBase, Bigtable, Cassandra, and Hypertable. You would get throughput around a hundred thousand rows per second in these systems, but not hundreds of millions of rows per second.
 
