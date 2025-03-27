@@ -130,7 +130,7 @@ SELECT prefix || (SELECT groupConcat(*) FROM main_content)
 INTO OUTFILE 'settings.md' TRUNCATE FORMAT LineAsString
 " > /dev/null || { echo "Failed to Autogenerate Core settings"; exit 1; }
 
-# Autogenerate merge tree settings
+# Autogenerate MergeTree settings
 ./clickhouse -q "
   WITH
     merge_tree_settings AS
