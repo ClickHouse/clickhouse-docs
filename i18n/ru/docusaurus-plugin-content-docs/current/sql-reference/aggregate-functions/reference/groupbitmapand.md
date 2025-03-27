@@ -1,19 +1,20 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/groupbitmapand
+description: 'Вычисления AND для столбца битовой карты, возвращает кардинальность типа
+  UInt64, если добавить суффикс -State, то вернуть [объект битовой карты](../../../sql-reference/functions/bitmap-functions.md).'
 sidebar_position: 149
-title: groupBitmapAnd
-description: "Вычисление AND колонки битовой карты, возвращает кардинальность типа UInt64, если добавить суффикс -State, то вернуть объект [битовой карты](../../../sql-reference/functions/bitmap-functions.md)."
+slug: /sql-reference/aggregate-functions/reference/groupbitmapand
+title: 'groupBitmapAnd'
 ---
 
-Вычисление AND колонки битовой карты, возвращает кардинальность типа UInt64, если добавить суффикс -State, то вернуть [битовой карты](../../../sql-reference/functions/bitmap-functions.md).
+Вычисления AND для столбца битовой карты, возвращает кардинальность типа UInt64, если добавить суффикс -State, то вернуть [объект битовой карты](../../../sql-reference/functions/bitmap-functions.md).
 
-``` sql
+```sql
 groupBitmapAnd(expr)
 ```
 
 **Аргументы**
 
-`expr` – Выражение, результатом которого является тип `AggregateFunction(groupBitmap, UInt*)`.
+`expr` – Выражение, которое возвращает тип `AggregateFunction(groupBitmap, UInt*)`.
 
 **Возвращаемое значение**
 
@@ -21,7 +22,7 @@ groupBitmapAnd(expr)
 
 **Пример**
 
-``` sql
+```sql
 DROP TABLE IF EXISTS bitmap_column_expr_test2;
 CREATE TABLE bitmap_column_expr_test2
 (

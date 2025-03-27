@@ -1,14 +1,14 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/maxintersections
+description: 'Агрегатная функция, которая вычисляет максимальное количество раз, когда группа интервалов пересекается друг с другом (если все интервалы пересекаются хотя бы раз).'
 sidebar_position: 163
-title: maxIntersections
-description: "Агрегатная функция, котораяcalculates the maximum number of times that a group of intervals intersects each other (if all the intervals intersect at least once)."
+slug: /sql-reference/aggregate-functions/reference/maxintersections
+title: 'maxIntersections'
 ---
 
 
 # maxIntersections
 
-Агрегатная функция, которая calculates the maximum number of times that a group of intervals intersects each other (if all the intervals intersect at least once).
+Агрегатная функция, которая вычисляет максимальное количество раз, когда группа интервалов пересекается друг с другом (если все интервалы пересекаются хотя бы раз).
 
 Синтаксис:
 
@@ -18,9 +18,9 @@ maxIntersections(start_column, end_column)
 
 **Аргументы**
 
-- `start_column` – числовая колонка, которая представляет начало каждого интервала. Если `start_column` равен `NULL` или 0, то интервал будет пропущен.
+- `start_column` – числовой столбец, который представляет начало каждого интервала. Если `start_column` равно `NULL` или 0, то интервал будет пропущен.
 
-- `end_column` - числовая колонка, которая представляет конец каждого интервала. Если `end_column` равен `NULL` или 0, то интервал будет пропущен.
+- `end_column` - числовой столбец, который представляет конец каждого интервала. Если `end_column` равно `NULL` или 0, то интервал будет пропущен.
 
 **Возвращаемое значение**
 
@@ -52,7 +52,7 @@ INSERT INTO my_events VALUES
     3 - - - 7
 ```
 
-Три из этих интервалов имеют общее значение (значение `4`, но значение, которое является общим, не важно, мы измеряем количество пересечений). Интервалы `(1,3)` и `(3,7)` имеют общую границу, но не считаются пересекающимися согласно функции `maxIntersections`.
+Три из этих интервалов имеют общее значение (это значение `4`, но само общее значение неважно, мы измеряем количество пересечений). Интервалы `(1,3)` и `(3,7)` имеют общую конечную точку, но не считаются пересекающимися по функции `maxIntersections`.
 
 ```sql
 SELECT maxIntersections(start, end) FROM my_events;
@@ -63,4 +63,4 @@ SELECT maxIntersections(start, end) FROM my_events;
 3
 ```
 
-Если у вас есть несколько вхождений максимального интервала, вы можете использовать функцию [`maxIntersectionsPosition`](./maxintersectionsposition.md), чтобы определить количество и местоположение этих вхождений.
+Если у вас есть несколько случаев максимального интервала, вы можете использовать функцию [`maxIntersectionsPosition`](./maxintersectionsposition.md), чтобы определить количество и местоположение этих случаев.

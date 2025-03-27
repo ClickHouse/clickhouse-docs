@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/covarsamp
+description: 'Вычисляет значение `Σ((x - x̅)(y - y̅)) / (n - 1)`'
 sidebar_position: 124
-title: "covarSamp"
-description: "Вычисляет значение `Σ((x - x̅)(y - y̅)) / (n - 1)`"
+slug: /sql-reference/aggregate-functions/reference/covarsamp
+title: 'covarSamp'
 ---
 
 

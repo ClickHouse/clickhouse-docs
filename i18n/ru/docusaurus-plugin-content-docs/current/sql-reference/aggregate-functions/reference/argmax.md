@@ -1,18 +1,18 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/argmax
+description: 'Вычисляет значение `arg` для максимального значения `val`.'
 sidebar_position: 109
+slug: /sql-reference/aggregate-functions/reference/argmax
 title: 'argMax'
-description: 'Calculates the `arg` value for a maximum `val` value.'
 ---
 
 
 # argMax
 
-Вычисляет значение `arg` для максимального значения `val`. Если существует несколько строк с одинаковым максимумом `val`, то какое из связанных значений `arg` будет возвращено, не поддается детерминизму. Оба значения, `arg` и `max`, работают как [агрегирующие функции](/sql-reference/aggregate-functions/index.md), они оба [пропускают `Null`](/sql-reference/aggregate-functions/index.md#null-processing) при обработке и возвращают значения не равные `Null`, если такие доступны.
+Вычисляет значение `arg` для максимального значения `val`. Если существует несколько строк с равным максимальным значением `val`, то возвращаемое значение `arg` не является детерминированным. Оба параметра `arg` и `max` ведут себя как [агрегатные функции](/sql-reference/aggregate-functions/index.md), они оба [пропускают `NULL`](/sql-reference/aggregate-functions/index.md#null-processing) во время обработки и возвращают значения, отличные от `NULL`, если такие значения доступны.
 
 **Синтаксис**
 
-``` sql
+```sql
 argMax(arg, val)
 ```
 
@@ -25,13 +25,13 @@ argMax(arg, val)
 
 - Значение `arg`, соответствующее максимальному значению `val`.
 
-Тип: соответствует типу `arg`.
+Тип: совпадает с типом `arg`.
 
 **Пример**
 
 Входная таблица:
 
-``` text
+```text
 ┌─user─────┬─salary─┐
 │ director │   5000 │
 │ manager  │   3000 │
@@ -41,13 +41,13 @@ argMax(arg, val)
 
 Запрос:
 
-``` sql
+```sql
 SELECT argMax(user, salary) FROM salary;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─argMax(user, salary)─┐
 │ director             │
 └──────────────────────┘
@@ -71,28 +71,28 @@ select * from test;
 │ b    │    2 │
 │ c    │    2 │
 │ ᴺᵁᴸᴸ │    3 │
-│ ᴺᵁᴸᴸ │ ᴺᵈᴼᴸᴸ │
+│ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │
 │ d    │ ᴺᵁᴸᴸ │
 └──────┴──────┘
 
 SELECT argMax(a, b), max(b) FROM test;
 ┌─argMax(a, b)─┬─max(b)─┐
-│ b            │      3 │ -- argMax = 'b', так как это первое ненулевое значение, max(b) из другой строки!
+│ b            │      3 │ -- argMax = 'b', потому что это первое ненулевое значение, max(b) из другой строки!
 └──────────────┴────────┘
 
 SELECT argMax(tuple(a), b) FROM test;
 ┌─argMax(tuple(a), b)─┐
-│ (NULL)              │ -- Кортеж a, содержащий только значение `NULL`, не является `NULL`, поэтому агрегирующие функции не пропускают эту строку из-за этого значения `NULL`
+│ (NULL)              │ -- Кортеж a, который содержит только значение NULL, не является NULL, поэтому агрегатные функции не пропустят эту строку из-за этого значения NULL
 └─────────────────────┘
 
 SELECT (argMax((a, b), b) as t).1 argMaxA, t.2 argMaxB FROM test;
 ┌─argMaxA─┬─argMaxB─┐
-│ ᴺᵁᴸᴸ    │       3 │ -- вы можете использовать Кортеж и получить оба (все - кортеж(*)) столбца для соответствующего max(b)
+│ ᴺᵁᴸᴸ    │       3 │ -- вы можете использовать Tuple и получить оба (все - tuple(*)) столбца для соответствующего max(b)
 └─────────┴─────────┘
 
 SELECT argMax(a, b), max(b) FROM test WHERE a IS NULL AND b IS NULL;
 ┌─argMax(a, b)─┬─max(b)─┐
-│ ᴺᵁᴸᴸ         │   ᴺᵁᴸᴸ │ -- Все агрегируемые строки содержат хотя бы одно значение `NULL` из-за фильтра, поэтому все строки пропускаются, следовательно, результат будет `NULL`
+│ ᴺᵁᴸᴸ         │   ᴺᵁᴸᴸ │ -- Все агрегированные строки содержат по крайней мере одно значение `NULL` из-за фильтра, поэтому все строки пропускаются, следовательно результат будет `NULL`
 └──────────────┴────────┘
 
 SELECT argMax(a, (b,a)) FROM test;
@@ -106,6 +106,6 @@ SELECT argMax(a, tuple(b)) FROM test;
 └─────────────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
 - [Tuple](/sql-reference/data-types/tuple.md)

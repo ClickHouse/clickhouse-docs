@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/kurtpop
-sidebar_position: 157
-title: 'kurtPop'
 description: 'Вычисляет куртозис последовательности.'
+sidebar_position: 157
+slug: /sql-reference/aggregate-functions/reference/kurtpop
+title: 'kurtPop'
 ---
 
 
@@ -10,7 +10,7 @@ description: 'Вычисляет куртозис последовательно
 
 Вычисляет [куртозис](https://en.wikipedia.org/wiki/Kurtosis) последовательности.
 
-``` sql
+```sql
 kurtPop(expr)
 ```
 
@@ -20,10 +20,10 @@ kurtPop(expr)
 
 **Возвращаемое значение**
 
-Куртозис данного распределения. Тип — [Float64](../../../sql-reference/data-types/float.md)
+Куртозис заданного распределения. Тип — [Float64](../../../sql-reference/data-types/float.md)
 
 **Пример**
 
-``` sql
+```sql
 SELECT kurtPop(value) FROM series_with_value_column;
 ```

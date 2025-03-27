@@ -1,13 +1,15 @@
 ---
-slug: /sql-reference/statements/use
+description: 'Документация по оператору USE'
+sidebar_label: 'USE'
 sidebar_position: 53
-sidebar_label: USE
+slug: /sql-reference/statements/use
+title: 'Оператор USE'
 ---
 
 
 # Оператор USE
 
-``` sql
+```sql
 USE db
 ```
 

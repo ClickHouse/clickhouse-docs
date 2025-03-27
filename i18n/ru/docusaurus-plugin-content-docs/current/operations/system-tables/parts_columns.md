@@ -1,22 +1,25 @@
 ---
-description: 'Системная таблица, содержащая информацию о частях и колонках таблиц MergeTree.'
+description: 'Системная таблица, содержащая информацию о частях и столбцах таблиц MergeTree.'
+keywords: ['system table', 'parts_columns']
 slug: /operations/system-tables/parts_columns
 title: 'system.parts_columns'
-keywords: ['system table', 'parts_columns']
 ---
 
-Содержит информацию о частях и колонках таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
+
+# system.parts_columns
+
+Содержит информацию о частях и столбцах таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
 
 Каждая строка описывает одну часть данных.
 
-Колонки:
+Столбцы:
 
-- `partition` ([String](../../sql-reference/data-types/string.md)) — Имя партиции. Чтобы узнать, что такое партиция, см. описание запроса [ALTER](/sql-reference/statements/alter).
+- `partition` ([String](../../sql-reference/data-types/string.md)) — Имя раздела. Чтобы узнать, что такое раздел, смотрите описание запроса [ALTER](/sql-reference/statements/alter).
 
     Форматы:
 
-    - `YYYYMM` для автоматической партиционирования по месяцам.
-    - `any_string` при ручном партиционировании.
+    - `YYYYMM` для автоматического разделения по месяцу.
+    - `any_string` для ручного разделения.
 
 - `name` ([String](../../sql-reference/data-types/string.md)) — Имя части данных.
 
@@ -24,16 +27,16 @@ keywords: ['system table', 'parts_columns']
 
     Возможные значения:
 
-    - `Wide` — Каждая колонка хранится в отдельном файле в файловой системе.
-    - `Compact` — Все колонки хранятся в одном файле в файловой системе.
+    - `Wide` — Каждый столбец хранится в отдельном файле в файловой системе.
+    - `Compact` — Все столбцы хранятся в одном файле в файловой системе.
 
-    Формат хранения данных контролируется параметрами `min_bytes_for_wide_part` и `min_rows_for_wide_part` таблицы [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
+    Формат хранения данных контролируется настройками `min_bytes_for_wide_part` и `min_rows_for_wide_part` таблицы [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
 
-- `active` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, является ли часть данных активной. Если часть данных активна, она используется в таблице. В противном случае она удаляется. Неактивные части данных остаются после слияния.
+- `active` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, активна ли часть данных. Если часть данных активна, она используется в таблице. В противном случае она удаляется. Неактивные части данных остаются после слияния.
 
-- `marks` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество меток. Чтобы получить приблизительное количество строк в части данных, умножьте `marks` на гранулярность индекса (обычно 8192) (этот совет не работает для адаптивной гранулярности).
+- `marks` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Число меток. Чтобы получить приблизительное количество строк в части данных, умножьте `marks` на гранулярность индекса (обычно 8192) (это указание не работает для адаптивной гранулярности).
 
-- `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество строк.
+- `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Число строк.
 
 - `bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Общий размер всех файлов части данных в байтах.
 
@@ -43,57 +46,57 @@ keywords: ['system table', 'parts_columns']
 
 - `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер файла с метками.
 
-- `modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время изменения директории с частью данных. Это обычно соответствует времени создания части данных.
+- `modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время изменения каталога с частью данных. Обычно это соответствует времени создания части данных.
 
 - `remove_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время, когда часть данных стала неактивной.
 
-- `refcount` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Количество мест, где используется часть данных. Значение больше 2 указывает на то, что часть данных используется в запросах или слияниях.
+- `refcount` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Число мест, где используется часть данных. Значение больше 2 указывает на то, что часть данных используется в запросах или слияниях.
 
 - `min_date` ([Date](../../sql-reference/data-types/date.md)) — Минимальное значение ключа даты в части данных.
 
 - `max_date` ([Date](../../sql-reference/data-types/date.md)) — Максимальное значение ключа даты в части данных.
 
-- `partition_id` ([String](../../sql-reference/data-types/string.md)) — ID партиции.
+- `partition_id` ([String](../../sql-reference/data-types/string.md)) — ID раздела.
 
-- `min_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Минимальное количество частей данных, из которых состоит текущая часть после слияния.
+- `min_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Минимальное число частей данных, составляющих текущую часть после слияния.
 
-- `max_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Максимальное количество частей данных, из которых состоит текущая часть после слияния.
+- `max_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Максимальное число частей данных, составляющих текущую часть после слияния.
 
-- `level` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Глубина дерева слияния. Ноль означает, что текущая часть была создана с помощью вставки, а не путем слияния других частей.
+- `level` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Глубина дерева слияния. Ноль означает, что текущая часть была создана путем вставки, а не слияния других частей.
 
-- `data_version` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Номер, используемый для определения, какие мутации следует применить к части данных (мутации с версией, превышающей `data_version`).
+- `data_version` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Число, используемое для определения, какие мутации должны применяться к части данных (мутации с версией выше, чем `data_version`).
 
-- `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Объем памяти (в байтах), используемой значениями первичного ключа.
+- `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Объем памяти (в байтах), используемый для значений первичного ключа.
 
-- `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Объем памяти (в байтах), зарезервированной для значений первичного ключа.
+- `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Объем памяти (в байтах), зарезервированный для значений первичного ключа.
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных.
+- `database` ([String](../../sql-reference/data-types/string.md)) — Название базы данных.
 
-- `table` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы.
+- `table` ([String](../../sql-reference/data-types/string.md)) — Название таблицы.
 
-- `engine` ([String](../../sql-reference/data-types/string.md)) — Имя движка таблицы без параметров.
+- `engine` ([String](../../sql-reference/data-types/string.md)) — Название движка таблицы без параметров.
 
-- `disk_name` ([String](../../sql-reference/data-types/string.md)) — Имя диска, на котором хранится часть данных.
+- `disk_name` ([String](../../sql-reference/data-types/string.md)) — Название диска, на котором хранится часть данных.
 
 - `path` ([String](../../sql-reference/data-types/string.md)) — Абсолютный путь к папке с файлами части данных.
 
-- `column` ([String](../../sql-reference/data-types/string.md)) — Имя колонки.
+- `column` ([String](../../sql-reference/data-types/string.md)) — Название столбца.
 
-- `type` ([String](../../sql-reference/data-types/string.md)) — Тип колонки.
+- `type` ([String](../../sql-reference/data-types/string.md)) — Тип столбца.
 
-- `column_position` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Порядковая позиция колонки в таблице, начиная с 1.
+- `column_position` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Порядковый номер столбца в таблице, начиная с 1.
 
-- `default_kind` ([String](../../sql-reference/data-types/string.md)) — Тип выражения (`DEFAULT`, `MATERIALIZED`, `ALIAS`) для значения по умолчанию, или пустая строка, если он не определен.
+- `default_kind` ([String](../../sql-reference/data-types/string.md)) — Тип выражения (`DEFAULT`, `MATERIALIZED`, `ALIAS`) для значения по умолчанию или пустая строка, если оно не определено.
 
-- `default_expression` ([String](../../sql-reference/data-types/string.md)) — Выражение для значения по умолчанию, или пустая строка, если оно не определено.
+- `default_expression` ([String](../../sql-reference/data-types/string.md)) — Выражение для значения по умолчанию или пустая строка, если оно не определено.
 
-- `column_bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Общий размер колонки в байтах.
+- `column_bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Общий размер столбца в байтах.
 
-- `column_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Общий размер сжатых данных в колонке, в байтах.
+- `column_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Общий размер сжатых данных в столбце, в байтах.
 
-- `column_data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Общий размер распакованных данных в колонке, в байтах.
+- `column_data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Общий размер несжатых данных в столбце, в байтах.
 
-- `column_marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер колонки с метками, в байтах.
+- `column_marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер столбца с метками, в байтах.
 
 - `bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Псевдоним для `bytes_on_disk`.
 
@@ -101,11 +104,11 @@ keywords: ['system table', 'parts_columns']
 
 **Пример**
 
-``` sql
+```sql
 SELECT * FROM system.parts_columns LIMIT 1 FORMAT Vertical;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 partition:                             tuple()
@@ -146,6 +149,6 @@ column_data_uncompressed_bytes:        2
 column_marks_bytes:                    48
 ```
 
-**Смотрите также**
+**См. также**
 
 - [Семейство MergeTree](../../engines/table-engines/mergetree-family/mergetree.md)

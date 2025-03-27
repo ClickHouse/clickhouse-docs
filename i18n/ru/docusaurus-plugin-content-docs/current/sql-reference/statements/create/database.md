@@ -1,30 +1,32 @@
 ---
-slug: /sql-reference/statements/create/database
+description: 'Документация для CREATE DATABASE'
+sidebar_label: 'БАЗА ДАННЫХ'
 sidebar_position: 35
-sidebar_label: БАЗА ДАННЫХ
+slug: /sql-reference/statements/create/database
+title: 'CREATE DATABASE'
 ---
 
 
-# СОЗДАТЬ БАЗУ ДАННЫХ
+# CREATE DATABASE
 
 Создает новую базу данных.
 
-``` sql
+```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster] [ENGINE = engine(...)] [COMMENT 'Комментарий']
 ```
 
-## Условия {#clauses}
+## Clauses {#clauses}
 
 ### IF NOT EXISTS {#if-not-exists}
 
-Если база данных `db_name` уже существует, ClickHouse не создает новую базу данных и:
+Если база данных `db_name` уже существует, то ClickHouse не создает новую базу данных и:
 
 - Не выбрасывает исключение, если условие указано.
 - Выбрасывает исключение, если условие не указано.
 
 ### ON CLUSTER {#on-cluster}
 
-ClickHouse создает базу данных `db_name` на всех серверах указанного кластера. Подробнее в статье [Распределенная DDL](../../../sql-reference/distributed-ddl.md).
+ClickHouse создает базу данных `db_name` на всех серверах указанного кластера. Подробности смотрите в статье [Distributed DDL](../../../sql-reference/distributed-ddl.md).
 
 ### ENGINE {#engine}
 
@@ -38,7 +40,7 @@ ClickHouse создает базу данных `db_name` на всех серв
 
 **Синтаксис**
 
-``` sql
+```sql
 CREATE DATABASE db_name ENGINE = engine(...) COMMENT 'Комментарий'
 ```
 
@@ -46,7 +48,7 @@ CREATE DATABASE db_name ENGINE = engine(...) COMMENT 'Комментарий'
 
 Запрос:
 
-``` sql
+```sql
 CREATE DATABASE db_comment ENGINE = Memory COMMENT 'Временная база данных';
 SELECT name, comment FROM system.databases WHERE name = 'db_comment';
 ```
@@ -55,6 +57,6 @@ SELECT name, comment FROM system.databases WHERE name = 'db_comment';
 
 ```text
 ┌─name───────┬─comment────────────────┐
-│ db_comment │ Временная база данных │
+│ db_comment │ Временная база данных  │
 └────────────┴────────────────────────┘
 ```

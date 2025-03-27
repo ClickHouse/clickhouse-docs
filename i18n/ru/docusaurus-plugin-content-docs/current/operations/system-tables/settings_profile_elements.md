@@ -1,17 +1,20 @@
 ---
-description: 'Системная таблица, которая описывает содержимое профиля настроек: ограничения, роли и пользователи, к которым применяются настройки, родительские профили настроек.'
+description: 'Системная таблица, которая описывает содержание профиля настроек: ограничения, роли и пользователи, к которым применяется настройка, родительские профили настроек.'
+keywords: ['системная таблица', 'elements_profile_elements']
 slug: /operations/system-tables/settings_profile_elements
 title: 'system.settings_profile_elements'
-keywords: ['system table', 'settings_profile_elements']
 ---
 
-Описывает содержимое профиля настроек:
+
+# system.settings_profile_elements
+
+Описывает содержание профиля настроек:
 
 - Ограничения.
-- Роли и пользователи, к которым применяются настройки.
+- Роли и пользователи, к которым применяется настройка.
 - Родительские профили настроек.
 
-Колонки:
+Столбцы:
 - `profile_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Имя профиля настроек.
 
 - `user_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Имя пользователя.
@@ -24,10 +27,10 @@ keywords: ['system table', 'settings_profile_elements']
 
 - `value` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Значение настройки.
 
-- `min` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Минимальное значение настройки. `NULL`, если не установлено.
+- `min` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Минимальное значение настройки. `NULL`, если не задано.
 
-- `max` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Максимальное значение настройки. `NULL`, если не установлено.
+- `max` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Максимальное значение настройки. `NULL`, если не задано.
 
-- `writability` ([Nullable](../../sql-reference/data-types/nullable.md)([Enum8](../../sql-reference/data-types/enum.md)('WRITABLE' = 0, 'CONST' = 1, 'CHANGEABLE_IN_READONLY' = 2))) — Устанавливает тип доступности для писем ограничений.
+- `writability` ([Nullable](../../sql-reference/data-types/nullable.md)([Enum8](../../sql-reference/data-types/enum.md)('WRITABLE' = 0, 'CONST' = 1, 'CHANGEABLE_IN_READONLY' = 2))) — Устанавливает вид ограничения записываемости настроек.
 
-- `inherit_profile` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Родительский профиль для этого профиля настроек. `NULL`, если не установлено. Профиль настроек наследует все значения и ограничения настройки (`min`, `max`, `readonly`) от своих родительских профилей.
+- `inherit_profile` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Родительский профиль для этого профиля настроек. `NULL`, если не задано. Профиль настроек унаследует все значения и ограничения настроек (`min`, `max`, `readonly`) от своих родительских профилей.

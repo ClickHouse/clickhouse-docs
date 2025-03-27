@@ -1,40 +1,41 @@
 ---
-slug: /sql-reference/functions/ip-address-functions
-sidebar_position: 95
+description: 'Документация по функциям для работы с адресами IPv4 и IPv6'
 sidebar_label: 'IP-адреса'
-keywords: ['функции', 'ip', 'адреса', 'ip-адреса', 'IPv4', 'IPv6']
-description: 'Функции для работы с IPv4 и IPv6 адресами'
+sidebar_position: 95
+slug: /sql-reference/functions/ip-address-functions
+title: 'Функции для работы с адресами IPv4 и IPv6'
 ---
 
-# Функции для работы с IPv4 и IPv6 адресами
+
+# Функции для работы с адресами IPv4 и IPv6
 
 ## IPv4NumToString {#IPv4NumToString}
 
-Принимает число UInt32. Интерпретирует его как IPv4 адрес в формате big endian. Возвращает строку, содержащую соответствующий IPv4 адрес в формате A.B.C.d (числа, разделенные точками, в десятичной форме).
+Принимает число UInt32. Интерпретирует его как адрес IPv4 в формате big endian. Возвращает строку, содержащую соответствующий адрес IPv4 в формате A.B.C.d (числа, разделенные точкой, в десятичной форме).
 
 Псевдоним: `INET_NTOA`.
 
 ## IPv4StringToNum {#IPv4StringToNum}
 
-Обратная функция к [IPv4NumToString](#IPv4NumToString). Если формат IPv4 адреса недопустим, она выбрасывает исключение.
+Обратная функция для [IPv4NumToString](#IPv4NumToString). Если адрес IPv4 имеет недопустимый формат, возникает исключение.
 
 Псевдоним: `INET_ATON`.
 
 ## IPv4StringToNumOrDefault(s) {#ipv4stringtonumordefaults}
 
-То же, что и `IPv4StringToNum`, но если формат IPv4 адреса недопустим, возвращает 0.
+То же, что и `IPv4StringToNum`, но если адрес IPv4 имеет недопустимый формат, возвращает 0.
 
 ## IPv4StringToNumOrNull(s) {#ipv4stringtonumornulls}
 
-То же, что и `IPv4StringToNum`, но если формат IPv4 адреса недопустим, возвращает null.
+То же, что и `IPv4StringToNum`, но если адрес IPv4 имеет недопустимый формат, возвращает null.
 
 ## IPv4NumToStringClassC(num) {#ipv4numtostringclasscnum}
 
-Подобно IPv4NumToString, но использует xxx вместо последнего октета.
+Подобно IPv4NumToString, но используется xxx вместо последнего октета.
 
 Пример:
 
-``` sql
+```sql
 SELECT
     IPv4NumToStringClassC(ClientIP) AS k,
     count() AS c
@@ -44,7 +45,7 @@ ORDER BY c DESC
 LIMIT 10
 ```
 
-``` text
+```text
 ┌─k──────────────┬─────c─┐
 │ 83.149.9.xxx   │ 26238 │
 │ 217.118.81.xxx │ 26074 │
@@ -59,28 +60,28 @@ LIMIT 10
 └────────────────┴───────┘
 ```
 
-Поскольку использование 'xxx' крайне необычно, это может измениться в будущем. Мы рекомендуем вам не полагаться на точный формат этого фрагмента.
+Поскольку использование 'xxx' является крайне необычным, это может быть изменено в будущем. Мы рекомендуем не полагаться на точный формат этого фрагмента.
 
 ### IPv6NumToString(x) {#ipv6numtostringx}
 
-Принимает значение FixedString(16), содержащее IPv6 адрес в двоичном формате. Возвращает строку, содержащую этот адрес в текстовом формате.
-IPv6-отображенные IPv4 адреса выводятся в формате ::ffff:111.222.33.44.
+Принимает значение FixedString(16), содержащее адрес IPv6 в двоичном формате. Возвращает строку, содержащую этот адрес в текстовом формате. 
+IPv6-адреса, сопоставленные с IPv4, выводятся в формате ::ffff:111.222.33.44.
 
 Псевдоним: `INET6_NTOA`.
 
 Примеры:
 
-``` sql
+```sql
 SELECT IPv6NumToString(toFixedString(unhex('2A0206B8000000000000000000000011'), 16)) AS addr;
 ```
 
-``` text
+```text
 ┌─addr─────────┐
 │ 2a02:6b8::11 │
 └──────────────┘
 ```
 
-``` sql
+```sql
 SELECT
     IPv6NumToString(ClientIP6 AS k),
     count() AS c
@@ -91,7 +92,7 @@ ORDER BY c DESC
 LIMIT 10
 ```
 
-``` text
+```text
 ┌─IPv6NumToString(ClientIP6)──────────────┬─────c─┐
 │ 2a02:2168:aaa:bbbb::2                   │ 24695 │
 │ 2a02:2698:abcd:abcd:abcd:abcd:8888:5555 │ 22408 │
@@ -106,7 +107,7 @@ LIMIT 10
 └─────────────────────────────────────────┴───────┘
 ```
 
-``` sql
+```sql
 SELECT
     IPv6NumToString(ClientIP6 AS k),
     count() AS c
@@ -117,7 +118,7 @@ ORDER BY c DESC
 LIMIT 10
 ```
 
-``` text
+```text
 ┌─IPv6NumToString(ClientIP6)─┬──────c─┐
 │ ::ffff:94.26.111.111       │ 747440 │
 │ ::ffff:37.143.222.4        │ 529483 │
@@ -134,38 +135,38 @@ LIMIT 10
 
 ## IPv6StringToNum {#ipv6stringtonum}
 
-Обратная функция к [IPv6NumToString](#ipv6numtostringx). Если формат IPv6 адреса недопустим, она выбрасывает исключение.
+Обратная функция для [IPv6NumToString](#ipv6numtostringx). Если адрес IPv6 имеет недопустимый формат, возникает исключение.
 
-Если входная строка содержит допустимый IPv4 адрес, возвращает его эквивалент в IPv6.
-HEX может быть заглавным или строчным.
+Если входная строка содержит действительный адрес IPv4, возвращает его эквивалент в IPv6. 
+HEX может быть прописным или строчным.
 
 Псевдоним: `INET6_ATON`.
 
 **Синтаксис**
 
-``` sql
+```sql
 IPv6StringToNum(string)
 ```
 
 **Аргумент**
 
-- `string` — IP адрес. [String](../data-types/string.md).
+- `string` — IP-адрес. [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- IPv6 адрес в двоичном формате. [FixedString(16)](../data-types/fixedstring.md).
+- Адрес IPv6 в двоичном формате. [FixedString(16)](../data-types/fixedstring.md).
 
 **Пример**
 
 Запрос:
 
-``` sql
+```sql
 SELECT addr, cutIPv6(IPv6StringToNum(addr), 0, 0) FROM (SELECT ['notaddress', '127.0.0.1', '1111::ffff'] AS addr) ARRAY JOIN addr;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─addr───────┬─cutIPv6(IPv6StringToNum(addr), 0, 0)─┐
 │ notaddress │ ::                                   │
 │ 127.0.0.1  │ ::ffff:127.0.0.1                     │
@@ -179,21 +180,21 @@ SELECT addr, cutIPv6(IPv6StringToNum(addr), 0, 0) FROM (SELECT ['notaddress', '1
 
 ## IPv6StringToNumOrDefault(s) {#ipv6stringtonumordefaults}
 
-То же, что и `IPv6StringToNum`, но если формат IPv6 адреса недопустим, возвращает 0.
+То же, что и `IPv6StringToNum`, но если адрес IPv6 имеет недопустимый формат, возвращает 0.
 
 ## IPv6StringToNumOrNull(s) {#ipv6stringtonumornulls}
 
-То же, что и `IPv6StringToNum`, но если формат IPv6 адреса недопустим, возвращает null.
+То же, что и `IPv6StringToNum`, но если адрес IPv6 имеет недопустимый формат, возвращает null.
 
 ## IPv4ToIPv6(x) {#ipv4toipv6x}
 
-Принимает число `UInt32`. Интерпретирует его как IPv4 адрес в [big endian](https://en.wikipedia.org/wiki/Endianness). Возвращает значение `FixedString(16)`, содержащее IPv6 адрес в двоичном формате. Примеры:
+Принимает число `UInt32`. Интерпретирует его как адрес IPv4 в [big endian](https://en.wikipedia.org/wiki/Endianness). Возвращает значение `FixedString(16)`, содержащее адрес IPv6 в двоичном формате. Примеры:
 
-``` sql
+```sql
 SELECT IPv6NumToString(IPv4ToIPv6(IPv4StringToNum('192.168.0.1'))) AS addr;
 ```
 
-``` text
+```text
 ┌─addr───────────────┐
 │ ::ffff:192.168.0.1 │
 └────────────────────┘
@@ -201,9 +202,9 @@ SELECT IPv6NumToString(IPv4ToIPv6(IPv4StringToNum('192.168.0.1'))) AS addr;
 
 ## cutIPv6(x, bytesToCutForIPv6, bytesToCutForIPv4) {#cutipv6x-bytestocutforipv6-bytestocutforipv4}
 
-Принимает значение FixedString(16), содержащее IPv6 адрес в двоичном формате. Возвращает строку, содержащую адрес с указанным количеством удаленных байтов в текстовом формате. Например:
+Принимает значение FixedString(16), содержащее адрес IPv6 в двоичном формате. Возвращает строку с указанным количеством удаленных байтов в текстовом формате. Например:
 
-``` sql
+```sql
 WITH
     IPv6StringToNum('2001:0DB8:AC10:FE01:FEED:BABE:CAFE:F00D') AS ipv6,
     IPv4ToIPv6(IPv4StringToNum('192.168.0.1')) AS ipv4
@@ -212,35 +213,35 @@ SELECT
     cutIPv6(ipv4, 0, 2)
 ```
 
-``` text
+```text
 ┌─cutIPv6(ipv6, 2, 0)─────────────────┬─cutIPv6(ipv4, 0, 2)─┐
 │ 2001:db8:ac10:fe01:feed:babe:cafe:0 │ ::ffff:192.168.0.0  │
 └─────────────────────────────────────┴─────────────────────┘
 ```
 
-## IPv4CIDRToRange(ipv4, Cidr), {#ipv4cidrtorangeipv4-cidr}
+## IPv4CIDRToRange(ipv4, Cidr) {#ipv4cidrtorangeipv4-cidr}
 
-Принимает IPv4 и значение UInt8, содержащее [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing). Возвращает кортеж из двух IPv4, содержащих нижний и верхний диапазоны подсети.
+Принимает адрес IPv4 и значение UInt8, содержащее [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing). Возвращает кортеж с двумя адресами IPv4, содержащими нижнюю и верхнюю границы подсети.
 
-``` sql
+```sql
 SELECT IPv4CIDRToRange(toIPv4('192.168.5.2'), 16);
 ```
 
-``` text
+```text
 ┌─IPv4CIDRToRange(toIPv4('192.168.5.2'), 16)─┐
 │ ('192.168.0.0','192.168.255.255')          │
 └────────────────────────────────────────────┘
 ```
 
-## IPv6CIDRToRange(ipv6, Cidr), {#ipv6cidrtorangeipv6-cidr}
+## IPv6CIDRToRange(ipv6, Cidr) {#ipv6cidrtorangeipv6-cidr}
 
-Принимает IPv6 и значение UInt8, содержащее CIDR. Возвращает кортеж из двух IPv6, содержащих нижний и верхний диапазоны подсети.
+Принимает адрес IPv6 и значение UInt8, содержащее CIDR. Возвращает кортеж с двумя адресами IPv6, содержащими нижнюю и верхнюю границы подсети.
 
-``` sql
+```sql
 SELECT IPv6CIDRToRange(toIPv6('2001:0db8:0000:85a3:0000:0000:ac1f:8001'), 32);
 ```
 
-``` text
+```text
 ┌─IPv6CIDRToRange(toIPv6('2001:0db8:0000:85a3:0000:0000:ac1f:8001'), 32)─┐
 │ ('2001:db8::','2001:db8:ffff:ffff:ffff:ffff:ffff:ffff')                │
 └────────────────────────────────────────────────────────────────────────┘
@@ -248,7 +249,7 @@ SELECT IPv6CIDRToRange(toIPv6('2001:0db8:0000:85a3:0000:0000:ac1f:8001'), 32);
 
 ## toIPv4 {#toipv4}
 
-Как [`IPv4StringToNum`](#IPv4StringToNum), но принимает строку в форме IPv4 адреса и возвращает значение типа [IPv4](../data-types/ipv4.md).
+Как [`IPv4StringToNum`](#IPv4StringToNum), но принимает строковое представление IPv4-адреса и возвращает значение типа [IPv4](../data-types/ipv4.md).
 
 **Синтаксис**
 
@@ -258,23 +259,23 @@ toIPv4(string)
 
 **Аргументы**
 
-- `string` — IPv4 адрес. [String](../data-types/string.md).
+- `string` — адрес IPv4. [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- `string` преобразованный в IPv4 адрес. [IPv4](../data-types/ipv4.md).
+- `string`, преобразованный в адрес IPv4. [IPv4](../data-types/ipv4.md).
 
 **Примеры**
 
 Запрос:
 
-``` sql
+```sql
 SELECT toIPv4('171.225.130.45');
 ```
 
 Результат:
 
-``` text
+```text
 ┌─toIPv4('171.225.130.45')─┐
 │ 171.225.130.45           │
 └──────────────────────────┘
@@ -282,7 +283,7 @@ SELECT toIPv4('171.225.130.45');
 
 Запрос:
 
-``` sql
+```sql
 WITH
     '171.225.130.45' as IPv4_string
 SELECT
@@ -292,7 +293,7 @@ SELECT
 
 Результат:
 
-``` text
+```text
 ┌─hex(IPv4StringToNum(IPv4_string))─┬─hex(toIPv4(IPv4_string))─┐
 │ ABE1822D                          │ ABE1822D                 │
 └───────────────────────────────────┴──────────────────────────┘
@@ -300,7 +301,7 @@ SELECT
 
 ## toIPv4OrDefault {#toipv4ordefault}
 
-То же, что и `toIPv4`, но если формат IPv4 адреса недопустим, возвращает `0.0.0.0` (0 IPv4) или предоставленный IPv4 по умолчанию.
+То же, что и `toIPv4`, но если адрес IPv4 имеет недопустимый формат, возвращает `0.0.0.0` (0 IPv4) или предоставленный адрес IPv4 по умолчанию.
 
 **Синтаксис**
 
@@ -310,12 +311,12 @@ toIPv4OrDefault(string[, default])
 
 **Аргументы**
 
-- `value` — IP адрес. [String](../data-types/string.md).
-- `default` (необязательный) — Значение, которое будет возвращено, если `string` имеет недопустимый формат. [IPv4](../data-types/ipv4.md).
+- `value` — IP-адрес. [Строка](../data-types/string.md).
+- `default` (опционально) — Значение, возвращаемое, если `string` имеет недопустимый формат. [IPv4](../data-types/ipv4.md).
 
 **Возвращаемое значение**
 
-- `string` преобразованный в текущий IPv4 адрес. [String](../data-types/string.md).
+- `string`, преобразованное в текущий адрес IPv4. [Строка](../data-types/string.md).
 
 **Пример**
 
@@ -341,7 +342,7 @@ SELECT
 
 ## toIPv4OrNull {#toipv4ornull}
 
-То же, что и [`toIPv4`](#toipv4), но если формат IPv4 адреса недопустим, возвращает null.
+То же, что и [`toIPv4`](#toipv4), но если адрес IPv4 имеет недопустимый формат, возвращает null.
 
 **Синтаксис**
 
@@ -351,24 +352,24 @@ toIPv4OrNull(string)
 
 **Аргументы**
 
-- `string` — IP адрес. [String](../data-types/string.md).
+- `string` — IP-адрес. [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- `string` преобразованный в текущий IPv4 адрес или null, если `string` является недопустимым адресом. [String](../data-types/string.md).
+- `string`, преобразованный в текущий адрес IPv4, или null, если `string` является недопустимым адресом. [Строка](../data-types/string.md).
 
 **Пример**
 
 Запрос:
 
-``` sql
+```sql
 WITH 'fe80:2030:31:24' AS invalid_IPv6_string
 SELECT toIPv4OrNull(invalid_IPv6_string);
 ```
 
 Результат:
 
-``` text
+```text
 ┌─toIPv4OrNull(invalid_IPv6_string)─┐
 │ ᴺᵁᴸᴸ                              │
 └───────────────────────────────────┘
@@ -376,7 +377,7 @@ SELECT toIPv4OrNull(invalid_IPv6_string);
 
 ## toIPv4OrZero {#toipv4orzero}
 
-То же, что и [`toIPv4`](#toipv4), но если формат IPv4 адреса недопустим, возвращает `0.0.0.0`.
+То же, что и [`toIPv4`](#toipv4), но если адрес IPv4 имеет недопустимый формат, возвращает `0.0.0.0`.
 
 **Синтаксис**
 
@@ -386,24 +387,24 @@ toIPv4OrZero(string)
 
 **Аргументы**
 
-- `string` — IP адрес. [String](../data-types/string.md).
+- `string` — IP-адрес. [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- `string` преобразованный в текущий IPv4 адрес или `0.0.0.0`, если `string` является недопустимым адресом. [String](../data-types/string.md).
+- `string`, преобразованный в текущий адрес IPv4, или `0.0.0.0`, если `string` является недопустимым адресом. [Строка](../data-types/string.md).
 
 **Пример**
 
 Запрос:
 
-``` sql
+```sql
 WITH 'Not an IP address' AS invalid_IPv6_string
 SELECT toIPv4OrZero(invalid_IPv6_string);
 ```
 
 Результат:
 
-``` text
+```text
 ┌─toIPv4OrZero(invalid_IPv6_string)─┐
 │ 0.0.0.0                           │
 └───────────────────────────────────┘
@@ -411,30 +412,31 @@ SELECT toIPv4OrZero(invalid_IPv6_string);
 
 ## toIPv6 {#toipv6}
 
-Преобразует строку в форме IPv6 адреса в тип [IPv6](../data-types/ipv6.md). Если формат IPv6 адреса недопустим, возвращает пустое значение.
-Похоже на функцию [IPv6StringToNum](#ipv6stringtonum), которая преобразует IPv6 адрес в двоичный формат.
+Преобразует строку или UInt128 в адрес IPv6 типа [IPv6](../data-types/ipv6.md). Для строк, если адрес IPv6 имеет недопустимый формат, возвращает пустое значение.
+Похож на функцию [IPv6StringToNum](#ipv6stringtonum), которая преобразует адрес IPv6 в двоичный формат.
 
-Если входная строка содержит допустимый IPv4 адрес, то возвращается эквивалент IPv6 этого IPv4 адреса.
+Если входная строка содержит действительный адрес IPv4, то возвращается эквивалент IPv6 для адреса IPv4.
 
 **Синтаксис**
 
 ```sql
 toIPv6(string)
+toIPv6(UInt128)
 ```
 
 **Аргумент**
 
-- `string` — IP адрес. [String](../data-types/string.md).
+- `string` или `UInt128` — IP-адрес. [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- IP адрес. [IPv6](../data-types/ipv6.md).
+- IP-адрес. [IPv6](../data-types/ipv6.md).
 
 **Примеры**
 
 Запрос:
 
-``` sql
+```sql
 WITH '2001:438:ffff::407d:1bc1' AS IPv6_string
 SELECT
     hex(IPv6StringToNum(IPv6_string)),
@@ -443,7 +445,7 @@ SELECT
 
 Результат:
 
-``` text
+```text
 ┌─hex(IPv6StringToNum(IPv6_string))─┬─hex(toIPv6(IPv6_string))─────────┐
 │ 20010438FFFF000000000000407D1BC1  │ 20010438FFFF000000000000407D1BC1 │
 └───────────────────────────────────┴──────────────────────────────────┘
@@ -451,13 +453,13 @@ SELECT
 
 Запрос:
 
-``` sql
+```sql
 SELECT toIPv6('127.0.0.1');
 ```
 
 Результат:
 
-``` text
+```text
 ┌─toIPv6('127.0.0.1')─┐
 │ ::ffff:127.0.0.1    │
 └─────────────────────┘
@@ -465,7 +467,7 @@ SELECT toIPv6('127.0.0.1');
 
 ## toIPv6OrDefault {#toipv6ordefault}
 
-То же, что и [`toIPv6`](#toipv6), но если формат IPv6 адреса недопустим, возвращает `::` (0 IPv6) или предоставленный IPv6 по умолчанию.
+То же, что и [`toIPv6`](#toipv6), но если адрес IPv6 имеет недопустимый формат, возвращает `::` (0 IPv6) или предоставленный адрес IPv6 по умолчанию.
 
 **Синтаксис**
 
@@ -475,18 +477,18 @@ toIPv6OrDefault(string[, default])
 
 **Аргумент**
 
-- `string` — IP адрес. [String](../data-types/string.md).
-- `default` (необязательный) — Значение, которое будет возвращено, если `string` имеет недопустимый формат. [IPv6](../data-types/ipv6.md).
+- `string` — IP-адрес. [Строка](../data-types/string.md).
+- `default` (опционально) — Значение, возвращаемое, если `string` имеет недопустимый формат. [IPv6](../data-types/ipv6.md).
 
 **Возвращаемое значение**
 
-- IPv6 адрес [IPv6](../data-types/ipv6.md), в противном случае `::` или предоставленный необязательный по умолчанию, если `string` имеет недопустимый формат.
+- Адрес IPv6 [IPv6](../data-types/ipv6.md), в противном случае `::` или предоставленный необязательный по умолчанию, если `string` имеет недопустимый формат.
 
 **Пример**
 
 Запрос:
 
-``` sql
+```sql
 WITH
     '127.0.0.1' AS valid_IPv4_string,
     '127.0.0.1.6' AS invalid_IPv4_string
@@ -498,7 +500,7 @@ SELECT
 
 Результат:
 
-``` text
+```text
 ┌─valid────────────┬─default─┬─provided_default─┐
 │ ::ffff:127.0.0.1 │ ::      │ ::ffff:1.1.1.1   │
 └──────────────────┴─────────┴──────────────────┘
@@ -506,7 +508,7 @@ SELECT
 
 ## toIPv6OrNull {#toipv6ornull}
 
-То же, что и [`toIPv6`](#toipv6), но если формат IPv6 адреса недопустим, возвращает null.
+То же, что и [`toIPv6`](#toipv6), но если адрес IPv6 имеет недопустимый формат, возвращает null.
 
 **Синтаксис**
 
@@ -516,24 +518,24 @@ toIPv6OrNull(string)
 
 **Аргумент**
 
-- `string` — IP адрес. [String](../data-types/string.md).
+- `string` — IP-адрес. [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- IP адрес. [IPv6](../data-types/ipv6.md), или null, если `string` не имеет допустимого формата.
+- IP-адрес. [IPv6](../data-types/ipv6.md), или null, если `string` не является допустимым форматом.
 
 **Пример**
 
 Запрос:
 
-``` sql
+```sql
 WITH '127.0.0.1.6' AS invalid_IPv4_string
 SELECT toIPv6OrNull(invalid_IPv4_string);
 ```
 
 Результат:
 
-``` text
+```text
 ┌─toIPv6OrNull(invalid_IPv4_string)─┐
 │ ᴺᵁᴸᴸ                              │
 └───────────────────────────────────┘
@@ -541,7 +543,7 @@ SELECT toIPv6OrNull(invalid_IPv4_string);
 
 ## toIPv6OrZero {#toipv6orzero}
 
-То же, что и [`toIPv6`](#toipv6), но если формат IPv6 адреса недопустим, возвращает `::`.
+То же, что и [`toIPv6`](#toipv6), но если адрес IPv6 имеет недопустимый формат, возвращает `::`.
 
 **Синтаксис**
 
@@ -551,40 +553,40 @@ toIPv6OrZero(string)
 
 **Аргумент**
 
-- `string` — IP адрес. [String](../data-types/string.md).
+- `string` — IP-адрес. [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- IP адрес. [IPv6](../data-types/ipv6.md), или `::`, если `string` не имеет допустимого формата.
+- IP-адрес. [IPv6](../data-types/ipv6.md), или `::`, если `string` не является допустимым форматом.
 
 **Пример**
 
 Запрос:
 
-``` sql
+```sql
 WITH '127.0.0.1.6' AS invalid_IPv4_string
 SELECT toIPv6OrZero(invalid_IPv4_string);
 ```
 
 Результат:
 
-``` text
-┌─toIPv6OrZero(invalid_IPv4_string)─┐
+```text
+┌─toIPv6OrZero(invalid_IPv6_string)─┐
 │ ::                                │
 └───────────────────────────────────┘
 ```
 
 ## IPv6StringToNumOrDefault(s) {#ipv6stringtonumordefaults-1}
 
-То же, что и `toIPv6`, но если формат IPv6 адреса недопустим, возвращает 0.
+То же, что и `toIPv6`, но если адрес IPv6 имеет недопустимый формат, возвращает 0.
 
 ## IPv6StringToNumOrNull(s) {#ipv6stringtonumornulls-1}
 
-То же, что и `toIPv6`, но если формат IPv6 адреса недопустим, возвращает null.
+То же, что и `toIPv6`, но если адрес IPv6 имеет недопустимый формат, возвращает null.
 
 ## isIPv4String {#isipv4string}
 
-Определяет, является ли входная строка IPv4 адресом или нет. Если `string` является IPv6 адресом, возвращает `0`.
+Определяет, является ли входная строка адресом IPv4. Если `string` является адресом IPv6, возвращает `0`.
 
 **Синтаксис**
 
@@ -594,11 +596,11 @@ isIPv4String(string)
 
 **Аргументы**
 
-- `string` — IP адрес. [String](../data-types/string.md).
+- `string` — IP-адрес. [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- `1`, если `string` является IPv4 адресом, `0` в противном случае. [UInt8](../data-types/int-uint.md).
+- `1`, если `string` является адресом IPv4, `0` в противном случае. [UInt8](../data-types/int-uint.md).
 
 **Примеры**
 
@@ -610,7 +612,7 @@ SELECT addr, isIPv4String(addr) FROM ( SELECT ['0.0.0.0', '127.0.0.1', '::ffff:1
 
 Результат:
 
-``` text
+```text
 ┌─addr─────────────┬─isIPv4String(addr)─┐
 │ 0.0.0.0          │                  1 │
 │ 127.0.0.1        │                  1 │
@@ -620,7 +622,7 @@ SELECT addr, isIPv4String(addr) FROM ( SELECT ['0.0.0.0', '127.0.0.1', '::ffff:1
 
 ## isIPv6String {#isipv6string}
 
-Определяет, является ли входная строка IPv6 адресом или нет. Если `string` является IPv4 адресом, возвращает `0`.
+Определяет, является ли входная строка адресом IPv6. Если `string` является адресом IPv4, возвращает `0`.
 
 **Синтаксис**
 
@@ -630,23 +632,23 @@ isIPv6String(string)
 
 **Аргументы**
 
-- `string` — IP адрес. [String](../data-types/string.md).
+- `string` — IP-адрес. [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- `1`, если `string` является IPv6 адресом, `0` в противном случае. [UInt8](../data-types/int-uint.md).
+- `1`, если `string` является адресом IPv6, `0` в противном случае. [UInt8](../data-types/int-uint.md).
 
 **Примеры**
 
 Запрос:
 
-``` sql
+```sql
 SELECT addr, isIPv6String(addr) FROM ( SELECT ['::', '1111::ffff', '::ffff:127.0.0.1', '127.0.0.1'] AS addr ) ARRAY JOIN addr;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─addr─────────────┬─isIPv6String(addr)─┐
 │ ::               │                  1 │
 │ 1111::ffff       │                  1 │
@@ -657,20 +659,20 @@ SELECT addr, isIPv6String(addr) FROM ( SELECT ['::', '1111::ffff', '::ffff:127.0
 
 ## isIPAddressInRange {#isipaddressinrange}
 
-Определяет, содержится ли IP адрес в сети, представленной в нотации [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing). Возвращает `1`, если это так, или `0` в противном случае.
+Определяет, содержится ли IP-адрес в сети, представленной в формате [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing). Возвращает `1`, если верно, или `0` в противном случае.
 
 **Синтаксис**
 
-``` sql
+```sql
 isIPAddressInRange(address, prefix)
 ```
 
-Эта функция принимает как IPv4, так и IPv6 адреса (и сети), представленные в виде строк. Она возвращает `0`, если версия IP адреса и CIDR не совпадают.
+Эта функция принимает как адреса IPv4, так и IPv6 (и сети), представленные как строки. Она возвращает `0`, если версия IP адреса и CIDR не совпадают.
 
 **Аргументы**
 
-- `address` — IPv4 или IPv6 адрес. [String](../data-types/string.md).
-- `prefix` — IPv4 или IPv6 сетевой префикс в CIDR. [String](../data-types/string.md).
+- `address` — Адрес IPv4 или IPv6. [Строка](../data-types/string.md).
+- `prefix` — Сетевой префикс IPv4 или IPv6 в CIDR. [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
@@ -680,13 +682,13 @@ isIPAddressInRange(address, prefix)
 
 Запрос:
 
-``` sql
+```sql
 SELECT isIPAddressInRange('127.0.0.1', '127.0.0.0/8');
 ```
 
 Результат:
 
-``` text
+```text
 ┌─isIPAddressInRange('127.0.0.1', '127.0.0.0/8')─┐
 │                                              1 │
 └────────────────────────────────────────────────┘
@@ -694,13 +696,13 @@ SELECT isIPAddressInRange('127.0.0.1', '127.0.0.0/8');
 
 Запрос:
 
-``` sql
+```sql
 SELECT isIPAddressInRange('127.0.0.1', 'ffff::/16');
 ```
 
 Результат:
 
-``` text
+```text
 ┌─isIPAddressInRange('127.0.0.1', 'ffff::/16')─┐
 │                                            0 │
 └──────────────────────────────────────────────┘
@@ -708,13 +710,14 @@ SELECT isIPAddressInRange('127.0.0.1', 'ffff::/16');
 
 Запрос:
 
-``` sql
+```sql
 SELECT isIPAddressInRange('::ffff:192.168.0.1', '::ffff:192.168.0.4/128');
 ```
 
 Результат:
 
-``` text
+```text
 ┌─isIPAddressInRange('::ffff:192.168.0.1', '::ffff:192.168.0.4/128')─┐
 │                                                                  0 │
 └────────────────────────────────────────────────────────────────────┘
+```

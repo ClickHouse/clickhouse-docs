@@ -1,13 +1,16 @@
 ---
 description: 'Системная таблица, содержащая информацию о существующих проекциях во всех таблицах.'
-slug: /operations/system-tables/projections
-title: 'system.processors_profile_log'
 keywords: ['системная таблица', 'проекции']
+slug: /operations/system-tables/projections
+title: 'system.projections'
 ---
+
+
+# system.projections
 
 Содержит информацию о существующих проекциях во всех таблицах.
 
-Колонки:
+Столбцы:
 
 - `database` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных.
 - `table` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы.

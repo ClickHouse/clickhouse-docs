@@ -1,20 +1,21 @@
 ---
-title: LineAsString
-slug: /interfaces/formats/LineAsString
-keywords: [LineAsString]
-input_format: true
-output_format: true
 alias: []
+description: 'Документация для формата LineAsString'
+input_format: true
+keywords: ['LineAsString']
+output_format: true
+slug: /interfaces/formats/LineAsString
+title: 'LineAsString'
 ---
 
-| Ввод | Вывод | Псевдоним |
+| Вход | Выход | Псевдоним |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## Описание {#description}
 
-Формат `LineAsString` интерпретирует каждую строку входных данных как одно значение строки. 
-Этот формат можно разобрать только для таблицы с одним полем типа [String](/sql-reference/data-types/string.md). 
+Формат `LineAsString` интерпретирует каждую строку входных данных как отдельное строковое значение. 
+Этот формат может быть распарсен только для таблицы с одной колонкой типа [String](/sql-reference/data-types/string.md). 
 Оставшиеся колонки должны быть установлены в [`DEFAULT`](/sql-reference/statements/create/table.md/#default), [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) или опущены.
 
 ## Пример использования {#example-usage}

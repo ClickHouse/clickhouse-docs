@@ -1,8 +1,9 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/stddevpopstable
+description: 'Результат равен квадратному корню из varPop. В отличие от stddevPop,
+  эта функция использует численно стабильный алгоритм.'
 sidebar_position: 189
+slug: /sql-reference/aggregate-functions/reference/stddevpopstable
 title: 'stddevPopStable'
-description: 'Результат равен квадратному корню из varPop. В отличие от stddevPop, эта функция использует численно стабильный алгоритм.'
 ---
 
 
@@ -18,11 +19,11 @@ stddevPopStable(x)
 
 **Параметры**
 
-- `x`: Популяция значений, для которых необходимо найти стандартное отклонение. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
+- `x`: Население значений, для которого нужно найти стандартное отклонение. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 
-Квадратный корень стандартного отклонения `x`. [Float64](../../data-types/float.md).
+Квадратный корень из стандартного отклонения `x`. [Float64](../../data-types/float.md).
 
 **Пример**
 

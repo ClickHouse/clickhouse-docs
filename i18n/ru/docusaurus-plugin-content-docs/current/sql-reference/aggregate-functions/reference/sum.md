@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/sum
-sidebar_position: 195
-title: 'sum'
 description: 'Вычисляет сумму. Работает только для чисел.'
+sidebar_position: 195
+slug: /sql-reference/aggregate-functions/reference/sum
+title: 'sum'
 ---
 
 
@@ -17,7 +17,7 @@ sum(num)
 ```
 
 **Параметры**
-- `num`: Колонка числовых значений. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
+- `num`: Столбец числовых значений. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 
@@ -25,7 +25,7 @@ sum(num)
 
 **Пример**
 
-Сначала мы создаем таблицу `employees` и вставляем в нее несколько вымышленных данных о сотрудниках.
+Сначала мы создаем таблицу `employees` и вставляем в нее данные о фиктивных сотрудниках.
 
 Запрос:
 
@@ -47,7 +47,7 @@ INSERT INTO employees VALUES
     (71245, 'Anastasia Ivanovna', 89210);
 ```
 
-Мы запрашиваем общую сумму зарплат сотрудников с помощью функции `sum`. 
+Мы запрашиваем общую сумму заработных плат сотрудников, используя функцию `sum`. 
 
 Запрос:
 

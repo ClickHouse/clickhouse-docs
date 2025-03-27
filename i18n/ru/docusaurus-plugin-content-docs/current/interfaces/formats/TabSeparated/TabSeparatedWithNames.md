@@ -1,28 +1,29 @@
 ---
-title: TabSeparatedWithNames
-slug: /interfaces/formats/TabSeparatedWithNames
-keywords: ['TabSeparatedWithNames']
-input_format: true
-output_format: true
 alias: ['TSVWithNames']
+description: 'Документация для формата TabSeparatedWithNames'
+input_format: true
+keywords: ['TabSeparatedWithNames']
+output_format: true
+slug: /interfaces/formats/TabSeparatedWithNames
+title: 'TabSeparatedWithNames'
 ---
 
-| Входные данные | Выходные данные | Псевдоним                   |
-|----------------|----------------|-----------------------------|
-|  ✔             |  ✔             | `TSVWithNames`, `RawWithNames` |
+| Input | Output | Alias                          |
+|-------|--------|--------------------------------|
+|     ✔    |     ✔     | `TSVWithNames`, `RawWithNames` |
 
-## Описание {#description}
+## Description {#description}
 
-Отличается от формата [`TabSeparated`](./TabSeparated.md) тем, что имена колонок записываются в первой строке.
+Отличается от формата [`TabSeparated`](./TabSeparated.md) тем, что имена столбцов записаны в первой строке.
 
-При разборе ожидается, что первая строка будет содержать имена колонок. Вы можете использовать имена колонок, чтобы определить их позицию и проверить их корректность.
+Во время парсинга ожидается, что первая строка будет содержать имена столбцов. Вы можете использовать имена столбцов для определения их позиции и для проверки их корректности.
 
 :::note
-Если параметр [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) установлен в `1`, 
-то колонки из входных данных будут сопоставлены с колонками таблицы по их именам, колонки с неизвестными именами будут пропущены, если параметр [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлен в `1`. 
+Если параметр [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) установлен в `1`,
+столбцы исходных данных будут сопоставлены со столбцами таблицы по их именам, столбцы с неизвестными именами будут пропущены, если параметр [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлен в `1`.
 В противном случае первая строка будет пропущена.
 :::
 
-## Пример использования {#example-usage}
+## Example Usage {#example-usage}
 
-## Настройки формата {#format-settings}
+## Format Settings {#format-settings}

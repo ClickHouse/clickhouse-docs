@@ -7,18 +7,18 @@ keywords: ['системная таблица', 'build_options']
 
 Содержит информацию о параметрах сборки сервера ClickHouse.
 
-Колонки:
+Столбцы:
 
-- `name` (String) — Название параметра сборки, например, `USE_ODBC`
-- `value` (String) — Значение параметра сборки, например, `1`
+- `name` (String) — Название параметра сборки, например `USE_ODBC`
+- `value` (String) — Значение параметра сборки, например `1`
 
 **Пример**
 
-``` sql
+```sql
 SELECT * FROM system.build_options LIMIT 5
 ```
 
-``` text
+```text
 ┌─name─────────────┬─value─┐
 │ USE_BROTLI       │ 1     │
 │ USE_BZIP2        │ 1     │

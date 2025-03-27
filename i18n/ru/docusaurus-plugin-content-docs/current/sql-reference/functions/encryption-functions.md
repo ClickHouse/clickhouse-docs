@@ -1,19 +1,21 @@
 ---
-slug: /sql-reference/functions/encryption-functions
-sidebar_position: 70
+description: 'Документация для функций шифрования'
 sidebar_label: 'Шифрование'
+sidebar_position: 70
+slug: /sql-reference/functions/encryption-functions
+title: 'Функции шифрования'
 ---
 
 
-# Функции Шифрования
+# Функции шифрования
 
-Эти функции реализуют шифрование и расшифровку данных с использованием алгоритма AES (Advanced Encryption Standard).
+Эти функции осуществляют шифрование и расшифровку данных с использованием алгоритма AES (Расширенный стандарт шифрования).
 
 Длина ключа зависит от режима шифрования. Она составляет 16, 24 и 32 байта для режимов `-128-`, `-196-` и `-256-` соответственно.
 
-Длина вектора инициализации всегда составляет 16 байт (байты свыше 16 игнорируются).
+Длина вектора инициализации всегда составляет 16 байт (байты, превышающие 16, игнорируются).
 
-Обратите внимание, что эти функции работают медленно до версии ClickHouse 21.1.
+Обратите внимание, что эти функции работают медленно до ClickHouse 21.1.
 
 ## encrypt {#encrypt}
 
@@ -28,21 +30,21 @@ sidebar_label: 'Шифрование'
 
 **Синтаксис**
 
-``` sql
+```sql
 encrypt('mode', 'plaintext', 'key' [, iv, aad])
 ```
 
 **Аргументы**
 
 - `mode` — Режим шифрования. [String](/sql-reference/data-types/string).
-- `plaintext` — Текст, который необходимо зашифровать. [String](/sql-reference/data-types/string).
+- `plaintext` — Текст, который нужно зашифровать. [String](/sql-reference/data-types/string).
 - `key` — Ключ шифрования. [String](/sql-reference/data-types/string).
-- `iv` — Вектор инициализации. Обязателен для режимов `-gcm`, опционален для других. [String](/sql-reference/data-types/string).
-- `aad` — Дополнительные аутентифицированные данные. Не шифруется, но влияет на расшифровку. Работает только в режимах `-gcm`, для остальных вызовет исключение. [String](/sql-reference/data-types/string).
+- `iv` — Вектор инициализации. Обязателен для режимов `-gcm`, необязателен для остальных. [String](/sql-reference/data-types/string).
+- `aad` — Дополнительные аутентифицированные данные. Он не шифруется, но влияет на расшифровку. Работает только в режимах `-gcm`, для остальных выдаст исключение. [String](/sql-reference/data-types/string).
 
 **Возвращаемое значение**
 
-- Зашифрованная двоичная строка. [String](/sql-reference/data-types/string).
+- Бинарная строка шифротекста. [String](/sql-reference/data-types/string).
 
 **Примеры**
 
@@ -50,7 +52,7 @@ encrypt('mode', 'plaintext', 'key' [, iv, aad])
 
 Запрос:
 
-``` sql
+```sql
 CREATE TABLE encryption_test
 (
     `comment` String,
@@ -59,11 +61,11 @@ CREATE TABLE encryption_test
 ENGINE = Memory;
 ```
 
-Вставьте некоторые данные (пожалуйста, избегайте хранения ключей/iv в базе данных, так как это подрывает всю концепцию шифрования), также хранить 'подсказки' небезопасно и используется только в иллюстративных целях:
+Вставьте некоторые данные (пожалуйста, избегайте хранения ключей/iv в базе данных, так как это подрывает всю концепцию шифрования), также хранение 'подсказок' небезопасно и используется только в иллюстративных целях:
 
 Запрос:
 
-``` sql
+```sql
 INSERT INTO encryption_test VALUES('aes-256-ofb no IV', encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212')),\
 ('aes-256-ofb no IV, different key', encrypt('aes-256-ofb', 'Secret', 'keykeykeykeykeykeykeykeykeykeyke')),\
 ('aes-256-ofb with IV', encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv')),\
@@ -72,13 +74,13 @@ INSERT INTO encryption_test VALUES('aes-256-ofb no IV', encrypt('aes-256-ofb', '
 
 Запрос:
 
-``` sql
+```sql
 SELECT comment, hex(secret) FROM encryption_test;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─comment──────────────────────────┬─hex(secret)──────────────────────┐
 │ aes-256-ofb no IV                │ B4972BDC4459                     │
 │ aes-256-ofb no IV, different key │ 2FF57C092DC9                     │
@@ -91,7 +93,7 @@ SELECT comment, hex(secret) FROM encryption_test;
 
 Запрос:
 
-``` sql
+```sql
 INSERT INTO encryption_test VALUES('aes-256-gcm', encrypt('aes-256-gcm', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv')), \
 ('aes-256-gcm with AAD', encrypt('aes-256-gcm', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv', 'aad'));
 
@@ -100,7 +102,7 @@ SELECT comment, hex(secret) FROM encryption_test WHERE comment LIKE '%gcm%';
 
 Результат:
 
-``` text
+```text
 ┌─comment──────────────┬─hex(secret)──────────────────────────────────┐
 │ aes-256-gcm          │ A8A3CCBC6426CFEEB60E4EAE03D3E94204C1B09E0254 │
 │ aes-256-gcm with AAD │ A8A3CCBC6426D9A1017A0A932322F1852260A4AD6837 │
@@ -109,9 +111,9 @@ SELECT comment, hex(secret) FROM encryption_test WHERE comment LIKE '%gcm%';
 
 ## aes_encrypt_mysql {#aes_encrypt_mysql}
 
-Совместим с шифрованием MySQL, и полученный зашифрованный текст можно расшифровывать с помощью функции [AES_DECRYPT](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-decrypt).
+Совместим с шифрованием MySQL и полученный шифротекст может быть расшифрован с помощью функции [AES_DECRYPT](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-decrypt).
 
-Будет производить тот же зашифрованный текст, что и `encrypt` при равных входных данных. Но когда `key` или `iv` длиннее, чем они должны быть, `aes_encrypt_mysql` будет придерживаться того, что делает `aes_encrypt` в MySQL: 'складывать' `key` и игнорировать лишние биты `iv`.
+Производит тот же шифротекст, что и `encrypt` при равных входных данных. Но когда `key` или `iv` длиннее, чем должно быть, `aes_encrypt_mysql` действует так же, как и `aes_encrypt` в MySQL: 'сворачивает' `key` и игнорирует лишние биты `iv`.
 
 Поддерживаемые режимы шифрования:
 
@@ -121,7 +123,7 @@ SELECT comment, hex(secret) FROM encryption_test WHERE comment LIKE '%gcm%';
 
 **Синтаксис**
 
-``` sql
+```sql
 aes_encrypt_mysql('mode', 'plaintext', 'key' [, iv])
 ```
 
@@ -129,20 +131,20 @@ aes_encrypt_mysql('mode', 'plaintext', 'key' [, iv])
 
 - `mode` — Режим шифрования. [String](/sql-reference/data-types/string).
 - `plaintext` — Текст, который нужно зашифровать. [String](/sql-reference/data-types/string).
-- `key` — Ключ шифрования. Если ключ длиннее, чем требуется по режиму, выполняется MySQL-специфическое сложение ключа. [String](/sql-reference/data-types/string).
-- `iv` — Вектор инициализации. Опционально, учитываются только первые 16 байт [String](/sql-reference/data-types/string).
+- `key` — Ключ шифрования. Если ключ длиннее, чем требуется для режима, выполняется специфическая для MySQL сворачивание ключа. [String](/sql-reference/data-types/string).
+- `iv` — Вектор инициализации. Необязательный, учитываются только первые 16 байт [String](/sql-reference/data-types/string).
 
 **Возвращаемое значение**
 
-- Зашифрованная двоичная строка. [String](/sql-reference/data-types/string).
+- Бинарная строка шифротекста. [String](/sql-reference/data-types/string).
 
 **Примеры**
 
-При равных входных данных `encrypt` и `aes_encrypt_mysql` производят одинаковый зашифрованный текст:
+При равных входных данных `encrypt` и `aes_encrypt_mysql` производят один и тот же шифротекст:
 
 Запрос:
 
-``` sql
+```sql
 SELECT encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv') = aes_encrypt_mysql('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv') AS ciphertexts_equal;
 ```
 
@@ -154,26 +156,26 @@ SELECT encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'ivi
 └───────────────────┘
 ```
 
-Но `encrypt` не работает, когда `key` или `iv` длиннее ожидаемого:
+Но `encrypt` завершает работу с ошибкой, когда `key` или `iv` длиннее, чем ожидается:
 
 Запрос:
 
-``` sql
+```sql
 SELECT encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123');
 ```
 
 Результат:
 
-``` text
+```text
 Received exception from server (version 22.6.1):
 Code: 36. DB::Exception: Received from localhost:9000. DB::Exception: Invalid key size: 33 expected 32: While processing encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123').
 ```
 
-В то время как `aes_encrypt_mysql` производит совместимый с MySQL вывод:
+В то время как `aes_encrypt_mysql` производит выход, совместимый с MySQL:
 
 Запрос:
 
-``` sql
+```sql
 SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123')) AS ciphertext;
 ```
 
@@ -185,25 +187,25 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 └──────────────┘
 ```
 
-Обратите внимание, что даже передача более длинного `IV` дает тот же результат
+Обратите внимание, что даже предоставление более длинного `IV` производит тот же результат.
 
 Запрос:
 
-``` sql
+```sql
 SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123456')) AS ciphertext
 ```
 
 Результат:
 
-``` text
+```text
 ┌─ciphertext───┐
 │ 24E9E4966469 │
 └──────────────┘
 ```
 
-Что бинарно равно тому, что MySQL производит при тех же входных данных:
+Что является бинарно равным тому, что MySQL производит при тех же входных данных:
 
-``` sql
+```sql
 mysql> SET  block_encryption_mode='aes-256-ofb';
 Query OK, 0 rows affected (0.00 sec)
 
@@ -218,7 +220,7 @@ mysql> SELECT aes_encrypt('Secret', '123456789101213141516171819202122', 'iviviv
 
 ## decrypt {#decrypt}
 
-Эта функция расшифровывает зашифрованный текст в открытый текст, используя следующие режимы:
+Эта функция расшифровывает шифротекст в открытый текст, используя следующие режимы:
 
 - aes-128-ecb, aes-192-ecb, aes-256-ecb
 - aes-128-cbc, aes-192-cbc, aes-256-cbc
@@ -229,7 +231,7 @@ mysql> SELECT aes_encrypt('Secret', '123456789101213141516171819202122', 'iviviv
 
 **Синтаксис**
 
-``` sql
+```sql
 decrypt('mode', 'ciphertext', 'key' [, iv, aad])
 ```
 
@@ -238,8 +240,8 @@ decrypt('mode', 'ciphertext', 'key' [, iv, aad])
 - `mode` — Режим расшифровки. [String](/sql-reference/data-types/string).
 - `ciphertext` — Зашифрованный текст, который необходимо расшифровать. [String](/sql-reference/data-types/string).
 - `key` — Ключ расшифровки. [String](/sql-reference/data-types/string).
-- `iv` — Вектор инициализации. Обязателен для `-gcm` режимов, опционален для других. [String](/sql-reference/data-types/string).
-- `aad` — Дополнительные аутентифицированные данные. Не будет расшифрован, если это значение неверно. Работает только в режимах `-gcm`, для остальных вызовет исключение. [String](/sql-reference/data-types/string).
+- `iv` — Вектор инициализации. Обязателен для режимов `-gcm`, необязателен для других. [String](/sql-reference/data-types/string).
+- `aad` — Дополнительные аутентифицированные данные. Не будет расшифрован, если это значение неверно. Работает только в режимах `-gcm`, для остальных выдает исключение. [String](/sql-reference/data-types/string).
 
 **Возвращаемое значение**
 
@@ -247,17 +249,17 @@ decrypt('mode', 'ciphertext', 'key' [, iv, aad])
 
 **Примеры**
 
-Повторно используя таблицу из [encrypt](#encrypt).
+Повторно используем таблицу из [encrypt](#encrypt).
 
 Запрос:
 
-``` sql
+```sql
 SELECT comment, hex(secret) FROM encryption_test;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─comment──────────────┬─hex(secret)──────────────────────────────────┐
 │ aes-256-gcm          │ A8A3CCBC6426CFEEB60E4EAE03D3E94204C1B09E0254 │
 │ aes-256-gcm with AAD │ A8A3CCBC6426D9A1017A0A932322F1852260A4AD6837 │
@@ -274,13 +276,13 @@ SELECT comment, hex(secret) FROM encryption_test;
 
 Запрос:
 
-``` sql
+```sql
 SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920212') as plaintext FROM encryption_test
 ```
 
 Результат:
 
-``` text
+```text
 ┌─comment──────────────┬─plaintext──┐
 │ aes-256-gcm          │ OQ�E
                              �t�7T�\���\�   │
@@ -296,15 +298,15 @@ SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920
 └──────────────────────────────────┴───────────┘
 ```
 
-Обратите внимание, что только часть данных была правильно расшифрована, а остальная часть — это бессмыслица, поскольку режим, ключ или вектор инициализации были разными при шифровании.
+Обратите внимание, что только часть данных была правильно расшифрована, а остальное является бессмысленным текстом, потому что либо `mode`, `key`, либо `iv` были различны при шифровании.
 
 ## tryDecrypt {#trydecrypt}
 
-Похож на `decrypt`, но возвращает NULL, если расшифровка не удалась из-за неверного ключа.
+Похожа на `decrypt`, но возвращает NULL, если расшифровка завершилась неудачей из-за использования неверного ключа.
 
 **Примеры**
 
-Давайте создадим таблицу, где `user_id` — это уникальный идентификатор пользователя, `encrypted` — зашифрованное строковое поле, `iv` — начальный вектор для расшифровки/шифрования. Предположим, что пользователи знают свой идентификатор и ключ для расшифровки зашифрованного поля:
+Создадим таблицу, где `user_id` — это уникальный идентификатор пользователя, `encrypted` — это зашифрованное строковое поле, `iv` — начальный вектор для расшифровки/шифрования. Предположим, что пользователи знают свой идентификатор и ключ для расшифровки зашифрованного поля:
 
 ```sql
 CREATE TABLE decrypt_null (
@@ -315,7 +317,7 @@ CREATE TABLE decrypt_null (
 ) ENGINE = Memory;
 ```
 
-Вставьте некоторые данные:
+Вставьте данные:
 
 ```sql
 INSERT INTO decrypt_null VALUES
@@ -349,7 +351,7 @@ ORDER BY user_id ASC
 
 Совместим с шифрованием MySQL и расшифровывает данные, зашифрованные с помощью функции [AES_ENCRYPT](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-encrypt).
 
-Будет производить тот же открытый текст, что и `decrypt` при равных входных данных. Но когда `key` или `iv` длиннее, чем они должны быть, `aes_decrypt_mysql` будет придерживаться того, что делает `aes_decrypt` в MySQL: 'складывать' `key` и игнорировать лишние биты `IV`.
+Производит тот же открытый текст, что и `decrypt` при равных входных данных. Но когда `key` или `iv` длиннее, чем должно быть, `aes_decrypt_mysql` действует так же, как и `aes_decrypt` в MySQL: 'сворачивает' `key` и игнорирует лишние биты `IV`.
 
 Поддерживаемые режимы расшифровки:
 
@@ -360,7 +362,7 @@ ORDER BY user_id ASC
 
 **Синтаксис**
 
-``` sql
+```sql
 aes_decrypt_mysql('mode', 'ciphertext', 'key' [, iv])
 ```
 
@@ -369,7 +371,7 @@ aes_decrypt_mysql('mode', 'ciphertext', 'key' [, iv])
 - `mode` — Режим расшифровки. [String](/sql-reference/data-types/string).
 - `ciphertext` — Зашифрованный текст, который нужно расшифровать. [String](/sql-reference/data-types/string).
 - `key` — Ключ расшифровки. [String](/sql-reference/data-types/string).
-- `iv` — Вектор инициализации. Опционально. [String](/sql-reference/data-types/string).
+- `iv` — Вектор инициализации. Необязательный. [String](/sql-reference/data-types/string).
 
 **Возвращаемое значение**
 
@@ -379,7 +381,7 @@ aes_decrypt_mysql('mode', 'ciphertext', 'key' [, iv])
 
 Давайте расшифруем данные, которые мы ранее зашифровали с помощью MySQL:
 
-``` sql
+```sql
 mysql> SET  block_encryption_mode='aes-256-ofb';
 Query OK, 0 rows affected (0.00 sec)
 
@@ -394,13 +396,14 @@ mysql> SELECT aes_encrypt('Secret', '123456789101213141516171819202122', 'iviviv
 
 Запрос:
 
-``` sql
+```sql
 SELECT aes_decrypt_mysql('aes-256-ofb', unhex('24E9E4966469'), '123456789101213141516171819202122', 'iviviviviviviviv123456') AS plaintext
 ```
 
 Результат:
 
-``` text
+```text
 ┌─plaintext─┐
 │ Secret    │
 └───────────┘
+```

@@ -1,22 +1,24 @@
 ---
-slug: /sql-reference/statements/alter/setting
+description: 'Документация по манипуляциям с настройками таблиц'
+sidebar_label: 'НАСТРОЙКА'
 sidebar_position: 38
-sidebar_label: УСТАНОВКА
+slug: /sql-reference/statements/alter/setting
+title: 'Манипуляции с настройками таблиц'
 ---
 
 
-# Манипуляции с настройками таблицы
+# Манипуляции с настройками таблиц
 
-Существует набор запросов для изменения настроек таблицы. Вы можете изменять настройки или сбрасывать их к значениям по умолчанию. Один запрос может изменять несколько настроек сразу. Если настраиваемое значение с указанным именем не существует, запрос вызовет исключение.
+Существует набор запросов для изменения настроек таблиц. Вы можете изменять настройки или сбрасывать их к значениям по умолчанию. Один запрос может изменить несколько настроек одновременно. Если настройка с указанным именем не существует, то запрос вызовет исключение.
 
 **Синтаксис**
 
-``` sql
+```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY|RESET SETTING ...
 ```
 
 :::note    
-Эти запросы могут применяться только к таблицам [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md).
+Эти запросы можно применять только к таблицам [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md).
 :::
 
 ## MODIFY SETTING {#modify-setting}
@@ -39,7 +41,7 @@ ALTER TABLE example_table MODIFY SETTING max_part_loading_threads=8, max_parts_i
 
 ## RESET SETTING {#reset-setting}
 
-Сбрасывает настройки таблицы к значениям по умолчанию. Если настройка находится в состоянии по умолчанию, то никаких действий не предпринимается.
+Сбрасывает настройки таблицы к их значениям по умолчанию. Если настройка находится в состоянии по умолчанию, то никаких действий не предпринимается.
 
 **Синтаксис**
 
@@ -56,6 +58,6 @@ CREATE TABLE example_table (id UInt32, data String) ENGINE=MergeTree() ORDER BY 
 ALTER TABLE example_table RESET SETTING max_part_loading_threads;
 ```
 
-**Смотрите также**
+**См. также**
 
 - [Настройки MergeTree](../../../operations/settings/merge-tree-settings.md)

@@ -1,34 +1,34 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/meanztest
+description: 'Применяет z-тест для среднего значения к выборкам из двух популяций.'
+sidebar_label: 'meanZTest'
 sidebar_position: 166
-sidebar_label: meanZTest
+slug: /sql-reference/aggregate-functions/reference/meanztest
 title: 'meanZTest'
-description: 'Применяет средний Z-тест к выборкам из двух популяций.'
 ---
 
 
 # meanZTest
 
-Применяет средний Z-тест к выборкам из двух популяций.
+Применяет z-тест для среднего значения к выборкам из двух популяций.
 
 **Синтаксис**
 
-``` sql
+```sql
 meanZTest(population_variance_x, population_variance_y, confidence_level)(sample_data, sample_index)
 ```
 
-Значения обеих выборок находятся в колонке `sample_data`. Если `sample_index` равен 0, то значение в этой строке принадлежит выборке из первой популяции. В противном случае оно принадлежит выборке из второй популяции. Нулевая гипотеза заключается в том, что средние значения популяций равны. Предполагается нормальное распределение. Популяции могут иметь неодинаковую дисперсию, и дисперсии известны.
+Значения обеих выборок находятся в столбце `sample_data`. Если `sample_index` равен 0, то значение в этой строке принадлежит выборке из первой популяции. В противном случае оно принадлежит выборке из второй популяции. Нулевая гипотеза заключается в том, что средние значения популяций равны. Предполагается нормальное распределение. Популяции могут иметь неравные дисперсии, и дисперсии известны.
 
 **Аргументы**
 
-- `sample_data` — Данные выборки. [Целое число](../../../sql-reference/data-types/int-uint.md), [Действительное число](../../../sql-reference/data-types/float.md) или [Десятичное число](../../../sql-reference/data-types/decimal.md).
-- `sample_index` — Индекс выборки. [Целое число](../../../sql-reference/data-types/int-uint.md).
+- `sample_data` — Данные выборки. [Целое](../../../sql-reference/data-types/int-uint.md), [С плавающей запятой](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md).
+- `sample_index` — Индекс выборки. [Целое](../../../sql-reference/data-types/int-uint.md).
 
 **Параметры**
 
-- `population_variance_x` — Дисперсия для популяции x. [Действительное число](../../../sql-reference/data-types/float.md).
-- `population_variance_y` — Дисперсия для популяции y. [Действительное число](../../../sql-reference/data-types/float.md).
-- `confidence_level` — Уровень доверия для расчета доверительных интервалов. [Действительное число](../../../sql-reference/data-types/float.md).
+- `population_variance_x` — Дисперсия для популяции x. [С плавающей запятой](../../../sql-reference/data-types/float.md).
+- `population_variance_y` — Дисперсия для популяции y. [С плавающей запятой](../../../sql-reference/data-types/float.md).
+- `confidence_level` — Уровень доверия для расчета доверительных интервалов. [С плавающей запятой](../../../sql-reference/data-types/float.md).
 
 **Возвращаемые значения**
 
@@ -39,11 +39,12 @@ meanZTest(population_variance_x, population_variance_y, confidence_level)(sample
 - рассчитанный нижний предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
 - рассчитанный верхний предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
 
+
 **Пример**
 
 Входная таблица:
 
-``` text
+```text
 ┌─sample_data─┬─sample_index─┐
 │        20.3 │            0 │
 │        21.9 │            0 │
@@ -56,13 +57,13 @@ meanZTest(population_variance_x, population_variance_y, confidence_level)(sample
 
 Запрос:
 
-``` sql
+```sql
 SELECT meanZTest(0.7, 0.45, 0.95)(sample_data, sample_index) FROM mean_ztest
 ```
 
 Результат:
 
-``` text
+```text
 ┌─meanZTest(0.7, 0.45, 0.95)(sample_data, sample_index)────────────────────────────┐
 │ (3.2841296025548123,0.0010229786769086013,0.8198428246768334,3.2468238419898365) │
 └──────────────────────────────────────────────────────────────────────────────────┘

@@ -1,10 +1,11 @@
 ---
-title: JSONStrings
-slug: /interfaces/formats/JSONStrings
-keywords: ['JSONStrings']
-input_format: true
-output_format: true
 alias: []
+description: 'Документация для формата JSONStrings'
+input_format: true
+keywords: ['JSONStrings']
+output_format: true
+slug: /interfaces/formats/JSONStrings
+title: 'JSONStrings'
 ---
 
 | Input | Output | Alias |
@@ -13,7 +14,7 @@ alias: []
 
 ## Описание {#description}
 
-Отличается от формата [JSON](./JSON.md) только тем, что поля данных выводятся в виде строк, а не типизированных значений JSON.
+Отличается от формата [JSON](./JSON.md) только тем, что поля данных выводятся как строки, а не как типизированные значения JSON.
 
 ## Пример использования {#example-usage}
 

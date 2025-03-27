@@ -1,7 +1,8 @@
 ---
-title: CustomSeparatedIgnoreSpaces
-slug: /interfaces/formats/CustomSeparatedIgnoreSpaces
+description: 'Документация для формата CustomSeparatedIgnoreSpaces'
 keywords: ['CustomSeparatedIgnoreSpaces']
+slug: /interfaces/formats/CustomSeparatedIgnoreSpaces
+title: 'CustomSeparatedIgnoreSpaces'
 ---
 
 ## Описание {#description}

@@ -1,18 +1,19 @@
 ---
-sidebar_label: Spark JDBC
+sidebar_label: 'Spark JDBC'
 sidebar_position: 3
 slug: /integrations/apache-spark/spark-jdbc
-description: Введение в Apache Spark с ClickHouse
-keywords: [ 'clickhouse', 'Apache Spark', 'jdbc', 'migrating', 'data' ]
+description: 'Введение в Apache Spark с ClickHouse'
+keywords: ['clickhouse', 'Apache Spark', 'jdbc', 'миграция', 'данные']
+title: 'Spark JDBC'
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 
 
 # Spark JDBC
-JDBC является одним из самых часто используемых источников данных в Spark. 
-В этом разделе мы предоставим детали о том, как использовать [официальный JDBC коннектор ClickHouse](/integrations/language-clients/java/jdbc) с Spark.
+JDBC является одним из наиболее часто используемых источников данных в Spark. В этом разделе мы предоставим детали о том, как использовать [официальный JDBC коннектор ClickHouse](/integrations/language-clients/java/jdbc) с Spark.
 
 <TOCInline toc={toc}></TOCInline>
 
@@ -23,7 +24,7 @@ JDBC является одним из самых часто используем
 
 ```java
 public static void main(String[] args) {
-        // Инициализация сеанса Spark
+        // Инициализация сессии Spark
         SparkSession spark = SparkSession.builder().appName("example").master("local").getOrCreate();
 
         String jdbcURL = "jdbc:ch://localhost:8123/default";
@@ -31,7 +32,7 @@ public static void main(String[] args) {
 
 
         //---------------------------------------------------------------------------------------------------
-        // Загрузка таблицы из ClickHouse с использованием метода jdbc
+        // Загружаем таблицу из ClickHouse, используя метод jdbc
         //---------------------------------------------------------------------------------------------------
         Properties jdbcProperties = new Properties();
         jdbcProperties.put("user", "default");
@@ -42,7 +43,7 @@ public static void main(String[] args) {
         df1.show();
 
         //---------------------------------------------------------------------------------------------------
-        // Загрузка таблицы из ClickHouse с использованием метода load
+        // Загружаем таблицу из ClickHouse, используя метод load
         //---------------------------------------------------------------------------------------------------
         Dataset<Row> df2 = spark.read()
                 .format("jdbc")
@@ -56,7 +57,7 @@ public static void main(String[] args) {
         df2.show();
 
 
-        // Остановка сеанса Spark
+        // Остановить сессию Spark
         spark.stop();
     }
 ```
@@ -66,7 +67,7 @@ public static void main(String[] args) {
 
 ```java
 object ReadData extends App {
-  // Инициализация сеанса Spark
+  // Инициализация сессии Spark
   val spark: SparkSession = SparkSession.builder.appName("example").master("local").getOrCreate
 
   val jdbcURL = "jdbc:ch://localhost:8123/default"
@@ -74,7 +75,7 @@ object ReadData extends App {
 
 
   //---------------------------------------------------------------------------------------------------
-  // Загрузка таблицы из ClickHouse с использованием метода jdbc
+  // Загружаем таблицу из ClickHouse, используя метод jdbc
   //---------------------------------------------------------------------------------------------------
   val connectionProperties = new Properties()
   connectionProperties.put("user", "default")
@@ -85,7 +86,7 @@ object ReadData extends App {
 
   df1.show()
   //---------------------------------------------------------------------------------------------------
-  // Загрузка таблицы из ClickHouse с использованием метода load
+  // Загружаем таблицу из ClickHouse, используя метод load
   //---------------------------------------------------------------------------------------------------
   val df2: Dataset[Row] = spark.read
     .format("jdbc")
@@ -99,7 +100,7 @@ object ReadData extends App {
 
 
 
-  // Остановка сеанса Spark
+  // Остановить сессию Spark
   spark.stop()
 
 }
@@ -116,7 +117,7 @@ jar_files = [
 ]
 
 
-# Инициализация сеанса Spark с JAR
+# Инициализация сессии Spark с JAR-файлами
 spark = SparkSession.builder \
     .appName("example") \
     .master("local") \
@@ -168,16 +169,16 @@ df.show()
 
 ```java
  public static void main(String[] args) {
-        // Инициализация сеанса Spark
+        // Инициализация сессии Spark
         SparkSession spark = SparkSession.builder().appName("example").master("local").getOrCreate();
 
-        // Детали подключения JDBC
+        // Детали соединения JDBC
         String jdbcUrl = "jdbc:ch://localhost:8123/default";
         Properties jdbcProperties = new Properties();
         jdbcProperties.put("user", "default");
         jdbcProperties.put("password", "123456");
 
-        // Создание примера DataFrame
+        // Создание примерного DataFrame
         StructType schema = new StructType(new StructField[]{
                 DataTypes.createStructField("id", DataTypes.IntegerType, false),
                 DataTypes.createStructField("name", DataTypes.StringType, false)
@@ -191,7 +192,7 @@ df.show()
         Dataset<Row> df = spark.createDataFrame(rows, schema);
 
         //---------------------------------------------------------------------------------------------------
-        // Запись df в ClickHouse с использованием метода jdbc
+        // Записываем df в ClickHouse, используя метод jdbc
         //---------------------------------------------------------------------------------------------------
 
         df.write()
@@ -199,7 +200,7 @@ df.show()
                 .jdbc(jdbcUrl, "example_table", jdbcProperties);
 
         //---------------------------------------------------------------------------------------------------
-        // Запись df в ClickHouse с использованием метода save
+        // Записываем df в ClickHouse, используя метод save
         //---------------------------------------------------------------------------------------------------
 
         df.write()
@@ -212,7 +213,7 @@ df.show()
                 .save();
 
 
-        // Остановка сеанса Spark
+        // Остановить сессию Spark
         spark.stop();
     }
 ```
@@ -225,13 +226,13 @@ object WriteData extends App {
 
   val spark: SparkSession = SparkSession.builder.appName("example").master("local").getOrCreate
 
-  // Детали подключения JDBC
+  // Детали соединения JDBC
   val jdbcUrl: String = "jdbc:ch://localhost:8123/default"
   val jdbcProperties: Properties = new Properties
   jdbcProperties.put("user", "default")
   jdbcProperties.put("password", "123456")
 
-  // Создание примера DataFrame
+  // Создание примерного DataFrame
 
 
   val rows = Seq(Row(1, "John"), Row(2, "Doe"))
@@ -246,17 +247,17 @@ object WriteData extends App {
     StructType(schema)
   )
   
-  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
-  // Запись df в ClickHouse с использованием метода jdbc
-  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------------
+  // Записываем df в ClickHouse, используя метод jdbc
+  //---------------------------------------------------------------------------------------------------
 
   df.write
     .mode(SaveMode.Append)
     .jdbc(jdbcUrl, "example_table", jdbcProperties)
 
-  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
-  // Запись df в ClickHouse с использованием метода save
-  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------------
+  // Записываем df в ClickHouse, используя метод save
+  //---------------------------------------------------------------------------------------------------
 
   df.write
     .format("jdbc")
@@ -268,7 +269,7 @@ object WriteData extends App {
     .save()
 
 
-  // Остановка сеанса Spark
+  // Остановить сессию Spark
   spark.stop()
 
 }
@@ -286,7 +287,7 @@ jar_files = [
 ]
 
 
-# Инициализация сеанса Spark с JAR
+# Инициализация сессии Spark с JAR-файлами
 spark = SparkSession.builder \
     .appName("example") \
     .master("local") \
@@ -304,7 +305,7 @@ password = "your_password"
 driver = "com.clickhouse.jdbc.ClickHouseDriver"
 
 
-# Запись DataFrame в ClickHouse
+# Записываем DataFrame в ClickHouse
 df.write \
     .format("jdbc") \
     .option("driver", driver) \
@@ -331,7 +332,7 @@ df.write \
                    password "password",
                    driver "com.clickhouse.jdbc.ClickHouseDriver" 
            );
-   -- resultTable может быть создан с помощью df.createTempView или с помощью Spark SQL
+   -- resultTable может быть создан с df.createTempView или с помощью Spark SQL
    INSERT INTO TABLE jdbcTable
                 SELECT * FROM resultTable;
                 
@@ -343,12 +344,8 @@ df.write \
 
 ## Параллелизм {#parallelism}
 
-При использовании Spark JDBC Spark считывает данные, используя одну партицию. Для достижения более высокой степени параллелизма необходимо указать 
-`partitionColumn`, `lowerBound`, `upperBound` и `numPartitions`, которые описывают, как партиционировать таблицу при 
-чтении по параллельным рабочим узлам. 
-Пожалуйста, посетите официальную документацию Apache Spark для получения дополнительной информации о [конфигурациях JDBC](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option).
+При использовании Spark JDBC, Spark считывает данные с помощью одной партиции. Для достижения более высокой конкурентности необходимо указать `partitionColumn`, `lowerBound`, `upperBound` и `numPartitions`, которые описывают, как партиционировать таблицу при чтении параллельно из нескольких рабочих узлов. Пожалуйста, посетите официальную документацию Apache Spark для получения дополнительной информации о [конфигурации JDBC](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option).
 
 ## Ограничения JDBC {#jdbc-limitations}
 
-* На сегодняшний день вы можете вставлять данные с помощью JDBC только в существующие таблицы (в настоящее время нет возможности автоматически создавать 
-  таблицу при вставке DF, как это делает Spark с другими коннекторами).
+* На сегодняшний день, вы можете вставлять данные через JDBC только в существующие таблицы (в настоящее время нет возможности автоматически создавать таблицу при вставке DF, как это делает Spark с другими коннекторами).

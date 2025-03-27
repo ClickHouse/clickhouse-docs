@@ -1,25 +1,25 @@
 ---
-slug: /sql-reference/table-functions/dictionary
+description: 'Отображает данные словаря в виде таблицы ClickHouse. Работает так же, как и движок Dictionary.'
+sidebar_label: 'словарь'
 sidebar_position: 47
-sidebar_label: dictionary
-title: 'dictionary'
-description: 'Отображает данные словаря как таблицу ClickHouse. Работает так же, как механизм Dictionary.'
+slug: /sql-reference/table-functions/dictionary
+title: 'словарь'
 ---
 
 
-# Функция таблицы dictionary
+# Функция Таблицы dictionary
 
-Отображает данные [словаря](../../sql-reference/dictionaries/index.md) как таблицу ClickHouse. Работает так же, как механизм [Dictionary](../../engines/table-engines/special/dictionary.md).
+Отображает данные [словаря](../../sql-reference/dictionaries/index.md) в виде таблицы ClickHouse. Работает так же, как и движок [Dictionary](../../engines/table-engines/special/dictionary.md).
 
 **Синтаксис**
 
-``` sql
+```sql
 dictionary('dict')
 ```
 
 **Аргументы**
 
-- `dict` — Название словаря. [Строка](../../sql-reference/data-types/string.md).
+- `dict` — Имя словаря. [Строка](../../sql-reference/data-types/string.md).
 
 **Возвращаемое значение**
 
@@ -29,7 +29,7 @@ dictionary('dict')
 
 Входная таблица `dictionary_source_table`:
 
-``` text
+```text
 ┌─id─┬─value─┐
 │  0 │     0 │
 │  1 │     1 │
@@ -38,20 +38,20 @@ dictionary('dict')
 
 Создание словаря:
 
-``` sql
+```sql
 CREATE DICTIONARY new_dictionary(id UInt64, value UInt64 DEFAULT 0) PRIMARY KEY id
 SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() USER 'default' TABLE 'dictionary_source_table')) LAYOUT(DIRECT());
 ```
 
 Запрос:
 
-``` sql
+```sql
 SELECT * FROM dictionary('new_dictionary');
 ```
 
 Результат:
 
-``` text
+```text
 ┌─id─┬─value─┐
 │  0 │     0 │
 │  1 │     1 │
@@ -60,4 +60,4 @@ SELECT * FROM dictionary('new_dictionary');
 
 **См. также**
 
-- [Механизм Dictionary](/engines/table-engines/special/dictionary)
+- [Движок словаря](/engines/table-engines/special/dictionary)

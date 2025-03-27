@@ -1,11 +1,12 @@
 ---
-slug: /sql-reference/statements/create/function
+description: 'Документация по функции'
+sidebar_label: 'ФУНКЦИЯ'
 sidebar_position: 38
-sidebar_label: ФУНКЦИЯ
-title: "CREATE FUNCTION - пользовательская функция (UDF)"
+slug: /sql-reference/statements/create/function
+title: 'CREATE FUNCTION - пользовательская функция (UDF)'
 ---
 
-Создает пользовательскую функцию (UDF) из выражения Lambda. Выражение должно состоять из параметров функции, констант, операторов или других вызовов функций.
+Создает пользовательскую функцию (UDF) из лямбда-выражения. Выражение должно состоять из параметров функции, констант, операторов или других вызовов функций.
 
 **Синтаксис**
 
@@ -18,9 +19,9 @@ CREATE FUNCTION name [ON CLUSTER cluster] AS (parameter0, ...) -> expression
 
 - Имя функции должно быть уникальным среди пользовательских и системных функций.
 - Рекурсивные функции не допускаются.
-- Все переменные, используемые функцией, должны быть указаны в списке параметров.
+- Все переменные, используемые в функции, должны быть указаны в списке ее параметров.
 
-Если любое ограничение нарушено, возникает исключение.
+Если любое ограничение нарушено, будет выдано исключение.
 
 **Пример**
 
@@ -33,7 +34,7 @@ SELECT number, linear_equation(number, 2, 1) FROM numbers(3);
 
 Результат:
 
-``` text
+```text
 ┌─number─┬─plus(multiply(2, number), 1)─┐
 │      0 │                            1 │
 │      1 │                            3 │
@@ -50,7 +51,7 @@ SELECT number, parity_str(number) FROM numbers(3);
 
 Результат:
 
-``` text
+```text
 ┌─number─┬─if(modulo(number, 2), 'odd', 'even')─┐
 │      0 │ even                                 │
 │      1 │ odd                                  │
@@ -60,6 +61,6 @@ SELECT number, parity_str(number) FROM numbers(3);
 
 ## Связанный контент {#related-content}
 
-### [Исполняемые UDFs](/sql-reference/functions/udf.md). {#executable-udfs}
+### [Исполняемые UDF](/sql-reference/functions/udf.md). {#executable-udfs}
 
 ### [Пользовательские функции в ClickHouse Cloud](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs) {#user-defined-functions-in-clickhouse-cloud}

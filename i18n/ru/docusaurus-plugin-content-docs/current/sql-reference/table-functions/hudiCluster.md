@@ -1,35 +1,35 @@
 ---
-slug: /sql-reference/table-functions/hudiCluster
+description: 'Расширение для табличной функции hudi. Позволяет обрабатывать файлы из таблиц Apache Hudi в Amazon S3 параллельно с использованием многих узлов в указанном кластере.'
+sidebar_label: 'hudiCluster'
 sidebar_position: 86
-sidebar_label: hudiCluster
-title: "Функция таблицы hudiCluster"
-description: "Расширение функции таблицы hudi. Позволяет обрабатывать файлы из таблиц Apache Hudi в Amazon S3 параллельно с множеством узлов в указанном кластере."
+slug: /sql-reference/table-functions/hudiCluster
+title: 'Функция таблицы hudiCluster'
 ---
 
 
 # Функция таблицы hudiCluster
 
-Это расширение к функции таблицы [hudi](sql-reference/table-functions/hudi.md).
+Это расширение для [функции таблицы hudi](sql-reference/table-functions/hudi.md).
 
-Позволяет обрабатывать файлы из таблиц Apache [Hudi](https://hudi.apache.org/) в Amazon S3 параллельно с множеством узлов в указанном кластере. На инициаторе создается соединение со всеми узлами в кластере и динамически распределяются файлы. На рабочем узле инициатор запрашивает следующую задачу для обработки и выполняет ее. Это повторяется, пока все задачи не будут завершены.
+Позволяет обрабатывать файлы из таблиц Apache [Hudi](https://hudi.apache.org/) в Amazon S3 параллельно с использованием многих узлов в указанном кластере. При инициировании создается соединение со всеми узлами кластера, и каждый файл динамически распределяется. На рабочем узле он запрашивает у инициатора следующее задание для обработки и обрабатывает его. Это повторяется, пока все задания не будут завершены.
 
 **Синтаксис**
 
-``` sql
+```sql
 hudiCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
 ```
 
 **Аргументы**
 
-- `cluster_name` — Имя кластера, которое используется для построения набора адресов и параметров подключения к удаленным и локальным серверам.
+- `cluster_name` — Имя кластера, которое используется для формирования набора адресов и параметров соединения с удаленными и локальными серверами.
 
-- Описание всех остальных аргументов совпадает с описанием аргументов в эквивалентной функции таблицы [hudi](sql-reference/table-functions/hudi.md).
+- Описание всех остальных аргументов совпадает с описанием аргументов в эквивалентной [функции таблицы hudi](sql-reference/table-functions/hudi.md).
 
 **Возвращаемое значение**
 
 Таблица с указанной структурой для чтения данных из кластера в указанной таблице Hudi в S3.
 
-**См. Также**
+**Смотрите также**
 
-- [Hudi engine](engines/table-engines/integrations/hudi.md)
-- [Hudi table function](sql-reference/table-functions/hudi.md)
+- [Движок Hudi](engines/table-engines/integrations/hudi.md)
+- [Функция таблицы Hudi](sql-reference/table-functions/hudi.md)

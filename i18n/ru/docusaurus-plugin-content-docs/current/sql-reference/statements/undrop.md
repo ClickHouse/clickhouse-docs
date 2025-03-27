@@ -1,6 +1,8 @@
 ---
+description: 'Документация для UNDROP TABLE'
+sidebar_label: 'UNDROP'
 slug: /sql-reference/statements/undrop
-sidebar_label: UNDROP
+title: 'UNDROP TABLE'
 ---
 
 
@@ -8,17 +10,19 @@ sidebar_label: UNDROP
 
 Отменяет удаление таблицы.
 
-Начиная с версии ClickHouse 23.3, можно выполнить UNDROP таблицы в атомарной базе данных в течение `database_atomic_delay_before_drop_table_sec` (по умолчанию 8 минут) после выполнения запроса DROP TABLE. Удаленные таблицы перечислены в системной таблице под названием `system.dropped_tables`.
+Начиная с версии ClickHouse 23.3 возможно выполнить UNDROP для таблицы в атомарной базе данных
+в течение `database_atomic_delay_before_drop_table_sec` (по умолчанию 8 минут) после выполнения оператора DROP TABLE. Удаленные таблицы перечислены в 
+системной таблице `system.dropped_tables`.
 
-Если у вас есть материализованное представление без условия `TO`, связанного с удаленной таблицей, вам также потребуется выполнить UNDROP внутренней таблицы этого представления.
+Если у вас есть материализованное представление без оператора `TO`, связанного с удаленной таблицей, то вам также придется выполнить UNDROP для внутренней таблицы этого представления.
 
 :::tip
-Смотрите также [DROP TABLE](/sql-reference/statements/drop.md)
+Также смотрите [DROP TABLE](/sql-reference/statements/drop.md)
 :::
 
 Синтаксис:
 
-``` sql
+```sql
 UNDROP TABLE [db.]name [UUID '<uuid>'] [ON CLUSTER cluster]
 ```
 

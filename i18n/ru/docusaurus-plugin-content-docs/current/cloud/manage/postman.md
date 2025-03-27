@@ -1,9 +1,11 @@
 ---
 slug: /cloud/manage/postman
-sidebar_label: Программный доступ к API с помощью Postman
-title: Программный доступ к API с помощью Postman
+sidebar_label: 'Программный доступ к API с Postman'
+title: 'Программный доступ к API с Postman'
+description: 'Этот гид поможет вам протестировать API ClickHouse Cloud с использованием Postman'
 ---
 
+import Image from '@theme/IdealImage';
 import postman1 from '@site/static/images/cloud/manage/postman/postman1.png';
 import postman2 from '@site/static/images/cloud/manage/postman/postman2.png';
 import postman3 from '@site/static/images/cloud/manage/postman/postman3.png';
@@ -22,95 +24,95 @@ import postman15 from '@site/static/images/cloud/manage/postman/postman15.png';
 import postman16 from '@site/static/images/cloud/manage/postman/postman16.png';
 import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 
-Данное руководство поможет вам протестировать API ClickHouse Cloud с помощью [Postman](https://www.postman.com/product/what-is-postman/). 
-Приложение Postman доступно для использования в веб-браузере или его можно скачать на рабочий стол.
+Этот гид поможет вам протестировать API ClickHouse Cloud с использованием [Postman](https://www.postman.com/product/what-is-postman/). 
+Приложение Postman доступно для использования в веб-браузере или может быть загружено на рабочий стол.
 
 ### Создайте учетную запись {#create-an-account}
-* Бесплатные учетные записи доступны на [https://www.postman.com](https://www.postman.com).
+* Бесплатные аккаунты доступны на [https://www.postman.com](https://www.postman.com).
 
-<img src={postman1} alt="Сайт Postman"/>
+<Image img={postman1} size="md" alt="Сайт Postman" border/>
 
-### Создайте Рабочую область {#create-a-workspace}
-* Назовите вашу рабочую область и установите уровень видимости. 
+### Создайте рабочее пространство {#create-a-workspace}
+* Назовите ваше рабочее пространство и установите уровень видимости. 
 
-<img src={postman2} alt="Создать рабочую область"/>
+<Image img={postman2} size="md" alt="Создание рабочего пространства" border/>
 
-### Создайте Коллекцию {#create-a-collection}
-* В верхнем левом меню под "Исследовать" нажмите "Импорт": 
+### Создайте коллекцию {#create-a-collection}
+* В левом верхнем меню ниже "Explore" нажмите "Import": 
 
-<img src={postman3} alt="Исследовать > Импорт"/>
+<Image img={postman3} size="md" alt="Explore > Import" border/>
 
 * Появится модальное окно:
 
-<img src={postman4} alt="Ввод URL API"/>
+<Image img={postman4} size="md" alt="Ввод URL API" border/>
 
 * Введите адрес API: "https://api.clickhouse.cloud/v1" и нажмите 'Enter':
 
-<img src={postman5} alt="Импортировать"/>
+<Image img={postman5} size="md" alt="Импорт" border/>
 
-* Выберите "Postman Collection", нажав кнопку "Импорт":
+* Выберите "Postman Collection", нажав на кнопку "Import":
 
-<img src={postman6} alt="Коллекция > Импорт"/>
+<Image img={postman6} size="md" alt="Collection > Import" border/>
 
-### Взаимодействие со спецификацией ClickHouse Cloud API {#interface-with-the-clickhouse-cloud-api-spec}
-* Спецификация "API для ClickHouse Cloud" теперь появится в "Коллекциях" (Левая навигация).
+### Интерфейс с API ClickHouse Cloud {#interface-with-the-clickhouse-cloud-api-spec}
+* Теперь "API spec for ClickHouse Cloud" появится в разделе "Collections" (Левая навигация).
 
-<img src={postman7} alt="Импортируйте ваш API"/>
+<Image img={postman7} size="md" alt="Импорт вашего API" border/>
 
-* Нажмите на "Спецификация API для ClickHouse Cloud." В среднем окне выберите вкладку ‘Authorization’:
+* Нажмите на "API spec for ClickHouse Cloud". В средней панели выберите вкладку 'Authorization':
 
-<img src={postman8} alt="Импорт завершен"/>
+<Image img={postman8} size="md" alt="Импорт завершен" border/>
 
-### Установите Авторизацию {#set-authorization}
-* Включите выпадающее меню, чтобы выбрать "Basic Auth":
+### Установка авторизации {#set-authorization}
+* Выберите из выпадающего меню "Basic Auth":
 
-<img src={postman9} alt="Базовая аутентификация"/>
+<Image img={postman9} size="md" alt="Базовая аутентификация" border/>
 
-* Введите Имя пользователя и Пароль, которые вы получили при настройке ключей API ClickHouse Cloud:
+* Введите имя пользователя и пароль, которые вы получили при настройке ключей API ClickHouse Cloud:
 
-<img src={postman10} alt="учетные данные"/>
+<Image img={postman10} size="md" alt="учетные данные" border/>
 
-### Включите Переменные {#enable-variables}
-* [Переменные](https://learning.postman.com/docs/sending-requests/variables/) позволяют хранить и повторно использовать значения в Postman, что упрощает тестирование API.
-#### Установите ID Организации и ID Сервиса {#set-the-organization-id-and-service-id}
-* Внутри "Коллекции" нажмите на вкладку "Переменная" в среднем окне (Базовый URL уже будет установлен при предыдущем импорте API):
-* Под `baseURL` нажмите открытое поле "Добавить новое значение" и подставьте ваш ID организации и ID сервиса:
+### Включить переменные {#enable-variables}
+* [Переменные](https://learning.postman.com/docs/sending-requests/variables/) позволяют сохранять и повторно использовать значения в Postman, что упрощает тестирование API.
+#### Установите идентификатор организации и идентификатор сервиса {#set-the-organization-id-and-service-id}
+* В "Collection" нажмите на вкладку "Variable" в средней панели (Базовый URL уже был установлен ранее при импорте API):
+* Под `baseURL` нажмите открытое поле "Add new value" и замените ваш идентификатор организации и идентификатор сервиса:
 
-<img src={postman11} alt="ID Организации и ID Сервиса"/>
+<Image img={postman11} size="md" alt="Идентификатор организации и идентификатор сервиса" border/>
 
 
-## Протестируйте функционал ClickHouse Cloud API {#test-the-clickhouse-cloud-api-functionalities}
-### Протестировать "GET список доступных организаций" {#test-get-list-of-available-organizations}
-* В разделе "Спецификация OpenAPI для ClickHouse Cloud" разверните папку > V1 > organizations
-* Нажмите "GET список доступных организаций" и нажмите голубую кнопку "Отправить" справа:
+## Тестирование функциональности API ClickHouse Cloud {#test-the-clickhouse-cloud-api-functionalities}
+### Тест "GET список доступных организаций" {#test-get-list-of-available-organizations}
+* В разделе "OpenAPI spec for ClickHouse Cloud" раскройте папку > V1 > organizations
+* Нажмите "GET список доступных организаций" и нажмите синюю кнопку "Send" справа:
 
-<img src={postman12} alt="Тестирование получения организаций"/>
+<Image img={postman12} size="md" alt="Тестирование получения организаций" border/>
 
-* Возвращенные результаты должны содержать информацию о вашей организации с "status": 200. (Если вы получите "status" 400 без информации о организации, ваша конфигурация неверна).
+* Вернувшиеся результаты должны предоставить данные о вашей организации с "status": 200. (Если вы получите "status" 400 без информации об организации, ваша конфигурация неверна).
 
-<img src={postman13} alt="Статус"/>
+<Image img={postman13} size="md" alt="Статус" border/>
 
-### Протестировать "GET детали организации" {#test-get-organizational-details}
-* В папке `organizationid` перейдите к "GET детали организации":
-* В меню среднего окна в разделе Params требуется `organizationid`.
+### Тест "GET данные организации" {#test-get-organizational-details}
+* В папке `organizationid` перейдите к "GET данные организации":
+* В меню средней панели в разделе Params требуется `organizationid`.
 
-<img src={postman14} alt="Тестирование получения деталей организации"/>
+<Image img={postman14} size="md" alt="Тестирование получения данных организации" border/>
 
-* Измените это значение на `orgid` в фигурных скобках `{{orgid}}` (При установке этого значения ранее появится меню с значением):
+* Измените это значение на `orgid` в фигурных скобках `{{orgid}}` (после установки этого значения появится меню с этим значением):
 
-<img src={postman15} alt="Подтвердить тест"/>
+<Image img={postman15} size="md" alt="Отправка теста" border/>
 
-* После нажатия кнопки "Сохранить" нажмите голубую кнопку "Отправить" в верхнем правом углу экрана.
+* После нажатия кнопки "Save", нажмите синюю кнопку "Send" в верхнем правом углу экрана.
 
-<img src={postman16} alt="Возвращаемое значение"/>
+<Image img={postman16} size="md" alt="Возвращаемое значение" border/>
 
-* Возвращенные результаты должны содержать информацию о вашей организации с "status": 200. (Если вы получите "status" 400 без информации о организации, ваша конфигурация неверна).
+* Вернувшиеся результаты должны предоставить данные о вашей организации с "status": 200. (Если вы получите "status" 400 без информации об организации, ваша конфигурация неверна).
 
-### Протестировать "GET детали сервиса" {#test-get-service-details}
-* Нажмите "GET детали сервиса"
-* Измените значения для `organizationid` и `serviceid` на `{{orgid}}` и `{{serviceid}}`, соответственно.
-* Нажмите "Сохранить", а затем голубую кнопку "Отправить" справа.
+### Тест "GET данные сервиса" {#test-get-service-details}
+* Нажмите "GET данные сервиса"
+* Измените значения для `organizationid` и `serviceid` на `{{orgid}}` и `{{serviceid}}` соответственно.
+* Нажмите "Save", а затем синюю кнопку "Send" справа.
 
-<img src={postman17} alt="Список сервисов"/>
+<Image img={postman17} size="md" alt="Список сервисов" border/>
 
-* Возвращенные результаты должны содержать список ваших сервисов и их детали с "status": 200. (Если вы получите "status" 400 без информации о сервисах ваша конфигурация неверна).
+* Вернувшиеся результаты должны предоставить список ваших сервисов и их данные с "status": 200. (Если вы получите "status" 400 без информации о сервисах, ваша конфигурация неверна).

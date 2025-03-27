@@ -1,14 +1,14 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/distinctjsonpaths
+description: 'Вычисляет список различных путей, хранящихся в столбце JSON.'
 sidebar_position: 216
-title: "distinctJSONPaths"
-description: "Вычисляет список уникальных путей, хранящихся в колонке JSON."
+slug: /sql-reference/aggregate-functions/reference/distinctjsonpaths
+title: 'distinctJSONPaths'
 ---
 
 
 # distinctJSONPaths
 
-Вычисляет список уникальных путей, хранящихся в колонке [JSON](../../data-types/newjson.md).
+Вычисляет список различных путей, хранящихся в [JSON](../../data-types/newjson.md) столбце.
 
 **Синтаксис**
 
@@ -18,11 +18,11 @@ distinctJSONPaths(json)
 
 **Аргументы**
 
-- `json` — [JSON](../../data-types/newjson.md) колонка.
+- `json` — [JSON](../../data-types/newjson.md) столбец.
 
 **Возвращаемое значение**
 
-- Упорядоченный список путей [Array(String)](../../data-types/array.md).
+- Отсортированный список путей [Array(String)](../../data-types/array.md).
 
 **Пример**
 
@@ -49,7 +49,7 @@ SELECT distinctJSONPaths(json) FROM test_json;
 
 # distinctJSONPathsAndTypes
 
-Вычисляет список уникальных путей и их типов, хранящихся в колонке [JSON](../../data-types/newjson.md).
+Вычисляет список различных путей и их типов, хранящихся в [JSON](../../data-types/newjson.md) столбце.
 
 **Синтаксис**
 
@@ -59,11 +59,11 @@ distinctJSONPathsAndTypes(json)
 
 **Аргументы**
 
-- `json` — [JSON](../../data-types/newjson.md) колонка.
+- `json` — [JSON](../../data-types/newjson.md) столбец.
 
 **Возвращаемое значение**
 
-- Упорядоченная карта путей и типов [Map(String, Array(String))](../../data-types/map.md).
+- Отсортированная карта путей и типов [Map(String, Array(String))](../../data-types/map.md).
 
 **Пример**
 

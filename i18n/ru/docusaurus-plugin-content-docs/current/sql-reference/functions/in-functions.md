@@ -1,7 +1,9 @@
 ---
-slug: /sql-reference/functions/in-functions
+description: 'Документация для функций реализации оператора IN'
+sidebar_label: 'Оператор IN'
 sidebar_position: 90
-sidebar_label: Оператор IN
+slug: /sql-reference/functions/in-functions
+title: 'Функции для реализации оператора IN'
 ---
 
 

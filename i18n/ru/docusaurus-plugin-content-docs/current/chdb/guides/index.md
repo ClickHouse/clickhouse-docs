@@ -1,24 +1,24 @@
 ---
 title: 'Руководства chDB'
 slug: /chdb/guides
-description: 'Страница индекса для руководств chDB'
-keywords: ['chdb', 'руководства']
+description: 'Индексная страница для руководств chDB'
+keywords: ['chdb', 'guides']
 ---
 
 Посмотрите наши руководства для разработчиков chDB ниже:
 
 <!-- 
-Следующий оглавление автоматически генерируется с помощью https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh
-из полей YAML frontmatter title, slug, description. Если вы обнаружили ошибку 
-в оглавлении, пожалуйста, отредактируйте frontmatter соответствующих файлов.
+Следующий оглавление автоматически сгенерировано с помощью https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh
+из полей заголовка, слага, описания в YAML frontmatter. Если вы нашли ошибку 
+в оглавлении, пожалуйста, отредактируйте frontmatter файлов напрямую.
 -->
 
 | Страница | Описание |
 |-----|-----|
-| [Как выполнить запрос к Parquet файлам](/docs/chdb/guides/querying-parquet) | Узнайте, как выполнять запросы к Parquet файлам с помощью chDB. |
-| [Как выполнить запрос к данным в S3 ведре](/docs/chdb/guides/querying-s3) | Узнайте, как выполнять запросы к данным в S3 ведре с помощью chDB. |
-| [Использование базы данных clickhouse-local](/docs/chdb/guides/clickhouse-local) | Узнайте, как использовать базу данных clickhouse-local с chDB |
-| [Как выполнять запросы к DataFrames Pandas с chDB](/docs/chdb/guides/pandas) | Узнайте, как выполнять запросы к DataFrames Pandas с chDB |
-| [JupySQL и chDB](/docs/chdb/guides/jupysql) | Как установить chDB для Bun |
-| [Как выполнить запрос к удаленному серверу ClickHouse](/docs/chdb/guides/query-remote-clickhouse) | В этом руководстве мы научимся выполнять запросы к удаленному серверу ClickHouse из chDB. |
-| [Как выполнять запросы к Apache Arrow с chDB](/docs/chdb/guides/apache-arrow) | В этом руководстве мы научимся выполнять запросы к таблицам Apache Arrow с помощью chDB |
+| [Как запрашивать файлы Parquet](/chdb/guides/querying-parquet) | Узнайте, как запрашивать файлы Parquet с chDB. |
+| [Как запрашивать данные в бакете S3](/chdb/guides/querying-s3) | Узнайте, как запрашивать данные в бакете S3 с chDB. |
+| [Использование базы данных clickhouse-local](/chdb/guides/clickhouse-local) | Узнайте, как использовать базу данных clickhouse-local с chDB |
+| [Как запрашивать DataFrame Pandas с chDB](/chdb/guides/pandas) | Узнайте, как запрашивать DataFrame Pandas с chDB |
+| [JupySQL и chDB](/chdb/guides/jupysql) | Как установить chDB для Bun |
+| [Как запрашивать удаленный сервер ClickHouse](/chdb/guides/query-remote-clickhouse) | В этом руководстве мы узнаем, как запрашивать удаленный сервер ClickHouse из chDB. |
+| [Как запрашивать Apache Arrow с chDB](/chdb/guides/apache-arrow) | В этом руководстве мы узнаем, как запрашивать таблицы Apache Arrow с chDB |

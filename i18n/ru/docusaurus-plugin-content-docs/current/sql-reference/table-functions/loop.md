@@ -1,15 +1,15 @@
 ---
+description: 'Функция табличного типа loop в ClickHouse используется для возврата результатов запроса в бесконечном цикле.'
 slug: /sql-reference/table-functions/loop
 title: 'loop'
-description: 'Функция таблицы loop в ClickHouse используется для возврата результатов запроса в бесконечном цикле.'
 ---
 
 
-# Функция таблицы loop
+# Функция табличного типа loop
 
 **Синтаксис**
 
-``` sql
+```sql
 SELECT ... FROM loop(database, table);
 SELECT ... FROM loop(database.table);
 SELECT ... FROM loop(table);
@@ -20,9 +20,9 @@ SELECT ... FROM loop(other_table_function(...));
 
 - `database` — название базы данных.
 - `table` — название таблицы.
-- `other_table_function(...)` — другая функция таблицы.
+- `other_table_function(...)` — другая табличная функция.
   Пример: `SELECT * FROM loop(numbers(10));`
-  `other_table_function(...)` здесь — это `numbers(10)`.
+  Здесь `other_table_function(...)` — это `numbers(10)`.
 
 **Возвращаемое значение**
 
@@ -32,15 +32,15 @@ SELECT ... FROM loop(other_table_function(...));
 
 Выбор данных из ClickHouse:
 
-``` sql
+```sql
 SELECT * FROM loop(test_database, test_table);
 SELECT * FROM loop(test_database.test_table);
 SELECT * FROM loop(test_table);
 ```
 
-Или с использованием другой функции таблицы:
+Или с использованием другой табличной функции:
 
-``` sql
+```sql
 SELECT * FROM loop(numbers(3)) LIMIT 7;
    ┌─number─┐
 1. │      0 │
@@ -56,7 +56,7 @@ SELECT * FROM loop(numbers(3)) LIMIT 7;
 7. │      0 │
    └────────┘
 ``` 
-``` sql
+```sql
 SELECT * FROM loop(mysql('localhost:3306', 'test', 'test', 'user', 'password'));
 ...
 ```
