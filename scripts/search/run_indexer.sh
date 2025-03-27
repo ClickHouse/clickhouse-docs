@@ -38,7 +38,7 @@ else
 fi
 
 BASE_DIRECTORY_ARG="$BASE_DIRECTORY"
-SUB_DIRECTORIES="docs/en,knowledgebase"
+SUB_DIRECTORIES="docs,knowledgebase"
 DRY_RUN=false
 
 # allows us to override params if needed
