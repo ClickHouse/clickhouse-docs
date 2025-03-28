@@ -13,7 +13,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 <ExperimentalBadge/>
 
-> ClickHouse supports integration with multiple catalogs (Unity, Glue, Polaris, 
+ClickHouse supports integration with multiple catalogs (Unity, Glue, Polaris, 
 etc.). In this guide, we will walk you through the steps to query your data in 
 S3 buckets using ClickHouse and the Glue Data Catalog.
 
@@ -22,7 +22,7 @@ Glue supports many different table formats, but this integration only supports
 Iceberg tables.
 :::
 
-## Configuring Glue in AWS
+## Configuring Glue in AWS {#configuring}
 
 To connect to the glue catalog, you will need to identify the region of your 
 catalog and provide an access and secret key. 
@@ -32,7 +32,7 @@ Currently, the Glue catalog only supports access and secret keys, but we will
 support additional authentication approaches in the future.
 :::
 
-## Creating a connection between Glue Data Catalog and ClickHouse
+## Creating a connection between Glue data catalog and ClickHouse {#connecting}
 
 With your Unity Catalog configured and authentication in place, establish a 
 connection between ClickHouse and Unity Catalog.
@@ -47,7 +47,7 @@ SETTINGS
     aws_secret_access_key = '<secret-key>'
 ```
 
-## Query the Glue Data Catalog using ClickHouse
+## Query the Glue data catalog using ClickHouse {#query-glue-catalog}
 
 Now that the connection is in place, you can start querying Glue:
 
@@ -199,7 +199,7 @@ SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
   └─────────────────────────────────────────────────────────┘
 ```
 
-## Loading Data from Your Data Lake into ClickHouse
+## Loading data from your Data Lake into ClickHouse {#loading-data-into-clickhouse}
 
 If you need to load data from Databricks into ClickHouse, start by creating a 
 local ClickHouse table:
