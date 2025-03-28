@@ -1,6 +1,6 @@
 ---
 title: "Removing specific tables from a ClickPipe"
-slug: /en/integrations/clickpipes/postgres/removing_tables
+slug: /integrations/clickpipes/postgres/removing_tables
 ---
 
 There are scenarios where it would be useful to remove specific tables of a pipe. For example, your analytics workload need to require this table on ClickHouse, and to save costs it makes sense to not have it be replicated.

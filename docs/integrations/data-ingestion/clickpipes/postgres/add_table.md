@@ -1,6 +1,6 @@
 ---
 title: "Adding specific tables to a ClickPipe"
-slug: /en/integrations/clickpipes/postgres/add_table
+slug: /integrations/clickpipes/postgres/add_table
 ---
 
 There are scenarios where it would be useful to add specific tables to a pipe. This becomes a common necessity as your transactional or analytical workload scales.

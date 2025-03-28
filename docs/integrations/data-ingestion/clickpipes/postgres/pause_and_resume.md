@@ -1,6 +1,6 @@
 ---
 title: "Pausing and Resuming a Postgres ClickPipe"
-slug: /en/integrations/clickpipes/postgres/pause_and_resume
+slug: /integrations/clickpipes/postgres/pause_and_resume
 ---
 
 There are scenarios where it would be useful to pause a Postgres ClickPipe. For example, you may want to run some analytics on existing data in a static state. Or, you might be performing upgrades on Postgres. Here is how you can pause and resume a Postgres ClickPipe.
