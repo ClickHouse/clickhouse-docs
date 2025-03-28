@@ -7,7 +7,7 @@ There are scenarios where it would be useful to add specific tables to a pipe. T
 
 ## Steps to add specific tables {#add-tables-steps}
 This can be done by the following steps:
-1. [Pause](./pause_and_resume#steps-to-pause-a-postgres-clickpipe) the pipe.
+1. [Pause](./pause_and_resume.md) the pipe.
 2. Click on Edit Table settings.
 3. Locate your table - this can be done by searching it in the search bar.
 4. Select the table by clicking on the checkbox.

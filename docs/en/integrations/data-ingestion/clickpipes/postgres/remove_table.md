@@ -7,7 +7,7 @@ There are scenarios where it would be useful to remove specific tables of a pipe
 
 ## Steps to remove specific tables {#remove-tables-steps}
 The first step is to remove the table from the pipe. This can be done by the following steps:
-1. [Pause](./pause_and_resume#steps-to-pause-a-postgres-clickpipe) the pipe.
+1. [Pause](./pause_and_resume.md) the pipe.
 2. Click on Edit Table Settings.
 3. Locate your table - this can be done by searching it in the search bar.
 4. Deselect the table by clicking on the selected checkbox.
