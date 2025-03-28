@@ -331,9 +331,6 @@ slideout
 --docs/integrations/data-ingestion/clickpipes/postgres/table_resync.md--
 Resyncing
 resyncing
---docs/en/integrations/data-ingestion/clickpipes/postgres/table_resync.md--
-Resyncing
-resyncing
 --docs/integrations/data-ingestion/google-dataflow/templates/bigquery-to-clickhouse.md--
 DataFlow
 Dataflow
