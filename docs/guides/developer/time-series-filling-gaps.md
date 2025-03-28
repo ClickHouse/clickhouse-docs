@@ -301,7 +301,7 @@ INTERPOLATE (cumulative);
 ```
 
 That looks much better. 
-And now to finish it off, let's add a bar chart using the `bar` function, not forgetting to add our new column to the `INTERPPOLATE` clause.
+And now to finish it off, let's add a bar chart using the `bar` function, not forgetting to add our new column to the `INTERPOLATE` clause.
 
 ```sql
 SELECT
