@@ -661,9 +661,12 @@ const sidebars = {
           collapsible: true,
           items: [
             "integrations/data-ingestion/clickpipes/postgres/index",
-            "integrations/data-ingestion/clickpipes/postgres/faq",
+            "integrations/data-ingestion/clickpipes/postgres/deduplication",
+            "integrations/data-ingestion/clickpipes/postgres/ordering_keys",
+            "integrations/data-ingestion/clickpipes/postgres/joins_and_denormalization",
             "integrations/data-ingestion/clickpipes/postgres/toast",
             "integrations/data-ingestion/clickpipes/postgres/schema-changes",
+            "integrations/data-ingestion/clickpipes/postgres/faq",
             {
               type: "category",
               label: "Source",
