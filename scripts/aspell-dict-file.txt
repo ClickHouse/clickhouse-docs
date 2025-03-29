@@ -944,3 +944,5 @@ kinesis
 --docs/cloud/security/aws-privatelink.md--
 GWLBs
 NLBs
+--docs/use-cases/data_lake/glue_catalog.md--
+Databricks
