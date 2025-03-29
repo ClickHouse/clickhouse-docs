@@ -55,7 +55,7 @@ Data parts are self-contained, including all metadata needed to interpret their 
 
 ## Part merges {#part-merges}
 
-To manage the number of parts per table, a [background merge](/merges) job periodically combines smaller parts into larger ones until they reach a [configurable](/operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool) compressed size (typically ~150 GB). Merged parts are marked as inactive and deleted after a [configurable](/operations/settings/merge-tree-settings#old-parts-lifetime) time interval. Over time, this process creates a hierarchical structure of merged parts, which is why it’s called a MergeTree table:
+To manage the number of parts per table, a [background merge](/merges) job periodically combines smaller parts into larger ones until they reach a [configurable](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool) compressed size (typically ~150 GB). Merged parts are marked as inactive and deleted after a [configurable](/operations/settings/merge-tree-settings#old_parts_lifetime) time interval. Over time, this process creates a hierarchical structure of merged parts, which is why it’s called a MergeTree table:
 
 <Image img={merges} size="lg"/>
 

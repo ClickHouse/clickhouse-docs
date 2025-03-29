@@ -15,7 +15,7 @@ When an insert is retried, ClickHouse tries to determine whether the data has al
 
 **Only `*MergeTree` engines support deduplication on insertion.**
 
-For `*ReplicatedMergeTree` engines, insert deduplication is enabled by default and is controlled by the [`replicated_deduplication_window`](/operations/settings/merge-tree-settings#replicated-deduplication-window) and [`replicated_deduplication_window_seconds`](/operations/settings/merge-tree-settings#replicated-deduplication-window-seconds) settings. For non-replicated `*MergeTree` engines, deduplication is controlled by the [`non_replicated_deduplication_window`](/operations/settings/merge-tree-settings#non-replicated-deduplication-window) setting.
+For `*ReplicatedMergeTree` engines, insert deduplication is enabled by default and is controlled by the [`replicated_deduplication_window`](/operations/settings/merge-tree-settings#replicated_deduplication_window) and [`replicated_deduplication_window_seconds`](/operations/settings/merge-tree-settings#replicated_deduplication_window_seconds) settings. For non-replicated `*MergeTree` engines, deduplication is controlled by the [`non_replicated_deduplication_window`](/operations/settings/merge-tree-settings#non_replicated_deduplication_window) setting.
 
 The settings above determine the parameters of the deduplication log for a table. The deduplication log stores a finite number of `block_id`s, which determine how deduplication works (see below).
 
@@ -41,9 +41,9 @@ When a table has one or more materialized views, the inserted data is also inser
 
 You can control this process using the following settings for the source table:
 
-- [`replicated_deduplication_window`](/operations/settings/merge-tree-settings#replicated-deduplication-window)
-- [`replicated_deduplication_window_seconds`](/operations/settings/merge-tree-settings#replicated-deduplication-window-seconds)
-- [`non_replicated_deduplication_window`](/operations/settings/merge-tree-settings#non-replicated-deduplication-window)
+- [`replicated_deduplication_window`](/operations/settings/merge-tree-settings#replicated_deduplication_window)
+- [`replicated_deduplication_window_seconds`](/operations/settings/merge-tree-settings#replicated_deduplication_window_seconds)
+- [`non_replicated_deduplication_window`](/operations/settings/merge-tree-settings#non_replicated_deduplication_window)
 
 You can also use the user profile setting [`deduplicate_blocks_in_dependent_materialized_views`](/operations/settings/settings#deduplicate_blocks_in_dependent_materialized_views).
 

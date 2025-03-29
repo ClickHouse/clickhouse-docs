@@ -20,10 +20,10 @@ It is important to note that using this optimization will force a rewrite of a p
 even if merging to a single part has already occurred.
 
 Additionally, use of the `OPTIMIZE TABLE ... FINAL` query may disregard 
-setting [`max_bytes_to_merge_at_max_space_in_pool`](/operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool) which controls the maximum size of parts
+setting [`max_bytes_to_merge_at_max_space_in_pool`](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool) which controls the maximum size of parts
 that ClickHouse will typically merge by itself in the background.
 
-The [`max_bytes_to_merge_at_max_space_in_pool`](/operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool) setting is by default set to 150 GB. 
+The [`max_bytes_to_merge_at_max_space_in_pool`](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool) setting is by default set to 150 GB. 
 When running `OPTIMIZE TABLE ... FINAL`, 
 the steps outlined above will be performed resulting in a single part after merge. 
 This remaining single part could exceed the 150 GB specified by the default of this setting. 
