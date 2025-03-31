@@ -5,21 +5,31 @@ import time
 import xxhash
 import argparse
 import os
+
+from anthropic import Anthropic
 from llama_index.core import Document
 from llama_index.core.node_parser import MarkdownNodeParser
 import json
 import math
 import shutil
 from openai import OpenAI
+import anthropic
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 TRANSLATE_EXCLUDED_FILES = {"about-us/adopters.md", "index.md", "integrations/language-clients/java/jdbc-v1.md"}
 TRANSLATE_EXCLUDED_FOLDERS = {"whats-new", "changelogs"}
 IGNORE_FOLDERS = {"ru", "zh"}
 
+
 client = OpenAI(
     api_key=os.environ.get("OPENAI_API_KEY"),
 )
+print(f"OpenAI API Key available: {'Yes' if os.environ.get('ANTHROPIC_API_KEY') else 'No'}")
+
+anthropic_client = Anthropic(
+    api_key=os.environ.get("ANTHROPIC_API_KEY"),
+)
+print(f"Anthropic API Key available: {'Yes' if os.environ.get('ANTHROPIC_API_KEY') else 'No'}")
 
 MAX_CHUNK_SIZE = 30000
 
@@ -96,14 +106,41 @@ def translate_text(config, text, model="gpt-4o-mini", translation_override_promp
     glossary_prompt = format_glossary_prompt(glossary)
     prompt_content = f"{glossary_prompt}\n{prompt}\n{translation_override_prompt}"
     try:
-        completion = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": prompt_content},
-                {"role": "user", "content": text}
-            ]
-        )
-        return completion.choices[0].message.content
+        if model=="claude-3-5-sonnet-20240620":
+            with anthropic_client.messages.stream(
+                    max_tokens=8192, # max allowed for claude-3-5-sonnet-20240620
+                    messages=[
+                        {
+                            "role": "user",
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": text
+                                }
+                            ]
+                        }
+                    ],
+                    model=model,
+                    system=prompt_content
+            ) as stream:
+                full_response = ""
+
+                # Process each chunk as it arrives
+                for chunk in stream:
+                    if chunk.type == "content_block_delta" and hasattr(chunk.delta, "text"):
+                        # Add this chunk of text to our response
+                        full_response += chunk.delta.text
+                # Return the complete translated text
+                return full_response
+        else:
+            completion = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": prompt_content},
+                    {"role": "user", "content": text}
+                ]
+            )
+            return completion.choices[0].message.content
     except Exception as e:
         print(f"failed to translate: {e}")
         return None
