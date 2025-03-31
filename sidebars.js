@@ -1701,7 +1701,7 @@ const sidebars = {
           type: "link",
           label: "Native Clients & Interfaces",
           description: "Choose a client and interface to connect to ClickHouse",
-          href: "/interfaces/"
+          href: "/interfaces/natives-clients-and-interfaces"
         },
         {
           type: "link",
