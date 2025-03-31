@@ -6,7 +6,7 @@ description: 'Официальный коннектор Kafka от ClickHouse.'
 title: 'ClickHouse Kafka Connect Sink'
 ---
 
-import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
 
 # ClickHouse Kafka Connect Sink
@@ -14,7 +14,7 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 :::note
 Если вам нужна помощь, пожалуйста, [сообщите об ошибке в репозитории](https://github.com/ClickHouse/clickhouse-kafka-connect/issues) или задайте вопрос в [публичном Slack ClickHouse](https://clickhouse.com/slack).
 :::
-**ClickHouse Kafka Connect Sink** — это коннектор Kafka, который передает данные из темы Kafka в таблицу ClickHouse.
+**ClickHouse Kafka Connect Sink** — это коннектор Kafka, который передает данные из топика Kafka в таблицу ClickHouse.
 
 ### Лицензия {#license}
 
@@ -22,38 +22,38 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 
 ### Требования к окружению {#requirements-for-the-environment}
 
-В окружении должна быть установлена платформа [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html) версии v2.7 или более поздней.
+В окружении должна быть установлена платформа [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html) версии 2.7 или более поздней.
 
 ### Матрица совместимости версий {#version-compatibility-matrix}
 
-| Version ClickHouse Kafka Connect | Version ClickHouse | Kafka Connect | Платформа Confluent |
-|----------------------------------|--------------------|---------------|----------------------|
-| 1.0.0                            | > 23.3             | > 2.7         | > 6.1                |
+| Версия ClickHouse Kafka Connect | Версия ClickHouse | Kafka Connect | Платформа Confluent |
+|---------------------------------|--------------------|---------------|----------------------|
+| 1.0.0                           | > 23.3             | > 2.7         | > 6.1                |
 
 ### Основные функции {#main-features}
 
-- Поставляется с заранее определенными семантиками exactly-once. Используется новая функция ядра ClickHouse под названием [KeeperMap](https://github.com/ClickHouse/ClickHouse/pull/39976) (используется как хранилище состояний конектора) и позволяет создать минималистичную архитектуру.
-- Поддержка сторонних хранилищ состояний: в данный момент по умолчанию используется память, но также может использоваться KeeperMap (Redis будет добавлен скоро).
-- Интеграция на уровне ядра: разработано, поддерживается и обслуживается ClickHouse.
-- Непрерывное тестирование с использованием [ClickHouse Cloud](https://clickhouse.com/cloud).
+- Поставляется с готовой к использованию семантикой exactly-once. Основан на новой функции ядра ClickHouse, называемой [KeeperMap](https://github.com/ClickHouse/ClickHouse/pull/39976) (используется как хранилище состояний коннектора) и позволяет создавать минималистичную архитектуру.
+- Поддержка сторонних хранилищ состояний: по умолчанию используется память, но можно использовать KeeperMap (Redis будет добавлен в ближайшее время).
+- Интеграция с ядром: разработан, поддерживается и обслуживается ClickHouse.
+- Постоянно тестируется на платформе [ClickHouse Cloud](https://clickhouse.com/cloud).
 - Вставка данных с объявленной схемой и без схемы.
 - Поддержка всех типов данных ClickHouse.
 
-### Инструкции по установке {#installation-instructions}
+### Инструкция по установке {#installation-instructions}
 
-#### Соберите ваши данные подключения {#gather-your-connection-details}
+#### Соберите свои данные подключения {#gather-your-connection-details}
 
 <ConnectionDetails />
 
 #### Общие инструкции по установке {#general-installation-instructions}
 
-Коннектор распространяется как единый JAR-файл, содержащий все классы, необходимые для работы плагина.
+Коннектор распространяется в виде одного JAR-файла, содержащего все классы, необходимые для работы плагина.
 
 Чтобы установить плагин, выполните следующие шаги:
 
-- Скачайте zip-архив, содержащий файл Connector JAR, со страницы [Releases](https://github.com/ClickHouse/clickhouse-kafka-connect/releases) репозитория ClickHouse Kafka Connect Sink.
+- Скачайте архив ZIP, содержащий файл Connector JAR со страницы [Релизы](https://github.com/ClickHouse/clickhouse-kafka-connect/releases) репозитория ClickHouse Kafka Connect Sink.
 - Извлеките содержимое ZIP-файла и скопируйте его в нужное место.
-- Добавьте путь с директорией плагина в конфигурацию [plugin.path](https://kafka.apache.org/documentation/#connectconfigs_plugin.path) в вашем свойствах Connect, чтобы позволить платформе Confluent обнаружить плагин.
+- Добавьте путь с директорией плагина в параметр [plugin.path](https://kafka.apache.org/documentation/#connectconfigs_plugin.path) в файле конфигурации Connect, чтобы платформа Confluent могла найти плагин.
 - Укажите имя темы, имя хоста экземпляра ClickHouse и пароль в конфигурации.
 
 ```yml
@@ -76,93 +76,94 @@ schemas.enable=false
 ```
 
 - Перезапустите платформу Confluent.
-- Если вы используете платформу Confluent, войдите в интерфейс управления Confluent Control Center, чтобы убедиться, что ClickHouse Sink доступен в списке доступных коннекторов.
+- Если вы используете платформу Confluent, войдите в интерфейс Confluent Control Center, чтобы убедиться, что ClickHouse Sink доступен в списке доступных коннекторов.
 
-### Параметры конфигурации {#configuration-options}
+### Опции конфигурации {#configuration-options}
 
-Чтобы подключить ClickHouse Sink к серверу ClickHouse, вам нужно предоставить:
+Чтобы подключить ClickHouse Sink к серверу ClickHouse, необходимо предоставить:
 
-- данные подключения: hostname (**обязательно**) и port (необязательно)
-- учетные данные пользователя: password (**обязательно**) и username (необязательно)
+- данные для подключения: имя хоста (**обязательно**) и порт (необязательно)
+- учетные данные пользователя: пароль (**обязательно**) и имя пользователя (необязательно)
 - класс коннектора: `com.clickhouse.kafka.connect.ClickHouseSinkConnector` (**обязательно**)
-- topics или topics.regex: Kafka-темы для опроса - имена тем должны соответствовать именам таблиц (**обязательно**)
-- преобразователи ключей и значений: устанавливаются в зависимости от типа данных в вашей теме. Обязательны, если не определены в конфигурации рабочего процесса.
+- темы или topics.regex: темы Kafka, которые нужно опрашивать - имена тем должны соответствовать именам таблиц (**обязательно**)
+- конвертеры ключа и значения: установить в зависимости от типа данных вашей темы. Обязательно, если они не определены в конфигурации работника.
 
-Полная таблица параметров конфигурации:
+Полная таблица опций конфигурации:
 
-| Название свойства                                     | Описание                                                                                                                                                                                                                                                         | Значение по умолчанию                                    |
-|------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-| `hostname` (Обязательно)                             | Имя хоста или IP-адрес сервера                                                                                                                                                                                                                                | N/A                                                      |
-| `port`                                              | Порт ClickHouse - по умолчанию 8443 (для HTTPS в облаке), но для HTTP (по умолчанию для самоуправляемых) он должен быть 8123                                                                                                                                 | `8443`                                                   |
-| `ssl`                                               | Включить ssl-соединение к ClickHouse                                                                                                                                                                                                                           | `true`                                                   |
-| `jdbcConnectionProperties`                          | Свойства подключения при подключении к ClickHouse. Должны начинаться с `?` и соединяться с помощью `&` между `param=value`                                                                                                                                    | `""`                                                     |
-| `username`                                          | Имя пользователя базы данных ClickHouse                                                                                                                                                                                                                        | `default`                                                |
-| `password` (Обязательно)                             | Пароль базы данных ClickHouse                                                                                                                                                                                                                                | N/A                                                      |
-| `database`                                          | Имя базы данных ClickHouse                                                                                                                                                                                                                                       | `default`                                                |
-| `connector.class` (Обязательно)                      | Класс коннектора (явно задайте и сохраните как значение по умолчанию)                                                                                                                                                                                         | `"com.clickhouse.kafka.connect.ClickHouseSinkConnector"` |
-| `tasks.max`                                         | Количество задач коннектора                                                                                                                                                                                                                                   | `"1"`                                                    |
-| `errors.retry.timeout`                              | Таймаут повторной попытки ClickHouse JDBC                                                                                                                                                                                                                     | `"60"`                                                   |
-| `exactlyOnce`                                       | Включено Exactly Once                                                                                                                                                                                                                                          | `"false"`                                                |
-| `topics` (Обязательно)                             | Kafka-темы для опроса - имена тем должны соответствовать именам таблиц                                                                                                                                                                                            | `""`                                                     |
-| `key.converter` (Обязательно* - см. Описание)       | Установите в зависимости от типов ваших ключей. Обязательно здесь, если вы передаете ключи (и не определены в конфигурации рабочего процесса).                                                                                                                  | `"org.apache.kafka.connect.storage.StringConverter"`     |
-| `value.converter` (Обязательно* - см. Описание)     | Установите в зависимости от типа данных в вашей теме. Поддерживаются: - JSON, String, Avro или Protobuf форматы. Обязательно здесь, если не определены в конфигурации рабочего процесса.                                                                          | `"org.apache.kafka.connect.json.JsonConverter"`          |
-| `value.converter.schemas.enable`                    | Поддержка схем преобразователя значения коннектора                                                                                                                                                                                                               | `"false"`                                                |
-| `errors.tolerance`                                  | Ошибки в соединителе допускаются. Поддерживаемые: none, all                                                                                                                                                                                                    | `"none"`                                                 |
-| `errors.deadletterqueue.topic.name`                 | Если установлено (с errors.tolerance=all), будет использоваться DLQ для неудавшихся партий (см. [Устранение неполадок](#troubleshooting))                                                                                                                              | `""`                                                     |
-| `errors.deadletterqueue.context.headers.enable`     | Добавляет дополнительные заголовки для DLQ                                                                                                                                                                                                                     | `""`                                                     |
-| `clickhouseSettings`                                | Список настроек ClickHouse через запятую (например, "insert_quorum=2 и т.д.")                                                                                                                                                                                  | `""`                                                     |
-| `topic2TableMap`                                    | Список через запятую, который отображает имена тем на имена таблиц (например, "topic1=table1, topic2=table2 и т.д.")                                                                                                                                              | `""`                                                     |
-| `tableRefreshInterval`                              | Время (в секундах) для обновления кэша определения таблицы                                                                                                                                                                                                      | `0`                                                      |
-| `keeperOnCluster`                                   | Позволяет настроить параметр ON CLUSTER для самоуправляемых экземпляров (например, `ON CLUSTER clusterNameInConfigFileDefinition`) для таблицы connect_state exactly-once (см. [Распределенные DDL Запросы](/sql-reference/distributed-ddl) | `""`                                                     |
-| `bypassRowBinary`                                   | Позволяет отключить использование RowBinary и RowBinaryWithDefaults для данных на основе схемы (Avro, Protobuf и т.д.) - должно использоваться только когда данные будут содержать отсутствующие столбцы, и Nullable/Default неприемлемы                           | `"false"`                                                |
-| `dateTimeFormats`                                   | Форматы даты и времени для разбора полей схемы DateTime64, разделенные `;` (например, `someDateField=yyyy-MM-dd HH:mm:ss.SSSSSSSSS;someOtherDateField=yyyy-MM-dd HH:mm:ss`).                                                                                    | `""`                                                     |
-| `tolerateStateMismatch`                             | Позволяет коннектору удалять записи "раньше", чем текущий смещение, сохраненное AFTER_PROCESSING (например, если смещение 5 отправлено, а смещение 250 - последняя зарегистрированная смещение)                                                                          | `"false"`                                                |
+| Имя свойства                                   | Описание                                                                                                                                                                                                                        | Значение по умолчанию                                   |
+|------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| `hostname` (обязательно)                       | Имя хоста или IP-адрес сервера                                                                                                                                                                                                | N/A                                                   |
+| `port`                                         | Порт ClickHouse - по умолчанию 8443 (для HTTPS в облаке), но для HTTP (по умолчанию для собственных хостингов) он должен быть 8123                                                                                           | `8443`                                               |
+| `ssl`                                          | Включить ssl-соединение с ClickHouse                                                                                                                                                                                        | `true`                                               |
+| `jdbcConnectionProperties`                     | Свойства соединения при подключении к ClickHouse. Должны начинаться с `?` и объединяться с `&` между `param=value`                                                                                                             | `""`                                                 |
+| `username`                                     | Имя пользователя базы данных ClickHouse                                                                                                                                                                                      | `default`                                            |
+| `password` (обязательно)                       | Пароль базы данных ClickHouse                                                                                                                                                                                                  | N/A                                                   |
+| `database`                                     | Имя базы данных ClickHouse                                                                                                                                                                                                      | `default`                                            |
+| `connector.class` (обязательно)                | Класс коннектора (явно установлен и оставлен по умолчанию)                                                                                                                                                                     | `"com.clickhouse.kafka.connect.ClickHouseSinkConnector"` |
+| `tasks.max`                                    | Количество задач коннектора                                                                                                                                                                                                     | `"1"`                                                |
+| `errors.retry.timeout`                         | Таймаут повторной попытки JDBC ClickHouse                                                                                                                                                                                      | `"60"`                                               |
+| `exactlyOnce`                                  | Включен режим Exactly Once                                                                                                                                                                                                      | `"false"`                                            |
+| `topics` (обязательно)                        | Темы Kafka для опроса - имена тем должны соответствовать именам таблиц                                                                                                                                                          | `""`                                                 |
+| `key.converter` (обязательно* - см. описание) | Установите в зависимости от типов ваших ключей. Обязательно, если вы передаете ключи (и они не определены в конфигурации работника).                                                                                             | `"org.apache.kafka.connect.storage.StringConverter"` |
+| `value.converter` (обязательно* - см. описание)| Установите в зависимости от типа данных вашей темы. Поддерживаемые: - форматы JSON, String, Avro или Protobuf. Обязательно, если не определены в конфигурации работника.                                                        | `"org.apache.kafka.connect.json.JsonConverter"`      |
+| `value.converter.schemas.enable`               | Поддержка схемы конвертера значений                                                                                                                                                                                            | `"false"`                                            |
+| `errors.tolerance`                             | Допустимость ошибок коннектора. Поддерживается: none, all                                                                                                                                                                       | `"none"`                                             |
+| `errors.deadletterqueue.topic.name`            | Если установлено (с errors.tolerance=all), будет использоваться DLQ для неудачных пакетов (см. [Устранение неполадок](#troubleshooting))                                                                                        | `""`                                                 |
+| `errors.deadletterqueue.context.headers.enable`| Добавляет дополнительные заголовки для DLQ                                                                                                                                                                                    | `""`                                                 |
+| `clickhouseSettings`                           | Список настроек ClickHouse, разделенный запятыми (например, "insert_quorum=2, и т.д...")                                                                                                                                      | `""`                                                 |
+| `topic2TableMap`                               | Список, разделенный запятыми, который сопоставляет имена тем с именами таблиц (например, "topic1=table1, topic2=table2, и т.д...")                                                                                          | `""`                                                 |
+| `tableRefreshInterval`                         | Время (в секундах) для обновления кеша определения таблицы                                                                                                                                                                     | `0`                                                  |
+| `keeperOnCluster`                              | Позволяет настроить параметр ON CLUSTER для собственных экземпляров (например, `ON CLUSTER clusterNameInConfigFileDefinition`) для таблицы connect_state с семантикой exactly-once (см. [Запросы распределенного DDL](/sql-reference/distributed-ddl) | `""`                                                 |
+| `bypassRowBinary`                              | Позволяет отключить использование RowBinary и RowBinaryWithDefaults для данных на основе схемы (Avro, Protobuf и т.д.) - должен использоваться только когда данные будут иметь отсутствующие столбцы, а Nullable/Default неприемлемы          | `"false"`                                            |
+| `dateTimeFormats`                              | Форматы даты и времени для разбора полей схемы DateTime64, разделенные `;` (например, `someDateField=yyyy-MM-dd HH:mm:ss.SSSSSSSSS;someOtherDateField=yyyy-MM-dd HH:mm:ss`).                                                | `""`                                                 |
+| `tolerateStateMismatch`                        | Позволяет коннектору удалять записи, "ранее" чем текущее смещение, сохраненное после обработки (например, если смещение 5 было отправлено, а смещение 250 было последним зафиксированным смещением)                                 | `"false"`                                            |
+| `ignorePartitionsWhenBatching`                 | Будет игнорировать партицию при сборе сообщений для вставки (хотя только если `exactlyOnce` — `false`). Примечание по производительности: чем больше задач коннектора, тем меньше партиций Kafka назначено на задачу — это может снизить отдачу. | `"false"`                                            |
 
 ### Целевые таблицы {#target-tables}
 
-ClickHouse Connect Sink считывает сообщения из тем Kafka и записывает их в соответствующие таблицы. ClickHouse Connect Sink записывает данные в существующие таблицы. Пожалуйста, убедитесь, что целевая таблица с соответствующей схемой создана в ClickHouse перед тем, как начать вставлять в нее данные.
+ClickHouse Connect Sink читает сообщения из топиков Kafka и записывает их в соответствующие таблицы. ClickHouse Connect Sink записывает данные в существующие таблицы. Пожалуйста, убедитесь, что целевая таблица с подходящей схемой была создана в ClickHouse до начала вставки данных в нее.
 
-Каждая тема требует выделенной целевой таблицы в ClickHouse. Имя целевой таблицы должно соответствовать имени исходной темы.
+Каждая тема требует выделенной целевой таблицы в ClickHouse. Имя целевой таблицы должно совпадать с именем исходной темы.
 
 ### Предварительная обработка {#pre-processing}
 
-Если вам нужно преобразовать исходящие сообщения перед их отправкой в ClickHouse Kafka Connect Sink, используйте [Kafka Connect Transformations](https://docs.confluent.io/platform/current/connect/transforms/overview.html).
+Если вам нужно преобразовать исходящие сообщения перед отправкой их в ClickHouse Kafka Connect Sink, используйте [Преобразования Kafka Connect](https://docs.confluent.io/platform/current/connect/transforms/overview.html).
 
 ### Поддерживаемые типы данных {#supported-data-types}
 
 **С объявленной схемой:**
 
-| Тип Kafka Connect                    | Тип ClickHouse     | Поддерживается | Примитив |
-|-------------------------------------|--------------------|----------------|----------|
-| STRING                              | String             | ✅             | Да       |
-| INT8                                | Int8               | ✅             | Да       |
-| INT16                               | Int16              | ✅             | Да       |
-| INT32                               | Int32              | ✅             | Да       |
-| INT64                               | Int64              | ✅             | Да       |
-| FLOAT32                             | Float32            | ✅             | Да       |
-| FLOAT64                             | Float64            | ✅             | Да       |
-| BOOLEAN                             | Boolean            | ✅             | Да       |
-| ARRAY                               | Array(T)           | ✅             | Нет      |
-| MAP                                 | Map(Primitive, T)  | ✅             | Нет      |
-| STRUCT                              | Variant(T1, T2, ...) | ✅             | Нет      |
-| STRUCT                              | Tuple(a T1, b T2, ...) | ✅             | Нет      |
-| STRUCT                              | Nested(a T1, b T2, ...) | ✅             | Нет      |
-| BYTES                               | String             | ✅             | Нет      |
-| org.apache.kafka.connect.data.Time   | Int64 / DateTime64 | ✅             | Нет      |
-| org.apache.kafka.connect.data.Timestamp | Int32 / Date32    | ✅             | Нет      |
-| org.apache.kafka.connect.data.Decimal | Decimal           | ✅             | Нет      |
+| Тип Kafka Connect                      | Тип ClickHouse       | Поддерживаемый | Примитивный |
+|---------------------------------------|----------------------|----------------|-------------|
+| STRING                                | String               | ✅             | Да          |
+| INT8                                  | Int8                 | ✅             | Да          |
+| INT16                                 | Int16                | ✅             | Да          |
+| INT32                                 | Int32                | ✅             | Да          |
+| INT64                                 | Int64                | ✅             | Да          |
+| FLOAT32                               | Float32              | ✅             | Да          |
+| FLOAT64                               | Float64              | ✅             | Да          |
+| BOOLEAN                               | Boolean              | ✅             | Да          |
+| ARRAY                                 | Array(T)             | ✅             | Нет         |
+| MAP                                   | Map(Primitive, T)    | ✅             | Нет         |
+| STRUCT                                | Variant(T1, T2, ...)  | ✅             | Нет         |
+| STRUCT                                | Tuple(a T1, b T2, ...) | ✅             | Нет         |
+| STRUCT                                | Nested(a T1, b T2, ...) | ✅             | Нет         |
+| BYTES                                 | String               | ✅             | Нет         |
+| org.apache.kafka.connect.data.Time    | Int64 / DateTime64   | ✅             | Нет         |
+| org.apache.kafka.connect.data.Timestamp| Int32 / Date32       | ✅             | Нет         |
+| org.apache.kafka.connect.data.Decimal  | Decimal              | ✅             | Нет         |
 
 **Без объявленной схемы:**
 
-Запись преобразуется в JSON и отправляется в ClickHouse в виде значения в формате [JSONEachRow](../../../sql-reference/formats.mdx#jsoneachrow).
+Запись преобразуется в JSON и отправляется в ClickHouse в формате [JSONEachRow](../../../sql-reference/formats.mdx#jsoneachrow).
 
 ### Рецепты конфигурации {#configuration-recipes}
 
-Это некоторые распространенные рецепты конфигурации, чтобы вы могли начать быстро.
+Это некоторые распространенные рецепты конфигурации, которые помогут вам быстро начать.
 
-#### Базовая конфигурация {#basic-configuration}
+#### Основная конфигурация {#basic-configuration}
 
-Самая простая конфигурация, чтобы начать - она предполагает, что вы запускаете Kafka Connect в распределенном режиме и у вас работает сервер ClickHouse на `localhost:8443` с включенным SSL, данные представлены в безсхемном JSON.
+Самая простая конфигурация, чтобы начать - предполагает, что вы выполняете Kafka Connect в распределенном режиме и используете сервер ClickHouse на `localhost:8443` с включенным SSL, данные в формате без схемы JSON.
 
 ```json
 {
@@ -189,9 +190,9 @@ ClickHouse Connect Sink считывает сообщения из тем Kafka 
 }
 ```
 
-#### Базовая конфигурация с несколькими темами {#basic-configuration-with-multiple-topics}
+#### Основная конфигурация с несколькими темами {#basic-configuration-with-multiple-topics}
 
-Коннектор может потреблять данные из нескольких тем.
+Коннектор может потреблять данные из нескольких тем:
 
 ```json
 {
@@ -205,7 +206,7 @@ ClickHouse Connect Sink считывает сообщения из тем Kafka 
 }
 ```
 
-#### Базовая конфигурация с DLQ {#basic-configuration-with-dlq}
+#### Основная конфигурация с DLQ {#basic-configuration-with-dlq}
 
 ```json
 {
@@ -215,12 +216,12 @@ ClickHouse Connect Sink считывает сообщения из тем Kafka 
     ...
     "errors.tolerance": "all",
     "errors.deadletterqueue.topic.name": "<DLQ_TOPIC>",
-    "errors.deadletterqueue.context.headers.enable": "true"
+    "errors.deadletterqueue.context.headers.enable": "true",
   }
 }
 ```
 
-#### Использование с разными форматами данных {#using-with-different-data-formats}
+#### Использование с различными форматами данных {#using-with-different-data-formats}
 
 ##### Поддержка схемы Avro {#avro-schema-support}
 
@@ -232,7 +233,7 @@ ClickHouse Connect Sink считывает сообщения из тем Kafka 
     ...
     "value.converter": "io.confluent.connect.avro.AvroConverter",
     "value.converter.schema.registry.url": "<SCHEMA_REGISTRY_HOST>:<PORT>",
-    "value.converter.schemas.enable": "true"
+    "value.converter.schemas.enable": "true",
   }
 }
 ```
@@ -247,12 +248,12 @@ ClickHouse Connect Sink считывает сообщения из тем Kafka 
     ...
     "value.converter": "io.confluent.connect.protobuf.ProtobufConverter",
     "value.converter.schema.registry.url": "<SCHEMA_REGISTRY_HOST>:<PORT>",
-    "value.converter.schemas.enable": "true"
+    "value.converter.schemas.enable": "true",
   }
 }
 ```
 
-Обратите внимание: если вы столкнетесь с проблемами с отсутствующими классами, не в каждой среде есть преобразователь protobuf, и вам может понадобиться альтернативная версия JAR с включенными зависимостями.
+Пожалуйста, обратите внимание: если вы столкнетесь с проблемами с отсутствующими классами, не каждое окружение поставляется с конвертером protobuf, и вам может понадобиться альтернативный релиз JAR с зависимостями.
 
 ##### Поддержка схемы JSON {#json-schema-support}
 
@@ -262,14 +263,14 @@ ClickHouse Connect Sink считывает сообщения из тем Kafka 
   "config": {
     "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
     ...
-    "value.converter": "org.apache.kafka.connect.json.JsonConverter"
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
   }
 }
 ```
 
-##### Поддержка строк {#string-support}
+##### Поддержка стрингов {#string-support}
 
-Коннектор поддерживает преобразователь строк в разных форматах ClickHouse: [JSON](/interfaces/formats#jsoneachrow), [CSV](/interfaces/formats#csv) и [TSV](/interfaces/formats#tabseparated).
+Коннектор поддерживает String Converter в различных форматах ClickHouse: [JSON](/interfaces/formats#jsoneachrow), [CSV](/interfaces/formats#csv) и [TSV](/interfaces/formats#tabseparated).
 
 ```json
 {
@@ -286,87 +287,86 @@ ClickHouse Connect Sink считывает сообщения из тем Kafka 
 
 ### Логирование {#logging}
 
-Логирование обеспечивается автоматически платформой Kafka Connect.
-Место назначения логирования и формат могут быть настроены через [файл конфигурации](https://docs.confluent.io/platform/current/connect/logging.html#log4j-properties-file) Kafka Connect.
+Логирование автоматически предоставляется платформой Kafka Connect. Место назначения и формат логирования можно настроить через [файл конфигурации Kafka connect](https://docs.confluent.io/platform/current/connect/logging.html#log4j-properties-file).
 
-Если вы используете платформу Confluent, журналы можно просмотреть, выполнив команду CLI:
+Если вы используете платформу Confluent, логи можно просмотреть, выполнив команду CLI:
 
 ```bash
 confluent local services connect log
 ```
 
-Для получения дополнительных сведений ознакомьтесь с официальным [руководством](https://docs.confluent.io/platform/current/connect/logging.html).
+Для получения дополнительных сведений ознакомьтесь с официальным [учебным пособием](https://docs.confluent.io/platform/current/connect/logging.html).
 
 ### Мониторинг {#monitoring}
 
-ClickHouse Kafka Connect сообщает метрики выполнения через [Java Management Extensions (JMX)](https://www.oracle.com/technical-resources/articles/javase/jmx.html). JMX включен в коннектор Kafka по умолчанию.
+ClickHouse Kafka Connect сообщает о метриках выполнения через [Java Management Extensions (JMX)](https://www.oracle.com/technical-resources/articles/javase/jmx.html). По умолчанию JMX включен для коннектора Kafka.
 
-ClickHouse Connect `MBeanName`:
+Имя ClickHouse Connect `MBeanName`:
 
 ```java
 com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
 ```
 
-ClickHouse Kafka Connect сообщает следующие метрики:
+ClickHouse Kafka Connect сообщает о следующих метриках:
 
-| Название                   | Тип  | Описание                                                                               |
-|---------------------------|------|---------------------------------------------------------------------------------------|
-| `receivedRecords`         | long | Общее количество полученных записей.                                                  |
-| `recordProcessingTime`    | long | Общее время в наносекундах, затраченное на группировку и преобразование записей в единую структуру. |
-| `taskProcessingTime`      | long | Общее время в наносекундах, затраченное на обработку и вставку данных в ClickHouse.   |
+| Имя                   | Тип   | Описание                                                                                     |
+|-----------------------|-------|----------------------------------------------------------------------------------------------|
+| `receivedRecords`     | long  | Общее количество полученных записей.                                                        |
+| `recordProcessingTime`| long  | Общее время в наносекундах, затраченное на группировку и преобразование записей в единую структуру. |
+| `taskProcessingTime`  | long  | Общее время в наносекундах, затраченное на обработку и вставку данных в ClickHouse.          |
 
 ### Ограничения {#limitations}
 
 - Удаления не поддерживаются.
-- Размер партии наследуется от свойств потребителя Kafka.
-- При использовании KeeperMap для exactly-once и изменении или возвращении смещения, вам необходимо удалить содержимое из KeeperMap для этой конкретной темы. (См. ниже руководство по устранению неполадок для получения дополнительных сведений)
+- Размер пакета наследуется от свойств потребителя Kafka.
+- При использовании KeeperMap для режима exactly-once и изменении или перемотке смещения необходимо удалить содержимое из KeeperMap для этой конкретной темы. (См. ниже руководство по устранению неполадок для получения дополнительной информации)
 
 ### Настройка производительности {#tuning-performance}
 
-Если вы когда-либо думали: "Я хотел бы настроить размер партии для коннектора sink", то этот раздел для вас.
+Если вы когда-либо думали про себя "Я хотел бы настроить размер пакета для коннектора sink", то этот раздел предназначен для вас.
 
-##### Fetch Connect против Poll Connector {#connect-fetch-vs-connector-poll}
+##### Fetch Connect vs Poll Connector {#connect-fetch-vs-connector-poll}
 
-Kafka Connect (рамка, на которой основан наш коннектор sink) будет извлекать сообщения из тем Kafka в фоновом режиме (независимо от коннектора).
+Kafka Connect (на базе которого работает наш коннектор sink) будет извлекать сообщения из топиков Kafka в фоновом режиме (независимо от коннектора).
 
-Вы можете контролировать этот процесс, используя `fetch.min.bytes` и `fetch.max.bytes` - в то время как `fetch.min.bytes` определяет минимальное количество, необходимое, прежде чем платформа передаст значения коннектору (в пределах временного ограничения, установленного `fetch.max.wait.ms`), `fetch.max.bytes` устанавливает верхний предел размера. Если вы хотите передать более крупные партии к коннектору, одним из вариантов может быть увеличение минимальной выборки или максимального ожидания для формирования более крупных пакетов данных.
+Вы можете управлять этим процессом, используя `fetch.min.bytes` и `fetch.max.bytes` - в то время как `fetch.min.bytes` устанавливает минимальное количество, необходимое, прежде чем фреймворк передаст значения коннектору (в пределах временного лимита, установленного `fetch.max.wait.ms`), `fetch.max.bytes` устанавливает верхний предел размера. Если вы хотите передать более крупные пакеты коннектору, одним из вариантов может быть увеличение минимального извлечения или максимального ожидания для формирования больших пакетов данных.
 
-Эти извлеченные данные затем обрабатываются клиентом коннектора, опрашивающим сообщения, где количество для каждого опроса контролируется `max.poll.records` - обратите внимание, что получение независимо от опроса!
+Эти извлеченные данные затем используются клиентом коннектора, который опрашивает сообщения, при этом количество для каждого опроса контролируется `max.poll.records` - обратите внимание, что извлечение независимо от опроса!
 
-При настройке этих параметров пользователи должны стремиться так, чтобы их размер выборки производил несколько партий `max.poll.records` (и помнить, что настройки `fetch.min.bytes` и `fetch.max.bytes` представляют сжатые данные) - таким образом, каждая задача коннектора вставляет как можно более крупную партию.
+При настройке этих параметров пользователи должны стремиться к тому, чтобы размер их извлечения создавал несколько пакетов `max.poll.records` (и не забудьте, что настройки `fetch.min.bytes` и `fetch.max.bytes` представляют сжатые данные) - таким образом, каждая задача коннектора вставляет как можно более крупный пакет.
 
-ClickHouse оптимизирован для больших партий, даже с небольшой задержкой, а не частых, но меньших партий - чем больше партия, тем лучше.
+ClickHouse оптимизирован для больших пакетов, даже с небольшой задержкой, а не для частых, но меньших пакетов - чем больше пакет, тем лучше.
 
 ```properties
 consumer.max.poll.records=5000
 consumer.max.partition.fetch.bytes=5242880
 ```
 
-Более подробную информацию можно найти в [документации Confluent](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)
+Больше деталей можно найти в [документации Confluent](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)
 или в [документации Kafka](https://kafka.apache.org/documentation/#consumerconfigs).
 
 #### Несколько тем с высокой пропускной способностью {#multiple-high-throughput-topics}
 
-Если ваш коннектор настроен на подписку на несколько тем, вы используете `topic2TableMap` для сопоставления тем с таблицами, и вы сталкиваетесь с узким местом при вставке, что приводит к задержке потребителя, рассмотрите возможность создания одного коннектора на тему. Основная причина, по которой это происходит, заключается в том, что в данный момент партии вставляются в каждую таблицу [поочередно](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/578ac07e8be1a920aaa3b26e49183595c3edd04b/src/main/java/com/clickhouse/kafka/connect/sink/ProxySinkTask.java#L95-L100).
+Если ваш коннектор настроен на подписку на несколько тем, вы используете `topics2TableMap` для сопоставления тем с таблицами, и вы испытываете узкое место при вставке, что приводит к задержкам потребления, рассмотрите возможность создания одного коннектора на тему. Основная причина, по которой это происходит, заключается в том, что в настоящее время пакеты вставляются в каждую таблицу [поочередно](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/578ac07e8be1a920aaa3b26e49183595c3edd04b/src/main/java/com/clickhouse/kafka/connect/sink/ProxySinkTask.java#L95-L100).
 
-Создание одного коннектора на тему — это обходной путь, который обеспечивает максимальную скорость вставки.
+Создание одного коннектора на тему является обходным решением, которое гарантирует, что вы получите максимально возможную скорость вставки.
 
 ### Устранение неполадок {#troubleshooting}
 
-#### "Несоответствие состояния для темы `[someTopic]` раздела `[0]`" {#state-mismatch-for-topic-sometopic-partition-0}
+#### "Несоответствие состояния для темы `[someTopic]` партиция `[0]`" {#state-mismatch-for-topic-sometopic-partition-0}
 
-Это происходит, когда смещение, хранимое в KeeperMap, отличается от смещения, хранимого в Kafka, обычно когда тема была удалена
-или смещение было вручную отрегулировано.
-Чтобы исправить это, вам нужно удалить старые значения, хранящиеся для данной темы + раздела.
+Это происходит, когда смещение, хранящееся в KeeperMap, отличается от смещения, хранящегося в Kafka, обычно когда тема была удалена
+или смещение было вручную изменено.
+Чтобы исправить это, необходимо удалить старые значения, хранящиеся для данной темы + партиции.
 
-**ПРИМЕЧАНИЕ: Этот коррекционный процесс может иметь последствия для exactly-once.**
+**ПРИМЕЧАНИЕ: Эта корректировка может иметь последствия для exactly-once.**
 
-#### "Какие ошибки коннектор будет повторять?" {#what-errors-will-the-connector-retry}
+#### "Какие ошибки будет повторно пытаться коннектор?" {#what-errors-will-the-connector-retry}
 
-В данный момент основное внимание уделяется выявлению ошибок, которые являются временными и могут быть повторены, включая:
+В настоящее время основное внимание уделяется выявлению ошибок, которые являются временными и могут быть повторными, включая:
 
-- `ClickHouseException` - это общее исключение, которое может быть выброшено ClickHouse.
-  Оно обычно выбрасывается, когда сервер перегружен, и следующие коды ошибок считаются особенно временными:
+- `ClickHouseException` - Это общий исключение, которое может быть выброшено ClickHouse.
+  Обычно оно возникает, когда сервер перегружен, и следующие коды ошибок считаются особенно временными:
   - 3 - UNEXPECTED_END_OF_FILE
   - 159 - TIMEOUT_EXCEEDED
   - 164 - READONLY
@@ -381,13 +381,13 @@ consumer.max.partition.fetch.bytes=5242880
   - 425 - SYSTEM_ERROR
   - 999 - KEEPER_EXCEPTION
   - 1002 - UNKNOWN_EXCEPTION
-- `SocketTimeoutException` - выбрасывается, когда время ожидания сокета истекает.
-- `UnknownHostException` - выбрасывается, когда хост не может быть разрешен.
-- `IOException` - выбрасывается, когда возникает проблема с сетью.
+- `SocketTimeoutException` - Это исключение возникает, когда сокет истекает.
+- `UnknownHostException` - Это исключение возникает, когда хост не может быть разрешен.
+- `IOException` - Это исключение возникает, когда возникает проблема в сети.
 
 #### "Все мои данные пустые/нули" {#all-my-data-is-blankzeroes}
-Скорее всего, поля в ваших данных не соответствуют полям в таблице - это особенно часто встречается с CDC (и форматом Debezium).
-Одно из распространенных решений - добавить преобразование flatten к вашей конфигурации коннектора:
+Вероятно, поля в ваших данных не совпадают с полями в таблице - это особенно распространено с CDC (и форматом Debezium).
+Одно из распространенных решений — добавить преобразование flatten в конфигурацию вашего коннектора:
 
 ```properties
 transforms=flatten
@@ -395,10 +395,10 @@ transforms.flatten.type=org.apache.kafka.connect.transforms.Flatten$Value
 transforms.flatten.delimiter=_
 ```
 
-Это преобразует ваши данные из вложенного JSON в плоский JSON (используя `_` в качестве разделителя). Поля в таблице будут иметь формат "field1_field2_field3" (т.е. "before_id", "after_id" и т.д.).
+Это преобразует ваши данные из вложенного JSON в уплощенный JSON (используя `_` в качестве разделителя). Поля в таблице будут следовать формату "field1_field2_field3" (т.е. "before_id", "after_id" и т.д.).
 
-#### "Я хочу использовать свои ключи Kafka в ClickHouse" {#i-want-to-use-my-kafka-keys-in-clickhouse}
-Ключи Kafka по умолчанию не сохраняются в поле значения, но вы можете использовать преобразование `KeyToValue`, чтобы переместить ключ в поле значения (под новым именем поля `_key`):
+#### "Я хочу использовать мои ключи Kafka в ClickHouse" {#i-want-to-use-my-kafka-keys-in-clickhouse}
+Ключи Kafka по умолчанию не хранятся в поле значения, но вы можете использовать преобразование `KeyToValue`, чтобы переместить ключ в поле значения (под новым именем поля `_key`):
 
 ```properties
 transforms=keyToValue

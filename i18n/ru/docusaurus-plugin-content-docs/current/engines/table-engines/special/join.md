@@ -1,18 +1,18 @@
 ---
-description: 'Допустимая подготовленная структура данных для использования в операциях [JOIN].'
-sidebar_label: 'Объединение'
+description: 'Дополнительная подготовленная структура данных для использования в операциях JOIN.'
+sidebar_label: 'Соединение'
 sidebar_position: 70
 slug: /engines/table-engines/special/join
-title: 'Движок таблиц Объединение'
+title: 'Движок таблиц Join'
 ---
 
 
-# Движок таблиц Объединение
+# Движок таблиц Join
 
-Допустимая подготовленная структура данных для использования в [JOIN](/sql-reference/statements/select/join) операциях.
+Дополнительная подготовленная структура данных для использования в [JOIN](/sql-reference/statements/select/join) операциях.
 
 :::note
-Это не статья о самом [JOIN условии](/sql-reference/statements/select/join).
+Это не статья о самом [JOIN-клауза](/sql-reference/statements/select/join).
 :::
 
 ## Создание таблицы {#creating-a-table}
@@ -25,44 +25,44 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE = Join(join_strictness, join_type, k1[, k2, ...])
 ```
 
-Смотрите подробное описание запроса [CREATE TABLE](/sql-reference/statements/create/table).
+См. подробное описание запроса [CREATE TABLE](/sql-reference/statements/create/table).
 
 ## Параметры движка {#engine-parameters}
 
 ### join_strictness {#join_strictness}
 
-`join_strictness` – [Строгость JOIN](/sql-reference/statements/select/join#supported-types-of-join).
+`join_strictness` – [строгость JOIN](/sql-reference/statements/select/join#supported-types-of-join).
 
 ### join_type {#join_type}
 
-`join_type` – [Тип JOIN](/sql-reference/statements/select/join#supported-types-of-join).
+`join_type` – [тип JOIN](/sql-reference/statements/select/join#supported-types-of-join).
 
-### Ключевые столбцы {#key-columns}
+### Ключевые колонки {#key-columns}
 
-`k1[, k2, ...]` – Ключевые столбцы из условия `USING`, по которым выполняется операция `JOIN`.
+`k1[, k2, ...]` – Ключевые колонки из клаузы `USING`, с которыми происходит операция `JOIN`.
 
 Введите параметры `join_strictness` и `join_type` без кавычек, например, `Join(ANY, LEFT, col1)`. Они должны соответствовать операции `JOIN`, для которой будет использоваться таблица. Если параметры не совпадают, ClickHouse не выдает исключение и может вернуть некорректные данные.
 
-## Специфика и рекомендации {#specifics-and-recommendations}
+## Особенности и рекомендации {#specifics-and-recommendations}
 
 ### Хранение данных {#data-storage}
 
-Данные таблицы `Join` всегда находятся в оперативной памяти. При вставке строк в таблицу ClickHouse записывает блоки данных в директорию на диске, чтобы их можно было восстановить при перезагрузке сервера.
+Данные таблицы `Join` всегда находятся в ОЗУ. При вставке строк в таблицу ClickHouse записывает блоки данных в каталог на диске, чтобы их можно было восстановить при перезапуске сервера.
 
-Если сервер перезапускается некорректно, блок данных на диске может быть потерян или поврежден. В этом случае вам может потребоваться вручную удалить файл с поврежденными данными.
+Если сервер перезапустится неправильно, блок данных на диске может быть потерян или поврежден. В этом случае вам может потребоваться вручную удалить файл с поврежденными данными.
 
-### Выборка и вставка данных {#selecting-and-inserting-data}
+### Выбор и вставка данных {#selecting-and-inserting-data}
 
-Вы можете использовать запросы `INSERT` для добавления данных в таблицы с движком `Join`. Если таблица была создана с `ANY` строгостью, данные для дублирующих ключей игнорируются. При `ALL` строгости все строки добавляются.
+Вы можете использовать запросы `INSERT` для добавления данных в таблицы с движком `Join`. Если таблица была создана с учетом строгости `ANY`, данные для дублирующихся ключей игнорируются. При строгости `ALL` все строки добавляются.
 
 Основные сценарии использования таблиц с движком `Join` следующие:
 
-- Разместите таблицу с правой стороны в условии `JOIN`.
+- Поместите таблицу на правую сторону в клаузе `JOIN`.
 - Вызовите функцию [joinGet](/sql-reference/functions/other-functions.md/#joinget), которая позволяет извлекать данные из таблицы так же, как из словаря.
 
 ### Удаление данных {#deleting-data}
 
-Запросы `ALTER DELETE` для таблиц с движком `Join` реализуются как [мутации](/sql-reference/statements/alter/index.md#mutations). Мутация `DELETE` читает отфильтрованные данные и перезаписывает данные в оперативной памяти и на диске.
+Запросы `ALTER DELETE` для таблиц с движком `Join` реализованы как [мутации](/sql-reference/statements/alter/index.md#mutations). Мутация `DELETE` читает отфильтрованные данные и перезаписывает данные в памяти и на диске.
 
 ### Ограничения и настройки {#join-limitations-and-settings}
 
@@ -74,15 +74,15 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 #### max_rows_in_join {#max_rows_in_join}
 
-[max_rows_in_join](/operations/settings/query-complexity#settings-max_rows_in_join)
+[max_rows_in_join](/operations/settings/settings#max_rows_in_join)
 
 #### max_bytes_in_join {#max_bytes_in_join}
 
-[max_bytes_in_join](/operations/settings/query-complexity#settings-max_bytes_in_join)
+[max_bytes_in_join](/operations/settings/settings#max_bytes_in_join)
 
 #### join_overflow_mode {#join_overflow_mode}
 
-[join_overflow_mode](/operations/settings/query-complexity#settings-join_overflow_mode)
+[join_overflow_mode](/operations/settings/settings#join_overflow_mode)
 
 #### join_any_take_last_row {#join_any_take_last_row}
 
@@ -91,9 +91,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 #### persistent {#persistent}
 
-Отключает долговечность для движков таблиц Join и [Set](/engines/table-engines/special/set.md).
+Отключает постоянство для движков таблиц Join и [Set](/engines/table-engines/special/set.md).
 
-Снижает накладные расходы на I/O. Подходит для сценариев, стремящихся к производительности и не требующих постоянства.
+Снижает накладные расходы на ввод-вывод. Подходит для сценариев, ориентированных на производительность и не требующих постоянства.
 
 Возможные значения:
 
@@ -102,13 +102,13 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Значение по умолчанию: `1`.
 
-Таблицы с движком `Join` нельзя использовать в операциях `GLOBAL JOIN`.
+Таблицы с движком `Join` не могут использоваться в операциях `GLOBAL JOIN`.
 
-Движок `Join` позволяет указать настройку [join_use_nulls](/operations/settings/settings.md/#join_use_nulls) в операторе `CREATE TABLE`. Запрос [SELECT](/sql-reference/statements/select/index.md) должен иметь такое же значение `join_use_nulls`.
+Движок `Join` позволяет указывать настройку [join_use_nulls](/operations/settings/settings.md/#join_use_nulls) в инструкции `CREATE TABLE`. Запрос [SELECT](/sql-reference/statements/select/index.md) должен иметь то же значение `join_use_nulls`.
 
 ## Примеры использования {#example}
 
-Создание таблицы на левой стороне:
+Создание таблицы с левой стороны:
 
 ```sql
 CREATE TABLE id_val(`id` UInt32, `val` UInt32) ENGINE = TinyLog;
@@ -118,7 +118,7 @@ CREATE TABLE id_val(`id` UInt32, `val` UInt32) ENGINE = TinyLog;
 INSERT INTO id_val VALUES (1,11)(2,12)(3,13);
 ```
 
-Создание таблицы `Join` на правой стороне:
+Создание таблицы `Join` с правой стороны:
 
 ```sql
 CREATE TABLE id_val_join(`id` UInt32, `val` UInt8) ENGINE = Join(ANY, LEFT, id);
@@ -142,7 +142,7 @@ SELECT * FROM id_val ANY LEFT JOIN id_val_join USING (id);
 └────┴─────┴─────────────────┘
 ```
 
-В качестве альтернативы вы можете извлечь данные из таблицы `Join`, указав значение ключа объединения:
+В качестве альтернативы вы можете извлечь данные из таблицы `Join`, указав значение ключа соединения:
 
 ```sql
 SELECT joinGet('id_val_join', 'val', toUInt32(1));

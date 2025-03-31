@@ -1,11 +1,11 @@
 ---
 description: 'Системная таблица, содержащая информацию, полезную для обзора использования памяти и ProfileEvents пользователей.'
-keywords: ['системная таблица', 'user_processes']
+keywords: ['системная таблица', 'пользовательские процессы']
 slug: /operations/system-tables/user_processes
 title: 'system.user_processes'
 ---
 
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 
 # system.user_processes
@@ -14,12 +14,12 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 Эта системная таблица может быть использована для получения обзора использования памяти и ProfileEvents пользователей.
 
-Столбцы:
+Колонки:
 
 - `user` ([String](../../sql-reference/data-types/string.md)) — Имя пользователя.
-- `memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) – Сумма ОЗУ, используемой всеми процессами пользователя. Она может не включать некоторые типы выделенной памяти. См. настройку [max_memory_usage](../../operations/settings/query-complexity.md#settings_max_memory_usage).
-- `peak_memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) — Пик использования памяти пользователем. Он может сбрасываться, когда пользователь не выполняет запросы.
-- `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map)) – Сводка ProfileEvents, которые измеряют различные метрики для пользователя. Описание этих метрик можно найти в таблице [system.events](/operations/system-tables/events).
+- `memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) – Сумма ОЗУ, используемой всеми процессами пользователя. Некоторые типы выделенной памяти могут не включаться. См. настройку [max_memory_usage](/operations/settings/settings#max_memory_usage).
+- `peak_memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) — Пик использования памяти пользователем. Он может сбрасываться, когда не выполняются запросы для пользователя.
+- `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map)) – Сводка о ProfileEvents, которые измеряют различные метрики для пользователя. Их описание можно найти в таблице [system.events](/operations/system-tables/events).
 
 ```sql
 SELECT * FROM system.user_processes LIMIT 10 FORMAT Vertical;

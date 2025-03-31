@@ -2,30 +2,30 @@
 description: 'Документация для операторов ALTER DATABASE ... MODIFY COMMENT'
 slug: /sql-reference/statements/alter/database-comment
 sidebar_position: 51
-sidebar_label: 'ИЗМЕНИТЬ'
-title: 'Операторы ALTER DATABASE ... MODIFY COMMENT'
+sidebar_label: 'ОБНОВИТЬ'
+title: 'ALTER DATABASE ... MODIFY COMMENT'
 ---
 
 
 # ALTER DATABASE ... MODIFY COMMENT
 
-Добавляет, модифицирует или убирает комментарий к базе данных, независимо от того, был ли он установлен ранее или нет. Изменение комментария отражается как в [system.databases](/operations/system-tables/databases.md), так и в запросе `SHOW CREATE DATABASE`.
+Добавляет, изменяет или удаляет комментарий к базе данных, независимо от того, был ли он установлен ранее. Изменение комментария отражается как в [system.databases](/operations/system-tables/databases.md), так и в запросе `SHOW CREATE DATABASE`.
 
 **Синтаксис**
 
 ``` sql
-ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
+ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Комментарий'
 ```
 
 **Примеры**
 
-Создание БАЗЫ ДАННЫХ с комментариями (для получения дополнительной информации смотрите пункт [COMMENT](/sql-reference/statements/create/table#comment-clause)):
+Создание БАЗЫ ДАННЫХ с комментарием (для получения дополнительной информации см. раздел [COMMENT](/sql-reference/statements/create/table#comment-clause)):
 
 ``` sql
 CREATE DATABASE database_with_comment ENGINE = Memory COMMENT 'Временная база данных';
 ```
 
-Изменение комментария базы данных:
+Изменение комментария таблицы:
 
 ``` sql
 ALTER DATABASE database_with_comment MODIFY COMMENT 'новый комментарий к базе данных';
@@ -40,14 +40,14 @@ SELECT comment FROM system.databases WHERE name = 'database_with_comment';
 └─────────────────────────┘
 ```
 
-Удаление комментария базы данных:
+Удаление комментария к базе данных:
 
 ``` sql
 ALTER DATABASE database_with_comment MODIFY COMMENT '';
-SELECT comment FROM system.databases WHERE  name = 'database_with_comment';
+SELECT comment FROM system.databases WHERE name = 'database_with_comment';
 ```
 
-Вывод удаленного комментария:
+Вывод удалённого комментария:
 
 ```text
 ┌─comment─┐

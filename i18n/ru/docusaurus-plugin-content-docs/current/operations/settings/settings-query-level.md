@@ -5,37 +5,106 @@ slug: /operations/settings/query-level
 title: 'Настройки сессии на уровне запроса'
 ---
 
-Существует несколько способов выполнения операторов с определенными настройками. Настройки конфигурируются по слоям, и каждый следующий слой перекрывает предыдущие значения настройки.
+## Обзор {#overview}
+
+Существует несколько способов выполнения запросов с определенными настройками.
+Настройки конфигурируются по слоям, и каждый последующий слой переопределяет предыдущие значения настройки.
+
+## Порядок приоритета {#order-of-priority}
 
 Порядок приоритета для определения настройки:
 
-1. Применение настройки к пользователю напрямую или в рамках профиля настроек
+1. Применение настройки непосредственно к пользователю или в профиле настроек
 
     - SQL (рекомендуется)
     - добавление одного или нескольких XML или YAML файлов в `/etc/clickhouse-server/users.d`
 
 2. Настройки сессии
 
-    - Отправить `SET setting=value` из консоли ClickHouse Cloud SQL или
-    `clickhouse client` в интерактивном режиме. Аналогично, вы можете использовать сессии ClickHouse
-    в HTTP-протоколе. Для этого необходимо указать HTTP-параметр
-    `session_id`.
+    - Отправка `SET setting=value` из консоли SQL ClickHouse Cloud или
+    `clickhouse client` в интерактивном режиме. Аналогично можно использовать
+    сессии ClickHouse в HTTP протоколе. Для этого нужно указать
+    HTTP параметр `session_id`.
 
-3. Настройки запросов
+3. Настройки запроса
 
-    - При запуске `clickhouse client` в неинтерактивном режиме установите параметр запуска `--setting=value`.
-    - При использовании HTTP API передайте параметры CGI (`URL?setting_1=value&setting_2=value...`).
+    - При запуске `clickhouse client` в неинтерактивном режиме, установите параметр
+    запуска `--setting=value`.
+    - При использовании HTTP API, передайте CGI параметры (`URL?setting_1=value&setting_2=value...`).
     - Определите настройки в
     [SETTINGS](../../sql-reference/statements/select/index.md#settings-in-select-query)
-    разделе SELECT запроса. Значение настройки применяется только к этому запросу
-    и сбрасывается на значение по умолчанию или предыдущее значение после выполнения запроса.
+    секции SELECT запроса. Значение настройки применяется только к этому запросу
+    и сбрасывается к значению по умолчанию или предыдущему значению после выполнения запроса.
+
+
+## Возврат настройки к значению по умолчанию {#converting-a-setting-to-its-default-value}
+
+Если вы изменили настройку и хотите вернуть ее обратно к значению по умолчанию, установите значение `DEFAULT`. Синтаксис выглядит так:
+
+```sql
+SET setting_name = DEFAULT
+```
+
+Например, значение по умолчанию для `async_insert` равно `0`. Предположим, вы изменили его значение на `1`:
+
+```sql
+SET async_insert = 1;
+
+SELECT value FROM system.settings where name='async_insert';
+```
+
+Ответ:
+
+```response
+┌─value──┐
+│ 1      │
+└────────┘
+```
+
+Следующая команда возвращает значение обратно к 0:
+
+```sql
+SET async_insert = DEFAULT;
+
+SELECT value FROM system.settings where name='async_insert';
+```
+
+Теперь настройка вернулась к значению по умолчанию:
+
+```response
+┌─value───┐
+│ 0       │
+└─────────┘
+```
+
+## Пользовательские настройки {#custom_settings}
+
+В дополнение к общим [настройкам](/operations/settings/settings.md), пользователи могут определять собственные настройки.
+
+Имя пользовательской настройки должно начинаться с одного из предопределенных префиксов. Список этих префиксов должен быть объявлен в параметре [custom_settings_prefixes](../../operations/server-configuration-parameters/settings.md#custom_settings_prefixes) в конфигурационном файле сервера.
+
+```xml
+<custom_settings_prefixes>custom_</custom_settings_prefixes>
+```
+
+Чтобы определить пользовательскую настройку, используйте команду `SET`:
+
+```sql
+SET custom_a = 123;
+```
+
+Чтобы получить текущее значение пользовательской настройки, используйте функцию `getSetting()`:
+
+```sql
+SELECT getSetting('custom_a');
+```
 
 ## Примеры {#examples}
 
 Все эти примеры устанавливают значение настройки `async_insert` в `1` и
 показывают, как проверить настройки в работающей системе.
 
-### Использование SQL для применения настройки к пользователю напрямую {#using-sql-to-apply-a-setting-to-a-user-directly}
+### Использование SQL для применения настройки непосредственно к пользователю {#using-sql-to-apply-a-setting-to-a-user-directly}
 
 Это создает пользователя `ingester` с настройкой `async_inset = 1`:
 
@@ -61,8 +130,7 @@ SHOW ACCESS
 │ ...                                                                                │
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
-### Использование SQL для создания профиля настроек и назначения его пользователю {#using-sql-to-create-a-settings-profile-and-assign-to-a-user}
+### Использование SQL для создания профиля настроек и назначения пользователю {#using-sql-to-create-a-settings-profile-and-assign-to-a-user}
 
 Это создает профиль `log_ingest` с настройкой `async_inset = 1`:
 
@@ -79,6 +147,7 @@ IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f2
 -- highlight-next-line
 SETTINGS PROFILE log_ingest
 ```
+
 
 ### Использование XML для создания профиля настроек и пользователя {#using-xml-to-create-a-settings-profile-and-user}
 
@@ -155,69 +224,7 @@ SETTINGS async_insert=1
 VALUES (...)
 ```
 
-## Приведение настройки к значению по умолчанию {#converting-a-setting-to-its-default-value}
+## Смотрите также {#see-also}
 
-Если вы изменили настройку и хотите вернуть ее к значению по умолчанию, установите значение в `DEFAULT`. Синтаксис выглядит следующим образом:
-
-```sql
-SET setting_name = DEFAULT
-```
-
-Например, значение по умолчанию для `async_insert` равно `0`. Предположим, вы изменили его значение на `1`:
-
-```sql
-SET async_insert = 1;
-
-SELECT value FROM system.settings where name='async_insert';
-```
-
-Ответ будет:
-
-```response
-┌─value──┐
-│ 1      │
-└────────┘
-```
-
-Следующая команда устанавливает его значение обратно на 0:
-
-```sql
-SET async_insert = DEFAULT;
-
-SELECT value FROM system.settings where name='async_insert';
-```
-
-Настройка теперь вернулась к своему значению по умолчанию:
-
-```response
-┌─value───┐
-│ 0       │
-└─────────┘
-```
-
-## Пользовательские настройки {#custom_settings}
-
-Кроме общих [настроек](/operations/settings/settings.md), пользователи могут определять пользовательские настройки.
-
-Имя пользовательской настройки должно начинаться с одного из предопределенных префиксов. Список этих префиксов должен быть объявлен в параметре [custom_settings_prefixes](../../operations/server-configuration-parameters/settings.md#custom_settings_prefixes) в файле конфигурации сервера.
-
-```xml
-<custom_settings_prefixes>custom_</custom_settings_prefixes>
-```
-
-Чтобы определить пользовательскую настройку, используйте команду `SET`:
-
-```sql
-SET custom_a = 123;
-```
-
-Чтобы получить текущее значение пользовательской настройки, используйте функцию `getSetting()`:
-
-```sql
-SELECT getSetting('custom_a');
-```
-
-**Смотрите также**
-
-- Просмотрите страницу [Настройки](/operations/settings/settings.md) для описания настроек ClickHouse.
+- Посмотрите страницу [Настройки](/operations/settings/settings.md) для описания настроек ClickHouse.
 - [Глобальные настройки сервера](/operations/server-configuration-parameters/settings.md)
