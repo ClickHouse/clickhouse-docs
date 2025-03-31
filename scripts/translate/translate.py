@@ -45,6 +45,9 @@ def format_glossary_prompt(glossary):
     glossary_text = "\n".join([f"- {key}: {value}" for key, value in glossary.items()])
     return f"Use the following glossary for specific translations:\n{glossary_text}\n"
 
+def format_translation_override_prompt(override):
+    translation_text = "\n".join([f"- {key}: {value}" for key, value in override.items()])
+    return f"If you encounter these phrases, take them as manual overrides and translate them accordingly:\n{translation_text}\n"
 
 def hash_file(input_path, chunk_size=65536):
     hasher = xxhash.xxh64()
@@ -74,11 +77,10 @@ def write_complete_file(output_path):
     with open(output_path, "w") as f:
         f.write(timestamp + "\n")
 
-def translate_text(config, text, model="gpt-4o-mini"):
+def translate_text(config, text, model="gpt-4o-mini", translation_override_prompt=""):
     language = config["language"]
     glossary = config["glossary"]
-    prompt = config[
-        "prompt"] if "prompt" in config else f"""
+    prompt = config["prompt"] if "prompt" in config else f"""
         Translate the following ClickHouse documentation text from English to {language}. Ensure the following rules are followed:
             - This content may be part of a document, so maintain the original html tags and markdown formatting used in Docusaurus, including any headings, code blocks, lists, links, and inline formatting like bold or italic text. Code blocks should be preserved using ` and ```.
             - Ensure that no content, links, explicit heading ids (denoted by {{#my-explicit-id}}), or references are omitted or altered during translation, preserving the same amount of information as the original text. 
@@ -92,7 +94,7 @@ def translate_text(config, text, model="gpt-4o-mini"):
             - Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}.
         """
     glossary_prompt = format_glossary_prompt(glossary)
-    prompt_content = f"{glossary_prompt}\n{prompt}"
+    prompt_content = f"{glossary_prompt}\n{prompt}\n{translation_override_prompt}"
     try:
         completion = client.chat.completions.create(
             model=model,
@@ -137,6 +139,8 @@ def translate_file(config, input_file_path, output_file_path, model):
     start_time = time.time()
 
     try:
+        if input_file_path=="/Users/sstruw/Desktop/clickhouse-docs/docs/use-cases/observability/demo-application.md":
+            print()
         with open(input_file_path, "r", encoding="utf-8") as input_file:
             original_text = input_file.read()
             print(f" - length: {len(original_text)}")
@@ -147,7 +151,27 @@ def translate_file(config, input_file_path, output_file_path, model):
         chunks = split_text(original_text, input_file_path, MAX_CHUNK_SIZE)
         for chunk in chunks:
             print(f" - start [{count}/{len(chunks)}], [{input_file_path}]")
-            translated_chunk = translate_text(config, chunk, model)
+
+            # check for per file translation override
+            base_path = os.path.splitext(output_file_path)[0]
+            translation_override_path = base_path + ".translate_override"
+            translation_override_prompt = ""
+            try:
+                with open(translation_override_path, "r", encoding="utf-8") as override_file:
+                    translation_override = json.load(override_file)
+                    if config["language"] not in translation_override:
+                        print(f"Warning: {config['language']} not found in translation override file")
+                    else:
+                        override = translation_override[config["language"]]
+                        translation_override_prompt = format_translation_override_prompt(override)
+                        print(f"Successfully loaded override for {config['language']}")
+            except FileNotFoundError as e:
+                pass
+            except json.JSONDecodeError:
+                print(f"Error parsing JSON in override file: {translation_override_path}")
+            except Exception as e:
+                print(f"Unexpected error with override file: {str(e)}")
+            translated_chunk = translate_text(config, chunk, model, translation_override_prompt)
             if translated_chunk:
                 if translated_chunk.startswith("```markdown"):
                     translated_chunk = translated_chunk.removeprefix("```markdown")
@@ -178,7 +202,7 @@ def translate_file(config, input_file_path, output_file_path, model):
         # generate hash file - TODO: This should probably happen after the files being renamed.
         write_file_hash(input_file_path, output_file_path.removesuffix(".translate") + ".hash", chunk_size=65536)
 
-    except FileNotFoundError:
+    except FileNotFoundError as e:
         print(f"no file: {input_file_path}")
     except Exception as e:
         raise e
@@ -345,6 +369,10 @@ def remove_old_files(files_translated, output_folder):
             if not file.endswith(".DS_Store") and not file.endswith(".hash"):
                 current_files.add(os.path.join(output_folder, relative_path))
     files_to_remove = current_files - files_translated
+
+    # Filter out special files that should be preserved
+    files_to_remove = {file_path for file_path in files_to_remove if not file_path.endswith(".md.translate_override")}
+
     # Remove the unnecessary files
     for file_path in files_to_remove:
         try:
