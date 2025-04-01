@@ -5,7 +5,6 @@ slug: /operations/utilities/clickhouse-keeper-client
 title: 'Утилита clickhouse-keeper-client'
 ---
 
-
 # Утилита clickhouse-keeper-client
 
 Клиентское приложение для взаимодействия с clickhouse-keeper по его собственному протоколу.

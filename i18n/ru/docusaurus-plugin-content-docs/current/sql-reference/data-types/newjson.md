@@ -7,6 +7,10 @@ slug: /sql-reference/data-types/newjson
 title: 'Тип данных JSON'
 ---
 
+import BetaBadge from '@theme/badges/BetaBadge';
+
+<BetaBadge/>
+
 Тип `JSON` хранит документы в формате JavaScript Object Notation (JSON) в одном столбце.
 
 Если вы хотите использовать тип `JSON`, и для примеров на этой странице, пожалуйста, используйте:
