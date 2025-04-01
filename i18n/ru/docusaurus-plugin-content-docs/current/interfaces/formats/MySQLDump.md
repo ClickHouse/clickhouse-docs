@@ -14,18 +14,18 @@ title: 'MySQLDump'
 
 ## Описание {#description}
 
-ClickHouse поддерживает чтение MySQL [дампов](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html).
+ClickHouse поддерживает чтение дампов MySQL [dumps](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html).
 
-Он считывает все данные из запросов `INSERT`, относящихся к одной таблице в дампе. 
-Если таблиц больше одной, по умолчанию считывает данные из первой.
+Он читает все данные из `INSERT` запросов, относящихся к одной таблице в дампе. 
+Если таблиц больше одной, по умолчанию он читает данные из первой.
 
 :::note
-Этот формат поддерживает вывод схемы: если дамп содержит запрос `CREATE` для указанной таблицы, структура выводится из него, в противном случае схема выводится из данных запросов `INSERT`.
+Этот формат поддерживает вывод схемы: если дамп содержит `CREATE` запрос для указанной таблицы, структура выводится из него, в противном случае схема выводится из данных `INSERT` запросов.
 :::
 
 ## Пример использования {#example-usage}
 
-Исходя из следующего SQL дампа:
+Допустим, у нас есть следующий SQL дамп файл:
 
 ```sql title="dump.sql"
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -81,6 +81,6 @@ SETTINGS input_format_mysql_dump_table_name = 'test2'
 
 ## Настройки формата {#format-settings}
 
-Вы можете указать имя таблицы, из которой нужно считывать данные, используя настройку [`input_format_mysql_dump_table_name`](/operations/settings/settings-formats.md/#input_format_mysql_dump_table_name).
-Если настройка `input_format_mysql_dump_map_columns` установлена в `1`, и дамп содержит запрос `CREATE` для указанной таблицы или имена столбцов в запросе `INSERT`, столбцы из входных данных будут сопоставлены со столбцами таблицы по имени.
+Вы можете указать имя таблицы, из которой следует читать данные, с помощью настройки [`input_format_mysql_dump_table_name`](/operations/settings/settings-formats.md/#input_format_mysql_dump_table_name).
+Если настройка `input_format_mysql_dump_map_columns` установлена в `1`, и дамп содержит `CREATE` запрос для указанной таблицы или имена столбцов в `INSERT` запросе, столбцы из входных данных будут сопоставлены со столбцами таблицы по имени.
 Столбцы с неизвестными именами будут пропущены, если настройка [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в `1`.

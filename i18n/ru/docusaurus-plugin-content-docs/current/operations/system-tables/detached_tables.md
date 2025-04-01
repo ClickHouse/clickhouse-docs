@@ -7,11 +7,11 @@ title: 'system.detached_tables'
 
 Содержит информацию о каждой отсоединенной таблице.
 
-Столбцы:
+Колонки:
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — Название базы данных, в которой находится таблица.
+- `database` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой находится таблица.
 
-- `table` ([String](../../sql-reference/data-types/string.md)) — Название таблицы.
+- `table` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы.
 
 - `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — UUID таблицы (атомарная база данных).
 

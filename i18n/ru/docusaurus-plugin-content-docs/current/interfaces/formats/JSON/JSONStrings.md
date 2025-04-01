@@ -12,11 +12,11 @@ title: 'JSONStrings'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## Описание {#description}
+## Description {#description}
 
-Отличается от формата [JSON](./JSON.md) только тем, что поля данных выводятся как строки, а не как типизированные значения JSON.
+Отличается от формата [JSON](./JSON.md) лишь тем, что поля данных выводятся в виде строк, а не как типизированные значения JSON.
 
-## Пример использования {#example-usage}
+## Example Usage {#example-usage}
 
 Пример:
 
@@ -70,4 +70,4 @@ title: 'JSONStrings'
 }
 ```
 
-## Настройки формата {#format-settings}
+## Format Settings {#format-settings}

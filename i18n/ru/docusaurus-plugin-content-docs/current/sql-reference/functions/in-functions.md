@@ -11,4 +11,4 @@ title: 'Функции для реализации оператора IN'
 
 ## in, notIn, globalIn, globalNotIn {#in-notin-globalin-globalnotin}
 
-Смотрите раздел [Операторы IN](/sql-reference/operators/in).
+Смотрите раздел [операторы IN](/sql-reference/operators/in).

@@ -21,11 +21,11 @@ curl -sL https://lib.chdb.io | bash
 
 Смотрите: [chdb-go](https://github.com/chdb-io/chdb-go)
 
-## Репозиторий на GitHub {#github-repository}
+## Репозиторий GitHub {#github-repository}
 
-Репозиторий проекта на GitHub можно найти по адресу [chdb-io/chdb-go](https://github.com/chdb-io/chdb-go).
+Вы можете найти репозиторий GitHub для проекта по адресу [chdb-io/chdb-go](https://github.com/chdb-io/chdb-go).
 
 ## Использование {#usage}
 
-- Документация по API: [High Level API](https://github.com/chdb-io/chdb-go/blob/main/chdb.md)
-- Документация по API низкого уровня: [Low Level API](https://github.com/chdb-io/chdb-go/blob/main/lowApi.md)
+- Документация API: [Высокоуровневый API](https://github.com/chdb-io/chdb-go/blob/main/chdb.md)
+- Документация низкоуровневого API: [Низкоуровневый API](https://github.com/chdb-io/chdb-go/blob/main/lowApi.md)

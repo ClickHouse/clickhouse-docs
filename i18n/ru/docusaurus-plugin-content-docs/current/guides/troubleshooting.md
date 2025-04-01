@@ -3,36 +3,35 @@ title: 'Устранение неполадок'
 description: 'Руководство по устранению неполадок установки'
 slug: /guides/troubleshooting
 ---
-```
 
 ## Установка {#installation}
 
-### Не удается импортировать GPG-ключи из keyserver.ubuntu.com с помощью apt-key {#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key}
+### Невозможно импортировать GPG ключи из keyserver.ubuntu.com с помощью apt-key {#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key}
 
-Функция `apt-key` с [расширенным инструментом пакетов (APT) была устаревшей](https://manpages.debian.org/bookworm/apt/apt-key.8.en.html). Пользователи должны использовать команду `gpg`. Пожалуйста, рассмотрите статью [руководство по установке](../getting-started/install.md).
+Функция `apt-key` с [Advanced package tool (APT) была устаревшей](https://manpages.debian.org/bookworm/apt/apt-key.8.en.html). Пользователям следует использовать команду `gpg`. Пожалуйста, обратитесь к статье [руководства по установке](../getting-started/install.md).
 
-### Не удается импортировать GPG-ключи из keyserver.ubuntu.com с помощью gpg {#cannot-import-gpg-keys-from-keyserverubuntucom-with-gpg}
+### Невозможно импортировать GPG ключи из keyserver.ubuntu.com с помощью gpg {#cannot-import-gpg-keys-from-keyserverubuntucom-with-gpg}
 
-1. Проверьте, установлен ли у вас `gpg`:
+1. Убедитесь, что у вас установлен `gpg`:
 
 ```shell
 sudo apt-get install gnupg
 ```
 
-### Не удается получить deb-пакеты из репозитория ClickHouse с помощью apt-get {#cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
+### Невозможно получить deb пакеты из репозитория ClickHouse с помощью apt-get {#cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
 
 1. Проверьте настройки брандмауэра.
-1. Если вы не можете получить доступ к репозиторию по какой-либо причине, загрузите пакеты, как описано в статье [руководство по установке](../getting-started/install.md), и установите их вручную с помощью команды `sudo dpkg -i <packages>`. Вам также понадобится пакет `tzdata`.
+1. Если вы не можете получить доступ к репозиторию по какой-либо причине, загрузите пакеты, как описано в статье [руководства по установке](../getting-started/install.md), и установите их вручную с помощью команды `sudo dpkg -i <packages>`. Вам также понадобится пакет `tzdata`.
 
-### Не удается обновить deb-пакеты из репозитория ClickHouse с помощью apt-get {#cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
+### Невозможно обновить deb пакеты из репозитория ClickHouse с помощью apt-get {#cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
 
-Проблема может возникнуть, когда GPG-ключ изменился.
+Проблема может возникнуть, если GPG ключ был изменен.
 
-Пожалуйста, используйте инструкцию из страницы [настройка](../getting-started/install.md#setup-the-debian-repository), чтобы обновить конфигурацию репозитория.
+Пожалуйста, используйте руководство с [настройками](../getting-started/install.md#setup-the-debian-repository) страницы, чтобы обновить конфигурацию репозитория.
 
 ### Вы получаете разные предупреждения с `apt-get update` {#you-get-different-warnings-with-apt-get-update}
 
-Завершенные предупреждающие сообщения выглядят как одно из следующих:
+Завершенные сообщения предупреждений могут быть одними из следующих:
 
 ```shell
 N: Skipping acquire of configured file 'main/binary-i386/Packages' as repository 'https://packages.clickhouse.com/deb stable InRelease' doesn't support architecture 'i386'
@@ -54,7 +53,7 @@ Err:11 https://packages.clickhouse.com/deb stable InRelease
 400  Bad Request [IP: 172.66.40.249 443]
 ```
 
-Чтобы решить указанную выше проблему, пожалуйста, используйте следующий скрипт:
+Чтобы решить указанную проблему, пожалуйста, используйте следующий скрипт:
 
 ```shell
 sudo rm /var/lib/apt/lists/packages.clickhouse.com_* /var/lib/dpkg/arch /var/lib/apt/lists/partial/packages.clickhouse.com_*
@@ -62,11 +61,11 @@ sudo apt-get clean
 sudo apt-get autoclean
 ```
 
-### Не удается получить пакеты с Yum из-за неправильной подписи {#cant-get-packages-with-yum-because-of-wrong-signature}
+### Невозможно получить пакеты с Yum из-за неправильной подписи {#cant-get-packages-with-yum-because-of-wrong-signature}
 
-Возможная проблема: кэш неправильный, возможно, он был поврежден после обновления GPG-ключа в 2022-09.
+Возможная проблема: кэш неверный, возможно, он был поврежден после обновления GPG ключа в 2022-09.
 
-Решение - очистить кэш и каталог lib для Yum:
+Решение состоит в очистке кэша и каталога lib для Yum:
 
 ```shell
 sudo find /var/lib/yum/repos/ /var/cache/yum/ -name 'clickhouse-*' -type d -exec rm -rf {} +
@@ -79,18 +78,18 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 
 Возможные проблемы:
 
-- Сервер не запущен.
+- Сервер не работает.
 - Неожиданные или неверные параметры конфигурации.
 
-### Сервер не запущен {#server-is-not-running}
+### Сервер не работает {#server-is-not-running}
 
-#### Проверьте, запущен ли сервер {#check-if-server-is-running}
+#### Проверьте, работает ли сервер {#check-if-server-is-running}
 
 ```shell
 sudo service clickhouse-server status
 ```
 
-Если сервер не запущен, запустите его с помощью команды:
+Если сервер не работает, запустите его с помощью команды:
 
 ```shell
 sudo service clickhouse-server start
@@ -100,24 +99,24 @@ sudo service clickhouse-server start
 
 Основной журнал `clickhouse-server` по умолчанию находится в `/var/log/clickhouse-server/clickhouse-server.log`.
 
-Если сервер запустился успешно, вы должны увидеть строки:
+Если сервер успешно запустился, вы должны увидеть строки:
 
 - `<Information> Application: starting up.` — Сервер запущен.
-- `<Information> Application: Ready for connections.` — Сервер работает и готов к подключениям.
+- `<Information> Application: Ready for connections.` — Сервер работает и готов для подключения.
 
-Если запуск `clickhouse-server` завершился неудачей из-за ошибки конфигурации, вы должны увидеть строку `<Error>` с описанием ошибки. Например:
+Если `clickhouse-server` не удалось запустить из-за ошибки конфигурации, вы должны увидеть строку `<Error>` с описанием ошибки. Например:
 
 ```plaintext
 2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
-Если вы не видите ошибок в конце файла, просмотрите весь файл, начиная с строки:
+Если вы не видите ошибки в конце файла, просмотрите весь файл, начиная с строки:
 
 ```plaintext
 <Information> Application: starting up.
 ```
 
-Если вы попытаетесь запустить второй экземпляр `clickhouse-server` на сервере, вы увидите следующий журнал:
+Если вы пытаетесь запустить вторую инстанцию `clickhouse-server` на сервере, вы увидите следующий журнал:
 
 ```plaintext
 2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Starting ClickHouse 19.1.0 with revision 54413
@@ -133,21 +132,21 @@ Revision: 54413
 2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
 ```
 
-#### Просмотреть журналы system.d {#see-systemd-logs}
+#### Просмотрите журналы system.d {#see-systemd-logs}
 
-Если вы не найдете полезной информации в журналах `clickhouse-server` или если журналов нет, вы можете просмотреть журналы `system.d`, используя команду:
+Если вы не нашли полезной информации в журналах `clickhouse-server` или там нет никаких журналов, вы можете просмотреть журналы `system.d`, используя команду:
 
 ```shell
 sudo journalctl -u clickhouse-server
 ```
 
-#### Запустить clickhouse-server в интерактивном режиме {#start-clickhouse-server-in-interactive-mode}
+#### Запустите clickhouse-server в интерактивном режиме {#start-clickhouse-server-in-interactive-mode}
 
 ```shell
 sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
 ```
 
-Эта команда запускает сервер как интерактивное приложение с параметрами, стандартными для сценария автозагрузки. В этом режиме `clickhouse-server` выводит все сообщения событий в консоль.
+Эта команда запускает сервер как интерактивное приложение с стандартными параметрами автозапуска. В этом режиме `clickhouse-server` выводит все сообщения событий в консоль.
 
 ### Параметры конфигурации {#configuration-parameters}
 
@@ -155,42 +154,42 @@ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-serv
 
 1. Настройки Docker:
 
-    - Если вы запускаете ClickHouse в Docker в сети IPv6, убедитесь, что установлен `network=host`.
+    - Если вы запускаете ClickHouse в Docker в сети IPv6, убедитесь, что установлено `network=host`.
 
-1. Настройки конечных точек.
+1. Настройки конечной точки.
     - Проверьте настройки [listen_host](/operations/server-configuration-parameters/settings#listen_host) и [tcp_port](/operations/server-configuration-parameters/settings#tcp_port).
-    - Сервер ClickHouse по умолчанию принимает подключения только с localhost.
+    - Сервер ClickHouse по умолчанию принимает подключения только от localhost.
 
-1. Настройки протокола HTTP:
+1. Настройки HTTP протокола:
 
-    - Проверьте параметры протокола для HTTP API.
+    - Проверьте настройки протокола для HTTP API.
 
 1. Настройки безопасного подключения.
 
     - Проверьте:
         - Настройку [tcp_port_secure](/operations/server-configuration-parameters/settings#tcp_port_secure).
-        - Настройки для [SSL-сертификатов](/operations/server-configuration-parameters/settings#openssl).
+        - Настройки для [SSL сертификатов](/operations/server-configuration-parameters/settings#openssl).
     - Используйте правильные параметры при подключении. Например, используйте параметр `port_secure` с `clickhouse_client`.
 
 1. Настройки пользователя:
 
-    - Возможно, вы используете неправильное имя пользователя или пароль.
+    - Вы, возможно, используете неверное имя пользователя или пароль.
 
 ## Обработка запросов {#query-processing}
 
-Если ClickHouse не может обработать запрос, он отправляет клиенту описание ошибки. В `clickhouse-client` вы получите описание ошибки в консоли. Если вы используете HTTP интерфейс, ClickHouse отправляет описание ошибки в теле ответа. Например:
+Если ClickHouse не в состоянии обработать запрос, он отправляет описание ошибки клиенту. В `clickhouse-client` вы получите описание ошибки в консоли. Если вы используете HTTP интерфейс, ClickHouse отправляет описание ошибки в теле ответа. Например:
 
 ```shell
 $ curl 'http://localhost:8123/' --data-binary "SELECT a"
 Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that there are no tables (FROM clause) in your query, context: required_names: 'a' source_tables: table_aliases: private_aliases: column_aliases: public_columns: 'a' masked_columns: array_join_columns: source_columns: , e.what() = DB::Exception
 ```
 
-Если вы запустите `clickhouse-client` с параметром `stack-trace`, ClickHouse вернет трассировку стека сервера с описанием ошибки.
+Если вы запускаете `clickhouse-client` с параметром `stack-trace`, ClickHouse возвращает стек-трейс сервера с описанием ошибки.
 
-Вы можете увидеть сообщение о разорванном соединении. В этом случае вы можете повторить запрос. Если соединение разрывается каждый раз, когда вы выполняете запрос, проверьте журналы сервера на наличие ошибок.
+Вы можете увидеть сообщение о разрыве соединения. В этом случае вы можете повторить запрос. Если соединение разрывается каждый раз при выполнении запроса, проверьте журналы сервера на наличие ошибок.
 
 ## Эффективность обработки запросов {#efficiency-of-query-processing}
 
-Если вы видите, что ClickHouse работает слишком медленно, вам нужно оценить нагрузку на ресурсы сервера и сеть для ваших запросов.
+Если вы видите, что ClickHouse работает слишком медленно, вам необходимо проанализировать нагрузку на ресурсы сервера и сеть для ваших запросов.
 
-Вы можете использовать утилиту clickhouse-benchmark для профилирования запросов. Она показывает количество запросов, обрабатываемых в секунду, количество строк, обрабатываемых в секунду, и процентиль времени обработки запросов.
+Вы можете использовать утилиту clickhouse-benchmark для профилирования запросов. Она показывает количество запросов, обработанных в секунду, количество строк, обработанных в секунду, и процентиль времени обработки запросов.

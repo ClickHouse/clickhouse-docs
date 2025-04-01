@@ -1,6 +1,6 @@
 ---
 description: 'Документация для ALTER NAMED COLLECTION'
-sidebar_label: 'NAMED COLLECTION'
+sidebar_label: 'ИМЕНОВАННАЯ КОЛЛЕКЦИЯ'
 slug: /sql-reference/statements/alter/named-collection
 title: 'ALTER NAMED COLLECTION'
 ---

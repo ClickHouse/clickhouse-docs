@@ -13,9 +13,9 @@ import TabItem from '@theme/TabItem';
 
 # Интеграция Amazon Glue с ClickHouse
 
-[Amazon Glue](https://aws.amazon.com/glue/) — это полностью управляемый, безсерверный сервис интеграции данных, предоставляемый Amazon Web Services (AWS). Он упрощает процесс обнаружения, подготовки и преобразования данных для аналитики, машинного обучения и разработки приложений.
+[Amazon Glue](https://aws.amazon.com/glue/) — это полностью управляемый безсерверный сервис интеграции данных, предоставляемый Amazon Web Services (AWS). Он упрощает процесс обнаружения, подготовки и преобразования данных для аналитики, машинного обучения и разработки приложений.
 
-Хотя в настоящее время не существует соединителя Glue для ClickHouse, официальный JDBC соединитель может быть использован для подключения и интеграции с ClickHouse:
+Хотя в настоящее время отсутствует коннектор Glue для ClickHouse, можно использовать официальный JDBC-коннектор для подключения и интеграции с ClickHouse:
 
 <Tabs>
 <TabItem value="Java" label="Java" default>
@@ -31,19 +31,19 @@ import scala.collection.JavaConverters._
 import com.amazonaws.services.glue.log.GlueLogger
 
 
-// Инициализация Glue задачи
+// Инициализация задачи Glue
 object GlueJob {
   def main(sysArgs: Array[String]) {
     val sc: SparkContext = new SparkContext()
     val glueContext: GlueContext = new GlueContext(sc)
     val spark: SparkSession = glueContext.getSparkSession
     val logger = new GlueLogger
-     import spark.implicits._
+    import spark.implicits._
     // @params: [JOB_NAME]
     val args = GlueArgParser.getResolvedOptions(sysArgs, Seq("JOB_NAME").toArray)
     Job.init(args("JOB_NAME"), glueContext, args.asJava)
 
-    // Детали подключения JDBC
+    // Подробности подключения JDBC
     val jdbcUrl = "jdbc:ch://{host}:{port}/{schema}"
     val jdbcProperties = new java.util.Properties()
     jdbcProperties.put("user", "default")
@@ -56,7 +56,7 @@ object GlueJob {
     // Показать Spark df или использовать его по своему усмотрению
     df.show()
 
-    // Подтвердить задачу
+    // Завершить задачу
     Job.commit()
   }
 }
@@ -85,7 +85,7 @@ job.init(args['JOB_NAME'], args)
 jdbc_url = "jdbc:ch://{host}:{port}/{schema}"
 query = "select * from my_table"
 
-# Для облачного использования, пожалуйста, добавьте параметры ssl
+# Для использования в облаке, пожалуйста, добавьте ssl параметры
 df = (spark.read.format("jdbc")
     .option("driver", 'com.clickhouse.jdbc.ClickHouseDriver')
     .option("url", jdbc_url)
@@ -106,4 +106,4 @@ job.commit()
 </TabItem>
 </Tabs>
 
-Для получения дополнительной информации, пожалуйста, посетите нашу [документацию по Spark & JDBC](/integrations/apache-spark/spark-jdbc#read-data).
+Для получения дополнительных сведений, пожалуйста, посетите нашу [документацию по Spark & JDBC](/integrations/apache-spark/spark-jdbc#read-data).

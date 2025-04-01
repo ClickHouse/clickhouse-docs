@@ -1,13 +1,13 @@
 ---
-description: 'Документация для функций работы с ULID'
+description: 'Документация по функциям для работы с ULID'
 sidebar_label: 'ULID'
 sidebar_position: 190
 slug: /sql-reference/functions/ulid-functions
-title: 'Функции работы с ULID'
+title: 'Функции для работы с ULID'
 ---
 
 
-# Функции работы с ULID
+# Функции для работы с ULID
 
 ## generateULID {#generateulid}
 
@@ -21,7 +21,7 @@ generateULID([x])
 
 **Аргументы**
 
-- `x` — [Выражение](/sql-reference/syntax#expressions), результатом которого является любой из [поддерживаемых типов данных](/sql-reference/data-types). Полученное значение игнорируется, но само выражение используется для обхода [устранения общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination) в случае, если функция вызывается несколько раз в одном запросе. Необязательный параметр.
+- `x` — [Выражение](/sql-reference/syntax#expressions), результатом которого является любой из [поддерживаемых типов данных](/sql-reference/data-types). Полученное значение отбрасывается, но само выражение используется для обхода [устранения общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), если функция вызывается несколько раз в одном запросе. Необязательный параметр.
 
 **Возвращаемое значение**
 
@@ -39,7 +39,7 @@ SELECT generateULID()
 └────────────────────────────┘
 ```
 
-**Пример использования, если нужно сгенерировать несколько значений в одной строке**
+**Пример использования, если необходимо сгенерировать несколько значений в одной строке**
 
 ```sql
 SELECT generateULID(1), generateULID(2)
@@ -63,8 +63,8 @@ ULIDStringToDateTime(ulid[, timezone])
 
 **Аргументы**
 
-- `ulid` — Входной ULID. [String](../data-types/string.md) или [FixedString(26)](../data-types/fixedstring.md).
-- `timezone` — [Название часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательно). [String](../data-types/string.md).
+- `ulid` — Входной ULID. [Строка](../data-types/string.md) или [FixedString(26)](../data-types/fixedstring.md).
+- `timezone` — [Название часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательный). [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 

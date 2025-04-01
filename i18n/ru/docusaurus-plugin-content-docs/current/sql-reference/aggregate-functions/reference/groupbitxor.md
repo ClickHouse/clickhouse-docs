@@ -1,5 +1,5 @@
 ---
-description: 'Применяет побитовую `XOR` для серии чисел.'
+description: 'Применяет побитовый `XOR` для серии чисел.'
 sidebar_position: 153
 slug: /sql-reference/aggregate-functions/reference/groupbitxor
 title: 'groupBitXor'
@@ -8,7 +8,7 @@ title: 'groupBitXor'
 
 # groupBitXor
 
-Применяет побитовую `XOR` для серии чисел.
+Применяет побитовый `XOR` для серии чисел.
 
 ```sql
 groupBitXor(expr)
@@ -16,7 +16,7 @@ groupBitXor(expr)
 
 **Аргументы**
 
-`expr` – Выражение, которое возвращает тип `UInt*` или `Int*`.
+`expr` – Выражение, которое приводит к типу `UInt*` или `Int*`.
 
 **Возвращаемое значение**
 
@@ -40,7 +40,7 @@ binary     decimal
 SELECT groupBitXor(num) FROM t
 ```
 
-Где `num` - это столбец с тестовыми данными.
+Где `num` - это колонка с тестовыми данными.
 
 Результат:
 

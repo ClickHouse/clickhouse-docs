@@ -1,5 +1,5 @@
 ---
-description: 'Вычисляет список различных путей, хранящихся в столбце JSON.'
+description: 'Расчитывает список уникальных путей, хранящихся в колонке JSON.'
 sidebar_position: 216
 slug: /sql-reference/aggregate-functions/reference/distinctjsonpaths
 title: 'distinctJSONPaths'
@@ -8,7 +8,7 @@ title: 'distinctJSONPaths'
 
 # distinctJSONPaths
 
-Вычисляет список различных путей, хранящихся в [JSON](../../data-types/newjson.md) столбце.
+Расчитывает список уникальных путей, хранящихся в колонке [JSON](../../data-types/newjson.md).
 
 **Синтаксис**
 
@@ -18,7 +18,7 @@ distinctJSONPaths(json)
 
 **Аргументы**
 
-- `json` — [JSON](../../data-types/newjson.md) столбец.
+- `json` — [JSON](../../data-types/newjson.md) колонка.
 
 **Возвращаемое значение**
 
@@ -49,7 +49,7 @@ SELECT distinctJSONPaths(json) FROM test_json;
 
 # distinctJSONPathsAndTypes
 
-Вычисляет список различных путей и их типов, хранящихся в [JSON](../../data-types/newjson.md) столбце.
+Расчитывает список уникальных путей и их типов, хранящихся в колонке [JSON](../../data-types/newjson.md).
 
 **Синтаксис**
 
@@ -59,7 +59,7 @@ distinctJSONPathsAndTypes(json)
 
 **Аргументы**
 
-- `json` — [JSON](../../data-types/newjson.md) столбец.
+- `json` — [JSON](../../data-types/newjson.md) колонка.
 
 **Возвращаемое значение**
 
@@ -89,7 +89,7 @@ SELECT distinctJSONPathsAndTypes(json) FROM test_json;
 
 **Примечание**
 
-Если объявление JSON содержит пути с указанными типами, эти пути всегда будут включены в результат функций `distinctJSONPaths/distinctJSONPathsAndTypes`, даже если входные данные не имели значений для этих путей.
+Если объявление JSON содержит пути с указанными типами, эти пути всегда будут включены в результат функций `distinctJSONPaths/distinctJSONPathsAndTypes`, даже если входные данные не содержат значений для этих путей.
 
 ```sql
 DROP TABLE IF EXISTS test_json;

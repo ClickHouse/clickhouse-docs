@@ -1,5 +1,5 @@
 ---
-description: 'Документация по профилям настроек'
+description: 'Документация для профиля настроек'
 sidebar_label: 'ПРОФИЛЬ НАСТРОЕК'
 sidebar_position: 48
 slug: /sql-reference/statements/alter/settings-profile

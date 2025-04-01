@@ -1,25 +1,25 @@
 ---
-description: 'Системная таблица, содержащая информацию обо всех кэшированных схемах файлов.'
+description: 'Системная таблица, содержащая информацию о всех кэшированных схемах файлов.'
 keywords: ['системная таблица', 'schema_inference_cache']
 slug: /operations/system-tables/schema_inference_cache
 title: 'system.schema_inference_cache'
 ---
 
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 
 # system.schema_inference_cache
 
 <SystemTableCloud/>
 
-Содержит информацию обо всех кэшированных схемах файлов.
+Содержит информацию о всех кэшированных схемах файлов.
 
 Колонки:
 - `storage` ([String](/sql-reference/data-types/string.md)) — Название хранилища: File, URL, S3 или HDFS.
 - `source` ([String](/sql-reference/data-types/string.md)) — Источник файла.
 - `format` ([String](/sql-reference/data-types/string.md)) — Название формата.
 - `additional_format_info` ([String](/sql-reference/data-types/string.md)) - Дополнительная информация, необходимая для идентификации схемы. Например, специфические настройки формата.
-- `registration_time` ([DateTime](/sql-reference/data-types/datetime.md)) — Временная метка, когда схема была добавлена в кэш.
+- `registration_time` ([DateTime](/sql-reference/data-types/datetime.md)) — Время регистрации схемы в кэше.
 - `schema` ([String](/sql-reference/data-types/string.md)) - Кэшированная схема.
 
 **Пример**
@@ -33,8 +33,8 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 ```
 
 :::tip
-Поместите `data.jsonl` в директорию `user_files_path`. Вы можете найти это, посмотрев
-в файлы конфигурации ClickHouse. По умолчанию это:
+Поместите `data.jsonl` в директорию `user_files_path`. Вы можете найти её, проверив
+ваши файлы конфигурации ClickHouse. По умолчанию это:
 ```sql
 <user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
 ```
@@ -55,7 +55,7 @@ DESCRIBE file('data.jsonl') SETTINGS input_format_try_infer_integers=0;
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-Давайте посмотрим на содержимое таблицы `system.schema_inference_cache`:
+Давайте посмотрим содержимое таблицы `system.schema_inference_cache`:
 
 ```sql
 SELECT *
@@ -73,5 +73,5 @@ registration_time:      2022-12-29 17:49:52
 schema:                 id Nullable(Float64), age Nullable(Float64), name Nullable(String), hobbies Array(Nullable(String))
 ```
 
-**См. также**
-- [Автоматическое выявление схемы из входных данных](/interfaces/schema-inference.md)
+**Смотрите также**
+- [Автоматическое выведение схемы из входных данных](/interfaces/schema-inference.md)

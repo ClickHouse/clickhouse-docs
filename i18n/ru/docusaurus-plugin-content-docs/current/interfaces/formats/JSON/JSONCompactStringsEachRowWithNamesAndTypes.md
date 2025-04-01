@@ -7,7 +7,7 @@ title: 'JSONCompactStringsEachRowWithNamesAndTypes'
 
 ## Описание {#description}
 
-Отличается от формата `JSONCompactEachRow` тем, что также печатает две строки заголовка с именами и типами столбцов, аналогично [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes).
+Отличается от формата `JSONCompactEachRow` тем, что также выводит две строки заголовков с именами и типами колонок, аналогично [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes).
 
 ## Пример использования {#example-usage}
 
@@ -15,11 +15,11 @@ title: 'JSONCompactStringsEachRowWithNamesAndTypes'
 
 :::note
 Если настройка [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) установлена в 1,
-столбцы из входных данных будут сопоставлены со столбцами таблицы по их именам, столбцы с неизвестными именами будут пропущены, если настройка [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в 1.
+колонки из входных данных будут сопоставляться с колонками из таблицы по их именам, колонки с неизвестными именами будут пропускаться, если настройка [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в 1.
 В противном случае первая строка будет пропущена.
 :::
 
 :::note
 Если настройка [input_format_with_types_use_header](/operations/settings/settings-formats.md/#input_format_with_types_use_header) установлена в 1,
-типы из входных данных будут сопоставляться с типами соответствующих столбцов таблицы. В противном случае вторая строка будет пропущена.
+типы из входных данных будут сравниваться с типами соответствующих колонок из таблицы. В противном случае вторая строка будет пропущена.
 :::

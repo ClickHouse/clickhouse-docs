@@ -1,17 +1,17 @@
 ---
-description: 'Системная таблица, содержащая записи логирования с информацией о различных операциях с объектным хранилищем, таких как загрузки и удаления.'
+description: 'Системная таблица, содержащая записи логов с информацией о различных операциях blob-хранилища, таких как загрузки и удаления.'
 keywords: ['системная таблица', 'blob_storage_log']
 slug: /operations/system-tables/blob_storage_log
 title: 'system.blob_storage_log'
 ---
 
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-Содержит записи логирования с информацией о различных операциях с объектным хранилищем, таких как загрузки и удаления.
+Содержит записи логов с информацией о различных операциях blob-хранилища, таких как загрузки и удаления.
 
-Столбцы:
+Колонки:
 
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
 - `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата события.
@@ -30,13 +30,13 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 - `disk_name` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — Имя связанного диска.
 - `bucket` ([String](../../sql-reference/data-types/string.md)) — Имя корзины.
 - `remote_path` ([String](../../sql-reference/data-types/string.md)) — Путь к удаленному ресурсу.
-- `local_path` ([String](../../sql-reference/data-types/string.md)) — Путь к файлу метаданных на локальной системе, который ссылается на удаленный ресурс.
-- `data_size` ([UInt32](/sql-reference/data-types/int-uint#integer-ranges)) — Размер данных, участвующих в операции загрузки.
+- `local_path` ([String](../../sql-reference/data-types/string.md)) — Путь к метаданным файла на локальной системе, который ссылается на удаленный ресурс.
+- `data_size` ([UInt32](/sql-reference/data-types/int-uint#integer-ranges)) — Размер данных, участвующих в событии загрузки.
 - `error` ([String](../../sql-reference/data-types/string.md)) — Сообщение об ошибке, связанное с событием, если таковое имеется.
 
 **Пример**
 
-Предположим, что операция с объектным хранилищем загружает файл, и событие логируется:
+Предположим, операция blob-хранилища загружает файл, и событие записывается в лог:
 
 ```sql
 SELECT * FROM system.blob_storage_log WHERE query_id = '7afe0450-504d-4e4b-9a80-cd9826047972' ORDER BY event_date, event_time_microseconds \G
@@ -60,8 +60,8 @@ data_size:               259
 error:
 ```
 
-В этом примере операция загрузки была связана с запросом `INSERT` с ID `7afe0450-504d-4e4b-9a80-cd9826047972`. Локальный файл метаданных `store/654/6549e8b3-d753-4447-8047-d462df6e6dbe/tmp_insert_all_1_1_0/checksums.txt` ссылается на удаленный путь `rrr/kxo/tbnqtrghgtnxkzgtcrlutwuslgawe` в корзине `bucket1` на диске `disk_s3`, с размером 259 байт.
+В этом примере операция загрузки была связана с запросом `INSERT` с идентификатором `7afe0450-504d-4e4b-9a80-cd9826047972`. Локальный файл метаданных `store/654/6549e8b3-d753-4447-8047-d462df6e6dbe/tmp_insert_all_1_1_0/checksums.txt` ссылается на удаленный путь `rrr/kxo/tbnqtrghgtnxkzgtcrlutwuslgawe` в корзине `bucket1` на диске `disk_s3`, с размером 259 байт.
 
-**Смотрите также**
+**См. также**
 
 - [Внешние диски для хранения данных](../../operations/storing-data.md)

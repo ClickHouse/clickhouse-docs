@@ -31,7 +31,7 @@ DESCRIBE TABLE hits;
 CREATE TABLE hits (url String, from IPv4) ENGINE = MergeTree() ORDER BY from;
 ```
 
-`IPv4` домен поддерживает пользовательский формат ввода в виде строк IPv4:
+Домен `IPv4` поддерживает пользовательский формат ввода в виде строк IPv4:
 
 ```sql
 INSERT INTO hits (url, from) VALUES ('https://wikipedia.org', '116.253.40.133')('https://clickhouse.com', '183.247.232.58')('https://clickhouse.com/docs/en/', '116.106.34.242');
@@ -71,6 +71,6 @@ SELECT toIPv4('127.0.0.1') = toIPv6('::ffff:127.0.0.1');
 └─────────────────────────────────────────────────────────┘
 ```
 
-**См. также**
+**См. Также**
 
-- [Функции для работы с адресами IPv4 и IPv6](../functions/ip-address-functions.md)
+- [Функции для Работы с IPv4 и IPv6 Адресами](../functions/ip-address-functions.md)

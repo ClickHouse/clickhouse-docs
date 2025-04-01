@@ -1,6 +1,6 @@
 ---
-description: 'Битовые или агрегатные вычисления из столбца без знака целого числа, возвращают
-  кардинальность типа UInt64, если добавить суффикс -State, то вернуть объект [bitmap](../../../sql-reference/functions/bitmap-functions.md)'
+description: 'Вычисления битовых карт или агрегатов из колонки с беззнаковыми целыми числами, возвращает
+  кардинальность типа UInt64, если добавить суффикс -State, то возвращает объект [битовой карты](../../../sql-reference/functions/bitmap-functions.md)'
 sidebar_position: 148
 slug: /sql-reference/aggregate-functions/reference/groupbitmap
 title: 'groupBitmap'
@@ -9,7 +9,7 @@ title: 'groupBitmap'
 
 # groupBitmap
 
-Битовые или агрегатные вычисления из столбца без знака целого числа, возвращают кардинальность типа UInt64, если добавить суффикс -State, то вернуть [объект bitmap](../../../sql-reference/functions/bitmap-functions.md).
+Вычисления битовых карт или агрегатов из колонки с беззнаковыми целыми числами, возвращает кардинальность типа UInt64, если добавить суффикс -State, то возвращает [объект битовой карты](../../../sql-reference/functions/bitmap-functions.md).
 
 ```sql
 groupBitmap(expr)
@@ -17,7 +17,7 @@ groupBitmap(expr)
 
 **Аргументы**
 
-`expr` – Выражение, которое приводит к типу `UInt*`.
+`expr` – Выражение, которое возвращает тип `UInt*`.
 
 **Возвращаемое значение**
 

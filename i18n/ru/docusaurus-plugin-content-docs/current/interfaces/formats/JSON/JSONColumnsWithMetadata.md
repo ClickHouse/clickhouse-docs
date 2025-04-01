@@ -14,10 +14,10 @@ title: 'JSONColumnsWithMetadata'
 
 ## Описание {#description}
 
-Отличается от формата [`JSONColumns`](./JSONColumns.md) тем, что также содержит некоторые метаданные и статистику (аналогично формату [`JSON`](./JSON.md)).
+Этот формат отличается от формата [`JSONColumns`](./JSONColumns.md) тем, что он также содержит некоторые метаданные и статистику (аналогично формату [`JSON`](./JSON.md)).
 
 :::note
-Формат `JSONColumnsWithMetadata` буферизует все данные в памяти, а затем выводит их как единый блок, что может привести к высокому потреблению памяти.
+Формат `JSONColumnsWithMetadata` буферизует все данные в памяти, а затем выводит их как один блок, что может привести к высокому потреблению памяти.
 :::
 
 ## Пример использования {#example-usage}
@@ -63,7 +63,7 @@ title: 'JSONColumnsWithMetadata'
 }
 ```
 
-Для формата ввода `JSONColumnsWithMetadata`, если настройка [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) установлена в `1`, 
-типы из метаданных во входных данных будут сопоставлены с типами соответствующих столбцов в таблице.
+Для формата ввода `JSONColumnsWithMetadata`, если настройка [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) установлена в `1`,
+типы из метаданных входных данных будут сопоставлены с типами соответствующих колонок из таблицы.
 
 ## Настройки формата {#format-settings}

@@ -11,122 +11,126 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # Форматы для ввода и вывода данных {#formats-for-input-and-output-data}
 
-ClickHouse поддерживает большинство известных текстовых и бинарных форматов данных. Это позволяет легко интегрироваться в практически любой рабочий конвейер данных, чтобы использовать преимущества ClickHouse.
+ClickHouse поддерживает большинство известных текстовых и бинарных форматов данных. Это позволяет легко интегрироваться в практически любой рабочий конвейер данных, чтобы воспользоваться преимуществами ClickHouse.
 
 ## Форматы ввода {#input-formats}
 
 Форматы ввода используются для:
-- Парсинга данных, предоставленных в операторах `INSERT`
-- Выполнения запросов `SELECT` из таблиц с поддержкой файлов, таких как `File`, `URL` или `HDFS`
+- Парсинга данных, предоставляемых в операциях `INSERT`
+- Выполнения запросов `SELECT` из таблиц, основанных на файлах, таких как `File`, `URL` или `HDFS`
 - Чтения словарей
 
-Выбор правильного формата ввода имеет ключевое значение для эффективного приема данных в ClickHouse. С более чем 70 поддерживаемыми форматами, выбор наиболее производительного варианта может значительно повлиять на скорость вставки, производительность CPU и использование памяти, а также на общую эффективность системы. Чтобы помочь с выбором, мы протестировали производительность приема данных по форматам, выявив ключевые выводы:
+Выбор правильного формата ввода имеет решающее значение для эффективного приёма данных в ClickHouse. С более чем 70 поддерживаемыми форматами выбор наиболее производительного варианта может значительно повлиять на скорость вставки, использование CPU и памяти, а также на общую эффективность системы. Чтобы помочь с этим выбором, мы провели бенчмаркинг производительности ввода по форматам, выявив ключевые выводы:
 
-- **Формат [Native](formats/Native.md) является наиболее эффективным форматом ввода**, предлагая лучшее сжатие, наименьшее использование ресурсов и минимальные накладные расходы на сервере.
-- **Сжатие имеет важное значение** - LZ4 уменьшает размер данных с минимальными затратами на CPU, в то время как ZSTD предлагает более высокое сжатие за счет дополнительных затрат CPU.
-- **Предварительная сортировка имеет умеренное влияние**, поскольку ClickHouse уже сортирует эффективно.
-- **Пакетная обработка значительно улучшает эффективность** - более крупные пакеты уменьшают накладные расходы на вставку и увеличивают пропускную способность.
+- **Формат [Native](formats/Native.md) является наиболее эффективным форматом ввода**, предлагая лучшее сжатие, минимальное 
+  использование ресурсов и минимальные накладные расходы на обработку на стороне сервера.
+- **Сжатие имеет решающее значение** - LZ4 уменьшает размер данных с минимальными затратами CPU, в то время как ZSTD предлагает более высокое сжатие за 
+  счёт дополнительных затрат CPU.
+- **Предварительная сортировка имеет умеренное влияние**, так как ClickHouse уже эффективно сортирует.
+- **Пакетная загрузка значительно улучшает эффективность** - более крупные пакеты снижают накладные расходы на вставку и увеличивают пропускную способность.
 
-Для углубленного анализа результатов и передовых практик прочитайте полный [анализ производительности](https://www.clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient). Для полного теста результатов исследуйте онлайн информационную панель [FastFormats](https://fastformats.clickhouse.com/).
+Для глубокого анализа результатов и лучших практик 
+читайте полный [анализ бенчмаркинга](https://www.clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient).
+Для ознакомления с полными результатами тестов исследуйте онлайн-дашборд [FastFormats](https://fastformats.clickhouse.com/).
 
 ## Форматы вывода {#output-formats}
 
-Поддерживаемые форматы для вывода используются для:
-- Упорядочивания результатов запроса `SELECT`
-- Выполнения операций `INSERT` в таблицы с поддержкой файлов
+Поддерживаемые форматы вывода используются для:
+- Организации результатов запроса `SELECT`
+- Выполнения операций `INSERT` в таблицы, основанные на файлах
 
 ## Обзор форматов {#formats-overview}
 
 Поддерживаемые форматы:
 
-| Формат                                                                                       | Ввод | Вывод |
-|----------------------------------------------------------------------------------------------|-----|-------|
-| [TabSeparated](#tabseparated)                                                                | ✔   | ✔     |
-| [TabSeparatedRaw](#tabseparatedraw)                                                          | ✔   | ✔     |
-| [TabSeparatedWithNames](#tabseparatedwithnames)                                              | ✔   | ✔     |
-| [TabSeparatedWithNamesAndTypes](#tabseparatedwithnamesandtypes)                              | ✔   | ✔     |
-| [TabSeparatedRawWithNames](#tabseparatedrawwithnames)                                        | ✔   | ✔     |
-| [TabSeparatedRawWithNamesAndTypes](#tabseparatedrawwithnamesandtypes)                        | ✔   | ✔     |
-| [Template](#format-template)                                                                 | ✔   | ✔     |
-| [TemplateIgnoreSpaces](#templateignorespaces)                                                | ✔   | ✗     |
-| [CSV](#csv)                                                                                  | ✔   | ✔     |
-| [CSVWithNames](#csvwithnames)                                                                | ✔   | ✔     |
-| [CSVWithNamesAndTypes](#csvwithnamesandtypes)                                                | ✔   | ✔     |
-| [CustomSeparated](#format-customseparated)                                                   | ✔   | ✔     |
-| [CustomSeparatedWithNames](#customseparatedwithnames)                                        | ✔   | ✔     |
-| [CustomSeparatedWithNamesAndTypes](#customseparatedwithnamesandtypes)                        | ✔   | ✔     |
-| [SQLInsert](#sqlinsert)                                                                      | ✗   | ✔     |
-| [Values](#data-format-values)                                                                | ✔   | ✔     |
-| [Vertical](#vertical)                                                                        | ✗   | ✔     |
-| [JSON](#json)                                                                                | ✔   | ✔     |
-| [JSONAsString](#jsonasstring)                                                                | ✔   | ✗     |
-| [JSONAsObject](#jsonasobject)                                                                | ✔   | ✗     |
-| [JSONStrings](#jsonstrings)                                                                  | ✔   | ✔     |
-| [JSONColumns](#jsoncolumns)                                                                  | ✔   | ✔     |
-| [JSONColumnsWithMetadata](#jsoncolumnsmonoblock)                                            | ✔   | ✔     |
-| [JSONCompact](#jsoncompact)                                                                  | ✔   | ✔     |
-| [JSONCompactStrings](#jsoncompactstrings)                                                    | ✗   | ✔     |
-| [JSONCompactColumns](#jsoncompactcolumns)                                                    | ✔   | ✔     |
-| [JSONEachRow](#jsoneachrow)                                                                  | ✔   | ✔     |
-| [PrettyJSONEachRow](#prettyjsoneachrow)                                                      | ✗   | ✔     |
-| [JSONEachRowWithProgress](#jsoneachrowwithprogress)                                          | ✗   | ✔     |
-| [JSONStringsEachRow](#jsonstringseachrow)                                                    | ✔   | ✔     |
-| [JSONStringsEachRowWithProgress](#jsonstringseachrowwithprogress)                            | ✗   | ✔     |
-| [JSONCompactEachRow](#jsoncompacteachrow)                                                    | ✔   | ✔     |
-| [JSONCompactEachRowWithNames](#jsoncompacteachrowwithnames)                                  | ✔   | ✔     |
-| [JSONCompactEachRowWithNamesAndTypes](#jsoncompacteachrowwithnamesandtypes)                  | ✔   | ✔     |
-| [JSONCompactEachRowWithProgress](#jsoncompacteachrow)                                        | ✗   | ✔     |
-| [JSONCompactStringsEachRow](#jsoncompactstringseachrow)                                      | ✔   | ✔     |
-| [JSONCompactStringsEachRowWithNames](#jsoncompactstringseachrowwithnames)                    | ✔   | ✔     |
-| [JSONCompactStringsEachRowWithNamesAndTypes](#jsoncompactstringseachrowwithnamesandtypes)    | ✔   | ✔     |
-| [JSONCompactStringsEachRowWithProgress](#jsoncompactstringseachrowwithnamesandtypes)         | ✗   | ✔     |
-| [JSONObjectEachRow](#jsonobjecteachrow)                                                      | ✔   | ✔     |
-| [BSONEachRow](#bsoneachrow)                                                                  | ✔   | ✔     |
-| [TSKV](#tskv)                                                                                | ✔   | ✔     |
-| [Pretty](#pretty)                                                                            | ✗   | ✔     |
-| [PrettyNoEscapes](#prettynoescapes)                                                          | ✗   | ✔     |
-| [PrettyMonoBlock](#prettymonoblock)                                                          | ✗   | ✔     |
-| [PrettyNoEscapesMonoBlock](#prettynoescapesmonoblock)                                       | ✗   | ✔     |
-| [PrettyCompact](#prettycompact)                                                              | ✗   | ✔     |
-| [PrettyCompactNoEscapes](#prettycompactnoescapes)                                            | ✗   | ✔     |
-| [PrettyCompactMonoBlock](#prettycompactmonoblock)                                            | ✗   | ✔     |
-| [PrettyCompactNoEscapesMonoBlock](#prettycompactnoescapesmonoblock)                        | ✗   | ✔     |
-| [PrettySpace](#prettyspace)                                                                  | ✗   | ✔     |
-| [PrettySpaceNoEscapes](#prettyspacenoescapes)                                               | ✗   | ✔     |
-| [PrettySpaceMonoBlock](#prettyspacemonoblock)                                               | ✗   | ✔     |
-| [PrettySpaceNoEscapesMonoBlock](#prettyspacenoescapesmonoblock)                             | ✗   | ✔     |
-| [Prometheus](#prometheus)                                                                    | ✗   | ✔     |
-| [Protobuf](#protobuf)                                                                        | ✔   | ✔     |
-| [ProtobufSingle](#protobufsingle)                                                            | ✔   | ✔     |
-| [ProtobufList](#protobuflist)                                                                | ✔   | ✔     |
-| [Avro](#data-format-avro)                                                                    | ✔   | ✔     |
-| [AvroConfluent](#data-format-avro-confluent)                                                 | ✔   | ✗     |
-| [Parquet](#data-format-parquet)                                                              | ✔   | ✔     |
-| [ParquetMetadata](#data-format-parquet-metadata)                                             | ✔   | ✗     |
-| [Arrow](#data-format-arrow)                                                                   | ✔   | ✔     |
-| [ArrowStream](#data-format-arrow-stream)                                                     | ✔   | ✔     |
-| [ORC](#data-format-orc)                                                                      | ✔   | ✔     |
-| [One](#data-format-one)                                                                      | ✔   | ✗     |
-| [Npy](#data-format-npy)                                                                      | ✔   | ✔     |
-| [RowBinary](#rowbinary)                                                                      | ✔   | ✔     |
-| [RowBinaryWithNames](#rowbinarywithnamesandtypes)                                            | ✔   | ✔     |
-| [RowBinaryWithNamesAndTypes](#rowbinarywithnamesandtypes)                                    | ✔   | ✔     |
-| [RowBinaryWithDefaults](#rowbinarywithdefaults)                                              | ✔   | ✗     |
-| [Native](#native)                                                                            | ✔   | ✔     |
-| [Null](#null)                                                                                | ✗   | ✔     |
-| [XML](#xml)                                                                                  | ✗   | ✔     |
-| [CapnProto](#capnproto)                                                                      | ✔   | ✔     |
-| [LineAsString](#lineasstring)                                                                | ✔   | ✔     |
-| [Regexp](#data-format-regexp)                                                                | ✔   | ✗     |
-| [RawBLOB](#rawblob)                                                                          | ✔   | ✔     |
-| [MsgPack](#msgpack)                                                                          | ✔   | ✔     |
-| [MySQLDump](#mysqldump)                                                                      | ✔   | ✗     |
-| [DWARF](#dwarf)                                                                              | ✔   | ✗     |
-| [Markdown](#markdown)                                                                        | ✗   | ✔     |
-| [Form](#form)                                                                                | ✔   | ✗     |
+| Формат                                                                                     | Ввод | Вывод |
+|-------------------------------------------------------------------------------------------|-----|-------|
+| [TabSeparated](#tabseparated)                                                             | ✔   | ✔     |
+| [TabSeparatedRaw](#tabseparatedraw)                                                       | ✔   | ✔     |
+| [TabSeparatedWithNames](#tabseparatedwithnames)                                           | ✔   | ✔     |
+| [TabSeparatedWithNamesAndTypes](#tabseparatedwithnamesandtypes)                           | ✔   | ✔     |
+| [TabSeparatedRawWithNames](#tabseparatedrawwithnames)                                     | ✔   | ✔     |
+| [TabSeparatedRawWithNamesAndTypes](#tabseparatedrawwithnamesandtypes)                     | ✔   | ✔     |
+| [Template](#format-template)                                                              | ✔   | ✔     |
+| [TemplateIgnoreSpaces](#templateignorespaces)                                             | ✔   | ✗     |
+| [CSV](#csv)                                                                               | ✔   | ✔     |
+| [CSVWithNames](#csvwithnames)                                                             | ✔   | ✔     |
+| [CSVWithNamesAndTypes](#csvwithnamesandtypes)                                             | ✔   | ✔     |
+| [CustomSeparated](#format-customseparated)                                                | ✔   | ✔     |
+| [CustomSeparatedWithNames](#customseparatedwithnames)                                     | ✔   | ✔     |
+| [CustomSeparatedWithNamesAndTypes](#customseparatedwithnamesandtypes)                     | ✔   | ✔     |
+| [SQLInsert](#sqlinsert)                                                                   | ✗   | ✔     |
+| [Values](#data-format-values)                                                             | ✔   | ✔     |
+| [Vertical](#vertical)                                                                     | ✗   | ✔     |
+| [JSON](#json)                                                                             | ✔   | ✔     |
+| [JSONAsString](#jsonasstring)                                                             | ✔   | ✗     |
+| [JSONAsObject](#jsonasobject)                                                             | ✔   | ✗     |
+| [JSONStrings](#jsonstrings)                                                               | ✔   | ✔     |
+| [JSONColumns](#jsoncolumns)                                                               | ✔   | ✔     |
+| [JSONColumnsWithMetadata](#jsoncolumnsmonoblock)                                          | ✔   | ✔     |
+| [JSONCompact](#jsoncompact)                                                               | ✔   | ✔     |
+| [JSONCompactStrings](#jsoncompactstrings)                                                 | ✗   | ✔     |
+| [JSONCompactColumns](#jsoncompactcolumns)                                                 | ✔   | ✔     |
+| [JSONEachRow](#jsoneachrow)                                                               | ✔   | ✔     |
+| [PrettyJSONEachRow](#prettyjsoneachrow)                                                   | ✗   | ✔     |
+| [JSONEachRowWithProgress](#jsoneachrowwithprogress)                                       | ✗   | ✔     |
+| [JSONStringsEachRow](#jsonstringseachrow)                                                 | ✔   | ✔     |
+| [JSONStringsEachRowWithProgress](#jsonstringseachrowwithprogress)                         | ✗   | ✔     |
+| [JSONCompactEachRow](#jsoncompacteachrow)                                                 | ✔   | ✔     |
+| [JSONCompactEachRowWithNames](#jsoncompacteachrowwithnames)                               | ✔   | ✔     |
+| [JSONCompactEachRowWithNamesAndTypes](#jsoncompacteachrowwithnamesandtypes)               | ✔   | ✔     |
+| [JSONCompactEachRowWithProgress](#jsoncompacteachrow)                                     | ✗    | ✔     |
+| [JSONCompactStringsEachRow](#jsoncompactstringseachrow)                                   | ✔   | ✔     |
+| [JSONCompactStringsEachRowWithNames](#jsoncompactstringseachrowwithnames)                 | ✔   | ✔     |
+| [JSONCompactStringsEachRowWithNamesAndTypes](#jsoncompactstringseachrowwithnamesandtypes) | ✔   | ✔     |
+| [JSONCompactStringsEachRowWithProgress](#jsoncompactstringseachrowwithnamesandtypes)      | ✗   | ✔     |
+| [JSONObjectEachRow](#jsonobjecteachrow)                                                   | ✔   | ✔     |
+| [BSONEachRow](#bsoneachrow)                                                               | ✔   | ✔     |
+| [TSKV](#tskv)                                                                             | ✔   | ✔     |
+| [Pretty](#pretty)                                                                         | ✗   | ✔     |
+| [PrettyNoEscapes](#prettynoescapes)                                                       | ✗   | ✔     |
+| [PrettyMonoBlock](#prettymonoblock)                                                       | ✗   | ✔     |
+| [PrettyNoEscapesMonoBlock](#prettynoescapesmonoblock)                                     | ✗   | ✔     |
+| [PrettyCompact](#prettycompact)                                                           | ✗   | ✔     |
+| [PrettyCompactNoEscapes](#prettycompactnoescapes)                                         | ✗   | ✔     |
+| [PrettyCompactMonoBlock](#prettycompactmonoblock)                                         | ✗   | ✔     |
+| [PrettyCompactNoEscapesMonoBlock](#prettycompactnoescapesmonoblock)                       | ✗   | ✔     |
+| [PrettySpace](#prettyspace)                                                               | ✗   | ✔     |
+| [PrettySpaceNoEscapes](#prettyspacenoescapes)                                             | ✗   | ✔     |
+| [PrettySpaceMonoBlock](#prettyspacemonoblock)                                             | ✗   | ✔     |
+| [PrettySpaceNoEscapesMonoBlock](#prettyspacenoescapesmonoblock)                           | ✗   | ✔     |
+| [Prometheus](#prometheus)                                                                 | ✗   | ✔     |
+| [Protobuf](#protobuf)                                                                     | ✔   | ✔     |
+| [ProtobufSingle](#protobufsingle)                                                         | ✔   | ✔     |
+| [ProtobufList](#protobuflist)                                                              | ✔   | ✔     |
+| [Avro](#data-format-avro)                                                                 | ✔   | ✔     |
+| [AvroConfluent](#data-format-avro-confluent)                                              | ✔   | ✗     |
+| [Parquet](#data-format-parquet)                                                           | ✔   | ✔     |
+| [ParquetMetadata](#data-format-parquet-metadata)                                          | ✔   | ✗     |
+| [Arrow](#data-format-arrow)                                                               | ✔   | ✔     |
+| [ArrowStream](#data-format-arrow-stream)                                                  | ✔   | ✔     |
+| [ORC](#data-format-orc)                                                                   | ✔   | ✔     |
+| [One](#data-format-one)                                                                   | ✔   | ✗     |
+| [Npy](#data-format-npy)                                                                   | ✔   | ✔     |
+| [RowBinary](#rowbinary)                                                                   | ✔   | ✔     |
+| [RowBinaryWithNames](#rowbinarywithnamesandtypes)                                         | ✔   | ✔     |
+| [RowBinaryWithNamesAndTypes](#rowbinarywithnamesandtypes)                                 | ✔   | ✔     |
+| [RowBinaryWithDefaults](#rowbinarywithdefaults)                                           | ✔   | ✗     |
+| [Native](#native)                                                                         | ✔   | ✔     |
+| [Null](#null)                                                                             | ✗   | ✔     |
+| [XML](#xml)                                                                               | ✗   | ✔     |
+| [CapnProto](#capnproto)                                                                   | ✔   | ✔     |
+| [LineAsString](#lineasstring)                                                             | ✔   | ✔     |
+| [Regexp](#data-format-regexp)                                                             | ✔   | ✗     |
+| [RawBLOB](#rawblob)                                                                       | ✔   | ✔     |
+| [MsgPack](#msgpack)                                                                       | ✔   | ✔     |
+| [MySQLDump](#mysqldump)                                                                   | ✔   | ✗     |
+| [DWARF](#dwarf)                                                                           | ✔   | ✗     |
+| [Markdown](#markdown)                                                                     | ✗   | ✔     |
+| [Form](#form)                                                                             | ✔   | ✗     |
 
 
-Вы можете контролировать некоторые параметры обработки форматов с помощью настроек ClickHouse. Для получения дополнительной информации прочитайте раздел [Настройки](/operations/settings/settings-formats.md).
+Вы можете контролировать некоторые параметры обработки формата с помощью настроек ClickHouse. Для получения дополнительной информации смотрите раздел [Настройки](/operations/settings/settings-formats.md).
 
 ### TabSeparated {#tabseparated}
 
@@ -266,7 +270,7 @@ ClickHouse поддерживает большинство известных т
 
 ### JSONCompactEachRowWithProgress {#jsoncompacteachrowwithprogress}
 
-Подобно `JSONEachRowWithProgress`, но выводит события `row` в компактной форме, как в формате `JSONCompactEachRow`.
+Аналогично `JSONEachRowWithProgress`, но выводит события `row` в компактном формате, как в формате `JSONCompactEachRow`.
 
 ### JSONCompactStringsEachRowWithNames {#jsoncompactstringseachrowwithnames}
 
@@ -280,9 +284,9 @@ ClickHouse поддерживает большинство известных т
 
 Смотрите [JSONObjectEachRow](/interfaces/formats/JSONObjectEachRow)
 
-### JSON Формат Настройки {#json-formats-settings}
+### Настройки JSON форматов {#json-formats-settings}
 
-Смотрите [Настройки формата JSON](/operations/settings/formats)
+Смотрите [Настройки JSON форматов](/operations/settings/formats)
 
 ### BSONEachRow {#bsoneachrow}
 
@@ -326,7 +330,7 @@ ClickHouse поддерживает большинство известных т
 
 ### PrettyCompactNoEscapesMonoBlock {#prettycompactnoescapesmonoblock}
 
-Смотрите [PrettyCompactNoEscapesMonoBlock](/interfaces/formats/PrettyCompactNoEscapesMonoBlock)
+Смотрите [PrettyCompactNoEscapesMonoBlock](/interfaces/formats/PrettyCompactNoEscapesmonoBlock)
 
 ### PrettySpace {#prettyspace}
 
@@ -465,15 +469,25 @@ ClickHouse поддерживает большинство известных т
 
 ## Схема формата {#formatschema}
 
-Имя файла, содержащего схему формата, устанавливается с помощью настройки `format_schema`. Необходимо установить эту настройку, когда используется один из форматов `Cap'n Proto` и `Protobuf`. Схема формата является комбинацией имени файла и имени типа сообщения в этом файле, разделёнными двоеточием, например, `schemafile.proto:MessageType`. Если файл имеет стандартное расширение для формата (например, `.proto` для `Protobuf`), его можно опустить, и в этом случае схема формата выглядит как `schemafile:MessageType`.
+Имя файла, содержащего схему формата, задаётся с помощью настройки `format_schema`.
+Необходимо установить эту настройку при использовании одного из форматов `Cap'n Proto` и `Protobuf`.
+Схема формата — это комбинация имени файла и названия типа сообщения в этом файле, разделённых двоеточием,
+например, `schemafile.proto:MessageType`.
+Если файл имеет стандартное расширение для формата (например, `.proto` для `Protobuf`),
+его можно опустить, и в этом случае схема формата выглядит как `schemafile:MessageType`.
 
-Если вы вводите или выводите данные через [клиент](/interfaces/cli.md) в интерактивном режиме, указанное имя файла в схеме формата может содержать абсолютный путь или путь относительно текущего каталога на клиенте. Если вы используете клиент в [пакетном режиме](/interfaces/cli.md/#batch-mode), путь к схеме должен быть относительным по соображениям безопасности.
+Если вы вводите или выводите данные через [клиент](/interfaces/cli.md) в интерактивном режиме, то имя файла, указанное в схеме формата,
+может содержать абсолютный путь или путь относительно текущего каталога на клиенте.
+Если вы используете клиент в [пакетном режиме](/interfaces/cli.md/#batch-mode), путь к схеме должен быть относительным по соображениям безопасности.
 
-Если вы вводите или выводите данные через [HTTP интерфейс](/interfaces/http.md), имя файла, указанное в схеме формата, должно находиться в каталоге, указанном в [format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path) в конфигурации сервера.
+Если вы вводите или выводите данные через [HTTP интерфейс](/interfaces/http.md), имя файла, указанное в схеме формата,
+должно находиться в каталоге, указанном в [format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path)
+в конфигурации сервера.
 
 ## Пропуск ошибок {#skippingerrors}
 
-Некоторые форматы, такие как `CSV`, `TabSeparated`, `TSKV`, `JSONEachRow`, `Template`, `CustomSeparated` и `Protobuf`, могут пропускать повреждённые строки, если произошла ошибка парсинга, и продолжать парсинг с начала следующей строки. Смотрите настройки [input_format_allow_errors_num](/operations/settings/settings-formats.md/#input_format_allow_errors_num) и [input_format_allow_errors_ratio](/operations/settings/settings-formats.md/#input_format_allow_errors_ratio). 
+Некоторые форматы, такие как `CSV`, `TabSeparated`, `TSKV`, `JSONEachRow`, `Template`, `CustomSeparated` и `Protobuf`, могут пропускать повреждённые строки, если произошла ошибка парсинга и продолжать парсинг с начала следующей строки. Смотрите настройки [input_format_allow_errors_num](/operations/settings/settings-formats.md/#input_format_allow_errors_num) и
+[input_format_allow_errors_ratio](/operations/settings/settings-formats.md/#input_format_allow_errors_ratio).
 Ограничения:
-- В случае ошибки парсинга `JSONEachRow` пропускает все данные до новой строки (или EOF), поэтому строки должны разделяться `\n`, чтобы корректно считывать ошибки.
-- `Template` и `CustomSeparated` используют разделитель после последнего столбца и разделитель между строками для нахождения начала следующей строки, поэтому пропуск ошибок работает только в том случае, если хотя бы один из них не пуст.
+- В случае ошибки парсинга `JSONEachRow` пропускает все данные до новой строки (или EOF), поэтому строки должны быть разделены `\n`, чтобы правильно подсчитать ошибки.
+- `Template` и `CustomSeparated` используют разделитель после последнего столбца и разделитель между строками для определения начала следующей строки, поэтому пропуск ошибок работает только в том случае, если хотя бы один из них не пуст.

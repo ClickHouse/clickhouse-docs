@@ -1,12 +1,12 @@
 ---
-description: 'Документация по команде Describe Table'
+description: 'Документация по команде DESCRIBE TABLE'
 sidebar_label: 'DESCRIBE TABLE'
 sidebar_position: 42
 slug: /sql-reference/statements/describe-table
 title: 'DESCRIBE TABLE'
 ---
 
-Возвращает информацию о столбцах таблицы.
+Возвращает информацию о колонках таблицы.
 
 **Синтаксис**
 
@@ -14,20 +14,20 @@ title: 'DESCRIBE TABLE'
 DESC|DESCRIBE TABLE [db.]table [INTO OUTFILE filename] [FORMAT format]
 ```
 
-Команда `DESCRIBE` возвращает строку для каждого столбца таблицы с следующими [String](../../sql-reference/data-types/string.md) значениями:
+Команда `DESCRIBE` возвращает строку для каждой колонки таблицы с следующими [строковыми](../../sql-reference/data-types/string.md) значениями:
 
-- `name` — Имя столбца.
-- `type` — Тип столбца.
-- `default_type` — Клаузула, которая используется в [default expression](/sql-reference/statements/create/table): `DEFAULT`, `MATERIALIZED` или `ALIAS`. Если выражение по умолчанию отсутствует, возвращается пустая строка.
+- `name` — Название колонки.
+- `type` — Тип колонки.
+- `default_type` — Клаузула, которая используется в [выражении по умолчанию](/sql-reference/statements/create/table): `DEFAULT`, `MATERIALIZED` или `ALIAS`. Если выражение по умолчанию отсутствует, возвращается пустая строка.
 - `default_expression` — Выражение, указанное после клаузулы `DEFAULT`.
-- `comment` — [Комментарий к столбцу](/sql-reference/statements/alter/column#comment-column).
-- `codec_expression` — [кодек](/sql-reference/statements/create/table#column_compression_codec), который применяется к столбцу.
+- `comment` — [Комментарий к колонке](/sql-reference/statements/alter/column#comment-column).
+- `codec_expression` — [Кодек](/sql-reference/statements/create/table#column_compression_codec), который применяется к колонке.
 - `ttl_expression` — Выражение [TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl).
-- `is_subcolumn` — Флаг, который равен `1` для внутренних подстолбцов. Он включен в результат только если описание подстолбцов включено настройкой [describe_include_subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
+- `is_subcolumn` — Флаг, который равен `1` для внутренних подколонок. Он включается в результат только если описание подколонок включено с помощью настройки [describe_include_subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
 
-Все столбцы в [Nested](../../sql-reference/data-types/nested-data-structures/index.md) структурах данных описываются отдельно. Имя каждого столбца префиксируется именем родительского столбца и точкой.
+Все колонки в [Nested](../../sql-reference/data-types/nested-data-structures/index.md) структурах данных описываются отдельно. Название каждой колонки начинается с названия родительской колонки и точки.
 
-Чтобы показать внутренние подстолбцы других типов данных, используйте настройку [describe_include_subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
+Чтобы показать внутренние подколонки других типов данных, используйте настройку [describe_include_subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
 
 **Пример**
 
@@ -53,7 +53,7 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-Второй запрос дополнительно показывает подстолбцы:
+Во втором запросе дополнительно показываются подколонки:
 
 ```text
 ┌─name──────┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┬─is_subcolumn─┐
@@ -65,6 +65,6 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 └───────────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┴──────────────┘
 ```
 
-**См. также**
+**Смотрите Также**
 
 - Настройка [describe_include_subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).

@@ -1,19 +1,19 @@
 ---
-description: 'Документация по функциям битмапа'
-sidebar_label: 'Битмап'
+description: 'Документация по битовым функциям'
+sidebar_label: 'Битовые функции'
 sidebar_position: 25
 slug: /sql-reference/functions/bitmap-functions
-title: 'Функции битмапа'
+title: 'Битовые функции'
 ---
 
 
-# Функции битмапа
+# Битовые функции
 
-Битмапы могут быть созданы двумя способами. Первый способ - это использование агрегатной функции groupBitmap с `-State`, другой способ - создать битмап из объекта массива.
+Битовые карты могут быть созданы двумя способами. Первый способ — это конструкция с помощью функции агрегации groupBitmap с `-State`, второй способ — создать битовую карту из объекта массива.
 
 ## bitmapBuild {#bitmapbuild}
 
-Создает битмап из массива беззнаковых целых чисел.
+Создает битовую карту из массива беззнаковых целых чисел.
 
 **Синтаксис**
 
@@ -23,7 +23,7 @@ bitmapBuild(array)
 
 **Аргументы**
 
-- `array` – массив беззнаковых целых чисел.
+- `array` – Массив беззнаковых целых чисел.
 
 **Пример**
 
@@ -39,7 +39,7 @@ SELECT bitmapBuild([1, 2, 3, 4, 5]) AS res, toTypeName(res);
 
 ## bitmapToArray {#bitmaptoarray}
 
-Преобразует битмап в массив целых чисел.
+Конвертирует битовую карту в массив целых чисел.
 
 **Синтаксис**
 
@@ -49,7 +49,7 @@ bitmapToArray(bitmap)
 
 **Аргументы**
 
-- `bitmap` – объект битмапа.
+- `bitmap` – Объект битовой карты.
 
 **Пример**
 
@@ -67,7 +67,7 @@ SELECT bitmapToArray(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 
 ## bitmapSubsetInRange {#bitmapsubsetinrange}
 
-Возвращает подмножество битмапа с битами в пределах заданного интервала значений.
+Возвращает подмножество битовой карты с битами в пределах интервала значений.
 
 **Синтаксис**
 
@@ -77,9 +77,9 @@ bitmapSubsetInRange(bitmap, range_start, range_end)
 
 **Аргументы**
 
-- `bitmap` – [объект битмапа](#bitmapbuild).
-- `range_start` – начало диапазона (включительно). [UInt32](../data-types/int-uint.md).
-- `range_end` – конец диапазона (исключительно). [UInt32](../data-types/int-uint.md).
+- `bitmap` – [Объект битовой карты](#bitmapbuild).
+- `range_start` – Начало диапазона (включительно). [UInt32](../data-types/int-uint.md).
+- `range_end` – Конец диапазона (исключительно). [UInt32](../data-types/int-uint.md).
 
 **Пример**
 
@@ -97,7 +97,7 @@ SELECT bitmapToArray(bitmapSubsetInRange(bitmapBuild([0,1,2,3,4,5,6,7,8,9,10,11,
 
 ## bitmapSubsetLimit {#bitmapsubsetlimit}
 
-Возвращает подмножество битмапа с наименьшим значением бита `range_start` и не более `cardinality_limit` элементов.
+Возвращает подмножество битовой карты с наименьшим значением бита `range_start` и не более `cardinality_limit` элементов.
 
 **Синтаксис**
 
@@ -107,9 +107,9 @@ bitmapSubsetLimit(bitmap, range_start, cardinality_limit)
 
 **Аргументы**
 
-- `bitmap` – [объект битмапа](#bitmapbuild).
-- `range_start` – начало диапазона (включительно). [UInt32](../data-types/int-uint.md).
-- `cardinality_limit` – максимальная кардинальность подмножества. [UInt32](../data-types/int-uint.md).
+- `bitmap` – [Объект битовой карты](#bitmapbuild).
+- `range_start` – Начало диапазона (включительно). [UInt32](../data-types/int-uint.md).
+- `cardinality_limit` – Максимальная кардинальность подмножества. [UInt32](../data-types/int-uint.md).
 
 **Пример**
 
@@ -127,7 +127,7 @@ SELECT bitmapToArray(bitmapSubsetLimit(bitmapBuild([0,1,2,3,4,5,6,7,8,9,10,11,12
 
 ## subBitmap {#subbitmap}
 
-Возвращает подмножество битмапа, начиная с позиции `offset`. Максимальная кардинальность возвращенного битмапа составляет `cardinality_limit`.
+Возвращает подмножество битовой карты, начиная с позиции `offset`. Максимальная кардинальность возвращаемой битовой карты — `cardinality_limit`.
 
 **Синтаксис**
 
@@ -137,9 +137,9 @@ subBitmap(bitmap, offset, cardinality_limit)
 
 **Аргументы**
 
-- `bitmap` – битмап. [объект битмапа](#bitmapbuild).
-- `offset` – позиция первого элемента подмножества. [UInt32](../data-types/int-uint.md).
-- `cardinality_limit` – максимальное количество элементов в подмножестве. [UInt32](../data-types/int-uint.md).
+- `bitmap` – Битовоя карта. [Объект битовой карты](#bitmapbuild).
+- `offset` – Позиция первого элемента подмножества. [UInt32](../data-types/int-uint.md).
+- `cardinality_limit` – Максимальное количество элементов в подмножестве. [UInt32](../data-types/int-uint.md).
 
 **Пример**
 
@@ -157,7 +157,7 @@ SELECT bitmapToArray(subBitmap(bitmapBuild([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,1
 
 ## bitmapContains {#bitmapcontains}
 
-Проверяет, содержит ли битмап элемент.
+Проверяет, содержит ли битовая карта элемент.
 
 ```sql
 bitmapContains(bitmap, needle)
@@ -165,8 +165,8 @@ bitmapContains(bitmap, needle)
 
 **Аргументы**
 
-- `bitmap` – [объект битмапа](#bitmapbuild).
-- `needle` – искомое значение бита. [UInt32](../data-types/int-uint.md).
+- `bitmap` – [Объект битовой карты](#bitmapbuild).
+- `needle` – Искомое значение бита. [UInt32](../data-types/int-uint.md).
 
 **Возвращаемые значения**
 
@@ -189,9 +189,9 @@ SELECT bitmapContains(bitmapBuild([1,5,7,9]), toUInt32(9)) AS res;
 
 ## bitmapHasAny {#bitmaphasany}
 
-Проверяет, пересекаются ли два битмапа.
+Проверяет, пересекаются ли две битовые карты.
 
-Если `bitmap2` содержит ровно один элемент, рассмотрите возможность использования [bitmapContains](#bitmapcontains) вместо этого, так как это работает более эффективно.
+Если `bitmap2` содержит ровно один элемент, рассмотрите возможность использования [bitmapContains](#bitmapcontains), так как она работает более эффективно.
 
 **Синтаксис**
 
@@ -201,8 +201,8 @@ bitmapHasAny(bitmap1, bitmap2)
 
 **Аргументы**
 
-- `bitmap1` – объект битмапа 1.
-- `bitmap2` – объект битмапа 2.
+- `bitmap1` – Объект битовой карты 1.
+- `bitmap2` – Объект битовой карты 2.
 
 **Возвращаемые значения**
 
@@ -225,9 +225,9 @@ SELECT bitmapHasAny(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 
 ## bitmapHasAll {#bitmaphasall}
 
-Возвращает 1, если первый битмап содержит все элементы второго битмапа, иначе 0. Если второй битмап пуст, возвращает 1.
+Возвращает 1, если первая битовая карта содержит все элементы второй битовой карты, в противном случае 0. Если вторая битовая карта пуста, возвращает 1.
 
-См. также `hasAll(array, array)`.
+Также смотрите `hasAll(array, array)`.
 
 **Синтаксис**
 
@@ -237,8 +237,8 @@ bitmapHasAll(bitmap1, bitmap2)
 
 **Аргументы**
 
-- `bitmap1` – объект битмапа 1.
-- `bitmap2` – объект битмапа 2.
+- `bitmap1` – Объект битовой карты 1.
+- `bitmap2` – Объект битовой карты 2.
 
 **Пример**
 
@@ -256,7 +256,7 @@ SELECT bitmapHasAll(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 
 ## bitmapCardinality {#bitmapcardinality}
 
-Возвращает кардинальность битмапа.
+Возвращает кардинальность битовой карты.
 
 **Синтаксис**
 
@@ -266,7 +266,7 @@ bitmapCardinality(bitmap)
 
 **Аргументы**
 
-- `bitmap` – объект битмапа.
+- `bitmap` – Объект битовой карты.
 
 **Пример**
 
@@ -284,7 +284,7 @@ SELECT bitmapCardinality(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 
 ## bitmapMin {#bitmapmin}
 
-Вычисляет наименьший установленный бит в битмапе, или UINT32_MAX, если битмап пуст.
+Вычисляет наименьший установленный бит в битовой карте или UINT32_MAX, если битовая карта пуста (UINT64_MAX, если тип >= 8 бит).
 
 **Синтаксис**
 
@@ -294,7 +294,7 @@ bitmapMin(bitmap)
 
 **Аргументы**
 
-- `bitmap` – объект битмапа.
+- `bitmap` – Объект битовой карты.
 
 **Пример**
 
@@ -312,7 +312,7 @@ SELECT bitmapMin(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 
 ## bitmapMax {#bitmapmax}
 
-Вычисляет наибольший установленный бит в битмапе, или 0, если битмап пуст.
+Вычисляет наибольший установленный бит в битовой карте или 0, если битовая карта пуста.
 
 **Синтаксис**
 
@@ -322,7 +322,7 @@ bitmapMax(bitmap)
 
 **Аргументы**
 
-- `bitmap` – объект битмапа.
+- `bitmap` – Объект битовой карты.
 
 **Пример**
 
@@ -340,9 +340,9 @@ SELECT bitmapMax(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 
 ## bitmapTransform {#bitmaptransform}
 
-Заменяет не более N бит в битмапе. Старое и новое значение i-го замененного бита задаются `from_array[i]` и `to_array[i]`.
+Заменяет не более N бит в битовой карте. Старое и новое значение i-го замененного бита задаются `from_array[i]` и `to_array[i]`.
 
-Результат зависит от порядка массивов `from_array` и `to_array`.
+Результат зависит от порядка элементов в массивах `from_array` и `to_array`.
 
 **Синтаксис**
 
@@ -352,9 +352,9 @@ bitmapTransform(bitmap, from_array, to_array)
 
 **Аргументы**
 
-- `bitmap` – объект битмапа.
-- `from_array` – массив UInt32. Для индекса в диапазоне \[0, from_array.size()), если битмап содержит from_array\[idx\], затем замените его на to_array\[idx\].
-- `to_array` – массив UInt32 такого же размера, как `from_array`.
+- `bitmap` – Объект битовой карты.
+- `from_array` – Массив UInt32. Для idx в диапазоне \[0, from_array.size()), если битовая карта содержит from_array\[idx\], то замените его на to_array\[idx\].
+- `to_array` – Массив UInt32 того же размера, что и `from_array`.
 
 **Пример**
 
@@ -372,7 +372,7 @@ SELECT bitmapToArray(bitmapTransform(bitmapBuild([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 ## bitmapAnd {#bitmapand}
 
-Вычисляет логическое и двух битмапов.
+Вычисляет логическое И двух битовых карт.
 
 **Синтаксис**
 
@@ -382,7 +382,7 @@ bitmapAnd(bitmap,bitmap)
 
 **Аргументы**
 
-- `bitmap` – объект битмапа.
+- `bitmap` – Объект битовой карты.
 
 **Пример**
 
@@ -400,7 +400,7 @@ SELECT bitmapToArray(bitmapAnd(bitmapBuild([1,2,3]),bitmapBuild([3,4,5]))) AS re
 
 ## bitmapOr {#bitmapor}
 
-Вычисляет логическое или двух битмапов.
+Вычисляет логическое ИЛИ двух битовых карт.
 
 **Синтаксис**
 
@@ -410,7 +410,7 @@ bitmapOr(bitmap,bitmap)
 
 **Аргументы**
 
-- `bitmap` – объект битмапа.
+- `bitmap` – Объект битовой карты.
 
 **Пример**
 
@@ -428,7 +428,7 @@ SELECT bitmapToArray(bitmapOr(bitmapBuild([1,2,3]),bitmapBuild([3,4,5]))) AS res
 
 ## bitmapXor {#bitmapxor}
 
-Выполняет операцию XOR для двух битмапов.
+Вычисляет XOR двух битовых карт.
 
 **Синтаксис**
 
@@ -438,7 +438,7 @@ bitmapXor(bitmap,bitmap)
 
 **Аргументы**
 
-- `bitmap` – объект битмапа.
+- `bitmap` – Объект битовой карты.
 
 **Пример**
 
@@ -456,7 +456,7 @@ SELECT bitmapToArray(bitmapXor(bitmapBuild([1,2,3]),bitmapBuild([3,4,5]))) AS re
 
 ## bitmapAndnot {#bitmapandnot}
 
-Вычисляет логическое и двух битмапов и негативирует результат.
+Вычисляет логическое И двух битовых карт и инвертирует результат.
 
 **Синтаксис**
 
@@ -466,7 +466,7 @@ bitmapAndnot(bitmap,bitmap)
 
 **Аргументы**
 
-- `bitmap` – объект битмапа.
+- `bitmap` – Объект битовой карты.
 
 **Пример**
 
@@ -484,7 +484,7 @@ SELECT bitmapToArray(bitmapAndnot(bitmapBuild([1,2,3]),bitmapBuild([3,4,5]))) AS
 
 ## bitmapAndCardinality {#bitmapandcardinality}
 
-Возвращает кардинальность логического и двух битмапов.
+Возвращает кардинальность логического И двух битовых карт.
 
 **Синтаксис**
 
@@ -494,7 +494,7 @@ bitmapAndCardinality(bitmap,bitmap)
 
 **Аргументы**
 
-- `bitmap` – объект битмапа.
+- `bitmap` – Объект битовой карты.
 
 **Пример**
 
@@ -512,7 +512,7 @@ SELECT bitmapAndCardinality(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 
 ## bitmapOrCardinality {#bitmaporcardinality}
 
-Возвращает кардинальность логического или двух битмапов.
+Возвращает кардинальность логического ИЛИ двух битовых карт.
 
 ```sql
 bitmapOrCardinality(bitmap,bitmap)
@@ -520,7 +520,7 @@ bitmapOrCardinality(bitmap,bitmap)
 
 **Аргументы**
 
-- `bitmap` – объект битмапа.
+- `bitmap` – Объект битовой карты.
 
 **Пример**
 
@@ -538,7 +538,7 @@ SELECT bitmapOrCardinality(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 
 ## bitmapXorCardinality {#bitmapxorcardinality}
 
-Возвращает кардинальность XOR двух битмапов.
+Возвращает кардинальность XOR двух битовых карт.
 
 ```sql
 bitmapXorCardinality(bitmap,bitmap)
@@ -546,7 +546,7 @@ bitmapXorCardinality(bitmap,bitmap)
 
 **Аргументы**
 
-- `bitmap` – объект битмапа.
+- `bitmap` – Объект битовой карты.
 
 **Пример**
 
@@ -564,7 +564,7 @@ SELECT bitmapXorCardinality(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 
 ## bitmapAndnotCardinality {#bitmapandnotcardinality}
 
-Возвращает кардинальность операции AND-NOT двух битмапов.
+Возвращает кардинальность операции AND-NOT двух битовых карт.
 
 ```sql
 bitmapAndnotCardinality(bitmap,bitmap)
@@ -572,7 +572,7 @@ bitmapAndnotCardinality(bitmap,bitmap)
 
 **Аргументы**
 
-- `bitmap` – объект битмапа.
+- `bitmap` – Объект битовой карты.
 
 **Пример**
 

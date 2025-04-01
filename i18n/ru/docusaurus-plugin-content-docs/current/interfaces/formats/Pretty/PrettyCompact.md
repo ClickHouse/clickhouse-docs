@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'Документация по формату PrettyCompact'
+description: 'Документация для формата PrettyCompact'
 input_format: false
 keywords: ['PrettyCompact']
 output_format: true
@@ -16,8 +16,8 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## Описание {#description}
 
-Отличается от формата [`Pretty`](./Pretty.md) тем, что таблица отображается с сеткой, проведенной между строками. 
-Из-за этого результат оказывается более компактным.
+Отличается от формата [`Pretty`](./Pretty.md) тем, что таблица отображается с сеткой, проведённой между строками. 
+Из-за этого результат более компактный.
 
 :::note
 Этот формат используется по умолчанию в клиенте командной строки в интерактивном режиме.

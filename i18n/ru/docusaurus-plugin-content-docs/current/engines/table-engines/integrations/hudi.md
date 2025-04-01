@@ -13,7 +13,7 @@ title: 'Движок таблиц Hudi'
 
 ## Создание таблицы {#create-table}
 
-Обратите внимание, что таблица Hudi уже должна существовать в S3, эта команда не принимает параметры DDL для создания новой таблицы.
+Обратите внимание, что таблица Hudi должна уже существовать в S3, эта команда не принимает параметры DDL для создания новой таблицы.
 
 ```sql
 CREATE TABLE hudi_table
@@ -23,9 +23,9 @@ CREATE TABLE hudi_table
 **Параметры движка**
 
 - `url` — URL ведра с путем к существующей таблице Hudi.
-- `aws_access_key_id`, `aws_secret_access_key` - Долгосрочные учетные данные для пользователя учетной записи [AWS](https://aws.amazon.com/). Вы можете использовать их для аутентификации ваших запросов. Параметр является необязательным. Если учетные данные не указаны, используются данные из файла конфигурации.
+- `aws_access_key_id`, `aws_secret_access_key` - Долгосрочные учетные данные для пользователя учетной записи [AWS](https://aws.amazon.com/). Вы можете использовать их для аутентификации своих запросов. Параметр является необязательным. Если учетные данные не указаны, они используются из файла конфигурации.
 
-Параметры движка можно указывать с помощью [Именованных коллекций](/operations/named-collections.md).
+Параметры движка можно указать с помощью [Именованных коллекций](/operations/named-collections.md).
 
 **Пример**
 
@@ -40,7 +40,7 @@ CREATE TABLE hudi_table ENGINE=Hudi('http://mars-doc-test.s3.amazonaws.com/click
     <named_collections>
         <hudi_conf>
             <url>http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/</url>
-            <access_key_id>ABC123</access_key_id>
+            <access_key_id>ABC123<access_key_id>
             <secret_access_key>Abc+123</secret_access_key>
         </hudi_conf>
     </named_collections>
@@ -51,6 +51,6 @@ CREATE TABLE hudi_table ENGINE=Hudi('http://mars-doc-test.s3.amazonaws.com/click
 CREATE TABLE hudi_table ENGINE=Hudi(hudi_conf, filename = 'test_table')
 ```
 
-## См. также {#see-also}
+## Смотрите также {#see-also}
 
-- [функция таблицы hudi](/sql-reference/table-functions/hudi.md)
+- [табличная функция hudi](/sql-reference/table-functions/hudi.md)

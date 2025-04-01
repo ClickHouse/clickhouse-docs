@@ -8,19 +8,19 @@ slug: /interfaces/formats/JSONCompactColumns
 title: 'JSONCompactColumns'
 ---
 
-| Входные данные | Выходные данные | Псевдоним |
-|----------------|-----------------|-----------|
-| ✔              | ✔               |           |
+| Вход | Выход | Псевдоним |
+|-------|--------|-------|
+| ✔     | ✔      |       |
 
 ## Описание {#description}
 
-В этом формате все данные представлены в виде одного JSON-массива.
+В этом формате все данные представлены в виде одного JSON массива.
 
 :::note
-Формат вывода `JSONCompactColumns` буферизует все данные в памяти, чтобы вывести их в виде одного блока, что может привести к высокому потреблению памяти.
+Выходной формат `JSONCompactColumns` буферизует все данные в памяти, чтобы вывести их как единственный блок, что может привести к высокому потреблению памяти.
 :::
 
-## Пример Использования {#example-usage}
+## Пример использования {#example-usage}
 
 ```json
 [
@@ -30,6 +30,6 @@ title: 'JSONCompactColumns'
 ]
 ```
 
-Столбцы, которые отсутствуют в блоке, будут заполнены значениями по умолчанию (вы можете использовать настройку [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) здесь)
+Столбцы, отсутствующие в блоке, будут заполнены значениями по умолчанию (вы можете использовать настройку [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) здесь)
 
-## Настройки Формата {#format-settings}
+## Настройки формата {#format-settings}

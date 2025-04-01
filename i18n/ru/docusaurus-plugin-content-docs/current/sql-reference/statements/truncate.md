@@ -18,12 +18,12 @@ TRUNCATE TABLE [IF EXISTS] [db.]name [ON CLUSTER cluster]
 
 Запрос `TRUNCATE` не поддерживается для движков таблиц [View](../../engines/table-engines/special/view.md), [File](../../engines/table-engines/special/file.md), [URL](../../engines/table-engines/special/url.md), [Buffer](../../engines/table-engines/special/buffer.md) и [Null](../../engines/table-engines/special/null.md).
 
-Вы можете использовать настройку [alter_sync](/operations/settings/settings#alter_sync) для организации ожидания выполнения действий на репликах.
+Вы можете использовать настройку [alter_sync](/operations/settings/settings#alter_sync) для настройки ожидания выполнения действий на репликах.
 
-Вы можете указать, сколько времени (в секундах) ждать неактивные реплики для выполнения запросов `TRUNCATE` с помощью настройки [replication_wait_for_inactive_replica_timeout](/operations/settings/settings#replication_wait_for_inactive_replica_timeout).
+Вы можете указать, как долго (в секундах) ждать, пока неактивные реплики выполнят запросы `TRUNCATE` с помощью настройки [replication_wait_for_inactive_replica_timeout](/operations/settings/settings#replication_wait_for_inactive_replica_timeout).
 
 :::note    
-Если `alter_sync` установлен на `2`, и некоторые реплики неактивны более чем на время, указанное в настройке `replication_wait_for_inactive_replica_timeout`, будет выброшено исключение `UNFINISHED`.
+Если `alter_sync` установлен на `2`, и некоторые реплики не активны более времени, указанного настройкой `replication_wait_for_inactive_replica_timeout`, то возникает исключение `UNFINISHED`.
 :::
 
 ## TRUNCATE ALL TABLES {#truncate-all-tables}
@@ -41,5 +41,5 @@ TRUNCATE DATABASE [IF EXISTS] db [ON CLUSTER cluster]
 Удаляет все таблицы из базы данных, но сохраняет саму базу данных. Когда условие `IF EXISTS` опущено, запрос возвращает ошибку, если база данных не существует.
 
 :::note
-`TRUNCATE DATABASE` не поддерживается для `Replicated` баз данных. Вместо этого просто выполните `DROP` и `CREATE` для базы данных.
+`TRUNCATE DATABASE` не поддерживается для `Replicated` баз данных. Вместо этого просто `DROP` и `CREATE` базу данных.
 :::

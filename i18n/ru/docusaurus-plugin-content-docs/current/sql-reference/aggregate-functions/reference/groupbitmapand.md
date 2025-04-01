@@ -1,12 +1,12 @@
 ---
-description: 'Вычисления AND для столбца битовой карты, возвращает кардинальность типа
-  UInt64, если добавить суффикс -State, то вернуть [объект битовой карты](../../../sql-reference/functions/bitmap-functions.md).'
+description: 'Вычисляет AND для битовой колонки, возвращает кардинальность типа
+  UInt64, если добавить суффикс -State, то возвращает [битовый объект](../../../sql-reference/functions/bitmap-functions.md).'
 sidebar_position: 149
 slug: /sql-reference/aggregate-functions/reference/groupbitmapand
 title: 'groupBitmapAnd'
 ---
 
-Вычисления AND для столбца битовой карты, возвращает кардинальность типа UInt64, если добавить суффикс -State, то вернуть [объект битовой карты](../../../sql-reference/functions/bitmap-functions.md).
+Вычисляет AND для битовой колонки, возвращает кардинальность типа UInt64, если добавить суффикс -State, то возвращает [битовый объект](../../../sql-reference/functions/bitmap-functions.md).
 
 ```sql
 groupBitmapAnd(expr)

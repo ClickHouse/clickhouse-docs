@@ -18,7 +18,7 @@ groupArraySorted(N)(column)
 
 - `N` – Количество элементов для возврата.
 
-- `column` – Значение (Целое число, Строка, Дробное число и другие общие типы).
+- `column` – Значение (Integer, String, Float и другие общие типы).
 
 **Пример**
 
@@ -34,7 +34,7 @@ SELECT groupArraySorted(10)(number) FROM numbers(100)
 └──────────────────────────────┘
 ```
 
-Получает все строковые представления всех чисел в столбце:
+Получает все строковые реализации всех чисел в колонке:
 
 ```sql
 SELECT groupArraySorted(5)(str) FROM (SELECT toString(number) as str FROM numbers(5));

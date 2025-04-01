@@ -1,21 +1,21 @@
 ---
-description: 'Системная таблица, содержащая информацию о таблицах, для которых была выполнена операция drop table, но очистка данных еще не была выполнена'
-keywords: ['системная таблица', 'удаленные таблицы']
+description: 'Системная таблица, содержащая информацию о таблицах, для которых была выполнена команда drop table, но для которых очистка данных еще не была проведена'
+keywords: ['системная таблица', 'dropped_tables']
 slug: /operations/system-tables/dropped_tables
 title: 'system.dropped_tables'
 ---
 
-Содержит информацию о таблицах, для которых была выполнена операция drop table, но очистка данных еще не была произведена.
+Содержит информацию о таблицах, для которых была выполнена команда drop table, но для которых очистка данных еще не была проведена.
 
-Столбцы:
+Колонки:
 
 - `index` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Индекс в очереди marked_dropped_tables.
 - `database` ([String](../../sql-reference/data-types/string.md)) — База данных.
 - `table` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы.
 - `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — UUID таблицы.
-- `engine` ([String](../../sql-reference/data-types/string.md)) — Название движка таблицы.
+- `engine` ([String](../../sql-reference/data-types/string.md)) — Имя движка таблицы.
 - `metadata_dropped_path` ([String](../../sql-reference/data-types/string.md)) — Путь к файлу метаданных таблицы в директории metadata_dropped.
-- `table_dropped_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время, когда запланирована следующая попытка удалить данные таблицы. Обычно это время удаления таблицы плюс `database_atomic_delay_before_drop_table_sec`.
+- `table_dropped_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время, когда запланирована следующая попытка удаления данных таблицы. Обычно это время, когда таблица была удалена, плюс `database_atomic_delay_before_drop_table_sec`.
 
 **Пример**
 
@@ -27,7 +27,7 @@ FROM system.dropped_tables\G
 ```
 
 ```text
-Row 1:
+Строка 1:
 ──────
 index:                 0
 database:              default

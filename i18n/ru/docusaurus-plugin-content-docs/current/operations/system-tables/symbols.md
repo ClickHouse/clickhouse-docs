@@ -1,17 +1,19 @@
 ---
-description: 'Системная таблица, полезная для экспертов C++ и инженеров ClickHouse, содержащая информацию для интроспекции двоичного файла `clickhouse`.'
+description: 'Системная таблица, полезная для экспертов C++ и инженеров ClickHouse, содержащая
+  информацию для интроспекции бинарного файла `clickhouse`.'
 keywords: ['системная таблица', 'символы']
 slug: /operations/system-tables/symbols
 title: 'system.symbols'
 ---
 
-Содержит информацию для интроспекции двоичного файла `clickhouse`. Для доступа требуется привилегия интроспекции. Эта таблица полезна только для экспертов C++ и инженеров ClickHouse.
+Содержит информацию для интроспекции бинарного файла `clickhouse`. Для доступа требуется привилегия интроспекции.
+Эта таблица полезна только для экспертов C++ и инженеров ClickHouse.
 
-Столбцы:
+Колонки:
 
-- `symbol` ([String](../../sql-reference/data-types/string.md)) — Имя символа в двоичном файле. Оно искажено. Вы можете применить `demangle(symbol)`, чтобы получить читаемое имя.
-- `address_begin` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Начальный адрес символа в двоичном файле.
-- `address_end` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Конечный адрес символа в двоичном файле.
+- `symbol` ([String](../../sql-reference/data-types/string.md)) — Имя символа в бинарном файле. Оно запутано. Вы можете применить `demangle(symbol)`, чтобы получить читаемое имя.
+- `address_begin` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Начальный адрес символа в бинарном файле.
+- `address_end` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Конечный адрес символа в бинарном файле.
 - `name` ([String](../../sql-reference/data-types/string.md)) — Псевдоним для `event`.
 
 **Пример**

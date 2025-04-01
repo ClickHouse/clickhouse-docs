@@ -14,13 +14,13 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 <CloudNotSupportedBadge/>
 
 :::note
-clickhouse-jdbc-bridge содержит экспериментальные коды и больше не поддерживается. Он может содержать проблемы с надежностью и уязвимости в безопасности. Используйте его на свой страх и риск. 
-ClickHouse рекомендует использовать встроенные табличные функции в ClickHouse, которые обеспечивают лучшие альтернативы для сценариев ad-hoc запросов (Postgres, MySQL, MongoDB и др.).
+clickhouse-jdbc-bridge содержит экспериментальные коды и больше не поддерживается. Он может содержать проблемы с надежностью и уязвимости безопасности. Используйте его на свой страх и риск.
+ClickHouse рекомендует использовать встроенные табличные функции в ClickHouse, которые предоставляют лучшую альтернативу для сценариев запросов по требованию (Postgres, MySQL, MongoDB и т.д.).
 :::
 
 Позволяет ClickHouse подключаться к внешним базам данных через [JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity).
 
-Для реализации подключения JDBC ClickHouse использует отдельную программу [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge), которая должна работать как демон.
+Для реализации подключения по JDBC ClickHouse использует отдельную программу [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge), которая должна работать как демон.
 
 Этот движок поддерживает тип данных [Nullable](../../../sql-reference/data-types/nullable.md).
 
@@ -36,6 +36,7 @@ ENGINE = JDBC(datasource_uri, external_database, external_table)
 
 **Параметры Движка**
 
+
 - `datasource_uri` — URI или имя внешней СУБД.
 
     Формат URI: `jdbc:<driver_name>://<host_name>:<port>/?user=<username>&password=<password>`.
@@ -43,11 +44,11 @@ ENGINE = JDBC(datasource_uri, external_database, external_table)
 
 - `external_database` — База данных во внешней СУБД.
 
-- `external_table` — Имя таблицы в `external_database` или запрос select, например, `select * from table1 where column1=1`.
+- `external_table` — Название таблицы в `external_database` или запрос select, например `select * from table1 where column1=1`.
 
 ## Пример Использования {#usage-example}
 
-Создание таблицы на MySQL сервере, подключаясь напрямую с помощью его консольного клиента:
+Создание таблицы на сервере MySQL, подключаясь напрямую с консольного клиента:
 
 ```text
 mysql> CREATE TABLE `test`.`test` (
@@ -70,7 +71,7 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-Создание таблицы на сервере ClickHouse и выбор данных из нее:
+Создание таблицы на сервере ClickHouse и выборка данных из нее:
 
 ```sql
 CREATE TABLE jdbc_table
@@ -100,6 +101,6 @@ SELECT toInt32(number), toFloat32(number * 1.0)
 FROM system.numbers
 ```
 
-## Смотрите Также {#see-also}
+## См. также {#see-also}
 
 - [JDBC табличная функция](../../../sql-reference/table-functions/jdbc.md).

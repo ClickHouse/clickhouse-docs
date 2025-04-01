@@ -8,13 +8,13 @@ slug: /interfaces/formats/LineAsStringWithNames
 title: 'LineAsStringWithNames'
 ---
 
-| Входные данные | Выходные данные | Псевдоним |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+| Вход | Выход | Псевдоним |
+|-------|--------|-----------|
+| ✗     | ✔      |           |
 
 ## Описание {#description}
 
-Формат `LineAsStringWithNames` аналогичен формату [`LineAsString`](./LineAsString.md), но выводит заголовок с именами столбцов.
+Формат `LineAsStringWithNames` схож с форматом [`LineAsString`](./LineAsString.md), но выводит строку заголовка с именами колонок.
 
 ## Пример использования {#example-usage}
 

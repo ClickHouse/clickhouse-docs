@@ -1,6 +1,5 @@
 ---
-description: 'Движок MongoDB является движком таблиц только для чтения, который позволяет считывать данные из
-  удаленной коллекции.'
+description: 'Движок MongoDB — это движок таблиц только для чтения, который позволяет читать данные из удаленной коллекции.'
 sidebar_label: 'MongoDB'
 sidebar_position: 135
 slug: /engines/table-engines/integrations/mongodb
@@ -10,9 +9,9 @@ title: 'MongoDB'
 
 # MongoDB
 
-Движок MongoDB является движком таблиц только для чтения, который позволяет считывать данные из удаленной [MongoDB](https://www.mongodb.com/) коллекции.
+Движок MongoDB — это движок таблиц только для чтения, который позволяет читать данные из удаленной [MongoDB](https://www.mongodb.com/) коллекции.
 
-Поддерживаются только серверы MongoDB версии 3.6 и выше.  
+Поддерживаются только серверы MongoDB версии 3.6 и выше. 
 [Seed list(`mongodb+srv`)](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list) пока не поддерживается.
 
 ## Создание таблицы {#creating-a-table}
@@ -38,13 +37,13 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name
 
 - `password` — пароль пользователя.
 
-- `options` — опции строки подключения MongoDB (необязательный параметр).
+- `options` — параметры строки подключения MongoDB (необязательный параметр).
 
-- `oid_columns` - Список столбцов, которые должны обрабатываться как `oid` в предложении WHERE, через запятую. По умолчанию `_id`.
+- `oid_columns` - Список колонок через запятую, которые должны рассматриваться как `oid` в предложении WHERE. По умолчанию `_id`.
 
 :::tip
-Если вы используете облачное предложение MongoDB Atlas, URL подключения можно получить из опции 'Atlas SQL'.
-Seed list(`mongodb**+srv**`) пока не поддерживается, но будет добавлен в будущих версиях.
+Если вы используете облачное предложение MongoDB Atlas, URL подключения можно получить из опции 'Atlas SQL'. 
+Seed list(`mongodb**+srv**`) пока не поддерживается, но будет добавлен в будущих релизах.
 :::
 
 В качестве альтернативы вы можете передать URI:
@@ -59,10 +58,10 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 
 - `collection` — имя удаленной коллекции.
 
-- `oid_columns` - Список столбцов, которые должны обрабатываться как `oid` в предложении WHERE, через запятую. По умолчанию `_id`.
+- `oid_columns` - Список колонок через запятую, которые должны рассматриваться как `oid` в предложении WHERE. По умолчанию `_id`.
 
 
-## Соответствия типов {#types-mappings}
+## Сопоставление типов {#types-mappings}
 
 | MongoDB                 | ClickHouse                                                            |
 |-------------------------|-----------------------------------------------------------------------|
@@ -70,20 +69,20 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 | double                  | Float64, String                                                       |
 | date                    | Date, Date32, DateTime, DateTime64, String                            |
 | string                  | String                                                                |
-| document                | String(в виде JSON)                                                  |
-| array                   | Array, String(в виде JSON)                                           |
+| document                | String(как JSON)                                                     |
+| array                   | Array, String(как JSON)                                              |
 | oid                     | String                                                                |
-| binary                  | String, если в столбце, строка в base64, если в массиве или документ |
+| binary                  | String, если в колонке, строка в формате base64, если в массиве или документе |
 | uuid (binary subtype 4) | UUID                                                                  |
 | *любой другой*         | String                                                                |
 
-Если ключ не найден в документе MongoDB (например, имя столбца не соответствует), будет вставлено значение по умолчанию или `NULL` (если столбец допускает значение NULL).
+Если ключ не найден в документе MongoDB (например, имя колонки не совпадает), будет вставлено значение по умолчанию или `NULL` (если колонка допускает NULL).
 
 ### OID {#oid}
 
-Если вы хотите, чтобы `String` обрабатывался как `oid` в предложении WHERE, просто укажите имя столбца в последнем аргументе движка таблицы.  
-Это может быть необходимо при запросе записи по столбцу `_id`, который по умолчанию имеет тип `oid` в MongoDB.  
-Если поле `_id` в таблице имеет другой тип, например `uuid`, вы должны указать пустой `oid_columns`, в противном случае будет использовано значение по умолчанию для этого параметра `_id`.
+Если вы хотите, чтобы `String` рассматривался как `oid` в предложении WHERE, просто укажите имя колонки в последнем аргументе движка таблицы. 
+Это может потребоваться при запросе записи по колонке `_id`, которая по умолчанию имеет тип `oid` в MongoDB. 
+Если поле `_id` в таблице имеет другой тип, например `uuid`, необходимо указать пустой `oid_columns`, в противном случае будет использовано значение по умолчанию для этого параметра `_id`.
 
 ```javascript
 db.sample_oid.insertMany([
@@ -99,7 +98,7 @@ db.sample_oid.find();
 ]
 ```
 
-По умолчанию только `_id` обрабатывается как столбец `oid`.
+По умолчанию только `_id` рассматривается как колонка `oid`.
 
 ```sql
 CREATE TABLE sample_oid
@@ -108,11 +107,11 @@ CREATE TABLE sample_oid
     another_oid_column String
 ) ENGINE = MongoDB('mongodb://user:pass@host/db', 'sample_oid');
 
-SELECT count() FROM sample_oid WHERE _id = '67bf6cc44ebc466d33d42fb2'; --вернет 1.
-SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; --вернет 0
+SELECT count() FROM sample_oid WHERE _id = '67bf6cc44ebc466d33d42fb2'; -- вернет 1.
+SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; -- вернет 0
 ```
 
-В этом случае вывод будет `0`, потому что ClickHouse не знает, что `another_oid_column` имеет тип `oid`, поэтому давайте исправим это:
+В этом случае результат будет `0`, потому что ClickHouse не знает, что `another_oid_column` имеет тип `oid`, давайте это исправим:
 
 ```sql
 CREATE TABLE sample_oid
@@ -132,22 +131,22 @@ CREATE TABLE sample_oid
 SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; -- теперь вернет 1
 ```
 
-## Поддерживаемые операторы {#supported-clauses}
+## Поддерживаемые предложения {#supported-clauses}
 
-Поддерживаются только запросы с простыми выражениями (например, `WHERE field = <константа> ORDER BY field2 LIMIT <константа>`).  
-Такие выражения переводятся в язык запросов MongoDB и выполняются на стороне сервера.  
-Вы можете отключить все эти ограничения, используя [mongodb_throw_on_unsupported_query](../../../operations/settings/settings.md#mongodb_throw_on_unsupported_query).  
-В этом случае ClickHouse пытается преобразовать запрос наилучшим образом, но это может привести к выполнению полного сканирования таблицы и обработке на стороне ClickHouse.
+Поддерживаются только запросы с простыми выражениями (например, `WHERE field = <constant> ORDER BY field2 LIMIT <constant>`). 
+Такие выражения преобразуются в язык запросов MongoDB и выполняются на стороне сервера. 
+Вы можете отключить все эти ограничения, используя [mongodb_throw_on_unsupported_query](../../../operations/settings/settings.md#mongodb_throw_on_unsupported_query). 
+В этом случае ClickHouse попытается преобразовать запрос на основе лучших усилий, но это может привести к полному сканированию таблицы и обработке на стороне ClickHouse.
 
 :::note
-Всегда лучше явно указывать тип литерала, потому что Mongo требует строгую типизацию фильтров.\
-Например, если вы хотите фильтровать по `Date`:
+Всегда лучше явно задавать тип литерала, потому что Mongo требует строгой типизации фильтров.\
+Например, если вы хотите отфильтровать по `Date`:
 
 ```sql
 SELECT * FROM mongo_table WHERE date = '2024-01-01'
 ```
 
-Это не сработает, потому что Mongo не приведет строку к `Date`, поэтому вам нужно вручную привести к типу:
+Это не сработает, потому что Mongo не выполнит преобразование строки в `Date`, поэтому вам нужно будет сделать это вручную:
 
 ```sql
 SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024-01-01')
@@ -160,10 +159,9 @@ SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024
 
 ## Пример использования {#usage-example}
 
+Предположим, что в MongoDB загружен набор данных [sample_mflix](https://www.mongodb.com/docs/atlas/sample-data/sample-mflix).
 
-Предположим, MongoDB загружен с набором данных [sample_mflix](https://www.mongodb.com/docs/atlas/sample-data/sample-mflix)
-
-Создайте таблицу в ClickHouse, которая позволит считывать данные из коллекции MongoDB:
+Создайте таблицу в ClickHouse, которая позволяет читать данные из коллекции MongoDB:
 
 ```sql
 CREATE TABLE sample_mflix_table
@@ -193,12 +191,12 @@ SELECT count() FROM sample_mflix_table
 ```
 
 ```sql
--- JSONExtractString не может быть отправлен на MongoDB
+-- JSONExtractString не может быть переработан в MongoDB
 SET mongodb_throw_on_unsupported_query = 0;
 
--- Найдите все продолжения 'Назад в будущее' с рейтингом > 7.5
+-- Найдите все сиквелы 'Назад в будущее' с рейтингом выше 7.5
 SELECT title, plot, genres, directors, released FROM sample_mflix_table
-WHERE title IN ('Назад в будущее', 'Назад в будущее 2', 'Назад в будущее 3')
+WHERE title IN ('Назад в будущее', 'Назад в будущее Часть II', 'Назад в будущее Часть III')
     AND toFloat32(JSONExtractString(imdb, 'rating')) > 7.5
 ORDER BY year
 FORMAT Vertical;
@@ -208,25 +206,25 @@ FORMAT Vertical;
 Row 1:
 ──────
 title:     Назад в будущее
-plot:      Молодой человек случайно отправляется на 30 лет в прошлое на машине времени DeLorean, изобретенной его другом, доктором Эмметом Брауном, и должен убедиться, что его родители в старшей школе соединятся, чтобы спасти его собственное существование.
+plot:      Молодой человек случайно отправляется на 30 лет в прошлое в машине времени DeLorean, изобретенной его другом, доктором Эмметом Брауном, и должен убедиться, что его родители, будучи школьниками, соединятся, чтобы спасти свое существование.
 genres:    ['Приключения','Комедия','Научная фантастика']
 directors: ['Роберт Земекис']
 released:  1985-07-03
 
 Row 2:
 ──────
-title:     Назад в будущее 2
-plot:      После визита в 2015 год Мартри Макфлай должен повторить свой визит в 1955 год, чтобы предотвратить катастрофические изменения в 1985 году... не вмешиваясь в свою первую поездку.
+title:     Назад в будущее Часть II
+plot:      После визита 2015 года, Мартин МакФлай должен повторно посетить 1955 год, чтобы предотвратить катастрофические изменения в 1985 году... не вмешиваясь в свою первую поездку.
 genres:    ['Экшен','Приключения','Комедия']
 directors: ['Роберт Земекис']
 released:  1989-11-22
 ```
 
 ```sql
--- Найдите 3 лучших фильма на основе книг Кормака Маккарти
+-- Найти топ 3 фильма на основе книг Кормака Маккарти
 SELECT title, toFloat32(JSONExtractString(imdb, 'rating')) as rating
 FROM sample_mflix_table
-WHERE arrayExists(x -> x like 'Кормак Маккарти%', writers)
+WHERE arrayExists(x -> x like 'Cormac McCarthy%', writers)
 ORDER BY rating DESC
 LIMIT 3;
 ```
@@ -242,4 +240,4 @@ LIMIT 3;
 ## Устранение неполадок {#troubleshooting}
 Вы можете увидеть сгенерированный запрос MongoDB в журналах уровня DEBUG.
 
-Сведения об имплементации можно найти в документациях [mongocxx](https://github.com/mongodb/mongo-cxx-driver) и [mongoc](https://github.com/mongodb/mongo-c-driver).
+Подробности реализации можно найти в документациях [mongocxx](https://github.com/mongodb/mongo-cxx-driver) и [mongoc](https://github.com/mongodb/mongo-c-driver).

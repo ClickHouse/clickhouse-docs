@@ -7,7 +7,7 @@ title: 'JSONStringsEachRowWithProgress'
 
 ## Описание {#description}
 
-Отличается от `JSONEachRow`/`JSONStringsEachRow` тем, что ClickHouse также будет выдавать информацию о прогрессе в виде значений JSON.
+Отличается от `JSONEachRow`/`JSONStringsEachRow` тем, что ClickHouse также будет предоставлять информацию о прогрессе в виде JSON значений.
 
 ## Пример использования {#example-usage}
 

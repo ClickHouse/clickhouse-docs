@@ -36,7 +36,7 @@ dictionary('dict')
 └────┴───────┘
 ```
 
-Создание словаря:
+Создайте словарь:
 
 ```sql
 CREATE DICTIONARY new_dictionary(id UInt64, value UInt64 DEFAULT 0) PRIMARY KEY id
@@ -58,6 +58,6 @@ SELECT * FROM dictionary('new_dictionary');
 └────┴───────┘
 ```
 
-**См. также**
+**См. Также**
 
-- [Движок словаря](/engines/table-engines/special/dictionary)
+- [Движок Dictionary](/engines/table-engines/special/dictionary)

@@ -7,7 +7,7 @@ title: 'JSONEachRow'
 
 ## Описание {#description}
 
-В этом формате ClickHouse выводит каждую строку в виде отдельного объекта JSON, разделенного переводом строки. Псевдоним: `JSONLines`, `NDJSON`.
+В этом формате ClickHouse выводит каждую строку как отдельный JSON-объект, разделенный переводом строки. Псевдонимы: `JSONLines`, `NDJSON`.
 
 ## Пример использования {#example-usage}
 
@@ -19,6 +19,6 @@ title: 'JSONEachRow'
 {"num":44,"str":"hello","arr":[0,1,2,3]}
 ```
 
-При импорте данных столбцы с неизвестными именами будут пропущены, если настройка [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена на 1.
+При импорте данных колонки с неизвестными именами будут пропущены, если настройка [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в 1.
 
 ## Настройки формата {#format-settings}

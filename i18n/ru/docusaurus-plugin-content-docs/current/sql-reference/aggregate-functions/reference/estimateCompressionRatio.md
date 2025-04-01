@@ -1,5 +1,5 @@
 ---
-description: 'Оценивает коэффициент сжатия заданного столбца без его сжатия.'
+description: 'Оценивает коэффициент сжатия заданной колонки без ее сжатия.'
 sidebar_position: 132
 slug: /sql-reference/aggregate-functions/reference/estimateCompressionRatio
 title: 'estimateCompressionRatio'
@@ -7,7 +7,7 @@ title: 'estimateCompressionRatio'
 
 ## estimateCompressionRatio {#estimatecompressionration}
 
-Оценивает коэффициент сжатия заданного столбца без его сжатия.
+Оценивает коэффициент сжатия заданной колонки без ее сжатия.
 
 **Синтаксис**
 
@@ -17,18 +17,18 @@ estimateCompressionRatio(codec, block_size_bytes)(column)
 
 **Аргументы**
 
-- `column` - Столбец любого типа
+- `column` - Колонка любого типа
 
 **Параметры**
 
-- `codec` - [Строка](../../../sql-reference/data-types/string.md), содержащая [кодек сжатия](/sql-reference/statements/create/table#column_compression_codec) или несколько кодеков, разделённых запятой, в одной строке.
-- `block_size_bytes` - Размер блока сжатых данных. Это аналогично настройкам [`max_compress_block_size`](../../../operations/settings/merge-tree-settings.md#max_compress_block_size) и [`min_compress_block_size`](../../../operations/settings/merge-tree-settings.md#min_compress_block_size). Значение по умолчанию - 1 MiB (1048576 байт).
+- `codec` - [String](../../../sql-reference/data-types/string.md), содержащая [кодек сжатия](/sql-reference/statements/create/table#column_compression_codec) или несколько кодеков, разделенных запятыми, в одной строке.
+- `block_size_bytes` - Размер блока сжатых данных. Это похоже на установку как [`max_compress_block_size`](../../../operations/settings/merge-tree-settings.md#max_compress_block_size), так и [`min_compress_block_size`](../../../operations/settings/merge-tree-settings.md#min_compress_block_size). Значение по умолчанию – 1 MiB (1048576 байт).
 
 Оба параметра являются необязательными.
 
 **Возвращаемые значения**
 
-- Возвращает оценочный коэффициент сжатия для заданного столбца.
+- Возвращает оценочный коэффициент сжатия для заданной колонки.
 
 Тип: [Float64](/sql-reference/data-types/float).
 
@@ -58,7 +58,7 @@ SELECT estimateCompressionRatio(number) AS estimate FROM compression_estimate_ex
 ```
 
 :::note
-Результат выше будет различаться в зависимости от стандартного кодека сжатия сервера. См. [Кодеки сжатия столбцов](/sql-reference/statements/create/table#column_compression_codec).
+Результат выше будет отличаться в зависимости от кодека сжатия по умолчанию на сервере. См. [Кодеки сжатия колонок](/sql-reference/statements/create/table#column_compression_codec).
 :::
 
 ```sql title="Запрос"

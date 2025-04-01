@@ -1,5 +1,5 @@
 ---
-description: 'Документация для функций работы с датами и временем'
+description: 'Документация по функциям работы с датами и временем'
 sidebar_label: 'Даты и Время'
 sidebar_position: 45
 slug: /sql-reference/functions/date-time-functions
@@ -8,7 +8,7 @@ title: 'Функции для работы с датами и временем'
 
 # Функции для работы с датами и временем
 
-Большинство функций в этом разделе принимают необязательный аргумент часового пояса, например `Europe/Amsterdam`. В этом случае используется указанный часовой пояс вместо локального (по умолчанию).
+Большинство функций в этом разделе принимают необязательный аргумент часового пояса, например, `Europe/Amsterdam`. В этом случае часовой пояс будет указанным, а не локальным (по умолчанию).
 
 **Пример**
 
@@ -27,9 +27,9 @@ SELECT
 ```
 ## makeDate {#makedate}
 
-Создает [Date](../data-types/date.md)
+Создает [дату](../data-types/date.md)
 - из аргументов год, месяц и день, или
-- из аргументов год и номер дня в году.
+- из аргументов год и день года.
 
 **Синтаксис**
 
@@ -38,20 +38,20 @@ makeDate(year, month, day);
 makeDate(year, day_of_year);
 ```
 
-Псевдонимы:
+Псевдоним:
 - `MAKEDATE(year, month, day);`
 - `MAKEDATE(year, day_of_year);`
 
 **Аргументы**
 
-- `year` — Год. [Целое число](../data-types/int-uint.md), [С плавающей запятой](../data-types/float.md) или [Десятичное](../data-types/decimal.md).
-- `month` — Месяц. [Целое число](../data-types/int-uint.md), [С плавающей запятой](../data-types/float.md) или [Десятичное](../data-types/decimal.md).
-- `day` — День. [Целое число](../data-types/int-uint.md), [С плавающей запятой](../data-types/float.md) или [Десятичное](../data-types/decimal.md).
-- `day_of_year` — Номер дня в году. [Целое число](../data-types/int-uint.md), [С плавающей запятой](../data-types/float.md) или [Десятичное](../data-types/decimal.md).
+- `year` — год. [Целое число](../data-types/int-uint.md), [число с плавающей запятой](../data-types/float.md) или [десятичное число](../data-types/decimal.md).
+- `month` — месяц. [Целое число](../data-types/int-uint.md), [число с плавающей запятой](../data-types/float.md) или [десятичное число](../data-types/decimal.md).
+- `day` — день. [Целое число](../data-types/int-uint.md), [число с плавающей запятой](../data-types/float.md) или [десятичное число](../data-types/decimal.md).
+- `day_of_year` — день в году. [Целое число](../data-types/int-uint.md), [число с плавающей запятой](../data-types/float.md) или [десятичное число](../data-types/decimal.md).
 
 **Возвращаемое значение**
 
-- Дата, созданная из аргументов. [Date](../data-types/date.md).
+- Дата, созданная из аргументов. [Дата](../data-types/date.md).
 
 **Пример**
 
@@ -69,7 +69,7 @@ SELECT makeDate(2023, 2, 28) AS Date;
 └────────────┘
 ```
 
-Создать дату из года и номера дня в году:
+Создать дату из года и дня в году:
 
 ```sql
 SELECT makeDate(2023, 42) AS Date;
@@ -84,7 +84,7 @@ SELECT makeDate(2023, 42) AS Date;
 ```
 ## makeDate32 {#makedate32}
 
-Создает дату типа [Date32](../../sql-reference/data-types/date32.md) из года, месяца, дня (или опционально года и дня).
+Создает дату типа [Date32](../../sql-reference/data-types/date32.md) из года, месяца, дня (или по желанию из года и дня).
 
 **Синтаксис**
 
@@ -94,12 +94,12 @@ makeDate32(year, [month,] day)
 
 **Аргументы**
 
-- `year` — Год. [Целое число](../../sql-reference/data-types/int-uint.md), [С плавающей запятой](../../sql-reference/data-types/float.md) или [Десятичное](../../sql-reference/data-types/decimal.md).
-- `month` — Месяц (необязательный). [Целое число](../../sql-reference/data-types/int-uint.md), [С плавающей запятой](../../sql-reference/data-types/float.md) или [Десятичное](../../sql-reference/data-types/decimal.md).
-- `day` — День. [Целое число](../../sql-reference/data-types/int-uint.md), [С плавающей запятой](../../sql-reference/data-types/float.md) или [Десятичное](../../sql-reference/data-types/decimal.md).
+- `year` — год. [Целое число](../../sql-reference/data-types/int-uint.md), [число с плавающей запятой](../../sql-reference/data-types/float.md) или [десятичное число](../../sql-reference/data-types/decimal.md).
+- `month` — месяц (необязательно). [Целое число](../../sql-reference/data-types/int-uint.md), [число с плавающей запятой](../../sql-reference/data-types/float.md) или [десятичное число](../../sql-reference/data-types/decimal.md).
+- `day` — день. [Целое число](../../sql-reference/data-types/int-uint.md), [число с плавающей запятой](../../sql-reference/data-types/float.md) или [десятичное число](../../sql-reference/data-types/decimal.md).
 
 :::note
-Если `month` опущен, то `day` должен принимать значение от `1` до `365`, в противном случае оно должно принимать значение от `1` до `31`.
+Если `month` опущен, то `day` должен принимать значение от `1` до `365`, в противном случае он должен иметь значение от `1` до `31`.
 :::
 
 **Возвращаемые значения**
@@ -122,7 +122,7 @@ SELECT makeDate32(2024, 1, 1);
 2024-01-01
 ```
 
-Создать дату из года и номера дня в году:
+Создать дату из года и дня в году:
 
 Запрос:
 
@@ -147,13 +147,13 @@ makeDateTime(year, month, day, hour, minute, second[, timezone])
 
 **Аргументы**
 
-- `year` — Год. [Целое число](../data-types/int-uint.md), [С плавающей запятой](../data-types/float.md) или [Десятичное](../data-types/decimal.md).
-- `month` — Месяц. [Целое число](../data-types/int-uint.md), [С плавающей запятой](../data-types/float.md) или [Десятичное](../data-types/decimal.md).
-- `day` — День. [Целое число](../data-types/int-uint.md), [С плавающей запятой](../data-types/float.md) или [Десятичное](../data-types/decimal.md).
-- `hour` — Час. [Целое число](../data-types/int-uint.md), [С плавающей запятой](../data-types/float.md) или [Десятичное](../data-types/decimal.md).
-- `minute` — Минута. [Целое число](../data-types/int-uint.md), [С плавающей запятой](../data-types/float.md) или [Десятичное](../data-types/decimal.md).
-- `second` — Секунда. [Целое число](../data-types/int-uint.md), [С плавающей запятой](../data-types/float.md) или [Десятичное](../data-types/decimal.md).
-- `timezone` — [Часовой пояс](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательный).
+- `year` — год. [Целое число](../data-types/int-uint.md), [число с плавающей запятой](../data-types/float.md) или [десятичное число](../data-types/decimal.md).
+- `month` — месяц. [Целое число](../data-types/int-uint.md), [число с плавающей запятой](../data-types/float.md) или [десятичное число](../data-types/decimal.md).
+- `day` — день. [Целое число](../data-types/int-uint.md), [число с плавающей запятой](../data-types/float.md) или [десятичное число](../data-types/decimal.md).
+- `hour` — час. [Целое число](../data-types/int-uint.md), [число с плавающей запятой](../data-types/float.md) или [десятичное число](../data-types/decimal.md).
+- `minute` — минута. [Целое число](../data-types/int-uint.md), [число с плавающей запятой](../data-types/float.md) или [десятичное число](../data-types/decimal.md).
+- `second` — секунда. [Целое число](../data-types/int-uint.md), [число с плавающей запятой](../data-types/float.md) или [десятичное число](../data-types/decimal.md).
+- `timezone` — [часовой пояс](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательно).
 
 **Возвращаемое значение**
 
@@ -174,7 +174,7 @@ SELECT makeDateTime(2023, 2, 28, 17, 12, 33) AS DateTime;
 ```
 ## makeDateTime64 {#makedatetime64}
 
-Создает значение типа [DateTime64](../../sql-reference/data-types/datetime64.md) из его компонентов: год, месяц, день, час, минута, секунда. С опциональной точностью до субсекунд.
+Создает значение типа [DateTime64](../../sql-reference/data-types/datetime64.md) из его компонентов: год, месяц, день, час, минута, секунда. С возможностью указания точности до миллисекунд.
 
 **Синтаксис**
 
@@ -184,17 +184,17 @@ makeDateTime64(year, month, day, hour, minute, second[, precision])
 
 **Аргументы**
 
-- `year` — Год (0-9999). [Целое число](../../sql-reference/data-types/int-uint.md), [С плавающей запятой](../../sql-reference/data-types/float.md) или [Десятичное](../../sql-reference/data-types/decimal.md).
-- `month` — Месяц (1-12). [Целое число](../../sql-reference/data-types/int-uint.md), [С плавающей запятой](../../sql-reference/data-types/float.md) или [Десятичное](../../sql-reference/data-types/decimal.md).
-- `day` — День (1-31). [Целое число](../../sql-reference/data-types/int-uint.md), [С плавающей запятой](../../sql-reference/data-types/float.md) или [Десятичное](../../sql-reference/data-types/decimal.md).
-- `hour` — Час (0-23). [Целое число](../../sql-reference/data-types/int-uint.md), [С плавающей запятой](../../sql-reference/data-types/float.md) или [Десятичное](../../sql-reference/data-types/decimal.md).
-- `minute` — Минута (0-59). [Целое число](../../sql-reference/data-types/int-uint.md), [С плавающей запятой](../../sql-reference/data-types/float.md) или [Десятичное](../../sql-reference/data-types/decimal.md).
-- `second` — Секунда (0-59). [Целое число](../../sql-reference/data-types/int-uint.md), [С плавающей запятой](../../sql-reference/data-types/float.md) или [Десятичное](../../sql-reference/data-types/decimal.md).
-- `precision` — Опциональная точность компонента субсекунд (0-9). [Целое число](../../sql-reference/data-types/int-uint.md).
+- `year` — год (0-9999). [Целое число](../../sql-reference/data-types/int-uint.md), [число с плавающей запятой](../../sql-reference/data-types/float.md) или [десятичное число](../../sql-reference/data-types/decimal.md).
+- `month` — месяц (1-12). [Целое число](../../sql-reference/data-types/int-uint.md), [число с плавающей запятой](../../sql-reference/data-types/float.md) или [десятичное число](../../sql-reference/data-types/decimal.md).
+- `day` — день (1-31). [Целое число](../../sql-reference/data-types/int-uint.md), [число с плавающей запятой](../../sql-reference/data-types/float.md) или [десятичное число](../../sql-reference/data-types/decimal.md).
+- `hour` — час (0-23). [Целое число](../../sql-reference/data-types/int-uint.md), [число с плавающей запятой](../../sql-reference/data-types/float.md) или [десятичное число](../../sql-reference/data-types/decimal.md).
+- `minute` — минута (0-59). [Целое число](../../sql-reference/data-types/int-uint.md), [число с плавающей запятой](../../sql-reference/data-types/float.md) или [десятичное число](../../sql-reference/data-types/decimal.md).
+- `second` — секунда (0-59). [Целое число](../../sql-reference/data-types/int-uint.md), [число с плавающей запятой](../../sql-reference/data-types/float.md) или [десятичное число](../../sql-reference/data-types/decimal.md).
+- `precision` — необязательная точность десятичной части (0-9). [Целое число](../../sql-reference/data-types/int-uint.md).
 
 **Возвращаемое значение**
 
-- Дата и время, созданные из предоставленных аргументов. [DateTime64](../../sql-reference/data-types/datetime64.md).
+- Дата и время, созданные из переданных аргументов. [DateTime64](../../sql-reference/data-types/datetime64.md).
 
 **Пример**
 
@@ -223,7 +223,7 @@ timestamp(expr[, expr_time])
 **Аргументы**
 
 - `expr` - Дата или дата с временем. [Строка](../data-types/string.md).
-- `expr_time` - Необязательный параметр. Время для добавления. [Строка](../data-types/string.md).
+- `expr_time` - необязательный параметр. Время для добавления. [Строка](../data-types/string.md).
 
 **Примеры**
 
@@ -257,7 +257,7 @@ SELECT timestamp('2023-12-31 12:00:00', '12:00:00.11') as ts;
 ## timeZone {#timezone}
 
 Возвращает часовой пояс текущей сессии, т.е. значение настройки [session_timezone](../../operations/settings/settings.md#session_timezone).
-Если функция выполняется в контексте распределенной таблицы, то она создает нормальный столбец со значениями, относящимися к каждому шард, в противном случае возвращает постоянное значение.
+Если функция выполняется в контексте распределенной таблицы, то она генерирует обычную колонку со значениями, относящимися к каждой шард, в противном случае она производит постоянное значение.
 
 **Синтаксис**
 
@@ -285,13 +285,13 @@ SELECT timezone()
 └────────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
 - [serverTimeZone](#servertimezone)
 ## serverTimeZone {#servertimezone}
 
 Возвращает часовой пояс сервера, т.е. значение настройки [timezone](../../operations/server-configuration-parameters/settings.md#timezone).
-Если функция выполняется в контексте распределенной таблицы, то она создает нормальный столбец со значениями, относящимися к каждому шард. В противном случае возвращает постоянное значение.
+Если функция выполняется в контексте распределенной таблицы, то она генерирует обычную колонку со значениями, относящимися к каждой шард. В противном случае, она производит постоянное значение.
 
 **Синтаксис**
 
@@ -303,7 +303,7 @@ serverTimeZone()
 
 **Возвращаемое значение**
 
-- Часовой пояс. [Строка](../data-types/string.md).
+-   Часовой пояс. [Строка](../data-types/string.md).
 
 **Пример**
 
@@ -319,12 +319,12 @@ SELECT serverTimeZone()
 └──────────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
 - [timeZone](#timezone)
 ## toTimeZone {#totimezone}
 
-Преобразует дату или дату с временем в указанный часовой пояс. Не изменяет внутреннее значение (количество unix-секунд) данных, только атрибут часового пояса значения и строковое представление значения изменяются.
+Преобразует дату или дату с временем в указанный часовой пояс. Не изменяет внутреннее значение (количество unix секунд) данных, только атрибут часового пояса значения и строковое представление значения изменяются.
 
 **Синтаксис**
 
@@ -337,7 +337,7 @@ toTimezone(value, timezone)
 **Аргументы**
 
 - `value` — Время или дата и время. [DateTime64](../data-types/datetime64.md).
-- `timezone` — Часовой пояс для возвращаемого значения. [Строка](../data-types/string.md). Этот аргумент является постоянным, потому что `toTimezone` изменяет часовой пояс столбца (часовой пояс является атрибутом типов `DateTime*`).
+- `timezone` — Часовой пояс для возвращаемого значения. [Строка](../data-types/string.md). Этот аргумент постоянен, поскольку `toTimezone` изменяет часовой пояс колонки (часовой пояс является атрибутом типов `DateTime*`).
 
 **Возвращаемое значение**
 
@@ -374,13 +374,13 @@ type_samoa: DateTime('US/Samoa')
 int32samoa: 1546300800
 ```
 
-**Смотрите также**
+**См. также**
 
 - [formatDateTime](#formatdatetime) - поддерживает неконстантный часовой пояс.
 - [toString](type-conversion-functions.md#tostring) - поддерживает неконстантный часовой пояс.
 ## timeZoneOf {#timezoneof}
 
-Возвращает название часового пояса типов [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
+Возвращает имя часового пояса типов [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
 
 **Синтаксис**
 
@@ -396,7 +396,7 @@ timeZoneOf(value)
 
 **Возвращаемое значение**
 
-- Название часового пояса. [Строка](../data-types/string.md).
+- Имя часового пояса. [Строка](../data-types/string.md).
 
 **Пример**
 
@@ -414,7 +414,7 @@ SELECT timezoneOf(now());
 
 Возвращает смещение часового пояса в секундах от [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
 Функция учитывает [летнее время](https://en.wikipedia.org/wiki/Daylight_saving_time) и исторические изменения часового пояса на указанную дату и время.
-Для вычисления смещения используется [база данных часовых поясов IANA](https://www.iana.org/time-zones).
+Используется [база данных часовых поясов IANA](https://www.iana.org/time-zones) для вычисления смещения.
 
 **Синтаксис**
 
@@ -448,7 +448,7 @@ SELECT toDateTime('2021-04-21 10:20:30', 'America/New_York') AS Time, toTypeName
 ```
 ## toYear {#toyear}
 
-Возвращает компонент года (н.э.) из даты или даты с временем.
+Возвращает компонент года (н.э.) даты или даты с временем.
 
 **Синтаксис**
 
@@ -464,7 +464,7 @@ toYear(value)
 
 **Возвращаемое значение**
 
-- Год указанной даты/времени. [UInt16](../data-types/int-uint.md).
+- Год данной даты/времени. [UInt16](../data-types/int-uint.md).
 
 **Пример**
 
@@ -497,7 +497,7 @@ toQuarter(value)
 
 **Возвращаемое значение**
 
-- Квартал года (1, 2, 3 или 4) указанной даты/времени. [UInt8](../data-types/int-uint.md).
+- Квартал года (1, 2, 3 или 4) данной даты/времени. [UInt8](../data-types/int-uint.md).
 
 **Пример**
 
@@ -530,7 +530,7 @@ toMonth(value)
 
 **Возвращаемое значение**
 
-- Месяц года (1 - 12) указанной даты/времени. [UInt8](../data-types/int-uint.md).
+- Месяц года (1 - 12) данной даты/времени. [UInt8](../data-types/int-uint.md).
 
 **Пример**
 
@@ -563,7 +563,7 @@ toDayOfYear(value)
 
 **Возвращаемое значение**
 
-- Номер дня в году (1 - 366) указанной даты/времени. [UInt16](../data-types/int-uint.md).
+- День года (1 - 366) данной даты/времени. [UInt16](../data-types/int-uint.md).
 
 **Пример**
 
@@ -596,7 +596,7 @@ toDayOfMonth(value)
 
 **Возвращаемое значение**
 
-- Номер дня в месяце (1 - 31) указанной даты/времени. [UInt8](../data-types/int-uint.md).
+- День месяца (1 - 31) данной даты/времени. [UInt8](../data-types/int-uint.md).
 
 **Пример**
 
@@ -615,12 +615,12 @@ SELECT toDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 
 Возвращает номер дня в неделе даты или даты с временем.
 
-Двухаргументная форма `toDayOfWeek()` позволяет вам указать, начинается ли неделя с понедельника или воскресенья, и должен ли возвращаемый результат находиться в диапазоне от 0 до 6 или от 1 до 7. Если аргумент режима опущен, по умолчанию используется режим 0. Часовой пояс даты можно указать в качестве третьего аргумента.
+Двухаргументная форма `toDayOfWeek()` позволяет задать, начинается ли неделя с понедельника или воскресенья, и должен ли возвращаемый результат быть в диапазоне от 0 до 6 или от 1 до 7. Если аргумент mode опущен, то режим по умолчанию - 0. Часовой пояс даты можно указать в качестве третьего аргумента.
 
-| Режим | Первый день недели | Диапазон                                          |
-|-------|--------------------|--------------------------------------------------|
-| 0     | Понедельник        | 1-7: Понедельник = 1, Вторник = 2, ..., Воскресенье = 7  |
-| 1     | Понедельник        | 0-6: Понедельник = 0, Вторник = 1, ..., Воскресенье = 6  |
+| Режим | Первый день недели | Диапазон                                     |
+|-------|--------------------|----------------------------------------------|
+| 0     | Понедельник        | 1-7: Понедельник = 1, Вторник = 2, ..., Воскресенье = 7 |
+| 1     | Понедельник        | 0-6: Понедельник = 0, Вторник = 1, ..., Воскресенье = 6 |
 | 2     | Воскресенье        | 0-6: Воскресенье = 0, Понедельник = 1, ..., Суббота = 6 |
 | 3     | Воскресенье        | 1-7: Воскресенье = 1, Понедельник = 2, ..., Суббота = 7 |
 
@@ -635,18 +635,18 @@ toDayOfWeek(t[, mode[, timezone]])
 **Аргументы**
 
 - `t` - [Дата](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md)
-- `mode` - определяет, какой первый день недели. Возможные значения: 0, 1, 2 или 3. См. таблицу выше для различий.
-- `timezone` - необязательный параметр, он ведет себя как любая другая функция преобразования
+- `mode` - определяет, какой день недели является первым. Возможные значения: 0, 1, 2 или 3. См. таблицу выше для различий.
+- `timezone` - необязательный параметр, он ведет себя как любая другая функция преобразования.
 
-Первый аргумент также может быть указан как [Строка](../data-types/string.md) в формате, поддерживаемом [parseDateTime64BestEffort()](type-conversion-functions.md#parsedatetime64besteffort). Поддержка строковых аргументов существует только по причинам совместимости с MySQL, на которые рассчитывают определенные сторонние инструменты. Поскольку поддержка строковых аргументов в будущем может быть сделана зависимой от новых настроек совместимости с MySQL и потому, что парсинг строк обычно медленный, рекомендуется не использовать его.
+Первый аргумент также можно указать как [Строку](../data-types/string.md) в формате, поддерживаемом [parseDateTime64BestEffort()](type-conversion-functions.md#parsedatetime64besteffort). Поддержка строковых аргументов существует только по причинам совместимости с MySQL, который ожидается определенными сторонними инструментами. Поскольку поддержка строковых аргументов может в будущем быть сделана зависимой от новых настроек совместимости с MySQL, и поскольку разбор строк обычно медленный, рекомендуется не использовать его.
 
 **Возвращаемое значение**
 
-- День недели (1-7), в зависимости от выбранного режима, указанной даты/времени
+- День недели (1-7), в зависимости от выбранного режима, данной даты/времени
 
 **Пример**
 
-Следующая дата - 21 апреля 2023 года, который был пятницей:
+Следующая дата - 21 апреля 2023 года, что был пятница:
 
 ```sql
 SELECT
@@ -663,9 +663,9 @@ SELECT
 ```
 ## toHour {#tohour}
 
-Возвращает часовую компоненту (0-24) даты с временем.
+Возвращает компонент часа (0-24) даты с временем.
 
-Предполагает, что если часы переводятся вперед, то на один час и происходит это в 2 часа, а если часы переводятся назад, то на один час и происходит это в 3 часа. (что не всегда именно так происходит - это зависит от часового пояса).
+Предполагается, что если часы переводятся вперед, это происходит на один час и в 2 часа ночи, а если часы переводятся назад, это происходит на один час и в 3 часа ночи (что не всегда точно, это зависит от часового пояса).
 
 **Синтаксис**
 
@@ -681,7 +681,7 @@ toHour(value)
 
 **Возвращаемое значение**
 
-- Час дня (0 - 23) указанной даты/времени. [UInt8](../data-types/int-uint.md).
+- Час дня (0 - 23) данной даты/времени. [UInt8](../data-types/int-uint.md).
 
 **Пример**
 
@@ -698,7 +698,7 @@ SELECT toHour(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toMinute {#tominute}
 
-Возвращает минутную компоненту (0-59) даты с временем.
+Возвращает компонент минуты (0-59) даты с временем.
 
 **Синтаксис**
 
@@ -714,7 +714,7 @@ toMinute(value)
 
 **Возвращаемое значение**
 
-- Минута часа (0 - 59) указанной даты/времени. [UInt8](../data-types/int-uint.md).
+- Минута часа (0 - 59) данной даты/времени. [UInt8](../data-types/int-uint.md).
 
 **Пример**
 
@@ -731,7 +731,7 @@ SELECT toMinute(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toSecond {#tosecond}
 
-Возвращает секунду (0-59) даты с временем. Високосные секунды не учитываются.
+Возвращает компонент секунды (0-59) даты с временем. Високосные секунды не учитываются.
 
 **Синтаксис**
 
@@ -747,7 +747,7 @@ toSecond(value)
 
 **Возвращаемое значение**
 
-- Секунда в минуте (0 - 59) указанной даты/времени. [UInt8](../data-types/int-uint.md).
+- Секунда в минуте (0 - 59) данной даты/времени. [UInt8](../data-types/int-uint.md).
 
 **Пример**
 
@@ -764,7 +764,7 @@ SELECT toSecond(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toMillisecond {#tomillisecond}
 
-Возвращает миллисекундную компоненту (0-999) даты с временем.
+Возвращает компонент миллисекунды (0-999) даты с временем.
 
 **Синтаксис**
 
@@ -792,7 +792,7 @@ SELECT toMillisecond(toDateTime64('2023-04-21 10:20:30.456', 3))
 
 **Возвращаемое значение**
 
-- Миллисекунда в минуте (0 - 59) указанной даты/времени. [UInt16](../data-types/int-uint.md).
+- Миллисекунда в минуте (0 - 999) данной даты/времени. [UInt16](../data-types/int-uint.md).
 ## toUnixTimestamp {#tounixtimestamp}
 
 Преобразует строку, дату или дату с временем в [Unix Timestamp](https://en.wikipedia.org/wiki/Unix_time) в представлении `UInt32`.
@@ -808,7 +808,7 @@ toUnixTimestamp(str, [timezone])
 
 **Возвращаемое значение**
 
-- Возвращает Unix timestamp. [UInt32](../data-types/int-uint.md).
+- Возвращает unix timestamp. [UInt32](../data-types/int-uint.md).
 
 **Пример**
 
@@ -839,19 +839,19 @@ from_date32:     1509840000
 ```
 
 :::note
-Тип возвращаемого значения `toStartOf*`, `toLastDayOf*`, `toMonday`, `timeSlot` функций, описанных ниже, определяется параметром конфигурации [enable_extended_results_for_datetime_functions](/operations/settings/settings#enable_extended_results_for_datetime_functions), который по умолчанию равен `0`.
+Тип возвращаемого значения функций `toStartOf*`, `toLastDayOf*`, `toMonday`, `timeSlot`, описанных ниже, определяется параметром конфигурации [enable_extended_results_for_datetime_functions](/operations/settings/settings#enable_extended_results_for_datetime_functions), который по умолчанию равен `0`.
 
 Поведение для
 * `enable_extended_results_for_datetime_functions = 0`:
   * Функции `toStartOfYear`, `toStartOfISOYear`, `toStartOfQuarter`, `toStartOfMonth`, `toStartOfWeek`, `toLastDayOfWeek`, `toLastDayOfMonth`, `toMonday` возвращают `Date` или `DateTime`.
-  * Функции `toStartOfDay`, `toStartOfHour`, `toStartOfFifteenMinutes`, `toStartOfTenMinutes`, `toStartOfFiveMinutes`, `toStartOfMinute`, `timeSlot` возвращают `DateTime`. Хотя эти функции могут принимать значения расширенных типов `Date32` и `DateTime64` в качестве аргумента, передача им времени за пределами нормального диапазона (год 1970 до 2149 для `Date` / 2106 для `DateTime`) приведет к неправильным результатам.
+  * Функции `toStartOfDay`, `toStartOfHour`, `toStartOfFifteenMinutes`, `toStartOfTenMinutes`, `toStartOfFiveMinutes`, `toStartOfMinute`, `timeSlot` возвращают `DateTime`. Хотя эти функции могут принимать значения расширенных типов `Date32` и `DateTime64` как аргументы, передача им времени вне нормального диапазона (год 1970-2149 для `Date` / 2106 для `DateTime`) приведет к неверным результатам.
 * `enable_extended_results_for_datetime_functions = 1`:
-  * Функции `toStartOfYear`, `toStartOfISOYear`, `toStartOfQuarter`, `toStartOfMonth`, `toStartOfWeek`, `toLastDayOfWeek`, `toLastDayOfMonth`, `toMonday` возвращают `Date` или `DateTime`, если их аргументом является `Date` или `DateTime`, и возвращают `Date32` или `DateTime64`, если их аргументом является `Date32` или `DateTime64`.
-  * Функции `toStartOfDay`, `toStartOfHour`, `toStartOfFifteenMinutes`, `toStartOfTenMinutes`, `toStartOfFiveMinutes`, `toStartOfMinute`, `timeSlot` возвращают `DateTime`, если их аргументом является `Date` или `DateTime`, и возвращают `DateTime64`, если их аргументом является `Date32` или `DateTime64`.
+  * Функции `toStartOfYear`, `toStartOfISOYear`, `toStartOfQuarter`, `toStartOfMonth`, `toStartOfWeek`, `toLastDayOfWeek`, `toLastDayOfMonth`, `toMonday` возвращают `Date` или `DateTime`, если их аргумент - это `Date` или `DateTime`, и они возвращают `Date32` или `DateTime64`, если их аргумент - это `Date32` или `DateTime64`.
+  * Функции `toStartOfDay`, `toStartOfHour`, `toStartOfFifteenMinutes`, `toStartOfTenMinutes`, `toStartOfFiveMinutes`, `toStartOfMinute`, `timeSlot` возвращают `DateTime`, если их аргумент - это `Date` или `DateTime`, и они возвращают `DateTime64`, если их аргумент - это `Date32` или `DateTime64`.
 :::
 ## toStartOfYear {#tostartofyear}
 
-Округляет дату или дату с временем до первого дня года. Возвращает дату в виде объекта `Date`.
+Округляет дату или дату с временем до первого дня года. Возвращает дату как объект `Date`.
 
 **Синтаксис**
 
@@ -865,7 +865,7 @@ toStartOfYear(value)
 
 **Возвращаемое значение**
 
-- Первый день года указанной даты/времени. [Date](../data-types/date.md).
+- Первый день года ввода даты/времени. [Дата](../data-types/date.md).
 
 **Пример**
 
@@ -896,7 +896,7 @@ toStartOfISOYear(value)
 
 **Возвращаемое значение**
 
-- Первый день года указанной даты/времени. [Date](../data-types/date.md).
+- Первый день года ввода даты/времени. [Дата](../data-types/date.md).
 
 **Пример**
 
@@ -913,7 +913,7 @@ SELECT toStartOfISOYear(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toStartOfQuarter {#tostartofquarter}
 
-Округляет дату или дату с временем до первого дня квартала. Первым днем квартала является либо 1 января, 1 апреля, 1 июля или 1 октября.
+Округляет дату или дату с временем до первого дня квартала. Первый день квартала - это либо 1 января, 1 апреля, 1 июля, либо 1 октября.
 Возвращает дату.
 
 **Синтаксис**
@@ -928,7 +928,7 @@ toStartOfQuarter(value)
 
 **Возвращаемое значение**
 
-- Первый день квартала указанной даты/времени. [Date](../data-types/date.md).
+- Первый день квартала данной даты/времени. [Дата](../data-types/date.md).
 
 **Пример**
 
@@ -959,7 +959,7 @@ toStartOfMonth(value)
 
 **Возвращаемое значение**
 
-- Первый день месяца указанной даты/времени. [Date](../data-types/date.md).
+- Первый день месяца данной даты/времени. [Дата](../data-types/date.md).
 
 **Пример**
 
@@ -976,7 +976,7 @@ SELECT toStartOfMonth(toDateTime('2023-04-21 10:20:30'))
 ```
 
 :::note
-Поведение разбора неправильных дат зависит от реализации. ClickHouse может вернуть нулевую дату, выбросить исключение или выполнить "естественное" переполнение.
+Поведение разбора неправильных дат специфично для реализации. ClickHouse может вернуть дату ноль, вызвать исключение или выполнить "естественный" переполнение.
 :::
 ## toLastDayOfMonth {#tolastdayofmonth}
 
@@ -996,7 +996,7 @@ toLastDayOfMonth(value)
 
 **Возвращаемое значение**
 
-- Последний день месяца указанной даты/времени. [Date](../data-types/date.md).
+- Последний день месяца данной даты/времени. [Дата](../data-types/date.md).
 
 **Пример**
 
@@ -1027,7 +1027,7 @@ toMonday(value)
 
 **Возвращаемое значение**
 
-- Дата ближайшего понедельника на или до указанной даты. [Дата](../data-types/date.md).
+- Дата ближайшего понедельника на или до данной даты. [Дата](../data-types/date.md).
 
 **Пример**
 
@@ -1046,7 +1046,7 @@ SELECT
 ```
 ## toStartOfWeek {#tostartofweek}
 
-Округляет дату или дату с временем вниз до ближайшего воскресенья или понедельника. Возвращает дату. Аргумент mode работает точно так же, как аргумент mode в функции `toWeek()`. Если режим не указан, по умолчанию используется 0.
+Округляет дату или дату с временем до ближайшего воскресенья или понедельника. Возвращает дату. Аргумент режима работает точно так же, как аргумент режима в функции `toWeek()`. Если режим не указан, по умолчанию используется 0.
 
 **Синтаксис**
 
@@ -1062,7 +1062,7 @@ toStartOfWeek(t[, mode[, timezone]])
 
 **Возвращаемое значение**
 
-- Дата ближайшего воскресенья или понедельника до или на указанной дате, в зависимости от режима. [Дата](../data-types/date.md).
+- Дата ближайшего воскресенья или понедельника на или до указанной даты, в зависимости от режима. [Дата](../data-types/date.md).
 
 **Пример**
 
@@ -1087,8 +1087,8 @@ toStartOfWeek(toDate('2023-04-24'), 1):              2023-04-24
 ```
 ## toLastDayOfWeek {#tolastdayofweek}
 
-Округляет дату или дату с временем вверх до ближайшей субботы или воскресенья. Возвращает дату.
-Аргумент mode работает точно так же, как аргумент mode в функции `toWeek()`. Если режим не указан, предполагается, что mode равен 0.
+Округляет дату или дату с временем до ближайшей субботы или воскресенья. Возвращает дату.
+Аргумент режима работает точно так же, как аргумент режима в функции `toWeek()`. Если режим не указан, режим принимается равным 0.
 
 **Синтаксис**
 
@@ -1129,7 +1129,7 @@ toLastDayOfWeek(toDate('2023-04-22'), 1):              2023-04-23
 ```
 ## toStartOfDay {#tostartofday}
 
-Округляет дату с временем вниз до начала дня.
+Округляет дату с временем до начала дня.
 
 **Синтаксис**
 
@@ -1143,7 +1143,7 @@ toStartOfDay(value)
 
 **Возвращаемое значение**
 
-- Начало дня указанной даты/времени. [DateTime](../data-types/datetime.md).
+- Начало дня для указанной даты/времени. [DateTime](../data-types/datetime.md).
 
 **Пример**
 
@@ -1160,7 +1160,7 @@ SELECT toStartOfDay(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toStartOfHour {#tostartofhour}
 
-Округляет дату с временем вниз до начала часа.
+Округляет дату с временем до начала часа.
 
 **Синтаксис**
 
@@ -1174,7 +1174,7 @@ toStartOfHour(value)
 
 **Возвращаемое значение**
 
-- Начало часа указанной даты/времени. [DateTime](../data-types/datetime.md).
+- Начало часа для указанной даты/времени. [DateTime](../data-types/datetime.md).
 
 **Пример**
 
@@ -1193,7 +1193,7 @@ SELECT
 ```
 ## toStartOfMinute {#tostartofminute}
 
-Округляет дату с временем вниз до начала минуты.
+Округляет дату с временем до начала минуты.
 
 **Синтаксис**
 
@@ -1207,7 +1207,7 @@ toStartOfMinute(value)
 
 **Возвращаемое значение**
 
-- Начало минуты указанной даты/времени. [DateTime](../data-types/datetime.md).
+- Начало минуты для указанной даты/времени. [DateTime](../data-types/datetime.md).
 
 **Пример**
 
@@ -1228,7 +1228,7 @@ toStartOfMinute(toDateTime64('2023-04-21 10:20:30.5300', 8)): 2023-04-21 10:20:0
 ```
 ## toStartOfSecond {#tostartofsecond}
 
-Отсекает субсекунды.
+Убирает компоненты субсекунд.
 
 **Синтаксис**
 
@@ -1239,7 +1239,7 @@ toStartOfSecond(value, [timezone])
 **Аргументы**
 
 - `value` — Дата и время. [DateTime64](../data-types/datetime64.md).
-- `timezone` — [Часовой пояс](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательный). Если не указан, функция использует часовой пояс параметра `value`. [Строка](../data-types/string.md).
+- `timezone` — [Часовой пояс](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательный). Если не указан, функция использует часовой пояс параметра `value`. [String](../data-types/string.md).
 
 **Возвращаемое значение**
 
@@ -1277,12 +1277,12 @@ SELECT toStartOfSecond(dt64, 'Asia/Istanbul');
 └────────────────────────────────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
-- [Параметр конфигурации сервера Timezone](../../operations/server-configuration-parameters/settings.md#timezone)
+- [Часовой пояс](../../operations/server-configuration-parameters/settings.md#timezone) параметр конфигурации сервера.
 ## toStartOfMillisecond {#tostartofmillisecond}
 
-Округляет дату с временем вниз до начала миллисекунд.
+Округляет дату с временем до начала миллисекунд.
 
 **Синтаксис**
 
@@ -1293,7 +1293,7 @@ toStartOfMillisecond(value, [timezone])
 **Аргументы**
 
 - `value` — Дата и время. [DateTime64](../../sql-reference/data-types/datetime64.md).
-- `timezone` — [Часовой пояс](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательный). Если не указан, функция использует часовой пояс параметра `value`. [Строка](../../sql-reference/data-types/string.md).
+- `timezone` — [Часовой пояс](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательный). Если не указан, функция использует часовой пояс параметра `value`. [String](../../sql-reference/data-types/string.md).
 
 **Возвращаемое значение**
 
@@ -1331,9 +1331,12 @@ SELECT toStartOfMillisecond(dt64, 'Asia/Istanbul');
 └─────────────────────────────────────────────┘
 ```
 
+**См. также**
+
+- [Часовой пояс](../../operations/server-configuration-parameters/settings.md#timezone) параметр конфигурации сервера.
 ## toStartOfMicrosecond {#tostartofmicrosecond}
 
-Округляет дату с временем вниз до начала микросекунд.
+Округляет дату с временем до начала микросекунд.
 
 **Синтаксис**
 
@@ -1344,7 +1347,7 @@ toStartOfMicrosecond(value, [timezone])
 **Аргументы**
 
 - `value` — Дата и время. [DateTime64](../../sql-reference/data-types/datetime64.md).
-- `timezone` — [Часовой пояс](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательный). Если не указан, функция использует часовой пояс параметра `value`. [Строка]( ../../sql-reference/data-types/string.md).
+- `timezone` — [Часовой пояс](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательный). Если не указан, функция использует часовой пояс параметра `value`. [String](../../sql-reference/data-types/string.md).
 
 **Возвращаемое значение**
 
@@ -1382,12 +1385,12 @@ SELECT toStartOfMicrosecond(dt64, 'Asia/Istanbul');
 └─────────────────────────────────────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
-- [Параметр конфигурации сервера Timezone](../../operations/server-configuration-parameters/settings.md#timezone)
+- [Часовой пояс](../../operations/server-configuration-parameters/settings.md#timezone) параметр конфигурации сервера.
 ## toStartOfNanosecond {#tostartofnanosecond}
 
-Округляет дату с временем вниз до начала наносекунд.
+Округляет дату с временем до начала наносекунд.
 
 **Синтаксис**
 
@@ -1398,7 +1401,7 @@ toStartOfNanosecond(value, [timezone])
 **Аргументы**
 
 - `value` — Дата и время. [DateTime64](../../sql-reference/data-types/datetime64.md).
-- `timezone` — [Часовой пояс](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательный). Если не указан, функция использует часовой пояс параметра `value`. [Строка](../../sql-reference/data-types/string.md).
+- `timezone` — [Часовой пояс](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательный). Если не указан, функция использует часовой пояс параметра `value`. [String](../../sql-reference/data-types/string.md).
 
 **Возвращаемое значение**
 
@@ -1436,12 +1439,12 @@ SELECT toStartOfNanosecond(dt64, 'Asia/Istanbul');
 └────────────────────────────────────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
-- [Параметр конфигурации сервера Timezone](../../operations/server-configuration-parameters/settings.md#timezone)
+- [Часовой пояс](../../operations/server-configuration-parameters/settings.md#timezone) параметр конфигурации сервера.
 ## toStartOfFiveMinutes {#tostartoffiveminutes}
 
-Округляет дату с временем вниз до начала пятиминутного интервала.
+Округляет дату с временем до начала пятиминутного интервала.
 
 **Синтаксис**
 
@@ -1455,7 +1458,7 @@ toStartOfFiveMinutes(value)
 
 **Возвращаемое значение**
 
-- Начало пятиминутного интервала указанной даты/времени. [DateTime](../data-types/datetime.md).
+- Начало пятиминутного интервала для указанной даты/времени. [DateTime](../data-types/datetime.md).
 
 **Пример**
 
@@ -1478,7 +1481,7 @@ toStartOfFiveMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 ```
 ## toStartOfTenMinutes {#tostartoftenminutes}
 
-Округляет дату с временем вниз до начала десятиминутного интервала.
+Округляет дату с временем до начала десятиминутного интервала.
 
 **Синтаксис**
 
@@ -1492,7 +1495,7 @@ toStartOfTenMinutes(value)
 
 **Возвращаемое значение**
 
-- Начало десятиминутного интервала указанной даты/времени. [DateTime](../data-types/datetime.md).
+- Начало десятиминутного интервала для указанной даты/времени. [DateTime](../data-types/datetime.md).
 
 **Пример**
 
@@ -1515,7 +1518,7 @@ toStartOfTenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 ```
 ## toStartOfFifteenMinutes {#tostartoffifteenminutes}
 
-Округляет дату с временем вниз до начала пятнадцатиминутного интервала.
+Округляет дату с временем до начала пятнадцатиминутного интервала.
 
 **Синтаксис**
 
@@ -1529,7 +1532,7 @@ toStartOfFifteenMinutes(value)
 
 **Возвращаемое значение**
 
-- Начало пятнадцатиминутного интервала указанной даты/времени. [DateTime](../data-types/datetime.md).
+- Начало пятнадцатиминутного интервала для указанной даты/времени. [DateTime](../data-types/datetime.md).
 
 **Пример**
 
@@ -1552,33 +1555,33 @@ toStartOfFifteenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:15:00
 ```
 ## toStartOfInterval {#tostartofinterval}
 
-Эта функция обобщает другие функции `toStartOf*()` с синтаксисом `toStartOfInterval(date_or_date_with_time, INTERVAL x unit [, time_zone])`.
+Эта функция обобщает другие функции `toStartOf*()` с помощью синтаксиса `toStartOfInterval(date_or_date_with_time, INTERVAL x unit [, time_zone])`.
 Например,
 - `toStartOfInterval(t, INTERVAL 1 YEAR)` возвращает то же самое, что и `toStartOfYear(t)`,
 - `toStartOfInterval(t, INTERVAL 1 MONTH)` возвращает то же самое, что и `toStartOfMonth(t)`,
 - `toStartOfInterval(t, INTERVAL 1 DAY)` возвращает то же самое, что и `toStartOfDay(t)`,
 - `toStartOfInterval(t, INTERVAL 15 MINUTE)` возвращает то же самое, что и `toStartOfFifteenMinutes(t)`.
 
-Расчет выполняется относительно конкретных моментов времени:
+Расчеты выполняются относительно определенных моментов времени:
 
-| Интервал    | Начало                  |
-|-------------|------------------------|
-| ГОД         | год 0                 |
-| КВАРТАЛ     | 1900 Q1                |
-| МЕСЯЦ       | Январь 1900           |
-| НЕДЕЛЯ      | 1970, 1-я неделя (01-05) |
-| ДЕНЬ        | 1970-01-01             |
-| ЧАС         | (*)                    |
-| МИНУТА      | 1970-01-01 00:00:00    |
-| СЕКУНДА     | 1970-01-01 00:00:00    |
-| МИЛЛИСЕКУНДА| 1970-01-01 00:00:00    |
-| МИКРОСЕКУНДА| 1970-01-01 00:00:00    |
-| НАНОСЕКУНДА | 1970-01-01 00:00:00    |
+| Интервал     | Начало                 |
+|--------------|-------------------------|
+| ГОД          | год 0                  |
+| КВАРТАЛ      | 1900 Q1                |
+| МЕСЯЦ        | Январь 1900           |
+| НЕДЕЛЯ       | 1970, 1-я неделя (01-05) |
+| ДЕНЬ         | 1970-01-01             |
+| ЧАС          | (*)                     |
+| МИНУТА       | 1970-01-01 00:00:00    |
+| СЕКУНДА      | 1970-01-01 00:00:00    |
+| МИЛЛИСЕКУНДА | 1970-01-01 00:00:00    |
+| МИКРОСЕКУНДА | 1970-01-01 00:00:00    |
+| НАНОСЕКУНДА  | 1970-01-01 00:00:00    |
 
-(*) интервалы часов являются специальными: расчет всегда выполняется относительно 00:00:00 (полночь) текущего дня. В результате только
-    значения часов от 1 до 23 полезны.
+(*) Интервалы часов являются особыми: расчеты всегда выполняются относительно 00:00:00 (полночь) текущего дня. В результате только
+    значения часов от 1 до 23 имеют смысл.
 
-Если был указан параметр `WEEK`, `toStartOfInterval` предполагает, что недели начинаются с понедельника. Обратите внимание, что это поведение отличается от функции `toStartOfWeek`, в которой недели по умолчанию начинаются с воскресенья.
+Если указан интервал `WEEK`, `toStartOfInterval` предполагает, что недели начинаются с понедельника. Обратите внимание, что это поведение отличается от функции `toStartOfWeek`, где недели по умолчанию начинаются с воскресенья.
 
 **Синтаксис**
 
@@ -1602,30 +1605,30 @@ SELECT toStartOfInterval(toDateTime('2023-01-01 14:45:00'), INTERVAL 1 MINUTE, t
 └──────────────────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 - [date_trunc](#date_trunc)
 ## toTime {#totime}
 
-Преобразует дату с временем в определенную фиксированную дату, сохраняя время.
+Преобразует дату с временем в определенную фиксированную дату, при этом сохраняя время.
 
 **Синтаксис**
 
 ```sql
-toTime(date[, timezone])
+toTime(date[,timezone])
 ```
 
 **Аргументы**
 
-- `date` — Дата для преобразования во время. [Дата](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
-- `timezone` (необязательный) — Часовой пояс для возвращаемого значения. [Строка](../data-types/string.md).
+- `date` — Дата, которую нужно преобразовать в время. [Дата](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
+- `timezone` (необязательный) — Часовой пояс для возвращаемого значения. [String](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- DateTime с установленной датой в `1970-01-02`, сохраняя время. [DateTime](../data-types/datetime.md).
+- DateTime с датой, равной `1970-01-02`, при этом сохраняя время. [DateTime](../data-types/datetime.md).
 
 :::note
 Если входной аргумент `date` содержал компоненты субсекунд,
-они будут отброшены в возвращаемом значении `DateTime` с точностью до секунды.
+они будут отброшены в возвращаемом значении `DateTime` с точностью до секунд.
 :::
 
 **Пример**
@@ -1659,7 +1662,7 @@ toRelativeYearNum(date)
 
 **Возвращаемое значение**
 
-- Количество лет от фиксированной отправной точки в прошлом. [UInt16](../data-types/int-uint.md).
+- Количество лет с фиксированной референсной точки в прошлом. [UInt16](../data-types/int-uint.md).
 
 **Пример**
 
@@ -1694,7 +1697,7 @@ toRelativeQuarterNum(date)
 
 **Возвращаемое значение**
 
-- Количество кварталов от фиксированной отправной точки в прошлом. [UInt32](../data-types/int-uint.md).
+- Количество кварталов от фиксированной референсной точки в прошлом. [UInt32](../data-types/int-uint.md).
 
 **Пример**
 
@@ -1729,7 +1732,7 @@ toRelativeMonthNum(date)
 
 **Возвращаемое значение**
 
-- Количество месяцев от фиксированной отправной точки в прошлом. [UInt32](../data-types/int-uint.md).
+- Количество месяцев с фиксированной референсной точки в прошлом. [UInt32](../data-types/int-uint.md).
 
 **Пример**
 
@@ -1764,7 +1767,7 @@ toRelativeWeekNum(date)
 
 **Возвращаемое значение**
 
-- Количество недель от фиксированной отправной точки в прошлом. [UInt32](../data-types/int-uint.md).
+- Количество недель с фиксированной референсной точки в прошлом. [UInt32](../data-types/int-uint.md).
 
 **Пример**
 
@@ -1799,7 +1802,7 @@ toRelativeDayNum(date)
 
 **Возвращаемое значение**
 
-- Количество дней от фиксированной отправной точки в прошлом. [UInt32](../data-types/int-uint.md).
+- Количество дней с фиксированной референсной точки в прошлом. [UInt32](../data-types/int-uint.md).
 
 **Пример**
 
@@ -1834,7 +1837,7 @@ toRelativeHourNum(date)
 
 **Возвращаемое значение**
 
-- Количество часов от фиксированной отправной точки в прошлом. [UInt32](../data-types/int-uint.md).
+- Количество часов с фиксированной референсной точки в прошлом. [UInt32](../data-types/int-uint.md).
 
 **Пример**
 
@@ -1869,7 +1872,7 @@ toRelativeMinuteNum(date)
 
 **Возвращаемое значение**
 
-- Количество минут от фиксированной отправной точки в прошлом. [UInt32](../data-types/int-uint.md).
+- Количество минут с фиксированной референсной точки в прошлом. [UInt32](../data-types/int-uint.md).
 
 **Пример**
 
@@ -1904,7 +1907,7 @@ toRelativeSecondNum(date)
 
 **Возвращаемое значение**
 
-- Количество секунд от фиксированной отправной точки в прошлом. [UInt32](../data-types/int-uint.md).
+- Количество секунд с фиксированной референсной точки в прошлом. [UInt32](../data-types/int-uint.md).
 
 **Пример**
 
@@ -1925,7 +1928,7 @@ SELECT
 ```
 ## toISOYear {#toisoyear}
 
-Преобразует дату или дату с временем в ISO-год как число UInt16.
+Преобразует дату или дату с временем в ISO год в виде числа UInt16.
 
 **Синтаксис**
 
@@ -1939,7 +1942,7 @@ toISOYear(value)
 
 **Возвращаемое значение**
 
-- Входное значение, преобразованное в номер ISO-года. [UInt16](../data-types/int-uint.md).
+- Входное значение, преобразованное в номер ISO года. [UInt16](../data-types/int-uint.md).
 
 **Пример**
 
@@ -1960,7 +1963,7 @@ SELECT
 ```
 ## toISOWeek {#toisoweek}
 
-Преобразует дату или дату с временем в число UInt8, содержащее номер ISO-недели.
+Преобразует дату или дату с временем в число UInt8, содержащее номер ISO недели.
 
 **Синтаксис**
 
@@ -1974,7 +1977,7 @@ toISOWeek(value)
 
 **Возвращаемое значение**
 
-- `value`, преобразованное в номер текущей ISO-недели. [UInt8](../data-types/int-uint.md).
+- `value`, преобразованное в текущий номер ISO недели. [UInt8](../data-types/int-uint.md).
 
 **Пример**
 
@@ -1995,32 +1998,34 @@ SELECT
 ```
 ## toWeek {#toweek}
 
-Эта функция возвращает номер недели для даты или даты с временем. Двухаргументная форма `toWeek()` позволяет указать, начинается ли неделя с воскресенья или понедельника и должен ли возвращаемый результат быть в диапазоне от 0 до 53 или от 1 до 53. Если аргумент mode опущен, используется режим по умолчанию 0.
+Эта функция возвращает номер недели для даты или временной метки. Двухаргументная форма `toWeek()` позволяет указать, начинается ли неделя в воскресенье или понедельник и должен ли возвращаемый результат быть в диапазоне от 0 до 53 или от 1 до 53. Если аргумент режима пропущен, режим по умолчанию равен 0.
 
-`toISOWeek()` - это функция совместимости, которая эквивалентна `toWeek(date,3)`.
+`toISOWeek()` — это функция совместимости, которая эквивалентна `toWeek(date,3)`.
 
-В следующей таблице описывается, как работает аргумент mode.
+Следующая таблица описывает, как работает аргумент режима.
 
-| Режим | Первый день недели | Диапазон | Недея 1 это первая неделя ...    |
-|------|-------------------|-------|-------------------------------|
-| 0    | Воскресенье       | 0-53  | с воскресеньем в этом году    |
-| 1    | Понедельник       | 0-53  | с 4 или более днями в этом году |
-| 2    | Воскресенье       | 1-53  | с воскресеньем в этом году    |
-| 3    | Понедельник       | 1-53  | с 4 или более днями в этом году |
-| 4    | Воскресенье       | 0-53  | с 4 или более днями в этом году |
-| 5    | Понедельник       | 0-53  | с понедельником в этом году    |
-| 6    | Воскресенье       | 1-53  | с 4 или более днями в этом году |
-| 7    | Понедельник       | 1-53  | с понедельником в этом году    |
-| 8    | Воскресенье       | 1-53  | содержит 1 января            |
-| 9    | Понедельник       | 1-53  | содержит 1 января            |
+| Режим | Первый день недели | Диапазон | Неделя 1 - это первая неделя ...          |
+|-------|--------------------|----------|-------------------------------------------|
+| 0     | Воскресенье        | 0-53     | с воскресеньем в этом году               |
+| 1     | Понедельник        | 0-53     | с 4 или более днями в этом году          |
+| 2     | Воскресенье        | 1-53     | с воскресеньем в этом году               |
+| 3     | Понедельник        | 1-53     | с 4 или более днями в этом году          |
+| 4     | Воскресенье        | 0-53     | с 4 или более днями в этом году          |
+| 5     | Понедельник        | 0-53     | с понедельником в этом году               |
+| 6     | Воскресенье        | 1-53     | с 4 или более днями в этом году          |
+| 7     | Понедельник        | 1-53     | с понедельником в этом году               |
+| 8     | Воскресенье        | 1-53     | содержит 1 января                         |
+| 9     | Понедельник        | 1-53     | содержит 1 января                         |
 
-Для значений режима с смыслом "с 4 или более днями в этом году" недели нумеруются в соответствии с ISO 8601:1988:
+Для режимов с пониманием "с 4 или более днями в этом году" недели нумеруются согласно ISO 8601:1988:
 
-- Если неделя, содержащая 1 января, имеет 4 или более дней в новом году, она будет неделей 1.
+- Если неделя, содержащая 1 января, имеет 4 или более дней в новом году, она является неделей 1.
 
-- В противном случае это последняя неделя предыдущего года, а следующая неделя - неделя 1.
+- В противном случае это последняя неделя предыдущего года, и следующая неделя становится неделей 1.
 
-Для значений режима с смыслом "содержит 1 января" неделя, содержащая 1 января, считается неделей 1. Не имеет значения, сколько дней в новом году неделя содержала, даже если это всего лишь один день. То есть, если последняя неделя декабря содержит 1 января следующего года, это будет неделя 1 следующего года.
+Для режимов с пониманием "содержит 1 января" неделя, содержащая 1 января, является неделей 1.
+Не имеет значения, сколько дней в новом году она содержала, даже если это было всего один день.
+То есть если последняя неделя декабря содержит 1 января следующего года, она будет неделей 1 следующего года.
 
 **Синтаксис**
 
@@ -2033,10 +2038,10 @@ toWeek(t[, mode[, time_zone]])
 **Аргументы**
 
 - `t` – Дата или ДатаВремя.
-- `mode` – Необязательный параметр, диапазон значений [0,9], по умолчанию 0.
+- `mode` – Необязательный параметр, диапазон значений \[0,9\], по умолчанию 0.
 - `timezone` – Необязательный параметр, ведет себя как любая другая функция преобразования.
 
-Первый аргумент также может быть указан как [Строка](../data-types/string.md) в формате, поддерживаемом [parseDateTime64BestEffort()](type-conversion-functions.md#parsedatetime64besteffort). Поддержка строковых аргументов существует только по причинам совместимости с MySQL, что ожидается определенными сторонними инструментами. Поскольку поддержка строковых аргументов может в будущем зависеть от новых настроек совместимости с MySQL и потому что парсинг строк обычно медленный, рекомендуется не использовать это.
+Первый аргумент также может быть указан в виде [String](../data-types/string.md) в формате, поддерживаемом [parseDateTime64BestEffort()](type-conversion-functions.md#parsedatetime64besteffort). Поддержка строковых аргументов существует только по причинам совместимости с MySQL, ожидаемым определенными сторонними инструментами. Поскольку поддержка строковых аргументов может в будущем зависеть от новых настроек совместимости MySQL и поскольку парсинг строк, как правило, медленный, рекомендуется не использовать это.
 
 **Пример**
 
@@ -2053,12 +2058,12 @@ SELECT toDate('2016-12-27') AS date, toWeek(date) AS week0, toWeek(date,1) AS we
 
 Возвращает год и неделю для даты. Год в результате может отличаться от года в аргументе даты для первой и последней недели года.
 
-Аргумент mode работает так же, как аргумент mode для `toWeek()`. Для синтаксиса с одним аргументом используется значение режима 0.
+Аргумент режима работает так же, как аргумент режима для `toWeek()`. Для однозначного синтаксиса используется значение режима 0.
 
-`toISOYear()` - это функция совместимости, которая эквивалентна `intDiv(toYearWeek(date,3),100)`.
+`toISOYear()` — это функция совместимости, эквивалентная `intDiv(toYearWeek(date,3),100)`.
 
 :::warning
-Номер недели, возвращаемый `toYearWeek()`, может отличаться от того, что возвращает `toWeek()`. `toWeek()` всегда возвращает номер недели в контексте данного года, и если `toWeek()` возвращает `0`, `toYearWeek()` возвращает значение, соответствующее последней неделе предыдущего года. См. `prev_yearWeek` в примере ниже.
+Номер недели, возвращаемый `toYearWeek()`, может отличаться от того, что возвращает `toWeek()`. `toWeek()` всегда возвращает номер недели в контексте данного года, и в случае, если `toWeek()` возвращает `0`, `toYearWeek()` возвращает значение, соответствующее последней неделе предыдущего года. См. `prev_yearWeek` в примере ниже.
 :::
 
 **Синтаксис**
@@ -2069,7 +2074,7 @@ toYearWeek(t[, mode[, timezone]])
 
 Псевдоним: `YEARWEEK`
 
-Первый аргумент также может быть указан как [Строка](../data-types/string.md) в формате, поддерживаемом [parseDateTime64BestEffort()](type-conversion-functions.md#parsedatetime64besteffort). Поддержка строковых аргументов существует только по причинам совместимости с MySQL, что ожидается определенными сторонними инструментами. Поскольку поддержка строковых аргументов может в будущем зависеть от новых настроек совместимости с MySQL и потому что парсинг строк обычно медленный, рекомендуется не использовать это.
+Первый аргумент также может быть указан в виде [String](../data-types/string.md) в формате, поддерживаемом [parseDateTime64BestEffort()](type-conversion-functions.md#parsedatetime64besteffort). Поддержка строковых аргументов существует только по причинам совместимости с MySQL, ожидаемым определенными сторонними инструментами. Поскольку поддержка строковых аргументов может в будущем зависеть от новых настроек совместимости MySQL и поскольку парсинг строк, как правило, медленный, рекомендуется не использовать это.
 
 **Пример**
 
@@ -2084,7 +2089,7 @@ SELECT toDate('2016-12-27') AS date, toYearWeek(date) AS yearWeek0, toYearWeek(d
 ```
 ## toDaysSinceYearZero {#todayssinceyearzero}
 
-Возвращает для данной даты количество дней, прошедших с [1 января 0000](https://en.wikipedia.org/wiki/Year_zero) по [пролептическому григорианскому календарю, определенному ISO 8601](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar). Расчет такой же, как в функции MySQL [`TO_DAYS()`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_to-days).
+Возвращает для указанной даты количество дней, прошедших с [1 января 0000](https://ru.wikipedia.org/wiki/Год_ноль) в [пролектическом григорианском календаре, определенном ISO 8601](https://ru.wikipedia.org/wiki/Григорианский_календарь#Пролектический_григорианский_календарь). Расчет такой же, как в функции MySQL [`TO_DAYS()`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_to-days).
 
 **Синтаксис**
 
@@ -2096,8 +2101,8 @@ toDaysSinceYearZero(date[, time_zone])
 
 **Аргументы**
 
-- `date` — Дата, от которой рассчитывается количество дней, прошедших с года ноль. [Дата](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
-- `time_zone` — Константное значение типа строки или выражение, представляющее часовой пояс. [Строковые типы](../data-types/string.md)
+- `date` — Дата, от которой нужно вычислить количество дней, прошедших с года ноль. [Дата](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
+- `time_zone` — Константное значение типа String или выражение, представляющее часовой пояс. [String types](../data-types/string.md)
 
 **Возвращаемое значение**
 
@@ -2117,21 +2122,14 @@ SELECT toDaysSinceYearZero(toDate('2023-09-08'));
 └────────────────────────────────────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
 - [fromDaysSinceYearZero](#fromdayssinceyearzero)
-```yaml
-title: 'Функции работы с датами и временем'
-sidebar_label: 'Функции даты и времени'
-keywords: ['функции', 'дата', 'время']
-description: 'Обзор функций ClickHouse для работы с датами и временем.'
-```
-
 ## fromDaysSinceYearZero {#fromdayssinceyearzero}
 
-Возвращает для данного числа дней, прошедших с [1 января 0000](https://en.wikipedia.org/wiki/Year_zero), соответствующую дату в [пролептическом григорианском календаре, определенном ISO 8601](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar). Вычисление такое же, как в функции MySQL [`FROM_DAYS()`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_from-days).
+Возвращает соответствующую дату для заданного количества дней, прошедших с [1 января 0000 года](https://en.wikipedia.org/wiki/Year_zero) в [пролектическом григорианском календаре, определённом ISO 8601](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar). Вычисление такое же, как в функции MySQL [`FROM_DAYS()`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_from-days).
 
-Результат непредсказуем, если он не может быть представлен в пределах типа [Date](../data-types/date.md).
+Результат неопределён, если его нельзя представить в пределах типа [Date](../data-types/date.md).
 
 **Синтаксис**
 
@@ -2143,11 +2141,11 @@ fromDaysSinceYearZero(days)
 
 **Аргументы**
 
-- `days` — Число дней, прошедших с года ноль.
+- `days` — Количество дней, прошедших с нулевого года.
 
 **Возвращаемое значение**
 
-Дата, соответствующая числу дней, прошедших с года ноль. [Date](../data-types/date.md).
+Дата, соответствующая количеству дней, прошедших с нулевого года. [Date](../data-types/date.md).
 
 **Пример**
 
@@ -2168,12 +2166,13 @@ SELECT fromDaysSinceYearZero(739136), fromDaysSinceYearZero(toDaysSinceYearZero(
 - [toDaysSinceYearZero](#todayssinceyearzero)
 ## fromDaysSinceYearZero32 {#fromdayssinceyearzero32}
 
-Как [fromDaysSinceYearZero](#fromdayssinceyearzero), но возвращает [Date32](../data-types/date32.md).
+Как и [fromDaysSinceYearZero](#fromdayssinceyearzero), но возвращает [Date32](../data-types/date32.md).
 ## age {#age}
 
-Возвращает компонент `unit` разности между `startdate` и `enddate`. Разность вычисляется с точностью 1 наносекунда. Например, разность между `2021-12-29` и `2022-01-01` составляет 3 дня для единицы `day`, 0 месяцев для единицы `month`, 0 лет для единицы `year`.
+Возвращает компонент `unit` разности между `startdate` и `enddate`. Разность вычисляется с точностью до 1 наносекунды.
+Например, разность между `2021-12-29` и `2022-01-01` составляет 3 дня для единицы `day`, 0 месяцев для единицы `month`, 0 лет для единицы `year`.
 
-Для альтернативы функции `age` см. функцию `date_diff`.
+Для альтернативы функции `age` смотрите функцию `date_diff`.
 
 **Синтаксис**
 
@@ -2198,11 +2197,11 @@ age('unit', startdate, enddate, [timezone])
     - `quarter`, `quarters`, `qq`, `q`
     - `year`, `years`, `yyyy`, `yy`
 
-- `startdate` — Первое значение времени для вычитания (уменьшаемое). [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
+- `startdate` — Первое значение времени для вычитания (умемое). [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
 
 - `enddate` — Второе значение времени, из которого вычитается (уменьшаемое). [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
 
-- `timezone` — [Имя часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) (опционально). Если указано, он применяется как к `startdate`, так и к `enddate`. Если не указано, используются часовые пояса `startdate` и `enddate`. Если они не совпадают, результат непредсказуем. [String](../data-types/string.md).
+- `timezone` — [Название часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) (необязательно). Если указано, применяется к обоим `startdate` и `enddate`. Если не указано, используются часовые пояса `startdate` и `enddate`. Если они разные, результат неопределён. [String](../data-types/string.md).
 
 **Возвращаемое значение**
 
@@ -2240,11 +2239,12 @@ SELECT
 ```
 ## date_diff {#date_diff}
 
-Возвращает количество пересеченных границ указанного `unit` между `startdate` и `enddate`. Разность вычисляется с использованием относительных единиц, например разность между `2021-12-29` и `2022-01-01` составляет 3 дня для единицы `day` (см. [toRelativeDayNum](#torelativedaynum)), 1 месяц для единицы `month` (см. [toRelativeMonthNum](#torelativemonthnum)) и 1 год для единицы `year` (см. [toRelativeYearNum](#torelativeyearnum)).
+Возвращает количество пересечённых границ заданного `unit` между `startdate` и `enddate`.
+Разность вычисляется с использованием относительных единиц, например разность между `2021-12-29` и `2022-01-01` составляет 3 дня для единицы `day` (см. [toRelativeDayNum](#torelativedaynum)), 1 месяц для единицы `month` (см. [toRelativeMonthNum](#torelativemonthnum)) и 1 год для единицы `year` (см. [toRelativeYearNum](#torelativeyearnum)).
 
 Если была указана единица `week`, `date_diff` предполагает, что недели начинаются с понедельника. Обратите внимание, что это поведение отличается от функции `toWeek()`, в которой недели по умолчанию начинаются с воскресенья.
 
-Для альтернативы функции `date_diff` см. функцию `age`.
+Для альтернативы функции `date_diff` смотрите функцию `age`.
 
 **Синтаксис**
 
@@ -2271,11 +2271,11 @@ date_diff('unit', startdate, enddate, [timezone])
     - `quarter`, `quarters`, `qq`, `q`
     - `year`, `years`, `yyyy`, `yy`
 
-- `startdate` — Первое значение времени для вычитания (уменьшаемое). [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
+- `startdate` — Первое временное значение, из которого вычитается (умемое). [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
 
-- `enddate` — Второе значение времени, из которого вычитается (уменьшаемое). [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
+- `enddate` — Второе временное значение, из которого вычитается (уменьшаемое). [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
 
-- `timezone` — [Имя часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) (опционально). Если указано, он применяется как к `startdate`, так и к `enddate`. Если не указано, используются часовые пояса `startdate` и `enddate`. Если они не совпадают, результат непредсказуем. [String](../data-types/string.md).
+- `timezone` — [Название часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) (необязательно). Если указано, оно применяется к обоим `startdate` и `enddate`. Если не указано, используются часовые пояса `startdate` и `enddate`. Если они не одинаковы, результат неопределён. [String](../data-types/string.md).
 
 **Возвращаемое значение**
 
@@ -2311,9 +2311,9 @@ SELECT
 │ 2022-01-01 │ 2021-12-29 │        3 │           1 │         1 │
 └────────────┴────────────┴──────────┴─────────────┴───────────┘
 ```
-## date\_trunc {#date_trunc}
+## date_trunc {#date_trunc}
 
-Обрезает данные даты и времени до указанной части даты.
+Обрезает временные данные по указанной части даты.
 
 **Синтаксис**
 
@@ -2328,9 +2328,9 @@ date_trunc(unit, value[, timezone])
 - `unit` — Тип интервала, к которому нужно обрезать результат. [String Literal](/sql-reference/syntax#string).
     Возможные значения:
 
-    - `nanosecond` - Совместим только с DateTime64
-    - `microsecond` - Совместим только с DateTime64
-    - `milisecond` - Совместим только с DateTime64
+    - `nanosecond` - Совместимо только с DateTime64
+    - `microsecond` - Совместимо только с DateTime64
+    - `milisecond` - Совместимо только с DateTime64
     - `second`
     - `minute`
     - `hour`
@@ -2340,22 +2340,22 @@ date_trunc(unit, value[, timezone])
     - `quarter`
     - `year`
 
-    Аргумент `unit` нечувствителен к регистру.
+    Аргумент `unit` не чувствителен к регистру.
 
 - `value` — Дата и время. [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
-- `timezone` — [Имя часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (опционально). Если не указано, функция использует часовой пояс параметра `value`. [String](../data-types/string.md).
+- `timezone` — [Название часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательно). Если не указано, функция использует часовой пояс параметра `value`. [String](../data-types/string.md).
 
 **Возвращаемое значение**
 
-Если аргумент unit равен Год, Квартал, Месяц или Неделя,
-- и аргумент value является Date32 или DateTime64, то возвращается [Date32](../data-types/date32.md),
+Если аргумент `unit` равен Год, Квартал, Месяц или Неделя,
+- и аргумент `value` равен Date32 или DateTime64, то возвращается [Date32](../data-types/date32.md),
 - в противном случае возвращается [Date](../data-types/date.md).
 
-Если аргумент unit равен День, Час, Минута или Секунда,
-- и аргумент value является Date32 или DateTime64, то возвращается [DateTime64](../data-types/datetime64.md),
+Если аргумент `unit` равен День, Час, Минуту или Секунду,
+- и аргумент `value` равен Date32 или DateTime64, то возвращается [DateTime64](../data-types/datetime64.md),
 - в противном случае возвращается [DateTime](../data-types/datetime.md).
 
-Если аргумент unit равен Миллисекунда, Микросекунда или Наносекунда, то возвращается [DateTime64](../data-types/datetime64.md) с масштабом 3 или 6 или 9 (в зависимости от аргумента unit).
+Если аргумент `unit` равен Миллисекунде, Микросекунде или Наносекунде, тогда возвращается [DateTime64](../data-types/datetime64.md) со шкалой 3, 6 или 9 (в зависимости от аргумента `unit`).
 
 **Пример**
 
@@ -2390,11 +2390,11 @@ SELECT now(), date_trunc('hour', now(), 'Asia/Istanbul');
 **См. также**
 
 - [toStartOfInterval](#tostartofinterval)
-## date\_add {#date_add}
+## date_add {#date_add}
 
-Добавляет временной интервал или интервал даты к предоставленной дате или дате с временем.
+Добавляет временной интервал или дату к указанной дате или дате с временем.
 
-Если сложение приводит к значению вне пределов типа данных, результат непредсказуем.
+Если прибавление приводит к значению, выходящему за границы типа данных, результат неопределён.
 
 **Синтаксис**
 
@@ -2412,7 +2412,7 @@ date_add(date, INTERVAL value unit)
 
 **Аргументы**
 
-- `unit` — Тип интервала для добавления. Обратите внимание: это не [String](../data-types/string.md) и не должно быть заключено в кавычки.
+- `unit` — Тип интервала, который нужно добавить. Примечание: Это не [String](../data-types/string.md) и, следовательно, не должен быть заключён в кавычки.
     Возможные значения:
 
     - `second`
@@ -2429,7 +2429,7 @@ date_add(date, INTERVAL value unit)
 
 **Возвращаемое значение**
 
-Дата или дата с временем, полученная путем добавления `value`, выраженного в `unit`, к `date`. [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
+Дата или дата с временем, полученная в результате добавления `value`, выраженного в `unit`, к `date`. [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -2462,11 +2462,11 @@ SELECT date_add(toDate('2018-01-01'), INTERVAL 3 YEAR);
 **См. также**
 
 - [addDate](#adddate)
-## date\_sub {#date_sub}
+## date_sub {#date_sub}
 
-Вычитает временной интервал или интервал даты из предоставленной даты или даты с временем.
+Вычитает временной интервал или дату из указанной даты или даты с временем.
 
-Если вычитание приводит к значению вне пределов типа данных, результат непредсказуем.
+Если вычитание приводит к значению, выходящему за границы типа данных, результат неопределён.
 
 **Синтаксис**
 
@@ -2484,7 +2484,7 @@ date_sub(date, INTERVAL value unit)
 
 **Аргументы**
 
-- `unit` — Тип интервала для вычитания. Обратите внимание: это не [String](../data-types/string.md) и не должно быть заключено в кавычки.
+- `unit` — Тип интервала, который нужно вычесть. Примечание: Это не [String](../data-types/string.md) и, следовательно, не должен быть заключён в кавычки.
 
     Возможные значения:
 
@@ -2497,12 +2497,12 @@ date_sub(date, INTERVAL value unit)
     - `quarter`
     - `year`
 
-- `value` — Значение интервала для вычитания. [Int](../data-types/int-uint.md).
+- `value` — Значение интервала, которое нужно вычесть. [Int](../data-types/int-uint.md).
 - `date` — Дата или дата с временем, из которой вычитается `value`. [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
 
 **Возвращаемое значение**
 
-Дата или дата с временем, полученная путем вычитания `value`, выраженного в `unit`, из `date`. [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
+Дата или дата с временем, полученная в результате вычитания `value`, выраженного в `unit`, из `date`. [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -2534,11 +2534,11 @@ SELECT date_sub(toDate('2018-01-01'), INTERVAL 3 YEAR);
 **См. также**
 
 - [subDate](#subdate)
-## timestamp\_add {#timestamp_add}
+## timestamp_add {#timestamp_add}
 
-Добавляет указанное значение времени к предоставленной дате или значению даты и времени.
+Добавляет указанное временное значение к предоставленной дате или дате с временем.
 
-Если сложение приводит к значению вне пределов типа данных, результат непредсказуем.
+Если прибавление приводит к значению, выходящему за границы типа данных, результат неопределён.
 
 **Синтаксис**
 
@@ -2552,7 +2552,7 @@ timestamp_add(date, INTERVAL value unit)
 
 - `date` — Дата или дата с временем. [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
 - `value` — Значение интервала для добавления. [Int](../data-types/int-uint.md).
-- `unit` — Тип интервала для добавления. [String](../data-types/string.md).
+- `unit` — Тип интервала, который нужно добавить. [String](../data-types/string.md).
     Возможные значения:
 
     - `second`
@@ -2566,7 +2566,7 @@ timestamp_add(date, INTERVAL value unit)
 
 **Возвращаемое значение**
 
-Дата или дата с временем, к которому добавлено указанное `value`, выраженное в `unit`. [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
+Дата или дата с временем с указанным `value`, выраженным в `unit`, добавленным к `date`. [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -2581,11 +2581,11 @@ select timestamp_add(toDate('2018-01-01'), INTERVAL 3 MONTH);
 │                                     2018-04-01 │
 └────────────────────────────────────────────────┘
 ```
-## timestamp\_sub {#timestamp_sub}
+## timestamp_sub {#timestamp_sub}
 
-Вычитает временной интервал из предоставленной даты или даты с временем.
+Вычитает временной интервал из указанной даты или даты с временем.
 
-Если вычитание приводит к значению вне пределов типа данных, результат непредсказуем.
+Если вычитание приводит к значению, выходящему за границы типа данных, результат неопределён.
 
 **Синтаксис**
 
@@ -2597,7 +2597,7 @@ timestamp_sub(unit, value, date)
 
 **Аргументы**
 
-- `unit` — Тип интервала для вычитания. [String](../data-types/string.md).
+- `unit` — Тип интервала, который нужно вычесть. [String](../data-types/string.md).
     Возможные значения:
 
     - `second`
@@ -2609,12 +2609,12 @@ timestamp_sub(unit, value, date)
     - `quarter`
     - `year`
 
-- `value` — Значение интервала для вычитания. [Int](../data-types/int-uint.md).
+- `value` — Значение интервала, которое нужно вычесть. [Int](../data-types/int-uint.md).
 - `date` — Дата или дата с временем. [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
 
 **Возвращаемое значение**
 
-Дата или дата с временем, полученная путем вычитания `value`, выраженного в `unit`, из `date`. [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
+Дата или дата с временем, полученная в результате вычитания `value`, выраженного в `unit`, из `date`. [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -2631,9 +2631,9 @@ select timestamp_sub(MONTH, 5, toDateTime('2018-12-18 01:02:03'));
 ```
 ## addDate {#adddate}
 
-Добавляет временной интервал к предоставленной дате, дате с временем или строковому представлению даты / даты с временем.
+Добавляет временной интервал к указанной дате, дате с временем или строковому представлению даты / даты с временем.
 
-Если сложение приводит к значению вне пределов типа данных, результат непредсказуем.
+Если прибавление приводит к значению, выходящему за границы типа данных, результат неопределён.
 
 **Синтаксис**
 
@@ -2648,7 +2648,7 @@ addDate(date, interval)
 
 **Возвращаемое значение**
 
-Дата или дата с временем, полученная путем добавления `interval` к `date`. [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
+Дата или дата с временем, полученная в результате добавления `interval` к `date`. [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -2671,9 +2671,9 @@ SELECT addDate(toDate('2018-01-01'), INTERVAL 3 YEAR);
 - [date_add](#date_add)
 ## subDate {#subdate}
 
-Вычитает временной интервал из предоставленной даты, даты с временем или строкового представления даты / даты с временем.
+Вычитает временной интервал из указанной даты, даты с временем или строкового представления даты / даты с временем.
 
-Если вычитание приводит к значению вне пределов типа данных, результат непредсказуем.
+Если вычитание приводит к значению, выходящему за границы типа данных, результат неопределён.
 
 **Синтаксис**
 
@@ -2688,7 +2688,7 @@ subDate(date, interval)
 
 **Возвращаемое значение**
 
-Дата или дата с временем, полученная путем вычитания `interval` из `date`. [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
+Дата или дата с временем, полученная в результате вычитания `interval` из `date`. [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -2711,7 +2711,7 @@ SELECT subDate(toDate('2018-01-01'), INTERVAL 3 YEAR);
 - [date_sub](#date_sub)
 ## now {#now}
 
-Возвращает текущую дату и время в момент анализа запроса. Функция является константным выражением.
+Возвращает текущую дату и время на момент анализа запроса. Функция является постоянным выражением.
 
 Псевдоним: `current_timestamp`.
 
@@ -2723,7 +2723,7 @@ now([timezone])
 
 **Аргументы**
 
-- `timezone` — [Имя часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (опционально). [String](../data-types/string.md).
+- `timezone` — [Название часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательно). [String](../data-types/string.md).
 
 **Возвращаемое значение**
 
@@ -2760,7 +2760,7 @@ SELECT now('Asia/Istanbul');
 ```
 ## now64 {#now64}
 
-Возвращает текущее время с долями секунды в момент анализа запроса. Функция является константным выражением.
+Возвращает текущую дату и время с точностью до доли секунды на момент анализа запроса. Функция является постоянным выражением.
 
 **Синтаксис**
 
@@ -2771,11 +2771,11 @@ now64([scale], [timezone])
 **Аргументы**
 
 - `scale` - Размер тика (точность): 10<sup>-precision</sup> секунд. Допустимый диапазон: [ 0 : 9 ]. Обычно используются - 3 (по умолчанию) (миллисекунды), 6 (микросекунды), 9 (наносекунды).
-- `timezone` — [Имя часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (опционально). [String](../data-types/string.md).
+- `timezone` — [Название часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательно). [String](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- Текущая дата и время с долями секунды. [DateTime64](../data-types/datetime64.md).
+- Текущая дата и время с точностью до доли секунды. [DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -2792,9 +2792,9 @@ SELECT now64(), now64(9, 'Asia/Istanbul');
 ```
 ## nowInBlock {#nowInBlock}
 
-Возвращает текущую дату и время в момент обработки каждого блока данных. В отличие от функции [now](#now), это не константное выражение, и возвращаемое значение будет различаться в разных блоках для долгих запросов.
+Возвращает текущую дату и время на момент обработки каждого блока данных. В отличие от функции [now](#now), это не постоянное выражение, и возвращаемое значение будет различаться в разных блоках для долгих запросов.
 
-Имеет смысл использовать эту функцию для генерации текущего времени в длительных запросах INSERT SELECT.
+Используйте эту функцию для генерации текущего времени в долгих запросах вставки SELECT.
 
 **Синтаксис**
 
@@ -2804,11 +2804,11 @@ nowInBlock([timezone])
 
 **Аргументы**
 
-- `timezone` — [Имя часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (опционально). [String](../data-types/string.md).
+- `timezone` — [Название часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательно). [String](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- Текущая дата и время в момент обработки каждого блока данных. [DateTime](../data-types/datetime.md).
+- Текущая дата и время на момент обработки каждого блока данных. [DateTime](../data-types/datetime.md).
 
 **Пример**
 
@@ -2833,7 +2833,7 @@ FORMAT PrettyCompactMonoBlock
 ```
 ## today {#today}
 
-Возвращает текущую дату в момент анализа запроса. Это то же самое, что 'toDate(now())' и имеет псевдонимы: `curdate`, `current_date`.
+Возвращает текущую дату на момент анализа запроса. Это то же самое, что и 'toDate(now())' и имеет псевдонимы: `curdate`, `current_date`.
 
 **Синтаксис**
 
@@ -2859,7 +2859,7 @@ SELECT today() AS today, curdate() AS curdate, current_date() AS current_date FO
 
 **Результат**:
 
-Выполнение приведенного выше запроса 3 марта 2024 года вернет следующий ответ:
+Выполнение запроса выше 3 марта 2024 года вернёт следующий ответ:
 
 ```response
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━┓
@@ -2870,10 +2870,11 @@ SELECT today() AS today, curdate() AS curdate, current_date() AS current_date FO
 ```
 ## yesterday {#yesterday}
 
-Принимает ноль аргументов и возвращает дату вчера в один из моментов анализа запроса. То же самое, что и 'today() - 1'.
+Принимает ноль аргументов и возвращает дату вчерашнего дня на момент анализа запроса.
+То же самое, что и 'today() - 1'.
 ## timeSlot {#timeslot}
 
-Округляет время до начала полудо-часового интервала.
+Округляет время до начала получасового интервала.
 
 **Синтаксис**
 
@@ -2883,16 +2884,16 @@ timeSlot(time[, time_zone])
 
 **Аргументы**
 
-- `time` — Время, которое нужно округлить до начала полудо-часового интервала. [DateTime](../data-types/datetime.md)/[Date32](../data-types/date32.md)/[DateTime64](../data-types/datetime64.md).
-- `time_zone` — Константное значение типа String или выражение, представляющее часовой пояс. [String](../data-types/string.md).
+- `time` — Время, которое нужно округлить до начала получасового интервала. [DateTime](../data-types/datetime.md)/[Date32](../data-types/date32.md)/[DateTime64](../data-types/datetime64.md).
+- `time_zone` — Значение типа String или выражение, представляющее часовой пояс. [String](../data-types/string.md).
 
 :::note
-Хотя эта функция может принимать значения расширенных типов `Date32` и `DateTime64` в качестве аргумента, передача ей времени за пределами обычного диапазона (год 1970 до 2149 для `Date` / 2106 для `DateTime`) даст некорректные результаты.
+Хотя эта функция может принимать значения расширенных типов `Date32` и `DateTime64` в качестве аргумента, передача времени за пределами нормального диапазона (год 1970 до 2149 для `Date` / 2106 для `DateTime`) приведёт к ошибочным результатам.
 :::
 
 **Тип возвращаемого значения**
 
-- Возвращает время, округленное до начала полудо-часового интервала. [DateTime](../data-types/datetime.md).
+- Возвращает округлённое время до начала получасового интервала. [DateTime](../data-types/datetime.md).
 
 **Пример**
 
@@ -2911,9 +2912,9 @@ SELECT timeSlot(toDateTime('2000-01-02 03:04:05', 'UTC'));
 ```
 ## toYYYYMM {#toyyyymm}
 
-Преобразует дату или дату с временем в число UInt32, содержащее номер года и месяца (YYYY \* 100 + MM). Принимает второй необязательный аргумент часового пояса. Если предоставлен, часовой пояс должен быть строковым константным значением.
+Преобразует дату или дату с временем в число UInt32, содержащее номер года и месяца (YYYY * 100 + MM). Принимает второй необязательный аргумент - часовой пояс. Если указан, часовой пояс должен быть строковой константой.
 
-Эта функция является противоположной функции `YYYYMMDDToDate()`.
+Эта функция является противоположностью функции `YYYYMMDDToDate()`.
 
 **Пример**
 
@@ -2931,7 +2932,7 @@ SELECT
 ```
 ## toYYYYMMDD {#toyyyymmdd}
 
-Преобразует дату или дату с временем в число UInt32, содержащее номер года, месяца и дня (YYYY \* 10000 + MM \* 100 + DD). Принимает второй необязательный аргумент часового пояса. Если предоставлен, часовой пояс должен быть строковым константным значением.
+Преобразует дату или дату с временем в число UInt32, содержащее номер года и месяца (YYYY * 10000 + MM * 100 + DD). Принимает второй необязательный аргумент - часовой пояс. Если указан, часовой пояс должен быть строковой константой.
 
 **Пример**
 
@@ -2948,7 +2949,7 @@ SELECT toYYYYMMDD(now(), 'US/Eastern')
 ```
 ## toYYYYMMDDhhmmss {#toyyyymmddhhmmss}
 
-Преобразует дату или дату с временем в число UInt64, содержащее номер года, месяца, дня, часов, минут и секунд (YYYY \* 10000000000 + MM \* 100000000 + DD \* 1000000 + hh \* 10000 + mm \* 100 + ss). Принимает второй необязательный аргумент часового пояса. Если предоставлен, часовой пояс должен быть строковым константным значением.
+Преобразует дату или дату с временем в число UInt64, содержащее номер года и месяца (YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss). Принимает второй необязательный аргумент - часовой пояс. Если указан, часовой пояс должен быть строковой константой.
 
 **Пример**
 
@@ -2965,11 +2966,11 @@ SELECT toYYYYMMDDhhmmss(now(), 'US/Eastern')
 ```
 ## YYYYMMDDToDate {#yyyymmddtodate}
 
-Преобразует число, содержащее номер года, месяца и дня, в [Date](../data-types/date.md).
+Преобразует число, содержащее номера года, месяца и дня в [Date](../data-types/date.md).
 
-Эта функция является противоположной функции `toYYYYMMDD()`.
+Эта функция является противоположностью функции `toYYYYMMDD()`.
 
-Вывод непредсказуем, если входные данные не кодируют допустимое значение Date.
+Выходное значение неопределено, если входное значение не кодирует допустимое значение даты.
 
 **Синтаксис**
 
@@ -2983,7 +2984,7 @@ YYYYMMDDToDate(yyyymmdd);
 
 **Возвращаемое значение**
 
-- дата, созданная из аргументов. [Date](../data-types/date.md).
+- Дата, созданная из аргументов. [Date](../data-types/date.md).
 
 **Пример**
 
@@ -3003,11 +3004,11 @@ SELECT YYYYMMDDToDate(20230911);
 Как функция `YYYYMMDDToDate()`, но производит [Date32](../data-types/date32.md).
 ## YYYYMMDDhhmmssToDateTime {#yyyymmddhhmmsstodatetime}
 
-Преобразует число, содержащее год, месяц, день, часы, минуты и секунды, в [DateTime](../data-types/datetime.md).
+Преобразует число, содержащее год, месяц, день, часы, минуты и секунды в [DateTime](../data-types/datetime.md).
 
-Вывод непредсказуем, если входные данные не кодируют допустимое значение DateTime.
+Выходное значение неопределено, если входное значение не кодирует допустимое значение DateTime.
 
-Эта функция является противоположной функции `toYYYYMMDDhhmmss()`.
+Эта функция является противоположностью функции `toYYYYMMDDhhmmss()`.
 
 **Синтаксис**
 
@@ -3018,11 +3019,11 @@ YYYYMMDDhhmmssToDateTime(yyyymmddhhmmss[, timezone]);
 **Аргументы**
 
 - `yyyymmddhhmmss` - Число, представляющее год, месяц и день. [Integer](../data-types/int-uint.md), [Float](../data-types/float.md) или [Decimal](../data-types/decimal.md).
-- `timezone` - [Часовой пояс](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (опционально).
+- `timezone` - [Часовой пояс](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательно).
 
 **Возвращаемое значение**
 
-- дата и время, созданные из аргументов. [DateTime](../data-types/datetime.md).
+- Дата и время, созданные из аргументов. [DateTime](../data-types/datetime.md).
 
 **Пример**
 
@@ -3044,7 +3045,7 @@ SELECT YYYYMMDDToDateTime(20230911131415);
 Принимает дополнительный необязательный параметр `precision` после параметра `timezone`.
 ## changeYear {#changeyear}
 
-Изменяет компонент года даты или даты времени.
+Изменяет компонент года даты или даты с временем.
 
 **Синтаксис**
 ```sql
@@ -3055,7 +3056,7 @@ changeYear(date_or_datetime, value)
 **Аргументы**
 
 - `date_or_datetime` - [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md)
-- `value` - новое значение года. [Integer](../../sql-reference/data-types/int-uint.md).
+- `value` - Новое значение года. [Integer](../../sql-reference/data-types/int-uint.md).
 
 **Возвращаемое значение**
 
@@ -3076,7 +3077,7 @@ SELECT changeYear(toDate('1999-01-01'), 2000), changeYear(toDateTime64('1999-01-
 ```
 ## changeMonth {#changemonth}
 
-Изменяет компонент месяца даты или даты времени.
+Изменяет компонент месяца даты или даты с временем.
 
 **Синтаксис**
 
@@ -3087,7 +3088,7 @@ changeMonth(date_or_datetime, value)
 **Аргументы**
 
 - `date_or_datetime` - [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md)
-- `value` - новое значение месяца. [Integer](../../sql-reference/data-types/int-uint.md).
+- `value` - Новое значение месяца. [Integer](../../sql-reference/data-types/int-uint.md).
 
 **Возвращаемое значение**
 
@@ -3108,7 +3109,7 @@ SELECT changeMonth(toDate('1999-01-01'), 2), changeMonth(toDateTime64('1999-01-0
 ```
 ## changeDay {#changeday}
 
-Изменяет компонент дня даты или даты времени.
+Изменяет компонент дня даты или даты с временем.
 
 **Синтаксис**
 
@@ -3119,7 +3120,7 @@ changeDay(date_or_datetime, value)
 **Аргументы**
 
 - `date_or_datetime` - [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md)
-- `value` - новое значение дня. [Integer](../../sql-reference/data-types/int-uint.md).
+- `value` - Новое значение дня. [Integer](../../sql-reference/data-types/int-uint.md).
 
 **Возвращаемое значение**
 
@@ -3138,10 +3139,9 @@ SELECT changeDay(toDate('1999-01-01'), 5), changeDay(toDateTime64('1999-01-01 00
 │                         1999-01-05 │                                  1999-01-05 00:00:00.000 │
 └────────────────────────────────────┴──────────────────────────────────────────────────────────┘
 ```
-
 ## changeHour {#changehour}
 
-Изменяет компонент часа даты или даты с временем.
+Изменяет компонент часа в дате или дате со временем.
 
 **Синтаксис**
 
@@ -3151,12 +3151,12 @@ changeHour(date_or_datetime, value)
 
 **Аргументы**
 
-- `date_or_datetime` - [Дата](../data-types/date.md), [Date32](../data-types/date32.md), [ДатаВремя](../data-types/datetime.md) или [ДатаВремя64](../data-types/datetime64.md)
+- `date_or_datetime` - [Дата](../data-types/date.md), [Date32](../data-types/date32.md), [ДатаВремя](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md)
 - `value` - новое значение часа. [Целое число](../../sql-reference/data-types/int-uint.md).
 
 **Возвращаемое значение**
 
-- Возвращает значение того же типа, что и `date_or_datetime`. Если входное значение - это [Дата](../data-types/date.md), возвращает [ДатаВремя](../data-types/datetime.md). Если входное значение - это [Date32](../data-types/date32.md), возвращает [ДатаВремя64](../data-types/datetime64.md).
+- Возвращает значение того же типа, что и `date_or_datetime`. Если введено [Дата](../data-types/date.md), возвращает [ДатаВремя](../data-types/datetime.md). Если введено [Date32](../data-types/date32.md), возвращает [DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3173,7 +3173,7 @@ SELECT changeHour(toDate('1999-01-01'), 14), changeHour(toDateTime64('1999-01-01
 ```
 ## changeMinute {#changeminute}
 
-Изменяет компонент минуты даты или даты с временем.
+Изменяет компонент минуты в дате или дате со временем.
 
 **Синтаксис**
 
@@ -3183,17 +3183,17 @@ changeMinute(date_or_datetime, value)
 
 **Аргументы**
 
-- `date_or_datetime` - [Дата](../data-types/date.md), [Date32](../data-types/date32.md), [ДатаВремя](../data-types/datetime.md) или [ДатаВремя64](../data-types/datetime64.md)
+- `date_or_datetime` - [Дата](../data-types/date.md), [Date32](../data-types/date32.md), [ДатаВремя](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md)
 - `value` - новое значение минуты. [Целое число](../../sql-reference/data-types/int-uint.md).
 
 **Возвращаемое значение**
 
-- Возвращает значение того же типа, что и `date_or_datetime`. Если входное значение - это [Дата](../data-types/date.md), возвращает [ДатаВремя](../data-types/datetime.md). Если входное значение - это [Date32](../data-types/date32.md), возвращает [ДатаВремя64](../data-types/datetime64.md).
+- Возвращает значение того же типа, что и `date_or_datetime`. Если введено [Дата](../data-types/date.md), возвращает [ДатаВремя](../data-types/datetime.md). Если введено [Date32](../data-types/date32.md), возвращает [DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
 ```sql
-    SELECT changeMinute(toDate('1999-01-01'), 15), changeMinute(toDateTime64('1999-01-01 00:00:00.000', 3), 15);
+SELECT changeMinute(toDate('1999-01-01'), 15), changeMinute(toDateTime64('1999-01-01 00:00:00.000', 3), 15);
 ```
 
 Результат:
@@ -3201,11 +3201,11 @@ changeMinute(date_or_datetime, value)
 ```sql
 ┌─changeMinute(toDate('1999-01-01'), 15)─┬─changeMinute(toDateTime64('1999-01-01 00:00:00.000', 3), 15)─┐
 │                    1999-01-01 00:15:00 │                                      1999-01-01 00:15:00.000 │
-└────────────────────────────────────────┴──────────────────────────────────────────────────────────────┘
+└────────────────────────────────────────┴───────────────────────────────────────────────────────────────┘
 ```
 ## changeSecond {#changesecond}
 
-Изменяет компонент секунды даты или даты с временем.
+Изменяет компонент секунды в дате или дате со временем.
 
 **Синтаксис**
 
@@ -3215,12 +3215,12 @@ changeSecond(date_or_datetime, value)
 
 **Аргументы**
 
-- `date_or_datetime` - [Дата](../data-types/date.md), [Date32](../data-types/date32.md), [ДатаВремя](../data-types/datetime.md) или [ДатаВремя64](../data-types/datetime64.md)
+- `date_or_datetime` - [Дата](../data-types/date.md), [Date32](../data-types/date32.md), [ДатаВремя](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md)
 - `value` - новое значение секунды. [Целое число](../../sql-reference/data-types/int-uint.md).
 
 **Возвращаемое значение**
 
-- Возвращает значение того же типа, что и `date_or_datetime`. Если входное значение - это [Дата](../data-types/date.md), возвращает [ДатаВремя](../data-types/datetime.md). Если входное значение - это [Date32](../data-types/date32.md), возвращает [ДатаВремя64](../data-types/datetime64.md).
+- Возвращает значение того же типа, что и `date_or_datetime`. Если введено [Дата](../data-types/date.md), возвращает [ДатаВремя](../data-types/datetime.md). Если введено [Date32](../data-types/date32.md), возвращает [DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3233,11 +3233,11 @@ SELECT changeSecond(toDate('1999-01-01'), 15), changeSecond(toDateTime64('1999-0
 ```sql
 ┌─changeSecond(toDate('1999-01-01'), 15)─┬─changeSecond(toDateTime64('1999-01-01 00:00:00.000', 3), 15)─┐
 │                    1999-01-01 00:00:15 │                                      1999-01-01 00:00:15.000 │
-└────────────────────────────────────────┴──────────────────────────────────────────────────────────────┘
+└────────────────────────────────────────┴───────────────────────────────────────────────────────────────┘
 ```
 ## addYears {#addyears}
 
-Добавляет указанное количество лет к дате, дате с временем или дате/дате с временем в виде строки.
+Добавляет указанное количество лет к дате, дате со временем или строково закодированной дате / дате со временем.
 
 **Синтаксис**
 
@@ -3247,12 +3247,12 @@ addYears(date, num)
 
 **Параметры**
 
-- `date`: Дата / дата с временем, к которой нужно добавить указанное количество лет. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество лет для добавления. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date`: Дата / дата со временем, к которой необходимо добавить указанное количество лет. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество лет, которое необходимо добавить. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date` плюс `num` лет. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date` плюс `num` лет. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3274,7 +3274,7 @@ SELECT
 ```
 ## addQuarters {#addquarters}
 
-Добавляет указанное количество кварталов к дате, дате с временем или дате/дате с временем в виде строки.
+Добавляет указанное количество кварталов к дате, дате со временем или строково закодированной дате / дате со временем.
 
 **Синтаксис**
 
@@ -3284,12 +3284,12 @@ addQuarters(date, num)
 
 **Параметры**
 
-- `date`: Дата / дата с временем, к которой нужно добавить указанное количество кварталов. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество кварталов для добавления. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date`: Дата / дата со временем, к которой необходимо добавить указанное количество кварталов. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество кварталов, которое необходимо добавить. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date` плюс `num` кварталов. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date` плюс `num` кварталов. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3311,7 +3311,7 @@ SELECT
 ```
 ## addMonths {#addmonths}
 
-Добавляет указанное количество месяцев к дате, дате с временем или дате/дате с временем в виде строки.
+Добавляет указанное количество месяцев к дате, дате со временем или строково закодированной дате / дате со временем.
 
 **Синтаксис**
 
@@ -3321,12 +3321,12 @@ addMonths(date, num)
 
 **Параметры**
 
-- `date`: Дата / дата с временем, к которой нужно добавить указанное количество месяцев. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество месяцев для добавления. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date`: Дата / дата со временем, к которой необходимо добавить указанное количество месяцев. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество месяцев, которое необходимо добавить. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date` плюс `num` месяцев. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date` плюс `num` месяцев. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3348,7 +3348,7 @@ SELECT
 ```
 ## addWeeks {#addweeks}
 
-Добавляет указанное количество недель к дате, дате с временем или дате/дате с временем в виде строки.
+Добавляет указанное количество недель к дате, дате со временем или строково закодированной дате / дате со временем.
 
 **Синтаксис**
 
@@ -3358,12 +3358,12 @@ addWeeks(date, num)
 
 **Параметры**
 
-- `date`: Дата / дата с временем, к которой нужно добавить указанное количество недель. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество недель для добавления. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date`: Дата / дата со временем, к которой необходимо добавить указанное количество недель. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество недель, которое необходимо добавить. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date` плюс `num` недель. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date` плюс `num` недель. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3385,7 +3385,7 @@ SELECT
 ```
 ## addDays {#adddays}
 
-Добавляет указанное количество дней к дате, дате с временем или дате/дате с временем в виде строки.
+Добавляет указанное количество дней к дате, дате со временем или строково закодированной дате / дате со временем.
 
 **Синтаксис**
 
@@ -3395,12 +3395,12 @@ addDays(date, num)
 
 **Параметры**
 
-- `date`: Дата / дата с временем, к которой нужно добавить указанное количество дней. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество дней для добавления. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date`: Дата / дата со временем, к которой необходимо добавить указанное количество дней. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество дней, которое необходимо добавить. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date` плюс `num` дней. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date` плюс `num` дней. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3422,7 +3422,7 @@ SELECT
 ```
 ## addHours {#addhours}
 
-Добавляет указанное количество часов к дате, дате с временем или дате/дате с временем в виде строки.
+Добавляет указанное количество часов к дате, дате со временем или строково закодированной дате / дате со временем.
 
 **Синтаксис**
 
@@ -3432,12 +3432,12 @@ addHours(date, num)
 
 **Параметры**
 
-- `date`: Дата / дата с временем, к которой нужно добавить указанное количество часов. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество часов для добавления. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date`: Дата / дата со временем, к которой необходимо добавить указанное количество часов. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество часов, которое необходимо добавить. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date` плюс `num` часов. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date` плюс `num` часов. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3459,7 +3459,7 @@ SELECT
 ```
 ## addMinutes {#addminutes}
 
-Добавляет указанное количество минут к дате, дате с временем или дате/дате с временем в виде строки.
+Добавляет указанное количество минут к дате, дате со временем или строково закодированной дате / дате со временем.
 
 **Синтаксис**
 
@@ -3469,12 +3469,12 @@ addMinutes(date, num)
 
 **Параметры**
 
-- `date`: Дата / дата с временем, к которой нужно добавить указанное количество минут. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество минут для добавления. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date`: Дата / дата со временем, к которой необходимо добавить указанное количество минут. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество минут, которое необходимо добавить. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date` плюс `num` минут. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date` плюс `num` минут. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3496,7 +3496,7 @@ SELECT
 ```
 ## addSeconds {#addseconds}
 
-Добавляет указанное количество секунд к дате, дате с временем или дате/дате с временем в виде строки.
+Добавляет указанное количество секунд к дате, дате со временем или строково закодированной дате / дате со временем.
 
 **Синтаксис**
 
@@ -3506,12 +3506,12 @@ addSeconds(date, num)
 
 **Параметры**
 
-- `date`: Дата / дата с временем, к которой нужно добавить указанное количество секунд. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество секунд для добавления. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date`: Дата / дата со временем, к которой необходимо добавить указанное количество секунд. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество секунд, которое необходимо добавить. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date` плюс `num` секунд. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date` плюс `num` секунд. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3533,7 +3533,7 @@ SELECT
 ```
 ## addMilliseconds {#addmilliseconds}
 
-Добавляет указанное количество миллисекунд к дате с временем или дате с временем в виде строки.
+Добавляет указанное количество миллисекунд к дате со временем или строково закодированной дате со временем.
 
 **Синтаксис**
 
@@ -3543,12 +3543,12 @@ addMilliseconds(date_time, num)
 
 **Параметры**
 
-- `date_time`: Дата с временем, к которой нужно добавить указанное количество миллисекунд. [ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество миллисекунд для добавления. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date_time`: Дата со временем, к которой необходимо добавить указанное количество миллисекунд. [ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество миллисекунд, которое необходимо добавить. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date_time` плюс `num` миллисекунд. [ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date_time` плюс `num` миллисекунд. [DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3568,7 +3568,7 @@ SELECT
 ```
 ## addMicroseconds {#addmicroseconds}
 
-Добавляет указанное количество микросекунд к дате с временем или дате с временем в виде строки.
+Добавляет указанное количество микросекунд к дате со временем или строково закодированной дате со временем.
 
 **Синтаксис**
 
@@ -3578,12 +3578,12 @@ addMicroseconds(date_time, num)
 
 **Параметры**
 
-- `date_time`: Дата с временем, к которой нужно добавить указанное количество микросекунд. [ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество микросекунд для добавления. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date_time`: Дата со временем, к которой необходимо добавить указанное количество микросекунд. [ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество микросекунд, которое необходимо добавить. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date_time` плюс `num` микросекунд. [ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date_time` плюс `num` микросекунд. [DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3603,7 +3603,7 @@ SELECT
 ```
 ## addNanoseconds {#addnanoseconds}
 
-Добавляет указанное количество наносекунд к дате с временем или дате с временем в виде строки.
+Добавляет указанное количество наносекунд к дате со временем или строково закодированной дате со временем.
 
 **Синтаксис**
 
@@ -3613,12 +3613,12 @@ addNanoseconds(date_time, num)
 
 **Параметры**
 
-- `date_time`: Дата с временем, к которой нужно добавить указанное количество наносекунд. [ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество наносекунд для добавления. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date_time`: Дата со временем, к которой необходимо добавить указанное количество наносекунд. [ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество наносекунд, которое необходимо добавить. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date_time` плюс `num` наносекунд. [ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date_time` плюс `num` наносекунд. [DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3638,7 +3638,7 @@ SELECT
 ```
 ## addInterval {#addinterval}
 
-Добавляет интервал к другому интервалу или к кортежу интервалов.
+Добавляет интервал к другому интервалу или к кортеже интервалов.
 
 **Синтаксис**
 
@@ -3649,14 +3649,14 @@ addInterval(interval_1, interval_2)
 **Параметры**
 
 - `interval_1`: Первый интервал или кортеж интервалов. [интервал](../data-types/special-data-types/interval.md), [кортеж](../data-types/tuple.md)([интервал](../data-types/special-data-types/interval.md)).
-- `interval_2`: Второй интервал для добавления. [интервал](../data-types/special-data-types/interval.md).
+- `interval_2`: Второй интервал, который будет добавлен. [интервал](../data-types/special-data-types/interval.md).
 
 **Возвращаемое значение**
 
 - Возвращает кортеж интервалов. [кортеж](../data-types/tuple.md)([интервал](../data-types/special-data-types/interval.md)).
 
 :::note
-Интервалы одного типа будут объединены в один интервал. Например, если передать `toIntervalDay(1)` и `toIntervalDay(2)`, то результат будет `(3)`, а не `(1,1)`.
+Интервалы одного типа будут объединяться в один интервал. Например, если передать `toIntervalDay(1)` и `toIntervalDay(2)`, результат будет `(3)`, а не `(1,1)`.
 :::
 
 **Пример**
@@ -3684,7 +3684,7 @@ SELECT addInterval(INTERVAL 2 DAY, INTERVAL 1 DAY);
 ```
 ## addTupleOfIntervals {#addtupleofintervals}
 
-Последовательно добавляет кортеж интервалов к дате или к дате с временем.
+Последовательно добавляет кортеж интервалов к дате или дате со временем.
 
 **Синтаксис**
 
@@ -3694,12 +3694,12 @@ addTupleOfIntervals(interval_1, interval_2)
 
 **Параметры**
 
-- `date`: Первый интервал или кортеж интервалов. [дата](../data-types/date.md)/[date32](../data-types/date32.md)/[датаВремя](../data-types/datetime.md)/[датаВремя64](../data-types/datetime64.md).
-- `intervals`: Кортеж интервалов, который нужно добавить к `date`. [кортеж](../data-types/tuple.md)([интервал](../data-types/special-data-types/interval.md)).
+- `date`: Первый интервал или кортеж интервалов. [дата](../data-types/date.md)/[date32](../data-types/date32.md)/[datetime](../data-types/datetime.md)/[datetime64](../data-types/datetime64.md).
+- `intervals`: Кортеж интервалов для добавления к `date`. [кортеж](../data-types/tuple.md)([интервал](../data-types/special-data-types/interval.md)).
 
 **Возвращаемое значение**
 
-- Возвращает `date` с добавленными `intervals`. [дата](../data-types/date.md)/[date32](../data-types/date32.md)/[датаВремя](../data-types/datetime.md)/[датаВремя64](../data-types/datetime64.md).
+- Возвращает `date` с добавленными `intervals`. [дата](../data-types/date.md)/[date32](../data-types/date32.md)/[datetime](../data-types/datetime.md)/[datetime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3719,7 +3719,7 @@ SELECT addTupleOfIntervals(date, (INTERVAL 1 DAY, INTERVAL 1 MONTH, INTERVAL 1 Y
 ```
 ## subtractYears {#subtractyears}
 
-Вычитает указанное количество лет из даты, даты с временем или даты/даты с временем в виде строки.
+Вычитает указанное количество лет из даты, даты со временем или строково закодированной даты / даты со временем.
 
 **Синтаксис**
 
@@ -3729,12 +3729,12 @@ subtractYears(date, num)
 
 **Параметры**
 
-- `date`: Дата / дата с временем, из которой нужно вычесть указанное количество лет. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество лет для вычитания. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date`: Дата / дата со временем, из которой необходимо вычесть указанное количество лет. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество лет, которое необходимо вычесть. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date` минус `num` лет. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date` минус `num` лет. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3756,7 +3756,7 @@ SELECT
 ```
 ## subtractQuarters {#subtractquarters}
 
-Вычитает указанное количество кварталов из даты, даты с временем или даты/даты с временем в виде строки.
+Вычитает указанное количество кварталов из даты, даты со временем или строково закодированной даты / даты со временем.
 
 **Синтаксис**
 
@@ -3766,12 +3766,12 @@ subtractQuarters(date, num)
 
 **Параметры**
 
-- `date`: Дата / дата с временем, из которой нужно вычесть указанное количество кварталов. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество кварталов для вычитания. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date`: Дата / дата со временем, из которой необходимо вычесть указанное количество кварталов. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество кварталов, которые необходимо вычесть. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date` минус `num` кварталов. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date` минус `num` кварталов. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3793,7 +3793,7 @@ SELECT
 ```
 ## subtractMonths {#subtractmonths}
 
-Вычитает указанное количество месяцев из даты, даты с временем или даты/даты с временем в виде строки.
+Вычитает указанное количество месяцев из даты, даты со временем или строково закодированной даты / даты со временем.
 
 **Синтаксис**
 
@@ -3803,12 +3803,12 @@ subtractMonths(date, num)
 
 **Параметры**
 
-- `date`: Дата / дата с временем, из которой нужно вычесть указанное количество месяцев. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество месяцев для вычитания. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date`: Дата / дата со временем, из которой необходимо вычесть указанное количество месяцев. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество месяцев, которые необходимо вычесть. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date` минус `num` месяцев. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date` минус `num` месяцев. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3830,7 +3830,7 @@ SELECT
 ```
 ## subtractWeeks {#subtractweeks}
 
-Вычитает указанное количество недель из даты, даты с временем или даты/даты с временем в виде строки.
+Вычитает указанное количество недель из даты, даты со временем или строково закодированной даты / даты со временем.
 
 **Синтаксис**
 
@@ -3840,12 +3840,12 @@ subtractWeeks(date, num)
 
 **Параметры**
 
-- `date`: Дата / дата с временем, из которой нужно вычесть указанное количество недель. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество недель для вычитания. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date`: Дата / дата со временем, из которой необходимо вычесть указанное количество недель. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество недель, которые необходимо вычесть. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date` минус `num` недель. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date` минус `num` недель. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3867,7 +3867,7 @@ SELECT
 ```
 ## subtractDays {#subtractdays}
 
-Вычитает указанное количество дней из даты, даты с временем или даты/даты с временем в виде строки.
+Вычитает указанное количество дней из даты, даты со временем или строково закодированной даты / даты со временем.
 
 **Синтаксис**
 
@@ -3877,12 +3877,12 @@ subtractDays(date, num)
 
 **Параметры**
 
-- `date`: Дата / дата с временем, из которой нужно вычесть указанное количество дней. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество дней для вычитания. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date`: Дата / дата со временем, из которой необходимо вычесть указанное количество дней. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество дней, которые необходимо вычесть. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date` минус `num` дней. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date` минус `num` дней. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[ДатаВремя](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3904,7 +3904,7 @@ SELECT
 ```
 ## subtractHours {#subtracthours}
 
-Вычитает указанное количество часов из даты, даты с временем или даты/даты с временем в виде строки.
+Вычитает указанное количество часов из даты, даты со временем или строково закодированной даты / даты со временем.
 
 **Синтаксис**
 
@@ -3914,12 +3914,12 @@ subtractHours(date, num)
 
 **Параметры**
 
-- `date`: Дата / дата с временем, из которой нужно вычесть указанное количество часов. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[Datetime](../data-types/datetime.md)/[Datetime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
-- `num`: Количество часов для вычитания. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
+- `date`: Дата / дата со временем, из которой необходимо вычесть указанное количество часов. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[Datetime](../data-types/datetime.md)/[Datetime64](../data-types/datetime64.md), [Строка](../data-types/string.md).
+- `num`: Количество часов, которые необходимо вычесть. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Возвращает `date` минус `num` часов. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[Datetime](../data-types/datetime.md)/[ДатаВремя64](../data-types/datetime64.md).
+- Возвращает `date` минус `num` часов. [Дата](../data-types/date.md)/[Date32](../data-types/date32.md)/[Datetime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
 
 **Пример**
 
@@ -3939,16 +3939,9 @@ SELECT
 │      2023-12-31 12:00:00 │           2023-12-31 12:00:00 │              2023-12-31 12:00:00.000 │
 └──────────────────────────┴───────────────────────────────┴──────────────────────────────────────┘
 ```
-```yaml
-title: 'subtractMinutes'
-sidebar_label: 'subtractMinutes'
-keywords: ['subtract', 'minutes', 'date', 'time']
-description: 'Subtracts a specified number of minutes from a date, a date with time or a string-encoded date / date with time.'
-```
-
 ## subtractMinutes {#subtractminutes}
 
-Вычитает указанное количество минут из даты, даты с временем или даты/даты с временем в виде строки.
+Вычитает указанное количество минут из даты, даты с временем или даты / даты с временем в строковом формате.
 
 **Синтаксис**
 
@@ -3958,7 +3951,7 @@ subtractMinutes(date, num)
 
 **Параметры**
 
-- `date`: Дата / дата с временем, от которой нужно вычесть указанное количество минут. [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [String](../data-types/string.md).
+- `date`: Дата / дата с временем, из которой следует вычесть указанное количество минут. [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [String](../data-types/string.md).
 - `num`: Количество минут, которые нужно вычесть. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
@@ -3985,7 +3978,7 @@ SELECT
 ```
 ## subtractSeconds {#subtractseconds}
 
-Вычитает указанное количество секунд из даты, даты с временем или даты/даты с временем в виде строки.
+Вычитает указанное количество секунд из даты, даты с временем или даты / даты с временем в строковом формате.
 
 **Синтаксис**
 
@@ -3995,7 +3988,7 @@ subtractSeconds(date, num)
 
 **Параметры**
 
-- `date`: Дата / дата с временем, из которой нужно вычесть указанное количество секунд. [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [String](../data-types/string.md).
+- `date`: Дата / дата с временем, из которой следует вычесть указанное количество секунд. [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [String](../data-types/string.md).
 - `num`: Количество секунд, которые нужно вычесть. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
@@ -4022,7 +4015,7 @@ SELECT
 ```
 ## subtractMilliseconds {#subtractmilliseconds}
 
-Вычитает указанное количество миллисекунд из даты с временем или даты с временем в виде строки.
+Вычитает указанное количество миллисекунд из даты с временем или даты с временем в строковом формате.
 
 **Синтаксис**
 
@@ -4032,7 +4025,7 @@ subtractMilliseconds(date_time, num)
 
 **Параметры**
 
-- `date_time`: Дата с временем, из которой нужно вычесть указанное количество миллисекунд. [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [String](../data-types/string.md).
+- `date_time`: Дата с временем, из которой следует вычесть указанное количество миллисекунд. [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [String](../data-types/string.md).
 - `num`: Количество миллисекунд, которые нужно вычесть. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
@@ -4057,7 +4050,7 @@ SELECT
 ```
 ## subtractMicroseconds {#subtractmicroseconds}
 
-Вычитает указанное количество микросекунд из даты с временем или даты с временем в виде строки.
+Вычитает указанное количество микросекунд из даты с временем или даты с временем в строковом формате.
 
 **Синтаксис**
 
@@ -4067,7 +4060,7 @@ subtractMicroseconds(date_time, num)
 
 **Параметры**
 
-- `date_time`: Дата с временем, из которой нужно вычесть указанное количество микросекунд. [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [String](../data-types/string.md).
+- `date_time`: Дата с временем, из которой следует вычесть указанное количество микросекунд. [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [String](../data-types/string.md).
 - `num`: Количество микросекунд, которые нужно вычесть. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
@@ -4092,7 +4085,7 @@ SELECT
 ```
 ## subtractNanoseconds {#subtractnanoseconds}
 
-Вычитает указанное количество наносекунд из даты с временем или даты с временем в виде строки.
+Вычитает указанное количество наносекунд из даты с временем или даты с временем в строковом формате.
 
 **Синтаксис**
 
@@ -4102,7 +4095,7 @@ subtractNanoseconds(date_time, num)
 
 **Параметры**
 
-- `date_time`: Дата с временем, из которой нужно вычесть указанное количество наносекунд. [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [String](../data-types/string.md).
+- `date_time`: Дата с временем, из которой следует вычесть указанное количество наносекунд. [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md), [String](../data-types/string.md).
 - `num`: Количество наносекунд, которые нужно вычесть. [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md).
 
 **Возвращаемое значение**
@@ -4127,7 +4120,7 @@ SELECT
 ```
 ## subtractInterval {#subtractinterval}
 
-Прибавляет отрицательный интервал к другому интервалу или кортежу интервалов.
+Добавляет отрицательный интервал к другому интервалу или кортежу интервалов.
 
 **Синтаксис**
 
@@ -4137,15 +4130,15 @@ subtractInterval(interval_1, interval_2)
 
 **Параметры**
 
-- `interval_1`: Первый интервал или интервал кортежей. [interval](../data-types/special-data-types/interval.md), [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md)).
-- `interval_2`: Второй интервал, который будет отрицаться. [interval](../data-types/special-data-types/interval.md).
+- `interval_1`: Первый интервал или интервал кортежа. [interval](../data-types/special-data-types/interval.md), [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md)).
+- `interval_2`: Второй интервал, который должен быть отрицательным. [interval](../data-types/special-data-types/interval.md).
 
 **Возвращаемое значение**
 
 - Возвращает кортеж интервалов. [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md)).
 
 :::note
-Интервалы одного типа будут объединены в один интервал. Например, если передать `toIntervalDay(2)` и `toIntervalDay(1)`, то результат будет `(1)`, а не `(2,1)`.
+Интервалы одного типа будут объединены в один интервал. Например, если переданы `toIntervalDay(2)` и `toIntervalDay(1)`, то результатом будет `(1)`, а не `(2,1)`
 :::
 
 **Пример**
@@ -4183,8 +4176,8 @@ subtractTupleOfIntervals(interval_1, interval_2)
 
 **Параметры**
 
-- `date`: Первая дата или интервал кортежей. [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
-- `intervals`: Кортеж интервалов, которые нужно вычесть из `date`. [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md)).
+- `date`: Первый интервал или интервал кортежа. [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
+- `intervals`: Кортеж интервалов, которые следует вычесть из `date`. [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md)).
 
 **Возвращаемое значение**
 
@@ -4207,7 +4200,7 @@ WITH toDate('2018-01-01') AS date SELECT subtractTupleOfIntervals(date, (INTERVA
 ```
 ## timeSlots {#timeslots}
 
-Для временного интервала, начинающегося с 'StartTime' и продолжающегося в течение 'Duration' секунд, возвращает массив моментов времени, состоящий из точек этого интервала, округленных вниз до 'Size' в секундах. 'Size' — это необязательный параметр, установленный по умолчанию на 1800 (30 минут). Это необходимо, например, при поиске просмотров страниц в соответствующей сессии. Принимает DateTime и DateTime64 в качестве аргумента 'StartTime'. Для DateTime аргументы 'Duration' и 'Size' должны быть `UInt32`. Для 'DateTime64' они должны быть `Decimal64`. Возвращает массив DateTime/DateTime64 (тип возвращаемого значения совпадает с типом 'StartTime'). Для DateTime64 масштаб возвращаемого значения может отличаться от масштаба 'StartTime' — принимается самый высокий масштаб среди всех переданных аргументов.
+Для временного интервала, начинающегося в 'StartTime' и продолжающегося в течение 'Duration' секунд, возвращает массив моментов времени, состоящий из точек этого интервала, округленных вниз до 'Size' в секундах. 'Size' является необязательным параметром, по умолчанию установленным на 1800 (30 минут). Это необходимо, например, при поиске просмотров страниц в соответствующей сессии. Принимает DateTime и DateTime64 в качестве аргумента 'StartTime'. Для DateTime аргументы 'Duration' и 'Size' должны быть `UInt32`. Для 'DateTime64' они должны быть `Decimal64`. Возвращает массив DateTime/DateTime64 (тип возвращаемого значения соответствует типу 'StartTime'). Для DateTime64 масштаб возвращаемого значения может отличаться от масштаба 'StartTime' --- принимается наибольший масштаб среди всех заданных аргументов.
 
 **Синтаксис**
 
@@ -4238,9 +4231,9 @@ SELECT timeSlots(toDateTime64('1980-12-12 21:01:02.1234', 4, 'UTC'), toDecimal64
 ```
 ## formatDateTime {#formatdatetime}
 
-Форматирует время согласно заданной строке формата. Формат является константным выражением, поэтому вы не можете иметь несколько форматов для одного столбца результата.
+Форматирует время в соответствии с заданной строкой формата. Формат является постоянным выражением, поэтому у вас не может быть нескольких форматов для одного результирующего столбца.
 
-formatDateTime использует стиль формата MySQL datetime, см. https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format.
+formatDateTime использует стиль формата MySQL для даты и времени, см. https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format.
 
 Обратная операция этой функции — [parseDateTime](/sql-reference/functions/type-conversion-functions#parsedatetime).
 
@@ -4254,59 +4247,59 @@ formatDateTime(Time, Format[, Timezone])
 
 **Возвращаемое значение(я)**
 
-Возвращает значения времени и даты в соответствии с определенным форматом.
+Возвращает время и дату в соответствии с определенным форматом.
 
-**Поля замены**
+**Замены полей**
 
-Используя поля замены, вы можете определить шаблон для результирующей строки. В колонке «Пример» показан результат форматирования для `2018-01-02 22:33:44`.
+Используя замены полей, вы можете определить шаблон для результирующей строки. Столбец "Пример" показывает результат форматирования для `2018-01-02 22:33:44`.
 
-| Заполнитель | Описание                                                                                                                                                                                         | Пример   |
+| Знак-заполнитель | Описание                                                                                                                                                                                         | Пример   |
 |----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
 | %a       | сокращенное название дня недели (Пн-Вс)                                                                                                                                                                  | Пн       |
 | %b       | сокращенное название месяца (Янв-Дек)                                                                                                                                                                    | Янв       |
-| %c       | месяц как целое число (01-12), см. 'Примечание 4' ниже                                                                                                                                              | 01        |
-| %C       | год, деленный на 100 и округленный до целого (00-99)                                                                                                                                                | 20        |
-| %d       | день месяца, с нулевым заполнением (01-31)                                                                                                                                                               | 02        |
-| %D       | Короткая дата в формате MM/DD/YY, эквивалентная %m/%d/%y                                                                                                                                                         | 01/02/18  |
-| %e       | день месяца, с пробеловым заполнением ( 1-31)                                                                                                                                                              | &nbsp; 2  |
-| %f       | дробная секунда, см. 'Примечание 1' и 'Примечание 2' ниже                                                                                                                                                  | 123456    |
-| %F       | короткая дата в формате YYYY-MM-DD, эквивалентная %Y-%m-%d                                                                                                                                                       | 2018-01-02 |
-| %g       | двухзначный год, выровненный по стандарту ISO 8601, сокращенный от четырехзначной записи                                                                                                                    | 18       |
-| %G       | год в четырехзначном формате для номера недели ISO, рассчитанный на основе года численности недель [определяемого стандартом ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Week_dates), обычно полезен только с %V | 2018        |
+| %c       | месяц в виде целого числа (01-12), см. 'Примечание 4' ниже                                                                                                                                              | 01        |
+| %C       | год, деленный на 100 и округленный до целого числа (00-99)                                                                                                                                                | 20        |
+| %d       | день месяца, с нулевым дополнением (01-31)                                                                                                                                                               | 02        |
+| %D       | Краткая дата MM/DD/YY, эквивалентная %m/%d/%y                                                                                                                                                         | 01/02/18  |
+| %e       | день месяца, с пробелом ( 1-31)                                                                                                                                                              | &nbsp; 2  |
+| %f       | дробная часть секунды, см. 'Примечание 1' и 'Примечание 2' ниже                                                                                                                                                  | 123456    |
+| %F       | краткая дата YYYY-MM-DD, эквивалентная %Y-%m-%d                                                                                                                                                       | 2018-01-02 |
+| %g       | двухзначный формат года, выровненный по ISO 8601, сокращенный из четырехзначного обозначения                                                                                                                    | 18       |
+| %G       | четырехзначный формат года для номера недели ISO, рассчитанного по году, основанному на неделях [определяемому по стандарту ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Week_dates), обычно полезен только с %V | 2018        |
 | %h       | час в 12-часовом формате (01-12)                                                                                                                                                                          | 09        |
 | %H       | час в 24-часовом формате (00-23)                                                                                                                                                                          | 22        |
-| %i       | минуты (00-59)                                                                                                                                                                                      | 33        |
+| %i       | минута (00-59)                                                                                                                                                                                      | 33        |
 | %I       | час в 12-часовом формате (01-12)                                                                                                                                                                          | 10        |
-| %j       | день в году (001-366)                                                                                                                                                                           | 002       |
+| %j       | день года (001-366)                                                                                                                                                                           | 002       |
 | %k       | час в 24-часовом формате (00-23), см. 'Примечание 4' ниже                                                                                                                                                      | 14        |
 | %l       | час в 12-часовом формате (01-12), см. 'Примечание 4' ниже                                                                                                                                                      | 09        |
-| %m       | месяц как целое число (01-12)                                                                                                                                                                  | 01        |
+| %m       | месяц в виде целого числа (01-12)                                                                                                                                                                  | 01        |
 | %M       | полное название месяца (Январь-Декабрь), см. 'Примечание 3' ниже                                                                                                                                              | Январь   |
 | %n       | символ новой строки ('')                                                                                                                                                                             |           |
 | %p       | обозначение AM или PM                                                                                                                                                                                | PM        |
-| %Q       | Квартал (1-4)                                                                                                                                                                                       | 1         |
-| %r       | время в формате 12-часового формата HH:MM AM/PM, эквивалентное %h:%i %p                                                                                                                                                    | 10:30 PM  |
-| %R       | время в 24-часовом формате HH:MM, эквивалентное %H:%i                                                                                                                                                             | 22:33     |
-| %s       | секунды (00-59)                                                                                                                                                                                      | 44        |
-| %S       | секунды (00-59)                                                                                                                                                                                      | 44        |
+| %Q       | Четверть (1-4)                                                                                                                                                                                       | 1         |
+| %r       | 12-часовое время HH:MM AM/PM, эквивалентное %h:%i %p                                                                                                                                                    | 10:30 PM  |
+| %R       | 24-часовое время HH:MM, эквивалентное %H:%i                                                                                                                                                             | 22:33     |
+| %s       | секунда (00-59)                                                                                                                                                                                      | 44        |
+| %S       | секунда (00-59)                                                                                                                                                                                      | 44        |
 | %t       | символ горизонтальной табуляции (')                                                                                                                                                                        |           |
-| %T       | ISO 8601 формат времени (HH:MM:SS), эквивалентный %H:%i:%S                                                                                                                                             | 22:33:44  |
-| %u       | ISO 8601 день недели как число с понедельником как 1 (1-7)                                                                                                                                                   | 2         |
-| %V       | номер недели ISO 8601 (01-53)                                                                                                                                                                        | 01        |
-| %w       | день недели как целое число с воскресеньем как 0 (0-6)                                                                                                                                                  | 2         |
+| %T       | Формат времени ISO 8601 (HH:MM:SS), эквивалентный %H:%i:%S                                                                                                                                             | 22:33:44  |
+| %u       | День недели по ISO 8601 как число, где понедельник — 1 (1-7)                                                                                                                                                   | 2         |
+| %V       | Номер недели ISO 8601 (01-53)                                                                                                                                                                        | 01        |
+| %w       | день недели в виде целого числа, где воскресенье — 0 (0-6)                                                                                                                                                  | 2         |
 | %W       | полное название дня недели (Понедельник-Воскресенье)                                                                                                                                                                   | Понедельник    |
 | %y       | Год, последние две цифры (00-99)                                                                                                                                                                       | 18        |
 | %Y       | Год                                                                                                                                                                                                | 2018      |
-| %z       | Смещение времени от UTC, записанное в формате +HHMM или -HHMM                                                                                                                                                              | -0500     |
+| %z       | Смещение времени от UTC в формате +HHMM или -HHMM                                                                                                                                                              | -0500     |
 | %%       | символ %                                                                                                                                                                                            | %         |
 
-Примечание 1: В версиях ClickHouse, предшествующих v23.4, `%f` выводит один ноль (0), если форматированное значение является датой, Date32 или DateTime (которые не имеют дробных секунд) или DateTime64 с нулевой точностью. Предыдущее поведение можно восстановить, установив параметр `formatdatetime_f_prints_single_zero = 1`.
+Примечание 1: В версиях ClickHouse ниже v23.4, `%f` выводит единичное ноль (0), если форматируемое значение является Датой, Date32 или Датой с временем (которые не имеют дробных секунд), или Датой с временем 64 с точностью 0. Предыдущее поведение может быть восстановлено с помощью установки `formatdatetime_f_prints_single_zero = 1`.
 
-Примечание 2: В версиях ClickHouse, предшествующих v25.1, `%f` выводит столько же знаков, сколько указано в масштабе DateTime64, вместо фиксированных 6 знаков. Предыдущее поведение можно восстановить, установив параметр `formatdatetime_f_prints_scale_number_of_digits= 1`.
+Примечание 2: В версиях ClickHouse ниже v25.1, `%f` выводит столько же цифр, сколько указано масштабом Даты с временем 64, вместо фиксированных 6 цифр. Предыдущее поведение может быть восстановлено с помощью установки `formatdatetime_f_prints_scale_number_of_digits= 1`.
 
-Примечание 3: В версиях ClickHouse, предшествующих v23.4, `%M` выводит минуты (00-59), а не полное название месяца (Январь-Декабрь). Предыдущее поведение можно восстановить, установив параметр `formatdatetime_parsedatetime_m_is_month_name = 0`.
+Примечание 3: В версиях ClickHouse ниже v23.4, `%M` выводит минуту (00-59) вместо полного названия месяца (Январь-Декабрь). Предыдущее поведение может быть восстановлено с помощью установки `formatdatetime_parsedatetime_m_is_month_name = 0`.
 
-Примечание 4: В версиях ClickHouse, предшествующих v23.11, функция `parseDateTime()` требовала начальных нулей для форматтеров `%c` (месяц) и `%l`/`%k` (час), например, `07`. В более поздних версиях начальный ноль можно опустить, например, `7`. Предыдущее поведение можно восстановить, установив параметр `parsedatetime_parse_without_leading_zeros = 0`. Обратите внимание, что функция `formatDateTime()` по умолчанию все еще выводит начальные нули для `%c` и `%l`/`%k`, чтобы не нарушать существующие случаи использования. Это поведение можно изменить, установив параметр `formatdatetime_format_without_leading_zeros = 1`.
+Примечание 4: В версиях ClickHouse ниже v23.11 функция `parseDateTime()` требовала наличия ведущих нулей для форматирования `%c` (месяц) и `%l`/`%k` (час), например `07`. В более поздних версиях ведущий ноль может быть опущен, например `7`. Предыдущее поведение может быть восстановлено с помощью установки `parsedatetime_parse_without_leading_zeros = 0`. Имейте в виду, что функция `formatDateTime()` по умолчанию все еще выводит ведущие нули для `%c` и `%l`/`%k`, чтобы не нарушать существующие случаи. Это поведение можно изменить с помощью установки `formatdatetime_format_without_leading_zeros = 1`.
 
 **Пример**
 
@@ -4328,13 +4321,13 @@ SELECT formatDateTime(toDateTime64('2010-01-04 12:34:56.123456', 7), '%f')
 
 Результат:
 
-```text
+```sql
 ┌─formatDateTime(toDateTime64('2010-01-04 12:34:56.123456', 7), '%f')─┐
 │ 1234560                                                             │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-Дополнительно, функция `formatDateTime` может принимать третий строковый аргумент, содержащий название часового пояса. Пример: `Asia/Istanbul`. В этом случае время форматируется в соответствии с указанным часовым поясом.
+Кроме того, функция `formatDateTime` может принимать третий строковый аргумент, содержащий название часового пояса. Пример: `Asia/Istanbul`. В этом случае время форматируется в соответствии с указанным часовым поясом.
 
 **Пример**
 
@@ -4366,39 +4359,40 @@ LIMIT 10
 - [formatDateTimeInJodaSyntax](#formatdatetimeinjodasyntax)
 ## formatDateTimeInJodaSyntax {#formatdatetimeinjodasyntax}
 
-Похож на formatDateTime, за исключением того, что форматирует datetime в стиле Joda, а не в стиле MySQL. Смотрите https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html.
+Похоже на formatDateTime, за исключением того, что форматирует дату и время в стиле Joda вместо стиля MySQL. Смотрите https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html.
 
 Обратная операция этой функции — [parseDateTimeInJodaSyntax](/sql-reference/functions/type-conversion-functions#parsedatetimeinjodasyntax).
 
-**Поля замены**
+**Замены полей**
 
-Используя поля замены, вы можете определить шаблон для результирующей строки.
+Используя замены полей, вы можете определить шаблон для результирующей строки.
 
-| Заполнитель | Описание                              | Презентация  | Примеры                           |
+
+| Знак-заполнитель | Описание                              | Презентация  | Примеры                           |
 | ----------- | ---------------------------------------- | ------------- | ---------------------------------- |
-| G           | эра                                      | текст          | Н.Э.                                 |
-| C           | век эры (>=0)                     | число        | 20                                 |
-| Y           | год эры (>=0)                        | год          | 1996                               |
-| x           | недельный год (пока не поддерживается)             | год          | 1996                               |
-| w           | неделя недельного года (пока не поддерживается)     | число        | 27                                 |
+| G           | эпоха                                      | текст          | AD                                 |
+| C           | век эпохи (>=0)                     | число        | 20                                 |
+| Y           | год эпохи (>=0)                        | год          | 1996                               |
+| x           | год недели (пока не поддерживается)             | год          | 1996                               |
+| w           | неделя года (пока не поддерживается)     | число        | 27                                 |
 | e           | день недели                              | число        | 2                                  |
-| E           | день недели                              | текст          | Вторник; Вт                       |
+| E           | день недели                              | текст          | Воскресенье; Вск                       |
 | y           | год                                     | год          | 1996                               |
-| D           | день в году                              | число        | 189                                |
-| M           | месяц года                            | месяц         | Июль; Июл; 07                      |
+| D           | день года                              | число        | 189                                |
+| M           | месяц года                            | месяц         | Июль; Июль; 07                      |
 | d           | день месяца                             | число        | 10                                 |
-| a           | половина дня                           | текст          | PM                                 |
+| a           | полдень дня                           | текст          | PM                                 |
 | K           | час половины дня (0~11)                   | число        | 0                                  |
-| h           | час секунды (1~12)              | число        | 12                                 |
+| h           | час на часах половины дня (1~12)              | число        | 12                                 |
 | H           | час дня (0~23)                       | число        | 0                                  |
-| k           | час дня (1~24)                  | число        | 24                                 |
-| m           | минуты часа                           | число        | 30                                 |
-| s           | секунды минуты                         | число        | 55                                 |
-| S           | дробная секунда                       | число        | 978                                |
-| z           | часовой пояс                                | текст          | Восточное стандартное время; EST         |
+| k           | час на часах дня (1~24)                  | число        | 24                                 |
+| m           | минута часа                           | число        | 30                                 |
+| s           | секунда минуты                         | число        | 55                                 |
+| S           | десятичная часть секунды                       | число        | 978                                |
+| z           | часовой пояс                                | текст          | Восточный стандартный час; EST         |
 | Z           | смещение часового пояса                         | зона          | -0800; -0812                       |
 | '           | экранирование для текста                          | разделитель     |                                    |
-| ''          | одиночная кавычка                             | литерал       | '                                  |
+| ''          | одинарная кавычка                             | литерал       | '                                  |
 
 **Пример**
 
@@ -4466,7 +4460,7 @@ monthName(date)
 
 **Возвращаемое значение**
 
-- Название месяца. [String](/sql-reference/data-types/string)
+- Название месяца. [String](/sql-reference/data-types/string) 
 
 **Пример**
 
@@ -4482,20 +4476,13 @@ SELECT monthName(date_value);
 │ April                 │
 └───────────────────────┘
 ```
-```yaml
-title: 'fromUnixTimestamp'
-sidebar_label: 'fromUnixTimestamp'
-keywords: ['fromUnixTimestamp', 'Unix timestamp', 'calendar date', 'time of day']
-description: 'This function converts a Unix timestamp to a calendar date and a time of a day.'
-```
-
 ## fromUnixTimestamp {#fromunixtimestamp}
 
-Эта функция конвертирует метку времени Unix в календарную дату и время суток.
+Эта функция преобразует Unix-метку времени в календарную дату и время суток.
 
-Её можно вызвать двумя способами:
+Вы можете вызвать её двумя способами:
 
-Когда указан единственный аргумент типа [Integer](../data-types/int-uint.md), она возвращает значение типа [DateTime](../data-types/datetime.md), то есть ведёт себя как [toDateTime](../../sql-reference/functions/type-conversion-functions.md#todatetime).
+При передаче одного аргумента типа [Integer](../data-types/int-uint.md) она возвращает значение типа [DateTime](../data-types/datetime.md), т.е. ведет себя как [toDateTime](../../sql-reference/functions/type-conversion-functions.md#todatetime).
 
 Псевдоним: `FROM_UNIXTIME`.
 
@@ -4513,7 +4500,7 @@ SELECT fromUnixTimestamp(423543535);
 └──────────────────────────────┘
 ```
 
-Когда переданы два или три аргумента, где первый аргумент имеет тип [Integer](../data-types/int-uint.md), [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md), второй аргумент — это строка формата константы, а третий аргумент — необязательная строка временной зоны, то функция возвращает значение типа [String](/sql-reference/data-types/string), то есть ведёт себя как [formatDateTime](#formatdatetime). В этом случае используется [формат стиля даты MySQL](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format).
+При передаче двух или трех аргументов, где первый аргумент является значением типа [Integer](../data-types/int-uint.md), [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) или [DateTime64](../data-types/datetime64.md), второй аргумент — это константная строка формата, а третий аргумент — это необязательная константная строка часового пояса, функция возвращает значение типа [String](/sql-reference/data-types/string), т.е. ведет себя как [formatDateTime](#formatdatetime). В этом случае используется [стиль формата даты MySQL](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format).
 
 **Пример:**
 
@@ -4529,12 +4516,12 @@ SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime;
 └─────────────────────┘
 ```
 
-**См. Также**
+**См. также**
 
 - [fromUnixTimestampInJodaSyntax](#fromunixtimestampinjodasyntax)
 ## fromUnixTimestampInJodaSyntax {#fromunixtimestampinjodasyntax}
 
-То же самое, что и [fromUnixTimestamp](#fromunixtimestamp), но при вызове вторым способом (два или три аргумента) форматирование выполняется с использованием [стиля Joda](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html), а не стиля MySQL.
+То же самое, что и [fromUnixTimestamp](#fromunixtimestamp), но когда вызывается вторым способом (два или три аргумента), форматирование выполняется с использованием [стиля Joda](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html) вместо стиля MySQL.
 
 **Пример:**
 
@@ -4551,7 +4538,7 @@ SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') A
 ```
 ## toModifiedJulianDay {#tomodifiedjulianday}
 
-Конвертирует дату в текстовом формате [Proleptic Gregorian calendar](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) `YYYY-MM-DD` в число [Modified Julian Day](https://en.wikipedia.org/wiki/Julian_day#Variants) в Int32. Эта функция поддерживает даты с `0000-01-01` по `9999-12-31`. Она вызывает исключение, если аргумент не может быть разобран как дата или дата недействительна.
+Преобразует дату в текстовом формате [пролектического григорианского календаря](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) `YYYY-MM-DD` в число [модифицированного юлианского дня](https://en.wikipedia.org/wiki/Julian_day#Variants) в формате Int32. Эта функция поддерживает даты с `0000-01-01` по `9999-12-31`. Она вызывает исключение, если аргумент не может быть разобран как дата или если дата недействительна.
 
 **Синтаксис**
 
@@ -4565,7 +4552,7 @@ toModifiedJulianDay(date)
 
 **Возвращаемое значение**
 
-- Число Modified Julian Day. [Int32](../data-types/int-uint.md).
+- Число модифицированного юлианского дня. [Int32](../data-types/int-uint.md).
 
 **Пример**
 
@@ -4582,7 +4569,7 @@ SELECT toModifiedJulianDay('2020-01-01');
 ```
 ## toModifiedJulianDayOrNull {#tomodifiedjuliandayornull}
 
-Похоже на [toModifiedJulianDay()](#tomodifiedjulianday), но вместо вызова исключений возвращает `NULL`.
+Похоже на [toModifiedJulianDay()](#tomodifiedjulianday), но вместо того, чтобы вызывать исключения, возвращает `NULL`.
 
 **Синтаксис**
 
@@ -4596,7 +4583,7 @@ toModifiedJulianDayOrNull(date)
 
 **Возвращаемое значение**
 
-- Число Modified Julian Day. [Nullable(Int32)](../data-types/int-uint.md).
+- Число модифицированного юлианского дня. [Nullable(Int32)](../data-types/int-uint.md).
 
 **Пример**
 
@@ -4613,7 +4600,7 @@ SELECT toModifiedJulianDayOrNull('2020-01-01');
 ```
 ## fromModifiedJulianDay {#frommodifiedjulianday}
 
-Конвертирует число [Modified Julian Day](https://en.wikipedia.org/wiki/Julian_day#Variants) в дату в текстовом формате [Proleptic Gregorian calendar](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) `YYYY-MM-DD`. Эта функция поддерживает номера дней с `-678941` по `2973483` (что соответствует 0000-01-01 и 9999-12-31 соответственно). Она вызывает исключение, если номер дня выходит за пределы поддерживаемого диапазона.
+Преобразует число [модифицированного юлианского дня](https://en.wikipedia.org/wiki/Julian_day#Variants) в дату [пролектического григорианского календаря](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) в текстовом формате `YYYY-MM-DD`. Эта функция поддерживает номера дней от `-678941` до `2973483` (что соответствует 0000-01-01 и 9999-12-31 соответственно). Она вызывает исключение, если номер дня выходит за пределы поддерживаемого диапазона.
 
 **Синтаксис**
 
@@ -4623,7 +4610,7 @@ fromModifiedJulianDay(day)
 
 **Аргументы**
 
-- `day` — Число Modified Julian Day. [Любые целые типы](../data-types/int-uint.md).
+- `day` — Число модифицированного юлианского дня. [Любые целочисленные типы](../data-types/int-uint.md).
 
 **Возвращаемое значение**
 
@@ -4644,7 +4631,7 @@ SELECT fromModifiedJulianDay(58849);
 ```
 ## fromModifiedJulianDayOrNull {#frommodifiedjuliandayornull}
 
-Похоже на [fromModifiedJulianDayOrNull()](#frommodifiedjuliandayornull), но вместо вызова исключений возвращает `NULL`.
+Похоже на [fromModifiedJulianDayOrNull()](#frommodifiedjuliandayornull), но вместо того, чтобы вызывать исключения, возвращает `NULL`.
 
 **Синтаксис**
 
@@ -4654,7 +4641,7 @@ fromModifiedJulianDayOrNull(day)
 
 **Аргументы**
 
-- `day` — Число Modified Julian Day. [Любые целые типы](../data-types/int-uint.md).
+- `day` — Число модифицированного юлианского дня. [Любые целочисленные типы](../data-types/int-uint.md).
 
 **Возвращаемое значение**
 
@@ -4675,7 +4662,7 @@ SELECT fromModifiedJulianDayOrNull(58849);
 ```
 ## toUTCTimestamp {#toutctimestamp}
 
-Конвертирует значение типа DateTime/DateTime64 из другой временной зоны в метку времени в UTC. Эта функция в основном включена для совместимости с Apache Spark и подобными фреймворками.
+Преобразует значение типа DateTime/DateTime64 из другого часового пояса в метку времени UTC. Эта функция включена в основном для совместимости с Apache Spark и аналогичными фреймворками.
 
 **Синтаксис**
 
@@ -4686,7 +4673,7 @@ toUTCTimestamp(time_val, time_zone)
 **Аргументы**
 
 - `time_val` — Константное значение типа DateTime/DateTime64 или выражение. [Типы DateTime/DateTime64](../data-types/datetime.md)
-- `time_zone` — Константное строковое значение или выражение, представляющее временную зону. [Строковые типы](../data-types/string.md)
+- `time_zone` — Константное значение типа String или выражение, представляющее часовой пояс. [Строковые типы](../data-types/string.md)
 
 **Возвращаемое значение**
 
@@ -4707,7 +4694,7 @@ SELECT toUTCTimestamp(toDateTime('2023-03-16'), 'Asia/Shanghai');
 ```
 ## fromUTCTimestamp {#fromutctimestamp}
 
-Конвертирует значение типа DateTime/DateTime64 из временной зоны UTC в метку времени в другой временной зоне. Эта функция в основном включена для совместимости с Apache Spark и подобными фреймворками.
+Преобразует значение типа DateTime/DateTime64 из часового пояса UTC в метку времени другого часового пояса. Эта функция включена в основном для совместимости с Apache Spark и аналогичными фреймворками.
 
 **Синтаксис**
 
@@ -4718,7 +4705,7 @@ fromUTCTimestamp(time_val, time_zone)
 **Аргументы**
 
 - `time_val` — Константное значение типа DateTime/DateTime64 или выражение. [Типы DateTime/DateTime64](../data-types/datetime.md)
-- `time_zone` — Константное строковое значение или выражение, представляющее временную зону. [Строковые типы](../data-types/string.md)
+- `time_zone` — Константное значение типа String или выражение, представляющее часовой пояс. [Строковые типы](../data-types/string.md)
 
 **Возвращаемое значение**
 
@@ -4739,10 +4726,10 @@ SELECT fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00', 3), 'Asia/Shanghai')
 ```
 ## UTCTimestamp {#utctimestamp}
 
-Возвращает текущую дату и время на момент анализа запроса. Функция является константным выражением.
+Возвращает текущую дату и время на момент анализа запроса. Эта функция является константным выражением.
 
 :::note
-Эта функция выдаёт тот же результат, что и `now('UTC')`. Она была добавлена только для поддержки MySQL, и [`now`](#now) является предпочтительным вариантом использования.
+Эта функция дает тот же результат, что и `now('UTC')`. Она была добавлена только для поддержки MySQL, а [`now`](#now) является предпочтительным использованием.
 :::
 
 **Синтаксис**
@@ -4774,7 +4761,7 @@ SELECT UTCTimestamp();
 ```
 ## timeDiff {#timediff}
 
-Возвращает разницу между двумя датами или датами с часовыми значениями. Разница рассчитывается в единицах секунд. Это то же самое, что и `dateDiff`, и было добавлено только для поддержки MySQL. `dateDiff` рекомендуется использовать.
+Возвращает разницу между двумя датами или датами с временными значениями. Разница вычисляется в единицах секунд. Это то же самое, что и `dateDiff`, и было добавлено только для поддержки MySQL. Предпочтительным вариантом является `dateDiff`.
 
 **Синтаксис**
 
@@ -4789,7 +4776,7 @@ timeDiff(first_datetime, second_datetime)
 
 **Возвращаемое значение**
 
-Разница между двумя датами или датами с часовыми значениями в секундах.
+Разница между двумя датами или датами с временными значениями в секундах.
 
 **Пример**
 

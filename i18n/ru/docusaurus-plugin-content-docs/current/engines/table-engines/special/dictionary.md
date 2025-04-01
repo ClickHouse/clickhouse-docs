@@ -3,11 +3,11 @@ description: 'Движок `Dictionary` отображает данные сло
 sidebar_label: 'Словарь'
 sidebar_position: 20
 slug: /engines/table-engines/special/dictionary
-title: 'Движок таблиц Словарь'
+title: 'Движок таблицы Словарь'
 ---
 
 
-# Движок таблиц Словарь
+# Движок таблицы Словарь
 
 Движок `Dictionary` отображает данные [словаря](../../../sql-reference/dictionaries/index.md) в виде таблицы ClickHouse.
 
@@ -46,7 +46,7 @@ title: 'Движок таблиц Словарь'
 </dictionaries>
 ```
 
-Запрос данных словаря:
+Запросите данные словаря:
 
 ```sql
 SELECT
@@ -68,9 +68,9 @@ WHERE name = 'products'
 └──────────┴──────┴────────┴─────────────────┴─────────────────┴─────────────────┴───────────────┴─────────────────┘
 ```
 
-Вы можете использовать функцию [dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull) для получения данных словаря в этом формате.
+Вы можете использовать функцию [dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull), чтобы получить данные словаря в этом формате.
 
-Этот вид не полезен, когда вам нужны сырые данные или при выполнении операции `JOIN`. В таких случаях вы можете использовать движок `Dictionary`, который отображает данные словаря в таблице.
+Этот вид не полезен, когда вам нужно получить необработанные данные или при выполнении операции `JOIN`. Для этих случаев вы можете использовать движок `Dictionary`, который отображает данные словаря в таблице.
 
 Синтаксис:
 
@@ -86,7 +86,7 @@ create table products (product_id UInt64, title String) Engine = Dictionary(prod
 
       Ok
 
-Посмотрите, что содержится в таблице.
+Посмотрите, что в таблице.
 
 ```sql
 select * from products limit 1;

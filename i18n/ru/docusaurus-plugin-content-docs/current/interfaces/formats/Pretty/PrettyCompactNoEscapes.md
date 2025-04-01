@@ -10,9 +10,9 @@ title: 'PrettyCompactNoEscapes'
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Вход | Выход  | Псевдоним |
-|-------|---------|-------|
-| ✗     | ✔       |       |
+| Входные данные | Выходные данные  | Псевдоним |
+|----------------|------------------|-----------|
+| ✗              | ✔                |           |
 
 ## Описание {#description}
 

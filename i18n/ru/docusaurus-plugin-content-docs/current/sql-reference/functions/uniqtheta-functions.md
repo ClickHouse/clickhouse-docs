@@ -1,5 +1,5 @@
 ---
-description: 'Документация для функций uniqTheta'
+description: 'Документация по функциям uniqTheta'
 sidebar_label: 'uniqTheta'
 sidebar_position: 210
 slug: /sql-reference/functions/uniqtheta-functions
@@ -9,15 +9,16 @@ title: 'Функции uniqTheta'
 
 # Функции uniqTheta
 
-Функции uniqTheta работают с двумя объектами uniqThetaSketch для выполнения вычислений по операциям над множествами, таким как ∪ / ∩ / × (объединение/пересечение/вычитание), и возвращают новый объект uniqThetaSketch, содержащий результат.
+Функции uniqTheta работают с двумя объектами uniqThetaSketch для выполнения расчетов операций над множествами, таких как ∪ / ∩ / × (объединение/пересечение/разность). Они возвращают новый объект uniqThetaSketch, содержащий результат.
 
 Объект uniqThetaSketch создается с помощью агрегатной функции uniqTheta с -State.
 
-UniqThetaSketch — это структура данных для хранения приблизительных значений множеств. Для получения дополнительной информации о RoaringBitmap см. [Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html).
+UniqThetaSketch — это структура данных для хранения приблизительных значений множеств. 
+Для получения дополнительной информации о RoaringBitmap, смотрите: [Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html).
 
 ## uniqThetaUnion {#uniqthetaunion}
 
-Два объекта uniqThetaSketch для выполнения расчета объединения (операция над множествами ∪), результатом является новый uniqThetaSketch.
+Два объекта uniqThetaSketch для выполнения операции объединения (∪). Результат — новый объект uniqThetaSketch.
 
 ```sql
 uniqThetaUnion(uniqThetaSketch,uniqThetaSketch)
@@ -43,7 +44,7 @@ from
 
 ## uniqThetaIntersect {#uniqthetaintersect}
 
-Два объекта uniqThetaSketch для выполнения расчета пересечения (операция над множествами ∩), результатом является новый uniqThetaSketch.
+Два объекта uniqThetaSketch для выполнения операции пересечения (∩). Результат — новый объект uniqThetaSketch.
 
 ```sql
 uniqThetaIntersect(uniqThetaSketch,uniqThetaSketch)
@@ -69,7 +70,7 @@ from
 
 ## uniqThetaNot {#uniqthetanot}
 
-Два объекта uniqThetaSketch для выполнения расчета a_not_b (операция над множествами ×), результатом является новый uniqThetaSketch.
+Два объекта uniqThetaSketch для выполнения операции разности (×). Результат — новый объект uniqThetaSketch.
 
 ```sql
 uniqThetaNot(uniqThetaSketch,uniqThetaSketch)
@@ -93,6 +94,6 @@ from
 └─────────┴───────────────┴───────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
 - [uniqThetaSketch](/sql-reference/aggregate-functions/reference/uniqthetasketch)

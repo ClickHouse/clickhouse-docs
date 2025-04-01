@@ -1,5 +1,5 @@
 ---
-description: 'Применяет побитовое `ИЛИ` к ряду чисел.'
+description: 'Применяет побитовый `OR` к серии чисел.'
 sidebar_position: 152
 slug: /sql-reference/aggregate-functions/reference/groupbitor
 title: 'groupBitOr'
@@ -8,7 +8,7 @@ title: 'groupBitOr'
 
 # groupBitOr
 
-Применяет побитовое `ИЛИ` к ряду чисел.
+Применяет побитовый `OR` к серии чисел.
 
 ```sql
 groupBitOr(expr)
@@ -40,7 +40,7 @@ binary     decimal
 SELECT groupBitOr(num) FROM t
 ```
 
-Где `num` является столбцом с тестовыми данными.
+Где `num` — это колонка с тестовыми данными.
 
 Результат:
 

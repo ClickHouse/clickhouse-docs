@@ -1,7 +1,7 @@
 ---
 slug: /cloud/billing/marketplace/azure-marketplace-payg
 title: 'Azure Marketplace PAYG'
-description: 'Подписка на ClickHouse Cloud через Azure Marketplace (PAYG).'
+description: 'Подпишитесь на ClickHouse Cloud через Azure Marketplace (PAYG).'
 keywords: ['azure', 'marketplace', 'billing', 'PAYG']
 ---
 
@@ -21,14 +21,14 @@ import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/mar
 import azure_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-11.png';
 import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-12.png';
 
-Начните работу с ClickHouse Cloud на [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) через публичное предложение PAYG (оплата по мере использования).
+Начните работу с ClickHouse Cloud на [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) через модель PAYG (оплата по мере использования) по публичному предложению.
 
-## Предварительные требования {#prerequisites}
+## Предварительные условия {#prerequisites}
 
-- Проект Azure, который включен с правами на покупку вашим администратором биллинга.
-- Для подписки на ClickHouse Cloud в Azure Marketplace вы должны войти с учетной записью, имеющей права на покупку, и выбрать соответствующий проект.
+- Проект Azure, который активирован с правами на покупку вашим администратором выставления счетов.
+- Для подписки на ClickHouse Cloud в Azure Marketplace вы должны войти в систему с учетной записью, имеющей права на покупку, и выбрать соответствующий проект.
 
-1. Перейдите на [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) и найдите ClickHouse Cloud. Убедитесь, что вы вошли в систему, чтобы иметь возможность приобрести предложение на маркетплейсе.
+1. Перейдите в [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) и найдите ClickHouse Cloud. Убедитесь, что вы вошли в систему, чтобы иметь возможность приобрести предложение на маркетплейсе.
 
 <br />
 
@@ -36,7 +36,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-2. На странице списка продуктов нажмите **Get It Now**.
+2. На странице списка продуктов нажмите **Получить сейчас**.
 
 <br />
 
@@ -44,7 +44,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-3. Вам нужно будет указать имя, электронную почту и информацию о местоположении на следующем экране.
+3. На следующем экране вам нужно будет указать имя, адрес электронной почты и местоположение.
 
 <br />
 
@@ -52,7 +52,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-4. На следующем экране нажмите **Subscribe**.
+4. На следующем экране нажмите **Подписаться**.
 
 <br />
 
@@ -60,7 +60,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-5. На следующем экране выберите подписку, группу ресурсов и местоположение группы ресурсов. Местоположение группы ресурсов не обязательно должно совпадать с местоположением, где вы собираетесь запускать свои сервисы на ClickHouse Cloud.
+5. На следующем экране выберите подписку, группу ресурсов и местоположение группы ресурсов. Местоположение группы ресурсов не обязательно должно совпадать с местоположением, где вы планируете запустить свои услуги на ClickHouse Cloud.
 
 <br />
 
@@ -68,7 +68,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-6. Вам также нужно будет указать название подписки и выбрать срок оплату из доступных вариантов. Вы можете выбрать установить **Recurring billing** как включенное или отключенное. Если вы установите его на "off", ваш контракт закончится после окончания срока оплаты, и ваши ресурсы будут деактивированы.
+6. Вам также нужно будет указать имя для подписки, а также выбрать срок выставления счетов из доступных вариантов. Вы можете выбрать, чтобы **Периодическая выставка счетов** была включена или отключена. Если вы установите ее "выключенной", ваш контракт завершится после окончания срока выставления счетов, и ваши ресурсы будут выведены из эксплуатации.
 
 <br />
 
@@ -76,9 +76,9 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-7. Нажмите **"Review + subscribe"**.
+7. Нажмите **"Просмотреть + подписаться"**.
 
-8. На следующем экране убедитесь, что все выглядит правильно, и нажмите **Subscribe**.
+8. На следующем экране убедитесь, что все выглядит правильно, и нажмите **Подписаться**.
 
 <br />
 
@@ -86,7 +86,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-9. Обратите внимание, что на этом этапе вы подписались на подписку Azure ClickHouse Cloud, но еще не настроили свою учетную запись в ClickHouse Cloud. Следующие шаги необходимы и критически важны для того, чтобы ClickHouse Cloud мог связаться с вашей подпиской Azure, обеспечивая правильный биллинг через Azure Marketplace.
+9. Обратите внимание, что на этом этапе вы подписались на подписку Azure ClickHouse Cloud, но еще не настроили свою учетную запись на ClickHouse Cloud. Следующие шаги необходимы и критически важны для того, чтобы ClickHouse Cloud смог связать вашу подписку Azure, чтобы выставление счетов происходило корректно через Azure Marketplace.
 
 <br />
 
@@ -94,7 +94,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-10. После завершения настройки Azure кнопка **Configure account now** должна активироваться.
+10. После завершения настройки Azure кнопка **Настроить учетную запись сейчас** должна стать активной.
 
 <br />
 
@@ -102,11 +102,11 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-11. Нажмите на **Configure account now**.
+11. Нажмите **Настроить учетную запись сейчас**.
 
 <br />
 
-Вы получите электронное письмо, подобное тому, что ниже, с деталями настройки вашей учетной записи:
+Вы получите электронное письмо, подобное тому, что представлено ниже, с деталями о настройке вашей учетной записи:
 
 <br />
 
@@ -114,9 +114,9 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-12. Вы будете перенаправлены на страницу регистрации или входа в ClickHouse Cloud. Вы можете зарегистрироваться с помощью новой учетной записи или войти с помощью существующей учетной записи. Как только вы войдете, будет создана новая организация, готовая к использованию и биллингу через Azure Marketplace.
+12. Вы будете перенаправлены на страницу регистрации или входа в ClickHouse Cloud. Вы можете либо зарегистрироваться с новой учетной записью, либо войти в систему, используя существующую учетную запись. После входа в систему будет создана новая организация, готовая к использованию и выставлению счетов через Azure Marketplace.
 
-13. Вам нужно будет ответить на несколько вопросов - адрес и данные о компании - прежде чем вы сможете продолжить.
+13. Вам нужно будет ответить на несколько вопросов - адрес и данные компании - прежде чем вы сможете продолжить.
 
 <br />
 
@@ -128,7 +128,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-14. После нажатия **Complete sign up** вы будете перенаправлены в вашу организацию в ClickHouse Cloud, где вы сможете просмотреть экран биллинга, чтобы убедиться, что вас выставляют счета через Azure Marketplace, и сможете создавать сервисы.
+14. После нажатия на **Завершить регистрацию** вы сможете перейти к вашей организации в ClickHouse Cloud, где сможете просмотреть экран выставления счетов, чтобы убедиться, что вам выставляют счета через Azure Marketplace, и создать услуги.
 
 <br />
 
@@ -144,4 +144,4 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-15. Если у вас возникли какие-либо проблемы, пожалуйста, не стесняйтесь обращаться в [нашу службу поддержки](https://clickhouse.com/support/program).
+15. Если у вас возникнут какие-либо проблемы, пожалуйста, не стесняйтесь обратиться в [нашу службу поддержки](https://clickhouse.com/support/program).

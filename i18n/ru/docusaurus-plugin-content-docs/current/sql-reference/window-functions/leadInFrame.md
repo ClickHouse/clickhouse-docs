@@ -1,5 +1,5 @@
 ---
-description: 'Документация для функции оконного метода leadInFrame'
+description: 'Документация для функции окна leadInFrame'
 sidebar_label: 'leadInFrame'
 sidebar_position: 10
 slug: /sql-reference/window-functions/leadInFrame
@@ -9,11 +9,11 @@ title: 'leadInFrame'
 
 # leadInFrame
 
-Возвращает значение, вычисленное на строке, которая смещена на заданное количество строк после текущей строки в упорядоченной рамке.
+Возвращает значение, вычисляемое для строки, которая смещена на заданное количество строк после текущей строки в пределах упорядоченного окна.
 
 :::warning
-Поведение `leadInFrame` отличается от стандартной функции оконного метода SQL `lead`.
-Функция оконного метода ClickHouse `leadInFrame` уважает рамки окна.
+Поведение `leadInFrame` отличается от стандартной функции окна SQL `lead`.
+Функция окна ClickHouse `leadInFrame` учитывает рамки окна.
 Чтобы получить поведение, идентичное `lead`, используйте `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`.
 :::
 
@@ -27,16 +27,16 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-Для получения более подробной информации о синтаксисе функций оконного метода смотрите: [Функции оконного метода - Синтаксис](./index.md/#syntax).
+Для подробной информации о синтаксисе функций окна смотрите: [Функции окна - Синтаксис](./index.md/#syntax).
 
 **Параметры**
-- `x` — Имя столбца.
-- `offset` — Смещение для применения. [(U)Int*](../data-types/int-uint.md). (Необязательный - по умолчанию `1`).
-- `default` — Значение, которое будет возвращено, если вычисленная строка превышает границы окна. (Необязательный - значение по умолчанию типа столбца, если пропущено).
+- `x` — Имя колонки.
+- `offset` — Смещение для применения. [(U)Int*](../data-types/int-uint.md). (Необязательно - по умолчанию `1`).
+- `default` — Значение, которое будет возвращено, если вычисленная строка превышает границы окна. (Необязательно - значение по умолчанию для типа колонки, если пропущено).
 
 **Возвращаемое значение**
 
-- значение, вычисленное на строке, которая смещена на заданное количество строк после текущей строки в упорядоченной рамке.
+- значение, вычисляемое для строки, которая смещена на заданное количество строк после текущей строки в пределах упорядоченного окна.
 
 **Пример**
 
@@ -68,14 +68,14 @@ LIMIT 9
 
 ```response
    ┌─fullName─────────┬─year─┬─category─┬─motivation─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-1. │ Anne L Huillier  │ 2023 │ physics  │ за экспериментальные методы, которые генерируют атаосекундные импульсы света для изучения динамики электронов в веществе                     │
-2. │ Pierre Agostini  │ 2023 │ physics  │ за экспериментальные методы, которые генерируют атаосекундные импульсы света для изучения динамики электронов в веществе                     │
-3. │ Ferenc Krausz    │ 2023 │ physics  │ за экспериментальные методы, которые генерируют атаосекундные импульсы света для изучения динамики электронов в веществе                     │
-4. │ Alain Aspect     │ 2022 │ physics  │ за эксперименты с запутанными фотонами, устанавливающие нарушение неравенств Белла и пионерскую работу в области квантовой информации │
-5. │ Anton Zeilinger  │ 2022 │ physics  │ за эксперименты с запутанными фотонами, устанавливающие нарушение неравенств Белла и пионерскую работу в области квантовой информации │
-6. │ John Clauser     │ 2022 │ physics  │ за эксперименты с запутанными фотонами, устанавливающие нарушение неравенств Белла и пионерскую работу в области квантовой информации │
-7. │ Giorgio Parisi   │ 2021 │ physics  │ за открытие взаимодействия беспорядка и колебаний в физических системах от атомного до планетарного масштаба                │
-8. │ Klaus Hasselmann │ 2021 │ physics  │ за физическое моделирование климата Земли, количественную оценку изменчивости и надежное прогнозирование глобального потепления                        │
-9. │ Syukuro Manabe   │ 2021 │ physics  │ за физическое моделирование климата Земли, количественную оценку изменчивости и надежное прогнозирование глобального потепления                        │
+1. │ Anne L Huillier  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
+2. │ Pierre Agostini  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
+3. │ Ferenc Krausz    │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
+4. │ Alain Aspect     │ 2022 │ physics  │ for experiments with entangled photons establishing the violation of Bell inequalities and  pioneering quantum information science │
+5. │ Anton Zeilinger  │ 2022 │ physics  │ for experiments with entangled photons establishing the violation of Bell inequalities and  pioneering quantum information science │
+6. │ John Clauser     │ 2022 │ physics  │ for experiments with entangled photons establishing the violation of Bell inequalities and  pioneering quantum information science │
+7. │ Giorgio Parisi   │ 2021 │ physics  │ for the discovery of the interplay of disorder and fluctuations in physical systems from atomic to planetary scales                │
+8. │ Klaus Hasselmann │ 2021 │ physics  │ for the physical modelling of Earths climate quantifying variability and reliably predicting global warming                        │
+9. │ Syukuro Manabe   │ 2021 │ physics  │ for the physical modelling of Earths climate quantifying variability and reliably predicting global warming                        │
    └──────────────────┴──────┴──────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```

@@ -19,12 +19,12 @@ sqlite('db_path', 'table_name')
 
 **Аргументы**
 
-- `db_path` — Путь к файлу с базой данных SQLite. [Строка](../../sql-reference/data-types/string.md).
-- `table_name` — Имя таблицы в базе данных SQLite. [Строка](../../sql-reference/data-types/string.md).
+- `db_path` — Путь к файлу с базой данных SQLite. [String](../../sql-reference/data-types/string.md).
+- `table_name` — Имя таблицы в базе данных SQLite. [String](../../sql-reference/data-types/string.md).
 
 **Возвращаемое значение**
 
-- Объект таблицы с теми же столбцами, что и в оригинальной таблице `SQLite`.
+- Объект таблицы с теми же колонками, что и в оригинальной таблице `SQLite`.
 
 **Пример**
 
@@ -44,6 +44,6 @@ SELECT * FROM sqlite('sqlite.db', 'table1') ORDER BY col2;
 └───────┴──────┘
 ```
 
-**См. также**
+**Смотрите Также**
 
 - Движок таблиц [SQLite](../../engines/table-engines/integrations/sqlite.md)

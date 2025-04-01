@@ -1,35 +1,35 @@
 ---
-description: 'Системная таблица, которая содержит трассировки стека всех потоков сервера. Позволяет разработчикам производить инспекцию состояния сервера.'
-keywords: ['системная таблица', 'stack_trace']
+description: 'Системная таблица, которая содержит трассировки стека всех серверных потоков. Позволяет разработчикам исследовать состояние сервера.'
+keywords: ['системная таблица', 'трассировка стека']
 slug: /operations/system-tables/stack_trace
 title: 'system.stack_trace'
 ---
 
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 
 # system.stack_trace
 
 <SystemTableCloud/>
 
-Содержит трассировки стека всех потоков сервера. Позволяет разработчикам производить инспекцию состояния сервера.
+Содержит трассировки стека всех серверных потоков. Позволяет разработчикам исследовать состояние сервера.
 
-Для анализа стековых фреймов используйте функции инспекции `addressToLine`, `addressToLineWithInlines`, `addressToSymbol` и `demangle` [инспекционные функции](../../sql-reference/functions/introspection.md).
+Для анализа стековых фреймов используйте функции [интроспекции](../../sql-reference/functions/introspection.md) `addressToLine`, `addressToLineWithInlines`, `addressToSymbol` и `demangle`.
 
 Колонки:
 
 - `thread_name` ([String](../../sql-reference/data-types/string.md)) — Имя потока.
 - `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Идентификатор потока.
-- `query_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор запроса, который можно использовать для получения деталей о запросе, который выполнялся из системной таблицы [query_log](../system-tables/query_log.md).
+- `query_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор запроса, который можно использовать для получения подробной информации о выполняемом запросе из системной таблицы [query_log](../system-tables/query_log.md).
 - `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — [трассировка стека](https://en.wikipedia.org/wiki/Stack_trace), представляющая собой список физических адресов, где хранятся вызванные методы.
 
 :::tip
-Посмотрите Базу знаний для некоторых полезных запросов, включая [как увидеть, какие потоки в данный момент работают](/knowledgebase/find-expensive-queries) и [полезные запросы для устранения неполадок](/knowledgebase/useful-queries-for-troubleshooting).
+Посмотрите на базу знаний для полезных запросов, включая [как увидеть, какие потоки в данный момент выполняются](/knowledgebase/find-expensive-queries) и [полезные запросы для устранения неполадок](/knowledgebase/useful-queries-for-troubleshooting).
 :::
 
 **Пример**
 
-Включение функций инспекции:
+Включение функций интроспекции:
 
 ```sql
 SET allow_introspection_functions = 1;
@@ -99,7 +99,7 @@ res:       /lib/x86_64-linux-gnu/libc-2.27.so
 
 **См. также**
 
-- [Инспекционные функции](../../sql-reference/functions/introspection.md) — Какие инспекционные функции доступны и как их использовать.
-- [system.trace_log](../system-tables/trace_log.md) — Содержит трассировки стека, собранные профайлером выборки запросов.
+- [Функции интроспекции](../../sql-reference/functions/introspection.md) — Какие функции интроспекции доступны и как их использовать.
+- [system.trace_log](../system-tables/trace_log.md) — Содержит трассировки стека, собранные профилятором запросов.
 - [arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) — Описание и пример использования функции `arrayMap`.
 - [arrayFilter](/sql-reference/functions/array-functions#arrayfilterfunc-arr1-) — Описание и пример использования функции `arrayFilter`.

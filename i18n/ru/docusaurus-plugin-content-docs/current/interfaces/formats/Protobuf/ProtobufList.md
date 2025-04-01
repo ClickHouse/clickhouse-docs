@@ -13,12 +13,12 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 <CloudNotSupportedBadge/>
 
 | Вход | Выход | Псевдоним |
-|-------|--------|-------|
-| ✔     | ✔      |       |
+|------|-------|-----------|
+| ✔    | ✔     |           |
 
 ## Описание {#description}
 
-Формат `ProtobufList` похож на формат [`Protobuf`](./Protobuf.md), но строки представлены в виде последовательности подсообщений, содержащихся в сообщении с фиксированным именем "Envelope".
+Формат `ProtobufList` аналогичен формату [`Protobuf`](./Protobuf.md), но строки представлены как последовательность подсообщений, содержащихся в сообщении с фиксированным именем "Envelope".
 
 ## Пример использования {#example-usage}
 
@@ -32,7 +32,7 @@ SELECT * FROM test.table FORMAT ProtobufList SETTINGS format_schema = 'schemafil
 cat protobuflist_messages.bin | clickhouse-client --query "INSERT INTO test.table FORMAT ProtobufList SETTINGS format_schema='schemafile:MessageType'"
 ```
 
-Где файл `schemafile.proto` выглядит так:
+Где файл `schemafile.proto` выглядит следующим образом:
 
 ```capnp title="schemafile.proto"
 syntax = "proto3";

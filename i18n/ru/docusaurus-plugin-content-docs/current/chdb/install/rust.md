@@ -3,7 +3,7 @@ title: 'Установка chDB для Rust'
 sidebar_label: 'Rust'
 slug: /chdb/install/rust
 description: 'Как установить chDB для Rust'
-keywords: ['chdb', 'встраиваемый', 'clickhouse-lite', 'bun', 'установка']
+keywords: ['chdb', 'встроенный', 'clickhouse-lite', 'bun', 'установка']
 ---
 
 ## Требования {#requirements}
@@ -16,7 +16,7 @@ curl -sL https://lib.chdb.io | bash
 
 ## Использование {#usage}
 
-Эта привязка находится в процессе разработки. Следуйте инструкциям на [chdb-rust](https://github.com/chdb-io/chdb-rust), чтобы начать.
+Этот биндинг находится в процессе разработки. Следуйте инструкциям на [chdb-rust](https://github.com/chdb-io/chdb-rust), чтобы начать.
 
 ## Репозиторий GitHub {#github-repository}
 

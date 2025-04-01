@@ -1,11 +1,11 @@
 ---
-title: 'Индекс интеграции языков'
+title: 'Индекс интеграций языков'
 slug: /chdb/install
-description: 'Страница-индекс для интеграции языков chDB'
+description: 'Страница индекса интеграций chDB языков'
 keywords: ['python', 'NodeJS', 'Go', 'Rust', 'Bun', 'C', 'C++']
 ---
 
-Инструкции по настройке chDB доступны ниже для следующих языков и сред исполнения:
+Инструкции по настройке chDB доступны ниже для следующих языков и сред выполнения:
 
 | Язык                                   |
 |----------------------------------------|
@@ -14,4 +14,4 @@ keywords: ['python', 'NodeJS', 'Go', 'Rust', 'Bun', 'C', 'C++']
 | [Go](/chdb/install/go)         |
 | [Rust](/chdb/install/rust)     |
 | [Bun](/chdb/install/bun)       |
-| [C и C++](/chdb/install/c)     |
+| [C и C++](/chdb/install/c)      |

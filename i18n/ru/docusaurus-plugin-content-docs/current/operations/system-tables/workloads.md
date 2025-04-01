@@ -38,7 +38,7 @@ parent:
 create_query: CREATE WORKLOAD `all`
 ```
 
-Столбцы:
+Колонки:
 
 - `name` (`String`) - Имя рабочей нагрузки.
 - `parent` (`String`) - Имя родительской рабочей нагрузки.

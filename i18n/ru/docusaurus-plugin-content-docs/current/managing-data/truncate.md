@@ -6,8 +6,8 @@ hide_title: false
 description: 'Обрезка позволяет удалить данные в таблице или базе данных, сохраняя их существование.'
 ---
 
-Обрезка позволяет удалить данные в таблице или базе данных, сохраняя их существование. Это легковесная операция, которую невозможно отменить.
+Обрезка позволяет удалить данные в таблице или базе данных, сохраняя их существование. Это легковесная операция, которую нельзя отменить.
 
-import Truncate from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/statements/truncate.md';
+import Truncate from '@site/docs/sql-reference/statements/truncate.md';
 
 <Truncate/>

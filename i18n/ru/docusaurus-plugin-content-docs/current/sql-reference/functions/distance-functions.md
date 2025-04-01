@@ -1,13 +1,13 @@
 ---
-description: 'Документация по функциям расстояния'
+description: 'Документация по функциям расстояний'
 sidebar_label: 'Расстояние'
 sidebar_position: 55
 slug: /sql-reference/functions/distance-functions
-title: 'Функции расстояния'
+title: 'Функции расстояний'
 ---
 
 
-# Функции расстояния
+# Функции расстояний
 
 ## L1Norm {#l1norm}
 
@@ -27,7 +27,7 @@ L1Norm(vector)
 
 **Возвращаемое значение**
 
-- L1-норма или расстояние [таксибуса](https://en.wikipedia.org/wiki/Taxicab_geometry). [UInt](../data-types/int-uint.md), [Float](../data-types/float.md) или [Decimal](../data-types/decimal.md).
+- L1-норма или расстояние в [таксикобритании](https://en.wikipedia.org/wiki/Taxicab_geometry). [UInt](../data-types/int-uint.md), [Float](../data-types/float.md) или [Decimal](../data-types/decimal.md).
 
 **Примеры**
 
@@ -63,7 +63,7 @@ L2Norm(vector)
 
 **Возвращаемое значение**
 
-- L2-норма или [евклидово расстояние](https://en.wikipedia.org/wiki/Euclidean_distance). [Float](../data-types/float.md).
+- L2-норма или [эвклидово расстояние](https://en.wikipedia.org/wiki/Euclidean_distance). [Float](../data-types/float.md).
 
 **Пример**
 
@@ -82,7 +82,7 @@ SELECT L2Norm((1, 2));
 ```
 ## L2SquaredNorm {#l2squarednorm}
 
-Вычисляет квадратный корень из суммы квадратов значений вектора (квадрат [L2Norm](#l2norm)).
+Вычисляет квадратный корень суммы квадратов значений вектора (квадрат [L2Norm](#l2norm)).
 
 **Синтаксис**
 
@@ -154,7 +154,7 @@ SELECT LinfNorm((1, -2));
 
 ## LpNorm {#lpnorm}
 
-Вычисляет корень `p`-й степени из суммы абсолютных значений вектора в степени `p`.
+Вычисляет корень `p`-й степени суммы абсолютных значений вектора в степени `p`.
 
 **Синтаксис**
 
@@ -167,7 +167,7 @@ LpNorm(vector, p)
 **Аргументы**
 
 - `vector` — [Кортеж](../data-types/tuple.md) или [Массив](../data-types/array.md).
-- `p` — Степень. Возможные значения: действительное число в диапазоне `[1; inf)`. [UInt](../data-types/int-uint.md) или [Float](../data-types/float.md).
+- `p` — Степень. Возможные значения: действительное число в `[1; inf)`. [UInt](../data-types/int-uint.md) или [Float](../data-types/float.md).
 
 **Возвращаемое значение**
 
@@ -191,7 +191,7 @@ SELECT LpNorm((1, -2), 2);
 
 ## L1Distance {#l1distance}
 
-Вычисляет расстояние между двумя точками (значения векторов являются координатами) в пространстве `L1` (1-норма ([таксибус](https://en.wikipedia.org/wiki/Taxicab_geometry) расстояние)).
+Вычисляет расстояние между двумя точками (значения векторов являются координатами) в пространстве `L1` (1-норма ([таксикобритания](https://en.wikipedia.org/wiki/Taxicab_geometry) расстояние)).
 
 **Синтаксис**
 
@@ -228,7 +228,7 @@ SELECT L1Distance((1, 2), (2, 3));
 
 ## L2Distance {#l2distance}
 
-Вычисляет расстояние между двумя точками (значения векторов являются координатами) в евклидова пространстве ([евклидово расстояние](https://en.wikipedia.org/wiki/Euclidean_distance)).
+Вычисляет расстояние между двумя точками (значения векторов являются координатами) в евклидовом пространстве ([эвклидово расстояние](https://en.wikipedia.org/wiki/Euclidean_distance)).
 
 **Синтаксис**
 
@@ -265,7 +265,7 @@ SELECT L2Distance((1, 2), (2, 3));
 
 ## L2SquaredDistance {#l2squareddistance}
 
-Вычисляет сумму квадратов разностей между соответствующими элементами двух векторов.
+Вычисляет сумму квадратов разности между соответствующими элементами двух векторов.
 
 **Синтаксис**
 
@@ -319,7 +319,7 @@ LinfDistance(vector1, vector2)
 
 **Возвращаемое значение**
 
-- Расстояние по бесконечной норме. [Float](../data-types/float.md).
+- Расстояние по бесконечному норму. [Float](../data-types/float.md).
 
 **Пример**
 
@@ -377,7 +377,7 @@ SELECT LpDistance((1, 2), (2, 3), 3);
 
 ## L1Normalize {#l1normalize}
 
-Вычисляет единичный вектор заданного вектора (значения кортежа являются координатами) в пространстве `L1` ([таксибус](https://en.wikipedia.org/wiki/Taxicab_geometry)).
+Вычисляет единичный вектор заданного вектора (значения кортежа являются координатами) в пространстве `L1` ([таксикобритания](https://en.wikipedia.org/wiki/Taxicab_geometry)).
 
 **Синтаксис**
 
@@ -413,7 +413,7 @@ SELECT L1Normalize((1, 2));
 
 ## L2Normalize {#l2normalize}
 
-Вычисляет единичный вектор заданного вектора (значения кортежа являются координатами) в евклидова пространстве (используя [евклидово расстояние](https://en.wikipedia.org/wiki/Euclidean_distance)).
+Вычисляет единичный вектор заданного вектора (значения кортежа являются координатами) в евклидово пространстве (используя [эвклидово расстояние](https://en.wikipedia.org/wiki/Euclidean_distance)).
 
 **Синтаксис**
 
@@ -537,7 +537,7 @@ cosineDistance(vector1, vector2)
 
 **Возвращаемое значение**
 
-- Косинус угла между двумя векторами, вычтенный из единицы. [Float](../data-types/float.md).
+- Косинус угла между двумя векторами, вычитание из единицы. [Float](../data-types/float.md).
 
 **Примеры**
 

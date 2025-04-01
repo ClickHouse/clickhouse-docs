@@ -10,13 +10,13 @@ title: 'PrettyNoEscapes'
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Вход | Выход  | Псевдоним |
-|-------|---------|-------|
-| ✗     | ✔       |       |
+| Входные данные | Выходные данные | Псевдоним |
+|----------------|-----------------|-----------|
+| ✗              | ✔               |           |
 
 ## Описание {#description}
 
-Отличается от [Pretty](/interfaces/formats/Pretty) тем, что [последовательности ANSI-escape](http://en.wikipedia.org/wiki/ANSI_escape_code) не используются. 
+Отличается от [Pretty](/interfaces/formats/Pretty) тем, что [ANSI-escape последовательности](http://en.wikipedia.org/wiki/ANSI_escape_code) не используются. 
 Это необходимо для отображения формата в браузере, а также для использования утилиты командной строки 'watch'.
 
 ## Пример использования {#example-usage}

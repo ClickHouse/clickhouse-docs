@@ -11,7 +11,7 @@ title: 'Движок таблиц GenerateRandom'
 Примеры использования:
 
 - Используйте в тестах для заполнения воспроизводимой большой таблицы.
-- Генерируйте случайный ввод для тестов на фуззинг.
+- Генерируйте случайный ввод для тестов на устойчивость.
 
 ## Использование в ClickHouse Server {#usage-in-clickhouse-server}
 
@@ -19,11 +19,11 @@ title: 'Движок таблиц GenerateRandom'
 ENGINE = GenerateRandom([random_seed [,max_string_length [,max_array_length]]])
 ```
 
-Параметры `max_array_length` и `max_string_length` задают максимальную длину всех массивов или карт и строк соответственно в сгенерированных данных.
+Параметры `max_array_length` и `max_string_length` задают максимальную длину всех массивов или колонок типа map и строк соответственно в сгенерированных данных.
 
 Движок генерации таблиц поддерживает только запросы `SELECT`.
 
-Он поддерживает все [DataTypes](../../../sql-reference/data-types/index.md), которые могут храниться в таблице, за исключением `AggregateFunction`.
+Он поддерживает все [DataTypes](../../../sql-reference/data-types/index.md), которые могут храниться в таблице, кроме `AggregateFunction`.
 
 ## Пример {#example}
 
@@ -49,7 +49,7 @@ SELECT * FROM generate_engine_table LIMIT 3
 
 ## Подробности реализации {#details-of-implementation}
 
-- Не поддерживается:
+- Не поддерживаются:
     - `ALTER`
     - `SELECT ... SAMPLE`
     - `INSERT`

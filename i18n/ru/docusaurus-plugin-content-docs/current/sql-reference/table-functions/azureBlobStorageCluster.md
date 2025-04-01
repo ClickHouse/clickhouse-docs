@@ -1,5 +1,5 @@
 ---
-description: 'Позволяет обрабатывать файлы из Azure Blob storage параллельно с множеством узлов в указанном кластере.'
+description: 'Позволяет обрабатывать файлы из Azure Blob Storage параллельно на множестве узлов в указанном кластере.'
 sidebar_label: 'azureBlobStorageCluster'
 sidebar_position: 15
 slug: /sql-reference/table-functions/azureBlobStorageCluster
@@ -9,7 +9,7 @@ title: 'azureBlobStorageCluster'
 
 # azureBlobStorageCluster Табличная Функция
 
-Позволяет обрабатывать файлы из [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) параллельно с множеством узлов в указанном кластере. При запуске создается соединение со всеми узлами в кластере, скрываются символы в пути файла S3, и динамически распределяются задачи для каждого файла. На рабочем узле он запрашивает у инициатора следующую задачу для обработки и выполняет ее. Это повторяется до тех пор, пока все задачи не будут выполнены. Эта табличная функция аналогична функции [s3Cluster](../../sql-reference/table-functions/s3Cluster.md).
+Позволяет обрабатывать файлы из [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) параллельно на множестве узлов в указанном кластере. На инициаторе она создает соединение со всеми узлами кластера, раскрывает звездочки в пути файла S3 и динамически распределяет каждый файл. На рабочем узле она запрашивает у инициатора следующую задачу для обработки и выполняет её. Этот процесс повторяется до тех пор, пока все задачи не будут завершены. Эта табличная функция схожа с функцией [s3Cluster](../../sql-reference/table-functions/s3Cluster.md).
 
 **Синтаксис**
 
@@ -19,14 +19,14 @@ azureBlobStorageCluster(cluster_name, connection_string|storage_account_url, con
 
 **Аргументы**
 
-- `cluster_name` — Имя кластера, являющегося основой для построения набора адресов и параметров соединения с удаленными и локальными серверами.
-- `connection_string|storage_account_url` — connection_string включает имя аккаунта и ключ ([Создать строку соединения](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json#configure-a-connection-string-for-an-azure-storage-account)) или можно также указать URL хранилища здесь и имя аккаунта с ключом как отдельные параметры (см. параметры account_name и account_key)
+- `cluster_name` — Имя кластера, который используется для построения набора адресов и параметров соединения с удаленными и локальными серверами.
+- `connection_string|storage_account_url` — connection_string включает имя и ключ учетной записи ([Создать строку подключения](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json#configure-a-connection-string-for-an-azure-storage-account)) или вы также можете предоставить URL учетной записи хранилища здесь, а имя учетной записи и ключ учетной записи как отдельные параметры (см. параметры account_name и account_key).
 - `container_name` - Имя контейнера
 - `blobpath` - путь к файлу. Поддерживает следующие подстановочные знаки в режиме только для чтения: `*`, `**`, `?`, `{abc,def}` и `{N..M}`, где `N`, `M` — числа, `'abc'`, `'def'` — строки.
-- `account_name` - если используется storage_account_url, то имя аккаунта можно указать здесь
-- `account_key` - если используется storage_account_url, то ключ аккаунта можно указать здесь
+- `account_name` - если используется storage_account_url, то имя учетной записи можно указать здесь
+- `account_key` - если используется storage_account_url, то ключ учетной записи можно указать здесь
 - `format` — [формат](/sql-reference/formats) файла.
-- `compression` — Поддерживаемые значения: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. По умолчанию автоматически определяется метод сжатия по расширению файла. (то же самое, что установка на `auto`).
+- `compression` — Поддерживаемые значения: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. По умолчанию он автоматически определяет сжатие по расширению файла. (то же самое, что установка на `auto`).
 - `structure` — Структура таблицы. Формат `'column1_name column1_type, column2_name column2_type, ...'`.
 
 **Возвращаемое значение**
@@ -35,7 +35,7 @@ azureBlobStorageCluster(cluster_name, connection_string|storage_account_url, con
 
 **Примеры**
 
-Аналогично движку таблиц [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage), пользователи могут использовать эмулятор Azurite для локальной разработки в Azure Storage. Подробности [здесь](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage). Предположим, что Azurite доступен на хосте `azurite1`.
+Похожим образом на движок таблиц [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage), пользователи могут использовать эмулятор Azurite для локальной разработки Azure Storage. Подробности [здесь](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage). Ниже мы предполагаем, что Azurite доступен по имени хоста `azurite1`.
 
 Выберите количество для файла `test_cluster_*.csv`, используя все узлы в кластере `cluster_simple`:
 
@@ -46,11 +46,11 @@ SELECT count(*) from azureBlobStorageCluster(
         'auto', 'key UInt64')
 ```
 
-**См. также**
+**См. Также**
 
 - [AzureBlobStorage engine](../../engines/table-engines/integrations/azureBlobStorage.md)
 - [azureBlobStorage табличная функция](../../sql-reference/table-functions/azureBlobStorage.md)
 
-## Использование Общих Доступов Подписей (SAS) {#using-shared-access-signatures-sas-sas-tokens}
+## Использование Совместимых Подписей Доступа (SAS) {#using-shared-access-signatures-sas-sas-tokens}
 
 Смотрите [azureBlobStorage](/sql-reference/table-functions/azureBlobStorage#using-shared-access-signatures-sas-sas-tokens) для примеров.

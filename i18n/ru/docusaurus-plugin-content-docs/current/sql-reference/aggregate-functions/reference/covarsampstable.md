@@ -1,6 +1,5 @@
 ---
-description: 'Похоже на covarSamp, но работает медленнее, обеспечивая при этом меньшую вычислительную
-  ошибку.'
+description: 'Похож на covarSamp, но работает медленнее, предоставляя меньшую вычислительную ошибку.'
 sidebar_position: 126
 slug: /sql-reference/aggregate-functions/reference/covarsampstable
 title: 'covarSampStable'
@@ -9,7 +8,7 @@ title: 'covarSampStable'
 
 # covarSampStable
 
-Вычисляет значение `Σ((x - x̅)(y - y̅)) / (n - 1)`. Похоже на [covarSamp](../reference/covarsamp.md), но работает медленнее, обеспечивая меньшую вычислительную ошибку.
+Вычисляет значение `Σ((x - x̅)(y - y̅)) / (n - 1)`. Похож на [covarSamp](../reference/covarsamp.md), но работает медленнее, предоставляя меньшую вычислительную ошибку.
 
 **Синтаксис**
 

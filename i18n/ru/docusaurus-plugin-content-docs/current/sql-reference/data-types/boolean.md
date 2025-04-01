@@ -11,6 +11,7 @@ title: 'Bool'
 
 Тип `bool` хранится внутренне как UInt8. Возможные значения: `true` (1), `false` (0).
 
+
 ```sql
 select true as col, toTypeName(col);
 ┌─col──┬─toTypeName(true)─┐

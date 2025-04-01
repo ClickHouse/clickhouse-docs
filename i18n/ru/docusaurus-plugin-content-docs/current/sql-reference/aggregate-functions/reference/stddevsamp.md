@@ -1,5 +1,5 @@
 ---
-description: 'Результат равен квадратному корню из varSamp'
+description: 'Результат равен квадратному корню от varSamp'
 sidebar_position: 190
 slug: /sql-reference/aggregate-functions/reference/stddevsamp
 title: 'stddevSamp'
@@ -8,12 +8,12 @@ title: 'stddevSamp'
 
 # stddevSamp
 
-Результат равен квадратному корню из [varSamp](../../../sql-reference/aggregate-functions/reference/varsamp.md).
+Результат равен квадратному корню от [varSamp](../../../sql-reference/aggregate-functions/reference/varsamp.md).
 
 Псевдоним: `STDDEV_SAMP`.
 
 :::note
-Эта функция использует численно нестабильный алгоритм. Если вам нужна [численная стабильность](https://en.wikipedia.org/wiki/Numerical_stability) в расчетах, используйте функцию [`stddevSampStable`](../reference/stddevsampstable.md). Она работает медленнее, но предоставляет меньшую вычислительную ошибку.
+Эта функция использует численно нестабильный алгоритм. Если вам нужна [численная стабильность](https://en.wikipedia.org/wiki/Numerical_stability) в вычислениях, используйте функцию [`stddevSampStable`](../reference/stddevsampstable.md). Она работает медленнее, но обеспечивает меньшую вычислительную ошибку.
 :::
 
 **Синтаксис**
@@ -24,11 +24,11 @@ stddevSamp(x)
 
 **Параметры**
 
-- `x`: Значения, для которых необходимо найти квадратный корень из выборочной дисперсии. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
+- `x`: Значения, для которых нужно найти квадратный корень выборочной дисперсии. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 
-Квадратный корень из выборочной дисперсии `x`. [Float64](../../data-types/float.md).
+Квадратный корень выборочной дисперсии `x`. [Float64](../../data-types/float.md).
 
 **Пример**
 

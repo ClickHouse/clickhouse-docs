@@ -13,15 +13,15 @@ title: 'clickhouse-format'
 
 - `--help` или `-h` — Вывести справочное сообщение.
 - `--query` — Форматировать запросы любой длины и сложности.
-- `--hilite` — Добавить подсветку синтаксиса с помощью ANSI последовательностей терминала.
+- `--hilite` — Добавить подсветку синтаксиса с помощью управляющих последовательностей ANSI терминала.
 - `--oneline` — Форматировать в одну строку.
-- `--max_line_length` — Форматировать запросы в одной строке, если длина меньше указанной.
+- `--max_line_length` — Форматировать в одной строке запросы длиной меньше указанной.
 - `--comments` — Сохранять комментарии в выводе.
-- `--quiet` или `-q` — Просто проверить синтаксис, без вывода при успешном выполнении.
+- `--quiet` или `-q` — Просто проверить синтаксис, без вывода при успехе.
 - `--multiquery` или `-n` — Разрешить несколько запросов в одном файле.
 - `--obfuscate` — Обфусцировать вместо форматирования.
-- `--seed <string>` — Начальное значение произвольной строки, которое определяет результат обфускации.
-- `--backslash` — Добавить обратный слеш в конец каждой строки форматированного запроса. Может быть полезно, если вы копируете запрос из веба или откуда-то еще, содержащий несколько строк, и хотите выполнить его в командной строке.
+- `--seed <string>` — Случайная строка, которая определяет результат обфускации.
+- `--backslash` — Добавить обратный слэш в конце каждой строки форматированного запроса. Может быть полезно, когда вы копируете запрос из интернета или откуда-либо еще с несколькими строками и хотите выполнить его в командной строке.
 
 ## Примеры {#examples}
 
@@ -52,7 +52,7 @@ $ clickhouse-format --oneline --hilite <<< "SELECT sum(number) FROM numbers(5);"
 SELECT sum(number) FROM numbers(5)
 ```
 
-3. Мультира запросов:
+3. Мульти-запросы:
 
 ```bash
 $ clickhouse-format -n <<< "SELECT min(number) FROM numbers(5); SELECT max(number) FROM numbers(5);"
@@ -83,7 +83,7 @@ $ clickhouse-format --seed Hello --obfuscate <<< "SELECT cost_first_screen BETWE
 SELECT treasury_mammoth_hazelnut BETWEEN nutmeg AND span, CASE WHEN chive >= 116 THEN switching ELSE ANYTHING END;
 ```
 
-Тот же запрос и другая строка начального значения:
+Тот же запрос и другая строка семени:
 
 ```bash
 $ clickhouse-format --seed World --obfuscate <<< "SELECT cost_first_screen BETWEEN a AND b, CASE WHEN x >= 123 THEN y ELSE NULL END;"
@@ -95,7 +95,7 @@ $ clickhouse-format --seed World --obfuscate <<< "SELECT cost_first_screen BETWE
 SELECT horse_tape_summer BETWEEN folklore AND moccasins, CASE WHEN intestine >= 116 THEN nonconformist ELSE FORESTRY END;
 ```
 
-5. Добавление обратного слеша:
+5. Добавление обратного слэша:
 
 ```bash
 $ clickhouse-format --backslash <<< "SELECT * FROM (SELECT 1 AS x UNION ALL SELECT 1 UNION DISTINCT SELECT 3);"

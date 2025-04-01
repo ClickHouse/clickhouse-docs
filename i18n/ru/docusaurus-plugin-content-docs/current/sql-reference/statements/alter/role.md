@@ -3,7 +3,7 @@ description: 'Документация для Роли'
 sidebar_label: 'РОЛЬ'
 sidebar_position: 46
 slug: /sql-reference/statements/alter/role
-title: 'ALTER ROLE'
+title: 'ИЗМЕНИТЬ РОЛЬ'
 ---
 
 Изменяет роли.

@@ -1,5 +1,5 @@
 ---
-description: 'Документация формата HiveText'
+description: 'Документация для формата HiveText'
 keywords: ['HiveText']
 slug: /interfaces/formats/HiveText
 title: 'HiveText'

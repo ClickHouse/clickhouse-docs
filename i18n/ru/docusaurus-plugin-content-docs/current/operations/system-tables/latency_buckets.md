@@ -1,5 +1,5 @@
 ---
-description: 'Системная таблица, содержащая информацию о границах ведро, используемых `latency_log`.'
+description: 'Системная таблица, содержащая информацию о границах бакетов, используемых в `latency_log`.'
 keywords: ['системная таблица', 'latency_buckets']
 slug: /operations/system-tables/latency_buckets
 title: 'system.latency_buckets'
@@ -8,7 +8,7 @@ title: 'system.latency_buckets'
 
 # system.latency_buckets
 
-Содержит границы ведер, используемых [latency_log](../../operations/system-tables/latency_log.md).
+Содержит границы бакетов, используемые в [latency_log](../../operations/system-tables/latency_log.md).
 
 **Пример**
 

@@ -17,25 +17,25 @@ title: 'studentTTest'
 studentTTest([confidence_level])(sample_data, sample_index)
 ```
 
-Значения обеих выборок находятся в столбце `sample_data`. Если `sample_index` равен 0, то значение в этой строке принадлежит выборке из первой популяции. В противном случае, оно принадлежит выборке из второй популяции. Нулевая гипотеза состоит в том, что средние значения популяций равны. Предполагается нормальное распределение с равными дисперсиями.
+Значения обеих выборок находятся в колонке `sample_data`. Если `sample_index` равен 0, то значение в этой строке принадлежит выборке из первой популяции. В противном случае оно принадлежит выборке из второй популяции. Нулевая гипотеза заключается в том, что средние значения популяций равны. Предполагается нормальное распределение с равными дисперсиями.
 
 **Аргументы**
 
-- `sample_data` — Выборка данных. [Целое](../../../sql-reference/data-types/int-uint.md), [Число с плавающей запятой](../../../sql-reference/data-types/float.md) или [Десятичное число](../../../sql-reference/data-types/decimal.md).
-- `sample_index` — Индекс выборки. [Целое](../../../sql-reference/data-types/int-uint.md).
+- `sample_data` — Данные выборки. [Целое число](../../../sql-reference/data-types/int-uint.md), [Число с плавающей точкой](../../../sql-reference/data-types/float.md) или [Десятичное число](../../../sql-reference/data-types/decimal.md).
+- `sample_index` — Индекс выборки. [Целое число](../../../sql-reference/data-types/int-uint.md).
 
 **Параметры**
 
-- `confidence_level` — Уровень доверия для расчета доверительных интервалов. [Число с плавающей запятой](../../../sql-reference/data-types/float.md).
+- `confidence_level` — Уровень доверия для расчета доверительных интервалов. [Число с плавающей точкой](../../../sql-reference/data-types/float.md).
 
 **Возвращаемые значения**
 
 [Кортеж](../../../sql-reference/data-types/tuple.md) с двумя или четырьмя элементами (если указан необязательный `confidence_level`):
 
-- рассчитанное t-статистическое значение. [Float64](../../../sql-reference/data-types/float.md).
+- рассчитанная t-статистика. [Float64](../../../sql-reference/data-types/float.md).
 - рассчитанное p-значение. [Float64](../../../sql-reference/data-types/float.md).
-- [рассчитанный нижний предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).]
-- [рассчитанный верхний предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).]
+- [рассчитанный нижний доверительный интервал. [Float64](../../../sql-reference/data-types/float.md).]
+- [рассчитанный верхний доверительный интервал. [Float64](../../../sql-reference/data-types/float.md).]
 
 **Пример**
 
@@ -66,7 +66,7 @@ SELECT studentTTest(sample_data, sample_index) FROM student_ttest;
 └───────────────────────────────────────────┘
 ```
 
-**Смотрите также**
+**См. Также**
 
 - [t-тест Стьюдента](https://en.wikipedia.org/wiki/Student%27s_t-test)
 - [функция welchTTest](/sql-reference/aggregate-functions/reference/welchttest)

@@ -1,5 +1,5 @@
 ---
-description: 'Вычисляет значение ковариации по населению'
+description: 'Вычисляет значение популяционной ковариации'
 sidebar_position: 123
 slug: /sql-reference/aggregate-functions/reference/covarpopstable
 title: 'covarPopStable'
@@ -8,13 +8,13 @@ title: 'covarPopStable'
 
 # covarPopStable
 
-Вычисляет значение ковариации по населению:
+Вычисляет значение популяционной ковариации:
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n}
 $$
 
-Он аналогичен функции [covarPop](../reference/covarpop.md), но использует численно устойчивый алгоритм. В результате `covarPopStable` медленнее, чем `covarPop`, но дает более точный результат.
+Это похоже на функцию [covarPop](../reference/covarpop.md), но использует численно устойчивый алгоритм. В результате `covarPopStable` медленнее, чем `covarPop`, но дает более точный результат.
 
 **Синтаксис**
 
@@ -29,7 +29,7 @@ covarPop(x, y)
 
 **Возвращаемое значение**
 
-- Ковариация по населению между `x` и `y`. [Float64](../../data-types/float.md).
+- Популяционная ковариация между `x` и `y`. [Float64](../../data-types/float.md).
 
 **Пример**
 

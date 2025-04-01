@@ -1,16 +1,16 @@
 ---
-description: 'Документация по манипуляции индексами пропуска данных'
+description: 'Документация по манипуляциям с индексами пропуска данных'
 sidebar_label: 'ИНДЕКС'
 sidebar_position: 42
 slug: /sql-reference/statements/alter/skipping-index
-title: 'Манипуляция индексами пропуска данных'
+title: 'Манипуляции с индексами пропуска данных'
 toc_hidden_folder: true
 ---
 
 
-# Манипуляция индексами пропуска данных
+# Манипуляции с индексами пропуска данных
 
-Доступные операции:
+Доступны следующие операции:
 
 ## ADD INDEX {#add-index}
 
@@ -22,16 +22,14 @@ toc_hidden_folder: true
 
 ## MATERIALIZE INDEX {#materialize-index}
 
-`ALTER TABLE [db.]table_name [ON CLUSTER cluster] MATERIALIZE INDEX [IF EXISTS] name [IN PARTITION partition_name]` - Перестраивает вторичный индекс `name` для указанного `partition_name`. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations). Если часть `IN PARTITION` опущена, то индекс перестраивается для всех данных таблицы.
+`ALTER TABLE [db.]table_name [ON CLUSTER cluster] MATERIALIZE INDEX [IF EXISTS] name [IN PARTITION partition_name]` - Воссоздает вторичный индекс `name` для указанного `partition_name`. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations). Если часть `IN PARTITION` опущена, то индекс воссоздается для всех данных таблицы.
 
 ## CLEAR INDEX {#clear-index}
 
 `ALTER TABLE [db.]table_name [ON CLUSTER cluster] CLEAR INDEX [IF EXISTS] name [IN PARTITION partition_name]` - Удаляет файлы вторичного индекса с диска без удаления описания. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations).
 
-
-Команды `ADD`, `DROP` и `CLEAR` являются легковесными в том смысле, что они только изменяют метаданные или удаляют файлы. 
-Также они реплицируются, синхронизируя метаданные индексов через ClickHouse Keeper или ZooKeeper.
+Команды `ADD`, `DROP` и `CLEAR` являются легковесными в том смысле, что они только изменяют метаданные или удаляют файлы. Также они реплицируются, синхронизируя метаданные индексов через ClickHouse Keeper или ZooKeeper.
 
 :::note    
-Манипуляция индексами поддерживается только для таблиц с [`*MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) движком (включая [реплицированные](/engines/table-engines/mergetree-family/replication.md) варианты).
+Манипуляция индексами поддерживается только для таблиц с движком [`*MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) (включая [реплицированные](/engines/table-engines/mergetree-family/replication.md) варианты).
 :::

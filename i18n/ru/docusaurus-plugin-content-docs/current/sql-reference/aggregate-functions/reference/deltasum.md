@@ -11,7 +11,7 @@ title: 'deltaSum'
 Суммирует арифметическую разницу между последовательными строками. Если разница отрицательная, она игнорируется.
 
 :::note
-Исходные данные должны быть отсортированы для корректной работы этой функции. Если вы хотите использовать эту функцию в [материализованном представлении](/sql-reference/statements/create/view#materialized-view), вы, скорее всего, захотите использовать метод [deltaSumTimestamp](/sql-reference/aggregate-functions/reference/deltasumtimestamp) вместо этого.
+Исходные данные должны быть отсортированы для корректной работы этой функции. Если вы хотите использовать эту функцию в [материализованном представлении](/sql-reference/statements/create/view#materialized-view), вам, вероятно, стоит использовать метод [deltaSumTimestamp](/sql-reference/aggregate-functions/reference/deltasumtimestamp).
 :::
 
 **Синтаксис**

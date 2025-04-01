@@ -1,20 +1,20 @@
 ---
 description: 'Документация для геометрических типов данных в ClickHouse, используемых для представления
-  географических объектов и местоположений'
+  географических объектов и локаций'
 sidebar_label: 'Гео'
 sidebar_position: 54
 slug: /sql-reference/data-types/geo
 title: 'Геометрические'
 ---
 
-ClickHouse поддерживает типы данных для представления географических объектов — местоположений, земель и т. д.
+ClickHouse поддерживает типы данных для представления географических объектов — локаций, земель и т.д.
 
-**Смотрите также**
+**См. также**
 - [Представление простых географических объектов](https://en.wikipedia.org/wiki/GeoJSON).
 
-## Точка {#point}
+## Point {#point}
 
-`Point` представляется своими координатами X и Y, хранящимися в [Tuple](tuple.md)([Float64](float.md), [Float64](float.md)).
+`Point` представляется своими координатами X и Y, которые хранятся как [Tuple](tuple.md)([Float64](float.md), [Float64](float.md)).
 
 **Пример**
 
@@ -33,9 +33,9 @@ SELECT p, toTypeName(p) FROM geo_point;
 └─────────┴───────────────┘
 ```
 
-## Кольцо {#ring}
+## Ring {#ring}
 
-`Ring` — это простой многоугольник без отверстий, хранящийся в виде массива точек: [Array](array.md)([Point](#point)).
+`Ring` — это простой многоугольник без отверстий, хранящийся как массив точек: [Array](array.md)([Point](#point)).
 
 **Пример**
 
@@ -54,9 +54,9 @@ SELECT r, toTypeName(r) FROM geo_ring;
 └───────────────────────────────┴───────────────┘
 ```
 
-## Линия {#linestring}
+## LineString {#linestring}
 
-`LineString` — это линия, хранящаяся в виде массива точек: [Array](array.md)([Point](#point)).
+`LineString` — это линия, хранящаяся как массив точек: [Array](array.md)([Point](#point)).
 
 **Пример**
 
@@ -75,9 +75,9 @@ SELECT l, toTypeName(l) FROM geo_linestring;
 └───────────────────────────────┴───────────────┘
 ```
 
-## МультиЛиния {#multilinestring}
+## MultiLineString {#multilinestring}
 
-`MultiLineString` — это множество линий, хранящихся в виде массива `LineString`: [Array](array.md)([LineString](#linestring)).
+`MultiLineString` — это несколько линий, хранящихся как массив `LineString`: [Array](array.md)([LineString](#linestring)).
 
 **Пример**
 
@@ -96,9 +96,9 @@ SELECT l, toTypeName(l) FROM geo_multilinestring;
 └─────────────────────────────────────────────────────┴─────────────────┘
 ```
 
-## Многоугольник {#polygon}
+## Polygon {#polygon}
 
-`Polygon` — это многоугольник с отверстиями, хранящийся в виде массива колец: [Array](array.md)([Ring](#ring)). Первый элемент внешнего массива — это внешняя форма многоугольника, а все последующие элементы — отверстия.
+`Polygon` — это многоугольник с отверстиями, хранящийся как массив колец: [Array](array.md)([Ring](#ring)). Первый элемент внешнего массива представляет собой внешнюю форму многоугольника, а все последующие элементы — это отверстия.
 
 **Пример**
 
@@ -118,13 +118,13 @@ SELECT pg, toTypeName(pg) FROM geo_polygon;
 └───────────────────────────────────────────────────────────────┴────────────────┘
 ```
 
-## МультиМногоугольник {#multipolygon}
+## MultiPolygon {#multipolygon}
 
-`MultiPolygon` состоит из нескольких многоугольников и хранится в виде массива многоугольников: [Array](array.md)([Polygon](#polygon)).
+`MultiPolygon` состоит из нескольких многоугольников и хранится как массив многоугольников: [Array](array.md)([Polygon](#polygon)).
 
 **Пример**
 
-Этот мультимногоугольник состоит из двух отдельных многоугольников — первый без отверстий, а второй с одним отверстием:
+Этот мультиполиго́н состоит из двух отдельных многоугольников — первый без отверстий, а второй с одним отверстием:
 
 ```sql
 CREATE TABLE geo_multipolygon (mpg MultiPolygon) ENGINE = Memory();
@@ -139,6 +139,6 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 └─────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────┘
 ```
 
-## Связанный контент {#related-content}
+## Related Content {#related-content}
 
-- [Изучение огромных, реальных наборов данных: 100+ лет записей погоды в ClickHouse](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
+- [Изучение масштабных реальных наборов данных: более 100 лет метеорологических записей в ClickHouse](https://clickhouse.com/blog/real-world-data-noaa-climate-data)

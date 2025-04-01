@@ -1,5 +1,5 @@
 ---
-description: 'Вычисляет список различных типов данных, хранящихся в столбце Dynamic.'
+description: 'Вычисляет список различных типов данных, хранящихся в колонке Dynamic.'
 sidebar_position: 215
 slug: /sql-reference/aggregate-functions/reference/distinctdynamictypes
 title: 'distinctDynamicTypes'
@@ -8,7 +8,7 @@ title: 'distinctDynamicTypes'
 
 # distinctDynamicTypes
 
-Вычисляет список различных типов данных, хранящихся в [Dynamic](../../data-types/dynamic.md) столбце.
+Вычисляет список различных типов данных, хранящихся в [Dynamic](../../data-types/dynamic.md) колонке.
 
 **Синтаксис**
 
@@ -18,7 +18,7 @@ distinctDynamicTypes(dynamic)
 
 **Аргументы**
 
-- `dynamic` — [Dynamic](../../data-types/dynamic.md) столбец.
+- `dynamic` — [Dynamic](../../data-types/dynamic.md) колонка.
 
 **Возвращаемое значение**
 

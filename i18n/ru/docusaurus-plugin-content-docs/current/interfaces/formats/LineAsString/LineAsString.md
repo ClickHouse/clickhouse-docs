@@ -8,15 +8,15 @@ slug: /interfaces/formats/LineAsString
 title: 'LineAsString'
 ---
 
-| Вход | Выход | Псевдоним |
-|-------|--------|-------|
-| ✔     | ✔      |       |
+| Входные данные | Выходные данные | Псевдоним |
+|----------------|----------------|-----------|
+| ✔              | ✔              |           |
 
 ## Описание {#description}
 
-Формат `LineAsString` интерпретирует каждую строку входных данных как отдельное строковое значение. 
-Этот формат может быть распарсен только для таблицы с одной колонкой типа [String](/sql-reference/data-types/string.md). 
-Оставшиеся колонки должны быть установлены в [`DEFAULT`](/sql-reference/statements/create/table.md/#default), [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) или опущены.
+Формат `LineAsString` интерпретирует каждую строку входных данных как одно строковое значение. 
+Этот формат может быть разобран только для таблицы с единственным полем типа [String](/sql-reference/data-types/string.md). 
+Остальные колонки должны быть установлены на [`DEFAULT`](/sql-reference/statements/create/table.md/#default), [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) или опущены.
 
 ## Пример использования {#example-usage}
 

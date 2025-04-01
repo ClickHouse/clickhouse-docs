@@ -1,5 +1,6 @@
 ---
-description: 'Этот движок обеспечивает только для чтения интеграцию с существующими таблицами [Delta Lake](https://github.com/delta-io/delta) в Amazon S3.'
+description: 'Этот движок обеспечивает интеграцию только для чтения с существующими таблицами 
+  Delta Lake в Amazon S3.'
 sidebar_label: 'DeltaLake'
 sidebar_position: 40
 slug: /engines/table-engines/integrations/deltalake
@@ -9,11 +10,11 @@ title: 'Движок таблиц DeltaLake'
 
 # Движок таблиц DeltaLake
 
-Этот движок обеспечивает только для чтения интеграцию с существующими [Delta Lake](https://github.com/delta-io/delta) таблицами в Amazon S3.
+Этот движок обеспечивает интеграцию только для чтения с существующими [Delta Lake](https://github.com/delta-io/delta) таблицами в Amazon S3.
 
 ## Создание таблицы {#create-table}
 
-Обратите внимание, что таблица Delta Lake должна уже существовать в S3, эта команда не принимает параметры DDL для создания новой таблицы.
+Обратите внимание, что таблица Delta Lake должна уже существовать в S3, эта команда не принимает DDL параметры для создания новой таблицы.
 
 ```sql
 CREATE TABLE deltalake
@@ -22,10 +23,10 @@ CREATE TABLE deltalake
 
 **Параметры движка**
 
-- `url` — URL ведра с путем к существующей таблице Delta Lake.
-- `aws_access_key_id`, `aws_secret_access_key` - Долгосрочные учетные данные для пользователя учетной записи [AWS](https://aws.amazon.com/). Вы можете использовать их для аутентификации ваших запросов. Параметр является необязательным. Если учетные данные не указаны, используются данные из файла конфигурации.
+- `url` — URL корзины с путём к существующей таблице Delta Lake.
+- `aws_access_key_id`, `aws_secret_access_key` - Долгосрочные учетные данные для пользователя учетной записи [AWS](https://aws.amazon.com/). Вы можете использовать их для аутентификации ваших запросов. Параметр является необязательным. Если учетные данные не указаны, они будут использованы из файла конфигурации.
 
-Параметры движка могут быть указаны с использованием [Именованных коллекций](/operations/named-collections.md).
+Параметры движка можно указать с помощью [Именованных Коллекций](/operations/named-collections.md).
 
 **Пример**
 
@@ -53,7 +54,7 @@ CREATE TABLE deltalake ENGINE=DeltaLake(deltalake_conf, filename = 'test_table')
 
 ### Кэш данных {#data-cache}
 
-Движок таблиц `Iceberg` и табличная функция поддерживают кэширование данных так же, как и хранилища `S3`, `AzureBlobStorage`, `HDFS`. См. [здесь](../../../engines/table-engines/integrations/s3.md#data-cache).
+Движок таблиц `Iceberg` и табличная функция поддерживают кэширование данных так же, как и `S3`, `AzureBlobStorage`, `HDFS` хранилища. См. [здесь](../../../engines/table-engines/integrations/s3.md#data-cache).
 
 ## См. также {#see-also}
 

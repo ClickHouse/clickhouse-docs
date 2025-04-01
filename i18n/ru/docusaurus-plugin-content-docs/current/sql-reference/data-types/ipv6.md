@@ -1,5 +1,5 @@
 ---
-description: 'Документация для типа данных IPv6 в ClickHouse, который хранит адреса IPv6 в виде 16-байтовых значений'
+description: 'Документация по типу данных IPv6 в ClickHouse, который хранит адреса IPv6 как 16-байтовые значения'
 sidebar_label: 'IPv6'
 sidebar_position: 30
 slug: /sql-reference/data-types/ipv6
@@ -8,9 +8,9 @@ title: 'IPv6'
 
 ## IPv6 {#ipv6}
 
-Адреса IPv6. Хранятся в 16 байтах в формате UInt128 big-endian.
+IPv6 адреса. Хранятся в 16 байтах как UInt128 в порядке старшего байта (big-endian).
 
-### Основное Использование {#basic-usage}
+### Основное использование {#basic-usage}
 
 ```sql
 CREATE TABLE hits (url String, from IPv6) ENGINE = MergeTree() ORDER BY url;
@@ -25,7 +25,7 @@ DESCRIBE TABLE hits;
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┘
 ```
 
-ИЛИ вы можете использовать домен `IPv6` в качестве ключа:
+ИЛИ вы можете использовать `IPv6` как ключ:
 
 ```sql
 CREATE TABLE hits (url String, from IPv6) ENGINE = MergeTree() ORDER BY from;
@@ -59,7 +59,7 @@ SELECT toTypeName(from), hex(from) FROM hits LIMIT 1;
 └──────────────────┴──────────────────────────────────┘
 ```
 
-Адреса IPv6 можно непосредственно сравнивать с адресами IPv4:
+IPv6 адреса могут быть сравнимы непосредственно с IPv4 адресами:
 
 ```sql
 SELECT toIPv4('127.0.0.1') = toIPv6('::ffff:127.0.0.1');
@@ -72,6 +72,6 @@ SELECT toIPv4('127.0.0.1') = toIPv6('::ffff:127.0.0.1');
 ```
 
 
-**Смотрите Также**
+**См. также**
 
 - [Функции для работы с адресами IPv4 и IPv6](../functions/ip-address-functions.md)

@@ -14,7 +14,7 @@ title: 'Типы кэшей'
 Основные типы кэшей:
 
 - `mark_cache` — Кэш меток, используемый движками таблиц семейства [MergeTree](../engines/table-engines/mergetree-family/mergetree.md).
-- `uncompressed_cache` — Кэш не сжатых данных, используемый движками таблиц семейства [MergeTree](../engines/table-engines/mergetree-family/mergetree.md).
+- `uncompressed_cache` — Кэш несжатых данных, используемый движками таблиц семейства [MergeTree](../engines/table-engines/mergetree-family/mergetree.md).
 - Кэш страниц операционной системы (используется косвенно для файлов с фактическими данными).
 
 Дополнительные типы кэшей:
@@ -22,12 +22,12 @@ title: 'Типы кэшей'
 - Кэш DNS.
 - Кэш [Regexp](../interfaces/formats.md#data-format-regexp).
 - Кэш скомпилированных выражений.
-- Кэш [индекса векторной схожести](../engines/table-engines/mergetree-family/annindexes.md).
-- Кэш схем [формата Avro](../interfaces/formats.md#data-format-avro).
-- Кэш данных [Словарей](../sql-reference/dictionaries/index.md).
+- Кэш [индекса векторного сходства](../engines/table-engines/mergetree-family/annindexes.md).
+- Кэш схем формата [Avro](../interfaces/formats.md#data-format-avro).
+- Кэш данных [словари](../sql-reference/dictionaries/index.md).
 - Кэш вывода схемы.
-- [Кэш файловой системы](storing-data.md) для S3, Azure, локальных и других дисков.
-- [Кэш страниц пользовательского пространства](/operations/userspace-page-cache).
+- Кэш [файловой системы](storing-data.md) для S3, Azure, Local и других дисков.
+- Кэш [пользовательского пространства](/operations/userspace-page-cache).
 - [Кэш запросов](query-cache.md).
 - [Кэш условий запросов](query-condition-cache.md).
 - Кэш схем формата.

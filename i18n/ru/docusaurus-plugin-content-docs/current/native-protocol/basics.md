@@ -9,9 +9,9 @@ description: 'Основы нативного протокола'
 # Основы
 
 :::note
-Ссылка на протокол клиента в процессе разработки.
+Справочник по клиентскому протоколу в процессе написания.
 
-Большинство примеров доступны только на Go.
+Большинство примеров только на Go.
 :::
 
 import Tabs from '@theme/Tabs';
@@ -21,19 +21,19 @@ import TabItem from '@theme/TabItem';
 
 ## Varint {#varint}
 
-Для длин, кодов пакетов и других случаев используется кодировка *беззнакового varint*.
+Для длин, кодов пакетов и других случаев используется *беззнаковое varint* кодирование.
 Используйте [binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) и [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint).
 
 :::note
-*Знаковый* varint не используется.
+*Знаковое* varint не используется.
 :::
 
 ## String {#string}
 
-Строки переменной длины кодируются как *(длина, значение)*, где *длина* — это [varint](#varint), а *значение* — это строка utf8.
+Строки переменной длины кодируются как *(длина, значение)*, где *длина* — это [varint](#varint), а *значение* — это строка в utf8.
 
 :::important
-Проверьте длину, чтобы избежать OOM:
+Проверяйте длину, чтобы предотвратить OOM:
 
 `0 ≤ len < MAX`
 :::
@@ -68,8 +68,8 @@ if err != nil {
         panic(err)
 }
 
-// Проверка n, чтобы избежать OOM или исключения времени выполнения в make().
-const maxSize = 1024 * 1024 * 10 // 10 MB
+// Проверка n для предотвращения OOM или исключения времени выполнения в make().
+const maxSize = 1024 * 1024 * 10 // 10 МБ
 if n > maxSize || n < 0 {
     panic("недействительное n")
 }
@@ -87,7 +87,7 @@ fmt.Println(string(buf))
 </Tabs>
 
 <Tabs>
-<TabItem value="hexdump" label="Hex dump">
+<TabItem value="hexdump" label="Hex дамп">
 
 ```hexdump
 00000000  0d 48 65 6c 6c 6f 2c 20  77 6f 72 6c 64 21        |.Hello, world!|
@@ -133,7 +133,7 @@ fmt.Println(d) // 1000
 ```
 
 <Tabs>
-<TabItem value="hexdump" label="Hex dump">
+<TabItem value="hexdump" label="Hex дамп">
 
 ```hexdump
 00000000  e8 03 00 00 00 00 00 00                           |........|
@@ -151,4 +151,4 @@ fmt.Println(d) // 1000
 
 ## Boolean {#boolean}
 
-Булевы значения представляются как один байт, `1` — это `true`, а `0` — это `false`.
+Булевы значения представлены одним байтом, `1` — это `true`, а `0` — это `false`.

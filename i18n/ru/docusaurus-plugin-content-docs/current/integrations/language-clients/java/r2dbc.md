@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'R2DBC драйвер'
+sidebar_label: 'R2DBC Драйвер'
 sidebar_position: 5
 keywords: ['clickhouse', 'java', 'драйвер', 'интеграция', 'r2dbc']
-description: 'ClickHouse R2DBC драйвер'
+description: 'ClickHouse R2DBC Драйвер'
 slug: /integrations/java/r2dbc
 title: 'R2DBC драйвер'
 ---
@@ -16,9 +16,9 @@ import CodeBlock from '@theme/CodeBlock';
 
 ## R2DBC драйвер {#r2dbc-driver}
 
-Обертка [R2DBC](https://r2dbc.io/) асинхронного Java клиента для ClickHouse.
+Обертка [R2DBC](https://r2dbc.io/) для асинхронного Java клиента ClickHouse.
 
-### Требования к среде {#environment-requirements}
+### Требования к окружению {#environment-requirements}
 
 - [OpenJDK](https://openjdk.java.net) версия >= 8
 

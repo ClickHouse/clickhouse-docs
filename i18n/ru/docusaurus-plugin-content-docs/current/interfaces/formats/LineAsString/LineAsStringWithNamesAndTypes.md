@@ -14,8 +14,8 @@ title: 'LineAsStringWithNamesAndTypes'
 
 ## Описание {#description}
 
-Формат `LineAsStringWithNames` аналогичен формату [`LineAsString`](./LineAsString.md),
-но выводит две строки заголовков: одну с названиями столбцов, другую с типами.
+Формат `LineAsStringWithNames` аналогичен формату [`LineAsString`](./LineAsString.md), 
+но выводит две строки заголовков: одну с именами колонок, другую с типами.
 
 ## Пример использования {#example-usage}
 

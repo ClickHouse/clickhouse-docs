@@ -17,7 +17,7 @@ SELECT min(salary) FROM employees;
 SELECT department, min(salary) FROM employees GROUP BY department;
 ```
 
-Если вам нужна неагрегатная функция для выбора минимума из двух значений, посмотрите `least`:
+Если вам нужна неагрегатная функция для выбора минимума из двух значений, смотрите `least`:
 
 ```sql
 SELECT least(a, b) FROM table;

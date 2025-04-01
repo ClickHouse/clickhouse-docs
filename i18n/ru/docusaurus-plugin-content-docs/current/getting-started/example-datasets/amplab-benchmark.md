@@ -1,12 +1,11 @@
 ---
-description: 'Набор данных для бенчмаркинга, используемый для сравнения производительности
-  решений по обработке данных.'
-sidebar_label: 'AMPLab Big Data Benchmark'
+description: 'Набор данных для бенчмаркинга, использующийся для сравнения производительности решений по хранению данных.'
+sidebar_label: 'Бенчмарк AMPLab Big Data'
 slug: /getting-started/example-datasets/amplab-benchmark
-title: 'AMPLab Big Data Benchmark'
+title: 'Бенчмарк AMPLab Big Data'
 ---
 
-См. https://amplab.cs.berkeley.edu/benchmark/
+Смотрите https://amplab.cs.berkeley.edu/benchmark/
 
 Зарегистрируйтесь для получения бесплатной учетной записи на https://aws.amazon.com. Это требует кредитной карты, электронной почты и номера телефона. Получите новый ключ доступа на https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential
 
@@ -89,7 +88,7 @@ CREATE TABLE uservisits_5nodes_on_single
 ) ENGINE = MergeTree(visitDate, visitDate, 8192);
 ```
 
-Вернитесь к консоли:
+Вернитесь в консоль:
 
 ```bash
 $ for i in tiny/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO rankings_tiny FORMAT CSV"; done
@@ -100,7 +99,7 @@ $ for i in 5nodes/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | 
 $ for i in 5nodes/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO uservisits_5nodes_on_single FORMAT CSV"; done
 ```
 
-Запросы для получения образцов данных:
+Запросы для получения выборок данных:
 
 ```sql
 SELECT pageURL, pageRank FROM rankings_1node WHERE pageRank > 1000

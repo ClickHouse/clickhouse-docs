@@ -3,8 +3,8 @@ sidebar_label: 'Airbyte'
 sidebar_position: 11
 keywords: ['clickhouse', 'Airbyte', 'connect', 'integrate', 'etl', 'data integration']
 slug: /integrations/airbyte
-description: 'Потоковая передача данных в ClickHouse с использованием конвейеров данных Airbyte'
-title: 'Подключите Airbyte к ClickHouse'
+description: 'Поток данных в ClickHouse с помощью конвейеров данных Airbyte'
+title: 'Соедините Airbyte с ClickHouse'
 ---
 
 import Image from '@theme/IdealImage';
@@ -20,23 +20,21 @@ import airbyte09 from '@site/static/images/integrations/data-ingestion/etl-tools
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Подключите Airbyte к ClickHouse
+# Соедините Airbyte с ClickHouse
 
 <CommunityMaintainedBadge/>
 
 :::note
-Обратите внимание, что источник и назначение Airbyte для ClickHouse в настоящее время находятся в статусе Alpha и не подходят для передачи больших наборов данных (> 10 миллионов строк)
+Обратите внимание, что исходный и целевой интерфейсы Airbyte для ClickHouse в настоящее время находятся на стадии Alpha и не предназначены для переноса больших наборов данных (> 10 миллионов строк).
 :::
 
-<a href="https://www.airbyte.com/" target="_blank">Airbyte</a> - это платформа интеграции данных с открытым исходным кодом. Она позволяет создавать <a href="https://airbyte.com/blog/why-the-future-of-etl-is-not-elt-but-el" target="_blank">ELT</a> конвейеры данных и поставляется с более чем 140 встроенными коннекторами. Этот пошаговый учебник показывает, как подключить Airbyte к ClickHouse в качестве назначения и загрузить образец набора данных.
-
+<a href="https://www.airbyte.com/" target="_blank">Airbyte</a> является платформой для интеграции данных с открытым исходным кодом. Она позволяет создавать <a href="https://airbyte.com/blog/why-the-future-of-etl-is-not-elt-but-el" target="_blank">ELT</a> конвейеры данных и поставляется с более чем 140 готовыми коннекторами. Этот пошаговый учебник показывает, как подключить Airbyte к ClickHouse в качестве назначения и загрузить демонстрационный набор данных.
 
 ## 1. Скачайте и запустите Airbyte {#1-download-and-run-airbyte}
 
-
 1. Airbyte работает на Docker и использует `docker-compose`. Убедитесь, что вы скачали и установили последние версии Docker.
 
-2. Разверните Airbyte, клонируя официальный репозиторий Github и запустив `docker-compose up` в вашем любимом терминале:
+2. Разверните Airbyte, склонировав официальный репозиторий на Github и запустив `docker-compose up` в вашем любимом терминале:
 
         ```bash
         git clone https://github.com/airbytehq/airbyte.git --depth=1
@@ -44,7 +42,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
         ./run-ab-platform.sh
         ```
 
-4. Как только вы увидите баннер Airbyte в своем терминале, вы можете подключиться к <a href="http://localhost:8000" target="_blank">localhost:8000</a>
+4. Как только вы увидите баннер Airbyte в вашем терминале, вы сможете подключиться к <a href="http://localhost:8000" target="_blank">localhost:8000</a>
 
     <Image img={airbyte01} size="lg" border alt="Баннер Airbyte" />
 
@@ -56,7 +54,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 В этом разделе мы покажем, как добавить экземпляр ClickHouse в качестве назначения.
 
-1. Запустите свой сервер ClickHouse (Airbyte совместим с версией ClickHouse `21.8.10.19` или выше) или войдите в свою учетную запись ClickHouse в облаке:
+1. Запустите ваш сервер ClickHouse (Airbyte совместим с версией ClickHouse `21.8.10.19` и выше) или войдите в свой облачный аккаунт ClickHouse:
 
     ```bash
     clickhouse-server start
@@ -64,16 +62,16 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 2. Внутри Airbyte выберите страницу "Destinations" и добавьте новое назначение:
 
-    <Image img={airbyte02} size="lg" border alt="Добавление назначения в Airbyte" />
+    <Image img={airbyte02} size="lg" border alt="Добавить назначение в Airbyte" />
 
-3. Выберите ClickHouse из выпадающего списка "Destination type" и заполните форму "Set up the destination", указав имя хоста и порты ClickHouse, имя базы данных, имя пользователя и пароль, а также выберите, является ли это SSL-соединением (эквивалентно флагу `--secure` в  `clickhouse-client`):
+3. Выберите ClickHouse из выпадающего списка "Destination type", заполните форму "Set up the destination", указав имя хоста ClickHouse, порты, имя базы данных, имя пользователя и пароль, а также выберите, будет ли это соединение SSL (эквивалент флага `--secure` в `clickhouse-client`):
 
     <Image img={airbyte03} size="lg" border alt="Создание назначения ClickHouse в Airbyte" />
 
-4. Поздравляем! Вы теперь добавили ClickHouse в качестве назначения в Airbyte.
+4. Поздравляем! Теперь вы добавили ClickHouse в качестве назначения в Airbyte.
 
 :::note
-Чтобы использовать ClickHouse в качестве назначения, пользователь, которого вы будете использовать, должен иметь разрешения на создание баз данных, таблиц и вставку строк. Мы рекомендуем создать отдельного пользователя для Airbyte (например, `my_airbyte_user`) с следующими правами:
+Для использования ClickHouse в качестве назначения, у пользователя, которого вы будете использовать, должны быть разрешения на создание баз данных, таблиц и вставку строк. Мы рекомендуем создать выделенного пользователя для Airbyte (например, `my_airbyte_user`) с следующими правами:
 
 ```sql
 CREATE USER 'my_airbyte_user'@'%' IDENTIFIED BY 'your_password_here';
@@ -82,17 +80,15 @@ GRANT CREATE ON * TO my_airbyte_user;
 ```
 :::
 
-
 ## 3. Добавьте набор данных в качестве источника {#3-add-a-dataset-as-a-source}
 
-Примером набора данных, который мы будем использовать, являются <a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">данные такси Нью-Йорка</a> (на <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a>). В этом учебнике мы будем использовать подсет этого набора данных, который соответствует месяцу января 2022 года.
-
+Примером набора данных, который мы будем использовать, являются <a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">Данные такси Нью-Йорка</a> (на <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a>). Для этого учебника мы будем использовать подмножество этого набора данных, соответствующее месяцу января 2022 года.
 
 1. Внутри Airbyte выберите страницу "Sources" и добавьте новый источник типа файл.
 
-    <Image img={airbyte04} size="lg" border alt="Добавление источника в Airbyte" />
+    <Image img={airbyte04} size="lg" border alt="Добавить источник в Airbyte" />
 
-2. Заполните форму "Set up the source", указав имя источника и URL файла NYC Taxi Jan 2022 (см. ниже). Убедитесь, что вы выбрали `parquet` в качестве формата файла, `HTTPS Public Web` в качестве провайдера хранения и `nyc_taxi_2022` в качестве названия набора данных.
+2. Заполните форму "Set up the source", назвав источник и указав URL файла NYC Taxi за январь 2022 года (см. ниже). Убедитесь, что выбран формат файла `parquet`, поставщик хранения `HTTPS Public Web` и имя набора данных `nyc_taxi_2022`.
 
         ```text
         https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2022-01.parquet
@@ -100,31 +96,29 @@ GRANT CREATE ON * TO my_airbyte_user;
 
     <Image img={airbyte05} size="lg" border alt="Создание источника ClickHouse в Airbyte" />
 
-3. Поздравляем! Вы теперь добавили файл источника в Airbyte.
-
+3. Поздравляем! Теперь вы добавили файл источника в Airbyte.
 
 ## 4. Создайте соединение и загрузите набор данных в ClickHouse {#4-create-a-connection-and-load-the-dataset-into-clickhouse}
 
 1. Внутри Airbyte выберите страницу "Connections" и добавьте новое соединение.
 
-<Image img={airbyte06} size="lg" border alt="Добавление соединения в Airbyte" />
+<Image img={airbyte06} size="lg" border alt="Добавить соединение в Airbyte" />
 
+2. Выберите "Use existing source" и выберите Данные такси Нью-Йорка, затем выберите "Use existing destination" и выберите ваш экземпляр ClickHouse.
 
-2. Выберите "Использовать существующий источник" и выберите данные такси Нью-Йорка, затем выберите "Использовать существующее назначение" и выберите ваш экземпляр ClickHouse.
-
-3. Заполните форму "Set up the connection", выбрав частоту репликации (в этом учебнике мы воспользуемся `manual`) и выберите `nyc_taxi_2022` в качестве потока, который хотите синхронизировать. Убедитесь, что вы выбрали `Normalized Tabular Data` в качестве нормализации.
+3. Заполните форму "Set up the connection", выбрав Частоту репликации (в этом учебнике мы будем использовать `manual`) и выберите `nyc_taxi_2022` в качестве потока, который хотите синхронизировать. Убедитесь, что вы выбрали `Normalized Tabular Data` в качестве нормализации.
 
 <Image img={airbyte07} size="lg" border alt="Создание соединения в Airbyte" />
 
-4. Теперь, когда соединение создано, нажмите "Sync now", чтобы запустить загрузку данных (так как мы выбрали `Manual` в качестве частоты репликации).
+4. Теперь, когда соединение создано, нажмите "Sync now", чтобы запустить загрузку данных (так как мы выбрали `Manual` в качестве Частоты репликации).
 
-<Image img={airbyte08} size="lg" border alt="Синхронизировать сейчас в Airbyte" />
+<Image img={airbyte08} size="lg" border alt="Синхронизация сейчас в Airbyte" />
 
-5. Ваши данные начнут загружаться, вы можете развернуть вид для просмотра логов Airbyte и хода выполнения. Как только операция завершится, вы увидите сообщение `Completed successfully` в логах:
+5. Ваши данные начнут загружаться, вы можете развернуть вид, чтобы увидеть логи и прогресс Airbyte. Как только операция завершится, вы увидите сообщение `Completed successfully` в логах:
 
 <Image img={airbyte09} size="lg" border alt="Завершено успешно" />
 
-6. Подключитесь к вашему экземпляру ClickHouse, используя предпочитаемый SQL-клиент, и проверьте полученную таблицу:
+6. Подключитесь к вашему экземпляру ClickHouse, используя ваш предпочитаемый SQL-клиент, и проверьте получившуюся таблицу:
 
         ```sql
         SELECT *
@@ -132,7 +126,7 @@ GRANT CREATE ON * TO my_airbyte_user;
         LIMIT 10
         ```
 
-        Ответ должен выглядеть так:
+        Ответ должен выглядеть следующим образом:
         ```response
         Query id: 4f79c106-fe49-4145-8eba-15e1cb36d325
 
@@ -155,7 +149,7 @@ GRANT CREATE ON * TO my_airbyte_user;
         FROM nyc_taxi_2022
         ```
 
-        Ответ:
+        Ответ будет следующим:
         ```response
         Query id: a9172d39-50f7-421e-8330-296de0baa67e
 
@@ -164,18 +158,15 @@ GRANT CREATE ON * TO my_airbyte_user;
         └─────────┘
         ```
 
-
-
-7. Обратите внимание, что Airbyte автоматически вывел типы данных и добавил 4 столбца в таблицу назначения. Эти столбцы используются Airbyte для управления логикой репликации и ведения лога операций. Более подробную информацию можно найти в <a href="https://docs.airbyte.com/integrations/destinations/clickhouse#output-schema" target="_blank">официальной документации Airbyte</a>.
+7. Обратите внимание, что Airbyte автоматически вывел типы данных и добавил 4 столбца в целевую таблицу. Эти столбцы используются Airbyte для управления логикой репликации и записи операций. Более подробную информацию можно найти в <a href="https://docs.airbyte.com/integrations/destinations/clickhouse#output-schema" target="_blank">официальной документации Airbyte</a>.
 
         ```sql
             `_airbyte_ab_id` String,
             `_airbyte_emitted_at` DateTime64(3, 'GMT'),
             `_airbyte_normalized_at` DateTime,
-            `_airbyte_nyc_taxi_072021_hashid` String
+            `_airbyte_nyc_taxi_2022_hashid` String
         ```
 
-        Теперь, когда набор данных загружен на ваш экземпляр ClickHouse, вы можете создать новую таблицу и использовать более подходящие типы данных ClickHouse (<a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">подробности</a>).
-
+        Теперь, когда набор данных загружен в ваш экземпляр ClickHouse, вы можете создать новую таблицу и использовать более подходящие типы данных ClickHouse (<a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">подробности</a>).
 
 8. Поздравляем - вы успешно загрузили данные такси Нью-Йорка в ClickHouse с использованием Airbyte!

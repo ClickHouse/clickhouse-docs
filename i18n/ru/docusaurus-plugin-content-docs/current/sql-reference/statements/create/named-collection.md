@@ -1,6 +1,6 @@
 ---
-description: 'Документация для CREATE NAMED COLLECTION'
-sidebar_label: 'Именованные коллекции'
+description: 'Документация по CREATE NAMED COLLECTION'
+sidebar_label: 'ИМЕНУЕМАЯ КОЛЛЕКЦИЯ'
 slug: /sql-reference/statements/create/named-collection
 title: 'CREATE NAMED COLLECTION'
 ---
@@ -12,7 +12,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # CREATE NAMED COLLECTION
 
-Создает новую именованную коллекцию.
+Создает новую именуемую коллекцию.
 
 **Синтаксис**
 
@@ -36,6 +36,6 @@ CREATE NAMED COLLECTION foobar AS a = '1', b = '2' OVERRIDABLE;
 - [DROP NAMED COLLECTION](/sql-reference/statements/drop#drop-function)
 
 
-**Смотрите также**
+**См. также**
 
-- [Руководство по именованным коллекциям](/operations/named-collections.md)
+- [Руководство по именуемым коллекциям](/operations/named-collections.md)

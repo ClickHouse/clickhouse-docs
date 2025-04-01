@@ -11,13 +11,13 @@ title: 'PrettySpaceNoEscapesMonoBlock'
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 | Вход | Выход  | Псевдоним |
-|-------|---------|-------|
-| ✗     | ✔       |       |
+|------|--------|-----------|
+| ✗    | ✔      |           |
 
 ## Описание {#description}
 
 Отличается от формата [`PrettySpaceNoEscapes`](./PrettySpaceNoEscapes.md) тем, что до `10,000` строк буферизуются, 
-а затем выводятся как одна таблица, а не по [блокам](/development/architecture#block).
+и затем выводятся как одна таблица, а не по [блокам](/development/architecture#block).
 
 ## Пример использования {#example-usage}
 

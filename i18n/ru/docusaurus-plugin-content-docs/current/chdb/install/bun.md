@@ -3,7 +3,7 @@ title: 'Установка chDB для Bun'
 sidebar_label: 'Bun'
 slug: /chdb/install/bun
 description: 'Как установить chDB для Bun'
-keywords: ['chdb', 'встроенный', 'clickhouse-lite', 'bun', 'установка']
+keywords: ['chdb', 'встраиваемый', 'clickhouse-lite', 'bun', 'установка']
 ---
 
 

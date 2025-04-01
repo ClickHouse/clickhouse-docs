@@ -8,7 +8,7 @@ title: 'system.system.resources'
 
 # system.system.resources
 
-Содержит информацию о [ресурсах](/operations/workload-scheduling.md#workload_entity_storage), находящихся на локальном сервере. Таблица содержит одну строку для каждого ресурса.
+Содержит информацию о [ресурсах](/operations/workload-scheduling.md#workload_entity_storage), находящихся на локальном сервере. Таблица содержит строку для каждого ресурса.
 
 Пример:
 
@@ -34,7 +34,7 @@ write_disks:  ['s3']
 create_query: CREATE RESOURCE io_write (WRITE DISK s3)
 ```
 
-Колонны:
+Столбцы:
 
 - `name` (`String`) - Имя ресурса.
 - `read_disks` (`Array(String)`) - Массив имен дисков, использующих этот ресурс для операций чтения.

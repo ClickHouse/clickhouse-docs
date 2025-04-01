@@ -7,7 +7,7 @@ title: 'представление'
 ---
 
 
-# представление Табличная Функция
+# Функция Таблицы представление
 
 Преобразует подзапрос в таблицу. Функция реализует представления (см. [CREATE VIEW](/sql-reference/statements/create/view)). Результирующая таблица не хранит данные, а только хранит указанный `SELECT` запрос. При чтении из таблицы ClickHouse выполняет запрос и удаляет все ненужные столбцы из результата.
 
@@ -55,7 +55,7 @@ SELECT * FROM view(SELECT name FROM months);
 └──────────┘
 ```
 
-Вы можете использовать функцию `view` в качестве параметра табличных функций [remote](/sql-reference/table-functions/remote) и [cluster](/sql-reference/table-functions/cluster):
+Вы можете использовать функцию `view` в качестве параметра для функций таблиц [remote](/sql-reference/table-functions/remote) и [cluster](/sql-reference/table-functions/cluster):
 
 ```sql
 SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
@@ -65,6 +65,6 @@ SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
 
-**См. Также**
+**См. также**
 
 - [View Table Engine](/engines/table-engines/special/view/)

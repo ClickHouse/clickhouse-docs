@@ -1,5 +1,5 @@
 ---
-description: 'Движок таблицы, который предоставляет интерфейс, похожий на таблицу, для SELECT и INSERT в файлы, аналогично табличной функции [s3](/sql-reference/table-functions/url.md). Используйте `file()`, когда работаете с локальными файлами, и `s3()`, когда работаете с ведрами в объектном хранилище, таком как S3, GCS или MinIO.'
+description: 'Движок таблицы, который предоставляет интерфейс, похожий на таблицу, для выборки и вставки данных в файлы, аналогично табличной функции [s3](/sql-reference/table-functions/url.md). Используйте `file()`, когда работаете с локальными файлами, и `s3()`, когда работаете с корзинами в объектном хранилище, таком как S3, GCS или MinIO.'
 sidebar_label: 'file'
 sidebar_position: 60
 slug: /sql-reference/table-functions/file
@@ -10,11 +10,11 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Функция таблицы file
+# Табличная функция file
 
-Движок таблицы, который предоставляет интерфейс, похожий на таблицу, для SELECT и INSERT в файлы, аналогично табличной функции [s3](/sql-reference/table-functions/url.md). Используйте `file()` при работе с локальными файлами и `s3()` при работе с ведрами в объектном хранилище, таком как S3, GCS или MinIO.
+Движок таблицы, который предоставляет интерфейс, похожий на таблицу, для выборки и вставки данных в файлы, аналогично табличной функции [s3](/sql-reference/table-functions/url.md). Используйте `file()`, когда работаете с локальными файлами, и `s3()` при работе с корзинами в объектном хранилище, таких как S3, GCS или MinIO.
 
-Функция `file` может использоваться в запросах `SELECT` и `INSERT` для чтения из или записи в файлы.
+Функция `file` может использоваться в запросах `SELECT` и `INSERT` для чтения из файлов или записи в них.
 
 **Синтаксис**
 
@@ -24,11 +24,11 @@ file([path_to_archive ::] path [,format] [,structure] [,compression])
 
 **Параметры**
 
-- `path` — Относительный путь к файлу от [user_files_path](operations/server-configuration-parameters/settings.md#user_files_path). Поддерживает в режиме только для чтения следующие [глобусы](#globs-in-path): `*`, `?`, `{abc,def}` (где `'abc'` и `'def'` являются строками) и `{N..M}` (где `N` и `M` — числа).
-- `path_to_archive` - Относительный путь к архиву zip/tar/7z. Поддерживает те же глобусы, что и `path`.
+- `path` — Относительный путь к файлу из [user_files_path](operations/server-configuration-parameters/settings.md#user_files_path). Поддерживает в режиме только для чтения следующие [глобсы](#globs-in-path): `*`, `?`, `{abc,def}` (где `'abc'` и `'def'` – это строки) и `{N..M}` (где `N` и `M` – это числа).
+- `path_to_archive` - Относительный путь к zip/tar/7z архиву. Поддерживает те же глобсы, что и `path`.
 - `format` — [формат](/interfaces/formats) файла.
 - `structure` — Структура таблицы. Формат: `'column1_name column1_type, column2_name column2_type, ...'`.
-- `compression` — Существующий тип сжатия при использовании в запросе `SELECT` или желаемый тип сжатия при использовании в запросе `INSERT`. Поддерживаемые типы сжатия: `gz`, `br`, `xz`, `zst`, `lz4` и `bz2`.
+- `compression` — Тип существующего сжатия при использовании в запросе `SELECT` или желаемый тип сжатия при использовании в запросе `INSERT`. Поддерживаемые типы сжатия: `gz`, `br`, `xz`, `zst`, `lz4` и `bz2`.
 
 **Возвращаемое значение**
 
@@ -54,9 +54,9 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 1    3    2
 ```
 
-### Разделенная запись в несколько TSV файлов {#partitioned-write-to-multiple-tsv-files}
+### Партированная запись в несколько TSV файлов {#partitioned-write-to-multiple-tsv-files}
 
-Если вы укажете выражение `PARTITION BY`, когда вставляете данные в табличную функцию типа `file()`, то для каждой секции будет создан отдельный файл. Разделение данных на отдельные файлы помогает улучшить производительность операций чтения.
+Если вы укажете выражение `PARTITION BY` при вставке данных в табличную функцию типа `file()`, то для каждой партиции создается отдельный файл. Разделение данных на отдельные файлы помогает улучшить производительность операций чтения.
 
 ```sql
 INSERT INTO TABLE FUNCTION
@@ -65,7 +65,7 @@ PARTITION BY column3
 VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 ```
 
-В результате данные будут записаны в три файла: `test_1.tsv`, `test_2.tsv` и `test_3.tsv`.
+В результате данные записываются в три файла: `test_1.tsv`, `test_2.tsv` и `test_3.tsv`.
 
 ```bash
 
@@ -131,27 +131,27 @@ file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32');
 └─────────┴─────────┴─────────┘
 ```
 
-Чтение данных из `table.csv`, находящегося в `archive1.zip` или/и `archive2.zip`:
+Чтение данных из `table.csv`, находящегося в `archive1.zip` и/или `archive2.zip`:
 
 ```sql
 SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
 ```
 
-## Глобусы в пути {#globs-in-path}
+## Глобсы в пути {#globs-in-path}
 
-Пути могут использовать глобальные шаблоны. Файлы должны соответствовать всему шаблону пути, а не только суффиксу или префиксу. Есть одно исключение: если путь ссылается на существующий каталог и не использует глобусы, `*` будет автоматически добавлен к пути, чтобы выбрать все файлы в каталоге.
+Пути могут использовать глобсы. Файлы должны соответствовать целому паттерну пути, а не только суффиксу или префиксу. Есть одно исключение: если путь ссылается на существующий каталог и не использует глобсы, то `*` будет неявно добавлен в путь, так что все файлы в каталоге будут выбраны.
 
-- `*` — Представляет произвольное количество символов, кроме `/`, но включая пустую строку.
-- `?` — Представляет произвольный один символ.
-- `{some_string,another_string,yet_another_one}` — Заменяет любую из строк `'some_string', 'another_string', 'yet_another_one'`. Строки могут содержать символ `/`.
+- `*` — Представляет произвольное количество символов, кроме `/`, включая пустую строку.
+- `?` — Представляет произвольный одиночный символ.
+- `{some_string,another_string,yet_another_one}` — Подставляет любую из строк `'some_string', 'another_string', 'yet_another_one'`. Строки могут содержать символ `/`.
 - `{N..M}` — Представляет любое число `>= N` и `<= M`.
 - `**` - Представляет все файлы внутри папки рекурсивно.
 
-Конструкции с `{}` аналогичны табличным функциям [remote](remote.md) и [hdfs](hdfs.md).
+Конструкции с `{}` аналогичны [удаленным](remote.md) и [hdfs](hdfs.md) табличным функциям.
 
 **Пример**
 
-Предположим, что есть такие файлы со следующими относительными путями:
+Предположим, есть следующие файлы с относительными путями:
 
 - `some_dir/some_file_1`
 - `some_dir/some_file_2`
@@ -166,13 +166,13 @@ SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
 SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name String, value UInt32');
 ```
 
-Альтернативное выражение пути, достигающее того же:
+Альтернативное выражение пути, которое достигает того же результата:
 
 ```sql
 SELECT count(*) FROM file('{some,another}_dir/*', 'TSV', 'name String, value UInt32');
 ```
 
-Запрос на общее количество строк в `some_dir` с использованием неявного `*`:
+Запрос на общее количество строк в `some_dir`, используя неявный `*`:
 
 ```sql
 SELECT count(*) FROM file('some_dir', 'TSV', 'name String, value UInt32');
@@ -192,7 +192,7 @@ SELECT count(*) FROM file('big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String,
 
 **Пример**
 
-Запрос на общее количество строк из всех файлов внутри каталога `big_dir/` рекурсивно:
+Запрос на общее количество строк во всех файлах внутри каталога `big_dir/` рекурсивно:
 
 ```sql
 SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
@@ -200,26 +200,26 @@ SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
 
 **Пример**
 
-Запрос на общее количество строк из всех файлов `file002` внутри любой папки в каталоге `big_dir/` рекурсивно:
+Запрос на общее количество строк во всех файлах `file002` внутри любой папки в каталоге `big_dir/` рекурсивно:
 
 ```sql
 SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt32');
 ```
 
-## Виртуальные столбцы {#virtual-columns}
+## Виртуальные колонки {#virtual-columns}
 
 - `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
 - `_file` — Имя файла. Тип: `LowCardinality(String)`.
 - `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение равно `NULL`.
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение равно `NULL`.
 
-## Разделение в стиле Hive {#hive-style-partitioning}
+## Партирование в стиле Hive {#hive-style-partitioning}
 
-Когда установка `use_hive_partitioning` установлена в 1, ClickHouse будет обнаруживать разбиение в стиле Hive в пути (`/name=value/`) и позволит использовать колонки раздела как виртуальные колонки в запросе. Эти виртуальные колонки будут иметь те же имена, что и в разделенном пути, но с подчеркиванием в начале.
+Когда `use_hive_partitioning` установлен в 1, ClickHouse будет определять партиционирование в стиле Hive в пути (`/name=value/`) и позволит использовать партиционные колонки в качестве виртуальных колонок в запросе. Эти виртуальные колонки будут иметь такие же имена, как и в партиционированном пути, но с префиксом `_`.
 
 **Пример**
 
-Используйте виртуальный столбец, созданный с помощью разбиения в стиле Hive
+Использование виртуальной колонки, созданной с партиционированием в стиле Hive:
 
 ```sql
 SELECT * from file('data/path/date=*/country=*/code=*/*.parquet') where _date > '2020-01-01' and _country = 'Netherlands' and _code = 42;
@@ -227,13 +227,13 @@ SELECT * from file('data/path/date=*/country=*/code=*/*.parquet') where _date > 
 
 ## Настройки {#settings}
 
-- [engine_file_empty_if_not_exists](/operations/settings/settings#engine_file_empty_if_not_exists) - позволяет выбирать пустые данные из несуществующего файла. Отключено по умолчанию.
-- [engine_file_truncate_on_insert](/operations/settings/settings#engine_file_truncate_on_insert) - позволяет обрезать файл перед вставкой в него. Отключено по умолчанию.
-- [engine_file_allow_create_multiple_files](operations/settings/settings.md#engine_file_allow_create_multiple_files) - позволяет создавать новый файл при каждой вставке, если формат имеет суффикс. Отключено по умолчанию.
-- [engine_file_skip_empty_files](operations/settings/settings.md#engine_file_skip_empty_files) - позволяет пропускать пустые файлы при чтении. Отключено по умолчанию.
+- [engine_file_empty_if_not_exists](/operations/settings/settings#engine_file_empty_if_not_exists) - позволяет выбирать пустые данные из файла, который не существует. По умолчанию отключено.
+- [engine_file_truncate_on_insert](/operations/settings/settings#engine_file_truncate_on_insert) - позволяет обрезать файл перед вставкой в него. По умолчанию отключено.
+- [engine_file_allow_create_multiple_files](operations/settings/settings.md#engine_file_allow_create_multiple_files) - позволяет создавать новый файл при каждой вставке, если формат имеет суффикс. По умолчанию отключено.
+- [engine_file_skip_empty_files](operations/settings/settings.md#engine_file_skip_empty_files) - позволяет пропускать пустые файлы при чтении. По умолчанию отключено.
 - [storage_file_read_method](/operations/settings/settings#engine_file_empty_if_not_exists) - метод чтения данных из файла хранилища, один из: read, pread, mmap (только для clickhouse-local). Значение по умолчанию: `pread` для clickhouse-server, `mmap` для clickhouse-local.
 
-**См. также**
+**Смотрите также**
 
-- [Виртуальные столбцы](engines/table-engines/index.md#table_engines-virtual_columns)
+- [Виртуальные колонки](engines/table-engines/index.md#table_engines-virtual_columns)
 - [Переименование файлов после обработки](operations/settings/settings.md#rename_files_after_processing)

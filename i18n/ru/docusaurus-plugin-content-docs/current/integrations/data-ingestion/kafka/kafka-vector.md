@@ -6,24 +6,24 @@ description: 'Использование Vector с Kafka и ClickHouse'
 title: 'Использование Vector с Kafka и ClickHouse'
 ---
 
-import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
 ## Использование Vector с Kafka и ClickHouse {#using-vector-with-kafka-and-clickhouse}
 
- Vector — это независимый от поставщика конвейер данных, способный считывать данные из Kafka и отправлять события в ClickHouse.
+ Vector — это независимый от поставщика конвейер данных с возможностью чтения из Kafka и отправки событий в ClickHouse.
 
-Руководство по [началу работы](../etl-tools/vector-to-clickhouse.md) с Vector и ClickHouse сосредоточено на случае использования логов и чтении событий из файла. Мы используем [образец набора данных Github](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson) с событиями, хранящимися в теме Kafka.
+Руководство по [началу работы](../etl-tools/vector-to-clickhouse.md) с Vector и ClickHouse сосредоточено на использовании журнала и чтении событий из файла. Мы используем [пример набора данных на Github](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson) с событиями, хранящимися в теме Kafka.
 
-Vector использует [источники](https://vector.dev/docs/about/concepts/#sources) для получения данных через модель push или pull. [Сливы](https://vector.dev/docs/about/concepts/#sinks) обеспечивают назначение для событий. Таким образом, мы используем источник Kafka и слив ClickHouse. Обратите внимание, что хотя Kafka поддерживается в качестве слива, источник ClickHouse недоступен. Поэтому Vector не подходит для пользователей, желающих передать данные из ClickHouse в Kafka.
+Vector использует [источники](https://vector.dev/docs/about/concepts/#sources) для получения данных через модель push или pull. [Сливы](https://vector.dev/docs/about/concepts/#sinks) в то же время предоставляют назначение для событий. Поэтому мы используем источник Kafka и слив ClickHouse. Обратите внимание, что, хотя Kafka поддерживается как слив, источник ClickHouse недоступен. В результате Vector не подходит для пользователей, желающих передать данные в Kafka из ClickHouse.
 
-Vector также поддерживает [трансформацию](https://vector.dev/docs/reference/configuration/transforms/) данных. Это выходит за рамки данного руководства. Пользователь может обратиться к документации Vector, если ему это необходимо для своего набора данных.
+Vector также поддерживает [преобразование](https://vector.dev/docs/reference/configuration/transforms/) данных. Это выходит за рамки данного руководства. Пользователь может обратиться к документации Vector, если ему это необходимо для своего набора данных.
 
-Обратите внимание, что текущая реализация слива ClickHouse использует HTTP интерфейс. В данный момент слив ClickHouse не поддерживает использование схемы JSON. Данные должны быть опубликованы в Kafka либо в обычном формате JSON, либо в виде строк.
+Обратите внимание, что текущая реализация слива ClickHouse использует HTTP интерфейс. На данный момент слив ClickHouse не поддерживает использование схемы JSON. Данные должны публиковаться в Kafka в простом формате JSON или в виде строк.
 
 ### Лицензия {#license}
-Vector распространяется под [лицензией MPL-2.0](https://github.com/vectordotdev/vector/blob/master/LICENSE)
+Vector распространяется по [лицензии MPL-2.0](https://github.com/vectordotdev/vector/blob/master/LICENSE)
 
-### Соберите ваши данные для подключения {#gather-your-connection-details}
+### Соберите данные о подключении {#gather-your-connection-details}
 <ConnectionDetails />
 
 ### Шаги {#steps}
@@ -104,13 +104,13 @@ batch.timeout_secs = 1
 
 Несколько важных примечаний по этой конфигурации и поведению Vector:
 
-- Этот пример был протестирован с использованием Confluent Cloud. Поэтому параметры безопасности `sasl.*` и `ssl.enabled` могут не подойти для самоуправляемых случаев.
-- Префикс протокола не требуется для параметра конфигурации `bootstrap_servers`, например, `pkc-2396y.us-east-1.aws.confluent.cloud:9092`
-- Параметр источника `decoding.codec = "json"` гарантирует, что сообщение передается в слив ClickHouse в виде одного JSON объекта. Если обрабатывать сообщения как строки и использовать значение по умолчанию `bytes`, содержимое сообщения будет добавлено в поле `message`. В большинстве случаев это потребует обработки в ClickHouse, как описано в руководстве [Vector по началу работы](../etl-tools/vector-to-clickhouse.md#4-parse-the-logs).
-- Vector [добавляет ряд полей](https://vector.dev/docs/reference/configuration/sources/kafka/#output-data) к сообщениям. В нашем примере мы игнорируем эти поля в сливе ClickHouse через параметр конфигурации `skip_unknown_fields = true`. Это игнорирует поля, которые не являются частью схемы целевой таблицы. Вы можете настроить свою схему, чтобы обеспечить добавление этих метаполей, таких как `offset`.
+- Этот пример был протестирован на Confluent Cloud. Поэтому параметры безопасности `sasl.*` и `ssl.enabled` могут быть неуместными в случае самоуправления.
+- Префикс протокола не требуется для параметра конфигурации `bootstrap_servers`, например `pkc-2396y.us-east-1.aws.confluent.cloud:9092`
+- Параметр источника `decoding.codec = "json"` гарантирует, что сообщение передается в слив ClickHouse как один объект JSON. Если обрабатывать сообщения как строки и использовать значение по умолчанию `bytes`, содержимое сообщения будет добавлено в поле `message`. В большинстве случаев это потребует обработки в ClickHouse, как описано в руководстве по [началу работы с Vector](../etl-tools/vector-to-clickhouse.md#4-parse-the-logs).
+- Vector [добавляет несколько полей](https://vector.dev/docs/reference/configuration/sources/kafka/#output-data) к сообщениям. В нашем примере мы игнорируем эти поля в сливе ClickHouse через параметр конфигурации `skip_unknown_fields = true`. Это игнорирует поля, которые не входят в схему целевой таблицы. Не стесняйтесь настраивать свою схему, чтобы убедиться, что такие метаполя, как `offset`, добавляются.
 - Обратите внимание, как слив ссылается на источник событий через параметр `inputs`.
-- Обратите внимание на поведение слива ClickHouse, как описано [здесь](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#buffers-and-batches). Для оптимальной пропускной способности пользователи могут захотеть настроить параметры `buffer.max_events`, `batch.timeout_secs` и `batch.max_bytes`. Согласно [рекомендациям](/sql-reference/statements/insert-into#performance-considerations) ClickHouse значение 1000 должно рассматриваться как минимум для количества событий в любой одной партии. Для случаев с однородным высоким уровнем пропускной способности пользователи могут увеличить параметр `buffer.max_events`. Более переменные пропускные способности могут потребовать изменений в параметре `batch.timeout_secs`.
-- Параметр `auto_offset_reset = "smallest"` заставляет источник Kafka начинать с начала темы, тем самым убеждаясь, что мы потребляем сообщения, опубликованные на шаге (1). Пользователям может потребоваться другое поведение. Смотрите [здесь](https://vector.dev/docs/reference/configuration/sources/kafka/#auto_offset_reset) для получения дополнительных деталей.
+- Обратите внимание на поведение слива ClickHouse, как описано [здесь](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#buffers-and-batches). Для оптимальной пропускной способности пользователи могут настраивать параметры `buffer.max_events`, `batch.timeout_secs` и `batch.max_bytes`. По [рекомендациям ClickHouse](/sql-reference/statements/insert-into#performance-considerations) значение 1000 должно считаться минимальным для количества событий в любой одной партии. Для однородных случаев с высокой пропускной способностью пользователи могут увеличить параметр `buffer.max_events`. Более переменные пропускные способности могут потребовать изменений в параметре `batch.timeout_secs`.
+- Параметр `auto_offset_reset = "smallest"` заставляет источник Kafka начинать с начала темы, гарантируя, что мы потребляем сообщения, опубликованные на шаге (1). Пользователи могут требовать другого поведения. См. [здесь](https://vector.dev/docs/reference/configuration/sources/kafka/#auto_offset_reset) для получения дополнительной информации.
 
 4. Запустите Vector
 
@@ -118,7 +118,7 @@ batch.timeout_secs = 1
 vector --config ./kafka.toml
 ```
 
-По умолчанию перед вставками в ClickHouse требуется [проверка состояния](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#healthcheck). Это обеспечивает возможность установить соединение и прочитать схему. Предварительно добавьте `VECTOR_LOG=debug`, чтобы получить дополнительное логирование, которое может быть полезным в случае возникновения проблем.
+По умолчанию необходим [проверка работоспособности](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#healthcheck) перед началом вставок в ClickHouse. Это обеспечивает возможность подключения и чтения схемы. Предварительно добавьте `VECTOR_LOG=debug`, чтобы получить дополнительные логи, которые могут быть полезны, если вы столкнетесь с проблемами.
 
 5. Подтвердите вставку данных.
 

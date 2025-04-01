@@ -10,13 +10,13 @@ title: 'PrettySpaceNoEscapes'
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Входной | Выходной  | Псевдоним |
+| Вход | Выход  | Alias |
 |-------|---------|-------|
 | ✗     | ✔       |       |
 
 ## Описание {#description}
 
-Отличается от формата [`PrettySpace`](./PrettySpace.md) тем, что [ANSI-экранирующие последовательности](http://en.wikipedia.org/wiki/ANSI_escape_code) не используются. 
+Отличается от формата [`PrettySpace`](./PrettySpace.md) тем, что [ANSI-escape последовательности](http://en.wikipedia.org/wiki/ANSI_escape_code) не используются. 
 Это необходимо для отображения этого формата в браузере, а также для использования утилиты командной строки 'watch'.
 
 ## Пример использования {#example-usage}

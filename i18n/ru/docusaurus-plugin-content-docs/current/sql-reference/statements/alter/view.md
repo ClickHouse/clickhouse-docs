@@ -3,15 +3,15 @@ description: 'Документация для оператора ALTER TABLE ...
 sidebar_label: 'VIEW'
 sidebar_position: 50
 slug: /sql-reference/statements/alter/view
-title: 'ALTER TABLE ... MODIFY QUERY'
+title: 'Оператор ALTER TABLE ... MODIFY QUERY'
 ---
 
 
-# ALTER TABLE ... MODIFY QUERY
+# ALTER TABLE ... MODIFY QUERY Statement
 
-Вы можете изменить `SELECT` запрос, который был указан при создании [материализованного представления](/sql-reference/statements/create/view#materialized-view), с помощью оператора `ALTER TABLE ... MODIFY QUERY`, не прерывая процесс загрузки данных.
+Вы можете изменить `SELECT` запрос, который был указан при создании [материализованного представления](/sql-reference/statements/create/view#materialized-view) с помощью оператора `ALTER TABLE ... MODIFY QUERY` без прерывания процесса приема данных.
 
-Эта команда предназначена для изменения материализованного представления, созданного с использованием условия `TO [db.]name`. Она не изменяет структуру базовой таблицы хранения и не меняет определение столбцов материализованного представления, из-за чего применение этой команды сильно ограничено для материализованных представлений, создаваемых без условия `TO [db.]name`.
+Эта команда создана для изменения материализованного представления, созданного с помощью `TO [db.]name`. Она не изменяет структуру лежащей в основе таблицы и не изменяет определение столбцов материализованного представления, поэтому применение этой команды очень ограничено для материализованных представлений, созданных без `TO [db.]name`.
 
 **Пример с TO таблицей**
 
@@ -44,15 +44,15 @@ ORDER BY ts, event_type;
 │ 2020-01-02 00:00:00 │ imp        │               2 │
 └─────────────────────┴────────────┴─────────────────┘
 
--- Добавим новую меру `cost`
+-- Добавим новое измерение `cost`
 -- и новое измерение `browser`.
 
 ALTER TABLE events
   ADD COLUMN browser String,
   ADD COLUMN cost Float64;
 
--- Столбцы не обязаны совпадать в материализованном представлении и TO
--- (целевой таблице), так что следующий оператор alter не нарушает вставку.
+-- Столбцы не обязаны соответствовать в материализованном представлении и TO
+-- (целевой таблице), поэтому следующий оператор alter не нарушает вставку.
 
 ALTER TABLE events_by_day
     ADD COLUMN cost Float64,
@@ -66,7 +66,7 @@ SELECT Date '2020-01-02' + interval number * 900 second,
        10/(number+1)%33
 FROM numbers(100);
 
--- Новые столбцы `browser` и `cost` пусты, потому что мы еще не изменили материализованное представление.
+-- Новые столбцы `browser` и `cost` пусты, потому что мы пока не изменили материализованное представление.
 
 SELECT ts, event_type, browser, sum(events_cnt) events_cnt, round(sum(cost),2) cost
 FROM events_by_day
@@ -137,8 +137,8 @@ PRIMARY KEY (event_type, ts)
 ORDER BY (event_type, ts, browser)
 SETTINGS index_granularity = 8192
 
--- !!! Определение столбцов не изменилось, но это не важно, мы не запрашиваем
--- материализованное представление, мы запрашиваем таблицу TO (хранилища).
+-- !!! Определение столбцов остается без изменений, но это не важно, мы не запрашиваем
+-- МАТЕРИАЛИЗОВАННОЕ ПРЕДСТАВЛЕНИЕ, мы запрашиваем TO (хранилище) таблицы.
 -- Раздел SELECT обновлен.
 
 SHOW CREATE TABLE mv FORMAT TSVRaw;
@@ -164,7 +164,7 @@ GROUP BY
 
 **Пример без TO таблицы**
 
-Применение очень ограничено, потому что вы можете изменить только раздел `SELECT`, не добавляя новые столбцы.
+Применение очень ограничено, поскольку вы можете изменять только `SELECT` раздел без добавления новых столбцов.
 
 ```sql
 CREATE TABLE src_table (`a` UInt32) ENGINE = MergeTree ORDER BY a;
@@ -196,8 +196,8 @@ SELECT * FROM mv;
 
 ## ALTER LIVE VIEW Statement {#alter-live-view-statement}
 
-Оператор `ALTER LIVE VIEW ... REFRESH` обновляет [живое представление](/sql-reference/statements/create/view#live-view). См. [Принудительное обновление живого представления](/sql-reference/statements/create/view#live-view).
+`ALTER LIVE VIEW ... REFRESH` оператор обновляет [Live view](/sql-reference/statements/create/view#live-view). Смотрите [Принудительное обновление Live View](/sql-reference/statements/create/view#live-view).
 
 ## ALTER TABLE ... MODIFY REFRESH Statement {#alter-table--modify-refresh-statement}
 
-Оператор `ALTER TABLE ... MODIFY REFRESH` изменяет параметры обновления [обновляемого материализованного представления](../create/view.md#refreshable-materialized-view). См. [Изменение параметров обновления](../create/view.md#changing-refresh-parameters).
+`ALTER TABLE ... MODIFY REFRESH` оператор изменяет параметры обновления [Обновляемого материализованного представления](../create/view.md#refreshable-materialized-view). Смотрите [Изменение параметров обновления](../create/view.md#changing-refresh-parameters).

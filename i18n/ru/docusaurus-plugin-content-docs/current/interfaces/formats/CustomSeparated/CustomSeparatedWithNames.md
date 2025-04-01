@@ -8,21 +8,21 @@ slug: /interfaces/formats/CustomSeparatedWithNames
 title: 'CustomSeparatedWithNames'
 ---
 
-| Вход | Выход | Псевдоним |
-|------|-------|-----------|
-| ✔    | ✔     |           |
+| Input | Output | Alias |
+|-------|--------|-------|
+| ✔     | ✔      |       |
 
-## Описание {#description}
+## Description {#description}
 
-Также выводит строку заголовка с названиями столбцов, аналогично [TabSeparatedWithNames](../TabSeparated/TabSeparatedWithNames.md).
+Также выводит строку заголовка с названиями колонок, аналогично [TabSeparatedWithNames](../TabSeparated/TabSeparatedWithNames.md).
 
-## Пример использования {#example-usage}
+## Example Usage {#example-usage}
 
-## Настройки формата {#format-settings}
+## Format Settings {#format-settings}
 
 :::note
 Если настройка [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) установлена в `1`,
-столбцы из входных данных будут сопоставлены со столбцами из таблицы по их названиям, 
-столбцы с неизвестными названиями будут пропущены, если настройка [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в `1`.
+то колонки из входных данных будут сопоставлены с колонками из таблицы по их названиям. 
+Колонки с неизвестными названиями будут пропущены, если настройка [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в `1`.
 В противном случае первая строка будет пропущена.
 :::

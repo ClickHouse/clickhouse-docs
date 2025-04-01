@@ -6,8 +6,8 @@ title: 'array_concat_agg'
 ---
 
 
-# array_concat_agg 
-- Псевдоним `groupArrayArray`. Функция не чувствительна к регистру.
+# array_concat_agg
+- Псевдоним для `groupArrayArray`. Функция нечувствительна к регистру.
 
 **Пример**
 

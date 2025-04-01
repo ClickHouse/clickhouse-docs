@@ -10,22 +10,22 @@ title: 'ClickHouse Rust Client'
 
 # ClickHouse Rust Client
 
-Официальный клиент Rust для подключения к ClickHouse, первоначально разработанный [Paul Loyd](https://github.com/loyd). Исходный код клиента доступен в [репозитории GitHub](https://github.com/ClickHouse/clickhouse-rs).
+Официальный клиент Rust для подключения к ClickHouse, изначально разработанный [Paul Loyd](https://github.com/loyd). Исходный код клиента доступен в [репозитории GitHub](https://github.com/ClickHouse/clickhouse-rs).
 
 ## Обзор {#overview}
 
 * Использует `serde` для кодирования/декодирования строк.
 * Поддерживает атрибуты `serde`: `skip_serializing`, `skip_deserializing`, `rename`.
-* Использует формат [`RowBinary`](/interfaces/formats#rowbinary) через HTTP-транспорт.
-    * Планы на переход к [`Native`](/interfaces/formats#native) через TCP.
+* Использует формат [`RowBinary`](/interfaces/formats#rowbinary) через HTTP транспорт.
+    * Планируется переход на [`Native`](/interfaces/formats#native) через TCP.
 * Поддерживает TLS (через функции `native-tls` и `rustls-tls`).
-* Поддерживает сжатие и декомпрессию (LZ4).
-* Предоставляет API для выбора и вставки данных, выполнения DDL и пакетирования на стороне клиента.
-* Предоставляет удобные моки для юнит-тестирования.
+* Поддерживает сжатие и распаковку (LZ4).
+* Предоставляет API для выбора или вставки данных, выполнения DDL и пакетирования на стороне клиента.
+* Предоставляет удобные мока для юнит-тестирования.
 
 ## Установка {#installation}
 
-Чтобы использовать пакет, добавьте следующее в ваш `Cargo.toml`:
+Чтобы использовать крейт, добавьте следующее в ваш `Cargo.toml`:
 
 ```toml
 [dependencies]
@@ -35,47 +35,47 @@ clickhouse = "0.12.2"
 clickhouse = { version = "0.12.2", features = ["test-util"] }
 ```
 
-См. также: [страница crates.io](https://crates.io/crates/clickhouse).
+Смотрите также: [страница crates.io](https://crates.io/crates/clickhouse).
 
 ## Функции Cargo {#cargo-features}
 
 * `lz4` (включен по умолчанию) — включает варианты `Compression::Lz4` и `Compression::Lz4Hc(_)`. Если включен, `Compression::Lz4` используется по умолчанию для всех запросов, кроме `WATCH`.
-* `native-tls` — поддерживает URL с схемой `HTTPS` через `hyper-tls`, который связывается с OpenSSL.
-* `rustls-tls` — поддерживает URL с схемой `HTTPS` через `hyper-rustls`, который не связывается с OpenSSL.
+* `native-tls` — поддерживает URLs со схемой `HTTPS` через `hyper-tls`, который ссылается на OpenSSL.
+* `rustls-tls` — поддерживает URLs со схемой `HTTPS` через `hyper-rustls`, который не ссылается на OpenSSL.
 * `inserter` — включает `client.inserter()`.
-* `test-util` — добавляет моки. См. [пример](https://github.com/ClickHouse/clickhouse-rs/tree/main/examples/mock.rs). Используйте только в `dev-dependencies`.
-* `watch` — включает функциональность `client.watch`. См. соответствующий раздел для получения подробностей.
-* `uuid` — добавляет `serde::uuid` для работы с [uuid](https://docs.rs/uuid) пакетом.
-* `time` — добавляет `serde::time` для работы с [time](https://docs.rs/time) пакетом.
+* `test-util` — добавляет мока. Смотрите [пример](https://github.com/ClickHouse/clickhouse-rs/tree/main/examples/mock.rs). Используйте только в `dev-dependencies`.
+* `watch` — включает функциональность `client.watch`. Смотрите соответствующий раздел для деталей.
+* `uuid` — добавляет `serde::uuid` для работы с крейтом [uuid](https://docs.rs/uuid).
+* `time` — добавляет `serde::time` для работы с крейтом [time](https://docs.rs/time).
 
 :::important
-При подключении к ClickHouse через URL `HTTPS`, следует включить либо функцию `native-tls`, либо `rustls-tls`.
-Если оба включены, функция `rustls-tls` будет иметь приоритет.
+При подключении к ClickHouse через URL `HTTPS` необходимо включить либо функцию `native-tls`, либо `rustls-tls`.
+Если включены обе, будет иметь приоритет функция `rustls-tls`.
 :::
 
 ## Совместимость версий ClickHouse {#clickhouse-versions-compatibility}
 
-Клиент совместим с LTS или более новыми версиями ClickHouse, а также с ClickHouse Cloud.
+Клиент совместим с LTS или более новыми версиями ClickHouse, а также ClickHouse Cloud.
 
-Сервер ClickHouse версии старше v22.6 обрабатывает RowBinary [неправильно в некоторых редких случаях](https://github.com/ClickHouse/ClickHouse/issues/37420). 
-Вы можете использовать v0.11+ и включить функцию `wa-37420`, чтобы решить эту проблему. Примечание: использование этой функции с более новыми версиями ClickHouse не рекомендуется.
+Сервер ClickHouse версии ниже v22.6 обрабатывает RowBinary [неправильно в некоторых редких случаях](https://github.com/ClickHouse/ClickHouse/issues/37420).
+Вы можете использовать v0.11+ и включить функцию `wa-37420`, чтобы решить эту проблему. Примечание: эта функция не должна использоваться с новыми версиями ClickHouse.
 
 ## Примеры {#examples}
 
-Мы стремимся охватить различные сценарии использования клиента в [примерах](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples) в репозитории клиента. Обзор доступен в [README примеров](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/README.md#overview).
+Мы стремимся охватить различные сценарии использования клиента с помощью [примеров](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples) в репозитории клиента. Обзор доступен в [README примеров](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/README.md#overview).
 
-Если что-то неясно или отсутствует в примерах или в следующей документации, не стесняйтесь [связаться с нами](./rust.md#contact-us).
+Если что-то не ясно или отсутствует в примерах или в следующей документации, не стесняйтесь [связаться с нами](./rust.md#contact-us).
 
 ## Использование {#usage}
 
 :::note
-Пакет [ch2rs](https://github.com/ClickHouse/ch2rs) полезен для создания типа строки из ClickHouse.
+Крейт [ch2rs](https://github.com/ClickHouse/ch2rs) полезен для генерации типа строки из ClickHouse.
 :::
 
 ### Создание экземпляра клиента {#creating-a-client-instance}
 
 :::tip
-Повторно используйте созданные клиенты или клонируйте их, чтобы повторно использовать базу соединений hyper.
+Повторно используйте созданные клиенты или клонируйте их, чтобы повторно использовать базовый пул соединений hyper.
 :::
 
 ```rust
@@ -89,14 +89,14 @@ let client = Client::default()
     .with_database("test");
 ```
 
-### Подключение через HTTPS или ClickHouse Cloud {#https-or-clickhouse-cloud-connection}
+### Подключение HTTPS или ClickHouse Cloud {#https-or-clickhouse-cloud-connection}
 
-HTTPS работает как с функциями `rustls-tls`, так и `native-tls`.
+HTTPS работает с функциями `rustls-tls` или `native-tls`.
 
-Затем создайте клиента как обычно. В этом примере переменные окружения используются для хранения данных подключения:
+Затем создайте клиента, как обычно. В этом примере используются переменные окружения для хранения деталей подключения:
 
 :::important
-URL должен включать как протокол, так и порт, например, `https://instance.clickhouse.cloud:8443`.
+URL должен включать как протокол, так и порт, например `https://instance.clickhouse.cloud:8443`.
 :::
 
 ```rust
@@ -110,8 +110,8 @@ let client = Client::default()
     .with_password(read_env_var("CLICKHOUSE_PASSWORD"));
 ```
 
-См. также: 
-- [Пример HTTPS с ClickHouse Cloud](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/clickhouse_cloud.rs) в репозитории клиента. Это должно быть применимо и к локальным соединениям HTTPS.
+Смотрите также:
+- [Пример HTTPS с ClickHouse Cloud](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/clickhouse_cloud.rs) в репозитории клиента. Это должно быть применимо и к локальным HTTPS соединениям.
 
 ### Выбор строк {#selecting-rows}
 
@@ -138,14 +138,14 @@ while let Some(row) = cursor.next().await? { .. }
 ```
 
 * Плейсхолдер `?fields` заменяется на `no, name` (поля `Row`).
-* Плейсхолдер `?` заменяется значениями в следующих вызовах `bind()`.
-* Удобные методы `fetch_one::<Row>()` и `fetch_all::<Row>()` могут быть использованы, чтобы получить первую строку или все строки соответственно.
-* `sql::Identifier` может быть использован для связывания имен таблиц.
+* Плейсхолдер `?` заменяется на значения в следующих вызовах `bind()`.
+* Удобные методы `fetch_one::<Row>()` и `fetch_all::<Row>()` могут использоваться для получения первой строки или всех строк соответственно.
+* `sql::Identifier` может быть использован для привязки имен таблиц.
 
-Примечание: так как весь ответ передается по потоку, курсоры могут вернуть ошибку даже после выдачи некоторых строк. Если это происходит в вашем случае использования, вы можете попробовать `query(...).with_option("wait_end_of_query", "1")`, чтобы включить буферизацию ответа на стороне сервера. [Больше деталей](/interfaces/http/#response-buffering). Параметр `buffer_size` также может быть полезен.
+Примечание: так как весь ответ передается по потоку, курсоры могут возвращать ошибку даже после получения некоторых строк. Если это произойдет в вашем случае, вы можете попробовать `query(...).with_option("wait_end_of_query", "1")`, чтобы включить буферизацию ответа на стороне сервера. [Подробнее](/interfaces/http/#response-buffering). Опция `buffer_size` также может быть полезна.
 
 :::warning
-Используйте `wait_end_of_query` с осторожностью при выборе строк, так как это может привести к большему потреблению памяти на стороне сервера и вероятно снизит общую производительность.
+Используйте `wait_end_of_query` осторожно при выборе строк, так как это может привести к большему потреблению памяти на стороне сервера и, вероятно, снизить общую производительность.
 :::
 
 ### Вставка строк {#inserting-rows}
@@ -166,13 +166,13 @@ insert.write(&MyRow { no: 1, name: "bar".into() }).await?;
 insert.end().await?;
 ```
 
-* Если `end()` не вызывается, `INSERT` будет прерван.
-* Строки отправляются постепенно как поток, чтобы распределить сетевую нагрузку.
-* ClickHouse вставляет пакеты атомарно только если все строки помещаются в один и тот же раздел, и их количество меньше [`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size).
+* Если `end()` не вызывается, `INSERT` отменяется.
+* Строки отправляются поэтапно в виде потока, чтобы распределить сетевую нагрузку.
+* ClickHouse вставляет батчи атомарно только если все строки помещаются в одну и ту же партицию и их количество меньше [`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size).
 
 ### Асинхронная вставка (пакетирование на стороне сервера) {#async-insert-server-side-batching}
 
-Вы можете использовать [асинхронные вставки ClickHouse](/optimize/asynchronous-inserts) для избегания пакетирования данных на стороне клиента. Это можно сделать, просто предоставив опцию `async_insert` методу `insert` (или даже экземпляру `Client` самим, чтобы это повлияло на все вызовы `insert`).
+Вы можете использовать [асинхронные вставки ClickHouse](/optimize/asynchronous-inserts), чтобы избежать пакетирования данных на стороне клиента. Это можно сделать, просто предоставив опцию `async_insert` методу `insert` (или даже экземпляру `Client`, чтобы это повлияло на все вызовы `insert`).
 
 ```rust
 let client = Client::default()
@@ -181,12 +181,12 @@ let client = Client::default()
     .with_option("wait_for_async_insert", "0");
 ```
 
-См. также:
+Смотрите также:
 - [Пример асинхронной вставки](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/async_insert.rs) в репозитории клиента.
 
 ### Функция Inserter (пакетирование на стороне клиента) {#inserter-feature-client-side-batching}
 
-Требует функции `inserter` в Cargo.
+Требует включения функции `inserter`.
 
 ```rust
 let mut inserter = client.inserter("some")?
@@ -205,19 +205,19 @@ if stats.rows > 0 {
     );
 }
 
-// не забудьте завершить inserter перед завершением приложения
+// не забудьте завершить inserter во время завершения приложения
 // и зафиксировать оставшиеся строки. `.end()` также предоставит статистику.
 inserter.end().await?;
 ```
 
-* `Inserter` завершает активную вставку в `commit()`, если какое-либо из пределов (`max_bytes`, `max_rows`, `period`) достигнуты.
-* Интервал между завершением активных `INSERT` может быть скорректирован с помощью `with_period_bias`, чтобы избежать пиков нагрузки в параллельных вставках.
-* `Inserter::time_left()` может быть использован для обнаружения, когда текущий период заканчивается. Вызовите `Inserter::commit()` снова для проверки пределов, если ваш поток редко выдает элементы.
-* Порог времени реализован с помощью [quanta](https://docs.rs/quanta) пакета для ускорения `inserter`. Не используется, если `test-util` включен (в этом случае время может управляться с помощью `tokio::time::advance()` в пользовательских тестах).
-* Все строки между вызовами `commit()` вставляются в одном `INSERT` запросе.
+* `Inserter` завершает активную вставку в `commit()`, если какое-либо из ограничений (`max_bytes`, `max_rows`, `period`) достигнуто.
+* Интервал между окончанием активных `INSERT` может быть изменен с использованием `with_period_bias`, чтобы избежать всплесков нагрузки параллельными вставками.
+* `Inserter::time_left()` можно использовать для определения, когда текущий период истекает. Вызывайте снова `Inserter::commit()`, чтобы проверить пределы, если ваш поток редко выдает элементы.
+* Временные ограничения реализованы с использованием [quanta](https://docs.rs/quanta) крейта для ускорения `inserter`. Не используется, если включена функция `test-util` (таким образом, время можно управлять с помощью `tokio::time::advance()` в собственных тестах).
+* Все строки между вызовами `commit()` вставляются в одном `INSERT` заявлении.
 
 :::warning
-Не забудьте выполнить сброс, если хотите завершить вставку:
+Не забудьте сбросить, если хотите завершить/завершить вставку:
 ```rust
 inserter.end().await?;
 ```
@@ -225,13 +225,13 @@ inserter.end().await?;
 
 ### Выполнение DDL {#executing-ddls}
 
-Для развертывания на одном узле достаточно выполнить DDL так:
+С развертыванием на одной ноде достаточно выполнить DDL следующим образом:
 
 ```rust
 client.query("DROP TABLE IF EXISTS some").execute().await?;
 ```
 
-Однако, в кластерных развертываниях с балансировщиком нагрузки или ClickHouse Cloud рекомендуется дождаться применения DDL на всех репликах, используя опцию `wait_end_of_query`. Это можно сделать так:
+Однако в кластерных развертываниях с балансировщиком нагрузки или ClickHouse Cloud рекомендуется дождаться применения DDL на всех репликах, используя опцию `wait_end_of_query`. Это можно сделать так:
 
 ```rust
 client
@@ -243,23 +243,23 @@ client
 
 ### Настройки ClickHouse {#clickhouse-settings}
 
-Вы можете применять различные [настройки ClickHouse](/operations/settings/settings) с помощью метода `with_option`. Например:
+Вы можете применять различные [настройки ClickHouse](/operations/settings/settings), используя метод `with_option`. Например:
 
 ```rust
 let numbers = client
     .query("SELECT number FROM system.numbers")
-    // Эта настройка будет применена только к этому запросу;
-    // она переопределит глобальную настройку клиента.
+    // Эта настройка будет применяться только к этому конкретному запросу;
+    // она заменит глобальную настройку клиента.
     .with_option("limit", "3")
     .fetch_all::<u64>()
     .await?;
 ```
 
-Кроме `query`, он работает аналогично для методов `insert` и `inserter`; дополнительно, тот же метод можно вызывать на экземпляре `Client`, чтобы задать глобальные настройки для всех запросов.
+Кроме `query`, это работает аналогично с методами `insert` и `inserter`; дополнительно тот же метод можно вызывать на экземпляре `Client`, чтобы установить глобальные настройки для всех запросов.
 
-### Идентификатор запроса {#query-id}
+### ID запроса {#query-id}
 
-С помощью `.with_option` вы можете установить опцию `query_id`, чтобы идентифицировать запросы в журнале запросов ClickHouse.
+Используя `.with_option`, вы можете установить опцию `query_id`, чтобы идентифицировать запросы в журнале запросов ClickHouse.
 
 ```rust
 let numbers = client
@@ -269,17 +269,17 @@ let numbers = client
     .await?;
 ```
 
-Кроме `query`, он работает аналогично для методов `insert` и `inserter`.
+Кроме `query`, это работает аналогично с методами `insert` и `inserter`.
 
 :::danger
 Если вы устанавливаете `query_id` вручную, убедитесь, что он уникален. UUID являются хорошим выбором для этого.
 :::
 
-См. также: [пример query_id](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/query_id.rs) в репозитории клиента.
+Смотрите также: [пример query_id](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/query_id.rs) в репозитории клиента.
 
-### Идентификатор сессии {#session-id}
+### ID сессии {#session-id}
 
-Аналогично `query_id`, вы можете установить `session_id`, чтобы выполнять инструкции в одной сессии. `session_id` может быть установлен либо глобально на уровне клиента, либо для каждого вызова `query`, `insert` или `inserter`.
+Аналогично `query_id`, вы можете установить `session_id`, чтобы выполнять операторы в одной сессии. `session_id` может быть установлен либо глобально на уровне клиента, либо для каждого `query`, `insert` или `inserter`.
 
 ```rust
 let client = Client::default()
@@ -288,14 +288,14 @@ let client = Client::default()
 ```
 
 :::danger
-В кластерных развертываниях, из-за отсутствия "липких сессий", вам нужно быть подключенным к _определенному узлу кластера_, чтобы правильно использовать эту функцию, поскольку, например, балансировщик нагрузки с круговым распределением не гарантирует, что последующие запросы будут обработаны тем же узлом ClickHouse.
+В кластерных развертываниях, из-за отсутствия "липких сессий", вам нужно быть подключенным к _определенной ноде кластера_, чтобы правильно использовать эту функцию, поскольку, например, балансировщик нагрузки с округлением не гарантирует, что последующие запросы будут обработаны одной и той же нодой ClickHouse.
 :::
 
-См. также: [пример session_id](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/session_id.rs) в репозитории клиента.
+Смотрите также: [пример session_id](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/session_id.rs) в репозитории клиента.
 
 ### Пользовательские HTTP заголовки {#custom-http-headers}
 
-Если вы используете аутентификацию прокси или необходимо передать пользовательские заголовки, это можно сделать так:
+Если вы используете прокси-аутентификацию или вам нужно передать пользовательские заголовки, вы можете сделать это так:
 
 ```rust
 let client = Client::default()
@@ -303,11 +303,11 @@ let client = Client::default()
     .with_header("X-My-Header", "hello");
 ```
 
-См. также: [пример пользовательских HTTP заголовков](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_headers.rs) в репозитории клиента.
+Смотрите также: [пример пользовательских HTTP заголовков](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_headers.rs) в репозитории клиента.
 
 ### Пользовательский HTTP клиент {#custom-http-client}
 
-Это может быть полезно для настройки параметров используемого пула HTTP соединений.
+Это может быть полезно для настройки параметров пула соединений HTTP.
 
 ```rust
 use hyper_util::client::legacy::connect::HttpConnector;
@@ -316,11 +316,11 @@ use hyper_util::rt::TokioExecutor;
 
 let connector = HttpConnector::new(); // или HttpsConnectorBuilder
 let hyper_client = HyperClient::builder(TokioExecutor::new())
-    // Как долго держать конкретный неактивный сокет активным на стороне клиента (в миллисекундах).
-    // Это предполагается быть гораздо меньше времени ожидания KeepAlive сервера ClickHouse,
-    // которое по умолчанию составляло 3 секунды для версий до 23.11 и 10 секунд после.
+    // Как долго держать определенный пустой сокет в живых на стороне клиента (в миллисекундах).
+    // Предполагается, что это должно быть значительно меньше времени ожидания KeepAlive сервера ClickHouse,
+    // которое по умолчанию составляло 3 секунды для версий до 23.11 и 10 секунд после этого.
     .pool_idle_timeout(Duration::from_millis(2_500))
-    // Устанавливает максимальное количество неактивных Keep-Alive соединений в пуле.
+    // Устанавливает максимальное количество пустых Keep-Alive соединений, разрешенных в пуле.
     .pool_max_idle_per_host(4)
     .build(connector);
 
@@ -328,25 +328,25 @@ let client = Client::with_http_client(hyper_client).with_url("http://localhost:8
 ```
 
 :::warning
-Этот пример основан на устаревшем API Hyper и может измениться в будущем.
+Этот пример полагается на устаревший API Hyper и может быть изменен в будущем.
 :::
 
-См. также: [пример пользовательского HTTP клиента](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_client.rs) в репозитории клиента.
+Смотрите также: [пример пользовательского HTTP клиента](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_client.rs) в репозитории клиента.
 
 ## Типы данных {#data-types}
 
 :::info
-См. также дополнительные примеры:
-* [Упрощенные типы данных ClickHouse](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/data_types_derive_simple.rs)
+Смотрите также дополнительные примеры:
+* [Более простые типы данных ClickHouse](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/data_types_derive_simple.rs)
 * [Типы данных ClickHouse, похожие на контейнеры](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/data_types_derive_containers.rs)
 :::
 
-* `(U)Int(8|16|32|64|128)` сопоставляется с соответствующими типами `(u|i)(8|16|32|64|128)` или новыми типами вокруг них.
-* `(U)Int256` не поддерживаются напрямую, но есть [решение для этого](https://github.com/ClickHouse/clickhouse-rs/issues/48).
-* `Float(32|64)` сопоставляется с соответствующими `f(32|64)` или новыми типами вокруг них.
-* `Decimal(32|64|128)` сопоставляется с соответствующими `i(32|64|128)` или новыми типами вокруг них. Удобнее использовать [`fixnum`](https://github.com/loyd/fixnum) или другую реализацию знаковых фиксированных чисел с плавающей точкой.
+* `(U)Int(8|16|32|64|128)` сопоставляются с соответствующими типами `(u|i)(8|16|32|64|128)` или новыми типами вокруг них.
+* `(U)Int256` не поддерживаются напрямую, но есть [обходной путь для этого](https://github.com/ClickHouse/clickhouse-rs/issues/48).
+* `Float(32|64)` сопоставляются с соответствующими `f(32|64)` или новыми типами вокруг них.
+* `Decimal(32|64|128)` сопоставляются с соответствующими `i(32|64|128)` или новыми типами вокруг них. Удобнее использовать [`fixnum`](https://github.com/loyd/fixnum) или другую реализацию знаковых фиксированных точек.
 * `Boolean` сопоставляется с `bool` или новыми типами вокруг него.
-* `String` сопоставляется с любыми строковыми или байтовыми типами, такими как `&str`, `&[u8]`, `String`, `Vec<u8>` или [`SmartString`](https://docs.rs/smartstring/latest/smartstring/struct.SmartString.html). Новые типы также поддерживаются. Для хранения байтов рассмотрите возможность использования [`serde_bytes`](https://docs.rs/serde_bytes/latest/serde_bytes/), так как это более эффективно.
+* `String` сопоставляется с любым строковым типом или типами байтов, например, `&str`, `&[u8]`, `String`, `Vec<u8>` или [`SmartString`](https://docs.rs/smartstring/latest/smartstring/struct.SmartString.html). Новые типы также поддерживаются. Чтобы сохранить байты, рассмотрите возможность использования [`serde_bytes`](https://docs.rs/serde_bytes/latest/serde_bytes/), так как это более эффективно.
 
 ```rust
 #[derive(Row, Debug, Serialize, Deserialize)]
@@ -368,7 +368,7 @@ struct MyRow {
     fixed_str: [u8; 16], // FixedString(16)
 }
 ```
-* `Enum(8|16)` поддерживаются с использованием [`serde_repr`](https://docs.rs/serde_repr/latest/serde_repr/).
+* `Enum(8|16)` поддерживается с использованием [`serde_repr`](https://docs.rs/serde_repr/latest/serde_repr/).
 
 ```rust
 use serde_repr::{Deserialize_repr, Serialize_repr};
@@ -387,7 +387,7 @@ enum Level {
     Error = 4,
 }
 ```
-* `UUID` сопоставляется с [`uuid::Uuid`](https://docs.rs/uuid/latest/uuid/struct.Uuid.html) с использованием `serde::uuid`. Требует включения функции `uuid`.
+* `UUID` сопоставляется с [`uuid::Uuid`](https://docs.rs/uuid/latest/uuid/struct.Uuid.html) с использованием `serde::uuid`. Требует функции `uuid`.
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
@@ -406,7 +406,7 @@ struct MyRow {
     ipv4: std::net::Ipv4Addr,
 }
 ```
-* `Date` сопоставляется с `u16` или новым типом вокруг него и представляет собой количество дней, прошедших с `1970-01-01`. Также поддерживается [`time::Date`](https://docs.rs/time/latest/time/struct.Date.html) с использованием `serde::time::date`, для этого требуется функция `time`.
+* `Date` сопоставляется с `u16` или новым типом вокруг него и представляет собой число дней, прошедших с `1970-01-01`. Также поддерживается [`time::Date`](https://docs.rs/time/latest/time/struct.Date.html) с использованием `serde::time::date`, для этого требуется функция `time`.
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
@@ -416,7 +416,7 @@ struct MyRow {
     date: Date,
 }
 ```
-* `Date32` сопоставляется с `i32` или новым типом вокруг него и представляет собой количество дней, прошедших с `1970-01-01`. Также поддерживается [`time::Date`](https://docs.rs/time/latest/time/struct.Date.html) с использованием `serde::time::date32`, для этого требуется функция `time`.
+* `Date32` сопоставляется с `i32` или новым типом вокруг него и представляет собой число дней, прошедших с `1970-01-01`. Также поддерживается [`time::Date`](https://docs.rs/time/latest/time/struct.Date.html) с использованием `serde::time::date32`, для этого требуется функция `time`.
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
@@ -426,7 +426,7 @@ struct MyRow {
     date: Date,
 }
 ```
-* `DateTime` сопоставляется с `u32` или новым типом вокруг него и представляет собой количество секунд, прошедших с эпохи UNIX. Также поддерживается [`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html) с использованием `serde::time::datetime`, для этого требуется функция `time`.
+* `DateTime` сопоставляется с `u32` или новым типом вокруг него и представляет собой число секунд, прошедших с времени UNIX эпохи. Также поддерживается [`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html) с использованием `serde::time::datetime`, для этого требуется функция `time`.
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
@@ -437,12 +437,12 @@ struct MyRow {
 }
 ```
 
-* `DateTime64(_)` сопоставляется с `i32` или новым типом вокруг него и представляет собой время, прошедшее с эпохи UNIX. Также поддерживается [`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html) с использованием `serde::time::datetime64::*`, для этого требуется функция `time`.
+* `DateTime64(_)` сопоставляется с `i32` или новым типом вокруг него и представляет собой время, прошедшее с времени UNIX эпохи. Также поддерживается [`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html) с использованием `serde::time::datetime64::*`, для этого требуется функция `time`.
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
 struct MyRow {
-    ts: i64, // время в секундах/us/ms/ns в зависимости от `DateTime64(X)`
+    ts: i64, // прошедшие с/мкс/мс/нс в зависимости от `DateTime64(X)`
     #[serde(with = "clickhouse::serde::time::datetime64::secs")]
     dt64s: OffsetDateTime,  // `DateTime64(0)`
     #[serde(with = "clickhouse::serde::time::datetime64::millis")]
@@ -454,10 +454,10 @@ struct MyRow {
 }
 ```
 
-* `Tuple(A, B, ...)` сопоставляется с `(A, B, ...)` или новым типом вокруг этого.
+* `Tuple(A, B, ...)` сопоставляется с `(A, B, ...)` или новым типом вокруг него.
 * `Array(_)` сопоставляется с любым срезом, например, `Vec<_>`, `&[_]`. Новые типы также поддерживаются.
 * `Map(K, V)` ведет себя как `Array((K, V))`.
-* `LowCardinality(_)` поддерживается без проблем.
+* `LowCardinality(_)` поддерживается бесшовно.
 * `Nullable(_)` сопоставляется с `Option<_>`. Для помощников `clickhouse::serde::*` добавьте `::option`.
 
 ```rust
@@ -478,7 +478,7 @@ struct MyRow {
     items_count: Vec<u32>,
 }
 ```
-* `Geo` типы поддерживаются. `Point` ведет себя как кортеж `(f64, f64)`, а остальные типы просто представляют собой срезы точек.
+* Типы `Geo` поддерживаются. `Point` ведет себя как кортеж `(f64, f64)`, а остальные типы являются просто срезами точек.
 ```rust
 type Point = (f64, f64);
 type Ring = Vec<Point>;
@@ -498,18 +498,18 @@ struct MyRow {
 }
 ```
 
-* `Variant`, `Dynamic`, (новые) `JSON` типы данных пока не поддерживаются.
+* Типы `Variant`, `Dynamic`, (новые) `JSON` еще не поддерживаются.
 
 ## Мокирование {#mocking}
-Пакет предоставляет утилиты для мокирования сервера CH и тестирования DDL, `SELECT`, `INSERT` и `WATCH` запросов. Функциональность может быть включена с помощью функции `test-util`. Используйте ее **только** в качестве dev-зависимости.
+Крейт предоставляет утилиты для мокирования сервера CH и тестирования DDL, `SELECT`, `INSERT` и `WATCH` запросов. Функциональность может быть включена с помощью функции `test-util`. Используйте ее **только** как зависимость для разработки.
 
-См. [пример](https://github.com/ClickHouse/clickhouse-rs/tree/main/examples/mock.rs).
+Смотрите [пример](https://github.com/ClickHouse/clickhouse-rs/tree/main/examples/mock.rs).
 
 ## Устранение неполадок {#troubleshooting}
 
 ### CANNOT_READ_ALL_DATA {#cannot_read_all_data}
 
-Наиболее распространенной причиной ошибки `CANNOT_READ_ALL_DATA` является то, что определение строки на стороне приложения не совпадает с тем, что в ClickHouse. 
+Самая распространенная причина ошибки `CANNOT_READ_ALL_DATA` — это то, что определение строки на стороне приложения не соответствует тому, что в ClickHouse.
 
 Рассмотрим следующую таблицу:
 
@@ -519,7 +519,7 @@ ENGINE = MergeTree
 ORDER BY timestamp
 ```
 
-Тогда, если `EventLog` определен на стороне приложения с несовпадающими типами, например:
+Затем, если `EventLog` определен на стороне приложения с несовпадающими типами, например:
 
 ```rust
 #[derive(Debug, Serialize, Deserialize, Row)]
@@ -545,9 +545,9 @@ struct EventLog {
 
 ## Известные ограничения {#known-limitations}
 
-* `Variant`, `Dynamic`, (новые) `JSON` типы данных пока не поддерживаются.
-* Привязка параметров на стороне сервера пока не поддерживается; см. [эту проблему](https://github.com/ClickHouse/clickhouse-rs/issues/142) для отслеживания.
+* Типы `Variant`, `Dynamic`, (новые) `JSON` еще не поддерживаются.
+* Привязка параметров на стороне сервера пока не поддерживается; смотрите [эту проблему](https://github.com/ClickHouse/clickhouse-rs/issues/142) для отслеживания.
 
 ## Свяжитесь с нами {#contact-us}
 
-Если у вас есть вопросы или вам нужна помощь, не стесняйтесь обращаться к нам в [Community Slack](https://clickhouse.com/slack) или через [GitHub issues](https://github.com/ClickHouse/clickhouse-rs/issues).
+Если у вас есть вопросы или нужна помощь, не стесняйтесь обращаться к нам в [Community Slack](https://clickhouse.com/slack) или через [GitHub issues](https://github.com/ClickHouse/clickhouse-rs/issues).

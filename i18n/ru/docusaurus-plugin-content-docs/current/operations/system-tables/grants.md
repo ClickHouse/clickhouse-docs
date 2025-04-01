@@ -18,10 +18,10 @@ title: 'system.grants'
 
 - `table` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Название таблицы.
 
-- `column` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Название столбца, к которому предоставлен доступ.
+- `column` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Название колонки, к которой предоставлен доступ.
 
-- `is_partial_revoke` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Логическое значение. Показывает, были ли отозваны некоторые привилегии. Возможные значения:
+- `is_partial_revoke` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Логическое значение. Указывает, были ли отменены некоторые привилегии. Возможные значения:
   - `0` — Строка описывает предоставление.
-  - `1` — Строка описывает частичный отзыв.
+  - `1` — Строка описывает частичную отмену.
 
 - `grant_option` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Разрешение предоставлено `WITH GRANT OPTION`, см. [GRANT](../../sql-reference/statements/grant.md#granting-privilege-syntax).

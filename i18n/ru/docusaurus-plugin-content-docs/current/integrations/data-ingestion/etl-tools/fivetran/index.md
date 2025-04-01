@@ -2,7 +2,7 @@
 sidebar_label: 'Fivetran'
 slug: /integrations/fivetran
 sidebar_position: 2
-description: 'Пользователи могут трансформировать и моделировать свои данные в ClickHouse с помощью dbt'
+description: 'Пользователи могут трансформировать и моделировать свои данные в ClickHouse, используя dbt'
 title: 'Fivetran и ClickHouse Cloud'
 ---
 
@@ -15,12 +15,12 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ## Обзор {#overview}
 
-[Fivetran](https://www.fivetran.com) — это автоматизированная платформа перемещения данных, которая перемещает данные внутрь, наружу и по вашим облачным платформам для данных.
+[Fivetran](https://www.fivetran.com) — это платформа автоматизированного перемещения данных, которая перемещает данные из ваших облачных платформ данных, в них и между ними.
 
-[ClickHouse Cloud](https://clickhouse.com/cloud) поддерживается как [приемник Fivetran](https://fivetran.com/docs/destinations/clickhouse), что позволяет пользователям загружать данные из различных источников в ClickHouse.
+[ClickHouse Cloud](https://clickhouse.com/cloud) поддерживается в качестве [назначения Fivetran](https://fivetran.com/docs/destinations/clickhouse), позволяя пользователям загружать данные из различных источников в ClickHouse.
 
 :::note
-[Приемник ClickHouse Cloud](https://fivetran.com/docs/destinations/clickhouse) в настоящий момент находится на этапе частного предварительного просмотра, пожалуйста, свяжитесь с поддержкой ClickHouse в случае возникновения каких-либо проблем.
+[Назначение ClickHouse Cloud](https://fivetran.com/docs/destinations/clickhouse) в настоящее время находится в частном превью, пожалуйста, свяжитесь с поддержкой ClickHouse в случае возникновения проблем.
 :::
 
 <div class='vimeo-container'>
@@ -35,13 +35,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
   </iframe>
 </div>
 
-## Приемник ClickHouse Cloud {#clickhouse-cloud-destination}
+## Назначение ClickHouse Cloud {#clickhouse-cloud-destination}
 
-Смотрите официальную документацию на веб-сайте Fivetran:
+Смотрите официальную документацию на сайте Fivetran:
 
-- [Обзор приемника ClickHouse](https://fivetran.com/docs/destinations/clickhouse)
-- [Руководство по настройке приемника ClickHouse](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
+- [Обзор назначения ClickHouse](https://fivetran.com/docs/destinations/clickhouse)
+- [Руководство по настройке назначения ClickHouse](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
 
 ## Свяжитесь с нами {#contact-us}
 
-Если у вас есть вопросы или если у вас есть запрос на новую функцию, пожалуйста, отправьте [запрос в службу поддержки](/about-us/support).
+Если у вас есть вопросы или предложения по функциональности, пожалуйста, откройте [заявку в службу поддержки](/about-us/support).

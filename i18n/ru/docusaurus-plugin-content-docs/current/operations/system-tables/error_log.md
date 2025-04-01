@@ -1,11 +1,12 @@
 ---
-description: 'Системная таблица, содержащая историю значений ошибок из таблицы `system.errors`, периодически сбрасываемую на диск.'
+description: 'Системная таблица, содержащая историю значений ошибок из таблицы `system.errors`,
+  периодически сбрасываемую на диск.'
 keywords: ['системная таблица', 'error_log']
 slug: /operations/system-tables/error_log
 title: 'system.error_log'
 ---
 
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
@@ -38,8 +39,8 @@ value:      2
 remote:     0
 ```
 
-**Смотрите также**
+**См. также**
 
-- [error_log setting](../../operations/server-configuration-parameters/settings.md#error_log) — Включение и отключение настройки.
-- [system.errors](../../operations/system-tables/errors.md) — Содержит коды ошибок с количеством раз, когда они были вызваны.
-- [Monitoring](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.
+- [error_log setting](../../operations/server-configuration-parameters/settings.md#error_log) — Включение и отключение параметра.
+- [system.errors](../../operations/system-tables/errors.md) — Содержит коды ошибок с количеством их срабатываний.
+- [Мониторинг](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.

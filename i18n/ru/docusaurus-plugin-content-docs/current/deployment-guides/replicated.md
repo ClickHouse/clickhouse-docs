@@ -3,26 +3,26 @@ slug: /architecture/replication
 sidebar_label: 'Репликация для отказоустойчивости'
 sidebar_position: 10
 title: 'Репликация для отказоустойчивости'
-description: 'Страница, описывающая пример архитектуры с пятью настроенными серверами. Два используются для размещения копий данных, а остальные используются для координации репликации данных'
+description: 'Страница, описывающая пример архитектуры с пятью серверами, сконфигурированными для работы. Два из них используются для размещения копий данных, а остальные три - для координации репликации данных.'
 ---
 
 import Image from '@theme/IdealImage';
-import ReplicationShardingTerminology from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_replication-sharding-terminology.md';
-import ConfigFileNote from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_config-files.md';
-import KeeperConfigFileNote from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_keeper-config-files.md';
+import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
+import ConfigFileNote from '@site/docs/_snippets/_config-files.md';
+import KeeperConfigFileNote from '@site/docs/_snippets/_keeper-config-files.md';
 import ReplicationArchitecture from '@site/static/images/deployment-guides/architecture_1s_2r_3_nodes.png';
 
 ## Описание {#description}
-В этой архитектуре настроено пять серверов. Два из них используются для размещения копий данных. Остальные три сервера используются для координации репликации данных. На этом примере мы создадим базу данных и таблицу, которые будут реплицироваться на обоих узлах данных с использованием движка таблиц ReplicatedMergeTree.
+В этой архитектуре сконфигурировано пять серверов. Два из них используются для размещения копий данных. Остальные три сервера используются для координации репликации данных. В этом примере мы создадим базу данных и таблицу, которые будут реплицированы на обоих узлах данных, используя движок таблиц ReplicatedMergeTree.
 
-## Уровень: Базовый {#level-basic}
+## Уровень: Основной {#level-basic}
 
 <ReplicationShardingTerminology />
 
 ## Среда {#environment}
 ### Диаграмма архитектуры {#architecture-diagram}
 
-<Image img={ReplicationArchitecture} size="md" alt="Диаграмма архитектуры для 1 шард и 2 реплики с ReplicatedMergeTree" />
+<Image img={ReplicationArchitecture} size="md" alt="Диаграмма архитектуры для 1 шарда и 2 реплик с ReplicatedMergeTree" />
 
 |Узел|Описание|
 |----|-----------|
@@ -33,7 +33,7 @@ import ReplicationArchitecture from '@site/static/images/deployment-guides/archi
 |clickhouse-keeper-03|Распределенная координация|
 
 :::note
-В продуктивных средах мы настоятельно рекомендуем использовать *выделенные* хосты для ClickHouse Keeper. В тестовой среде приемлемо запускать ClickHouse Server и ClickHouse Keeper на одном сервере. Другой основной пример, [Масштабирование](/deployment-guides/horizontal-scaling.md), использует этот метод. В этом примере мы представляем рекомендуемый метод отделения Keeper от ClickHouse Server. Серверы Keeper могут быть меньше, 4 ГБ RAM обычно достаточно для каждого сервера Keeper до тех пор, пока ваши ClickHouse Server не станут очень большими.
+В производственных средах мы настоятельно рекомендуем использовать *выделенные* хосты для ClickHouse Keeper. В тестовой среде допустимо запускать ClickHouse Server и ClickHouse Keeper на одном сервере. Другой базовый пример, [Масштабирование](/deployment-guides/horizontal-scaling.md), использует этот метод. В этом примере мы представляем рекомендуемый метод отделения Keeper от ClickHouse Server. Серверы Keeper могут быть меньше, 4 ГБ ОЗУ, как правило, достаточно для каждого сервера Keeper, пока ваши серверы ClickHouse не вырастут до очень больших размеров.
 :::
 
 ## Установка {#install}
@@ -48,14 +48,14 @@ import ReplicationArchitecture from '@site/static/images/deployment-guides/archi
 
 ## Конфигурация clickhouse-01 {#clickhouse-01-configuration}
 
-Для clickhouse-01 существует пять файлов конфигурации. Вы можете выбрать, чтобы объединить эти файлы в один, но для ясности в документации может быть проще рассмотреть их по отдельности. Читая файлы конфигурации, вы увидите, что большая часть конфигурации одинакова между clickhouse-01 и clickhouse-02; различия будут выделены.
+Для clickhouse-01 доступны пять файлов конфигурации. Вы можете решить объединить эти файлы в один, но для ясности в документации может быть проще рассматривать их отдельно. При чтении файлов конфигурации вы увидите, что большинство конфигураций одинаковы между clickhouse-01 и clickhouse-02; различия будут выделены.
 
 ### Конфигурация сети и логирования {#network-and-logging-configuration}
 
-Эти значения могут быть настроены по вашему усмотрению. Эта примерная конфигурация предоставляет вам:
-- отладочный журнал, который будет сворачиваться при достижении 1000M три раза
-- название, отображаемое при подключении с помощью `clickhouse-client`, - `cluster_1S_2R node 1`
-- ClickHouse будет слушать на IPV4 сети на портах 8123 и 9000.
+Эти значения можно настраивать по вашему усмотрению. Эта конфигурация примера дает вам:
+- журнал отладки, который будет перезаписываться на 1000 М трижды
+- имя, отображаемое при подключении с помощью `clickhouse-client`, это `cluster_1S_2R node 1`
+- ClickHouse будет слушать на сети IPV4 на портах 8123 и 9000.
 
 ```xml title="/etc/clickhouse-server/config.d/network-and-logging.xml на clickhouse-01"
 <clickhouse>
@@ -75,7 +75,7 @@ import ReplicationArchitecture from '@site/static/images/deployment-guides/archi
 
 ### Конфигурация макросов {#macros-configuration}
 
-Макросы `shard` и `replica` снижают сложность распределенного DDL. Настроенные значения автоматически подставляются в ваши DDL-запросы, что упрощает ваш DDL. Макросы для этой конфигурации задают номер шарда и реплики для каждого узла. В этом примере с 1 шардом и 2 репликами макрос реплики - `replica_1` на clickhouse-01 и `replica_2` на clickhouse-02. Макрос шарда - `1` на обоих clickhouse-01 и clickhouse-02, поскольку имеется только один шард.
+Макросы `shard` и `replica` упрощают сложность распределенного DDL. Настроенные значения автоматически подставляются в ваши DDL-запросы, что упрощает ваше DDL. Макросы для этой конфигурации указывают номер шарда и реплики для каждого узла. В этом примере с 1 шардом и 2 репликами макрос реплики - `replica_1` на clickhouse-01 и `replica_2` на clickhouse-02. Макрос шардов - `1` на обоих clickhouse-01 и clickhouse-02, так как существует только один шард.
 
 ```xml title="/etc/clickhouse-server/config.d/macros.xml на clickhouse-01"
 <clickhouse>
@@ -91,11 +91,11 @@ import ReplicationArchitecture from '@site/static/images/deployment-guides/archi
 ### Конфигурация репликации и шардирования {#replication-and-sharding-configuration}
 
 Начнем с верхней части:
-- Секция `remote_servers` в XML определяет каждый из кластеров в среде. Атрибут `replace=true` заменяет образцы `remote_servers` в конфигурации по умолчанию ClickHouse на конфигурацию `remote_server`, указанную в этом файле. Без этого атрибута удаленные серверы в этом файле были бы добавлены в список образцов в конфигурации по умолчанию.
-- В этом примере есть один кластер с именем `cluster_1S_2R`.
-- Создается секрет для кластера с именем `cluster_1S_2R` со значением `mysecretphrase`. Секрет делится между всеми удаленными серверами в среде, чтобы гарантировать, что правильные серверы соединяются друг с другом.
-- Кластер `cluster_1S_2R` имеет один шард и две реплики. Взгляните на диаграмму архитектуры в начале этого документа и сравните ее с определением `shard` в приведенном ниже XML. Определение шарда содержит две реплики. Хост и порт для каждой реплики указаны. Одна реплика хранится на `clickhouse-01`, а другая реплика хранится на `clickhouse-02`.
-- Внутренняя репликация для шарда установлена как true. Каждый шард может иметь параметр `internal_replication`, определенный в файле конфигурации. Если этот параметр установлен на true, операция записи выбирает первую здоровую реплику и записывает данные в нее.
+- Раздел remote_servers в XML указывает каждый из кластеров в среде. Атрибут `replace=true` заменяет примеры remote_servers в конфигурации по умолчанию ClickHouse на конфигурацию remote_server, указанную в этом файле. Без этого атрибута remote-серверы в этом файле будут добавлены к списку образцов в конфигурации по умолчанию.
+- В этом примере существует один кластер под именем `cluster_1S_2R`.
+- Создается секрет для кластера, названного `cluster_1S_2R`, со значением `mysecretphrase`. Секрет делится между всеми удаленными серверами в среде, чтобы гарантировать, что правильные серверы соединены.
+- Кластер `cluster_1S_2R` имеет один шард и две реплики. Обратите внимание на диаграмму архитектуры в начале этого документа и сравните ее с определением `shard` в приведенном ниже XML. Определение шардов содержит две реплики. Хост и порт для каждой реплики указаны. Одна реплика хранится на `clickhouse-01`, а другая реплика хранится на `clickhouse-02`.
+- Внутренняя репликация для шарда установлена в true. Каждый шард может иметь параметр internal_replication, определенный в конфигурационном файле. Если этот параметр установлен в true, операция записи выбирает первую здоровую реплику и записывает данные в нее.
 
 ```xml title="/etc/clickhouse-server/config.d/remote-servers.xml на clickhouse-01"
 <clickhouse>
@@ -120,7 +120,7 @@ import ReplicationArchitecture from '@site/static/images/deployment-guides/archi
 
 ### Конфигурация использования Keeper {#configuring-the-use-of-keeper}
 
-Этот файл конфигурации `use-keeper.xml` настраивает ClickHouse Server для использования ClickHouse Keeper для координации репликации и распределенного DDL. Этот файл указывает, что ClickHouse Server должен использовать Keeper на узлах clickhouse-keeper-01 - 03 на порту 9181, и файл одинаковый на `clickhouse-01` и `clickhouse-02`.
+Этот конфигурационный файл `use-keeper.xml` настраивает ClickHouse Server на использование ClickHouse Keeper для координации репликации и распределенного DDL. Этот файл указывает, что ClickHouse Server должен использовать Keeper на узлах clickhouse-keeper-01 - 03 на порту 9181, и файл одинаков на `clickhouse-01` и `clickhouse-02`.
 
 ```xml title="/etc/clickhouse-server/config.d/use-keeper.xml на clickhouse-01"
 <clickhouse>
@@ -148,7 +148,7 @@ import ReplicationArchitecture from '@site/static/images/deployment-guides/archi
 
 ### Конфигурация сети и логирования {#network-and-logging-configuration-1}
 
-Этот файл одинаков на обоих узлах clickhouse-01 и clickhouse-02, за исключением `display_name`.
+Этот файл идентичен на обоих clickhouse-01 и clickhouse-02, за исключением `display_name`.
 
 ```xml title="/etc/clickhouse-server/config.d/network-and-logging.xml на clickhouse-02"
 <clickhouse>
@@ -169,7 +169,7 @@ import ReplicationArchitecture from '@site/static/images/deployment-guides/archi
 
 ### Конфигурация макросов {#macros-configuration-1}
 
-Конфигурация макросов различается между clickhouse-01 и clickhouse-02. `replica` установлен на `02` на этом узле.
+Конфигурация макросов отличается между clickhouse-01 и clickhouse-02. Значение `replica` установлено в `02` на этом узле.
 
 ```xml title="/etc/clickhouse-server/config.d/macros.xml на clickhouse-02"
 <clickhouse>
@@ -184,7 +184,7 @@ import ReplicationArchitecture from '@site/static/images/deployment-guides/archi
 
 ### Конфигурация репликации и шардирования {#replication-and-sharding-configuration-1}
 
-Этот файл одинаков на обоих узлах clickhouse-01 и clickhouse-02.
+Этот файл идентичен на обоих clickhouse-01 и clickhouse-02.
 
 ```xml title="/etc/clickhouse-server/config.d/remote-servers.xml на clickhouse-02"
 <clickhouse>
@@ -209,7 +209,7 @@ import ReplicationArchitecture from '@site/static/images/deployment-guides/archi
 
 ### Конфигурация использования Keeper {#configuring-the-use-of-keeper-1}
 
-Этот файл одинаков на обоих узлах clickhouse-01 и clickhouse-02.
+Этот файл идентичен на обоих clickhouse-01 и clickhouse-02.
 
 ```xml title="/etc/clickhouse-server/config.d/use-keeper.xml на clickhouse-02"
 <clickhouse>
@@ -235,10 +235,10 @@ import ReplicationArchitecture from '@site/static/images/deployment-guides/archi
 
 <KeeperConfigFileNote />
 
-ClickHouse Keeper обеспечивает систему координации для репликации данных и выполнения распределенных запросов DDL. ClickHouse Keeper совместим с Apache ZooKeeper. Эта конфигурация включает ClickHouse Keeper на порту 9181. Выделенная строка указывает, что у этого экземпляра Keeper идентификатор сервера равен 1. Это единственное различие в файле `enable-keeper.xml` на трех серверах. `clickhouse-keeper-02` будет иметь `server_id`, установленный на `2`, а `clickhouse-keeper-03` будет иметь `server_id`, установленный на `3`. Секция конфигурации raft одинакова на всех трех серверах; она выделена ниже, чтобы показать вам взаимосвязь между `server_id` и экземпляром `server` в конфигурации raft.
+ClickHouse Keeper предоставляет систему координации для репликации данных и выполнения распределенных DDL-запросов. ClickHouse Keeper совместим с Apache ZooKeeper. Эта конфигурация включает ClickHouse Keeper на порту 9181. Выделенная строка указывает, что этот экземпляр Keeper имеет server_id равным 1. Это единственное отличие в файле `enable-keeper.xml` на трех серверах. `clickhouse-keeper-02` будет иметь `server_id`, установленный в `2`, а `clickhouse-keeper-03` - в `3`. Раздел конфигурации raft одинаков на всех трех серверах, он выделен ниже, чтобы показать вам связь между `server_id` и экземпляром `server` в конфигурации raft.
 
 :::note
-Если по какой-либо причине узел Keeper заменяется или пересобирается, не повторно используйте существующий `server_id`. Например, если узел Keeper с `server_id` 2 пересобирается, задайте ему `server_id` равный 4 или больше.
+Если по какой-либо причине узел Keeper заменяется или восстанавливается, не используйте существующий `server_id`. Например, если узел Keeper с `server_id` равным `2` восстанавливается, дайте ему server_id равный `4` или выше.
 :::
 
 ```xml title="/etc/clickhouse-keeper/keeper_config.xml на clickhouse-keeper-01"
@@ -287,7 +287,7 @@ ClickHouse Keeper обеспечивает систему координации
 
 ## Конфигурация clickhouse-keeper-02 {#clickhouse-keeper-02-configuration}
 
-Существует только одна строка различий между `clickhouse-keeper-01` и `clickhouse-keeper-02`. `server_id` установлен на `2` на этом узле.
+Существует только одна строка различия между `clickhouse-keeper-01` и `clickhouse-keeper-02`. Значение `server_id` установлено в `2` на этом узле.
 
 ```xml title="/etc/clickhouse-keeper/keeper_config.xml на clickhouse-keeper-02"
 <clickhouse>
@@ -335,7 +335,7 @@ ClickHouse Keeper обеспечивает систему координации
 
 ## Конфигурация clickhouse-keeper-03 {#clickhouse-keeper-03-configuration}
 
-Существует только одна строка различий между `clickhouse-keeper-01` и `clickhouse-keeper-03`. `server_id` установлен на `3` на этом узле.
+Существует только одна строка различия между `clickhouse-keeper-01` и `clickhouse-keeper-03`. Значение `server_id` установлено в `3` на этом узле.
 
 ```xml title="/etc/clickhouse-keeper/keeper_config.xml на clickhouse-keeper-03"
 <clickhouse>
@@ -384,23 +384,23 @@ ClickHouse Keeper обеспечивает систему координации
 ## Тестирование {#testing}
 
 Чтобы получить опыт работы с ReplicatedMergeTree и ClickHouse Keeper, вы можете выполнить следующие команды, которые позволят вам:
-- Создать базу данных на кластер, настроенном выше
+- Создать базу данных в вышеуказанном кластере
 - Создать таблицу в базе данных, используя движок таблиц ReplicatedMergeTree
-- Вставить данные на одном узле и запросить их на другом узле
+- Вставить данные на один узел и запросить их на другом узле
 - Остановить один узел сервера ClickHouse
 - Вставить больше данных на работающем узле
 - Перезапустить остановленный узел
-- Убедиться, что данные доступны при выполнении запроса к перезапущенному узлу
+- Убедиться, что данные доступны при запросе на перезапущенном узле
 
 ### Убедитесь, что ClickHouse Keeper работает {#verify-that-clickhouse-keeper-is-running}
 
-Команда `mntr` используется для проверки того, что ClickHouse Keeper работает, и получения информации о состоянии отношений между тремя узлами Keeper. В конфигурации, использованной в этом примере, есть три узла, работающие вместе. Узлы выберут лидера, а остальные узлы будут последователями. Команда `mntr` предоставляет информацию, связанную с производительностью, и о том, является ли конкретный узел последователем или лидером.
+Команда `mntr` используется для проверки того, что ClickHouse Keeper работает, и для получения информации о состоянии отношений трех узлов Keeper. В конфигурации, используемой в этом примере, три узла работают вместе. Узлы выберут лидера, а оставшиеся узлы будут последователями. Команда `mntr` предоставляет информацию, связанную с производительностью, и о том, является ли конкретный узел последователем или лидером.
 
 :::tip
-Вам может понадобиться установить `netcat`, чтобы отправить команду `mntr` на Keeper. Пожалуйста, смотрите страницу [nmap.org](https://nmap.org/ncat/) для получения информации о загрузке.
+Вам может потребоваться установить `netcat`, чтобы отправить команду `mntr` на Keeper. Пожалуйста, посетите страницу [nmap.org](https://nmap.org/ncat/) для получения информации о скачивании.
 :::
 
-```bash title="выполнить из оболочки на clickhouse-keeper-01, clickhouse-keeper-02 и clickhouse-keeper-03"
+```bash title="выполните в shell на clickhouse-keeper-01, clickhouse-keeper-02 и clickhouse-keeper-03"
 echo mntr | nc localhost 9181
 ```
 ```response title="ответ от последователя"
@@ -453,13 +453,13 @@ zk_synced_followers     2
 # highlight-end
 ```
 
-### Проверьте работоспособность кластера ClickHouse {#verify-clickhouse-cluster-functionality}
+### Убедитесь в функциональности кластера ClickHouse {#verify-clickhouse-cluster-functionality}
 
-Подключитесь к узлу `clickhouse-01` с помощью `clickhouse client` в одной оболочке и подключитесь к узлу `clickhouse-02` с помощью `clickhouse client` в другой оболочке.
+Подключитесь к узлу `clickhouse-01` с помощью `clickhouse client` в одном shell, а к узлу `clickhouse-02` с помощью `clickhouse client` в другом shell.
 
-1. Создайте базу данных на кластере, настроенном выше
+1. Создайте базу данных в вышеуказанном кластере
 
-```sql title="выполнить на любом узле clickhouse-01 или clickhouse-02"
+```sql title="выполните на любом узле clickhouse-01 или clickhouse-02"
 CREATE DATABASE db1 ON CLUSTER cluster_1S_2R
 ```
 ```response
@@ -470,7 +470,7 @@ CREATE DATABASE db1 ON CLUSTER cluster_1S_2R
 ```
 
 2. Создайте таблицу в базе данных, используя движок таблиц ReplicatedMergeTree
-```sql title="выполнить на любом узле clickhouse-01 или clickhouse-02"
+```sql title="выполните на любом узле clickhouse-01 или clickhouse-02"
 CREATE TABLE db1.table1 ON CLUSTER cluster_1S_2R
 (
     `id` UInt64,
@@ -485,13 +485,13 @@ ORDER BY id
 │ clickhouse-01 │ 9000 │      0 │       │                   0 │                0 │
 └───────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
-3. Вставьте данные на одном узле и запросите их на другом узле
-```sql title="выполнить на узле clickhouse-01"
+3. Вставьте данные на один узел и запросите их на другом узле
+```sql title="выполните на узле clickhouse-01"
 INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
 ```
 
 4. Запросите таблицу на узле `clickhouse-02`
-```sql title="выполнить на узле clickhouse-02"
+```sql title="выполните на узле clickhouse-02"
 SELECT *
 FROM db1.table1
 ```
@@ -502,11 +502,11 @@ FROM db1.table1
 ```
 
 5. Вставьте данные на другом узле и запросите их на узле `clickhouse-01`
-```sql title="выполнить на узле clickhouse-02"
+```sql title="выполните на узле clickhouse-02"
 INSERT INTO db1.table1 (id, column1) VALUES (2, 'def');
 ```
 
-```sql title="выполнить на узле clickhouse-01"
+```sql title="выполните на узле clickhouse-01"
 SELECT *
 FROM db1.table1
 ```
@@ -519,16 +519,16 @@ FROM db1.table1
 └────┴─────────┘
 ```
 
-6. Остановите один узел сервера ClickHouse
-Остановите один из узлов сервера ClickHouse, выполнив команду операционной системы, аналогичную команде, использованной для запуска узла. Если вы использовали `systemctl start` для запуска узла, то используйте `systemctl stop` для его остановки.
+6. Остановите один из узлов сервера ClickHouse
+Остановите один из узлов сервера ClickHouse, запустив команду операционной системы, аналогичную команде, использованной для запуска узла. Если вы использовали `systemctl start` для запуска узла, то используйте `systemctl stop` для его остановки.
 
 7. Вставьте больше данных на работающем узле
-```sql title="выполнить на работающем узле"
+```sql title="выполните на работающем узле"
 INSERT INTO db1.table1 (id, column1) VALUES (3, 'ghi');
 ```
 
 Выберите данные:
-```sql title="выполнить на работающем узле"
+```sql title="выполните на работающем узле"
 SELECT *
 FROM db1.table1
 ```
@@ -544,9 +544,9 @@ FROM db1.table1
 └────┴─────────┘
 ```
 
-8. Перезапустите остановленный узел и выберите данные оттуда также
+8. Перезапустите остановленный узел и выберите из него также
 
-```sql title="выполнить на перезапущенном узле"
+```sql title="выполните на перезапущенном узле"
 SELECT *
 FROM db1.table1
 ```

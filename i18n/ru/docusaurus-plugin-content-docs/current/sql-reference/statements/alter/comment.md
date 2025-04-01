@@ -19,7 +19,7 @@ ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Комментари�
 
 **Примеры**
 
-Создание таблицы с комментарием (для получения дополнительной информации см. клаузу [COMMENT](/sql-reference/statements/create/table#comment-clause)):
+Создание таблицы с комментарием (для получения дополнительной информации смотрите [COMMENT](/sql-reference/statements/create/table#comment-clause) условие):
 
 ```sql
 CREATE TABLE table_with_comment
@@ -41,9 +41,9 @@ SELECT comment FROM system.tables WHERE database = currentDatabase() AND name = 
 Вывод нового комментария:
 
 ```text
-┌─comment────────────────┐
+┌─comment───────────────────────┐
 │ новый комментарий к таблице │
-└────────────────────────┘
+└───────────────────────────────┘
 ```
 
 Удаление комментария таблицы:
@@ -53,7 +53,7 @@ ALTER TABLE table_with_comment MODIFY COMMENT '';
 SELECT comment FROM system.tables WHERE database = currentDatabase() AND name = 'table_with_comment';
 ```
 
-Вывод удаленного комментария:
+Вывод удалённого комментария:
 
 ```text
 ┌─comment─┐
@@ -61,8 +61,8 @@ SELECT comment FROM system.tables WHERE database = currentDatabase() AND name = 
 └─────────┘
 ```
 
-**Ограничения**
+**Предостережения**
 
-Для реплицированных таблиц комментарий может отличаться на разных репликах. Изменение комментария применяется лишь к одной реплике.
+Для реплицируемых таблиц комментарий может отличаться на разных репликах. Изменение комментария применяется к одной реплике.
 
 Эта функция доступна с версии 23.9. Она не работает в предыдущих версиях ClickHouse.

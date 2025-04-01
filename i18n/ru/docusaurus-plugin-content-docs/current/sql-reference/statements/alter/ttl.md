@@ -10,7 +10,7 @@ title: 'Манипуляции с TTL таблицы'
 # Манипуляции с TTL таблицы
 
 :::note
-Если вы ищете детали по использованию TTL для управления старыми данными, ознакомьтесь с пользовательским руководством [Управление данными с помощью TTL](/guides/developer/ttl.md). Документация ниже демонстрирует, как изменить или удалить существующее правило TTL.
+Если вы ищете детали о том, как использовать TTL для управления старыми данными, ознакомьтесь с пользовательским руководством [Управление данными с помощью TTL](/guides/developer/ttl.md). В документации ниже показано, как изменить или удалить существующее правило TTL.
 :::
 
 ## ИЗМЕНИТЬ TTL {#modify-ttl}
@@ -50,7 +50,7 @@ INSERT INTO table_with_ttl VALUES (now(), 1, 'username1');
 INSERT INTO table_with_ttl VALUES (now() - INTERVAL 4 MONTH, 2, 'username2');
 ```
 
-Выполните `OPTIMIZE`, чтобы принудительно очистить `TTL`:
+Запустите `OPTIMIZE`, чтобы принудительно выполнить очистку `TTL`:
 
 ```sql
 OPTIMIZE TABLE table_with_ttl FINAL;
@@ -64,13 +64,13 @@ SELECT * FROM table_with_ttl FORMAT PrettyCompact;
 └───────────────────────┴─────────┴──────────────┘
 ```
 
-Теперь удалите `TTL` из таблицы с помощью следующего запроса:
+Теперь удалите `TTL` таблицы с помощью следующего запроса:
 
 ```sql
 ALTER TABLE table_with_ttl REMOVE TTL;
 ```
 
-Пере-вставьте удаленную строку и снова принудительно очистите `TTL` с помощью `OPTIMIZE`:
+Снова вставьте удалённую строку и принудительно выполните очистку `TTL` с помощью `OPTIMIZE`:
 
 ```sql
 INSERT INTO table_with_ttl VALUES (now() - INTERVAL 4 MONTH, 2, 'username2');
@@ -87,7 +87,7 @@ SELECT * FROM table_with_ttl FORMAT PrettyCompact;
 └───────────────────────┴─────────┴──────────────┘
 ```
 
-**См. также**
+**Смотрите также**
 
-- Узнать больше о [выражении TTL](../../../sql-reference/statements/create/table.md#ttl-expression).
-- Изменить столбец [с TTL](/sql-reference/statements/alter/ttl).
+- Подробнее о [TTL-выражении](../../../sql-reference/statements/create/table.md#ttl-expression).
+- Изменение колонки [с TTL](/sql-reference/statements/alter/ttl).

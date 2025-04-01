@@ -12,17 +12,17 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-**Apache Beam** — это модель программирования с открытым исходным кодом, которая позволяет разработчикам определять и выполнять как пакетные, так и потоковые (непрерывные) конвейеры обработки данных. Гибкость Apache Beam заключается в его способности поддерживать широкий спектр сценариев обработки данных, от ETL (извлечение, преобразование, загрузка) операций до сложной обработки событий и аналитики в реальном времени. Эта интеграция использует официальный [JDBC-коннектор](https://github.com/ClickHouse/clickhouse-java) ClickHouse для основы слоя вставки.
+**Apache Beam** — это модель программирования с открытым исходным кодом, которая позволяет разработчикам определять и выполнять как пакетные, так и потоковые (непрерывные) конвейеры обработки данных. Гибкость Apache Beam проявляется в его способности поддерживать широкий спектр сценариев обработки данных, от операций ETL (Извлечение, Преобразование, Загрузка) до сложной обработки событий и аналитики в реальном времени. Эта интеграция использует официальный [JDBC соединитель](https://github.com/ClickHouse/clickhouse-java) ClickHouse для нижележащего слоя вставки.
 
 ## Пакет интеграции {#integration-package}
 
-Пакет интеграции, необходимый для интеграции Apache Beam и ClickHouse, поддерживается и разрабатывается в рамках [Apache Beam I/O Connectors](https://beam.apache.org/documentation/io/connectors/) — набора интеграций для многих популярных систем хранения данных и баз данных. Реализация `org.apache.beam.sdk.io.clickhouse.ClickHouseIO` находится в [репозитории Apache Beam](https://github.com/apache/beam/tree/0bf43078130d7a258a0f1638a921d6d5287ca01e/sdks/java/io/clickhouse/src/main/java/org/apache/beam/sdk/io/clickhouse).
+Пакет интеграции, необходимый для интеграции Apache Beam и ClickHouse, поддерживается и разрабатывается в рамках [Apache Beam I/O Connectors](https://beam.apache.org/documentation/io/connectors/) — набора интеграций с множеством популярных систем хранения данных и баз данных. Реализация `org.apache.beam.sdk.io.clickhouse.ClickHouseIO` находится в [репозитории Apache Beam](https://github.com/apache/beam/tree/0bf43078130d7a258a0f1638a921d6d5287ca01e/sdks/java/io/clickhouse/src/main/java/org/apache/beam/sdk/io/clickhouse).
 
-## Установка пакета Apache Beam ClickHouse {#setup-of-the-apache-beam-clickhouse-package}
+## Настройка пакета Apache Beam ClickHouse {#setup-of-the-apache-beam-clickhouse-package}
 
 ### Установка пакета {#package-installation}
 
-Добавьте следующую зависимость в ваш фреймворк управления пакетами:
+Добавьте следующую зависимость в свою систему управления пакетами:
 ```xml
 <dependency>
     <groupId>org.apache.beam</groupId>
@@ -32,14 +32,15 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 ```
 
 :::important Рекомендуемая версия Beam
-Коннектор `ClickHouseIO` рекомендуется для использования начиная с версии Apache Beam `2.59.0`. Более ранние версии могут не полностью поддерживать функциональность коннектора.
+Рекомендуется использовать соединитель `ClickHouseIO`, начиная с версии Apache Beam `2.59.0`. Ранее версии могут не полностью поддерживать функциональность соединителя.
 :::
 
-Артефакты могут быть найдены в [официальном maven репозитории](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse).
+
+Артефакты можно найти в [официальном репозитории maven](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse).
 
 ### Пример кода {#code-example}
 
-Следующий пример читает CSV файл с названием `input.csv` как `PCollection`, преобразует его в объект Row (используя определенную схему) и вставляет его в локальный экземпляр ClickHouse с использованием `ClickHouseIO`:
+Следующий пример считывает CSV файл с именем `input.csv` как `PCollection`, преобразует его в объект Row (используя определенную схему) и вставляет его в локальный экземпляр ClickHouse, используя `ClickHouseIO`:
 
 ```java
 
@@ -119,32 +120,32 @@ public class Main {
 | `TableSchema.TypeName.ENUM16`      | `Schema.TypeName#STRING`   | ✅              |                                                                                                                                          |
 | `TableSchema.TypeName.BOOL`        | `Schema.TypeName#BOOLEAN`  | ✅              |                                                                                                                                          |
 | `TableSchema.TypeName.TUPLE`       | `Schema.TypeName#ROW`      | ✅              |                                                                                                                                          |
-| `TableSchema.TypeName.FIXEDSTRING` | `FixedBytes`               | ✅              | `FixedBytes` — это `LogicalType`, представляющий массив байтов фиксированной длины, расположенный в `org.apache.beam.sdk.schemas.logicaltypes` |
+| `TableSchema.TypeName.FIXEDSTRING` | `FixedBytes`               | ✅              | `FixedBytes` — это `LogicalType`, представляющий фиксированный по длине <br/> массив байт, расположенный в <br/> `org.apache.beam.sdk.schemas.logicaltypes` |
 |                                    | `Schema.TypeName#DECIMAL`  | ❌              |                                                                                                                                          |
 |                                    | `Schema.TypeName#MAP`      | ❌              |                                                                                                                                          |
 
 ## Параметры ClickHouseIO.Write {#clickhouseiowrite-parameters}
 
-Вы можете настроить параметры `ClickHouseIO.Write` с помощью следующих функций-сеттеров:
+Вы можете настроить конфигурацию `ClickHouseIO.Write` с помощью следующих сеттеров:
 
-| Функция-сеттер параметра          | Тип аргумента               | Значение по умолчанию            | Описание                                                         |
-|-----------------------------------|-----------------------------|----------------------------------|-----------------------------------------------------------------|
-| `withMaxInsertBlockSize`          | `(long maxInsertBlockSize)` | `1000000`                        | Максимальный размер блока строк для вставки.                     |
-| `withMaxRetries`                  | `(int maxRetries)`          | `5`                              | Максимальное количество повторных попыток для неудачных вставок. |
-| `withMaxCumulativeBackoff`        | `(Duration maxBackoff)`     | `Duration.standardDays(1000)`    | Максимальная накопительная длительность отката для повторов.     |
-| `withInitialBackoff`              | `(Duration initialBackoff)` | `Duration.standardSeconds(5)`    | Начальная длительность отката перед первой попыткой.             |
-| `withInsertDistributedSync`       | `(Boolean sync)`            | `true`                           | Если true, синхронизирует операции вставки для распределенных таблиц. |
-| `withInsertQuorum`                | `(Long quorum)`             | `null`                           | Количество реплик, необходимых для подтверждения операции вставки. |
-| `withInsertDeduplicate`           | `(Boolean deduplicate)`     | `true`                           | Если true, включается дедупликация для операций вставки.         |
-| `withTableSchema`                 | `(TableSchema schema)`      | `null`                           | Схема целевой таблицы ClickHouse.                               |
+| Функция установки параметра       | Тип аргумента               | Значение по умолчанию          | Описание                                                        |
+|------------------------------------|-----------------------------|--------------------------------|-----------------------------------------------------------------|
+| `withMaxInsertBlockSize`           | `(long maxInsertBlockSize)` | `1000000`                      | Максимальный размер блока строк для вставки.                     |
+| `withMaxRetries`                   | `(int maxRetries)`          | `5`                            | Максимальное количество попыток повторной вставки в случае ошибки.|
+| `withMaxCumulativeBackoff`         | `(Duration maxBackoff)`     | `Duration.standardDays(1000)`  | Максимальная кумулятивная длительность откладывания для повторных попыток. |
+| `withInitialBackoff`               | `(Duration initialBackoff)` | `Duration.standardSeconds(5)`  | Начальная длительность откладывания перед первой попыткой повторной вставки. |
+| `withInsertDistributedSync`        | `(Boolean sync)`            | `true`                         | Если истинно, синхронизирует операции вставки для распределенных таблиц. |
+| `withInsertQuorum`                 | `(Long quorum)`             | `null`                         | Количество реплик, необходимых для подтверждения операции вставки. |
+| `withInsertDeduplicate`            | `(Boolean deduplicate)`     | `true`                         | Если истинно, включена дедупликация для операций вставки.       |
+| `withTableSchema`                  | `(TableSchema schema)`      | `null`                         | Схема целевой таблицы ClickHouse.                               |
 
 ## Ограничения {#limitations}
 
-Пожалуйста, учитывайте следующие ограничения при использовании коннектора:
-* На сегодняшний день поддерживается только операция Sink. Коннектор не поддерживает операцию Source.
-* ClickHouse выполняет дедупликацию при вставке в `ReplicatedMergeTree` или в `Distributed` таблицу, построенную на основе `ReplicatedMergeTree`. Без репликации вставка в обычный MergeTree может приводить к дубликатам, если вставка не удалась и затем была успешно повторена. Однако каждый блок вставляется атомарно, и размер блока можно настроить с помощью `ClickHouseIO.Write.withMaxInsertBlockSize(long)`. Дедупликация достигается с использованием контрольных сумм вставленных блоков. Для получения дополнительной информации о дедупликации, пожалуйста, посетите [Дедупликация](/guides/developer/deduplication) и [Настройки дедупликации вставки](/operations/settings/settings#insert_deduplicate).
-* Коннектор не выполняет никаких DDL операторов; следовательно, целевая таблица должна существовать до вставки.
+Пожалуйста, учитывайте следующие ограничения при использовании соединителя:
+* На сегодняшний день поддерживается только операция Sink. Соединитель не поддерживает операцию Source.
+* ClickHouse выполняет дедупликацию при вставке в `ReplicatedMergeTree` или в распределённую таблицу, построенную на основе `ReplicatedMergeTree`. Без репликации вставка в обычный MergeTree может привести к дубликатам, если вставка не удалась, а затем была успешно повторена. Однако каждый блок вставляется атомарно, и размер блока можно настроить с помощью `ClickHouseIO.Write.withMaxInsertBlockSize(long)`. Дедупликация достигается с использованием контрольных сумм вставленных блоков. Для получения дополнительной информации о дедупликации, пожалуйста, посетите [Дедупликация](/guides/developer/deduplication) и [Настройки дедупликации вставки](/operations/settings/settings#insert_deduplicate).
+* Соединитель не выполняет никаких DDL операторов; поэтому целевая таблица должна существовать до вставки.
 
 ## Связанный контент {#related-content}
-* Документация по классу `ClickHouseIO` [документация](https://beam.apache.org/releases/javadoc/current/org/apache/beam/sdk/io/clickhouse/ClickHouseIO.html).
-* Репозиторий примеров `Github` [clickhouse-beam-connector](https://github.com/ClickHouse/clickhouse-beam-connector).
+* Документация класса `ClickHouseIO` [доступна здесь](https://beam.apache.org/releases/javadoc/current/org/apache/beam/sdk/io/clickhouse/ClickHouseIO.html).
+* Репозиторий `Github` примеров [clickhouse-beam-connector](https://github.com/ClickHouse/clickhouse-beam-connector).

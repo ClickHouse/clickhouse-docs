@@ -7,8 +7,8 @@ title: 'system.current_roles'
 
 Содержит активные роли текущего пользователя. `SET ROLE` изменяет содержимое этой таблицы.
 
-Столбцы:
+Колонки:
 
- - `role_name` ([String](../../sql-reference/data-types/string.md))) — Имя роли.
- - `with_admin_option` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Флаг, указывающий, является ли `current_role` ролью с привилегией `ADMIN OPTION`.
- - `is_default` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Флаг, показывающий, является ли `current_role` ролью по умолчанию.
+ - `role_name` ([String](../../sql-reference/data-types/string.md))) — Название роли.
+ - `with_admin_option` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Флаг, который показывает, является ли `current_role` ролью с привилегией `ADMIN OPTION`.
+ - `is_default` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Флаг, который показывает, является ли `current_role` ролью по умолчанию.

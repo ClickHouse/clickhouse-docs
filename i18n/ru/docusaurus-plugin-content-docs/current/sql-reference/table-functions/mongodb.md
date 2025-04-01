@@ -1,5 +1,5 @@
 ---
-description: 'Позволяет выполнять запросы `SELECT` к данным, хранящимся на удаленном сервере MongoDB.'
+description: 'Позволяет выполнять запросы `SELECT` к данным, которые хранятся на удалённом сервере MongoDB.'
 sidebar_label: 'mongodb'
 sidebar_position: 135
 slug: /sql-reference/table-functions/mongodb
@@ -7,9 +7,9 @@ title: 'mongodb'
 ---
 
 
-# mongodb Табличная Функция
+# Функция Таблицы mongodb
 
-Позволяет выполнять запросы `SELECT` к данным, хранящимся на удаленном сервере MongoDB.
+Позволяет выполнять запросы `SELECT` к данным, которые хранятся на удалённом сервере MongoDB.
 
 **Синтаксис**
 
@@ -21,9 +21,9 @@ mongodb(host:port, database, collection, user, password, structure[, options[, o
 
 - `host:port` — Адрес сервера MongoDB.
 
-- `database` — Имя удаленной базы данных.
+- `database` — Имя удалённой базы данных.
 
-- `collection` — Имя удаленной коллекции.
+- `collection` — Имя удалённой коллекции.
 
 - `user` — Пользователь MongoDB.
 
@@ -31,12 +31,12 @@ mongodb(host:port, database, collection, user, password, structure[, options[, o
 
 - `structure` - Схема для таблицы ClickHouse, возвращаемой из этой функции.
 
-- `options` - Опции строки подключения MongoDB (необязательный параметр).
+- `options` - Опции строки подключения MongoDB (опциональный параметр).
 
-- `oid_columns` - Список столбцов через запятую, которые должны обрабатываться как `oid` в предложении WHERE. По умолчанию `_id`.
+- `oid_columns` - Список столбцов через запятую, которые должны рассматриваться как `oid` в предложении WHERE. По умолчанию `_id`.
 
 :::tip
-Если вы используете облачное предложение MongoDB Atlas, пожалуйста, добавьте эти опции:
+Если вы используете облачное решение MongoDB Atlas, пожалуйста, добавьте эти опции:
 
 ```ini
 'connectTimeoutMS=10000&ssl=true&authSource=admin'
@@ -53,11 +53,11 @@ mongodb(uri, collection, structure[, oid_columns])
 
 - `uri` — Строка подключения.
 
-- `collection` — Имя удаленной коллекции.
+- `collection` — Имя удалённой коллекции.
 
 - `structure` — Схема для таблицы ClickHouse, возвращаемой из этой функции.
 
-- `oid_columns` - Список столбцов через запятую, которые должны обрабатываться как `oid` в предложении WHERE. По умолчанию `_id`.
+- `oid_columns` - Список столбцов через запятую, которые должны рассматриваться как `oid` в предложении WHERE. По умолчанию `_id`.
 
 **Возвращаемое значение**
 
@@ -66,7 +66,7 @@ mongodb(uri, collection, structure[, oid_columns])
 
 **Примеры**
 
-Предположим, у нас есть коллекция с именем `my_collection`, определенная в базе данных MongoDB с именем `test`, и мы вставляем несколько документов:
+Предположим, у нас есть коллекция с именем `my_collection`, определённая в базе данных MongoDB с именем `test`, и мы вставили несколько документов:
 
 ```sql
 db.createUser({user:"test_user",pwd:"password",roles:[{role:"readWrite",db:"test"}]})
@@ -82,7 +82,7 @@ db.my_collection.insertOne(
 )
 ```
 
-Давайте запросим коллекцию, используя табличную функцию `mongodb`:
+Давайте запросим коллекцию, используя функцию таблицы `mongodb`:
 
 ```sql
 SELECT * FROM mongodb(
@@ -106,7 +106,7 @@ SELECT * FROM mongodb(
 )
 ```
 
-**Смотрите также**
+**См. также**
 
 - [Движок таблицы `MongoDB`](engines/table-engines/integrations/mongodb.md)
-- [Использование MongoDB в качестве источника для словаря](sql-reference/dictionaries/index.md#mongodb)
+- [Использование MongoDB в качестве источника словаря](sql-reference/dictionaries/index.md#mongodb)

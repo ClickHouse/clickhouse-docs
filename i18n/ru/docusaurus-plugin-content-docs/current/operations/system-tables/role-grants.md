@@ -1,6 +1,6 @@
 ---
-description: 'Системная таблица, содержащая права роли для пользователей и ролей.'
-keywords: ['системная таблица', 'role_grants']
+description: 'Системная таблица, содержащая разрешения ролей для пользователей и ролей.'
+keywords: ['системная таблица', 'разрешения_ролей']
 slug: /operations/system-tables/role-grants
 title: 'system.role_grants'
 ---
@@ -8,9 +8,9 @@ title: 'system.role_grants'
 
 # system.role_grants
 
-Содержит права роли для пользователей и ролей. Чтобы добавить записи в эту таблицу, используйте `GRANT role TO user`.
+Содержит разрешения ролей для пользователей и ролей. Чтобы добавить записи в эту таблицу, используйте `GRANT role TO user`.
 
-Столбцы:
+Колонки:
 
 - `user_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Имя пользователя.
 

@@ -10,13 +10,13 @@ title: 'JSONAsObject'
 
 ## Описание {#description}
 
-В этом формате один JSON объект интерпретируется как одно [JSON](/sql-reference/data-types/newjson.md) значение. Если входные данные содержат несколько JSON объектов (разделённых запятыми), они интерпретируются как отдельные строки. Если входные данные заключены в квадратные скобки, они интерпретируются как массив JSONов.
+В этом формате один объект JSON интерпретируется как одно значение [JSON](/sql-reference/data-types/newjson.md). Если входные данные содержат несколько объектов JSON (разделенных запятыми), они интерпретируются как отдельные строки. Если входные данные заключены в квадратные скобки, это интерпретируется как массив JSON.
 
-Этот формат можно разобрать только для таблицы с единственным полем типа [JSON](/sql-reference/data-types/newjson.md). Остальные столбцы должны быть установлены на [`DEFAULT`](/sql-reference/statements/create/table.md/#default) или [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view).
+Этот формат можно разобрать только для таблицы с одним полем типа [JSON](/sql-reference/data-types/newjson.md). Остальные столбцы должны быть установлены на [`DEFAULT`](/sql-reference/statements/create/table.md/#default) или [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view).
 
 ## Пример использования {#example-usage}
 
-### Основной пример {#basic-example}
+### Базовый пример {#basic-example}
 
 ```sql title="Запрос"
 SET enable_json_type = 1;
@@ -31,7 +31,7 @@ SELECT * FROM json_as_object FORMAT JSONEachRow;
 {"json":{"any json stucture":"1"}}
 ```
 
-### Массив JSON объектов {#an-array-of-json-objects}
+### Массив объектов JSON {#an-array-of-json-objects}
 
 ```sql title="Запрос"
 SET enable_json_type = 1;

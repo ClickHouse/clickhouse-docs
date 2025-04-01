@@ -10,14 +10,14 @@ title: 'PrettySpaceMonoBlock'
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Вход | Выход  | Псевдоним |
+| Input | Output  | Alias |
 |-------|---------|-------|
 | ✗     | ✔       |       |
 
 ## Описание {#description}
 
-Отличается от формата [`PrettySpace`](./PrettySpace.md) тем, что буферизует до `10,000` строк, 
-а затем выводит их в виде одной таблицы, а не по [блокам](/development/architecture#block).
+Отличается от формата [`PrettySpace`](./PrettySpace.md) тем, что буферизуется до `10,000` строк, 
+а затем выводится в виде одной таблицы, а не по [блокам](/development/architecture#block).
 
 ## Пример использования {#example-usage}
 

@@ -5,7 +5,7 @@ slug: /sql-reference/aggregate-functions/reference/quantileddsketch
 title: 'quantileDD'
 ---
 
-Вычисляет приблизительный [квантиль](https://en.wikipedia.org/wiki/Quantile) выборки с гарантией относительной ошибки. Это достигается за счет построения [DD](https://www.vldb.org/pvldb/vol12/p2195-masson.pdf).
+Вычисляет приблизительный [квантиль](https://en.wikipedia.org/wiki/Quantile) выборки с гарантией относительной ошибки. Это достигается путем построения [DD](https://www.vldb.org/pvldb/vol12/p2195-masson.pdf).
 
 **Синтаксис**
 
@@ -15,13 +15,13 @@ quantileDD(relative_accuracy, [level])(expr)
 
 **Аргументы**
 
-- `expr` — Столбец с числовыми данными. [Целое](../../../sql-reference/data-types/int-uint.md), [Дробное](../../../sql-reference/data-types/float.md).
+- `expr` — Колонка с числовыми данными. [Целое число](../../../sql-reference/data-types/int-uint.md), [Число с плавающей точкой](../../../sql-reference/data-types/float.md).
 
 **Параметры**
 
-- `relative_accuracy` — Относительная точность квантиля. Возможные значения находятся в диапазоне от 0 до 1. [Дробное](../../../sql-reference/data-types/float.md). Размер эскиза зависит от диапазона данных и относительной точности. Чем больше диапазон и меньше относительная точность, тем больше эскиз. Приблизительный размер памяти эскиза составляет `log(max_value/min_value)/relative_accuracy`. Рекомендуемое значение — 0.001 или выше.
+- `relative_accuracy` — Относительная точность квантиля. Возможные значения находятся в диапазоне от 0 до 1. [Число с плавающей точкой](../../../sql-reference/data-types/float.md). Размер зарисовки зависит от диапазона данных и относительной точности. Чем больше диапазон и меньше относительная точность, тем больше зарисовка. Приблизительный размер памяти для зарисовки составляет `log(max_value/min_value)/relative_accuracy`. Рекомендуемое значение — 0.001 или выше.
 
-- `level` — Уровень квантиля. Опционально. Возможные значения находятся в диапазоне от 0 до 1. Значение по умолчанию: 0.5. [Дробное](../../../sql-reference/data-types/float.md).
+- `level` — Уровень квантиля. Необязательный параметр. Возможные значения находятся в диапазоне от 0 до 1. Значение по умолчанию: 0.5. [Число с плавающей точкой](../../../sql-reference/data-types/float.md).
 
 **Возвращаемое значение**
 
@@ -31,7 +31,7 @@ quantileDD(relative_accuracy, [level])(expr)
 
 **Пример**
 
-Входная таблица имеет целый и дробный столбцы:
+Входная таблица имеет целочисленную и плавающую колонки:
 
 ```text
 ┌─a─┬─────b─┐
@@ -56,7 +56,7 @@ SELECT quantileDD(0.01, 0.75)(a), quantileDD(0.01, 0.75)(b) FROM example_table;
 └─────────────────────────────────┴─────────────────────────────────┘
 ```
 
-**См. также**
+**См. Также**
 
 - [median](/sql-reference/aggregate-functions/reference/median)
 - [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)

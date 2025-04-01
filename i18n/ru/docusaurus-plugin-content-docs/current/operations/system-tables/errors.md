@@ -5,16 +5,16 @@ slug: /operations/system-tables/errors
 title: 'system.errors'
 ---
 
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-Содержит коды ошибок с количеством раз, когда они были вызваны.
+Содержит коды ошибок с количеством их срабатываний.
 
-Столбцы:
+Колонки:
 
 - `name` ([String](../../sql-reference/data-types/string.md)) — имя ошибки (`errorCodeToName`).
-- `code` ([Int32](../../sql-reference/data-types/int-uint.md)) — номер кода ошибки.
+- `code` ([Int32](../../sql-reference/data-types/int-uint.md)) — код ошибки.
 - `value` ([UInt64](../../sql-reference/data-types/int-uint.md)) — количество раз, когда произошла эта ошибка.
 - `last_error_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — время, когда произошла последняя ошибка.
 - `last_error_message` ([String](../../sql-reference/data-types/string.md)) — сообщение для последней ошибки.
@@ -22,7 +22,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 - `remote` ([UInt8](../../sql-reference/data-types/int-uint.md)) — удаленное исключение (т.е. полученное во время одного из распределенных запросов).
 
 :::note
-Счетчики для некоторых ошибок могут увеличиваться во время успешного выполнения запроса. Не рекомендуется использовать эту таблицу для мониторинга сервера, если вы не уверены, что соответствующая ошибка не может быть ложноположительной.
+Счетчики некоторых ошибок могут увеличиваться в процессе успешного выполнения запроса. Не рекомендуется использовать эту таблицу для мониторинга сервера, если вы не уверены, что соответствующая ошибка не может быть ложноположительной.
 :::
 
 **Пример**

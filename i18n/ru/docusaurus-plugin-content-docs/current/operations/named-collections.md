@@ -1,5 +1,5 @@
 ---
-description: 'Документация для Именованных коллекций'
+description: 'Документация по именованным коллекциям'
 sidebar_label: 'Именованные коллекции'
 sidebar_position: 69
 slug: /operations/named-collections
@@ -10,26 +10,27 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
-Именованные коллекции предоставляют способ хранения коллекций пар ключ-значение, которые могут быть использованы для настройки интеграций с внешними источниками. Вы можете использовать именованные коллекции с 
-словарями, таблицами, табличными функциями и объектным хранилищем.
+Именованные коллекции предоставляют способ хранения коллекций пар ключ-значение,
+которые можно использовать для настройки интеграций с внешними источниками. Вы можете использовать именованные коллекции с
+словарами, таблицами, табличными функциями и объектным хранилищем.
 
-Именованные коллекции могут быть настроены с помощью DDL или в файлах конфигурации и применяются 
-при запуске ClickHouse. Они упрощают создание объектов и скрытие учетных данных 
+Именованные коллекции могут быть настроены с помощью DDL или в файлах конфигурации и применяются
+при запуске ClickHouse. Они упрощают создание объектов и скрытие учетных данных
 от пользователей без административного доступа.
 
-Ключи в именованной коллекции должны соответствовать именам параметров соответствующей 
-функции, движка таблиц, базы данных и т.д. В приведённых ниже примерах параметрический список 
-связан для каждого типа.
+Ключи в именованной коллекции должны совпадать с названиями параметров соответствующей
+функции, движка таблицы, базы данных и т.д. В примерах ниже вы можете найти
+ссылку на список параметров для каждого типа.
 
-Параметры, заданные в именованной коллекции, могут быть переопределены в SQL, это показано в примерах 
-ниже. Эта возможность может быть ограничена с помощью ключевых слов `[NOT] OVERRIDABLE` и XML атрибутов 
+Параметры, заданные в именованной коллекции, могут быть переопределены в SQL, это показано в примерах
+ниже. Эта возможность может быть ограничена с помощью ключевых слов `[NOT] OVERRIDABLE` и атрибутов XML
 и/или параметра конфигурации `allow_named_collection_override_by_default`.
 
 :::warning
-Если переопределение разрешено, пользователи без административного доступа могут 
+Если переопределение разрешено, пользователи без административного доступа могут
 выяснить учетные данные, которые вы пытаетесь скрыть.
-Если вы используете именованные коллекции с этой целью, вам следует отключить 
-`allow_named_collection_override_by_default` (по умолчанию включено).
+Если вы используете именованные коллекции с этой целью, вы должны отключить
+`allow_named_collection_override_by_default` (который включен по умолчанию).
 :::
 
 ## Хранение именованных коллекций в системной базе данных {#storing-named-collections-in-the-system-database}
@@ -43,15 +44,15 @@ key_2 = 'value2' NOT OVERRIDABLE,
 url = 'https://connection.url/'
 ```
 
-В приведённом выше примере:
+В приведенном выше примере:
 
- * `key_1` всегда может быть переопределён.
- * `key_2` никогда не может быть переопределён.
- * `url` может быть переопределён или нет в зависимости от значения `allow_named_collection_override_by_default`.
+ * `key_1` всегда может быть переопределен.
+ * `key_2` никогда не может быть переопределен.
+ * `url` может быть переопределен или нет, в зависимости от значения `allow_named_collection_override_by_default`.
 
 ### Разрешения на создание именованных коллекций с помощью DDL {#permissions-to-create-named-collections-with-ddl}
 
-Чтобы управлять именованными коллекциями с помощью DDL, пользователь должен иметь привилегию `named_collection_control`. Это можно назначить, добавив файл в `/etc/clickhouse-server/users.d/`. Пример даёт пользователю `default` как привилегии `access_management`, так и `named_collection_control`:
+Для управления именованными коллекциями с помощью DDL пользователь должен иметь привилегию `named_collection_control`. Это можно назначить, добавив файл в `/etc/clickhouse-server/users.d/`. Пример дает пользователю `default` привилегии и `access_management`, и `named_collection_control`:
 
 ```xml title='/etc/clickhouse-server/users.d/user_default.xml'
 <clickhouse>
@@ -68,20 +69,20 @@ url = 'https://connection.url/'
 ```
 
 :::tip
-В приведённом выше примере значение `password_sha256_hex` является шестнадцатеричным представлением SHA256 хеш-значения пароля. Эта конфигурация для пользователя `default` имеет атрибут `replace=true`, так как в конфигурации по умолчанию установлен открытый текстовый пароль `password`, и нельзя иметь одновременно и открытый текст, и sha256 hex пароли для одного пользователя.
+В приведенном выше примере значение `password_sha256_hex` является шестнадцатеричным представлением SHA256-хеша пароля. Эта настройка для пользователя `default` имеет атрибут `replace=true`, так как в конфигурации по умолчанию установлен открытый текстовый `password`, и невозможно установить как открытый текст, так и sha256 hex пароли для пользователя.
 :::
 
 ### Хранение именованных коллекций {#storage-for-named-collections}
 
 Именованные коллекции могут храниться либо на локальном диске, либо в ZooKeeper/Keeper. По умолчанию используется локальное хранилище.
-Они также могут храниться с использованием шифрования с теми же алгоритмами, которые используются для [шифрования диска](storing-data#encrypted-virtual-file-system), 
+Они также могут храниться с использованием шифрования с теми же алгоритмами, которые используются для [шифрования диска](storing-data#encrypted-virtual-file-system),
 где по умолчанию используется `aes_128_ctr`.
 
-Чтобы настроить хранилище именованных коллекций, необходимо указать `type`. Это может быть либо `local`, либо `keeper`/`zookeeper`. Для зашифрованного хранилища вы можете использовать `local_encrypted` или `keeper_encrypted`/`zookeeper_encrypted`.
+Чтобы настроить хранилище именованных коллекций, необходимо указать `type`. Это может быть либо `local`, либо `keeper`/`zookeeper`. Для зашифрованного хранилища
+можно использовать `local_encrypted` или `keeper_encrypted`/`zookeeper_encrypted`.
 
-Для использования ZooKeeper/Keeper нам также нужно настроить `path` (путь в ZooKeeper/Keeper, где будут храниться именованные коллекции) в 
-разделе `named_collections_storage` в файле конфигурации. Следующий пример использует шифрование и ZooKeeper/Keeper:
-
+Для использования ZooKeeper/Keeper необходимо также установить `path` (путь в ZooKeeper/Keeper, где будут храниться именованные коллекции) в
+разделе `named_collections_storage` в конфигурационном файле. В следующем примере используется шифрование и ZooKeeper/Keeper:
 ```xml
 <clickhouse>
   <named_collections_storage>
@@ -112,60 +113,54 @@ url = 'https://connection.url/'
 </clickhouse>
 ```
 
-В приведённом выше примере:
+В приведенном выше примере:
 
- * `key_1` всегда может быть переопределён.
- * `key_2` никогда не может быть переопределён.
- * `url` может быть переопределён или нет в зависимости от значения `allow_named_collection_override_by_default`.
+ * `key_1` всегда может быть переопределен.
+ * `key_2` никогда не может быть переопределен.
+ * `url` может быть переопределен или нет, в зависимости от значения `allow_named_collection_override_by_default`.
 
 ## Модификация именованных коллекций {#modifying-named-collections}
 
-Именованные коллекции, созданные с помощью DDL-запросов, могут быть изменены или удалены с помощью DDL. Именованные коллекции, созданные с помощью XML-файлов, могут управляться путём редактирования или удаления соответствующего XML.
+Именованные коллекции, созданные с помощью DDL-запросов, могут быть изменены или удалены с помощью DDL. Именованные коллекции, созданные с помощью XML-файлов, могут быть управляемы путем редактирования или удаления соответствующего XML.
 
-### Изменить именованную коллекцию DDL {#alter-a-ddl-named-collection}
+### Изменение именованной коллекции DDL {#alter-a-ddl-named-collection}
 
-Измените или добавьте ключи `key1` и `key3` коллекции `collection2` 
+Измените или добавьте ключи `key1` и `key3` коллекции `collection2`
 (это не изменит значение флага `overridable` для этих ключей):
-
 ```sql
 ALTER NAMED COLLECTION collection2 SET key1=4, key3='value3'
 ```
 
 Измените или добавьте ключ `key1` и разрешите его всегда переопределять:
-
 ```sql
 ALTER NAMED COLLECTION collection2 SET key1=4 OVERRIDABLE
 ```
 
 Удалите ключ `key2` из `collection2`:
-
 ```sql
 ALTER NAMED COLLECTION collection2 DELETE key2
 ```
 
 Измените или добавьте ключ `key1` и удалите ключ `key3` коллекции `collection2`:
-
 ```sql
 ALTER NAMED COLLECTION collection2 SET key1=4, DELETE key3
 ```
 
-Чтобы заставить ключ использовать параметры по умолчанию для флага `overridable`, вы должны 
-удалить и повторно добавить ключ.
-
+Чтобы заставить ключ использовать параметры по умолчанию для флага `overridable`, вы должны
+удалить и заново добавить ключ.
 ```sql
 ALTER NAMED COLLECTION collection2 DELETE key1;
 ALTER NAMED COLLECTION collection2 SET key1=4;
 ```
 
-### Удалить DDL именованную коллекцию `collection2`: {#drop-the-ddl-named-collection-collection2}
-
+### Удалить именованную коллекцию DDL `collection2`: {#drop-the-ddl-named-collection-collection2}
 ```sql
 DROP NAMED COLLECTION collection2
 ```
 
 ## Именованные коллекции для доступа к S3 {#named-collections-for-accessing-s3}
 
-Описание параметров смотрите в [s3 Табличной функции](../sql-reference/table-functions/s3.md).
+Описание параметров см. в [s3 Табличной функции](../sql-reference/table-functions/s3.md).
 
 ### Пример DDL {#ddl-example-1}
 
@@ -192,7 +187,7 @@ url = 'https://s3.us-east-1.amazonaws.com/yourbucket/mydata/'
 </clickhouse>
 ```
 
-### Примеры функции s3() и Таблицы именованной коллекции S3 {#s3-function-and-s3-table-named-collection-examples}
+### Примеры функции s3() и именованной коллекции таблицы S3 {#s3-function-and-s3-table-named-collection-examples}
 
 Оба следующих примера используют одну и ту же именованную коллекцию `s3_mydata`:
 
@@ -205,7 +200,7 @@ SELECT * FROM numbers(10000);
 ```
 
 :::tip
-Первый аргумент к функции `s3()` выше — это имя коллекции, `s3_mydata`. Без именованных коллекций, идентификатор ключа доступа, секрет, формат и URL все должны были бы передаваться в каждом вызове функции `s3()`.
+Первый аргумент к функции `s3()` выше — это имя коллекции, `s3_mydata`. Без именованных коллекций, идентификатор ключа доступа, секрет, формат и URL все передавались бы в каждом вызове функции `s3()`.
 :::
 
 #### Таблица S3 {#s3-table}
@@ -225,7 +220,7 @@ SELECT * FROM s3_engine_table LIMIT 3;
 
 ## Именованные коллекции для доступа к базе данных MySQL {#named-collections-for-accessing-mysql-database}
 
-Описание параметров смотрите в [mysql](../sql-reference/table-functions/mysql.md).
+Описание параметров см. в [mysql](../sql-reference/table-functions/mysql.md).
 
 ### Пример DDL {#ddl-example-2}
 
@@ -258,7 +253,7 @@ replace_query = 1
 </clickhouse>
 ```
 
-### Примеры функции mysql(), Таблицы MySQL, Базы данных MySQL и именованной коллекции Словарь {#mysql-function-mysql-table-mysql-database-and-dictionary-named-collection-examples}
+### Примеры функции mysql(), таблицы MySQL, базы данных MySQL и именованной коллекции словаря {#mysql-function-mysql-table-mysql-database-and-dictionary-named-collection-examples}
 
 Четыре следующих примера используют одну и ту же именованную коллекцию `mymysql`:
 
@@ -272,7 +267,7 @@ SELECT count() FROM mysql(mymysql, table = 'test');
 └─────────┘
 ```
 :::note
-Именованная коллекция не указывает параметр `table`, поэтому он указывается в вызове функции как `table = 'test'`.
+Именованная коллекция не указывает параметр `table`, поэтому он задается в вызове функции как `table = 'test'`.
 :::
 
 #### Таблица MySQL {#mysql-table}
@@ -287,7 +282,7 @@ SELECT count() FROM mytable;
 ```
 
 :::note
-DDL переопределяет настройки именованной коллекции для connection_pool_size.
+DDL переопределяет значение настроек именованной коллекции для connection_pool_size.
 :::
 
 #### База данных MySQL {#mysql-database}
@@ -321,12 +316,12 @@ SELECT dictGet('dict', 'B', 2);
 
 ## Именованные коллекции для доступа к базе данных PostgreSQL {#named-collections-for-accessing-postgresql-database}
 
-Описание параметров смотрите в [postgresql](../sql-reference/table-functions/postgresql.md). Дополнительно имеются псевдонимы:
+Описание параметров см. в [postgresql](../sql-reference/table-functions/postgresql.md). Дополнительно существуют псевдонимы:
 
 - `username` для `user`
 - `db` для `database`.
 
-Параметр `addresses_expr` используется в коллекции вместо `host:port`. Параметр является необязательным, так как есть и другие необязательные: `host`, `hostname`, `port`. Следующий псевдокод объясняет приоритет:
+Параметр `addresses_expr` используется в коллекции вместо `host:port`. Параметр является необязательным, поскольку есть другие необязательные: `host`, `hostname`, `port`. Следующий псевдокод объясняет приоритет:
 
 ```sql
 CASE
@@ -337,7 +332,6 @@ END
 ```
 
 Пример создания:
-
 ```sql
 CREATE NAMED COLLECTION mypg AS
 user = 'pguser',
@@ -349,7 +343,6 @@ schema = 'test_schema'
 ```
 
 Пример конфигурации:
-
 ```xml
 <clickhouse>
     <named_collections>
@@ -433,7 +426,7 @@ SELECT dictGet('dict', 'b', 2);
 
 ## Именованные коллекции для доступа к удаленной базе данных ClickHouse {#named-collections-for-accessing-a-remote-clickhouse-database}
 
-Описание параметров смотрите в [remote](../sql-reference/table-functions/remote.md/#parameters).
+Описание параметров см. в [remote](../sql-reference/table-functions/remote.md/#parameters).
 
 Пример конфигурации:
 
@@ -461,7 +454,7 @@ secure = 1
     </named_collections>
 </clickhouse>
 ```
-`secure` не нужен для подключения из-за `remoteSecure`, но может быть использован для словарей.
+`secure` не нужен для подключения из-за `remoteSecure`, но может использоваться для словарей.
 
 ### Пример использования именованных коллекций с функциями `remote`/`remoteSecure` {#example-of-using-named-collections-with-the-remoteremotesecure-functions}
 
@@ -501,7 +494,7 @@ SELECT dictGet('dict', 'b', 1);
 
 ## Именованные коллекции для доступа к Kafka {#named-collections-for-accessing-kafka}
 
-Описание параметров смотрите в [Kafka](../engines/table-engines/integrations/kafka.md).
+Описание параметров см. в [Kafka](../engines/table-engines/integrations/kafka.md).
 
 ### Пример DDL {#ddl-example-3}
 
@@ -556,7 +549,7 @@ SETTINGS kafka_num_consumers = 4,
 
 ## Именованные коллекции для резервного копирования {#named-collections-for-backups}
 
-Для описания параметров смотрите [Резервное копирование и восстановление](./backup.md).
+Для описания параметров см. [Резервное копирование и восстановление](./backup.md).
 
 ### Пример DDL {#ddl-example-4}
 
@@ -578,9 +571,9 @@ BACKUP TABLE default.test to S3(named_collection_s3_backups, 'directory')
 </clickhouse>
 ```
 
-## Именованные коллекции для доступа к таблице и словарю MongoDB {#named-collections-for-accessing-mongodb-table-and-dictionary}
+## Именованные коллекции для доступа к MongoDB Таблице и Словарю {#named-collections-for-accessing-mongodb-table-and-dictionary}
 
-Для описания параметров смотрите [mongodb](../sql-reference/table-functions/mongodb.md).
+Для описания параметров см. [mongodb](../sql-reference/table-functions/mongodb.md).
 
 ### Пример DDL {#ddl-example-5}
 
@@ -625,7 +618,7 @@ SELECT count() FROM mytable;
 ```
 
 :::note
-DDL переопределяет настройки именованной коллекции для options.
+DDL переопределяет настройку именованной коллекции для options.
 :::
 
 #### Словарь MongoDB {#mongodb-dictionary}
@@ -649,5 +642,5 @@ SELECT dictGet('dict', 'b', 2);
 ```
 
 :::note
-Именованная коллекция указывает `my_collection` в качестве имени коллекции. В вызове функции она переопределяется `collection = 'my_dict'`, чтобы выбрать другую коллекцию.
+Именованная коллекция указывает `my_collection` для имени коллекции. В вызове функции она переопределяется `collection = 'my_dict'` для выбора другой коллекции.
 :::

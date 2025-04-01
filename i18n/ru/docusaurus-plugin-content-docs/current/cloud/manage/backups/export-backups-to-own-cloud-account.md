@@ -9,17 +9,17 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 <EnterprisePlanFeatureBadge/>
 
-ClickHouse Cloud поддерживает создание резервных копий для вашего собственного облачного провайдера (CSP) (AWS S3, Google Cloud Storage или Azure Blob Storage). Для получения дополнительных сведений о том, как работают резервные копии ClickHouse Cloud, в том числе о "полных" и "инкрементных" резервных копиях, смотрите документацию по [резервным копиям](overview.md).
+ClickHouse Cloud поддерживает создание резервных копий в вашей облачной учетной записи (CSP) (AWS S3, Google Cloud Storage или Azure Blob Storage). Для получения информации о том, как работают резервные копии ClickHouse Cloud, включая "полные" и "инкрементные" резервные копии, смотрите документацию по [резервным копиям](overview.md).
 
-Здесь мы покажем примеры того, как выполнять полные и инкрементные резервные копии в AWS, GCP, Azure и как восстанавливать данные из резервных копий.
+Здесь мы показываем примеры того, как сделать полные и инкрементные резервные копии в AWS, GCP, Azure объектное хранилище, а также как восстановить данные из резервных копий.
 
 :::note
-Пользователи должны помнить, что любое использование, связанное с экспортом резервных копий в другой регион того же облачного провайдера или к другому облачному провайдеру (в том же или другом регионе), будет подразумевать [расходы на передачу данных](../network-data-transfer.mdx).
+Пользователи должны быть осведомлены о том, что любое использование, при котором резервные копии экспортируются в другой регион в том же облачном провайдере или в другой облачный провайдер (в том же или другом регионе), будет облагаться дополнительными [тарифами на передачу данных](../network-data-transfer.mdx).
 :::
 
 ## Требования {#requirements}
 
-Вам понадобятся следующие данные для экспорта/восстановления резервных копий в ваше собственное облачное хранилище CSP.
+Вам понадобятся следующие данные для экспорта/восстановления резервных копий в ваше собственное хранилище CSP.
 
 ### AWS {#aws}
 
@@ -34,7 +34,7 @@ ClickHouse Cloud поддерживает создание резервных к
     s3://testchbackups.s3.amazonaws.com/backups/
     ```
     Где:
-   - `testchbackups` — это имя ведра S3, в которое будут экспортироваться резервные копии.
+   - `testchbackups` — это имя S3-ведра, в которое будут экспортироваться резервные копии.
    - `backups` — это необязательный подпапка.
 
 2. Ключ доступа AWS и секретный ключ.
@@ -52,13 +52,13 @@ ClickHouse Cloud поддерживает создание резервных к
     ```text
     https://storage.googleapis.com/<bucket_name>/
     ```
-2. HMAC-ключ доступа и HMAC-секрет.
+2. Ключ доступа HMAC и секрет HMAC.
 
 <hr/>
 
 # Резервное копирование / Восстановление
 
-## Резервное копирование / Восстановление в ведро AWS S3 {#backup--restore-to-aws-s3-bucket}
+## Резервное копирование / Восстановление в AWS S3 Bucket {#backup--restore-to-aws-s3-bucket}
 
 ### Создание резервной копии БД {#take-a-db-backup}
 
@@ -69,10 +69,10 @@ BACKUP DATABASE test_backups
 TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
 ```
 
-Где `uuid` — это уникальный идентификатор, используемый для различения набора резервных копий.
+Где `uuid` — это уникальный идентификатор, используемый для различия наборов резервных копий.
 
 :::note
-Вам необходимо будет использовать новый UUID для каждой новой резервной копии в этой подпапке, иначе вы получите ошибку `BACKUP_ALREADY_EXISTS`. Например, если вы делаете резервные копии ежедневно, вам нужно будет использовать новый UUID каждый день.
+Каждая новая резервная копия в этой подпапке должна использовать другой UUID, иначе вы получите ошибку `BACKUP_ALREADY_EXISTS`. Например, если вы делаете резервные копии ежедневно, вам нужно будет использовать новый UUID каждый день.  
 :::
 
 **Инкрементная резервная копия**
@@ -91,12 +91,12 @@ AS test_backups_restored
 FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
 ```
 
-Смотрите: [Настройка BACKUP/RESTORE для использования с S3 Endpoint](/operations/backup#configuring-backuprestore-to-use-an-s3-endpoint) для получения дополнительных сведений.
+Смотрите: [Настройка BACKUP/RESTORE для использования точки доступа S3](/operations/backup#configuring-backuprestore-to-use-an-s3-endpoint) для получения более подробной информации.
 
 ## Резервное копирование / Восстановление в Azure Blob Storage {#backup--restore-to-azure-blob-storage}
 
 :::note
-Экспортировать резервные копии в ваше собственное ведро на Azure Blob Storage пока невозможно. Мы обновим эту страницу, когда функция станет доступной.
+Экспорт резервных копий в ваше собственное ведро в Azure Blob Storage пока недоступен. Мы обновим эту страницу, когда функция станет доступна.
 :::
 
 ### Создание резервной копии БД {#take-a-db-backup-1}
@@ -108,7 +108,7 @@ BACKUP DATABASE test_backups
 TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>');
 ```
 
-Где `uuid` — это уникальный идентификатор, используемый для различения набора резервных копий.
+Где `uuid` — это уникальный идентификатор, используемый для различия наборов резервных копий.
 
 **Инкрементная резервная копия**
 
@@ -126,7 +126,7 @@ AS test_backups_restored_azure
 FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>')
 ```
 
-Смотрите: [Настройка BACKUP/RESTORE для использования с AzureBlobStorage Endpoint](/operations/backup#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) для получения дополнительных сведений.
+Смотрите: [Настройка BACKUP/RESTORE для использования точки доступа AzureBlobStorage](/operations/backup#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) для получения более подробной информации.
 
 ## Резервное копирование / Восстановление в Google Cloud Storage (GCS) {#backup--restore-to-google-cloud-storage-gcs}
 
@@ -138,7 +138,7 @@ FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<contain
 BACKUP DATABASE test_backups 
 TO S3('https://storage.googleapis.com/<bucket>/<uuid>', <hmac-key>', <hmac-secret>)
 ```
-Где `uuid` — это уникальный идентификатор, используемый для различения набора резервных копий.
+Где `uuid` — это уникальный идентификатор, используемый для различия наборов резервных копий.
 
 **Инкрементная резервная копия**
 

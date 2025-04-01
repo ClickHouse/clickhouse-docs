@@ -1,5 +1,5 @@
 ---
-description: 'Документация по типу данных Map в ClickHouse'
+description: 'Документация для типа данных Map в ClickHouse'
 sidebar_label: 'Map(K, V)'
 sidebar_position: 36
 slug: /sql-reference/data-types/map
@@ -11,20 +11,20 @@ title: 'Map(K, V)'
 
 Тип данных `Map(K, V)` хранит пары ключ-значение.
 
-В отличие от других баз данных, карты не уникальны в ClickHouse, т.е. карта может содержать два элемента с одинаковым ключом. 
-(Причина этого в том, что карты реализованы внутренне как `Array(Tuple(K, V))`.)
+В отличие от других баз данных, карты не являются уникальными в ClickHouse, т.е. карта может содержать два элемента с одинаковым ключом. 
+(Причина этого в том, что карты внутренне реализованы как `Array(Tuple(K, V))`.)
 
-Вы можете использовать синтаксис `m[k]`, чтобы получить значение для ключа `k` в карте `m`.
-Также `m[k]` производит сканирование карты, т.е. время выполнения операции линейно относительно размера карты.
+Вы можете использовать синтаксис `m[k]`, чтобы получить значение для ключа `k` в карте `m`. 
+Также `m[k]` сканирует карту, т.е. время выполнения операции линейно относительно размера карты.
 
 **Параметры**
 
-- `K` — Тип ключей карты. Произвольный тип, за исключением [Nullable](../../sql-reference/data-types/nullable.md) и [LowCardinality](../../sql-reference/data-types/lowcardinality.md), вложенных с типами [Nullable](../../sql-reference/data-types/nullable.md).
+- `K` — Тип ключей карты. Произвольный тип, кроме [Nullable](../../sql-reference/data-types/nullable.md) и [LowCardinality](../../sql-reference/data-types/lowcardinality.md), вложенных в типы [Nullable](../../sql-reference/data-types/nullable.md).
 - `V` — Тип значений карты. Произвольный тип.
 
 **Примеры**
 
-Создайте таблицу с колонкой типа map:
+Создать таблицу с колонкой типа map:
 
 ```sql
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
@@ -47,7 +47,7 @@ SELECT m['key2'] FROM tab;
 └─────────────────────────┘
 ```
 
-Если запрашиваемый ключ `k` не содержится в карте, `m[k]` возвращает значение по умолчанию для типа значения, например, `0` для целочисленных типов и `''` для строковых типов. 
+Если запрашиваемый ключ `k` не содержится в карте, `m[k]` возвращает значение по умолчанию для типа значения, например `0` для целочисленных типов и `''` для строковых типов. 
 Чтобы проверить, существует ли ключ в карте, вы можете использовать функцию [mapContains](../../sql-reference/functions/tuple-map-functions#mapcontains).
 
 ```sql
@@ -67,7 +67,7 @@ SELECT m['key1'] FROM tab;
 
 ## Преобразование Tuple в Map {#converting-tuple-to-map}
 
-Значения типа `Tuple()` можно преобразовать в значения типа `Map()` с помощью функции [CAST](/sql-reference/functions/type-conversion-functions#cast):
+Значения типа `Tuple()` могут быть приведены к значениям типа `Map()` с помощью функции [CAST](/sql-reference/functions/type-conversion-functions#cast):
 
 **Пример**
 
@@ -117,9 +117,9 @@ SELECT m.values FROM tab; -- то же самое, что и mapValues(m)
 
 - [map()](/sql-reference/functions/tuple-map-functions#map) функция
 - [CAST()](/sql-reference/functions/type-conversion-functions#cast) функция
-- [-Комбинатор Map для типа данных Map](../aggregate-functions/combinators.md#-map)
+- [-Map комбинатор для типа данных Map](../aggregate-functions/combinators.md#-map)
 
 
-## Связанный контент {#related-content}
+## Связанное содержимое {#related-content}
 
-- Блог: [Создание решения для наблюдаемости с ClickHouse - Часть 2 - Трейсы](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)
+- Блог: [Создание решения для наблюдаемости с помощью ClickHouse - Часть 2 - Следы](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)

@@ -7,7 +7,7 @@ title: 'system.databases'
 
 Содержит информацию о базах данных, доступных текущему пользователю.
 
-Столбцы:
+Колонки:
 
 - `name` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных.
 - `engine` ([String](../../sql-reference/data-types/string.md)) — [Движок базы данных](../../engines/database-engines/index.md).
@@ -18,24 +18,24 @@ title: 'system.databases'
 - `engine_full` ([String](../../sql-reference/data-types/enum.md)) — Параметры движка базы данных.
 - `database` ([String](../../sql-reference/data-types/string.md)) – Псевдоним для `name`.
 
-Столбец `name` из этой системной таблицы используется для выполнения запроса `SHOW DATABASES`.
+Столбец `name` из этой системной таблицы используется для реализации запроса `SHOW DATABASES`.
 
 **Пример**
 
-Создайте базу данных.
+Создать базу данных.
 
 ```sql
 CREATE DATABASE test;
 ```
 
-Проверьте все доступные базы данных для пользователя.
+Проверить все доступные базы данных для пользователя.
 
 ```sql
 SELECT * FROM system.databases;
 ```
 
 ```text
-┌─name────────────────┬─engine─────┬─data_path────────────────────┬─metadata_path─────────────────────────────────────────────────────────┬─uuid─────────────────────────────────┬─engine_full────────────────────────────────────────────┬─comment─┐
+┌─name────────────────┬─engine─────┬─data_path────────────────────┬─metadata_path─────────────────────────────────────────────────────────────────────────┬─uuid─────────────────────────────────┬─engine_full────────────────────────────────────────────┬─comment─┐
 │ INFORMATION_SCHEMA  │ Memory     │ /data/clickhouse_data/       │                                                                       │ 00000000-0000-0000-0000-000000000000 │ Memory                                                 │         │
 │ default             │ Atomic     │ /data/clickhouse_data/store/ │ /data/clickhouse_data/store/f97/f97a3ceb-2e8a-4912-a043-c536e826a4d4/ │ f97a3ceb-2e8a-4912-a043-c536e826a4d4 │ Atomic                                                 │         │
 │ information_schema  │ Memory     │ /data/clickhouse_data/       │                                                                       │ 00000000-0000-0000-0000-000000000000 │ Memory                                                 │         │

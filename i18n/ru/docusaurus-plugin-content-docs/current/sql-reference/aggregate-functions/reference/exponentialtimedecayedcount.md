@@ -1,6 +1,5 @@
 ---
-description: 'Возвращает накопительное экспоненциальное затухание по временной серии в индексе
-  `t` во времени.'
+description: 'Возвращает кумулятивное экспоненциальное затухание по временным рядам в моменте `t` во времени.'
 sidebar_position: 134
 slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedCount
 title: 'exponentialTimeDecayedCount'
@@ -8,7 +7,7 @@ title: 'exponentialTimeDecayedCount'
 
 ## exponentialTimeDecayedCount {#exponentialtimedecayedcount}
 
-Возвращает накопительное экспоненциальное затухание по временной серии в индексе `t` во времени.
+Возвращает кумулятивное экспоненциальное затухание по временным рядам в моменте `t` во времени.
 
 **Синтаксис**
 
@@ -18,15 +17,15 @@ exponentialTimeDecayedCount(x)(t)
 
 **Аргументы**
 
-- `t` — Время. [Целое](../../../sql-reference/data-types/int-uint.md), [Вещественное](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md), [DateTime](../../data-types/datetime.md), [DateTime64](../../data-types/datetime64.md).
+- `t` — Время. [Целое](../../../sql-reference/data-types/int-uint.md), [Число с плавающей точкой](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md), [ДатаВремя](../../data-types/datetime.md), [ДатаВремя64](../../data-types/datetime64.md).
 
 **Параметры**
 
-- `x` — Период полураспада. [Целое](../../../sql-reference/data-types/int-uint.md), [Вещественное](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md).
+- `x` — Период полураспада. [Целое](../../../sql-reference/data-types/int-uint.md), [Число с плавающей точкой](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md).
 
 **Возвращаемые значения**
 
-- Возвращает накопительное экспоненциальное затухание в данный момент времени. [Float64](../../data-types/float.md).
+- Возвращает кумулятивное экспоненциальное затухание в данный момент времени. [Float64](../../data-types/float.md).
 
 **Пример**
 

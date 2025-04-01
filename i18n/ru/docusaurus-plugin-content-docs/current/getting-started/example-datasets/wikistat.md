@@ -1,15 +1,15 @@
 ---
-description: 'Изучите набор данных WikiStat, содержащий 0,5 триллиона записей.'
+description: 'Исследуйте набор данных WikiStat, содержащий 0.5 триллиона записей.'
 sidebar_label: 'WikiStat'
 slug: /getting-started/example-datasets/wikistat
 title: 'WikiStat'
 ---
 
-Набор данных содержит 0,5 триллиона записей.
+Набор данных содержит 0.5 триллиона записей.
 
 Смотрите видео с FOSDEM 2023: https://www.youtube.com/watch?v=JlcI2Vfz_uk
 
-И презентацию: https://presentations.clickhouse.com/fosdem2023/
+А также презентацию: https://presentations.clickhouse.com/fosdem2023/
 
 Источник данных: https://dumps.wikimedia.org/other/pageviews/
 

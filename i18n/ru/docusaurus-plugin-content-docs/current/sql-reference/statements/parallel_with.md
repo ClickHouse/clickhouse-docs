@@ -1,13 +1,13 @@
 ---
-description: 'Документация для оператора PARALLEL WITH'
+description: 'Документация для клаausa PARALLEL WITH'
 sidebar_label: 'PARALLEL WITH'
 sidebar_position: 53
 slug: /sql-reference/statements/parallel_with
-title: 'Оператор PARALLEL WITH'
+title: 'Клаusa PARALLEL WITH'
 ---
 
 
-# Оператор PARALLEL WITH
+# Клаusa PARALLEL WITH
 
 Позволяет выполнять несколько операторов параллельно.
 
@@ -19,7 +19,7 @@ statement1 PARALLEL WITH statement2 [PARALLEL WITH statement3 ...]
 
 Выполняет операторы `statement1`, `statement2`, `statement3`, ... параллельно друг с другом. Вывод этих операторов игнорируется.
 
-Выполнение операторов параллельно может быть быстрее, чем просто последовательность тех же операторов во многих случаях. Например, `statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` вероятно будет быстрее, чем `statement1; statement2; statement3`.
+Выполнение операторов параллельно может быть быстрее, чем просто последовательное выполнение тех же операторов во многих случаях. Например, `statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` вероятно будет быстрее, чем `statement1; statement2; statement3`.
 
 ## Примеры {#examples}
 
@@ -41,11 +41,11 @@ DROP TABLE table2;
 
 ## Настройки {#settings}
 
-Настройка [max_threads](../../operations/settings/settings.md#max_threads) управляет количеством создаваемых потоков.
+Настройка [max_threads](../../operations/settings/settings.md#max_threads) управляет тем, сколько потоков будет запущено.
 
 ## Сравнение с UNION {#comparison-with-union}
 
-Оператор `PARALLEL WITH` немного похож на [UNION](select/union.md), который также исполняет свои операнды параллельно. Однако есть несколько отличий:
-- `PARALLEL WITH` не возвращает никаких результатов от выполнения своих операндов, он может только передать исключение, если оно возникло;
-- `PARALLEL WITH` не требует, чтобы его операнды имели одинаковый набор результирующих столбцов;
+Клаusa `PARALLEL WITH` немного напоминает [UNION](select/union.md), который также выполняет свои операнды параллельно. Однако есть некоторые отличия:
+- `PARALLEL WITH` не возвращает никакие результаты от выполнения своих операндов, он может только повторно выбросить исключение от них, если такие имеются;
+- `PARALLEL WITH` не требует, чтобы его операнды имели один и тот же набор столбцов результата;
 - `PARALLEL WITH` может выполнять любые операторы (не только `SELECT`).

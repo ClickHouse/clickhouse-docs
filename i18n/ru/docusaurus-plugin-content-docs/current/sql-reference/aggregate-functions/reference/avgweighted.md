@@ -21,13 +21,13 @@ avgWeighted(x, weight)
 - `x` — Значения.
 - `weight` — Веса значений.
 
-`x` и `weight` должны быть
-[целыми](../../../sql-reference/data-types/int-uint.md) или [числами с плавающей точкой](../../../sql-reference/data-types/float.md),
+`x` и `weight` должны быть обоими
+[целиком](../../../sql-reference/data-types/int-uint.md) или [с плавающей запятой](../../../sql-reference/data-types/float.md),
 но могут иметь разные типы.
 
 **Возвращаемое значение**
 
-- `NaN`, если все веса равны 0 или параметр весов пустой.
+- `NaN`, если все веса равны 0 или параметр весов пуст.
 - Взвешенное среднее в противном случае.
 
 **Тип возвращаемого значения** всегда [Float64](../../../sql-reference/data-types/float.md).

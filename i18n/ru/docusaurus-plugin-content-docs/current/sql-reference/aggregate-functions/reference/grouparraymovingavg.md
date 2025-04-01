@@ -1,5 +1,5 @@
 ---
-description: 'Вычисляет скользящее среднее значений на входе.'
+description: 'Вычисляет скользящее среднее входных значений.'
 sidebar_position: 144
 slug: /sql-reference/aggregate-functions/reference/grouparraymovingavg
 title: 'groupArrayMovingAvg'
@@ -8,25 +8,25 @@ title: 'groupArrayMovingAvg'
 
 # groupArrayMovingAvg
 
-Вычисляет скользящее среднее значений на входе.
+Вычисляет скользящее среднее входных значений.
 
 ```sql
 groupArrayMovingAvg(numbers_for_summing)
 groupArrayMovingAvg(window_size)(numbers_for_summing)
 ```
 
-Функция может принимать размер окна в качестве параметра. Если он не указан, функция принимает размер окна, равный количеству строк в столбце.
+Функция может принимать размер окна в качестве параметра. Если он не указан, функция принимает размер окна, равный количеству строк в колонке.
 
 **Аргументы**
 
-- `numbers_for_summing` — [Выражение](/sql-reference/syntax#expressions), в результате которого получается значение числового типа данных.
-- `window_size` — Размер окна расчета.
+- `numbers_for_summing` — [Выражение](/sql-reference/syntax#expressions), приводящее к значению числового типа данных.
+- `window_size` — Размер окна расчетов.
 
 **Возвращаемые значения**
 
-- Массив того же размера и типа, что и входные данные.
+- Массив такого же размера и типа, как входные данные.
 
-Функция использует [округление к нулю](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero). Она отсекает значащие десятичные знаки для результирующего типа данных.
+Функция использует [округление к нулю](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero). Она отсекает десятичные знаки, незначительные для результирующего типа данных.
 
 **Пример**
 

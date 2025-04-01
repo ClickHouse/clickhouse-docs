@@ -1,5 +1,5 @@
 ---
-description: 'Возвращает выборочную ковариационную матрицу по N переменным.'
+description: 'Возвращает матрицу выборочной ковариации по N переменным.'
 sidebar_position: 125
 slug: /sql-reference/aggregate-functions/reference/covarsampmatrix
 title: 'covarSampMatrix'
@@ -8,7 +8,7 @@ title: 'covarSampMatrix'
 
 # covarSampMatrix
 
-Возвращает выборочную ковариационную матрицу по N переменным.
+Возвращает матрицу выборочной ковариации по N переменным.
 
 **Синтаксис**
 
@@ -22,7 +22,7 @@ covarSampMatrix(x[, ...])
 
 **Возвращаемое значение**
 
-- Выборочная ковариационная матрица. [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md))).
+- Матрица выборочной ковариации. [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md))).
 
 **Пример**
 

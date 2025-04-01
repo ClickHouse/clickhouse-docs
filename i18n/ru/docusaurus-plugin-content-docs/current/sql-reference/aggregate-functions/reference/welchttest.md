@@ -17,7 +17,7 @@ title: 'welchTTest'
 welchTTest([confidence_level])(sample_data, sample_index)
 ```
 
-Значения обеих выборок находятся в столбце `sample_data`. Если `sample_index` равен 0, то значение в этой строке принадлежит выборке из первой популяции. В противном случае оно принадлежит выборке из второй популяции. Нулевая гипотеза заключается в том, что средние значения популяций равны. Предполагается нормальное распределение. Популяции могут иметь неравные дисперсии.
+Значения обеих выборок находятся в колонке `sample_data`. Если `sample_index` равен 0, то значение в этой строке принадлежит выборке из первой популяции. В противном случае оно принадлежит выборке из второй популяции. Нулевая гипотеза заключается в том, что средние значения популяций равны. Предполагается нормальное распределение. Популяции могут иметь неравные дисперсии.
 
 **Аргументы**
 
@@ -32,8 +32,8 @@ welchTTest([confidence_level])(sample_data, sample_index)
 
 [Кортеж](../../../sql-reference/data-types/tuple.md) с двумя или четырьмя элементами (если указан необязательный `confidence_level`)
 
-- рассчитанная t-статистика. [Float64](../../../sql-reference/data-types/float.md).
-- рассчитанное значение p. [Float64](../../../sql-reference/data-types/float.md).
+- рассчитанное t-значение. [Float64](../../../sql-reference/data-types/float.md).
+- рассчитанное p-значение. [Float64](../../../sql-reference/data-types/float.md).
 - рассчитанный нижний предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
 - рассчитанный верхний предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
 
@@ -66,7 +66,7 @@ SELECT welchTTest(sample_data, sample_index) FROM welch_ttest;
 └───────────────────────────────────────────┘
 ```
 
-**См. также**
+**Смотрите также**
 
 - [t-тест Уэлча](https://en.wikipedia.org/wiki/Welch%27s_t-test)
 - [функция studentTTest](/sql-reference/aggregate-functions/reference/studentttest)

@@ -1,5 +1,5 @@
 ---
-description: 'Системная таблица, содержащая лицензии сторонних библиотек, расположенных в каталоге contrib исходников ClickHouse.'
+description: 'Системная таблица, содержащая лицензии сторонних библиотек, находящихся в директории contrib исходного кода ClickHouse.'
 keywords: ['системная таблица', 'лицензии']
 slug: /operations/system-tables/licenses
 title: 'system.licenses'
@@ -8,11 +8,11 @@ title: 'system.licenses'
 
 # system.licenses
 
-Содержит лицензии сторонних библиотек, которые расположены в [contrib](https://github.com/ClickHouse/ClickHouse/tree/master/contrib) каталоге исходников ClickHouse.
+Содержит лицензии сторонних библиотек, которые расположены в директории [contrib](https://github.com/ClickHouse/ClickHouse/tree/master/contrib) исходных кодов ClickHouse.
 
 Столбцы:
 
-- `library_name` ([String](../../sql-reference/data-types/string.md)) — Название библиотеки, с которой связана лицензия.
+- `library_name` ([String](../../sql-reference/data-types/string.md)) — Имя библиотеки, с которой связана лицензия.
 - `license_type` ([String](../../sql-reference/data-types/string.md)) — Тип лицензии — например, Apache, MIT.
 - `license_path` ([String](../../sql-reference/data-types/string.md)) — Путь к файлу с текстом лицензии.
 - `license_text` ([String](../../sql-reference/data-types/string.md)) — Текст лицензии.
@@ -28,7 +28,7 @@ SELECT library_name, license_type, license_path FROM system.licenses LIMIT 15
 │ aws-c-common       │ Apache       │ /contrib/aws-c-common/LICENSE       │
 │ base64             │ BSD 2-clause │ /contrib/aklomp-base64/LICENSE      │
 │ brotli             │ MIT          │ /contrib/brotli/LICENSE             │
-│ […]                │ […]          │ […]                                 │
+│ [...]              │ [...]        │ [...]                               │
 └────────────────────┴──────────────┴─────────────────────────────────────┘
 
 ```

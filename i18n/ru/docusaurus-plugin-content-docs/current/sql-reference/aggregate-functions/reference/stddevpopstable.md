@@ -1,6 +1,5 @@
 ---
-description: 'Результат равен квадратному корню из varPop. В отличие от stddevPop,
-  эта функция использует численно стабильный алгоритм.'
+description: 'Результат равен квадратному корню из varPop. В отличие от stddevPop, эта функция использует численно устойчивый алгоритм.'
 sidebar_position: 189
 slug: /sql-reference/aggregate-functions/reference/stddevpopstable
 title: 'stddevPopStable'
@@ -9,7 +8,7 @@ title: 'stddevPopStable'
 
 # stddevPopStable
 
-Результат равен квадратному корню из [varPop](../../../sql-reference/aggregate-functions/reference/varpop.md). В отличие от [`stddevPop`](../reference/stddevpop.md), эта функция использует численно стабильный алгоритм. Она работает медленнее, но обеспечивает меньшую вычислительную ошибку.
+Результат равен квадратному корню из [varPop](../../../sql-reference/aggregate-functions/reference/varpop.md). В отличие от [`stddevPop`](../reference/stddevpop.md), эта функция использует численно устойчивый алгоритм. Она работает медленнее, но обеспечивает меньшую вычислительную ошибку.
 
 **Синтаксис**
 
@@ -19,7 +18,7 @@ stddevPopStable(x)
 
 **Параметры**
 
-- `x`: Население значений, для которого нужно найти стандартное отклонение. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
+- `x`: Набор значений, для которого требуется найти стандартное отклонение. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 

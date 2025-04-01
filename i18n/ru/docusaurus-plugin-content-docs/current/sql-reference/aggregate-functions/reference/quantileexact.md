@@ -11,11 +11,11 @@ title: 'Функции quantileExact'
 
 ## quantileExact {#quantileexact}
 
-Точно вычисляет [квантили](https://en.wikipedia.org/wiki/Quantile) последовательности числовых данных.
+Точно вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
 
-Для получения точного значения все переданные значения объединяются в массив, который затем частично сортируется. Поэтому функция потребляет `O(n)` памяти, где `n` — это количество переданных значений. Тем не менее, для небольшого количества значений функция очень эффективна.
+Чтобы получить точное значение, все переданные значения объединяются в массив, который затем частично сортируется. Поэтому функция потребляет `O(n)` памяти, где `n` — это количество переданных значений. Однако для небольшого количества значений функция очень эффективна.
 
-При использовании нескольких функций `quantile*` с различными уровнями в запросе, внутренние состояния не объединяются (то есть, запрос работает менее эффективно, чем мог бы). В этом случае используйте функцию [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles).
+При использовании нескольких функций `quantile*` с различными уровнями в запросе внутренние состояния не комбинируются (то есть запрос работает менее эффективно, чем мог бы). В этом случае используйте функцию [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles).
 
 **Синтаксис**
 
@@ -27,16 +27,16 @@ quantileExact(level)(expr)
 
 **Аргументы**
 
-- `level` — Уровень квантили. Необязательный параметр. Константное вещественное число от 0 до 1. Рекомендуется использовать значение `level` в диапазоне `[0.01, 0.99]`. Значение по умолчанию: 0.5. При `level=0.5` функция вычисляет [медину](https://en.wikipedia.org/wiki/Median).
-- `expr` — Выражение над значениями столбца, результатом которого являются числовые [типы данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
+- `level` — Уровень квантиля. Необязательный параметр. Константное число с плавающей запятой от 0 до 1. Рекомендуем использовать значение `level` в диапазоне `[0.01, 0.99]`. Значение по умолчанию: 0.5. При `level=0.5` функция вычисляет [медиану](https://en.wikipedia.org/wiki/Median).
+- `expr` — Выражение по значениям колонки, приводящее к числовым [типам данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
 
 **Возвращаемое значение**
 
-- Квантиль заданного уровня.
+- Квантиль указанного уровня.
 
 Тип:
 
-- Для числовых типов данных выходной формат будет таким же, как и входной. Например:
+- Для числовых типов данных формат вывода будет таким же, как и формат входных данных. Например:
 
 ```sql
 
@@ -53,7 +53,7 @@ FROM numbers(1)
 1. │ UInt64   │ Int32          │ Float32          │ Float64          │ Int64          │
    └──────────┴────────────────┴──────────────────┴──────────────────┴────────────────┘
 
-1 строка в наборе. Затраченное время: 0.002 сек.
+1 row in set. Elapsed: 0.002 sec.
 ```
 
 - [Date](../../../sql-reference/data-types/date.md), если входные значения имеют тип `Date`.
@@ -77,11 +77,11 @@ SELECT quantileExact(number) FROM numbers(10)
 
 ## quantileExactLow {#quantileexactlow}
 
-Аналогично `quantileExact`, вычисляет точный [квантиль](https://en.wikipedia.org/wiki/Quantile) последовательности числовых данных.
+Подобно `quantileExact`, эта функция вычисляет точный [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
 
-Для получения точного значения все переданные значения объединяются в массив, который затем полностью сортируется. Комплексность [алгоритма сортировки](https://en.cppreference.com/w/cpp/algorithm/sort) составляет `O(N·log(N))`, где `N = std::distance(first, last)` сравнений.
+Чтобы получить точное значение, все переданные значения объединяются в массив, который затем полностью сортируется. Сложность [алгоритма сортировки](https://en.cppreference.com/w/cpp/algorithm/sort) составляет `O(N·log(N))`, где `N = std::distance(first, last)` сравнений.
 
-Возвращаемое значение зависит от уровня квантили и количества элементов в выборке, т.е. если уровень равен 0.5, то функция возвращает нижнее медианное значение для четного числа элементов и среднее медианное значение для нечетного числа элементов. Медиана вычисляется аналогично реализации [median_low](https://docs.python.org/3/library/statistics.html#statistics.median_low), которая используется в Python.
+Возвращаемое значение зависит от уровня квантиля и количества элементов в выборке, т.е. если уровень равен 0.5, функция возвращает нижнее медианное значение для четного количества элементов и среднее медианное значение для нечетного количества элементов. Медиана вычисляется аналогично реализации [median_low](https://docs.python.org/3/library/statistics.html#statistics.median_low), которая используется в Python.
 
 Для всех остальных уровней возвращается элемент по индексу, соответствующему значению `level * size_of_array`. Например:
 
@@ -93,7 +93,7 @@ SELECT quantileExactLow(0.1)(number) FROM numbers(10)
 └───────────────────────────────┘
 ```
 
-При использовании нескольких функций `quantile*` с различными уровнями в запросе, внутренние состояния не комбинируются (то есть, запрос работает менее эффективно, чем мог бы). В этом случае используйте функцию [quantiles](/sql-reference/aggregate-functions/reference/quantiles) функцию.
+При использовании нескольких функций `quantile*` с различными уровнями в запросе внутренние состояния не комбинируются (то есть запрос работает менее эффективно, чем мог бы). В этом случае используйте функцию [quantiles](/sql-reference/aggregate-functions/reference/quantiles) функции.
 
 **Синтаксис**
 
@@ -105,16 +105,16 @@ quantileExactLow(level)(expr)
 
 **Аргументы**
 
-- `level` — Уровень квантили. Необязательный параметр. Константное вещественное число от 0 до 1. Мы рекомендуем использовать значение `level` в диапазоне `[0.01, 0.99]`. Значение по умолчанию: 0.5. При `level=0.5` функция вычисляет [медину](https://en.wikipedia.org/wiki/Median).
-- `expr` — Выражение над значениями столбца, результатом которого являются числовые [типы данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
+- `level` — Уровень квантиля. Необязательный параметр. Константное число с плавающей запятой от 0 до 1. Рекомендуем использовать значение `level` в диапазоне `[0.01, 0.99]`. Значение по умолчанию: 0.5. При `level=0.5` функция вычисляет [медиану](https://en.wikipedia.org/wiki/Median).
+- `expr` — Выражение по значениям колонки, приводящее к числовым [типам данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
 
 **Возвращаемое значение**
 
-- Квантиль заданного уровня.
+- Квантиль указанного уровня.
 
 Тип:
 
-- [Float64](../../../sql-reference/data-types/float.md) для числового типа данных входа.
+- [Float64](../../../sql-reference/data-types/float.md) для входных данных числового типа.
 - [Date](../../../sql-reference/data-types/date.md), если входные значения имеют тип `Date`.
 - [DateTime](../../../sql-reference/data-types/datetime.md), если входные значения имеют тип `DateTime`.
 
@@ -133,17 +133,18 @@ SELECT quantileExactLow(number) FROM numbers(10)
 │                        4 │
 └──────────────────────────┘
 ```
+
 ## quantileExactHigh {#quantileexacthigh}
 
-Аналогично `quantileExact`, вычисляет точный [квантиль](https://en.wikipedia.org/wiki/Quantile) последовательности числовых данных.
+Подобно `quantileExact`, эта функция вычисляет точный [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
 
-Все переданные значения объединяются в массив, который затем полностью сортируется для получения точного значения. Комплексность [алгоритма сортировки](https://en.cppreference.com/w/cpp/algorithm/sort) составляет `O(N·log(N))`, где `N = std::distance(first, last)` сравнений.
+Все переданные значения объединяются в массив, который затем полностью сортируется для получения точного значения. Сложность [алгоритма сортировки](https://en.cppreference.com/w/cpp/algorithm/sort) составляет `O(N·log(N))`, где `N = std::distance(first, last)` сравнений.
 
-Возвращаемое значение зависит от уровня квантили и количества элементов в выборке, т.е. если уровень равен 0.5, то функция возвращает верхнее медианное значение для четного числа элементов и среднее медианное значение для нечетного числа элементов. Медиана вычисляется аналогично реализации [median_high](https://docs.python.org/3/library/statistics.html#statistics.median_high), которая используется в Python. Для всех остальных уровней возвращается элемент по индексу, соответствующему значению `level * size_of_array`.
+Возвращаемое значение зависит от уровня квантиля и количества элементов в выборке, т.е. если уровень равен 0.5, функция возвращает более высокое медианное значение для четного числа элементов и среднее медианное значение для нечетного числа элементов. Медиана вычисляется аналогично реализации [median_high](https://docs.python.org/3/library/statistics.html#statistics.median_high), которая используется в Python. Для всех остальных уровней возвращается элемент по индексу, соответствующему значению `level * size_of_array`.
 
-Эта реализация ведет себя аналогично текущей реализации `quantileExact`.
+Эта реализация ведет себя точно так же, как и текущая реализация `quantileExact`.
 
-При использовании нескольких функций `quantile*` с различными уровнями в запросе, внутренние состояния не объединяются (то есть, запрос работает менее эффективно, чем мог бы). В этом случае используйте функцию [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles).
+При использовании нескольких функций `quantile*` с различными уровнями в запросе внутренние состояния не комбинируются (то есть запрос работает менее эффективно, чем мог бы). В этом случае используйте функцию [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles) функции.
 
 **Синтаксис**
 
@@ -155,16 +156,16 @@ quantileExactHigh(level)(expr)
 
 **Аргументы**
 
-- `level` — Уровень квантили. Необязательный параметр. Константное вещественное число от 0 до 1. Мы рекомендуем использовать значение `level` в диапазоне `[0.01, 0.99]`. Значение по умолчанию: 0.5. При `level=0.5` функция вычисляет [медину](https://en.wikipedia.org/wiki/Median).
-- `expr` — Выражение над значениями столбца, результатом которого являются числовые [типы данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
+- `level` — Уровень квантиля. Необязательный параметр. Константное число с плавающей запятой от 0 до 1. Рекомендуем использовать значение `level` в диапазоне `[0.01, 0.99]`. Значение по умолчанию: 0.5. При `level=0.5` функция вычисляет [медиану](https://en.wikipedia.org/wiki/Median).
+- `expr` — Выражение по значениям колонки, приводящее к числовым [типам данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
 
 **Возвращаемое значение**
 
-- Квантиль заданного уровня.
+- Квантиль указанного уровня.
 
 Тип:
 
-- [Float64](../../../sql-reference/data-types/float.md) для числового типа данных входа.
+- [Float64](../../../sql-reference/data-types/float.md) для входных данных числового типа.
 - [Date](../../../sql-reference/data-types/date.md), если входные значения имеют тип `Date`.
 - [DateTime](../../../sql-reference/data-types/datetime.md), если входные значения имеют тип `DateTime`.
 
@@ -186,13 +187,13 @@ SELECT quantileExactHigh(number) FROM numbers(10)
 
 ## quantileExactExclusive {#quantileexactexclusive}
 
-Точно вычисляет [квантили](https://en.wikipedia.org/wiki/Quantile) последовательности числовых данных.
+Точно вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
 
-Для получения точного значения все переданные значения объединяются в массив, который затем частично сортируется. Поэтому функция потребляет `O(n)` памяти, где `n` — это количество переданных значений. Тем не менее, для небольшого количества значений функция очень эффективна.
+Чтобы получить точное значение, все переданные значения объединяются в массив, который затем частично сортируется. Поэтому функция потребляет `O(n)` памяти, где `n` — это количество переданных значений. Однако для небольшого количества значений функция очень эффективна.
 
-Эта функция эквивалентна функции [PERCENTILE.EXC](https://support.microsoft.com/en-us/office/percentile-exc-function-bbaa7204-e9e1-4010-85bf-c31dc5dce4ba) в Excel, ([тип R6](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample)).
+Эта функция эквивалентна функции Excel [PERCENTILE.EXC](https://support.microsoft.com/en-us/office/percentile-exc-function-bbaa7204-e9e1-4010-85bf-c31dc5dce4ba), ([type R6](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample)).
 
-При использовании нескольких функций `quantileExactExclusive` с различными уровнями в запросе, внутренние состояния не объединяются (то есть, запрос работает менее эффективно, чем мог бы). В этом случае используйте функцию [quantilesExactExclusive](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantilesexactexclusive) функцию.
+При использовании нескольких функций `quantileExactExclusive` с различными уровнями в запросе внутренние состояния не комбинируются (то есть запрос работает менее эффективно, чем мог бы). В этом случае используйте функцию [quantilesExactExclusive](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantilesexactexclusive).
 
 **Синтаксис**
 
@@ -202,19 +203,19 @@ quantileExactExclusive(level)(expr)
 
 **Аргументы**
 
-- `expr` — Выражение над значениями столбца, результатом которого являются числовые [типы данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
+- `expr` — Выражение по значениям колонки, приводящее к числовым [типам данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
 
 **Параметры**
 
-- `level` — Уровень квантили. Необязательный. Возможные значения: (0, 1) — границы не включены. Значение по умолчанию: 0.5. При `level=0.5` функция вычисляет [медину](https://en.wikipedia.org/wiki/Median). [Float](../../../sql-reference/data-types/float.md).
+- `level` — Уровень квантиля. Необязательный. Возможные значения: (0, 1) — границы не включены. Значение по умолчанию: 0.5. При `level=0.5` функция вычисляет [медиану](https://en.wikipedia.org/wiki/Median). [Float](../../../sql-reference/data-types/float.md).
 
 **Возвращаемое значение**
 
-- Квантиль заданного уровня.
+- Квантиль указанного уровня.
 
 Тип:
 
-- [Float64](../../../sql-reference/data-types/float.md) для числового типа данных входа.
+- [Float64](../../../sql-reference/data-types/float.md) для входных данных числового типа.
 - [Date](../../../sql-reference/data-types/date.md), если входные значения имеют тип `Date`.
 - [DateTime](../../../sql-reference/data-types/datetime.md), если входные значения имеют тип `DateTime`.
 
@@ -238,13 +239,13 @@ SELECT quantileExactExclusive(0.6)(x) FROM (SELECT number AS x FROM num);
 
 ## quantileExactInclusive {#quantileexactinclusive}
 
-Точно вычисляет [квантили](https://en.wikipedia.org/wiki/Quantile) последовательности числовых данных.
+Точно вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
 
-Для получения точного значения все переданные значения объединяются в массив, который затем частично сортируется. Поэтому функция потребляет `O(n)` памяти, где `n` — это количество переданных значений. Тем не менее, для небольшого количества значений функция очень эффективна.
+Чтобы получить точное значение, все переданные значения объединяются в массив, который затем частично сортируется. Поэтому функция потребляет `O(n)` памяти, где `n` — это количество переданных значений. Однако для небольшого количества значений функция очень эффективна.
 
-Эта функция эквивалентна функции [PERCENTILE.INC](https://support.microsoft.com/en-us/office/percentile-inc-function-680f9539-45eb-410b-9a5e-c1355e5fe2ed) в Excel, ([тип R7](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample)).
+Эта функция эквивалентна функции Excel [PERCENTILE.INC](https://support.microsoft.com/en-us/office/percentile-inc-function-680f9539-45eb-410b-9a5e-c1355e5fe2ed), ([type R7](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample)).
 
-При использовании нескольких функций `quantileExactInclusive` с различными уровнями в запросе, внутренние состояния не объединяются (то есть, запрос работает менее эффективно, чем мог бы). В этом случае используйте функцию [quantilesExactInclusive](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantilesexactinclusive) функцию.
+При использовании нескольких функций `quantileExactInclusive` с различными уровнями в запросе внутренние состояния не комбинируются (то есть запрос работает менее эффективно, чем мог бы). В этом случае используйте функцию [quantilesExactInclusive](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantilesexactinclusive).
 
 **Синтаксис**
 
@@ -254,19 +255,19 @@ quantileExactInclusive(level)(expr)
 
 **Аргументы**
 
-- `expr` — Выражение над значениями столбца, результатом которого являются числовые [типы данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
+- `expr` — Выражение по значениям колонки, приводящее к числовым [типам данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
 
 **Параметры**
 
-- `level` — Уровень квантили. Необязательный. Возможные значения: [0, 1] — границы включены. Значение по умолчанию: 0.5. При `level=0.5` функция вычисляет [медину](https://en.wikipedia.org/wiki/Median). [Float](../../../sql-reference/data-types/float.md).
+- `level` — Уровень квантиля. Необязательный. Возможные значения: [0, 1] — границы включены. Значение по умолчанию: 0.5. При `level=0.5` функция вычисляет [медиану](https://en.wikipedia.org/wiki/Median). [Float](../../../sql-reference/data-types/float.md).
 
 **Возвращаемое значение**
 
-- Квантиль заданного уровня.
+- Квантиль указанного уровня.
 
 Тип:
 
-- [Float64](../../../sql-reference/data-types/float.md) для числового типа данных входа.
+- [Float64](../../../sql-reference/data-types/float.md) для входных данных числового типа.
 - [Date](../../../sql-reference/data-types/date.md), если входные значения имеют тип `Date`.
 - [DateTime](../../../sql-reference/data-types/datetime.md), если входные значения имеют тип `DateTime`.
 
@@ -288,7 +289,7 @@ SELECT quantileExactInclusive(0.6)(x) FROM (SELECT number AS x FROM num);
 └────────────────────────────────┘
 ```
 
-**См. Также**
+**См. также**
 
 - [median](/sql-reference/aggregate-functions/reference/median)
 - [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)

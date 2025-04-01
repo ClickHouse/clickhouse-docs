@@ -9,7 +9,7 @@ description: 'Целевая страница для раздела Инстру
 # Инструменты
 
 | Страница              |
-|-----------------------|
+|-------------------|
 | [Визуальные интерфейсы](/interfaces/third-party/gui) |
 | [Прокси](/interfaces/third-party/proxy)         |
 | [Интеграции](/interfaces/third-party/integrations)      |

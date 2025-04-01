@@ -11,5 +11,5 @@ title: 'Интеграция Confluent Cloud с ClickHouse'
 
 Платформа Confluent предоставляет два варианта интеграции с ClickHouse
 
-* [ClickHouse Connect Sink на Confluent Cloud](./custom-connector.md) с использованием функции пользовательских коннекторов
+* [ClickHouse Connect Sink на Confluent Cloud](./custom-connector.md) с использованием функции пользовательских коннекторов 
 * [HTTP Sink Connector для платформы Confluent](./kafka-connect-http.md), который интегрирует Apache Kafka с API через HTTP или HTTPS

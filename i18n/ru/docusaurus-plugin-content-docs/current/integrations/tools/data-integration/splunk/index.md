@@ -2,8 +2,8 @@
 sidebar_label: 'Splunk'
 slug: /integrations/audit-splunk
 keywords: ['clickhouse', 'Splunk', 'audit', 'cloud']
-description: 'Хранение журналов аудита ClickHouse Cloud в Splunk.'
-title: 'Хранение журналов аудита ClickHouse Cloud в Splunk'
+description: 'Сохранение журналов аудита ClickHouse Cloud в Splunk.'
+title: 'Сохранение журналов аудита ClickHouse Cloud в Splunk'
 ---
 
 import Image from '@theme/IdealImage';
@@ -22,24 +22,24 @@ import splunk_012 from '@site/static/images/integrations/tools/data-integration/
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Хранение журналов аудита ClickHouse Cloud в Splunk
+# Сохранение журналов аудита ClickHouse Cloud в Splunk
 
 <ClickHouseSupportedBadge/>
 
 [Splunk](https://www.splunk.com/) — это платформа для аналитики и мониторинга данных.
 
-Этот подключаемый модуль позволяет пользователям хранить [журналы аудита ClickHouse Cloud](/cloud/security/audit-logging) в Splunk. Он использует [ClickHouse Cloud API](/cloud/manage/api/api-overview) для загрузки журналов аудита.
+Этот аддон позволяет пользователям сохранять [журналы аудита ClickHouse Cloud](/cloud/security/audit-logging) в Splunk. Он использует [ClickHouse Cloud API](/cloud/manage/api/api-overview) для загрузки журналов аудита.
 
-Этот подключаемый модуль содержит только модульный ввод, никаких дополнительных интерфейсов с этим модулем не предоставлено.
+Этот аддон содержит только модульный ввод, дополнительный интерфейс не предоставляется.
 
 
 # Установка
 
 ## Для Splunk Enterprise {#for-splunk-enterprise}
 
-Скачайте ClickHouse Cloud Audit Add-on для Splunk с [Splunkbase](https://splunkbase.splunk.com/app/7709).
+Скачайте аддон ClickHouse Cloud Audit для Splunk с [Splunkbase](https://splunkbase.splunk.com/app/7709).
 
-<Image img={splunk_001} size="lg" alt="Веб-сайт Splunkbase, показывающий страницу загрузки ClickHouse Cloud Audit Add-on для Splunk" border />
+<Image img={splunk_001} size="lg" alt="Сайт Splunkbase, показывающий страницу загрузки аддона ClickHouse Cloud Audit для Splunk" border />
 
 В Splunk Enterprise перейдите в Apps -> Manage. Затем нажмите на Install app from file.
 
@@ -47,61 +47,61 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 Выберите загруженный архивированный файл из Splunkbase и нажмите Upload.
 
-<Image img={splunk_003} size="lg" alt="Диалог установки приложения Splunk для загрузки ClickHouse add-on" border />
+<Image img={splunk_003} size="lg" alt="Диалог установки Splunk для загрузки аддона ClickHouse" border />
 
-Если все пройдет успешно, вы должны увидеть установленное приложение ClickHouse Audit logs. Если нет, проверьте журналы Splunkd на наличие ошибок.
+Если все прошло хорошо, вы должны увидеть установленное приложение ClickHouse Audit logs. Если нет, проверьте журналы Splunkd на наличие ошибок.
 
 
-# Настройка модульного ввода
+# Конфигурация модульного ввода
 
-Чтобы настроить модульный ввод, вам сначала потребуется информация из вашей установки ClickHouse Cloud:
+Чтобы настроить модульный ввод, вам сначала потребуется информация из вашего развертывания ClickHouse Cloud:
 
 - Идентификатор организации
-- Администраторский [API Key](/cloud/manage/openapi)
+- Админский [API Key](/cloud/manage/openapi)
 
 ## Получение информации из ClickHouse Cloud {#getting-information-from-clickhouse-cloud}
 
 Войдите в [консоль ClickHouse Cloud](https://console.clickhouse.cloud/).
 
-Перейдите в вашу Организацию -> Подробности организации. Там вы можете скопировать идентификатор организации.
+Перейдите в вашу Организацию -> Подробности организации. Там вы можете скопировать Идентификатор организации.
 
-<Image img={splunk_004} size="lg" alt="Консоль ClickHouse Cloud, показывающая страницу Подробности организации с идентификатором организации" border />
+<Image img={splunk_004} size="lg" alt="Консоль ClickHouse Cloud, показывающая страницу Подробности организации с Идентификатором организации" border />
 
 Затем перейдите в API Keys в левом меню.
 
 <Image img={splunk_005} size="lg" alt="Консоль ClickHouse Cloud, показывающая раздел API Keys в левом навигационном меню" border />
 
-Создайте API Key, дайте ему осмысленное имя и выберите привилегии `Admin`. Нажмите на Generate API Key.
+Создайте API Key, дайте ему понятное имя и выберите привилегии `Admin`. Нажмите на Generate API Key.
 
 <Image img={splunk_006} size="lg" alt="Консоль ClickHouse Cloud, показывающая интерфейс создания API Key с выбранными привилегиями Admin" border />
 
-Сохраните API Key и секретное значение в надежном месте.
+Сохраните API Key и секретное значение в безопасном месте.
 
-<Image img={splunk_007} size="lg" alt="Консоль ClickHouse Cloud, показывающая созданный API Key и секрет, которые нужно сохранить" border />
+<Image img={splunk_007} size="lg" alt="Консоль ClickHouse Cloud, показывающая сгенерированный API Key и секрет для сохранения" border />
 
 ## Настройка ввода данных в Splunk {#configure-data-input-in-splunk}
 
-Вернитесь в Splunk, перейдите в Settings -> Data inputs.
+Вернувшись в Splunk, перейдите в Settings -> Data inputs.
 
-<Image img={splunk_008} size="lg" alt="Интерфейс Splunk, показывающий меню настроек с опцией Data inputs" border />
+<Image img={splunk_008} size="lg" alt="Интерфейс Splunk, показывающий меню Настройки с опцией Ввод данных" border />
 
-Выберите ввод данных журнала аудита ClickHouse Cloud.
+Выберите ввод данных ClickHouse Cloud Audit Logs.
 
-<Image img={splunk_009} size="lg" alt="Страница ввода данных Splunk, показывающая вариант ClickHouse Cloud Audit Logs" border />
+<Image img={splunk_009} size="lg" alt="Страница ввода данных Splunk, показывающая опцию ClickHouse Cloud Audit Logs" border />
 
 Нажмите "New", чтобы настроить новый экземпляр ввода данных.
 
-<Image img={splunk_010} size="lg" alt="Интерфейс Splunk для настройки нового ввода данных журнала аудита ClickHouse Cloud" border />
+<Image img={splunk_010} size="lg" alt="Интерфейс Splunk для настройки нового ввода данных ClickHouse Cloud Audit Logs" border />
 
 После того как вы ввели всю информацию, нажмите Next.
 
-<Image img={splunk_011} size="lg" alt="Страница конфигурации Splunk с заполненными параметрами ввода данных ClickHouse" border />
+<Image img={splunk_011} size="lg" alt="Страница конфигурации Splunk с завершенными настройками ввода данных ClickHouse" border />
 
-Ввод настроен, теперь вы можете начать просматривать журналы аудита.
+Ввод настроен, вы можете начать просматривать журналы аудита.
 
 
 # Использование
 
-Модульный ввод хранит данные в Splunk. Чтобы просмотреть данные, вы можете использовать общий интерфейс поиска в Splunk.
+Модульный ввод хранит данные в Splunk. Чтобы просмотреть данные, вы можете использовать общий режим поиска в Splunk.
 
-<Image img={splunk_012} size="lg" alt="Интерфейс поиска в Splunk, показывающий данные журналов аудита ClickHouse" border />
+<Image img={splunk_012} size="lg" alt="Интерфейс поиска Splunk, показывающий данные журналов аудита ClickHouse" border />

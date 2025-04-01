@@ -1,35 +1,35 @@
 ---
-description: 'Системная таблица, содержащая информацию о текущих фоновых
-  извлечениях.'
+description: 'Системная таблица, содержащая информацию о текущих фонах
+  извлечения.'
 keywords: ['системная таблица', 'replicated_fetches']
 slug: /operations/system-tables/replicated_fetches
 title: 'system.replicated_fetches'
 ---
 
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 
 # system.replicated_fetches
 
 <SystemTableCloud/>
 
-Содержит информацию о текущих фоновых извлечениях.
+Содержит информацию о текущих фонах извлечения.
 
-Столбцы:
+Колонки:
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных.
+- `database` ([String](../../sql-reference/data-types/string.md)) — Название базы данных.
 
-- `table` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы.
+- `table` ([String](../../sql-reference/data-types/string.md)) — Название таблицы.
 
-- `elapsed` ([Float64](../../sql-reference/data-types/float.md)) — Время, прошедшее (в секундах) с момента начала отображения текущих фоновых извлечений.
+- `elapsed` ([Float64](../../sql-reference/data-types/float.md)) — Время, прошедшее (в секундах) с момента начала показа текущих фонов извлечения.
 
 - `progress` ([Float64](../../sql-reference/data-types/float.md)) — Процент завершенной работы от 0 до 1.
 
-- `result_part_name` ([String](../../sql-reference/data-types/string.md)) — Имя части, которая будет сформирована в результате отображения текущих фоновых извлечений.
+- `result_part_name` ([String](../../sql-reference/data-types/string.md)) — Название части, которая будет сформирована как результат показа текущих фонов извлечения.
 
-- `result_part_path` ([String](../../sql-reference/data-types/string.md)) — Абсолютный путь к части, которая будет сформирована в результате отображения текущих фоновых извлечений.
+- `result_part_path` ([String](../../sql-reference/data-types/string.md)) — Абсолютный путь к части, которая будет сформирована как результат показа текущих фонов извлечения.
 
-- `partition_id` ([String](../../sql-reference/data-types/string.md)) — ID раздела.
+- `partition_id` ([String](../../sql-reference/data-types/string.md)) — ID партиции.
 
 - `total_size_bytes_compressed` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Общий размер (в байтах) сжатых данных в результирующей части.
 
@@ -41,11 +41,11 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 - `source_replica_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — Номер порта исходной реплики.
 
-- `interserver_scheme` ([String](../../sql-reference/data-types/string.md)) — Имя межсерверной схемы.
+- `interserver_scheme` ([String](../../sql-reference/data-types/string.md)) — Название межсерверной схемы.
 
 - `URI` ([String](../../sql-reference/data-types/string.md)) — Уникальный идентификатор ресурса.
 
-- `to_detached` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, выполняется ли текущее фоновое извлечение с использованием выражения `TO DETACHED`.
+- `to_detached` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, выполняется ли в данный момент фоновое извлечение с использованием выражения `TO DETACHED`.
 
 - `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Идентификатор потока.
 
@@ -76,6 +76,6 @@ to_detached:                 0
 thread_id:                   54
 ```
 
-**См. также**
+**Смотрите также**
 
 - [Управление таблицами ReplicatedMergeTree](../../sql-reference/statements/system.md/#managing-replicatedmergetree-tables)

@@ -9,4 +9,4 @@ title: 'Set'
 
 # Set
 
-Используется для правой части выражения [IN](/sql-reference/operators/in).
+Используется для правой половины выражения [IN](/sql-reference/operators/in).

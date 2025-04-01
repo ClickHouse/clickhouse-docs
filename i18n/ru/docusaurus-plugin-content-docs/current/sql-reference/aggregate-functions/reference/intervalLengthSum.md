@@ -25,7 +25,7 @@ intervalLengthSum(start, end)
 
 **Возвращаемое значение**
 
-- Общая длина объединения всех диапазонов (сегментов на числовой оси). В зависимости от типа аргумента, возвращаемое значение может быть типа [UInt64](/sql-reference/data-types/int-uint#integer-ranges) или [Float64](/sql-reference/data-types/float).
+- Общая длина объединения всех диапазонов (сегментов на числовой оси). В зависимости от типа аргумента возвращаемое значение может быть типа [UInt64](/sql-reference/data-types/int-uint#integer-ranges) или [Float64](/sql-reference/data-types/float).
 
 **Примеры**
 

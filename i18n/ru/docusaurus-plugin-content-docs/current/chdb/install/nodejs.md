@@ -3,7 +3,7 @@ title: 'Установка chDB для NodeJS'
 sidebar_label: 'NodeJS'
 slug: /chdb/install/nodejs
 description: 'Как установить chDB для NodeJS'
-keywords: ['chdb', 'встраиваемый', 'clickhouse-lite', 'NodeJS', 'установка']
+keywords: ['chdb', 'встроенный', 'clickhouse-lite', 'NodeJS', 'установка']
 ---
 
 
@@ -27,21 +27,22 @@ npm i chdb
 
 Вы можете найти репозиторий GitHub для проекта по адресу [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node).
 
+
 ## Использование {#usage}
 
-Вы можете использовать возможности chdb в ваших приложениях NodeJS, импортируя и используя модуль chdb-node:
+Вы можете использовать возможности chdb в своих приложениях на NodeJS, импортируя и используя модуль chdb-node:
 
 ```javascript
 const { query, Session } = require("chdb");
 
 var ret;
 
-// Тест независимого запроса
+// Тестирование отдельного запроса
 ret = query("SELECT version(), 'Hello chDB', chdb()", "CSV");
-console.log("Результат независимого запроса:", ret);
+console.log("Результат отдельного запроса:", ret);
 
-// Тест запроса сессии
-// Создайте новый экземпляр сессии
+// Тестирование запроса сессии
+// Создание нового экземпляра сессии
 const session = new Session("./chdb-node-tmp");
 ret = session.query("SELECT 123", "CSV")
 console.log("Результат запроса сессии:", ret);

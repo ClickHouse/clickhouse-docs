@@ -13,7 +13,7 @@ title: 'stddevPop'
 Псевдонимы: `STD`, `STDDEV_POP`.
 
 :::note
-Эта функция использует численно нестабильный алгоритм. Если вам нужна [численная стабильность](https://en.wikipedia.org/wiki/Numerical_stability) в вычислениях, используйте функцию [`stddevPopStable`](../reference/stddevpopstable.md). Она работает медленнее, но обеспечивает меньшую вычислительную погрешность.
+Эта функция использует численно нестабильный алгоритм. Если вам нужна [численная стабильность](https://en.wikipedia.org/wiki/Numerical_stability) в расчетах, используйте функцию [`stddevPopStable`](../reference/stddevpopstable.md). Она работает медленнее, но обеспечивает меньшую вычислительную ошибку.
 :::
 
 **Синтаксис**
@@ -24,7 +24,7 @@ stddevPop(x)
 
 **Параметры**
 
-- `x`: Популяция значений, для которых необходимо найти стандартное отклонение. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
+- `x`: Популяция значений, для которых нужно найти стандартное отклонение. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 

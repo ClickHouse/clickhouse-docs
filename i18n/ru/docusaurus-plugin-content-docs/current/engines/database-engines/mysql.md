@@ -1,6 +1,6 @@
 ---
 description: 'Позволяет подключаться к базам данных на удалённом сервере MySQL и выполнять
-  `INSERT` и `SELECT` запросы для обмена данными между ClickHouse и MySQL.'
+  запросы `INSERT` и `SELECT` для обмена данными между ClickHouse и MySQL.'
 sidebar_label: 'MySQL'
 sidebar_position: 50
 slug: /engines/database-engines/mysql
@@ -10,15 +10,15 @@ title: 'MySQL'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# MySQL Database Engine
+# Движок баз данных MySQL
 
 <CloudNotSupportedBadge />
 
-Позволяет подключаться к базам данных на удалённом сервере MySQL и выполнять `INSERT` и `SELECT` запросы для обмена данными между ClickHouse и MySQL.
+Позволяет подключаться к базам данных на удалённом сервере MySQL и выполнять запросы `INSERT` и `SELECT` для обмена данными между ClickHouse и MySQL.
 
-Движок базы данных `MySQL` преобразует запросы к серверу MySQL, так что вы можете выполнять операции такие как `SHOW TABLES` или `SHOW CREATE TABLE`.
+Движок базы данных `MySQL` переводит запросы на сервер MySQL, позволяя выполнять операции, такие как `SHOW TABLES` или `SHOW CREATE TABLE`.
 
-Вы не можете выполнять следующие запросы:
+Вы не можете выполнить следующие запросы:
 
 - `RENAME`
 - `CREATE TABLE`
@@ -58,13 +58,13 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 
 Все остальные типы данных MySQL преобразуются в [String](../../sql-reference/data-types/string.md).
 
-Поддерживается [Nullable](../../sql-reference/data-types/nullable.md).
+[Nullable](../../sql-reference/data-types/nullable.md) поддерживается.
 
 ## Поддержка глобальных переменных {#global-variables-support}
 
-Для лучшей совместимости вы можете обращаться к глобальным переменным в стиле MySQL, используя `@@identifier`.
+Для лучшей совместимости вы можете адресовать глобальные переменные в стиле MySQL, используя `@@identifier`.
 
-Поддерживаются следующие переменные:
+Эти переменные поддерживаются:
 - `version`
 - `max_allowed_packet`
 
@@ -104,7 +104,7 @@ mysql> select * from mysql_table;
 1 row in set (0,00 sec)
 ```
 
-База данных в ClickHouse, обмен данными с сервером MySQL:
+База данных в ClickHouse, обменивающаяся данными с сервером MySQL:
 
 ```sql
 CREATE DATABASE mysql_db ENGINE = MySQL('localhost:3306', 'test', 'my_user', 'user_password') SETTINGS read_write_timeout=10000, connect_timeout=100;

@@ -5,7 +5,7 @@ slug: /operations/system-tables/query_cache
 title: 'system.query_cache'
 ---
 
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 
 # system.query_cache
@@ -20,11 +20,11 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 - `query_id` ([String](../../sql-reference/data-types/string.md)) — ID запроса.
 - `result_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Размер записи в кэше запросов.
 - `tag` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — Тег записи в кэше запросов.
-- `stale` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Если запись в кэше запросов устарела.
-- `shared` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Если запись в кэше запросов общая для нескольких пользователей.
-- `compressed` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Если запись в кэше запросов сжата.
-- `expires_at` ([DateTime](../../sql-reference/data-types/datetime.md)) — Когда запись в кэше запросов становится устаревшей.
-- `key_hash` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Хеш строки запроса, используемый в качестве ключа для поиска записей в кэше запросов.
+- `stale` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Указывает, является ли запись в кэше запросов устаревшей.
+- `shared` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Указывает, разделяется ли запись в кэше запросов между несколькими пользователями.
+- `compressed` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Указывает, сжата ли запись в кэше запросов.
+- `expires_at` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время, когда запись в кэше запросов становится устаревшей.
+- `key_hash` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Хеш строки запроса, используемый в качестве ключа для поиска записей кэша запросов.
 
 **Пример**
 

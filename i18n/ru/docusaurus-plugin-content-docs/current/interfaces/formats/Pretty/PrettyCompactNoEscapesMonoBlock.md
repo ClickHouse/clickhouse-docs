@@ -10,14 +10,14 @@ title: 'PrettyCompactNoEscapesMonoBlock'
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Вход   | Выход   | Псевдоним |
-|--------|---------|-----------|
-| ✗      | ✔       |           |
+| Вход | Выход  | Псевдоним |
+|-------|---------|-------|
+| ✗     | ✔       |       |
 
 ## Описание {#description}
 
-Отличается от формата [`PrettyCompactNoEscapes`](./PrettyCompactNoEscapes.md) тем, что буферизует до `10,000` строк, 
-и затем выводит их как одну таблицу, а не по [блокам](/development/architecture#block).
+Отличается от формата [`PrettyCompactNoEscapes`](./PrettyCompactNoEscapes.md) тем, что до `10,000` строк буферизуются, 
+а затем выводятся как одна таблица, а не по [блокам](/development/architecture#block).
 
 ## Пример использования {#example-usage}
 

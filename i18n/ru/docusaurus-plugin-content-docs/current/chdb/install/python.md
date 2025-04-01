@@ -31,7 +31,7 @@ python3 -m chdb [SQL] [OutputFormat]
 python3 -m chdb "SELECT 1, 'abc'" Pretty
 ```
 
-Пример Python файла:
+Пример файла на Python:
 
 ```python
 import chdb
@@ -40,19 +40,19 @@ res = chdb.query("SELECT 1, 'abc'", "CSV")
 print(res, end="")
 ```
 
-Запросы могут возвращать данные в любом [поддерживаемом формате](/interfaces/formats), а также в `Dataframe` и `Debug`.
+Запросы могут возвращать данные в любом [поддерживаемом формате](/interfaces/formats), а также в формате `Dataframe` и `Debug`.
 
-## Репозиторий GitHub {#github-repository}
+## Репозиторий на GitHub {#github-repository}
 
 Вы можете найти репозиторий GitHub для проекта по адресу [chdb-io/chdb](https://github.com/chdb-io/chdb).
 
 ## Ввод данных {#data-input}
 
-Доступны следующие методы для работы с форматами данных на диске и в памяти:
+Доступные методы для работы с форматами данных на диске и в памяти:
 
-### Запрос в файл (Parquet, CSV, JSON, Arrow, ORC и 60+) {#query-on-file-parquet-csv-json-arrow-orc-and-60}
+### Запрос на файле (Parquet, CSV, JSON, Arrow, ORC и 60+) {#query-on-file-parquet-csv-json-arrow-orc-and-60}
 
-Вы можете выполнять SQL и возвращать данные в нужном формате.
+Вы можете выполнять SQL запросы и возвращать данные в нужном формате.
 
 ```python
 import chdb
@@ -63,50 +63,50 @@ res = chdb.query('select version()', 'Pretty'); print(res)
 
 ```python
 
-# См. больше форматов типов данных в tests/format_output.py
+# Смотрите больше форматов типов данных в tests/format_output.py
 res = chdb.query('select * from file("data.parquet", Parquet)', 'JSON'); print(res)
-res = chdb.query('select * from file("data.csv", CSV)', 'CSV');  print(res)
+res = chdb.query('select * from file("data.csv", CSV)', 'CSV'); print(res)
 print(f"SQL прочитано {res.rows_read()} строк, {res.bytes_read()} байт, затраченное время {res.elapsed()} секунд")
 ```
 
 **Вывод в формате Pandas DataFrame**
 ```python
 
-# См. больше информации в https://clickhouse.com/docs/interfaces/formats
+# Смотрите больше информации в https://clickhouse.com/docs/interfaces/formats
 chdb.query('select * from file("data.parquet", Parquet)', 'Dataframe')
 ```
 
-### Запрос в таблице (Pandas DataFrame, файл/байты Parquet, байты Arrow) {#query-on-table-pandas-dataframe-parquet-filebytes-arrow-bytes}
+### Запрос на таблице (Pandas DataFrame, Parquet файл/байты, Arrow байты) {#query-on-table-pandas-dataframe-parquet-filebytes-arrow-bytes}
 
-**Запрос в Pandas DataFrame**
+**Запрос на Pandas DataFrame**
 
 ```python
 import chdb.dataframe as cdf
 import pandas as pd
 
-# Объединение 2 DataFrames
+# Объединить 2 DataFrames
 df1 = pd.DataFrame({'a': [1, 2, 3], 'b': ["one", "two", "three"]})
 df2 = pd.DataFrame({'c': [1, 2, 3], 'd': ["①", "②", "③"]})
 ret_tbl = cdf.query(sql="select * from __tbl1__ t1 join __tbl2__ t2 on t1.a = t2.c",
                   tbl1=df1, tbl2=df2)
 print(ret_tbl)
 
-# Запрос по таблице DataFrame
+# Запрос на таблице DataFrame
 print(ret_tbl.query('select b, sum(a) from __table__ group by b'))
 ```
 
-### Запрос с поддержанием состояния сессии {#query-with-stateful-session}
+### Запрос с состоянием сеанса {#query-with-stateful-session}
 
-Сессии будут сохранять состояние запроса. Все состояния DDL и DML будут храниться в директории. Путь к директории может быть передан в качестве аргумента. Если он не передан, будет создана временная директория.
+Сессии сохранят состояние запроса. Все состояния DDL и DML будут храниться в каталоге. Путь к каталогу можно передать в качестве аргумента. Если он не передан, будет создан временный каталог.
 
-Если путь не указан, временная директория будет удалена, когда объект Session будет удален. В противном случае путь будет сохранен.
+Если путь не указан, временный каталог будет удален, когда объект Session будет удален. В противном случае путь будет сохранен.
 
-Обратите внимание, что база данных по умолчанию - `_local`, а движок по умолчанию - `Memory`, что означает, что все данные будут храниться в памяти. Если вы хотите сохранить данные на диске, вам следует создать другую базу данных.
+Обратите внимание, что база данных по умолчанию - это `_local`, а движок по умолчанию - `Memory`, что означает, что все данные будут храниться в памяти. Если вы хотите хранить данные на диске, вам следует создать другую базу данных.
 
 ```python
 from chdb import session as chs
 
-## Создание БД, Таблицы, Представления во временной сессии, автоматическая очистка при удалении сессии.
+## Создать БД, Таблицу, Вид в временной сессии, автоматическая очистка при удалении сессии.
 sess = chs.Session()
 sess.query("CREATE DATABASE IF NOT EXISTS db_xxx ENGINE = Atomic")
 sess.query("CREATE TABLE IF NOT EXISTS db_xxx.log_table_xxx (x String, y Int) ENGINE = Log;")
@@ -114,13 +114,13 @@ sess.query("INSERT INTO db_xxx.log_table_xxx VALUES ('a', 1), ('b', 3), ('c', 2)
 sess.query(
     "CREATE VIEW db_xxx.view_xxx AS SELECT * FROM db_xxx.log_table_xxx LIMIT 4;"
 )
-print("Выбор из представления:\n")
+print("Выбор из вида:\n")
 print(sess.query("SELECT * FROM db_xxx.view_xxx", "Pretty"))
 ```
 
 Смотрите также: [test_stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py).
 
-### Запрос с использованием Python DB-API 2.0 {#query-with-python-db-api-20}
+### Запрос с Python DB-API 2.0 {#query-with-python-db-api-20}
 
 ```python
 import chdb.dbapi as dbapi
@@ -135,7 +135,7 @@ cur1.close()
 conn1.close()
 ```
 
-### Запрос с использованием UDF (Пользовательские функции) {#query-with-udf-user-defined-functions}
+### Запрос с UDF (Пользовательские Определенные Функции) {#query-with-udf-user-defined-functions}
 
 ```python
 from chdb.udf import chdb_udf
@@ -148,11 +148,11 @@ def sum_udf(lhs, rhs):
 print(query("select sum_udf(12,22)"))
 ```
 
-Некоторые заметки о декораторе chDB Python UDF (Пользовательская функция).
-1. Функция должна быть без состояния. Поддерживаются только UDF, не UDAF (Пользовательские функции агрегации).
-2. Тип возврата по умолчанию - String. Если вы хотите изменить тип возврата, вы можете передать его в качестве аргумента. Тип возврата должен быть одним из [следующих](/sql-reference/data-types).
-3. Функция должна принимать аргументы типа String. Поскольку входные данные разделены табуляцией, все аргументы являются строками.
-4. Функция будет вызываться для каждой строки входных данных. Пример:
+Некоторые примечания по декоратору UDF (Пользовательская Определенная Функция) для chDB.
+1. Функция должна быть статeless. Поддерживаются только UDF, не UDAF (Пользовательские Определенные Агрегатные Функции).
+2. Тип возвращаемого значения по умолчанию - String. Если вы хотите изменить тип возвращаемого значения, вы можете передать его в качестве аргумента. Тип возвращаемого значения должен быть одним из [следующих](/sql-reference/data-types).
+3. Функция должна принимать аргументы типа String. Поскольку входной формат - TabSeparated, все аргументы строковые.
+4. Функция будет вызываться для каждой строки ввода. Например:
     ```python
     def sum_udf(lhs, rhs):
         return int(lhs) + int(rhs)
@@ -170,13 +170,13 @@ print(query("select sum_udf(12,22)"))
         import json
         ...
     ```
-6. Используемый интерпретатор Python такой же, как и тот, который используется для запуска скрипта. Вы можете получить его из `sys.executable`.
+6. Используемый интерпретатор Python такой же, как и тот, который использовался для запуска скрипта. Вы можете получить его из `sys.executable`.
 
-смотрите также: [test_udf.py](https://github.com/chdb-io/chdb/blob/main/tests/test_udf.py).
+Смотрите также: [test_udf.py](https://github.com/chdb-io/chdb/blob/main/tests/test_udf.py).
 
 ### Движок таблиц Python {#python-table-engine}
 
-### Запрос по Pandas DataFrame {#query-on-pandas-dataframe}
+### Запрос на Pandas DataFrame {#query-on-pandas-dataframe}
 
 ```python
 import chdb
@@ -191,7 +191,7 @@ df = pd.DataFrame(
 chdb.query("SELECT b, sum(a) FROM Python(df) GROUP BY b ORDER BY b").show()
 ```
 
-### Запрос по Arrow Table {#query-on-arrow-table}
+### Запрос на Arrow Table {#query-on-arrow-table}
 
 ```python
 import chdb
@@ -208,14 +208,14 @@ chdb.query(
 ).show()
 ```
 
-### Запрос по экземпляру класса chdb.PyReader {#query-on-chdbpyreader-class-instance}
+### Запрос на экземпляре класса chdb.PyReader {#query-on-chdbpyreader-class-instance}
 
-1. Вы должны наследовать класс chdb.PyReader и реализовать метод `read`.
+1. Вы должны унаследовать класс chdb.PyReader и реализовать метод `read`.
 2. Метод `read` должен:
-    1. возвращать список списков, первая размерность - столбец, вторая размерность - строка, порядок столбцов должен совпадать с первым аргументом `col_names` метода `read`.
+    1. возвращать список списков, первая размерность - колонка, вторая - строка, порядок колонок должен быть таким же, как и первый аргумент `col_names` метода `read`.
     1. возвращать пустой список, когда больше нет данных для чтения.
-    1. иметь состояние, курсор должен обновляться в методе `read`.
-3. Метод `get_schema` может быть реализован для возврата схемы таблицы. Прототип: `def get_schema(self) -> List[Tuple[str, str]]:`, возвращаемое значение - список кортежей, каждый кортеж содержит имя столбца и тип столбца. Тип столбца должен быть одним из [следующих](/sql-reference/data-types).
+    1. быть stateful, курсор должен обновляться в методе `read`.
+3. Необязательный метод `get_schema` может быть реализован для возврата схемы таблицы. Прототип: `def get_schema(self) -> List[Tuple[str, str]]:`, значение, возвращаемое функцией, - это список кортежей, каждый из которых содержит имя колонки и тип колонки. Тип колонки должен быть одним из [следующих](/sql-reference/data-types).
 
 <br />
 
@@ -229,7 +229,7 @@ class myReader(chdb.PyReader):
         super().__init__(data)
 
     def read(self, col_names, count):
-        print("Функция Python read", col_names, count, self.cursor)
+        print("Python func read", col_names, count, self.cursor)
         if self.cursor >= len(self.data["a"]):
             return []
         block = [self.data[col] for col in col_names]
@@ -252,10 +252,10 @@ chdb.query(
 
 ## Ограничения {#limitations}
 
-1. Поддерживаемые типы столбцов: `pandas.Series`, `pyarrow.array`, `chdb.PyReader`
+1. Поддерживаемые типы колонок: `pandas.Series`, `pyarrow.array`, `chdb.PyReader`
 1. Поддерживаемые типы данных: Int, UInt, Float, String, Date, DateTime, Decimal
-1. Тип Python Object будет преобразован в String
-1. Производительность Pandas DataFrame является лучшей, Arrow Table лучше, чем PyReader
+1. Тип объекта Python будет преобразован в String
+1. Производительность Pandas DataFrame лучшая, Arrow Table лучше, чем PyReader
 
 <br />
 

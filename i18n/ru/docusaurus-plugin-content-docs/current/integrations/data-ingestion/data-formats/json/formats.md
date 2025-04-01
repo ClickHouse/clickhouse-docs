@@ -2,17 +2,17 @@
 title: 'Обработка других форматов JSON'
 slug: /integrations/data-formats/json/other-formats
 description: 'Обработка других форматов JSON'
-keywords: ['json', 'форматы', 'форматы json']
+keywords: ['json', 'formats', 'json formats']
 ---
 
 
 # Обработка других форматов
 
-Ранее приведенные примеры загрузки данных JSON предполагают использование [`JSONEachRow`](/interfaces/formats#jsoneachrow) (ndjson). Мы предлагаем примеры загрузки JSON в других популярных форматах ниже.
+Ранее в примерах загрузки данных JSON предполагалось использование [`JSONEachRow`](/interfaces/formats#jsoneachrow) (ndjson). Ниже представлены примеры загрузки JSON в других распространённых форматах.
 
 ## Массив JSON объектов {#array-of-json-objects}
 
-Одна из самых популярных форм JSON данных — это наличие списка JSON объектов в массиве JSON, как в [этом примере](../assets/list.json):
+Одной из самых популярных форм JSON данных является наличие списка JSON объектов в массиве JSON, как в [этом примере](../assets/list.json):
 
 ```bash
 > cat list.json
@@ -31,7 +31,7 @@ keywords: ['json', 'форматы', 'форматы json']
 ]
 ```
 
-Создадим таблицу для такого рода данных:
+Давайте создадим таблицу для такого рода данных:
 
 ```sql
 CREATE TABLE sometable
@@ -52,7 +52,7 @@ FROM INFILE 'list.json'
 FORMAT JSONEachRow
 ```
 
-Мы использовали [FROM INFILE](/sql-reference/statements/insert-into.md/#inserting-data-from-a-file) для загрузки данных из локального файла, и мы можем увидеть, что импорт прошел успешно:
+Мы использовали [FROM INFILE](/sql-reference/statements/insert-into.md/#inserting-data-from-a-file) для загрузки данных из локального файла, и мы можем увидеть, что импорт прошёл успешно:
 
 ```sql
 SELECT *
@@ -68,7 +68,7 @@ FROM sometable
 
 ## Обработка NDJSON (JSON с разделением по строкам) {#handling-ndjson-line-delimited-json}
 
-Многие приложения могут записывать данные в формате JSON, так что каждая строка лога является отдельным JSON объектом, как в [этом файле](../assets/object-per-line.json):
+Многие приложения могут вести логирование данных в формате JSON, так что каждая строка лога — это отдельный JSON объект, как в [этом файле](../assets/object-per-line.json):
 
 ```bash
 cat object-per-line.json
@@ -79,7 +79,7 @@ cat object-per-line.json
 {"path":"Bob_Dolman","month":"2016-11-01","hits":245}
 ```
 
-Тот же формат `JSONEachRow` способен работать с такими файлами:
+Тот же формат `JSONEachRow` может работать с такими файлами:
 
 ```sql
 INSERT INTO sometable FROM INFILE 'object-per-line.json' FORMAT JSONEachRow;
@@ -95,7 +95,7 @@ SELECT * FROM sometable;
 
 ## Ключи объектов JSON {#json-object-keys}
 
-В некоторых случаях список JSON объектов может быть закодирован как свойства объекта, а не как элементы массива (см. [objects.json](../assets/objects.json) для примера):
+В некоторых случаях список JSON объектов может быть закодирован как свойства объекта вместо элементов массива (см. [objects.json](../assets/objects.json) для примера):
 
 ```bash
 cat objects.json
@@ -117,7 +117,7 @@ cat objects.json
 }
 ```
 
-ClickHouse может загружать данные из такого рода данных, используя формат [`JSONObjectEachRow`](/interfaces/formats.md/#jsonobjecteachrow):
+ClickHouse может загружать данные этого типа с использованием формата [`JSONObjectEachRow`](/interfaces/formats.md/#jsonobjecteachrow):
 
 ```sql
 INSERT INTO sometable FROM INFILE 'objects.json' FORMAT JSONObjectEachRow;
@@ -131,9 +131,9 @@ SELECT * FROM sometable;
 └─────────────────┴────────────┴──────┘
 ```
 
-### Указание значений ключей родительского объекта {#specifying-parent-object-key-values}
+### Указание значений родительских ключей объекта {#specifying-parent-object-key-values}
 
-Предположим, мы также хотим сохранить значения ключей родительского объекта в таблице. В этом случае мы можем использовать [следующий параметр](/operations/settings/settings-formats.md/#format_json_object_each_row_column_for_object_name) для определения имени столбца, в который мы хотим сохранить значения ключей:
+Предположим, мы также хотим сохранить значения в родительских ключах объекта в таблице. В этом случае мы можем использовать [следующий параметр](/operations/settings/settings-formats.md/#format_json_object_each_row_column_for_object_name) для определения имени столбца, в который мы хотим, чтобы значения ключей были сохранены:
 
 ```sql
 SET format_json_object_each_row_column_for_object_name = 'id'
@@ -152,11 +152,11 @@ SELECT * FROM file('objects.json', JSONObjectEachRow)
 └────┴─────────────────┴────────────┴──────┘
 ```
 
-Обратите внимание, что столбец `id` заполнился значениями ключей корректно.
+Обратите внимание, как колонка `id` была правильно заполнена значениями ключей.
 
 ## JSON Массивы {#json-arrays}
 
-Иногда, ради экономии места, JSON файлы кодируются в массивы вместо объектов. В этом случае мы имеем [список JSON массивов](../assets/arrays.json):
+Иногда, для экономии места, JSON файлы кодируются в массивы вместо объектов. В этом случае мы имеем дело со [списком JSON массивов](../assets/arrays.json):
 
 ```bash
 cat arrays.json
@@ -167,7 +167,7 @@ cat arrays.json
 ["1971-72_Utah_Stars_season", "2016-10-01", 1]
 ```
 
-В этом случае ClickHouse загрузит эти данные и назначит каждое значение соответствующему столбцу на основе их порядка в массиве. Мы используем формат [`JSONCompactEachRow`](/interfaces/formats.md/#jsoncompacteachrow) для этого:
+В этом случае ClickHouse загрузит эти данные и назначит каждому значению соответствующий столбец в зависимости от его порядка в массиве. Мы используем формат [`JSONCompactEachRow`](/interfaces/formats.md/#jsoncompacteachrow) для этого:
 
 ```sql
 SELECT * FROM sometable
@@ -182,7 +182,7 @@ SELECT * FROM sometable
 
 ### Импорт отдельных столбцов из JSON массивов {#importing-individual-columns-from-json-arrays}
 
-В некоторых случаях данные могут быть закодированы по столбцам вместо по строкам. В этом случае родительский JSON объект содержит столбцы со значениями. Посмотрите на [следующий файл](../assets/columns.json):
+В некоторых случаях данные могут быть закодированы по столбцам вместо строк. В этом случае родительский JSON объект содержит столбцы со значениями. Посмотрите на [следующий файл](../assets/columns.json):
 
 ```bash
 cat columns.json
@@ -195,7 +195,7 @@ cat columns.json
 }
 ```
 
-ClickHouse использует формат [`JSONColumns`](/interfaces/formats.md/#jsoncolumns) для разбора данных, отформатированных таким образом:
+ClickHouse использует формат [`JSONColumns`](/interfaces/formats.md/#jsoncolumns) для разбора данных формата:
 
 ```sql
 SELECT * FROM file('columns.json', JSONColumns)
@@ -208,7 +208,7 @@ SELECT * FROM file('columns.json', JSONColumns)
 └────────────────────────────┴────────────┴──────┘
 ```
 
-Также поддерживается более компактный формат, когда мы имеем [массив столбцов](../assets/columns-array.json) вместо объекта, используя формат [`JSONCompactColumns`](/interfaces/formats.md/#jsoncompactcolumns):
+Также поддерживается более компактный формат при работе с [массивом колонок](../assets/columns-array.json) вместо объекта с использованием формата [`JSONCompactColumns`](/interfaces/formats.md/#jsoncompactcolumns):
 
 ```sql
 SELECT * FROM file('columns-array.json', JSONCompactColumns)
@@ -223,7 +223,7 @@ SELECT * FROM file('columns-array.json', JSONCompactColumns)
 
 ## Сохранение JSON объектов вместо разбора {#saving-json-objects-instead-of-parsing}
 
-Есть случаи, когда вы можете захотеть сохранить JSON объекты в одном столбце `String` (или JSON), а не разбирать его. Это может быть полезно при работе со списком JSON объектов с различными структурами. Рассмотрим [этот файл](../assets/custom.json), в котором у нас есть несколько различных JSON объектов внутри родительского списка:
+Существуют случаи, когда вы можете захотеть сохранить JSON объекты в одном столбце `String` (или JSON) вместо их разбора. Это может быть полезно при работе со списком JSON объектов разной структуры. Давайте возьмём [этот файл](../assets/custom.json), где у нас есть несколько различных JSON объектов внутри родительского списка:
 
 ```bash
 cat custom.json
@@ -247,7 +247,7 @@ ENGINE = MergeTree
 ORDER BY ()
 ```
 
-Теперь мы можем загрузить данные из файла в эту таблицу, используя формат [`JSONAsString`](/interfaces/formats.md/#jsonasstring), чтобы сохранить JSON объекты, а не разбирать их:
+Теперь мы можем загрузить данные из файла в эту таблицу, используя формат [`JSONAsString`](/interfaces/formats.md/#jsonasstring), чтобы сохранить JSON объекты вместо их разбора:
 
 ```sql
 INSERT INTO events (data)
@@ -255,7 +255,7 @@ FROM INFILE 'custom.json'
 FORMAT JSONAsString
 ```
 
-И мы можем использовать [функции JSON](/sql-reference/functions/json-functions.md), чтобы запросить сохраненные объекты:
+И мы можем использовать [JSON функции](/sql-reference/functions/json-functions.md) для запроса сохранённых объектов:
 
 ```sql
 SELECT
@@ -271,7 +271,7 @@ FROM events
 └────────┴──────────────────────────────────────────────────────┘
 ```
 
-Обратите внимание, что `JSONAsString` прекрасно работает в случаях, когда у нас есть JSON файлы, отформатированные по одной строке на объект (обычно используемые с форматом `JSONEachRow`).
+Обратите внимание, что `JSONAsString` отлично работает в случаях, когда у нас есть файлы, отформатированные как JSON объект на строку (обычно используемые с форматом `JSONEachRow`).
 
 ## Схема для вложенных объектов {#schema-for-nested-objects}
 
@@ -290,13 +290,13 @@ LIMIT 1
 
 ## Доступ к вложенным JSON объектам {#accessing-nested-json-objects}
 
-Мы можем ссылаться на [вложенные JSON ключи](../assets/list-nested.json), включив [следующую настройку](/operations/settings/settings-formats.md/#input_format_import_nested_json):
+Мы можем ссылаться на [вложенные ключи JSON](../assets/list-nested.json), включив [следующий параметр настройки](/operations/settings/settings-formats.md/#input_format_import_nested_json):
 
 ```sql
 SET input_format_import_nested_json = 1
 ```
 
-Это позволяет нам ссылаться на ключи вложенных JSON объектов, используя нотацию с точками (не забудьте обернуть их в символы обратной кавычки, чтобы это работало):
+Это позволяет нам ссылаться на ключи вложенных JSON объектов, используя нотацию через точку (не забудьте заключать их в символы обратной кавычки для работы):
 
 ```sql
 SELECT *
@@ -309,11 +309,11 @@ LIMIT 1
 └───────────────┴──────────────────────┴────────────┴──────┘
 ```
 
-Таким образом, мы можем развернуть вложенные JSON объекты или использовать некоторые вложенные значения, чтобы сохранить их в отдельных столбцах.
+Таким образом, мы можем упростить вложенные JSON объекты или использовать некоторые вложенные значения, чтобы сохранить их как отдельные столбцы.
 
 ## Пропуск неизвестных столбцов {#skipping-unknown-columns}
 
-По умолчанию ClickHouse будет игнорировать неизвестные столбцы при импорте JSON данных. Давайте попробуем импортировать оригинальный файл в таблицу без столбца `month`:
+По умолчанию ClickHouse будет игнорировать неизвестные столбцы при импорте JSON данных. Давайте попробуем импортировать оригинальный файл в таблицу без колонки `month`:
 
 ```sql
 CREATE TABLE shorttable
@@ -325,7 +325,7 @@ ENGINE = MergeTree
 ORDER BY path
 ```
 
-Мы все еще можем вставить [оригинальные JSON данные](../assets/list.json) с 3 столбцами в эту таблицу:
+Мы все еще можем вставить [оригинальные JSON данные](../assets/list.json) с 3 колонками в эту таблицу:
 
 ```sql
 INSERT INTO shorttable FROM INFILE 'list.json' FORMAT JSONEachRow;
@@ -339,7 +339,7 @@ SELECT * FROM shorttable
 └───────────────────────────┴──────┘
 ```
 
-ClickHouse будет игнорировать неизвестные столбцы во время импорта. Это можно отключить с помощью параметра [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields):
+ClickHouse будет игнорировать неизвестные столбцы при импорте. Это можно отключить с помощью параметра [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields):
 
 ```sql
 SET input_format_skip_unknown_fields = 0;
@@ -351,13 +351,13 @@ Exception on client:
 Code: 117. DB::Exception: Unknown field found while parsing JSONEachRow format: month: (in file/uri /data/clickhouse/user_files/list.json): (at row 1)
 ```
 
-ClickHouse выдаст исключения в случаях несоответствия структуры JSON и структуры столбцов таблицы.
+ClickHouse выдаст исключения в случаях несоответствия структуры JSON и столбцов таблицы.
 
 ## BSON {#bson}
 
-ClickHouse позволяет экспортировать и импортировать данные из файлов, закодированных в [BSON](https://bsonspec.org/). Этот формат используется некоторыми СУБД, например [MongoDB](https://github.com/mongodb/mongo).
+ClickHouse позволяет экспортировать в и импортировать данные из [BSON](https://bsonspec.org/) закодированных файлов. Этот формат используется некоторыми СУБД, например, базой данных [MongoDB](https://github.com/mongodb/mongo).
 
-Для импорта данных BSON мы используем формат [BSONEachRow](/interfaces/formats.md/#bsoneachrow). Давайте импортируем данные из [этого BSON файла](../assets/data.bson):
+Чтобы импортировать BSON данные, мы используем формат [BSONEachRow](/interfaces/formats.md/#bsoneachrow). Давайте импортируем данные из [этого BSON файла](../assets/data.bson):
 
 ```sql
 SELECT * FROM file('data.bson', BSONEachRow)
@@ -379,4 +379,4 @@ INTO OUTFILE 'out.bson'
 FORMAT BSONEachRow
 ```
 
-После этого мы получим наши данные, экспортированные в файл `out.bson`.
+После этого наши данные будут экспортированы в файл `out.bson`.

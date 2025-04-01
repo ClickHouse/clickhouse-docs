@@ -20,7 +20,7 @@ skewPop(expr)
 
 **Возвращаемое значение**
 
-Асимметрия заданного распределения. Тип — [Float64](../../../sql-reference/data-types/float.md)
+Асимметрия данного распределения. Тип — [Float64](../../../sql-reference/data-types/float.md)
 
 **Пример**
 

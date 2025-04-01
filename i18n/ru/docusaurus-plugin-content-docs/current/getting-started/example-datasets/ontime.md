@@ -1,11 +1,11 @@
 ---
-description: 'Набор данных, содержащий информацию о своевременности выполнения авиарейсов'
-sidebar_label: 'Данные о своевременности авиарейсов'
+description: 'Набор данных, содержащий информацию о своевременности рейсов авиакомпаний'
+sidebar_label: 'Данные о своевременности рейсов авиакомпаний'
 slug: /getting-started/example-datasets/ontime
 title: 'Своевременность'
 ---
 
-Этот набор данных содержит данные из Бюро статистики транспорта.
+Этот набор данных содержит информацию из Бюро статистики транспортировки.
 
 ## Создание таблицы {#creating-a-table}
 
@@ -139,17 +139,17 @@ wget --no-check-certificate --continue https://transtats.bts.gov/PREZIP/On_Time_
 ls -1 *.zip | xargs -I{} -P $(nproc) bash -c "echo {}; unzip -cq {} '*.csv' | sed 's/\.00//g' | clickhouse-client --input_format_csv_empty_as_default 1 --query='INSERT INTO ontime FORMAT CSVWithNames'"
 ```
 
-(если у вас возникнут проблемы с нехваткой памяти или другие проблемы на сервере, уберите часть `-P $(nproc)`)
+(если у вас возникнут нехватка памяти или другие проблемы на сервере, удалите часть `-P $(nproc)`)
 
 ## Импорт из сохраненной копии {#import-from-a-saved-copy}
 
-В качестве альтернативы вы можете импортировать данные из сохраненной копии с помощью следующего запроса:
+Кроме того, вы можете импортировать данные из сохраненной копии с помощью следующего запроса:
 
 ```sql
 INSERT INTO ontime SELECT * FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/ontime/csv_by_year/*.csv.gz', CSVWithNames) SETTINGS max_insert_threads = 40;
 ```
 
-Снимок был создан 2022-05-29.
+Снимок был создан 29-05-2022.
 
 ## Запросы {#queries}
 
@@ -175,7 +175,7 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q2. Количество рейсов, задержанных более чем на 10 минут, сгруппированных по дням недели, за 2000-2008 годы
+Q2. Количество рейсов, задержанных более чем на 10 минут, сгруппированных по дню недели, за 2000-2008 годы
 
 ```sql
 SELECT DayOfWeek, count(*) AS c
@@ -196,7 +196,7 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Q4. Количество задержек по перевозчику за 2007 год
+Q4. Количество задержек по авиакомпаниям за 2007 год
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, count(*)
@@ -206,7 +206,7 @@ GROUP BY Carrier
 ORDER BY count(*) DESC;
 ```
 
-Q5. Процент задержек по перевозчику за 2007 год
+Q5. Процент задержек по авиакомпаниям за 2007 год
 
 ```sql
 SELECT Carrier, c, c2, c*100/c2 as c3
@@ -311,7 +311,7 @@ GROUP BY Year
 ORDER BY Year;
 ```
 
-Q8. Самые популярные направления по количеству прямо соединенных городов за разные диапазоны лет
+Q8. Самые популярные направления по количеству напрямую связанных городов для различных диапазонов лет
 
 ```sql
 SELECT DestCityName, uniqExact(OriginCityName) AS u
@@ -387,7 +387,7 @@ LIMIT 10;
 
 Вы также можете поиграть с данными в Playground, [пример](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K).
 
-Этот тест производительности был создан Вадимом Ткаченко. Смотрите:
+Этот тест производительности был создан Вадимом Ткаченко. См.:
 
 - https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/
 - https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/

@@ -8,20 +8,19 @@ slug: /interfaces/formats/XML
 title: 'XML'
 ---
 
-| Вход | Выход | Псевдоним |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+| Входные данные | Выходные данные | Псевдоним |
+|----------------|----------------|-----------|
+| ✗              | ✔              |           |
 
 ## Описание {#description}
 
 Формат `XML` подходит только для вывода, а не для разбора. 
 
-Если имя столбца не имеет допустимого формата, используется просто 'field' в качестве имени элемента. В общем, структура XML следует структуре JSON.
-Так же, как и для JSON, недопустимые последовательности UTF-8 заменяются символом замены `�`, так что выходной текст будет состоять из допустимых последовательностей UTF-8.
+Если имя колонки не имеет приемлемого формата, то в качестве имени элемента используется просто 'field'. В общем, структура XML следует структуре JSON. Как и для JSON, недопустимые последовательности UTF-8 заменяются на заменяющий символ `�`, так что выходной текст будет состоять из допустимых последовательностей UTF-8.
 
 В строковых значениях символы `<` и `&` экранируются как `<` и `&`.
 
-Массивы выводятся как `<array><elem>Hello</elem><elem>World</elem>...</array>`, а кортежи как `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`.
+Массивы выводятся в виде `<array><elem>Hello</elem><elem>World</elem>...</array>`, а кортежи как `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`.
 
 ## Пример использования {#example-usage}
 
@@ -48,7 +47,7 @@ title: 'XML'
                         <field>8267016</field>
                 </row>
                 <row>
-                        <SearchPhrase>дизайн интерьер ванной</SearchPhrase>
+                        <SearchPhrase>bathroom interior design</SearchPhrase>
                         <field>2166</field>
                 </row>
                 <row>
@@ -56,31 +55,31 @@ title: 'XML'
                         <field>1655</field>
                 </row>
                 <row>
-                        <SearchPhrase>весеннее модное 2014</SearchPhrase>
+                        <SearchPhrase>2014 spring fashion</SearchPhrase>
                         <field>1549</field>
                 </row>
                 <row>
-                        <SearchPhrase>свободные фотографии</SearchPhrase>
+                        <SearchPhrase>freeform photos</SearchPhrase>
                         <field>1480</field>
                 </row>
                 <row>
-                        <SearchPhrase>анджелина джоли</SearchPhrase>
+                        <SearchPhrase>angelina jolie</SearchPhrase>
                         <field>1245</field>
                 </row>
                 <row>
-                        <SearchPhrase>омск</SearchPhrase>
+                        <SearchPhrase>omsk</SearchPhrase>
                         <field>1112</field>
                 </row>
                 <row>
-                        <SearchPhrase>фотографии пород собак</SearchPhrase>
+                        <SearchPhrase>photos of dog breeds</SearchPhrase>
                         <field>1091</field>
                 </row>
                 <row>
-                        <SearchPhrase>дизайны штор</SearchPhrase>
+                        <SearchPhrase>curtain designs</SearchPhrase>
                         <field>1064</field>
                 </row>
                 <row>
-                        <SearchPhrase>баку</SearchPhrase>
+                        <SearchPhrase>baku</SearchPhrase>
                         <field>1000</field>
                 </row>
         </data>

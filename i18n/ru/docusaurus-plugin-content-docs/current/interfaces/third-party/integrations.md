@@ -1,6 +1,5 @@
 ---
-description: 'Документация по интеграции ClickHouse с различными сторонними системами
-  и инструментами'
+description: 'Документация по интеграции ClickHouse с различными сторонними системами и инструментами'
 sidebar_label: 'Интеграции'
 sidebar_position: 27
 slug: /interfaces/third-party/integrations
@@ -11,10 +10,10 @@ title: 'Библиотеки интеграции от сторонних раз
 # Библиотеки интеграции от сторонних разработчиков
 
 :::note Disclaimer
-Компания ClickHouse, Inc. **не** поддерживает перечисленные ниже инструменты и библиотеки и не проводила обширного тестирования для обеспечения их качества.
+ClickHouse, Inc. **не** поддерживает инструменты и библиотеки, перечисленные ниже, и не проводила обширного тестирования для обеспечения их качества.
 :::
 
-## Продукты инфраструктуры {#infrastructure-products}
+## Инфраструктурные продукты {#infrastructure-products}
 
 - Системы управления реляционными базами данных
     - [MySQL](https://www.mysql.com)
@@ -36,7 +35,7 @@ title: 'Библиотеки интеграции от сторонних раз
 - Пакетная обработка
     - [Spark](https://spark.apache.org)
         - [spark-clickhouse-connector](https://github.com/housepower/spark-clickhouse-connector)
-- Стриминговая обработка
+- Потоковая обработка
     - [Flink](https://flink.apache.org)
         - [flink-clickhouse-sink](https://github.com/ivi-ru/flink-clickhouse-sink)
 - Объектные хранилища
@@ -45,7 +44,7 @@ title: 'Библиотеки интеграции от сторонних раз
 - Оркестрация контейнеров
     - [Kubernetes](https://kubernetes.io)
         - [clickhouse-operator](https://github.com/Altinity/clickhouse-operator)
-- Управление конфигурациями
+- Управление конфигурацией
     - [puppet](https://puppet.com)
         - [innogames/clickhouse](https://forge.puppet.com/innogames/clickhouse)
         - [mfedotov/clickhouse](https://forge.puppet.com/mfedotov/clickhouse)
@@ -54,7 +53,7 @@ title: 'Библиотеки интеграции от сторонних раз
         - [graphouse](https://github.com/ClickHouse/graphouse)
         - [carbon-clickhouse](https://github.com/lomik/carbon-clickhouse)
         - [graphite-clickhouse](https://github.com/lomik/graphite-clickhouse)
-        - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) - оптимизирует устаревшие разделы в [*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree), если могут быть применены правила из [конфигурации сводки](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration)
+        - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) - оптимизирует устаревшие разделы в [*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree), если правила из [rollup configuration](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration) могут быть применены
     - [Grafana](https://grafana.com/)
         - [clickhouse-grafana](https://github.com/Vertamedia/clickhouse-grafana)
     - [Prometheus](https://prometheus.io/)
@@ -74,13 +73,13 @@ title: 'Библиотеки интеграции от сторонних раз
     - [fluentd](https://www.fluentd.org)
         - [loghouse](https://github.com/flant/loghouse) (для [Kubernetes](https://kubernetes.io))
     - [logagent](https://www.sematext.com/logagent)
-        - [плагин-выход logagent-clickhouse](https://sematext.com/docs/logagent/output-plugin-clickhouse/)
+        - [logagent output-plugin-clickhouse](https://sematext.com/docs/logagent/output-plugin-clickhouse/)
 - Гео
     - [MaxMind](https://dev.maxmind.com/geoip/)
         - [clickhouse-maxmind-geoip](https://github.com/AlexeyKupershtokh/clickhouse-maxmind-geoip)
 - AutoML
     - [MindsDB](https://mindsdb.com/)
-        - [MindsDB](https://github.com/mindsdb/mindsdb) - Интегрируется с ClickHouse, делая данные из ClickHouse доступными для широкого спектра моделей AI/ML.
+        - [MindsDB](https://github.com/mindsdb/mindsdb) - Интегрируется с ClickHouse, делая данные из ClickHouse доступными для разнообразных AI/ML моделей.
 
 ## Экосистемы языков программирования {#programming-language-ecosystems}
 

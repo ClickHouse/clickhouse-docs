@@ -1,5 +1,5 @@
 ---
-description: 'Вычисляет приближенный квантиль числовой последовательности данных, используя алгоритм t-digest.'
+description: 'Вычисляет приближенный квантиль числовой последовательности данных с использованием алгоритма t-digest.'
 sidebar_position: 178
 slug: /sql-reference/aggregate-functions/reference/quantiletdigest
 title: 'quantileTDigest'
@@ -8,13 +8,13 @@ title: 'quantileTDigest'
 
 # quantileTDigest
 
-Вычисляет приближенный [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных, используя алгоритм [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf).
+Вычисляет приближенный [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных с использованием алгоритма [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf).
 
-Потребление памяти составляет `log(n)`, где `n` — это количество значений. Результат зависит от порядка выполнения запроса и является недетерминированным.
+Потребление памяти составляет `log(n)`, где `n` — количество значений. Результат зависит от порядка выполнения запроса и является недетерминированным.
 
-Производительность функции ниже, чем производительность [quantile](/sql-reference/aggregate-functions/reference/quantile) или [quantileTiming](/sql-reference/aggregate-functions/reference/quantiletiming). В терминах соотношения размера состояния к точности эта функция значительно лучше, чем `quantile`.
+Производительность функции ниже, чем производительность [quantile](/sql-reference/aggregate-functions/reference/quantile) или [quantileTiming](/sql-reference/aggregate-functions/reference/quantiletiming). В терминах соотношения объема состояния к точности эта функция значительно лучше, чем `quantile`.
 
-При использовании нескольких функций `quantile*` с разными уровнями в запросе внутренние состояния не комбинируются (то есть запрос работает менее эффективно, чем мог бы). В этом случае используйте функцию [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles).
+При использовании нескольких функций `quantile*` с разными уровнями в одном запросе внутренние состояния не комбинируются (то есть запрос работает менее эффективно, чем мог бы). В этом случае используйте функцию [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles).
 
 **Синтаксис**
 
@@ -26,8 +26,8 @@ quantileTDigest(level)(expr)
 
 **Аргументы**
 
-- `level` — Уровень квантиля. Необязательный параметр. Константное число с плавающей запятой от 0 до 1. Рекомендуется использовать значение `level` в диапазоне `[0.01, 0.99]`. Значение по умолчанию: 0.5. При `level=0.5` функция вычисляет [медиану](https://en.wikipedia.org/wiki/Median).
-- `expr` — Выражение, основанное на значениях столбца, приводящее к числовым [типам данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
+- `level` — Уровень квантили. Опциональный параметр. Константное число с плавающей запятой от 0 до 1. Рекомендуем использовать значение `level` в диапазоне `[0.01, 0.99]`. Значение по умолчанию: 0.5. При `level=0.5` функция вычисляет [медиану](https://en.wikipedia.org/wiki/Median).
+- `expr` — Выражение над значениями колонки, приводящее к числовым [типам данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
 
 **Возвращаемое значение**
 
@@ -55,7 +55,7 @@ SELECT quantileTDigest(number) FROM numbers(10)
 └─────────────────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
 - [median](/sql-reference/aggregate-functions/reference/median)
 - [quantiles](/sql-reference/aggregate-functions/reference/quantiles)

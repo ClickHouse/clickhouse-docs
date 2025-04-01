@@ -1,5 +1,5 @@
 ---
-description: 'Заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) на одну строку (в пределах одной части данных), которая хранит комбинацию состояний агрегатных функций.'
+description: 'Заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) одной строкой (внутри одной части данных), которая хранит комбинацию состояний агрегатных функций.'
 sidebar_label: 'AggregatingMergeTree'
 sidebar_position: 60
 slug: /engines/table-engines/mergetree-family/aggregatingmergetree
@@ -9,21 +9,21 @@ title: 'AggregatingMergeTree'
 
 # AggregatingMergeTree
 
-Движок наследует от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree), изменяя логику слияния частей данных. ClickHouse заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) на одну строку (в пределах одной части данных), которая хранит комбинацию состояний агрегатных функций.
+Движок наследуется от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree), изменяя логику слияния частей данных. ClickHouse заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) одной строкой (внутри одной части данных), которая хранит комбинацию состояний агрегатных функций.
 
-Вы можете использовать таблицы `AggregatingMergeTree` для поэтапной агрегации данных, включая агрегированные материализованные представления.
+Вы можете использовать таблицы `AggregatingMergeTree` для инкрементной агрегации данных, в том числе для агрегированных материализованных представлений.
 
-Вы можете увидеть пример использования AggregatingMergeTree и агрегатных функций в видео ниже:
+Вы можете ознакомиться с примером использования `AggregatingMergeTree` и агрегатных функций в приведенном ниже видео:
 <div class='vimeo-container'>
-<iframe width="1030" height="579" src="https://www.youtube.com/embed/pryhI4F_zqQ" title="Aggregation States in ClickHouse" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1030" height="579" src="https://www.youtube.com/embed/pryhI4F_zqQ" title="Состояния агрегации в ClickHouse" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Движок обрабатывает все столбцы со следующими типами:
+Движок обрабатывает все колонки со следующими типами:
 
 ## [AggregateFunction](../../../sql-reference/data-types/aggregatefunction.md) {#aggregatefunction}
 ## [SimpleAggregateFunction](../../../sql-reference/data-types/simpleaggregatefunction.md) {#simpleaggregatefunction}
 
-Уместно использовать `AggregatingMergeTree`, если это уменьшает количество строк на порядки.
+Использование `AggregatingMergeTree` уместно, если оно существенно уменьшает количество строк.
 
 ## Создание таблицы {#creating-a-table}
 
@@ -43,16 +43,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Для описания параметров запроса смотрите [описание запроса](../../../sql-reference/statements/create/table.md).
 
-**Клаузулы запроса**
+**Клавиши запроса**
 
-При создании таблицы `AggregatingMergeTree` требуются те же [клаузулы](../../../engines/table-engines/mergetree-family/mergetree.md), что и при создании таблицы `MergeTree`.
+При создании таблицы `AggregatingMergeTree` требуются те же [клавиши](../../../engines/table-engines/mergetree-family/mergetree.md), что и при создании таблицы `MergeTree`.
 
 <details markdown="1">
 
 <summary>Устаревший метод создания таблицы</summary>
 
 :::note
-Не используйте этот метод в новых проектах и, если возможно, переключите старые проекты на метод, описанный выше.
+Не используйте этот метод в новых проектах и, по возможности, переключите старые проекты на метод, описанный выше.
 :::
 
 ```sql
@@ -69,10 +69,10 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 ## SELECT и INSERT {#select-and-insert}
 
-Чтобы вставить данные, используйте [INSERT SELECT](../../../sql-reference/statements/insert-into.md) запрос с агрегатными -State- функциями.
-При выборке данных из таблицы `AggregatingMergeTree` используйте клаузу `GROUP BY` и те же агрегатные функции, что и при вставке данных, но с суффиксом `-Merge`.
+Для вставки данных используйте [INSERT SELECT](../../../sql-reference/statements/insert-into.md) запрос с агрегатными функциями состояния.
+При выборе данных из таблицы `AggregatingMergeTree` используйте `GROUP BY` и те же агрегатные функции, что и при вставке данных, но с суффиксом `-Merge`.
 
-В результате запроса `SELECT` значения типа `AggregateFunction` имеют специфическое для реализации двоичное представление для всех форматов вывода ClickHouse. Например, если вы выгружаете данные в формат `TabSeparated` с помощью запроса `SELECT`, то эту выгрузку можно загрузить обратно с помощью запроса `INSERT`.
+В результатах запроса `SELECT` значения типа `AggregateFunction` имеют специфическое для реализации двоичное представление для всех форматов вывода ClickHouse. Например, если вы выведете данные в формате `TabSeparated` с помощью запроса `SELECT`, то этот дамп можно будет загрузить обратно с использованием запроса `INSERT`.
 
 ## Пример агрегированного материализованного представления {#example-of-an-aggregated-materialized-view}
 
@@ -94,9 +94,9 @@ CREATE TABLE test.visits
 ) ENGINE = MergeTree ORDER BY (StartDate, CounterID);
 ```
 
-Далее вам нужна таблица `AggregatingMergeTree`, которая будет хранить `AggregationFunction`, отслеживающую общее количество посещений и количество уникальных пользователей. 
+Далее вам нужна таблица `AggregatingMergeTree`, которая будет хранить `AggregationFunction`, отслеживающую общее количество посещений и количество уникальных пользователей.
 
-Создайте материализованное представление `AggregatingMergeTree`, которое отслеживает таблицу `test.visits` и использует тип `AggregateFunction`:
+Создайте материализованное представление `AggregatingMergeTree`, которое следит за таблицей `test.visits` и использует тип `AggregateFunction`:
 
 ```sql
 CREATE TABLE test.agg_visits (
@@ -128,9 +128,9 @@ INSERT INTO test.visits (StartDate, CounterID, Sign, UserID)
  VALUES (1667446031000, 1, 3, 4), (1667446031000, 1, 6, 3);
 ```
 
-Данные вставляются в обе таблицы `test.visits` и `test.agg_visits`.
+Данные вставляются как в `test.visits`, так и в `test.agg_visits`.
 
-Чтобы получить агрегированные данные, выполните запрос, такой как `SELECT ... GROUP BY ...` из материализованного представления `test.mv_visits`:
+Чтобы получить агрегированные данные, выполните запрос, например, `SELECT ... GROUP BY ...` из материализованного представления `test.mv_visits`:
 
 ```sql
 SELECT
@@ -166,4 +166,4 @@ INSERT INTO test.visits (StartDate, CounterID, Sign, UserID)
 
 ## Связанный контент {#related-content}
 
-- Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+- Блог: [Использование агрегатных комбинаций в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

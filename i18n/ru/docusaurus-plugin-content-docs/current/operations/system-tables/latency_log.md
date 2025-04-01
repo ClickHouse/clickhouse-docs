@@ -1,23 +1,23 @@
 ---
-description: 'Содержит историю всех ведер задержки, периодически сбрасываемую на диск.'
+description: 'Содержит историю всех бакетов задержки, периодически сбрасываемых на диск.'
 slug: /operations/system-tables/latency_log
 title: 'system.latency_log'
 ---
 
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 
 # latency_log
 
 <SystemTableCloud/>
 
-Содержит историю всех ведер задержки, периодически сбрасываемую на диск.
+Содержит историю всех бакетов задержки, периодически сбрасываемых на диск.
 
-Столбцы:
+Колонки:
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
 - `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата события.
 - `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время события.
-- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время события с разрешением до микросекунд.
+- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время события с разрешением в микросекундах.
 
 **Пример**
 
@@ -50,8 +50,8 @@ LatencyEvent_DiskS3ReadConnectMicroseconds:            [1,1,1,1,1,1,1,1,1,1]
 LatencyEvent_DiskS3WriteConnectMicroseconds:           [329,362,362,363,363,363,363,363,363,363]
 ```
 
-**Смотрите также**
+**См. также**
 
 - [latency_log_setting](../../operations/server-configuration-parameters/settings.md#latency_log) - Включение и отключение настройки.
-- [latency_buckets](../../operations/system-tables/latency_buckets.md) - Границы ведер задержки.
-- [Monitoring](../../operations/monitoring.md) - Основные концепции мониторинга ClickHouse.
+- [latency_buckets](../../operations/system-tables/latency_buckets.md) - Границы бакетов журнала задержки.
+- [Monitoring](../../operations/monitoring.md) - Основные понятия мониторинга ClickHouse.

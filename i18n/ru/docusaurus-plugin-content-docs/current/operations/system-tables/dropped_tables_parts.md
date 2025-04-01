@@ -5,11 +5,11 @@ slug: /operations/system-tables/dropped_tables_parts
 title: 'system.dropped_tables_parts'
 ---
 
-Содержит информацию о частях [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) удалённых таблиц из [system.dropped_tables](./dropped_tables.md)
+Содержит информацию о частях удалённых таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) из [system.dropped_tables](./dropped_tables.md).
 
-Схема этой таблицы такая же, как у [system.parts](./parts.md)
+Схема этой таблицы такая же, как у [system.parts](./parts.md).
 
-**См. также**
+**Смотрите также**
 
 - [Семейство MergeTree](../../engines/table-engines/mergetree-family/mergetree.md)
 - [system.parts](./parts.md)

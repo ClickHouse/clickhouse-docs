@@ -18,11 +18,11 @@ SELECT ... FROM loop(other_table_function(...));
 
 **Параметры**
 
-- `database` — название базы данных.
-- `table` — название таблицы.
+- `database` — имя базы данных.
+- `table` — имя таблицы.
 - `other_table_function(...)` — другая табличная функция.
   Пример: `SELECT * FROM loop(numbers(10));`
-  Здесь `other_table_function(...)` — это `numbers(10)`.
+  Здесь `other_table_function(...)` является `numbers(10)`.
 
 **Возвращаемое значение**
 
