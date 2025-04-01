@@ -240,3 +240,20 @@ It is recommended that you do not carry out any disruptive operations like upgra
 
 To resolve this issue, you can trigger a resync from the ClickPipes UI. This will restart the initial load process from the beginning.
 
+### What happens if I drop a publication in Postgres? {#what-happens-if-i-drop-a-publication-in-postgres}
+
+Dropping a publication in Postgres will break your ClickPipe connection since the publication is required for the ClickPipe to pull changes from the source. When this happens, you'll typically receive an error alert indicating that the publication no longer exists.
+
+To recover your ClickPipe after dropping a publication:
+
+1. Create a new publication with the same name and required tables in Postgres
+2. Click the 'Resync tables' button in the Settings tab of your ClickPipe
+
+This resync is necessary because the recreated publication will have a different Object Identifier (OID) in Postgres, even if it has the same name. The resync process refreshes your destination tables and restores the connection.
+
+Alternatively, you can create an entirely new pipe if preferred.
+
+Note that if you're working with partitioned tables, make sure to create your publication with the appropriate settings:
+```sql
+CREATE PUBLICATION clickpipes_publication FOR ALL TABLES WITH (publish_via_partition_root = true);
+```
