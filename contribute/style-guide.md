@@ -250,3 +250,46 @@ should pass. Finally open another PR on the docs repo again to remove the
 file from the exception list and add it to `sidebars.js` in the appropriate
 sidebar.
 
+## Client versioning
+
+Docusaurus supports versioning documentation, however it is opinionated and 
+aimed more at use cases where you have a single product with set releases, or
+multiple products with their own releases.
+
+Due to the fact that we have many 
+different integrations in ClickHouse, each of which may need versioned documentation,
+we use the following custom `ClientVersionDropdown` component for versioning of
+client documentation:
+
+```markdown
+<ClientVersionDropdown versions={}/>
+```
+
+To use this component, import it into the markdown page:
+
+```markdown
+import ClientVersionDropdown from '@theme/ClientVersionDropdown/ClientVersionDropdown'
+```
+
+Add it underneath the H1 element on the page and pass it an array of objects
+representing versions and the slug of the page:
+
+```markdown
+# JDBC Driver (0.8+)
+
+<ClientVersionDropdown versions={[
+{
+'version': 'v0.8+',
+'slug': '/docs/integrations/language-clients/java/jdbc'
+},
+{
+'version': 'v0.7.x',
+'slug': '/docs/integrations/language-clients/java/jdbc-v1'
+}
+]}/>
+```
+
+Note that the component will display the first item as the 'selected' version, so
+it is important to make sure the order of the objects is correct.
+
+Add this component on every 'versioned' page for the client.
