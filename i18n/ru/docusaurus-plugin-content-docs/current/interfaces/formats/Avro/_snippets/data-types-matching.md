@@ -37,4 +37,3 @@
 - `time-millis`
 - `time-micros`
 - `duration`
-```
