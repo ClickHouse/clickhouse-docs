@@ -255,5 +255,5 @@ Alternatively, you can create an entirely new pipe if preferred.
 
 Note that if you're working with partitioned tables, make sure to create your publication with the appropriate settings:
 ```sql
-CREATE PUBLICATION clickpipes_publication FOR ALL TABLES WITH (publish_via_partition_root = true);
+CREATE PUBLICATION clickpipes_publication FOR TABLE table_1, table_2, ... WITH (publish_via_partition_root = true);
 ```
