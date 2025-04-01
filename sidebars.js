@@ -697,6 +697,23 @@ const sidebars = {
             },
           ],
         },
+        {
+          type: "category",
+          label: "ClickPipes for MySQL",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "integrations/data-ingestion/clickpipes/mysql/index",
+            {
+              type: "category",
+              label: "Source",
+              items: [
+                "integrations/data-ingestion/clickpipes/postgres/source/rds",
+                //"integrations/data-ingestion/clickpipes/postgres/source/aurora",
+              ],
+            },
+          ],
+        },
       ],
     },
     {
