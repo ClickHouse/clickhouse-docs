@@ -24,7 +24,7 @@
     "description": "The label for category Use Case Guides in sidebar docs"
   },
   "sidebar.docs.category.Observability": {
-    "message": "Обнаружаемость",
+    "message": "Мониторинг",
     "description": "The label for category Observability in sidebar docs"
   },
   "sidebar.docs.category.Migration Guides": {

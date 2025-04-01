@@ -53,7 +53,7 @@ def load_config(file_path):
 
 def format_glossary_prompt(glossary):
     glossary_text = "\n".join([f"- {key}: {value}" for key, value in glossary.items()])
-    return f"Use the following glossary for specific translations:\n{glossary_text}\n"
+    return f"Use the following glossary for specific translations of key technical terms. Take these into account even when translating YAML frontmatter fields like title, sidebar_label etc:\n{glossary_text}\n"
 
 def format_translation_override_prompt(override):
     translation_text = "\n".join([f"- {key}: {value}" for key, value in override.items()])
@@ -176,8 +176,6 @@ def translate_file(config, input_file_path, output_file_path, model):
     start_time = time.time()
 
     try:
-        if input_file_path=="/Users/sstruw/Desktop/clickhouse-docs/docs/use-cases/observability/demo-application.md":
-            print()
         with open(input_file_path, "r", encoding="utf-8") as input_file:
             original_text = input_file.read()
             print(f" - length: {len(original_text)}")

@@ -1,19 +1,19 @@
 ---
-description: 'Документация для специального типа данных Interval'
-sidebar_label: 'Интервал'
+description: 'Документация по специальному типу данных Interval'
+sidebar_label: 'Interval'
 sidebar_position: 61
 slug: /sql-reference/data-types/special-data-types/interval
-title: 'Интервал'
+title: 'Interval'
 ---
 
 
-# Интервал
+# Interval
 
-Семейство типов данных, представляющих временные и датные интервалы. Результирующие типы оператора [INTERVAL](/sql-reference/operators#interval).
+Семейство типов данных, представляющих временные и датные интервалы. Получаемые типы оператора [INTERVAL](/sql-reference/operators#interval).
 
 Структура:
 
-- Временной интервал в виде беззнакового целого значения.
+- Временной интервал как беззнаковое целочисленное значение.
 - Тип интервала.
 
 Поддерживаемые типы интервалов:
@@ -82,5 +82,5 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 
 ## См. также {#see-also}
 
-- [INTERVAL](/sql-reference/operators#interval) оператор
-- [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) функции преобразования типов
+- Оператор [INTERVAL](/sql-reference/operators#interval)
+- Функции преобразования типов [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear)

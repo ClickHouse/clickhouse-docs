@@ -1,9 +1,9 @@
 ---
-description: 'Документация для Роли'
-sidebar_label: 'РОЛЬ'
+description: 'Документация для ROLE'
+sidebar_label: 'ROLE'
 sidebar_position: 40
 slug: /sql-reference/statements/create/role
-title: 'СОЗДАТЬ РОЛЬ'
+title: 'CREATE ROLE'
 ---
 
 Создает новые [роли](../../../guides/sre/user-management/index.md#role-management). Роль — это набор [привилегий](/sql-reference/statements/grant#granting-privilege-syntax). Пользователь, которому назначена роль, получает все привилегии этой роли.
@@ -16,15 +16,15 @@ CREATE ROLE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
     [SETTINGS variable [= value] [MIN [=] min_value] [MAX [=] max_value] [CONST|READONLY|WRITABLE|CHANGEABLE_IN_READONLY] | PROFILE 'profile_name'] [,...]
 ```
 
-## Управление Ролями {#managing-roles}
+## Управление ролями {#managing-roles}
 
-Пользователю может быть назначено несколько ролей. Пользователи могут применять свои назначенные роли в произвольных комбинациях с помощью оператора [SET ROLE](../../../sql-reference/statements/set-role.md). Окончательный объем привилегий — это объединенный набор всех привилегий всех примененных ролей. Если пользователю предоставлены привилегии, непосредственно связанные с его учетной записью, они также комбинируются с привилегиями, предоставленными ролями.
+Пользователю могут быть назначены несколько ролей. Пользователи могут применять свои назначенные роли в произвольных комбинациях с помощью оператора [SET ROLE](../../../sql-reference/statements/set-role.md). Конечный объем привилегий — это объединенный набор всех привилегий всех примененных ролей. Если у пользователя есть привилегии, предоставленные напрямую его учетной записи, они также комбинируются с привилегиями, предоставленными ролями.
 
-Пользователь может иметь роли по умолчанию, которые применяются при входе. Чтобы установить роли по умолчанию, используйте оператор [SET DEFAULT ROLE](/sql-reference/statements/set-role#set-default-role) или оператор [ALTER USER](/sql-reference/statements/alter/user).
+Пользователь может иметь роли по умолчанию, которые применяются при входе пользователя в систему. Чтобы установить роли по умолчанию, используйте оператор [SET DEFAULT ROLE](/sql-reference/statements/set-role#set-default-role) или оператор [ALTER USER](/sql-reference/statements/alter/user).
 
 Чтобы отозвать роль, используйте оператор [REVOKE](../../../sql-reference/statements/revoke.md).
 
-Чтобы удалить роль, используйте оператор [DROP ROLE](/sql-reference/statements/drop#drop-role). Удаленная роль автоматически аннулируется у всех пользователей и ролей, которым она была назначена.
+Чтобы удалить роль, используйте оператор [DROP ROLE](/sql-reference/statements/drop#drop-role). Удаленная роль автоматически отзывается у всех пользователей и ролей, которым она была назначена.
 
 ## Примеры {#examples}
 
@@ -33,7 +33,7 @@ CREATE ROLE accountant;
 GRANT SELECT ON db.* TO accountant;
 ```
 
-Эта последовательность запросов создает роль `accountant`, которая имеет привилегию чтения данных из базы данных `db`.
+Эта последовательность запросов создает роль `accountant`, которая имеет право на чтение данных из базы данных `db`.
 
 Назначение роли пользователю `mira`:
 

@@ -1,19 +1,20 @@
 ---
-description: 'Документация для функции'
-sidebar_label: 'ФУНКЦИЯ'
+description: 'Документация для FUNCTION'
+sidebar_label: 'FUNCTION'
 sidebar_position: 38
 slug: /sql-reference/statements/create/function
 title: 'CREATE FUNCTION - пользовательская функция (UDF)'
 ---
 
-Создает пользовательскую функцию (UDF) из лямбда-выражения. Выражение должно состоять из параметров функции, констант, операторов или других вызовов функций.
+Создает пользовательскую функцию (UDF) на основе лямбда-выражения. Выражение должно состоять из параметров функции, констант, операторов или вызовов других функций.
 
 **Синтаксис**
 
 ```sql
 CREATE FUNCTION name [ON CLUSTER cluster] AS (parameter0, ...) -> expression
 ```
-У функции может быть произвольное количество параметров.
+
+Функция может иметь произвольное количество параметров.
 
 Существуют некоторые ограничения:
 
@@ -21,7 +22,7 @@ CREATE FUNCTION name [ON CLUSTER cluster] AS (parameter0, ...) -> expression
 - Рекурсивные функции не допускаются.
 - Все переменные, используемые в функции, должны быть указаны в ее списке параметров.
 
-Если какое-либо ограничение нарушено, возникает исключение.
+Если любое ограничение нарушено, возникает исключение.
 
 **Пример**
 
@@ -42,7 +43,7 @@ SELECT number, linear_equation(number, 2, 1) FROM numbers(3);
 └────────┴──────────────────────────────┘
 ```
 
-В [условной функции](../../../sql-reference/functions/conditional-functions.md) вызвана пользовательская функция в следующем запросе:
+В [условной функции](../../../sql-reference/functions/conditional-functions.md) вызывается пользовательская функция в следующем запросе:
 
 ```sql
 CREATE FUNCTION parity_str AS (n) -> if(n % 2, 'odd', 'even');
@@ -59,8 +60,8 @@ SELECT number, parity_str(number) FROM numbers(3);
 └────────┴──────────────────────────────────────┘
 ```
 
-## Связанное содержание {#related-content}
+## Связанный контент {#related-content}
 
-### [Исполняемые UDF](/sql-reference/functions/udf.md). {#executable-udfs}
+### [Исполнимые UDF](/sql-reference/functions/udf.md). {#executable-udfs}
 
 ### [Пользовательские функции в ClickHouse Cloud](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs) {#user-defined-functions-in-clickhouse-cloud}

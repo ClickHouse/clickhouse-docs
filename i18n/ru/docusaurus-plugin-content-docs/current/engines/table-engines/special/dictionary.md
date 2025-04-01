@@ -1,13 +1,13 @@
 ---
 description: 'Движок `Dictionary` отображает данные словаря в виде таблицы ClickHouse.'
-sidebar_label: 'Словарь'
+sidebar_label: 'Dictionary'
 sidebar_position: 20
 slug: /engines/table-engines/special/dictionary
-title: 'Движок таблицы Словарь'
+title: 'Движок таблицы Dictionary'
 ---
 
 
-# Движок таблицы Словарь
+# Движок таблицы Dictionary
 
 Движок `Dictionary` отображает данные [словаря](../../../sql-reference/dictionaries/index.md) в виде таблицы ClickHouse.
 
@@ -70,7 +70,7 @@ WHERE name = 'products'
 
 Вы можете использовать функцию [dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull), чтобы получить данные словаря в этом формате.
 
-Этот вид не полезен, когда вам нужно получить необработанные данные или при выполнении операции `JOIN`. Для этих случаев вы можете использовать движок `Dictionary`, который отображает данные словаря в таблице.
+Этот вид не очень полезен, когда вам необходимо получить сырье данные или при выполнении операции `JOIN`. Для этих случаев вы можете использовать движок `Dictionary`, который отображает данные словаря в таблице.
 
 Синтаксис:
 
@@ -86,7 +86,7 @@ create table products (product_id UInt64, title String) Engine = Dictionary(prod
 
       Ok
 
-Посмотрите, что в таблице.
+Посмотрите, что находится в таблице.
 
 ```sql
 select * from products limit 1;

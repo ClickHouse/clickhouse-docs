@@ -2,10 +2,9 @@
 description: 'Документация для операторов ALTER DATABASE ... MODIFY COMMENT'
 slug: /sql-reference/statements/alter/database-comment
 sidebar_position: 51
-sidebar_label: 'ОБНОВИТЬ'
+sidebar_label: 'UPDATE'
 title: 'ALTER DATABASE ... MODIFY COMMENT'
 ---
-
 
 # ALTER DATABASE ... MODIFY COMMENT
 
