@@ -293,3 +293,12 @@ Note that the component will display the first item as the 'selected' version, s
 it is important to make sure the order of the objects is correct.
 
 Add this component on every 'versioned' page for the client.
+
+In addition, add to every 'archived' version page the following frontmatter item:
+
+```markdown
+displayed_sidebar: integrations
+```
+
+This will make sure that the sidebar displays, even if this particular page is
+not shown in the sidebar.
