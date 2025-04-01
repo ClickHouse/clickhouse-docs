@@ -10,9 +10,11 @@ title: 'JDBC Driver (0.8+)'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-
+import ClientVersionDropdown from '@theme/ClientVersionDropdown/ClientVersionDropdown'
 
 # JDBC Driver (0.8+)
+
+<ClientVersionDropdown/>
 
 `clickhouse-jdbc` implements the standard JDBC interface using the latest [java client](/integrations/language-clients/java/client.md).
 We recommend using the latest [java client](/integrations/language-clients/java/client.md) directly if performance/direct access is critical.
