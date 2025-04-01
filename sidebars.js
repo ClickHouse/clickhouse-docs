@@ -708,8 +708,8 @@ const sidebars = {
               type: "category",
               label: "Source",
               items: [
-                "integrations/data-ingestion/clickpipes/postgres/source/rds",
-                //"integrations/data-ingestion/clickpipes/postgres/source/aurora",
+                "integrations/data-ingestion/clickpipes/mysql/source/rds",
+                "integrations/data-ingestion/clickpipes/mysql/source/aurora",
               ],
             },
           ],

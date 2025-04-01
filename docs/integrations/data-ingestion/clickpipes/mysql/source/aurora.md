@@ -37,9 +37,9 @@ If not already configured, make sure to set these in the parameter group:
 1. `binlog_format` to `ROW`
 2. `binlog_row_metadata` to `FULL`
 3. `binlog_row_image` to `FULL`
-
+<br/>
 :::tip
-If you have a MySQL cluster, the above parameters would be found in a DB Cluster parameter group and not the DB instance group.
+If you have a MySQL cluster, the above parameters would be found in a [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) parameter group and not the DB instance group.
 :::
 
 ## Configure Database User {#configure-database-user}
