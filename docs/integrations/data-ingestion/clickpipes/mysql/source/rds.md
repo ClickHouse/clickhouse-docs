@@ -15,17 +15,17 @@ import Image from '@theme/IdealImage';
 
 This is a step-by-step guide on how to configure your RDS MySQL instance for replicating its data via the MySQL ClickPipe.
 
-## Enable Binary Log Retention {#enable-binlog-retention}
+## Enable Binary Log Retention {#enable-binlog-retention-rds}
 The binary log is a set of log files that contain information about data modifications made to an MySQL server instance, and binary log files are required for replication. Both of the below steps must be followed:
 
-### 1. Enable binary logging via automated backup
+### 1. Enable binary logging via automated backup{#enable-binlog-logging-rds}
 The automated backups feature determines whether binary logging is turned on or off for MySQL. It can be set in the AWS console:
 
 <Image img={rds_backups} alt="Enabling automated backups in RDS" size="lg" border/>
 
 Setting backup retention to a reasonably long value depending on the replication use-case is advisable.
 
-### 2. Binlog retention hours
+### 2. Binlog retention hours{#binlog-retention-hours-rds}
 The default value of binlog retention hours is NULL. For RDS for MySQL, NULL means binary logs aren't retained.
 To specify the number of hours to retain binary logs on a DB instance, use the mysql.rds_set_configuration with a period with enough time for replication to occur:
 
@@ -43,7 +43,7 @@ If not already configured, make sure to set these in the parameter group:
 If you have a MySQL cluster, the above parameters would be found in a [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) parameter group and not the DB instance group.
 :::
 
-## Configure Database User {#configure-database-user}
+## Configure Database User {#configure-database-user-rds}
 
 Connect to your RDS MySQL instance as an admin user and execute the following commands:
 

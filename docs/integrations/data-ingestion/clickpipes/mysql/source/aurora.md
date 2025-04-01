@@ -15,17 +15,17 @@ import Image from '@theme/IdealImage';
 
 This is a step-by-step guide on how to configure your Aurora MySQL instance for replicating its data via the MySQL ClickPipe.
 
-## Enable Binary Log Retention {#enable-binlog-retention}
+## Enable Binary Log Retention {#enable-binlog-retention-aurora}
 The binary log is a set of log files that contain information about data modifications made to an MySQL server instance, and binary log files are required for replication. Both of the below steps must be followed:
 
-### 1. Enable binary logging via automated backup
+### 1. Enable binary logging via automated backup {#enable-binlog-logging-aurora}
 The automated backups feature determines whether binary logging is turned on or off for MySQL. It can be set in the AWS console:
 
 <Image img={rds_backups} alt="Enabling automated backups in Aurora" size="lg" border/>
 
 Setting backup retention to a reasonably long value depending on the replication use-case is advisable.
 
-### 2. Binlog retention hours
+### 2. Binlog retention hours {#binlog-retention-hours-aurora}
 The below procedure must be called to ensure availability of binary logs for replication.
 
 ```text
@@ -42,7 +42,7 @@ If not already configured, make sure to set these in the parameter group:
 If you have a MySQL cluster, the above parameters would be found in a [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) parameter group and not the DB instance group.
 :::
 
-## Configure Database User {#configure-database-user}
+## Configure Database User {#configure-database-user-aurora}
 
 Connect to your Aurora MySQL instance as an admin user and execute the following commands:
 
