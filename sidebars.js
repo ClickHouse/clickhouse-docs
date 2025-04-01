@@ -233,6 +233,7 @@ const sidebars = {
         "cloud/bestpractices/avoidoptimizefinal",
         "cloud/bestpractices/partitioningkey",
         "cloud/bestpractices/usagelimits",
+        "cloud/bestpractices/multitenancy"
       ],
     },
     {
@@ -381,24 +382,6 @@ const sidebars = {
         },
         "cloud/reference/cloud-compatibility",
         "cloud/reference/supported-regions"
-      ],
-    },
-    {
-      type: "category",
-      label: "Best Practices",
-      collapsed: false,
-      collapsible: false,
-      className: "top-nav-item",
-      link: { type: "doc", id: "cloud/bestpractices/index" },
-      items: [
-        "cloud/bestpractices/bulkinserts",
-        "cloud/bestpractices/asyncinserts",
-        "cloud/bestpractices/avoidmutations",
-        "cloud/bestpractices/avoidnullablecolumns",
-        "cloud/bestpractices/avoidoptimizefinal",
-        "cloud/bestpractices/partitioningkey",
-        "cloud/bestpractices/usagelimits",
-        "cloud/bestpractices/multitenancy",
       ],
     },
     {
