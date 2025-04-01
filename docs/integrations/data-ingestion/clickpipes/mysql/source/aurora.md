@@ -26,17 +26,21 @@ The automated backups feature determines whether binary logging is turned on or 
 Setting backup retention to a reasonably long value depending on the replication use-case is advisable.
 
 ### 2. Binlog retention hours
-The default value of binlog retention hours is NULL. For Aurora for MySQL, NULL means binary logs aren't retained.
-To specify the number of hours to retain binary logs on a DB instance, use the mysql.rds_set_configuration with a period with enough time for replication to occur:
+The below procedure must be called to ensure availability of binary logs for replication.
 
 ```text
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 ```
+If this configuration isn't set, Amazon RDS purges the binary logs as soon as possible, leading to gaps in the binary logs.
 
 If not already configured, make sure to set these in the parameter group:
-1. `binlog_expire_logs_seconds` to a value >= 86400.
-2. `binlog_row_metadata` to FULL - this is to support column exclusion in the ClickPipe.
-3. `binlog_row_image` to FULL
+1. `binlog_format` to `ROW`
+2. `binlog_row_metadata` to `FULL`
+3. `binlog_row_image` to `FULL`
+
+:::tip
+If you have a MySQL cluster, the above parameters would be found in a DB Cluster parameter group and not the DB instance group.
+:::
 
 ## Configure Database User {#configure-database-user}
 
@@ -48,11 +52,16 @@ Connect to your Aurora MySQL instance as an admin user and execute the following
     CREATE USER 'clickpipes_user'@'%' IDENTIFIED BY 'some-password';
     ```
 
-2. Grant schema permissions. The following example shows permissions for the `mysql` database. Repeat these commands for each database you want to replicate:
+2. Grant schema permissions. The following example shows permissions for the `mysql` database. Repeat these commands for each database and host you want to replicate:
 
     ```sql
-    GRANT USAGE ON *.* TO 'clickpipes_user'@'%';
-    GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'%';
+    GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
+    ```
+
+3. Grant replication permissions to the user.
+
+    ```sql
+    GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
     ```
 
 ## Configure Network Access {#configure-network-access}

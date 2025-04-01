@@ -34,9 +34,14 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 ```
 
 If not already configured, make sure to set these in the parameter group:
-1. `binlog_expire_logs_seconds` to a value >= `86400`.
-2. `binlog_row_metadata` to FULL - this is to support column exclusion in the ClickPipe.
-3. `binlog_row_image` to FULL
+1. `binlog_format` to `ROW`.
+2. `binlog_expire_logs_seconds` to a value >= `86400` (1 day).
+3. `binlog_row_metadata` to `FULL`
+4. `binlog_row_image` to `FULL`
+
+:::tip
+If you have a MySQL cluster, the above parameters would be found in a DB Cluster parameter group and not the DB instance group.
+:::
 
 ## Configure Database User {#configure-database-user}
 
@@ -45,14 +50,13 @@ Connect to your RDS MySQL instance as an admin user and execute the following co
 1. Create a dedicated user for ClickPipes:
 
     ```sql
-    CREATE USER 'clickpipes_user'@'%' IDENTIFIED BY 'some-password';
+    CREATE USER 'clickpipes_user'@'host' IDENTIFIED BY 'some-password';
     ```
 
-2. Grant database permissions. Repeat these commands for each database you want to replicate:
+2. Grant schema permissions. The following example shows permissions for the `mysql` database. Repeat these commands for each database and host you want to replicate:
 
     ```sql
-    GRANT USAGE ON `<database_name>`.* TO 'clickpipes_user'@'%';
-    GRANT SELECT ON `<database_name>`.* TO 'clickpipes_user'@'%';
+    GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
     ```
 
 3. Grant replication permissions to the user.
