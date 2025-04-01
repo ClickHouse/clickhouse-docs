@@ -220,6 +220,23 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Best Practices",
+      collapsed: false,
+      collapsible: false,
+      className: "top-nav-item",
+      link: { type: "doc", id: "cloud/bestpractices/index" },
+      items: [
+        "cloud/bestpractices/bulkinserts",
+        "cloud/bestpractices/asyncinserts",
+        "cloud/bestpractices/avoidmutations",
+        "cloud/bestpractices/avoidnullablecolumns",
+        "cloud/bestpractices/avoidoptimizefinal",
+        "cloud/bestpractices/partitioningkey",
+        "cloud/bestpractices/usagelimits",
+      ],
+    },
+    {
+      type: "category",
       label: "Managing Cloud",
       collapsed: false,
       collapsible: false,
@@ -1523,6 +1540,12 @@ const sidebars = {
         },
         {
           type: "link",
+          label: "Best Practices",
+          description: "How to get the most out of ClickHouse Cloud",
+          href: "/cloud/bestpractices/"
+        },
+        {
+          type: "link",
           label: "Managing Cloud",
           description: "Manage your ClickHouse Cloud services",
           href: "/cloud/bestpractices"
@@ -1538,12 +1561,6 @@ const sidebars = {
           label: "Cloud Reference",
           description: "Understanding how ClickHouse Cloud works",
           href: "/cloud/reference/"
-        },
-        {
-          type: "link",
-          label: "Best Practices",
-          description: "How to get the most out of ClickHouse Cloud",
-          href: "/cloud/bestpractices/"
         },
         {
           type: "link",
@@ -1701,7 +1718,7 @@ const sidebars = {
           type: "link",
           label: "Native Clients & Interfaces",
           description: "Choose a client and interface to connect to ClickHouse",
-          href: "/interfaces/"
+          href: "/interfaces/natives-clients-and-interfaces"
         },
         {
           type: "link",
