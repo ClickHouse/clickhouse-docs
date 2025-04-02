@@ -1646,4 +1646,3 @@ ClickHouse 用于可观察性的主要原因之一是压缩。
 压缩不仅显著降低存储成本，磁盘上的数据更少意味着 I/O 更少、查询和插入更快。I/O 的减少将抵消任何压缩算法在 CPU 上的开销。因此，改善数据的压缩应成为确保 ClickHouse 查询快速的首要任务。
 
 有关测量压缩的详细信息，请参见 [这里](/data-compression/compression-in-clickhouse)。
-```

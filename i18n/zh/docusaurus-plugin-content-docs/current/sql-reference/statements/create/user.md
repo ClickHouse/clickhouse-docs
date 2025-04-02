@@ -234,4 +234,3 @@ CREATE USER john DEFAULT ROLE ALL EXCEPT role1, role2;
 ``` sql
 CREATE USER john GRANTEES jack;
 ```
-```
