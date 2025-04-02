@@ -17,7 +17,10 @@
 }
 .DocSearch-Button-Placeholder {
   font-size: inherit;
+}
 
+[data-theme='dark'] .DocSearch-Button-Placeholder {
+  color: white;
 }
 
 .DocSearch-Container {
