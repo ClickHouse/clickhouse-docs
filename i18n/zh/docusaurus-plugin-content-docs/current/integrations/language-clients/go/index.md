@@ -2562,4 +2562,3 @@ fmt.Printf("count: %d\n", count)
 * 插入数据时要明确类型。虽然客户端旨在灵活，例如允许字符串解析为 UUID 或 IP，但这需要数据验证，并在插入时产生开销。
 * 在可能的情况下，使用面向列的插入。这些应强类型化，避免客户端转换值的需要。
 * 遵循 ClickHouse [建议](/sql-reference/statements/insert-into/#performance-considerations) 以获得最佳插入性能。
-```
