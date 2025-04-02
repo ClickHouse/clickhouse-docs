@@ -27,7 +27,7 @@ Users must be assigned an organization level role and may optionally be assigned
 | Service      | Service ReadOnly      | View services and settings.                     |
 | SQL console  | SQL console admin     | Administrative access to databases within the service equivalent to the Default database role. |
 | SQL console  | SQL console read only | Read only access to databases within the service |
-| SQL console  | Custom                | Configure using SQL [GRANT](/en/sql-reference/statements/grant) statement; assign the role to a SQL console user by naming the role after the user |
+| SQL console  | Custom                | Configure using SQL [GRANT](/sql-reference/statements/grant) statement; assign the role to a SQL console user by naming the role after the user |
   
 To create a custom role for a SQL console user and grant it a general role, run the following commands. The email address must match the user's email address in the console. 
     
@@ -52,7 +52,7 @@ To create a custom role for a SQL console user and grant it a general role, run 
 SQL console users are created for each session and authenticated using X.509 certificates that are automatically rotated. The user is removed when the session is terminated. When generating access lists for audits, please navigate to the Settings tab for the service in the console and note the SQL console access in addition to the database users that exist in the database. If custom roles are configured, the user's access is listed in the role ending with the user's username.
 
 ## Database permissions {#database-permissions}
-Configure the following within the services and databases using the SQL [GRANT](/en/sql-reference/statements/grant) statement.
+Configure the following within the services and databases using the SQL [GRANT](/sql-reference/statements/grant) statement.
 
 | Role                  | Description                                                                   |
 |:----------------------|:------------------------------------------------------------------------------|
