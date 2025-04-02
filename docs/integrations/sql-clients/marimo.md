@@ -52,7 +52,7 @@ Once you have set up a connection, you can create a new SQL cell and choose the 
 
 <Image img={choose_sql_engine} size="md" border alt="Choose SQL engine" />
 
-For this guide, we will use the New York Taxi dataset from S3.
+For this guide, we will use the New York Taxi dataset.
 
 ```sql
 CREATE TABLE trips (

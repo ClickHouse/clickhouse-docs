@@ -17,4 +17,4 @@ This section describes how to integrate ClickHouse with various common database 
 | [Jupyter Notebooks](/integrations/jupysql)          | Interactive notebooks for code, visualizations, and text    |
 | [QStudio](/integrations/qstudio)                    | Free, open-source SQL GUI client                            |
 | [TABLUM.IO](/integrations/tablumio)                 | Cloud-based data visualization platform                     |
-| [marimo](/integrations/marimo)                      | Next-gen Python notebook for interacting with data          |
+| [marimo](/integrations/marimo)                      | Open-source reactive notebook for Python with SQL built-in  |
