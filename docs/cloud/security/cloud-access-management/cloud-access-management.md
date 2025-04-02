@@ -57,7 +57,7 @@ Configure the following within the services and databases using the SQL [GRANT](
 | Role                  | Description                                                                   |
 |:----------------------|:------------------------------------------------------------------------------|
 | Default               | Full administrative access to services                                        |
-| Custom                | Configure using the SQL [GRANT](/en/sql-reference/statements/grant) statement |
+| Custom                | Configure using the SQL [GRANT](/sql-reference/statements/grant) statement |
 
 
 - Database roles are additive. This means if a user is a member of two roles, the user has the most access granted to the two roles. They do not lose access by adding roles.
