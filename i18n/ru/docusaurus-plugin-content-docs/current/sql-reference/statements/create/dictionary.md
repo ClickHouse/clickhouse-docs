@@ -1,12 +1,12 @@
 ---
-description: 'Документация для Словаря'
-sidebar_label: 'СЛОВАРЬ'
+description: 'Документация по Словарю'
+sidebar_label: 'DICTIONARY'
 sidebar_position: 38
 slug: /sql-reference/statements/create/dictionary
-title: 'СОЗДАТЬ СЛОВАРЬ'
+title: 'CREATE DICTIONARY'
 ---
 
-Создает новый [словарь](../../../sql-reference/dictionaries/index.md) с заданной [структурой](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields), [источником](../../../sql-reference/dictionaries/index.md#dictionary-sources), [расположением](/sql-reference/dictionaries#storing-dictionaries-in-memory) и [временем жизни](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
+Создает новый [словарь](../../../sql-reference/dictionaries/index.md) с заданной [структурой](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields), [источником](../../../sql-reference/dictionaries/index.md#dictionary-sources), [расположением](/sql-reference/dictionaries#storing-dictionaries-in-memory) и [временной жизнью](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
 
 ## Синтаксис {#syntax}
 
@@ -26,15 +26,15 @@ SETTINGS(setting_name = setting_value, setting_name = setting_value, ...)
 COMMENT 'Комментарий'
 ```
 
-Структура словаря состоит из атрибутов. Атрибуты словаря указываются аналогично столбцам таблицы. Единственным обязательным свойством атрибута является его тип, все остальные свойства могут иметь значения по умолчанию.
+Структура словаря состоит из атрибутов. Атрибуты словаря задаются аналогично столбцам таблицы. Единственным обязательным свойством атрибута является его тип, все остальные свойства могут иметь значения по умолчанию.
 
-Клауза `ON CLUSTER` позволяет создавать словарь в кластере, см. [Распределенный DDL](../../../sql-reference/distributed-ddl.md).
+Клаузула `ON CLUSTER` позволяет создавать словарь в кластере, см. [Распределенный DDL](../../../sql-reference/distributed-ddl.md).
 
-В зависимости от [расположения](/sql-reference/dictionaries#storing-dictionaries-in-memory) словаря, один или несколько атрибутов могут быть указаны в качестве ключей словаря.
+В зависимости от [расположения](/sql-reference/dictionaries#storing-dictionaries-in-memory) словаря один или несколько атрибутов могут быть указаны в качестве ключей словаря.
 
 ## SOURCE {#source}
 
-Источником для словаря может быть:
+Источник для словаря может быть:
 - таблица в текущем сервисе ClickHouse
 - таблица в удаленном сервисе ClickHouse
 - файл, доступный по HTTP(S)
@@ -84,7 +84,7 @@ LAYOUT(FLAT())
 ```
 
 :::note
-При использовании SQL-консоли в [ClickHouse Cloud](https://clickhouse.com) необходимо указать пользователя (`default` или любого другого пользователя с ролью `default_role`) и пароль при создании словаря.
+При использовании SQL-консоли в [ClickHouse Cloud](https://clickhouse.com) вы должны указать пользователя (`default` или любого другого пользователя с ролью `default_role`) и пароль при создании словаря.
 :::
 
 ```sql
@@ -155,7 +155,7 @@ LAYOUT(HASHED())
 
 ### Создание словаря из другой базы данных {#create-a-dictionary-from-another-database}
 
-Пожалуйста, смотрите подробности в [Источники словарей](/sql-reference/dictionaries#dbms).
+Пожалуйста, смотрите детали в [Источники словаря](/sql-reference/dictionaries#dbms).
 
 **Смотрите также**
 
