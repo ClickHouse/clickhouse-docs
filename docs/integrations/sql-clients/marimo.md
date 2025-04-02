@@ -20,7 +20,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-[marimo](marimo.io) is a next-generation Python notebook for working with data. When you run a cell or interact with a UI element, marimo automatically runs affected cells (or marks them as stale), keeping code and outputs consistent and preventing bugs before they happen. Every marimo notebook is stored as pure Python, executable as a script, and deployable as an app.
+[marimo](https://marimo.io/) is an open-source reactive notebook for Python with SQL built-in. When you run a cell or interact with a UI element, marimo automatically runs affected cells (or marks them as stale), keeping code and outputs consistent and preventing bugs before they happen. Every marimo notebook is stored as pure Python, executable as a script, and deployable as an app.
 
 <Image img={marimo_connect} size="md" border alt="Connect to ClickHouse" />
 
