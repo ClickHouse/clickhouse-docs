@@ -84,7 +84,7 @@ GRANT default_role to userID;
 
 Users can use a SHA256 hash generator or code function such as `hashlib` in Python to convert a 12+ character password with appropriate complexity to a SHA256 string to provide to the system administrator as the password. This ensures the administrator does not see or handle clear text passwords.
 
-## Database access listings with SQL console users {#database-access-listings-with-sql-console-users}
+### Database access listings with SQL console users {#database-access-listings-with-sql-console-users}
 The following process can be used to generate a complete access listing across the SQL console and databases in your organization.
 
 1. Run the following queries to get a list of all grants in the database. 
