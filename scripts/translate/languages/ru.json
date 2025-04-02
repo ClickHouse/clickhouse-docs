@@ -4,6 +4,7 @@
   "glossary": {
     "access control": "контроль доступа",
     "access key": "ключ доступа",
+    "adaptive join algorithms": "Адаптивные алгоритмы JOIN",
     "address sanitizer": "санитайзер адресов",
     "aggregate functions": "агрегатные функции",
     "aggregation": "агрегация",
