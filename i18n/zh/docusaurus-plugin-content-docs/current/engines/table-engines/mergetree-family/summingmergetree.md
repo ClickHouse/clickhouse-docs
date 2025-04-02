@@ -193,4 +193,3 @@ ARRAY JOIN
 ## 相关内容 {#related-content}
 
 - 博客: [在 ClickHouse 中使用聚合组合器](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
-```
