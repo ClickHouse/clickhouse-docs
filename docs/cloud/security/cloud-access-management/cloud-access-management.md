@@ -16,9 +16,6 @@ Users must be assigned an organization level role and may optionally be assigned
 - Users added to an organization via a SAML integration are automatically assigned the Member role.
 - Service Admin is assigned the SQL console admin role by default. SQL console permissions may be removed in the service settings page.
 
-:::note
-The first user to set up your ClickHouse Cloud account is automatically assigned the Admin role in the console. This user may invite additional users to the organization and assign either the Admin or Developer role to users.
-:::
 
 | Context      | Role                   | Description                                      |
 |:-------------|:-----------------------|:-------------------------------------------------|
@@ -86,4 +83,43 @@ GRANT default_role to userID;
 ```
 
 Users can use a SHA256 hash generator or code function such as `hashlib` in Python to convert a 12+ character password with appropriate complexity to a SHA256 string to provide to the system administrator as the password. This ensures the administrator does not see or handle clear text passwords.
+
+## Database access listings with SQL console users {#database-access-listings-with-sql-console-users}
+The following process can be used to generate a complete access listing across the SQL console and databases in your organization.
+
+1. Run the following queries to get a list of all grants in the database. 
+
+    ```
+    SELECT grants.user_name,
+      grants.role_name,
+      users.name AS role_member,
+      grants.access_type,
+      grants.database,
+      grants.table
+    FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
+      LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
+    
+    UNION ALL
+    
+    SELECT grants.user_name,
+      grants.role_name,
+      role_grants.role_name AS role_member,
+      grants.access_type,
+      grants.database,
+      grants.table
+    FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
+    WHERE role_grants.user_name is null;
+    ```
+    
+2. Associate this list to Console users with access to SQL console.
+   
+    a. Go to the Console.
+
+    b. Select the relevant service.
+
+    c. Select Settings on the left.
+
+    d. Scroll to the SQL console access section.
+
+    e. Click the link for the number of users with access to the database `There are # users with access to this service.` to see the user listing.
 
