@@ -24,7 +24,7 @@ Users must be assigned an organization level role and may optionally be assigned
 | Organization | Billing               | View usage and invoices, and manage payment methods. |
 | Organization | Member                | Sign-in only with the ability to manage personal profile settings. Assigned to SAML SSO users by default. |
 | Service      | Service Admin         | Manage service settings.                        |
-| Service      | Service ReadOnly      | View services and settings.                     |
+| Service      | Service Read Only     | View services and settings.                     |
 | SQL console  | SQL console admin     | Administrative access to databases within the service equivalent to the Default database role. |
 | SQL console  | SQL console read only | Read only access to databases within the service |
 | SQL console  | Custom                | Configure using SQL [GRANT](/sql-reference/statements/grant) statement; assign the role to a SQL console user by naming the role after the user |
