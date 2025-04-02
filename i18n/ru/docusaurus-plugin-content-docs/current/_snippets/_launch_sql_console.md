@@ -18,4 +18,3 @@ import createservice8 from '@site/static/images/_snippets/createservice8.png';
 <img src={createservice8} class="image" alt="SQL консоль" />
 
 </details>
-```

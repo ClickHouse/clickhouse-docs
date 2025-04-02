@@ -4799,4 +4799,3 @@ timeDiff(toDateTime64('1927-01-01 00:00:00', 3), toDate32('1927-01-02'));
 ## Related content {#related-content}
 
 - Blog: [Работа с временными рядами данных в ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
-```

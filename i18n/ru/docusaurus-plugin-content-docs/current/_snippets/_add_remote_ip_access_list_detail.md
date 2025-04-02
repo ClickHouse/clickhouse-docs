@@ -1,9 +1,3 @@
-title: 'Управление списком разрешенных IP'
-sidebar_label: 'Управление списком разрешенных IP'
-keywords: ['ClickHouse', 'IP Access List', 'cloud services']
-description: 'Управление доступом к вашим ClickHouse Cloud сервисам через список разрешенных IP.'
-```
-
 import ip_allow_list_check_list from '@site/static/images/_snippets/ip-allow-list-check-list.png';
 import ip_allow_list_add_current_ip from '@site/static/images/_snippets/ip-allow-list-add-current-ip.png';
 

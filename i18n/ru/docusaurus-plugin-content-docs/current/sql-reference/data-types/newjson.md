@@ -5,6 +5,7 @@ sidebar_label: JSON
 keywords: ['json', 'data type']
 title: 'Тип данных JSON'
 ---
+
 import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge/>
@@ -815,4 +816,3 @@ SELECT json1, json2, json1 == json2 FROM test;
 
 - [Как мы создали новый мощный тип данных JSON для ClickHouse](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)
 - [Челендж на миллиард документов JSON: ClickHouse против MongoDB, Elasticsearch и других](https://clickhouse.com/blog/json-bench-clickhouse-vs-mongodb-elasticsearch-duckdb-postgresql)
-```

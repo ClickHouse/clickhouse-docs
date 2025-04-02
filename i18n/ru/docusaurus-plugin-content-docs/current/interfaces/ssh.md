@@ -4,6 +4,7 @@ sidebar_label: SSH интерфейс
 sidebar_position: 60
 keywords: [клиент, ssh, putty]
 ---
+
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 

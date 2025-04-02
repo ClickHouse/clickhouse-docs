@@ -4,6 +4,7 @@ sidebar_label: Расширенный учебник
 sidebar_position: 0.5
 keywords: [clickhouse, install, tutorial, dictionary, dictionaries]
 ---
+
 import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
 
 

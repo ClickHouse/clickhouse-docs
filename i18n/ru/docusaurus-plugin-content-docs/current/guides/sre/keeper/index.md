@@ -1299,4 +1299,3 @@ reconfig(joining="server.5=localhost:5123;participant;8", leaving=None)
 - `setWatches` не поддерживается
 - Создание znodes типа [`CONTAINER`](https://zookeeper.apache.org/doc/r3.5.1-alpha/api/org/apache/zookeeper/CreateMode.html) не поддерживается
 - [`SASL аутентификация`](https://cwiki.apache.org/confluence/display/ZOOKEEPER/Zookeeper+and+SASL) не поддерживается
-```

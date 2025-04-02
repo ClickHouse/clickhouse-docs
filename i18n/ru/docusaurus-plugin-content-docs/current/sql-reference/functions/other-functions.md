@@ -4551,4 +4551,3 @@ SELECT getMaxTableNameLengthForDatabase('default');
 │                                         206 │
 └─────────────────────────────────────────────┘
 ```
-```

@@ -501,4 +501,3 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 - [system.metrics](/operations/system-tables/metrics) — Содержит мгновенно рассчитанные метрики.
 - [system.events](/operations/system-tables/events) — Содержит ряд произошедших событий.
 - [system.metric_log](/operations/system-tables/metric_log) — Содержит историю значений метрик из таблиц `system.metrics` и `system.events`.
-```

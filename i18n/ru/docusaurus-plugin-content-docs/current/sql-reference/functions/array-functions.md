@@ -3263,4 +3263,3 @@ SELECT arrayNormalizedGini([0.9, 0.3, 0.8, 0.7], [6, 1, 0, 2]);
 ## Distance functions {#distance-functions}
 
 Все поддерживаемые функции описаны в [документации по функциям расстояния](../../sql-reference/functions/distance-functions.md).
-```
