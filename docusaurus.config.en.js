@@ -7,6 +7,7 @@ const { customParseFrontMatter } = require('./plugins/frontmatter-validation/cus
 const checkFloatingPages = require('./plugins/checkFloatingPages');
 const frontmatterValidator = require('./plugins/frontmatter-validation/frontmatterValidatorPlugin');
 const path = require('path');
+import pluginLlmsTxt from './plugins/llms-txt-plugin.ts'
 
 // Helper function to skip over index.md files.
 function skipIndex(items) {
@@ -350,6 +351,10 @@ const config = {
         failBuild: true,
         exceptionsFile: path.resolve(__dirname, 'plugins/floating-pages-exceptions.txt')
       },
+    ],
+    [
+      pluginLlmsTxt,
+      {}
     ]
   ],
   customFields: {
