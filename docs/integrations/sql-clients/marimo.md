@@ -110,11 +110,11 @@ SELECT * FROM trips LIMIT 1000;
 
 <Image img={results} size="lg" border alt="Results in a dataframe" />
 
-Now, you are able to view the results in a dataframe. I would like to visualize the most expensive dropoffs from a given pickup location. To do this, I will use a built-in dropdown and altair for charting.
+Now, you are able to view the results in a dataframe. I would like to visualize the most expensive dropoffs from a given pickup location. marimo provides several UI components to help you. I will use a dropdown to select the location and altair for charting.
 
 <Image img={dropdown_cell_chart} size="lg" border alt="Combination of dropdown, table and chart" />
 
-marimo's reactive execution model extends into SQL queries, so changes to your SQL will automatically trigger downstream computations for dependent cells (or optionally mark cells as stale for expensive computations).
+marimo's reactive execution model extends into SQL queries, so changes to your SQL will automatically trigger downstream computations for dependent cells (or optionally mark cells as stale for expensive computations). Hence the chart and table changes when the query is updated.
 
 You can also toggle App View to have a clean interface for exploring your data.
 
