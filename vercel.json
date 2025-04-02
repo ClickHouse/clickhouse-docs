@@ -1,9 +1,21 @@
 {
   "rewrites": [
-    { "source": "/docs/jp/:path*", "destination": "/:path*" },
-    { "source": "/docs/zh/:path*", "destination": "/:path*" },
-    { "source": "/docs/ru/:path*", "destination": "/:path*" },
-    { "source": "/docs/:path*", "destination": "/:path*" }
+    {
+      "source": "/docs/jp/:path*",
+      "destination": "/:path*"
+    },
+    {
+      "source": "/docs/zh/:path*",
+      "destination": "/:path*"
+    },
+    {
+      "source": "/docs/ru/:path*",
+      "destination": "/:path*"
+    },
+    {
+      "source": "/docs/:path*",
+      "destination": "/:path*"
+    }
   ],
   "trailingSlash": false,
   "cleanUrls": true,
@@ -284,6 +296,11 @@
     {
       "source": "/docs/en/integrations/sql-clients/tablum.io",
       "destination": "/docs/integrations/tablumio",
+      "permanent": true
+    },
+    {
+      "source": "/docs/en/integrations/sql-clients/marimo",
+      "destination": "/docs/integrations/marimo",
       "permanent": true
     },
     {

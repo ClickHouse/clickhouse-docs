@@ -5,197 +5,197 @@
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 const sidebars = {
-  docs: [
-    {
-      type: "category",
-      label: "Introduction",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "introduction-index" },
-      items: [
-        "intro",
-        "quick-start",
-        "tutorial",
-        "getting-started/install",
-        "deployment-modes",
-      ],
-    },
-    {
-      type: "category",
-      label: "Concepts",
-      className: "top-nav-item",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "concepts/index" },
-      items: [
-        "concepts/olap",
-        "concepts/why-clickhouse-is-so-fast",
-        "about-us/distinctive-features",
-        "concepts/glossary",
-        {
-          type: "category",
-          label: "FAQ",
-          collapsed: true,
-          collapsible: true,
-          link: { type: "doc", id: "faq/index" },
-          items: [
-            "faq/general/index",
-            "faq/general/mapreduce",
-            "faq/general/ne-tormozit",
-            "faq/general/olap",
-            "faq/general/who-is-using-clickhouse",
-          ],
-        }
-      ],
-    },
-    {
-      type: "category",
-      label: "Starter Guides",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "starter-guides/index" },
-      items: [
-        "guides/creating-tables",
-        "guides/inserting-data",
-        "guides/writing-queries",
-        "guides/developer/mutations",
-      ],
-    },
-    {
-      type: "category",
-      label: "Use Case Guides",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "use-cases/index" },
-      items: [
-        {
-          type: "category",
-          label: "Observability",
-          collapsed: true,
-          collapsible: true,
-          link: { type: "doc", id: "use-cases/observability/index" },
-          items: [
-            "use-cases/observability/introduction",
-            "use-cases/observability/schema-design",
-            "use-cases/observability/managing-data",
-            "use-cases/observability/integrating-opentelemetry",
-            "use-cases/observability/grafana",
-            "use-cases/observability/demo-application",
-          ]
-        },
-        {
-          type: "category",
-          label: "Time-Series",
-          collapsed: true,
-          collapsible: true,
-          link: { type: "doc", id: "use-cases/time-series/index" },
-          items: [
-            "use-cases/time-series/date-time-data-types",
-            "use-cases/time-series/basic-operations",
-            "use-cases/time-series/analysis-functions",
-            "use-cases/time-series/storage-efficiency",
-            "use-cases/time-series/query-performance"
-          ]
-        },
-      ]
-    },
-    {
-      type: "category",
-      label: "Migration Guides",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "migrations/index" },
-      items: [
-        {
-          type: "category",
-          label: "BigQuery",
-          link: { type: "doc", id: "migrations/bigquery/index" },
-          items: [
-            {
-              type: "doc",
-              id: "migrations/bigquery/equivalent-concepts",
-            },
-            {
-              type: "doc",
-              id: "migrations/bigquery/migrating-to-clickhouse-cloud",
-            },
-            {
-              type: "doc",
-              id: "migrations/bigquery/loading-data",
-            },
-          ]
-        },
-        "migrations/snowflake",
-        {
-          type: "category",
-          label: "PostgreSQL",
-          collapsed: true,
-          collapsible: true,
-          link: { type: "doc", id: "migrations/postgres/index" },
-          items: [
-            {
-              type: "doc",
-              id: "migrations/postgres/overview",
-              label: "Introduction",
-            },
-            "integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql",
-            "integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse",
-            "migrations/postgres/dataset",
-            "migrations/postgres/designing-schemas",
-            "migrations/postgres/data-modeling-techniques",
-            "integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries",
-            "integrations/data-ingestion/dbms/postgresql/inserting-data",
-            "integrations/data-ingestion/dbms/postgresql/data-type-mappings",
-          ],
-        },
-        "integrations/data-ingestion/dbms/mysql/index",
-        "integrations/data-ingestion/redshift/index",
-        "integrations/data-ingestion/dbms/dynamodb/index",
-        {
-          type: "doc",
-          id: "integrations/migration/rockset",
-          label: "Rockset",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Example Datasets",
-      className: "top-nav-item",
-      collapsed: true,
-      collapsible: true,
-      link: { type: "doc", id: "getting-started/index" },
-      items: [
-        "getting-started/example-datasets/amazon-reviews",
-        "getting-started/example-datasets/amplab-benchmark",
-        "getting-started/example-datasets/brown-benchmark",
-        "getting-started/example-datasets/cell-towers",
-        "getting-started/example-datasets/covid19",
-        "getting-started/example-datasets/criteo",
-        "getting-started/example-datasets/environmental-sensors",
-        "getting-started/example-datasets/github",
-        "getting-started/example-datasets/github-events",
-        "getting-started/example-datasets/laion",
-        "getting-started/example-datasets/menus",
-        "getting-started/example-datasets/metrica",
-        "getting-started/example-datasets/noaa",
-        "getting-started/example-datasets/nyc-taxi",
-        "getting-started/example-datasets/nypd_complaint_data",
-        "getting-started/example-datasets/ontime",
-        "getting-started/example-datasets/opensky",
-        "getting-started/example-datasets/recipes",
-        "getting-started/example-datasets/reddit-comments",
-        "getting-started/example-datasets/stackoverflow",
-        "getting-started/example-datasets/star-schema",
-        "getting-started/example-datasets/tw-weather",
-        "getting-started/example-datasets/tpcds",
-        "getting-started/example-datasets/tpch",
-        "getting-started/example-datasets/uk-price-paid",
-        "getting-started/example-datasets/wikistat",
-        "getting-started/example-datasets/youtube-dislikes",
-      ],
-    }
-  ],
+	docs: [
+		{
+			type: "category",
+			label: "Introduction",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "introduction-index" },
+			items: [
+				"intro",
+				"quick-start",
+				"tutorial",
+				"getting-started/install",
+				"deployment-modes",
+			],
+		},
+		{
+			type: "category",
+			label: "Concepts",
+			className: "top-nav-item",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "concepts/index" },
+			items: [
+				"concepts/olap",
+				"concepts/why-clickhouse-is-so-fast",
+				"about-us/distinctive-features",
+				"concepts/glossary",
+				{
+					type: "category",
+					label: "FAQ",
+					collapsed: true,
+					collapsible: true,
+					link: { type: "doc", id: "faq/index" },
+					items: [
+						"faq/general/index",
+						"faq/general/mapreduce",
+						"faq/general/ne-tormozit",
+						"faq/general/olap",
+						"faq/general/who-is-using-clickhouse",
+					],
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "Starter Guides",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "starter-guides/index" },
+			items: [
+				"guides/creating-tables",
+				"guides/inserting-data",
+				"guides/writing-queries",
+				"guides/developer/mutations",
+			],
+		},
+		{
+			type: "category",
+			label: "Use Case Guides",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "use-cases/index" },
+			items: [
+				{
+					type: "category",
+					label: "Observability",
+					collapsed: true,
+					collapsible: true,
+					link: { type: "doc", id: "use-cases/observability/index" },
+					items: [
+						"use-cases/observability/introduction",
+						"use-cases/observability/schema-design",
+						"use-cases/observability/managing-data",
+						"use-cases/observability/integrating-opentelemetry",
+						"use-cases/observability/grafana",
+						"use-cases/observability/demo-application",
+					],
+				},
+				{
+					type: "category",
+					label: "Time-Series",
+					collapsed: true,
+					collapsible: true,
+					link: { type: "doc", id: "use-cases/time-series/index" },
+					items: [
+						"use-cases/time-series/date-time-data-types",
+						"use-cases/time-series/basic-operations",
+						"use-cases/time-series/analysis-functions",
+						"use-cases/time-series/storage-efficiency",
+						"use-cases/time-series/query-performance",
+					],
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "Migration Guides",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "migrations/index" },
+			items: [
+				{
+					type: "category",
+					label: "BigQuery",
+					link: { type: "doc", id: "migrations/bigquery/index" },
+					items: [
+						{
+							type: "doc",
+							id: "migrations/bigquery/equivalent-concepts",
+						},
+						{
+							type: "doc",
+							id: "migrations/bigquery/migrating-to-clickhouse-cloud",
+						},
+						{
+							type: "doc",
+							id: "migrations/bigquery/loading-data",
+						},
+					],
+				},
+				"migrations/snowflake",
+				{
+					type: "category",
+					label: "PostgreSQL",
+					collapsed: true,
+					collapsible: true,
+					link: { type: "doc", id: "migrations/postgres/index" },
+					items: [
+						{
+							type: "doc",
+							id: "migrations/postgres/overview",
+							label: "Introduction",
+						},
+						"integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql",
+						"integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse",
+						"migrations/postgres/dataset",
+						"migrations/postgres/designing-schemas",
+						"migrations/postgres/data-modeling-techniques",
+						"integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries",
+						"integrations/data-ingestion/dbms/postgresql/inserting-data",
+						"integrations/data-ingestion/dbms/postgresql/data-type-mappings",
+					],
+				},
+				"integrations/data-ingestion/dbms/mysql/index",
+				"integrations/data-ingestion/redshift/index",
+				"integrations/data-ingestion/dbms/dynamodb/index",
+				{
+					type: "doc",
+					id: "integrations/migration/rockset",
+					label: "Rockset",
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "Example Datasets",
+			className: "top-nav-item",
+			collapsed: true,
+			collapsible: true,
+			link: { type: "doc", id: "getting-started/index" },
+			items: [
+				"getting-started/example-datasets/amazon-reviews",
+				"getting-started/example-datasets/amplab-benchmark",
+				"getting-started/example-datasets/brown-benchmark",
+				"getting-started/example-datasets/cell-towers",
+				"getting-started/example-datasets/covid19",
+				"getting-started/example-datasets/criteo",
+				"getting-started/example-datasets/environmental-sensors",
+				"getting-started/example-datasets/github",
+				"getting-started/example-datasets/github-events",
+				"getting-started/example-datasets/laion",
+				"getting-started/example-datasets/menus",
+				"getting-started/example-datasets/metrica",
+				"getting-started/example-datasets/noaa",
+				"getting-started/example-datasets/nyc-taxi",
+				"getting-started/example-datasets/nypd_complaint_data",
+				"getting-started/example-datasets/ontime",
+				"getting-started/example-datasets/opensky",
+				"getting-started/example-datasets/recipes",
+				"getting-started/example-datasets/reddit-comments",
+				"getting-started/example-datasets/stackoverflow",
+				"getting-started/example-datasets/star-schema",
+				"getting-started/example-datasets/tw-weather",
+				"getting-started/example-datasets/tpcds",
+				"getting-started/example-datasets/tpch",
+				"getting-started/example-datasets/uk-price-paid",
+				"getting-started/example-datasets/wikistat",
+				"getting-started/example-datasets/youtube-dislikes",
+			],
+		},
+	],
 
   cloud: [
     {
@@ -462,136 +462,139 @@ const sidebars = {
     },
   ],
 
-  sqlreference: [
-    {
-      type: "category",
-      label: "Introduction",
-      className: "top-nav-item",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "sql-reference/index" },
-      items: [
-        {
-          type: "doc",
-          id: "sql-reference/syntax",
-        },
-        {
-          type: "doc",
-          id: "sql-reference/formats",
-        },
-        // {
-        //   type: "doc",
-        //   id: "sql-reference/ansi",
-        // },
-        {
-          type: "category",
-          label: "Data Types",
-          link: { type: "doc", id: "sql-reference/data-types/index" },
-          items: [
-            {
-              type: "autogenerated",
-              dirName: "sql-reference/data-types",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Statements",
-          link: { type: "doc", id: "sql-reference/statements/index" },
-          items: [
-            {
-              type: "autogenerated",
-              dirName: "sql-reference/statements",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Operators",
-          items: [
-            {
-              type: "autogenerated",
-              dirName: "sql-reference/operators",
-            },
-          ]
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Engines",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "engines/index" },
-      items: [
-        {
-          type: "autogenerated",
-          dirName: "engines",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Functions",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "sql-reference/functions/index" },
-      items: [
-        {
-          type: "category",
-          label: "Regular Functions",
-          collapsed: true,
-          collapsible: true,
-          link: { type: "doc", id: "sql-reference/functions/regular-functions-index" },
-          items: [
-            {
-              type: "autogenerated",
-              dirName: "sql-reference/functions",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Aggregate Functions",
-          collapsed: true,
-          collapsible: true,
-          link: { type: "doc", id: "sql-reference/aggregate-functions/index" },
-          items: [
-            {
-              type: "autogenerated",
-              dirName: "sql-reference/aggregate-functions",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Table Functions",
-          collapsed: true,
-          collapsible: true,
-          link: { type: "doc", id: "sql-reference/table-functions/index" },
-          items: [
-            {
-              type: "autogenerated",
-              dirName: "sql-reference/table-functions",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Window Functions",
-          collapsed: true,
-          collapsible: true,
-          link: { type: "doc", id: "sql-reference/window-functions/index" },
-          items: [
-            {
-              type: "autogenerated",
-              dirName: "sql-reference/window-functions",
-            },
-          ],
-        },
-      ],
-    },
-  ],
+	sqlreference: [
+		{
+			type: "category",
+			label: "Introduction",
+			className: "top-nav-item",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "sql-reference/index" },
+			items: [
+				{
+					type: "doc",
+					id: "sql-reference/syntax",
+				},
+				{
+					type: "doc",
+					id: "sql-reference/formats",
+				},
+				// {
+				//   type: "doc",
+				//   id: "sql-reference/ansi",
+				// },
+				{
+					type: "category",
+					label: "Data Types",
+					link: { type: "doc", id: "sql-reference/data-types/index" },
+					items: [
+						{
+							type: "autogenerated",
+							dirName: "sql-reference/data-types",
+						},
+					],
+				},
+				{
+					type: "category",
+					label: "Statements",
+					link: { type: "doc", id: "sql-reference/statements/index" },
+					items: [
+						{
+							type: "autogenerated",
+							dirName: "sql-reference/statements",
+						},
+					],
+				},
+				{
+					type: "category",
+					label: "Operators",
+					items: [
+						{
+							type: "autogenerated",
+							dirName: "sql-reference/operators",
+						},
+					],
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "Engines",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "engines/index" },
+			items: [
+				{
+					type: "autogenerated",
+					dirName: "engines",
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "Functions",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "sql-reference/functions/index" },
+			items: [
+				{
+					type: "category",
+					label: "Regular Functions",
+					collapsed: true,
+					collapsible: true,
+					link: {
+						type: "doc",
+						id: "sql-reference/functions/regular-functions-index",
+					},
+					items: [
+						{
+							type: "autogenerated",
+							dirName: "sql-reference/functions",
+						},
+					],
+				},
+				{
+					type: "category",
+					label: "Aggregate Functions",
+					collapsed: true,
+					collapsible: true,
+					link: { type: "doc", id: "sql-reference/aggregate-functions/index" },
+					items: [
+						{
+							type: "autogenerated",
+							dirName: "sql-reference/aggregate-functions",
+						},
+					],
+				},
+				{
+					type: "category",
+					label: "Table Functions",
+					collapsed: true,
+					collapsible: true,
+					link: { type: "doc", id: "sql-reference/table-functions/index" },
+					items: [
+						{
+							type: "autogenerated",
+							dirName: "sql-reference/table-functions",
+						},
+					],
+				},
+				{
+					type: "category",
+					label: "Window Functions",
+					collapsed: true,
+					collapsible: true,
+					link: { type: "doc", id: "sql-reference/window-functions/index" },
+					items: [
+						{
+							type: "autogenerated",
+							dirName: "sql-reference/window-functions",
+						},
+					],
+				},
+			],
+		},
+	],
 
   integrations: [
     {
@@ -994,225 +997,223 @@ const sidebars = {
     },
   ],
 
-  managingData: [
-    {
-      type: "category",
-      label: "Core Concepts",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "managing-data/core-concepts/index" },
-      items: [
-        "managing-data/core-concepts/parts",
-        "managing-data/core-concepts/partitions",
-        "managing-data/core-concepts/merges",
-        "managing-data/core-concepts/shards",
-        "guides/best-practices/sparse-primary-indexes",
-        "managing-data/core-concepts/academic_overview"
-      ]
-    },
-    {
-      type: "category",
-      label: "Updating Data",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "managing-data/updating-data/index" },
-      items: [
-        "managing-data/updating-data/overview",
-        "managing-data/updating-data/update_mutations",
-        {
-          type: "doc",
-          label: "Lightweight Updates",
-          id: "guides/developer/lightweight-update"
-        },
-        {
-          type: "doc",
-          label: "ReplacingMergeTree",
-          id: "migrations/postgres/replacing-merge-tree"
-        },
-      ]
-    },
-    {
-      type: "category",
-      label: "Deleting Data",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "managing-data/deleting-data/index" },
-      items: [
-        "managing-data/deleting-data/overview",
-        {
-          type: "doc",
-          label: "Lightweight Deletes",
-          id: "guides/developer/lightweight-delete"
-        },
-        "managing-data/deleting-data/delete_mutations",
-        "managing-data/truncate",
-        "managing-data/drop_partition",
-      ]
-    },
-    {
-      type: "category",
-      label: "Data Modeling",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "data-modeling/index" },
-      items: [
-        "data-modeling/schema-design",
-        {
-          type: "category",
-          label: "Dictionary",
-          collapsible: true,
-          collapsed: true,
-          items: [
-            "dictionary/index",
-            "sql-reference/dictionaries/index",
-          ],
-        },
-        {
-          type: "category",
-          label: "Materialized Views",
-          collapsible: true,
-          collapsed: true,
-          link: { type: "doc", id: "materialized-view/index" },
-          items: [
-            "materialized-view/incremental-materialized-view",
-            "materialized-view/refreshable-materialized-view"
-          ],
-        },
-        {
-          type: "category",
-          label: "Data Compression",
-          collapsed: true,
-          collapsible: true,
-          link: { type: "doc", id: "data-compression/compression-in-clickhouse" },
-          items: [
-            "data-compression/compression-modes"
-          ],
-        },
-        "data-modeling/denormalization",
-        "data-modeling/backfilling",
-      ],
-    },
-    {
-      type: "category",
-      label: "Advanced Guides",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "guides/developer/index" },
-      items: [
-        "guides/developer/alternative-query-languages",
-        "guides/developer/cascading-materialized-views",
-        "guides/developer/debugging-memory-issues",
-        "guides/developer/deduplicating-inserts-on-retries",
-        "guides/developer/deduplication",
-        "guides/developer/time-series-filling-gaps",
-        "sql-reference/transactions",
-        "guides/developer/ttl",
-        "guides/developer/understanding-query-execution-with-the-analyzer",
-        "guides/joining-tables",
-      ],
-    },
-    {
-      type: "category",
-      label: "Performance and Optimizations",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "guides/best-practices/index" },
-      items: [
-        "guides/best-practices/query-optimization",
-        "guides/best-practices/partitioningkey",
-        "guides/best-practices/skipping-indexes",
-        "guides/best-practices/bulkinserts",
-        "guides/best-practices/asyncinserts",
-        "guides/best-practices/avoidmutations",
-        "guides/best-practices/avoidnullablecolumns",
-        "guides/best-practices/avoidoptimizefinal",
-        "operations/analyzer",
-        "operations/optimizing-performance/sampling-query-profiler",
-        "operations/query-cache",
-        "operations/query-condition-cache",
-        "operations/userspace-page-cache",
-        "operations/performance-test",
-      ]
-    }
-  ],
+	managingData: [
+		{
+			type: "category",
+			label: "Core Concepts",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "managing-data/core-concepts/index" },
+			items: [
+				"managing-data/core-concepts/parts",
+				"managing-data/core-concepts/partitions",
+				"managing-data/core-concepts/merges",
+				"managing-data/core-concepts/shards",
+				"guides/best-practices/sparse-primary-indexes",
+				"managing-data/core-concepts/academic_overview",
+			],
+		},
+		{
+			type: "category",
+			label: "Updating Data",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "managing-data/updating-data/index" },
+			items: [
+				"managing-data/updating-data/overview",
+				"managing-data/updating-data/update_mutations",
+				{
+					type: "doc",
+					label: "Lightweight Updates",
+					id: "guides/developer/lightweight-update",
+				},
+				{
+					type: "doc",
+					label: "ReplacingMergeTree",
+					id: "migrations/postgres/replacing-merge-tree",
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "Deleting Data",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "managing-data/deleting-data/index" },
+			items: [
+				"managing-data/deleting-data/overview",
+				{
+					type: "doc",
+					label: "Lightweight Deletes",
+					id: "guides/developer/lightweight-delete",
+				},
+				"managing-data/deleting-data/delete_mutations",
+				"managing-data/truncate",
+				"managing-data/drop_partition",
+			],
+		},
+		{
+			type: "category",
+			label: "Data Modeling",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "data-modeling/index" },
+			items: [
+				"data-modeling/schema-design",
+				{
+					type: "category",
+					label: "Dictionary",
+					collapsible: true,
+					collapsed: true,
+					items: ["dictionary/index", "sql-reference/dictionaries/index"],
+				},
+				{
+					type: "category",
+					label: "Materialized Views",
+					collapsible: true,
+					collapsed: true,
+					link: { type: "doc", id: "materialized-view/index" },
+					items: [
+						"materialized-view/incremental-materialized-view",
+						"materialized-view/refreshable-materialized-view",
+					],
+				},
+				{
+					type: "category",
+					label: "Data Compression",
+					collapsed: true,
+					collapsible: true,
+					link: {
+						type: "doc",
+						id: "data-compression/compression-in-clickhouse",
+					},
+					items: ["data-compression/compression-modes"],
+				},
+				"data-modeling/denormalization",
+				"data-modeling/backfilling",
+			],
+		},
+		{
+			type: "category",
+			label: "Advanced Guides",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "guides/developer/index" },
+			items: [
+				"guides/developer/alternative-query-languages",
+				"guides/developer/cascading-materialized-views",
+				"guides/developer/debugging-memory-issues",
+				"guides/developer/deduplicating-inserts-on-retries",
+				"guides/developer/deduplication",
+				"guides/developer/time-series-filling-gaps",
+				"sql-reference/transactions",
+				"guides/developer/ttl",
+				"guides/developer/understanding-query-execution-with-the-analyzer",
+				"guides/joining-tables",
+			],
+		},
+		{
+			type: "category",
+			label: "Performance and Optimizations",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "guides/best-practices/index" },
+			items: [
+				"guides/best-practices/query-optimization",
+				"guides/best-practices/partitioningkey",
+				"guides/best-practices/skipping-indexes",
+				"guides/best-practices/bulkinserts",
+				"guides/best-practices/asyncinserts",
+				"guides/best-practices/avoidmutations",
+				"guides/best-practices/avoidnullablecolumns",
+				"guides/best-practices/avoidoptimizefinal",
+				"operations/analyzer",
+				"operations/optimizing-performance/sampling-query-profiler",
+				"operations/query-cache",
+				"operations/query-condition-cache",
+				"operations/userspace-page-cache",
+				"operations/performance-test",
+			],
+		},
+	],
 
-  aboutClickHouse: [
-    {
-      type: "category",
-      label: "About ClickHouse",
-      link: {
-        type: "doc",
-        id: "about-us/index",
-      },
-      collapsed: false,
-      collapsible: false,
-      items: [
-        "about-us/intro",
-        "about-us/adopters",
-        "about-us/support",
-        "settings/beta-and-experimental-features",
-        "about-us/cloud",
-        "about-us/history",
-      ],
-    },
-    {
-      type: "category",
-      label: "Changelogs",
-      collapsed: false,
-      collapsible: false,
-      items: [
-        {
-          type: "autogenerated",
-          dirName: "whats-new",
-        }
-      ]
-    },
-    {
-      type: "category",
-      label: "Development and Contributing",
-      collapsed: false,
-      collapsible: false,
-      items: [
-        {
-          type: "autogenerated",
-          dirName: "development",
-        },
-        "operations/optimizing-performance/profile-guided-optimization",
-        {
-          type: "category",
-          label: "Native Protocol",
-          collapsed: true,
-          collapsible: true,
-          items: [
-            {
-              type: "autogenerated",
-              dirName: "native-protocol",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "FAQ",
-      collapsed: true,
-      collapsible: true,
-      link: { type: "doc", id: "about-us/about-faq-index" },
-      items: [
-        "faq/general/columnar-database",
-        "faq/general/dbms-naming",
-        "faq/integration/index",
-        "faq/integration/json-import",
-        "faq/integration/oracle-odbc",
-        "faq/operations/delete-old-data",
-        "faq/operations/index",
-        "faq/operations/separate_storage",
-        "faq/use-cases/index",
-        "faq/use-cases/key-value",
-        "faq/use-cases/time-series",
-      ],
-    }
-  ],
+	aboutClickHouse: [
+		{
+			type: "category",
+			label: "About ClickHouse",
+			link: {
+				type: "doc",
+				id: "about-us/index",
+			},
+			collapsed: false,
+			collapsible: false,
+			items: [
+				"about-us/intro",
+				"about-us/adopters",
+				"about-us/support",
+				"settings/beta-and-experimental-features",
+				"about-us/cloud",
+				"about-us/history",
+			],
+		},
+		{
+			type: "category",
+			label: "Changelogs",
+			collapsed: false,
+			collapsible: false,
+			items: [
+				{
+					type: "autogenerated",
+					dirName: "whats-new",
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "Development and Contributing",
+			collapsed: false,
+			collapsible: false,
+			items: [
+				{
+					type: "autogenerated",
+					dirName: "development",
+				},
+				"operations/optimizing-performance/profile-guided-optimization",
+				{
+					type: "category",
+					label: "Native Protocol",
+					collapsed: true,
+					collapsible: true,
+					items: [
+						{
+							type: "autogenerated",
+							dirName: "native-protocol",
+						},
+					],
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "FAQ",
+			collapsed: true,
+			collapsible: true,
+			link: { type: "doc", id: "about-us/about-faq-index" },
+			items: [
+				"faq/general/columnar-database",
+				"faq/general/dbms-naming",
+				"faq/integration/index",
+				"faq/integration/json-import",
+				"faq/integration/oracle-odbc",
+				"faq/operations/delete-old-data",
+				"faq/operations/index",
+				"faq/operations/separate_storage",
+				"faq/use-cases/index",
+				"faq/use-cases/key-value",
+				"faq/use-cases/time-series",
+			],
+		},
+	],
 
   serverAdmin: [
     {
@@ -1362,457 +1363,451 @@ const sidebars = {
       ],
     }],
 
-  chdb: [
-    {
-      type: "category",
-      label: "chDB",
-      className: "top-nav-item",
-      collapsed: false,
-      collapsible: false,
-      items: [
-        "chdb/index",
-        "chdb/getting-started"
-      ],
-    },
-    {
-      type: "category",
-      label: "Language Integrations",
-      className: "top-nav-item",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "chdb/install/index" },
-      items: [
-        "chdb/install/python",
-        "chdb/install/nodejs",
-        "chdb/install/go",
-        "chdb/install/rust",
-        "chdb/install/bun",
-        "chdb/install/c",
-      ],
-    },
-    {
-      type: "category",
-      label: "Developer Guides",
-      className: "top-nav-item",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "chdb/guides/index" },
-      items: [
-        "chdb/guides/jupysql",
-        "chdb/guides/querying-pandas",
-        "chdb/guides/querying-apache-arrow",
-        "chdb/guides/querying-s3-bucket",
-        "chdb/guides/querying-parquet",
-        "chdb/guides/query-remote-clickhouse",
-        "chdb/guides/clickhouse-local"
-      ],
-    },
-    {
-      type: "category",
-      label: "Technical Reference",
-      className: "top-nav-item",
-      collapsed: false,
-      collapsible: false,
-      link: { type: "doc", id: "chdb/reference/index" },
-      items: [
-        "chdb/reference/data-formats",
-        "chdb/reference/sql-reference"
-      ],
-    },
-    {
-      type: "category",
-      label: "Integrations",
-      className: "top-nav-item",
-      collapsed: false,
-      collapsible: false,
-      items: [
-        {
-          type: "link",
-          label: "JupySQL",
-          href: "https://jupysql.ploomber.io/en/latest/integrations/chdb.html",
-        },
-        {
-          type: "link",
-          label: "chdb-lambda",
-          href: "https://github.com/chdb-io/chdb-lambda",
-        },
-        {
-          type: "link",
-          label: "chdb-cli",
-          href: "https://github.com/chdb-io/chdb-go?tab=readme-ov-file#chdb-go-cli",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "About chDB",
-      className: "top-nav-item",
-      collapsed: false,
-      collapsible: false,
-      items: [
-        {
-          type: "link",
-          label: "Discord",
-          href: "https://discord.gg/Njw5YXSPPc",
-        },
-        {
-          type: "link",
-          label: "Birth of chDB",
-          href: "https://auxten.com/the-birth-of-chdb/",
-        },
-        {
-          type: "link",
-          label: "Joining ClickHouse, Inc.",
-          href: "https://clickhouse.com/blog/welcome-chdb-to-clickhouse",
-        },
-        {
-          type: "link",
-          label: "Team and Contributors",
-          href: "https://github.com/chdb-io/chdb#contributors",
-        },
-      ],
-    },
+	chdb: [
+		{
+			type: "category",
+			label: "chDB",
+			className: "top-nav-item",
+			collapsed: false,
+			collapsible: false,
+			items: ["chdb/index", "chdb/getting-started"],
+		},
+		{
+			type: "category",
+			label: "Language Integrations",
+			className: "top-nav-item",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "chdb/install/index" },
+			items: [
+				"chdb/install/python",
+				"chdb/install/nodejs",
+				"chdb/install/go",
+				"chdb/install/rust",
+				"chdb/install/bun",
+				"chdb/install/c",
+			],
+		},
+		{
+			type: "category",
+			label: "Developer Guides",
+			className: "top-nav-item",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "chdb/guides/index" },
+			items: [
+				"chdb/guides/jupysql",
+				"chdb/guides/querying-pandas",
+				"chdb/guides/querying-apache-arrow",
+				"chdb/guides/querying-s3-bucket",
+				"chdb/guides/querying-parquet",
+				"chdb/guides/query-remote-clickhouse",
+				"chdb/guides/clickhouse-local",
+			],
+		},
+		{
+			type: "category",
+			label: "Technical Reference",
+			className: "top-nav-item",
+			collapsed: false,
+			collapsible: false,
+			link: { type: "doc", id: "chdb/reference/index" },
+			items: ["chdb/reference/data-formats", "chdb/reference/sql-reference"],
+		},
+		{
+			type: "category",
+			label: "Integrations",
+			className: "top-nav-item",
+			collapsed: false,
+			collapsible: false,
+			items: [
+				{
+					type: "link",
+					label: "JupySQL",
+					href: "https://jupysql.ploomber.io/en/latest/integrations/chdb.html",
+				},
+				{
+					type: "link",
+					label: "chdb-lambda",
+					href: "https://github.com/chdb-io/chdb-lambda",
+				},
+				{
+					type: "link",
+					label: "chdb-cli",
+					href: "https://github.com/chdb-io/chdb-go?tab=readme-ov-file#chdb-go-cli",
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "About chDB",
+			className: "top-nav-item",
+			collapsed: false,
+			collapsible: false,
+			items: [
+				{
+					type: "link",
+					label: "Discord",
+					href: "https://discord.gg/Njw5YXSPPc",
+				},
+				{
+					type: "link",
+					label: "Birth of chDB",
+					href: "https://auxten.com/the-birth-of-chdb/",
+				},
+				{
+					type: "link",
+					label: "Joining ClickHouse, Inc.",
+					href: "https://clickhouse.com/blog/welcome-chdb-to-clickhouse",
+				},
+				{
+					type: "link",
+					label: "Team and Contributors",
+					href: "https://github.com/chdb-io/chdb#contributors",
+				},
+			],
+		},
+	],
 
-  ],
-
-  // Used for generating the top nav menu and secondary nav mobile menu (DocsCategoryDropdown) AND top navigation menu
-  dropdownCategories: [
-    {
-      type: "category",
-      label: "Getting Started",
-      description: "Learn how to use ClickHouse",
-      customProps: {
-        href: "/introduction-clickhouse",
-        sidebar: "docs"
-      },
-      items: [
-        {
-          type: "link",
-          label: "Introduction",
-          description: "An introduction to ClickHouse",
-          href: "/intro"
-        },
-        {
-          type: "link",
-          label: "Starter Guides",
-          description: "Start here when learning ClickHouse",
-          href: "/starter-guides"
-        },
-        {
-          type: "link",
-          label: "Concepts",
-          description: "Core concepts to know",
-          href: "/concepts"
-        },
-        {
-          type: "link",
-          label: "Migration Guides",
-          description: "Migrate your database to ClickHouse",
-          href: "/migrations/migrations"
-        },
-        {
-          type: "link",
-          label: "Use Case Guides",
-          description: "Common use case guides for ClickHouse",
-          href: "/use-cases"
-        },
-        {
-          type: "link",
-          label: "Example datasets",
-          description: "Helpful datasets and tutorials",
-          href: "/getting-started/example-datasets"
-        },
-      ]
-    },
-    {
-      type: "category",
-      label: "Cloud",
-      description: "The fastest way to deploy ClickHouse",
-      customProps: {
-        href: "/cloud/overview",
-        sidebar: "cloud"
-      },
-      items: [
-        {
-          type: "link",
-          label: "Get Started",
-          description: "Start quickly with ClickHouse Cloud",
-          href: "/cloud/get-started/"
-        },
-        {
-          type: "link",
-          label: "Best Practices",
-          description: "How to get the most out of ClickHouse Cloud",
-          href: "/cloud/bestpractices/"
-        },
-        {
-          type: "link",
-          label: "Managing Cloud",
-          description: "Manage your ClickHouse Cloud services",
-          href: "/cloud/bestpractices"
-        },
-        {
-          type: "link",
-          label: "Cloud API",
-          description: "Automate your ClickHouse Cloud services",
-          href: "/cloud/manage/cloud-api/"
-        },
-        {
-          type: "link",
-          label: "Cloud Reference",
-          description: "Understanding how ClickHouse Cloud works",
-          href: "/cloud/reference/"
-        },
-        {
-          type: "link",
-          label: "Security",
-          description: "Secure your ClickHouse Cloud services",
-          href: "/cloud/security/"
-        },
-        {
-          type: "link",
-          label: "Migrating to Cloud",
-          description: "Migrate your database to ClickHouse Cloud",
-          href: "/integrations/migration"
-        },
-      ]
-    },
-    {
-      type: "category",
-      label: "Manage Data",
-      customProps: {
-        href: "/updating-data",
-        sidebar: "managingData"
-      },
-      description: "How to manage data in ClickHouse",
-      items: [
-        {
-          type: "link",
-          label: "Core Data Concepts",
-          description: "Understand internal concepts in ClickHouse",
-          href: "/managing-data/core-concepts"
-        },
-        {
-          type: "link",
-          label: "Updating Data",
-          description: "Updating and replacing data in ClickHouse",
-          href: "/updating-data"
-        },
-        {
-          type: "link",
-          label: "Deleting data",
-          description: "Deleting data in ClickHouse",
-          href: "/managing-data/deleting-data/overview"
-        },
-        {
-          type: "link",
-          label: "Data Modeling",
-          description: "Optimize your schema and data model",
-          href: "/data-modeling/overview"
-        },
-        {
-          type: "link",
-          label: "Performance and Optimizations",
-          description: "Guides to help you optimize ClickHouse",
-          href: "/operations/overview"
-        }
-      ]
-    },
-    {
-      type: "category",
-      label: "Server Admin",
-      customProps: {
-        href: "/guides/manage-and-deploy-index",
-        sidebar: "serverAdmin"
-      },
-      description: "Manage and deploy ClickHouse",
-      items: [
-        {
-          type: "link",
-          label: "Deployments and Scaling",
-          description: "How to deploy ClickHouse",
-          href: "/deployment-guides/index"
-        },
-        {
-          type: "link",
-          label: "Security and Authentication",
-          description: "Secure your ClickHouse deployment",
-          href: "/security-and-authentication"
-        },
-        {
-          type: "link",
-          label: "Settings",
-          description: "Configure ClickHouse",
-          href: "/operations/settings"
-        },
-        {
-          type: "link",
-          label: "Tools and Utilities",
-          description: "Tools to help you manage ClickHouse",
-          href: "/operations/utilities"
-        },
-        {
-          type: "link",
-          label: "System Tables",
-          description: "Metadata tables to help you manage ClickHouse",
-          href: "/operations/system-tables"
-        }
-      ]
-    },
-    {
-      type: "category",
-      label: "Reference",
-      customProps: {
-        href: "/sql-reference",
-        sidebar: "sqlreference"
-      },
-      description: "Reference documentation for ClickHouse features",
-      items: [
-        {
-          type: "link",
-          label: "Introduction",
-          description: "Learn ClickHouse syntax",
-          href: "/sql-reference"
-        },
-        {
-          type: "link",
-          label: "Functions",
-          description: "Hundreds of built-in functions to help you analyze your data",
-          href: "/sql-reference/functions"
-        },
-        {
-          type: "link",
-          label: "Engines",
-          description: "Use the right table and database engines for your data",
-          href: "/engines"
-        },
-      ]
-    },
-    {
-      type: "category",
-      label: "Integrations",
-      description: "Integrations, clients, and drivers to use with ClickHouse",
-      customProps: {
-        href: "/integrations",
-        sidebar: "integrations"
-      },
-      items: [
-        {
-          type: "link",
-          label: "All Integrations",
-          description: "Integrate ClickHouse with other databases and applications",
-          href: "/integrations"
-        },
-        {
-          type: "link",
-          label: "Language Clients",
-          description: "Use your favorite language to work with ClickHouse",
-          href: "/integrations/language-clients"
-        },
-        {
-          type: "link",
-          label: "ClickPipes",
-          description: "The easiest way to ingest data into ClickHouse",
-          href: "/integrations/clickpipes"
-        },
-        {
-          type: "link",
-          label: "Native Clients & Interfaces",
-          description: "Choose a client and interface to connect to ClickHouse",
-          href: "/interfaces/natives-clients-and-interfaces"
-        },
-        {
-          type: "link",
-          label: "Data Sources",
-          description: "Load data into ClickHouse from your prefered source",
-          href: "/integrations/index"
-        },
-        {
-          type: "link",
-          label: "Data Visualization",
-          description: "Connect ClickHouse to your favorite visualization tool",
-          href: "/integrations/data-visualization"
-        },
-        {
-          type: "link",
-          label: "Data Formats",
-          description: "Explore data formats supported by ClickHouse",
-          href: "/integrations/data-formats"
-        },
-        {
-          type: "link",
-          label: "Data Ingestion",
-          description: "Ingest data into ClickHouse with a range of ELT tools",
-          href: "/integrations/data-ingestion-overview"
-        }
-      ]
-    },
-    {
-      type: "category",
-      label: "chDB",
-      description: "chDB is an embedded version of ClickHouse",
-      customProps: {
-        href: "/chdb",
-        sidebar: "chdb"
-      },
-      items: [
-        {
-          type: "link",
-          label: "Learn chDB",
-          description: "Learn how to use chDB",
-          href: "/chdb"
-        },
-        {
-          type: "link",
-          label: "Language Integrations",
-          description: "Connect to chDB using a language client",
-          href: "/chdb/install"
-        },
-        {
-          type: "link",
-          label: "Guides",
-          description: "Guides to help you use chDB",
-          href: "/chdb/guides"
-        },
-      ]
-    },
-    {
-      type: "category",
-      label: "About",
-      customProps: {
-        href: "/about",
-        sidebar: "aboutClickHouse"
-      },
-      description: "Learn more about ClickHouse",
-      items: [
-        {
-          type: "link",
-          label: "Adopters",
-          description: "ClickHouse adopters",
-          href: "/about-us/adopters"
-        },
-        {
-          type: "link",
-          label: "Changelogs",
-          description: "View the latest changes in ClickHouse",
-          href: "/whats-new/security-changelog"
-        },
-        {
-          type: "link",
-          label: "Support",
-          description: "Get support from ClickHouse engineers",
-          href: "/about-us/support"
-        },
-        {
-          type: "link",
-          label: "Development and Contributing",
-          description: "Learn how to contribute to ClickHouse",
-          href: "/development/developer-instruction"
-        }
-      ]
-    },
-  ],
-
+	// Used for generating the top nav menu and secondary nav mobile menu (DocsCategoryDropdown) AND top navigation menu
+	dropdownCategories: [
+		{
+			type: "category",
+			label: "Getting Started",
+			description: "Learn how to use ClickHouse",
+			customProps: {
+				href: "/introduction-clickhouse",
+				sidebar: "docs",
+			},
+			items: [
+				{
+					type: "link",
+					label: "Introduction",
+					description: "An introduction to ClickHouse",
+					href: "/intro",
+				},
+				{
+					type: "link",
+					label: "Starter Guides",
+					description: "Start here when learning ClickHouse",
+					href: "/starter-guides",
+				},
+				{
+					type: "link",
+					label: "Concepts",
+					description: "Core concepts to know",
+					href: "/concepts",
+				},
+				{
+					type: "link",
+					label: "Migration Guides",
+					description: "Migrate your database to ClickHouse",
+					href: "/migrations/migrations",
+				},
+				{
+					type: "link",
+					label: "Use Case Guides",
+					description: "Common use case guides for ClickHouse",
+					href: "/use-cases",
+				},
+				{
+					type: "link",
+					label: "Example datasets",
+					description: "Helpful datasets and tutorials",
+					href: "/getting-started/example-datasets",
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "Cloud",
+			description: "The fastest way to deploy ClickHouse",
+			customProps: {
+				href: "/cloud/overview",
+				sidebar: "cloud",
+			},
+			items: [
+				{
+					type: "link",
+					label: "Get Started",
+					description: "Start quickly with ClickHouse Cloud",
+					href: "/cloud/get-started/",
+				},
+				{
+					type: "link",
+					label: "Best Practices",
+					description: "How to get the most out of ClickHouse Cloud",
+					href: "/cloud/bestpractices/",
+				},
+				{
+					type: "link",
+					label: "Managing Cloud",
+					description: "Manage your ClickHouse Cloud services",
+					href: "/cloud/bestpractices",
+				},
+				{
+					type: "link",
+					label: "Cloud API",
+					description: "Automate your ClickHouse Cloud services",
+					href: "/cloud/manage/cloud-api/",
+				},
+				{
+					type: "link",
+					label: "Cloud Reference",
+					description: "Understanding how ClickHouse Cloud works",
+					href: "/cloud/reference/",
+				},
+				{
+					type: "link",
+					label: "Security",
+					description: "Secure your ClickHouse Cloud services",
+					href: "/cloud/security/",
+				},
+				{
+					type: "link",
+					label: "Migrating to Cloud",
+					description: "Migrate your database to ClickHouse Cloud",
+					href: "/integrations/migration",
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "Manage Data",
+			customProps: {
+				href: "/updating-data",
+				sidebar: "managingData",
+			},
+			description: "How to manage data in ClickHouse",
+			items: [
+				{
+					type: "link",
+					label: "Core Data Concepts",
+					description: "Understand internal concepts in ClickHouse",
+					href: "/managing-data/core-concepts",
+				},
+				{
+					type: "link",
+					label: "Updating Data",
+					description: "Updating and replacing data in ClickHouse",
+					href: "/updating-data",
+				},
+				{
+					type: "link",
+					label: "Deleting data",
+					description: "Deleting data in ClickHouse",
+					href: "/managing-data/deleting-data/overview",
+				},
+				{
+					type: "link",
+					label: "Data Modeling",
+					description: "Optimize your schema and data model",
+					href: "/data-modeling/overview",
+				},
+				{
+					type: "link",
+					label: "Performance and Optimizations",
+					description: "Guides to help you optimize ClickHouse",
+					href: "/operations/overview",
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "Server Admin",
+			customProps: {
+				href: "/guides/manage-and-deploy-index",
+				sidebar: "serverAdmin",
+			},
+			description: "Manage and deploy ClickHouse",
+			items: [
+				{
+					type: "link",
+					label: "Deployments and Scaling",
+					description: "How to deploy ClickHouse",
+					href: "/deployment-guides/index",
+				},
+				{
+					type: "link",
+					label: "Security and Authentication",
+					description: "Secure your ClickHouse deployment",
+					href: "/security-and-authentication",
+				},
+				{
+					type: "link",
+					label: "Settings",
+					description: "Configure ClickHouse",
+					href: "/operations/settings",
+				},
+				{
+					type: "link",
+					label: "Tools and Utilities",
+					description: "Tools to help you manage ClickHouse",
+					href: "/operations/utilities",
+				},
+				{
+					type: "link",
+					label: "System Tables",
+					description: "Metadata tables to help you manage ClickHouse",
+					href: "/operations/system-tables",
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "Reference",
+			customProps: {
+				href: "/sql-reference",
+				sidebar: "sqlreference",
+			},
+			description: "Reference documentation for ClickHouse features",
+			items: [
+				{
+					type: "link",
+					label: "Introduction",
+					description: "Learn ClickHouse syntax",
+					href: "/sql-reference",
+				},
+				{
+					type: "link",
+					label: "Functions",
+					description:
+						"Hundreds of built-in functions to help you analyze your data",
+					href: "/sql-reference/functions",
+				},
+				{
+					type: "link",
+					label: "Engines",
+					description: "Use the right table and database engines for your data",
+					href: "/engines",
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "Integrations",
+			description: "Integrations, clients, and drivers to use with ClickHouse",
+			customProps: {
+				href: "/integrations",
+				sidebar: "integrations",
+			},
+			items: [
+				{
+					type: "link",
+					label: "All Integrations",
+					description:
+						"Integrate ClickHouse with other databases and applications",
+					href: "/integrations",
+				},
+				{
+					type: "link",
+					label: "Language Clients",
+					description: "Use your favorite language to work with ClickHouse",
+					href: "/integrations/language-clients",
+				},
+				{
+					type: "link",
+					label: "ClickPipes",
+					description: "The easiest way to ingest data into ClickHouse",
+					href: "/integrations/clickpipes",
+				},
+				{
+					type: "link",
+					label: "Native Clients & Interfaces",
+					description: "Choose a client and interface to connect to ClickHouse",
+					href: "/interfaces/natives-clients-and-interfaces",
+				},
+				{
+					type: "link",
+					label: "Data Sources",
+					description: "Load data into ClickHouse from your prefered source",
+					href: "/integrations/index",
+				},
+				{
+					type: "link",
+					label: "Data Visualization",
+					description: "Connect ClickHouse to your favorite visualization tool",
+					href: "/integrations/data-visualization",
+				},
+				{
+					type: "link",
+					label: "Data Formats",
+					description: "Explore data formats supported by ClickHouse",
+					href: "/integrations/data-formats",
+				},
+				{
+					type: "link",
+					label: "Data Ingestion",
+					description: "Ingest data into ClickHouse with a range of ELT tools",
+					href: "/integrations/data-ingestion-overview",
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "chDB",
+			description: "chDB is an embedded version of ClickHouse",
+			customProps: {
+				href: "/chdb",
+				sidebar: "chdb",
+			},
+			items: [
+				{
+					type: "link",
+					label: "Learn chDB",
+					description: "Learn how to use chDB",
+					href: "/chdb",
+				},
+				{
+					type: "link",
+					label: "Language Integrations",
+					description: "Connect to chDB using a language client",
+					href: "/chdb/install",
+				},
+				{
+					type: "link",
+					label: "Guides",
+					description: "Guides to help you use chDB",
+					href: "/chdb/guides",
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "About",
+			customProps: {
+				href: "/about",
+				sidebar: "aboutClickHouse",
+			},
+			description: "Learn more about ClickHouse",
+			items: [
+				{
+					type: "link",
+					label: "Adopters",
+					description: "ClickHouse adopters",
+					href: "/about-us/adopters",
+				},
+				{
+					type: "link",
+					label: "Changelogs",
+					description: "View the latest changes in ClickHouse",
+					href: "/whats-new/security-changelog",
+				},
+				{
+					type: "link",
+					label: "Support",
+					description: "Get support from ClickHouse engineers",
+					href: "/about-us/support",
+				},
+				{
+					type: "link",
+					label: "Development and Contributing",
+					description: "Learn how to contribute to ClickHouse",
+					href: "/development/developer-instruction",
+				},
+			],
+		},
+	],
 };
 
-module.exports = sidebars
+module.exports = sidebars;
