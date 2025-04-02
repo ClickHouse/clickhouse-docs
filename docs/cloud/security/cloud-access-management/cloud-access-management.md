@@ -36,7 +36,7 @@ To create a custom role for a SQL console user and grant it a general role, run 
     
 1. Create the database_developer role and grant SHOW, CREATE, ALTER, and DELETE permissions.
     
-    ```
+    ```sql
     CREATE ROLE OR REPLACE database_developer;
     GRANT SHOW ON * TO database_developer;
     GRANT CREATE ON * TO database_developer;
@@ -46,7 +46,7 @@ To create a custom role for a SQL console user and grant it a general role, run 
     
 2. Create a role for the SQL console user my.user@domain.com and assign it the database_developer role.
     
-    ```
+    ```sql
     CREATE ROLE OR REPLACE `sql-console-role:my.user@domain.com`;
     GRANT database_developer TO `sql-console-role:my.user@domain.com`;
     ```
