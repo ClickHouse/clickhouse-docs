@@ -89,7 +89,7 @@ The following process can be used to generate a complete access listing across t
 
 1. Run the following queries to get a list of all grants in the database. 
 
-    ```
+    ```sql
     SELECT grants.user_name,
       grants.role_name,
       users.name AS role_member,
