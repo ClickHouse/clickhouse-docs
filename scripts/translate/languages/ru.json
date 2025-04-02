@@ -58,6 +58,7 @@
     "incremental backups": "инкрементные резервные копии",
     "incremental materialized view": "инкрементное материализованное представление",
     "integration tests": "интеграционные тесты",
+    "joins": "joins",
     "Kafka": "Kafka",
     "Keeper": "Keeper",
     "key-value pairs": "пары ключ-значение",

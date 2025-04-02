@@ -53,7 +53,7 @@ def load_config(file_path):
 
 def format_glossary_prompt(glossary):
     glossary_text = "\n".join([f"- {key}: {value}" for key, value in glossary.items()])
-    return f"Use the following glossary for specific translations of key technical terms. Take these into account even when translating YAML frontmatter fields like title, sidebar_label etc:\n{glossary_text}\n"
+    return f"Use the following glossary for specific translations of key technical terms. Take these into account even when translating YAML frontmatter fields like title, sidebar_label etc. Translate these words like this, within the context of the sentence:\n{glossary_text}\n"
 
 def format_translation_override_prompt(override):
     translation_text = "\n".join([f"- {key}: {value}" for key, value in override.items()])
