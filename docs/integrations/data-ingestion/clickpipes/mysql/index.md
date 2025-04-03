@@ -30,9 +30,9 @@ You can use ClickPipes to ingest data from your source MySQL database into Click
 
 To get started, you first need to make sure that your MySQL database is set up correctly. Depending on your source MySQL instance, you may follow any of the following guides:
 
-1. [Amazon RDS MySQL](./postgres/source/rds)
+1. [Amazon RDS MySQL](./mysql/source/rds)
 
-2. [Amazon Aurora MySQL](./postgres/source/aurora)
+2. [Amazon Aurora MySQL](./mysql/source/aurora)
 
 Once your source MySQL database is set up, you can continue creating your ClickPipe.
 
