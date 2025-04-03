@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Amazon RDS MySQL'
-description: 'Set up Amazon RDS MySQL as a source for ClickPipes'
+description: 'Step-by-step guide on how to set up Amazon RDS MySQL as a source for ClickPipes'
 slug: /integrations/clickpipes/mysql/source/rds
-title: 'RDS MySQL Source Setup Guide'
+title: 'RDS MySQL source setup guide'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/rds-backups.png';
@@ -11,11 +11,11 @@ import security_group_in_rds_mysql from '@site/static/images/integrations/data-i
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-# RDS MySQL Source Setup Guide
+# RDS MySQL source setup guide
 
 This is a step-by-step guide on how to configure your RDS MySQL instance for replicating its data via the MySQL ClickPipe.
 
-## Enable Binary Log Retention {#enable-binlog-retention-rds}
+## Enable binary log retention {#enable-binlog-retention-rds}
 The binary log is a set of log files that contain information about data modifications made to an MySQL server instance, and binary log files are required for replication. Both of the below steps must be followed:
 
 ### 1. Enable binary logging via automated backup{#enable-binlog-logging-rds}
@@ -43,7 +43,7 @@ If not already configured, make sure to set these in the parameter group:
 If you have a MySQL cluster, the above parameters would be found in a [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) parameter group and not the DB instance group.
 :::
 
-## Configure Database User {#configure-database-user-rds}
+## Configure a database user {#configure-database-user-rds}
 
 Connect to your RDS MySQL instance as an admin user and execute the following commands:
 
@@ -59,15 +59,15 @@ Connect to your RDS MySQL instance as an admin user and execute the following co
     GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
     ```
 
-3. Grant replication permissions to the user.
+3. Grant replication permissions to the user:
 
     ```sql
     GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
     ```
 
-## Configure Network Access {#configure-network-access}
+## Configure network access {#configure-network-access}
 
-### IP-based Access Control {#ip-based-access-control}
+### IP-based access control {#ip-based-access-control}
 
 If you want to restrict traffic to your RDS instance, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the `Inbound rules` of your RDS security group.
 
@@ -75,6 +75,6 @@ If you want to restrict traffic to your RDS instance, please add the [documented
 
 <Image img={edit_inbound_rules} alt="Edit inbound rules for the above security group" size="lg" border/>
 
-### Private Access via AWS PrivateLink {#private-access-via-aws-privatelink}
+### Private access via AWS PrivateLink {#private-access-via-aws-privatelink}
 
 To connect to your RDS instance through a private network, you can use AWS PrivateLink. Follow our [AWS PrivateLink setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes) to set up the connection.
