@@ -342,7 +342,7 @@ const config = {
     [
       frontmatterValidator,
       {
-        failBuild: true,
+        failBuild: true
       },
     ],
     [

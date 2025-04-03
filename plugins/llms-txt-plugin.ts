@@ -34,29 +34,20 @@ async function pluginLlmsTxt(context) {
     postBuild: async ({ content, routes, outDir }) => {
       const { allMdx } = content as { allMdx: string[] };
 
-      // Write concatenated MDX content
-      const concatenatedPath = path.join(outDir, "llms-full.txt");
-      await fs.promises.writeFile(concatenatedPath, allMdx.join("\n\n---\n\n"));
-
       // we need to dig down several layers:
       // find PluginRouteConfig marked by plugin.name === "docusaurus-plugin-content-docs"
       const docsPluginRouteConfig = routes.filter(
         (route) => route.plugin.name === "docusaurus-plugin-content-docs"
       )[0];
 
-      // docsPluginRouteConfig has a routes property has a record with the path "/" that contains all docs routes.
-      const allDocsRouteConfig = docsPluginRouteConfig.routes?.filter(
-        (route) => route.path === "/"
-      )[0];
-
       // A little type checking first
-      if (!allDocsRouteConfig?.props?.version) {
+      if (!docsPluginRouteConfig.routes[0].props?.version) {
         return;
       }
 
       // this route config has a `props` property that contains the current documentation.
       const currentVersionDocsRoutes = (
-        allDocsRouteConfig.props.version as Record<string, unknown>
+          docsPluginRouteConfig.routes[0].props.version as Record<string, unknown>
       ).docs as Record<string, Record<string, unknown>>;
 
       // for every single docs route we now parse a path (which is the key) and a title
@@ -65,7 +56,13 @@ async function pluginLlmsTxt(context) {
       });
 
       // Build up llms.txt file
-      const llmsTxt = `# ${context.siteConfig.title}\n\n## Docs\n\n${docsRecords.join("\n")}`;
+      let llmsTxt = `# ${context.siteConfig.title}\n\n`;
+          llmsTxt += '> Documentation for ClickHouse, the fastest and most resource' +
+              ' efficient real-time data warehouse and open-source database.\n' +
+              'Including documentation for opensource ClickHouse, ClickHouse Cloud,' +
+              ' chDB and various integrations for ClickHouse.\n The documentation has ' +
+              'various resources for learning ClickHouse as well as reference documentation\n\n';
+          llmsTxt+= `## Docs\n\n${docsRecords.join("\n")}`;
 
       // Write llms.txt file
       const llmsTxtPath = path.join(outDir, "llms.txt");
