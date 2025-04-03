@@ -6,7 +6,7 @@ description: 'Describes how access control in ClickHouse cloud works, including 
 ---
 
 import Image from '@theme/IdealImage';
-import user_grant_permissions_options from '@site/static/images/cloud/cloud-access-management/user_grant_permissions_options.png';
+import user_grant_permissions_options from '@site/static/images/cloud/security/cloud-access-management/user_grant_permissions_options.png';
 
 # Access control in ClickHouse Cloud {#access-control-in-clickhouse-cloud}
 ClickHouse controls user access in two places, via the console and via the database. Console access is managed via the clickhouse.cloud user interface. Database access is managed via database user accounts and roles. Additionally, console users can be granted roles within the database that enable the console user to interact with the database via our SQL console.
