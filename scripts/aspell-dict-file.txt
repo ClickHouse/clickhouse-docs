@@ -255,6 +255,7 @@ CTID
 autovacuum
 VACUUM
 resync
+Resync
 --docs/cloud/security/cmek.md--
 Poller
 --docs/integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse.md--

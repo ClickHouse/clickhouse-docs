@@ -220,7 +220,7 @@ The only way to recover ClickPipe is by triggering a resync, which you can do in
 
 The most common cause of replication slot invalidation is a low `max_slot_wal_keep_size` setting on your PostgreSQL database (e.g., a few gigabytes). We recommend increasing this value. [Refer to this section](/integrations/clickpipes/postgres/faq#recommended-max_slot_wal_keep_size-settings) on tuning `max_slot_wal_keep_size`. Ideally, this should be set to at least 200GB to prevent replication slot invalidation.
 
-In rare cases, we have seen this issue occur even when `max_slot_wal_keep_size` is not configured. This could be due to an intricate and a rare bug in PostgreSQL, although the cause remains unclear.
+In rare cases, we have seen this issue occur even when `max_slot_wal_keep_size` is not configured. This could be due to an intricate and rare bug in PostgreSQL, although the cause remains unclear.
 
 ### I am seeing Out Of Memory (OOMs) on ClickHouse while my ClickPipe is ingesting data. Can you help? {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
 
@@ -254,6 +254,9 @@ This resync is necessary because the recreated publication will have a different
 Alternatively, you can create an entirely new pipe if preferred.
 
 Note that if you're working with partitioned tables, make sure to create your publication with the appropriate settings:
+
 ```sql
-CREATE PUBLICATION clickpipes_publication FOR TABLE table_1, table_2, ... WITH (publish_via_partition_root = true);
+CREATE PUBLICATION clickpipes_publication 
+FOR TABLE table_1, table_2, ... 
+WITH (publish_via_partition_root = true);
 ```
