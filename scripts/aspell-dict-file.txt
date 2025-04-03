@@ -50,6 +50,7 @@ TableStatus
 UVarInt
 --docs/integrations/prometheus.md--
 OpenMetrics
+clickpipe
 --docs/materialized-view/refreshable-materialized-view.md--
 DAGs
 McClickHouse
