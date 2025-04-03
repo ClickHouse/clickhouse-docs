@@ -34,7 +34,7 @@ ClickPipes reverse private endpoint can be configured with one of the following 
 
 Follow the links above for detailed instructions on how to set up the respective AWS PrivateLink shares.
 
-### VPC resource
+### VPC resource {#vpc-resource}
 
 Your VPC resources can be accessed in ClickPipes using PrivateLink.
 Resource configuration can be targeted with a specific host or RDS cluster ARN.
@@ -44,7 +44,7 @@ See a [getting started](https://docs.aws.amazon.com/vpc/latest/privatelink/resou
 
 It's a preferred choice for Postgres CDC ingesting data from RDS cluster.
 
-### MSK multi-VPC connectivity
+### MSK multi-VPC connectivity {#msk-multi-vpc}
 
 The MSK multi-VPC is a built-in feature of AWS MSK that allows you to connect multiple VPCs to a single MSK cluster.
 Private DNS support is out of the box and does not require any additional configuration.
@@ -53,7 +53,7 @@ Cross-region is not supported.
 It is a recommended option for ClickPipes for MSK.
 See a [getting started](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-getting-started.html) guide for more details.
 
-### VPC endpoint service
+### VPC endpoint service {#vpc-endpoint-service}
 
 VPC service is another approach to share your data source with ClickPipes.
 It requires setting up a NLB (Network Load Balancer) in front of your data source
