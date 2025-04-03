@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'ClickPipes for MySQL'
-description: 'Seamlessly connect your MySQL to ClickHouse Cloud.'
+description: 'Describes how to seamlessly connect your MySQL to ClickHouse Cloud.'
 slug: /integrations/clickpipes/mysql
 title: 'Ingesting Data from MySQL to ClickHouse (using CDC)'
 ---
@@ -15,7 +15,7 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-# Ingesting Data from MySQL to ClickHouse (using CDC)
+# Ingesting data from MySQL to ClickHouse using CDC
 
 <BetaBadge/>
 
@@ -36,7 +36,7 @@ To get started, you first need to make sure that your MySQL database is set up c
 
 Once your source MySQL database is set up, you can continue creating your ClickPipe.
 
-## Creating your ClickPipe {#creating-your-clickpipe}
+## Create your ClickPipe {#creating-your-clickpipe}
 
 Make sure you are logged in to your ClickHouse Cloud account. If you don't have an account yet, you can sign up [here](https://cloud.clickhouse.com/).
 
@@ -51,22 +51,22 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 
 3. Select the `MySQL CDC` tile
 
-   <Image img={mysql_tile} alt="Select MySQL" size="lg" border/>
+<Image img={mysql_tile} alt="Select MySQL" size="lg" border/>
 
-### Adding your source MySQL database connection {#adding-your-source-mysql-database-connection}
+### Add your source MySQL database connection {#adding-your-source-mysql-database-connection}
 
 4. Fill in the connection details for your source MySQL database which you configured in the prerequisites step.
 
    :::info
 
-   Before you start adding your connection details make sure that you have whitelisted ClickPipes IP addresses in your firewall rules. You can find the list of ClickPipes IP addresses [here](../index.md#list-of-static-ips).
+   Before you start adding your connection details make sure that you have whitelisted ClickPipes IP addresses in your firewall rules. On the following page you can find a [list of ClickPipes IP addresses](../index.md#list-of-static-ips).
    For more information refer to the source MySQL setup guides linked at [the top of this page](#prerequisites).
 
    :::
 
    <Image img={mysql_connection_details} alt="Fill in connection details" size="lg" border/>
 
-#### (Optional) Setting up SSH Tunneling {#optional-setting-up-ssh-tunneling}
+#### (Optional) Set up SSH Tunneling {#optional-setting-up-ssh-tunneling}
 
 You can specify SSH tunneling details if your source MySQL database is not publicly accessible.
 
@@ -87,18 +87,18 @@ Make sure to whitelist [ClickPipes IP addresses](../clickpipes#list-of-static-ip
 
 Once the connection details are filled in, click on "Next".
 
-#### Advanced Settings {#advanced-settings}
+#### Configure advanced settings {#advanced-settings}
 
-You can configure the Advanced settings if needed. A brief description of each setting is provided below:
+You can configure the advanced settings if needed. A brief description of each setting is provided below:
 
-- **Sync interval**: This is the interval at which ClickPipes will poll the source database for changes. This has implication on the destination ClickHouse service, for cost-sensitive users we recommend to keep this at a higher value (over `3600`).
+- **Sync interval**: This is the interval at which ClickPipes will poll the source database for changes. This has an implication on the destination ClickHouse service, for cost-sensitive users we recommend to keep this at a higher value (over `3600`).
 - **Parallel threads for initial load**: This is the number of parallel workers that will be used to fetch the initial snapshot. This is useful when you have a large number of tables and you want to control the number of parallel workers used to fetch the initial snapshot. This setting is per-table.
 - **Pull batch size**: The number of rows to fetch in a single batch. This is a best effort setting and may not be respected in all cases.
 - **Snapshot number of rows per partition**: This is the number of rows that will be fetched in each partition during the initial snapshot. This is useful when you have a large number of rows in your tables and you want to control the number of rows fetched in each partition.
 - **Snapshot number of tables in parallel**: This is the number of tables that will be fetched in parallel during the initial snapshot. This is useful when you have a large number of tables and you want to control the number of tables fetched in parallel.
 
 
-### Configuring the tables {#configuring-the-tables}
+### Configure the tables {#configuring-the-tables}
 
 5. Here you can select the destination database for your ClickPipe. You can either select an existing database or create a new one.
 
