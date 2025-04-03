@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/data-lake/glue-catalog
 sidebar_label: 'Glue'
-title: 'Querying data in S3 using ClickHouse and the Glue Data Catalog'
+title: 'AWS Glue Catalog'
 pagination_prev: null
 pagination_next: null
 description: 'ClickHouse supports integration with multiple catalogs (Unity, 
