@@ -5,6 +5,9 @@ title: 'Cloud access management'
 description: 'Describes how access control in ClickHouse cloud works, including information on role types'
 ---
 
+import Image from '@theme/IdealImage';
+import user_grant_permissions_options from '@site/static/images/cloud/cloud-access-management/user_grant_permissions_options.png';
+
 # Access control in ClickHouse Cloud {#access-control-in-clickhouse-cloud}
 ClickHouse controls user access in two places, via the console and via the database. Console access is managed via the clickhouse.cloud user interface. Database access is managed via database user accounts and roles. Additionally, console users can be granted roles within the database that enable the console user to interact with the database via our SQL console.
 
@@ -66,7 +69,7 @@ Configure the following within the services and databases using the SQL [GRANT](
 
 The illustration below shows the different ways a user could be granted permissions.
 
-![Screenshot 2024-01-18 at 5 14 41 PM](https://github.com/ClickHouse/clickhouse-docs/assets/110556185/94b45f98-48cc-4907-87d8-5eff1ac468e5)
+<Image img={user_grant_permissions_options} alt='An illustration showing the different ways a user could be granted permissions' size="md" background="black"/>
 
 ### Initial settings {#initial-settings} 
 Databases have an account named `default` that is added automatically and granted the default_role upon service creation. The user that creates the service is presented with the automatically generated, random password that is assigned to the `default` account when the service is created. The password is not shown after initial setup, but may be changed by any user with Service Admin permissions in the console at a later time. This account or an account with Service Admin privileges within the console may set up additional database users and roles at any time.
