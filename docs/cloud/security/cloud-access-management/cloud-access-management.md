@@ -30,11 +30,11 @@ Users must be assigned an organization level role and may optionally be assigned
 | Service      | Service Read Only     | View services and settings.                     |
 | SQL console  | SQL console admin     | Administrative access to databases within the service equivalent to the Default database role. |
 | SQL console  | SQL console read only | Read only access to databases within the service |
-| SQL console  | Custom                | Configure using SQL [GRANT](/sql-reference/statements/grant) statement; assign the role to a SQL console user by naming the role after the user |
+| SQL console  | Custom                | Configure using SQL [`GRANT`](/sql-reference/statements/grant) statement; assign the role to a SQL console user by naming the role after the user |
   
 To create a custom role for a SQL console user and grant it a general role, run the following commands. The email address must match the user's email address in the console. 
     
-1. Create the database_developer role and grant SHOW, CREATE, ALTER, and DELETE permissions.
+1. Create the database_developer role and grant `SHOW`, `CREATE`, `ALTER`, and `DELETE` permissions.
     
     ```sql
     CREATE ROLE OR REPLACE database_developer;
@@ -60,7 +60,7 @@ Configure the following within the services and databases using the SQL [GRANT](
 | Role                  | Description                                                                   |
 |:----------------------|:------------------------------------------------------------------------------|
 | Default               | Full administrative access to services                                        |
-| Custom                | Configure using the SQL [GRANT](/sql-reference/statements/grant) statement |
+| Custom                | Configure using the SQL [`GRANT`](/sql-reference/statements/grant) statement |
 
 
 - Database roles are additive. This means if a user is a member of two roles, the user has the most access granted to the two roles. They do not lose access by adding roles.
@@ -80,10 +80,10 @@ To change the password assigned to the `default` account in the console, go to t
 
 We recommend creating a new user account associated with a person and granting the user the default_role. This is so activities performed by users are identified to their user IDs and the `default` account is reserved for break-glass type activities. 
 
-```sql
-CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
-GRANT default_role to userID;
-```
+  ```sql
+  CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
+  GRANT default_role to userID;
+  ```
 
 Users can use a SHA256 hash generator or code function such as `hashlib` in Python to convert a 12+ character password with appropriate complexity to a SHA256 string to provide to the system administrator as the password. This ensures the administrator does not see or handle clear text passwords.
 
