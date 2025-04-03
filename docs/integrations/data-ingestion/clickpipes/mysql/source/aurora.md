@@ -62,6 +62,7 @@ Connect to your Aurora MySQL instance as an admin user and execute the following
 
     ```sql
     GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
+    GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
     ```
 
 ## Configure network access {#configure-network-access}
