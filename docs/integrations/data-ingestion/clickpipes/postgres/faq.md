@@ -220,7 +220,7 @@ The only way to recover ClickPipe is by triggering a resync, which you can do in
 
 The most common cause of replication slot invalidation is a low `max_slot_wal_keep_size` setting on your PostgreSQL database (e.g., a few gigabytes). We recommend increasing this value. [Refer to this section](/integrations/clickpipes/postgres/faq#recommended-max_slot_wal_keep_size-settings) on tuning `max_slot_wal_keep_size`. Ideally, this should be set to at least 200GB to prevent replication slot invalidation.
 
-In rare cases, we have seen this issue occur even when `max_slot_wal_keep_size` is not configured. This could be due to an intricate and a rare bug in PostgreSQL, although the cause remains unclear.
+In rare cases, we have seen this issue occur even when `max_slot_wal_keep_size` is not configured. This could be due to an intricate and rare bug in PostgreSQL, although the cause remains unclear.
 
 ### I am seeing Out Of Memory (OOMs) on ClickHouse while my ClickPipe is ingesting data. Can you help? {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
 
@@ -240,3 +240,23 @@ It is recommended that you do not carry out any disruptive operations like upgra
 
 To resolve this issue, you can trigger a resync from the ClickPipes UI. This will restart the initial load process from the beginning.
 
+### What happens if I drop a publication in Postgres? {#what-happens-if-i-drop-a-publication-in-postgres}
+
+Dropping a publication in Postgres will break your ClickPipe connection since the publication is required for the ClickPipe to pull changes from the source. When this happens, you'll typically receive an error alert indicating that the publication no longer exists.
+
+To recover your ClickPipe after dropping a publication:
+
+1. Create a new publication with the same name and required tables in Postgres
+2. Click the 'Resync tables' button in the Settings tab of your ClickPipe
+
+This resync is necessary because the recreated publication will have a different Object Identifier (OID) in Postgres, even if it has the same name. The resync process refreshes your destination tables and restores the connection.
+
+Alternatively, you can create an entirely new pipe if preferred.
+
+Note that if you're working with partitioned tables, make sure to create your publication with the appropriate settings:
+
+```sql
+CREATE PUBLICATION clickpipes_publication 
+FOR TABLE table_1, table_2, ... 
+WITH (publish_via_partition_root = true);
+```
