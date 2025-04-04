@@ -59,4 +59,5 @@ Deleting an API key is a permanent action. Any services using the key will immed
 
 ## Endpoints {#endpoints}
 
-The [endpoint docs are here](/cloud/manage/api/invitations-api-reference.md).  Use your API Key and API Secret with the base URL `https://api.clickhouse.cloud/v1`.
+Refer details on endpoints, refer to the [API reference](https://clickhouse.com/docs/cloud/manage/api/swagger). 
+Use your API Key and API Secret with the base URL `https://api.clickhouse.cloud/v1`.
