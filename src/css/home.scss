@@ -70,6 +70,7 @@
   align-items: center;
   justify-content: space-between;
   flex: 1;
+  gap: 20px;
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -88,7 +89,6 @@
   padding: 16px;
   border-radius: 8px;
   margin-bottom: 1rem;
-  margin: 0px 20px;
   width: 100%;
 
   @media (min-width: 768px) {
@@ -222,13 +222,12 @@
   align-items: center;
   justify-content: right;
   flex: 1;
-  max-width: 450px;
+  max-width: 465px;
 
   @media (min-width: 768px) {
     flex-direction: row;
     flex: 1;
     justify-content: right;
-    max-width: 450px;
   }
 }
 
