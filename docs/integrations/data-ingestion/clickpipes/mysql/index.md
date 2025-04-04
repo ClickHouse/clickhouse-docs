@@ -24,7 +24,7 @@ Currently, ingesting data from MySQL to ClickHouse Cloud via ClickPipes is in Pr
 :::
 
 
-You can use ClickPipes to ingest data from your source MySQL database into ClickHouse Cloud. The source MySQL database can be hosted on-premises or in the cloud such as Amazon RDS or Aurora.
+You can use ClickPipes to ingest data from your source MySQL database into ClickHouse Cloud. The source MySQL database can be hosted on-premises or in the cloud.
 
 ## Prerequisites {#prerequisites}
 
@@ -33,6 +33,8 @@ To get started, you first need to make sure that your MySQL database is set up c
 1. [Amazon RDS MySQL](./mysql/source/rds)
 
 2. [Amazon Aurora MySQL](./mysql/source/aurora)
+
+3. [Cloud SQL for MySQL](./mysql/source/gcp)
 
 3. [Amazon RDS MariaDB](./mysql/source/rds_maria)
 
