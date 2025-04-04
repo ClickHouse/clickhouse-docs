@@ -30,6 +30,11 @@ import query_endpoints from '@site/static/images/cloud/reference/may-17-query-en
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
 
+## April 4, 2025 {#april-4-2025}
+
+- Slack notifications for ClickHouse Cloud: ClickHouse Cloud now supports Slack notifications for billing, scaling, and ClickPipes events, in addition to in-console and email notifications. These notifications are sent via the ClickHouse Cloud Slack application. Organization admins can configure these notifications via the notification center by specifying slack channels to which notifications should be sent.
+- Users running Production and Development services will now see ClickPipes and DataTransfer usage price on their bills. Please refer to the [announcement](/manage/jan-2025-faq/pricing-dimensions) from January 2025 for more details. 
+  
 ## March 21, 2025 {#march-21-2025}
 
 - Cross-region Private Link connectivity on AWS is now in Beta. Please refer to
