@@ -97,6 +97,10 @@ const sidebars = {
             "use-cases/time-series/query-performance"
           ]
         },
+        { 
+          type: "doc", 
+          id: "use-cases/data_lake/glue_catalog" 
+        }
       ]
     },
     {
