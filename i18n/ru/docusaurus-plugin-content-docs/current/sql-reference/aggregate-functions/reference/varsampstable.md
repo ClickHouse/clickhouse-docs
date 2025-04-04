@@ -1,13 +1,13 @@
 ---
-title: 'varSampStable'
-slug: /sql-reference/aggregate-functions/reference/varsampstable
+description: 'Вычислить выборочную дисперсию набора данных. В отличие от `varSamp`, эта функция использует численно устойчивый алгоритм. Она работает медленнее, но обеспечивает меньшую вычислительную ошибку.'
 sidebar_position: 213
-description: 'Calculate the sample variance of a data set. Unlike `varSamp`, this function uses a numerically stable algorithm. It works slower but provides a lower computational error.'
+slug: /sql-reference/aggregate-functions/reference/varsampstable
+title: 'varSampStable'
 ---
 
 ## varSampStable {#varsampstable}
 
-Вычислите выборочную дисперсию набора данных. В отличие от [`varSamp`](../reference/varsamp.md), эта функция использует численно устойчивый алгоритм. Она работает медленнее, но даёт более низкую вычислительную ошибку.
+Вычислить выборочную дисперсию набора данных. В отличие от [`varSamp`](../reference/varsamp.md), эта функция использует численно устойчивый алгоритм. Она работает медленнее, но обеспечивает меньшую вычислительную ошибку.
 
 **Синтаксис**
 
@@ -19,7 +19,7 @@ varSampStable(x)
 
 **Параметры**
 
-- `x`: Население, для которого вы хотите вычислить выборочную дисперсию. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
+- `x`: Популяция, для которой вы хотите вычислить выборочную дисперсию. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 
@@ -34,9 +34,9 @@ $$
 $$
 
 Где:
-- `x` — это каждое отдельное значение в наборе данных.
-- `mean(x)` — это арифметическое среднее набора данных.
-- `n` — это количество значений в наборе данных.
+- `x` — каждая отдельная точка данных в наборе данных.
+- `mean(x)` — арифметическое среднее набора данных.
+- `n` — количество точек данных в наборе данных.
 
 **Пример**
 

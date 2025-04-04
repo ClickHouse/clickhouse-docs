@@ -1,25 +1,24 @@
 ---
-title: 'AvroConfluent'
-slug: '/interfaces/formats/AvroConfluent'
-keywords: ['AvroConfluent']
-input_format: true
-output_format: false
 alias: []
+description: 'Документация для формата AvroConfluent'
+input_format: true
+keywords: ['AvroConfluent']
+output_format: false
+slug: /interfaces/formats/AvroConfluent
+title: 'AvroConfluent'
 ---
 
 import DataTypesMatching from './_snippets/data-types-matching.md'
 
-| Входные данные | Выходные данные | Псевдоним |
+| Input | Output | Alias |
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
 ## Описание {#description}
 
-AvroConfluent поддерживает декодирование сообщений Avro с одним объектом, часто используемых с [Kafka](https://kafka.apache.org/) и [Confluent Schema Registry](https://docs.confluent.io/current/schema-registry/index.html).
-Каждое сообщение Avro включает в себя ID схемы, который может быть разрешен в фактическую схему с помощью Schema Registry.
-Схемы кэшируются после разрешения.
+AvroConfluent поддерживает декодирование сообщении Avro с одним объектом, которые обычно используются с [Kafka](https://kafka.apache.org/) и [Confluent Schema Registry](https://docs.confluent.io/current/schema-registry/index.html). Каждый Avro-сообщение включает в себя ID схемы, который может быть разрешен до фактической схемы с помощью Schema Registry. Схемы кэшируются после разрешения.
 
-## Соответствие типов данных {#data_types-matching-1}
+## Сопоставление типов данных {#data_types-matching-1}
 
 <DataTypesMatching/>
 
@@ -49,8 +48,8 @@ kafka_topic_list = 'topic1',
 kafka_group_name = 'group1',
 kafka_format = 'AvroConfluent';
 
--- для отладки вы можете установить format_avro_schema_registry_url в сессию.
--- этот способ не может быть использован в производственной среде
+-- для целей отладки вы можете установить format_avro_schema_registry_url в сессии.
+-- этот способ не может быть использован в производстве
 SET format_avro_schema_registry_url = 'http://schema-registry';
 
 SELECT * FROM topic1_stream;
@@ -61,11 +60,11 @@ SELECT * FROM topic1_stream;
 URL Schema Registry настраивается с помощью [`format_avro_schema_registry_url`](/operations/settings/settings-formats.md/#format_avro_schema_registry_url).
 
 :::note
-Установка `format_avro_schema_registry_url` должна быть настроена в `users.xml`, чтобы сохранить свое значение после перезапуска. Также вы можете использовать настройку `format_avro_schema_registry_url` для движка таблицы `Kafka`.
+Установка `format_avro_schema_registry_url` должна быть настроена в `users.xml`, чтобы сохранить свое значение после перезагрузки. Также вы можете использовать настройку `format_avro_schema_registry_url` движка таблиц `Kafka`.
 :::
 
-| Настройка                                     | Описание                                                                                         | По умолчанию |
-|---------------------------------------------|-----------------------------------------------------------------------------------------------------|---------|
-| `input_format_avro_allow_missing_fields`    | Для формата Avro/AvroConfluent: когда поле не найдено в схеме, используйте значение по умолчанию вместо ошибки | `0`     |
-| `input_format_avro_null_as_default`         | Для формата Avro/AvroConfluent: вставка значения по умолчанию в случае null и ненулевой колонки	    |   `0`   |
-| `format_avro_schema_registry_url`           | Для формата AvroConfluent: URL Confluent Schema Registry.                                            |         |
+| Настройка                                   | Описание                                                                                       | Значение по умолчанию |
+|---------------------------------------------|------------------------------------------------------------------------------------------------|-----------------------|
+| `input_format_avro_allow_missing_fields`    | Для формата Avro/AvroConfluent: когда поле не найдено в схеме, использовать значение по умолчанию вместо ошибки | `0`                   |
+| `input_format_avro_null_as_default`         | Для формата Avro/AvroConfluent: вставить значение по умолчанию в случае null и ненулевого столбца       |   `0`                 |
+| `format_avro_schema_registry_url`           | Для формата AvroConfluent: URL Confluent Schema Registry.                                      |                       |

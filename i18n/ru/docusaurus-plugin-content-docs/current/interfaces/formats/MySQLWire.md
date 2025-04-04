@@ -1,11 +1,12 @@
 ---
-title: MySQLWire
-slug: /interfaces/formats/MySQLWire
+description: 'Документация по формату MySQLWire'
 keywords: ['MySQLWire']
+slug: /interfaces/formats/MySQLWire
+title: 'MySQLWire'
 ---
 
 ## Описание {#description}
 
-## Пример Использования {#example-usage}
+## Пример использования {#example-usage}
 
-## Настройки Формата {#format-settings}
+## Настройки формата {#format-settings}

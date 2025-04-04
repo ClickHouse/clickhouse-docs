@@ -1,15 +1,16 @@
 ---
-slug: /sql-reference/statements/alter/role
+description: 'Документация для ROLE'
+sidebar_label: 'ROLE'
 sidebar_position: 46
-sidebar_label: РОЛЬ
-title: "ALTER ROLE"
+slug: /sql-reference/statements/alter/role
+title: 'ALTER ROLE'
 ---
 
 Изменяет роли.
 
 Синтаксис:
 
-``` sql
+```sql
 ALTER ROLE [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]] 
     [ON CLUSTER cluster_name]
     [DROP ALL PROFILES]

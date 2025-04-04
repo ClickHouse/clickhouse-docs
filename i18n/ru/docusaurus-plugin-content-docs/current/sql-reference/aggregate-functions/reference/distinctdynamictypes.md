@@ -1,14 +1,14 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/distinctdynamictypes
+description: 'Вычисляет список различных типов данных, хранящихся в колонке Dynamic.'
 sidebar_position: 215
-title: "distinctDynamicTypes"
-description: "Calculates the list of distinct data types stored in Dynamic column."
+slug: /sql-reference/aggregate-functions/reference/distinctdynamictypes
+title: 'distinctDynamicTypes'
 ---
 
 
 # distinctDynamicTypes
 
-Вычисляет список различных типов данных, хранящихся в колонке [Dynamic](../../data-types/dynamic.md).
+Вычисляет список различных типов данных, хранящихся в [Dynamic](../../data-types/dynamic.md) колонке.
 
 **Синтаксис**
 
@@ -18,9 +18,9 @@ distinctDynamicTypes(dynamic)
 
 **Аргументы**
 
-- `dynamic` — колонка [Dynamic](../../data-types/dynamic.md).
+- `dynamic` — [Dynamic](../../data-types/dynamic.md) колонка.
 
-**Возвращаемое Значение**
+**Возвращаемое значение**
 
 - Отсортированный список имен типов данных [Array(String)](../../data-types/array.md).
 

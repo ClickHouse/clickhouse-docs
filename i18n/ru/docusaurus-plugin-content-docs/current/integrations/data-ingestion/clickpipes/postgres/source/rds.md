@@ -1,7 +1,8 @@
 ---
-sidebar_label: Amazon RDS Postgres
-description: Настройте Amazon RDS Postgres в качестве источника для ClickPipes
+sidebar_label: 'Amazon RDS Postgres'
+description: 'Настройка Amazon RDS Postgres в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/postgres/source/rds
+title: 'Руководство по настройке источника RDS Postgres'
 ---
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
@@ -11,21 +12,22 @@ import modify_parameter_group from '@site/static/images/integrations/data-ingest
 import reboot_rds from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/reboot_rds.png';
 import security_group_in_rds_postgres from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/security_group_in_rds_postgres.png';
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
+import Image from '@theme/IdealImage';
 
 
-# Настройка источника RDS Postgres
+# Руководство по настройке источника RDS Postgres
 
 ## Поддерживаемые версии Postgres {#supported-postgres-versions}
 
-ClickPipes поддерживает версии Postgres 12 и новее.
+ClickPipes поддерживает версии Postgres 12 и выше.
 
 ## Включение логической репликации {#enable-logical-replication}
 
-Вы можете пропустить этот раздел, если ваша RDS инстанция уже имеет следующие настройки:
+Вы можете пропустить этот раздел, если ваша RDS-инстанция уже имеет следующие настройки:
 - `rds.logical_replication = 1`
 - `wal_sender_timeout = 0`
 
-Эти настройки обычно предварительно сконфигурированы, если вы ранее использовали другой инструмент репликации данных.
+Эти настройки обычно преднастроены, если вы ранее использовали другой инструмент репликации данных.
 
 ```text
 postgres=> SHOW rds.logical_replication ;
@@ -41,37 +43,37 @@ postgres=> SHOW wal_sender_timeout ;
 (1 row)
 ```
 
-Если они еще не настроены, выполните следующие шаги:
+Если настройки ещё не сконфигурированы, выполните следующие шаги:
 
 1. Создайте новую группу параметров для вашей версии Postgres с необходимыми настройками:
     - Установите `rds.logical_replication` в 1
     - Установите `wal_sender_timeout` в 0
 
-<img src={parameter_group_in_blade} alt="Где найти группы параметров в RDS?" />
+<Image img={parameter_group_in_blade} alt="Где найти группы параметров в RDS?" size="lg" border/>
 
-<img src={change_rds_logical_replication} alt="Изменение rds.logical_replication" />
+<Image img={change_rds_logical_replication} alt="Изменение rds.logical_replication" size="lg" border/>
 
-<img src={change_wal_sender_timeout} alt="Изменение wal_sender_timeout" />
+<Image img={change_wal_sender_timeout} alt="Изменение wal_sender_timeout" size="lg" border/>
 
-2. Примените новую группу параметров к вашей базе данных RDS Postgres
+2. Примените новую группу параметров к вашей базе данных RDS Postgres.
 
-<img src={modify_parameter_group} alt="Модификация RDS Postgres с новыми группами параметров" />
+<Image img={modify_parameter_group} alt="Изменение RDS Postgres с новой группой параметров" size="lg" border/>
 
-3. Перезагрузите вашу RDS инстанцию, чтобы применить изменения
+3. Перезагрузите вашу RDS-инстанцию, чтобы применить изменения.
 
-<img src={reboot_rds} alt="Перезагрузить RDS Postgres" />
+<Image img={reboot_rds} alt="Перезагрузка RDS Postgres" size="lg" border/>
 
 ## Настройка пользователя базы данных {#configure-database-user}
 
-Подключитесь к вашей RDS Postgres инстанции как администратор и выполните следующие команды:
+Подключитесь к вашему RDS Postgres экземпляру как администратор и выполните следующие команды:
 
-1. Создайте выделенного пользователя для ClickPipes:
+1. Создайте отдельного пользователя для ClickPipes:
 
     ```sql
     CREATE USER clickpipes_user PASSWORD 'some-password';
     ```
 
-2. Предоставьте права на схемы. Приведенный ниже пример показывает права для схемы `public`. Повторите эти команды для каждой схемы, которую вы хотите реплицировать:
+2. Предоставьте права на схему. Пример ниже показывает права для схемы `public`. Повторите эти команды для каждой схемы, которую вы хотите реплицировать:
 
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -93,27 +95,27 @@ postgres=> SHOW wal_sender_timeout ;
 
 ## Настройка сетевого доступа {#configure-network-access}
 
-### Управление доступом на основе IP {#ip-based-access-control}
+### Контроль доступа на основе IP {#ip-based-access-control}
 
-Если вы хотите ограничить трафик к вашей RDS инстанции, добавьте [документированные статические NAT IP-адреса](../../index.md#list-of-static-ips) в `Правила для входящих подключений` вашей группы безопасности RDS.
+Если вы хотите ограничить трафик к вашей RDS-инстанции, добавьте [документированные статические IP-адреса NAT](../../index.md#list-of-static-ips) в `Inbound rules` вашей группы безопасности RDS.
 
-<img src={security_group_in_rds_postgres} alt="Где найти группу безопасности в RDS Postgres?" />
+<Image img={security_group_in_rds_postgres} alt="Где найти группу безопасности в RDS Postgres?" size="lg" border/>
 
-<img src={edit_inbound_rules} alt="Изменить правила для входящих подключений для вышеупомянутой группы безопасности" />
+<Image img={edit_inbound_rules} alt="Редактирование входящих правил для указанной группы безопасности" size="lg" border/>
 
 ### Приватный доступ через AWS PrivateLink {#private-access-via-aws-privatelink}
 
-Чтобы подключиться к вашей RDS инстанции через частную сеть, вы можете использовать AWS PrivateLink. Следуйте нашему [руководству по настройке AWS PrivateLink для ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes), чтобы установить соединение.
+Чтобы подключиться к вашей RDS-инстанции через частную сеть, вы можете использовать AWS PrivateLink. Следуйте нашему [руководству по настройке AWS PrivateLink для ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes) для настройки соединения.
 
-### Обходные решения для RDS Proxy {#workarounds-for-rds-proxy}
-RDS Proxy не поддерживает соединения для логической репликации. Если у вас динамические IP-адреса в RDS и вы не можете использовать DNS-имя или AWS Lambda, вот несколько альтернатив:
+### Обходные пути для RDS Proxy {#workarounds-for-rds-proxy}
+RDS Proxy не поддерживает соединения логической репликации. Если у вас динамические IP-адреса в RDS и вы не можете использовать DNS-имя или лямбду, вот некоторые альтернативы:
 
-1. Используя cron-работу, периодически разрешайте IP-адрес конечной точки RDS и обновляйте NLB, если он изменился.
-2. Используйте уведомления событий RDS с EventBridge/SNS: автоматически запускайте обновления с помощью уведомлений событий AWS RDS.
-3. Стабильный EC2: разверните экземпляр EC2, чтобы он acted как служба опроса или прокси на основе IP.
-4. Автоматизируйте управление IP-адресами с помощью инструментов, таких как Terraform или CloudFormation.
+1. Используйте cron-задачу для периодического разрешения IP-адреса конечной точки RDS и обновления NLB, если он изменился.
+2. Используйте уведомления событий RDS с EventBridge/SNS: автоматически инициируйте обновления с помощью уведомлений событий AWS RDS.
+3. Устойчивый EC2: разверните экземпляр EC2, который будет выполнять функции опроса или прокси на основе IP.
+4. Автоматизируйте управление IP-адресами с помощью таких инструментов, как Terraform или CloudFormation.
 
 ## Что дальше? {#whats-next}
 
 Теперь вы можете [создать свой ClickPipe](../index.md) и начать загружать данные из вашего экземпляра Postgres в ClickHouse Cloud. 
-Не забудьте записать данные подключения, которые вы использовали при настройке вашего экземпляра Postgres, так как они понадобятся вам во время процесса создания ClickPipe.
+Не забудьте записать данные подключения, которые вы использовали при настройке вашего экземпляра Postgres, так как они понадобятся вам в процессе создания ClickPipe.

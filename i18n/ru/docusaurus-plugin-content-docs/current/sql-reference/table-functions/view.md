@@ -1,19 +1,19 @@
 ---
-slug: /sql-reference/table-functions/view
+description: 'Преобразует подзапрос в таблицу. Функция реализует представления.'
+sidebar_label: 'представление'
 sidebar_position: 210
-sidebar_label: view
-title: view
-description: "Преобразует подзапрос в таблицу. Функция реализует представления."
+slug: /sql-reference/table-functions/view
+title: 'представление'
 ---
 
 
-# Функция таблицы view
+# Функция Таблицы представление
 
-Преобразует подзапрос в таблицу. Функция реализует представления (см. [CREATE VIEW](/sql-reference/statements/create/view)). Результирующая таблица не хранит данные, а только хранит указанный `SELECT` запрос. При чтении из таблицы ClickHouse выполняет запрос и удаляет все ненужные колонки из результата.
+Преобразует подзапрос в таблицу. Функция реализует представления (см. [CREATE VIEW](/sql-reference/statements/create/view)). Результирующая таблица не хранит данные, а только хранит указанный `SELECT` запрос. При чтении из таблицы ClickHouse выполняет запрос и удаляет все ненужные столбцы из результата.
 
 **Синтаксис**
 
-``` sql
+```sql
 view(subquery)
 ```
 
@@ -29,7 +29,7 @@ view(subquery)
 
 Входная таблица:
 
-``` text
+```text
 ┌─id─┬─name─────┬─days─┐
 │  1 │ January  │   31 │
 │  2 │ February │   29 │
@@ -40,13 +40,13 @@ view(subquery)
 
 Запрос:
 
-``` sql
+```sql
 SELECT * FROM view(SELECT name FROM months);
 ```
 
 Результат:
 
-``` text
+```text
 ┌─name─────┐
 │ January  │
 │ February │
@@ -55,16 +55,16 @@ SELECT * FROM view(SELECT name FROM months);
 └──────────┘
 ```
 
-Вы можете использовать функцию `view` в качестве параметра функций таблиц [remote](/sql-reference/table-functions/remote) и [cluster](/sql-reference/table-functions/cluster):
+Вы можете использовать функцию `view` в качестве параметра для функций таблиц [remote](/sql-reference/table-functions/remote) и [cluster](/sql-reference/table-functions/cluster):
 
-``` sql
+```sql
 SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 ```
 
-``` sql
+```sql
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
 
-**Смотрите также**
+**См. также**
 
 - [View Table Engine](/engines/table-engines/special/view/)

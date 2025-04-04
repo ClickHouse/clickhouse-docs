@@ -1,9 +1,13 @@
 ---
-sidebar_label: 'Облачная Поддержка'
+sidebar_label: 'Облачная поддержка'
+title: 'Облачная поддержка'
+slug: /cloud/support
+description: 'Узнайте о облачной поддержке'
 ---
 
-# Облачная Поддержка
 
-import Content from '@site/i18n/ru/docusaurus-plugin-content-docs/current/about-us/support.md';
+# Облачная поддержка
+
+import Content from '@site/docs/about-us/support.md';
 
 <Content />

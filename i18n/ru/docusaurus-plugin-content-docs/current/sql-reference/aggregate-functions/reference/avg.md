@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/avg
+description: 'Вычисляет арифметическое среднее.'
 sidebar_position: 112
-title: "avg"
-description: "Вычисляет арифметическое среднее."
+slug: /sql-reference/aggregate-functions/reference/avg
+title: 'avg'
 ---
 
 
@@ -12,7 +12,7 @@ description: "Вычисляет арифметическое среднее."
 
 **Синтаксис**
 
-``` sql
+```sql
 avg(x)
 ```
 
@@ -29,13 +29,13 @@ avg(x)
 
 Запрос:
 
-``` sql
+```sql
 SELECT avg(x) FROM values('x Int8', 0, 1, 2, 3, 4, 5);
 ```
 
 Результат:
 
-``` text
+```text
 ┌─avg(x)─┐
 │    2.5 │
 └────────┘
@@ -47,7 +47,7 @@ SELECT avg(x) FROM values('x Int8', 0, 1, 2, 3, 4, 5);
 
 Запрос:
 
-``` sql
+```sql
 CREATE table test (t UInt8) ENGINE = Memory;
 ```
 
@@ -61,7 +61,7 @@ SELECT avg(t) FROM test;
 
 Результат:
 
-``` text
+```text
 ┌─avg(x)─┐
 │    nan │
 └────────┘

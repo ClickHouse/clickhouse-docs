@@ -1,18 +1,18 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/kurtsamp
+description: 'Вычисляет выборочную эксцизу последовательности.'
 sidebar_position: 158
-title: "kurtSamp"
-description: "Вычисляет выборочную куртозис последовательности."
+slug: /sql-reference/aggregate-functions/reference/kurtsamp
+title: 'kurtSamp'
 ---
 
 
 # kurtSamp
 
-Вычисляет [выборочный куртозис](https://en.wikipedia.org/wiki/Kurtosis) последовательности.
+Вычисляет [выборочную эксцизу](https://en.wikipedia.org/wiki/Kurtosis) последовательности.
 
-Он представляет собой несмещенную оценку куртозиса случайной переменной, если переданные значения образуют её выборку.
+Она представляет собой несмещённую оценку эксцизы случайной величины, если переданные значения формируют её выборку.
 
-``` sql
+```sql
 kurtSamp(expr)
 ```
 
@@ -22,10 +22,10 @@ kurtSamp(expr)
 
 **Возвращаемое значение**
 
-Куртозис данной распределения. Тип — [Float64](../../../sql-reference/data-types/float.md). Если `n <= 1` (`n` — размер выборки), функция возвращает `nan`.
+Эксциза данной распределения. Тип — [Float64](../../../sql-reference/data-types/float.md). Если `n <= 1` (`n` — размер выборки), тогда функция возвращает `nan`.
 
 **Пример**
 
-``` sql
+```sql
 SELECT kurtSamp(value) FROM series_with_value_column;
 ```

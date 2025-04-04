@@ -1,12 +1,13 @@
 ---
 slug: /managing-data/truncate
-sidebar_label: Удалить таблицу
-title: Удалить таблицу
+sidebar_label: 'Обрезать таблицу'
+title: 'Обрезать таблицу'
 hide_title: false
+description: 'Обрезка позволяет удалить данные в таблице или базе данных, сохраняя их существование.'
 ---
 
-Удаление позволяет данные в таблице или базе данных быть удаленными, сохраняя их существование. Это легковесная операция, которую невозможно отменить.
+Обрезка позволяет удалить данные в таблице или базе данных, сохраняя их существование. Это легковесная операция, которую нельзя отменить.
 
-import Truncate from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/statements/truncate.md';
+import Truncate from '@site/docs/sql-reference/statements/truncate.md';
 
 <Truncate/>

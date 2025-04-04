@@ -1,10 +1,12 @@
 ---
-slug: /sql-reference/data-types/special-data-types/set
+description: 'Документация для специального типа данных Set, используемого в выражениях IN'
+sidebar_label: 'Set'
 sidebar_position: 59
-sidebar_label: 'Набор'
+slug: /sql-reference/data-types/special-data-types/set
+title: 'Set'
 ---
 
 
-# Набор
+# Set
 
-Используется для правой части выражения [IN](/sql-reference/operators/in).
+Используется для правой половины выражения [IN](/sql-reference/operators/in).

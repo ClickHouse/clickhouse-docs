@@ -1,11 +1,11 @@
 ---
-description: 'Таблица системы, содержащая информацию о контрибьюторах.'
+description: 'Системная таблица, содержащая информацию о контрибьюторах.'
+keywords: ['системная таблица', 'контрибьюторах']
 slug: /operations/system-tables/contributors
 title: 'system.contributors'
-keywords: ['system table', 'contributors']
 ---
 
-Содержит информацию о контрибьюторах. Порядок произвольный во время выполнения запроса.
+Содержит информацию о контрибьюторах. Порядок результатов случайный в момент выполнения запроса.
 
 Колонки:
 
@@ -13,11 +13,11 @@ keywords: ['system table', 'contributors']
 
 **Пример**
 
-``` sql
+```sql
 SELECT * FROM system.contributors LIMIT 10
 ```
 
-``` text
+```text
 ┌─name─────────────┐
 │ Olga Khvostikova │
 │ Max Vetrov       │
@@ -32,13 +32,13 @@ SELECT * FROM system.contributors LIMIT 10
 └──────────────────┘
 ```
 
-Чтобы найти себя в таблице, используйте запрос:
+Чтобы узнать себя в таблице, используйте запрос:
 
-``` sql
+```sql
 SELECT * FROM system.contributors WHERE name = 'Olga Khvostikova'
 ```
 
-``` text
+```text
 ┌─name─────────────┐
 │ Olga Khvostikova │
 └──────────────────┘

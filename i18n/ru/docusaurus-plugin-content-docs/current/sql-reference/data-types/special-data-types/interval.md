@@ -1,17 +1,19 @@
 ---
-slug: /sql-reference/data-types/special-data-types/interval
+description: 'Документация по специальному типу данных Interval'
+sidebar_label: 'Interval'
 sidebar_position: 61
-sidebar_label: Интервал
+slug: /sql-reference/data-types/special-data-types/interval
+title: 'Interval'
 ---
 
 
-# Интервал
+# Interval
 
-Семейство типов данных, представляющих временные и датные интервалы. Результирующие типы оператора [INTERVAL](/sql-reference/operators#interval).
+Семейство типов данных, представляющих временные и датные интервалы. Получаемые типы оператора [INTERVAL](/sql-reference/operators#interval).
 
 Структура:
 
-- Временной интервал в виде беззнакового целочисленного значения.
+- Временной интервал как беззнаковое целочисленное значение.
 - Тип интервала.
 
 Поддерживаемые типы интервалов:
@@ -30,11 +32,11 @@ sidebar_label: Интервал
 
 Для каждого типа интервала существует отдельный тип данных. Например, интервал `DAY` соответствует типу данных `IntervalDay`:
 
-``` sql
+```sql
 SELECT toTypeName(INTERVAL 4 DAY)
 ```
 
-``` text
+```text
 ┌─toTypeName(toIntervalDay(4))─┐
 │ IntervalDay                  │
 └──────────────────────────────┘
@@ -44,11 +46,11 @@ SELECT toTypeName(INTERVAL 4 DAY)
 
 Вы можете использовать значения типа `Interval` в арифметических операциях с значениями типов [Date](../../../sql-reference/data-types/date.md) и [DateTime](../../../sql-reference/data-types/datetime.md). Например, вы можете добавить 4 дня к текущему времени:
 
-``` sql
+```sql
 SELECT now() as current_date_time, current_date_time + INTERVAL 4 DAY
 ```
 
-``` text
+```text
 ┌───current_date_time─┬─plus(now(), toIntervalDay(4))─┐
 │ 2019-10-23 10:58:45 │           2019-10-27 10:58:45 │
 └─────────────────────┴───────────────────────────────┘
@@ -56,23 +58,23 @@ SELECT now() as current_date_time, current_date_time + INTERVAL 4 DAY
 
 Также возможно использовать несколько интервалов одновременно:
 
-``` sql
+```sql
 SELECT now() AS current_date_time, current_date_time + (INTERVAL 4 DAY + INTERVAL 3 HOUR)
 ```
 
-``` text
+```text
 ┌───current_date_time─┬─plus(current_date_time, plus(toIntervalDay(4), toIntervalHour(3)))─┐
 │ 2024-08-08 18:31:39 │                                                2024-08-12 21:31:39 │
 └─────────────────────┴────────────────────────────────────────────────────────────────────┘
 ```
 
-И сравнивать значения с разными интервалами:
+И сравнивать значения с различными интервалами:
 
-``` sql
+```sql
 SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 ```
 
-``` text
+```text
 ┌─less(toIntervalMicrosecond(179999999), toIntervalMinute(3))─┐
 │                                                           1 │
 └─────────────────────────────────────────────────────────────┘
@@ -80,5 +82,5 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 
 ## См. также {#see-also}
 
-- [INTERVAL](/sql-reference/operators#interval) оператор
-- [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) функции преобразования типов
+- Оператор [INTERVAL](/sql-reference/operators#interval)
+- Функции преобразования типов [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear)

@@ -1,10 +1,11 @@
 ---
 slug: /cloud/billing/marketplace/gcp-marketplace-committed-contract
-title: Комитированный контракт GCP Marketplace
-description: Подпишитесь на ClickHouse Cloud через GCP Marketplace (Комитированный контракт)
-keywords: [gcp, google, marketplace, billing, committed, committed contract]
+title: 'Приватный контракт GCP Marketplace'
+description: 'Подпишитесь на ClickHouse Cloud через GCP Marketplace (Приватный контракт)'
+keywords: ['gcp', 'google', 'marketplace', 'billing', 'committed', 'committed contract']
 ---
 
+import Image from '@theme/IdealImage';
 import gcp_marketplace_committed_1 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-committed-1.png';
 import gcp_marketplace_committed_2 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-committed-2.png';
 import gcp_marketplace_committed_3 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-committed-3.png';
@@ -20,159 +21,107 @@ import gcp_marketplace_payg_5 from '@site/static/images/cloud/manage/billing/mar
 import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-11.png';
 import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-6.png';
 
-Начните использовать ClickHouse Cloud на [GCP Marketplace](https://console.cloud.google.com/marketplace) через комитированный контракт. Комитированный контракт, также известный как Частное предложение, позволяет клиентам обязаться тратить определенную сумму на ClickHouse Cloud в течение определенного времени.
+Начните работу с ClickHouse Cloud на [GCP Marketplace](https://console.cloud.google.com/marketplace) через приватный контракт. Приватный контракт, также известный как Private Offer, позволяет клиентам обязаться потратить определенную сумму на ClickHouse Cloud за определенный период времени.
 
-## Предварительные требования {#prerequisites}
+## Необходимые условия {#prerequisites}
 
-- Частное предложение от ClickHouse на основе конкретных условий контракта.
+- Приватное предложение от ClickHouse на основе конкретных договорных условий.
 
 ## Шаги для регистрации {#steps-to-sign-up}
 
-1. Вы должны были получить электронное письмо с ссылкой для просмотра и принятия вашего частного предложения.
+1. Вы должны были получить электронное письмо с ссылкой для просмотра и принятия вашего приватного предложения.
 
 <br />
 
-<img src={gcp_marketplace_committed_1}
-    alt='Электронное письмо о частном предложении GCP Marketplace'
-    class='image'
-    style={{width: '300px'}}
- />
+<Image img={gcp_marketplace_committed_1} size="md" alt="Электронное письмо с приватным предложением GCP Marketplace" border />
 
 <br />
 
-2. Нажмите на ссылку **Просмотреть предложение** в электронном письме. Это должно перенести вас на страницу GCP Marketplace с деталями частного предложения.
+2. Нажмите на ссылку **Review Offer** в электронном письме. Это должно привести вас на страницу GCP Marketplace с деталями приватного предложения.
 
 <br />
 
-<img src={gcp_marketplace_committed_2}
-    alt='Резюме предложения GCP Marketplace'
-    class='image'
-    style={{width: '300px'}}
- />
+<Image img={gcp_marketplace_committed_2} size="md" alt="Резюме предложения GCP Marketplace" border/>
 
 <br />
 
-<img src={gcp_marketplace_committed_3}
-    alt='Резюме цен GCP Marketplace'
-    class='image'
-    style={{width: '300px'}}
- />
+<Image img={gcp_marketplace_committed_3} size="md" alt="Резюме цен GCP Marketplace" border/>
 
 <br />
 
-3. Просмотрите детали частного предложения и, если все верно, нажмите **Принять**.
+3. Просмотрите детали приватного предложения и, если всё правильно, нажмите **Accept**.
 
 <br />
 
-<img src={gcp_marketplace_committed_4}
-    alt='Страница принятия GCP Marketplace'
-    class='image'
-    style={{width: '300px'}}
- />
+<Image img={gcp_marketplace_committed_4} size="md" alt="Страница принятия GCP Marketplace" border/>
 
 <br />
 
-4. Нажмите на **Перейти на страницу продукта**.
+4. Нажмите на **Go to product page**.
 
 <br />
 
-<img src={gcp_marketplace_committed_5}
-    alt='Подтверждение принятия GCP Marketplace'
-    class='image'
-    style={{width: '400px'}}
- />
+<Image img={gcp_marketplace_committed_5} size="md" alt="Подтверждение принятия GCP Marketplace" border/>
 
 <br />
 
-5. Нажмите на **Управлять у поставщика**.
+5. Нажмите на **Manage on provider**.
 
 <br />
 
-<img src={gcp_marketplace_committed_6}
-    alt='Страница ClickHouse Cloud в GCP Marketplace'
-    class='image'
-    style={{width: '400px'}}
- />
+<Image img={gcp_marketplace_committed_6} size="md" alt="Страница ClickHouse Cloud GCP Marketplace" border/>
 
 <br />
 
-На этом этапе критически важно перейти на ClickHouse Cloud и зарегистрироваться или войти. Без выполнения этого шага мы не сможем связать вашу подписку GCP Marketplace с ClickHouse Cloud.
+Критически важно на данном этапе перейти на ClickHouse Cloud и зарегистрироваться или войти в систему. Без завершения этого шага мы не сможем связать вашу подписку GCP Marketplace с ClickHouse Cloud.
 
 <br />
 
-<img src={gcp_marketplace_committed_7}
-    alt='Модальное окно подтверждения выхода из сайта GCP Marketplace'
-    class='image'
-    style={{width: '400px'}}
- />
+<Image img={gcp_marketplace_committed_7} size="md" alt="Подтверждение выхода с сайта GCP Marketplace" border/>
 
 <br />
 
-6. После перенаправления на ClickHouse Cloud вы можете либо войти с существующей учетной записью, либо зарегистрироваться с новой учетной записью.
+6. После перехода на ClickHouse Cloud вы можете либо войти с существующей учетной записью, либо зарегистрироваться с новой учетной записью.
 
 <br />
 
-<img src={aws_marketplace_payg_6}
-    alt='Страница входа в ClickHouse Cloud'
-    class='image'
-    style={{width: '300px'}}
- />
+<Image img={aws_marketplace_payg_6} size="md" alt="Страница входа в ClickHouse Cloud" border/>
 
 <br />
 
-Если вы новый пользователь ClickHouse Cloud, нажмите **Зарегистрироваться** внизу страницы. Вам будет предложено создать нового пользователя и подтвердить электронную почту. После подтверждения электронной почты вы можете покинуть страницу входа ClickHouse Cloud и войти, используя новое имя пользователя на [https://console.clickhouse.cloud](https://console.clickhouse.cloud).
+Если вы новый пользователь ClickHouse Cloud, нажмите **Register** внизу страницы. Вам будет предложено создать нового пользователя и подтвердить электронную почту. После подтверждения электронной почты вы можете покинуть страницу входа в ClickHouse Cloud и войти с новым именем пользователя на [https://console.clickhouse.cloud](https://console.clickhouse.cloud).
 
 <br />
 
-<img src={aws_marketplace_payg_7}
-    alt='Страница регистрации ClickHouse Cloud'
-    class='image'
-    style={{width: '500px'}}
- />
+<Image img={aws_marketplace_payg_7} size="md" alt="Страница регистрации ClickHouse Cloud" border/>
 
 <br />
 
-Обратите внимание, что если вы новый пользователь, вам также потребуется предоставить некоторую основную информацию о вашем бизнесе. См. скриншоты ниже.
+Обратите внимание, что если вы новый пользователь, вам также потребуется предоставить базовую информацию о вашей компании. Смотрите скриншоты ниже.
 
 <br />
 
-<img src={aws_marketplace_payg_8}
-    alt='Форма информации о регистрации ClickHouse Cloud'
-    class='image'
-    style={{width: '400px'}}
- />
+<Image img={aws_marketplace_payg_8} size="md" alt="Форма информации для регистрации ClickHouse Cloud" border/>
 
 <br />
 
-<img src={aws_marketplace_payg_9}
-    alt='Форма информации о регистрации ClickHouse Cloud 2'
-    class='image'
-    style={{width: '400px'}}
- />
+<Image img={aws_marketplace_payg_9} size="md" alt="Форма информации для регистрации ClickHouse Cloud 2" border/>
 
 <br />
 
-Если вы существующий пользователь ClickHouse Cloud, просто войдите, используя свои учетные данные.
+Если вы существующий пользователь ClickHouse Cloud, просто войдите, используя ваши учетные данные.
 
-7. После успешного входа будет создана новая организация ClickHouse Cloud. Эта организация будет связана с вашим аккаунтом выставления счетов GCP, и все расходы будут выставляться через ваш аккаунт GCP.
+7. После успешного входа будет создана новая организация ClickHouse Cloud. Эта организация будет связана с вашим GCP-учетным счетом и все расходы будут взиматься через ваш GCP-аккаунт.
 
-8. После входа вы можете подтвердить, что ваше выставление счетов действительно связано с GCP Marketplace, и начать настраивать свои ресурсы ClickHouse Cloud.
-
-<br />
-
-<img src={gcp_marketplace_payg_5}
-    alt='Страница входа в ClickHouse Cloud'
-    class='image'
-    style={{width: '300px'}}
- />
+8. Как только вы войдете, вы сможете подтвердить, что ваши расходы действительно связаны с GCP Marketplace, и начать настройку ваших ресурсов ClickHouse Cloud.
 
 <br />
 
-<img src={aws_marketplace_payg_11}
-    alt='Страница новых услуг ClickHouse Cloud'
-    class='image'
-    style={{width: '400px'}}
- />
+<Image img={gcp_marketplace_payg_5} size="md" alt="Страница входа ClickHouse Cloud" border/>
+
+<br />
+
+<Image img={aws_marketplace_payg_11} size="md" alt="Страница новых услуг ClickHouse Cloud" border/>
 
 <br />
 
@@ -181,14 +130,10 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 <br />
 <br />
 
-<img src={gcp_marketplace_payg_6}
-    alt='Электронное письмо подтверждения GCP Marketplace'
-    class='image'
-    style={{width: '300px'}}
- />
+<Image img={gcp_marketplace_payg_6} size="md" alt="Электронное письмо подтверждения GCP Marketplace" border/>
 
 <br />
 
 <br />
 
-Если у вас возникнут какие-либо проблемы, пожалуйста, не стесняйтесь обращаться в [нашу службу поддержки](https://clickhouse.com/support/program).
+Если у вас возникли проблемы, не стесняйтесь обращаться в [нашу службу поддержки](https://clickhouse.com/support/program).

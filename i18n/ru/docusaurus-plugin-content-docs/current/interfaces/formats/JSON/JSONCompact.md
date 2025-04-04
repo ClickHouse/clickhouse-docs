@@ -1,10 +1,11 @@
 ---
-title: 'JSONCompact'
-slug: '/interfaces/formats/JSONCompact'
-keywords: ['JSONCompact']
-input_format: true
-output_format: true
 alias: []
+description: 'Документация для формата JSONCompact'
+input_format: true
+keywords: ['JSONCompact']
+output_format: true
+slug: /interfaces/formats/JSONCompact
+title: 'JSONCompact'
 ---
 
 | Входные данные | Выходные данные | Псевдоним |

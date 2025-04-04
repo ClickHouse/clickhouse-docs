@@ -1,14 +1,19 @@
 ---
-description: "Системная таблица, содержащая записи логирования с информацией о операциях `BACKUP` и `RESTORE`."
+description: 'Системная таблица, содержащая записи логирования с информацией о `BACKUP`
+  и `RESTORE` операциях.'
+keywords: ['системная таблица', 'backup_log']
 slug: /operations/system-tables/backup_log
-title: "system.backup_log"
-keywords: ["системная таблица", "backup_log"]
+title: 'system.backup_log'
 ---
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+
+
+# system.backup_log
 
 <SystemTableCloud/>
 
-Содержит записи логирования с информацией о операциях `BACKUP` и `RESTORE`.
+Содержит записи логирования с информацией о `BACKUP` и `RESTORE` операциях.
 
 Колонки:
 
@@ -17,7 +22,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 - `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Дата и время записи.
 - `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время записи с точностью до микросекунд.
 - `id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор операции резервного копирования или восстановления.
-- `name` ([String](../../sql-reference/data-types/string.md)) — Имя хранилища резервных копий (содержимое клаузов `FROM` или `TO`).
+- `name` ([String](../../sql-reference/data-types/string.md)) — Имя хранилища резервных копий (содержимое клаузулы `FROM` или `TO`).
 - `status` ([Enum8](../../sql-reference/data-types/enum.md)) — Статус операции. Возможные значения:
     - `'CREATING_BACKUP'`
     - `'BACKUP_CREATED'`
@@ -140,7 +145,7 @@ files_read:              57
 bytes_read:              4290364870
 ```
 
-Это по сути та же информация, что записывается в системную таблицу `system.backups`:
+Это по сути та же информация, что записана в системной таблице `system.backups`:
 
 ```sql
 SELECT * FROM system.backups ORDER BY start_time
@@ -152,6 +157,6 @@ SELECT * FROM system.backups ORDER BY start_time
 └──────────────────────────────────────┴───────────────────────────────┴────────────────┴───────┴─────────────────────┴─────────────────────┴───────────┴────────────┴─────────────┴───────────────────┴─────────────────┴────────────┴────────────┘
 ```
 
-**Смотрите также**
+**Смотрите Также**
 
 - [Резервное копирование и восстановление](../../operations/backup.md)

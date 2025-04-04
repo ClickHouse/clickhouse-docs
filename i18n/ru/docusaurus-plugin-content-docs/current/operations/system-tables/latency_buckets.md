@@ -1,11 +1,14 @@
 ---
 description: 'Системная таблица, содержащая информацию о границах бакетов, используемых в `latency_log`.'
+keywords: ['системная таблица', 'latency_buckets']
 slug: /operations/system-tables/latency_buckets
 title: 'system.latency_buckets'
-keywords: ['system table', 'latency_buckets']
 ---
 
-Содержит границы бакетов, используемых в [latency_log](../../operations/system-tables/latency_log.md).
+
+# system.latency_buckets
+
+Содержит границы бакетов, используемые в [latency_log](../../operations/system-tables/latency_log.md).
 
 **Пример**
 
@@ -14,7 +17,7 @@ SELECT * FROM system.latency_buckets FORMAT Vertical;
 ```
 
 ```text
-Строка 1:
+Row 1:
 ──────
 LatencyEvent_S3FirstByteReadAttempt1Microseconds:      [100,1000,10000,100000,300000,500000,1000000,2000000,5000000,10000000,15000000,20000000,25000000,30000000,35000000,4294967295]
 LatencyEvent_S3FirstByteWriteAttempt1Microseconds:     [100,1000,10000,100000,300000,500000,1000000,2000000,5000000,10000000,15000000,20000000,25000000,30000000,35000000,4294967295]

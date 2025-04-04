@@ -1,15 +1,16 @@
 ---
-slug: /sql-reference/statements/alter/settings-profile
+description: 'Документация для профиля настроек'
+sidebar_label: 'SETTINGS PROFILE'
 sidebar_position: 48
-sidebar_label: ПРОФИЛЬ НАСТРОЕК
-title: ИЗМЕНИТЬ ПРОФИЛЬ НАСТРОЕК
+slug: /sql-reference/statements/alter/settings-profile
+title: 'ALTER SETTINGS PROFILE'
 ---
 
 Изменяет профили настроек.
 
 Синтаксис:
 
-``` sql
+```sql
 ALTER SETTINGS PROFILE [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]] 
     [ON CLUSTER cluster_name]
     [DROP ALL PROFILES]

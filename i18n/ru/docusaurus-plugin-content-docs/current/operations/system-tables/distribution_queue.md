@@ -1,41 +1,41 @@
 ---
-description: 'Системная таблица, содержащая информацию о локальных файлах, находящихся в очереди на отправку на шарды.'
+description: 'Системная таблица, содержащая информацию о локальных файлах, которые находятся в очереди для отправки на шард.'
+keywords: ['системная таблица', 'distribution_queue']
 slug: /operations/system-tables/distribution_queue
 title: 'system.distribution_queue'
-keywords: ['системная таблица', 'distribution_queue']
 ---
 
-Содержит информацию о локальных файлах, находящихся в очереди на отправку на шарды. Эти локальные файлы содержат новые части, которые создаются путем вставки новых данных в распределенную таблицу в асинхронном режиме.
+Содержит информацию о локальных файлах, которые находятся в очереди для отправки на шард. Эти локальные файлы содержат новые части, которые создаются при вставке новых данных в распределенную таблицу в асинхронном режиме.
 
-Колонки:
+Столбцы:
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных.
+- `database` ([String](../../sql-reference/data-types/string.md)) — Название базы данных.
 
-- `table` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы.
+- `table` ([String](../../sql-reference/data-types/string.md)) — Название таблицы.
 
 - `data_path` ([String](../../sql-reference/data-types/string.md)) — Путь к папке с локальными файлами.
 
-- `is_blocked` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, блокирована ли отправка локальных файлов на сервер.
+- `is_blocked` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, заблокирована ли отправка локальных файлов на сервер.
 
 - `error_count` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество ошибок.
 
 - `data_files` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество локальных файлов в папке.
 
-- `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер сжатых данных в локальных файлах в байтах.
+- `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер сжатых данных в локальных файлах, в байтах.
 
-- `broken_data_files` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество файлов, помеченных как поврежденные (вследствие ошибки).
+- `broken_data_files` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество файлов, которые были помечены как поврежденные (из-за ошибки).
 
-- `broken_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер сжатых данных в поврежденных файлах в байтах.
+- `broken_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер сжатых данных в поврежденных файлах, в байтах.
 
-- `last_exception` ([String](../../sql-reference/data-types/string.md)) — Текстовое сообщение о последней произошедшей ошибке (если таковая была).
+- `last_exception` ([String](../../sql-reference/data-types/string.md)) — Текстовое сообщение о последней произошедшей ошибке (если таковая имеется).
 
 **Пример**
 
-``` sql
+```sql
 SELECT * FROM system.distribution_queue LIMIT 1 FORMAT Vertical;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 database:              default
@@ -48,6 +48,6 @@ data_compressed_bytes: 499
 last_exception:
 ```
 
-**См. Также**
+**Смотрите также**
 
 - [Distributed table engine](../../engines/table-engines/special/distributed.md)

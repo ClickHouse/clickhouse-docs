@@ -1,21 +1,24 @@
 ---
 description: 'Системная таблица, содержащая информацию о рабочих нагрузках, находящихся на локальном сервере.'
+keywords: ['системная таблица', 'рабочие нагрузки']
 slug: /operations/system-tables/workloads
 title: 'system.workloads'
-keywords: ['system table', 'workloads']
 ---
+
+
+# system.workloads
 
 Содержит информацию о [рабочих нагрузках](/operations/workload-scheduling.md#workload_entity_storage), находящихся на локальном сервере. Таблица содержит строку для каждой рабочей нагрузки.
 
 Пример:
 
-``` sql
+```sql
 SELECT *
 FROM system.workloads
 FORMAT Vertical
 ```
 
-``` text
+```text
 Row 1:
 ──────
 name:         production

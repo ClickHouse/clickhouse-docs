@@ -1,14 +1,16 @@
 ---
-slug: /interfaces/third-party/integrations
-sidebar_position: 27
+description: 'Документация по интеграции ClickHouse с различными сторонними системами и инструментами'
 sidebar_label: 'Интеграции'
+sidebar_position: 27
+slug: /interfaces/third-party/integrations
+title: 'Библиотеки интеграции от сторонних разработчиков'
 ---
 
 
-# Интеграционные библиотеки от сторонних разработчиков
+# Библиотеки интеграции от сторонних разработчиков
 
-:::note Примечание
-ClickHouse, Inc. **не** поддерживает инструменты и библиотеки, перечисленные ниже, и не провела extensive тестирования для обеспечения их качества.
+:::note Disclaimer
+ClickHouse, Inc. **не** поддерживает инструменты и библиотеки, перечисленные ниже, и не проводила обширного тестирования для обеспечения их качества.
 :::
 
 ## Инфраструктурные продукты {#infrastructure-products}
@@ -36,7 +38,7 @@ ClickHouse, Inc. **не** поддерживает инструменты и б�
 - Потоковая обработка
     - [Flink](https://flink.apache.org)
         - [flink-clickhouse-sink](https://github.com/ivi-ru/flink-clickhouse-sink)
-- Объектное хранилище
+- Объектные хранилища
     - [S3](https://en.wikipedia.org/wiki/Amazon_S3)
         - [clickhouse-backup](https://github.com/AlexAkulov/clickhouse-backup)
 - Оркестрация контейнеров
@@ -51,7 +53,7 @@ ClickHouse, Inc. **не** поддерживает инструменты и б�
         - [graphouse](https://github.com/ClickHouse/graphouse)
         - [carbon-clickhouse](https://github.com/lomik/carbon-clickhouse)
         - [graphite-clickhouse](https://github.com/lomik/graphite-clickhouse)
-        - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) - оптимизирует устаревшие партиции в [\*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree), если правила из [конфигурации rollup](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration) могут быть применены
+        - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) - оптимизирует устаревшие разделы в [*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree), если правила из [rollup configuration](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration) могут быть применены
     - [Grafana](https://grafana.com/)
         - [clickhouse-grafana](https://github.com/Vertamedia/clickhouse-grafana)
     - [Prometheus](https://prometheus.io/)
@@ -64,7 +66,7 @@ ClickHouse, Inc. **не** поддерживает инструменты и б�
     - [Zabbix](https://www.zabbix.com)
         - [clickhouse-zabbix-template](https://github.com/Altinity/clickhouse-zabbix-template)
     - [Sematext](https://sematext.com/)
-        - [интеграция с clickhouse](https://github.com/sematext/sematext-agent-integrations/tree/master/clickhouse)
+        - [интеграция clickhouse](https://github.com/sematext/sematext-agent-integrations/tree/master/clickhouse)
 - Логирование
     - [rsyslog](https://www.rsyslog.com/)
         - [omclickhouse](https://www.rsyslog.com/doc/master/configuration/modules/omclickhouse.html)
@@ -72,12 +74,12 @@ ClickHouse, Inc. **не** поддерживает инструменты и б�
         - [loghouse](https://github.com/flant/loghouse) (для [Kubernetes](https://kubernetes.io))
     - [logagent](https://www.sematext.com/logagent)
         - [logagent output-plugin-clickhouse](https://sematext.com/docs/logagent/output-plugin-clickhouse/)
-- Геолокация
+- Гео
     - [MaxMind](https://dev.maxmind.com/geoip/)
         - [clickhouse-maxmind-geoip](https://github.com/AlexeyKupershtokh/clickhouse-maxmind-geoip)
 - AutoML
     - [MindsDB](https://mindsdb.com/)
-        - [MindsDB](https://github.com/mindsdb/mindsdb) - интегрируется с ClickHouse, делая данные из ClickHouse доступными для разнообразных моделей AI/ML.
+        - [MindsDB](https://github.com/mindsdb/mindsdb) - Интегрируется с ClickHouse, делая данные из ClickHouse доступными для разнообразных AI/ML моделей.
 
 ## Экосистемы языков программирования {#programming-language-ecosystems}
 

@@ -1,10 +1,24 @@
 ---
 slug: /whats-new/security-changelog
 sidebar_position: 20
-sidebar_label: Security Changelog
+sidebar_label: 'Security Changelog'
+title: 'Security Changelog'
+description: 'Security changelog detailing security related updates and changes'
 ---
 
 # Security Changelog
+
+## Fixed in ClickHouse v25.1.5.5, 2025-01-05 {#fixed-in-clickhouse-release-2025-01-05}
+
+### [CVE-2025-1385](https://github.com/ClickHouse/ClickHouse/security/advisories/GHSA-5phv-x8x4-83x5) {#CVE-2025-1385}
+
+When the library bridge feature is enabled, the clickhouse-library-bridge exposes an HTTP API on localhost. This allows clickhouse-server to dynamically load a library from a specified path and execute it in an isolated process. Combined with the ClickHouse table engine functionality that permits file uploads to specific directories, a misconfigured server can be exploited by an attacker with privileges to access both table engines, allowing them to execute arbitrary code on the ClickHouse server.
+
+Fix has been pushed to the following open-source versions: v24.3.18.6, v24.8.14.27, v24.11.5.34, v24.12.5.65, v25.1.5.5
+
+ClickHouse Cloud is unaffected by this vulnerability.
+
+Credits: [Arseniy Dugin](https://github.com/ZerLes)
 
 ## Fixed in ClickHouse v24.5, 2024-08-01 {#fixed-in-clickhouse-release-2024-08-01}
 

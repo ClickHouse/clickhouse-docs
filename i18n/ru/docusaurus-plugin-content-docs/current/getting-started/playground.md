@@ -1,46 +1,46 @@
 ---
-sidebar_label: 'Площадка ClickHouse'
-sidebar_position: 2
-keywords: ['clickhouse', 'площадка', 'начало', 'работы', 'документация']
 description: 'Площадка ClickHouse позволяет пользователям экспериментировать с ClickHouse, выполняя запросы мгновенно, без настройки своего сервера или кластера.'
+keywords: ['clickhouse', 'площадка', 'начало', 'работы', 'документы']
+sidebar_label: 'Площадка ClickHouse'
 slug: /getting-started/playground
+title: 'Площадка ClickHouse'
 ---
 
 
 # Площадка ClickHouse
 
-[Площадка ClickHouse](https://sql.clickhouse.com) позволяет пользователям экспериментировать с ClickHouse, выполняя запросы мгновенно, без настройки своего сервера или кластера. В Площадке доступны несколько примерных наборов данных.
+[Площадка ClickHouse](https://sql.clickhouse.com) позволяет пользователям экспериментировать с ClickHouse, выполняя запросы мгновенно, без настройки своего сервера или кластера. В Площадке доступны несколько примеров наборов данных.
 
-Вы можете выполнять запросы к Площадке с помощью любого HTTP-клиента, например [curl](https://curl.haxx.se) или [wget](https://www.gnu.org/software/wget/), или настроить соединение с помощью драйверов [JDBC](../interfaces/jdbc.md) или [ODBC](../interfaces/odbc.md). Более подробную информацию о программных продуктах, поддерживающих ClickHouse, можно найти [здесь](../integrations/index.mdx).
+Вы можете делать запросы к Площадке, используя любой HTTP-клиент, например [curl](https://curl.haxx.se) или [wget](https://www.gnu.org/software/wget/), или установить соединение с помощью драйверов [JDBC](../interfaces/jdbc.md) или [ODBC](../interfaces/odbc.md). Больше информации о программных продуктах, поддерживающих ClickHouse, доступно [здесь](../integrations/index.mdx).
 
 ## Учетные данные {#credentials}
 
-| Параметр           | Значение                              |
-|:-------------------|:-------------------------------------|
+| Параметр           | Значение                             |
+|:--------------------|:-------------------------------------|
 | HTTPS endpoint      | `https://play.clickhouse.com:443/`  |
 | Native TCP endpoint | `play.clickhouse.com:9440`          |
-| Пользователь       | `explorer` или `play`                |
-| Пароль             | (пусто)                             |
+| Пользователь        | `explorer` или `play`                |
+| Пароль             | (пустой)                            |
 
 ## Ограничения {#limitations}
 
-Запросы выполняются от имени пользователя с правами только на чтение. Это подразумевает некоторые ограничения:
+Запросы выполняются как пользователь с правами только для чтения. Это подразумевает некоторые ограничения:
 
-- DDL-запросы не разрешены
-- INSERT-запросы не разрешены
+- DDL-запросы не допускаются
+- INSERT-запросы не допускаются
 
-У сервиса также есть квоты на использование.
+У службы также есть квоты на использование.
 
 ## Примеры {#examples}
 
-Пример HTTPS-эндпоинта с использованием `curl`:
+Пример HTTPS endpoint с помощью `curl`:
 
-``` bash
+```bash
 curl "https://play.clickhouse.com/?user=explorer" --data-binary "SELECT 'Play ClickHouse'"
 ```
 
-Пример TCP-эндпоинта с помощью [CLI](../interfaces/cli.md):
+Пример TCP endpoint с помощью [CLI](../interfaces/cli.md):
 
-``` bash
+```bash
 clickhouse client --secure --host play.clickhouse.com --user explorer
 ```

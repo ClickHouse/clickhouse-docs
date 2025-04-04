@@ -1,15 +1,15 @@
 ---
-slug: /sql-reference/table-functions/merge
+description: 'Создает временную таблицу Merge. Структура таблицы берется из первой таблицы, которая соответствует регулярному выражению.'
+sidebar_label: 'merge'
 sidebar_position: 130
-sidebar_label: merge
+slug: /sql-reference/table-functions/merge
 title: 'merge'
-description: 'Создает временную таблицу Merge. Структура таблицы берется из первой найденной таблицы, которая соответствует регулярному выражению.'
 ---
 
 
-# merge Table Function
+# merge Функция Таблицы
 
-Создает временную [Merge](../../engines/table-engines/special/merge.md) таблицу. Структура таблицы берется из первой найденной таблицы, которая соответствует регулярному выражению.
+Создает временную [Merge](../../engines/table-engines/special/merge.md) таблицу. Структура таблицы берется из первой таблицы, которая соответствует регулярному выражению.
 
 **Синтаксис**
 
@@ -18,13 +18,13 @@ merge(['db_name',] 'tables_regexp')
 ```
 **Аргументы**
 
-- `db_name` — Возможные значения (необязательно, по умолчанию `currentDatabase()`):
+- `db_name` — Возможные значения (необязательный, по умолчанию `currentDatabase()`):
     - имя базы данных,
     - константное выражение, которое возвращает строку с именем базы данных, например, `currentDatabase()`,
     - `REGEXP(expression)`, где `expression` — регулярное выражение для сопоставления с именами БД.
 
 - `tables_regexp` — Регулярное выражение для сопоставления с именами таблиц в указанной БД или БД.
 
-**Смотрите также**
+**См. также**
 
-- [Merge](../../engines/table-engines/special/merge.md) движок таблицы
+- [Merge](../../engines/table-engines/special/merge.md) движок таблиц

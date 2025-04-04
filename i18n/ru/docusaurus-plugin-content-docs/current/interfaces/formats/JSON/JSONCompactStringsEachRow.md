@@ -1,10 +1,11 @@
 ---
-title: 'JSONCompactStringsEachRow'
-slug: '/interfaces/formats/JSONCompactStringsEachRow'
-keywords: ['JSONCompactStringsEachRow']
-input_format: true
-output_format: true
 alias: []
+description: 'Документация для формата JSONCompactStringsEachRow'
+input_format: true
+keywords: ['JSONCompactStringsEachRow']
+output_format: true
+slug: /interfaces/formats/JSONCompactStringsEachRow
+title: 'JSONCompactStringsEachRow'
 ---
 
 | Вход | Выход | Псевдоним |
@@ -13,7 +14,7 @@ alias: []
 
 ## Описание {#description}
 
-Отличается от [`JSONCompactEachRow`](./JSONCompactEachRow.md) только тем, что поля данных выводятся как строки, а не как типизированные значения JSON.
+Отличается от [`JSONCompactEachRow`](./JSONCompactEachRow.md) тем, что поля данных выводятся как строки, а не как типизированные значения JSON.
 
 ## Пример использования {#example-usage}
 

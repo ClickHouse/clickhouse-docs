@@ -1,21 +1,23 @@
 ---
 slug: /cloud/bestpractices
-keywords: ['Cloud', 'Best Practices', 'Bulk Inserts', 'Asynchronous Inserts', 'Avoid Mutations', 'Avoid Nullable Columns', 'Avoid Optimize Final', 'Low Cardinality Partitioning Key']
+keywords: ['Cloud', 'Лучшие практики', 'Пакетные вставки', 'Асинхронные вставки', 'Избегайте мутаций', 'Избегайте Nullable колонок', 'Избегайте Optimize Final', 'Ключ партиционирования с низкой кардинальностью', 'Мультитенденция']
 title: 'Обзор'
 hide_title: true
+description: 'Стартовая страница для раздела Лучшие практики в ClickHouse'
 ---
 
 
 # Лучшие практики в ClickHouse
 
-В этом разделе представлены шесть лучших практик, которых вы должны придерживаться, чтобы извлечь максимальную пользу из ClickHouse Cloud.
+Этот раздел предоставляет шесть лучших практик, которых вы захотите придерживаться, чтобы получить максимальную пользу от ClickHouse Cloud.
 
-| Страница                                                     | Описание                                                                |
-|----------------------------------------------------------|----------------------------------------------------------------------------|
-| [Используйте массовую вставку](/cloud/bestpractices/bulk-inserts)                                  | Узнайте, почему вам следует загружать данные массово в ClickHouse         |
-| [Асинхронные вставки](/cloud/bestpractices/asynchronous-inserts)                              | Узнайте, как асинхронно вставлять данные, если массовая вставка не вариант. |
-| [Избегайте мутаций](/cloud/bestpractices/avoid-mutations)                                   | Узнайте, почему вам следует избегать мутаций, которые вызывают перезаписи.               |
-| [Избегайте Nullable колонок](/cloud/bestpractices/avoid-nullable-columns)                            | Узнайте, почему вам лучше избегать Nullable колонок                        |
-| [Избегайте OPTIMIZE TABLE ... FINAL](/cloud/bestpractices/avoid-optimize-final)                              | Узнайте, почему вам следует избегать `OPTIMIZE TABLE ... FINAL`                      |
-| [Выберите ключ партиции с низкой кардинальностью](/cloud/bestpractices/low-cardinality-partitioning-key)         | Узнайте, как выбрать ключ партиции с низкой кардинальностью.                    |
-| [Ограничения использования](/cloud/bestpractices/usage-limits)| Изучите ограничения ClickHouse.                                          |
+| Страница                                                 | Описание                                                                  |
+|----------------------------------------------------------|--------------------------------------------------------------------------|
+| [Используйте пакетные вставки](/cloud/bestpractices/bulk-inserts)                                  | Узнайте, почему вам следует загружать данные пакетами в ClickHouse     |
+| [Асинхронные вставки](/cloud/bestpractices/asynchronous-inserts)                              | Узнайте, как асинхронно вставлять данные, если пакетные вставки не подходят. |
+| [Избегайте мутаций](/cloud/bestpractices/avoid-mutations)                                   | Узнайте, почему вам следует избегать мутаций, которые вызывают перезаписи.|
+| [Избегайте Nullable колонок](/cloud/bestpractices/avoid-nullable-columns)                            | Узнайте, почему вам следует по возможности избегать Nullable колонок      |
+| [Избегайте Optimize Final](/cloud/bestpractices/avoid-optimize-final)                              | Узнайте, почему вам следует избегать `OPTIMIZE TABLE ... FINAL`         |
+| [Выберите ключ партиционирования с низкой кардинальностью](/cloud/bestpractices/low-cardinality-partitioning-key)         | Узнайте, как выбрать ключ партиционирования с низкой кардинальностью.    |
+| [Ограничения использования](/cloud/bestpractices/usage-limits)| Изучите ограничения ClickHouse.                                         |
+| [Мультитенденция](/cloud/bestpractices/multi-tenancy)| Узнайте о различных стратегиях реализации мультитенденции.                                          |

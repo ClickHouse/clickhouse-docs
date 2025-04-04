@@ -1,11 +1,11 @@
 ---
-description: "Системная таблица, содержащая информацию о таблицах, на которых была выполнена команда drop table, но для которых очистка данных еще не была выполнена."
+description: 'Системная таблица, содержащая информацию о таблицах, для которых была выполнена команда drop table, но для которых очистка данных еще не была проведена'
+keywords: ['системная таблица', 'dropped_tables']
 slug: /operations/system-tables/dropped_tables
-title: "system.dropped_tables"
-keywords: ['system table', 'dropped_tables']
+title: 'system.dropped_tables'
 ---
 
-Содержит информацию о таблицах, на которых была выполнена команда drop table, но для которых очистка данных еще не была выполнена.
+Содержит информацию о таблицах, для которых была выполнена команда drop table, но для которых очистка данных еще не была проведена.
 
 Колонки:
 
@@ -21,13 +21,13 @@ keywords: ['system table', 'dropped_tables']
 
 Следующий пример показывает, как получить информацию о `dropped_tables`.
 
-``` sql
+```sql
 SELECT *
 FROM system.dropped_tables\G
 ```
 
-``` text
-Row 1:
+```text
+Строка 1:
 ──────
 index:                 0
 database:              default

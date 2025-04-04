@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/minmap
+description: 'Вычисляет минимум из массива `value` в соответствии с ключами, указанными в массиве `key`.'
 sidebar_position: 169
+slug: /sql-reference/aggregate-functions/reference/minmap
 title: 'minMap'
-description: 'Calculates the minimum from `value` array according to the keys specified in the `key` array.'
 ---
 
 
@@ -23,8 +23,8 @@ minMap(Tuple(key, value))
 Псевдоним: `minMappedArrays`
 
 :::note
-- Передача кортежа массивов ключей и значений эквивалентна передаче массива ключей и массива значений.
-- Количество элементов в `key` и `value` должно быть одинаковым для каждой строки, которая суммируется.
+- Передача кортежа массивов ключей и значений идентична передаче массива ключей и массива значений.
+- Количество элементов в `key` и `value` должно быть одинаковым для каждой строки, для которой вычисляется итог.
 :::
 
 **Параметры**
@@ -34,20 +34,20 @@ minMap(Tuple(key, value))
 
 **Возвращаемое значение**
 
-- Возвращает кортеж из двух массивов: ключи в отсортированном порядке и значения, вычисленные для соответствующих ключей. [Tuple](../../data-types/tuple.md)([Array](../../data-types/array.md), [Array](../../data-types/array.md)).
+- Возвращает кортеж из двух массивов: ключей в отсортированном порядке и значений, рассчитанных для соответствующих ключей. [Tuple](../../data-types/tuple.md)([Array](../../data-types/array.md), [Array](../../data-types/array.md)).
 
 **Пример**
 
 Запрос:
 
-``` sql
+```sql
 SELECT minMap(a, b)
 FROM values('a Array(Int32), b Array(Int64)', ([1, 2], [2, 2]), ([2, 3], [1, 1]))
 ```
 
 Результат:
 
-``` text
+```text
 ┌─minMap(a, b)──────┐
 │ ([1,2,3],[2,1,1]) │
 └───────────────────┘

@@ -1,9 +1,9 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/welchttest
-sidebar_position: 214
-sidebar_label: welchTTest
-title: 'welchTTest'
 description: 'Применяет t-тест Уэлча к выборкам из двух популяций.'
+sidebar_label: 'welchTTest'
+sidebar_position: 214
+slug: /sql-reference/aggregate-functions/reference/welchttest
+title: 'welchTTest'
 ---
 
 
@@ -13,7 +13,7 @@ description: 'Применяет t-тест Уэлча к выборкам из 
 
 **Синтаксис**
 
-``` sql
+```sql
 welchTTest([confidence_level])(sample_data, sample_index)
 ```
 
@@ -21,12 +21,12 @@ welchTTest([confidence_level])(sample_data, sample_index)
 
 **Аргументы**
 
-- `sample_data` — Данные выборки. [Целое число](../../../sql-reference/data-types/int-uint.md), [Вещественное число](../../../sql-reference/data-types/float.md) или [Десятичное число](../../../sql-reference/data-types/decimal.md).
+- `sample_data` — Данные выборки. [Целое число](../../../sql-reference/data-types/int-uint.md), [С плавающей запятой](../../../sql-reference/data-types/float.md) или [Десятичное число](../../../sql-reference/data-types/decimal.md).
 - `sample_index` — Индекс выборки. [Целое число](../../../sql-reference/data-types/int-uint.md).
 
 **Параметры**
 
-- `confidence_level` — Уровень значимости для расчета доверительных интервалов. [Вещественное число](../../../sql-reference/data-types/float.md).
+- `confidence_level` — Уровень доверия для расчета доверительных интервалов. [Число с плавающей запятой](../../../sql-reference/data-types/float.md).
 
 **Возвращаемые значения**
 
@@ -37,12 +37,11 @@ welchTTest([confidence_level])(sample_data, sample_index)
 - рассчитанный нижний предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
 - рассчитанный верхний предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
 
-
 **Пример**
 
 Входная таблица:
 
-``` text
+```text
 ┌─sample_data─┬─sample_index─┐
 │        20.3 │            0 │
 │        22.1 │            0 │
@@ -55,19 +54,19 @@ welchTTest([confidence_level])(sample_data, sample_index)
 
 Запрос:
 
-``` sql
+```sql
 SELECT welchTTest(sample_data, sample_index) FROM welch_ttest;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─welchTTest(sample_data, sample_index)─────┐
 │ (2.7988719532211235,0.051807360348581945) │
 └───────────────────────────────────────────┘
 ```
 
-**См. также**
+**Смотрите также**
 
 - [t-тест Уэлча](https://en.wikipedia.org/wiki/Welch%27s_t-test)
-- [Функция studentTTest](/sql-reference/aggregate-functions/reference/studentttest)
+- [функция studentTTest](/sql-reference/aggregate-functions/reference/studentttest)

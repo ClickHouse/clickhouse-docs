@@ -1,13 +1,14 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedAvg
+description: 'Возвращает экспоненциально сглаженное среднее взвешенное скользящее значение
+  значений временного ряда в момент времени `t`.'
 sidebar_position: 133
+slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedAvg
 title: 'exponentialTimeDecayedAvg'
-description: 'Возвращает экспоненциально сглаженное взвешенное скользящее среднее значений временного ряда в точке `t` во времени.'
 ---
 
 ## exponentialTimeDecayedAvg {#exponentialtimedecayedavg}
 
-Возвращает экспоненциально сглаженное взвешенное скользящее среднее значений временного ряда в точке `t` во времени.
+Возвращает экспоненциально сглаженное среднее взвешенное скользящее значение значений временного ряда в момент времени `t`.
 
 **Синтаксис**
 
@@ -17,16 +18,16 @@ exponentialTimeDecayedAvg(x)(v, t)
 
 **Аргументы**
 
-- `v` — Значение. [Целое](../../../sql-reference/data-types/int-uint.md), [Число с плавающей запятой](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md).
-- `t` — Время. [Целое](../../../sql-reference/data-types/int-uint.md), [Число с плавающей запятой](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md), [DateTime](../../data-types/datetime.md), [DateTime64](../../data-types/datetime64.md).
+- `v` — Значение. [Целое](../../../sql-reference/data-types/int-uint.md), [Действительное](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md).
+- `t` — Время. [Целое](../../../sql-reference/data-types/int-uint.md), [Действительное](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md), [DateTime](../../data-types/datetime.md), [DateTime64](../../data-types/datetime64.md).
 
 **Параметры**
 
-- `x` — Период полураспада. [Целое](../../../sql-reference/data-types/int-uint.md), [Число с плавающей запятой](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md).
+- `x` — Период полураспада. [Целое](../../../sql-reference/data-types/int-uint.md), [Действительное](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md).
 
 **Возвращаемые значения**
 
-- Возвращает экспоненциально сглаженное взвешенное скользящее среднее по индексу `t` во времени. [Float64](../../data-types/float.md).
+- Возвращает экспоненциально сглаженное среднее взвешенное скользящее значение по индексу `t` во времени. [Float64](../../data-types/float.md).
 
 **Примеры**
 

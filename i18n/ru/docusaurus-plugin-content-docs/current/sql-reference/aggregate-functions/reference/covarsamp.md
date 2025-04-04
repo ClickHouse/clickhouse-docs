@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/covarsamp
+description: 'Вычисляет значение `Σ((x - x̅)(y - y̅)) / (n - 1)`'
 sidebar_position: 124
-title: "covarSamp"
-description: "Вычисляет значение `Σ((x - x̅)(y - y̅)) / (n - 1)`"
+slug: /sql-reference/aggregate-functions/reference/covarsamp
+title: 'covarSamp'
 ---
 
 
@@ -11,7 +11,7 @@ description: "Вычисляет значение `Σ((x - x̅)(y - y̅)) / (n -
 Вычисляет значение `Σ((x - x̅)(y - y̅)) / (n - 1)`.
 
 :::note
-Эта функция использует численно нестабильный алгоритм. Если вам нужна [численная стабильность](https://en.wikipedia.org/wiki/Numerical_stability) в расчетах, используйте функцию [`covarSampStable`](../reference/covarsamp.md). Она работает медленнее, но обеспечивает меньшую вычислительную ошибку.
+Эта функция использует численно нестабильный алгоритм. Если вам нужна [численная устойчивость](https://en.wikipedia.org/wiki/Numerical_stability) в расчетах, используйте функцию [`covarSampStable`](../reference/covarsamp.md). Она работает медленнее, но обеспечивает меньшую вычислительную ошибку.
 :::
 
 **Синтаксис**
@@ -27,7 +27,7 @@ covarSamp(x, y)
 
 **Возвращаемое значение**
 
-- Выборочная ковариация между `x` и `y`. Для `n <= 1` возвращается `nan`. [Float64](../../data-types/float.md).
+- Выборочная ковария между `x` и `y`. Для `n <= 1` возвращается `nan`. [Float64](../../data-types/float.md).
 
 **Пример**
 
@@ -69,7 +69,6 @@ FROM
         y_value
     FROM series LIMIT 1
 );
-
 ```
 
 Результат:

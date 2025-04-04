@@ -1,22 +1,21 @@
----
-sidebar_label: Пример Вкладок
----
+sidebar_label: 'Пример вкладок'
+```
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';  
+import TabItem from '@theme/TabItem';  
+import CodeBlock from '@theme/CodeBlock';  
 
 ##  Шаг 1. {#step-1}
 
-<Tabs groupId="deployMethod">
+<Tabs groupId="deployMethod">  
 <TabItem value="serverless" label="ClickHouse Cloud" default>
 
-Облако
+Облачный
 
-</TabItem>
+</TabItem>  
 <TabItem value="selfmanaged" label="Self-managed">
 
-Управляемый самостоятельно
+Самоуправляемый
 
-</TabItem>
+</TabItem>  
 </Tabs>

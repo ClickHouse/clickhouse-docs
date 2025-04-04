@@ -1,13 +1,15 @@
 ---
-slug: /sql-reference/statements/watch
+description: 'Документация для оператора WATCH'
+sidebar_label: 'WATCH'
 sidebar_position: 53
-sidebar_label: WATCH
+slug: /sql-reference/statements/watch
+title: 'Оператор WATCH'
 ---
 
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 
-# Заявление WATCH
+# Оператор WATCH
 
 <DeprecatedBadge/>
 

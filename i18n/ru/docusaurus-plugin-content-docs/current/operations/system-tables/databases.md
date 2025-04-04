@@ -1,15 +1,15 @@
 ---
 description: 'Системная таблица, содержащая информацию о базах данных, доступных текущему пользователю.'
+keywords: ['системная таблица', 'базы данных']
 slug: /operations/system-tables/databases
 title: 'system.databases'
-keywords: ['system table', 'databases']
 ---
 
 Содержит информацию о базах данных, доступных текущему пользователю.
 
 Колонки:
 
-- `name` ([String](../../sql-reference/data-types/string.md)) — Название базы данных.
+- `name` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных.
 - `engine` ([String](../../sql-reference/data-types/string.md)) — [Движок базы данных](../../engines/database-engines/index.md).
 - `data_path` ([String](../../sql-reference/data-types/string.md)) — Путь к данным.
 - `metadata_path` ([String](../../sql-reference/data-types/enum.md)) — Путь к метаданным.
@@ -22,20 +22,20 @@ keywords: ['system table', 'databases']
 
 **Пример**
 
-Создайте базу данных.
+Создать базу данных.
 
-``` sql
+```sql
 CREATE DATABASE test;
 ```
 
-Проверьте все доступные базы данных для пользователя.
+Проверить все доступные базы данных для пользователя.
 
-``` sql
+```sql
 SELECT * FROM system.databases;
 ```
 
-``` text
-┌─name────────────────┬─engine─────┬─data_path────────────────────┬─metadata_path─────────────────────────────────────────────────────────┬─uuid─────────────────────────────────┬─engine_full────────────────────────────────────────────┬─comment─┐
+```text
+┌─name────────────────┬─engine─────┬─data_path────────────────────┬─metadata_path─────────────────────────────────────────────────────────────────────────┬─uuid─────────────────────────────────┬─engine_full────────────────────────────────────────────┬─comment─┐
 │ INFORMATION_SCHEMA  │ Memory     │ /data/clickhouse_data/       │                                                                       │ 00000000-0000-0000-0000-000000000000 │ Memory                                                 │         │
 │ default             │ Atomic     │ /data/clickhouse_data/store/ │ /data/clickhouse_data/store/f97/f97a3ceb-2e8a-4912-a043-c536e826a4d4/ │ f97a3ceb-2e8a-4912-a043-c536e826a4d4 │ Atomic                                                 │         │
 │ information_schema  │ Memory     │ /data/clickhouse_data/       │                                                                       │ 00000000-0000-0000-0000-000000000000 │ Memory                                                 │         │

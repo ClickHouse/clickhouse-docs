@@ -1,17 +1,18 @@
 ---
-title: PrettyNoEscapes
-slug: /interfaces/formats/PrettyNoEscapes
-keywords: [PrettyNoEscapes]
-input_format: false
-output_format: true
 alias: []
+description: 'Документация для формата PrettyNoEscapes'
+input_format: false
+keywords: ['PrettyNoEscapes']
+output_format: true
+slug: /interfaces/formats/PrettyNoEscapes
+title: 'PrettyNoEscapes'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Вход | Выход  | Псевдоним |
-|-------|---------|-------|
-| ✗     | ✔       |       |
+| Входные данные | Выходные данные | Псевдоним |
+|----------------|-----------------|-----------|
+| ✗              | ✔               |           |
 
 ## Описание {#description}
 

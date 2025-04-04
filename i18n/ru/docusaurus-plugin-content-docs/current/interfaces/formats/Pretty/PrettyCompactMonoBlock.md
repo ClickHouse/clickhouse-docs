@@ -1,10 +1,11 @@
 ---
-title: PrettyCompactMonoBlock
-slug: /interfaces/formats/PrettyCompactMonoBlock
-keywords: ['PrettyCompactMonoBlock']
-input_format: false
-output_format: true
 alias: []
+description: 'Документация для формата PrettyCompactMonoBlock'
+input_format: false
+keywords: ['PrettyCompactMonoBlock']
+output_format: true
+slug: /interfaces/formats/PrettyCompactMonoBlock
+title: 'PrettyCompactMonoBlock'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
@@ -15,8 +16,8 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## Описание {#description}
 
-Отличается от формата [`PrettyCompact`](./PrettyCompact.md) тем, что буферизуется до `10,000` строк, 
-а затем выводится в виде одной таблицы, а не по [блокам](/development/architecture#block).
+Отличается от формата [`PrettyCompact`](./PrettyCompact.md) тем, что буферизует до `10,000` строк, 
+а затем выводит их в виде одной таблицы, а не по [блокам](/development/architecture#block).
 
 ## Пример использования {#example-usage}
 

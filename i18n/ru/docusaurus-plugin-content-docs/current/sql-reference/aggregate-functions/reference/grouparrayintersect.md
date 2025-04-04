@@ -1,18 +1,19 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/grouparrayintersect
+description: 'Возвращает пересечение заданных массивов (Возвращает все элементы массивов, 
+  которые присутствуют во всех данных массивах).'
 sidebar_position: 141
+slug: /sql-reference/aggregate-functions/reference/grouparrayintersect
 title: 'groupArrayIntersect'
-description: 'Возвращает пересечение заданных массивов (Возвращает все элементы массивов, которые присутствуют во всех заданных массивах).'
 ---
 
 
 # groupArrayIntersect
 
-Возвращает пересечение заданных массивов (Возвращает все элементы массивов, которые присутствуют во всех заданных массивах).
+Возвращает пересечение заданных массивов (Возвращает все элементы массивов, которые присутствуют во всех данных массивах).
 
 **Синтаксис**
 
-``` sql
+```sql
 groupArrayIntersect(x)
 ```
 
@@ -22,7 +23,7 @@ groupArrayIntersect(x)
 
 **Возвращаемые значения**
 
-- Массив, который содержит элементы, присутствующие во всех массивах.
+- Массив, содержащий элементы, которые присутствуют во всех массивах.
 
 Тип: [Array](../../data-types/array.md).
 
@@ -30,7 +31,7 @@ groupArrayIntersect(x)
 
 Рассмотрим таблицу `numbers`:
 
-``` text
+```text
 ┌─a──────────────┐
 │ [1,2,4]        │
 │ [1,5,2,8,-1,0] │
@@ -40,7 +41,7 @@ groupArrayIntersect(x)
 
 Запрос с именем колонки в качестве аргумента:
 
-``` sql
+```sql
 SELECT groupArrayIntersect(a) as intersection FROM numbers;
 ```
 

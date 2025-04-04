@@ -1,17 +1,18 @@
 ---
 slug: /integrations/index
-keywords: [AWS S3, PostgreSQL, Kafka, Apache Spark, MySQL, Cassandra, Redis, RabbitMQ, MongoDB, Google Cloud Storage, Hive, Hudi, Iceberg, MinIO, Delta Lake, RocksDB, Splunk, SQLite, NATS, EMQX, локальные файлы, JDBC, ODBC]
-description: Страница обзора источников данных
+keywords: ['AWS S3', 'PostgreSQL', 'Kafka', 'Apache Spark', 'MySQL', 'Cassandra', 'Redis', 'RabbitMQ', 'MongoDB', 'Google Cloud Storage', 'Hive', 'Hudi', 'Iceberg', 'MinIO', 'Delta Lake', 'RocksDB', 'Splunk', 'SQLite', 'NATS', 'EMQX', 'local files', 'JDBC', 'ODBC']
+description: 'Обзор источников данных'
+title: 'Источники данных'
 ---
 
 
 # Источники данных
 
-ClickHouse позволяет легко загружать данные в вашу базу данных из различных источников.  
-Для получения дополнительной информации смотрите страницы, указанные ниже:
+ClickHouse позволяет легко загружать данные в вашу базу данных из различных источников.
+Для получения дополнительной информации смотрите страницы, перечисленные ниже:
 
-| Источник данных                                                                  |
-|---------------------------------------------------------------------------------|
+| Источник данных                                                              |
+|-------------------------------------------------------------------------------|
 | [AWS S3](/integrations/s3)                                            |
 | [PostgreSQL](/integrations/postgresql)                                |
 | [Kafka](/integrations/kafka)                                          |

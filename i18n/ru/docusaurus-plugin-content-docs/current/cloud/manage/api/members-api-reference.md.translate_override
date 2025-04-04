@@ -1,0 +1,9 @@
+{
+    "russian": {
+        "Members": "Пользователи",
+        "List organization members":"Перечислите ползователей организации",
+        "Get member details":"Получить информацию о пользователей",
+        "Update organization member":"Обновить информацию о пользователе организации",
+        "Delete an organization member":"Удалить пользователя организации"
+    }
+}

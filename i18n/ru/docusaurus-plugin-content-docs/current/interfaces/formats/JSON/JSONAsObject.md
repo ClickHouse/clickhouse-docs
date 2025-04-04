@@ -1,24 +1,25 @@
 ---
-title: 'JSONAsObject'
-slug: '/interfaces/formats/JSONAsObject'
-keywords: ['JSONAsObject']
-input_format: true
-output_format: false
 alias: []
+description: 'Документация для формата JSONAsObject'
+input_format: true
+keywords: ['JSONAsObject']
+output_format: false
+slug: /interfaces/formats/JSONAsObject
+title: 'JSONAsObject'
 ---
 
 ## Описание {#description}
 
-В этом формате один объект JSON интерпретируется как одно значение [JSON](/sql-reference/data-types/newjson.md). Если входные данные содержат несколько объектов JSON (разделенных запятыми), они интерпретируются как отдельные строки. Если входные данные заключены в квадратные скобки, они интерпретируются как массив JSON.
+В этом формате один объект JSON интерпретируется как одно значение [JSON](/sql-reference/data-types/newjson.md). Если входные данные содержат несколько объектов JSON (разделенных запятыми), они интерпретируются как отдельные строки. Если входные данные заключены в квадратные скобки, это интерпретируется как массив JSON.
 
-Этот формат может быть разобран только для таблицы с одним полем типа [JSON](/sql-reference/data-types/newjson.md). Оставшиеся колонки должны быть установлены на [`DEFAULT`](/sql-reference/statements/create/table.md/#default) или [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view).
+Этот формат можно разобрать только для таблицы с одним полем типа [JSON](/sql-reference/data-types/newjson.md). Остальные столбцы должны быть установлены на [`DEFAULT`](/sql-reference/statements/create/table.md/#default) или [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view).
 
 ## Пример использования {#example-usage}
 
-### Основной пример {#basic-example}
+### Базовый пример {#basic-example}
 
 ```sql title="Запрос"
-SET allow_experimental_json_type = 1;
+SET enable_json_type = 1;
 CREATE TABLE json_as_object (json JSON) ENGINE = Memory;
 INSERT INTO json_as_object (json) FORMAT JSONAsObject {"foo":{"bar":{"x":"y"},"baz":1}},{},{"any json stucture":1}
 SELECT * FROM json_as_object FORMAT JSONEachRow;
@@ -33,7 +34,7 @@ SELECT * FROM json_as_object FORMAT JSONEachRow;
 ### Массив объектов JSON {#an-array-of-json-objects}
 
 ```sql title="Запрос"
-SET allow_experimental_json_type = 1;
+SET enable_json_type = 1;
 CREATE TABLE json_square_brackets (field JSON) ENGINE = Memory;
 INSERT INTO json_square_brackets FORMAT JSONAsObject [{"id": 1, "name": "name1"}, {"id": 2, "name": "name2"}];
 SELECT * FROM json_square_brackets FORMAT JSONEachRow;
@@ -44,10 +45,10 @@ SELECT * FROM json_square_brackets FORMAT JSONEachRow;
 {"field":{"id":"2","name":"name2"}}
 ```
 
-### Колонки с значениями по умолчанию {#columns-with-default-values}
+### Столбцы с значениями по умолчанию {#columns-with-default-values}
 
 ```sql title="Запрос"
-SET allow_experimental_json_type = 1;
+SET enable_json_type = 1;
 CREATE TABLE json_as_object (json JSON, time DateTime MATERIALIZED now()) ENGINE = Memory;
 INSERT INTO json_as_object (json) FORMAT JSONAsObject {"foo":{"bar":{"x":"y"},"baz":1}};
 INSERT INTO json_as_object (json) FORMAT JSONAsObject {};

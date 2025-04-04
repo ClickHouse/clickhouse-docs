@@ -3,10 +3,11 @@ slug: migrations
 title: 'Миграции'
 pagination_prev: null
 pagination_next: null
+description: 'Страница приземления для раздела миграций'
 ---
 
-| Page                                                              | Description                    |
-|-------------------------------------------------------------------|--------------------------------|
+| Страница                                                            | Описание                          |
+|-------------------------------------------------------------------|----------------------------------|
 | [BigQuery](bigquery/index.md)                                     | Руководство по миграции для BigQuery   |
 | [Snowflake](./snowflake.md)                                       | Руководство по миграции для Snowflake  |
 | [PostgreSQL](postgres/index.md)                                   | Руководство по миграции для PostgreSQL |

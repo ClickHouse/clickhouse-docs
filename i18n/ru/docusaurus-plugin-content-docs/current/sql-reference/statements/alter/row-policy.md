@@ -1,17 +1,19 @@
 ---
-slug: /sql-reference/statements/alter/row-policy
+description: 'Документация для ALTER ROW POLICY'
+sidebar_label: 'ROW POLICY'
 sidebar_position: 47
-sidebar_label: ПОЛИТИКА СТРОК
+slug: /sql-reference/statements/alter/row-policy
+title: 'ALTER ROW POLICY'
 ---
 
 
-# ALTER POLITIKA STROK
+# ALTER ROW POLICY
 
 Изменяет политику строк.
 
 Синтаксис:
 
-``` sql
+```sql
 ALTER [ROW] POLICY [IF EXISTS] name1 [ON CLUSTER cluster_name1] ON [database1.]table1 [RENAME TO new_name1]
         [, name2 [ON CLUSTER cluster_name2] ON [database2.]table2 [RENAME TO new_name2] ...]
     [AS {PERMISSIVE | RESTRICTIVE}]

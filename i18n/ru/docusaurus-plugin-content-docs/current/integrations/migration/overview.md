@@ -1,8 +1,10 @@
 ---
-sidebar_label: Обзор
+sidebar_label: 'Обзор'
 sidebar_position: 1
 slug: /integrations/migration/overview
-keywords: ['clickhouse', 'миграция', 'мигрировать', 'данные']
+keywords: ['clickhouse', 'миграция', 'миграция данных', 'перемещение', 'данные']
+title: 'Миграция данных в ClickHouse'
+description: 'Страница, описывающая доступные варианты миграции данных в ClickHouse'
 ---
 
 
@@ -22,11 +24,11 @@ keywords: ['clickhouse', 'миграция', 'мигрировать', 'данн
 
 <br/>
 
-Существует несколько вариантов миграции данных в ClickHouse Cloud, в зависимости от того, где ваши данные находятся сейчас:
+Существует несколько вариантов миграции данных в ClickHouse Cloud, в зависимости от того, где в настоящее время находятся ваши данные:
 
-- [Self-managed в Cloud](./clickhouse-to-cloud.md): используйте функцию `remoteSecure` для передачи данных
-- [Другой СУБД](./clickhouse-local-etl.md): используйте инструмент [clickhouse-local] ETL вместе с подходящей функцией таблицы ClickHouse для вашей текущей СУБД
-- [Куда угодно!](./etl-tool-to-clickhouse.md): используйте один из популярных ETL/ELT инструментов, которые подключаются ко всем типам различных источников данных
-- [Объектное хранилище](./object-storage-to-clickhouse.md): легко вставить данные из S3 в ClickHouse
+- [С самоуправляемого в облако](./clickhouse-to-cloud.md): используйте функцию `remoteSecure` для передачи данных
+- [Из другой СУБД](./clickhouse-local-etl.md): используйте инструмент [clickhouse-local] ETL вместе с соответствующей табличной функцией ClickHouse для вашей текущей СУБД
+- [Везде!](./etl-tool-to-clickhouse.md): используйте один из популярных инструментов ETL/ELT, которые подключаются ко всем видам различных источников данных
+- [Объектное хранилище](./object-storage-to-clickhouse.md): легко вставляйте данные из S3 в ClickHouse
 
 В примере [Миграция из Redshift](/integrations/data-ingestion/redshift/index.md) мы представляем три различных способа миграции данных в ClickHouse.

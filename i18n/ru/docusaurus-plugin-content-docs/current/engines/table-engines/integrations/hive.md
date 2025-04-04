@@ -1,9 +1,9 @@
 ---
-slug: /engines/table-engines/integrations/hive
+description: 'Движок Hive позволяет выполнять запросы `SELECT` к таблицам Hive в HDFS.'
+sidebar_label: 'Hive'
 sidebar_position: 84
-sidebar_label: Hive
-title: "Hive"
-description: "Движок Hive позволяет выполнять запросы `SELECT` к таблицам Hive в HDFS."
+slug: /engines/table-engines/integrations/hive
+title: 'Hive'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -13,17 +13,17 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
-Движок Hive позволяет выполнять запросы `SELECT` к таблицам Hive в HDFS. В настоящее время он поддерживает следующие форматы входных данных:
+Движок Hive позволяет выполнять запросы `SELECT` к таблицам Hive в HDFS. В настоящее время поддерживаются следующие форматы ввода:
 
 - Text: поддерживает только простые скалярные типы колонок, кроме `binary`
 
-- ORC: поддерживает простые скалярные типы колонок, кроме `char`; поддерживает только сложные типы, такие как `array`
+- ORC: поддерживает простые скалярные типы колонок кроме `char`; поддерживает только сложные типы, такие как `array`
 
 - Parquet: поддерживает все простые скалярные типы колонок; поддерживает только сложные типы, такие как `array`
 
 ## Создание таблицы {#creating-a-table}
 
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
     name1 [type1] [ALIAS expr1],
@@ -35,9 +35,9 @@ PARTITION BY expr
 Смотрите подробное описание запроса [CREATE TABLE](/sql-reference/statements/create/table).
 
 Структура таблицы может отличаться от оригинальной структуры таблицы Hive:
-- Имена колонок должны совпадать с именами в оригинальной таблице Hive, но вы можете использовать только некоторые из этих колонок и в любом порядке, также вы можете использовать некоторые алиас-колонки, вычисленные из других колонок.
-- Типы колонок должны совпадать с типами в оригинальной таблице Hive.
-- Выражение для партиции должно соответствовать оригинальной таблице Hive, и колонки в выражении для партиции должны быть в структуре таблицы.
+- Имена колонок должны совпадать с оригинальными именами в таблице Hive, но вы можете использовать только некоторые из этих колонок и в любом порядке, также вы можете использовать колонки с псевдонимами, рассчитанные из других колонок.
+- Типы колонок должны совпадать с теми, что в оригинальной таблице Hive.
+- Выражение для партиционирования должно соответствовать оригинальной таблице Hive, и колонки в выражении для партиционирования должны быть в структуре таблицы.
 
 **Параметры движка**
 
@@ -51,10 +51,10 @@ PARTITION BY expr
 
 ### Как использовать локальный кэш для файловой системы HDFS {#how-to-use-local-cache-for-hdfs-filesystem}
 
-Мы настоятельно рекомендуем вам включить локальный кэш для удаленных файловых систем. Бенчмаркинг показывает, что с кэшем это почти в 2 раза быстрее.
+Мы настоятельно рекомендуем вам включить локальный кэш для удаленных файловых систем. Тесты показывают, что при использовании кэша производительность почти в 2 раза выше.
 
 Перед использованием кэша добавьте его в `config.xml`
-``` xml
+```xml
 <local_cache_for_remote_fs>
     <enable>true</enable>
     <root_dir>local_cache</root_dir>
@@ -63,18 +63,16 @@ PARTITION BY expr
 </local_cache_for_remote_fs>
 ```
 
-- enable: ClickHouse будет поддерживать локальный кэш для удаленной файловой системы (HDFS) после запуска, если true.
-- root_dir: Обязательный. Корневая директория для хранения локальных кэш-файлов для удаленной файловой системы.
-- limit_size: Обязательный. Максимальный размер (в байтах) локальных кэш-файлов.
-- bytes_read_before_flush: Контроль байт перед сбросом на локальную файловую систему при загрузке файла из удаленной файловой системы. Значение по умолчанию — 1МБ.
+- enable: ClickHouse будет поддерживать локальный кэш для удаленной файловой системы (HDFS) после старта, если true.
+- root_dir: Обязательно. Корневая директория для хранения файлов локального кэша удаленной файловой системы.
+- limit_size: Обязательно. Максимальный размер (в байтах) файлов локального кэша.
+- bytes_read_before_flush: Управляет байтами перед сбросом в локальную файловую систему при загрузке файла с удаленной файловой системы. Значение по умолчанию — 1МБ.
 
-Когда ClickHouse запущен с включенным локальным кэшем для удаленной файловой системы, пользователи все равно могут выбрать не использовать кэш с помощью `settings use_local_cache_for_remote_storage = 0` в своем запросе. `use_local_cache_for_remote_storage` по умолчанию равно `1`.
+### Запрос таблицы Hive с форматом ввода ORC {#query-hive-table-with-orc-input-format}
 
-### Запрос таблицы Hive с форматом входных данных ORC {#query-hive-table-with-orc-input-format}
+#### Создание таблицы в Hive {#create-table-in-hive}
 
-#### Создать таблицу в Hive {#create-table-in-hive}
-
-``` text
+```text
 hive > CREATE TABLE `test`.`test_orc`(
   `f_tinyint` tinyint,
   `f_smallint` smallint,
@@ -116,14 +114,14 @@ Time taken: 36.025 seconds
 
 hive > select * from test.test_orc;
 OK
-1	2	3	4	5	6.11	7.22	8	2021-11-05 12:38:16.314	2021-11-05	hello world	hello world	hello world                                                                                         	true	hello world	[1,2,3]	["hello world","hello world"]	[1.1,1.2]	[[1,2],[3,4]]	[["a","b"],["c","d"]]	[[1.11,2.22],[3.33,4.44]]	2021-09-18
+1    2    3    4    5    6.11    7.22    8    2021-11-05 12:38:16.314    2021-11-05    hello world    hello world    hello world                                                                                             true    hello world    [1,2,3]    ["hello world","hello world"]    [1.1,1.2]    [[1,2],[3,4]]    [["a","b"],["c","d"]]    [[1.11,2.22],[3.33,4.44]]    2021-09-18
 Time taken: 0.295 seconds, Fetched: 1 row(s)
 ```
 
-#### Создать таблицу в ClickHouse {#create-table-in-clickhouse}
+#### Создание таблицы в ClickHouse {#create-table-in-clickhouse}
 
-Таблица в ClickHouse, извлекая данные из таблицы Hive, созданной выше:
-``` sql
+Таблица в ClickHouse, получающая данные из ранее созданной таблицы Hive:
+```sql
 CREATE TABLE test.test_orc
 (
     `f_tinyint` Int8,
@@ -153,11 +151,11 @@ PARTITION BY day
 
 ```
 
-``` sql
+```sql
 SELECT * FROM test.test_orc settings input_format_orc_allow_missing_columns = 1\G
 ```
 
-``` text
+```text
 SELECT *
 FROM test.test_orc
 SETTINGS input_format_orc_allow_missing_columns = 1
@@ -192,11 +190,11 @@ day:                  2021-09-18
 1 rows in set. Elapsed: 0.078 sec.
 ```
 
-### Запрос таблицы Hive с форматом входных данных Parquet {#query-hive-table-with-parquet-input-format}
+### Запрос таблицы Hive с форматом ввода Parquet {#query-hive-table-with-parquet-input-format}
 
-#### Создать таблицу в Hive {#create-table-in-hive-1}
+#### Создание таблицы в Hive {#create-table-in-hive-1}
 
-``` text
+```text
 hive >
 CREATE TABLE `test`.`test_parquet`(
   `f_tinyint` tinyint,
@@ -239,14 +237,14 @@ Time taken: 36.025 seconds
 
 hive > select * from test.test_parquet;
 OK
-1	2	3	4	5	6.11	7.22	8	2021-12-14 17:54:56.743	2021-12-14	hello world	hello world	hello world                                                                                         	true	hello world	[1,2,3]	["hello world","hello world"]	[1.1,1.2]	[[1,2],[3,4]]	[["a","b"],["c","d"]]	[[1.11,2.22],[3.33,4.44]]	2021-09-18
+1    2    3    4    5    6.11    7.22    8    2021-12-14 17:54:56.743    2021-12-14    hello world    hello world    hello world                                                                                             true    hello world    [1,2,3]    ["hello world","hello world"]    [1.1,1.2]    [[1,2],[3,4]]    [["a","b"],["c","d"]]    [[1.11,2.22],[3.33,4.44]]    2021-09-18
 Time taken: 0.766 seconds, Fetched: 1 row(s)
 ```
 
-#### Создать таблицу в ClickHouse {#create-table-in-clickhouse-1}
+#### Создание таблицы в ClickHouse {#create-table-in-clickhouse-1}
 
-Таблица в ClickHouse, извлекая данные из таблицы Hive, созданной выше:
-``` sql
+Таблица в ClickHouse, получающая данные из ранее созданной таблицы Hive:
+```sql
 CREATE TABLE test.test_parquet
 (
     `f_tinyint` Int8,
@@ -276,11 +274,11 @@ ENGINE = Hive('thrift://localhost:9083', 'test', 'test_parquet')
 PARTITION BY day
 ```
 
-``` sql
+```sql
 SELECT * FROM test.test_parquet settings input_format_parquet_allow_missing_columns = 1\G
 ```
 
-``` text
+```text
 SELECT *
 FROM test_parquet
 SETTINGS input_format_parquet_allow_missing_columns = 1
@@ -315,11 +313,11 @@ day:                  2021-09-18
 1 rows in set. Elapsed: 0.357 sec.
 ```
 
-### Запрос таблицы Hive с форматом входных данных Text {#query-hive-table-with-text-input-format}
+### Запрос таблицы Hive с форматом ввода Text {#query-hive-table-with-text-input-format}
 
-#### Создать таблицу в Hive {#create-table-in-hive-2}
+#### Создание таблицы в Hive {#create-table-in-hive-2}
 
-``` text
+```text
 hive >
 CREATE TABLE `test`.`test_text`(
   `f_tinyint` tinyint,
@@ -362,14 +360,14 @@ Time taken: 36.025 seconds
 
 hive > select * from test.test_text;
 OK
-1	2	3	4	5	6.11	7.22	8	2021-12-14 18:11:17.239	2021-12-14	hello world	hello world	hello world                                                                                         	true	hello world	[1,2,3]	["hello world","hello world"]	[1.1,1.2]	[[1,2],[3,4]]	[["a","b"],["c","d"]]	[[1.11,2.22],[3.33,4.44]]	2021-09-18
+1    2    3    4    5    6.11    7.22    8    2021-12-14 18:11:17.239    2021-12-14    hello world    hello world    hello world                                                                                             true    hello world    [1,2,3]    ["hello world","hello world"]    [1.1,1.2]    [[1,2],[3,4]]    [["a","b"],["c","d"]]    [[1.11,2.22],[3.33,4.44]]    2021-09-18
 Time taken: 0.624 seconds, Fetched: 1 row(s)
 ```
 
-#### Создать таблицу в ClickHouse {#create-table-in-clickhouse-2}
+#### Создание таблицы в ClickHouse {#create-table-in-clickhouse-2}
 
-Таблица в ClickHouse, извлекая данные из таблицы Hive, созданной выше:
-``` sql
+Таблица в ClickHouse, получающая данные из ранее созданной таблицы Hive:
+```sql
 CREATE TABLE test.test_text
 (
     `f_tinyint` Int8,
@@ -392,11 +390,11 @@ ENGINE = Hive('thrift://localhost:9083', 'test', 'test_text')
 PARTITION BY day
 ```
 
-``` sql
+```sql
 SELECT * FROM test.test_text settings input_format_skip_unknown_fields = 1, input_format_with_names_use_header = 1, date_time_input_format = 'best_effort'\G
 ```
 
-``` text
+```text
 SELECT *
 FROM test.test_text
 SETTINGS input_format_skip_unknown_fields = 1, input_format_with_names_use_header = 1, date_time_input_format = 'best_effort'

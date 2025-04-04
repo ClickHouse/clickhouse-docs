@@ -1,35 +1,35 @@
 ---
-slug: /sql-reference/table-functions/deltalakeCluster
+description: 'Это расширение для табличной функции deltaLake.'
+sidebar_label: 'deltaLakeCluster'
 sidebar_position: 46
-sidebar_label: deltaLakeCluster
-title: "deltaLakeCluster"
-description: "Это расширение функции таблицы deltaLake."
+slug: /sql-reference/table-functions/deltalakeCluster
+title: 'deltaLakeCluster'
 ---
 
 
-# Функция таблицы deltaLakeCluster
+# Табличная функция deltaLakeCluster
 
-Это расширение функции таблицы [deltaLake](sql-reference/table-functions/deltalake.md).
+Это расширение для [табличной функции deltaLake](sql-reference/table-functions/deltalake.md).
 
-Позволяет обрабатывать файлы из таблиц [Delta Lake](https://github.com/delta-io/delta) в Amazon S3 параллельно с нескольких узлов в заданном кластере. На инициаторе создается соединение со всеми узлами кластера, и каждый файл динамически распределяется. На рабочем узле он запрашивает у инициатора следующую задачу для обработки и выполняет её. Это повторяется до тех пор, пока все задачи не будут завершены.
+Позволяет обрабатывать файлы из таблиц [Delta Lake](https://github.com/delta-io/delta) в Amazon S3 параллельно с множества узлов в заданном кластере. На инициаторе создаётся соединение со всеми узлами в кластере и динамически распределяются файлы. На рабочем узле инициатор запрашивает следующую задачу на обработку и выполняет её. Это повторяется, пока все задачи не будут выполнены.
 
 **Синтаксис**
 
-``` sql
+```sql
 deltaLakeCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
 ```
 
 **Аргументы**
 
-- `cluster_name` — Имя кластера, которое используется для построения набора адресов и параметров подключения к удалённым и локальным серверам.
+- `cluster_name` — Имя кластера, который используется для построения набора адресов и параметров соединения с удалёнными и локальными серверами.
 
-- Описание всех остальных аргументов совпадает с описанием аргументов в эквивалентной функции таблицы [deltaLake](sql-reference/table-functions/deltalake.md).
+- Описание всех других аргументов совпадает с описанием аргументов в эквивалентной табличной функции [deltaLake](sql-reference/table-functions/deltalake.md).
 
 **Возвращаемое значение**
 
-Таблица с заданной структурой для чтения данных из кластера в указанной таблице Delta Lake в S3.
+Таблица с указанной структурой для чтения данных из кластера в указанной таблице Delta Lake в S3.
 
 **См. также**
 
 - [движок deltaLake](engines/table-engines/integrations/deltalake.md)
-- [функция таблицы deltaLake](sql-reference/table-functions/deltalake.md)
+- [табличная функция deltaLake](sql-reference/table-functions/deltalake.md)

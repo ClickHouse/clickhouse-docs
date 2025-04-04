@@ -1,48 +1,54 @@
 ---
-sidebar_label: Retool
+sidebar_label: 'Retool'
 slug: /integrations/retool
-keywords: [clickhouse, retool, connect, integrate, ui, admin, panel, dashboard, nocode, no-code]
-description: Быстро создавайте веб- и мобильные приложения с богатым пользовательским интерфейсом, автоматизируйте сложные задачи и интегрируйте ИИ — все на основе ваших данных.
+keywords: ['clickhouse', 'retool', 'connect', 'integrate', 'ui', 'admin', 'panel', 'dashboard', 'nocode', 'no-code']
+description: 'Быстро создавайте веб и мобильные приложения с богатыми пользовательскими интерфейсами, автоматизируйте сложные задачи и интегрируйте ИИ — всё на основе ваших данных.'
+title: 'Подключение Retool к ClickHouse'
 ---
-import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import Image from '@theme/IdealImage';
 import retool_01 from '@site/static/images/integrations/tools/data-integration/retool/retool_01.png';
 import retool_02 from '@site/static/images/integrations/tools/data-integration/retool/retool_02.png';
 import retool_03 from '@site/static/images/integrations/tools/data-integration/retool/retool_03.png';
 import retool_04 from '@site/static/images/integrations/tools/data-integration/retool/retool_04.png';
 import retool_05 from '@site/static/images/integrations/tools/data-integration/retool/retool_05.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
 # Подключение Retool к ClickHouse
 
-## 1. Соберите данные для подключения {#1-gather-your-connection-details}
+<CommunityMaintainedBadge/>
+
+## 1. Соберите данные о вашем подключении {#1-gather-your-connection-details}
 <ConnectionDetails />
 
 ## 2. Создайте ресурс ClickHouse {#2-create-a-clickhouse-resource}
 
-Войдите в свой аккаунт Retool и перейдите на вкладку _Ресурсы_. Выберите "Создать новый" -> "Ресурс":
+Войдите в ваш аккаунт Retool и перейдите на вкладку _Ресурсы_. Выберите "Создать новый" -> "Ресурс":
 
-<img src={retool_01} className="image" alt="Создание нового ресурса" style={{width: '75%', 'backgroundColor': 'transparent'}}/>
+<Image img={retool_01} size="lg" border alt="Создание нового ресурса" />
 <br/>
 
 Выберите "JDBC" из списка доступных коннекторов:
 
-<img src={retool_02} className="image" alt="Выбор JDBC коннектора" style={{width: '75%', 'backgroundColor': 'transparent'}}/>
+<Image img={retool_02} size="lg" border alt="Выбор коннектора JDBC" />
 <br/>
 
-В мастере настройки убедитесь, что вы выбрали `com.clickhouse.jdbc.ClickHouseDriver` в качестве "Имя драйвера":
+В мастере настройки убедитесь, что вы выбрали `com.clickhouse.jdbc.ClickHouseDriver` в качестве "Имени драйвера":
 
-<img src={retool_03} className="image" alt="Выбор правильного драйвера" style={{width: '75%', 'backgroundColor': 'transparent'}}/>
+<Image img={retool_03} size="lg" border alt="Выбор правильного драйвера" />
 <br/>
 
-Заполните свои учетные данные ClickHouse в следующем формате: `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD`. 
-Если ваша инстанция требует SSL или вы используете ClickHouse Cloud, добавьте `&ssl=true` к строке подключения, так что она будет выглядеть как `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD&ssl=true`
+Заполните свои учетные данные ClickHouse в следующем формате: `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD`.
+Если ваш экземпляр требует SSL или вы используете ClickHouse Cloud, добавьте `&ssl=true` к строке подключения, чтобы она выглядела как `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD&ssl=true`
 
-<img src={retool_04} className="image" alt="Указание ваших учетных данных" style={{width: '75%', 'backgroundColor': 'transparent'}}/>
+<Image img={retool_04} size="lg" border alt="Указание ваших учетных данных" />
 <br/>
 
-После этого протестируйте ваше соединение:
+После этого протестируйте ваше подключение:
 
-<img src={retool_05} className="image" alt="Тестирование вашего соединения" style={{width: '75%', 'backgroundColor': 'transparent'}}/>
+<Image img={retool_05} size="lg" border alt="Тестирование вашего подключения" />
 <br/>
 
-Теперь вы сможете перейти к вашему приложению, используя ресурс ClickHouse.
+Теперь вы должны иметь возможность продолжить работу с вашим приложением, используя ресурс ClickHouse.

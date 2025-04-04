@@ -1,143 +1,144 @@
 ---
-slug: /sql-reference/statements/drop
+description: 'Документация для операторов DROP'
+sidebar_label: 'DROP'
 sidebar_position: 44
-sidebar_label: DROP
+slug: /sql-reference/statements/drop
+title: 'Операторы DROP'
 ---
 
 
-# Удаление объектов (DROP)
+# Операторы DROP
 
-Удаляет существующий объект. Если указано условие `IF EXISTS`, эти запросы не возвращают ошибку, если объект не существует. Если указан модификатор `SYNC`, объект удаляется без задержки.
+Удаляет существующую сущность. Если указано условие `IF EXISTS`, эти запросы не возвращают ошибку, если сущность не существует. Если указан модификатор `SYNC`, сущность удаляется без задержки.
 
-## УДАЛИТЬ БАЗУ ДАННЫХ {#drop-database}
+## DROP DATABASE {#drop-database}
 
-Удаляет все таблицы внутри базы данных `db`, затем удаляет саму базу данных `db`.
+Удаляет все таблицы в базе данных `db`, затем удаляет саму базу данных `db`.
 
 Синтаксис:
 
-``` sql
+```sql
 DROP DATABASE [IF EXISTS] db [ON CLUSTER cluster] [SYNC]
 ```
 
-## УДАЛИТЬ ТАБЛИЦУ {#drop-table}
+## DROP TABLE {#drop-table}
 
 Удаляет одну или несколько таблиц.
 
 :::tip
-Чтобы отменить удаление таблицы, пожалуйста, обратитесь к [Восстановление таблицы](/sql-reference/statements/undrop.md)
+Чтобы отменить удаление таблицы, смотрите [UNDROP TABLE](/sql-reference/statements/undrop.md)
 :::
 
 Синтаксис:
 
-``` sql
+```sql
 DROP [TEMPORARY] TABLE [IF EXISTS] [IF EMPTY] [db1.]name_1[, [db2.]name_2, ...] [ON CLUSTER cluster] [SYNC]
 ```
 
 Ограничения:
 - Если указано условие `IF EMPTY`, сервер проверяет пустоту таблицы только на реплике, которая получила запрос.  
-- Удаление нескольких таблиц одновременно не является атомарной операцией, т.е. если удаление одной таблицы не успешно, последующие таблицы не будут удалены.
+- Удаление нескольких таблиц одновременно не является атомарной операцией, т.е. если удаление одной таблицы не удается, последующие таблицы не будут удалены.
 
-## УДАЛИТЬ СЛОВАРЬ {#drop-dictionary}
+## DROP DICTIONARY {#drop-dictionary}
 
 Удаляет словарь.
 
 Синтаксис:
 
-``` sql
+```sql
 DROP DICTIONARY [IF EXISTS] [db.]name [SYNC]
 ```
 
-## УДАЛИТЬ ПОЛЬЗОВАТЕЛЯ {#drop-user}
+## DROP USER {#drop-user}
 
 Удаляет пользователя.
 
 Синтаксис:
 
-``` sql
+```sql
 DROP USER [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage_type]
 ```
 
-## УДАЛИТЬ РОЛЬ {#drop-role}
+## DROP ROLE {#drop-role}
 
-Удаляет роль. Удаленная роль отзывается у всех объектов, где она была назначена.
+Удаляет роль. Удаленная роль аннулируется для всех сущностей, где она была назначена.
 
 Синтаксис:
 
-``` sql
+```sql
 DROP ROLE [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage_type]
 ```
 
-## УДАЛИТЬ ПОЛИТИКУ СТРОК {#drop-row-policy}
+## DROP ROW POLICY {#drop-row-policy}
 
-Удаляет политику строк. Удаленная политика строк отзывается у всех объектов, где она была назначена.
+Удаляет политику строк. Удаленная политика строк аннулируется для всех сущностей, где она была назначена.
 
 Синтаксис:
 
-``` sql
+```sql
 DROP [ROW] POLICY [IF EXISTS] name [,...] ON [database.]table [,...] [ON CLUSTER cluster_name] [FROM access_storage_type]
 ```
 
-## УДАЛИТЬ КВОТУ {#drop-quota}
+## DROP QUOTA {#drop-quota}
 
-Удаляет квоту. Удаленная квота отзывается у всех объектов, где она была назначена.
+Удаляет квоту. Удаленная квота аннулируется для всех сущностей, где она была назначена.
 
 Синтаксис:
 
-``` sql
+```sql
 DROP QUOTA [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage_type]
 ```
 
-## УДАЛИТЬ ПРОФИЛЬ НАСТРОЕК {#drop-settings-profile}
+## DROP SETTINGS PROFILE {#drop-settings-profile}
 
-Удаляет профиль настроек. Удаленный профиль настроек отзывается у всех объектов, где он был назначен.
+Удаляет профиль настроек. Удаленный профиль настроек аннулируется для всех сущностей, где он был назначен.
 
 Синтаксис:
 
-``` sql
+```sql
 DROP [SETTINGS] PROFILE [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage_type]
 ```
 
-## УДАЛИТЬ ВИД {#drop-view}
+## DROP VIEW {#drop-view}
 
-Удаляет вид. Виды также могут быть удалены командой `DROP TABLE`, но `DROP VIEW` проверяет, что `[db.]name` является видом.
+Удаляет представление. Представления также могут быть удалены с помощью команды `DROP TABLE`, но `DROP VIEW` проверяет, что `[db.]name` является представлением.
 
 Синтаксис:
 
-``` sql
+```sql
 DROP VIEW [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
 ```
 
-## УДАЛИТЬ ФУНКЦИЮ {#drop-function}
+## DROP FUNCTION {#drop-function}
 
-Удаляет пользовательскую функцию, созданную с помощью [CREATE FUNCTION](./create/function.md).
-Системные функции не могут быть удалены.
+Удаляет пользовательскую функцию, созданную с помощью [CREATE FUNCTION](./create/function.md). Системные функции не могут быть удалены.
 
 **Синтаксис**
 
-``` sql
+```sql
 DROP FUNCTION [IF EXISTS] function_name [on CLUSTER cluster]
 ```
 
 **Пример**
 
-``` sql
+```sql
 CREATE FUNCTION linear_equation AS (x, k, b) -> k*x + b;
 DROP FUNCTION linear_equation;
 ```
 
-## УДАЛИТЬ ИМЕНОВАННУЮ КОЛЛЕКЦИЮ {#drop-named-collection}
+## DROP NAMED COLLECTION {#drop-named-collection}
 
 Удаляет именованную коллекцию.
 
 **Синтаксис**
 
-``` sql
+```sql
 DROP NAMED COLLECTION [IF EXISTS] name [on CLUSTER cluster]
 ```
 
 **Пример**
 
-``` sql
+```sql
 CREATE NAMED COLLECTION foobar AS a = '1', b = '2';
 DROP NAMED COLLECTION foobar;
 ```

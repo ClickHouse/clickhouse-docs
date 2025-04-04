@@ -1,9 +1,9 @@
 ---
-slug: /engines/table-engines/special/dictionary
+description: 'Движок `Dictionary` отображает данные словаря в виде таблицы ClickHouse.'
+sidebar_label: 'Dictionary'
 sidebar_position: 20
-sidebar_label: Dictionary
-title: "Движок таблицы Dictionary"
-description: "Движок `Dictionary` отображает данные словаря в виде таблицы ClickHouse."
+slug: /engines/table-engines/special/dictionary
+title: 'Движок таблицы Dictionary'
 ---
 
 
@@ -13,9 +13,9 @@ description: "Движок `Dictionary` отображает данные сло
 
 ## Пример {#example}
 
-В качестве примера рассмотрим словарь `products` со следующей конфигурацией:
+В качестве примера рассмотрим словарь `products` с следующей конфигурацией:
 
-``` xml
+```xml
 <dictionaries>
     <dictionary>
         <name>products</name>
@@ -46,9 +46,9 @@ description: "Движок `Dictionary` отображает данные сло
 </dictionaries>
 ```
 
-Запросите данные из словаря:
+Запросите данные словаря:
 
-``` sql
+```sql
 SELECT
     name,
     type,
@@ -62,37 +62,37 @@ FROM system.dictionaries
 WHERE name = 'products'
 ```
 
-``` text
+```text
 ┌─name─────┬─type─┬─key────┬─attribute.names─┬─attribute.types─┬─bytes_allocated─┬─element_count─┬─source──────────┐
 │ products │ Flat │ UInt64 │ ['title']       │ ['String']      │        23065376 │        175032 │ ODBC: .products │
 └──────────┴──────┴────────┴─────────────────┴─────────────────┴─────────────────┴───────────────┴─────────────────┘
 ```
 
-Вы можете использовать функцию [dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull) для получения данных словаря в этом формате.
+Вы можете использовать функцию [dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull), чтобы получить данные словаря в этом формате.
 
-Этот вид не полезен, когда вам нужно получить сырые данные или когда выполняется операция `JOIN`. В этих случаях вы можете использовать движок `Dictionary`, который отображает данные словаря в таблице.
+Этот вид не очень полезен, когда вам необходимо получить сырье данные или при выполнении операции `JOIN`. Для этих случаев вы можете использовать движок `Dictionary`, который отображает данные словаря в таблице.
 
 Синтаксис:
 
-``` sql
+```sql
 CREATE TABLE %table_name% (%fields%) engine = Dictionary(%dictionary_name%)`
 ```
 
 Пример использования:
 
-``` sql
+```sql
 create table products (product_id UInt64, title String) Engine = Dictionary(products);
 ```
 
       Ok
 
-Посмотрите, что содержится в таблице.
+Посмотрите, что находится в таблице.
 
-``` sql
+```sql
 select * from products limit 1;
 ```
 
-``` text
+```text
 ┌────product_id─┬─title───────────┐
 │        152689 │ Some item       │
 └───────────────┴─────────────────┘

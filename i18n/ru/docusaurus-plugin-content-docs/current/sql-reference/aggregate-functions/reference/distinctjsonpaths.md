@@ -1,14 +1,14 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/distinctjsonpaths
+description: 'Расчитывает список уникальных путей, хранящихся в колонке JSON.'
 sidebar_position: 216
-title: "distinctJSONPaths"
-description: "Вычисляет список уникальных путей, хранящихся в колонке JSON."
+slug: /sql-reference/aggregate-functions/reference/distinctjsonpaths
+title: 'distinctJSONPaths'
 ---
 
 
 # distinctJSONPaths
 
-Вычисляет список уникальных путей, хранящихся в колонке [JSON](../../data-types/newjson.md).
+Расчитывает список уникальных путей, хранящихся в колонке [JSON](../../data-types/newjson.md).
 
 **Синтаксис**
 
@@ -22,7 +22,7 @@ distinctJSONPaths(json)
 
 **Возвращаемое значение**
 
-- Упорядоченный список путей [Array(String)](../../data-types/array.md).
+- Отсортированный список путей [Array(String)](../../data-types/array.md).
 
 **Пример**
 
@@ -49,7 +49,7 @@ SELECT distinctJSONPaths(json) FROM test_json;
 
 # distinctJSONPathsAndTypes
 
-Вычисляет список уникальных путей и их типов, хранящихся в колонке [JSON](../../data-types/newjson.md).
+Расчитывает список уникальных путей и их типов, хранящихся в колонке [JSON](../../data-types/newjson.md).
 
 **Синтаксис**
 
@@ -63,7 +63,7 @@ distinctJSONPathsAndTypes(json)
 
 **Возвращаемое значение**
 
-- Упорядоченная карта путей и типов [Map(String, Array(String))](../../data-types/map.md).
+- Отсортированная карта путей и типов [Map(String, Array(String))](../../data-types/map.md).
 
 **Пример**
 
@@ -89,7 +89,7 @@ SELECT distinctJSONPathsAndTypes(json) FROM test_json;
 
 **Примечание**
 
-Если объявление JSON содержит пути с указанными типами, эти пути всегда будут включены в результат функций `distinctJSONPaths/distinctJSONPathsAndTypes`, даже если входные данные не имели значений для этих путей.
+Если объявление JSON содержит пути с указанными типами, эти пути всегда будут включены в результат функций `distinctJSONPaths/distinctJSONPathsAndTypes`, даже если входные данные не содержат значений для этих путей.
 
 ```sql
 DROP TABLE IF EXISTS test_json;
