@@ -33,7 +33,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 ## April 4, 2025 {#april-4-2025}
 
 - Slack notifications for ClickHouse Cloud: ClickHouse Cloud now supports Slack notifications for billing, scaling, and ClickPipes events, in addition to in-console and email notifications. These notifications are sent via the ClickHouse Cloud Slack application. Organization admins can configure these notifications via the notification center by specifying slack channels to which notifications should be sent.
-- Users running Production and Development services will now see ClickPipes and data transfer usage price on their bills. Please refer to the [announcement](/manage/jan-2025-faq/pricing-dimensions) from January 2025 for more details. 
+- Users running Production and Development services will now see ClickPipes and data transfer usage price on their bills. Please refer to the [announcement](/cloud/manage/jan-2025-faq/pricing-dimensions) from January 2025 for more details. 
   
 ## March 21, 2025 {#march-21-2025}
 
