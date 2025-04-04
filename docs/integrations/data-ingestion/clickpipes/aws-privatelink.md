@@ -51,7 +51,7 @@ Private DNS support is out of the box and does not require any additional config
 Cross-region is not supported.
 
 It is a recommended option for ClickPipes for MSK.
-See a [getting started](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-getting-started.html) guide for more details.
+See the [getting started](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-getting-started.html) guide for more details.
 
 ### VPC endpoint service {#vpc-endpoint-service}
 
@@ -65,7 +65,7 @@ that will be accessible in a ClickPipes VPC.
 Cross-region is supported.
 
 It's a preferred choice for:
-- any on premise Kafka setup that requires private DNS support
+- any on-premise Kafka setup that requires private DNS support
 - cross-region connectivity for Postgres CDC
 
 Cross-region MSK cluster connectivity can be set up using VPC endpoint service as well.
