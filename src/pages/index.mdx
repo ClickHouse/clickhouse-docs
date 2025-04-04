@@ -23,6 +23,7 @@ import IconSQLConsole from '@site/src/icons/IconSQLConsole';
 import IconLightning from '@site/src/icons/IconLightning';
 import IconDownload from '@site/src/icons/IconDownload';
 import Image from '@theme/IdealImage';
+import SearchBar from "@theme/SearchBar";
 
 export const Hero = ({children, color}) => {
     return (
@@ -85,6 +86,17 @@ export const HomePageOptionButton = ({children, icon, iconWidth, svgIcon, link})
             </div>
             <div style={{fontWeight: '500'}}>{children}</div>
         </a>
+    )
+}
+
+export const SearchClickHouse = ({children, color}) => {
+    return (
+        <div className='home-page-section-search'>
+            <p style={{fontWeight: '600', fontSize: '18px', margin: 'auto', flex: '1'}}>Search documentation</p>
+            <div className='home-page-hero-right-search'>
+                <SearchBar style="width: 75%"/>
+            </div>
+        </div>
     )
 }
 
@@ -197,6 +209,7 @@ export const HomeContainer = () => {
     return (
         <div className='home-container'>
             <Hero/>
+            <SearchClickHouse/>
             <ConnectToClickHouse/>
             <MigrateToClickHouse/>
             <DeployClickHouse/>
