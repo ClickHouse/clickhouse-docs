@@ -12,7 +12,7 @@ import CodeBlock from '@theme/CodeBlock';
 # Java Clients Overview
 
 - [Client 0.8+](./client.md)
-- [JDBC 0.8+](./jdbc.md)
+- [JDBC 0.8+](./jdbc)
 - [R2DBC Driver](./r2dbc.md)
 
 ## ClickHouse Client {#clickhouse-client}

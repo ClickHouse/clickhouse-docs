@@ -2,14 +2,26 @@
 title: 'JDBC Driver'
 description: 'Page describing the JDBC driver for ClickHouse'
 slug: /integrations/language-clients/java/jdbc-v1
+displayed_sidebar: integrations
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-
+import ClientVersionDropdown from '@theme/ClientVersionDropdown/ClientVersionDropdown'
 
 # JDBC Driver
+
+<ClientVersionDropdown versions={[
+{
+'version': 'v0.7.x',
+'slug': '/docs/integrations/language-clients/java/jdbc-v1'
+},
+{
+'version': 'v0.8+',
+'slug': '/docs/integrations/language-clients/java/jdbc'
+}
+]}/>
 
 `clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](/integrations/sql-clients/sql-console), it provides additional features like custom type mapping, transaction support, and standard synchronous `UPDATE` and `DELETE` statements, etc., so that it can be easily used with legacy applications and tools.
 
