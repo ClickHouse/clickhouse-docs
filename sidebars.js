@@ -965,6 +965,7 @@ const sidebars = {
             "integrations/sql-clients/jupysql",
             "integrations/sql-clients/qstudio",
             "integrations/sql-clients/tablum",
+			      "integrations/sql-clients/marimo",
           ],
         },
         {
