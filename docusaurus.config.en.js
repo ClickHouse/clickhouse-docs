@@ -7,6 +7,7 @@ const { customParseFrontMatter } = require('./plugins/frontmatter-validation/cus
 const checkFloatingPages = require('./plugins/checkFloatingPages');
 const frontmatterValidator = require('./plugins/frontmatter-validation/frontmatterValidatorPlugin');
 const path = require('path');
+import pluginLlmsTxt from './plugins/llms-txt-plugin.ts'
 
 // Helper function to skip over index.md files.
 function skipIndex(items) {
@@ -225,6 +226,13 @@ const config = {
         rel: "preconnect",
       },
     },
+    {
+      tagName: 'img',
+      attributes: {
+        referrerPolicy: 'no-referrer-when-downgrade',
+        src: 'https://static.scarf.sh/a.png?x-pxid=e6377503-591b-4886-9398-e69c7fee0b91',
+      },
+    },
   ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
@@ -334,7 +342,7 @@ const config = {
     [
       frontmatterValidator,
       {
-        failBuild: true,
+        failBuild: true
       },
     ],
     [
@@ -343,6 +351,10 @@ const config = {
         failBuild: true,
         exceptionsFile: path.resolve(__dirname, 'plugins/floating-pages-exceptions.txt')
       },
+    ],
+    [
+      pluginLlmsTxt,
+      {}
     ]
   ],
   customFields: {

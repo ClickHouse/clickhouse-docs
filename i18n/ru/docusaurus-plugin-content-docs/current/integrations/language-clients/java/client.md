@@ -603,4 +603,3 @@ client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
 - [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - основной набор примеров.
 - [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - пример того, как использовать клиент в приложении Spring Boot.
 - [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - пример того, как использовать клиент в приложении Ktor (Kotlin).
-```

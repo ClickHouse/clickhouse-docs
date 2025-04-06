@@ -116,6 +116,10 @@ const sidebars = {
             "use-cases/time-series/query-performance"
           ]
         },
+        { 
+          type: "doc", 
+          id: "use-cases/data_lake/glue_catalog" 
+        }
       ]
     },
     {
@@ -667,6 +671,7 @@ const sidebars = {
         "integrations/data-ingestion/clickpipes/object-storage",
         "integrations/data-ingestion/clickpipes/kinesis",
         "integrations/data-ingestion/clickpipes/secure-kinesis",
+        "integrations/data-ingestion/clickpipes/aws-privatelink",
         {
           type: "category",
           label: "ClickPipes for Postgres",
@@ -689,6 +694,23 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/postgres/source/neon-postgres",
                 "integrations/data-ingestion/clickpipes/postgres/source/crunchy-postgres",
                 "integrations/data-ingestion/clickpipes/postgres/source/generic",
+              ],
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "ClickPipes for MySQL",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "integrations/data-ingestion/clickpipes/mysql/index",
+            {
+              type: "category",
+              label: "Source",
+              items: [
+                "integrations/data-ingestion/clickpipes/mysql/source/rds",
+                "integrations/data-ingestion/clickpipes/mysql/source/aurora",
               ],
             },
           ],
@@ -1265,20 +1287,21 @@ const sidebars = {
       items: [
         "operations/settings/overview",
         "operations/server-configuration-parameters/settings",
+        "operations/settings/settings",
+        "operations/settings/merge-tree-settings",
+        "operations/settings/settings-formats",
         "operations/settings/composable-protocols",
         "operations/settings/constraints-on-settings",
-        "operations/settings/settings-formats",
         "operations/settings/memory-overcommit",
-        "operations/settings/merge-tree-settings",
         // "operations/settings/mysql-binlog-client",
         "operations/settings/permissions-for-queries",
         "operations/settings/query-complexity",
         "operations/settings/settings-query-level",
-        "operations/settings/settings",
         "operations/settings/settings-profiles",
         "operations/settings/settings-users",
         "operations/named-collections",
         "operations/configuration-files",
+        "operations/settings/experimental-settings",
       ],
     },
     {

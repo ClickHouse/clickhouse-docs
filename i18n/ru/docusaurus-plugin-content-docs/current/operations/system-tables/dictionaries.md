@@ -4,6 +4,7 @@ slug: /operations/system-tables/dictionaries
 title: 'system.dictionaries'
 keywords: ['системная таблица', 'словаря']
 ---
+
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>

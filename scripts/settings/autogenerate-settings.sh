@@ -54,12 +54,13 @@ done
 # move across files to where they need to be
 mv settings-formats.md "$root/docs/operations/settings" || { echo "Failed to move generated settings-format.md"; exit 1; }
 mv settings.md "$root/docs/operations/settings" || { echo "Failed to move generated settings.md"; exit 1; }
-cat generated_merge_tree_settings.md >> "$root/docs/operations/settings/merge-tree-settings.md" || { echo "Failed to append MergeTree settings.md"; exit 1; }
 mv server_settings.md "$root/docs/operations/server-configuration-parameters/settings.md" || { echo "Failed to move generated server_settings.md"; exit 1; }
+cat generated_merge_tree_settings.md >> "$root/docs/operations/settings/merge-tree-settings.md" || { echo "Failed to append MergeTree settings.md"; exit 1; }
+cat experimental-settings.md >> "$root/docs/operations/settings/experimental-settings.md" || { echo "Failed to append experimental settings.md"; exit 1; }
 
 echo "[$SCRIPT_NAME] Auto-generation of settings markdown pages completed successfully"
 
 # perform cleanup
-rm -rf "$tmp_dir"/{settings-formats.md,settings.md,FormatFactorySettings.h,Settings.cpp,generated_merge_tree_settings.md,clickhouse}
+rm -rf "$tmp_dir"/{settings-formats.md, settings.md, FormatFactorySettings.h, Settings.cpp, generated_merge_tree_settings.md, experimental-settings.md, clickhouse}
 
 echo "[$SCRIPT_NAME] Autogenerating settings completed"

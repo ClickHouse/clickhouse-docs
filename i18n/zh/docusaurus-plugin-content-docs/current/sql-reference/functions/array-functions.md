@@ -3303,4 +3303,3 @@ SELECT arrayNormalizedGini([0.9, 0.3, 0.8, 0.7], [6, 1, 0, 2]);
 ## Distance functions {#distance-functions}
 
 所有支持的函数在 [距离函数文档](../../sql-reference/functions/distance-functions.md) 中有所描述。
-```
