@@ -167,7 +167,7 @@ Additionally, we visualize how the sparse index prunes all row blocks that can't
 <Image img={primary_key} size="lg" alt="Primary key" />
 
 :::note
-All columns in a table will be sorted based on the value of the specified ordering key, regardless of whether they are included in the key itself. For instance, if CreationDate is used as the key, the order of values in all other columns will correspond to the order of values in the CreationDate column. Multiple ordering keys can be specified - this will order with the same semantics as an `ORDER BY` clause in a `SELECT` query.
+All columns in a table will be sorted based on the value of the specified ordering key, regardless of whether they are included in the key itself. For instance, if `CreationDate` is used as the key, the order of values in all other columns will correspond to the order of values in the `CreationDate` column. Multiple ordering keys can be specified - this will order with the same semantics as an `ORDER BY` clause in a `SELECT` query.
 :::
 
 A complete advanced guide on choosing primary keys can be found [here](/guides/best-practices/sparse-primary-indexes).

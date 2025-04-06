@@ -11,7 +11,7 @@ import partitions from '@site/static/images/bestpractices/partitions.png';
 import merges_with_partitions from '@site/static/images/bestpractices/merges_with_partitions.png';
 
 :::note A data management technique
-Partitioning is primarily a data management technique and not a query optimization tool, and while it can improve performance in specific workloads, it should not be the first mechanism used to accelerate queries; the partitioning key must be chosen carefully, with a clear understanding of its implications, and only applied when it aligns with data lifecycle needs or well-understood access patterns.
+Partitioning is primarily a data management technique and not a query optimization tool, and while it can improve performance in specific workloads, it should not be the first mechanism used to accelerate queries; the partitioning key must be chosen carefully, with a clear understanding of its implications, and only applied when it aligns with data life cycle needs or well-understood access patterns.
 :::
 
 In ClickHouse, partitioning organizes data into logical segments based on a specified key. This is defined using the `PARTITION BY` clause at table creation time and is commonly used to group rows by time intervals, categories, or other business-relevant dimensions. Each unique value of the partitioning expression forms its own physical partition on disk, and ClickHouse stores data in separate parts for each of these values. Partitioning improves data management, simplifies retention policies, and can help with certain query patterns.
@@ -46,17 +46,17 @@ With partitioning enabled, ClickHouse only [merges](/merges) data parts within, 
 
 ## Applications of partitioning {#applications-of-partionning}
 
-Partitioning is a powerful tool for managing large datasets in ClickHouse, especially in observability and analytics use cases. It enables efficient data lifecycle operations by allowing entire partitions, often aligned with time or business logic, to be dropped, moved, or archived in a single metadata operation. This is significantly faster and less resource-intensive than row-level deletes or copy operations. Partitioning also integrates cleanly with ClickHouse features like TTL and tiered storage, making it possible to implement retention policies or hot/cold storage strategies without custom orchestration. For example, recent data can be kept on fast SSD-backed storage, while older partitions are automatically moved to cheaper object storage.
+Partitioning is a powerful tool for managing large datasets in ClickHouse, especially in observability and analytics use cases. It enables efficient data life cycle operations by allowing entire partitions, often aligned with time or business logic, to be dropped, moved, or archived in a single metadata operation. This is significantly faster and less resource-intensive than row-level deletes or copy operations. Partitioning also integrates cleanly with ClickHouse features like TTL and tiered storage, making it possible to implement retention policies or hot/cold storage strategies without custom orchestration. For example, recent data can be kept on fast SSD-backed storage, while older partitions are automatically moved to cheaper object storage.
 
 While partitioning can improve query performance for some workloads, it can also negatively impact response time. 
 
 If the partitioning key is not in the primary key and you are filtering by it, users may see an improvement in query performance with partitioning. See [here](/partitions#query-optimization) for an example.
 
-Conversely, if queries need to query across partitions performance may be negatively impacted due to a higher number of total parts. For this reason, users should understand their access patterns before considering partioning a a query optimization technique.
+Conversely, if queries need to query across partitions performance may be negatively impacted due to a higher number of total parts. For this reason, users should understand their access patterns before considering partitioning a a query optimization technique.
 
 In summary, users should primarily think of partitioning as a data management technique. For an example of managing data, see [here](/observability/managing-data) and [here](/partitions#data-management).
 
-## Choose a low cardinality partitioning key {#choose-a-low-cardinality-partioning-key}
+## Choose a low cardinality partitioning key {#choose-a-low-cardinality-partitioning-key}
 
 Importantly, a higher number of parts will negatively affect query performance. ClickHouse will therefore respond to inserts with a [“too many parts”](/knowledgebase/exception-too-many-parts) error if the number of parts exceeds [limits either in total](/operations/settings/merge-tree-settings#max_parts_in_total) or [per partition](/operations/settings/merge-tree-settings#parts_to_throw_insert).
 
@@ -64,4 +64,4 @@ Choosing the right **cardinality** for the partitioning key is critical. A high-
 
 By contrast, a **low-cardinality partitioning key**—with fewer than 100 - 1,000 distinct values - is usually optimal. It enables efficient part merging, keeps metadata overhead low, and avoids excessive object creation in storage. In addition, ClickHouse automatically builds MinMax indexes on partition columns, which can significantly speed up queries that filter on those columns. For example, filtering by month when the table is partitioned by `toStartOfMonth(date)` allows the engine to skip irrelevant partitions and their parts entirely.
 
-While partitioning can improve performance in some query patterns, it’s primarily a data management feature. In many cases, querying across all partitions can be slower than using a non-partitioned table due to increased data fragmentation and more parts being scanned. Use partitioning judiciously, and always ensure that the chosen key is low-cardinality and aligns with your data lifecycle policies (e.g., retention via TTL). If you’re unsure whether partitioning is necessary, you may want to start without it and optimize later based on observed access patterns.
+While partitioning can improve performance in some query patterns, it’s primarily a data management feature. In many cases, querying across all partitions can be slower than using a non-partitioned table due to increased data fragmentation and more parts being scanned. Use partitioning judiciously, and always ensure that the chosen key is low-cardinality and aligns with your data life cycle policies (e.g., retention via TTL). If you’re unsure whether partitioning is necessary, you may want to start without it and optimize later based on observed access patterns.

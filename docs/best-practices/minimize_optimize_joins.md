@@ -45,7 +45,7 @@ ClickHouse supports several join algorithms that trade off between speed and mem
 * **Direct JOIN:** Ideal when using dictionaries (or other table engines with key-value characteristics) with `INNER` or `LEFT ANY JOIN`  - the fastest method for point lookups as it eliminates the need to build a hash table.
 * **Full Sorting Merge JOIN:** Efficient when both tables are sorted on the join key.
 * **Partial Merge JOIN:** Minimizes memory but is slower—best for joining large tables with limited memory.
-* **Grace Hash JOIN:** Flexible and memory-tunable, good for large datasets with adjustable performance characteristics.
+* **Grace Hash JOIN:** Flexible and can memory-tunable, good for large datasets with adjustable performance characteristics.
 
 <Image img={joins} size="md" alt="Joins - speed vs memory"/>
 

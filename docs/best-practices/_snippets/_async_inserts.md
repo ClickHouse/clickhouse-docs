@@ -19,7 +19,7 @@ When enabled (1), inserts are buffered and only written to disk once one of the 
 (2) a time threshold elapses (async_insert_busy_timeout_ms) or 
 (3) a maximum number of insert queries accumulate (async_insert_max_query_number). 
 
-This batching process is invisible to clients and helps ClickHouse efficiently merge insert traffic from multiple sources. However, until a flush occurs, the data is not queryable. Importantly, there are multiple buffers per insert shape and settings combination, and in clusters, buffers are maintained per node - enabling fine-grained control across multi-tenant environments. Insert mechanics are otherwise identical to those described for [synchronous inserts](/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default).
+This batching process is invisible to clients and helps ClickHouse efficiently merge insert traffic from multiple sources. However, until a flush occurs, the data cannot be queried. Importantly, there are multiple buffers per insert shape and settings combination, and in clusters, buffers are maintained per node - enabling fine-grained control across multi-tenant environments. Insert mechanics are otherwise identical to those described for [synchronous inserts](/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default).
 
 ### Choosing a Return Mode {#choosing-a-return-mode}
 

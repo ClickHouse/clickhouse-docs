@@ -203,7 +203,7 @@ Suppose another column is added `tags`. If this was simply a list of strings we 
 }
 ```
 
-In this case, we could model the arxiv documents as either all JSON or simply add a JSON `tags` column. We provide both examples below:
+In this case, we could model the arXiv documents as either all JSON or simply add a JSON `tags` column. We provide both examples below:
 
 
 ```sql

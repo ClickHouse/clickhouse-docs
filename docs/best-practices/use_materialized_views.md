@@ -11,7 +11,7 @@ import incremental_materialized_view from '@site/static/images/bestpractices/inc
 import refreshable_materialized_view from '@site/static/images/bestpractices/refreshable_materialized_view.gif';
 
 
-ClickHouse supports two types of materialized views: **incremental** and **refreshable**. While both are designed to accelerate queries by precomputing and storing results, they differ significantly in how and when the underlying queries are executed, what workloads they are suited for, and how data freshness is handled.
+ClickHouse supports two types of materialized views: **incremental** and **refreshable**. While both are designed to accelerate queries by pre-computing and storing results, they differ significantly in how and when the underlying queries are executed, what workloads they are suited for, and how data freshness is handled.
 
 
 **Users should consider materialized views for specific query patterns which need to be accelerated, assuming previous best practices [regarding type](/best-practices/select-data-types) and [primary key optimization](/best-practices/choosing-a-primary-key) have been performed.**
@@ -54,7 +54,7 @@ In summary, use refreshable materialized views when:
 - You need cached query results available instantly, and minor delays in freshness are acceptable.
 - You need the top N for a query result set.
 - The size of the result set does not grow unbounded over time. This will cause performance of the target view to degrade.
-- You’re performing complex joins or de-normalizations involving multiple tables, requiring updates whenever any source table changes.
+- You’re performing complex joins or denormalization involving multiple tables, requiring updates whenever any source table changes.
 - You’re building batch workflows, denormalization tasks, or creating view dependencies similar to DBT DAGs.
 
 For examples of refreshable materialized views see [here](/materialized-view/refreshable-materialized-view).

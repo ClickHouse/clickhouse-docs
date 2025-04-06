@@ -24,7 +24,7 @@ OPTIMIZE TABLE <table> FINAL;
 
 Running `OPTIMIZE FINAL` forces ClickHouse to merge **all** active parts into a **single part**, even if large merges have already occurred. This involves:
 
-1. **Uncompressing** all parts
+1. **Decompressing** all parts
 2. **Merging** the data
 3. **Compressing** it again
 4. **Writing** the final part to disk or object storage
@@ -37,7 +37,7 @@ Normally, ClickHouse avoids merging parts larger than ~150 GB (configurable via 
 
 * It may try to merge **multiple 150 GB parts** into one massive part
 * This could result in **long merge times**, **memory pressure**, or even **out-of-memory errors**
-* These large parts may become “unmergable” i.e. attempts to merge them further fails for the reasons stated above. In cases where merges are required for correct query time behavior, this can result in undesired consequences e.g. [duplicates accumulating for a ReplacingMergeTree](/guides/developer/deduplication#using-replacingmergetree-for-upserts), increasing query time performance.
+* These large parts may become challenging to merge i.e. attempts to merge them further fails for the reasons stated above. In cases where merges are required for correct query time behavior, this can result in undesired consequences e.g. [duplicates accumulating for a ReplacingMergeTree](/guides/developer/deduplication#using-replacingmergetree-for-upserts), increasing query time performance.
 
 ## Let background merges do the work {#let-background-merges-do-the-work}
 

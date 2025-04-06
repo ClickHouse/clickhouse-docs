@@ -37,7 +37,7 @@ In general, data skipping indices are best applied after ensuring proper primary
 
 Always:
 
-1. test skip indexes on real data with realistic queries. Try different index types and granularities.
+1. test skip indexes on real data with realistic queries. Try different index types and granularity values.
 2. Evaluate their impact using tools like send_logs_level='trace' and `EXPLAIN indexes=1` to view index effectiveness. 
 3. Always evaluate the size of an index and how it is impacted by granularity. Reducing granularity size often will improve performance to a point, resulting in more granules being filtered and needing to be scanned. However, as index size increases with lower granularity performance can also degrade. Measure the performance and index size for various granularity data points. This is particularly pertinent on bloom filter indexes.
 
@@ -135,7 +135,7 @@ LIMIT 1
 25 rows in set. Elapsed: 0.070 sec.
 ```
 
-A simple analysis shows that ViewCount is correlated with the CreationDate (a primary key) as one might expect - the longer a post exists, the more time it has to be viewed.
+A simple analysis shows that `ViewCount` is correlated with the `CreationDate` (a primary key) as one might expect - the longer a post exists, the more time it has to be viewed.
 
 ```sql
 SELECT toDate(CreationDate) as day, avg(ViewCount) as view_count FROM stackoverflow.posts WHERE day > '2009-01-01'  GROUP BY day
@@ -184,7 +184,7 @@ PARTITION BY toYear(CreationDate)
 ORDER BY (PostTypeId, toDate(CreationDate))
 ```
 
-The following animation illustrates how our minmax skipping index is built for the example table, tracking the minimum and maximum ViewCount values for each block of rows (granule) in the table:
+The following animation illustrates how our minmax skipping index is built for the example table, tracking the minimum and maximum `ViewCount` values for each block of rows (granule) in the table:
 
 <Image img={building_skipping_indices} size="lg" alt="Building skipping indices"/>
 
@@ -245,6 +245,6 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 29 rows in set. Elapsed: 0.211 sec.
 ```
 
-We also show an animation how the minmax skipping index prunes all row blocks that cannot possibly contain matches for the ViewCount > 10,000,000 predicate in our example query:
+We also show an animation how the minmax skipping index prunes all row blocks that cannot possibly contain matches for the `ViewCount` > 10,000,000 predicate in our example query:
 
 <Image img={using_skipping_indices} size="lg" alt="Using skipping indices"/>
