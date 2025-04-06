@@ -457,7 +457,7 @@ automatically used the two projections for the two queries above (see the
 projections column below):
 
 ```sql
-HELLO
+
 ```
 
 ## When to use Projections? {#when-to-use-projections}
