@@ -266,7 +266,7 @@ WITH (publish_via_partition_root = true);
 This error typically occurs when the source Postgres database has a datatype which cannot be mapped during ingestion.
 For more specific issue, refer to the possibilities below.
 
-### `Cannot parse type Decimal(XX, YY), expected non-empty binary data with size equal to or less than ...`
+### `Cannot parse type Decimal(XX, YY), expected non-empty binary data with size equal to or less than ...` {#cannot-parse-type-decimal-expected-non-empty-binary-data-with-size-equal-to-or-less-than}
 
 Postgres `NUMERIC`s have really high precision (up to 131072 digits before the decimal point; up to 16383 digits after the decimal point) and ClickHouse Decimal type allows maximum of (76 digits, 39 scale).
 The system assumes that _usually_ the size would not get that high and does an optimistic cast for the same as source table can have large number of rows or the row can come in during the CDC phase.
