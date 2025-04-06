@@ -1104,6 +1104,7 @@ const sidebars = {
             "materialized-view/refreshable-materialized-view"
           ],
         },
+        "data-modeling/projections",
         {
           type: "category",
           label: "Data Compression",

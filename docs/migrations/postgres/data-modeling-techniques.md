@@ -114,7 +114,10 @@ WHERE UserId = 8592047
 Peak memory usage: 201.93 MiB.
 ```
 
-This query requires all 90m rows to be scanned (admittedly quickly) as the `UserId` is not the ordering key. Previously, we solved this using a materialized view acting as a lookup for the `PostId`. The same problem can be solved with a projection. The command below adds a projection for the `ORDER BY user_id`.
+This query requires all 90m rows to be scanned (admittedly quickly) as the `UserId` is not the ordering key. 
+Previously, we solved this using a materialized view acting as a lookup for the `PostId`. The same problem can be solved
+with a [projection](/data-modeling/projections). The command below adds a 
+projection for the `ORDER BY user_id`.
 
 ```sql
 ALTER TABLE comments ADD PROJECTION comments_user_id (
@@ -157,7 +160,7 @@ FROM system.mutations
 WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
 
    ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
-1. │            1 │     0 │                     │
+1. │           1 │       0 │                    │
    └─────────────┴─────────┴────────────────────┘
 
 1 row in set. Elapsed: 0.003 sec.
@@ -186,43 +189,21 @@ SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
 
-        ┌─explain─────────────────────────────────────────────┐
- 1. │ Expression ((Projection + Before ORDER BY))       │
- 2. │   Aggregating                                     │
- 3. │   Filter                                          │
- 4. │           ReadFromMergeTree (comments_user_id)            │
- 5. │           Indexes:                                        │
- 6. │           PrimaryKey                                      │
- 7. │           Keys:                                   │
- 8. │           UserId                                  │
+    ┌─explain─────────────────────────────────────────────┐
+ 1. │ Expression ((Projection + Before ORDER BY))         │
+ 2. │   Aggregating                                       │
+ 3. │   Filter                                            │
+ 4. │           ReadFromMergeTree (comments_user_id)      │
+ 5. │           Indexes:                                  │
+ 6. │           PrimaryKey                                │
+ 7. │           Keys:                                     │
+ 8. │           UserId                                    │
  9. │           Condition: (UserId in [8592047, 8592047]) │
-10. │           Parts: 2/2                              │
-11. │           Granules: 2/11360                       │
-        └─────────────────────────────────────────────────────┘
+10. │           Parts: 2/2                                │
+11. │           Granules: 2/11360                         │
+    └─────────────────────────────────────────────────────┘
 
 11 rows in set. Elapsed: 0.004 sec.
 ```
-
-## When to use projections {#when-to-use-projections}
-
-Projections are an appealing feature for new users as they are automatically maintained as data is inserted. Furthermore, queries can just be sent to a single table where the projections are exploited where possible to speed up the response time.
-
-<Image img={postgres_projections} size="md" alt="PostgreSQL projections in ClickHouse"/>
-
-This is in contrast to materialized views, where the user has to select the appropriate optimized target table or rewrite their query, depending on the filters. This places greater emphasis on user applications and increases client-side complexity.
-
-Despite these advantages, projections come with some inherent limitations which users should be aware of and thus should be deployed sparingly.
-
-- Projections don't allow to use different TTL for the source table and the (hidden) target table, materialized views allow different TTLs.
-- Projections [don't currently support](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes) `optimize_read_in_order` for the (hidden) target table.
-- Lightweight updates and deletes are not supported for tables with projections.
-- Materialized views can be chained: the target table of one materialized view can be the source table of another materialized view, and so on. This is not possible with projections.
-- Projections don't support joins; materialized views do.
-- Projections don't support filters (WHERE clause); materialized views do.
-
-We recommend using projections when:
-
-- A complete reordering of the data is required. While the expression in the projection can, in theory, use a `GROUP BY,` materialized views are more effective for maintaining aggregates. The query optimizer is also more likely to exploit projections that use a simple reordering, i.e., `SELECT * ORDER BY x`. Users can select a subset of columns in this expression to reduce storage footprint.
-- Users are comfortable with the associated increase in storage footprint and overhead of writing data twice. Test the impact on insertion speed and [evaluate the storage overhead](/data-compression/compression-in-clickhouse).
 
 [Click here for Part 4](/migrations/postgresql/rewriting-queries).
