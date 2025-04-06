@@ -128,26 +128,6 @@ When data arrives pre-sorted, ClickHouse can skip or simplify the internal sorti
 
 <AsyncInserts />
 
-### Choosing a Return Mode {#choosing-a-return-mode}
-
-The behavior of asynchronous inserts is further refined using the [`wait_for_async_insert`](/operations/settings/settings#wait_for_async_insert) setting. 
-
-When set to 1 (the default), ClickHouse only acknowledges the insert after the data is successfully flushed to disk. This ensures strong durability guarantees and makes error handling straightforward: if something goes wrong during the flush, the error is returned to the client. This mode is recommended for most production scenarios, especially when insert failures must be tracked reliably. 
-
-[Benchmarks](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) show it scales well with concurrency - whether you’re running 200 or 500 clients- thanks to adaptive inserts and stable part creation behavior.
-
-Setting `wait_for_async_insert = 0` enables "fire-and-forget" mode. Here, the server acknowledges the insert as soon as the data is buffered, without waiting for it to reach storage. 
-
-This offers ultra-low-latency inserts and maximal throughput, ideal for high-velocity, low-criticality data. However, this comes with trade-offs: there’s no guarantee the data will be persisted, errors may only surface during flush, and it’s difficult to trace failed inserts. Use this mode only if your workload can tolerate data loss. 
-
-[Benchmarks also demonstrate](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) substantial part reduction and lower CPU usage when buffer flushes are infrequent (e.g. every 30 seconds), but the risk of silent failure remains.
-
-### Deduplication and reliability {#deduplication-and-reliability}
-
-By default, ClickHouse performs automatic deduplication for synchronous inserts, which makes retries safe in failure scenarios. However, this is disabled for asynchronous inserts unless explicitly enabled (this should not be enabled if you have dependent materialized views - [see issue](https://github.com/ClickHouse/ClickHouse/issues/66003)). 
-
-In practice, if deduplication is turned on and the same insert is retried - due to, for instance, a timeout or network drop - ClickHouse can safely ignore the duplicate. This helps maintain idempotency and avoids double-writing data. Still, it’s worth noting that insert validation and schema parsing happen only during buffer flush - so errors (like type mismatches) will only surface at that point.
-
 ## Choose an interface - HTTP or Native {#choose-an-interface}
 
 ### Native {#choose-an-interface-native}
