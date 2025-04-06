@@ -63,6 +63,25 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Best Practices",
+      collapsed: false,
+      collapsible: false,
+      link: { type: "doc", id: "best-practices/index" },
+      items: [
+        "best-practices/choosing_a_primary_key",
+        "best-practices/select_data_type",
+        "best-practices/use_materialized_views",
+        "best-practices/minimize_optimize_joins",
+        "best-practices/partionning_keys",
+        "best-practices/selecting_an_insert_strategy",
+        "best-practices/using_data_skipping_indices",
+        "best-practices/avoid_mutations",
+        "best-practices/avoid_optimize_final",
+        "best-practices/json_type"
+      ],
+    },
+    {
+      type: "category",
       label: "Use Case Guides",
       collapsed: false,
       collapsible: false,
@@ -226,13 +245,8 @@ const sidebars = {
       className: "top-nav-item",
       link: { type: "doc", id: "cloud/bestpractices/index" },
       items: [
-        "cloud/bestpractices/bulkinserts",
-        "cloud/bestpractices/asyncinserts",
-        "cloud/bestpractices/avoidmutations",
-        "cloud/bestpractices/avoidnullablecolumns",
-        "cloud/bestpractices/avoidoptimizefinal",
-        "cloud/bestpractices/partitioningkey",
         "cloud/bestpractices/usagelimits",
+        "cloud/bestpractices/multitenancy",
       ],
     },
     {
@@ -381,24 +395,6 @@ const sidebars = {
         },
         "cloud/reference/cloud-compatibility",
         "cloud/reference/supported-regions"
-      ],
-    },
-    {
-      type: "category",
-      label: "Best Practices",
-      collapsed: false,
-      collapsible: false,
-      className: "top-nav-item",
-      link: { type: "doc", id: "cloud/bestpractices/index" },
-      items: [
-        "cloud/bestpractices/bulkinserts",
-        "cloud/bestpractices/asyncinserts",
-        "cloud/bestpractices/avoidmutations",
-        "cloud/bestpractices/avoidnullablecolumns",
-        "cloud/bestpractices/avoidoptimizefinal",
-        "cloud/bestpractices/partitioningkey",
-        "cloud/bestpractices/usagelimits",
-        "cloud/bestpractices/multitenancy",
       ],
     },
     {
@@ -1493,15 +1489,21 @@ const sidebars = {
         },
         {
           type: "link",
+          label: "Concepts",
+          description: "Core concepts to know",
+          href: "/concepts"
+        },
+        {
+          type: "link",
           label: "Starter Guides",
           description: "Start here when learning ClickHouse",
           href: "/starter-guides"
         },
         {
           type: "link",
-          label: "Concepts",
-          description: "Core concepts to know",
-          href: "/concepts"
+          label: "Best Practices",
+          description: "Follow best practices with ClickHouse",
+          href: "/best-practices"
         },
         {
           type: "link",
