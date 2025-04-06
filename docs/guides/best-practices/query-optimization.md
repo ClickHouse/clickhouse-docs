@@ -423,7 +423,7 @@ Depending on how you ingested your data, you might have leveraged ClickHouse [ca
 
 ### Nullable {#nullable}
 
-As described in the [best practices documentation](/cloud/bestpractices/avoid-nullable-columns), avoid nullable columns wherever possible. It is tempting to use them often, as they make the data ingestion mechanism more flexible, but they negatively affect performance as an additional column has to be processed every time.
+As described in the [best practices documentation](/best-practices/select-data-types#avoid-nullable-columns), avoid nullable columns wherever possible. It is tempting to use them often, as they make the data ingestion mechanism more flexible, but they negatively affect performance as an additional column has to be processed every time.
 
 Running an SQL query that counts the rows with a NULL value can easily reveal the columns in your tables that actually need a Nullable value.
 

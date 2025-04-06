@@ -172,4 +172,4 @@ All columns in a table will be sorted based on the value of the specified orderi
 
 A complete advanced guide on choosing primary keys can be found [here](/guides/best-practices/sparse-primary-indexes).
 
-For deeper insights into how ordering keys improve compression and further optimize storage, explore the official guides on[ Compression in ClickHouse](/guides/improving-query-performance/sparse-primary-indexes-and-sorting) and[ Column Compression Codecs](/guides/improving-query-performance/compression).
+For deeper insights into how ordering keys improve compression and further optimize storage, explore the official guides on [Compression in ClickHouse](/data-compression/compression-in-clickhouse) and [Column Compression Codecs](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec).

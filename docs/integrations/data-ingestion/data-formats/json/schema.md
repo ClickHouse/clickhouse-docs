@@ -358,7 +358,7 @@ FORMAT PrettyJSONEachRow
 ```
 
 :::note Differentiating empty and null
-If users need to differentiate between a value being empty and not provided, the [Nullable](/sql-reference/data-types/nullable) type can be used. This [should be avoided](/cloud/bestpractices/avoid-nullable-columns) unless absolutely required, as it will negatively impact storage and query performance on these columns.
+If users need to differentiate between a value being empty and not provided, the [Nullable](/sql-reference/data-types/nullable) type can be used. This [should be avoided](/best-practices/select-data-types#avoid-nullable-columns) unless absolutely required, as it will negatively impact storage and query performance on these columns.
 :::
 
 ### Handling new columns {#handling-new-columns}

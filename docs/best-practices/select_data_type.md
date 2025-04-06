@@ -17,7 +17,7 @@ Some straightforward guidelines can significantly enhance the schema:
 
 * **Use Strict Types:** Always select the correct data type for columns. Numeric and date fields should use appropriate numeric and date types rather than general-purpose String types. This ensures correct semantics for filtering and aggregations.
 
-* **Avoid Nullable Columns:** Nullable columns introduce additional overhead by maintaining separate columns for tracking null values. Only use Nullable if explicitly required to distinguish between empty and null states. Otherwise, default or zero-equivalent values typically suffice. For further information on why this type should be avoided unless needed, see [Avoid Nullable Columns](/bestpractices/select-data-types#avoid-nullable-columns).
+* **Avoid Nullable Columns:** Nullable columns introduce additional overhead by maintaining separate columns for tracking null values. Only use Nullable if explicitly required to distinguish between empty and null states. Otherwise, default or zero-equivalent values typically suffice. For further information on why this type should be avoided unless needed, see [Avoid Nullable Columns](/best-practices/select-data-types#avoid-nullable-columns).
 
 * **Minimize Numeric Precision:** Select numeric types with minimal bit-width that still accommodate the expected data range. For instance, prefer [UInt16 over Int32](/sql-reference/data-types/int-uint) if negative values aren’t needed, and the range fits within 0–65535.
 

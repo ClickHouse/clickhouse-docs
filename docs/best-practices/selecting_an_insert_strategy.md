@@ -40,7 +40,7 @@ If the data to be ingested has no predefined format, the **key decision** is cho
 
 The next **major decision** is ④ whether to compress data before transmission to the ClickHouse server. Compression reduces transfer size and improves network efficiency, leading to faster data transfers and lower bandwidth usage, especially for large datasets.
 
-The data is ⑤ transmitted to a ClickHouse network interface—either the [native](interfaces/tcp) or[ HTTP](/interfaces/http) interface (which we [compare](https://clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient#clickhouse-client-defaults) later in this post).
+The data is ⑤ transmitted to a ClickHouse network interface—either the [native](/interfaces/tcp) or[ HTTP](/interfaces/http) interface (which we [compare](https://clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient#clickhouse-client-defaults) later in this post).
 
 #### Server-side steps {#server-side-steps}
 
