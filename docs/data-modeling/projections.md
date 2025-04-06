@@ -399,7 +399,6 @@ FROM uk_price_paid_with_projections
 WHERE town = 'LONDON'
 ORDER BY price DESC
 LIMIT 3
-SETTINGS log_queries=1
 ```
 ```sql
 Query id: dd2cb0ff-7082-4b71-a03c-9260d470a302 -- Note: this will be different for each user
@@ -416,7 +415,7 @@ Peak memory usage: 193.73 KiB.
 ```
 
 Likewise, for the query that lists the U.K. counties with the three highest 
-average paid prices:
+average-paid prices:
 
 ```sql
 SELECT
@@ -426,7 +425,6 @@ FROM uk_price_paid_with_projections
 GROUP BY county
 ORDER BY avg(price) DESC
 LIMIT 3
-SETTINGS log_queries=1
 ```
 
 ```response
@@ -452,12 +450,55 @@ optimized for this query, only 81.92 thousand rows were streamed from disk.
 The reason for the difference is that currently, the `optimize_read_in_order` 
 optimization mentioned above isn’t supported for projections.
 
-We inspect the `system.query_log` table in order to see that ClickHouse 
+We inspect the `system.query_log` table to see that ClickHouse 
 automatically used the two projections for the two queries above (see the 
 projections column below):
 
 ```sql
+SELECT
+  tables,
+  query,
+  query_duration_ms::String ||  ' ms' AS query_duration,
+        formatReadableQuantity(read_rows) AS read_rows,
+  projections
+FROM clusterAllReplicas(default, system.query_log)
+WHERE (type = 'QueryFinish') AND (tables = ['default.uk_price_paid_with_projections'])
+ORDER BY initial_query_start_time DESC
+  LIMIT 2
+FORMAT Vertical
+```
 
+```response
+Row 1:
+──────
+tables:         ['default.uk_price_paid_with_projections']
+query:          SELECT
+    county,
+    avg(price)
+FROM uk_price_paid_with_projections
+GROUP BY county
+ORDER BY avg(price) DESC
+LIMIT 3
+query_duration: 5 ms
+read_rows:      132.00
+projections:    ['default.uk_price_paid_with_projections.prj_gby_county']
+
+Row 2:
+──────
+tables:         ['default.uk_price_paid_with_projections']
+query:          SELECT
+  county,
+  price
+FROM uk_price_paid_with_projections
+WHERE town = 'LONDON'
+ORDER BY price DESC
+LIMIT 3
+SETTINGS log_queries=1
+query_duration: 11 ms
+read_rows:      2.29 million
+projections:    ['default.uk_price_paid_with_projections.prj_obj_town_price']
+
+2 rows in set. Elapsed: 0.006 sec.
 ```
 
 ## When to use Projections? {#when-to-use-projections}
