@@ -166,8 +166,6 @@ FROM trips WHERE tip_amount > 200 AND trip_duration_min > 0
 ```
 
 ```sql
-Query id: db460660-c1e7-4f57-87e4-40bd46a9d052
-
    ┌─tip_amount─┬────trip_id─┬─trip_duration_min─┐
 1. │        215 │ 1211976534 │                16 │
 2. │     222.88 │ 1203166979 │                41 │
@@ -190,7 +188,7 @@ querying the `system.query_log` table:
 ```sql
 SELECT query, projections 
 FROM system.query_log 
-WHERE query_id='db460660-c1e7-4f57-87e4-40bd46a9d052'
+WHERE query_id='<query_id>'
 ```
 
 ```response
@@ -401,9 +399,6 @@ ORDER BY price DESC
 LIMIT 3
 ```
 ```sql
-Query id: dd2cb0ff-7082-4b71-a03c-9260d470a302 -- Note: this will be different for each user
-
-↘ Progress: 2.29 million rows, 16.06 MB (188.06 million rows/s., 1.32 GB/s.)  99↓ Progress: 2.29 million rows, 16.06 MB (188.06 million rows/s., 1.32 GB/s.)  99
    ┌─county─────────┬─────price─┐
 1. │ GREATER LONDON │ 594300000 │
 2. │ GREATER LONDON │ 569200000 │
