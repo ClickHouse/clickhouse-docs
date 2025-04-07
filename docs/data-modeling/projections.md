@@ -77,7 +77,7 @@ CREATE TABLE trips(
 )
 ENGINE = MergeTree
 --highlight-next-line
-PRIMARY KEY (pickup_datetime, dropoff_datetime);
+ORDER BY (pickup_datetime, dropoff_datetime);
 ```
 
 Next we'll insert 10% of the data into the table from an S3 bucket:
