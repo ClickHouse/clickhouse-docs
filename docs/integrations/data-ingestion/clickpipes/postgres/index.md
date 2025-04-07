@@ -147,6 +147,6 @@ You can configure the Advanced settings if needed. A brief description of each s
 
 ## What's next? {#whats-next}
 
-Once you've moved data from Postgres to ClickHouse, the next obvious question is how to query and model your data in ClickHouse to make the most of it. Please start by this [page](/integrations/clickpipes/postgres/deduplication) to understand how to handle duplicates and query your data like you do in Postgres. Then refer to this [page](/integrations/clickpipes/postgres/ordering_keys) if you're interested in customizing the sorting key and this [page](/integrations/clickpipes/postgres/joins_and_denormalization) to understand how to optimize your JOINs. 
+Once you've moved data from Postgres to ClickHouse, the next obvious question is how to query and model your data in ClickHouse to make the most of it. Please start with page ["Deduplication strategies (using CDC)"](/integrations/clickpipes/postgres/deduplication) to understand how to handle duplicates and query your data like you do in Postgres. Then refer to page ["Ordering keys"](/integrations/clickpipes/postgres/ordering_keys) if you're interested in customizing the sorting key and page ["JOINs and Denormalization"](/integrations/clickpipes/postgres/joins_and_denormalization) to understand how to optimize your JOINs. 
 
-Finally, please refer to the [ClickPipes for Postgres FAQ](/integrations/clickpipes/postgres/faq) for more information about common issues and how to resolve them.
+Finally, please refer to the ["ClickPipes for Postgres FAQ"](/integrations/clickpipes/postgres/faq) page for more information about common issues and how to resolve them.

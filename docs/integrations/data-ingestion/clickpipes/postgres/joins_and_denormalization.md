@@ -10,7 +10,7 @@ import Image from '@theme/IdealImage';
 
 Since Postgres is a relational database, its data model is heavily [normalized](https://en.wikipedia.org/wiki/Database_normalization), often involving hundreds of tables. In ClickHouse, denormalization can be beneficial at times to optimize JOIN performance. This page covers common JOINs tips and best practices to denormalize data.
 
-### Optimizing JOINs {#optimizing-joins}
+## Optimizing JOINs {#optimizing-joins}
 
 For most use cases, running queries with JOINs (as in Postgres) on raw data in ClickHouse should perform significantly better than in Postgres.
 
@@ -39,7 +39,7 @@ ORDER BY t.views DESC
 SETTINGS final=1;
 ```
 
--  **Optimize Ordering Keys**: Consider including JOIN columns in the `Ordering Key` of the table. For more details, refer to the page on [Ordering Key](/integrations/clickpipes/postgres/ordering_keys).
+-  **Optimize Ordering Keys**: Consider including JOIN columns in the `Ordering Key` of the table. For more details, refer to the page on [Ordering Keys](/integrations/clickpipes/postgres/ordering_keys).
 
 - **Use Dictionaries for dimension tables**: Consider creating a [dictionary](/sql-reference/dictionaries) from a table in ClickHouse to improve lookup performance during query execution. This [documentation](/dictionary#speeding-up-joins-using-a-dictionary) provides an example of how to use dictionaries to optimize JOIN queries with a StackOverflow dataset.
 
@@ -89,13 +89,13 @@ SETTINGS join_algorithm = 'parallel_hash'
 Peak memory usage: 5.44 GiB.
 ```
 
-### Denormalization {#denormalization}
+## Denormalization {#denormalization}
 
-Another approach users follow to speed up queries is denormalizing data in ClickHouse to create a more flattened table. You could do this with Refreshable Materialized views or Incremental Materialized views.
+Another approach users follow to speed up queries is denormalizing data in ClickHouse to create a more flattened table. You could do this with [Refreshable Materialized views](/materialized-view/refreshable-materialized-view) or [Incremental Materialized views](/materialized-view/incremental-materialized-view).
 
-Two main strategies will be explored when [denormalizing data using materialized views](/data-modeling/denormalization). One is to flatten the raw data with no transformation simply; we'll refer to it as raw denormalization. The other approach is to aggregate the data as we denormalize it and store it in a Materialized view; we'll refer to it as aggregated denormalization. 
+Two main strategies will be explored when [denormalizing data using materialized views](/data-modeling/denormalization). One is to flatten the raw data with no transformation simply; we'll refer to it as _raw denormalization_. The other approach is to aggregate the data as we denormalize it and store it in a Materialized view; we'll refer to it as _aggregated denormalization_. 
 
-#### Raw denormalization with Refreshable Materialized Views {#raw-denormalization-with-refreshable-materialized-views}
+### Raw denormalization with Refreshable Materialized Views {#raw-denormalization-with-refreshable-materialized-views}
 
 Using Refreshable Materialized views to flatten data is easy and allows for the filtering out of duplicates at refresh time, as described in the [deduplication strategy page](/integrations/clickpipes/postgres/deduplication).
 
@@ -111,7 +111,7 @@ SELECT p.*, u.* FROM posts p FINAL LEFT JOIN users u FINAL ON u.id = p.owneruser
 WHERE p._peerdb_is_deleted = 0;
 ```
 
-After a few seconds the materialized view is populated with the result of the JOIN query. We can query it with no JOINs or FINAL keyword. 
+After a few seconds the materialized view is populated with the result of the JOIN query. We can query it with without JOINs or the FINAL keyword. 
 
 ```sql
 -- Number of posts and sum view for top 10 most upvoted users 
@@ -130,7 +130,7 @@ ORDER BY upvotes DESC
 LIMIT 10
 ```
 
-#### Aggregated denormalization with Refreshable Materialized Views {#aggregated-denormalization-with-refreshable-materialized-views}
+### Aggregated denormalization with Refreshable Materialized Views {#aggregated-denormalization-with-refreshable-materialized-views}
 
 It is also a common strategy to aggregate the data and store the result in separate tables using Refreshable Materialized Views for even faster access to results but at the cost of query flexibility.
 

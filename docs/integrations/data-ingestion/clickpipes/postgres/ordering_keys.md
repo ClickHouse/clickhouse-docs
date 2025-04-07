@@ -9,7 +9,7 @@ title: 'Ordering keys'
 
 For larger use cases, you should include additional columns beyond the Postgres primary key in the ClickHouse ordering key to optimize queries. By default, choosing an ordering key different from the Postgres primary key can cause data deduplication issues in ClickHouse. This happens because the ordering key in ClickHouse serves a dual role: it controls data indexing and sorting while acting as the deduplication key. The easiest way to address this issue is by defining refreshable materialized views.
 
-### Use Refreshable Materialized Views {#use-refreshable-materialized-views}
+## Use Refreshable Materialized Views {#use-refreshable-materialized-views}
 
 A simple way to define custom ordering keys (ORDER BY) is using [refreshable materialized views](/materialized-view/refreshable-materialized-view) (MVs). These allow you to periodically (e.g., every 5 or 10 minutes) copy the entire table with the desired ordering key. 
 
@@ -24,11 +24,11 @@ SELECT * FROM posts FINAL
 WHERE _peerdb_is_deleted = 0; -- this does the deduplication
 ```
 
-### Custom ordering keys without refreshable materialized views {#custom-ordering-keys-without-refreshable-materialized-views}
+## Custom ordering keys without refreshable materialized views {#custom-ordering-keys-without-refreshable-materialized-views}
 
 If refreshable materialized views don't work due to the scale of data, here are a few recommendations you can follow to define custom ordering keys on larger tables and overcome deduplication-related issues.
 
-**Choose ordering key columns that don't change for a given row**
+### Choose ordering key columns that don't change for a given row
 
 When including additional columns in the ordering key for ClickHouse (besides the primary key from Postgres), we recommend selecting columns that don't change for each row. This helps prevent data consistency and deduplication issues with ReplacingMergeTree.
 
@@ -36,7 +36,7 @@ For example, in a multi-tenant SaaS application, using (`tenant_id`, `id`) as th
 
 **Note**: If you have scenarios where ordering keys need to include columns that change, please reach out to us at support@clickhouse.com. There are advanced methods to handle this, and we will work with you to find a solution.
 
-**Set Replica Identity on Postgres Tables to Custom Ordering Key**
+### Set Replica Identity on Postgres tables to custom ordering key
 
 For Postgres CDC to function as expected, it is important to modify the `REPLICA IDENTITY` on tables to include the ordering key columns. This is essential for handling DELETEs accurately.
 
@@ -53,7 +53,7 @@ CREATE UNIQUE INDEX posts_unique_owneruserid_idx ON posts(owneruserid, id);
 ALTER TABLE posts REPLICA IDENTITY USING INDEX posts_unique_owneruserid_idx;
 ```
 
-### Projections {#projections}
+## Projections {#projections}
 
 [Projections](/sql-reference/statements/alter/projection) are useful for running queries on a column that is not a part of the primary key.
 
@@ -61,7 +61,7 @@ ALTER TABLE posts REPLICA IDENTITY USING INDEX posts_unique_owneruserid_idx;
 
 Projections are defined on the table we want to add a custom ordering key for. Then, each time a query is executed on this table, ClickHouse determines if the query execution can benefit from using one of the existing Projections.
 
-Let's take an example where we want to order the table posts by the field `creationdate` instead of the current one id. This would benefit query that filter using a date range.
+Let's take an example where we want to order the table posts by the field `creationdate` instead of the current one, `id`. This would benefit queries that filter using a date range.
 
 Consider the following query that finds the most viewed posts mentioning "clickhouse" in 2024.
 
@@ -79,7 +79,7 @@ LIMIT 5
 Peak memory usage: 147.04 MiB.
 ```
 
-By default, ClickHouse needs to do a full scan of the table as the order by is `id`, we can note in the last query processed 4.69 million rows.
+By default, ClickHouse needs to do a full scan of the table as `id` is in the ORDER BY. We can note in the last query that 4.69 million rows got processed.
 Now, let's add a Projection to order by `creationdate`.
 
 ```sql
