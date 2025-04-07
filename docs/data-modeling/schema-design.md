@@ -307,7 +307,7 @@ LIMIT 3
 
 For users interested in the compression improvements achieved by using specific types and appropriate ordering keys, see [Compression in ClickHouse](/data-compression/compression-in-clickhouse). If users need to further improve compression we also recommend the section [Choosing the right column compression codec](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec).
 
-## Next: Data Modelling Techniques {#next-data-modelling-techniques}
+## Next: Data Modeling Techniques {#next-data-modeling-techniques}
 
 Until now, we've migrated only a single table. While this has allowed us to introduce some core ClickHouse concepts, most schemas are unfortunately not this simple.
 
