@@ -1,17 +1,18 @@
 ---
 slug: /guides/developer/debugging-memory-issues
-sidebar_label: Отладка проблем с памятью
+sidebar_label: 'Отладка проблем с памятью'
 sidebar_position: 1
-description: Запросы, которые помогут вам отладить проблемы с памятью.
+description: 'Запросы, которые помогут вам отладить проблемы с памятью.'
 keywords: ['проблемы с памятью']
+title: 'Отладка проблем с памятью'
 ---
 
 
 # Отладка проблем с памятью {#debugging-memory-issues}
 
-При возникновении проблем с памятью или утечке памяти полезно знать, какие запросы и ресурсы потребляют значительное количество памяти. Ниже вы найдете запросы, которые помогут вам отладить проблемы с памятью, определив, какие запросы, базы данных и таблицы можно оптимизировать:
+При возникновении проблем с памятью или утечке памяти полезно знать, какие запросы и ресурсы потребляют значительное количество памяти. Ниже вы можете найти запросы, которые могут помочь вам отладить проблемы с памятью, определив, какие запросы, базы данных и таблицы могут быть оптимизированы:
 
-## Список текущих процессов по пиковому использованию памяти {#list-currently-running-processes-by-peak-memory}
+## Список текущих выполняемых процессов по максимальному использованию памяти {#list-currently-running-processes-by-peak-memory}
 
 ```sql
 SELECT
@@ -50,13 +51,13 @@ FROM system.tables
 WHERE engine IN ('Memory','Set','Join');
 ```
 
-## Вывод общего объема памяти, используемой при слияниях {#output-total-memory-used-by-merges}
+## Вывод общего объема памяти, используемой мержами {#output-total-memory-used-by-merges}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.merges;
 ```
 
-## Вывод общего объема памяти, используемой текущими процессами {#output-total-memory-used-by-currently-running-processes}
+## Вывод общего объема памяти, используемой текущими выполняемыми процессами {#output-total-memory-used-by-currently-running-processes}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.processes;

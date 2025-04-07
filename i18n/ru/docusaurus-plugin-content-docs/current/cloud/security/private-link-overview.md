@@ -1,13 +1,14 @@
 ---
-sidebar_label: 'Обзор частной ссылки'
+sidebar_label: 'Обзор Частной Ссылки'
 slug: /cloud/security/private-link-overview
-title: 'Обзор частной ссылки'
+title: 'Обзор Частной Ссылки'
+description: 'Целевая страница для Частной Ссылки'
 ---
 
 
-# Обзор частной ссылки
+# Обзор Частной Ссылки
 
-ClickHouse Cloud предоставляет возможность подключить ваши службы к вашей облачной виртуальной сети. Обратите внимание на руководства ниже для вашего провайдера:
+ClickHouse Cloud предоставляет возможность подключения ваших сервисов к вашему облачному виртуальному сетевому окружению. Обратитесь к руководствам ниже для вашего провайдера:
 
 - [AWS Private Link](/cloud/security/aws-privatelink.md)
 - [GCP Private Service Connect](/cloud/security/gcp-private-service-connect.md)

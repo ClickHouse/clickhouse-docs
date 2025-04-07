@@ -1,14 +1,15 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/maxintersectionsposition
+description: 'Агрегатная функция, которая вычисляет позиции вхождений функции
+  maxIntersections.'
 sidebar_position: 164
-title: maxIntersectionsPosition
-description: "Агрегатная функция, которая вычисляет позиции появлений функции maxIntersections."
+slug: /sql-reference/aggregate-functions/reference/maxintersectionsposition
+title: 'maxIntersectionsPosition'
 ---
 
 
 # maxIntersectionsPosition
 
-Агрегатная функция, которая вычисляет позиции появлений функции [`maxIntersections`](./maxintersections.md).
+Агрегатная функция, которая вычисляет позиции вхождений функции [`maxIntersections`](./maxintersections.md).
 
 Синтаксис:
 
@@ -24,7 +25,7 @@ maxIntersectionsPosition(start_column, end_column)
 
 **Возвращаемое значение**
 
-Возвращает стартовые позиции максимального числа пересекающихся интервалов.
+Возвращает начальные позиции максимального количества пересекающихся интервалов.
 
 **Пример**
 
@@ -35,7 +36,11 @@ CREATE TABLE my_events (
 )
 Engine = MergeTree
 ORDER BY tuple();
+```
 
+Вставляем данные в таблицу:
+
+```sql
 INSERT INTO my_events VALUES
    (1, 3),
    (1, 6),
@@ -52,7 +57,7 @@ INSERT INTO my_events VALUES
     3 - - - 7
 ```
 
-Обратите внимание, что три из этих интервалов имеют общее значение 4, и это начинается со 2-го интервала:
+Обратите внимание, что три из этих интервалов имеют значение 4 общее, и это начинается со второго интервала:
 
 ```sql
 SELECT maxIntersectionsPosition(start, end) FROM my_events;

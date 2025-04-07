@@ -1,22 +1,23 @@
 ---
-title: TabSeparatedRawWithNamesAndTypes
-slug: /interfaces/formats/TabSeparatedRawWithNamesAndTypes
-keywords: ['TabSeparatedRawWithNamesAndTypes', 'TSVRawWithNamesAndTypes', 'RawWithNamesAndTypes']
-input_format: true
-output_format: true
 alias: ['TSVRawWithNamesAndTypes', 'RawWithNamesAndTypes']
+description: 'Документация для формата TabSeparatedRawWithNamesAndTypes'
+input_format: true
+keywords: ['TabSeparatedRawWithNamesAndTypes', 'TSVRawWithNamesAndTypes', 'RawWithNamesAndTypes']
+output_format: true
+slug: /interfaces/formats/TabSeparatedRawWithNamesAndTypes
+title: 'TabSeparatedRawWithNamesAndTypes'
 ---
 
-| Input | Output | Alias                                             |
-|-------|--------|---------------------------------------------------|
-| ✔     | ✔      | `TSVRawWithNamesAndNames`, `RawWithNamesAndNames` |
+| Входные данные | Выходные данные | Псевдоним                                       |
+|----------------|----------------|-------------------------------------------------|
+| ✔              | ✔              | `TSVRawWithNamesAndNames`, `RawWithNamesAndNames` |
 
 ## Описание {#description}
 
 Отличается от формата [`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md) тем, что строки записываются без экранирования.
 
 :::note
-При парсинге с использованием этого формата табуляции или переводы строк не допускаются в каждом поле.
+При разборе с использованием этого формата табуляции или переходы на новую строку не допускаются в каждом поле.
 :::
 
 ## Пример использования {#example-usage}

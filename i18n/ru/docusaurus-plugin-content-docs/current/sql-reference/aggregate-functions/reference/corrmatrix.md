@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/corrmatrix
-sidebar_position: 118
-title: 'corrMatrix'
 description: 'Вычисляет матрицу корреляции по N переменным.'
+sidebar_position: 118
+slug: /sql-reference/aggregate-functions/reference/corrmatrix
+title: 'corrMatrix'
 ---
 
 
@@ -18,7 +18,7 @@ corrMatrix(x[, ...])
 
 **Аргументы**
 
-- `x` — переменное число параметров. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
+- `x` — переменное количество параметров. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 

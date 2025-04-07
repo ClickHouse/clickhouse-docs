@@ -1,42 +1,48 @@
 ---
 slug: /integrations/jupysql
-sidebar_label: Jupyter notebooks
-description: JupySQL - это многоплатформенный инструмент работы с базами данных для Jupyter.
+sidebar_label: 'Jupyter notebooks'
+description: 'JupySQL - это многоплатформенный инструмент для работы с базами данных в Jupyter.'
+title: 'Использование JupySQL с ClickHouse'
 ---
 
+import Image from '@theme/IdealImage';
 import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql-plot-1.png';
 import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql-plot-2.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
 # Использование JupySQL с ClickHouse
+
+<CommunityMaintainedBadge/>
+
 В этом руководстве мы покажем интеграцию с ClickHouse.
 
 Мы будем использовать JupySQL для выполнения запросов к ClickHouse.
-После загрузки данных мы визуализируем их с помощью SQL-диаграмм.
+После загрузки данных мы визуализируем их с помощью SQL-графиков.
 
-Интеграция между JupySQL и ClickHouse возможна благодаря использованию библиотеки clickhouse_sqlalchemy. Эта библиотека позволяет легко взаимодействовать между двумя системами и дает пользователям возможность подключаться к ClickHouse и передавать диалект SQL. После подключения пользователи могут выполнять SQL-запросы напрямую из родного интерфейса ClickHouse или из Jupyter notebook.
+Интеграция между JupySQL и ClickHouse возможна благодаря использованию библиотеки clickhouse_sqlalchemy. Эта библиотека позволяет легко обмениваться данными между двумя системами и дает возможность пользователям подключаться к ClickHouse и передавать SQL-диалект. После подключения пользователи могут выполнять SQL-запросы прямо из родного интерфейса ClickHouse или непосредственно из Jupyter notebook.
 
 ```python
 
-# Установка необходимых пакетов
+# Установите необходимые пакеты
 %pip install --quiet jupysql clickhouse_sqlalchemy
 ```
 
-    Примечание: вам, возможно, нужно будет перезапустить ядро, чтобы использовать обновленные пакеты.
+    Примечание: вам может потребоваться перезапустить ядро, чтобы использовать обновленные пакеты.
 
 ```python
 import pandas as pd
 from sklearn_evaluation import plot
 
 
-# Импорт расширения jupysql для Jupyter для создания SQL-ячейки
+# Импортируйте расширение jupysql для создания SQL ячеек
 %load_ext sql
 %config SqlMagic.autocommit=False
 ```
 
-**Вы должны убедиться, что ваш Clickhouse запущен и доступен для следующих этапов. Вы можете использовать как локальную, так и облачную версию.**
+**Вам нужно убедиться, что ваш ClickHouse доступен для следующих этапов. Вы можете использовать как локальную, так и облачную версию.**
 
-**Примечание:** вам нужно будет настроить строку подключения в зависимости от типа экземпляра, к которому вы пытаетесь подключиться (url, user, password). В приведенном ниже примере мы использовали локальный экземпляр. Чтобы узнать больше об этом, ознакомьтесь с [руководством](/getting-started/quick-start).
+**Примечание:** вам нужно будет настроить строку подключения в зависимости от типа экземпляра, к которому вы пытаетесь подключиться (url, user, password). В приведенном ниже примере мы использовали локальный экземпляр. Чтобы узнать больше об этом, ознакомьтесь с [этим руководством](/getting-started/quick-start).
 
 ```python
 %sql clickhouse://default:@localhost:8123/default
@@ -359,9 +365,9 @@ WHERE trip_distance < 6.3
 ```
 
 ```response
-<AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
+<AxesSubplot: title={'center': "'trip_distance' из 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
 ```
-<img src={jupysql_plot_1} alt="пример гистограммы" />
+<Image img={jupysql_plot_1} size="md" alt="Гистограмма, показывающая распределение расстояний поездок с 10 корзинами из набора данных short-trips" border />
 
 ```python
 ax = %sqlplot histogram --table short-trips --column trip_distance --bins 50 --with short-trips
@@ -370,4 +376,4 @@ ax.set_title("Расстояние поездки из поездок < 6.3")
 _ = ax.set_xlabel("Расстояние поездки")
 ```
 
-<img src={jupysql_plot_2} alt="второй пример гистограммы" />
+<Image img={jupysql_plot_2} size="md" alt="Гистограмма, показывающая распределение расстояний поездок с 50 корзинами и сеткой, с заголовком 'Расстояние поездки из поездок < 6.3'" border />

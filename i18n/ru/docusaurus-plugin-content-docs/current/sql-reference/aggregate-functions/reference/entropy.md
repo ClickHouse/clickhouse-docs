@@ -1,18 +1,18 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/entropy
+description: 'Вычисляет энтропию Шеннона для колонки значений.'
 sidebar_position: 131
-title: 'entropy'
-description: 'Calculates Shannon entropy of for a column of values.'
+slug: /sql-reference/aggregate-functions/reference/entropy
+title: 'энтропия'
 ---
 
 
-# entropy
+# энтропия
 
-Вызывает [энтропию Шеннона](https://en.wikipedia.org/wiki/Entropy_(information_theory)) для колонки значений.
+Вычисляет [энтропию Шеннона](https://en.wikipedia.org/wiki/Entropy_(information_theory)) для колонки значений.
 
 **Синтаксис**
 
-``` sql
+```sql
 entropy(val)
 ```
 
@@ -30,7 +30,7 @@ entropy(val)
 
 Запрос:
 
-``` sql
+```sql
 CREATE TABLE entropy (`vals` UInt32,`strings` String) ENGINE = Memory;
 
 INSERT INTO entropy VALUES (1, 'A'), (1, 'A'), (1,'A'), (1,'A'), (2,'B'), (2,'B'), (2,'C'), (2,'D');
@@ -40,7 +40,7 @@ SELECT entropy(vals), entropy(strings) FROM entropy;
 
 Результат:
 
-``` text
+```text
 ┌─entropy(vals)─┬─entropy(strings)─┐
 │             1 │             1.75 │
 └───────────────┴──────────────────┘

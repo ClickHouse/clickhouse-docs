@@ -5,21 +5,31 @@ import time
 import xxhash
 import argparse
 import os
+
+from anthropic import Anthropic
 from llama_index.core import Document
 from llama_index.core.node_parser import MarkdownNodeParser
 import json
 import math
 import shutil
 from openai import OpenAI
+import anthropic
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 TRANSLATE_EXCLUDED_FILES = {"about-us/adopters.md", "index.md", "integrations/language-clients/java/jdbc-v1.md"}
 TRANSLATE_EXCLUDED_FOLDERS = {"whats-new", "changelogs"}
 IGNORE_FOLDERS = {"ru", "zh"}
 
+
 client = OpenAI(
     api_key=os.environ.get("OPENAI_API_KEY"),
 )
+print(f"OpenAI API Key available: {'Yes' if os.environ.get('ANTHROPIC_API_KEY') else 'No'}")
+
+anthropic_client = Anthropic(
+    api_key=os.environ.get("ANTHROPIC_API_KEY"),
+)
+print(f"Anthropic API Key available: {'Yes' if os.environ.get('ANTHROPIC_API_KEY') else 'No'}")
 
 MAX_CHUNK_SIZE = 30000
 
@@ -43,8 +53,11 @@ def load_config(file_path):
 
 def format_glossary_prompt(glossary):
     glossary_text = "\n".join([f"- {key}: {value}" for key, value in glossary.items()])
-    return f"Use the following glossary for specific translations:\n{glossary_text}\n"
+    return f"Use the following glossary for specific translations of key technical terms. Take these into account even when translating YAML frontmatter fields like title, sidebar_label etc. Translate these words like this, within the context of the sentence:\n{glossary_text}\n"
 
+def format_translation_override_prompt(override):
+    translation_text = "\n".join([f"- {key}: {value}" for key, value in override.items()])
+    return f"If you encounter these phrases, take them as manual overrides and translate them accordingly:\n{translation_text}\n"
 
 def hash_file(input_path, chunk_size=65536):
     hasher = xxhash.xxh64()
@@ -74,33 +87,60 @@ def write_complete_file(output_path):
     with open(output_path, "w") as f:
         f.write(timestamp + "\n")
 
-def translate_text(config, text, model="gpt-4o-mini"):
+def translate_text(config, text, model="gpt-4o-mini", translation_override_prompt=""):
     language = config["language"]
     glossary = config["glossary"]
-    prompt = config[
-        "prompt"] if "prompt" in config else f"""
+    prompt = config["prompt"] if "prompt" in config else f"""
         Translate the following ClickHouse documentation text from English to {language}. Ensure the following rules are followed:
-            - This content may be part of a document, so maintain the original html tags and markdown formatting used in Docusaurus, including any headings, code blocks, lists, links, and inline formatting like bold or italic text. Code backs should be preserved using ` and ```.
+            - This content may be part of a document, so maintain the original html tags and markdown formatting used in Docusaurus, including any headings, code blocks, lists, links, and inline formatting like bold or italic text. Code blocks should be preserved using ` and ```.
             - Ensure that no content, links, explicit heading ids (denoted by {{#my-explicit-id}}), or references are omitted or altered during translation, preserving the same amount of information as the original text. 
-            - Do not translate code, URLs, or any links within markdown. Mark down links must be preserved and never modified. Urls in text should be surrounded by white space and have never have adjacent {language} characters.
+            - Do not translate code, URLs, or any links within markdown. Mark down links must be preserved and never modified. Urls in text should be surrounded by white space and never have adjacent {language} characters.
             - Ensure the markdown is MDX 3 compatible - escaping < and > with &lt; and &gt; and avoiding the creation of unclosed xml tags.
             - Do not add new code delimiters which are not present in the original content e.g. '```html', even if the content appears to contain this type.
             - Do not translate terms which indicate setting names. These are denoted by lower case and underscore e.g. live_view_heartbeat_interval.
+            - Do not translate terms in all caps which are SQL statements. For example DESCRIBE TABLE, RENAME, SET ROLE etc.
             - Translate the title, sidebar_label, keywords (list of single quoted strings) and description in yaml metadata blocks if they exist. Ensure these are wrapped in single quotes. Do not add entries.
             - This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. 
             - Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}.
         """
     glossary_prompt = format_glossary_prompt(glossary)
-    prompt_content = f"{glossary_prompt}\n{prompt}"
+    prompt_content = f"{glossary_prompt}\n{prompt}\n{translation_override_prompt}"
     try:
-        completion = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": prompt_content},
-                {"role": "user", "content": text}
-            ]
-        )
-        return completion.choices[0].message.content
+        if model=="claude-3-5-sonnet-20240620":
+            with anthropic_client.messages.stream(
+                    max_tokens=8192, # max allowed for claude-3-5-sonnet-20240620
+                    messages=[
+                        {
+                            "role": "user",
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": text
+                                }
+                            ]
+                        }
+                    ],
+                    model=model,
+                    system=prompt_content
+            ) as stream:
+                full_response = ""
+
+                # Process each chunk as it arrives
+                for chunk in stream:
+                    if chunk.type == "content_block_delta" and hasattr(chunk.delta, "text"):
+                        # Add this chunk of text to our response
+                        full_response += chunk.delta.text
+                # Return the complete translated text
+                return full_response
+        else:
+            completion = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": prompt_content},
+                    {"role": "user", "content": text}
+                ]
+            )
+            return completion.choices[0].message.content
     except Exception as e:
         print(f"failed to translate: {e}")
         return None
@@ -146,7 +186,27 @@ def translate_file(config, input_file_path, output_file_path, model):
         chunks = split_text(original_text, input_file_path, MAX_CHUNK_SIZE)
         for chunk in chunks:
             print(f" - start [{count}/{len(chunks)}], [{input_file_path}]")
-            translated_chunk = translate_text(config, chunk, model)
+
+            # check for per file translation override
+            base_path = os.path.splitext(output_file_path)[0]
+            translation_override_path = base_path + ".translate_override"
+            translation_override_prompt = ""
+            try:
+                with open(translation_override_path, "r", encoding="utf-8") as override_file:
+                    translation_override = json.load(override_file)
+                    if config["language"] not in translation_override:
+                        print(f"Warning: {config['language']} not found in translation override file")
+                    else:
+                        override = translation_override[config["language"]]
+                        translation_override_prompt = format_translation_override_prompt(override)
+                        print(f"Successfully loaded override for {config['language']}")
+            except FileNotFoundError as e:
+                pass
+            except json.JSONDecodeError:
+                print(f"Error parsing JSON in override file: {translation_override_path}")
+            except Exception as e:
+                print(f"Unexpected error with override file: {str(e)}")
+            translated_chunk = translate_text(config, chunk, model, translation_override_prompt)
             if translated_chunk:
                 if translated_chunk.startswith("```markdown"):
                     translated_chunk = translated_chunk.removeprefix("```markdown")
@@ -177,7 +237,7 @@ def translate_file(config, input_file_path, output_file_path, model):
         # generate hash file - TODO: This should probably happen after the files being renamed.
         write_file_hash(input_file_path, output_file_path.removesuffix(".translate") + ".hash", chunk_size=65536)
 
-    except FileNotFoundError:
+    except FileNotFoundError as e:
         print(f"no file: {input_file_path}")
     except Exception as e:
         raise e
@@ -297,7 +357,7 @@ def translate_plugin_data(output_folder, config, model="gpt-4o-mini"):
     language = config["language"]
     glossary = config["glossary"]
     prompt = f"""
-    Translate the following Docusaurus translation file from English to {language}. This content is JSON. Please preserve the structure and only translate values for the  message keys. Ensure the response is JSON only and preserve any translated values.  Do not translate description values. If values are already translated preserve them.
+    Translate the following Docusaurus translation file from English to {language}. This content is JSON. Please preserve the structure and only translate values for the message keys. Ensure the response is JSON only and preserve any translated values. Do not translate description values. If values are already translated preserve them.
 
     This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}.
     """
@@ -344,6 +404,10 @@ def remove_old_files(files_translated, output_folder):
             if not file.endswith(".DS_Store") and not file.endswith(".hash"):
                 current_files.add(os.path.join(output_folder, relative_path))
     files_to_remove = current_files - files_translated
+
+    # Filter out special files that should be preserved
+    files_to_remove = {file_path for file_path in files_to_remove if not file_path.endswith(".md.translate_override")}
+
     # Remove the unnecessary files
     for file_path in files_to_remove:
         try:

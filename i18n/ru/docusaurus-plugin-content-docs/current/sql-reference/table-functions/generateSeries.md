@@ -1,8 +1,10 @@
 ---
-slug: /sql-reference/table-functions/generateSeries
+description: 'Генерация последовательностей чисел.'
+sidebar_label: 'generateSeries'
 sidebar_position: 147
-sidebar_label: generateSeries
+slug: /sql-reference/table-functions/generateSeries
+title: 'Генерация последовательностей чисел'
 ---
 
-### Псевдоним Для {#alias-to}
+### Alias To {#alias-to}
 [generate_series](generate_series.md)

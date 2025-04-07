@@ -1,19 +1,20 @@
 ---
-title: 'JSONCompactEachRow'
-slug: '/interfaces/formats/JSONCompactEachRow'
-keywords: ['JSONCompactEachRow']
-input_format: true
-output_format: true
 alias: []
+description: 'Документация для формата JSONCompactEachRow'
+input_format: true
+keywords: ['JSONCompactEachRow']
+output_format: true
+slug: /interfaces/formats/JSONCompactEachRow
+title: 'JSONCompactEachRow'
 ---
 
-| Входные данные | Выходные данные | Псевдоним |
-|----------------|-----------------|-----------|
-| ✔              | ✔               |           |
+| Вход | Выход | Псевдоним |
+|-------|--------|-------|
+| ✔     | ✔      |       |
 
 ## Описание {#description}
 
-Отличается от [`JSONEachRow`](./JSONEachRow.md) только тем, что строки данных выводятся в виде массивов, а не объектов.
+Отличается от [`JSONEachRow`](./JSONEachRow.md) только тем, что строки данных выводятся как массивы, а не как объекты.
 
 ## Пример использования {#example-usage}
 
