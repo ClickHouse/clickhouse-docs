@@ -12,10 +12,10 @@ import async_inserts from '@site/static/images/bestpractices/async_inserts.png';
 import AsyncInserts from '@site/docs/best-practices/_snippets/_async_inserts.md';
 import BulkInserts from '@site/docs/best-practices/_snippets/_bulk_inserts.md';
 
-Efficient data ingestion is a basis of high-performance ClickHouse deployments. Selecting the right insert strategy can dramatically impact throughput, cost, and reliability. This section outlines best practices, tradeoffs, and configuration options to help you make the right decision for your workload.
+Efficient data ingestion forms the basis of high-performance ClickHouse deployments. Selecting the right insert strategy can dramatically impact throughput, cost, and reliability. This section outlines best practices, tradeoffs, and configuration options to help you make the right decision for your workload.
 
 :::note
-The following assumes you are pushing data to ClickHouse via a client. If you are pulling data into ClickHouse e.g. using built in table functions such as [s3](/sql-reference/table-functions/s3) and [gcs](/sql-reference/table-functions/gcs), we recommend [this guide](/integrations/s3/performance).
+The following assumes you are pushing data to ClickHouse via a client. If you are pulling data into ClickHouse e.g. using built in table functions such as [s3](/sql-reference/table-functions/s3) and [gcs](/sql-reference/table-functions/gcs), we recommend our guide ["Optimizing for S3 Insert and Read Performance"](/integrations/s3/performance).
 :::
 
 ## Synchronous inserts by default {#synchronous-inserts-by-default}
@@ -53,7 +53,7 @@ Using the values from that formatted data and the target table's [DDL](/sql-refe
 
 <BulkInserts/>
 
-### Ensure Idempotent Retries {#ensure-idempotent-retries}
+### Ensure idempotent retries {#ensure-idempotent-retries}
 
 Synchronous inserts are also **idempotent**. When using MergeTree engines, ClickHouse will deduplicate inserts by default. This protects against ambiguous failure cases, such as:
 
@@ -67,7 +67,7 @@ In both cases, it's safe to **retry the insert** - as long as the batch contents
 For sharded clusters, you have two options:
 
 * Insert directly into a **MergeTree** or **ReplicatedMergeTree** table. This is the most efficient option when the client can perform load balancing across shards. With `internal_replication = true`, ClickHouse handles replication transparently.
-* Insert into a Distributed table. This allows clients to send data to any node and let ClickHouse forward it to the correct shard. This is simpler but slightly less performant due to the extra forwarding step. `internal_replication = true` is still recommended.
+* Insert into a [Distributed table](/engines/table-engines/special/distributed). This allows clients to send data to any node and let ClickHouse forward it to the correct shard. This is simpler but slightly less performant due to the extra forwarding step. `internal_replication = true` is still recommended.
 
 **In ClickHouse Cloud all nodes read and write to the same single shard. Inserts are automatically balanced across nodes. Users can simply send inserts to the exposed endpoint.**
 
@@ -89,7 +89,7 @@ Compressing insert data reduces the size of the payload sent over the network, m
 
 For inserts, compression is especially effective when used with the Native format, which already matches ClickHouse's internal columnar storage model. In this setup, the server can efficiently decompress and directly store the data with minimal transformation.
 
-#### Use LZ4 for Speed, ZSTD for Compression Ratio {#use-lz4-for-speed-zstd-for-compression-ratio}
+#### Use LZ4 for speed, ZSTD for compression ratio {#use-lz4-for-speed-zstd-for-compression-ratio}
 
 ClickHouse supports several compression codecs during data transmission. Two common options are:
 
@@ -102,7 +102,7 @@ Best practice: Use LZ4 unless you have constrained bandwidth or incur data egres
 In tests from the [FastFormats benchmark](https://clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient), LZ4-compressed Native inserts reduced data size by more than 50%, cutting ingestion time from 150s to 131s for a 5.6 GiB dataset. Switching to ZSTD compressed the same dataset down to 1.69 GiB, but increased server-side processing time slightly.
 :::
 
-#### Compression Reduces Resource Usage {#compression-reduces-resource-usage}
+#### Compression reduces resource usage {#compression-reduces-resource-usage}
 
 Compression not only reduces network traffic—it also improves CPU and memory efficiency on the server. With compressed data, ClickHouse receives fewer bytes and spends less time parsing large inputs. This benefit is especially important when ingesting from multiple concurrent clients, such as in observability scenarios.
 

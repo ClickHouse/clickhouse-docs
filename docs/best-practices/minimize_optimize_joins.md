@@ -26,7 +26,7 @@ For a full guide on denormalizing data in ClickHouse see [here](/data-modeling/d
 
 ## When JOINs are required {#when-joins-are-required}
 
-When JOINs are required, ensure you're using **at least 24.12 and preferably the latest**, as JOIN performance continues to improve. As of ClickHouse 24.12, the query planner now automatically places the smaller table on the right side of the join for optimal performance - a task that previously had to be done manually. Even more enhancements are coming soon, including more aggressive filter pushdown and automatic re-ordering of multiple joins.
+When JOINs are required, ensure you’re using **at least version 24.12 and preferably the latest version**, as JOIN performance continues to improve with each new release. As of ClickHouse 24.12, the query planner now automatically places the smaller table on the right side of the join for optimal performance - a task that previously had to be done manually. Even more enhancements are coming soon, including more aggressive filter pushdown and automatic re-ordering of multiple joins.
 
 Follow these best practices to improve JOIN performance:
 
@@ -44,13 +44,13 @@ When using dictionaries for JOINs in ClickHouse, it's important to understand th
 
 ## Choosing the right JOIN Algorithm {#choosing-the-right-join-algorithm}
 
-ClickHouse supports several join algorithms that trade off between speed and memory:
+ClickHouse supports several JOIN algorithms that trade off between speed and memory:
 
 * **Parallel Hash JOIN (default):** Fast for small-to-medium right-hand tables that fit in memory.
 * **Direct JOIN:** Ideal when using dictionaries (or other table engines with key-value characteristics) with `INNER` or `LEFT ANY JOIN`  - the fastest method for point lookups as it eliminates the need to build a hash table.
 * **Full Sorting Merge JOIN:** Efficient when both tables are sorted on the join key.
 * **Partial Merge JOIN:** Minimizes memory but is slower—best for joining large tables with limited memory.
-* **Grace Hash JOIN:** Flexible and can memory-tunable, good for large datasets with adjustable performance characteristics.
+* **Grace Hash JOIN:** Flexible and memory-tunable, good for large datasets with adjustable performance characteristics.
 
 <Image img={joins} size="md" alt="Joins - speed vs memory"/>
 
@@ -66,4 +66,4 @@ For optimal performance:
 * Avoid more than 3–4 joins per query.
 * Benchmark different algorithms on real data - performance varies based on JOIN key distribution and data size.
 
-For more on JOIN optimization strategies, join algorithms, and how to tune them, refer to the[ ClickHouse documentation](/guides/joining-tables) and this [blog series](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1).
+For more on JOIN optimization strategies, JOIN algorithms, and how to tune them, refer to the[ ClickHouse documentation](/guides/joining-tables) and this [blog series](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1).

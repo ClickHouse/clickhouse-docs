@@ -46,7 +46,7 @@ With partitioning enabled, ClickHouse only [merges](/merges) data parts within, 
 
 ## Applications of partitioning {#applications-of-partionning}
 
-Partitioning is a powerful tool for managing large datasets in ClickHouse, especially in observability and analytics use cases. It enables efficient data life cycle operations by allowing entire partitions, often aligned with time or business logic, to be dropped, moved, or archived in a single metadata operation. This is significantly faster and less resource-intensive than row-level deletes or copy operations. Partitioning also integrates cleanly with ClickHouse features like TTL and tiered storage, making it possible to implement retention policies or hot/cold storage strategies without custom orchestration. For example, recent data can be kept on fast SSD-backed storage, while older partitions are automatically moved to cheaper object storage.
+Partitioning is a powerful tool for managing large datasets in ClickHouse, especially in observability and analytics use cases. It enables efficient data life cycle operations by allowing entire partitions, often aligned with time or business logic, to be dropped, moved, or archived in a single metadata operation. This is significantly faster and less resource-intensive than row-level delete or copy operations. Partitioning also integrates cleanly with ClickHouse features like TTL and tiered storage, making it possible to implement retention policies or hot/cold storage strategies without custom orchestration. For example, recent data can be kept on fast SSD-backed storage, while older partitions are automatically moved to cheaper object storage.
 
 While partitioning can improve query performance for some workloads, it can also negatively impact response time. 
 
@@ -54,11 +54,11 @@ If the partitioning key is not in the primary key and you are filtering by it, u
 
 Conversely, if queries need to query across partitions performance may be negatively impacted due to a higher number of total parts. For this reason, users should understand their access patterns before considering partitioning a a query optimization technique.
 
-In summary, users should primarily think of partitioning as a data management technique. For an example of managing data, see [here](/observability/managing-data) and [here](/partitions#data-management).
+In summary, users should primarily think of partitioning as a data management technique. For an example of managing data, see ["Managing Data"](/observability/managing-data) from the observability use-case guide and ["What are table partitions used for?"](/partitions#data-management) from Core Concepts - Table partitions.
 
 ## Choose a low cardinality partitioning key {#choose-a-low-cardinality-partitioning-key}
 
-Importantly, a higher number of parts will negatively affect query performance. ClickHouse will therefore respond to inserts with a [“too many parts”](/knowledgebase/exception-too-many-parts) error if the number of parts exceeds [limits either in total](/operations/settings/merge-tree-settings#max_parts_in_total) or [per partition](/operations/settings/merge-tree-settings#parts_to_throw_insert).
+Importantly, a higher number of parts will negatively affect query performance. ClickHouse will therefore respond to inserts with a [“too many parts”](/knowledgebase/exception-too-many-parts) error if the number of parts exceeds specified limits either in [total](/operations/settings/merge-tree-settings#max_parts_in_total) or [per partition](/operations/settings/merge-tree-settings#parts_to_throw_insert).
 
 Choosing the right **cardinality** for the partitioning key is critical. A high-cardinality partitioning key - where the number of distinct partition values is large - can lead to a proliferation of data parts. Since ClickHouse does not merge parts across partitions, too many partitions will result in too many unmerged parts, eventually triggering the “Too many parts” error. [Merges are essential](/merges) for reducing storage fragmentation and optimizing query speed, but with high-cardinality partitions, that merge potential is lost.
 
