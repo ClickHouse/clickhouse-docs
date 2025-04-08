@@ -66,7 +66,7 @@ const config = {
   trailingSlash: false,
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "jp", "zh"],
+    locales: ["en", "jp", "zh", "ru"],
     path: "i18n",
     localeConfigs: {
       en: {
