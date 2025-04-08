@@ -8,7 +8,6 @@ title: 'Прием данных из Postgres в ClickHouse (с использо
 import BetaBadge from '@theme/badges/BetaBadge';
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
-import postgres_tile from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-tile.jpg'
 import postgres_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-connection-details.jpg'
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 import select_replication_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-replication-slot.jpg'
@@ -72,8 +71,6 @@ import Image from '@theme/IdealImage';
 <Image img={cp_step0} alt="Выбор импорта" size="lg" border/>
 
 3. Выберите плитку `Postgres CDC`
-
-   <Image img={postgres_tile} alt="Выбрать Postgres" size="lg" border/>
 
 ### Добавление подключения вашей исходной базы данных Postgres {#adding-your-source-postgres-database-connection}
 
