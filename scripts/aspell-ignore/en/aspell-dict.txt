@@ -2271,6 +2271,7 @@ kurtpop
 kurtsamp
 lagInFrame
 laion
+lakehouse
 lang
 laravel
 largestTriangleThreeBuckets
