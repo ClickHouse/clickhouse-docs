@@ -64,7 +64,7 @@ jobs:
 
       - name: Set check status
         if: steps.check_step.outcome != 'success'
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             core.setFailed('${{ matrix.check_type }} check failed.');
