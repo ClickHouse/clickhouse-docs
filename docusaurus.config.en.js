@@ -355,7 +355,8 @@ const config = {
     [
       pluginLlmsTxt,
       {}
-    ]
+    ],
+    ['./plugins/tailwind-config.js', {}],
   ],
   customFields: {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page

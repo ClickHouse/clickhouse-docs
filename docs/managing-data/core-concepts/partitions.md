@@ -25,7 +25,7 @@ Partitioning can be enabled when a table is initially defined via the [PARTITION
 To illustrate this, we [enhance](https://sql.clickhouse.com/?query=U0hPVyBDUkVBVEUgVEFCTEUgdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQ&run_query=true&tab=results) the [What are table parts](/parts) example table by adding a `PARTITION BY toStartOfMonth(date)` clause, which organizes the table`s data parts based on the months of property sales:
 
 
-```sql
+```sql runnable=true view=chart show_statistics=false
 CREATE TABLE uk.uk_price_paid_simple_partitioned
 (
     date Date,

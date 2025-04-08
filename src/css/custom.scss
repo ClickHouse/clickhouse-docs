@@ -2,6 +2,10 @@
 @use "default";
 @use "home";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* KaTeX renders the input twice by default, once in HTML and one in MathML */
 .katex-html {
   display: none;
@@ -225,8 +229,7 @@ html {
 }
 
 code {
-  font-weight: bold;
-  background-color: var(--ifm-code-background) !important;
+  background-color: var(--ifm-code-background);
   scrollbar-width: thin;
   scrollbar-color: rgb(99, 99, 99) rgb(41, 45, 62);
   span {

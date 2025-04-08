@@ -46,10 +46,10 @@ export default function CodeBlockWrapper(props) {
         </div>
     );
   }
-
+  console.log(props)
     return (
-        <>
-            <CodeBlock {...props} />
-        </>
+      <>
+          <CodeBlock {...props} />
+      </>
   );
 }
