@@ -1,0 +1,36 @@
+name: PullRequestCI
+
+env:
+  # Force the stdout and stderr streams to be unbuffered
+  PYTHONUNBUFFERED: 1
+
+on:  # yamllint disable-line rule:truthy
+  pull_request:
+    types:
+      - synchronize
+      - reopened
+      - opened
+
+# Cancel the previous wf run in PRs.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  DocsCheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'  # Adjust Node.js version as needed
+          cache: 'yarn'       # Cache yarn dependencies
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        run: yarn build
