@@ -948,3 +948,13 @@ GWLBs
 NLBs
 --docs/use-cases/data_lake/glue_catalog.md--
 Databricks
+--docs/best-practices/_snippets/_avoid_mutations.md--
+unmutated
+--docs/best-practices/selecting_an_insert_strategy.md--
+FastFormats
+--docs/best-practices/using_data_skipping_indices.md--
+Probabilistically
+--docs/best-practices/minimize_optimize_joins.md--
+tunable
+--docs/best-practices/use_materialized_views.md--
+DAGs

@@ -14,12 +14,12 @@ import Image from '@theme/IdealImage';
 
 <br/>
 :::note
-This topic doesn’t apply to ClickHouse Cloud, where [Parallel Replicas](/docs/deployment-guides/parallel-replicas) function like multiple shards in traditional shared-nothing ClickHouse clusters, and object storage [replaces](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates#shared-object-storage-for-data-availability) replicas, ensuring high availability and fault tolerance.
+This topic doesn't apply to ClickHouse Cloud, where [Parallel Replicas](/docs/deployment-guides/parallel-replicas) function like multiple shards in traditional shared-nothing ClickHouse clusters, and object storage [replaces](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates#shared-object-storage-for-data-availability) replicas, ensuring high availability and fault tolerance.
 :::
 
 ## What are table shards in ClickHouse? {#what-are-table-shards-in-clickhouse}
 
-In traditional [shared-nothing](https://en.wikipedia.org/wiki/Shared-nothing_architecture) ClickHouse clusters, sharding is used when ① the data is too large for a single server or ② a single server is too slow for processing the data. The next figure illustrates case ①, where the [uk_price_paid_simple](/parts) table exceeds a single machine’s capacity:
+In traditional [shared-nothing](https://en.wikipedia.org/wiki/Shared-nothing_architecture) ClickHouse clusters, sharding is used when ① the data is too large for a single server or ② a single server is too slow for processing the data. The next figure illustrates case ①, where the [uk_price_paid_simple](/parts) table exceeds a single machine's capacity:
 
 <Image img={image_01} size="lg" alt='SHARDS'/>
 
@@ -31,7 +31,7 @@ In such a case the data can be split over multiple ClickHouse servers in the for
 
 <br/>
 
-Each shard holds a subset of the data and functions as a regular ClickHouse table that can be queried independently. However, queries will only process that subset, which may be a valid use case depending on data distribution. Typically, a [distributed table](/docs/engines/table-engines/special/distributed) (often per server) provides a unified view of the full dataset. It doesn’t store data itself but forwards **SELECT** queries to all shards, assembles the results, and routes **INSERTS** to distribute data evenly.
+Each shard holds a subset of the data and functions as a regular ClickHouse table that can be queried independently. However, queries will only process that subset, which may be a valid use case depending on data distribution. Typically, a [distributed table](/docs/engines/table-engines/special/distributed) (often per server) provides a unified view of the full dataset. It doesn't store data itself but forwards **SELECT** queries to all shards, assembles the results, and routes **INSERTS** to distribute data evenly.
 
 ## Distributed table creation {#distributed-table-creation}
 

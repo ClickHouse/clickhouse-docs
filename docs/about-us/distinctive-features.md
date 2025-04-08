@@ -78,7 +78,7 @@ ClickHouse provides various ways to trade accuracy for performance:
 
 ## Adaptive Join Algorithm {#adaptive-join-algorithm}
 
-ClickHouse adaptively chooses how to [JOIN](../sql-reference/statements/select/join.md) multiple tables, by preferring hash-join algorithm and falling back to the merge-join algorithm if there’s more than one large table.
+ClickHouse adaptively chooses how to [JOIN](../sql-reference/statements/select/join.md) multiple tables, by preferring hash-join algorithm and falling back to the merge-join algorithm if there's more than one large table.
 
 ## Data Replication and Data Integrity Support {#data-replication-and-data-integrity-support}
 

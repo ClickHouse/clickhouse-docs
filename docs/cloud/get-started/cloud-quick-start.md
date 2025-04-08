@@ -189,7 +189,7 @@ You can use the familiar [`INSERT INTO TABLE`](../../sql-reference/statements/in
 
 :::tip ClickHouse best practice
 Insert a large number of rows per batch - tens of thousands or even millions of
-rows at once. Don't worry - ClickHouse can easily handle that type of volume - and it will [save you money](/cloud/bestpractices/bulkinserts.md) by sending fewer write requests to your service.
+rows at once. Don't worry - ClickHouse can easily handle that type of volume - and it will [save you money](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous) by sending fewer write requests to your service.
 :::
 
 <br/>
