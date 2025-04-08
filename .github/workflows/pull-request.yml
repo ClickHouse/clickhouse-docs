@@ -43,9 +43,8 @@ jobs:
       - name: Docs Check
         run: |
           cp -r "$GITHUB_WORKSPACE/ClickHouse" "$TEMP_PATH"
-          cd "$REPO_COPY/tests/ci"
-          python3 docs_check.py --force --docs-branch "$GITHUB_REF"
-          python3 finish_check.py
+          cd "$REPO_COPY"
+          python3 python3 -m ci.praktika run Docs
       - name: Cleanup
         if: always()
         run: |
