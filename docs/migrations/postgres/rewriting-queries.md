@@ -9,15 +9,17 @@ description: 'Part 2 of a guide on migrating from PostgreSQL to ClickHouse'
 
 Most SQL queries from your PostgreSQL setup should run in ClickHouse without modification and will likely execute faster.
 
-## Query like PostgreSQL {#query-like-postgresql}
+## Deduplication using CDC {#deduplication-cdc}
 
 When using real-time replication with CDC, keep in mind that updates and deletes may result in duplicate rows. To manage this, you can use techniques involving Views and Refreshable Materialized Views. 
 
-Refer to this [guide](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres) to learn how to migrate your application from PostgreSQL to ClickHouse with minimal friction.
+Refer to this [guide](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres) to learn how to migrate your application from PostgreSQL to ClickHouse with minimal friction when migrating using real-time replication with CDC.
 
 ## Optimize queries in ClickHouse {#optimize-queries-in-clickhouse}
 
-This section provides examples on how to exploit ClickHouse features to significantly simplify queries and further improve query performance. The examples here use the full [Stack Overflow dataset](/getting-started/example-datasets/stackoverflow) (up to April 2024) on equivalent resources in PostgreSQL and ClickHouse (8 cores, 32GiB RAM).
+While this is possible to migrate with minimum query rewriting, it is recommended to leverage ClickHouse features to significantly simplify queries and further improve query performance.
+
+The examples here covers common query patterns and show how to optimize them with ClickHouse. They use the full [Stack Overflow dataset](/getting-started/example-datasets/stackoverflow) (up to April 2024) on equivalent resources in PostgreSQL and ClickHouse (8 cores, 32GiB RAM).
 
 > For simplicity, the queries below omit the use of techniques to deduplicate the data. 
 
@@ -267,4 +269,4 @@ LIMIT 5;
 Time: 116750.131 ms (01:56.750)
 ```
 
-
+[Click here for Part 3](./data-modeling-techniques.md)

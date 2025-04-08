@@ -78,29 +78,29 @@ FROM system.parts
 WHERE `table` = 'posts'
 
 ┌─partition─┐
-│ 2008          │
-│ 2009          │
-│ 2010          │
-│ 2011          │
-│ 2012          │
-│ 2013          │
-│ 2014          │
-│ 2015          │
-│ 2016          │
-│ 2017          │
-│ 2018          │
-│ 2019          │
-│ 2020          │
-│ 2021          │
-│ 2022          │
-│ 2023          │
-│ 2024          │
+│ 2008      │
+│ 2009      │
+│ 2010      │
+│ 2011      │
+│ 2012      │
+│ 2013      │
+│ 2014      │
+│ 2015      │
+│ 2016      │
+│ 2017      │
+│ 2018      │
+│ 2019      │
+│ 2020      │
+│ 2021      │
+│ 2022      │
+│ 2023      │
+│ 2024      │
 └───────────┘
 
 17 rows in set. Elapsed: 0.002 sec.
 
-        ALTER TABLE posts
-        (DROP PARTITION '2008')
+ALTER TABLE posts
+(DROP PARTITION '2008')
 
 Ok.
 
@@ -259,7 +259,5 @@ We recommend using projections when:
 Since Postgres is a relational database, its data model is heavily [normalized](https://en.wikipedia.org/wiki/Database_normalization), often involving hundreds of tables. In ClickHouse, denormalization can be beneficial at times to optimize JOIN performance. 
 
 You can refer to this [guide](/data-modeling/denormalization) that shows the benefits of denormalizing the Stack Overflow dataset in ClickHouse.
-
-
 
 This concludes our basic guide for users migrating from Postgres to ClickHouse. We recommend users migrating from Postgres read the [guide for modeling data in ClickHouse](/data-modeling/schema-design) to learn more about advanced ClickHouse features.
