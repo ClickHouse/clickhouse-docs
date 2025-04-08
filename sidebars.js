@@ -117,8 +117,15 @@ const sidebars = {
           ]
         },
         { 
-          type: "doc", 
-          id: "use-cases/data_lake/glue_catalog" 
+          type: "category",
+          label: "Data lake",
+          collapsed: true,
+          collapsible: true,
+          link: { type: "doc", id: "use-cases/data_lake/index" },
+          items: [
+            "use-cases/data_lake/glue_catalog",
+            "use-cases/data_lake/unity_catalog" 
+          ]
         }
       ]
     },
