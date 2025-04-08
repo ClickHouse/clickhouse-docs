@@ -41,7 +41,7 @@ Once your catalog is configured, you must generate credentials for ClickHouse. T
 
 With your Unity Catalog configured and authentication in place, establish a connection between ClickHouse and Unity Catalog.
 
-### Read Delta
+### Read Delta {#read-delta}
 
 ```sql
 CREATE DATABASE unity
@@ -49,7 +49,7 @@ ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/un
 SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type = 'unity'
 ```
 
-### Read Iceberg
+### Read Iceberg {#read-iceberg}
 
 ```sql
 CREATE DATABASE unity
