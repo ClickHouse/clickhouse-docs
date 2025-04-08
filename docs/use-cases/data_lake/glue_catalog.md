@@ -4,9 +4,8 @@ sidebar_label: 'AWS Glue Catalog'
 title: 'AWS Glue Catalog'
 pagination_prev: null
 pagination_next: null
-description: 'ClickHouse supports integration with multiple catalogs (Unity, 
-Glue, Polaris, etc.). In this guide, we will walk you through the steps to query
- your data in S3 buckets using ClickHouse and the Glue Data Catalog.'
+description: 'In this guide, we will walk you through the steps to query
+ your data in S3 buckets using ClickHouse and the AWS Glue Data Catalog.'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
