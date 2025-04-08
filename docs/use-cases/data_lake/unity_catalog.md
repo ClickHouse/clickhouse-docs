@@ -24,7 +24,7 @@ ClickHouse supports integration with multiple catalogs (Unity, Glue, Polaris, et
 
 Databricks supports multiple data formats for their lakehouse. With ClickHouse, you can query Unity Catalog tables as both Delta and Iceberg.
 
-## Configuring Unity in Databricks
+## Configuring Unity in Databricks {#configuring-unity-in-databricks}
 
 To allow ClickHouse to interact with the Unity catalog, you need to make sure the Unity Catalog is configured to allow interaction with an external reader. This can be achieved by following the[ "Enable external data access to Unity Catalog"](https://docs.databricks.com/aws/en/external-access/admin) guide.
 
@@ -37,7 +37,7 @@ Once your catalog is configured, you must generate credentials for ClickHouse. T
 * For Delta clients, use a Personal Access Token ([PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat)).
 
 
-## Creating a connection between Unity Catalog and ClickHouse
+## Creating a connection between Unity Catalog and ClickHouse {#creating-a-connection-between-unity-catalog-and-clickhouse}
 
 With your Unity Catalog configured and authentication in place, establish a connection between ClickHouse and Unity Catalog.
 
@@ -58,7 +58,7 @@ SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret
 oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql'
 ```
 
-## Querying Unity catalog tables using ClickHouse
+## Querying Unity catalog tables using ClickHouse {#querying-unity-catalog-tables-using-clickhouse}
 
 Now that the connection is in place, you can start querying via the Unity catalog. For example:
 
@@ -148,7 +148,7 @@ ENGINE = Iceberg('s3://<path>);
 
 ```
 
-## Loading data from your Data Lake into ClickHouse
+## Loading data from your Data Lake into ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 
 If you need to load data from Databricks into ClickHouse, start by creating a local ClickHouse table:
 
