@@ -2,7 +2,8 @@
 
 In this document, you will find a number of style guidelines for writing ClickHouse
 documentation. As documentation is a collective effort, these guidelines are 
-intended to help all of us ensure quality and consistency across our documentation.
+intended to help all of us ensure we maintain quality and consistency across our
+documentation.
 
 ## YAML front matter
 
