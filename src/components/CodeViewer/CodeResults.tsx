@@ -13,6 +13,7 @@ import Chart from './charts'
 import copyGridElements from './copy/copyGridElements'
 import { ChartConfig, ChartType, QueryResults } from './types'
 import LoadingSVG from '@site/static/images/loading.svg'
+import { useColorMode } from '@docusaurus/theme-common'
 
 export enum DefaultView {
   Chart = 'chart',
@@ -41,11 +42,14 @@ const Loading: React.FC<LoadingProps> = ({
   position = Position.Start,
   className = ''
 }) => {
+  const { colorMode } = useColorMode()
+  const strokeColor = colorMode === 'light' ? '#000000' : '#FAFF69'
+
   return (
     <div className={`flex justify-center h-full ${className}`}>
       <div className={`flex gap-4 items-${position}`}>
-        <LoadingSVG width={36} height={36} alt='loading-icon'/>
-        <span>Loading</span>
+        <LoadingSVG width={36} height={36} className={colorMode === 'light' ? 'text-[#000]' : 'text-[#FAFF69]'} />
+        <span>&nbsp; Loading</span>
       </div>
     </div>
   )
@@ -87,6 +91,7 @@ function CodeResults(props: ResultsProps) {
   const response = props.results?.response
   const error = props.results?.error
   const gridRef = useRef<HTMLDivElement | null>(null)
+  const { colorMode } = useColorMode(); // 'light' or 'dark'
 
   const isNumeric = (columnType: string) => {
     return columnType.startsWith('UInt') || columnType.startsWith('Int') || columnType.startsWith('Float') || columnType.startsWith('Decimal');
@@ -178,8 +183,19 @@ function CodeResults(props: ResultsProps) {
 
     if (isNumeric(columnType) && response && response.data.length > 1) {
       const ratio = value ? 100 * Number(value) / Number(extreme[columnName].max) : 100;
-      const bgColor = rowIndex === selectedCell.row? "lch(15.8 0 0)" : "#1f201b";
-      const background = `linear-gradient(to right, #35372f 0%, #35372f ${ratio}%, ${bgColor} ${ratio}%, ${bgColor} 100%)`
+      const bgColor =
+      colorMode === 'light'
+        ? rowIndex === selectedCell.row
+          ? '#f0f0f0'
+          : '#ffffff'
+        : rowIndex === selectedCell.row
+          ? 'lch(15.8 0 0)'
+          : '#1f201b'
+    
+      const barColor = colorMode === 'light' ? '#d2d2d2' : '#35372f'
+      
+      const background = `linear-gradient(to right, ${barColor} 0%, ${barColor} ${ratio}%, ${bgColor} ${ratio}%, ${bgColor} 100%)`
+
       return (<span
         style={{
           textAlign: textAlign,

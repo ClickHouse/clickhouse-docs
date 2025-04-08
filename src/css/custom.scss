@@ -228,48 +228,12 @@ html {
   font-size: 16px;
 }
 
-code {
-  background-color: var(--ifm-code-background);
-  scrollbar-width: thin;
-  scrollbar-color: rgb(99, 99, 99) rgb(41, 45, 62);
-  span {
-    font-style: normal !important;
-  }
+.code-viewer pre {
+  font-size: inherit !important;
 }
 
-/* Style individual tokens */
-code .token.keyword {
-  font-style: italic !important; /* Italicize keywords */
-  color: rgb(86, 156, 214) !important; /* Blue for keywords */
-}
-
-code .token.plain {
-  color: rgb(156, 220, 254) !important;
-}
-
-code .token.punctuation {
-  color: rgb(199, 146, 234) !important; /* Match punctuation color */
-}
-
-code .token.operator {
-  color: rgb(137, 221, 255) !important; /* Light blue for operators */
-}
-
-code .token.string {
-  color: rgb(206, 145, 120) !important; /* Orange for strings */
-}
-
-code .token.number {
-  color: rgb(181, 206, 168) !important; /* Green for numbers */
-}
-
-code .token.function {
-  color: rgb(220, 220, 170) !important; /* Bright blue for functions */
-}
-
-/* Ensure keywords are not italic */
-code span.token.keyword {
-  font-style: normal !important;
+.code-viewer pre code {
+  font-size: inherit !important;
 }
 
 .markdown h1:first-child {
