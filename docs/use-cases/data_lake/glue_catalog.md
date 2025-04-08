@@ -66,7 +66,7 @@ SHOW TABLES;
 ```
 
 You can see above that some tables above are not Iceberg tables, for instance
-`iceberg-benchmark.hitsparquet`. You won’t be able to query these as only Iceberg
+`iceberg-benchmark.hitsparquet`. You won't be able to query these as only Iceberg
 is currently supported.
 
 To query a table:
@@ -76,7 +76,7 @@ SELECT count(*) FROM `iceberg-benchmark.hitsiceberg`;
 ```
 
 :::note
-Backticks are required because ClickHouse doesn’t support more than one namespace.
+Backticks are required because ClickHouse doesn't support more than one namespace.
 :::
 
 To inspect the table DDL, run the following query:

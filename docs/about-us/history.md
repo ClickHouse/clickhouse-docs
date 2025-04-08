@@ -37,7 +37,7 @@ There is a widespread opinion that to calculate statistics effectively, you must
 However data aggregation comes with a lot of limitations:
 
 - You must have a pre-defined list of required reports.
-- The user can’t make custom reports.
+- The user can't make custom reports.
 - When aggregating over a large number of distinct keys, the data volume is barely reduced, so aggregation is useless.
 - For a large number of reports, there are too many aggregation variations (combinatorial explosion).
 - When aggregating keys with high cardinality (such as URLs), the volume of data is not reduced by much (less than twofold).

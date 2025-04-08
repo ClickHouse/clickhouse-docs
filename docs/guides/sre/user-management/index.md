@@ -29,7 +29,7 @@ You can configure access entities using:
 We recommend using SQL-driven workflow. Both of the configuration methods work simultaneously, so if you use the server configuration files for managing accounts and access rights, you can smoothly switch to SQL-driven workflow.
 
 :::note
-You can’t manage the same access entity by both configuration methods simultaneously.
+You can't manage the same access entity by both configuration methods simultaneously.
 :::
 
 :::note
@@ -45,7 +45,7 @@ By default, the ClickHouse server provides the `default` user account which is n
 If you just started using ClickHouse, consider the following scenario:
 
 1.  [Enable](#enabling-access-control) SQL-driven access control and account management for the `default` user.
-2.  Log in to the `default` user account and create all the required users. Don’t forget to create an administrator account (`GRANT ALL ON *.* TO admin_user_account WITH GRANT OPTION`).
+2.  Log in to the `default` user account and create all the required users. Don't forget to create an administrator account (`GRANT ALL ON *.* TO admin_user_account WITH GRANT OPTION`).
 3.  [Restrict permissions](/operations/settings/permissions-for-queries) for the `default` user and disable SQL-driven access control and account management for it.
 
 ### Properties of Current Solution {#access-control-properties}

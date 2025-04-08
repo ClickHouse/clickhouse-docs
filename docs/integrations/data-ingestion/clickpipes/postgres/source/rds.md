@@ -110,7 +110,7 @@ To connect to your RDS instance through a private network, you can use AWS Priva
 ### Workarounds for RDS Proxy {#workarounds-for-rds-proxy}
 RDS Proxy does not support logical replication connections. If you have dynamic IP addresses in RDS and cannot use DNS name or a lambda, here are some alternatives:
 
-1. Using a cron job, resolve the RDS endpoint’s IP periodically and update the NLB if it has changed.
+1. Using a cron job, resolve the RDS endpoint's IP periodically and update the NLB if it has changed.
 2. Using RDS Event Notifications with EventBridge/SNS: Trigger updates automatically using AWS RDS event notifications
 3. Stable EC2: Deploy an EC2 instance to act as a polling service or IP-based proxy
 4. Automate IP address management using tools like Terraform or CloudFormation.

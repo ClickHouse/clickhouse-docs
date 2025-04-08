@@ -135,7 +135,7 @@ You can configure the Advanced settings if needed. A brief description of each s
 
    :::warning
 
-   If you are defining a Ordering Key in ClickHouse differently from the Primary Key in Postgres, please don’t forget to read all the [considerations](https://docs.peerdb.io/mirror/ordering-key-different) around it!
+   If you are defining a Ordering Key in ClickHouse differently from the Primary Key in Postgres, please don't forget to read all the [considerations](https://docs.peerdb.io/mirror/ordering-key-different) around it!
 
    :::
 

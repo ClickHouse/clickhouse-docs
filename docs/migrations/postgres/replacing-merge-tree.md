@@ -314,7 +314,7 @@ As shown, partitioning has significantly improved query performance in this case
 
 ## Merge Behavior Considerations {#merge-behavior-considerations}
 
-ClickHouse’s merge selection mechanism goes beyond simple merging of parts. Below, we examine this behavior in the context of ReplacingMergeTree, including configuration options for enabling more aggressive merging of older data and considerations for larger parts.
+ClickHouse's merge selection mechanism goes beyond simple merging of parts. Below, we examine this behavior in the context of ReplacingMergeTree, including configuration options for enabling more aggressive merging of older data and considerations for larger parts.
 
 ### Merge Selection Logic {#merge-selection-logic}
 

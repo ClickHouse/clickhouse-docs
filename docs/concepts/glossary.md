@@ -25,7 +25,7 @@ A dictionary is a mapping of key-value pairs that is useful for various types of
 
 ## Parts {#parts}
 
-A physical file on a disk that stores a portion of the table's data. This is different from a partition, which is a logical division of a table’s data that is created using a partition key.
+A physical file on a disk that stores a portion of the table's data. This is different from a partition, which is a logical division of a table's data that is created using a partition key.
 
 ## Replica {#replica}
 

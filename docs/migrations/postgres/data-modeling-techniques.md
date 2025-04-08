@@ -93,7 +93,7 @@ Users should consider partitioning a data management technique. It is ideal when
 
 ## Materialized views vs projections {#materialized-views-vs-projections}
 
-Postgres allows for the creation of multiple indices on a single table, enabling optimization for a variety of access patterns. This flexibility allows administrators and developers to tailor database performance to specific queries and operational needs. ClickHouse’s concept of projections, while not fully analogous to this, allows users to specify multiple `ORDER BY` clauses for a table.
+Postgres allows for the creation of multiple indices on a single table, enabling optimization for a variety of access patterns. This flexibility allows administrators and developers to tailor database performance to specific queries and operational needs. ClickHouse's concept of projections, while not fully analogous to this, allows users to specify multiple `ORDER BY` clauses for a table.
 
 In ClickHouse [data modeling docs](/data-modeling/schema-design), we explore how materialized views can be used in ClickHouse to pre-compute aggregations, transform rows, and optimize queries for different access patterns.
 
