@@ -3,7 +3,7 @@ name: PullRequestCI
 env:
   # Force the stdout and stderr streams to be unbuffered
   PYTHONUNBUFFERED: 1
-  CI: true
+  CI: false
 
 on:  # yamllint disable-line rule:truthy
   pull_request:
