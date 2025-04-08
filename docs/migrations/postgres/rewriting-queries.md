@@ -7,11 +7,13 @@ description: 'Part 2 of a guide on migrating from PostgreSQL to ClickHouse'
 
 > This is **Part 2** of a guide on migrating from PostgreSQL to ClickHouse. Using a practical example, it demonstrates how to efficiently carry out the migration with a real-time replication (CDC) approach. Many of the concepts covered are also applicable to manual bulk data transfers from PostgreSQL to ClickHouse.
 
-Most SQL queries from your PostgreSQL deployment should run as-is with ClickHouse and be, most likely, running faster than in PostgreSQL. 
+Most SQL queries from your PostgreSQL setup should run in ClickHouse without modification and will likely execute faster.
 
 ## Query like PostgreSQL {#query-like-postgresql}
 
-When using real-time replication with CDC, you need to handle duplicated rows due to the way updates and deletes are handled. Refer to this [guide](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres) to see techniques using Views and Refreshable Materialized Views to migrate your application from PostgreSQL to ClickHouse seamlessly. 
+When using real-time replication with CDC, keep in mind that updates and deletes may result in duplicate rows. To manage this, you can use techniques involving Views and Refreshable Materialized Views. 
+
+Refer to this [guide](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres) to learn how to migrate your application from PostgreSQL to ClickHouse with minimal friction.
 
 ## Optimize queries in ClickHouse {#optimize-queries-in-clickhouse}
 

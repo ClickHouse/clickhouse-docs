@@ -52,7 +52,7 @@ ORDER BY id;
 
 The illustration below walks through a basic example of synchronization of a table `users` between PostgreSQL and ClickHouse using ClickPipes.
 
-<Image img={clickpipes_initial_load} alt="Clickpipes initial load" size="lg" border/>
+<Image img={clickpipes_initial_load} alt="ClickPipes initial load" size="lg"/>
 
 **Step 1** shows the initial snapshot of the 2 rows in PostgreSQL and ClickPipes performing the initial load of those 2 rows to ClickHouse. As you can observe, both rows are copied as-is to ClickHouse.
 

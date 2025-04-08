@@ -73,8 +73,6 @@ Refer to this [guide](/integrations/clickpipes/postgres) to set up ClickPipes fo
 
 With CDC approach using ClickPipes or PeerDB, each tables in the PostgreSQL database are automatically replicated in ClickHouse. 
 
-To handle updates and deletes at near real-time, ClickPipes maps Postgres tables to ClickHouse using the [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) table engine, which is specifically design to handle updates and deletes in ClickHouse. You can find more information on how the data gets replicated to ClickHouse using ClickPipes [here](/integrations/clickpipes/postgres/deduplication#how-does-data-get-replicated). Important to note that replication using CDC creates duplicated rows in ClickHouse when updates or deletes operations are replicated. Techniques using FINAL keyword are described [here](/integrations/clickpipes/postgres/deduplication#deduplicate-using-final-keyword) on how to handles those in ClickHouse.
-
 To handle updates and deletes in near real-time, ClickPipes maps Postgres tables to ClickHouse using [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) engine, specifically designed to handle updates and deletes in ClickHouse. You can find more information on how the data gets replicated to ClickHouse using ClickPipes [here](/integrations/clickpipes/postgres/deduplication#how-does-data-get-replicated). It is important to note that replication using CDC creates duplicated rows in ClickHouse when replicating updates or deletes operations. [See techniques](/integrations/clickpipes/postgres/deduplication#deduplicate-using-final-keyword) using the [FINAL](https://clickhouse.com/docs/sql-reference/statements/select/from#final-modifier) modifier for handling those in ClickHouse.
 
 Let's have a look on how the table `users` is created in ClickHouse using ClickPipes. 
@@ -111,8 +109,6 @@ Using a manual approach, the initial bulk load of the dataset can be achieved vi
 
 - **Table functions** - Using the [Postgres table function](/sql-reference/table-functions/postgresql) in ClickHouse to `SELECT` data from Postgres and `INSERT` it into a ClickHouse table. Relevant to bulk loads up to datasets of several hundred GB.
 - **Exports** - Exporting to intermediary formats such as CSV or SQL script file. These files can then be loaded into ClickHouse from either the client via the `INSERT FROM INFILE` clause or using object storage and their associated functions i.e. s3, gcs.
-
-Incremental loads can, in turn, be scheduled. If the Postgres table only receives inserts and an incrementing id or timestamp exists, users can use the above table function approach to load increments, i.e. a `WHERE` clause can be applied to the `SELECT`.  This approach may also be used to support updates if these are guaranteed to update the same column. Supporting deletes will, however, require a complete reload, which may be difficult to achieve as the table grows.
 
 When loading data manually from PostgreSQL, you need to first create the tables in ClickHouse. Refer to this [Data Modeling documentation](/data-modeling/schema-design#establish-initial-schema) to that also uses the Stack Overflow dataset to optimize the table schema in ClickHouse. 
 
@@ -180,4 +176,4 @@ INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', '
 
 > A possible method to detect UPDATE operations when using query replication is using the [`XMIN` system column](https://www.postgresql.org/docs/9.1/ddl-system-columns.html) (transaction IDs) as a watermark - a change in this column is indicative of a change and therefore can be applied to the destination table. Users employing this approach should be aware that `XMIN` values can wrap around and comparisons require a full table scan, making tracking changes more complex.
 
-Click here for Part 2
+[Click here for Part 2](./rewriting-queries.md)

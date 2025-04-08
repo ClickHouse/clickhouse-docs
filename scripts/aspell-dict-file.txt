@@ -944,15 +944,5 @@ kinesis
 --docs/cloud/security/aws-privatelink.md--
 GWLBs
 NLBs
---docs/integrations/data-ingestion/clickpipes/postgres/joins_and_denormalization.md--
-Clickpipes
-RMVs
-StackOverflow
-clickpipes
-uniqMerge
-uniqState
-upvoted
 --docs/integrations/data-ingestion/clickpipes/postgres/deduplication.md--
-Clickpipes
-clickpipes
 cumulate
