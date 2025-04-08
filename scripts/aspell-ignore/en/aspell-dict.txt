@@ -1371,6 +1371,7 @@ aiochclient
 alloc
 allocator
 alphaTokens
+altair
 amplab
 analysisOfVariance
 analytics
@@ -1765,12 +1766,14 @@ dashboarding
 datacenter
 datacenters
 datafiles
+dataframe
 datagrip
 datalens
 datanode
 dataset
 datasets
 datasource
+datasources
 datatypes
 dateName
 dateTime
@@ -2372,6 +2375,7 @@ mappedfile
 marginBottom
 marginLeft
 mariadb
+marimo
 matcher
 materializations
 materializedview
