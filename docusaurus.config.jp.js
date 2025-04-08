@@ -79,6 +79,11 @@ const config = {
         htmlLang: "zh",
         path: "zh",
       },
+      ru: {
+        label: "Русский",
+        htmlLang: "ru",
+        path: "ru",
+      }
     },
   },
   staticDirectories: ["static"],

@@ -69,11 +69,6 @@ const config = {
         htmlLang: "en",
         path: "en",
       },
-      ru: {
-        label: "Русский",
-        htmlLang: "ru",
-        path: "ru",
-      },
       jp: {
         label: "日本語",
         htmlLang: "jp",
@@ -84,6 +79,11 @@ const config = {
         htmlLang: "zh",
         path: "zh",
       },
+      ru: {
+        label: "Русский",
+        htmlLang: "ru",
+        path: "ru",
+      }
     },
   },
   staticDirectories: ["static"],
