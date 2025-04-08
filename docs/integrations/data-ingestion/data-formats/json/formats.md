@@ -30,7 +30,7 @@ One of the most popular forms of JSON data is having a list of JSON objects in a
 ]
 ```
 
-Let’s create a table for this kind of data:
+Let's create a table for this kind of data:
 
 ```sql
 CREATE TABLE sometable
@@ -132,7 +132,7 @@ SELECT * FROM sometable;
 
 ### Specifying parent object key values {#specifying-parent-object-key-values}
 
-Let’s say we also want to save values in parent object keys to the table. In this case, we can use the [following option](/operations/settings/settings-formats.md/#format_json_object_each_row_column_for_object_name) to define the name of the column we want key values to be saved to:
+Let's say we also want to save values in parent object keys to the table. In this case, we can use the [following option](/operations/settings/settings-formats.md/#format_json_object_each_row_column_for_object_name) to define the name of the column we want key values to be saved to:
 
 ```sql
 SET format_json_object_each_row_column_for_object_name = 'id'
@@ -312,7 +312,7 @@ This way we can flatten nested JSON objects or use some nested values to save th
 
 ## Skipping unknown columns {#skipping-unknown-columns}
 
-By default, ClickHouse will ignore unknown columns when importing JSON data. Let’s try to import the original file into the table without the `month` column:
+By default, ClickHouse will ignore unknown columns when importing JSON data. Let's try to import the original file into the table without the `month` column:
 
 ```sql
 CREATE TABLE shorttable
@@ -356,7 +356,7 @@ ClickHouse will throw exceptions in cases of inconsistent JSON and table columns
 
 ClickHouse allows exporting to and importing data from [BSON](https://bsonspec.org/) encoded files. This format is used by some DBMSs, e.g. [MongoDB](https://github.com/mongodb/mongo) database.
 
-To import BSON data, we use the [BSONEachRow](/interfaces/formats.md/#bsoneachrow) format. Let’s import data from [this BSON file](../assets/data.bson):
+To import BSON data, we use the [BSONEachRow](/interfaces/formats.md/#bsoneachrow) format. Let's import data from [this BSON file](../assets/data.bson):
 
 
 ```sql
@@ -379,4 +379,4 @@ INTO OUTFILE 'out.bson'
 FORMAT BSONEachRow
 ```
 
-After that, we’ll have our data exported to the `out.bson` file.
+After that, we'll have our data exported to the `out.bson` file.

@@ -10,7 +10,7 @@ Over time, background processes merge smaller parts into larger ones to reduce f
 
 <Image img={simple_merges} size="md" alt="Simple merges" />
 
-While it’s tempting to manually trigger this merge using:
+While it's tempting to manually trigger this merge using:
 
 ```sql
 OPTIMIZE TABLE <table> FINAL;
@@ -20,7 +20,7 @@ OPTIMIZE TABLE <table> FINAL;
 
 ## Why Avoid?  {#why-avoid}
 
-### It’s expensive {#its-expensive}
+### It's expensive {#its-expensive}
 
 Running `OPTIMIZE FINAL` forces ClickHouse to merge **all** active parts into a **single part**, even if large merges have already occurred. This involves:
 
@@ -41,4 +41,4 @@ Normally, ClickHouse avoids merging parts larger than ~150 GB (configurable via 
 
 ## Let background merges do the work {#let-background-merges-do-the-work}
 
-ClickHouse already performs smart background merges to optimize storage and query efficiency. These are incremental, resource-aware, and respect configured thresholds. Unless you have a very specific need (e.g., finalizing data before freezing a table or exporting), **you’re better off letting ClickHouse manage merges on its own**.
+ClickHouse already performs smart background merges to optimize storage and query efficiency. These are incremental, resource-aware, and respect configured thresholds. Unless you have a very specific need (e.g., finalizing data before freezing a table or exporting), **you're better off letting ClickHouse manage merges on its own**.

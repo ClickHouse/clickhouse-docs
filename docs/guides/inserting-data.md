@@ -135,7 +135,7 @@ The [JSONEachRow](/interfaces/formats/JSONEachRow) format can be considered for 
 
 Unlike many traditional databases, ClickHouse supports an HTTP interface.
 Users can use this for both inserting and querying data, using any of the above formats.
-This is often preferable to ClickHouse’s native protocol as it allows traffic to be easily switched with load balancers.
+This is often preferable to ClickHouse's native protocol as it allows traffic to be easily switched with load balancers.
 We expect small differences in insert performance with the native protocol, which incurs a little less overhead.
 Existing clients use either of these protocols ( in some cases both e.g. the Go client).
 The native protocol does allow query progress to be easily tracked.

@@ -11,13 +11,12 @@ import incremental_materialized_view from '@site/static/images/bestpractices/inc
 import refreshable_materialized_view from '@site/static/images/bestpractices/refreshable_materialized_view.gif';
 
 
-ClickHouse supports two types of materialized views: **incremental** and **refreshable**. While both are designed to accelerate queries by pre-computing and storing results, they differ significantly in how and when the underlying queries are executed, what workloads they are suited for, and how data freshness is handled.
-
+ClickHouse supports two types of materialized views: [**incremental**](/materialized-view/incremental-materialized-view) and [**refreshable**](/materialized-view/refreshable-materialized-view). While both are designed to accelerate queries by pre-computing and storing results, they differ significantly in how and when the underlying queries are executed, what workloads they are suited for, and how data freshness is handled.
 
 **Users should consider materialized views for specific query patterns which need to be accelerated, assuming previous best practices [regarding type](/best-practices/select-data-types) and [primary key optimization](/best-practices/choosing-a-primary-key) have been performed.**
 
 
-**Incremental materialized views** are updated in real-time. As new data is inserted into the source table, ClickHouse automatically applies the materialized view’s query to the new data block and writes the results to a separate target table. Over time, ClickHouse merges these partial results to produce a complete, up-to-date view. This approach is highly efficient because it shifts the computational cost to insert time and only processes new data. As a result, `SELECT` queries against the target table are fast and lightweight. Incremental views support all aggregation functions and scale well—even to petabytes of data—because each query operates on a small, recent subset of the dataset being inserted.
+**Incremental materialized views** are updated in real-time. As new data is inserted into the source table, ClickHouse automatically applies the materialized view's query to the new data block and writes the results to a separate target table. Over time, ClickHouse merges these partial results to produce a complete, up-to-date view. This approach is highly efficient because it shifts the computational cost to insert time and only processes new data. As a result, `SELECT` queries against the target table are fast and lightweight. Incremental views support all aggregation functions and scale well—even to petabytes of data—because each query operates on a small, recent subset of the dataset being inserted.
 
 <Image img={incremental_materialized_view} size="lg" alt="Materialized Views" />
 
@@ -34,7 +33,7 @@ Incremental materialized views are generally preferred, as they update automatic
 Use incremental materialized views when:
 
 - You require real-time query results updated with every insert.
-- You’re aggregating or filtering large volumes of data frequently.
+- You're aggregating or filtering large volumes of data frequently.
 - Your queries involve straightforward transformations or aggregations on single tables.
 
 For examples of incremental materialized views see [here](/materialized-view/incremental-materialized-view).
@@ -54,14 +53,14 @@ In summary, use refreshable materialized views when:
 - You need cached query results available instantly, and minor delays in freshness are acceptable.
 - You need the top N for a query result set.
 - The size of the result set does not grow unbounded over time. This will cause performance of the target view to degrade.
-- You’re performing complex joins or denormalization involving multiple tables, requiring updates whenever any source table changes.
-- You’re building batch workflows, denormalization tasks, or creating view dependencies similar to DBT DAGs.
+- You're performing complex joins or denormalization involving multiple tables, requiring updates whenever any source table changes.
+- You're building batch workflows, denormalization tasks, or creating view dependencies similar to DBT DAGs.
 
 For examples of refreshable materialized views see [here](/materialized-view/refreshable-materialized-view).
 
 ### APPEND vs REPLACE Mode {#append-vs-replace-mode}
 
-Refreshable materialized views support two modes for writing data to the target table: `APPEND` and `REPLACE`. These modes define how the result of the view’s query is written when the view is refreshed.
+Refreshable materialized views support two modes for writing data to the target table: `APPEND` and `REPLACE`. These modes define how the result of the view's query is written when the view is refreshed.
 
 `REPLACE` is the default behavior. Each time the view is refreshed, the previous contents of the target table are completely overwritten with the latest query result. This is suitable for use cases where the view should always reflect the latest state, such as caching a result set.
 
@@ -70,7 +69,7 @@ Refreshable materialized views support two modes for writing data to the target 
 Choose `APPEND` mode when:
 
 - You want to keep a history of past refreshes.
-- You’re building periodic snapshots or reports.
+- You're building periodic snapshots or reports.
 - You need to incrementally collect refreshed results over time.
 
 Choose `REPLACE` mode when:

@@ -8,7 +8,7 @@ description: 'Page describing how to choose data types in ClickHouse'
 
 import NullableColumns from '@site/docs/best-practices/_snippets/_avoid_nullable_columns.md';
 
-One of the core reasons for ClickHouse’s query performance is its efficient data compression. Less data on disk results in faster queries and inserts by minimizing I/O overhead. ClickHouse’s column-oriented architecture naturally arranges similar data adjacently, enabling compression algorithms and codecs to reduce data size dramatically. To maximize these compression benefits, it’s essential to carefully choose appropriate data types.
+One of the core reasons for ClickHouse's query performance is its efficient data compression. Less data on disk results in faster queries and inserts by minimizing I/O overhead. ClickHouse's column-oriented architecture naturally arranges similar data adjacently, enabling compression algorithms and codecs to reduce data size dramatically. To maximize these compression benefits, it's essential to carefully choose appropriate data types.
 
 Compression efficiency in ClickHouse depends mainly on three factors: the ordering key, data types, and codecs, all defined through the table schema. Choosing optimal data types yields immediate improvements in both storage and query performance.
 
@@ -19,7 +19,7 @@ Some straightforward guidelines can significantly enhance the schema:
 
 * **Avoid Nullable Columns:** Nullable columns introduce additional overhead by maintaining separate columns for tracking null values. Only use Nullable if explicitly required to distinguish between empty and null states. Otherwise, default or zero-equivalent values typically suffice. For further information on why this type should be avoided unless needed, see [Avoid Nullable Columns](/best-practices/select-data-types#avoid-nullable-columns).
 
-* **Minimize Numeric Precision:** Select numeric types with minimal bit-width that still accommodate the expected data range. For instance, prefer [UInt16 over Int32](/sql-reference/data-types/int-uint) if negative values aren’t needed, and the range fits within 0–65535.
+* **Minimize Numeric Precision:** Select numeric types with minimal bit-width that still accommodate the expected data range. For instance, prefer [UInt16 over Int32](/sql-reference/data-types/int-uint) if negative values aren't needed, and the range fits within 0–65535.
 
 * **Optimize Date and Time Precision:** Choose the most coarse-grained date or datetime type that meets query requirements. Use Date or Date32 for date-only fields, and prefer DateTime over DateTime64 unless millisecond or finer precision is essential.
 

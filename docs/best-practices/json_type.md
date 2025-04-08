@@ -6,7 +6,7 @@ title: 'Use JSON where appropriate'
 description: 'Page describing when to use JSON'
 ---
 
-ClickHouse now offers a native JSON column type designed for semi-structured and dynamic data. It’s important to clarify that **this is a column type, not a data format**—you can insert JSON into ClickHouse as a string or via supported formats like [JSONEachRow](/docs/interfaces/formats/JSONEachRow), but that does not imply using the JSON column type. Users should only use the JSON type when the structure of their data is dynamic, not when they simply happen to store JSON.
+ClickHouse now offers a native JSON column type designed for semi-structured and dynamic data. It's important to clarify that **this is a column type, not a data format**—you can insert JSON into ClickHouse as a string or via supported formats like [JSONEachRow](/docs/interfaces/formats/JSONEachRow), but that does not imply using the JSON column type. Users should only use the JSON type when the structure of their data is dynamic, not when they simply happen to store JSON.
 
 ## When to Use the JSON Type {#when-to-use-the-json-type}
 
@@ -14,7 +14,7 @@ Use the JSON type when your data:
 
 * Has **unpredictable keys** that can change over time.
 * Contains **values with varying types** (e.g., a path might sometimes contain a string, sometimes a number).
-* Requires schema flexibility where strict typing isn’t viable.
+* Requires schema flexibility where strict typing isn't viable.
 
 If your data structure is known and consistent, there is rarely a need for the JSON type, even if your data is in JSON format. Specifically, if your data has:
 
@@ -29,7 +29,7 @@ You can also mix approaches - for example, use static columns for predictable to
 The JSON type enables efficient columnar storage by flattening paths into subcolumns. But with flexibility comes responsibility. To use it effectively:
 
 * **Specify path types** using [hints in the column definition](/sql-reference/data-types/newjson) to specify types for known sub columns, avoiding unnecessary type inference. 
-* **Skip paths** if you don’t need the values, with [SKIP and SKIP REGEXP](/sql-reference/data-types/newjson) to reduce storage and improve performance.
+* **Skip paths** if you don't need the values, with [SKIP and SKIP REGEXP](/sql-reference/data-types/newjson) to reduce storage and improve performance.
 * **Avoid setting [`max_dynamic_paths`](/sql-reference/data-types/newjson#reaching-the-limit-of-dynamic-paths-inside-json) too high** - large values increase resource consumption and reduce efficiency. As a rule of thumb, keep it below 10,000.
 
 :::note Type hints 
@@ -220,7 +220,7 @@ ORDER BY doc.update_date
 ```
 
 :::note
-We specify the `update_date` in the JSON definition as we use it in the ordering/primary key. This helps ClickHouse know this column won’t be null. If not specified, the user must explicitly allow nullable primary keys (not recommended for performance reasons) via the setting [`allow_nullable_key=1`](/operations/settings/merge-tree-settings#allow_nullable_key)
+We specify the `update_date` in the JSON definition as we use it in the ordering/primary key. This helps ClickHouse know this column won't be null. If not specified, the user must explicitly allow nullable primary keys (not recommended for performance reasons) via the setting [`allow_nullable_key=1`](/operations/settings/merge-tree-settings#allow_nullable_key)
 :::
 
 We can insert into this table and view the subsequently inferred schema using the [`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#jsonallpathswithtypes) function and [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow) output format:

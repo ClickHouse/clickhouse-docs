@@ -26,7 +26,7 @@ By default, inserts into ClickHouse are synchronous.  Each insert query immediat
 If not, see [Asynchronous inserts](#asynchronous-inserts) below.
 :::
 
- We briefly review ClickHouse’s MergeTree insert mechanics below:
+ We briefly review ClickHouse's MergeTree insert mechanics below:
 
 <Image img={insert_process} size="lg" alt="Insert processes" background="black"/>
 
@@ -34,7 +34,7 @@ If not, see [Asynchronous inserts](#asynchronous-inserts) below.
 
 For optimal performance, data must be ①[ batched](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance), making batch size the **first decision**.
 
-ClickHouse stores inserted data on disk,[ ordered](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) by the table’s primary key column(s). The **second decision** is whether to ② pre-sort the data before transmission to the server. If a batch arrives pre-sorted by primary key column(s), ClickHouse can [skip](https://github.com/ClickHouse/ClickHouse/blob/94ce8e95404e991521a5608cd9d636ff7269743d/src/Storages/MergeTree/MergeTreeDataWriter.cpp#L595) the ⑨ sorting step, speeding up ingestion.
+ClickHouse stores inserted data on disk,[ ordered](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) by the table's primary key column(s). The **second decision** is whether to ② pre-sort the data before transmission to the server. If a batch arrives pre-sorted by primary key column(s), ClickHouse can [skip](https://github.com/ClickHouse/ClickHouse/blob/94ce8e95404e991521a5608cd9d636ff7269743d/src/Storages/MergeTree/MergeTreeDataWriter.cpp#L595) the ⑨ sorting step, speeding up ingestion.
 
 If the data to be ingested has no predefined format, the **key decision** is choosing a format. ClickHouse supports inserting data in [over 70 formats](/interfaces/formats). However, when using the ClickHouse command-line client or programming language clients, this choice is often handled automatically. If needed, this automatic selection can also be overridden explicitly.
 
@@ -60,7 +60,7 @@ Synchronous inserts are also **idempotent**. When using MergeTree engines, Click
 * The insert succeeded but the client never received an acknowledgment due to a network interruption.
 * The insert failed server-side and timed out.
 
-In both cases, it’s safe to **retry the insert** - as long as the batch contents and order remain identical. For this reason, it’s critical that clients retry consistently, without modifying or reordering data.
+In both cases, it's safe to **retry the insert** - as long as the batch contents and order remain identical. For this reason, it's critical that clients retry consistently, without modifying or reordering data.
 
 ### Choose the right insert target {#choose-the-right-insert-target}
 
@@ -87,14 +87,14 @@ Compression plays a critical role in reducing network overhead, speeding up inse
 
 Compressing insert data reduces the size of the payload sent over the network, minimizing bandwidth usage and accelerating transmission.
 
-For inserts, compression is especially effective when used with the Native format, which already matches ClickHouse’s internal columnar storage model. In this setup, the server can efficiently decompress and directly store the data with minimal transformation.
+For inserts, compression is especially effective when used with the Native format, which already matches ClickHouse's internal columnar storage model. In this setup, the server can efficiently decompress and directly store the data with minimal transformation.
 
 #### Use LZ4 for Speed, ZSTD for Compression Ratio {#use-lz4-for-speed-zstd-for-compression-ratio}
 
 ClickHouse supports several compression codecs during data transmission. Two common options are:
 
 * **LZ4**: Fast and lightweight. It reduces data size significantly with minimal CPU overhead, making it ideal for high-throughput inserts and default in most ClickHouse clients.
-* **ZSTD**: Higher compression ratio but more CPU-intensive. It’s useful when network transfer costs are high—such as in cross-region or cloud provider scenarios—though it increases client-side compute and server-side decompression time slightly.
+* **ZSTD**: Higher compression ratio but more CPU-intensive. It's useful when network transfer costs are high—such as in cross-region or cloud provider scenarios—though it increases client-side compute and server-side decompression time slightly.
 
 Best practice: Use LZ4 unless you have constrained bandwidth or incur data egress costs - then consider ZSTD.
 
@@ -122,7 +122,7 @@ When data arrives pre-sorted, ClickHouse can skip or simplify the internal sorti
 
 **That said, pre-sorting is an optional optimization—not a requirement.** ClickHouse sorts data highly efficiently using parallel processing, and in many cases, server-side sorting is faster or more convenient than pre-sorting client-side. 
 
-**We recommend pre-sorting only if the data is already nearly ordered or if client-side resources (CPU, memory) are sufficient and underutilized.** In latency-sensitive or high-throughput use cases, such as observability, where data arrives out of order or from many agents, it’s often better to skip pre-sorting and rely on ClickHouse’s built-in performance.
+**We recommend pre-sorting only if the data is already nearly ordered or if client-side resources (CPU, memory) are sufficient and underutilized.** In latency-sensitive or high-throughput use cases, such as observability, where data arrives out of order or from many agents, it's often better to skip pre-sorting and rely on ClickHouse's built-in performance.
 
 ## Asynchronous inserts {#asynchronous-inserts}
 
@@ -132,7 +132,7 @@ When data arrives pre-sorted, ClickHouse can skip or simplify the internal sorti
 
 ### Native {#choose-an-interface-native}
 
-ClickHouse offers two main interfaces for data ingestion: the **native interface** and the **HTTP interface** - each with trade-offs between performance and flexibility. The native interface, used by [clickhouse-client](/interfaces/cli) and select language clients like Go and C++, is purpose-built for performance. It always transmits data in ClickHouse’s highly efficient Native format, supports block-wise compression with LZ4 or ZSTD, and minimizes server-side processing by offloading work such as parsing and format conversion to the client. 
+ClickHouse offers two main interfaces for data ingestion: the **native interface** and the **HTTP interface** - each with trade-offs between performance and flexibility. The native interface, used by [clickhouse-client](/interfaces/cli) and select language clients like Go and C++, is purpose-built for performance. It always transmits data in ClickHouse's highly efficient Native format, supports block-wise compression with LZ4 or ZSTD, and minimizes server-side processing by offloading work such as parsing and format conversion to the client. 
 
 It even enables client-side computation of MATERIALIZED and DEFAULT column values, allowing the server to skip these steps entirely. This makes the native interface ideal for high-throughput ingestion scenarios where efficiency is critical.
 
@@ -140,9 +140,9 @@ It even enables client-side computation of MATERIALIZED and DEFAULT column value
 
 Unlike many traditional databases, ClickHouse also supports an HTTP interface. **This, by contrast, prioritizes compatibility and flexibility.** It allows data to be sent in [any supported format](/integrations/data-formats) - including JSON, CSV, Parquet, and others - and is widely supported across most ClickHouse clients, including Python, Java, JavaScript, and Rust. 
 
-This is often preferable to ClickHouse’s native protocol as it allows traffic to be easily switched with load balancers. We expect small differences in insert performance with the native protocol, which incurs a little less overhead.
+This is often preferable to ClickHouse's native protocol as it allows traffic to be easily switched with load balancers. We expect small differences in insert performance with the native protocol, which incurs a little less overhead.
 
-However, it lacks the native protocol’s deeper integration and cannot perform client-side optimizations like materialized value computation or automatic conversion to Native format. While HTTP inserts can still be compressed using standard HTTP headers (e.g. `Content-Encoding: lz4`), the compression is applied to the entire payload rather than individual data blocks. This interface is often preferred in environments where protocol simplicity, load balancing, or broad format compatibility is more important than raw performance.
+However, it lacks the native protocol's deeper integration and cannot perform client-side optimizations like materialized value computation or automatic conversion to Native format. While HTTP inserts can still be compressed using standard HTTP headers (e.g. `Content-Encoding: lz4`), the compression is applied to the entire payload rather than individual data blocks. This interface is often preferred in environments where protocol simplicity, load balancing, or broad format compatibility is more important than raw performance.
 
 For a more detailed description of these interfaces see [here](/interfaces/overview).
 

@@ -646,7 +646,7 @@ The above uses the `simpleJSONExtractString` to extract the `created` key, explo
 If an object is used to store arbitrary keys of mostly one type, consider using the `Map` type. Ideally, the number of unique keys should not exceed several hundred. We recommend the `Map` type be used for labels and tags e.g. Kubernetes pod labels in log data. While a simple way to represent nested structures, `Map`s have some notable limitations:
 
 - The fields must be of all the same type.
-- Accessing sub-columns requires a special map syntax since the fields don’t exist as columns; the entire object is a column.
+- Accessing sub-columns requires a special map syntax since the fields don't exist as columns; the entire object is a column.
 - Accessing a subcolumn loads the entire `Map` value i.e. all siblings and their respective values. For larger maps, this can result in a significant performance penalty.
 
 :::note String keys

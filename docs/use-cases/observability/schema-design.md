@@ -659,7 +659,7 @@ select count() from geoip_url;
 └─────────┘
 ```
 
-Because our `ip_trie` dictionary requires IP address ranges to be expressed in CIDR notation, we’ll need to transform `ip_range_start` and `ip_range_end`.
+Because our `ip_trie` dictionary requires IP address ranges to be expressed in CIDR notation, we'll need to transform `ip_range_start` and `ip_range_end`.
 
 This CIDR for each range can be succinctly computed with the following query:
 
@@ -1058,7 +1058,7 @@ We can imagine this might be a common line chart users plot with Grafana. This q
 This query would be 10x faster if we used the `otel_logs_v2` table, which results from our earlier materialized view, which extracts the size key from the `LogAttributes` map. We use the raw data here for illustrative purposes only and would recommend using the earlier view if this is a common query.
 :::
 
-We need a table to receive the results if we want to compute this at insert time using a Materialized view. This table should only keep 1 row per hour. If an update is received for an existing hour, the other columns should be merged into the existing hour’s row. For this merge of incremental states to happen, partial states must be stored for the other columns.
+We need a table to receive the results if we want to compute this at insert time using a Materialized view. This table should only keep 1 row per hour. If an update is received for an existing hour, the other columns should be merged into the existing hour's row. For this merge of incremental states to happen, partial states must be stored for the other columns.
 
 This requires a special engine type in ClickHouse: The SummingMergeTree. This replaces all the rows with the same ordering key with one row which contains summed values for the numeric columns. The following table will merge any rows with the same date, summing any numerical columns.
 

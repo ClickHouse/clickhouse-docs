@@ -15,12 +15,12 @@ import primary_key from '@site/static/images/bestpractices/primary_key.gif';
 
 Note that a ClickHouse primary key works [very differently](/migrations/postgresql/designing-schemas#how-are-clickhouse-primary-keys-different) to those familiar with similar terms in OLTP databases such as Postgres.
 
-Choosing an effective primary key in ClickHouse is crucial for query performance and storage efficiency. ClickHouse organizes data into parts, each containing its own sparse primary index. This index significantly speeds up queries by reducing the volume of data scanned. Additionally, because the primary key determines the physical order of data on disk, it directly impacts compression efficiency - optimally ordered data compresses more effectively, further enhancing performance by reducing I/O.
+Choosing an effective primary key in ClickHouse is crucial for query performance and storage efficiency. ClickHouse organizes data into parts, each containing its own sparse primary index. This index significantly speeds up queries by reducing the volume of data scanned. Additionally, because the primary key determines the physical order of data on disk, it directly impacts compression efficiency. Optimally ordered data compresses more effectively, which further enhances performance by reducing I/O.
 
 
-1. When selecting an ordering key, prioritize columns frequently used in query filters (i.e. WHERE clause), especially those that exclude large numbers of rows.
+1. When selecting an ordering key, prioritize columns frequently used in query filters (i.e. the `WHERE` clause), especially those that exclude large numbers of rows.
 2. Columns highly correlated with other data in the table are also beneficial, as contiguous storage improves compression ratios and memory efficiency during `GROUP BY` and `ORDER BY` operations.
-
+<br/>
 Some simple rules can be applied to help choose an ordering key. The following can sometimes be in conflict, so consider these in order. **Users can identify a number of keys from this process, with 4-5 typically sufficient**:
 
 :::note Important
@@ -74,7 +74,7 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 ┌─count()─┐
 │  192611 │
 └─────────┘
-
+--highlight-next-line
 1 row in set. Elapsed: 0.055 sec. Processed 59.82 million rows, 361.34 MB (1.09 billion rows/s., 6.61 GB/s.)
 ```
 
@@ -129,11 +129,11 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 ┌─count()─┐
 │  192611 │
 └─────────┘
-
+--highlight-next-line
 1 row in set. Elapsed: 0.013 sec. Processed 196.53 thousand rows, 1.77 MB (14.64 million rows/s., 131.78 MB/s.)
 ```
 
-This query now leverages sparse indexing, significantly reducing the amount of data read and speeding up the execute time by 4x - note the reduction of rows and bytes read. 
+This query now leverages sparse indexing, significantly reducing the amount of data read and speeding up the execution time by 4x - note the reduction of rows and bytes read. 
 
 The use of the index can be confirmed with an `EXPLAIN indexes=1`.
 
