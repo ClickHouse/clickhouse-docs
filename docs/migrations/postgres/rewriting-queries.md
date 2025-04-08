@@ -2,14 +2,22 @@
 slug: /migrations/postgresql/rewriting-queries
 title: 'Rewriting PostgreSQL Queries'
 keywords: ['postgres', 'postgresql', 'rewriting queries', 'rewrite query']
-description: 'Part 4 of a guide on migrating from PostgreSQL to ClickHouse'
+description: 'Part 2 of a guide on migrating from PostgreSQL to ClickHouse'
 ---
 
-# Rewriting PostgreSQL queries in ClickHouse
+> This is **Part 2** of a guide on migrating from PostgreSQL to ClickHouse. Using a practical example, it demonstrates how to efficiently carry out the migration with a real-time replication (CDC) approach. Many of the concepts covered are also applicable to manual bulk data transfers from PostgreSQL to ClickHouse.
 
-> This is **Part 4** of a guide on migrating from PostgreSQL to ClickHouse. This content can be considered introductory, with the aim of helping users deploy an initial functional system that adheres to ClickHouse best practices. It avoids complex topics and will not result in a fully optimized schema; rather, it provides a solid foundation for users to build a production system and base their learning.
+Most SQL queries from your PostgreSQL deployment should run as-is with ClickHouse and be, most likely, running faster than in PostgreSQL. 
 
-The following provides example queries comparing PostgreSQL to ClickHouse. This list aims to demonstrate how to exploit ClickHouse features to significantly simplify queries. These queries will, in most cases, also execute faster in ClickHouse. The examples here use the full [Stack Overflow dataset](/getting-started/example-datasets/stackoverflow) (up to April 2024) on equivalent resources in PostgreSQL and ClickHouse (8 cores, 32GiB RAM).
+## Query like PostgreSQL {#query-like-postgresql}
+
+When using real-time replication with CDC, you need to handle duplicated rows due to the way updates and deletes are handled. Refer to this [guide](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres) to see techniques using Views and Refreshable Materialized Views to migrate your application from PostgreSQL to ClickHouse seamlessly. 
+
+## Optimize queries in ClickHouse {#optimize-queries-in-clickhouse}
+
+This section provides examples on how to exploit ClickHouse features to significantly simplify queries and further improve query performance. The examples here use the full [Stack Overflow dataset](/getting-started/example-datasets/stackoverflow) (up to April 2024) on equivalent resources in PostgreSQL and ClickHouse (8 cores, 32GiB RAM).
+
+> For simplicity, the queries below omit the use of techniques to deduplicate the data. 
 
 > Counts here will slightly differ as the Postgres data only contains rows which satisfy the referential integrity of the foreign keys. ClickHouse imposes no such constraints and thus has the full dataset e.g. inc. anon users.
 
@@ -158,8 +166,6 @@ MaxViewCount:           66975
 Peak memory usage: 554.31 MiB.
 ```
 
-
-
 This is significantly simpler (and faster) than the equivalent Postgres query:
 
 ```sql
@@ -259,4 +265,4 @@ LIMIT 5;
 Time: 116750.131 ms (01:56.750)
 ```
 
-This concludes our basic guide for users migrating from Postgres to ClickHouse. We recommend users migrating from Postgres read [the guide for modeling data in ClickHouse](/data-modeling/schema-design) to learn more about advanced ClickHouse features.
+

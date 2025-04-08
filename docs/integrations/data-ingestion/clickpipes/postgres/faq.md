@@ -40,7 +40,7 @@ Yes! ClickPipes for Postgres offers two ways to connect to databases in private 
    - Works across all regions
 
 2. **AWS PrivateLink**
-   - Available in three AWS regions:
+   - Available in three AWS regions: 
      - us-east-1
      - us-east-2 
      - eu-central-1

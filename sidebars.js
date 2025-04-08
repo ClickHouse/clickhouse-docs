@@ -136,16 +136,13 @@ const sidebars = {
             {
               type: "doc",
               id: "migrations/postgres/overview",
-              label: "Introduction",
+              label: "Overview",
             },
-            "integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql",
-            "integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse",
             "migrations/postgres/dataset",
-            "migrations/postgres/designing-schemas",
             "migrations/postgres/data-modeling-techniques",
-            "integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries",
+            "migrations/postgres/rewriting-queries",
             "integrations/data-ingestion/dbms/postgresql/inserting-data",
-            "integrations/data-ingestion/dbms/postgresql/data-type-mappings",
+            "migrations/postgres/appendix",
           ],
         },
         "integrations/data-ingestion/dbms/mysql/index",
@@ -663,7 +660,6 @@ const sidebars = {
             "integrations/data-ingestion/clickpipes/postgres/index",
             "integrations/data-ingestion/clickpipes/postgres/deduplication",
             "integrations/data-ingestion/clickpipes/postgres/ordering_keys",
-            "integrations/data-ingestion/clickpipes/postgres/joins_and_denormalization",
             "integrations/data-ingestion/clickpipes/postgres/toast",
             "integrations/data-ingestion/clickpipes/postgres/schema-changes",
             "integrations/data-ingestion/clickpipes/postgres/faq",
@@ -1013,7 +1009,7 @@ const sidebars = {
         {
           type: "doc",
           label: "ReplacingMergeTree",
-          id: "migrations/postgres/replacing-merge-tree"
+          id: "guides/developer/replacing-merge-tree"
         },
       ]
     },

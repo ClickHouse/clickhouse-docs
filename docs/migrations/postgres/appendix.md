@@ -1,9 +1,10 @@
 ---
-slug: /integrations/postgresql/postgres-vs-clickhouse
-title: 'Comparing PostgreSQL and ClickHouse'
-keywords: ['postgres', 'postgresql', 'comparison']
-description: 'Page which explores the similarities and differences between PostgreSQL and ClickHouse'
+slug: /migrations/postgresql/appendix
+title: 'Appendix'
+keywords: ['postgres', 'postgresql', 'data types', 'types']
+description: 'Additional information relative to migrating from PostgreSQL'
 ---
+
 
 import postgresReplicas from '@site/static/images/integrations/data-ingestion/dbms/postgres-replicas.png';
 import Image from '@theme/IdealImage';
@@ -110,12 +111,81 @@ While powerful, this comes with inherent limitations and makes PB scales challen
 
 ClickHouse provides ACID properties under [limited configurations](/guides/developer/transactional) - most simply when using a non-replicated instance of the MergeTree table engine with one partition. Users should not expect these properties outside of these cases and ensure these are not a requirement.
 
-## Replicating or migrating Postgres data with ClickPipes (powered by PeerDB) {#replicating-or-migrating-postgres-data-with-clickpipes-powered-by-peerdb}
+## Compression {#compression}
 
-:::info
-PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/integrations/clickpipes/postgres) - now in Public Beta.
-:::
+ClickHouse's column-oriented storage means compression will often be significantly better when compared to Postgres. The following illustrated when comparing the storage requirement for all Stack Overflow tables in both databases:
 
-[PeerDB](https://www.peerdb.io/) enables you to seamlessly replicate data from Postgres to ClickHouse. You can use this tool for
-1. continuous replication using CDC, allowing Postgres and ClickHouse to coexist—Postgres for OLTP and ClickHouse for OLAP; and
-2. migrating from Postgres to ClickHouse.
+```sql title="Query (Postgres)"
+SELECT
+    schemaname,
+    tablename,
+    pg_total_relation_size(schemaname || '.' || tablename) AS total_size_bytes,
+    pg_total_relation_size(schemaname || '.' || tablename) / (1024 * 1024 * 1024) AS total_size_gb
+FROM
+    pg_tables s
+WHERE
+    schemaname = 'public';
+```
+
+```sql title="Query (ClickHouse)"
+SELECT
+        `table`,
+        formatReadableSize(sum(data_compressed_bytes)) AS compressed_size
+FROM system.parts
+WHERE (database = 'stackoverflow') AND active
+GROUP BY `table`
+```
+
+```response title="Response"
+┌─table───────┬─compressed_size─┐
+│ posts       │ 25.17 GiB       │
+│ users       │ 846.57 MiB      │
+│ badges      │ 513.13 MiB      │
+│ comments    │ 7.11 GiB        │
+│ votes       │ 1.28 GiB        │
+│ posthistory │ 40.44 GiB       │
+│ postlinks   │ 79.22 MiB       │
+└─────────────┴─────────────────┘
+```
+
+Further details on optimizing and measuring compression can be found [here](/data-compression/compression-in-clickhouse).
+
+## Data type mappings {#data-type-mappings}
+
+The following table shows the equivalent ClickHouse data types for Postgres.
+
+| Postgres Data Type | ClickHouse Type |
+| --- | --- |
+| `DATE` | [Date](/sql-reference/data-types/date) |
+| `TIMESTAMP` | [DateTime](/sql-reference/data-types/datetime) |
+| `REAL` | [Float32](/sql-reference/data-types/float) |
+| `DOUBLE` | [Float64](/sql-reference/data-types/float) |
+| `DECIMAL, NUMERIC` | [Decimal](/sql-reference/data-types/decimal) |
+| `SMALLINT` | [Int16](/sql-reference/data-types/int-uint) |
+| `INTEGER` | [Int32](/sql-reference/data-types/int-uint) |
+| `BIGINT` | [Int64](/sql-reference/data-types/int-uint) |
+| `SERIAL` | [UInt32](/sql-reference/data-types/int-uint) |
+| `BIGSERIAL` | [UInt64](/sql-reference/data-types/int-uint) |
+| `TEXT` | [String](/sql-reference/data-types/string) |
+| `CHAR, BPCHAR` | [FixedString](/sql-reference/data-types/fixedstring) |
+| `INTEGER` | Nullable([Int32](/sql-reference/data-types/int-uint)) |
+| `ARRAY` | [Array](/sql-reference/data-types/array) |
+| `FLOAT4` | [Float32](/sql-reference/data-types/float) |
+| `BOOLEAN` | [Bool](/sql-reference/data-types/boolean) |
+| `VARCHAR` | [String](/sql-reference/data-types/string) |
+| `BIT` | [String](/sql-reference/data-types/string) |
+| `BIT VARYING` | [String](/sql-reference/data-types/string) |
+| `BYTEA` | [String](/sql-reference/data-types/string) |
+| `NUMERIC` | [Decimal](/sql-reference/data-types/decimal) |
+| `GEOGRAPHY` | [Point](/sql-reference/data-types/geo#point), [Ring](/sql-reference/data-types/geo#ring), [Polygon](/sql-reference/data-types/geo#polygon), [MultiPolygon](/sql-reference/data-types/geo#multipolygon) |
+| `GEOMETRY` | [Point](/sql-reference/data-types/geo#point), [Ring](/sql-reference/data-types/geo#ring), [Polygon](/sql-reference/data-types/geo#polygon), [MultiPolygon](/sql-reference/data-types/geo#multipolygon) |
+| `INET` | [IPv4](/sql-reference/data-types/ipv4), [IPv6](/sql-reference/data-types/ipv6) |
+| `MACADDR` | [String](/sql-reference/data-types/string) |
+| `CIDR` | [String](/sql-reference/data-types/string) |
+| `HSTORE` | [Map(K, V)](/sql-reference/data-types/map), [Map](/sql-reference/data-types/map)(K,[Variant](/sql-reference/data-types/variant)) |
+| `UUID` | [UUID](/sql-reference/data-types/uuid) |
+| `ARRAY<T>` | [ARRAY(T)](/sql-reference/data-types/array) |
+| `JSON*` | [String](/sql-reference/data-types/string), [Variant](/sql-reference/data-types/variant), [Nested](/sql-reference/data-types/nested-data-structures/nested#nestedname1-type1-name2-type2-), [Tuple](/sql-reference/data-types/tuple) |
+| `JSONB` | [String](/sql-reference/data-types/string) |
+
+*\* Production support for JSON in ClickHouse is under development. Currently users can either map JSON as String, and use [JSON functions](/sql-reference/functions/json-functions), or map the JSON directly to [Tuples](/sql-reference/data-types/tuple) and [Nested](/sql-reference/data-types/nested-data-structures/nested) if the structure is predictable. Read more about JSON [here](/integrations/data-formats/json/overview).*
