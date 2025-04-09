@@ -56,34 +56,27 @@ on columns which are not in the primary key of a table.
 
 For this example, we'll be using the New York Taxi Data
 dataset available at [sql.clickhouse.com](sql.clickhouse.com) which is ordered 
-by `pickup_datetime` and `dropoff_datetime`:
+by `pickup_datetime`.
 
 Let's write a simple query to find all the trip IDs for which passengers 
 tipped their driver greater than $200:
 
-```sql
+```sql runnable
 SELECT
   tip_amount,
   trip_id,
   dateDiff('minutes', pickup_datetime, dropoff_datetime) AS trip_duration_min
 FROM nyc_taxi.trips WHERE tip_amount > 200 AND trip_duration_min > 0
-
-   ┌─tip_amount─┬────trip_id─┬─trip_duration_min─┐
-   │     233.25 │ 1211709305 │                18 │
-   │     222.88 │ 1203166979 │                41 │
-   │        215 │ 1211976534 │                16 │
-   └────────────┴────────────┴───────────────────┘
 ```
 
-Notice that because we are filtering on `tip_amount` which is not in the primary
-key ClickHouse had to do a full table scan which takes around 2.3 seconds to 
-return the result. Let's speed this up.
+Notice that because we are filtering on `tip_amount` which is not in the `ORDER BY`, ClickHouse 
+had to do a full table scan. Let's speed this query up.
 
 To add a projection we use the `ALTER TABLE` statement together with the `ADD PROJECTION`
 statement:
 
 ```sql
-ALTER TABLE nyc_taxi.trips
+ALTER TABLE nyc_taxi.trips_with_projection
 ADD PROJECTION prj_tip_amount
 (
     SELECT *
@@ -96,29 +89,21 @@ statement so that the data in it is physically ordered and rewritten according
 to the specified query above:
 
 ```sql
-ALTER TABLE trips MATERIALIZE PROJECTION prj_tip_amount
+ALTER TABLE nyc.trips_with_projection MATERIALIZE PROJECTION prj_tip_amount
 ```
 
 Let's run the query again now that we've added the projection:
 
-```sql
+```sql runnable
 SELECT
   tip_amount,
   trip_id,
   dateDiff('minutes', pickup_datetime, dropoff_datetime) AS trip_duration_min
-FROM nyc_taxi.trips_with_projections WHERE tip_amount > 200 AND trip_duration_min > 0
+FROM nyc_taxi.trips_with_projection WHERE tip_amount > 200 AND trip_duration_min > 0
 ```
 
-```sql
-   ┌─tip_amount─┬────trip_id─┬─trip_duration_min─┐
-   │        215 │ 1211976534 │                16 │
-   │     222.88 │ 1203166979 │                41 │
-   │     233.25 │ 1211709305 │                18 │
-   └────────────┴────────────┴───────────────────┘
-```
-
-Notice how we were able to decrease the query time from 2.3 seconds to _
-seconds and we scanned only 10.97 thousand rows instead of 3 million.
+Notice how we were able to decrease the query time substantially, and needed to scan
+less rows.
 
 We can confirm that our query above did indeed use the projection we made by
 querying the `system.query_log` table:
@@ -152,36 +137,35 @@ If you would like to see how the table was created and data inserted, you can
 refer to ["The UK property prices dataset"](/getting-started/example-datasets/uk-price-paid)
 page.
 
-We can run a simple query on this dataset that lists the counties in London which
-have the highest prices paid:
+We can run two simple queries on this dataset. The first lists the counties in London which
+have the highest prices paid, and the second calculates the average price for the counties:
 
-```sql
+```sql runnable
 SELECT
   county,
   price
-FROM uk_price_paid_with_projections
+FROM uk.uk_price_paid
 WHERE town = 'LONDON'
 ORDER BY price DESC
 LIMIT 3
 ```
 
-```response
-   ┌─county─────────┬─────price─┐
-1. │ GREATER LONDON │ 594300000 │
-2. │ GREATER LONDON │ 569200000 │
-3. │ GREATER LONDON │ 542540820 │
-   └────────────────┴───────────┘
-// highlight-next-line
-3 rows in set. Elapsed: 0.028 sec. Processed 30.03 million rows, 72.71 MB (1.06 billion rows/s., 2.57 GB/s.)
-Peak memory usage: 719.45 KiB.
+```sql runnable
+SELECT
+    county,
+    avg(price)
+FROM uk.uk_price_paid
+GROUP BY county
+ORDER BY avg(price) DESC
+LIMIT 3
 ```
 
-Notice above how a full table scan of all 30.03 million rows occurred, due to 
-the fact that `town` was not one of the keys in our ORDER BY statement when we
+Notice above how a full table scan of all 30.03 million rows occurred for both queries, due 
+to the fact that neither `town` nor `price` were in our `ORDER BY` statement when we
 created the table:
 
 ```sql
-CREATE TABLE uk_price_paid_with_projections
+CREATE TABLE uk.uk_price_paid
 (
   ...
 )
@@ -201,7 +185,7 @@ optimize the query that lists the counties in a specific town for the highest
 paid prices:
 
 ```sql
-ALTER TABLE uk_price_paid_with_projections
+ALTER TABLE uk.uk_price_paid_with_projections
   (ADD PROJECTION prj_obj_town_price
   (
     SELECT *
@@ -210,8 +194,9 @@ ALTER TABLE uk_price_paid_with_projections
         price
   ))
 ```
+
 ```sql
-ALTER TABLE uk_price_paid_with_projections
+ALTER TABLE uk.uk_price_paid_with_projections
   (MATERIALIZE PROJECTION prj_obj_town_price)
 SETTINGS mutations_sync = 1
 ```
@@ -224,7 +209,7 @@ that incrementally pre-computes the avg(price) aggregate values for all existing
 130 UK counties:
 
 ```sql
-ALTER TABLE uk_price_paid_with_projections
+ALTER TABLE uk.uk_price_paid_with_projections
   (ADD PROJECTION prj_gby_county
   (
     SELECT
@@ -234,7 +219,7 @@ ALTER TABLE uk_price_paid_with_projections
   ))
 ```
 ```sql
-ALTER TABLE uk_price_paid_with_projections
+ALTER TABLE uk.uk_price_paid_with_projections
   (MATERIALIZE PROJECTION prj_gby_county)
 SETTINGS mutations_sync = 1
 ```
@@ -252,27 +237,16 @@ and its two projections:
 <Image img={projections_2} size="lg" alt="Visualization of the main table uk_price_paid_with_projections and its two projections"/>
 
 If we now run the query that lists the counties in London for the three highest 
-paid prices again, we see a dramatic difference in performance, from 0.028 sec 
-down to 0.012 sec:
+paid prices again, we see a dramatic difference in query performance:
 
 ```sql title="Query (with projections)"
 SELECT
   county,
   price
-FROM uk_price_paid_with_projections
+FROM uk.uk_price_paid_with_projections
 WHERE town = 'LONDON'
 ORDER BY price DESC
 LIMIT 3
-```
-```sql
-   ┌─county─────────┬─────price─┐
-   │ GREATER LONDON │ 594300000 │
-   │ GREATER LONDON │ 569200000 │
-   │ GREATER LONDON │ 542540820 │
-   └────────────────┴───────────┘
-
-3 rows in set. Elapsed: 0.012 sec. Processed 2.29 million rows, 16.06 MB (186.83 million rows/s., 1.31 GB/s.)
-Peak memory usage: 193.73 KiB.
 ```
 
 Likewise, for the query that lists the U.K. counties with the three highest 
@@ -282,21 +256,10 @@ average-paid prices:
 SELECT
     county,
     avg(price)
-FROM uk_price_paid_with_projections
+FROM uk.uk_price_paid_with_projections
 GROUP BY county
 ORDER BY avg(price) DESC
 LIMIT 3
-```
-
-```response
-
-   ┌─county─────────────────┬────────avg(price)─┐
-   │ GREATER LONDON         │ 427152.7303796859 │
-   │ WINDSOR AND MAIDENHEAD │ 423806.3374685812 │
-   │ WEST NORTHAMPTONSHIRE  │ 414738.3185798591 │
-   └────────────────────────┴───────────────────┘
-
-3 rows in set. Elapsed: 0.004 sec.
 ```
 
 Note that both queries target the original table, and that both queries resulted
@@ -331,7 +294,7 @@ FORMAT Vertical
 ```response
 Row 1:
 ──────
-tables:         ['default.uk_price_paid_with_projections']
+tables:         ['uk.uk_price_paid_with_projections']
 query:          SELECT
     county,
     avg(price)
@@ -341,11 +304,11 @@ ORDER BY avg(price) DESC
 LIMIT 3
 query_duration: 5 ms
 read_rows:      132.00
-projections:    ['default.uk_price_paid_with_projections.prj_gby_county']
+projections:    ['uk.uk_price_paid_with_projections.prj_gby_county']
 
 Row 2:
 ──────
-tables:         ['default.uk_price_paid_with_projections']
+tables:         ['uk.uk_price_paid_with_projections']
 query:          SELECT
   county,
   price
@@ -356,7 +319,7 @@ LIMIT 3
 SETTINGS log_queries=1
 query_duration: 11 ms
 read_rows:      2.29 million
-projections:    ['default.uk_price_paid_with_projections.prj_obj_town_price']
+projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
 
 2 rows in set. Elapsed: 0.006 sec.
 ```
