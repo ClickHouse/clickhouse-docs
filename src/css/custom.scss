@@ -248,7 +248,7 @@ html[data-theme='dark'] pre,
 html[data-theme='dark'] pre code,
 html[data-theme='dark'] code {
   background: none !important;
-  background-color: #292D3E !important;
+  background-color: #282828 !important;
   box-shadow: none !important;
   filter: none !important;
   border: none !important;
@@ -273,7 +273,7 @@ html[data-theme='light'] pre code {
 
 html[data-theme='dark'] pre,
 html[data-theme='dark'] pre code {
-  background-color: #292D3E !important;
+  background-color: #282828 !important;
   color: var(--prism-color);
 }
 
