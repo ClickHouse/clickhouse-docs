@@ -4,7 +4,6 @@ node_modules
 build
 docs/development
 docs/engines
-docs/getting-started
 docs/interfaces
 docs/operations
 docs/sql-reference
