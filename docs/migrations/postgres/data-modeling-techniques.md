@@ -247,7 +247,7 @@ Despite these advantages, projections come with some inherent limitations which 
 - Materialized views can be chained: the target table of one materialized view can be the source table of another materialized view, and so on. This is not possible with projections.
 - Projections don't support joins; materialized views do.
 - Projections don't support filters (WHERE clause); materialized views do.
-- Projections dont'support FINAL keyword; materialized views do.
+- Projections don't support FINAL keyword; materialized views do.
 
 We recommend using projections when:
 

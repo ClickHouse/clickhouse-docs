@@ -960,3 +960,5 @@ Probabilistically
 tunable
 --docs/best-practices/use_materialized_views.md--
 DAGs
+--docs/migrations/postgres/appendix.md--
+Citus
