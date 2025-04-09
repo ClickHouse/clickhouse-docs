@@ -265,7 +265,7 @@ const config = {
       prism: {
         theme: themes.darkTheme,
         darkTheme: themes.darkTheme,
-        additionalLanguages: ["java", "cpp", "rust"],
+        additionalLanguages: ["java", "cpp", "rust", "python", "javascript"],
         magicComments: [
           // Remember to extend the default highlight class name as well!
           {
@@ -309,6 +309,7 @@ const config = {
       },
     ],
     chHeader,
+    ['./plugins/tailwind-config.js', {}],
   ],
   customFields: {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page
