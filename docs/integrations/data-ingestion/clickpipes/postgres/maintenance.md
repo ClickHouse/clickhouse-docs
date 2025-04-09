@@ -2,7 +2,6 @@
 sidebar_label: 'Maintenance Windows'
 description: 'Maintenance windows for ClickPipes for Postgres.'
 slug: /integrations/clickpipes/postgres/maintenance
-sidebar_position: 2
 title: 'Maintenance windows for ClickPipes for Postgres'
 ---
 
