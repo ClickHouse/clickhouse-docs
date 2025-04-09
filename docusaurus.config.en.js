@@ -287,7 +287,7 @@ const config = {
       prism: {
         theme: themes.darkTheme,
         darkTheme: themes.darkTheme,
-        additionalLanguages: ["java", "cpp", "rust", "python"],
+        additionalLanguages: ["java", "cpp", "rust", "python", "javascript"],
         magicComments: [
           // Remember to extend the default highlight class name as well!
           {
