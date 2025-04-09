@@ -65,7 +65,7 @@ In ClickHouse Cloud, this same parallelism is achieved through [parallel replica
 
 Use these tools to verify that your query fully utilizes available CPU resources and to diagnose when it doesn’t.
 
-We’re running this on a test server with 59 CPU cores, which allows ClickHouse to fully showcase its intra-query parallelism.
+We’re running this on a test server with 59 CPU cores, which allows ClickHouse to fully showcase its query parallelism.
 
 To observe how the example query is executed, we can instruct the ClickHouse server to return all trace-level log entries during the aggregation query. For this demonstration, we removed the query’s predicate—otherwise, only 3 granules would be processed, which isn’t enough data for ClickHouse to make use of more than a few parallel processing lanes:
 ```sql runnable=false
@@ -124,7 +124,7 @@ Note: Read the visualization from left to right. Each row represents a parallel 
 
 ### Load balancing across processing lanes {#load-balancing-across-processing-lanes}
 
-Note that the `Resize` operators in the physical plan above [repartition and redistribute](/academic_overview#4-2-multi-core-parallelization) data block streams across processing lanes to keep them evenly utilized. This rebalancing is essential when data ranges have varying predicate selectivities, which can otherwise overload some lanes while leaving others underutilized. By redistributing the work, faster lanes effectively help out slower ones—optimizing overall query runtime.
+Note that the `Resize` operators in the physical plan above [repartition and redistribute](/academic_overview#4-2-multi-core-parallelization) data block streams across processing lanes to keep them evenly utilized. This rebalancing is especially important when data ranges vary in how many rows match the query predicates, otherwise, some lanes may become overloaded while others sit idle. By redistributing the work, faster lanes effectively help out slower ones, optimizing overall query runtime.
 
 
 ## Why max_threads isn't always respected {#why-max-threads-isnt-always-respected}
