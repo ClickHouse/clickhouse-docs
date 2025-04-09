@@ -177,7 +177,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2);
 For the original example table `uk_price_paid`, we will create (and populate) two
 projections.
 
-Let's see if we can speed this query up using Projections.
+Let's see if we can speed this query up using projections.
 
 We create and populate projection `prj_oby_town_price` which produces an 
 additional (hidden) table with a primary index, ordering by town and price, to 
@@ -239,7 +239,7 @@ and its two projections:
 If we now run the query that lists the counties in London for the three highest 
 paid prices again, we see a dramatic difference in query performance:
 
-```sql title="Query (with projections)"
+```sql runnable
 SELECT
   county,
   price
@@ -252,7 +252,7 @@ LIMIT 3
 Likewise, for the query that lists the U.K. counties with the three highest 
 average-paid prices:
 
-```sql
+```sql runnable
 SELECT
     county,
     avg(price)
