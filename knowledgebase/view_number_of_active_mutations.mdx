@@ -9,13 +9,13 @@ keywords: ['Active Mutations', 'Queued Mutations']
 {frontMatter.description}
 {/* truncate */}
 
-## Question
+## Question {#question}
 
 How do I view the number of active or queued mutations?
 
-## Answer
+## Answer {#answer}
 
-Monitoring the number of active or queued mutations is important if you are performing a lot of `ALTER` or `UPDATE` statements on your tables. These queries rewrite data parts and are not atomic - they are ordered by their creation part and applied to each part in that order. You can find more details on mutations in the [docs](https://clickhouse.com/docs/en/sql-reference/statements/alter#mutations).
+Monitoring the number of active or queued mutations is important if you are performing a lot of `ALTER` or `UPDATE` statements on your tables. These queries rewrite data parts and are not atomic - they are ordered by their creation part and applied to each part in that order. You can find more details on mutations in the [docs](https://clickhouse.com/docs/sql-reference/statements/alter#mutations).
 
 Each mutation generates an entry in the `system.mutations` table. When performing a large number of mutations, you can monitor the count running and queued mutations with this:
 

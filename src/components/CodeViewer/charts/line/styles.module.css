@@ -1,0 +1,37 @@
+.tooltip {
+  position: relative;
+  visibility: visible;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: visible;
+  background-color: #302e32;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  margin-left: -64px;
+  margin-top: -20px;
+}
+
+.tooltip .tooltiptext::after {
+  content: '';
+  visibility: visible;
+  position: absolute;
+  background-color: transparent;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: #302e32 transparent transparent transparent;
+}
+
+.line {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

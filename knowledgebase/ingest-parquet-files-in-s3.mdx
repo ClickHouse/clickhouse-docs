@@ -9,7 +9,7 @@ keywords: ['Parquet', 'S3 Bucket']
 {frontMatter.description}
 {/* truncate */}
 
-## Ingesting Parquet files from an S3 bucket
+## Ingesting Parquet files from an S3 bucket {#ingesting-parquet-files-from-an-s3-bucket}
 
 Below are some basics of using the S3 table engine to read parquet files.
 
@@ -21,7 +21,7 @@ normal login users usually don't work since they may have been configured with a
 The following is a very simple example that you can use to test the mechanics of accessing your parquet files successfully prior to applying to your actual data.
 
 If you need an example of creating a user and bucket, you can follow the first two sections (create user and create bucket):
-https://clickhouse.com/docs/en/guides/sre/configuring-s3-for-clickhouse-use/
+https://clickhouse.com/docs/guides/sre/configuring-s3-for-clickhouse-use/
 
 I used this sample file: https://github.com/Teradata/kylo/tree/master/samples/sample-data/parquet
 and uploaded it to my test bucket
@@ -52,7 +52,7 @@ You can set the policy something like this on the bucket:
 ```
 
 You can run queries with this type of syntax using the S3 table engine:
-https://clickhouse.com/docs/en/sql-reference/table-functions/s3/
+https://clickhouse.com/docs/sql-reference/table-functions/s3/
 
 ```
 clickhouse-cloud :)  select count(*) from s3('https://mars-doc-test.s3.amazonaws.com/s3-parquet-test/userdata1.parquet','ABC123', 'abc+123', 'Parquet', 'first_name String');
@@ -70,7 +70,7 @@ Query id: fd4f1193-d604-4ac0-9a46-bdd2d5e14727
 ```
 
 The data types reference for parquet format are here:
-https://clickhouse.com/docs/en/interfaces/formats/#data-format-parquet
+https://clickhouse.com/docs/interfaces/formats/#data-format-parquet
 
 To bring in the data into a native ClickHouse table:
 
@@ -139,7 +139,7 @@ When you are ready to import your real data, you can use some special syntax lik
 I'd recommend to filter a few directories and files to test the import, maybe a certain year, a couple months and some date range to test first.
 
 besides the path options here, newly released is syntax `**` which specifies all subdirectories recursively.
-https://clickhouse.com/docs/en/sql-reference/table-functions/s3/
+https://clickhouse.com/docs/sql-reference/table-functions/s3/
 
 For example, assuming the paths and bucket structure is something like this:
 `https://your_s3_bucket.s3.amazonaws.com/<your_folder>/<year>/<month>/<day>/<filename>.parquet`

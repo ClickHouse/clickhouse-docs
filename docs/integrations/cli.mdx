@@ -1,0 +1,12 @@
+---
+sidebar_position: 30
+sidebar_label: 'clickhouse-client'
+title: 'clickhouse-client'
+slug: /integrations/sql-clients/cli
+displayed_sidebar: 'integrations'
+description: 'Page describing the CLI interface'
+---
+
+import Content from '@site/docs/interfaces/cli.md';
+
+<Content />
