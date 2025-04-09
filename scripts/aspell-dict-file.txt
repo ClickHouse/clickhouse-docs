@@ -1,3 +1,9 @@
+--docs/tutorial.md--
+Allerton
+Boro
+LocationID
+Pelham
+york
 --docs/materialized-view/refreshable-materialized-view.md--
 Clicky
 Clicky's
