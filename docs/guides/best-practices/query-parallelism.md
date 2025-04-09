@@ -32,7 +32,7 @@ When ClickHouse ① runs an aggregation query with a filter on the table’s pri
 
 ### Distributing work across processing lanes {#distributing-work-across-processing-lanes}
 
-The selected data is then [dynamically](#load-balancing-across-processing-lanes) distributed across `n` parallel processing lanes, which stream and process the data [block](/development/architecture#block) by block into the final result:
+The selected data is then [dynamically](#load-balancing-across-processing-lanes) distributed across `n` parallel [processing lanes](/academic_overview#4-2-multi-core-parallelization), which stream and process the data [block](/development/architecture#block) by block into the final result:
 
 <Image img={visual02} size="md" alt="4 parallel processing lanes"/>
 
@@ -219,7 +219,10 @@ For clusters with shared storage (e.g. ClickHouse Cloud):
 Additionally, there’s a hard lower limit for read task size, controlled by:
 * [Merge_tree_min_read_task_size](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_read_task_size) + [merge_tree_min_bytes_per_task_for_remote_reading](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_per_task_for_remote_reading)
 
+:::warning Don't modify these settings
 We don’t recommend modifying these settings in production. They’re shown here solely to illustrate why `max_threads` doesn’t always determine the actual level of parallelism.
+:::
+
 
 For demonstration purposes, let’s inspect the physical plan with these settings overridden to force maximum concurrency:
 ```sql runnable=false
@@ -257,9 +260,9 @@ This demonstrates that for queries on small datasets, ClickHouse will intentiona
 
 If you’d like to dive deeper into how ClickHouse executes queries in parallel and how it achieves high performance at scale, explore the following resources: 
 
-* [Query Processing Layer – VLDB 2024 Paper (Web Edition)](https://clickhouse.com/docs/academic_overview#4-query-processing-layer) - A detailed breakdown of ClickHouse’s internal execution model, including scheduling, pipelining, and operator design.
+* [Query Processing Layer – VLDB 2024 Paper (Web Edition)](/academic_overview#4-query-processing-layer) - A detailed breakdown of ClickHouse’s internal execution model, including scheduling, pipelining, and operator design.
 
-* [Partial aggregation states explained](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization) - A technical deep dive into how partial aggregation states enable efficient parallel execution across processing lanes.
+* [Partial aggregation states explained](/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization) - A technical deep dive into how partial aggregation states enable efficient parallel execution across processing lanes.
 
 * A video tutorial walking in detail through all ClickHouse query processing steps:
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/hP6G2Nlz_cA?si=Imd_i427J_kZOXHe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
