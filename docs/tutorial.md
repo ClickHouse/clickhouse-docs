@@ -9,11 +9,12 @@ keywords: ['clickhouse', 'install', 'tutorial', 'dictionary', 'dictionaries', 'e
 
 # Advanced Tutorial
 
-## Overview
+## Overview {#overview}
 
 Learn how to ingest and query data in ClickHouse using a New York City taxi example dataset. 
 
-### Prerequisites
+### Prerequisites {#prerequisites}
+
 You need access to a running ClickHouse service to complete this tutorial. For instructions, see the [Quick Start](./quick-start.mdx) guide.
 
 ## Create a new table {#create-a-new-table}
