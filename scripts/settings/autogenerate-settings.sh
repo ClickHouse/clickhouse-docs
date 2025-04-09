@@ -56,7 +56,8 @@ mv settings-formats.md "$root/docs/operations/settings" || { echo "Failed to mov
 mv settings.md "$root/docs/operations/settings" || { echo "Failed to move generated settings.md"; exit 1; }
 mv server_settings.md "$root/docs/operations/server-configuration-parameters/settings.md" || { echo "Failed to move generated server_settings.md"; exit 1; }
 cat generated_merge_tree_settings.md >> "$root/docs/operations/settings/merge-tree-settings.md" || { echo "Failed to append MergeTree settings.md"; exit 1; }
-cat experimental-settings.md >> "$root/docs/operations/settings/experimental-settings.md" || { echo "Failed to append experimental settings.md"; exit 1; }
+cat experimental-settings.md >> "$root/docs/settings/beta-and-experimental-features.md" || { echo "Failed to append experimental settings.md"; exit 1; }
+cat beta-settings.md >> "$root/docs/settings/beta-and-experimental-features.md" || { echo "Failed to append beta settings.md"; exit 1; }
 
 echo "[$SCRIPT_NAME] Auto-generation of settings markdown pages completed successfully"
 
