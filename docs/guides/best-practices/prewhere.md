@@ -128,7 +128,7 @@ SETTINGS optimize_move_to_prewhere = false;
 Peak memory usage: 132.10 MiB.
 ```
 
-ClickHouse read **23.36MB** of column data while processing 2.31 million rows for the query.
+ClickHouse read **23.36 MB** of column data while processing 2.31 million rows for the query.
 
 Next, we run the query with the `optimize_move_to_prewhere` setting enabled. (Note that this setting is optional, as the setting is enabled by default):
 ```sql
@@ -152,7 +152,7 @@ SETTINGS optimize_move_to_prewhere = true;
 Peak memory usage: 132.11 MiB.
 ```
 
-The same number of rows was processed (2.31 million), but thanks to PREWHERE, ClickHouse read over three times less column data—just 6.74MB instead of 23.36MB—which cut the total runtime by a factor of 3.
+The same number of rows was processed (2.31 million), but thanks to PREWHERE, ClickHouse read over three times less column data—just 6.74 MB instead of 23.36 MB—which cut the total runtime by a factor of 3.
 
 For deeper insight into how ClickHouse applies PREWHERE behind the scenes, use EXPLAIN and trace logs. 
 
