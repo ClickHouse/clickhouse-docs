@@ -61,25 +61,25 @@ Now, thanks to the PREWHERE clause, the next step differs: Instead of reading al
 With each step, it only loads granules that contain at least one row that survived—i.e., matched—the previous filter. As a result, the number of granules to load and evaluate for each filter decreases monotonically:
 
 **Step 1: Filtering by town**<br/>
-ClickHouse begins PREWHERE processing by reading the selected granules from the `town` column and checking which ones actually contain rows matching `London`.
+ClickHouse begins PREWHERE processing by ① reading the selected granules from the `town` column and checking which ones actually contain rows matching `London`.
 
-In our example, all selected granules do match, so the corresponding positionally aligned granules for the next filter column—`date`—are then selected for processing:
+In our example, all selected granules do match, so ② the corresponding positionally aligned granules for the next filter column—`date`—are then selected for processing:
 
 <Image img={visual03} size="md" alt="Step 1: Filtering by town"/>
 
 <br/><br/>
 **Step 2: Filtering by date**<br/>
-Next, ClickHouse reads the selected `date` column granules to evaluate the filter `date > '2024-12-31'`.
+Next, ClickHouse ① reads the selected `date` column granules to evaluate the filter `date > '2024-12-31'`.
 
-In this case, two out of three granules contain matching rows, so only their positionally aligned granules from the next filter column—`price`—are selected for further processing:
+In this case, two out of three granules contain matching rows, so ② only their positionally aligned granules from the next filter column—`price`—are selected for further processing:
 
 <Image img={visual04} size="md" alt="Step 2: Filtering by date"/>
 
 <br/><br/>
 **Step 3: Filtering by price**<br/>
-Finally, ClickHouse reads the two selected granules from the `price` column to evaluate the last filter `price > 10_000`.
+Finally, ClickHouse ① reads the two selected granules from the `price` column to evaluate the last filter `price > 10_000`.
 
-Only one of the two granules contains matching rows, so just its positionally aligned granule from the `SELECT` column—`street`—needs to be loaded for further processing:
+Only one of the two granules contains matching rows, so ② just its positionally aligned granule from the `SELECT` column—`street`—needs to be loaded for further processing:
 
 <Image img={visual05} size="md" alt="Step 2: Filtering by price"/>
 
