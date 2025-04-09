@@ -233,7 +233,7 @@ code {
   font-weight: bold;
   font-size: 0.95em;
   border-radius: 0;
-  padding: 0.15em 0.35em;
+  padding: 0.15em 0.35em !important;
   scrollbar-width: thin;
   scrollbar-color: rgb(99, 99, 99) rgb(41, 45, 62);
 }
@@ -261,7 +261,7 @@ html[data-theme='light'] code {
 
 /* === Block code (pre) === */
 pre {
-  padding: 1rem;
+  padding: 1em 1em 1em 1em !important;
   border-radius: 0 !important;
 }
 
