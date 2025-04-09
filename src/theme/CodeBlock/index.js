@@ -12,7 +12,7 @@ function countLines(text) {
 
 function parseMetaString(meta = '') {
   const result = {}
-  const implicit_settings = ['runnable', 'run', 'show_statistics']
+  const implicit_settings = ['runnable', 'run', 'show_statistics', 'click_ui']
 
   meta.split(' ').forEach((part) => {
     if (!part) return
@@ -72,7 +72,7 @@ export default function CodeBlockWrapper(props) {
     );
   }
 
-
+  
   const settings = parseMetaString(props.metastring); 
   settings['language'] = props.className ? props.className.replace('language-', ''): 'txt';
   return (

@@ -5,6 +5,7 @@ import { ChartConfig, ChartType } from './types'
 import { base64Decode } from './utils'
 import { useColorMode } from '@docusaurus/theme-common'
 import { isValidElement } from 'react'
+import DocusaurusCodeBlock from '@theme-original/CodeBlock';
 
 function getCodeContent(children: any): string {
   if (typeof children === 'string') return children
@@ -49,6 +50,7 @@ function CodeViewer({
   show_statistics = 'true',
   style = '',
   title='',
+  click_ui = 'false',
   children,
   ...props
 }: any) {
@@ -78,36 +80,44 @@ function CodeViewer({
   const header = title ? (
     <>
       <Text className='pl-[16px] pt-[14px]' size='md'>{title}</Text>
-      <Separator size="md"/>
     </>
   ): null
+
+  const code_block = click_ui === 'true' ? (
+    <CodeBlock
+      style={combinedStyle}
+      className={`code-viewer`}
+      language={language}
+      onCopy={function Da() {}}
+      onCopyError={function Da() {}}
+      showLineNumbers={showLineNumbers}
+      theme={colorMode}
+      wrapLines={false}
+    >
+      {typeof children === 'string' ? children : getCodeContent(children)}
+    </CodeBlock>
+  ): (
+    <DocusaurusCodeBlock children={children} className={`language-${language}`}/>
+  )
+  const results = runnable ? (
+    <CodeInterpreter
+      link={link}
+      run={runBoolean}
+      runnable={runnableBoolean}
+      queryString={typeof children === 'string' ? children : getCodeContent(children)}
+      view={chart ? view : DefaultView.Table}
+      chart={chart}
+      settings={clickhouse_settings}
+      show_statistics={showStatistics}
+    />
+  ): null
+
   return (
-      <div className={`code-viewer mb-[12px] ${colorMode === 'dark' ? 'bg-[#282828]' : 'bg-[#f5f5f5]'}`}>
+      <div className={`code-viewer mb-[12px] ${colorMode === 'dark' ? 'bg-[#292D3E]' : 'bg-[#f5f5f5]'}`}>
         <ClickUIProvider theme={colorMode}>
           { header }
-          <CodeBlock
-            style={combinedStyle}
-            className={`code-viewer`}
-            language={language}
-            onCopy={function Da() {}}
-            onCopyError={function Da() {}}
-            showLineNumbers={showLineNumbers}
-            theme={colorMode}
-            wrapLines={false}
-            >
-            {typeof children === 'string' ? children : getCodeContent(children)}
-          </CodeBlock>
-          
-          <CodeInterpreter
-            link={link}
-            run={runBoolean}
-            runnable={runnableBoolean}
-            queryString={typeof children === 'string' ? children : getCodeContent(children)}
-            view={chart ? view : DefaultView.Table}
-            chart={chart}
-            settings={clickhouse_settings}
-            show_statistics={showStatistics}
-          />
+          { code_block }
+          { results }
         </ClickUIProvider>
       </div>
 
