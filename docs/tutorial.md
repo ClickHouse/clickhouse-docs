@@ -365,7 +365,7 @@ Run some queries to analyze the data. Explore the following examples or try your
 
 ## Create a dictionary {#create-a-dictionary}
 
-A dictionary is a mapping of key-value pairs stored in memory. For details, see [Dictionaries](/docs/en/sql-reference/dictionaries/index.md) 
+A dictionary is a mapping of key-value pairs stored in memory. For details, see [Dictionaries](/sql-reference/dictionaries/index.md) 
 
 Create a dictionary associated with a table in your ClickHouse service.
 The table and dictionary are based on a CSV file that contains a row for each neighborhood in New York City. 
@@ -399,7 +399,7 @@ Here's an excerpt from the CSV file you're using in table format. The `LocationI
   ```
 
   :::note
-  Setting `LIFETIME` to 0 disables automatic updates to avoid unnecessary traffic to our S3 bucket. In other cases, you might configure it differently. For details, see [Refreshing dictionary data using LIFETIME](/docs/en/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
+  Setting `LIFETIME` to 0 disables automatic updates to avoid unnecessary traffic to our S3 bucket. In other cases, you might configure it differently. For details, see [Refreshing dictionary data using LIFETIME](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
   :::
 
 3. Verify it worked. The following should return 265 rows, or one row for each neighborhood:
@@ -514,6 +514,6 @@ Write some queries that join the `taxi_zone_dictionary` with your `trips` table.
 Learn more about ClickHouse with the following documentation:
 
 - [Introduction to Primary Indexes in ClickHouse](./guides/best-practices/sparse-primary-indexes.md): Learn how ClickHouse uses sparse primary indexes to efficiently locate relevant data during queries. 
-- [Integrate an external data source](/docs/en/integrations/index.mdx): Review data source integration options, including files, Kafka, PostgreSQL, data pipelines, and many others.
+- [Integrate an external data source](/integrations/index.mdx): Review data source integration options, including files, Kafka, PostgreSQL, data pipelines, and many others.
 - [Visualize data in ClickHouse](./integrations/data-visualization/index.md): Connect your favorite UI/BI tool to ClickHouse.
 - [SQL Reference](./sql-reference/index.md): Browse the SQL functions available in ClickHouse for transforming, processing and analyzing data.
