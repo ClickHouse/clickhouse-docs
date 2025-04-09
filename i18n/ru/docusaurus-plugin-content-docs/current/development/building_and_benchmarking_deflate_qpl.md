@@ -1,42 +1,43 @@
 ---
-slug: /development/building_and_benchmarking_deflate_qpl
+description: 'Как собрать ClickHouse и запустить бенчмарк с кодеком DEFLATE_QPL'
+sidebar_label: 'Сборка и Бенчмарк DEFLATE_QPL'
 sidebar_position: 73
-sidebar_label: Создание и тестирование DEFLATE_QPL
-description: Как собрать ClickHouse и запустить тестирование с кодеком DEFLATE_QPL
+slug: /development/building_and_benchmarking_deflate_qpl
+title: 'Собрать ClickHouse с DEFLATE_QPL'
 ---
 
 
-# Соберите ClickHouse с помощью DEFLATE_QPL
+# Собрать ClickHouse с DEFLATE_QPL
 
-- Убедитесь, что ваша хост-машина соответствует требованиям [предварительным условиям](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#prerequisites) QPL.
-- deflate_qpl включен по умолчанию во время сборки cmake. В случае, если вы случайно измените это, пожалуйста, дважды проверьте флаг сборки: ENABLE_QPL=1.
+- Убедитесь, что ваша хост-машина соответствует требованиям QPL [предварительные условия](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#prerequisites)
+- deflate_qpl включен по умолчанию во время сборки cmake. В случае если вы случайно изменили это, пожалуйста, дважды проверьте флаг сборки: ENABLE_QPL=1
 
-- Для общих требований, пожалуйста, обратитесь к общим [инструкциям по сборке ClickHouse](/development/build.md).
+- Для общих требований, пожалуйста, обратитесь к общим [инструкциям по сборке ClickHouse](/development/build.md)
 
 
-# Запустите тестирование с DEFLATE_QPL
+# Запустить бенчмарк с DEFLATE_QPL
 
 ## Список файлов {#files-list}
 
-Папки `benchmark_sample` в [qpl-cmake](https://github.com/ClickHouse/ClickHouse/tree/master/contrib/qpl-cmake) предоставляют пример запуска тестирования с помощью python-скриптов:
+Папка `benchmark_sample` под [qpl-cmake](https://github.com/ClickHouse/ClickHouse/tree/master/contrib/qpl-cmake) предоставляет пример для запуска бенчмарка с помощью python-скриптов:
 
-`client_scripts` содержит python-скрипты для выполнения типичного тестирования, например:
-- `client_stressing_test.py`: скрипт на python для стресстестирования запросов с [1~4] серверами.
-- `queries_ssb.sql`: файл со списком всех запросов для [Star Schema Benchmark](/getting-started/example-datasets/star-schema/).
-- `allin1_ssb.sh`: Этот shell-скрипт автоматически выполняет весь процесс тестирования в одном.
+`client_scripts` содержит python-скрипты для выполнения типичного бенчмарка, например:
+- `client_stressing_test.py`: скрипт на python для стресс-тестирования запросов с [1~4] экземплярами сервера.
+- `queries_ssb.sql`: файл, в котором перечислены все запросы для [Star Schema Benchmark](/getting-started/example-datasets/star-schema/)
+- `allin1_ssb.sh`: Этот скрипт оболочки автоматически выполняет весь рабочий процесс бенчмарка.
 
-`database_files` означает, что он будет хранить файлы базы данных в соответствии с кодеками lz4/deflate/zstd.
+`database_files` означает, что он будет хранить файлы базы данных согласно кодекам lz4/deflate/zstd.
 
-## Автоматический запуск тестирования для Star Schema: {#run-benchmark-automatically-for-star-schema}
+## Запустить бенчмарк автоматически для Star Schema: {#run-benchmark-automatically-for-star-schema}
 
-``` bash
+```bash
 $ cd ./benchmark_sample/client_scripts
 $ sh run_ssb.sh
 ```
 
-После завершения проверьте все результаты в этой папке: `./output/`.
+После завершения, пожалуйста, проверьте все результаты в этой папке:`./output/`
 
-Если вы столкнулись с неудачей, пожалуйста, выполните тестирование вручную, как указано в следующих разделах.
+В случае сбоя, пожалуйста, вручную запустите бенчмарк в следующих разделах.
 
 ## Определение {#definition}
 
@@ -45,82 +46,82 @@ $ sh run_ssb.sh
 ## Окружение {#environment}
 
 - CPU: Sapphire Rapid
-- Требования к ОС обратитесь к [Системным требованиям для QPL](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#system-requirements)
-- Настройка IAA смотрите [Конфигурацию ускорителя](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#accelerator-configuration)
+- Требования к ОС смотрите в [Системные требования для QPL](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#system-requirements)
+- Установка IAA смотрите в [Конфигурация ускорителей](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#accelerator-configuration)
 - Установите модули python:
 
-``` bash
+```bash
 pip3 install clickhouse_driver numpy
 ```
 
 [Самопроверка для IAA]
 
-``` bash
+```bash
 $ accel-config list | grep -P 'iax|state'
 ```
 
 Ожидаемый вывод будет таким:
-``` bash
+```bash
     "dev":"iax1",
     "state":"enabled",
             "state":"enabled",
 ```
 
-Если вы ничего не видите в выводе, это означает, что IAA не готов к работе. Пожалуйста, проверьте настройку IAA еще раз.
+Если вы не видите никакого вывода, это означает, что IAA не готова к работе. Пожалуйста, проверьте установку IAA снова.
 
 ## Генерация сырых данных {#generate-raw-data}
 
-``` bash
+```bash
 $ cd ./benchmark_sample
 $ mkdir rawdata_dir && cd rawdata_dir
 ```
 
-Используйте [`dbgen`](/getting-started/example-datasets/star-schema), чтобы сгенерировать 100 миллионов строк данных с параметрами:
+Используйте [`dbgen`](/getting-started/example-datasets/star-schema) для генерации данных объемом 100 миллионов строк с параметрами:
 -s 20
 
-Ожидается, что файлы типа `*.tbl` будут выводиться в `./benchmark_sample/rawdata_dir/ssb-dbgen`:
+Ожидается, что файлы, такие как `*.tbl`, будут находиться в `./benchmark_sample/rawdata_dir/ssb-dbgen`:
 
 ## Настройка базы данных {#database-setup}
 
-Настройте базу данных с кодеком LZ4
+Настройка базы данных с кодеком LZ4
 
-``` bash
+```bash
 $ cd ./database_dir/lz4
 $ [CLICKHOUSE_EXE] server -C config_lz4.xml >&/dev/null&
 $ [CLICKHOUSE_EXE] client
 ```
 
-Здесь вы должны увидеть сообщение `Connected to ClickHouse server` в консоли, что означает, что клиент успешно установил соединение с сервером.
+Здесь вы должны увидеть сообщение `Подключено к серверу ClickHouse` в консоли, что означает, что клиент успешно установил соединение с сервером.
 
-Завершите три шага, упомянутые в [Star Schema Benchmark](/getting-started/example-datasets/star-schema):
+Завершите три шага, упомянутые в [Star Schema Benchmark](/getting-started/example-datasets/star-schema)
 - Создание таблиц в ClickHouse
 - Вставка данных. Здесь следует использовать `./benchmark_sample/rawdata_dir/ssb-dbgen/*.tbl` в качестве входных данных.
-- Преобразование "звездной схемы" в денормализованную "плоскую схему".
+- Преобразование "звездной схемы" в денормализованную "плоскую схему"
 
-Настройте базу данных с кодеком IAA Deflate
+Настройка базы данных с кодеком IAA Deflate
 
-``` bash
+```bash
 $ cd ./database_dir/deflate
 $ [CLICKHOUSE_EXE] server -C config_deflate.xml >&/dev/null&
 $ [CLICKHOUSE_EXE] client
 ```
-Завершите три шага так же, как и с lz4 выше.
+Завершите три шага так же, как и для lz4 выше.
 
-Настройте базу данных с кодеком ZSTD
+Настройка базы данных с кодеком ZSTD
 
-``` bash
+```bash
 $ cd ./database_dir/zstd
 $ [CLICKHOUSE_EXE] server -C config_zstd.xml >&/dev/null&
 $ [CLICKHOUSE_EXE] client
 ```
-Завершите три шага так же, как и с lz4 выше.
+Завершите три шага так же, как и для lz4 выше.
 
-[Самопроверка]
-Для каждого кодека (lz4/zstd/deflate) выполните следующий запрос, чтобы убедиться, что базы данных созданы успешно:
+[самопроверка]
+Для каждого кодека (lz4/zstd/deflate) выполните следующий запрос, чтобы убедиться, что базы данных были успешно созданы:
 ```sql
 select count() from lineorder_flat
 ```
-Ожидается следующий вывод:
+Ожидаемый вывод будет таким:
 ```sql
 ┌───count()─┐
 │ 119994608 │
@@ -128,33 +129,33 @@ select count() from lineorder_flat
 ```
 [Самопроверка для кодека IAA Deflate]
 
-Первый раз, когда вы выполняете вставку или запрос от клиента, консоль сервера clickhouse ожидаемо выпустит этот лог:
+При первом выполнении вставки или запроса из клиента ожидается, что консоль сервера clickhouse напечатает этот лог:
 ```text
-Аппаратный кодек DeflateQpl готов к работе!
+Кодек DeflateQpl с аппаратным ускорением готов!
 ```
-Если вы этого никогда не находили, но видите другой лог ниже:
+Если вы никогда не найдете это, но увидите другой лог, как ниже:
 ```text
-Инициализация аппаратного кодека DeflateQpl не удалась
+Инициализация кодека DeflateQpl с аппаратным ускорением завершилась неудачно
 ```
-Это означает, что устройства IAA не готовы, вам нужно снова проверить настройку IAA.
+Это означает, что устройства IAA не готовы, вам нужно проверить установку IAA снова.
 
-## Тестирование с одним экземпляром {#benchmark-with-single-instance}
+## Бенчмарк с одним экземпляром {#benchmark-with-single-instance}
 
-- Перед началом тестирования отключите C6 и установите частотный губернатор CPU на `performance`.
+- Прежде чем начать бенчмарк, пожалуйста, отключите C6 и установите губернатор частоты CPU на `performance`
 
-``` bash
+```bash
 $ cpupower idle-set -d 3
 $ cpupower frequency-set -g performance
 ```
 
-- Чтобы устранить влияние памяти на перекрестные сокеты, мы используем `numactl`, чтобы связать сервер с одним сокетом и клиента с другим сокетом.
+- Чтобы исключить влияние памяти на многопоточность, мы используем `numactl` для привязки сервера к одному сокету, а клиента к другому сокету.
 - Один экземпляр означает один сервер, подключенный к одному клиенту.
 
-Теперь запустите тестирование для LZ4/Deflate/ZSTD соответственно:
+Теперь запустите бенчмарк для LZ4/Deflate/ZSTD соответственно:
 
 LZ4:
 
-``` bash
+```bash
 $ cd ./database_dir/lz4 
 $ numactl -m 0 -N 0 [CLICKHOUSE_EXE] server -C config_lz4.xml >&/dev/null&
 $ cd ./client_scripts
@@ -163,7 +164,7 @@ $ numactl -m 1 -N 1 python3 client_stressing_test.py queries_ssb.sql 1 > lz4.log
 
 IAA deflate:
 
-``` bash
+```bash
 $ cd ./database_dir/deflate
 $ numactl -m 0 -N 0 [CLICKHOUSE_EXE] server -C config_deflate.xml >&/dev/null&
 $ cd ./client_scripts
@@ -172,14 +173,14 @@ $ numactl -m 1 -N 1 python3 client_stressing_test.py queries_ssb.sql 1 > deflate
 
 ZSTD:
 
-``` bash
+```bash
 $ cd ./database_dir/zstd
 $ numactl -m 0 -N 0 [CLICKHOUSE_EXE] server -C config_zstd.xml >&/dev/null&
 $ cd ./client_scripts
 $ numactl -m 1 -N 1 python3 client_stressing_test.py queries_ssb.sql 1 > zstd.log
 ```
 
-Теперь три лога должны быть выданы, как ожидалось:
+Теперь три лога должны быть выведены как ожидается:
 ```text
 lz4.log
 deflate.log
@@ -188,47 +189,47 @@ zstd.log
 
 Как проверить метрики производительности:
 
-Мы фокусируемся на QPS, пожалуйста, ищите ключевое слово: `QPS_Final` и собирайте статистику.
+Мы сосредоточимся на QPS, пожалуйста, ищите ключевое слово: `QPS_Final` и собирайте статистику.
 
-## Тестирование с несколькими экземплярами {#benchmark-with-multi-instances}
+## Бенчмарк с несколькими экземплярами {#benchmark-with-multi-instances}
 
-- Чтобы уменьшить влияние памяти на слишком много потоков, мы рекомендуем запускать тестирование с несколькими экземплярами.
-- Мульти-инстанс означает несколько (2 или 4) серверов, подключенных к соответствующему клиенту.
-- Ядра одного сокета нужно делить поровну и назначать серверам соответственно.
-- Для многопоточности необходимо создать новую папку для каждого кодека и вставить набор данных, следуя аналогичным шагам, как и для одного экземпляра.
+- Чтобы уменьшить влияние малой памяти на слишком большое количество потоков, мы рекомендуем запускать бенчмарк с несколькими экземплярами.
+- Множественный экземпляр означает несколько (2 или 4) серверов, подключенных к соответствующему клиенту.
+- Ядра одного сокета необходимо разделить поровну и назначить их серверам соответственно.
+- Для нескольких экземпляров необходимо создать новую папку для каждого кодека и вставить набор данных, следуя аналогичным шагам, как и для одного экземпляра.
 
 Есть 2 отличия:
-- Со стороны клиента необходимо запустить clickhouse с назначенным портом во время создания таблицы и вставки данных.
-- Со стороны сервера необходимо запустить clickhouse с конкретным файлом конфигурации xml, в котором был назначен порт. Все пользовательские файлы xml для множественных инстансов предоставлены в ./server_config.
+- Для клиентской стороны вам нужно запустить clickhouse с назначенным портом во время создания таблицы и вставки данных.
+- Для серверной стороны вам нужно запустить clickhouse с конкретным xml конфигурационным файлом, в котором был назначен порт. Все настраиваемые xml конфигурационные файлы для нескольких экземпляров представлены в ./server_config.
 
-Предположим, что на каждом сокете 60 ядер и возьмем 2 экземпляра в качестве примера.
+Здесь мы предполагаем, что есть 60 ядер на сокет и берем 2 экземпляра в качестве примера.
 Запустите сервер для первого экземпляра
 LZ4:
 
-``` bash
+```bash
 $ cd ./database_dir/lz4
 $ numactl -C 0-29,120-149 [CLICKHOUSE_EXE] server -C config_lz4.xml >&/dev/null&
 ```
 
 ZSTD:
 
-``` bash
+```bash
 $ cd ./database_dir/zstd
 $ numactl -C 0-29,120-149 [CLICKHOUSE_EXE] server -C config_zstd.xml >&/dev/null&
 ```
 
 IAA Deflate:
 
-``` bash
+```bash
 $ cd ./database_dir/deflate
 $ numactl -C 0-29,120-149 [CLICKHOUSE_EXE] server -C config_deflate.xml >&/dev/null&
 ```
 
-[Запускаем сервер для второго экземпляра]
+[Запустите сервер для второго экземпляра]
 
 LZ4:
 
-``` bash
+```bash
 $ cd ./database_dir && mkdir lz4_s2 && cd lz4_s2
 $ cp ../../server_config/config_lz4_s2.xml ./
 $ numactl -C 30-59,150-179 [CLICKHOUSE_EXE] server -C config_lz4_s2.xml >&/dev/null&
@@ -236,7 +237,7 @@ $ numactl -C 30-59,150-179 [CLICKHOUSE_EXE] server -C config_lz4_s2.xml >&/dev/n
 
 ZSTD:
 
-``` bash
+```bash
 $ cd ./database_dir && mkdir zstd_s2 && cd zstd_s2
 $ cp ../../server_config/config_zstd_s2.xml ./
 $ numactl -C 30-59,150-179 [CLICKHOUSE_EXE] server -C config_zstd_s2.xml >&/dev/null&
@@ -244,7 +245,7 @@ $ numactl -C 30-59,150-179 [CLICKHOUSE_EXE] server -C config_zstd_s2.xml >&/dev/
 
 IAA Deflate:
 
-``` bash
+```bash
 $ cd ./database_dir && mkdir deflate_s2 && cd deflate_s2
 $ cp ../../server_config/config_deflate_s2.xml ./
 $ numactl -C 30-59,150-179 [CLICKHOUSE_EXE] server -C config_deflate_s2.xml >&/dev/null&
@@ -254,35 +255,35 @@ $ numactl -C 30-59,150-179 [CLICKHOUSE_EXE] server -C config_deflate_s2.xml >&/d
 
 Создание таблиц:
 
-``` bash
+```bash
 $ [CLICKHOUSE_EXE] client -m --port=9001 
 ```
 
 Вставка данных:
 
-``` bash
+```bash
 $ [CLICKHOUSE_EXE] client --query "INSERT INTO [TBL_FILE_NAME] FORMAT CSV" < [TBL_FILE_NAME].tbl  --port=9001
 ```
 
-- [TBL_FILE_NAME] представляет имя файла, названного по регулярному выражению: *. tbl в `./benchmark_sample/rawdata_dir/ssb-dbgen`.
-- `--port=9001` обозначает назначенный порт для экземпляра сервера, который также определяется в config_lz4_s2.xml/config_zstd_s2.xml/config_deflate_s2.xml. Для еще большего количества экземпляров вам нужно заменить его значением: 9002/9003, которые обозначают s3/s4 экземпляр соответственно. Если вы не назначите его, порт по умолчанию будет 9000, который уже используется первым экземпляром.
+- [TBL_FILE_NAME] представляет имя файла, названного регулярным выражением: *. tbl в папке `./benchmark_sample/rawdata_dir/ssb-dbgen`.
+- `--port=9001` означает назначенный порт для экземпляра сервера, который также определен в config_lz4_s2.xml/config_zstd_s2.xml/config_deflate_s2.xml. Для еще большего количества экземпляров вам нужно заменить его значением: 9002/9003, что соответствует экземплярам s3/s4 соответственно. Если вы не назначаете его, порт по умолчанию 9000, который уже используется первым экземпляром.
 
-Тестирование с 2 экземплярами
+Бенчмаркинг с 2 экземплярами
 
 LZ4:
 
-``` bash
+```bash
 $ cd ./database_dir/lz4
 $ numactl -C 0-29,120-149 [CLICKHOUSE_EXE] server -C config_lz4.xml >&/dev/null&
 $ cd ./database_dir/lz4_s2
 $ numactl -C 30-59,150-179 [CLICKHOUSE_EXE] server -C config_lz4_s2.xml >&/dev/null&
 $ cd ./client_scripts
-$ numactl -m 1 -N 1 python3 client_stressing_test.py queries_ssb.sql 2  > lz4_2insts.log
+$ numactl -m 1 -N 1 python3 client_stressing_test.py queries_ssb.sql 2 > lz4_2insts.log
 ```
 
 ZSTD:
 
-``` bash
+```bash
 $ cd ./database_dir/zstd
 $ numactl -C 0-29,120-149 [CLICKHOUSE_EXE] server -C config_zstd.xml >&/dev/null&
 $ cd ./database_dir/zstd_s2
@@ -293,7 +294,7 @@ $ numactl -m 1 -N 1 python3 client_stressing_test.py queries_ssb.sql 2 > zstd_2i
 
 IAA deflate
 
-``` bash
+```bash
 $ cd ./database_dir/deflate
 $ numactl -C 0-29,120-149 [CLICKHOUSE_EXE] server -C config_deflate.xml >&/dev/null&
 $ cd ./database_dir/deflate_s2
@@ -302,28 +303,28 @@ $ cd ./client_scripts
 $ numactl -m 1 -N 1 python3 client_stressing_test.py queries_ssb.sql 2 > deflate_2insts.log
 ```
 
-Последний аргумент: `2` в client_stressing_test.py обозначает количество экземпляров. Для большего количества экземпляров вам нужно заменить его значением: 3 или 4. Этот скрипт поддерживает до 4 экземпляров.
+Здесь последний аргумент: `2` в client_stressing_test.py обозначает количество экземпляров. Для большего количества экземпляров вам нужно заменить его значением: 3 или 4. Этот скрипт поддерживает до 4 экземпляров.
 
-Теперь три лога должны быть выданы, как ожидалось:
+Теперь три лога должны быть выведены как ожидается:
 
-``` text
+```text
 lz4_2insts.log
 deflate_2insts.log
 zstd_2insts.log
 ```
 Как проверить метрики производительности:
 
-Мы фокусируемся на QPS, пожалуйста, ищите ключевое слово: `QPS_Final` и собирайте статистику.
+Мы сосредоточимся на QPS, пожалуйста, ищите ключевое слово: `QPS_Final` и собирайте статистику.
 
-Настройка тестирования для 4 экземпляров аналогична 2 экземплярам выше.
-Мы рекомендуем использовать данные тестирования для 2 экземпляров в качестве окончательного отчета для обзора.
+Настройка бенчмарка для 4 экземпляров аналогична настройке для 2 экземпляров выше.
+Мы рекомендуем использовать данные бенчмарка для 2 экземпляров в качестве окончательного отчета для обзора.
 
 ## Советы {#tips}
 
-Каждый раз перед запуском нового сервера clickhouse убедитесь, что не работает фоновой процесс clickhouse, проверьте и убейте старый:
+Каждый раз перед запуском нового сервера clickhouse, пожалуйста, убедитесь, что нет запущенных процессов clickhouse в фоновом режиме, проверьте и завершите старые:
 
-``` bash
+```bash
 $ ps -aux| grep clickhouse
 $ kill -9 [PID]
 ```
-Сравнив список запросов в ./client_scripts/queries_ssb.sql с официальным [Star Schema Benchmark](/getting-started/example-datasets/star-schema), вы найдете, что 3 запроса не включены: Q1.2/Q1.3/Q3.4. Это связано с тем, что использование CPU% для этих запросов очень низкое < 10%, что означает, что они не могут продемонстрировать различия в производительности.
+Сравнив список запросов в ./client_scripts/queries_ssb.sql с официальным [Star Schema Benchmark](/getting-started/example-datasets/star-schema), вы обнаружите, что 3 запроса не входят: Q1.2/Q1.3/Q3.4. Это связано с тем, что использование ЦПУ% очень низкое < 10% для этих запросов, что означает, что не удается продемонстрировать различия в производительности.

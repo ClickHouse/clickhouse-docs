@@ -101,7 +101,7 @@ GROUP BY table
 └─────────────────┴─────────────────┴───────────────────┴───────┘
 ```
 
-Data will be stored uncompressed in our dictionary, so we need at least 4GB of memory if we were to store all columns (we won’t) in a dictionary. The dictionary will be replicated across our cluster, so this amount of memory needs to be reserved *per node*.
+Data will be stored uncompressed in our dictionary, so we need at least 4GB of memory if we were to store all columns (we won't) in a dictionary. The dictionary will be replicated across our cluster, so this amount of memory needs to be reserved *per node*.
 
 > In the example below the data for our dictionary originates from a ClickHouse table. While this represents the most common source of dictionaries, [a number of sources](/sql-reference/dictionaries#dictionary-sources) are supported including files, http and databases including [Postgres](/sql-reference/dictionaries#postgresql). As we'll show, dictionaries can be automatically refreshed providing an ideal way to ensure small datasets subject to frequent changes are available for direct joins.
 

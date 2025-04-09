@@ -1,41 +1,41 @@
 ---
-slug: /sql-reference/table-functions/mysql
+description: 'Позволяет выполнять запросы `SELECT` и `INSERT` на данных, хранящихся на удалённом сервере MySQL.'
+sidebar_label: 'mysql'
 sidebar_position: 137
-sidebar_label: mysql
-title: "mysql"
-description: "Позволяет выполнять `SELECT` и `INSERT` запросы на данные, которые хранятся на удаленном сервере MySQL."
+slug: /sql-reference/table-functions/mysql
+title: 'mysql'
 ---
 
 
 # mysql Табличная Функция
 
-Позволяет выполнять `SELECT` и `INSERT` запросы на данные, которые хранятся на удаленном сервере MySQL.
+Позволяет выполнять запросы `SELECT` и `INSERT` на данных, хранящихся на удалённом сервере MySQL.
 
 **Синтаксис**
 
-``` sql
+```sql
 mysql({host:port, database, table, user, password[, replace_query, on_duplicate_clause] | named_collection[, option=value [,..]]})
 ```
 
 **Параметры**
 
 - `host:port` — Адрес сервера MySQL.
-- `database` — Имя удаленной базы данных.
-- `table` — Имя удаленной таблицы.
+- `database` — Имя удалённой базы данных.
+- `table` — Имя удалённой таблицы.
 - `user` — Пользователь MySQL.
 - `password` — Пароль пользователя.
 - `replace_query` — Флаг, который преобразует запросы `INSERT INTO` в `REPLACE INTO`. Возможные значения:
     - `0` - Запрос выполняется как `INSERT INTO`.
     - `1` - Запрос выполняется как `REPLACE INTO`.
-- `on_duplicate_clause` — Выражение `ON DUPLICATE KEY on_duplicate_clause`, которое добавляется к запросу `INSERT`. Может быть указано только с `replace_query = 0` (если одновременно передан `replace_query = 1` и `on_duplicate_clause`, ClickHouse генерирует исключение).
+- `on_duplicate_clause` — Выражение `ON DUPLICATE KEY on_duplicate_clause`, которое добавляется к запросу `INSERT`. Может быть указано только с `replace_query = 0` (если одновременно передать `replace_query = 1` и `on_duplicate_clause`, ClickHouse сгенерирует исключение).
     Пример: `INSERT INTO t (c1,c2) VALUES ('a', 2) ON DUPLICATE KEY UPDATE c2 = c2 + 1;`
-    Здесь `on_duplicate_clause` — это `UPDATE c2 = c2 + 1`. См. документацию MySQL, чтобы узнать, какие `on_duplicate_clause` можно использовать с `ON DUPLICATE KEY`.
+    Здесь `on_duplicate_clause` - это `UPDATE c2 = c2 + 1`. См. документацию MySQL, чтобы узнать, какой `on_duplicate_clause` вы можете использовать с предложением `ON DUPLICATE KEY`.
 
-Аргументы также могут быть переданы с использованием [именованных коллекций](operations/named-collections.md). В этом случае `host` и `port` должны быть указаны отдельно. Этот подход рекомендуется для производственной среды.
+Аргументы также могут передаваться с помощью [именованных коллекций](operations/named-collections.md). В этом случае `host` и `port` должны указываться отдельно. Этот подход рекомендуется для производственной среды.
 
-Простые условия `WHERE`, такие как `=, !=, >, >=, <, <=` в данный момент выполняются на сервере MySQL.
+Простые условия `WHERE`, такие как `=, !=, >, >=, <, <=`, в настоящее время выполняются на сервере MySQL.
 
-Остальные условия и ограничение выборки `LIMIT` выполняются в ClickHouse только после завершения запроса к MySQL.
+Остальные условия и ограничение выборки `LIMIT` выполняются в ClickHouse только после того, как запрос к MySQL завершится.
 
 Поддерживает несколько реплик, которые должны быть перечислены через `|`. Например:
 
@@ -51,21 +51,21 @@ SELECT name FROM mysql(`mysql1:3306|mysql2:3306|mysql3:3306`, 'mysql_database', 
 
 **Возвращаемое значение**
 
-Объект таблицы с такими же колонками, как и у оригинальной таблицы MySQL.
+Объект таблицы с такими же колонками, как и в оригинальной таблице MySQL.
 
 :::note
-Некоторые типы данных MySQL могут быть сопоставлены с различными типами ClickHouse - это регулируется настройкой уровня поддержки типов данных на уровне запросов [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level).
+Некоторые типы данных MySQL могут быть сопоставлены с другими типами ClickHouse - это регулируется настройкой уровня поддержки типов данных на уровне запроса [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level)
 :::
 
 :::note
-В запросе `INSERT`, чтобы отличить табличную функцию `mysql(...)` от имени таблицы с перечислением имен колонок, необходимо использовать ключевые слова `FUNCTION` или `TABLE FUNCTION`. См. примеры ниже.
+В запросе `INSERT`, чтобы отличить табличную функцию `mysql(...)` от имени таблицы со списком имен колонок, вы должны использовать ключевые слова `FUNCTION` или `TABLE FUNCTION`. См. примеры ниже.
 :::
 
 **Примеры**
 
 Таблица в MySQL:
 
-``` text
+```text
 mysql> CREATE TABLE `test`.`test` (
     ->   `int_id` INT NOT NULL AUTO_INCREMENT,
     ->   `float` FLOAT NOT NULL,
@@ -83,7 +83,7 @@ mysql> SELECT * FROM test;
 
 Выбор данных из ClickHouse:
 
-``` sql
+```sql
 SELECT * FROM mysql('localhost:3306', 'test', 'test', 'bayonet', '123');
 ```
 
@@ -99,7 +99,7 @@ CREATE NAMED COLLECTION creds AS
 SELECT * FROM mysql(creds, table='test');
 ```
 
-``` text
+```text
 ┌─int_id─┬─float─┐
 │      1 │     2 │
 └────────┴───────┘
@@ -113,7 +113,7 @@ INSERT INTO TABLE FUNCTION mysql('localhost:3306', 'test', 'test', 'bayonet', '1
 SELECT * FROM mysql('localhost:3306', 'test', 'test', 'bayonet', '123');
 ```
 
-``` text
+```text
 ┌─int_id─┬─float─┐
 │      1 │     3 │
 │      2 │     4 │
@@ -144,10 +144,10 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password')
 WHERE id > (SELECT max(id) from mysql_copy);
 ```
 
-**Смотрите также**
+**См. также**
 
 - [Движок таблицы 'MySQL'](../../engines/table-engines/integrations/mysql.md)
-- [Использование MySQL в качестве источника словарей](/sql-reference/dictionaries#mysql)
+- [Использование MySQL в качестве источника словаря](/sql-reference/dictionaries#mysql)
 - [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level)
 - [mysql_map_fixed_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_fixed_string_to_text_in_show_columns)
 - [mysql_map_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_string_to_text_in_show_columns)

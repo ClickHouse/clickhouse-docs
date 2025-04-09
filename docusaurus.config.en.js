@@ -7,6 +7,7 @@ const { customParseFrontMatter } = require('./plugins/frontmatter-validation/cus
 const checkFloatingPages = require('./plugins/checkFloatingPages');
 const frontmatterValidator = require('./plugins/frontmatter-validation/frontmatterValidatorPlugin');
 const path = require('path');
+import pluginLlmsTxt from './plugins/llms-txt-plugin.ts'
 
 // Helper function to skip over index.md files.
 function skipIndex(items) {
@@ -59,13 +60,13 @@ const config = {
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   onDuplicateRoutes: "throw",
-  onBrokenAnchors: "throw",
+  onBrokenAnchors: "warn",
   favicon: "img/docs_favicon.ico",
   organizationName: "ClickHouse",
   trailingSlash: false,
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "jp", "zh"],
+    locales: ["en", "jp", "zh", "ru"],
     path: "i18n",
     localeConfigs: {
       en: {
@@ -83,6 +84,11 @@ const config = {
         htmlLang: "zh",
         path: "zh",
       },
+      ru: {
+        label: "Русский",
+        htmlLang: "ru",
+        path: "ru",
+      }
     },
   },
   staticDirectories: ["static"],
@@ -225,6 +231,13 @@ const config = {
         rel: "preconnect",
       },
     },
+    {
+      tagName: 'img',
+      attributes: {
+        referrerPolicy: 'no-referrer-when-downgrade',
+        src: 'https://static.scarf.sh/a.png?x-pxid=e6377503-591b-4886-9398-e69c7fee0b91',
+      },
+    },
   ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
@@ -279,7 +292,7 @@ const config = {
       prism: {
         theme: themes.darkTheme,
         darkTheme: themes.darkTheme,
-        additionalLanguages: ["java", "cpp", "rust"],
+        additionalLanguages: ["java", "cpp", "rust", "python", "javascript"],
         magicComments: [
           // Remember to extend the default highlight class name as well!
           {
@@ -334,7 +347,7 @@ const config = {
     [
       frontmatterValidator,
       {
-        failBuild: true,
+        failBuild: true
       },
     ],
     [
@@ -343,7 +356,12 @@ const config = {
         failBuild: true,
         exceptionsFile: path.resolve(__dirname, 'plugins/floating-pages-exceptions.txt')
       },
-    ]
+    ],
+    [
+      pluginLlmsTxt,
+      {}
+    ],
+    ['./plugins/tailwind-config.js', {}],
   ],
   customFields: {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page

@@ -54,7 +54,7 @@ As you can see in the stats section in the above diagram, the query processed 10
 
 **Row-oriented DBMS**
 
-In a row-oriented database, even though the query above only processes a few out of the existing columns, the system still needs to load the data from other existing columns from disk to memory. The reason for that is that data is stored on disk in chunks called [blocks](https://en.wikipedia.org/wiki/Block_(data_storage)) (usually fixed sizes, e.g., 4 KB or 8 KB). Blocks are the smallest units of data read from disk to memory. When an application or database requests data, the operating system’s disk I/O subsystem reads the required blocks from the disk. Even if only part of a block is needed, the entire block is read into memory (this is due to disk and file system design):
+In a row-oriented database, even though the query above only processes a few out of the existing columns, the system still needs to load the data from other existing columns from disk to memory. The reason for that is that data is stored on disk in chunks called [blocks](https://en.wikipedia.org/wiki/Block_(data_storage)) (usually fixed sizes, e.g., 4 KB or 8 KB). Blocks are the smallest units of data read from disk to memory. When an application or database requests data, the operating system's disk I/O subsystem reads the required blocks from the disk. Even if only part of a block is needed, the entire block is read into memory (this is due to disk and file system design):
 
 <Image img={row_orientated} alt="Row-oriented database structure" size="lg"/>
 
@@ -83,7 +83,7 @@ ClickHouse provides ways to trade accuracy for performance. For example, some of
 
 ## Adaptive join algorithms {#adaptive-join-algorithms}
 
-ClickHouse chooses the join algorithm adaptively, it starts with fast hash joins and falls back to merge joins if there’s more than one large table.
+ClickHouse chooses the join algorithm adaptively, it starts with fast hash joins and falls back to merge joins if there's more than one large table.
 
 ## Superior query performance {#superior-query-performance}
 
@@ -164,7 +164,7 @@ The higher the load on the system, the more important it is to customize the sys
 - Queries extract a large number of rows, but only a small subset of columns.
 - For simple queries, latencies around 50ms are allowed.
 - There is one large table per query; all tables are small, except for one.
-- A query result is significantly smaller than the source data. In other words, data is filtered or aggregated, so the result fits in a single server’s RAM.
+- A query result is significantly smaller than the source data. In other words, data is filtered or aggregated, so the result fits in a single server's RAM.
 - Queries are relatively rare (usually hundreds of queries per server or less per second).
 - Inserts happen in fairly large batches (\> 1000 rows), not by single rows.
 - Transactions are not necessary.

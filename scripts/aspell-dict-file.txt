@@ -50,6 +50,7 @@ TableStatus
 UVarInt
 --docs/integrations/prometheus.md--
 OpenMetrics
+clickpipe
 --docs/materialized-view/refreshable-materialized-view.md--
 DAGs
 McClickHouse
@@ -255,6 +256,7 @@ CTID
 autovacuum
 VACUUM
 resync
+Resync
 --docs/cloud/security/cmek.md--
 Poller
 --docs/integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse.md--
@@ -946,3 +948,15 @@ GWLBs
 NLBs
 --docs/integrations/data-ingestion/clickpipes/postgres/deduplication.md--
 cumulate
+--docs/use-cases/data_lake/glue_catalog.md--
+Databricks
+--docs/best-practices/_snippets/_avoid_mutations.md--
+unmutated
+--docs/best-practices/selecting_an_insert_strategy.md--
+FastFormats
+--docs/best-practices/using_data_skipping_indices.md--
+Probabilistically
+--docs/best-practices/minimize_optimize_joins.md--
+tunable
+--docs/best-practices/use_materialized_views.md--
+DAGs

@@ -60,13 +60,13 @@ Note that the `min_insert_block_size_bytes` value denotes the uncompressed in-me
 
 #### Be aware of merges {#be-aware-of-merges}
 
-The smaller the configured insert block size is, the more initial parts get created for a large data load, and the more background part merges are executed concurrently with the data ingestion. This can cause resource contention (CPU and memory) and require additional time (for reaching a [healthy](/operations/settings/merge-tree-settings#parts-to-throw-insert) (3000) number of parts) after the ingestion is finished. 
+The smaller the configured insert block size is, the more initial parts get created for a large data load, and the more background part merges are executed concurrently with the data ingestion. This can cause resource contention (CPU and memory) and require additional time (for reaching a [healthy](/operations/settings/merge-tree-settings#parts_to_throw_insert) (3000) number of parts) after the ingestion is finished. 
 
 :::important
-ClickHouse query performance will be negatively impacted if the part count exceeds the [recommended limits](/operations/settings/merge-tree-settings#parts-to-throw-insert).
+ClickHouse query performance will be negatively impacted if the part count exceeds the [recommended limits](/operations/settings/merge-tree-settings#parts_to_throw_insert).
 :::
 
-ClickHouse will continuously [merge parts](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance) into larger parts until they [reach](/operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool) a compressed size of ~150 GiB. This diagram shows how a ClickHouse server merges parts:
+ClickHouse will continuously [merge parts](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance) into larger parts until they [reach](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool) a compressed size of ~150 GiB. This diagram shows how a ClickHouse server merges parts:
 
 <Image img={Merges} size="lg" border alt="Background merges in ClickHouse" />
 
@@ -84,7 +84,7 @@ Go to ①
 
 Note that [increasing](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#hardware-size) the number of CPU cores and the size of RAM increases the background merge throughput.
 
-Parts that were merged into larger parts are marked as [inactive](/operations/system-tables/parts) and finally deleted after a [configurable](/operations/settings/merge-tree-settings#old-parts-lifetime) number of minutes. Over time, this creates a tree of merged parts (hence the name [`MergeTree`](/engines/table-engines/mergetree-family) table).
+Parts that were merged into larger parts are marked as [inactive](/operations/system-tables/parts) and finally deleted after a [configurable](/operations/settings/merge-tree-settings#old_parts_lifetime) number of minutes. Over time, this creates a tree of merged parts (hence the name [`MergeTree`](/engines/table-engines/mergetree-family) table).
 
 ### Insert Parallelism {#insert-parallelism}
 

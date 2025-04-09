@@ -87,7 +87,7 @@ It should be noted however that this approach is a little less performant as wri
 There are scenarios where client-side batching is not feasible e.g. an observability use case with 100s or 1000s of single-purpose agents sending logs, metrics, traces, etc.
 In this scenario real-time transport of that data is key to detect issues and anomalies as quickly as possible.
 Furthermore, there is a risk of event spikes in the observed systems, which could potentially cause large memory spikes and related issues when trying to buffer observability data client-side.
-If large batches cannot be inserted, users can delegate batching to ClickHouse using [asynchronous inserts](/cloud/bestpractices/asynchronous-inserts).
+If large batches cannot be inserted, users can delegate batching to ClickHouse using [asynchronous inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts).
 
 With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later in 3 steps, as illustrated by the diagram below:
 
@@ -135,7 +135,7 @@ The [JSONEachRow](/interfaces/formats/JSONEachRow) format can be considered for 
 
 Unlike many traditional databases, ClickHouse supports an HTTP interface.
 Users can use this for both inserting and querying data, using any of the above formats.
-This is often preferable to ClickHouse’s native protocol as it allows traffic to be easily switched with load balancers.
+This is often preferable to ClickHouse's native protocol as it allows traffic to be easily switched with load balancers.
 We expect small differences in insert performance with the native protocol, which incurs a little less overhead.
 Existing clients use either of these protocols ( in some cases both e.g. the Go client).
 The native protocol does allow query progress to be easily tracked.

@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const { getFilesWithIssues, resetIssues } = require('./customParseFrontMatter');
+const { getFilesWithIssues, resetIssues, reloadExceptions } = require('./customParseFrontMatter');
 
 /**
  * Custom plugin to enforce frontmatter formatting rules
@@ -12,6 +12,7 @@ function frontmatterValidatorPlugin(context, options) {
 
         // Reset the issue tracker at the beginning of each build
         async loadContent() {
+            reloadExceptions();
             resetIssues();
         },
 

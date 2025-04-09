@@ -247,7 +247,7 @@ LIMIT 3
 Peak memory usage: 429.38 MiB.
 ```
 
-> The query here is very fast even though all 60m rows have been linearly scanned - ClickHouse is just fast :) You’ll have to trust us ordering keys is worth it at TB and PB scale!
+> The query here is very fast even though all 60m rows have been linearly scanned - ClickHouse is just fast :) You'll have to trust us ordering keys is worth it at TB and PB scale!
 
 Lets select the columns `PostTypeId` and `CreationDate` as our ordering keys.
 
@@ -307,7 +307,7 @@ LIMIT 3
 
 For users interested in the compression improvements achieved by using specific types and appropriate ordering keys, see [Compression in ClickHouse](/data-compression/compression-in-clickhouse). If users need to further improve compression we also recommend the section [Choosing the right column compression codec](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec).
 
-## Next: Data Modelling Techniques {#next-data-modelling-techniques}
+## Next: Data Modeling Techniques {#next-data-modeling-techniques}
 
 Until now, we've migrated only a single table. While this has allowed us to introduce some core ClickHouse concepts, most schemas are unfortunately not this simple.
 
@@ -317,7 +317,7 @@ In the other guides listed below, we will explore a number of techniques to rest
 
 The following approaches all aim to minimize the need to use JOINs to optimize reads and improve query performance. While JOINs are fully supported in ClickHouse, we recommend they are used sparingly (2 to 3 tables in a JOIN query is fine) to achieve optimal performance.
 
-> ClickHouse has no notion of foreign keys. This does not prohibit joins but means referential integrity is left to the user to manage at an application level. In OLAP systems like ClickHouse, data integrity is often managed at the application level or during the data ingestion process rather than being enforced by the database itself where it incurs a significant overhead. This approach allows for more flexibility and faster data insertion. This aligns with ClickHouse’s focus on speed and scalability of read and insert queries with very large datasets.
+> ClickHouse has no notion of foreign keys. This does not prohibit joins but means referential integrity is left to the user to manage at an application level. In OLAP systems like ClickHouse, data integrity is often managed at the application level or during the data ingestion process rather than being enforced by the database itself where it incurs a significant overhead. This approach allows for more flexibility and faster data insertion. This aligns with ClickHouse's focus on speed and scalability of read and insert queries with very large datasets.
 
 In order to minimize the use of Joins at query time, users have several tools/approaches:
 

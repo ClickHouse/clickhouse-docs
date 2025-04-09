@@ -1,14 +1,14 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/covarpopmatrix
+description: 'Возвращает матрицу ковариации по популяции для N переменных.'
 sidebar_position: 122
+slug: /sql-reference/aggregate-functions/reference/covarpopmatrix
 title: 'covarPopMatrix'
-description: 'Возвращает матрицу ковариации по выборке для N переменных.'
 ---
 
 
 # covarPopMatrix
 
-Возвращает матрицу ковариации по выборке для N переменных.
+Возвращает матрицу ковариации по популяции для N переменных.
 
 **Синтаксис**
 
@@ -22,7 +22,7 @@ covarPopMatrix(x[, ...])
 
 **Возвращаемое значение**
 
-- Матрица ковариации по выборке. [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md))).
+- Матрица ковариации по популяции. [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md))).
 
 **Пример**
 

@@ -1082,4 +1082,3 @@ dbt 提供从 CSV 文件加载数据的功能。此功能不适合加载大型�
 ## 相关内容 {#related-content}
 
 - 博客 & 网络研讨会: [ClickHouse 和 dbt - 来自社区的礼物](https://clickhouse.com/blog/clickhouse-dbt-project-introduction-and-webinar)
-```

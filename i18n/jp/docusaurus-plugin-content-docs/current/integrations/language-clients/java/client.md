@@ -600,4 +600,3 @@ client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
 - [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - 主な例セット。
 - [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - Spring Bootアプリケーションでクライアントを使用する方法の例。
 - [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - Ktor（Kotlin）アプリケーションでクライアントを使用する方法の例。
-```

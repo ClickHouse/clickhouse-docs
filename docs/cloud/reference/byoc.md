@@ -33,7 +33,7 @@ BYOC is designed specifically for large-scale deployments, and requires customer
 ## Glossary {#glossary}
 
 - **ClickHouse VPC:**  The VPC owned by ClickHouse Cloud.
-- **Customer BYOC VPC:** The VPC, owned by the customer’s cloud account, is provisioned and managed by ClickHouse Cloud and dedicated to a ClickHouse Cloud BYOC deployment.
+- **Customer BYOC VPC:** The VPC, owned by the customer's cloud account, is provisioned and managed by ClickHouse Cloud and dedicated to a ClickHouse Cloud BYOC deployment.
 - **Customer VPC** Other VPCs owned by the customer cloud account used for applications that need to connect to the Customer BYOC VPC.
 
 ## Architecture {#architecture}

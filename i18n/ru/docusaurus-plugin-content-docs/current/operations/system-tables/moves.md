@@ -1,13 +1,17 @@
 ---
-description: 'Системная таблица, содержащая информацию о текущих перемещениях частей данных таблиц MergeTree. Каждое перемещение части данных представлено одной строкой.'
+description: 'Системная таблица, содержащая информацию о перемещениях частей данных, находящихся в процессе
+  перемещения таблиц MergeTree. Каждое перемещение данных представлено одной строкой.'
+keywords: ['системная таблица', 'перемещения']
 slug: /operations/system-tables/moves
 title: 'system.moves'
-keywords: ['системная таблица', 'перемещения']
 ---
 
-Таблица содержит информацию о текущих [перемещениях частей данных](/sql-reference/statements/alter/partition#move-partitionpart) таблиц [MergeTree](/engines/table-engines/mergetree-family/mergetree.md). Каждое перемещение части данных представлено одной строкой.
 
-Колонки:
+# system.moves
+
+Таблица содержит информацию о текущих [перемещениях частей данных](/sql-reference/statements/alter/partition#move-partitionpart) таблиц [MergeTree](/engines/table-engines/mergetree-family/mergetree.md). Каждое перемещение данных представлено одной строкой.
+
+Столбцы:
 
 - `database` ([String](/sql-reference/data-types/string.md)) — Название базы данных.
 
@@ -37,8 +41,8 @@ SELECT * FROM system.moves
 └──────────┴───────┴─────────────┴──────────────────┴──────────────────┴───────────┴───────────┴───────────┘
 ```
 
-**См. Также**
+**Смотрите также**
 
-- [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) движок таблиц
-- [Использование нескольких блоковых устройств для хранения данных](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes)
+- Движок таблиц [MergeTree](/engines/table-engines/mergetree-family/mergetree.md)
+- [Использование нескольких блоков устройств для хранения данных](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes)
 - Команда [ALTER TABLE ... MOVE PART](/sql-reference/statements/alter/partition#move-partitionpart)

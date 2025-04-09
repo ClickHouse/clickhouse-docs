@@ -1,16 +1,17 @@
 ---
+description: 'Документация для Svg'
+sidebar_label: 'SVG'
 slug: /sql-reference/functions/geo/svg
-sidebar_label: SVG
-title: "Функции для генерации SVG изображений из Geo данных"
+title: 'Функции для генерации изображений SVG из гео-данных'
 ---
 
 ## Svg {#svg}
 
-Возвращает строку выбранных тегов SVG элементов из Geo данных.
+Возвращает строку с выбранными тегами SVG элементов из гео-данных.
 
 **Синтаксис**
 
-``` sql
+```sql
 Svg(geometry,[style])
 ```
 
@@ -18,14 +19,14 @@ Svg(geometry,[style])
 
 **Параметры**
 
-- `geometry` — Geo данные. [Geo](../../data-types/geo).
-- `style` — Необязательное название стиля. [String](../../data-types/string).
+- `geometry` — Гео данные. [Geo](../../data-types/geo).
+- `style` — Необязательное имя стиля. [String](../../data-types/string).
 
 **Возвращаемое значение**
 
 - SVG представление геометрии. [String](../../data-types/string).
   - SVG круг
-  - SVG полигон
+  - SVG многоугольник
   - SVG путь
 
 **Примеры**
@@ -44,7 +45,7 @@ SELECT SVG((0., 0.))
 <circle cx="0" cy="0" r="5" style=""/>
 ```
 
-**Полигон**
+**Многоугольник**
 
 Запрос:
 

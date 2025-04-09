@@ -18,7 +18,7 @@ Depending on where you are located, applicable law may also provide you addition
 
 **Scope of Personal Data**
 
-Please review ClickHouse’s Privacy Policy for details on personal data that ClickHouse collects and how it may be used.
+Please review ClickHouse's Privacy Policy for details on personal data that ClickHouse collects and how it may be used.
 
 ## Self Service {#self-service}
 
@@ -47,7 +47,7 @@ Please be sure to include the following details in your support case:
 | Field | Text to include in your request |
 |-------------|---------------------------------------------------|
 | Subject     | Data Subject Access Request (DSAR)                |
-| Description | Detailed description of the information you’d like ClickHouse to look for, collect, and/or provide. |
+| Description | Detailed description of the information you'd like ClickHouse to look for, collect, and/or provide. |
 
 <Image img={support_case_form} size="sm" alt="Support Case Form in ClickHouse Cloud" border />
 

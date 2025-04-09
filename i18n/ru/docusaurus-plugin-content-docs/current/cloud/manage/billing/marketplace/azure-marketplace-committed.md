@@ -1,10 +1,11 @@
 ---
 slug: /cloud/billing/marketplace/azure-marketplace-committed-contract
-title: Обязательный контракт Azure Marketplace
-description: Подпишитесь на ClickHouse Cloud через Azure Marketplace (обязательный контракт)
-keywords: [Microsoft, Azure, marketplace, billing, committed, committed contract]
+title: 'Коммированный контракт Azure Marketplace'
+description: 'Подпишитесь на ClickHouse Cloud через Azure Marketplace (Коммированный контракт)'
+keywords: ['Microsoft', 'Azure', 'marketplace', 'billing', 'committed', 'committed contract']
 ---
 
+import Image from '@theme/IdealImage';
 import azure_marketplace_committed_1 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-committed-1.png';
 import azure_marketplace_committed_2 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-committed-2.png';
 import azure_marketplace_committed_3 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-committed-3.png';
@@ -19,88 +20,64 @@ import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/mar
 import azure_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-11.png';
 import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-12.png';
 
-Начните работу с ClickHouse Cloud в [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) через обязательный контракт. Обязательный контракт, также известный как Частное предложение, позволяет клиентам обязаться потратить определенную сумму на ClickHouse Cloud в течение определенного периода времени.
+Начните работу с ClickHouse Cloud на [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) через коммированный контракт. Коммированный контракт, также известный как Личное предложение, позволяет клиентам обязаться потратить определенную сумму на ClickHouse Cloud за определенный период времени.
 
 
-## Предварительные требования {#prerequisites}
+## Предварительные условия {#prerequisites}
 
-- Частное предложение от ClickHouse на основе специфических условий контракта.
+- Личное предложение от ClickHouse на основе конкретных условий контракта.
 
-## Шаги для подписки {#steps-to-sign-up}
+## Шаги для регистрации {#steps-to-sign-up}
 
-1. Вы должны были получить электронное письмо с ссылкой для ознакомления и принятия вашего частного предложения.
-
-<br />
-
-<img src={azure_marketplace_committed_1}
-    alt='Электронное письмо с частным предложением Azure Marketplace'
-    class='image'
-    style={{width: '400px'}}
-/>
+1. Вы должны были получить электронное письмо со ссылкой для просмотра и принятия вашего личного предложения.
 
 <br />
 
-2. Нажмите на ссылку **Посмотреть частное предложение** в письме. Это должно перенаправить вас на вашу страницу GCP Marketplace с деталями частного предложения.
+<Image img={azure_marketplace_committed_1} size="md" alt="Электронное письмо с личным предложением от Azure Marketplace" border/>
 
 <br />
 
-<img src={azure_marketplace_committed_2}
-    alt='Детали частного предложения Azure Marketplace'
-    class='image'
-    style={{width: '600px'}}
-/>
+2. Нажмите на ссылку **Просмотреть личное предложение** в электронном письме. Это должно перенести вас на страницу вашего GCP Marketplace с деталями личного предложения.
 
 <br />
 
-3. После того как вы примете предложение, вы попадете на экран **Управление частным предложением**. Azure может занять некоторое время для подготовки предложения к покупке.
+<Image img={azure_marketplace_committed_2} size="md" alt="Детали личного предложения Azure Marketplace" border/>
 
 <br />
 
-<img src={azure_marketplace_committed_3}
-    alt='Страница управления частным предложением Azure Marketplace'
-    class='image'
-    style={{width: '600px'}}
-/>
+3. После того как вы примете предложение, вы перейдете на экран **Управление личными предложениями**. Azure может потребовать некоторое время для подготовки предложения к покупке.
 
 <br />
 
-<img src={azure_marketplace_committed_4}
-    alt='Загрузка страницы управления частным предложением Azure Marketplace'
-    class='image'
-    style={{width: '600px'}}
-/>
+<Image img={azure_marketplace_committed_3} size="md" alt="Страница управления личным предложением Azure Marketplace" border/>
 
 <br />
 
-4. Через несколько минут обновите страницу. Предложение должно быть готово к **Покупке**.
+<Image img={azure_marketplace_committed_4} size="md" alt="Страница управления личным предложением Azure Marketplace загружается" border/>
 
 <br />
 
-<img src={azure_marketplace_committed_5}
-    alt='Страница управления частным предложением Azure Marketplace, покупка доступна'
-    class='image'
-    style={{width: '500px'}}
-/>
+4. Подождите несколько минут, обновите страницу. Предложение должно быть готово к **Покупке**.
 
 <br />
 
-5. Нажмите на **Купить** - вы увидите открывающееся окно. Заполните следующее:
+<Image img={azure_marketplace_committed_5} size="md" alt="Страница управления личным предложением Azure Marketplace, покупка включена" border/>
 
 <br />
 
-- Подписка и группа ресурсов 
+5. Нажмите на **Покупка** — вы увидите появляющееся окно. Заполните следующие поля:
+
+<br />
+
+- Подписка и группа ресурсов
 - Укажите имя для подписки SaaS
-- Выберите план выставления счетов, на который у вас есть частное предложение. Только срок, на который было создано частное предложение (например, 1 год), будет иметь указанную сумму. Другие варианты сроков выставления счета будут указаны с суммами $0. 
-- Выберите, требуется ли вам периодическая оплата. Если периодическая оплата не выбрана, контракт закончится в конце расчетного периода, и ресурсы будут помечены как выведенные из эксплуатации.
-- Нажмите на **Просмотр + подписка**.
+- Выберите план оплаты, для которого у вас есть личное предложение. Только срок, на который было создано личное предложение (например, 1 год), будет иметь сумму против него. Другие варианты сроков оплаты будут с суммами $0.
+- Выберите, хотите ли вы повторяющиеся платежи или нет. Если повторяющиеся платежи не выбраны, контракт завершится в конце расчетного периода, и ресурсы будут переведены в статус вывода из эксплуатации.
+- Нажмите на **Просмотреть + подписаться**.
 
 <br />
 
-<img src={azure_marketplace_committed_6}
-    alt='Форма подписки Azure Marketplace'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={azure_marketplace_committed_6} size="md" alt="Форма подписки Azure Marketplace" border/>
 
 <br />
 
@@ -108,11 +85,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<img src={azure_marketplace_committed_7}
-    alt='Подтверждение подписки Azure Marketplace'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={azure_marketplace_committed_7} size="md" alt="Подтверждение подписки Azure Marketplace" border/>
 
 <br />
 
@@ -120,70 +93,46 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<img src={azure_marketplace_committed_8}
-    alt='Страница отправки подписки Azure Marketplace'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={azure_marketplace_committed_8} size="md" alt="Страница отправки подписки Azure Marketplace" border/>
 
 <br />
 
-8. Как только все будет готово, вы можете нажать на **Настроить аккаунт сейчас**. Обратите внимание, что это критически важный шаг, который связывает подписку Azure с организацией ClickHouse Cloud для вашей учетной записи. Без этого шага ваша подписка на Marketplace не завершена.
+8. Когда будет готово, вы можете нажать на **Настроить учетную запись сейчас**. Обратите внимание, что это критический шаг, который связывает подписку Azure с организацией ClickHouse Cloud для вашей учетной записи. Без этого шага ваша подписка Marketplace не завершена.
 
 <br />
 
-<img src={azure_marketplace_committed_9}
-    alt='Кнопка "настроить аккаунт сейчас" Azure Marketplace'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={azure_marketplace_committed_9} size="md" alt="Кнопка настроить учетную запись Azure Marketplace сейчас" border/>
 
 <br />
 
-9. Вы будете перенаправлены на страницу регистрации или входа в ClickHouse Cloud. Вы можете либо зарегистрироваться, используя новую учетную запись, либо войти с помощью существующей учетной записи. После входа будет создана новая организация, готовая к использованию и выставлению счета через Azure Marketplace.
+9. Вы будете перенаправлены на страницу регистрации или входа в систему ClickHouse Cloud. Вы можете либо зарегистрироваться с помощью новой учетной записи, либо войти в систему с помощью существующей учетной записи. После входа в систему будет создана новая организация, которая готова к использованию и выставлению счетов через Azure Marketplace.
 
-10. Вам необходимо будет ответить на несколько вопросов - адрес и данные компании - перед тем, как вы сможете продолжить.
-
-<br />
-
-<img src={aws_marketplace_payg_8}
-    alt='Форма информации о регистрации в ClickHouse Cloud'
-    class='image'
-    style={{width: '400px'}}
-/>
+10. Вам потребуется ответить на несколько вопросов - адрес и данные компании - перед тем как вы сможете продолжить.
 
 <br />
 
-<img src={aws_marketplace_payg_9}
-    alt='Форма информации о регистрации в ClickHouse Cloud 2'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={aws_marketplace_payg_8} size="md" alt="Форма информации для регистрации ClickHouse Cloud" border/>
 
 <br />
 
-11. После того как вы нажмете **Завершить регистрацию**, вы попадете в вашу организацию в ClickHouse Cloud, где сможете просмотреть экран выставления счета, чтобы убедиться, что вам выставляют счет через Azure Marketplace, и сможете создать услуги.
+<Image img={aws_marketplace_payg_9} size="md" alt="Форма информации для регистрации ClickHouse Cloud 2" border/>
+
+<br />
+
+11. После того как вы нажмете **Завершить регистрацию**, вы перейдете в вашу организацию в ClickHouse Cloud, где сможете увидеть экран выставления счетов, чтобы убедиться, что вам выставляется счет через Azure Marketplace и вы можете создавать сервисы.
 
 <br />
 
 <br />
 
-<img src={azure_marketplace_payg_11}
-    alt='Форма информации о регистрации в ClickHouse Cloud'
-    class='image'
-    style={{width: '300px'}}
-/>
+<Image img={azure_marketplace_payg_11} size="sm" alt="Форма информации для регистрации ClickHouse Cloud" border/>
 
 <br />
 
 <br />
 
-<img src={azure_marketplace_payg_12}
-    alt='Форма информации о регистрации в ClickHouse Cloud'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={azure_marketplace_payg_12} size="md" alt="Форма информации для регистрации ClickHouse Cloud" border/>
 
 <br />
 
-Если у вас возникли какие-либо проблемы, пожалуйста, не стесняйтесь обращаться в [нашу службу поддержки](https://clickhouse.com/support/program).
+Если у вас возникли какие-либо проблемы, не стесняйтесь обращаться в [нашу службу поддержки](https://clickhouse.com/support/program).

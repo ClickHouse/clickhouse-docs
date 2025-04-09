@@ -29,10 +29,28 @@ import share_queries from '@site/static/images/cloud/reference/may-30-share-quer
 import query_endpoints from '@site/static/images/cloud/reference/may-17-query-endpoints.png';
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
+
+## April 4, 2025 {#april-4-2025}
+
+- Slack notifications for ClickHouse Cloud: ClickHouse Cloud now supports Slack notifications for billing, scaling, and ClickPipes events, in addition to in-console and email notifications. These notifications are sent via the ClickHouse Cloud Slack application. Organization admins can configure these notifications via the notification center by specifying slack channels to which notifications should be sent.
+- Users running Production and Development services will now see ClickPipes and data transfer usage price on their bills. Please refer to the [announcement](/cloud/manage/jan-2025-faq/pricing-dimensions) from January 2025 for more details. 
+  
+## March 21, 2025 {#march-21-2025}
+
+- Cross-region Private Link connectivity on AWS is now in Beta. Please refer to
+  ClickHouse Cloud private link [docs](/manage/security/aws-privatelink) for 
+  details of how to set up and list of supported regions.
+- The maximum replica size available for services on AWS is now set to 236 GiB RAM. 
+  This allows for efficient utilization, while ensuring we have resources 
+  allocated to background processes.
+
 ## March 7, 2025 {#march-7-2025}
 
-- New `UsageCost` API endpoint: The API specification now supports a new endpoint for retrieving usage information. This is an organization endpoint and usage costs can be queried for a maximum of 31 days. The metrics that can be retrieved include Storage, Compute, Data Transfer and ClickPipes. Please refer to the [documentation](https://clickhouse.com/docs/cloud/manage/api/usageCost-api-reference) for details.
-
+- New `UsageCost` API endpoint: The API specification now supports a new endpoint
+  for retrieving usage information. This is an organization endpoint and usage 
+  costs can be queried for a maximum of 31 days. The metrics that can be 
+  retrieved include Storage, Compute, Data Transfer and ClickPipes. Please refer
+  to the [documentation](https://clickhouse.com/docs/cloud/manage/api/usageCost-api-reference) for details.
 - Terraform provider [v2.1.0](https://registry.terraform.io/providers/ClickHouse/clickhouse/2.1.0/docs/resources/service#nestedatt--endpoints_configuration) release supports enabling the MySQL endpoint.
 
 ## February 21, 2025 {#february-21-2025}

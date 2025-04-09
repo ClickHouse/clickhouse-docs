@@ -1,11 +1,13 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/array_concat_agg
+description: 'Документация для функции array_concat_agg'
 sidebar_position: 111
+slug: /sql-reference/aggregate-functions/reference/array_concat_agg
+title: 'array_concat_agg'
 ---
 
 
-# array_concat_agg 
-- Псевдоним для `groupArrayArray`. Функция не чувствительна к регистру.
+# array_concat_agg
+- Псевдоним для `groupArrayArray`. Функция нечувствительна к регистру.
 
 **Пример**
 
@@ -13,21 +15,18 @@ sidebar_position: 111
 SELECT *
 FROM t
 
-┌─a───────┐
-│ [1,2,3] │
-│ [4,5]   │
-│ [6]     │
-└─────────┘
-
 ```
 
 Запрос:
 
 ```sql
-SELECT array_concat_agg(a) AS a
-FROM t
+┌           ┐
+│[1,2,3]    │
+│[4,5]      │
+│[6]        │
+└           ┘
 
-┌─a─────────────┐
-│ [1,2,3,4,5,6] │
-└───────────────┘
 ```
+┌ ─a───────────── ┌
+│ [1,2,3,4,5,6]   │
+└ ─────────────── └

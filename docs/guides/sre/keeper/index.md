@@ -639,7 +639,7 @@ Keeper can expose metrics data for scraping from [Prometheus](https://prometheus
 
 Settings:
 
-- `endpoint` – HTTP endpoint for scraping metrics by the Prometheus server. Start from ‘/’.
+- `endpoint` – HTTP endpoint for scraping metrics by the Prometheus server. Start from '/'.
 - `port` – Port for `endpoint`.
 - `metrics` – Flag that sets to expose metrics from the [system.metrics](/operations/system-tables/metrics) table.
 - `events` – Flag that sets to expose metrics from the [system.events](/operations/system-tables/events) table.

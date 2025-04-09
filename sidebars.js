@@ -63,6 +63,25 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Best Practices",
+      collapsed: false,
+      collapsible: false,
+      link: { type: "doc", id: "best-practices/index" },
+      items: [
+        "best-practices/choosing_a_primary_key",
+        "best-practices/select_data_type",
+        "best-practices/use_materialized_views",
+        "best-practices/minimize_optimize_joins",
+        "best-practices/partionning_keys",
+        "best-practices/selecting_an_insert_strategy",
+        "best-practices/using_data_skipping_indices",
+        "best-practices/avoid_mutations",
+        "best-practices/avoid_optimize_final",
+        "best-practices/json_type"
+      ],
+    },
+    {
+      type: "category",
       label: "Use Case Guides",
       collapsed: false,
       collapsible: false,
@@ -97,6 +116,17 @@ const sidebars = {
             "use-cases/time-series/query-performance"
           ]
         },
+        { 
+          type: "category",
+          label: "Data lake",
+          collapsed: true,
+          collapsible: true,
+          link: { type: "doc", id: "use-cases/data_lake/index" },
+          items: [
+            "use-cases/data_lake/glue_catalog",
+            "use-cases/data_lake/unity_catalog" 
+          ]
+        }
       ]
     },
     {
@@ -212,6 +242,18 @@ const sidebars = {
         "cloud/get-started/query-endpoints",
         "cloud/manage/dashboards",
         "cloud/support",
+      ],
+    },
+    {
+      type: "category",
+      label: "Best Practices",
+      collapsed: false,
+      collapsible: false,
+      className: "top-nav-item",
+      link: { type: "doc", id: "cloud/bestpractices/index" },
+      items: [
+        "cloud/bestpractices/usagelimits",
+        "cloud/bestpractices/multitenancy",
       ],
     },
     {
@@ -360,24 +402,6 @@ const sidebars = {
         },
         "cloud/reference/cloud-compatibility",
         "cloud/reference/supported-regions"
-      ],
-    },
-    {
-      type: "category",
-      label: "Best Practices",
-      collapsed: false,
-      collapsible: false,
-      className: "top-nav-item",
-      link: { type: "doc", id: "cloud/bestpractices/index" },
-      items: [
-        "cloud/bestpractices/bulkinserts",
-        "cloud/bestpractices/asyncinserts",
-        "cloud/bestpractices/avoidmutations",
-        "cloud/bestpractices/avoidnullablecolumns",
-        "cloud/bestpractices/avoidoptimizefinal",
-        "cloud/bestpractices/partitioningkey",
-        "cloud/bestpractices/usagelimits",
-        "cloud/bestpractices/multitenancy",
       ],
     },
     {
@@ -650,6 +674,7 @@ const sidebars = {
         "integrations/data-ingestion/clickpipes/object-storage",
         "integrations/data-ingestion/clickpipes/kinesis",
         "integrations/data-ingestion/clickpipes/secure-kinesis",
+        "integrations/data-ingestion/clickpipes/aws-privatelink",
         {
           type: "category",
           label: "ClickPipes for Postgres",
@@ -674,6 +699,23 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/postgres/source/neon-postgres",
                 "integrations/data-ingestion/clickpipes/postgres/source/crunchy-postgres",
                 "integrations/data-ingestion/clickpipes/postgres/source/generic",
+              ],
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "ClickPipes for MySQL",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "integrations/data-ingestion/clickpipes/mysql/index",
+            {
+              type: "category",
+              label: "Source",
+              items: [
+                "integrations/data-ingestion/clickpipes/mysql/source/rds",
+                "integrations/data-ingestion/clickpipes/mysql/source/aurora",
               ],
             },
           ],
@@ -941,6 +983,7 @@ const sidebars = {
             "integrations/sql-clients/jupysql",
             "integrations/sql-clients/qstudio",
             "integrations/sql-clients/tablum",
+			      "integrations/sql-clients/marimo",
           ],
         },
         {
@@ -1100,6 +1143,7 @@ const sidebars = {
       link: { type: "doc", id: "guides/best-practices/index" },
       items: [
         "guides/best-practices/query-optimization",
+        "guides/best-practices/query-parallelism",
         "guides/best-practices/partitioningkey",
         "guides/best-practices/skipping-indexes",
         "guides/best-practices/bulkinserts",
@@ -1250,20 +1294,21 @@ const sidebars = {
       items: [
         "operations/settings/overview",
         "operations/server-configuration-parameters/settings",
+        "operations/settings/settings",
+        "operations/settings/merge-tree-settings",
+        "operations/settings/settings-formats",
         "operations/settings/composable-protocols",
         "operations/settings/constraints-on-settings",
-        "operations/settings/settings-formats",
         "operations/settings/memory-overcommit",
-        "operations/settings/merge-tree-settings",
         // "operations/settings/mysql-binlog-client",
         "operations/settings/permissions-for-queries",
         "operations/settings/query-complexity",
         "operations/settings/settings-query-level",
-        "operations/settings/settings",
         "operations/settings/settings-profiles",
         "operations/settings/settings-users",
         "operations/named-collections",
         "operations/configuration-files",
+        "operations/settings/experimental-settings",
       ],
     },
     {
@@ -1474,15 +1519,21 @@ const sidebars = {
         },
         {
           type: "link",
+          label: "Concepts",
+          description: "Core concepts to know",
+          href: "/concepts"
+        },
+        {
+          type: "link",
           label: "Starter Guides",
           description: "Start here when learning ClickHouse",
           href: "/starter-guides"
         },
         {
           type: "link",
-          label: "Concepts",
-          description: "Core concepts to know",
-          href: "/concepts"
+          label: "Best Practices",
+          description: "Follow best practices with ClickHouse",
+          href: "/best-practices"
         },
         {
           type: "link",
@@ -1521,6 +1572,12 @@ const sidebars = {
         },
         {
           type: "link",
+          label: "Best Practices",
+          description: "How to get the most out of ClickHouse Cloud",
+          href: "/cloud/bestpractices/"
+        },
+        {
+          type: "link",
           label: "Managing Cloud",
           description: "Manage your ClickHouse Cloud services",
           href: "/cloud/bestpractices"
@@ -1536,12 +1593,6 @@ const sidebars = {
           label: "Cloud Reference",
           description: "Understanding how ClickHouse Cloud works",
           href: "/cloud/reference/"
-        },
-        {
-          type: "link",
-          label: "Best Practices",
-          description: "How to get the most out of ClickHouse Cloud",
-          href: "/cloud/bestpractices/"
         },
         {
           type: "link",
@@ -1699,7 +1750,7 @@ const sidebars = {
           type: "link",
           label: "Native Clients & Interfaces",
           description: "Choose a client and interface to connect to ClickHouse",
-          href: "/interfaces/"
+          href: "/interfaces/natives-clients-and-interfaces"
         },
         {
           type: "link",

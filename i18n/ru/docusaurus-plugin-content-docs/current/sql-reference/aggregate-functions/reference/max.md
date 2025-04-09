@@ -1,11 +1,11 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/max
+description: 'Агрегатная функция, которая вычисляет максимум среди группы значений.'
 sidebar_position: 162
+slug: /sql-reference/aggregate-functions/reference/max
 title: 'max'
-description: 'Агрегатная функция, которая вычисляет максимум по группе значений.'
 ---
 
-Агрегатная функция, которая вычисляет максимум по группе значений.
+Агрегатная функция, которая вычисляет максимум среди группы значений.
 
 Пример:
 

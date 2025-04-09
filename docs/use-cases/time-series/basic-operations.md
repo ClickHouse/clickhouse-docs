@@ -14,7 +14,7 @@ This section covers the fundamental operations commonly used when working with t
 Common operations include grouping data by time intervals, handling gaps in time series data, and calculating changes between time periods. 
 These operations can be performed using standard SQL syntax combined with ClickHouse's built-in time functions.
 
-We’re going to explore ClickHouse time-series querying capabilities with the Wikistat (Wikipedia pageviews data) dataset:
+We're going to explore ClickHouse time-series querying capabilities with the Wikistat (Wikipedia pageviews data) dataset:
 
 ```sql
 CREATE TABLE wikistat
@@ -29,7 +29,7 @@ ENGINE = MergeTree
 ORDER BY (time);
 ```
 
-Let’s populate this table with 1 billion records:
+Let's populate this table with 1 billion records:
 
 ```sql
 INSERT INTO wikistat 
@@ -62,7 +62,7 @@ LIMIT 5;
 └────────────┴──────────┘
 ```
 
-We’ve used the [`toDate()`](/sql-reference/functions/type-conversion-functions#todate) function here, which converts the specified time to a date type. Alternatively, we can batch by an hour and filter on the specific date:
+We've used the [`toDate()`](/sql-reference/functions/type-conversion-functions#todate) function here, which converts the specified time to a date type. Alternatively, we can batch by an hour and filter on the specific date:
 
 
 ```sql
@@ -93,7 +93,7 @@ You can also group by year, quarter, month, or day.
 
 We can even group by arbitrary intervals, e.g., 5 minutes using the [`toStartOfInterval()`](/docs/sql-reference/functions/date-time-functions#tostartofinterval) function. 
 
-Let’s say we want to group by 4-hour intervals.
+Let's say we want to group by 4-hour intervals.
 We can specify the grouping interval using the [`INTERVAL`](/docs/sql-reference/data-types/special-data-types/interval) clause:
 
 ```sql
@@ -135,7 +135,7 @@ Either way, we get the following results:
 
 ## Filling empty groups {#time-series-filling-empty-groups}
 
-In a lot of cases we deal with sparse data with some absent intervals. This results in empty buckets. Let’s take the following example where we group data by 1-hour intervals. This will output the following stats with some hours missing values:
+In a lot of cases we deal with sparse data with some absent intervals. This results in empty buckets. Let's take the following example where we group data by 1-hour intervals. This will output the following stats with some hours missing values:
 
 ```sql
 SELECT
@@ -215,10 +215,10 @@ ORDER BY hour ASC WITH FILL STEP toIntervalHour(1);
 
 ## Rolling time windows {#time-series-rolling-time-windows}
 
-Sometimes, we don’t want to deal with the start of intervals (like the start of the day or an hour) but window intervals. 
-Let’s say we want to understand the total hits for a window, not based on days but on a 24-hour period offset from 6 pm. 
+Sometimes, we don't want to deal with the start of intervals (like the start of the day or an hour) but window intervals. 
+Let's say we want to understand the total hits for a window, not based on days but on a 24-hour period offset from 6 pm. 
 
-We can use the [`date_diff()`](/docs/sql-reference/functions/date-time-functions#date_diff) function to calculate the difference between a reference time and each record’s time. 
+We can use the [`date_diff()`](/docs/sql-reference/functions/date-time-functions#date_diff) function to calculate the difference between a reference time and each record's time. 
 In this case, the `day` column will represent the difference in days (e.g., 1 day ago, 2 days ago, etc.):
 
 ```sql

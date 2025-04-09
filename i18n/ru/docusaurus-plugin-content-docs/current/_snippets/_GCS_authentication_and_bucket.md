@@ -7,47 +7,48 @@ import GCS_create_service_account_a from '@site/static/images/integrations/data-
 import GCS_create_service_account_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-create-service-account-2.png';
 import GCS_create_service_account_3 from '@site/static/images/integrations/data-ingestion/s3/GCS-create-service-account-3.png';
 import GCS_guide_key from '@site/static/images/integrations/data-ingestion/s3/GCS-guide-key.png';
+import Image from '@theme/IdealImage';
 
 <details>
-    <summary>Создание бакетов GCS и HMAC ключа</summary>
+    <summary>Создание ведер GCS и ключа HMAC</summary>
 
 ### ch_bucket_us_east1 {#ch_bucket_us_east1}
 
-<img src={GCS_bucket_1} alt="Создание бакета GCS в US East 1" />
+<Image size="md" img={GCS_bucket_1} alt="Создание ведра GCS в US East 1" border />
 
 ### ch_bucket_us_east4 {#ch_bucket_us_east4}
 
-<img src={GCS_bucket_2} alt="Создание бакета GCS в US East 4" />
+<Image size="md" img={GCS_bucket_2} alt="Создание ведра GCS в US East 4" border />
 
 ### Генерация ключа доступа {#generate-an-access-key}
 
-### Создание HMAC ключа и секрета для сервисного аккаунта {#create-a-service-account-hmac-key-and-secret}
+### Создать ключ HMAC для сервисного аккаунта и секрет {#create-a-service-account-hmac-key-and-secret}
 
-Откройте **Cloud Storage > Настройки > Совместимость** и выберите существующий **Ключ доступа**, или **СОЗДАТЬ КЛЮЧ ДЛЯ СЕРВИСНОГО АККУНТА**. Этот гид охватывает процесс создания нового ключа для нового сервисного аккаунта.
+Откройте **Cloud Storage > Settings > Interoperability** и выберите существующий **Access key**, или **CREATE A KEY FOR A SERVICE ACCOUNT**. Этот учебник охватывает процесс создания нового ключа для нового сервисного аккаунта.
 
-<img src={GCS_create_service_account_key} alt="Генерация HMAC ключа сервисного аккаунта в GCS" />
+<Image size="md" img={GCS_create_service_account_key} alt="Генерация ключа HMAC для сервисного аккаунта в GCS" border />
 
-### Добавление нового сервисного аккаунта {#add-a-new-service-account}
+### Добавить новый сервисный аккаунт {#add-a-new-service-account}
 
-Если это проект без существующего сервисного аккаунта, **СОЗДАТЬ НОВЫЙ АККАНТ**.
+Если это проект без существующего сервисного аккаунта, выберите **CREATE NEW ACCOUNT**.
 
-<img src={GCS_create_service_account_0} alt="Добавление нового сервисного аккаунта в GCS" />
+<Image size="md" img={GCS_create_service_account_0} alt="Добавление нового сервисного аккаунта в GCS" border />
 
-Существует три шага для создания сервисного аккаунта, на первом шаге дайте аккаунту значимое имя, ID и описание.
+Существует три этапа создания сервисного аккаунта, на первом этапе дайте аккаунту значащее имя, ID и описание.
 
-<img src={GCS_create_service_account_a} alt="Определение имени и ID нового сервисного аккаунта в GCS" />
+<Image size="md" img={GCS_create_service_account_a} alt="Определение имени и ID нового сервисного аккаунта в GCS" border />
 
-В диалоговом окне настроек совместимости рекомендуется роль IAM **Администратор объектов хранилища**; выберите эту роль на втором шаге.
+В диалоговом окне настроек совместимости рекомендуется роль IAM **Storage Object Admin**; выберите эту роль на втором этапе.
 
-<img src={GCS_create_service_account_2} alt="Выбор IAM роли Администратор объектов хранилища в GCS" />
+<Image size="md" img={GCS_create_service_account_2} alt="Выбор IAM роли Storage Object Admin в GCS" border />
 
-Шаг третий является необязательным и не используется в этом руководстве. Вы можете разрешить пользователям иметь эти привилегии в зависимости от ваших политик.
+Третий этап является необязательным и не используется в этом руководстве. Вы можете разрешить пользователям иметь эти привилегии в соответствии с вашими политиками.
 
-<img src={GCS_create_service_account_3} alt="Настройка дополнительных параметров для нового сервисного аккаунта в GCS" />
+<Image size="md" img={GCS_create_service_account_3} alt="Настройка дополнительных параметров для нового сервисного аккаунта в GCS" border />
 
-HMAC ключ сервисного аккаунта будет отображен. Сохраните эту информацию, так как она будет использована в конфигурации ClickHouse.
+Ключ HMAC сервисного аккаунта будет отображен. Сохраните эту информацию, так как она будет использована в конфигурации ClickHouse.
 
-<img src={GCS_guide_key} alt="Получение сгенерированного HMAC ключа для GCS" />
+<Image size="md" img={GCS_guide_key} alt="Получение сгенерированного HMAC ключа для GCS" border />
 
 </details>
-```
+

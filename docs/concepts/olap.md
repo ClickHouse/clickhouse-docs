@@ -20,7 +20,7 @@ slug: /concepts/olap
 
 ## OLAP from the Business Perspective {#olap-from-the-business-perspective}
 
-In recent years business people started to realize the value of data. Companies who make their decisions blindly more often than not fail to keep up with the competition. The data-driven approach of successful companies forces them to collect all data that might be even remotely useful for making business decisions, and imposes on them a need for mechanisms which allow them to analyze this data in a timely manner. Here’s where OLAP database management systems (DBMS) come in.
+In recent years business people started to realize the value of data. Companies who make their decisions blindly more often than not fail to keep up with the competition. The data-driven approach of successful companies forces them to collect all data that might be even remotely useful for making business decisions, and imposes on them a need for mechanisms which allow them to analyze this data in a timely manner. Here's where OLAP database management systems (DBMS) come in.
 
 In a business sense, OLAP allows companies to continuously plan, analyze, and report operational activities, thus maximizing efficiency, reducing expenses, and ultimately conquering the market share. It could be done either in an in-house system or outsourced to SaaS providers like web/mobile analytics services, CRM services, etc. OLAP is the technology behind many BI applications (Business Intelligence).
 
@@ -36,5 +36,5 @@ Even if a DBMS started out as a pure OLAP or pure OLTP, it is forced to move in 
 
 The fundamental trade-off between OLAP and OLTP systems remains:
 
-- To build analytical reports efficiently it’s crucial to be able to read columns separately, thus most OLAP databases are [columnar](https://clickhouse.com/engineering-resources/what-is-columnar-database),
+- To build analytical reports efficiently it's crucial to be able to read columns separately, thus most OLAP databases are [columnar](https://clickhouse.com/engineering-resources/what-is-columnar-database),
 - While storing columns separately increases costs of operations on rows, like append or in-place modification, proportionally to the number of columns (which can be huge if the systems try to collect all details of an event just in case). Thus, most OLTP systems store data arranged by rows.

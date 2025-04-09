@@ -8,7 +8,7 @@ title: 'Ingesting Data from Postgres to ClickHouse (using CDC)'
 import BetaBadge from '@theme/badges/BetaBadge';
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
-import postgres_tile from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-tile.jpg'
+import postgres_tile from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-tile.png'
 import postgres_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-connection-details.jpg'
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 import select_replication_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-replication-slot.jpg'
@@ -134,9 +134,7 @@ You can configure the Advanced settings if needed. A brief description of each s
 7. You can select the tables you want to replicate from the source Postgres database. While selecting the tables, you can also choose to rename the tables in the destination ClickHouse database as well as exclude specific columns.
 
    :::warning
-
    If you are defining a Ordering Key in ClickHouse differently from the Primary Key in Postgres, please don’t forget to read all the [considerations](/integrations/clickpipes/postgres/ordering_keys) around it!
-
    :::
 
 ### Review permissions and start the ClickPipe {#review-permissions-and-start-the-clickpipe}
