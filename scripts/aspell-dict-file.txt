@@ -1,10 +1,10 @@
---docs/en/tutorial.md--
+--docs/tutorial.md--
 Allerton
 Boro
 LocationID
 Pelham
 york
---docs/en/materialized-view/refreshable-materialized-view.md--
+--docs/materialized-view/refreshable-materialized-view.md--
 Clicky
 Clicky's
 --docs/native-protocol/server.md--
