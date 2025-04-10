@@ -138,7 +138,6 @@ const config = {
             if (
               docPath.includes("development") ||
               docPath.includes("engines") ||
-              docPath.includes("getting-started") ||
               docPath.includes("interfaces") ||
               docPath.includes("operations") ||
               docPath.includes("sql-reference")
