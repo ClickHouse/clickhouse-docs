@@ -251,7 +251,7 @@ and its two projections:
 <Image img={projections_2} size="lg" alt="Visualization of the main table uk_price_paid_with_projections and its two projections"/>
 
 If we now run the query that lists the counties in London for the three highest 
-paid prices again, we see a dramatic difference in query performance:
+paid prices again, we see an improvement in query performance:
 
 ```sql runnable
 SELECT
