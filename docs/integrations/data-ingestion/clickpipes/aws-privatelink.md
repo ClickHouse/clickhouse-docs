@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'AWS PrivateLink for ClickPipes'
-description: 'Establish a secure connection between ClickPipes and a data source using AWS PrivateLink.'
+sidebar_label: "AWS PrivateLink for ClickPipes"
+description: "Establish a secure connection between ClickPipes and a data source using AWS PrivateLink."
 slug: /integrations/clickpipes/aws-privatelink
-title: 'AWS PrivateLink for ClickPipes'
+title: "AWS PrivateLink for ClickPipes"
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
@@ -40,9 +40,14 @@ Your VPC resources can be accessed in ClickPipes using PrivateLink.
 Resource configuration can be targeted with a specific host or RDS cluster ARN.
 Cross-region is not supported.
 
+It's a preferred choice for Postgres CDC ingesting data from RDS cluster.
+
 See a [getting started](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html) guide for more details.
 
-It's a preferred choice for Postgres CDC ingesting data from RDS cluster.
+:::info
+VPC resource needs to be shared with a ClickPipes account. Add `072088201116` to the allowed principals to your resource share configuration.
+See AWS guide for [sharing resources](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) for more details.
+:::
 
 ### MSK multi-VPC connectivity {#msk-multi-vpc}
 
@@ -53,6 +58,11 @@ Cross-region is not supported.
 It is a recommended option for ClickPipes for MSK.
 See the [getting started](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-getting-started.html) guide for more details.
 
+:::info
+Update your MSK cluster policy and add `072088201116` to the allowed principals to your MSK cluster.
+See AWS guide for [attaching a cluster policy](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-cluster-owner-action-policy.html) for more details.
+:::
+
 ### VPC endpoint service {#vpc-endpoint-service}
 
 VPC service is another approach to share your data source with ClickPipes.
@@ -62,21 +72,29 @@ and configuring the VPC endpoint service to use the NLB.
 VPC endpoint service can be [configured with a private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/manage-dns-names.html),
 that will be accessible in a ClickPipes VPC.
 
-Cross-region is supported.
-
 It's a preferred choice for:
-- any on-premise Kafka setup that requires private DNS support
-- cross-region connectivity for Postgres CDC
 
-Cross-region MSK cluster connectivity can be set up using VPC endpoint service as well.
-Please reach out to the ClickHouse support team for assistance.
+- Any on-premise Kafka setup that requires private DNS support
+- Cross-region connectivity for Postgres CDC
+- Cross-region connectivity for MSK cluster. Please reach out to the ClickHouse support team for assistance.
+
+See the [getting started](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html) guide for more details.
+
+:::info
+Add ClickPipes account ID `072088201116` to the allowed principals to your VPC endpoint service.
+See AWS guide for [managing permissions](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html#add-remove-permissions) for more details.
+:::
+
+:::info
+[Cross-region access](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-cross-region)
+can be configured for ClickPipes. Add [your ClickPipe region](#supported-aws-regions-aws-privatelink-regions) to the allowed regions in your VPC endpoint service.
+:::
 
 ## Creating a ClickPipe with reverse private endpoint {#creating-clickpipe}
 
 1. Access the SQL Console for your ClickHouse Cloud Service.
 
 <Image img={cp_service} alt="ClickPipes service" size="md" border/>
-
 
 2. Select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
 
@@ -104,22 +122,22 @@ Please reach out to the ClickHouse support team for assistance.
 
 7. Click on `Create` and wait for the reverse private endpoint to be ready.
 
-    If you are creating a new endpoint, it will take some time to set up the endpoint.
-    The page will refresh automatically once the endpoint is ready.
-    VPC endpoint service might require accepting the connection request in your AWS console.
+   If you are creating a new endpoint, it will take some time to set up the endpoint.
+   The page will refresh automatically once the endpoint is ready.
+   VPC endpoint service might require accepting the connection request in your AWS console.
 
 <Image img={cp_rpe_step3} alt="Select reverse private endpoint" size="lg" border/>
 
 8. Once the endpoint is ready, you can use a DNS name to connect to the data source.
-   
-    On a list of endpoints, you can see the DNS name for the available endpoint.
-    It can be either an internally ClickPipes provisioned DNS name or a private DNS name supplied by a PrivateLink service.
-    DNS name is not a complete network address.
-    Add the port according to the data source.
 
-    MSK connection string can be accessed in the AWS console.
+   On a list of endpoints, you can see the DNS name for the available endpoint.
+   It can be either an internally ClickPipes provisioned DNS name or a private DNS name supplied by a PrivateLink service.
+   DNS name is not a complete network address.
+   Add the port according to the data source.
 
-    To see a full list of DNS names, access it in the cloud service settings.
+   MSK connection string can be accessed in the AWS console.
+
+   To see a full list of DNS names, access it in the cloud service settings.
 
 ## Managing existing reverse private endpoints {#managing-existing-endpoints}
 
@@ -140,6 +158,7 @@ You can manage existing reverse private endpoints in the ClickHouse Cloud servic
 ## Supported AWS regions {#aws-privatelink-regions}
 
 The following AWS regions are supported for AWS PrivateLink:
+
 - `us-east-1` - for ClickHouse services running in `us-east-1` region
 - `eu-central-1` for ClickHouse services running in EU regions
 - `us-east-2` - for ClickHouse services running everywhere else
