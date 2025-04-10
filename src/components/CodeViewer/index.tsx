@@ -1,4 +1,4 @@
-import { CodeBlock, ClickUIProvider, Text, Separator } from '@clickhouse/click-ui/bundled'
+import { CodeBlock, ClickUIProvider, Text } from '@clickhouse/click-ui/bundled'
 import CodeInterpreter from './CodeInterpreter'
 import { DefaultView } from './CodeResults'
 import { ChartConfig, ChartType } from './types'

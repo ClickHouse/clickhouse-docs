@@ -262,7 +262,7 @@ If you’d like to dive deeper into how ClickHouse executes queries in parallel 
 
 * [Query Processing Layer – VLDB 2024 Paper (Web Edition)](/academic_overview#4-query-processing-layer) - A detailed breakdown of ClickHouse’s internal execution model, including scheduling, pipelining, and operator design.
 
-* [Partial aggregation states explained](/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization) - A technical deep dive into how partial aggregation states enable efficient parallel execution across processing lanes.
+* [Partial aggregation states explained](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization) - A technical deep dive into how partial aggregation states enable efficient parallel execution across processing lanes.
 
 * A video tutorial walking in detail through all ClickHouse query processing steps:
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/hP6G2Nlz_cA?si=Imd_i427J_kZOXHe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

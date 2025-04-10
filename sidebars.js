@@ -192,6 +192,7 @@ const sidebars = {
       collapsible: true,
       link: { type: "doc", id: "getting-started/index" },
       items: [
+        "getting-started/example-datasets/nyc-taxi",
         "getting-started/example-datasets/amazon-reviews",
         "getting-started/example-datasets/amplab-benchmark",
         "getting-started/example-datasets/brown-benchmark",
@@ -205,7 +206,6 @@ const sidebars = {
         "getting-started/example-datasets/menus",
         "getting-started/example-datasets/metrica",
         "getting-started/example-datasets/noaa",
-        "getting-started/example-datasets/nyc-taxi",
         "getting-started/example-datasets/nypd_complaint_data",
         "getting-started/example-datasets/ontime",
         "getting-started/example-datasets/opensky",
@@ -1030,7 +1030,7 @@ const sidebars = {
         "managing-data/core-concepts/partitions",
         "managing-data/core-concepts/merges",
         "managing-data/core-concepts/shards",
-        "guides/best-practices/sparse-primary-indexes",
+        "managing-data/core-concepts/primary-indexes",
         "managing-data/core-concepts/academic_overview"
       ]
     },
@@ -1102,6 +1102,7 @@ const sidebars = {
             "materialized-view/refreshable-materialized-view"
           ],
         },
+        "data-modeling/projections",
         {
           type: "category",
           label: "Data Compression",
