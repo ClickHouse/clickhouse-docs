@@ -68,6 +68,7 @@ SELECT
   trip_id,
   dateDiff('minutes', pickup_datetime, dropoff_datetime) AS trip_duration_min
 FROM nyc_taxi.trips WHERE tip_amount > 200 AND trip_duration_min > 0
+ORDER BY tip_amount, trip_id ASC
 ```
 
 Notice that because we are filtering on `tip_amount` which is not in the `ORDER BY`, ClickHouse 
@@ -108,6 +109,7 @@ SELECT
   trip_id,
   dateDiff('minutes', pickup_datetime, dropoff_datetime) AS trip_duration_min
 FROM nyc_taxi.trips_with_projection WHERE tip_amount > 200 AND trip_duration_min > 0
+ORDER BY tip_amount, trip_id ASC
 ```
 
 Notice how we were able to decrease the query time substantially, and needed to scan
