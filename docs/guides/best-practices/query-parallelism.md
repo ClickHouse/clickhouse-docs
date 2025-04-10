@@ -87,7 +87,7 @@ We can see that
 * ② With 59 CPU cores, it distributes this work across 59 parallel processing streams—one per lane.
 
 Alternatively, we can use the [EXPLAIN](/sql-reference/statements/explain#explain-pipeline) clause to inspect the [physical operator plan](/academic_overview#4-2-multi-core-parallelization)—also known as the "query pipeline"—for the aggregation query:
-```sql runnable=true
+```sql runnable
 EXPLAIN PIPELINE
 SELECT
    max(price)
@@ -128,7 +128,7 @@ Note that the `Resize` operators in the physical plan above [repartition and red
 ## Why max_threads isn't always respected {#why-max-threads-isnt-always-respected}
 
 As mentioned above, the number of `n` parallel processing lanes is controlled by the `max_threads` setting, which by default matches the number of CPU cores available to ClickHouse on the server:
-```sql runnable=true
+```sql runnable
 SELECT getSetting('max_threads');
 ```
 
@@ -140,7 +140,7 @@ Static result for the query above from April 2025
 ```
 
 However, the `max_threads` value may be ignored for some plan operators depending on the amount of data selected for processing:
-```sql runnable=true
+```sql runnable
 EXPLAIN PIPELINE
 SELECT
    max(price)
@@ -159,7 +159,7 @@ MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 30
 As shown in the operator plan extract above, even though `max_threads` is set to `59`, ClickHouse uses only **30** concurrent streams to scan the data.
 
 Now let’s run the query:
-```sql runnable=true
+```sql runnable
 SELECT
    max(price)
 FROM
@@ -179,7 +179,7 @@ Peak memory usage: 27.24 MiB.
 
 As shown in the output above, the query processed 2.31 million rows and read 13.66MB of data. This is because, during the index analysis phase, ClickHouse selected **282 granules** for processing, each containing 8,192 rows, totaling approximately 2.31 million rows:
 
-```sql runnable=true
+```sql runnable
 EXPLAIN indexes = 1
 SELECT
    max(price)
