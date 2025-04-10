@@ -35,7 +35,8 @@ jobs:
       - name: Build
         id: build
         continue-on-error: true
-        run: yarn build
+        run: CI=false yarn build # CI=false here as copy-clickhouse-repo-docs uses it as a flag to
+                                 # not look for ClickHouse repo locally but rather pull the repo
 
       - name: Check Build Result
         if: steps.build.outcome == 'failure' && steps.build.exitCode == 1
