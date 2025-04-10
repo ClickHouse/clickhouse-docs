@@ -35,9 +35,12 @@ jobs:
       - name: Build
         id: build
         continue-on-error: true
-        run: CI=false yarn build # CI=false here as copy-clickhouse-repo-docs uses it as a flag to
-                                 # not look for ClickHouse repo locally but rather pull the repo
+        run: |
+          CI=false yarn build # CI=false here as copy-clickhouse-repo-docs uses it as a flag to not look for ClickHouse repo locally but rather pull the repo
+          echo "::set-output name=exit_code::$?"
 
       - name: Check Build Result
-        if: steps.build.outcome == 'failure' && steps.build.exitCode == 1
-        run: exit 1
+        if: steps.build.outputs.exit_code == '1'
+        run: |
+          echo "Build failed with exit code 1"
+          exit 1
