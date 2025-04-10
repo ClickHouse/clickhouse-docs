@@ -170,7 +170,7 @@ ORDER BY avg(price) DESC
 LIMIT 3
 ```
 
-Notice above how a full table scan of all 30.03 million rows occurred for both queries, due 
+Notice that despite being very fast how a full table scan of all 30.03 million rows occurred for both queries, due 
 to the fact that neither `town` nor `price` were in our `ORDER BY` statement when we
 created the table:
 
