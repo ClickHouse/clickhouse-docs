@@ -173,14 +173,14 @@ GROUP BY passenger_count;
 
 Here's a correlation between the number of passengers and the distance of the trip:
 
-```sql runnable chart_config='eyJ0eXBlIjoiaG9yaXpvbnRhbCBiYXIiLCJjb25maWciOnsidGl0bGUiOiJEaXN0YW5jZSBieSBwYXNzZW5nZXIgY291bnQiLCJ4YXhpcyI6InBhc3Nlbmdlcl9jb3VudCIsInlheGlzIjoiZGlzdGFuY2UiLCJ6YXhpcyI6ImNvdW50KCkifX0'
+```sql runnable chart_config='eyJ0eXBlIjoiaG9yaXpvbnRhbCBiYXIiLCJjb25maWciOnsieGF4aXMiOiJwYXNzZW5nZXJfY291bnQiLCJ5YXhpcyI6ImRpc3RhbmNlIiwic2VyaWVzIjoiY291bnRyeSIsInRpdGxlIjoiQXZnIGZhcmUgYnkgcGFzc2VuZ2VyIGNvdW50In19'
 SELECT
-   passenger_count,
-   round(trip_distance) AS distance,
-   count(*)
+    passenger_count,
+    avg(trip_distance) AS distance,
+    count() AS c
 FROM nyc_taxi.trips_small
-GROUP BY passenger_count, distance
-ORDER BY passenger_count ASC, count(*) DESC;
+GROUP BY passenger_count
+ORDER BY passenger_count ASC
 ```
 
 ## Download of Prepared Partitions {#download-of-prepared-partitions}
