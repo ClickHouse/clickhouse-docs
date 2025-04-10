@@ -18,8 +18,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## Open the TABLUM.IO startup page {#open-the-tablumio-startup-page}
 
-Cloud version of TABLUM.IO is available at [https://go.tablum.io/](https://go.tablum.io/)
-
 :::note
   You can install a self-hosted version of TABLUM.IO on your Linux server in docker.
 :::
