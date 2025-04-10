@@ -72,7 +72,7 @@ Each [data part](/parts) in the table has its own primary index. We can inspect 
 
 The following query lists the number of entries in the primary index for each data part of our example table:
 
-```sql runnable=true
+```sql
 SELECT
     part_name,
     max(mark_number) as entries
@@ -82,7 +82,6 @@ GROUP BY part_name;
 
 
 ```txt
-Static result for the query above from April 2025
    ┌─part_name─┬─entries─┐
 1. │ all_2_2_0 │     914 │
 2. │ all_1_1_0 │    1343 │
@@ -92,7 +91,7 @@ Static result for the query above from April 2025
 
 This query shows the first 10 entries from the primary index of one of the current data parts. Note that these parts are continuously [merged](/merges) in the background into larger parts:
 
-```sql runnable=true
+```sql 
 SELECT 
     mark_number + 1 as entry,
     town,
@@ -105,7 +104,6 @@ LIMIT 10;
 
 
 ```txt
-Static result for the query above from April 2025
     ┌─entry─┬─town───────────┬─street───────────┐
  1. │     1 │ ABBOTS LANGLEY │ ABBEY DRIVE      │
  2. │     2 │ ABERDARE       │ RICHARDS TERRACE │
@@ -121,7 +119,7 @@ Static result for the query above from April 2025
 ```
 
 Lastly, we use the [EXPLAIN](/sql-reference/statements/explain) clause to see how the primary indexes of all data parts are used to skip granules that can’t possibly contain rows matching the example query’s predicates. These granules are excluded from loading and processing:
-```sql runnable=true
+```sql
 EXPLAIN indexes = 1
 SELECT
     max(price)
@@ -133,7 +131,6 @@ WHERE
 
 
 ```txt
-Static result for the query above from April 2025
     ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────┐
  1. │ Expression ((Project names + Projection))                                                                  │
  2. │   Aggregating                                                                                              │
@@ -155,7 +152,7 @@ Static result for the query above from April 2025
 Note how row 13 of the EXPLAIN output above shows that only 3 out of 3,609 granules across all data parts were selected by the primary index analysis for processing. The remaining granules were skipped entirely.
 
 We can also observe that most of the data was skipped by simply running the query:
-```sql runnable=true
+```sql 
 SELECT max(price)
 FROM uk.uk_price_paid_simple
 WHERE (town = 'LONDON') AND (street = 'OXFORD STREET');
@@ -163,7 +160,6 @@ WHERE (town = 'LONDON') AND (street = 'OXFORD STREET');
 
 
 ```txt
-Static result for the query above from April 2025
    ┌─max(price)─┐
 1. │  263100000 │ -- 263.10 million
    └────────────┘
@@ -173,12 +169,11 @@ Peak memory usage: 13.00 MiB.
 ```
 
 As shown above, only around 25,000 rows were processed out of approximately 30 million rows in the example table:
-```sql runnable=true
+```sql 
 SELECT count() FROM uk.uk_price_paid_simple;
 ```
 
 ```txt
-Static result for the query above from April 2025
    ┌──count()─┐
 1. │ 29556244 │ -- 29.56 million
    └──────────┘
