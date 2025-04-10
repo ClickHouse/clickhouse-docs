@@ -1,5 +1,5 @@
 ---
-title: 'ClickPipes for Postgres: Schema Changes Propagation Support'
+title: 'Schema Changes Propagation Support'
 slug: /integrations/clickpipes/postgres/schema-changes
 description: 'Page describing schema change types detectable by ClickPipes in the source tables'
 ---

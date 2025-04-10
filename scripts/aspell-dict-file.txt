@@ -952,6 +952,8 @@ kinesis
 --docs/cloud/security/aws-privatelink.md--
 GWLBs
 NLBs
+--docs/integrations/data-ingestion/clickpipes/postgres/deduplication.md--
+cumulate
 --docs/use-cases/data_lake/glue_catalog.md--
 Databricks
 --docs/best-practices/_snippets/_avoid_mutations.md--
@@ -964,3 +966,5 @@ Probabilistically
 tunable
 --docs/best-practices/use_materialized_views.md--
 DAGs
+--docs/migrations/postgres/appendix.md--
+Citus
