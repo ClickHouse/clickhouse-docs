@@ -152,7 +152,7 @@ Notice there are columns for the pickup and dropoff dates, geo coordinates, fare
 
 Let's run a few queries. This query shows us the top 10 neighborhoods that have the most frequent pickups:
 
-```sql runnable settings={'enable_parallel_replicas':1}
+```sql runnable
 SELECT
    pickup_ntaname,
    count(*) AS count
@@ -164,7 +164,7 @@ LIMIT 10;
 
 This query shows the average fare based on the number of passengers:
 
-```sql runnable settings={'enable_parallel_replicas':1} view='chart' chart_config='eyJ0eXBlIjoiYmFyIiwiY29uZmlnIjp7InhheGlzIjoicGFzc2VuZ2VyX2NvdW50IiwieWF4aXMiOiJhdmcodG90YWxfYW1vdW50KSIsInRpdGxlIjoiQXZlcmFnZSBmYXJlIGJ5IHBhc3NlbmdlciBjb3VudCJ9fQ'
+```sql runnable view='chart' chart_config='eyJ0eXBlIjoiYmFyIiwiY29uZmlnIjp7InhheGlzIjoicGFzc2VuZ2VyX2NvdW50IiwieWF4aXMiOiJhdmcodG90YWxfYW1vdW50KSIsInRpdGxlIjoiQXZlcmFnZSBmYXJlIGJ5IHBhc3NlbmdlciBjb3VudCJ9fQ'
 SELECT
    passenger_count,
    avg(total_amount)
