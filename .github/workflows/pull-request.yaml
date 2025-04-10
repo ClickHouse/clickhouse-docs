@@ -43,12 +43,12 @@ jobs:
         run: |
           FAILED=false
           
-          if [ -f ".frontmatter-validation-failed" ]; then
+          if [ -f "frontmatterValidationFailed" ]; then
             echo "::error::Frontmatter validation failed"
             FAILED=true
           fi
           
-          if [ -f ".floating-pages-validation-failed" ]; then
+          if [ -f "floatingPageValidationFailed" ]; then
             echo "::error::Floating pages validation failed"
             FAILED=true
           fi
