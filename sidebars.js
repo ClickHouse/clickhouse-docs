@@ -196,6 +196,7 @@ const sidebars = {
       collapsible: true,
       link: { type: "doc", id: "getting-started/index" },
       items: [
+        "getting-started/example-datasets/nyc-taxi",
         "getting-started/example-datasets/amazon-reviews",
         "getting-started/example-datasets/amplab-benchmark",
         "getting-started/example-datasets/brown-benchmark",
@@ -209,7 +210,6 @@ const sidebars = {
         "getting-started/example-datasets/menus",
         "getting-started/example-datasets/metrica",
         "getting-started/example-datasets/noaa",
-        "getting-started/example-datasets/nyc-taxi",
         "getting-started/example-datasets/nypd_complaint_data",
         "getting-started/example-datasets/ontime",
         "getting-started/example-datasets/opensky",

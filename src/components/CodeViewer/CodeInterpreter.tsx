@@ -175,6 +175,7 @@ function CodeInterpreter({
           <Tooltip.Trigger>
             <Button
               className='h-full m-auto'
+              fillWidth={false}
               iconLeft='chevron-down'
               onClick={closeResultPanel}
               type='empty'></Button>
@@ -186,6 +187,7 @@ function CodeInterpreter({
           <Tooltip.Trigger>
             <Button
               className='h-full m-auto'
+              fillWidth={false}
               iconLeft='chevron-up'
               onClick={openTableResultPanel}
               type='empty'></Button>
@@ -195,15 +197,15 @@ function CodeInterpreter({
       )
 
       return (
-        <div className='flex items-end whitespace-pre-wrap'>
+        <div className={`flex items-end whitespace-pre-wrap ${chart && 'w-[180px] h-[28px]'}`}>
           {show_results}
           {chart && (
-            <div className='my-auto w-[80px] sm:w-[140px]'>
+            <div className=''>
             <RadioGroup
               orientation='vertical'
               value={currentView}>
               <RadioGroup.Item
-              label='Table'
+                label='Table'
               onClick={(): void => {
                   setCurrentView(DefaultView.Table)
                 }}
@@ -230,14 +232,14 @@ function CodeInterpreter({
       return (
         <div className='flex justify-between'>
           <div className='flex items-center'>
-          <div className='flex items-center'>{hideTableResultButton()}</div>
-          <div className='flex items-center'>
-          {show_statistics && results?.response?.statistics && (
-            <div className={`whitespace-pre-wrap text-xs mx-auto italic ${chart ? 'ml-[8px]' : ''}`}>
-              {`${runBy()} Read ${formatReadableRows(results.response.statistics.rows_read)} rows and ${formatBytes(results.response.statistics.bytes_read)} in ${roundToDynamicPrecision(results.response.statistics.elapsed)} seconds`}
+            <div className='flex items-center'>{hideTableResultButton()}</div>
+            <div className='flex items-end min-h-[28px]'>
+              {show_statistics && results?.response?.statistics && (
+                <div className={`whitespace-pre-wrap text-[12px] mx-auto italic ${chart ? 'ml-[8px]' : ''}`}>
+                  {`Read ${formatReadableRows(results.response.statistics.rows_read)} rows and ${formatBytes(results.response.statistics.bytes_read)} in ${roundToDynamicPrecision(results.response.statistics.elapsed)} secs`}
+                </div>
+              )}
             </div>
-          )}
-          </div>
           </div>
           
           <div className='flex items-center'>
