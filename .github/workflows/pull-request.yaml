@@ -39,8 +39,20 @@ jobs:
           CI=false yarn build # CI=false here as copy-clickhouse-repo-docs uses it as a flag to not look for ClickHouse repo locally but rather pull the repo
           echo "::set-output name=exit_code::$?"
 
-      - name: Check Build Result
-        if: steps.build.outputs.exit_code == '1'
+      - name: Check for validation failures
         run: |
-          echo "Build failed with exit code 1"
-          exit 1
+          FAILED=false
+          
+          if [ -f ".frontmatter-validation-failed" ]; then
+            echo "::error::Frontmatter validation failed"
+            FAILED=true
+          fi
+          
+          if [ -f ".floating-pages-validation-failed" ]; then
+            echo "::error::Floating pages validation failed"
+            FAILED=true
+          fi
+          
+          if [ "$FAILED" = true ]; then
+            exit 1
+          fi

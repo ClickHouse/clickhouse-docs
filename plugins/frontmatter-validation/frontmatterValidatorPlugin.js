@@ -17,9 +17,9 @@ function frontmatterValidatorPlugin(context, options) {
         },
 
         // Check for issues
-        async contentLoaded({ outDir }) {
+        async postBuild({ outDir }) {
             const filesWithIssues = getFilesWithIssues();
-
+            
             if (filesWithIssues.length > 0) {
                 if (options && options.failBuild) {
                     console.error('\n🚨 Build failed: Frontmatter validation issues found');
@@ -46,6 +46,7 @@ function frontmatterValidatorPlugin(context, options) {
 
                     // Fail the build by throwing an error
                     console.error('🚨Frontmatter validation failed. For more details see https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/style-guide.md');
+                    process.send({ frontmatterValidationFailed: true });
                     process.exit(1);
                 } else {
                     console.log(`⚠️ Warning: Found ${filesWithIssues.length} files containing problems with frontmatter`)
