@@ -40,7 +40,7 @@ Your VPC resources can be accessed in ClickPipes using PrivateLink.
 Resource configuration can be targeted with a specific host or RDS cluster ARN.
 Cross-region is not supported.
 
-It's a preferred choice for Postgres CDC ingesting data from RDS cluster.
+It's the preferred choice for Postgres CDC ingesting data from an RDS cluster.
 
 See a [getting started](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html) guide for more details.
 
