@@ -32,9 +32,7 @@ The sparse primary index in ClickHouse helps efficiently identify [granules](htt
 
 To illustrate how the sparse primary index is built, we use the [uk_price_paid_simple](https://clickhouse.com/docs/parts) table along with some animations.
 
-As a [reminder](https://clickhouse.com/docs/parts), in our ① example table with the primary key (town, street),
-
-② inserted data is ③ stored on disk, sorted by the primary key column values, and compressed, in separate files for each column:
+As a [reminder](https://clickhouse.com/docs/parts), in our ① example table with the primary key (town, street), ② inserted data is ③ stored on disk, sorted by the primary key column values, and compressed, in separate files for each column:
 
 <Image img={visual01} size="lg"/>
 
