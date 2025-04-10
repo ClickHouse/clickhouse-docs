@@ -16,8 +16,9 @@ import Image from '@theme/IdealImage';
 
 ClickHouse offers various mechanisms of speeding up analytical queries on large
 amounts of data for real-time scenarios. One such mechanism to speed up your
-queries is through the use of so-called _Projections_. Projections help optimize
+queries is through the use of _Projections_. Projections help optimize
 queries by creating a reordering of data by attributes of interest. This can be:
+
 1. A complete reordering
 2. A subset of the original table with a different order
 3. A precomputed aggregation (similar to a Materialized View) but with an ordering
@@ -29,8 +30,8 @@ Practically, a Projection can be thought of as an additional, hidden table to th
 original table. The projection can have a different row order, and therefore a 
 different primary index, to that of the original table and it can automatically 
 and incrementally pre-compute aggregate values. As a result, using Projections 
-helps to tune the first two "tuning knobs" that you have control over 
-for speeding up query execution:
+provide two "tuning knobs" for speeding up query execution:
+
 - **Properly using primary indexes**
 - **Pre-computing aggregates**
 
@@ -71,6 +72,13 @@ FROM nyc_taxi.trips WHERE tip_amount > 200 AND trip_duration_min > 0
 
 Notice that because we are filtering on `tip_amount` which is not in the `ORDER BY`, ClickHouse 
 had to do a full table scan. Let's speed this query up.
+
+So as to preserve the original table and results, we'll create a new table and copy the data using an `INSERT INTO SELECT`:
+
+```sql
+CREATE TABLE nyc_taxi.trips_with_projection AS nyc_taxi.trips;
+INSERT INTO nyc_taxi.trips_with_projection SELECT * FROM nyc_taxi.trips;
+```
 
 To add a projection we use the `ALTER TABLE` statement together with the `ADD PROJECTION`
 statement:
@@ -174,10 +182,14 @@ ENGINE = MergeTree
 ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
-For the original example table `uk_price_paid`, we will create (and populate) two
-projections.
-
 Let's see if we can speed this query up using projections.
+
+To preserve the original table and results, we'll create a new table and copy the data using an `INSERT INTO SELECT`:
+
+```sql
+CREATE TABLE uk.uk_price_paid_with_projections AS uk_price_paid;
+INSERT INTO uk.uk_price_paid_with_projections SELECT * FROM uk.uk_price_paid;
+```
 
 We create and populate projection `prj_oby_town_price` which produces an 
 additional (hidden) table with a primary index, ordering by town and price, to 
