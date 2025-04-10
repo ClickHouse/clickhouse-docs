@@ -3,7 +3,6 @@ name: PullRequestCI
 env:
   # Force the stdout and stderr streams to be unbuffered
   PYTHONUNBUFFERED: 1
-  CI: true
 
 on:  # yamllint disable-line rule:truthy
   pull_request:
@@ -34,4 +33,4 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build
-        run: yarn build
+        run: CI=false yarn build
