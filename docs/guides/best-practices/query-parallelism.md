@@ -83,11 +83,14 @@ SETTINGS send_logs_level='trace';
 ```
 
 We can see that
+
+
+
 * ① ClickHouse needs to read 3,609 granules (indicated as marks in the trace logs) across 3 data ranges.
 * ② With 59 CPU cores, it distributes this work across 59 parallel processing streams—one per lane.
 
 Alternatively, we can use the [EXPLAIN](/sql-reference/statements/explain#explain-pipeline) clause to inspect the [physical operator plan](/academic_overview#4-2-multi-core-parallelization)—also known as the "query pipeline"—for the aggregation query:
-```sql runnable
+```sql runnable=false
 EXPLAIN PIPELINE
 SELECT
    max(price)
@@ -96,7 +99,6 @@ FROM
 ```
 
 ```txt
-Static result for the query above from April 2025
     ┌─explain───────────────────────────────────────────────────────────────────────────┐
  1. │ (Expression)                                                                      │
  2. │ ExpressionTransform × 59                                                          │
@@ -128,19 +130,18 @@ Note that the `Resize` operators in the physical plan above [repartition and red
 ## Why max_threads isn't always respected {#why-max-threads-isnt-always-respected}
 
 As mentioned above, the number of `n` parallel processing lanes is controlled by the `max_threads` setting, which by default matches the number of CPU cores available to ClickHouse on the server:
-```sql runnable
+```sql runnable=false
 SELECT getSetting('max_threads');
 ```
 
 ```txt
-Static result for the query above from April 2025
    ┌─getSetting('max_threads')─┐
 1. │                        59 │
    └───────────────────────────┘
 ```
 
-However, the `max_threads` value may be ignored for some plan operators depending on the amount of data selected for processing:
-```sql runnable
+However, the `max_threads` value may be ignored depending on the amount of data selected for processing:
+```sql runnable=false
 EXPLAIN PIPELINE
 SELECT
    max(price)
@@ -150,7 +151,6 @@ WHERE town = 'LONDON';
 ```
 
 ```txt
-Static result for the query above from April 2025
 ...   
 (ReadFromMergeTree)
 MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 30
@@ -159,7 +159,7 @@ MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 30
 As shown in the operator plan extract above, even though `max_threads` is set to `59`, ClickHouse uses only **30** concurrent streams to scan the data.
 
 Now let’s run the query:
-```sql runnable
+```sql runnable=false
 SELECT
    max(price)
 FROM
@@ -168,7 +168,6 @@ WHERE town = 'LONDON';
 ```
 
 ```txt
-Static result for the query above from April 2025
    ┌─max(price)─┐
 1. │  594300000 │ -- 594.30 million
    └────────────┘
@@ -179,7 +178,7 @@ Peak memory usage: 27.24 MiB.
 
 As shown in the output above, the query processed 2.31 million rows and read 13.66MB of data. This is because, during the index analysis phase, ClickHouse selected **282 granules** for processing, each containing 8,192 rows, totaling approximately 2.31 million rows:
 
-```sql runnable
+```sql runnable=false
 EXPLAIN indexes = 1
 SELECT
    max(price)
@@ -189,7 +188,6 @@ WHERE town = 'LONDON';
 ```
 
 ```txt
-Static result for the query above from April 2025
     ┌─explain───────────────────────────────────────────────┐
  1. │ Expression ((Project names + Projection))             │
  2. │   Aggregating                                         │
@@ -206,7 +204,7 @@ Static result for the query above from April 2025
     └───────────────────────────────────────────────────────┘  
 ```
 
-Regardless of the configured `max_threads` value, ClickHouse only allocates additional parallel processing lanes for operator plans scanning the data when there’s enough data to justify them. The "max" in `max_threads` refers to an upper limit, not a guaranteed number of threads used.
+Regardless of the configured `max_threads` value, ClickHouse only allocates additional parallel processing lanes when there’s enough data to justify them. The "max" in `max_threads` refers to an upper limit, not a guaranteed number of threads used.
 
 What "enough data" means is primarily determined by two settings, which define the minimum number of rows (163,840 by default) and the minimum number of bytes (2,097,152 by default) that each processing lane should handle:
 
