@@ -8,7 +8,7 @@ async function checkFloatingPages(context, options = {}) {
     return {
         name: 'check-floating-pages',
 
-        async postBuild({ siteConfig, routesPaths, outDir, head }) {
+        async contentLoaded({ siteConfig, routesPaths, outDir, head }) {
             const { baseUrl } = siteConfig;
             const docsDir = path.resolve(context.siteDir, 'docs');
 

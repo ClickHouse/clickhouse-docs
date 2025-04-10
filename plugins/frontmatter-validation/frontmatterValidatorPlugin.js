@@ -16,8 +16,8 @@ function frontmatterValidatorPlugin(context, options) {
             resetIssues();
         },
 
-        // Check for issues after the build
-        async postBuild({ outDir }) {
+        // Check for issues
+        async contentLoaded({ outDir }) {
             const filesWithIssues = getFilesWithIssues();
 
             if (filesWithIssues.length > 0) {
