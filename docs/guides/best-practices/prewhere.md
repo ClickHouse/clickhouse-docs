@@ -118,6 +118,7 @@ SETTINGS optimize_move_to_prewhere = false;
 ```
 
 ```txt
+Static result for the query above from April 2025
    ┌─street──────┐
 1. │ MOYSER ROAD │
 2. │ AVENUE ROAD │
@@ -131,7 +132,7 @@ Peak memory usage: 132.10 MiB.
 ClickHouse read **23.36 MB** of column data while processing 2.31 million rows for the query.
 
 Next, we run the query with the `optimize_move_to_prewhere` setting enabled. (Note that this setting is optional, as the setting is enabled by default):
-```sql
+```sql runnable=true
 SELECT
     street
 FROM
@@ -142,6 +143,7 @@ SETTINGS optimize_move_to_prewhere = true;
 ```
 
 ```txt
+Static result for the query above from April 2025
    ┌─street──────┐
 1. │ MOYSER ROAD │
 2. │ AVENUE ROAD │
@@ -157,7 +159,7 @@ The same number of rows was processed (2.31 million), but thanks to PREWHERE, Cl
 For deeper insight into how ClickHouse applies PREWHERE behind the scenes, use EXPLAIN and trace logs. 
 
 We inspect the query’s logical plan using the [EXPLAIN](/sql-reference/statements/explain#explain-plan) clause:
-```sql
+```sql runnable=true
 EXPLAIN PLAN actions = 1
 SELECT
     street
@@ -168,6 +170,7 @@ WHERE
 ```
 
 ```txt
+Static result for the query above from April 2025
 ...
 Prewhere info                                                                                                                                                                                                                                          
   Prewhere filter column: 
