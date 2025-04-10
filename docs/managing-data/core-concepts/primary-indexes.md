@@ -76,8 +76,8 @@ The following query lists the number of entries in the primary index for each da
 
 ```sql runnable=true
 SELECT
-part_name,
-	max(mark_number) as entries
+    part_name,
+    max(mark_number) as entries
 FROM mergeTreeIndex('uk', 'uk_price_paid_simple')
 GROUP BY part_name;
 ```
@@ -128,9 +128,9 @@ EXPLAIN indexes = 1
 SELECT
     max(price)
 FROM
-   uk.uk_price_paid_simple
+    uk.uk_price_paid_simple
 WHERE
-   town = 'LONDON' AND street = 'OXFORD STREET';
+    town = 'LONDON' AND street = 'OXFORD STREET';
 ```
 
 
