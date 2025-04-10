@@ -46,6 +46,7 @@ function frontmatterValidatorPlugin(context, options) {
 
                     // Fail the build by throwing an error
                     throw new Error('🚨Frontmatter validation failed. For more details see https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/style-guide.md');
+                    process.exit(1);
                 } else {
                     console.log(`⚠️ Warning: Found ${filesWithIssues.length} files containing problems with frontmatter`)
                 }
