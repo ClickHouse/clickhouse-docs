@@ -164,7 +164,7 @@ LIMIT 10
 ```
 
 :::note
-This query is using a projection to speed up performance.
+This query is using a [projection](/data-modeling/projections) to speed up performance.
 :::
 
 8. Here are the top 10 products in Amazon with the most reviews:
