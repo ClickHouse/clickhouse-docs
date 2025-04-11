@@ -219,10 +219,11 @@ function CodeInterpreter({
             <div className='flex-nowrap'>
               <RadioGroup
                 orientation='horizontal'
+                style={{'flexWrap': 'nowrap'}}
                 value={currentView}>
                 <RadioGroup.Item
                   label='Table'
-                onClick={(): void => {
+                  onClick={(): void => {
                     setCurrentView(DefaultView.Table)
                   }}
                   value={DefaultView.Table}
@@ -250,7 +251,7 @@ function CodeInterpreter({
     if (runnable) {
       return (
         <div className='flex justify-between'>
-          <div className='flex items-center'>
+          <div className='flex items-center flex-nowrap'>
             <div className='flex items-center'>{hideTableResultButton()}</div>
             <div className='flex items-end min-h-[28px]'>
               {show_statistics && results?.response?.statistics && (
