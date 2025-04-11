@@ -45,3 +45,11 @@ TCP endpoint example with [CLI](../interfaces/cli.md):
 ```bash
 clickhouse client --secure --host play.clickhouse.com --user explorer
 ```
+
+## Playground specifications {#specifications}
+
+our ClickHouse Playground is running with the following specifications:
+
+- Hosted on Google Cloud (GCE) in the US Central region (US-Central-1)
+- 3-replica setup
+- 256 GiB of storage and 59 virtual CPUs each.

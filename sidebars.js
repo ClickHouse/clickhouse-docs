@@ -166,16 +166,12 @@ const sidebars = {
             {
               type: "doc",
               id: "migrations/postgres/overview",
-              label: "Introduction",
+              label: "Overview",
             },
-            "integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql",
-            "integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse",
             "migrations/postgres/dataset",
-            "migrations/postgres/designing-schemas",
+            "migrations/postgres/rewriting-queries",
             "migrations/postgres/data-modeling-techniques",
-            "integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries",
-            "integrations/data-ingestion/dbms/postgresql/inserting-data",
-            "integrations/data-ingestion/dbms/postgresql/data-type-mappings",
+            "migrations/postgres/appendix",
           ],
         },
         "integrations/data-ingestion/dbms/mysql/index",
@@ -196,6 +192,7 @@ const sidebars = {
       collapsible: true,
       link: { type: "doc", id: "getting-started/index" },
       items: [
+        "getting-started/example-datasets/nyc-taxi",
         "getting-started/example-datasets/amazon-reviews",
         "getting-started/example-datasets/amplab-benchmark",
         "getting-started/example-datasets/brown-benchmark",
@@ -209,7 +206,6 @@ const sidebars = {
         "getting-started/example-datasets/menus",
         "getting-started/example-datasets/metrica",
         "getting-started/example-datasets/noaa",
-        "getting-started/example-datasets/nyc-taxi",
         "getting-started/example-datasets/nypd_complaint_data",
         "getting-started/example-datasets/ontime",
         "getting-started/example-datasets/opensky",
@@ -686,9 +682,11 @@ const sidebars = {
           collapsible: true,
           items: [
             "integrations/data-ingestion/clickpipes/postgres/index",
-            "integrations/data-ingestion/clickpipes/postgres/faq",
+            "integrations/data-ingestion/clickpipes/postgres/deduplication",
+            "integrations/data-ingestion/clickpipes/postgres/ordering_keys",
             "integrations/data-ingestion/clickpipes/postgres/toast",
             "integrations/data-ingestion/clickpipes/postgres/schema-changes",
+            "integrations/data-ingestion/clickpipes/postgres/faq",
             {
               type: "category",
               label: "Source",
@@ -1032,7 +1030,7 @@ const sidebars = {
         "managing-data/core-concepts/partitions",
         "managing-data/core-concepts/merges",
         "managing-data/core-concepts/shards",
-        "guides/best-practices/sparse-primary-indexes",
+        "managing-data/core-concepts/primary-indexes",
         "managing-data/core-concepts/academic_overview"
       ]
     },
@@ -1053,7 +1051,7 @@ const sidebars = {
         {
           type: "doc",
           label: "ReplacingMergeTree",
-          id: "migrations/postgres/replacing-merge-tree"
+          id: "guides/developer/replacing-merge-tree"
         },
       ]
     },
@@ -1104,6 +1102,7 @@ const sidebars = {
             "materialized-view/refreshable-materialized-view"
           ],
         },
+        "data-modeling/projections",
         {
           type: "category",
           label: "Data Compression",
@@ -1145,6 +1144,7 @@ const sidebars = {
       link: { type: "doc", id: "guides/best-practices/index" },
       items: [
         "guides/best-practices/query-optimization",
+        "guides/best-practices/sparse-primary-indexes",
         "guides/best-practices/query-parallelism",
         "guides/best-practices/partitioningkey",
         "guides/best-practices/skipping-indexes",

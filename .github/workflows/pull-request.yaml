@@ -3,7 +3,6 @@ name: PullRequestCI
 env:
   # Force the stdout and stderr streams to be unbuffered
   PYTHONUNBUFFERED: 1
-  CI: false
 
 on:  # yamllint disable-line rule:truthy
   pull_request:
@@ -34,4 +33,33 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build
-        run: yarn build
+        id: build
+        continue-on-error: true
+        run: |
+          CI=false DOCUSAURUS_IGNORE_SSG_WARNINGS=true yarn build
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+
+      - name: Check for validation failures
+        if: success() || failure()  # Run regardless of build success
+        run: |
+          FAILED=false
+          
+          if [ -f ".frontmatter-validation-failed" ]; then
+            echo "::error::Frontmatter validation failed"
+            FAILED=true
+          fi
+          
+          if [ -f ".floating-pages-validation-failed" ]; then
+            echo "::error::Floating pages validation failed"
+            FAILED=true
+          fi
+          
+          # Check if build failed with non-validation error
+          if [ "${{ steps.build.outputs.exit_code }}" != "0" ] && [ "$FAILED" != "true" ]; then
+            echo "::error::Build failed with exit code ${{ steps.build.outputs.exit_code }}"
+            exit 1
+          fi
+          
+          if [ "$FAILED" = true ]; then
+            exit 1
+          fi

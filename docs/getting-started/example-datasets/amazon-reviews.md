@@ -8,7 +8,8 @@ title: 'Amazon Customer Review'
 This dataset contains over 150M customer reviews of Amazon products. The data is in snappy-compressed Parquet files in AWS S3 that total 49GB in size (compressed). Let's walk through the steps to insert it into ClickHouse.
 
 :::note
-The queries below were executed on a **Production** instance of [ClickHouse Cloud](https://clickhouse.cloud).
+The queries below were executed on a **Production** instance of ClickHouse Cloud. For more information see
+["Playground specifications"](/getting-started/playground#specifications).
 :::
 
 ## Loading the dataset {#loading-the-dataset}
@@ -86,21 +87,26 @@ CREATE DATABASE amazon
 
 CREATE TABLE amazon.amazon_reviews
 (
-    review_date Date,
-    marketplace LowCardinality(String),
-    customer_id UInt64,
-    review_id String,
-    product_id String,
-    product_parent UInt64,
-    product_title String,
-    product_category LowCardinality(String),
-    star_rating UInt8,
-    helpful_votes UInt32,
-    total_votes UInt32,
-    vine Bool,
-    verified_purchase Bool,
-    review_headline String,
-    review_body String
+    `review_date` Date,
+    `marketplace` LowCardinality(String),
+    `customer_id` UInt64,
+    `review_id` String,
+    `product_id` String,
+    `product_parent` UInt64,
+    `product_title` String,
+    `product_category` LowCardinality(String),
+    `star_rating` UInt8,
+    `helpful_votes` UInt32,
+    `total_votes` UInt32,
+    `vine` Bool,
+    `verified_purchase` Bool,
+    `review_headline` String,
+    `review_body` String,
+    PROJECTION helpful_votes
+    (
+        SELECT *
+        ORDER BY helpful_votes
+    )
 )
 ENGINE = MergeTree
 ORDER BY (review_date, product_category)
@@ -146,7 +152,7 @@ The original data was about 70G, but compressed in ClickHouse it takes up about 
 
 ## Example queries {#example-queries}
 
-7. Let's run some queries...here are the top 10 most-helpful reviews in the dataset:
+7. Let's run some queries. Here are the top 10 most-helpful reviews in the dataset:
 
 ```sql runnable
 SELECT
@@ -157,7 +163,9 @@ ORDER BY helpful_votes DESC
 LIMIT 10
 ```
 
-Notice the query has to process all 151M rows in less than a second!
+:::note
+This query is using a [projection](/data-modeling/projections) to speed up performance.
+:::
 
 8. Here are the top 10 products in Amazon with the most reviews:
 
@@ -214,7 +222,7 @@ ORDER BY count DESC
 LIMIT 50;
 ```
 
-The query only takes 4 seconds - which is impressive - and the results are a fun read:
+Notice the query time for such a large amount of data. The results are also a fun read!
 
 12. We can run the same query again, except this time we search for **awesome** in the reviews:
 
