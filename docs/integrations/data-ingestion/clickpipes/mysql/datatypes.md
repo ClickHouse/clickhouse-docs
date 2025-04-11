@@ -15,7 +15,7 @@ Here is the supported data-type mapping for the MySQL ClickPipe:
 | SmallInt                                                                   | Int16                                     | Supports unsigned.                                                                     |
 | MediumInt, Int                                                             | Int32                                     | Supports unsigned.                                                                     |
 | BigInt                                                                     | Int64                                     | Supports unsigned.                                                                     |
-| Year                                                                       | Int16                                     | This type is limited; it only supports `0000` and `1900` to `2155`.                    |
+| Year                                                                       | Int16                                     |                    |
 | TinyText, Text, MediumText, LongText                                       | String                                    |                                                                                        |
 | TinyBlob, Blob, MediumBlob, LongBlob                                       | String                                    |                                                                                        |
 | Char, Varchar                                                              | String                                    |                                                                                        |
