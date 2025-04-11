@@ -255,7 +255,7 @@ function CodeInterpreter({
             <div className='flex items-center'>{hideTableResultButton()}</div>
             <div className='flex items-end min-h-[28px]'>
               {show_statistics && results?.response?.statistics && (
-                <div className={`whitespace-pre-wrap text-[${windowWidth > 600 ? '12': '10'}px] mx-auto italic ${chart ? 'ml-[8px]' : ''}`}>
+                <div className={`whitespace-pre-wrap text-[${windowWidth > 600 ? '12': '10'}px] mx-auto italic ${chart ? 'ml-[14px]' : ''}`}>
                   { windowWidth > 600 ? `Read ${formatReadableRows(results.response.statistics.rows_read)} rows and ${formatBytes(results.response.statistics.bytes_read)} in ${roundToDynamicPrecision(results.response.statistics.elapsed)} secs` : 
                   `Read ${formatReadableRows(results.response.statistics.rows_read)} rows in ${roundToDynamicPrecision(results.response.statistics.elapsed)} secs` }
                 </div>
