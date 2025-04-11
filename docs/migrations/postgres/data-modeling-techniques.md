@@ -68,7 +68,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate)
 PARTITION BY toYear(CreationDate)
 ```
 
-For a full description of partionning see ["Table partitions"](/partitions).
+For a full description of partitioning see ["Table partitions"](/partitions).
 
 ### Applications of Partitions {#applications-of-partitions}
 

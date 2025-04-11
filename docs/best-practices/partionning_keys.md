@@ -44,7 +44,7 @@ With partitioning enabled, ClickHouse only [merges](/merges) data parts within, 
 
 <Image img={merges_with_partitions} size="md" alt="Partitions" />
 
-## Applications of partitioning {#applications-of-partionning}
+## Applications of partitioning {#applications-of-partitioning}
 
 Partitioning is a powerful tool for managing large datasets in ClickHouse, especially in observability and analytics use cases. It enables efficient data life cycle operations by allowing entire partitions, often aligned with time or business logic, to be dropped, moved, or archived in a single metadata operation. This is significantly faster and less resource-intensive than row-level delete or copy operations. Partitioning also integrates cleanly with ClickHouse features like TTL and tiered storage, making it possible to implement retention policies or hot/cold storage strategies without custom orchestration. For example, recent data can be kept on fast SSD-backed storage, while older partitions are automatically moved to cheaper object storage.
 
