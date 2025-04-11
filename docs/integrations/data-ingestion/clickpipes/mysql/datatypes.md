@@ -22,7 +22,7 @@ Here is the supported data-type mapping for the MySQL ClickPipe:
 | Binary, VarBinary                                                          | String                                    |                                                                                        |
 | TinyInt(1)                                                                 | Bool                                      | This is a display hint; MySQL has `boolean` aliased to `tinyint(1)`.                   |
 | JSON                                                                       | String                                    | MySQL only; MariaDB `json` is just an alias for `text` with a constraint.              |
-| Geometry & Geometry Types                                                 | String                                    | WKT (Well-Known Text). WKT may suffer from potential precision loss; subtypes need testing. |
+| Geometry & Geometry Types                                                 | String                                    | WKT (Well-Known Text). WKT may suffer from small precision loss. |
 | Vector                                                                     | Array(Float32)                            | MySQL only; MariaDB is adding support soon.                                            |
 | Float                                                                      | Float32                                   | May lose a bit of precision during initial load due to text protocols.                 |
 | Double                                                                     | Float64                                   | May lose a bit of precision during initial load due to text protocols.                 |
