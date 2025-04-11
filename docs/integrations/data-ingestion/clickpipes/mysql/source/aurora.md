@@ -38,7 +38,7 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 ```
 If this configuration isn't set, Amazon RDS purges the binary logs as soon as possible, leading to gaps in the binary logs.
 
-## Configure binlog settings in the parameter group
+## Configure binlog settings in the parameter group {#binlog-parameter-group-aurora}
 
 The parameter group can be found when you click on your MySQL instance in the RDS Console, and then heading over to the `Configurations` tab.
 
@@ -68,7 +68,7 @@ Then click on `Save Changes` in the top-right. You may need to reboot your insta
 If you have a MySQL cluster, the above parameters would be found in a [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) parameter group and not the DB instance group.
 :::
 
-## Enabling GTID Mode
+## Enabling GTID Mode {#gtid-mode-aurora}
 Global Transaction Identifiers (GTIDs) are unique IDs assigned to each committed transaction in MySQL. They simplify binlog replication and make troubleshooting more straightforward.
 
 If your MySQL instance is MySQL 5.7, 8.0 or 8.4, we recommend enabling GTID mode so that the MySQL ClickPipe can use GTID replication.
