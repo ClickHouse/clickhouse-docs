@@ -8,8 +8,8 @@ Here is the supported data-type mapping for the MySQL ClickPipe:
 
 | MySQL Type                                                                 | ClickHouse type                             | Notes                                                                                  |
 | -------------------------------------------------------------------------- | ------------------------------------------ | -------------------------------------------------------------------------------------- |
-| Enum                                                                       | LowCardinality(String)                     | MySQL doesn't have user-defined types for enums; instead, columns have type `enum('a','b','c')`. |
-| Set                                                                        | String                                     | `set` is like `enum`, except from `set('a','b','c')` value can be `'a,b'`. `set` can only have 64 items, as it's internally a 64-bit bitset. |
+| Enum                                                                       | LowCardinality(String)                     | |
+| Set                                                                        | String                                     |  |
 | Decimal                                                                    | Decimal                                   |  |
 | TinyInt                                                                    | Int8                                      | Supports unsigned.                                                                     |
 | SmallInt                                                                   | Int16                                     | Supports unsigned.                                                                     |
