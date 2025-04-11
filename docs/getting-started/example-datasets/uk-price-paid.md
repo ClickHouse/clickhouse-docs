@@ -164,7 +164,7 @@ ORDER BY price DESC
 LIMIT 100
 ```
 
-## Speeding up queries with projections
+## Speeding up queries with projections {#speeding-up-queries-with-projections}
 
 We can speed up these queries with projections. See ["Projections"](/data-modeling/projections) for examples with this dataset.
 

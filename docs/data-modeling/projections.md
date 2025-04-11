@@ -376,7 +376,7 @@ projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
 2 rows in set. Elapsed: 0.006 sec.
 ```
 
-### Further examples 
+### Further examples {#further-examples}
 
 The following examples use the same UK price dataset, contrasting queries with and without projections.
 
