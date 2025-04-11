@@ -9,6 +9,11 @@ import rds_backups from '@site/static/images/integrations/data-ingestion/clickpi
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
 import security_group_in_rds_mysql from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/security-group-in-rds-mysql.png';
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
+import aurora_config from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/rds_config.png';
+import binlog_format from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/binlog_format.png';
+import binlog_row_image from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/binlog_row_image.png';
+import binlog_row_metadata from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/binlog_row_metadata.png';
+import edit_button from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/edit_button.png';
 import Image from '@theme/IdealImage';
 
 # Aurora MySQL source setup guide
@@ -33,13 +38,63 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 ```
 If this configuration isn't set, Amazon RDS purges the binary logs as soon as possible, leading to gaps in the binary logs.
 
-If not already configured, make sure to set these in the parameter group:
-1. `binlog_format` to `ROW`
+## Configure binlog settings in the parameter group
+
+The parameter group can be found when you click on your MySQL instance in the RDS Console, and then heading over to the `Configurations` tab.
+
+<Image img={aurora_config} alt="Where to find parameter group in RDS" size="lg" border/>
+
+Upon clicking on the parameter group link, you will be taken to the page for it. You will see an Edit button in the top-right.
+
+<Image img={edit_button} alt="Edit parameter group" size="lg" border/>
+
+The following settings need to be set as follows:
+
+1. `binlog_format` to `ROW`.
+
+<Image img={binlog_format} alt="Binlog format to ROW" size="lg" border/>
+
 2. `binlog_row_metadata` to `FULL`
+
+<Image img={binlog_row_metadata} alt="Binlog row metadata" size="lg" border/>
+
 3. `binlog_row_image` to `FULL`
+
+<Image img={binlog_row_image} alt="Binlog row image" size="lg" border/>
+
+Then click on `Save Changes` in the top-right. You may need to reboot your instance for the changes to take effect - a way of knowing this is if you see `Pending reboot` next to the parameter group link in the Configurations tab of the RDS instance.
 <br/>
 :::tip
 If you have a MySQL cluster, the above parameters would be found in a [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) parameter group and not the DB instance group.
+:::
+
+## Enabling GTID Mode
+Global Transaction Identifiers (GTIDs) are unique IDs assigned to each committed transaction in MySQL. They simplify binlog replication and make troubleshooting more straightforward.
+
+If your MySQL instance is MySQL 5.7, 8.0 or 8.4, we recommend enabling GTID mode so that the MySQL ClickPipe can use GTID replication.
+
+To enable GTID mode for your MySQL instance, follow the steps as follows:
+1. In the RDS Console, click on your MySQL instance.
+2. Click on the `Configurations` tab.
+3. Click on the parameter group link.
+4. Click on the `Edit` button in the top-right corner.
+5. Set the following parameters:
+   - `gtid_mode` to `OFF_PERMISSIVE`
+   - `enforce-gtid-consistency` to `ON`
+6. Click on `Save Changes` in the top-right corner.
+7. Reboot your instance for the changes to take effect.
+8. Edit the parameter group again and set `gtid_mode` to `ON_PERMISSIVE`. Ensure `enforce-gtid-consistency` is `ON`.
+9. Click on `Save Changes` in the top-right corner.
+10. Reboot your instance for the changes to take effect.
+11. Edit the parameter group again and set `gtid_mode` to `ON`. Ensure `enforce-gtid-consistency` is `ON`.
+12. Click on `Save Changes` in the top-right corner.
+13. Reboot your instance for the changes to take effect.
+
+<Image img={enable_gtid} alt="GTID enabled" size="lg" border/>
+
+<br/>
+:::tip
+The MySQL ClickPipe also supports replication without GTID mode. However, enabling GTID mode is recommended for better performance and easier troubleshooting.
 :::
 
 ## Configure a database user {#configure-database-user-aurora}
