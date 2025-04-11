@@ -47,6 +47,44 @@ read as shown in the figure below:
 
 <Image img={projections_1} size="lg" alt="Projections in ClickHouse"/>
 
+## When to use Projections? {#when-to-use-projections}
+
+Projections are an appealing feature for new users as they are automatically 
+maintained as data is inserted. Furthermore, queries can just be sent to a 
+single table where the projections are exploited where possible to speed up 
+the response time.
+
+This is in contrast to Materialized Views, where the user has to select the 
+appropriate optimized target table or rewrite their query, depending on the 
+filters. This places greater emphasis on user applications and increases 
+client-side complexity.
+
+Despite these advantages, projections come with some inherent limitations which
+users should be aware of and thus should be deployed sparingly.
+
+- Projections don't allow using different TTL for the source table and the 
+  (hidden) target table, materialized views allow different TTLs.
+- Projections don't currently support `optimize_read_in_order` for the (hidden) 
+  target table.
+- Lightweight updates and deletes are not supported for tables with projections.
+- Materialized Views can be chained: the target table of one Materialized View 
+  can be the source table of another Materialized View, and so on. This is not 
+  possible with projections.
+- Projections don't support joins, but Materialized Views do.
+- Projections don't support filters (`WHERE` clause), but Materialized Views do.
+
+We recommend using projections when:
+
+- A complete re-ordering of the data is required. While the expression in the 
+  projection can, in theory, use a `GROUP BY,` materialized views are more 
+  effective for maintaining aggregates. The query optimizer is also more likely
+  to exploit projections that use a simple reordering, i.e., `SELECT * ORDER BY x`.
+  Users can select a subset of columns in this expression to reduce storage 
+  footprint.
+- Users are comfortable with the associated increase in storage footprint and 
+  overhead of writing data twice. Test the impact on insertion speed and 
+  [evaluate the storage overhead](/data-compression/compression-in-clickhouse).
+
 ## Examples {#examples}
 
 ### Filtering on columns which aren't in the primary key {#filtering-without-using-primary-keys}
@@ -338,43 +376,142 @@ projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
 2 rows in set. Elapsed: 0.006 sec.
 ```
 
-## When to use Projections? {#when-to-use-projections}
+### Further examples 
 
-Projections are an appealing feature for new users as they are automatically 
-maintained as data is inserted. Furthermore, queries can just be sent to a 
-single table where the projections are exploited where possible to speed up 
-the response time.
+The following examples use the same UK price dataset, contrasting queries with and without projections.
 
-This is in contrast to Materialized Views, where the user has to select the 
-appropriate optimized target table or rewrite their query, depending on the 
-filters. This places greater emphasis on user applications and increases 
-client-side complexity.
+In order to preserve our original table (and performance), we again create a copy of the table using `CREATE AS` and `INSERT INTO SELECT`.
 
-Despite these advantages, projections come with some inherent limitations which
-users should be aware of and thus should be deployed sparingly.
+```sql
+CREATE TABLE uk.uk_price_paid_with_projections_v2 AS uk.uk_price_paid;
+INSERT INTO uk.uk_price_paid_with_projections_v2 SELECT * FROM uk.uk_price_paid;
+```
 
-- Projections don't allow using different TTL for the source table and the 
-  (hidden) target table, materialized views allow different TTLs.
-- Projections don't currently support `optimize_read_in_order` for the (hidden) 
-  target table.
-- Lightweight updates and deletes are not supported for tables with projections.
-- Materialized Views can be chained: the target table of one Materialized View 
-  can be the source table of another Materialized View, and so on. This is not 
-  possible with projections.
-- Projections don't support joins, but Materialized Views do.
-- Projections don't support filters (`WHERE` clause), but Materialized Views do.
+#### Build a Projection {#build-projection}
 
-We recommend using projections when:
+Let's create an aggregate projection by the dimensions `toYear(date)`, `district`, and `town`:
 
-- A complete re-ordering of the data is required. While the expression in the 
-  projection can, in theory, use a `GROUP BY,` materialized views are more 
-  effective for maintaining aggregates. The query optimizer is also more likely
-  to exploit projections that use a simple reordering, i.e., `SELECT * ORDER BY x`.
-  Users can select a subset of columns in this expression to reduce storage 
-  footprint.
-- Users are comfortable with the associated increase in storage footprint and 
-  overhead of writing data twice. Test the impact on insertion speed and 
-  [evaluate the storage overhead](/data-compression/compression-in-clickhouse).
+```sql
+ALTER TABLE uk.uk_price_paid_with_projections_v2
+    ADD PROJECTION projection_by_year_district_town
+    (
+        SELECT
+            toYear(date),
+            district,
+            town,
+            avg(price),
+            sum(price),
+            count()
+        GROUP BY
+            toYear(date),
+            district,
+            town
+    )
+```
+
+Populate the projection for existing data. (Without materializing it, the projection will be created for only newly inserted data):
+
+```sql
+ALTER TABLE uk.uk_price_paid_with_projections_v2
+    MATERIALIZE PROJECTION projection_by_year_district_town
+SETTINGS mutations_sync = 1
+```
+
+The following queries contrast performance with and without projections. To disable projection use we use the setting [`optimize_use_projections`](/operations/settings/settings#optimize_use_projections), which is enabled by default.
+
+#### Query 1. Average Price Per Year {#average-price-projections}
+
+```sql runnable
+SELECT
+    toYear(date) AS year,
+    round(avg(price)) AS price,
+    bar(price, 0, 1000000, 80)
+FROM uk.uk_price_paid_with_projections_v2
+GROUP BY year
+ORDER BY year ASC
+SETTINGS optimize_use_projections=0
+```
+
+```sql runnable
+SELECT
+    toYear(date) AS year,
+    round(avg(price)) AS price,
+    bar(price, 0, 1000000, 80)
+FROM uk.uk_price_paid_with_projections_v2
+GROUP BY year
+ORDER BY year ASC
+
+```
+The results should be the same, but the performance better on the latter example!
+
+
+#### Query 2. Average Price Per Year in London {#average-price-london-projections}
+
+```sql runnable
+SELECT
+    toYear(date) AS year,
+    round(avg(price)) AS price,
+    bar(price, 0, 2000000, 100)
+FROM uk.uk_price_paid_with_projections_v2
+WHERE town = 'LONDON'
+GROUP BY year
+ORDER BY year ASC
+SETTINGS optimize_use_projections=0
+```
+
+
+```sql runnable
+SELECT
+    toYear(date) AS year,
+    round(avg(price)) AS price,
+    bar(price, 0, 2000000, 100)
+FROM uk.uk_price_paid_with_projections_v2
+WHERE town = 'LONDON'
+GROUP BY year
+ORDER BY year ASC
+```
+
+#### Query 3. The Most Expensive Neighborhoods {#most-expensive-neighborhoods-projections}
+
+The condition (date >= '2020-01-01') needs to be modified so that it matches the projection dimension (`toYear(date) >= 2020)`:
+
+```sql runnable
+SELECT
+    town,
+    district,
+    count() AS c,
+    round(avg(price)) AS price,
+    bar(price, 0, 5000000, 100)
+FROM uk.uk_price_paid_with_projections_v2
+WHERE toYear(date) >= 2020
+GROUP BY
+    town,
+    district
+HAVING c >= 100
+ORDER BY price DESC
+LIMIT 100
+SETTINGS optimize_use_projections=0
+```
+
+```sql runnable
+SELECT
+    town,
+    district,
+    count() AS c,
+    round(avg(price)) AS price,
+    bar(price, 0, 5000000, 100)
+FROM uk.uk_price_paid_with_projections_v2
+WHERE toYear(date) >= 2020
+GROUP BY
+    town,
+    district
+HAVING c >= 100
+ORDER BY price DESC
+LIMIT 100
+```
+
+Again, the result is the same but notice the improvement in query performance for the 2nd query.
+
 
 ## Related content {#related-content}
 - [A Practical Introduction to Primary Indexes in ClickHouse](/guides/best-practices/sparse-primary-indexes#option-3-projections)
