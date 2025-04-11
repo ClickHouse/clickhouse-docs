@@ -11,7 +11,7 @@ import postgres_partitions from '@site/static/images/migrations/postgres-partiti
 import postgres_projections from '@site/static/images/migrations/postgres-projections.png';
 import Image from '@theme/IdealImage';
 
-> This is **Part 3** of a guide on migrating from PostgreSQL to ClickHouse. Using a practical example, it demonstrates how to efficiently carry out the migration with a real-time replication (CDC) approach. Many of the concepts covered are also applicable to manual bulk data transfers from PostgreSQL to ClickHouse.
+> This is **Part 3** of a guide on migrating from PostgreSQL to ClickHouse. Using a practical example, it demonstrates how to model data in ClickHouse if migrating from PostgreSQL.
 
 We recommend users migrating from Postgres read [the guide for modeling data in ClickHouse](/data-modeling/schema-design). This guide uses the same Stack Overflow dataset and explores multiple approaches using ClickHouse features.
 
@@ -25,7 +25,9 @@ To understand why using your OLTP primary key in ClickHouse is not appropriate, 
 
 - Postgres primary keys are, by definition, unique per row. The use of [B-tree structures](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales) allows the efficient lookup of single rows by this key. While ClickHouse can be optimized for the lookup of a single row value, analytics workloads will typically require the reading of a few columns but for many rows. Filters will more often need to identify **a subset of rows** on which an aggregation will be performed.
 - Memory and disk efficiency are paramount to the scale at which ClickHouse is often used. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, the merged part's primary indexes are also merged. Unlike Postgres, these indexes are not built for each row. Instead, the primary index for a part has one index entry per group of rows - this technique is called **sparse indexing**.
-- **Sparse indexing** is possible because ClickHouse stores the rows for a part on disk ordered by a specified key. Instead of directly locating single rows (like a B-Tree-based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows are then, in parallel, streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it completely fits into the main memory) whilst still significantly speeding up query execution times, especially for range queries that are typical in data analytics use cases. For more details, we recommend this [in-depth guide](/guides/best-practices/sparse-primary-indexes).
+- **Sparse indexing** is possible because ClickHouse stores the rows for a part on disk ordered by a specified key. Instead of directly locating single rows (like a B-Tree-based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows are then, in parallel, streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it completely fits into the main memory) whilst still significantly speeding up query execution times, especially for range queries that are typical in data analytics use cases. 
+
+For more details, we recommend this [in-depth guide](/guides/best-practices/sparse-primary-indexes).
 
 <Image img={postgres_b_tree} size="lg" alt="PostgreSQL B-Tree Index"/>
 
@@ -65,6 +67,8 @@ ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CreationDate)
 PARTITION BY toYear(CreationDate)
 ```
+
+For a full description of partitioning see ["Table partitions"](/partitions).
 
 ### Applications of Partitions {#applications-of-partitions}
 
@@ -256,5 +260,3 @@ Since Postgres is a relational database, its data model is heavily [normalized](
 You can refer to this [guide](/data-modeling/denormalization) that shows the benefits of denormalizing the Stack Overflow dataset in ClickHouse.
 
 This concludes our basic guide for users migrating from Postgres to ClickHouse. We recommend users migrating from Postgres read the [guide for modeling data in ClickHouse](/data-modeling/schema-design) to learn more about advanced ClickHouse features.
-
-[Click here for Part 4](/migrations/postgresql/rewriting-queries).

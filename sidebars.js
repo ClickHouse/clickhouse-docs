@@ -193,6 +193,7 @@ const sidebars = {
       link: { type: "doc", id: "getting-started/index" },
       items: [
         "getting-started/example-datasets/nyc-taxi",
+        "getting-started/example-datasets/uk-price-paid",
         "getting-started/example-datasets/amazon-reviews",
         "getting-started/example-datasets/amplab-benchmark",
         "getting-started/example-datasets/brown-benchmark",
@@ -216,7 +217,6 @@ const sidebars = {
         "getting-started/example-datasets/tw-weather",
         "getting-started/example-datasets/tpcds",
         "getting-started/example-datasets/tpch",
-        "getting-started/example-datasets/uk-price-paid",
         "getting-started/example-datasets/wikistat",
         "getting-started/example-datasets/youtube-dislikes",
       ],
