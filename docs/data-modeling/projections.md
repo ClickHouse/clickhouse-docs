@@ -419,7 +419,7 @@ SETTINGS mutations_sync = 1
 
 The following queries contrast performance with and without projections. To disable projection use we use the setting [`optimize_use_projections`](/operations/settings/settings#optimize_use_projections), which is enabled by default.
 
-#### Query 1. Average Price Per Year {#average-price-projections}
+#### Query 1. Average price per year {#average-price-projections}
 
 ```sql runnable
 SELECT
@@ -445,7 +445,7 @@ ORDER BY year ASC
 The results should be the same, but the performance better on the latter example!
 
 
-#### Query 2. Average Price Per Year in London {#average-price-london-projections}
+#### Query 2. Average price per year in London {#average-price-london-projections}
 
 ```sql runnable
 SELECT
@@ -471,7 +471,7 @@ GROUP BY year
 ORDER BY year ASC
 ```
 
-#### Query 3. The Most Expensive Neighborhoods {#most-expensive-neighborhoods-projections}
+#### Query 3. The most expensive neighborhoods {#most-expensive-neighborhoods-projections}
 
 The condition (date >= '2020-01-01') needs to be modified so that it matches the projection dimension (`toYear(date) >= 2020)`:
 
