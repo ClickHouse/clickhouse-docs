@@ -1148,6 +1148,7 @@ const sidebars = {
         "guides/best-practices/query-parallelism",
         "guides/best-practices/partitioningkey",
         "guides/best-practices/skipping-indexes",
+        "guides/best-practices/prewhere",
         "guides/best-practices/bulkinserts",
         "guides/best-practices/asyncinserts",
         "guides/best-practices/avoidmutations",
