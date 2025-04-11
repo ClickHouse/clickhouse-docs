@@ -20,7 +20,7 @@ Here is the supported data-type mapping for the MySQL ClickPipe:
 | TinyBlob, Blob, MediumBlob, LongBlob                                       | String                                    |                                                                                        |
 | Char, Varchar                                                              | String                                    |                                                                                        |
 | Binary, VarBinary                                                          | String                                    |                                                                                        |
-| TinyInt(1)                                                                 | Bool                                      | This is a display hint; MySQL has `boolean` aliased to `tinyint(1)`.                   |
+| TinyInt(1)                                                                 | Bool                                      |                  |
 | JSON                                                                       | String                                    | MySQL only; MariaDB `json` is just an alias for `text` with a constraint.              |
 | Geometry & Geometry Types                                                 | String                                    | WKT (Well-Known Text). WKT may suffer from small precision loss. |
 | Vector                                                                     | Array(Float32)                            | MySQL only; MariaDB is adding support soon.                                            |
