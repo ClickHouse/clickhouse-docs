@@ -15,6 +15,7 @@ import { formatBytes, formatReadableRows, roundToDynamicPrecision } from './util
 import { getGoogleAnalyticsUserIdFromBrowserCookie } from '../../lib/google/google'
 
 
+
 interface Props {
   queryString: string
   runnable: boolean
@@ -54,6 +55,21 @@ function CodeInterpreter({
       read_overflow_mode: 'break'
     }
   })
+
+  function useWindowWidth(): number {
+    const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0)
+  
+    useEffect(() => {
+      function handleResize() {
+        setWidth(window.innerWidth)
+      }
+  
+      window.addEventListener('resize', handleResize)
+      return () => window.removeEventListener('resize', handleResize)
+    }, [])
+  
+    return width
+  }
 
   function generateId(): string {
     return short.generate().toUpperCase().slice(0, 27)
@@ -197,28 +213,28 @@ function CodeInterpreter({
       )
 
       return (
-        <div className={`flex items-end whitespace-pre-wrap ${chart && 'w-[180px] h-[28px]'}`}>
+        <div className={`flex items-end whitespace-pre-wrap flex-nowrap ${chart && 'w-[180px] h-[28px]'}`}>
           {show_results}
           {chart && (
-            <div className=''>
-            <RadioGroup
-              orientation='vertical'
-              value={currentView}>
-              <RadioGroup.Item
-                label='Table'
-              onClick={(): void => {
-                  setCurrentView(DefaultView.Table)
-                }}
-                value={DefaultView.Table}
-              />
-              <RadioGroup.Item
-                label='Chart'
+            <div className='flex-nowrap'>
+              <RadioGroup
+                orientation='horizontal'
+                value={currentView}>
+                <RadioGroup.Item
+                  label='Table'
                 onClick={(): void => {
-                  setCurrentView(DefaultView.Chart)
-                }}
-                value={DefaultView.Chart}
-              />
-            </RadioGroup>
+                    setCurrentView(DefaultView.Table)
+                  }}
+                  value={DefaultView.Table}
+                />
+                <RadioGroup.Item
+                  label='Chart'
+                  onClick={(): void => {
+                    setCurrentView(DefaultView.Chart)
+                  }}
+                  value={DefaultView.Chart}
+                />
+              </RadioGroup>
             </div>
           )}
           
@@ -227,7 +243,10 @@ function CodeInterpreter({
     }
   }
 
+  const windowWidth = useWindowWidth()
+
   const runButton = () => {
+
     if (runnable) {
       return (
         <div className='flex justify-between'>
@@ -235,8 +254,9 @@ function CodeInterpreter({
             <div className='flex items-center'>{hideTableResultButton()}</div>
             <div className='flex items-end min-h-[28px]'>
               {show_statistics && results?.response?.statistics && (
-                <div className={`whitespace-pre-wrap text-[12px] mx-auto italic ${chart ? 'ml-[8px]' : ''}`}>
-                  {`Read ${formatReadableRows(results.response.statistics.rows_read)} rows and ${formatBytes(results.response.statistics.bytes_read)} in ${roundToDynamicPrecision(results.response.statistics.elapsed)} secs`}
+                <div className={`whitespace-pre-wrap text-[${windowWidth > 600 ? '12': '10'}px] mx-auto italic ${chart ? 'ml-[8px]' : ''}`}>
+                  { windowWidth > 600 ? `Read ${formatReadableRows(results.response.statistics.rows_read)} rows and ${formatBytes(results.response.statistics.bytes_read)} in ${roundToDynamicPrecision(results.response.statistics.elapsed)} secs` : 
+                  `Read ${formatReadableRows(results.response.statistics.rows_read)} rows in ${roundToDynamicPrecision(results.response.statistics.elapsed)} secs` }
                 </div>
               )}
             </div>
