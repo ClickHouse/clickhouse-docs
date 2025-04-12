@@ -48,7 +48,7 @@ root=$(dirname "$(dirname "$(realpath "$tmp_dir")")")
 for SQL_FILE in "$SCRIPT_DIR"/*.sql; do
   if [ -f "$SQL_FILE" ]; then
     echo "Running: $SQL_FILE"
-    ./clickhouse --queries-file "$SQL_FILE" > /dev/null || { echo "Failed to generate some settings"; exit 1; }
+    ./clickhouse --queries-file "$SQL_FILE" > /dev/null || { echo "Failed to generate some settings:" && ./clickhouse --queries-file "$SQL_FILE"; exit 1; }
   fi
 done
 
