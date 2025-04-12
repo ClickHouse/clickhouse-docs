@@ -119,7 +119,7 @@ DESCRIBE TABLE postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<
 SETTINGS describe_compact_output = 1
 ```
 
-For an overview of data type mapping between PostgreSQL and ClickHouse, refer to the [appendix documentation](/migrations/postgres/appendix#data-type-mappings).
+For an overview of data type mapping between PostgreSQL and ClickHouse, refer to the [appendix documentation](/migrations/postgresql/appendix#data-type-mappings).
 
 The steps for optimizing the types for this schema are identical to if the data has been loaded from other sources e.g. Parquet on S3. Applying the process described in this [alternate guide using Parquet](/data-modeling/schema-design) results in the following schema:
 

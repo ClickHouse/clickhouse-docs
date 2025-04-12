@@ -13,7 +13,7 @@ import primary_key from '@site/static/images/bestpractices/primary_key.gif';
 
 > We interchangeably use the term "ordering key" to refer to the "primary key" on this page. Strictly, [these differ in ClickHouse](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key), but for the purposes of this document, readers can use them interchangeably, with the ordering key referring to the columns specified in the table `ORDER BY`.
 
-Note that a ClickHouse primary key works [very differently](/migrations/postgresql/designing-schemas#how-are-clickhouse-primary-keys-different) to those familiar with similar terms in OLTP databases such as Postgres.
+Note that a ClickHouse primary key works [very differently](/migrations/postgresql/data-modeling-techniques#primary-ordering-keys-in-clickhouse) to those familiar with similar terms in OLTP databases such as Postgres.
 
 Choosing an effective primary key in ClickHouse is crucial for query performance and storage efficiency. ClickHouse organizes data into parts, each containing its own sparse primary index. This index significantly speeds up queries by reducing the volume of data scanned. Additionally, because the primary key determines the physical order of data on disk, it directly impacts compression efficiency. Optimally ordered data compresses more effectively, which further enhances performance by reducing I/O.
 

@@ -94,7 +94,7 @@ We'll also look at how the projection can be used to speed up queries which filt
 on columns which are not in the primary key of a table.
 
 For this example, we'll be using the New York Taxi Data
-dataset available at [sql.clickhouse.com](sql.clickhouse.com) which is ordered 
+dataset available at [sql.clickhouse.com](https://sql.clickhouse.com/) which is ordered 
 by `pickup_datetime`.
 
 Let's write a simple query to find all the trip IDs for which passengers 
