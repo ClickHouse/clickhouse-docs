@@ -13,7 +13,7 @@ OLTP, or online transactional processing databases, are designed to manage trans
 
 OLAP, or online analytical processing databases, are designed to meet those needs — to manage analytical workloads. The primary objective of these databases is to ensure that engineers can efficiently query and aggregate over vast datasets. Real-time OLAP systems like ClickHouse allow this analysis to happen as data is ingested in real time.
 
-See [here](/migrations/postgres/appendix#postgres-vs-clickhouse-equivalent-and-different-concepts) for a more in-depth comparison of ClickHouse and PostgreSQL.
+See [here](/migrations/postgresql/appendix#postgres-vs-clickhouse-equivalent-and-different-concepts) for a more in-depth comparison of ClickHouse and PostgreSQL.
 
 To see the potential performance differences between ClickHouse and Postgres on analytical queries, see [Rewriting PostgreSQL Queries in ClickHouse](/migrations/postgresql/rewriting-queries).
 
