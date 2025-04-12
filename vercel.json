@@ -3272,6 +3272,16 @@
       "permanent": true
     },
     {
+      "source": "/docs/integrations/postgresql/postgres-vs-clickhouse",
+      "destination": "/docs/migrations/postgresql/appendix",
+      "permanent": true
+    },
+    {
+      "source": "/docs/migrations/postgresql/designing-schemas",
+      "destination": "/docs/migrations/postgresql/data-modeling-techniques",
+      "permanent": true
+    },
+    {
       "source": "/docs/en/:path*",
       "destination": "/docs/:path*"
     }
