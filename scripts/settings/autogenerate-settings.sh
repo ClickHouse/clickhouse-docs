@@ -31,13 +31,44 @@ script_path="$tmp_dir/$script_filename"
 # Install ClickHouse
 if [ ! -f "$script_path" ]; then
   echo -e "[$SCRIPT_NAME] Installing ClickHouse binary\n"
+  
+  # Save the installation script first
   curl -s https://clickhouse.com/ | sh &> /dev/null
+
+  if [[ ! -f "$script_path" ]]; then
+    echo "Error: File not found after curl download!"
+    exit 1
+  fi
+  
+  # Wait for the clickhouse binary to appear
+  max_wait=60  # maximum wait time in seconds
+  wait_time=0
+  echo "Waiting for ClickHouse binary to be ready..."
+  
+  while [ ! -f "$script_path" ] && [ $wait_time -lt $max_wait ]; do
+    sleep 1
+    wait_time=$((wait_time + 1))
+    echo -n "."
+  done
+  
+  echo ""
+  
+  # Check if we found the binary within the timeout period
+  if [ ! -f "$script_path" ]; then
+    echo "Error: ClickHouse binary not found after waiting $max_wait seconds!"
+    exit 1
+  fi
+  
+  # Test that the binary is actually executable
+  chmod +x "$script_path" || { echo "Error: Failed to set execute permission"; exit 1; }
+  
+  # Simple test to verify the binary is working
+  "$script_path" --version >/dev/null 2>&1 || { 
+    echo "Error: ClickHouse binary exists but is not functioning correctly!"
+    exit 1
+  }
 fi
 
-if [[ ! -f "$script_path" ]]; then
-  echo "Error: File not found after curl download!"
-  exit 1
-fi
 
 echo "Downloaded to: $script_path"
 echo "[$SCRIPT_NAME] Auto-generating settings"
