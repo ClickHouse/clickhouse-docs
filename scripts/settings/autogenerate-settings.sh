@@ -45,6 +45,12 @@ done
 echo "[$SCRIPT_NAME] All basic dependencies found."
 
 
+# TO DO: the following functionality was implemented due to a failing clickhouse binary 
+# using curl (ClickHouse quick start method). Ideally once this is fixed, we should try 
+# to pull from master and fall back to stable release if it doesn't work. The advantage
+# of this is being able to quickly fix setting descriptions which cause docusaurus build
+# to fail.
+
 # --- Installation Function 1 (Primary: TGZ Download/Extract) ---
 install_clickhouse_via_tgz() {
   echo "[$SCRIPT_NAME] Attempting install via TGZ download..."
@@ -259,12 +265,11 @@ else
 fi
 
 # --- temporary sed replacements ---
-echo "$tmp_dir"/generated_merge_tree_settings.md
 sed -i.bak \
   -e 's/Limit the max number of partitions that can be accessed in one query. <= 0 means unlimited./Limit the max number of partitions that can be accessed in one query. `<=` 0 means unlimited./g' \
   -e 's/\(this merge is created when set min_age_to_force_merge_seconds > 0 and min_age_to_force_merge_on_partition_only = true\)/(this merge is created when set `min_age_to_force_merge_seconds > 0` and `min_age_to_force_merge_on_partition_only = true`)/g' \
   -e 's/If >= 1, columns will be always written in full serialization\./If `>= 1`, columns will be always written in full serialization./g' \
-  -e 's/<candidate partitions for mutations only (partitions that cannot be merged)>/<candidate partitions for mutations>`<candidate partitions for mutations only (partitions that cannot be merged)>\/`/g' \
+  -e 's#<candidate partitions for mutations only (partitions that cannot be merged)>#<candidate partitions for mutations>`<candidate partitions for mutations only (partitions that cannot be merged)>`#g' \
   "$tmp_dir"/generated_merge_tree_settings.md
 
 # --- Move Generated Files ---
