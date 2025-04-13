@@ -1,88 +1,151 @@
 #!/usr/bin/env bash
 
-if ! command -v bash &> /dev/null; then
-    echo "Error: bash not found!"
-    exit 1
-fi
-
-# always run "yarn copy-clickhouse-repo-docs" before invoking this script
-# otherwise it will fail not being able to find the files it needs which
-# are copied to scripts/tmp and configured in package.json -> "autogen_settings_needed_files"
-
-if command -v curl >/dev/null 2>&1; then
-  echo "curl is installed"
-else
-  echo "curl is NOT installed"
-  exit 1
-fi
-
-target_dir=$(dirname "$(dirname "$(realpath "$0")")")
 SCRIPT_NAME=$(basename "$0")
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+target_dir=$(dirname "$(dirname "$(realpath "$0")")")
 tmp_dir="$target_dir/tmp"
 
 mkdir -p "$tmp_dir" || exit 1
 cd "$tmp_dir" || exit 1
 
-script_url="https://clickhouse.com/"  # URL of the installation script
-script_filename="clickhouse" # Choose a descriptive name
+script_filename="clickhouse" # Name of the target binary
 script_path="$tmp_dir/$script_filename"
 
-# Install ClickHouse
-if [ ! -f "$script_path" ]; then
-  echo -e "[$SCRIPT_NAME] Installing ClickHouse binary\n"
-  
-  # Save the installation script first
-  curl -s https://clickhouse.com/ | sh &> /dev/null
+# Function to check if a command exists
+command_exists() {
+  command -v "$1" &> /dev/null
+}
 
-  if [[ ! -f "$script_path" ]]; then
-    echo "Error: File not found after curl download!"
+# Check for required dependencies
+if ! command_exists bash; then
+    echo "Error: bash not found!"
     exit 1
-  fi
-  
-  # Wait for the clickhouse binary to appear
-  max_wait=60  # maximum wait time in seconds
-  wait_time=0
-  echo "Waiting for ClickHouse binary to be ready..."
-  
-  while [ ! -f "$script_path" ] && [ $wait_time -lt $max_wait ]; do
-    sleep 1
-    wait_time=$((wait_time + 1))
-    echo -n "."
-  done
-  
-  echo ""
-  
-  # Check if we found the binary within the timeout period
-  if [ ! -f "$script_path" ]; then
-    echo "Error: ClickHouse binary not found after waiting $max_wait seconds!"
-    exit 1
-  fi
-  
-  # Test that the binary is actually executable
-  chmod +x "$script_path" || { echo "Error: Failed to set execute permission"; exit 1; }
-  
-  # Simple test to verify the binary is working
-  "$script_path" --version >/dev/null 2>&1 || { 
-    arch=$(uname -m)
-    echo "Architecture: $arch"
-    gdb "$script_path"
-    echo "Error: ClickHouse binary exists but is not functioning correctly!"
-    exit 1
-  }
 fi
 
+if ! command_exists curl; then
+  echo "curl is NOT installed"
+  exit 1
+fi
 
-echo "Downloaded to: $script_path"
+# Try to install clickhouse-local to our specific path
+install_clickhouse_local() {
+  echo -e "[$SCRIPT_NAME] Installing clickhouse-local to $script_path\n"
+  
+  # First approach: Direct download (most portable)
+  echo "Downloading clickhouse binary directly..."
+  curl -sL https://clickhouse.com/ | sh &> /dev/null
+  
+  if [[ -f "$script_path" ]]; then
+    chmod +x "$script_path" || { echo "Error: Failed to set execute permission"; return 1; }
+    
+    # Test that the binary is working
+    "$script_path" --version >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+      echo "clickhouse binary downloaded successfully to $script_path"
+      return 0
+    else
+      echo "Downloaded binary is not functioning correctly. Trying alternative methods..."
+    fi
+  fi
+  
+  # Second approach: Try yum if available
+  if command_exists yum; then
+    echo "Attempting installation via yum..."
+    
+    # Create temporary location for package extraction
+    pkg_tmp="$tmp_dir/pkg_extract"
+    mkdir -p "$pkg_tmp"
+    
+    if yum install -y yum-utils && \
+       yum-config-manager --add-repo https://packages.clickhouse.com/rpm/clickhouse.repo && \
+       yum install --downloadonly --downloaddir="$pkg_tmp" clickhouse-common-static; then
+       
+      # Extract the binary from the RPM
+      if command_exists rpm2cpio && command_exists cpio; then
+        cd "$pkg_tmp"
+        rpm_file=$(ls clickhouse-common-static*.rpm 2>/dev/null | head -1)
+        if [ -n "$rpm_file" ]; then
+          rpm2cpio "$rpm_file" | cpio -idm ./usr/bin/clickhouse 2>/dev/null
+          
+          if [ -f ./usr/bin/clickhouse ]; then
+            cp ./usr/bin/clickhouse "$script_path"
+            chmod +x "$script_path"
+            echo "clickhouse binary extracted and copied to $script_path"
+            cd "$tmp_dir"
+            rm -rf "$pkg_tmp"
+            return 0
+          fi
+        fi
+      fi
+    fi
+    
+    cd "$tmp_dir"
+    rm -rf "$pkg_tmp"
+  fi
+  
+  # Third approach: Try apt if available
+  if command_exists apt-get; then
+    echo "Attempting installation via apt..."
+    
+    # Create temporary location for package extraction
+    pkg_tmp="$tmp_dir/pkg_extract"
+    mkdir -p "$pkg_tmp"
+    cd "$pkg_tmp"
+    
+    if apt-get update && \
+       apt-get download clickhouse-common-static; then
+       
+      # Extract the binary from the DEB
+      if command_exists dpkg; then
+        deb_file=$(ls clickhouse-common-static*.deb 2>/dev/null | head -1)
+        if [ -n "$deb_file" ]; then
+          dpkg -x "$deb_file" ./
+          
+          if [ -f ./usr/bin/clickhouse ]; then
+            cp ./usr/bin/clickhouse "$script_path"
+            chmod +x "$script_path"
+            echo "clickhouse binary extracted and copied to $script_path"
+            cd "$tmp_dir"
+            rm -rf "$pkg_tmp"
+            return 0
+          fi
+        fi
+      fi
+    fi
+    
+    cd "$tmp_dir"
+    rm -rf "$pkg_tmp"
+  fi
+  
+  # If we get here, all methods failed
+  echo "Failed to install clickhouse-local to $script_path through any method"
+  return 1
+}
+
+# First check if the binary already exists
+if [ -f "$script_path" ]; then
+  # Verify it works
+  chmod +x "$script_path"
+  "$script_path" --version >/dev/null 2>&1
+  if [ $? -eq 0 ]; then
+    echo "[$SCRIPT_NAME] Using existing clickhouse binary at $script_path"
+  else
+    # Binary exists but doesn't work, try to reinstall
+    install_clickhouse_local || { echo "Failed to install clickhouse-local"; exit 1; }
+  fi
+else
+  # Binary doesn't exist, install it
+  install_clickhouse_local || { echo "Failed to install clickhouse-local"; exit 1; }
+fi
+
 echo "[$SCRIPT_NAME] Auto-generating settings"
-chmod +x "$script_path" || { echo "Error: Failed to set execute permission"; exit 1; }
 root=$(dirname "$(dirname "$(realpath "$tmp_dir")")")
 
 # Autogenerate settings for all .sql files in directory
 for SQL_FILE in "$SCRIPT_DIR"/*.sql; do
   if [ -f "$SQL_FILE" ]; then
     echo "Running: $SQL_FILE"
-    ./clickhouse --queries-file "$SQL_FILE" > /dev/null || { echo "Failed to generate some settings:" && ./clickhouse --queries-file "$SQL_FILE"; exit 1; }
+    "$script_path" --queries-file "$SQL_FILE" > /dev/null || { echo "Failed to generate some settings:" && "$script_path" --queries-file "$SQL_FILE"; exit 1; }
   fi
 done
 
@@ -97,6 +160,8 @@ cat beta-settings.md >> "$root/docs/settings/beta-and-experimental-features.md" 
 echo "[$SCRIPT_NAME] Auto-generation of settings markdown pages completed successfully"
 
 # perform cleanup
-rm -rf "$tmp_dir"/{settings-formats.md, settings.md, FormatFactorySettings.h, Settings.cpp, generated_merge_tree_settings.md, experimental-settings.md, clickhouse}
+rm -rf "$tmp_dir"/{settings-formats.md, settings.md, FormatFactorySettings.h, Settings.cpp, generated_merge_tree_settings.md, experimental-settings.md}
+# Don't remove the clickhouse binary as it might be needed for future runs
+# rm -f "$script_path"
 
 echo "[$SCRIPT_NAME] Autogenerating settings completed"
