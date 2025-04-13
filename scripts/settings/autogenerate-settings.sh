@@ -259,6 +259,7 @@ else
 fi
 
 # --- temporary sed replacements ---
+echo "$tmp_dir"/generated_merge_tree_settings.md
 sed -i.bak \
   -e 's/Limit the max number of partitions that can be accessed in one query. <= 0 means unlimited./Limit the max number of partitions that can be accessed in one query. `<=` 0 means unlimited./g' \
   -e 's/\(this merge is created when set min_age_to_force_merge_seconds > 0 and min_age_to_force_merge_on_partition_only = true\)/(this merge is created when set `min_age_to_force_merge_seconds > 0` and `min_age_to_force_merge_on_partition_only = true`)/g' \
