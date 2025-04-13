@@ -230,7 +230,6 @@ fi
 # Check final install status
 if ! $INSTALL_SUCCESS; then
     echo "[$SCRIPT_NAME] FATAL: All installation methods failed."
-    # Optional: cd back before exiting?
     cd .. || echo "[$SCRIPT_NAME] Warning: Failed to cd back to parent directory before exiting."
     exit 1
 fi
@@ -258,6 +257,9 @@ else
       fi
     done
 fi
+
+# --- temporary debugging ---
+cat generated_merge_tree_settings.md
 
 # --- Move Generated Files ---
 # Define destination paths relative to the project root ($target_dir)
