@@ -259,7 +259,7 @@ else
 fi
 
 # --- temporary sed replacements ---
-sed -i.bak 's/<= 0 means unlimited/`<=` 0 means unlimited/g; s/\(this merge is created when set min_age_to_force_merge_seconds > 0 and min_age_to_force_merge_on_partition_only = true\)/(this merge is created when set `min_age_to_force_merge_seconds > 0` and `min_age_to_force_merge_on_partition_only = true`)/g; s/"If >= 1, columns will be always written in full serialization\."/"If `>= 1`, columns will be always written in full serialization."/g' ./generated_merge_tree_settings.md
+sed -i.bak 's/<= 0 means unlimited/`<=` 0 means unlimited/g; s/\(this merge is created when set min_age_to_force_merge_seconds > 0 and min_age_to_force_merge_on_partition_only = true\)/(this merge is created when set `min_age_to_force_merge_seconds > 0` and `min_age_to_force_merge_on_partition_only = true`)/g; s/"If >= 1, columns will be always written in full serialization\."/"If `>= 1`, columns will be always written in full serialization."/g; s/<candidate partitions for mutations only \(partitions that cannot be merged\)\/>/<candidate partitions for mutations>/`<candidate partitions for mutations only (partitions that cannot be merged)>/<candidate partitions for mutations>`/g' generated_merge_tree_settings.md
 
 # --- Move Generated Files ---
 # Define destination paths relative to the project root ($target_dir)
