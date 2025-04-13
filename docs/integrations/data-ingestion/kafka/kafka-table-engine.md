@@ -35,6 +35,12 @@ To persist this data from a read of the table engine, we need a means of capturi
 
 <Image img={kafka_01} size="lg" alt="Kafka table engine architecture diagram" style={{width: '80%'}} />
 
+:::tip
+The Kafka Engine does have some limitations:
+- [Kafka message header](https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/index.html#wire-format) is not currently supported, so schema registry cannot be used
+- Protobuf, ProtobufSingle are supported, while [ProtobufList](https://github.com/ClickHouse/ClickHouse/issues/78746) is not
+:::
+
 #### Steps {#steps}
 
 
@@ -179,10 +185,19 @@ CREATE TABLE github_queue
     review_comments UInt32,
     member_login LowCardinality(String)
 )
-   ENGINE = Kafka('kafka_host:9092', 'github', 'clickhouse',
-            'JSONEachRow') settings kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
+ENGINE = Kafka SETTINGS
+    kafka_broker_list = 'kafka_host:9092',
+    kafka_topic_list = 'github',
+    kafka_group_name = 'clickhouse',
+    kafka_format = 'JSONEachRow';
 ```
 
+:::tip
+Notes
+[Full Kafka Engine Table creation options](https://clickhouse.com/docs/engines/table-engines/integrations/kafka#creating-a-table)
+
+[kafka_format must be the last setting](https://github.com/ClickHouse/ClickHouse/issues/37895)
+:::
 
 We discuss engine settings and performance tuning below. At this point, a simple select on the table `github_queue` should read some rows.  Note that this will move the consumer offsets forward, preventing these rows from being re-read without a [reset](#common-operations). Note the limit and required parameter `stream_like_engine_allow_direct_select.`
 
@@ -303,6 +318,11 @@ Errors such as authentication issues are not reported in responses to Kafka engi
 <kafka>
    <debug>all</debug>
 </kafka>
+```
+
+Another useful source of information is the system.kafka_consumers table:
+```
+SELECT * FROM system.kafka_consumers FORMAT Vertical;
 ```
 
 ##### Handling malformed messages {#handling-malformed-messages}
@@ -473,7 +493,6 @@ Multiple ClickHouse instances can all be configured to read from a topic using t
 #### Tuning Performance {#tuning-performance}
 
 Consider the following when looking to increase Kafka Engine table throughput performance:
-
 
 * The performance will vary depending on the message size, format, and target table types. 100k rows/sec on a single table engine should be considered obtainable. By default, messages are read in blocks, controlled by the parameter kafka_max_block_size. By default, this is set to the [max_insert_block_size](/operations/settings/settings#max_insert_block_size), defaulting to 1,048,576. Unless messages are extremely large, this should nearly always be increased. Values between 500k to 1M are not uncommon. Test and evaluate the effect on throughput performance.
 * The number of consumers for a table engine can be increased using kafka_num_consumers. However, by default, inserts will be linearized in a single thread unless kafka_thread_per_consumer is changed from the default value of 1. Set this to 1 to ensure flushes are performed in parallel. Note that creating a Kafka engine table with N consumers (and kafka_thread_per_consumer=1) is logically equivalent to creating N Kafka engines, each with a materialized view and kafka_thread_per_consumer=0.
