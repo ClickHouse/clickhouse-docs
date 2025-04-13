@@ -296,9 +296,6 @@ for i in "${!move_src_files[@]}"; do
     fi
 done
 
-# TO DO - remove
-cat -n "$target_dir/docs/operations/settings/merge-tree-settings.md"
-
 echo "[$SCRIPT_NAME] Appending generated markdown files to documentation directories..."
 # Iterate using index; declare loop variables WITHOUT 'local'
 for i in "${!append_src_files[@]}"; do
@@ -321,6 +318,8 @@ for i in "${!append_src_files[@]}"; do
      fi
 done
 
+# TO DO - remove
+cat -n "$target_dir/docs/operations/settings/merge-tree-settings.md"
 
 # --- Final Cleanup ---
 echo "[$SCRIPT_NAME] Performing final cleanup..."
