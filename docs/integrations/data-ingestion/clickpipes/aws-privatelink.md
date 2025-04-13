@@ -87,7 +87,7 @@ See AWS guide for [managing permissions](https://docs.aws.amazon.com/vpc/latest/
 
 :::info
 [Cross-region access](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-cross-region)
-can be configured for ClickPipes. Add [your ClickPipe region](#supported-aws-regions-aws-privatelink-regions) to the allowed regions in your VPC endpoint service.
+can be configured for ClickPipes. Add [your ClickPipe region](#aws-privatelink-endpoint-types) to the allowed regions in your VPC endpoint service.
 :::
 
 ## Creating a ClickPipe with reverse private endpoint {#creating-clickpipe}
