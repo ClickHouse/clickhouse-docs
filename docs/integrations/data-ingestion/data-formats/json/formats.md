@@ -2,12 +2,112 @@
 title: 'Handling other JSON formats'
 slug: /integrations/data-formats/json/other-formats
 description: 'Handling other JSON formats'
+sidebar_label: 'Handling other formats'
 keywords: ['json', 'formats', 'json formats']
 ---
 
-# Handling other formats
+# Handling other JSON formats
 
-Earlier examples of loading JSON data assume the use of [`JSONEachRow`](/interfaces/formats#jsoneachrow) (ndjson). We provide examples of loading JSON in other common formats below.
+Earlier examples of loading JSON data assume the use of [`JSONEachRow`](/interfaces/formats#jsoneachrow) (ndjson). This format reads they keys in each JSON line as columns. For example:
+
+```sql
+SELECT *
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz', JSONEachRow)
+LIMIT 5
+
+┌───────date─┬─country_code─┬─project────────────┬─type────────┬─installer────┬─python_minor─┬─system─┬─version─┐
+│ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8   │
+│ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8   │
+│ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8   │
+│ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8   │
+│ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8   │
+└────────────┴──────────────┴────────────────────┴─────────────┴──────────────┴──────────────┴────────┴─────────┘
+
+5 rows in set. Elapsed: 0.449 sec.
+
+```
+
+While this is generally the most common format, users will encounter other formats or need to read the JSON as a single object.
+
+We provide examples of reading and loading JSON in other common formats below.
+
+## Reading JSON as an object {#reading-json-as-an-object}
+
+Our previous examples show how `JSONEachRow` reads newline-delimited JSON, with each line read as a separate object mapped to a table row. This is ideal for structured logs or events. 
+
+In contrast, `JSONAsObject` treats the entire input as a single `JSON` object and stores it in a single column, of type `JSON`, making it better suited for raw or nested JSON payloads. Use `JSONEachRow` for row-wise inserts, and JSONAsObject when storing flexible or unstructured data.
+
+Contrast the above example, with the following query which reads the same data as a JSON object:
+
+```sql
+SELECT *
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz', JSONAsObject)
+LIMIT 5
+
+┌─json─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
+│ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
+│ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
+│ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
+│ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+5 rows in set. Elapsed: 0.338 sec.
+```
+
+This latter format is useful for inserting rows into a table using a single JSON object column e.g.
+
+```sql
+CREATE TABLE pypi
+(
+    `json` JSON
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+
+INSERT INTO pypi SELECT *
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz', JSONAsObject)
+LIMIT 5;
+
+SELECT *
+FROM pypi
+LIMIT 2;
+
+┌─json─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
+│ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+2 rows in set. Elapsed: 0.003 sec.
+```
+
+The JSONAsObject format may also be useful for reading some newline-delimited JSON in cases where the structure of the objects is inconsistent e.g. if a field varies in type across rows (e.g., sometimes a string, other times an object). In such cases, ClickHouse cannot infer a stable schema using `JSONEachRow`, and `JSONAsObject` allows the data to be ingested without strict type enforcement, storing each JSON row as a whole in a single column. For example, notice how `JSONEachRow` fails on the following example:
+
+```sql
+SELECT count()
+FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.json.gz', 'JSONEachRow')
+
+Elapsed: 1.198 sec.
+
+Received exception from server (version 24.12.1):
+Code: 636. DB::Exception: Received from sql-clickhouse.clickhouse.com:9440. DB::Exception: The table structure cannot be extracted from a JSONEachRow format file. Error:
+Code: 117. DB::Exception: JSON objects have ambiguous data: in some objects path 'record.subject' has type 'String' and in some - 'Tuple(`$type` String, cid String, uri String)'. You can enable setting input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects to use String type for path 'record.subject'. (INCORRECT_DATA) (version 24.12.1.18239 (official build))
+To increase the maximum number of rows/bytes to read for structure determination, use setting input_format_max_rows_to_read_for_schema_inference/input_format_max_bytes_to_read_for_schema_inference.
+You can specify the structure manually: (in file/uri bluesky/file_0001.json.gz). (CANNOT_EXTRACT_TABLE_STRUCTURE)
+```
+ 
+Conversely, `JSONAsObject` can be used in this case as the `JSON` type supports multiple types for the same subcolumn.
+
+```sql
+SELECT count()
+FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.json.gz', 'JSONAsObject')
+
+┌─count()─┐
+│ 1000000 │
+└─────────┘
+
+1 row in set. Elapsed: 0.480 sec. Processed 1.00 million rows, 256.00 B (2.08 million rows/s., 533.76 B/s.)
+```
 
 ## Array of JSON objects {#array-of-json-objects}
 
