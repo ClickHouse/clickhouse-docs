@@ -297,7 +297,7 @@ for i in "${!move_src_files[@]}"; do
 done
 
 # TO DO - remove
-cat -n "$target_dir/docs/operations/settings/merge-tree-settings.md/"
+cat -n "$target_dir/docs/operations/settings/merge-tree-settings.md"
 
 echo "[$SCRIPT_NAME] Appending generated markdown files to documentation directories..."
 # Iterate using index; declare loop variables WITHOUT 'local'
