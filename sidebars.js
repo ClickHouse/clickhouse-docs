@@ -171,8 +171,7 @@ const sidebars = {
             "migrations/postgres/dataset",
             "migrations/postgres/rewriting-queries",
             "migrations/postgres/data-modeling-techniques",
-            "migrations/postgres/appendix",
-            ""
+            "migrations/postgres/appendix"
           ],
         },
         "integrations/data-ingestion/dbms/mysql/index",
