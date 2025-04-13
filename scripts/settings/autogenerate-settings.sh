@@ -66,7 +66,7 @@ if [ ! -f "$script_path" ]; then
   "$script_path" --version >/dev/null 2>&1 || { 
     arch=$(uname -m)
     echo "Architecture: $arch"
-    "$script_path" --verbose -q 'SELECT 1'
+    gdb "$script_path"
     echo "Error: ClickHouse binary exists but is not functioning correctly!"
     exit 1
   }
