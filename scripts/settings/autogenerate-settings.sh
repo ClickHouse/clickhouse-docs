@@ -271,7 +271,7 @@ sed -i.bak \
   -e 's/If >= 1, columns will be always written in full serialization\./If `>= 1`, columns will be always written in full serialization./g' \
   -e 's#<candidate partitions for mutations only (partitions that cannot be merged)>/<candidate partitions for mutations>#`<candidate partitions for mutations only (partitions that cannot be merged)>/<candidate partitions for mutations>`#g' \
   -e 's#(<part>/columns and <part>/checksums)#`(<part>/columns and <part>/checksums)`#g' \
-  "$tmp_dir"/generated_merge_tree_settings.md
+  "$tmp_dir"/generated_merge_tree_settings.md > /dev/null
 
 # --- Move Generated Files ---
 # Define destination paths relative to the project root ($target_dir)

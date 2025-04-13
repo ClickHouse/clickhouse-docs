@@ -172,9 +172,12 @@ const sidebars = {
             "migrations/postgres/rewriting-queries",
             "migrations/postgres/data-modeling-techniques",
             "migrations/postgres/appendix",
+            ""
           ],
         },
         "integrations/data-ingestion/dbms/mysql/index",
+        "integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql",
+        "integrations/data-ingestion/dbms/postgresql/inserting-data",
         "integrations/data-ingestion/redshift/index",
         "integrations/data-ingestion/dbms/dynamodb/index",
         {
