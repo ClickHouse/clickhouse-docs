@@ -64,6 +64,9 @@ if [ ! -f "$script_path" ]; then
   
   # Simple test to verify the binary is working
   "$script_path" --version >/dev/null 2>&1 || { 
+    arch=$(uname -m)
+    echo "Architecture: $arch"
+    echo "$script_path" --verbose
     echo "Error: ClickHouse binary exists but is not functioning correctly!"
     exit 1
   }
