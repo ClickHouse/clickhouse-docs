@@ -270,6 +270,7 @@ sed -i.bak \
   -e 's/\(this merge is created when set min_age_to_force_merge_seconds > 0 and min_age_to_force_merge_on_partition_only = true\)/(this merge is created when set `min_age_to_force_merge_seconds > 0` and `min_age_to_force_merge_on_partition_only = true`)/g' \
   -e 's/If >= 1, columns will be always written in full serialization\./If `>= 1`, columns will be always written in full serialization./g' \
   -e 's#<candidate partitions for mutations only (partitions that cannot be merged)>/<candidate partitions for mutations>#`<candidate partitions for mutations only (partitions that cannot be merged)>/<candidate partitions for mutations>`#g' \
+  -e 's#(<part>/columns and <part>/checksums)#`(<part>/columns and <part>/checksums)`#g' \
   "$tmp_dir"/generated_merge_tree_settings.md
 
 # --- Move Generated Files ---
