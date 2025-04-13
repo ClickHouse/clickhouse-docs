@@ -161,7 +161,6 @@ echo "[$SCRIPT_NAME] Auto-generation of settings markdown pages completed succes
 
 # perform cleanup
 rm -rf "$tmp_dir"/{settings-formats.md, settings.md, FormatFactorySettings.h, Settings.cpp, generated_merge_tree_settings.md, experimental-settings.md}
-# Don't remove the clickhouse binary as it might be needed for future runs
-# rm -f "$script_path"
+rm -f "$script_path"
 
 echo "[$SCRIPT_NAME] Autogenerating settings completed"
