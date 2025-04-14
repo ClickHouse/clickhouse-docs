@@ -276,14 +276,14 @@ Note we use a `GROUP BY` here instead of using `FINAL`.
 ## Materialized Views and JOINs {#materialized-views-and-joins}
 
 :::note Refreshable Materialized Views
-The following applies to Incremental Materialized Views only. Refreshable Materialized Views execute their query periodically over the full target dataset and fully support JOINs. Consider using for complex JOINs if a reduction in result freshness can be tolerated.
+The following applies to Incremental Materialized Views only. Refreshable Materialized Views execute their query periodically over the full target dataset and fully support JOINs. Consider using them for complex JOINs if a reduction in result freshness can be tolerated.
 :::
 
-Incremental Materialized views in ClickHouse fully support `JOIN` operations—but with one crucial constraint: **the Materialized View only triggers on inserts to the source table (the left-most table in the query).** Right-side tables in joins do not trigger updates, even if their data changes. This behavior is especially important when building **Incremental** Materialized Views, where data is aggregated or transformed during insert time.
+Incremental Materialized views in ClickHouse fully support `JOIN` operations, but with one crucial constraint: **the Materialized View only triggers on inserts to the source table (the left-most table in the query).** Right-side tables in JOINs do not trigger updates, even if their data changes. This behavior is especially important when building **Incremental** Materialized Views, where data is aggregated or transformed during insert time.
 
-When a Incremental Materialized View is defined using a `JOIN`, the left-most table in the `SELECT` query acts as the source. When new rows are inserted into this table, ClickHouse executes the Materialized View query *only* with those newly inserted rows. Right-side tables in the join are read in full during this execution, but changes to them alone do not trigger the view.
+When an Incremental Materialized View is defined using a `JOIN`, the left-most table in the `SELECT` query acts as the source. When new rows are inserted into this table, ClickHouse executes the Materialized View query *only* with those newly inserted rows. Right-side tables in the JOIN are read in full during this execution, but changes to them alone do not trigger the view.
 
-This behavior makes joins in Materialized Views similar to a snapshot join against static dimension data. 
+This behavior makes JOINs in Materialized Views similar to a snapshot join against static dimension data. 
 
 This works well for enriching data with reference or dimension tables. However, any updates to the right-side tables (e.g., user metadata) will not retroactively update the Materialized View. To see updated data, new inserts must arrive in the source table.
 
@@ -291,7 +291,7 @@ This works well for enriching data with reference or dimension tables. However, 
 
 Let's walk through a concrete example using the [Stack Overflow dataset](/data-modeling/schema-design). We'll use a Materialized View to compute **daily badges per user**, including the display name of the user from the `users` table.
 
-As a reminder, our table schemas:
+As a reminder, our table schemas are:
 
 ```sql
 CREATE TABLE badges
@@ -322,14 +322,14 @@ ENGINE = MergeTree
 ORDER BY Id;
 ```
 
-We'll assume our users table is pre-populated:
+We'll assume our `users` table is pre-populated:
 
 ```sql
 INSERT INTO users
 SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/users.parquet');
 ```
 
-The Materialized View and its associated target table:
+The Materialized View and its associated target table are defined as:
 
 ```sql
 CREATE TABLE daily_badges_by_user
@@ -370,7 +370,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 0 rows in set. Elapsed: 433.762 sec. Processed 1.16 billion rows, 28.50 GB (2.67 million rows/s., 65.70 MB/s.)
 ```
 
-Suppose we wish to view the badges achieved by a specific user:
+Suppose we wish to view the badges achieved by a specific user, we can write the following query:
 
 ```sql
 SELECT *
@@ -422,7 +422,6 @@ WHERE DisplayName = 'gingerwizard'
 Notice the latency of the insert here. The inserted user row is joined against the entire `users` table, significantly impacting insert performance. We propose approaches to address this below in ["Using Source Table in Filters and Joins"](/materialized-view/incremental-materialized-view#using-source-table-in-filters-and-joins-in-materialized-views).
 :::
 
-
 Conversely, if we insert a badge for a new user, followed by the row for the user, our Materialized View will fail to capture the users' metrics. 
 
 ```sql
@@ -439,7 +438,7 @@ WHERE DisplayName = 'brand_new_user';
 0 rows in set. Elapsed: 0.017 sec. Processed 32.77 thousand rows, 644.32 KB (1.98 million rows/s., 38.94 MB/s.)
 ```
 
-The view, in this case, only executes for the badge insert before the user row exists. If we insert another badge for the user, a row is as expected inserted into our row:
+The view, in this case, only executes for the badge insert before the user row exists. If we insert another badge for the user, a row is inserted, as is expected:
 
 ```sql
 INSERT INTO badges VALUES (53505060, 23923286, 'Teacher', now(), 'Bronze', 0);
@@ -456,13 +455,13 @@ WHERE DisplayName = 'brand_new_user'
 1 row in set. Elapsed: 0.018 sec. Processed 32.77 thousand rows, 644.48 KB (1.87 million rows/s., 36.72 MB/s.)
 ```
 
-Note, however, this result is incorrect.
+Note, however, that this result is incorrect.
 
 ### Best Practices for JOINs in Materialized Views {#join-best-practices}
 
 - **Use the left-most table as the trigger.** Only the table on the left side of the `SELECT` statement triggers the Materialized View. Changes to right-side tables will not trigger updates.
 
-- **Pre-insert joined data.** Ensure that data in joined tables exists before inserting rows into the source table. The join is evaluated at insert time, so missing data will result in unmatched rows or nulls.
+- **Pre-insert joined data.** Ensure that data in joined tables exists before inserting rows into the source table. The JOIN is evaluated at insert time, so missing data will result in unmatched rows or nulls.
 
 - **Limit columns pulled from joins.** Select only the required columns from joined tables to minimize memory use and reduce insert-time latency (see below).
 
@@ -523,14 +522,13 @@ SELECT * FROM mvw2;
 
 In the above example, we have two Materialized Views `mvw1` and `mvw2` that perform similar operations but with a slight difference in how they reference the source table `t0`.
 
-In `mvw1`, table `t0` is directly referenced inside a `(SELECT * FROM t0)` subquery on the right side of the JOIN. When data is inserted into `t0`, the Materialized View's query is executed with the inserted block of data replacing `t0`. This means that the join operation is performed only on the newly inserted rows, not the entire table.
+In `mvw1`, table `t0` is directly referenced inside a `(SELECT * FROM t0)` subquery on the right side of the JOIN. When data is inserted into `t0`, the Materialized View's query is executed with the inserted block of data replacing `t0`. This means that the JOIN operation is performed only on the newly inserted rows, not the entire table.
 
-In the second case with joining `vt0`, the view reads all the data from `t0`. This ensures that the join operation considers all rows in `t0`, not just the newly inserted block.
+In the second case with joining `vt0`, the view reads all the data from `t0`. This ensures that the JOIN operation considers all rows in `t0`, not just the newly inserted block.
 
 The key difference lies in how ClickHouse handles the source table in the Materialized View's query. When a Materialized View is triggered by an insert, the source table (`t0` in this case) is replaced by the inserted block of data. This behavior can be leveraged to optimize queries but also requires careful consideration to avoid unexpected results.
 
 ### Use Cases and Caveats {#use-cases-and-caveats}
-
 
 In practice, you may use this behavior to optimize Materialized Views that only need to process a subset of the source table's data. For example, you can use a subquery to filter the source table before joining it with other tables. This can help reduce the amount of data processed by the Materialized View and improve performance.
 
@@ -548,12 +546,11 @@ JOIN (SELECT * FROM t1 WHERE t1.id IN (SELECT id FROM t0)) AS t1
 ON t0.id = t1.id;
 ```
 
-In this example, set build from the `IN (SELECT id FROM t0)` subquery has only the newly inserted rows, which can help to filter `t1` against it.
+In this example, the set built from the `IN (SELECT id FROM t0)` subquery has only the newly inserted rows, which can help to filter `t1` against it.
 
 #### Example with Stack Overflow
 
 Consider our [earlier Materialized View example](/materialized-view/incremental-materialized-view#example) to compute **daily badges per user**, including the user's display name from the `users` table.
-
 
 ```sql
 CREATE MATERIALIZED VIEW daily_badges_by_user_mv TO daily_badges_by_user AS
@@ -577,8 +574,7 @@ INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
 1 row in set. Elapsed: 7.517 sec.
 ```
 
-Using the approach above, we can optimize this view - adding a filter to the users table using the user ids in the inserted badge rows:
-
+Using the approach above, we can optimize this view. We'll add a filter to the `users` table using the user ids in the inserted badge rows:
 
 ```sql
 CREATE MATERIALIZED VIEW daily_badges_by_user_mv TO daily_badges_by_user
@@ -607,7 +603,7 @@ GROUP BY
     u.DisplayName
 ```
 
-Note only does this speed up the initial badges insert:
+Not only does this speed up the initial badges insert:
 
 ```sql
 INSERT INTO badges SELECT *
@@ -646,18 +642,18 @@ CREATE MATERIALIZED VIEW posts_mv TO posts AS
 
 ### Lookup table {#lookup-table}
 
-Users should consider their access patterns when choosing the ClickHouse ordering key with the columns which are frequently used in filter and aggregation clauses being used. This can be restrictive for scenarios where users have more diverse access patterns which cannot be encapsulated in a single set of columns. For example, consider the following `comments` table:
+Users should consider their access patterns when choosing a ClickHouse ordering key. Columns which are frequently used in filter and aggregation clauses should be used. This can be restrictive for scenarios where users have more diverse access patterns which cannot be encapsulated in a single set of columns. For example, consider the following `comments` table:
 
 ```sql
 CREATE TABLE comments
 (
-        `Id` UInt32,
-        `PostId` UInt32,
-        `Score` UInt16,
-        `Text` String,
-        `CreationDate` DateTime64(3, 'UTC'),
-        `UserId` Int32,
-        `UserDisplayName` LowCardinality(String)
+    `Id` UInt32,
+    `PostId` UInt32,
+    `Score` UInt16,
+    `Text` String,
+    `CreationDate` DateTime64(3, 'UTC'),
+    `UserId` Int32,
+    `UserDisplayName` LowCardinality(String)
 )
 ENGINE = MergeTree
 ORDER BY PostId
@@ -704,7 +700,7 @@ INSERT INTO comments_null SELECT * FROM comments
 0 rows in set. Elapsed: 5.163 sec. Processed 90.38 million rows, 17.25 GB (17.51 million rows/s., 3.34 GB/s.)
 ```
 
-We can now use this view in a subquery to accelerate our previous query:
+We can now use this View in a subquery to accelerate our previous query:
 
 ```sql
 SELECT avg(Score)
@@ -724,4 +720,4 @@ WHERE PostId IN (
 
 ### Chaining {#chaining}
 
-Materialized views can be chained, allowing complex workflows to be established. For a practical example, we recommend this [blog post](https://clickhouse.com/blog/chaining-materialized-views).
+Materialized views can be chained, allowing complex workflows to be established. For a practical example, we recommend reading this [blog post](https://clickhouse.com/blog/chaining-materialized-views).
