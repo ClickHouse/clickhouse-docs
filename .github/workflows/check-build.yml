@@ -25,14 +25,9 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y aspell aspell-en
       - name: Set up Python
         if: matrix.check_type == 'kbcheck'
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-      - name: Install dependencies
-        if: matrix.check_type == 'kbcheck'
         run: |
-          python -m pip install --upgrade pip
-          pip install -r 'scripts/knowledgebase-checker/requirements.txt'
+          curl -Ls https://astral.sh/uv/install.sh | sh
+          uv python install 3.12
       - name: Setup md-lint environment
         if: matrix.check_type == 'md-lint'
         uses: actions/setup-node@v3
@@ -47,13 +42,13 @@ jobs:
         id: check_step
         run: |
           if [[ "${{ matrix.check_type }}" == "spellcheck" ]]; then
-            ./scripts/check-doc-aspell
+            yarn check-spelling
           exit_code=$?
           elif [[ "${{ matrix.check_type }}" == "kbcheck" ]]; then
-            ./scripts/knowledgebase-checker/knowledgebase_article_checker.py --kb-dir="knowledgebase"
+            yarn check-kb
           exit_code=$?
           elif [[ "${{ matrix.check_type }}" == "md-lint" ]]; then
-            yarn markdownlint-cli2 --config ./scripts/.markdownlint-cli2.yaml 'docs/**/*.md'
+            yarn check-markdown
           exit_code=$?
           fi
           
