@@ -36,7 +36,7 @@ get_arch() {
 
 
 # --- Dependency Checks ---
-for cmd in bash curl uname mv chmod rm mkdir find cat grep sed ls pwd sort head tar file; do
+for cmd in bash curl uname mv chmod rm mkdir find cat grep sed ls pwd sort head tar; do
     if ! command_exists $cmd; then
         echo "[$SCRIPT_NAME] Error: Required command '$cmd' not found!"
         exit 1
