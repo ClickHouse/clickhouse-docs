@@ -8,7 +8,7 @@ keywords: ['json', 'formats', 'json formats']
 
 # Handling other JSON formats
 
-Earlier examples of loading JSON data assume the use of [`JSONEachRow`](/interfaces/formats#jsoneachrow) (ndjson). This format reads they keys in each JSON line as columns. For example:
+Earlier examples of loading JSON data assume the use of [`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`). This format reads the keys in each JSON line as columns. For example:
 
 ```sql
 SELECT *
@@ -24,10 +24,9 @@ LIMIT 5
 └────────────┴──────────────┴────────────────────┴─────────────┴──────────────┴──────────────┴────────┴─────────┘
 
 5 rows in set. Elapsed: 0.449 sec.
-
 ```
 
-While this is generally the most common format, users will encounter other formats or need to read the JSON as a single object.
+While this is generally the most commonly used format for JSON, users will encounter other formats or need to read the JSON as a single object.
 
 We provide examples of reading and loading JSON in other common formats below.
 
@@ -35,7 +34,7 @@ We provide examples of reading and loading JSON in other common formats below.
 
 Our previous examples show how `JSONEachRow` reads newline-delimited JSON, with each line read as a separate object mapped to a table row. This is ideal for structured logs or events. 
 
-In contrast, `JSONAsObject` treats the entire input as a single `JSON` object and stores it in a single column, of type `JSON`, making it better suited for raw or nested JSON payloads. Use `JSONEachRow` for row-wise inserts, and JSONAsObject when storing flexible or unstructured data.
+In contrast, `JSONAsObject` treats the entire input as a single `JSON` object and stores it in a single column, of type `JSON`, making it better suited for raw or nested JSON payloads. Use `JSONEachRow` for row-wise inserts, and [`JSONAsObject`](/interfaces/formats/JSONAsObject) when storing flexible or unstructured data.
 
 Contrast the above example, with the following query which reads the same data as a JSON object:
 
@@ -55,7 +54,7 @@ LIMIT 5
 5 rows in set. Elapsed: 0.338 sec.
 ```
 
-This latter format is useful for inserting rows into a table using a single JSON object column e.g.
+`JSONAsObject` is useful for inserting rows into a table using a single JSON object column e.g.
 
 ```sql
 CREATE TABLE pypi
@@ -81,7 +80,7 @@ LIMIT 2;
 2 rows in set. Elapsed: 0.003 sec.
 ```
 
-The JSONAsObject format may also be useful for reading some newline-delimited JSON in cases where the structure of the objects is inconsistent e.g. if a field varies in type across rows (e.g., sometimes a string, other times an object). In such cases, ClickHouse cannot infer a stable schema using `JSONEachRow`, and `JSONAsObject` allows the data to be ingested without strict type enforcement, storing each JSON row as a whole in a single column. For example, notice how `JSONEachRow` fails on the following example:
+The `JSONAsObject` format may also be useful for reading some newline-delimited JSON in cases where the structure of the objects is inconsistent e.g. if a field varies in type across rows (e.g., it is sometimes a string, but other times an object). In such cases, ClickHouse cannot infer a stable schema using `JSONEachRow`, and `JSONAsObject` allows the data to be ingested without strict type enforcement, storing each JSON row as a whole in a single column. For example, notice how `JSONEachRow` fails on the following example:
 
 ```sql
 SELECT count()
