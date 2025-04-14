@@ -1,41 +1,46 @@
 ---
-description: 'Системная таблица, содержащая метрики, которые могут быть рассчитаны мгновенно или имеют текущее значение.'
+description: 'Системная таблица, содержащая метрики, которые могут быть рассчитаны мгновенно или
+  имеют текущее значение.'
+keywords: ['системная таблица', 'метрики']
 slug: /operations/system-tables/metrics
 title: 'system.metrics'
-keywords: ['system table', 'metrics']
 ---
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+
+
+# system.metrics
 
 <SystemTableCloud/>
 
-Содержит метрики, которые могут быть рассчитаны мгновенно или имеют текущее значение. Например, количество одновременно обрабатываемых запросов или текущая задержка реплики. Эта таблица всегда актуальна.
+Содержит метрики, которые могут быть рассчитаны мгновенно или имеют текущее значение. Например, количество одновременно обрабатываемых запросов или текущее задержка реплики. Эта таблица всегда актуальна.
 
 Колонки:
 
-- `metric` ([String](../../sql-reference/data-types/string.md)) — название метрики.
-- `value` ([Int64](../../sql-reference/data-types/int-uint.md)) — значение метрики.
-- `description` ([String](../../sql-reference/data-types/string.md)) — описание метрики.
-- `name` ([String](../../sql-reference/data-types/string.md)) — псевдоним для `metric`.
+- `metric` ([String](../../sql-reference/data-types/string.md)) — Название метрики.
+- `value` ([Int64](../../sql-reference/data-types/int-uint.md)) — Значение метрики.
+- `description` ([String](../../sql-reference/data-types/string.md)) — Описание метрики.
+- `name` ([String](../../sql-reference/data-types/string.md)) — Псевдоним для `metric`.
 
 Вы можете найти все поддерживаемые метрики в исходном файле [src/Common/CurrentMetrics.cpp](https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/CurrentMetrics.cpp).
 
 **Пример**
 
-``` sql
+```sql
 SELECT * FROM system.metrics LIMIT 10
 ```
 
-``` text
+```text
 ┌─metric───────────────────────────────┬─value─┬─description────────────────────────────────────────────────────────────┐
-│ Query                                │     1 │ Количество выполняемых запросов                                          │
-│ Merge                                │     0 │ Количество выполняемых фоновых объединений                                │
-│ PartMutation                         │     0 │ Количество мутаций (ALTER DELETE/UPDATE)                                 │
-│ ReplicatedFetch                      │     0 │ Количество частей данных, извлекаемых из реплик                         │
-│ ReplicatedSend                       │     0 │ Количество частей данных, отправляемых в реплики                        │
-│ ReplicatedChecks                     │     0 │ Количество частей, проверяющих согласованность                           │
-│ BackgroundMergesAndMutationsPoolTask │     0 │ Количество активных объединений и мутаций в связанном фоновой пулах    │
-│ BackgroundFetchesPoolTask            │     0 │ Количество активных извлечений в связанном фоновой пулах                │
-│ BackgroundCommonPoolTask             │     0 │ Количество активных задач в связанном фоновой пулах                     │
+│ Query                                │     1 │ Количество выполняемых запросов                                        │
+│ Merge                                │     0 │ Количество выполняемых фоновых слияний                                  │
+│ PartMutation                         │     0 │ Количество мутаций (ALTER DELETE/UPDATE)                              │
+│ ReplicatedFetch                      │     0 │ Количество частей данных, извлекаемых из реплик                        │
+│ ReplicatedSend                       │     0 │ Количество частей данных, отправляемых в реплики                       │
+│ ReplicatedChecks                     │     0 │ Количество проверок частей данных на согласованность                   │
+│ BackgroundMergesAndMutationsPoolTask │     0 │ Количество активных слияний и мутаций в связанном фоновой пуле        │
+│ BackgroundFetchesPoolTask            │     0 │ Количество активных извлечений в связанном фоновой пуле                │
+│ BackgroundCommonPoolTask             │     0 │ Количество активных задач в связанном фоновой пуле                    │
 │ BackgroundMovePoolTask               │     0 │ Количество активных задач в BackgroundProcessingPool для перемещений    │
 └──────────────────────────────────────┴───────┴────────────────────────────────────────────────────────────────────────┘
 ```
@@ -44,39 +49,39 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### AggregatorThreads {#aggregatorthreads}
 
-Количество потоков в пуле потоков Aggregator.
+Количество потоков в пуле потоков Агрегатора.
 
 ### AggregatorThreadsActive {#aggregatorthreadsactive}
 
-Количество потоков в пуле потоков Aggregator, выполняющих задачу.
+Количество потоков в пуле потоков Агрегатора, выполняющих задачу.
 
 ### TablesLoaderForegroundThreads {#tablesloaderforegroundthreads}
 
-Количество потоков в пуле потоков асинхронного загрузчика переднего плана.
+Количество потоков в пуле фоновых потоков асинхронного загрузчика.
 
 ### TablesLoaderForegroundThreadsActive {#tablesloaderforegroundthreadsactive}
 
-Количество потоков в пуле потоков асинхронного загрузчика переднего плана, выполняющих задачу.
+Количество потоков в пуле фоновых потоков асинхронного загрузчика, выполняющих задачу.
 
 ### TablesLoaderBackgroundThreads {#tablesloaderbackgroundthreads}
 
-Количество потоков в пуле потоков асинхронного загрузчика фонового плана.
+Количество потоков в пуле фоновых потоков асинхронного загрузчика.
 
 ### TablesLoaderBackgroundThreadsActive {#tablesloaderbackgroundthreadsactive}
 
-Количество потоков в пуле потоков асинхронного загрузчика фонового плана, выполняющих задачу.
+Количество потоков в пуле фоновых потоков асинхронного загрузчика, выполняющих задачу.
 
 ### AsyncInsertCacheSize {#asyncinsertcachesize}
 
-Количество хэш-ид асинхронных вставок в кеше.
+Количество хэш ID асинхронных вставок в кэше.
 
 ### AsynchronousInsertThreads {#asynchronousinsertthreads}
 
-Количество потоков в пуле потоков AsynchronousInsert.
+Количество потоков в пуле потоков асинхронной вставки.
 
 ### AsynchronousInsertThreadsActive {#asynchronousinsertthreadsactive}
 
-Количество потоков в пуле потоков AsynchronousInsert, выполняющих задачу.
+Количество потоков в пуле потоков асинхронной вставки, выполняющих задачу.
 
 ### AsynchronousReadWait {#asynchronousreadwait}
 
@@ -104,11 +109,11 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### BackgroundDistributedSchedulePoolTask {#backgrounddistributedschedulepooltask}
 
-Количество активных задач в BackgroundDistributedSchedulePool. Этот пул используется для распределенной отправки данных, происходящей в фоновом режиме.
+Количество активных задач в BackgroundDistributedSchedulePool. Этот пул используется для распределенных отправок, которые проводятся в фоновом режиме.
 
 ### BackgroundFetchesPoolSize {#backgroundfetchespoolsize}
 
-Ограничение на количество одновременно извлекаемых данных в связанном фоновой пуле.
+Ограничение на количество одновременных извлечений в связанном фоновой пуле.
 
 ### BackgroundFetchesPoolTask {#backgroundfetchespooltask}
 
@@ -116,11 +121,11 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### BackgroundMergesAndMutationsPoolSize {#backgroundmergesandmutationspoolsize}
 
-Ограничение на количество активных объединений и мутаций в связанном фоновой пуле.
+Ограничение на количество активных слияний и мутаций в связанном фоновой пуле.
 
 ### BackgroundMergesAndMutationsPoolTask {#backgroundmergesandmutationspooltask}
 
-Количество активных объединений и мутаций в связанном фоновой пуле.
+Количество активных слияний и мутаций в связанном фоновой пуле.
 
 ### BackgroundMessageBrokerSchedulePoolSize {#backgroundmessagebrokerschedulepoolsize}
 
@@ -140,19 +145,19 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### BackgroundSchedulePoolSize {#backgroundschedulepoolsize}
 
-Ограничение на количество задач в BackgroundSchedulePool. Этот пул используется для периодических задач ReplicatedMergeTree, таких как очистка старых частей данных, изменение частей данных, повторная инициализация реплик и т.д.
+Ограничение на количество задач в BackgroundSchedulePool. Этот пул используется для периодических задач ReplicatedMergeTree, таких как очистка старых частей данных, изменение частей данных, повторная инициализация реплики и т.д.
 
 ### BackgroundSchedulePoolTask {#backgroundschedulepooltask}
 
-Количество активных задач в BackgroundSchedulePool. Этот пул используется для периодических задач ReplicatedMergeTree, таких как очистка старых частей данных, изменение частей данных, повторная инициализация реплик и т.д.
+Количество активных задач в BackgroundSchedulePool. Этот пул используется для периодических задач ReplicatedMergeTree, таких как очистка старых частей данных, изменение частей данных, повторная инициализация реплики и т.д.
 
 ### BackupsIOThreads {#backupsiothreads}
 
-Количество потоков в пуле потоков BackupsIO.
+Количество потоков в пуле потока BackupsIO.
 
 ### BackupsIOThreadsActive {#backupsiothreadsactive}
 
-Количество потоков в пуле потоков BackupsIO, выполняющих задачу.
+Количество потоков в пуле потока BackupsIO, выполняющих задачу.
 
 ### BackupsThreads {#backupsthreads}
 
@@ -168,7 +173,7 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### CacheDetachedFileSegments {#cachedetachedfilesegments}
 
-Количество существующих сегментов кэша файлов.
+Количество существующих сегментов кэша файлов без привязки.
 
 ### CacheDictionaryThreads {#cachedictionarythreads}
 
@@ -188,11 +193,11 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### CacheFileSegments {#cachefilesegments}
 
-Количество существующих сегментов кэша файлов.
+Количество существующих сегментов кэшируемых файлов.
 
 ### ContextLockWait {#contextlockwait}
 
-Количество потоков, ожидающих блокировки в контексте. Это глобальная блокировка.
+Количество потоков, ожидающих блокировку в контексте. Это глобальная блокировка.
 
 ### DDLWorkerThreads {#ddlworkerthreads}
 
@@ -232,7 +237,7 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### DictCacheRequests {#dictcacherequests}
 
-Количество запросов в полете к источникам данных словарей кэшированного типа.
+Количество запросов к источникам данных словарей кэшированного типа.
 
 ### DiskObjectStorageAsyncThreads {#diskobjectstorageasyncthreads}
 
@@ -244,23 +249,23 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### DiskSpaceReservedForMerge {#diskspacereservedformerge}
 
-Дисковое пространство, зарезервированное для текущих фоновых объединений. Оно немного превышает общий размер частей, которые в данный момент объединяются.
+Дисковое пространство, резервируемое для текущих фоновых слияний. Оно немного больше, чем общий размер текущих сливаемых частей.
 
 ### DistributedFilesToInsert {#distributedfilestoinsert}
 
-Количество ожидающих файлов для обработки для асинхронной вставки в распределенные таблицы. Количество файлов для каждого шард суммируется.
+Количество ожидающих файлов для асинхронной вставки в распределенные таблицы. Количество файлов для каждого шард суммируется.
 
 ### DistributedSend {#distributedsend}
 
-Количество соединений с удаленными серверами, отправляющих данные, которые были INSERTированы в распределенные таблицы. Режим как синхронный, так и асинхронный.
+Количество подключений к удаленным серверам, отправляющим данные, которые были INSERTed в распределенные таблицы. Включает как синхронный, так и асинхронный режим.
 
 ### EphemeralNode {#ephemeralnode}
 
-Количество эфемерных узлов в ZooKeeper.
+Количество эфемерных узлов, хранящихся в ZooKeeper.
 
 ### FilesystemCacheElements {#filesystemcacheelements}
 
-Элементы кэша файловой системы (сегменты файлов).
+Элементы кеша файловой системы (сегменты файлов).
 
 ### FilesystemCacheReadBuffers {#filesystemcachereadbuffers}
 
@@ -280,7 +285,7 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### HTTPConnection {#httpconnection}
 
-Количество соединений с HTTP сервером.
+Количество подключений к HTTP-серверу.
 
 ### HashedDictionaryThreads {#hasheddictionarythreads}
 
@@ -292,11 +297,11 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### IOPrefetchThreads {#ioprefetchthreads}
 
-Количество потоков в пуле потоков предварительной выборки IO.
+Количество потоков в пуле потоков предварительной загрузки IO.
 
 ### IOPrefetchThreadsActive {#ioprefetchthreadsactive}
 
-Количество потоков в пуле потоков предварительной выборки IO, выполняющих задачу.
+Количество потоков в пуле потоков предварительной загрузки IO, выполняющих задачу.
 
 ### IOThreads {#iothreads}
 
@@ -308,11 +313,11 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### IOUringInFlightEvents {#iouringinflightevents}
 
-Количество SQE io_uring в полете.
+Количество IO_uring SQE в полете.
 
 ### IOUringPendingEvents {#iouringpendingevents}
 
-Количество ожидающих SQE io_uring, ждущих отправки.
+Количество IO_uring SQE, ожидающих отправки.
 
 ### IOWriterThreads {#iowriterthreads}
 
@@ -324,15 +329,15 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### InterserverConnection {#interserverconnection}
 
-Количество соединений от других реплик для извлечения частей.
+Количество подключений от других реплик для извлечения частей.
 
 ### KafkaAssignedPartitions {#kafkaassignedpartitions}
 
-Количество партиций, в которых таблицы Kafka в настоящее время назначены.
+Количество разделов, в Kafka таблицы, которые в настоящее время назначены.
 
 ### KafkaBackgroundReads {#kafkabackgroundreads}
 
-Количество фоновых чтений, которые в настоящее время работают (заполнение материализованных представлений из Kafka).
+Количество фоновых чтений, которые в настоящее время работают (заполняя материализованные представления из Kafka).
 
 ### KafkaConsumers {#kafkaconsumers}
 
@@ -344,7 +349,7 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### KafkaConsumersWithAssignment {#kafkaconsumerswithassignment}
 
-Количество активных потребителей Kafka, у которых есть некоторые назначенные партиции.
+Количество активных потребителей Kafka, которые имеют назначенные некоторые разделы.
 
 ### KafkaLibrdkafkaThreads {#kafkalibrdkafkathreads}
 
@@ -352,19 +357,19 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### KafkaProducers {#kafkaproducers}
 
-Количество активных созданных продюсеров Kafka.
+Количество активных созданных производителей Kafka.
 
 ### KafkaWrites {#kafkawrites}
 
-Количество сейчас выполняемых вставок в Kafka.
+Количество текущих вставок в Kafka.
 
 ### KeeperAliveConnections {#keeperaliveconnections}
 
-Количество живых соединений.
+Количество активных подключений.
 
 ### KeeperOutstandingRequests {#keeperoutstandingrequests}
 
-Количество неполученных запросов.
+Количество ожидающих запросов.
 
 ### LocalThread {#localthread}
 
@@ -376,47 +381,47 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### MMappedAllocBytes {#mmappedallocbytes}
 
-Общее количество байтов, выделенных для mmapped.
+Сумма байт mmapped аллокаций.
 
 ### MMappedAllocs {#mmappedallocs}
 
-Общее количество mmapped выделений.
+Общее количество mmapped аллокаций.
 
 ### MMappedFileBytes {#mmappedfilebytes}
 
-Общая размер mmapped-файловых регионов.
+Сумма размера mmapped регионов файлов.
 
 ### MMappedFiles {#mmappedfiles}
 
-Общее количество mmapped-файлов.
+Общее количество mmapped файлов.
 
 ### MarksLoaderThreads {#marksloaderthreads}
 
-Количество потоков в пуле потоков для загрузки марок.
+Количество потоков в пуле потоков для загрузки меток.
 
 ### MarksLoaderThreadsActive {#marksloaderthreadsactive}
 
-Количество потоков в пуле потоков для загрузки марок, выполняющих задачу.
+Количество потоков в пуле потоков для загрузки меток, выполняющих задачу.
 
 ### MaxDDLEntryID {#maxddlentryid}
 
-Максимальная обработанная запись DDL от DDLWorker.
+Максимальный обработанный DDL вход DDLWorker.
 
 ### MaxPushedDDLEntryID {#maxpushedddlentryid}
 
-Максимальная запись DDL от DDLWorker, отправленной в ZooKeeper.
+Максимальный DDL вход DDLWorker, который был отправлен в ZooKeeper.
 
 ### MemoryTracking {#memorytracking}
 
-Общее количество памяти (в байтах), выделенной сервером.
+Общее количество памяти (байты), выделенное сервером.
 
 ### Merge {#merge}
 
-Количество выполняемых фоновых объединений.
+Количество выполняемых фоновых слияний.
 
 ### MergeTreeAllRangesAnnouncementsSent {#mergetreeallrangesannouncementssent}
 
-Текующее количество объявлений, отправляемых в полете с удаленного сервера инициатору сервера о наборе частей данных (для таблиц MergeTree). Измеряется на стороне удаленного сервера.
+Текущее количество объявлений, отправляемых в полете с удаленного сервера на сервер инициатор о наборе частей данных (для таблиц MergeTree). Измеряется на стороне удаленного сервера.
 
 ### MergeTreeBackgroundExecutorThreads {#mergetreebackgroundexecutorthreads}
 
@@ -452,7 +457,7 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### MergeTreeReadTaskRequestsSent {#mergetreereadtaskrequestssent}
 
-Текующее количество запросов обратного вызова в полете с удаленного сервера обратно к инициатору для выбора задачи чтения (для таблиц MergeTree). Измеряется на стороне удаленного сервера.
+Текущее количество запросов обратного вызова в полете с удаленного сервера назад на сервер инициатор для выбора задачи чтения (для таблиц MergeTree). Измеряется на стороне удаленного сервера.
 
 ### Move {#move}
 
@@ -460,15 +465,15 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### MySQLConnection {#mysqlconnection}
 
-Количество клиентских соединений, использующих протокол MySQL.
+Количество клиентских подключений, использующих MySQL протокол.
 
 ### NetworkReceive {#networkreceive}
 
-Количество потоков, принимающих данные из сети. Включается только взаимодействие с сетью, относящееся к ClickHouse, не включая библиотеки третьих сторон.
+Количество потоков, получающих данные из сети. Включается только взаимодействие ClickHouse с сетью, не включая сторонние библиотеки.
 
 ### NetworkSend {#networksend}
 
-Количество потоков, отправляющих данные в сеть. Включается только взаимодействие с сетью, относящееся к ClickHouse, не включая библиотеки третьих сторон.
+Количество потоков, отправляющих данные в сеть. Включается только взаимодействие ClickHouse с сетью, не включая сторонние библиотеки.
 
 ### OpenFileForRead {#openfileforread}
 
@@ -504,7 +509,7 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### PartsCommitted {#partscommitted}
 
-Устарело. См. PartsActive.
+Устарело. Смотрите PartsActive.
 
 ### PartsCompact {#partscompact}
 
@@ -512,15 +517,15 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### PartsDeleteOnDestroy {#partsdeleteondestroy}
 
-Часть перемещена на другой диск и должна быть удалена в собственном деструкторе.
+Часть была перемещена на другой диск и должна быть удалена в собственном деструкторе.
 
 ### PartsDeleting {#partsdeleting}
 
-Неактивная часть данных с счетчиком ссылок, которая сейчас удаляется очищающим процессом.
+Неактивная часть данных с идентификатором счетчика ссылок, в данный момент удаляется очистителем.
 
 ### PartsOutdated {#partsoutdated}
 
-Неактивная часть данных, но может быть использована только текущими SELECT; может быть удалена после завершения SELECT.
+Неактивная часть данных, но может использоваться только текущими SELECT, может быть удалена после завершения SELECT.
 
 ### PartsPreActive {#partspreactive}
 
@@ -528,11 +533,11 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### PartsPreCommitted {#partsprecommitted}
 
-Устарело. См. PartsPreActive.
+Устарело. Смотрите PartsPreActive.
 
 ### PartsTemporary {#partstemporary}
 
-Часть сейчас создается, она не в списке data_parts.
+Часть в данный момент генерируется, она не в списке data_parts.
 
 ### PartsWide {#partswide}
 
@@ -540,11 +545,11 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### PendingAsyncInsert {#pendingasyncinsert}
 
-Количество асинхронных вставок, ожидающих сброса.
+Количество асинхронных вставок, которые ждут сброса.
 
 ### PostgreSQLConnection {#postgresqlconnection}
 
-Количество клиентских соединений, использующих протокол PostgreSQL.
+Количество клиентских подключений, использующих PostgreSQL протокол.
 
 ### Query {#query}
 
@@ -568,31 +573,31 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### RWLockWaitingReaders {#rwlockwaitingreaders}
 
-Количество потоков, ожидающих чтения в RWLock таблицы.
+Количество потоков, ожидающих чтения на RWLock таблице.
 
 ### RWLockWaitingWriters {#rwlockwaitingwriters}
 
-Количество потоков, ожидающих записи в RWLock таблицы.
+Количество потоков, ожидающих записи на RWLock таблице.
 
 ### Read {#read}
 
-Количество системных вызовов на чтение (read, pread, io_getevents и т.д.) в полете.
+Количество системных вызовов чтения (read, pread, io_getevents и т.д.) в полете.
 
 ### ReadTaskRequestsSent {#readtaskrequestssent}
 
-Текующее количество запросов обратного вызова в полете с удаленного сервера обратно к инициатору для выбора задачи чтения (для функции таблицы s3Cluster и аналогичных). Измеряется на стороне удаленного сервера.
+Текущее количество запросов обратного вызова в полете с удаленного сервера назад на сервер инициатор для выбора задачи чтения (для функции таблицы s3Cluster и подобных). Измеряется на стороне удаленного сервера.
 
 ### ReadonlyReplica {#readonlyreplica}
 
-Количество реплицированных таблиц, которые в настоящее время находятся в режиме только для чтения из-за повторной инициализации после потери сессии ZooKeeper или из-за запуска без настройки ZooKeeper.
+Количество реплицированных таблиц, которые в настоящее время находятся в состоянии только для чтения из-за повторной инициализации после потери сессии ZooKeeper или из-за запуска без настроенной ZooKeeper.
 
 ### RemoteRead {#remoteread}
 
-Количество чтений с удаленным считывателем в полете.
+Количество чтений с удаленным читателем в полете.
 
 ### ReplicatedChecks {#replicatedchecks}
 
-Количество частей данных, проверяющих согласованность.
+Количество проверок частей данных на согласованность.
 
 ### ReplicatedFetch {#replicatedfetch}
 
@@ -620,7 +625,7 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### Revision {#revision}
 
-Ревизия сервера. Это число, увеличиваемое для каждого релиза или релиза-кандидата, кроме патч-релизов.
+Ревизия сервера. Это число увеличивается для каждого релиза или кандидата релиза, кроме патч-версий.
 
 ### S3Requests {#s3requests}
 
@@ -628,11 +633,11 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### SendExternalTables {#sendexternaltables}
 
-Количество соединений, отправляющих данные для внешних таблиц на удаленные серверы. Внешние таблицы используются для реализации операторов GLOBAL IN и GLOBAL JOIN с распределенными подзапросами.
+Количество подключений, отправляющих данные для внешних таблиц на удаленные серверы. Внешние таблицы используются для реализации операторов GLOBAL IN и GLOBAL JOIN с распределенными подзапросами.
 
 ### SendScalars {#sendscalars}
 
-Количество соединений, отправляющих данные для скаляров на удаленные серверы.
+Количество подключений, отправляющих данные для скаляров на удаленные серверы.
 
 ### StorageBufferBytes {#storagebufferbytes}
 
@@ -676,11 +681,11 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### TCPConnection {#tcpconnection}
 
-Количество соединений с TCP сервером (клиенты с нативным интерфейсом), также включаются соединения сервер-сервер для распределенных запросов.
+Количество подключений к TCP-серверу (клиенты с родным интерфейсом), также включены сервер-серверные распределенные запросы.
 
 ### TablesToDropQueueSize {#tablestodropqueuesize}
 
-Количество удаленных таблиц, ожидающих удаления данных в фоновом режиме.
+Количество удаленных таблиц, которые ожидают фонового удаления данных.
 
 ### TemporaryFilesForAggregation {#temporaryfilesforaggregation}
 
@@ -724,11 +729,11 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### VersionInteger {#versioninteger}
 
-Версия сервера в едином целочисленном формате в базе 1000. Например, версия 11.22.33 переводится в 11022033.
+Версия сервера в одном целочисленном числе в базе-1000. Например, версия 11.22.33 переводится в 11022033.
 
 ### Write {#write}
 
-Количество системных вызовов на запись (write, pwrite, io_getevents и т.д.) в полете.
+Количество системных вызовов записи (write, pwrite, io_getevents и т.д.) в полете.
 
 ### ZooKeeperRequest {#zookeeperrequest}
 
@@ -736,23 +741,23 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### ZooKeeperSession {#zookeepersession}
 
-Количество сессий (соединений) к ZooKeeper. Не должно быть более одной, так как использование более чем одного соединения с ZooKeeper может привести к ошибкам из-за отсутствия линейности (устаревшие чтения), что позволяет модель согласованности ZooKeeper.
+Количество сессий (подключений) к ZooKeeper. Не должно быть более одной, так как использование более одной сессии к ZooKeeper может привести к ошибкам из-за отсутствия линейности (устаревшие чтения), которые допускает модель согласованности ZooKeeper.
 
 ### ZooKeeperWatch {#zookeeperwatch}
 
-Количество подписок (подписок на события) в ZooKeeper.
+Количество наблюдений (подписок на события) в ZooKeeper.
 
 ### ConcurrencyControlAcquired {#concurrencycontrolacquired}
 
-Общее количество занятых слотов ЦП.
+Общее количество захваченных слотов CPU.
 
 ### ConcurrencyControlSoftLimit {#concurrencycontrolsoftlimit}
 
-Значение мягкого предела на количество слотов ЦП.
+Значение мягкого ограничения на количество слотов CPU.
 
 **Смотрите также**
 
-- [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) — Содержит периодически вычисляемые метрики.
+- [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) — Содержит периодически рассчитываемые метрики.
 - [system.events](/operations/system-tables/events) — Содержит количество произошедших событий.
 - [system.metric_log](/operations/system-tables/metric_log) — Содержит историю значений метрик из таблиц `system.metrics` и `system.events`.
-- [Monitoring](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.
+- [Мониторинг](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.

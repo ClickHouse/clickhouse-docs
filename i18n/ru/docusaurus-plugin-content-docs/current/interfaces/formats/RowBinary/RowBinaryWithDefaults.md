@@ -1,10 +1,11 @@
 ---
-title: RowBinaryWithDefaults
-slug: /interfaces/formats/RowBinaryWithDefaults
-keywords: ['RowBinaryWithDefaults']
-input_format: true
-output_format: false
 alias: []
+description: 'Документация для формата RowBinaryWithDefaults'
+input_format: true
+keywords: ['RowBinaryWithDefaults']
+output_format: false
+slug: /interfaces/formats/RowBinaryWithDefaults
+title: 'RowBinaryWithDefaults'
 ---
 
 import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settings.md'
@@ -15,7 +16,7 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 
 ## Описание {#description}
 
-Аналогично формату [`RowBinary`](./RowBinary.md), но с дополнительным байтом перед каждой колонкой, который указывает, следует ли использовать значение по умолчанию.
+Похож на формат [`RowBinary`](./RowBinary.md), но с дополнительным байтом перед каждым столбцом, который указывает, следует ли использовать значение по умолчанию.
 
 ## Пример использования {#example-usage}
 
@@ -30,8 +31,8 @@ SELECT * FROM FORMAT('RowBinaryWithDefaults', 'x UInt32 default 42, y UInt32', x
 └────┴───┘
 ```
 
-- Для колонки `x` есть только один байт `01`, который указывает, что следует использовать значение по умолчанию, и данные после этого байта не предоставляются.
-- Для колонки `y` данные начинаются с байта `00`, который указывает, что колонка содержит фактическое значение, которое следует считать из последующих данных `01000000`.
+- Для столбца `x` есть только один байт `01`, который указывает, что следует использовать значение по умолчанию, и после этого байта никаких других данных не предоставляется.
+- Для столбца `y` данные начинаются с байта `00`, который указывает, что столбец имеет актуальное значение, которое следует читать из последующих данных `01000000`.
 
 ## Настройки формата {#format-settings}
 

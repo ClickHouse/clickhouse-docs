@@ -1,9 +1,10 @@
 ---
 slug: /guides/developer/time-series-filling-gaps
-sidebar_label: Time Series - Gap Fill
+sidebar_label: 'Time Series - Gap Fill'
 sidebar_position: 10
-description: Filling gaps in time-series data.
-keywords: [time series, gap fill]
+description: 'Filling gaps in time-series data.'
+keywords: ['time series', 'gap fill']
+title: 'Filling gaps in time-series data'
 ---
 
 # Filling gaps in time-series data
@@ -300,7 +301,7 @@ INTERPOLATE (cumulative);
 ```
 
 That looks much better. 
-And now to finish it off, let's add a bar chart using the `bar` function, not forgetting to add our new column to the `INTERPPOLATE` clause.
+And now to finish it off, let's add a bar chart using the `bar` function, not forgetting to add our new column to the `INTERPOLATE` clause.
 
 ```sql
 SELECT

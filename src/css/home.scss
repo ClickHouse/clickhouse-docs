@@ -50,14 +50,14 @@
 
   @media (min-width: 768px) {
     flex-direction: row;
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+    padding-right: 2rem;
   }
 }
 
 .home-page-hero-left {
-  text-align: left;
-  padding-bottom: 2rem;
+  align-self: center;
+  padding: 2rem 0rem;
+  flex: 1;
 
   @media (min-width: 768px) {
     padding-right: 2rem;
@@ -68,11 +68,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  gap: 20px;
 
   @media (min-width: 768px) {
     flex-direction: row;
     flex: 1;
-    justify-content: center;
+    justify-content: space-between;
   }
 }
 
@@ -89,7 +92,6 @@
   width: 100%;
 
   @media (min-width: 768px) {
-    margin-right: 24px;
     margin-bottom: 0;
     width: 200px;
   }
@@ -126,13 +128,11 @@
   width: 100%;
   flex-direction: row;
   align-items: center;
-  padding: 8px;
   cursor: pointer;
 
   @media (min-width: 768px) {
     marginBottom: 4rem;
     width: 210px;
-    margin-right: 2rem;
   }
 }
 
@@ -157,7 +157,6 @@
   // background-color: rgb(250, 250, 250);
   border-radius: 4px;
   margin-right: 16px;
-  padding: 6px;
 }
 
 [data-theme='dark'] .home-page-option-icon {
@@ -172,7 +171,6 @@
 .home-page-button-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 
   @media (min-width: 768px) {
@@ -198,6 +196,38 @@
     flex-direction: row;
     padding-top: 2rem;
     padding-bottom: 2rem;
+  }
+}
+
+.home-page-section-search {
+  display: flex;
+  flex-direction: row;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--click-color-stroke);
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    padding-right: 2rem;
+    justify-content: space-between;
+  }
+}
+
+.home-page-hero-right-search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: right;
+  flex: 1;
+  max-width: 465px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    flex: 1;
+    justify-content: right;
   }
 }
 
@@ -237,8 +267,9 @@ img.home-svg svg path {
 }
 
 .home-container {
-  @media (min-width: 768px) {
-    padding-left: 4rem !important;
-  }
+  display: flex;
+  flex-direction: column;
+  max-width: 1000px;
+  justify-self: center;
 }
 

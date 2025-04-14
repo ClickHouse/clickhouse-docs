@@ -4,7 +4,6 @@ node_modules
 build
 docs/development
 docs/engines
-docs/getting-started
 docs/interfaces
 docs/operations
 docs/sql-reference
@@ -29,6 +28,7 @@ yarn.lock
 yarn.error-log
 .comments
 yarn-error.log
+frontmatter-validation-errors.log
 
 # Output files used by scripts to verify links
 sidebar_links.txt
@@ -49,6 +49,8 @@ docs/cloud/manage/api/privateEndpointConfig-api-reference.md
 docs/cloud/manage/api/prometheus-api-reference.md
 docs/cloud/manage/api/usageCost-api-reference.md
 docs/whats-new/changelog/index.md
+docs/settings/beta-and-experimental-features.md
+
 .vscode
 .aspell.en.prepl
 *.md.bak
@@ -57,5 +59,8 @@ docs/whats-new/changelog/index.md
 **.translate
 ClickHouse/
 
-# Ignore generated table of contents files
+
+# Ignore table of contents files
 docs/cloud/reference/release-notes-index.md
+docs/whats-new/changelog/index.md
+docs/cloud/manage/api/api-reference-index.md

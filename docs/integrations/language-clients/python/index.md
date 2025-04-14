@@ -1,10 +1,12 @@
 ---
-sidebar_label: Python
+sidebar_label: 'Python'
 sidebar_position: 10
-keywords: [clickhouse, python, client, connect, integrate]
+keywords: ['clickhouse', 'python', 'client', 'connect', 'integrate']
 slug: /integrations/python
-description: The ClickHouse Connect project suite for connecting Python to ClickHouse
+description: 'The ClickHouse Connect project suite for connecting Python to ClickHouse'
+title: 'Python Integration with ClickHouse Connect'
 ---
+
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
 # Python Integration with ClickHouse Connect

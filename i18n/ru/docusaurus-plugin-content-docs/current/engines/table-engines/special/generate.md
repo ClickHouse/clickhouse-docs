@@ -1,28 +1,27 @@
 ---
-slug: /engines/table-engines/special/generate
+description: 'Движок таблиц GenerateRandom генерирует случайные данные для заданной схемы таблицы.'
+sidebar_label: 'GenerateRandom'
 sidebar_position: 140
-sidebar_label:  Генерация случайных данных
-title: "Генерация случайных данных с помощью таблицы"
-description: "Движок таблицы GenerateRandom создает случайные данные для заданной схемы таблицы."
+slug: /engines/table-engines/special/generate
+title: 'Движок таблиц GenerateRandom'
 ---
 
-Движок таблицы GenerateRandom создает случайные данные для заданной схемы таблицы.
+Движок таблиц GenerateRandom генерирует случайные данные для заданной схемы таблицы.
 
 Примеры использования:
 
-- Используйте в тестах для заполнения воспроизводимой крупной таблицы.
-- Генерируйте случайное входное значение для тестов на fuzzing.
+- Используйте в тестах для заполнения воспроизводимой большой таблицы.
+- Генерируйте случайный ввод для тестов на устойчивость.
 
 ## Использование в ClickHouse Server {#usage-in-clickhouse-server}
 
-``` sql
+```sql
 ENGINE = GenerateRandom([random_seed [,max_string_length [,max_array_length]]])
 ```
 
-Параметры `max_array_length` и `max_string_length` задают максимальную длину всех
-колонок массивов или отображений и строк соответственно в сгенерированных данных.
+Параметры `max_array_length` и `max_string_length` задают максимальную длину всех массивов или колонок типа map и строк соответственно в сгенерированных данных.
 
-Движок генерации таблицы поддерживает только запросы `SELECT`.
+Движок генерации таблиц поддерживает только запросы `SELECT`.
 
 Он поддерживает все [DataTypes](../../../sql-reference/data-types/index.md), которые могут храниться в таблице, кроме `AggregateFunction`.
 
@@ -30,17 +29,17 @@ ENGINE = GenerateRandom([random_seed [,max_string_length [,max_array_length]]])
 
 **1.** Настройте таблицу `generate_engine_table`:
 
-``` sql
+```sql
 CREATE TABLE generate_engine_table (name String, value UInt32) ENGINE = GenerateRandom(1, 5, 3)
 ```
 
 **2.** Запросите данные:
 
-``` sql
+```sql
 SELECT * FROM generate_engine_table LIMIT 3
 ```
 
-``` text
+```text
 ┌─name─┬──────value─┐
 │ c4xJ │ 1412771199 │
 │ r    │ 1791099446 │
@@ -48,9 +47,9 @@ SELECT * FROM generate_engine_table LIMIT 3
 └──────┴────────────┘
 ```
 
-## Детали реализации {#details-of-implementation}
+## Подробности реализации {#details-of-implementation}
 
-- Не поддерживается:
+- Не поддерживаются:
     - `ALTER`
     - `SELECT ... SAMPLE`
     - `INSERT`

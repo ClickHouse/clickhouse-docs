@@ -1,8 +1,8 @@
 ---
-title: Migrating from Rockset
+title: 'Migrating from Rockset'
 slug: /migrations/rockset
-description: Migrating from Rockset to ClickHouse
-keywords: [migrate, migration, migrating, data, etl, elt, Rockset]
+description: 'Migrating from Rockset to ClickHouse'
+keywords: ['migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'Rockset']
 ---
 
 # Migrating from Rockset

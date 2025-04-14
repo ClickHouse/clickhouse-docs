@@ -1,7 +1,8 @@
 ---
-sidebar_label: Shared Responsibility Model
+sidebar_label: 'Shared Responsibility Model'
 slug: /cloud/security/shared-responsibility-model
-title: Security Shared Responsibility Model
+title: 'Security Shared Responsibility Model'
+description: 'Learn more about the security model of ClickHouse Cloud'
 ---
 
 ## Service types {#service-types}
@@ -59,7 +60,7 @@ The model below generally addresses ClickHouse responsibilities and shows respon
   | [Standard role-based access](/cloud/security/cloud-access-management) in control plane | Available | AWS, GCP, Azure | All               | 
   | [Multi-factor authentication (MFA)](/cloud/security/cloud-authentication#multi-factor-authentication) available | Available | AWS, GCP, Azure | All   |
   | [SAML Single Sign-On](/cloud/security/saml-setup) to control plane available                 | Preview   | AWS, GCP, Azure   | Enterprise              |
-  | Granular [role-based access control](/cloud/security/cloud-access-management/overview#database-roles) in databases | Available | AWS, GCP, Azure | All          |
+  | Granular [role-based access control](/cloud/security/cloud-access-management/overview#database-permissions) in databases | Available | AWS, GCP, Azure | All          |
   
 </details>
 <details>

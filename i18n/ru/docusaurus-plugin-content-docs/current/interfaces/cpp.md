@@ -1,15 +1,17 @@
 ---
-slug: /interfaces/cpp
+description: 'Документация для C++ библиотеки клиента ClickHouse и интеграции с фреймворком u-server'
+sidebar_label: 'C++ Клиентская Библиотека'
 sidebar_position: 24
-sidebar_label: C++ клиентская библиотека
+slug: /interfaces/cpp
+title: 'C++ Клиентская Библиотека'
 ---
 
 
-# C++ клиентская библиотека
+# C++ Клиентская Библиотека
 
-Смотрите файл README в репозитории [clickhouse-cpp](https://github.com/ClickHouse/clickhouse-cpp).
+Смотрите README в [clickhouse-cpp](https://github.com/ClickHouse/clickhouse-cpp) репозитории.
 
 
-# userver Асинхронный фреймворк
+# userver Асинхронный Фреймворк
 
 [userver (beta)](https://github.com/userver-framework/userver) имеет встроенную поддержку для ClickHouse.

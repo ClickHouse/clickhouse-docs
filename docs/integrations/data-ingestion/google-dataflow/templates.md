@@ -1,11 +1,16 @@
 ---
-sidebar_label: Templates
+sidebar_label: 'Templates'
 slug: /integrations/google-dataflow/templates
 sidebar_position: 3
-description: Users can ingest data into ClickHouse using Google Dataflow Templates
+description: 'Users can ingest data into ClickHouse using Google Dataflow Templates'
+title: 'Google Dataflow Templates'
 ---
 
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+
 # Google Dataflow Templates
+
+<ClickHouseSupportedBadge/>
 
 Google Dataflow templates provide a convenient way to execute prebuilt, ready-to-use data pipelines without the need to write custom code. These templates are designed to simplify common data processing tasks and are built using [Apache Beam](https://beam.apache.org/), leveraging connectors like `ClickHouseIO` for seamless integration with ClickHouse databases. By running these templates on Google Dataflow, you can achieve highly scalable, distributed data processing with minimal effort.
 

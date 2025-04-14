@@ -15,6 +15,10 @@ function skipIndex(items) {
 const config = {
   scripts: [
     {
+      src: "/docs/zh/js/kapa_config.js",
+      async: false,
+    },
+    {
       src: "https://widget.kapa.ai/kapa-widget.bundle.js",
       "data-website-id": "c0b5f156-1e92-49df-8252-adacc9feb21b",
       "data-project-name": "ClickHouse",
@@ -43,7 +47,7 @@ const config = {
   },
   title: "ClickHouse Docs",
   tagline:
-      "我们提供文档、快速入门指南、用户指南、技术参考、常见问题解答等多种信息。",
+    "我们提供文档、快速入门指南、用户指南、技术参考、常见问题解答等多种信息。",
   url: "https://clickhouse.com",
   // url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
   baseUrl: "/docs/zh/",
@@ -57,7 +61,7 @@ const config = {
   trailingSlash: false,
   i18n: {
     defaultLocale: "zh",
-    locales: ["en", "jp", "zh"],
+    locales: ["en", "jp", "zh", "ru"],
     path: "i18n",
     localeConfigs: {
       en: {
@@ -75,6 +79,11 @@ const config = {
         htmlLang: "zh",
         path: "zh",
       },
+      ru: {
+        label: "Русский",
+        htmlLang: "ru",
+        path: "ru",
+      }
     },
   },
   staticDirectories: ["static"],
@@ -189,6 +198,13 @@ const config = {
         rel: "preconnect",
       },
     },
+    {
+      tagName: 'img',
+      attributes: {
+        referrerPolicy: 'no-referrer-when-downgrade',
+        src: 'https://static.scarf.sh/a.png?x-pxid=e6377503-591b-4886-9398-e69c7fee0b91',
+      },
+    },
   ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
@@ -243,7 +259,7 @@ const config = {
       prism: {
         theme: themes.darkTheme,
         darkTheme: themes.darkTheme,
-        additionalLanguages: ["java", "cpp", "rust"],
+        additionalLanguages: ["java", "cpp", "rust", "python", "javascript"],
         magicComments: [
           // Remember to extend the default highlight class name as well!
           {
@@ -281,6 +297,7 @@ const config = {
       },
     ],
     chHeader,
+    ['./plugins/tailwind-config.js', {}],
   ],
   customFields: {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page

@@ -1,0 +1,5 @@
+{
+    "russian": {
+        "In this case it would be likely that the same UserID value is spread over multiple table rows and granules and therefore index marks.": "В этом случае вполне вероятно, что одно и то же значение userId распределено по нескольким строкам таблицы и, следовательно, по индексным меткам."
+    }
+}

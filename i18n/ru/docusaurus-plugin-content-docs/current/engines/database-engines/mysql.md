@@ -1,43 +1,44 @@
 ---
-slug: /engines/database-engines/mysql
+description: 'Позволяет подключаться к базам данных на удалённом сервере MySQL и выполнять
+  запросы `INSERT` и `SELECT` для обмена данными между ClickHouse и MySQL.'
+sidebar_label: 'MySQL'
 sidebar_position: 50
-sidebar_label: MySQL
-title: "MySQL"
-description: "Позволяет подключаться к базам данных на удалённом сервере MySQL и выполнять `INSERT` и `SELECT` запросы для обмена данными между ClickHouse и MySQL."
+slug: /engines/database-engines/mysql
+title: 'MySQL'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# MySQL Движок Базы Данных
+# Движок баз данных MySQL
 
 <CloudNotSupportedBadge />
 
-Позволяет подключаться к базам данных на удалённом сервере MySQL и выполнять `INSERT` и `SELECT` запросы для обмена данными между ClickHouse и MySQL.
+Позволяет подключаться к базам данных на удалённом сервере MySQL и выполнять запросы `INSERT` и `SELECT` для обмена данными между ClickHouse и MySQL.
 
-Движок базы данных `MySQL` переводит запросы на сервер MySQL, чтобы вы могли выполнять операции, такие как `SHOW TABLES` или `SHOW CREATE TABLE`.
+Движок базы данных `MySQL` переводит запросы на сервер MySQL, позволяя выполнять операции, такие как `SHOW TABLES` или `SHOW CREATE TABLE`.
 
-Вы не можете выполнять следующие запросы:
+Вы не можете выполнить следующие запросы:
 
 - `RENAME`
 - `CREATE TABLE`
 - `ALTER`
 
-## Создание Базы Данных {#creating-a-database}
+## Создание базы данных {#creating-a-database}
 
-``` sql
+```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
 ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 ```
 
-**Параметры Движка**
+**Параметры движка**
 
 - `host:port` — адрес сервера MySQL.
 - `database` — имя удалённой базы данных.
 - `user` — пользователь MySQL.
 - `password` — пароль пользователя.
 
-## Поддержка Типов Данных {#data_types-support}
+## Поддержка типов данных {#data_types-support}
 
 | MySQL                            | ClickHouse                                                   |
 |----------------------------------|--------------------------------------------------------------|
@@ -57,31 +58,31 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 
 Все остальные типы данных MySQL преобразуются в [String](../../sql-reference/data-types/string.md).
 
-Поддерживается [Nullable](../../sql-reference/data-types/nullable.md).
+[Nullable](../../sql-reference/data-types/nullable.md) поддерживается.
 
-## Поддержка Глобальных Переменных {#global-variables-support}
+## Поддержка глобальных переменных {#global-variables-support}
 
-Для лучшей совместимости вы можете ссылаться на глобальные переменные в стиле MySQL, как `@@identifier`.
+Для лучшей совместимости вы можете адресовать глобальные переменные в стиле MySQL, используя `@@identifier`.
 
-Поддерживаются следующие переменные:
+Эти переменные поддерживаются:
 - `version`
 - `max_allowed_packet`
 
 :::note
-В настоящее время эти переменные являются заглушками и не соответствуют ничему.
+На данный момент эти переменные являются заглушками и не соответствуют ничему.
 :::
 
 Пример:
 
-``` sql
+```sql
 SELECT @@version;
 ```
 
-## Примеры Использования {#examples-of-use}
+## Примеры использования {#examples-of-use}
 
 Таблица в MySQL:
 
-``` text
+```text
 mysql> USE test;
 Database changed
 
@@ -103,17 +104,17 @@ mysql> select * from mysql_table;
 1 row in set (0,00 sec)
 ```
 
-База данных в ClickHouse, обмен данными с сервером MySQL:
+База данных в ClickHouse, обменивающаяся данными с сервером MySQL:
 
-``` sql
+```sql
 CREATE DATABASE mysql_db ENGINE = MySQL('localhost:3306', 'test', 'my_user', 'user_password') SETTINGS read_write_timeout=10000, connect_timeout=100;
 ```
 
-``` sql
+```sql
 SHOW DATABASES
 ```
 
-``` text
+```text
 ┌─name─────┐
 │ default  │
 │ mysql_db │
@@ -121,35 +122,35 @@ SHOW DATABASES
 └──────────┘
 ```
 
-``` sql
+```sql
 SHOW TABLES FROM mysql_db
 ```
 
-``` text
+```text
 ┌─name─────────┐
 │  mysql_table │
 └──────────────┘
 ```
 
-``` sql
+```sql
 SELECT * FROM mysql_db.mysql_table
 ```
 
-``` text
+```text
 ┌─int_id─┬─value─┐
 │      1 │     2 │
 └────────┴───────┘
 ```
 
-``` sql
+```sql
 INSERT INTO mysql_db.mysql_table VALUES (3,4)
 ```
 
-``` sql
+```sql
 SELECT * FROM mysql_db.mysql_table
 ```
 
-``` text
+```text
 ┌─int_id─┬─value─┐
 │      1 │     2 │
 │      3 │     4 │

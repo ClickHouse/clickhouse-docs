@@ -1,8 +1,8 @@
 ---
 description: 'Системная таблица, содержащая информацию о существующих индексах пропуска данных во всех таблицах.'
+keywords: ['системная таблица', 'индексы_пропуска_данных']
 slug: /operations/system-tables/data_skipping_indices
 title: 'system.data_skipping_indices'
-keywords: ['системная таблица', 'data_skipping_indices']
 ---
 
 Содержит информацию о существующих индексах пропуска данных во всех таблицах.
@@ -17,7 +17,7 @@ keywords: ['системная таблица', 'data_skipping_indices']
 - `expr` ([String](../../sql-reference/data-types/string.md)) — Выражение для вычисления индекса.
 - `granularity` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество гранул в блоке.
 - `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер сжатых данных в байтах.
-- `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер распакованных данных в байтах.
+- `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер несжатых данных в байтах.
 - `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер меток в байтах.
 
 **Пример**
@@ -27,7 +27,7 @@ SELECT * FROM system.data_skipping_indices LIMIT 2 FORMAT Vertical;
 ```
 
 ```text
-Строка 1:
+Row 1:
 ──────
 database:    default
 table:       user_actions
@@ -40,7 +40,7 @@ data_compressed_bytes:   58
 data_uncompressed_bytes: 6
 marks_bytes:             48
 
-Строка 2:
+Row 2:
 ──────
 database:    default
 table:       users

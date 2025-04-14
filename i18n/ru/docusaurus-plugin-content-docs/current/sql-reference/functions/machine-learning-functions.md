@@ -1,15 +1,17 @@
 ---
-slug: /sql-reference/functions/machine-learning-functions
+description: 'Документация для функций машинного обучения'
+sidebar_label: 'Машинное обучение'
 sidebar_position: 115
-sidebar_label: Машинное Обучение
+slug: /sql-reference/functions/machine-learning-functions
+title: 'Функции машинного обучения'
 ---
 
 
-# Функции Машинного Обучения
+# Функции машинного обучения
 
 ## evalMLMethod {#evalmlmethod}
 
-Предсказание с использованием обученных моделей регрессии осуществляется с помощью функции `evalMLMethod`. См. ссылку в `linearRegression`.
+Предсказание с использованием подогнанных регрессионных моделей осуществляется с помощью функции `evalMLMethod`. Смотрите ссылку в `linearRegression`.
 
 ## stochasticLinearRegression {#stochasticlinearregression}
 

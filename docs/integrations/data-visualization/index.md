@@ -1,7 +1,10 @@
 ---
-sidebar_label: Overview
+sidebar_label: 'Overview'
 sidebar_position: 1
-keywords: [ClickHouse, connect, Luzmo, Explo, Tableau, Grafana, Metabase, Mitzu, superset, Deepnote, Draxlr, RocketBI, Omni, bi, visualization, tool]
+keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'bi', 'visualization', 'tool']
+title: 'Visualizing Data in ClickHouse'
+slug: /integrations/data-visualization
+description: 'Learn about Visualizing Data in ClickHouse'
 ---
 
 # Visualizing Data in ClickHouse
@@ -23,6 +26,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 
 - [Apache Superset](./superset-and-clickhouse.md)
 - [Astrato](./astrato-and-clickhouse.md)
+- [Chartbrew](./chartbrew-and-clickhouse.md)
 - [Deepnote](./deepnote.md)
 - [Draxlr](./draxlr-and-clickhouse.md)
 - [Explo](./explo-and-clickhouse.md)
@@ -44,6 +48,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 | [Apache Superset](./superset-and-clickhouse.md)      | ClickHouse official connector | ✅      | ✅          |                                                                                                                                         |
 | [Astrato](./astrato-and-clickhouse.md)      | Native connector | ✅      | ✅          | Works natively using pushdown SQL (direct query only). |
 | [AWS QuickSight](./quicksight-and-clickhouse.md)     | MySQL interface               | ✅      | ✅          | Works with some limitations, see [the documentation](./quicksight-and-clickhouse.md) for more details                |
+| [Chartbrew](./chartbrew-and-clickhouse.md)           | ClickHouse official connector              | ✅      | ✅          |                                                                                                                                         |
 | [Deepnote](./deepnote.md)                            | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Explo](./explo-and-clickhouse.md)                   | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Grafana](./grafana/index.md)                        | ClickHouse official connector | ✅      | ✅          |                                                                                                                                         |

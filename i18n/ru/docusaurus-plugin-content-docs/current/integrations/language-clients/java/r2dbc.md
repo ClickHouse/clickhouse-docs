@@ -1,9 +1,10 @@
 ---
-sidebar_label: R2DBC Драйвер
+sidebar_label: 'R2DBC Драйвер'
 sidebar_position: 5
-keywords: [clickhouse, java, драйвер, интеграция, r2dbc]
-description: Драйвер R2DBC для ClickHouse
+keywords: ['clickhouse', 'java', 'драйвер', 'интеграция', 'r2dbc']
+description: 'ClickHouse R2DBC Драйвер'
 slug: /integrations/java/r2dbc
+title: 'R2DBC драйвер'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,14 +12,15 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 
+# R2DBC драйвер
 
 ## R2DBC драйвер {#r2dbc-driver}
 
-[R2DBC](https://r2dbc.io/) раппер асинхронного Java клиента для ClickHouse.
+Обертка [R2DBC](https://r2dbc.io/) для асинхронного Java клиента ClickHouse.
 
-### Требования к среде {#environment-requirements}
+### Требования к окружению {#environment-requirements}
 
-- [OpenJDK](https://openjdk.java.net) версии >= 8
+- [OpenJDK](https://openjdk.java.net) версия >= 8
 
 ### Настройка {#setup}
 
@@ -28,7 +30,7 @@ import CodeBlock from '@theme/CodeBlock';
     <!-- измените на clickhouse-r2dbc_0.9.1 для SPI 0.9.1.RELEASE -->
     <artifactId>clickhouse-r2dbc</artifactId>
     <version>0.7.1</version>
-    <!-- используйте uber jar с включенными всеми зависимостями, измените классификатор на http или grpc для меньшего jar файла -->
+    <!-- используйте uber jar со всеми включенными зависимостями, измените классификатор на http или grpc для меньшего jar -->
     <classifier>all</classifier>
     <exclusions>
         <exclusion>

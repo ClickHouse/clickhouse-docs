@@ -1,9 +1,10 @@
 ---
-sidebar_label: MySQL
+sidebar_label: 'MySQL'
 sidebar_position: 10
 slug: /integrations/connecting-to-mysql
-description: The MySQL table engine allows you to connect ClickHouse to MySQL.
-keywords: [clickhouse, mysql, connect, integrate, table, engine]
+description: 'The MySQL table engine allows you to connect ClickHouse to MySQL.'
+keywords: ['clickhouse', 'mysql', 'connect', 'integrate', 'table', 'engine']
+title: 'Integrating MySQL with ClickHouse'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -11,7 +12,11 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 # Integrating MySQL with ClickHouse
 
-This page covers using the `MySQL` table engine, for reading from a MySQL table
+This page covers using the `MySQL` table engine, for reading from a MySQL table.
+
+:::note
+For ClickHouse Cloud, you can also use the [MySQL ClickPipe](/integrations/clickpipes/mysql) (currently in Private Preview) to easily move data from your MySQL tables to ClickHouse.
+:::
 
 ## Connecting ClickHouse to MySQL using the MySQL Table Engine {#connecting-clickhouse-to-mysql-using-the-mysql-table-engine}
 

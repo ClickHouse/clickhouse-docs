@@ -1,9 +1,10 @@
 ---
-sidebar_label: JDBC 0.8+
+sidebar_label: 'JDBC 0.8+'
 sidebar_position: 4
-keywords: [clickhouse, java, jdbc, driver, integrate]
-description: ClickHouse JDBC driver
+keywords: ['clickhouse', 'java', 'jdbc', 'driver', 'integrate']
+description: 'ClickHouse JDBC driver'
 slug: /integrations/language-clients/java/jdbc
+title: 'JDBC Driver (0.8+)'
 ---
 
 import Tabs from '@theme/Tabs';

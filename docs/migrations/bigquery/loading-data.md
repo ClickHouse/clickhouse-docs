@@ -1,9 +1,9 @@
 ---
-sidebar_label: Loading data
-title: Loading data from BigQuery to ClickHouse
+sidebar_label: 'Loading data'
+title: 'Loading data from BigQuery to ClickHouse'
 slug: /migrations/bigquery/loading-data
-description: How to load data from BigQuery to ClickHouse
-keywords: [migrate, migration, migrating, data, etl, elt, BigQuery]
+description: 'How to load data from BigQuery to ClickHouse'
+keywords: ['migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'BigQuery']
 ---
 
 _This guide is compatible with ClickHouse Cloud and for self-hosted ClickHouse v23.5+._
@@ -73,8 +73,8 @@ SET input_format_parquet_import_nested = 1;
 
 CREATE TABLE default.mytable
 (
-	`timestamp` DateTime64(6),
-	`some_text` String
+        `timestamp` DateTime64(6),
+        `some_text` String
 )
 ENGINE = MergeTree
 ORDER BY (timestamp);

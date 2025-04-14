@@ -1,34 +1,34 @@
 ---
-title: JSONAsString
-slug: /interfaces/formats/JSONAsString
-keywords: [JSONAsString]
-input_format: true
-output_format: false
 alias: []
+description: 'Документация для формата JSONAsString'
+input_format: true
+keywords: ['JSONAsString']
+output_format: false
+slug: /interfaces/formats/JSONAsString
+title: 'JSONAsString'
 ---
 
-| Input | Output  | Alias |
-|-------|---------|-------|
-| ✔     | ✗       |       |
-
+| Входные данные | Выходные данные | Псевдоним |
+|----------------|----------------|-----------|
+| ✔              | ✗              |           |
 
 ## Описание {#description}
 
-В этом формате единый JSON-объект интерпретируется как единое значение. 
-Если входные данные содержат несколько JSON-объектов (разделённых запятыми), они интерпретируются как отдельные строки. 
-Если входные данные заключены в квадратные скобки, это интерпретируется как массив JSON-объектов.
+В этом формате один объект JSON интерпретируется как одно значение. 
+Если входные данные содержат несколько объектов JSON (разделённых запятыми), они интерпретируются как отдельные строки. 
+Если входные данные заключены в квадратные скобки, то они интерпретируются как массив объектов JSON.
 
 :::note
-Этот формат может быть разобран только для таблицы с единственным полем типа [String](/sql-reference/data-types/string.md). 
-Остальные колонки должны быть установлены либо на [`DEFAULT`](/sql-reference/statements/create/table.md/#default), либо на [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view), 
+Этот формат можно разобрать только для таблицы с одним полем типа [String](/sql-reference/data-types/string.md). 
+Оставшиеся колонки должны быть установлены либо в [`DEFAULT`](/sql-reference/statements/create/table.md/#default), либо в [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view), 
 или могут быть опущены. 
 :::
 
-После того как вы сериализуете весь JSON-объект в строку, вы можете использовать [JSON функции](/sql-reference/functions/json-functions.md) для его обработки.
+Как только вы сериализуете весь объект JSON в строку, вы можете использовать [JSON функции](/sql-reference/functions/json-functions.md) для его обработки.
 
 ## Пример использования {#example-usage}
 
-### Основной пример {#basic-example}
+### Базовый пример {#basic-example}
 
 ```sql title="Запрос"
 DROP TABLE IF EXISTS json_as_string;
@@ -45,7 +45,7 @@ SELECT * FROM json_as_string;
 └───────────────────────────────────┘
 ```
 
-### Массив JSON-объектов {#an-array-of-json-objects}
+### Массив объектов JSON {#an-array-of-json-objects}
 
 ```sql title="Запрос"
 CREATE TABLE json_square_brackets (field String) ENGINE = Memory;

@@ -1,8 +1,10 @@
 ---
-sidebar_label: Security and Compliance
+sidebar_label: 'Security and Compliance'
 slug: /cloud/security/security-and-compliance
-title: Security and Compliance
+title: 'Security and Compliance'
+description: 'This page describes the security and compliance measures implemented by ClickHouse Cloud to protect customer data.'
 ---
+
 import BetaBadge from '@theme/badges/BetaBadge';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 
@@ -31,7 +33,7 @@ The Health Insurance Portability and Accountability Act (HIPAA) of 1996 is a Uni
 
 ### PCI Service Provider (Since 2025) {#pci-service-provider-since-2025}
 
-<EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
+<EnterprisePlanFeatureBadge feature="PCI compliance" support="true"/>
 
 Customers must contact sales or support to onboard services to PCI compliant regions to load cardholder data. Additionally, customers should review our PCI responsibility overview available in our [Trust Center](https://trust.clickhouse.com), select and implement appropriate controls for their use case.
 

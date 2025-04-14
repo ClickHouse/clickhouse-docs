@@ -1,7 +1,9 @@
 ---
-sidebar_label: Avro, Arrow and ORC
+sidebar_label: 'Avro, Arrow and ORC'
 sidebar_position: 5
 slug: /integrations/data-formats/arrow-avro-orc
+title: 'Working with Avro, Arrow, and ORC data in ClickHouse'
+description: 'Page describing how to work with Avro, Arrow and ORC data in ClickHouse'
 ---
 
 # Working with Avro, Arrow, and ORC data in ClickHouse

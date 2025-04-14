@@ -69,11 +69,11 @@ cd clickhouse-docs # local docs repo
 
 # Below you can choose only ***ONE*** of the two prep commands
 
-# yarn prep-from-master
+# yarn copy-clickhouse-repo-docs
 # This command will clone master ClickHouse/Clickhouse branch to a temp folder and 
 # from there it will copy over the relevant docs folders to this folder
 
-yarn prep-from-master
+yarn copy-clickhouse-repo-docs
 
 # OR
 
@@ -265,6 +265,7 @@ slug: /integrations/sql-clients/clickhouse-client-local
 sidebar_label: clickhouse-client
 title: clickhouse-client and clickhouse-local
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 

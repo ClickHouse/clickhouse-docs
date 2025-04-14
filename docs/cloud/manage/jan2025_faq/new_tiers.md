@@ -1,8 +1,8 @@
 ---
-title: Description of New Tiers
+title: 'Description of New Tiers'
 slug: /cloud/manage/jan-2025-faq/new-tiers
-keywords: [new tiers, features, pricing, description]
-description: Description of new tiers and features
+keywords: ['new tiers', 'features', 'pricing', 'description']
+description: 'Description of new tiers and features'
 ---
 
 ## Summary of key changes {#summary-of-key-changes}
@@ -62,6 +62,6 @@ The enterprise tier will support standard profiles (1:4 vCPU:memory ratio), as w
 - **Scheduled upgrades:** Users can select the day of the week/time window for upgrades, both database and cloud releases.  
 - **HIPAA Compliance:** The customer must sign a Business Associate Agreement (BAA) through Legal before we enable HIPAA-compliant regions for them.
 - **Private Regions:** It is not self-serve enabled and will need users to route requests through Sales sales@clickhouse.com.
-- **Export Backups** to the customer’s cloud account.
+- **Export Backups** to the customer's cloud account.
 
 

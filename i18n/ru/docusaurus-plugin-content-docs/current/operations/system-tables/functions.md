@@ -1,20 +1,20 @@
 ---
 description: 'Системная таблица, содержащая информацию о нормальных и агрегатных функциях.'
+keywords: ['системная таблица', 'функции']
 slug: /operations/system-tables/functions
 title: 'system.functions'
-keywords: ['системная таблица', 'функции']
 ---
 
 Содержит информацию о нормальных и агрегатных функциях.
 
 Колонки:
 
-- `name` ([String](../../sql-reference/data-types/string.md)) – Имя функции.
-- `is_aggregate` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Является ли функция агрегатной функцией.
-- `case_insensitive`, ([UInt8](../../sql-reference/data-types/int-uint.md)) - Можно ли использовать имя функции без учета регистра.
-- `alias_to`, ([String](../../sql-reference/data-types/string.md)) - Оригинальное имя функции, если имя функции является псевдонимом.
-- `create_query`, ([String](../../sql-reference/data-types/enum.md)) - Неиспользуемое.
-- `origin`, ([Enum8](../../sql-reference/data-types/string.md)) - Неиспользуемое.
+- `name` ([String](../../sql-reference/data-types/string.md)) – Название функции.
+- `is_aggregate` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Является ли функция агрегатной.
+- `case_insensitive`, ([UInt8](../../sql-reference/data-types/int-uint.md)) - Могут ли использоваться названия функции без учета регистра.
+- `alias_to`, ([String](../../sql-reference/data-types/string.md)) - Оригинальное название функции, если название функции является псевдонимом.
+- `create_query`, ([String](../../sql-reference/data-types/enum.md)) - Неиспользуемый.
+- `origin`, ([Enum8](../../sql-reference/data-types/string.md)) - Неиспользуемый.
 - `description`, ([String](../../sql-reference/data-types/string.md)) - Общее описание того, что делает функция.
 - `syntax`, ([String](../../sql-reference/data-types/string.md)) - Подпись функции.
 - `arguments`, ([String](../../sql-reference/data-types/string.md)) - Какие аргументы принимает функция.
@@ -37,5 +37,5 @@ keywords: ['системная таблица', 'функции']
 │ mapPartialSort           │            0 │                1 │                0 │          │
 └──────────────────────────┴──────────────┴──────────────────┴──────────────────┴──────────┘
 
-5 строк в наборе. Время выполнения: 0.002 сек.
+5 строк в наборе. Время: 0.002 сек.
 ```

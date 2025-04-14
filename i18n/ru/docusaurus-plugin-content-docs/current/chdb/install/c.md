@@ -1,9 +1,9 @@
 ---
-title: Установка chDB для C и C++
-sidebar_label: C и C++
+title: 'Установка chDB для C и C++'
+sidebar_label: 'C и C++'
 slug: /chdb/install/c
-description: Как установить chDB для C и C++
-keywords: [chdb, встроенный, clickhouse-lite, установка]
+description: 'Как установить chDB для C и C++'
+keywords: ['chdb', 'встраиваемый', 'clickhouse-lite', 'установка']
 ---
 
 
@@ -16,6 +16,7 @@ keywords: [chdb, встроенный, clickhouse-lite, установка]
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
+
 
 ## Использование {#usage}
 

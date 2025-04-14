@@ -1,7 +1,9 @@
 ---
-slug: /sql-reference/functions/introspection
+description: 'Документация по функциям интроспекции'
+sidebar_label: 'Интроспекция'
 sidebar_position: 100
-sidebar_label: Интроспекция
+slug: /sql-reference/functions/introspection
+title: 'Функции интроспекции'
 ---
 
 
@@ -17,34 +19,34 @@ sidebar_label: Интроспекция
 
 - Установите пакет `clickhouse-common-static-dbg`.
 
-- Установите настройку [allow_introspection_functions](../../operations/settings/settings.md#allow_introspection_functions) на 1.
+- Установите настройку [allow_introspection_functions](../../operations/settings/settings.md#allow_introspection_functions) в 1.
 
         По соображениям безопасности функции интроспекции по умолчанию отключены.
 
-ClickHouse сохраняет отчеты профилировщика в системной таблице [trace_log](/operations/system-tables/trace_log). Убедитесь, что таблица и профилировщик настроены правильно.
+ClickHouse сохраняет отчеты профилировщика в системную таблицу [trace_log](/operations/system-tables/trace_log). Убедитесь, что таблица и профилировщик правильно настроены.
 
 ## addressToLine {#addresstoline}
 
-Преобразует виртуальный адрес памяти в процессе сервера ClickHouse в имя файла и номер строки в исходном коде ClickHouse.
+Преобразует виртуальный адрес памяти внутри процесса сервера ClickHouse в имя файла и номер строки в исходном коде ClickHouse.
 
-Если вы используете официальные пакеты ClickHouse, вам нужно установить пакет `clickhouse-common-static-dbg`.
+Если вы используете официальные пакеты ClickHouse, вам необходимо установить пакет `clickhouse-common-static-dbg`.
 
 **Синтаксис**
 
-``` sql
+```sql
 addressToLine(address_of_binary_instruction)
 ```
 
 **Аргументы**
 
-- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — Адрес инструкции в запущенном процессе.
+- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — Адрес инструкции в работающем процессе.
 
 **Возвращаемое значение**
 
-- Имя файла исходного кода и номер строки в этом файле, разделённые двоеточием.
-        Например, `/build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199`, где `199` — это номер строки.
+- Имя файла исходного кода и номер строки в этом файле, разделенные двоеточием.
+        Например, `/build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199`, где `199` — номер строки.
 - Имя бинарного файла, если функция не смогла найти отладочную информацию.
-- Пустая строка, если адрес не является допустимым.
+- Пустая строка, если адрес недействителен.
 
 Тип: [String](../../sql-reference/data-types/string.md).
 
@@ -52,17 +54,17 @@ addressToLine(address_of_binary_instruction)
 
 Включение функций интроспекции:
 
-``` sql
+```sql
 SET allow_introspection_functions=1;
 ```
 
 Выбор первой строки из системной таблицы `trace_log`:
 
-``` sql
+```sql
 SELECT * FROM system.trace_log LIMIT 1 \G;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 event_date:              2019-11-19
@@ -74,15 +76,15 @@ query_id:                421b6855-1858-45a5-8f37-f383409d6d72
 trace:                   [140658411141617,94784174532828,94784076370703,94784076372094,94784076361020,94784175007680,140658411116251,140658403895439]
 ```
 
-Поле `trace` содержит стек вызовов в момент выборки.
+Поле `trace` содержит стек вызовов на момент выборки.
 
-Получение имени файла исходного кода и номера строки для единственного адреса:
+Получение имени файла исходного кода и номера строки для одного адреса:
 
-``` sql
+```sql
 SELECT addressToLine(94784076370703) \G;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 addressToLine(94784076370703): /build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199
@@ -90,7 +92,7 @@ addressToLine(94784076370703): /build/obj-x86_64-linux-gnu/../src/Common/ThreadP
 
 Применение функции ко всему стеку вызовов:
 
-``` sql
+```sql
 SELECT
     arrayStringConcat(arrayMap(x -> addressToLine(x), trace), '\n') AS trace_source_code_lines
 FROM system.trace_log
@@ -98,9 +100,9 @@ LIMIT 1
 \G
 ```
 
-Функция [arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) позволяет обрабатывать каждый отдельный элемент массива `trace` с помощью функции `addressToLine`. Результат этой обработки вы видите в колонке `trace_source_code_lines` вывода.
+Функция [arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) позволяет обработать каждый отдельный элемент массива `trace` с помощью функции `addressToLine`. Результат этой обработки вы видите в столбце `trace_source_code_lines` вывода.
 
-``` text
+```text
 Row 1:
 ──────
 trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
@@ -115,31 +117,31 @@ trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 
 ## addressToLineWithInlines {#addresstolinewithinlines}
 
-Подобно `addressToLine`, но возвращает массив со всеми встроенными функциями. В результате этого она медленнее, чем `addressToLine`.
+Похоже на `addressToLine`, но возвращает массив со всеми инлайн-функциями. В результате этого он медленнее, чем `addressToLine`.
 
 :::note
-Если вы используете официальные пакеты ClickHouse, вам нужно установить пакет `clickhouse-common-static-dbg`.
+Если вы используете официальные пакеты ClickHouse, вам необходимо установить пакет `clickhouse-common-static-dbg`.
 :::
 
 **Синтаксис**
 
-``` sql
+```sql
 addressToLineWithInlines(address_of_binary_instruction)
 ```
 
 **Аргументы**
 
-- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — Адрес инструкции в запущенном процессе.
+- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — Адрес инструкции в работающем процессе.
 
 **Возвращаемое значение**
 
-- Массив, первый элемент которого — имя файла исходного кода и номер строки в файле, разделённые двоеточием. Со второго элемента и далее перечислены имена файлов исходного кода встроенных функций, номера строк и имена функций. Если функция не смогла найти отладочную информацию, то возвращается массив с единственным элементом, равным имени бинарного файла, в противном случае возвращается пустой массив, если адрес не является допустимым. [Array(String)](../data-types/array.md).
+- Массив, первый элемент которого — это имя файла исходного кода и номер строки в файле, разделенные двоеточием. Начиная со второго элемента, перечислены имена файлов исходного кода инлайн-функций, номера строк и имена функций. Если функция не смогла найти отладочную информацию, то возвращается массив с единственным элементом, равным имени бинарного файла; в противном случае, если адрес недействителен, возвращается пустой массив. [Array(String)](../data-types/array.md).
 
 **Пример**
 
 Включение функций интроспекции:
 
-``` sql
+```sql
 SET allow_introspection_functions=1;
 ```
 
@@ -149,15 +151,15 @@ SET allow_introspection_functions=1;
 SELECT addressToLineWithInlines(531055181::UInt64);
 ```
 
-``` text
+```text
 ┌─addressToLineWithInlines(CAST('531055181', 'UInt64'))────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ ['./src/Functions/addressToLineWithInlines.cpp:98','./build_normal_debug/./src/Functions/addressToLineWithInlines.cpp:176:DB::(анонимное пространство имен)::FunctionAddressToLineWithInlines::implCached(unsigned long) const'] │
+│ ['./src/Functions/addressToLineWithInlines.cpp:98','./build_normal_debug/./src/Functions/addressToLineWithInlines.cpp:176:DB::(anonymous namespace)::FunctionAddressToLineWithInlines::implCached(unsigned long) const'] │
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 Применение функции ко всему стеку вызовов:
 
-``` sql
+```sql
 SELECT
     ta, addressToLineWithInlines(arrayJoin(trace) as ta)
 FROM system.trace_log
@@ -165,9 +167,9 @@ WHERE
     query_id = '5e173544-2020-45de-b645-5deebe2aae54';
 ```
 
-Функция [arrayJoin](/sql-reference/functions/array-join) разделит массив на строки.
+Функция [arrayJoin](/sql-reference/functions/array-join) разбивает массив на строки.
 
-``` text
+```text
 ┌────────ta─┬─addressToLineWithInlines(arrayJoin(trace))───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ 365497529 │ ['./build_normal_debug/./contrib/libcxx/include/string_view:252']                                                                                                                                                        │
 │ 365593602 │ ['./build_normal_debug/./src/Common/Dwarf.cpp:191']                                                                                                                                                                      │
@@ -189,7 +191,7 @@ WHERE
 │ 365597289 │ ['./build_normal_debug/./src/Common/Dwarf.cpp:807']                                                                                                                                                                      │
 │ 365599840 │ ['./build_normal_debug/./src/Common/Dwarf.cpp:1118']                                                                                                                                                                     │
 │ 531058145 │ ['./build_normal_debug/./src/Functions/addressToLineWithInlines.cpp:152']                                                                                                                                                │
-│ 531055181 │ ['./src/Functions/addressToLineWithInlines.cpp:98','./build_normal_debug/./src/Functions/addressToLineWithInlines.cpp:176:DB::(анонимное пространство имен)::FunctionAddressToLineWithInlines::implCached(unsigned long) const'] │
+│ 531055181 │ ['./src/Functions/addressToLineWithInlines.cpp:98','./build_normal_debug/./src/Functions/addressToLineWithInlines.cpp:176:DB::(anonymous namespace)::FunctionAddressToLineWithInlines::implCached(unsigned long) const'] │
 │ 422333613 │ ['./build_normal_debug/./src/Functions/IFunctionAdaptors.h:21']                                                                                                                                                          │
 │ 586866022 │ ['./build_normal_debug/./src/Functions/IFunction.cpp:216']                                                                                                                                                               │
 │ 586869053 │ ['./build_normal_debug/./src/Functions/IFunction.cpp:264']                                                                                                                                                               │
@@ -213,40 +215,41 @@ WHERE
 
 ```
 
+
 ## addressToSymbol {#addresstosymbol}
 
-Преобразует виртуальный адрес памяти в процессе сервера ClickHouse в символ из объектных файлов ClickHouse.
+Преобразует виртуальный адрес памяти внутри процесса сервера ClickHouse в символ из объектных файлов ClickHouse.
 
 **Синтаксис**
 
-``` sql
+```sql
 addressToSymbol(address_of_binary_instruction)
 ```
 
 **Аргументы**
 
-- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — Адрес инструкции в запущенном процессе.
+- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — Адрес инструкции в работающем процессе.
 
 **Возвращаемое значение**
 
 - Символ из объектных файлов ClickHouse. [String](../data-types/string.md).
-- Пустая строка, если адрес не является допустимым. [String](../data-types/string.md).
+- Пустая строка, если адрес недействителен. [String](../data-types/string.md).
 
 **Пример**
 
 Включение функций интроспекции:
 
-``` sql
+```sql
 SET allow_introspection_functions=1;
 ```
 
 Выбор первой строки из системной таблицы `trace_log`:
 
-``` sql
+```sql
 SELECT * FROM system.trace_log LIMIT 1 \G;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 event_date:    2019-11-20
@@ -258,15 +261,15 @@ query_id:      724028bf-f550-45aa-910d-2af6212b94ac
 trace:         [94138803686098,94138815010911,94138815096522,94138815101224,94138815102091,94138814222988,94138806823642,94138814457211,94138806823642,94138814457211,94138806823642,94138806795179,94138806796144,94138753770094,94138753771646,94138753760572,94138852407232,140399185266395,140399178045583]
 ```
 
-Поле `trace` содержит стек вызовов в момент выборки.
+Поле `trace` содержит стек вызовов на момент выборки.
 
-Получение символа для единственного адреса:
+Получение символа для одного адреса:
 
-``` sql
+```sql
 SELECT addressToSymbol(94138803686098) \G;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 addressToSymbol(94138803686098): _ZNK2DB24IAggregateFunctionHelperINS_20AggregateFunctionSumImmNS_24AggregateFunctionSumDataImEEEEE19addBatchSinglePlaceEmPcPPKNS_7IColumnEPNS_5ArenaE
@@ -274,7 +277,7 @@ addressToSymbol(94138803686098): _ZNK2DB24IAggregateFunctionHelperINS_20Aggregat
 
 Применение функции ко всему стеку вызовов:
 
-``` sql
+```sql
 SELECT
     arrayStringConcat(arrayMap(x -> addressToSymbol(x), trace), '\n') AS trace_symbols
 FROM system.trace_log
@@ -282,9 +285,9 @@ LIMIT 1
 \G
 ```
 
-Функция [arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) позволяет обрабатывать каждый отдельный элемент массива `trace` с помощью функции `addressToSymbol`. Результат этой обработки вы видите в колонке `trace_symbols` вывода.
+Функция [arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) позволяет обработать каждый отдельный элемент массива `trace` с помощью функции `addressToSymbols`. Результат этой обработки вы видите в столбце `trace_symbols` вывода.
 
-``` text
+```text
 Row 1:
 ──────
 trace_symbols: _ZNK2DB24IAggregateFunctionHelperINS_20AggregateFunctionSumImmNS_24AggregateFunctionSumDataImEEEEE19addBatchSinglePlaceEmPcPPKNS_7IColumnEPNS_5ArenaE
@@ -310,11 +313,11 @@ clone
 
 ## demangle {#demangle}
 
-Преобразует символ, который можно получить с помощью функции [addressToSymbol](#addresstosymbol), в имя функции C++.
+Преобразует символ, который вы можете получить с помощью функции [addressToSymbol](#addresstosymbol), в имя функции C++.
 
 **Синтаксис**
 
-``` sql
+```sql
 demangle(symbol)
 ```
 
@@ -330,17 +333,17 @@ demangle(symbol)
 
 Включение функций интроспекции:
 
-``` sql
+```sql
 SET allow_introspection_functions=1;
 ```
 
 Выбор первой строки из системной таблицы `trace_log`:
 
-``` sql
+```sql
 SELECT * FROM system.trace_log LIMIT 1 \G;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 event_date:    2019-11-20
@@ -352,15 +355,15 @@ query_id:      724028bf-f550-45aa-910d-2af6212b94ac
 trace:         [94138803686098,94138815010911,94138815096522,94138815101224,94138815102091,94138814222988,94138806823642,94138814457211,94138806823642,94138814457211,94138806823642,94138806795179,94138806796144,94138753770094,94138753771646,94138753760572,94138852407232,140399185266395,140399178045583]
 ```
 
-Поле `trace` содержит стек вызовов в момент выборки.
+Поле `trace` содержит стек вызовов на момент выборки.
 
 Получение имени функции для одного адреса:
 
-``` sql
+```sql
 SELECT demangle(addressToSymbol(94138803686098)) \G;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 demangle(addressToSymbol(94138803686098)): DB::IAggregateFunctionHelper<DB::AggregateFunctionSum<unsigned long, unsigned long, DB::AggregateFunctionSumData<unsigned long> > >::addBatchSinglePlace(unsigned long, char*, DB::IColumn const**, DB::Arena*) const
@@ -368,7 +371,7 @@ demangle(addressToSymbol(94138803686098)): DB::IAggregateFunctionHelper<DB::Aggr
 
 Применение функции ко всему стеку вызовов:
 
-``` sql
+```sql
 SELECT
     arrayStringConcat(arrayMap(x -> demangle(addressToSymbol(x)), trace), '\n') AS trace_functions
 FROM system.trace_log
@@ -376,9 +379,9 @@ LIMIT 1
 \G
 ```
 
-Функция [arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) позволяет обрабатывать каждый отдельный элемент массива `trace` с помощью функции `demangle`. Результат этой обработки вы видите в колонке `trace_functions` вывода.
+Функция [arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) позволяет обработать каждый отдельный элемент массива `trace` с помощью функции `demangle`. Результат этой обработки вы видите в столбце `trace_functions` вывода.
 
-``` text
+```text
 Row 1:
 ──────
 trace_functions: DB::IAggregateFunctionHelper<DB::AggregateFunctionSum<unsigned long, unsigned long, DB::AggregateFunctionSumData<unsigned long> > >::addBatchSinglePlace(unsigned long, char*, DB::IColumn const**, DB::Arena*) const
@@ -401,14 +404,13 @@ execute_native_thread_routine
 start_thread
 clone
 ```
-
 ## tid {#tid}
 
 Возвращает идентификатор потока, в котором обрабатывается текущий [Block](/development/architecture/#block).
 
 **Синтаксис**
 
-``` sql
+```sql
 tid()
 ```
 
@@ -420,13 +422,13 @@ tid()
 
 Запрос:
 
-``` sql
+```sql
 SELECT tid();
 ```
 
 Результат:
 
-``` text
+```text
 ┌─tid()─┐
 │  3878 │
 └───────┘
@@ -434,17 +436,17 @@ SELECT tid();
 
 ## logTrace {#logtrace}
 
-Вызывает сообщение журнала трассировки для каждой [Block](/development/architecture/#block).
+Генерирует сообщение трассировки в журнал сервера для каждого [Block](/development/architecture/#block).
 
 **Синтаксис**
 
-``` sql
+```sql
 logTrace('message')
 ```
 
 **Аргументы**
 
-- `message` — Сообщение, которое выводится в журнал сервера. [String](/sql-reference/data-types/string).
+- `message` — Сообщение, которое будет записано в журнал сервера. [String](/sql-reference/data-types/string).
 
 **Возвращаемое значение**
 
@@ -454,13 +456,13 @@ logTrace('message')
 
 Запрос:
 
-``` sql
+```sql
 SELECT logTrace('logTrace message');
 ```
 
 Результат:
 
-``` text
+```text
 ┌─logTrace('logTrace message')─┐
 │                            0 │
 └──────────────────────────────┘
