@@ -720,6 +720,7 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/mysql/source/aurora",
               ],
             },
+            "integrations/data-ingestion/clickpipes/mysql/datatypes"
           ],
         },
       ],
