@@ -380,6 +380,7 @@ Fuzzers
 GDPR
 GHCN
 GTID
+GTIDs
 GTest
 GUID
 Gb
