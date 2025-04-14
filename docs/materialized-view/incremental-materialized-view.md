@@ -273,10 +273,10 @@ LIMIT 10
 Note we use a `GROUP BY` here instead of using `FINAL`.
 
 
-## Materialized Views and JOINs
+## Materialized Views and JOINs {#materialized-views-and-joins}
 
 :::note Refreshable Materialized Views
-The following applies to Incremental Materialized Views only. Refreshable Materialized Views execute their query peridocially over the full target dataset and fully support JOINs. Consider using for complex JOINs if a reduction in result freshness can be tolerated.
+The following applies to Incremental Materialized Views only. Refreshable Materialized Views execute their query periodically over the full target dataset and fully support JOINs. Consider using for complex JOINs if a reduction in result freshness can be tolerated.
 :::
 
 Incremental Materialized views in ClickHouse fully support `JOIN` operations—but with one crucial constraint: **the Materialized View only triggers on inserts to the source table (the left-most table in the query).** Right-side tables in joins do not trigger updates, even if their data changes. This behavior is especially important when building **Incremental** Materialized Views, where data is aggregated or transformed during insert time.
@@ -287,7 +287,7 @@ This behavior makes joins in Materialized Views similar to a snapshot join again
 
 This works well for enriching data with reference or dimension tables. However, any updates to the right-side tables (e.g., user metadata) will not retroactively update the Materialized View. To see updated data, new inserts must arrive in the source table.
 
-### Example
+### Example {#example}
 
 Let's walk through a concrete example using the [Stack Overflow dataset](/data-modeling/schema-design). We'll use a Materialized View to compute **daily badges per user**, including the user's display name from the `users` table.
 
