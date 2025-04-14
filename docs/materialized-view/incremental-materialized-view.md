@@ -287,7 +287,7 @@ This behavior makes JOINs in Materialized Views similar to a snapshot join again
 
 This works well for enriching data with reference or dimension tables. However, any updates to the right-side tables (e.g., user metadata) will not retroactively update the Materialized View. To see updated data, new inserts must arrive in the source table.
 
-### Example {#example}
+### Example {#materialized-views-and-joins-example}
 
 Let's walk through a concrete example using the [Stack Overflow dataset](/data-modeling/schema-design). We'll use a Materialized View to compute **daily badges per user**, including the display name of the user from the `users` table.
 
