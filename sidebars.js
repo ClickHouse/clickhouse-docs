@@ -171,7 +171,7 @@ const sidebars = {
             "migrations/postgres/dataset",
             "migrations/postgres/rewriting-queries",
             "migrations/postgres/data-modeling-techniques",
-            "migrations/postgres/appendix",
+            "migrations/postgres/appendix"
           ],
         },
         "integrations/data-ingestion/dbms/mysql/index",
@@ -687,6 +687,8 @@ const sidebars = {
             "integrations/data-ingestion/clickpipes/postgres/toast",
             "integrations/data-ingestion/clickpipes/postgres/schema-changes",
             "integrations/data-ingestion/clickpipes/postgres/faq",
+            "integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql",
+            "integrations/data-ingestion/dbms/postgresql/inserting-data",
             {
               type: "category",
               label: "Source",
