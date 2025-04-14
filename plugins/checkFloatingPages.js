@@ -97,7 +97,7 @@ async function checkFloatingPages(context, options = {}) {
                     console.error('Error: Found "floating" pages without sidebars. For further details see: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/style-guide.md/');
                     // Create a signal file
                     fs.writeFileSync(
-                        path.join(process.cwd(), 'floating-pages-validation-failed'),
+                        path.join(process.cwd(), '.floating-pages-validation-failed'),
                         'Floating pages validation failed'
                     );
                     process.exit(1);
