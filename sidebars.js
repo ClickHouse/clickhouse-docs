@@ -790,18 +790,6 @@ const sidebars = {
             "integrations/data-ingestion/kafka/kafka-table-engine-named-collections"
           ],
         },
-        {
-          type: "category",
-          label: "Apache Spark",
-          className: "top-nav-item",
-          collapsed: true,
-          collapsible: true,
-          items: [
-            "integrations/data-ingestion/apache-spark/index",
-            "integrations/data-ingestion/apache-spark/spark-native-connector",
-            "integrations/data-ingestion/apache-spark/spark-jdbc",
-          ],
-        },
         "integrations/data-sources/mysql",
         "integrations/data-sources/cassandra",
         "integrations/data-sources/redis",
@@ -932,6 +920,18 @@ const sidebars = {
       link: { type: "doc", id: "integrations/data-ingestion/data-ingestion-index" },
       items: [
         "integrations/data-ingestion/etl-tools/airbyte-and-clickhouse",
+        {
+          type: "category",
+          label: "Apache Spark",
+          className: "top-nav-item",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "integrations/data-ingestion/apache-spark/index",
+            "integrations/data-ingestion/apache-spark/spark-native-connector",
+            "integrations/data-ingestion/apache-spark/spark-jdbc",
+          ],
+        },
         "integrations/data-ingestion/aws-glue/index",
         "integrations/data-ingestion/etl-tools/apache-beam",
         {
