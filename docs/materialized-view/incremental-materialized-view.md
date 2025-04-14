@@ -9,7 +9,7 @@ score: 10000
 import materializedViewDiagram from '@site/static/images/materialized-view/materialized-view-diagram.png';
 import Image from '@theme/IdealImage';
 
-## Background
+## Background {#background}
 
 Incremental Materialized Views (Materialized Views) allow users to shift the cost of computation from query time to insert time, resulting in faster `SELECT` queries.
 
@@ -548,7 +548,7 @@ ON t0.id = t1.id;
 
 In this example, the set built from the `IN (SELECT id FROM t0)` subquery has only the newly inserted rows, which can help to filter `t1` against it.
 
-#### Example with Stack Overflow
+#### Example with Stack Overflow {#example-with-stack-overflow}
 
 Consider our [earlier Materialized View example](/materialized-view/incremental-materialized-view#example) to compute **daily badges per user**, including the user's display name from the `users` table.
 
