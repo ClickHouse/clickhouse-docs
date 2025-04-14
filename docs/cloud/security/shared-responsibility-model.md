@@ -71,7 +71,7 @@ The model below generally addresses ClickHouse responsibilities and shows respon
   | [Cloud provider and region](/cloud/reference/supported-regions) selections                   | Available | AWS, GCP, Azure   | All                     |
   | Limited [free daily backups](/cloud/manage/backups/overview#default-backup-policy)                    | Available | AWS, GCP, Azure   | All                     |
   | [Custom backup configurations](/cloud/manage/backups/overview#configurable-backups) available         | Available | GCP, AWS, Azure   | Scale or Enterprise     |
-  | [Customer managed encryption keys (CMEK)](/cloud/security/cmek) for transparent<br/> data encryption available  | Available | AWS | Scale or Enterprise |
+  | [Customer managed encryption keys (CMEK)](/cloud/security/cmek) for transparent<br/> data encryption available  | Available | AWS, GCP | Enterprise |
   | [Field level encryption](/sql-reference/functions/encryption-functions) with manual key management for granular encryption | Available | GCP, AWS, Azure | All  |
 
   
@@ -105,6 +105,7 @@ The model below generally addresses ClickHouse responsibilities and shows respon
   | SOC 2 Type II compliance                                                                             | Available | AWS, GCP, Azure   | All                     |
   | GDPR and CCPA compliance                                                                             | Available | AWS, GCP, Azure   | All                     |
   | HIPAA compliance                                                                                     | Available | AWS, GCP          | Enterprise              |
+  | PCI compliance                                                                                       | Available | AWS               | Enterprise              |
 
   For more information on supported compliance frameworks, please review our [Security and Compliance](/cloud/security/security-and-compliance) page.
 
