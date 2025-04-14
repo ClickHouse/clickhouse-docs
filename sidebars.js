@@ -175,8 +175,6 @@ const sidebars = {
           ],
         },
         "integrations/data-ingestion/dbms/mysql/index",
-        "integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql",
-        "integrations/data-ingestion/dbms/postgresql/inserting-data",
         "integrations/data-ingestion/redshift/index",
         "integrations/data-ingestion/dbms/dynamodb/index",
         {
@@ -689,6 +687,8 @@ const sidebars = {
             "integrations/data-ingestion/clickpipes/postgres/toast",
             "integrations/data-ingestion/clickpipes/postgres/schema-changes",
             "integrations/data-ingestion/clickpipes/postgres/faq",
+            "integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql",
+            "integrations/data-ingestion/dbms/postgresql/inserting-data",
             {
               type: "category",
               label: "Source",
