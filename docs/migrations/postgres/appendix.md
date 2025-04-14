@@ -166,8 +166,7 @@ The following table shows the equivalent ClickHouse data types for Postgres.
 | `BIGINT` | [Int64](/sql-reference/data-types/int-uint) |
 | `SERIAL` | [UInt32](/sql-reference/data-types/int-uint) |
 | `BIGSERIAL` | [UInt64](/sql-reference/data-types/int-uint) |
-| `TEXT` | [String](/sql-reference/data-types/string) |
-| `CHAR, BPCHAR` | [FixedString](/sql-reference/data-types/fixedstring) |
+| `TEXT, CHAR, BPCHAR` | [String](/sql-reference/data-types/string) |
 | `INTEGER` | Nullable([Int32](/sql-reference/data-types/int-uint)) |
 | `ARRAY` | [Array](/sql-reference/data-types/array) |
 | `FLOAT4` | [Float32](/sql-reference/data-types/float) |
