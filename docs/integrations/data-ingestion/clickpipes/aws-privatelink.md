@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'AWS PrivateLink for ClickPipes'
-description: 'Establish a secure connection between ClickPipes and a data source using AWS PrivateLink.'
+sidebar_label: "AWS PrivateLink for ClickPipes"
+description: "Establish a secure connection between ClickPipes and a data source using AWS PrivateLink."
 slug: /integrations/clickpipes/aws-privatelink
-title: 'AWS PrivateLink for ClickPipes'
+title: "AWS PrivateLink for ClickPipes"
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
@@ -62,6 +62,8 @@ See the [getting started](https://docs.aws.amazon.com/msk/latest/developerguide/
 Update your MSK cluster policy and add `072088201116` to the allowed principals to your MSK cluster.
 See AWS guide for [attaching a cluster policy](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-cluster-owner-action-policy.html) for more details.
 :::
+
+Follow our [MSK setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup-for-msk-clickpipes) to set up the connection.
 
 ### VPC endpoint service {#vpc-endpoint-service}
 
