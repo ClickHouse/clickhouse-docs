@@ -423,7 +423,7 @@ Notice the latency of the insert here. The inserted user row is joined against t
 :::
 
 
-Conversely, if we insert a badge for a new user, followed by the row for the user, our Materialized View will fail to capture the users's metrics. 
+Conversely, if we insert a badge for a new user, followed by the row for the user, our Materialized View will fail to capture the users' metrics. 
 
 ```sql
 INSERT INTO badges VALUES (53505059, 23923286, 'Good Answer', now(), 'Bronze', 0);
