@@ -44,13 +44,6 @@ for cmd in bash curl uname mv chmod rm mkdir find cat grep sed ls pwd sort head 
 done
 echo "[$SCRIPT_NAME] All basic dependencies found."
 
-
-# TO DO: the following functionality was implemented due to a failing clickhouse binary 
-# using curl (ClickHouse quick start method). Ideally once this is fixed, we should try 
-# to pull from master and fall back to stable release if it doesn't work. The advantage
-# of this is being able to quickly fix setting descriptions which cause docusaurus build
-# to fail.
-
 # --- Installation Function 1 (Primary: TGZ Download/Extract) ---
 install_clickhouse_via_tgz() {
   echo "[$SCRIPT_NAME] Attempting install via TGZ download..."
@@ -211,25 +204,25 @@ if [ -f "$script_path" ]; then
     echo "[$SCRIPT_NAME] Existing binary at $script_path is not working. Attempting installation..."
     rm -f "$script_path"
     # Try primary method first
-    if install_clickhouse_via_tgz; then
-        INSTALL_SUCCESS=true
-    else
-        echo "[$SCRIPT_NAME] Primary install (TGZ) failed. Attempting fallback (curl | sh)..."
-        if install_clickhouse_via_script; then
+    if install_clickhouse_via_script; then
             INSTALL_SUCCESS=true
-        fi
     fi
+    else
+        echo "[$SCRIPT_NAME] Install via script (curl | sh) failed. Attempting fallback to TGZ..."
+        install_clickhouse_via_tgz; then
+          INSTALL_SUCCESS=true
+        fi
   fi
 else
-  echo "[$SCRIPT_NAME] ClickHouse binary not found at $script_path. Attempting primary install (TGZ)..."
+  echo "[$SCRIPT_NAME] ClickHouse binary not found at $script_path. Attempting primary install via script..."
    # Try primary method first
-  if install_clickhouse_via_tgz; then
-      INSTALL_SUCCESS=true
+  if install_clickhouse_via_script; then
+    INSTALL_SUCCESS=true
+  fi
   else
-      echo "[$SCRIPT_NAME] Primary install (TGZ) failed. Attempting fallback (curl | sh)..."
-      if install_clickhouse_via_script; then
-          INSTALL_SUCCESS=true
-      fi
+      echo "[$SCRIPT_NAME] Primary install via script failed. Attempting fallback TGZ install..."
+      if install_clickhouse_via_tgz; then
+        INSTALL_SUCCESS=true
   fi
 fi
 
@@ -241,7 +234,7 @@ if ! $INSTALL_SUCCESS; then
 fi
 
 # --- Auto-generate Settings Documentation ---
-# Source files are assumed to be present in the CWD ($tmp_dir) by an external script
+# Source files are assumed to be present in the CWD ($tmp_dir) by copy-clickhouse-repo-docs
 echo "[$SCRIPT_NAME] Auto-generating settings markdown pages..."
 # $target_dir is the project root (e.g., .../clickhouse-docs)
 root=$target_dir # Use target_dir directly as project root
@@ -329,9 +322,6 @@ for i in "${!append_src_files[@]}"; do
         echo "[$SCRIPT_NAME] Warning: Expected output file $src_rel_path not found in $tmp_dir. Skipping append."
      fi
 done
-
-# TO DO - remove
-cat -n "$target_dir/docs/operations/settings/merge-tree-settings.md"
 
 # --- Final Cleanup ---
 echo "[$SCRIPT_NAME] Performing final cleanup..."
