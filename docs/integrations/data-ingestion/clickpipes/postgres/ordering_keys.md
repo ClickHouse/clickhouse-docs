@@ -7,7 +7,7 @@ title: 'Ordering keys'
 
 Ordering Keys (a.k.a. sorting keys) define how data is sorted on disk and indexed for a table in ClickHouse. When replicating from Postgres, ClickPipes sets the Postgres primary key of a table as the ordering key for the corresponding table in ClickHouse. In most cases, the Postgres primary key serves as a sufficient ordering key, as ClickHouse is already optimized for fast scans, and custom ordering keys are often not required.
 
-As describe in the [migration guide](/migrations/postgres/data-modeling-techniques), for larger use cases you should include additional columns beyond the Postgres primary key in the ClickHouse ordering key to optimize queries. 
+As describe in the [migration guide](/migrations/postgresql/data-modeling-techniques), for larger use cases you should include additional columns beyond the Postgres primary key in the ClickHouse ordering key to optimize queries. 
 
 By default with CDC, choosing an ordering key different from the Postgres primary key can cause data deduplication issues in ClickHouse. This happens because the ordering key in ClickHouse serves a dual role: it controls data indexing and sorting while acting as the deduplication key. The easiest way to address this issue is by defining refreshable materialized views.
 
