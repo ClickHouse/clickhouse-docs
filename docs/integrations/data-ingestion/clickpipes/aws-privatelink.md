@@ -110,6 +110,11 @@ can be configured for ClickPipes. Add [your ClickPipe region](#aws-privatelink-r
 
 5. Select any of existing reverse private endpoints or create a new one.
 
+:::info
+For RDS, the process to create the VPC Endpoint service is a bit more involved and
+[this guide should provide](/knowledgebase/aws-privatelink-setup-for-clickpipes) a good starting point to set it up.
+:::
+
 <Image img={cp_rpe_step1} alt="Select reverse private endpoint" size="lg" border/>
 
 6. Provide the required parameters for the selected endpoint type.
