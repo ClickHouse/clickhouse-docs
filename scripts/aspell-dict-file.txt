@@ -968,3 +968,5 @@ tunable
 DAGs
 --docs/migrations/postgres/appendix.md--
 Citus
+--docs/integrations/data-visualization/metabase-and-clickhouse.md--
+Metabase's
