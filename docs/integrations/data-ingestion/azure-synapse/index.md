@@ -5,6 +5,7 @@ description: 'Introduction to Azure Synapse with ClickHouse'
 keywords: ['clickhouse', 'azure synapse', 'azure', 'synapse', 'microsoft', 'azure spark', 'data']
 title: 'Integrating Azure Synapse with ClickHouse'
 ---
+
 import TOCInline from '@theme/TOCInline';
 import Image from '@theme/IdealImage';
 import sparkConfigViaNotebook from '@site/static/images/integrations/data-ingestion/azure-synapse/spark_notebook_conf.png';
@@ -20,7 +21,7 @@ This article will show you how to integrate the [ClickHouse Spark connector](/in
 
 <TOCInline toc={toc}></TOCInline>
 
-## Add the connector's dependencies
+## Add the connector's dependencies {#add-connector-dependencies}
 Azure Synapse supports three levels of [packages maintenance](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-portal-add-libraries):
 1. Default packages
 2. Spark pool level
@@ -34,7 +35,7 @@ Follow the [Manage libraries for Apache Spark pools guide](https://learn.microso
 
 Please visit our [Spark Connector Compatibility Matrix](/integrations/apache-spark/spark-native-connector#compatibility-matrix) docs to understand which versions suit your needs.
 
-## Add ClickHouse as a catalog
+## Add ClickHouse as a catalog {#add-clickhouse-as-catalog}
 
 There are a variety of ways to add Spark configs to your session:
 * Custom configuration file to load with your session
@@ -50,7 +51,7 @@ For instance, you can configure your Spark session in the first cell of your not
 
 Please visit the [ClickHouse Spark configurations page](integrations/apache-spark/spark-native-connector#configurations) for additional settings.
 
-## Setup Verification
+## Setup Verification {#setup-verification}
 
 To verify that the dependencies and configurations were set successfully, please visit your session's Spark UI, and go to your `Environment` tab.
 There, look for your ClickHouse related settings:
@@ -58,7 +59,7 @@ There, look for your ClickHouse related settings:
 <Image img={sparkUICHSettings} size="xl" alt="Verifying ClickHouse settings using Spark UI" border/>
 
 
-## Additional Resources
+## Additional Resources {#additional-resources}
 
 - [ClickHouse Spark Connector Docs](/integrations/apache-spark)
 - [Azure Synapse Spark Pools Overview](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-overview)
