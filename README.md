@@ -110,6 +110,12 @@ We recommend to install rsync in order to only copy what is needed, however the 
 
 Running `yarn copy-clickhouse-repo-docs` without any arguments will pull in the latest docs changes from github.
 
+To check spelling and markdown is correct locally run:
+
+```bash
+yarn check-style
+```
+
 ### Notes {#notes}
 
 Here are some things to keep in mind when building a local copy of the ClickHouse docs site.
@@ -134,7 +140,13 @@ Check out the GitHub docs for a refresher on [how to create a pull request](http
 
 ### Style guidelines
 
-For documentation style guidelines, see ["Style guide"](/contribute/style-guide.md).
+For documentation style guidelines, see ["Style guide"](/contribute/style-guide.md). 
+
+To check spelling and markdown is correct locally run:
+
+```bash
+yarn check-style
+```
 
 ### Generating documentation from source code
 
