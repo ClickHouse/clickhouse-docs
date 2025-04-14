@@ -205,24 +205,24 @@ if [ -f "$script_path" ]; then
     rm -f "$script_path"
     # Try primary method first
     if install_clickhouse_via_script; then
-            INSTALL_SUCCESS=true
-    fi
+      INSTALL_SUCCESS=true
     else
-        echo "[$SCRIPT_NAME] Install via script (curl | sh) failed. Attempting fallback to TGZ..."
-        install_clickhouse_via_tgz; then
-          INSTALL_SUCCESS=true
-        fi
+      echo "[$SCRIPT_NAME] Install via script (curl | sh) failed. Attempting fallback to TGZ..."
+      if install_clickhouse_via_tgz; then
+        INSTALL_SUCCESS=true
+      fi
+    fi
   fi
 else
   echo "[$SCRIPT_NAME] ClickHouse binary not found at $script_path. Attempting primary install via script..."
    # Try primary method first
   if install_clickhouse_via_script; then
     INSTALL_SUCCESS=true
-  fi
   else
       echo "[$SCRIPT_NAME] Primary install via script failed. Attempting fallback TGZ install..."
       if install_clickhouse_via_tgz; then
         INSTALL_SUCCESS=true
+      fi
   fi
 fi
 
@@ -236,8 +236,7 @@ fi
 # --- Auto-generate Settings Documentation ---
 # Source files are assumed to be present in the CWD ($tmp_dir) by copy-clickhouse-repo-docs
 echo "[$SCRIPT_NAME] Auto-generating settings markdown pages..."
-# $target_dir is the project root (e.g., .../clickhouse-docs)
-root=$target_dir # Use target_dir directly as project root
+# $target_dir is the project root (clickhouse-docs)
 
 sql_files_found=$(find "$SCRIPT_DIR" -maxdepth 1 -name '*.sql' -print -quit)
 if [ -z "$sql_files_found" ]; then
