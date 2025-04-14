@@ -321,7 +321,8 @@ Errors such as authentication issues are not reported in responses to Kafka engi
 ```
 
 Another useful source of information is the system.kafka_consumers table:
-```
+
+```sql
 SELECT * FROM system.kafka_consumers FORMAT Vertical;
 ```
 
