@@ -289,7 +289,7 @@ This works well for enriching data with reference or dimension tables. However, 
 
 ### Example {#example}
 
-Let's walk through a concrete example using the [Stack Overflow dataset](/data-modeling/schema-design). We'll use a Materialized View to compute **daily badges per user**, including the user's display name from the `users` table.
+Let's walk through a concrete example using the [Stack Overflow dataset](/data-modeling/schema-design). We'll use a Materialized View to compute **daily badges per user**, including the display name of the user from the `users` table.
 
 As a reminder, our table schemas:
 
