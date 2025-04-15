@@ -20,6 +20,10 @@ import Image from '@theme/IdealImage';
 # RDS MySQL source setup guide
 
 This is a step-by-step guide on how to configure your RDS MySQL instance for replicating its data via the MySQL ClickPipe.
+<br/>
+:::info
+We also recommend going through the MySQL FAQs here. The FAQs page is being actively updated.
+:::
 
 ## Enable binary log retention {#enable-binlog-retention-rds}
 The binary log is a set of log files that contain information about data modifications made to an MySQL server instance, and binary log files are required for replication. Both of the below steps must be followed:
