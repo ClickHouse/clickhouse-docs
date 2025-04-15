@@ -111,3 +111,5 @@ You can configure the advanced settings if needed. A brief description of each s
 7. Select the "Full access" role from the permissions dropdown and click "Complete Setup".
 
    <Image img={ch_permissions} alt="Review permissions" size="lg" border/>
+
+Finally, please refer to the ["ClickPipes for MySQL FAQ"](/integrations/clickpipes/mysql/faq) page for more information about common issues and how to resolve them.
