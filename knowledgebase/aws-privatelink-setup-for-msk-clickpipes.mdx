@@ -11,11 +11,11 @@ keywords: ['AWS PrivateLink', 'MSK', 'ClickPipes']
 
 ## Overview {#overview}
 
-This guide will get you started with setting up a **MSK multi-VPC** to be used with [ClickPipes reverse private endpoint](/integrations/data-ingestion/clickpipes/aws-privatelink.md#msk-multi-vpc).
+This guide will get you started with setting up a **MSK multi-VPC** to be used with [ClickPipes reverse private endpoint](/integrations/clickpipes/aws-privatelink#msk-multi-vpc).
 
 ## Requirements {#requirements}
 
-Your MSK cluster VPC must be located in one of our ClickPipes regions. See [ClickPipes regions](/integrations/data-ingestion/clickpipes/aws-privatelink.md#aws-privatelink-regions) for the list of supported regions.
+Your MSK cluster VPC must be located in one of our ClickPipes regions. See [ClickPipes regions](/integrations/clickpipes/aws-privatelink#aws-privatelink-regions) for the list of supported regions.
 
 ## Enabling multi-VPC connectivity {#enabling-multi-vpc-connectivity}
 
@@ -35,23 +35,23 @@ Your MSK cluster VPC must be located in one of our ClickPipes regions. See [Clic
         {
             "Version": "2012-10-17",
             "Statement": [
-            {
-                "Effect": "Allow",
-                "Principal": {
-                "AWS": [
-                    "arn:aws:iam::072088201116:root"
-                ]
-                },
-                "Action": [
-                "kafka-cluster:Connect",
-                "kafka-cluster:DescribeCluster",
-                "kafka-cluster:ListClusters"
-                ]
-            }
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "AWS": [
+                            "arn:aws:iam::072088201116:root"
+                        ]
+                    },
+                    "Action": [
+                        "kafka-cluster:Connect",
+                        "kafka-cluster:DescribeCluster",
+                        "kafka-cluster:ListClusters"
+                    ]
+                }
             ]
         }
         ```
 
 ## Creating reverse private endpoint {#creating-reverse-private-endpoint}
 
-Follow reverse private endpoint creation steps in the [ClickPipes documentation](/integrations/data-ingestion/clickpipes/aws-privatelink.md#creating-clickpipe).
+Follow reverse private endpoint creation steps in the [ClickPipes documentation](/integrations/clickpipes/aws-privatelink#creating-clickpipe).
