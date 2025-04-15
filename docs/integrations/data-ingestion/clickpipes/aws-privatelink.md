@@ -63,6 +63,8 @@ Update your MSK cluster policy and add `072088201116` to the allowed principals 
 See AWS guide for [attaching a cluster policy](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-cluster-owner-action-policy.html) for more details.
 :::
 
+Follow our [MSK setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup-for-msk-clickpipes) to learn how to set up the connection.
+
 ### VPC endpoint service {#vpc-endpoint-service}
 
 VPC service is another approach to share your data source with ClickPipes.
@@ -87,7 +89,7 @@ See AWS guide for [managing permissions](https://docs.aws.amazon.com/vpc/latest/
 
 :::info
 [Cross-region access](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-cross-region)
-can be configured for ClickPipes. Add [your ClickPipe region](#aws-privatelink-endpoint-types) to the allowed regions in your VPC endpoint service.
+can be configured for ClickPipes. Add [your ClickPipe region](#aws-privatelink-regions) to the allowed regions in your VPC endpoint service.
 :::
 
 ## Creating a ClickPipe with reverse private endpoint {#creating-clickpipe}
@@ -109,6 +111,11 @@ can be configured for ClickPipes. Add [your ClickPipe region](#aws-privatelink-e
 <Image img={cp_rpe_step0} alt="Select reverse private endpoint" size="lg" border/>
 
 5. Select any of existing reverse private endpoints or create a new one.
+
+:::info
+For RDS, the process to create the VPC Endpoint service is a bit more involved and
+[this guide should provide](/knowledgebase/aws-privatelink-setup-for-clickpipes) a good starting point to set it up.
+:::
 
 <Image img={cp_rpe_step1} alt="Select reverse private endpoint" size="lg" border/>
 

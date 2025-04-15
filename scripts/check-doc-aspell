@@ -1,11 +1,23 @@
 #!/usr/bin/env bash
 
+echo "Checking spelling using aspell"
+
 # Only support OSX and Linux for now
 OS=$(uname | tr '[:upper:]' '[:lower:]')
 if [[ "$OS" != "darwin" && "$OS" != "linux" ]]; then
     echo "Unsupported OS: $OS"
     exit 1
 fi
+
+# Check if aspell is installed
+if ! command -v aspell &> /dev/null; then
+    echo "Error: aspell is not installed. Please install it using your package manager:"
+    echo "  macOS: brew install aspell"
+    echo "  Linux (Debian/Ubuntu): sudo apt install aspell"
+    echo "  Linux (Fedora/RHEL): sudo dnf install aspell"
+    exit 1
+fi
+
 
 # Perform spell checking on the docs
 if [[ ${1:-} == "--help" ]] || [[ ${1:-} == "-h" ]]; then
