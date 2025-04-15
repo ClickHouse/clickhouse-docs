@@ -263,6 +263,13 @@ autovacuum
 VACUUM
 resync
 Resync
+--docs/integrations/data-ingestion/clickpipes/mysql/faq.md--
+PlanetScale
+Planetscale
+VGtids
+VStream
+Vitess
+Vitess's
 --docs/integrations/data-ingestion/clickpipes/mysql/datatypes.md--
 BigInt
 LongBlob

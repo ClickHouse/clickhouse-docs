@@ -712,6 +712,7 @@ const sidebars = {
           collapsible: true,
           items: [
             "integrations/data-ingestion/clickpipes/mysql/index",
+            "integrations/data-ingestion/clickpipes/mysql/faq",
             {
               type: "category",
               label: "Source",
