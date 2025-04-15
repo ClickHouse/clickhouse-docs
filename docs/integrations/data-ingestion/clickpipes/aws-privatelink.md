@@ -63,7 +63,7 @@ Update your MSK cluster policy and add `072088201116` to the allowed principals 
 See AWS guide for [attaching a cluster policy](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-cluster-owner-action-policy.html) for more details.
 :::
 
-Follow our [MSK setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup-for-msk-clickpipes) to set up the connection.
+Follow our [MSK setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup-for-msk-clickpipes) to learn how to set up the connection.
 
 ### VPC endpoint service {#vpc-endpoint-service}
 
