@@ -51,6 +51,10 @@ For instance, you can configure your Spark session in the first cell of your not
 
 Please visit the [ClickHouse Spark configurations page](integrations/apache-spark/spark-native-connector#configurations) for additional settings.
 
+:::info
+When working with ClickHouse Cloud Please make sure to set the [required Spark settings](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings).  
+:::
+
 ## Setup Verification {#setup-verification}
 
 To verify that the dependencies and configurations were set successfully, please visit your session's Spark UI, and go to your `Environment` tab.
