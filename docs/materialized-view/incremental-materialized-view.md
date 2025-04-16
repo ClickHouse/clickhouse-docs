@@ -1079,7 +1079,7 @@ Although our ordering of the arrival of rows from each view is the same, this is
 
 Enabling `parallel_view_processing=1` can significantly improve insert throughput, as shown above, especially when multiple Materialized Views are attached to a single table. However, it’s important to understand the trade-offs:
 
-- **Increased insert pressure**: All Materialized Views are executed simultaneously, increasing CPU and memory usage. If each view performs heavy computation or joins, this can overload the system.
+- **Increased insert pressure**: All Materialized Views are executed simultaneously, increasing CPU and memory usage. If each view performs heavy computation or JOINs, this can overload the system.
 - **Need for strict execution order**: In rare workflows where the order of view execution matters (e.g., chained dependencies), parallel execution may lead to inconsistent state or race conditions. While possible to design around this, such setups are fragile and may break with future versions.
 
 :::note Historical defaults and stability
