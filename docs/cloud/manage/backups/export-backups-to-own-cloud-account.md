@@ -88,8 +88,8 @@ SETTINGS base_backup = S3('https://testchbackups.s3.amazonaws.com/backups/<base-
 ### Restore from a backup {#restore-from-a-backup}
 
 ```sql
-RESTORE DATABASE test_backups 
-AS test_backups_restored 
+RESTORE DATABASE test_backups_restored 
+AS test_backups 
 FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
 ```
 
