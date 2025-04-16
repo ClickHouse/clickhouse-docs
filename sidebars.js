@@ -691,6 +691,16 @@ const sidebars = {
             "integrations/data-ingestion/dbms/postgresql/inserting-data",
             {
               type: "category",
+              label: "Operations",
+              items: [
+                "integrations/data-ingestion/clickpipes/postgres/add_table",
+                "integrations/data-ingestion/clickpipes/postgres/pause_and_resume",
+                "integrations/data-ingestion/clickpipes/postgres/remove_table",
+                "integrations/data-ingestion/clickpipes/postgres/table_resync",
+              ],
+            },
+            {
+              type: "category",
               label: "Source",
               items: [
                 "integrations/data-ingestion/clickpipes/postgres/source/rds",

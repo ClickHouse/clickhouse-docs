@@ -2,6 +2,7 @@
 title: Resyncing Specific Tables
 description: Resyncing specific tables in a Postgres ClickPipe
 slug: /integrations/clickpipes/postgres/table_resync
+sidebar_label: 'Resync Table'
 ---
 
 # Resyncing specific tables {#resync-tables}
@@ -20,4 +21,5 @@ This step is to avoid data duplication when we add this table again in the next 
 Note that since PeerDB creates ReplacingMergeTree tables by default, if your table is small enough where temporary duplicates is harmless, this step can be skipped.
 
 ### 3. Add the table to the ClickPipe again {#add-table-again}
+
 This can be followed by following the [table addition guide](./add_table).
