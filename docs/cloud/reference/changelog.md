@@ -51,7 +51,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
   databases to ClickHouse Cloud in a few clicks, enabling fast analytics and 
   removing the need for external ETL tools. The connector supports both continuous
   replication and one-time migrations, whether MySQL is on the cloud (RDS, 
-  Aurora, CloudSQL, Azure, etc.) or on-premises. You can sign up to the private
+  Aurora, Cloud SQL, Azure, etc.) or on-premises. You can sign up to the private
   preview by [following this link](https://clickhouse.com/cloud/clickpipes/mysql-cdc-connector).
 - Introduced *AWS PrivateLink for ClickPipes*. You can use AWS PrivateLink to 
   establish secure connectivity between VPCs, AWS services, your on-premises 
