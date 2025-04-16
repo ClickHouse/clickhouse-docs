@@ -30,7 +30,7 @@ WITH
                 change.4 AS comment
         FROM system.settings_changes
         WHERE type = 'Session'
-        ORDER BY setting_name, version ASC
+        ORDER BY setting_name, version DESC
         )
         GROUP BY setting_name
     ),
