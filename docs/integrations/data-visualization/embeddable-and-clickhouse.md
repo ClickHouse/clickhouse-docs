@@ -13,11 +13,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-In [Embeddable](https://embeddable.com/) you define [Data Models](https://trevorio.notion.site/Data-modeling-35637bbbc01046a1bc47715456bfa1d8) and [Components](https://trevorio.notion.site/Using-components-761f52ac2d0743b488371088a1024e49) in code (stored in your own code repository) and use our **SDK** to make these available for your team in the powerful Embeddable **no-code builder.**
+In [Embeddable](https://embeddable.com/) you define [Data Models](https://docs.embeddable.com/data-modeling/introduction) and [Components](https://docs.embeddable.com/development/introduction) in code (stored in your own code repository) and use our **SDK** to make these available for your team in the powerful Embeddable **no-code builder.**
 
 The end result is the ability to deliver fast, interactive customer-facing analytics directly in your product; designed by your product team; built by your engineering team; maintained by your customer-facing and data teams. Exactly the way it should be.
 
-Built-in row-level security means that every user only ever sees exactly the data they’re allowed to see. And two levels of fully-configurable caching mean you can deliver fast, real time analytics at scale.
+Built-in row-level security means that every user only ever sees exactly the data they're allowed to see. And two levels of fully-configurable caching mean you can deliver fast, real time analytics at scale.
 
 
 ## 1. Gather your connection details {#1-gather-your-connection-details}
@@ -68,4 +68,4 @@ The `credentials` is a JavaScript object containing the necessary credentials ex
 - These are securely encrypted and only used to retrieve exactly the data you have described in your data models.
 Embeddable strongly encourage you to create a read-only database user for each connection (Embeddable will only ever read from your database, not write).
 
-In order to support connecting to different databases for prod, qa, test, etc (or to support different databases for different customers) you can assign each connection to an environment (see [Environments API](https://www.notion.so/Environments-API-497169036b5148b38f7936aa75e62949?pvs=21)).
+In order to support connecting to different databases for prod, qa, test, etc (or to support different databases for different customers) you can assign each connection to an environment (see [Environments API](https://docs.embeddable.com/data/environments)).

@@ -1,9 +1,10 @@
 ---
-sidebar_label: MySQL
+sidebar_label: 'MySQL'
 sidebar_position: 10
 slug: /integrations/connecting-to-mysql
-description: Двигатель таблиц MySQL позволяет подключить ClickHouse к MySQL.
-keywords: [clickhouse, mysql, connect, integrate, table, engine]
+description: 'Движок таблиц MySQL позволяет подключить ClickHouse к MySQL.'
+keywords: ['clickhouse', 'mysql', 'connect', 'integrate', 'table', 'engine']
+title: 'Интеграция MySQL с ClickHouse'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -12,11 +13,11 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 # Интеграция MySQL с ClickHouse
 
-Эта страница описывает использование двигателя таблиц `MySQL` для чтения из таблицы MySQL.
+Эта страница описывает использование движка таблиц `MySQL` для чтения из таблицы MySQL.
 
-## Подключение ClickHouse к MySQL с помощью двигателя таблиц MySQL {#connecting-clickhouse-to-mysql-using-the-mysql-table-engine}
+## Подключение ClickHouse к MySQL с использованием движка таблиц MySQL {#connecting-clickhouse-to-mysql-using-the-mysql-table-engine}
 
-Двигатель таблиц `MySQL` позволяет подключить ClickHouse к MySQL. **SELECT** и **INSERT** команды могут выполняться как в ClickHouse, так и в таблице MySQL. Эта статья иллюстрирует основные методы использования двигателя таблиц `MySQL`.
+Движок таблиц `MySQL` позволяет подключить ClickHouse к MySQL. **SELECT** и **INSERT** операторы могут выполняться как в ClickHouse, так и в таблице MySQL. В этой статье показаны основные методы использования движка таблиц `MySQL`.
 
 ### 1. Настройка MySQL {#1-configure-mysql}
 
@@ -33,7 +34,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
   );
   ```
 
-3. Вставьте примеры строк:
+3. Вставьте образцы строк:
   ```sql
   INSERT INTO db1.table1
     (id, column1)
@@ -48,19 +49,19 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
   CREATE USER 'mysql_clickhouse'@'%' IDENTIFIED BY 'Password123!';
   ```
 
-5. Предоставьте необходимые привилегии. (В демонстрационных целях пользователю `mysql_clickhouse` предоставляются административные права.)
+5. Предоставьте привилегии по мере необходимости. (Для демонстрационных целей пользователю `mysql_clickhouse` предоставляются административные привилегии.)
   ```sql
   GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
   ```
 
 :::note
-Если вы используете эту функцию в ClickHouse Cloud, вам может потребоваться разрешить IP-адреса ClickHouse Cloud для доступа к вашему экземпляру MySQL.
-Проверьте [API конечных точек Cloud ClickHouse](//cloud/get-started/query-endpoints.md) для получения сведений об исходящем трафике.
+Если вы используете эту функцию в ClickHouse Cloud, вам может понадобиться разрешить IP-адреса ClickHouse Cloud для доступа к вашему экземпляру MySQL.
+Проверьте документацию ClickHouse [Cloud Endpoints API](//cloud/get-started/query-endpoints.md) для получения информации о выходящем трафике.
 :::
 
 ### 2. Определите таблицу в ClickHouse {#2-define-a-table-in-clickhouse}
 
-1. Теперь давайте создадим таблицу ClickHouse, которая использует двигатель таблиц `MySQL`:
+1. Теперь давайте создадим таблицу ClickHouse, которая использует движок таблиц `MySQL`:
   ```sql
   CREATE TABLE mysql_table1 (
     id UInt64,
@@ -71,19 +72,19 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
   Минимальные параметры:
 
-  |parameter|Описание        |пример              |
+  |parameter|Description        |example              |
   |---------|----------------------------|---------------------|
-  |host     |имя хоста или IP           |mysql-host.domain.com|
-  |database |имя базы данных mysql      |db1                  |
-  |table    |имя таблицы mysql          |table1               |
+  |host     |hostname или IP              |mysql-host.domain.com|
+  |database |имя базы данных MySQL         |db1                  |
+  |table    |имя таблицы MySQL            |table1               |
   |user     |имя пользователя для подключения к mysql|mysql_clickhouse     |
   |password |пароль для подключения к mysql|Password123!         |
 
   :::note
-  Просмотрите страницу документации [двигателя таблиц MySQL](/engines/table-engines/integrations/mysql.md) для полного списка параметров.
+  Просмотрите страницу документации [MySQL table engine](/engines/table-engines/integrations/mysql.md) для полного списка параметров.
   :::
 
-### 3. Проверьте интеграцию {#3-test-the-integration}
+### 3. Протестируйте интеграцию {#3-test-the-integration}
 
 1. В MySQL вставьте образец строки:
   ```sql
@@ -93,7 +94,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
     (4, 'jkl');
   ```
 
-2. Обратите внимание, что существующие строки из таблицы MySQL находятся в таблице ClickHouse, вместе с новой строкой, которую вы только что добавили:
+2. Обратите внимание, что существующие строки из таблицы MySQL находятся в таблице ClickHouse вместе с новой строкой, которую вы только что добавили:
   ```sql
   SELECT
       id,
@@ -112,7 +113,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
   │  4 │ jkl     │
   └────┴─────────┘
 
-  4 строки в наборе. Затраченное время: 0.044 сек.
+  4 rows in set. Elapsed: 0.044 sec.
   ```
 
 3. Давайте добавим строку в таблицу ClickHouse:
@@ -139,9 +140,9 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
   |    4 | jkl     |
   |    5 | mno     |
   +------+---------+
-  5 строк в наборе (0.01 сек)
+  5 rows in set (0.01 sec)
   ```
 
 ### Резюме {#summary}
 
-Двигатель таблиц `MySQL` позволяет вам подключить ClickHouse к MySQL для обмена данными в обоих направлениях. Для получения более подробной информации обязательно ознакомьтесь с документом о [двигателе таблиц MySQL](/sql-reference/table-functions/mysql.md).
+Движок таблиц `MySQL` позволяет подключать ClickHouse к MySQL для обмена данными в обе стороны. Для получения дополнительных сведений не забудьте ознакомиться с документацией на странице [MySQL table engine](/sql-reference/table-functions/mysql.md).

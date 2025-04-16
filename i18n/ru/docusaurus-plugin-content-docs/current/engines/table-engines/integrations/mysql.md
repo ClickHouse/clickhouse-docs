@@ -1,18 +1,20 @@
 ---
-slug: /engines/table-engines/integrations/mysql
+description: 'Документация для движка таблиц MySQL'
+sidebar_label: 'MySQL'
 sidebar_position: 138
-sidebar_label: MySQL
-title: "Движок MySQL позволяет выполнять `SELECT` и `INSERT` запросы к данным, хранящимся на удалённом сервере MySQL."
+slug: /engines/table-engines/integrations/mysql
+title: 'Движок MySQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, 
+  которые хранятся на удаленном MySQL сервере.'
 ---
 
 
-# Движок таблиц MySQL
+# MySQL Table Engine
 
-Движок MySQL позволяет выполнять `SELECT` и `INSERT` запросы к данным, хранящимся на удалённом сервере MySQL.
+Движок MySQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, которые хранятся на удаленном MySQL сервере.
 
 ## Создание таблицы {#creating-a-table}
 
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1] [TTL expr1],
@@ -35,25 +37,25 @@ SETTINGS
 
 - Имена колонок должны совпадать с именами в оригинальной таблице MySQL, но вы можете использовать только некоторые из этих колонок и в любом порядке.
 - Типы колонок могут отличаться от тех, что в оригинальной таблице MySQL. ClickHouse пытается [привести](../../../engines/database-engines/mysql.md#data_types-support) значения к типам данных ClickHouse.
-- Параметр [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls) определяет, как обрабатывать Nullable колонки. Значение по умолчанию: 1. Если 0, функция таблицы не делает Nullable колонки и вставляет значения по умолчанию вместо null. Это также относится к NULL-значениям внутри массивов.
+- Настройка [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls) определяет, как обрабатывать Nullable колонки. Значение по умолчанию: 1. Если 0, функция таблицы не создаёт Nullable колонки и вставляет значения по умолчанию вместо null. Это также применимо к NULL значениям внутри массивов.
 
 :::note
-Движок таблиц MySQL в данный момент недоступен в сборках ClickHouse для MacOS ([issue](https://github.com/ClickHouse/ClickHouse/issues/21191))
+Движок MySQL в настоящее время недоступен в сборках ClickHouse для MacOS ([issue](https://github.com/ClickHouse/ClickHouse/issues/21191))
 :::
 
-**Параметры двигателя**
+**Параметры движка**
 
 - `host:port` — адрес сервера MySQL.
-- `database` — имя удалённой базы данных.
-- `table` — имя удалённой таблицы.
+- `database` — имя удаленной базы данных.
+- `table` — имя удаленной таблицы.
 - `user` — пользователь MySQL.
 - `password` — пароль пользователя.
-- `replace_query` — флаг, который преобразует запросы `INSERT INTO` в `REPLACE INTO`. Если `replace_query=1`, запрос будет заменён.
+- `replace_query` — флаг, который преобразует запросы `INSERT INTO` в `REPLACE INTO`. Если `replace_query=1`, запрос заменяется.
 - `on_duplicate_clause` — выражение `ON DUPLICATE KEY on_duplicate_clause`, которое добавляется к запросу `INSERT`.
-    Пример: `INSERT INTO t (c1,c2) VALUES ('a', 2) ON DUPLICATE KEY UPDATE c2 = c2 + 1`, где `on_duplicate_clause` это `UPDATE c2 = c2 + 1`. Смотрите [документацию MySQL](https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html), чтобы узнать, какое `on_duplicate_clause` вы можете использовать с клаузой `ON DUPLICATE KEY`.
-    Чтобы указать `on_duplicate_clause`, вам нужно передать `0` в параметр `replace_query`. Если одновременно передать `replace_query = 1` и `on_duplicate_clause`, ClickHouse выдаст исключение.
+    Пример: `INSERT INTO t (c1,c2) VALUES ('a', 2) ON DUPLICATE KEY UPDATE c2 = c2 + 1`, где `on_duplicate_clause` это `UPDATE c2 = c2 + 1`. Смотрите [документацию MySQL](https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html), чтобы узнать, какое `on_duplicate_clause` вы можете использовать с `ON DUPLICATE KEY`.
+    Чтобы указать `on_duplicate_clause`, нужно передать `0` параметру `replace_query`. Если вы одновременно передаете `replace_query = 1` и `on_duplicate_clause`, ClickHouse генерирует исключение.
 
-Также аргументы могут быть переданы с использованием [именованных коллекций](/operations/named-collections.md). В этом случае `host` и `port` должны быть указаны отдельно. Этот подход рекомендуется для производственной среды.
+Аргументы также могут быть переданы с использованием [именованных коллекций](/operations/named-collections.md). В этом случае `host` и `port` должны быть указаны отдельно. Этот подход рекомендуется для производственной среды.
 
 Простые условия `WHERE`, такие как `=, !=, >, >=, <, <=`, выполняются на сервере MySQL.
 
@@ -69,7 +71,7 @@ CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) EN
 
 Создайте таблицу в MySQL:
 
-``` text
+```text
 mysql> CREATE TABLE `test`.`test` (
     ->   `int_id` INT NOT NULL AUTO_INCREMENT,
     ->   `int_nullable` INT NULL DEFAULT NULL,
@@ -90,9 +92,9 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-Создайте таблицу в ClickHouse, используя простые аргументы:
+Создайте таблицу в ClickHouse, используя обычные аргументы:
 
-``` sql
+```sql
 CREATE TABLE mysql_table
 (
     `float_nullable` Nullable(Float32),
@@ -118,13 +120,13 @@ CREATE TABLE mysql_table
 ENGINE = MySQL(creds, table='test')
 ```
 
-Получение данных из таблицы MySQL:
+Извлечение данных из таблицы MySQL:
 
-``` sql
+```sql
 SELECT * FROM mysql_table
 ```
 
-``` text
+```text
 ┌─float_nullable─┬─int_id─┐
 │           ᴺᵁᴸᴸ │      1 │
 └────────────────┴────────┘
@@ -132,33 +134,33 @@ SELECT * FROM mysql_table
 
 ## Настройки {#mysql-settings}
 
-Настройки по умолчанию не очень эффективны, поскольку они даже не повторно используют соединения. Эти настройки позволяют увеличить количество запросов, выполняемых сервером в секунду.
+Настройки по умолчанию не очень эффективны, так как они даже не повторно используют соединения. Эти настройки позволяют увеличить количество запросов, выполняемых сервером в секунду.
 
 ### connection_auto_close {#connection-auto-close}
 
-Позволяет автоматически закрывать соединение после выполнения запроса, т.е. отключает повторное использование соединений.
+Позволяет автоматически закрывать соединение после выполнения запроса, т.е. отключить повторное использование соединения.
 
 Возможные значения:
 
-- 1 — Автозакрытие соединения разрешено, повторное использование соединения отключено.
-- 0 — Автозакрытие соединения не разрешено, повторное использование соединения включено.
+- 1 — Авто-закрытие соединения разрешено, поэтому повторное использование соединения отключено
+- 0 — Авто-закрытие соединения не разрешено, поэтому повторное использование соединения включено
 
 Значение по умолчанию: `1`.
 
 ### connection_max_tries {#connection-max-tries}
 
-Устанавливает количество попыток для пула с резервированием.
+Устанавливает количество попыток для пула с переключением на резервный сервер.
 
 Возможные значения:
 
 - Положительное целое число.
-- 0 — Нет попыток для пула с резервированием.
+- 0 — Нет попыток для пула с переключением на резервный сервер.
 
 Значение по умолчанию: `3`.
 
 ### connection_pool_size {#connection-pool-size}
 
-Размер пула соединений (если все соединения заняты, запрос будет ждать, пока какое-то соединение не освободится).
+Размер пула соединений (если все соединения используются, запрос будет ждать, пока какое-то соединение не будет освобождено).
 
 Возможные значения:
 
@@ -168,7 +170,7 @@ SELECT * FROM mysql_table
 
 ### connection_wait_timeout {#connection-wait-timeout}
 
-Тайм-аут (в секундах) для ожидания свободного соединения (в случае, если уже есть активные соединения, равные connection_pool_size), 0 - не ждать.
+Тайм-аут (в секундах) для ожидания свободного соединения (в случае, если уже есть connection_pool_size активных соединений), 0 - не ждать.
 
 Возможные значения:
 
@@ -178,7 +180,7 @@ SELECT * FROM mysql_table
 
 ### connect_timeout {#connect-timeout}
 
-Тайм-аут соединения (в секундах).
+Тайм-аут подключения (в секундах).
 
 Возможные значения:
 
@@ -196,7 +198,7 @@ SELECT * FROM mysql_table
 
 Значение по умолчанию: `300`.
 
-## См. также {#see-also}
+## Дополнительно {#see-also}
 
 - [Функция таблицы mysql](../../../sql-reference/table-functions/mysql.md)
 - [Использование MySQL в качестве источника словаря](/sql-reference/dictionaries#mysql)

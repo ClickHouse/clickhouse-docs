@@ -1,18 +1,19 @@
 ---
-slug: /sql-reference/statements/alter/sample-by
+description: 'Документация по манипулированию выражением SAMPLE BY'
+sidebar_label: 'SAMPLE BY'
 sidebar_position: 41
-sidebar_label: SAMPLE BY
-title: "Манипулирование выражениями ключа выборки"
+slug: /sql-reference/statements/alter/sample-by
+title: 'Манипулирование выражениями ключа выборки'
 ---
 
 
 # Манипулирование выражением SAMPLE BY
 
-Доступны следующие операции:
+Следующие операции доступны:
 
 ## MODIFY {#modify}
 
-``` sql
+```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY SAMPLE BY new_expression
 ```
 
@@ -20,15 +21,15 @@ ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY SAMPLE BY new_expression
 
 ## REMOVE {#remove}
 
-``` sql
+```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] REMOVE SAMPLE BY
 ```
 
 Команда удаляет [ключ выборки](../../../engines/table-engines/mergetree-family/mergetree.md) таблицы.
 
 
-Команды `MODIFY` и `REMOVE` являются легковесными в том смысле, что они только изменяют метаданные или удаляют файлы.
+Команды `MODIFY` и `REMOVE` являются легковесными в том смысле, что они изменяют только метаданные или удаляют файлы.
 
 :::note    
-Это работает только для таблиц в семействе [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) (включая [реплицированные](../../../engines/table-engines/mergetree-family/replication.md) таблицы).
+Это работает только для таблиц из семейства [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) (включая [реплицированные](../../../engines/table-engines/mergetree-family/replication.md) таблицы).
 :::

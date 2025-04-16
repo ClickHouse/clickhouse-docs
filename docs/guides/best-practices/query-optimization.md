@@ -15,9 +15,9 @@ This section aims to illustrate through common scenarios how to use different pe
 
 ## Understand query performance {#understand-query-performance}
 
-The best moment to think about performance optimization is when you’re setting up your [data schema](/data-modeling/schema-design) before ingesting data into ClickHouse for the first time. 
+The best moment to think about performance optimization is when you're setting up your [data schema](/data-modeling/schema-design) before ingesting data into ClickHouse for the first time. 
 
-But let’s be honest; it is difficult to predict how much your data will grow or what types of queries will be executed. 
+But let's be honest; it is difficult to predict how much your data will grow or what types of queries will be executed. 
 
 If you have an existing deployment with a few queries that you want to improve, the first step is understanding how those queries perform and why some execute in a few milliseconds while others take longer.
 
@@ -27,7 +27,7 @@ In this section, we will look at those tools and how to use them. 
 
 ## General considerations {#general-considerations}
 
-To understand query performance, let’s look at what happens in ClickHouse when a query is executed. 
+To understand query performance, let's look at what happens in ClickHouse when a query is executed. 
 
 The following part is deliberately simplified and takes some shortcuts; the idea here is not to drown you with details but to get you up to speed with the basic concepts. For more information you can read about [query analyzer](/operations/analyzer). 
 
@@ -51,7 +51,7 @@ The results are merged, sorted, and formatted into a final result before being s
 
 In reality, many [optimizations](/concepts/why-clickhouse-is-so-fast) are taking place, and we will discuss them a bit more in this guide, but for now, those main concepts give us a good understanding of what is happening behind the scenes when ClickHouse executes a query. 
 
-With this high-level understanding, let’s examine the tooling ClickHouse provides and how we can use it to track the metrics that affect query performance. 
+With this high-level understanding, let's examine the tooling ClickHouse provides and how we can use it to track the metrics that affect query performance. 
 
 ## Dataset {#dataset}
 
@@ -113,7 +113,7 @@ For each executed query, ClickHouse logs statistics such as query execution time
 
 Therefore, the query log is a good place to start when investigating slow queries. You can easily spot the queries that take a long time to execute and display the resource usage information for each one. 
 
-Let’s find the top five long-running queries on our NYC taxi dataset.
+Let's find the top five long-running queries on our NYC taxi dataset.
 
 ```sql
 -- Find top 5 long running queries from nyc_taxi database in the last 1 hour
@@ -236,7 +236,7 @@ ORDER BY memory_usage DESC
 LIMIT 30
 ```
 
-Let’s isolate the long-running queries we found and rerun them a few times to understand the response time. 
+Let's isolate the long-running queries we found and rerun them a few times to understand the response time. 
 
 At this point, it is essential to turn off the filesystem cache by setting the `enable_filesystem_cache` setting to 0 to improve reproducibility.
 
@@ -401,7 +401,7 @@ If you know which user, database, or tables are having issues, you can use the f
 
 Once you identify the queries you want to optimize, you can start working on them to optimize. One common mistake developers make at this stage is changing multiple things simultaneously, running ad-hoc experiments, and usually ending up with mixed results, but, more importantly, missing a good understanding of what made the query faster. 
 
-Query optimization requires structure. I’m not talking about advanced benchmarking, but having a simple process in place to understand how your changes affect query performance can go a long way. 
+Query optimization requires structure. I'm not talking about advanced benchmarking, but having a simple process in place to understand how your changes affect query performance can go a long way. 
 
 Start by identifying your slow queries from query logs, then investigate potential improvements in isolation. When testing the query, make sure you disable the filesystem cache. 
 
@@ -411,7 +411,7 @@ Once you have identified potential optimizations, it is recommended that you imp
 
 <Image img={queryOptimizationDiagram1} size="lg" alt="Optimization workflow"/>
 
-_Finally, be cautious of outliers; it’s pretty common that a query might run slowly, either because a user tried an ad-hoc expensive query or the system was under stress for another reason. You can group by the field normalized_query_hash to identify expensive queries that are being executed regularly. Those are probably the ones you want to investigate._
+_Finally, be cautious of outliers; it's pretty common that a query might run slowly, either because a user tried an ad-hoc expensive query or the system was under stress for another reason. You can group by the field normalized_query_hash to identify expensive queries that are being executed regularly. Those are probably the ones you want to investigate._
 
 ## Basic optimization {#basic-optimization}
 
@@ -419,11 +419,11 @@ Now that we have our framework to test, we can start optimizing.
 
 The best place to start is to look at how the data is stored. As for any database, the less data we read, the faster the query will be executed. 
 
-Depending on how you ingested your data, you might have leveraged ClickHouse [capabilities](/interfaces/schema-inference) to infer the table schema based on the ingested data. While this is very practical to get started, if you want to optimize your query performance, you’ll need to review the data schema to best fit your use case.
+Depending on how you ingested your data, you might have leveraged ClickHouse [capabilities](/interfaces/schema-inference) to infer the table schema based on the ingested data. While this is very practical to get started, if you want to optimize your query performance, you'll need to review the data schema to best fit your use case.
 
 ### Nullable {#nullable}
 
-As described in the [best practices documentation](/cloud/bestpractices/avoid-nullable-columns), avoid nullable columns wherever possible. It is tempting to use them often, as they make the data ingestion mechanism more flexible, but they negatively affect performance as an additional column has to be processed every time.
+As described in the [best practices documentation](/best-practices/select-data-types#avoid-nullable-columns), avoid nullable columns wherever possible. It is tempting to use them often, as they make the data ingestion mechanism more flexible, but they negatively affect performance as an additional column has to be processed every time.
 
 Running an SQL query that counts the rows with a NULL value can easily reveal the columns in your tables that actually need a Nullable value.
 
@@ -517,11 +517,11 @@ Query id: 4306a8e1-2a9c-4b06-97b4-4d902d2233eb
    └───────────────────┴───────────────────┘
 ```
 
-For dates, you should pick a precision that matches your dataset and is best suited to answering the queries you’re planning to run.
+For dates, you should pick a precision that matches your dataset and is best suited to answering the queries you're planning to run.
 
 ### Apply the optimizations {#apply-the-optimizations}
 
-Let’s create a new table to use the optimized schema and re-ingest the data.
+Let's create a new table to use the optimized schema and re-ingest the data.
 
 ```sql
 -- Create table with optimized data
@@ -743,7 +743,7 @@ We then rerun our queries. We compile the results from the three experiments to 
 
 We can see significant improvement across the board in execution time and memory used. 
 
-Query 2 benefits most from the primary key. Let’s have a look at how the query plan generated is different from before.
+Query 2 benefits most from the primary key. Let's have a look at how the query plan generated is different from before.
 
 ```sql
 EXPLAIN indexes = 1

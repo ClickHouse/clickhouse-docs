@@ -20,11 +20,11 @@
     "description": "The label for category Starter Guides in sidebar docs"
   },
   "sidebar.docs.category.Use Case Guides": {
-    "message": "Руководства по случаям использования",
+    "message": "Руководства по использованию",
     "description": "The label for category Use Case Guides in sidebar docs"
   },
   "sidebar.docs.category.Observability": {
-    "message": "Обнаружаемость",
+    "message": "Мониторинг",
     "description": "The label for category Observability in sidebar docs"
   },
   "sidebar.docs.category.Migration Guides": {

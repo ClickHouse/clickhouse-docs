@@ -1,8 +1,8 @@
 ---
-sidebar_label: Redshift
+sidebar_label: 'Redshift'
 slug: /integrations/redshift
-description: Миграция данных из Redshift в ClickHouse
----
+description: 'Миграция данных из Redshift в ClickHouse'
+title: 'Миграция данных из Redshift в ClickHouse'
 ---
 
 import redshiftToClickhouse from '@site/static/images/integrations/data-ingestion/redshift/redshift-to-clickhouse.png';
@@ -11,6 +11,7 @@ import pull from '@site/static/images/integrations/data-ingestion/redshift/pull.
 import pivot from '@site/static/images/integrations/data-ingestion/redshift/pivot.png';
 import s3_1 from '@site/static/images/integrations/data-ingestion/redshift/s3-1.png';
 import s3_2 from '@site/static/images/integrations/data-ingestion/redshift/s3-2.png';
+import Image from '@theme/IdealImage';
 
 
 # Миграция данных из Redshift в ClickHouse
@@ -33,75 +34,72 @@ import s3_2 from '@site/static/images/integrations/data-ingestion/redshift/s3-2.
 
 ## Введение {#introduction}
 
-[Amazon Redshift](https://aws.amazon.com/redshift/) — это популярное облачное решение для хранения данных, входящее в состав предложений Amazon Web Services. Этот гид представляет различные подходы к миграции данных из экземпляра Redshift в ClickHouse. Мы рассмотрим три варианта:
+[Amazon Redshift](https://aws.amazon.com/redshift/) — популярное облачное решение для хранения данных, которое является частью предложений Amazon Web Services. Этот гид представляет различные подходы к миграции данных из экземпляра Redshift в ClickHouse. Мы рассмотрим три варианта:
 
-<img src={redshiftToClickhouse} class="image" alt="Варианты миграции из Redshift в ClickHouse"/>
+<Image img={redshiftToClickhouse} size="lg" alt="Опции миграции Redshift в ClickHouse" background="white"/>
 
-С точки зрения экземпляра ClickHouse у вас есть возможность:
+С точки зрения экземпляра ClickHouse, вы можете:
 
-1. **[PUSH](#push-data-from-redshift-to-clickhouse)** данные в ClickHouse с помощью стороннего инструмента или сервиса ETL/ELT
+1. **[PUSH](#push-data-from-redshift-to-clickhouse)** данные в ClickHouse, используя сторонний инструмент или сервис ETL/ELT
 
-2. **[PULL](#pull-data-from-redshift-to-clickhouse)** данные из Redshift, используя ClickHouse JDBC Bridge
+2. **[PULL](#pull-data-from-redshift-to-clickhouse)** данные из Redshift с использованием ClickHouse JDBC Bridge
 
-3. **[PIVOT](#pivot-data-from-redshift-to-clickhouse-using-s3)** с использованием хранилища объектов S3, используя логику "Разгрузить, затем загрузить"
+3. **[PIVOT](#pivot-data-from-redshift-to-clickhouse-using-s3)** с использованием объектного хранилища S3, применяя логику «Выгрузить, затем загрузить»
 
 :::note
-В этом учебнике мы использовали Redshift в качестве источника данных. Однако представленные здесь подходы миграции не являются эксклюзивными для Redshift, и аналогичные шаги могут быть применены для любого совместимого источника данных.
+В этом учебнике мы использовали Redshift в качестве источника данных. Тем не менее, представленные подходы миграции не являются эксклюзивными для Redshift, и аналогичные шаги могут быть применены к любому совместимому источнику данных.
 :::
 
 
-## Перенос данных из Redshift в ClickHouse {#push-data-from-redshift-to-clickhouse}
+## Передача данных из Redshift в ClickHouse {#push-data-from-redshift-to-clickhouse}
 
-В сценарии push основная идея состоит в том, чтобы использовать сторонний инструмент или сервис (либо пользовательский код, либо [ETL/ELT](https://en.wikipedia.org/wiki/Extract,_transform,_load#ETL_vs._ELT)), чтобы передать ваши данные в экземпляр ClickHouse. Например, вы можете использовать такое программное обеспечение, как [Airbyte](https://www.airbyte.com/), для передачи данных между вашим экземпляром Redshift (в качестве источника) и ClickHouse как целью ([см. наш гид по интеграции для Airbyte](/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md))
+В сценарии передачи данные отправляются с помощью стороннего инструмента или сервиса (либо кастомного кода, либо [ETL/ELT](https://en.wikipedia.org/wiki/Extract,_transform,_load#ETL_vs._ELT)), чтобы отправить ваши данные в экземпляр ClickHouse. Например, вы можете использовать программное обеспечение, такое как [Airbyte](https://www.airbyte.com/), чтобы перемещать данные между вашим экземпляром Redshift (в качестве источника) и ClickHouse в качестве назначения ([см. наш гид по интеграции для Airbyte](/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md))
 
-
-<img src={push} class="image" alt="PUSH из Redshift в ClickHouse"/>
+<Image img={push} size="lg" alt="PUSH Redshift в ClickHouse" background="white"/>
 
 ### Плюсы {#pros}
 
-* Может использовать существующий каталог соединителей из программного обеспечения ETL/ELT.
-* Встроенные возможности для синхронизации данных (добавление/перезапись/логика инкремента).
-* Позволяет сценарии трансформации данных (например, см. наш [гид по интеграции для dbt](/integrations/data-ingestion/etl-tools/dbt/index.md)).
+* Использует существующий каталог коннекторов ETL/ELT программного обеспечения.
+* Встроенные возможности для синхронизации данных (добавление/перезапись/инкрементная логика).
+* Позволяет сценарии преобразования данных (например, см. наш [гид по интеграции для dbt](/integrations/data-ingestion/etl-tools/dbt/index.md)).
 
 ### Минусы {#cons}
 
-* Пользователям необходимо настроить и поддерживать инфраструктуру ETL/ELT.
-* Вводит элемент третьей стороны в архитектуру, который может стать потенциальным узким местом для масштабируемости.
+* Пользователям необходимо настраивать и поддерживать инфраструктуру ETL/ELT.
+* Внесение стороннего элемента в архитектуру, что может стать потенциальным узким местом в масштабируемости.
 
 
 ## Извлечение данных из Redshift в ClickHouse {#pull-data-from-redshift-to-clickhouse}
 
-В сценарии pull основная идея состоит в том, чтобы использовать ClickHouse JDBC Bridge для подключения к кластеру Redshift непосредственно из экземпляра ClickHouse и выполнения запросов `INSERT INTO ... SELECT`:
+В сценарии извлечения идея заключается в использовании ClickHouse JDBC Bridge для непосредственного подключения к кластеру Redshift из экземпляра ClickHouse и выполнения запросов `INSERT INTO ... SELECT`:
 
-
-<img src={pull} class="image" alt="PULL из Redshift в ClickHouse"/>
+<Image img={pull} size="lg" alt="PULL из Redshift в ClickHouse" background="white"/>
 
 ### Плюсы {#pros-1}
 
-* Универсально для всех инструментов, совместимых с JDBC
+* Обобщенный для всех инструментов, совместимых с JDBC
 * Элегантное решение для выполнения запросов к нескольким внешним источникам данных из ClickHouse
 
 ### Минусы {#cons-1}
 
-* Требуется экземпляр ClickHouse JDBC Bridge, который может стать потенциальным узким местом для масштабируемости
+* Требуется экземпляр ClickHouse JDBC Bridge, что может стать потенциальным узким местом в масштабируемости
 
 
 :::note
-Несмотря на то, что Redshift основан на PostgreSQL, использование функции таблицы PostgreSQL или таблицы ClickHouse невозможно, так как ClickHouse требует версию PostgreSQL 9 или выше, а API Redshift основан на более ранней версии (8.x).
+Хотя Redshift основан на PostgreSQL, использование функции таблицы или движка таблицы ClickHouse для PostgreSQL невозможно, так как ClickHouse требует версию PostgreSQL 9 или выше, а API Redshift основан на более ранней версии (8.x).
 :::
 
 ### Учебник {#tutorial}
 
-Чтобы использовать этот вариант, вам нужно настроить ClickHouse JDBC Bridge. ClickHouse JDBC Bridge — это отдельное Java-приложение, которое обеспечивает подключение JDBC и действует как прокси между экземпляром ClickHouse и источниками данных. Для этого учебника мы использовали заранее заполненный экземпляр Redshift с [образцом базы данных](https://docs.aws.amazon.com/redshift/latest/dg/c_sampledb.html).
+Чтобы использовать этот вариант, необходимо настроить ClickHouse JDBC Bridge. ClickHouse JDBC Bridge — это автономное Java-приложение, которое обрабатывает соединение JDBC и служит прокси между экземпляром ClickHouse и источниками данных. Для этого учебника мы использовали предварительно заполненный экземпляр Redshift с [образцом базы данных](https://docs.aws.amazon.com/redshift/latest/dg/c_sampledb.html).
 
-
-1. Разверните ClickHouse JDBC Bridge. Для получения дополнительной информации см. наш пользовательский гид по [JDBC для внешних источников данных](/integrations/data-ingestion/dbms/jdbc-with-clickhouse.md)
+1. Разверните ClickHouse JDBC Bridge. Для получения дополнительной информации смотрите наш пользовательский гид по [JDBC для внешних источников данных](/integrations/data-ingestion/dbms/jdbc-with-clickhouse.md)
 
 :::note
-Если вы используете ClickHouse Cloud, вам необходимо запустить ClickHouse JDBC Bridge в отдельной среде и подключиться к ClickHouse Cloud, используя функцию [remoteSecure](/sql-reference/table-functions/remote/)
+Если вы используете ClickHouse Cloud, вам нужно будет запустить ClickHouse JDBC Bridge в отдельной среде и подключиться к ClickHouse Cloud с помощью функции [remoteSecure](/sql-reference/table-functions/remote/)
 :::
 
-2. Настройте ваш источник данных Redshift для ClickHouse JDBC Bridge. Например, `/etc/clickhouse-jdbc-bridge/config/datasources/redshift.json `
+2. Настройте источник данных Redshift для ClickHouse JDBC Bridge. Например, `/etc/clickhouse-jdbc-bridge/config/datasources/redshift.json `
 
   ```json
   {
@@ -121,7 +119,7 @@ import s3_2 from '@site/static/images/integrations/data-ingestion/redshift/s3-2.
   }
   ```
 
-3. После развертывания и запуска ClickHouse JDBC Bridge вы можете начать запрашивать ваш экземпляр Redshift из ClickHouse
+3. Как только ClickHouse JDBC Bridge будет развернут и запущен, вы можете начать выполнять запросы к вашему экземпляру Redshift из ClickHouse
 
   ```sql
   SELECT *
@@ -132,14 +130,14 @@ import s3_2 from '@site/static/images/integrations/data-ingestion/redshift/s3-2.
   Query id: 1b7de211-c0f6-4117-86a2-276484f9f4c0
 
   ┌─username─┬─firstname─┬─lastname─┐
-  │ PGL08LJI │ Vladimir  │ Humphrey │
-  │ XDZ38RDD │ Barry     │ Roy      │
-  │ AEB55QTM │ Reagan    │ Hodge    │
-  │ OWY35QYB │ Tamekah   │ Juarez   │
-  │ MSD36KVR │ Mufutau   │ Watkins  │
+  │ PGL08LJI │ Владимир  │ Хамфри  │
+  │ XDZ38RDD │ Барри     │ Рой      │
+  │ AEB55QTM │ Рейган    │ Ходж    │
+  │ OWY35QYB │ Тмекхах   │ Хуарес   │
+  │ MSD36KVR │ Муфутау   │ Уоткинс  │
   └──────────┴───────────┴──────────┘
 
-  5 строк в наборе. Затрачено: 0.438 сек.
+  5 строк в наборе. Время: 0.438 сек.
   ```
 
   ```sql
@@ -154,11 +152,11 @@ import s3_2 from '@site/static/images/integrations/data-ingestion/redshift/s3-2.
   │ 172456 │
   └────────┘
 
-  1 строка в наборе. Затрачено: 0.304 сек.
+  1 строка в наборе. Время: 0.304 сек.
   ```
 
 
-4. В дальнейшем мы покажем импорт данных с использованием оператора `INSERT INTO ... SELECT`
+4. Далее мы покажем импорт данных с помощью оператора `INSERT INTO ... SELECT`
 
   ```sql
   # СОЗДАНИЕ ТАБЛИЦЫ с 3 колонками
@@ -177,7 +175,7 @@ import s3_2 from '@site/static/images/integrations/data-ingestion/redshift/s3-2.
 
   Ok.
 
-  0 строк в наборе. Затрачено: 0.233 сек.
+  0 строк в наборе. Время: 0.233 сек.
   ```
 
   ```sql
@@ -191,35 +189,35 @@ import s3_2 from '@site/static/images/integrations/data-ingestion/redshift/s3-2.
 
   Ok.
 
-  0 строк в наборе. Затрачено: 4.498 сек. Обработано 49.99 тысяч строк, 2.49 MB (11.11 тысяч строк/с., 554.27 KB/с.)
+  0 строк в наборе. Время: 4.498 сек. Обработано 49.99 тысяч строк, 2.49 МБ (11.11 тысяч строк/с, 554.27 КБ/с.)
   ```
 
-## Поворот данных из Redshift в ClickHouse с использованием S3 {#pivot-data-from-redshift-to-clickhouse-using-s3}
+## Пивот данных из Redshift в ClickHouse с использованием S3 {#pivot-data-from-redshift-to-clickhouse-using-s3}
 
-В этом сценарии мы экспортируем данные в S3 в промежуточном формате и, на втором этапе, загружаем данные из S3 в ClickHouse.
+В этом сценарии мы экспортируем данные в S3 в промежуточном формате пивота, а затем загружаем данные из S3 в ClickHouse.
 
-<img src={pivot} class="image" alt="PIVOT из Redshift с использованием S3"/>
+<Image img={pivot} size="lg" alt="ПИВОТ из Redshift с использованием S3" background="white"/>
 
 ### Плюсы {#pros-2}
 
-* И Redshift, и ClickHouse имеют мощные функции интеграции S3.
-* Использует существующие функции, такие как команда Redshift `UNLOAD` и функция таблицы/табличный движок S3 ClickHouse.
-* Легко масштабируется благодаря параллельным чтениям и высоким темпам передачи данных из/в S3 в ClickHouse.
-* Можете использовать сложные и сжатые форматы, такие как Apache Parquet.
+* И Redshift, и ClickHouse обладают мощными функциями интеграции с S3.
+* Использует существующие функции, такие как команда `UNLOAD` в Redshift и функция таблицы / движок таблицы S3 в ClickHouse.
+* Масштабируется без проблем благодаря параллельному чтению и высокой пропускной способности между S3 и ClickHouse.
+* Может использовать сложные и сжатые форматы, такие как Apache Parquet.
 
 ### Минусы {#cons-2}
 
-* Два этапа в процессе (разгрузка из Redshift затем загрузка в ClickHouse).
+* Два шага в процессе (выгрузка из Redshift, затем загрузка в ClickHouse).
 
 ### Учебник {#tutorial-1}
 
-1. С помощью функции [UNLOAD](https://docs.aws.amazon.com/redshift/latest/dg/r_UNLOAD.html) Redshift экспортируйте данные в существующий частный S3-бакет:
+1. Используя функцию [UNLOAD](https://docs.aws.amazon.com/redshift/latest/dg/r_UNLOAD.html) в Redshift, экспортируйте данные в существующее частное S3 хранилище:
 
-    <img src={s3_1} class="image" alt="UNLOAD из Redshift в S3"/>
+    <Image img={s3_1} size="md" alt="Выгрузка из Redshift в S3" background="white"/>
 
-    Это сгенерирует файлы частей, содержащие необработанные данные в S3
+    Это приведет к созданию файлов частей, содержащих необработанные данные в S3
 
-    <img src={s3_2} class="image" alt="Данные в S3"/>
+    <Image img={s3_2} size="md" alt="Данные в S3" background="white"/>
 
 2. Создайте таблицу в ClickHouse:
 
@@ -234,7 +232,7 @@ import s3_2 from '@site/static/images/integrations/data-ingestion/redshift/s3-2.
     ORDER BY username
     ```
 
-    В качестве альтернативы ClickHouse может попытаться определить структуру таблицы с помощью `CREATE TABLE ... EMPTY AS SELECT`:
+    В качестве альтернативы ClickHouse может попробовать вывести структуру таблицы, используя `CREATE TABLE ... EMPTY AS SELECT`:
 
     ```sql
     CREATE TABLE users
@@ -243,9 +241,9 @@ import s3_2 from '@site/static/images/integrations/data-ingestion/redshift/s3-2.
     SELECT * FROM s3('https://your-bucket.s3.amazonaws.com/unload/users/*', '<aws_access_key>', '<aws_secret_access_key>', 'CSV')
     ```
 
-    Это особенно хорошо работает, когда данные находятся в формате, который содержит информацию о типах данных, например, Parquet.
+    Это особенно хорошо работает, когда данные находятся в формате, содержащем информацию о типах данных, как Parquet.
 
-3. Загрузите файлы S3 в ClickHouse с помощью оператора `INSERT INTO ... SELECT`:
+3. Загрузите S3 файлы в ClickHouse с помощью оператора `INSERT INTO ... SELECT`:
     ```sql
     INSERT INTO users SELECT *
     FROM s3('https://your-bucket.s3.amazonaws.com/unload/users/*', '<aws_access_key>', '<aws_secret_access_key>', 'CSV')
@@ -256,9 +254,9 @@ import s3_2 from '@site/static/images/integrations/data-ingestion/redshift/s3-2.
 
     Ok.
 
-    0 строк в наборе. Затрачено: 0.545 сек. Обработано 49.99 тысяч строк, 2.34 MB (91.72 тысяч строк/с., 4.30 MB/с.)
+    0 строк в наборе. Время: 0.545 сек. Обработано 49.99 тысяч строк, 2.34 МБ (91.72 тысяч строк/с, 4.30 МБ/с.)
     ```
 
 :::note
-В этом примере использовался формат CSV как поворотный формат. Однако для производственных нагрузок мы рекомендуем Apache Parquet как лучший вариант для больших миграций, так как он сопровождается сжатием и может снизить затраты на хранение, уменьшая время передачи. (По умолчанию каждая группа строк сжимается с использованием SNAPPY). ClickHouse также использует колонкоориентированность Parquet для ускорения загрузки данных.
+В этом примере использовался CSV в качестве формата пивота. Тем не менее, для производственных задач мы рекомендуем использовать Apache Parquet в качестве лучшего варианта для крупных миграций, так как он содержит сжатие и может сэкономить некоторые затраты на хранение, одновременно уменьшая время передачи. (По умолчанию каждая группа строк сжимается с использованием SNAPPY). ClickHouse также использует колонкоориентированность Parquet для ускорения приема данных.
 :::

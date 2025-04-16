@@ -1,14 +1,14 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/covarsampstable
+description: 'Похож на covarSamp, но работает медленнее, предоставляя меньшую вычислительную ошибку.'
 sidebar_position: 126
+slug: /sql-reference/aggregate-functions/reference/covarsampstable
 title: 'covarSampStable'
-description: 'Аналог covarSamp, но работает медленнее, обеспечивая меньшую вычислительную ошибку.'
 ---
 
 
 # covarSampStable
 
-Вычисляет значение `Σ((x - x̅)(y - y̅)) / (n - 1)`. Аналогично [covarSamp](../reference/covarsamp.md), но работает медленнее, обеспечивая меньшую вычислительную ошибку.
+Вычисляет значение `Σ((x - x̅)(y - y̅)) / (n - 1)`. Похож на [covarSamp](../reference/covarsamp.md), но работает медленнее, предоставляя меньшую вычислительную ошибку.
 
 **Синтаксис**
 

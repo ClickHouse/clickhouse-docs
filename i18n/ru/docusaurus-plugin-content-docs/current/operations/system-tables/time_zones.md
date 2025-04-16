@@ -1,23 +1,27 @@
 ---
-description: 'Системная таблица, содержащая список часовых поясов, поддерживаемых сервером ClickHouse.'
+description: 'Системная таблица, содержащая список часовых поясов, поддерживаемых 
+  сервером ClickHouse.'
+keywords: ['системная таблица', 'часы_пояса']
 slug: /operations/system-tables/time_zones
 title: 'system.time_zones'
-keywords: ['system table', 'time_zones']
 ---
+
+
+# system.time_zones
 
 Содержит список часовых поясов, поддерживаемых сервером ClickHouse. Этот список часовых поясов может варьироваться в зависимости от версии ClickHouse.
 
-Колонки:
+Столбцы:
 
 - `time_zone` (String) — Список поддерживаемых часовых поясов.
 
 **Пример**
 
-``` sql
+```sql
 SELECT * FROM system.time_zones LIMIT 10
 ```
 
-``` text
+```text
 ┌─time_zone──────────┐
 │ Africa/Abidjan     │
 │ Africa/Accra       │

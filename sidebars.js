@@ -63,6 +63,25 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Best Practices",
+      collapsed: false,
+      collapsible: false,
+      link: { type: "doc", id: "best-practices/index" },
+      items: [
+        "best-practices/choosing_a_primary_key",
+        "best-practices/select_data_type",
+        "best-practices/use_materialized_views",
+        "best-practices/minimize_optimize_joins",
+        "best-practices/partionning_keys",
+        "best-practices/selecting_an_insert_strategy",
+        "best-practices/using_data_skipping_indices",
+        "best-practices/avoid_mutations",
+        "best-practices/avoid_optimize_final",
+        "best-practices/json_type"
+      ],
+    },
+    {
+      type: "category",
       label: "Use Case Guides",
       collapsed: false,
       collapsible: false,
@@ -97,6 +116,17 @@ const sidebars = {
             "use-cases/time-series/query-performance"
           ]
         },
+        { 
+          type: "category",
+          label: "Data lake",
+          collapsed: true,
+          collapsible: true,
+          link: { type: "doc", id: "use-cases/data_lake/index" },
+          items: [
+            "use-cases/data_lake/glue_catalog",
+            "use-cases/data_lake/unity_catalog" 
+          ]
+        }
       ]
     },
     {
@@ -136,16 +166,12 @@ const sidebars = {
             {
               type: "doc",
               id: "migrations/postgres/overview",
-              label: "Introduction",
+              label: "Overview",
             },
-            "integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql",
-            "integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse",
             "migrations/postgres/dataset",
-            "migrations/postgres/designing-schemas",
+            "migrations/postgres/rewriting-queries",
             "migrations/postgres/data-modeling-techniques",
-            "integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries",
-            "integrations/data-ingestion/dbms/postgresql/inserting-data",
-            "integrations/data-ingestion/dbms/postgresql/data-type-mappings",
+            "migrations/postgres/appendix"
           ],
         },
         "integrations/data-ingestion/dbms/mysql/index",
@@ -166,6 +192,8 @@ const sidebars = {
       collapsible: true,
       link: { type: "doc", id: "getting-started/index" },
       items: [
+        "getting-started/example-datasets/nyc-taxi",
+        "getting-started/example-datasets/uk-price-paid",
         "getting-started/example-datasets/amazon-reviews",
         "getting-started/example-datasets/amplab-benchmark",
         "getting-started/example-datasets/brown-benchmark",
@@ -179,7 +207,6 @@ const sidebars = {
         "getting-started/example-datasets/menus",
         "getting-started/example-datasets/metrica",
         "getting-started/example-datasets/noaa",
-        "getting-started/example-datasets/nyc-taxi",
         "getting-started/example-datasets/nypd_complaint_data",
         "getting-started/example-datasets/ontime",
         "getting-started/example-datasets/opensky",
@@ -190,7 +217,6 @@ const sidebars = {
         "getting-started/example-datasets/tw-weather",
         "getting-started/example-datasets/tpcds",
         "getting-started/example-datasets/tpch",
-        "getting-started/example-datasets/uk-price-paid",
         "getting-started/example-datasets/wikistat",
         "getting-started/example-datasets/youtube-dislikes",
       ],
@@ -216,6 +242,18 @@ const sidebars = {
         "cloud/get-started/query-endpoints",
         "cloud/manage/dashboards",
         "cloud/support",
+      ],
+    },
+    {
+      type: "category",
+      label: "Best Practices",
+      collapsed: false,
+      collapsible: false,
+      className: "top-nav-item",
+      link: { type: "doc", id: "cloud/bestpractices/index" },
+      items: [
+        "cloud/bestpractices/usagelimits",
+        "cloud/bestpractices/multitenancy",
       ],
     },
     {
@@ -364,24 +402,6 @@ const sidebars = {
         },
         "cloud/reference/cloud-compatibility",
         "cloud/reference/supported-regions"
-      ],
-    },
-    {
-      type: "category",
-      label: "Best Practices",
-      collapsed: false,
-      collapsible: false,
-      className: "top-nav-item",
-      link: { type: "doc", id: "cloud/bestpractices/index" },
-      items: [
-        "cloud/bestpractices/bulkinserts",
-        "cloud/bestpractices/asyncinserts",
-        "cloud/bestpractices/avoidmutations",
-        "cloud/bestpractices/avoidnullablecolumns",
-        "cloud/bestpractices/avoidoptimizefinal",
-        "cloud/bestpractices/partitioningkey",
-        "cloud/bestpractices/usagelimits",
-        "cloud/bestpractices/multitenancy",
       ],
     },
     {
@@ -654,6 +674,7 @@ const sidebars = {
         "integrations/data-ingestion/clickpipes/object-storage",
         "integrations/data-ingestion/clickpipes/kinesis",
         "integrations/data-ingestion/clickpipes/secure-kinesis",
+        "integrations/data-ingestion/clickpipes/aws-privatelink",
         {
           type: "category",
           label: "ClickPipes for Postgres",
@@ -661,9 +682,13 @@ const sidebars = {
           collapsible: true,
           items: [
             "integrations/data-ingestion/clickpipes/postgres/index",
-            "integrations/data-ingestion/clickpipes/postgres/faq",
+            "integrations/data-ingestion/clickpipes/postgres/deduplication",
+            "integrations/data-ingestion/clickpipes/postgres/ordering_keys",
             "integrations/data-ingestion/clickpipes/postgres/toast",
             "integrations/data-ingestion/clickpipes/postgres/schema-changes",
+            "integrations/data-ingestion/clickpipes/postgres/faq",
+            "integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql",
+            "integrations/data-ingestion/dbms/postgresql/inserting-data",
             {
               type: "category",
               label: "Source",
@@ -678,6 +703,25 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/postgres/source/generic",
               ],
             },
+          ],
+        },
+        {
+          type: "category",
+          label: "ClickPipes for MySQL",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "integrations/data-ingestion/clickpipes/mysql/index",
+            "integrations/data-ingestion/clickpipes/mysql/faq",
+            {
+              type: "category",
+              label: "Source",
+              items: [
+                "integrations/data-ingestion/clickpipes/mysql/source/rds",
+                "integrations/data-ingestion/clickpipes/mysql/source/aurora",
+              ],
+            },
+            "integrations/data-ingestion/clickpipes/mysql/datatypes"
           ],
         },
       ],
@@ -943,6 +987,7 @@ const sidebars = {
             "integrations/sql-clients/jupysql",
             "integrations/sql-clients/qstudio",
             "integrations/sql-clients/tablum",
+			      "integrations/sql-clients/marimo",
           ],
         },
         {
@@ -989,7 +1034,7 @@ const sidebars = {
         "managing-data/core-concepts/partitions",
         "managing-data/core-concepts/merges",
         "managing-data/core-concepts/shards",
-        "guides/best-practices/sparse-primary-indexes",
+        "managing-data/core-concepts/primary-indexes",
         "managing-data/core-concepts/academic_overview"
       ]
     },
@@ -1010,7 +1055,7 @@ const sidebars = {
         {
           type: "doc",
           label: "ReplacingMergeTree",
-          id: "migrations/postgres/replacing-merge-tree"
+          id: "guides/developer/replacing-merge-tree"
         },
       ]
     },
@@ -1061,6 +1106,7 @@ const sidebars = {
             "materialized-view/refreshable-materialized-view"
           ],
         },
+        "data-modeling/projections",
         {
           type: "category",
           label: "Data Compression",
@@ -1102,8 +1148,11 @@ const sidebars = {
       link: { type: "doc", id: "guides/best-practices/index" },
       items: [
         "guides/best-practices/query-optimization",
+        "guides/best-practices/sparse-primary-indexes",
+        "guides/best-practices/query-parallelism",
         "guides/best-practices/partitioningkey",
         "guides/best-practices/skipping-indexes",
+        "guides/best-practices/prewhere",
         "guides/best-practices/bulkinserts",
         "guides/best-practices/asyncinserts",
         "guides/best-practices/avoidmutations",
@@ -1155,6 +1204,10 @@ const sidebars = {
       label: "Development and Contributing",
       collapsed: false,
       collapsible: false,
+      link: {
+        type: "doc",
+        id: "development/index",
+      },
       items: [
         {
           type: "autogenerated",
@@ -1252,20 +1305,21 @@ const sidebars = {
       items: [
         "operations/settings/overview",
         "operations/server-configuration-parameters/settings",
+        "operations/settings/settings",
+        "operations/settings/merge-tree-settings",
+        "operations/settings/settings-formats",
         "operations/settings/composable-protocols",
         "operations/settings/constraints-on-settings",
-        "operations/settings/settings-formats",
         "operations/settings/memory-overcommit",
-        "operations/settings/merge-tree-settings",
         // "operations/settings/mysql-binlog-client",
         "operations/settings/permissions-for-queries",
         "operations/settings/query-complexity",
         "operations/settings/settings-query-level",
-        "operations/settings/settings",
         "operations/settings/settings-profiles",
         "operations/settings/settings-users",
         "operations/named-collections",
         "operations/configuration-files",
+        "operations/settings/experimental-settings",
       ],
     },
     {
@@ -1476,15 +1530,21 @@ const sidebars = {
         },
         {
           type: "link",
+          label: "Concepts",
+          description: "Core concepts to know",
+          href: "/concepts"
+        },
+        {
+          type: "link",
           label: "Starter Guides",
           description: "Start here when learning ClickHouse",
           href: "/starter-guides"
         },
         {
           type: "link",
-          label: "Concepts",
-          description: "Core concepts to know",
-          href: "/concepts"
+          label: "Best Practices",
+          description: "Follow best practices with ClickHouse",
+          href: "/best-practices"
         },
         {
           type: "link",
@@ -1523,6 +1583,12 @@ const sidebars = {
         },
         {
           type: "link",
+          label: "Best Practices",
+          description: "How to get the most out of ClickHouse Cloud",
+          href: "/cloud/bestpractices/"
+        },
+        {
+          type: "link",
           label: "Managing Cloud",
           description: "Manage your ClickHouse Cloud services",
           href: "/cloud/bestpractices"
@@ -1538,12 +1604,6 @@ const sidebars = {
           label: "Cloud Reference",
           description: "Understanding how ClickHouse Cloud works",
           href: "/cloud/reference/"
-        },
-        {
-          type: "link",
-          label: "Best Practices",
-          description: "How to get the most out of ClickHouse Cloud",
-          href: "/cloud/bestpractices/"
         },
         {
           type: "link",
@@ -1701,7 +1761,7 @@ const sidebars = {
           type: "link",
           label: "Native Clients & Interfaces",
           description: "Choose a client and interface to connect to ClickHouse",
-          href: "/interfaces/"
+          href: "/interfaces/natives-clients-and-interfaces"
         },
         {
           type: "link",

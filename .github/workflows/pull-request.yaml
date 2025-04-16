@@ -1,0 +1,65 @@
+name: PullRequestCI
+
+env:
+  # Force the stdout and stderr streams to be unbuffered
+  PYTHONUNBUFFERED: 1
+
+on:  # yamllint disable-line rule:truthy
+  pull_request:
+    types:
+      - synchronize
+      - reopened
+      - opened
+
+# Cancel the previous wf run in PRs.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  DocsCheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'  # Adjust Node.js version as needed
+          cache: 'yarn'       # Cache yarn dependencies
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        id: build
+        continue-on-error: true
+        run: |
+          DOCUSAURUS_IGNORE_SSG_WARNINGS=true yarn build
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+
+      - name: Check for validation failures
+        if: success() || failure()  # Run regardless of build success
+        run: |
+          FAILED=false
+          
+          if [ -f ".frontmatter-validation-failed" ]; then
+            echo "::error::Frontmatter validation failed"
+            FAILED=true
+          fi
+          
+          if [ -f ".floating-pages-validation-failed" ]; then
+            echo "::error::Floating pages validation failed"
+            FAILED=true
+          fi
+          
+          # Check if build failed with non-validation error
+          if [ "${{ steps.build.outputs.exit_code }}" != "0" ] && [ "$FAILED" != "true" ]; then
+            echo "::error::Build failed with exit code ${{ steps.build.outputs.exit_code }}"
+            exit 1
+          fi
+          
+          if [ "$FAILED" = true ]; then
+            exit 1
+          fi

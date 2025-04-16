@@ -1,26 +1,28 @@
 ---
-description: 'Системная таблица, полезная для экспертов C++ и инженеров ClickHouse, содержащая информацию для интроспекции бинарного файла `clickhouse`.'
+description: 'Системная таблица, полезная для экспертов C++ и инженеров ClickHouse, содержащая
+  информацию для интроспекции бинарного файла `clickhouse`.'
+keywords: ['системная таблица', 'символы']
 slug: /operations/system-tables/symbols
 title: 'system.symbols'
-keywords: ['системная таблица', 'символы']
 ---
 
-Содержит информацию для интроспекции бинарного файла `clickhouse`. Для доступа требуется привилегия интроспекции. Эта таблица полезна только для экспертов C++ и инженеров ClickHouse.
+Содержит информацию для интроспекции бинарного файла `clickhouse`. Для доступа требуется привилегия интроспекции.
+Эта таблица полезна только для экспертов C++ и инженеров ClickHouse.
 
 Колонки:
 
-- `symbol` ([String](../../sql-reference/data-types/string.md)) — Имя символа в бинарном файле. Оно искажено. Вы можете применить `demangle(symbol)`, чтобы получить читаемое имя.
+- `symbol` ([String](../../sql-reference/data-types/string.md)) — Имя символа в бинарном файле. Оно запутано. Вы можете применить `demangle(symbol)`, чтобы получить читаемое имя.
 - `address_begin` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Начальный адрес символа в бинарном файле.
 - `address_end` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Конечный адрес символа в бинарном файле.
 - `name` ([String](../../sql-reference/data-types/string.md)) — Псевдоним для `event`.
 
 **Пример**
 
-``` sql
+```sql
 SELECT address_begin, address_end - address_begin AS size, demangle(symbol) FROM system.symbols ORDER BY size DESC LIMIT 10
 ```
 
-``` text
+```text
 ┌─address_begin─┬─────size─┬─demangle(symbol)──────────────────────────────────────────────────────────────────┐
 │      25000976 │ 29466000 │ icudt70_dat                                                                       │
 │     400605288 │  2097272 │ arena_emap_global                                                                 │

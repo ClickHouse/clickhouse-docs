@@ -1,7 +1,9 @@
 ---
-slug: /sql-reference/functions/functions-for-nulls
+description: 'Документация для функций работы с Nullable значениями'
+sidebar_label: 'Nullable'
 sidebar_position: 135
-sidebar_label: Nullable
+slug: /sql-reference/functions/functions-for-nulls
+title: 'Функции для работы с Nullable значениями'
 ---
 
 
@@ -15,7 +17,7 @@ sidebar_label: Nullable
 
 **Синтаксис**
 
-``` sql
+```sql
 isNull(x)
 ```
 
@@ -27,14 +29,14 @@ isNull(x)
 
 **Возвращаемое значение**
 
-- `1`, если `x` является `NULL`.
-- `0`, если `x` не является `NULL`.
+- `1`, если `x` равно `NULL`.
+- `0`, если `x` не равно `NULL`.
 
 **Пример**
 
 Таблица:
 
-``` text
+```text
 ┌─x─┬────y─┐
 │ 1 │ ᴺᵁᴸᴸ │
 │ 2 │    3 │
@@ -43,13 +45,13 @@ isNull(x)
 
 Запрос:
 
-``` sql
+```sql
 SELECT x FROM t_null WHERE isNull(y);
 ```
 
 Результат:
 
-``` text
+```text
 ┌─x─┐
 │ 1 │
 └───┘
@@ -57,11 +59,11 @@ SELECT x FROM t_null WHERE isNull(y);
 
 ## isNullable {#isnullable}
 
-Возвращает `1`, если колонка является [Nullable](../data-types/nullable.md) (т.е. допускает `NULL` значения), `0` в противном случае.
+Возвращает `1`, если колонка является [Nullable](../data-types/nullable.md) (то есть позволяет значения `NULL`), и `0` в противном случае.
 
 **Синтаксис**
 
-``` sql
+```sql
 isNullable(x)
 ```
 
@@ -71,14 +73,14 @@ isNullable(x)
 
 **Возвращаемое значение**
 
-- `1`, если `x` допускает `NULL` значения. [UInt8](../data-types/int-uint.md).
-- `0`, если `x` не допускает `NULL` значения. [UInt8](../data-types/int-uint.md).
+- `1`, если `x` позволяет значения `NULL`. [UInt8](../data-types/int-uint.md).
+- `0`, если `x` не позволяет значения `NULL`. [UInt8](../data-types/int-uint.md).
 
 **Пример**
 
 Запрос:
 
-``` sql
+```sql
 CREATE TABLE tab (ordinary_col UInt32, nullable_col Nullable(UInt32)) ENGINE = Log;
 INSERT INTO tab (ordinary_col, nullable_col) VALUES (1,1), (2, 2), (3,3);
 SELECT isNullable(ordinary_col), isNullable(nullable_col) FROM tab;    
@@ -86,7 +88,7 @@ SELECT isNullable(ordinary_col), isNullable(nullable_col) FROM tab;
 
 Результат:
 
-``` text
+```text
    ┌───isNullable(ordinary_col)──┬───isNullable(nullable_col)──┐
 1. │                           0 │                           1 │
 2. │                           0 │                           1 │
@@ -100,7 +102,7 @@ SELECT isNullable(ordinary_col), isNullable(nullable_col) FROM tab;
 
 Смотрите также оператор [`IS NOT NULL`](../operators/index.md#is_not_null).
 
-``` sql
+```sql
 isNotNull(x)
 ```
 
@@ -110,14 +112,14 @@ isNotNull(x)
 
 **Возвращаемое значение**
 
-- `1`, если `x` не является `NULL`.
-- `0`, если `x` является `NULL`.
+- `1`, если `x` не равно `NULL`.
+- `0`, если `x` равно `NULL`.
 
 **Пример**
 
 Таблица:
 
-``` text
+```text
 ┌─x─┬────y─┐
 │ 1 │ ᴺᵁᴸᴸ │
 │ 2 │    3 │
@@ -126,13 +128,13 @@ isNotNull(x)
 
 Запрос:
 
-``` sql
+```sql
 SELECT x FROM t_null WHERE isNotNull(y);
 ```
 
 Результат:
 
-``` text
+```text
 ┌─x─┐
 │ 2 │
 └───┘
@@ -140,15 +142,15 @@ SELECT x FROM t_null WHERE isNotNull(y);
 
 ## isNotDistinctFrom {#isnotdistinctfrom}
 
-Выполняет безопасное для NULL сравнение. Используется для сравнения ключей JOIN, которые содержат значения NULL в секции JOIN ON. Эта функция будет рассматривать два значения `NULL` как идентичные и вернет `true`, что отличается от обычного поведения сравнения, при котором сравнение двух значений `NULL` вернет `NULL`.
+Выполняет безопасное по отношению к нулю сравнение. Используется для сравнения ключей JOIN, которые содержат значения NULL в разделе JOIN ON. Эта функция будет рассматривать два значения `NULL` как идентичные и вернёт `true`, что отличается от обычного поведения равенства, когда сравнение двух значений `NULL` вернёт `NULL`.
 
 :::note
-Эта функция является внутренней функцией, используемой в реализации JOIN ON. Пожалуйста, не используйте ее вручную в запросах.
+Эта функция является внутренней функцией, используемой реализацией JOIN ON. Пожалуйста, не используйте её вручную в запросах.
 :::
 
 **Синтаксис**
 
-``` sql
+```sql
 isNotDistinctFrom(x, y)
 ```
 
@@ -159,7 +161,7 @@ isNotDistinctFrom(x, y)
 
 **Возвращаемое значение**
 
-- `true`, если `x` и `y` оба равны `NULL`.
+- `true`, когда `x` и `y` оба равны `NULL`.
 - `false` в противном случае.
 
 **Пример**
@@ -170,7 +172,7 @@ isNotDistinctFrom(x, y)
 
 Возвращает, является ли аргумент 0 (ноль) или [NULL](/operations/settings/formats#input_format_null_as_default).
 
-``` sql
+```sql
 isZeroOrNull(x)
 ```
 
@@ -180,16 +182,16 @@ isZeroOrNull(x)
 
 **Возвращаемое значение**
 
-- `1`, если `x` равен 0 (нулю) или `NULL`.
+- `1`, если `x` равно 0 (ноль) или `NULL`.
 - `0` в противном случае.
 
 **Пример**
 
 Таблица:
 
-``` text
+```text
 ┌─x─┬────y─┐
-│ 1 │ ᴺᵁᴸᴸ │
+│ 1 │ ᴺᵁᴸᴹ │
 │ 2 │    0 │
 │ 3 │    3 │
 └───┴──────┘
@@ -197,13 +199,13 @@ isZeroOrNull(x)
 
 Запрос:
 
-``` sql
+```sql
 SELECT x FROM t_null WHERE isZeroOrNull(y);
 ```
 
 Результат:
 
-``` text
+```text
 ┌─x─┐
 │ 1 │
 │ 2 │
@@ -212,41 +214,41 @@ SELECT x FROM t_null WHERE isZeroOrNull(y);
 
 ## coalesce {#coalesce}
 
-Возвращает левый наиболее не-`NULL` аргумент.
+Возвращает самый левый аргумент, который не равен `NULL`.
 
-``` sql
+```sql
 coalesce(x,...)
 ```
 
 **Аргументы:**
 
-- Произвольное количество параметров не составного типа. Все параметры должны быть совместимыми по типу данных.
+- Любое количество параметров не составного типа. Все параметры должны быть совместимы по типам данных.
 
 **Возвращаемые значения**
 
-- Первый не-`NULL` аргумент.
+- Первый аргумент, который не равен `NULL`
 - `NULL`, если все аргументы равны `NULL`.
 
 **Пример**
 
-Рассмотрим список контактов, который может содержать несколько способов связи с клиентом.
+Рассмотрим список контактов, которые могут указывать несколько способов связаться с клиентом.
 
-``` text
+```text
 ┌─name─────┬─mail─┬─phone─────┬──telegram─┐
 │ client 1 │ ᴺᵁᴸᴸ │ 123-45-67 │       123 │
 │ client 2 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ      │      ᴺᵁᴸᴸ │
 └──────────┴──────┴───────────┴───────────┘
 ```
 
-Поля `mail` и `phone` имеют тип String, но поле `telegram` — это `UInt32`, поэтому оно должно быть преобразовано в `String`.
+Поля `mail` и `phone` имеют тип String, но поле `telegram` — это `UInt32`, поэтому его нужно преобразовать в `String`.
 
-Получите первый доступный способ связи с клиентом из списка контактов:
+Получите первый доступный способ контакта с клиентом из списка контактов:
 
-``` sql
+```sql
 SELECT name, coalesce(mail, phone, CAST(telegram,'Nullable(String)')) FROM aBook;
 ```
 
-``` text
+```text
 ┌─name─────┬─coalesce(mail, phone, CAST(telegram, 'Nullable(String)'))─┐
 │ client 1 │ 123-45-67                                                 │
 │ client 2 │ ᴺᵁᴸᴸ                                                      │
@@ -257,31 +259,31 @@ SELECT name, coalesce(mail, phone, CAST(telegram,'Nullable(String)')) FROM aBook
 
 Возвращает альтернативное значение, если аргумент равен `NULL`.
 
-``` sql
+```sql
 ifNull(x, alt)
 ```
 
 **Аргументы:**
 
-- `x` — Значение, которое нужно проверить на `NULL`.
-- `alt` — Значение, которое функция возвращает, если `x` равен `NULL`.
+- `x` — Значение, которое необходимо проверить на `NULL`.
+- `alt` — Значение, которое функция возвращает, если `x` равно `NULL`.
 
 **Возвращаемые значения**
 
-- `x`, если `x` не равен `NULL`.
-- `alt`, если `x` равен `NULL`.
+- `x`, если `x` не равно `NULL`.
+- `alt`, если `x` равно `NULL`.
 
 **Пример**
 
 Запрос:
 
-``` sql
+```sql
 SELECT ifNull('a', 'b');
 ```
 
 Результат:
 
-``` text
+```text
 ┌─ifNull('a', 'b')─┐
 │ a                │
 └──────────────────┘
@@ -289,13 +291,13 @@ SELECT ifNull('a', 'b');
 
 Запрос:
 
-``` sql
+```sql
 SELECT ifNull(NULL, 'b');
 ```
 
 Результат:
 
-``` text
+```text
 ┌─ifNull(NULL, 'b')─┐
 │ b                 │
 └───────────────────┘
@@ -305,13 +307,13 @@ SELECT ifNull(NULL, 'b');
 
 Возвращает `NULL`, если оба аргумента равны.
 
-``` sql
+```sql
 nullIf(x, y)
 ```
 
 **Аргументы:**
 
-`x`, `y` — Значения для сравнения. Должны быть совместимого типа.
+`x`, `y` — Значения для сравнения. Должны быть совместимы по типам.
 
 **Возвращаемые значения**
 
@@ -322,13 +324,13 @@ nullIf(x, y)
 
 Запрос:
 
-``` sql
+```sql
 SELECT nullIf(1, 1);
 ```
 
 Результат:
 
-``` text
+```text
 ┌─nullIf(1, 1)─┐
 │         ᴺᵁᴸᴸ │
 └──────────────┘
@@ -336,13 +338,13 @@ SELECT nullIf(1, 1);
 
 Запрос:
 
-``` sql
+```sql
 SELECT nullIf(1, 2);
 ```
 
 Результат:
 
-``` text
+```text
 ┌─nullIf(1, 2)─┐
 │            1 │
 └──────────────┘
@@ -350,26 +352,26 @@ SELECT nullIf(1, 2);
 
 ## assumeNotNull {#assumenotnull}
 
-Возвращает соответствующее значение не-`Nullable` для значения типа [Nullable](../data-types/nullable.md). Если оригинальное значение равно `NULL`, может быть возвращено произвольное значение. Смотрите также функции `ifNull` и `coalesce`.
+Возвращает соответствующее значение не-`Nullable` для значения типа [Nullable](../data-types/nullable.md). Если исходное значение равно `NULL`, может быть возвращено произвольное значение. Смотрите также функции `ifNull` и `coalesce`.
 
-``` sql
+```sql
 assumeNotNull(x)
 ```
 
 **Аргументы:**
 
-- `x` — Оригинальное значение.
+- `x` — Исходное значение.
 
 **Возвращаемые значения**
 
-- Входное значение как тип не-`Nullable`, если оно не равно `NULL`.
+- Входное значение в виде не-`Nullable` типа, если оно не равно `NULL`.
 - Произвольное значение, если входное значение равно `NULL`.
 
 **Пример**
 
 Таблица:
 
-``` text
+```text
 
 ┌─x─┬────y─┐
 │ 1 │ ᴺᵁᴸᴸ │
@@ -379,13 +381,13 @@ assumeNotNull(x)
 
 Запрос:
 
-``` sql
+```sql
 SELECT assumeNotNull(y) FROM table;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─assumeNotNull(y)─┐
 │                0 │
 │                3 │
@@ -394,13 +396,13 @@ SELECT assumeNotNull(y) FROM table;
 
 Запрос:
 
-``` sql
+```sql
 SELECT toTypeName(assumeNotNull(y)) FROM t_null;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─toTypeName(assumeNotNull(y))─┐
 │ Int8                         │
 │ Int8                         │
@@ -411,7 +413,7 @@ SELECT toTypeName(assumeNotNull(y)) FROM t_null;
 
 Преобразует тип аргумента в `Nullable`.
 
-``` sql
+```sql
 toNullable(x)
 ```
 
@@ -421,19 +423,19 @@ toNullable(x)
 
 **Возвращаемое значение**
 
-- Входное значение, но типа `Nullable`.
+- Входное значение, но в типе `Nullable`.
 
 **Пример**
 
 Запрос:
 
-``` sql
+```sql
 SELECT toTypeName(10);
 ```
 
 Результат:
 
-``` text
+```text
 ┌─toTypeName(10)─┐
 │ UInt8          │
 └────────────────┘
@@ -441,13 +443,13 @@ SELECT toTypeName(10);
 
 Запрос:
 
-``` sql
+```sql
 SELECT toTypeName(toNullable(10));
 ```
 
 Результат:
 
-``` text
+```text
 ┌─toTypeName(toNullable(10))─┐
 │ Nullable(UInt8)            │
 └────────────────────────────┘

@@ -8,7 +8,7 @@ keywords: ['refreshable materialized view', 'refresh', 'materialized views', 'sp
 import refreshableMaterializedViewDiagram from '@site/static/images/materialized-view/refreshable-materialized-view-diagram.png';
 import Image from '@theme/IdealImage';
 
-[Refreshable materialized views](/sql-reference/statements/create/view#refreshable-materialized-view) are conceptually similar to materialized views in traditional OLTP databases, storing the result of a specified query for quick retrieval and reducing the need to repeatedly execute resource-intensive queries. Unlike ClickHouse’s [incremental materialized views](/materialized-view/incremental-materialized-view), this requires the periodic execution of the query over the full dataset - the results of which are stored in a target table for querying. This result set should, in theory, be smaller than the original dataset, allowing the subsequent query to execute faster.
+[Refreshable materialized views](/sql-reference/statements/create/view#refreshable-materialized-view) are conceptually similar to materialized views in traditional OLTP databases, storing the result of a specified query for quick retrieval and reducing the need to repeatedly execute resource-intensive queries. Unlike ClickHouse's [incremental materialized views](/materialized-view/incremental-materialized-view), this requires the periodic execution of the query over the full dataset - the results of which are stored in a target table for querying. This result set should, in theory, be smaller than the original dataset, allowing the subsequent query to execute faster.
 
 The diagram explains how Refreshable Materialized Views work:
 
@@ -86,7 +86,7 @@ Once you've done that, you can use [When was a refreshable materialized view las
 
 The `APPEND` functionality allows you to add new rows to the end of the table instead of replacing the whole view.
 
-One use of this feature is to capture snapshots of values at a point in time. For example, let’s imagine that we have an `events` table populated by a stream of messages from [Kafka](https://kafka.apache.org/), [Redpanda](https://www.redpanda.com/), or another streaming data platform.
+One use of this feature is to capture snapshots of values at a point in time. For example, let's imagine that we have an `events` table populated by a stream of messages from [Kafka](https://kafka.apache.org/), [Redpanda](https://www.redpanda.com/), or another streaming data platform.
 
 ```sql
 SELECT *
@@ -134,7 +134,7 @@ LIMIT 10
 └──────┴─────────┘
 ```
 
-Let’s say we want to capture the count for each `uuid` every 10 seconds and store it in a new table called `events_snapshot`. The schema of `events_snapshot` would look like this:
+Let's say we want to capture the count for each `uuid` every 10 seconds and store it in a new table called `events_snapshot`. The schema of `events_snapshot` would look like this:
 
 ```sql
 CREATE TABLE events_snapshot (
@@ -365,7 +365,7 @@ FROM imdb.movies
 LIMIT 10000, 910;
 ```
 
-Less than 60 seconds later, our target table is updated to reflect the prolific nature of Clicky’s acting:
+Less than 60 seconds later, our target table is updated to reflect the prolific nature of Clicky's acting:
 
 ```sql
 SELECT *

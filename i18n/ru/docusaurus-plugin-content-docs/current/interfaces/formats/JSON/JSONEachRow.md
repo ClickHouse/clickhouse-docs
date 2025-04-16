@@ -1,12 +1,13 @@
 ---
-title: JSONEachRow
+description: 'Документация для формата JSONEachRow'
+keywords: ['JSONEachRow']
 slug: /interfaces/formats/JSONEachRow
-keywords: [JSONEachRow]
+title: 'JSONEachRow'
 ---
 
 ## Описание {#description}
 
-В этом формате ClickHouse выводит каждую строку как отдельный объект JSON, разделённый переносами строк. Псевдоним: `JSONLines`, `NDJSON`.
+В этом формате ClickHouse выводит каждую строку как отдельный JSON-объект, разделенный переводом строки. Псевдонимы: `JSONLines`, `NDJSON`.
 
 ## Пример использования {#example-usage}
 

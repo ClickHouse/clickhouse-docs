@@ -1,13 +1,15 @@
 ---
-slug: /sql-reference/functions/bitmap-functions
+description: 'Документация по битовым функциям'
+sidebar_label: 'Битовые функции'
 sidebar_position: 25
-sidebar_label: Bitmap
+slug: /sql-reference/functions/bitmap-functions
+title: 'Битовые функции'
 ---
 
 
-# Функции битовых карт
+# Битовые функции
 
-Битовые карты могут быть построены двумя способами. Первый способ – с помощью агрегатной функции groupBitmap с `-State`, второй способ – путем создания битовой карты из объекта массива.
+Битовые карты могут быть созданы двумя способами. Первый способ — это конструкция с помощью функции агрегации groupBitmap с `-State`, второй способ — создать битовую карту из объекта массива.
 
 ## bitmapBuild {#bitmapbuild}
 
@@ -15,7 +17,7 @@ sidebar_label: Bitmap
 
 **Синтаксис**
 
-``` sql
+```sql
 bitmapBuild(array)
 ```
 
@@ -25,11 +27,11 @@ bitmapBuild(array)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapBuild([1, 2, 3, 4, 5]) AS res, toTypeName(res);
 ```
 
-``` text
+```text
 ┌─res─┬─toTypeName(bitmapBuild([1, 2, 3, 4, 5]))─────┐
 │     │ AggregateFunction(groupBitmap, UInt8)        │
 └─────┴──────────────────────────────────────────────┘
@@ -37,11 +39,11 @@ SELECT bitmapBuild([1, 2, 3, 4, 5]) AS res, toTypeName(res);
 
 ## bitmapToArray {#bitmaptoarray}
 
-Преобразует битовую карту в массив целых чисел.
+Конвертирует битовую карту в массив целых чисел.
 
 **Синтаксис**
 
-``` sql
+```sql
 bitmapToArray(bitmap)
 ```
 
@@ -51,13 +53,13 @@ bitmapToArray(bitmap)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapToArray(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─res─────────┐
 │ [1,2,3,4,5] │
 └─────────────┘
@@ -65,11 +67,11 @@ SELECT bitmapToArray(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 
 ## bitmapSubsetInRange {#bitmapsubsetinrange}
 
-Возвращает подмножество битовой карты с битами в пределах интервального значения.
+Возвращает подмножество битовой карты с битами в пределах интервала значений.
 
 **Синтаксис**
 
-``` sql
+```sql
 bitmapSubsetInRange(bitmap, range_start, range_end)
 ```
 
@@ -81,13 +83,13 @@ bitmapSubsetInRange(bitmap, range_start, range_end)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapToArray(bitmapSubsetInRange(bitmapBuild([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,100,200,500]), toUInt32(30), toUInt32(200))) AS res;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─res───────────────┐
 │ [30,31,32,33,100] │
 └───────────────────┘
@@ -95,11 +97,11 @@ SELECT bitmapToArray(bitmapSubsetInRange(bitmapBuild([0,1,2,3,4,5,6,7,8,9,10,11,
 
 ## bitmapSubsetLimit {#bitmapsubsetlimit}
 
-Возвращает подмножество битовой карты с наименьшим значением бита `range_start` и максимумом `cardinality_limit` элементов.
+Возвращает подмножество битовой карты с наименьшим значением бита `range_start` и не более `cardinality_limit` элементов.
 
 **Синтаксис**
 
-``` sql
+```sql
 bitmapSubsetLimit(bitmap, range_start, cardinality_limit)
 ```
 
@@ -111,13 +113,13 @@ bitmapSubsetLimit(bitmap, range_start, cardinality_limit)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapToArray(bitmapSubsetLimit(bitmapBuild([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,100,200,500]), toUInt32(30), toUInt32(200))) AS res;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─res───────────────────────┐
 │ [30,31,32,33,100,200,500] │
 └───────────────────────────┘
@@ -125,29 +127,29 @@ SELECT bitmapToArray(bitmapSubsetLimit(bitmapBuild([0,1,2,3,4,5,6,7,8,9,10,11,12
 
 ## subBitmap {#subbitmap}
 
-Возвращает подмножество битовой карты, начиная с позиции `offset`. Максимальная кардинальность возвращаемой битовой карты составляет `cardinality_limit`.
+Возвращает подмножество битовой карты, начиная с позиции `offset`. Максимальная кардинальность возвращаемой битовой карты — `cardinality_limit`.
 
 **Синтаксис**
 
-``` sql
+```sql
 subBitmap(bitmap, offset, cardinality_limit)
 ```
 
 **Аргументы**
 
-- `bitmap` – Битовая карта. [Объект битовой карты](#bitmapbuild).
+- `bitmap` – Битовоя карта. [Объект битовой карты](#bitmapbuild).
 - `offset` – Позиция первого элемента подмножества. [UInt32](../data-types/int-uint.md).
 - `cardinality_limit` – Максимальное количество элементов в подмножестве. [UInt32](../data-types/int-uint.md).
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapToArray(subBitmap(bitmapBuild([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,100,200,500]), toUInt32(10), toUInt32(10))) AS res;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─res─────────────────────────────┐
 │ [10,11,12,13,14,15,16,17,18,19] │
 └─────────────────────────────────┘
@@ -157,7 +159,7 @@ SELECT bitmapToArray(subBitmap(bitmapBuild([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,1
 
 Проверяет, содержит ли битовая карта элемент.
 
-``` sql
+```sql
 bitmapContains(bitmap, needle)
 ```
 
@@ -173,13 +175,13 @@ bitmapContains(bitmap, needle)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapContains(bitmapBuild([1,5,7,9]), toUInt32(9)) AS res;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─res─┐
 │  1  │
 └─────┘
@@ -189,11 +191,11 @@ SELECT bitmapContains(bitmapBuild([1,5,7,9]), toUInt32(9)) AS res;
 
 Проверяет, пересекаются ли две битовые карты.
 
-Если `bitmap2` содержит ровно один элемент, имеет смысл использовать [bitmapContains](#bitmapcontains), так как это работает более эффективно.
+Если `bitmap2` содержит ровно один элемент, рассмотрите возможность использования [bitmapContains](#bitmapcontains), так как она работает более эффективно.
 
 **Синтаксис**
 
-``` sql
+```sql
 bitmapHasAny(bitmap1, bitmap2)
 ```
 
@@ -202,20 +204,20 @@ bitmapHasAny(bitmap1, bitmap2)
 - `bitmap1` – Объект битовой карты 1.
 - `bitmap2` – Объект битовой карты 2.
 
-**Возврат значений**
+**Возвращаемые значения**
 
 - `1`, если `bitmap1` и `bitmap2` имеют хотя бы один общий элемент.
 - `0`, в противном случае.
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapHasAny(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─res─┐
 │  1  │
 └─────┘
@@ -223,13 +225,13 @@ SELECT bitmapHasAny(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 
 ## bitmapHasAll {#bitmaphasall}
 
-Возвращает 1, если первая битовая карта содержит все элементы второй битовой карты, иначе 0. Если вторая битовая карта пуста, возвращает 1.
+Возвращает 1, если первая битовая карта содержит все элементы второй битовой карты, в противном случае 0. Если вторая битовая карта пуста, возвращает 1.
 
-Также см. `hasAll(array, array)`.
+Также смотрите `hasAll(array, array)`.
 
 **Синтаксис**
 
-``` sql
+```sql
 bitmapHasAll(bitmap1, bitmap2)
 ```
 
@@ -240,13 +242,13 @@ bitmapHasAll(bitmap1, bitmap2)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapHasAll(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─res─┐
 │  0  │
 └─────┘
@@ -258,7 +260,7 @@ SELECT bitmapHasAll(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 
 **Синтаксис**
 
-``` sql
+```sql
 bitmapCardinality(bitmap)
 ```
 
@@ -268,13 +270,13 @@ bitmapCardinality(bitmap)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapCardinality(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─res─┐
 │   5 │
 └─────┘
@@ -282,7 +284,7 @@ SELECT bitmapCardinality(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 
 ## bitmapMin {#bitmapmin}
 
-Вычисляет наименьший установленный бит в битовой карте или UINT32_MAX, если битовая карта пуста.
+Вычисляет наименьший установленный бит в битовой карте или UINT32_MAX, если битовая карта пуста (UINT64_MAX, если тип >= 8 бит).
 
 **Синтаксис**
 
@@ -296,13 +298,13 @@ bitmapMin(bitmap)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapMin(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 ```
 
 Результат:
 
-``` text
+```text
  ┌─res─┐
  │   1 │
  └─────┘
@@ -324,13 +326,13 @@ bitmapMax(bitmap)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapMax(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 ```
 
 Результат:
 
-``` text
+```text
  ┌─res─┐
  │   5 │
  └─────┘
@@ -338,13 +340,13 @@ SELECT bitmapMax(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 
 ## bitmapTransform {#bitmaptransform}
 
-Заменяет максимум N бит в битовой карте. Старое и новое значение i-го замененного бита задаются `from_array[i]` и `to_array[i]`.
+Заменяет не более N бит в битовой карте. Старое и новое значение i-го замененного бита задаются `from_array[i]` и `to_array[i]`.
 
-Результат зависит от порядка массива, если `from_array` и `to_array`.
+Результат зависит от порядка элементов в массивах `from_array` и `to_array`.
 
 **Синтаксис**
 
-``` sql
+```sql
 bitmapTransform(bitmap, from_array, to_array)
 ```
 
@@ -352,17 +354,17 @@ bitmapTransform(bitmap, from_array, to_array)
 
 - `bitmap` – Объект битовой карты.
 - `from_array` – Массив UInt32. Для idx в диапазоне \[0, from_array.size()), если битовая карта содержит from_array\[idx\], то замените его на to_array\[idx\].
-- `to_array` – Массив UInt32 с тем же размером, что и `from_array`.
+- `to_array` – Массив UInt32 того же размера, что и `from_array`.
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapToArray(bitmapTransform(bitmapBuild([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]), cast([5,999,2] as Array(UInt32)), cast([2,888,20] as Array(UInt32)))) AS res;
 ```
 
 Результат:
 
-``` text
+```text
  ┌─res───────────────────┐
  │ [1,3,4,6,7,8,9,10,20] │
  └───────────────────────┘
@@ -370,11 +372,11 @@ SELECT bitmapToArray(bitmapTransform(bitmapBuild([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 ## bitmapAnd {#bitmapand}
 
-Вычисляет логическое совмещение двух битовых карт.
+Вычисляет логическое И двух битовых карт.
 
 **Синтаксис**
 
-``` sql
+```sql
 bitmapAnd(bitmap,bitmap)
 ```
 
@@ -384,13 +386,13 @@ bitmapAnd(bitmap,bitmap)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapToArray(bitmapAnd(bitmapBuild([1,2,3]),bitmapBuild([3,4,5]))) AS res;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─res─┐
 │ [3] │
 └─────┘
@@ -398,11 +400,11 @@ SELECT bitmapToArray(bitmapAnd(bitmapBuild([1,2,3]),bitmapBuild([3,4,5]))) AS re
 
 ## bitmapOr {#bitmapor}
 
-Вычисляет логическое дизъюнкцию двух битовых карт.
+Вычисляет логическое ИЛИ двух битовых карт.
 
 **Синтаксис**
 
-``` sql
+```sql
 bitmapOr(bitmap,bitmap)
 ```
 
@@ -412,13 +414,13 @@ bitmapOr(bitmap,bitmap)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapToArray(bitmapOr(bitmapBuild([1,2,3]),bitmapBuild([3,4,5]))) AS res;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─res─────────┐
 │ [1,2,3,4,5] │
 └─────────────┘
@@ -430,7 +432,7 @@ SELECT bitmapToArray(bitmapOr(bitmapBuild([1,2,3]),bitmapBuild([3,4,5]))) AS res
 
 **Синтаксис**
 
-``` sql
+```sql
 bitmapXor(bitmap,bitmap)
 ```
 
@@ -440,13 +442,13 @@ bitmapXor(bitmap,bitmap)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapToArray(bitmapXor(bitmapBuild([1,2,3]),bitmapBuild([3,4,5]))) AS res;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─res───────┐
 │ [1,2,4,5] │
 └───────────┘
@@ -454,11 +456,11 @@ SELECT bitmapToArray(bitmapXor(bitmapBuild([1,2,3]),bitmapBuild([3,4,5]))) AS re
 
 ## bitmapAndnot {#bitmapandnot}
 
-Вычисляет логическое совмещение двух битовых карт и инвертирует результат.
+Вычисляет логическое И двух битовых карт и инвертирует результат.
 
 **Синтаксис**
 
-``` sql
+```sql
 bitmapAndnot(bitmap,bitmap)
 ```
 
@@ -468,13 +470,13 @@ bitmapAndnot(bitmap,bitmap)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapToArray(bitmapAndnot(bitmapBuild([1,2,3]),bitmapBuild([3,4,5]))) AS res;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─res───┐
 │ [1,2] │
 └───────┘
@@ -482,11 +484,11 @@ SELECT bitmapToArray(bitmapAndnot(bitmapBuild([1,2,3]),bitmapBuild([3,4,5]))) AS
 
 ## bitmapAndCardinality {#bitmapandcardinality}
 
-Возвращает кардинальность логического совмещения двух битовых карт.
+Возвращает кардинальность логического И двух битовых карт.
 
 **Синтаксис**
 
-``` sql
+```sql
 bitmapAndCardinality(bitmap,bitmap)
 ```
 
@@ -496,13 +498,13 @@ bitmapAndCardinality(bitmap,bitmap)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapAndCardinality(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─res─┐
 │   1 │
 └─────┘
@@ -510,9 +512,9 @@ SELECT bitmapAndCardinality(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 
 ## bitmapOrCardinality {#bitmaporcardinality}
 
-Возвращает кардинальность логического дизъюнкции двух битовых карт.
+Возвращает кардинальность логического ИЛИ двух битовых карт.
 
-``` sql
+```sql
 bitmapOrCardinality(bitmap,bitmap)
 ```
 
@@ -522,13 +524,13 @@ bitmapOrCardinality(bitmap,bitmap)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapOrCardinality(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─res─┐
 │   5 │
 └─────┘
@@ -538,7 +540,7 @@ SELECT bitmapOrCardinality(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 
 Возвращает кардинальность XOR двух битовых карт.
 
-``` sql
+```sql
 bitmapXorCardinality(bitmap,bitmap)
 ```
 
@@ -548,13 +550,13 @@ bitmapXorCardinality(bitmap,bitmap)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapXorCardinality(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─res─┐
 │   4 │
 └─────┘
@@ -564,7 +566,7 @@ SELECT bitmapXorCardinality(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 
 Возвращает кардинальность операции AND-NOT двух битовых карт.
 
-``` sql
+```sql
 bitmapAndnotCardinality(bitmap,bitmap)
 ```
 
@@ -574,13 +576,13 @@ bitmapAndnotCardinality(bitmap,bitmap)
 
 **Пример**
 
-``` sql
+```sql
 SELECT bitmapAndnotCardinality(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 ```
 
 Результат:
 
-``` text
+```text
 ┌─res─┐
 │   2 │
 └─────┘

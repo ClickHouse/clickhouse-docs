@@ -1,11 +1,14 @@
 ---
-sidebar_label: Rocket BI
+sidebar_label: 'Rocket BI'
 sidebar_position: 131
 slug: /integrations/rocketbi
-keywords: [clickhouse, RocketBI, connect, integrate, ui]
-description: RocketBI - это платформа для аналитики данных самообслуживания, которая помогает вам быстро анализировать данные, строить визуализации с помощью перетаскивания и сотрудничать с коллегами прямо в вашем веб-браузере.
+keywords: ['clickhouse', 'RocketBI', 'connect', 'integrate', 'ui']
+description: 'RocketBI - это платформа бизнес-аналитики самообслуживания, которая помогает вам быстро анализировать данные, создавать визуализации с помощью перетаскивания и сотрудничать с коллегами прямо в вашем веб-браузере.'
+title: 'ЦЕЛЬ: СОЗДАТЬ ВАШ ПЕРВЫЙ ПАНЕЛЬ УПРАВЛЕНИЯ'
 ---
-import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import Image from '@theme/IdealImage';
 import rocketbi_01 from '@site/static/images/integrations/data-visualization/rocketbi_01.gif';
 import rocketbi_02 from '@site/static/images/integrations/data-visualization/rocketbi_02.gif';
 import rocketbi_03 from '@site/static/images/integrations/data-visualization/rocketbi_03.png';
@@ -24,132 +27,136 @@ import rocketbi_15 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_16 from '@site/static/images/integrations/data-visualization/rocketbi_16.png';
 import rocketbi_17 from '@site/static/images/integrations/data-visualization/rocketbi_17.png';
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# ЦЕЛЬ: СОЗДАЙТЕ СВОЙ ПЕРВЫЙ ПАНЕЛЬ УПРАВЛЕНИЯ
+# ЦЕЛЬ: СОЗДАТЬ ВАШ ПЕРВЫЙ ПАНЕЛЬ УПРАВЛЕНИЯ
 
-В этом руководстве вы установите и создадите простую панель управления, используя Rocket.BI. 
-Это панель управления:
+<CommunityMaintainedBadge/>
 
-<img width="800" alt="Github RocketBI" src={rocketbi_01}/>
+В этом руководстве вы установите и создадите простую панель управления, используя Rocket.BI.
+Вот панель управления:
+
+<Image size="md" img={rocketbi_01} alt="Панель управления Rocket BI, показывающая метрики продаж с графиками и KPI" border />
 <br/>
 
 Вы можете ознакомиться с [панелью управления по этой ссылке.](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
 
 ## УСТАНОВКА {#install}
 
-Запустите RocketBI с нашими предустановленными образами docker.
+Запустите RocketBI с помощью наших заранее подготовленных изображений docker.
 
-Получите файл docker-compose.yml и конфигурационный файл:
+Получите docker-compose.yml и файл конфигурации:
 
 ```bash
 wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/docker-compose.yml
 wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.clickhouse.env
 ```
-Отредактируйте .clickhouse.env, добавив информацию о сервере ClickHouse.
+Отредактируйте .clickhouse.env, добавив информацию о сервере clickhouse.
 
 Запустите RocketBI, выполнив команду: ``` docker-compose up -d . ```
 
-Откройте браузер, перейдите по адресу ```localhost:5050```, войдите с помощью этой учетной записи: ```hello@gmail.com/123456```
+Откройте браузер, перейдите на ```localhost:5050```, войдите с помощью этой учетной записи: ```hello@gmail.com/123456```
 
-Для сборки из исходников или для более сложной конфигурации вы можете посмотреть здесь [README Rocket.BI](https://github.com/datainsider-co/rocket-bi/blob/main/README.md)
+Чтобы создать из исходников или для расширенной конфигурации, вы можете проверить это здесь [Rocket.BI Readme](https://github.com/datainsider-co/rocket-bi/blob/main/README.md)
 
-## ДАВАЙТЕ СОЗДАДИМ ПАНЕЛЬ УПРАВЛЕНИЯ {#lets-build-the-dashboard}
+## ДАВАЙТЕ СОЗДАМ ПАНЕЛЬ УПРАВЛЕНИЯ {#lets-build-the-dashboard}
 
-В панели управления вы найдете свои отчеты, начните визуализацию, нажав **+Новый**
+На панели управления вы найдете ваши отчеты, начните визуализацию, нажав **+Новая**
 
-Вы можете создать **неограниченное количество панелей управления** и нарисовать **неограниченное количество графиков** на панели управления.
+Вы можете создавать **неограниченные панели управления** и рисовать **неограниченные графики** на панели управления.
 
-<img width="800" alt="RocketBI create chart" src={rocketbi_02}/>
+<Image size="md" img={rocketbi_02} alt="Анимация, показывающая процесс создания нового графика в Rocket BI" border />
 <br/>
 
-Смотрите подробный урок на Youtube: [https://www.youtube.com/watch?v=TMkdMHHfvqY](https://www.youtube.com/watch?v=TMkdMHHfvqY)
+Смотрите высококачественный учебник на Youtube: [https://www.youtube.com/watch?v=TMkdMHHfvqY](https://www.youtube.com/watch?v=TMkdMHHfvqY)
 
-### Создание элементов управления графиком {#build-the-chart-controls}
+### Создание Элементов Управления Графика {#build-the-chart-controls}
 
-#### Создание элемента управления метриками {#create-a-metrics-control}
-В фильтре вкладки выберите метрики, которые вы хотите использовать. Убедитесь, что настройка агрегации установлена правильно.
+#### Создайте Элемент Управления Метриками {#create-a-metrics-control}
+В фильтре вкладки выберите поля метрик, которые вы хотите использовать. Убедитесь, что вы следите за настройкой агрегации.
 
-<img width="650" alt="RocketBI chart 6" src={rocketbi_03}/>
+<Image size="md" img={rocketbi_03} alt="Панель настройки элемента управления метриками Rocket BI, показывающая выбранные поля и настройки агрегации" border />
 <br/>
 
-Переименуйте фильтры и сохраните элемент управления на панели управления
+Переименуйте фильтры и сохраните элемент управления на панели управления.
 
-<img width="400" alt="Metrics Control" src={rocketbi_04}/>
+<Image size="md" img={rocketbi_04} alt="Элемент управления метриками с переименованными фильтрами, готовый к сохранению на панели управления" border />
 
-#### Создание элемента управления для типа даты {#create-a-date-type-control}
-Выберите поле даты в качестве основной даты:
 
-<img width="650" alt="RocketBI chart 4" src={rocketbi_05}/>
+#### Создайте Элемент Управления Типом Даты {#create-a-date-type-control}
+Выберите поле Даты в качестве основной колонки даты:
+
+<Image size="md" img={rocketbi_05} alt="Интерфейс выбора поля даты в Rocket BI, показывающий доступные колонки даты" border />
 <br/>
 
-Добавьте дублированные варианты с различными диапазонами поиска. Например, Год, Месяц, Дата или День недели.
+Добавьте дублирующие варианты с разными диапазонами поиска. Например, Год, Месяц, Дата или День недели.
 
-<img width="650" alt="RocketBI chart 5" src={rocketbi_06}/>
+<Image size="md" img={rocketbi_06} alt="Настройка диапазона дат, показывающая разные варианты временных периодов, такие как год, месяц и день" border />
 <br/>
 
-Переименуйте фильтры и сохраните элемент управления на панели управления
+Переименуйте фильтры и сохраните элемент управления на панели управления.
 
-<img width="200" alt="Date Range Control" src={rocketbi_07}/>
+<Image size="md" img={rocketbi_07} alt="Элемент управления диапазоном дат с переименованными фильтрами, готовый к сохранению на панели управления" border />
 
-### Теперь давайте создадим графики {#now-let-build-the-charts}
+### Теперь давайте создадим Графики {#now-let-build-the-charts}
 
-#### Круговая диаграмма: метрики продаж по регионам {#pie-chart-sales-metrics-by-regions}
-Выберите Добавить новый график, затем выберите Круговую диаграмму
+#### Круговая Диаграмма: Метрики Продаж по Регионам {#pie-chart-sales-metrics-by-regions}
+Выберите Добавление нового графика, затем выберите Круговую диаграмму.
 
-<img width="650" alt="Add Pie Chart" src={rocketbi_08}/>
+<Image size="md" img={rocketbi_08} alt="Панель выбора типа графика с выделенной опцией круговой диаграммы" border />
 <br/>
 
-Сначала перетащите колонку "Регион" из набора данных в поле Легенда
+Сначала перетащите колонку "Регион" из набора данных в поле Легенды.
 
-<img width="650" alt="Drag-n-drop Column to Chart" src={rocketbi_09}/>
+<Image size="md" img={rocketbi_09} alt="Интерфейс перетаскивания, показывающий добавление колонки Регион в поле легенды" border />
 <br/>
 
-Затем перейдите на вкладку Управление графиком
+Затем переключитесь на вкладку Элемента Управления Графиком.
 
-<img width="650" alt="Navigate to Chart Control in Visualization" src={rocketbi_10}/>
+<Image size="md" img={rocketbi_10} alt="Интерфейс вкладки элемента управления графиком, показывающий параметры настройки визуализации" border />
 <br/>
 
-Перетащите элемент управления метриками в поле Значение
+Перетащите Элемент Управления Метриками в поле Значения.
 
-<img width="650" alt="Use Metrics Control in Chart" src={rocketbi_11}/>
+<Image size="md" img={rocketbi_11} alt="Элемент управления метриками добавляется в поле значений круговой диаграммы" border />
 <br/>
 
-(вы также можете использовать элемент управления метриками для сортировки)
+(вы также можете использовать элемент управления метриками в качестве сортировки)
 
-Перейдите в Настройки графика для дальнейшей настройки
+Перейдите к настройкам графика для дальнейшей настройки.
 
-<img width="650" alt="Custom the Chart with Setting" src={rocketbi_12}/>
+<Image size="md" img={rocketbi_12} alt="Панель настроек графика, показывающая параметры настройки круговой диаграммы" border />
 <br/>
 
-Например, измените метку данных на Процент
+Например, измените Подпись данных на Процент.
 
-<img width="650" alt="Chart Customization Example" src={rocketbi_13}/>
+<Image size="md" img={rocketbi_13} alt="Настройки подписи данных изменены для отображения процентов на круговой диаграмме" border />
 <br/>
 
-Сохраните и добавьте график на панель управления
+Сохраните и добавьте график на панель управления.
 
-<img width="650" alt="Overview Dashboard with Pie Chart" src={rocketbi_14}/>
+<Image size="md" img={rocketbi_14} alt="Вид панели управления, показывающий недавно добавленную круговую диаграмму с другими элементами управления" border />
 
-#### Используйте элемент управления даты в графике временных рядов {#use-date-control-in-a-time-series-chart}
-Давайте используем сложенный столбчатый график
+#### Используйте Элемент Управления Датой в Временном Графике {#use-date-control-in-a-time-series-chart}
+Давайте используем Сложенную Столбчатую Диаграмму.
 
-<img width="650" alt="Create a Time-series chart with Tab Control" src={rocketbi_15}/>
+<Image size="md" img={rocketbi_15} alt="Интерфейс создания сложенной столбчатой диаграммы с данными временных рядов" border />
 <br/>
 
-В элементе управления графиком используйте элемент управления метриками в качестве оси Y и диапазон дат в качестве оси X
+В Элементе Управления Графиком используйте Элемент Управления Метриками в качестве оси Y и Диапазон Дат в качестве оси X.
 
-<img width="650" alt="Use Date Range as Controller" src={rocketbi_16}/>
+<Image size="md" img={rocketbi_16} alt="Настройка элемента управления графиком, показывающая метрики на оси Y и диапазон дат на оси X" border />
 <br/>
 
-Добавьте колонку региона в Разделение
+Добавьте колонку Регион в Разбиение.
 
-<img width="650" alt="Add Region into Breakdown" src={rocketbi_17}/>
+<Image size="md" img={rocketbi_17} alt="Колонка Регион добавляется как элемент разбиения в сложенную столбчатую диаграмму" border />
 <br/>
 
-Добавьте числовой график в качестве KPI и улучшите панель управления
+Добавьте Числовой График в качестве KPI и улучшьте панель управления.
 
-<img width="800" alt="Screenshot 2022-11-17 at 10 43 29" src={rocketbi_18} />
+<Image size="md" img={rocketbi_18} alt="Завершенная панель управления с графиками KPI, круговой диаграммой и визуализацией временных рядов" border />
 <br/>
 
-Теперь вы успешно создали свою первую панель управления с помощью rocket.BI.
+Теперь вы успешно создали свою первую панель управления с rocket.BI.

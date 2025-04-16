@@ -1,33 +1,35 @@
 ---
-slug: /sql-reference/data-types/uuid
+description: 'Документация для типа данных UUID в ClickHouse'
+sidebar_label: 'UUID'
 sidebar_position: 24
-sidebar_label: UUID
+slug: /sql-reference/data-types/uuid
+title: 'UUID'
 ---
 
 
 # UUID
 
-Универсальный уникальный идентификатор (UUID) — это 16-байтовое значение, используемое для идентификации записей. Для получения подробной информации о UUID см. [Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier).
+Универсальный уникальный идентификатор (UUID) — это 16-байтовое значение, используемое для идентификации записей. Для получения более подробной информации о UUID см. [Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier).
 
-Хотя существуют разные варианты UUID (см. [здесь](https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis)), ClickHouse не проверяет, соответствуют ли вставляемые UUID какому-либо конкретному варианту. UUID внутренне рассматриваются как последовательность из 16 случайных байтов с представлением [8-4-4-4-12](https://en.wikipedia.org/wiki/Universally_unique_identifier#Textual_representation) на уровне SQL.
+Хотя существуют различные вариации UUID (см. [здесь](https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis)), ClickHouse не проверяет, соответствуют ли вставляемые UUID определенной вариации. UUID внутренне обрабатываются как последовательность 16 случайных байтов с представлением [8-4-4-4-12](https://en.wikipedia.org/wiki/Universally_unique_identifier#Textual_representation) на SQL уровне.
 
 Пример значения UUID:
 
-``` text
+```text
 61f0c404-5cb3-11e7-907b-a6006ad3dba0
 ```
 
-UUID по умолчанию равен всем нулям. Он используется, например, когда новая запись вставляется, но значение для колонки UUID не указано:
+По умолчанию UUID равен нулю. Он используется, например, когда новая запись вставляется, но значение для колонки UUID не указано:
 
-``` text
+```text
 00000000-0000-0000-0000-000000000000
 ```
 
-По историческим причинам UUID сортируются по их второй половине. Поэтому UUIDs не следует использовать напрямую в первичном ключе, ключе сортировки или ключе партиции таблицы.
+По историческим причинам, UUID сортируются по их второй половине. Поэтому UUID не следует использовать непосредственно в первичном ключе, ключе сортировки или ключе партиции таблицы.
 
 Пример:
 
-``` sql
+```sql
 CREATE TABLE tab (uuid UUID) ENGINE = Memory;
 INSERT INTO tab SELECT generateUUIDv4() FROM numbers(50);
 SELECT * FROM tab ORDER BY uuid;
@@ -35,7 +37,7 @@ SELECT * FROM tab ORDER BY uuid;
 
 Результат:
 
-``` text
+```text
 ┌─uuid─────────────────────────────────┐
 │ 36a0b67c-b74a-4640-803b-e44bb4547e3c │
 │ 3a00aeb8-2605-4eec-8215-08c0ecb51112 │
@@ -51,11 +53,11 @@ SELECT * FROM tab ORDER BY uuid;
 └──────────────────────────────────────┘
 ```
 
-В качестве обходного пути UUID можно преобразовать в тип с интуитивным порядком сортировки.
+В качестве обходного решения UUID можно преобразовать в тип с интуитивно понятным порядком сортировки.
 
-Пример с преобразованием в UInt128:
+Пример использования преобразования в UInt128:
 
-``` sql
+```sql
 CREATE TABLE tab (uuid UUID) ENGINE = Memory;
 INSERT INTO tab SELECT generateUUIDv4() FROM numbers(50);
 SELECT * FROM tab ORDER BY toUInt128(uuid);
@@ -89,17 +91,17 @@ ClickHouse предоставляет функцию [generateUUIDv4](../../sql-
 
 Этот пример демонстрирует создание таблицы с колонкой UUID и вставку значения в таблицу.
 
-``` sql
-CREATE TABLE t_uuid (x UUID, y String) ENGINE=TinyLog
+```sql
+CREATE TABLE t_uuid (x UUID, y String) ENGINE=TinyLog;
 
-INSERT INTO t_uuid SELECT generateUUIDv4(), 'Example 1'
+INSERT INTO t_uuid SELECT generateUUIDv4(), 'Example 1';
 
-SELECT * FROM t_uuid
+SELECT * FROM t_uuid;
 ```
 
 Результат:
 
-``` text
+```text
 ┌────────────────────────────────────x─┬─y─────────┐
 │ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ Example 1 │
 └──────────────────────────────────────┴───────────┘
@@ -107,15 +109,15 @@ SELECT * FROM t_uuid
 
 **Пример 2**
 
-В этом примере значение колонки UUID не указано, когда запись вставляется, т.е. вставляется значение по умолчанию для UUID:
+В этом примере значение колонки UUID не указано при вставке записи, т.е. вставляется значение по умолчанию для UUID:
 
-``` sql
-INSERT INTO t_uuid (y) VALUES ('Example 2')
+```sql
+INSERT INTO t_uuid (y) VALUES ('Example 2');
 
-SELECT * FROM t_uuid
+SELECT * FROM t_uuid;
 ```
 
-``` text
+```text
 ┌────────────────────────────────────x─┬─y─────────┐
 │ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ Example 1 │
 │ 00000000-0000-0000-0000-000000000000 │ Example 2 │
@@ -126,4 +128,4 @@ SELECT * FROM t_uuid
 
 Тип данных UUID поддерживает только функции, которые также поддерживает тип данных [String](../../sql-reference/data-types/string.md) (например, [min](/sql-reference/aggregate-functions/reference/min), [max](/sql-reference/aggregate-functions/reference/max) и [count](/sql-reference/aggregate-functions/reference/count)).
 
-Тип данных UUID не поддерживает арифметические операции (например, [abs](/sql-reference/functions/arithmetic-functions#abs)) или агрегационные функции, такие как [sum](/sql-reference/aggregate-functions/reference/sum) и [avg](/sql-reference/aggregate-functions/reference/avg).
+Тип данных UUID не поддерживается арифметическими операциями (например, [abs](/sql-reference/functions/arithmetic-functions#abs)) или агрегатными функциями, такими как [sum](/sql-reference/aggregate-functions/reference/sum) и [avg](/sql-reference/aggregate-functions/reference/avg).

@@ -11,15 +11,11 @@ function parse_args() {
         echo ""
         echo "Options:"
         echo "  -l   Path to a local copy of the ClickHouse repository."
-        echo "  -f  Force pull from GitHub even in CI environment."
         echo "  -h   Display this help message."
         exit 0
         ;;
       l)
         local_path="$OPTARG"
-        ;;
-      f)
-        force_pull=true
         ;;
       \?)
         echo "Invalid option: -$OPTARG" >&2
@@ -103,14 +99,11 @@ main() {
 
   if [[ -z "$local_path" ]]; then
 
-    # Check if in CI environment and force_pull is not set
-    if [[ "$CI" == "true" && "$force_pull" == "false" ]]; then
-      echo "CI environment detected, expecting /ClickHouse without having to pull the repo"
+    # Check if override is set
+    if [[ "$MASTER_PULL" == "false" ]]; then
+      echo "expecting /ClickHouse folder to be present without having to pull it from the repo"
       copy_docs_locally "/ClickHouse"
     else
-      if [[ "$force_pull" == "true" && "$CI" == "true" ]]; then
-        echo "Force pull enabled, ignoring CI environment and pulling from GitHub"
-      fi
       git clone --depth 1 --branch master https://github.com/ClickHouse/ClickHouse
       # Copy docs from cloned repository
       copy_docs_locally "$(pwd)/ClickHouse"

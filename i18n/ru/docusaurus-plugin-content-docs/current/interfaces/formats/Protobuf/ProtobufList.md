@@ -1,10 +1,11 @@
 ---
-title: ProtobufList
-slug: /interfaces/formats/ProtobufList
-keywords: ['ProtobufList']
-input_format: true
-output_format: true
 alias: []
+description: 'Документация для формата ProtobufList'
+input_format: true
+keywords: ['ProtobufList']
+output_format: true
+slug: /interfaces/formats/ProtobufList
+title: 'ProtobufList'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -17,7 +18,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## Описание {#description}
 
-Формат `ProtobufList` схож с форматом [`Protobuf`](./Protobuf.md), но строки представлены как последовательность подсообщений, содержащихся в сообщении с фиксированным именем "Envelope".
+Формат `ProtobufList` аналогичен формату [`Protobuf`](./Protobuf.md), но строки представлены как последовательность подсообщений, содержащихся в сообщении с фиксированным именем "Envelope".
 
 ## Пример использования {#example-usage}
 

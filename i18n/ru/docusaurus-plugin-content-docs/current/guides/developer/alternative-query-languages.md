@@ -1,23 +1,24 @@
 ---
 slug: /guides/developer/alternative-query-languages
-sidebar_label: Альтернативные языки запросов
-title: Альтернативные языки запросов
-description: Использование альтернативных языков запросов в ClickHouse
+sidebar_label: 'Альтернативные языки запросов'
+title: 'Альтернативные языки запросов'
+description: 'Использование альтернативных языков запросов в ClickHouse'
 ---
+
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-Помимо стандартного SQL, ClickHouse поддерживает различные альтернативные языки запросов для работы с данными.
+Кроме стандартного SQL, ClickHouse поддерживает различные альтернативные языки запросов для выборки данных.
 
-В настоящее время поддерживаемые диалекты:
-- `clickhouse`: Стандартный [SQL-диалект](../../sql-reference/syntax.md) ClickHouse
+ВCurrently supported dialects are:
+- `clickhouse`: Стандартный [SQL диалект](../../sql-reference/syntax.md) ClickHouse
 - `prql`: [Pipelined Relational Query Language (PRQL)](https://prql-lang.org/)
 - `kusto`: [Kusto Query Language (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
 
-Язык запроса контролируется установкой `dialect`.
+Выбор языка запросов осуществляется с помощью настройки `dialect`.
 
 ## Стандартный SQL {#standard-sql}
 
-Стандартный SQL является языком запросов по умолчанию в ClickHouse.
+Стандартный SQL является языком запросов по умолчанию для ClickHouse.
 
 ```sql
 SET dialect = 'clickhouse'
@@ -30,11 +31,12 @@ SET dialect = 'clickhouse'
 Чтобы включить PRQL:
 
 ```sql
-SET allow_experimental_prql_dialect = 1; -- эта установка необходима только для версий ClickHouse >= v25.1
+SET allow_experimental_prql_dialect = 1; -- эта команда SET необходима только для версий ClickHouse >= v25.1
 SET dialect = 'prql'
 ```
 
 Пример запроса PRQL:
+
 
 ```prql
 from trips
@@ -53,7 +55,7 @@ aggregate {
 Чтобы включить KQL:
 
 ```sql
-SET allow_experimental_kusto_dialect = 1; -- эта установка необходима только для версий ClickHouse >= 25.1
+SET allow_experimental_kusto_dialect = 1; -- эта команда SET необходима только для версий ClickHouse >= 25.1
 SET dialect = 'kusto'
 ```
 
@@ -76,4 +78,4 @@ numbers(10) | project number
 └────────┘
 ```
 
-Обратите внимание, что запросы KQL могут иметь доступ не ко всем функциям, определенным в ClickHouse.
+Обратите внимание, что запросы KQL могут не иметь доступа ко всем функциям, определенным в ClickHouse.

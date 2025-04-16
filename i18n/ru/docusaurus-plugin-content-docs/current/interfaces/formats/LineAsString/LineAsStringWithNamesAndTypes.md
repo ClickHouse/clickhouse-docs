@@ -1,20 +1,21 @@
 ---
-title: LineAsStringWithNamesAndTypes
-slug: /interfaces/formats/LineAsStringWithNamesAndTypes
-keywords: ['LineAsStringWithNamesAndTypes']
-input_format: false
-output_format: true
 alias: []
+description: 'Документация для формата LineAsStringWithNamesAndTypes'
+input_format: false
+keywords: ['LineAsStringWithNamesAndTypes']
+output_format: true
+slug: /interfaces/formats/LineAsStringWithNamesAndTypes
+title: 'LineAsStringWithNamesAndTypes'
 ---
 
-| Input | Output | Alias |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+| Вход | Выход | Псевдоним |
+|------|-------|-----------|
+| ✗    | ✔     |           |
 
 ## Описание {#description}
 
-Формат `LineAsStringWithNames` похож на формат [`LineAsString`](./LineAsString.md), 
-но печатает две строки заголовка: одну с именами колонок, другую с типами.
+Формат `LineAsStringWithNames` аналогичен формату [`LineAsString`](./LineAsString.md), 
+но выводит две строки заголовков: одну с именами колонок, другую с типами.
 
 ## Пример использования {#example-usage}
 
@@ -31,11 +32,11 @@ SELECT * FROM example FORMAT LineAsStringWithNamesAndTypes;
 ```
 
 ```response title="Ответ"
-name	value
-String	Int32
-John	30
-Jane	25
-Peter	35
+name    value
+String    Int32
+John    30
+Jane    25
+Peter    35
 ```
 
 ## Настройки формата {#format-settings}

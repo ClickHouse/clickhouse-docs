@@ -60,7 +60,7 @@ The model below generally addresses ClickHouse responsibilities and shows respon
   | [Standard role-based access](/cloud/security/cloud-access-management) in control plane | Available | AWS, GCP, Azure | All               | 
   | [Multi-factor authentication (MFA)](/cloud/security/cloud-authentication#multi-factor-authentication) available | Available | AWS, GCP, Azure | All   |
   | [SAML Single Sign-On](/cloud/security/saml-setup) to control plane available                 | Preview   | AWS, GCP, Azure   | Enterprise              |
-  | Granular [role-based access control](/cloud/security/cloud-access-management/overview#database-roles) in databases | Available | AWS, GCP, Azure | All          |
+  | Granular [role-based access control](/cloud/security/cloud-access-management/overview#database-permissions) in databases | Available | AWS, GCP, Azure | All          |
   
 </details>
 <details>
@@ -71,7 +71,7 @@ The model below generally addresses ClickHouse responsibilities and shows respon
   | [Cloud provider and region](/cloud/reference/supported-regions) selections                   | Available | AWS, GCP, Azure   | All                     |
   | Limited [free daily backups](/cloud/manage/backups/overview#default-backup-policy)                    | Available | AWS, GCP, Azure   | All                     |
   | [Custom backup configurations](/cloud/manage/backups/overview#configurable-backups) available         | Available | GCP, AWS, Azure   | Scale or Enterprise     |
-  | [Customer managed encryption keys (CMEK)](/cloud/security/cmek) for transparent<br/> data encryption available  | Available | AWS | Scale or Enterprise |
+  | [Customer managed encryption keys (CMEK)](/cloud/security/cmek) for transparent<br/> data encryption available  | Available | AWS, GCP | Enterprise |
   | [Field level encryption](/sql-reference/functions/encryption-functions) with manual key management for granular encryption | Available | GCP, AWS, Azure | All  |
 
   
@@ -105,6 +105,7 @@ The model below generally addresses ClickHouse responsibilities and shows respon
   | SOC 2 Type II compliance                                                                             | Available | AWS, GCP, Azure   | All                     |
   | GDPR and CCPA compliance                                                                             | Available | AWS, GCP, Azure   | All                     |
   | HIPAA compliance                                                                                     | Available | AWS, GCP          | Enterprise              |
+  | PCI compliance                                                                                       | Available | AWS               | Enterprise              |
 
   For more information on supported compliance frameworks, please review our [Security and Compliance](/cloud/security/security-and-compliance) page.
 

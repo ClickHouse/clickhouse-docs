@@ -1,28 +1,28 @@
 ---
+description: 'Набор данных и запросы бенчмарка TPC-DS.'
+sidebar_label: 'TPC-DS'
 slug: /getting-started/example-datasets/tpcds
-sidebar_label: TPC-DS
-description:  "Набор данных и запросов для бенчмарка TPC-DS."
-title: "TPC-DS (2012)"
+title: 'TPC-DS (2012)'
 ---
 
-Аналогично [Star Schema Benchmark (SSB)](star-schema.md), TPC-DS основан на [TPC-H](tpch.md), но пошел противоположным путем, т.е. увеличил количество необходимых соединений, сохраняя данные в сложной схеме снежинки (24 вместо 8 таблиц).
-Распределение данных нестабильно (например, нормальное и распределение Пуассона).
-Содержит 99 отчетов и ад-хок запросов с произвольными заменами.
+Подобно [бенчмарку Star Schema Benchmark (SSB)](star-schema.md), TPC-DS основан на [TPC-H](tpch.md), но пошёл другим путём, т.е. увеличил количество соединений, необходимых для хранения данных в сложной снежинокообразной схеме (24 вместо 8 таблиц). 
+Распределение данных искажено (например, нормальное и распределение Пуассона). 
+Он включает в себя 99 отчетных и ад-хок запросов с случайными заменами.
 
 Ссылки
 - [Создание TPC-DS](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar), 2006
 
-Во-первых, клонируйте репозиторий TPC-DS и скомпилируйте генератор данных:
+Сначала клонируйте репозиторий TPC-DS и скомпилируйте генератор данных:
 
-``` bash
+```bash
 git clone https://github.com/gregrahn/tpcds-kit.git
 cd tpcds-kit/tools
 make
 ```
 
-Затем сгенерируйте данные. Параметр `-scale` указывает масштабный коэффициент.
+Затем сгенерируйте данные. Параметр `-scale` задает масштабный коэффициент.
 
-``` bash
+```bash
 ./dsdgen -scale 1
 ```
 
@@ -33,7 +33,7 @@ make
 ```
 
 Теперь создайте таблицы в ClickHouse.
-Вы можете использовать оригинальные определения таблиц в tools/tpcds.sql или "настроенные" определения таблиц с правильно определенными индексами первичного ключа и колонками типа LowCardinality там, где это имеет смысл.
+Вы можете использовать либо оригинальные определения таблиц в tools/tpcds.sql, либо "настроенные" определения таблиц с правильно определенными индексами первичного ключа и типами колонок LowCardinality в тех местах, где это имеет смысл.
 
 ```sql
 CREATE TABLE call_center(
@@ -560,7 +560,7 @@ CREATE TABLE web_site (
 
 Данные можно импортировать следующим образом:
 
-``` bash
+```bash
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO call_center FORMAT CSV" < call_center.tbl
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO catalog_page FORMAT CSV" < catalog_page.tbl
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO catalog_returns FORMAT CSV" < catalog_returns.tbl
@@ -590,6 +590,6 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_site FORMA
 Затем выполните сгенерированные запросы.
 
 ::::warning
-TPC-DS активно использует коррелированные подзапросы, которые на момент написания этого текста (сентябрь 2024 года) не поддерживаются ClickHouse ([issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)).
-В результате многие из вышеупомянутых тестовых запросов завершатся с ошибками.
+TPC-DS активно использует коррелированные подзапросы, которые на момент написания (сентябрь 2024 года) не поддерживаются ClickHouse ([issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)).
+В результате многие из приведенных выше тестовых запросов будут завершены с ошибками.
 ::::

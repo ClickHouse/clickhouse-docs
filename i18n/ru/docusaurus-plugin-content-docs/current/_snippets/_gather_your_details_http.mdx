@@ -1,22 +1,22 @@
 
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_https from '@site/static/images/_snippets/connection-details-https.png';
+import Image from '@theme/IdealImage';
 
-Чтобы подключиться к ClickHouse с помощью HTTP(S), вам нужна следующая информация:
+Чтобы подключиться к ClickHouse с помощью HTTP(S), вам необходима следующая информация:
 
-- ХОСТ и ПОРТ: обычно порт 8443 при использовании TLS или 8123 при его отсутствии.
+- ХОСТ и ПОРТ: как правило, порт 8443 при использовании TLS или 8123 при отсутствии TLS.
 
-- НАЗВАНИЕ БАЗЫ ДАННЫХ: по умолчанию есть база данных с именем `default`, используйте имя базы данных, к которой вы хотите подключиться.
+- ИМЯ БАЗЫ ДАННЫХ: по умолчанию существует база данных с именем `default`, используйте имя базы данных, к которой вы хотите подключиться.
 
-- ИМЯ ПОЛЬЗОВАТЕЛЯ и ПАРОЛЬ: по умолчанию имя пользователя `default`. Используйте имя пользователя, подходящее для вашего случая использования.
+- ИМЯ ПОЛЬЗОВАТЕЛЯ и ПАРОЛЬ: по умолчанию имя пользователя `default`. Используйте имя пользователя, подходящее для вашего случая.
 
-Данные для вашей службы ClickHouse Cloud доступны в консоли ClickHouse Cloud. Выберите службу, к которой вы будете подключаться, и нажмите **Подключиться**:
+Данные для вашего сервиса ClickHouse Cloud доступны в консоли ClickHouse Cloud. Выберите сервис, к которому вы хотите подключиться, и нажмите **Подключиться**:
 
-<img src={cloud_connect_button} class="image" alt="Кнопка подключения к службе ClickHouse Cloud" />
+<Image img={cloud_connect_button} size="md" alt="Кнопка подключения к сервису ClickHouse Cloud" border />
 
-Выберите **HTTPS**, и детали будут доступны в примере команды `curl`.
+Выберите **HTTPS**, и данные будут доступны в примере команды `curl`.
 
-<img src={connection_details_https} class="image" alt="Детали подключения ClickHouse Cloud через HTTPS" />
+<Image img={connection_details_https} size="md" alt="Детали подключения ClickHouse Cloud по HTTPS" border/>
 
-Если вы используете self-managed ClickHouse, детали подключения задаются вашим администратором ClickHouse.
-```
+Если вы используете самоуправляемый ClickHouse, детали подключения устанавливаются вашим администратором ClickHouse.

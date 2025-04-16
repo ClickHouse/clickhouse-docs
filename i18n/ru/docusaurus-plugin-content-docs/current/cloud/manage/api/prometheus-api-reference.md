@@ -1,11 +1,13 @@
 ---
-sidebar_label: Prometheus
-title: Prometheus
+sidebar_label: 'Prometheus'
+title: 'Prometheus'
+slug: /cloud/manage/api/prometheus-api-reference
+description: 'Документация справочника API облака для prometheus'
 ---
 
-## Получение метрик организации
+## Получение показателей организации
 
-Возвращает метрики prometheus для всех сервисов в организации.
+Возвращает показатели prometheus для всех служб в организации.
 
 | Метод | Путь |
 | :----- | :--- |
@@ -18,4 +20,4 @@ title: Prometheus
 | Название | Тип | Описание |
 | :--- | :--- | :---------- |
 | organizationId | uuid | ID запрашиваемой организации. | 
-| filtered_metrics | boolean | Возвращает отфильтрованный список метрик Prometheus. | 
+| filtered_metrics | boolean | Вернуть отфильтрованный список показателей Prometheus. | 
