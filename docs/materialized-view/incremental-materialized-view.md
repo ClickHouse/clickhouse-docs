@@ -947,3 +947,151 @@ GROUP BY UserId
 
 1 row in set. Elapsed: 0.006 sec.
 ```
+## Materialized Views - parallel vs sequential processing {#materialized-views-parallel-vs-sequential}
+
+As shown in the previous example, a table can act as the source for multiple Materialized Views. The order in which these are executed depends on the setting [`parallel_view_processing`](/operations/settings/settings#parallel_view_processing).
+
+By default, this setting is equal to `0` (`false`), meaning Materialized Views are executed sequentially in `uuid` order.
+
+For example, consider the following `source` table and 3 Materialized Views, each sending to a `target` table:
+
+```sql
+CREATE TABLE source
+(
+    `message` String
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+
+CREATE TABLE target
+(
+    `message` String,
+    `from` String,
+    `now` DateTime64(9),
+    `sleep` UInt8
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+
+CREATE MATERIALIZED VIEW mv_2 TO target
+AS SELECT
+    message,
+    'mv2' AS from,
+ now64(9) as now,
+ sleep(1) as sleep
+FROM source;
+
+CREATE MATERIALIZED VIEW mv_3 TO target
+AS SELECT
+    message,
+    'mv3' AS from,
+ now64(9) as now,
+ sleep(1) as sleep
+FROM source;
+
+CREATE MATERIALIZED VIEW mv_1 TO target
+AS SELECT
+    message,
+    'mv1' AS from,
+ now64(9) as now,
+ sleep(1) as sleep
+FROM source;
+```
+
+Notice that each of the views pauses 1 second prior to inserting their rows to the `target` table while also including their name and insertion time.
+
+Inserting a row into the table `source` takes ~3 seconds, with each view executing sequentially:
+
+```sql
+INSERT INTO source VALUES ('test')
+
+1 row in set. Elapsed: 3.786 sec.
+```
+
+We can confirm the arrival of rows from each row with a `SELECT`:
+
+```sql
+SELECT
+    message,
+    from,
+    now
+FROM target
+ORDER BY now ASC
+
+┌─message─┬─from─┬───────────────────────────now─┐
+│ test    │ mv3  │ 2025-04-15 14:52:01.306162309 │
+│ test    │ mv1  │ 2025-04-15 14:52:02.307693521 │
+│ test    │ mv2  │ 2025-04-15 14:52:03.309250283 │
+└─────────┴──────┴───────────────────────────────┘
+
+3 rows in set. Elapsed: 0.015 sec.
+```
+
+This aligns with the `uuid` of the views:
+
+```sql
+SELECT
+    name,
+ uuid
+FROM system.tables
+WHERE name IN ('mv_1', 'mv_2', 'mv_3')
+ORDER BY uuid ASC
+
+┌─name─┬─uuid─────────────────────────────────┐
+│ mv_3 │ ba5e36d0-fa9e-4fe8-8f8c-bc4f72324111 │
+│ mv_1 │ b961c3ac-5a0e-4117-ab71-baa585824d43 │
+│ mv_2 │ e611cc31-70e5-499b-adcc-53fb12b109f5 │
+└──────┴──────────────────────────────────────┘
+
+3 rows in set. Elapsed: 0.004 sec.
+```
+
+Conversely, consider if set insert a row with `parallel_view_processing=1` enabled. With this, the views are executed in parallel, giving no guarantees with respect to the order of delivery to the target table:
+
+```sql
+TRUNCATE target;
+SET parallel_view_processing = 1;
+
+INSERT INTO source VALUES ('test');
+
+1 row in set. Elapsed: 1.588 sec.
+
+SELECT
+    message,
+    from,
+    now
+FROM target
+ORDER BY now ASC
+
+┌─message─┬─from─┬───────────────────────────now─┐
+│ test    │ mv3  │ 2025-04-15 19:47:32.242937372 │
+│ test    │ mv1  │ 2025-04-15 19:47:32.243058183 │
+│ test    │ mv2  │ 2025-04-15 19:47:32.337921800 │
+└─────────┴──────┴───────────────────────────────┘
+
+3 rows in set. Elapsed: 0.004 sec.
+```
+
+Although our ordering of the arrival of rows from each view is the same, this is not guaranteed - as illustrated by the similarity of each row's insert time. Also note the improved insert performance.
+
+### Materialized Views - when to use parallel processing {#materialized-views-when-to-use-parallel}
+
+Enabling `parallel_view_processing=1` can significantly improve insert throughput, as shown above, especially when multiple Materialized Views are attached to a single table. However, it’s important to understand the trade-offs:
+
+- **Increased insert pressure**: All Materialized Views are executed simultaneously, increasing CPU and memory usage. If each view performs heavy computation or joins, this can overload the system.
+- **Need for strict execution order**: In rare workflows where the order of view execution matters (e.g., chained dependencies), parallel execution may lead to inconsistent state or race conditions. While possible to design around this, such setups are fragile and may break with future versions.
+
+:::note Historical defaults and stability
+Sequential execution was the default for a long time, in part due to error handling complexities. Historically, a failure in one Materialized View could prevent others from executing. Newer versions have improved this by isolating failures per block, but sequential execution still provides clearer failure semantics
+:::
+
+In general, enable `parallel_view_processing=1` when:
+
+- You have multiple independent Materialized Views
+- You're aiming to maximize insert performance
+- You're aware of the system’s capacity to handle concurrent view execution
+
+Leave it disabled when:
+- Materialized Views have dependencies on one another
+- You require predictable, ordered execution
+- You're debugging or auditing insert behavior and want deterministic replay
