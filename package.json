@@ -55,7 +55,7 @@
     "flexsearch": "^0.7.43",
     "gray-matter": "^4.0.3",
     "hast-util-is-element": "1.1.0",
-    "http-proxy-middleware": "3.0.3",
+    "http-proxy-middleware": "3.0.5",
     "katex": "^0.16.21",
     "markdownlint-cli2": "^0.17.2",
     "node-fetch": "^3.3.2",
