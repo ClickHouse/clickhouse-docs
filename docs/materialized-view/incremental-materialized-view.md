@@ -1143,7 +1143,7 @@ FROM filtered_posts
 GROUP BY Day, PostTypeId;
 ```
 
-While the CTE is strictly unnecessary here, and for example purposes, the view will work as expected:
+While the CTE is strictly unnecessary here, for example purposes, the view will work as expected:
 
 ```sql
 INSERT INTO posts
