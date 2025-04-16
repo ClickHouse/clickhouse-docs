@@ -1083,7 +1083,7 @@ Enabling `parallel_view_processing=1` can significantly improve insert throughpu
 - **Need for strict execution order**: In rare workflows where the order of view execution matters (e.g., chained dependencies), parallel execution may lead to inconsistent state or race conditions. While possible to design around this, such setups are fragile and may break with future versions.
 
 :::note Historical defaults and stability
-Sequential execution was the default for a long time, in part due to error handling complexities. Historically, a failure in one Materialized View could prevent others from executing. Newer versions have improved this by isolating failures per block, but sequential execution still provides clearer failure semantics
+Sequential execution was the default for a long time, in part due to error handling complexities. Historically, a failure in one Materialized View could prevent others from executing. Newer versions have improved this by isolating failures per block, but sequential execution still provides clearer failure semantics.
 :::
 
 In general, enable `parallel_view_processing=1` when:
