@@ -1047,7 +1047,7 @@ ORDER BY uuid ASC
 3 rows in set. Elapsed: 0.004 sec.
 ```
 
-Conversely, consider if set insert a row with `parallel_view_processing=1` enabled. With this, the views are executed in parallel, giving no guarantees with respect to the order of delivery to the target table:
+Conversely, consider what happens if we insert a row with `parallel_view_processing=1` enabled. With this enabled, the views are executed in parallel, giving no guarantees to the order at which rows arrive to the target table:
 
 ```sql
 TRUNCATE target;
