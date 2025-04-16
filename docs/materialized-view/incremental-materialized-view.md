@@ -1182,7 +1182,7 @@ LIMIT 10
 Peak memory usage: 989.53 KiB.
 ```
 
-In ClickHouse, CTEs are inlined they are effectively copy-pasted into the query during optimization and **not** materialized. This means:
+In ClickHouse, CTEs are inlined which means they are effectively copy-pasted into the query during optimization and **not** materialized. This means:
 
 - If your CTE references a different table from the source table (i.e., the one the Materialized View is attached to), and is used in a `JOIN` or `IN` clause, it will behave like a subquery or join, not a trigger.
 - The Materialized View will still only trigger on inserts into the main source table, but the CTE will be re-executed on every insert, which may cause unnecessary overhead, especially if the referenced table is large.
