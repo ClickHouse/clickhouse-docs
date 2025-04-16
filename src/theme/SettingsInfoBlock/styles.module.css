@@ -1,0 +1,14 @@
+.settingsInfoBlock {
+    width: fit-content;
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    margin-bottom: 15px;
+    padding: 0;
+}
+
+.table {
+    overflow-x: auto;
+    display: block;
+    margin-bottom: 0px;
+}
