@@ -988,3 +988,7 @@ tunable
 DAGs
 --docs/migrations/postgres/appendix.md--
 Citus
+--docs/integrations/data-ingestion/azure-synapse/index.md--
+microsoft
+sparkConfigViaNotebook
+sparkUICHSettings

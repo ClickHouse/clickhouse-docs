@@ -222,6 +222,15 @@ That way, you would be able to access clickhouse1 table `<ck_db>.<ck_table>` fro
 
 :::
 
+## ClickHouse Cloud Settings {#clickhouse-cloud-settings}
+
+When connecting to [ClickHouse Cloud](https://clickhouse.com), make sure to enable SSL and set the appropriate SSL mode. For example:
+
+```text
+spark.sql.catalog.clickhouse.option.ssl        true
+spark.sql.catalog.clickhouse.option.ssl_mode   NONE
+```
+
 ## Read Data {#read-data}
 
 <Tabs groupId="spark_apis">
