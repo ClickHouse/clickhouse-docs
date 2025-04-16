@@ -5,10 +5,10 @@ import styles from './styles.module.css';
 const VersionHistoryDropdown = ({rows=[]}) => {
     const { colorMode } = useColorMode();
     return(
-        <ClickUIProvider theme={colorMode}>
             <div
                 className={styles.versionHistory}
             >
+                <ClickUIProvider theme={colorMode}>
                 <Accordion
                     color="default"
                     title="Version history"
@@ -32,8 +32,8 @@ const VersionHistoryDropdown = ({rows=[]}) => {
                         className={styles.table}
                     ></Table>
                 </Accordion>
+                </ClickUIProvider>
             </div>
-        </ClickUIProvider>
     )
 }
 
