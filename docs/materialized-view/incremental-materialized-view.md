@@ -954,7 +954,7 @@ As shown in the previous example, a table can act as the source for multiple Mat
 
 By default, this setting is equal to `0` (`false`), meaning Materialized Views are executed sequentially in `uuid` order.
 
-For example, consider the following `source` table and 3 Materialized Views, each sending to a `target` table:
+For example, consider the following `source` table and 3 Materialized Views, each sending rows to a `target` table:
 
 ```sql
 CREATE TABLE source
