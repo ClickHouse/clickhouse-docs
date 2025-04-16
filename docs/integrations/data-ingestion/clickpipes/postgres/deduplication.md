@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Deduplication strategies'
+sidebar_label: 'Deduplication Strategies'
 description: 'Handle duplicates and deleted rows.'
 slug: /integrations/clickpipes/postgres/deduplication
 title: 'Deduplication strategies (using CDC)'

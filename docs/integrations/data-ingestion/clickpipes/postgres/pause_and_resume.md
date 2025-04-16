@@ -1,7 +1,7 @@
 ---
 title: 'Pausing and Resuming a Postgres ClickPipe'
 description: 'Pausing and Resuming a Postgres ClickPipe'
-sidebar_label: 'Pause and Resume'
+sidebar_label: 'Pause Table'
 slug: /integrations/clickpipes/postgres/pause_and_resume
 ---
 

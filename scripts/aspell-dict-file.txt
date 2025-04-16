@@ -358,6 +358,7 @@ clickpipesPricingFaq
 slideout
 --docs/integrations/data-ingestion/clickpipes/postgres/table_resync.md--
 Resyncing
+Resync
 resyncing
 --docs/integrations/data-ingestion/google-dataflow/templates/bigquery-to-clickhouse.md--
 DataFlow
