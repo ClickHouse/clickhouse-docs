@@ -1,14 +1,11 @@
-import { Accordion, Table, ClickUIProvider, Container } from '@clickhouse/click-ui/bundled'
-import { useColorMode } from '@docusaurus/theme-common'
+import { Accordion, Table} from '@clickhouse/click-ui/bundled'
 import styles from './styles.module.css';
 
 const VersionHistoryDropdown = ({rows=[]}) => {
-    const { colorMode } = useColorMode();
     return(
             <div
                 className={styles.versionHistory}
             >
-                <ClickUIProvider theme={colorMode}>
                 <Accordion
                     color="default"
                     title="Version history"
@@ -32,7 +29,6 @@ const VersionHistoryDropdown = ({rows=[]}) => {
                         className={styles.table}
                     ></Table>
                 </Accordion>
-                </ClickUIProvider>
             </div>
     )
 }
