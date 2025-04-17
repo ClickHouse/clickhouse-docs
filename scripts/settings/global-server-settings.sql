@@ -57,7 +57,7 @@ title: ''Server Settings''
 
 import Tabs from ''@theme/Tabs'';
 import TabItem from ''@theme/TabItem'';
-import SystemLogParameters from ''@site/docs/operations/server-configuration-parameters/_snippets/_system-log-parameters.md''
+import SystemLogParameters from ''@site/docs/operations/server-configuration-parameters/_snippets/_system-log-parameters.md'';
 import SettingsInfoBlock from ''@theme/SettingsInfoBlock/SettingsInfoBlock'';
 
 # Server Settings
