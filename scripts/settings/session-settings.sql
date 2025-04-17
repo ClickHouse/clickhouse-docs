@@ -28,9 +28,9 @@ WITH
                 version,
                 change.3 AS default_value,
                 change.4 AS comment
-        FROM system.settings_changes
-        WHERE type = 'Session'
-        ORDER BY setting_name, version DESC
+            FROM system.settings_changes
+            WHERE type = 'Session'
+            ORDER BY setting_name, version DESC
         )
         GROUP BY setting_name
     ),
@@ -47,7 +47,7 @@ WITH
             b.*
         FROM
             system.settings AS a
-        INNER JOIN settings_changes as b
+        LEFT OUTER JOIN settings_changes as b
         ON a.name = b.name
         WHERE name IN settings_from_cpp
     ),
