@@ -5,6 +5,7 @@ title: 'Working with JSON'
 slug: /integrations/data-formats/json/loading
 description: 'Loading JSON'
 keywords: ['json', 'clickhouse', 'inserting', 'loading', 'inserting']
+score: 15
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';

@@ -5,6 +5,7 @@ title: 'Working with JSON'
 slug: /integrations/data-formats/json/overview
 description: 'Working with JSON in ClickHouse'
 keywords: ['json', 'clickhouse']
+score: 10
 ---
 
 # JSON Overview

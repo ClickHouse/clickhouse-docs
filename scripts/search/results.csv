@@ -1,5 +1,5 @@
 array,https://clickhouse.com/docs/sql-reference/functions/array-functions,https://clickhouse.com/docs/sql-reference/data-types/array,https://clickhouse.com/docs/sql-reference/statements/select/array-join
-json,https://clickhouse.com/docs/sql-reference/data-types/newjson,https://clickhouse.com/docs/integrations/data-formats/json/loading,https://clickhouse.com/docs/integrations/data-formats/json/inference
+json,https://clickhouse.com/docs/sql-reference/data-types/newjson,https://clickhouse.com/docs/integrations/data-formats/json/overview,https://clickhouse.com/docs/integrations/data-formats/json/inference
 index,https://clickhouse.com/docs/optimize/sparse-primary-indexes,https://clickhouse.com/docs/optimize/skipping-indexes,
 join,https://clickhouse.com/docs/sql-reference/statements/select/join,https://clickhouse.com/docs/guides/joining-tables,
 map,https://clickhouse.com/docs/sql-reference/data-types/map,https://clickhouse.com/docs/zh/sql-reference/functions/tuple-map-functions,
