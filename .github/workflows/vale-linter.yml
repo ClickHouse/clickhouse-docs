@@ -48,4 +48,4 @@ jobs:
         env:
           LINES_CHANGED: ${{ steps.changed_lines.outputs.changed_lines }}
         run: |
-          python scripts/vale_annotations.py --data="${{LINES_CHANGED}}"
+          python scripts/vale_annotations.py --data=${LINES_CHANGED}
