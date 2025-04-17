@@ -767,7 +767,7 @@ FORMAT PrettyJsonEachRow
 
 ### Using type hints and skipping paths {#using-type-hints-and-skipping-paths}
 
-Type hints allow us to specify the type for a path and its sub-column, thus unnecessary type inference. Consider the following example where we specify the types for the JSON keys `dissolved`, `employees`, and `founded` within the JSON column `company.labels`
+Type hints allow us to specify the type for a path and its sub-column, preventing unnecessary type inference. Consider the following example where we specify the types for the JSON keys `dissolved`, `employees`, and `founded` within the JSON column `company.labels`
 
 ```sql
 CREATE TABLE people
@@ -836,7 +836,7 @@ FORMAT PrettyJsonEachRow
 2 rows in set. Elapsed: 0.003 sec.
 ```
 
-Additionally, we can skip paths within JSON that we don't want to store with [SKIP and SKIP REGEXP](/sql-reference/data-types/newjson) parameters in order to minimize storage and avoid unnecessary inference on unneeded paths. For example, suppose we use a single JSON column for the above data. We can skip the `address` and `company` paths:
+Additionally, we can skip paths within JSON that we don't want to store with the [`SKIP` and `SKIP REGEXP`](/sql-reference/data-types/newjson) parameters in order to minimize storage and avoid unnecessary inference on unneeded paths. For example, suppose we use a single JSON column for the above data. We can skip the `address` and `company` paths:
 
 ```sql
 CREATE TABLE people
@@ -857,7 +857,7 @@ INSERT INTO people FORMAT JSONAsObject
 1 row in set. Elapsed: 0.440 sec.
 ```
 
-Note how our columns have excluded from our data:
+Note how our columns have been excluded from our data:
 
 ```sql
 
@@ -960,6 +960,6 @@ ENGINE = MergeTree
 ORDER BY tuple();
 ```
 
-**Avoid setting this parameter too high** - large values increase resource consumption and reduce efficiency. As a rule of thumb, keep it below 10,000.  For workloads with highly dynamic structures, use type hints and SKIP parameters to restrict what's stored.
+**Avoid setting this parameter too high** - large values increase resource consumption and reduce efficiency. As a rule of thumb, keep it below 10,000.  For workloads with highly dynamic structures, use type hints and `SKIP` parameters to restrict what's stored.
 
 For users curious about the implementation of this new column type, we recommend reading our detailed blog post ["A New Powerful JSON Data Type for ClickHouse"](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse).
