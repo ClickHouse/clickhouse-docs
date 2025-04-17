@@ -10,7 +10,7 @@ keywords: ['json', 'formats']
 **The following are alternatives to modeling JSON in ClickHouse. These are documented for completeness and were applicable before the development of the JSON type and are thus generally not recommended or applicable in most use cases.**
 
 :::note Apply an object level approach
-Different techniques may be applied to different objects in the same schema. For example, some objects can be best solved with a `String` and others `Map`. Note that once a `String` type is used, no further schema decisions need to be made. Conversely, it is possible to nest sub-objects within a `Map` key as we show below - including a `String` representing JSON.
+Different techniques may be applied to different objects in the same schema. For example, some objects can be best solved with a `String` type and others with a `Map` type. Note that once a `String` type is used, no further schema decisions need to be made. Conversely, it is possible to nest sub-objects within a `Map` key - including a `String` representing JSON - as we show below:
 :::
 
 ## Using String {#using-string}
@@ -19,7 +19,7 @@ If the objects are highly dynamic, with no predictable structure and contain arb
 
 Handling data using the structured approach described above is often not viable for those users with dynamic JSON, which is either subject to change or for which the schema is not well understood. For absolute flexibility, users can simply store JSON as `String`s before using functions to extract fields as required. This represents the extreme opposite of handling JSON as a structured object. This flexibility incurs costs with significant disadvantages - primarily an increase in query syntax complexity as well as degraded performance.
 
-As noted earlier, for the [original person object](/integrations/data-formats/json/schema#static-vs-dynamic-json), we cannot ensure the structure of the `tags` column. We insert the original row (we also include `company.labels`, which we ignore for now), declaring the `Tags` column as a `String`:
+As noted earlier, for the [original person object](/integrations/data-formats/json/schema#static-vs-dynamic-json), we cannot ensure the structure of the `tags` column. We insert the original row (including `company.labels`, which we ignore for now), declaring the `Tags` column as a `String`:
 
 ```sql
 CREATE TABLE people
@@ -58,7 +58,7 @@ FROM people
 1 row in set. Elapsed: 0.001 sec.
 ```
 
-The [JSONExtract](/sql-reference/functions/json-functions#jsonextract-functions) functions can be used to retrieve values from this JSON. Consider the simple example below:
+The [`JSONExtract`](/sql-reference/functions/json-functions#jsonextract-functions) functions can be used to retrieve values from this JSON. Consider the simple example below:
 
 ```sql
 SELECT JSONExtractString(tags, 'holidays') as holidays FROM people
@@ -70,7 +70,7 @@ SELECT JSONExtractString(tags, 'holidays') as holidays FROM people
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-Notice how the functions require both a reference to the `String` column `tags` and a path in the JSON to extract. Nested paths require functions to be nested e.g. `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')` which extracts the column `tags.car.year`. The extraction of nested paths can be simplified through the functions [JSON_QUERY](/sql-reference/functions/json-functions#json_query) AND [JSON_VALUE](/sql-reference/functions/json-functions#json_value).
+Notice how the functions require both a reference to the `String` column `tags` and a path in the JSON to extract. Nested paths require functions to be nested e.g. `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')` which extracts the column `tags.car.year`. The extraction of nested paths can be simplified through the functions [`JSON_QUERY`](/sql-reference/functions/json-functions#json_query) and [`JSON_VALUE`](/sql-reference/functions/json-functions#json_value).
 
 Consider the extreme case with the `arxiv` dataset where we consider the entire body to be a `String`.
 
@@ -90,7 +90,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.j
 0 rows in set. Elapsed: 25.186 sec. Processed 2.52 million rows, 1.38 GB (99.89 thousand rows/s., 54.79 MB/s.)
 ```
 
-Suppose we wish to count the number of papers released by year. Contrast the query against the [structured version](/integrations/data-formats/json/inference#creating-tables) of the schema vs using only a string:
+Suppose we wish to count the number of papers released by year. Contrast the following query using only a string versus the [structured version](/integrations/data-formats/json/inference#creating-tables) of the schema:
 
 ```sql
 -- using structured schema
@@ -156,22 +156,21 @@ The above examples use the JSON* family of functions. These utilize a full JSON 
 
 A faster and more strict set of functions are available. These `simpleJSON*` functions offer potentially superior performance, primarily by making strict assumptions as to the structure and format of the JSON. Specifically:
 
-* Field names must be constants
-* Consistent encoding of field names e.g. `simpleJSONHas('{"abc":"def"}', 'abc') = 1`, but `visitParamHas('{"\\u0061\\u0062\\u0063":"def"}', 'abc') = 0`
-* The field names are unique across all nested structures. No differentiation is made between nesting levels and matching is indiscriminate. In the event of multiple matching fields, the first occurrence is used.
-* No special characters outside of string literals. This includes spaces. The following is invalid and will not parse.
+- Field names must be constants
+- Consistent encoding of field names e.g. `simpleJSONHas('{"abc":"def"}', 'abc') = 1`, but `visitParamHas('{"\\u0061\\u0062\\u0063":"def"}', 'abc') = 0`
+- The field names are unique across all nested structures. No differentiation is made between nesting levels and matching is indiscriminate. In the event of multiple matching fields, the first occurrence is used.
+- No special characters outside of string literals. This includes spaces. The following is invalid and will not parse.
 
     ```json
     {"@timestamp": 893964617, "clientip": "40.135.0.0", "request": {"method": "GET",
     "path": "/images/hm_bg.jpg", "version": "HTTP/1.0"}, "status": 200, "size": 24736}
     ```
 
-    Whereas, the following will parse correctly:
+Whereas, the following will parse correctly:
 
-    ```json
-    {"@timestamp":893964617,"clientip":"40.135.0.0","request":{"method":"GET",
+```json
+{"@timestamp":893964617,"clientip":"40.135.0.0","request":{"method":"GET",
     "path":"/images/hm_bg.jpg","version":"HTTP/1.0"},"status":200,"size":24736}
-    ```
 
 In some circumstances, where performance is critical and your JSON meets the above requirements, these may be appropriate. An example of the earlier query, re-written to use `simpleJSON*` functions, is shown below:
 
@@ -201,16 +200,16 @@ LIMIT 10
 Peak memory usage: 211.49 MiB.
 ```
 
-The above uses the `simpleJSONExtractString` to extract the `created` key, exploiting the fact we want the first value only for the published date. In this case, the limitations of the `simpleJSON*` functions are acceptable for the gain in performance.
+The above query uses the `simpleJSONExtractString` to extract the `created` key, exploiting the fact we want the first value only for the published date. In this case, the limitations of the `simpleJSON*` functions are acceptable for the gain in performance.
 
 ## Using Map {#using-map}
 
 If the object is used to store arbitrary keys, mostly of one type, consider using the `Map` type. Ideally, the number of unique keys should not exceed several hundred. The `Map` type can also be considered for objects with sub-objects, provided the latter have uniformity in their types. Generally, we recommend the `Map` type be used for labels and tags, e.g. Kubernetes pod labels in log data.
 
-While a simple way to represent nested structures, `Map`s have some notable limitations:
+Although `Map`s give a simple way to represent nested structures, they have some notable limitations:
 
-- The fields must be of all the same type.
-- Accessing sub-columns requires a special map syntax since the fields don't exist as columns; the entire object is a column.
+- The fields must all be of the same type.
+- Accessing sub-columns requires a special map syntax since the fields don't exist as columns. The entire object _is_ a column.
 - Accessing a subcolumn loads the entire `Map` value i.e. all siblings and their respective values. For larger maps, this can result in a significant performance penalty.
 
 :::note String keys
