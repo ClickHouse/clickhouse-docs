@@ -277,7 +277,7 @@ FORMAT PrettyJSONEachRow
 
 ## Handling errors {#handling-errors}
 
-Sometimes, you might have bad data. For example, specific columns that do not have the right type or an improperly formatted JSON. For this, you can use the settings [`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num) and [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio) to allow a certain number of rows to be ignored if the data is triggering insert errors. Additionally, [hints](/operations/settings/formats#schema_inference_hints) can be provided to assist inference.
+Sometimes, you might have bad data. For example, specific columns that do not have the right type or an improperly formatted JSON object. For this, you can use the settings [`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num) and [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio) to allow a certain number of rows to be ignored if the data is triggering insert errors. Additionally, [hints](/operations/settings/formats#schema_inference_hints) can be provided to assist inference.
 
 ## Working with semi-structured and dynamic data {#working-with-semi-structured-data}
 
