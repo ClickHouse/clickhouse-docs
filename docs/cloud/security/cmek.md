@@ -56,7 +56,7 @@ Once a service is encrypted with TDE, customers may update the key to enable CME
         "Action": [
             "kms:Encrypt",
             "kms:Decrypt",
-            "kms:ReEncrypt",
+            "kms:ReEncrypt*",
             "kms:DescribeKey"
         ],
         "Resource": "*"
