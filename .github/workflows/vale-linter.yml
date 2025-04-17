@@ -1,4 +1,5 @@
 name: clickhouse-style-review
+
 on:
   pull_request:
       paths:
