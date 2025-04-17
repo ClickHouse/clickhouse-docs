@@ -1,0 +1,48 @@
+name: clickhouse-style-review
+on:
+  pull_request:
+      paths:
+        - 'docs/*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  vale:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        run: |
+          curl -Ls https://astral.sh/uv/install.sh | sh
+          uv python install 3.12
+
+      - name: Find changed lines
+        id: changed_lines
+        uses: hestonhoffman/changed-lines@v1
+        with:
+          file_filter: '.md'
+
+      - name: Run vale on changed files
+        if: steps.changed_lines.outputs.changed_files
+        env:
+          CHANGED_FILES: ${{ steps.changed_Lines.outputs.changed_files }}
+        run: |
+          vale --config='.vale.ini' \
+          "${CHANGED_FILES}" \
+          --output=scripts/vale_output_template.tmpl --no-exit > vale_output.log
+
+      - name: Parse Vale output
+        if: steps.changed_lines.outputs.changed_files
+        env:
+          LINES_CHANGED: ${{ steps.changed_lines.outputs.changed_lines }}
+        run: |
+          python local/bin/py/vale/vale_annotations.py --data="${{LINES_CHANGED}}"
