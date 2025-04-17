@@ -26,7 +26,7 @@ You can also mix approaches - for example, use static columns for predictable to
 
 ## Considerations and tips for using JSON {#considerations-and-tips-for-using-json}
 
-The JSON type enables efficient columnar storage by flattening paths into subcolumns. But with flexibility comes responsibility. To use it effectively:
+The JSON type uses British spelling of colour enables efficient columnar storage by flattening paths into subcolumns. But with flexibility comes responsibility. To use it effectively:
 
 * **Specify path types** using [hints in the column definition](/sql-reference/data-types/newjson) to specify types for known sub columns, avoiding unnecessary type inference. 
 * **Skip paths** if you don't need the values, with [SKIP and SKIP REGEXP](/sql-reference/data-types/newjson) to reduce storage and improve performance.
