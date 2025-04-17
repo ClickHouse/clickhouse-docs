@@ -11,14 +11,14 @@ ClickHouse can automatically determine the structure of JSON data. This can be u
 
 ## When to use type inference {#when-to-use-type-inference}
 
-* **Consistent structure** - The data from which you are going to infer types contains all the columns that you are interested in. Type inference is based on sampling the data up to a [maximum number of rows](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) or [bytes](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference). Data after the sample, with additional columns, will be ignored and can't be queried.
-* **Consistent types** - Data types for specific columns need to be compatible.
+* **Consistent structure** - The data from which you are going to infer types contains all the keys that you are interested in. Type inference is based on sampling the data up to a [maximum number of rows](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) or [bytes](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference). Data after the sample, with additional columns, will be ignored and can't be queried.
+* **Consistent types** - Data types for specific keys need to be compatible i.e. it must be possible to coerce one type to the other automatically.
 
 If you have more dynamic JSON, to which new keys are added and multiple types are possible for the same path, see ["Working with semi-structured and dynamic data"](#working-with-semi-structured-and-dynamic-data).
 
 ## Detecting types {#detecting-types}
 
-The following assumes the JSON is consistentyly structured and has a single type for each path.
+The following assumes the JSON is consistently structured and has a single type for each path.
 
 Our previous examples used a simple version of the [Python PyPI dataset](https://clickpy.clickhouse.com/) in NDJSON format. In this section, we explore a more complex dataset with nested structures - the [arXiv dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download) containing 2.5m scholarly papers. Each row in this dataset, distributed as NDJSON, represents a published academic paper. An example row is shown below:
 
@@ -102,6 +102,8 @@ The auto-detection of dates and datetimes can be controlled through the settings
 :::
 
 ## Querying JSON {#querying-json}
+
+The following assumes the JSON is consistently structured and has a single type for each path.
 
 We can rely on schema inference to query JSON data in place. Below, we find the top authors for each year, exploiting the fact the dates and arrays are automatically detected.
 
@@ -220,6 +222,8 @@ ORDER BY update_date
 ```
 
 ## Loading JSON data {#loading-json-data}
+
+The following assumes the JSON is consistently structured and has a single type for each path.
 
 The previous commands created a table to which data can be loaded. You can now insert the data into your table using the following `INSERT INTO SELECT`:
 

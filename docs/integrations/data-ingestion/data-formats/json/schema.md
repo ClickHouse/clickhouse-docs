@@ -14,7 +14,7 @@ import shared_json_column from '@site/static/images/integrations/data-ingestion/
 
 # Designing your schema
 
-While [schema inference](/integrations/data-formats/json/inference) can be used to establish an initial schema for JSON data and query JSON data files in place, e.g., in S3, users should aim to establish an optimized versioned schema for their data. We discuss the recommened approach for modeling JSON structures below.
+While [schema inference](/integrations/data-formats/json/inference) can be used to establish an initial schema for JSON data and query JSON data files in place, e.g., in S3, users should aim to establish an optimized versioned schema for their data. We discuss the recommended approach for modeling JSON structures below.
 
 ## Static vs dynamic JSON {#static-vs-dynamic-json}
 
@@ -367,7 +367,7 @@ More specifically, use the JSON type when your data:
 * Has **unpredictable keys** that can change over time.
 * Contains **values with varying types** (e.g., a path might sometimes contain a string, sometimes a number).
 * Requires schema flexibility where strict typing isn't viable.
-* You have **hundreds or even thousands** of paths which are static but simply not realistic to declare explictly. This tends to be a rare.
+* You have **hundreds or even thousands** of paths which are static but simply not realistic to declare explicitly. This tends to be a rare.
 
 Consider our [earlier person JSON](/integrations/data-formats/json/schema#static-vs-dynamic-json) where the `company.labels` object was determined to be dynamic.
 

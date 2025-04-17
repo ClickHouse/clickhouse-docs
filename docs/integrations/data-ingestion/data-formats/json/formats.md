@@ -32,9 +32,9 @@ We provide examples of reading and loading JSON in other common formats below.
 
 ## Reading JSON as an object {#reading-json-as-an-object}
 
-Our previous examples show how `JSONEachRow` reads newline-delimited JSON, with each line read as a separate object mapped to a table row and each field to a column. This is ideal for cases where the JSON is predictable with single types for each column. 
+Our previous examples show how `JSONEachRow` reads newline-delimited JSON, with each line read as a separate object mapped to a table row and each key to a column. This is ideal for cases where the JSON is predictable with single types for each column. 
 
-In contrast, `JSONAsObject` treats each line as single `JSON` object and stores it in a single column, of type [`JSON`](/sql-reference/data-types/newjson), making it better suited nested JSON payloads and cases where the fields are dynamic and have potentially more than one type. 
+In contrast, `JSONAsObject` treats each line as single `JSON` object and stores it in a single column, of type [`JSON`](/sql-reference/data-types/newjson), making it better suited nested JSON payloads and cases where the keys are dynamic and have potentially more than one type. 
 
 Use `JSONEachRow` for row-wise inserts, and [`JSONAsObject`](/interfaces/formats/JSONAsObject) when storing flexible or dynamic JSON data.
 
@@ -82,7 +82,7 @@ LIMIT 2;
 2 rows in set. Elapsed: 0.003 sec.
 ```
 
-The `JSONAsObject` format may also be useful for reading some newline-delimited JSON in cases where the structure of the objects is inconsistent e.g. if a field varies in type across rows (e.g., it is sometimes a string, but other times an object). In such cases, ClickHouse cannot infer a stable schema using `JSONEachRow`, and `JSONAsObject` allows the data to be ingested without strict type enforcement, storing each JSON row as a whole in a single column. For example, notice how `JSONEachRow` fails on the following example:
+The `JSONAsObject` format may also be useful for reading some newline-delimited JSON in cases where the structure of the objects is inconsistent e.g. if a key varies in type across rows (e.g., it is sometimes a string, but other times an object). In such cases, ClickHouse cannot infer a stable schema using `JSONEachRow`, and `JSONAsObject` allows the data to be ingested without strict type enforcement, storing each JSON row as a whole in a single column. For example, notice how `JSONEachRow` fails on the following example:
 
 ```sql
 SELECT count()
