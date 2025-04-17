@@ -34,7 +34,7 @@ We provide examples of reading and loading JSON in other common formats below.
 
 Our previous examples show how `JSONEachRow` reads newline-delimited JSON, with each line read as a separate object mapped to a table row and each key to a column. This is ideal for cases where the JSON is predictable with single types for each column. 
 
-In contrast, `JSONAsObject` treats each line as single `JSON` object and stores it in a single column, of type [`JSON`](/sql-reference/data-types/newjson), making it better suited nested JSON payloads and cases where the keys are dynamic and have potentially more than one type. 
+In contrast, `JSONAsObject` treats each line as a single `JSON` object and stores it in a single column, of type [`JSON`](/sql-reference/data-types/newjson), making it better suited for nested JSON payloads and cases where the keys are dynamic and have potentially more than one type. 
 
 Use `JSONEachRow` for row-wise inserts, and [`JSONAsObject`](/interfaces/formats/JSONAsObject) when storing flexible or dynamic JSON data.
 
