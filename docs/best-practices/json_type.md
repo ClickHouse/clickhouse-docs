@@ -220,7 +220,7 @@ ORDER BY doc.update_date
 ```
 
 :::note
-We specify the `update_date` in the JSON definition as we use it in the ordering/primary key. This helps ClickHouse know this column won't be null. If not specified, the user must explicitly allow nullable primary keys (not recommended for performance reasons) via the setting [`allow_nullable_key=1`](/operations/settings/merge-tree-settings#allow_nullable_key)
+We provide a type hint for the `update_date` column in the JSON definition, as we use it in the ordering/primary key. This helps ClickHouse to know that this column won't be null and ensures it knows which `update_date` sub-column to use (there may be multiple for each type, so this is ambiguous otherwise).
 :::
 
 We can insert into this table and view the subsequently inferred schema using the [`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#jsonallpathswithtypes) function and [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow) output format:
