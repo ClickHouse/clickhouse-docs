@@ -1194,7 +1194,7 @@ const sidebars = {
         "about-us/intro",
         "about-us/adopters",
         "about-us/support",
-        "settings/beta-and-experimental-features",
+        "about-us/beta-and-experimental-features",
         "about-us/cloud",
         "about-us/history",
       ],
