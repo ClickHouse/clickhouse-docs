@@ -278,8 +278,8 @@ move_dest_files=(
 append_src_files=("generated_merge_tree_settings.md" "experimental-settings.md" "beta-settings.md")
 append_dest_files=(
     "docs/operations/settings/merge-tree-settings.md"
-    "docs/settings/beta-and-experimental-features.md"
-    "docs/settings/beta-and-experimental-features.md"
+    "docs/about-us/beta-and-experimental-features.md"
+    "docs/about-us/beta-and-experimental-features.md"
 )
 
 echo "[$SCRIPT_NAME] Moving generated markdown files to documentation directories..."
