@@ -77,7 +77,7 @@ that will be accessible in a ClickPipes VPC.
 It's a preferred choice for:
 
 - Any on-premise Kafka setup that requires private DNS support
-- Cross-region connectivity for Postgres CDC
+- [Cross-region connectivity for Postgres CDC](/knowledgebase/aws-privatelink-setup-for-clickpipes)
 - Cross-region connectivity for MSK cluster. Please reach out to the ClickHouse support team for assistance.
 
 See the [getting started](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html) guide for more details.
@@ -113,8 +113,10 @@ can be configured for ClickPipes. Add [your ClickPipe region](#aws-privatelink-r
 5. Select any of existing reverse private endpoints or create a new one.
 
 :::info
-For RDS, the process to create the VPC Endpoint service is a bit more involved and
+If cross-region access is required for RDS, you need to create a VPC endpoint service and 
 [this guide should provide](/knowledgebase/aws-privatelink-setup-for-clickpipes) a good starting point to set it up.
+
+For same-region access, creating a VPC Resource is the recommended approach.
 :::
 
 <Image img={cp_rpe_step1} alt="Select reverse private endpoint" size="lg" border/>
