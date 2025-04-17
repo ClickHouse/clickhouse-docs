@@ -3,6 +3,7 @@ title: 'Designing JSON schema'
 slug: /integrations/data-formats/json/schema
 description: 'How to optimally design JSON schemas'
 keywords: ['json', 'clickhouse', 'inserting', 'loading', 'formats', 'schema', 'structured', 'semi-structured']
+score: 20
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
