@@ -14,11 +14,11 @@ ClickHouse can automatically determine the structure of JSON data. This can be u
 * **Consistent structure** - The data from which you are going to infer types contains all the columns that you are interested in. Type inference is based on sampling the data up to a [maximum number of rows](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) or [bytes](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference). Data after the sample, with additional columns, will be ignored and can't be queried.
 * **Consistent types** - Data types for specific columns need to be compatible.
 
-:::note Important
-If you have more dynamic JSON, to which new keys are added without sufficient warning to modify the schema e.g. Kubernetes labels in logs, we recommend reading [**Designing JSON schema**](/integrations/data-formats/json/schema).
-:::
+If you have more dynamic JSON, to which new keys are added and multiple types are possible for the same path, see ["Working with semi-structured and dynamic data"](#working-with-semi-structured-and-dynamic-data).
 
 ## Detecting types {#detecting-types}
+
+The following assumes the JSON is consistentyly structured and has a single type for each path.
 
 Our previous examples used a simple version of the [Python PyPI dataset](https://clickpy.clickhouse.com/) in NDJSON format. In this section, we explore a more complex dataset with nested structures - the [arXiv dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download) containing 2.5m scholarly papers. Each row in this dataset, distributed as NDJSON, represents a published academic paper. An example row is shown below:
 
@@ -36,23 +36,23 @@ Our previous examples used a simple version of the [Python PyPI dataset](https:/
   "license": "http://creativecommons.org/licenses/by/4.0/",
   "abstract": "With disks and networks providing gigabytes per second ....\n",
   "versions": [
- {
+    {
       "created": "Mon, 11 Jan 2021 20:31:27 GMT",
       "version": "v1"
- },
- {
+    },
+    {
       "created": "Sat, 30 Jan 2021 23:57:29 GMT",
       "version": "v2"
- }
- ],
+    }
+  ],
   "update_date": "2022-11-07",
   "authors_parsed": [
- [
+    [
       "Lemire",
       "Daniel",
       ""
- ]
- ]
+    ]
+  ]
 }
 ```
 
@@ -242,30 +242,30 @@ LIMIT 1
 FORMAT PrettyJSONEachRow
 
 {
-    "id": "0704.0004",
-    "submitter": "David Callan",
-    "authors": "David Callan",
-    "title": "A determinant of Stirling cycle numbers counts unlabeled acyclic",
-    "comments": "11 pages",
-    "journal-ref": "",
-    "doi": "",
-    "report-no": "",
-    "categories": "math.CO",
-    "license": "",
-    "abstract": "  We show that a determinant of Stirling cycle numbers counts unlabeled acyclic\nsingle-source automata.",
-    "versions": [
- {
-            "created": "Sat, 31 Mar 2007 03:16:14 GMT",
-            "version": "v1"
- }
- ],
-    "update_date": "2007-05-23",
-    "authors_parsed": [
- [
-            "Callan",
-            "David"
- ]
- ]
+  "id": "0704.0004",
+  "submitter": "David Callan",
+  "authors": "David Callan",
+  "title": "A determinant of Stirling cycle numbers counts unlabeled acyclic",
+  "comments": "11 pages",
+  "journal-ref": "",
+  "doi": "",
+  "report-no": "",
+  "categories": "math.CO",
+  "license": "",
+  "abstract": "  We show that a determinant of Stirling cycle numbers counts unlabeled acyclic\nsingle-source automata.",
+  "versions": [
+    {
+      "created": "Sat, 31 Mar 2007 03:16:14 GMT",
+      "version": "v1"
+    }
+  ],
+  "update_date": "2007-05-23",
+  "authors_parsed": [
+    [
+      "Callan",
+      "David"
+    ]
+  ]
 }
 
 1 row in set. Elapsed: 0.009 sec.
@@ -273,35 +273,35 @@ FORMAT PrettyJSONEachRow
 
 ## Handling errors {#handling-errors}
 
-Sometimes, you might have bad data. For example, specific columns that do not have the right type or an improperly formatted JSON. For this, you can use the setting [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio) to allow a certain number of rows to be ignored if the data is triggering insert errors. Additionally, [hints](/operations/settings/formats#schema_inference_hints) can be provided to assist inference.
+Sometimes, you might have bad data. For example, specific columns that do not have the right type or an improperly formatted JSON. For this, you can use the settings [`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num) and [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio) to allow a certain number of rows to be ignored if the data is triggering insert errors. Additionally, [hints](/operations/settings/formats#schema_inference_hints) can be provided to assist inference.
 
-## Working with semi-structured data {#working-with-semi-structured-data}
+## Working with semi-structured and dynamic data {#working-with-semi-structured-data}
 
 <PrivatePreviewBadge/>
 
-Our previous example loaded JSON which was static with well known field names and types. This often not the case - fields can be added or their types can change. This is common in use cases such as Observability data.
+Our previous example used JSON which was static with well known key names and types. This often not the case - keys can be added or their types can change. This is common in use cases such as Observability data.
 
 ClickHouse handles this through a dedicated [`JSON`](/sql-reference/data-types/newjson) type.
 
-If you know your JSON is highly dynamic with many unique fields and multiple types for the same keys, we recommend not using schema inference with `JSONEachRow` - even if the data is in newline-delimited JSON format.
+If you know your JSON is highly dynamic with many unique keys and multiple types for the same keys, we recommend not using schema inference with `JSONEachRow` to try and infer a column for each key - even if the data is in newline-delimited JSON format.
 
 Consider the following example from an extended version of the above [Python PyPI dataset](https://clickpy.clickhouse.com/) dataset. Here we have added an arbitrary `tags` column with random key value pairs.
 
 
 ```json
 {
-    "date": "2022-09-22",
-    "country_code": "IN",
-    "project": "clickhouse-connect",
-    "type": "bdist_wheel",
-    "installer": "bandersnatch",
-    "python_minor": "",
-    "system": "",
-    "version": "0.2.8",
-    "tags": {
-        "5gTux" : "f3to*PMvaTYZsz!*rtzX1",
-        "nD8CV" : "value"
- }
+  "date": "2022-09-22",
+  "country_code": "IN",
+  "project": "clickhouse-connect",
+  "type": "bdist_wheel",
+  "installer": "bandersnatch",
+  "python_minor": "",
+  "system": "",
+  "version": "0.2.8",
+  "tags": {
+    "5gTux": "f3to*PMvaTYZsz!*rtzX1",
+    "nD8CV": "value"
+  }
 }
 ```
 
@@ -315,7 +315,7 @@ DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi
 9 rows in set. Elapsed: 127.066 sec.
 ```
 
-The primary issue here is `JSONEachRow` format is used for inference. This attempts to infer **a column type per field in the JSON** - effectively trying to apply a static schema to the data without using the [`JSON`](/sql-reference/data-types/newjson) type. 
+The primary issue here is `JSONEachRow` format is used for inference. This attempts to infer **a column type per key in the JSON** - effectively trying to apply a static schema to the data without using the [`JSON`](/sql-reference/data-types/newjson) type. 
 
 With thousands of unique columns this approach inference is slow. As alternative, users can use the `JSONAsObject` format.
 
@@ -332,7 +332,7 @@ SETTINGS describe_compact_output = 1
 1 row in set. Elapsed: 0.005 sec.
 ```
 
-This format is essential in cases where columns have multiple types that cannot be reconciled. For example, consider a `sample.json` with the following newline-delimited JSON:
+This format is also essential in cases where columns have multiple types that cannot be reconciled. For example, consider a `sample.json` with the following newline-delimited JSON:
 
 ```json
 {"a":1}

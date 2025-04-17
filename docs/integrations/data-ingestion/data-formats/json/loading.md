@@ -121,7 +121,7 @@ These examples assume the use of the `JSONEachRow` format. Other common JSON for
 
 <PrivatePreviewBadge/>
 
-Our previous example loaded JSON which was static with well known field names and types. This often not the case - fields can be added or their types can change. This is common in use cases such as Observability data.
+Our previous example loaded JSON which was static with well known key names and types. This often not the case - keys can be added or their types can change. This is common in use cases such as Observability data.
 
 ClickHouse handles this through a dedicated [`JSON`](/sql-reference/data-types/newjson) type.
 
@@ -130,19 +130,20 @@ Consider the following example from an extended version of the above [Python PyP
 
 ```json
 {
-    "date": "2022-09-22",
-    "country_code": "IN",
-    "project": "clickhouse-connect",
-    "type": "bdist_wheel",
-    "installer": "bandersnatch",
-    "python_minor": "",
-    "system": "",
-    "version": "0.2.8",
-    "tags": {
-        "5gTux" : "f3to*PMvaTYZsz!*rtzX1",
-        "nD8CV" : "value"
- }
+  "date": "2022-09-22",
+  "country_code": "IN",
+  "project": "clickhouse-connect",
+  "type": "bdist_wheel",
+  "installer": "bandersnatch",
+  "python_minor": "",
+  "system": "",
+  "version": "0.2.8",
+  "tags": {
+    "5gTux": "f3to*PMvaTYZsz!*rtzX1",
+    "nD8CV": "value"
+  }
 }
+
 ```
 
 The tags column here is unpredictable and thus impossible for us to model. To load this data, we can use our previous schema but provide an additional `tags` column of type [`JSON`](/sql-reference/data-types/newjson):
@@ -209,4 +210,4 @@ If your data structure is known and consistent, there is rarely a need for the J
 * **Predictable nesting**: use Tuple, Array, or Nested types for these structures.
 * **Predictable structure with varying types**: consider Dynamic or Variant types instead.
 
-You can also mix approaches as we have done in the above example, using static columns for predictable top-level fields and a single JSON column for a dynamic section of the payload.
+You can also mix approaches as we have done in the above example, using static columns for predictable top-level keys and a single JSON column for a dynamic section of the payload.
