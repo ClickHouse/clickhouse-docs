@@ -1,4 +1,4 @@
-name: clickhouse-style-review
+name: Style check
 
 on:
   pull_request:
@@ -45,14 +45,15 @@ jobs:
           first_file=true
 
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            if [ -f "$file" ]; then
+            # Only process .md or .mdx files in the docs directory
+            if [[ "$file" =~ ^docs/.*\.(md|mdx)$ ]] && [ -f "$file" ]; then
               if [ "$first_file" = true ]; then
                 first_file=false
               else
                 echo "," >> reports/changed_lines.json
               fi
 
-              echo "  \"$file\": {" >> reports/changed_lines.json
+              echo "  \"$file\": [" >> reports/changed_lines.json
 
               # Get changed lines for this file
               first_line=true
@@ -66,11 +67,10 @@ jobs:
                   echo "," >> reports/changed_lines.json
                 fi
 
-                content=$(sed -n "${line_number}p" "$file" | sed 's/"/\\"/g')
-                echo "    \"$line_number\": \"$content\"" >> reports/changed_lines.json
+                echo "    $line_number" >> reports/changed_lines.json
               done
 
-              echo "  }" >> reports/changed_lines.json
+              echo "  ]" >> reports/changed_lines.json
             fi
           done
 
