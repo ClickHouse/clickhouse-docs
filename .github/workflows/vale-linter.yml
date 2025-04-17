@@ -84,17 +84,22 @@ jobs:
           done
 
           echo "}" >> reports/changed_lines.json
-          echo "Report contents:"
-          cat reports/changed_lines.json
 
       - name: Run vale on changed files
-        if: steps.changed_lines.outputs.changed_files
-        env:
-          CHANGED_FILES: ${{ steps.changed_lines.outputs.changed_files }}
         run: |
+          # Extract file names from the JSON report
+          CHANGED_FILES=$(jq -r 'keys[]' reports/changed_lines.json)
+          
+          # Check if we have any files to process
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No changed files to analyze"
+            exit 0
+          fi
+    
           vale --config='.vale.ini' \
           "${CHANGED_FILES}" \
           --output=scripts/vale_output_template.tmpl --no-exit > vale_output.log
+          cat vale_output.log
 
       - name: Parse Vale output
         if: steps.changed_lines.outputs.changed_files
