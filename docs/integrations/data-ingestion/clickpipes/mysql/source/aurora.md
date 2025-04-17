@@ -22,7 +22,7 @@ import Image from '@theme/IdealImage';
 This is a step-by-step guide on how to configure your Aurora MySQL instance for replicating its data via the MySQL ClickPipe.
 <br/>
 :::info
-We also recommend going through the MySQL FAQs [here](./mysql/faq). The FAQs page is being actively updated.
+We also recommend going through the MySQL FAQs [here](/integrations/data-ingestion/clickpipes/mysql/faq.md). The FAQs page is being actively updated.
 :::
 
 ## Enable binary log retention {#enable-binlog-retention-aurora}

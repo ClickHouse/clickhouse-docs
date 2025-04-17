@@ -996,3 +996,9 @@ Citus
 microsoft
 sparkConfigViaNotebook
 sparkUICHSettings
+--docs/integrations/data-ingestion/clickpipes/mysql/source/aurora.md--
+clickpipes
+--docs/integrations/data-ingestion/clickpipes/mysql/source/rds.md--
+clickpipes
+--docs/integrations/data-ingestion/clickpipes/mysql/source/rds_maria.md--
+clickpipes
