@@ -44,8 +44,10 @@ jobs:
           echo "{" > reports/changed_lines.json
           first_file=true
 
+          echo ${{ steps.changed-files.outputs.all_changed_files }}
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             # Only process .md or .mdx files in the docs directory
+            echo "$file"
             if [[ "$file" =~ ^docs/.*\.(md|mdx)$ ]] && [ -f "$file" ]; then
               if [ "$first_file" = true ]; then
                 first_file=false
@@ -57,6 +59,7 @@ jobs:
 
               # Get changed lines for this file
               first_line=true
+              echo git diff --unified=0 ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} -- "$file"
               git diff --unified=0 ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} -- "$file" | 
               grep -E "^@@" | 
               sed -E 's/^@@ -[0-9]+(,[0-9]+)? \+([0-9]+)(,[0-9]+)? @@.*$/\2/' |
