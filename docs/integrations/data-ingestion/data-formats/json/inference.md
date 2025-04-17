@@ -20,7 +20,7 @@ If you have more dynamic JSON, to which new keys are added and multiple types ar
 
 The following assumes the JSON is consistently structured and has a single type for each path.
 
-Our previous examples used a simple version of the [Python PyPI dataset](https://clickpy.clickhouse.com/) in NDJSON format. In this section, we explore a more complex dataset with nested structures - the [arXiv dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download) containing 2.5m scholarly papers. Each row in this dataset, distributed as NDJSON, represents a published academic paper. An example row is shown below:
+Our previous examples used a simple version of the [Python PyPI dataset](https://clickpy.clickhouse.com/) in `NDJSON` format. In this section, we explore a more complex dataset with nested structures - the [arXiv dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download) containing 2.5m scholarly papers. Each row in this dataset, distributed as `NDJSON`, represents a published academic paper. An example row is shown below:
 
 ```json
 {
