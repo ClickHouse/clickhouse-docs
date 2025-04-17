@@ -87,7 +87,7 @@ Applying these rules:
 - The `company` object is **static** and will always contain at most the 3 keys specified. The subkeys `name` and `catchPhrase` are of type `String`. The key `labels` is **dynamic**. We assume new arbitrary tags can be added to this object. Values will always be key-value pairs of type string.
 
 :::note
-Structures will hundreds or thousands of static keys can be considered dynamic, as it is rarely realistic to statically declare the columns for these. However, where possible [skip paths](#using-type-hints-and-skipping-paths) which are not needed to save both storage and inference overhead.
+Structures with hundreds or thousands of static keys can be considered dynamic, as it is rarely realistic to statically declare the columns for these. However, where possible [skip paths](#using-type-hints-and-skipping-paths) which are not needed to save both storage and inference overhead.
 :::
 
 ## Handling static structures {#handling-static-structures}
@@ -364,10 +364,10 @@ If JSON data is semi-structured where keys can be dynamically added and/or have 
 
 More specifically, use the JSON type when your data:
 
-* Has **unpredictable keys** that can change over time.
-* Contains **values with varying types** (e.g., a path might sometimes contain a string, sometimes a number).
-* Requires schema flexibility where strict typing isn't viable.
-* You have **hundreds or even thousands** of paths which are static but simply not realistic to declare explicitly. This tends to be a rare.
+- Has **unpredictable keys** that can change over time.
+- Contains **values with varying types** (e.g., a path might sometimes contain a string, sometimes a number).
+- Requires schema flexibility where strict typing isn't viable.
+- You have **hundreds or even thousands** of paths which are static but simply not realistic to declare explicitly. This tends to be a rare.
 
 Consider our [earlier person JSON](/integrations/data-formats/json/schema#static-vs-dynamic-json) where the `company.labels` object was determined to be dynamic.
 
@@ -481,12 +481,12 @@ Given the dynamic nature of the `company.labels` column between objects, with re
 
 While the first approach [does not align with previous methodology](#static-vs-dynamic-json), a single JSON column approach is useful for prototyping and data engineering tasks. 
 
-For production deployment of ClickHouses at scale, we recommend being specific with structure and using the JSON type for targeted dynamic sub-structures where possible. 
+For production deployments of ClickHouse at scale, we recommend being specific with structure and using the JSON type for targeted dynamic sub-structures where possible. 
 
 A strict schema has a number of benefits:
 
 - **Data validation** – enforcing a strict schema avoids the risk of column explosion, outside of specific structures. 
-- **Avoids risk of column explosion** - Although the JSON type scales to potentially thousands of columns, where subcolumns are stored as dedicated columns, this can lead to a column file explosion where an excessive number of column files are created that impacts performance. To mitigate this, the underlying [Dynamic type](/sql-reference/data-types/dynamic) used by JSON offers a [`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) parameter, which limits the number of unique paths stored as separate column files. Once the threshold is reached, additional paths are stored in a shared column file using a compact encoded format, maintaining performance and storage efficiency while supporting flexible data ingestion. Accessing this shared column file is, however, not as performant. Note, however, than the JSON column can be used with [type hints](#using-type-hints-and-skipping-paths). "Hinted" columns will deliver the same performance as dedicated columns.
+- **Avoids risk of column explosion** - Although the JSON type scales to potentially thousands of columns, where subcolumns are stored as dedicated columns, this can lead to a column file explosion where an excessive number of column files are created that impacts performance. To mitigate this, the underlying [Dynamic type](/sql-reference/data-types/dynamic) used by JSON offers a [`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) parameter, which limits the number of unique paths stored as separate column files. Once the threshold is reached, additional paths are stored in a shared column file using a compact encoded format, maintaining performance and storage efficiency while supporting flexible data ingestion. Accessing this shared column file is, however, not as performant. Note, however, that the JSON column can be used with [type hints](#using-type-hints-and-skipping-paths). "Hinted" columns will deliver the same performance as dedicated columns.
 - **Simpler introspection of paths and types** - Although the JSON type supports [introspection functions](/sql-reference/data-types/newjson#introspection-functions) to determine the types and paths that have been inferred, static structures can be simpler to explore e.g. with `DESCRIBE`.
 
 ### Single JSON column {#single-json-column}
