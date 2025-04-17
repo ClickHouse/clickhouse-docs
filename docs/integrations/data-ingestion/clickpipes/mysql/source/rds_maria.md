@@ -24,9 +24,10 @@ We also recommend going through the MySQL FAQs [here](/integrations/data-ingesti
 :::
 
 ## Enable binary log retention {#enable-binlog-retention-rds}
-The binary log is a set of log files that contain information about data modifications made to an MySQL server instance, and binary log files are required for replication. Both of the below steps must be followed:
+The binary log is a set of log files that contain information about data modifications made to a MySQL server instance. Binary log files are required for replication. Both of the steps below must be followed:
 
 ### 1. Enable binary logging via automated backup{#enable-binlog-logging-rds}
+
 The automated backups feature determines whether binary logging is turned on or off for MySQL. It can be set in the AWS console:
 
 <Image img={rds_backups} alt="Enabling automated backups in RDS" size="lg" border/>
@@ -34,8 +35,9 @@ The automated backups feature determines whether binary logging is turned on or 
 Setting backup retention to a reasonably long value depending on the replication use-case is advisable.
 
 ### 2. Binlog retention hours{#binlog-retention-hours-rds}
-The default value of binlog retention hours is NULL. For RDS for MariaDB, NULL means binary logs aren't retained.
-To specify the number of hours to retain binary logs on a DB instance, use the mysql.rds_set_configuration with a period with enough time for replication to occur:
+
+The default value of binlog retention hours is `NULL`. For RDS for MariaDB, `NULL` means binary logs aren't retained.
+To specify the number of hours to retain binary logs on a DB instance, use the `mysql.rds_set_configuration` with a period with enough time for replication to occur:
 
 ```text
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
@@ -43,15 +45,15 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 
 ## Configure binlog settings in the parameter group {#binlog-parameter-group-rds}
 
-The parameter group can be found when you click on your MariaDB instance in the RDS Console, and then heading over to the `Configurations` tab.
+The parameter group can be found when you click on your MariaDB instance in the RDS Console, and then navigate to the `Configurations` tab.
 
 <Image img={rds_config} alt="Where to find parameter group in RDS" size="lg" border/>
 
-Upon clicking on the parameter group link, you will be taken to the page for it. You will see an Edit button in the top-right.
+Upon clicking on the parameter group link, you will be taken to the parameter group link page. You will see an Edit button in the top-right:
 
 <Image img={edit_button} alt="Edit parameter group" size="lg" border/>
 
-The following settings need to be set as follows:
+Settings `binlog_format`, `binlog_row_metadata` and `binlog_row_image` need to be set as follows:
 
 1. `binlog_format` to `ROW`.
 
@@ -65,7 +67,7 @@ The following settings need to be set as follows:
 
 <Image img={binlog_row_image} alt="Binlog row image to FULL" size="lg" border/>
 
-Then click on `Save Changes` in the top-right. You may need to reboot your instance for the changes to take effect - a way of knowing this is if you see `Pending reboot` next to the parameter group link in the Configurations tab of the RDS instance.
+Next, click on `Save Changes` in the top-right. You may need to reboot your instance for the changes to take effect. If you see `Pending reboot` next to the parameter group link in the Configurations tab of the RDS instance, this is a good indication that a reboot of your instance is needed.
 
 <br/>
 :::tip
@@ -85,7 +87,7 @@ Connect to your RDS MariaDB instance as an admin user and execute the following 
     CREATE USER 'clickpipes_user'@'host' IDENTIFIED BY 'some-password';
     ```
 
-2. Grant schema permissions. The following example shows permissions for the `mysql` database. Repeat these commands for each database and host you want to replicate:
+2. Grant schema permissions. The following example shows permissions for the `mysql` database. Repeat these commands for each database and host that you want to replicate:
 
     ```sql
     GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
