@@ -32,11 +32,13 @@ We provide examples of reading and loading JSON in other common formats below.
 
 ## Reading JSON as an object {#reading-json-as-an-object}
 
-Our previous examples show how `JSONEachRow` reads newline-delimited JSON, with each line read as a separate object mapped to a table row. This is ideal for structured logs or events. 
+Our previous examples show how `JSONEachRow` reads newline-delimited JSON, with each line read as a separate object mapped to a table row and each field to a column. This is ideal for cases where the JSON is predictable with single types for each column. 
 
-In contrast, `JSONAsObject` treats the entire input as a single `JSON` object and stores it in a single column, of type `JSON`, making it better suited for raw or nested JSON payloads. Use `JSONEachRow` for row-wise inserts, and [`JSONAsObject`](/interfaces/formats/JSONAsObject) when storing flexible or unstructured data.
+In contrast, `JSONAsObject` treats each line as single `JSON` object and stores it in a single column, of type [`JSON`](/sql-reference/data-types/newjson), making it better suited nested JSON payloads and cases where the fields are dynamic and have potentially more than one type. 
 
-Contrast the above example, with the following query which reads the same data as a JSON object:
+Use `JSONEachRow` for row-wise inserts, and [`JSONAsObject`](/interfaces/formats/JSONAsObject) when storing flexible or dynamic JSON data.
+
+Contrast the above example, with the following query which reads the same data as a JSON object per line:
 
 ```sql
 SELECT *
@@ -161,33 +163,6 @@ FROM sometable
 │ 1971-72_Utah_Stars_season │ 2016-10-01 │    1 │
 │ Akiba_Hebrew_Academy      │ 2017-08-01 │  241 │
 │ Aegithina_tiphia          │ 2018-02-01 │   34 │
-└───────────────────────────┴────────────┴──────┘
-```
-
-## Handling NDJSON (line delimited JSON) {#handling-ndjson-line-delimited-json}
-
-Many apps can log data in JSON format so that each log line is an individual JSON object, like in [this file](../assets/object-per-line.json):
-
-```bash
-cat object-per-line.json
-```
-```response
-{"path":"1-krona","month":"2017-01-01","hits":4}
-{"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":3}
-{"path":"Bob_Dolman","month":"2016-11-01","hits":245}
-```
-
-The same `JSONEachRow` format is capable of working with such files:
-
-```sql
-INSERT INTO sometable FROM INFILE 'object-per-line.json' FORMAT JSONEachRow;
-SELECT * FROM sometable;
-```
-```response
-┌─path──────────────────────┬──────month─┬─hits─┐
-│ Bob_Dolman                │ 2016-11-01 │  245 │
-│ 1-krona                   │ 2017-01-01 │    4 │
-│ Ahmadabad-e_Kalij-e_Sofla │ 2017-01-01 │    3 │
 └───────────────────────────┴────────────┴──────┘
 ```
 
@@ -321,7 +296,7 @@ SELECT * FROM file('columns-array.json', JSONCompactColumns)
 
 ## Saving JSON objects instead of parsing {#saving-json-objects-instead-of-parsing}
 
-There are cases you might want to save JSON objects to a single `String` (or JSON) column instead of parsing it. This can be useful when dealing with a list of JSON objects of different structures. Let's take [this file](../assets/custom.json) where we have multiple different JSON objects inside a parent list:
+There are cases you might want to save JSON objects to a single `String` (or `JSON`) column instead of parsing it. This can be useful when dealing with a list of JSON objects of different structures. Let's take [this file](../assets/custom.json) where we have multiple different JSON objects inside a parent list:
 
 ```bash
 cat custom.json
@@ -373,7 +348,7 @@ Note that `JSONAsString` works perfectly fine in cases we have JSON object-per-l
 
 ## Schema for nested objects {#schema-for-nested-objects}
 
-In cases when we're dealing with [nested JSON objects](../assets/list-nested.json), we can additionally define schema and use complex types ([`Array`](/sql-reference/data-types/array.md), [`Object Data Type`](/sql-reference/data-types/object-data-type) or [`Tuple`](/sql-reference/data-types/tuple.md)) to load data:
+In cases when we're dealing with [nested JSON objects](../assets/list-nested.json), we can additionally define an explicit schema and use complex types ([`Array`](/sql-reference/data-types/array.md), [`Object Data Type`](/sql-reference/data-types/object-data-type) or [`Tuple`](/sql-reference/data-types/tuple.md)) to load data:
 
 ```sql
 SELECT *

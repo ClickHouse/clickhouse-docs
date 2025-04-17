@@ -2763,6 +2763,7 @@ quantiletdigestweighted
 quantiletiming
 quantiletimingweighted
 quartile
+queryable
 queryID
 queryString
 queryStringAndFragment
