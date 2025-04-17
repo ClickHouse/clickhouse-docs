@@ -39,7 +39,7 @@ WITH
             a.*,
             b.*
         FROM system.merge_tree_settings AS a
-        INNER JOIN settings_changes as b
+        LEFT OUTER JOIN settings_changes as b
         ON a.name = b.name
     ),
     merge_tree_settings AS
