@@ -2,8 +2,10 @@ name: clickhouse-style-review
 
 on:
   pull_request:
-      paths:
-        - 'docs/*'
+    types:
+      - synchronize
+      - reopened
+      - opened
 
 permissions:
   contents: read
