@@ -392,20 +392,6 @@
         ]
     },
     {
-        "title": "AWS PrivateLink setup to expose MSK for ClickPipes",
-        "description": "Setup steps to expose a private MSK via MSK multi-VPC connectivity to ClickPipes.",
-        "date": "2025-4-15",
-        "tags": [
-            "Security and Authentication",
-            "Managing Cloud"
-        ],
-        "keywords": [
-            "AWS PrivateLink",
-            "MSK",
-            "ClickPipes"
-        ]
-    },
-    {
         "title": "How to Validate if Two Queries Return the Same Result-sets",
         "description": "Learn how to validate that two ClickHouse queries produce identical result-sets using hash functions and comparison techniques.",
         "date": "2023-05-04",
@@ -1144,6 +1130,20 @@
         "keywords": [
             "AWS PrivateLink",
             "Private RDS",
+            "ClickPipes"
+        ]
+    },
+    {
+        "title": "AWS PrivateLink setup to expose MSK for ClickPipes",
+        "description": "Setup steps to expose a private MSK via MSK multi-VPC connectivity to ClickPipes.",
+        "date": "2025-4-15",
+        "tags": [
+            "Security and Authentication",
+            "Managing Cloud"
+        ],
+        "keywords": [
+            "AWS PrivateLink",
+            "MSK",
             "ClickPipes"
         ]
     },
