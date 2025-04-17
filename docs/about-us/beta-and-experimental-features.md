@@ -37,4 +37,4 @@ Note: please be sure to be using a current version of the ClickHouse [compatibil
 - May lack important functionality and documentation
 - Cannot be enabled in the cloud
 
-Please note: no additional experimental features are allowed to be enabled in ClickHouse Cloud other than those listed above as Beta.\n
+Please note: no additional experimental features are allowed to be enabled in ClickHouse Cloud other than those listed above as Beta.
