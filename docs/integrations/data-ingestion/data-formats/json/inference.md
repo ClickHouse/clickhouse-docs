@@ -283,7 +283,7 @@ Sometimes, you might have bad data. For example, specific columns that do not ha
 
 <PrivatePreviewBadge/>
 
-Our previous example used JSON which was static with well known key names and types. This often not the case - keys can be added or their types can change. This is common in use cases such as Observability data.
+Our previous example used JSON which was static with well known key names and types. This is often not the case - keys can be added or their types can change. This is common in use cases such as Observability data.
 
 ClickHouse handles this through a dedicated [`JSON`](/sql-reference/data-types/newjson) type.
 
