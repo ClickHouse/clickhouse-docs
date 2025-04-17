@@ -1,25 +1,23 @@
 ---
-sidebar_label: 'Amazon RDS MySQL'
-description: 'Step-by-step guide on how to set up Amazon RDS MySQL as a source for ClickPipes'
-slug: /integrations/clickpipes/mysql/source/rds
-title: 'RDS MySQL source setup guide'
+sidebar_label: 'Amazon RDS MariaDB'
+description: 'Step-by-step guide on how to set up Amazon RDS MariaDB as a source for ClickPipes'
+slug: /integrations/clickpipes/mysql/source/rds_maria
+title: 'RDS MariaDB source setup guide'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/rds-backups.png';
-import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
-import security_group_in_rds_mysql from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/security-group-in-rds-mysql.png';
-import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import rds_config from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/rds_config.png';
+import edit_button from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/edit_button.png';
 import binlog_format from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/binlog_format.png';
 import binlog_row_image from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/binlog_row_image.png';
 import binlog_row_metadata from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/binlog_row_metadata.png';
-import edit_button from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/edit_button.png';
-import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/enable_gtid.png';
+import security_group_in_rds_mysql from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/security-group-in-rds-mysql.png';
+import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-# RDS MySQL source setup guide
+# RDS MariaDB source setup guide
 
-This is a step-by-step guide on how to configure your RDS MySQL instance for replicating its data via the MySQL ClickPipe.
+This is a step-by-step guide on how to configure your RDS MariaDB instance for replicating its data via the MySQL ClickPipe.
 <br/>
 :::info
 We also recommend going through the MySQL FAQs [here](/integrations/data-ingestion/clickpipes/mysql/faq.md). The FAQs page is being actively updated.
@@ -36,7 +34,7 @@ The automated backups feature determines whether binary logging is turned on or 
 Setting backup retention to a reasonably long value depending on the replication use-case is advisable.
 
 ### 2. Binlog retention hours{#binlog-retention-hours-rds}
-The default value of binlog retention hours is NULL. For RDS for MySQL, NULL means binary logs aren't retained.
+The default value of binlog retention hours is NULL. For RDS for MariaDB, NULL means binary logs aren't retained.
 To specify the number of hours to retain binary logs on a DB instance, use the mysql.rds_set_configuration with a period with enough time for replication to occur:
 
 ```text
@@ -45,7 +43,7 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 
 ## Configure binlog settings in the parameter group {#binlog-parameter-group-rds}
 
-The parameter group can be found when you click on your MySQL instance in the RDS Console, and then heading over to the `Configurations` tab.
+The parameter group can be found when you click on your MariaDB instance in the RDS Console, and then heading over to the `Configurations` tab.
 
 <Image img={rds_config} alt="Where to find parameter group in RDS" size="lg" border/>
 
@@ -71,38 +69,11 @@ Then click on `Save Changes` in the top-right. You may need to reboot your insta
 
 <br/>
 :::tip
-If you have a MySQL cluster, the above parameters would be found in a [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) parameter group and not the DB instance group.
+If you have a MariaDB cluster, the above parameters would be found in a [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) parameter group and not the DB instance group.
 :::
 
 ## Enabling GTID Mode {#gtid-mode-rds}
-Global Transaction Identifiers (GTIDs) are unique IDs assigned to each committed transaction in MySQL. They simplify binlog replication and make troubleshooting more straightforward.
-
-If your MySQL instance is MySQL 5.7, 8.0 or 8.4, we recommend enabling GTID mode so that the MySQL ClickPipe can use GTID replication.
-
-To enable GTID mode for your MySQL instance, follow the steps as follows:
-1. In the RDS Console, click on your MySQL instance.
-2. Click on the `Configurations` tab.
-3. Click on the parameter group link.
-4. Click on the `Edit` button in the top-right corner.
-5. Set the following parameters:
-   - `gtid_mode` to `OFF_PERMISSIVE`
-   - `enforce-gtid-consistency` to `ON`
-6. Click on `Save Changes` in the top-right corner.
-7. Reboot your instance for the changes to take effect.
-8. Edit the parameter group again and set `gtid_mode` to `ON_PERMISSIVE`. Ensure `enforce-gtid-consistency` is `ON`.
-9. Click on `Save Changes` in the top-right corner.
-10. Reboot your instance for the changes to take effect.
-11. Edit the parameter group again and set `gtid_mode` to `ON`. Ensure `enforce-gtid-consistency` is `ON`.
-12. Click on `Save Changes` in the top-right corner.
-13. Reboot your instance for the changes to take effect.
-
-<Image img={enable_gtid} alt="GTID enabled" size="lg" border/>
-
-<br/>
-:::tip
-The MySQL ClickPipe also supports replication without GTID mode. However, enabling GTID mode is recommended for better performance and easier troubleshooting.
-:::
-
+Global Transaction Identifiers (GTIDs) are unique IDs assigned to each committed transaction in MySQL/MariaDB. They simplify binlog replication and make troubleshooting more straightforward. MariaDB enables GTID mode by default, so no user action is needed to use it.
 
 ## Configure a database user {#configure-database-user-rds}
 
@@ -125,7 +96,6 @@ Connect to your RDS MySQL instance as an admin user and execute the following co
     ```sql
     GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
     GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
-    ```
 
 ## Configure network access {#configure-network-access}
 
@@ -140,3 +110,4 @@ If you want to restrict traffic to your RDS instance, please add the [documented
 ### Private access via AWS PrivateLink {#private-access-via-aws-privatelink}
 
 To connect to your RDS instance through a private network, you can use AWS PrivateLink. Follow our [AWS PrivateLink setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes) to set up the connection.
+
