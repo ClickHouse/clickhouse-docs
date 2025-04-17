@@ -296,7 +296,7 @@ SELECT * FROM file('columns-array.json', JSONCompactColumns)
 
 ## Saving JSON objects instead of parsing {#saving-json-objects-instead-of-parsing}
 
-There are cases you might want to save JSON objects to a single `String` (or `JSON`) column instead of parsing it. This can be useful when dealing with a list of JSON objects of different structures. Let's take [this file](../assets/custom.json) where we have multiple different JSON objects inside a parent list:
+There are cases you might want to save JSON objects to a single `String` (or `JSON`) column instead of parsing it. This can be useful when dealing with a list of JSON objects of different structures. Let's take [this file](../assets/custom.json) for example, where we have multiple different JSON objects inside a parent list:
 
 ```bash
 cat custom.json
