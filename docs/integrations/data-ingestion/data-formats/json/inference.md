@@ -319,9 +319,9 @@ DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi
 9 rows in set. Elapsed: 127.066 sec.
 ```
 
-The primary issue here is `JSONEachRow` format is used for inference. This attempts to infer **a column type per key in the JSON** - effectively trying to apply a static schema to the data without using the [`JSON`](/sql-reference/data-types/newjson) type. 
+The primary issue here is that the `JSONEachRow` format is used for inference. This attempts to infer **a column type per key in the JSON** - effectively trying to apply a static schema to the data without using the [`JSON`](/sql-reference/data-types/newjson) type. 
 
-With thousands of unique columns this approach inference is slow. As alternative, users can use the `JSONAsObject` format.
+With thousands of unique columns this approach to inference is slow. As an alternative, users can use the `JSONAsObject` format.
 
 `JSONAsObject` treats the entire input as a single JSON object and stores it in a single column of type [`JSON`](/sql-reference/data-types/newjson), making it better suited for highly dynamic or nested JSON payloads. 
 
@@ -336,7 +336,7 @@ SETTINGS describe_compact_output = 1
 1 row in set. Elapsed: 0.005 sec.
 ```
 
-This format is also essential in cases where columns have multiple types that cannot be reconciled. For example, consider a `sample.json` with the following newline-delimited JSON:
+This format is also essential in cases where columns have multiple types that cannot be reconciled. For example, consider a `sample.json` file with the following newline-delimited JSON:
 
 ```json
 {"a":1}
@@ -379,7 +379,7 @@ Code: 636. DB::Exception: Received from sql-clickhouse.clickhouse.com:9440. DB::
 Code: 53. DB::Exception: Automatically defined type Tuple(b Int64) for column 'a' in row 1 differs from type defined by previous rows: Int64. You can specify the type for this column using setting schema_inference_hints.
 ```
 
-In this case, `JSONAsObject` by considering each row as a single [`JSON`](/sql-reference/data-types/newjson) type (which supports the same column having multiple types) is essential:
+In this case, `JSONAsObject` considers each row as a single [`JSON`](/sql-reference/data-types/newjson) type (which supports the same column having multiple types). This is essential:
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json', JSONAsObject)

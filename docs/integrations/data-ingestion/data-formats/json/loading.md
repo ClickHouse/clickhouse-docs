@@ -15,7 +15,7 @@ The following examples provide a very simple example of loading structured and s
 
 ## Loading Structured JSON {#loading-structured-json}
 
-In this section, we assume the JSON data is in [NDJSON](https://github.com/ndjson/ndjson-spec) (Newline delimited JSON) format, known as [`JSONEachRow`](/interfaces/formats#jsoneachrow) in ClickHouse, and well structured i.e. the column names and types are fixed. NDJSON is the preferred format for loading JSON due to its brevity and efficient use of space, but others are supported for both [input and output](/interfaces/formats#json).
+In this section, we assume the JSON data is in [`NDJSON`](https://github.com/ndjson/ndjson-spec) (Newline delimited JSON) format, known as [`JSONEachRow`](/interfaces/formats#jsoneachrow) in ClickHouse, and well structured i.e. the column names and types are fixed. `NDJSON` is the preferred format for loading JSON due to its brevity and efficient use of space, but others are supported for both [input and output](/interfaces/formats#json).
 
 Consider the following JSON sample, representing a row from the [Python PyPI dataset](https://clickpy.clickhouse.com/):
 
@@ -114,14 +114,14 @@ FORMAT JSONEachRow
 {"date":"2022-11-15","country_code":"CN","project":"clickhouse-connect","type":"bdist_wheel","installer":"bandersnatch","python_minor":"","system":"","version":"0.2.8"}
 ```
 
-These examples assume the use of the `JSONEachRow` format. Other common JSON formats are supported, with examples provided of loading these [here](/integrations/data-formats/json/other-formats).
+These examples assume the use of the `JSONEachRow` format. Other common JSON formats are supported, with examples of loading these provided [here](/integrations/data-formats/json/other-formats).
 
 
 ## Loading Semi-structured JSON {#loading-semi-structured-json}
 
 <PrivatePreviewBadge/>
 
-Our previous example loaded JSON which was static with well known key names and types. This often not the case - keys can be added or their types can change. This is common in use cases such as Observability data.
+Our previous example loaded JSON which was static with well known key names and types. This is often not the case - keys can be added or their types can change. This is common in use cases such as Observability data.
 
 ClickHouse handles this through a dedicated [`JSON`](/sql-reference/data-types/newjson) type.
 
@@ -194,7 +194,7 @@ LIMIT 2
 2 rows in set. Elapsed: 0.149 sec.
 ```
 
-Notice the performance difference here on loading data. The JSON column requires type inference at insert time as well as additional storage if columns exist that have more than one type. Although the JSON type can be configured (see [Designing JSON schema](/integrations/data-formats/json/schema)) for equivalent performance to explicitly declaring columns, it is intentionally out-of-the-box flexible - this flexibility comes at some cost. 
+Notice the performance difference here on loading data. The JSON column requires type inference at insert time as well as additional storage if columns exist that have more than one type. Although the JSON type can be configured (see [Designing JSON schema](/integrations/data-formats/json/schema)) for equivalent performance to explicitly declaring columns, it is intentionally flexible out-of-the-box. This flexibility, however, comes at some cost. 
 
 ### When to use the JSON type {#when-to-use-the-json-type}
 
