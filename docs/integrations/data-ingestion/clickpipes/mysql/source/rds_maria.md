@@ -77,7 +77,7 @@ Global Transaction Identifiers (GTIDs) are unique IDs assigned to each committed
 
 ## Configure a database user {#configure-database-user-rds}
 
-Connect to your RDS MySQL instance as an admin user and execute the following commands:
+Connect to your RDS MariaDB instance as an admin user and execute the following commands:
 
 1. Create a dedicated user for ClickPipes:
 
@@ -103,7 +103,7 @@ Connect to your RDS MySQL instance as an admin user and execute the following co
 
 If you want to restrict traffic to your RDS instance, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the `Inbound rules` of your RDS security group.
 
-<Image img={security_group_in_rds_mysql} alt="Where to find security group in RDS MySQL?" size="lg" border/>
+<Image img={security_group_in_rds_mysql} alt="Where to find security group in RDS?" size="lg" border/>
 
 <Image img={edit_inbound_rules} alt="Edit inbound rules for the above security group" size="lg" border/>
 
