@@ -34,7 +34,7 @@ jobs:
       - name: Run vale on changed files
         if: steps.changed_lines.outputs.changed_files
         env:
-          CHANGED_FILES: ${{ steps.changed_Lines.outputs.changed_files }}
+          CHANGED_FILES: ${{ steps.changed_lines.outputs.changed_files }}
         run: |
           vale --config='.vale.ini' \
           "${CHANGED_FILES}" \
@@ -45,4 +45,4 @@ jobs:
         env:
           LINES_CHANGED: ${{ steps.changed_lines.outputs.changed_lines }}
         run: |
-          python local/bin/py/vale/vale_annotations.py --data="${{LINES_CHANGED}}"
+          python scripts/vale_annotations.py --data="${{LINES_CHANGED}}"
