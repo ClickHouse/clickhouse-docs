@@ -10,16 +10,23 @@ title: 'JDBC Driver (0.8+)'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
-
+import ClientVersionDropdown from '@theme/ClientVersionDropdown/ClientVersionDropdown'
 
 # JDBC Driver (0.8+)
 
+<ClientVersionDropdown versions={[
+{
+'version': 'v0.8+',
+'slug': '/docs/integrations/language-clients/java/jdbc'
+},
+{
+'version': 'v0.7.x',
+'slug': '/docs/integrations/language-clients/java/jdbc-v1'
+}
+]}/>
+
 `clickhouse-jdbc` implements the standard JDBC interface using the latest [java client](/integrations/language-clients/java/client.md).
 We recommend using the latest [java client](/integrations/language-clients/java/client.md) directly if performance/direct access is critical.
-
-:::note
-If you're looking for a prior version of the JDBC driver docs, please see [here](/integrations/language-clients/java/jdbc-v1.md).
-:::
 
 ## Changes from 0.7.x {#changes-from-07x}
 In 0.8 we tried to make the driver more strictly follow the JDBC specification, so there are some removed features that may affect you:
