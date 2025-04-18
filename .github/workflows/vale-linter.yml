@@ -35,56 +35,21 @@ jobs:
           curl -Ls https://astral.sh/uv/install.sh | sh
           uv python install 3.12
 
-      - name: Get changed files and create report
+      - name: Log changed lines
         run: |
-          # Create output directory
-          mkdir -p reports
-
-          # Start JSON file
-          echo "{" > reports/changed_lines.json
-
-          # Use git directly to find changed files in docs directory
-          changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -E '^docs/.*\.(md|mdx)$' || echo "")
-
-          echo "Changed files in docs directory:"
-          echo "$changed_files"
-
-          # Process each file
-          first_file=true
-          for file in $changed_files; do
-            if [ -f "$file" ]; then
-              echo "Processing file: $file"
-
-              if [ "$first_file" = true ]; then
-                first_file=false
-              else
-                echo "," >> reports/changed_lines.json
-              fi
-
-              echo "  \"$file\": [" >> reports/changed_lines.json
-
-              # Get changed lines
-              first_line=true
-              git diff --unified=0 ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} -- "$file" | 
-              grep -E "^@@" | 
-              sed -E 's/^@@ -[0-9]+(,[0-9]+)? \+([0-9]+)(,[0-9]+)? @@.*$/\2/' |
-              while read -r line_number; do
-                echo "Found changed line $line_number in $file"
-
-                if [ "$first_line" = true ]; then
-                  first_line=false
-                else
-                  echo "," >> reports/changed_lines.json
-                fi
-
-                echo "    $line_number" >> reports/changed_lines.json
-              done
-
-              echo "  ]" >> reports/changed_lines.json
-            fi
-          done
-
-          echo "}" >> reports/changed_lines.json
+          # Make sure script is executable
+          chmod +x scripts/get_changed_lines.py
+          
+          # Run the script to get changed lines
+          python scripts/get_changed_lines.py ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+          
+          # Check if the report was created
+          if [ -f "logs/changed_lines.json" ]; then
+            echo "Changed lines log generated successfully."
+          else
+            echo "Error: Failed to generate changed lines report."
+            exit 1
+          fi
 
       - name: Debug Vale setup
         run: |
