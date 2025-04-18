@@ -6,7 +6,7 @@ This script finds all changed markdown files in the docs directory
 and creates a JSON file showing which lines were modified.
 
 Usage:
-    python scripts/get_changed_lines.py <base_sha> <head_sha>
+    python scripts/changed_lines_to_json.py <base_sha> <head_sha>
 
 Output:
     Creates a JSON file at logs/changed_lines.json with format:
@@ -64,7 +64,7 @@ def get_changed_lines(file_path, base_sha, head_sha):
 
 def main():
     if len(sys.argv) < 3:
-        print("Usage: python get_changed_lines.py <base_sha> <head_sha>")
+        print("Usage: python changed_lines_to_json.py <base_sha> <head_sha>")
         sys.exit(1)
 
     base_sha = sys.argv[1]

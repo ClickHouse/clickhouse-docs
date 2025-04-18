@@ -38,10 +38,10 @@ jobs:
       - name: Log changed lines
         run: |
           # Make sure script is executable
-          chmod +x scripts/get_changed_lines.py
+          chmod +x scripts/changed_lines_to_json.py
           
           # Run the script to get changed lines
-          python scripts/get_changed_lines.py ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+          python scripts/changed_lines_to_json.py ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
           
           # Check if the report was created
           if [ -f "logs/changed_lines.json" ]; then
@@ -79,16 +79,17 @@ jobs:
       - name: Run vale on changed files
         run: |
           # Extract file names from the JSON report
-          CHANGED_FILES=$(jq -r 'keys[]' reports/changed_lines.json)
-          
+          CHANGED_FILES=$(cat reports/changed_lines.json | jq -r '.[].filename' | tr '\n' ' ')
+
           # Check if we have any files to process
           if [ -z "$CHANGED_FILES" ]; then
             echo "No changed files to analyze"
             exit 0
           fi
-    
+
+          echo "Running Vale on: $CHANGED_FILES"
           vale --config='.vale.ini' \
-          "${CHANGED_FILES}" \
+          ${CHANGED_FILES} \
           --output=scripts/vale_output_template.tmpl --no-exit > vale_output.log
           cat vale_output.log
 
