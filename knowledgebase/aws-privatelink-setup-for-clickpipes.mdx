@@ -11,12 +11,13 @@ keywords: ['AWS PrivateLink', 'Private RDS', 'ClickPipes']
 
 ## AWS PrivateLink setup to expose private RDS for ClickPipes {#aws-privatelink-setup-to-expose-private-rds-for-clickpipes}
 
-Setup steps to expose a private RDS via AWS PrivateLink to ClickPipes.
+Setup steps to expose a private RDS via AWS PrivateLink to ClickPipes, also supporting cross-region access.
 
-## Requirements {#requirements}
-
-The VPC must be located in one of our ClickPipes regions: us-east-1, us-east-2 or eu-central-1, additionally the
-ClickHouse Instance must be in the same region.
+:::info
+This uses AWS Endpoint Service and is mainly suitable for Cross-Region Access. If you require same-region access,
+[creating a VPC Resource](/integrations/clickpipes/aws-privatelink#vpc-resource) is
+recommended instead.
+:::
 
 ## Private link creation {#private-link-creation}
 

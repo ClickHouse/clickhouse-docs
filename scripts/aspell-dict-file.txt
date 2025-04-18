@@ -119,6 +119,7 @@ ConfluentSVG
 GCSSVG
 KafkaSVG
 MskSVG
+Mysqlsvg
 PostgresSVG
 WarpStreamSVG
 clickpipes

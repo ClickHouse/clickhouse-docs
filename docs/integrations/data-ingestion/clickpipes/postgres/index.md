@@ -87,6 +87,12 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 
    <Image img={postgres_connection_details} alt="Fill in connection details" size="lg" border/>
 
+#### (Optional) Setting up AWS Private Link {#optional-setting-up-aws-private-link}
+
+You can use AWS Private Link to connect to your source Postgres database if it is hosted on AWS. This is useful if you
+want to keep your data transfer private.
+You can follow the [setup guide to set up the connection](/integrations/clickpipes/aws-privatelink).
+
 #### (Optional) Setting up SSH Tunneling {#optional-setting-up-ssh-tunneling}
 
 You can specify SSH tunneling details if your source Postgres database is not publicly accessible.
