@@ -85,6 +85,17 @@ jobs:
 
           echo "}" >> reports/changed_lines.json
 
+      - name: Debug Vale setup
+        run: |
+          # Show current directory structure
+          find . -type d -name "ClickHouse" -o -name "styles"
+
+          # Show the vale configuration
+          cat .vale.ini
+
+          # Check Vale's configuration
+          vale ls-config
+
       - name: Run vale on changed files
         run: |
           # Extract file names from the JSON report
