@@ -126,7 +126,7 @@ CREATE TABLE posts
    AnswerCount UInt16,
    CommentCount UInt8,
    FavoriteCount UInt8,
-   ContentLicenseLowCardinality(String),
+   ContentLicense LowCardinality(String),
    ParentId String,
    CommunityOwnedDate DateTime,
    ClosedDate DateTime
