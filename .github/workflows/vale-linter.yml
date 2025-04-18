@@ -65,8 +65,7 @@ jobs:
           echo "Running Vale on: $CHANGED_FILES"
           vale --config='.vale.ini' \
           ${CHANGED_FILES} \
-          --output=scripts/vale/vale_output_template.tmpl --no-exit > vale_output.log
-          cat vale_output.log
+          --output=scripts/vale/vale_output_template.tmpl --no-exit > logs/vale_output.log
 
       - name: Parse Vale output
         run: |
@@ -74,4 +73,4 @@ jobs:
           CHANGED_LINES=$(cat logs/changed_lines.json)
 
           # Run the parser script
-          python scripts/vale/vale_annotations.py --data="${CHANGED_LINES}"
+          python scripts/vale/vale_annotations.py --git-log-file="logs/changed_lines.json" --vale-log-file="logs/vale_output.log"
