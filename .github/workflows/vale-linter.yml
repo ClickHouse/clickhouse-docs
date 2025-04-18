@@ -96,6 +96,20 @@ jobs:
           # Check Vale's configuration
           vale ls-config
 
+      - name: Check styles directory
+        run: |
+          echo "Checking styles directory structure:"
+          ls -la styles/
+          
+          echo "Looking for ClickHouse style:"
+          if [ -d "styles/ClickHouse" ]; then
+            echo "✅ ClickHouse style directory found"
+            ls -la styles/ClickHouse/
+          else
+            echo "❌ ClickHouse style directory NOT found"
+            find styles/ -type d -maxdepth 2
+          fi
+
       - name: Run vale on changed files
         run: |
           # Extract file names from the JSON report
