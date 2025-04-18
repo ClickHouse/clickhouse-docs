@@ -35,7 +35,7 @@ def compare_log(git_filename, vale_log):
     if level == 'notice':
         message = 'Suggestion: ' + message
 
-    command = f"::{level} ::file={git_filename},line={line},col={column},title={title}::{message}"
+    command = f"::{level} file={git_filename},line={line},col={column},title={title}::{message}"
     error_present = True if severity == 'error' else False
     return command, error_present
 
