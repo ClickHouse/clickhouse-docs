@@ -79,7 +79,7 @@ jobs:
       - name: Run vale on changed files
         run: |
           # Extract file names from the JSON report
-          CHANGED_FILES=$(cat reports/changed_lines.json | jq -r '.[].filename' | tr '\n' ' ')
+          CHANGED_FILES=$(cat logs/changed_lines.json | jq -r '.[].filename' | tr '\n' ' ')
 
           # Check if we have any files to process
           if [ -z "$CHANGED_FILES" ]; then
