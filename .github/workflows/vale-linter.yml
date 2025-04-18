@@ -38,10 +38,10 @@ jobs:
       - name: Log changed lines
         run: |
           # Make sure script is executable
-          chmod +x scripts/changed_lines_to_json.py
+          chmod +x scripts/vale/changed_lines_to_json.py
           
           # Run the script to get changed lines
-          python scripts/changed_lines_to_json.py ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+          python scripts/vale/changed_lines_to_json.py ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
           
           # Check if the report was created
           if [ -f "logs/changed_lines.json" ]; then
@@ -49,31 +49,6 @@ jobs:
           else
             echo "Error: Failed to generate changed lines report."
             exit 1
-          fi
-
-      - name: Debug Vale setup
-        run: |
-          # Show current directory structure
-          find . -type d -name "ClickHouse" -o -name "styles"
-
-          # Show the vale configuration
-          cat .vale.ini
-
-          # Check Vale's configuration
-          vale ls-config
-
-      - name: Check styles directory
-        run: |
-          echo "Checking styles directory structure:"
-          ls -la .
-          
-          echo "Looking for ClickHouse style:"
-          if [ -d "styles/ClickHouse" ]; then
-            echo "✅ ClickHouse style directory found"
-            ls -la styles/ClickHouse/
-          else
-            echo "❌ ClickHouse style directory NOT found"
-            find styles/ -type d -maxdepth 2
           fi
 
       - name: Run vale on changed files
@@ -90,12 +65,13 @@ jobs:
           echo "Running Vale on: $CHANGED_FILES"
           vale --config='.vale.ini' \
           ${CHANGED_FILES} \
-          --output=scripts/vale_output_template.tmpl --no-exit > vale_output.log
+          --output=scripts/vale/vale_output_template.tmpl --no-exit > vale_output.log
           cat vale_output.log
 
       - name: Parse Vale output
-        if: steps.changed_lines.outputs.changed_files
-        env:
-          LINES_CHANGED: ${{ steps.changed_lines.outputs.changed_lines }}
         run: |
-          python scripts/vale_annotations.py --data=${LINES_CHANGED}
+          # Read the changed_lines.json to get line numbers
+          CHANGED_LINES=$(cat logs/changed_lines.json)
+
+          # Run the parser script
+          python scripts/vale/vale_annotations.py --data="${CHANGED_LINES}"

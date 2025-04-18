@@ -20,43 +20,44 @@ def process_data(data):
         except: print('Did not process line: ', line)
     return logs
 
-# Compares the Vale log data to the git data and returns the GitHub annotation
-def compare_log(filename_log, log_data):
-    severity = log_data.get('Severity')
-    line = log_data.get('Line')
-    title = log_data.get('Check')
-    message = log_data.get('Message')
-    col = log_data.get('Col')
-    match severity:
-        case 'suggestion': level = 'notice'
-        case 'warning': level = 'warning'
-        case 'error': level = 'error'
-    if level == 'notice':
+# Compares git log data and vale log data and returns the GitHub annotations
+def compare_log(git_filename, vale_log):
+    severity = vale_log.get('Severity')
+    line = vale_log.get('Line')
+    column = vale_log.get('Col')
+    title = vale_log.get('Check')
+    message = vale_log.get('Message')
+    if severity == 'suggestion':
         message = 'Suggestion: ' + message
 
-    command = f"::file={filename_log},line={line},col={col},title={title}::{message}"
-    error_present = True if level == 'error' else False
+    command = f"::file={git_filename},line={line},col={column},title={title}::{message}"
+    error_present = True if severity == 'error' else False
     return command, error_present
 
 if __name__ == '__main__':
     log_list = []
     error_list = []
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data', help='An array of dictionaries mapping a filename to changed lines. ([{filename: [lines_changed]}])', type=str)
+    parser.add_argument('--git-log-file', help='Path to JSON file with changed lines data', type=str)
+    parser.add_argument('--vale-log-file', help='Path to Vale output log file', type=str)
     args = parser.parse_args()
-    git_data = json.loads(args.data)
 
-    with open('vale_output.log') as f:
+    with open(args.git_log_file, 'r') as f:
+        git_data = json.load(f)
+    with open(args.vale_log_file, 'r') as f:
         vale_logs = process_data(f.read())
 
     if vale_logs:
-        for entry in vale_logs:
-            vale_filename = entry['Filename']
-            line = entry['Line']
-            for git_filename, git_line_data in git_data.items():
+        for vale_log in vale_logs:
+            vale_filename = vale_log['Filename']
+            line = vale_log['Line']
+
+            for item in git_data:
+                git_filename = item['filename']
+                git_line_data = item['changed_lines']
                 if vale_filename == git_filename and line in git_line_data:
                     try:
-                        annotation, error_present = compare_log(git_filename, entry)
+                        annotation, error_present = compare_log(git_filename, vale_log)
                         log_list.append(annotation)
                         error_list.append(error_present)
                     except:

@@ -1,0 +1,6 @@
+docs/best-practices/json_type.md:9:312:suggestion:ClickHouse.Contractions:Use 'doesn't' instead of 'does not'.
+docs/best-practices/json_type.md:11:4:warning:ClickHouse.Headings:'When To Use the JSON type {#when-to-use-the-json-type}' should use sentence-style capitalization.
+docs/best-practices/json_type.md:39:4:warning:ClickHouse.Headings:'Advanced Features {#advanced-features}' should use sentence-style capitalization.
+docs/best-practices/json_type.md:41:79:suggestion:ClickHouse.Contractions:Use 'can't' instead of 'cannot'.
+docs/best-practices/json_type.md:125:57:suggestion:ClickHouse.Contractions:Use 'it's' instead of 'it is'.
+docs/best-practices/json_type.md:125:110:suggestion:ClickHouse.Contractions:Use 'won't' instead of 'will not'.
