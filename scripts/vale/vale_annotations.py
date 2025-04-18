@@ -27,10 +27,15 @@ def compare_log(git_filename, vale_log):
     column = vale_log.get('Col')
     title = vale_log.get('Check')
     message = vale_log.get('Message')
-    if severity == 'suggestion':
+    # Convert vale severity to Github annotation level
+    match severity:
+        case 'suggestion': level = 'notice'
+        case 'warning': level = 'warning'
+        case 'error': level = 'error'
+    if level == 'notice':
         message = 'Suggestion: ' + message
 
-    command = f"::file={git_filename},line={line},col={column},title={title}::{message}"
+    command = f"::{level} ::file={git_filename},line={line},col={column},title={title}::{message}"
     error_present = True if severity == 'error' else False
     return command, error_present
 
