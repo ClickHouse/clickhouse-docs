@@ -25,10 +25,11 @@
     "write-heading-ids": "docusaurus write-heading-ids",
     "run-markdown-linter": "yarn check-markdown",
     "run-indexer": "bash ./scripts/search/run_indexer.sh",
-    "check-style": "yarn check-markdown && yarn check-spelling && yarn check-kb",
+    "check-style": "yarn check-markdown && yarn check-spelling && yarn check-kb && yarn check-prose",
     "check-spelling": "./scripts/check-doc-aspell",
     "check-kb": "./scripts/check-kb.sh",
-    "check-markdown": "./scripts/check-markdown.sh"
+    "check-markdown": "./scripts/check-markdown.sh",
+    "check-prose": "./scripts/vale/check-prose.sh"
   },
   "dependencies": {
     "@clickhouse/click-ui": "^0.0.199",
