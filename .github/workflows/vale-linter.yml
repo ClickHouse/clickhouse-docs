@@ -1,0 +1,76 @@
+name: Style check
+
+on:
+  pull_request:
+    types:
+      - synchronize
+      - reopened
+      - opened
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  vale:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          path: .
+
+      - name: Install Vale
+        run: |
+          sudo snap install vale
+          vale -v # Verify installation
+
+      - name: Set up Python
+        run: |
+          curl -Ls https://astral.sh/uv/install.sh | sh
+          uv python install 3.12
+
+      - name: Log changed lines
+        run: |
+          # Make sure script is executable
+          chmod +x scripts/vale/changed_lines_to_json.py
+          
+          # Run the script to get changed lines
+          python scripts/vale/changed_lines_to_json.py ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+          
+          # Check if the report was created
+          if [ -f "logs/changed_lines.json" ]; then
+            echo "Changed lines log generated successfully."
+          else
+            echo "Error: Failed to generate changed lines report."
+            exit 1
+          fi
+
+      - name: Run vale on changed files
+        run: |
+          # Extract file names from the JSON report
+          CHANGED_FILES=$(cat logs/changed_lines.json | jq -r '.[].filename' | tr '\n' ' ')
+
+          # Check if we have any files to process
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No changed files to analyze"
+            exit 0
+          fi
+
+          echo "Running Vale on: $CHANGED_FILES"
+          vale --config='.vale.ini' \
+          ${CHANGED_FILES} \
+          --output=scripts/vale/vale_output_template.tmpl --no-exit > logs/vale_output.log
+
+      - name: Parse Vale output
+        run: |
+          # Read the changed_lines.json to get line numbers
+          CHANGED_LINES=$(cat logs/changed_lines.json)
+
+          # Run the parser script
+          python scripts/vale/vale_annotations.py --git-log-file="logs/changed_lines.json" --vale-log-file="logs/vale_output.log"
