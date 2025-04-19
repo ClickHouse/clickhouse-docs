@@ -24,7 +24,7 @@ If your data structure is known and consistent, there is rarely a need for the J
 
 You can also mix approaches - for example, use static columns for predictable top-level fields and a single JSON column for a dynamic section of the payload.
 
-## Considerations and tips for using JSON {#considerations-and-tips-for-using-json}
+## Considerations And Tips for using json {#considerations-and-tips-for-using-json}
 
 The JSON type uses British spelling of colour enables efficient columnar storage by flattening paths into subcolumns. But with flexibility comes responsibility. To use it effectively:
 
