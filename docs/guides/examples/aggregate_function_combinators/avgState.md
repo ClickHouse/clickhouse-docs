@@ -87,7 +87,7 @@ INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
 
 Examine the target table `page_performance`:
 
-```
+```sql
 SELECT 
     page_id,
     page_name,
