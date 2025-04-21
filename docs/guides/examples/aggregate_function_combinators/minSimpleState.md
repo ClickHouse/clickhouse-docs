@@ -10,68 +10,152 @@ sidebar_label: 'minSimpleState'
 ## Description {#description}
 
 The [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) combinator can be applied to the [`min`](/sql-reference/aggregate-functions/reference/min)
-function to return the minimum value across all input values. It returns the result with type `SimpleAggregateState`.
+function to return the minimum value across all input values. It returns the 
+result with type `SimpleAggregateState`.
 
 ## Example Usage {#example-usage}
 
-Let's look at a practical example using a table that tracks daily temperature readings. For each location, we want to maintain the lowest temperature recorded. Using the `SimpleAggregateFunction` type with `min` automatically updates the stored value when a lower temperature is encountered.
+Let's look at a practical example using a table that tracks daily temperature 
+readings. For each location, we want to maintain the lowest temperature recorded.
+Using the `SimpleAggregateFunction` type with `min` automatically updates the 
+stored value when a lower temperature is encountered.
 
-```sql title="Query"
--- Create a table using SimpleAggregateFunction type for temperature tracking
-CREATE TABLE temperature_readings
+Create the source table for raw temperature readings:
+
+```sql
+CREATE TABLE raw_temperature_readings
 (
     location_id UInt32,
-    location_name LowCardinality(String),
-    min_temp SimpleAggregateFunction(min, Int32)  -- Stores the lowest temperature seen
+    location_name String,
+    temperature Int32,
+    recorded_at DateTime DEFAULT now()
+)
+    ENGINE = MergeTree()
+ORDER BY (location_id, recorded_at);
+```
+
+Create the aggregate table that will store the min temperatures:
+
+```sql
+CREATE TABLE temperature_extremes
+(
+    location_id UInt32,
+    location_name String,
+    min_temp SimpleAggregateFunction(min, Int32),  -- Stores minimum temperature
+    max_temp SimpleAggregateFunction(max, Int32)   -- Stores maximum temperature
 )
 ENGINE = AggregatingMergeTree()
 ORDER BY location_id;
+```
 
--- Insert initial temperature readings
-INSERT INTO temperature_readings VALUES
-    (1, 'North', minSimpleState(5)),    -- 5°C at North
-    (2, 'South', minSimpleState(15)),   -- 15°C at South
-    (3, 'West', minSimpleState(10));    -- 10°C at West
+Create an Incremental Materialized View that will act as an insert trigger
+for inserted data and maintains the minimum, maximum temperatures per location.
 
--- Insert new readings (some lower, some higher)
-INSERT INTO temperature_readings VALUES
-    (1, 'North', 3),    -- Lower temperature for North (will update min)
-    (2, 'South', 18),   -- Higher temperature for South (won't affect min)
-    (3, 'West', 10),    -- Same temperature for West
-    (1, 'North', 4);    -- Temperature for North between min and max (won't affect min)
+```sql
+CREATE MATERIALIZED VIEW temperature_extremes_mv
+TO temperature_extremes
+AS SELECT
+    location_id,
+    location_name,
+    minSimpleState(temperature) AS min_temp,     -- Using SimpleState combinator
+    maxSimpleState(temperature) AS max_temp      -- Using SimpleState combinator
+FROM raw_temperature_readings
+GROUP BY location_id, location_name;
+```
 
--- Show how minSimpleState maintains the minimum values
+Insert some initial temperature readings:
+
+```sql
+INSERT INTO raw_temperature_readings (location_id, location_name, temperature) VALUES
+(1, 'North', 5),
+(2, 'South', 15),
+(3, 'West', 10),
+(4, 'East', 8);
+```
+
+These readings are automatically processed by the Materialized View. Let's check
+the current state:
+
+```sql
 SELECT
     location_id,
     location_name,
-    minSimpleState(min_temp) AS lowest_temp,
-    toTypeName(lowest_temp),
-    count() as num_readings
-FROM temperature_readings
+    min_temp,     -- Directly accessing the SimpleAggregateFunction values
+    max_temp      -- No need for finalization function with SimpleAggregateFunction
+FROM temperature_extremes
+ORDER BY location_id;
+```
+
+```response
+┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
+│           1 │ North         │        5 │        5 │
+│           2 │ South         │       15 │       15 │
+│           3 │ West          │       10 │       10 │
+│           4 │ East          │        8 │        8 │
+└─────────────┴───────────────┴──────────┴──────────┘
+```
+
+Insert some more data:
+
+```sql
+INSERT INTO raw_temperature_readings (location_id, location_name, temperature) VALUES
+    (1, 'North', 3),
+    (2, 'South', 18),
+    (3, 'West', 10),
+    (1, 'North', 8),
+    (4, 'East', 2);
+```
+
+View the updated extremes after new data:
+
+```sql
+SELECT
+    location_id,
+    location_name,
+    min_temp,  
+    max_temp
+FROM temperature_extremes
+ORDER BY location_id;
+```
+
+```response
+┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
+│           1 │ North         │        3 │        8 │
+│           1 │ North         │        5 │        5 │
+│           2 │ South         │       18 │       18 │
+│           2 │ South         │       15 │       15 │
+│           3 │ West          │       10 │       10 │
+│           3 │ West          │       10 │       10 │
+│           4 │ East          │        2 │        2 │
+│           4 │ East          │        8 │        8 │
+└─────────────┴───────────────┴──────────┴──────────┘
+```
+
+Notice above that we have two inserted values for each location. This is because
+parts have not yet been merged (and aggregated by `AggregatingMergeTree`). To get
+the final result from the partial states we need to add a `GROUP BY`:
+
+```sql
+SELECT
+    location_id,
+    location_name,
+    min(min_temp) AS min_temp,  -- Aggregate across all parts 
+    max(max_temp) AS max_temp   -- Aggregate across all parts
+FROM temperature_extremes
 GROUP BY location_id, location_name
 ORDER BY location_id;
 ```
 
-```response title="Response"
-┌─location_id─┬─location_name─┬─lowest_temp─┬─num_readings─┐
-│           1 │ North        │           3 │            3 │
-│           2 │ South        │          15 │            2 │
-│           3 │ West         │          10 │            2 │
-└─────────────┴──────────────┴────────────┴──────────────┘
+We now get the expected result:
+
+```sql
+┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
+│           1 │ North         │        3 │        8 │
+│           2 │ South         │       15 │       18 │
+│           3 │ West          │       10 │       10 │
+│           4 │ East          │        2 │        8 │
+└─────────────┴───────────────┴──────────┴──────────┘
 ```
-
-The example shows how:
-- When new data is inserted, SimpleAggregateFunction(min) automatically:
-  - Updates the stored value if the new value is lower
-  - Keeps the existing value if the new value is higher
-- minSimpleState returns the current minimum value for each group
-- The storage is efficient because only the minimum value is kept, not the full history
-
-For location_id 1 (North), we can see that:
-- Initial temperature was 5°C
-- When 3°C was recorded, it became the new minimum
-- When 4°C was recorded, the minimum stayed at 3°C
-This demonstrates how SimpleAggregateFunction(min) maintains the minimum value through multiple insertions.
 
 ## See also {#see-also}
 - [`min`](/sql-reference/aggregate-functions/reference/min)
