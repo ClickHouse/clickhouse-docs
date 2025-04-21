@@ -8,6 +8,7 @@ title: 'ClickHouse Cloud Quick Start'
 description: 'Quick start guide for ClickHouse Cloud'
 ---
 
+import Image from '@theme/IdealImage';
 import signup_page from '@site/static/images/_snippets/signup_page.png';
 import select_plan from '@site/static/images/_snippets/select_plan.png';
 import createservice1 from '@site/static/images/_snippets/createservice1.png';
@@ -35,16 +36,12 @@ To create a free ClickHouse service in [ClickHouse Cloud](https://console.clickh
   - If you sign up using an email and password, remember to verify your email address within the next 24h via the link you receive in your email
   - Login using the username and password you just created
 
-<div class="eighty-percent">
-    <img src={signup_page} class="image" alt="Select Plan" />
-</div>
+<Image img={signup_page} size="md" alt='Select Plan' border/>
 <br/>
 
 Once you are logged in, ClickHouse Cloud starts the onboarding wizard which walks you through creating a new ClickHouse service. You will initially be requested to [select a plan](/cloud/manage/cloud-tiers):
 
-<div class="eighty-percent">
-    <img src={select_plan} class="image" alt="Select Plan" />
-</div>
+<Image img={select_plan} size="md" alt='Select Plan' border/>
 <br/>
 
 :::tip
@@ -58,18 +55,14 @@ In the step below, we assume that the user has opted for the recommended Scale t
 
 Select your desired region for deploying the service, and give your new service a name:
 
-<div class="eighty-percent">
-    <img src={createservice1} class="image" alt="New ClickHouse Service" />
-</div>
+<Image img={createservice1} size="md" alt='New ClickHouse Service' border/>
 <br/>
 
 By default, the scale tier will create 3 replicas each with 4 VCPUs and 16 GiB RAM. [Vertical autoscaling](/manage/scaling#vertical-auto-scaling) will be enabled by default in the Scale tier.
 
 Users can customize the service resources if required, specifying a minimum and maximum size for replicas to scale between. When ready, select `Create service`.
 
-<div class="eighty-percent">
-    <img src={scaling_limits} class="image" alt="Scaling Limits" />
-</div>
+<Image img={scaling_limits} size="md" alt='Scaling Limits' border/>
 <br/>
 
 Congratulations! Your ClickHouse Cloud service is up and running and onboarding is complete. Keep reading for details on how to start ingesting and querying your data.
@@ -83,9 +76,7 @@ There are 2 ways to connect to ClickHouse:
 
 For getting started quickly, ClickHouse provides a web-based SQL console to which you will be redirected on completing onboarding.
 
-<div class="eighty-percent">
-    <img src={createservice8} class="image" alt="SQL Console" />
-</div>
+<Image img={createservice8} size="md" alt='SQL Console' border/>
 <br/>
 
 
@@ -98,9 +89,7 @@ SHOW databases
 
 You should see 4 databases in the list, plus any that you may have added.
 
-<div class="eighty-percent">
-    <img src={show_databases} class="image" alt="SQL Console" />
-</div>
+<Image img={show_databases} size="md" alt='SQL Console' border/>
 <br/>
 
 
@@ -110,20 +99,16 @@ That's it - you are ready to start using your new ClickHouse service!
 
 Press the connect button from the navigation menu. A modal will open offering the credentials to your service and offering you a set of instructions on how to connect with your interface or language clients.
 
-<div class="eighty-percent">
-    <img src={service_connect} class="image" alt="Service Connect" />
-</div>
+<Image img={service_connect} size="md" alt='Service Connect' border/>
 <br/>
 
-If you can’t see your language client, you may want to check our list of  [Integrations](/integrations).
+If you can't see your language client, you may want to check our list of  [Integrations](/integrations).
 
 ## 3. Add data {#3-add-data}
 
 ClickHouse is better with data! There are multiple ways to add data and most of them are available on the Data Sources page, which can be accessed in the navigation menu.
 
-<div class="eighty-percent">
-    <img src={data_sources} class="image" alt="Data sources" />
-</div>
+<Image img={data_sources} size="md" alt='Data sources' border/>
 <br/>
 
 You can upload data using the following methods:
@@ -137,9 +122,7 @@ You can upload data using the following methods:
 
 [ClickPipes](http://clickhouse.com/docs/integrations/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. ClickPipes can be used for long-term streaming needs or one-time data loading job.
 
-<div class="eighty-percent">
-    <img src={select_data_source} class="image" alt="Select data source" />
-</div>
+<Image img={select_data_source} size="md" alt='Select data source' border/>
 <br/>
 
 ### Add data using the SQL Console {#add-data-using-the-sql-console}
@@ -202,12 +185,11 @@ For a deep dive into core ClickHouse concepts, see ["Core Concepts"](../../manag
 
 #### Insert data into your table {#insert-data-into-your-table}
 
-
 You can use the familiar [`INSERT INTO TABLE`](../../sql-reference/statements/insert-into.md) command with ClickHouse, but it is important to understand that each insert into a [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) table causes a **part** to be created in storage.
 
 :::tip ClickHouse best practice
 Insert a large number of rows per batch - tens of thousands or even millions of
-rows at once. Don't worry - ClickHouse can easily handle that type of volume - and it will [save you money](/cloud/bestpractices/bulkinserts.md) by sending fewer write requests to your service.
+rows at once. Don't worry - ClickHouse can easily handle that type of volume - and it will [save you money](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous) by sending fewer write requests to your service.
 :::
 
 <br/>
@@ -236,9 +218,7 @@ SELECT * FROM helloworld.my_first_table
 
 You can also connect to your ClickHouse Cloud service using a command-line tool named [**clickhouse client**](/interfaces/cli). Click `Connect` on the left menu to access these details. From the dialog select `Native` from the drop-down:
 
-<div class="eighty-percent">
-    <img src={client_details} class="image" alt="clickhouse client connection details" />
-</div>
+<Image img={client_details} size="md" alt='clickhouse client connection details' border/>
 <br/>
 
 1. Install [ClickHouse](/interfaces/cli).
@@ -293,10 +273,10 @@ In the above query, the output is returned as tab-separated:
 ```response
 Query id: 3604df1c-acfd-4117-9c56-f86c69721121
 
-102 Insert a lot of rows per batch	2022-03-21 00:00:00	1.41421
-102 Sort your data based on your commonly-used queries	2022-03-22 00:00:00	2.718
-101 Hello, ClickHouse!	2022-03-22 14:04:09	-1
-101 Granules are the smallest chunks of data read	2022-03-22 14:04:14	3.14159
+102 Insert a lot of rows per batch      2022-03-21 00:00:00     1.41421
+102 Sort your data based on your commonly-used queries  2022-03-22 00:00:00     2.718
+101 Hello, ClickHouse!  2022-03-22 14:04:09     -1
+101 Granules are the smallest chunks of data read       2022-03-22 14:04:14     3.14159
 
 4 rows in set. Elapsed: 0.005 sec.
 ```
@@ -339,9 +319,7 @@ Suppose we have the following text in a CSV file named `data.csv`:
 
 <br/>
 
-<div class="eighty-percent">
-    <img src={new_rows_from_csv} class="image" alt="New rows from CSV file" />
-</div>
+<Image img={new_rows_from_csv} size="md" alt='New rows from CSV file' />
 <br/>
 
 ## What's Next? {#whats-next}

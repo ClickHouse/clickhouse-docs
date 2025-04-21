@@ -4,6 +4,10 @@ import katex from "rehype-katex";
 import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
 const { customParseFrontMatter } = require('./plugins/frontmatter-validation/customParseFrontMatter');
+const checkFloatingPages = require('./plugins/checkFloatingPages');
+const frontmatterValidator = require('./plugins/frontmatter-validation/frontmatterValidatorPlugin');
+const path = require('path');
+import pluginLlmsTxt from './plugins/llms-txt-plugin.ts'
 
 // Helper function to skip over index.md files.
 function skipIndex(items) {
@@ -62,7 +66,7 @@ const config = {
   trailingSlash: false,
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "jp", "zh"],
+    locales: ["en", "jp", "zh", "ru"],
     path: "i18n",
     localeConfigs: {
       en: {
@@ -80,6 +84,11 @@ const config = {
         htmlLang: "zh",
         path: "zh",
       },
+      ru: {
+        label: "Русский",
+        htmlLang: "ru",
+        path: "ru",
+      }
     },
   },
   staticDirectories: ["static"],
@@ -129,7 +138,6 @@ const config = {
             if (
               docPath.includes("development") ||
               docPath.includes("engines") ||
-              docPath.includes("getting-started") ||
               docPath.includes("interfaces") ||
               docPath.includes("operations") ||
               docPath.includes("sql-reference")
@@ -183,6 +191,9 @@ const config = {
             );
           },
         },
+        pages: {
+
+        },
         theme: {
           customCss: [require.resolve("./src/css/custom.scss")],
         },
@@ -217,6 +228,13 @@ const config = {
       attributes: {
         href: "https://www.googletagmanager.com",
         rel: "preconnect",
+      },
+    },
+    {
+      tagName: 'img',
+      attributes: {
+        referrerPolicy: 'no-referrer-when-downgrade',
+        src: 'https://static.scarf.sh/a.png?x-pxid=e6377503-591b-4886-9398-e69c7fee0b91',
       },
     },
   ],
@@ -273,7 +291,7 @@ const config = {
       prism: {
         theme: themes.darkTheme,
         darkTheme: themes.darkTheme,
-        additionalLanguages: ["java", "cpp", "rust"],
+        additionalLanguages: ["java", "cpp", "rust", "python", "javascript"],
         magicComments: [
           // Remember to extend the default highlight class name as well!
           {
@@ -317,13 +335,39 @@ const config = {
       },
     ],
     chHeader,
-    './plugins/frontmatter-validation/frontmatterValidatorPlugin'
+    [
+      '@docusaurus/plugin-ideal-image',
+      {
+        quality: 85,
+        sizes: [48, 300, 600, 1024, 2048],
+        disableInDev: false,
+      },
+    ],
+    [
+      frontmatterValidator,
+      {
+        failBuild: true
+      },
+    ],
+    [
+      checkFloatingPages,
+      {
+        failBuild: true,
+        exceptionsFile: path.resolve(__dirname, 'plugins/floating-pages-exceptions.txt')
+      },
+    ],
+    [
+      pluginLlmsTxt,
+      {}
+    ],
+    ['./plugins/tailwind-config.js', {}],
   ],
   customFields: {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page
     galaxyApiEndpoint:
       process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || "http://localhost:3000",
   },
+
 };
 
 module.exports = config;

@@ -13,6 +13,7 @@ import connections from '@site/static/images/integrations/data-ingestion/clickpi
 import connections_networking from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/connections_networking.png';
 import firewall1 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall1.png';
 import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall2.png';
+import Image from '@theme/IdealImage';
 
 # Google Cloud SQL Postgres Source Setup Guide
 
@@ -33,13 +34,13 @@ Anything on or after Postgres 12
 
 1. Click on **Edit** button on the Overview page.
 
-<img src={edit_button} alt="Edit Button in Cloud SQL Postgres" />
+<Image img={edit_button} alt="Edit Button in Cloud SQL Postgres" size="lg" border/>
 
 2. Go to Flags and change `cloudsql.logical_decoding` to on and `wal_sender_timeout` to 0. These changes will need restarting your Postgres server.
 
-<img src={cloudsql_logical_decoding1} alt="Change cloudsql.logical_decoding to on" />
-<img src={cloudsql_logical_decoding2} alt="Changed cloudsql.logical_decoding and wal_sender_timeout" />
-<img src={cloudsql_logical_decoding3} alt="Restart Server" />
+<Image img={cloudsql_logical_decoding1} alt="Change cloudsql.logical_decoding to on" size="lg" border/>
+<Image img={cloudsql_logical_decoding2} alt="Changed cloudsql.logical_decoding and wal_sender_timeout" size="lg" border/>
+<Image img={cloudsql_logical_decoding3} alt="Restart Server" size="lg" border/>
 
 
 ## Creating ClickPipes User and Granting permissions {#creating-clickpipes-user-and-granting-permissions}
@@ -87,16 +88,16 @@ If your are using SSH Tunneling, then you need to add the [ClickPipes IPs](../..
 
 1. Go to **Connections** section
 
-<img src={connections} alt="Connections Section in Cloud SQL" />
+<Image img={connections} alt="Connections Section in Cloud SQL" size="lg" border/>
 
 2. Go to the Networking subsection
 
-<img src={connections_networking} alt="Networking Subsection in Cloud SQL" />
+<Image img={connections_networking} alt="Networking Subsection in Cloud SQL" size="lg" border/>
 
 3. Add the [public IPs of ClickPipes](../../index.md#list-of-static-ips)
 
-<img src={firewall1} alt="Add ClickPipes Networks to Firewall" />
-<img src={firewall2} alt="ClickPipes Networks Added to Firewall" />
+<Image img={firewall1} alt="Add ClickPipes Networks to Firewall" size="lg" border/>
+<Image img={firewall2} alt="ClickPipes Networks Added to Firewall" size="lg" border/>
 
 
 ## What's next? {#whats-next}

@@ -1,13 +1,13 @@
 ---
-description: 'Системная таблица, содержащая информацию оDetached части таблиц MergeTree'
+description: 'Системная таблица, содержащая информацию о отделённых частях таблиц MergeTree'
+keywords: ['системная таблица', 'отделённые_части']
 slug: /operations/system-tables/detached_parts
 title: 'system.detached_parts'
-keywords: ['системная таблица', 'detached_parts']
 ---
 
-Содержит информацию оDetached частях таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md). Колонка `reason` указывает, почему часть была отделена.
+Содержит информацию об отделённых частях таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md). Колонка `reason` указывает, почему часть была отделена.
 
-Для частей, отделенных пользователем, причина остается пустой. Такие части могут быть присоединены с помощью команды [ALTER TABLE ATTACH PARTITION\|PART](/sql-reference/statements/alter/partition#attach-partitionpart).
+Для отделённых пользователем частей причина пуста. Такие части могут быть присоединены с помощью команды [ALTER TABLE ATTACH PARTITION\|PART](/sql-reference/statements/alter/partition#attach-partitionpart).
 
 Для описания других колонок см. [system.parts](../../operations/system-tables/parts.md).
 

@@ -6,6 +6,7 @@ title: 'Optimizing for S3 Insert and Read Performance'
 description: 'Optimizing the performance of S3 read and insert'
 ---
 
+import Image from '@theme/IdealImage';
 import InsertMechanics from '@site/static/images/integrations/data-ingestion/s3/insert_mechanics.png';
 import Pull from '@site/static/images/integrations/data-ingestion/s3/pull.png';
 import Merges from '@site/static/images/integrations/data-ingestion/s3/merges.png';
@@ -24,19 +25,19 @@ Before tuning threads and block sizes to improve insert performance, we recommen
 
 ## Insert Mechanics (single node) {#insert-mechanics-single-node}
 
-Two main factors, in addition to hardware size, influence the performance and resource usage of ClickHouse’s data insert mechanics (for a single node): **insert block size** and **insert parallelism**.
+Two main factors, in addition to hardware size, influence the performance and resource usage of ClickHouse's data insert mechanics (for a single node): **insert block size** and **insert parallelism**.
 
 ### Insert Block Size {#insert-block-size}
 
-<img src={InsertMechanics} alt="Insert block size mechanics in ClickHouse" />
+<Image img={InsertMechanics} size="lg" border alt="Insert block size mechanics in ClickHouse" />
 
-When performing an `INSERT INTO SELECT`, ClickHouse receives some data portion, and ① forms (at least) one in-memory insert block (per [partitioning key](/engines/table-engines/mergetree-family/custom-partitioning-key)) from the received data. The block’s data is sorted, and table engine-specific optimizations are applied. The data is then compressed and ② written to the database storage in the form of a new data part.
+When performing an `INSERT INTO SELECT`, ClickHouse receives some data portion, and ① forms (at least) one in-memory insert block (per [partitioning key](/engines/table-engines/mergetree-family/custom-partitioning-key)) from the received data. The block's data is sorted, and table engine-specific optimizations are applied. The data is then compressed and ② written to the database storage in the form of a new data part.
 
 The insert block size impacts both the [disk file I/O usage](https://en.wikipedia.org/wiki/Category:Disk_file_systems) and memory usage of a ClickHouse server. Larger insert blocks use more memory but generate larger and fewer initial parts. The fewer parts ClickHouse needs to create for loading a large amount of data, the less disk file I/O and automatic [background merges required](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges).
 
 When using an `INSERT INTO SELECT` query in combination with an integration table engine or a table function, the data is pulled by the ClickHouse server: 
 
-<img src={Pull} alt="Pulling data from external sources in ClickHouse" />
+<Image img={Pull} size="lg" border alt="Pulling data from external sources in ClickHouse" />
 
 Until the data is completely loaded, the server executes a loop:
 
@@ -59,15 +60,15 @@ Note that the `min_insert_block_size_bytes` value denotes the uncompressed in-me
 
 #### Be aware of merges {#be-aware-of-merges}
 
-The smaller the configured insert block size is, the more initial parts get created for a large data load, and the more background part merges are executed concurrently with the data ingestion. This can cause resource contention (CPU and memory) and require additional time (for reaching a [healthy](/operations/settings/merge-tree-settings#parts-to-throw-insert) (3000) number of parts) after the ingestion is finished. 
+The smaller the configured insert block size is, the more initial parts get created for a large data load, and the more background part merges are executed concurrently with the data ingestion. This can cause resource contention (CPU and memory) and require additional time (for reaching a [healthy](/operations/settings/merge-tree-settings#parts_to_throw_insert) (3000) number of parts) after the ingestion is finished. 
 
 :::important
-ClickHouse query performance will be negatively impacted if the part count exceeds the [recommended limits](/operations/settings/merge-tree-settings#parts-to-throw-insert).
+ClickHouse query performance will be negatively impacted if the part count exceeds the [recommended limits](/operations/settings/merge-tree-settings#parts_to_throw_insert).
 :::
 
-ClickHouse will continuously [merge parts](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance) into larger parts until they [reach](/operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool) a compressed size of ~150 GiB. This diagram shows how a ClickHouse server merges parts:
+ClickHouse will continuously [merge parts](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance) into larger parts until they [reach](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool) a compressed size of ~150 GiB. This diagram shows how a ClickHouse server merges parts:
 
-<img src={Merges} alt="Background merges in ClickHouse" />
+<Image img={Merges} size="lg" border alt="Background merges in ClickHouse" />
 
 A single ClickHouse server utilizes several [background merge threads](/operations/server-configuration-parameters/settings#background_pool_size) to execute concurrent [part merges](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges:~:text=to%20execute%20concurrent-,part%20merges,-.%20Each%20thread%20executes). Each thread executes a loop:
 
@@ -83,17 +84,17 @@ Go to ①
 
 Note that [increasing](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#hardware-size) the number of CPU cores and the size of RAM increases the background merge throughput.
 
-Parts that were merged into larger parts are marked as [inactive](/operations/system-tables/parts) and finally deleted after a [configurable](/operations/settings/merge-tree-settings#old-parts-lifetime) number of minutes. Over time, this creates a tree of merged parts (hence the name [`MergeTree`](/engines/table-engines/mergetree-family) table).
+Parts that were merged into larger parts are marked as [inactive](/operations/system-tables/parts) and finally deleted after a [configurable](/operations/settings/merge-tree-settings#old_parts_lifetime) number of minutes. Over time, this creates a tree of merged parts (hence the name [`MergeTree`](/engines/table-engines/mergetree-family) table).
 
 ### Insert Parallelism {#insert-parallelism}
 
-<img src={ResourceUsage} alt="Resource usage for insert parallelism" />
+<Image img={ResourceUsage} size="lg" border alt="Resource usage for insert parallelism" />
 
 A ClickHouse server can process and insert data in parallel. The level of insert parallelism impacts the ingest throughput and memory usage of a ClickHouse server. Loading and processing data in parallel requires more main memory but increases the ingest throughput as data is processed faster.
 
 Table functions like s3 allow specifying sets of to-be-loaded-file names via glob patterns. When a glob pattern matches multiple existing files, ClickHouse can parallelize reads across and within these files and insert the data in parallel into a table by utilizing parallel running insert threads (per server): 
 
-<img src={InsertThreads} alt="Parallel insert threads in ClickHouse" />
+<Image img={InsertThreads} size="lg" border alt="Parallel insert threads in ClickHouse" />
 
 Until all data from all files is processed, each insert thread executes a loop: 
 
@@ -117,7 +118,7 @@ Optimizing the performance of queries using the S3 table functions is required w
 
 ## Impact of Hardware Size {#impact-of-hardware-size}
 
-<img src={HardwareSize} alt="Impact of hardware size on ClickHouse performance" />
+<Image img={HardwareSize} size="lg" border alt="Impact of hardware size on ClickHouse performance" />
 
 The number of available CPU cores and the size of RAM impacts the:
 
@@ -308,7 +309,7 @@ Utilizing a cluster for S3 reads requires using the `s3Cluster` function as desc
 
 The server that initially receives the insert query first resolves the glob pattern and then dispatches the processing of each matching file dynamically to itself and the other servers.
 
-<img src={S3Cluster} alt="s3Cluster function in ClickHouse" />
+<Image img={S3Cluster} size="lg" border alt="s3Cluster function in ClickHouse" />
 
 We repeat our earlier read query distributing the workload across 3 nodes, adjusting the query to use `s3Cluster`. This is performed automatically in ClickHouse Cloud, by referring to the `default` cluster.
 

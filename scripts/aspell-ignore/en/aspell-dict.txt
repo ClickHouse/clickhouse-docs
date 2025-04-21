@@ -171,6 +171,8 @@ CertificateHandler
 Chadmin
 ChannelID
 ChartDB
+Chartbrew
+Chartbrew's
 ChatGPT
 Cidr
 Ciphertext
@@ -266,6 +268,7 @@ DatabaseOnDiskThreadsActive
 DatabaseOrdinaryThreads
 DatabaseOrdinaryThreadsActive
 Datadog
+Databricks
 Datasource
 Datasources
 DateTime
@@ -377,6 +380,7 @@ Fuzzers
 GDPR
 GHCN
 GTID
+GTIDs
 GTest
 GUID
 Gb
@@ -1369,6 +1373,7 @@ aiochclient
 alloc
 allocator
 alphaTokens
+altair
 amplab
 analysisOfVariance
 analytics
@@ -1763,12 +1768,14 @@ dashboarding
 datacenter
 datacenters
 datafiles
+dataframe
 datagrip
 datalens
 datanode
 dataset
 datasets
 datasource
+datasources
 datatypes
 dateName
 dateTime
@@ -2172,6 +2179,7 @@ initcapUTF
 initialQueryID
 initializeAggregation
 injective
+inlined
 innogames
 inodes
 instantiation
@@ -2268,6 +2276,7 @@ kurtpop
 kurtsamp
 lagInFrame
 laion
+lakehouse
 lang
 laravel
 largestTriangleThreeBuckets
@@ -2370,6 +2379,8 @@ mappedfile
 marginBottom
 marginLeft
 mariadb
+marimo
+marimo's
 matcher
 materializations
 materializedview
@@ -2642,6 +2653,7 @@ polygonsWithinSpherical
 popcnt
 portRFC
 porthttps
+positionally
 positionCaseInsensitive
 positionCaseInsensitiveUTF
 positionUTF
@@ -2751,6 +2763,7 @@ quantiletdigestweighted
 quantiletiming
 quantiletimingweighted
 quartile
+queryable
 queryID
 queryString
 queryStringAndFragment

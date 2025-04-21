@@ -43,7 +43,7 @@ function BlogTagsPostsPageContent({ tag, items, sidebar, listMetadata }) {
         <BlogBreadcrumbs />
         <h1 className={styles.kbTitle}>Knowledge Base</h1>
         <ButtonGroup
-          onClick={function Nav(value) { value === 'recent' ? history.push(`/docs/${currentLocale}/knowledgebase`) : history.push(`/docs/${currentLocale}/knowledgebase/tags`) }}
+          onClick={function Nav(value) { value === 'recent' ? history.push(`/docs/knowledgebase`) : history.push(`/docs/knowledgebase/tags`) }}
           options={[
             {
               label: 'Recent',

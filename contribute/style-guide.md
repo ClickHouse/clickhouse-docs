@@ -1,22 +1,38 @@
 # ClickHouse docs style guide
 
-In this document, you will find a number of style guidelines for writing documentation.
-The rules in this guide are intended to assist in helping us to create a high
-quality documentation offering on par with the quality of ClickHouse itself.
+In this document, you will find a number of style guidelines for writing ClickHouse
+documentation. As documentation is a collective effort, these guidelines are 
+intended to help all of us ensure we maintain quality and consistency across our
+documentation.
 
 ## YAML front matter
 
-Begin every new markdown document with YAML front-matter:
+Begin every new Markdown document with YAML front-matter:
 
 ```markdown
 ---
-title: Using a clickhouse-local database
-sidebar_label: Using clickhouse-local database
+title: 'Using a clickhouse-local database'
+sidebar_label: 'Using clickhouse-local database'
 slug: /chdb/guides/clickhouse-local
-description: Learn how to use a clickhouse-local database with chDB
-keywords: [chdb, clickhouse-local]
+description: 'Learn how to use a clickhouse-local database with chDB'
+keywords: ['chdb', 'clickhouse-local']
 ---
 ```
+
+### Associated markdown rule or CI check
+
+#### front-matter validation 
+
+There is a custom Docusaurus plugin which runs on build that makes the following
+checks on front-matter:
+
+- title, description and slug are specified.
+- keywords use flow style arrays with single quoted items e.g. 
+  `keywords: ['integrations']`
+- single quotes are used for title, description, slug, sidebar_label
+- there is an empty line after the YAML frontmatter block
+
+For implementation details see [plugins/frontmatter-validation](https://github.com/ClickHouse/clickhouse-docs/tree/main/plugins/frontmatter-validation)
 
 ## Explicit header tags
 
@@ -61,20 +77,30 @@ keywords: [chdb, clickhouse-local]
 import clickhouse-local-1 from '@site/static/images/chdb/guides/clickhouse-local-1.png'
 import clickhouse-local-2 from '@site/static/images/chdb/guides/clickhouse-local-2.png'
 import clickhouse-local-3 from '@site/static/images/chdb/guides/clickhouse-local-3.png'
+import Image from '@theme/IdealImage';
 ```
 
-Use the `<img/>` tag to place your image in the appropriate place:
+To render images we use a fork of the IdealImage plugin. This generates multiple variants of an image, [asynchronously loading them as well as selecting the most appropriate based on the network connection](https://github.com/stereobooster/react-ideal-image/blob/master/introduction.md).
+
+Ensure you import the `Image` component as shown above.
+
+Use the `<Image/>` tag to place your image in the appropriate place:
 
 ```markdown
 Here is some example text which refers to the image below:
 
-<img src={clickhouse-local-1}
-    alt='DESCRIPTION OF THE IMAGE'
-    style={{width: '800px'}} // optional
-/>
+<Image img={clickhouse-local-1} alt='DESCRIPTION OF THE IMAGE' size="md" border background="black"/>
 
 Here is another paragraph...
 ```
+
+This component takes a number of props:
+
+1. `img` - the imported image
+2. `alt` - mandatory alternate text specified
+3. `size` - either `lg` (width 1024px), `md` (width 600px), `sm` (width 300px) or `logo` (48x). This sets the maximum image size. Lower resolutions maybe used on smaller screens or slower connections.
+4. `border` - Applies a border. **Use for screenshots only.**
+5. `background` - either `white` or `black`. Applicable if your image is transparent. All new images must use `black`.
 
 ## Codeblocks
 
@@ -91,6 +117,38 @@ Code blocks:
   backticks, without any space.
 - Have a title (optional) such as 'Query' or 'Response'
 - Use language `response` if it is for the result of a query.
+
+### Highlighting
+
+You can highlight lines in a code block using the following keywords:
+
+- `highlight-next-line` 
+- `highlight-start`
+- `highlight-end`
+
+These keywords should be added as comments in the codeblock with the appropriate
+escape symbol for the codeblock language. 
+
+For example, if the codeblock is SQL:
+
+```text
+SELECT UserID, count(UserID) AS Count
+-- highlight-next-line
+FROM mv_hits_URL_UserID
+WHERE URL = 'http://public_search'
+GROUP BY UserID
+ORDER BY Count DESC
+LIMIT 10;
+```
+
+If the codeblock is a response: 
+
+```text
+10 rows in set. Elapsed: 0.026 sec.
+# highlight-next-line
+Processed 335.87 thousand rows,
+13.54 MB (12.91 million rows/s., 520.38 MB/s.)
+```
 
 ### Associated markdown rule or CI check
 
@@ -159,4 +217,37 @@ export function Anchor(props) {
 ```
 - Replace `<span id="some-id"></span>` with `Anchor id="some-id"/>`
 
+### Floating pages
+
+In order to prevent pages from becoming 'floating' or 'orphaned' it is
+necessary that you add a newly created page to `sidebars.js`. We have a [custom
+docusaurus plugin](plugins/checkFloatingPages.js) to catch dangling pages.
+
+If there is some specific reason that you need to bypass this check, you can
+add an exception to `floating-pages-exceptions.txt` in the plugins directory.
+
+When adding a new page from the ClickHouse/ClickHouse repo this check will fail
+unless the file is in a folder which [`sidebars.js`](https://github.com/ClickHouse/clickhouse-docs/blob/main/sidebars.js)
+uses with `type: autogenerated` to generate the navigation items from the markdown
+files in the folder.
+
+If you've added a new page on ClickHouse/ClickHouse and this check is failing.
+
+For example:
+
+```text
+âœ… All markdown files passed frontmatter validation.
+Loaded 3 exceptions from /opt/clickhouse-docs/plugins/floating-pages-exceptions.txt
+Skipping excepted page: index
+Skipping excepted page: integrations/language-clients/java/client-v1
+Skipping excepted page: integrations/language-clients/java/jdbc-v1
+�[31m1 floating pages found:�[0m
+  - /opt/clickhouse-docs/docs/operations/query-condition-cache.md
+```
+
+You will need to open a PR on docs repo to add this page to [`floating-pages-exceptions.txt`](https://github.com/ClickHouse/clickhouse-docs/blob/main/plugins/floating-pages-exceptions.txt). Once it is merged
+you can then rerun the docs check on the ClickHouse/ClickHouse repo which 
+should pass. Finally open another PR on the docs repo again to remove the 
+file from the exception list and add it to `sidebars.js` in the appropriate
+sidebar.
 

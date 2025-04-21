@@ -10,25 +10,28 @@ import image_02 from '@site/static/images/managing-data/core-concepts/shards_02.
 import image_03 from '@site/static/images/managing-data/core-concepts/shards_03.png'
 import image_04 from '@site/static/images/managing-data/core-concepts/shards_04.png'
 import image_05 from '@site/static/images/managing-data/core-concepts/shards_replicas_01.png'
+import Image from '@theme/IdealImage';
 
 <br/>
 :::note
-This topic doesn’t apply to ClickHouse Cloud, where [Parallel Replicas](/docs/deployment-guides/parallel-replicas) function like multiple shards in traditional shared-nothing ClickHouse clusters, and object storage [replaces](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates#shared-object-storage-for-data-availability) replicas, ensuring high availability and fault tolerance.
+This topic doesn't apply to ClickHouse Cloud, where [Parallel Replicas](/docs/deployment-guides/parallel-replicas) function like multiple shards in traditional shared-nothing ClickHouse clusters, and object storage [replaces](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates#shared-object-storage-for-data-availability) replicas, ensuring high availability and fault tolerance.
 :::
 
 ## What are table shards in ClickHouse? {#what-are-table-shards-in-clickhouse}
 
-In traditional [shared-nothing](https://en.wikipedia.org/wiki/Shared-nothing_architecture) ClickHouse clusters, sharding is used when ① the data is too large for a single server or ② a single server is too slow for processing the data. The next figure illustrates case ①, where the [uk_price_paid_simple](/parts) table exceeds a single machine’s capacity:  
+In traditional [shared-nothing](https://en.wikipedia.org/wiki/Shared-nothing_architecture) ClickHouse clusters, sharding is used when ① the data is too large for a single server or ② a single server is too slow for processing the data. The next figure illustrates case ①, where the [uk_price_paid_simple](/parts) table exceeds a single machine's capacity:
 
-<img src={image_01} alt='SHARDS' class='image' />
+<Image img={image_01} size="lg" alt='SHARDS'/>
+
 <br/>
 
 In such a case the data can be split over multiple ClickHouse servers in the form of table shards:
 
-<img src={image_02} alt='SHARDS' class='image' />
+<Image img={image_02} size="lg" alt='SHARDS'/>
+
 <br/>
 
-Each shard holds a subset of the data and functions as a regular ClickHouse table that can be queried independently. However, queries will only process that subset, which may be a valid use case depending on data distribution. Typically, a [distributed table](/docs/engines/table-engines/special/distributed) (often per server) provides a unified view of the full dataset. It doesn’t store data itself but forwards **SELECT** queries to all shards, assembles the results, and routes **INSERTS** to distribute data evenly.
+Each shard holds a subset of the data and functions as a regular ClickHouse table that can be queried independently. However, queries will only process that subset, which may be a valid use case depending on data distribution. Typically, a [distributed table](/docs/engines/table-engines/special/distributed) (often per server) provides a unified view of the full dataset. It doesn't store data itself but forwards **SELECT** queries to all shards, assembles the results, and routes **INSERTS** to distribute data evenly.
 
 ## Distributed table creation {#distributed-table-creation}
 
@@ -54,7 +57,8 @@ For the [distributed engine parameters](/docs/engines/table-engines/special/dist
 
 The diagram below illustrates how INSERTs into a distributed table are processed in ClickHouse:
 
-<img src={image_03} alt='SHARDS' class='image' />
+<Image img={image_03} size="lg" alt='SHARDS'/>
+
 <br/>
 
 ① An INSERT (with a single row) targeting the distributed table is sent to a ClickHouse server hosting the table, either directly or via a load balancer.
@@ -67,7 +71,8 @@ The next section explains how SELECT forwarding works.
 
 This diagram shows how SELECT queries are processed with a distributed table in ClickHouse:
 
-<img src={image_04} alt='SHARDS' class='image' />
+<Image img={image_04} size="lg" alt='SHARDS'/>
+
 <br/>
 
 ① A SELECT aggregation query targeting the distributed table is sent to corresponding ClickHouse server, either directly or via a load balancer.
@@ -85,7 +90,8 @@ Note that replication requires a [Keeper](https://clickhouse.com/clickhouse/keep
 
 The following diagram illustrates a ClickHouse cluster with six servers, where the two table shards `Shard-1` and `Shard-2` introduced earlier each have three replicas. A query is sent to this cluster:
 
-<img src={image_05} alt='SHARDS' class='image' />
+<Image img={image_05} size="lg" alt='SHARDS'/>
+
 <br/>
 
 Query processing works similarly to setups without replicas, with only a single replica from each shard executing the query.
@@ -104,9 +110,8 @@ Note that ClickHouse allows configuring the query forwarding strategy for ②. B
 
 ## Where to find more information {#where-to-find-more-information}
 
-For more details beyond this high-level introduction to table shards and replicas, check out our [deployment and scaling guide](/docs/architecture/horizontal-scaling). 
+For more details beyond this high-level introduction to table shards and replicas, check out our [deployment and scaling guide](/docs/architecture/horizontal-scaling).
 
 We also highly recommend this tutorial video for a deeper dive into ClickHouse shards and replicas:
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/vBjCJtw_Ei0?si=WqopTrnti6usCMRs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/vBjCJtw_Ei0?si=WqopTrnti6usCMRs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

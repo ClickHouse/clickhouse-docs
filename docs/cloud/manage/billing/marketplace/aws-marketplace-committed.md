@@ -5,6 +5,7 @@ description: 'Subscribe to ClickHouse Cloud through the AWS Marketplace (Committ
 keywords: ['aws', 'amazon', 'marketplace', 'billing', 'committed', 'committed contract']
 ---
 
+import Image from '@theme/IdealImage';
 import aws_marketplace_committed_1 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-committed-1.png';
 import aws_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-6.png';
 import aws_marketplace_payg_7 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-7.png';
@@ -26,11 +27,7 @@ Get started with ClickHouse Cloud on the [AWS Marketplace](https://aws.amazon.co
 
 <br />
 
-<img src={aws_marketplace_committed_1}
-    alt='AWS Marketplace private offer email'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={aws_marketplace_committed_1} size="md" alt="AWS Marketplace private offer email" border/>
 
 <br />
 
@@ -43,11 +40,7 @@ It is critical to redirect to ClickHouse Cloud at this point and either register
 
 <br />
 
-<img src={aws_marketplace_payg_6}
-    alt='ClickHouse Cloud sign in page'
-    class='image'
-    style={{width: '300px'}}
-/>
+<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud sign in page" border/>
 
 <br />
 
@@ -55,11 +48,7 @@ If you are a new ClickHouse Cloud user, click **Register** at the bottom of the 
 
 <br />
 
-<img src={aws_marketplace_payg_7}
-    alt='ClickHouse Cloud sign up page'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud sign up page" border/>
 
 <br />
 
@@ -67,21 +56,13 @@ Note that if you are a new user, you will also need to provide some basic inform
 
 <br />
 
-<img src={aws_marketplace_payg_8}
-    alt='ClickHouse Cloud sign up info form'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud sign up info form" border/>
 
 <br />
 
 <br />
 
-<img src={aws_marketplace_payg_9}
-    alt='ClickHouse Cloud sign up info form 2'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud sign up info form 2" border/>
 
 <br />
 
@@ -93,19 +74,11 @@ If you are an existing ClickHouse Cloud user, simply log in using your credentia
 
 <br />
 
-<img src={aws_marketplace_payg_10}
-    alt='ClickHouse Cloud view AWS Marketplace billing'
-    class='image'
-    style={{width: '300px'}}
-/>
+<Image img={aws_marketplace_payg_10} size="md" alt="ClickHouse Cloud view AWS Marketplace billing" border/>
 
 <br />
 
-<img src={aws_marketplace_payg_11}
-    alt='ClickHouse Cloud new services page'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud new services page" border/>
 
 <br />
 
@@ -113,11 +86,7 @@ If you are an existing ClickHouse Cloud user, simply log in using your credentia
 
 <br />
 
-<img src={aws_marketplace_payg_12}
-    alt='AWS Marketplace confirmation email'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={aws_marketplace_payg_12} size="md" alt="AWS Marketplace confirmation email" border/>
 
 <br />
 

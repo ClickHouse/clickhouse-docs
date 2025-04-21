@@ -203,7 +203,7 @@ FROM system.disks
 └─────────────┴────────────────┴──────────────┴──────────────┘
 ```
 
-3. And…let's verify the volumes:
+3. And...let's verify the volumes:
 
 ```sql
 SELECT

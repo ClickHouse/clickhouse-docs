@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/min
-sidebar_position: 168
-title: 'min'
 description: 'Агрегатная функция, которая вычисляет минимум среди группы значений.'
+sidebar_position: 168
+slug: /sql-reference/aggregate-functions/reference/min
+title: 'min'
 ---
 
 Агрегатная функция, которая вычисляет минимум среди группы значений.
@@ -17,7 +17,7 @@ SELECT min(salary) FROM employees;
 SELECT department, min(salary) FROM employees GROUP BY department;
 ```
 
-Если вам нужна неагрегатная функция для выбора минимума между двумя значениями, смотрите `least`:
+Если вам нужна неагрегатная функция для выбора минимума из двух значений, смотрите `least`:
 
 ```sql
 SELECT least(a, b) FROM table;

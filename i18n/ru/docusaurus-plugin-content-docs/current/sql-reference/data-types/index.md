@@ -1,7 +1,9 @@
 ---
-slug: /sql-reference/data-types/
+description: 'Документация по типам данных в ClickHouse'
 sidebar_label: 'Список типов данных'
 sidebar_position: 1
+slug: /sql-reference/data-types/
+title: 'Типы данных в ClickHouse'
 ---
 
 
@@ -11,4 +13,4 @@ sidebar_position: 1
 
 Системная таблица [system.data_type_families](/operations/system-tables/data_type_families) предоставляет
 обзор всех доступных типов данных.
-Она также показывает, является ли тип данных алиасом для другого типа данных, и его имя чувствительно к регистра (например, `bool` против `BOOL`).
+Она также показывает, является ли тип данных псевдонимом для другого типа данных, и его имя чувствительно к регистру (например, `bool` против `BOOL`).

@@ -30,7 +30,7 @@ External integrations are not supported.
 
 ### Configuration {#configuration}
 
-ClickHouse Keeper can be used as a standalone replacement for ZooKeeper or as an internal part of the ClickHouse server. In both cases the configuration is almost the same `.xml` file. 
+ClickHouse Keeper can be used as a standalone replacement for ZooKeeper or as an internal part of the ClickHouse server. In both cases the configuration is almost the same `.xml` file.
 
 #### Keeper configuration settings {#keeper-configuration-settings}
 
@@ -389,23 +389,23 @@ Sent yield leadership request to leader.
 - `pfev`: Returns the values for all collected events. For each event it returns event name, event value, and event's description.
 
 ```response
-FileOpen	62	Number of files opened.
-Seek	4	Number of times the 'lseek' function was called.
-ReadBufferFromFileDescriptorRead	126	Number of reads (read/pread) from a file descriptor. Does not include sockets.
-ReadBufferFromFileDescriptorReadFailed	0	Number of times the read (read/pread) from a file descriptor have failed.
-ReadBufferFromFileDescriptorReadBytes	178846	Number of bytes read from file descriptors. If the file is compressed, this will show the compressed data size.
-WriteBufferFromFileDescriptorWrite	7	Number of writes (write/pwrite) to a file descriptor. Does not include sockets.
-WriteBufferFromFileDescriptorWriteFailed	0	Number of times the write (write/pwrite) to a file descriptor have failed.
-WriteBufferFromFileDescriptorWriteBytes	153	Number of bytes written to file descriptors. If the file is compressed, this will show compressed data size.
-FileSync	2	Number of times the F_FULLFSYNC/fsync/fdatasync function was called for files.
-DirectorySync	0	Number of times the F_FULLFSYNC/fsync/fdatasync function was called for directories.
-FileSyncElapsedMicroseconds	12756	Total time spent waiting for F_FULLFSYNC/fsync/fdatasync syscall for files.
-DirectorySyncElapsedMicroseconds	0	Total time spent waiting for F_FULLFSYNC/fsync/fdatasync syscall for directories.
-ReadCompressedBytes	0	Number of bytes (the number of bytes before decompression) read from compressed sources (files, network).
-CompressedReadBufferBlocks	0	Number of compressed blocks (the blocks of data that are compressed independent of each other) read from compressed sources (files, network).
-CompressedReadBufferBytes	0	Number of uncompressed bytes (the number of bytes after decompression) read from compressed sources (files, network).
-AIOWrite	0	Number of writes with Linux or FreeBSD AIO interface
-AIOWriteBytes	0	Number of bytes written with Linux or FreeBSD AIO interface
+FileOpen        62      Number of files opened.
+Seek    4       Number of times the 'lseek' function was called.
+ReadBufferFromFileDescriptorRead        126     Number of reads (read/pread) from a file descriptor. Does not include sockets.
+ReadBufferFromFileDescriptorReadFailed  0       Number of times the read (read/pread) from a file descriptor have failed.
+ReadBufferFromFileDescriptorReadBytes   178846  Number of bytes read from file descriptors. If the file is compressed, this will show the compressed data size.
+WriteBufferFromFileDescriptorWrite      7       Number of writes (write/pwrite) to a file descriptor. Does not include sockets.
+WriteBufferFromFileDescriptorWriteFailed        0       Number of times the write (write/pwrite) to a file descriptor have failed.
+WriteBufferFromFileDescriptorWriteBytes 153     Number of bytes written to file descriptors. If the file is compressed, this will show compressed data size.
+FileSync        2       Number of times the F_FULLFSYNC/fsync/fdatasync function was called for files.
+DirectorySync   0       Number of times the F_FULLFSYNC/fsync/fdatasync function was called for directories.
+FileSyncElapsedMicroseconds     12756   Total time spent waiting for F_FULLFSYNC/fsync/fdatasync syscall for files.
+DirectorySyncElapsedMicroseconds        0       Total time spent waiting for F_FULLFSYNC/fsync/fdatasync syscall for directories.
+ReadCompressedBytes     0       Number of bytes (the number of bytes before decompression) read from compressed sources (files, network).
+CompressedReadBufferBlocks      0       Number of compressed blocks (the blocks of data that are compressed independent of each other) read from compressed sources (files, network).
+CompressedReadBufferBytes       0       Number of uncompressed bytes (the number of bytes after decompression) read from compressed sources (files, network).
+AIOWrite        0       Number of writes with Linux or FreeBSD AIO interface
+AIOWriteBytes   0       Number of bytes written with Linux or FreeBSD AIO interface
 ...
 ```
 
@@ -430,9 +430,9 @@ Example of configuration that enables `/ready` endpoint:
 
 ### Feature flags {#feature-flags}
 
-Keeper is fully compatible with ZooKeeper and its clients, but it also introduces some unique features and request types that can be used by ClickHouse client. 
-Because those features can introduce backward incompatible change, most of them are disabled by default and can be enabled using `keeper_server.feature_flags` config.  
-All features can be disabled explicitly.  
+Keeper is fully compatible with ZooKeeper and its clients, but it also introduces some unique features and request types that can be used by ClickHouse client.
+Because those features can introduce backward incompatible change, most of them are disabled by default and can be enabled using `keeper_server.feature_flags` config.
+All features can be disabled explicitly.
 If you want to enable a new feature for your Keeper cluster, we recommend you to first update all the Keeper instances in the cluster to a version that supports the feature and then enable the feature itself.
 
 Example of feature flag config that disables `multi_read` and enables `check_not_exists`:
@@ -450,10 +450,11 @@ Example of feature flag config that disables `multi_read` and enables `check_not
 
 The following features are available:
 
-`multi_read` - support for read multi request. Default: `1`  
-`filtered_list` - support for list request which filters results by the type of node (ephemeral or persistent). Default: `1`  
-`check_not_exists` - support for `CheckNotExists` request which asserts that node doesn't exists. Default: `0`  
-`create_if_not_exists` - support for `CreateIfNotExists` requests which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned. Default: `0`
+- `multi_read` - support for read multi request. Default: `1`
+- `filtered_list` - support for list request which filters results by the type of node (ephemeral or persistent). Default: `1`
+- `check_not_exists` - support for `CheckNotExists` request, which asserts that node doesn't exists. Default: `0`
+- `create_if_not_exists` - support for `CreateIfNotExists` request, which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned. Default: `0`
+- `remove_recursive` - support for `RemoveRecursive` request, which removes the node along with its subtree. Default: `0`
 
 ### Migration from ZooKeeper {#migration-from-zookeeper}
 
@@ -469,10 +470,10 @@ Seamless migration from ZooKeeper to ClickHouse Keeper is not possible. You have
 clickhouse-keeper-converter --zookeeper-logs-dir /var/lib/zookeeper/version-2 --zookeeper-snapshots-dir /var/lib/zookeeper/version-2 --output-dir /path/to/clickhouse/keeper/snapshots
 ```
 
-4. Copy snapshot to ClickHouse server nodes with a configured `keeper` or start ClickHouse Keeper instead of ZooKeeper. The snapshot must persist on all nodes, otherwise, empty nodes can be faster and one of them can become a leader.  
+4. Copy snapshot to ClickHouse server nodes with a configured `keeper` or start ClickHouse Keeper instead of ZooKeeper. The snapshot must persist on all nodes, otherwise, empty nodes can be faster and one of them can become a leader.
 
 :::note
-`keeper-converter` tool is not available from the Keeper standalone binary.  
+`keeper-converter` tool is not available from the Keeper standalone binary.
 If you have ClickHouse installed, you can use the binary directly:
 
 ```bash
@@ -554,19 +555,19 @@ Following is an example of disk definitions contained inside a config.
 </clickhouse>
 ```
 
-To use a disk for logs `keeper_server.log_storage_disk` config should be set to the name of disk.  
-To use a disk for snapshots `keeper_server.snapshot_storage_disk` config should be set to the name of disk.  
-Additionally, different disks can be used for the latest logs or snapshots by using `keeper_server.latest_log_storage_disk` and `keeper_server.latest_snapshot_storage_disk` respectively.  
+To use a disk for logs `keeper_server.log_storage_disk` config should be set to the name of disk.
+To use a disk for snapshots `keeper_server.snapshot_storage_disk` config should be set to the name of disk.
+Additionally, different disks can be used for the latest logs or snapshots by using `keeper_server.latest_log_storage_disk` and `keeper_server.latest_snapshot_storage_disk` respectively.
 In that case, Keeper will automatically move files to correct disks when new logs or snapshots are created.
-To use a disk for state file, `keeper_server.state_storage_disk` config should be set to the name of disk.  
+To use a disk for state file, `keeper_server.state_storage_disk` config should be set to the name of disk.
 
 Moving files between disks is safe and there is no risk of losing data if Keeper stops in the middle of transfer.
 Until the file is completely moved to the new disk, it's not deleted from the old one.
 
-Keeper with `keeper_server.coordination_settings.force_sync` set to `true` (`true` by default) cannot satisfy some guarantees for all types of disks.  
-Right now, only disks of type `local` support persistent sync.   
-If `force_sync` is used, `log_storage_disk` should be a `local` disk if `latest_log_storage_disk` is not used.  
-If `latest_log_storage_disk` is used, it should always be a `local` disk.   
+Keeper with `keeper_server.coordination_settings.force_sync` set to `true` (`true` by default) cannot satisfy some guarantees for all types of disks.
+Right now, only disks of type `local` support persistent sync.
+If `force_sync` is used, `log_storage_disk` should be a `local` disk if `latest_log_storage_disk` is not used.
+If `latest_log_storage_disk` is used, it should always be a `local` disk.
 If `force_sync` is disabled, disks of all types can be used in any setup.
 
 A possible storage setup for a Keeper instance could look like following:
@@ -583,7 +584,7 @@ A possible storage setup for a Keeper instance could look like following:
 </clickhouse>
 ```
 
-This instance will store all but the latest logs on disk `log_s3_plain`, while the latest log will be on the `log_local` disk.  
+This instance will store all but the latest logs on disk `log_s3_plain`, while the latest log will be on the `log_local` disk.
 Same logic applies for snapshots, all but the latest snapshots will be stored on `snapshot_s3_plain`, while the latest snapshot will be on the `snapshot_local` disk.
 
 ### Changing disk setup {#changing-disk-setup}
@@ -592,9 +593,9 @@ Same logic applies for snapshots, all but the latest snapshots will be stored on
 Before applying a new disk setup, manually back up all Keeper logs and snapshots.
 :::
 
-If a tiered disk setup is defined (using separate disks for the latest files), Keeper will try to automatically move files to the correct disks on startup.  
+If a tiered disk setup is defined (using separate disks for the latest files), Keeper will try to automatically move files to the correct disks on startup.
 The same guarantee is applied as before; until the file is completely moved to the new disk, it's not deleted from the old one, so multiple restarts
-can be safely done.  
+can be safely done.
 
 If it's necessary to move files to a completely new disk (or move from a 2-disk setup to a single disk setup), it's possible to use multiple definitions of `keeper_server.old_snapshot_storage_disk` and `keeper_server.old_log_storage_disk`.
 
@@ -614,13 +615,13 @@ The following config shows how we can move from the previous 2-disk setup to a c
 </clickhouse>
 ```
 
-On startup, all the log files will be moved from `log_local` and `log_s3_plain` to the `log_local2` disk.  
+On startup, all the log files will be moved from `log_local` and `log_s3_plain` to the `log_local2` disk.
 Also, all the snapshot files will be moved from `snapshot_local` and `snapshot_s3_plain` to the `snapshot_local2` disk.
 
 ## Configuring logs cache {#configuring-logs-cache}
 
-To minimize the amount of data read from disk, Keeper caches log entries in memory.  
-If requests are large, log entries will take too much memory so the amount of cached logs is capped.  
+To minimize the amount of data read from disk, Keeper caches log entries in memory.
+If requests are large, log entries will take too much memory so the amount of cached logs is capped.
 The limit is controlled with these two configs:
 - `latest_logs_cache_size_threshold` - total size of latest logs stored in cache
 - `commit_logs_cache_size_threshold` - total size of subsequent logs that need to be committed next
@@ -628,8 +629,8 @@ The limit is controlled with these two configs:
 If the default values are too big, you can reduce the memory usage by reducing these two configs.
 
 :::note
-You can use `pfev` command to check amount of logs read from each cache and from a file.  
-You can also use metrics from Prometheus endpoint to track the current size of both caches.  
+You can use `pfev` command to check amount of logs read from each cache and from a file.
+You can also use metrics from Prometheus endpoint to track the current size of both caches.
 :::
 
 
@@ -639,7 +640,7 @@ Keeper can expose metrics data for scraping from [Prometheus](https://prometheus
 
 Settings:
 
-- `endpoint` – HTTP endpoint for scraping metrics by the Prometheus server. Start from ‘/’.
+- `endpoint` – HTTP endpoint for scraping metrics by the Prometheus server. Start from '/'.
 - `port` – Port for `endpoint`.
 - `metrics` – Flag that sets to expose metrics from the [system.metrics](/operations/system-tables/metrics) table.
 - `events` – Flag that sets to expose metrics from the [system.events](/operations/system-tables/events) table.
@@ -883,7 +884,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     ```
 
     On `chnode2`:
-6. 
+6.
     ```sql
     SELECT *
     FROM db1.table1
@@ -1180,18 +1181,13 @@ SHOW CREATE TABLE db_uuid.uuid_table1;
 ```response
 SHOW CREATE TABLE db_uuid.uuid_table1
 
-Query id: 5925ecce-a54f-47d8-9c3a-ad3257840c9e
-
-┌─statement────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ CREATE TABLE db_uuid.uuid_table1
+CREATE TABLE db_uuid.uuid_table1
 (
     `id` UInt64,
     `column1` String
 )
 ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}')
 ORDER BY id
-SETTINGS index_granularity = 8192 │
-└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
 1 row in set. Elapsed: 0.003 sec.
 ```

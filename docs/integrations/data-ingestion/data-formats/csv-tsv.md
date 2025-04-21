@@ -12,7 +12,7 @@ ClickHouse supports importing data from and exporting to CSV. Since CSV files ca
 
 ## Importing data from a CSV file {#importing-data-from-a-csv-file}
 
-Before importing data, let’s create a table with a relevant structure:
+Before importing data, let's create a table with a relevant structure:
 
 ```sql
 CREATE TABLE sometable
@@ -33,7 +33,7 @@ To import data from the [CSV file](assets/data_small.csv) to the `sometable` tab
 clickhouse-client -q "INSERT INTO sometable FORMAT CSV" < data_small.csv
 ```
 
-Note that we use [FORMAT CSV](/interfaces/formats.md/#csv) to let ClickHouse know we’re ingesting CSV formatted data. Alternatively, we can load data from a local file using the [FROM INFILE](/sql-reference/statements/insert-into.md/#inserting-data-from-a-file) clause:
+Note that we use [FORMAT CSV](/interfaces/formats.md/#csv) to let ClickHouse know we're ingesting CSV formatted data. Alternatively, we can load data from a local file using the [FROM INFILE](/sql-reference/statements/insert-into.md/#inserting-data-from-a-file) clause:
 
 
 ```sql
@@ -96,7 +96,7 @@ Sometimes, we might skip a certain number of lines while importing data from a C
 SET input_format_csv_skip_first_lines = 10
 ```
 
-In this case, we’re going to skip the first ten lines from the CSV file:
+In this case, we're going to skip the first ten lines from the CSV file:
 
 ```sql
 SELECT count(*) FROM file('data-small.csv', CSV)
@@ -107,7 +107,7 @@ SELECT count(*) FROM file('data-small.csv', CSV)
 └─────────┘
 ```
 
-The [file](assets/data_small.csv) has 1k rows, but ClickHouse loaded only 990 since we’ve asked to skip the first 10.
+The [file](assets/data_small.csv) has 1k rows, but ClickHouse loaded only 990 since we've asked to skip the first 10.
 
 :::tip
 When using the `file()` function, with ClickHouse Cloud you will need to run the commands in `clickhouse client` on the machine where the file resides. Another option is to use [`clickhouse-local`](/operations/utilities/clickhouse-local.md) to explore files locally.
@@ -170,7 +170,7 @@ clickhouse-client -q "INSERT INTO sometable FORMAT TabSeparated" < data_small.ts
 ```
 
 
-There’s also a [TabSeparatedWithNames](/interfaces/formats.md/#tabseparatedwithnames) format to allow working with TSV files that have headers. And, like for CSV, we can skip the first X lines using the [input_format_tsv_skip_first_lines](/operations/settings/settings-formats.md/#input_format_tsv_skip_first_lines) option.
+There's also a [TabSeparatedWithNames](/interfaces/formats.md/#tabseparatedwithnames) format to allow working with TSV files that have headers. And, like for CSV, we can skip the first X lines using the [input_format_tsv_skip_first_lines](/operations/settings/settings-formats.md/#input_format_tsv_skip_first_lines) option.
 
 
 ### Raw TSV {#raw-tsv}
@@ -217,7 +217,7 @@ FORMAT CSVWithNames
 
 ### Saving exported data to a CSV file {#saving-exported-data-to-a-csv-file}
 
-To save exported data to a file, we can use the [INTO…OUTFILE](/sql-reference/statements/select/into-outfile.md) clause:
+To save exported data to a file, we can use the [INTO...OUTFILE](/sql-reference/statements/select/into-outfile.md) clause:
 
 ```sql
 SELECT *
@@ -282,7 +282,7 @@ DESCRIBE file('data-small.csv', CSV)
 ```
 
 
-Here, ClickHouse could guess column types for our CSV file efficiently. If we don’t want ClickHouse to guess, we can disable this with the following option:
+Here, ClickHouse could guess column types for our CSV file efficiently. If we don't want ClickHouse to guess, we can disable this with the following option:
 
 
 ```sql

@@ -7,6 +7,7 @@ description: 'Learn about SQL Console'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+import Image from '@theme/IdealImage';
 import table_list_and_schema from '@site/static/images/cloud/sqlconsole/table-list-and-schema.png';
 import view_columns from '@site/static/images/cloud/sqlconsole/view-columns.png';
 import abc from '@site/static/images/cloud/sqlconsole/abc.png';
@@ -59,60 +60,60 @@ SQL console is the fastest and easiest way to explore and query your databases i
 
 An overview of tables contained in your ClickHouse instance can be found in the left sidebar area. Use the database selector at the top of the left bar to view the tables in a specific database
 
-<img src={table_list_and_schema} alt="table list and schema"/>
+<Image img={table_list_and_schema} size="lg" border alt="Table list and schema view showing database tables in the left sidebar"/>
 
 Tables in the list can also be expanded to view columns and types
 
-<img src={view_columns} alt="view columns"/>
+<Image img={view_columns} size="lg" border alt="View of expanded table showing column names and data types"/>
 
 ### Exploring Table Data {#exploring-table-data}
 
 Click on a table in the list to open it in a new tab. In the Table View, data can be easily viewed, selected, and copied. Note that structure and formatting are preserved when copy-pasting to spreadsheet applications such as Microsoft Excel and Google Sheets. You can flip between pages of table data (paginated in 30-row increments) using the navigation in the footer.
 
-<img src={abc} alt="abc"/>
+<Image img={abc} size="lg" border alt="Table view showing data that can be selected and copied"/>
 
 ### Inspecting Cell Data {#inspecting-cell-data}
 
-The Cell Inspector tool can be used to view large amounts of data contained within a single cell. To open it, right-click on a cell and select ‘Inspect Cell’. The contents of the cell inspector can be copied by clicking the copy icon in the top right corner of the inspector contents.
+The Cell Inspector tool can be used to view large amounts of data contained within a single cell. To open it, right-click on a cell and select 'Inspect Cell'. The contents of the cell inspector can be copied by clicking the copy icon in the top right corner of the inspector contents.
 
-<img src={inspecting_cell_content} alt="inspecting cell content"/>
+<Image img={inspecting_cell_content} size="lg" border alt="Cell inspector dialog showing the content of a selected cell"/>
 
 ## Filtering and Sorting Tables {#filtering-and-sorting-tables}
 
 ### Sorting a table {#sorting-a-table}
 
-To sort a table in the SQL console, open a table and select the ‘Sort’ button in the toolbar. This button will open a menu that will allow you to configure your sort. You can choose a column by which to sort and configure the ordering of the sort (ascending or descending). Select ‘Apply’ or press Enter to sort your table
+To sort a table in the SQL console, open a table and select the 'Sort' button in the toolbar. This button will open a menu that will allow you to configure your sort. You can choose a column by which to sort and configure the ordering of the sort (ascending or descending). Select 'Apply' or press Enter to sort your table
 
-<img src={sort_descending_on_column} alt="sort descending on a column"/>
+<Image img={sort_descending_on_column} size="lg" border alt="Sort dialog showing configuration for descending sort on a column"/>
 
-The SQL console also allows you to add multiple sorts to a table. Click the ‘Sort’ button again to add another sort. Note: sorts are applied in the order that they appear in the sort pane (top to bottom). To remove a sort, simply click the ‘x’ button next to the sort.
+The SQL console also allows you to add multiple sorts to a table. Click the 'Sort' button again to add another sort. Note: sorts are applied in the order that they appear in the sort pane (top to bottom). To remove a sort, simply click the 'x' button next to the sort.
 
 ### Filtering a table {#filtering-a-table}
 
-To filter a table in the SQL console, open a table and select the ‘Filter’ button. Just like sorting, this button will open a menu that will allow you to configure your filter. You can choose a column by which to filter and select the necessary criteria. The SQL console intelligently displays filter options that correspond to the type of data contained in the column.
+To filter a table in the SQL console, open a table and select the 'Filter' button. Just like sorting, this button will open a menu that will allow you to configure your filter. You can choose a column by which to filter and select the necessary criteria. The SQL console intelligently displays filter options that correspond to the type of data contained in the column.
 
-<img src={filter_on_radio_column_equal_gsm} alt="filter on the radio column equal to GSM"/>
+<Image img={filter_on_radio_column_equal_gsm} size="lg" border alt="Filter dialog showing configuration to filter radio column equal to GSM"/>
 
-When you’re happy with your filter, you can select ‘Apply’ to filter your data. You can also add additional filters as shown below.
+When you're happy with your filter, you can select 'Apply' to filter your data. You can also add additional filters as shown below.
 
-<img src={add_more_filters} alt="Add a filter on range greater than 2000"/>
+<Image img={add_more_filters} size="lg" border alt="Dialog showing how to add an additional filter on range greater than 2000"/>
 
-Similar to the sort functionality, click the ‘x’ button next to a filter to remove it.
+Similar to the sort functionality, click the 'x' button next to a filter to remove it.
 
 ### Filtering and sorting together {#filtering-and-sorting-together}
 
-The SQL console allows you to filter and sort a table at the same time. To do this, add all desired filters and sorts using the steps described above and click the ‘Apply’ button.
+The SQL console allows you to filter and sort a table at the same time. To do this, add all desired filters and sorts using the steps described above and click the 'Apply' button.
 
-<img src={filtering_and_sorting_together} alt="Filtering and sorting together"/>
+<Image img={filtering_and_sorting_together} size="lg" border alt="Interface showing both filtering and sorting applied simultaneously"/>
 
 ### Creating a query from filters and sorts {#creating-a-query-from-filters-and-sorts}
 
-The SQL console can convert your sorts and filters directly into queries with one click. Simply select the ‘Create Query’ button from the toolbar with the sort and filter parameters of your choosing. After clicking ‘Create query’, a new query tab will open pre-populated with the SQL command corresponding to the data contained in your table view.
+The SQL console can convert your sorts and filters directly into queries with one click. Simply select the 'Create Query' button from the toolbar with the sort and filter parameters of your choosing. After clicking 'Create query', a new query tab will open pre-populated with the SQL command corresponding to the data contained in your table view.
 
-<img src={create_a_query_from_sorts_and_filters} alt="Create a query from sorts and filters"/>
+<Image img={create_a_query_from_sorts_and_filters} size="lg" border alt="Interface showing the Create Query button that generates SQL from filters and sorts"/>
 
 :::note
-Filters and sorts are not mandatory when using the ‘Create Query’ feature.
+Filters and sorts are not mandatory when using the 'Create Query' feature.
 :::
 
 You can learn more about querying in the SQL console by reading the (link) query documentation.
@@ -123,14 +124,14 @@ You can learn more about querying in the SQL console by reading the (link) query
 
 There are two ways to create a new query in the SQL console.
 
-- Click the ‘+’ button in the tab bar
-- Select the ‘New Query’ button from the left sidebar query list
+- Click the '+' button in the tab bar
+- Select the 'New Query' button from the left sidebar query list
 
-<img src={creating_a_query} alt="Creating a query"/>
+<Image img={creating_a_query} size="lg" border alt="Interface showing how to create a new query using the + button or New Query button"/>
 
 ### Running a Query {#running-a-query}
 
-To run a query, type your SQL command(s) into the SQL Editor and click the ‘Run’ button or use the shortcut `cmd / ctrl + enter`. To write and run multiple commands sequentially, make sure to add a semicolon after each command.
+To run a query, type your SQL command(s) into the SQL Editor and click the 'Run' button or use the shortcut `cmd / ctrl + enter`. To write and run multiple commands sequentially, make sure to add a semicolon after each command.
 
 Query Execution Options
 By default, clicking the run button will run all commands contained in the SQL Editor. The SQL console supports two other query execution options:
@@ -138,19 +139,19 @@ By default, clicking the run button will run all commands contained in the SQL E
 - Run selected command(s)
 - Run command at the cursor
 
-To run selected command(s), highlight the desired command or sequence of commands and click the ‘Run’ button (or use the `cmd / ctrl + enter` shortcut). You can also select ‘Run selected’ from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
+To run selected command(s), highlight the desired command or sequence of commands and click the 'Run' button (or use the `cmd / ctrl + enter` shortcut). You can also select 'Run selected' from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
 
-<img src={run_selected_query} alt="run selected query"/>
+<Image img={run_selected_query} size="lg" border alt="Interface showing how to run a selected portion of SQL query"/>
 
 Running the command at the current cursor position can be achieved in two ways:
 
-- Select ‘At Cursor’ from the extended run options menu (or use the corresponding `cmd / ctrl + shift + enter` keyboard shortcut
+- Select 'At Cursor' from the extended run options menu (or use the corresponding `cmd / ctrl + shift + enter` keyboard shortcut
 
-<img src={run_at_cursor_2} alt="run at cursor"/>
+<Image img={run_at_cursor_2} size="lg" border alt="Run at cursor option in the extended run options menu"/>
 
-  - Selecting ‘Run at cursor’ from the SQL Editor context menu
+  - Selecting 'Run at cursor' from the SQL Editor context menu
 
-<img src={run_at_cursor} alt="run at cursor"/>
+<Image img={run_at_cursor} size="lg" border alt="Run at cursor option in the SQL Editor context menu"/>
 
 :::note
 The command present at the cursor position will flash yellow on execution.
@@ -158,19 +159,19 @@ The command present at the cursor position will flash yellow on execution.
 
 ### Canceling a Query {#canceling-a-query}
 
-While a query is running, the ‘Run’ button in the Query Editor toolbar will be replaced with a ‘Cancel’ button. Simply click this button or press `Esc` to cancel the query. Note: Any results that have already been returned will persist after cancellation.
+While a query is running, the 'Run' button in the Query Editor toolbar will be replaced with a 'Cancel' button. Simply click this button or press `Esc` to cancel the query. Note: Any results that have already been returned will persist after cancellation.
 
-<img src={cancel_a_query} alt="Cancel a query"/>
+<Image img={cancel_a_query} size="lg" border alt="Cancel button that appears during query execution"/>
 
 ### Saving a Query {#saving-a-query}
 
-If not previously named, your query should be called ‘Untitled Query’. Click on the query name to change it. Renaming a query will cause the query to be saved.
+If not previously named, your query should be called 'Untitled Query'. Click on the query name to change it. Renaming a query will cause the query to be saved.
 
-<img src={give_a_query_a_name} alt="Give a query a name"/>
+<Image img={give_a_query_a_name} size="lg" border alt="Interface showing how to rename a query from Untitled Query"/>
 
 You can also use the save button or `cmd / ctrl + s` keyboard shortcut to save a query.
 
-<img src={save_the_query} alt="Save the query"/>
+<Image img={save_the_query} size="lg" border alt="Save button in the query editor toolbar"/>
 
 ## Using GenAI to manage queries {#using-genai-to-manage-queries}
 
@@ -300,33 +301,33 @@ Keep in mind that GenAI is an experimental feature. Use caution when running Gen
 
 ### Searching query results {#searching-query-results}
 
-After a query is executed, you can quickly search through the returned result set using the search input in the result pane. This feature assists in previewing the results of an additional `WHERE` clause or simply checking to ensure that specific data is included in the result set. After inputting a value into the search input, the result pane will update and return records containing an entry that matches the inputted value. In this example, we’ll look for all instances of `breakfast` in the `hackernews` table for comments that contain `ClickHouse` (case-insensitive):
+After a query is executed, you can quickly search through the returned result set using the search input in the result pane. This feature assists in previewing the results of an additional `WHERE` clause or simply checking to ensure that specific data is included in the result set. After inputting a value into the search input, the result pane will update and return records containing an entry that matches the inputted value. In this example, we'll look for all instances of `breakfast` in the `hackernews` table for comments that contain `ClickHouse` (case-insensitive):
 
-<img src={search_hn} alt="Search Hacker News Data"/>
+<Image img={search_hn} size="lg" border alt="Search Hacker News Data"/>
 
-Note: Any field matching the inputted value will be returned. For example, the third record in the above screenshot does not match ‘breakfast’ in the `by` field, but the `text` field does:
+Note: Any field matching the inputted value will be returned. For example, the third record in the above screenshot does not match 'breakfast' in the `by` field, but the `text` field does:
 
-<img src={match_in_body} alt="Match in body"/>
+<Image img={match_in_body} size="lg" border alt="Match in body"/>
 
 ### Adjusting pagination settings {#adjusting-pagination-settings}
 
 By default, the query result pane will display every result record on a single page. For larger result sets, it may be preferable to paginate results for easier viewing. This can be accomplished using the pagination selector in the bottom right corner of the result pane:
 
-<img src={pagination} alt="Pagination options"/>
+<Image img={pagination} size="lg" border alt="Pagination options"/>
 
 Selecting a page size will immediately apply pagination to the result set and navigation options will appear in the middle of the result pane footer
 
-<img src={pagination_nav} alt="Pagination navigation"/>
+<Image img={pagination_nav} size="lg" border alt="Pagination navigation"/>
 
 ### Exporting query result data {#exporting-query-result-data}
 
-Query result sets can be easily exported to CSV format directly from the SQL console. To do so, open the `•••` menu on the right side of the result pane toolbar and select ‘Download as CSV’.
+Query result sets can be easily exported to CSV format directly from the SQL console. To do so, open the `•••` menu on the right side of the result pane toolbar and select 'Download as CSV'.
 
-<img src={download_as_csv} alt="Download as CSV"/>
+<Image img={download_as_csv} size="lg" border alt="Download as CSV"/>
 
 ## Visualizing Query Data {#visualizing-query-data}
 
-Some data can be more easily interpreted in chart form. You can quickly create visualizations from query result data directly from the SQL console in just a few clicks. As an example, we’ll use a query that calculates weekly statistics for NYC taxi trips:
+Some data can be more easily interpreted in chart form. You can quickly create visualizations from query result data directly from the SQL console in just a few clicks. As an example, we'll use a query that calculates weekly statistics for NYC taxi trips:
 
 ```sql
 select
@@ -342,35 +343,35 @@ order by
    1 asc
 ```
 
-<img src={tabular_query_results} alt="Tabular query results"/>
+<Image img={tabular_query_results} size="lg" border alt="Tabular query results"/>
 
-Without visualization, these results are difficult to interpret. Let’s turn them into a chart.
+Without visualization, these results are difficult to interpret. Let's turn them into a chart.
 
 ### Creating charts {#creating-charts}
 
-To begin building your visualization, select the ‘Chart’ option from the query result pane toolbar. A chart configuration pane will appear:
+To begin building your visualization, select the 'Chart' option from the query result pane toolbar. A chart configuration pane will appear:
 
-<img src={switch_from_query_to_chart} alt="Switch from query to chart"/>
+<Image img={switch_from_query_to_chart} size="lg" border alt="Switch from query to chart"/>
 
-We’ll start by creating a simple bar chart tracking `trip_total` by `week`. To accomplish this, we’ll drag the `week` field to the x-axis and the `trip_total` field to the y-axis:
+We'll start by creating a simple bar chart tracking `trip_total` by `week`. To accomplish this, we'll drag the `week` field to the x-axis and the `trip_total` field to the y-axis:
 
-<img src={trip_total_by_week} alt="Trip total by week"/>
+<Image img={trip_total_by_week} size="lg" border alt="Trip total by week"/>
 
-Most chart types support multiple fields on numeric axes. To demonstrate, we’ll drag the fare_total field onto the y-axis:
+Most chart types support multiple fields on numeric axes. To demonstrate, we'll drag the fare_total field onto the y-axis:
 
-<img src={bar_chart} alt="Bar chart"/>
+<Image img={bar_chart} size="lg" border alt="Bar chart"/>
 
 ### Customizing charts {#customizing-charts}
 
 The SQL console supports ten chart types that can be selected from the chart type selector in the chart configuration pane. For example, we can easily change the previous chart type from Bar to an Area:
 
-<img src={change_from_bar_to_area} alt="Change from Bar chart to Area"/>
+<Image img={change_from_bar_to_area} size="lg" border alt="Change from Bar chart to Area"/>
 
 Chart titles match the name of the query supplying the data. Updating the name of the query will cause the Chart title to update as well:
 
-<img src={update_query_name} alt="Update query name"/>
+<Image img={update_query_name} size="lg" border alt="Update query name"/>
 
-A number of more advanced chart characteristics can also be adjusted in the ‘Advanced’ section of the chart configuration pane. To begin, we’ll adjust the following settings:
+A number of more advanced chart characteristics can also be adjusted in the 'Advanced' section of the chart configuration pane. To begin, we'll adjust the following settings:
 
 - Subtitle
 - Axis titles
@@ -378,9 +379,29 @@ A number of more advanced chart characteristics can also be adjusted in the ‘A
 
 Our chart will be updated accordingly:
 
-<img src={update_subtitle_etc} alt="Update subtitle etc."/>
+<Image img={update_subtitle_etc} size="lg" border alt="Update subtitle etc."/>
 
-In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the ‘Advanced’ section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
+In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
 
-<img src={adjust_axis_scale} alt="Adjust axis scale"/>
+<Image img={adjust_axis_scale} size="lg" border alt="Adjust axis scale"/>
+
+## Sharing Queries {#sharing-queries}
+
+The SQL console enables you to share queries with your team. When a query is shared, all members of the team can see and edit the query. Shared queries are a great way to collaborate with your team.
+
+To share a query, click the 'Share' button in the query toolbar.
+
+<Image img={sql_console_share} size="lg" border alt="Share button in the query toolbar"/>
+
+A dialog will open, allowing you to share the query with all members of a team. If you have multiple teams, you can select which team to share the query with.
+
+<Image img={sql_console_edit_access} size="lg" border alt="Dialog for editing access to a shared query"/>
+
+<Image img={sql_console_add_team} size="lg" border alt="Interface for adding a team to a shared query"/>
+
+<Image img={sql_console_edit_member} size="lg" border alt="Interface for editing member access to a shared query"/>
+
+In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
+
+<Image img={sql_console_access_queries} size="lg" border alt="Shared with me section in the query list"/>
 

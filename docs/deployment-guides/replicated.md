@@ -6,6 +6,7 @@ title: 'Replication for fault tolerance'
 description: 'Page describing an example architecture with five servers configured. Two are used to host copies of the data and the rest are used to coordinate the replication of data'
 ---
 
+import Image from '@theme/IdealImage';
 import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
 import ConfigFileNote from '@site/docs/_snippets/_config-files.md';
 import KeeperConfigFileNote from '@site/docs/_snippets/_keeper-config-files.md';
@@ -21,7 +22,7 @@ In this architecture, there are five servers configured. Two are used to host co
 ## Environment {#environment}
 ### Architecture Diagram {#architecture-diagram}
 
-<img src={ReplicationArchitecture} alt="Architecture diagram for 1 shard and 2 replicas with ReplicatedMergeTree" />
+<Image img={ReplicationArchitecture} size="md" alt="Architecture diagram for 1 shard and 2 replicas with ReplicatedMergeTree" />
 
 |Node|Description|
 |----|-----------|
@@ -404,48 +405,48 @@ You may need to install `netcat` in order to send the `mntr` command to Keeper. 
 echo mntr | nc localhost 9181
 ```
 ```response title="response from a follower"
-zk_version	v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
-zk_avg_latency	0
-zk_max_latency	0
-zk_min_latency	0
-zk_packets_received	0
-zk_packets_sent	0
-zk_num_alive_connections	0
-zk_outstanding_requests	0
+zk_version      v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
+zk_avg_latency  0
+zk_max_latency  0
+zk_min_latency  0
+zk_packets_received     0
+zk_packets_sent 0
+zk_num_alive_connections        0
+zk_outstanding_requests 0
 # highlight-next-line
-zk_server_state	follower
-zk_znode_count	6
-zk_watch_count	0
-zk_ephemerals_count	0
-zk_approximate_data_size	1271
-zk_key_arena_size	4096
-zk_latest_snapshot_size	0
-zk_open_file_descriptor_count	46
-zk_max_file_descriptor_count	18446744073709551615
+zk_server_state follower
+zk_znode_count  6
+zk_watch_count  0
+zk_ephemerals_count     0
+zk_approximate_data_size        1271
+zk_key_arena_size       4096
+zk_latest_snapshot_size 0
+zk_open_file_descriptor_count   46
+zk_max_file_descriptor_count    18446744073709551615
 ```
 
 ```response title="response from a leader"
-zk_version	v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
-zk_avg_latency	0
-zk_max_latency	0
-zk_min_latency	0
-zk_packets_received	0
-zk_packets_sent	0
-zk_num_alive_connections	0
-zk_outstanding_requests	0
+zk_version      v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
+zk_avg_latency  0
+zk_max_latency  0
+zk_min_latency  0
+zk_packets_received     0
+zk_packets_sent 0
+zk_num_alive_connections        0
+zk_outstanding_requests 0
 # highlight-next-line
-zk_server_state	leader
-zk_znode_count	6
-zk_watch_count	0
-zk_ephemerals_count	0
-zk_approximate_data_size	1271
-zk_key_arena_size	4096
-zk_latest_snapshot_size	0
-zk_open_file_descriptor_count	48
-zk_max_file_descriptor_count	18446744073709551615
+zk_server_state leader
+zk_znode_count  6
+zk_watch_count  0
+zk_ephemerals_count     0
+zk_approximate_data_size        1271
+zk_key_arena_size       4096
+zk_latest_snapshot_size 0
+zk_open_file_descriptor_count   48
+zk_max_file_descriptor_count    18446744073709551615
 # highlight-start
-zk_followers	2
-zk_synced_followers	2
+zk_followers    2
+zk_synced_followers     2
 # highlight-end
 ```
 

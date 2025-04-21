@@ -6,10 +6,14 @@ description: 'How to tail a log file into ClickHouse using Vector'
 title: 'Integrating Vector with ClickHouse'
 ---
 
+import Image from '@theme/IdealImage';
 import vector01 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_01.png';
 import vector02 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_02.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Integrating Vector with ClickHouse
+
+<CommunityMaintainedBadge/>
 
 Being able to analyze your logs in real time is critical for production applications. Have you ever wondered if ClickHouse is good at storing and analyzing log data? Just checkout <a href="https://eng.uber.com/logging/" target="_blank">Uber's experience</a> with converting their logging infrastructure from ELK to ClickHouse.
 
@@ -90,7 +94,7 @@ Vector collects, transforms and routes logs, metrics, and traces (referred to as
     ```sql
     SELECT * FROM nginxdb.access_logs
     ```
-    <img src={vector01} class="image" alt="View the logs" />
+    <Image img={vector01} size="lg" border alt="View ClickHouse logs in table format" />
 
 
 ## 4. Parse the Logs {#4-parse-the-logs}
@@ -173,7 +177,7 @@ Having the logs in ClickHouse is great, but storing each event as a single strin
     ```sql
     SELECT * FROM nginxdb.access_logs_view
     ```
-    <img src={vector02} class="image" alt="View the logs" />
+    <Image img={vector02} size="lg" border alt="View parsed ClickHouse logs in table format" />
 
     :::note
     The lesson above stored the data in two tables, but you could change the initial `nginxdb.access_logs` table to use the **Null** table engine - the parsed data will still end up in the `nginxdb.access_logs_view` table, but the raw data will not be stored in a table.

@@ -1,5 +1,5 @@
 array,https://clickhouse.com/docs/sql-reference/functions/array-functions,https://clickhouse.com/docs/sql-reference/data-types/array,https://clickhouse.com/docs/sql-reference/statements/select/array-join
-json,https://clickhouse.com/docs/sql-reference/data-types/newjson,https://clickhouse.com/docs/integrations/data-formats/json/loading,https://clickhouse.com/docs/integrations/data-formats/json/inference
+json,https://clickhouse.com/docs/sql-reference/data-types/newjson,https://clickhouse.com/docs/integrations/data-formats/json/overview,https://clickhouse.com/docs/integrations/data-formats/json/inference
 index,https://clickhouse.com/docs/optimize/sparse-primary-indexes,https://clickhouse.com/docs/optimize/skipping-indexes,
 join,https://clickhouse.com/docs/sql-reference/statements/select/join,https://clickhouse.com/docs/guides/joining-tables,
 map,https://clickhouse.com/docs/sql-reference/data-types/map,https://clickhouse.com/docs/zh/sql-reference/functions/tuple-map-functions,
@@ -49,7 +49,7 @@ window,https://clickhouse.com/docs/sql-reference/window-functions,,
 replacingmergetree,https://clickhouse.com/docs/engines/table-engines/mergetree-family/replacingmergetree,,
 datediff,https://clickhouse.com/docs/sql-reference/functions/date-time-functions#date_diff,,
 csv,https://clickhouse.com/docs/integrations/data-formats/csv-tsv,,
-materialized,https://clickhouse.com/docs/materialized-view/incremental-materialized-view,https://clickhouse.com/docs/materialized-view/refreshable-materialized-view,https://clickhouse.com/docs/materialized-view
+materialized,https://clickhouse.com/docs/materialized-view/incremental-materialized-view,https://clickhouse.com/docs/materialized-view/refreshable-materialized-view,https://clickhouse.com/docs/materialized-views
 merge,https://clickhouse.com/docs/parts,https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree,
 quantile,https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantile,,
 lag,https://clickhouse.com/docs/sql-reference/window-functions/lagInFrame,,
@@ -83,7 +83,7 @@ keeper,https://clickhouse.com/docs/guides/sre/keeper/clickhouse-keeper,https://c
 type,https://clickhouse.com/docs/sql-reference/data-types,https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions,
 nullable,https://clickhouse.com/docs/sql-reference/data-types/nullable,https://clickhouse.com/docs/cloud/bestpractices/avoid-nullable-columns,https://clickhouse.com/docs/sql-reference/functions/functions-for-nulls
 projection,https://clickhouse.com/docs/sql-reference/statements/alter/projection,https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree#projections,https://clickhouse.com/docs/knowledgebase/projection_example
-jdbc,https://clickhouse.com/docs/interfaces/jdbc,https://clickhouse.com/docs/integrations/java/jdbc-v2, https://clickhouse.com/docs/engines/table-engines/integrations/jdbc
+jdbc,https://clickhouse.com/docs/interfaces/jdbc,https://clickhouse.com/docs/integrations/language-clients/java/jdbc,https://clickhouse.com/docs/engines/table-engines/integrations/jdbc
 ifnull,https://clickhouse.com/docs/sql-reference/functions/functions-for-nulls#ifnull,https://clickhouse.com/docs/sql-reference/functions/conditional-functions,
 any,https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/any,https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/first_value,
 optimize,https://clickhouse.com/docs/sql-reference/statements/optimize,https://clickhouse.com/docs/cloud/bestpractices/avoid-optimize-final,
@@ -210,9 +210,10 @@ max_bytes_before_external_group_by,https://clickhouse.com/docs/operations/settin
 max_bytes_before_external_sort,https://clickhouse.com/docs/operations/settings/settings#max_bytes_before_external_sort,,
 result_overflow_mode,https://clickhouse.com/docs/operations/settings/settings#result_overflow_mode,,
 use_query_cache,https://clickhouse.com/docs/operations/settings/settings#use_query_cache,,
-date time best effort,https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#parsedatetimebesteffortusorzero,https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#parsedatetimebesteffort
+date time best effort,https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#parsedatetimebesteffortusorzero,https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#parsedatetimebesteffort,
 if,https://clickhouse.com/docs/sql-reference/functions/conditional-functions,,
 system parts,https://clickhouse.com/docs/operations/system-tables/parts,,
-system tables,https://clickhouse.com/docs/operations/system-tables/tables,https://clickhouse.com/docs/operations/system-tables/overview,
-sparse primary keys,https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes#a-full-table-scan
-ParquetMetadata,https://clickhouse.com/docs/interfaces/formats/ParquetMetadata
+system tables,https://clickhouse.com/docs/operations/system-tables/tables,https://clickhouse.com/docs/operations/system-tables/overview,,
+sparse primary keys,https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes#a-full-table-scan,,
+ParquetMetadata,https://clickhouse.com/docs/interfaces/formats/ParquetMetadata,,
+filelog,https://clickhouse.com/docs/engines/table-engines/special/filelog,,

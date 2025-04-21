@@ -12,7 +12,7 @@ import observability_6 from '@site/static/images/use-cases/observability/observa
 import observability_7 from '@site/static/images/use-cases/observability/observability-7.png';
 import observability_8 from '@site/static/images/use-cases/observability/observability-8.png';
 import observability_9 from '@site/static/images/use-cases/observability/observability-9.png';
-
+import Image from '@theme/IdealImage';
 
 # Integrating OpenTelemetry for Data Collection
 
@@ -56,16 +56,11 @@ Below we assume a simple agent collector, sending its events directly to ClickHo
 
 ### Collecting logs {#collecting-logs}
 
-The principal advantage of using a collector is it allows your services to offload data quickly, leaving the Collector to take care of additional handling like retries, batching, encryption or even sensitive data filtering. 
+The principal advantage of using a collector is it allows your services to offload data quickly, leaving the Collector to take care of additional handling like retries, batching, encryption or even sensitive data filtering.
 
 The Collector uses the terms [receiver](https://opentelemetry.io/docs/collector/configuration/#receivers), [processor](https://opentelemetry.io/docs/collector/configuration/#processors), and [exporter](https://opentelemetry.io/docs/collector/configuration/#exporters) for its three main processing stages. Receivers are used for data collection and can either be pull or push-based. Processors provide the ability to perform transformations and enrichment of messages. Exporters are responsible for sending the data to a downstream service. While this service can, in theory, be another collector, we assume all data is sent directly to ClickHouse for the initial discussion below.
 
-<img src={observability_3}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
-
-<br />
+<Image img={observability_3} alt="Collecting logs" size="md"/>
 
 We recommend users familiarize themselves with the full set of receivers, processors and exporters.
 
@@ -73,23 +68,13 @@ The collector provides two principal receivers for collecting logs:
 
 **Via OTLP** - In this case, logs are sent (pushed) directly to the collector from OpenTelemetry SDKs via the OTLP protocol. The [OpenTelemetry demo](https://opentelemetry.io/docs/demo/) employs this approach, with the OTLP exporters in each language assuming a local collector endpoint. The collector must be configured with the OTLP receiver in this case —see the above [demo for a configuration](https://github.com/ClickHouse/opentelemetry-demo/blob/main/src/otelcollector/otelcol-config.yml#L5-L12). The advantage of this approach is that log data will automatically contain Trace Ids, allowing users to later identify the traces for a specific log and vice versa.
 
-<img src={observability_4}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
-
-<br />
+<Image img={observability_4} alt="Collecting logs via otlp" size="md"/>
 
 This approach requires users to instrument their code with their [appropriate language SDK](https://opentelemetry.io/docs/languages/).
 
 - **Scraping via Filelog receiver** - This receiver tails files on disk and formulates log messages, sending these to ClickHouse. This receiver handles complex tasks such as detecting multi-line messages, handling log rollovers, checkpointing for robustness to restart, and extracting structure. This receiver is additionally able to tail Docker and Kubernetes container logs, deployable as a helm chart, [extracting the structure from these](https://opentelemetry.io/blog/2024/otel-collector-container-log-parser/) and enriching them with the pod details.
 
-<img src={observability_5}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
-
-<br />
+<Image img={observability_5} alt="File log receiver" size="md"/>
 
 **Most deployments will use a combination of the above receivers. We recommend users read the [collector documentation](https://opentelemetry.io/docs/collector/) and familiarize themselves with the basic concepts, along with [the configuration structure](https://opentelemetry.io/docs/collector/configuration/) and [installation methods](https://opentelemetry.io/docs/collector/installation/).**
 
@@ -99,7 +84,7 @@ This approach requires users to instrument their code with their [appropriate la
 
 ## Structured vs Unstructured {#structured-vs-unstructured}
 
-Logs can either be structured or unstructured. 
+Logs can either be structured or unstructured.
 
 A structured log will employ a data format such as JSON, defining metadata fields such as http code and source IP address.
 
@@ -185,24 +170,24 @@ SeverityText:
 SeverityNumber: Unspecified(0)
 Body: Str({"remote_addr":"66.249.66.195","remote_user":"-","run_time":"0","time_local":"2019-01-22 01:12:53.000","request_type":"GET","request_path":"\/product\/7564","request_protocol":"HTTP\/1.1","status":"301","size":"178","referer":"-","user_agent":"Mozilla\/5.0 (Linux; Android 6.0.1; Nexus 5X Build\/MMB29P) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/41.0.2272.96 Mobile Safari\/537.36 (compatible; Googlebot\/2.1; +http:\/\/www.google.com\/bot.html)"})
 Attributes:
- 	-> remote_user: Str(-)
- 	-> request_protocol: Str(HTTP/1.1)
- 	-> time_local: Str(2019-01-22 01:12:53.000)
- 	-> user_agent: Str(Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.96 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html))
- 	-> log.file.name: Str(access.log)
- 	-> status: Str(301)
- 	-> size: Str(178)
- 	-> referer: Str(-)
- 	-> remote_addr: Str(66.249.66.195)
- 	-> request_type: Str(GET)
- 	-> request_path: Str(/product/7564)
- 	-> run_time: Str(0)
+        -> remote_user: Str(-)
+        -> request_protocol: Str(HTTP/1.1)
+        -> time_local: Str(2019-01-22 01:12:53.000)
+        -> user_agent: Str(Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.96 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html))
+        -> log.file.name: Str(access.log)
+        -> status: Str(301)
+        -> size: Str(178)
+        -> referer: Str(-)
+        -> remote_addr: Str(66.249.66.195)
+        -> request_type: Str(GET)
+        -> request_path: Str(/product/7564)
+        -> run_time: Str(0)
 Trace ID:
 Span ID:
 Flags: 0
 ```
 
-The above represents a single log message as produced by the OTel collector. We ingest these same messages into ClickHouse in later sections. 
+The above represents a single log message as produced by the OTel collector. We ingest these same messages into ClickHouse in later sections.
 
 The full schema of log messages, along with additional columns which may be present if using other receivers, is maintained [here](https://opentelemetry.io/docs/specs/otel/logs/data-model/). **We strongly recommend users familiarize themselves with this schema.**
 
@@ -270,18 +255,18 @@ This will result in trace messages similar to the example below, being output to
 
 ```response
 Span #86
-	Trace ID   	: 1bb5cdd2c9df5f0da320ca22045c60d9
-	Parent ID  	: ce129e5c2dd51378
-	ID         	: fbb14077b5e149a0
-	Name       	: okey-dokey-0
-	Kind       	: Server
-	Start time 	: 2024-06-19 18:03:41.603868 +0000 UTC
-	End time   	: 2024-06-19 18:03:41.603991 +0000 UTC
-	Status code	: Unset
-	Status message :
+        Trace ID        : 1bb5cdd2c9df5f0da320ca22045c60d9
+        Parent ID       : ce129e5c2dd51378
+        ID              : fbb14077b5e149a0
+        Name            : okey-dokey-0
+        Kind            : Server
+        Start time      : 2024-06-19 18:03:41.603868 +0000 UTC
+        End time        : 2024-06-19 18:03:41.603991 +0000 UTC
+        Status code     : Unset
+        Status message :
 Attributes:
- 	-> net.peer.ip: Str(1.2.3.4)
- 	-> peer.service: Str(telemetrygen-client)
+        -> net.peer.ip: Str(1.2.3.4)
+        -> peer.service: Str(telemetrygen-client)
 ```
 
 The above represents a single trace message as produced by the OTel collector. We ingest these same messages into ClickHouse in later sections.
@@ -300,7 +285,7 @@ As demonstrated in the earlier example of setting the timestamp for a log event,
     - [Basic filtering](https://opentelemetry.io/docs/collector/transforming-telemetry/) - Dropping events that are not required if this cannot be done via operator (see below).
     - [Batching](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor/batchprocessor) - essential when working with ClickHouse to ensure data is sent in batches. See ["Exporting to ClickHouse"](#exporting-to-clickhouse).
 
-- **Operators** - [Operators](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) provide the most basic unit of processing available at the receiver. Basic parsing is supported, allowing fields such as the Severity and Timestamp to be set. JSON and regex parsing are supported here along with event filtering and basic transformations. We recommend performing event filtering here. 
+- **Operators** - [Operators](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) provide the most basic unit of processing available at the receiver. Basic parsing is supported, allowing fields such as the Severity and Timestamp to be set. JSON and regex parsing are supported here along with event filtering and basic transformations. We recommend performing event filtering here.
 
 We recommend users avoid doing excessive event processing using operators or [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md). These can incur considerable memory and CPU overhead, especially JSON parsing.  It is possible to do all processing in ClickHouse at insert time with materialized views and columns with some exceptions - specifically, context-aware enrichment e.g. adding of k8s metadata. For more details see [Extracting structure with SQL](/use-cases/observability/schema-design#extracting-structure-with-sql).
 
@@ -411,18 +396,18 @@ service:
 
 Note the following key settings:
 
-- **pipelines** - The above configuration highlights the use of [pipelines](https://opentelemetry.io/docs/collector/configuration/#pipelines), consisting of a set of receivers, processors and exporters with one for logs and traces. 
+- **pipelines** - The above configuration highlights the use of [pipelines](https://opentelemetry.io/docs/collector/configuration/#pipelines), consisting of a set of receivers, processors and exporters with one for logs and traces.
 - **endpoint** - Communication with ClickHouse is configured via the `endpoint` parameter. The connection string `tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1` causes communication to occur over TCP. If users prefer HTTP for traffic-switching reasons, modify this connection string as described [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options). Full connection details, with the ability to specify a username and password within this connection string, are described [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
 
 **Important:** Note the above connection string enables both compression (lz4) as well as asynchronous inserts. We recommend both are always enabled. See [Batching](#batching) for further details on asynchronous inserts. Compression should always be specified and will not by default be enabled by default on older versions of the exporter.
 
-- **ttl** - the value here determines how long data is retained. Further details in "Managing data". This should be specified as a time unit in hours e.g. 72h. We disable TTL in the example below since our data is from 2019 and will be removed by ClickHouse immediately if inserted. 
+- **ttl** - the value here determines how long data is retained. Further details in "Managing data". This should be specified as a time unit in hours e.g. 72h. We disable TTL in the example below since our data is from 2019 and will be removed by ClickHouse immediately if inserted.
 - **traces_table_name** and **logs_table_name** - determines the name of the logs and traces table.
 - **create_schema** - determines if tables are created with the default schemas on startup. Defaults to true for getting started. Users should set it to false and define their own schema.
 - **database** - target database.
-- **retry_on_failure** - settings to determine whether failed batches should be tried. 
+- **retry_on_failure** - settings to determine whether failed batches should be tried.
 - **batch** - a batch processor ensures events are sent as batches. We recommend a value of around 5000 with a timeout of 5s. Whichever of these is reached first will initiate a batch to be flushed to the exporter. Lowering these values will mean a lower latency pipeline with data available for querying sooner, at the expense of more connections and batches sent to ClickHouse. This is not recommended if users are not using [asynchronous inserts](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) as it may cause issues with [too many parts](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#1-too-many-parts) in ClickHouse. Conversely, if users are using asynchronous inserts these availability data for querying will also be dependent on asynchronous insert settings - although data will still be flushed from the connector sooner. See [Batching](#batching) for more details.
-- **sending_queue** - controls the size of the sending queue. Each item in the queue contains a batch. If this queue is exceeded e.g. due to ClickHouse being unreachable but events continue to arrive, batches will be dropped. 
+- **sending_queue** - controls the size of the sending queue. Each item in the queue contains a batch. If this queue is exceeded e.g. due to ClickHouse being unreachable but events continue to arrive, batches will be dropped.
 
 Assuming users have extracted the structured log file and have a [local instance of ClickHouse](/install) running (with default authentication), users can run this configuration via the command:
 
@@ -446,21 +431,21 @@ FORMAT Vertical
 
 Row 1:
 ──────
-Timestamp:      	2019-01-22 06:46:14.000000000
+Timestamp:              2019-01-22 06:46:14.000000000
 TraceId:
 SpanId:
-TraceFlags:     	0
+TraceFlags:             0
 SeverityText:
-SeverityNumber: 	0
+SeverityNumber:         0
 ServiceName:
-Body:           	{"remote_addr":"109.230.70.66","remote_user":"-","run_time":"0","time_local":"2019-01-22 06:46:14.000","request_type":"GET","request_path":"\/image\/61884\/productModel\/150x150","request_protocol":"HTTP\/1.1","status":"200","size":"1684","referer":"https:\/\/www.zanbil.ir\/filter\/p3%2Cb2","user_agent":"Mozilla\/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko\/20100101 Firefox\/64.0"}
+Body:                   {"remote_addr":"109.230.70.66","remote_user":"-","run_time":"0","time_local":"2019-01-22 06:46:14.000","request_type":"GET","request_path":"\/image\/61884\/productModel\/150x150","request_protocol":"HTTP\/1.1","status":"200","size":"1684","referer":"https:\/\/www.zanbil.ir\/filter\/p3%2Cb2","user_agent":"Mozilla\/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko\/20100101 Firefox\/64.0"}
 ResourceSchemaUrl:
 ResourceAttributes: {}
 ScopeSchemaUrl:
 ScopeName:
 ScopeVersion:
-ScopeAttributes:	{}
-LogAttributes:  	{'referer':'https://www.zanbil.ir/filter/p3%2Cb2','log.file.name':'access-structured.log','run_time':'0','remote_user':'-','request_protocol':'HTTP/1.1','size':'1684','user_agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0','remote_addr':'109.230.70.66','request_path':'/image/61884/productModel/150x150','status':'200','time_local':'2019-01-22 06:46:14.000','request_type':'GET'}
+ScopeAttributes:        {}
+LogAttributes:          {'referer':'https://www.zanbil.ir/filter/p3%2Cb2','log.file.name':'access-structured.log','run_time':'0','remote_user':'-','request_protocol':'HTTP/1.1','size':'1684','user_agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0','remote_addr':'109.230.70.66','request_path':'/image/61884/productModel/150x150','status':'200','time_local':'2019-01-22 06:46:14.000','request_type':'GET'}
 
 1 row in set. Elapsed: 0.012 sec. Processed 5.04 thousand rows, 4.62 MB (414.14 thousand rows/s., 379.48 MB/s.)
 Peak memory usage: 5.41 MiB.
@@ -475,35 +460,35 @@ FORMAT Vertical
 
 Row 1:
 ──────
-Timestamp:      	2024-06-20 11:36:41.181398000
-TraceId:        	00bba81fbd38a242ebb0c81a8ab85d8f
-SpanId:         	beef91a2c8685ace
+Timestamp:              2024-06-20 11:36:41.181398000
+TraceId:                00bba81fbd38a242ebb0c81a8ab85d8f
+SpanId:                 beef91a2c8685ace
 ParentSpanId:
 TraceState:
-SpanName:       	lets-go
-SpanKind:       	SPAN_KIND_CLIENT
-ServiceName:    	telemetrygen
+SpanName:               lets-go
+SpanKind:               SPAN_KIND_CLIENT
+ServiceName:            telemetrygen
 ResourceAttributes: {'service.name':'telemetrygen'}
-ScopeName:      	telemetrygen
+ScopeName:              telemetrygen
 ScopeVersion:
-SpanAttributes: 	{'peer.service':'telemetrygen-server','net.peer.ip':'1.2.3.4'}
-Duration:       	123000
-StatusCode:     	STATUS_CODE_UNSET
+SpanAttributes:         {'peer.service':'telemetrygen-server','net.peer.ip':'1.2.3.4'}
+Duration:               123000
+StatusCode:             STATUS_CODE_UNSET
 StatusMessage:
 Events.Timestamp:   []
-Events.Name:    	[]
+Events.Name:            []
 Events.Attributes:  []
-Links.TraceId:  	[]
-Links.SpanId:   	[]
+Links.TraceId:          []
+Links.SpanId:           []
 Links.TraceState:   []
 Links.Attributes:   []
 ```
 
 ## Out of the box schema {#out-of-the-box-schema}
 
-By default, the ClickHouse exporter creates a target log table for both logs and traces. This can be disabled via the setting `create_schema`. Furthermore, the names for both the logs and traces table can be modified from their defaults of `otel_logs` and `otel_traces` via the settings noted above. 
+By default, the ClickHouse exporter creates a target log table for both logs and traces. This can be disabled via the setting `create_schema`. Furthermore, the names for both the logs and traces table can be modified from their defaults of `otel_logs` and `otel_traces` via the settings noted above.
 
-:::note 
+:::note
 In the schemas below we assume TTL has been enabled as 72h.
 :::
 
@@ -512,35 +497,35 @@ The default schema for logs is shown below (`otelcol-contrib v0.102.1`):
 ```sql
 CREATE TABLE default.otel_logs
 (
-	`Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-	`TraceId` String CODEC(ZSTD(1)),
-	`SpanId` String CODEC(ZSTD(1)),
-	`TraceFlags` UInt32 CODEC(ZSTD(1)),
-	`SeverityText` LowCardinality(String) CODEC(ZSTD(1)),
-	`SeverityNumber` Int32 CODEC(ZSTD(1)),
-	`ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
-	`Body` String CODEC(ZSTD(1)),
-	`ResourceSchemaUrl` String CODEC(ZSTD(1)),
-	`ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`ScopeSchemaUrl` String CODEC(ZSTD(1)),
-	`ScopeName` String CODEC(ZSTD(1)),
-	`ScopeVersion` String CODEC(ZSTD(1)),
-	`ScopeAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`LogAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1,
-	INDEX idx_res_attr_key mapKeys(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_res_attr_value mapValues(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_scope_attr_key mapKeys(ScopeAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_scope_attr_value mapValues(ScopeAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_log_attr_key mapKeys(LogAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_log_attr_value mapValues(LogAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_body Body TYPE tokenbf_v1(32768, 3, 0) GRANULARITY 1
+        `Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
+        `TraceId` String CODEC(ZSTD(1)),
+        `SpanId` String CODEC(ZSTD(1)),
+        `TraceFlags` UInt32 CODEC(ZSTD(1)),
+        `SeverityText` LowCardinality(String) CODEC(ZSTD(1)),
+        `SeverityNumber` Int32 CODEC(ZSTD(1)),
+        `ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
+        `Body` String CODEC(ZSTD(1)),
+        `ResourceSchemaUrl` String CODEC(ZSTD(1)),
+        `ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `ScopeSchemaUrl` String CODEC(ZSTD(1)),
+        `ScopeName` String CODEC(ZSTD(1)),
+        `ScopeVersion` String CODEC(ZSTD(1)),
+        `ScopeAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `LogAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1,
+        INDEX idx_res_attr_key mapKeys(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_res_attr_value mapValues(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_scope_attr_key mapKeys(ScopeAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_scope_attr_value mapValues(ScopeAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_log_attr_key mapKeys(LogAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_log_attr_value mapValues(LogAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_body Body TYPE tokenbf_v1(32768, 3, 0) GRANULARITY 1
 )
 ENGINE = MergeTree
 PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)
 TTL toDateTime(Timestamp) + toIntervalDay(3)
-SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
+SETTINGS ttl_only_drop_parts = 1
 ```
 
 The columns here correlate with the OTel official specification for logs documented [here](https://opentelemetry.io/docs/specs/otel/logs/data-model/).
@@ -552,47 +537,47 @@ A few important notes on this schema:
 - The table uses the classic [`MergeTree` engine](/engines/table-engines/mergetree-family/mergetree). This is recommended for logs and traces and should not need to be changed.
 - The table is ordered by `ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)`. This means queries will be optimized for filters on `ServiceName`, `SeverityText`, `Timestamp` and `TraceId` - earlier columns in the list will filter faster than later ones e.g. filtering by `ServiceName` will be significantly faster than filtering by `TraceId`. Users should modify this ordering according to their expected access patterns - see [Choosing a primary key](/use-cases/observability/schema-design#choosing-a-primary-ordering-key).
 - The above schema applies `ZSTD(1)` to columns. This offers the best compression for logs. Users can increase the ZSTD compression level (above the default of 1) for better compression, although this is rarely beneficial.  Increasing this value will incur greater CPU overhead at insert time (during compression), although decompression (and thus queries) should remain comparable. See [here](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema) for further details. Additional [delta encoding](/sql-reference/statements/create/table#delta) is applied to the Timestamp with the aim of reducing its size on disk.
-- Note how [`ResourceAttributes`](https://opentelemetry.io/docs/specs/otel/resource/sdk/), [`LogAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-attributes) and [`ScopeAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-instrumentationscope) are maps. Users should familiarize themselves with the difference between these. For how to access these maps and optimize accessing keys within them, see [Using maps](/use-cases/observability/integrating-opentelemetry.md). 
+- Note how [`ResourceAttributes`](https://opentelemetry.io/docs/specs/otel/resource/sdk/), [`LogAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-attributes) and [`ScopeAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-instrumentationscope) are maps. Users should familiarize themselves with the difference between these. For how to access these maps and optimize accessing keys within them, see [Using maps](/use-cases/observability/integrating-opentelemetry.md).
 - Most other types here e.g. `ServiceName` as LowCardinality, are optimized.  Note the Body, although JSON in our example logs, is stored as a String.
 - Bloom filters are applied to map keys and values, as well as the Body column. These aim to improve query times on accessing these columns but are typically not required. See [Secondary/Data skipping indices](/use-cases/observability/schema-design#secondarydata-skipping-indices).
 
 ```sql
 CREATE TABLE default.otel_traces
 (
-	`Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-	`TraceId` String CODEC(ZSTD(1)),
-	`SpanId` String CODEC(ZSTD(1)),
-	`ParentSpanId` String CODEC(ZSTD(1)),
-	`TraceState` String CODEC(ZSTD(1)),
-	`SpanName` LowCardinality(String) CODEC(ZSTD(1)),
-	`SpanKind` LowCardinality(String) CODEC(ZSTD(1)),
-	`ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
-	`ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`ScopeName` String CODEC(ZSTD(1)),
-	`ScopeVersion` String CODEC(ZSTD(1)),
-	`SpanAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-	`Duration` Int64 CODEC(ZSTD(1)),
-	`StatusCode` LowCardinality(String) CODEC(ZSTD(1)),
-	`StatusMessage` String CODEC(ZSTD(1)),
-	`Events.Timestamp` Array(DateTime64(9)) CODEC(ZSTD(1)),
-	`Events.Name` Array(LowCardinality(String)) CODEC(ZSTD(1)),
-	`Events.Attributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
-	`Links.TraceId` Array(String) CODEC(ZSTD(1)),
-	`Links.SpanId` Array(String) CODEC(ZSTD(1)),
-	`Links.TraceState` Array(String) CODEC(ZSTD(1)),
-	`Links.Attributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
-	INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1,
-	INDEX idx_res_attr_key mapKeys(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_res_attr_value mapValues(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_span_attr_key mapKeys(SpanAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_span_attr_value mapValues(SpanAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-	INDEX idx_duration Duration TYPE minmax GRANULARITY 1
+        `Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
+        `TraceId` String CODEC(ZSTD(1)),
+        `SpanId` String CODEC(ZSTD(1)),
+        `ParentSpanId` String CODEC(ZSTD(1)),
+        `TraceState` String CODEC(ZSTD(1)),
+        `SpanName` LowCardinality(String) CODEC(ZSTD(1)),
+        `SpanKind` LowCardinality(String) CODEC(ZSTD(1)),
+        `ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
+        `ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `ScopeName` String CODEC(ZSTD(1)),
+        `ScopeVersion` String CODEC(ZSTD(1)),
+        `SpanAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
+        `Duration` Int64 CODEC(ZSTD(1)),
+        `StatusCode` LowCardinality(String) CODEC(ZSTD(1)),
+        `StatusMessage` String CODEC(ZSTD(1)),
+        `Events.Timestamp` Array(DateTime64(9)) CODEC(ZSTD(1)),
+        `Events.Name` Array(LowCardinality(String)) CODEC(ZSTD(1)),
+        `Events.Attributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
+        `Links.TraceId` Array(String) CODEC(ZSTD(1)),
+        `Links.SpanId` Array(String) CODEC(ZSTD(1)),
+        `Links.TraceState` Array(String) CODEC(ZSTD(1)),
+        `Links.Attributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
+        INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1,
+        INDEX idx_res_attr_key mapKeys(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_res_attr_value mapValues(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_span_attr_key mapKeys(SpanAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_span_attr_value mapValues(SpanAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+        INDEX idx_duration Duration TYPE minmax GRANULARITY 1
 )
 ENGINE = MergeTree
 PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SpanName, toUnixTimestamp(Timestamp), TraceId)
 TTL toDateTime(Timestamp) + toIntervalDay(3)
-SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
+SETTINGS ttl_only_drop_parts = 1
 ```
 
 Again, this will correlate with the columns corresponding to OTel official specification for traces documented [here](https://opentelemetry.io/docs/specs/otel/trace/api/). The schema here employs many of the same settings as the above logs schema with additional Link columns specific to spans.
@@ -605,13 +590,13 @@ In order to achieve high insert performance while obtaining strong consistency g
 
 ### Batching {#batching}
 
-By default, each insert sent to ClickHouse causes ClickHouse to immediately create a part of storage containing the data from the insert together with other metadata that needs to be stored. Therefore sending a smaller amount of inserts that each contain more data, compared to sending a larger amount of inserts that each contain less data, will reduce the number of writes required. We recommend inserting data in fairly large batches of at least 1,000 rows at a time. Further details [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance). 
+By default, each insert sent to ClickHouse causes ClickHouse to immediately create a part of storage containing the data from the insert together with other metadata that needs to be stored. Therefore sending a smaller amount of inserts that each contain more data, compared to sending a larger amount of inserts that each contain less data, will reduce the number of writes required. We recommend inserting data in fairly large batches of at least 1,000 rows at a time. Further details [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance).
 
 By default, inserts into ClickHouse are synchronous and idempotent if identical. For tables of the merge tree engine family, ClickHouse will, by default, automatically [deduplicate inserts](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time). This means inserts are tolerant in cases like the following:
 
 - (1) If the node receiving the data has issues, the insert query will time out (or get a more specific error) and not receive an acknowledgment.
 - (2) If the data got written by the node, but the acknowledgement can't be returned to the sender of the query because of network interruptions, the sender will either get a time-out or a network error.
-  
+
 From the collector's perspective, (1) and (2) can be hard to distinguish. However, in both cases, the unacknowledged insert can just immediately be retried. As long as the retried insert query contains the same data in the same order, ClickHouse will automatically ignore the retried insert if the (unacknowledged) original insert succeeded.
 
 We recommend users use the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md) shown in earlier configurations to satisfy the above. This ensures inserts are sent as consistent batches of rows satisfying the above requirements. If a collector is expected to have high throughput (events per second), and at least 5000 events can be sent in each insert, this is usually the only batching required in the pipeline. In this case the collector will flush batches before the batch processor's `timeout` is reached, ensuring the end-to-end latency of the pipeline remains low and batches are of a consistent size.
@@ -620,14 +605,9 @@ We recommend users use the [batch processor](https://github.com/open-telemetry/o
 
 Typically, users are forced to send smaller batches when the throughput of a collector is low, and yet they still expect data to reach ClickHouse within a minimum end-to-end latency. In this case, small batches are sent when the `timeout` of the batch processor expires. This can cause problems and is when asynchronous inserts are required. This case typically arises when **collectors in the agent role are configured to send directly to ClickHouse**. Gateways, by acting as aggregators, can alleviate this problem - see [Scaling with Gateways](#scaling-with-gateways).
 
-If large batches cannot be guaranteed, users can delegate batching to ClickHouse using [Asynchronous Inserts](/cloud/bestpractices/asynchronous-inserts). With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later or asynchronously respectively.
+If large batches cannot be guaranteed, users can delegate batching to ClickHouse using [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts). With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later or asynchronously respectively.
 
-<img src={observability_6}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
-
-<br />
+<Image img={observability_6} alt="Async inserts" size="md"/>
 
 With [enabled asynchronous inserts](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), when ClickHouse ① receives an insert query, the query's data is ② immediately written into an in-memory buffer first. When ③ the next buffer flush takes place, the buffer's data is [sorted](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) and written as a part to the database storage. Note, that the data is not searchable by queries before being flushed to the database storage; the buffer flush is [configurable](/optimize/asynchronous-inserts).
 
@@ -651,14 +631,9 @@ Several deployment architectures are possible when using the OTel collector with
 
 In an agent only architecture, users deploy the OTel collector as agents to the edge. These receive traces from local applications (e.g. as a sidecar container) and collect logs from servers and Kubernetes nodes. In this mode, agents send their data directly to ClickHouse.
 
-<img src={observability_7}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '600px'}} />
+<Image img={observability_7} alt="Agents only" size="md"/>
 
-<br />
-
-This architecture is appropriate for small to medium-sized deployments. Its principal advantage is it does not require additional hardware and keeps the total resource footprint of the ClickHouse observability solution minimal, with a simple mapping between applications and collectors. 
+This architecture is appropriate for small to medium-sized deployments. Its principal advantage is it does not require additional hardware and keeps the total resource footprint of the ClickHouse observability solution minimal, with a simple mapping between applications and collectors.
 
 Users should consider migrating to a Gateway-based architecture once the number of agents exceeds several hundred. This architecture has several disadvantages which make it challenging to scale:
 
@@ -670,12 +645,7 @@ Users should consider migrating to a Gateway-based architecture once the number 
 
 OTel collectors can be deployed as Gateway instances to address the above limitations. These provide a standalone service, typically per data center or per region. These receive events from applications (or other collectors in the agent role) via a single OTLP endpoint. Typically a set of gateway instances are deployed, with an out-of-the-box load balancer used to distribute the load amongst them.
 
-<img src={observability_8}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
-
-<br />
+<Image img={observability_8} alt="Scaling with gateways" size="md"/>
 
 The objective of this architecture is to offload computationally intensive processing from the agents, thereby minimizing their resource usage. These gateways can perform transformation tasks that would otherwise need to be done by agents. Furthermore, by aggregating events from many agents, the gateways can ensure large batches are sent to ClickHouse - allowing efficient insertion. These gateway collectors can easily be scaled as more agents are added and event throughput increases. An example gateway configuration, with an associated agent config consuming the example structured log file, is shown below. Note the use of OTLP for communication between the agent and gateway.
 
@@ -755,13 +725,13 @@ These configurations can be run with the following commands.
 ./otelcol-contrib --config clickhouse-agent-config.yaml
 ```
 
-The main disadvantage of this architecture is the associated cost and overhead of managing a set of collectors. 
+The main disadvantage of this architecture is the associated cost and overhead of managing a set of collectors.
 
 For an example of managing larger gateway-based architectures with associated learning, we recommend this [blog post](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog).
 
 ### Adding Kafka {#adding-kafka}
 
-Readers may notice the above architectures do not use Kafka as a message queue. 
+Readers may notice the above architectures do not use Kafka as a message queue.
 
 Using a Kafka queue as a message buffer is a popular design pattern seen in logging architectures and was popularized by the ELK stack. It provides a few benefits; principally, it helps provide stronger message delivery guarantees and helps deal with backpressure. Messages are sent from collection agents to Kafka and written to disk. In theory, a clustered Kafka instance should provide a high throughput message buffer since it incurs less computational overhead to write data linearly to disk than parse and process a message – in Elastic, for example, the tokenization and indexing incurs significant overhead. By moving data away from the agents, you also incur less risk of losing messages as a result of log rotation at the source. Finally, it offers some message reply and cross-region replication capabilities, which might be attractive for some use cases.
 
@@ -769,12 +739,7 @@ However, ClickHouse can handle inserting data very quickly - millions of rows pe
 
 However, if you require high delivery guarantees or the ability to replay data (potentially to multiple sources), Kafka can be a useful architectural addition.
 
-<img src={observability_9}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
-
-<br />
+<Image img={observability_9} alt="Adding kafka" size="md"/>
 
 In this case, OTel agents can be configured to send data to Kafka via the [Kafka exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/kafkaexporter/README.md). Gateway instances, in turn, consume messages using the [Kafka receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/kafkareceiver/README.md). We recommend the Confluent and OTel documentation for further details.
 
@@ -782,24 +747,12 @@ In this case, OTel agents can be configured to send data to Kafka via the [Kafka
 
 Resource requirements for the OTel collector will depend on the event throughput, the size of messages and amount of processing performed. The OpenTelemetry project maintains [benchmarks users](https://opentelemetry.io/docs/collector/benchmarks/) can use to estimate resource requirements.
 
-[In our experience](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog#architectural-overview), a gateway instance with 3 cores and 12GB of RAM can handle around 60k events per second. This assumes a minimal processing pipeline responsible for renaming fields and no regular expressions. 
+[In our experience](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog#architectural-overview), a gateway instance with 3 cores and 12GB of RAM can handle around 60k events per second. This assumes a minimal processing pipeline responsible for renaming fields and no regular expressions.
 
 For agent instances responsible for shipping events to a gateway, and only setting the timestamp on the event, we recommend users size based on the anticipated logs per second. The following represent approximate numbers users can use as a starting point:
-
-Logging rate
-Resources to collector agent	
-1k/second
-0.2CPU, 0.2GiB	
-5k/second
-0.5 CPU, 0.5GiB	
-10k/second
-1 CPU, 1GiB	
 
 | Logging rate | Resources to collector agent |
 |--------------|------------------------------|
 | 1k/second    | 0.2CPU, 0.2GiB              |
 | 5k/second    | 0.5 CPU, 0.5GiB             |
 | 10k/second   | 1 CPU, 1GiB                 |
-
-
-

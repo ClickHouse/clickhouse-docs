@@ -1,0 +1,12 @@
+# List of pages to exclude from floating pages check
+# One path per line. Lines starting with # are comments
+# Paths can be in any of these formats:
+# - Relative to docs directory: integrations/language-clients/java/client-v1
+# - With .md extension: integrations/language-clients/java/client-v1.md
+# - With /docs/ prefix: /docs/integrations/language-clients/java/client-v1
+# - With /docs/ prefix and .md extension: /docs/integrations/language-clients/java/client-v1.md
+
+/docs/index.md
+integrations/language-clients/java/client-v1
+integrations/language-clients/java/jdbc-v1
+integrations/data-ingestion/clickpipes/postgres/maintenance.md

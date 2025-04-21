@@ -7,19 +7,17 @@ keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafa
 
 import observability_1 from '@site/static/images/use-cases/observability/observability-1.png';
 import observability_2 from '@site/static/images/use-cases/observability/observability-2.png';
+import Image from '@theme/IdealImage';
 
 # Using ClickHouse for Observability
 
 ## Introduction {#introduction}
 
-This guide is designed for users looking to build their own SQL-based Observability solution using ClickHouse, focusing on logs and traces. This covers all aspects of building your own solution including considerations for ingestion, optimizing schemas for your access patterns and extracting structure from unstructured logs. 
+This guide is designed for users looking to build their own SQL-based Observability solution using ClickHouse, focusing on logs and traces. This covers all aspects of building your own solution including considerations for ingestion, optimizing schemas for your access patterns and extracting structure from unstructured logs.
 
 ClickHouse alone is not an out-of-the-box solution for Observability. It can, however, be used as a highly efficient storage engine for Observability data, capable of unrivaled compression rates and lightning-fast query response times. In order for users to use ClickHouse within an Observability solution, both a user interface and data collection framework are required. We currently recommend using **Grafana** for visualization of Observability signals and **OpenTelemetry** for data collection (both are officially supported integrations).
 
-<img src={observability_1}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
+<Image img={observability_1} alt="Simple OTel" size="md"/>
 
 <br />
 
@@ -37,7 +35,7 @@ Due to its performance and cost efficiency, ClickHouse has become the de facto s
 
 More specifically, the following means ClickHouse is ideally suited for the storage of observability data:
 
-- **Compression** - Observability data typically contains fields for which the values are taken from a distinct set e.g. HTTP codes or service names. ClickHouse’s column-oriented storage, where values are stored sorted, means this data compresses extremely well - especially when combined with a range of specialized codecs for time-series data. Unlike other data stores, which require as much storage as the original data size of the data, typically in JSON format, ClickHouse compresses logs and traces on average up to 14x. Beyond providing significant storage savings for large Observability installations, this compression assists in accelerating queries as less data needs to be read from disk.
+- **Compression** - Observability data typically contains fields for which the values are taken from a distinct set e.g. HTTP codes or service names. ClickHouse's column-oriented storage, where values are stored sorted, means this data compresses extremely well - especially when combined with a range of specialized codecs for time-series data. Unlike other data stores, which require as much storage as the original data size of the data, typically in JSON format, ClickHouse compresses logs and traces on average up to 14x. Beyond providing significant storage savings for large Observability installations, this compression assists in accelerating queries as less data needs to be read from disk.
 - **Fast Aggregations** - Observability solutions typically heavily involve the visualization of data through charts e.g. lines showing error rates or bar charts showing traffic sources. Aggregations, or GROUP BYs, are fundamental to powering these charts which must also be fast and responsive when applying filters in workflows for issue diagnosis. ClickHouse's column-oriented format combined with a vectorized query execution engine is ideal for fast aggregations, with sparse indexing allowing rapid filtering of data in response to users' actions.
 - **Fast Linear scans** - While alternative technologies rely on inverted indices for fast querying of logs, these invariably result in high disk and resource utilization. While ClickHouse provides inverted indices as an additional optional index type, linear scans are highly parallelized and use all of the available cores on a machine (unless configured otherwise). This potentially allows 10s of GB/s per second (compressed) to be scanned for matches with [highly optimized text-matching operators](/sql-reference/functions/string-search-functions).
 - **Familiarity of SQL** - SQL is the ubiquitous language with which all engineers are familiar. With over 50 years of development, it has proven itself as the de facto language for data analytics and remains the [3rd most popular programming language](https://clickhouse.com/blog/the-state-of-sql-based-observability#lingua-franca). Observability is just another data problem for which SQL is ideal.
@@ -93,11 +91,6 @@ Each trace consists of several spans, with the initial span associated with the 
 
 Most observability vendors visualize this information as a waterfall, with relative timing shown using horizontal bars of proportional size. For example, in Grafana:
 
-<img src={observability_2}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '1000px'}} />
-
-<br />
+<Image img={observability_2} alt="Example trace" size="lg" border/>
 
 For users needing to familiarize themselves deeply with the concepts of logs and traces, we highly recommend the [OpenTelemetry documentation](https://opentelemetry.io/docs/concepts/).

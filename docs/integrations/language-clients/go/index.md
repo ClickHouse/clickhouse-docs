@@ -12,9 +12,11 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.
 # ClickHouse Go
 
 ## A simple example {#a-simple-example}
+
 Let's Go with a simple example.  This will connect to ClickHouse and select from the system database.  To get started you will need your connection details.
 
 ### Connection Details {#connection-details}
+
 <ConnectionDetails />
 
 ### Initialize a module {#initialize-a-module}
@@ -33,82 +35,82 @@ Copy this code into the `clickhouse-golang-example` directory as `main.go`.
 package main
 
 import (
-	"context"
-	"crypto/tls"
-	"fmt"
-	"log"
+        "context"
+        "crypto/tls"
+        "fmt"
+        "log"
 
-	"github.com/ClickHouse/clickhouse-go/v2"
-	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
+        "github.com/ClickHouse/clickhouse-go/v2"
+        "github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 )
 
 func main() {
-	conn, err := connect()
-	if err != nil {
-		panic((err))
-	}
+        conn, err := connect()
+        if err != nil {
+                panic((err))
+        }
 
-	ctx := context.Background()
-	rows, err := conn.Query(ctx, "SELECT name,toString(uuid) as uuid_str FROM system.tables LIMIT 5")
-	if err != nil {
-		log.Fatal(err)
-	}
+        ctx := context.Background()
+        rows, err := conn.Query(ctx, "SELECT name,toString(uuid) as uuid_str FROM system.tables LIMIT 5")
+        if err != nil {
+                log.Fatal(err)
+        }
 
-	for rows.Next() {
-		var (
-			name, uuid string
-		)
-		if err := rows.Scan(
-			&name,
-			&uuid,
-		); err != nil {
-			log.Fatal(err)
-		}
-		log.Printf("name: %s, uuid: %s",
-			name, uuid)
-	}
+        for rows.Next() {
+                var (
+                        name, uuid string
+                )
+                if err := rows.Scan(
+                        &name,
+                        &uuid,
+                ); err != nil {
+                        log.Fatal(err)
+                }
+                log.Printf("name: %s, uuid: %s",
+                        name, uuid)
+        }
 
 }
 
 func connect() (driver.Conn, error) {
-	var (
-		ctx       = context.Background()
-		conn, err = clickhouse.Open(&clickhouse.Options{
-			Addr: []string{"<CLICKHOUSE_SECURE_NATIVE_HOSTNAME>:9440"},
-			Auth: clickhouse.Auth{
-				Database: "default",
-				Username: "default",
-				Password: "<DEFAULT_USER_PASSWORD>",
-			},
-			ClientInfo: clickhouse.ClientInfo{
-				Products: []struct {
-					Name    string
-					Version string
-				}{
-					{Name: "an-example-go-client", Version: "0.1"},
-				},
-			},
+        var (
+                ctx       = context.Background()
+                conn, err = clickhouse.Open(&clickhouse.Options{
+                        Addr: []string{"<CLICKHOUSE_SECURE_NATIVE_HOSTNAME>:9440"},
+                        Auth: clickhouse.Auth{
+                                Database: "default",
+                                Username: "default",
+                                Password: "<DEFAULT_USER_PASSWORD>",
+                        },
+                        ClientInfo: clickhouse.ClientInfo{
+                                Products: []struct {
+                                        Name    string
+                                        Version string
+                                }{
+                                        {Name: "an-example-go-client", Version: "0.1"},
+                                },
+                        },
 
-			Debugf: func(format string, v ...interface{}) {
-				fmt.Printf(format, v)
-			},
-			TLS: &tls.Config{
-				InsecureSkipVerify: true,
-			},
-		})
-	)
+                        Debugf: func(format string, v ...interface{}) {
+                                fmt.Printf(format, v)
+                        },
+                        TLS: &tls.Config{
+                                InsecureSkipVerify: true,
+                        },
+                })
+        )
 
-	if err != nil {
-		return nil, err
-	}
+        if err != nil {
+                return nil, err
+        }
 
-	if err := conn.Ping(ctx); err != nil {
-		if exception, ok := err.(*clickhouse.Exception); ok {
-			fmt.Printf("Exception [%d] %s \n%s\n", exception.Code, exception.Message, exception.StackTrace)
-		}
-		return nil, err
-	}
-	return conn, nil
+        if err := conn.Ping(ctx); err != nil {
+                if exception, ok := err.(*clickhouse.Exception); ok {
+                        fmt.Printf("Exception [%d] %s \n%s\n", exception.Code, exception.Message, exception.StackTrace)
+                }
+                return nil, err
+        }
+        return conn, nil
 }
 ```
 
@@ -1833,32 +1835,32 @@ Connection can be achieved either via a DSN string with the format `clickhouse:/
 
 ```go
 func Connect() error {
-	env, err := GetStdTestEnvironment()
-	if err != nil {
-		return err
-	}
-	conn := clickhouse.OpenDB(&clickhouse.Options{
-		Addr: []string{fmt.Sprintf("%s:%d", env.Host, env.Port)},
-		Auth: clickhouse.Auth{
-			Database: env.Database,
-			Username: env.Username,
-			Password: env.Password,
-		},
-	})
-	return conn.Ping()
+        env, err := GetStdTestEnvironment()
+        if err != nil {
+                return err
+        }
+        conn := clickhouse.OpenDB(&clickhouse.Options{
+                Addr: []string{fmt.Sprintf("%s:%d", env.Host, env.Port)},
+                Auth: clickhouse.Auth{
+                        Database: env.Database,
+                        Username: env.Username,
+                        Password: env.Password,
+                },
+        })
+        return conn.Ping()
 }
 
 
 func ConnectDSN() error {
-	env, err := GetStdTestEnvironment()
-	if err != nil {
-		return err
-	}
-	conn, err := sql.Open("clickhouse", fmt.Sprintf("clickhouse://%s:%d?username=%s&password=%s", env.Host, env.Port, env.Username, env.Password))
-	if err != nil {
-		return err
-	}
-	return conn.Ping()
+        env, err := GetStdTestEnvironment()
+        if err != nil {
+                return err
+        }
+        conn, err := sql.Open("clickhouse", fmt.Sprintf("clickhouse://%s:%d?username=%s&password=%s", env.Host, env.Port, env.Username, env.Password))
+        if err != nil {
+                return err
+        }
+        return conn.Ping()
 }
 ```
 
@@ -1890,15 +1892,15 @@ The following parameters can be passed in the DSN string:
 
 ```go
 func ConnectSettings() error {
-	env, err := GetStdTestEnvironment()
-	if err != nil {
-		return err
-	}
-	conn, err := sql.Open("clickhouse", fmt.Sprintf("clickhouse://127.0.0.1:9001,127.0.0.1:9002,%s:%d/%s?username=%s&password=%s&dial_timeout=10s&connection_open_strategy=round_robin&debug=true&compress=lz4", env.Host, env.Port, env.Database, env.Username, env.Password))
-	if err != nil {
-		return err
-	}
-	return conn.Ping()
+        env, err := GetStdTestEnvironment()
+        if err != nil {
+                return err
+        }
+        conn, err := sql.Open("clickhouse", fmt.Sprintf("clickhouse://127.0.0.1:9001,127.0.0.1:9002,%s:%d/%s?username=%s&password=%s&dial_timeout=10s&connection_open_strategy=round_robin&debug=true&compress=lz4", env.Host, env.Port, env.Database, env.Username, env.Password))
+        if err != nil {
+                return err
+        }
+        return conn.Ping()
 }
 ```
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_settings.go)
@@ -1913,32 +1915,32 @@ By default, connections are established over the native protocol. For users need
 
 ```go
 func ConnectHTTP() error {
-	env, err := GetStdTestEnvironment()
-	if err != nil {
-		return err
-	}
-	conn := clickhouse.OpenDB(&clickhouse.Options{
-		Addr: []string{fmt.Sprintf("%s:%d", env.Host, env.HttpPort)},
-		Auth: clickhouse.Auth{
-			Database: env.Database,
-			Username: env.Username,
-			Password: env.Password,
-		},
-		Protocol: clickhouse.HTTP,
-	})
-	return conn.Ping()
+        env, err := GetStdTestEnvironment()
+        if err != nil {
+                return err
+        }
+        conn := clickhouse.OpenDB(&clickhouse.Options{
+                Addr: []string{fmt.Sprintf("%s:%d", env.Host, env.HttpPort)},
+                Auth: clickhouse.Auth{
+                        Database: env.Database,
+                        Username: env.Username,
+                        Password: env.Password,
+                },
+                Protocol: clickhouse.HTTP,
+        })
+        return conn.Ping()
 }
 
 func ConnectDSNHTTP() error {
-	env, err := GetStdTestEnvironment()
-	if err != nil {
-		return err
-	}
-	conn, err := sql.Open("clickhouse", fmt.Sprintf("http://%s:%d?username=%s&password=%s", env.Host, env.HttpPort, env.Username, env.Password))
-	if err != nil {
-		return err
-	}
-	return conn.Ping()
+        env, err := GetStdTestEnvironment()
+        if err != nil {
+                return err
+        }
+        conn, err := sql.Open("clickhouse", fmt.Sprintf("http://%s:%d?username=%s&password=%s", env.Host, env.HttpPort, env.Username, env.Password))
+        if err != nil {
+                return err
+        }
+        return conn.Ping()
 }
 ```
 
@@ -1952,40 +1954,40 @@ For DSN-based connections, the string accepts multiple hosts and a `connection_o
 
 ```go
 func MultiStdHost() error {
-	env, err := GetStdTestEnvironment()
-	if err != nil {
-		return err
-	}
-	conn, err := clickhouse.Open(&clickhouse.Options{
-		Addr: []string{"127.0.0.1:9001", "127.0.0.1:9002", fmt.Sprintf("%s:%d", env.Host, env.Port)},
-		Auth: clickhouse.Auth{
-			Database: env.Database,
-			Username: env.Username,
-			Password: env.Password,
-		},
-		ConnOpenStrategy: clickhouse.ConnOpenRoundRobin,
-	})
-	if err != nil {
-		return err
-	}
-	v, err := conn.ServerVersion()
-	if err != nil {
-		return err
-	}
-	fmt.Println(v.String())
-	return nil
+        env, err := GetStdTestEnvironment()
+        if err != nil {
+                return err
+        }
+        conn, err := clickhouse.Open(&clickhouse.Options{
+                Addr: []string{"127.0.0.1:9001", "127.0.0.1:9002", fmt.Sprintf("%s:%d", env.Host, env.Port)},
+                Auth: clickhouse.Auth{
+                        Database: env.Database,
+                        Username: env.Username,
+                        Password: env.Password,
+                },
+                ConnOpenStrategy: clickhouse.ConnOpenRoundRobin,
+        })
+        if err != nil {
+                return err
+        }
+        v, err := conn.ServerVersion()
+        if err != nil {
+                return err
+        }
+        fmt.Println(v.String())
+        return nil
 }
 
 func MultiStdHostDSN() error {
-	env, err := GetStdTestEnvironment()
-	if err != nil {
-		return err
-	}
-	conn, err := sql.Open("clickhouse", fmt.Sprintf("clickhouse://127.0.0.1:9001,127.0.0.1:9002,%s:%d?username=%s&password=%s&connection_open_strategy=round_robin", env.Host, env.Port, env.Username, env.Password))
-	if err != nil {
-		return err
-	}
-	return conn.Ping()
+        env, err := GetStdTestEnvironment()
+        if err != nil {
+                return err
+        }
+        conn, err := sql.Open("clickhouse", fmt.Sprintf("clickhouse://127.0.0.1:9001,127.0.0.1:9002,%s:%d?username=%s&password=%s&connection_open_strategy=round_robin", env.Host, env.Port, env.Username, env.Password))
+        if err != nil {
+                return err
+        }
+        return conn.Ping()
 }
 ```
 
@@ -1997,49 +1999,49 @@ If using a DSN connection string, SSL can be enabled via the parameter "secure=t
 
 ```go
 func ConnectSSL() error {
-	env, err := GetStdTestEnvironment()
-	if err != nil {
-		return err
-	}
-	cwd, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-	t := &tls.Config{}
-	caCert, err := ioutil.ReadFile(path.Join(cwd, "../../tests/resources/CAroot.crt"))
-	if err != nil {
-		return err
-	}
-	caCertPool := x509.NewCertPool()
-	successful := caCertPool.AppendCertsFromPEM(caCert)
-	if !successful {
-		return err
-	}
-	t.RootCAs = caCertPool
+        env, err := GetStdTestEnvironment()
+        if err != nil {
+                return err
+        }
+        cwd, err := os.Getwd()
+        if err != nil {
+                return err
+        }
+        t := &tls.Config{}
+        caCert, err := ioutil.ReadFile(path.Join(cwd, "../../tests/resources/CAroot.crt"))
+        if err != nil {
+                return err
+        }
+        caCertPool := x509.NewCertPool()
+        successful := caCertPool.AppendCertsFromPEM(caCert)
+        if !successful {
+                return err
+        }
+        t.RootCAs = caCertPool
 
 
-	conn := clickhouse.OpenDB(&clickhouse.Options{
-		Addr: []string{fmt.Sprintf("%s:%d", env.Host, env.SslPort)},
-		Auth: clickhouse.Auth{
-			Database: env.Database,
-			Username: env.Username,
-			Password: env.Password,
-		},
-		TLS: t,
-	})
-	return conn.Ping()
+        conn := clickhouse.OpenDB(&clickhouse.Options{
+                Addr: []string{fmt.Sprintf("%s:%d", env.Host, env.SslPort)},
+                Auth: clickhouse.Auth{
+                        Database: env.Database,
+                        Username: env.Username,
+                        Password: env.Password,
+                },
+                TLS: t,
+        })
+        return conn.Ping()
 }
 
 func ConnectDSNSSL() error {
-	env, err := GetStdTestEnvironment()
-	if err != nil {
-		return err
-	}
-	conn, err := sql.Open("clickhouse", fmt.Sprintf("https://%s:%d?secure=true&skip_verify=true&username=%s&password=%s", env.Host, env.HttpsPort, env.Username, env.Password))
-	if err != nil {
-		return err
-	}
-	return conn.Ping()
+        env, err := GetStdTestEnvironment()
+        if err != nil {
+                return err
+        }
+        conn, err := sql.Open("clickhouse", fmt.Sprintf("https://%s:%d?secure=true&skip_verify=true&username=%s&password=%s", env.Host, env.HttpsPort, env.Username, env.Password))
+        if err != nil {
+                return err
+        }
+        return conn.Ping()
 }
 ```
 
@@ -2051,35 +2053,35 @@ If using `OpenDB`, authentication information can be passed via the usual option
 
 ```go
 func ConnectAuth() error {
-	env, err := GetStdTestEnvironment()
-	if err != nil {
-		return err
-	}
-	conn := clickhouse.OpenDB(&clickhouse.Options{
-		Addr: []string{fmt.Sprintf("%s:%d", env.Host, env.Port)},
-		Auth: clickhouse.Auth{
-			Database: env.Database,
-			Username: env.Username,
-			Password: env.Password,
-		},
-	})
-	return conn.Ping()
+        env, err := GetStdTestEnvironment()
+        if err != nil {
+                return err
+        }
+        conn := clickhouse.OpenDB(&clickhouse.Options{
+                Addr: []string{fmt.Sprintf("%s:%d", env.Host, env.Port)},
+                Auth: clickhouse.Auth{
+                        Database: env.Database,
+                        Username: env.Username,
+                        Password: env.Password,
+                },
+        })
+        return conn.Ping()
 }
 
 func ConnectDSNAuth() error {
-	env, err := GetStdTestEnvironment()
-	conn, err := sql.Open("clickhouse", fmt.Sprintf("http://%s:%d?username=%s&password=%s", env.Host, env.HttpPort, env.Username, env.Password))
-	if err != nil {
-		return err
-	}
-	if err = conn.Ping(); err != nil {
-		return err
-	}
-	conn, err = sql.Open("clickhouse", fmt.Sprintf("http://%s:%s@%s:%d", env.Username, env.Password, env.Host, env.HttpPort))
-	if err != nil {
-		return err
-	}
-	return conn.Ping()
+        env, err := GetStdTestEnvironment()
+        conn, err := sql.Open("clickhouse", fmt.Sprintf("http://%s:%d?username=%s&password=%s", env.Host, env.HttpPort, env.Username, env.Password))
+        if err != nil {
+                return err
+        }
+        if err = conn.Ping(); err != nil {
+                return err
+        }
+        conn, err = sql.Open("clickhouse", fmt.Sprintf("http://%s:%s@%s:%d", env.Username, env.Password, env.Host, env.HttpPort))
+        if err != nil {
+                return err
+        }
+        return conn.Ping()
 }
 ```
 

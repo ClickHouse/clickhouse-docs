@@ -144,7 +144,7 @@ def clean_content(content):
 
 def inject_snippets(directory, content):
     snippet_pattern = re.compile(
-        r"import\s+(\w+)\s+from\s+['\"]@site/((.*?))['\"];",
+        r"import\s+(\w+)\s+from\s+['\"]@site/(docs/(.*?))['\"];",
         re.DOTALL
     )
     matches = snippet_pattern.findall(content)
@@ -235,7 +235,7 @@ def parse_markdown_content(metadata, content, base_url):
     current_h3 = None
     current_subdoc = {
         'file_path': metadata.get('file_path', ''),
-        'slug': heading_slug,
+        'slug': slug,
         'url': f'{base_url}{heading_slug}',
         'h1': current_h1,
         'h1_camel': current_h1,
@@ -257,7 +257,7 @@ def parse_markdown_content(metadata, content, base_url):
             slug_match = re.match(HEADER_PATTERN, current_h1)
             if slug_match:
                 current_h1 = slug_match.group(1)
-                heading_slug = slug_match.group(2)
+                heading_slug = f"{slug}"
             current_subdoc['slug'] = heading_slug
             current_subdoc['url'] = f'{base_url}{heading_slug}'
             current_subdoc['h1'] = current_h1

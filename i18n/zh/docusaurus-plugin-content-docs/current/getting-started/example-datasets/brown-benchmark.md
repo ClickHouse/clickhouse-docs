@@ -454,4 +454,3 @@ ORDER BY yr,
 ```
 
 数据也可用于交互式查询，请访问 [Playground](https://sql.clickhouse.com)，[示例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。
-```

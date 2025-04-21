@@ -5,6 +5,7 @@ keywords: ['parallel replica']
 description: 'In this guide, we will first discuss how ClickHouse distributes a query across multiple shards via distributed tables, and then how a query can leverage multiple replicas for its execution.'
 ---
 
+import Image from '@theme/IdealImage';
 import BetaBadge from '@theme/badges/BetaBadge';
 import image_1 from '@site/static/images/deployment-guides/parallel-replicas-1.png'
 import image_2 from '@site/static/images/deployment-guides/parallel-replicas-2.png'
@@ -39,7 +40,7 @@ on the specified shard, or it can be sent to the distributed table, and in that
 case, each shard will execute the given queries. The server where the distributed
 table was queried will aggregate the data and respond to the client:
 
-<img src={image_1} alt="sharded archtiecture"/>
+<Image img={image_1} size="md" alt="sharded archtiecture" />
 
 The figure above visualizes what happens when a client queries a distributed table:
 
@@ -77,7 +78,7 @@ infinite amount of storage, the need for shards becomes less important.
 
 The figure below shows the ClickHouse Cloud architecture:
 
-<img src={image_2} alt="non sharded architecture"/>
+<Image img={image_2} size="md" alt="non sharded architecture" />
 
 This architecture allows us to be able to add and remove replicas nearly
 instantaneously, ensuring a very high cluster scalability. The ClickHouse
@@ -104,7 +105,7 @@ as the unit of work.
 
 Now, let's see how it works in practice with the help of the figure below:
 
-<img src={image_3} alt="Parallel replicas"/>
+<Image img={image_3} size="md" alt="Parallel replicas" />
 
 With parallel replicas:
 
@@ -160,7 +161,7 @@ We explore how these factors are overcome in the following sections.
 To address (1) and (2) from the list above, we introduced the concept of an
 announcement. Let's visualize how it works using the figure below:
 
-<img src={image_4} alt="Announcements"/>
+<Image img={image_4} size="md" alt="Announcements" />
 
 <ol className="docs-ordered-list">
     <li>
@@ -201,7 +202,7 @@ an announcement with all parts.
 
 The figure below visualizes how dynamic coordination works:
 
-<img src={image_5} alt="Dynamic Coordination - part 1"/>
+<Image img={image_5} size="md" alt="Dynamic Coordination - part 1" />
 
 <ol className="docs-ordered-list">
     <li>
@@ -213,7 +214,7 @@ The figure below visualizes how dynamic coordination works:
     </li>
 </ol>
 
-<img src={image_6} alt="Dynamic Coordination - part 2"/>
+<Image img={image_6} size="md" alt="Dynamic Coordination - part 2" />
 
 <ol className="docs-ordered-list">
     <li>
@@ -225,7 +226,7 @@ The figure below visualizes how dynamic coordination works:
     </li>
 </ol>
 
-<img src={image_7} alt="Dynamic Coordination - part 3"/>
+<Image img={image_7} size="md" alt="Dynamic Coordination - part 3" />
 
 <ol className="docs-ordered-list">
     <li>
@@ -466,7 +467,7 @@ Received from 3 replica
 
 Finally, you can also use the `EXPLAIN PIPELINE`. It highlights how ClickHouse 
 is going to execute a query and what resources are going to be used for the 
-execution of the query. Let’s take the following query for example:
+execution of the query. Let's take the following query for example:
 
 ```sql
 SELECT count(), uniq(pageId) , min(timestamp), max(timestamp) 
@@ -475,7 +476,7 @@ WHERE type='type3'
 GROUP BY toYear(timestamp) LIMIT 10
 ```
 
-Let’s have a look at the query pipeline without parallel replica:
+Let's have a look at the query pipeline without parallel replica:
 
 ```sql title="EXPLAIN PIPELINE (without parallel replica)"
 EXPLAIN PIPELINE graph = 1, compact = 0 
@@ -488,7 +489,7 @@ SETTINGS allow_experimental_parallel_reading_from_replicas=0
 FORMAT TSV;
 ```
 
-<img src={image_8} alt="EXPLAIN without parallel_replica"/>
+<Image img={image_8} size="lg" alt="EXPLAIN without parallel_replica" />
 
 And now with parallel replica:
 
@@ -503,4 +504,4 @@ SETTINGS allow_experimental_parallel_reading_from_replicas=2
 FORMAT TSV;
 ```
 
-<img src={image_9} alt="EXPLAIN with parallel_replica"/>
+<Image img={image_9} size="lg" alt="EXPLAIN with parallel_replica"/>

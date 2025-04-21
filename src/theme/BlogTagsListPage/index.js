@@ -37,7 +37,7 @@ export default function BlogTagsListPage({ tags, sidebar }) {
         <BlogBreadcrumbs />
         <Heading as="h1" className={styles.kbTitle}><Translate id={`theme.blog.title`} description={`Translation for Knowledge Base`}>Knowledge Base</Translate></Heading>
         <ButtonGroup
-          onClick={function Nav(value) { if (typeof window !== 'undefined') { value === 'recent' ? history.push(`/docs/${currentLocale}/knowledgebase`) : history.push(`/docs/${currentLocale}/knowledgebase/tags`) } }}
+          onClick={function Nav(value) { if (typeof window !== 'undefined') { value === 'recent' ? history.push(`/docs/knowledgebase`) : history.push(`/docs/knowledgebase/tags`) } }}
           options={[
             {
               label: 'Recent',

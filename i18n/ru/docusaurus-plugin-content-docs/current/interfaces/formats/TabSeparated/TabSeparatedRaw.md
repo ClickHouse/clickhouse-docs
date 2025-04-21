@@ -1,15 +1,16 @@
 ---
-title: TabSeparatedRaw
-slug: /interfaces/formats/TabSeparatedRaw
-keywords: ['TabSeparatedRaw']
-input_format: true
-output_format: true
 alias: ['TSVRaw', 'Raw']
+description: 'Документация для формата TabSeparatedRaw'
+input_format: true
+keywords: ['TabSeparatedRaw']
+output_format: true
+slug: /interfaces/formats/TabSeparatedRaw
+title: 'TabSeparatedRaw'
 ---
 
-| Вход | Выход | Псевдоним        |
-|------|-------|------------------|
-| ✔    | ✔     | `TSVRaw`, `Raw`  |
+| Входные данные | Выходные данные | Псевдоним       |
+|----------------|-----------------|-----------------|
+| ✔              | ✔               | `TSVRaw`, `Raw` |
 
 ## Описание {#description}
 

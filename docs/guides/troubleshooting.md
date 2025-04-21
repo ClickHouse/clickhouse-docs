@@ -134,7 +134,7 @@ Revision: 54413
 
 #### See system.d logs {#see-systemd-logs}
 
-If you do not find any useful information in `clickhouse-server` logs or there aren’t any logs, you can view `system.d` logs using the command:
+If you do not find any useful information in `clickhouse-server` logs or there aren't any logs, you can view `system.d` logs using the command:
 
 ```shell
 sudo journalctl -u clickhouse-server

@@ -9,13 +9,17 @@ title: 'Connecting ClickHouse to Hashboard'
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
 import hashboard_01 from '@site/static/images/integrations/data-visualization/hashboard_01.png';
+import Image from '@theme/IdealImage';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Connecting ClickHouse to Hashboard
 
-[Hashboard](https://hashboard.com) is an interactive data exploration tool that enables anyone in your organization to track metrics and discover actionable insights. Hashboard issues live SQL queries to your ClickHouse database and is particularly useful for self-serve, ad hoc data exploration use cases.  
+<CommunityMaintainedBadge/>
+
+[Hashboard](https://hashboard.com) is an interactive data exploration tool that enables anyone in your organization to track metrics and discover actionable insights. Hashboard issues live SQL queries to your ClickHouse database and is particularly useful for self-serve, ad hoc data exploration use cases.
 
 
-<img src={hashboard_01} class="image" alt="Hashboard data explorer" />  
+<Image size="md" img={hashboard_01} alt="Hashboard data explorer interface showing interactive query builder and visualization" border />
 
 <br/>
 

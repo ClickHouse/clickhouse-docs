@@ -5,6 +5,7 @@ title: 'Setting IP Filters'
 description: 'This page explains how to set IP filters in ClickHouse Cloud to control access to ClickHouse services.'
 ---
 
+import Image from '@theme/IdealImage';
 import ip_filtering_after_provisioning from '@site/static/images/cloud/security/ip-filtering-after-provisioning.png';
 import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filter-add-single-ip.png';
 
@@ -33,7 +34,7 @@ A sidebar will appear with options for you to configure:
 
 This screenshot shows an access list which allows traffic from a range of IP Addresses, described as "NY Office range":
 
-<img src={ip_filtering_after_provisioning} alt="Existing access list in ClickHouse Cloud" />
+<Image img={ip_filtering_after_provisioning} size="md" alt="Existing access list in ClickHouse Cloud" border/>
 
 ### Possible actions {#possible-actions}
 
@@ -41,7 +42,7 @@ This screenshot shows an access list which allows traffic from a range of IP Add
 
   This example adds a single IP address, with a description of `London server`:
 
-<img src={ip_filter_add_single_ip} alt="Adding a single IP to the access list in ClickHouse Cloud" />
+<Image img={ip_filter_add_single_ip} size="md" alt="Adding a single IP to the access list in ClickHouse Cloud" border/>
 
 1. Delete an existing entry
 

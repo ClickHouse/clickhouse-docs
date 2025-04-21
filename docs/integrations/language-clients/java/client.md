@@ -246,7 +246,7 @@ This client version supports:
 | [Prometheus](/interfaces/formats#prometheus)                                                                          | -      | raw     |
 | [Protobuf](/interfaces/formats#protobuf)                                                                              | raw    | raw     |
 | [ProtobufSingle](/interfaces/formats#protobufsingle)                                                                  | raw    | raw     |
-| [ProtobufList](/interfaces/formats#protobuflist)								                                        | raw    | raw     |
+| [ProtobufList](/interfaces/formats#protobuflist)                                                                                                      | raw    | raw     |
 | [Avro](/interfaces/formats#data-format-avro)                                                                          | raw    | raw     |
 | [AvroConfluent](/interfaces/formats#data-format-avro-confluent)                                                       | raw    | -       |
 | [Parquet](/interfaces/formats#data-format-parquet)                                                                    | raw    | raw     |

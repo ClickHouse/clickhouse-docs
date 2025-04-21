@@ -1,27 +1,27 @@
 ---
-slug: /engines/table-engines/special/url
+description: 'Запросы данных из/в удаленный HTTP/HTTPS сервер. Этот движок аналогичен движку File.'
+sidebar_label: 'URL'
 sidebar_position: 80
-sidebar_label:  URL
-title: 'URL Table Engine'
-description: 'Запросы данных из/в удаленный HTTP/HTTPS сервер. Этот движок аналогичен движку [File](../../../engines/table-engines/special/file.md).'
+slug: /engines/table-engines/special/url
+title: 'Движок таблиц URL'
 ---
 
 
-# URL Table Engine
+# Движок таблиц URL
 
-Запросы данных из/в удаленный HTTP/HTTPS сервер. Этот движок аналогичен движку [File](../../../engines/table-engines/special/file.md).
+Запросы данных из/в удаленный HTTP/HTTPS сервер. Этот движок аналогичен [движку File](../../../engines/table-engines/special/file.md).
 
 Синтаксис: `URL(URL [,Format] [,CompressionMethod])`
 
-- Параметр `URL` должен соответствовать структуре Уникального Ресурса Локатора. Указанный URL должен указывать на сервер, использующий HTTP или HTTPS. Это не требует дополнительных заголовков для получения ответа от сервера.
+- Параметр `URL` должен соответствовать структуре Уникального Ресурсного Локатора. Указанный URL должен указывать на сервер, использующий HTTP или HTTPS. Для получения ответа от сервера никаких дополнительных заголовков не требуется.
 
-- `Format` должен быть тем, который ClickHouse может использовать в запросах `SELECT` и, при необходимости, в `INSERT`. Для полного списка поддерживаемых форматов см. [Formats](/interfaces/formats#formats-overview).
+- `Format` должен быть одним из тех, которые ClickHouse может использовать в запросах `SELECT`, а при необходимости и в `INSERT`. Для полного списка поддерживаемых форматов смотрите [Форматы](/interfaces/formats#formats-overview).
 
-    Если этот аргумент не указан, ClickHouse автоматически определяет формат по суффиксу параметра `URL`. Если суффикс параметра `URL` не соответствует ни одному из поддерживаемых форматов, создание таблицы завершается неудачей. Например, для выражения движка `URL('http://localhost/test.json')`, применяется формат `JSON`.
+    Если этот аргумент не указан, ClickHouse автоматически определяет формат по суффиксу параметра `URL`. Если суффикс параметра `URL` не соответствует ни одному из поддерживаемых форматов, создание таблицы завершается неудачей. Например, для выражения движка `URL('http://localhost/test.json')` применяется формат `JSON`.
 
-- `CompressionMethod` указывает, нужно ли сжимать тело HTTP. Если сжатие включено, HTTP-пакеты, отправляемые движком URL, содержат заголовок 'Content-Encoding', чтобы указать, какой метод сжатия используется.
+- Параметр `CompressionMethod` указывает, нужно ли сжимать HTTP-тело. Если сжатие включено, HTTP-пакеты, отправляемые движком URL, содержат заголовок 'Content-Encoding', чтобы указать, какой метод сжатия используется.
 
-Чтобы включить сжатие, сначала убедитесь, что удаленный HTTP-эндпоинт, указанный параметром `URL`, поддерживает соответствующий алгоритм сжатия.
+Чтобы включить сжатие, сначала убедитесь, что удаленная HTTP-точка, указанная параметром `URL`, поддерживает соответствующий алгоритм сжатия.
 
 Поддерживаемый `CompressionMethod` должен быть одним из следующих:
 - gzip или gz
@@ -35,31 +35,28 @@ description: 'Запросы данных из/в удаленный HTTP/HTTPS 
 - none
 - auto
 
-Если `CompressionMethod` не указан, он по умолчанию равен `auto`. Это означает, что ClickHouse автоматически определяет метод сжатия по суффиксу параметра `URL`. Если суффикс соответствует любому из перечисленных выше методов сжатия, применяется соответствующее сжатие, иначе сжатие не будет включено.
+Если `CompressionMethod` не указан, по умолчанию используется `auto`. Это означает, что ClickHouse автоматически определяет метод сжатия по суффиксу параметра `URL`. Если суффикс соответствует любому из перечисленных методов сжатия, применяется соответствующее сжатие или сжатие не будет включено.
 
-Например, для выражения движка `URL('http://localhost/test.gzip')` применяется метод сжатия `gzip`, но для `URL('http://localhost/test.fr')` сжатие не включается, потому что суффикс `fr` не соответствует ни одному из вышеперечисленных методов сжатия.
+Например, для выражения движка `URL('http://localhost/test.gzip')` применяется метод сжатия `gzip`, но для `URL('http://localhost/test.fr')` сжатие не включается, так как суффикс `fr` не соответствует ни одному из вышеперечисленных методов сжатия.
 
-## Usage {#using-the-engine-in-the-clickhouse-server}
+## Использование {#using-the-engine-in-the-clickhouse-server}
 
-Запросы `INSERT` и `SELECT` преобразуются в запросы `POST` и `GET`,
-соответственно. Для обработки `POST` запросов удаленный сервер должен поддерживать
-[Chunked transfer encoding](https://en.wikipedia.org/wiki/Chunked_transfer_encoding).
+Запросы `INSERT` и `SELECT` преобразуются в запросы `POST` и `GET`, соответственно. Для обработки запросов `POST` удаленный сервер должен поддерживать [Chunked transfer encoding](https://en.wikipedia.org/wiki/Chunked_transfer_encoding).
 
 Вы можете ограничить максимальное количество перенаправлений HTTP GET, используя настройку [max_http_get_redirects](/operations/settings/settings#max_http_get_redirects).
 
-## Example {#example}
+## Пример {#example}
 
 **1.** Создайте таблицу `url_engine_table` на сервере:
 
-``` sql
+```sql
 CREATE TABLE url_engine_table (word String, value UInt64)
 ENGINE=URL('http://127.0.0.1:12345/', CSV)
 ```
 
-**2.** Создайте простой HTTP-сервер с использованием стандартных инструментов Python 3 и
-запустите его:
+**2.** Создайте простой HTTP сервер, используя стандартные инструменты Python 3, и запустите его:
 
-``` python3
+```python3
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 class CSVHTTPServer(BaseHTTPRequestHandler):
@@ -75,32 +72,32 @@ if __name__ == "__main__":
     HTTPServer(server_address, CSVHTTPServer).serve_forever()
 ```
 
-``` bash
+```bash
 $ python3 server.py
 ```
 
 **3.** Запросите данные:
 
-``` sql
+```sql
 SELECT * FROM url_engine_table
 ```
 
-``` text
+```text
 ┌─word──┬─value─┐
 │ Hello │     1 │
 │ World │     2 │
 └───────┴───────┘
 ```
 
-## Details of Implementation {#details-of-implementation}
+## Детали реализации {#details-of-implementation}
 
-- Чтения и записи могут выполняться параллельно
-- Не поддерживаются:
-    - операции `ALTER` и `SELECT...SAMPLE`.
+- Чтения и записи могут выполняться параллельно.
+- Не поддерживается:
+    - Операции `ALTER` и `SELECT...SAMPLE`.
     - Индексы.
     - Репликация.
 
-## Virtual Columns {#virtual-columns}
+## Виртуальные колонки {#virtual-columns}
 
 - `_path` — Путь к `URL`. Тип: `LowCardinality(String)`.
 - `_file` — Имя ресурса `URL`. Тип: `LowCardinality(String)`.
@@ -108,7 +105,7 @@ SELECT * FROM url_engine_table
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение равно `NULL`.
 - `_headers` - Заголовки HTTP-ответа. Тип: `Map(LowCardinality(String), LowCardinality(String))`.
 
-## Storage Settings {#storage-settings}
+## Настройки хранения {#storage-settings}
 
 - [engine_url_skip_empty_files](/operations/settings/settings.md#engine_url_skip_empty_files) - позволяет пропускать пустые файлы при чтении. Отключено по умолчанию.
 - [enable_url_encoding](/operations/settings/settings.md#enable_url_encoding) - позволяет включать/выключать декодирование/кодирование пути в uri. Включено по умолчанию.

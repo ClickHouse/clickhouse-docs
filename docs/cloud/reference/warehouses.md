@@ -12,6 +12,7 @@ import compute_4 from '@site/static/images/cloud/reference/compute-compute-4.png
 import compute_5 from '@site/static/images/cloud/reference/compute-compute-5.png';
 import compute_7 from '@site/static/images/cloud/reference/compute-compute-7.png';
 import compute_8 from '@site/static/images/cloud/reference/compute-compute-8.png';
+import Image from '@theme/IdealImage';
 
 # Warehouses
 
@@ -28,13 +29,7 @@ Each ClickHouse Cloud service includes:
 Child single services can scale vertically unlike single parent services.
 :::
 
-<br />
-
-<img src={compute_1}
-    alt='NEEDS ALT'
-    class='image'
-    style={{width: '200px'}}
-/>
+<Image img={compute_1} size="sm" alt="Current service in ClickHouse Cloud" background='white' />
 
 <br />
 
@@ -44,17 +39,11 @@ Compute-compute separation allows users to create multiple compute node groups, 
 
 Each compute node group will have its own endpoint so you can choose which set of replicas to use for your workloads. Some of your workloads may be satisfied with only one small-size replica, and others may require full high-availability (HA) and hundreds of gigs of memory. Compute-compute separation also allows you to separate read operations from write operations so they don't interfere with each other:
 
-<br />
-
-<img src={compute_2}
-    alt='NEEDS ALT'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={compute_2} size="md" alt="Compute separation in ClickHouse Cloud" background='white' />
 
 <br />
 
-_Fig. 2 - compute  ClickHouse Cloud_
+_Fig. 2 - compute separation in ClickHouse Cloud_
 
 In this private preview program, you will have the ability to create extra services that share the same data with your existing services, or create a completely new setup with multiple services sharing the same data.
 
@@ -66,13 +55,7 @@ Each warehouse has a primary service (this service was created first) and second
 - Primary service `DWH Prod`
 - Secondary service `DWH Prod Subservice`
 
-<br />
-
-<img src={compute_8}
-    alt='NEEDS ALT'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={compute_8} size="lg" alt="Warehouse example with primary and secondary services" background='white' />
 
 <br />
 
@@ -92,13 +75,7 @@ You can sort services by the warehouse that they belong to.
 
 Because all in a warehouse share the same set of tables, they also share access controls to those other services. This means that all database users that are created in Service 1 will also be able to use Service 2 with the same permissions (grants for tables, views, etc), and vice versa. Users will use another endpoint for each service but will use the same username and password. In other words, _users are shared across services that work with the same storage:_
 
-<br />
-
-<img src={compute_3}
-    alt='NEEDS ALT'
-    class='image'
-    style={{width: '500px'}}
-/>
+<Image img={compute_3} size="md" alt="User access across services sharing same data" />
 
 <br />
 
@@ -110,13 +87,7 @@ It is often useful to restrict specific services from being used by other applic
 
 You can apply IP filtering setting to each service separately, which means you can control which application can access which service. This allows you to restrict users from using specific services:
 
-<br />
-
-<img src={compute_4}
-    alt='NEEDS ALT'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={compute_4} size="md" alt="Network access control settings" background='white' />
 
 <br />
 
@@ -126,20 +97,15 @@ _Fig. 5 - Alice is restricted to access Service 2 because of the network setting
 
 Sometimes it is useful to restrict write access to a specific service and allow writes only by a subset of services in a warehouse. This can be done when creating the second and nth services (the first service should always be read-write):
 
-<br />
-
-<img src={compute_5}
-    alt='NEEDS ALT'
-    class='image'
-    style={{width: '400px'}}
-/>
+<Image img={compute_5} size="lg" alt="Read-write and Read-only services in a warehouse" background='white' />
 
 <br />
 
 _Fig. 6 - Read-write and Read-only services in a warehouse_
 
 :::note
-Read-only services currently allow user management operations (create, drop, etc). This behavior may be changed in the future.
+1. Read-only services currently allow user management operations (create, drop, etc). This behavior may be changed in the future.
+2. Currently, refreshable materialized views are executed on all services in the warehouse, including read-only services. This behavior will be changed in the future, however, and they will be executed on RW services only.
 :::
 
 
@@ -175,6 +141,8 @@ settings distributed_ddl_task_timeout=0
 
 6. **In very rare cases, secondary services that are idled or stopped for a long time (days) without waking/starting up can cause performance degradation to other services in the same warehouse.** This issue will be resolved soon and is connected to mutations running in the background. If you think you are experiencing this issue, please contact ClickHouse [Support](https://clickhouse.com/support/program).
 
+7. **Currently there is a soft limit of 5 services per warehouse.** Contact the support team if you need more than 5 services in a single warehouse.
+
 
 ## Pricing {#pricing}
 
@@ -191,13 +159,7 @@ Extra services created during the private preview are billed as usual. Compute p
 
 To create a warehouse, you need to create a second service that will share the data with an existing service. This can be done by clicking the plus sign on any of the existing services:
 
-<br />
-
-<img src={compute_7}
-    alt='NEEDS ALT'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={compute_7} size="md" alt="Creating a new service in a warehouse" border background='white' />
 
 <br />
 

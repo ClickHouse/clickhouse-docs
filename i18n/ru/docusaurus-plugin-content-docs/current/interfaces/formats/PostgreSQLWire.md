@@ -1,11 +1,12 @@
 ---
-title: PostgreSQLWire
-slug: /interfaces/formats/PostgreSQLWire
+description: 'Документация для формата PostgreSQLWire'
 keywords: ['PostgreSQLWire']
+slug: /interfaces/formats/PostgreSQLWire
+title: 'PostgreSQLWire'
 ---
 
 ## Описание {#description}
 
-## Пример Использования {#example-usage}
+## Пример использования {#example-usage}
 
-## Настройки Формата {#format-settings}
+## Настройки формата {#format-settings}

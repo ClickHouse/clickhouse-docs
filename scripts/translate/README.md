@@ -4,7 +4,7 @@ export LC_ALL=C
 cd ~/git/clickhouse-docs
 yarn cache clean
 yarn install
-yarn prep-from-master
+yarn copy-clickhouse-repo-docs
 bash scripts/settings/autogenerate-settings.sh
 cp -r docs/en docs/ja
 find docs/ja -type f -exec sed -i '' 's|slug: /en/|slug: /ja/|g' {} \;

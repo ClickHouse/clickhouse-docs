@@ -53,7 +53,7 @@ catalog feature, it is now possible to add and work with multiple catalogs in a 
 ## Installation & Setup {#installation--setup}
 
 For integrating ClickHouse with Spark, there are multiple installation options to suit different project setups.
-You can add the ClickHouse Spark connector as a dependency directly in your project’s build file (such as in `pom.xml`
+You can add the ClickHouse Spark connector as a dependency directly in your project's build file (such as in `pom.xml`
 for Maven or `build.sbt` for SBT).
 Alternatively, you can put the required JAR files in your `$SPARK_HOME/jars/` folder, or pass them directly as a Spark
 option using the `--jars` flag in the `spark-submit` command.
@@ -221,6 +221,15 @@ That way, you would be able to access clickhouse1 table `<ck_db>.<ck_table>` fro
 `clickhouse1.<ck_db>.<ck_table>`, and access clickhouse2 table `<ck_db>.<ck_table>` by `clickhouse2.<ck_db>.<ck_table>`.
 
 :::
+
+## ClickHouse Cloud Settings {#clickhouse-cloud-settings}
+
+When connecting to [ClickHouse Cloud](https://clickhouse.com), make sure to enable SSL and set the appropriate SSL mode. For example:
+
+```text
+spark.sql.catalog.clickhouse.option.ssl        true
+spark.sql.catalog.clickhouse.option.ssl_mode   NONE
+```
 
 ## Read Data {#read-data}
 

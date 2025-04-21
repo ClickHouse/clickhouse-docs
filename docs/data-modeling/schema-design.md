@@ -6,8 +6,8 @@ keywords: ['schema', 'schema design', 'query optimization']
 ---
 
 import stackOverflowSchema from '@site/static/images/data-modeling/stackoverflow-schema.png';
-import schemaDesignTypes from '@site/static/images/data-modeling/schema-design-types.png';
 import schemaDesignIndices from '@site/static/images/data-modeling/schema-design-indices.png';
+import Image from '@theme/IdealImage';
 
 Understanding effective schema design is key to optimizing ClickHouse performance and includes choices that often involve trade-offs, with the optimal approach depending on the queries being served as well as factors such as data update frequency, latency requirements, and data volume. This guide provides an overview of schema design best practices and data modeling techniques for optimizing ClickHouse performance.
 
@@ -17,7 +17,7 @@ For the examples in this guide, we use a subset of the Stack Overflow dataset. T
 
 > The primary keys and relationships indicated are not enforced through constraints (Parquet is file not table format) and purely indicate how the data is related and the unique keys it possesses.
 
-<img src={stackOverflowSchema} class="image" alt="Stack Overflow Schema" style={{width: '800px', background: 'none'}} />
+<Image img={stackOverflowSchema} size="lg" alt="Stack Overflow Schema"/>
 
 <br />
 
@@ -39,28 +39,28 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/sta
 SETTINGS describe_compact_output = 1
 
 ┌─name──────────────────┬─type───────────────────────────┐
-│ Id                	│ Nullable(Int64)            	│
-│ PostTypeId        	│ Nullable(Int64)            	│
-│ AcceptedAnswerId  	│ Nullable(Int64)            	│
-│ CreationDate      	│ Nullable(DateTime64(3, 'UTC')) │
-│ Score             	│ Nullable(Int64)            	│
-│ ViewCount         	│ Nullable(Int64)            	│
-│ Body              	│ Nullable(String)           	│
-│ OwnerUserId       	│ Nullable(Int64)            	│
-│ OwnerDisplayName  	│ Nullable(String)           	│
-│ LastEditorUserId  	│ Nullable(Int64)            	│
-│ LastEditorDisplayName │ Nullable(String)           	│
-│ LastEditDate      	│ Nullable(DateTime64(3, 'UTC')) │
-│ LastActivityDate  	│ Nullable(DateTime64(3, 'UTC')) │
-│ Title             	│ Nullable(String)           	│
-│ Tags              	│ Nullable(String)           	│
-│ AnswerCount       	│ Nullable(Int64)            	│
-│ CommentCount      	│ Nullable(Int64)            	│
-│ FavoriteCount     	│ Nullable(Int64)            	│
-│ ContentLicense    	│ Nullable(String)           	│
-│ ParentId          	│ Nullable(String)           	│
-│ CommunityOwnedDate	│ Nullable(DateTime64(3, 'UTC')) │
-│ ClosedDate        	│ Nullable(DateTime64(3, 'UTC')) │
+│ Id                    │ Nullable(Int64)               │
+│ PostTypeId            │ Nullable(Int64)               │
+│ AcceptedAnswerId      │ Nullable(Int64)               │
+│ CreationDate          │ Nullable(DateTime64(3, 'UTC')) │
+│ Score                 │ Nullable(Int64)               │
+│ ViewCount             │ Nullable(Int64)               │
+│ Body                  │ Nullable(String)              │
+│ OwnerUserId           │ Nullable(Int64)               │
+│ OwnerDisplayName      │ Nullable(String)              │
+│ LastEditorUserId      │ Nullable(Int64)               │
+│ LastEditorDisplayName │ Nullable(String)              │
+│ LastEditDate          │ Nullable(DateTime64(3, 'UTC')) │
+│ LastActivityDate      │ Nullable(DateTime64(3, 'UTC')) │
+│ Title                 │ Nullable(String)              │
+│ Tags                  │ Nullable(String)              │
+│ AnswerCount           │ Nullable(Int64)               │
+│ CommentCount          │ Nullable(Int64)               │
+│ FavoriteCount         │ Nullable(Int64)               │
+│ ContentLicense        │ Nullable(String)              │
+│ ParentId              │ Nullable(String)              │
+│ CommunityOwnedDate    │ Nullable(DateTime64(3, 'UTC')) │
+│ ClosedDate            │ Nullable(DateTime64(3, 'UTC')) │
 └───────────────────────┴────────────────────────────────┘
 ```
 
@@ -89,28 +89,28 @@ SHOW CREATE TABLE posts
 
 CREATE TABLE posts
 (
-	`Id` Nullable(Int64),
-	`PostTypeId` Nullable(Int64),
-	`AcceptedAnswerId` Nullable(Int64),
-	`CreationDate` Nullable(DateTime64(3, 'UTC')),
-	`Score` Nullable(Int64),
-	`ViewCount` Nullable(Int64),
-	`Body` Nullable(String),
-	`OwnerUserId` Nullable(Int64),
-	`OwnerDisplayName` Nullable(String),
-	`LastEditorUserId` Nullable(Int64),
-	`LastEditorDisplayName` Nullable(String),
-	`LastEditDate` Nullable(DateTime64(3, 'UTC')),
-	`LastActivityDate` Nullable(DateTime64(3, 'UTC')),
-	`Title` Nullable(String),
-	`Tags` Nullable(String),
-	`AnswerCount` Nullable(Int64),
-	`CommentCount` Nullable(Int64),
-	`FavoriteCount` Nullable(Int64),
-	`ContentLicense` Nullable(String),
-	`ParentId` Nullable(String),
-	`CommunityOwnedDate` Nullable(DateTime64(3, 'UTC')),
-	`ClosedDate` Nullable(DateTime64(3, 'UTC'))
+        `Id` Nullable(Int64),
+        `PostTypeId` Nullable(Int64),
+        `AcceptedAnswerId` Nullable(Int64),
+        `CreationDate` Nullable(DateTime64(3, 'UTC')),
+        `Score` Nullable(Int64),
+        `ViewCount` Nullable(Int64),
+        `Body` Nullable(String),
+        `OwnerUserId` Nullable(Int64),
+        `OwnerDisplayName` Nullable(String),
+        `LastEditorUserId` Nullable(Int64),
+        `LastEditorDisplayName` Nullable(String),
+        `LastEditDate` Nullable(DateTime64(3, 'UTC')),
+        `LastActivityDate` Nullable(DateTime64(3, 'UTC')),
+        `Title` Nullable(String),
+        `Tags` Nullable(String),
+        `AnswerCount` Nullable(Int64),
+        `CommentCount` Nullable(Int64),
+        `FavoriteCount` Nullable(Int64),
+        `ContentLicense` Nullable(String),
+        `ParentId` Nullable(String),
+        `CommunityOwnedDate` Nullable(DateTime64(3, 'UTC')),
+        `ClosedDate` Nullable(DateTime64(3, 'UTC'))
 )
 ENGINE = MergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 ORDER BY tuple()
@@ -150,7 +150,30 @@ FixedString for special cases - Strings which have a fixed length can be encoded
 
 By applying these simple rules to our posts table, we can identify an optimal type for each column:
 
-<img src={schemaDesignTypes} class="image" alt="Schema Design - Optimized Types" style={{width: '1000px', background: 'none'}} />
+
+| Column                  | Is Numeric | Min, Max                                                              | Unique Values | Nulls | Comment                                                                                      | Optimized Type                           |
+|------------------------|------------|------------------------------------------------------------------------|----------------|--------|----------------------------------------------------------------------------------------------|------------------------------------------|
+| `PostTypeId`             | Yes        | 1, 8                                                                   | 8              | No     |                                                                                              | `Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8)` |
+| `AcceptedAnswerId`      | Yes        | 0, 78285170                                                            | 12282094       | Yes    | Differentiate Null with 0 value                                                               | UInt32                                   |
+| `CreationDate`           | No         | 2008-07-31 21:42:52.667000000, 2024-03-31 23:59:17.697000000           | -              | No     | Millisecond granularity is not required, use DateTime                                        | DateTime                                 |
+| `Score`                  | Yes        | -217, 34970                                                            | 3236           | No     |                                                                                              | Int32                                    |
+| `ViewCount`              | Yes        | 2, 13962748                                                            | 170867         | No     |                                                                                              | UInt32                                   |
+| `Body`                   | No         | -                                                                      | -              | No     |                                                                                              | String                                   |
+| `OwnerUserId`            | Yes        | -1, 4056915                                                            | 6256237        | Yes    |                                                                                              | Int32                                    |
+| `OwnerDisplayName`       | No         | -                                                                      | 181251         | Yes    | Consider Null to be empty string                                                             | String                                   |
+| `LastEditorUserId`       | Yes        | -1, 9999993                                                            | 1104694        | Yes    | 0 is an unused value can be used for Nulls                                                   | Int32                                    |
+| `LastEditorDisplayName`  | No         | -                                                                      | 70952          | Yes    | Consider Null to be an empty string. Tested LowCardinality and no benefit                    | String                                   |
+| `LastEditDate`           | No         | 2008-08-01 13:24:35.051000000, 2024-04-06 21:01:22.697000000           | -              | No     | Millisecond granularity is not required, use DateTime                                        | DateTime                                 |
+| `LastActivityDate`       | No         | 2008-08-01 12:19:17.417000000, 2024-04-06 21:01:22.697000000           | -              | No     | Millisecond granularity is not required, use DateTime                                        | DateTime                                 |
+| `Title`                  | No         | -                                                                      | -              | No     | Consider Null to be an empty string                                                          | String                                   |
+| `Tags`                   | No         | -                                                                      | -              | No     | Consider Null to be an empty string                                                          | String                                   |
+| `AnswerCount`            | Yes        | 0, 518                                                                 | 216            | No     | Consider Null and 0 to same                                                                  | UInt16                                   |
+| `CommentCount`           | Yes        | 0, 135                                                                 | 100            | No     | Consider Null and 0 to same                                                                  | UInt8                                    |
+| `FavoriteCount`          | Yes        | 0, 225                                                                 | 6              | Yes    | Consider Null and 0 to same                                                                  | UInt8                                    |
+| `ContentLicense`         | No         | -                                                                      | 3              | No     | LowCardinality outperforms FixedString                                                       | LowCardinality(String)                   |
+| `ParentId`               | No         | -                                                                      | 20696028       | Yes    | Consider Null to be an empty string                                                          | String                                   |
+| `CommunityOwnedDate`     | No         | 2008-08-12 04:59:35.017000000, 2024-04-01 05:36:41.380000000           | -              | Yes    | Consider default 1970-01-01 for Nulls. Millisecond granularity is not required, use DateTime | DateTime                                 |
+| `ClosedDate`             | No         | 2008-09-04 20:56:44, 2024-04-06 18:49:25.393000000                     | -              | Yes    | Consider default 1970-01-01 for Nulls. Millisecond granularity is not required, use DateTime | DateTime                                 |
 
 <br />
 
@@ -203,9 +226,7 @@ Users coming from OLTP databases often look for the equivalent concept in ClickH
 
 At the scale at which ClickHouse is often used, memory and disk efficiency are paramount. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, then the merged part's primary indexes are also merged. The primary index for a part has one index entry per group of rows - this technique is called sparse indexing.
 
-<img src={schemaDesignIndices} class="image" alt="Sparse Indexing in ClickHouse" style={{width: '600px', background: 'none'}} />
-
-<br />
+<Image img={schemaDesignIndices} size="md" alt="Sparse Indexing in ClickHouse"/>
 
 The selected key in ClickHouse will determine not only the index, but also order in which data is written on disk. Because of this, it can dramatically impact compression levels which can in turn affect query performance. An ordering key which causes the values of most columns to be written in contiguous order will allow the selected compression algorithm (and codecs) to compress the data more effectively.
 
@@ -239,16 +260,16 @@ ORDER BY CommentCount DESC
 LIMIT 3
 
 ┌───────Id─┬─Title─────────────────────────────────────────────────────────────┬─CommentCount─┐
-│ 78203063 │ How to avoid default initialization of objects in std::vector?	│       	74 │
-│ 78183948 │ About memory barrier                                          	│       	52 │
-│ 77900279 │ Speed Test for Buffer Alignment: IBM's PowerPC results vs. my CPU │       	49 │
+│ 78203063 │ How to avoid default initialization of objects in std::vector?     │               74 │
+│ 78183948 │ About memory barrier                                               │               52 │
+│ 77900279 │ Speed Test for Buffer Alignment: IBM's PowerPC results vs. my CPU │        49 │
 └──────────┴───────────────────────────────────────────────────────────────────┴──────────────
 
 10 rows in set. Elapsed: 0.070 sec. Processed 59.82 million rows, 569.21 MB (852.55 million rows/s., 8.11 GB/s.)
 Peak memory usage: 429.38 MiB.
 ```
 
-> The query here is very fast even though all 60m rows have been linearly scanned - ClickHouse is just fast :) You’ll have to trust us ordering keys is worth it at TB and PB scale!
+> The query here is very fast even though all 60m rows have been linearly scanned - ClickHouse is just fast :) You'll have to trust us ordering keys is worth it at TB and PB scale!
 
 Lets select the columns `PostTypeId` and `CreationDate` as our ordering keys.
 
@@ -257,28 +278,28 @@ Maybe in our case, we expect users to always filter by `PostTypeId`. This has a 
 ```sql
 CREATE TABLE posts_v3
 (
-	`Id` Int32,
-	`PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
-	`AcceptedAnswerId` UInt32,
-	`CreationDate` DateTime,
-	`Score` Int32,
-	`ViewCount` UInt32,
-	`Body` String,
-	`OwnerUserId` Int32,
-	`OwnerDisplayName` String,
-	`LastEditorUserId` Int32,
-	`LastEditorDisplayName` String,
-	`LastEditDate` DateTime,
-	`LastActivityDate` DateTime,
-	`Title` String,
-	`Tags` String,
-	`AnswerCount` UInt16,
-	`CommentCount` UInt8,
-	`FavoriteCount` UInt8,
-	`ContentLicense` LowCardinality(String),
-	`ParentId` String,
-	`CommunityOwnedDate` DateTime,
-	`ClosedDate` DateTime
+        `Id` Int32,
+        `PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
+        `AcceptedAnswerId` UInt32,
+        `CreationDate` DateTime,
+        `Score` Int32,
+        `ViewCount` UInt32,
+        `Body` String,
+        `OwnerUserId` Int32,
+        `OwnerDisplayName` String,
+        `LastEditorUserId` Int32,
+        `LastEditorDisplayName` String,
+        `LastEditDate` DateTime,
+        `LastActivityDate` DateTime,
+        `Title` String,
+        `Tags` String,
+        `AnswerCount` UInt16,
+        `CommentCount` UInt8,
+        `FavoriteCount` UInt8,
+        `ContentLicense` LowCardinality(String),
+        `ParentId` String,
+        `CommunityOwnedDate` DateTime,
+        `ClosedDate` DateTime
 )
 ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
@@ -308,7 +329,7 @@ LIMIT 3
 
 For users interested in the compression improvements achieved by using specific types and appropriate ordering keys, see [Compression in ClickHouse](/data-compression/compression-in-clickhouse). If users need to further improve compression we also recommend the section [Choosing the right column compression codec](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec).
 
-## Next: Data Modelling Techniques {#next-data-modelling-techniques}
+## Next: Data Modeling Techniques {#next-data-modeling-techniques}
 
 Until now, we've migrated only a single table. While this has allowed us to introduce some core ClickHouse concepts, most schemas are unfortunately not this simple.
 
@@ -318,7 +339,7 @@ In the other guides listed below, we will explore a number of techniques to rest
 
 The following approaches all aim to minimize the need to use JOINs to optimize reads and improve query performance. While JOINs are fully supported in ClickHouse, we recommend they are used sparingly (2 to 3 tables in a JOIN query is fine) to achieve optimal performance.
 
-> ClickHouse has no notion of foreign keys. This does not prohibit joins but means referential integrity is left to the user to manage at an application level. In OLAP systems like ClickHouse, data integrity is often managed at the application level or during the data ingestion process rather than being enforced by the database itself where it incurs a significant overhead. This approach allows for more flexibility and faster data insertion. This aligns with ClickHouse’s focus on speed and scalability of read and insert queries with very large datasets.
+> ClickHouse has no notion of foreign keys. This does not prohibit joins but means referential integrity is left to the user to manage at an application level. In OLAP systems like ClickHouse, data integrity is often managed at the application level or during the data ingestion process rather than being enforced by the database itself where it incurs a significant overhead. This approach allows for more flexibility and faster data insertion. This aligns with ClickHouse's focus on speed and scalability of read and insert queries with very large datasets.
 
 In order to minimize the use of Joins at query time, users have several tools/approaches:
 

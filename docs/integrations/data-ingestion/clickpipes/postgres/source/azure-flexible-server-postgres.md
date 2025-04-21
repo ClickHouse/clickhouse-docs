@@ -9,6 +9,7 @@ import server_parameters from '@site/static/images/integrations/data-ingestion/c
 import wal_level from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/wal_level.png';
 import restart from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/restart.png';
 import firewall from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/firewall.png';
+import Image from '@theme/IdealImage';
 
 # Azure Flexible Server for Postgres Source Setup Guide
 
@@ -20,15 +21,15 @@ ClickPipes supports Postgres version 12 and later.
 
 1. Click on the **Server parameters** section
 
-<img src={server_parameters} alt="Server Parameters in Azure Flexible Server for Postgres" />
+<Image img={server_parameters} alt="Server Parameters in Azure Flexible Server for Postgres" size="lg" border/>
 
 2. Edit the `wal_level` to `logical`
 
-<img src={wal_level} alt="Change wal_level to logical in Azure Flexible Server for Postgres" />
+<Image img={wal_level} alt="Change wal_level to logical in Azure Flexible Server for Postgres" size="lg" border/>
 
 3. This change would require a server restart. So restart when requested.
 
-<img src={restart} alt="Restart server after changing wal_level" />
+<Image img={restart} alt="Restart server after changing wal_level" size="lg" border/>
 
 ## Creating ClickPipes User and Granting permissions {#creating-clickpipes-user-and-granting-permissions}
 
@@ -74,7 +75,7 @@ Please follow the below steps to add [ClickPipes IPs](../../index.md#list-of-sta
 1. Go to the **Networking** tab and add the [ClickPipes IPs](../../index.md#list-of-static-ips) to the Firewall
    of your Azure Flexible Server Postgres OR the Jump Server/Bastion if you are using SSH tunneling.
 
-<img src={firewall} alt="Add ClickPipes IPs to Firewall in Azure Flexible Server for Postgres" />
+<Image img={firewall} alt="Add ClickPipes IPs to Firewall in Azure Flexible Server for Postgres" size="lg"/>
 
 
 ## What's next? {#whats-next}

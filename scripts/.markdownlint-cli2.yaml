@@ -5,7 +5,9 @@
 config:
   # turn settings on or off here
   default: false
+  MD010: true # Disallow hard tabs
   MD040: true # Fenced code blocks should have a language specified
+  #MD047: true # New line on end of file
   links-url-type: false # Disallow relative links to a .md or .mdx file
   custom-anchor-headings: true # Headings must have a custom anchor which is unique per page eg. # A Heading {#a-heading}
   no-markdown-image-tags: false

@@ -6,6 +6,7 @@ keywords: ['api', 'query api endpoints', 'query endpoints', 'query rest api']
 title: 'Query API Endpoints'
 ---
 
+import Image from '@theme/IdealImage';
 import endpoints_testquery from '@site/static/images/cloud/sqlconsole/endpoints-testquery.png';
 import endpoints_savequery from '@site/static/images/cloud/sqlconsole/endpoints-savequery.png';
 import endpoints_configure from '@site/static/images/cloud/sqlconsole/endpoints-configure.png';
@@ -46,11 +47,11 @@ limit 10
 
 Note that this query contains a parameter (`year`). The SQL console query editor automatically detects ClickHouse query parameter expressions and provides an input for each parameter. Let's quickly run this query to make sure that it works:
 
-<img src={endpoints_testquery} alt="Test the example query"/>
+<Image img={endpoints_testquery} size="md" alt="Test the example query" />
 
 Next step, we'll go ahead and save the query:
 
-<img src={endpoints_savequery} alt="Save example query"/>
+<Image img={endpoints_savequery} size="md" alt="Save example query" />
 
 More documentation around saved queries can be found [here](/cloud/get-started/sql-console#saving-a-query).
 
@@ -58,11 +59,11 @@ More documentation around saved queries can be found [here](/cloud/get-started/s
 
 Query API endpoints can be configured directly from query view by clicking the **Share** button and selecting `API Endpoint`. You'll be prompted to specify which API key(s) should be able to access the endpoint:
 
-<img src={endpoints_configure} alt="Configure query endpoint"/>
+<Image img={endpoints_configure} size="md" alt="Configure query endpoint" />
 
 After selecting an API key, the query API endpoint will automatically be provisioned. An example `curl` command will be displayed so you can send a test request:
 
-<img src={endpoints_completed} alt="Endpoint curl command"/>
+<Image img={endpoints_completed} size="md" alt="Endpoint curl command" />
 
 ### Query API parameters {#query-api-parameters}
 
@@ -72,13 +73,11 @@ Query parameters in a query can be specified with the syntax `{parameter_name: t
 
 Once a Query API endpoint is created, you can test that it works by using `curl` or any other HTTP client:
 
-
-<img src={endpoints_curltest} class="image" alt="endpoint curl test" style={{width: '80%', background:'none'}} />
+<Image img={endpoints_curltest} size="md" alt="endpoint curl test" />
 
 After you've sent your first request, a new button should appear immediately to the right of the **Share** button. Clicking it will open a flyout containing monitoring data about the query:
 
-<img src={endpoints_monitoring} alt="Endpoint monitoring"/>
-
+<Image img={endpoints_monitoring} size="md" alt="Endpoint monitoring" />
 
 ## Implementation Details {#implementation-details}
 

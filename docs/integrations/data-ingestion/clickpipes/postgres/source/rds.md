@@ -12,6 +12,7 @@ import modify_parameter_group from '@site/static/images/integrations/data-ingest
 import reboot_rds from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/reboot_rds.png';
 import security_group_in_rds_postgres from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/security_group_in_rds_postgres.png';
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
+import Image from '@theme/IdealImage';
 
 # RDS Postgres Source Setup Guide
 
@@ -47,19 +48,19 @@ If not already configured, follow these steps:
     - Set `rds.logical_replication` to 1
     - Set `wal_sender_timeout` to 0
 
-<img src={parameter_group_in_blade} alt="Where to find Parameter groups in RDS?" />
+<Image img={parameter_group_in_blade} alt="Where to find Parameter groups in RDS?" size="lg" border/>
 
-<img src={change_rds_logical_replication} alt="Changing rds.logical_replication" />
+<Image img={change_rds_logical_replication} alt="Changing rds.logical_replication" size="lg" border/>
 
-<img src={change_wal_sender_timeout} alt="Changing wal_sender_timeout" />
+<Image img={change_wal_sender_timeout} alt="Changing wal_sender_timeout" size="lg" border/>
 
 2. Apply the new parameter group to your RDS Postgres database
 
-<img src={modify_parameter_group} alt="Modifying RDS Postgres with new parameter group" />
+<Image img={modify_parameter_group} alt="Modifying RDS Postgres with new parameter group" size="lg" border/>
 
 3. Reboot your RDS instance to apply the changes
 
-<img src={reboot_rds} alt="Reboot RDS Postgres" />
+<Image img={reboot_rds} alt="Reboot RDS Postgres" size="lg" border/>
 
 ## Configure Database User {#configure-database-user}
 
@@ -98,9 +99,9 @@ Connect to your RDS Postgres instance as an admin user and execute the following
 
 If you want to restrict traffic to your RDS instance, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the `Inbound rules` of your RDS security group.
 
-<img src={security_group_in_rds_postgres} alt="Where to find security group in RDS Postgres?" />
+<Image img={security_group_in_rds_postgres} alt="Where to find security group in RDS Postgres?" size="lg" border/>
 
-<img src={edit_inbound_rules} alt="Edit inbound rules for the above security group" />
+<Image img={edit_inbound_rules} alt="Edit inbound rules for the above security group" size="lg" border/>
 
 ### Private Access via AWS PrivateLink {#private-access-via-aws-privatelink}
 
@@ -109,7 +110,7 @@ To connect to your RDS instance through a private network, you can use AWS Priva
 ### Workarounds for RDS Proxy {#workarounds-for-rds-proxy}
 RDS Proxy does not support logical replication connections. If you have dynamic IP addresses in RDS and cannot use DNS name or a lambda, here are some alternatives:
 
-1. Using a cron job, resolve the RDS endpoint’s IP periodically and update the NLB if it has changed.
+1. Using a cron job, resolve the RDS endpoint's IP periodically and update the NLB if it has changed.
 2. Using RDS Event Notifications with EventBridge/SNS: Trigger updates automatically using AWS RDS event notifications
 3. Stable EC2: Deploy an EC2 instance to act as a polling service or IP-based proxy
 4. Automate IP address management using tools like Terraform or CloudFormation.

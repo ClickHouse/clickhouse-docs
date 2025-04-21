@@ -6,6 +6,7 @@ keywords: ['BYOC', 'cloud', 'bring your own cloud']
 description: 'Deploy ClickHouse on your own cloud infrastructure'
 ---
 
+import Image from '@theme/IdealImage';
 import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
 import byoc4 from '@site/static/images/cloud/reference/byoc-4.png';
 import byoc3 from '@site/static/images/cloud/reference/byoc-3.png';
@@ -16,7 +17,6 @@ import byoc_vpcpeering4 from '@site/static/images/cloud/reference/byoc-vpcpeerin
 import byoc_plb from '@site/static/images/cloud/reference/byoc-plb.png';
 import byoc_security from '@site/static/images/cloud/reference/byoc-securitygroup.png';
 import byoc_inbound from '@site/static/images/cloud/reference/byoc-inbound-rule.png';
-
 
 ## Overview {#overview}
 
@@ -33,7 +33,7 @@ BYOC is designed specifically for large-scale deployments, and requires customer
 ## Glossary {#glossary}
 
 - **ClickHouse VPC:**  The VPC owned by ClickHouse Cloud.
-- **Customer BYOC VPC:** The VPC, owned by the customer’s cloud account, is provisioned and managed by ClickHouse Cloud and dedicated to a ClickHouse Cloud BYOC deployment.
+- **Customer BYOC VPC:** The VPC, owned by the customer's cloud account, is provisioned and managed by ClickHouse Cloud and dedicated to a ClickHouse Cloud BYOC deployment.
 - **Customer VPC** Other VPCs owned by the customer cloud account used for applications that need to connect to the Customer BYOC VPC.
 
 ## Architecture {#architecture}
@@ -42,11 +42,7 @@ Metrics and logs are stored within the customer's BYOC VPC. Logs are currently s
 
 <br />
 
-<img src={byoc1}
-    alt='BYOC Architecture'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc1} size="lg" alt="BYOC Architecture" background='black'/>
 
 <br />
 
@@ -89,11 +85,7 @@ Contact ClickHouse Support to enable Private Load Balancer.
 
 <br />
 
-<img src={byoc_vpcpeering}
-    alt='BYOC Create Peering Connection'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_vpcpeering} size="lg" alt="BYOC Create Peering Connection" border />
 
 <br />
 
@@ -102,11 +94,7 @@ Go to the peering account, in the (VPC -> Peering connections -> Actions -> Acce
 
 <br />
 
-<img src={byoc_vpcpeering2}
-    alt='BYOC Accept Peering Connection'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_vpcpeering2} size="lg" alt="BYOC Accept Peering Connection" border />
 
 <br />
 
@@ -121,11 +109,7 @@ In ClickHouse BYOC account,
 
 <br />
 
-<img src={byoc_vpcpeering3}
-    alt='BYOC Add route table'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_vpcpeering3} size="lg" alt="BYOC Add route table" border />
 
 <br />
 
@@ -140,11 +124,7 @@ In the peering AWS account,
 
 <br />
 
-<img src={byoc_vpcpeering4}
-    alt='BYOC Add route table'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_vpcpeering4} size="lg" alt="BYOC Add route table" border />
 
 <br />
 
@@ -154,11 +134,7 @@ In ClickHouse BYOC account,
 
 <br />
 
-<img src={byoc_plb}
-    alt='BYOC Private Load Balancer'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_plb} size="lg" alt="BYOC Private Load Balancer" border />
 
 <br />
 
@@ -166,11 +142,7 @@ In ClickHouse BYOC account,
 
 <br />
 
-<img src={byoc_security}
-    alt='BYOC Private Load Balancer Security Group'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_security} size="lg" alt="BYOC Private Load Balancer Security Group" border />
 
 <br />
 
@@ -178,11 +150,7 @@ In ClickHouse BYOC account,
 
 <br />
 
-<img src={byoc_inbound}
-    alt='BYOC Security Group Inbound Rule'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_inbound} size="lg" alt="BYOC Security Group Inbound Rule" border />
 
 <br />
 
@@ -360,11 +328,7 @@ ClickHouse Cloud includes an advanced observability dashboard that displays metr
 
 <br />
 
-<img src={byoc3}
-    alt='Observability dashboard'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc3} size="lg" alt="Observability dashboard" border />
 
 <br />
 
@@ -374,11 +338,7 @@ You can customize a dashboard using metrics from system tables like `system.metr
 
 <br />
 
-<img src={byoc4}
-    alt='Advanced dashboard'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc4} size="lg" alt="Advanced dashboard" border />
 
 <br />
 

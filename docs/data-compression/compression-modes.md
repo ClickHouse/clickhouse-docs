@@ -7,6 +7,7 @@ keywords: ['compression', 'codec', 'encoding', 'modes']
 ---
 
 import CompressionBlock from '@site/static/images/data-compression/ch_compression_block.png';
+import Image from '@theme/IdealImage';
 
 # Compression modes
 
@@ -43,7 +44,7 @@ From [Facebook benchmarks](https://facebook.github.io/zstd/#benchmarks):
 | mode            | byte    | Compression mode                                 |
 | compressed_data | binary  | Block of compressed data                         |
 
-<img src={CompressionBlock} alt="Diagram illustrating ClickHouse compression block structure" />
+<Image img={CompressionBlock} size="md" alt="Diagram illustrating ClickHouse compression block structure"/>
 
 Header is (raw_size + data_size + mode), raw size consists of len(header + compressed_data).
 

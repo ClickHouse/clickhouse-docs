@@ -5,9 +5,10 @@ description: 'ClickHouse® is a column-oriented SQL database management system (
 title: 'What is ClickHouse?'
 ---
 
-import RowOrientedExample from '@site/static/images/column-oriented-example-query.png';
-import RowOriented from '@site/static/images/row-oriented.gif';
-import ColumnOriented from '@site/static/images/column-oriented.gif';
+import column_example from '@site/static/images/column-oriented-example-query.png';
+import row_orientated from '@site/static/images/row-oriented.gif';
+import column_orientated from '@site/static/images/column-oriented.gif';
+import Image from '@theme/IdealImage';
 
 ClickHouse® is a high-performance, column-oriented SQL database management system (DBMS) for online analytical processing (OLAP). It is available as both an [open-source software](https://github.com/ClickHouse/ClickHouse) and a [cloud offering](https://clickhouse.com/cloud).
 
@@ -47,22 +48,22 @@ LIMIT 8;
 
 You can [run this query on the ClickHouse SQL Playground](https://sql.clickhouse.com?query=U0VMRUNUIE1vYmlsZVBob25lTW9kZWwsIENPVU5UKCkgQVMgYyAKRlJPTSBtZXRyaWNhLmhpdHMgCldIRVJFIAogICAgICBSZWdpb25JRCA9IDIyOSAKICBBTkQgRXZlbnREYXRlID49ICcyMDEzLTA3LTAxJyAKICBBTkQgRXZlbnREYXRlIDw9ICcyMDEzLTA3LTMxJyAKICBBTkQgTW9iaWxlUGhvbmUgIT0gMCAKICBBTkQgTW9iaWxlUGhvbmVNb2RlbCBub3QgaW4gWycnLCAnaVBhZCddIApHUk9VUCBCWSBNb2JpbGVQaG9uZU1vZGVsCk9SREVSIEJZIGMgREVTQyAKTElNSVQgODs&chart=eyJ0eXBlIjoicGllIiwiY29uZmlnIjp7InhheGlzIjoiTW9iaWxlUGhvbmVNb2RlbCIsInlheGlzIjoiYyJ9fQ&run_query=true) that selects and filters [just a few out of over 100](https://sql.clickhouse.com/?query=U0VMRUNUIG5hbWUKRlJPTSBzeXN0ZW0uY29sdW1ucwpXSEVSRSBkYXRhYmFzZSA9ICdtZXRyaWNhJyBBTkQgdGFibGUgPSAnaGl0cyc7&tab=results&run_query=true) existing columns, returning the result within milliseconds:
 
-<img src={RowOrientedExample} alt="Example query in a column-oriented database" />
+<Image img={column_example} alt="Example query in a column-oriented database" size="lg"/>
 
 As you can see in the stats section in the above diagram, the query processed 100 million rows in 92 milliseconds, a throughput of approximately 300 million rows or just under 7 GB per second.
 
 **Row-oriented DBMS**
 
-In a row-oriented database, even though the query above only processes a few out of the existing columns, the system still needs to load the data from other existing columns from disk to memory. The reason for that is that data is stored on disk in chunks called [blocks](https://en.wikipedia.org/wiki/Block_(data_storage)) (usually fixed sizes, e.g., 4 KB or 8 KB). Blocks are the smallest units of data read from disk to memory. When an application or database requests data, the operating system’s disk I/O subsystem reads the required blocks from the disk. Even if only part of a block is needed, the entire block is read into memory (this is due to disk and file system design):
+In a row-oriented database, even though the query above only processes a few out of the existing columns, the system still needs to load the data from other existing columns from disk to memory. The reason for that is that data is stored on disk in chunks called [blocks](https://en.wikipedia.org/wiki/Block_(data_storage)) (usually fixed sizes, e.g., 4 KB or 8 KB). Blocks are the smallest units of data read from disk to memory. When an application or database requests data, the operating system's disk I/O subsystem reads the required blocks from the disk. Even if only part of a block is needed, the entire block is read into memory (this is due to disk and file system design):
 
-<img src={RowOriented} alt="Row-oriented database structure" />
+<Image img={row_orientated} alt="Row-oriented database structure" size="lg"/>
 
 **Column-oriented DBMS**
 
 Because the values of each column are stored sequentially one after the other on disk, no unnecessary data is loaded when the query from above is run.
 Because the block-wise storage and transfer from disk to memory is aligned with the data access pattern of analytical queries, only the columns required for a query are read from disk, avoiding unnecessary I/O for unused data. This is [much faster](https://benchmark.clickhouse.com/) compared to row-based storage, where entire rows (including irrelevant columns) are read:
 
-<img src={ColumnOriented} alt="Column-oriented database structure" />
+<Image img={column_orientated} alt="Column-oriented database structure" size="lg"/>
 
 ## Data Replication and Integrity {#data-replication-and-integrity}
 
@@ -82,7 +83,7 @@ ClickHouse provides ways to trade accuracy for performance. For example, some of
 
 ## Adaptive join algorithms {#adaptive-join-algorithms}
 
-ClickHouse chooses the join algorithm adaptively, it starts with fast hash joins and falls back to merge joins if there’s more than one large table.
+ClickHouse chooses the join algorithm adaptively, it starts with fast hash joins and falls back to merge joins if there's more than one large table.
 
 ## Superior query performance {#superior-query-performance}
 
@@ -131,7 +132,7 @@ In a row-oriented DBMS, data is stored in this order:
 | #0 | 89354350662 | 1          | Investor Relations | 1         | 2016-05-18 05:19:20 |
 | #1 | 90329509958 | 0          | Contact us         | 1         | 2016-05-18 08:10:20 |
 | #2 | 89953706054 | 1          | Mission            | 1         | 2016-05-18 07:38:00 |
-| #N | …           | …          | …                  | …         | …                   |
+| #N | ...           | ...          | ...                  | ...         | ...                   |
 
 In other words, all the values related to a row are physically stored next to each other.
 
@@ -141,11 +142,11 @@ In a column-oriented DBMS, data is stored like this:
 
 | Row:        | #0                 | #1                 | #2                 | #N |
 |-------------|---------------------|---------------------|---------------------|-----|
-| WatchID:    | 89354350662         | 90329509958         | 89953706054         | …   |
-| JavaEnable: | 1                   | 0                   | 1                   | …   |
-| Title:      | Investor Relations  | Contact us          | Mission             | …   |
-| GoodEvent:  | 1                   | 1                   | 1                   | …   |
-| EventTime:  | 2016-05-18 05:19:20 | 2016-05-18 08:10:20 | 2016-05-18 07:38:00 | …   |
+| WatchID:    | 89354350662         | 90329509958         | 89953706054         | ...   |
+| JavaEnable: | 1                   | 0                   | 1                   | ...   |
+| Title:      | Investor Relations  | Contact us          | Mission             | ...   |
+| GoodEvent:  | 1                   | 1                   | 1                   | ...   |
+| EventTime:  | 2016-05-18 05:19:20 | 2016-05-18 08:10:20 | 2016-05-18 07:38:00 | ...   |
 
 These examples only show the order that data is arranged in. The values from different columns are stored separately, and data from the same column is stored together.
 
@@ -163,7 +164,7 @@ The higher the load on the system, the more important it is to customize the sys
 - Queries extract a large number of rows, but only a small subset of columns.
 - For simple queries, latencies around 50ms are allowed.
 - There is one large table per query; all tables are small, except for one.
-- A query result is significantly smaller than the source data. In other words, data is filtered or aggregated, so the result fits in a single server’s RAM.
+- A query result is significantly smaller than the source data. In other words, data is filtered or aggregated, so the result fits in a single server's RAM.
 - Queries are relatively rare (usually hundreds of queries per server or less per second).
 - Inserts happen in fairly large batches (\> 1000 rows), not by single rows.
 - Transactions are not necessary.

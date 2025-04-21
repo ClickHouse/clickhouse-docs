@@ -14,10 +14,13 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 This guide provides simple and minimal settings to configure authentication with SSL user certificates. The tutorial builds on the [Configuring SSL-TLS user guide](../configuring-ssl.md).
 
 :::note
-SSL user authentication is supported when using the `https` or native interfaces only.
-It is not currently used in gRPC or PostgreSQL/MySQL emulation ports.
+SSL user authentication is supported when using the `https`, `native`, `mysql`, and `postgresql` interfaces.
 
 ClickHouse nodes need `<verificationMode>strict</verificationMode>` set for secure authentication (although `relaxed` will work for testing purposes).
+
+If you use AWS NLB with the MySQL interface, you have to ask AWS support to enable the undocumented option:
+
+> I would like to be able to configure our NLB proxy protocol v2 as below `proxy_protocol_v2.client_to_server.header_placement,Value=on_first_ack`.
 :::
 
 ## 1. Create SSL user certificates {#1-create-ssl-user-certificates}

@@ -6,7 +6,11 @@ title: 'Connect dlt to ClickHouse'
 slug: /integrations/data-ingestion/etl-tools/dlt-and-clickhouse
 ---
 
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+
 # Connect dlt to ClickHouse
+
+<CommunityMaintainedBadge/>
 
 <a href="https://dlthub.com/docs/intro" target="_blank">dlt</a>  is an open-source library that you can add to your Python scripts to load data from various and often messy data sources into well-structured, live datasets.
 
@@ -14,7 +18,7 @@ slug: /integrations/data-ingestion/etl-tools/dlt-and-clickhouse
 
 ### To Install the `dlt` library with ClickHouse dependencies: {#to-install-the-dlt-library-with-clickhouse-dependencies}
 ```bash
-pip install "dlt[clickhouse]" 
+pip install "dlt[clickhouse]"
 ```
 
 ## Setup Guide {#setup-guide}
@@ -98,7 +102,7 @@ All [write dispositions](https://dlthub.com/docs/general-usage/incremental-loadi
 
 Write dispositions in the dlt library define how the data should be written to the destination. There are three types of write dispositions:
 
-**Replace**: This disposition replaces the data in the destination with the data from the resource. It deletes all the classes and objects and recreates the schema before loading the data. You can learn more about it <a href="https://dlthub.com/docs/general-usage/full-loading">here</a>. 
+**Replace**: This disposition replaces the data in the destination with the data from the resource. It deletes all the classes and objects and recreates the schema before loading the data. You can learn more about it <a href="https://dlthub.com/docs/general-usage/full-loading">here</a>.
 
 **Merge**: This write disposition merges the data from the resource with the data at the destination. For `merge` disposition, you would need to specify a `primary_key` for the resource. You can learn more about it <a href="https://dlthub.com/docs/general-usage/incremental-loading">here</a>.
 
@@ -107,7 +111,7 @@ Write dispositions in the dlt library define how the data should be written to t
 ## Data Loading {#data-loading}
 Data is loaded into ClickHouse using the most efficient method depending on the data source:
 
-- For local files, the `clickhouse-connect` library is used to directly load files into ClickHouse tables using the `INSERT` command. 
+- For local files, the `clickhouse-connect` library is used to directly load files into ClickHouse tables using the `INSERT` command.
 - For files in remote storage like `S3`,` Google Cloud Storage`, or `Azure Blob Storage`, ClickHouse table functions like s3, gcs and azureBlobStorage are used to read the files and insert the data into tables.
 
 ## Datasets {#datasets}
@@ -220,4 +224,3 @@ Integration with <a href="https://dlthub.com/docs/dlt-ecosystem/transformations/
 
 ### Syncing of `dlt` state {#syncing-of-dlt-state}
 This destination fully supports <a href="https://dlthub.com/docs/general-usage/state#syncing-state-with-destination">dlt</a> state sync.
-

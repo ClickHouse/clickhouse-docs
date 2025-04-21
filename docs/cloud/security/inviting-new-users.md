@@ -5,6 +5,7 @@ title: 'Inviting New Users'
 description: 'This page describes how administrators can invite new users to their organisation and assign roles to them'
 ---
 
+import Image from '@theme/IdealImage';
 import users_and_roles from '@site/static/images/cloud/security/users_and_roles.png';
 import invite_user from '@site/static/images/cloud/security/invite-user.png';
 
@@ -16,13 +17,13 @@ Admins and developers are different than database users. To create database user
 
 To invite a user, select the organization and click `Users and roles`:
 
-<img src={users_and_roles} alt="ClickHouse Cloud users and roles page" style={{width: '300px'}} />
+<Image img={users_and_roles} size="md" alt="ClickHouse Cloud users and roles page" />
 
 <br />
 
 Select `Invite members`, and enter the email address of up to 3 new users at once, selecting the role for each.
 
-<img src={invite_user} alt="ClickHouse Cloud invite user page" style={{width: '1000px'}} />
+<Image img={invite_user} size="md" alt="ClickHouse Cloud invite user page" />
 
 <br />
 

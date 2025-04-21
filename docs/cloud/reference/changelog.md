@@ -5,6 +5,7 @@ title: 'Cloud Changelog'
 description: 'ClickHouse Cloud changelog providing descriptions of what is new in each ClickHouse Cloud release'
 ---
 
+import Image from '@theme/IdealImage';
 import add_marketplace from '@site/static/images/cloud/reference/add_marketplace.png';
 import beta_dashboards from '@site/static/images/cloud/reference/beta_dashboards.png';
 import api_endpoints from '@site/static/images/cloud/reference/api_endpoints.png';
@@ -21,18 +22,66 @@ import latency_insights from '@site/static/images/cloud/reference/oct-4-latency-
 import cloud_console_2 from '@site/static/images/cloud/reference/aug-15-compute-compute.png';
 import compute_compute from '@site/static/images/cloud/reference/july-18-table-inspector.png';
 import query_insights from '@site/static/images/cloud/reference/june-28-query-insights.png';
-import prometheous from '@site/static/images/cloud/reference/june-28-prometheus.png';
+import prometheus from '@site/static/images/cloud/reference/june-28-prometheus.png';
 import kafka_config from '@site/static/images/cloud/reference/june-13-kafka-config.png';
 import fast_releases from '@site/static/images/cloud/reference/june-13-fast-releases.png';
 import share_queries from '@site/static/images/cloud/reference/may-30-share-queries.png';
 import query_endpoints from '@site/static/images/cloud/reference/may-17-query-endpoints.png';
 
-
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
+
+## April 18, 2025 {#april-18-2025}
+
+- Introduced a new **Member** organization level role and two new service level 
+  roles: **Service Admin** and **Service Read Only**.
+  **Member** is an organization level role that is assigned to SAML SSO users by 
+  default and provides only sign-in and profile update capabilities. **Service Admin** 
+  and **Service Read Only** roles for one or more services can be assigned to users 
+  with **Member**, **Developer**, or **Billing Admin** roles. For more information 
+  see ["Access control in ClickHouse Cloud"](https://clickhouse.com/docs/cloud/security/cloud-access-management/overview)
+- ClickHouse Cloud now offers **HIPAA** and **PCI** services in the following regions
+  for **Enterprise** customers: AWS eu-central-1, AWS eu-west-2, AWS us-east-2.
+- Introduced **user facing notifications for ClickPipes**. This feature sends 
+  automatic alerts for ClickPipes failures via email, ClickHouse Cloud UI, and 
+  Slack. Notifications via email and UI are enabled by default and can be 
+  configured per pipe. For **Postgres CDC ClickPipes**, alerts also cover 
+  replication slot threshold (configurable in the **Settings** tab), specific error
+  types, and self-serve steps to resolve failures.
+- **MySQL CDC private preview** is now open. This lets customers replicate MySQL 
+  databases to ClickHouse Cloud in a few clicks, enabling fast analytics and 
+  removing the need for external ETL tools. The connector supports both continuous
+  replication and one-time migrations, whether MySQL is on the cloud (RDS, 
+  Aurora, Cloud SQL, Azure, etc.) or on-premises. You can sign up to the private
+  preview by [following this link](https://clickhouse.com/cloud/clickpipes/mysql-cdc-connector).
+- Introduced **AWS PrivateLink for ClickPipes**. You can use AWS PrivateLink to 
+  establish secure connectivity between VPCs, AWS services, your on-premises 
+  systems, and ClickHouse Cloud. This can be done without exposing traffic to 
+  the public internet while moving data from sources like Postgres, MySQL, and 
+  MSK on AWS. It also supports cross-region access through VPC service endpoints.
+  PrivateLink connectivity set-up is now [fully self-serve](https://clickhouse.com/docs/integrations/clickpipes/aws-privatelink)
+  through ClickPipes.
+
+## April 4, 2025 {#april-4-2025}
+
+- Slack notifications for ClickHouse Cloud: ClickHouse Cloud now supports Slack notifications for billing, scaling, and ClickPipes events, in addition to in-console and email notifications. These notifications are sent via the ClickHouse Cloud Slack application. Organization admins can configure these notifications via the notification center by specifying slack channels to which notifications should be sent.
+- Users running Production and Development services will now see ClickPipes and data transfer usage price on their bills. Please refer to the [announcement](/cloud/manage/jan-2025-faq/pricing-dimensions) from January 2025 for more details. 
+  
+## March 21, 2025 {#march-21-2025}
+
+- Cross-region Private Link connectivity on AWS is now in Beta. Please refer to
+  ClickHouse Cloud private link [docs](/manage/security/aws-privatelink) for 
+  details of how to set up and list of supported regions.
+- The maximum replica size available for services on AWS is now set to 236 GiB RAM. 
+  This allows for efficient utilization, while ensuring we have resources 
+  allocated to background processes.
+
 ## March 7, 2025 {#march-7-2025}
 
-- New `UsageCost` API endpoint: The API specification now supports a new endpoint for retrieving usage information. This is an organization endpoint and usage costs can be queried for a maximum of 31 days. The metrics that can be retrieved include Storage, Compute, Data Transfer and ClickPipes. Please refer to the [documentation](https://clickhouse.com/docs/cloud/manage/api/usageCost-api-reference) for details.
-
+- New `UsageCost` API endpoint: The API specification now supports a new endpoint
+  for retrieving usage information. This is an organization endpoint and usage 
+  costs can be queried for a maximum of 31 days. The metrics that can be 
+  retrieved include Storage, Compute, Data Transfer and ClickPipes. Please refer
+  to the [documentation](https://clickhouse.com/docs/cloud/manage/api/usageCost-api-reference) for details.
 - Terraform provider [v2.1.0](https://registry.terraform.io/providers/ClickHouse/clickhouse/2.1.0/docs/resources/service#nestedatt--endpoints_configuration) release supports enabling the MySQL endpoint.
 
 ## February 21, 2025 {#february-21-2025}
@@ -167,19 +216,17 @@ We've added several enhancements for the Prometheus integration:
 
 ### Marketplace subscription organization attachment {#marketplace-subscription-organization-attachment}
 
-You can now attach your new marketplace subscription to an existing ClickHouse Cloud organization. Once you finish subscribing to the marketplace and redirect to ClickHouse Cloud, you can connect an existing organization created in the past to the new marketplace subscription. From this point, your resources in the organization will be billed via the marketplace. 
+You can now attach your new marketplace subscription to an existing ClickHouse Cloud organization. Once you finish subscribing to the marketplace and redirect to ClickHouse Cloud, you can connect an existing organization created in the past to the new marketplace subscription. From this point, your resources in the organization will be billed via the marketplace. 
 
-<img alt="Add marketplace subscription"
-  style={{width: '600px'}}
-  src={add_marketplace} />
+<Image img={add_marketplace} size="md" alt="ClickHouse Cloud interface showing how to add a marketplace subscription to an existing organization" border />
 
 ### Force OpenAPI key expiration {#force-openapi-key-expiration}
 
-It is now possible to restrict the expiry options of API keys so you don’t create unexpired OpenAPI keys. Please contact the ClickHouse Cloud Support team to enable these restrictions for your organization.
+It is now possible to restrict the expiry options of API keys so you don't create unexpired OpenAPI keys. Please contact the ClickHouse Cloud Support team to enable these restrictions for your organization.
 
 ### Custom emails for notifications {#custom-emails-for-notifications}
 
-Org Admins can now add more email addresses to a specific notification as additional recipients. This is useful in case you want to send notifications to an alias or to other users within your organization who might not be users of ClickHouse Cloud. To configure this, go to the Notification Settings from the cloud console and edit the email addresses that you want to receive the email notifications.  
+Org Admins can now add more email addresses to a specific notification as additional recipients. This is useful in case you want to send notifications to an alias or to other users within your organization who might not be users of ClickHouse Cloud. To configure this, go to the Notification Settings from the cloud console and edit the email addresses that you want to receive the email notifications. 
 
 ## December 6, 2024 {#december-6-2024}
 
@@ -193,11 +240,9 @@ This turnkey integration enables customers to replicate their Postgres databases
 
 ### Dashboards (Beta) {#dashboards-beta}
 
-This week, we’re excited to announce the Beta launch of Dashboards in ClickHouse Cloud. With Dashboards, users can turn saved queries into visualizations, organize visualizations onto dashboards, and interact with dashboards using query parameters. To get started, follow the [dashboards documentation](/cloud/manage/dashboards).
+This week, we're excited to announce the Beta launch of Dashboards in ClickHouse Cloud. With Dashboards, users can turn saved queries into visualizations, organize visualizations onto dashboards, and interact with dashboards using query parameters. To get started, follow the [dashboards documentation](/cloud/manage/dashboards).
 
-<img alt="Dashboards Beta"
-  style={{width: '600px'}}
-  src={beta_dashboards} />
+<Image img={beta_dashboards} size="lg" alt="ClickHouse Cloud interface showing the new Dashboards Beta feature with visualizations" border />
 
 ### Query API endpoints (GA) {#query-api-endpoints-ga}
 
@@ -213,9 +258,7 @@ In addition to these improvements, we are excited to announce generic query API 
 
 To get started, follow the [Query API Endpoints documentation](/cloud/get-started/query-endpoints).
 
-<img alt="API Endpoints"
-  style={{width: '600px'}}
-  src={api_endpoints} />
+<Image img={api_endpoints} size="lg" alt="ClickHouse Cloud interface showing the API Endpoints configuration with various settings" border />
 
 ### Native JSON support (Beta) {#native-json-support-beta}
 
@@ -241,9 +284,7 @@ Please upgrade to:
 
 You can now grant uni-directional access to a specific data source like AWS MSK. With Cross-VPC resource access with AWS PrivateLink and VPC Lattice, you can share individual resources across VPC and account boundaries, or even from on-premise networks without compromising on privacy and security when going over a public network. To get started and set up a resource share, you can read the [announcement post](https://clickhouse.com/blog/clickpipes-crossvpc-resource-endpoints?utm_medium=web&utm_source=changelog).
 
-<img alt="VPC ClickPipes"
-  style={{width: '600px'}}
-  src={cross_vpc} />
+<Image img={cross_vpc} size="lg" alt="Diagram showing the Cross-VPC resource access architecture for ClickPipes connecting to AWS MSK" border />
 
 ### ClickPipes now supports IAM for AWS MSK {#clickpipes-now-supports-iam-for-aws-msk}
 
@@ -261,17 +302,13 @@ Previously, the advanced observability dashboard that allows you to monitor Clic
 
 This dashboard allows you to view queries based on the [system.dashboards](/operations/system-tables/dashboards) table in an all-in-one UI. Visit **Monitoring > Service Health** page to start using the advanced observability dashboard today.
 
-<img alt="Advanced Observability Dashboard"
-  style={{width: '600px'}}
-  src={nov_22} />
+<Image img={nov_22} size="lg" alt="ClickHouse Cloud advanced observability dashboard showing server metrics and resource utilization" border />
 
 ### AI-powered SQL autocomplete {#ai-powered-sql-autocomplete}
 
-We’ve improved autocomplete significantly, allowing you to get in-line SQL completions as you write your queries with the new AI Copilot!  This feature can be enabled by toggling the **"Enable Inline Code Completion"** setting for any ClickHouse Cloud service.
+We've improved autocomplete significantly, allowing you to get in-line SQL completions as you write your queries with the new AI Copilot!  This feature can be enabled by toggling the **"Enable Inline Code Completion"** setting for any ClickHouse Cloud service.
 
-<img alt="AI Copilot SQL autocomplete"
-  style={{width: '600px'}}
-  src={copilot} />
+<Image img={copilot} size="lg" alt="Animation showing the AI Copilot providing SQL autocompletion suggestions as a user types" border />
 
 ### New "Billing" role {#new-billing-role}
 
@@ -287,9 +324,7 @@ In future, we will add notifications for other events, as well as additional way
 
 Please see the [ClickHouse docs](/cloud/notifications) to learn more about how to enable notifications for your service.
 
-<img alt="Customer notifications UI"
-  style={{width: '600px'}}
-  src={notifications} />
+<Image img={notifications} size="lg" alt="ClickHouse Cloud notification center interface showing configuration options for different notification types" border />
 
 <br />
 
@@ -305,7 +340,7 @@ Services are available in GCP `us-central-1` to customers with the **Dedicated**
 
 We recently announced the Private Preview for Compute-Compute Separation for AWS. We're happy to announce that it is now available for GCP and Azure.
 
-Compute-compute separation allows you to designate specific services as read-write or read-only services, allowing you to design the optimal compute configuration for your application to optimize cost and performance. Please [read the docs](/cloud/reference/compute-compute-separation) for more details.
+Compute-compute separation allows you to designate specific services as read-write or read-only services, allowing you to design the optimal compute configuration for your application to optimize cost and performance. Please [read the docs](/cloud/reference/warehouses) for more details.
 
 ### Self-service MFA recovery codes {#self-service-mfa-recovery-codes}
 
@@ -323,9 +358,7 @@ ClickPipes for Kafka now supports custom authentication certificates for Kafka b
 
 Performance visibility is crucial. ClickPipes now features a latency graph, giving you insight into the time between message production (whether from a Kafka Topic or a Kinesis Stream) to ingestion in ClickHouse Cloud. With this new metric, you can keep a closer eye on the performance of your data pipelines and optimize accordingly.
 
-<img alt="Latency Metrics graph"
-  style={{width: '600px'}}
-  src={latency_insights} />
+<Image img={latency_insights} size="lg" alt="ClickPipes interface showing latency metrics graph for data ingestion performance" border />
 
 <br />
 
@@ -357,11 +390,9 @@ Please also check out our [Trust Center](https://trust.clickhouse.com/) for secu
 
 For existing ClickHouse Cloud services, replicas handle both reads and writes, and there is no way to configure a certain replica to handle only one kind of operation. We have an upcoming new feature called Compute-compute separation that allows you to designate specific services as read-write or read-only services, allowing you to design the optimal compute configuration for your application to optimize cost and performance.
 
-Our new compute-compute separation feature enables you to create multiple compute node groups, each with its own endpoint, that are using the same object storage folder, and thus, with the same tables, views, etc. Read more about [Compute-compute separation here](/cloud/reference/compute-compute-separation). Please [contact support](https://clickhouse.com/support/program) if you would like access to this feature in Private Preview.
+Our new compute-compute separation feature enables you to create multiple compute node groups, each with its own endpoint, that are using the same object storage folder, and thus, with the same tables, views, etc. Read more about [Compute-compute separation here](/cloud/reference/warehouses). Please [contact support](https://clickhouse.com/support/program) if you would like access to this feature in Private Preview.
 
-<img alt="Example architecture for compute-compute separation"
-  style={{width: '600px'}}
-  src={cloud_console_2} />
+<Image img={cloud_console_2} size="lg" alt="Diagram showing example architecture for compute-compute separation with read-write and read-only service groups" border />
 
 ### ClickPipes for S3 and GCS now in GA, Continuous mode support {#clickpipes-for-s3-and-gcs-now-in-ga-continuous-mode-support}
 
@@ -379,9 +410,7 @@ ClickHouse has commands like [`DESCRIBE`](/sql-reference/statements/describe-tab
 
 We recently launched a **Table Inspector** in the cloud console which allows you to retrieve important table and column information in the UI, without having to write SQL. You can try out the Table Inspector for your services by checking out the cloud console. It provides information about your schema, storage, compression, and more in one unified interface.
 
-<img alt="Table Inspector UI"
-  style={{width: '800px', marginLeft: 0}}
-  src={compute_compute} />
+<Image img={compute_compute} size="lg" alt="ClickHouse Cloud Table Inspector interface showing detailed schema and storage information" border />
 
 ### New Java Client API {#new-java-client-api}
 
@@ -410,17 +439,13 @@ If you'd like any specific region to be supported, please [contact us](https://c
 
 Our new Query Insights UI in the Cloud Console makes ClickHouse's built-in query log a lot easier to use. ClickHouse's `system.query_log` table is a key source of information for query optimization, debugging, and monitoring overall cluster health and performance.  There's just one caveat: with 70+ fields and multiple records per query, interpreting the query log represents a steep learning curve. This initial version of query insights provides a blueprint for future work to simplify query debugging and optimization patterns. We'd love to hear your feedback as we continue to iterate on this feature, so please reach out—your input will be greatly appreciated!
 
-<img alt="Query Insights UI"
-  style={{width: '600px', marginLeft: 0}}
-  src={query_insights} />
+<Image img={query_insights} size="lg" alt="ClickHouse Cloud Query Insights UI showing query performance metrics and analysis" border />
 
 ### Prometheus Endpoint for Metrics (Private Preview) {#prometheus-endpoint-for-metrics-private-preview}
 
 Perhaps one of our most requested features: you can now export [Prometheus](https://prometheus.io/) metrics from ClickHouse Cloud to [Grafana](https://grafana.com/) and [Datadog](https://www.datadoghq.com/) for visualization. Prometheus provides an open-source solution to monitor ClickHouse and set up custom alerts. Access to Prometheus metrics for your ClickHouse Cloud service is available via the [ClickHouse Cloud API](/integrations/prometheus). This feature is currently in Private Preview. Please reach out to the [support team](https://clickhouse.com/support/program) to enable this feature for your organization.
 
-<img alt="Prometheus Metrics with Grafana"
-  style={{width: '600px', marginLeft: 0}}
-  src={prometheous} />
+<Image img={prometheus} size="lg" alt="Grafana dashboard showing Prometheus metrics from ClickHouse Cloud" border />
 
 ### Other features: {#other-features}
 - [Configurable backups](/cloud/manage/backups/configurable-backups) to configure custom backup policies like frequency, retention, and schedule are now Generally Available.
@@ -438,17 +463,13 @@ The following options are available:
 - From latest: Begin consuming data from the most recent offset. This is useful for users who are only interested in new messages.
 - From a timestamp: Start consuming data from messages that were produced at or after a specific timestamp. This feature allows for more precise control, enabling users to resume processing from an exact point in time.
 
-<img alt="Configure offsets for Kafka connector"
-  style={{width: '600px', marginLeft: 0}}
-  src={kafka_config} />
+<Image img={kafka_config} size="lg" alt="ClickPipes Kafka connector configuration interface showing offset selection options" border />
 
 ### Enroll services to the Fast release channel {#enroll-services-to-the-fast-release-channel}
 
 The Fast release channel allows your services to receive updates ahead of the release schedule. Previously, this feature required assistance from the support team to enable. Now, you can use the ClickHouse Cloud console to enable this feature for your services directly. Simply navigate to **Settings**, and click **Enroll in fast releases**. Your service will now receive updates as soon as they are available!
 
-<img alt="Enroll in Fast releases"
-  style={{width: '500px', marginLeft: 0}}
-  src={fast_releases} />
+<Image img={fast_releases} size="lg" alt="ClickHouse Cloud settings page showing the option to enroll in fast releases" border />
 
 ### Terraform support for horizontal scaling {#terraform-support-for-horizontal-scaling}
 
@@ -460,11 +481,11 @@ Please see the [ClickHouse Terraform provider](https://registry.terraform.io/pro
 
 ### Share queries with your teammates {#share-queries-with-your-teammates}
 
-When you write a SQL query, there's a good chance that other people on your team would also find that query useful. Previously, you'd have to send a query over Slack or email and there'd be no way for a teammate to automatically receive updates for that query if you edit it.
+When you write a SQL query, there's a good chance that other people on your team would also find that query useful. Previously, you'd have to send a query over Slack or email and there would be no way for a teammate to automatically receive updates for that query if you edit it.
 
 We're happy to announce that you can now easily share queries via the ClickHouse Cloud console. From the query editor, you can share a query directly with your entire team or a specific team member. You can also specify whether they have read or write only access. Click on the **Share** button in the query editor to try out the new shared queries feature.
 
-<img alt="Share queries" style={{width: '500px', marginLeft: 0}} src={share_queries} />
+<Image img={share_queries} size="lg" alt="ClickHouse Cloud query editor showing the share functionality with permission options" border />
 
 ### ClickHouse Cloud for Microsoft Azure is now in beta {#clickhouse-cloud-for-microsoft-azure-is-now-in-beta}
 
@@ -480,7 +501,7 @@ Our Private Link feature allows you to connect your ClickHouse Cloud services wi
 
 You can now configure private endpoints in just a few clicks directly from the ClickHouse Cloud console. Simply go to your service's **Settings**, go to the **Security** section and click **Set up private endpoint**.
 
-<img alt="Set up private endpoint" src={private_endpoint} />
+<Image img={private_endpoint} size="lg" alt="ClickHouse Cloud console showing private endpoint setup interface in the security settings" border />
 
 ## May 17, 2024 {#may-17-2024}
 
@@ -490,8 +511,7 @@ ClickPipes is an exclusive service provided by ClickHouse Cloud to ingest data w
 
 You can try the new Amazon Kinesis integration for ClickPipes in the cloud console:
 
-<img alt="Amazon Kinesis on ClickPipes"
-  src={kenesis} />
+<Image img={kenesis} size="lg" alt="ClickPipes interface showing Amazon Kinesis integration configuration options" border />
 
 ### Configurable Backups (Private Preview) {#configurable-backups-private-preview}
 
@@ -501,7 +521,7 @@ Backups are important for every database (no matter how reliable), and we've tak
 
 When you write a SQL query for ClickHouse, you still need to connect to ClickHouse via a driver to expose your query to your application. Now with our now **Query Endpoints** feature, you can execute SQL queries directly from an API without any configuration. You can specify the query endpoints to return JSON, CSV, or TSVs. Click the "Share" button in the cloud console to try this new feature with your queries. Read more about Query Endpoints [here](https://clickhouse.com/blog/automatic-query-endpoints).
 
-<img alt="Configure query endpoints" style={{width: '450px', marginLeft: 0}} src={query_endpoints} />
+<Image img={query_endpoints} size="lg" alt="ClickHouse Cloud interface showing Query Endpoints configuration with output format options" border />
 
 ### Official ClickHouse Certification is now available {#official-clickhouse-certification-is-now-available}
 
@@ -511,11 +531,11 @@ There are 12 free training modules in ClickHouse Develop training course. Prior 
 
 ### Load data from S3 and GCS using ClickPipes {#load-data-from-s3-and-gcs-using-clickpipes}
 
-You may have noticed in our newly released cloud console that there’s a new section called "Data sources". The "Data sources" page is powered by ClickPipes, a native ClickHouse Cloud feature which lets you easily insert data from a variety of sources into ClickHouse Cloud.
+You may have noticed in our newly released cloud console that there's a new section called "Data sources". The "Data sources" page is powered by ClickPipes, a native ClickHouse Cloud feature which lets you easily insert data from a variety of sources into ClickHouse Cloud.
 
 Our most recent ClickPipes update features the ability to directly upload data directly from Amazon S3 and Google Cloud Storage. While you can still use our built-in table functions, ClickPipes is a fully-managed service via our UI that will let you ingest data from S3 and GCS in just a few clicks. This feature is still in Private Preview, but you can try it out today via the cloud console.
 
-<img alt="ClickPipes S3 and GCS" src={s3_gcs} />
+<Image img={s3_gcs} size="lg" alt="ClickPipes interface showing configuration options for loading data from S3 and GCS buckets" border />
 
 ### Use Fivetran to load data from 500+ sources into ClickHouse Cloud {#use-fivetran-to-load-data-from-500-sources-into-clickhouse-cloud}
 
@@ -538,7 +558,7 @@ This is an open-source integration built over many months of hard work by our In
 
 This release introduces the new AWS Tokyo region (`ap-northeast-1`) for ClickHouse Cloud. Because we want ClickHouse to be the fastest database, we are continuously adding more regions for every cloud to reduce latency as much as possible. You can create your new service in Tokyo in the updated cloud console.
 
-<img alt="Create Tokyo Service" src={tokyo} />
+<Image img={tokyo} size="lg" alt="ClickHouse Cloud service creation interface showing Tokyo region selection" border />
 
 Other changes:
 
@@ -567,7 +587,7 @@ Thousands of ClickHouse Cloud users execute billions of queries on our SQL conso
 
 Select customers will receive a preview of our new cloud console experience –  a unified and immersive way to explore and manage your data in ClickHouse. Please reach out to us at support@clickhouse.com if you'd like priority access.
 
-<img alt="New Cloud Console" src={cloud_console} />
+<Image img={cloud_console} size="lg" alt="Animation showing the new ClickHouse Cloud Console interface with integrated SQL editor and management features" border />
 
 ## March 28, 2024 {#march-28-2024}
 
@@ -604,9 +624,9 @@ This release introduces support for Microsoft Azure, Horizontal Scaling via API,
 This release makes available in early access the new Cloud Console experience, ClickPipes for bulk loading from S3 and GCS, and support for Avro format in ClickPipes for Kafka. It also upgrades the ClickHouse database version to 24.1, bringing support for new functions as well as performance and resource usage optimizations.
 
 ### Console changes {#console-changes-2}
-- New Cloud Console experience is available in early access (please contact support if you’re interested in participating).
-- ClickPipes for bulk loading from S3 and GCS are available in early access (please contact support if you’re interested in participating).
-- Support for Avro format in ClickPipes for Kafka is available in early access (please contact support if you’re interested in participating).
+- New Cloud Console experience is available in early access (please contact support if you're interested in participating).
+- ClickPipes for bulk loading from S3 and GCS are available in early access (please contact support if you're interested in participating).
+- Support for Avro format in ClickPipes for Kafka is available in early access (please contact support if you're interested in participating).
 
 ### ClickHouse version upgrade {#clickhouse-version-upgrade}
 - Optimizations for FINAL, vectorization improvements, faster aggregations - see [23.12 release blog](https://clickhouse.com/blog/clickhouse-release-23-12#optimizations-for-final) for details.
@@ -626,7 +646,7 @@ This release improves SQL console application load time, adds support for SCRAM-
 
 ### Console changes {#console-changes-3}
 - Optimized SQL console application initial load time
-- Fixed SQL console race condition resulting in ‘authentication failed’ error
+- Fixed SQL console race condition resulting in 'authentication failed' error
 - Fixed behavior on the monitoring page where most recent memory allocation value was sometimes incorrect
 - Fixed behavior where SQL console sometimes issue duplicate KILL QUERY commands
 - Added support in ClickPipes for SCRAM-SHA-256 authentication method for Kafka-based data sources
@@ -998,7 +1018,7 @@ This release brings a new heatmap chart type, improves billing usage page, and i
 - Optimized long-running query cancellation logic in SQL console
 
 ### Bug fixes {#bug-fixes}
-- Fixed a bug causing ‘Cell Towers’ sample dataset import to fail
+- Fixed a bug causing 'Cell Towers' sample dataset import to fail
 
 ## April 20, 2023 {#april-20-2023}
 
@@ -1030,7 +1050,7 @@ This release brings an API for retrieving cloud endpoints, an advanced scaling c
 * Added ability to programmatically query ClickHouse Cloud endpoints via [Cloud Endpoints API](//cloud/get-started/query-endpoints.md)
 
 ### Console changes {#console-changes-21}
-- Added ‘minimum idle timeout’ setting to advanced scaling settings
+- Added 'minimum idle timeout' setting to advanced scaling settings
 - Added best-effort datetime detection to schema inference in data loading modal
 
 ### Integrations changes {#integrations-changes-21}
@@ -1043,7 +1063,7 @@ This release brings an API for retrieving cloud endpoints, an advanced scaling c
   - Fixed server-side parameter binding of the NULL value for Nullable types
 
 ### Bug fixes {#bug-fixes-1}
-* Fixed behavior where running `INSERT INTO … SELECT …` from the SQL console incorrectly applied the same row limit as select queries
+* Fixed behavior where running `INSERT INTO ... SELECT ...` from the SQL console incorrectly applied the same row limit as select queries
 
 
 ## March 23, 2023 {#march-23-2023}

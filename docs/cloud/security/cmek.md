@@ -5,12 +5,13 @@ title: 'Customer Managed Encryption Keys (CMEK)'
 description: 'Learn more about customer managed encryption keys'
 ---
 
+import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import cmek_performance from '@site/static/images/_snippets/cmek-performance.png';
 
 # ClickHouse Enhanced Encryption
 
-<EnterprisePlanFeatureBadge feature="Enhanced Encryption" support="true"/>
+<EnterprisePlanFeatureBadge feature="Enhanced Encryption"/>
 
 Data at rest is encrypted by default using cloud provider-managed AES 256 keys. Customers may enable Transparent Data Encryption (TDE) to provide an additional layer of protection for service data or supply their own key to implement Customer Managed Encryption Keys (CMEK) for their service.
 
@@ -55,7 +56,7 @@ Once a service is encrypted with TDE, customers may update the key to enable CME
         "Action": [
             "kms:Encrypt",
             "kms:Decrypt",
-            "kms:ReEncrypt",
+            "kms:ReEncrypt*",
             "kms:DescribeKey"
         ],
         "Resource": "*"
@@ -106,4 +107,4 @@ As specified in this page, we use ClickHouse's built-in [Virtual File System for
 
 The algorithm in use for this feature is `AES_256_CTR`, which is expected to have a performance penalty of 5-15% depending on the workload:
 
-<img src={cmek_performance} class="image" alt="CMEK Performance Penalty" />
+<Image img={cmek_performance} size="lg" alt="CMEK Performance Penalty" />

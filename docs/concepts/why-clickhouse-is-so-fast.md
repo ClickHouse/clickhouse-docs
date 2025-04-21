@@ -15,11 +15,11 @@ From an architectural perspective, databases consist (at least) of a storage lay
 
 ## Storage Layer: Concurrent inserts are isolated from each other {#storage-layer-concurrent-inserts-are-isolated-from-each-other}
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/vsykFYns0Ws?si=hE2qnOf6cDKn-otP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/vsykFYns0Ws?si=hE2qnOf6cDKn-otP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 In ClickHouse, each table consists of multiple "table parts". A [part](/parts) is created whenever a user inserts data into the table (INSERT statement). A query is always executed against all table parts that exist at the time the query starts.
 
-To avoid that too many parts accumulate, ClickHouse runs a [merge](/merges) operation in the background which continuously combines multiple smaller parts into a single bigger part. 
+To avoid that too many parts accumulate, ClickHouse runs a [merge](/merges) operation in the background which continuously combines multiple smaller parts into a single bigger part.
 
 This approach has several advantages: All data processing can be [offloaded to background part merges](/concepts/why-clickhouse-is-so-fast#storage-layer-merge-time-computation), keeping data writes lightweight and highly efficient. Individual inserts are "local" in the sense that they do not need to update global, i.e. per-table data structures. As a result, multiple simultaneous inserts need no mutual synchronization or synchronization with existing table data, and thus inserts can be performed almost at the speed of disk I/O.
 
@@ -29,7 +29,7 @@ This approach has several advantages: All data processing can be [offloaded to b
 
 ## Storage Layer: Concurrent inserts and selects are isolated {#storage-layer-concurrent-inserts-and-selects-are-isolated}
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/dvGlPh2bJFo?si=F3MSALPpe0gAoq5k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/dvGlPh2bJFo?si=F3MSALPpe0gAoq5k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Inserts are fully isolated from SELECT queries, and merging inserted data parts happens in the background without affecting concurrent queries.
 
@@ -37,7 +37,7 @@ Inserts are fully isolated from SELECT queries, and merging inserted data parts 
 
 ## Storage Layer: Merge-time computation {#storage-layer-merge-time-computation}
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/_w3zQg695c0?si=g0Wa_Petn-LcmC-6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/_w3zQg695c0?si=g0Wa_Petn-LcmC-6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Unlike other databases, ClickHouse keeps data writes lightweight and efficient by performing all additional data transformations during the [merge](/merges) background process. Examples of this include:
 
@@ -47,9 +47,9 @@ Unlike other databases, ClickHouse keeps data writes lightweight and efficient b
 
 - **TTL (time-to-live) merges** compress, move, or delete rows based on certain time-based rules.
 
-The point of these transformations is to shift work (computation) from the time user queries run to merge time. This is important for two reasons: 
+The point of these transformations is to shift work (computation) from the time user queries run to merge time. This is important for two reasons:
 
-On the one hand, user queries may become significantly faster, sometimes by 1000x or more, if they can leverage "transformed" data, e.g. pre-aggregated data. 
+On the one hand, user queries may become significantly faster, sometimes by 1000x or more, if they can leverage "transformed" data, e.g. pre-aggregated data.
 
 On the other hand, the majority of the runtime of merges is consumed by loading the input parts and saving the output part. The additional effort to transform the data during merge does usually not impact the runtime of merges too much. All of this magic is completely transparent and does not affect the result of queries (besides their performance).
 
@@ -57,7 +57,7 @@ On the other hand, the majority of the runtime of merges is consumed by loading 
 
 ## Storage Layer: Data pruning {#storage-layer-data-pruning}
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/UJpVAx7o1aY?si=w-AfhBcRIO-e3Ysj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/UJpVAx7o1aY?si=w-AfhBcRIO-e3Ysj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 In practice, many queries are repetitive, i.e., run unchanged or only with slight modifications (e.g. different parameter values) in periodic intervals. Running the same or similar queries again and again allows adding indexes or re-organize the data in a way that frequent queries can access it faster. This approach is also known as "data pruning" and ClickHouse provides three techniques for that:
 
@@ -73,13 +73,13 @@ All three techniques aim to skip as many rows during full-column reads as possib
 
 ## Storage Layer: Data compression {#storage-layer-data-compression}
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/MH10E3rVvnM?si=duWmS_OatCLx-akH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/MH10E3rVvnM?si=duWmS_OatCLx-akH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-Besides that, ClickHouse’s storage layer additionally (and optionally) compresses the raw table data using different codecs.
+Besides that, ClickHouse's storage layer additionally (and optionally) compresses the raw table data using different codecs.
 
-Column-stores are particularly well suited for such compression as values of the same type and data distribution are located together. 
+Column-stores are particularly well suited for such compression as values of the same type and data distribution are located together.
 
-Users can [specify](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema) that columns are compressed using various generic compression algorithms (like ZSTD) or specialized codecs, e.g. Gorilla and FPC for floating-point values, Delta and GCD for integer values, or even AES as an encrypting codec. 
+Users can [specify](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema) that columns are compressed using various generic compression algorithms (like ZSTD) or specialized codecs, e.g. Gorilla and FPC for floating-point values, Delta and GCD for integer values, or even AES as an encrypting codec.
 
 Data compression not only reduces the storage size of the database tables, but in many cases, it also improves query performance as local disks and network I/O are often constrained by low throughput.
 
@@ -87,7 +87,7 @@ Data compression not only reduces the storage size of the database tables, but i
 
 ## State-of-the-art query processing layer {#state-of-the-art-query-processing-layer}
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/O5qecdQ7Y18?si=XVtOIuVd8NLbqyox" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/O5qecdQ7Y18?si=XVtOIuVd8NLbqyox" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Finally, ClickHouse uses a vectorized query processing layer that parallelizes query execution as much as possible to utilize all resources for maximum speed and efficiency.
 
@@ -101,30 +101,30 @@ If a single node becomes too small to hold the table data, further nodes can be 
 
 ## Meticulous attention to detail {#meticulous-attention-to-detail}
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/dccGLSuYWy0?si=rQ-Jp-z5Ik_-Rb8S" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/dccGLSuYWy0?si=rQ-Jp-z5Ik_-Rb8S" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-> **"ClickHouse is a freak system - you guys have 20 versions of a hash table. You guys have all these amazing things where most systems will have one hash table** **…** **ClickHouse has this amazing performance because it has all these specialized components"** [Andy Pavlo, Database Professor at CMU](https://www.youtube.com/watch?v=Vy2t_wZx4Is&t=3579s)
+> **"ClickHouse is a freak system - you guys have 20 versions of a hash table. You guys have all these amazing things where most systems will have one hash table** **...** **ClickHouse has this amazing performance because it has all these specialized components"** [Andy Pavlo, Database Professor at CMU](https://www.youtube.com/watch?v=Vy2t_wZx4Is&t=3579s)
 
 What sets ClickHouse [apart](https://www.youtube.com/watch?v=CAS2otEoerM) is its meticulous attention to low-level optimization. Building a database that simply works is one thing, but engineering it to deliver speed across diverse query types, data structures, distributions, and index configurations is where the "[freak system](https://youtu.be/Vy2t_wZx4Is?si=K7MyzsBBxgmGcuGU&t=3579)" artistry shines.
 
-  
-**Hash Tables.** Let’s take a hash table as an example. Hash tables are central data structures used by joins and aggregations. As a programmer, one needs to consider these design decisions:
 
-* The hash function to choose,  
-* The collision resolution: [open addressing](https://en.wikipedia.org/wiki/Open_addressing) or [chaining](https://en.wikipedia.org/wiki/Hash_table#Separate_chaining),  
-* The memory layout: one array for keys and values or separate arrays?  
-* The fill factor: When and how to resize? How to move values during resize?  
+**Hash Tables.** Let's take a hash table as an example. Hash tables are central data structures used by joins and aggregations. As a programmer, one needs to consider these design decisions:
+
+* The hash function to choose,
+* The collision resolution: [open addressing](https://en.wikipedia.org/wiki/Open_addressing) or [chaining](https://en.wikipedia.org/wiki/Hash_table#Separate_chaining),
+* The memory layout: one array for keys and values or separate arrays?
+* The fill factor: When and how to resize? How to move values during resize?
 * Deletions: Should the hash table allow evicting entries?
 
-A standard hash table provided by a third-party library would functionally work, but it would not be fast. Great performance requires meticulous benchmarking and experimentation. 
+A standard hash table provided by a third-party library would functionally work, but it would not be fast. Great performance requires meticulous benchmarking and experimentation.
 
 The [hash table implementation in ClickHouse](https://clickhouse.com/blog/hash-tables-in-clickhouse-and-zero-cost-abstractions) chooses one of **30+ precompiled hash table variants based** on the specifics of the query and the data.
 
 **Algorithms.** The same goes for algorithms. For example, in sorting, you might consider:
 
-* What will be sorted: numbers, tuples, strings, or structures?  
-* Is the data in RAM?  
-* Is the sort required to be stable?  
+* What will be sorted: numbers, tuples, strings, or structures?
+* Is the data in RAM?
+* Is the sort required to be stable?
 * Should all data be sorted or will a partial sort suffice?
 
 Algorithms that rely on data characteristics often perform better than their generic counterparts. If the data characteristics are not known in advance, the system can try various implementations and choose the one that works best at runtime. For an example, see the [article on how LZ4 decompression is implemented in ClickHouse](https://habr.com/en/company/yandex/blog/457612/).
@@ -133,13 +133,13 @@ Algorithms that rely on data characteristics often perform better than their gen
 
 ## VLDB 2024 paper {#vldb-2024-paper}
 
-In August 2024, we had our first research paper accepted and published at VLDB. 
-VLDB in an international conference on very large databases, and is widely regarded as one of the leading conferences in the field of data management. 
+In August 2024, we had our first research paper accepted and published at VLDB.
+VLDB in an international conference on very large databases, and is widely regarded as one of the leading conferences in the field of data management.
 Among the hundreds of submissions, VLDB generally has an acceptance rate of ~20%.
 
 You can read a [PDF of the paper](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf) or our [web version](/docs/academic_overview) of it, which gives a concise description of ClickHouse's most interesting architectural and system design components that make it so fast.
 
-Alexey Milovidov, our CTO and the creator of ClickHouse, presented the paper (slides [here](https://raw.githubusercontent.com/ClickHouse/clickhouse-presentations/master/2024-vldb/VLDB_2024_presentation.pdf)), followed by a Q&A (that quickly ran out of time!). 
-You can catch the recorded presentation here: 
+Alexey Milovidov, our CTO and the creator of ClickHouse, presented the paper (slides [here](https://raw.githubusercontent.com/ClickHouse/clickhouse-presentations/master/2024-vldb/VLDB_2024_presentation.pdf)), followed by a Q&A (that quickly ran out of time!).
+You can catch the recorded presentation here:
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/7QXKBKDOkJE?si=5uFerjqPSXQWqDkF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/7QXKBKDOkJE?si=5uFerjqPSXQWqDkF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

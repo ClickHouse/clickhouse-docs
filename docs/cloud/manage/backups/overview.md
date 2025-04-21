@@ -9,6 +9,7 @@ description: 'Provides an overview of backups in ClickHouse Cloud'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
+import Image from '@theme/IdealImage';
 import backup_chain from '@site/static/images/cloud/manage/backup-chain.png';
 import backup_status_list from '@site/static/images/cloud/manage/backup-status-list.png';
 import backup_usage from '@site/static/images/cloud/manage/backup-usage.png';
@@ -27,10 +28,7 @@ In the screenshot below, the solid line squares show full backups and the dotted
 
 On Day 1, a full backup is taken to start the backup chain. On Day 2, an incremental backup is taken, and we now have a full and incremental backup available to restore from. By Day 7, we have one full backup and six incremental backups in the chain, with the most recent two incremental backups visible to the user. On Day 8, we take a new full backup, and on Day 9, once we have two backups in the new chain, the previous chain is discarded.
 
-<img src={backup_chain}
-    alt="Backup chain example in ClickHouse Cloud"
-    class="image"
-/>
+<Image img={backup_chain} size="md" alt="Backup chain example in ClickHouse Cloud" />
 
 *Example backup scenario in Clickhouse Cloud*
 
@@ -42,10 +40,7 @@ In the Basic, Scale, and Enterprise tiers, backups are metered and billed separa
 
 Your service will be backed up based on the set schedule, whether it is the default daily schedule or a [custom schedule](./configurable-backups.md) picked by you. All available backups can be viewed from the **Backups** tab of the service. From here, you can see the status of the backup, the duration, as well as the size of the backup. You can also restore a specific backup using the **Actions** column.
 
-<img src={backup_status_list}
-    alt="List of backup statuses in ClickHouse Cloud"
-    class="image"
-/>
+<Image img={backup_status_list} size="md" alt="List of backup statuses in ClickHouse Cloud" border/>
 
 ## Understanding backup cost {#understanding-backup-cost}
 
@@ -53,10 +48,7 @@ Per the default policy, ClickHouse Cloud mandates a backup every day, with a 24 
 
 To understand the backup cost, you can view the backup cost per service from the usage screen (as shown below). Once you have backups running for a few days with a customized schedule, you can get an idea of the cost and extrapolate to get the monthly cost for backups.
 
-<img src={backup_usage}
-    alt="Backup usage chart in ClickHouse Cloud"
-    class="image"
-/>
+<Image img={backup_usage} size="md" alt="Backup usage chart in ClickHouse Cloud" border/>
 
 
 Estimating the total cost for your backups requires you to set a schedule. We are also working on updating our [pricing calculator](https://clickhouse.com/pricing), so you can get a monthly cost estimate before setting a schedule. You will need to provide the following inputs in order to estimate the cost:
@@ -76,18 +68,11 @@ Backups are restored to a new ClickHouse Cloud service, not to the existing serv
 
 After clicking on the **Restore** backup icon, you can specify the service name of the new service that will be created, and then restore this backup:
 
-<img src={backup_restore}
-    alt="Restoring a backup in ClickHouse Cloud"
-    class="image"
-/>
+<Image img={backup_restore} size="md" alt="Restoring a backup in ClickHouse Cloud" />
 
 The new service will show in the services list as `Provisioning` until it is ready:
 
-<img src={backup_service_provisioning}
-    alt="Provisioning service in progress"
-    class="image"
-    style={{width: '80%'}}
-/>
+<Image img={backup_service_provisioning} size="md" alt="Provisioning service in progress" border/>
 
 ## Working with your restored service {#working-with-your-restored-service}
 

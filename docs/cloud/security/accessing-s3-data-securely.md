@@ -5,6 +5,7 @@ title: 'Accessing S3 Data Securely'
 description: 'This article demonstrates how ClickHouse Cloud customers can leverage role-based access to authenticate with Amazon Simple Storage Service(S3) and access their data securely.'
 ---
 
+import Image from '@theme/IdealImage';
 import secure_s3 from '@site/static/images/cloud/security/secures3.jpg';
 import s3_info from '@site/static/images/cloud/security/secures3_arn.png';
 import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
@@ -15,7 +16,7 @@ This article demonstrates how ClickHouse Cloud customers can leverage role-based
 
 Before diving into the setup for secure S3 access, it is important to understand how this works. Below is an overview of how ClickHouse services can access private S3 buckets by assuming into a role within customers' AWS account.
 
-<img src={secure_s3} alt="Overview of Secure S3 Access with ClickHouse" />
+<Image img={secure_s3} size="md" alt="Overview of Secure S3 Access with ClickHouse"/>
 
 This approach allows customers to manage all access to their S3 buckets in a single place (the IAM policy of the assumed-role) without having to go through all of their bucket policies to add or remove access.
 
@@ -33,7 +34,7 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 5 - Copy the **Service role ID (IAM)** value belong to the service as shown below.
 
-<img src={s3_info} alt="Obtaining ClickHouse service IAM Role ARN" />
+<Image img={s3_info} size="lg" alt="Obtaining ClickHouse service IAM Role ARN" border />
 
 ### Setting up IAM assume role {#setting-up-iam-assume-role}
 
@@ -68,7 +69,7 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 9 - Copy the **RoleArn** value for this integration. This is what needed to access your S3 bucket.
 
-<img src={s3_output} alt="CloudFormation stack output showing IAM Role ARN" />
+<Image img={s3_output} size="lg" alt="CloudFormation stack output showing IAM Role ARN" border />
 
 #### Option 2: Manually create IAM role. {#option-2-manually-create-iam-role}
 

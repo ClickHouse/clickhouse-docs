@@ -5,6 +5,9 @@ description: 'Subscribe to ClickHouse Cloud through the AWS, GCP, and Azure mark
 keywords: ['aws', 'azure', 'gcp', 'google cloud', 'marketplace', 'billing']
 ---
 
+import Image from '@theme/IdealImage';
+import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage/billing/marketplace/marketplace_signup_and_org_linking.png'
+
 You can subscribe to ClickHouse Cloud through the AWS, GCP, and Azure marketplaces. This allows you to pay for ClickHouse Cloud through your existing cloud provider billing.
 
 You can either use pay-as-you-go (PAYG) or commit to a contract with ClickHouse Cloud through the marketplace. The billing will be handled by the cloud provider, and you will receive a single invoice for all your cloud services.
@@ -36,7 +39,7 @@ You can switch between organizations from the bottom left menu of the ClickHouse
 
 You will need to subscribe to ClickHouse Cloud via the cloud provider marketplace. Once you finish subscribing on the marketplace, and redirect to ClickHouse Cloud you will have the option of linking an existing ClickHouse Cloud organization to marketplace billing. From that point on, your existing resources will now get billed via the marketplace. 
 
-![Marketplace signup and org linking](https://github.com/user-attachments/assets/a0939007-320b-4b12-9d6d-fd63bce31864)
+<Image img={marketplace_signup_and_org_linking} size='md' alt='Marketplace signup and org linking' border/>
 
 You can confirm from the organization's billing page that billing is indeed now linked to the marketplace. Please contact [ClickHouse Cloud support](https://clickhouse.com/support/program) if you run into any issues.
 
@@ -79,3 +82,7 @@ Please see the [Billing overview page](/cloud/manage/billing).
 ### Is there a difference in ClickHouse Cloud pricing, whether paying through the cloud provider marketplace or directly to ClickHouse? {#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse}
 
 There is no difference in pricing between marketplace billing and signing up directly with ClickHouse. In either case, your usage of  ClickHouse Cloud is tracked in terms of ClickHouse Cloud Credits (CHCs), which are metered in the same way and billed accordingly.
+
+### Can I set up multiple ClickHouse Organizations to bill to a single cloud marketplace billing account or sub account (AWS, GCP, or Azure)? {#multiple-organizations-to-bill-to-single-cloud-marketplace-account}
+
+A single ClickHouse organization can only be configured to bill to a single Cloud marketplace billing account or sub account.

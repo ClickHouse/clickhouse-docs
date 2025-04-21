@@ -820,4 +820,3 @@ SELECT json1, json2, json1 == json2 FROM test;
 
 - [ClickHouse のための新しい強力な JSON データ型をどのように構築したか](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)
 - [億ドキュメント JSON チャレンジ: ClickHouse 対 MongoDB、Elasticsearch など](https://clickhouse.com/blog/json-bench-clickhouse-vs-mongodb-elasticsearch-duckdb-postgresql)
-```

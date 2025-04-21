@@ -6,6 +6,7 @@ keywords: ['migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'BigQuery'
 ---
 
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
+import Image from '@theme/IdealImage';
 
 # BigQuery vs ClickHouse Cloud: Equivalent and different concepts
 
@@ -13,28 +14,23 @@ import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 
 The way resources are organized in ClickHouse Cloud is similar to [BigQuery's resource hierarchy](https://cloud.google.com/bigquery/docs/resource-hierarchy). We describe specific differences below based on the following diagram showing the ClickHouse Cloud resource hierarchy:
 
-<img src={bigquery_1}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '600px'}} />
-
-<br />
+<Image img={bigquery_1} size="md" alt="Resource organizations"/>
 
 ### Organizations {#organizations}
 
-Similar to BigQuery, organizations are the root nodes in the ClickHouse cloud resource hierarchy. The first user you set up in your ClickHouse Cloud account is automatically assigned to an organization owned by the user. The user may invite additional users to the organization. 
+Similar to BigQuery, organizations are the root nodes in the ClickHouse cloud resource hierarchy. The first user you set up in your ClickHouse Cloud account is automatically assigned to an organization owned by the user. The user may invite additional users to the organization.
 
 ### BigQuery Projects vs ClickHouse Cloud Services {#bigquery-projects-vs-clickhouse-cloud-services}
 
 Within organizations, you can create services loosely equivalent to BigQuery projects because stored data in ClickHouse Cloud is associated with a service. There are [several service types available](/cloud/manage/cloud-tiers) in ClickHouse Cloud. Each ClickHouse Cloud service is deployed in a specific region and includes:
 
-1. A group of compute nodes (currently, 2 nodes for a Development tier service and 3 for a Production tier service). For these nodes, ClickHouse Cloud [supports vertical and horizontal scaling](/manage/scaling#how-scaling-works-in-clickhouse-cloud), both manually and automatically. 
+1. A group of compute nodes (currently, 2 nodes for a Development tier service and 3 for a Production tier service). For these nodes, ClickHouse Cloud [supports vertical and horizontal scaling](/manage/scaling#how-scaling-works-in-clickhouse-cloud), both manually and automatically.
 2. An object storage folder where the service stores all the data.
 3. An endpoint (or multiple endpoints created via ClickHouse Cloud UI console)  - a service URL that you use to connect to the service (for example, `https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`)
 
 ### BigQuery Datasets vs ClickHouse Cloud Databases {#bigquery-datasets-vs-clickhouse-cloud-databases}
 
-ClickHouse logically groups tables into databases. Like BigQuery datasets, ClickHouse databases are logical containers that organize and control access to table data. 
+ClickHouse logically groups tables into databases. Like BigQuery datasets, ClickHouse databases are logical containers that organize and control access to table data.
 
 ### BigQuery Folders {#bigquery-folders}
 
@@ -77,13 +73,13 @@ ClickHouse offers more granular precision with respect to numerics. For example,
 | [TIME](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#time_type)     | [DateTime64](/sql-reference/data-types/datetime64) |
 | [TIMESTAMP](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#timestamp_type) | [DateTime64](/sql-reference/data-types/datetime64) |
 
-When presented with multiple options for ClickHouse types, consider the actual range of the data and pick the lowest required. Also, consider utilizing [appropriate codecs](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema) for further compression. 
+When presented with multiple options for ClickHouse types, consider the actual range of the data and pick the lowest required. Also, consider utilizing [appropriate codecs](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema) for further compression.
 
 ## Query acceleration techniques {#query-acceleration-techniques}
 
 ### Primary and Foreign keys and Primary index {#primary-and-foreign-keys-and-primary-index}
 
-In BigQuery, a table can have [primary key and foreign key constraints](https://cloud.google.com/bigquery/docs/information-schema-table-constraints). Typically, primary and foreign keys are used in relational databases to ensure data integrity. A primary key value is normally unique for each row and is not `NULL`. Each foreign key value in a row must be present in the primary key column of the primary key table or be `NULL`. In BigQuery, these constraints are not enforced, but the query optimizer may use this information to optimize queries better. 
+In BigQuery, a table can have [primary key and foreign key constraints](https://cloud.google.com/bigquery/docs/information-schema-table-constraints). Typically, primary and foreign keys are used in relational databases to ensure data integrity. A primary key value is normally unique for each row and is not `NULL`. Each foreign key value in a row must be present in the primary key column of the primary key table or be `NULL`. In BigQuery, these constraints are not enforced, but the query optimizer may use this information to optimize queries better.
 
 In ClickHouse, a table can also have a primary key. Like BigQuery, ClickHouse doesn't enforce uniqueness for a table's primary key column values. Unlike BigQuery, a table's data is stored on disk [ordered](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files) by the primary key column(s). The query optimizer utilizes this sort order to prevent resorting, to minimize memory usage for joins, and to enable short-circuiting for limit clauses. Unlike BigQuery, ClickHouse automatically creates [a (sparse) primary index](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales) based on the primary key column values. This index is used to speed up all queries that contain filters on the primary key columns. ClickHouse currently doesn't support foreign key constraints.
 
@@ -102,7 +98,7 @@ In addition to the primary index created from the values of a table's primary ke
 
 ## Search indexes {#search-indexes}
 
-Similar to [search indexes](https://cloud.google.com/bigquery/docs/search-index) in BigQuery, [full-text indexes](/engines/table-engines/mergetree-family/invertedindexes) can be created for ClickHouse tables on columns with string values.  
+Similar to [search indexes](https://cloud.google.com/bigquery/docs/search-index) in BigQuery, [full-text indexes](/engines/table-engines/mergetree-family/invertedindexes) can be created for ClickHouse tables on columns with string values.
 
 ## Vector indexes {#vector-indexes}
 
@@ -116,11 +112,11 @@ Like BigQuery, ClickHouse uses table partitioning to enhance the performance and
 
 With clustering, BigQuery automatically sorts table data based on the values of a few specified columns and colocates them in optimally sized blocks. Clustering improves query performance, allowing BigQuery to better estimate the cost of running the query. With clustered columns, queries also eliminate scans of unnecessary data.
 
-In ClickHouse, data is automatically [clustered on disk](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files) based on a table’s primary key columns and logically organized in blocks that can be quickly located or pruned by queries utilizing the primary index data structure.
+In ClickHouse, data is automatically [clustered on disk](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files) based on a table's primary key columns and logically organized in blocks that can be quickly located or pruned by queries utilizing the primary index data structure.
 
 ## Materialized views {#materialized-views}
 
-Both BigQuery and ClickHouse support materialized views – precomputed results based on a transformation query's result against a base table for increased performance and efficiency. 
+Both BigQuery and ClickHouse support materialized views – precomputed results based on a transformation query's result against a base table for increased performance and efficiency.
 
 ## Querying materialized views {#querying-materialized-views}
 
@@ -154,15 +150,15 @@ Compared to BigQuery, ClickHouse supports significantly more file formats and da
 
 ## SQL language features {#sql-language-features}
 
-ClickHouse provides standard SQL with many extensions and improvements that make it more friendly for analytical tasks. E.g. ClickHouse SQL [supports lambda functions](/sql-reference/functions/overview#arrow-operator-and-lambda) and higher order functions, so you don’t have to unnest/explode arrays when applying transformations. This is a big advantage over other systems like BigQuery.
+ClickHouse provides standard SQL with many extensions and improvements that make it more friendly for analytical tasks. E.g. ClickHouse SQL [supports lambda functions](/sql-reference/functions/overview#arrow-operator-and-lambda) and higher order functions, so you don't have to unnest/explode arrays when applying transformations. This is a big advantage over other systems like BigQuery.
 
 ## Arrays {#arrays}
 
 Compared to BigQuery's 8 array functions, ClickHouse has over 80 [built-in array functions](/sql-reference/functions/array-functions) for modeling and solving a wide range of problems elegantly and simply.
 
-A typical design pattern in ClickHouse is to use the [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) aggregate function to (temporarily) transform specific row values of a table into an array. This then can be conveniently processed via array functions, and the result can be converted back into individual table rows via [`arrayJoin`](/sql-reference/functions/array-join) aggregate function. 
+A typical design pattern in ClickHouse is to use the [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) aggregate function to (temporarily) transform specific row values of a table into an array. This then can be conveniently processed via array functions, and the result can be converted back into individual table rows via [`arrayJoin`](/sql-reference/functions/array-join) aggregate function.
 
-Because ClickHouse SQL supports [higher order lambda functions](/sql-reference/functions/overview#arrow-operator-and-lambda), many advanced array operations can be achieved by simply calling one of the higher order built-in array functions, instead of temporarily converting arrays back to tables, as it is often [required](https://cloud.google.com/bigquery/docs/arrays) in BigQuery, e.g. for [filtering](https://cloud.google.com/bigquery/docs/arrays#filtering_arrays) or [zipping](https://cloud.google.com/bigquery/docs/arrays#zipping_arrays) arrays. In ClickHouse these operations are just a simple function call of the higher order functions [`arrayFilter`](/sql-reference/functions/array-functions#arrayfilterfunc-arr1-), and [`arrayZip`](/sql-reference/functions/array-functions#arrayzip), respectively. 
+Because ClickHouse SQL supports [higher order lambda functions](/sql-reference/functions/overview#arrow-operator-and-lambda), many advanced array operations can be achieved by simply calling one of the higher order built-in array functions, instead of temporarily converting arrays back to tables, as it is often [required](https://cloud.google.com/bigquery/docs/arrays) in BigQuery, e.g. for [filtering](https://cloud.google.com/bigquery/docs/arrays#filtering_arrays) or [zipping](https://cloud.google.com/bigquery/docs/arrays#zipping_arrays) arrays. In ClickHouse these operations are just a simple function call of the higher order functions [`arrayFilter`](/sql-reference/functions/array-functions#arrayfilterfunc-arr1-), and [`arrayZip`](/sql-reference/functions/array-functions#arrayzip), respectively.
 
 In the following, we provide a mapping of array operations from BigQuery to ClickHouse:
 
@@ -326,7 +322,7 @@ Query id: b324c11f-655b-479f-9337-f4d34fd02190
 
 _BigQuery_
 
-Requires temporarily converting arrays back to tables via [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator 
+Requires temporarily converting arrays back to tables via [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
 
 ```sql
 WITH Sequences AS
@@ -454,7 +450,7 @@ FROM Sequences AS s;
 
 _ClickHouse_
 
-[arraySum](/sql-reference/functions/array-functions#arraysum), [arrayAvg](/sql-reference/functions/array-functions#arrayavg), … function, or any of the over 90 existing aggregate function names as argument for the [arrayReduce](/sql-reference/functions/array-functions#arrayreduce) function
+[arraySum](/sql-reference/functions/array-functions#arraysum), [arrayAvg](/sql-reference/functions/array-functions#arrayavg), ... function, or any of the over 90 existing aggregate function names as argument for the [arrayReduce](/sql-reference/functions/array-functions#arrayreduce) function
 
 ```sql
 WITH Sequences AS

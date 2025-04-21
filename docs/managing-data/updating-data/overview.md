@@ -30,11 +30,11 @@ Here is a summary of the different ways to update data in ClickHouse:
 
 ## Update Mutations {#update-mutations}
 
-Update mutations can be issued through a `ALTER TABLE … UPDATE` command e.g.
+Update mutations can be issued through a `ALTER TABLE ... UPDATE` command e.g.
 
 ```sql
 ALTER TABLE posts_temp
-	(UPDATE AnswerCount = AnswerCount + 1 WHERE AnswerCount = 0)
+        (UPDATE AnswerCount = AnswerCount + 1 WHERE AnswerCount = 0)
 ```
 These are extremely IO-heavy, rewriting all the parts that match the `WHERE` expression. There is no atomicity to this process - parts are substituted for mutated parts as soon as they are ready, and a `SELECT` query that starts executing during a mutation will see data from parts that have already been mutated along with data from parts that have not been mutated yet. Users can track the state of the progress via the [systems.mutations](/operations/system-tables/mutations) table. These are I/O intense operations and should be used sparingly as they can impact cluster `SELECT` performance.
 
@@ -52,7 +52,7 @@ FROM posts
 WHERE Id = 404346
 
 ┌─ViewCount─┐
-│ 	26762   │
+│       26762   │
 └───────────┘
 
 1 row in set. Elapsed: 0.115 sec. Processed 59.55 million rows, 238.25 MB (517.83 million rows/s., 2.07 GB/s.)
@@ -60,14 +60,14 @@ Peak memory usage: 113.65 MiB.
 
 -increment count
 ALTER TABLE posts
-	(UPDATE ViewCount = ViewCount + 1 WHERE Id = 404346)
+        (UPDATE ViewCount = ViewCount + 1 WHERE Id = 404346)
 
 SELECT ViewCount
 FROM posts
 WHERE Id = 404346
 
 ┌─ViewCount─┐
-│ 	26763   │
+│       26763   │
 └───────────┘
 
 1 row in set. Elapsed: 0.149 sec. Processed 59.55 million rows, 259.91 MB (399.99 million rows/s., 1.75 GB/s.)

@@ -6,11 +6,15 @@ description: 'Users can transform and model their data in ClickHouse using dbt'
 title: 'Fivetran and ClickHouse Cloud'
 ---
 
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+
 # Fivetran and ClickHouse Cloud
+
+<ClickHouseSupportedBadge/>
 
 ## Overview {#overview}
 
-[Fivetran](https://www.fivetran.com) is the automated data movement platform moving data out of, into and across your cloud data platforms. 
+[Fivetran](https://www.fivetran.com) is the automated data movement platform moving data out of, into and across your cloud data platforms.
 
 [ClickHouse Cloud](https://clickhouse.com/cloud) is supported as a [Fivetran destination](https://fivetran.com/docs/destinations/clickhouse), allowing users to load data from various sources into ClickHouse.
 

@@ -5,7 +5,13 @@ title: 'SAML SSO Setup'
 description: 'How to set up SAML SSO with ClickHouse Cloud'
 ---
 
-import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge' 
+import Image from '@theme/IdealImage';
+import samlOrgId from '@site/static/images/cloud/security/saml-org-id.png';
+import samlOktaSetup from '@site/static/images/cloud/security/saml-okta-setup.png';
+import samlGoogleApp from '@site/static/images/cloud/security/saml-google-app.png';
+import samlAzureApp from '@site/static/images/cloud/security/saml-azure-app.png';
+import samlAzureClaims from '@site/static/images/cloud/security/saml-azure-claims.png';
+import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 # SAML SSO Setup
 
@@ -32,10 +38,7 @@ We recommend setting up a **direct link to your organization** in addition to yo
    
    1. Sign in to your [ClickHouse Cloud](https://console.clickhouse.cloud) organization.
    
-      <img src='https://github.com/ClickHouse/clickhouse-docs/assets/110556185/0cb69e9e-1506-4eb4-957d-f104d8c15f3a'
-           class="image"
-           alt="Organization ID"
-           style={{width: '60%', display: 'inline'}} />
+      <Image img={samlOrgId} size="md" alt="Organization ID" />
       
    3. In the lower left corner, click on your organization name under **Organization**.
    
@@ -99,7 +102,7 @@ We recommend setting up a **direct link to your organization** in addition to yo
 
    1. Assign user access within your Identity Provider. 
 
-   2. Log in to ClickHouse via https://console.clickhouse.cloud OR the direct link you configured in 'Configure your SAML integration' above. Users are initially assigned the 'Developer' role, which has read-only access to the organization.
+   2. Log in to ClickHouse via https://console.clickhouse.cloud OR the direct link you configured in 'Configure your SAML integration' above. Users are initially assigned the 'Member' role, which can log in to the organization and update personal settings.
 
    3. Log out of the ClickHouse organization. 
 
@@ -191,10 +194,7 @@ You will configure two App Integrations in Okta for each ClickHouse organization
    
    12. On the **Sign On** tab for your new app, click the **View SAML setup instructions** button. 
    
-         <img src='https://github.com/ClickHouse/clickhouse-docs/assets/110556185/8d316548-5fb7-4d3a-aad9-5d025c51f158'
-              class="image"
-              alt="Okta SAML Setup Instructions"
-              style={{width: '60%', display: 'inline'}} />
+         <Image img={samlOktaSetup} size="md" alt="Okta SAML Setup Instructions" />
    
    13. Gather these three items and go to Submit a Support Case above to complete the process.
      - Identity Provider Single Sign-On URL
@@ -213,10 +213,7 @@ You will configure one SAML app in Google for each organization and must provide
    
    1. Go to your Google Admin console (admin.google.com).
 
-   <img src='https://github.com/ClickHouse/clickhouse-docs/assets/110556185/b931bd12-2fdf-4e25-b0b5-1170bbd20760'
-        class="image"
-        alt="Google SAML App"
-        style={{width: '60%', display: 'inline'}} />
+   <Image img={samlGoogleApp} size="md" alt="Google SAML App" />
 
    2. Click **Apps**, then **Web and mobile apps** on the left.
    
@@ -237,7 +234,7 @@ You will configure one SAML app in Google for each organization and must provide
    
    8. Check the box for **Signed response**.
    
-   9. Select **EMAIL** for the Name ID Format and leave the Name ID as **Basic Inforamtion > Primary email.**
+   9. Select **EMAIL** for the Name ID Format and leave the Name ID as **Basic Information > Primary email.**
    
    10. Click **Continue**.
    
@@ -273,10 +270,7 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
    
    5. Enter a name and select **Integrate any other application you don't find in the gallery (Non-gallery)**, then click **Create**.
    
-      <img src='https://github.com/ClickHouse/clickhouse-docs/assets/110556185/5577b3ed-56e0-46b9-a9f7-80aa27f9a97a'
-           class="image"
-           alt="Azure Non-Gallery App"
-           style={{width: '60%', display: 'inline'}} />
+      <Image img={samlAzureApp} size="md" alt="Azure Non-Gallery App" />
    
    6. Click **Users and groups** on the left and assign users.
    
@@ -302,10 +296,7 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
        | (A) email                            | Basic         | user.mail        |
        | (U) /identity/claims/name            | Omitted       | user.mail        |
    
-         <img src='https://github.com/ClickHouse/clickhouse-docs/assets/110556185/b59af49f-4cdc-47f4-99e0-fe4a7ffbceda'
-              class="image"
-              alt="Attributes and Claims"
-              style={{width: '60%', display: 'inline'}} />
+         <Image img={samlAzureClaims} size="md" alt="Attributes and Claims" />
    
    12. Gather these two items and go to Submit a Support Case above to complete the process:
      - Login URL
@@ -372,3 +363,4 @@ Security is our top priority when it comes to authentication. For this reason, w
 - **All users assigned to your app via your IdP must have the same email domain.** If you have vendors, contractors or consultants you would like to have access to your ClickHouse account, they must have an email address with the same domain (e.g. user@domain.com) as your employees.
 
 - **We do not automatically link SSO and non-SSO accounts.** You may see multiple accounts for your users in your ClickHouse user list even if they are using the same email address.
+      

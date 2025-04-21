@@ -1,19 +1,20 @@
 ---
-title: 'JSONStringsEachRow'
-slug: '/interfaces/formats/JSONStringsEachRow'
-keywords: ['JSONStringsEachRow']
-input_format: false
-output_format: true
 alias: []
+description: 'Документация для формата JSONStringsEachRow'
+input_format: false
+keywords: ['JSONStringsEachRow']
+output_format: true
+slug: /interfaces/formats/JSONStringsEachRow
+title: 'JSONStringsEachRow'
 ---
 
-| Входные данные | Выходные данные | Псевдоним |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+| Вход  | Выход | Псевдоним |
+|-------|-------|-----------|
+| ✗     | ✔     |           |
 
 ## Описание {#description}
 
-Отличается от [`JSONEachRow`](./JSONEachRow.md) только тем, что поля данных выводятся в строковом формате, а не в типизированных JSON значениях.
+Отличается от [`JSONEachRow`](./JSONEachRow.md) только тем, что поля данных выводятся в виде строк, а не в типизированных значениях JSON.
 
 ## Пример использования {#example-usage}
 

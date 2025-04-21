@@ -5,7 +5,11 @@ description: 'Users can ingest data into ClickHouse using Apache Beam'
 title: 'Integrating Apache Beam and ClickHouse'
 ---
 
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+
 # Integrating Apache Beam and ClickHouse
+
+<ClickHouseSupportedBadge/>
 
 **Apache Beam**  is an open-source, unified programming model that enables developers to define and execute both batch and stream (continuous) data processing pipelines. The flexibility of Apache Beam lies in its ability to support a wide range of data processing scenarios, from ETL (Extract, Transform, Load) operations to complex event processing and real-time analytics.
 This integration leverage ClickHouse's official [JDBC connector](https://github.com/ClickHouse/clickhouse-java) for the underlying insertion layer.
@@ -77,7 +81,7 @@ public class Main {
         PCollection<Row> rows = lines.apply("ConvertToRow", ParDo.of(new DoFn<String, Row>() {
             @ProcessElement
             public void processElement(@Element String line, OutputReceiver<Row> out) {
-            
+
                 String[] values = line.split(",");
                 Row row = Row.withSchema(SCHEMA)
                         .addValues(values[0], Short.parseShort(values[1]), DateTime.now())
@@ -141,10 +145,10 @@ You can adjust the `ClickHouseIO.Write` configuration with the following setter 
 
 Please consider the following limitations when using the connector:
 * As of today, only Sink operation is supported. The connector doesn't support Source operation.
-* ClickHouse performs deduplication when inserting into a `ReplicatedMergeTree` or a `Distributed` table built on top of a `ReplicatedMergeTree`. Without replication, inserting into a regular MergeTree can result in duplicates if an insert fails and then successfully retries. However, each block is inserted atomically, and the block size can be configured using `ClickHouseIO.Write.withMaxInsertBlockSize(long)`. Deduplication is achieved by using checksums of the inserted blocks. For more information about deduplication, please visit [Deduplication](/guides/developer/deduplication) and [Deduplicate insertion config](/operations/settings/settings#insert_deduplicate). 
+* ClickHouse performs deduplication when inserting into a `ReplicatedMergeTree` or a `Distributed` table built on top of a `ReplicatedMergeTree`. Without replication, inserting into a regular MergeTree can result in duplicates if an insert fails and then successfully retries. However, each block is inserted atomically, and the block size can be configured using `ClickHouseIO.Write.withMaxInsertBlockSize(long)`. Deduplication is achieved by using checksums of the inserted blocks. For more information about deduplication, please visit [Deduplication](/guides/developer/deduplication) and [Deduplicate insertion config](/operations/settings/settings#insert_deduplicate).
 * The connector doesn't perform any DDL statements; therefore, the target table must exist prior insertion.
 
 
 ## Related Content {#related-content}
 * `ClickHouseIO` class [documentation](https://beam.apache.org/releases/javadoc/current/org/apache/beam/sdk/io/clickhouse/ClickHouseIO.html).
-* `Github` repository of examples [clickhouse-beam-connector](https://github.com/ClickHouse/clickhouse-beam-connector). 
+* `Github` repository of examples [clickhouse-beam-connector](https://github.com/ClickHouse/clickhouse-beam-connector).

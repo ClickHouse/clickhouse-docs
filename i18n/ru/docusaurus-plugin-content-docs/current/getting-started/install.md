@@ -1,8 +1,9 @@
 ---
-sidebar_label: Установка
-keywords: [clickhouse, установка, начало работы, быстрый старт]
-description: Установка ClickHouse
+description: 'Установить ClickHouse'
+keywords: ['clickhouse', 'установка', 'начало работы', 'быстрый старт']
+sidebar_label: 'Установка'
 slug: /install
+title: 'Установка ClickHouse'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -12,82 +13,82 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Установка ClickHouse
 
-У вас есть четыре варианта, чтобы начать работу с ClickHouse:
+У вас есть четыре варианта, чтобы начать работать с ClickHouse:
 
-- **[ClickHouse Cloud](https://clickhouse.com/cloud/):** Официальный ClickHouse как услуга, разработанный, поддерживаемый и обслуживаемый создателями ClickHouse
-- **[Быстрая установка](#quick-install):** легкий для загрузки бинарный файл для тестирования и разработки с ClickHouse
-- **[Производственные развертывания](#available-installation-options):** ClickHouse может работать на любом Linux, FreeBSD или macOS с архитектурой процессора x86-64, современным ARM (ARMv8.2-A и выше) или PowerPC64LE
-- **[Docker Image](https://hub.docker.com/_/clickhouse):** используйте официальный Docker образ на Docker Hub
+- **[ClickHouse Cloud](https://clickhouse.com/cloud/):** Официальный ClickHouse как услуга, разработанный, поддерживаемый и поддерживающийся создателями ClickHouse
+- **[Быстрая установка](#quick-install):** легковесный бинарный файл для тестирования и разработки с ClickHouse
+- **[Промышленные развертывания](#available-installation-options):** ClickHouse может работать на любом Linux, FreeBSD или macOS с архитектурой CPU x86-64, современный ARM (ARMv8.2-A и выше) или PowerPC64LE
+- **[Docker-образ](https://hub.docker.com/_/clickhouse):** используйте официальный Docker-образ в Docker Hub
 
 ## ClickHouse Cloud {#clickhouse-cloud}
 
-Самый быстрый и простой способ начать работу с ClickHouse - создать новую службу в [ClickHouse Cloud](https://clickhouse.cloud/).
+Самый быстрый и простой способ начать работать с ClickHouse - создать новую услугу в [ClickHouse Cloud](https://clickhouse.cloud/).
 
 ## Быстрая установка {#quick-install}
 
 :::tip
-Для производственных установок конкретной версии смотрите [варианты установки](#available-installation-options) ниже.
+Для промышленных установок конкретной версии смотрите [варианты установки](#available-installation-options) ниже.
 :::
 
 На Linux, macOS и FreeBSD:
 
-1. Если вы только начинаете и хотите увидеть, на что способен ClickHouse, самый простой способ загрузить его локально - запустить следующую команду. Это загрузит один бинарный файл для вашей операционной системы, который можно использовать для запуска сервера ClickHouse, `clickhouse-client`, `clickhouse-local`, ClickHouse Keeper и других инструментов:
+1. Если вы только начинаете и хотите увидеть, что может сделать ClickHouse, самый простой способ загрузить ClickHouse локально - запустить следующую команду. Она загружает один бинарный файл для вашей операционной системы, который может быть использован для запуска сервера ClickHouse, `clickhouse-client`, `clickhouse-local`, ClickHouse Keeper и других инструментов:
 
    ```bash
    curl https://clickhouse.com/ | sh
    ```
 
    :::note
-   Для пользователей Mac: Если вы получаете ошибки, что разработчик бинарного файла не может быть подтвержден, пожалуйста, смотрите [здесь](/knowledgebase/fix-developer-verification-error-in-macos).
+   Для пользователей Mac: если вы получаете ошибки, что разработчик бинарного файла не может быть проверен, пожалуйста, смотрите [здесь](/knowledgebase/fix-developer-verification-error-in-macos).
    :::
 
-2. Запустите следующую команду для старта [clickhouse-local](../operations/utilities/clickhouse-local.md):
+2. Выполните следующую команду, чтобы запустить [clickhouse-local](../operations/utilities/clickhouse-local.md):
 
    ```bash
    ./clickhouse
    ```
 
-   `clickhouse-local` позволяет обрабатывать локальные и удаленные файлы с помощью мощного SQL ClickHouse и без необходимости конфигурации. Данные таблицы хранятся во временном месте, что означает, что после перезапуска `clickhouse-local` ранее созданные таблицы больше не доступны.
+   `clickhouse-local` позволяет вам обрабатывать локальные и удаленные файлы, используя мощный SQL ClickHouse, без необходимости в конфигурации. Данные таблицы хранятся во временном месте, что означает, что после перезапуска `clickhouse-local` ранее созданные таблицы более не доступны.
 
-   В качестве альтернативы вы можете запустить сервер ClickHouse с помощью этой команды...
+   В качестве альтернативы вы можете запустить сервер ClickHouse с помощью этой команды ...
 
-   ```bash
-   ./clickhouse server
-   ```
+    ```bash
+    ./clickhouse server
+    ```
 
-   ... и открыть новый терминал, чтобы подключиться к серверу с `clickhouse-client`:
+   ... и открыть новый терминал для подключения к серверу с помощью `clickhouse-client`:
 
-   ```bash
-   ./clickhouse client
-   ```
+    ```bash
+    ./clickhouse client
+    ```
 
     ```response
     ./clickhouse client
     ClickHouse client version 24.5.1.117 (официальная сборка).
     Подключение к localhost:9000 как пользователь default.
-    Подключено к серверу ClickHouse версии 24.5.1.
+    Подключено к версии сервера ClickHouse 24.5.1.
 
     local-host :)
     ```
 
-   Данные таблицы хранятся в текущем каталоге и по-прежнему доступны после перезапуска сервера ClickHouse. Если необходимо, вы можете передать `-C config.xml` в качестве дополнительного аргумента командной строки к `./clickhouse server` и предоставить дальнейшую конфигурацию в конфигурационном файле. Все доступные параметры конфигурации документированы [здесь](../operations/settings/settings.md) и в [шаблоне примерного конфигурационного файла](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml).
+   Данные таблицы хранятся в текущем каталоге и все еще доступны после перезапуска сервера ClickHouse. При необходимости вы можете передать `-C config.xml` в качестве дополнительного аргумента командной строки к `./clickhouse server` и предоставить дальнейшую конфигурацию в файле конфигурации. Все доступные настройки конфигурации документированы [здесь](../operations/settings/settings.md) и в [шаблоне примерного файла конфигурации](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml).
 
-   Вы готовы начать отправлять SQL запросы в ClickHouse!
+   Вы готовы отправлять SQL-команды в ClickHouse!
 
 :::tip
 [Быстрый старт](/quick-start.mdx) описывает шаги для создания таблиц и вставки данных.
 :::
 
-## Производственные развертывания {#available-installation-options}
+## Промышленные развертывания {#available-installation-options}
 
-Для производственных развертываний ClickHouse выберите один из следующих вариантов установки.
+Для промышленных развертываний ClickHouse выберите один из следующих вариантов установки.
 
-### Из DEB пакетов {#install-from-deb-packages}
+### Из пакетов DEB {#install-from-deb-packages}
 
-Рекомендуется использовать официальные предварительно собранные `deb` пакеты для Debian или Ubuntu. Запустите эти команды для установки пакетов:
+Рекомендуется использовать официальные предварительно скомпилированные `deb` пакеты для Debian или Ubuntu. Запустите эти команды для установки пакетов:
 
 #### Настройка репозитория Debian {#setup-the-debian-repository}
-``` bash
+```bash
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
 curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | sudo gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg
 
@@ -96,20 +97,20 @@ echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] ht
 sudo apt-get update
 ```
 
-#### Установка сервера и клиента ClickHouse {#install-clickhouse-server-and-client}
+#### Установить сервер и клиент ClickHouse {#install-clickhouse-server-and-client}
 ```bash
 sudo apt-get install -y clickhouse-server clickhouse-client
 ```
 
-#### Запуск сервера ClickHouse {#start-clickhouse-server}
+#### Запустить сервер ClickHouse {#start-clickhouse-server}
 
 ```bash
 sudo service clickhouse-server start
-clickhouse-client # или "clickhouse-client --password", если вы установили пароль.
+clickhouse-client # или "clickhouse-client --password", если вы настроили пароль.
 ```
 
 <details>
-<summary>Метод старых дистрибутивов для установки deb-пакетов</summary>
+<summary>Старый метод установки deb-пакетов</summary>
 
 ```bash
 sudo apt-get install apt-transport-https ca-certificates dirmngr
@@ -121,28 +122,28 @@ sudo apt-get update
 sudo apt-get install -y clickhouse-server clickhouse-client
 
 sudo service clickhouse-server start
-clickhouse-client # или "clickhouse-client --password", если вы установили пароль.
+clickhouse-client # или "clickhouse-client --password", если вы настроили пароль.
 ```
 
 </details>
 
-Вы можете заменить `stable` на `lts`, чтобы использовать разные [типы релиза](/knowledgebase/production) в зависимости от ваших нужд.
+Вы можете заменить `stable` на `lts`, чтобы использовать другие [типы релизов](/knowledgebase/production) в зависимости от ваших нужд.
 
-Вы также можете вручную загрузить и установить пакеты [отсюда](https://packages.clickhouse.com/deb/pool/main/c/).
+Вы также можете загрузить и установить пакеты вручную [здесь](https://packages.clickhouse.com/deb/pool/main/c/).
 
-#### Установка независимого ClickHouse Keeper {#install-standalone-clickhouse-keeper}
+#### Установить отдельный ClickHouse Keeper {#install-standalone-clickhouse-keeper}
 
 :::tip
 В производственной среде мы настоятельно рекомендуем запускать ClickHouse Keeper на выделенных узлах.
-В тестовых средах, если вы решите запустить ClickHouse Server и ClickHouse Keeper на одном сервере, вам не нужно устанавливать ClickHouse Keeper, так как он включен в сервер ClickHouse.
-Эта команда нужна только на независимых серверах ClickHouse Keeper.
+В тестовых средах, если вы решите запустить сервер ClickHouse и ClickHouse Keeper на одном и том же сервере, вам не нужно устанавливать ClickHouse Keeper, так как он включен в сервер ClickHouse.
+Эта команда нужна только на отдельном сервере ClickHouse Keeper.
 :::
 
 ```bash
 sudo apt-get install -y clickhouse-keeper
 ```
 
-#### Включение и запуск ClickHouse Keeper {#enable-and-start-clickhouse-keeper}
+#### Включить и запустить ClickHouse Keeper {#enable-and-start-clickhouse-keeper}
 
 ```bash
 sudo systemctl enable clickhouse-keeper
@@ -154,64 +155,64 @@ sudo systemctl status clickhouse-keeper
 
 - `clickhouse-common-static` — Устанавливает скомпилированные бинарные файлы ClickHouse.
 - `clickhouse-server` — Создает символическую ссылку для `clickhouse-server` и устанавливает конфигурацию сервера по умолчанию.
-- `clickhouse-client` — Создает символическую ссылку для `clickhouse-client` и других инструментов, связанных с клиентом, а также устанавливает конфигурационные файлы клиента.
+- `clickhouse-client` — Создает символическую ссылку для `clickhouse-client` и других связанных с клиентом инструментов. Устанавливает файлы конфигурации клиента.
 - `clickhouse-common-static-dbg` — Устанавливает скомпилированные бинарные файлы ClickHouse с отладочной информацией.
-- `clickhouse-keeper` - Используется для установки ClickHouse Keeper на выделенные узлы ClickHouse Keeper. Если вы запускаете ClickHouse Keeper на том же сервере, что и сервер ClickHouse, то устанавливать этот пакет не нужно. Устанавливает ClickHouse Keeper и файлы конфигурации по умолчанию.
+- `clickhouse-keeper` - Используется для установки ClickHouse Keeper на выделенных узлах ClickHouse Keeper. Если вы запускаете ClickHouse Keeper на том же сервере, что и сервер ClickHouse, то вам не нужно устанавливать этот пакет. Устанавливает ClickHouse Keeper и файлы конфигурации ClickHouse Keeper по умолчанию.
 
 :::info
-Если вам необходимо установить определенную версию ClickHouse, вам нужно установить все пакеты одной версии:
+Если вам нужно установить конкретную версию ClickHouse, вы должны установить все пакеты с одной и той же версией:
 `sudo apt-get install clickhouse-server=21.8.5.7 clickhouse-client=21.8.5.7 clickhouse-common-static=21.8.5.7`
 :::
 
-### Из RPM пакетов {#from-rpm-packages}
+### Из пакетов RPM {#from-rpm-packages}
 
-Рекомендуется использовать официальные предварительно собранные `rpm` пакеты для CentOS, RedHat и всех других дистрибутивов Linux на базе rpm.
+Рекомендуется использовать официальные предварительно скомпилированные `rpm` пакеты для CentOS, RedHat и всех других дистрибутивов Linux на базе rpm.
 
-#### Настройка RPM репозитория {#setup-the-rpm-repository}
+#### Настройка репозитория RPM {#setup-the-rpm-repository}
 Сначала вам нужно добавить официальный репозиторий:
 
-``` bash
+```bash
 sudo yum install -y yum-utils
 sudo yum-config-manager --add-repo https://packages.clickhouse.com/rpm/clickhouse.repo
 ```
 
 Для систем с менеджером пакетов `zypper` (openSUSE, SLES):
 
-``` bash
+```bash
 sudo zypper addrepo -r https://packages.clickhouse.com/rpm/clickhouse.repo -g
 sudo zypper --gpg-auto-import-keys refresh clickhouse-stable
 ```
 
-В дальнейшем любые команды `yum install` могут быть заменены на `zypper install`. Для указания конкретной версии добавьте `-$VERSION` в конце имени пакета, например `clickhouse-client-22.2.2.22`.
+Позже любую команду `yum install` можно заменить на `zypper install`. Чтобы указать конкретную версию, добавьте `-$VERSION` к концу имени пакета, например, `clickhouse-client-22.2.2.22`.
 
-#### Установка сервера и клиента ClickHouse {#install-clickhouse-server-and-client-1}
+#### Установить сервер и клиент ClickHouse {#install-clickhouse-server-and-client-1}
 
 ```bash
 sudo yum install -y clickhouse-server clickhouse-client
 ```
 
-#### Запуск сервера ClickHouse {#start-clickhouse-server-1}
+#### Запустить сервер ClickHouse {#start-clickhouse-server-1}
 
 ```bash
 sudo systemctl enable clickhouse-server
 sudo systemctl start clickhouse-server
 sudo systemctl status clickhouse-server
-clickhouse-client # или "clickhouse-client --password", если вы установили пароль.
+clickhouse-client # или "clickhouse-client --password", если вы настроили пароль.
 ```
 
-#### Установка независимого ClickHouse Keeper {#install-standalone-clickhouse-keeper-1}
+#### Установить отдельный ClickHouse Keeper {#install-standalone-clickhouse-keeper-1}
 
 :::tip
 В производственной среде мы настоятельно рекомендуем запускать ClickHouse Keeper на выделенных узлах.
-В тестовых средах, если вы решите запустить ClickHouse Server и ClickHouse Keeper на одном сервере, вам не нужно устанавливать ClickHouse Keeper, так как он включен в сервер ClickHouse.
-Эта команда нужна только на независимых серверах ClickHouse Keeper.
+В тестовых средах, если вы решите запустить сервер ClickHouse и ClickHouse Keeper на одном и том же сервере, вам не нужно устанавливать ClickHouse Keeper, так как он включен в сервер ClickHouse.
+Эта команда нужна только на отдельных серверах ClickHouse Keeper.
 :::
 
 ```bash
 sudo yum install -y clickhouse-keeper
 ```
 
-#### Включение и запуск ClickHouse Keeper {#enable-and-start-clickhouse-keeper-1}
+#### Включить и запустить ClickHouse Keeper {#enable-and-start-clickhouse-keeper-1}
 
 ```bash
 sudo systemctl enable clickhouse-keeper
@@ -219,24 +220,24 @@ sudo systemctl start clickhouse-keeper
 sudo systemctl status clickhouse-keeper
 ```
 
-Вы можете заменить `stable` на `lts`, чтобы использовать разные [типы релиза](/knowledgebase/production) в зависимости от ваших нужд.
+Вы можете заменить `stable` на `lts`, чтобы использовать различные [типы релизов](/knowledgebase/production) в зависимости от ваших нужд.
 
-Затем выполните следующие команды для установки пакетов:
+Затем выполните команды для установки пакетов:
 
-``` bash
+```bash
 sudo yum install clickhouse-server clickhouse-client
 ```
 
-Вы также можете вручную загрузить и установить пакеты от [сюда](https://packages.clickhouse.com/rpm/stable).
+Вы также можете загрузить и установить пакеты вручную [здесь](https://packages.clickhouse.com/rpm/stable).
 
-### Из Tgz архивов {#from-tgz-archives}
+### Из архивов Tgz {#from-tgz-archives}
 
-Рекомендуется использовать официальные предварительно собранные `tgz` архивы для всех дистрибутивов Linux, где невозможно установить `deb` или `rpm` пакеты.
+Рекомендуется использовать официальные предварительно скомпилированные `tgz` архивы для всех дистрибутивов Linux, где установка пакетов `deb` или `rpm` невозможна.
 
 Необходимую версию можно загрузить с помощью `curl` или `wget` из репозитория https://packages.clickhouse.com/tgz/.
-После этого загруженные архивы следует распаковать и установить с помощью установочных скриптов. Пример для последней стабильной версии:
+После этого загруженные архивы должны быть распакованы и установлены с помощью установочных скриптов. Пример для последней стабильной версии:
 
-``` bash
+```bash
 LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/utils/list-versions/version_date.tsv | \
     grep -Eo '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | sort -V -r | head -n 1)
 export LATEST_VERSION
@@ -271,106 +272,106 @@ tar -xzvf "clickhouse-client-$LATEST_VERSION-${ARCH}.tgz" \
 sudo "clickhouse-client-$LATEST_VERSION/install/doinst.sh"
 ```
 
-Для производственных сред рекомендуется использовать последнюю `stable` версию. Вы можете найти ее номер на странице GitHub https://github.com/ClickHouse/ClickHouse/tags с постфиксом `-stable`.
+Для производственных сред рекомендуется использовать последнюю версию `stable`. Вы можете найти её номер на странице GitHub https://github.com/ClickHouse/ClickHouse/tags с постфиксом `-stable`.
 
-### Из Docker Image {#from-docker-image}
+### Из Docker-образа {#from-docker-image}
 
-Для запуска ClickHouse в Docker следуйте руководству на [Docker Hub](https://hub.docker.com/r/clickhouse/clickhouse-server/). Эти образы используют официальные `deb` пакеты внутри.
+Чтобы запустить ClickHouse внутри Docker, следуйте руководству на [Docker Hub](https://hub.docker.com/r/clickhouse/clickhouse-server/). Эти образы используют официальные `deb` пакеты внутри.
 
-## Непроизводственные развертывания (расширенный режим) {#non-production-deployments-advanced}
+## Непромышленные развертывания (расширенные) {#non-production-deployments-advanced}
 
 ### Компиляция из исходников {#from-sources}
 
 Чтобы вручную скомпилировать ClickHouse, следуйте инструкциям для [Linux](/development/build.md) или [macOS](/development/build-osx.md).
 
-Вы можете компилировать пакеты и устанавливать их, или использовать программы без установки пакетов.
+Вы можете скомпилировать пакеты и установить их или использовать программы без установки пакетов.
 
 ```xml
 Клиент: <build_directory>/programs/clickhouse-client
 Сервер: <build_directory>/programs/clickhouse-server
 ```
 
-Вам необходимо будет вручную создать каталоги данных и метаданных и поменять их владельца на нужного пользователя. Их пути можно изменить в конфигурации сервера (src/programs/server/config.xml), по умолчанию они следующие:
+Вам нужно будет вручную создать папки данных и метаданных и выполнить для них команду `chown` для желаемого пользователя. Их пути могут быть изменены в конфигурации сервера (src/programs/server/config.xml), по умолчанию они следующие:
 
 ```bash
 /var/lib/clickhouse/data/default/
 /var/lib/clickhouse/metadata/default/
 ```
 
-На Gentoo вы можете просто использовать `emerge clickhouse` для установки ClickHouse из исходников.
+На Gentoo вы можете просто использовать `emerge clickhouse`, чтобы установить ClickHouse из исходников.
 
 ### Установка бинарного файла, сгенерированного CI {#install-a-ci-generated-binary}
 
-Инфраструктура непрерывной интеграции (CI) ClickHouse производит специализированные сборки для каждого коммита в [репозитории ClickHouse](https://github.com/clickhouse/clickhouse/), например, [санитизированные](https://github.com/google/sanitizers) сборки, неоптимизированные (Debug) сборки и т.д. Хотя такие сборки обычно полезны только в процессе разработки, в определённых ситуациях они также могут быть интересны пользователям.
+Инфраструктура непрерывной интеграции (CI) ClickHouse производит специализированные сборки для каждого коммита в [репозитории ClickHouse](https://github.com/clickhouse/clickhouse/), например, [санизированные](https://github.com/google/sanitizers) сборки, не оптимизированные (Debug) сборки, кросс-компилированные сборки и т.д. Хотя такие сборки обычно полезны только в процессе разработки, в некоторых ситуациях они также могут быть интересны пользователям.
 
 :::note
-Поскольку CI ClickHouse со временем развивается, точные шаги для загрузки сборок, сгенерированных CI, могут меняться.
-Также, CI может удалить слишком старые артефакты сборки, делая их недоступными для загрузки.
+Поскольку CI ClickHouse со временем развивается, точные шаги для загрузки сборок, сгенерированных CI, могут варьироваться.
+Кроме того, CI может удалить слишком старые артефакты сборки, что делает их недоступными для загрузки.
 :::
 
-Например, чтобы загрузить aarch64 бинарный файл для ClickHouse v23.4, выполните следующие шаги:
+Например, чтобы загрузить бинарный файл aarch64 для ClickHouse v23.4, выполните следующие шаги:
 
-- Найдите запрос на вытягивание GitHub для релиза v23.4: [Запрос на вытягивание для ветки 23.4](https://github.com/ClickHouse/ClickHouse/pull/49238)
-- Нажмите "Commits", затем нажмите на коммит, похожий на "Обновить сгенерированную версию до 23.4.2.1 и участников" для версии, которую вы хотите установить.
+- Найдите запрос на выставление релиза для v23.4: [Запрос на выставление релиза для ветки 23.4](https://github.com/ClickHouse/ClickHouse/pull/49238)
+- Нажмите "Commits", затем нажмите коммит, похожий на "Обновление сгенерированной версии на 23.4.2.1 и contributors" для версии, которую вы хотите установить.
 - Нажмите зеленую галочку / желтую точку / красный крест, чтобы открыть список проверок CI.
-- Нажмите "Детали" рядом с "Сборками" в списке, это откроет страницу, подобную [этой странице](https://s3.amazonaws.com/clickhouse-test-reports/46793/b460eb70bf29b19eadd19a1f959b15d186705394/clickhouse_build_check/report.html)
-- Найдите строки с компилятором = "clang-*-aarch64" - их несколько.
+- Нажмите "Details" рядом с "Builds" в списке, это откроет страницу, аналогичную [этой странице](https://s3.amazonaws.com/clickhouse-test-reports/46793/b460eb70bf29b19eadd19a1f959b15d186705394/clickhouse_build_check/report.html)
+- Найдите строки с компилятором = "clang-*-aarch64" - там несколько строк.
 - Загрузите артефакты для этих сборок.
 
-### Только для macOS: Установка с Homebrew {#macos-only-install-with-homebrew}
+### Только для macOS: установка через Homebrew {#macos-only-install-with-homebrew}
 
-Чтобы установить ClickHouse на macOS с помощью [homebrew](https://brew.sh/), смотрите формулу [сообщества homebrew ClickHouse](https://formulae.brew.sh/cask/clickhouse).
+Чтобы установить ClickHouse на macOS с использованием [homebrew](https://brew.sh/), пожалуйста, смотрите [сообщество формулы homebrew ClickHouse](https://formulae.brew.sh/cask/clickhouse).
 
 :::note
-Для пользователей Mac: Если вы получаете ошибки, что разработчик бинарного файла не может быть подтвержден, пожалуйста, смотрите [здесь](/knowledgebase/fix-developer-verification-error-in-macos).
+Для пользователей Mac: если вы получаете ошибки, что разработчик бинарного файла не может быть проверен, пожалуйста, смотрите [здесь](/knowledgebase/fix-developer-verification-error-in-macos).
 :::
 
 ## Запуск {#launch}
 
 Чтобы запустить сервер как демон, выполните:
 
-``` bash
+```bash
 $ clickhouse start
 ```
 
-Существует также другие способы запуска ClickHouse:
+Существует также другие способы запустить ClickHouse:
 
-``` bash
+```bash
 $ sudo service clickhouse-server start
 ```
 
-Если у вас нет команды `service`, выполните как
+Если у вас нет команды `service`, выполните
 
-``` bash
+```bash
 $ sudo /etc/init.d/clickhouse-server start
 ```
 
-Если у вас есть команда `systemctl`, выполните как
+Если у вас есть команда `systemctl`, выполните
 
-``` bash
+```bash
 $ sudo systemctl start clickhouse-server.service
 ```
 
-Смотрите логи в каталоге `/var/log/clickhouse-server/`.
+Смотрите журналы в директории `/var/log/clickhouse-server/`.
 
 Если сервер не запускается, проверьте конфигурации в файле `/etc/clickhouse-server/config.xml`.
 
 Вы также можете вручную запустить сервер из консоли:
 
-``` bash
+```bash
 $ clickhouse-server --config-file=/etc/clickhouse-server/config.xml
 ```
 
-В этом случае лог будет напечатан в консоли, что удобно во время разработки.
-Если конфигурационный файл находится в текущем каталоге, вам не нужно указывать параметр `--config-file`. По умолчанию используется `./config.xml`.
+В этом случае журнал будет выведен в консоль, что удобно во время разработки.
+Если файл конфигурации находится в текущем каталоге, вам не нужно указывать параметр `--config-file`. По умолчанию используется `./config.xml`.
 
 ClickHouse поддерживает настройки ограничения доступа. Они находятся в файле `users.xml` (рядом с `config.xml`).
 По умолчанию доступ разрешен отовсюду для пользователя `default`, без пароля. Смотрите `user/default/networks`.
 Для получения дополнительной информации смотрите раздел ["Файлы конфигурации"](/operations/configuration-files.md).
 
-После запуска сервера вы можете использовать клиент командной строки для подключения к нему:
+После запуска сервера вы можете использовать клиент командной строки, чтобы подключиться к нему:
 
-``` bash
+```bash
 $ clickhouse-client
 ```
 
@@ -383,7 +384,7 @@ $ clickhouse-client
 
 ```bash
 $ ./clickhouse-client
-Клиент ClickHouse версия 0.0.18749.
+ClickHouse client version 0.0.18749.
 Подключение к localhost:9000.
 Подключено к серверу ClickHouse версии 0.0.18749.
 
@@ -395,50 +396,50 @@ SELECT 1
 │ 1 │
 └───┘
 
-1 строк в результате. Время: 0.003 сек.
+1 строка в наборе. Затраченное время: 0.003 сек.
 
 :)
 ```
 
-**Поздравляем, система работает!**
+**Поздравляю, система работает!**
 
-Чтобы продолжить эксперименты, вы можете скачать один из тестовых наборов данных или пройти [учебник](/tutorial.md).
+Чтобы продолжить эксперименты, вы можете загрузить один из тестовых наборов данных или пройти [учебник](/tutorial.md).
 
-## Рекомендации для самостоятельного управления ClickHouse {#recommendations-for-self-managed-clickhouse}
+## Рекомендации для самоуправляемого ClickHouse {#recommendations-for-self-managed-clickhouse}
 
-ClickHouse может работать на любом Linux, FreeBSD или macOS с архитектурой процессора x86-64, ARM или PowerPC64LE.
+ClickHouse может работать на любом Linux, FreeBSD или macOS с архитектурой CPU x86-64, ARM или PowerPC64LE.
 
 ClickHouse использует все доступные аппаратные ресурсы для обработки данных.
 
-ClickHouse, как правило, работает более эффективно с большим количеством ядер на более низкой тактовой частоте, чем с меньшим количеством ядер на более высокой тактовой частоте.
+ClickHouse, как правило, работает более эффективно с большим количеством ядер при более низкой частоте, чем с меньшим количеством ядер при более высокой частоте.
 
-Мы рекомендуем использовать минимум 4 ГБ ОЗУ для выполнения нетривиальных запросов. Сервер ClickHouse может работать с гораздо меньшим объемом ОЗУ, но в этом случае запросы будут часто отменяться.
+Рекомендуемое количество оперативной памяти составляет минимум 4 ГБ для выполнения нетривиальных запросов. Сервер ClickHouse может работать с гораздо меньшим объемом ОЗУ, но в этом случае запросы будут часто прерываться.
 
-Необходимый объем оперативной памяти в целом зависит от:
+Необходимый объем ОЗУ в общем зависит от:
 
 - Сложности запросов.
 - Объема данных, обрабатываемых в запросах.
 
 Чтобы рассчитать необходимый объем ОЗУ, вы можете оценить размер временных данных для [GROUP BY](/sql-reference/statements/select/group-by), [DISTINCT](/sql-reference/statements/select/distinct), [JOIN](/sql-reference/statements/select/join) и других операций, которые вы используете.
 
-Чтобы уменьшить потребление памяти, ClickHouse может перемещать временные данные на внешнее хранилище. Смотрите [GROUP BY в внешней памяти](/sql-reference/statements/select/group-by#group-by-in-external-memory) для получения подробной информации.
+Чтобы уменьшить потребление памяти, ClickHouse может перемещать временные данные на внешнее хранилище. Смотрите [GROUP BY в внешней памяти](/sql-reference/statements/select/group-by#group-by-in-external-memory) для получения деталей.
 
-Рекомендуем отключить файл подкачки операционной системы в производственных средах.
+Мы рекомендуем отключить файл подкачки операционной системы в производственных средах.
 
-Бинарный файл ClickHouse требует как минимум 2.5 ГБ дискового пространства для установки.
+Бинарный файл ClickHouse требует как минимум 2,5 ГБ дискового пространства для установки.
 
-Объем хранилища, необходимый для ваших данных, может быть рассчитан отдельно на основе
+Объем хранилища, необходимый для ваших данных, можно рассчитать отдельно на основе
 
-- оценки объема данных.
+- оценок объема данных.
 
-    Вы можете взять выборку данных и получить средний размер строки из нее. Затем умножьте значение на количество строк, которые вы планируете хранить.
+    Вы можете взять образец данных и получить средний размер строки из него. Затем умножьте это значение на количество строк, которые вы планируете хранить.
 
-- коэффициента сжатия данных.
+- Коэффициента сжатия данных.
 
-    Чтобы оценить коэффициент сжатия данных, загрузите выборку ваших данных в ClickHouse и сравните реальный размер данных с размером хранимой таблицы. Например, данные потоков кликов обычно сжимаются в 6-10 раз.
+    Чтобы оценить коэффициент сжатия данных, загрузите образец ваших данных в ClickHouse и сравните фактический размер данных с размером хранимой таблицы. Например, данные о кликах обычно сжимаются в 6-10 раз.
 
-Чтобы рассчитать окончательный объем данных, которые будут храниться, примените коэффициент сжатия к оцененному объему данных. Если вы планируете хранить данные в нескольких репликах, умножьте оценочный объем на количество реплик.
+Чтобы рассчитать итоговый объем данных, которые необходимо хранить, примените коэффициент сжатия к оцененному объему данных. Если вы планируете хранить данные в нескольких репликах, умножьте оцененный объем на количество реплик.
 
-Для распределенных развертываний ClickHouse (кластеризация) мы рекомендуем как минимум сетевое соединение класса 10G.
+Для распределенных развертываний ClickHouse (кластеризация) мы рекомендуем сетевую связь по классу не менее 10G.
 
-Пропускная способность сети имеет критическое значение для обработки распределенных запросов с большим объемом промежуточных данных. Кроме того, скорость сети влияет на процессы репликации.
+Пропускная способность сети имеет критическое значение для обработки распределённых запросов с большим объёмом промежуточных данных. Кроме того, скорость сети влияет на процессы репликации.

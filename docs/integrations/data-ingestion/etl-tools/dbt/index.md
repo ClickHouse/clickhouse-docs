@@ -7,6 +7,7 @@ title: 'Integrating dbt and ClickHouse'
 ---
 
 import TOCInline from '@theme/TOCInline';
+import Image from '@theme/IdealImage';
 import dbt_01 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_01.png';
 import dbt_02 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_02.png';
 import dbt_03 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_03.png';
@@ -14,8 +15,11 @@ import dbt_04 from '@site/static/images/integrations/data-ingestion/etl-tools/db
 import dbt_05 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_05.png';
 import dbt_06 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_06.png';
 import dbt_07 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_07.png';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Integrating dbt and ClickHouse
+
+<ClickHouseSupportedBadge/>
 
 **dbt** (data build tool) enables analytics engineers to transform data in their warehouses by simply writing select statements. dbt handles materializing these select statements into objects in the database in the form of tables and views - performing the T of [Extract Load and Transform (ELT)](https://en.wikipedia.org/wiki/Extract,_load,_transform). Users can create a model defined by a SELECT statement.
 
@@ -27,7 +31,7 @@ Dbt is compatible with ClickHouse through a [ClickHouse-supported plugin](https:
 
 ## Concepts {#concepts}
 
-dbt introduces the concept of a model. This is defined as a SQL statement, potentially joining many tables. A model can be "materialized" in a number of ways. A materialization represents a build strategy for the model’s select query. The code behind a materialization is boilerplate SQL that wraps your SELECT query in a statement in order to create a new or update an existing relation.
+dbt introduces the concept of a model. This is defined as a SQL statement, potentially joining many tables. A model can be "materialized" in a number of ways. A materialization represents a build strategy for the model's select query. The code behind a materialization is boilerplate SQL that wraps your SELECT query in a statement in order to create a new or update an existing relation.
 
 dbt provides 4 types of materialization:
 
@@ -36,7 +40,7 @@ dbt provides 4 types of materialization:
 * **ephemeral**: The model is not directly built in the database but is instead pulled into dependent models as common table expressions.
 * **incremental**: The model is initially materialized as a table, and in subsequent runs, dbt inserts new rows and updates changed rows in the table.
 
-Additional syntax and clauses define how these models should be updated if their underlying data changes. dbt generally recommends starting with the view materialization until performance becomes a concern. The table materialization provides a query time performance improvement by capturing the results of the model’s query as a table at the expense of increased storage. The incremental approach builds on this further to allow subsequent updates to the underlying data to be captured in the target table.
+Additional syntax and clauses define how these models should be updated if their underlying data changes. dbt generally recommends starting with the view materialization until performance becomes a concern. The table materialization provides a query time performance improvement by capturing the results of the model's query as a table at the expense of increased storage. The incremental approach builds on this further to allow subsequent updates to the underlying data to be captured in the target table.
 
 The[ current plugin](https://github.com/silentsokolov/dbt-clickhouse) for ClickHouse supports the **view**, **table,**, **ephemeral** and **incremental** materializations. The plugin also supports dbt[ snapshots](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy) and [seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds) which we explore in this guide.
 
@@ -70,7 +74,7 @@ pip install dbt-clickhouse
 dbt excels when modeling highly relational data. For the purposes of example, we provide a small IMDB dataset with the following relational schema. This dataset originates from the[ relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb). This is trivial relative to common schemas used with dbt but represents a manageable sample:
 
 
-<img src={dbt_01} class="image" alt="IMDB table schema" style={{width: '100%'}}/>
+<Image img={dbt_01} size="lg" alt="IMDB table schema" />
 
 We use a subset of these tables as shown.
 
@@ -241,13 +245,13 @@ In the later guides, we will convert this query into a model - materializing it 
 
 3. At this point, you will need the text editor of your choice. In the examples below, we use the popular VS Code. Opening the IMDB directory, you should see a collection of yml and sql files:
 
-    <img src={dbt_02} class="image" alt="New dbt project" style={{width: '100%'}}/>
+    <Image img={dbt_02} size="lg" alt="New dbt project" />
 
 4. Update your `dbt_project.yml` file to specify our first model - `actor_summary` and set profile to `clickhouse_imdb`.
 
-    <img src={dbt_03} class="image" alt="dbt profile" style={{width: '100%'}}/>
+    <Image img={dbt_03} size="lg" alt="dbt profile" />
 
-    <img src={dbt_04} class="image" alt="dbt profile" style={{width: '100%'}}/>
+    <Image img={dbt_04} size="lg" alt="dbt profile" />
 
 5. We next need to provide dbt with the connection details for our ClickHouse instance. Add the following to your `~/.dbt/profiles.yml`.
 
@@ -479,7 +483,6 @@ In the previous example, our model was materialized as a view. While this might 
     |)
     |ENGINE = MergeTree
     |ORDER BY (id, first_name, last_name)
-    |SETTINGS index_granularity = 8192
     +----------------------------------------
     ```
 
@@ -512,7 +515,7 @@ In the previous example, our model was materialized as a view. While this might 
 
 The previous example created a table to materialize the model. This table will be reconstructed for each dbt execution. This may be infeasible and extremely costly for larger result sets or complex transformations. To address this challenge and reduce the build time, dbt offers Incremental materializations. This allows dbt to insert or update records into a table since the last execution, making it appropriate for event-style data. Under the hood a temporary table is created with all the updated records and then all the untouched records as well as the updated records are inserted into a new target table. This results in similar [limitations](#limitations) for large result sets as for the table model.
 
-To overcome these limitations for large sets, the plugin supports ‘inserts_only‘ mode, where all the updates are inserted into the target table without creating a temporary table (more about it below).
+To overcome these limitations for large sets, the plugin supports 'inserts_only' mode, where all the updates are inserted into the target table without creating a temporary table (more about it below).
 
 To illustrate this example, we will add the actor "Clicky McClickHouse", who will appear in an incredible 910 movies - ensuring he has appeared in more films than even [Mel Blanc](https://en.wikipedia.org/wiki/Mel_Blanc).
 
@@ -683,9 +686,10 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
     |45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
     +------+-------------------+----------+------------------+------+---------+-------------------+
     ```
+
 ### Internals {#internals}
 
-We can identify the statements executed to achieve the above incremental update by querying ClickHouse’s query log.
+We can identify the statements executed to achieve the above incremental update by querying ClickHouse's query log.
 
 ```sql
 SELECT event_time, query  FROM system.query_log WHERE type='QueryStart' AND query LIKE '%dbt%'
@@ -702,14 +706,14 @@ Adjust the above query to the period of execution. We leave result inspection to
 
 This is visualized below:
 
-<img src={dbt_05} class="image" alt="incremental updates dbt" style={{width: '100%'}}/>
+<Image img={dbt_05} size="lg" alt="incremental updates dbt" />
 
 This strategy may encounter challenges on very large models. For further details see [Limitations](#limitations).
 
 ### Append Strategy (inserts-only mode) {#append-strategy-inserts-only-mode}
 
 To overcome the limitations of large datasets in incremental models, the plugin uses the dbt configuration parameter `incremental_strategy`. This can be set to the value `append`. When set, updated rows are inserted directly into the target table (a.k.a `imdb_dbt.actor_summary`) and no temporary table is created.
-Note: Append only mode requires your data to be immutable or for duplicates to be acceptable. If you want an incremental table model that supports altered rows don’t use this mode!
+Note: Append only mode requires your data to be immutable or for duplicates to be acceptable. If you want an incremental table model that supports altered rows don't use this mode!
 
 To illustrate this mode, we will add another new actor and re-execute dbt run with `incremental_strategy='append'`.
 
@@ -719,7 +723,7 @@ To illustrate this mode, we will add another new actor and re-execute dbt run wi
    {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id', incremental_strategy='append') }}
    ```
 
-2. Let’s add another famous actor - Danny DeBito
+2. Let's add another famous actor - Danny DeBito
 
    ```sql
    INSERT INTO imdb.actors VALUES (845467, 'Danny', 'DeBito', 'M');
@@ -830,7 +834,7 @@ In summary, this approach:
 
 This process is shown below:
 
-<img src={dbt_06} class="image" alt="lightweight delete incremental" style={{width: '100%'}}/>
+<Image img={dbt_06} size="lg" alt="lightweight delete incremental" />
 
 ### insert_overwrite mode (Experimental) {#insert_overwrite-mode-experimental}
 Performs the following steps:
@@ -847,7 +851,7 @@ This approach has the following advantages:
 * It is safer than other strategies because it doesn't modify the original table until the INSERT operation completes successfully: in case of intermediate failure, the original table is not modified.
 * It implements "partitions immutability" data engineering best practice. Which simplifies incremental and parallel data processing, rollbacks, etc.
 
-<img src={dbt_07} class="image" alt="insert overwrite incremental" style={{width: '100%'}}/>
+<Image img={dbt_07} size="lg" alt="insert overwrite incremental" />
 
 ## Creating a Snapshot {#creating-a-snapshot}
 

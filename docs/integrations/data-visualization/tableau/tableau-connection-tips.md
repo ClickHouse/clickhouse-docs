@@ -7,6 +7,8 @@ description: 'Tableau connection tips when using ClickHouse official connector.'
 title: 'Connection tips'
 ---
 
+import Image from '@theme/IdealImage';
+
 # Connection tips
 ## Initial SQL tab {#initial-sql-tab}
 If the *Set Session ID* checkbox is activated on the Advanced tab (by default), feel free to set session level [settings](/operations/settings/settings/) using

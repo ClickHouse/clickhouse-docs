@@ -5,6 +5,12 @@ description: "Learn how to profile ClickHouse using LLVM's XRay instrumentation 
 tags: ['Performance and Optimizations', 'Tools and Utilities']
 ---
 
+import Image from "@theme/IdealImage";
+import time_order from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/time-order.png'
+import left_heavy from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/left-heavy.png'
+import sandwich from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/sandwich.png'
+import clickhouse_time_order from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/clickhouse-time-order.png'
+
 {frontMatter.description}
 {/* truncate */}
 
@@ -115,13 +121,15 @@ generating a flamegraph and a sandwich view of your data.
 
 #### Time Order {#time-order}
 
-![time-order](./images/profiling-clickhouse-with-llvm-xray/time-order.png)
+<Image img={time_order} size="md" alt="time-order" />
 
 #### Left Heavy {#left-heavy}
-![left-heavy](./images/profiling-clickhouse-with-llvm-xray/left-heavy.png)
+
+<Image img={left_heavy} size="md" alt="left-heavy" />
 
 #### Sandwitch {#sandwitch}
-![sandwich](./images/profiling-clickhouse-with-llvm-xray/sandwich.png)
+
+<Image img={sandwich} size="md" alt="sandwich" />
 
 ## Profiling ClickHouse {#profiling-clickhouse}
 
@@ -135,8 +143,7 @@ generating a flamegraph and a sandwich view of your data.
 4. Visualize the trace in [speedscope.app](https://www.speedscope.app/) or
    [Perfetto](https://ui.perfetto.dev).
 
-
-![clickhouse-time-order](./images/profiling-clickhouse-with-llvm-xray/clickhouse-time-order.png)
+<Image img={clickhouse_time_order} alt="clickhouse time-order" size="md"/>
 
 Notice that this is the visualization of only one thread. You can select the others `tid`s on the
 top bar.

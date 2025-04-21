@@ -7,6 +7,8 @@ title: 'Deduplication Strategies'
 ---
 
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
+import Image from '@theme/IdealImage';
+
 
 # Deduplication Strategies
 
@@ -22,7 +24,7 @@ ClickHouse is built for speed when it comes to data insertion. The storage files
 
 |||
 |------|----|
-|<img src={deduplication} class="image" alt="Cassandra logo" style={{width: '16rem', 'background-color': 'transparent'}}/>|ClickHouse provides free training on deduplication and many other topics.  The [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) is a good place to start.|
+|<Image img={deduplication}  alt="Deduplication Logo" size="sm"/>|ClickHouse provides free training on deduplication and many other topics.  The [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) is a good place to start.|
 
 </div>
 
@@ -103,7 +105,7 @@ FINAL
 The result only has 2 rows, and the last row inserted is the row that gets returned.
 
 :::note
-Using `FINAL` works OK if you have a small amount of data. If you are dealing with a large amount of data, using `FINAL` is probably not the best option. Let's discuss a better option for finding the latest value of a column…
+Using `FINAL` works OK if you have a small amount of data. If you are dealing with a large amount of data, using `FINAL` is probably not the best option. Let's discuss a better option for finding the latest value of a column...
 :::
 
 ### Avoiding FINAL {#avoiding-final}
@@ -164,7 +166,7 @@ Our [Deleting and Updating Data training module](https://learn.clickhouse.com/vi
 
 ## Using CollapsingMergeTree for Updating Columns Frequently {#using-collapsingmergetree-for-updating-columns-frequently}
 
-Updating a column involves deleting an existing row and replacing it with new values. As you have already seen, this type of mutation in ClickHouse happens _eventually_ - during merges. If you have a lot of rows to update, it can actually be more efficient to avoid `ALTER TABLE..UPDATE` and instead just insert the new data alongside the existing data. We could add a column that denotes whether or not the data is stale or new… and there is actually a table engine that already implements this behavior very nicely, especially considering that it deletes the stale data automatically for you. Let's see how it works.
+Updating a column involves deleting an existing row and replacing it with new values. As you have already seen, this type of mutation in ClickHouse happens _eventually_ - during merges. If you have a lot of rows to update, it can actually be more efficient to avoid `ALTER TABLE..UPDATE` and instead just insert the new data alongside the existing data. We could add a column that denotes whether or not the data is stale or new... and there is actually a table engine that already implements this behavior very nicely, especially considering that it deletes the stale data automatically for you. Let's see how it works.
 
 Suppose we track the number of views that a Hacker News comment has using an external system and every few hours, we push the data into ClickHouse. We want the old rows deleted and the new rows to represent the new state of each Hacker News comment. We can use a `CollapsingMergeTree` to implement this behavior.
 
@@ -336,7 +338,7 @@ FROM hackernews_views_vcmt
 
 A `VersionedCollapsingMergeTree` table is quite handy when you want to implement deduplication while inserting rows from multiple clients and/or threads.
 
-## Why aren’t my rows being deduplicated? {#why-arent-my-rows-being-deduplicated}
+## Why aren't my rows being deduplicated? {#why-arent-my-rows-being-deduplicated}
 
 One reason inserted rows may not be deduplicated is if you are using a non-idempotent function or expression in your `INSERT` statement. For example, if you are inserting rows with the column `createdAt DateTime64(3) DEFAULT now()`, your rows are guaranteed to be unique because each row will have a unique default value for the `createdAt` column. The MergeTree / ReplicatedMergeTree table engine will not know to deduplicate the rows as each inserted row will generate a unique checksum.
 

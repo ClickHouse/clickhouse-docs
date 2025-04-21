@@ -6,7 +6,7 @@ sidebar_position: 60
 description: 'A list of companies using ClickHouse and their success stories'
 ---
 
-The following list of companies using ClickHouse and their success stories is assembled from public sources, thus might differ from current reality. We’d appreciate it if you share the story of adopting ClickHouse in your company and [add it to the list](https://github.com/ClickHouse/clickhouse-docs/blob/main/docs/about-us/adopters.md), but please make sure you won’t have any NDA issues by doing so. Providing updates with publications from other companies is also useful.
+The following list of companies using ClickHouse and their success stories is assembled from public sources, thus might differ from current reality. We'd appreciate it if you share the story of adopting ClickHouse in your company and [add it to the list](https://github.com/ClickHouse/clickhouse-docs/blob/main/docs/about-us/adopters.md), but please make sure you won't have any NDA issues by doing so. Providing updates with publications from other companies is also useful.
 
 <div class="adopters-table">
 
@@ -79,6 +79,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Bloxy](https://bloxy.info) | Blockchain | Analytics | — | — | [Slides in Russian, August 2018](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup17/4_bloxy.pptx) |
 | [Bonree](https://www.bonree.com/) | Software & Technology | Performance Monitoring & Observability | — | — | ClickHouse Meetup in Hangzhou, May 2024 |
 | [Bonside](https://www.bonside.com/) | FinTech | - | — | — | [Hacker News, July 2023](https://news.ycombinator.com/item?id=36619722) |
+| [BoundaryML](https://www.boundaryml.com/)| Software Development | AI Platform| — | — | [Meetup, March 2025](https://youtu.be/DV-zkQUvuPc) |
 | [Botify](https://www.botify.com/) | SaaS | SEO | — | — | [Blog Article, September 2022](https://tech.marksblogg.com/billion-taxi-rides-doublecloud-clickhouse.html) |
 | [Braintrust](https://www.usebraintrust.com/) | Software & Technology | Real-time Analytics | — | — | [Written Blog from Meetup Video, July 2024](https://clickhouse.com/blog/building-better-ai-products-faster-how-braintrust-uses-clickhouse-for-real-time-data-analysis) |
 | [Buildkite](https://buildkite.com/)| Software & Technology | Real-time analytics | — | — | [Wellington meetup, February 2025](https://clickhouse.com/videos/wellington-meetup-buildkite-clickhouse-test-analytics) |
@@ -118,7 +119,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Common Room](https://www.commonroom.io/) | Marketing SaaS | Real-Time Analytics | — | — | [Seattle Meetup, March 2024](https://www.youtube.com/watch?v=liTgGiTuhJE) |
 | [Constructor](https://constructor.io/) | E-commerce Search | E-commerce Search | — | — | ClickHouse Cloud user |
 | [Contentsquare](https://contentsquare.com) | Web analytics | Main product | — | — | [Meetup Video, January 2023](https://www.youtube.com/watch?v=zvuCBAl2T0Q&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=5) [Blog Post, October 2022](https://clickhouse.com/blog/contentsquare-migration-from-elasticsearch-to-clickhouse) [Blog post in French, November 2018](http://souslecapot.net/2018/11/21/patrick-chatain-vp-engineering-chez-contentsquare-penser-davantage-amelioration-continue-que-revolution-constante/) |
-| [Coroot](https://coroot.com/) | Software & Technology	 | Observability | — | — | [Twitter, July 2023](https://twitter.com/coroot_com/status/1680993372385804288?s=20) |
+| [Coroot](https://coroot.com/) | Software & Technology  | Observability | — | — | [Twitter, July 2023](https://twitter.com/coroot_com/status/1680993372385804288?s=20) |
 | [Corsearch](https://corsearch.com/) | Marketing SaaS (Brand Protection) | Main Datastore | — | — | [Seattle Meetup, March 2023](https://www.youtube.com/watch?v=BuS8jFL9cvw&list=PL0Z2YDlm0b3iNDUzpY1S3L_iV4nARda_U&index=10) |
 | [Corunet](https://coru.net/) | Analytics | Main product | — | — | [Slides in English, April 2019](https://github.com/ClickHouse/clickhouse-presentations/blob/master/meetup21/predictive_models.pdf) |
 | [Covalent](https://www.covalenthq.com/) | Financial - Crypto | Blockchain analysis | — | — | ClickHouse Cloud user |
@@ -268,6 +269,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Kyligence](https://kyligence.io/) | Managed Service | Main Product | — | — | [Website](https://kyligence.io/all-inclusive-olap/) |
 | [LANCOM Systems](https://www.lancom-systems.com/) | Network Solutions | Traffic analysis | - | - | [ClickHouse Operator for Kubernetes](https://www.lancom-systems.com/), [Hacker News post](https://news.ycombinator.com/item?id=29413660) |
 | [Langchain](https://www.langchain.com/) | Software & Technology | LLM Monitoring | - | - | [Blog, Apr 2024](https://clickhouse.com/blog/langchain-why-we-choose-clickhouse-to-power-langchain) |
+| [LangFuse](https://langfuse.com/) | Software & Technology | LLM Monitoring | - | - | [Meetup, March 2025](https://youtu.be/AnghkoucpN0) |
 | [Langtrace AI](https://www.langtrace.ai/) | Software & Technology | LLM Monitoring | - | - | [Twitter, May 2024](https://x.com/karthikkalyan90/status/1790483625743716703) |
 | [Lago](https://www.getlago.com/) | Billing automation | - | — | — | [GitHub Wiki post](https://github.com/getlago/lago/wiki/How-ClickHouse-saved-our-events-engine-problem) |
 | [Lagon](https://lagon.app/) | Software Development | Serverless Functions | — | — | [Twitter, 2023](https://twitter.com/tomlienard/status/1702759256909394010) |
@@ -325,7 +327,7 @@ The following list of companies using ClickHouse and their success stories is as
 | [Neocom](https://www.neocom.ai/) | Software & Technology | Sales Platform | — | — | [Hacker News, September 2023](https://news.ycombinator.com/item?id=37359122) |
 | [NeonDB](https://neon.tech/) | Cloud | Postgres management | - | - | [Blog, 2024](https://double.cloud/resources/case-studies/neon-increases-data-granularity-with-managed-clickhouse/) |
 | [NetMeta](https://github.com/monogon-dev/NetMeta/blob/main/README.md) | Observability | Main Product | — | — | [Twitter, December 2022](https://twitter.com/leolukde/status/1605643470239977475) |
-| [Netflix](https://www.netflix.com/) | Software & Technology | Video Streaming | — | — | [Twitter, June 2023](https://twitter.com/clickhousedb/status/1673803621220360193) |
+| [Netflix](https://www.netflix.com/) | Software & Technology | Video Streaming | — | — | [Meetup, March 2025](https://youtu.be/64TFG_Qt5r4) |
 | [Netskope](https://www.netskope.com/) | Network Security | — | — | — | [Job advertisement, March 2021](https://www.mendeley.com/careers/job/senior-software-developer-backend-developer-1346348) |
 | [Nexpath Networks](https://www.nexpath.net/) | Software & Technology | Network Analysis | — | — | [Slides, September 2021](https://opensips.org/events/Summit-2021Distributed/assets/presentations/2021-jon-abrams-big-telco-data-with-clickhouse.pdf) [Video, September 2021](https://www.youtube.com/watch?v=kyu_wDcO0S4&t=3840s) |
 | [NineData](https://www.ninedata.cloud/) | Software & Technology | DMaaS | — | — | ClickHouse Meetup in Hangzhou, May 2024 |

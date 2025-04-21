@@ -5,6 +5,7 @@ title: 'Upgrades'
 description: 'With ClickHouse Cloud you never have to worry about patching and upgrades. We roll out upgrades that include fixes, new features and performance improvements on a periodic basis.'
 ---
 
+import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 import fast_release from '@site/static/images/cloud/manage/fast_release.png';
@@ -54,12 +55,12 @@ Specifically, services will:
 You can modify the release schedule of the service in the Cloud console as shown below:
 
 <div class="eighty-percent">
-    <img alt="Select Plan" src={fast_release} />
+    <Image img={fast_release} size="lg" alt="Select Plan" border/>
 </div>
 <br/>
 
 <div class="eighty-percent">
-    <img alt="Select Plan" src={enroll_fast_release} />
+    <Image img={enroll_fast_release} size="lg" alt="Select Plan" border/>
 </div>
 <br/>
 
@@ -84,14 +85,14 @@ Users can configure an upgrade window for services in the Enterprise tier.
 Select the service for which you wish to specify an upgrade scheduled, followed by `Settings` from the left menu. Scroll to `Scheduled upgrades`.
 
 <div class="eighty-percent">
-    <img alt="Scheduled upgrades" src={scheduled_upgrades} />
+    <Image img={scheduled_upgrades} size="lg" alt="Scheduled upgrades" border/>
 </div>
 <br/>
 
 Selecting this option will allow users to select the day of the week/time window for database and cloud upgrades.
 
 <div class="eighty-percent">
-    <img alt="Scheduled upgrade window" src={scheduled_upgrade_window} />
+    <Image img={scheduled_upgrade_window} size="lg" alt="Scheduled upgrade window" border/>
 </div>
 <br/>
 :::note

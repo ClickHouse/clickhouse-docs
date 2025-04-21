@@ -5,11 +5,12 @@ keywords: ['object storage', 's3', 'azure blob', 'gcs', 'migration']
 slug: /integrations/migration/object-storage-to-clickhouse
 ---
 
+import Image from '@theme/IdealImage';
 import object_storage_01 from '@site/static/images/integrations/migration/object-storage-01.png';
 
 # Move data from Cloud Object Storage to ClickHouse Cloud
 
-<img src={object_storage_01} class="image" alt="Migrating Self-managed ClickHouse" style={{width: '90%', padding: '30px'}} />
+<Image img={object_storage_01} size='md' alt='Migrating Self-managed ClickHouse' background='white' />
 
 If you use a Cloud Object Storage as a data lake and wish to import this data into ClickHouse Cloud,
 or if your current database system is able to directly offload data into a Cloud Object Storage, then you can use one of the
