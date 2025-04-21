@@ -73,7 +73,7 @@ Then click on `Save Changes` in the top-right. You may need to reboot your insta
 If you have a MySQL cluster, the above parameters would be found in a [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) parameter group and not the DB instance group.
 :::
 
-## Enabling GTID Mode {#gtid-mode-aurora}
+## Enabling GTID Mode {#gtid-mode-rds}
 Global Transaction Identifiers (GTIDs) are unique IDs assigned to each committed transaction in MySQL. They simplify binlog replication and make troubleshooting more straightforward.
 
 If your MySQL instance is MySQL 5.7, 8.0 or 8.4, we recommend enabling GTID mode so that the MySQL ClickPipe can use GTID replication.
@@ -83,22 +83,15 @@ To enable GTID mode for your MySQL instance, follow the steps as follows:
 2. Click on the `Configurations` tab.
 3. Click on the parameter group link.
 4. Click on the `Edit` button in the top-right corner.
-5. Set the following parameters:
-   - `gtid_mode` to `OFF_PERMISSIVE`
-   - `enforce-gtid-consistency` to `ON`
+5. Set `enforce_gtid_consistency` is `ON`.
+5. Set `gtid-mode` to `ON`.
 6. Click on `Save Changes` in the top-right corner.
 7. Reboot your instance for the changes to take effect.
-8. Edit the parameter group again and set `gtid_mode` to `ON_PERMISSIVE`. Ensure `enforce-gtid-consistency` is `ON`.
-9. Click on `Save Changes` in the top-right corner.
-10. Reboot your instance for the changes to take effect.
-11. Edit the parameter group again and set `gtid_mode` to `ON`. Ensure `enforce-gtid-consistency` is `ON`.
-12. Click on `Save Changes` in the top-right corner.
-13. Reboot your instance for the changes to take effect.
 
 <Image img={enable_gtid} alt="GTID enabled" size="lg" border/>
 
 <br/>
-:::tip
+:::info
 The MySQL ClickPipe also supports replication without GTID mode. However, enabling GTID mode is recommended for better performance and easier troubleshooting.
 :::
 
