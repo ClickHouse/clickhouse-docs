@@ -56,6 +56,11 @@ main() {
 
   # Execute the build command for English (or without locale if no locale provided)
   eval "$build_command"
+  build_status=$?
+  if [[ $build_status -ne 0 ]]; then
+    echo "Build failed with status $build_status"
+    exit $build_status
+  fi
 
   if [[ -n "$locale" ]]; then
     echo "Building Docusaurus with locale: $locale"
@@ -67,6 +72,11 @@ main() {
 
     # Execute the build command for the additional locale
     eval "$build_command"
+    build_status=$?
+    if [[ $build_status -ne 0 ]]; then
+      echo "Build failed with status $build_status"
+      exit $build_status
+    fi
   fi
 }
 
