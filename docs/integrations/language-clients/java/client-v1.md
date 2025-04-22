@@ -2,6 +2,7 @@
 title: 'Client (0.7.x and earlier)'
 description: 'Java client library to communicate with a DB server through its protocols.'
 slug: /integrations/language-clients/java/client-v1
+displayed_sidebar: 'integrations'
 ---
 
 import Tabs from '@theme/Tabs';

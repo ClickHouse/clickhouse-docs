@@ -2,7 +2,7 @@
 title: 'JDBC Driver'
 description: 'Page describing the JDBC driver for ClickHouse'
 slug: /integrations/language-clients/java/jdbc-v1
-displayed_sidebar: integrations
+displayed_sidebar: 'integrations'
 ---
 
 import Tabs from '@theme/Tabs';
