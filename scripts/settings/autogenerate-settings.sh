@@ -8,6 +8,27 @@ target_dir=$(dirname "$(dirname "$SCRIPT_DIR")") # Should be project root: .../c
 # Temporary directory within the target project structure
 tmp_dir="$target_dir/scripts/tmp"
 
+# --- Parse Command Line Arguments ---
+CUSTOM_BINARY=""
+while getopts "b:" opt; do
+  case $opt in
+    b)
+      CUSTOM_BINARY="$OPTARG"
+      echo "[$SCRIPT_NAME] Custom ClickHouse binary specified: $CUSTOM_BINARY"
+      ;;
+    \?)
+      echo "[$SCRIPT_NAME] Invalid option: -$OPTARG" >&2
+      echo "[$SCRIPT_NAME] Usage: $0 [-b custom_clickhouse_binary_path]" >&2
+      exit 1
+      ;;
+    :)
+      echo "[$SCRIPT_NAME] Option -$OPTARG requires an argument." >&2
+      echo "[$SCRIPT_NAME] Usage: $0 [-b custom_clickhouse_binary_path]" >&2
+      exit 1
+      ;;
+  esac
+done
+
 # --- Ensure temporary directory exists ---
 mkdir -p "$tmp_dir" || { echo "[$SCRIPT_NAME] Error: Failed to create temporary directory $tmp_dir"; exit 1; }
 cd "$tmp_dir" || { echo "[$SCRIPT_NAME] Error: Failed to change directory to $tmp_dir"; exit 1; }
@@ -34,6 +55,65 @@ get_arch() {
   esac
 }
 
+# Function to verify a ClickHouse binary
+verify_clickhouse_binary() {
+  local binary_path="$1"
+  echo "[$SCRIPT_NAME] Verifying ClickHouse binary at '$binary_path'..."
+
+  if [[ ! -f "$binary_path" ]]; then
+    echo "[$SCRIPT_NAME] Error: Binary file not found at '$binary_path'"
+    return 1
+  fi
+
+  if [[ ! -x "$binary_path" ]]; then
+    echo "[$SCRIPT_NAME] Setting executable permission on binary..."
+    chmod +x "$binary_path" || {
+      echo "[$SCRIPT_NAME] Error: Failed to set execute permission on '$binary_path'";
+      return 1;
+    }
+  fi
+
+  local version_output
+  version_output=$("$binary_path" --version 2> /dev/null)
+  local exit_code=$?
+
+  if [ $exit_code -eq 0 ]; then
+    echo "[$SCRIPT_NAME] ClickHouse binary verified successfully at '$binary_path'"
+    echo "[$SCRIPT_NAME] Version info: $version_output"
+    return 0 # Success
+  else
+    echo "[$SCRIPT_NAME] Error: Binary at '$binary_path' is not a valid ClickHouse executable (Exit code: $exit_code)"
+    "$binary_path" --version # Show error output
+    return 1 # Failure
+  fi
+}
+
+# Function to setup a custom binary
+setup_custom_binary() {
+  local source_path="$1"
+
+  # Verify the provided binary first
+  if ! verify_clickhouse_binary "$source_path"; then
+    echo "[$SCRIPT_NAME] Error: The specified custom binary is not valid."
+    return 1
+  fi
+
+  # Copy the binary to our tmp directory with the expected name
+  echo "[$SCRIPT_NAME] Copying custom binary to '$script_path'..."
+  cp "$source_path" "$script_path" || {
+    echo "[$SCRIPT_NAME] Error: Failed to copy custom binary to tmp directory."
+    return 1
+  }
+
+  chmod +x "$script_path" || {
+    echo "[$SCRIPT_NAME] Error: Failed to set execute permission on copied binary."
+    return 1
+  }
+
+  # Verify the copied binary
+  verify_clickhouse_binary "$script_path"
+  return $?
+}
 
 # --- Dependency Checks ---
 for cmd in bash curl uname mv chmod rm mkdir find cat grep sed ls pwd sort head tar; do
@@ -43,100 +123,6 @@ for cmd in bash curl uname mv chmod rm mkdir find cat grep sed ls pwd sort head 
     fi
 done
 echo "[$SCRIPT_NAME] All basic dependencies found."
-
-# --- Installation Function 1 (Fallback: TGZ Download/Extract) ---
-# install_clickhouse_via_tgz() {
-#   echo "[$SCRIPT_NAME] Attempting install via TGZ download..."
-
-#   # Determine architecture
-#   local arch=$(get_arch)
-#   if [ -z "$arch" ]; then
-#       echo "[$SCRIPT_NAME] Error (TGZ): Unsupported architecture: $(uname -m)"
-#       return 1
-#   fi
-#   echo "[$SCRIPT_NAME] Detected architecture for TGZ: $arch"
-
-#   # Find the latest STABLE version number via version_date.tsv
-#   echo "[$SCRIPT_NAME] Finding latest STABLE version via version_date.tsv..."
-#   local tsv_url="https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/utils/list-versions/version_date.tsv"
-#   local latest_numeric_version
-
-#   latest_numeric_version=$(curl -fsSL "$tsv_url" | \
-#                            grep -E '\s+v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+(-stable)?\s+' | \
-#                            sed -E 's/.*\s+(v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+(-stable)?)\s+.*/\1/' | \
-#                            sed -E 's/^v//; s/-stable$//' | \
-#                            sort -V -r | head -n 1)
-#   if [ -z "$latest_numeric_version" ]; then
-#       echo "[$SCRIPT_NAME] Warning (TGZ): No recent '-stable' or numeric tag found in TSV via primary pattern. Falling back..."
-#       latest_numeric_version=$(curl -fsSL "$tsv_url" | \
-#                            grep -Eo '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | \
-#                            sort -V -r | head -n 1)
-#   fi
-#   if [ -z "$latest_numeric_version" ]; then
-#     echo "[$SCRIPT_NAME] Error (TGZ): Could not determine the latest stable version from $tsv_url."
-#     return 1
-#   fi
-#   echo "[$SCRIPT_NAME] Latest stable version found: $latest_numeric_version"
-
-#   # Construct the TGZ download URL (using stable channel)
-#   local channel="stable"
-#   local download_url="https://packages.clickhouse.com/tgz/${channel}/clickhouse-common-static-${latest_numeric_version}-${arch}.tgz"
-#   local temp_tgz_file="./clickhouse_${channel}_${latest_numeric_version}.tgz" # Relative path
-
-#   echo "[$SCRIPT_NAME] Using download URL: $download_url"
-#   echo "[$SCRIPT_NAME] Downloading ClickHouse TGZ (version $latest_numeric_version)..."
-#   if ! curl -fSL -o "$temp_tgz_file" "$download_url"; then
-#       echo "[$SCRIPT_NAME] Error (TGZ): Failed to download ClickHouse TGZ (URL: $download_url)"
-#       rm -f "$temp_tgz_file"; return 1;
-#   fi
-#   echo "[$SCRIPT_NAME] TGZ downloaded successfully to $temp_tgz_file"
-
-#   echo "[$SCRIPT_NAME] Verifying downloaded file type..."
-#    if ! file "$temp_tgz_file" | grep -q 'gzip compressed data'; then
-#       echo "[$SCRIPT_NAME] Error (TGZ): Downloaded file $temp_tgz_file is not a valid gzip archive."
-#       file "$temp_tgz_file"; echo "[$SCRIPT_NAME] File head:"; head "$temp_tgz_file"; rm -f "$temp_tgz_file"; return 1;
-#   fi
-
-#   echo "[$SCRIPT_NAME] Extracting binary from TGZ..."
-#   local extract_dir="./extract_${latest_numeric_version}" # Relative path
-#   mkdir -p "$extract_dir" || { echo "[$SCRIPT_NAME] Error (TGZ): Failed to create extraction directory $extract_dir"; rm -f "$temp_tgz_file"; return 1; }
-
-#   if ! tar -xzf "$temp_tgz_file" -C "$extract_dir"; then
-#     echo "[$SCRIPT_NAME] Error (TGZ): Failed to extract ClickHouse archive $temp_tgz_file"
-#     rm -f "$temp_tgz_file"; rm -rf "$extract_dir"; return 1;
-#   fi
-
-#   echo "[$SCRIPT_NAME] Searching for extracted binary in $extract_dir..."
-#   # Use find without -executable for macOS compatibility
-#   local extracted_bin=$(find "$extract_dir" -name "clickhouse" -type f | head -n 1)
-#   if [ -z "$extracted_bin" ]; then
-#     echo "[$SCRIPT_NAME] Error (TGZ): ClickHouse binary not found in extracted archive at $extract_dir"; echo "Contents:"; find "$extract_dir"; rm -f "$temp_tgz_file"; rm -rf "$extract_dir"; return 1;
-#   fi
-#   echo "[$SCRIPT_NAME] Found extracted binary at: $extracted_bin"
-
-#   echo "[$SCRIPT_NAME] Moving binary to $script_path" # script_path is ./clickhouse
-#   mv "$extracted_bin" "$script_path" || { echo "[$SCRIPT_NAME] Error (TGZ): Failed to move binary to $script_path"; rm -f "$temp_tgz_file"; rm -rf "$extract_dir"; return 1; }
-
-#   chmod +x "$script_path" || { echo "[$SCRIPT_NAME] Error (TGZ): Failed to set execute permission on $script_path"; rm -f "$script_path"; rm -f "$temp_tgz_file"; rm -rf "$extract_dir"; return 1; }
-
-#   echo "[$SCRIPT_NAME] Verifying ClickHouse binary (TGZ method)..."
-#   local version_output
-#   version_output=$("$script_path" --version 2> /dev/null)
-#   local exit_code=$?
-#   if [ $exit_code -ne 0 ]; then
-#     echo "[$SCRIPT_NAME] Error (TGZ): ClickHouse binary downloaded but not functioning correctly (Exit code: $exit_code)"; "$script_path" --version; rm -f "$script_path"; rm -f "$temp_tgz_file"; rm -rf "$extract_dir"; return 1;
-#   fi
-#   echo "[$SCRIPT_NAME] ClickHouse binary (TGZ method) verified successfully. Version: $version_output"
-
-#   echo "[$SCRIPT_NAME] Cleaning up temporary TGZ download files..."
-#   rm -f "$temp_tgz_file"
-#   rm -rf "$extract_dir"
-#   rm -rf "./clickhouse-common-static"* # Older cleanup pattern relative to CWD
-
-#   echo "[$SCRIPT_NAME] Clickhouse binary installed successfully from TGZ to $script_path"
-#   return 0 # Success
-# }
-
 
 # --- Installation Function 2 (Primary: Official Script) ---
 install_clickhouse_via_script() {
@@ -191,40 +177,42 @@ install_clickhouse_via_script() {
 # --- Main Script Logic ---
 
 INSTALL_SUCCESS=false
-# Check if the binary already exists and works
-if [ -f "$script_path" ]; then
-  echo "[$SCRIPT_NAME] Found existing binary at $script_path. Verifying..."
-  chmod +x "$script_path" || echo "[$SCRIPT_NAME] Warning: Could not set executable permission on existing binary."
-  existing_version_output=$("$script_path" --version 2> /dev/null)
-  if [ $? -eq 0 ]; then
-    echo "[$SCRIPT_NAME] Using existing, working clickhouse binary at $script_path"
-    echo "[$SCRIPT_NAME] Existing version info: $existing_version_output"
+
+# Check if a custom binary was provided
+if [[ -n "$CUSTOM_BINARY" ]]; then
+  echo "[$SCRIPT_NAME] Using custom ClickHouse binary: $CUSTOM_BINARY"
+  if setup_custom_binary "$CUSTOM_BINARY"; then
     INSTALL_SUCCESS=true
   else
-    echo "[$SCRIPT_NAME] Existing binary at $script_path is not working. Attempting installation..."
-    rm -f "$script_path"
-    # Try primary method first
+    echo "[$SCRIPT_NAME] Failed to setup custom binary. Exiting."
+    exit 1
+  fi
+else
+  # No custom binary provided, proceed with normal installation logic
+  # Check if the binary already exists and works
+  if [ -f "$script_path" ]; then
+    echo "[$SCRIPT_NAME] Found existing binary at $script_path. Verifying..."
+    if verify_clickhouse_binary "$script_path"; then
+      echo "[$SCRIPT_NAME] Using existing, working clickhouse binary at $script_path"
+      INSTALL_SUCCESS=true
+    else
+      echo "[$SCRIPT_NAME] Existing binary at $script_path is not working. Attempting installation..."
+      rm -f "$script_path"
+      # Try primary method
+      if install_clickhouse_via_script; then
+        INSTALL_SUCCESS=true
+      else
+        INSTALL_SUCCESS=false
+      fi
+    fi
+  else
+    echo "[$SCRIPT_NAME] ClickHouse binary not found at $script_path. Attempting primary install via script..."
+    # Try primary method
     if install_clickhouse_via_script; then
       INSTALL_SUCCESS=true
     else
-      # echo "[$SCRIPT_NAME] Install via script (curl | sh) failed. Attempting fallback to TGZ..."
-      # if install_clickhouse_via_tgz; then
-      #   INSTALL_SUCCESS=true
-      # fi
       INSTALL_SUCCESS=false
     fi
-  fi
-else
-  echo "[$SCRIPT_NAME] ClickHouse binary not found at $script_path. Attempting primary install via script..."
-   # Try primary method first
-  if install_clickhouse_via_script; then
-    INSTALL_SUCCESS=true
-  else
-      # echo "[$SCRIPT_NAME] Primary install via script failed. Attempting fallback TGZ install..."
-      # if install_clickhouse_via_tgz; then
-      #   INSTALL_SUCCESS=true
-      # fi
-      INSTALL_SUCCESS=false
   fi
 fi
 
