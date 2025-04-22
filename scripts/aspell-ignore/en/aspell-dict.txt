@@ -3484,6 +3484,7 @@ subpath
 AICPA
 restartable
 sumArray
+sumForEach
 argMaxIf
 groupArrayResample
 downsampled
@@ -3511,3 +3512,4 @@ avgMerge
 avgState
 argMinIf
 minSimpleState
+maxSimpleState
