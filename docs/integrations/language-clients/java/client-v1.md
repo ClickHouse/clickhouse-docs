@@ -7,8 +7,20 @@ slug: /integrations/language-clients/java/client-v1
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ClientVersionDropdown from '@theme/ClientVersionDropdown/ClientVersionDropdown';
 
-# Client (0.7.x and earlier)
+# Java client (0.7.x and earlier)
+
+<ClientVersionDropdown versions={[
+{
+'version': 'v0.7.x',
+'slug': '/integrations/language-clients/java/client-v1'
+},
+{
+'version': 'v0.8+',
+'slug': '/docs/integrations/language-clients/java/client'
+}
+]}/>
 
 Java client library to communicate with a DB server through its protocols. Current implementation supports only [HTTP interface](/interfaces/http). The library provides own API to send requests to a server.
 

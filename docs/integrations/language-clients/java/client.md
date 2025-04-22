@@ -10,15 +10,23 @@ title: 'Java Client (0.8+)'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import ClientVersionDropdown from '@theme/ClientVersionDropdown/ClientVersionDropdown';
 
-# Java Client (0.8+)
+# Java client (0.8+)
+
+<ClientVersionDropdown versions={[
+{
+'version': 'v0.8+',
+'slug': '/docs/integrations/language-clients/java/client'
+},
+{
+'version': 'v0.7.x',
+'slug': '/integrations/language-clients/java/client-v1'
+}
+]}/>
 
 Java client library to communicate with a DB server through its protocols. The current implementation only supports the [HTTP interface](/interfaces/http). 
-The library provides its own API to send requests to a server. The library also provides tools to work with different binary data formats (RowBinary* & Native*).  
-
-:::note
-If you're looking for a prior version of the java client docs, please see [here](/integrations/language-clients/java/client-v1.md).
-:::
+The library provides its own API to send requests to a server. The library also provides tools to work with different binary data formats (RowBinary* & Native*).
 
 ## Setup {#setup}
 
