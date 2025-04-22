@@ -1,5 +1,6 @@
 ---
 slug: '/examples/aggregate-function-combinators/anyIf'
+title: 'anyIf'
 description: 'Example of using the anyIf combinator'
 keywords: ['any', 'if', 'combinator', 'examples', 'anyIf']
 sidebar_label: 'anyIf'

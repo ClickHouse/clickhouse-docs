@@ -1,5 +1,6 @@
 ---
 slug: '/examples/aggregate-function-combinators/uniqArray'
+title: 'uniqArray'
 description: 'Example of using the uniqArray combinator'
 keywords: ['uniq', 'array', 'combinator', 'examples', 'uniqArray']
 sidebar_label: 'uniqArray'

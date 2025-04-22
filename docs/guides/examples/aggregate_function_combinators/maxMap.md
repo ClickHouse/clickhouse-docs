@@ -1,5 +1,6 @@
 ---
 slug: '/examples/aggregate-function-combinators/maxMap'
+title: 'maxMap'
 description: 'Example of using the maxMap combinator'
 keywords: ['max', 'map', 'combinator', 'examples', 'maxMap']
 sidebar_label: 'maxMap'

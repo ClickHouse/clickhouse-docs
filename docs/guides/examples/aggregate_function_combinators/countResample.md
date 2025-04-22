@@ -1,5 +1,6 @@
 ---
 slug: '/examples/aggregate-function-combinators/countResample'
+title: 'countResample'
 description: 'Example of using the Resample combinator with count'
 keywords: ['count', 'Resample', 'combinator', 'examples', 'countResample']
 sidebar_label: 'countResample'

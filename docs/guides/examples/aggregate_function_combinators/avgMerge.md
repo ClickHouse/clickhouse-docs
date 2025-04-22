@@ -1,5 +1,6 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgMerge'
+title: 'avgMerge'
 description: 'Example of using the avgMerge combinator'
 keywords: ['avg', 'merge', 'combinator', 'examples', 'avgMerge']
 sidebar_label: 'avgMerge'

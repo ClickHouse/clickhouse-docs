@@ -1,5 +1,6 @@
 ---
 slug: '/examples/aggregate-function-combinators/groupArrayResample'
+title: 'groupArrayResample'
 description: 'Example of using the Resample combinator with groupArray'
 keywords: ['groupArray', 'Resample', 'combinator', 'examples', 'groupArrayResample']
 sidebar_label: 'groupArrayResample'

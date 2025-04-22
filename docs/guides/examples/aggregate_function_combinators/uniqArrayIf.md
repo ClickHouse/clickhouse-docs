@@ -1,5 +1,6 @@
 ---
 slug: '/examples/aggregate-function-combinators/uniqArrayIf'
+title: 'uniqArrayIf'
 description: 'Example of using the uniqArrayIf combinator'
 keywords: ['uniq', 'array', 'if', 'combinator', 'examples', 'uniqArrayIf']
 sidebar_label: 'uniqArrayIf'
@@ -10,20 +11,23 @@ sidebar_label: 'uniqArrayIf'
 ## Description {#description}
 
 The [`Array`](/sql-reference/aggregate-functions/combinators#-array) and [`If`](/sql-reference/aggregate-functions/combinators#-if) combinators can be applied to the [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-function to count the number of unique values in arrays for rows where the condition is true,
-using the `uniqArrayIf` aggregate combinator function.
+function to count the number of unique values in arrays for rows where the 
+condition is true, using the `uniqArrayIf` aggregate combinator function.
 
 :::note
 -`If` and -`Array` can be combined. However, `Array` must come first, then `If`.
 :::
 
-This is useful when you want to count unique elements in an array based on specific conditions without having to use `arrayJoin`.
+This is useful when you want to count unique elements in an array based on 
+specific conditions without having to use `arrayJoin`.
 
 ## Example Usage {#example-usage}
 
 ### Count unique products viewed by segment type and engagement level {#count-unique-products}
 
-In this example we'll use a table with user shopping session data to count the number of unique products viewed by users of a specific user segment and with an engagement metric of time spent in the session.
+In this example, we'll use a table with user shopping session data to count the 
+number of unique products viewed by users of a specific user segment and with 
+an engagement metric of time spent in the session.
 
 ```sql title="Query"
 CREATE TABLE user_shopping_sessions

@@ -1,5 +1,6 @@
 ---
 slug: '/examples/aggregate-function-combinators/minSimpleState'
+title: 'minSimpleState'
 description: 'Example of using the minSimpleState combinator'
 keywords: ['min', 'state', 'simple', 'combinator', 'examples', 'minSimpleState']
 sidebar_label: 'minSimpleState'

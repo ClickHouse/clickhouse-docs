@@ -1,5 +1,6 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumForEach'
+title: 'sumForEach'
 description: 'Example of using the sumArray combinator'
 keywords: ['sum', 'array', 'combinator', 'examples', 'sumArray']
 sidebar_label: 'sumArray'

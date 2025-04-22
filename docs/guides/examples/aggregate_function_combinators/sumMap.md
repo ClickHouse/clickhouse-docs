@@ -1,5 +1,6 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumMap'
+title: 'sumMap'
 description: 'Example of using the sumMap combinator'
 keywords: ['sum', 'map', 'combinator', 'examples', 'sumMap']
 sidebar_label: 'sumMap'
