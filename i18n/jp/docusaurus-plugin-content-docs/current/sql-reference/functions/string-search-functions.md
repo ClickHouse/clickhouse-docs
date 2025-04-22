@@ -1950,4 +1950,3 @@ SELECT hasTokenCaseInsensitiveOrNull('Hello World','hello,world');
 ```response
 null
 ```
-```

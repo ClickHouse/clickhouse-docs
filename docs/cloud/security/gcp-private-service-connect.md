@@ -65,7 +65,7 @@ Code examples are provided below to show how to set up Private Service Connect w
  - GCP VPC in customer GCP project: `default`
 :::
 
-You’ll need to retrieve information about your ClickHouse Cloud service. You can do this either via the ClickHouse Cloud Console or the ClickHouse API. If you are going to use the ClickHouse API, please set the following environment variables before proceeding:
+You'll need to retrieve information about your ClickHouse Cloud service. You can do this either via the ClickHouse Cloud Console or the ClickHouse API. If you are going to use the ClickHouse API, please set the following environment variables before proceeding:
 
 ```shell
 REGION=<Your region code using the GCP format, for example: us-central1>

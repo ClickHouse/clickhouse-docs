@@ -1,0 +1,5 @@
+{
+    "russian": {
+        "In ClickHouse, data can reside on different shards.": "В ClickHouse данные могут храниться на разных шардах."
+    }
+}

@@ -142,7 +142,7 @@ The diagram below illustrates how parts in a standard [MergeTree](/engines/table
 
 The DDL statement in the diagram above creates a `MergeTree` table with a sorting key `(town, street)`, [meaning](/parts#what-are-table-parts-in-clickhouse) data on disk is sorted by these columns, and a sparse primary index is generated accordingly.
 
-The ① decompressed, pre-sorted table columns are ② merged while preserving the table’s global sorting order defined by the table’s sorting key, ③ a new sparse primary index is generated, and ④ the merged column files and index are compressed and stored as a new data part on disk.
+The ① decompressed, pre-sorted table columns are ② merged while preserving the table's global sorting order defined by the table's sorting key, ③ a new sparse primary index is generated, and ④ the merged column files and index are compressed and stored as a new data part on disk.
 
 ### Replacing merges {#replacing-merges}
 

@@ -30,6 +30,42 @@ import query_endpoints from '@site/static/images/cloud/reference/may-17-query-en
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
 
+## April 18, 2025 {#april-18-2025}
+
+- Introduced a new **Member** organization level role and two new service level 
+  roles: **Service Admin** and **Service Read Only**.
+  **Member** is an organization level role that is assigned to SAML SSO users by 
+  default and provides only sign-in and profile update capabilities. **Service Admin** 
+  and **Service Read Only** roles for one or more services can be assigned to users 
+  with **Member**, **Developer**, or **Billing Admin** roles. For more information 
+  see ["Access control in ClickHouse Cloud"](https://clickhouse.com/docs/cloud/security/cloud-access-management/overview)
+- ClickHouse Cloud now offers **HIPAA** and **PCI** services in the following regions
+  for **Enterprise** customers: AWS eu-central-1, AWS eu-west-2, AWS us-east-2.
+- Introduced **user facing notifications for ClickPipes**. This feature sends 
+  automatic alerts for ClickPipes failures via email, ClickHouse Cloud UI, and 
+  Slack. Notifications via email and UI are enabled by default and can be 
+  configured per pipe. For **Postgres CDC ClickPipes**, alerts also cover 
+  replication slot threshold (configurable in the **Settings** tab), specific error
+  types, and self-serve steps to resolve failures.
+- **MySQL CDC private preview** is now open. This lets customers replicate MySQL 
+  databases to ClickHouse Cloud in a few clicks, enabling fast analytics and 
+  removing the need for external ETL tools. The connector supports both continuous
+  replication and one-time migrations, whether MySQL is on the cloud (RDS, 
+  Aurora, Cloud SQL, Azure, etc.) or on-premises. You can sign up to the private
+  preview by [following this link](https://clickhouse.com/cloud/clickpipes/mysql-cdc-connector).
+- Introduced **AWS PrivateLink for ClickPipes**. You can use AWS PrivateLink to 
+  establish secure connectivity between VPCs, AWS services, your on-premises 
+  systems, and ClickHouse Cloud. This can be done without exposing traffic to 
+  the public internet while moving data from sources like Postgres, MySQL, and 
+  MSK on AWS. It also supports cross-region access through VPC service endpoints.
+  PrivateLink connectivity set-up is now [fully self-serve](https://clickhouse.com/docs/integrations/clickpipes/aws-privatelink)
+  through ClickPipes.
+
+## April 4, 2025 {#april-4-2025}
+
+- Slack notifications for ClickHouse Cloud: ClickHouse Cloud now supports Slack notifications for billing, scaling, and ClickPipes events, in addition to in-console and email notifications. These notifications are sent via the ClickHouse Cloud Slack application. Organization admins can configure these notifications via the notification center by specifying slack channels to which notifications should be sent.
+- Users running Production and Development services will now see ClickPipes and data transfer usage price on their bills. Please refer to the [announcement](/cloud/manage/jan-2025-faq/pricing-dimensions) from January 2025 for more details. 
+  
 ## March 21, 2025 {#march-21-2025}
 
 - Cross-region Private Link connectivity on AWS is now in Beta. Please refer to

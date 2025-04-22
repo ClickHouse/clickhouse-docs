@@ -1,7 +1,9 @@
 ---
-slug: /sql-reference/functions/ulid-functions
+description: 'Документация по функциям для работы с ULID'
+sidebar_label: 'ULID'
 sidebar_position: 190
-sidebar_label: ULID
+slug: /sql-reference/functions/ulid-functions
+title: 'Функции для работы с ULID'
 ---
 
 
@@ -13,13 +15,13 @@ sidebar_label: ULID
 
 **Синтаксис**
 
-``` sql
+```sql
 generateULID([x])
 ```
 
 **Аргументы**
 
-- `x` — [Выражение](/sql-reference/syntax#expressions), результирующее в любом из [поддерживаемых типов данных](/sql-reference/data-types). Результирующее значение отбрасывается, но само выражение используется для обхода [устранения общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), если функция вызывается несколько раз в одном запросе. Необязательный параметр.
+- `x` — [Выражение](/sql-reference/syntax#expressions), результатом которого является любой из [поддерживаемых типов данных](/sql-reference/data-types). Полученное значение отбрасывается, но само выражение используется для обхода [устранения общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), если функция вызывается несколько раз в одном запросе. Необязательный параметр.
 
 **Возвращаемое значение**
 
@@ -27,11 +29,11 @@ generateULID([x])
 
 **Пример использования**
 
-``` sql
+```sql
 SELECT generateULID()
 ```
 
-``` text
+```text
 ┌─generateULID()─────────────┐
 │ 01GNB2S2FGN2P93QPXDNB4EN2R │
 └────────────────────────────┘
@@ -43,7 +45,7 @@ SELECT generateULID()
 SELECT generateULID(1), generateULID(2)
 ```
 
-``` text
+```text
 ┌─generateULID(1)────────────┬─generateULID(2)────────────┐
 │ 01GNB2SGG4RHKVNT9ZGA4FFMNP │ 01GNB2SGG4V0HMQVH4VBVPSSRB │
 └────────────────────────────┴────────────────────────────┘
@@ -55,14 +57,14 @@ SELECT generateULID(1), generateULID(2)
 
 **Синтаксис**
 
-``` sql
+```sql
 ULIDStringToDateTime(ulid[, timezone])
 ```
 
 **Аргументы**
 
 - `ulid` — Входной ULID. [Строка](../data-types/string.md) или [FixedString(26)](../data-types/fixedstring.md).
-- `timezone` — [Имя часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательный). [Строка](../data-types/string.md).
+- `timezone` — [Название часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) для возвращаемого значения (необязательный). [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
@@ -70,11 +72,11 @@ ULIDStringToDateTime(ulid[, timezone])
 
 **Пример использования**
 
-``` sql
+```sql
 SELECT ULIDStringToDateTime('01GNB2S2FGN2P93QPXDNB4EN2R')
 ```
 
-``` text
+```text
 ┌─ULIDStringToDateTime('01GNB2S2FGN2P93QPXDNB4EN2R')─┐
 │                            2022-12-28 00:40:37.616 │
 └────────────────────────────────────────────────────┘

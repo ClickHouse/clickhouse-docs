@@ -1,7 +1,8 @@
 ---
 slug: /integrations/postgresql/data-type-mappings
-title: Сопоставление типов данных для PostgreSQL
-keywords: [postgres, postgresql, типы данных, типы]
+title: 'Сопоставление типов данных для PostgreSQL'
+keywords: ['postgres', 'postgresql', 'типы данных', 'types']
+description: 'Страница с таблицей, показывающей эквивалентные типы данных ClickHouse и Postgres'
 ---
 
 Следующая таблица показывает эквивалентные типы данных ClickHouse для Postgres.
@@ -18,7 +19,7 @@ keywords: [postgres, postgresql, типы данных, типы]
 | `BIGINT` | [Int64](/sql-reference/data-types/int-uint) |
 | `SERIAL` | [UInt32](/sql-reference/data-types/int-uint) |
 | `BIGSERIAL` | [UInt64](/sql-reference/data-types/int-uint) |
-| `TEXT, CHAR` | [String](/sql-reference/data-types/string) |
+| `TEXT, CHAR, BPCHAR` | [String](/sql-reference/data-types/string) |
 | `INTEGER` | Nullable([Int32](/sql-reference/data-types/int-uint)) |
 | `ARRAY` | [Array](/sql-reference/data-types/array) |
 | `FLOAT4` | [Float32](/sql-reference/data-types/float) |
@@ -39,4 +40,4 @@ keywords: [postgres, postgresql, типы данных, типы]
 | `JSON*` | [String](/sql-reference/data-types/string), [Variant](/sql-reference/data-types/variant), [Nested](/sql-reference/data-types/nested-data-structures/nested#nestedname1-type1-name2-type2-), [Tuple](/sql-reference/data-types/tuple) |
 | `JSONB` | [String](/sql-reference/data-types/string) |
 
-*\* Поддержка JSON в ClickHouse находится на стадии разработки. В настоящее время пользователи могут либо сопоставить JSON как String и использовать [JSON функции](/sql-reference/functions/json-functions), либо сопоставить JSON напрямую с [Tuples](/sql-reference/data-types/tuple) и [Nested](/sql-reference/data-types/nested-data-structures/nested), если структура предсказуемая. Узнайте больше о JSON [здесь](/integrations/data-formats/json/overview).*
+*\* Поддержка JSON в ClickHouse находится в разработке. В настоящее время пользователи могут либо сопоставить JSON как String и использовать [JSON функции](/sql-reference/functions/json-functions), либо сопоставить JSON непосредственно к [Tuples](/sql-reference/data-types/tuple) и [Nested](/sql-reference/data-types/nested-data-structures/nested), если структура предсказуема. Узнайте больше о JSON [здесь](/integrations/data-formats/json/overview).*

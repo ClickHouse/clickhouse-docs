@@ -13,7 +13,7 @@ In this section of the docs, you can find examples for loading from various file
 
 ### [**Binary**](/integrations/data-ingestion/data-formats/binary.md) {#binary}
 
-Export and load binary formats such as ClickHouse Native, MessagePack, Protocol Buffers and Cap’n Proto.
+Export and load binary formats such as ClickHouse Native, MessagePack, Protocol Buffers and Cap'n Proto.
 
 ### [**CSV and TSV**](/integrations/data-ingestion/data-formats/csv-tsv.md) {#csv-and-tsv}
 

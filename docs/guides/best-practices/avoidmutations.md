@@ -5,6 +5,7 @@ title: 'Avoid Mutations'
 description: 'Mutations refers to ALTER queries that manipulate table data'
 ---
 
-import Content from '@site/docs/cloud/bestpractices/avoidmutations.md';
+import Content from '@site/docs/best-practices/_snippets/_avoid_mutations.md';
 
 <Content />
+

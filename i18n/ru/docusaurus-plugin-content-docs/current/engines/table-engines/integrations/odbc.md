@@ -1,9 +1,9 @@
 ---
-slug: /engines/table-engines/integrations/odbc
-sidebar_position: 150
-sidebar_label: ODBC
-title: 'ODBC'
 description: 'Позволяет ClickHouse подключаться к внешним базам данных через ODBC.'
+sidebar_label: 'ODBC'
+sidebar_position: 150
+slug: /engines/table-engines/integrations/odbc
+title: 'ODBC'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -15,13 +15,13 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 Позволяет ClickHouse подключаться к внешним базам данных через [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity).
 
-Для безопасной реализации ODBC-подключений ClickHouse использует отдельную программу `clickhouse-odbc-bridge`. Если драйвер ODBC загружается непосредственно из `clickhouse-server`, проблемы с драйвером могут привести к сбою сервера ClickHouse. ClickHouse автоматически запускает `clickhouse-odbc-bridge`, когда это требуется. Программа ODBC-бриджа устанавливается из того же пакета, что и `clickhouse-server`.
+Для безопасной реализации ODBC подключений ClickHouse использует отдельную программу `clickhouse-odbc-bridge`. Если ODBC драйвер загружается напрямую из `clickhouse-server`, проблемы с драйвером могут привести к сбою сервера ClickHouse. ClickHouse автоматически запускает `clickhouse-odbc-bridge`, когда это необходимо. Программа ODBC моста устанавливается из того же пакета, что и `clickhouse-server`.
 
-Этот движок поддерживает тип данных [Nullable](../../../sql-reference/data-types/nullable.md).
+Этот движок поддерживает [Nullable](../../../sql-reference/data-types/nullable.md) тип данных.
 
 ## Создание таблицы {#creating-a-table}
 
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
     name1 [type1],
@@ -35,9 +35,9 @@ ENGINE = ODBC(connection_settings, external_database, external_table)
 
 Структура таблицы может отличаться от структуры исходной таблицы:
 
-- Имена колонок должны совпадать с именами в исходной таблице, но вы можете использовать только некоторые из этих колонок и в любом порядке.
-- Типы колонок могут отличаться от тех, что в исходной таблице. ClickHouse пытается [привести](/sql-reference/functions/type-conversion-functions#cast) значения к типам данных ClickHouse.
-- Параметр [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls) определяет, как обрабатывать Nullable-колонки. Значение по умолчанию: 1. Если 0, функция таблицы не создаёт Nullable-колонки и вместо null вставляет значения по умолчанию. Это также применимо для NULL-значений внутри массивов.
+- Имена колонок должны быть такими же, как в исходной таблице, но вы можете использовать только некоторые из этих колонок и в любом порядке.
+- Типы колонок могут отличаться от типов в исходной таблице. ClickHouse пытается [преобразовать](/sql-reference/functions/type-conversion-functions#cast) значения в типы данных ClickHouse.
+- Настройка [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls) определяет, как обрабатывать Nullable колонки. Значение по умолчанию: 1. Если 0, табличная функция не создает Nullable колонки и вставляет значения по умолчанию вместо null. Это также применимо к значениям NULL внутри массивов.
 
 **Параметры движка**
 
@@ -51,22 +51,22 @@ ENGINE = ODBC(connection_settings, external_database, external_table)
 
 Этот пример проверен на Ubuntu Linux 18.04 и MySQL сервере 5.7.
 
-Убедитесь, что установлены unixODBC и MySQL Connector.
+Убедитесь, что unixODBC и MySQL Connector установлены.
 
-По умолчанию (если установлен из пакетов) ClickHouse запускается от имени пользователя `clickhouse`. Поэтому вам нужно создать и настроить этого пользователя в сервере MySQL.
+По умолчанию (если установлено из пакетов) ClickHouse запускается как пользователь `clickhouse`. Поэтому вам нужно создать и настроить этого пользователя в MySQL сервере.
 
-``` bash
+```bash
 $ sudo mysql
 ```
 
-``` sql
+```sql
 mysql> CREATE USER 'clickhouse'@'localhost' IDENTIFIED BY 'clickhouse';
 mysql> GRANT ALL PRIVILEGES ON *.* TO 'clickhouse'@'localhost' WITH GRANT OPTION;
 ```
 
 Затем настройте подключение в `/etc/odbc.ini`.
 
-``` bash
+```bash
 $ cat /etc/odbc.ini
 [mysqlconn]
 DRIVER = /usr/local/lib/libmyodbc5w.so
@@ -77,9 +77,9 @@ USER = clickhouse
 PASSWORD = clickhouse
 ```
 
-Вы можете проверить подключение, используя утилиту `isql` из установки unixODBC.
+Вы можете проверить подключение с помощью утилиты `isql` из установки unixODBC.
 
-``` bash
+```bash
 $ isql -v mysqlconn
 +-------------------------+
 | Connected!                            |
@@ -89,7 +89,7 @@ $ isql -v mysqlconn
 
 Таблица в MySQL:
 
-``` text
+```text
 mysql> CREATE DATABASE test;
 Query OK, 1 row affected (0,01 sec)
 
@@ -115,7 +115,7 @@ mysql> select * from test.test;
 
 Таблица в ClickHouse, получение данных из таблицы MySQL:
 
-``` sql
+```sql
 CREATE TABLE odbc_t
 (
     `int_id` Int32,
@@ -124,11 +124,11 @@ CREATE TABLE odbc_t
 ENGINE = ODBC('DSN=mysqlconn', 'test', 'test')
 ```
 
-``` sql
+```sql
 SELECT * FROM odbc_t
 ```
 
-``` text
+```text
 ┌─int_id─┬─float_nullable─┐
 │      1 │           ᴺᵁᴸᴸ │
 └────────┴────────────────┘
@@ -136,5 +136,5 @@ SELECT * FROM odbc_t
 
 ## См. также {#see-also}
 
-- [ODBC словари](/sql-reference/dictionaries#mysql)
-- [Функция таблицы ODBC](../../../sql-reference/table-functions/odbc.md)
+- [ODBC dictionaries](/sql-reference/dictionaries#mysql)
+- [ODBC table function](../../../sql-reference/table-functions/odbc.md)

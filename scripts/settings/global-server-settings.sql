@@ -39,7 +39,7 @@ WITH
             '## {}{}{}{}\n\n',
             name,
             lcase(' {#'|| name ||'} \n\n'),
-            if(type != '' AND default != '', format('|Type|Default|\n|---|---|\n|`{}`|`{}`|\n\n',type, default), ''),
+            if(type != '' AND default != '', format('<SettingsInfoBlock type="{}" default_value="{}" />', type, default), ''),
             description
         ) AS formatted_text
         FROM combined_server_settings
@@ -57,7 +57,8 @@ title: ''Server Settings''
 
 import Tabs from ''@theme/Tabs'';
 import TabItem from ''@theme/TabItem'';
-import SystemLogParameters from ''@site/docs/operations/server-configuration-parameters/_snippets/_system-log-parameters.md''
+import SystemLogParameters from ''@site/docs/operations/server-configuration-parameters/_snippets/_system-log-parameters.md'';
+import SettingsInfoBlock from ''@theme/SettingsInfoBlock/SettingsInfoBlock'';
 
 # Server Settings
 

@@ -75,7 +75,7 @@ You can sort services by the warehouse that they belong to.
 
 Because all in a warehouse share the same set of tables, they also share access controls to those other services. This means that all database users that are created in Service 1 will also be able to use Service 2 with the same permissions (grants for tables, views, etc), and vice versa. Users will use another endpoint for each service but will use the same username and password. In other words, _users are shared across services that work with the same storage:_
 
-<Image img={compute_3} size="md" alt="User access across services sharing same data" background='white' />
+<Image img={compute_3} size="md" alt="User access across services sharing same data" />
 
 <br />
 
@@ -104,7 +104,8 @@ Sometimes it is useful to restrict write access to a specific service and allow 
 _Fig. 6 - Read-write and Read-only services in a warehouse_
 
 :::note
-Read-only services currently allow user management operations (create, drop, etc). This behavior may be changed in the future.
+1. Read-only services currently allow user management operations (create, drop, etc). This behavior may be changed in the future.
+2. Currently, refreshable materialized views are executed on all services in the warehouse, including read-only services. This behavior will be changed in the future, however, and they will be executed on RW services only.
 :::
 
 

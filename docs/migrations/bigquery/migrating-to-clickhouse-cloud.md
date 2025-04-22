@@ -18,7 +18,6 @@ import bigquery_11 from '@site/static/images/migrations/bigquery-11.png';
 import bigquery_12 from '@site/static/images/migrations/bigquery-12.png';
 import Image from '@theme/IdealImage';
 
-
 ## Why use ClickHouse Cloud over BigQuery? {#why-use-clickhouse-cloud-over-bigquery}
 
 TLDR: Because ClickHouse is faster, cheaper, and more powerful than BigQuery for modern data analytics:
@@ -68,7 +67,7 @@ Change Data Capture (CDC) is the process by which tables are kept in sync betwee
 
 ## Designing Schemas {#designing-schemas}
 
-The Stack Overflow dataset contains a number of related tables. We recommend focusing on migrating the primary table first. This may not necessarily be the largest table but rather the one on which you expect to receive the most analytical queries. This will allow you to familiarize yourself with the main ClickHouse concepts. This table may require remodeling as additional tables are added to fully exploit ClickHouse features and obtain optimal performance. We explore this modeling process in our [Data Modeling docs](/data-modeling/schema-design#next-data-modelling-techniques).
+The Stack Overflow dataset contains a number of related tables. We recommend focusing on migrating the primary table first. This may not necessarily be the largest table but rather the one on which you expect to receive the most analytical queries. This will allow you to familiarize yourself with the main ClickHouse concepts. This table may require remodeling as additional tables are added to fully exploit ClickHouse features and obtain optimal performance. We explore this modeling process in our [Data Modeling docs](/data-modeling/schema-design#next-data-modeling-techniques).
 
 Adhering to this principle, we focus on the main `posts` table. The BigQuery schema for this is shown below:
 

@@ -1,28 +1,28 @@
 ---
-title: XML
-slug: /interfaces/formats/XML
-keywords: ['XML']
-input_format: false
-output_format: true
 alias: []
+description: 'Документация для формата XML'
+input_format: false
+keywords: ['XML']
+output_format: true
+slug: /interfaces/formats/XML
+title: 'XML'
 ---
 
-| Input | Output | Alias |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+| Входные данные | Выходные данные | Псевдоним |
+|----------------|----------------|-----------|
+| ✗              | ✔              |           |
 
-## Description {#description}
+## Описание {#description}
 
 Формат `XML` подходит только для вывода, а не для разбора. 
 
-Если имя колонки не имеет приемлемого формата, используется 'field' в качестве имени элемента. В целом, структура XML соответствует структуре JSON. 
-Так же, как и для JSON, недопустимые последовательности UTF-8 заменяются символом замены `�`, так что выходной текст будет состоять из допустимых последовательностей UTF-8.
+Если имя колонки не имеет приемлемого формата, то в качестве имени элемента используется просто 'field'. В общем, структура XML следует структуре JSON. Как и для JSON, недопустимые последовательности UTF-8 заменяются на заменяющий символ `�`, так что выходной текст будет состоять из допустимых последовательностей UTF-8.
 
 В строковых значениях символы `<` и `&` экранируются как `<` и `&`.
 
-Массивы выводятся в формате `<array><elem>Hello</elem><elem>World</elem>...</array>`, а кортежи в формате `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`.
+Массивы выводятся в виде `<array><elem>Hello</elem><elem>World</elem>...</array>`, а кортежи как `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`.
 
-## Example Usage {#example-usage}
+## Пример использования {#example-usage}
 
 Пример:
 
@@ -88,6 +88,6 @@ alias: []
 </result>
 ```
 
-## Format Settings {#format-settings}
+## Настройки формата {#format-settings}
 
 ## XML {#xml}

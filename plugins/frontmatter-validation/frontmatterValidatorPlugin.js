@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const { getFilesWithIssues, resetIssues } = require('./customParseFrontMatter');
+const { getFilesWithIssues, resetIssues, reloadExceptions } = require('./customParseFrontMatter');
 
 /**
  * Custom plugin to enforce frontmatter formatting rules
@@ -12,13 +12,14 @@ function frontmatterValidatorPlugin(context, options) {
 
         // Reset the issue tracker at the beginning of each build
         async loadContent() {
+            reloadExceptions();
             resetIssues();
         },
 
-        // Check for issues after the build
+        // Check for issues
         async postBuild({ outDir }) {
             const filesWithIssues = getFilesWithIssues();
-
+            
             if (filesWithIssues.length > 0) {
                 if (options && options.failBuild) {
                     console.error('\n🚨 Build failed: Frontmatter validation issues found');
@@ -44,7 +45,13 @@ function frontmatterValidatorPlugin(context, options) {
                     console.log('See frontmatter-validation-errors.log (when running locally)')
 
                     // Fail the build by throwing an error
-                    throw new Error('🚨Frontmatter validation failed. For more details see https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/style-guide.md');
+                    console.error('🚨Frontmatter validation failed. For more details see https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/style-guide.md');
+                    // Create a signal file
+                    fs.writeFileSync(
+                        path.join(process.cwd(), '.frontmatter-validation-failed'),
+                        'Frontmatter validation failed'
+                    );
+                    process.exit(1);
                 } else {
                     console.log(`⚠️ Warning: Found ${filesWithIssues.length} files containing problems with frontmatter`)
                 }

@@ -213,7 +213,7 @@ clickhouse-local --query "SELECT * FROM s3('https://datasets-documentation.s3.eu
 ### Inserting Data from S3 {#inserting-data-from-s3}
 
 To exploit the full capabilities of ClickHouse, we next read and insert the data into our instance.
-We combine our `s3` function with a simple `INSERT` statement to achieve this. Note that we aren’t required to list our columns because our target table provides the required structure. This requires the columns to appear in the order specified in the table DDL statement: columns are mapped according to their position in the `SELECT` clause. The insertion of all 10m rows can take a few minutes depending on the ClickHouse instance. Below we insert 1M rows to ensure a prompt response. Adjust the `LIMIT` clause or column selection to import subsets as required:
+We combine our `s3` function with a simple `INSERT` statement to achieve this. Note that we aren't required to list our columns because our target table provides the required structure. This requires the columns to appear in the order specified in the table DDL statement: columns are mapped according to their position in the `SELECT` clause. The insertion of all 10m rows can take a few minutes depending on the ClickHouse instance. Below we insert 1M rows to ensure a prompt response. Adjust the `LIMIT` clause or column selection to import subsets as required:
 
 
 ```sql
@@ -254,7 +254,7 @@ FROM trips
 LIMIT 10000;
 ```
 
-Note here how the format of the file is inferred from the extension. We also don’t need to specify the columns in the `s3` function - this can be inferred from the `SELECT`.
+Note here how the format of the file is inferred from the extension. We also don't need to specify the columns in the `s3` function - this can be inferred from the `SELECT`.
 
 ### Splitting Large Files {#splitting-large-files}
 

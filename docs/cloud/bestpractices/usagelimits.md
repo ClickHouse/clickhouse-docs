@@ -17,10 +17,11 @@ If you've run up against one of these guardrails, it's possible that you are imp
 - **Partitions**: 50k
 - **Parts**: 100k across the entire instance
 - **Part size**: 150gb
-- **Services**: 20 (soft)
+- **Services per organization**: 20 (soft)
+- **Services per warehouse**: 5 (soft)
 - **Low cardinality**: 10k or less
 - **Primary keys in a table**: 4-5 that sufficiently filter down the data
-- **Query Concurrency**: 1000
+- **Query concurrency**: 1000
 - **Batch ingest**: anything > 1M will be split by the system in 1M row blocks
 
 :::note

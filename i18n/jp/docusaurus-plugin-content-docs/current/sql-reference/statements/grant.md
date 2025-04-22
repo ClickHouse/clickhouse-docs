@@ -678,4 +678,3 @@ GRANT CLUSTER ON *.* TO <username>
 ### ADMIN OPTION {#admin-option}
 
 `ADMIN OPTION` 権限は、ユーザーが自分のロールを他のユーザーに付与できるようにします。
-```

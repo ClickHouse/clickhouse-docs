@@ -67,4 +67,3 @@ GRANT sql_console_pm_role to `sql-console-role:zach@clickhouse.com`;
 ```
 
 <CommonUserRolesContent />
-```

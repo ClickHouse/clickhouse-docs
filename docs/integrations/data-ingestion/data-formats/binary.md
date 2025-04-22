@@ -195,11 +195,11 @@ SETTINGS format_schema = 'schema:MessageType'
 
 This saves data to the [proto.bin](assets/proto.bin) file. ClickHouse also supports importing Protobuf data as well as nested messages. Consider using [ProtobufSingle](/interfaces/formats.md/#protobufsingle) to work with a single Protocol Buffer message (length delimiters will be omitted in this case).
 
-## Cap’n Proto {#capn-proto}
+## Cap'n Proto {#capn-proto}
 
 <CloudNotSupportedBadge/>
 
-Another popular binary serialization format supported by ClickHouse is [Cap’n Proto](https://capnproto.org/). Similarly to `Protobuf` format, we have to define a schema file ([`schema.capnp`](assets/schema.capnp)) in our example:
+Another popular binary serialization format supported by ClickHouse is [Cap'n Proto](https://capnproto.org/). Similarly to `Protobuf` format, we have to define a schema file ([`schema.capnp`](assets/schema.capnp)) in our example:
 
 ```response
 @0xec8ff1a10aa10dbe;

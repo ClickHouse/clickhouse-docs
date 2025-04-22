@@ -8,20 +8,20 @@
 
 ## Установка {#troubleshooting-installation-errors}
 
-### Вы не можете получить deb-пакеты из репозитория ClickHouse с помощью Apt-get {#you-cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
+### Вы не можете получить Deb-пакеты из репозитория ClickHouse с помощью Apt-get {#you-cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
 
 - Проверьте настройки брандмауэра.
-- Если вы не можете получить доступ к репозиторию по какой-либо причине, загрузите пакеты, как описано в статье [руководства по установке](../getting-started/install.md) и установите их вручную с помощью команды `sudo dpkg -i <packages>`. Вам также понадобится пакет `tzdata`.
+- Если вы не можете получить доступ к репозиторию по какой-либо причине, загрузите пакеты, как описано в статье [руководства по установке](../getting-started/install.md), и установите их вручную, используя команду `sudo dpkg -i <packages>`. Вам также понадобится пакет `tzdata`.
 
-### Вы не можете обновить deb-пакеты из репозитория ClickHouse с помощью Apt-get {#you-cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
+### Вы не можете обновить Deb-пакеты из репозитория ClickHouse с помощью Apt-get {#you-cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
 
-- Проблема может возникнуть, если GPG ключ был изменен.
+- Проблема может возникнуть, если GPG-ключ изменён.
 
-Пожалуйста, воспользуйтесь руководством со страницы [настройка](../getting-started/install.md#setup-the-debian-repository) для обновления конфигурации репозитория.
+Пожалуйста, используйте данные из страницы [настройки](../getting-started/install.md#setup-the-debian-repository), чтобы обновить конфигурацию репозитория.
 
-### Вы получаете разные предупреждения с `apt-get update` {#you-get-different-warnings-with-apt-get-update}
+### Вы получаете разные предупреждения при выполнении `apt-get update` {#you-get-different-warnings-with-apt-get-update}
 
-- Полные сообщения-тревоги могут выглядеть следующим образом:
+- Завершенные сообщения предупреждений выглядят как одно из следующих:
 
 ```bash
 N: Skipping acquire of configured file 'main/binary-i386/Packages' as repository 'https://packages.clickhouse.com/deb stable InRelease' doesn't support architecture 'i386'
@@ -43,7 +43,7 @@ Err:11 https://packages.clickhouse.com/deb stable InRelease
   400  Bad Request [IP: 172.66.40.249 443]
 ```
 
-Чтобы решить указанную выше проблему, воспользуйтесь следующим скриптом:
+Чтобы решить приведенную выше проблему, используйте следующий скрипт:
 
 ```bash
 sudo rm /var/lib/apt/lists/packages.clickhouse.com_* /var/lib/dpkg/arch /var/lib/apt/lists/partial/packages.clickhouse.com_*
@@ -51,22 +51,22 @@ sudo apt-get clean
 sudo apt-get autoclean
 ```
 
-### Вы не можете получить пакеты с помощью Yum из-за неправильной подписи {#you-cant-get-packages-with-yum-because-of-wrong-signature}
+### Вы не можете получить пакеты с помощью Yum из-за неверной подписи {#you-cant-get-packages-with-yum-because-of-wrong-signature}
 
-Возможная проблема: кэш неправильный, возможно, он сломался после обновления GPG ключа в 2022-09.
+Возможная проблема: кэш неверный, возможно, он сломан после обновления GPG-ключа в 2022-09.
 
-Решение заключается в очистке кэша и каталога lib для yum:
+Решение — очистить кэш и каталог библиотеки для yum:
 
 ```bash
 sudo find /var/lib/yum/repos/ /var/cache/yum/ -name 'clickhouse-*' -type d -exec rm -rf {} +
 sudo rm -f /etc/yum.repos.d/clickhouse.repo
 ```
 
-После этого следуйте [руководству по установке](../getting-started/install.md#from-rpm-packages)
+После этого следуйте [руководству по установке](../getting-started/install.md#from-rpm-packages).
 
-### Вы не можете запустить контейнер Docker {#you-cant-run-docker-container}
+### Вы не можете запустить Docker-контейнер {#you-cant-run-docker-container}
 
-Вы запускаете простую команду `docker run clickhouse/clickhouse-server` и она аварийно завершает работу с трассировкой стека, подобной следующей:
+Вы запускаете простой `docker run clickhouse/clickhouse-server`, и он выдает ошибку с трассировкой стека, похожей на следующую:
 
 ```bash
 $ docker run -it clickhouse/clickhouse-server
@@ -84,34 +84,32 @@ Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread
 7. Poco::Util::ServerApplication::run(int, char**) @ 0x0000000015825e27
 8. mainEntryClickHouseServer(int, char**) @ 0x000000000d125b38
 9. main @ 0x0000000007ea4eee
-10. ? @ 0x00007f67ff946d90
-11. ? @ 0x00007f67ff946e40
-12. _start @ 0x00000000062e802e
- (версия 24.10.1.2812 (официальная сборка))
+10. ? @ 0x00000000062e802e
+ (version 24.10.1.2812 (official build))
 ```
 
-Причина заключается в старом демоне Docker с версией, менее чем `20.10.10`. Исправить это можно, либо обновив его, либо запустив `docker run [--privileged | --security-opt seccomp=unconfined]`. Последний вариант имеет влияние на безопасность.
+Причина заключается в том, что версия демона Docker устарела и ниже `20.10.10`. Исправить это можно либо обновлением, либо запуском `docker run [--privileged | --security-opt seccomp=unconfined]`. Второй вариант имеет последствия для безопасности.
 
 ## Подключение к серверу {#troubleshooting-accepts-no-connections}
 
 Возможные проблемы:
 
-- Сервер не работает.
-- Неожиданные или неправильные параметры конфигурации.
+- Сервер не запущен.
+- Неожиданные или неверные параметры конфигурации.
 
-### Сервер не работает {#server-is-not-running}
+### Сервер не запущен {#server-is-not-running}
 
-**Проверьте, запущен ли сервер**
+**Проверьте, работает ли сервер**
 
 Команда:
 
-``` bash
+```bash
 $ sudo service clickhouse-server status
 ```
 
-Если сервер не запущен, запустите его с помощью команды:
+Если сервер не работает, запустите его с помощью команды:
 
-``` bash
+```bash
 $ sudo service clickhouse-server start
 ```
 
@@ -119,26 +117,26 @@ $ sudo service clickhouse-server start
 
 Основной журнал `clickhouse-server` находится по умолчанию в `/var/log/clickhouse-server/clickhouse-server.log`.
 
-Если сервер успешно запустился, вы должны видеть следующие строки:
+Если сервер успешно запустился, вы должны увидеть строки:
 
 - `<Information> Application: starting up.` — Сервер запущен.
 - `<Information> Application: Ready for connections.` — Сервер работает и готов к подключениям.
 
-Если запуск `clickhouse-server` завершился с ошибкой конфигурации, вы должны увидеть строку с `<Error>` и описание ошибки. Например:
+Если запуск `clickhouse-server` не удался из-за ошибки конфигурации, вы должны увидеть строку `<Error>` с описанием ошибки. Например:
 
-``` text
+```text
 2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
 Если вы не видите ошибки в конце файла, просмотрите весь файл, начиная со строки:
 
-``` text
+```text
 <Information> Application: starting up.
 ```
 
-Если вы пытаетесь запустить вторую инстанцию `clickhouse-server` на сервере, вы увидите следующий журнал:
+Если вы пытаетесь запустить второй экземпляр `clickhouse-server` на сервере, вы видите следующий журнал:
 
-``` text
+```text
 2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Starting ClickHouse 19.1.0 with revision 54413
 2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Application: starting up
 2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: Status file ./status already exists - unclean restart. Contents:
@@ -152,21 +150,21 @@ Revision: 54413
 2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
 ```
 
-**Смотрите журналы system.d**
+**Смотрите системные журналы system.d**
 
-Если вы не найдете полезной информации в журналах `clickhouse-server` или их вообще нет, вы можете просмотреть журналы `system.d`, используя команду:
+Если вы не нашли полезной информации в журналах `clickhouse-server` или журналов нет, вы можете просмотреть журналы `system.d`, используя команду:
 
-``` bash
+```bash
 $ sudo journalctl -u clickhouse-server
 ```
 
 **Запустите clickhouse-server в интерактивном режиме**
 
-``` bash
+```bash
 $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
 ```
 
-Эта команда запускает сервер как интерактивное приложение с параметрами автозапуска. В этом режиме `clickhouse-server` выводит все сообщения событий в консоль.
+Эта команда запускает сервер как интерактивное приложение с параметрами, стандартными для скрипта автозапуска. В этом режиме `clickhouse-server` выводит все сообщения событий в консоль.
 
 ### Параметры конфигурации {#configuration-parameters}
 
@@ -174,47 +172,47 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
 
 - Настройки Docker.
 
-    Если вы запускаете ClickHouse в Docker в сети IPv6, убедитесь, что установлено `network=host`.
+    Если вы запускаете ClickHouse в Docker в сети IPv6, убедитесь, что установлен `network=host`.
 
 - Настройки конечной точки.
 
     Проверьте настройки [listen_host](../operations/server-configuration-parameters/settings.md#listen_host) и [tcp_port](../operations/server-configuration-parameters/settings.md#tcp_port).
 
-    Сервер ClickHouse по умолчанию принимает соединения только от localhost.
+    Сервер ClickHouse по умолчанию принимает соединения только из localhost.
 
-- Настройки HTTP протокола.
+- Настройки протокола HTTP.
 
     Проверьте настройки протокола для HTTP API.
 
-- Настройки безопасного соединения.
+- Настройки защищенного соединения.
 
     Проверьте:
 
     - Настройку [tcp_port_secure](../operations/server-configuration-parameters/settings.md#tcp_port_secure).
-    - Настройки для [SSL сертификатов](../operations/server-configuration-parameters/settings.md#openssl).
+    - Настройки для [SSL-сертификатов](../operations/server-configuration-parameters/settings.md#openssl).
 
     Используйте правильные параметры при подключении. Например, используйте параметр `port_secure` с `clickhouse_client`.
 
 - Настройки пользователя.
 
-    Возможно, вы используете неправильное имя пользователя или пароль.
+    Возможно, вы используете неверное имя пользователя или пароль.
 
 ## Обработка запросов {#troubleshooting-does-not-process-queries}
 
-Если ClickHouse не может обработать запрос, он отправляет описание ошибки клиенту. В `clickhouse-client` вы получите описание ошибки в консоли. Если вы используете HTTP интерфейс, ClickHouse отправляет описание ошибки в теле ответа. Например:
+Если ClickHouse не может обработать запрос, он отправляет описание ошибки клиенту. В `clickhouse-client` вы получите описание ошибки в консоли. Если вы используете HTTP-интерфейс, ClickHouse отправляет описание ошибки в теле ответа. Например:
 
-``` bash
+```bash
 $ curl 'http://localhost:8123/' --data-binary "SELECT a"
 Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that there are no tables (FROM clause) in your query, context: required_names: 'a' source_tables: table_aliases: private_aliases: column_aliases: public_columns: 'a' masked_columns: array_join_columns: source_columns: , e.what() = DB::Exception
 ```
 
 Если вы запускаете `clickhouse-client` с параметром `stack-trace`, ClickHouse возвращает трассировку стека сервера с описанием ошибки.
 
-Вы можете увидеть сообщение об обрыве соединения. В этом случае вы можете повторить запрос. Если соединение обрывается каждый раз, когда вы выполняете запрос, проверьте журналы сервера на наличие ошибок.
+Вы можете увидеть сообщение о разрыве соединения. В таком случае вы можете повторить запрос. Если соединение обрывается каждый раз, когда вы выполняете запрос, проверьте журналы сервера на наличие ошибок.
 
 ## Эффективность обработки запросов {#troubleshooting-too-slow}
 
-Если вы видите, что ClickHouse работает слишком медленно, вам необходимо профилировать нагрузку на ресурсы сервера и сеть для ваших запросов.
+Если вы видите, что ClickHouse работает слишком медленно, вам нужно профилировать нагрузку на ресурсы сервера и сеть для ваших запросов.
 
-Вы можете использовать утилиту `clickhouse-benchmark` для профилирования запросов. Она показывает количество запросов, обработанных в секунду, количество строк, обработанных в секунду, и процентиль времени обработки запросов.
+Вы можете использовать утилиту clickhouse-benchmark для профилирования запросов. Она показывает количество запросов, обрабатываемых в секунду, количество строк, обрабатываемых в секунду, и процентиль времени обработки запросов.
 ```

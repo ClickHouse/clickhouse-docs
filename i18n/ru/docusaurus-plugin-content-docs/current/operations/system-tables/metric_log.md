@@ -1,14 +1,18 @@
 ---
-description: "Системная таблица, содержащая историю значений метрик из таблиц `system.metrics` и `system.events`, периодически записываемую на диск."
+description: 'Системная таблица, содержащая историю значений метрик из таблиц `system.metrics` и `system.events`, периодически сбрасываемая на диск.'
+keywords: ['системная таблица', 'metric_log']
 slug: /operations/system-tables/metric_log
-title: "system.metric_log"
-keywords: ['system table', 'metric_log']
+title: 'system.metric_log'
 ---
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+
+
+# system.metric_log
 
 <SystemTableCloud/>
 
-Содержит историю значений метрик из таблиц `system.metrics` и `system.events`, периодически записываемую на диск.
+Содержит историю значений метрик из таблиц `system.metrics` и `system.events`, периодически сбрасываемую на диск.
 
 Колонки:
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
@@ -18,11 +22,11 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 **Пример**
 
-``` sql
+```sql
 SELECT * FROM system.metric_log LIMIT 1 FORMAT Vertical;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 hostname:                                                        clickhouse.eu-central1.internal
@@ -52,8 +56,8 @@ CurrentMetric_DistributedFilesToInsert:                          0
 
 **Смотрите также**
 
-- [metric_log setting](../../operations/server-configuration-parameters/settings.md#metric_log) — Включение и отключение настройки.
+- [metric_log setting](../../operations/server-configuration-parameters/settings.md#metric_log) — Включение и отключение параметра.
 - [system.asynchronous_metrics](../../operations/system-tables/asynchronous_metrics.md) — Содержит периодически вычисляемые метрики.
 - [system.events](/operations/system-tables/events) — Содержит ряд произошедших событий.
 - [system.metrics](../../operations/system-tables/metrics.md) — Содержит мгновенно вычисляемые метрики.
-- [Monitoring](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.
+- [Мониторинг](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.

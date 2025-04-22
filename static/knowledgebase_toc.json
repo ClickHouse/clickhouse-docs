@@ -1134,6 +1134,20 @@
         ]
     },
     {
+        "title": "AWS PrivateLink setup to expose MSK for ClickPipes",
+        "description": "Setup steps to expose a private MSK via MSK multi-VPC connectivity to ClickPipes.",
+        "date": "2025-4-15",
+        "tags": [
+            "Security and Authentication",
+            "Managing Cloud"
+        ],
+        "keywords": [
+            "AWS PrivateLink",
+            "MSK",
+            "ClickPipes"
+        ]
+    },
+    {
         "title": "How to use the exchange command to switch tables",
         "description": "How to use the exchange command to switch tables",
         "date": "2024-11-21",

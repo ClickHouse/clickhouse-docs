@@ -9,4 +9,4 @@
 /docs/index.md
 integrations/language-clients/java/client-v1
 integrations/language-clients/java/jdbc-v1
-operations/settings/experimental-settings
+integrations/data-ingestion/clickpipes/postgres/maintenance.md

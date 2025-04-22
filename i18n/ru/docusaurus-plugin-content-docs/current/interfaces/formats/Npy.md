@@ -1,40 +1,41 @@
 ---
-title: Npy
-slug: /interfaces/formats/Npy
-keywords: ['Npy']
-input_format: true
-output_format: true
 alias: []
+description: 'Документация по формату Npy'
+input_format: true
+keywords: ['Npy']
+output_format: true
+slug: /interfaces/formats/Npy
+title: 'Npy'
 ---
 
-| Вход | Выход | Псевдоним |
-|------|-------|-----------|
-| ✔    | ✔     |           |
+| Ввод  | Вывод  | Псевдоним |
+|-------|--------|-----------|
+| ✔     | ✔      |           |
 
 ## Описание {#description}
 
 Формат `Npy` предназначен для загрузки массива NumPy из файла `.npy` в ClickHouse. 
-Файл формата NumPy является двоичным форматом, используемым для эффективного хранения массивов числовых данных. 
-При импорте ClickHouse рассматривает верхний уровень измерения как массив строк с одной колонкой.
+Формат файла NumPy является бинарным форматом, используемым для эффективного хранения массивов числовых данных. 
+При импорте ClickHouse рассматривает верхний уровень размерности как массив строк с одной колонкой.
 
-Таблица ниже показывает поддерживаемые типы данных Npy и соответствующий им тип в ClickHouse:
+В таблице ниже представлены поддерживаемые типы данных Npy и соответствующий тип в ClickHouse:
 
 ## Соответствие типов данных {#data_types-matching}
 
-| Тип данных Npy (`INSERT`) | Тип данных ClickHouse                                       | Тип данных Npy (`SELECT`) |
-|---------------------------|-----------------------------------------------------------|----------------------------|
-| `i1`                      | [Int8](/sql-reference/data-types/int-uint.md)            | `i1`                       |
-| `i2`                      | [Int16](/sql-reference/data-types/int-uint.md)           | `i2`                       |
-| `i4`                      | [Int32](/sql-reference/data-types/int-uint.md)           | `i4`                       |
-| `i8`                      | [Int64](/sql-reference/data-types/int-uint.md)           | `i8`                       |
-| `u1`, `b1`                | [UInt8](/sql-reference/data-types/int-uint.md)           | `u1`                       |
-| `u2`                      | [UInt16](/sql-reference/data-types/int-uint.md)          | `u2`                       |
-| `u4`                      | [UInt32](/sql-reference/data-types/int-uint.md)          | `u4`                       |
-| `u8`                      | [UInt64](/sql-reference/data-types/int-uint.md)          | `u8`                       |
-| `f2`, `f4`                | [Float32](/sql-reference/data-types/float.md)            | `f4`                       |
-| `f8`                      | [Float64](/sql-reference/data-types/float.md)            | `f8`                       |
-| `S`, `U`                  | [String](/sql-reference/data-types/string.md)            | `S`                        |
-|                           | [FixedString](/sql-reference/data-types/fixedstring.md)  | `S`                        |
+| Тип данных Npy (`INSERT`) | Тип данных ClickHouse                                            | Тип данных Npy (`SELECT`) |
+|---------------------------|-----------------------------------------------------------------|----------------------------|
+| `i1`                      | [Int8](/sql-reference/data-types/int-uint.md)           | `i1`                       |
+| `i2`                      | [Int16](/sql-reference/data-types/int-uint.md)          | `i2`                       |
+| `i4`                      | [Int32](/sql-reference/data-types/int-uint.md)          | `i4`                       |
+| `i8`                      | [Int64](/sql-reference/data-types/int-uint.md)          | `i8`                       |
+| `u1`, `b1`                | [UInt8](/sql-reference/data-types/int-uint.md)          | `u1`                       |
+| `u2`                      | [UInt16](/sql-reference/data-types/int-uint.md)         | `u2`                       |
+| `u4`                      | [UInt32](/sql-reference/data-types/int-uint.md)         | `u4`                       |
+| `u8`                      | [UInt64](/sql-reference/data-types/int-uint.md)         | `u8`                       |
+| `f2`, `f4`                | [Float32](/sql-reference/data-types/float.md)           | `f4`                       |
+| `f8`                      | [Float64](/sql-reference/data-types/float.md)           | `f8`                       |
+| `S`, `U`                  | [String](/sql-reference/data-types/string.md)           | `S`                        |
+|                           | [FixedString](/sql-reference/data-types/fixedstring.md) | `S`                        |
 
 ## Пример использования {#example-usage}
 

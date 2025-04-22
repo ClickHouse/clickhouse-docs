@@ -112,7 +112,7 @@ Like BigQuery, ClickHouse uses table partitioning to enhance the performance and
 
 With clustering, BigQuery automatically sorts table data based on the values of a few specified columns and colocates them in optimally sized blocks. Clustering improves query performance, allowing BigQuery to better estimate the cost of running the query. With clustered columns, queries also eliminate scans of unnecessary data.
 
-In ClickHouse, data is automatically [clustered on disk](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files) based on a table’s primary key columns and logically organized in blocks that can be quickly located or pruned by queries utilizing the primary index data structure.
+In ClickHouse, data is automatically [clustered on disk](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files) based on a table's primary key columns and logically organized in blocks that can be quickly located or pruned by queries utilizing the primary index data structure.
 
 ## Materialized views {#materialized-views}
 
@@ -150,7 +150,7 @@ Compared to BigQuery, ClickHouse supports significantly more file formats and da
 
 ## SQL language features {#sql-language-features}
 
-ClickHouse provides standard SQL with many extensions and improvements that make it more friendly for analytical tasks. E.g. ClickHouse SQL [supports lambda functions](/sql-reference/functions/overview#arrow-operator-and-lambda) and higher order functions, so you don’t have to unnest/explode arrays when applying transformations. This is a big advantage over other systems like BigQuery.
+ClickHouse provides standard SQL with many extensions and improvements that make it more friendly for analytical tasks. E.g. ClickHouse SQL [supports lambda functions](/sql-reference/functions/overview#arrow-operator-and-lambda) and higher order functions, so you don't have to unnest/explode arrays when applying transformations. This is a big advantage over other systems like BigQuery.
 
 ## Arrays {#arrays}
 

@@ -1,6 +1,7 @@
 import React, {useState, useRef, useCallback, useEffect} from 'react';
-import CodeBlock from '@theme-original/CodeBlock';
 import styles from './styles.module.css';
+import CodeViewer from "../../components/CodeViewer";
+
 
 function countLines(text) {
   // Split the string by newline characters
@@ -8,6 +9,30 @@ function countLines(text) {
   // Return the number of lines
   return lines.length;
 }
+
+function parseMetaString(meta = '') {
+  const result = {}
+  const implicit_settings = ['runnable', 'run', 'show_statistics', 'click_ui']
+
+  meta.split(' ').forEach((part) => {
+    if (!part) return
+
+    const [rawKey, ...rawValueParts] = part.split('=')
+    const key = rawKey?.trim()
+    const rawValue = rawValueParts.join('=').trim()
+
+    if (key && rawValue) {
+      // Remove surrounding single or double quotes if present
+      const cleanedValue = rawValue.replace(/^['"]|['"]$/g, '')
+      result[key] = cleanedValue
+    } else if (key && implicit_settings.includes(key)) {
+      result[key] = 'true'
+    }
+  })
+
+  return result
+}
+
 export default function CodeBlockWrapper(props) {
   const lineHeight = 18.85;
   const [isLoaded, setIsLoaded] = useState(false);
@@ -47,9 +72,14 @@ export default function CodeBlockWrapper(props) {
     );
   }
 
-    return (
-        <>
-            <CodeBlock {...props} />
-        </>
+  
+  const settings = parseMetaString(props.metastring); 
+  settings['language'] = props.className ? props.className.replace('language-', ''): 'txt';
+  return (
+    <>
+        <CodeViewer {...settings}>
+          {props.children}
+        </CodeViewer>
+    </>
   );
 }

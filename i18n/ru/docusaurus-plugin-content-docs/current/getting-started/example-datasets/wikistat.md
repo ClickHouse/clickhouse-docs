@@ -1,20 +1,20 @@
 ---
-description: "Изучите набор данных WikiStat, содержащий 0,5 триллиона записей."
-sidebar_label: WikiStat
-title: "WikiStat"
+description: 'Исследуйте набор данных WikiStat, содержащий 0.5 триллиона записей.'
+sidebar_label: 'WikiStat'
 slug: /getting-started/example-datasets/wikistat
+title: 'WikiStat'
 ---
 
-Набор данных содержит 0,5 триллиона записей.
+Набор данных содержит 0.5 триллиона записей.
 
-Посмотрите видео с FOSDEM 2023: https://www.youtube.com/watch?v=JlcI2Vfz_uk
+Смотрите видео с FOSDEM 2023: https://www.youtube.com/watch?v=JlcI2Vfz_uk
 
 А также презентацию: https://presentations.clickhouse.com/fosdem2023/
 
 Источник данных: https://dumps.wikimedia.org/other/pageviews/
 
 Получение списка ссылок:
-``` shell
+```shell
 for i in {2015..2023}; do
   for j in {01..12}; do
     echo "${i}-${j}" >&2
@@ -25,7 +25,7 @@ done | sort | uniq | tee links.txt
 ```
 
 Скачивание данных:
-``` shell
+```shell
 sed -r 's!pageviews-([0-9]{4})([0-9]{2})[0-9]{2}-[0-9]+\.gz!https://dumps.wikimedia.org/other/pageviews/\1/\1-\2/\0!' \
   links.txt | xargs -P3 wget --continue
 ```
@@ -34,7 +34,7 @@ sed -r 's!pageviews-([0-9]{4})([0-9]{2})[0-9]{2}-[0-9]+\.gz!https://dumps.wikime
 
 Создание таблицы:
 
-``` sql
+```sql
 CREATE TABLE wikistat
 (
     time DateTime CODEC(Delta, ZSTD(3)),
@@ -49,7 +49,7 @@ ORDER BY (path, time);
 
 Загрузка данных:
 
-``` shell
+```shell
 clickhouse-local --query "
   WITH replaceRegexpOne(_path, '^.+pageviews-(\\d{4})(\\d{2})(\\d{2})-(\\d{2})(\\d{2})(\\d{2}).gz$', '\1-\2-\3 \4-\5-\6')::DateTime AS time, 
        extractGroups(line, '^([^ \\.]+)(\\.[^ ]+)? +([^ ]+) +(\\d+) +(\\d+)$') AS values
@@ -66,7 +66,7 @@ clickhouse-local --query "
 
 Или загрузка очищенных данных:
 
-``` sql
+```sql
 INSERT INTO wikistat WITH
     parseDateTimeBestEffort(extract(_file, '^pageviews-([\\d\\-]+)\\.gz$')) AS time,
     splitByChar(' ', line) AS values,

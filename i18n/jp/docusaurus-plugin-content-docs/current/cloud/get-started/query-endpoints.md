@@ -505,4 +505,3 @@ cat ./samples/my_first_table_2024-07-11.csv | curl --user '<openApiKeyId:openApi
                                                    "https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=CSV" \
                                                    --data-binary @-
 ```
-```

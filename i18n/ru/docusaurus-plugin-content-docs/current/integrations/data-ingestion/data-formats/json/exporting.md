@@ -1,14 +1,14 @@
 ---
-title: Экспорт JSON
+title: 'Экспорт JSON'
 slug: /integrations/data-formats/json/exporting
-description: Как экспортировать данные JSON из ClickHouse
-keywords: [json, clickhouse, форматы, экспорт]
+description: 'Как экспортировать данные JSON из ClickHouse'
+keywords: ['json', 'clickhouse', 'formats', 'exporting']
 ---
 
 
 # Экспорт JSON
 
-Практически любой формат JSON, используемый для импорта, можно использовать и для экспорта. Наиболее популярный формат — это [`JSONEachRow`](/interfaces/formats.md/#jsoneachrow):
+Практически любой формат JSON, используемый для импорта, может быть использован и для экспорта. Самый популярный формат — это [`JSONEachRow`](/interfaces/formats.md/#jsoneachrow):
 
 ```sql
 SELECT * FROM sometable FORMAT JSONEachRow
@@ -32,7 +32,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRow
 
 ## Переопределение типов данных как строк {#overriding-data-types-as-strings}
 
-ClickHouse уважает типы данных и будет экспортировать JSON в соответствии со стандартами. Но в тех случаях, когда нам нужно, чтобы все значения были закодированы как строки, мы можем использовать формат [JSONStringsEachRow](/interfaces/formats.md/#jsonstringseachrow):
+ClickHouse учитывает типы данных и будет экспортировать JSON в соответствии со стандартами. Но в случаях, когда нам нужно, чтобы все значения кодировались как строки, мы можем использовать формат [JSONStringsEachRow](/interfaces/formats.md/#jsonstringseachrow):
 
 ```sql
 SELECT * FROM sometable FORMAT JSONStringsEachRow
@@ -56,74 +56,74 @@ SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
 
 ## Экспорт метаданных вместе с данными {#exporting-metadata-together-with-data}
 
-Общий формат [JSON](/interfaces/formats.md/#json), который популярен в приложениях, будет экспортировать не только результирующие данные, но и типы колонок, и статистику запроса:
+Общий [JSON](/interfaces/formats.md/#json) формат, который популярен в приложениях, будет экспортировать не только результирующие данные, но и типы колонок и статистику запросов:
 
 ```sql
 SELECT * FROM sometable FORMAT JSON
 ```
 ```response
 {
-	"meta":
-	[
-		{
-			"name": "path",
-			"type": "String"
-		},
-		…
-	],
+        "meta":
+        [
+                {
+                        "name": "path",
+                        "type": "String"
+                },
+                ...
+        ],
 
-	"data":
-	[
-		{
-			"path": "Bob_Dolman",
-			"month": "2016-11-01",
-			"hits": 245
-		},
-		…
-	],
+        "data":
+        [
+                {
+                        "path": "Bob_Dolman",
+                        "month": "2016-11-01",
+                        "hits": 245
+                },
+                ...
+        ],
 
-	"rows": 3,
+        "rows": 3,
 
-	"statistics":
-	{
-		"elapsed": 0.000497457,
-		"rows_read": 3,
-		"bytes_read": 87
-	}
+        "statistics":
+        {
+                "elapsed": 0.000497457,
+                "rows_read": 3,
+                "bytes_read": 87
+        }
 }
 ```
 
-Формат [JSONCompact](/interfaces/formats.md/#jsoncompact) выведет ту же метаданную информацию, но использует компактную форму для самих данных:
+Формат [JSONCompact](/interfaces/formats.md/#jsoncompact) будет печатать ту же метаинформацию, но использовать компактную форму для самих данных:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompact
 ```
 ```response
 {
-	"meta":
-	[
-		{
-			"name": "path",
-			"type": "String"
-		},
-		…
-	],
+        "meta":
+        [
+                {
+                        "name": "path",
+                        "type": "String"
+                },
+                ...
+        ],
 
-	"data":
-	[
-		["Bob_Dolman", "2016-11-01", 245],
-		["1-krona", "2017-01-01", 4],
-		["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", 3]
-	],
+        "data":
+        [
+                ["Bob_Dolman", "2016-11-01", 245],
+                ["1-krona", "2017-01-01", 4],
+                ["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", 3]
+        ],
 
-	"rows": 3,
+        "rows": 3,
 
-	"statistics":
-	{
-		"elapsed": 0.00074981,
-		"rows_read": 3,
-		"bytes_read": 87
-	}
+        "statistics":
+        {
+                "elapsed": 0.00074981,
+                "rows_read": 3,
+                "bytes_read": 87
+        }
 }
 ```
 
@@ -144,11 +144,11 @@ SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
 ["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", 3]
 ```
 
-Этот формат будет использовать компактный JSON с двумя заголовочными строками с именами и типами колонок. Этот формат можно использовать для загрузки данных в другой экземпляр ClickHouse (или в другие приложения).
+Этот формат использует компактный JSON, предваряемый двумя строками заголовка с именами и типами колонок. Этот формат может быть использован для приема данных в другую инстанцию ClickHouse (или в другие приложения).
 
 ## Экспорт JSON в файл {#exporting-json-to-a-file}
 
-Чтобы сохранить экспортированные данные JSON в файл, мы можем использовать конструкцию [INTO OUTFILE](/sql-reference/statements/select/into-outfile.md):
+Чтобы сохранить экспортируемые данные JSON в файл, мы можем использовать конструкцию [INTO OUTFILE](/sql-reference/statements/select/into-outfile.md):
 
 ```sql
 SELECT * FROM sometable INTO OUTFILE 'out.json' FORMAT JSONEachRow
@@ -157,7 +157,7 @@ SELECT * FROM sometable INTO OUTFILE 'out.json' FORMAT JSONEachRow
 36838935 rows in set. Elapsed: 2.220 sec. Processed 36.84 million rows, 1.27 GB (16.60 million rows/s., 572.47 MB/s.)
 ```
 
-ClickHouse потребовалось всего 2 секунды, чтобы экспортировать почти 37 миллионов записей в файл JSON. Мы также можем экспортировать, используя конструкцию `COMPRESSION`, чтобы включить сжатие на лету:
+ClickHouse потребовалось всего 2 секунды, чтобы экспортировать почти 37 миллионов записей в файл JSON. Мы также можем экспортировать с помощью конструкции `COMPRESSION`, чтобы включить сжатие на лету:
 
 ```sql
 SELECT * FROM sometable INTO OUTFILE 'out.json.gz' FORMAT JSONEachRow
@@ -166,9 +166,9 @@ SELECT * FROM sometable INTO OUTFILE 'out.json.gz' FORMAT JSONEachRow
 36838935 rows in set. Elapsed: 22.680 sec. Processed 36.84 million rows, 1.27 GB (1.62 million rows/s., 56.02 MB/s.)
 ```
 
-Это занимает больше времени, но генерирует значительно меньший сжатый файл:
+На это уходит больше времени, но создается намного меньший сжатый файл:
 
 ```bash
-2.2G	out.json
-576M	out.json.gz
+2.2G    out.json
+576M    out.json.gz
 ```

@@ -6,7 +6,7 @@ description: 跳过索引使 ClickHouse 能够跳过读取保证没有匹配值�
 ---
 
 import SimpleSkip from '@site/static/images/guides/best-practices/simple_skip.svg';
-import BadSkip from '@site/static/images/guides/best-practices/bad_skip_1.svg';
+import BadSkip from '@site/static/images/guides/best-practices/bad_skip.svg';
 
 
 # 理解 ClickHouse 数据跳过索引
