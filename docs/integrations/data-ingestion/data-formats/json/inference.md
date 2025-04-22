@@ -14,7 +14,7 @@ ClickHouse can automatically determine the structure of JSON data. This can be u
 * **Consistent structure** - The data from which you are going to infer types contains all the keys that you are interested in. Type inference is based on sampling the data up to a [maximum number of rows](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) or [bytes](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference). Data after the sample, with additional columns, will be ignored and can't be queried.
 * **Consistent types** - Data types for specific keys need to be compatible i.e. it must be possible to coerce one type to the other automatically.
 
-If you have more dynamic JSON, to which new keys are added and multiple types are possible for the same path, see ["Working with semi-structured and dynamic data"](#working-with-semi-structured-and-dynamic-data).
+If you have more dynamic JSON, to which new keys are added and multiple types are possible for the same path, see ["Working with semi-structured and dynamic data"](/integrations/data-formats/json/inference#working-with-semi-structured-data).
 
 ## Detecting types {#detecting-types}
 

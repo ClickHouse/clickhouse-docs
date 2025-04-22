@@ -44,7 +44,7 @@ Yes! ClickPipes for Postgres offers two ways to connect to databases in private 
      - us-east-1
      - us-east-2 
      - eu-central-1
-   - For detailed setup instructions, see our [PrivateLink documentation](/knowledgebase/aws-privatelink-setup-for-clickpipes#requirements)
+   - For detailed setup instructions, see our [PrivateLink documentation](/knowledgebase/aws-privatelink-setup-for-clickpipes)
    - For regions where PrivateLink is not available, please use SSH tunneling
 
 ### How do you handle UPDATEs and DELETEs? {#how-do-you-handle-updates-and-deletes}
