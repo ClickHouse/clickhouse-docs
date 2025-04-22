@@ -36,9 +36,9 @@ WITH
     ),
     settings_from_cpp AS
     (
-        SELECT extract(line, 'DECLARE\\(\\w+, (\\w+),') AS name
+        SELECT extract(line, 'DECLARE(?:_WITH_ALIAS)?\\(\\w+, (\\w+),') AS name
         FROM file(cpp_file, LineAsString)
-        WHERE match(line, '^\\s*DECLARE\\(')
+        WHERE match(line, '^\\s*DECLARE(?:_WITH_ALIAS)?\\(')
     ),
     settings_with_change_history AS
     (
