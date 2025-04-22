@@ -83,10 +83,10 @@ To enable GTID mode for your MySQL instance, follow the steps as follows:
 2. Click on the `Configurations` tab.
 3. Click on the parameter group link.
 4. Click on the `Edit` button in the top-right corner.
-5. Set `enforce_gtid_consistency` is `ON`.
-5. Set `gtid-mode` to `ON`.
-6. Click on `Save Changes` in the top-right corner.
-7. Reboot your instance for the changes to take effect.
+5. Set `enforce_gtid_consistency` to `ON`.
+6. Set `gtid-mode` to `ON`.
+7. Click on `Save Changes` in the top-right corner.
+8. Reboot your instance for the changes to take effect.
 
 <Image img={enable_gtid} alt="GTID enabled" size="lg" border/>
 
