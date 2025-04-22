@@ -28,7 +28,7 @@ To establish whether a value is **static** or **dynamic**, see the relevant sect
 
 <p></p>
 
-**Important:** The above rules should be applied recursively. If a key's value is determined to be dynamic, no further evaluation is required and the guidelines in [**Handling dynamic objects**](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-objects) can be followed. If the object is static, continue to assess the subkeys until either key values are primitive or dynamic keys are encountered.
+**Important:** The above rules should be applied recursively. If a key's value is determined to be dynamic, no further evaluation is required and the guidelines in [**Handling dynamic objects**](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures) can be followed. If the object is static, continue to assess the subkeys until either key values are primitive or dynamic keys are encountered.
 
 To illustrate these rules, we use the following JSON example representing a person:
 
