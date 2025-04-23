@@ -129,30 +129,7 @@ In the peering AWS account,
 <br />
 
 #### Step 6 Edit Security Group to allow Peered VPC access {#step-6-edit-security-group-to-allow-peered-vpc-access}
-In ClickHouse BYOC account,
-1. In the ClickHouse BYOC account, navigate to EC2 and locate the Private Load Balancer named like infra-xx-xxx-ingress-private.
-
-<br />
-
-<Image img={byoc_plb} size="lg" alt="BYOC Private Load Balancer" border />
-
-<br />
-
-2. Under the Security tab on the Details page, find the associated Security Group, which follows a naming pattern like `k8s-istioing-istioing-xxxxxxxxx`.
-
-<br />
-
-<Image img={byoc_security} size="lg" alt="BYOC Private Load Balancer Security Group" border />
-
-<br />
-
-3. Edit the Inbound Rules of this Security Group and add the Peered VPC CIDR range (or specify the required CIDR range as needed).
-
-<br />
-
-<Image img={byoc_inbound} size="lg" alt="BYOC Security Group Inbound Rule" border />
-
-<br />
+In the ClickHouse BYOC account, you'll need to update the Security Group settings to allow traffic from your peered VPC. Please contact ClickHouse Support to request the addition of inbound rules that include the CIDR ranges of your peered VPC.
 
 ---
 The ClickHouse service should now be accessible from the peered VPC.
