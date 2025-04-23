@@ -1,8 +1,10 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-`clickhouse-jdbc` implements the standard JDBC interface using the latest [java client](/integrations/language-clients/java/client/client.mdx).
-We recommend using the latest [java client](/integrations/language-clients/java/client.mdx) directly if performance/direct access is critical.
+:::note
+`clickhouse-jdbc` implements the standard JDBC interface using the latest java clientю
+We recommend using the latest java client directly if performance/direct access is critical.
+:::
 
 ## Changes from 0.7.x {#changes-from-07x}
 In 0.8 we tried to make the driver more strictly follow the JDBC specification, so there are some removed features that may affect you:
@@ -13,7 +15,7 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
 | Response Column Renaming         | `ResultSet` was mutable - for efficiency sake they're now read-only                                                                                                                                                                                                                                             |
 | Multi-Statement SQL              | Multi-statement support was only **simulated**, now it strictly follows 1:1                                                                                                                                                                                                                                     |
 | Named Parameters                 | Not part of the JDBC spec                                                                                                                                                                                                                                                                                       |
-| Stream-based `PreparedStatement` | Early version of the driver allowed for non-jdbc usage of `PreparedStatement` - if you desire such options, we recommend looking at the [Java Client](/integrations/language-clients/java/client.md) and its [examples](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2). |
+| Stream-based `PreparedStatement` | Early version of the driver allowed for non-jdbc usage of `PreparedStatement` - if you desire such options, we recommend looking at the [Java Client](/integrations/language-clients/java/client/client.mdx) and its [examples](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2). |
 
 :::note
 `Date` is stored without timezone, while `DateTime` is stored with timezone. This can lead to unexpected results if you're not careful.
@@ -67,7 +69,7 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
 
 **Connection Properties**:
 
-Beyond standard JDBC properties, the driver supports the ClickHouse-specific properties offered by the underlying [java client](/integrations/language-clients/java/client.md).
+Beyond standard JDBC properties, the driver supports the ClickHouse-specific properties offered by the underlying [java client](/integrations/language-clients/java/client/client.mdx).
 Where possible methods will return an `SQLFeatureNotSupportedException` if the feature is not supported. Other custom properties include:
 
 | Property                         | Default | Description                                                    |
