@@ -59,8 +59,8 @@ WITH
         ' {#'||name||'} \n\n',
         multiIf(tier == 'Experimental', '<ExperimentalBadge/>\n\n', tier == 'Beta', '<BetaBadge/>\n\n', ''),
         if(description LIKE '%Only has an effect in ClickHouse Cloud%', '<CloudAvailableBadge/>\n\n', ''),
-        if(type != '' AND default != '', format('<SettingsInfoBlock type="{}" default_value="{}" />', type, default), ''),
-        if(rows != '', printf('<VersionHistory rows={%s}/>\n\n', rows), ''),
+        if(type != '' AND default != '', format('\n\n<SettingsInfoBlock type="{}" default_value="{}" />\n\n', type, default), ''),
+        if(rows != '', printf('\n\n<VersionHistory rows={%s}/>\n\n', rows), ''),
         replaceOne(trim(BOTH '\\n' FROM description), ' and [MaterializedMySQL](../../engines/database-engines/materialized-mysql.md)',''))
     FROM settings_with_change_history
     ORDER BY name
