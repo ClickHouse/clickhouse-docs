@@ -274,13 +274,15 @@ Versioned folders are structured as follows:
 ```text
 .
 ├── client
-│         ├── _v0_7.mdx
-│         ├── _v0_8.mdx
+│         ├── _snippets
+│         │         ├── _v0_7.mdx
+│         │         └── _v0_8.mdx
 │         └── client.mdx
 ├── index.md
 ├── jdbc
-│         ├── _v0_7.mdx
-│         ├── _v0_8.mdx
+│         ├── _snippets
+│         │         ├── _v0_7.mdx
+│         │         └── _v0_8.mdx
 │         └── jdbc.mdx
 └── r2dbc.md
 ```
