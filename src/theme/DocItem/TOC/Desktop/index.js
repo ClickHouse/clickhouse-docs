@@ -29,18 +29,8 @@ export default function DocItemTOCDesktop() {
       {!isClosed && (<div className={styles.docCloudCard}>
         <div className={styles.docCloudCardHeader}>
           <h6>Try ClickHouse Cloud for FREE</h6>
-          <button
-            className={styles.docCloudClose}
-            onClick={() => {
-              setClosed(true)
-              window.localStorage.setItem('doc-cloud-card-banner', 'closed')
-            }}>
-            <IconClose color="var(--ifm-color-emphasis-600)" width={10} height={10}/>
-          </button>
         </div>
-        <p className={styles.docCloudCardContent}>Easy data ingestion, automatic scaling, built-in SQL console and lots
-          more.
-        </p>
+        <p className={styles.docCloudCardContent}>Separation of storage and compute, automatic scaling, built-in SQL console, and lots more. $300 in free credits when signing up.</p>
         <a href='https://console.clickhouse.cloud/signUp?loc=doc-card-banner'
            className={clsx(styles.docCloudCardLink, 'click-button primary-btn')}>Try it for Free</a>
       </div>)}
