@@ -17,6 +17,8 @@ import byoc_vpcpeering4 from '@site/static/images/cloud/reference/byoc-vpcpeerin
 import byoc_plb from '@site/static/images/cloud/reference/byoc-plb.png';
 import byoc_security from '@site/static/images/cloud/reference/byoc-securitygroup.png';
 import byoc_inbound from '@site/static/images/cloud/reference/byoc-inbound-rule.png';
+import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png';
+import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
 
 ## Overview {#overview}
 
@@ -50,9 +52,11 @@ Metrics and logs are stored within the customer's BYOC VPC. Logs are currently s
 
 Customers can initiate the onboarding process by reaching out to [us](https://clickhouse.com/cloud/bring-your-own-cloud). Customers need to have a dedicated AWS account and know the region they will use. At this time, we are allowing users to launch BYOC services only in the regions that we support for ClickHouse Cloud.
 
-### Prepare a Dedicated AWS Account {#prepare-a-dedicated-aws-account}
+### Prepare an AWS Account {#prepare-an-aws-account}
 
-Customers must prepare a dedicated AWS account for hosting the ClickHouse BYOC deployment to ensure better isolation. With this and the initial organization admin email, you can contact ClickHouse support.
+Customers are recommended to prepare a dedicated AWS account for hosting the ClickHouse BYOC deployment to ensure better isolation. However, using a shared account and an existing VPC is also possible. See the details in *Setup BYOC Infrastructure* below.
+
+With this account and the initial organization admin email, you can contact ClickHouse support.
 
 ### Apply CloudFormation Template {#apply-cloudformation-template}
 
@@ -67,6 +71,36 @@ After creating the CloudFormation stack, you will be prompted to set up the infr
 - **The region you want to use**, you can choose one of any [public regions](/cloud/reference/supported-regions) we have for ClickHouse Cloud.
 - **The VPC CIDR range for BYOC**: By default, we use `10.0.0.0/16` for the BYOC VPC CIDR range. If you plan to use VPC peering with another account, ensure the CIDR ranges do not overlap. Allocate a proper CIDR range for BYOC, with a minimum size of `/22` to accommodate necessary workloads.
 - **Availability Zones for BYOC VPC**: If you plan to use VPC peering, aligning availability zones between the source and BYOC accounts can help reduce cross-AZ traffic costs. In AWS, availability zone suffixes (`a, b, c`) may represent different physical zone IDs across accounts. See the [AWS guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html) for details.
+
+#### Customer-managed VPC
+By default, ClickHouse Cloud will provision a dedicated VPC for better isolation in your BYOC deployment. However, you can also use an existing VPC in your account. This requires specific configuration and must be coordinated through ClickHouse Support.
+
+**Configure Your Existing VPC**
+1. Allocate at least 3 private subnets across 3 different availability zones for ClickHouse Cloud to use.
+2. Ensure each subnet has a minimum CIDR range of `/23` (e.g., 10.0.0.0/23) to provide sufficient IP addresses for the ClickHouse deployment.
+3. Add the tag `kubernetes.io/role/internal-elb=1` to each subnet to enable proper load balancer configuration.
+
+<br />
+
+<Image img={byoc_subnet_1} size="lg" alt="BYOC VPC Subnet" background='black'/>
+
+<br />
+
+<br />
+
+<Image img={byoc_subnet_2} size="lg" alt="BYOC VPC Subnet Tags" background='black'/>
+
+<br />
+
+**Contact ClickHouse Support**  
+Create a support ticket with the following information:
+
+* Your AWS account ID
+* The AWS region where you want to deploy the service
+* Your VPC ID
+* The Private Subnet IDs you've allocated for ClickHouse
+* The availability zones these subnets are in
+
 
 ### Optional: Setup VPC Peering {#optional-setup-vpc-peering}
 
