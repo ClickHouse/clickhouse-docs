@@ -17,6 +17,8 @@ import byoc_vpcpeering4 from '@site/static/images/cloud/reference/byoc-vpcpeerin
 import byoc_plb from '@site/static/images/cloud/reference/byoc-plb.png';
 import byoc_security from '@site/static/images/cloud/reference/byoc-securitygroup.png';
 import byoc_inbound from '@site/static/images/cloud/reference/byoc-inbound-rule.png';
+import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png';
+import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
 
 ## Overview {#overview}
 
@@ -50,9 +52,11 @@ Metrics and logs are stored within the customer's BYOC VPC. Logs are currently s
 
 Customers can initiate the onboarding process by reaching out to [us](https://clickhouse.com/cloud/bring-your-own-cloud). Customers need to have a dedicated AWS account and know the region they will use. At this time, we are allowing users to launch BYOC services only in the regions that we support for ClickHouse Cloud.
 
-### Prepare a Dedicated AWS Account {#prepare-a-dedicated-aws-account}
+### Prepare an AWS Account {#prepare-an-aws-account}
 
-Customers must prepare a dedicated AWS account for hosting the ClickHouse BYOC deployment to ensure better isolation. With this and the initial organization admin email, you can contact ClickHouse support.
+Customers are recommended to prepare a dedicated AWS account for hosting the ClickHouse BYOC deployment to ensure better isolation. However, using a shared account and an existing VPC is also possible. See the details in *Setup BYOC Infrastructure* below.
+
+With this account and the initial organization admin email, you can contact ClickHouse support.
 
 ### Apply CloudFormation Template {#apply-cloudformation-template}
 
