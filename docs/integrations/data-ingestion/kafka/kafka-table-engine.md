@@ -38,7 +38,7 @@ To persist this data from a read of the table engine, we need a means of capturi
 :::tip
 The Kafka Engine does have some limitations:
 - [Kafka message header](https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/index.html#wire-format) is not currently supported, so schema registry cannot be used.
-- Protobuf, ProtobufSingle are function correctly, while [ProtobufList](https://github.com/ClickHouse/ClickHouse/issues/78746) current does not work when the Kafka quque has many messages.
+- Protobuf, ProtobufSingle are function correctly, while [ProtobufList](https://github.com/ClickHouse/ClickHouse/issues/78746) current does not work when the Kafka queue has many messages.
 :::
 
 #### Steps {#steps}
