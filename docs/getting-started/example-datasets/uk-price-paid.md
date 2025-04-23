@@ -70,7 +70,7 @@ SELECT
     district,
     county
 FROM url(
-    'http://prod.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
+    'http://prod1.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
     'CSV',
     'uuid_string String,
     price_string String,
