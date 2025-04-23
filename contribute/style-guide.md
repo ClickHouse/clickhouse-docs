@@ -253,53 +253,124 @@ sidebar.
 
 ## Client versioning
 
+### Background
+
 Docusaurus supports versioning documentation, however it is opinionated and 
 aimed more at use cases where you have a single product with set releases, or
 multiple products with their own releases.
 
-Due to the fact that we have many 
-different integrations in ClickHouse, each of which may need versioned documentation,
-we use the following custom `ClientVersionDropdown` component for versioning of
-client documentation:
+Due to the fact that we have many different integrations in ClickHouse, each of 
+which may need versioned documentation, we use the following custom 
+`ClientVersionDropdown` component for versioning of client documentation:
 
 ```markdown
 <ClientVersionDropdown versions={}/>
 ```
 
-To use this component, import it into the markdown page:
+### How to use it 
 
-```markdown
+Versioned folders are structured as follows:
+
+```text
+.
+├── client
+│         ├── _v0_7.mdx
+│         ├── _v0_8.mdx
+│         └── client.mdx
+├── index.md
+├── jdbc
+│         ├── _v0_7.mdx
+│         ├── _v0_8.mdx
+│         └── jdbc.mdx
+└── r2dbc.md
+```
+
+* The content for each version is placed in a snippet. For example `_v0_7.mdx`
+  * Snippets begin with `_` 
+  * Snippets do not contain front-matter
+  * These snippets import any components they may need (See `_v0_7.mdx` for example)
+  * They should be .mdx files
+* There is a single page for all versions. For example `client.mdx`
+  * This page contains frontmatter
+  * It imports the `<ClientVersionDropdown>` component
+  * It should be a .mdx file
+
+To use this component, import it into the single page:
+
+```js
 import ClientVersionDropdown from '@theme/ClientVersionDropdown/ClientVersionDropdown'
 ```
 
-Add it underneath the H1 element on the page and pass it an array of objects
-representing versions and the slug of the page:
+Also import the two snippets:
+
+```js
+import v07 from './_v0_7.mdx'
+import v08 from './_v0_8.mdx'
+```
+
+Pass it an array of objects representing versions and their respective snippets:
 
 ```markdown
-# JDBC Driver (0.8+)
-
 <ClientVersionDropdown versions={[
 {
 'version': 'v0.8+',
-'slug': '/docs/integrations/language-clients/java/jdbc'
+'snippet': v08
 },
 {
 'version': 'v0.7.x',
-'slug': '/docs/integrations/language-clients/java/jdbc-v1'
+'snippet': v07
 }
 ]}/>
 ```
 
-Note that the component will display the first item as the 'selected' version, so
+**Note**: The component will display the first item as the 'selected' version, so
 it is important to make sure the order of the objects is correct.
 
-Add this component on every 'versioned' page for the client.
+### URL parameters
 
-In addition, add to every 'archived' version page the following frontmatter item:
+If you need to share a link to the page you can do it through URL params:
 
-```markdown
-displayed_sidebar: integrations
+```response
+/docs/integrations/language-clients/java/client?v=v08
 ```
 
-This will make sure that the sidebar displays, even if this particular page is
-not shown in the sidebar.
+When using URL parameters to control which version of documentation is displayed, 
+there are conventions to follow for reliable functionality. 
+Here's how the `?v=v08` parameter relates to the snippet selection:
+
+#### How It Works
+
+The URL parameter acts as a selector that matches against the `version` property 
+in your component configuration. For example:
+
+- URL: `docs/api?v=v08`
+- Matches: `version: 'v0.8+'` in your dropdown configuration
+
+#### Conventions That Work
+
+- **Simple Version Strings**: Parameters like `?v=v08`, `?v=v07` work by 
+- matching against stripped versions of your configured version names.
+
+- **Flexible Matching**: The implementation supports:
+  - Removing dots: `v0.8` matches `?v=v08`
+  - Ignoring plus signs: `v0.8+` matches `?v=v08`
+  - Case-insensitive matching: `v0.8` matches `?v=V08`
+
+- **Preserving Other Parameters**: Other URL parameters are preserved when 
+switching versions.
+
+#### What Won't Work
+
+- **Partial Matches**: `?v=8` won't match `v0.8` with the default implementation.
+
+- **Complex Version Strings**: Very complex versions like `?v=v1.2.3-beta.4` 
+require more sophisticated matching logic. (Reach out to the docs team if required)
+
+- **Non-Standard Formats**: Version formats not accounted for in the matching 
+logic might fail.
+
+#### Best Practices
+
+1. Keep version strings in consistent formats for predictable results.
+
+2. Use simplified version parameters in URLs (e.g., `v08` instead of `v0.8.x`).
