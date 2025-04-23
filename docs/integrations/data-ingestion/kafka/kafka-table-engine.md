@@ -37,8 +37,8 @@ To persist this data from a read of the table engine, we need a means of capturi
 
 :::tip
 The Kafka Engine does have some limitations:
-- [Kafka message header](https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/index.html#wire-format) is not currently supported, so schema registry cannot be used
-- Protobuf, ProtobufSingle are supported, while [ProtobufList](https://github.com/ClickHouse/ClickHouse/issues/78746) is not
+- [Kafka message header](https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/index.html#wire-format) is not currently supported, so schema registry cannot be used.
+- Protobuf, ProtobufSingle are function correctly, while [ProtobufList](https://github.com/ClickHouse/ClickHouse/issues/78746) current does not work when the Kafka quque has many messages.
 :::
 
 #### Steps {#steps}
@@ -196,7 +196,7 @@ ENGINE = Kafka SETTINGS
 Notes
 [Full Kafka Engine Table creation options](https://clickhouse.com/docs/engines/table-engines/integrations/kafka#creating-a-table)
 
-[kafka_format must be the last setting](https://github.com/ClickHouse/ClickHouse/issues/37895)
+Please use caution with INSERTs because the [kafka_format must be the last setting](https://github.com/ClickHouse/ClickHouse/issues/37895)
 :::
 
 We discuss engine settings and performance tuning below. At this point, a simple select on the table `github_queue` should read some rows.  Note that this will move the consumer offsets forward, preventing these rows from being re-read without a [reset](#common-operations). Note the limit and required parameter `stream_like_engine_allow_direct_select.`
