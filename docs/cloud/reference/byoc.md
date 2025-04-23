@@ -72,7 +72,7 @@ After creating the CloudFormation stack, you will be prompted to set up the infr
 - **The VPC CIDR range for BYOC**: By default, we use `10.0.0.0/16` for the BYOC VPC CIDR range. If you plan to use VPC peering with another account, ensure the CIDR ranges do not overlap. Allocate a proper CIDR range for BYOC, with a minimum size of `/22` to accommodate necessary workloads.
 - **Availability Zones for BYOC VPC**: If you plan to use VPC peering, aligning availability zones between the source and BYOC accounts can help reduce cross-AZ traffic costs. In AWS, availability zone suffixes (`a, b, c`) may represent different physical zone IDs across accounts. See the [AWS guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html) for details.
 
-#### Customer-managed VPC
+#### Customer-managed VPC {#customer-managed-vpc}
 By default, ClickHouse Cloud will provision a dedicated VPC for better isolation in your BYOC deployment. However, you can also use an existing VPC in your account. This requires specific configuration and must be coordinated through ClickHouse Support.
 
 **Configure Your Existing VPC**
