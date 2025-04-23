@@ -29,7 +29,7 @@ Each ClickHouse Cloud service includes:
 Child single services can scale vertically unlike single parent services.
 :::
 
-<Image img={compute_1} size="sm" alt="Current service in ClickHouse Cloud" background='white' />
+<Image img={compute_1} size="md" alt="Current service in ClickHouse Cloud" />
 
 <br />
 
@@ -39,7 +39,7 @@ Compute-compute separation allows users to create multiple compute node groups, 
 
 Each compute node group will have its own endpoint so you can choose which set of replicas to use for your workloads. Some of your workloads may be satisfied with only one small-size replica, and others may require full high-availability (HA) and hundreds of gigs of memory. Compute-compute separation also allows you to separate read operations from write operations so they don't interfere with each other:
 
-<Image img={compute_2} size="md" alt="Compute separation in ClickHouse Cloud" background='white' />
+<Image img={compute_2} size="md" alt="Compute separation in ClickHouse Cloud" />
 
 <br />
 
@@ -87,7 +87,7 @@ It is often useful to restrict specific services from being used by other applic
 
 You can apply IP filtering setting to each service separately, which means you can control which application can access which service. This allows you to restrict users from using specific services:
 
-<Image img={compute_4} size="md" alt="Network access control settings" background='white' />
+<Image img={compute_4} size="md" alt="Network access control settings"/>
 
 <br />
 
@@ -97,7 +97,7 @@ _Fig. 5 - Alice is restricted to access Service 2 because of the network setting
 
 Sometimes it is useful to restrict write access to a specific service and allow writes only by a subset of services in a warehouse. This can be done when creating the second and nth services (the first service should always be read-write):
 
-<Image img={compute_5} size="lg" alt="Read-write and Read-only services in a warehouse" background='white' />
+<Image img={compute_5} size="lg" alt="Read-write and Read-only services in a warehouse"/>
 
 <br />
 
