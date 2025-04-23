@@ -1,29 +1,5 @@
----
-sidebar_label: 'JDBC 0.8+'
-sidebar_position: 4
-keywords: ['clickhouse', 'java', 'jdbc', 'driver', 'integrate']
-description: 'ClickHouse JDBC driver'
-slug: /integrations/language-clients/java/jdbc
-title: 'JDBC Driver (0.8+)'
----
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-import ClientVersionDropdown from '@theme/ClientVersionDropdown/ClientVersionDropdown'
-
-# JDBC Driver (0.8+)
-
-<ClientVersionDropdown versions={[
-{
-'version': 'v0.8+',
-'slug': '/docs/integrations/language-clients/java/jdbc'
-},
-{
-'version': 'v0.7.x',
-'slug': '/docs/integrations/language-clients/java/jdbc-v1'
-}
-]}/>
 
 `clickhouse-jdbc` implements the standard JDBC interface using the latest [java client](/integrations/language-clients/java/client.md).
 We recommend using the latest [java client](/integrations/language-clients/java/client.md) directly if performance/direct access is critical.
@@ -50,34 +26,34 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
 ### Setup {#setup}
 
 <Tabs groupId="jdbc-base-dependencies">
-<TabItem value="maven" label="Maven" >
+    <TabItem value="maven" label="Maven" >
 
-```xml 
-<!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
-<dependency>
-    <groupId>com.clickhouse</groupId>
-    <artifactId>clickhouse-jdbc</artifactId>
-    <version>0.8.2</version>
-    <classifier>shaded-all</classifier>    
-</dependency>
-```
+        ```xml
+        <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
+        <dependency>
+            <groupId>com.clickhouse</groupId>
+            <artifactId>clickhouse-jdbc</artifactId>
+            <version>0.8.2</version>
+            <classifier>shaded-all</classifier>
+        </dependency>
+        ```
 
-</TabItem>
-<TabItem value="gradle-kt" label="Gradle (Kotlin)">
+    </TabItem>
+    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
 
-```kotlin
-// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-implementation("com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all")
-```
-</TabItem>
-<TabItem value="gradle" label="Gradle">
+        ```kotlin
+        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+        implementation("com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all")
+        ```
+    </TabItem>
+    <TabItem value="gradle" label="Gradle">
 
-```groovy
-// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-implementation 'com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all'
-```
+        ```groovy
+        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+        implementation 'com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all'
+        ```
 
-</TabItem>
+    </TabItem>
 </Tabs>
 
 ## Configuration {#configuration}
@@ -169,7 +145,7 @@ try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable VALUES (?
 ```
 
 ## `HikariCP` {#hikaricp}
-    
+
 ```java showLineNumbers
 // connection pooling won't help much in terms of performance,
 // because the underlying implementation has its own pool.
@@ -224,14 +200,14 @@ On Linux, the equivalent settings alone may not resolve the issue. Additional st
 
 1. Adjust the following Linux kernel parameters in `/etc/sysctl.conf` or a related configuration file:
 
-    - `net.inet.tcp.keepidle`: 60000
-    - `net.inet.tcp.keepintvl`: 45000
-    - `net.inet.tcp.keepinit`: 45000
-    - `net.inet.tcp.keepcnt`: 8
-    - `net.inet.tcp.always_keepalive`: 1
-    - `net.ipv4.tcp_keepalive_intvl`: 75
-    - `net.ipv4.tcp_keepalive_probes`: 9
-    - `net.ipv4.tcp_keepalive_time`: 60 (You may consider lowering this value from the default 300 seconds)
+ - `net.inet.tcp.keepidle`: 60000
+ - `net.inet.tcp.keepintvl`: 45000
+ - `net.inet.tcp.keepinit`: 45000
+ - `net.inet.tcp.keepcnt`: 8
+ - `net.inet.tcp.always_keepalive`: 1
+ - `net.ipv4.tcp_keepalive_intvl`: 75
+ - `net.ipv4.tcp_keepalive_probes`: 9
+ - `net.ipv4.tcp_keepalive_time`: 60 (You may consider lowering this value from the default 300 seconds)
 
 2. After modifying the kernel parameters, apply the changes by running the following command:
 
