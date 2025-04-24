@@ -195,83 +195,11 @@ There are various ways to configure DNS. Please set up DNS according to your spe
 
 You need to point "DNS name", taken from [Obtain Endpoint "Service name" ](#obtain-endpoint-service-info) step, to AWS Endpoint network interfaces. This ensures that services/components within your VPC/Network can resolve it properly.
 
-### Add Endpoint ID to ClickHouse Cloud organization {#add-endpoint-id-to-clickhouse-cloud-organization}
-
-#### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-1}
-
-To add an endpoint to organization, proceed to the [Add Endpoint ID to service(s) allow list](#add-endpoint-id-to-services-allow-list) step. Adding the `Endpoint ID` using the ClickHouse Cloud console to the services allow list automatically adds it to organization.
-
-To remove an endpoint, open **Organization details -> Private Endpoints** and click the delete button to remove the endpoint.
-
-<Image img={pe_remove_private_endpoint} size="md" alt="Remove Private Endpoint" border/>
-
-#### Option 2: API {#option-2-api-1}
-
-Set the following environment variables before running any commands:
-
-```bash
-REGION=<Your region code using the AWS format, for example: us-west-2>
-PROVIDER=aws
-KEY_ID=<Your ClickHouse key ID>
-KEY_SECRET=<Your ClickHouse key secret>
-ORG_ID=<Your ClickHouse organization ID>
-SERVICE_NAME=<Your ClickHouse service name>
-```
-
-Set the `ENDPOINT_ID` environment variable using data from [Create AWS Endpoint](#create-aws-endpoint) step.
-
-To add an endpoint, run:
-
-```bash
-cat <<EOF | tee pl_config_org.json
-{
-  "privateEndpoints": {
-    "add": [
-      {
-        "cloudProvider": "aws",
-        "id": "${ENDPOINT_ID:?}",
-        "description": "An aws private endpoint",
-        "region": "${REGION:?}"
-      }
-    ]
-  }
-}
-EOF
-
-curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
--X PATCH -H "Content-Type: application/json" \
-"https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}" \
--d @pl_config_org.json
-```
-
-To remove an endpoint, run:
-
-```bash
-cat <<EOF | tee pl_config_org.json
-{
-  "privateEndpoints": {
-    "remove": [
-      {
-        "cloudProvider": "aws",
-        "id": "${ENDPOINT_ID:?}",
-        "region": "${REGION:?}"
-      }
-    ]
-  }
-}
-EOF
-
-curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
--X PATCH -H "Content-Type: application/json" \
-"https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}" \
--d @pl_config_org.json
-```
-
 ### Add "Endpoint ID" to ClickHouse service allow list {#add-endpoint-id-to-services-allow-list}
 
 #### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-2}
 
-To add please navigate to the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink then navigate to **Settings**. Enter the `Endpoint ID` obtained from the [Create AWS Endpoint](#create-aws-endpoint) step. Click "Create endpoint".
+To add please navigate to the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink then navigate to **Settings**. Click **Set up private endpoint** to open private endpoints settings. Enter the `Endpoint ID` obtained from the [Create AWS Endpoint](#create-aws-endpoint) step. Click "Create endpoint".
 
 :::note
 If you want to allow access from an existing PrivateLink connection, use the existing endpoint drop-down menu.
