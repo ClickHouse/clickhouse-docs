@@ -199,7 +199,7 @@ You need to point "DNS name", taken from [Obtain Endpoint "Service name" ](#obta
 
 #### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-2}
 
-To add please navigate to the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink then navigate to **Settings**. Click **Set up private endpoint** to open private endpoints settings. Enter the `Endpoint ID` obtained from the [Create AWS Endpoint](#create-aws-endpoint) step. Click "Create endpoint".
+To add, please navigate to the ClickHouse Cloud console, open the service that you would like to connect via PrivateLink then navigate to **Settings**. Click **Set up private endpoint** to open private endpoints settings. Enter the `Endpoint ID` obtained from the [Create AWS Endpoint](#create-aws-endpoint) step. Click "Create endpoint".
 
 :::note
 If you want to allow access from an existing PrivateLink connection, use the existing endpoint drop-down menu.
