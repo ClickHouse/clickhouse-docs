@@ -1,24 +1,9 @@
----
-sidebar_label: 'JDBC 0.8+'
-sidebar_position: 4
-keywords: ['clickhouse', 'java', 'jdbc', 'driver', 'integrate']
-description: 'ClickHouse JDBC driver'
-slug: /integrations/language-clients/java/jdbc
-title: 'JDBC Driver (0.8+)'
----
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-
-
-# JDBC Driver (0.8+)
-
-`clickhouse-jdbc` implements the standard JDBC interface using the latest [java client](/integrations/language-clients/java/client.md).
-We recommend using the latest [java client](/integrations/language-clients/java/client.md) directly if performance/direct access is critical.
 
 :::note
-If you're looking for a prior version of the JDBC driver docs, please see [here](/integrations/language-clients/java/jdbc-v1.md).
+`clickhouse-jdbc` implements the standard JDBC interface using the latest java clientю
+We recommend using the latest java client directly if performance/direct access is critical.
 :::
 
 ## Changes from 0.7.x {#changes-from-07x}
@@ -30,7 +15,7 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
 | Response Column Renaming         | `ResultSet` was mutable - for efficiency sake they're now read-only                                                                                                                                                                                                                                             |
 | Multi-Statement SQL              | Multi-statement support was only **simulated**, now it strictly follows 1:1                                                                                                                                                                                                                                     |
 | Named Parameters                 | Not part of the JDBC spec                                                                                                                                                                                                                                                                                       |
-| Stream-based `PreparedStatement` | Early version of the driver allowed for non-jdbc usage of `PreparedStatement` - if you desire such options, we recommend looking at the [Java Client](/integrations/language-clients/java/client.md) and its [examples](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2). |
+| Stream-based `PreparedStatement` | Early version of the driver allowed for non-jdbc usage of `PreparedStatement` - if you desire such options, we recommend looking at the [Java Client](/integrations/language-clients/java/client/client.mdx) and its [examples](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2). |
 
 :::note
 `Date` is stored without timezone, while `DateTime` is stored with timezone. This can lead to unexpected results if you're not careful.
@@ -43,34 +28,34 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
 ### Setup {#setup}
 
 <Tabs groupId="jdbc-base-dependencies">
-<TabItem value="maven" label="Maven" >
+    <TabItem value="maven" label="Maven" >
 
-```xml 
-<!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
-<dependency>
-    <groupId>com.clickhouse</groupId>
-    <artifactId>clickhouse-jdbc</artifactId>
-    <version>0.8.2</version>
-    <classifier>shaded-all</classifier>    
-</dependency>
-```
+        ```xml
+        <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
+        <dependency>
+            <groupId>com.clickhouse</groupId>
+            <artifactId>clickhouse-jdbc</artifactId>
+            <version>0.8.2</version>
+            <classifier>shaded-all</classifier>
+        </dependency>
+        ```
 
-</TabItem>
-<TabItem value="gradle-kt" label="Gradle (Kotlin)">
+    </TabItem>
+    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
 
-```kotlin
-// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-implementation("com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all")
-```
-</TabItem>
-<TabItem value="gradle" label="Gradle">
+        ```kotlin
+        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+        implementation("com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all")
+        ```
+    </TabItem>
+    <TabItem value="gradle" label="Gradle">
 
-```groovy
-// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-implementation 'com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all'
-```
+        ```groovy
+        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+        implementation 'com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all'
+        ```
 
-</TabItem>
+    </TabItem>
 </Tabs>
 
 ## Configuration {#configuration}
@@ -84,7 +69,7 @@ implementation 'com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all'
 
 **Connection Properties**:
 
-Beyond standard JDBC properties, the driver supports the ClickHouse-specific properties offered by the underlying [java client](/integrations/language-clients/java/client.md).
+Beyond standard JDBC properties, the driver supports the ClickHouse-specific properties offered by the underlying [java client](/integrations/language-clients/java/client/client.mdx).
 Where possible methods will return an `SQLFeatureNotSupportedException` if the feature is not supported. Other custom properties include:
 
 | Property                         | Default | Description                                                    |
@@ -96,7 +81,7 @@ Where possible methods will return an `SQLFeatureNotSupportedException` if the f
 
 ## Supported data types {#supported-data-types}
 
-JDBC Driver supports the same data formats as the underlying [java client](/integrations/language-clients/java/client.md).
+JDBC Driver supports the same data formats as the underlying [java client](/integrations/language-clients/java/client/client.mdx).
 
 ### Handling Dates, Times, and Timezones {#handling-dates-times-and-timezones}
 `java.sql.Date`, `java.sql.Time`, and `java.sql.Timestamp` can complicate how Timezones are calculated - though they're of course supported,
@@ -162,7 +147,7 @@ try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable VALUES (?
 ```
 
 ## `HikariCP` {#hikaricp}
-    
+
 ```java showLineNumbers
 // connection pooling won't help much in terms of performance,
 // because the underlying implementation has its own pool.
@@ -185,7 +170,7 @@ try (HikariDataSource ds = new HikariDataSource(poolConfig);
 ```
 
 ## More Information {#more-information}
-For more information, see our [GitHub repository](https://github.com/ClickHouse/clickhouse-java) and [Java Client documentation](/integrations/language-clients/java/client.md).
+For more information, see our [GitHub repository](https://github.com/ClickHouse/clickhouse-java) and [Java Client documentation](/integrations/language-clients/java/client/client.mdx).
 
 
 ## Troubleshooting {#troubleshooting}
@@ -217,14 +202,14 @@ On Linux, the equivalent settings alone may not resolve the issue. Additional st
 
 1. Adjust the following Linux kernel parameters in `/etc/sysctl.conf` or a related configuration file:
 
-    - `net.inet.tcp.keepidle`: 60000
-    - `net.inet.tcp.keepintvl`: 45000
-    - `net.inet.tcp.keepinit`: 45000
-    - `net.inet.tcp.keepcnt`: 8
-    - `net.inet.tcp.always_keepalive`: 1
-    - `net.ipv4.tcp_keepalive_intvl`: 75
-    - `net.ipv4.tcp_keepalive_probes`: 9
-    - `net.ipv4.tcp_keepalive_time`: 60 (You may consider lowering this value from the default 300 seconds)
+ - `net.inet.tcp.keepidle`: 60000
+ - `net.inet.tcp.keepintvl`: 45000
+ - `net.inet.tcp.keepinit`: 45000
+ - `net.inet.tcp.keepcnt`: 8
+ - `net.inet.tcp.always_keepalive`: 1
+ - `net.ipv4.tcp_keepalive_intvl`: 75
+ - `net.ipv4.tcp_keepalive_probes`: 9
+ - `net.ipv4.tcp_keepalive_time`: 60 (You may consider lowering this value from the default 300 seconds)
 
 2. After modifying the kernel parameters, apply the changes by running the following command:
 

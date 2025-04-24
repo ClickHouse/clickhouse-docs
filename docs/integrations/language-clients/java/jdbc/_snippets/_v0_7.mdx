@@ -1,15 +1,5 @@
----
-title: 'JDBC Driver'
-description: 'Page describing the JDBC driver for ClickHouse'
-slug: /integrations/language-clients/java/jdbc-v1
----
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-
-
-# JDBC Driver
 
 `clickhouse-jdbc` implements the standard JDBC interface. Being built on top of [clickhouse-client](/integrations/sql-clients/sql-console), it provides additional features like custom type mapping, transaction support, and standard synchronous `UPDATE` and `DELETE` statements, etc., so that it can be easily used with legacy applications and tools.
 
@@ -27,69 +17,69 @@ Latest JDBC (0.7.2) version uses Client-V1
 ### Setup {#setup}
 
 <Tabs groupId="client-v1-compression-deps">
-<TabItem value="maven" label="Maven">
+    <TabItem value="maven" label="Maven">
 
-```xml 
-<!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
-<dependency>
-    <groupId>com.clickhouse</groupId>
-    <artifactId>clickhouse-jdbc</artifactId>
-    <version>0.7.2</version>
-    <!-- use uber jar with all dependencies included, change classifier to http for smaller jar -->
-    <classifier>shaded-all</classifier>    
-</dependency>
-```
+        ```xml
+        <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
+        <dependency>
+            <groupId>com.clickhouse</groupId>
+            <artifactId>clickhouse-jdbc</artifactId>
+            <version>0.7.2</version>
+            <!-- use uber jar with all dependencies included, change classifier to http for smaller jar -->
+            <classifier>shaded-all</classifier>
+        </dependency>
+        ```
 
-</TabItem>
-<TabItem value="gradle-kt" label="Gradle (Kotlin)">
+    </TabItem>
+    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
 
-```kotlin
-// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-// use uber jar with all dependencies included, change classifier to http for smaller jar
-implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
-```
-</TabItem>
-<TabItem value="gradle" label="Gradle">
+        ```kotlin
+        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+        // use uber jar with all dependencies included, change classifier to http for smaller jar
+        implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
+        ```
+    </TabItem>
+    <TabItem value="gradle" label="Gradle">
 
-```groovy
-// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-// use uber jar with all dependencies included, change classifier to http for smaller jar
-implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
-```
+        ```groovy
+        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+        // use uber jar with all dependencies included, change classifier to http for smaller jar
+        implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
+        ```
 
-</TabItem>
+    </TabItem>
 </Tabs>
 
 Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client. Since there is not a shared version of the package, you need to add a logger as a dependency.
 
 <Tabs groupId="client-v1-compression-deps">
-<TabItem value="maven" label="Maven" >
+    <TabItem value="maven" label="Maven" >
 
-```xml 
-<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-<dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-api</artifactId>
-    <version>2.0.16</version>
-</dependency>
-```
+        ```xml
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.16</version>
+        </dependency>
+        ```
 
-</TabItem>
-<TabItem value="gradle-kt" label="Gradle (Kotlin)">
+    </TabItem>
+    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
 
-```kotlin
-// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-implementation("org.slf4j:slf4j-api:2.0.16")
-```
-</TabItem>
-<TabItem value="gradle" label="Gradle">
+        ```kotlin
+        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+        implementation("org.slf4j:slf4j-api:2.0.16")
+        ```
+    </TabItem>
+    <TabItem value="gradle" label="Gradle">
 
-```groovy
-// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-implementation 'org.slf4j:slf4j-api:2.0.16'
-```
+        ```groovy
+        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+        implementation 'org.slf4j:slf4j-api:2.0.16'
+        ```
 
-</TabItem>
+    </TabItem>
 </Tabs>
 
 ## Configuration {#configuration}
@@ -126,7 +116,7 @@ JDBC Driver supports same data formats as client library does.
 - Decimal - `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency
 - Enum - can be treated as both string and integer
 - UInt64 - mapped to `long` (in client-v1)
-  :::
+:::
 
 ## Creating Connection {#creating-connection}
 
@@ -158,7 +148,7 @@ try (Connection conn = dataSource.getConnection(...);
 
 :::note
 - Use `PreparedStatement` instead of `Statement`
-  :::
+:::
 
 It's easier to use but slower performance compare to input function (see below):
 
@@ -355,19 +345,19 @@ On Linux, the equivalent settings alone may not resolve the issue. Additional st
 
 1. Adjust the following Linux kernel parameters in `/etc/sysctl.conf` or a related configuration file:
 
-   - `net.inet.tcp.keepidle`: 60000
-   - `net.inet.tcp.keepintvl`: 45000
-   - `net.inet.tcp.keepinit`: 45000
-   - `net.inet.tcp.keepcnt`: 8
-   - `net.inet.tcp.always_keepalive`: 1
-   - `net.ipv4.tcp_keepalive_intvl`: 75
-   - `net.ipv4.tcp_keepalive_probes`: 9
-   - `net.ipv4.tcp_keepalive_time`: 60 (You may consider lowering this value from the default 300 seconds)
+- `net.inet.tcp.keepidle`: 60000
+- `net.inet.tcp.keepintvl`: 45000
+- `net.inet.tcp.keepinit`: 45000
+- `net.inet.tcp.keepcnt`: 8
+- `net.inet.tcp.always_keepalive`: 1
+- `net.ipv4.tcp_keepalive_intvl`: 75
+- `net.ipv4.tcp_keepalive_probes`: 9
+- `net.ipv4.tcp_keepalive_time`: 60 (You may consider lowering this value from the default 300 seconds)
 
 2. After modifying the kernel parameters, apply the changes by running the following command:
 
-   ```shell
-   sudo sysctl -p
+```shell
+sudo sysctl -p
    ```
 
 After Setting those settings, you need to ensure that your client enables the Keep Alive option on the socket:

@@ -1,30 +1,14 @@
----
-sidebar_label: 'Client 0.8+'
-sidebar_position: 2
-keywords: ['clickhouse', 'java', 'client', 'integrate']
-description: 'Java ClickHouse Connector 0.8+'
-slug: /integrations/language-clients/java/client
-title: 'Java Client (0.8+)'
----
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 
-# Java Client (0.8+)
-
-Java client library to communicate with a DB server through its protocols. The current implementation only supports the [HTTP interface](/interfaces/http). 
-The library provides its own API to send requests to a server. The library also provides tools to work with different binary data formats (RowBinary* & Native*).  
-
-:::note
-If you're looking for a prior version of the java client docs, please see [here](/integrations/language-clients/java/client-v1.md).
-:::
+Java client library to communicate with a DB server through its protocols. The current implementation only supports the [HTTP interface](/interfaces/http).
+The library provides its own API to send requests to a server. The library also provides tools to work with different binary data formats (RowBinary* & Native*).
 
 ## Setup {#setup}
 
 - Maven Central (project web page): https://mvnrepository.com/artifact/com.clickhouse/client-v2
 - Nightly builds (repository link): https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/
-
+<br/>
 <Tabs groupId="client-setup">
 <TabItem value="maven" label="Maven" >
 
@@ -57,9 +41,9 @@ implementation 'com.clickhouse:client-v2:0.8.2'
 ## Initialization {#initialization}
 
 The Client object is initialized by `com.clickhouse.client.api.Client.Builder#build()`. Each client has its own context and no objects are shared between them.
-The Builder has configuration methods for convenient setup. 
+The Builder has configuration methods for convenient setup.
 
-Example: 
+Example:
 ```java showLineNumbers
  Client client = new Client.Builder()
                 .addEndpoint("https://clickhouse-cloud-instance:8443/")
@@ -72,9 +56,9 @@ Example:
 
 ### Authentication {#authentication}
 
-Authentication is configured per client at the initialization phase. There are three authentication methods supported: by password, by access token, by SSL Client Certificate. 
+Authentication is configured per client at the initialization phase. There are three authentication methods supported: by password, by access token, by SSL Client Certificate.
 
-Authentication by a password requires setting user name password by calling `setUsername(String)` and `setPassword(String)`: 
+Authentication by a password requires setting user name password by calling `setUsername(String)` and `setPassword(String)`:
 ```java showLineNumbers
  Client client = new Client.Builder()
         .addEndpoint("https://clickhouse-cloud-instance:8443/")
@@ -91,7 +75,7 @@ Authentication by an access token requires setting access token by calling `setA
         .build();
 ```
 
-Authentication by a SSL Client Certificate require setting username, enabling SSL Authentication, setting a client sertificate and a client key by calling `setUsername(String)`,  `useSSLAuthentication(boolean)`, `setClientCertificate(String)` and `setClientKey(String)` accordingly: 
+Authentication by a SSL Client Certificate require setting username, enabling SSL Authentication, setting a client sertificate and a client key by calling `setUsername(String)`,  `useSSLAuthentication(boolean)`, `setClientCertificate(String)` and `setClientKey(String)` accordingly:
 ```java showLineNumbers
 Client client = new Client.Builder()
         .useSSLAuthentication(true)
@@ -103,18 +87,18 @@ Client client = new Client.Builder()
 :::note
 SSL Authentication may be hard to troubleshoot on production because many errors from SSL libraries provide not enough information. For example, if client certificate and key do not match then server will terminate connection immediately (in case of HTTP it will be connection initiation stage where no HTTP requests are send so no response is sent).
 
-Please use tools like [openssl](https://docs.openssl.org/master/man1/openssl/) to verify certificates and keys: 
+Please use tools like [openssl](https://docs.openssl.org/master/man1/openssl/) to verify certificates and keys:
 - check key integrity: `openssl rsa -in [key-file.key] -check -noout`
 - check client certificate has matching CN for a user:
     - get CN from an user certificate - `openssl x509 -noout -subject -in [user.cert]`
-    - verify same value is set in database `select name, auth_type, auth_params from system.users where auth_type = 'ssl_certificate'` (query will output `auth_params` with something like ` {"common_names":["some_user"]}`) 
+    - verify same value is set in database `select name, auth_type, auth_params from system.users where auth_type = 'ssl_certificate'` (query will output `auth_params` with something like ` {"common_names":["some_user"]}`)
 
 :::
 
 
 ## Configuration {#configuration}
 
-All settings are defined by instance methods (a.k.a configuration methods) that make the scope and context of each value clear. 
+All settings are defined by instance methods (a.k.a configuration methods) that make the scope and context of each value clear.
 Major configuration parameters are defined in one scope (client or operation) and do not override each other.
 
 Configuration is defined during client creation. See `com.clickhouse.client.api.Client.Builder`.
@@ -181,9 +165,9 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 
 ### ClickHouseFormat {#clickhouseformat}
 
-Enum of [supported formats](/interfaces/formats). It includes all formats that ClickHouse supports. 
+Enum of [supported formats](/interfaces/formats). It includes all formats that ClickHouse supports.
 
-* `raw` - user should transcode raw data 
+* `raw` - user should transcode raw data
 * `full` - the client can transcode data by itself and accepts a raw data stream
 * `-` - operation not supported by ClickHouse for this format
 
@@ -329,7 +313,7 @@ client.insert(String tableName, List<?> data)
 
 **Parameters**
 
-`tableName` - name of the target table. 
+`tableName` - name of the target table.
 
 `data` - collection DTO (Data Transfer Object) objects.
 
@@ -371,7 +355,7 @@ Configuration options for insert operations.
 
 ### InsertResponse {#insertresponse}
 
-Response object that holds result of insert operation. It is only available if the client got response from a server. 
+Response object that holds result of insert operation. It is only available if the client got response from a server.
 
 :::note
 This object should be closed as soon as possible to release a connection because the connection cannot be re-used until all data of previous response is fully read.
@@ -397,13 +381,13 @@ CompletableFuture<QueryResponse> query(String sqlQuery)
 
 **Parameters**
 
-`sqlQuery` - a single SQL statement. The Query is sent as is to a server.  
+`sqlQuery` - a single SQL statement. The Query is sent as is to a server.
 
 `settings` - request settings.
 
 **Return value**
 
-Future of `QueryResponse` type - a result dataset and additional information like server side metrics. The Response object should be closed after consuming the dataset. 
+Future of `QueryResponse` type - a result dataset and additional information like server side metrics. The Response object should be closed after consuming the dataset.
 
 **Examples**
 
@@ -444,15 +428,15 @@ CompletableFuture<QueryResponse> query(String sqlQuery, Map<String, Object> quer
 
 **Parameters**
 
-`sqlQuery` - sql expression with placeholders `{}`. 
+`sqlQuery` - sql expression with placeholders `{}`.
 
 `queryParams` - map of variables to complete the sql expression on server.
 
-`settings` - request settings. 
+`settings` - request settings.
 
 **Return value**
 
-Future of `QueryResponse` type - a result dataset and additional information like server side metrics. The Response object should be closed after consuming the dataset. 
+Future of `QueryResponse` type - a result dataset and additional information like server side metrics. The Response object should be closed after consuming the dataset.
 
 **Examples**
 
@@ -495,7 +479,7 @@ List<GenericRecord> queryAll(String sqlQuery)
 
 **Return value**
 
-Complete dataset represented by a list of `GenericRecord` objects that provide access in row style for the result data. 
+Complete dataset represented by a list of `GenericRecord` objects that provide access in row style for the result data.
 
 **Examples**
 
@@ -538,7 +522,7 @@ Configuration options for query operations.
 
 ### QueryResponse {#queryresponse}
 
-Response object that holds result of query execution. It is only available if the client got a response from a server. 
+Response object that holds result of query execution. It is only available if the client got a response from a server.
 
 :::note
 This object should be closed as soon as possible to release a connection because the connection cannot be re-used until all data of previous response is fully read.
@@ -582,7 +566,7 @@ Returns a `TableSchema` object with list of table columns.
 
 ### getTableSchemaFromQuery(String sql) {#gettableschemafromquerystring-sql}
 
-Fetches schema from a SQL statement. 
+Fetches schema from a SQL statement.
 
 **Signatures**
 
@@ -602,8 +586,8 @@ Returns a `TableSchema` object with columns matching the `sql` expression.
 
 ### register(Class&lt;?> clazz, TableSchema schema) {#registerclasslt-clazz-tableschema-schema}
 
-Compiles serialization and deserialization layer for the Java Class to use for writing/reading data with `schema`. The method will create a serializer and deserializer for the pair getter/setter and corresponding column. 
-Column match is found by extracting its name from a method name. For example, `getFirstName` will be for the column `first_name` or `firstname`. 
+Compiles serialization and deserialization layer for the Java Class to use for writing/reading data with `schema`. The method will create a serializer and deserializer for the pair getter/setter and corresponding column.
+Column match is found by extracting its name from a method name. For example, `getFirstName` will be for the column `first_name` or `firstname`.
 
 **Signatures**
 
