@@ -5,7 +5,7 @@ import { useColorMode } from '@docusaurus/theme-common'
 import styles from './styles.module.scss'
 import clsx from 'clsx'
 
-export default function Feedback() {
+export default function Feedback({side}) {
   const [open, setOpen] = useState(false);
   const [negResponse, setNegResponse] = useState('');
   const [comment, setComment] = useState('');
@@ -29,7 +29,7 @@ export default function Feedback() {
         sentiment: response  ? 'Positive' : 'Negative',
         reason: response ? '' : negResponse,
         google_id: gaId || 'anonymous',
-        comment,
+        comment: !response ? comment: '',
     };
 
     const insertQuery = `
@@ -84,10 +84,10 @@ export default function Feedback() {
 
 
   const negative_feedback = (
-    <Popover.Content  side='left' align='end' showArrow={true}>
+    <Popover.Content  side={side} align='end' showArrow={true}>
         <div ref={popoverRef}>
             <div className='flex justify-between items-center mb-[4px]'>
-                <Title size='md'>Why was is not helpful?</Title>
+                <Title size='md'>Why was it not helpful?</Title>
                 <IconButton size='xs' icon='cross' onClick={() => handleSubmit(false) } type='ghost'/>
             </div>
             

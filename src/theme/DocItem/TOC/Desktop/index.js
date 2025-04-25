@@ -8,6 +8,8 @@ import Feedback from '../../../../components/Feedback';
 
 export default function DocItemTOCDesktop() {
   const {toc, frontMatter} = useDoc();
+
+
   return (
     <div className={clsx(styles.docTOCContainer, 'theme-doc-toc-desktop-container')}>
       <TOC
@@ -16,8 +18,8 @@ export default function DocItemTOCDesktop() {
         maxHeadingLevel={frontMatter.toc_max_heading_level}
         className={clsx(styles.docTOC, ThemeClassNames.docs.docTocDesktop)}
       />
-      <div style={{'marginTop': toc.length < 7 ? '150px': '32px'}}>
-        <Feedback/>
+      <div style={{'marginTop': '32px'}}>
+        <Feedback side ={toc.length >= 7 ? 'left' : 'bottom'}/>
       </div>
 
       <div className={styles.docCloudCard}>
