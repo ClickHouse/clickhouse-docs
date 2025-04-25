@@ -36,7 +36,7 @@ The JSON type enables efficient columnar storage by flattening paths into subcol
 Type hits offer more than just a way to avoid unnecessary type inference - they eliminate storage and processing indirection entirely. JSON paths with type hints are always stored just like traditional columns, bypassing the need for [**discriminator columns**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data) or dynamic resolution during query time. This means that with well-defined type hints, nested JSON fields achieve the same performance and efficiency as if they were modeled as top-level fields from the outset. As a result, for datasets that are mostly consistent but still benefit from the flexibility of JSON, type hints provide a convenient way to preserve performance without needing to restructure your schema or ingest pipeline.
 :::
 
-## Advanced Features {#advanced-features}
+## Advanced features {#advanced-features}
 
 * JSON columns **can be used in primary keys** like any other columns. Codecs cannot be specified for a sub-column.
 * They support introspection via functions like [`JSONAllPathsWithTypes()` and `JSONDynamicPaths()`](/sql-reference/data-types/newjson#introspection-functions).
