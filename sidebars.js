@@ -14,7 +14,7 @@ const sidebars = {
       link: { type: "doc", id: "introduction-index" },
       items: [
         "intro",
-        "getting-started/quick-start",
+        "quick-start",
         "tutorial",
         "getting-started/install",
         "deployment-modes",

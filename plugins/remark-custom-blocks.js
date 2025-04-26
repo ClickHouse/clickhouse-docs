@@ -1,4 +1,6 @@
 // plugins/remark-custom-blocks.js
+// VERSION BEFORE anchorId/slug logic was added
+
 const { visit } = require('unist-util-visit');
 
 // --- Helper Functions ---
@@ -18,28 +20,29 @@ const extractText = (nodes) => {
 // --- Main Plugin Function ---
 const plugin = (options) => {
     const transformer = (tree, file) => {
+
         // Target JSX elements in the AST
         visit(tree, 'mdxJsxFlowElement', (node, index, parent) => {
-            // Look specifically for the <VStepper> tag used in Markdown source
-            if (node.name === 'VStepper') {
+            // Look specifically for the <VerticlStepper> tag used in Markdown source (as originally written)
+            if (node.name === 'VerticalStepper') { // <-- Checks for VerticalStepper from original code
                 try {
-                    console.log('Processing VStepper tag');
+                    console.log('Processing VStepper tag'); // Log from original code
 
                     // --- 1. Parse <VStepper> Attributes ---
                     const jsxAttributes = node.attributes || [];
                     let type = "numbered"; // Default type
-                    let isExpanded = false; // Default not expanded
+                    let isExpanded = false; // Default not expanded (allExpanded)
 
                     // Extract attributes
                     jsxAttributes.forEach(attr => {
                         if (attr.type === 'mdxJsxAttribute') {
                             if (attr.name === 'type' && typeof attr.value === 'string') {
                                 type = attr.value;
-                                console.log(`Found type: ${type}`);
+                                console.log(`Found type: ${type}`); // Log from original code
                             }
-                            else if (attr.name === 'allExpanded') {
+                            else if (attr.name === 'allExpanded') { // Check for allExpanded
                                 isExpanded = true;
-                                console.log('Found allExpanded attribute');
+                                console.log('Found allExpanded attribute'); // Log from original code
                             }
                         }
                     });
@@ -49,17 +52,20 @@ const plugin = (options) => {
                     let currentStepContent = [];
                     let currentStepLabel = null;
                     let currentStepId = null;
+                    // No anchorId variable here
 
                     const finalizeStep = () => {
                         if (currentStepLabel) {
                             stepsData.push({
-                                id: currentStepId,
-                                label: currentStepLabel,
-                                content: [...currentStepContent], // Collect content AST nodes
+                                id: currentStepId, // step-X ID
+                                label: currentStepLabel, // Plain text label
+                                // No anchorId here
+                                content: [...currentStepContent],
                             });
-                            console.log(`Finalized step: ${currentStepLabel}`);
+                            console.log(`Finalized step: ${currentStepLabel}`); // Log from original code
                         }
                         currentStepContent = [];
+                        currentStepLabel = null; // Reset label
                     };
 
                     if (node.children && node.children.length > 0) {
@@ -67,8 +73,9 @@ const plugin = (options) => {
                             if (child.type === 'heading' && child.depth === 2) {
                                 finalizeStep(); // Finalize the previous step first
                                 currentStepLabel = extractText(child.children);
-                                currentStepId = `step-${stepsData.length + 1}`;
-                                console.log(`Found heading: ${currentStepLabel}`);
+                                currentStepId = `step-${stepsData.length + 1}`; // Generate step-X ID
+                                // No anchor extraction here
+                                console.log(`Found heading: ${currentStepLabel}`); // Log from original code
                             } else if (currentStepLabel) {
                                 // Only collect content nodes *after* a heading has defined a step
                                 currentStepContent.push(child);
@@ -77,36 +84,37 @@ const plugin = (options) => {
                     }
                     finalizeStep(); // Finalize the last step found
 
-                    console.log(`Found ${stepsData.length} steps`);
+                    console.log(`Found ${stepsData.length} steps`); // Log from original code
 
-                    // --- 3. Transform Parent Node (<VStepper> to <VerticalStepper>) ---
-                    node.name = 'VerticalStepper'; // Use the name expected by MDXComponents mapping
-                    node.children = []; // Clear original children from <VStepper> tag
+                    // --- 3. Transform Parent Node ---
+                    // Transforms to VerticalStepper to match MDXComponents.js
+                    node.name = 'Stepper';
+                    node.children = []; // Clear original children
 
-                    // Set attributes - using a simple string for expanded mode
+                    // Set attributes - type and expanded (if isExpanded is true)
                     node.attributes = [
                         { type: 'mdxJsxAttribute', name: 'type', value: type },
                     ];
-
-                    // Add expanded attribute as a string (safer than boolean in MDX)
                     if (isExpanded) {
                         node.attributes.push({
                             type: 'mdxJsxAttribute',
-                            name: 'expanded',
+                            name: 'expanded', // Pass 'expanded' prop to React component
                             value: 'true'
                         });
-                        console.log('Added expanded="true" attribute');
+                        console.log('Added expanded="true" attribute'); // Log from original code
                     }
 
                     // --- 4. Generate Child <Step> Nodes ---
                     stepsData.forEach(step => {
                         // Basic attributes for Step
                         const stepAttributes = [
-                            { type: 'mdxJsxAttribute', name: 'id', value: step.id },
-                            { type: 'mdxJsxAttribute', name: 'label', value: step.label },
+                            { type: 'mdxJsxAttribute', name: 'id', value: step.id }, // step-X
+                            { type: 'mdxJsxAttribute', name: 'label', value: step.label }, // Plain text
+                            // No anchorId attribute
                         ];
 
-                        // If expanded mode, add a "forceExpanded" attribute to each step
+                        // Add forceExpanded attribute if parent was expanded
+                        // (Matches React prop name used before anchor logic)
                         if (isExpanded) {
                             stepAttributes.push({
                                 type: 'mdxJsxAttribute',
@@ -118,14 +126,15 @@ const plugin = (options) => {
                         // Push the Step node
                         node.children.push({
                             type: 'mdxJsxFlowElement',
-                            name: 'Step',
+                            name: 'Step', // Output Step tag
                             attributes: stepAttributes,
-                            children: step.content,
+                            children: step.content, // Pass content nodes as children
                         });
-                        console.log(`Added step: ${step.label}`);
+                        console.log(`Added step: ${step.label}`); // Log from original code
                     });
                 } catch (error) {
                     const filePath = file?.path || 'unknown file';
+                    // Added error logging
                     console.error(`Error processing <VStepper> in ${filePath}:`, error);
                 }
             }

@@ -1,15 +1,14 @@
-// src/components/Stepper/Stepper.tsx
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-// Import the ORIGINAL library component
+import React, { useState, useEffect } from 'react';
 import { VerticalStepper as OriginalVerticalStepper } from '@clickhouse/click-ui/bundled';
 
 // --- Step Component ---
 interface StepProps {
     children?: React.ReactNode;
-    id?: string;
+    id?: string; // step-X ID
     label?: React.ReactNode;
-    forceExpanded?: string; // String attribute from remark plugin
-    isActive?: boolean; // Passed from parent
+    forceExpanded?: string; // From parent 'expanded' state
+    isFirstStep?: boolean; // Prop calculated by parent
+    isActiveStep?: boolean; // Prop calculated by parent (based on state/scroll)
     [key: string]: any;
 }
 
@@ -18,28 +17,36 @@ const Step = ({
                   id,
                   label,
                   forceExpanded,
-                  isActive = false,
+                  isFirstStep = false,
+                  isActiveStep = false,
                   ...restProps
               }: StepProps) => {
-    // Determine if this step should be expanded
-    // Either it's forced expanded or it's the active step
-    const isExpanded = forceExpanded === 'true' || isActive;
 
-    // Convert to proper props for original component
-    const status: 'active' | 'incomplete' = isExpanded ? 'active' : 'incomplete';
-    const collapsed = !isExpanded;
+    // Logic from before anchor fixes:
+    // Determine 'active' status based on props passed from parent
+    const shouldBeActive = isFirstStep || isActiveStep || forceExpanded === 'true';
+    const status: 'active' | 'complete' | 'incomplete' = shouldBeActive ? 'active' : 'incomplete';
 
-    console.log(`Step ${id}: forceExpanded=${forceExpanded}, isActive=${isActive}, collapsed=${collapsed}`);
+    // Let underlying component handle expansion based on status='active'
+    // We pass collapsed=true, relying on status='active' to override it.
+    const collapsed = true;
 
-    // Filter out props that shouldn't go to DOM
-    const { forceExpanded: _, isActive: __, ...domSafeProps } = restProps;
+    // console.log(`Step ${id}: isFirstStep=${isFirstStep}, isActiveStep=${isActiveStep}, status=${status}, collapsed=${collapsed}`);
+
+    // Filter out props specific to this wrapper logic
+    const {
+        forceExpanded: _,
+        isFirstStep: __,
+        isActiveStep: ___,
+        ...domSafeProps // Pass the rest to the underlying component
+    } = restProps;
 
     return (
         <OriginalVerticalStepper.Step
             label={label}
             status={status}
             collapsed={collapsed}
-            id={id}
+            id={id} // Pass step-X ID
             {...domSafeProps}
         >
             {children}
@@ -52,80 +59,130 @@ interface StepperProps {
     children?: React.ReactNode;
     type?: 'numbered' | 'bulleted';
     className?: string;
-    expanded?: string; // String attribute from remark plugin
+    expanded?: string; // Corresponds to allExpanded in MDX
     [key: string]: any;
 }
 
-const VerticalStepper = ({
+// Using VerticalStepper name based on MDXComponents.js
+const VStepper = ({
                              children,
                              type = 'numbered',
                              className,
-                             expanded, // String from remark plugin
+                             expanded, // 'true' if allExpanded was set
                              ...props
                          }: StepperProps) => {
-    // Component-wide expanded mode
+
+    // State for tracking active steps via scroll/click
+    const [activeStepIds, setActiveStepIds] = useState<Set<string>>(new Set());
+
+    // Determine if all steps should be expanded from the start
     const isExpandedMode = expanded === 'true';
-    console.log(`VerticalStepper: expanded=${expanded}, isExpandedMode=${isExpandedMode}`);
 
-    // For non-expanded mode, we need active step tracking
-    const [activeStepId, setActiveStepId] = useState<string | null>(null);
-
-    // Get array of child steps
+    // Get children and filter out non-elements
     const childSteps = React.Children.toArray(children)
-        .filter(child => React.isValidElement(child) && child.type === Step);
+        .filter(child => React.isValidElement(child));
 
-    // If not in expanded mode, set the first step as active initially
+    // Extract step-X IDs (used for state tracking and keys)
+    const stepIds = childSteps.map((child, index) => {
+        const childElement = child as React.ReactElement;
+        return childElement.props.id || `step-${index + 1}`;
+    });
+
+    // --- Scroll Listener Effect (with CORRECT selectors) ---
     useEffect(() => {
-        if (!isExpandedMode && childSteps.length > 0 && !activeStepId) {
-            const firstStep = childSteps[0] as React.ReactElement;
-            const firstStepId = firstStep.props.id || 'step-1';
-            console.log(`Setting initial active step: ${firstStepId}`);
-            setActiveStepId(firstStepId);
-        }
-    }, [childSteps, isExpandedMode, activeStepId]);
+        if (isExpandedMode) return;
 
-    // Prepare children with keys and active state
+        const handleScroll = () => {
+            // --- Uses the CORRECT selectors ---
+            const headers = document.querySelectorAll('button[id^="step-"]');
+            if (headers.length === 0) {
+                console.log('No step headers found using CORRECT selectors');
+                return;
+            }
+            // console.log(`Found ${headers.length} step headers using CORRECT selectors`);
+
+            headers.forEach((header, index) => {
+                if (index >= stepIds.length) return;
+                const rect = header.getBoundingClientRect();
+                const isVisible = rect.top < window.innerHeight * 0.7 && rect.bottom > 0;
+                if (isVisible) {
+                    const stepId = stepIds[index];
+                    setActiveStepIds(prev => {
+                        if (prev.has(stepId)) return prev;
+                        // console.log(`Activating step ${stepId} from scroll`);
+                        return new Set([...prev, stepId]);
+                    });
+                }
+            });
+        };
+
+        const timeoutId = setTimeout(handleScroll, 500);
+        window.addEventListener('scroll', handleScroll);
+        const intervals = [1000, 2000, 3000].map(delay => setTimeout(handleScroll, delay));
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            clearTimeout(timeoutId);
+            intervals.forEach(id => clearTimeout(id));
+        };
+    }, [isExpandedMode, stepIds]);
+
+    // Click handler (used within onClick prop below)
+    const handleStepClick = (stepId: string) => {
+        if (isExpandedMode) return;
+        // console.log(`Clicked on step ${stepId}`);
+        setActiveStepIds(prev => new Set([...prev, stepId]));
+    };
+
+    // Prepare children, passing down calculated state
     const enhancedChildren = childSteps.map((child, index) => {
         const childElement = child as React.ReactElement;
         const stepId = childElement.props.id || `step-${index + 1}`;
-        const isActive = stepId === activeStepId;
+        const isActiveStep = activeStepIds.has(stepId); // Is this step activated by scroll/click?
+        const isFirstStep = index === 0; // Is this the first step?
 
         return React.cloneElement(childElement, {
             key: stepId,
             id: stepId,
-            isActive,
+            isFirstStep, // Pass down flag for first step logic
+            isActiveStep, // Pass down flag for active state logic
+            forceExpanded: isExpandedMode ? 'true' : undefined // Pass down expanded mode
         });
     });
 
-    // Handle step click
-    const handleStepClick = (stepId: string) => {
-        if (!isExpandedMode) {
-            console.log(`Activating step: ${stepId}`);
-            setActiveStepId(stepId);
-        }
-    };
-
-    // Filter out custom props
+    // Filter out custom props before passing to underlying component
     const { expanded: _, ...domProps } = props;
 
     return (
-        <div className={className}
-             onClick={(e) => {
-                 // Find closest step element and activate it
-                 const stepEl = (e.target as HTMLElement).closest('[data-step-id]');
-                 if (stepEl) {
-                     const stepId = stepEl.getAttribute('data-step-id');
-                     if (stepId) handleStepClick(stepId);
-                 }
-             }}>
-            <OriginalVerticalStepper type={type} {...domProps}>
-                {enhancedChildren}
-            </OriginalVerticalStepper>
-        </div>
+        <OriginalVerticalStepper
+            type={type}
+            className={className}
+            {...domProps}
+            // --- onClick Handler (with CORRECT selectors) ---
+            onClick={(e) => {
+                if (isExpandedMode) return;
+                const target = e.target as HTMLElement;
+                // --- Uses the CORRECT selector ---
+                const header = target.closest('button[id^="step-"]');
+                if (header) {
+                    // --- Uses the CORRECT selector ---
+                    const allHeaders = document.querySelectorAll('button[id^="step-"]');
+                    const index = Array.from(allHeaders).indexOf(header as Element);
+                    if (index !== -1 && index < stepIds.length) {
+                        const stepId = stepIds[index];
+                        handleStepClick(stepId); // Call handler to update state
+                        // Removed stopPropagation unless needed
+                    }
+                }
+            }}
+        >
+            {enhancedChildren}
+        </OriginalVerticalStepper>
     );
 };
 
-// Attach the Step for mapping purposes
-VerticalStepper.Step = Step;
+// Attach the Step component
+VStepper.Step = Step;
 
-export default VerticalStepper;
+// Export the main component
+export default VStepper;
