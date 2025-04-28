@@ -52,17 +52,16 @@ const plugin = (options) => {
                     let currentStepContent = [];
                     let currentStepLabel = null;
                     let currentStepId = null;
-                    // No anchorId variable here
+                    let currentAnchorId = null;
 
                     const finalizeStep = () => {
                         if (currentStepLabel) {
                             stepsData.push({
                                 id: currentStepId, // step-X ID
                                 label: currentStepLabel, // Plain text label
-                                // No anchorId here
+                                anchorId: currentAnchorId,
                                 content: [...currentStepContent],
                             });
-                            console.log(`Finalized step: ${currentStepLabel}`); // Log from original code
                         }
                         currentStepContent = [];
                         currentStepLabel = null; // Reset label
@@ -70,12 +69,13 @@ const plugin = (options) => {
 
                     if (node.children && node.children.length > 0) {
                         node.children.forEach((child) => {
+                            console.log(child)
                             if (child.type === 'heading' && child.depth === 2) {
                                 finalizeStep(); // Finalize the previous step first
                                 currentStepLabel = extractText(child.children);
+                                currentAnchorId = child.data.hProperties.id;
                                 currentStepId = `step-${stepsData.length + 1}`; // Generate step-X ID
-                                // No anchor extraction here
-                                console.log(`Found heading: ${currentStepLabel}`); // Log from original code
+                                console.log(`Found heading: ${currentStepLabel} \{#${currentAnchorId}\}`); // Log from original code
                             } else if (currentStepLabel) {
                                 // Only collect content nodes *after* a heading has defined a step
                                 currentStepContent.push(child);
@@ -110,7 +110,6 @@ const plugin = (options) => {
                         const stepAttributes = [
                             { type: 'mdxJsxAttribute', name: 'id', value: step.id }, // step-X
                             { type: 'mdxJsxAttribute', name: 'label', value: step.label }, // Plain text
-                            // No anchorId attribute
                         ];
 
                         // Add forceExpanded attribute if parent was expanded
@@ -123,14 +122,44 @@ const plugin = (options) => {
                             });
                         }
 
+                        const anchorElement = {
+                            type: 'mdxJsxFlowElement',
+                            name: 'a',
+                            attributes: [
+                                { type: 'mdxJsxAttribute', name: 'href', value: `#${step.anchorId}` },
+                                { type: 'mdxJsxAttribute', name: 'className', value: 'hash-link' }
+                            ],
+                            children: [
+                                // Add a link symbol or text
+                                {
+                                    type: 'text',
+                                    value: '🔗' // Or any other symbol/text you prefer
+                                }
+                            ]
+                        };
+
+                        const contentWithAnchor = [
+                            {
+                                type: 'mdxJsxFlowElement',
+                                name: 'div',
+                                attributes: [
+                                    { type: 'mdxJsxAttribute', name: 'id', value: step.anchorId }
+                                ],
+                                children: [
+                                    anchorElement, // Add the anchor element
+                                    ...step.content // Then add the regular content
+                                ]
+                            }
+                        ];
+
                         // Push the Step node
                         node.children.push({
                             type: 'mdxJsxFlowElement',
                             name: 'Step', // Output Step tag
                             attributes: stepAttributes,
-                            children: step.content, // Pass content nodes as children
+                            children: contentWithAnchor, // Pass content nodes as children
                         });
-                        console.log(`Added step: ${step.label}`); // Log from original code
+                        console.log(`Added step: ${step.label} with anchorId: ${step.anchorId || 'none'}`); // Log from original code
                     });
                 } catch (error) {
                     const filePath = file?.path || 'unknown file';
