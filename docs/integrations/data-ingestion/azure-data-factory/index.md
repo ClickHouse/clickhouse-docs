@@ -200,7 +200,7 @@ inference from input data](https://clickhouse.com/docs/interfaces/schema-inferen
 Your sensors table is now populated with data from the `2019-06_bmp180.csv.zst`
 file stored in Azure Blob Storage.
 
-### Additional Resources
+### Additional Resources {#additional-resources}
 
 This is just a basic introduction to using the azureBlobStorage function. For
 more advanced options and configuration details, please refer to the official
@@ -497,7 +497,7 @@ Now that we’ve configured both the input and output datasets, we can set up a
 
 6. Once complete, click **Publish all** to save your pipeline and dataset changes.
 
-### Additional Resources
+### Additional Resources {#additional-resources-1}
 - [HTTP Interface](https://clickhouse.com/docs/interfaces/http)
 - [Copy and transform data from and to a REST endpoint by using Azure Data Factory](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest?tabs=data-factory)
 - [Selecting an Insert Strategy](https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy)
