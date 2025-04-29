@@ -90,16 +90,39 @@ const sidebars = {
         {
           type: "category",
           label: "Observability",
-          collapsed: true,
+          collapsed: false,
           collapsible: true,
           link: { type: "doc", id: "use-cases/observability/index" },
           items: [
-            "use-cases/observability/introduction",
-            "use-cases/observability/schema-design",
-            "use-cases/observability/managing-data",
-            "use-cases/observability/integrating-opentelemetry",
-            "use-cases/observability/grafana",
-            "use-cases/observability/demo-application",
+            {
+              type: "category",
+              label: "ClickHouse Observability Stack",
+              collapsed: true,
+              collapsible: true,
+              link: { type: "doc", id: "use-cases/observability/clickhouse-stack/index" },
+              items: [
+                "use-cases/observability/clickhouse-stack/getting-started",
+                "use-cases/observability/clickhouse-stack/architecture",
+                "use-cases/observability/clickhouse-stack/deployment",
+                "use-cases/observability/clickhouse-stack/scaling",
+                "use-cases/observability/clickhouse-stack/production",
+              ]
+            },
+            {
+              type: "category",
+              label: "Build Your Own",
+              collapsed: true,
+              collapsible: true,
+              link: { type: "doc", id: "use-cases/observability/build-your-own/index" },
+              items: [
+                "use-cases/observability/build-your-own/introduction",
+                "use-cases/observability/build-your-own/schema-design",
+                "use-cases/observability/build-your-own/managing-data",
+                "use-cases/observability/build-your-own/integrating-opentelemetry",
+                "use-cases/observability/build-your-own/grafana",
+                "use-cases/observability/build-your-own/demo-application",
+              ]
+            }
           ]
         },
         {
