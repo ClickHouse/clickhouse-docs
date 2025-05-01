@@ -7,8 +7,7 @@ import IconClose from '@theme/Icon/Close';
 import styles from './styles.module.css'
 import Feedback from '../../../../components/Feedback';
 
-// Change me!
-const AD_DATA_ENDPOINT = ''
+const AD_DATA_ENDPOINT = 'https://cms.clickhouse-dev.com:1337/api/docs-ad'
 
 export default function DocItemTOCDesktop() {
   const {toc, frontMatter} = useDoc();
