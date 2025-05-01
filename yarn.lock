@@ -1241,17 +1241,17 @@
     react-window "^1.8.9"
     sortablejs "^1.15.0"
 
-"@clickhouse/client-common@1.11.0":
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/@clickhouse/client-common/-/client-common-1.11.0.tgz#e66f74040228984dd1b7bda4749bc2d14cfa897d"
-  integrity sha512-O0xbwv7HiMXayokrf5dYIBpjBnYekcOXWz60T1cXLmiZ8vgrfNRCiOpybJkrMXKnw9D0mWCgPUu/rgMY7U1f4g==
+"@clickhouse/client-common@1.11.1":
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/@clickhouse/client-common/-/client-common-1.11.1.tgz#73a78165656f6e058e2d4eb09cce0f9cf6195255"
+  integrity sha512-bme0le2yhDSAh13d2fxhSW5ZrNoVqZ3LTyac8jK6hNH0qkksXnjYkLS6KQalPU6NMpffxHmpI4+/Gi2MnX0NCA==
 
-"@clickhouse/client-web@^1.11.0":
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/@clickhouse/client-web/-/client-web-1.11.0.tgz#86601892f6b6a562ec4248f077e2964f2cf2fcb6"
-  integrity sha512-5N8ll85KRjVsxq2V0Y3gowcApwZA+YyIHIC7M5bFki8gtt3SihijH9cspdZBdBTFFzYPbiKS+zftKq7YQhoGxA==
+"@clickhouse/client-web@^1.11.1":
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/@clickhouse/client-web/-/client-web-1.11.1.tgz#d9942959cebd9ed557ace85bee51f8b6d6e9677e"
+  integrity sha512-dRmve4Vh8tdnLo8tt77O+2Ye4FWBR9eBrJ3CsaoNS2Q6aQNwv0JbPUKIrU88ep2sg5kilmNfAXqWaJXehpYVRg==
   dependencies:
-    "@clickhouse/client-common" "1.11.0"
+    "@clickhouse/client-common" "1.11.1"
 
 "@colors/colors@1.5.0":
   version "1.5.0"
