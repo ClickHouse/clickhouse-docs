@@ -22,7 +22,6 @@ const Step = ({
                   ...restProps
               }: StepProps) => {
 
-    // Logic from before anchor fixes:
     // Determine 'active' status based on props passed from parent
     const shouldBeActive = isFirstStep || isActiveStep || forceExpanded === 'true';
     const status: 'active' | 'complete' | 'incomplete' = shouldBeActive ? 'active' : 'incomplete';
@@ -31,7 +30,22 @@ const Step = ({
     // We pass collapsed=true, relying on status='active' to override it.
     const collapsed = true;
 
-    // console.log(`Step ${id}: isFirstStep=${isFirstStep}, isActiveStep=${isActiveStep}, status=${status}, collapsed=${collapsed}`);
+    // Swap out the Click-UI Stepper label (shown next to the numbered circle) for the
+    // H2 header so that Docusaurus doesn't fail on broken anchor checks
+    useEffect(() => {
+        try {
+            const button = document.querySelectorAll(`button[id^=${id}]`)[0];
+            const divChildren = Array.from(button.children).filter(el => el.tagName === 'DIV');
+            const label = divChildren[1];
+            const content = button.nextElementSibling;
+            const header = content.querySelectorAll('h2')[0]
+            header.style.margin = '0';
+            button.append(header)
+            label.remove()
+        } catch (e) {
+            console.log('Error occurred in Stepper.tsx while swapping H2 for Click-UI label')
+        }
+    }, []);
 
     // Filter out props specific to this wrapper logic
     const {
@@ -46,7 +60,7 @@ const Step = ({
             label={label}
             status={status}
             collapsed={collapsed}
-            id={id} // Pass step-X ID
+            id={id}
             {...domSafeProps}
         >
             {children}
@@ -88,18 +102,17 @@ const VStepper = ({
         return childElement.props.id || `step-${index + 1}`;
     });
 
-    // --- Scroll Listener Effect (with CORRECT selectors) ---
+    // --- Scroll Listener Effect ---
+    // This is currently not used, but we may want to include it at a later stage
     useEffect(() => {
         if (isExpandedMode) return;
 
         const handleScroll = () => {
-            // --- Uses the CORRECT selectors ---
             const headers = document.querySelectorAll('button[id^="step-"]');
             if (headers.length === 0) {
                 console.log('No step headers found using CORRECT selectors');
                 return;
             }
-            // console.log(`Found ${headers.length} step headers using CORRECT selectors`);
 
             headers.forEach((header, index) => {
                 if (index >= stepIds.length) return;
@@ -158,20 +171,16 @@ const VStepper = ({
             type={type}
             className={className}
             {...domProps}
-            // --- onClick Handler (with CORRECT selectors) ---
             onClick={(e) => {
                 if (isExpandedMode) return;
                 const target = e.target as HTMLElement;
-                // --- Uses the CORRECT selector ---
                 const header = target.closest('button[id^="step-"]');
                 if (header) {
-                    // --- Uses the CORRECT selector ---
                     const allHeaders = document.querySelectorAll('button[id^="step-"]');
                     const index = Array.from(allHeaders).indexOf(header as Element);
                     if (index !== -1 && index < stepIds.length) {
                         const stepId = stepIds[index];
-                        handleStepClick(stepId); // Call handler to update state
-                        // Removed stopPropagation unless needed
+                        handleStepClick(stepId);
                     }
                 }
             }}
