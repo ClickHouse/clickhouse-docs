@@ -88,7 +88,6 @@ const plugin = (options) => {
                             name: 'expanded', // Pass 'expanded' prop to React component
                             value: 'true'
                         });
-                        console.log('Added expanded="true" attribute'); // Log from original code
                     }
 
                     // --- 4. Generate Child <Step> Nodes ---
