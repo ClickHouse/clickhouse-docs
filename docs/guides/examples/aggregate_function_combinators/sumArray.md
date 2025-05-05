@@ -46,17 +46,8 @@ GROUP BY date, category_sales;
 ```
 
 The `sumArray` function will sum up all elements in each `category_sales` array. 
-For example, on '2024-01-01', it sums 100 + 200 + 150 = 450. 
-This is equivalent to using `sum(arraySum(category_sales))`, where `arraySum` 
-first sums the elements within each array, and then `sum` aggregates those results.
-
-```response title="Response"
-   ┌───────date─┬─category_sales─┬─total_sales_sumArray─┬─total_sales_arraySum─┐
-1. │ 2024-01-01 │ [100,200,150]  │                  450 │                  450 │
-2. │ 2024-01-02 │ [120,180,160]  │                  460 │                  460 │
-3. │ 2024-01-03 │ [90,220,140]   │                  450 │                  450 │
-   └────────────┴────────────────┴──────────────────────┴──────────────────────┘
-```
+For example, on `2024-01-01`, it sums `100 + 200 + 150 = 450`. This gives the 
+same result as `arraySum`.
 
 ## See also {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

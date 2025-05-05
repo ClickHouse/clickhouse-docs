@@ -58,4 +58,4 @@ The returned array contains the following quantiles in order:
 
 ## See also {#see-also}
 - [`quantilesTimingArray`](/sql-reference/aggregate-functions/reference/quantilestimingarray)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if) 
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

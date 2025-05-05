@@ -80,6 +80,3 @@ The returned array contains the following quantiles in order:
 ## See also {#see-also}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
-
-
-

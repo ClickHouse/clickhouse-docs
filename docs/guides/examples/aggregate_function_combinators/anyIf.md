@@ -47,9 +47,6 @@ SELECT
 FROM sales;
 ```
 
-The `avgIf` function will calculate the average amount only for rows where `is_successful = 1`.
-In this case, it will average the amounts: 100.50, 200.75, 300.00, and 175.25.
-
 ```response title="Response"
 ┌─tid_lt_200─┬─tid_gt_200─┐
 │          1 │          4 │
@@ -57,5 +54,5 @@ In this case, it will average the amounts: 100.50, 200.75, 300.00, and 175.25.
 ```
 
 ## See also {#see-also}
-- [`avg`](/sql-reference/aggregate-functions/reference/avg)
+- [`any`](/sql-reference/aggregate-functions/reference/any)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

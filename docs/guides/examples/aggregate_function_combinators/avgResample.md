@@ -42,9 +42,9 @@ INSERT INTO employee_data (name, age, wage) VALUES
 ```
 
 Let's get the average wage of the people whose age lies in the intervals of `[30,60)` 
-and `[60,75)`. Since we use integer representation for age, we get ages in the
-`[30, 59]` and `[60,74]` intervals. To do so we apply the `Resample` combinator 
-to the `avg` aggregate function.
+and `[60,75)` (`[` is exclusive and `)` is inclusive). Since we use integer 
+representation for age, we get ages in the intervals `[30, 59]` and `[60,74]`. 
+To do so we apply the `Resample` combinator to the `avg` aggregate function.
 
 ```sql
 WITH avg_wage AS

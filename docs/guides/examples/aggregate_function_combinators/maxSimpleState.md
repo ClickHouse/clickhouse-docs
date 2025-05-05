@@ -22,4 +22,4 @@ demonstrates a usage of both `maxSimpleState` and `minSimpleState`.
 ## See also {#see-also}
 - [`max`](/sql-reference/aggregate-functions/reference/max)
 - [`SimpleState combinator`](/sql-reference/aggregate-functions/combinators#-simplestate)
-- [`SimpleAggregateFunction type`](/sql-reference/data-types/simpleaggregatefunction) 
+- [`SimpleAggregateFunction type`](/sql-reference/data-types/simpleaggregatefunction)

@@ -12,8 +12,8 @@ sidebar_label: 'sumArray'
 
 The [`ForEach`](/sql-reference/aggregate-functions/combinators#-foreach) combinator
 can be applied to the [`sum`](/sql-reference/aggregate-functions/reference/sum) aggregate function to turn it from an aggregate
-function which operates on tables to an aggregate function which operates on 
-an array.
+function which operates on row values to an aggregate function which operates on
+array columns, applying the aggregate to each element in the array across rows.
 
 ## Example Usage {#example-usage}
 

@@ -58,4 +58,4 @@ among the popular products.
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 - [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if) 
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

@@ -62,4 +62,4 @@ The `maxMap` function will find the maximum count for each status code within ea
 
 ## See also {#see-also}
 - [`max`](/sql-reference/aggregate-functions/reference/max)
-- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map) 
+- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)

@@ -12,7 +12,7 @@ sidebar_label: 'sumSimpleState'
 
 The [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) combinator can be applied to the [`sum`](/sql-reference/aggregate-functions/reference/sum)
 function to return the sum across all input values. It returns the result with 
-type `SimpleAggregateState`.
+type [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
 ## Example Usage {#example-usage}
 
@@ -22,7 +22,10 @@ Let's look at a practical example using a table that tracks votes on posts.
 For each post, we want to maintain running totals of upvotes, downvotes, and an 
 overall score. Using the `SimpleAggregateFunction` type with sum is suited for
 this use case as we only need to store the running totals, not the entire state 
-of the aggregation.
+of the aggregation. As a result, it will be faster and will not require merging 
+of partial aggregate states.
+
+First, we create a table for the raw data:
 
 ```sql title="Query"
 CREATE TABLE raw_votes
@@ -34,10 +37,10 @@ ENGINE = MergeTree()
 ORDER BY post_id;
 ```
 
-Create a materialized view with `SimpleAggregateFunction` type columns:
-       
+Next, we create a target table which will store the aggregated data:
+
 ```sql
-CREATE MATERIALIZED VIEW vote_totals
+CREATE TABLE vote_aggregates
 (
     post_id UInt32,
     upvotes SimpleAggregateFunction(sum, UInt64),
@@ -45,13 +48,22 @@ CREATE MATERIALIZED VIEW vote_totals
     score SimpleAggregateFunction(sum, Int64)
 )
 ENGINE = AggregatingMergeTree()
-ORDER BY post_id
+ORDER BY post_id;
+```
+
+We then create a Materialized View with `SimpleAggregateFunction` type columns:
+       
+```sql
+CREATE MATERIALIZED VIEW mv_vote_processor TO vote_aggregates
 AS
 SELECT
-    post_id,
-    toUInt32(vote_type = 'upvote') AS upvotes,
-    toUInt32(vote_type = 'downvote') AS downvotes,
-    toInt32(if(vote_type = 'upvote', 1, -1)) AS score
+  post_id,
+  -- Initial value for sum state (1 if upvote, 0 otherwise)
+  toUInt64(vote_type = 'upvote') AS upvotes,
+  -- Initial value for sum state (1 if downvote, 0 otherwise)
+  toUInt64(vote_type = 'downvote') AS downvotes,
+  -- Initial value for sum state (1 for upvote, -1 for downvote)
+  toInt64(vote_type) AS score
 FROM raw_votes;
 ```
 
@@ -71,13 +83,13 @@ Query the Materialized View using the `SimpleState` combinator:
 
 ```sql
 SELECT
-    post_id,
-    sumSimpleState(upvotes) AS total_upvotes,
-    sumSimpleState(downvotes) AS total_downvotes,
-    sumSimpleState(score) AS total_score
-FROM vote_totals
+  post_id,
+  sum(upvotes) AS total_upvotes,
+  sum(downvotes) AS total_downvotes,
+  sum(score) AS total_score
+FROM vote_aggregates -- Query the target table
 GROUP BY post_id
-ORDER BY post_id;
+ORDER BY post_id ASC;
 ```
 
 ```response
@@ -87,39 +99,8 @@ ORDER BY post_id;
 │       3 │             0 │               1 │          -1 │
 └─────────┴───────────────┴─────────────────┴─────────────┘
 ```
-
-Note that we could get the same result using just `sum` instead of `sumSimpleState`:
-
-```sql
-SELECT
-    post_id,
-    sum(upvotes) AS total_upvotes,
-    sum(downvotes) AS total_downvotes,
-    sum(score) AS total_score
-FROM vote_totals
-GROUP BY post_id
-ORDER BY post_id ASC
-```
-
-```response
-┌─post_id─┬─total_upvotes─┬─total_downvotes─┬─total_score─┐
-│       1 │             2 │               1 │           1 │
-│       2 │             1 │               1 │           0 │
-│       3 │             0 │               1 │          -1 │
-└─────────┴───────────────┴─────────────────┴─────────────┘
-```
-
-When you use `sumSimpleState(column)`:
-- It directly extracts the stored sum value without doing any additional 
-  aggregation.
-- The result is of type `SimpleAggregateFunction(sum, Int64)`
-
-When you use `sum(column)` on a `SimpleAggregateFunction` column:
-- ClickHouse recognizes this special case and implicitly converts it to behave 
-  like `sumSimpleState`
-- The result is `Int64`
 
 ## See also {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`SimpleState combinator`](/sql-reference/aggregate-functions/combinators#-simplestate)
-- [`SimpleAggregateFunction type`](/sql-reference/data-types/simpleaggregatefunction) 
+- [`SimpleAggregateFunction type`](/sql-reference/data-types/simpleaggregatefunction)

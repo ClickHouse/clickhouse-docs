@@ -62,4 +62,4 @@ but only considering rows where `in_stock = 1`. For example:
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
 - [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if) 
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

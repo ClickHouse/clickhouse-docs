@@ -62,4 +62,4 @@ The `minMap` function will find the minimum count for each status code within ea
 
 ## See also {#see-also}
 - [`min`](/sql-reference/aggregate-functions/reference/min)
-- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map) 
+- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)

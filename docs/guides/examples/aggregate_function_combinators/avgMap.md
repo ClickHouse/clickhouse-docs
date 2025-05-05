@@ -62,4 +62,4 @@ The `avgMap` function will calculate the average count for each status code with
 
 ## See also {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
-- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map) 
+- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)

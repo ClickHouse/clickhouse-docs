@@ -12,7 +12,7 @@ sidebar_label: 'minSimpleState'
 
 The [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) combinator can be applied to the [`min`](/sql-reference/aggregate-functions/reference/min)
 function to return the minimum value across all input values. It returns the 
-result with type `SimpleAggregateState`.
+result with type [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
 ## Example Usage {#example-usage}
 
@@ -158,7 +158,12 @@ We now get the expected result:
 └─────────────┴───────────────┴──────────┴──────────┘
 ```
 
+:::note
+With `SimpleState`, you do not need to use the `Merge` combinator to combine
+partial aggregation states.
+:::
+
 ## See also {#see-also}
 - [`min`](/sql-reference/aggregate-functions/reference/min)
 - [`SimpleState combinator`](/sql-reference/aggregate-functions/combinators#-simplestate)
-- [`SimpleAggregateFunction type`](/sql-reference/data-types/simpleaggregatefunction) 
+- [`SimpleAggregateFunction type`](/sql-reference/data-types/simpleaggregatefunction)

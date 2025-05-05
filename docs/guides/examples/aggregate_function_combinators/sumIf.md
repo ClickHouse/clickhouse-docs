@@ -48,7 +48,7 @@ In this case, it will sum: 100.50 + 200.75 + 300.00 + 175.25.
    └───────────────────────┘
 ```
 
-### Calculate trading volume by price direction {#calculate-trading-vol-orce-direction}
+### Calculate trading volume by price direction {#calculate-trading-vol-price-direction}
 
 In this example we'll use the `stock` table available at [ClickHouse playground](https://sql.clickhouse.com/)
 to calculate trading volume by price direction in the first half of the year 2002.
