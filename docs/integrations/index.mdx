@@ -81,6 +81,7 @@ import Yepcodesvg from '@site/static/images/integrations/logos/yepcode.svg';
 import Warpstreamsvg from '@site/static/images/integrations/logos/warpstream.svg';
 import Bytewaxsvg from '@site/static/images/integrations/logos/bytewax.svg';
 import glue_logo from '@site/static/images/integrations/logos/glue_logo.png';
+import azure_synapse_logo from '@site/static/images/integrations/logos/azure-synapse.png';
 import logo_cpp from '@site/static/images/integrations/logos/logo_cpp.png';
 import cassandra from '@site/static/images/integrations/logos/cassandra.png';
 import deltalake from '@site/static/images/integrations/logos/deltalake.png';
@@ -174,7 +175,9 @@ import great_expectations_logo from '@site/static/images/integrations/logos/grea
 import Hashboardsvg from '@site/static/images/integrations/logos/hashboard.svg';
 import luzmo_logo from '@site/static/images/integrations/logos/luzmo.png';
 import vs_logo from '@site/static/images/integrations/logos/logo_vs.png';
+import Moosesvg from '@site/static/images/integrations/logos/moose_logo.svg';
 import chartbrew_logo from '@site/static/images/integrations/logos/logo_chartbrew.png';
+import marimo_logo from '@site/static/images/integrations/logos/logo_marimo.png';
 import Image from '@theme/IdealImage';
 
 ClickHouse integrations are organized by their support level:
@@ -202,6 +205,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Amazon Glue|<Image img={glue_logo} size="logo" alt="Amazon Glue logo"/>|Data ingestion|Query ClickHouse over JDBC|[Documentation](/integrations/glue)|
 |Apache Spark|<Sparksvg alt="Amazon Spark logo" style={{width: '3rem'}}/>|Data ingestion|Spark ClickHouse Connector is a high performance connector built on top of Spark DataSource V2.|[GitHub](https://github.com/housepower/spark-clickhouse-connector),<br/>[Documentation](/integrations/data-ingestion/apache-spark/index.md)|
 |Azure Event Hubs|<Azureeventhubssvg alt="Azure Events Hub logo" style={{width: '3rem'}}/>|Data ingestion|A data streaming platform that supports Apache Kafka's native protocol|[Website](https://azure.microsoft.com/en-gb/products/event-hubs)|
+|Azure Synapse|<Image img={azure_synapse_logo} size="logo" alt="Azure Synapse logo"/>|Data ingestion|A cloud-based analytics service for big data and data warehousing.|[Documentation](/integrations/azure-synapse)|
 |C++|<Image img={logo_cpp} alt="Cpp logo" size="logo"/>|Language client|C++ client for ClickHouse|[GitHub](https://github.com/ClickHouse/clickhouse-cpp)|
 |Cassandra|<Image img={cassandra} alt="Cassandra logo" size="logo"/>|Data ingestion|Allows ClickHouse to use [Cassandra](https://cassandra.apache.org/) as a dictionary source.|[Documentation](/sql-reference/dictionaries/index.md#cassandra)|
 |CHDB|<Chdbsvg alt="CHDB logo" style={{width: '3rem' }}/>|AI/ML|An embedded OLAP SQL Engine|[GitHub](https://github.com/chdb-io/chdb#/),<br/>[Documentation](https://doc.chdb.io/)|
@@ -235,7 +239,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |QuickSight|<Quicksightsvg alt="QuickSight logo" style={{width: '3rem', 'height': '3rem', fill: '#5ccfff'}}/>|Data visualization|Amazon QuickSight powers data-driven organizations with unified business intelligence (BI).|[Documentation](/integrations/quicksight)|
 |RabbitMQ|<Rabbitmqsvg alt="RabbitMQ logo" style={{width: '3rem', 'height': '3rem'}}/>|Data ingestion|Allows ClickHouse to connect [RabbitMQ](https://www.rabbitmq.com/).|[Documentation](/engines/table-engines/integrations/rabbitmq)|
 |Redis|<Redissvg alt="Redis logo" style={{width: '3rem', 'height': '3rem'}}/>|Data ingestion|Allows ClickHouse to use [Redis](https://redis.io/) as a dictionary source.|[Documentation](/sql-reference/dictionaries/index.md#redis)|
-|Redpanda|<Image img={redpanda} alt="Redpanda logo" size="logo"/>|Data ingestion|Redpanda is the streaming data platform for developers. It’s API-compatible with Apache Kafka, but 10x faster, much easier to use, and more cost effective|[Blog](https://redpanda.com/blog/real-time-olap-database-clickhouse-redpanda)|
+|Redpanda|<Image img={redpanda} alt="Redpanda logo" size="logo"/>|Data ingestion|Redpanda is the streaming data platform for developers. It's API-compatible with Apache Kafka, but 10x faster, much easier to use, and more cost effective|[Blog](https://redpanda.com/blog/real-time-olap-database-clickhouse-redpanda)|
 |Rust|<Image img={rust} size="logo" alt="Rust logo"/>|Language client|A typed client for ClickHouse|[Documentation](/integrations/language-clients/rust.md)|
 |SQLite|<Sqlitesvg alt="Sqlite logo" style={{width: '3rem', 'height': '3rem'}}/>|Data ingestion|Allows to import and export data to SQLite and supports queries to SQLite tables directly from ClickHouse.|[Documentation](/engines/table-engines/integrations/sqlite)|
 |Superset|<Supersetsvg alt="Superset logo" style={{width: '3rem'}}/>|Data visualization|Explore and visualize your ClickHouse data with Apache Superset.|[Documentation](/integrations/data-visualization/superset-and-clickhouse.md)|
@@ -293,6 +297,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |MindsDB|<Image img={mindsdb_logo} size="logo" alt="MindsDB logo"/>|AI/ML|  The platform for customizing AI from enterprise data |[Website](https://mindsdb.com/clickhouse-machine-learning )|
 |Mitzu|<Image img={mitzu_logo} size="logo" alt="Mitzu logo"/>|Data visualization|Mitzu is a no-code warehouse-native product analytics application. Find funnel, retention, user segmentation insights without copying your data.|[Documentation](/integrations/mitzu)|
 |Mode Analytics|<Image img={mode_logo} size="logo" alt="Mode logo"/>|Data visualization|Business Intelligence built around data teams|[Website](https://mode.com/)|
+|Moose|<Moosesvg className="image" alt="Moose logo" style={{width: '3rem'}}/>|Data integration|Moose is an open source developer framework for building production applications on Clickhouse|[Website](https://www.fiveonefour.com/moose)|
 |Omni|<Omnisvg alt="Omni logo" style={{width: '3rem', 'backgroundColor': 'transparent'}}/>|Data visualization|Business intelligence that speaks your language. Explore, visualize, and model data your way with Omni. From spreadsheets to SQL—in a single platform.| [Website](https://omni.co/)|
 |Openblocks|<Image img={openBlocks_logo} size="logo" alt="Openblocks logo"/>|SQL client|Openblocks is a low code platform for building UIs|[Documentation](https://blog.openblocks.dev/blog/openblocks-x-clickhouse)|
 |OpsRamp (HP)| <Image img={ramp_logo} size="logo" alt="OpsRamp Logo"/>|Data management| Provides observability metrics for ClickHouse|[Documentation](https://docs.opsramp.com/integrations/database-no-sql/automonitor-clickhouse-monitoring/)|
@@ -384,4 +389,5 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |TricksterCache|<Trickstercachesvg className="image" alt="TricksterCache logo" style={{width: '3rem'}}/>|Data visualization| Open Source HTTP Reverse Proxy Cache and Time Series Dashboard Accelerator |[Website](https://trickstercache.org/)|
 |Visual Studio Client|<Image img={vs_logo} size="logo" alt="VS logo"/>|Language client|Visual studio lightweight client|[Marketplace](https://marketplace.visualstudio.com/items?itemName=fanruten.clickhouse-light)|
 |VulcanSQL|<Image img={vulcansql_logo} size="logo" alt="VulcanSQL logo"/>|Data API Framework|It's a Data API Framework for data applications that helps data folks create and share data APIs faster. It turns your SQL templates into data APIs. No backend skills required.|[Website](https://vulcansql.com/), <br/>[Documentation](https://vulcansql.com/docs/connect/clickhouse)|
+|marimo|<Image img={marimo_logo} size="logo" alt="marimo logo"/>|SQL Client|An open-source reactive notebook for Python with SQL built-in. Create data visualizations, shareable apps or executable scripts.|[Website](https://marimo.io/), <br/>[Documentation](https://docs.marimo.io/guides/working_with_data/sql/?h=sql#clickhouse-support)|
 </div>

@@ -1,59 +1,59 @@
 ---
-slug: /sql-reference/table-functions/postgresql
+description: 'Позволяет выполнять `SELECT` и `INSERT` запросы на данные, которые хранятся на удалённом сервере PostgreSQL.'
+sidebar_label: 'postgresql'
 sidebar_position: 160
-sidebar_label: postgresql
+slug: /sql-reference/table-functions/postgresql
 title: 'postgresql'
-description: 'Позволяет выполнять `SELECT` и `INSERT` запросы к данным, которые хранятся на удаленном сервере PostgreSQL.'
 ---
 
 
-# postgresql Table Function
+# Функция таблицы postgresql
 
-Позволяет выполнять `SELECT` и `INSERT` запросы к данным, которые хранятся на удаленном сервере PostgreSQL.
+Позволяет выполнять `SELECT` и `INSERT` запросы на данные, которые хранятся на удалённом сервере PostgreSQL.
 
 **Синтаксис**
 
-``` sql
+```sql
 postgresql({host:port, database, table, user, password[, schema, [, on_conflict]] | named_collection[, option=value [,..]]})
 ```
 
 **Параметры**
 
 - `host:port` — адрес сервера PostgreSQL.
-- `database` — имя удаленной базы данных.
-- `table` — имя удаленной таблицы.
+- `database` — имя удалённой базы данных.
+- `table` — имя удалённой таблицы.
 - `user` — пользователь PostgreSQL.
 - `password` — пароль пользователя.
-- `schema` — схема таблицы, отличная от схемы по умолчанию. Необязательный.
+- `schema` — нестандартная схема таблицы. Необязательный.
 - `on_conflict` — стратегия разрешения конфликтов. Пример: `ON CONFLICT DO NOTHING`. Необязательный.
 
 Аргументы также могут передаваться с использованием [именованных коллекций](operations/named-collections.md). В этом случае `host` и `port` должны быть указаны отдельно. Этот подход рекомендуется для производственной среды.
 
 **Возвращаемое значение**
 
-Объект таблицы с теми же колонками, что и у оригинальной таблицы PostgreSQL.
+Объект таблицы с такими же столбцами, как и у оригинальной таблицы PostgreSQL.
 
 :::note
-В запросе `INSERT`, чтобы отличить функцию таблицы `postgresql(...)` от имени таблицы с перечислением имен колонок, вы должны использовать ключевые слова `FUNCTION` или `TABLE FUNCTION`. См. примеры ниже.
+В запросе `INSERT`, чтобы отличить функцию таблицы `postgresql(...)` от имени таблицы со списком имен столбцов, необходимо использовать ключевые слова `FUNCTION` или `TABLE FUNCTION`. См. примеры ниже.
 :::
 
-## Детали реализации {#implementation-details}
+## Подробности реализации {#implementation-details}
 
-`SELECT` запросы на стороне PostgreSQL выполняются как `COPY (SELECT ...) TO STDOUT` внутри транзакции PostgreSQL только для чтения с коммитом после каждого `SELECT` запроса.
+Запросы `SELECT` на стороне PostgreSQL выполняются как `COPY (SELECT ...) TO STDOUT` внутри транзакции PostgreSQL только для чтения с коммитом после каждого запроса `SELECT`.
 
-Простые условия `WHERE`, такие как `=`, `!=`, `>`, `>=`, `<`, `<=`, и `IN`, выполняются на сервере PostgreSQL.
+Простые условия `WHERE`, такие как `=`, `!=`, `>`, `>=`, `<`, `<=`, и `IN` выполняются на сервере PostgreSQL.
 
-Все соединения, агрегирования, сортировки, условия `IN [ array ]` и ограничение выборки `LIMIT` выполняются в ClickHouse только после завершения запроса к PostgreSQL.
+Все соединения, агрегации, сортировки, условия `IN [ array ]` и ограничение выборки `LIMIT` выполняются в ClickHouse только после завершения запроса к PostgreSQL.
 
-`INSERT` запросы на стороне PostgreSQL выполняются как `COPY "table_name" (field1, field2, ... fieldN) FROM STDIN` внутри транзакции PostgreSQL с авто-коммитом после каждого оператора `INSERT`.
+Запросы `INSERT` на стороне PostgreSQL выполняются как `COPY "table_name" (field1, field2, ... fieldN) FROM STDIN` внутри транзакции PostgreSQL с авто-коммитом после каждого оператора `INSERT`.
 
-Типы массивов PostgreSQL преобразуются в массивы ClickHouse.
+Типы массивов PostgreSQL конвертируются в массивы ClickHouse.
 
 :::note
-Будьте осторожны, в PostgreSQL колонка типа данных массива, такая как Integer[], может содержать массивы разных размерностей в разных строках, но в ClickHouse разрешено иметь многомерные массивы одной размерности во всех строках.
+Будьте осторожны, в PostgreSQL столбец типа данных массива, такой как Integer[], может содержать массивы различной размерности в разных строках, но в ClickHouse разрешено иметь только многомерные массивы одинаковой размерности во всех строках.
 :::
 
-Поддерживает множество реплик, которые должны быть указаны через `|`. Например:
+Поддерживает несколько реплик, которые должны быть перечислены через `|`. Например:
 
 ```sql
 SELECT name FROM postgresql(`postgres{1|2|3}:5432`, 'postgres_database', 'postgres_table', 'user', 'password');
@@ -71,7 +71,7 @@ SELECT name FROM postgresql(`postgres1:5431|postgres2:5432`, 'postgres_database'
 
 Таблица в PostgreSQL:
 
-``` text
+```text
 postgres=# CREATE TABLE "public"."test" (
 "int_id" SERIAL,
 "int_nullable" INT NULL DEFAULT NULL,
@@ -92,13 +92,13 @@ postgresql> SELECT * FROM test;
 (1 row)
 ```
 
-Выбор данных из ClickHouse, используя простые аргументы:
+Выбор данных из ClickHouse с использованием простых аргументов:
 
 ```sql
 SELECT * FROM postgresql('localhost:5432', 'test', 'test', 'postgresql_user', 'password') WHERE str IN ('test');
 ```
 
-Или используя [именованные коллекции](operations/named-collections.md):
+Или с использованием [именованных коллекций](operations/named-collections.md):
 
 ```sql
 CREATE NAMED COLLECTION mypg AS
@@ -110,7 +110,7 @@ CREATE NAMED COLLECTION mypg AS
 SELECT * FROM postgresql(mypg, table='test') WHERE str IN ('test');
 ```
 
-``` text
+```text
 ┌─int_id─┬─int_nullable─┬─float─┬─str──┬─float_nullable─┐
 │      1 │         ᴺᵁᴸᴸ │     2 │ test │           ᴺᵁᴸᴸ │
 └────────┴──────────────┴───────┴──────┴────────────────┘
@@ -123,21 +123,21 @@ INSERT INTO TABLE FUNCTION postgresql('localhost:5432', 'test', 'test', 'postgrs
 SELECT * FROM postgresql('localhost:5432', 'test', 'test', 'postgresql_user', 'password');
 ```
 
-``` text
+```text
 ┌─int_id─┬─int_nullable─┬─float─┬─str──┬─float_nullable─┐
 │      1 │         ᴺᵁᴸᴸ │     2 │ test │           ᴺᵁᴸᴸ │
 │      2 │         ᴺᵁᴸᴸ │     3 │      │           ᴺᵁᴸᴸ │
 └────────┴──────────────┴───────┴──────┴────────────────┘
 ```
 
-Использование схемы, отличной от схемы по умолчанию:
+Используя нестандартную схему:
 
 ```text
 postgres=# CREATE SCHEMA "nice.schema";
 
 postgres=# CREATE TABLE "nice.schema"."nice.table" (a integer);
 
-postgres=# INSERT INTO "nice.schema"."nice.table" SELECT i FROM generate_series(0, 99) as t(i)
+postgres=# INSERT INTO "nice.schema"."nice.table" SELECT i FROM generate_series(0, 99) as t(i);
 ```
 
 ```sql
@@ -147,14 +147,14 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 
 **См. также**
 
-- [Движок таблицы PostgreSQL](../../engines/table-engines/integrations/postgresql.md)
+- [Движок таблиц PostgreSQL](../../engines/table-engines/integrations/postgresql.md)
 - [Использование PostgreSQL в качестве источника словаря](/sql-reference/dictionaries#postgresql)
 
-## Связанное содержимое {#related-content}
+## Связанный контент {#related-content}
 
-- Блог: [ClickHouse и PostgreSQL - идеальное сочетание в мире данных - часть 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
-- Блог: [ClickHouse и PostgreSQL - идеальное сочетание в мире данных - часть 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)
+- Блог: [ClickHouse и PostgreSQL - идеальная пара в мире данных - часть 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
+- Блог: [ClickHouse и PostgreSQL - идеальная пара в мире данных - часть 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)
 
-### Репликация или миграция данных Postgres с помощью PeerDB {#replicating-or-migrating-postgres-data-with-with-peerdb}
+### Репликация или миграция данных Postgres с использованием PeerDB {#replicating-or-migrating-postgres-data-with-with-peerdb}
 
-> В дополнение к функциям таблиц вы всегда можете использовать [PeerDB](https://docs.peerdb.io/introduction) от ClickHouse для настройки непрерывного потока данных из Postgres в ClickHouse. PeerDB — это инструмент, разработанный специально для репликации данных из Postgres в ClickHouse с использованием захвата изменений данных (CDC).
+> В дополнение к функциям таблиц, вы всегда можете использовать [PeerDB](https://docs.peerdb.io/introduction) от ClickHouse для настройки непрерывного конвейера данных от Postgres к ClickHouse. PeerDB — это инструмент, специально разработанный для репликации данных из Postgres в ClickHouse с использованием захвата изменений данных (CDC).

@@ -1,16 +1,18 @@
 ---
-description: "Системная таблица, содержащая историю значений ошибок из таблицы `system.errors`, периодически сбрасываемую на диск."
+description: 'Системная таблица, содержащая историю значений ошибок из таблицы `system.errors`,
+  периодически сбрасываемую на диск.'
+keywords: ['системная таблица', 'error_log']
 slug: /operations/system-tables/error_log
-title: "system.error_log"
-keywords: ["системная таблица", "error_log"]
+title: 'system.error_log'
 ---
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
 Содержит историю значений ошибок из таблицы `system.errors`, периодически сбрасываемую на диск.
 
-Колонки:
+Столбцы:
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
 - `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата события.
 - `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время события.
@@ -21,11 +23,11 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 **Пример**
 
-``` sql
+```sql
 SELECT * FROM system.error_log LIMIT 1 FORMAT Vertical;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 hostname:   clickhouse.eu-central1.internal
@@ -37,8 +39,8 @@ value:      2
 remote:     0
 ```
 
-**Смотрите также**
+**См. также**
 
-- [настройка error_log](../../operations/server-configuration-parameters/settings.md#error_log) — Включение и выключение настройки.
+- [error_log setting](../../operations/server-configuration-parameters/settings.md#error_log) — Включение и отключение параметра.
 - [system.errors](../../operations/system-tables/errors.md) — Содержит коды ошибок с количеством их срабатываний.
 - [Мониторинг](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.

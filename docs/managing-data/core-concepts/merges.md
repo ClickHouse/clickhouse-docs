@@ -28,7 +28,7 @@ ClickHouse [is fast](/concepts/why-clickhouse-is-so-fast) not just for queries b
 
 This makes data writes lightweight and [highly efficient](/concepts/why-clickhouse-is-so-fast#storage-layer-concurrent-inserts-are-isolated-from-each-other).
 
-To control the number of parts per table and implement ② above, ClickHouse continuously merges ([per partition](/partitions#per-partition-merges)) smaller parts into larger ones in the background until they reach a compressed size of approximately [~150 GB](/operations/settings/merge-tree-settings#max-bytes-to-merge-at-max-space-in-pool).
+To control the number of parts per table and implement ② above, ClickHouse continuously merges ([per partition](/partitions#per-partition-merges)) smaller parts into larger ones in the background until they reach a compressed size of approximately [~150 GB](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool).
 
 The following diagram sketches this background merge process:
 
@@ -36,7 +36,7 @@ The following diagram sketches this background merge process:
 
 <br/>
 
-The `merge level` of a part is incremented by one with each additional merge. A level of `0` means the part is new and has not been merged yet. Parts that were merged into larger parts are marked as [inactive](/operations/system-tables/parts) and finally deleted after a [configurable](/operations/settings/merge-tree-settings#old-parts-lifetime) time (8 minutes by default). Over time, this creates a **tree** of merged parts. Hence the name [merge tree](/engines/table-engines/mergetree-family) table.
+The `merge level` of a part is incremented by one with each additional merge. A level of `0` means the part is new and has not been merged yet. Parts that were merged into larger parts are marked as [inactive](/operations/system-tables/parts) and finally deleted after a [configurable](/operations/settings/merge-tree-settings#old_parts_lifetime) time (8 minutes by default). Over time, this creates a **tree** of merged parts. Hence the name [merge tree](/engines/table-engines/mergetree-family) table.
 
 ## Monitoring merges {#monitoring-merges}
 
@@ -142,7 +142,7 @@ The diagram below illustrates how parts in a standard [MergeTree](/engines/table
 
 The DDL statement in the diagram above creates a `MergeTree` table with a sorting key `(town, street)`, [meaning](/parts#what-are-table-parts-in-clickhouse) data on disk is sorted by these columns, and a sparse primary index is generated accordingly.
 
-The ① decompressed, pre-sorted table columns are ② merged while preserving the table’s global sorting order defined by the table’s sorting key, ③ a new sparse primary index is generated, and ④ the merged column files and index are compressed and stored as a new data part on disk.
+The ① decompressed, pre-sorted table columns are ② merged while preserving the table's global sorting order defined by the table's sorting key, ③ a new sparse primary index is generated, and ④ the merged column files and index are compressed and stored as a new data part on disk.
 
 ### Replacing merges {#replacing-merges}
 

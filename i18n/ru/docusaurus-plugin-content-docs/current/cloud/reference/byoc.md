@@ -1,11 +1,12 @@
 ---
-title: BYOC (Принесите свой облако) для AWS
+title: 'BYOC (Bring Your Own Cloud) для AWS'
 slug: /cloud/reference/byoc
-sidebar_label: BYOC (Принесите свой облако)
-keywords: [BYOC, облако, принесите свой облако]
-description: Разверните ClickHouse на своей облачной инфраструктуре
+sidebar_label: 'BYOC (Bring Your Own Cloud)'
+keywords: ['BYOC', 'cloud', 'bring your own cloud']
+description: 'Развертывание ClickHouse в вашей собственной облачной инфраструктуре'
 ---
 
+import Image from '@theme/IdealImage';
 import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
 import byoc4 from '@site/static/images/cloud/reference/byoc-4.png';
 import byoc3 from '@site/static/images/cloud/reference/byoc-3.png';
@@ -17,374 +18,333 @@ import byoc_plb from '@site/static/images/cloud/reference/byoc-plb.png';
 import byoc_security from '@site/static/images/cloud/reference/byoc-securitygroup.png';
 import byoc_inbound from '@site/static/images/cloud/reference/byoc-inbound-rule.png';
 
-
 ## Обзор {#overview}
 
-BYOC (Принесите свое облако) позволяет вам разворачивать ClickHouse Cloud на вашей собственной облачной инфраструктуре. Это полезно, если у вас есть конкретные требования или ограничения, которые не позволяют вам использовать управляемый сервис ClickHouse Cloud.
+BYOC (Bring Your Own Cloud) позволяет вам развернуть ClickHouse Cloud на вашей собственной облачной инфраструктуре. Это полезно, если у вас есть специфические требования или ограничения, которые не позволяют вам использовать управляемый сервис ClickHouse Cloud.
 
-**Если вы хотите получить доступ, пожалуйста, [свяжитесь с нами](https://clickhouse.com/cloud/bring-your-own-cloud).** Ознакомьтесь с нашими [Условиями использования](https://clickhouse.com/legal/agreements/terms-of-service) для получения дополнительной информации.
+**Если вы хотите получить доступ, пожалуйста, [свяжитесь с нами](https://clickhouse.com/cloud/bring-your-own-cloud).** Ознакомьтесь с нашими [Условиями обслуживания](https://clickhouse.com/legal/agreements/terms-of-service) для получения дополнительной информации.
 
-В настоящее время BYOC поддерживается только для AWS, разработка для GCP и Microsoft Azure на стадии завершения.
+В настоящее время BYOC поддерживается только для AWS, разработки для GCP и Microsoft Azure находятся в процессе.
 
 :::note 
-BYOC предназначен специально для развертываний крупномасштабного характера и требует от клиентов подписания обязательного контракта.
+BYOC предназначен специально для развертываний в крупном масштабе и требует от клиентов подписать обязательный контракт.
 :::
 
 ## Глоссарий {#glossary}
 
 - **VPC ClickHouse:** VPC, принадлежащий ClickHouse Cloud.
-- **VPC Customer BYOC:** VPC, принадлежащий облачному аккаунту клиента, развернутый и управляемый ClickHouse Cloud и посвященный развертыванию ClickHouse Cloud BYOC.
-- **VPC Customer** Другие VPC, принадлежащие облачному аккаунту клиента, используемые для приложений, которым необходимо подключиться к VPC Customer BYOC.
+- **VPC клиента BYOC:** VPC, принадлежащий облачному аккаунту клиента, создаваемый и управляемый ClickHouse Cloud и выделенный для развертывания BYOC ClickHouse Cloud.
+- **VPC клиента:** Другие VPC, принадлежащие облачному аккаунту клиента, используемые для приложений, которым необходимо подключаться к VPC клиента BYOC.
 
 ## Архитектура {#architecture}
 
-Метрики и логи хранятся в VPC клиента BYOC. Логи в настоящее время хранятся локально в EBS. В одном из будущих обновлений логи будут храниться в LogHouse, что является сервисом ClickHouse в VPC клиента BYOC. Метрики реализованы через стек Prometheus и Thanos, хранящийся локально в VPC клиента BYOC.
+Метрики и логи хранятся в VPC клиента BYOC. В данный момент логи хранятся локально в EBS. В будущих обновлениях логи будут храниться в LogHouse, который является сервисом ClickHouse в VPC клиента BYOC. Метрики реализованы с помощью стека Prometheus и Thanos, хранится локально в VPC клиента BYOC.
 
 <br />
 
-<img src={byoc1}
-    alt='Архитектура BYOC'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc1} size="lg" alt="Архитектура BYOC" background='black'/>
 
 <br />
 
-## Процесс адаптации {#onboarding-process}
+## Процесс регистрации {#onboarding-process}
 
-Клиенты могутInitiate процесс адаптации, связавшись с [нами](https://clickhouse.com/cloud/bring-your-own-cloud). Клиенты должны иметь выделенный аккаунт AWS и знать регион, который они будут использовать. На данный момент мы разрешаем пользователям запускать службы BYOC только в тех регионах, которые мы поддерживаем для ClickHouse Cloud.
+Клиенты могут инициировать процесс регистрации, обратившись к [нам](https://clickhouse.com/cloud/bring-your-own-cloud). Клиенты должны иметь выделенный аккаунт AWS и знать регион, который они будут использовать. В настоящее время мы разрешаем пользователям запускать услуги BYOC только в тех регионах, которые поддерживаются для ClickHouse Cloud.
 
 ### Подготовка выделенного аккаунта AWS {#prepare-a-dedicated-aws-account}
 
-Клиенты должны подготовить выделенный аккаунт AWS для размещения развертывания ClickHouse BYOC, чтобы обеспечить лучшую изоляцию. С этим и адресом электронной почты начального администратора организации вы можете обратиться в службу поддержки ClickHouse.
+Клиенты должны подготовить выделенный аккаунт AWS для размещения развертывания ClickHouse BYOC, чтобы обеспечить лучшую изоляцию. С этим и начальными организационными данными админу вы можете обратиться в техническую поддержку ClickHouse.
 
 ### Применение шаблона CloudFormation {#apply-cloudformation-template}
 
-Настройка BYOC инициализируется через [стек CloudFormation](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml), который создает только роль, позволяющую контроллерам BYOC из ClickHouse Cloud управлять инфраструктурой. Ресурсы S3, VPC и вычислений для запуска ClickHouse не включены в этот стек.
+Настройка BYOC инициализируется с помощью [стека CloudFormation](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml), который создает только роль, позволяющую контроллерам BYOC от ClickHouse Cloud управлять инфраструктурой. Ресурсы S3, VPC и вычислительные ресурсы для запуска ClickHouse не включены в этот стек.
 
-<!-- TODO: Add Screenshot for the rest of onboarding, once self-served onboarding is implemented. -->
+<!-- TODO: Добавить скриншот для оставшейся части регистрации, как только будет реализована самостоятелная регистрация. -->
 
 ### Настройка инфраструктуры BYOC {#setup-byoc-infrastructure}
 
-После создания стека CloudFormation вам будет предложено настроить инфраструктуру, включая S3, VPC и кластер EKS, из облачной консоли. На этом этапе необходимо определить определенные настройки, так как их нельзя будет изменить позже. В частности:
+После создания стека CloudFormation вам будет предложено настроить инфраструктуру, включая S3, VPC и кластер EKS, из облачной консоли. Некоторые конфигурации должны быть определены на этом этапе, так как их нельзя будет изменить позже. В частности:
 
-- **Регион, который вы хотите использовать**: вы можете выбрать любой из [публичных регионов](/cloud/reference/supported-regions), которые мы имеем для ClickHouse Cloud.
-- **CIDR диапазон VPC для BYOC**: По умолчанию мы используем `10.0.0.0/16` для CIDR диапазона VPC BYOC. Если вы планируете использовать VPC-peering с другой учетной записью, убедитесь, что диапазоны CIDR не пересекаются. Выделите подходящий CIDR диапазон для BYOC, минимальный размер `/22`, чтобы разместить необходимые рабочие нагрузки.
-- **Зоны доступности для VPC BYOC**: Если вы планируете использовать VPC-peering, выравнивание зон доступности между исходным и BYOC аккаунтами может помочь уменьшить затраты на трафик между AZ. В AWS суффиксы зон доступности (`a, b, c`) могут представлять разные физические ID зон между аккаунтами. Подробнее смотрите в [руководстве AWS](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html).
+- **Регион, который вы хотите использовать**: вы можете выбрать один из любых [публичных регионов](/cloud/reference/supported-regions), которые мы имеем для ClickHouse Cloud.
+- **CIDR диапазон VPC для BYOC**: По умолчанию мы используем `10.0.0.0/16` для CIDR диапазона VPC BYOC. Если вы планируете использовать VPC-пиринг с другим аккаунтом, убедитесь, что CIDR диапазоны не перекрываются. Выделите соответствующий CIDR диапазон для BYOC, минимальный размер которого должен составлять `/22`, чтобы учесть необходимые рабочие нагрузки.
+- **Зоны доступности для VPC BYOC**: Если вы планируете использовать VPC-пиринг, согласование зон доступности между исходным и BYOC аккаунтами может помочь снизить расходы на межзоновой трафик. В AWS суффиксы зон доступности (`a, b, c`) могут представлять разные физические идентификаторы зон в разных аккаунтах. См. [руководство AWS](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html) для получения дополнительной информации.
 
-### Дополнительно: Настройка VPC-Peering {#optional-setup-vpc-peering}
+### Необязательно: Настройка VPC-пиринга {#optional-setup-vpc-peering}
 
-Для создания или удаления VPC-peering для ClickHouse BYOC выполните следующие шаги:
+Чтобы создать или удалить VPC-пиринг для ClickHouse BYOC, выполните следующие шаги:
 
-#### Шаг 1 Включите Private Load Balancer для ClickHouse BYOC {#step-1-enable-private-load-balancer-for-clickhouse-byoc}
-Свяжитесь со службой поддержки ClickHouse для активации Private Load Balancer.
+#### Шаг 1 Включение частного балансировщика нагрузки для ClickHouse BYOC {#step-1-enable-private-load-balancer-for-clickhouse-byoc}
+Свяжитесь с поддержкой ClickHouse для включения частного балансировщика нагрузки.
 
-#### Шаг 2 Создайте соединение peering {#step-2-create-a-peering-connection}
-1. Перейдите на панель VPC в аккаунте ClickHouse BYOC.
-2. Выберите Peering Connections.
-3. Нажмите Create Peering Connection.
-4. Установите VPC Requester на ID VPC ClickHouse.
-5. Установите VPC Acceptor на ID целевого VPC. (Выберите другую учетную запись, если применимо)
-6. Нажмите Create Peering Connection.
-
-<br />
-
-<img src={byoc_vpcpeering}
-    alt='Создание peering соединения BYOC'
-    class='image'
-    style={{width: '800px'}}
-/>
+#### Шаг 2 Создание соединения пиринга {#step-2-create-a-peering-connection}
+1. Перейдите на панель управления VPC в аккаунте ClickHouse BYOC.
+2. Выберите "Соединения пиринга".
+3. Нажмите "Создать соединение пиринга".
+4. Установите VPC-запрос для ID VPC ClickHouse.
+5. Установите VPC-акцептор для целевого ID VPC. (Выберите другой аккаунт, если применимо)
+6. Нажмите "Создать соединение пиринга".
 
 <br />
 
-#### Шаг 3 Примите запрос на соединение peering {#step-3-accept-the-peering-connection-request}
-Перейдите в peering аккаунт, на странице (VPC -> Peering connections -> Actions -> Accept request) клиент может одобрить этот запрос на VPC peering.
+<Image img={byoc_vpcpeering} size="lg" alt="Создание соединения пиринга BYOC" border />
 
 <br />
 
-<img src={byoc_vpcpeering2}
-    alt='Принять соединение peering BYOC'
-    class='image'
-    style={{width: '800px'}}
-/>
+#### Шаг 3 Принять запрос на соединение пиринга {#step-3-accept-the-peering-connection-request}
+Перейдите в пиринговый аккаунт, на странице (VPC -> Соединения пиринга -> Действия -> Принять запрос) клиент может утвердить этот запрос о пиринге VPC.
 
 <br />
 
-#### Шаг 4 Добавьте назначение в таблицы маршрутов VPC ClickHouse {#step-4-add-destination-to-clickhouse-vpc-route-tables}
+<Image img={byoc_vpcpeering2} size="lg" alt="Принятие соединения пиринга BYOC" border />
+
+<br />
+
+#### Шаг 4 Добавить назначение в таблицы маршрутов VPC ClickHouse {#step-4-add-destination-to-clickhouse-vpc-route-tables}
 В аккаунте ClickHouse BYOC,
-1. Выберите Route Tables на панели VPC.
-2. Найдите ID VPC ClickHouse. Отредактируйте каждую таблицу маршрутов, прикрепленную к приватным подсетям.
-3. Нажмите кнопку Edit под вкладкой Routes.
-4. Нажмите Add another route.
-5. Введите CIDR диапазон целевого VPC для Destination.
-6. Выберите “Peering Connection” и ID соединения peering для Target.
+1. Выберите "Таблицы маршрутов" в панели управления VPC.
+2. Найдите ID VPC ClickHouse. Отредактируйте каждую таблицу маршрутов, прикрепленную к частным подсетям.
+3. Нажмите кнопку "Редактировать" на вкладке маршрутов.
+4. Нажмите "Добавить другой маршрут".
+5. Введите CIDR диапазон целевого VPC в поле Назначения.
+6. Выберите "Соединение пиринга" и ID соединения пиринга для Цели.
 
 <br />
 
-<img src={byoc_vpcpeering3}
-    alt='Добавить маршрут в таблицу BYOC'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_vpcpeering3} size="lg" alt="Добавить таблицу маршрутов BYOC" border />
 
 <br />
 
-#### Шаг 5 Добавьте назначение в таблицы маршрутов целевого VPC {#step-5-add-destination-to-the-target-vpc-route-tables}
-В peering аккаунте AWS,
-1. Выберите Route Tables на панели VPC.
+#### Шаг 5 Добавить назначение в таблицы маршрутов целевого VPC {#step-5-add-destination-to-the-target-vpc-route-tables}
+В пиринговом аккаунте AWS,
+1. Выберите "Таблицы маршрутов" в панели управления VPC.
 2. Найдите ID целевого VPC.
-3. Нажмите кнопку Edit под вкладкой Routes.
-4. Нажмите Add another route.
-5. Введите CIDR диапазон VPC ClickHouse для Destination.
-6. Выберите “Peering Connection” и ID соединения peering для Target.
+3. Нажмите кнопку "Редактировать" на вкладке маршрутов.
+4. Нажмите "Добавить другой маршрут".
+5. Введите CIDR диапазон VPC ClickHouse в поле Назначения.
+6. Выберите "Соединение пиринга" и ID соединения пиринга для Цели.
 
 <br />
 
-<img src={byoc_vpcpeering4}
-    alt='Добавить маршрут в таблицу BYOC'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_vpcpeering4} size="lg" alt="Добавить таблицу маршрутов BYOC" border />
 
 <br />
 
-#### Шаг 6 Измените группу безопасности, чтобы разрешить доступ к VPC-peering {#step-6-edit-security-group-to-allow-peered-vpc-access}
+#### Шаг 6 Редактировать группу безопасности, чтобы разрешить доступ к пиринговой VPC {#step-6-edit-security-group-to-allow-peered-vpc-access}
 В аккаунте ClickHouse BYOC,
-1. В аккаунте ClickHouse BYOC перейдите в EC2 и найдите Private Load Balancer, называемый infra-xx-xxx-ingress-private.
+1. В аккаунте ClickHouse BYOC перейдите в EC2 и найдите Частный балансировщик нагрузки с именем вроде infra-xx-xxx-ingress-private.
 
 <br />
 
-<img src={byoc_plb}
-    alt='Private Load Balancer BYOC'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_plb} size="lg" alt="Частный балансировщик нагрузки BYOC" border />
 
 <br />
 
-2. На вкладке Security на странице Details найдите связанную группу безопасности, которая следует шаблону именования, например `k8s-istioing-istioing-xxxxxxxxx`.
+2. На вкладке Безопасность на странице деталей найдите соответствующую группу безопасности, которая следует шаблону именования, как `k8s-istioing-istioing-xxxxxxxxx`.
 
 <br />
 
-<img src={byoc_security}
-    alt='Группа безопасности Private Load Balancer BYOC'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_security} size="lg" alt="Группа безопасности частного балансировщика нагрузки BYOC" border />
 
 <br />
 
-3. Измените правила Inbound этой группы безопасности и добавьте CIDR диапазон VPC-партнера (или укажите необходимый CIDR диапазон по мере необходимости).
+3. Отредактируйте входящие правила этой группы безопасности и добавьте CIDR диапазон пиринговой VPC (или укажите необходимый CIDR диапазон по мере необходимости).
 
 <br />
 
-<img src={byoc_inbound}
-    alt='Правило входящего трафика группы безопасности BYOC'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_inbound} size="lg" alt="Правило входа группы безопасности BYOC" border />
 
 <br />
 
 ---
-Сейчас сервис ClickHouse должен быть доступен из VPC-партнера.
+Сервис ClickHouse теперь должен быть доступен из пиринговой VPC.
 
-Чтобы получить доступ к ClickHouse приватно, для безопасного подключения из VPC-партнера пользователя предусмотрены приватный балансировщик нагрузки и конечная точка. Приватная конечная точка следует формату публичной конечной точки с суффиксом `-private`. Например:
+Для частного доступа к ClickHouse в пиринговой VPC выделяется частный балансировщик нагрузки и конечная точка для безопасного подключения. Частная конечная точка следует формату публичной конечной точки с суффиксом `-private`. Например:
 - **Публичная конечная точка**: `h5ju65kv87.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`
-- **Приватная конечная точка**: `h5ju65kv87-private.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`
+- **Частная конечная точка**: `h5ju65kv87-private.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`
 
-Дополнительно, после проверки работы пиринга, вы можете запросить удаление публичного балансировщика нагрузки для ClickHouse BYOC.
+Необязательно, после проверки работы пиринга вы можете запросить удаление публичного балансировщика нагрузки для ClickHouse BYOC.
 
 ## Процесс обновления {#upgrade-process}
 
-Мы регулярно обновляем программное обеспечение, включая обновления версии базы данных ClickHouse, ClickHouse Operator, EKS и другие компоненты.
+Мы регулярно обновляем программное обеспечение, включая обновления версий баз данных ClickHouse, ClickHouse Operator, EKS и других компонентов.
 
-Хотя мы стремимся к бесшовным обновлениям (например, к последовательным обновлениям и перезапускам), некоторые из них, такие как изменения версии ClickHouse и обновления узлов EKS, могут повлиять на сервис. Клиенты могут задать временное окно обслуживания (например, каждую среду в 1:00 по PDT), гарантируя, что такие обновления происходят только в запланированное время.
+Хотя мы стремимся к бесшовным обновлениям (например, кrolling upgrades и перезагрузкам), некоторые из них, такие как изменения версий ClickHouse и обновления узлов EKS, могут повлиять на сервис. Клиенты могут указать окно обслуживания (например, каждую вторник в 1:00 по PDT), чтобы гарантировать, что такие обновления происходят только в запланированное время.
 
 :::note
-Окна обслуживания не применяются к исправлениям безопасности и уязвимостей. Эти исправления обрабатываются как внецикловые обновления, с своевременным общением для координации подходящего времени и минимизации операционного воздействия.
+Окна обслуживания не применяются для исправлений безопасности и уязвимостей. Они обрабатываются как внецикловые обновления с своевременным уведомлением для координации подходящего времени и минимизации операционного воздействия.
 :::
 
 ## IAM роли CloudFormation {#cloudformation-iam-roles}
 
-### Роль bootstrap IAM {#bootstrap-iam-role}
+### Роль IAM начальной загрузки {#bootstrap-iam-role}
 
-Роль bootstrap IAM имеет следующие разрешения:
+Роль IAM начальной загрузки имеет следующие разрешения:
 
-- **Операции EC2 и VPC**: Необходимы для настройки VPC и кластеров EKS.
-- **Операции S3 (например, `s3:CreateBucket`)**: Необходимы для создания бакетов для хранения ClickHouse BYOC.
+- **Действия EC2 и VPC**: Необходимы для настройки VPC и кластеров EKS.
+- **Действия с S3 (например, `s3:CreateBucket`)**: Необходимы для создания бакетов для хранения ClickHouse BYOC.
 - **Разрешения `route53:*`**: Необходимы для внешнего DNS для настройки записей в Route 53.
-- **Операции IAM (например, `iam:CreatePolicy`)**: Необходимы контроллерам для создания дополнительных ролей (см. следующий раздел для подробностей).
-- **Операции EKS**: Ограничены ресурсами с именами, начинающимися с префикса `clickhouse-cloud`.
+- **Действия IAM (например, `iam:CreatePolicy`)**: Необходимы для контроллеров для создания дополнительных ролей (см. следующий раздел для подробностей).
+- **Действия EKS**: Ограничены ресурсами с именами, начинающимися с префикса `clickhouse-cloud`.
 
 ### Дополнительные IAM роли, создаваемые контроллером {#additional-iam-roles-created-by-the-controller}
 
-В дополнение к роли `ClickHouseManagementRole`, созданной через CloudFormation, контроллер создаст несколько дополнительных ролей.
+В дополнение к `ClickHouseManagementRole`, созданной через CloudFormation, контроллер создаст несколько дополнительных ролей.
 
-Эти роли принимаются приложениями, работающими в кластере клиента EKS:
-- **Роль State Exporter**
-  - Компонент ClickHouse, который сообщает о состоянии сервиса в ClickHouse Cloud.
-  - Требуется разрешение на запись в очередь SQS, принадлежащую ClickHouse Cloud.
+Эти роли предполагаются приложениями, запущенными в кластере EKS клиента:
+- **Роль экспорта состояния**
+  - Компонент ClickHouse, который сообщает информацию о состоянии сервиса ClickHouse Cloud.
+  - Требует разрешения на запись в очередь SQS, принадлежащую ClickHouse Cloud.
 - **Контроллер балансировщика нагрузки**
   - Стандартный контроллер балансировщика нагрузки AWS.
-  - EBS CSI Controller для управления объемами для служб ClickHouse.
-- **External-DNS**
-  - Пропагирует конфигурации DNS в Route 53.
+  - Контроллер EBS CSI для управления томами для услуг ClickHouse.
+- **Внешний DNS**
+  - Распространяет конфигурации DNS в Route 53.
 - **Cert-Manager**
-  - Выдает TLS сертификаты для доменов сервиса BYOC.
-- **Cluster Autoscaler**
+  - Предоставляет TLS сертификаты для доменов BYOC.
+- **Автоскейлер кластера**
   - Регулирует размер группы узлов по мере необходимости.
 
-**K8s-control-plane** и **k8s-worker** роли предназначены для получения доступа AWS EKS службами.
+**K8s-control-plane** и **k8s-worker** роли предназначены для использования службами AWS EKS.
 
-Наконец, **`data-plane-mgmt`** позволяет компоненту управления ClickHouse Cloud согласовывать необходимые пользовательские ресурсы, такие как `ClickHouseCluster` и виртуальная служба/ворота Istio.
+Наконец, **`data-plane-mgmt`** позволяет компоненту управления ClickHouse Cloud синхронизировать необходимые настраиваемые ресурсы, такие как `ClickHouseCluster` и виртуальные сервисы/шлюзы Istio.
 
-## Границы сети {#network-boundaries}
+## Сетевые границы {#network-boundaries}
 
-Этот раздел охватывает различные сетевые потоки к и от VPC клиента BYOC:
+В этом разделе рассматривается разный сетевой трафик из и в VPC клиента BYOC:
 
 - **Входящий**: Трафик, входящий в VPC клиента BYOC.
-- **Исходящий**: Трафик, исходящий из VPC клиента BYOC и отправляемый на внешний адрес.
-- **Общественный**: Сетевая конечная точка, доступная из публичного интернета.
-- **Приватный**: Сетевая конечная точка, доступная только через частные соединения, такие как VPC-peering, VPC Private Link или Tailscale.
+- **Исходящий**: Трафик, исходящий из VPC клиента BYOC и отправляемый на внешние назначения.
+- **Публичный**: Сетевой конечный пункт, доступный из публичного интернета.
+- **Частный**: Сетевой конечный пункт, доступный только через частные соединения, такие как пиринг VPC, Частный линк VPC или Tailscale.
 
-**Ingress Istio развернут за AWS NLB для приема трафика клиентского ClickHouse.**
+**Ingess Istio развертывается за NLB AWS для приема трафика клиентов ClickHouse.**
 
-*Входящий, публичный (может быть частным)*
+*Входящий, Публичный (может быть Частным)*
 
-Шлюз входящего трафика Istio завершает TLS. Сертификат, выдаваемый CertManager с помощью Let's Encrypt, хранится в виде секрета в кластере EKS. Трафик между Istio и ClickHouse [шифруется AWS](https://docs.aws.amazon.com/whitepapers/latest/logical-separation/encrypting-data-at-rest-and--in-transit.html#:~:text=All%20network%20traffic%20between%20AWS,supported%20Amazon%20EC2%20instance%20types), так как они находятся в одном VPC.
+Шлюз входа Istio завершает TLS. Сертификат, предоставленный CertManager с Let's Encrypt, хранится как секрет в классе EKS. Трафик между Istio и ClickHouse [шифруется AWS](https://docs.aws.amazon.com/whitepapers/latest/logical-separation/encrypting-data-at-rest-and--in-transit.html#:~:text=All%20network%20traffic%20between%20AWS,supported%20Amazon%20EC2%20instance%20types) так как они находятся в одном и том же VPC.
 
-По умолчанию, входящий трафик является публично доступным с фильтрацией по списку разрешенных IP-адресов. Клиенты могут настроить VPC-peering, чтобы сделать его частным и отключить публичные соединения. Мы настоятельно рекомендуем настроить [IP фильтр](/cloud/security/setting-ip-filters) для ограничения доступа.
+По умолчанию входящий трафик является публично доступным с фильтрацией по списку разрешений IP. Клиенты могут настроить пиринг VPC, чтобы сделать его частным и отключить публичные соединения. Мы настоятельно рекомендуем настроить [фильтр IP](/cloud/security/setting-ip-filters), чтобы ограничить доступ.
 
 ### Устранение проблем с доступом {#troubleshooting-access}
 
-*Входящий, публичный (может быть частным)*
+*Входящий, Публичный (может быть Частным)*
 
-Инженеры ClickHouse Cloud требуют доступа для устранения проблем через Tailscale. Им предоставляются сертификаты на момент доступа для развертываний BYOC.
+Инженеры ClickHouse Cloud требуют доступа для устранения проблем через Tailscale. Им предоставляется аутентификация на основе сертификатов с ограниченным временем действия для развертываний BYOC.
 
-### Сбор информации о выставлении счетов {#billing-scraper}
+### Сборщик данных {#billing-scraper}
 
-*Исходящий, приватный*
+*Исходящий, Частный*
 
-Сбор информации о выставлении счетов собирает данные о выставлении счетов от ClickHouse и отправляет их в бакет S3, принадлежащий ClickHouse Cloud.
+Сборщик данных собирает данные о выставлении счетов из ClickHouse и отправляет их в бакет S3, принадлежащий ClickHouse Cloud.
 
-Он работает как сайдкар вместе с контейнером сервера ClickHouse, периодически собирая данные о CPU и памяти. Запросы в пределах одного региона маршрутизируются через конечные точки службы шлюза VPC.
+Он работает как сайдкар рядом с контейнером сервера ClickHouse, периодически собирая метрики CPU и памяти. Запросы в рамках одного региона маршрутизируются через конечные точки сервисов шлюза VPC.
 
-### Оповещения {#alerts}
+### Уведомления {#alerts}
 
-*Исходящий, публичный*
+*Исходящий, Публичный*
 
-AlertManager настроен на отправку оповещений в ClickHouse Cloud, когда кластер ClickHouse клиента становится нездоровым.
+AlertManager настроен на отправку уведомлений ClickHouse Cloud, когда кластер ClickHouse клиента работает неправильно.
 
-Метрики и логи хранятся в VPC клиента BYOC. Логи в настоящее время хранятся локально в EBS. В одном из будущих обновлений они будут храниться в LogHouse, сервисе ClickHouse в VPC BYOC. Метрики используют стек Prometheus и Thanos, хранящийся локально в VPC BYOC.
+Метрики и логи хранятся в VPC клиента BYOC. Логи в настоящее время хранятся локально в EBS. В будущем они будут храниться в LogHouse, сервисе ClickHouse в VPC BYOC. Метрики используют стек Prometheus и Thanos, хранится локально в VPC BYOC.
 
 ### Состояние сервиса {#service-state}
 
 *Исходящий*
 
-Экспортёр состояния отправляет информацию о состоянии сервиса ClickHouse в SQS, принадлежащий ClickHouse Cloud.
+Экспортер состояния отправляет информацию о состоянии сервиса ClickHouse в SQS, принадлежащую ClickHouse Cloud.
 
-## Возможности {#features}
+## Функции {#features}
 
 ### Поддерживаемые функции {#supported-features}
 
-- **SharedMergeTree**: ClickHouse Cloud и BYOC используют одинаковый бинарный и конфигурацию. Поэтому все функции из ядра ClickHouse поддерживаются в BYOC, такие как SharedMergeTree.
-- **Консольный доступ для управления состоянием сервиса**:
+- **SharedMergeTree**: ClickHouse Cloud и BYOC используют один и тот же бинарный файл и конфигурацию. Поэтому все функции из ядра ClickHouse поддерживаются в BYOC, такие как SharedMergeTree.
+- **Доступ через консоль для управления состоянием сервиса**:
   - Поддерживает операции, такие как запуск, остановка и завершение.
-  - Просмотр служб и статусов.
+  - Просмотр сервисов и статуса.
 - **Резервное копирование и восстановление.**
 - **Ручное вертикальное и горизонтальное масштабирование.**
-- **Простой уровень ожидания.**
-- **Складские помещения**: отделение вычислений.
-- **Сеть нулевой доверенности через Tailscale.**
+- **Идлинг.**
+- **Склады**: Разделение вычислений
+- **Сеть с нулевым доверием через Tailscale.**
 - **Мониторинг**:
-  - Облачная консоль включает встроенные информационные панели для мониторинга состояния сервиса.
-  - Сбор метрик Prometheus для централизованного мониторинга с Prometheus, Grafana и Datadog. Ознакомьтесь с [документацией Prometheus](/integrations/prometheus) для инструкций по настройке.
-- **VPC-пиринг.**
-- **Интеграции**: см. полный список на [этой странице](/integrations).
+  - Облачная консоль включает встроенные панели мониторинга для отслеживания состояния сервиса.
+  - Сбор метрик Prometheus для централизованного мониторинга с Prometheus, Grafana и Datadog. См. [документацию по Prometheus](/integrations/prometheus) для инструкций по настройке.
+- **VPC пиринг.**
+- **Интеграции**: См. полный список на [этой странице](/integrations).
 - **Безопасный S3.**
 - **[AWS PrivateLink](https://aws.amazon.com/privatelink/).**
 
-### Запланированные функции (в настоящее время не поддерживаются) {#planned-features-currently-unsupported}
+### Планируемые функции (текущая неподдержка) {#planned-features-currently-unsupported}
 
-- [AWS KMS](https://aws.amazon.com/kms/) или CMEK (шифрование с управляемыми заказчиком ключами)
-- ClickPipes для загрузки данных
-- Авто-масштабирование
+- [AWS KMS](https://aws.amazon.com/kms/) также известный как CMEK (ключи шифрования, управляемые клиентом)
+- ClickPipes для приема
+- Автомасштабирование
 - Интерфейс MySQL
 
 ## Часто задаваемые вопросы {#faq}
 
 ### Вычисления {#compute}
 
-#### Могу ли я создать несколько служб в этом одном кластере EKS? {#can-i-create-multiple-services-in-this-single-eks-cluster}
+#### Могу ли я создать несколько сервисов в одном кластере EKS? {#can-i-create-multiple-services-in-this-single-eks-cluster}
 
-Да. Инфраструктура должна быть развернута только один раз для каждого сочетания аккаунта AWS и региона.
+Да. Инфраструктура должна быть подготовлена только один раз для каждой комбинации аккаунта AWS и региона.
 
 ### Какие регионы вы поддерживаете для BYOC? {#which-regions-do-you-support-for-byoc}
 
-BYOC поддерживает тот же набор [регионов](/cloud/reference/supported-regions#aws-regions), что и ClickHouse Cloud.
+BYOC поддерживает такой же набор [регионов](/cloud/reference/supported-regions#aws-regions), как и ClickHouse Cloud.
 
-#### Будет ли какой-то накладной ресурс? Каковы ресурсы, необходимые для запуска служб, кроме экземпляров ClickHouse? {#will-there-be-some-resource-overhead-what-are-the-resources-needed-to-run-services-other-than-clickhouse-instances}
+#### Будет ли какая-либо накладная нагрузка? Какие ресурсы нужны для работы сервисов, кроме экземпляров ClickHouse? {#will-there-be-some-resource-overhead-what-are-the-resources-needed-to-run-services-other-than-clickhouse-instances}
 
-Кроме экземпляров Clickhouse (серверов ClickHouse и ClickHouse Keeper), мы запускаем такие службы, как `clickhouse-operator`, `aws-cluster-autoscaler`, Istio и т.д. и наш стек мониторинга.
+Кроме экземпляров Clickhouse (серверы ClickHouse и ClickHouse Keeper), мы запускаем такие службы, как `clickhouse-operator`, `aws-cluster-autoscaler`, Istio и нашу стек мониторинга.
 
 В настоящее время у нас есть 3 узла m5.xlarge (по одному для каждой AZ) в выделенной группе узлов для выполнения этих рабочих нагрузок.
 
 ### Сеть и безопасность {#network-and-security}
 
-#### Можем ли мы отменить разрешения, установленные во время установки, после завершения настройки? {#can-we-revoke-permissions-set-up-during-installation-after-setup-is-complete}
+#### Можем ли мы отозвать разрешения, установленные во время установки, после завершения настройки? {#can-we-revoke-permissions-set-up-during-installation-after-setup-is-complete}
 
-На данный момент это невозможно.
+В настоящее время это невозможно.
 
-#### Учитывали ли вы какие-либо будущие меры безопасности для инженеров ClickHouse для доступа к инфраструктуре клиента для устранения неполадок? {#have-you-considered-some-future-security-controls-for-clickhouse-engineers-to-access-customer-infra-for-troubleshooting}
+#### Рассматривали ли вы некоторые будущие меры безопасности, чтобы инженеры ClickHouse могли получить доступ к инфраструктуре клиента для устранения проблем? {#have-you-considered-some-future-security-controls-for-clickhouse-engineers-to-access-customer-infra-for-troubleshooting}
 
-Да. Реализация механизма, контролируемого клиентом, где клиенты могут одобрять доступ инженеров к кластеру, есть в нашем плане. В данный момент инженеры должны проходить наш внутренний процесс эскалации, чтобы получить доступ в режиме "в нужное время" к кластеру. Это фиксируется и проверяется нашей службой безопасности.
+Да. Реализация механизма, контролируемого клиентом, где клиенты могут одобрять доступ инженеров к кластеру, стоит у нас на повестке дня. В данный момент инженерам необходимо пройти наш внутренний процесс эскалации, чтобы получить доступ ко времени действия кластера. Это фиксируется и проверяется нашей командой безопасности.
 
-#### Каков размер создаваемого диапазона IP VPC? {#what-is-the-size-of-the-vpc-ip-range-created}
+#### Каков размер диапазона IP VPC? {#what-is-the-size-of-the-vpc-ip-range-created}
 
-По умолчанию мы используем `10.0.0.0/16` для VPC BYOC. Мы рекомендуем зарезервировать как минимум /22 для потенциального масштабирования в будущем, но если вы предпочитаете ограничить размер, возможно использование /23, если вероятно, что вы будете ограничены до 30 серверных подов.
+По умолчанию мы используем `10.0.0.0/16` для VPC BYOC. Мы рекомендуем зарезервировать минимум /22 для потенциального будущего масштабирования, но если вы предпочитаете ограничить размер, возможно использование /23, если вам, вероятно, будет достаточно развёртывания 30 серверных подов.
 
-#### Могу ли я определить частоту технического обслуживания {#can-i-decide-maintenance-frequency}
+#### Могу ли я решить частоту обслуживания {#can-i-decide-maintenance-frequency}
 
-Свяжитесь с поддержкой для планирования окон технического обслуживания. Ожидайте минимум раз в неделю обновлений.
+Свяжитесь с поддержкой, чтобы запланировать окна обслуживания. Ожидайте минимум еженедельного графика обновления.
 
 ## Наблюдаемость {#observability}
 
 ### Встроенные инструменты мониторинга {#built-in-monitoring-tools}
 
-#### Информационная панель наблюдаемости {#observability-dashboard}
+#### Панель наблюдаемости {#observability-dashboard}
 
-ClickHouse Cloud включает в себя продвинутую информационную панель наблюдаемости, которая отображает метрики, такие как использование памяти, скорость запросов и I/O. Получить доступ к ней можно в разделе **Мониторинг** интерфейса веб-консоли ClickHouse Cloud.
+ClickHouse Cloud включает усовершенствованную панель наблюдаемости, которая отображает метрики, такие как использование памяти, скорость запросов и I/O. Это можно получить в разделе **Мониторинг** интерфейса веб-консоли ClickHouse Cloud.
 
 <br />
 
-<img src={byoc3}
-    alt='Информационная панель наблюдаемости'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc3} size="lg" alt="Панель наблюдаемости" border />
 
 <br />
 
 #### Расширенная панель {#advanced-dashboard}
 
-Вы можете настроить панель, используя метрики из системных таблиц, таких как `system.metrics`, `system.events` и `system.asynchronous_metrics`, и т.д. для детального мониторинга производительности сервера и использования ресурсов.
+Вы можете настроить панель, используя метрики из системных таблиц, такие как `system.metrics`, `system.events` и `system.asynchronous_metrics`, чтобы детально отслеживать производительность сервера и использование ресурсов.
 
 <br />
 
-<img src={byoc4}
-    alt='Расширенная панель'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc4} size="lg" alt="Расширенная панель" border />
 
 <br />
 
 #### Интеграция с Prometheus {#prometheus-integration}
 
-ClickHouse Cloud предоставляет конечную точку Prometheus, которую вы можете использовать для сбора метрик для мониторинга. Это позволяет интегрироваться с инструментами, такими как Grafana и Datadog, для визуализации.
+ClickHouse Cloud предоставляет конечную точку Prometheus, которую вы можете использовать для сбора метрик для мониторинга. Это позволяет интегрироваться с такими инструментами, как Grafana и Datadog для визуализации.
 
-**Пример запроса через https конечную точку /metrics_all**
+**Пример запроса через HTTPS конечную точку /metrics_all**
 
 ```bash
 curl --user <username>:<password> https://i6ro4qarho.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud:8443/metrics_all
@@ -394,12 +354,12 @@ curl --user <username>:<password> https://i6ro4qarho.mhp0y4dmph.us-west-2.aws.by
 
 ```bash
 
-# HELP ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes Количество байт, хранимых на диске `s3disk` в системной базе данных
+# HELP ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes Количество байт, хранящихся на диске `s3disk` в системной базе данных
 
 # TYPE ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes gauge
 ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes{hostname="c-jet-ax-16-server-43d5baj-0"} 62660929
 
-# HELP ClickHouse_CustomMetric_NumberOfBrokenDetachedParts Количество сломанных отсоединённых частей
+# HELP ClickHouse_CustomMetric_NumberOfBrokenDetachedParts Количество поврежденных отсоединенных частей
 
 # TYPE ClickHouse_CustomMetric_NumberOfBrokenDetachedParts gauge
 ClickHouse_CustomMetric_NumberOfBrokenDetachedParts{hostname="c-jet-ax-16-server-43d5baj-0"} 0
@@ -409,7 +369,7 @@ ClickHouse_CustomMetric_NumberOfBrokenDetachedParts{hostname="c-jet-ax-16-server
 # TYPE ClickHouse_CustomMetric_LostPartCount gauge
 ClickHouse_CustomMetric_LostPartCount{hostname="c-jet-ax-16-server-43d5baj-0"} 0
 
-# HELP ClickHouse_CustomMetric_NumberOfWarnings Количество предупреждений, выданных сервером. Обычно это указывает на возможные неправильные настройки
+# HELP ClickHouse_CustomMetric_NumberOfWarnings Количество предупреждений, выданных сервером. Обычно указывает на возможные ошибки конфигурации
 
 # TYPE ClickHouse_CustomMetric_NumberOfWarnings gauge
 ClickHouse_CustomMetric_NumberOfWarnings{hostname="c-jet-ax-16-server-43d5baj-0"} 2
@@ -424,7 +384,7 @@ ClickHouseErrorMetric_FILE_DOESNT_EXIST{hostname="c-jet-ax-16-server-43d5baj-0",
 # TYPE ClickHouseErrorMetric_UNKNOWN_ACCESS_TYPE counter
 ClickHouseErrorMetric_UNKNOWN_ACCESS_TYPE{hostname="c-jet-ax-16-server-43d5baj-0",table="system.errors"} 8
 
-# HELP ClickHouse_CustomMetric_TotalNumberOfErrors Общее количество ошибок на сервере с момента последнего перезапуска
+# HELP ClickHouse_CustomMetric_TotalNumberOfErrors Общее количество ошибок на сервере с последнего перезапуска
 
 # TYPE ClickHouse_CustomMetric_TotalNumberOfErrors gauge
 ClickHouse_CustomMetric_TotalNumberOfErrors{hostname="c-jet-ax-16-server-43d5baj-0"} 9
@@ -432,7 +392,7 @@ ClickHouse_CustomMetric_TotalNumberOfErrors{hostname="c-jet-ax-16-server-43d5baj
 
 **Аутентификация**
 
-Для аутентификации можно использовать пару логин-пароль ClickHouse. Мы рекомендуем создать выделенного пользователя с минимальными разрешениями для сбора метрик. По меньшей мере, разрешение `READ` требуется на таблицу `system.custom_metrics` на всех репликах. Например:
+Для аутентификации можно использовать пару имени пользователя и пароля ClickHouse. Мы рекомендуем создавать выделенного пользователя с минимальными разрешениями для сбора метрик. Минимум, требуется разрешение `READ` на таблице `system.custom_metrics` на всех репликах. Например:
 
 ```sql
 GRANT REMOTE ON *.* TO scraping_user
@@ -441,7 +401,7 @@ GRANT SELECT ON system.custom_metrics TO scraping_user
 
 **Настройка Prometheus**
 
-Пример конфигурации показан ниже. Конечная точка `targets` такая же, как для доступа к сервису ClickHouse.
+Пример конфигурации показан ниже. Эндпоинт `targets` - это тот же, который используется для доступа к сервису ClickHouse.
 
 ```bash
 global:
@@ -462,4 +422,4 @@ scrape_configs:
    honor_labels: true
 ```
 
-Также смотрите [этот блог пост](https://clickhouse.com/blog/clickhouse-cloud-now-supports-prometheus-monitoring) и [документацию по настройке Prometheus для ClickHouse](/integrations/prometheus).
+Пожалуйста, также смотрите [этот блог-пост](https://clickhouse.com/blog/clickhouse-cloud-now-supports-prometheus-monitoring) и [документы по настройке Prometheus для ClickHouse](/integrations/prometheus).

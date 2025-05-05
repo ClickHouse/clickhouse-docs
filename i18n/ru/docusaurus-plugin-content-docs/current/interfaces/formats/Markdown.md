@@ -1,14 +1,15 @@
 ---
-title: Markdown
-slug: /interfaces/formats/Markdown
+description: 'Документация для формата Markdown'
 keywords: ['Markdown']
+slug: /interfaces/formats/Markdown
+title: 'Markdown'
 ---
 
 ## Описание {#description}
 
-Вы можете экспортировать результаты в формате [Markdown](https://en.wikipedia.org/wiki/Markdown), чтобы создать вывод, готовый для вставки в ваши `.md` файлы:
+Вы можете экспортировать результаты в формате [Markdown](https://en.wikipedia.org/wiki/Markdown) для генерации вывода, готового к вставке в ваши `.md` файлы:
 
-Таблица в формате markdown будет сгенерирована автоматически и может быть использована на платформах с поддержкой markdown, таких как Github. Этот формат используется только для вывода.
+Markdown-таблица будет сгенерирована автоматически и может быть использована на платформах, поддерживающих markdown, таких как Github. Этот формат используется только для вывода.
 
 ## Пример использования {#example-usage}
 

@@ -7,7 +7,6 @@ slug: '/integrations/clickpipes/postgres'
 import BetaBadge from '@theme/badges/BetaBadge';
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
-import postgres_tile from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-tile.jpg'
 import postgres_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-connection-details.jpg'
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 import select_replication_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-replication-slot.jpg'
@@ -67,8 +66,6 @@ Postgres 代理如 PgBouncer、RDS Proxy、Supabase Pooler 等不支持基于 CD
 <img src={cp_step0} alt="选择导入" />
 
 3. 选择 `Postgres CDC` 瓦片
-
-   <img src={postgres_tile} alt="选择 Postgres" />
 
 ### 添加源 Postgres 数据库连接 {#adding-your-source-postgres-database-connection}
 

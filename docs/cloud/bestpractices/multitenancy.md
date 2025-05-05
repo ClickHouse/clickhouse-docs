@@ -11,7 +11,7 @@ Depending on the requirements, there are different ways to implement multi-tenan
 
 ## Shared table  {#shared-table}
 
-In this approach, data from all tenants is stored in a single shared table, with a field (or set of fields) used to identify each tenant’s data. To maximize performance, this field should be included in the [primary key](/sql-reference/statements/create/table#primary-key). To ensure that users can only access data belonging to their respective tenants we use [role-based access control](/operations/access-rights), implemented through [row policies](/operations/access-rights#row-policy-management).
+In this approach, data from all tenants is stored in a single shared table, with a field (or set of fields) used to identify each tenant's data. To maximize performance, this field should be included in the [primary key](/sql-reference/statements/create/table#primary-key). To ensure that users can only access data belonging to their respective tenants we use [role-based access control](/operations/access-rights), implemented through [row policies](/operations/access-rights#row-policy-management).
 
 > **We recommend this approach as this is the simplest to manage, particularly when all tenants share the same data schema and data volumes are moderate (< TBs)**
 
@@ -107,11 +107,11 @@ FROM events
 
 ## Separate tables {#separate-tables}
 
-In this approach, each tenant’s data is stored in a separate table within the same database, eliminating the need for a specific field to identify tenants. User access is enforced using a [GRANT statement](/sql-reference/statements/grant), ensuring that each user can access only tables containing their tenants' data.
+In this approach, each tenant's data is stored in a separate table within the same database, eliminating the need for a specific field to identify tenants. User access is enforced using a [GRANT statement](/sql-reference/statements/grant), ensuring that each user can access only tables containing their tenants' data.
 
 > **Using separate tables is a good choice when tenants have different data schemas.**
 
-For scenarios involving a few tenants with very large datasets where query performance is critical, this approach may outperform a shared table model. Since there is no need to filter out other tenants’ data, queries can be more efficient. Additionally, primary keys can be further optimized, as there is no need to include an extra field (such as a tenant ID) in the primary key. 
+For scenarios involving a few tenants with very large datasets where query performance is critical, this approach may outperform a shared table model. Since there is no need to filter out other tenants' data, queries can be more efficient. Additionally, primary keys can be further optimized, as there is no need to include an extra field (such as a tenant ID) in the primary key. 
 
 Note this approach doesn't scale for 1000s of tenants. See [usage limits](/cloud/bestpractices/usage-limits).
 
@@ -199,7 +199,7 @@ FROM default.events_tenant_1
 
 ## Separate databases {#separate-databases}
 
-Each tenant’s data is stored in a separate database within the same ClickHouse service.
+Each tenant's data is stored in a separate database within the same ClickHouse service.
 
 > **This approach is useful if each tenant requires a large number of tables and possibly materialized views, and has different data schema. However, it may become challenging to manage if the number of tenants is large.**
 
@@ -311,7 +311,7 @@ The most radical approach is to use a different ClickHouse service per tenant.
 
 > **This less common method would be a solution if tenants data are required to be stored in different regions - for legal, security or proximity reasons.**
 
-A user account must be created on each service where the user can access their respective tenant’s data.
+A user account must be created on each service where the user can access their respective tenant's data.
 
 This approach is harder to manage and bring overhead with each service, as they each requires their own infrastructure to run. Services can be managed via the [ClickHouse Cloud API](/cloud/manage/api/api-overview) with orchestration also possible via the [official Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs).
 

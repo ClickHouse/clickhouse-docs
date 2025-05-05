@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/corr
-sidebar_position: 117
-title: 'corr'
 description: 'Вычисляет коэффициент корреляции Пирсона.'
+sidebar_position: 117
+slug: /sql-reference/aggregate-functions/reference/corr
+title: 'corr'
 ---
 
 
@@ -14,9 +14,9 @@ $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{\sqrt{\Sigma{(x - \bar{x})^2} * \Sigma{(y - \bar{y})^2}}}
 $$
 
-
+<br/>
 :::note
-Эта функция использует численно неустойчивый алгоритм. Если вам нужна [численная стабильность](https://en.wikipedia.org/wiki/Numerical_stability) в вычислениях, используйте функцию [`corrStable`](../reference/corrstable.md). Она медленнее, но дает более точный результат.
+Эта функция использует численно неустойчивый алгоритм. Если вам нужна [численная устойчивость](https://en.wikipedia.org/wiki/Numerical_stability) в расчетах, используйте функцию [`corrStable`](../reference/corrstable.md). Она медленнее, но дает более точный результат.
 :::
 
 **Синтаксис**

@@ -75,7 +75,7 @@ All three techniques aim to skip as many rows during full-column reads as possib
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/MH10E3rVvnM?si=duWmS_OatCLx-akH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-Besides that, ClickHouse’s storage layer additionally (and optionally) compresses the raw table data using different codecs.
+Besides that, ClickHouse's storage layer additionally (and optionally) compresses the raw table data using different codecs.
 
 Column-stores are particularly well suited for such compression as values of the same type and data distribution are located together.
 
@@ -108,7 +108,7 @@ If a single node becomes too small to hold the table data, further nodes can be 
 What sets ClickHouse [apart](https://www.youtube.com/watch?v=CAS2otEoerM) is its meticulous attention to low-level optimization. Building a database that simply works is one thing, but engineering it to deliver speed across diverse query types, data structures, distributions, and index configurations is where the "[freak system](https://youtu.be/Vy2t_wZx4Is?si=K7MyzsBBxgmGcuGU&t=3579)" artistry shines.
 
 
-**Hash Tables.** Let’s take a hash table as an example. Hash tables are central data structures used by joins and aggregations. As a programmer, one needs to consider these design decisions:
+**Hash Tables.** Let's take a hash table as an example. Hash tables are central data structures used by joins and aggregations. As a programmer, one needs to consider these design decisions:
 
 * The hash function to choose,
 * The collision resolution: [open addressing](https://en.wikipedia.org/wiki/Open_addressing) or [chaining](https://en.wikipedia.org/wiki/Hash_table#Separate_chaining),

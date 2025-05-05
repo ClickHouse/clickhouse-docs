@@ -1,49 +1,51 @@
 ---
-slug: /sql-reference/statements/parallel_with
+description: 'Документация для клаausa PARALLEL WITH'
+sidebar_label: 'PARALLEL WITH'
 sidebar_position: 53
-sidebar_label: ПАРАЛЛЕЛЬНО С
+slug: /sql-reference/statements/parallel_with
+title: 'Клаusa PARALLEL WITH'
 ---
 
 
-# ПАРАЛЛЕЛЬНО С Clause
+# Клаusa PARALLEL WITH
 
 Позволяет выполнять несколько операторов параллельно.
 
 ## Синтаксис {#syntax}
 
-``` sql
-statement1 ПАРАЛЛЕЛЬНО С statement2 [ПАРАЛЛЕЛЬНО С statement3 ...]
+```sql
+statement1 PARALLEL WITH statement2 [PARALLEL WITH statement3 ...]
 ```
 
 Выполняет операторы `statement1`, `statement2`, `statement3`, ... параллельно друг с другом. Вывод этих операторов игнорируется.
 
-Выполнение операторов параллельно может быть быстрее, чем просто последовательность тех же операторов в многих случаях. Например, `statement1 ПАРАЛЛЕЛЬНО С statement2 ПАРАЛЛЕЛЬНО С statement3` вероятно будет быстрее, чем `statement1; statement2; statement3`.
+Выполнение операторов параллельно может быть быстрее, чем просто последовательное выполнение тех же операторов во многих случаях. Например, `statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` вероятно будет быстрее, чем `statement1; statement2; statement3`.
 
 ## Примеры {#examples}
 
 Создает две таблицы параллельно:
 
-``` sql
+```sql
 CREATE TABLE table1(x Int32) ENGINE = MergeTree ORDER BY tuple()
-ПАРАЛЛЕЛЬНО С
+PARALLEL WITH
 CREATE TABLE table2(y String) ENGINE = MergeTree ORDER BY tuple();
 ```
 
 Удаляет две таблицы параллельно:
 
-``` sql
+```sql
 DROP TABLE table1
-ПАРАЛЛЕЛЬНО С
+PARALLEL WITH
 DROP TABLE table2;
 ```
 
 ## Настройки {#settings}
 
-Настройка [max_threads](../../operations/settings/settings.md#max_threads) контролирует, сколько потоков создается.
+Настройка [max_threads](../../operations/settings/settings.md#max_threads) управляет тем, сколько потоков будет запущено.
 
 ## Сравнение с UNION {#comparison-with-union}
 
-Клауза `ПАРАЛЛЕЛЬНО С` несколько похожа на [UNION](select/union.md), который также выполняет свои операнды параллельно. Однако есть некоторые отличия:
-- `ПАРАЛЛЕЛЬНО С` не возвращает никакие результаты от выполнения своих операндов, он может только повторно выбросить исключение, если такое будет;
-- `ПАРАЛЛЕЛЬНО С` не требует, чтобы его операнды имели один и тот же набор результирующих колонок;
-- `ПАРАЛЛЕЛЬНО С` может выполнять любые операторы (не только `SELECT`).
+Клаusa `PARALLEL WITH` немного напоминает [UNION](select/union.md), который также выполняет свои операнды параллельно. Однако есть некоторые отличия:
+- `PARALLEL WITH` не возвращает никакие результаты от выполнения своих операндов, он может только повторно выбросить исключение от них, если такие имеются;
+- `PARALLEL WITH` не требует, чтобы его операнды имели один и тот же набор столбцов результата;
+- `PARALLEL WITH` может выполнять любые операторы (не только `SELECT`).

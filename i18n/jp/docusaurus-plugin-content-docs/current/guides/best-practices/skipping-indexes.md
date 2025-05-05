@@ -6,7 +6,7 @@ description: スキップインデックスにより、ClickHouseは一致する
 ---
 
 import SimpleSkip from '@site/static/images/guides/best-practices/simple_skip.svg';
-import BadSkip from '@site/static/images/guides/best-practices/bad_skip_1.svg';
+import BadSkip from '@site/static/images/guides/best-practices/bad_skip.svg';
 
 
 # ClickHouseデータスキッピングインデックスの理解

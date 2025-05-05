@@ -11,7 +11,7 @@ import cmek_performance from '@site/static/images/_snippets/cmek-performance.png
 
 # ClickHouse Enhanced Encryption
 
-<EnterprisePlanFeatureBadge feature="Enhanced Encryption" support="true"/>
+<EnterprisePlanFeatureBadge feature="Enhanced Encryption"/>
 
 Data at rest is encrypted by default using cloud provider-managed AES 256 keys. Customers may enable Transparent Data Encryption (TDE) to provide an additional layer of protection for service data or supply their own key to implement Customer Managed Encryption Keys (CMEK) for their service.
 
@@ -56,7 +56,7 @@ Once a service is encrypted with TDE, customers may update the key to enable CME
         "Action": [
             "kms:Encrypt",
             "kms:Decrypt",
-            "kms:ReEncrypt",
+            "kms:ReEncrypt*",
             "kms:DescribeKey"
         ],
         "Resource": "*"

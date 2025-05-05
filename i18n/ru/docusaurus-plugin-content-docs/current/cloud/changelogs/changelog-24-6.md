@@ -1,8 +1,8 @@
 ---
 slug: /changelogs/24.6
-title: v24.6 Changelog for Cloud
-description: Fast release changelog for v24.6
-keywords: [changelog, cloud]
+title: 'v24.6 Changelog for Cloud'
+description: 'Fast release changelog for v24.6'
+keywords: ['changelog', 'cloud']
 ---
 
 # v24.6 Changelog for Cloud

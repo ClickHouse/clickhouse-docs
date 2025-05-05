@@ -1,40 +1,42 @@
 ---
-slug: /sql-reference/functions/uniqtheta-functions
+description: 'Документация по функциям uniqTheta'
+sidebar_label: 'uniqTheta'
 sidebar_position: 210
-sidebar_label: uniqTheta
+slug: /sql-reference/functions/uniqtheta-functions
+title: 'Функции uniqTheta'
 ---
 
 
 # Функции uniqTheta
 
-Функции uniqTheta работают с двумя объектами uniqThetaSketch для выполнения расчетов операций над множествами, таких как ∪ / ∩ / × (объединение/пересечение/разность), результатом которых является новый объект uniqThetaSketch.
+Функции uniqTheta работают с двумя объектами uniqThetaSketch для выполнения расчетов операций над множествами, таких как ∪ / ∩ / × (объединение/пересечение/разность). Они возвращают новый объект uniqThetaSketch, содержащий результат.
 
 Объект uniqThetaSketch создается с помощью агрегатной функции uniqTheta с -State.
 
-UniqThetaSketch - это структура данных для хранения приблизительных значений множеств. 
-Для получения дополнительной информации о RoaringBitmap, см. [Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html).
+UniqThetaSketch — это структура данных для хранения приблизительных значений множеств. 
+Для получения дополнительной информации о RoaringBitmap, смотрите: [Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html).
 
 ## uniqThetaUnion {#uniqthetaunion}
 
-Два объекта uniqThetaSketch выполняют вычисление объединения (операция над множествами ∪), результатом является новый объект uniqThetaSketch.
+Два объекта uniqThetaSketch для выполнения операции объединения (∪). Результат — новый объект uniqThetaSketch.
 
-``` sql
+```sql
 uniqThetaUnion(uniqThetaSketch,uniqThetaSketch)
 ```
 
-**Параметры**
+**Аргументы**
 
 - `uniqThetaSketch` – объект uniqThetaSketch.
 
 **Пример**
 
-``` sql
+```sql
 select finalizeAggregation(uniqThetaUnion(a, b)) as a_union_b, finalizeAggregation(a) as a_cardinality, finalizeAggregation(b) as b_cardinality
 from
 (select arrayReduce('uniqThetaState',[1,2]) as a, arrayReduce('uniqThetaState',[2,3,4]) as b );
 ```
 
-``` text
+```text
 ┌─a_union_b─┬─a_cardinality─┬─b_cardinality─┐
 │         4 │             2 │             3 │
 └───────────┴───────────────┴───────────────┘
@@ -42,25 +44,25 @@ from
 
 ## uniqThetaIntersect {#uniqthetaintersect}
 
-Два объекта uniqThetaSketch выполняют вычисление пересечения (операция над множествами ∩), результатом является новый объект uniqThetaSketch.
+Два объекта uniqThetaSketch для выполнения операции пересечения (∩). Результат — новый объект uniqThetaSketch.
 
-``` sql
+```sql
 uniqThetaIntersect(uniqThetaSketch,uniqThetaSketch)
 ```
 
-**Параметры**
+**Аргументы**
 
 - `uniqThetaSketch` – объект uniqThetaSketch.
 
 **Пример**
 
-``` sql
+```sql
 select finalizeAggregation(uniqThetaIntersect(a, b)) as a_intersect_b, finalizeAggregation(a) as a_cardinality, finalizeAggregation(b) as b_cardinality
 from
 (select arrayReduce('uniqThetaState',[1,2]) as a, arrayReduce('uniqThetaState',[2,3,4]) as b );
 ```
 
-``` text
+```text
 ┌─a_intersect_b─┬─a_cardinality─┬─b_cardinality─┐
 │             1 │             2 │             3 │
 └───────────────┴───────────────┴───────────────┘
@@ -68,25 +70,25 @@ from
 
 ## uniqThetaNot {#uniqthetanot}
 
-Два объекта uniqThetaSketch выполняют вычисление a_not_b (операция над множествами ×), результатом является новый объект uniqThetaSketch.
+Два объекта uniqThetaSketch для выполнения операции разности (×). Результат — новый объект uniqThetaSketch.
 
-``` sql
+```sql
 uniqThetaNot(uniqThetaSketch,uniqThetaSketch)
 ```
 
-**Параметры**
+**Аргументы**
 
 - `uniqThetaSketch` – объект uniqThetaSketch.
 
 **Пример**
 
-``` sql
+```sql
 select finalizeAggregation(uniqThetaNot(a, b)) as a_not_b, finalizeAggregation(a) as a_cardinality, finalizeAggregation(b) as b_cardinality
 from
 (select arrayReduce('uniqThetaState',[2,3,4]) as a, arrayReduce('uniqThetaState',[1,2]) as b );
 ```
 
-``` text
+```text
 ┌─a_not_b─┬─a_cardinality─┬─b_cardinality─┐
 │       2 │             3 │             2 │
 └─────────┴───────────────┴───────────────┘

@@ -450,10 +450,11 @@ Example of feature flag config that disables `multi_read` and enables `check_not
 
 The following features are available:
 
-`multi_read` - support for read multi request. Default: `1`
-`filtered_list` - support for list request which filters results by the type of node (ephemeral or persistent). Default: `1`
-`check_not_exists` - support for `CheckNotExists` request which asserts that node doesn't exists. Default: `0`
-`create_if_not_exists` - support for `CreateIfNotExists` requests which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned. Default: `0`
+- `multi_read` - support for read multi request. Default: `1`
+- `filtered_list` - support for list request which filters results by the type of node (ephemeral or persistent). Default: `1`
+- `check_not_exists` - support for `CheckNotExists` request, which asserts that node doesn't exists. Default: `0`
+- `create_if_not_exists` - support for `CreateIfNotExists` request, which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned. Default: `0`
+- `remove_recursive` - support for `RemoveRecursive` request, which removes the node along with its subtree. Default: `0`
 
 ### Migration from ZooKeeper {#migration-from-zookeeper}
 
@@ -639,7 +640,7 @@ Keeper can expose metrics data for scraping from [Prometheus](https://prometheus
 
 Settings:
 
-- `endpoint` – HTTP endpoint for scraping metrics by the Prometheus server. Start from ‘/’.
+- `endpoint` – HTTP endpoint for scraping metrics by the Prometheus server. Start from '/'.
 - `port` – Port for `endpoint`.
 - `metrics` – Flag that sets to expose metrics from the [system.metrics](/operations/system-tables/metrics) table.
 - `events` – Flag that sets to expose metrics from the [system.events](/operations/system-tables/events) table.

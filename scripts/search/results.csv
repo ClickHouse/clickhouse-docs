@@ -1,5 +1,5 @@
 array,https://clickhouse.com/docs/sql-reference/functions/array-functions,https://clickhouse.com/docs/sql-reference/data-types/array,https://clickhouse.com/docs/sql-reference/statements/select/array-join
-json,https://clickhouse.com/docs/sql-reference/data-types/newjson,https://clickhouse.com/docs/integrations/data-formats/json/loading,https://clickhouse.com/docs/integrations/data-formats/json/inference
+json,https://clickhouse.com/docs/sql-reference/data-types/newjson,https://clickhouse.com/docs/integrations/data-formats/json/overview,https://clickhouse.com/docs/integrations/data-formats/json/inference
 index,https://clickhouse.com/docs/optimize/sparse-primary-indexes,https://clickhouse.com/docs/optimize/skipping-indexes,
 join,https://clickhouse.com/docs/sql-reference/statements/select/join,https://clickhouse.com/docs/guides/joining-tables,
 map,https://clickhouse.com/docs/sql-reference/data-types/map,https://clickhouse.com/docs/zh/sql-reference/functions/tuple-map-functions,
@@ -14,7 +14,7 @@ concat,https://clickhouse.com/docs/sql-reference/functions/string-functions#conc
 mergetree,https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree,https://clickhouse.com/docs/operations/settings/merge-tree-settings,
 todatetime,https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#todatetime,https://clickhouse.com/docs/sql-reference/functions/date-time-functions,
 todate,https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#todate,,
-cast,https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#cast,,
+cast,https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions,,
 arraymap,https://clickhouse.com/docs/sql-reference/functions/array-functions#arraymapfunc-arr1-,,
 insert,https://clickhouse.com/docs/guides/inserting-data,https://clickhouse.com/docs/sql-reference/statements/insert-into,
 partition,https://clickhouse.com/docs/partitions,https://clickhouse.com/docs/engines/table-engines/mergetree-family/custom-partitioning-key,https://clickhouse.com/docs/sql-reference/statements/alter/partition,
@@ -48,7 +48,7 @@ remote,https://clickhouse.com/docs/sql-reference/table-functions/remote,,
 window,https://clickhouse.com/docs/sql-reference/window-functions,,
 replacingmergetree,https://clickhouse.com/docs/engines/table-engines/mergetree-family/replacingmergetree,,
 datediff,https://clickhouse.com/docs/sql-reference/functions/date-time-functions#date_diff,,
-csv,https://clickhouse.com/docs/integrations/data-formats/csv-tsv,,
+csv,https://clickhouse.com/docs/interfaces/formats/CSV,https://clickhouse.com/docs/integrations/data-formats/csv-tsv,,
 materialized,https://clickhouse.com/docs/materialized-view/incremental-materialized-view,https://clickhouse.com/docs/materialized-view/refreshable-materialized-view,https://clickhouse.com/docs/materialized-views
 merge,https://clickhouse.com/docs/parts,https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree,
 quantile,https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantile,,
@@ -64,7 +64,7 @@ alter table,https://clickhouse.com/docs/sql-reference/statements/alter,https://c
 partition by,https://clickhouse.com/docs/partitions#partition-by,https://clickhouse.com/docs/engines/table-engines/mergetree-family/custom-partitioning-key,
 group,https://clickhouse.com/docs/sql-reference/statements/select/group-by,,
 null,https://clickhouse.com/docs/sql-reference/data-types/nullable,,
-dictget,https://clickhouse.com/docs/sql-reference/functions/ext-dict-functions,,
+dictget,https://clickhouse.com/docs/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull,,
 coalesce,https://clickhouse.com/docs/sql-reference/functions/functions-for-nulls#coalesce,,
 round,https://clickhouse.com/docs/sql-reference/functions/rounding-functions,,
 grant,https://clickhouse.com/docs/sql-reference/statements/grant,https://clickhouse.com/docs/operations/system-tables/grants,
@@ -147,7 +147,7 @@ on cluster,https://clickhouse.com/docs/sql-reference/distributed-ddl,,
 aggregatefunction,https://clickhouse.com/docs/sql-reference/data-types/aggregatefunction,,
 groupuniqarray,https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/groupuniqarray,,
 clickhouse-client,https://clickhouse.com/docs/interfaces/cli,,
-materi,https://clickhouse.com/docs/materialized-view/incremental-materialized-view,https://clickhouse.com/docs/materialized-view/refreshable-materialized-view,https://clickhouse.com/docs/materialized-view
+materi,https://clickhouse.com/docs/materialized-views,https://clickhouse.com/docs/materialized-view/incremental-materialized-view,https://clickhouse.com/docs/materialized-view/refreshable-materialized-view
 max_threads,https://clickhouse.com/docs/operations/settings/settings#max_threads,,
 limit,https://clickhouse.com/docs/sql-reference/statements/select/limit,,
 toint,https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions,,
@@ -157,7 +157,7 @@ date_diff,https://clickhouse.com/docs/sql-reference/functions/date-time-function
 default,https://clickhouse.com/docs/operations/settings/settings-users,https://clickhouse.com/docs/knowledgebase/remove-default-user,
 tostartofinterval,https://clickhouse.com/docs/sql-reference/functions/date-time-functions#tostartofinterval,,
 populate,https://clickhouse.com/docs/data-modeling/backfilling#scenario-2-adding-materialized-views-to-existing-tables,,
-max_memory_usage,https://clickhouse.com/docs/operations/settings/query-complexity#settings_max_memory_usage,,
+max_memory_usage,https://clickhouse.com/docs/operations/settings/settings#max_memory_usage,https://clickhouse.com/docs/operations/settings/query-complexity#settings_max_memory_usage,
 user,https://clickhouse.com/docs/operations/system-tables/users,https://clickhouse.com/docs/sql-reference/statements/create/user,
 truncate,https://clickhouse.com/docs/managing-data/truncate,https://clickhouse.com/docs/sql-reference/statements/truncate,
 contains,https://clickhouse.com/docs/sql-reference/functions/string-search-functions,,

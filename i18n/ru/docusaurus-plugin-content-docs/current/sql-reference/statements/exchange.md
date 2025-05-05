@@ -1,14 +1,15 @@
 ---
-slug: /sql-reference/statements/exchange
+description: 'Документация для оператора EXCHANGE'
+sidebar_label: 'EXCHANGE'
 sidebar_position: 49
-sidebar_label: EXCHANGE
+slug: /sql-reference/statements/exchange
+title: 'Оператор EXCHANGE'
 ---
 
 
 # Оператор EXCHANGE
 
-Обменяет имена двух таблиц или словарей атомарно. 
-Эта задача также может быть выполнена с помощью запроса [RENAME](./rename.md) с использованием временного имени, но в этом случае операция не является атомарной.
+Меняет названия двух таблиц или словарей атомарно. Эта задача также может быть выполнена с помощью запроса [RENAME](./rename.md), использующего временное имя, но в этом случае операция не атомарна.
 
 :::note    
 Запрос `EXCHANGE` поддерживается только движком базы данных [Atomic](../../engines/database-engines/atomic.md).
@@ -22,7 +23,7 @@ EXCHANGE TABLES|DICTIONARIES [db0.]name_A AND [db1.]name_B [ON CLUSTER cluster]
 
 ## EXCHANGE TABLES {#exchange-tables}
 
-Обменяет имена двух таблиц.
+Меняет названия двух таблиц.
 
 **Синтаксис**
 
@@ -32,7 +33,7 @@ EXCHANGE TABLES [db0.]table_A AND [db1.]table_B [ON CLUSTER cluster]
 
 ## EXCHANGE DICTIONARIES {#exchange-dictionaries}
 
-Обменяет имена двух словарей.
+Меняет названия двух словарей.
 
 **Синтаксис**
 
@@ -40,6 +41,6 @@ EXCHANGE TABLES [db0.]table_A AND [db1.]table_B [ON CLUSTER cluster]
 EXCHANGE DICTIONARIES [db0.]dict_A AND [db1.]dict_B [ON CLUSTER cluster]
 ```
 
-**См. также**
+**Смотрите также**
 
 - [Словари](../../sql-reference/dictionaries/index.md)

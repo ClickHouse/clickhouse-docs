@@ -1,19 +1,20 @@
 ---
-title: 'JSONCompactStrings'
-slug: '/interfaces/formats/JSONCompactStrings'
-keywords: ['JSONCompactStrings']
-input_format: false
-output_format: true
 alias: []
+description: 'Документация для формата JSONCompactStrings'
+input_format: false
+keywords: ['JSONCompactStrings']
+output_format: true
+slug: /interfaces/formats/JSONCompactStrings
+title: 'JSONCompactStrings'
 ---
 
-| Входные данные | Выходные данные | Псевдоним |
+| Вход | Выход | Псевдоним |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
 ## Описание {#description}
 
-Формат `JSONCompactStrings` отличается от [JSONStrings](./JSONStrings.md) только тем, что строки данных выводятся как массивы, а не как объекты.
+Формат `JSONCompactStrings` отличается от [JSONStrings](./JSONStrings.md) только тем, что строки данных выводятся в виде массивов, а не объектов.
 
 ## Пример использования {#example-usage}
 

@@ -1,0 +1,13 @@
+.versionHistory {
+    width: fit-content;
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    margin-bottom: 15px;
+}
+
+.table {
+    overflow-x: auto;
+    display: block;
+    margin-bottom: 0px;
+}

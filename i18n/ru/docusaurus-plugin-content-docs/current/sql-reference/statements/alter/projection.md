@@ -1,19 +1,21 @@
 ---
-slug: /sql-reference/statements/alter/projection
+description: 'Документация по манипулированию проекциями'
+sidebar_label: 'PROJECTION'
 sidebar_position: 49
-sidebar_label: ПРОЕКЦИИ
-title: "Проекции"
+slug: /sql-reference/statements/alter/projection
+title: 'Проекции'
 ---
 
-Проекции хранят данные в формате, оптимизирующем выполнение запросов, что полезно для:
+Проекции хранят данные в формате, оптимизирующем выполнение запросов, это полезная функция для:
 - Выполнения запросов по колонке, которая не является частью первичного ключа
-- Предагрегирования колонок, что снизит как вычисления, так и ввод-вывод
+- Предварительной агрегации колонок, что уменьшит как вычисления, так и ввод-вывод
 
-Вы можете определить одну или несколько проекций для таблицы, и в процессе анализа запроса ClickHouse выберет проекцию с наименьшим количеством данных для сканирования, не изменяя запрос, предоставленный пользователем.
+Вы можете определить одну или несколько проекций для таблицы, и во время анализа запроса ClickHouse выберет проекцию с наименьшим объемом данных для сканирования, не изменяя запрос, предоставленный пользователем.
 
 :::note Использование диска
 
-Проекции создадут внутри новую скрытую таблицу, это означает, что потребуется больше операций ввода-вывода и дискового пространства. Например, если проекция определяет другой первичный ключ, все данные из оригинальной таблицы будут продублированы.
+Проекции будут создаст внутреннюю скрытую таблицу, это означает, что потребуется больше ввода-вывода и место на диске.
+Например, если проекция определяет другой первичный ключ, все данные из оригинальной таблицы будут дублироваться.
 :::
 
 Вы можете увидеть больше технических деталей о том, как проекции работают внутри, на этой [странице](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections).
@@ -32,7 +34,7 @@ CREATE TABLE visits_order
 ENGINE = MergeTree()
 PRIMARY KEY user_agent
 ```
-Используя `ALTER TABLE`, мы можем добавить проекцию в существующую таблицу:
+Используя `ALTER TABLE`, мы можем добавить проекцию к существующей таблице:
 ```sql
 ALTER TABLE visits_order ADD PROJECTION user_name_projection (
 SELECT
@@ -53,7 +55,7 @@ FROM numbers(1, 100);
 ```
 
 Проекция позволит нам быстро фильтровать по `user_name`, даже если в оригинальной таблице `user_name` не был определен как `PRIMARY_KEY`.
-Во время выполнения запроса ClickHouse определил, что будет обработано меньше данных, если будет использована проекция, так как данные упорядочены по `user_name`.
+Во время выполнения запроса ClickHouse определил, что меньше данных будет обработано, если используется проекция, так как данные упорядочены по `user_name`.
 ```sql
 SELECT
     *
@@ -62,12 +64,12 @@ WHERE user_name='test'
 LIMIT 2
 ```
 
-Чтобы проверить, что запрос использует проекцию, мы можем просмотреть таблицу `system.query_log`. В поле `projections` указано имя использованной проекции или пусто, если ни одна не была использована:
+Чтобы проверить, использует ли запрос проекцию, мы можем просмотреть таблицу `system.query_log`. В поле `projections` мы имеем имя используемой проекции или пустое значение, если ни одна не использовалась:
 ```sql
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
-## Пример запроса предагрегирования {#example-pre-aggregation-query}
+## Пример запроса предварительной агрегации {#example-pre-aggregation-query}
 
 Создание таблицы с проекцией:
 ```sql
@@ -105,7 +107,7 @@ INSERT INTO visits SELECT
    'IOS'
 FROM numbers(100, 500);
 ```
-Мы выполним первый запрос, используя `GROUP BY`, по полю `user_agent`, этот запрос не использует определенную проекцию, так как предагрегирование не соответствует.
+Мы выполним первый запрос, используя `GROUP BY`, с использованием поля `user_agent`, этот запрос не будет использовать предопределенную проекцию, так как предварительная агрегация не совпадает.
 ```sql
 SELECT
     user_agent,
@@ -114,7 +116,7 @@ FROM visits
 GROUP BY user_agent
 ```
 
-Чтобы использовать проекцию, мы можем выполнять запросы, которые выбирают часть или все поля предагрегирования и `GROUP BY`.
+Чтобы использовать проекцию, мы можем выполнить запросы, которые выберут часть или все поля предварительной агрегации и `GROUP BY`.
 ```sql
 SELECT
     user_agent
@@ -130,23 +132,23 @@ FROM visits
 GROUP BY user_agent
 ```
 
-Как уже упоминалось, мы можем просмотреть таблицу `system.query_log`. В поле `projections` указано имя использованной проекции или пусто, если ни одна не была использована:
+Как упоминалось ранее, мы можем просмотреть таблицу `system.query_log`. В поле `projections` мы имеем имя используемой проекции или пустое значение, если ни одна не использовалась:
 ```sql
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-# Управление проекциями
+# Манипулирование проекциями
 
 Доступны следующие операции с [проекциями](/engines/table-engines/mergetree-family/mergetree.md/#projections):
 
 ## ADD PROJECTION {#add-projection}
 
-`ALTER TABLE [db.]name [ON CLUSTER cluster] ADD PROJECTION [IF NOT EXISTS] name ( SELECT <COLUMN LIST EXPR> [GROUP BY] [ORDER BY] )` - Добавляет описание проекции в метаданные таблиц.
+`ALTER TABLE [db.]name [ON CLUSTER cluster] ADD PROJECTION [IF NOT EXISTS] name ( SELECT <COLUMN LIST EXPR> [GROUP BY] [ORDER BY] )` - Добавляет описание проекции в метаданные таблицы.
 
 ## DROP PROJECTION {#drop-projection}
 
-`ALTER TABLE [db.]name [ON CLUSTER cluster] DROP PROJECTION [IF EXISTS] name` - Удаляет описание проекции из метаданных таблиц и удаляет файлы проекции с диска. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations).
+`ALTER TABLE [db.]name [ON CLUSTER cluster] DROP PROJECTION [IF EXISTS] name` - Удаляет описание проекции из метаданных таблицы и удаляет файлы проекции с диска. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations).
 
 ## MATERIALIZE PROJECTION {#materialize-projection}
 
@@ -161,5 +163,5 @@ SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 Кроме того, они реплицируются, синхронизируя метаданные проекций через ClickHouse Keeper или ZooKeeper.
 
 :::note
-Манипуляции с проекциями поддерживаются только для таблиц с движком [`*MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) (включая [реплицированные](/engines/table-engines/mergetree-family/replication.md) варианты).
+Манипуляция проекциями поддерживается только для таблиц с движком [`*MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) (включая [реплицированные](/engines/table-engines/mergetree-family/replication.md) варианты).
 :::

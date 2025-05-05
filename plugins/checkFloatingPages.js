@@ -94,7 +94,13 @@ async function checkFloatingPages(context, options = {}) {
                 if (options && options.failBuild) {
                     console.error('\x1b[31m%s\x1b[0m', `${floatingPages.length} floating pages found:`);
                     floatingPages.forEach(page => console.error(`  - ${page}`));
-                    throw new Error('Error: Found "floating" pages without sidebars. For further details see: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/style-guide.md/');
+                    console.error('Error: Found "floating" pages without sidebars. For further details see: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/style-guide.md/');
+                    // Create a signal file
+                    fs.writeFileSync(
+                        path.join(process.cwd(), '.floating-pages-validation-failed'),
+                        'Floating pages validation failed'
+                    );
+                    process.exit(1);
                 } else {
                     console.log('Warning:', 'Found floating pages:');
                     floatingPages.forEach(page => console.log(`  - ${page}`));

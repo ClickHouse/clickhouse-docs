@@ -338,7 +338,7 @@ FROM hackernews_views_vcmt
 
 A `VersionedCollapsingMergeTree` table is quite handy when you want to implement deduplication while inserting rows from multiple clients and/or threads.
 
-## Why aren’t my rows being deduplicated? {#why-arent-my-rows-being-deduplicated}
+## Why aren't my rows being deduplicated? {#why-arent-my-rows-being-deduplicated}
 
 One reason inserted rows may not be deduplicated is if you are using a non-idempotent function or expression in your `INSERT` statement. For example, if you are inserting rows with the column `createdAt DateTime64(3) DEFAULT now()`, your rows are guaranteed to be unique because each row will have a unique default value for the `createdAt` column. The MergeTree / ReplicatedMergeTree table engine will not know to deduplicate the rows as each inserted row will generate a unique checksum.
 

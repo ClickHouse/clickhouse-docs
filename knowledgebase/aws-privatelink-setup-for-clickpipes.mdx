@@ -11,12 +11,13 @@ keywords: ['AWS PrivateLink', 'Private RDS', 'ClickPipes']
 
 ## AWS PrivateLink setup to expose private RDS for ClickPipes {#aws-privatelink-setup-to-expose-private-rds-for-clickpipes}
 
-Setup steps to expose a private RDS via AWS PrivateLink to ClickPipes.
+Setup steps to expose a private RDS via AWS PrivateLink to ClickPipes, also supporting cross-region access.
 
-## Requirements {#requirements}
-
-The VPC must be located in one of our ClickPipes regions: us-east-1, us-east-2 or eu-central-1, additionally the
-ClickHouse Instance must be in the same region.
+:::info
+This uses AWS Endpoint Service and is mainly suitable for Cross-Region Access. If you require same-region access,
+[creating a VPC Resource](/integrations/clickpipes/aws-privatelink#vpc-resource) is
+recommended instead.
+:::
 
 ## Private link creation {#private-link-creation}
 
@@ -59,12 +60,13 @@ RDS instances that require endpoint services (OR you may have different listener
 
 ## Initiating connection {#initiating-connection}
 
-When it's done, share details such as AWS region, VPC service name and availability zone.
-ClickPipes team will initiate VPC endpoints creation in ClickPipes VPC. This will require [connection request acceptance](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html#accept-reject-connection-requests) on your side.
+When it's done you can follow the guide to [initiate the connection](/integrations/clickpipes/aws-privatelink#creating-clickpipe)
+
+Once the status shows `Ready` on console, you can follow the next section to create your ClickPipe.
 
 ## Creating ClickPipes {#creating-clickpipes}
 
-ClickPipes team will provide the DNS name to be used in the ClickPipe creation process. You can now [create your ClickPipe](/integrations/clickpipes/postgres).
+Use the DNS name you got from the previous step to [create your ClickPipe](/integrations/clickpipes/postgres).
 
 ## Dynamically updating the RDS endpoint IP {#dynamically-updating-the-rds-endpoint-ip}
 

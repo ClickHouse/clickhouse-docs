@@ -1,22 +1,22 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/groupbitand
+description: 'Применяет побитовую `И` для серии чисел.'
 sidebar_position: 147
+slug: /sql-reference/aggregate-functions/reference/groupbitand
 title: 'groupBitAnd'
-description: 'Применяет побитовую операцию `AND` для серии чисел.'
 ---
 
 
 # groupBitAnd
 
-Применяет побитовую операцию `AND` для серии чисел.
+Применяет побитовую `И` для серии чисел.
 
-``` sql
+```sql
 groupBitAnd(expr)
 ```
 
 **Аргументы**
 
-`expr` – Выражение, которое выводит тип `UInt*` или `Int*`.
+`expr` – выражение, которое возвращает тип `UInt*` или `Int*`.
 
 **Возвращаемое значение**
 
@@ -26,7 +26,7 @@ groupBitAnd(expr)
 
 Тестовые данные:
 
-``` text
+```text
 binary     decimal
 00101100 = 44
 00011100 = 28
@@ -36,15 +36,15 @@ binary     decimal
 
 Запрос:
 
-``` sql
+```sql
 SELECT groupBitAnd(num) FROM t
 ```
 
-Где `num` - это колонка с тестовыми данными.
+Где `num` – это колонка с тестовыми данными.
 
 Результат:
 
-``` text
+```text
 binary     decimal
 00000100 = 4
 ```

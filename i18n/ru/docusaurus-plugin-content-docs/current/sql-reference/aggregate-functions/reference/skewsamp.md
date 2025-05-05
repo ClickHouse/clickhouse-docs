@@ -1,18 +1,18 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/skewsamp
+description: 'Вычесляет выборочную асимметрию последовательности.'
 sidebar_position: 186
+slug: /sql-reference/aggregate-functions/reference/skewsamp
 title: 'skewSamp'
-description: 'Вычисляет выборочную асимметрию последовательности.'
 ---
 
 
 # skewSamp
 
-Вычисляет [выборочную асимметрию](https://en.wikipedia.org/wiki/Skewness) последовательности.
+Вычесляет [выборочную асимметрию](https://en.wikipedia.org/wiki/Skewness) последовательности.
 
-Она представляет собой несмещенную оценку асимметрии случайной величины, если переданные значения составляют её выборку.
+Она представляет собой несмещённую оценку асимметрии случайной величины, если переданные значения образуют её выборку.
 
-``` sql
+```sql
 skewSamp(expr)
 ```
 
@@ -22,10 +22,10 @@ skewSamp(expr)
 
 **Возвращаемое значение**
 
-Асимметрия данной распределения. Тип — [Float64](../../../sql-reference/data-types/float.md). Если `n <= 1` (`n` — размер выборки), тогда функция возвращает `nan`.
+Асимметрия данной распределения. Тип — [Float64](../../../sql-reference/data-types/float.md). Если `n <= 1` (`n` — размер выборки), то функция возвращает `nan`.
 
 **Пример**
 
-``` sql
+```sql
 SELECT skewSamp(value) FROM series_with_value_column;
 ```

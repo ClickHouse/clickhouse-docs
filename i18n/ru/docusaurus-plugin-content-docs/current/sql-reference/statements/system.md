@@ -1,27 +1,23 @@
 ---
-slug: /sql-reference/statements/system
+description: 'Документация по командам SYSTEM'
+sidebar_label: 'SYSTEM'
 sidebar_position: 36
-sidebar_label: 'Системные'
-keywords: ['системные команды', 'ClickHouse', 'запросы', 'инструменты администрирования']
-description: 'Справочник системных команд ClickHouse для управления базами данных, таблицами и репликацией.'
+slug: /sql-reference/statements/system
+title: 'Команды SYSTEM'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Системные команды
+# Команды SYSTEM
 
-## PERезагрузить встроенные словари {#reload-embedded-dictionaries}
+## RELOAD EMBEDDED DICTIONARIES {#reload-embedded-dictionaries}
 
-Перезагружает все [внутренние словари](../../sql-reference/dictionaries/index.md).
-По умолчанию внутренние словари отключены.
-Всегда возвращает `Ok.` независимо от результата обновления внутреннего словаря.
+Перезагружает все [внутренние словари](../../sql-reference/dictionaries/index.md). По умолчанию внутренние словари отключены. Всегда возвращает `Ok.`, независимо от результата обновления внутреннего словаря.
 
-## PERезагрузить словари {#reload-dictionaries}
+## RELOAD DICTIONARIES {#reload-dictionaries}
 
-Перезагружает все словари, которые были успешно загружены ранее.
-По умолчанию словари загружаются лениво (см. [dictionaries_lazy_load](../../operations/server-configuration-parameters/settings.md#dictionaries_lazy_load)), поэтому вместо автоматической загрузки при запуске они инициализируются при первом доступе через функцию dictGet или SELECT из таблиц с ENGINE = Dictionary. Запрос `SYSTEM RELOAD DICTIONARIES` перезагружает такие словари (ЗАГРУЖЕНЫ).
-Всегда возвращает `Ok.` независимо от результата обновления словаря.
+Перезагружает все словари, которые были успешно загружены ранее. По умолчанию словари загружаются лениво (см. [dictionaries_lazy_load](../../operations/server-configuration-parameters/settings.md#dictionaries_lazy_load)), поэтому вместо автоматической загрузки при старте они инициализируются при первом доступе через функцию dictGet или SELECT из таблиц с ENGINE = Dictionary. Запрос `SYSTEM RELOAD DICTIONARIES` перезагружает такие словари (LOADED). Всегда возвращает `Ok.`, независимо от результата обновления словаря.
 
 **Синтаксис**
 
@@ -29,26 +25,24 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 SYSTEM RELOAD DICTIONARIES [ON CLUSTER cluster_name]
 ```
 
-## PERезагрузить словарь {#reload-dictionary}
+## RELOAD DICTIONARY {#reload-dictionary}
 
-Полностью перезагружает словарь `dictionary_name`, независимо от состояния словаря (ЗАГРУЖЕН / НЕ ЗАГРУЖЕН / ОШИБКА).
-Всегда возвращает `Ok.` независимо от результата обновления словаря.
+Полностью перезагружает словарь `dictionary_name`, независимо от состояния словаря (LOADED / NOT_LOADED / FAILED). Всегда возвращает `Ok.`, независимо от результата обновления словаря.
 
 ```sql
 SYSTEM RELOAD DICTIONARY [ON CLUSTER cluster_name] dictionary_name
 ```
 
-Состояние словаря можно проверить, выполнив запрос к таблице `system.dictionaries`.
+Статус словаря можно проверить, запросив таблицу `system.dictionaries`.
 
 ```sql
 SELECT name, status FROM system.dictionaries;
 ```
 
-## PERезагрузить модели {#reload-models}
+## RELOAD MODELS {#reload-models}
 
 :::note
-Эта команда и `SYSTEM RELOAD MODEL` просто выгружают модели catboost из clickhouse-library-bridge. Функция `catboostEvaluate()`
-загружает модель при первом доступе, если она еще не загружена.
+Эта команда и `SYSTEM RELOAD MODEL` просто выгружают модели catboost из clickhouse-library-bridge. Функция `catboostEvaluate()` загружает модель при первом доступе, если она еще не загружена.
 :::
 
 Выгружает все модели CatBoost.
@@ -59,9 +53,9 @@ SELECT name, status FROM system.dictionaries;
 SYSTEM RELOAD MODELS [ON CLUSTER cluster_name]
 ```
 
-## PERезагрузить модель {#reload-model}
+## RELOAD MODEL {#reload-model}
 
-Выгружает модель CatBoost по `model_path`.
+Выгружает модель CatBoost по пути `model_path`.
 
 **Синтаксис**
 
@@ -69,9 +63,9 @@ SYSTEM RELOAD MODELS [ON CLUSTER cluster_name]
 SYSTEM RELOAD MODEL [ON CLUSTER cluster_name] <model_path>
 ```
 
-## PERезагрузить функции {#reload-functions}
+## RELOAD FUNCTIONS {#reload-functions}
 
-Перезагружает все зарегистрированные [исполняемые пользовательские функции](/sql-reference/functions/udf#executable-user-defined-functions) или одну из них из конфигурационного файла.
+Перезагружает все зарегистрированные [выполняемые пользовательские функции](/sql-reference/functions/udf#executable-user-defined-functions) или одну из них из файла конфигурации.
 
 **Синтаксис**
 
@@ -80,76 +74,73 @@ RELOAD FUNCTIONS [ON CLUSTER cluster_name]
 RELOAD FUNCTION [ON CLUSTER cluster_name] function_name
 ```
 
-## PERезагрузить асинхронные метрики {#reload-asynchronous-metrics}
+## RELOAD ASYNCHRONOUS METRICS {#reload-asynchronous-metrics}
 
-Переоценивает все [асинхронные метрики](../../operations/system-tables/asynchronous_metrics.md). Поскольку асинхронные метрики периодически обновляются на основе параметра [asynchronous_metrics_update_period_s](../../operations/server-configuration-parameters/settings.md), вручную обновлять их с помощью этого запроса обычно не нужно.
+Пересчитывает все [асинхронные метрики](../../operations/system-tables/asynchronous_metrics.md). Поскольку асинхронные метрики периодически обновляются на основе настройки [asynchronous_metrics_update_period_s](../../operations/server-configuration-parameters/settings.md), вручную обновлять их с помощью этой команды обычно не требуется.
 
 ```sql
 RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 ```
 
-## Удалить DNS кэш {#drop-dns-cache}
+## DROP DNS CACHE {#drop-dns-cache}
 
-Очищает внутренний DNS-кэш ClickHouse. Иногда (для старых версий ClickHouse) необходимо использовать эту команду при изменении инфраструктуры (изменение IP-адреса другого сервера ClickHouse или сервера, используемого для словарей).
+Очищает внутренний кэш DNS ClickHouse. Иногда (для старых версий ClickHouse) необходимо использовать эту команду при изменении инфраструктуры (изменение IP-адреса другого сервера ClickHouse или сервера, используемого словарями).
 
-Для более удобного (автоматического) управления кэшем смотрите параметры disable_internal_dns_cache, dns_cache_max_entries, dns_cache_update_period.
+Для более удобного (автоматического) управления кэшем см. параметры disable_internal_dns_cache, dns_cache_max_entries, dns_cache_update_period.
 
-## Удалить кэш меток {#drop-mark-cache}
+## DROP MARK CACHE {#drop-mark-cache}
 
 Очищает кэш меток.
 
-## Удалить реплику {#drop-replica}
+## DROP REPLICA {#drop-replica}
 
-Старые реплики таблиц `ReplicatedMergeTree` можно удалить с помощью следующего синтаксиса:
+Мертвые реплики таблиц `ReplicatedMergeTree` могут быть удалены с использованием следующего синтаксиса:
 
-``` sql
+```sql
 SYSTEM DROP REPLICA 'replica_name' FROM TABLE database.table;
 SYSTEM DROP REPLICA 'replica_name' FROM DATABASE database;
 SYSTEM DROP REPLICA 'replica_name';
 SYSTEM DROP REPLICA 'replica_name' FROM ZKPATH '/path/to/table/in/zk';
 ```
 
-Запросы удалят путь реплики `ReplicatedMergeTree` в ZooKeeper. Это полезно, когда реплика потеряна, и ее метаданные не могут быть удалены из ZooKeeper с помощью `DROP TABLE`, потому что такой таблицы больше не существует. Это удалит только неактивную/устаревшую реплику и не сможет удалить локальную реплику, пожалуйста, используйте `DROP TABLE` для этого. `DROP REPLICA` не удаляет никакие таблицы и не удаляет никаких данных или метаданных с диска.
+Запросы удалят путь реплики `ReplicatedMergeTree` в ZooKeeper. Это полезно, когда реплика мертва, и ее метаданные не могут быть удалены из ZooKeeper с помощью `DROP TABLE`, потому что такой таблицы больше нет. Это удалит только неактивную/устаревшую реплику, и нельзя удалить локальную реплику, для этого используйте `DROP TABLE`. `DROP REPLICA` не удаляет никаких таблиц и не удаляет никаких данных или метаданных с диска.
 
-Первый запрос удаляет метаданные реплики `'replica_name'` таблицы `database.table`.
-Второй запрос делает то же самое для всех реплицируемых таблиц в базе данных.
-Третий запрос делает то же самое для всех реплицируемых таблиц на локальном сервере.
-Четвертый запрос полезен для удаления метаданных мертвой реплики, когда все другие реплики таблицы были удалены. Он требует явного указания пути к таблице. Он должен быть тем же путем, который был передан в первый аргумент движка `ReplicatedMergeTree` при создании таблицы.
+Первый запрос удаляет метаданные реплики `'replica_name'` таблицы `database.table`. Второй делает то же самое для всех реплицируемых таблиц в базе данных. Третий делает то же самое для всех реплицируемых таблиц на локальном сервере. Четвертый полезен для удаления метаданных мертвой реплики, когда все другие реплики таблицы были удалены. Для этого необходимо явно указать путь к таблице. Он должен быть тем же путем, который был передан в первом аргументе движка `ReplicatedMergeTree` при создании таблицы.
 
-## Удалить реплику базы данных {#drop-database-replica}
+## DROP DATABASE REPLICA {#drop-database-replica}
 
-Старые реплики `Replicated` баз данных можно удалить с помощью следующего синтаксиса:
+Мертвые реплики `Replicated` баз данных могут быть удалены с использованием следующего синтаксиса:
 
-``` sql
+```sql
 SYSTEM DROP DATABASE REPLICA 'replica_name' [FROM SHARD 'shard_name'] FROM DATABASE database;
 SYSTEM DROP DATABASE REPLICA 'replica_name' [FROM SHARD 'shard_name'];
 SYSTEM DROP DATABASE REPLICA 'replica_name' [FROM SHARD 'shard_name'] FROM ZKPATH '/path/to/table/in/zk';
 ```
 
-Похож на `SYSTEM DROP REPLICA`, но удаляет путь реплики `Replicated` базы данных из ZooKeeper, когда нет базы данных для выполнения `DROP DATABASE`. Пожалуйста, обратите внимание, что он не удаляет реплики `ReplicatedMergeTree` (поэтому может понадобиться `SYSTEM DROP REPLICA` также). Имена шардов и реплик - это имена, заданные в аргументах движка `Replicated` при создании базы данных. Также эти имена можно получить из колонок `database_shard_name` и `database_replica_name` в `system.clusters`. Если отсутствует условие `FROM SHARD`, то `replica_name` должен быть полным именем реплики в формате `shard_name|replica_name`.
+Похоже на `SYSTEM DROP REPLICA`, но удаляет путь реплики `Replicated` базы данных из ZooKeeper, когда нет базы данных для выполнения `DROP DATABASE`. Обратите внимание, что он не удаляет реплики `ReplicatedMergeTree` (поэтому вам может понадобиться и `SYSTEM DROP REPLICA`). Имена шардов и реплик — это имена, которые были указаны в аргументах движка `Replicated` при создании базы данных. Также эти имена можно получить из столбцов `database_shard_name` и `database_replica_name` в `system.clusters`. Если опция `FROM SHARD` отсутствует, то `replica_name` должен быть полным именем реплики в формате `shard_name|replica_name`.
 
-## Удалить кэш несжатых данных {#drop-uncompressed-cache}
+## DROP UNCOMPRESSED CACHE {#drop-uncompressed-cache}
 
-Очищает кэш несжатых данных.
-Кэш несжатых данных включается/выключается с помощью настройки запроса/пользователя/профиля [`use_uncompressed_cache`](../../operations/settings/settings.md#use_uncompressed_cache).
-Его размер можно настроить с помощью настройки уровня сервера [`uncompressed_cache_size`](../../operations/server-configuration-parameters/settings.md#uncompressed_cache_size).
+Очищает кэш несжатых данных. Кэш несжатых данных включается/выключается с помощью настройки запроса/профиля [`use_uncompressed_cache`](../../operations/settings/settings.md#use_uncompressed_cache). Его размер можно настроить с помощью настройки уровня сервера [`uncompressed_cache_size`](../../operations/server-configuration-parameters/settings.md#uncompressed_cache_size).
 
-## Удалить кэш скомпилированных выражений {#drop-compiled-expression-cache}
+## DROP COMPILED EXPRESSION CACHE {#drop-compiled-expression-cache}
 
-Очищает кэш скомпилированных выражений.
-Кэш скомпилированных выражений включается/выключается с помощью настройки запроса/пользователя/профиля [`compile_expressions`](../../operations/settings/settings.md#compile_expressions).
+Очищает кэш скомпилированных выражений. Кэш скомпилированных выражений включается/выключается с помощью настройки запроса/профиля [`compile_expressions`](../../operations/settings/settings.md#compile_expressions).
 
-## Удалить кэш запросов {#drop-query-cache}
+## DROP QUERY CONDITION CACHE {#drop-query-condition-cache}
+
+Очищает кэш условий запроса.
+
+## DROP QUERY CACHE {#drop-query-cache}
 
 ```sql
 SYSTEM DROP QUERY CACHE;
 SYSTEM DROP QUERY CACHE TAG '<tag>'
 ````
 
-Очищает [кэш запросов](../../operations/query-cache.md).
-Если указан тег, удаляются только записи кэша запросов с указанным тегом.
+Очищает [кэш запросов](../../operations/query-cache.md). Если указана метка, удаляются только записи кэша запросов с указанной меткой.
 
-## Удалить кэш схем форматов {#system-drop-schema-format}
+## DROP FORMAT SCHEMA CACHE {#system-drop-schema-format}
 
 Очищает кэш для схем, загруженных из [`format_schema_path`](../../operations/server-configuration-parameters/settings.md#format_schema_path).
 
@@ -161,70 +152,69 @@ SYSTEM DROP QUERY CACHE TAG '<tag>'
 SYSTEM DROP FORMAT SCHEMA CACHE [FOR Protobuf]
 ```
 
-## Сбросить логи {#flush-logs}
+## FLUSH LOGS {#flush-logs}
 
-Сбрасывает буферизованные сообщения журнала в системные таблицы, например, system.query_log. Главное предназначение - отладка, поскольку у большинства системных таблиц есть интервал сброса по умолчанию 7.5 секунд.
-Это также создаст системные таблицы, даже если очередь сообщений пуста.
+Сбрасывает буферизированные сообщения журналов в системные таблицы, например, system.query_log. В основном полезно для отладки, так как большинство системных таблиц имеют интервал сброса по умолчанию в 7,5 секунд. Это также создаст системные таблицы, даже если очередь сообщений пуста.
 
 ```sql
 SYSTEM FLUSH LOGS [ON CLUSTER cluster_name] [log_name|[database.table]] [, ...]
 ```
 
-Если вы не хотите сбрасывать все, вы можете сбросить один или несколько отдельных журналов, передав либо их имя, либо их целевую таблицу:
+Если вы не хотите сбрасывать все, вы можете сбросить один или несколько отдельных журналов, передав либо их имя, либо целевую таблицу:
 
 ```sql
 SYSTEM FLUSH LOGS query_log, system.query_views_log;
 ```
 
-## PERезагрузить конфигурацию {#reload-config}
+## RELOAD CONFIG {#reload-config}
 
-Перезагружает конфигурацию ClickHouse. Используется, когда конфигурация хранится в ZooKeeper. Обратите внимание, что `SYSTEM RELOAD CONFIG` не перезагружает конфигурацию `USER`, хранящуюся в ZooKeeper, он перезагружает только конфигурацию `USER`, хранящуюся в `users.xml`.  Для перезагрузки всей конфигурации `USER` используйте `SYSTEM RELOAD USERS`
+Перезагружает конфигурацию ClickHouse. Используется, когда конфигурация хранится в ZooKeeper. Обратите внимание, что `SYSTEM RELOAD CONFIG` не перезагружает конфигурацию `USER`, хранящуюся в ZooKeeper, он только перезагружает конфигурацию `USER`, которая хранится в `users.xml`. Чтобы перезагрузить всю конфигурацию `USER`, используйте `SYSTEM RELOAD USERS`.
 
 ```sql
 SYSTEM RELOAD CONFIG [ON CLUSTER cluster_name]
 ```
 
-## PERезагрузить пользователей {#reload-users}
+## RELOAD USERS {#reload-users}
 
-Перезагружает все хранилища доступа, включая: users.xml, локальное хранилище доступа, реплицированное (в ZooKeeper) хранилище доступа.
+Перезагружает все хранилища доступа, включая: users.xml, хранение доступа на локальном диске, реплицируемое (в ZooKeeper) хранилище доступа.
 
 ```sql
 SYSTEM RELOAD USERS [ON CLUSTER cluster_name]
 ```
 
-## ВЫКЛЮЧИТЬ {#shutdown}
+## SHUTDOWN {#shutdown}
 
 <CloudNotSupportedBadge/>
 
 Обычно отключает ClickHouse (как `service clickhouse-server stop` / `kill {$pid_clickhouse-server}`)
 
-## УБИТЬ {#kill}
+## KILL {#kill}
 
 Прерывает процесс ClickHouse (как `kill -9 {$ pid_clickhouse-server}`)
 
 ## Управление распределенными таблицами {#managing-distributed-tables}
 
-ClickHouse может управлять [распределенными](../../engines/table-engines/special/distributed.md) таблицами. Когда пользователь вставляет данные в эти таблицы, ClickHouse сначала создает очередь данных, которые должны быть отправлены узлам кластера, затем асинхронно отправляет их. Вы можете управлять обработкой очереди с помощью запросов [`STOP DISTRIBUTED SENDS`](#stop-distributed-sends), [FLUSH DISTRIBUTED](#flush-distributed) и [`START DISTRIBUTED SENDS`](#start-distributed-sends). Вы также можете синхронно вставлять распределенные данные с помощью настройки [`distributed_foreground_insert`](../../operations/settings/settings.md#distributed_foreground_insert).
+ClickHouse может управлять [распределенными](../../engines/table-engines/special/distributed.md) таблицами. Когда пользователь вставляет данные в эти таблицы, ClickHouse сначала создает очередь данных, которые должны быть отправлены на узлы кластера, а затем асинхронно отправляет их. Вы можете управлять обработкой очереди с помощью запросов [`STOP DISTRIBUTED SENDS`](#stop-distributed-sends), [FLUSH DISTRIBUTED](#flush-distributed) и [`START DISTRIBUTED SENDS`](#start-distributed-sends). Вы также можете синхронно вставлять распределенные данные с помощью настройки [`distributed_foreground_insert`](../../operations/settings/settings.md#distributed_foreground_insert).
 
-### ОСТАНОВИТЬ РАСПРЕДЕЛЕННЫЕ ОТПРАВКИ {#stop-distributed-sends}
+### STOP DISTRIBUTED SENDS {#stop-distributed-sends}
 
-Отключает распределение данных в фоновом режиме при вставке данных в распределенные таблицы.
+Отключает фоновое распределение данных при вставке данных в распределенные таблицы.
 
-``` sql
+```sql
 SYSTEM STOP DISTRIBUTED SENDS [db.]<distributed_table_name> [ON CLUSTER cluster_name]
 ```
 
 :::note
-Если включена [`prefer_localhost_replica`](../../operations/settings/settings.md#prefer_localhost_replica) (по умолчанию), данные будут вставляться в локальный шард в любом случае.
+В случае включенной опции [`prefer_localhost_replica`](../../operations/settings/settings.md#prefer_localhost_replica) (по умолчанию), данные все равно будут вставлены на локальный шард.
 :::
 
-### СБРОСИТЬ РАСПРЕДЕЛЕННЫЕ {#flush-distributed}
+### FLUSH DISTRIBUTED {#flush-distributed}
 
-Заставляет ClickHouse отправить данные узлам кластера синхронно. Если какие-либо узлы недоступны, ClickHouse выбрасывает исключение и останавливает выполнение запроса. Вы можете повторять запрос до тех пор, пока он не выполнится успешно, что произойдет, когда все узлы снова станут доступны.
+Принуждает ClickHouse отправлять данные на узлы кластера синхронно. Если какие-либо узлы недоступны, ClickHouse выдает исключение и останавливает выполнение запроса. Вы можете повторять запрос, пока он не будет успешным, что произойдет, когда все узлы снова станут доступными.
 
-Вы также можете переопределить некоторые настройки через оператор `SETTINGS`, это может быть полезно, чтобы избежать некоторых временных ограничений, таких как `max_concurrent_queries_for_all_users` или `max_memory_usage`.
+Вы также можете переопределить некоторые настройки через клаузу `SETTINGS`, это может быть полезно для избежания некоторых временных ограничений, таких как `max_concurrent_queries_for_all_users` или `max_memory_usage`.
 
-``` sql
+```sql
 SYSTEM FLUSH DISTRIBUTED [db.]<distributed_table_name> [ON CLUSTER cluster_name] [SETTINGS ...]
 ```
 
@@ -232,34 +222,34 @@ SYSTEM FLUSH DISTRIBUTED [db.]<distributed_table_name> [ON CLUSTER cluster_name]
 Каждый ожидающий блок хранится на диске с настройками из первоначального запроса INSERT, поэтому иногда вы можете захотеть переопределить настройки.
 :::
 
-### НАЧАТЬ РАСПРЕДЕЛЕННЫЕ ОТПРАВКИ {#start-distributed-sends}
+### START DISTRIBUTED SENDS {#start-distributed-sends}
 
-Включает распределение данных в фоновом режиме при вставке данных в распределенные таблицы.
+Включает фоновое распределение данных при вставке данных в распределенные таблицы.
 
-``` sql
+```sql
 SYSTEM START DISTRIBUTED SENDS [db.]<distributed_table_name> [ON CLUSTER cluster_name]
 ```
 
-### ОСТАНОВИТЬ СЛУШАНИЕ {#stop-listen}
+### STOP LISTEN {#stop-listen}
 
-Закрывает сокет и корректно завершает существующие подключения к серверу на указанном порту с указанным протоколом.
+Закрывает сокет и корректно завершает существующие соединения с сервером на указанном порту с указанным протоколом.
 
-Однако, если соответствующие настройки протокола не были указаны в конфигурации clickhouse-server, эта команда не будет иметь эффекта.
+Однако, если соответствующие настройки протокола не были указаны в конфигурации clickhouse-server, эта команда не окажет никакого эффекта.
 
 ```sql
 SYSTEM STOP LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QUERIES CUSTOM | TCP | TCP WITH PROXY | TCP SECURE | HTTP | HTTPS | MYSQL | GRPC | POSTGRESQL | PROMETHEUS | CUSTOM 'protocol']
 ```
 
 - Если указан модификатор `CUSTOM 'protocol'`, будет остановлен пользовательский протокол с указанным именем, определенным в разделе протоколов конфигурации сервера.
-- Если указан модификатор `QUERIES ALL [EXCEPT .. [,..]]`, все протоколы останавливаются, если не указано с помощью условия `EXCEPT`.
-- Если указан модификатор `QUERIES DEFAULT [EXCEPT .. [,..]]`, останавливаются все стандартные протоколы, если не указано с помощью условия `EXCEPT`.
-- Если указан модификатор `QUERIES CUSTOM [EXCEPT .. [,..]]`, останавливаются все пользовательские протоколы, если не указано с помощью условия `EXCEPT`.
+- Если указан модификатор `QUERIES ALL [EXCEPT .. [,..]]`, останавливаются все протоколы, за исключением указанных в составе `EXCEPT`.
+- Если указан модификатор `QUERIES DEFAULT [EXCEPT .. [,..]]`, останавливаются все протоколы по умолчанию, за исключением указанных в составе `EXCEPT`.
+- Если указан модификатор `QUERIES CUSTOM [EXCEPT .. [,..]]`, останавливаются все пользовательские протоколы, за исключением указанных в составе `EXCEPT`.
 
-### НАЧАТЬ СЛУШАНИЕ {#start-listen}
+### START LISTEN {#start-listen}
 
-Позволяет устанавливать новые подключения по указанным протоколам.
+Разрешает устанавливать новые соединения на указанных протоколах.
 
-Однако, если сервер на указанном порту и протоколе не был остановлен с помощью команды SYSTEM STOP LISTEN, эта команда не будет иметь эффекта.
+Однако, если сервер на указанном порту и протоколе не был остановлен с помощью команды SYSTEM STOP LISTEN, эта команда не окажет никакого эффекта.
 
 ```sql
 SYSTEM START LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QUERIES CUSTOM | TCP | TCP WITH PROXY | TCP SECURE | HTTP | HTTPS | MYSQL | GRPC | POSTGRESQL | PROMETHEUS | CUSTOM 'protocol']
@@ -267,208 +257,199 @@ SYSTEM START LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | Q
 
 ## Управление таблицами MergeTree {#managing-mergetree-tables}
 
-ClickHouse может управлять фоновыми процессами в таблицах [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
+ClickHouse может управлять фоновой обработкой в таблицах [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
 
-### ОСТАНОВИТЬ СЛИЯНИЯ {#stop-merges}
+### STOP MERGES {#stop-merges}
 
 <CloudNotSupportedBadge/>
 
 Предоставляет возможность остановить фоновое слияние для таблиц в семействе MergeTree:
 
-``` sql
+```sql
 SYSTEM STOP MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]merge_tree_family_table_name]
 ```
 
 :::note
-`DETACH / ATTACH` таблица запустит фоновое слияние для таблицы, даже если слияния были остановлены для всех таблиц MergeTree ранее.
+Таблица `DETACH / ATTACH` запустит фоновое слияние для таблицы, даже если слияния были остановлены для всех таблиц MergeTree ранее.
 :::
 
-### НАЧАТЬ СЛИЯНИЯ {#start-merges}
+### START MERGES {#start-merges}
 
 <CloudNotSupportedBadge/>
 
 Предоставляет возможность запустить фоновое слияние для таблиц в семействе MergeTree:
 
-``` sql
+```sql
 SYSTEM START MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]merge_tree_family_table_name]
 ```
 
-### ОСТАНОВИТЬ СЛИЯНИЯ TTL {#stop-ttl-merges}
+### STOP TTL MERGES {#stop-ttl-merges}
 
-Предоставляет возможность остановить фоновое удаление старых данных в соответствии с [выражением TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) для таблиц в семействе MergeTree:
-Возвращает `Ok.` даже если таблицы не существует или у таблицы нет движка MergeTree. Возвращает ошибку, если базы данных не существует:
+Предоставляет возможность остановить фоновое удаление старых данных в соответствии с [TTL выражением](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) для таблиц в семействе MergeTree: Возвращает `Ok.`, даже если таблица не существует или у таблицы нет движка MergeTree. Возвращает ошибку, когда база данных не существует:
 
-``` sql
+```sql
 SYSTEM STOP TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-### НАЧАТЬ СЛИЯНИЯ TTL {#start-ttl-merges}
+### START TTL MERGES {#start-ttl-merges}
 
-Предоставляет возможность запустить фоновое удаление старых данных в соответствии с [выражением TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) для таблиц в семействе MergeTree:
-Возвращает `Ok.` даже если таблицы не существует. Возвращает ошибку, если базы данных не существует:
+Предоставляет возможность запустить фоновое удаление старых данных в соответствии с [TTL выражением](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) для таблиц в семействе MergeTree: Возвращает `Ok.`, даже если таблица не существует. Возвращает ошибку, когда база данных не существует:
 
-``` sql
+```sql
 SYSTEM START TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-### ОСТАНОВИТЬ ПЕРЕПИСКИ {#stop-moves}
+### STOP MOVES {#stop-moves}
 
-Предоставляет возможность остановить фоновое перемещение данных в соответствии с [выражением TTL таблицы с TO VOLUME или TO DISK](../../engines/table-engines/mergetree-family/mergetree.md#mergetree-table-ttl) для таблиц в семействе MergeTree:
-Возвращает `Ok.` даже если таблицы не существует. Возвращает ошибку, если базы данных не существует:
+Предоставляет возможность остановить фоновое перемещение данных в соответствии с [TTL таблицы изразом с TO VOLUME или TO DISK клаузой](../../engines/table-engines/mergetree-family/mergetree.md#mergetree-table-ttl) для таблиц в семействе MergeTree: Возвращает `Ok.`, даже если таблица не существует. Возвращает ошибку, когда база данных не существует:
 
-``` sql
+```sql
 SYSTEM STOP MOVES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-### НАЧАТЬ ПЕРЕПИСКИ {#start-moves}
+### START MOVES {#start-moves}
 
-Предоставляет возможность запустить фоновое перемещение данных в соответствии с [выражением TTL таблицы с TO VOLUME и TO DISK](../../engines/table-engines/mergetree-family/mergetree.md#mergetree-table-ttl) для таблиц в семействе MergeTree:
-Возвращает `Ok.` даже если таблицы не существует. Возвращает ошибку, если базы данных не существует:
+Предоставляет возможность начать фоновое перемещение данных в соответствии с [TTL таблицы изразом с TO VOLUME и TO DISK клаузой](../../engines/table-engines/mergetree-family/mergetree.md#mergetree-table-ttl) для таблиц в семействе MergeTree: Возвращает `Ok.`, даже если таблица не существует. Возвращает ошибку, когда база данных не существует:
 
-``` sql
+```sql
 SYSTEM START MOVES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
 ### SYSTEM UNFREEZE {#query_language-system-unfreeze}
 
-Очищает замороженный бэкап с указанным именем со всех дисков. См. больше о размораживании отдельных частей в [ALTER TABLE table_name UNFREEZE WITH NAME ](/sql-reference/statements/alter/partition#unfreeze-partition)
+Очищает замороженный бэкап с указанным именем из всех дисков. См. больше о размораживании отдельных частей в [ALTER TABLE table_name UNFREEZE WITH NAME ](/sql-reference/statements/alter/partition#unfreeze-partition)
 
-``` sql
+```sql
 SYSTEM UNFREEZE WITH NAME <backup_name>
 ```
 
-### ЖДАТЬ ЗАГРУЖЕННЫЕ ЧАСТИ {#wait-loading-parts}
+### WAIT LOADING PARTS {#wait-loading-parts}
 
-Ждет, пока все асинхронно загружаемые части данных таблицы (устаревшие части данных) не будут загружены.
+Ожидает, пока все асинхронно загружаемые части данных таблицы (устаревшие части данных) не будут загружены.
 
-``` sql
+```sql
 SYSTEM WAIT LOADING PARTS [ON CLUSTER cluster_name] [db.]merge_tree_family_table_name
 ```
 
 ## Управление таблицами ReplicatedMergeTree {#managing-replicatedmergetree-tables}
 
-ClickHouse может управлять процессами, связанными с фоновыми репликациями в таблицах [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication).
+ClickHouse может управлять фоновыми процессами, связанными с репликацией в таблицах [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication).
 
-### ОСТАНОВИТЬ ИЗВЛЕЧЕНИЯ {#stop-fetches}
+### STOP FETCHES {#stop-fetches}
 
 <CloudNotSupportedBadge/>
 
-Предоставляет возможность остановить фоновое извлечение вставленных частей для таблиц в семействе `ReplicatedMergeTree`:
-Всегда возвращает `Ok.` независимо от движка таблицы и даже если таблицы или базы данных не существуют.
+Предоставляет возможность остановить фоновые загрузки вставленных частей для таблиц в семействе `ReplicatedMergeTree`: Всегда возвращает `Ok.`, независимо от движка таблицы и даже если таблица или база данных не существуют.
 
-``` sql
+```sql
 SYSTEM STOP FETCHES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-### НАЧАТЬ ИЗВЛЕЧЕНИЯ {#start-fetches}
+### START FETCHES {#start-fetches}
 
 <CloudNotSupportedBadge/>
 
-Предоставляет возможность запустить фоновое извлечение вставленных частей для таблиц в семействе `ReplicatedMergeTree`:
-Всегда возвращает `Ok.` независимо от движка таблицы и даже если таблицы или базы данных не существуют.
+Предоставляет возможность запустить фоновые загрузки вставленных частей для таблиц в семействе `ReplicatedMergeTree`: Всегда возвращает `Ok.`, независимо от движка таблицы и даже если таблица или база данных не существуют.
 
-``` sql
+```sql
 SYSTEM START FETCHES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-### ОСТАНОВИТЬ РАСПРЕДЕЛЕННЫЕ ОТПРАВКИ {#stop-replicated-sends}
+### STOP REPLICATED SENDS {#stop-replicated-sends}
 
 Предоставляет возможность остановить фоновую отправку другим репликам в кластере для новых вставленных частей для таблиц в семействе `ReplicatedMergeTree`:
 
-``` sql
+```sql
 SYSTEM STOP REPLICATED SENDS [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-### НАЧАТЬ РАСПРЕДЕЛЕННЫЕ ОТПРАВКИ {#start-replicated-sends}
+### START REPLICATED SENDS {#start-replicated-sends}
 
-Предоставляет возможность запустить фоновую отправку другим репликам в кластер для новых вставленных частей для таблиц в семействе `ReplicatedMergeTree`:
+Предоставляет возможность запустить фоновую отправку другим репликам в кластере для новых вставленных частей для таблиц в семействе `ReplicatedMergeTree`:
 
-``` sql
+```sql
 SYSTEM START REPLICATED SENDS [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-### ОСТАНОВИТЬ ОЧЕРЕДИ РЕПЛИКАЦИИ {#stop-replication-queues}
+### STOP REPLICATION QUEUES {#stop-replication-queues}
 
-Предоставляет возможность остановить фоновые извлечение задач из очередей репликации, хранящихся в ZooKeeper для таблиц в семействе `ReplicatedMergeTree`. Возможные типы фоновых задач - слияния, извлечения, мутации, операторы DDL с клаузой ON CLUSTER:
+Предоставляет возможность остановить фоновые задачи загрузки из очередей репликации, которые хранятся в ZooKeeper для таблиц в семействе `ReplicatedMergeTree`. Возможные фоновые типы задач - слияния, загрузки, мутации, DDL операторы с клаузой ON CLUSTER:
 
-``` sql
+```sql
 SYSTEM STOP REPLICATION QUEUES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-### НАЧАТЬ ОЧЕРЕДИ РЕПЛИКАЦИИ {#start-replication-queues}
+### START REPLICATION QUEUES {#start-replication-queues}
 
-Предоставляет возможность запустить фоновые извлечения задач из очередей репликации, хранящихся в ZooKeeper для таблиц в семействе `ReplicatedMergeTree`. Возможные типы фоновых задач - слияния, извлечения, мутации, операторы DDL с клаузой ON CLUSTER:
+Предоставляет возможность запустить фоновые задачи загрузки из очередей репликации, которые хранятся в ZooKeeper для таблиц в семействе `ReplicatedMergeTree`. Возможные фоновые типы задач - слияния, загрузки, мутации, DDL операторы с клаузой ON CLUSTER:
 
-``` sql
+```sql
 SYSTEM START REPLICATION QUEUES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-### ОСТАНОВИТЬ ЗАГРУЗКУ ЖУРНАЛА РЕПЛИКАЦИИ {#stop-pulling-replication-log}
+### STOP PULLING REPLICATION LOG {#stop-pulling-replication-log}
 
-Останавливает загрузку новых записей из журнала репликации в очередь репликации в таблице `ReplicatedMergeTree`.
+Останавливает загрузку новых записей из журналов репликации в очередь репликации в таблице `ReplicatedMergeTree`.
 
-``` sql
+```sql
 SYSTEM STOP PULLING REPLICATION LOG [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-### НАЧАТЬ ЗАГРУЗКУ ЖУРНАЛА РЕПЛИКАЦИИ {#start-pulling-replication-log}
+### START PULLING REPLICATION LOG {#start-pulling-replication-log}
 
 Отменяет `SYSTEM STOP PULLING REPLICATION LOG`.
 
-``` sql
+```sql
 SYSTEM START PULLING REPLICATION LOG [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-### СИНХРОНИЗИРОВАТЬ РЕПЛИКУ {#sync-replica}
+### SYNC REPLICA {#sync-replica}
 
-Ждет, пока таблица `ReplicatedMergeTree` не будет синхронизирована с другими репликами в кластере, но не более чем `receive_timeout` секунд.
+Ожидает, пока таблица `ReplicatedMergeTree` будет синхронизирована с другими репликами в кластере, но не более `receive_timeout` секунд.
 
-``` sql
+```sql
 SYSTEM SYNC REPLICA [ON CLUSTER cluster_name] [db.]replicated_merge_tree_family_table_name [STRICT | LIGHTWEIGHT [FROM 'srcReplica1'[, 'srcReplica2'[, ...]]] | PULL]
 ```
 
-После выполнения этого запроса таблица `[db.]replicated_merge_tree_family_table_name` извлекает команды из общего журнала репликаций в свою очередь репликаций, и затем запрос ждет, пока реплика обработает все извлеченные команды. Поддерживаются следующие модификаторы:
+После выполнения этого запроса `[db.]replicated_merge_tree_family_table_name` извлекает команды из общего реплицированного лога в свою собственную очередь репликации, а затем запрос ждет, пока реплика обработает все извлеченные команды. Поддерживаются следующие модификаторы:
 
- - Если был указан модификатор `STRICT`, то запрос ждет, пока очередь репликаций не станет пустой. Версия `STRICT` может никогда не завершиться успешно, если в очереди репликаций постоянно появляются новые записи.
- - Если был указан модификатор `LIGHTWEIGHT`, то запрос ждет лишь обработки записей `GET_PART`, `ATTACH_PART`, `DROP_RANGE`, `REPLACE_RANGE` и `DROP_PART`.
-   Дополнительно модификатор LIGHTWEIGHT поддерживает необязательную клаузу FROM 'srcReplicas', где 'srcReplicas' - это список имен исходных реплик, разделенных запятыми. Это расширение позволяет более целенаправленно синхронизироваться, сосредоточив внимание только на задачах репликации, исходящих от указанных исходных реплик.
- - Если был указан модификатор `PULL`, то запрос извлекает новые записи из очереди репликаций из ZooKeeper, но не ждет обработки.
+- Если был указан модификатор `STRICT`, то запрос ждет, пока очередь репликации не станет пустой. Версия `STRICT` может никогда не удаться, если в очереди репликации постоянно появляются новые записи.
+- Если был указан модификатор `LIGHTWEIGHT`, то запрос ждет только обработки записей `GET_PART`, `ATTACH_PART`, `DROP_RANGE`, `REPLACE_RANGE` и `DROP_PART`. Кроме того, модификатор LIGHTWEIGHT поддерживает необязательную клаузу FROM 'srcReplicas', где 'srcReplicas' — это запятая-разделенный список имен исходных реплик. Это расширение позволяет более целенаправленно синхронизировать, сосредоточив внимание только на задачах репликации, происходящих от указанных исходных реплик.
+- Если был указан модификатор `PULL`, то запрос извлекает новые записи из очереди репликации из ZooKeeper, но не ожидает обработки ничего.
 
-### СИНХРОНИЗИРОВАТЬ РЕПЛИКУ БАЗЫ ДАННЫХ {#sync-database-replica}
+### SYNC DATABASE REPLICA {#sync-database-replica}
 
-Ждет, пока указанная [реплицированная база данных](/engines/database-engines/replicated) применит все изменения схемы из очереди DDL этой базы данных.
+Ожидает, пока указанная [реплицированная база данных](/engines/database-engines/replicated) применит все изменения схемы из DDL-очереди этой базы данных.
 
 **Синтаксис**
 ```sql
 SYSTEM SYNC DATABASE REPLICA replicated_database_name;
 ```
 
-### ПЕРЕЗАПУСТИТЬ РЕПЛИКУ {#restart-replica}
+### RESTART REPLICA {#restart-replica}
 
-Предоставляет возможность повторной инициализации состояния сессии ZooKeeper для таблицы `ReplicatedMergeTree`, будет сравнивать текущее состояние с ZooKeeper как источником правды и при необходимости добавит задачи в очередь ZooKeeper.
-Инициализация очереди репликаций на основе данных ZooKeeper происходит так же, как и для оператора `ATTACH TABLE`. На короткое время таблица будет недоступна для любых операций.
+Предоставляет возможность повторной инициализации состояния сессии ZooKeeper для таблицы `ReplicatedMergeTree`, будет сравнивать текущее состояние с ZooKeeper как с источником истины и добавлять задачи в очередь ZooKeeper, если это необходимо. Инициализация очереди репликации на основе данных ZooKeeper происходит так же, как для оператора `ATTACH TABLE`. На короткое время таблица будет недоступна для любых операций.
 
-``` sql
+```sql
 SYSTEM RESTART REPLICA [ON CLUSTER cluster_name] [db.]replicated_merge_tree_family_table_name
 ```
 
-### ВОССТАНОВИТЬ РЕПЛИКУ {#restore-replica}
+### RESTORE REPLICA {#restore-replica}
 
 Восстанавливает реплику, если данные [возможно] присутствуют, но метаданные ZooKeeper потеряны.
 
-Работает только на таблицах `ReplicatedMergeTree` с режимом только для чтения.
+Работает только на таблицах `ReplicatedMergeTree`, доступных только для чтения.
 
-Один может выполнить запрос после:
+Запрос можно выполнить после:
 
-  - потери корневого каталога ZooKeeper `/`.
-  - потери пути к репликам `/replicas`.
-  - потери индивидуального пути к реплике `/replicas/replica_name/`.
+- Потери корня ZooKeeper `/`.
+- Потери пути реплик `/replicas`.
+- Потери индивидуального пути реплики `/replicas/replica_name/`.
 
-Реплика прикрепляет локально найденные части и отправляет информацию о них в ZooKeeper.
-Части, присутствующие на реплике до потери метаданных, не будут повторно загружены из других, если не устарели (поэтому восстановление реплики не означает повторную загрузку всех данных по сети).
+Реплика присоединяет локально найденные части и отправляет информацию о них в ZooKeeper. Части, присутствующие на реплике до потери метаданных, не загружаются заново из других, если они не устарели (поэтому восстановление реплики не означает повторное скачивание всех данных по сети).
 
 :::note
-Части во всех состояниях перемещаются в папку `detached/`. Части, активные до потери данных (проверенные), прикрепляются.
+Части во всех состояниях перемещаются в папку `detached/`. Части, активные до потери данных (подтвержденные), присоединяются.
 :::
 
 **Синтаксис**
@@ -485,7 +466,7 @@ SYSTEM RESTORE REPLICA [ON CLUSTER cluster_name] [db.]replicated_merge_tree_fami
 
 **Пример**
 
-Создание таблицы на нескольких серверах. После потери метаданных реплики в ZooKeeper таблица будет прикреплена как только для чтения, так как метаданные отсутствуют. Последний запрос необходимо выполнить на каждой реплике.
+Создание таблицы на нескольких серверах. После потери метаданных реплики в ZooKeeper таблица будет присоединена как доступная только для чтения, поскольку метаданные отсутствуют. Последний запрос нужно выполнить на каждой реплике.
 
 ```sql
 CREATE TABLE test(n UInt32)
@@ -506,11 +487,11 @@ SYSTEM RESTORE REPLICA test;
 SYSTEM RESTORE REPLICA test ON CLUSTER cluster;
 ```
 
-### ПЕРЕЗАПУСТИТЬ РЕПЛИКИ {#restart-replicas}
+### RESTART REPLICAS {#restart-replicas}
 
-Предоставляет возможность повторной инициализации состояния сессий ZooKeeper для всех таблиц `ReplicatedMergeTree`, будет сравнивать текущее состояние с ZooKeeper как источником правды и при необходимости добавит задачи в очередь ZooKeeper.
+Предоставляет возможность повторной инициализации состояния сессий ZooKeeper для всех таблиц `ReplicatedMergeTree`, будет сравнивать текущее состояние с ZooKeeper как источником истины и добавлять задачи в очередь ZooKeeper, если это необходимо.
 
-### УДАЛИТЬ КЭШ ФАЙЛОВОЙ СИСТЕМЫ {#drop-filesystem-cache}
+### DROP FILESYSTEM CACHE {#drop-filesystem-cache}
 
 Позволяет удалить кэш файловой системы.
 
@@ -518,19 +499,19 @@ SYSTEM RESTORE REPLICA test ON CLUSTER cluster;
 SYSTEM DROP FILESYSTEM CACHE [ON CLUSTER cluster_name]
 ```
 
-### СИНХРОНИЗИРОВАТЬ КЭШ ФАЙЛОВ {#sync-file-cache}
+### SYNC FILE CACHE {#sync-file-cache}
 
 :::note
-Это слишком тяжелая операция и может быть использована неправильно.
+Это слишком тяжело и может быть использовано неправильно.
 :::
 
-Сделает системный вызов синхронизации.
+Выполнит системный вызов синхронизации.
 
 ```sql
 SYSTEM SYNC FILE CACHE [ON CLUSTER cluster_name]
 ```
 
-### ЗАГРУЗИТЬ ПЕРВИЧНЫЙ КЛЮЧ {#load-primary-key}
+### LOAD PRIMARY KEY {#load-primary-key}
 
 Загружает первичные ключи для указанной таблицы или для всех таблиц.
 
@@ -542,7 +523,7 @@ SYSTEM LOAD PRIMARY KEY [db.]name
 SYSTEM LOAD PRIMARY KEY
 ```
 
-### ВЫГРУЗИТЬ ПЕРВИЧНЫЙ КЛЮЧ {#unload-primary-key}
+### UNLOAD PRIMARY KEY {#unload-primary-key}
 
 Выгружает первичные ключи для указанной таблицы или для всех таблиц.
 
@@ -556,25 +537,25 @@ SYSTEM UNLOAD PRIMARY KEY
 
 ## Управление обновляемыми материализованными представлениями {#refreshable-materialized-views}
 
-Команды для управления фоновыми задачами, выполняемыми [обновляемыми материализованными представлениями](../../sql-reference/statements/create/view.md#refreshable-materialized-view)
+Команды для управления фоновыми заданиями, выполняемыми [обновляемыми материализованными представлениями](../../sql-reference/statements/create/view.md#refreshable-materialized-view)
 
-Следите за [`system.view_refreshes`](../../operations/system-tables/view_refreshes.md), пока используете их.
+Следите за [`system.view_refreshes`](../../operations/system-tables/view_refreshes.md) во время их использования.
 
-### ОБНОВИТЬ ПРЕДСТАВЛЕНИЕ {#refresh-view}
+### REFRESH VIEW {#refresh-view}
 
-Запускает немедленное обновление расписания заданного представления.
+Запуск немедленного обновления данного представления вне расписания.
 
 ```sql
 SYSTEM REFRESH VIEW [db.]name
 ```
 
-### ОБНОВИТЬ ПРЕДСТАВЛЕНИЕ {#refresh-view-1}
+### REFRESH VIEW {#refresh-view-1}
 
-Ждет, пока текущее обновление не завершится. Если обновление завершится с ошибкой, выбрасывает исключение. Если обновление не выполняется, завершается немедленно, выбрасывая исключение, если предыдущее обновление завершилось с ошибкой.
+Ожидание завершения текущего обновления. Если обновление завершилось неудачей, будет выброшено исключение. Если обновление не выполняется, завершится немедленно, выбрасывая исключение, если предыдущее обновление завершилось неудачей.
 
-### ОСТАНОВИТЬ ПРЕДСТАВЛЕНИЕ, ОСТАНОВИТЬ ПРЕДСТАВЛЕНИЯ {#stop-view-stop-views}
+### STOP VIEW, STOP VIEWS {#stop-view-stop-views}
 
-Отключает периодическое обновление заданного представления или всех обновляемых представлений. Если обновление выполняется, отменяет его также.
+Отключает периодическое обновление данного представления или всех обновляемых представлений. Также отменяет обновление, если оно выполняется.
 
 ```sql
 SYSTEM STOP VIEW [db.]name
@@ -583,9 +564,9 @@ SYSTEM STOP VIEW [db.]name
 SYSTEM STOP VIEWS
 ```
 
-### НАЧАТЬ ПРЕДСТАВЛЕНИЕ, НАЧАТЬ ПРЕДСТАВЛЕНИЯ {#start-view-start-views}
+### START VIEW, START VIEWS {#start-view-start-views}
 
-Включает периодическое обновление заданного представления или всех обновляемых представлений. Немедленное обновление не вызвано.
+Включает периодическое обновление для данного представления или всех обновляемых представлений. Никакое немедленное обновление не вызывается.
 
 ```sql
 SYSTEM START VIEW [db.]name
@@ -594,9 +575,9 @@ SYSTEM START VIEW [db.]name
 SYSTEM START VIEWS
 ```
 
-### ОТМЕНИТЬ ПРЕДСТАВЛЕНИЕ {#cancel-view}
+### CANCEL VIEW {#cancel-view}
 
-Если обновление выполняется для заданного представления, прерывает и отменяет его. В противном случае ничего не делать.
+Если для данного представления выполняется обновление, прерывает и отменяет его. В противном случае ничего не делает.
 
 ```sql
 SYSTEM CANCEL VIEW [db.]name
@@ -604,9 +585,9 @@ SYSTEM CANCEL VIEW [db.]name
 
 ### SYSTEM WAIT VIEW {#system-wait-view}
 
-Ждет завершения текущего обновления. Если обновление не выполняется, возвращает немедленно. Если последняя попытка обновления завершилась с ошибкой, сообщает об ошибке.
+Ожидает завершения выполняемого обновления. Если обновление не выполняется, возвращает немедленно. Если последняя попытка обновления завершилась неудачей, сообщает об ошибке.
 
-Может использоваться сразу после создания нового обновляемого материализованного представления (без ключевого слова EMPTY), чтобы дождаться завершения первоначального обновления.
+Может быть использовано сразу после создания нового обновляемого материализованного представления (без ключевого слова EMPTY) для того, чтобы дождаться завершения начального обновления.
 
 ```sql
 SYSTEM WAIT VIEW [db.]name

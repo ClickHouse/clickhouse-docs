@@ -1,15 +1,16 @@
 ---
-slug: /sql-reference/statements/create/dictionary
+description: 'Документация по Словарю'
+sidebar_label: 'DICTIONARY'
 sidebar_position: 38
-sidebar_label: СЛОВАРЬ
-title: "СОЗДАТЬ СЛОВАРЬ"
+slug: /sql-reference/statements/create/dictionary
+title: 'CREATE DICTIONARY'
 ---
 
-Создает новый [словарь](../../../sql-reference/dictionaries/index.md) с заданной [структурой](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields), [источником](../../../sql-reference/dictionaries/index.md#dictionary-sources), [макетом](/sql-reference/dictionaries#storing-dictionaries-in-memory) и [временем жизни](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
+Создает новый [словарь](../../../sql-reference/dictionaries/index.md) с заданной [структурой](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields), [источником](../../../sql-reference/dictionaries/index.md#dictionary-sources), [расположением](/sql-reference/dictionaries#storing-dictionaries-in-memory) и [временной жизнью](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
 
 ## Синтаксис {#syntax}
 
-``` sql
+```sql
 CREATE [OR REPLACE] DICTIONARY [IF NOT EXISTS] [db.]dictionary_name [ON CLUSTER cluster]
 (
     key1 type1  [DEFAULT|EXPRESSION expr1] [IS_OBJECT_ID],
@@ -25,13 +26,13 @@ SETTINGS(setting_name = setting_value, setting_name = setting_value, ...)
 COMMENT 'Комментарий'
 ```
 
-Структура словаря состоит из атрибутов. Атрибуты словаря указываются аналогично колонкам таблицы. Единственное обязательное свойство атрибута — его тип, все остальные свойства могут иметь значения по умолчанию.
+Структура словаря состоит из атрибутов. Атрибуты словаря задаются аналогично столбцам таблицы. Единственным обязательным свойством атрибута является его тип, все остальные свойства могут иметь значения по умолчанию.
 
-Клаузу `ON CLUSTER` можно использовать для создания словаря в кластере, см. [Распределенная DDL](../../../sql-reference/distributed-ddl.md).
+Клаузула `ON CLUSTER` позволяет создавать словарь в кластере, см. [Распределенный DDL](../../../sql-reference/distributed-ddl.md).
 
-В зависимости от [макета](/sql-reference/dictionaries#storing-dictionaries-in-memory) словаря можно указать один или несколько атрибутов в качестве ключей словаря.
+В зависимости от [расположения](/sql-reference/dictionaries#storing-dictionaries-in-memory) словаря один или несколько атрибутов могут быть указаны в качестве ключей словаря.
 
-## ИСНОВНИК {#source}
+## SOURCE {#source}
 
 Источник для словаря может быть:
 - таблица в текущем сервисе ClickHouse
@@ -43,7 +44,7 @@ COMMENT 'Комментарий'
 
 Входная таблица `source_table`:
 
-``` text
+```text
 ┌─id─┬─value──┐
 │  1 │ First  │
 │  2 │ Second │
@@ -52,7 +53,7 @@ COMMENT 'Комментарий'
 
 Создание словаря:
 
-``` sql
+```sql
 CREATE DICTIONARY id_value_dictionary
 (
     id UInt64,
@@ -66,7 +67,7 @@ LIFETIME(MIN 0 MAX 1000)
 
 Вывод словаря:
 
-``` sql
+```sql
 SHOW CREATE DICTIONARY id_value_dictionary;
 ```
 
@@ -83,8 +84,8 @@ LAYOUT(FLAT())
 ```
 
 :::note
-При использовании SQL-консоли в [ClickHouse Cloud](https://clickhouse.com) вы должны указать пользователя (`default` или другого пользователя с ролью `default_role`) и пароль при создании словаря.
-:::note
+При использовании SQL-консоли в [ClickHouse Cloud](https://clickhouse.com) вы должны указать пользователя (`default` или любого другого пользователя с ролью `default_role`) и пароль при создании словаря.
+:::
 
 ```sql
 CREATE USER IF NOT EXISTS clickhouse_admin
@@ -115,7 +116,7 @@ LIFETIME(MIN 0 MAX 1000);
 
 Входная таблица (в удаленном сервисе ClickHouse) `source_table`:
 
-``` text
+```text
 ┌─id─┬─value──┐
 │  1 │ First  │
 │  2 │ Second │
@@ -124,7 +125,7 @@ LIFETIME(MIN 0 MAX 1000);
 
 Создание словаря:
 
-``` sql
+```sql
 CREATE DICTIONARY id_value_dictionary
 (
     id UInt64,
@@ -154,7 +155,7 @@ LAYOUT(HASHED())
 
 ### Создание словаря из другой базы данных {#create-a-dictionary-from-another-database}
 
-Пожалуйста, смотрите подробности в [Источники словарей](/sql-reference/dictionaries#dbms).
+Пожалуйста, смотрите детали в [Источники словаря](/sql-reference/dictionaries#dbms).
 
 **Смотрите также**
 

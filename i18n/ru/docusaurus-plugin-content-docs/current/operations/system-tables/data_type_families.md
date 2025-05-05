@@ -1,25 +1,25 @@
 ---
 description: 'Системная таблица, содержащая информацию о поддерживаемых типах данных'
+keywords: ['системная таблица', 'семейства_типов_данных']
 slug: /operations/system-tables/data_type_families
 title: 'system.data_type_families'
-keywords: ['системная таблица', 'data_type_families', 'типы данных']
 ---
 
 Содержит информацию о поддерживаемых [типах данных](../../sql-reference/data-types/index.md).
 
 Колонки:
 
-- `name` ([String](../../sql-reference/data-types/string.md)) — Название типа данных.
-- `case_insensitive` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Свойство, показывающее, можно ли использовать название типа данных в запросе без учета регистра. Например, `Date` и `date` являются допустимыми.
-- `alias_to` ([String](../../sql-reference/data-types/string.md)) — Название типа данных, для которого `name` является псевдонимом.
+- `name` ([String](../../sql-reference/data-types/string.md)) — Имя типа данных.
+- `case_insensitive` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Свойство, показывающее, можно ли использовать имя типа данных в запросе без учета регистра. Например, `Date` и `date` оба допустимы.
+- `alias_to` ([String](../../sql-reference/data-types/string.md)) — Имя типа данных, для которого `name` является псевдонимом.
 
 **Пример**
 
-``` sql
+```sql
 SELECT * FROM system.data_type_families WHERE alias_to = 'String'
 ```
 
-``` text
+```text
 ┌─name───────┬─case_insensitive─┬─alias_to─┐
 │ LONGBLOB   │                1 │ String   │
 │ LONGTEXT   │                1 │ String   │

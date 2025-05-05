@@ -4,7 +4,6 @@ node_modules
 build
 docs/development
 docs/engines
-docs/getting-started
 docs/interfaces
 docs/operations
 docs/sql-reference
@@ -50,13 +49,15 @@ docs/cloud/manage/api/privateEndpointConfig-api-reference.md
 docs/cloud/manage/api/prometheus-api-reference.md
 docs/cloud/manage/api/usageCost-api-reference.md
 docs/whats-new/changelog/index.md
+docs/about-us/beta-and-experimental-features.md
+
 .vscode
 .aspell.en.prepl
 *.md.bak
 
 **.translated
 **.translate
-ClickHouse/
+/ClickHouse/
 
 
 # Ignore table of contents files

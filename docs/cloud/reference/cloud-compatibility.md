@@ -16,8 +16,8 @@ These benefits come as a result of architectural choices underlying ClickHouse C
 - Compute and storage are separated and thus can be automatically scaled along separate dimensions, so you do not have to over-provision either storage or compute in static instance configurations.
 - Tiered storage on top of object store and multi-level caching provides virtually limitless scaling and good price/performance ratio, so you do not have to size your storage partition upfront and worry about high storage costs.
 - High availability is on by default and replication is transparently managed, so you can focus on building your applications or analyzing your data.
-- Automatic scaling for variable continuous workloads is on by default, so you don’t have to size your service upfront, scale up your servers when your workload increases, or manually scale down your servers when you have less activity
-- Seamless hibernation for intermittent workloads is on by default. We automatically pause your compute resources after a period of inactivity and transparently start it again when a new query arrives, so you don’t have to pay for idle resources.
+- Automatic scaling for variable continuous workloads is on by default, so you don't have to size your service upfront, scale up your servers when your workload increases, or manually scale down your servers when you have less activity
+- Seamless hibernation for intermittent workloads is on by default. We automatically pause your compute resources after a period of inactivity and transparently start it again when a new query arrives, so you don't have to pay for idle resources.
 - Advanced scaling controls provide the ability to set an auto-scaling maximum for additional cost control or an auto-scaling minimum to reserve compute resources for applications with specialized performance requirements.
 
 ## Capabilities {#capabilities}
