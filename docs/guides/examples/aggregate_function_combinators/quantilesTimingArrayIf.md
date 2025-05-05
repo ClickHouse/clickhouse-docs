@@ -10,7 +10,8 @@ sidebar_label: 'quantilesTimingArrayIf'
 
 ## Description {#description}
 
-The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be applied to the [`quantilesTimingArray`](/sql-reference/aggregate-functions/reference/quantilestimingarray)
+The [`Array`](/sql-reference/aggregate-functions/combinators#-array) and [`If`](/sql-reference/aggregate-functions/combinators#-if) 
+combinator can be applied to the [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantilestiming)
 function to calculate quantiles of timing values in arrays for rows where the condition is true,
 using the `quantilesTimingArrayIf` aggregate combinator function.
 
