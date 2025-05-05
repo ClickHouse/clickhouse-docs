@@ -29,6 +29,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Chartbrew](./chartbrew-and-clickhouse.md)
 - [Deepnote](./deepnote.md)
 - [Draxlr](./draxlr-and-clickhouse.md)
+- [Embeddable](./embeddable-and-clickhouse.md)
 - [Explo](./explo-and-clickhouse.md)
 - [Grafana](./grafana/index.md)
 - [Looker](./looker-and-clickhouse.md)
