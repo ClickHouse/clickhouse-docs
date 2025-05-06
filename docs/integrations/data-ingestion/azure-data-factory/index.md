@@ -345,12 +345,12 @@ Data Factory instance.
 6. In the dynamic content pane you can create a parameterized URL, which
    allows you to define the query later when creating datasets for different
    tables — this makes the linked service reusable.
-   <Image img={adfNewLinkedServiceBaseUrlEmpty} size="xl" alt="New Linked ServiceBase Url Empty" border/>
+   <Image img={adfNewLinkedServiceBaseUrlEmpty} size="lg" alt="New Linked ServiceBase Url Empty" border/>
 
 7. Click the **"+"** next to the filter input and add a new parameter, name it
    `pQuery`, set the type to String, and set the default value to `SELECT 1`.
    Click **Save**.
-   <Image img={adfNewLinkedServiceParams} size="xl" alt="New Linked Service Parameters" border/>
+   <Image img={adfNewLinkedServiceParams} size="lg" alt="New Linked Service Parameters" border/>
 
 8. In the expression field, enter the following and click **OK**. Replace
    `your-clickhouse-url.com` with the actual address of your ClickHouse
@@ -403,7 +403,7 @@ Data](https://clickhouse.com/docs/getting-started/example-datasets/environmental
 3. In the search bar, type **REST**, select **REST**, and click **Continue**.
    Enter a name for your dataset and select the **linked service** you created
    in the previous step. Click **OK** to create the dataset.
-   <Image img={adfNewDatasetPage} size="xl" alt="New Dataset Page" border/>
+   <Image img={adfNewDatasetPage} size="lg" alt="New Dataset Page" border/>
 
 4. You should now see your newly created dataset listed under the Datasets
    section in the Factory Resources pane on the left. Select the dataset to
@@ -443,7 +443,7 @@ just a small subset available at the
 [Sensors Dataset Sample](https://datasets-documentation.s3.eu-west-3.amazonaws.com/environmental/sensors.csv).
 
 :::info
-To keep this guide focused, we won’t go into the exact steps for creating the
+To keep this guide focused, we won't go into the exact steps for creating the
 source dataset in Azure Data Factory. You can upload the sample data to any
 storage service of your choice — for example, Azure Blob Storage, Microsoft SQL
 Server, or even a different file format supported by Azure Data Factory.
@@ -456,21 +456,21 @@ save your changes.
 
 ### Creating a Copy Activity to transfer data to ClickHouse {#creating-the-copy-activity-to-transfer-data-to-clickhouse}
 
-Now that we’ve configured both the input and output datasets, we can set up a
+Now that we've configured both the input and output datasets, we can set up a
 **Copy Data** activity to transfer data from our example dataset into the
 `sensors` table in ClickHouse.
 
 1. Open **Azure Data Factory Studio**, go to the **Author tab**. In the
    **Factory Resources** pane, hover over **Pipeline**, click the three-dot
    icon, and select **New pipeline**.
-   <Image img={adfNewPipelineItem} size="xl" alt="ADF New Pipeline Item" border/>
+   <Image img={adfNewPipelineItem} size="lg" alt="ADF New Pipeline Item" border/>
 
 2. In the **Activities** pane, expand the **Move and transform** section and
    drag the **Copy data** activity onto the canvas.
-   <Image img={adfNewCopyDataItem} size="xl" alt="New Copy DataItem" border/>
+   <Image img={adfNewCopyDataItem} size="lg" alt="New Copy DataItem" border/>
 
 3. Select the **Source** tab, and choose the source dataset you created earlier.
-   <Image img={adfCopyDataSource} size="xl" alt="Copy Data Source" border/>
+   <Image img={adfCopyDataSource} size="lg" alt="Copy Data Source" border/>
 
 4. Go to the **Sink** tab and select the ClickHouse dataset created for your
    sensors table. Set **Request method** to POST. Ensure **HTTP compression
@@ -486,13 +486,13 @@ Now that we’ve configured both the input and output datasets, we can set up a
    [Selecting an Insert Strategy / Batch inserts if synchronous](https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous)
    for more details.
    :::
-   <Image img={adfCopyDataSinkSelectPost} size="xl" alt="Copy Data Sink Select Post" border/>
+   <Image img={adfCopyDataSinkSelectPost} size="lg" alt="Copy Data Sink Select Post" border/>
 
 
 5. Click **Debug** at the top of the canvas to run the pipeline. After a short
    wait, the activity will be queued and executed. If everything is configured
    correctly, the task should finish with a **Success** status.
-   <Image img={adfCopyDataDebugSuccess} size="xl" alt="Copy Data Debug Success" border/>
+   <Image img={adfCopyDataDebugSuccess} size="lg" alt="Copy Data Debug Success" border/>
 
 6. Once complete, click **Publish all** to save your pipeline and dataset changes.
 
