@@ -7,6 +7,6 @@ title: 'Install ClickHouse on Windows with WSL'
 hide_title: true
 ---
 
-import Windows from './_snippets/_windows_prod_install.md'
+import Windows from './_snippets/_windows_install.md'
 
 <Windows/>

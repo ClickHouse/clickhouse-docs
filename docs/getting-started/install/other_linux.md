@@ -7,6 +7,6 @@ title: 'Install ClickHouse using tgz archives'
 hide_title: true
 ---
 
-import TarProd from './_snippets/_prod_linux_tar_install.md'
+import Tar from './_snippets/_linux_tar_install.md'
 
-<TarProd/>
+<Tar/>

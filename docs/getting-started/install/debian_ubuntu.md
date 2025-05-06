@@ -7,6 +7,6 @@ title: 'Install ClickHouse on Debian/Ubuntu'
 hide_title: true
 ---
 
-import DebianProd from './_snippets/_prod_deb_install.md'
+import DebianProd from './_snippets/_deb_install.md'
 
 <DebianProd/>

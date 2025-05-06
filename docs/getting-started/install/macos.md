@@ -7,6 +7,6 @@ title: 'Install ClickHouse using Homebrew'
 hide_title: true
 ---
 
-import MacOSProd from './_snippets/_macos_prod.md'
+import MacOSProd from './_snippets/_macos.md'
 
 <MacOSProd/>

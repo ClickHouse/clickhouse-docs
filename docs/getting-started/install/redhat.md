@@ -7,6 +7,6 @@ title: 'Install ClickHouse on rpm-based Linux distributions'
 hide_title: true
 ---
 
-import RPMProd from './_snippets/_prod_rpm_install.md'
+import RPM from './_snippets/_rpm_install.md'
 
-<RPMProd/>
+<RPM/>

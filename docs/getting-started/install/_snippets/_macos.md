@@ -76,7 +76,7 @@ clickhouse
 
 This should output something like:
 
-```
+```bash
 Use one of the following commands:
 clickhouse local [args]
 clickhouse client [args]
