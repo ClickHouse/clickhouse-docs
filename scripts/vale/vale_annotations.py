@@ -3,6 +3,7 @@
 import json
 import argparse
 import sys
+import os
 
 def process_data(data):
     logs = []
