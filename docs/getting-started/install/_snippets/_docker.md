@@ -149,7 +149,10 @@ docker run --rm --user "${UID}:${GID}" --name some-clickhouse-server --ulimit no
 
 When you use the image with local directories mounted, you probably want to specify the user to maintain the proper file ownership. Use the `--user` argument and mount `/var/lib/clickhouse` and `/var/log/clickhouse-server` inside the container. Otherwise, the image will complain and not start.
 
-### Start server from root (useful in case of enabled user namespace)
+### Start server from root {#start-server-from-root}
+
+Starting the server from root is useful in cases where user namespace is enabled.
+To do so run:
 
 ```bash
 docker run --rm -e CLICKHOUSE_RUN_AS_ROOT=1 --name clickhouse-server-userns -v "$PWD/logs/clickhouse:/var/log/clickhouse-server" -v "$PWD/data/clickhouse:/var/lib/clickhouse" clickhouse/clickhouse-server
