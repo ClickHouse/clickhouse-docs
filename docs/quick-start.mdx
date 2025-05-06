@@ -251,18 +251,18 @@ technologies that integrate with ClickHouse.
 
         Query id: 8ca9b2f9-65a2-4982-954a-890de710a336
 
-        ┌─name──────┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-        │ id        │ Nullable(Int64)         │              │                    │         │                  │                │
-        │ type      │ Nullable(String)        │              │                    │         │                  │                │
-        │ author    │ Nullable(String)        │              │                    │         │                  │                │
-        │ timestamp │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
-        │ comment   │ Nullable(String)        │              │                    │         │                  │                │
-        │ children  │ Array(Nullable(Int64))  │              │                    │         │                  │                │
-        └───────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+        ┌─name──────┬─type────────────────────┐
+        │ id        │ Nullable(Int64)         │
+        │ type      │ Nullable(String)        │
+        │ author    │ Nullable(String)        │
+        │ timestamp │ Nullable(DateTime64(9)) │
+        │ comment   │ Nullable(String)        │
+        │ children  │ Array(Nullable(Int64))  │
+        └───────────┴─────────────────────────┘
         ```
 
         Notice ClickHouse infers the names and data types of your columns by analyzing a
-        large batch of rows. If ClickHouse can not determine the storage type from the
+        large batch of rows. If ClickHouse can not determine the file format from the
         filename, you can specify it as the second argument:
 
         ```sql
