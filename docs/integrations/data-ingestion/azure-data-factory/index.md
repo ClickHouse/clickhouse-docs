@@ -57,7 +57,6 @@ as a
 data source within Azure Data Factory, allowing you to copy data or use it in
 data flow activities as part of your pipelines.
 
-<TOCInline toc={toc}></TOCInline>
 
 ## Using ClickHouse's azureBlobStorage table function {#using-azureBlobStorage-function}
 
