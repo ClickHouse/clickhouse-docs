@@ -398,7 +398,7 @@ Data](https://clickhouse.com/docs/getting-started/example-datasets/environmental
 
 2. In Azure Data Factory Studio, select Author in the left-hand pane. Hover
    over the Dataset item, click the three-dot icon, and choose New dataset.
-   <Image img={adfNewDatasetItem} size="xl" alt="New Dataset Item" border/>
+   <Image img={adfNewDatasetItem} size="lg" alt="New Dataset Item" border/>
 
 3. In the search bar, type **REST**, select **REST**, and click **Continue**.
    Enter a name for your dataset and select the **linked service** you created
@@ -407,10 +407,10 @@ Data](https://clickhouse.com/docs/getting-started/example-datasets/environmental
 
 4. You should now see your newly created dataset listed under the Datasets
    section in the Factory Resources pane on the left. Select the dataset to
-   open its properties. You’ll see the `pQuery` parameter that was defined in the
+   open its properties. You'll see the `pQuery` parameter that was defined in the
    linked service. Click the **Value** text field. Then click **Add dynamic**
    content.
-   <Image img={adfNewDatasetProperties} size="xl" alt="New Dataset Properties" border/>
+   <Image img={adfNewDatasetProperties} size="lg" alt="New Dataset Properties" border/>
 
 5. In the pane that opens, paste the following query:
    ```sql
@@ -423,8 +423,8 @@ Data](https://clickhouse.com/docs/getting-started/example-datasets/environmental
 
    :::danger
    All single quotes `'` in the query must be replaced with two single quotes
-   `''`. This is required by Azure Data Factory’s expression parser. If you
-   don’t escape them, you may not see an error immediately — but it will fail
+   `''`. This is required by Azure Data Factory's expression parser. If you
+   don't escape them, you may not see an error immediately — but it will fail
    later when you try to use or save the dataset. For example, `'best_effort'`
    must be written as `''best_effort''`.
    :::
