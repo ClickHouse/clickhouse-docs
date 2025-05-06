@@ -326,21 +326,21 @@ Data Factory instance.
    <Image img={azureHomeWithDataFactory} size="lg" alt="Azure Portal Home Page with Data Factory" border/>
 
 2. On the Data Factory overview page, click **Launch Studio**.
-   <Image img={azureDataFactoryPage} size="xl" alt="Azure Portal Data Factory Page" border/>
+   <Image img={azureDataFactoryPage} size="lg" alt="Azure Portal Data Factory Page" border/>
 
 3. In the left-hand menu, select **Manage**, then go to **Linked services**,
    and click **+ New** to create a new linked service.
-   <Image img={adfCreateLinkedServiceButton} size="xl" alt="Azure Data Factory New Linked Service Button" border/>
+   <Image img={adfCreateLinkedServiceButton} size="lg" alt="Azure Data Factory New Linked Service Button" border/>
 
 4. In the **New linked service search bar**, type **REST**, select **REST**, and click **Continue**
    to create [a REST connector](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest)
    instance.
-   <Image img={adfNewLinkedServiceSearch} size="xl" alt="Azure Data Factory New Linked Service Search" border/>
+   <Image img={adfNewLinkedServiceSearch} size="lg" alt="Azure Data Factory New Linked Service Search" border/>
 
 5. In the linked service configuration pane enter a name for your new service,
    click the **Base URL** field, then click **Add dynamic content** (this link only
    appears when the field is selected).
-   <Image img={adfNewLinedServicePane} size="xl" alt="New Lined Service Pane" border/>
+   <Image img={adfNewLinedServicePane} size="lg" alt="New Lined Service Pane" border/>
 
 6. In the dynamic content pane you can create a parameterized URL, which
    allows you to define the query later when creating datasets for different
@@ -358,16 +358,16 @@ Data Factory instance.
    ```text
    @{concat('https://your-clickhouse-url.com:8443/?query=', encodeUriComponent(linkedService().pQuery))}
    ```
-   <Image img={adfNewLinkedServiceExpressionFieldFilled} size="xl" alt="New Linked Service Expression Field Filled" border/>
+   <Image img={adfNewLinkedServiceExpressionFieldFilled} size="lg" alt="New Linked Service Expression Field Filled" border/>
 
 9. Back in the main form select Basic authentication, enter the username and
    password used to connect to your ClickHouse HTTP interface, click **Test
    connection**. If everything is configured correctly, you’ll see a success
    message.
-   <Image img={adfNewLinkedServiceCheckConnection} size="xl" alt="New Linked Service Check Connection" border/>
+   <Image img={adfNewLinkedServiceCheckConnection} size="lg" alt="New Linked Service Check Connection" border/>
 
 10. Click **Create** to finalize the setup. 
-    <Image img={adfLinkedServicesList} size="xl" alt="Linked Services List" border/>
+    <Image img={adfLinkedServicesList} size="lg" alt="Linked Services List" border/>
 
 You should now see your newly registered REST-based linked service in the list.
 
@@ -377,7 +377,7 @@ Now that we have a linked service configured for the ClickHouse HTTP interface,
 we can create a dataset that Azure Data Factory will use to send data to
 ClickHouse.
 
-In this example, we’ll insert a small portion of the [Environmental Sensors
+In this example, we'll insert a small portion of the [Environmental Sensors
 Data](https://clickhouse.com/docs/getting-started/example-datasets/environmental-sensors).
 
 1. Open the ClickHouse query console of your choice — this could be the
