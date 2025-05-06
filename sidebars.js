@@ -965,6 +965,7 @@ const sidebars = {
           ],
         },
         "integrations/data-ingestion/aws-glue/index",
+        "integrations/data-ingestion/azure-data-factory/index",
         "integrations/data-ingestion/azure-synapse/index",
         "integrations/data-ingestion/etl-tools/apache-beam",
         {

@@ -1,6 +1,6 @@
 ---
 slug: /integrations/index
-keywords: ['AWS S3', 'PostgreSQL', 'Kafka', 'MySQL', 'Cassandra', 'Redis', 'RabbitMQ', 'MongoDB', 'Google Cloud Storage', 'Hive', 'Hudi', 'Iceberg', 'MinIO', 'Delta Lake', 'RocksDB', 'Splunk', 'SQLite', 'NATS', 'EMQX', 'local files', 'JDBC', 'ODBC']
+keywords: ['AWS S3', 'Azure Data Factory', 'PostgreSQL', 'Kafka', 'MySQL', 'Cassandra', 'Data Factory', 'Redis', 'RabbitMQ', 'MongoDB', 'Google Cloud Storage', 'Hive', 'Hudi', 'Iceberg', 'MinIO', 'Delta Lake', 'RocksDB', 'Splunk', 'SQLite', 'NATS', 'EMQX', 'local files', 'JDBC', 'ODBC']
 description: 'Datasources overview page'
 title: 'Data Sources'
 ---
