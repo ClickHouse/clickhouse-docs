@@ -25,7 +25,7 @@ powerful SQL syntax and without the need for configuration. Table data is stored
 in a temporary location, meaning that after a restart of `clickhouse-local` 
 previously created tables are no longer available.
 
-Run the following command to start [clickhouse-local](../operations/utilities/clickhouse-local.md):
+Run the following command to start [clickhouse-local](/operations/utilities/clickhouse-local):
 
 ```bash
 ./clickhouse
@@ -64,7 +64,7 @@ Table data is stored in the current directory and still available after a restar
 of ClickHouse server. If necessary, you can pass
 `-C config.xml` as an additional command line argument to `./clickhouse server` 
 and provide further configuration in a configuration
-file. All available configuration settings are documented [here](../operations/settings/settings.md) and in the 
+file. All available configuration settings are documented [here](/operations/server-configuration-parameters/settings) and in the 
 [example configuration file
 template](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml).
 
