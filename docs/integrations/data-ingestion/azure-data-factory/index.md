@@ -59,7 +59,7 @@ data flow activities as part of your pipelines.
 
 <TOCInline toc={toc}></TOCInline>
 
-## Using ClickHouse’s azureBlobStorage table function {#using-azureBlobStorage-function}
+## Using ClickHouse's azureBlobStorage table function {#using-azureBlobStorage-function}
 
 This is one of the most efficient and straightforward ways to copy data from
 Azure Blob Storage or Azure Data Lake Storage into ClickHouse. With this table
