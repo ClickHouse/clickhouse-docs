@@ -37,7 +37,7 @@ sudo yum install -y clickhouse-server clickhouse-client
 - To specify a particular version, add `-$version` to the end of the package name,
 for example:
 
-```
+```bash
 sudo yum install clickhouse-server-22.8.7.34`
 ```
 
