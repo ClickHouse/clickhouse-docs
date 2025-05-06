@@ -237,7 +237,7 @@ article. You can find more information in the official guide:
 runtime](https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted-integration-runtime?tabs=data-factory)
 :::
 
-### Turning ClickHouse to a REST Service {#turning-clickhouse-to-a-rest-service}
+### Turning ClickHouse into a REST service {#turning-clickhouse-to-a-rest-service}
 
 Azure Data Factory supports sending data to external systems over HTTP in JSON
 format. We can use this capability to insert data directly into ClickHouse
