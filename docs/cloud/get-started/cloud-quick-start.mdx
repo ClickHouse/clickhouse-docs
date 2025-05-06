@@ -27,7 +27,9 @@ import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 The quickest and easiest way to get up and running with ClickHouse is to create a new
 service in [ClickHouse Cloud](https://console.clickhouse.cloud).
 
-## 1. Create a ClickHouse service {#1-create-a-clickhouse-service}
+<VerticalStepper type="numbered">
+
+## Create a ClickHouse service {#1-create-a-clickhouse-service}
 
 To create a free ClickHouse service in [ClickHouse Cloud](https://console.clickhouse.cloud), you just need to sign up by completing the following steps:
 
@@ -67,22 +69,20 @@ Users can customize the service resources if required, specifying a minimum and 
 
 Congratulations! Your ClickHouse Cloud service is up and running and onboarding is complete. Keep reading for details on how to start ingesting and querying your data.
 
-## 2. Connect to ClickHouse {#2-connect-to-clickhouse}
+## Connect to ClickHouse {#2-connect-to-clickhouse}
 There are 2 ways to connect to ClickHouse:
   - Connect using our web-based SQL console
   - Connect with your app
-
+<br/>
 ### Connect using SQL console {#connect-using-sql-console}
 
 For getting started quickly, ClickHouse provides a web-based SQL console to which you will be redirected on completing onboarding.
 
 <Image img={createservice8} size="md" alt='SQL Console' border/>
-<br/>
 
 
 Create a query tab and enter a simple query to verify that your connection is working:
 
-<br/>
 ```sql
 SHOW databases
 ```
@@ -104,7 +104,7 @@ Press the connect button from the navigation menu. A modal will open offering th
 
 If you can't see your language client, you may want to check our list of  [Integrations](/integrations).
 
-## 3. Add data {#3-add-data}
+## Add data {#3-add-data}
 
 ClickHouse is better with data! There are multiple ways to add data and most of them are available on the Data Sources page, which can be accessed in the navigation menu.
 
@@ -321,6 +321,8 @@ Suppose we have the following text in a CSV file named `data.csv`:
 
 <Image img={new_rows_from_csv} size="md" alt='New rows from CSV file' />
 <br/>
+
+</VerticalStepper>
 
 ## What's Next? {#whats-next}
 

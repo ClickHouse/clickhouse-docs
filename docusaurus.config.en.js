@@ -3,10 +3,13 @@ import math from "remark-math";
 import katex from "rehype-katex";
 import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
+const path = require('path');
+const remarkCustomBlocks = require('./plugins/remark-custom-blocks');
+
+// Import custom plugins
 const { customParseFrontMatter } = require('./plugins/frontmatter-validation/customParseFrontMatter');
 const checkFloatingPages = require('./plugins/checkFloatingPages');
 const frontmatterValidator = require('./plugins/frontmatter-validation/frontmatterValidatorPlugin');
-const path = require('path');
 import pluginLlmsTxt from './plugins/llms-txt-plugin.ts'
 
 // Helper function to skip over index.md files.
@@ -156,7 +159,7 @@ const config = {
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: "/",
-          remarkPlugins: [math],
+          remarkPlugins: [math, remarkCustomBlocks],
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },
@@ -360,7 +363,10 @@ const config = {
       pluginLlmsTxt,
       {}
     ],
-    ['./plugins/tailwind-config.js', {}],
+    [
+        './plugins/tailwind-config.js',
+        {}
+    ]
   ],
   customFields: {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page

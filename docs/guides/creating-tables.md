@@ -1,21 +1,23 @@
 ---
 sidebar_position: 1
-sidebar_label: 'Creating Tables'
-title: 'Creating Tables in ClickHouse'
+sidebar_label: 'Creating tables'
+title: 'Creating tables in ClickHouse'
 slug: /guides/creating-tables
 description: 'Learn about Creating Tables in ClickHouse'
 ---
 
-# Creating Tables in ClickHouse
+# Creating tables in ClickHouse
 
  Like most databases, ClickHouse logically groups tables into **databases**. Use the `CREATE DATABASE` command to create a new database in ClickHouse:
 
-  ```sql
-  CREATE DATABASE IF NOT EXISTS helloworld
-  ```
+```sql
+CREATE DATABASE IF NOT EXISTS helloworld
+```
 
-Similarly, use `CREATE TABLE` to define a new table. (If you do not specify the database name, the table will be in the
-`default` database.) The following table named is `my_first_table` in the `helloworld` database:
+Similarly, use `CREATE TABLE` to define a new table. If you do not specify the database name, the table will be in the
+`default` database. 
+
+The following table named `my_first_table` is created in the `helloworld` database:
 
   ```sql
   CREATE TABLE helloworld.my_first_table
@@ -36,21 +38,21 @@ In the example above, `my_first_table` is a `MergeTree` table with four columns:
 - `timestamp`: a `DateTime` value, which represents an instant in time
 - `metric`: a 32-bit floating point number
 
-  :::note
-  The table engine determines:
-   - How and where the data is stored
-   - Which queries are supported
-   - Whether or not the data is replicated
+:::note
+The table engine determines:
+- How and where the data is stored
+- Which queries are supported
+- Whether or not the data is replicated
 
-  There are many engines to choose from, but for a simple table on a single-node ClickHouse server, [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) is your likely choice.
-  :::
+There are many engines to choose from, but for a simple table on a single-node ClickHouse server, [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) is your likely choice.
+:::
 
 ## A Brief Intro to Primary Keys {#a-brief-intro-to-primary-keys}
 
 Before you go any further, it is important to understand how primary keys work in ClickHouse (the implementation
 of primary keys might seem unexpected!):
 
-  - primary keys in ClickHouse are **_not unique_** for each row in a table
+- primary keys in ClickHouse are **_not unique_** for each row in a table
 
 The primary key of a ClickHouse table determines how the data is sorted when written to disk. Every 8,192 rows or 10MB of
 data (referred to as the **index granularity**) creates an entry in the primary key index file. This granularity concept

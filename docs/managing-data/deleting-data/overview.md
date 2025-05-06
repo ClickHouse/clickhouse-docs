@@ -21,7 +21,7 @@ Here is a summary of the different ways to delete data in ClickHouse:
 Lightweight deletes cause rows to be immediately marked as deleted such that they can be automatically filtered out of all subsequent `SELECT` queries. Subsequent removal of these deleted rows occurs during natural merge cycles and thus incurs less I/O. As a result, it is possible that for an unspecified period, data is not actually deleted from storage and is only marked as deleted. If you need to guarantee that data is deleted, consider the above mutation command.
 
 ```sql
--- delete all data from 2018 with a mutation. Not recommended.
+-- delete all data from 2018 with a lightweight delete. Not recommended.
 DELETE FROM posts WHERE toYear(CreationDate) = 2018
 ```
 
