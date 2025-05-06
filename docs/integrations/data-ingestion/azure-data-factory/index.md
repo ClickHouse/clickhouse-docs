@@ -48,7 +48,7 @@ Azure databases.
 
 In this article, we will explore two ways to ingest data from Microsoft Azure
 into ClickHouse. The first method, and likely the easiest, involves using
-ClickHouse’s
+ClickHouse's
 [azureBlobStorage Table Function](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
 to transfer data directly from
 Azure Blob Storage. The second method uses the 
