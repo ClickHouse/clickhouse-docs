@@ -213,13 +213,13 @@ documentation:
 
 The [azureBlobStorage Table Function](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
 is a fast and convenient way to ingest data from Azure Blob Storage into
-ClickHouse. However, this option is not always available.
+ClickHouse. Using it may however not always be suitable for the following reasons:
 
-In some cases, your data might not be stored in Azure Blob Storage — for
-example, it could be in Azure SQL Database, Microsoft SQL Server, or Cosmos
-DB. Or, security policies might prevent external access to Blob Storage
-altogether — for example, if the storage account is locked down with no public
-endpoint. In such scenarios, you can use Azure Data Factory together with the
+- Your data might not be stored in Azure Blob Storage — for example, it could be in Azure SQL Database, Microsoft SQL Server, or Cosmos DB.
+- Security policies might prevent external access to Blob Storage
+altogether — for example, if the storage account is locked down with no public endpoint. 
+
+In such scenarios, you can use Azure Data Factory together with the
 [ClickHouse HTTP interface](https://clickhouse.com/docs/interfaces/http)
 to send data from Azure services into ClickHouse.
 
