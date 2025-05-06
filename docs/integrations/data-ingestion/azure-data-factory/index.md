@@ -71,7 +71,7 @@ filter data directly from the source. The function is highly optimized and
 supports many widely used file formats, including CSV, JSON, Parquet, Arrow,
 TSV, ORC, Avro, and more.
 
-In this section, we’ll walk through a simple startup guide for transferring
+In this section, we'll walk through a simple startup guide for transferring
 data from Azure Blob Storage to ClickHouse, along with important considerations
 for using this function effectively. For more details and advanced options,
 refer to the official documentation:
