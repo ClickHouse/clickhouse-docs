@@ -78,7 +78,7 @@ refer to the official documentation:
 
 ### Acquiring Azure Blob Storage Access Keys {#acquiring-azure-blob-storage-access-keys}
 
-To allow ClickHouse to access your Azure Blob Storage, you’ll need a connection string with an access key.
+To allow ClickHouse to access your Azure Blob Storage, you'll need a connection string with an access key.
 
 1. In the Azure portal, navigate to your **Storage Account**.
 
