@@ -231,7 +231,7 @@ internet.
 :::info
 It is possible to avoid exposing your ClickHouse instance to the internet by
 using Azure Data Factory's Self-hosted Integration Runtime. This setup allows
-data to be sent over a private network. However, it’s beyond the scope of this
+data to be sent over a private network. However, it's beyond the scope of this
 article. You can find more information in the official guide:
 [Create and configure a self-hosted integration
 runtime](https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted-integration-runtime?tabs=data-factory)
@@ -265,7 +265,7 @@ https://your-clickhouse-url.com?query=INSERT%20INTO%20my_table%20SETTINGS%20date
 
 :::info
 Azure Data Factory can handle this encoding automatically using its built-in
-`encodeUriComponent` function, so you don’t have to do it manually.
+`encodeUriComponent` function, so you don't have to do it manually.
 :::
 
 Now you can send JSON-formatted data to this URL. The data should match the
@@ -285,24 +285,24 @@ As you can see, for this step you don’t need to do anything special on the Cli
 side. The HTTP interface already provides everything needed to act as a
 REST-like endpoint — no additional configuration required.
 
-Now that we’ve made ClickHouse behave like a REST endpoint, it’s time to
+Now that we’ve made ClickHouse behave like a REST endpoint, it's time to
 configure Azure Data Factory to use it.
 
-In the next steps, we’ll create an Azure Data Factory instance, set up a Linked
+In the next steps, we'll create an Azure Data Factory instance, set up a Linked
 Service to your ClickHouse instance, define a Dataset for the
 [REST sink](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest),
 and create a Copy Data activity to send data from Azure to ClickHouse.
 
 ### Creating an Azure Data Factory instance {#create-an-azure-data-factory-instance}
 
-This guide assumes that you have an access to Microsoft Azure account, and you
+This guide assumes that you have access to Microsoft Azure account, and you
 already have configured a subscription and a resource group. If you have
 an Azure Data Factory already configured, then you can safely skip this step
 and move to the next one using your existing service.
 
 1. Log in to the [Microsoft Azure Portal](https://portal.azure.com/) and click
    **Create a resource**.
-   <Image img={azureHomePage} size="xl" alt="Azure Portal Home Page" border/>
+   <Image img={azureHomePage} size="lg" alt="Azure Portal Home Page" border/>
 
 2. In the Categories pane on the left, select **Analytics**, then click on
    **Data Factory** in the list of popular services.
