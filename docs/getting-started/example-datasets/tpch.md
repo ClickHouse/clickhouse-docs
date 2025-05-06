@@ -234,6 +234,8 @@ ORDER BY
 **Q2**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1;
+
 SELECT
     s_acctbal,
     s_name,
@@ -279,62 +281,6 @@ ORDER BY
     p_partkey;
 ```
 
-::::note
-As of February 2025, the query does not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
-
-This alternative formulation works and was verified to return the reference results.
-
-```sql
-WITH MinSupplyCost AS (
-    SELECT
-        ps_partkey,
-        MIN(ps_supplycost) AS min_supplycost
-    FROM
-        partsupp ps
-    JOIN
-        supplier s ON ps.ps_suppkey = s.s_suppkey
-    JOIN
-        nation n ON s.s_nationkey = n.n_nationkey
-    JOIN
-        region r ON n.n_regionkey = r.r_regionkey
-    WHERE
-        r.r_name = 'EUROPE'
-    GROUP BY
-        ps_partkey
-)
-SELECT
-    s.s_acctbal,
-    s.s_name,
-    n.n_name,
-    p.p_partkey,
-    p.p_mfgr,
-    s.s_address,
-    s.s_phone,
-    s.s_comment
-FROM
-    part p
-JOIN
-    partsupp ps ON p.p_partkey = ps.ps_partkey
-JOIN
-    supplier s ON s.s_suppkey = ps.ps_suppkey
-JOIN
-    nation n ON s.s_nationkey = n.n_nationkey
-JOIN
-    region r ON n.n_regionkey = r.r_regionkey
-JOIN
-    MinSupplyCost msc ON ps.ps_partkey = msc.ps_partkey AND ps.ps_supplycost = msc.min_supplycost
-WHERE
-    p.p_size = 15
-    AND p.p_type LIKE '%BRASS'
-    AND r.r_name = 'EUROPE'
-ORDER BY
-    s.s_acctbal DESC,
-    n.n_name,
-    s.s_name,
-    p.p_partkey;
-```
-::::
-
 **Q3**
 
 ```sql
@@ -365,6 +311,8 @@ ORDER BY
 **Q4**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1;
+
 SELECT
     o_orderpriority,
     count(*) AS order_count
@@ -387,39 +335,6 @@ GROUP BY
 ORDER BY
     o_orderpriority;
 ```
-
-::::note
-As of February 2025, the query does not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
-
-This alternative formulation works and was verified to return the reference results.
-
-```sql
-WITH ValidLineItems AS (
-    SELECT
-        l_orderkey
-    FROM
-        lineitem
-    WHERE
-        l_commitdate < l_receiptdate
-    GROUP BY
-        l_orderkey
-)
-SELECT
-    o.o_orderpriority,
-    COUNT(*) AS order_count
-FROM
-    orders o
-JOIN
-    ValidLineItems vli ON o.o_orderkey = vli.l_orderkey
-WHERE
-    o.o_orderdate >= DATE '1993-07-01'
-    AND o.o_orderdate < DATE '1993-07-01' + INTERVAL '3' MONTH
-GROUP BY
-    o.o_orderpriority
-ORDER BY
-    o.o_orderpriority;
-```
-::::
 
 **Q5**
 
@@ -823,6 +738,8 @@ ORDER BY
 **Q17**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1;
+
 SELECT
     sum(l_extendedprice) / 7.0 AS avg_yearly
 FROM
@@ -841,37 +758,6 @@ WHERE
             l_partkey = p_partkey
     );
 ```
-
-::::note
-As of February 2025, the query does not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
-
-This alternative formulation works and was verified to return the reference results.
-
-```sql
-WITH AvgQuantity AS (
-    SELECT
-        l_partkey,
-        AVG(l_quantity) * 0.2 AS avg_quantity
-    FROM
-        lineitem
-    GROUP BY
-        l_partkey
-)
-SELECT
-    SUM(l.l_extendedprice) / 7.0 AS avg_yearly
-FROM
-    lineitem l
-JOIN
-    part p ON p.p_partkey = l.l_partkey
-JOIN
-    AvgQuantity aq ON l.l_partkey = aq.l_partkey
-WHERE
-    p.p_brand = 'Brand#23'
-    AND p.p_container = 'MED BOX'
-    AND l.l_quantity < aq.avg_quantity;
-
-```
-::::
 
 **Q18**
 
@@ -954,6 +840,8 @@ WHERE
 **Q20**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1;
+
 SELECT
     s_name,
     s_address
@@ -993,13 +881,11 @@ ORDER BY
     s_name;
 ```
 
-::::note
-As of February 2025, the query does not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
-::::
-
 **Q21**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1;
+
 SELECT
     s_name,
     count(*) AS numwait
@@ -1040,13 +926,12 @@ ORDER BY
     numwait DESC,
     s_name;
 ```
-::::note
-As of February 2025, the query does not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
-::::
 
 **Q22**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1;
+
 SELECT
     cntrycode,
     count(*) AS numcust,
@@ -1084,7 +969,3 @@ GROUP BY
 ORDER BY
     cntrycode;
 ```
-
-::::note
-As of February 2025, the query does not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
-::::
