@@ -85,7 +85,7 @@ To allow ClickHouse to access your Azure Blob Storage, you’ll need a connectio
 
 2. In the left-hand menu, select **Access keys** under the **Security +
    networking** section.
-   <Image img={azureDataStoreSettings} size="xl" alt="Azure Data Store Settings" border/>
+   <Image img={azureDataStoreSettings} size="lg" alt="Azure Data Store Settings" border/>
 
 3. Choose either **key1** or **key2**, and click the **Show** button next to
    the **Connection string** field.
