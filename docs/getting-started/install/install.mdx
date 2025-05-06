@@ -14,11 +14,27 @@ import DebianProd from './_snippets/_prod_deb_install.md'
 import RPMProd from './_snippets/_prod_rpm_install.md'
 import MacOSProd from './_snippets/_macos_prod.md'
 import Docker from './_snippets/_docker.md'
+import {CardPrimary} from '@clickhouse/click-ui/bundled';
 
 # Installation Instructions
 
-Select a platform, distribution and install method below to view install
-instructions:
+<CardPrimary
+    alignContent="center"
+    description="Start building instantly without having to size and scale your cluster. We take care of sizing, scaling
+    , security, reliability and upgrades."
+    icon="cloud"
+    infoText="Get started free"
+    infoUrl="https://auth.clickhouse.cloud/"
+    isSelected
+    onButtonClick={function Da(){}}
+    size="md"
+    title="ClickHouse Cloud"
+    topBadgeText="Recommended"
+/>
+<br/>
+
+Alternatively, select a platform, distribution and install method below to view install
+instructions for Opensource ClickHouse:
 
 <InstallSelector
     windows={<Windows/>}

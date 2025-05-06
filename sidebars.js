@@ -84,6 +84,7 @@ const sidebars = {
       collapsible: false,
       link: { type: "doc", id: "best-practices/index" },
       items: [
+        "best-practices/sizing-and-hardware-recommendations",
         "best-practices/choosing_a_primary_key",
         "best-practices/select_data_type",
         "best-practices/use_materialized_views",
@@ -1301,7 +1302,6 @@ const sidebars = {
           ]
         },
         "guides/separation-storage-compute",
-        "guides/sizing-and-hardware-recommendations",
         "guides/sre/keeper/index",
         "guides/sre/network-ports",
         "guides/sre/scaling-clusters",

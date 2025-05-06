@@ -5,6 +5,8 @@ import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-v
 
 # Install ClickHouse using Homebrew
 
+<VerticalStepper>
+
 ## Install using the community Homebrew formula
 
 To install ClickHouse on macOS using [Homebrew](https://brew.sh/), you can use
@@ -96,3 +98,4 @@ Now reinstall ClickHouse with `--no-quarantine`:
 ```shell
 brew install --no-quarantine clickhouse
 ```
+</VerticalStepper>
