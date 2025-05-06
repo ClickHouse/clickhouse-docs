@@ -306,16 +306,16 @@ and move to the next one using your existing service.
 
 2. In the Categories pane on the left, select **Analytics**, then click on
    **Data Factory** in the list of popular services.
-   <Image img={azureNewResourceAnalytics} size="xl" alt="Azure Portal New Resource" border/>
+   <Image img={azureNewResourceAnalytics} size="lg" alt="Azure Portal New Resource" border/>
 
 3. Select your subscription and resource group, enter a name for the new Data
    Factory instance, choose the region and leave the version as V2.
-   <Image img={azureNewDataFactory} size="xl" alt="Azure Portal New Data Factory" border/>
+   <Image img={azureNewDataFactory} size="lg" alt="Azure Portal New Data Factory" border/>
 
 3. Click **Review + Create**, then click **Create** to launch the deployment.
-   <Image img={azureNewDataFactoryConfirm} size="xl" alt="Azure Portal New Data Factory Confirm" border/>
+   <Image img={azureNewDataFactoryConfirm} size="lg" alt="Azure Portal New Data Factory Confirm" border/>
 
-   <Image img={azureNewDataFactorySuccess} size="xl" alt="Azure Portal New Data Factory Success" border/>
+   <Image img={azureNewDataFactorySuccess} size="lg" alt="Azure Portal New Data Factory Success" border/>
 
 Once the deployment completes successfully, you can start using your new Azure
 Data Factory instance.
@@ -323,7 +323,7 @@ Data Factory instance.
 ### Creating a new REST-Based linked service {#-creating-new-rest-based-linked-service}
 
 1. Log in to the Microsoft Azure Portal and open your Data Factory instance.
-   <Image img={azureHomeWithDataFactory} size="xl" alt="Azure Portal Home Page with Data Factory" border/>
+   <Image img={azureHomeWithDataFactory} size="lg" alt="Azure Portal Home Page with Data Factory" border/>
 
 2. On the Data Factory overview page, click **Launch Studio**.
    <Image img={azureDataFactoryPage} size="xl" alt="Azure Portal Data Factory Page" border/>
