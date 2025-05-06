@@ -49,8 +49,11 @@ if __name__ == '__main__':
 
     with open(args.git_log_file, 'r') as f:
         git_data = json.load(f)
-    with open(args.vale_log_file, 'r') as f:
-        vale_logs = process_data(f.read())
+    
+    vale_logs = None
+    if os.path.exists(args.vale_log_file):
+        with open(args.vale_log_file, 'r') as f:
+            vale_logs = process_data(f.read())
 
     if vale_logs:
         for vale_log in vale_logs:
