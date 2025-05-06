@@ -6,7 +6,7 @@ binary for your OS.
 
 <VerticalStepper>
 
-## Install ClickHouse using curl
+## Install ClickHouse using curl {#install-clickhouse-using-curl}
 
 Run the following comand to download a single binary for your operating system.
 
@@ -18,7 +18,7 @@ curl https://clickhouse.com/ | sh
 For Mac users: If you are getting errors that the developer of the binary cannot be verified, please see [here](/knowledgebase/fix-developer-verification-error-in-macos).
 :::
 
-## Start clickhouse-local
+## Start clickhouse-local {#start-clickhouse-local}
 
 `clickhouse-local` allows you to process local and remote files using ClickHouse's 
 powerful SQL syntax and without the need for configuration. Table data is stored
@@ -31,7 +31,7 @@ Run the following command to start [clickhouse-local](../operations/utilities/cl
 ./clickhouse
 ```
 
-## Start clickhouse-server
+## Start clickhouse-server {#start-clickhouse-server}
 
 Should you wish to persist data, you'll want to run `clickhouse-server`. You can
 start the ClickHouse server using the following command:
@@ -40,7 +40,7 @@ start the ClickHouse server using the following command:
 ./clickhouse server
 ```
 
-## Start clickhouse-client
+## Start clickhouse-client {#start-clickhouse-client}
 
 With the server up and running, open a new terminal window and run the following command
 to launch `clickhouse-client`:

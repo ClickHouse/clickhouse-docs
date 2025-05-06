@@ -7,7 +7,7 @@ title: 'Advanced installation methods'
 hide_title: false
 ---
 
-## Compile from source
+## Compile from source {#compile-from-source}
 
 To manually compile ClickHouse, follow the instructions for [Linux](/development/build.md) or [macOS](/development/build-osx.md).
 

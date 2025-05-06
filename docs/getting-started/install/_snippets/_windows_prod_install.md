@@ -1,6 +1,6 @@
 # Install ClickHouse on Windows with WSL
 
-## Requirements
+## Requirements {#requirements}
 
 :::note
 To install ClickHouse on Windows you will need WSL (Windows Subsystem for Linux).
@@ -8,7 +8,7 @@ To install ClickHouse on Windows you will need WSL (Windows Subsystem for Linux)
 
 <VerticalStepper>
 
-## Install WSL
+## Install WSL {#install-wsl}
 
 Open Windows PowerShell as administrator and run the following command:
 
@@ -23,7 +23,7 @@ entered your desired username and password you should see a message similar to:
 Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
 ```
 
-## Install ClickHouse via script using curl
+## Install ClickHouse via script using curl {#install-clickhouse-via-script-using-curl}
 
 Run the following command to install ClickHouse via script using curl:
 
@@ -38,7 +38,7 @@ Successfully downloaded the ClickHouse binary, you can run it as:
   ./clickhouse
 ```
 
-## Start clickhouse-local
+## Start clickhouse-local {#start-clickhouse-local}
 
 `clickhouse-local` allows you to process local and remote files using ClickHouse's
 powerful SQL syntax and without the need for configuration. Table data is stored
@@ -51,7 +51,7 @@ Run the following command to start [clickhouse-local](../operations/utilities/cl
 ./clickhouse
 ```
 
-## Start clickhouse-server
+## Start clickhouse-server {#start-clickhouse-server}
 
 Should you wish to persist data, you'll want to run `clickhouse-server`. You can
 start the ClickHouse server using the following command:
@@ -60,7 +60,7 @@ start the ClickHouse server using the following command:
 ./clickhouse server
 ```
 
-## Start clickhouse-client
+## Start clickhouse-client {#start-clickhouse-client}
 
 With the server up and running, open a new terminal window and run the following command
 to launch `clickhouse-client`:
