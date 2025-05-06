@@ -133,7 +133,7 @@ Dataset.
 1. Download a [sample file](https://clickhouse-public-datasets.s3.eu-central-1.amazonaws.com/sensors/monthly/2019-06_bmp180.csv.zst)
    from the [Environmental Sensors Dataset](https://clickhouse.com/docs/getting-started/example-datasets/environmental-sensors)
 
-2. In the Azure Portal, create a new storage account if you don’t already have one.
+2. In the Azure Portal, create a new storage account if you don't already have one.
 
 :::warning
 Make sure that **Allow storage account key access** is enabled for your storage
