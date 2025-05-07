@@ -6,22 +6,22 @@ import {Link} from "react-router-dom";
 
 const RelatedBlogItem = (props) => {
     return (
-        <Link
-            to={`https:www.clickhouse.com/${props.url}`}
+        <a
+            href={`https:www.clickhouse.com/${props.url}`}
             className={styles.relatedBlogCard}
         >
             <img src={props.image}></img>
             <div className={styles.cardBottom}>
                 <h3>{props.headline}</h3>
             </div>
-        </Link>
+        </a>
     )
 }
 const RelatedBlogs = (props) => {
     // Setup for Algolia
     const {algolia} = useAlgoliaThemeConfig()
     const client = algoliasearch(algolia.appId, algolia.apiKey);
-    const indexName = "clickhouse_blog_articles";
+    const indexName = "clickhouse_blogs_articles";
 
     // Access frontmatter of the doc
     const keywords = props.frontMatter.keywords || []
@@ -42,7 +42,7 @@ const RelatedBlogs = (props) => {
             });
             setRelatedBlogs(results[0].hits)
         }
-        fetchRelatedBlogs(client, indexName, "json").catch(console.error);
+        fetchRelatedBlogs(client, indexName, props.frontMatter.title).catch(console.error);
 
     }, [])
 
