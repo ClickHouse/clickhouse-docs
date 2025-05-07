@@ -3,7 +3,7 @@ sidebar_label: 'Snowflake'
 sidebar_position: 20
 slug: /migrations/snowflake
 description: 'Migrating from Snowflake to ClickHouse'
-keywords: ['migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'snowflake']
+keywords: ['migration', 'snowflake']
 title: 'Migrating from Snowflake to ClickHouse'
 ---
 

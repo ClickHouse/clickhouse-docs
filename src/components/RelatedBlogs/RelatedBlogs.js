@@ -1,5 +1,5 @@
-import {useEffect, useState} from 'react'
-import {useAlgoliaThemeConfig} from "@docusaurus/theme-search-algolia/client";
+import { useEffect, useState } from 'react'
+import { useAlgoliaThemeConfig } from "@docusaurus/theme-search-algolia/client";
 import { algoliasearch } from "algoliasearch";
 import styles from './styles.module.scss'
 import {Link} from "react-router-dom";
@@ -30,19 +30,31 @@ const RelatedBlogs = (props) => {
     const [relatedBlogs, setRelatedBlogs] = useState([]);
 
     useEffect(()=>{
-        const fetchRelatedBlogs = async (client, index_name, query_string) => {
+        const fetchRelatedBlogs = async (client, index_name, title, keywords) => {
+
+            let search_query = ''
+            if (keywords.length === 0)
+                search_query = title
+            else
+                search_query = keywords.join(",")
+            console.log(search_query)
+            const param_string = `attributesToRetrieve=headline,image,description,url&hitsPerPage=3&optionalWords=${keywords.join(",")}`
+
             const { results } = await client.search({
                 requests: [
                     {
+                        query: search_query,
                         indexName: index_name,
-                        query: query_string,
-                        params: "attributesToRetrieve=headline,image,description,url&hitsPerPage=3"
+                        params: param_string
                     },
                 ],
             });
             setRelatedBlogs(results[0].hits)
         }
-        fetchRelatedBlogs(client, indexName, props.frontMatter.title).catch(console.error);
+        let title = props.frontMatter.title || ''
+        let keywords = props.frontMatter.keywords || []
+
+        fetchRelatedBlogs(client, indexName, title, keywords).catch(console.error);
 
     }, [])
 

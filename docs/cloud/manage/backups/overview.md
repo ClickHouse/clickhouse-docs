@@ -5,6 +5,7 @@ slug: /cloud/manage/backups/overview
 title: 'Overview'
 keywords: ['backups', 'cloud backups', 'restore']
 description: 'Provides an overview of backups in ClickHouse Cloud'
+show_related_blogs: false
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

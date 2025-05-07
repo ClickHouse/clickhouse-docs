@@ -108,7 +108,7 @@ export default function DocItemLayout({children}) {
             <DocItemContent>{children}</DocItemContent>
             <DocItemFooter />
           </article>
-          {frontMatter.related_blogs === false ? <></> : <RelatedBlogs frontMatter={frontMatter}/>}
+          {frontMatter.show_related_blogs === false ? <></> : <RelatedBlogs frontMatter={frontMatter}/>}
           <DocItemPaginator />
         </div>
       </div>

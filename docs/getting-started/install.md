@@ -1,9 +1,10 @@
 ---
 description: 'Install ClickHouse'
-keywords: ['clickhouse', 'install', 'getting started', 'quick start']
+keywords: ['install', 'setup']
 sidebar_label: 'Install'
 slug: /install
 title: 'Install ClickHouse'
+show_related_blogs: false
 ---
 
 import Tabs from '@theme/Tabs';

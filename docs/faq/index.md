@@ -4,6 +4,7 @@ title: 'FAQ'
 description: 'Landing page for FAQ'
 pagination_prev: null
 pagination_next: null
+show_related_blogs: false
 ---
 
 | Page                                                          | Description                                                                            |

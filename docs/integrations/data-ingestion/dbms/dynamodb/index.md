@@ -3,7 +3,7 @@ sidebar_label: 'DynamoDB'
 sidebar_position: 10
 slug: /integrations/dynamodb
 description: 'ClickPipes allows you to connect ClickHouse to DynamoDB.'
-keywords: ['clickhouse', 'DynamoDB', 'connect', 'integrate', 'table']
+keywords: ['DynamoDB']
 title: 'CDC from DynamoDB to ClickHouse'
 ---
 
