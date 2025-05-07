@@ -6,7 +6,7 @@ toc_priority: 9
 description: 'Describes who is using ClickHouse'
 ---
 
-# Who Is Using ClickHouse? {#who-is-using-clickhouse}
+# Who us using ClickHouse? {#who-is-using-clickhouse}
 
 Being an open-source product makes this question not so straightforward to answer. You do not have to tell anyone if you want to start using ClickHouse, you just go grab source code or pre-compiled packages. There's no contract to sign and the [Apache 2.0 license](https://github.com/ClickHouse/ClickHouse/blob/master/LICENSE) allows for unconstrained software distribution.
 
