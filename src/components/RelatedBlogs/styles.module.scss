@@ -1,0 +1,61 @@
+/* Container for the entire component */
+.relatedBlogsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Container for just the cards (excluding header) */
+.blogCardsContainer {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5em;
+  width: 100%;
+}
+
+/* Container for individual card */
+.relatedBlogCard {
+  padding: 0px;
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 12px;
+  cursor: pointer;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 150px;
+    border-left: 1px solid #393939;
+    border-right: 1px solid #393939;
+    border-top: 1px solid #393939;
+    border-radius: 12px 12px 0px 0px;
+    margin: 0px;
+  }
+
+}
+
+/* Container for the bottom half of the card */
+.cardBottom {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  border-radius: 0px 0px 12px 12px;
+  margin: 0px;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 1.5rem;
+}
+
+/* Container for the bottom half of the card */
+[data-theme='light'] .cardBottom {
+
+}
+
+/* Container for the bottom half of the card */
+[data-theme='dark'] .cardBottom {
+  background-color: #161615;
+  border-left: 1px solid #393939;
+  border-right: 1px solid #393939;
+  border-bottom: 1px solid #393939;
+}
