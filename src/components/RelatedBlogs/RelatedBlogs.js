@@ -7,7 +7,7 @@ import {Link} from "react-router-dom";
 const RelatedBlogItem = (props) => {
     return (
         <a
-            href={`https:www.clickhouse.com/${props.url}`}
+            href={`https://clickhouse.com/${props.url}`}
             className={styles.relatedBlogCard}
         >
             <img src={props.image}></img>
