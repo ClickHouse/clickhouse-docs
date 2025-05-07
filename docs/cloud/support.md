@@ -3,6 +3,7 @@ sidebar_label: 'Cloud Support'
 title: 'Cloud Support'
 slug: /cloud/support
 description: 'Learn about Cloud Support'
+hide_title: true
 ---
 
 # Cloud Support
