@@ -56,6 +56,6 @@ In this example:
 
 ## See also {#see-also}
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-- [`arrayJoin`](/sql-reference/functions/array-functions#arrayjoin)
+- [`arrayJoin`](/sql-reference/functions/array-join)
 - [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
 - [`uniqCombined`](/sql-reference/aggregate-functions/reference/uniqcombined)

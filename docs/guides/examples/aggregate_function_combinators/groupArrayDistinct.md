@@ -36,4 +36,4 @@ LIMIT 20;
 
 ## See also {#see-also}
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
-- [`Distinct combinator`](/sql-reference/aggregate-functions/combinators#distinct)
+- [`Distinct combinator`](/sql-reference/aggregate-functions/combinators#-distinct)

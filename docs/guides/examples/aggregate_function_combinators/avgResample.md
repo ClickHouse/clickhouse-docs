@@ -65,4 +65,4 @@ FROM avg_wage;
 
 ## See also {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#resample)
+- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)

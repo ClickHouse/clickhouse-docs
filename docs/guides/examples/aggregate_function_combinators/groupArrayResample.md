@@ -62,4 +62,4 @@ SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
 
 ## See also {#see-also}
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
-- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#resample)
+- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)

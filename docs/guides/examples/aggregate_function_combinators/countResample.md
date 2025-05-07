@@ -58,4 +58,4 @@ SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
 
 ## See also {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#resample)
+- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)
