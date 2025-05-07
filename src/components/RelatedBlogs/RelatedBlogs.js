@@ -1,5 +1,4 @@
 import {useEffect, useState} from 'react'
-import {useDoc} from '@docusaurus/plugin-content-docs/client';
 import {useAlgoliaThemeConfig} from "@docusaurus/theme-search-algolia/client";
 import { algoliasearch } from "algoliasearch";
 import styles from './styles.module.scss'
@@ -7,7 +6,10 @@ import {Link} from "react-router-dom";
 
 const RelatedBlogItem = (props) => {
     return (
-        <Link to={`https:www.clickhouse.com/${props.url}`} className={styles.relatedBlogCard}>
+        <Link
+            to={`https:www.clickhouse.com/${props.url}`}
+            className={styles.relatedBlogCard}
+        >
             <img src={props.image}></img>
             <div className={styles.cardBottom}>
                 <h3>{props.headline}</h3>
@@ -15,15 +17,14 @@ const RelatedBlogItem = (props) => {
         </Link>
     )
 }
-const RelatedBlogs = () => {
+const RelatedBlogs = (props) => {
     // Setup for Algolia
     const {algolia} = useAlgoliaThemeConfig()
     const client = algoliasearch(algolia.appId, algolia.apiKey);
     const indexName = "clickhouse_blog_articles";
 
     // Access frontmatter of the doc
-    const {frontMatter} = useDoc();
-    const keywords = frontMatter.keywords || []
+    const keywords = props.frontMatter.keywords || []
 
     // State
     const [relatedBlogs, setRelatedBlogs] = useState([]);
@@ -41,7 +42,7 @@ const RelatedBlogs = () => {
             });
             setRelatedBlogs(results[0].hits)
         }
-        fetchRelatedBlogs(client, indexName, 'parquet').catch(console.error);
+        fetchRelatedBlogs(client, indexName, "json").catch(console.error);
 
     }, [])
 
@@ -50,20 +51,25 @@ const RelatedBlogs = () => {
     }, [relatedBlogs])
 
     return (
-        <div className={styles.relatedBlogsContainer}>
-            <h2>Related blog posts</h2>
-            <div className={styles.blogCardsContainer}>
-                {relatedBlogs.map((blog)=>{
-                    return <RelatedBlogItem
-                        url={blog.url}
-                        headline={blog.headline}
-                        description={blog.description}
-                        image={blog.image}
-                    />
-                })}
+        relatedBlogs.length > 0 ? (
+            <div className={styles.relatedBlogsContainer}>
+                <h2>Related blog posts</h2>
+                <div className={styles.blogCardsContainer}>
+                    {relatedBlogs.map((blog) => {
+                        return <RelatedBlogItem
+                            key={blog.url} // Added a key prop which is required in lists
+                            url={blog.url}
+                            headline={blog.headline}
+                            description={blog.description}
+                            image={blog.image}
+                        />
+                    })}
+                </div>
             </div>
-        </div>
-    )
+        ) : (
+            <></> // Empty fragment
+        )
+    );
 }
 
 export default RelatedBlogs;
