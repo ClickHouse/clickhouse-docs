@@ -31,7 +31,3 @@ ClickHouse provides several approaches for handling JSON, each with its respecti
 - [Exporting JSON](/integrations/data-formats/json/exporting) - How to export JSON.
 - [Handling other JSON Formats](/integrations/data-formats/json/other-formats) - Some tips on handling JSON formats other than newline-delimited (NDJSON).
 - [Other approaches to modelling JSON](/integrations/data-formats/json/other-approaches) - Legacy approaches to modelling JSON. **Not recommended.**
-
-:::note Important: A new JSON type is available in Beta
-This guide considers existing techniques for handling JSON. A new JSON type is available in Beta. Further details [here](/sql-reference/data-types/newjson).
-:::
