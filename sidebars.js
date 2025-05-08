@@ -390,12 +390,13 @@ const sidebars = {
               collapsed: true,
               link: { type: "doc", id: "cloud/reference/release-notes-index" },
               items: [
+                "cloud/changelogs/changelog-25_1-25_4",
                 "cloud/changelogs/changelog-24-12",
                 "cloud/changelogs/changelog-24-10",
                 "cloud/changelogs/changelog-24-8",
                 "cloud/changelogs/changelog-24-6",
                 "cloud/changelogs/changelog-24-5",
-                "fast-release-24-2"
+                "cloud/changelogs/fast-release-24-2"
               ]
             }
           ],
