@@ -1042,3 +1042,5 @@ azureNewResourceAnalytics
 microsoft
 --docs/integrations/data-ingestion/azure-data-factory/overview.md--
 microsoft
+--docs/integrations/data-ingestion/azure-data-factory/index.md--
+microsoft
