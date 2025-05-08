@@ -7,6 +7,7 @@ match: $sentence
 indicators:
   - ":"
 exceptions:
+  - ClickHouse
   - Cloud
   - Azure
   - CLI
@@ -29,3 +30,5 @@ exceptions:
   - Windows
   - JSON
   - MergeTree
+  - ReplacingMergeTree
+  - AggregatingMergeTree

@@ -3,6 +3,7 @@ slug: /whats-new/changelog/24.2-fast-release
 title: 'v24.2 Changelog'
 description: 'Fast release changelog for v24.2'
 keywords: ['changelog']
+sidebar_label: 'v24.2'
 ---
 
 ### ClickHouse release tag: 24.2.2.15987 {#clickhouse-release-tag-242215987}

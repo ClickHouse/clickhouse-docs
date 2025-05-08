@@ -13,7 +13,7 @@ ClickHouse Cloud evaluates the security and compliance needs of our customers an
 
 ### SOC 2 Type II (Since 2022) {#soc-2-type-ii-since-2022}
 
-System and Organization Controls (SOC) 2 is a report focusing on security, availability, confidentiality, processing integrity and privacy criteria contained in the Trust Services Criteria (TSC) as applied to an organization's systems and is designed to provide assurance about these controls to relying parties (our customers). ClickHouse works with independent external auditors to undergo an audit at least once per year addressing security, availability, confidentiality and processing integrity of ClickHouse Cloud. 
+System and Organization Controls (SOC) 2 is a report focusing on security, availability, confidentiality, processing integrity and privacy criteria contained in the Trust Services Criteria (TSC) as applied to an organization's systems and is designed to provide assurance about these controls to relying parties (our customers). ClickHouse works with independent external auditors to undergo an audit at least once per year addressing security, availability and processing integrity of our systems and confidentiality and privacy of the data processed by our systems. The report addresses both our ClickHouse Cloud and Bring Your Own Cloud (BYOC) offerings. 
 
 ### ISO 27001 (Since 2023) {#iso-27001-since-2023}
 
@@ -29,7 +29,7 @@ The U.S. Data Privacy Framework was developed to provide U.S. organizations with
 
 Customers must complete a Business Associate Agreement (BAA) and contact sales or support to onboard services to HIPAA compliant regions to load ePHI. Additionally, customers should review our [shared responsibility model](/cloud/security/shared-responsibility-model), select and implement appropriate controls for their use case.
 
-The Health Insurance Portability and Accountability Act (HIPAA) of 1996 is a United States based privacy law focused on management of protected health information (PHI). HIPAA has several requirements, including the [Security Rule](https://www.hhs.gov/hipaa/for-professionals/security/index.html), which is focused on protecting electronic personal health information (ePHI). ClickHouse has implemented administrative, physical and technical safeguards to ensure the confidentiality, integrity and security of ePHI stored in designated services. We plan to add HIPAA to our SOC 2 in mid 2025 to provide external assurance of our compliance program.
+The Health Insurance Portability and Accountability Act (HIPAA) of 1996 is a United States based privacy law focused on management of protected health information (PHI). HIPAA has several requirements, including the [Security Rule](https://www.hhs.gov/hipaa/for-professionals/security/index.html), which is focused on protecting electronic personal health information (ePHI). ClickHouse has implemented administrative, physical and technical safeguards to ensure the confidentiality, integrity and security of ePHI stored in designated services. These activities are incorporated in our SOC 2 Type II report available for download in our [Trust Center](https://trust.clickhouse.com).
 
 ### PCI Service Provider (Since 2025) {#pci-service-provider-since-2025}
 

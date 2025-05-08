@@ -41,7 +41,7 @@ This paper presents an overview of ClickHouse, a popular opensource OLAP databas
 
 This paper describes ClickHouse, a columnar OLAP database designed for high-performance analytical queries on tables with trillions of rows and hundreds of columns. ClickHouse was [started](https://clickhou.se/evolution) in 2009 as a filter and aggregation operator for web-scale log file data and was open sourced in 2016. [Figure 1](#page-1-0) illustrates when major features described in this paper were introduced to ClickHouse.
 
-ClickHouse is designed to address fve key challenges of modern analytical data management:
+ClickHouse is designed to address five key challenges of modern analytical data management:
 
 1. **Huge data sets with high ingestion rates**. Many datadriven applications in industries like web analytics, finance, and e-commerce are characterized by huge and continuously growing amounts of data. To handle huge data sets, analytical databases must not only provide efficient indexing and compression strategies, but also allow data distribution across multiple nodes (scale-out) as single servers are limited to several dozen terabytes of storage. Moreover, recent data is often more relevant for real-time insights than historical data. As a result, analytical databases must be able to ingest new data at consistently high rates or in bursts, as well as continuously "deprioritize" (e.g. aggregate, archive) historical data without slowing down parallel reporting queries.
 
