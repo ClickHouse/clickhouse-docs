@@ -3296,7 +3296,7 @@
       "destination": "/docs/:path*"
     },
     {
-      "source": "/docs/cloud/manage/api/swagger",
+      "source": "/docs/cloud/manage/api/usageCost-api-reference",
       "destination": "/docs/cloud/manage/api/swagger#/paths/~1v1~1organizations~1%7BorganizationId%7D~1usageCost/get"
     }
   ]
