@@ -3294,6 +3294,10 @@
     {
       "source": "/docs/en/:path*",
       "destination": "/docs/:path*"
+    },
+    {
+      "source": "/docs/cloud/manage/api/swagger",
+      "destination": "/docs/cloud/manage/api/swagger#/paths/~1v1~1organizations~1%7BorganizationId%7D~1usageCost/get"
     }
   ]
 }
