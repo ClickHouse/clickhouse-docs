@@ -30,4 +30,4 @@ ClickHouse provides several approaches for handling JSON, each with its respecti
 - [Designing JSON schema](/integrations/data-formats/json/schema) - Steps to design and optimize your JSON schema.
 - [Exporting JSON](/integrations/data-formats/json/exporting) - How to export JSON.
 - [Handling other JSON Formats](/integrations/data-formats/json/other-formats) - Some tips on handling JSON formats other than newline-delimited (NDJSON).
-- [Other approaches to modelling JSON](/integrations/data-formats/json/other-approaches) - Legacy approaches to modelling JSON. **Not recommended.**
+- [Other approaches to modeling JSON](/integrations/data-formats/json/other-approaches) - Legacy approaches to modeling JSON. **Not recommended.**
