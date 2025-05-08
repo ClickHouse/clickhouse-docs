@@ -3,7 +3,7 @@ slug: /guides/developer/mutations
 sidebar_label: 'Updating and Deleting Data'
 sidebar_position: 1
 keywords: ['update', 'delete', 'mutation']
-title: 'Updating and Deleting ClickHouse Data'
+title: 'Updating and deleting ClickHouse data'
 description: 'Describes how to perform update and delete operations in ClickHouse'
 ---
 
