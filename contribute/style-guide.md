@@ -376,3 +376,19 @@ logic might fail.
 1. Keep version strings in consistent formats for predictable results.
 
 2. Use simplified version parameters in URLs (e.g., `v08` instead of `v0.8.x`).
+
+## Related blog component
+
+Each page has a "Related blogs" component which displays recent blogs which are
+related to the keywords or title of the document.
+
+If you would like to hide it from a page, add the following property to the 
+front matter:
+
+```yaml
+---
+show_related_blogs: false
+---
+```
+
+This will hide it from the page.
