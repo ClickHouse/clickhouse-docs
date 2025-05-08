@@ -1034,3 +1034,9 @@ azureNewDataFactoryConfirm
 azureNewDataFactorySuccess
 azureNewResourceAnalytics
 microsoft
+--docs/integrations/data-ingestion/clickpipes/postgres/source/timescale.md--
+Hypertables
+TimescaleDB
+hypercore
+hypertable
+hypertables
