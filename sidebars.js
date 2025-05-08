@@ -735,7 +735,8 @@ const sidebars = {
               items: [
                 "integrations/data-ingestion/clickpipes/mysql/source/rds",
                 "integrations/data-ingestion/clickpipes/mysql/source/aurora",
-                "integrations/data-ingestion/clickpipes/mysql/source/rds_maria"
+                "integrations/data-ingestion/clickpipes/mysql/source/rds_maria",
+                "integrations/data-ingestion/clickpipes/mysql/source/gcp"
               ],
             },
             "integrations/data-ingestion/clickpipes/mysql/datatypes"
