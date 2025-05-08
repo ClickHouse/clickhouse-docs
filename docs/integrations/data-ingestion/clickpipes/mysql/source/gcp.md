@@ -64,10 +64,10 @@ Connect to your Cloud SQL MySQL instance as the root user and execute the follow
 
 ## Configure network access {#configure-network-access-gcp-mysql}
 
-If you want to restrict traffic to your Cloud SQL instance, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the whitelisted IPs of your Cloud SQL MySQL instance.
+If you want to restrict traffic to your Cloud SQL instance, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the allowlisted IPs of your Cloud SQL MySQL instance.
 This can be done either by editing the instance or by heading over to the `Connections` tab in the sidebar in Cloud Console.
 
-<Image img={gcp_mysql_ip} alt="IP whitelisting in GCP MySQL" size="lg" border/>
+<Image img={gcp_mysql_ip} alt="IP allowlisting in GCP MySQL" size="lg" border/>
 
 ## Download and Use Root CA certificate {#download-root-ca-certificate-gcp-mysql}
 To connect to your Cloud SQL instance, you need to download the root CA certificate.
