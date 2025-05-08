@@ -1011,7 +1011,7 @@ microsoft
 PITR
 pitr
 rootca
---docs/integrations/data-ingestion/azure-data-factory/index.md--
+--docs/integrations/data-ingestion/azure-data-factory/using_http_interface.md--
 DataItem
 ServiceBase
 adfCopyDataDebugSuccess
