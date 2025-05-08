@@ -10,6 +10,7 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.5em;
   width: 100%;
+  height: 100%
 }
 
 /* Container for individual card */
@@ -27,14 +28,22 @@
   img {
     display: block;
     width: 100%;
-    height: 120px;
-    border-left: 1px solid #393939;
-    border-right: 1px solid #393939;
-    border-top: 1px solid #393939;
+    height: auto;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-top: 1px solid;
     border-radius: 12px 12px 0px 0px;
     margin: 0px;
   }
 
+}
+
+[data-theme='dark'] .relatedBlogCard img {
+  border-color: #393939;
+}
+
+[data-theme='light'] .relatedBlogCard img {
+  border-color: #c7c7c7;
 }
 
 .relatedBlogCard:hover {
@@ -53,14 +62,15 @@
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   padding-top: 1.5rem;
+  justify-content: space-between;
 }
 
 /* Container for the bottom half of the card */
 [data-theme='light'] .cardBottom {
-  background-color: #f7f7fa;
-  border-left: 1px solid #393939;
-  border-right: 1px solid #393939;
-  border-bottom: 1px solid #393939;
+  background-color: #c0c0c0;
+  border-left: 1px solid #c7c7c7;
+  border-right: 1px solid #c7c7c7;
+  border-bottom: 1px solid #c7c7c7;
 }
 
 /* Container for the bottom half of the card */
@@ -69,4 +79,110 @@
   border-left: 1px solid #393939;
   border-right: 1px solid #393939;
   border-bottom: 1px solid #393939;
+}
+
+// Image styles
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  background-color: #f5f7f9;
+  overflow: hidden;
+  border-radius: 12px 12px 0px 0px;
+}
+
+.imagePlaceholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px 8px 0px 0px;
+
+  &::after {
+    content: "";
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px 8px 0px 0px;
+    border-top-color: #3b5998; /* Use your brand color */
+    animation: spin 1s ease-in-out infinite;
+  }
+}
+
+.imageWrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+  border-radius: 8px 8px 0px 0px;
+}
+
+.imageLoaded {
+  opacity: 1;
+}
+
+.imageHidden {
+  opacity: 0;
+}
+
+// Skeleton loading styles
+.cardSkeleton {
+  pointer-events: none;
+}
+
+.imageSkeletonWrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+}
+
+.imageSkeleton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #edf2f7;
+}
+
+.titleSkeleton {
+  height: 20px;
+  width: 90%;
+  background-color: #edf2f7;
+  border-radius: 4px;
+  margin-bottom: 0.8rem;
+}
+
+.dateSkeleton {
+  height: 14px;
+  width: 60%;
+  background-color: #edf2f7;
+  border-radius: 4px;
+}
+
+.skeletonPulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
 }
