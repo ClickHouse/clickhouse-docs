@@ -75,9 +75,8 @@ IGNORE_LIST=(
     "${ROOT_PATH}/docs/integrations/data-visualization.md"
     "${ROOT_PATH}/docs/integrations/index.mdx"
     "${ROOT_PATH}/docs/whats-new/security-changelog.md"
-    "${ROOT_PATH}/docs/fast-release-24-2.md"
+    "${ROOT_PATH}/docs/cloud/changelogs/*"
     "${ROOT_PATH}/docs/whats-new/changelog/*" # ignore all changelogs
-    "${ROOT_PATH}/docs/cloud/changelogs/changelog-24*"
     "${ROOT_PATH}/docs/sql-reference/*" # we ignore all files from ClickHouse/ClickHouse
     "${ROOT_PATH}/docs/engines/*"
     "${ROOT_PATH}/docs/getting-started/*"

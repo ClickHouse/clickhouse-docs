@@ -3,6 +3,7 @@ slug: /changelogs/24.10
 title: 'v24.10 Changelog for Cloud'
 description: 'Fast release changelog for v24.10'
 keywords: ['changelog', 'cloud']
+sidebar_label: 'v24.10'
 show_related_blogs: false
 ---
 

@@ -32,7 +32,6 @@ python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/chdb/guides" --md="docs/chdb/guides/index.md" --ignore images
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/cloud/manage/jan2025_faq" --md="docs/cloud/manage/jan2025_faq/index.md" --ignore images
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/cloud/changelogs" --md="docs/cloud/reference/release-notes-index.md"
-python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/cloud/manage/api" --md="docs/cloud/manage/api/api-reference-index.md"
 python3 scripts/table-of-contents-generator/toc_gen.py --single-toc --dir="docs/development" --md="docs/development/index.md" --ignore images
 deactivate
 rm -r venv
