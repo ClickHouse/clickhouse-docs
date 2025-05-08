@@ -1003,6 +1003,10 @@ clickpipes
 clickpipes
 --docs/integrations/data-ingestion/clickpipes/mysql/source/rds_maria.md--
 clickpipes
+--docs/integrations/data-ingestion/clickpipes/mysql/source/gcp.md--
+PITR
+pitr
+rootca
 --docs/integrations/data-ingestion/azure-data-factory/index.md--
 DataItem
 ServiceBase
