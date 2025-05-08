@@ -68,4 +68,5 @@ The different types of events captured for the organization are grouped in 3 cat
 
 ## API for audit events {#api-for-audit-events}
 
-Users can use the ClickHouse Cloud API `activity` endpoint to obtain an export of audit events. Further details can be found [here](/cloud/manage/api/organizations-api-reference#list-of-organization-activities).
+Users can use the ClickHouse Cloud API `activity` endpoint to obtain an export 
+of audit events. Further details can be found in the [API reference](https://clickhouse.com/docs/cloud/manage/api/swagger).
