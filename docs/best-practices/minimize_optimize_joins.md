@@ -4,7 +4,7 @@ sidebar_position: 10
 sidebar_label: 'Minimize and Optimize JOINs'
 title: 'Minimize and optimize JOINs'
 description: 'Page describing best practices for JOINs'
-keywords: ['JOINs',]
+keywords: ['joins', 'join algorithm']
 ---
 
 import Image from '@theme/IdealImage';

@@ -3,6 +3,7 @@ slug: /cloud/manage/marketplace/
 title: 'Market Place'
 description: 'Market Place Table of Contents page'
 keywords: ['Marketplace Billing', 'AWS', 'GCP']
+show_related_blogs: false
 ---
 
 This section details billing related topics for Marketplace.

@@ -3,6 +3,7 @@ slug: /changelogs/24.8
 title: 'v24.8 Changelog for Cloud'
 description: 'Fast release changelog for v24.8'
 keywords: ['changelog', 'cloud']
+show_related_blogs: false
 ---
 
 Relevant changes for ClickHouse Cloud services based on the v24.8 release.

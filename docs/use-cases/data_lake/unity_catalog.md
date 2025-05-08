@@ -6,7 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'In this guide, we will walk you through the steps to query
  your data in S3 buckets using ClickHouse and the Unity Catalog.'
-keywords: ['Unity catalog']
+keywords: ['Unity catalog', 'data lake']
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

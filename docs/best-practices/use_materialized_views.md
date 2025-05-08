@@ -4,7 +4,7 @@ sidebar_position: 10
 sidebar_label: 'Use Materialized Views'
 title: 'Use Materialized Views'
 description: 'Page describing Materialized Views'
-keywords: ['Materialized Views']
+keywords: ['materialized views', 'medallion architecture']
 ---
 
 import Image from '@theme/IdealImage';
