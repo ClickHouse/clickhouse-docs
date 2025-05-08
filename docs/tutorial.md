@@ -17,6 +17,8 @@ Learn how to ingest and query data in ClickHouse using a New York City taxi exam
 
 You need access to a running ClickHouse service to complete this tutorial. For instructions, see the [Quick Start](./quick-start.mdx) guide.
 
+<VerticalStepper>
+
 ## Create a new table {#create-a-new-table}
 
 The New York City taxi dataset contains details about millions of taxi rides, with columns including tip amount, tolls, payment type, and more. Create a table to store this data.
@@ -508,6 +510,7 @@ Write some queries that join the `taxi_zone_dictionary` with your `trips` table.
         Generally, we avoid using `SELECT *` often in ClickHouse. You should only retrieve the columns you actually need. However, this query is slower for the purposes of the example.
         :::
 
+</VerticalStepper>
 
 ## Next steps {#next-steps}
 
@@ -517,3 +520,4 @@ Learn more about ClickHouse with the following documentation:
 - [Integrate an external data source](/integrations/index.mdx): Review data source integration options, including files, Kafka, PostgreSQL, data pipelines, and many others.
 - [Visualize data in ClickHouse](./integrations/data-visualization/index.md): Connect your favorite UI/BI tool to ClickHouse.
 - [SQL Reference](./sql-reference/index.md): Browse the SQL functions available in ClickHouse for transforming, processing and analyzing data.
+
