@@ -955,7 +955,18 @@ const sidebars = {
           ],
         },
         "integrations/data-ingestion/aws-glue/index",
-        "integrations/data-ingestion/azure-data-factory/index",
+        {
+          type: "category",
+          label: "Azure Data Factory",
+          collapsed: true,
+          collapsible: true,
+          link: { type: "doc", id: "integrations/data-ingestion/azure-data-factory/index" },
+          items: [
+            "integrations/data-ingestion/azure-data-factory/overview",
+            "integrations/data-ingestion/azure-data-factory/using_azureblobstorage",
+            "integrations/data-ingestion/azure-data-factory/using_http_interface",
+          ],
+        },
         "integrations/data-ingestion/azure-synapse/index",
         "integrations/data-ingestion/etl-tools/apache-beam",
         {
