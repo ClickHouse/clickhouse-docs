@@ -6,7 +6,7 @@ title: 'Cluster Deployment'
 description: 'By going through this tutorial, you will learn how to set up a simple ClickHouse cluster.'
 ---
 
-This tutorial assumes you've already set up a [local ClickHouse server](../getting-started/install.md)
+This tutorial assumes you've already set up a [local ClickHouse server](../getting-started/install/install.mdx)
 
 By going through this tutorial, you'll learn how to set up a simple ClickHouse cluster. It'll be small, but fault-tolerant and scalable. Then we will use one of the example datasets to fill it with data and execute some demo queries.
 

@@ -833,7 +833,7 @@ ClickHouse tables are replicated across the two servers, and therefore across th
 ### Install software {#install-software}
 
 #### ClickHouse server nodes {#clickhouse-server-nodes}
-Refer to the [installation instructions](/getting-started/install.md/#available-installation-options) when performing the deployment steps on the ClickHouse server nodes.
+Refer to the [installation instructions](/getting-started/install/install.mdx) when performing the deployment steps on the ClickHouse server nodes.
 
 #### Deploy ClickHouse {#deploy-clickhouse}
 
@@ -845,7 +845,7 @@ Place `chnode1` in one AWS region, and `chnode2` in a second.
 
 Deploy ClickHouse Keeper on three hosts, in the sample configurations these are named `keepernode1`, `keepernode2`, and `keepernode3`.  `keepernode1` can be deployed in the same region as `chnode1`, `keepernode2` with `chnode2`, and `keepernode3` in either region but a different availability zone from the ClickHouse node in that region.
 
-Refer to the [installation instructions](/getting-started/install.md/#install-standalone-clickhouse-keeper) when performing the deployment steps on the ClickHouse Keeper nodes.
+Refer to the [installation instructions](/getting-started/install/install.mdx) when performing the deployment steps on the ClickHouse Keeper nodes.
 
 ### Create S3 Buckets {#create-s3-buckets}
 
