@@ -23,7 +23,7 @@ Iceberg tables.
 
 ## Configuring Glue in AWS {#configuring}
 
-To connect to the glue catalog, you will need to identify the region of your 
+To connect to the Glue catalog, you will need to identify the region of your 
 catalog and provide an access and secret key. 
 
 :::note
@@ -321,3 +321,10 @@ Then load the data from your Iceberg table:
 INSERT INTO default.hits 
 SELECT * FROM glue.`iceberg-benchmark.hitsiceberg`;
 ```
+
+## Related content {#related-content}
+
+It’s now possible to run Apache Iceberg queries based on previous snapshots, aka time travel. 
+Our resident data expert Mark shows you how in the video below:
+
+<iframe width="1024" height="576" src="[https://www.youtube.com/embed/-A3EtQgDn_0?si=TBiN_E80BKZ0DPpd](https://youtu.be/5fRcMByUrlY?feature=shared)" title="run Apache Iceberg queries with Glue" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
