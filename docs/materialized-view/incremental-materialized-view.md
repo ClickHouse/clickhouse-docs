@@ -651,8 +651,8 @@ In this example, the set built from the `IN (SELECT id FROM t0)` subquery has on
 Consider our [earlier Materialized View example](/materialized-view/incremental-materialized-view#example) to compute **daily badges per user**, including the user's display name from the `users` table.
 
 ```sql
-CREATE MATERIALIZED VIEW daily_badges_by_user_mv TO daily_badges_by_user AS
-SELECT
+CREATE MATERIALIZED VIEW daily_badges_by_user_mv TO daily_badges_by_user
+AS SELECT
     toDate(Date) AS Day,
     b.UserId,
     u.DisplayName,
@@ -660,7 +660,7 @@ SELECT
     countIf(Class = 'Silver') AS Silver,
     countIf(Class = 'Bronze') AS Bronze
 FROM badges AS b
-LEFT JOIN (SELECT Id, DisplayName FROM users WHERE Id IN (SELECT UserId FROM badges)) AS u ON b.UserId = u.Id
+LEFT JOIN users AS u ON b.UserId = u.Id
 GROUP BY Day, b.UserId, u.DisplayName;
 ```
 
