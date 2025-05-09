@@ -38,7 +38,7 @@ sudo yum install -y clickhouse-server clickhouse-client
 for example:
 
 ```bash
-sudo yum install clickhouse-server-22.8.7.34`
+sudo yum install clickhouse-server-22.8.7.34
 ```
 
 ## Start ClickHouse server {#start-clickhouse-server-1}
