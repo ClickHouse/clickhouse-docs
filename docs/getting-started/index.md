@@ -1,0 +1,23 @@
+---
+description: 'Get started with ClickHouse using our tutorials and example datasets'
+keywords: ['clickhouse', 'install', 'tutorial', 'sample', 'datasets']
+pagination_next: tutorial
+sidebar_label: 'Overview'
+sidebar_position: 0
+slug: /getting-started/example-datasets/
+title: 'Tutorials and Example Datasets'
+---
+
+# Tutorials and Example Datasets
+
+We have a lot of resources for helping you get started and learn how ClickHouse works:
+
+- If you need to get ClickHouse up and running, check out our [Quick Start](../quick-start.mdx)
+- The [ClickHouse Tutorial](../tutorial.md) analyzes a dataset of New York City taxi rides
+
+In addition, the sample datasets provide a great experience on working with ClickHouse,
+learning important techniques and tricks, and seeing how to take advantage of the many powerful
+functions in ClickHouse. The sample datasets include:
+
+<!-- The following table is automatically generated at build time 
+by https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh -->
