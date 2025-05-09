@@ -1,7 +1,6 @@
 .settingsInfoBlock {
-    width: max-content;
-    max-width: 300px;
-    max-height: 78px;
+    width: fit-content;
+    max-width: 100%;
     word-wrap: break-word;
     overflow-wrap: break-word;
     margin-bottom: 15px;
