@@ -50,6 +50,10 @@ docs/cloud/manage/api/prometheus-api-reference.md
 docs/cloud/manage/api/usageCost-api-reference.md
 docs/whats-new/changelog/index.md
 docs/about-us/beta-and-experimental-features.md
+static/knowledgebase_toc.json
+.floating-pages-validation-failed
+.frontmatter-validation-failed
+logs/
 
 .vscode
 .aspell.en.prepl
@@ -58,7 +62,6 @@ docs/about-us/beta-and-experimental-features.md
 **.translated
 **.translate
 /ClickHouse/
-
 
 # Ignore table of contents files
 docs/cloud/reference/release-notes-index.md
