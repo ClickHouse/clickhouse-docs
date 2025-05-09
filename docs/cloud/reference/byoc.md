@@ -24,7 +24,7 @@ BYOC (Bring Your Own Cloud) allows you to deploy ClickHouse Cloud on your own cl
 
 **If you would like access, please [contact us](https://clickhouse.com/cloud/bring-your-own-cloud).** Refer to our [Terms of Service](https://clickhouse.com/legal/agreements/terms-of-service) for additional information.
 
-BYOC is currently only supported for AWS, with GCP and Microsoft Azure in development.
+BYOC is currently only supported for AWS. You can join the waitlist for GCP and Azure [here](https://clickhouse.com/cloud/bring-your-own-cloud).
 
 :::note 
 BYOC is designed specifically for large-scale deployments, and requires customers to sign a committed contract.
