@@ -7,8 +7,8 @@ title: 'Environmental Sensors Data'
 ---
 
 import Image from '@theme/IdealImage';
-import no_events_per_day from './images/sensors_01.png';
-import sensors_02 from './images/sensors_02.png';
+import no_events_per_day from '@site/static/images/getting-started/example-datasets/sensors_01.png';
+import sensors_02 from '@site/static/images/getting-started/example-datasets/sensors_02.png';
 
 [Sensor.Community](https://sensor.community/en/) is a contributors-driven global sensor network that creates Open Environmental Data. The data is collected from sensors all over the globe. Anyone can purchase a sensor and place it wherever they like. The APIs to download the data is in [GitHub](https://github.com/opendata-stuttgart/meta/wiki/APIs) and the data is freely available under the [Database Contents License (DbCL)](https://opendatacommons.org/licenses/dbcl/1-0/).
 

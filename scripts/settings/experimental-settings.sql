@@ -1,6 +1,6 @@
 -- First write the header
 SELECT '\n\n## Experimental settings {#experimental-settings}\n\n| Name | Default |\n|------|--------|'
-INTO OUTFILE 'experimental-settings.md' TRUNCATE
+INTO OUTFILE 'experimental-beta-settings.md' APPEND
 FORMAT TSVRaw;
 
 -- Then append the table content
@@ -32,5 +32,5 @@ ORDER BY Name ASC
     )
 SELECT concat('| ', Name, ' | ', Default, ' |')
 FROM combined
-    INTO OUTFILE 'experimental-settings.md' APPEND
+    INTO OUTFILE 'experimental-beta-settings.md' APPEND
 FORMAT TSVRaw;
