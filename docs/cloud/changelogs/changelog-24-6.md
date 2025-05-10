@@ -4,6 +4,7 @@ title: 'v24.6 Changelog for Cloud'
 description: 'Fast release changelog for v24.6'
 keywords: ['changelog', 'cloud']
 sidebar_label: 'v24.6'
+show_related_blogs: false
 ---
 
 # v24.6 Changelog for Cloud

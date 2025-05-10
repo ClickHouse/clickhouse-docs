@@ -2,6 +2,7 @@
 slug: /cloud/reference/changelogs
 title: 'Changelogs'
 description: 'Landing page for Cloud changelogs'
+show_related_blogs: false
 ---
 
 | Page                                                          | Description                                     |

@@ -3,6 +3,7 @@ sidebar_label: 'Redshift'
 slug: /integrations/redshift
 description: 'Migrating Data from Redshift to ClickHouse'
 title: 'Migrating Data from Redshift to ClickHouse'
+keywords: ['Redshift']
 ---
 
 import redshiftToClickhouse from '@site/static/images/integrations/data-ingestion/redshift/redshift-to-clickhouse.png';

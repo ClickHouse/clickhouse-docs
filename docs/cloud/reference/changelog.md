@@ -3,6 +3,7 @@ slug: /whats-new/cloud
 sidebar_label: 'Cloud Changelog'
 title: 'Cloud Changelog'
 description: 'ClickHouse Cloud changelog providing descriptions of what is new in each ClickHouse Cloud release'
+show_related_blogs: false
 ---
 
 import Image from '@theme/IdealImage';

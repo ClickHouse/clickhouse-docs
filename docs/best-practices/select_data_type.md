@@ -1,9 +1,10 @@
 ---
 slug: /best-practices/select-data-types
 sidebar_position: 10
-sidebar_label: 'Select Data Types'
-title: 'Select Data Types'
+sidebar_label: 'Selecting data Types'
+title: 'Selecting data Types'
 description: 'Page describing how to choose data types in ClickHouse'
+keywords: ['data types']
 ---
 
 import NullableColumns from '@site/docs/best-practices/_snippets/_avoid_nullable_columns.md';
