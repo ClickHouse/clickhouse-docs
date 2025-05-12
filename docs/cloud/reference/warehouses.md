@@ -45,7 +45,7 @@ Each compute node group will have its own endpoint so you can choose which set o
 
 _Fig. 2 - compute separation in ClickHouse Cloud_
 
-In this private preview program, you will have the ability to create extra services that share the same data with your existing services, or create a completely new setup with multiple services sharing the same data.
+It is possible to create extra services that share the same data with your existing services, or create a completely new setup with multiple services sharing the same data.
 
 ## What is a Warehouse? {#what-is-a-warehouse}
 
@@ -122,8 +122,6 @@ Once compute-compute is enabled for a service (at least one secondary service wa
 
 ## Limitations {#limitations}
 
-Because this compute-compute separation is currently in private preview, there are some limitations to using this feature. Most of these limitations will be removed once the feature is released to GA (general availability):
-
 1. **Primary service should always be up and should not be idled (limitation will be removed some time after GA).** During the private preview and some time after GA, the primary service (usually the existing service that you want to extend by adding other services) will be always up and will have the idling setting disabled. You will not be able to stop or idle the primary service if there is at least one secondary service. Once all secondary services are removed, you can stop or idle the original service again.
 
 2. **Sometimes workloads cannot be isolated.** Though the goal is to give you an option to isolate database workloads from each other, there can be corner cases where one workload in one service will affect another service sharing the same data. These are quite rare situations that are mostly connected to OLTP-like workloads.
@@ -146,7 +144,7 @@ settings distributed_ddl_task_timeout=0
 
 ## Pricing {#pricing}
 
-Extra services created during the private preview are billed as usual. Compute prices are the same for all services in a warehouse (primary and secondary). Storage is billed only once - it is included in the first (original) service.
+Compute prices are the same for all services in a warehouse (primary and secondary). Storage is billed only once - it is included in the first (original) service.
 
 ## Backups {#backups}
 
