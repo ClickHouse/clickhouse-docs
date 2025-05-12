@@ -3314,6 +3314,10 @@
     {
       "source": "/docs/engines/table-engines/integrations/google-cloud-storage",
       "destination": "/docs/sql-reference/table-functions/gcs"
+    },
+    {
+      "source": "/docs/cloud/manage/api/organizations-api-reference",
+      "destination": "https://clickhouse.com/docs/cloud/manage/api/swagger#/paths/~1v1~1organizations/get"
     }
   ]
 }
