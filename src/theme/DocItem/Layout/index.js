@@ -39,10 +39,9 @@ function useDocTOC() {
 
 function isExcludedPath(path, excludedSlugs) {
   // Check if any of the excluded components exist in the path
-  console.log(path)
-  console.log(excludedSlugs)
   return excludedSlugs.some(component => path.includes(component));
 }
+
 export default function DocItemLayout({children}) {
   const docTOC = useDocTOC();
   const {metadata, frontMatter} = useDoc();
@@ -51,7 +50,6 @@ export default function DocItemLayout({children}) {
   const location = useLocation();
   const context = useDocusaurusContext();
 
-  console.log(context)
   const excludeRelatedComponents = isExcludedPath(location.pathname, context.siteConfig.customFields.relatedBlogsIgnoreList)
 
   const [showPopup, setShowPopup] = useState(false)
