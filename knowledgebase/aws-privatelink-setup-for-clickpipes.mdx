@@ -48,10 +48,10 @@ RDS instances that require endpoint services (OR you may have different listener
 
 5. Authorize ClickPipes to Use the Endpoint Service
     - Grant permission to the ClickPipes account to request this endpoint service.
-    - Configure allowed principals by adding the following principal ID:
-      ```
-      arn:aws:iam::072088201116:root
-      ```
+        - Configure allowed principals by adding the following principal ID:
+          ```
+          arn:aws:iam::072088201116:root
+          ```
 
 6. Disable "Enforce Security Group Inbound Rules on Private Link Traffic" on the NLB (if a security group is attached to the NLB)
     - Navigate to the NLB's settings and disable the "Enforce Security Group Inbound Rules on Private Link Traffic" setting if a security group is attached to the NLB.
