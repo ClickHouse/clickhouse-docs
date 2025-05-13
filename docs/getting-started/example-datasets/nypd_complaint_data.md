@@ -21,8 +21,7 @@ The dataset used in this guide comes from the NYC Open Data team, and contains d
 
 ## Prerequisites {#prerequisites}
 - Download the dataset by visiting the [NYPD Complaint Data Current (Year To Date)](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) page, clicking the Export button, and choosing **TSV for Excel**.
-- Install [ClickHouse server and client](../../getting-started/install.md).
-- [Launch](../../getting-started/install.md#launch) ClickHouse server, and connect with `clickhouse-client`
+- Install [ClickHouse server and client](../../getting-started/install/install.mdx)
 
 ### A note about the commands described in this guide {#a-note-about-the-commands-described-in-this-guide}
 There are two types of commands in this guide:
