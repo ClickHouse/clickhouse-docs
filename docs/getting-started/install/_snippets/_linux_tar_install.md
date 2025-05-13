@@ -52,7 +52,7 @@ do
 done
 ```
 
-## Extract and install packages
+## Extract and install packages {#extract-and-install}
 
 Run the commands below to extract and install the following packages:
 - `clickhouse-common-static`
