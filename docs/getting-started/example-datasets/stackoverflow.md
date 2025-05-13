@@ -7,7 +7,7 @@ title: 'Analyzing Stack Overflow data with ClickHouse'
 ---
 
 import Image from '@theme/IdealImage';
-import stackoverflow from './images/stackoverflow.png'
+import stackoverflow from '@site/static/images/getting-started/example-datasets/stackoverflow.png'
 
 This dataset contains every `Posts`, `Users`, `Votes`, `Comments`, `Badges`, `PostHistory`, and `PostLinks` that has occurred on Stack Overflow.
 

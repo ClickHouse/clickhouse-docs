@@ -32,3 +32,4 @@ exceptions:
   - MergeTree
   - ReplacingMergeTree
   - AggregatingMergeTree
+  - DigitalOcean Spaces

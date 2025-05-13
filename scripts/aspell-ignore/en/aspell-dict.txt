@@ -3515,3 +3515,6 @@ avgState
 argMinIf
 minSimpleState
 maxSimpleState
+TimescaleDB
+columnstore
+

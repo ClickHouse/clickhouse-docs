@@ -7,6 +7,7 @@ title: 'Integrating Object Storage with ClickHouse Cloud'
 
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
 import Gcssvg from '@site/static/images/integrations/logos/gcs.svg';
+import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
 import cp_step1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step1.png';
 import cp_step2_object_storage from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step2_object_storage.png';
@@ -22,7 +23,7 @@ import cp_overview from '@site/static/images/integrations/data-ingestion/clickpi
 import Image from '@theme/IdealImage';
 
 # Integrating Object Storage with ClickHouse Cloud
-Object Storage ClickPipes provide a simple and resilient way to ingest data from Amazon S3 and Google Cloud Storage into ClickHouse Cloud. Both one-time and continuous ingestion are supported with exactly-once semantics.
+Object Storage ClickPipes provide a simple and resilient way to ingest data from Amazon S3, Google Cloud Storage, and DigitalOcean Spaces into ClickHouse Cloud. Both one-time and continuous ingestion are supported with exactly-once semantics.
 
 
 ## Prerequisite {#prerequisite}
@@ -93,8 +94,9 @@ Image
 |----------------------|----|----|-----------------|------------------------------------------------------------------------------------------------------|
 | Amazon S3            |<S3svg class="image" alt="Amazon S3 logo" style={{width: '3rem', height: 'auto'}}/>|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
 | Google Cloud Storage |<Gcssvg class="image" alt="Google Cloud Storage logo" style={{width: '3rem', height: 'auto'}}/>|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
+| DigitalOcean Spaces | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '3rem', height: 'auto'}}/> | Object Storage | Stable | Configure ClickPipes to ingest large volumes of data from object storage.
 
-More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
+More connectors will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ## Supported Data Formats {#supported-data-formats}
 
@@ -102,6 +104,7 @@ The supported formats are:
 - [JSON](/interfaces/formats/JSON)
 - [CSV](/interfaces/formats/CSV)
 - [Parquet](/interfaces/formats/Parquet)
+- [Avro](/interfaces/formats/Avro)
 
 ## Exactly-Once Semantics {#exactly-once-semantics}
 
@@ -140,7 +143,7 @@ https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/{documents-01,doc
 :::
 
 ## Continuous Ingest {#continuous-ingest}
-ClickPipes supports continuous ingestion from both S3 and GCS. When enabled, ClickPipes will continuously ingest data from the specified path, it will poll for new files at a rate of once every 30 seconds. However, new files must be lexically greater than the last ingested file, meaning they must be named in a way that defines the ingestion order. For instance, files named `file1`, `file2`, `file3`, etc., will be ingested sequentially. If a new file is added with a name like `file0`, ClickPipes will not ingest it because it is not lexically greater than the last ingested file.
+ClickPipes supports continuous ingestion from S3, GCS, and DigitalOcean Spaces. When enabled, ClickPipes will continuously ingest data from the specified path, it will poll for new files at a rate of once every 30 seconds. However, new files must be lexically greater than the last ingested file, meaning they must be named in a way that defines the ingestion order. For instance, files named `file1`, `file2`, `file3`, etc., will be ingested sequentially. If a new file is added with a name like `file0`, ClickPipes will not ingest it because it is not lexically greater than the last ingested file.
 
 ## Archive table {#archive-table}
 ClickPipes will create a table next to your destination table with the postfix `s3_clickpipe_<clickpipe_id>_archive`. This table will contain a list of all the files that have been ingested by the ClickPipe. This table is used to track files during ingestion and can be used to verify files have been ingested. The archive table has a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
@@ -160,6 +163,10 @@ Like S3, you can access public buckets with no configuration, and with protected
 
 Service Accounts for GCS aren't directly supported. HMAC (IAM) Credentials must be used when authenticating with non-public buckets.
 The Service Account permissions attached to the HMAC credentials should be `storage.objects.list` and `storage.objects.get`.
+
+### DigitalOcean Spaces {#dospaces}
+Currently only protected buckets are supported for DigitalOcean spaces. You require an "Access Key" and a "Secret Key" to access the bucket and its files. You can read [this guide](https://docs.digitalocean.com/products/spaces/how-to/manage-access/) on how to create access keys.
+
 
 ## F.A.Q. {#faq}
 
