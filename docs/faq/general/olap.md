@@ -4,6 +4,7 @@ title: 'What is OLAP?'
 toc_hidden: true
 toc_priority: 100
 description: 'An explainer on what Online Analytical Processing is'
+keywords: ['OLAP']
 ---
 
 # What Is OLAP? {#what-is-olap}

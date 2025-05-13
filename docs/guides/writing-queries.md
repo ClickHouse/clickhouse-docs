@@ -4,6 +4,7 @@ sidebar_label: 'Selecting data'
 title: 'Selecting ClickHouse Data'
 slug: /guides/writing-queries
 description: 'Learn about Selecting ClickHouse Data'
+keywords: ['SELECT']
 ---
 
 ClickHouse is a SQL database, and you query your data by writing the same type of `SELECT` queries you are already familiar with. For example:

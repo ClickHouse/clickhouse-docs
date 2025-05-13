@@ -1,0 +1,3180 @@
+{
+    "https://clickhouse.com/blog/clickhouse-release-25-04": [
+        "lazy materialization",
+        "MergeTree tables",
+        "CPU slot scheduling",
+        "correlated subqueries",
+        "Apache Iceberg"
+    ],
+    "https://clickhouse.com/blog/fsq": [
+        "materialized columns",
+        "space-filling curve",
+        "minmax indices",
+        "rasterized tiles",
+        "geographical datasets"
+    ],
+    "https://clickhouse.com/blog/clickhouse-and-parquet-a-foundation-for-fast-lakehouse-analytics": [
+        "Parquet",
+        "native Parquet reader",
+        "predicate pushdown",
+        "MergeTree",
+        "I/O reduction"
+    ],
+    "https://clickhouse.com/blog/anlytic-big-data-analytics-at-the-dutch-police": [
+        "data infrastructure",
+        "data accessibility",
+        "high-performance database systems",
+        "managed databases",
+        "data connectors"
+    ],
+    "https://clickhouse.com/blog/how-wallarms-api-security-platform-relies-on-clickhouse-cloud": [
+        "API Sessions",
+        "real-time security",
+        "ClickHouse Cloud",
+        "self-hosted deployment",
+        "AI vulnerabilities"
+    ],
+    "https://clickhouse.com/blog/why-flock-safety-turned-to-clickhouse": [
+        "AggregatingMergeTree",
+        "materialized views",
+        "ReplacingMergeTree",
+        "ClickPipes",
+        "AggregateFunction"
+    ],
+    "https://clickhouse.com/blog/whats-new-clickhouse-cloud-spring-2025": [
+        "CDC connector",
+        "PrivateLink",
+        "AWS Middle East",
+        "Resource Utilization dashboard",
+        "BYOC"
+    ],
+    "https://clickhouse.com/blog/how-real-estate-analytics-made-its-data-pipeline-50x-faster-with-clickhouse": [
+        "materialized views",
+        "MergeTree",
+        "replication",
+        "arrayJoin",
+        "Parquet"
+    ],
+    "https://clickhouse.com/blog/agenthouse-demo-clickhouse-llm-mcp": [
+        "MCP server",
+        "Sonnet model",
+        "LLM",
+        "LibreChat UI",
+        "public datasets"
+    ],
+    "https://clickhouse.com/blog/clickhouse-gets-lazier-and-faster-introducing-lazy-materialization": [
+        "lazy materialization",
+        "PREWHERE",
+        "primary index",
+        "granules",
+        "I/O optimizations"
+    ],
+    "https://clickhouse.com/blog/202504-newsletter": [
+        "Materialized Views",
+        "array functions",
+        "query condition cache",
+        "AggregatingMergeTree",
+        "Delta Lake support"
+    ],
+    "https://clickhouse.com/blog/announcing-ruby-gem-analytics-powered-by-clickhouse": [
+        "S3Queue",
+        "materialized views",
+        "Gem analytics",
+        "ReplacingMergeTree",
+        "incremental materialized views"
+    ],
+    "https://clickhouse.com/blog/last9-clickhouse-delivering-seamless-observability-minus-the-chaos": [
+        "observability",
+        "telemetry data",
+        "Last9",
+        "AI-powered observability",
+        "ClickHouse"
+    ],
+    "https://clickhouse.com/blog/mysql-cdc-connector-clickpipes-private-preview": [
+        "CDC connector",
+        "PeerDB",
+        "continuous replication",
+        "table and column-level filtering",
+        "MySQL-native data types"
+    ],
+    "https://clickhouse.com/blog/building-an-observability-solution-with-clickhouse-at-dash0": [
+        "AggregatingMergeTree",
+        "materialized columns",
+        "sampling",
+        "disk configuration",
+        "data skipping indexes"
+    ],
+    "https://clickhouse.com/blog/make-before-break-faster-scaling-mechanics-for-clickhouse-cloud": [
+        "Make-Before-Break",
+        "MultiSTS",
+        "StatefulSets",
+        "MBB",
+        "system tables"
+    ],
+    "https://clickhouse.com/blog/rust": [
+        "Rust integration",
+        "PRQL",
+        "Delta Lake",
+        "sanitizers",
+        "cross-compilation"
+    ],
+    "https://clickhouse.com/blog/observing-in-style-how-poizon-rebuilt-its-data-platform-with-clickhouse-enterprise-edition": [
+        "SharedMergeTree",
+        "storage-compute separation",
+        "serverless architecture",
+        "horizontal scaling",
+        "Parallel Replica"
+    ],
+    "https://clickhouse.com/blog/introducing-the-clickhouse-query-condition-cache": [
+        "query condition cache",
+        "granules",
+        "predicate",
+        "trace logging",
+        "JSON dataset"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-25-03": [
+        "arraySymmetricDifference",
+        "estimateCompressionRatio",
+        "s3Cluster",
+        "JSON storage",
+        "query condition cache"
+    ],
+    "https://clickhouse.com/blog/how-harvey-uses-clickhouse-for-proactive-threat-detection": [
+        "materialized views",
+        "compression capabilities",
+        "primary indexes",
+        "network logs",
+        "security threats"
+    ],
+    "https://clickhouse.com/blog/202503-newsletter": [
+        "Parquet Bloom filters",
+        "materialized views",
+        "ReplacingMergeTree",
+        "Delta Rust Kernel",
+        "Postgres CDC connector"
+    ],
+    "https://clickhouse.com/blog/accelerating-clickhouse-json-queries-for-fast-bluesky-dashboards": [
+        "incremental materialized views",
+        "JSON documents",
+        "pre-aggregated data",
+        "refreshable materialized views",
+        "in-memory dictionaries"
+    ],
+    "https://clickhouse.com/blog/longbridge-technology-simplifies-their-architecture-and-achieves-10x-performance-boost-with-clickhouse": [
+        "columnar storage",
+        "aggregation functions",
+        "bulk data insertion",
+        "external table feature",
+        "time-series databases"
+    ],
+    "https://clickhouse.com/blog/clickhouse-acquires-hyperdx-the-future-of-open-source-observability": [
+        "observability",
+        "HyperDX",
+        "database performance",
+        "session replay",
+        "open-source"
+    ],
+    "https://clickhouse.com/blog/building-clickhouse-byoc-on-aws": [
+        "BYOC",
+        "VPC",
+        "EKS clusters",
+        "Tailscale",
+        "Kubernetes Upgrader"
+    ],
+    "https://clickhouse.com/blog/how-solarwinds-uses-clickhouse-for-realtime-observability-at-scale": [
+        "ReplacingMergeTree",
+        "index granularity",
+        "primary key",
+        "filesystem reads",
+        "BYOC deployment model"
+    ],
+    "https://clickhouse.com/blog/why-astronomer-chose-clickhouse-to-power-its-new-data-observability-platform-astro-observe": [
+        "Astro Observe",
+        "ClickHouse Cloud",
+        "MergeTree",
+        "materialized views",
+        "Airflow"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-25-02": [
+        "parallel hash join",
+        "Bloom filters",
+        "transitive inference",
+        "Backup database engine",
+        "Delta Lake support"
+    ],
+    "https://clickhouse.com/blog/postgres-to-clickhouse-data-modeling-tips-v2": [
+        "PeerDB",
+        "ReplacingMergeTree",
+        "FINAL modifier",
+        "Refreshable Materialized View",
+        "AggregatingMergeTree"
+    ],
+    "https://clickhouse.com/blog/a-case-of-the-vanishing-cpu-a-linux-kernel-debugging-story": [
+        "mmap_lock",
+        "shrink_lruvec",
+        "vmscan",
+        "page reclaiming",
+        "Multi-Gen LRU"
+    ],
+    "https://clickhouse.com/blog/announcing-billing-api-for-clickhouse-cloud-with-vantage-support": [
+        "Billing API",
+        "FinOps",
+        "data transfer costs",
+        "Vantage",
+        "usageCost API"
+    ],
+    "https://clickhouse.com/blog/poolside-using-clickhouse-to-build-next-gen-ai-for-software-development": [
+        "AI models",
+        "ClickHouse Cloud",
+        "iterative workflows",
+        "columnar OLAP database",
+        "data pipelines"
+    ],
+    "https://clickhouse.com/blog/announcing-clickhouse-connector-tableau": [
+        "Tableau Connector",
+        "JDBC Driver",
+        "dashboard",
+        "Tableau Cloud",
+        "MySQL interface"
+    ],
+    "https://clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient": [
+        "Native format",
+        "compression",
+        "pre-sorting",
+        "MergeTree",
+        "FastFormats"
+    ],
+    "https://clickhouse.com/blog/clickhouse-at-fosdem-2025": [
+        "JSON data type",
+        "fuzz testing",
+        "BuzzHouse",
+        "rDNS data",
+        "column-oriented storage"
+    ],
+    "https://clickhouse.com/blog/announcing-general-availability-of-clickhouse-bring-your-own-cloud-on-aws": [
+        "BYOC",
+        "SharedMergeTree",
+        "compute-compute separation",
+        "VPC",
+        "data governance"
+    ],
+    "https://clickhouse.com/blog/202502-newsletter": [
+        "JSONBench",
+        "join improvements",
+        "compress data",
+        "parallel hash join algorithm",
+        "MinMax indices"
+    ],
+    "https://clickhouse.com/blog/climbing-the-iceberg-with-clickhouse": [
+        "Iceberg",
+        "Delta Lake",
+        "Unity catalog",
+        "Glue",
+        "data lake"
+    ],
+    "https://clickhouse.com/blog/postgres-cdc-connector-clickpipes-public-beta-jp": [
+        "Postgres CDC\u30b3\u30cd\u30af\u30bf",
+        "ClickPipes",
+        "\u30ec\u30d7\u30ea\u30b1\u30fc\u30c8",
+        "materialized views",
+        "\u30d1\u30d6\u30ea\u30c3\u30af\u30d9\u30fc\u30bf"
+    ],
+    "https://clickhouse.com/blog/postgres-cdc-connector-clickpipes-public-beta": [
+        "Postgres CDC connector",
+        "ClickPipes",
+        "replication slot",
+        "Open API support",
+        "PeerDB"
+    ],
+    "https://clickhouse.com/blog/agent-facing-analytics": [
+        "LLMs",
+        "RAG",
+        "SQL extension",
+        "AI memory",
+        "MCP"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-25-01": [
+        "parallel hash join",
+        "MinMax index",
+        "add_minmax_index_for_numeric_columns",
+        "generateSerialID",
+        "Merge table engine"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-25-01-jp": [
+        "two-level hash table",
+        "MinMax index",
+        "generateSerialID",
+        "Merge table engine",
+        "Parquet format"
+    ],
+    "https://clickhouse.com/blog/how-memorial-sloan-kettering-cancer-center-is-using-clickhouse-to-accelerate-cancer-research": [
+        "OLAP",
+        "columnar storage",
+        "distributed architecture",
+        "denormalized schema",
+        "Sling"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-microsoft-azure-consumption-commitment-eligble": [
+        "MACC program",
+        "azureBlobStorage",
+        "ClickPipes",
+        "Microsoft Power BI",
+        "real-time analytics"
+    ],
+    "https://clickhouse.com/blog/electrum-driving-net-zero-carbon-future-with-clickhouse": [
+        "MergeTree",
+        "materialized views",
+        "IoT data",
+        "geospatial function",
+        "flexibility"
+    ],
+    "https://clickhouse.com/blog/kubenetmon-open-sourced": [
+        "conntrack",
+        "kubenetmon",
+        "ClickHouse Cloud",
+        "LogHouse",
+        "gRPC"
+    ],
+    "https://clickhouse.com/blog/json-bench-clickhouse-vs-mongodb-elasticsearch-duckdb-postgresql-jp": [
+        "JSON",
+        "ClickHouse",
+        "compression",
+        "benchmarks",
+        "data types"
+    ],
+    "https://clickhouse.com/blog/json-bench-clickhouse-vs-mongodb-elasticsearch-duckdb-postgresql": [
+        "JSON data type",
+        "primary key columns",
+        "compression codecs",
+        "parallelization",
+        "covered index scans"
+    ],
+    "https://clickhouse.com/blog/evolution-of-clickhouse-cloud-new-features-superior-performance-tailored-offerings": [
+        "compute-compute separation",
+        "make before break",
+        "single-replica service",
+        "Transparent Data Encryption",
+        "custom hardware profiles"
+    ],
+    "https://clickhouse.com/blog/evolution-of-clickhouse-cloud-new-features-superior-performance-tailored-offerings-jp": [
+        "SharedMergeTree",
+        "make before break",
+        "analyzer",
+        "Transparent Data Encryption",
+        "Cross-Region Backup"
+    ],
+    "https://clickhouse.com/blog/introducing-warehouses-compute-compute-separation-in-clickhouse-cloud-jp": [
+        "\u30b3\u30f3\u30d4\u30e5\u30fc\u30c8-\u30b3\u30f3\u30d4\u30e5\u30fc\u30c8\u5206\u96e2",
+        "\u30a6\u30a7\u30a2\u30cf\u30a6\u30b9",
+        "SharedMergeTree",
+        "replica-group",
+        "Keeper"
+    ],
+    "https://clickhouse.com/blog/introducing-warehouses-compute-compute-separation-in-clickhouse-cloud": [
+        "compute-compute separation",
+        "warehouses",
+        "Replicated database",
+        "SharedMergeTree",
+        "background merge operations"
+    ],
+    "https://clickhouse.com/blog/graviton-boosts-clickhouse-cloud-performance": [
+        "ARM architecture",
+        "AWS Graviton processors",
+        "AArch64",
+        "benchmarking",
+        "performance optimization"
+    ],
+    "https://clickhouse.com/blog/announcing-clickhouse-cloud-audit-add-on-for-splunk": [
+        "Cloud Audit",
+        "Splunk",
+        "integration",
+        "audit logs",
+        "Splunkbase"
+    ],
+    "https://clickhouse.com/blog/buzzhouse-bridging-the-database-fuzzing-gap-for-testing-clickhouse": [
+        "fuzzing",
+        "BuzzHouse",
+        "SQL queries",
+        "code coverage",
+        "testing infrastructure"
+    ],
+    "https://clickhouse.com/blog/amp-clickhouse-oss-to-clickhouse-cloud": [
+        "ReplacingMergeTree",
+        "real-time streaming",
+        "Amazon Kinesis Data Firehose",
+        "continuous streaming architecture",
+        "event replay"
+    ],
+    "https://clickhouse.com/blog/ibm-instance-monitoring-clickhouse-performance": [
+        "materialized views",
+        "tracing",
+        "custom span exporter",
+        "OpenTelemetry",
+        "telemetry data"
+    ],
+    "https://clickhouse.com/blog/202501-newsletter": [
+        "Iceberg REST catalog",
+        "Medallion architecture",
+        "ReplacingMergeTree",
+        "cohort analysis",
+        "partitioned table"
+    ],
+    "https://clickhouse.com/blog/evidence-bluesky-dashboard": [
+        "Parquet",
+        "Archie Wood\u2019s ClickHouse connector",
+        "static-site generation",
+        "Evidence.dev",
+        "dynamic, templated pages"
+    ],
+    "https://clickhouse.com/blog/why-m3ter-clickhouse-cloud": [
+        "columnar storage",
+        "materialized views",
+        "compression ratio",
+        "managed services",
+        "data ingestion"
+    ],
+    "https://clickhouse.com/blog/how-increff-rebuilt-bi-platform-with-clickhouse": [
+        "materialized views",
+        "MergeTree",
+        "DuckDB",
+        "LowCardinality",
+        "PREWHERE clause"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-24-12": [
+        "MergeTree",
+        "JSON subcolumns",
+        "primary key",
+        "parallel hash join",
+        "query_plan_join_swap_table"
+    ],
+    "https://clickhouse.com/blog/building-a-medallion-architecture-for-bluesky-json-data-with-clickhouse": [
+        "JSON type",
+        "Medallion architecture",
+        "Materialized columns",
+        "ReplacingMergeTree",
+        "S3Queue table engine"
+    ],
+    "https://clickhouse.com/blog/common-issues-you-can-solve-using-advanced-monitoring-dashboards": [
+        "Advanced Dashboard",
+        "bulk insert",
+        "primary key design",
+        "system health specific",
+        "ClickHouse Cloud"
+    ],
+    "https://clickhouse.com/blog/clickhouse-support-services-fast-simple-friendly": [
+        "Support Services",
+        "Cloud",
+        "S2",
+        "Knowledge Base",
+        "ClickHouse Academy"
+    ],
+    "https://clickhouse.com/blog/202412-newsletter": [
+        "materialized views",
+        "table engines",
+        "Postgres CDC connector",
+        "vector similarity indexes",
+        "observability"
+    ],
+    "https://clickhouse.com/blog/gumlet-processing-billions-of-video-image-requests-with-clickhouse": [
+        "materialized views",
+        "MergeTree",
+        "S3 integration",
+        "batch inserts",
+        "replication"
+    ],
+    "https://clickhouse.com/blog/building-a-medallion-architecture-with-clickhouse": [
+        "MergeTree",
+        "Incremental Materialized Views",
+        "ReplacingMergeTree",
+        "Gold layer",
+        "Bronze layer"
+    ],
+    "https://clickhouse.com/blog/a-simple-guide-to-clickhouse-query-optimization-part-1": [
+        "materialized views",
+        "primary keys",
+        "LowCardinality",
+        "EXPLAIN statement",
+        "Projection"
+    ],
+    "https://clickhouse.com/blog/clickhouse-announces-strategic-collaboration-agreement-with-aws-to-advance-real-time-data-analytics-and-generative-ai-innovation": [
+        "real-time analytics",
+        "data warehousing",
+        "observability",
+        "MergeTree",
+        "materialized views"
+    ],
+    "https://clickhouse.com/blog/202412-newsletter-jp": [
+        "materialized views",
+        "Postgres CDC\u30b3\u30cd\u30af\u30bf",
+        "\u30de\u30fc\u30b8\u30ad\u30e3\u30c3\u30b7\u30e5",
+        "BFloat16\u30c7\u30fc\u30bf\u578b",
+        "\u30d9\u30af\u30bf\u30fc\u985e\u4f3c\u691c\u7d22\u30a4\u30f3\u30c7\u30c3\u30af\u30b9"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-24-11": [
+        "parallel hash join",
+        "STALENESS clause",
+        "Parquet",
+        "mark_cache_prewarm_ratio",
+        "BFloat16"
+    ],
+    "https://clickhouse.com/blog/building-product-analytics-with-clickhouse": [
+        "materialized views",
+        "columnar storage",
+        "incremental materialized views",
+        "window functions",
+        "A/B testing"
+    ],
+    "https://clickhouse.com/blog/upollos-journey-from-bigquery-to-clickhouse": [
+        "OLAP database",
+        "ClickHouse Cloud",
+        "ClickPipes",
+        "inverted indexes",
+        "dbt"
+    ],
+    "https://clickhouse.com/blog/reinvent-2024-product-announcements": [
+        "BYOC",
+        "Postgres CDC connector",
+        "Cross-VPC resource access",
+        "Dashboards",
+        "Query API Endpoints"
+    ],
+    "https://clickhouse.com/blog/clickpipes-crossvpc-resource-endpoints": [
+        "AWS PrivateLink",
+        "VPC Lattice",
+        "ClickPipes",
+        "Resource-Configuration",
+        "Resource Access Manager"
+    ],
+    "https://clickhouse.com/blog/confoundingly-fast-inside-attentives-migration-to-clickhouse": [
+        "ReplacingMergeTree",
+        "materialized views",
+        "idempotent",
+        "schema design",
+        "data ingestion"
+    ],
+    "https://clickhouse.com/blog/postgres-cdc-connector-clickpipes-private-preview": [
+        "Change Data Capture",
+        "PeerDB",
+        "Postgres CDC connector",
+        "ClickPipes",
+        "replication"
+    ],
+    "https://clickhouse.com/blog/202411-newsletter-jp": [
+        "Refreshable Materialized Views",
+        "JSON\u30c7\u30fc\u30bf\u578b",
+        "\u8f9e\u66f8",
+        "arrayIntersect\u95a2\u6570",
+        "BYOC"
+    ],
+    "https://clickhouse.com/blog/202411-newsletter": [
+        "Refreshable Materialized Views",
+        "JSON data type",
+        "dictionaries",
+        "CLONE AS clause",
+        "arrayIntersect function"
+    ],
+    "https://clickhouse.com/blog/how-skool-uses-clickhouse-for-observability-behavioral-analytics": [
+        "materialized views",
+        "Grafana",
+        "telemetry data",
+        "real-time observability",
+        "experimentation"
+    ],
+    "https://clickhouse.com/blog/how-huntress-improved-performance-and-slashed-costs-with-clickHouse": [
+        "materialized views",
+        "sorting key",
+        "data skipping indexes",
+        "SIEM",
+        "Vector"
+    ],
+    "https://clickhouse.com/blog/official-microsoft-power-bi-connector": [
+        "Power BI Connector",
+        "ClickHouse ODBC driver",
+        "Get Data",
+        "DirectQuery",
+        "Power BI Service"
+    ],
+    "https://clickhouse.com/blog/speed-meets-scale-how-clickhouse-helps-tydo-deliver-lightning-fast-customer-analytics": [
+        "ReplacingMergeTree",
+        "columnar storage",
+        "sparse indexing",
+        "Extract, Load, Transform (ELT)",
+        "domain-specific language (DSL)"
+    ],
+    "https://clickhouse.com/blog/building-chronicle-how-temporal-supercharged-their-observability-with-clickhouse": [
+        "materialized views",
+        "distributed tables",
+        "write-read aggregation",
+        "schema optimization",
+        "async inserts"
+    ],
+    "https://clickhouse.com/blog/weights-and-biases-scale-ai-development": [
+        "columnar storage",
+        "low-latency capabilities",
+        "scaling",
+        "experiment tracking",
+        "observability tool"
+    ],
+    "https://clickhouse.com/blog/evolution-of-sql-based-observability-with-clickhouse": [
+        "JSON type",
+        "materialized views",
+        "OpenTelemetry",
+        "Timeseries table engine",
+        "inverted indices"
+    ],
+    "https://clickhouse.com/blog/clickhouse-and-open-telemtry": [
+        "OpenTelemetry",
+        "OTel exporter",
+        "schema",
+        "materialized view",
+        "JSON data type"
+    ],
+    "https://clickhouse.com/blog/clickhouse-and-open-telemtry-jp": [
+        "OpenTelemetry",
+        "ClickHouse Cloud Logging Solution",
+        "\u30c6\u30fc\u30d6\u30eb\u30b9\u30ad\u30fc\u30de",
+        "\u30de\u30c6\u30ea\u30a2\u30e9\u30a4\u30ba\u30c9\u30d3\u30e5\u30fc",
+        "JSON\u30c7\u30fc\u30bf\u578b"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-24-10": [
+        "Parquet",
+        "CLONE AS clause",
+        "Refreshable Materialized Views",
+        "JSON type",
+        "MongoDB integration"
+    ],
+    "https://clickhouse.com/blog/announcing-the-new-sql-playground": [
+        "example queries",
+        "demo playground",
+        "query feedback",
+        "Apache Echarts",
+        "system.processes table"
+    ],
+    "https://clickhouse.com/blog/supabase-partnership-native-postgres-replication-clickhouse-fdw": [
+        "PeerDB",
+        "Postgres CDC",
+        "clickhouse_fdw",
+        "Supabase",
+        "ClickPipes"
+    ],
+    "https://clickhouse.com/blog/clickhouse-mta-data-challenge-subway-transits-demo": [
+        "turnstile dataset",
+        "OLAP database",
+        "schema inference",
+        "LowCardinality(String)",
+        "window function"
+    ],
+    "https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse-jp": [
+        "Variant",
+        "Dynamic",
+        "JSON\u578b",
+        "\u5217\u6307\u5411\u30b9\u30c8\u30ec\u30fc\u30b8",
+        "max_dynamic_paths"
+    ],
+    "https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse": [
+        "Variant",
+        "Dynamic",
+        "JSON path",
+        "column-oriented storage",
+        "max_dynamic_paths"
+    ],
+    "https://clickhouse.com/blog/202410-newsletter": [
+        "Refreshable Materialized Views",
+        "APPEND clause",
+        "duplicate data",
+        "JSON data type",
+        "materialized views"
+    ],
+    "https://clickhouse.com/blog/building-single-page-applications-with-clickhouse-and-http": [
+        "client-only architecture",
+        "Query Endpoints",
+        "JSON formats",
+        "Materialized Views",
+        "HTTP compression"
+    ],
+    "https://clickhouse.com/blog/semantic-versioning-udf": [
+        "User-Defined Functions",
+        "semantic versioning",
+        "int arrays",
+        "toUInt32OrZero",
+        "extract function"
+    ],
+    "https://clickhouse.com/blog/powering-the-next-generation-of-electric-cars": [
+        "materialized views",
+        "MergeTree",
+        "AWS",
+        "Rust",
+        "PostgreSQL"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-24-09": [
+        "APPEND clause",
+        "refreshable materialized views",
+        "Variant type",
+        "automatic schema inference",
+        "Variable data type"
+    ],
+    "https://clickhouse.com/blog/inside-the-lamp-how-geniee-used-clickhouse-to-stabilize-and-optimize-ad-performance-reporting": [
+        "materialized views",
+        "SummingMergeTree",
+        "Kafka table engine",
+        "dictionaries feature",
+        "aggregation engine"
+    ],
+    "https://clickhouse.com/blog/geniee-user-story-japanese": [
+        "Materialized View",
+        "SummingMergeTree",
+        "Dictionary",
+        "Kafka",
+        "JSON"
+    ],
+    "https://clickhouse.com/blog/unlocking-the-power-of-onchain-analytics-how-nansen-transformed-their-data-infrastructure-with-clickhouse-cloud": [
+        "materialized views",
+        "columnar database",
+        "ClickHouse Cloud",
+        "distributed architecture",
+        "horizontal scaling"
+    ],
+    "https://clickhouse.com/blog/streaming-real-time-visualizations-clickhouse-apache-arrow-perpsective": [
+        "Arrow",
+        "materialized views",
+        "streaming data",
+        "Incremental Materialized views",
+        "Apache Arrow"
+    ],
+    "https://clickhouse.com/blog/rockset-migration-to-clickhouse-lens": [
+        "PeerDB",
+        "Rockset",
+        "Lens Protocol",
+        "GraphQL API",
+        "feature store"
+    ],
+    "https://clickhouse.com/blog/real-time-salesforce-analytics-with-clickhouse-and-estuary-flow": [
+        "Estuary Flow",
+        "Dekaf",
+        "ClickPipes",
+        "real-time analytics",
+        "Kafka API"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-runreveal": [
+        "RunReveal",
+        "ETL",
+        "detections",
+        "security logging",
+        "observability"
+    ],
+    "https://clickhouse.com/blog/epilots-journey-from-redshift-and-influxdb-to-clickhouse": [
+        "data lake",
+        "query performance",
+        "scalability",
+        "real-time analytics",
+        "AWS Bedrock"
+    ],
+    "https://clickhouse.com/blog/adding-analytics-to-an-application-with-clickhouse-query-endpoints": [
+        "API endpoints",
+        "materialized views",
+        "PyPi data",
+        "GitHub events",
+        "SQL query"
+    ],
+    "https://clickhouse.com/blog/202409-newsletter": [
+        "JSON data type",
+        "TimeSeries table engine",
+        "Kafka table engine",
+        "Private Preview",
+        "BYOC"
+    ],
+    "https://clickhouse.com/blog/building-a-data-warehouse-with-clickhouse-part-2": [
+        "dbt",
+        "materialized views",
+        "real-time data formats",
+        "Apache Superset",
+        "compute-compute separation"
+    ],
+    "https://clickhouse.com/blog/first-clickhouse-research-paper-vldb-lightning-fast-analytics-for-everyone": [
+        "VLDB",
+        "data replication",
+        "ACID compliance",
+        "SIMD parallelization",
+        "Native support"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-24-08": [
+        "JSON data type",
+        "materialized column",
+        "projections",
+        "TimeSeries table engine",
+        "Kafka engine"
+    ],
+    "https://clickhouse.com/blog/clickpy-one-trillion-rows": [
+        "materialized views",
+        "Parquet",
+        "dictionaries",
+        "ClickLoad",
+        "Next.JS"
+    ],
+    "https://clickhouse.com/blog/chdb-pandas-dataframes-87x-faster": [
+        "DataFrame",
+        "Python",
+        "GIL",
+        "chDB",
+        "SQL"
+    ],
+    "https://clickhouse.com/blog/postgres-to-clickhouse-data-modeling-tips": [
+        "ReplacingMergeTree",
+        "FINAL clause",
+        "argMax",
+        "materialized views",
+        "Ordering Key"
+    ],
+    "https://clickhouse.com/blog/postgres-to-clickhouse-data-modeling-tips-jp": [
+        "ReplacingMergeTree",
+        "Ordering Key",
+        "FINAL",
+        "argMax",
+        "materialized views"
+    ],
+    "https://clickhouse.com/blog/202408-newsletter": [
+        "PeerDB",
+        "vector-based analytics",
+        "largestTriangleThreeBuckets",
+        "deduplication In Materialized Views",
+        "clickhouse-copier"
+    ],
+    "https://clickhouse.com/blog/data-hive-the-story-of-beehiivs-journey-from-postgres-to-clickhouse": [
+        "materialized views",
+        "MergeTree",
+        "OLAP",
+        "window functions",
+        "Kafka"
+    ],
+    "https://clickhouse.com/blog/measuring-brand-impact-how-loopme-uses-clickhouse-to-deliver-better-brand-advertising-outcomes": [
+        "ad tech solutions",
+        "AI-powered",
+        "brand advertising campaigns",
+        "LoopMe",
+        "ClickHouse Cloud"
+    ],
+    "https://clickhouse.com/blog/behind-the-scenes-how-clickhouse-helps-vimeo-power-video-analytics-at-scale": [
+        "MergeTree",
+        "materialized views",
+        "replication",
+        "columnar storage",
+        "multi-tier storage"
+    ],
+    "https://clickhouse.com/blog/trade-secrets-how-coinhall-uses-clickhouse-to-power-its-blockchain-data-platform": [
+        "materialized views",
+        "AggregatedMergeTree",
+        "sparse primary indexes",
+        "candlestick queries",
+        "sort-merge joins"
+    ],
+    "https://clickhouse.com/blog/migrating-to-clickhouse-cloud-in-just-three-months-with-no-downtime-a-120-terabyte-data-journey-and-its-benefits": [
+        "Zero Copy Replication",
+        "MinIO",
+        "ETL processes",
+        "data durability",
+        "DBT"
+    ],
+    "https://clickhouse.com/blog/enhancing-postgres-to-clickhouse-replication-using-peerdb": [
+        "PeerDB",
+        "Logical Replication Slots",
+        "max_block_size",
+        "Lua-based row-level transformations",
+        "AWS S3 buckets"
+    ],
+    "https://clickhouse.com/blog/migrating-to-clickhouse-cloud-in-just-three-months-with-no-downtime-a-120-terabyte-data-journey-and-its-benefits-jp": [
+        "MergeTree",
+        "materialized views",
+        "sharding",
+        "replication",
+        "arrayJoin"
+    ],
+    "https://clickhouse.com/blog/unlocking-big-data-potential-for-startups": [
+        "columnar database",
+        "ClickHouse Cloud",
+        "AWS Activate",
+        "real-time data analytics",
+        "query speed"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-24-07": [
+        "optimize_read_in_order",
+        "read_in_order_use_buffering",
+        "parallel hash join",
+        "ASOF JOIN",
+        "percent_rank"
+    ],
+    "https://clickhouse.com/blog/modeling-machine-learning-data-in-clickhouse-jp": [
+        "materialized views",
+        "ASOF JOIN",
+        "ReplacingMergeTree",
+        "Refreshable Materialized Views",
+        "\u7279\u5fb4\u91cf\u30b9\u30c8\u30a2"
+    ],
+    "https://clickhouse.com/blog/modeling-machine-learning-data-in-clickhouse": [
+        "materialized views",
+        "ASOF JOIN",
+        "ReplacingMergeTree",
+        "feature store",
+        "offline feature store"
+    ],
+    "https://clickhouse.com/blog/announcing-cryptohouse-free-blockchain-analytics": [
+        "Materialized View",
+        "ReplacingMergeTree",
+        "Solana",
+        "Goldsky",
+        "CryptoHouse"
+    ],
+    "https://clickhouse.com/blog/transforming-ad-tech-how-cognitiv-uses-clickhouse-to-build-better-machine-learning-models": [
+        "machine learning models",
+        "data management",
+        "columnar database",
+        "Kubernetes operator",
+        "ClickHouse Cloud"
+    ],
+    "https://clickhouse.com/blog/introduction-to-ibis": [
+        "Ibis",
+        "SQL",
+        "materialized views",
+        "group by",
+        "union"
+    ],
+    "https://clickhouse.com/blog/clickhouse-acquires-peerdb-to-boost-real-time-analytics-with-postgres-cdc-integration": [
+        "change data capture",
+        "PeerDB",
+        "real-time analytics",
+        "CDC technology",
+        "Postgres"
+    ],
+    "https://clickhouse.com/blog/clickhouse-welcomes-peerdb-adding-the-fastest-postgres-cdc-to-the-fastest-olap-database": [
+        "PeerDB",
+        "Change Data Capture",
+        "CDC",
+        "Postgres",
+        "ClickPipes"
+    ],
+    "https://clickhouse.com/blog/bonree-replaces-zookeeper-with-clickhouse-keeper-for-drastically-improved-performance-and-reduced-costs": [
+        "ClickHouse Keeper",
+        "ZooKeeper",
+        "migration",
+        "resource efficiency",
+        "metadata storage"
+    ],
+    "https://clickhouse.com/blog/building-user-facing-dashboards-with-clickhouse-and-luzmo": [
+        "Columnar databases",
+        "dimensional data modeling",
+        "derived column",
+        "interactivity",
+        "embed filters"
+    ],
+    "https://clickhouse.com/blog/202407-newsletter": [
+        "optimal table sorting",
+        "MergeTree",
+        "Pandas DataFrames",
+        "Hilbert Curves",
+        "MergeTree table engine"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-now-supports-prometheus-monitoring": [
+        "Prometheus",
+        "Refreshable Materialized Views",
+        "Cloud API",
+        "system tables",
+        "Datadog"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-now-supports-prometheus-monitoring-jp": [
+        "Prometheus",
+        "Refreshable Materialized Views",
+        "system table",
+        "Cloud API",
+        "Prometheus format"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-24-06": [
+        "MergeTree",
+        "optimize_row_order",
+        "space-filling curves",
+        "Hilbert curves",
+        "Morton order"
+    ],
+    "https://clickhouse.com/blog/corsearch-replaces-mysql-with-clickhouse-for-content-and-brand-protection": [
+        "time-series data",
+        "data compression",
+        "vector-based analytics",
+        "SQL-Based Observability",
+        "materialized views"
+    ],
+    "https://clickhouse.com/blog/building-better-ai-products-faster-how-braintrust-uses-clickhouse-for-real-time-data-analysis": [
+        "MergeTree",
+        "materialized views",
+        "replication",
+        "DuckDB",
+        "horizontal scaling"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-query-log-insights-ui": [
+        "Query Insights",
+        "system.query_log",
+        "clusterAllReplicas()",
+        "latency",
+        "Query history"
+    ],
+    "https://clickhouse.com/blog/java-client-sequel": [
+        "Java client",
+        "data formats",
+        "serialization",
+        "client object",
+        "format readers"
+    ],
+    "https://clickhouse.com/blog/tekion-adopts-clickhouse-cloud-to-power-application-performance-and-metrics-monitoring": [
+        "Dataplatform APM",
+        "Dataplatform Custom Metrics",
+        "Delta Lake",
+        "data compression",
+        "query latency"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-launched-microsoft-launched": [
+        "Resource Groups",
+        "managed Cilium",
+        "cells",
+        "Azure Blob Storage",
+        "network isolation"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-is-now-generally-available-on-microsoft-azure": [
+        "real-time analytics",
+        "ClickHouse Cloud",
+        "Microsoft Azure",
+        "petabyte-scale datasets",
+        "shared object storage"
+    ],
+    "https://clickhouse.com/blog/clickhouse-replaces-postgres-to-power-real-time-analytics-in-common-room-customer-portal": [
+        "ReplacingMergeTree",
+        "VersionCollapsingMergeTree",
+        "materialized views",
+        "table engines",
+        "PostgreSQL"
+    ],
+    "https://clickhouse.com/blog/202406-newsletter": [
+        "Dynamic type",
+        "HyperDX",
+        "Python User-Defined functions",
+        "Kafka table engine",
+        "semantic sharding"
+    ],
+    "https://clickhouse.com/blog/introducing-the-clickhouse-oss-trust-center": [
+        "Trust Center",
+        "Bug Bounty program",
+        "Embargo Notification Program",
+        "CVE record",
+        "vulnerability management program"
+    ],
+    "https://clickhouse.com/blog/horizontal-scaling-in-clickHouse-cloud": [
+        "horizontal scaling",
+        "replicas",
+        "APIs",
+        "memory",
+        "autoscaling"
+    ],
+    "https://clickhouse.com/blog/seeing-the-big-picture-shopees-journey-to-distributed-tracing-with-clickhouse": [
+        "distributed tracing",
+        "materialized views",
+        "system tables",
+        "ClickHouse Gateway",
+        "system performance"
+    ],
+    "https://clickhouse.com/blog/openmeter-real-time-usage-based-billing-powered-by-clickhouse-cloud": [
+        "Materialized Views",
+        "AggregatingMergeTree",
+        "Kafka",
+        "event deduplication",
+        "tumbling windows"
+    ],
+    "https://clickhouse.com/blog/how-trip.com-migrated-from-elasticsearch-and-built-a-50pb-logging-solution-with-clickhouse": [
+        "SharedMergeTree",
+        "Kibana",
+        "partitioning architecture",
+        "Antlr4",
+        "ClickHouse Enterprise Service"
+    ],
+    "https://clickhouse.com/blog/how-trip.com-migrated-from-elasticsearch-and-built-a-50pb-logging-solution-with-clickhouse-jp": [
+        "SharedMergeTree",
+        "ClickHouse Keeper",
+        "column-oriented storage",
+        "vectorized query execution",
+        "materialized views"
+    ],
+    "https://clickhouse.com/blog/how-to-learn-clickhouse-and-become-a-certified-clickhouse-developer": [
+        "materialized views",
+        "sharding",
+        "replication",
+        "MergeTree",
+        "arrayJoin"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-24-05": [
+        "Dynamic type",
+        "semi-structured columns",
+        "CROSS JOIN",
+        "compression thresholds",
+        "allow_experimental_join_condition"
+    ],
+    "https://clickhouse.com/blog/prefect-event-driven-workflow-orchestration-powered-by-clickhouse": [
+        "observability",
+        "event-based architecture",
+        "workflow",
+        "Prefect Cloud",
+        "ClickHouse"
+    ],
+    "https://clickhouse.com/blog/lago-using-clickhouse-to-scale-an-events-engine": [
+        "MergeTree",
+        "materialized views",
+        "vectorized query execution",
+        "Kafka table engine",
+        "dynamic materialized views"
+    ],
+    "https://clickhouse.com/blog/newsletter-may-2024": [
+        "recursive CTEs",
+        "Developer Certification Program",
+        "Yoda decision platform",
+        "K-Means clustering",
+        "Fluentbit"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-is-now-on-azure-in-public-beta": [
+        "Cloud Console",
+        "ClickPipes",
+        "Public Beta release",
+        "dedicated deployment",
+        "integrations"
+    ],
+    "https://clickhouse.com/blog/automatic-query-endpoints": [
+        "Automatic Query Endpoints",
+        "ClickPipes",
+        "query-based API endpoints",
+        "Cloud API key",
+        "OpenAPI keys"
+    ],
+    "https://clickhouse.com/blog/first-official-clickhouse-certification": [
+        "projection",
+        "clickhouse-client",
+        "certification",
+        "developer training course",
+        "digital badge"
+    ],
+    "https://clickhouse.com/blog/configurable-backups-in-clickhouse-cloud": [
+        "backups",
+        "configurable backup controls",
+        "retention",
+        "frequency",
+        "point-in-time restores"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-console-rebuilt": [
+        "SQL client",
+        "Unified Console",
+        "Design System",
+        "component library",
+        "Tokens Studio"
+    ],
+    "https://clickhouse.com/blog/clickpipes-amazon-kinesis": [
+        "ClickPipes",
+        "Amazon Kinesis connector",
+        "Lambda Architecture",
+        "Kappa Architecture",
+        "KeeperMap"
+    ],
+    "https://clickhouse.com/blog/clickhouse_vs_elasticsearch_the_billion_row_matchup": [
+        "materialized views",
+        "Parquet",
+        "arrayJoin",
+        "MergeTree",
+        "replication"
+    ],
+    "https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations": [
+        "partial aggregation states",
+        "AggregatingMergeTree",
+        "materialized views",
+        "parallelization",
+        "incremental aggregation"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-24-04": [
+        "recursive CTEs",
+        "QUALIFY clause",
+        "table engine",
+        "predicate pushdown",
+        "JOIN performance improvements"
+    ],
+    "https://clickhouse.com/blog/upsolver-high-volume-etl-for-real-time-analytics": [
+        "MergeTree",
+        "Parquet",
+        "materialized views",
+        "sharding",
+        "replication"
+    ],
+    "https://clickhouse.com/blog/clickhouse-and-alibaba-cloud-revolutionizing-data-analytics-in-china": [
+        "ApsaraDB for ClickHouse",
+        "Alibaba Cloud",
+        "data analytics",
+        "real-time analytics",
+        "database"
+    ],
+    "https://clickhouse.com/blog/fivetran-destination-clickhouse-cloud": [
+        "ReplacingMergeTree",
+        "SharedMergeTree",
+        "select_sequential_consistency",
+        "Fivetran SDK",
+        "Change Data Capture"
+    ],
+    "https://clickhouse.com/blog/interactive-visualization-analytics-adsb-flight-data-with-clickhouse": [
+        "materialized views",
+        "Leaflet",
+        "Morton Curve",
+        "fault injection",
+        "distributed cache"
+    ],
+    "https://clickhouse.com/blog/langchain-why-we-choose-clickhouse-to-power-langchain": [
+        "materialized views",
+        "ReplacingMergeTree",
+        "sorting keys",
+        "EXPLAIN Api",
+        "data-skipping indices"
+    ],
+    "https://clickhouse.com/blog/didi-migrates-from-elasticsearch-to-clickHouse-for-a-new-generation-log-storage-system": [
+        "materialized views",
+        "MergeTree",
+        "Flink",
+        "HDFS",
+        "Native Connector"
+    ],
+    "https://clickhouse.com/blog/s3-gcs-clickpipes-beta": [
+        "ClickPipes",
+        "object storage connectors",
+        "data loading",
+        "temporary staging tables",
+        "continuous mode"
+    ],
+    "https://clickhouse.com/blog/newsletter-april-2024": [
+        "ARRAY JOIN",
+        "analyzer",
+        "MergeTree",
+        "materialized views",
+        "replication"
+    ],
+    "https://clickhouse.com/blog/chaining-materialized-views": [
+        "materialized views",
+        "Kafka",
+        "AggregateFunction",
+        "State combinators",
+        "MergeState combinators"
+    ],
+    "https://clickhouse.com/blog/kmeans-clustering-with-clickhouse": [
+        "avgForEach",
+        "Materialized Views",
+        "AggregatingMergeTree",
+        "K-Means clustering",
+        "PCA"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-24-03": [
+        "analyzer",
+        "ARRAY JOIN",
+        "ATTACH TABLE",
+        "ATTACH PARTITION",
+        "S3 Express"
+    ],
+    "https://clickhouse.com/blog/new-clickhouse-cloud-experience": [
+        "Data Sources",
+        "ClickPipes",
+        "Settings",
+        "Account profile",
+        "Dark and Light themes"
+    ],
+    "https://clickhouse.com/blog/training-machine-learning-models-with-clickhouse-and-featureform": [
+        "materialization",
+        "offline store",
+        "transformation engine",
+        "Featureform",
+        "entity"
+    ],
+    "https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog": [
+        "Materialized Views",
+        "SharedMergeTree",
+        "OpenTelemetry",
+        "Kubernetes",
+        "Observability"
+    ],
+    "https://clickhouse.com/blog/newsletter-march-2024": [
+        "materialized views",
+        "table engines",
+        "Parquet",
+        "vector search",
+        "aggregation states"
+    ],
+    "https://clickhouse.com/blog/manage-your-clickHouse-schema-as-code-using-atlas": [
+        "declarative",
+        "Database Schema-as-Code",
+        "materialized views",
+        "Atlas",
+        "ClickHouse"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-24-02": [
+        "Parquet",
+        "auto-detection",
+        "SQL SECURITY",
+        "Vector search",
+        "asynchronous inserts"
+    ],
+    "https://clickhouse.com/blog/chdb-joins-clickhouse-family": [
+        "chDB",
+        "Parquet",
+        "PyPi",
+        "continuous integration",
+        "materialized views"
+    ],
+    "https://clickhouse.com/blog/clickhouse-1-trillion-row-challenge": [
+        "MergeTree",
+        "Parquet",
+        "s3 function",
+        "spot instances",
+        "AWS"
+    ],
+    "https://clickhouse.com/blog/building-hackernews-stackoverflow-chatbot-with-llamaindex-and-clickhouse": [
+        "LlamaIndex",
+        "VectorIndexAutoRetriever",
+        "ClickHouseVectorStore",
+        "RAG",
+        "SQLAutoVectorQueryEngine"
+    ],
+    "https://clickhouse.com/blog/newsletter-february-2024": [
+        "Variant type",
+        "ReplacingMergeTree",
+        "table engines",
+        "semi structured column support",
+        "string similarity functions"
+    ],
+    "https://clickhouse.com/blog/change-data-capture-solution-clickhouse-streamkap-cdc": [
+        "Materialized Views",
+        "MergeTree",
+        "ReplacingMergeTree",
+        "Upserts",
+        "Change Data Capture"
+    ],
+    "https://clickhouse.com/blog/how-grupo-masmovil-monitors-radio-access-networks-with-clickhouse": [
+        "compression",
+        "formulas",
+        "temporal aggregations",
+        "spatial aggregations",
+        "OLAP cube"
+    ],
+    "https://clickhouse.com/blog/clickHouse-and-the-machine-learning-data-layer": [
+        "Materialized Views",
+        "UDFs",
+        "vector database",
+        "feature store",
+        "observability"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-24-01": [
+        "Variant type",
+        "Damerau Levenshtein",
+        "Jaro Similarity",
+        "ReplacingMergeTree",
+        "vertical query-time merge algorithm"
+    ],
+    "https://clickhouse.com/blog/exploring-global-internet-speeds-with-apache-iceberg-clickhouse": [
+        "Iceberg",
+        "UDFs",
+        "Mercator projection",
+        "h3 indexes",
+        "Polygon Dictionaries"
+    ],
+    "https://clickhouse.com/blog/clickhouse-grafana-plugin-4-0": [
+        "OTel",
+        "logs",
+        "traces",
+        "Observability",
+        "Grafana"
+    ],
+    "https://clickhouse.com/blog/hybrid-query-execution-experiment": [
+        "Materialized Views",
+        "remoteSecure",
+        "hybrid query execution",
+        "EXPLAIN PLAN",
+        "remote table"
+    ],
+    "https://clickhouse.com/blog/trackingplan-web-analytics-with-clickhouse": [
+        "Materialized views",
+        "Map and Array types",
+        "ordering keys",
+        "ClickHouse Cloud",
+        "scaling API"
+    ],
+    "https://clickhouse.com/blog/clickhouse-one-billion-row-challenge": [
+        "Materialized View",
+        "MergeTree",
+        "randCanonical",
+        "CustomSeparated",
+        "AggregatingMergeTree"
+    ],
+    "https://clickhouse.com/blog/powering-featurestores-with-clickhouse": [
+        "Feature Stores",
+        "materialized views",
+        "Featureform",
+        "literal store",
+        "virtual feature store"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-23-12": [
+        "Refreshable Materialized Views",
+        "FINAL modifier",
+        "vectorization",
+        "PASTE JOIN",
+        "ReplacingMergeTree"
+    ],
+    "https://clickhouse.com/blog/monitoring-asynchronous-data-inserts-in-clickhouse": [
+        "asynchronous inserts",
+        "system tables",
+        "buffer flushes",
+        "insert errors",
+        "PendingAsyncInsert metric"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-23-11": [
+        "column statistics",
+        "MergeTree",
+        "S3Queue",
+        "window functions",
+        "PREWHERE"
+    ],
+    "https://clickhouse.com/blog/clickhouse-redpanda-architecture-with-goldsky": [
+        "Redpanda",
+        "Apache Flink",
+        "ReplacingMergeTree",
+        "FlinkSQL",
+        "Avro format"
+    ],
+    "https://clickhouse.com/blog/celebrating-a-year-of-growth": [
+        "SharedMergeTree",
+        "Dedicated Instances",
+        "AI-based Query Suggestions",
+        "ClickPipes",
+        "Customer Managed Encryption Keys (CMEK)"
+    ],
+    "https://benjaminwootton.com/insights/linear-regression-using-clickhouse/ ": [
+        "linear regression",
+        "geoDistance function",
+        "date_diff function",
+        "stochasticLinearRegression function",
+        "mean absolute error"
+    ],
+    "https://clickhouse.com/blog/the-state-of-sql-based-observability": [
+        "OLAP",
+        "observability",
+        "ClickHouse Cloud",
+        "materialized views",
+        "OpenTelemetry"
+    ],
+    "https://clickhouse.com/blog/approximate-nearest-neighbour-ann-with-sql-powered-local-sensitive-hashing-lsh-random-projections": [
+        "LSH",
+        "ANN",
+        "bit hash",
+        "vector index",
+        "hamming distance"
+    ],
+    "https://clickhouse.com/blog/sql-dynamic-column-selection-clickhouse": [
+        "Parquet",
+        "COLUMNS clause",
+        "APPLY function",
+        "REPLACE clause",
+        "EXCEPT clause"
+    ],
+    "https://clickhouse.com/blog/retrieval-augmented-generation-rag-with-clickhouse-bedrock": [
+        "materialized views",
+        "RAG",
+        "LLM",
+        "prompt engineering",
+        "Spider challenge"
+    ],
+    "https://clickhouse.com/blog/enhancing-google-analytics-data-with-clickhouse": [
+        "Google Analytics",
+        "SQL",
+        "Parquet",
+        "materialized views",
+        "replication"
+    ],
+    "https://clickhouse.com/blog/querying-pandas-dataframes": [
+        "chDB",
+        "Pandas",
+        "DataFrame",
+        "query",
+        "join"
+    ],
+    "https://clickhouse.com/blog/cost-predictable-logging-with-clickhouse-vs-datadog-elastic-stack": [
+        "WarpStream",
+        "object storage",
+        "compression rates",
+        "parallel replicas",
+        "OTEL"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-23-10": [
+        "arrayFold",
+        "Largest Triangle Three Buckets",
+        "vectors",
+        "Parquet",
+        "array functions"
+    ],
+    "https://clickhouse.com/blog/runreveal-is-building-the-ridiculously-fast-security-data-platform-on-clickhouse": [
+        "LSM Tree",
+        "materialized views",
+        "bottoms-up approach",
+        "Log Structured Merge Tree",
+        "Kubernetes"
+    ],
+    "https://clickhouse.com/blog/the-unbundling-of-the-cloud-data-warehouse": [
+        "materialized views",
+        "object stores",
+        "real-time data warehouse",
+        "data lakes",
+        "vector search"
+    ],
+    "https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3": [
+        "ClickPipes",
+        "object storage",
+        "materialized views",
+        "ClickLoad",
+        "staging table"
+    ],
+    "https://benjaminwootton.com/insights/forecasting-using-clickhouse/": [
+        "stochasticLinearRegression",
+        "evalMLMethod",
+        "materialized view",
+        "linear regression",
+        "dummy variables"
+    ],
+    "https://clickhouse.com/blog/announcing-genai-powered-query-suggestions-clickhouse-cloud": [
+        "LLMs",
+        "SQL",
+        "query assistant",
+        "GenAI-powered query suggestions",
+        "ClickHouse Cloud"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-23-09": [
+        "JSON formats",
+        "type inference",
+        "GCD codec",
+        "SSH key authentication",
+        "Workload scheduling"
+    ],
+    "https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2": [
+        "insert block size",
+        "parallel insert threads",
+        "SharedMergeTree",
+        "PyPi dataset",
+        "s3Cluster integration"
+    ],
+    "https://clickhouse.com/blog/packing-kubernetes-pods-more-efficiently-saving-money": [
+        "kube-scheduler",
+        "EKS",
+        "cluster autoscaler",
+        "resource utilization",
+        "custom scheduler"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-compatible-with-mysql": [
+        "MySQL interface",
+        "Looker Studio",
+        "Tableau online",
+        "compatibility",
+        "SSL certificate"
+    ],
+    "https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey": [
+        "MySQL protocol",
+        "BI tools",
+        "Prepared Statements",
+        "Istio Proxy",
+        "native ClickHouse syntax"
+    ],
+    "https://clickhouse.com/blog/cpu-dispatch-in-clickhouse": [
+        "vectorization",
+        "CPU dispatch",
+        "SIMD instructions",
+        "AVX2",
+        "performance optimizations"
+    ],
+    "https://clickhouse.com/blog/chdb-embedded-clickhouse-rocket-engine-on-a-bicycle": [
+        "vectorized engines",
+        "BufferBase",
+        "Pybind11",
+        "jemalloc",
+        "Parquet"
+    ],
+    "https://clickhouse.com/blog/clickhouse-keeper-a-zookeeper-alternative-written-in-cpp": [
+        "Keeper",
+        "multi-write transactions",
+        "Raft",
+        "deduplication",
+        "benchmark suite"
+    ],
+    "https://clickhouse.com/blog/clickhouse-announces-clickpipes": [
+        "ClickPipes",
+        "SharedMergeTree",
+        "continuous data pipelines",
+        "serverless ingestion experience",
+        "real-time analytics"
+    ],
+    "https://clickhouse.com/blog/clickpipes-is-generally-available": [
+        "ClickPipes",
+        "continuous data ingestion",
+        "real-time analytics",
+        "data-driven decision making",
+        "performance"
+    ],
+    "https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1": [
+        "MergeTree",
+        "insert block size",
+        "Insert parallelism",
+        "max_insert_block_size",
+        "asynchronous inserts"
+    ],
+    "https://clickhouse.com/blog/how-cloudflare-processes-hundreds-of-millions-of-rows-per-second-with-clickhouse": [
+        "dictionaries",
+        "Cloudflare",
+        "sampling",
+        "hashed array",
+        "clickhouse-dictionary-dumper"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-23-08": [
+        "Parquet",
+        "S3Queue",
+        "materialized view",
+        "file virtual column",
+        "archives"
+    ],
+    "https://clickhouse.com/blog/clickhouse-open-ai-user-defined-functions-udfs": [
+        "UDFs",
+        "OpenAI",
+        "sentiment analysis",
+        "Python",
+        "Hacker News"
+    ],
+    "https://clickhouse.com/blog/measure-visaualize-minimize-kafka-latency-clickhouse": [
+        "Kafka Connector",
+        "latency",
+        "Kafka pipeline",
+        "batch sizes",
+        "asynchronous inserts"
+    ],
+    "https://clickhouse.com/blog/clickhouse-vs-snowflake-for-real-time-analytics-comparison-migration-guide-jp": [
+        "MergeTree",
+        "Parquet",
+        "materialized views",
+        "sharding",
+        "arrayJoin"
+    ],
+    "https://clickhouse.com/blog/clickhouse-vs-snowflake-for-real-time-analytics-benchmarks-cost-analysis-jp": [
+        "Parquet",
+        "materialized views",
+        "clustering",
+        "compression",
+        "query performance"
+    ],
+    "https://clickhouse.com/blog/escape-rising-costs-of-snowflake-speed-and-cost-savings-clickhouse-cloud": [
+        "real-time analytics",
+        "Snowflake",
+        "query speed",
+        "low latency",
+        "data ingestion"
+    ],
+    "https://clickhouse.com/blog/clickhouse-vs-snowflake-for-real-time-analytics-comparison-migration-guide": [
+        "materialized views",
+        "MergeTree",
+        "Parquet",
+        "object storage",
+        "sparse indices"
+    ],
+    "https://clickhouse.com/blog/clickhouse-vs-snowflake-for-real-time-analytics-benchmarks-cost-analysis": [
+        "Parquet",
+        "materialized views",
+        "clustering",
+        "compression",
+        "ordering key"
+    ],
+    "https://clickhouse.com/blog/welcome-chdb-to-clickhouse": [
+        "chDB",
+        "Python module",
+        "Parquet",
+        "Pandas",
+        "MergeTree"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-23-07": [
+        "Parquet",
+        "sparse columns",
+        "PRQL",
+        "compression",
+        "performance"
+    ],
+    "https://clickhouse.com/blog/query-analyze-hugging-face-datasets-with-clickhouse": [
+        "Parquet",
+        "UDF",
+        "MergeTree",
+        "table engine",
+        "statistical functions"
+    ],
+    "https://clickhouse.com/blog/ongages-strategic-shift-to-clickhouse-for-real-time-email-marketing": [
+        "Materialized Views",
+        "MergeTree",
+        "MySQL engine",
+        "real-time analytics",
+        "automation"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates": [
+        "SharedMergeTree",
+        "ReplicatedMergeTree",
+        "zero-copy replication",
+        "automatic cluster scaling",
+        "lightweight updates"
+    ],
+    "https://clickhouse.com/blog/how-messagebird-uses-clickhouse-to-monitor-the-delivery-of-billions-of-messages": [
+        "Projections",
+        "CollapsingMergeTree",
+        "Cloud migration",
+        "Apache Beam",
+        "Dataflow"
+    ],
+    "https://clickhouse.com/blog/helicones-migration-from-postgres-to-clickhouse-for-advanced-llm-monitoring": [
+        "LLMs",
+        "aggregations",
+        "pgv2cht",
+        "dashboard query performance",
+        "ClickHouse Cloud"
+    ],
+    "https://clickhouse.com/blog/fuzzing-wingfuzz": [
+        "fuzzing",
+        "WINGFUZZ",
+        "sequence-oriented fuzzing",
+        "type-affinity",
+        "metadata graph"
+    ],
+    "https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse": [
+        "asynchronous inserts",
+        "buffer flush",
+        "MergeTree engine",
+        "async_insert_busy_timeout_ms",
+        "fire-and-forget mode"
+    ],
+    "https://clickhouse.com/blog/building-a-unified-data-platform-with-clickhouse": [
+        "Materialised Views",
+        "Async Inserts",
+        "ReplacingMergeTree",
+        "dbt",
+        "table ORDER KEYs"
+    ],
+    "https://clickhouse.com/blog/how-clickhouse-powers-ahrefs-the-worlds-most-active-web-crawler": [
+        "geo-replicated",
+        "column-oriented",
+        "fetch and attach",
+        "mark compression",
+        "Query Analyzer"
+    ],
+    "https://clickhouse.com/blog/newsletter_2023_july": [
+        "windowFunnel",
+        "transform function",
+        "MongoDB",
+        "sorted data",
+        "Github Events dataset"
+    ],
+    "https://clickhouse.com/blog/real-time-event-streaming-with-confluent-cloud-clickhouse-and-clickpipes": [
+        "materialized view",
+        "JSONExtract",
+        "ClickPipes",
+        "Kafka Connector",
+        "Confluent Cloud"
+    ],
+    "https://clickhouse.com/blog/building-a-data-warehouse-with-clickhouse": [
+        "ReplicatedReplacingMergeTree",
+        "materialized views",
+        "Airflow",
+        "insert_quorum",
+        "DBT"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-clickpipes-for-kafka-managed-ingestion-service": [
+        "ClickPipes",
+        "Confluent Cloud",
+        "Apache Kafka",
+        "data ingestion",
+        "real-time analytics"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-terraform-for-continuous-integration-and-continuous-delivery-deployment-ci-cd": [
+        "Terraform",
+        "provider",
+        "ephemeral services",
+        "CI/CD workflow",
+        "Github actions"
+    ],
+    "https://clickhouse.com/blog/nyc-meetup-report-vantages-journey-from-redshift-and-postgres-to-clickhouse": [
+        "ReplacingMergeTree",
+        "ReplicatedMergeTree",
+        "import version column",
+        "ClickHouse Cloud",
+        "vacuum"
+    ],
+    "https://clickhouse.com/blog/learning-clickhouse-a-story-of-community": [
+        "ClickHouse Academy",
+        "documentation",
+        "YouTube channel",
+        "Subreddit",
+        "Slack channel"
+    ],
+    "https://clickhouse.com/blog/london-meetup-report-scaling-analytics-with-posthog-and-introducing-housewatch": [
+        "materialized column",
+        "person override table",
+        "HouseWatch",
+        "session replay",
+        "feature flags"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-23-06": [
+        "MongoDB",
+        "table function",
+        "MergeTree",
+        "transform function",
+        "natural sorting"
+    ],
+    "https://clickhouse.com/blog/clickhouse-fully-supports-joins-how-to-choose-the-right-algorithm-part5": [
+        "join algorithms",
+        "direct join",
+        "hash join",
+        "full sorting merge join",
+        "grace hash join"
+    ],
+    "https://clickhouse.com/blog/driving-sustainable-data-management-with-clickhouse-introducing-stash-by-modeo": [
+        "Stash",
+        "Modeo",
+        "real-time analytics",
+        "efficient storage",
+        "data adoption"
+    ],
+    "https://clickhouse.com/blog/boosting-game-performance-exitlag-quest-for-a-better-data-management-system": [
+        "materialized views",
+        "scalability",
+        "data replication",
+        "real-time analytics",
+        "machine learning"
+    ],
+    "https://clickhouse.com/blog/harnessing-the-power-of-materialized-views-and-clickhouse-for-high-performance-analytics-at-inigo": [
+        "Materialized Views",
+        "quantilesState",
+        "quantileMerge",
+        "aggregation functions",
+        "scaling architecture"
+    ],
+    "https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse": [
+        "Kafka connector",
+        "Keeper Map table engine",
+        "materialized view",
+        "Confluent Cloud",
+        "Pub/Sub"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-23-05": [
+        "azureBlobStorage",
+        "Parquet",
+        "keeper-client",
+        "input_format_parquet_preserve_order",
+        "Query Results Cache"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-on-google-cloud-platform-gcp-is-generally-available": [
+        "Cloud",
+        "Google Cloud Platform",
+        "end-to-end encryption",
+        "SOC 2 Type II",
+        "ISO 27001 certifications"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-expands-choice-with-launch-on-google-cloud-platform": [
+        "real-time analytics",
+        "ClickHouse Cloud",
+        "serverless",
+        "observability",
+        "Google Cloud Platform"
+    ],
+    "https://clickhouse.com/blog/building-github-workflow-job-scheduler-using-clickhouse": [
+        "GitHub Webhooks",
+        "lambda",
+        "scaling",
+        "Auto-Scaling Groups",
+        "AWS"
+    ],
+    "https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2": [
+        "ReplacingMergeTree",
+        "materialized view",
+        "Debezium",
+        "CDC pipeline",
+        "Kafka Connect"
+    ],
+    "https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1": [
+        "Debezium",
+        "ReplacingMergeTree",
+        "Change Data Capture",
+        "Logical decoding",
+        "FINAL operator"
+    ],
+    "https://clickhouse.com/blog/signoz-observability-solution-with-clickhouse-and-open-telemetry": [
+        "SigNoz",
+        "OpenTelemetry",
+        "ClickHouse as main data store",
+        "Observability",
+        "cardinality"
+    ],
+    "https://clickhouse.com/blog/clickhouse-fully-supports-joins-direct-join-part4": [
+        "direct join",
+        "dictionary",
+        "memory layout",
+        "key-value lookups",
+        "query pipeline"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-updates-gcp-beta-api-support-s3-iam-roles-and-more": [
+        "materialized views",
+        "Heatmap chart type",
+        "IAM roles",
+        "Cloud API",
+        "service scaling policies"
+    ],
+    "https://clickhouse.com/blog/vector-search-clickhouse-p1": [
+        "vector search",
+        "embeddings",
+        "vector databases",
+        "Annoy algorithm",
+        "multimodal models"
+    ],
+    "https://clickhouse.com/blog/vector-search-clickhouse-p2": [
+        "vector search",
+        "embedding",
+        "Annoy index",
+        "bfloat16",
+        "UDFs"
+    ],
+    "https://clickhouse.com/blog/using-the-new-clickhouse-cloud-api-to-automate-deployments": [
+        "API support",
+        "CI/CD pipeline",
+        "service provisioning",
+        "configuration",
+        "scaling"
+    ],
+    "https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3": [
+        "full sorting merge join",
+        "partial merge join",
+        "external sorting",
+        "join algorithm",
+        "min-max indexes"
+    ],
+    "https://clickhouse.com/blog/geolocating-ips-in-clickhouse-and-grafana": [
+        "ip_trie",
+        "dictGet",
+        "CIDR notation",
+        "bitXor",
+        "geohashEncode"
+    ],
+    "https://clickhouse.com/blog/ooni-analyzes-internet-censorship-data-with-clickhouse": [
+        "OLAP",
+        "MAT",
+        "aggregations",
+        "metadata",
+        "visualization"
+    ],
+    "https://clickhouse.com/blog/hash-tables-in-clickhouse-and-zero-cost-abstractions": [
+        "hash table",
+        "GROUP BY",
+        "hash function",
+        "resizing policy",
+        "LRU cache"
+    ],
+    "https://clickhouse.com/blog/adding-real-time-analytics-to-a-supabase-application": [
+        "OLTP",
+        "OLAP",
+        "Foreign Data Wrappers",
+        "materialized views",
+        "Push-down"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-on-gcp-available-in-public-beta": [
+        "Cloud",
+        "autoscale",
+        "speed layer",
+        "BigQuery",
+        "geographies"
+    ],
+    "https://clickhouse.com/blog/coinpaprika-aggregates-pricing-data": [
+        "time-series database",
+        "materialized views",
+        "query concurrency",
+        "scalability",
+        "Gorm"
+    ],
+    "https://clickhouse.com/blog/querying-clickhouse-on-your-phone-with-zing-data": [
+        "real-time alerts",
+        "natural language querying",
+        "query optimization",
+        "SQL typeahead",
+        "location-based queries"
+    ],
+    "https://clickhouse.com/blog/clickhouse-architectures-with-docker-compose": [
+        "Replica",
+        "Shard",
+        "1S_2R",
+        "docker compose",
+        "materialized views"
+    ],
+    "https://clickhouse.com/blog/adgreetz-processes-millions-of-daily-ad-impressions": [
+        "materialized views",
+        "HTTP requests",
+        "JSON payloads",
+        "Metabase",
+        "data compression"
+    ],
+    "https://clickhouse.com/blog/apache-parquet-clickhouse-local-querying-writing-internals-row-groups": [
+        "Parquet format",
+        "row groups",
+        "column chunks",
+        "dictionary encoding",
+        "row group level"
+    ],
+    "https://clickhouse.com/blog/newsletter_2023_april": [
+        "Lightweight deletes",
+        "materialized tables",
+        "Parallel Replicas",
+        "Incremental Materializations",
+        "DELETE FROM table"
+    ],
+    "https://clickhouse.com/blog/serving-real-time-analytics-across-marketplaces-at-adevinta": [
+        "real-time analytics",
+        "ClickHouse Cloud",
+        "data solutions",
+        "user-facing analytics",
+        "Apache Beam Data Flow"
+    ],
+    "https://clickhouse.com/blog/overview-of-highlightio": [
+        "observability",
+        "logging",
+        "OLAP",
+        "OpenTelemetry",
+        "multi-tenancy"
+    ],
+    "https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2": [
+        "hash join",
+        "parallel hash join",
+        "grace hash join",
+        "max_threads",
+        "join algorithms"
+    ],
+    "https://clickhouse.com/blog/apache-parquet-clickhouse-local-querying-writing": [
+        "Parquet",
+        "MergeTree",
+        "ClickHouse Local",
+        "s3 function",
+        "PARTITION BY"
+    ],
+    "https://clickhouse.com/blog/how-we-used-clickhouse-to-store-opentelemetry-traces": [
+        "OpenTelemetry",
+        "materialized columns",
+        "distributed tracing",
+        "Athena",
+        "tracing"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-23-03": [
+        "parallel replicas",
+        "sharding",
+        "Lightweight Deletes",
+        "parseDateTime",
+        "opentelemetry_span_log"
+    ],
+    "https://clickhouse.com/blog/lz4-compression-in-clickhouse": [
+        "LZ4",
+        "decompression",
+        "compression",
+        "algorithm",
+        "multi-armed bandits"
+    ],
+    "https://clickhouse.com/blog/my-journey-as-a-serial-startup-product-manager": [
+        "MergeTree",
+        "materialized views",
+        "replication",
+        "sharding",
+        "observability"
+    ],
+    "https://clickhouse.com/blog/building-real-time-applications-with-clickhouse-and-hex-notebook-keeper-engine": [
+        "git-import",
+        "KeeperMap table engine",
+        "ReplacingMergeTree",
+        "Hex.tech",
+        "github_events"
+    ],
+    "https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse": [
+        "OpenTelemetry",
+        "materialized views",
+        "OTLP",
+        "bloom filters",
+        "parametrized views"
+    ],
+    "https://clickhouse.com/blog/women-who-inspire-us-the-women-building-clickhouse": [
+        "VP of Operations",
+        "recruiter",
+        "operations team",
+        "Finance Director",
+        "Executive Assistant"
+    ],
+    "https://clickhouse.com/blog/clickhouse-inc-and-alibaba-cloud-announce-a-new-partnership": [
+        "MergeTree",
+        "materialized views",
+        "replication",
+        "serverless",
+        "cloud native"
+    ],
+    "https://clickhouse.com/blog/newsletter_2023_march": [
+        "PREWHERE",
+        "Apache Iceberg",
+        "Correlation Matrices",
+        "groupArrayDistinct",
+        "uniqState"
+    ],
+    "https://clickhouse.com/blog/redshift-vs-clickhouse-comparison": [
+        "materialized views",
+        "Parquet",
+        "arrayJoin",
+        "MergeTree",
+        "sharding"
+    ],
+    "https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year": [
+        "Kubernetes",
+        "object storage",
+        "auto-scaling",
+        "security",
+        "billing"
+    ],
+    "https://clickhouse.com/blog/women-who-inspire-us-elissas-journey": [
+        "MergeTree",
+        "materialized views",
+        "sharding",
+        "replication",
+        "table engines"
+    ],
+    "https://clickhouse.com/blog/juspay-analyzes-payment-transactions-in-real-time-with-clickhouse": [
+        "A/B testing",
+        "Kafka",
+        "Grafana",
+        "ETL processes",
+        "roll-ups"
+    ],
+    "https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse": [
+        "Lightweight Deletes",
+        "mutations",
+        "CollapsingMergeTree",
+        "ReplacingMergeTree",
+        "TTL"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-23-02": [
+        "PREWHERE clause",
+        "enable_multiple_prewhere_read_steps",
+        "Apache Iceberg format",
+        "Iceberg table engine",
+        "corrMatrix function"
+    ],
+    "https://clickhouse.com/blog/women-who-inspire-us-the-women-pioneers-in-clickhouse-community-and-company": [
+        "Map Data Type",
+        "filesystem cache",
+        "prefetching",
+        "parameterized views",
+        "streaming replication"
+    ],
+    "https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1": [
+        "JOIN types",
+        "data denormalization",
+        "JOIN algorithms",
+        "ASOF JOIN",
+        "distributed joins"
+    ],
+    "https://clickhouse.com/blog/clickhouse-bigquery-migrating-data-for-realtime-queries": [
+        "Parquet",
+        "materialized views",
+        "sharding",
+        "compression",
+        "incremental loading"
+    ],
+    "https://clickhouse.com/blog/five-methods-of-database-obfuscation": [
+        "compression",
+        "data anonymization",
+        "Feistel network",
+        "Markov models",
+        "performance testing"
+    ],
+    "https://clickhouse.com/blog/metabase-clickhouse-plugin-ga-release": [
+        "Metabase",
+        "plugin",
+        "visualization",
+        "JDBC driver",
+        "SSL certificate"
+    ],
+    "https://clickhouse.com/blog/newsletter_2023_february": [
+        "SAMPLE BY",
+        "native random sampling",
+        "materialized views",
+        "MergeTree",
+        "table engines"
+    ],
+    "https://clickhouse.com/blog/introduction-to-clickhouse-and-grafana-webinar": [
+        "OLAP database",
+        "GH Archive",
+        "git-import tool",
+        "dashboard",
+        "Grafana plugin"
+    ],
+    "https://clickhouse.com/blog/introduction-to-the-clickhouse-query-cache-and-design": [
+        "query cache",
+        "time-to-live",
+        "max_entry_size",
+        "transactionally inconsistent caching",
+        "Abstract Syntax Tree"
+    ],
+    "https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states": [
+        "combinators",
+        "Array",
+        "Resample",
+        "Map",
+        "State"
+    ],
+    "https://clickhouse.com/blog/analyzing-aws-fow-logs-using-clickhouse": [
+        "Parquet",
+        "AWS Flow Logs",
+        "CREATE TABLE",
+        "dictionary",
+        "availability zones"
+    ],
+    "https://clickhouse.com/blog/for-the-love-of-coffee-and-distributed-working": [
+        "distributed",
+        "remote",
+        "network",
+        "culture",
+        "team members"
+    ],
+    "https://clickhouse.com/blog/clickhouse-search-with-inverted-indices": [
+        "inverted indexes",
+        "roaring bitmaps",
+        "Finite State Transducers",
+        "posting lists",
+        "index construction"
+    ],
+    "https://clickhouse.com/blog/clickhouse-dbt-project-introduction-and-webinar": [
+        "materialized views",
+        "dbt-clickhouse plugin",
+        "incremental materializations",
+        "adapter plugin API",
+        "lightweight deletes"
+    ],
+    "https://clickhouse.com/blog/using-ttl-to-manage-data-lifecycles-in-clickhouse": [
+        "TTL clause",
+        "Materialized Views",
+        "GROUP BY ... SET clause",
+        "RECOMPRESS clause",
+        "storage policy"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-23-01": [
+        "Inverted indices",
+        "Parameterized views",
+        "Query Result Cache",
+        "multiSearchAny",
+        "time-to-live"
+    ],
+    "https://clickhouse.com/blog/trillabit-utilizes-the-power-of-clickhouse-for-fast-scalable-results-within-their-self-service-search-driven-analytics-offering": [
+        "MergeTree",
+        "ReplacingMergeTree",
+        "materialized views",
+        "table engines",
+        "AirByte"
+    ],
+    "https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2": [
+        "dictionary",
+        "table engine",
+        "ISO 3166-2",
+        "reverse ELT",
+        "Postgres-backed"
+    ],
+    "https://clickhouse.com/blog/data-formats-clickhouse-csv-tsv-parquet-native": [
+        "CSV",
+        "JSONEachRow",
+        "Native format",
+        "Parquet",
+        "SQLInsert"
+    ],
+    "https://clickhouse.com/blog/clickhouse-powers-dassanas-security-data-lake": [
+        "ReplacingMergeTree",
+        "AggregatingMergeTree",
+        "materialized view",
+        "dictionary feature",
+        "Join table engine"
+    ],
+    "https://clickhouse.com/blog/clickhouse-fiddle-sql-playground": [
+        "SQL playground",
+        "ClickHouse Fiddle",
+        "DDL queries",
+        "ephemeral containers",
+        "liveness probes"
+    ],
+    "https://clickhouse.com/blog/newsletter_2023_january": [
+        "encryption",
+        "decryption",
+        "tryDecrypt",
+        "database encryption",
+        "key management system"
+    ],
+    "https://clickhouse.com/blog/using-materialized-views-in-clickhouse": [
+        "Materialized Views",
+        "SummingMergeTree",
+        "AggregatingMergeTree",
+        "State/Merge combinator",
+        "TTL expression"
+    ],
+    "https://clickhouse.com/blog/using-materialized-views-in-clickhouse-jp": [
+        "Materialized View",
+        "SummingMergeTree",
+        "AggregatingMergeTree",
+        "state \u30b3\u30f3\u30d3\u30cd\u30fc\u30bf",
+        "AggregateFunction"
+    ],
+    "https://clickhouse.com/blog/self-service-data-analytics-for-microsofts-biggest-web-properties": [
+        "materialized views",
+        "MergeTree",
+        "arrayJoin",
+        "replication",
+        "sharding"
+    ],
+    "https://clickhouse.com/blog/petabyte-scale-website-behavior-analytics-using-clickhouse": [
+        "Microsoft Clarity",
+        "heat maps",
+        "big query",
+        "Azure",
+        "incremental backups"
+    ],
+    "https://clickhouse.com/blog/sending-windows-event-logs-to-clickhouse-with-fluent-bit": [
+        "Sysmon",
+        "Fluent Bit",
+        "JSON object type",
+        "Grafana",
+        "event logs"
+    ],
+    "https://clickhouse.com/blog/kafka-connect-connector-clickhouse-with-exactly-once": [
+        "Kafka Connect Sink",
+        "exactly-once delivery",
+        "Kafka table engine",
+        "ClickHouse Keeper",
+        "KeeperMap engine"
+    ],
+    "https://clickhouse.com/blog/storing-log-data-in-clickhouse-fluent-bit-vector-open-telemetry": [
+        "aggregator",
+        "OpenTelemetry",
+        "Vector",
+        "FluentBit",
+        "compression"
+    ],
+    "https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse": [
+        "DateTime64",
+        "arrayJoin",
+        "materialized views",
+        "LowCardinality",
+        "Delta codec"
+    ],
+    "https://clickhouse.com/blog/hifis-migration-from-bigquery-to-clickhouse": [
+        "JOIN engine table",
+        "Grace Hash join",
+        "column-oriented database",
+        "materialized views",
+        "replication"
+    ],
+    "https://clickhouse.com/blog/monitor-github-action-workflow-job-queues": [
+        "GitHub Webhooks",
+        "workflow_job events",
+        "storage layer",
+        "ClickHouse Cloud",
+        "self-managed GitHub Runners"
+    ],
+    "https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local": [
+        "file function",
+        "CSVWithNames format",
+        "Parquet format",
+        "MergeTree table",
+        "random functions"
+    ],
+    "https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse": [
+        "materialized views",
+        "groupArray",
+        "MergeTree",
+        "arrayJoin",
+        "replication"
+    ],
+    "https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse": [
+        "randNormal",
+        "randExponential",
+        "randBernoulli",
+        "binomial distribution",
+        "randomString"
+    ],
+    "https://clickhouse.com/blog/monitoring-troubleshooting-insert-queries-clickhouse": [
+        "system tables",
+        "asynchronous inserts",
+        "synchronous inserts",
+        "partitions",
+        "parts"
+    ],
+    "https://clickhouse.com/blog/clickhouse-debugging-issues-with-system-tables": [
+        "system tables",
+        "MergeTree",
+        "system log tables",
+        "system.errors",
+        "system.parts"
+    ],
+    "https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres": [
+        "MergeTree",
+        "materialized views",
+        "external_table_functions_use_nulls",
+        "conditional aggregate function",
+        "CDC.PostgreSQL"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-22-12": [
+        "Grace Hash",
+        "self-join",
+        "password_complexity",
+        "BSON",
+        "ClickHouse Keeper"
+    ],
+    "https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes": [
+        "primary index",
+        "projections",
+        "optimize_read_in_order",
+        "max_threads",
+        "query pipeline"
+    ],
+    "https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema": [
+        "compression",
+        "codecs",
+        "Delta",
+        "ZSTD",
+        "Gorilla"
+    ],
+    "https://clickhouse.com/blog/newsletter_2022_december": [
+        "projections",
+        "materialized views",
+        "JIT compilation",
+        "MergeTree",
+        "UDFs"
+    ],
+    "https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs": [
+        "UDF",
+        "file_path_history",
+        "git-import",
+        "ReplicatedMergeTree",
+        "recursive"
+    ],
+    "https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse": [
+        "dictionaries",
+        "subquery",
+        "primary key",
+        "dictionary layout",
+        "dictGet"
+    ],
+    "https://clickhouse.com/blog/nyc-meetup-report-real-time-slicing-and-dicing-reporting-with-clickhouse": [
+        "Parquet",
+        "materialized views",
+        "sharding",
+        "replication",
+        "MergeTree"
+    ],
+    "https://clickhouse.com/blog/nyc-meetup-report-large-scale-financial-market-analytics-with-clickhouse": [
+        "columnar storage",
+        "merge tree table",
+        "buffer tables",
+        "immutable files",
+        "ZooKeeper"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-generally-available": [
+        "Cloud",
+        "SQL console",
+        "SOC 2 Type II",
+        "Development services",
+        "ClickHouse Academy"
+    ],
+    "https://clickhouse.com/blog/clickhouse-launches-cloud-offering-for-worlds-fastest-olap-database-management-system": [
+        "OLAP",
+        "CloudSAN",
+        "SOC 2 Type II",
+        "serverless",
+        "real-time analytics"
+    ],
+    "https://clickhouse.com/blog/clickhouse-release-22-11": [
+        "INSERT",
+        "retries",
+        "Glob patterns",
+        "s3 function",
+        "array functions"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-is-now-soc-2-type-ii-compliant": [
+        "SOC 2 Type II",
+        "Trust Services Criteria",
+        "Prescient Assurance",
+        "Trust Center",
+        "Security Companion Guide"
+    ],
+    "https://clickhouse.com/blog/clickhouse-just-in-time-compiler-jit": [
+        "JIT compilation",
+        "LLVM",
+        "column-oriented storage",
+        "IColumn",
+        "aggregate functions"
+    ],
+    "https://clickhouse.com/blog/clickhouse-window-array-functions-git-commits": [
+        "window functions",
+        "array functions",
+        "PARTITION BY",
+        "groupArray",
+        "arrayMap"
+    ],
+    "https://clickhouse.com/blog/clickhouse-git-community-commits": [
+        "git-import tool",
+        "arrayFold",
+        "arrayReduce",
+        "materialized views",
+        "sharding"
+    ],
+    "https://clickhouse.com/blog/newsletter_2022_november": [
+        "obfuscator",
+        "Parquet",
+        "GROUP BY",
+        "dataset",
+        "ClickHouse Cloud"
+    ],
+    "https://clickhouse.com/blog/100x-faster-graphql-hive-migration-from-elasticsearch-to-clickhouse": [
+        "GraphQL Hive",
+        "Elasticsearch",
+        "TimescaleDB",
+        "Druid",
+        "materialized views"
+    ],
+    "https://clickhouse.com/blog/clickhouse-spotlight-niek-lok": [
+        "Go To Market team",
+        "Sales",
+        "users",
+        "feedback",
+        "services"
+    ],
+    "https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit": [
+        "Fluent Bit",
+        "Kubernetes logs",
+        "primary keys",
+        "JSON format",
+        "lua filter"
+    ],
+    "https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse": [
+        "parts",
+        "mutations",
+        "primary key",
+        "skip indices",
+        "materialized views"
+    ],
+    "https://clickhouse.com/blog/more-than-2x-faster-hashing-in-clickhouse-using-rust": [
+        "Rust",
+        "Cargo",
+        "CMake",
+        "BLAKE3",
+        "shim function"
+    ],
+    "https://clickhouse.com/blog/nginx-logs-to-clickhouse-fluent-bit": [
+        "Fluent Bit",
+        "JSON object type",
+        "Fluent Bit Nest Filter",
+        "HTTP output plugin",
+        "observability"
+    ],
+    "https://clickhouse.com/blog/node-js-client-for-clickhouse": [
+        "language clients",
+        "Node.js client",
+        "specification",
+        "API",
+        "integration tests"
+    ],
+    "https://clickhouse.com/blog/visualizing-data-with-metabase": [
+        "Metabase",
+        "SQL editor",
+        "arrayJoin",
+        "geohashEncode",
+        "If combinator"
+    ],
+    "https://clickhouse.com/blog/worlds-fastest-json-querying-tool-clickhouse-local": [
+        "clickhouse-local",
+        "JSON",
+        "benchmark",
+        "SPySQL",
+        "OctoSQL"
+    ],
+    "https://clickhouse.com/blog/newsletter_2022_october": [
+        "replication",
+        "sharding",
+        "object storage",
+        "max_threads",
+        "thread work"
+    ],
+    "https://clickhouse.com/blog/visualizing-data-with-superset": [
+        "docker-compose",
+        "virtual datasets",
+        "Schema",
+        "dictGet",
+        "array functions"
+    ],
+    "https://clickhouse.com/blog/contentsquare-migration-from-elasticsearch-to-clickhouse": [
+        "OLAP database engines",
+        "sharding key",
+        "abstract syntax trees",
+        "clickin",
+        "query optimiser"
+    ],
+    "https://clickhouse.com/blog/visualizing-data-with-grafana": [
+        "Grafana",
+        "plugin",
+        "SQL",
+        "argMax",
+        "GeoMap"
+    ],
+    "https://clickhouse.com/blog/clickhouse-cloud-public-beta": [
+        "serverless",
+        "object storage",
+        "automatic scaling",
+        "security-first philosophy",
+        "integrations"
+    ],
+    "https://clickhouse.com/blog/getting-data-into-clickhouse-part-3-s3": [
+        "MergeTree",
+        "S3 table function",
+        "materialized views",
+        "replication",
+        "window functions"
+    ],
+    "https://clickhouse.com/blog/newsletter_2022_september": [
+        "DELETE query",
+        "Long Term Support",
+        "hidden column",
+        "MergeTree",
+        "materialized views"
+    ],
+    "https://clickhouse.com/blog/clickhouse-spotlight-san-tran": [
+        "Application Security Engineer",
+        "security topics",
+        "flexible working hours",
+        "technology",
+        "blameless culture"
+    ],
+    "https://clickhouse.com/blog/real-world-data-noaa-climate-data": [
+        "MergeTree",
+        "group by",
+        "materialized views",
+        "arrayJoin",
+        "replication"
+    ],
+    "https://clickhouse.com/blog/clickhouse-grafana-plugin-2.0": [
+        "additional_table_filters",
+        "JSON",
+        "clickhouse-go",
+        "Adhoc filters",
+        "__conditionalAll"
+    ],
+    "https://clickhouse.com/blog/getting-data-into-clickhouse-part-2-json": [
+        "JSON",
+        "JSONAsObject",
+        "Object('json')",
+        "JSONEachRow",
+        "JSONAsString"
+    ],
+    "https://clickhouse.com/blog/getting-data-into-clickhouse-part-1": [
+        "schema inference",
+        "clickhouse-client",
+        "Parquet",
+        "data cleansing",
+        "schema optimization"
+    ],
+    "https://clickhouse.com/blog/newsletter_2022_august": [
+        "sequenceMatch",
+        "OnTime dataset",
+        "ClickBench",
+        "performance improvement",
+        "MergeTree"
+    ],
+    "https://clickhouse.com/blog/from-experimentation-to-production-the-journey-to-supercolumn": [
+        "MergeTree",
+        "materialized views",
+        "fast indexing",
+        "MergeTree function",
+        "data ingestion"
+    ],
+    "https://clickhouse.com/blog/fast-feature-rich-and-mutable-clickhouse-powers-darwiniums-security-and-fraud-analytics-use-cases": [
+        "AggregatingMergeTree",
+        "mutable database engines",
+        "Map and Array data types",
+        "JSON type support",
+        "tumbling data retention windows"
+    ],
+    "https://clickhouse.com/blog/deepls-journey-with-clickhouse": [
+        "MergeTree",
+        "materialized views",
+        "array functions",
+        "sharding",
+        "replicas"
+    ],
+    "https://clickhouse.com/blog/clickhouse-spotlight-claire-lucas": [
+        "language",
+        "team members",
+        "global business strategy",
+        "wellness",
+        "technology"
+    ],
+    "https://clickhouse.com/blog/newsletter_2022_july": [
+        "materialized views",
+        "MergeTree",
+        "Geo queries",
+        "table engines",
+        "window function"
+    ],
+    "https://clickhouse.com/blog/clickhouse-deepnote-data-notebooks-collaborative-analytics": [
+        "Deepnote",
+        "SQL",
+        "Jupyter-compatible",
+        "Playground",
+        "OLAP database"
+    ],
+    "https://clickhouse.com/blog/optimizing-your-customer-facing-analytics-experience-with-luzmo-and-clickhouse": [
+        "embedded analytics",
+        "columnar database",
+        "aggregations",
+        "MySQL",
+        "performance"
+    ],
+    "https://clickhouse.com/blog/collecting-semi-structured-data-from-kafka-topics-using-clickhouse-kafka-engine": [
+        "Protobuf",
+        "materialized view",
+        "ALTER TABLE",
+        "welchTTest",
+        "Bayesian A/B Testing"
+    ],
+    "https://clickhouse.com/blog/clickhouse-over-the-years-with-benchmarks": [
+        "materialized columns",
+        "adaptive granularity",
+        "Star Schema Benchmark",
+        "index_granularity_bytes",
+        "LowCardinality"
+    ],
+    "https://clickhouse.com/blog/clickhouse-newsletter-june-2022-materialized-but-still-real-time": [
+        "argMax",
+        "materialized view",
+        "point-in-time queries",
+        "Union All",
+        "time series data"
+    ],
+    "https://clickhouse.com/blog/amsterdam-meetup-with-the-clickhouse-team": [
+        "MergeTree",
+        "materialized views",
+        "lightning talks",
+        "networking",
+        "performance & monitoring"
+    ],
+    "https://clickhouse.com/blog/how-quickcheck-uses-clickhouse-to-bring-banking-to-the-unbanked": [
+        "OLAP queries",
+        "column-oriented database",
+        "Metabase",
+        "fraud analysis",
+        "dashboarding"
+    ],
+    "https://clickhouse.com/blog/denic-improves-query-times-by-10x-with-clickhouse": [
+        "materialized views",
+        "ReplicatedReplacingMergeTree",
+        "AggregatedMergeTree",
+        "ARRAY JOIN",
+        "time series"
+    ],
+    "https://clickhouse.com/blog/clickhouse-newsletter-may-2022-explain-statement-query-optimization": [
+        "EXPLAIN SYNTAX",
+        "EXPLAIN PLAN",
+        "MergeTree",
+        "query optimization",
+        "materialized views"
+    ],
+    "https://clickhouse.com/blog/10x-improved-response-times-cheaper-to-operate-and-30-storage-reduction-why-instabug-chose-clickhouse-for-apm": [
+        "Elasticsearch",
+        "datastores",
+        "ClickHouse",
+        "replication",
+        "data visualizations"
+    ],
+    "https://clickhouse.com/blog/clickhouse-docs-have-a-new-look-and-feel": [
+        "documentation",
+        "contributors",
+        "user guides",
+        "pull request",
+        "Creative Commons license"
+    ],
+    "https://clickhouse.com/blog/clickhouse-newsletter-april-2022-json-json-json": [
+        "JSON data type",
+        "ARM builds",
+        "S3 disks",
+        "Hive table function",
+        "MergeTree table"
+    ],
+    "https://clickhouse.com/blog/clickhouse-22-3-lts-released": [
+        "ClickHouse Keeper",
+        "AArch64",
+        "VFS over S3",
+        "dynamic subcolumns",
+        "MergeTree"
+    ],
+    "https://clickhouse.com/blog/building-a-paste-service-with-clickhouse": [
+        "EPHEMERAL columns",
+        "MATERIALIZED columns",
+        "Replicated database",
+        "PRIMARY KEY",
+        "ReplicatedMergeTree"
+    ],
+    "https://clickhouse.com/blog/we-stand-with-ukraine": [
+        "open-source project",
+        "distributed community",
+        "fastest analytics database",
+        "cloud-native serverless analytics platform",
+        "engineering team"
+    ],
+    "https://clickhouse.com/blog/-indexing-for-data-streams-benocs-telco": [
+        "MergeTree",
+        "fast indexing",
+        "fuzzy matching",
+        "time dimension",
+        "ASOF join"
+    ],
+    "https://clickhouse.com/blog/stories-of-difference-inspiration-courage-and-empathy-international-womens-day-2022": [
+        "materialized views",
+        "table engines",
+        "distributed computer systems",
+        "OLAP landscape",
+        "vector search"
+    ],
+    "https://clickhouse.com/blog/international-womens-day-2022-breakthebias": [
+        "bias",
+        "inclusion",
+        "unconscious bias training",
+        "skills-based hiring",
+        "diversify teams"
+    ],
+    "https://clickhouse.com/blog/clickhouse-newsletter-march-2022-theres-a-window-function-for-that": [
+        "window functions",
+        "UK Price Paid dataset",
+        "lagInFrame",
+        "sorting with window functions",
+        "New ClickHouse Adopters"
+    ],
+    "https://clickhouse.com/blog/clickhouse-22-2-released": [
+        "projections",
+        "Parquet",
+        "ReplicatedMergeTree",
+        "insert_deduplication_token",
+        "EPHEMERAL column"
+    ],
+    "https://clickhouse.com/blog/opensee-analyzing-terabytes-of-financial-data-a-day-with-clickhouse": [
+        "horizontal scalability",
+        "fast dictionary lookup",
+        "vectorization",
+        "array values",
+        "data versioning"
+    ],
+    "https://clickhouse.com/blog/clickhouse-newsletter-february-2022-do-you-know-how-to-search-a-table": [
+        "formatRow",
+        "APPLY",
+        "arrayExists",
+        "text classification functions",
+        "release webinar"
+    ],
+    "https://clickhouse.com/blog/whats-new-in-clickhouse-22-1": [
+        "table function",
+        "schema autodetection",
+        "ReplicatedMergeTree",
+        "parallel processing algorithm",
+        "sparse format"
+    ],
+    "https://clickhouse.com/blog/admixer-aggregates-over-1-billion-unique-users-a-day-using-clickhouse": [
+        "AggregatingMergeTree",
+        "Global Events Queue",
+        "MatViews",
+        "EventsProcessor",
+        "unique users"
+    ],
+    "https://clickhouse.com/blog/decorating-a-christmas-tree-with-the-help-of-flaky-tests": [
+        "flaky tests",
+        "functional stateless tests",
+        "fuzzing",
+        "test suite",
+        "testing infrastructure"
+    ],
+    "https://clickhouse.com/blog/whats-new-in-clickhouse-21-12": [
+        "clickhouse-keeper",
+        "PARTITION BY",
+        "WITH FILL",
+        "Identifier table parameter",
+        "Bool data type"
+    ],
+    "https://clickhouse.com/blog/how-to-enable-predictive-capabilities-in-clickhouse-databases": [
+        "materialized views",
+        "AI Tables",
+        "MindsDB",
+        "multivariate time-series analysis",
+        "anomalies"
+    ],
+    "https://clickhouse.com/blog/plausible-analytics-uses-click-house-to-power-their-privacy-friendly-google-analytics-alternative": [
+        "Postgres",
+        "dashboards",
+        "segmentation",
+        "compute power",
+        "rich feature set"
+    ],
+    "https://clickhouse.com/blog/click-house-moscow-meetup-october-19-2021": [
+        "User Defined Functions",
+        "table engines",
+        "Executable",
+        "ExecutablePool",
+        "encryption"
+    ],
+    "https://clickhouse.com/blog/click-house-v2111-released": [
+        "asynchronous inserts",
+        "interactive mode",
+        "UDFs",
+        "predefined connections",
+        "compression gains"
+    ],
+    "https://clickhouse.com/blog/click-house-raises-a-250m-series-b-at-a-2b-valuationand-we-are-hiring": [
+        "MergeTree",
+        "materialized views",
+        "Parquet",
+        "replication",
+        "sharding"
+    ],
+    "https://clickhouse.com/blog/click-house-v2110-released": [
+        "OLAP",
+        "DBMS",
+        "contributions",
+        "pull requests",
+        "Release 21.10"
+    ],
+    "https://clickhouse.com/blog/introducing-click-house-inc": [
+        "MergeTree",
+        "materialized views",
+        "vectorization",
+        "JIT compilation",
+        "Unix timestamp"
+    ],
+    "https://clickhouse.com/blog/testing-the-performance-of-click-house": [
+        "micro-benchmark",
+        "median",
+        "profiler",
+        "performance test system",
+        "clickhouse-local"
+    ],
+    "https://clickhouse.com/blog/the-tests-are-passing-why-would-i-read-the-diff-again": [
+        "code review",
+        "comments",
+        "design review",
+        "data structures",
+        "code documentation"
+    ],
+    "https://clickhouse.com/blog/fuzzing-click-house": [
+        "AST-based query fuzzer",
+        "property-based testing",
+        "SQLSmith",
+        "materialized views",
+        "fuzzing"
+    ],
+    "https://clickhouse.com/blog/a-journey-to-io_uring-aio-and-modern-storage-devices": [
+        "block size",
+        "system call",
+        "latency",
+        "SSD",
+        "polling mode"
+    ],
+    "https://clickhouse.com/blog/running-click-house-on-an-android-phone": [
+        "ARM platform",
+        "position-independent code",
+        "system.trace_log table",
+        "query profiler",
+        "Termux package"
+    ],
+    "https://clickhouse.com/blog/five-methods-for-database-obfuscation": [
+        "high-speed processing",
+        "analytical queries",
+        "performance testing",
+        "reliable",
+        "claims"
+    ],
+    "https://clickhouse.com/blog/how-to-speed-up-lz4-decompression-in-click-house": [
+        "LZ_decompress_fast",
+        "compression algorithm",
+        "compressed form",
+        "CPU resources",
+        "decompression"
+    ],
+    "https://clickhouse.com/blog/click-house-lecture-at-institute-of-computing-technology-chinese-academy-of-science-on-june-11-2019": [
+        "MergeTree",
+        "materialized views",
+        "sharding",
+        "replication",
+        "arrayJoin"
+    ],
+    "https://clickhouse.com/blog/click-house-meetup-in-beijing-on-june-8-2019": [
+        "MergeTree",
+        "materialized views",
+        "arrayJoin",
+        "Parquet",
+        "replication"
+    ],
+    "https://clickhouse.com/blog/click-house-at-percona-live-2019": [
+        "MergeTree",
+        "column-oriented",
+        "materialized views",
+        "replication",
+        "TiFlash"
+    ],
+    "https://clickhouse.com/blog/click-house-meetup-in-san-francisco-on-june-4-2019": [
+        "Meetup",
+        "Altinity",
+        "Kubernetes",
+        "operator",
+        "roadmap"
+    ],
+    "https://clickhouse.com/blog/click-house-meetup-in-limassol-on-may-7-2019": [
+        "MergeTree",
+        "materialized views",
+        "arrayJoin",
+        "replication",
+        "sharding"
+    ],
+    "https://clickhouse.com/blog/schedule-of-click-house-meetups-in-china-for-2019": [
+        "Meetups",
+        "Beijing",
+        "China",
+        "website visits",
+        "schedule"
+    ],
+    "https://clickhouse.com/blog/concept-cloud-merge-tree-tables": [
+        "MergeTree",
+        "sharding",
+        "virtual shard",
+        "cloud table",
+        "replicas"
+    ],
+    "https://clickhouse.com/blog/click-house-at-percona-live-europe-2018": [
+        "subsecond latencies",
+        "analytics",
+        "case studies",
+        "unique ClickHouse features",
+        "delivery of SMS"
+    ],
+    "https://clickhouse.com/blog/click-house-meetup-in-amsterdam-on-november-15-2018": [
+        "time-series database",
+        "string processing optimization",
+        "benchmark",
+        "Scala reactive client",
+        "performance analysis"
+    ],
+    "https://clickhouse.com/blog/click-house-community-meetup-in-beijing-on-october-28-2018": [
+        "LowCardinality",
+        "string processing optimization",
+        "QingCloud",
+        "data processing infrastructure",
+        "ClickHouse Contributors Awards"
+    ],
+    "https://clickhouse.com/blog/click-house-at-analysys-a10-2018": [
+        "OLAP contest",
+        "marketing funnel",
+        "technical talks",
+        "Community Meetup",
+        "Big Data"
+    ],
+    "https://clickhouse.com/blog/announcing-click-house-meetup-in-amsterdam-on-november-15": [
+        "meetup",
+        "community",
+        "Europe",
+        "agenda",
+        "register"
+    ],
+    "https://clickhouse.com/blog/click-house-community-meetup-in-paris-on-october-2-2018": [
+        "Meetup",
+        "France-based companies",
+        "engineers",
+        "GitHub",
+        "use cases"
+    ],
+    "https://clickhouse.com/blog/click-house-community-meetup-in-berlin-on-july-3-2018": [
+        "Altinity",
+        "experimentation metrics",
+        "Google Cloud Platform",
+        "framework scalable",
+        "technical meetups"
+    ],
+    "https://clickhouse.com/blog/announcing-click-house-community-meetup-in-berlin-on-july-3": [
+        "meetup",
+        "community",
+        "Europe",
+        "agenda",
+        "event page"
+    ],
+    "https://clickhouse.com/blog/clickhouse-meetup-in-madrid-on-april-2-2019": [
+        "materialized views",
+        "CatBoost",
+        "MergeTree",
+        "replication",
+        "arrayJoin"
+    ],
+    "https://clickhouse.com/blog/click-house-community-meetup-in-beijing-on-january-27-2018": [
+        "sparse index",
+        "distributed tables",
+        "migrating to ClickHouse",
+        "Chinese ClickHouse Community Meetup",
+        "ClickHouse integration into Splunk"
+    ],
+    "https://clickhouse.com/blog/join-the-click-house-meetup-in-berlin": [
+        "column-oriented",
+        "real time",
+        "linearly scalable",
+        "SQL query dialect",
+        "analytics capabilities"
+    ],
+    "https://clickhouse.com/blog/click-house-meetup-in-berlin-october-5-2017": [
+        "presentations",
+        "download",
+        "event page",
+        "available",
+        "download"
+    ],
+    "https://clickhouse.com/blog/click-house-at-datascale-2017": [
+        "MergeTree",
+        "materialized views",
+        "arrayJoin",
+        "Parquet",
+        "Arrow"
+    ],
+    "https://clickhouse.com/blog/click-house-meetup-in-santa-clara-on-may-4-2017": [
+        "Percona Live 2017",
+        "San Francisco Bay Area",
+        "meetup",
+        "active ClickHouse users",
+        "discussions"
+    ],
+    "https://clickhouse.com/blog/click-house-at-percona-live-2017": [
+        "column-oriented",
+        "real time",
+        "linearly scalable",
+        "SQL query dialect",
+        "built-in analytics"
+    ],
+    "https://clickhouse.com/blog/evolution-of-data-structures-in-yandexmetrica": [
+        "Metrage",
+        "OLAPServer",
+        "column-oriented DBMS",
+        "Yandex.Metrica",
+        "ClickHouse"
+    ],
+    "https://clickhouse.com/blog/how-to-update-data-in-click-house": [
+        "MergeTree",
+        "partitions",
+        "Incremental Log",
+        "Collapsing family",
+        "FINAL modifier"
+    ],
+    "https://clickhouse.com/blog/yandex-opensources-click-house": [
+        "Yandex",
+        "real time",
+        "scale",
+        "Yandex.Metrica",
+        "GitHub"
+    ]
+}

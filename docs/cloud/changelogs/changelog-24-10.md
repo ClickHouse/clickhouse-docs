@@ -4,6 +4,7 @@ title: 'v24.10 Changelog for Cloud'
 description: 'Fast release changelog for v24.10'
 keywords: ['changelog', 'cloud']
 sidebar_label: 'v24.10'
+show_related_blogs: false
 ---
 
 Relevant changes for ClickHouse Cloud services based on the v24.10 release.

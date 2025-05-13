@@ -4,6 +4,8 @@ title: 'Observability'
 pagination_prev: null
 pagination_next: null
 description: 'Landing page for the Observability use case guide'
+keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
+show_related_blogs: false
 ---
 
 Welcome to our Observability use case guide. In this guide you'll learn how you can get setup and use ClickHouse for Observability.

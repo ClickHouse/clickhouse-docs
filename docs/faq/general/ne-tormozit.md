@@ -4,6 +4,7 @@ title: 'What does “не тормозит” mean?'
 toc_hidden: true
 toc_priority: 11
 description: 'This page explains what "Не тормозит" means'
+keywords: ['Yandex']
 ---
 
 # What Does "Не тормозит" Mean? {#what-does-ne-tormozit-mean}

@@ -4,6 +4,7 @@ title: 'v25.4 Changelog for Cloud'
 description: 'Changelog for v25.4'
 keywords: ['changelog', 'cloud']
 sidebar_label: 'v25.4'
+show_related_blogs: false
 ---
 
 ## Backward Incompatible Changes {#backward-incompatible-changes}

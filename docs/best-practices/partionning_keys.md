@@ -4,6 +4,7 @@ sidebar_position: 10
 sidebar_label: 'Choosing a Partitioning Key'
 title: 'Choosing a Partitioning Key'
 description: 'Page describing how to choose a partitioning key'
+keywords: ['partitioning key']
 ---
 
 import Image from '@theme/IdealImage';

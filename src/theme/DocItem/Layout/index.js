@@ -16,6 +16,7 @@ import Translate from "@docusaurus/Translate";
 import IconClose from "@theme/Icon/Close";
 import {useLocation} from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import RelatedBlogs from "../../../components/RelatedBlogs/RelatedBlogs";
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
  */
@@ -36,14 +37,20 @@ function useDocTOC() {
   };
 }
 
+function isExcludedPath(path, excludedSlugs) {
+  // Check if any of the excluded components exist in the path
+  return excludedSlugs.some(component => path.includes(component));
+}
 
 export default function DocItemLayout({children}) {
   const docTOC = useDocTOC();
-  const {metadata} = useDoc();
+  const {metadata, frontMatter} = useDoc();
   const {editUrl} = metadata;
 
   const location = useLocation();
   const context = useDocusaurusContext();
+
+  const excludeRelatedComponents = isExcludedPath(location.pathname, context.siteConfig.customFields.relatedBlogsIgnoreList)
 
   const [showPopup, setShowPopup] = useState(false)
   useEffect(() => {
@@ -107,6 +114,7 @@ export default function DocItemLayout({children}) {
             <DocItemContent>{children}</DocItemContent>
             <DocItemFooter />
           </article>
+          {(excludeRelatedComponents === true || frontMatter.show_related_blogs === false) ? <></> : <RelatedBlogs frontMatter={frontMatter}/>}
           <DocItemPaginator />
         </div>
       </div>
