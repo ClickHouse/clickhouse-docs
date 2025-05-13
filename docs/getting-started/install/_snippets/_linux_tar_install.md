@@ -17,47 +17,82 @@ You can find the release number on this [GitHub page](https://github.com/ClickHo
 with postfix `-stable`.
 :::
 
+## Get the latest ClickHouse version {#get-latest-version}
+
+Get the latest ClickHouse version from GitHub and store it in `LATEST_VERSION` variable.
+
 ```bash
-# Get the latest ClickHouse version from GitHub and store it in LATEST_VERSION variable
 LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/utils/list-versions/version_date.tsv | \
     grep -Eo '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | sort -V -r | head -n 1)
 export LATEST_VERSION
+```
 
-# Detect the system architecture and set the ARCH variable accordingly
+## Detect your system architecture {#detect-system-architecture}
+
+Detect the system architecture and set the ARCH variable accordingly:
+
+```bash
 case $(uname -m) in
   x86_64) ARCH=amd64 ;;         # For Intel/AMD 64-bit processors
   aarch64) ARCH=arm64 ;;        # For ARM 64-bit processors
   *) echo "Unknown architecture $(uname -m)"; exit 1 ;; # Exit if architecture isn't supported
 esac
+```
 
-# Download tarballs for each ClickHouse component
-# The loop tries architecture-specific packages first, then falls back to generic ones
+## Download tarballs for each ClickHouse component {#download-tarballs}
+
+Download tarballs for each ClickHouse component. The loop tries architecture-specific 
+packages first, then falls back to generic ones.
+
+```bash
 for PKG in clickhouse-common-static clickhouse-common-static-dbg clickhouse-server clickhouse-client clickhouse-keeper
 do
   curl -fO "https://packages.clickhouse.com/tgz/stable/$PKG-$LATEST_VERSION-${ARCH}.tgz" \
     || curl -fO "https://packages.clickhouse.com/tgz/stable/$PKG-$LATEST_VERSION.tgz"
 done
+```
 
+## Extract and install packages
+
+Run the commands below to extract and install the following packages:
+- `clickhouse-common-static`
+
+```bash
 # Extract and install clickhouse-common-static package
 tar -xzvf "clickhouse-common-static-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
+```
 
+
+- `clickhouse-common-static-dbg`
+
+```bash
 # Extract and install debug symbols package
 tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
+```
 
+- `clickhouse-server`
+
+```bash
 # Extract and install server package with configuration
 tar -xzvf "clickhouse-server-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-server-$LATEST_VERSION.tgz"
 sudo "clickhouse-server-$LATEST_VERSION/install/doinst.sh" configure
 sudo /etc/init.d/clickhouse-server start  # Start the server
+```
 
+- `clickhouse-client`
+
+```bash
 # Extract and install client package
 tar -xzvf "clickhouse-client-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-client-$LATEST_VERSION.tgz"
 sudo "clickhouse-client-$LATEST_VERSION/install/doinst.sh"
 ```
+
+
 
 </VerticalStepper>

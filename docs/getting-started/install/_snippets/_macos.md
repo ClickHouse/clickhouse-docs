@@ -23,7 +23,7 @@ By default, MacOS will not run applications or tools created by a developer who 
 
 When attempting to run any `clickhouse` command, you may see this error:
 
-<Image img={dev_error} size="md" alt="MacOS developer verification error dialog" border />
+<Image img={dev_error} size="sm" alt="MacOS developer verification error dialog" border />
 
 To get around this verification error, you need to remove the app from MacOS' quarantine bin either by finding the appropriate setting in your System Settings window, using the terminal, or by re-installing ClickHouse.
 
