@@ -55,7 +55,7 @@ RDS instances that require endpoint services (OR you may have different listener
 
 6. Disable "Enforce Security Group Inbound Rules on Private Link Traffic" on the NLB (if a security group is attached to the NLB)
     - Navigate to the NLB's settings and disable the "Enforce Security Group Inbound Rules on Private Link Traffic" setting if a security group is attached to the NLB.
-    - If using Terraform, set the `enforce_security_group_inbound_rules_on_private_link_traffic` attribute to `false` for the NLB
+    - If using Terraform, set the `enforce_security_group_inbound_rules_on_private_link_traffic` attribute to `off` for the NLB
     - This setting is **required** to allow traffic from the ClickPipes VPC to the NLB.
 
 ## Initiating connection {#initiating-connection}
