@@ -22,29 +22,32 @@ const SettingsInfoBlock = ({type, default_value}) => {
                 return <div
                     className={styles.settingsInfoBlock}
                 >
-                    <Table
-                        headers={[
-                            {
-                                label: 'Type'
-                            },
-                            {
-                                label: 'Default value'
-                            },
-                        ]}
-                        rows={
-                            [
+                    <Suspense fallback={<SettingsInfoBlockPlaceholder />}>
+                        <Table
+                            headers={[
                                 {
-                                    id: "row-1",
-                                    items: [
-                                        {label: `${type}`},
-                                        {label: `${default_value}`}
-                                    ]
-                                }
-                            ]
-                        }
-                        size="sm"
-                        className={styles.table}
-                    ></Table>
+                                    label: 'Type'
+                                },
+                                {
+                                    label: 'Default value'
+                                },
+                            ]}
+                            rows={
+                                [
+                                    {
+                                        id: "row-1",
+                                        items: [
+                                            {label: `${type}`},
+                                            {label: `${default_value}`}
+                                        ]
+                                    }
+                                ]
+                            }
+                            size="sm"
+                            className={styles.table}
+                        >
+                        </Table>
+                    </Suspense>
                 </div>
             }}
         </BrowserOnly>
