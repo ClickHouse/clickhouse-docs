@@ -46,7 +46,9 @@ To get started, you first need to make sure that your Postgres database is set u
 
 7. [Crunchy Bridge Postgres](./postgres/source/crunchy-postgres)
 
-8. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance
+8. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance.
+
+9. [TimescaleDB](./postgres/source/timescale), if you are using the TimescaleDB extension on a managed service or self-hosted instance.
 
 
 :::warning

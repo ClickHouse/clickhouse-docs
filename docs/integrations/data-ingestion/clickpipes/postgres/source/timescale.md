@@ -105,6 +105,16 @@ steps and perform a one-time load of your data.
 
 After these steps, you should be able to proceed with [creating a ClickPipe](../index.md).
 
+## Troubleshooting {#troubleshooting}
+
+Initial load for tables can fail with an error:
+
+```sql
+ERROR: transparent decompression only supports tableoid system column (SQLSTATE 42P10)
+```
+
+You may need to disable [compression](https://docs.timescale.com/api/latest/compression/decompress_chunk) or [hypercore columnstore](https://docs.timescale.com/api/latest/hypercore/convert_to_rowstore) for these tables.
+
 ## Configure Network Access {#configure-network-access}
 
 If you want to restrict traffic to your Timescale instance, please allowlist the [documented static NAT IPs](../../index.md#list-of-static-ips).
