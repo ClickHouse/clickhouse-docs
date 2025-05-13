@@ -117,12 +117,14 @@ AmazonKinesis
 AzureEventHubsSVG
 ConfluentSVG
 GCSSVG
+DOsvg
 KafkaSVG
 MskSVG
 Mysqlsvg
 PostgresSVG
 WarpStreamSVG
 clickpipes
+DigitalOcean
 --docs/integrations/tools/data-integration/retool/index.md--
 nocode
 --docs/integrations/data-visualization/hashboard-and-clickhouse.md--
@@ -213,6 +215,8 @@ KeyStore
 Truststore
 --docs/integrations/data-ingestion/clickpipes/object-storage.md--
 GCSSVG
+DOsvg
+DigitalOcean
 --docs/integrations/data-ingestion/clickpipes/kafka.md--
 AzureEventHubsSVG
 ConfluentSVG
