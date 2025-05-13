@@ -1,5 +1,5 @@
 import styles from './styles.module.css';
-import React from 'react'
+import React, {Suspense} from 'react'
 import BrowserOnly from '@docusaurus/BrowserOnly';
 
 const Table = React.lazy(() => import('@clickhouse/click-ui/bundled').then(module => ({
