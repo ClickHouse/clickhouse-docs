@@ -1,14 +1,14 @@
 ---
 sidebar_label: 'Troubleshooting Billing Issues'
 slug: /manage/troubleshooting-billing-issues
-title: 'Troubleshooting Billing Issues'
+title: 'Troubleshooting billing issues'
 description: 'Troubleshooting article for common billing issues'
 ---
 
 import trial_expired from '@site/static/images/cloud/manage/trial-expired.png';
 import Image from '@theme/IdealImage';
 
-# Troubleshooting Billing Issues
+# Troubleshooting billing issues
 
 ## Fixing non-working payment details {#fixing-non-working-payment-details}
 

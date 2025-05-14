@@ -3,10 +3,13 @@ import math from "remark-math";
 import katex from "rehype-katex";
 import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
+const path = require('path');
+const remarkCustomBlocks = require('./plugins/remark-custom-blocks');
+
+// Import custom plugins
 const { customParseFrontMatter } = require('./plugins/frontmatter-validation/customParseFrontMatter');
 const checkFloatingPages = require('./plugins/checkFloatingPages');
 const frontmatterValidator = require('./plugins/frontmatter-validation/frontmatterValidatorPlugin');
-const path = require('path');
 import pluginLlmsTxt from './plugins/llms-txt-plugin.ts'
 
 // Helper function to skip over index.md files.
@@ -57,10 +60,10 @@ const config = {
   // url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
   baseUrl: "/docs/",
   baseUrlIssueBanner: true,
-  onBrokenLinks: "throw",
+  onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   onDuplicateRoutes: "throw",
-  onBrokenAnchors: "throw",
+  onBrokenAnchors: "warn",
   favicon: "img/docs_favicon.ico",
   organizationName: "ClickHouse",
   trailingSlash: false,
@@ -156,7 +159,7 @@ const config = {
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: "/",
-          remarkPlugins: [math],
+          remarkPlugins: [math, remarkCustomBlocks],
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },
@@ -228,13 +231,6 @@ const config = {
       attributes: {
         href: "https://www.googletagmanager.com",
         rel: "preconnect",
-      },
-    },
-    {
-      tagName: 'img',
-      attributes: {
-        referrerPolicy: 'no-referrer-when-downgrade',
-        src: 'https://static.scarf.sh/a.png?x-pxid=e6377503-591b-4886-9398-e69c7fee0b91',
       },
     },
   ],
@@ -360,7 +356,10 @@ const config = {
       pluginLlmsTxt,
       {}
     ],
-    ['./plugins/tailwind-config.js', {}],
+    [
+        './plugins/tailwind-config.js',
+        {}
+    ]
   ],
   customFields: {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page

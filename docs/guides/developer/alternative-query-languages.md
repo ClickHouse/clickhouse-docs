@@ -10,7 +10,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 Besides standard SQL, ClickHouse supports various alternative query languages for querying data.
 
 The currently supported dialects are:
-- `clickhouse`: The default [SQL dialect](../../sql-reference/syntax.md) of ClickHouse
+- `clickhouse`: The default [SQL dialect](../../chdb/reference/sql-reference.md) of ClickHouse
 - `prql`: [Pipelined Relational Query Language (PRQL)](https://prql-lang.org/)
 - `kusto`: [Kusto Query Language (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
 

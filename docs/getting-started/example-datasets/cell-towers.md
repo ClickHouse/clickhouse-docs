@@ -17,17 +17,17 @@ import ActionsMenu from '@site/docs/_snippets/_service_actions_menu.md';
 import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 import SupersetDocker from '@site/docs/_snippets/_add_superset_detail.md';
 import cloud_load_data_sample from '@site/static/images/_snippets/cloud-load-data-sample.png';
-import cell_towers_1 from '@site/docs/getting-started/example-datasets/images/superset-cell-tower-dashboard.png'
-import add_a_database from '@site/docs/getting-started/example-datasets/images/superset-add.png'
-import choose_clickhouse_connect from '@site/docs/getting-started/example-datasets/images/superset-choose-a-database.png'
-import add_clickhouse_as_superset_datasource from '@site/docs/getting-started/example-datasets/images/superset-connect-a-database.png'
-import add_cell_towers_table_as_dataset from '@site/docs/getting-started/example-datasets/images/superset-add-dataset.png'
-import create_a_map_in_superset from '@site/docs/getting-started/example-datasets/images/superset-create-map.png'
-import specify_long_and_lat from '@site/docs/getting-started/example-datasets/images/superset-lon-lat.png'
-import superset_mcc_2024 from '@site/docs/getting-started/example-datasets/images/superset-mcc-204.png'
-import superset_radio_umts from '@site/docs/getting-started/example-datasets/images/superset-radio-umts.png'
-import superset_umts_netherlands from '@site/docs/getting-started/example-datasets/images/superset-umts-netherlands.png'
-import superset_cell_tower_dashboard from '@site/docs/getting-started/example-datasets/images/superset-cell-tower-dashboard.png'
+import cell_towers_1 from '@site/static/images/getting-started/example-datasets/superset-cell-tower-dashboard.png'
+import add_a_database from '@site/static/images/getting-started/example-datasets/superset-add.png'
+import choose_clickhouse_connect from '@site/static/images/getting-started/example-datasets/superset-choose-a-database.png'
+import add_clickhouse_as_superset_datasource from '@site/static/images/getting-started/example-datasets/superset-connect-a-database.png'
+import add_cell_towers_table_as_dataset from '@site/static/images/getting-started/example-datasets/superset-add-dataset.png'
+import create_a_map_in_superset from '@site/static/images/getting-started/example-datasets/superset-create-map.png'
+import specify_long_and_lat from '@site/static/images/getting-started/example-datasets/superset-lon-lat.png'
+import superset_mcc_2024 from '@site/static/images/getting-started/example-datasets/superset-mcc-204.png'
+import superset_radio_umts from '@site/static/images/getting-started/example-datasets/superset-radio-umts.png'
+import superset_umts_netherlands from '@site/static/images/getting-started/example-datasets/superset-umts-netherlands.png'
+import superset_cell_tower_dashboard from '@site/static/images/getting-started/example-datasets/superset-cell-tower-dashboard.png'
 
 ## Goal {#goal}
 

@@ -199,13 +199,6 @@ const config = {
         rel: "preconnect",
       },
     },
-    {
-      tagName: 'img',
-      attributes: {
-        referrerPolicy: 'no-referrer-when-downgrade',
-        src: 'https://static.scarf.sh/a.png?x-pxid=e6377503-591b-4886-9398-e69c7fee0b91',
-      },
-    },
   ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */

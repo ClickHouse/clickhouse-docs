@@ -453,12 +453,12 @@
     },
     {
       "source": "/docs/en/integrations/language-clients/java/jdbc",
-      "destination": "/docs/integrations/java",
+      "destination": "/docs/integrations/language-clients/java/jdbc",
       "permanent": true
     },
     {
       "source": "/docs/en/integrations/language-clients/java/client",
-      "destination": "/docs/integrations/java",
+      "destination": "/docs/integrations/language-clients/java/client",
       "permanent": true
     },
     {
@@ -3294,6 +3294,30 @@
     {
       "source": "/docs/en/:path*",
       "destination": "/docs/:path*"
+    },
+    {
+      "source": "/docs/cloud/manage/api/usageCost-api-reference",
+      "destination": "/docs/cloud/manage/api/swagger#/paths/~1v1~1organizations~1%7BorganizationId%7D~1usageCost/get"
+    },
+    {
+      "source": "/docs/operations/system-tables/error_log",
+      "destination": "/docs/operations/system-tables/system-error-log"
+    },
+    {
+      "source": "/docs/engines/table-engines/special/replicatedmergetree",
+      "destination": "/docs/engines/table-engines/mergetree-family/replication"
+    },
+    {
+      "source": "/docs/integrations/language-clients/java/jdbc-v1",
+      "destination": "/docs/integrations/language-clients/java/jdbc"
+    },
+    {
+      "source": "/docs/engines/table-engines/integrations/google-cloud-storage",
+      "destination": "/docs/sql-reference/table-functions/gcs"
+    },
+    {
+      "source": "/docs/cloud/manage/api/organizations-api-reference",
+      "destination": "https://clickhouse.com/docs/cloud/manage/api/swagger#/paths/~1v1~1organizations/get"
     }
   ]
 }

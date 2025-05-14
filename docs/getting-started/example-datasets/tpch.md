@@ -234,6 +234,8 @@ ORDER BY
 **Q2**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     s_acctbal,
     s_name,
@@ -280,7 +282,7 @@ ORDER BY
 ```
 
 ::::note
-As of February 2025, the query does not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
+Until v25.5, the query did not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
 
 This alternative formulation works and was verified to return the reference results.
 
@@ -365,6 +367,8 @@ ORDER BY
 **Q4**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     o_orderpriority,
     count(*) AS order_count
@@ -389,7 +393,7 @@ ORDER BY
 ```
 
 ::::note
-As of February 2025, the query does not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
+Until v25.5, the query did not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
 
 This alternative formulation works and was verified to return the reference results.
 
@@ -823,6 +827,8 @@ ORDER BY
 **Q17**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     sum(l_extendedprice) / 7.0 AS avg_yearly
 FROM
@@ -843,7 +849,7 @@ WHERE
 ```
 
 ::::note
-As of February 2025, the query does not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
+Until v25.5, the query did not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
 
 This alternative formulation works and was verified to return the reference results.
 
@@ -954,6 +960,8 @@ WHERE
 **Q20**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     s_name,
     s_address
@@ -994,12 +1002,14 @@ ORDER BY
 ```
 
 ::::note
-As of February 2025, the query does not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
+Until v25.5, the query did not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
 ::::
 
 **Q21**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     s_name,
     count(*) AS numwait
@@ -1041,12 +1051,14 @@ ORDER BY
     s_name;
 ```
 ::::note
-As of February 2025, the query does not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
+Until v25.5, the query did not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
 ::::
 
 **Q22**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     cntrycode,
     count(*) AS numcust,
@@ -1086,5 +1098,5 @@ ORDER BY
 ```
 
 ::::note
-As of February 2025, the query does not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
+Until v25.5, the query did not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
 ::::

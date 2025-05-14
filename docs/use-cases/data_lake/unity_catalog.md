@@ -13,10 +13,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 <ExperimentalBadge/>
 
 :::note
-The integration with the Unity Catalog works for managed and external tables.
-:::
-
-:::note
+Integration with the Unity Catalog works for managed and external tables.
 This integration is currently only supported on AWS.
 :::
 
