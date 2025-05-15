@@ -18,6 +18,8 @@ const extractText = (nodes) => {
 const plugin = (options) => {
     const transformer = (tree, file) => {
 
+        let total_steps = 0; // Keep track of the total number of steps
+
         // Target JSX elements in the AST
         visit(tree, 'mdxJsxFlowElement', (node, index, parent) => {
             // Look specifically for the <VerticalStepper> tag used in the markdown file
@@ -27,12 +29,16 @@ const plugin = (options) => {
                     const jsxAttributes = node.attributes || [];
                     let type = "numbered"; // Default type
                     let isExpanded = true;
+                    let headerLevel = 2;
 
                     // Extract attributes
                     jsxAttributes.forEach(attr => {
                         if (attr.type === 'mdxJsxAttribute') {
                             if (attr.name === 'type' && typeof attr.value === 'string') {
                                 type = attr.value;
+                            } else if (attr.name === 'headerLevel' && typeof attr.value === 'string') {
+                                if (attr.value === "h3")
+                                    headerLevel = 3
                             }
                         }
                     });
@@ -52,6 +58,7 @@ const plugin = (options) => {
                                 anchorId: currentAnchorId,
                                 content: [...currentStepContent],
                             });
+                            total_steps++;
                         }
                         currentStepContent = [];
                         currentStepLabel = null; // Reset label
@@ -59,11 +66,11 @@ const plugin = (options) => {
 
                     if (node.children && node.children.length > 0) {
                         node.children.forEach((child) => {
-                            if (child.type === 'heading' && child.depth === 2) {
+                            if (child.type === 'heading' && child.depth === headerLevel) {
                                 finalizeStep(); // Finalize the previous step first
                                 currentStepLabel = extractText(child.children);
                                 currentAnchorId = child.data.hProperties.id;
-                                currentStepId = `step-${stepsData.length + 1}`; // Generate step-X ID
+                                currentStepId = `step-${total_steps}`; // Generate step-X ID
                                 currentStepContent.push(child); // We need the header otherwise onBrokenAnchors fails
                             } else if (currentStepLabel) {
                                 // Only collect content nodes *after* a heading has defined a step
@@ -81,6 +88,7 @@ const plugin = (options) => {
                     // Set attributes
                     node.attributes = [
                         { type: 'mdxJsxAttribute', name: 'type', value: type },
+                        { type: 'mdxJsxAttribute', name: 'headerLevel', value: headerLevel },
                     ];
                     if (isExpanded) {
                         node.attributes.push({
