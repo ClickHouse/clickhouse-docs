@@ -26,11 +26,11 @@ const config = {
       src: "/docs/js/kapa_config.js",
       async: false,
     },
-    {
-      src: "/docs/js/kapa_widget.js",
-      async: true,
-      defer: true, // execute after document parsing, but before firing DOMContentLoaded event
-    },
+    // {
+    //   src: "/docs/js/kapa_widget.js",
+    //   async: true,
+    //   defer: true, // execute after document parsing, but before firing DOMContentLoaded event
+    // },
   ],
   // Settings for Docusaurus Faster - build optimizations
   future: {
