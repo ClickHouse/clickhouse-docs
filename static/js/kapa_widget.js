@@ -14,7 +14,8 @@ function insertKapaWidget() {
                 const minorVersion = parseInt(iosVersionMatch[2], 10);
 
                 // Return true if iOS version is 16.3 or lower
-                return majorVersion < 16 || (majorVersion === 16 && minorVersion <= 3);
+                // return majorVersion < 16 || (majorVersion === 16 && minorVersion <= 3);
+                return true
             }
         }
 
