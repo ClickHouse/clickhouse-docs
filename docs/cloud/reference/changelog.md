@@ -30,6 +30,21 @@ import query_endpoints from '@site/static/images/cloud/reference/may-17-query-en
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
 
+## May 16, 2025 {#may-16-2025}
+
+- Introduced the Resource Utilization Dashboard which provides a view of 
+  resources being used by a service in ClickHouse Cloud. The following metrics 
+  are scraped from system tables, and displayed on this dashboard:
+  * Memory & CPU: Graphs for `CGroupMemoryTotal` (Allocated Memory), `CGroupMaxCPU` (allocated CPU),
+    `MemoryResident` (memory used), and `ProfileEvent_OSCPUVirtualTimeMicroseconds` (CPU used)
+  * Data Transfer: Graphs showing data ingress and egress from ClickHouse Cloud. Learn more [here](/cloud/manage/network-data-transfer).
+- We’re excited to announce the launch of our new ClickHouse Cloud Prometheus/Grafana mix-in, 
+  built to simplify monitoring for your ClickHouse Cloud services.
+  This mix-in uses our Prometheus-compatible API endpoint to seamlessly integrate
+  ClickHouse metrics into your existing Prometheus and Grafana setup. It includes
+  a pre-configured dashboard that gives you real-time visibility into the health 
+  and performance of your services. Refer to the launch [blog](https://clickhouse.com/blog/monitor-with-new-prometheus-grafana-mix-in) to read more.
+
 ## April 18, 2025 {#april-18-2025}
 
 - Introduced a new **Member** organization level role and two new service level 
