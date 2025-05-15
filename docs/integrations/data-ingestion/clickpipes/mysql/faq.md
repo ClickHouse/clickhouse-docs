@@ -25,4 +25,4 @@ To resolve this issue, you have three options:
 
 3. Update your MySQL server's SSL certificate to include the actual hostname you're using to connect in its certificate.
 
-This is a common configuration issue with MySQL TLS certificates, particularly when connecting to databases hosted in cloud environments where the public DNS name differs from what's in the certificate.
+This is a common configuration issue with MySQL TLS certificates, particularly when connecting to databases self-hosted in cloud environments where the public DNS name differs from what's in the certificate.
