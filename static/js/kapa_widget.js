@@ -46,5 +46,9 @@ function insertKapaWidget() {
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', insertKapaWidget);
 } else {
-    insertKapaWidget();
+    try {
+        insertKapaWidget();
+    } catch (e) {
+        console.log("An error occured while trying to load the Kapa.ai widget:", e);
+    }
 }
