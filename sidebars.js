@@ -118,7 +118,18 @@ const sidebars = {
               collapsible: true,
               link: { type: "doc", id: "use-cases/observability/clickhouse-stack/index" },
               items: [
-                "use-cases/observability/clickhouse-stack/getting-started",
+                {
+                  type: "category",
+                  label: "Getting Started",
+                  collapsed: true,
+                  collapsible: true,
+                  link: { type: "doc", id: "use-cases/observability/clickhouse-stack/getting-started/index" },
+                  items: [
+                    "use-cases/observability/clickhouse-stack/getting-started/example-data",
+                    "use-cases/observability/clickhouse-stack/getting-started/local-data",
+                    "use-cases/observability/clickhouse-stack/getting-started/remote-demo-data",
+                  ]
+                },
                 "use-cases/observability/clickhouse-stack/architecture",
                 "use-cases/observability/clickhouse-stack/deployment",
                 "use-cases/observability/clickhouse-stack/scaling",
