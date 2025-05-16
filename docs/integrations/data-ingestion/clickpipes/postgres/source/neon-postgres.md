@@ -22,7 +22,7 @@ Make sure you're signed in to your [Neon console](https://console.neon.tech/app/
 Let's create a new user for ClickPipes with the necessary permissions suitable for CDC,
 and also create a publication that we'll use for replication.
 
-For this, you can head over to the **SQL Console** tab.
+For this, you can head over to the **SQL Editor** tab.
 Here, we can run the following SQL commands:
 
 ```sql
