@@ -8,6 +8,7 @@ interface StepProps {
     label?: React.ReactNode;
     forceExpanded?: string; // From parent 'expanded' state
     isFirstStep?: boolean; // Prop calculated by parent
+    headerType?: string;
     [key: string]: any;
 }
 
@@ -17,6 +18,7 @@ const Step = ({
                   label,
                   forceExpanded,
                   isFirstStep = false,
+                  headerType,
                   ...restProps
               }: StepProps) => {
 
@@ -34,14 +36,14 @@ const Step = ({
             const divChildren = Array.from(button.children).filter(el => el.tagName === 'DIV');
             const label = divChildren[1];
             const content = button.nextElementSibling;
-            const header = content.querySelectorAll('h2')[0]
+            const header = content.querySelectorAll(headerType)[0]
             header.style.margin = '0';
             button.append(header)
             label.remove()
         } catch (e) {
-            console.log('Error occurred in Stepper.tsx while swapping H2 for Click-UI label')
+            console.log(`Error occurred in Stepper.tsx while swapping ${headerType} for Click-UI label:`, e)
         }
-    }, [id]);
+    }, [id, headerType]);
 
     // Filter out props specific to this wrapper logic
     const {
@@ -69,6 +71,7 @@ interface StepperProps {
     type?: 'numbered' | 'bulleted';
     className?: string;
     expanded?: string; // Corresponds to allExpanded in MDX
+    headerLevel?: number;
     [key: string]: any;
 }
 
@@ -77,12 +80,18 @@ const VStepper = ({
                       children,
                       type = 'numbered',
                       className,
-                      expanded, // 'true' if allExpanded was set
+                      expanded,
+                      headerLevel,
                       ...props
                   }: StepperProps) => {
 
     // Determine if all steps should be expanded from the start
     const isExpandedMode = expanded === 'true';
+
+    let hType = 'h2';
+    if (headerLevel == 3) {
+        hType = 'h3'
+    }
 
     // Get children and filter out non-elements
     const childSteps = React.Children.toArray(children)
@@ -104,7 +113,8 @@ const VStepper = ({
             key: stepId,
             id: stepId,
             isFirstStep, // Pass down flag for first step logic
-            forceExpanded: isExpandedMode ? 'true' : undefined // Pass down expanded mode
+            forceExpanded: isExpandedMode ? 'true' : undefined, // Pass down expanded mode
+            headerType: hType
         });
     });
 

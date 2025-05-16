@@ -17,7 +17,7 @@ import Image from '@theme/IdealImage';
 ClickHouse Cloud provides an API utilizing OpenAPI that allows you to programmatically manage your account and aspects of your services.
 
 :::note
-This document covers the ClickHouse Cloud API. For database API endpoints, please see [Cloud Endpoints API](//cloud/get-started/query-endpoints.md)
+This document covers the ClickHouse Cloud API. For database API endpoints, please see [Cloud Endpoints API](/cloud/get-started/query-endpoints.md)
 :::
 
 1. You can use the **API Keys** tab on the left menu to create and manage your API keys.
