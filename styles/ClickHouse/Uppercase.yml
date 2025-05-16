@@ -270,3 +270,5 @@ exceptions:
   - YAML
   - ZAP
   - ZIP
+  - GCS
+  - BYOC
