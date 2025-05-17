@@ -1,25 +1,44 @@
 function insertKapaWidget() {
     // Check if user agent is iOS 16.4 or lower
     function isOldiOS() {
-        const ua = navigator.userAgent;
+    const ua = navigator.userAgent;
 
-        // Check if it's an iOS device
-        const isIOS = /iPad|iPhone/.test(ua);
+    // Check if it's an iOS device
+    const isIOS = /iPad|iPhone/.test(ua);
 
-        if (isIOS) {
-            // Extract iOS version if it exists
-            const iosVersionMatch = ua.match(/OS (\d+)_(\d+)/);
-            if (iosVersionMatch) {
-                const majorVersion = parseInt(iosVersionMatch[1], 10);
-                const minorVersion = parseInt(iosVersionMatch[2], 10);
+    if (isIOS) {
+        // Regex to capture major version and optionally minor version.
+        // Examples: "OS 16_4" (major: 16, minor: 4), "OS 16" (major: 16, minor: defaults to 0)
+        const iosVersionMatch = ua.match(/OS (\d+)(?:_(\d+))?/);
 
-                // Return true if iOS version is 16.4 or lower
-                return majorVersion < 16 || (majorVersion === 16 && minorVersion <= 4);
+        if (iosVersionMatch) {
+            const majorVersion = parseInt(iosVersionMatch[1], 10);
+            let minorVersion = 0; // Default minor version to 0
+
+            // If minor version (group 2) was captured in the regex
+            if (iosVersionMatch[2]) {
+                minorVersion = parseInt(iosVersionMatch[2], 10);
+                // Fallback if parsing somehow still results in NaN (though \d+ should prevent this for a captured group)
+                if (isNaN(minorVersion)) {
+                    minorVersion = 0;
+                }
             }
-        }
 
-        return false;
+            // Return true if iOS version is 16.4 or lower
+            // (major < 16) OR (major == 16 AND minor <= 4)
+            return majorVersion < 16 || (majorVersion === 16 && minorVersion <= 4);
+        } else {
+            // It's an iOS device, but we couldn't parse the OS version string using the regex.
+            // To be safe and prevent loading the widget on a potentially old/unsupported iOS version,
+            // assume it IS an "old iOS" in this scenario.
+            console.warn('Kapa widget: iOS device detected, but OS version parsing failed. Assuming old iOS to prevent loading.');
+            return true; // Treat as "old" if parsing fails for an iOS device
+        }
     }
+
+    // Not an iOS device, or parsing failed and we're not treating it as old by default (if the above 'else' was different)
+    return false;
+}
 
     // Only insert script if not running on older iOS as Kapa does not support it (using a look behind regex)
     if (!isOldiOS()) {
