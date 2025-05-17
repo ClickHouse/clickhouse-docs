@@ -1,5 +1,5 @@
 function insertKapaWidget() {
-    // Check if user agent is iOS 16.3 or lower
+    // Check if user agent is iOS 16.4 or lower
     function isOldiOS() {
         const ua = navigator.userAgent;
 
@@ -13,16 +13,15 @@ function insertKapaWidget() {
                 const majorVersion = parseInt(iosVersionMatch[1], 10);
                 const minorVersion = parseInt(iosVersionMatch[2], 10);
 
-                // Return true if iOS version is 16.3 or lower
-                // return majorVersion < 16 || (majorVersion === 16 && minorVersion <= 3);
-                return true
+                // Return true if iOS version is 16.4 or lower
+                return majorVersion < 16 || (majorVersion === 16 && minorVersion <= 4);
             }
         }
 
         return false;
     }
 
-    // Only insert script if not running on older iOS as Kapa does not support it
+    // Only insert script if not running on older iOS as Kapa does not support it (using a look behind regex)
     if (!isOldiOS()) {
         const script = document.createElement('script');
         script.src = 'https://widget.kapa.ai/kapa-widget.bundle.js';
@@ -39,7 +38,7 @@ function insertKapaWidget() {
         document.head.appendChild(script);
         console.log('Kapa widget script added successfully');
     } else {
-        console.log('Kapa widget not added: detected iOS 16.3 or lower');
+        console.log('Kapa widget not added: detected iOS 16.4 or lower');
     }
 }
 
