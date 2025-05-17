@@ -89,8 +89,8 @@ const VStepper = ({
     const isExpandedMode = expanded === 'true';
 
     let hType = 'h2';
-    if (headerLevel == 3) {
-        hType = 'h3'
+    if (headerLevel > 2) {
+        hType = `h${headerLevel}`
     }
 
     // Get children and filter out non-elements

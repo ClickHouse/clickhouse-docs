@@ -89,7 +89,7 @@ const sidebars = {
         "best-practices/select_data_type",
         "best-practices/use_materialized_views",
         "best-practices/minimize_optimize_joins",
-        "best-practices/partionning_keys",
+        "best-practices/partitioning_keys",
         "best-practices/selecting_an_insert_strategy",
         "best-practices/using_data_skipping_indices",
         "best-practices/avoid_mutations",
