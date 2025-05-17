@@ -379,16 +379,17 @@ logic might fail.
 
 ## Related blog component
 
-Each page has a "Related blogs" component which displays recent blogs which are
+Pages can show a "Related blogs" component which displays recent blogs which are
 related to the keywords or title of the document.
 
-If you would like to hide it from a page, add the following property to the 
+If you would like to show it on a page, add the following property to the 
 front matter:
 
 ```yaml
 ---
-show_related_blogs: false
+show_related_blogs: true
 ---
 ```
 
-This will hide it from the page.
+This will show it on the page, assuming there is a matching blog. If there is no
+match then it remains hidden.

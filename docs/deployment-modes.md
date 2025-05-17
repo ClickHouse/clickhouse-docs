@@ -3,7 +3,8 @@ slug: /deployment-modes
 sidebar_label: 'Deployment modes'
 description: 'ClickHouse offers four deployment options that all use the same powerful database engine, just packaged differently to suit your specific needs.'
 title: 'Deployment modes'
-keywords: ['chDB', 'clickhouse-local', 'ClickHouse Cloud']
+keywords: ['Deployment Modes', 'chDB', 'clickhouse-local', 'ClickHouse Cloud']
+show_related_blogs: true
 ---
 
 import chServer from '@site/static/images/deployment-modes/ch-server.png';

@@ -3,8 +3,9 @@ sidebar_label: 'Snowflake'
 sidebar_position: 20
 slug: /migrations/snowflake
 description: 'Migrating from Snowflake to ClickHouse'
-keywords: ['migration', 'snowflake']
+keywords: ['migration', 'Snowflake']
 title: 'Migrating from Snowflake to ClickHouse'
+show_related_blogs: true
 ---
 
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';

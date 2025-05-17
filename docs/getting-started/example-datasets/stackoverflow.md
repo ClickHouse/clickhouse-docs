@@ -4,6 +4,8 @@ sidebar_label: 'Stack Overflow'
 sidebar_position: 1
 slug: /getting-started/example-datasets/stackoverflow
 title: 'Analyzing Stack Overflow data with ClickHouse'
+keywords: ['StackOverflow']
+show_related_blogs: true
 ---
 
 import Image from '@theme/IdealImage';

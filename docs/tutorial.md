@@ -5,6 +5,7 @@ title: 'Advanced Tutorial'
 description: 'Learn how to ingest and query data in ClickHouse using a New York City taxi example dataset.'
 sidebar_position: 0.5
 keywords: ['clickhouse', 'install', 'tutorial', 'dictionary', 'dictionaries', 'example', 'advanced', 'taxi', 'new york', 'nyc']
+show_related_blogs: true
 ---
 
 # Advanced Tutorial
