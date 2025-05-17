@@ -3,7 +3,6 @@ slug: /cloud/manage/backups
 title: 'Backups'
 description: 'Table of contents page for backups.'
 keywords: ['backups', 'configurable backups', 'export backups to own cloud']
-show_related_blogs: false
 ---
 
 | Page                                                                                 | Description                                                                                                                     |

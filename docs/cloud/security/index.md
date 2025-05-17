@@ -4,7 +4,6 @@ keywords: ['Cloud', 'Security']
 title: 'Overview'
 hide_title: true
 description: 'Landing page for ClickHouse Cloud Security'
-show_related_blogs: false
 ---
 
 # ClickHouse Cloud Security

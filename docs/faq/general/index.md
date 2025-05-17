@@ -5,7 +5,6 @@ sidebar_label: 'General Questions about ClickHouse'
 keywords: ['faq', 'questions', 'what is']
 title: 'General Questions About ClickHouse'
 description: 'Index page listing general questions about ClickHouse'
-show_related_blogs: false
 ---
 
 # General Questions About ClickHouse

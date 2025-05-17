@@ -369,11 +369,6 @@ const config = {
     ]
   ],
   customFields: {
-    // add general slug paths here for which you don't want RelatedBlogs component to show
-    relatedBlogsIgnoreList: [
-      '/docs/sql-reference',
-      '/docs/engines'
-    ],
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page
     galaxyApiEndpoint:
       process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || "http://localhost:3000",
