@@ -1,17 +1,17 @@
 ---
-description: 'Площадка ClickHouse позволяет пользователям экспериментировать с ClickHouse, выполняя запросы мгновенно, без настройки своего сервера или кластера.'
-keywords: ['clickhouse', 'площадка', 'начало', 'работы', 'документы']
-sidebar_label: 'Площадка ClickHouse'
+description: 'Playground ClickHouse позволяет пользователям экспериментировать с ClickHouse, выполняя запросы мгновенно, без настройки своего сервера или кластера.'
+keywords: ['clickhouse', 'playground', 'getting', 'started', 'docs']
+sidebar_label: 'Playground ClickHouse'
 slug: /getting-started/playground
-title: 'Площадка ClickHouse'
+title: 'Playground ClickHouse'
 ---
 
 
-# Площадка ClickHouse
+# Playground ClickHouse
 
-[Площадка ClickHouse](https://sql.clickhouse.com) позволяет пользователям экспериментировать с ClickHouse, выполняя запросы мгновенно, без настройки своего сервера или кластера. В Площадке доступны несколько примеров наборов данных.
+[Playground ClickHouse](https://sql.clickhouse.com) позволяет пользователям экспериментировать с ClickHouse, выполняя запросы мгновенно, без настройки своего сервера или кластера. В Playground доступны несколько примерных наборов данных.
 
-Вы можете делать запросы к Площадке, используя любой HTTP-клиент, например [curl](https://curl.haxx.se) или [wget](https://www.gnu.org/software/wget/), или установить соединение с помощью драйверов [JDBC](../interfaces/jdbc.md) или [ODBC](../interfaces/odbc.md). Больше информации о программных продуктах, поддерживающих ClickHouse, доступно [здесь](../integrations/index.mdx).
+Вы можете выполнять запросы в Playground, используя любой HTTP-клиент, например [curl](https://curl.haxx.se) или [wget](https://www.gnu.org/software/wget/), или настроить соединение с помощью драйверов [JDBC](../interfaces/jdbc.md) или [ODBC](../interfaces/odbc.md). Более подробная информация о программных продуктах, поддерживающих ClickHouse, доступна [здесь](../integrations/index.mdx).
 
 ## Учетные данные {#credentials}
 
@@ -20,27 +20,35 @@ title: 'Площадка ClickHouse'
 | HTTPS endpoint      | `https://play.clickhouse.com:443/`  |
 | Native TCP endpoint | `play.clickhouse.com:9440`          |
 | Пользователь        | `explorer` или `play`                |
-| Пароль             | (пустой)                            |
+| Пароль             | (пусто)                             |
 
 ## Ограничения {#limitations}
 
-Запросы выполняются как пользователь с правами только для чтения. Это подразумевает некоторые ограничения:
+Запросы выполняются как пользователем только для чтения. Это предполагает некоторые ограничения:
 
-- DDL-запросы не допускаются
-- INSERT-запросы не допускаются
+- Запросы DDL не разрешены
+- Запросы INSERT не разрешены
 
-У службы также есть квоты на использование.
+У сервиса также есть квоты на его использование.
 
 ## Примеры {#examples}
 
-Пример HTTPS endpoint с помощью `curl`:
+Пример HTTPS endpoint с использованием `curl`:
 
 ```bash
 curl "https://play.clickhouse.com/?user=explorer" --data-binary "SELECT 'Play ClickHouse'"
 ```
 
-Пример TCP endpoint с помощью [CLI](../interfaces/cli.md):
+Пример TCP endpoint с [CLI](../interfaces/cli.md):
 
 ```bash
 clickhouse client --secure --host play.clickhouse.com --user explorer
 ```
+
+## Спецификации Playground {#specifications}
+
+Наш Playground ClickHouse работает с следующими спецификациями:
+
+- Размещен на Google Cloud (GCE) в центральном регионе США (US-Central-1)
+- Настройка с 3 репликами
+- 256 GiB хранилища и 59 виртуальных CPU каждый.

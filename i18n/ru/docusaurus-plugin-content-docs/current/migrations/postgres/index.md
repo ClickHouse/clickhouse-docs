@@ -1,19 +1,16 @@
 ---
-slug: migrations/postgresql
+slug: /migrations/postgresql
 pagination_prev: null
 pagination_next: null
 title: 'PostgreSQL'
-description: 'Стартовая страница для раздела миграций PostgreSQL'
+description: 'Страница входа в раздел миграций PostgreSQL'
 ---
 
-| Страница                                                                                                              | Описание                                                                                                                                                              |
-|----------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Введение](./overview.md)                                                                                           | Страница введения для данного раздела                                                                                                                                 |
-| [Подключение к PostgreSQL](../../integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md)            | Эта страница охватывает следующие опции интеграции PostgreSQL с ClickHouse: ClickPipes, PeerDB, движок таблиц PostgreSQL, движок базы данных MaterializedPostgreSQL. |
-| [Сравнение PostgreSQL и ClickHouse](../../integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse.md)   | Исследуются концепции Postgres и ClickHouse - эквиваленты и отличия.                                                                                                 |
-| [Загрузка данных из PostgreSQL в ClickHouse](./dataset.md)                                                          | Часть 1 руководства по миграции из PostgreSQL в ClickHouse.                                                                                                          |
-| [Проектирование схем](./designing-schemas.md)                                                                       | Часть 2 руководства по миграции из PostgreSQL в ClickHouse.                                                                                                          |
-| [Методы моделирования данных](./data-modeling-techniques.md)                                                         | Часть 3 руководства по миграции из PostgreSQL в ClickHouse.                                                                                                          |
-| [Переписывание запросов PostgreSQL](../../integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries.md) | Часть 4 руководства по миграции из PostgreSQL в ClickHouse.                                                                                                          |
-| [Как вставить данные из PostgreSQL](../../integrations/data-ingestion/dbms/postgresql/inserting-data.md)            | Узнайте, как массово загружать данные из PostgreSQL в ClickHouse.                                                                                                     |
-| [Сопоставление типов данных для PostgreSQL](../../integrations/data-ingestion/dbms/postgresql/data-type-mappings.md) | Таблица, показывающая эквивалентные типы данных ClickHouse для Postgres.                                                                                             |
+| Страница                                                                                                            | Описание                                                                                                                                                              |
+|-------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Обзор](./overview.md)                                                                                           | Вводная страница для этого раздела                                                                                                                                  |
+| [Подключение к PostgreSQL](/integrations/postgresql/connecting-to-postgresql)                       | Эта страница охватывает следующие варианты интеграции PostgreSQL с ClickHouse: ClickPipes, PeerDB, движок таблиц PostgreSQL, движок базы данных MaterializedPostgreSQL. |
+| [Миграция данных](/migrations/postgresql/dataset)    | Часть 1 руководства по миграции с PostgreSQL на ClickHouse. С использованием практического примера демонстрируется, как эффективно выполнить миграцию с использованием подхода репликации в реальном времени (CDC). Многие из охваченных концепций также применимы для ручных массовых передач данных из PostgreSQL в ClickHouse.                                                                                        |
+| [Переписывание запросов PostgreSQL](/migrations/postgresql/rewriting-queries) | Часть 2 руководства по миграции с PostgreSQL на ClickHouse. С использованием практического примера демонстрируется, как эффективно выполнить миграцию с использованием подхода репликации в реальном времени (CDC). Многие из охваченных концепций также применимы для ручных массовых передач данных из PostgreSQL в ClickHouse.|
+| [Методы моделирования данных](/migrations/postgresql/data-modeling-techniques) | Часть 3 руководства по миграции с PostgreSQL на ClickHouse. С использованием практического примера демонстрируется, как моделировать данные в ClickHouse при миграции из PostgreSQL. |
+| [Приложение](/migrations/postgresql/appendix) | Дополнительная информация, относящаяся к миграции из PostgreSQL |

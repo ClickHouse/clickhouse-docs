@@ -1,25 +1,23 @@
 ---
-title: 'Как запрашивать Apache Arrow с помощью chDB'
+title: 'Как выполнять запросы к Apache Arrow с помощью chDB'
 sidebar_label: 'Запросы к Apache Arrow'
 slug: /chdb/guides/apache-arrow
-description: 'В этом руководстве мы научимся запрашивать таблицы Apache Arrow с помощью chDB'
+description: 'В этом руководстве мы научимся выполнять запросы к таблицам Apache Arrow с помощью chDB'
 keywords: ['chdb', 'Apache Arrow']
 ---
 
-[Apache Arrow](https://arrow.apache.org/) — это стандартизированный формат памяти с колонковым расположением, который приобрел популярность в сообществе данных.
-В этом руководстве мы научимся запрашивать Apache Arrow, используя табличную функцию `Python`.
+[Apache Arrow](https://arrow.apache.org/) — это стандартизированный столбцовый формат памяти, который получил популярность в сообществе данных. В этом руководстве мы научимся выполнять запросы к Apache Arrow, используя табличную функцию `Python`.
 
 ## Настройка {#setup}
 
-Для начала создадим виртуальное окружение:
+Сначала создадим виртуальную среду:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-Теперь установим chDB.
-Убедитесь, что у вас установлена версия 2.0.2 или выше:
+Теперь установим chDB. Убедитесь, что у вас версия 2.0.2 или выше:
 
 ```bash
 pip install "chdb>=2.0.2"
@@ -31,13 +29,13 @@ pip install "chdb>=2.0.2"
 pip install pyarrow pandas ipython
 ```
 
-Мы будем использовать `ipython` для выполнения команд в остальной части руководства, который можно запустить командой:
+Мы будем использовать `ipython` для выполнения команд в остальной части руководства, который можно запустить, выполнив:
 
 ```bash
 ipython
 ```
 
-Вы также можете использовать этот код в Python скрипте или в вашем любимом ноутбуке.
+Вы также можете использовать код в Python-скрипте или в вашем любимом блокноте.
 
 ## Создание таблицы Apache Arrow из файла {#creating-an-apache-arrow-table-from-a-file}
 
@@ -65,7 +63,7 @@ import pyarrow.parquet as pq
 arrow_table = pq.read_table("./2023-04-01_performance_mobile_tiles.parquet")
 ```
 
-Схема приведена ниже:
+Схема показана ниже:
 
 ```python
 arrow_table.schema
@@ -85,7 +83,7 @@ tests: int64
 devices: int64
 ```
 
-И мы можем получить количество строк и колонок, вызвав атрибут `shape`:
+Мы также можем получить количество строк и колонок, вызвав атрибут `shape`:
 
 ```python
 arrow_table.shape
@@ -95,10 +93,9 @@ arrow_table.shape
 (3864546, 11)
 ```
 
-## Запрос к Apache Arrow {#querying-apache-arrow}
+## Запросы к Apache Arrow {#querying-apache-arrow}
 
-Теперь давайте сделаем запрос к таблице Arrow из chDB.
-Сначала импортируем chDB:
+Теперь давайте выполним запрос к таблице Arrow из chDB. Сначала импортируем chDB:
 
 ```python
 import chdb
@@ -128,7 +125,7 @@ SETTINGS describe_compact_output=1
 10          devices    Int64
 ```
 
-Мы также можем подсчитать количество строк:
+Мы также можем посчитать количество строк:
 
 ```python
 chdb.query("SELECT count() FROM Python(arrow_table)", "DataFrame")
@@ -139,9 +136,7 @@ chdb.query("SELECT count() FROM Python(arrow_table)", "DataFrame")
 0  3864546
 ```
 
-Теперь давайте сделаем что-то более интересное. 
-Следующий запрос исключает колонки `quadkey` и `tile.*`, а затем вычисляет средние и максимальные значения для всех оставшихся колонок:
-
+Теперь давайте сделаем что-то немного более интересное. Следующий запрос исключает колонки `quadkey` и `tile.*` и затем вычисляет средние и максимальные значения для всех оставшихся колонок:
 
 ```python
 chdb.query("""

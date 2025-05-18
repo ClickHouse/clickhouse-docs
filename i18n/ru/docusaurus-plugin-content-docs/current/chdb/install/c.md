@@ -20,7 +20,7 @@ curl -sL https://lib.chdb.io | bash
 
 ## Использование {#usage}
 
-Следуйте инструкциям для [libchdb](https://github.com/chdb-io/chdb/blob/main/bindings.md), чтобы начать.
+Следуйте инструкциям для [libchdb](https://github.com/chdb-io/chdb/blob/main/bindings.md), чтобы начать работу.
 
 `chdb.h`
 
