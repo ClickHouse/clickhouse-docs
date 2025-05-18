@@ -96,6 +96,4 @@ tar -xzvf "clickhouse-client-$LATEST_VERSION-${ARCH}.tgz" \
 sudo "clickhouse-client-$LATEST_VERSION/install/doinst.sh"
 ```
 
-
-
 </VerticalStepper>

@@ -1,4 +1,3 @@
-
 import Image from '@theme/IdealImage';
 import async_inserts from '@site/static/images/bestpractices/async_inserts.png';
 
@@ -62,4 +61,3 @@ import async_inserts from '@site/static/images/bestpractices/async_inserts.png';
   ```bash
   "jdbc:ch://HOST.clickhouse.cloud:8443/?user=default&password=PASSWORD&ssl=true&custom_http_params=async_insert=1,wait_for_async_insert=1"
   ```
-```

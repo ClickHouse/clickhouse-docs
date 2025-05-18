@@ -1,9 +1,3 @@
-title: 'Оптимизация слияний в ClickHouse'
-sidebar_label: 'Оптимизация слияний'
-keywords: ['слияния', 'оптимизация', 'MergeTree']
-description: 'Управление слияниями в ClickHouse: когда избегать ручных операций и доверять ClickHouse.'
-```
-
 import Image from '@theme/IdealImage';
 import simple_merges from '@site/static/images/bestpractices/simple_merges.png';
 
