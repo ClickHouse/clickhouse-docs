@@ -1,6 +1,8 @@
-description: 'Настройки для MergeTree, которые находятся в `system.merge_tree_settings`'
+---
+description: 'Settings for MergeTree which are in `system.merge_tree_settings`'
 slug: /operations/settings/merge-tree-settings
-title: 'Настройки таблиц MergeTree'
+title: 'MergeTree tables settings'
+---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import BetaBadge from '@theme/badges/BetaBadge';

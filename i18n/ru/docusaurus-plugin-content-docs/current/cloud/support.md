@@ -1,9 +1,10 @@
-sidebar_label: 'Поддержка в облаке'
-title: 'Поддержка в облаке'
-slug: /cloud/support
-description: 'Узнайте о поддержке в облаке'
-hide_title: true
-```
+---
+slug: /about-us/support
+sidebar_label: 'Support'
+title: 'ClickHouse Cloud Support Services'
+sidebar_position: 30
+description: 'Information on ClickHouse Cloud support services'
+---
 
 import Content from '@site/docs/about-us/support.md';
 

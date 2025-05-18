@@ -5,8 +5,6 @@ description: 'OLAP расшифровывается как Online Analytical Pro
 title: 'Что такое OLAP?'
 slug: /concepts/olap
 ---
-```
-
 
 # Что такое OLAP?
 
