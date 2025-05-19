@@ -1,5 +1,5 @@
 ---
-description: 'Руководство по сборке ClickHouse из исходного кода на системах macOS'
+description: 'Руководство по сборке ClickHouse из源 на системах macOS'
 sidebar_label: 'Сборка на macOS для macOS'
 sidebar_position: 15
 slug: /development/build-osx
@@ -10,16 +10,16 @@ title: 'Сборка на macOS для macOS'
 # Как собрать ClickHouse на macOS для macOS
 
 :::info Вам не нужно собирать ClickHouse самостоятельно!
-Вы можете установить предварительно собранный ClickHouse, как описано в [Быстром старте](https://clickhouse.com/#quick-start).
+Вы можете установить предустановленный ClickHouse, как описано в [Quick Start](https://clickhouse.com/#quick-start).
 :::
 
-ClickHouse можно компилировать на macOS x86_64 (Intel) и arm64 (Apple Silicon), начиная с macOS 10.15 (Catalina) или выше.
+ClickHouse можно скомпилировать на macOS x86_64 (Intel) и arm64 (Apple Silicon) начиная с macOS 10.15 (Catalina) или выше.
 
 В качестве компилятора поддерживается только Clang из homebrew.
 
-## Установка предварительных требований {#install-prerequisites}
+## Установка необходимых компонентов {#install-prerequisites}
 
-Сначала ознакомьтесь с общей [документацией по предварительным требованиям](developer-instruction.md).
+Сначала ознакомьтесь с общей [документацией по требованиям](developer-instruction.md).
 
 Затем установите [Homebrew](https://brew.sh/) и выполните
 
@@ -27,17 +27,17 @@ ClickHouse можно компилировать на macOS x86_64 (Intel) и ar
 
 ```bash
 brew update
-brew install ccache cmake ninja libtool gettext llvm binutils grep findutils nasm
+brew install ccache cmake ninja libtool gettext llvm binutils grep findutils nasm bash
 ```
 
 :::note
-Apple по умолчанию использует файловую систему без учета регистра. Хотя это обычно не влияет на компиляцию (в частности, можно использовать scratch makes), это может запутать операции с файлами, такие как `git mv`.
-Для серьезной разработки на macOS убедитесь, что исходный код хранится на дисковом томе с учетом регистра, например, ознакомьтесь с [этими инструкциями](https://brianboyko.medium.com/a-case-sensitive-src-folder-for-mac-programmers-176cc82a3830).
+Apple использует файловую систему без учета регистра по умолчанию. Хотя это обычно не влияет на сборку (особенно работают командные сборки), это может вызвать путаницу в операциях с файлами, таких как `git mv`.
+Для серьезной разработки на macOS убедитесь, что исходный код хранится на диске с учетом регистра, например, смотрите [эти инструкции](https://brianboyko.medium.com/a-case-sensitive-src-folder-for-mac-programmers-176cc82a3830).
 :::
 
 ## Сборка ClickHouse {#build-clickhouse}
 
-Для сборки необходимо использовать компилятор Clang из Homebrew:
+Для сборки необходимо использовать компилятор Clang от Homebrew:
 
 ```bash
 cd ClickHouse
@@ -46,15 +46,15 @@ export PATH=$(brew --prefix llvm)/bin:$PATH
 cmake -S . -B build
 cmake --build build
 
-# Результирующий двоичный файл будет создан в: build/programs/clickhouse
+# Получившийся бинарный файл будет создан по адресу: build/programs/clickhouse
 ```
 
 ## Замечания {#caveats}
 
-Если вы собираетесь запускать `clickhouse-server`, убедитесь, что увеличили системную переменную `maxfiles`.
+Если вы собираетесь запускать `clickhouse-server`, убедитесь, что вы увеличили переменную `maxfiles` в системе.
 
 :::note
-Вам нужно будет использовать sudo.
+Вам понадобится использовать sudo.
 :::
 
 Для этого создайте файл `/Library/LaunchDaemons/limit.maxfiles.plist` со следующим содержимым:
@@ -83,13 +83,13 @@ cmake --build build
 </plist>
 ```
 
-Установите правильные права доступа к файлу:
+Дайте файлу правильные права:
 
 ```bash
 sudo chown root:wheel /Library/LaunchDaemons/limit.maxfiles.plist
 ```
 
-Проверьте, правильный ли файл:
+Проверьте корректность файла:
 
 ```bash
 plutil /Library/LaunchDaemons/limit.maxfiles.plist

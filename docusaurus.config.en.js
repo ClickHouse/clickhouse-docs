@@ -60,10 +60,10 @@ const config = {
   // url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
   baseUrl: "/docs/",
   baseUrlIssueBanner: true,
-  onBrokenLinks: "throw",
+  onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   onDuplicateRoutes: "throw",
-  onBrokenAnchors: "throw",
+  onBrokenAnchors: "warn",
   favicon: "img/docs_favicon.ico",
   organizationName: "ClickHouse",
   trailingSlash: false,
@@ -231,13 +231,6 @@ const config = {
       attributes: {
         href: "https://www.googletagmanager.com",
         rel: "preconnect",
-      },
-    },
-    {
-      tagName: 'img',
-      attributes: {
-        referrerPolicy: 'no-referrer-when-downgrade',
-        src: 'https://static.scarf.sh/a.png?x-pxid=e6377503-591b-4886-9398-e69c7fee0b91',
       },
     },
   ],

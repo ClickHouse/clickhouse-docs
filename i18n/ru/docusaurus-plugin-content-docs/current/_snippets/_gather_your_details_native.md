@@ -20,4 +20,3 @@ import Image from '@theme/IdealImage';
 <Image img={connection_details_native} size="md" alt="Детали подключения ClickHouse Cloud Native TCP" border/>
 
 Если вы используете самоуправляемый ClickHouse, детали подключения настраиваются вашим администратором ClickHouse.
-```

@@ -131,7 +131,7 @@ In summary, while sync and normalize processes are terminated during a pause, it
 
 ### Can ClickPipe creation be automated or done via API or CLI? {#can-clickpipe-creation-be-automated-or-done-via-api-or-cli}
 
-As of now, you can create a ClickPipe only via the UI. However, we are actively working on exposing OpenAPI and Terraform endpoints. We expect this to be released in the near future (within a month). If you are interested in becoming a design partner for this feature, please reach out to db-integrations-support@clickhouse.com.
+A Postgres ClickPipe can also be created and managed via [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi) endpoints. This feature is in beta, and the API reference can be found [here](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/beta). We are actively working on Terraform support to create Postgres ClickPipes as well.
 
 ### How do I speed up my initial load? {#how-do-i-speed-up-my-initial-load}
 
@@ -147,7 +147,7 @@ These adjustments should significantly enhance the performance of the initial lo
 
 ### How should I scope my publications when setting up replication? {#how-should-i-scope-my-publications-when-setting-up-replication}
 
-You can let ClickPipes manage your publications (requires write access) or create them yourself. With ClickPipes-managed publications, we automatically handle table additions and removals as you edit the pipe. If self-managing, carefully scope your publications to only include tables you need to replicate - including unnecessary tables will slow down Postgres WAL decoding.
+You can let ClickPipes manage your publications (requires additional permissions) or create them yourself. With ClickPipes-managed publications, we automatically handle table additions and removals as you edit the pipe. If self-managing, carefully scope your publications to only include tables you need to replicate - including unnecessary tables will slow down Postgres WAL decoding.
 
 If you include any table in your publication, make sure it has either a primary key or `REPLICA IDENTITY FULL`. If you have tables without a primary key, creating a publication for all tables will cause DELETE and UPDATE operations to fail on those tables.
 
@@ -168,7 +168,7 @@ You have two options when dealing with tables without primary keys:
 1. **Exclude tables without primary keys from ClickPipes**:
    Create the publication with only the tables that have a primary key:
    ```sql
-   CREATE PUBLICATION my_publication FOR TABLE table_with_primary_key1, table_with_primary_key2, ...;
+   CREATE PUBLICATION clickpipes_publication FOR TABLE table_with_primary_key1, table_with_primary_key2, ...;
    ```
 
 2. **Include tables without primary keys in ClickPipes**:
@@ -176,8 +176,15 @@ You have two options when dealing with tables without primary keys:
    ```sql
    ALTER TABLE table_without_primary_key1 REPLICA IDENTITY FULL;
    ALTER TABLE table_without_primary_key2 REPLICA IDENTITY FULL;
-   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
+   CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>;
    ```
+
+:::tip
+If you're creating a publication manually instead of letting ClickPipes manage it, we don't recommend creating a publication `FOR ALL TABLES`, this leads to more traffic from Postgres to ClickPipes (to sending changes for other tables not in the pipe) and reduces overall efficiency.
+
+For manually created publications, please add any tables you want to the publication before adding them to the pipe.
+::: 
+
 
 ## Recommended `max_slot_wal_keep_size` Settings {#recommended-max_slot_wal_keep_size-settings}
 
@@ -257,7 +264,7 @@ Note that if you're working with partitioned tables, make sure to create your pu
 
 ```sql
 CREATE PUBLICATION clickpipes_publication 
-FOR TABLE table_1, table_2, ... 
+FOR TABLE <...>, <...>  
 WITH (publish_via_partition_root = true);
 ```
 

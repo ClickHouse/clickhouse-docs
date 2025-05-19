@@ -5,7 +5,7 @@ description: 'Форматы данных для chDB'
 keywords: ['chdb', 'форматы данных']
 ---
 
-| Страница справки      |
-|----------------------|
+| Справочная страница    |
+|------------------------|
 | [Форматы данных](/chdb/reference/data-formats)  |
-| [Справочник SQL](/chdb/reference/sql-reference) |
+| [Справка по SQL](/chdb/reference/sql-reference) |

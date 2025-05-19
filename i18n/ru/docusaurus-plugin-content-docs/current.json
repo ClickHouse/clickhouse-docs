@@ -413,7 +413,7 @@
   },
   "sidebar.managingData.doc.ReplacingMergeTree": {
     "message": "ReplacingMergeTree",
-    "description": "The label for the doc item ReplacingMergeTree in sidebar managingData, linking to the doc migrations/postgres/replacing-merge-tree"
+    "description": "The label for the doc item ReplacingMergeTree in sidebar managingData, linking to the doc guides/developer/replacing-merge-tree"
   },
   "sidebar.managingData.doc.Lightweight Deletes": {
     "message": "Легкое удаление",
@@ -685,7 +685,7 @@
   },
   "sidebar.dropdownCategories.link.Native Clients & Interfaces": {
     "message": "Нативные клиенты и интерфейсы",
-    "description": "The label for link Native Clients & Interfaces in sidebar dropdownCategories, linking to /interfaces/"
+    "description": "The label for link Native Clients & Interfaces in sidebar dropdownCategories, linking to /interfaces/natives-clients-and-interfaces"
   },
   "sidebar.dropdownCategories.link.Data Sources": {
     "message": "Источники данных",
@@ -730,5 +730,81 @@
   "sidebar.dropdownCategories.link.Development and Contributing": {
     "message": "Разработка и вклад",
     "description": "The label for link Development and Contributing in sidebar dropdownCategories, linking to /development/developer-instruction"
+  },
+  "sidebar.docs.category.Install": {
+    "message": "Установка",
+    "description": "The label for category Install in sidebar docs"
+  },
+  "sidebar.docs.category.Best Practices": {
+    "message": "Лучшие практики",
+    "description": "The label for category Best Practices in sidebar docs"
+  },
+  "sidebar.docs.category.Time-Series": {
+    "message": "временной ряд",
+    "description": "The label for category Time-Series in sidebar docs"
+  },
+  "sidebar.docs.category.Data lake": {
+    "message": "ДатаЛэйк",
+    "description": "The label for category Data lake in sidebar docs"
+  },
+  "sidebar.docs.doc.Overview": {
+    "message": "Обзор",
+    "description": "The label for the doc item Overview in sidebar docs, linking to the doc migrations/postgres/overview"
+  },
+  "sidebar.cloud.link.API Reference": {
+    "message": "Справочник по API",
+    "description": "The label for link API Reference in sidebar cloud, linking to https://clickhouse.com/docs/cloud/manage/api/swagger"
+  },
+  "sidebar.sqlreference.category.Специальные типы данных": {
+    "message": "Специальные типы данных",
+    "description": "The label for category Специальные типы данных in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Движки баз данных": {
+    "message": "Движки баз данных",
+    "description": "The label for category Движки баз данных in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Движки Таблиц": {
+    "message": "Движки Таблиц",
+    "description": "The label for category Движки Таблиц in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Семейство MergeTree": {
+    "message": "Семейство MergeTree",
+    "description": "The label for category Семейство MergeTree in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Семейство журналов": {
+    "message": "Семейство журналов",
+    "description": "The label for category Семейство журналов in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Интеграции": {
+    "message": "Интеграции",
+    "description": "The label for category Интеграции in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Специальные": {
+    "message": "Специальные",
+    "description": "The label for category Специальные in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Гео": {
+    "message": "Гео",
+    "description": "The label for category Гео in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Агрегатные функции": {
+    "message": "Агрегатные функции",
+    "description": "The label for category Агрегатные функции in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Combinator examples": {
+    "message": "Примеры комбинаторов",
+    "description": "The label for category Combinator examples in sidebar sqlreference"
+  },
+  "sidebar.integrations.category.Operations": {
+    "message": "Операции",
+    "description": "The label for category Operations in sidebar integrations"
+  },
+  "sidebar.integrations.category.ClickPipes for MySQL": {
+    "message": "ClickPipes для MySQL",
+    "description": "The label for category ClickPipes for MySQL in sidebar integrations"
+  },
+  "sidebar.integrations.category.Azure Data Factory": {
+    "message": "Azure Data Factory",
+    "description": "The label for category Azure Data Factory in sidebar integrations"
   }
 }

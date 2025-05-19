@@ -38,9 +38,9 @@ In production environments, we strongly recommend using *dedicated* hosts for Cl
 
 ## Install {#install}
 
-Install ClickHouse server and client on the two servers `clickhouse-01` and `clickhouse-02` following the [instructions for your archive type](/getting-started/install.md/#available-installation-options) (.deb, .rpm, .tar.gz, etc.).
+Install ClickHouse server and client on the two servers `clickhouse-01` and `clickhouse-02` following the [instructions for your archive type](/getting-started/install/install.mdx) (.deb, .rpm, .tar.gz, etc.).
 
-Install ClickHouse Keeper on the three servers `clickhouse-keeper-01`, `clickhouse-keeper-02` and `clickhouse-keeper-03` following the [instructions for your archive type](/getting-started/install.md/#install-standalone-clickhouse-keeper) (.deb, .rpm, .tar.gz, etc.).
+Install ClickHouse Keeper on the three servers `clickhouse-keeper-01`, `clickhouse-keeper-02` and `clickhouse-keeper-03` following the [instructions for your archive type](/getting-started/install/install.mdx) (.deb, .rpm, .tar.gz, etc.).
 
 ## Editing configuration files {#editing-configuration-files}
 

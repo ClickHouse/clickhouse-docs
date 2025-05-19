@@ -10,10 +10,10 @@ show_related_blogs: true
 ---
 
 import Image from '@theme/IdealImage';
-import superset_github_lines_added_deleted from './images/superset-github-lines-added-deleted.png'
-import superset_commits_authors from './images/superset-commits-authors.png'
-import superset_authors_matrix from './images/superset-authors-matrix.png'
-import superset_authors_matrix_v2 from './images/superset-authors-matrix_v2.png'
+import superset_github_lines_added_deleted from '@site/static/images/getting-started/example-datasets/superset-github-lines-added-deleted.png'
+import superset_commits_authors from '@site/static/images/getting-started/example-datasets/superset-commits-authors.png'
+import superset_authors_matrix from '@site/static/images/getting-started/example-datasets/superset-authors-matrix.png'
+import superset_authors_matrix_v2 from '@site/static/images/getting-started/example-datasets/superset-authors-matrix_v2.png'
 
 This dataset contains all of the commits and changes for the ClickHouse repository. It can be generated using the native `git-import` tool distributed with ClickHouse.
 

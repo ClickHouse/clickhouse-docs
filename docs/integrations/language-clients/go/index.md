@@ -47,27 +47,21 @@ import (
 func main() {
         conn, err := connect()
         if err != nil {
-                panic((err))
+                panic(err)
         }
 
         ctx := context.Background()
-        rows, err := conn.Query(ctx, "SELECT name,toString(uuid) as uuid_str FROM system.tables LIMIT 5")
+        rows, err := conn.Query(ctx, "SELECT name, toString(uuid) as uuid_str FROM system.tables LIMIT 5")
         if err != nil {
                 log.Fatal(err)
         }
 
         for rows.Next() {
-                var (
-                        name, uuid string
-                )
-                if err := rows.Scan(
-                        &name,
-                        &uuid,
-                ); err != nil {
+                var name, uuid string
+                if err := rows.Scan(&name, &uuid); err != nil {
                         log.Fatal(err)
                 }
-                log.Printf("name: %s, uuid: %s",
-                        name, uuid)
+                log.Printf("name: %s, uuid: %s", name, uuid)
         }
 
 }
@@ -90,7 +84,6 @@ func connect() (driver.Conn, error) {
                                         {Name: "an-example-go-client", Version: "0.1"},
                                 },
                         },
-
                         Debugf: func(format string, v ...interface{}) {
                                 fmt.Printf(format, v)
                         },
@@ -437,9 +430,7 @@ conn, err := clickhouse.Open(&clickhouse.Options{
 if err != nil {
     return err
 }
-if err != nil {
-    return err
-}
+
 v, err := conn.ServerVersion()
 ```
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/auth.go)

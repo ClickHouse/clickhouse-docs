@@ -5,6 +5,7 @@ title: 'Выберите ключ партиционирования с низк
 description: 'Используйте ключ партиционирования с низкой кардинальностью или избегайте использования любого ключа партиционирования для вашей таблицы.'
 ---
 
-import Content from '@site/docs/cloud/bestpractices/partitioningkey.md';
+import Content from '@site/docs/best-practices/partionning_keys.md';
 
 <Content />
+

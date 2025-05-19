@@ -1,10 +1,10 @@
 ---
 slug: /optimize/avoid-nullable-columns
-sidebar_label: 'Избегать колонок с возможностью NULL'
-title: 'Избегать колонок с возможностью NULL'
-description: 'Колонки с возможностью NULL (например, Nullable(String)) создают отдельную колонку типа UInt8.'
+sidebar_label: 'Избегайте Nullable Колонок'
+title: 'Избегайте Nullable Колонок'
+description: 'Почему следует избегать Nullable Колонок в ClickHouse'
 ---
 
-import Content from '@site/docs/cloud/bestpractices/avoidnullablecolumns.md';
+import Content from '@site/docs/best-practices/_snippets/_avoid_nullable_columns.md';
 
 <Content />
