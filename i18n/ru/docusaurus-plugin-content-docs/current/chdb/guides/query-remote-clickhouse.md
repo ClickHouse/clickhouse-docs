@@ -1,63 +1,63 @@
 ---
-title: 'Как запрашивать удаленный сервер ClickHouse'
+title: 'Как выполнять запросы к удаленному серверу ClickHouse'
 sidebar_label: 'Запросы к удаленному ClickHouse'
 slug: /chdb/guides/query-remote-clickhouse
-description: 'В этом руководстве мы узнаем, как запрашивать удаленный сервер ClickHouse из chDB.'
+description: 'В этом руководстве мы научимся выполнять запросы к удаленному серверу ClickHouse из chDB.'
 keywords: ['chdb', 'clickhouse']
 ---
 
-В этом руководстве мы узнаем, как запрашивать удаленный сервер ClickHouse из chDB.
+В этом руководстве мы научимся выполнять запросы к удаленному серверу ClickHouse из chDB.
 
-## Настройка {#setup}
+## Установка {#setup}
 
-Сначала создадим виртуальное окружение:
+Сначала создадим виртуальную среду:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-А теперь установим chDB.
+Теперь установим chDB.
 Убедитесь, что у вас версия 2.0.2 или выше:
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-А теперь установим pandas и ipython:
+Теперь мы установим pandas и ipython:
 
 ```bash
 pip install pandas ipython
 ```
 
-Мы будем использовать `ipython` для выполнения команд в остальной части руководства, который можно запустить, выполнив:
+Мы будем использовать `ipython` для выполнения команд в остальной части руководства, который можно запустить командой:
 
 ```bash
 ipython
 ```
 
-Вы также можете использовать этот код в Python-скрипте или в вашем любимом блокноте.
+Вы также можете использовать код в Python-скрипте или в своем любимом ноутбуке.
 
 ## Введение в ClickPy {#an-intro-to-clickpy}
 
-Удаленный сервер ClickHouse, к которому мы будем делать запросы, это [ClickPy](https://clickpy.clickhouse.com).
-ClickPy отслеживает все загрузки пакетов PyPI и позволяет вам исследовать статистику пакетов через пользовательский интерфейс.
-Основная база данных доступна для запросов с использованием пользователя `play`.
+Удаленный сервер ClickHouse, к которому мы будем выполнять запросы, это [ClickPy](https://clickpy.clickhouse.com).
+ClickPy отслеживает все загрузки пакетов PyPI и позволяет вам исследовать статистику пакетов через интерфейс.
+Подлежащая база данных доступна для запросов с использованием пользователя `play`.
 
-Вы можете узнать больше о ClickPy в [его репозитории на GitHub](https://github.com/ClickHouse/clickpy).
+Вы можете узнать больше о ClickPy в [его репозитории GitHub](https://github.com/ClickHouse/clickpy).
 
-## Запрос к ClickPy ClickHouse сервису {#querying-the-clickpy-clickhouse-service}
+## Запрос к сервису ClickPy ClickHouse {#querying-the-clickpy-clickhouse-service}
 
-Давайте импортируем chDB:
+Импортируем chDB:
 
 ```python
 import chdb
 ```
 
 Мы будем запрашивать ClickPy с помощью функции `remoteSecure`.
-Эта функция требует, как минимум, имя хоста, имя таблицы и имя пользователя.
+Эта функция принимает как минимум имя хоста, имя таблицы и имя пользователя.
 
-Мы можем написать следующий запрос, чтобы вернуть количество загрузок в день пакета [`openai`](https://clickpy.clickhouse.com/dashboard/openai) в виде DataFrame Pandas:
+Мы можем написать следующий запрос, чтобы получить количество загрузок в день для пакета [`openai`](https://clickpy.clickhouse.com/dashboard/openai) в виде DataFrame Pandas:
  
 ```python
 query = """
@@ -92,7 +92,7 @@ openai_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-Теперь давайте сделаем то же самое, чтобы вернуть загрузки для [`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn):
+Теперь сделаем то же самое, чтобы получить загрузки для [`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn):
 
 ```python
 query = """
@@ -127,9 +127,9 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-## Слияние DataFrame Pandas {#merging-pandas-dataframes}
+## Объединение DataFrames Pandas {#merging-pandas-dataframes}
 
-Теперь у нас есть два DataFrame, которые мы можем объединить по дате (которая является колонкой `x`) следующим образом:
+Теперь у нас есть два DataFrame, которые мы можем объединить на основе даты (которая является колонкой `x`) следующим образом:
 
 ```python
 df = openai_df.merge(
@@ -149,7 +149,7 @@ df.head(n=5)
 4  2018-03-02         5      23842
 ```
 
-Затем мы можем вычислить отношение загрузок Open AI к загрузкам `scikit-learn` следующим образом:
+Затем мы можем вычислить отношение загрузок OpenAI к загрузкам `scikit-learn` следующим образом:
 
 ```python
 df['ratio'] = df['y_openai'] / df['y_sklearn']
@@ -165,9 +165,9 @@ df.head(n=5)
 4  2018-03-02         5      23842  0.000210
 ```
 
-## Запросы к DataFrame Pandas {#querying-pandas-dataframes}
+## Запрос к DataFrames Pandas {#querying-pandas-dataframes}
 
-Далее, скажем, что мы хотим найти даты с лучшими и худшими отношениями. 
+Далее, давайте скажем, что мы хотим найти даты с лучшими и худшими отношениями. 
 Мы можем вернуться к chDB и вычислить эти значения:
 
 ```python
@@ -185,4 +185,4 @@ FROM Python(df)
 0   0.693855  2024-09-19    0.000003  2020-02-09
 ```
 
-Если вы хотите узнать больше о запросах к DataFrame Pandas, смотрите [руководство разработчика по DataFrame Pandas](querying-pandas.md).
+Если вы хотите узнать больше о запросах к DataFrames Pandas, смотрите [руководство разработчика по DataFrames Pandas](querying-pandas.md).

@@ -1,12 +1,10 @@
 ---
-sidebar_label: 'Облачная поддержка'
-title: 'Облачная поддержка'
+sidebar_label: 'Cloud Support'
+title: 'Cloud Support'
 slug: /cloud/support
-description: 'Узнайте о облачной поддержке'
+description: 'Learn about Cloud Support'
+hide_title: true
 ---
-
-
-# Облачная поддержка
 
 import Content from '@site/docs/about-us/support.md';
 
