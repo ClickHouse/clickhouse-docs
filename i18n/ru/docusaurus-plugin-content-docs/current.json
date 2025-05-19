@@ -744,7 +744,7 @@
     "description": "The label for category Time-Series in sidebar docs"
   },
   "sidebar.docs.category.Data lake": {
-    "message": "Озеро данных",
+    "message": "ДатаЛэйк",
     "description": "The label for category Data lake in sidebar docs"
   },
   "sidebar.docs.doc.Overview": {
