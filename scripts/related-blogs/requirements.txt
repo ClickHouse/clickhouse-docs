@@ -1,2 +1,0 @@
-algoliasearch==2.6.3
-openai==1.78.0
