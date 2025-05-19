@@ -2,7 +2,8 @@
 title: 'Migrating from Rockset'
 slug: /migrations/rockset
 description: 'Migrating from Rockset to ClickHouse'
-keywords: ['Rockset', 'migration']
+keywords: ['Rockset']
+show_related_blogs: true
 ---
 
 # Migrating from Rockset

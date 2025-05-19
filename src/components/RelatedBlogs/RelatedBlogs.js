@@ -114,15 +114,14 @@ const RelatedBlogs = (props) => {
                     setIsLoading(true);
 
                     // Calculate timestamp from 18 months ago
-                    const eighteenMonthsAgo = new Date();
-                    eighteenMonthsAgo.setMonth(eighteenMonthsAgo.getMonth() - 18);
-                    const timestampEighteenMonthsAgo = Math.floor(eighteenMonthsAgo.getTime() / 1000);
+                    const cutOff = new Date('2023-01-01');
+                    const timestampCutoff = Math.floor(cutOff.getTime() / 1000);
 
                     // Search on title if there are no keywords
                     let search_query = keywords.length === 0 ? title : formatKeywords(keywords);
                     console.log(formatKeywords(keywords))
 
-                    const param_string = `attributesToRetrieve=title,image,url,date&hitsPerPage=3&optionalWords=${formatKeywords(keywords)}&filters=(category:Engineering OR category:Product)&filters=release_post:false&numericFilters=date>=${timestampEighteenMonthsAgo}`;
+                    const param_string = `attributesToRetrieve=title,image,url,date&hitsPerPage=3&optionalWords=${formatKeywords(keywords)}&filters=(category:Engineering)&filters=release_post:false&numericFilters=date>=${timestampCutoff}`;
 
                     const { results } = await client.search({
                         requests: [

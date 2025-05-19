@@ -2,7 +2,7 @@
 title: 'Migrating from BigQuery to ClickHouse Cloud'
 slug: /migrations/bigquery/migrating-to-clickhouse-cloud
 description: 'How to migrate your data from BigQuery to ClickHouse Cloud'
-keywords: ['migrate', 'migration', 'BigQuery']
+keywords: ['BigQuery']
 show_related_blogs: true
 ---
 
