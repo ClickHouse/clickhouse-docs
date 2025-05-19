@@ -8,6 +8,7 @@ title: 'Integrating Object Storage with ClickHouse Cloud'
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
 import Gcssvg from '@site/static/images/integrations/logos/gcs.svg';
 import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
+import ABSsvg from '@site/static/images/integrations/logos/azureblobstorage.svg';
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
 import cp_step1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step1.png';
 import cp_step2_object_storage from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step2_object_storage.png';
@@ -23,7 +24,7 @@ import cp_overview from '@site/static/images/integrations/data-ingestion/clickpi
 import Image from '@theme/IdealImage';
 
 # Integrating Object Storage with ClickHouse Cloud
-Object Storage ClickPipes provide a simple and resilient way to ingest data from Amazon S3, Google Cloud Storage, and DigitalOcean Spaces into ClickHouse Cloud. Both one-time and continuous ingestion are supported with exactly-once semantics.
+Object Storage ClickPipes provide a simple and resilient way to ingest data from Amazon S3, Google Cloud Storage, Azure Blob Storage, and DigitalOcean Spaces into ClickHouse Cloud. Both one-time and continuous ingestion are supported with exactly-once semantics.
 
 
 ## Prerequisite {#prerequisite}
@@ -95,6 +96,7 @@ Image
 | Amazon S3            |<S3svg class="image" alt="Amazon S3 logo" style={{width: '3rem', height: 'auto'}}/>|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
 | Google Cloud Storage |<Gcssvg class="image" alt="Google Cloud Storage logo" style={{width: '3rem', height: 'auto'}}/>|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
 | DigitalOcean Spaces | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '3rem', height: 'auto'}}/> | Object Storage | Stable | Configure ClickPipes to ingest large volumes of data from object storage.
+| Azure Blob Storage | <ABSsvg class="image" alt="Azure Blob Storage logo" style={{width: '3rem', height: 'auto'}}/> | Object Storage | Private Beta | Configure ClickPipes to ingest large volumes of data from object storage.
 
 More connectors will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
@@ -126,13 +128,13 @@ To increase the throughput on large ingest jobs, we recommend scaling the ClickH
 - There are limitations on the types of views that are supported. Please read the section on [exactly-once semantics](#exactly-once-semantics) and [view support](#view-support) for more information.
 - Role authentication is not available for S3 ClickPipes for ClickHouse Cloud instances deployed into GCP or Azure. It is only supported for AWS ClickHouse Cloud instances.
 - ClickPipes will only attempt to ingest objects at 10GB or smaller in size. If a file is greater than 10GB an error will be appended to the ClickPipes dedicated error table.
-- S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](/sql-reference/table-functions/s3).
+- S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](/sql-reference/table-functions/s3), nor Azure with the [AzureBlobStorage Table function](/sql-reference/table-functions/azureBlobStorage).
   - `?` — Substitutes any single character
   - `*` — Substitutes any number of any characters except / including empty string
   - `**` — Substitutes any number of any character include / including empty string
 
 :::note
-This is a valid path:
+This is a valid path (for S3):
 
 https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/**.ndjson.gz
 
@@ -143,7 +145,7 @@ https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/{documents-01,doc
 :::
 
 ## Continuous Ingest {#continuous-ingest}
-ClickPipes supports continuous ingestion from S3, GCS, and DigitalOcean Spaces. When enabled, ClickPipes will continuously ingest data from the specified path, it will poll for new files at a rate of once every 30 seconds. However, new files must be lexically greater than the last ingested file, meaning they must be named in a way that defines the ingestion order. For instance, files named `file1`, `file2`, `file3`, etc., will be ingested sequentially. If a new file is added with a name like `file0`, ClickPipes will not ingest it because it is not lexically greater than the last ingested file.
+ClickPipes supports continuous ingestion from S3, GCS, Azure Blob Storage, and DigitalOcean Spaces. When enabled, ClickPipes continuously ingests data from the specified path, and polls for new files at a rate of once every 30 seconds. However, new files must be lexically greater than the last ingested file. This means that they must be named in a way that defines the ingestion order. For instance, files named `file1`, `file2`, `file3`, etc., will be ingested sequentially. If a new file is added with a name like `file0`, ClickPipes will not ingest it because it is not lexically greater than the last ingested file.
 
 ## Archive table {#archive-table}
 ClickPipes will create a table next to your destination table with the postfix `s3_clickpipe_<clickpipe_id>_archive`. This table will contain a list of all the files that have been ingested by the ClickPipe. This table is used to track files during ingestion and can be used to verify files have been ingested. The archive table has a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
@@ -167,6 +169,8 @@ The Service Account permissions attached to the HMAC credentials should be `stor
 ### DigitalOcean Spaces {#dospaces}
 Currently only protected buckets are supported for DigitalOcean spaces. You require an "Access Key" and a "Secret Key" to access the bucket and its files. You can read [this guide](https://docs.digitalocean.com/products/spaces/how-to/manage-access/) on how to create access keys.
 
+### Azure Blob Storage {#azureblobstorage}
+Currently only protected buckets are supported for Azure Blob Storage. Authentication is done via a connection string, which supports access keys and shared keys. For more information, read [this guide](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string).
 
 ## F.A.Q. {#faq}
 

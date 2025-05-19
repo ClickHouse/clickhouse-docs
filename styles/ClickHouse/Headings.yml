@@ -33,3 +33,4 @@ exceptions:
   - ReplacingMergeTree
   - AggregatingMergeTree
   - DigitalOcean Spaces
+  - Azure Blob Storage

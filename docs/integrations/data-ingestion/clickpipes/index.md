@@ -14,6 +14,7 @@ import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
 import Amazonkinesis from '@site/static/images/integrations/logos/amazon_kinesis_logo.svg';
 import Gcssvg from '@site/static/images/integrations/logos/gcs.svg';
 import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
+import ABSsvg from '@site/static/images/integrations/logos/azureblobstorage.svg';
 import Postgressvg from '@site/static/images/integrations/logos/postgresql.svg';
 import Mysqlsvg from '@site/static/images/integrations/logos/mysql.svg';
 import redpanda_logo from '@site/static/images/integrations/logos/logo_redpanda.png';
@@ -42,7 +43,7 @@ import Image from '@theme/IdealImage';
 | Amazon S3            | <S3svg class="image" alt="Amazon S3 logo" style={{width: '3rem', height: 'auto'}}/>              |Object Storage| Stable           | Configure ClickPipes to ingest large volumes of data from object storage.                            |
 | Google Cloud Storage | <Gcssvg class="image" alt="Google Cloud Storage logo" style={{width: '3rem', height: 'auto'}}/>  |Object Storage| Stable           | Configure ClickPipes to ingest large volumes of data from object storage.                            |
 | DigitalOcean Spaces | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '3rem', height: 'auto'}}/> | Object Storage | Stable | Configure ClickPipes to ingest large volumes of data from object storage.
-
+| Azure Blob Storage | <ABSsvg class="image" alt="Azure Blob Storage logo" style={{width: '3rem', height: 'auto'}}/> | Object Storage | Private Beta | Configure ClickPipes to ingest large volumes of data from object storage.
 | Amazon Kinesis       | <Amazonkinesis class="image" alt="Amazon Kenesis logo" style={{width: '3rem', height: 'auto'}}/> |Streaming| Stable           | Configure ClickPipes and start ingesting streaming data from Amazon Kinesis into ClickHouse cloud.   |
 | Postgres             | <Postgressvg class="image" alt="Postgres logo" style={{width: '3rem', height: 'auto'}}/>         |DBMS| Public Beta      | Configure ClickPipes and start ingesting data from Postgres into ClickHouse Cloud.                   |
 | MySQL                | <Mysqlsvg class="image" alt="MySQL logo" style={{width: '3rem', height: 'auto'}}/>               |DBMS| Private Beta | Configure ClickPipes and start ingesting data from MySQL into ClickHouse Cloud.                      |
