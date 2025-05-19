@@ -16,7 +16,7 @@ curl -sL https://lib.chdb.io | bash
 
 ## Использование {#usage}
 
-Этот биндинг находится в процессе разработки. Следуйте инструкциям на [chdb-rust](https://github.com/chdb-io/chdb-rust), чтобы начать.
+Это связывание находится в процессе разработки. Следуйте инструкциям на [chdb-rust](https://github.com/chdb-io/chdb-rust), чтобы начать.
 
 ## Репозиторий GitHub {#github-repository}
 

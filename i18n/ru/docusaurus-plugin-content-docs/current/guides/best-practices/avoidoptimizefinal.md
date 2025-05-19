@@ -1,9 +1,10 @@
-slug: '/optimize/avoidoptimizefinal'
-sidebar_label: 'Избегайте Optimize Final'
-title: 'Избегайте Optimize Final'
-description: 'Использование запроса OPTIMIZE TABLE ... FINAL инициирует несогласованное слияние частей данных.'
-``` 
+---
+slug: /optimize/avoidoptimizefinal
+sidebar_label: 'Избегать Optimize Final'
+title: 'Избегать Optimize Final'
+description: 'Использование запроса OPTIMIZE TABLE ... FINAL инициирует незапланированное слияние частей данных.'
+---
 
-import Content from '@site/docs/cloud/bestpractices/avoidoptimizefinal.md';
+import Content from '@site/docs/best-practices/_snippets/_avoid_optimize_final.md';
 
 <Content />

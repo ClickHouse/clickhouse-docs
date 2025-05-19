@@ -6,17 +6,17 @@ description: 'SQL Справочник для chDB'
 keywords: ['chdb', 'sql справочник']
 ---
 
-chdb поддерживает тот же SQL синтаксис, инструкции, движки и функции, что и ClickHouse:
+chdb поддерживает тот же синтаксис SQL, те же операторы, движки и функции, что и ClickHouse:
 
-| Тематика                   |
-|----------------------------|
+| Тема                        |
+|-----------------------------|
 | [SQL Синтаксис](/sql-reference/syntax)          |
-| [Инструкции](/sql-reference/statements)          |
-| [Движки Таблиц](/engines/table-engines)         |
+| [Операторы](/sql-reference/statements)          |
+| [Движки Таблиц](/engines/table-engines)       |
 | [Движки Баз Данных](/engines/database-engines)    |
-| [Обычные Функции](/sql-reference/functions)       |
+| [Регулярные Функции](/sql-reference/functions)   |
 | [Агрегатные Функции](/sql-reference/aggregate-functions) |
 | [Табличные Функции](/sql-reference/table-functions)     | 
-| [Оконные Функции](/sql-reference/window-functions)      |
+| [Оконные Функции](/sql-reference/window-functions)    |
 
-Для получения дополнительной информации и примеров смотрите [Справочник SQL ClickHouse](/sql-reference).
+Для получения дополнительной информации и примеров смотрите [SQL Справочник ClickHouse](/sql-reference).

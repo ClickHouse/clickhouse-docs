@@ -1,24 +1,24 @@
 ---
-description: 'Документация по манипулированию проекциями'
+description: 'Документация по манипуляциям с проекциями'
 sidebar_label: 'PROJECTION'
 sidebar_position: 49
 slug: /sql-reference/statements/alter/projection
 title: 'Проекции'
 ---
 
-Проекции хранят данные в формате, оптимизирующем выполнение запросов, это полезная функция для:
-- Выполнения запросов по колонке, которая не является частью первичного ключа
-- Предварительной агрегации колонок, что уменьшит как вычисления, так и ввод-вывод
+Проекции хранят данные в формате, оптимизирующем выполнение запросов, эта функция полезна для:
+- Выполнения запросов по колонкам, которые не являются частью первичного ключа
+- Предагрегирования колонок, что уменьшает как вычисления, так и ввод-вывод
 
 Вы можете определить одну или несколько проекций для таблицы, и во время анализа запроса ClickHouse выберет проекцию с наименьшим объемом данных для сканирования, не изменяя запрос, предоставленный пользователем.
 
 :::note Использование диска
 
-Проекции будут создаст внутреннюю скрытую таблицу, это означает, что потребуется больше ввода-вывода и место на диске.
-Например, если проекция определяет другой первичный ключ, все данные из оригинальной таблицы будут дублироваться.
+Проекции создадут внутреннюю скрытую таблицу, что означает, что потребуется больше ввода-вывода и места на диске. 
+Например, если проекция определила другой первичный ключ, все данные из оригинальной таблицы будут продублированы. 
 :::
 
-Вы можете увидеть больше технических деталей о том, как проекции работают внутри, на этой [странице](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections).
+Вы можете увидеть больше технических деталей о том, как проекции работают внутренне на этой [странице](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections).
 
 ## Пример фильтрации без использования первичных ключей {#example-filtering-without-using-primary-keys}
 
@@ -34,7 +34,7 @@ CREATE TABLE visits_order
 ENGINE = MergeTree()
 PRIMARY KEY user_agent
 ```
-Используя `ALTER TABLE`, мы можем добавить проекцию к существующей таблице:
+Используя `ALTER TABLE`, мы могли бы добавить проекцию в существующую таблицу:
 ```sql
 ALTER TABLE visits_order ADD PROJECTION user_name_projection (
 SELECT
@@ -55,7 +55,7 @@ FROM numbers(1, 100);
 ```
 
 Проекция позволит нам быстро фильтровать по `user_name`, даже если в оригинальной таблице `user_name` не был определен как `PRIMARY_KEY`.
-Во время выполнения запроса ClickHouse определил, что меньше данных будет обработано, если используется проекция, так как данные упорядочены по `user_name`.
+В момент выполнения запроса ClickHouse определил, что будет обработано меньше данных, если использовать проекцию, поскольку данные отсортированы по `user_name`.
 ```sql
 SELECT
     *
@@ -64,12 +64,12 @@ WHERE user_name='test'
 LIMIT 2
 ```
 
-Чтобы проверить, использует ли запрос проекцию, мы можем просмотреть таблицу `system.query_log`. В поле `projections` мы имеем имя используемой проекции или пустое значение, если ни одна не использовалась:
+Чтобы проверить, использует ли запрос проекцию, мы могли бы просмотреть таблицу `system.query_log`. В поле `projections` мы имеем имя использованной проекции или пустое значение, если ни одна не была использована:
 ```sql
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
-## Пример запроса предварительной агрегации {#example-pre-aggregation-query}
+## Пример запроса предагрегации {#example-pre-aggregation-query}
 
 Создание таблицы с проекцией:
 ```sql
@@ -107,7 +107,7 @@ INSERT INTO visits SELECT
    'IOS'
 FROM numbers(100, 500);
 ```
-Мы выполним первый запрос, используя `GROUP BY`, с использованием поля `user_agent`, этот запрос не будет использовать предопределенную проекцию, так как предварительная агрегация не совпадает.
+Мы выполним первый запрос с использованием `GROUP BY` по полю `user_agent`, этот запрос не будет использовать определенную проекцию, так как предагрегация не совпадает.
 ```sql
 SELECT
     user_agent,
@@ -116,7 +116,7 @@ FROM visits
 GROUP BY user_agent
 ```
 
-Чтобы использовать проекцию, мы можем выполнить запросы, которые выберут часть или все поля предварительной агрегации и `GROUP BY`.
+Чтобы использовать проекцию, мы можем выполнить запросы, которые выбирают часть или все поля предагрегации и `GROUP BY`.
 ```sql
 SELECT
     user_agent
@@ -132,36 +132,79 @@ FROM visits
 GROUP BY user_agent
 ```
 
-Как упоминалось ранее, мы можем просмотреть таблицу `system.query_log`. В поле `projections` мы имеем имя используемой проекции или пустое значение, если ни одна не использовалась:
+Как упоминалось ранее, мы могли бы просмотреть таблицу `system.query_log`. В поле `projections` мы имеем имя использованной проекции или пустое значение, если ни одна не была использована:
 ```sql
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
+## Обычная проекция с полем `_part_offset` {#normal-projection-with-part-offset-field}
 
-# Манипулирование проекциями
+Создание таблицы с обычной проекцией, использующей поле `_part_offset`:
+
+```sql
+CREATE TABLE events
+(
+    `event_time` DateTime,
+    `event_id` UInt64,
+    `user_id` UInt64,
+    `huge_string` String,
+    PROJECTION order_by_user_id
+    (
+        SELECT
+            _part_offset
+        ORDER BY user_id
+    )
+)
+ENGINE = MergeTree()
+ORDER BY (event_id);
+```
+
+Вставка некоторых тестовых данных:
+
+```sql
+INSERT INTO events SELECT * FROM generateRandom() LIMIT 100000;
+```
+
+### Использование `_part_offset` как вторичного индекса {#normal-projection-secondary-index}
+
+Поле `_part_offset` сохраняет свое значение во время слияний и мутаций, что делает его ценным для вторичного индексирования. Мы можем использовать это в запросах:
+
+```sql
+SELECT
+    count()
+FROM events
+WHERE (_part, _part_offset) IN (
+    SELECT _part, _part_offset
+    FROM events
+    WHERE user_id = 42
+)
+```
+
+
+# Манипуляции с проекциями
 
 Доступны следующие операции с [проекциями](/engines/table-engines/mergetree-family/mergetree.md/#projections):
 
 ## ADD PROJECTION {#add-projection}
 
-`ALTER TABLE [db.]name [ON CLUSTER cluster] ADD PROJECTION [IF NOT EXISTS] name ( SELECT <COLUMN LIST EXPR> [GROUP BY] [ORDER BY] )` - Добавляет описание проекции в метаданные таблицы.
+`ALTER TABLE [db.]name [ON CLUSTER cluster] ADD PROJECTION [IF NOT EXISTS] name ( SELECT <COLUMN LIST EXPR> [GROUP BY] [ORDER BY] )` - Добавляет описание проекции в метаданные таблиц.
 
 ## DROP PROJECTION {#drop-projection}
 
-`ALTER TABLE [db.]name [ON CLUSTER cluster] DROP PROJECTION [IF EXISTS] name` - Удаляет описание проекции из метаданных таблицы и удаляет файлы проекции с диска. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations).
+`ALTER TABLE [db.]name [ON CLUSTER cluster] DROP PROJECTION [IF EXISTS] name` - Удаляет описание проекции из метаданных таблиц и удаляет файлы проекции с диска. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations).
 
 ## MATERIALIZE PROJECTION {#materialize-projection}
 
-`ALTER TABLE [db.]table [ON CLUSTER cluster] MATERIALIZE PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` - Запрос восстанавливает проекцию `name` в партиции `partition_name`. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations).
+`ALTER TABLE [db.]table [ON CLUSTER cluster] MATERIALIZE PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` - Запрос перестраивает проекцию `name` в партиции `partition_name`. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations).
 
 ## CLEAR PROJECTION {#clear-projection}
 
-`ALTER TABLE [db.]table [ON CLUSTER cluster] CLEAR PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` - Удаляет файлы проекции с диска без удаления описания. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations).
+`ALTER TABLE [db.]table [ON CLUSTER cluster] CLEAR PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` - Удаляет файлы проекции с диска, не удаляя описание. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations).
 
-Команды `ADD`, `DROP` и `CLEAR` являются легковесными в том смысле, что они только изменяют метаданные или удаляют файлы.
+Команды `ADD`, `DROP` и `CLEAR` являются легковесными в том смысле, что они изменяют только метаданные или удаляют файлы.
 
 Кроме того, они реплицируются, синхронизируя метаданные проекций через ClickHouse Keeper или ZooKeeper.
 
 :::note
-Манипуляция проекциями поддерживается только для таблиц с движком [`*MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) (включая [реплицированные](/engines/table-engines/mergetree-family/replication.md) варианты).
+Манипуляции с проекциями поддерживаются только для таблиц с движком [`*MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) (включая [реплицируемые](/engines/table-engines/mergetree-family/replication.md) варианты).
 :::
