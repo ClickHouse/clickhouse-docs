@@ -202,6 +202,9 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      metadata: [
+        {name: 'Accept-Language', content: 'zh-CN,zh;q=0.9'},
+      ],
       algolia: {
         appId: "5H9UG7CX5W",
         apiKey: "4a7bf25cf3edbef29d78d5e1eecfdca5",
