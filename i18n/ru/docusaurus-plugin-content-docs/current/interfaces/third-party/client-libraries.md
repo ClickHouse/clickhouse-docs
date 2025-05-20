@@ -1,16 +1,16 @@
 ---
-description: 'Обзор доступных библиотек клиентов от сторонних разработчиков для различных языков программирования'
+description: 'Обзор доступных библиотек клиентов от третьих лиц для различных языков программирования'
 sidebar_label: 'Библиотеки клиентов'
 sidebar_position: 26
 slug: /interfaces/third-party/client-libraries
-title: 'Библиотеки клиентов от сторонних разработчиков'
+title: 'Библиотеки клиентов от разработчиков третьих лиц'
 ---
 
 
-# Библиотеки клиентов от сторонних разработчиков
+# Библиотеки клиентов от разработчиков третьих лиц
 
 :::note
-ClickHouse Inc **не** поддерживает перечисленные ниже библиотеки и не проводила обширное тестирование для обеспечения их качества.
+ClickHouse Inc **не** поддерживает перечисленные ниже библиотеки и не проводил обширного тестирования для обеспечения их качества.
 :::
 
 ### Python {#python}
@@ -28,6 +28,7 @@ ClickHouse Inc **не** поддерживает перечисленные ни
  - [SeasClick C++ client](https://github.com/SeasX/SeasClick)
  - [one-ck](https://github.com/lizhichao/one-ck)
  - [glushkovds/phpclickhouse-laravel](https://packagist.org/packages/glushkovds/phpclickhouse-laravel)
+ - [glushkovds/php-clickhouse-schema-builder](https://packagist.org/packages/glushkovds/php-clickhouse-schema-builder)
  - [kolya7k ClickHouse PHP extension](https://github.com//kolya7k/clickhouse-php)
  - [hyvor/clickhouse-php](https://github.com/hyvor/clickhouse-php)
 ### Go {#go}
@@ -82,3 +83,4 @@ ClickHouse Inc **не** поддерживает перечисленные ни
  - [nim-clickhouse](https://github.com/leonardoce/nim-clickhouse)
 ### Haskell {#haskell}
  - [hdbc-clickhouse](https://github.com/zaneli/hdbc-clickhouse)
+ - [ClickHaskell](https://clickhaskell.dev/)

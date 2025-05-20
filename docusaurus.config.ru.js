@@ -3,6 +3,7 @@ import math from "remark-math";
 import katex from "rehype-katex";
 import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
+const remarkCustomBlocks = require('./plugins/remark-custom-blocks');
 
 // Helper function to skip over index.md files.
 function skipIndex(items) {
@@ -128,7 +129,7 @@ const config = {
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: "/",
-          remarkPlugins: [math],
+          remarkPlugins: [math, remarkCustomBlocks],
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },

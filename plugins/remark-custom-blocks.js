@@ -37,8 +37,15 @@ const plugin = (options) => {
                             if (attr.name === 'type' && typeof attr.value === 'string') {
                                 type = attr.value;
                             } else if (attr.name === 'headerLevel' && typeof attr.value === 'string') {
-                                if (attr.value === "h3")
-                                    headerLevel = 3
+                                let set_level = attr.value
+                                const regex = /h([2-5])/;
+                                const match = set_level.match(regex);
+                                // If there's a match, convert the captured group to a number
+                                if (match) {
+                                    headerLevel = Number(match[1]);
+                                } else {
+                                    throw new Error("VerticalStepper supported only for h2-5");
+                                }
                             }
                         }
                     });

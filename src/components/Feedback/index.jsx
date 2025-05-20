@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { IconButton, Popover, Title, RadioGroup, TextAreaField, Button, IconButton, Panel, Text} from '@clickhouse/click-ui/bundled'
+import { IconButton, Popover, Title, RadioGroup, TextAreaField, Button, Panel, Text} from '@clickhouse/click-ui/bundled'
 import { getGoogleAnalyticsUserIdFromBrowserCookie } from '../../lib/google/google'
 import { useColorMode } from '@docusaurus/theme-common'
 import styles from './styles.module.scss'

@@ -1,4 +1,3 @@
-import { Accordion, Table} from '@clickhouse/click-ui/bundled'
 import styles from './styles.module.css';
 import React, {Suspense} from 'react'
 import BrowserOnly from '@docusaurus/BrowserOnly';

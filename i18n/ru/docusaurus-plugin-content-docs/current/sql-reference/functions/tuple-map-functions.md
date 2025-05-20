@@ -1,5 +1,5 @@
-description: 'Документация для функций Map для кортежей'
-sidebar_label: 'Maps'
+description: 'Документация по функциям Map для Tuple'
+sidebar_label: 'Map'
 sidebar_position: 120
 slug: /sql-reference/functions/tuple-map-functions
 title: 'Функции Map'
@@ -17,12 +17,12 @@ map(key1, value1[, key2, value2, ...])
 
 **Аргументы**
 
-- `key_n` — Ключи записей map. Любой тип, поддерживаемый в качестве типа ключа [Map](../data-types/map.md).
-- `value_n` — Значения записей map. Любой тип, поддерживаемый в качестве типа значения [Map](../data-types/map.md).
+- `key_n` — Ключи записей карты. Любой тип, поддерживаемый в качестве типа ключа для [Map](../data-types/map.md).
+- `value_n` — Значения записей карты. Любой тип, поддерживаемый в качестве типа значения для [Map](../data-types/map.md).
 
 **Возвращаемое значение**
 
-- Map, содержащий пары `key:value`. [Map(key, value)](../data-types/map.md).
+- Карта, содержащая пары `key:value`. [Map(key, value)](../data-types/map.md).
 
 **Примеры**
 
@@ -44,14 +44,13 @@ SELECT map('key1', number, 'key2', number * 2) FROM numbers(3);
 
 ## mapFromArrays {#mapfromarrays}
 
-Создает map из массива или map ключей и массива или map значений.
+Создает карту из массива или карты ключей и массива или карты значений.
 
-Эта функция является удобной альтернативой синтаксису `CAST([...], 'Map(key_type, value_type)')`.
-Например, вместо того чтобы писать
+Функция является удобной альтернативой синтаксису `CAST([...], 'Map(key_type, value_type)')`. Например, вместо записи
 - `CAST((['aa', 'bb'], [4, 5]), 'Map(String, UInt32)')`, или
 - `CAST([('aa',4), ('bb',5)], 'Map(String, UInt32)')`
 
-вы можете написать `mapFromArrays(['aa', 'bb'], [4, 5])`.
+вы можете записать `mapFromArrays(['aa', 'bb'], [4, 5])`.
 
 **Синтаксис**
 
@@ -63,12 +62,12 @@ mapFromArrays(keys, values)
 
 **Аргументы**
 
-- `keys` — Массив или map ключей для создания map из [Array](../data-types/array.md) или [Map](../data-types/map.md). Если `keys` — это массив, мы принимаем `Array(Nullable(T))` или `Array(LowCardinality(Nullable(T)))` в качестве его типа, если он не содержит значение NULL.
-- `values` — Массив или map значений для создания map из [Array](../data-types/array.md) или [Map](../data-types/map.md).
+- `keys` — Массив или карта ключей для создания карты из [Array](../data-types/array.md) или [Map](../data-types/map.md). Если `keys` является массивом, принимаем `Array(Nullable(T))` или `Array(LowCardinality(Nullable(T)))` в качестве его типа, при условии, что он не содержит значений NULL.
+- `values` - Массив или карта значений для создания карты из [Array](../data-types/array.md) или [Map](../data-types/map.md).
 
 **Возвращаемое значение**
 
-- Map с ключами и значениями, построенный из массива ключей и массива/значений.
+- Карта с ключами и значениями, сконструированными из массива ключей и массива/карты значений.
 
 **Пример**
 
@@ -115,10 +114,10 @@ SELECT mapFromArrays(map('a', 1, 'b', 2, 'c', 3), [1, 2, 3])
 ## extractKeyValuePairs {#extractkeyvaluepairs}
 
 Преобразует строку пар ключ-значение в [Map(String, String)](../data-types/map.md).
-Парсинг толерантен к шуму (например, файлы логов).
-Ключи и значения в входной строке состоят из ключа, за которым следует разделитель ключ-значение и значение.
-Пары ключ-значение разделяются разделителем пар.
-Ключи и значения могут быть заключены в кавычки.
+Парсинг нечувствителен к шуму (например, файлы логов).
+Пар ключ-значение во входной строке состоит из ключа, за которым следует разделитель ключ-значение и значение.
+Парные ключи разделяются разделителем пар.
+Ключи и значения могут быть в кавычках.
 
 **Синтаксис**
 
@@ -132,14 +131,14 @@ extractKeyValuePairs(data[, key_value_delimiter[, pair_delimiter[, quoting_chara
 
 **Аргументы**
 
-- `data` - Строка, из которой нужно извлечь пары ключ-значение. [String](../data-types/string.md) или [FixedString](../data-types/fixedstring.md).
+- `data` - Строка для извлечения пар ключ-значение. [String](../data-types/string.md) или [FixedString](../data-types/fixedstring.md).
 - `key_value_delimiter` - Один символ, разделяющий ключи и значения. По умолчанию `:`. [String](../data-types/string.md) или [FixedString](../data-types/fixedstring.md).
 - `pair_delimiters` - Набор символов, разделяющих пары. По умолчанию ` `, `,` и `;`. [String](../data-types/string.md) или [FixedString](../data-types/fixedstring.md).
 - `quoting_character` - Один символ, используемый в качестве символа кавычек. По умолчанию `"`. [String](../data-types/string.md) или [FixedString](../data-types/fixedstring.md).
 
-**Возвращаемое значение**
+**Возвращаемые значения**
 
-- Map пар ключ-значение. Тип: [Map(String, String)](../data-types/map.md)
+- Массив пар ключ-значение. Тип: [Map(String, String)](../data-types/map.md) 
 
 **Примеры**
 
@@ -157,7 +156,7 @@ SELECT extractKeyValuePairs('name:neymar, age:31 team:psg,nationality:brazil') a
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-С одним символом кавычек `'` в качестве символа кавычек:
+С одинарной кавычкой `'` в качестве символа кавычек:
 
 ```sql
 SELECT extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:brazil,last_key:last_value', ':', ';,', '\'') as kv
@@ -171,7 +170,7 @@ SELECT extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:bra
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Эскейп- последовательности без поддержки эскейп-последовательностей:
+Эскапированные последовательности без поддержки эскейпирования:
 
 ```sql
 SELECT extractKeyValuePairs('age:a\\x0A\\n\\0') AS kv
@@ -185,7 +184,7 @@ SELECT extractKeyValuePairs('age:a\\x0A\\n\\0') AS kv
 └────────────────────────┘
 ```
 
-Чтобы восстановить строку map пар ключ-значение, сериализованную с помощью `toString`:
+Чтобы восстановить строку карты пар ключ-значение, сериализованную с помощью `toString`:
 
 ```sql
 SELECT
@@ -207,22 +206,22 @@ map_restored:   {'John':'33','Paula':'31'}
 
 ## extractKeyValuePairsWithEscaping {#extractkeyvaluepairswithescaping}
 
-То же самое, что и `extractKeyValuePairs`, но с поддержкой экранирования.
+То же самое, что и `extractKeyValuePairs`, но поддерживает эскейпирование.
 
-Поддерживаемые экранирующие последовательности: `\x`, `\N`, `\a`, `\b`, `\e`, `\f`, `\n`, `\r`, `\t`, `\v` и `\0`.
-Несоответствующие экранировки возвращаются так, как есть (включая обратную косую черту), если они не являются одной из следующих:
-`\\`, `'`, `"`, `backtick`, `/`, `=` или управляющие символы ASCII (c &lt;= 31).
+Поддерживаемые escape-последовательности: `\x`, `\N`, `\a`, `\b`, `\e`, `\f`, `\n`, `\r`, `\t`, `\v` и `\0`.
+Нестандартные escape-последовательности возвращаются такими, какие они есть (включая обратный слеш), если они не являются одним из следующих:
+`\\`, `'`, `"`, `backtick`, `/`, `=` или условные управляющие символы ASCII (c &lt;= 31).
 
-Эта функция будет удовлетворять сценарии использования, где предварительное и последующее экранирование не подходят. Например, рассмотрим следующую
+Эта функция удовлетворяет использование случаев, когда предварительное и последующее экранирование неприменимо. Например, рассмотрим следующую
 входную строку: `a: "aaaa\"bbb"`. Ожидаемый вывод: `a: aaaa\"bbbb`.
-- Предварительное экранирование: Предварительное экранирование даст: `a: "aaaa"bbb"` и `extractKeyValuePairs` затем выдает: `a: aaaa`
-- Последующее экранирование: `extractKeyValuePairs` выдаст `a: aaaa\` и последующее экранирование сохранит его как есть.
+- Предварительное экранирование: Экранирование приведет к выводу: `a: "aaaa"bbb"`, а затем `extractKeyValuePairs` выдаст: `a: aaaa`
+- Последующее экранирование: `extractKeyValuePairs` выдаст `a: aaaa\`, а последующее экранирование оставит это как есть.
 
-Ведущие экранирующие последовательности будут пропущены в ключах и будут считаться недействительными для значений.
+Ведущие escape-последовательности будут пропущены в ключах и будут считаться недопустимыми для значений.
 
 **Примеры**
 
-Экранирующие последовательности с поддержкой экранирующих последовательностей:
+Escape-последовательности с поддержкой escape-последовательностей:
 
 ```sql
 SELECT extractKeyValuePairsWithEscaping('age:a\\x0A\\n\\0') AS kv
@@ -248,7 +247,7 @@ mapAdd(arg1, arg2 [, ...])
 
 **Аргументы**
 
-Аргументы — это [maps](../data-types/map.md) или [tuples](/sql-reference/data-types/tuple) из двух [arrays](/sql-reference/data-types/array), где элементы в первом массиве представляют ключи, а второй массив содержит значения для каждого ключа. Все массивы ключей должны иметь один и тот же тип, а все массивы значений должны содержать элементы, которые преобразуются в один тип ([Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges) или [Float64](/sql-reference/data-types/float)). Общий прод promoted type используется в качестве типа для результирующего массива.
+Аргументы являются [map](../data-types/map.md) или [кортежами](/sql-reference/data-types/tuple) из двух [массивов](/sql-reference/data-types/array), где элементы первого массива представляют ключи, а второй массив содержит значения для каждого ключа. Все массивы ключей должны быть одного типа, а все массивы значений должны содержать элементы, которые преобразуются в один тип ([Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges) или [Float64](/sql-reference/data-types/float)). Общий преобразуемый тип используется как тип для результирующего массива.
 
 **Возвращаемое значение**
 
@@ -296,7 +295,7 @@ mapSubtract(Tuple(Array, Array), Tuple(Array, Array) [, ...])
 
 **Аргументы**
 
-Аргументы — это [maps](../data-types/map.md) или [tuples](/sql-reference/data-types/tuple) из двух [arrays](/sql-reference/data-types/array), где элементы в первом массиве представляют ключи, а второй массив содержит значения для каждого ключа. Все массивы ключей должны иметь один и тот же тип, а все массивы значений должны содержать элементы, которые преобразуются в один тип ([Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges) или [Float64](/sql-reference/data-types/float)). Общий промоутированный тип используется в качестве типа для результирующего массива.
+Аргументы являются [map](../data-types/map.md) или [кортежами](/sql-reference/data-types/tuple) из двух [массивов](/sql-reference/data-types/array), где элементы первого массива представляют ключи, а второй массив содержит значения для каждого ключа. Все массивы ключей должны быть одного типа, а все массивы значений должны содержать элементы, которые преобразуются в один тип ([Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges) или [Float64](/sql-reference/data-types/float)). Общий преобразуемый тип используется как тип для результирующего массива.
 
 **Возвращаемое значение**
 
@@ -318,7 +317,7 @@ SELECT mapSubtract(map(1,1), map(1,1));
 └───────────────────────────────────┘
 ```
 
-Запрос с кортежем:
+Запрос с кортежем map:
 
 ```sql
 SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt32(2), 1])) as res, toTypeName(res) as type;
@@ -334,11 +333,11 @@ SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt3
 
 ## mapPopulateSeries {#mappopulateseries}
 
-Заполняет отсутствующие пары ключ-значение в map с целыми ключами.
-Чтобы поддержать расширение ключей за пределами наибольшего значения, можно указать максимальный ключ.
-Более конкретно, функция возвращает map, в котором ключи образуют серию от наименьшего до наибольшего ключа (или аргументу `max`, если он указан) с размером шага 1 и соответствующими значениями.
+Заполняет отсутствующие пары ключ-значение в карте с целочисленными ключами.
+Чтобы поддержать расширение ключей за пределы наибольшего значения, можно указать максимальный ключ.
+Более конкретно, функция возвращает карту, в которой ключи образуют последовательность от наименьшего до наибольшего ключа (или аргумента `max`, если он указан) с шагом 1, и соответствующие значения.
 Если для ключа не указано значение, используется значение по умолчанию.
-В случае, если ключи повторяются, только первое значение (в порядке появления) ассоциируется с ключом.
+В случае повторения ключей только первое значение (по порядку появления) связывается с ключом.
 
 **Синтаксис**
 
@@ -351,21 +350,21 @@ mapPopulateSeries(keys, values[, max])
 
 **Аргументы**
 
-Аргументы — это [Maps](../data-types/map.md) или два [Arrays](/sql-reference/data-types/array), где первый и второй массив содержат ключи и значения для каждого ключа.
+Аргументы являются [Map](../data-types/map.md) или двумя [Arrays](/sql-reference/data-types/array), где первый и второй массив содержат ключи и значения для каждого ключа.
 
 Сопоставленные массивы:
 
-- `map` — Map с целыми ключами. [Map](../data-types/map.md).
+- `map` — Карта с целочисленными ключами. [Map](../data-types/map.md).
 
 или
 
 - `keys` — Массив ключей. [Array](/sql-reference/data-types/array)([Int](/sql-reference/data-types/int-uint#integer-ranges)).
 - `values` — Массив значений. [Array](/sql-reference/data-types/array)([Int](/sql-reference/data-types/int-uint#integer-ranges)).
-- `max` — Максимальное значение ключа. Необязательно. [Int8, Int16, Int32, Int64, Int128, Int256](/sql-reference/data-types/int-uint#integer-ranges).
+- `max` — Максимальное значение ключа. Необязательный. [Int8, Int16, Int32, Int64, Int128, Int256](/sql-reference/data-types/int-uint#integer-ranges).
 
 **Возвращаемое значение**
 
-- В зависимости от аргументов [Map](../data-types/map.md) или [Tuple](/sql-reference/data-types/tuple) из двух [Arrays](/sql-reference/data-types/array): ключи в отсортированном порядке и значения, соответствующие ключам.
+- В зависимости от аргументов возвращает [Map](../data-types/map.md) или [Tuple](/sql-reference/data-types/tuple) из двух [Arrays](/sql-reference/data-types/array): ключи в отсортированном порядке и соответствующие значения.
 
 **Пример**
 
@@ -397,9 +396,52 @@ SELECT mapPopulateSeries([1,2,4], [11,22,44], 5) AS res, toTypeName(res) AS type
 └──────────────────────────────┴───────────────────────────────────┘
 ```
 
+## mapKeys {#mapkeys}
+
+Возвращает ключи данной карты.
+
+Эта функция может быть оптимизирована путем включения настройки [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns).
+С включенной настройкой функция читает только подколонку [keys](/sql-reference/data-types/map#reading-subcolumns-of-map) вместо всей карты.
+Запрос `SELECT mapKeys(m) FROM table` преобразуется в `SELECT m.keys FROM table`.
+
+**Синтаксис**
+
+```sql
+mapKeys(map)
+```
+
+**Аргументы**
+
+- `map` — Карта. [Map](../data-types/map.md).
+
+**Возвращаемое значение**
+
+- Массив, содержащий все ключи из `map`. [Array](../data-types/array.md).
+
+**Пример**
+
+Запрос:
+
+```sql
+CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
+
+INSERT INTO tab VALUES ({'name':'eleven','age':'11'}), ({'number':'twelve','position':'6.0'});
+
+SELECT mapKeys(a) FROM tab;
+```
+
+Результат:
+
+```text
+┌─mapKeys(a)────────────┐
+│ ['name','age']        │
+│ ['number','position'] │
+└───────────────────────┘
+```
+
 ## mapContains {#mapcontains}
 
-Возвращает, содержится ли данный ключ в данном map.
+Возвращает, если данный ключ содержится в данной карте.
 
 **Синтаксис**
 
@@ -407,9 +449,11 @@ SELECT mapPopulateSeries([1,2,4], [11,22,44], 5) AS res, toTypeName(res) AS type
 mapContains(map, key)
 ```
 
+Псевдоним: `mapContainsKey(map, key)`
+
 **Аргументы**
 
-- `map` — Map. [Map](../data-types/map.md).
+- `map` — Карта. [Map](../data-types/map.md).
 - `key` — Ключ. Тип должен соответствовать типу ключа `map`.
 
 **Возвращаемое значение**
@@ -438,27 +482,21 @@ SELECT mapContains(a, 'name') FROM tab;
 └────────────────────────┘
 ```
 
-## mapKeys {#mapkeys}
-
-Возвращает ключи данного map.
-
-Эта функция может быть оптимизирована путем включения настройки [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns).
-С включенной настройкой функция считывает только подколонку [keys](/sql-reference/data-types/map#reading-subcolumns-of-map), вместо всего map.
-Запрос `SELECT mapKeys(m) FROM table` преобразуется в `SELECT m.keys FROM table`.
+## mapContainsKeyLike {#mapcontainskeylike}
 
 **Синтаксис**
 
 ```sql
-mapKeys(map)
+mapContainsKeyLike(map, pattern)
 ```
 
 **Аргументы**
-
-- `map` — Map. [Map](../data-types/map.md).
+- `map` — Карта. [Map](../data-types/map.md).
+- `pattern`  - Шаблон строки для сопоставления.
 
 **Возвращаемое значение**
 
-- Массив, содержащий все ключи из `map`. [Array](../data-types/array.md).
+- `1`, если `map` содержит `key`, соответствующий указанному шаблону, `0`, если нет.
 
 **Пример**
 
@@ -467,26 +505,66 @@ mapKeys(map)
 ```sql
 CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
 
-INSERT INTO tab VALUES ({'name':'eleven','age':'11'}), ({'number':'twelve','position':'6.0'});
+INSERT INTO tab VALUES ({'abc':'abc','def':'def'}), ({'hij':'hij','klm':'klm'});
 
-SELECT mapKeys(a) FROM tab;
+SELECT mapContainsKeyLike(a, 'a%') FROM tab;
 ```
 
 Результат:
 
 ```text
-┌─mapKeys(a)────────────┐
-│ ['name','age']        │
-│ ['number','position'] │
-└───────────────────────┘
+┌─mapContainsKeyLike(a, 'a%')─┐
+│                           1 │
+│                           0 │
+└─────────────────────────────┘
+```
+
+## mapExtractKeyLike {#mapextractkeylike}
+
+Данная функция принимает карту с ключами-строками и шаблон LIKE и возвращает карту с элементами, ключи которых соответствуют шаблону.
+
+**Синтаксис**
+
+```sql
+mapExtractKeyLike(map, pattern)
+```
+
+**Аргументы**
+
+- `map` — Карта. [Map](../data-types/map.md).
+- `pattern`  - Шаблон строки для сопоставления.
+
+**Возвращаемое значение**
+
+- Карта, содержащая элементы, у которых ключ соответствует указанному шаблону. Если ни один элемент не соответствует шаблону, возвращается пустая карта.
+
+**Пример**
+
+Запрос:
+
+```sql
+CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
+
+INSERT INTO tab VALUES ({'abc':'abc','def':'def'}), ({'hij':'hij','klm':'klm'});
+
+SELECT mapExtractKeyLike(a, 'a%') FROM tab;
+```
+
+Результат:
+
+```text
+┌─mapExtractKeyLike(a, 'a%')─┐
+│ {'abc':'abc'}              │
+│ {}                         │
+└────────────────────────────┘
 ```
 
 ## mapValues {#mapvalues}
 
-Возвращает значения данного map.
+Возвращает значения данной карты.
 
 Эта функция может быть оптимизирована путем включения настройки [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns).
-С включенной настройкой функция считывает только подколонку [values](/sql-reference/data-types/map#reading-subcolumns-of-map), вместо всего map.
+С включенной настройкой функция читает только подколонку [values](/sql-reference/data-types/map#reading-subcolumns-of-map) вместо всей карты.
 Запрос `SELECT mapValues(m) FROM table` преобразуется в `SELECT m.values FROM table`.
 
 **Синтаксис**
@@ -497,7 +575,7 @@ mapValues(map)
 
 **Аргументы**
 
-- `map` — Map. [Map](../data-types/map.md).
+- `map` — Карта. [Map](../data-types/map.md).
 
 **Возвращаемое значение**
 
@@ -524,21 +602,64 @@ SELECT mapValues(a) FROM tab;
 └──────────────────┘
 ```
 
-## mapContainsKeyLike {#mapcontainskeylike}
+## mapContainsValue {#mapcontainsvalue}
+
+Возвращает, если данное значение содержится в данной карте.
 
 **Синтаксис**
 
 ```sql
-mapContainsKeyLike(map, pattern)
+mapContainsValue(map, value)
+```
+
+Псевдоним: `mapContainsValue(map, value)`
+
+**Аргументы**
+
+- `map` — Карта. [Map](../data-types/map.md).
+- `value` — Значение. Тип должен соответствовать типу значения `map`.
+
+**Возвращаемое значение**
+
+- `1`, если `map` содержит `value`, `0`, если нет. [UInt8](../data-types/int-uint.md).
+
+**Пример**
+
+Запрос:
+
+```sql
+CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
+
+INSERT INTO tab VALUES ({'name':'eleven','age':'11'}), ({'number':'twelve','position':'6.0'});
+
+SELECT mapContainsValue(a, '11') FROM tab;
+
+```
+
+Результат:
+
+```text
+┌─mapContainsValue(a, '11')─┐
+│                         1 │
+│                         0 │
+└───────────────────────────┘
+```
+
+## mapContainsValueLike {#mapcontainsvaluelike}
+
+**Синтаксис**
+
+```sql
+mapContainsValueLike(map, pattern)
 ```
 
 **Аргументы**
-- `map` — Map. [Map](../data-types/map.md).
+- `map` — Карта. [Map](../data-types/map.md).
 - `pattern`  - Шаблон строки для сопоставления.
 
 **Возвращаемое значение**
 
-- `1`, если `map` содержит `key`, похожий на указанный шаблон, `0`, если нет.
+- `1`, если `map` содержит `value`, соответствующий указанному шаблону, `0`, если нет.
 
 **Пример**
 
@@ -549,36 +670,36 @@ CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
 
 INSERT INTO tab VALUES ({'abc':'abc','def':'def'}), ({'hij':'hij','klm':'klm'});
 
-SELECT mapContainsKeyLike(a, 'a%') FROM tab;
+SELECT mapContainsValueLike(a, 'a%') FROM tab;
 ```
 
 Результат:
 
 ```text
-┌─mapContainsKeyLike(a, 'a%')─┐
-│                           1 │
-│                           0 │
-└─────────────────────────────┘
+┌─mapContainsV⋯ke(a, 'a%')─┐
+│                        1 │
+│                        0 │
+└──────────────────────────┘
 ```
 
-## mapExtractKeyLike {#mapextractkeylike}
+## mapExtractValueLike {#mapextractvaluelike}
 
-Данная функция возвращает map с элементами, ключи которых соответствуют шаблону, если она работает с map со строковыми ключами и шаблоном LIKE.
+Данная функция принимает карту с значениями-строками и шаблон LIKE и возвращает карту с элементами, у которых значение соответствует шаблону.
 
 **Синтаксис**
 
 ```sql
-mapExtractKeyLike(map, pattern)
+mapExtractValueLike(map, pattern)
 ```
 
 **Аргументы**
 
-- `map` — Map. [Map](../data-types/map.md).
+- `map` — Карта. [Map](../data-types/map.md).
 - `pattern`  - Шаблон строки для сопоставления.
 
 **Возвращаемое значение**
 
-- Map, содержащий элементы, ключи которых соответствуют указанному шаблону. Если элементы не соответствуют шаблону, возвращается пустой map.
+- Карта, содержащая элементы, у которых значение соответствует указанному шаблону. Если ни один элемент не соответствует шаблону, возвращается пустая карта.
 
 **Пример**
 
@@ -589,21 +710,21 @@ CREATE TABLE tab (a Map(String, String)) ENGINE = Memory;
 
 INSERT INTO tab VALUES ({'abc':'abc','def':'def'}), ({'hij':'hij','klm':'klm'});
 
-SELECT mapExtractKeyLike(a, 'a%') FROM tab;
+SELECT mapExtractValueLike(a, 'a%') FROM tab;
 ```
 
 Результат:
 
 ```text
-┌─mapExtractKeyLike(a, 'a%')─┐
-│ {'abc':'abc'}              │
-│ {}                         │
-└────────────────────────────┘
+┌─mapExtractValueLike(a, 'a%')─┐
+│ {'abc':'abc'}                │
+│ {}                           │
+└──────────────────────────────┘
 ```
 
 ## mapApply {#mapapply}
 
-Применяет функцию к каждому элементу map.
+Применяет функцию к каждому элементу карты.
 
 **Синтаксис**
 
@@ -618,7 +739,7 @@ mapApply(func, map)
 
 **Возвращаемое значение**
 
-- Возвращает map, полученный из оригинального map путем применения `func(map1[i], ..., mapN[i])` для каждого элемента.
+- Возвращает карту, полученную из оригинальной карты путем применения `func(map1[i], ..., mapN[i])` для каждого элемента.
 
 **Пример**
 
@@ -645,7 +766,7 @@ FROM
 
 ## mapFilter {#mapfilter}
 
-Фильтрует map, применяя функцию к каждому элементу map.
+Фильтрует карту, применяя функцию к каждому элементу карты.
 
 **Синтаксис**
 
@@ -660,7 +781,7 @@ mapFilter(func, map)
 
 **Возвращаемое значение**
 
-- Возвращает map, содержащий только элементы в `map`, для которых `func(map1[i], ..., mapN[i])` возвращает что-то отличное от 0.
+- Возвращает карту, содержащую только элементы в `map`, для которых `func(map1[i], ..., mapN[i])` возвращает что-то, кроме 0.
 
 **Пример**
 
@@ -720,8 +841,8 @@ SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10)) AS map;
 
 ## mapConcat {#mapconcat}
 
-Конкатенирует несколько maps на основе равенства их ключей.
-Если элементы с одинаковым ключом присутствуют в более чем одном входном map, все элементы добавляются в результирующий map, но только первый доступен через оператор `[]`.
+Конкатенирует несколько карт на основе равенства их ключей.
+Если элементы с одинаковым ключом существуют в более чем одной входной карте, все элементы добавляются в результирующую карту, но только первый из них доступен через оператор `[]`.
 
 **Синтаксис**
 
@@ -735,7 +856,7 @@ mapConcat(maps)
 
 **Возвращаемое значение**
 
-- Возвращает map с конкатенированными map, переданными в качестве аргументов.
+- Возвращает карту с конкатенированными картами, переданными в аргументах.
 
 **Примеры**
 
@@ -769,11 +890,11 @@ SELECT mapConcat(map('key1', 1, 'key2', 2), map('key1', 3)) AS map, map['key1'];
 
 ## mapExists(\[func,\], map) {#mapexistsfunc-map}
 
-Возвращает 1, если хотя бы одна пара ключ-значение в `map` существует, для которой `func(key, value)` возвращает что-то отличное от 0. В противном случае возвращает 0.
+Возвращает 1, если хотя бы одна пара ключ-значение в `map` существует, для которой `func(key, value)` возвращает что-то, кроме 0. В противном случае возвращает 0.
 
 :::note
 `mapExists` является [функцией высшего порядка](/sql-reference/functions/overview#higher-order-functions).
-Вы можете передать ей лямбда-функцию в качестве первого аргумента.
+Вы можете передать лямбда-функцию в качестве первого аргумента.
 :::
 
 **Пример**
@@ -794,11 +915,11 @@ SELECT mapExists((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 
 ## mapAll(\[func,\] map) {#mapallfunc-map}
 
-Возвращает 1, если `func(key, value)` возвращает что-то отличное от 0 для всех пар ключ-значение в `map`. В противном случае возвращает 0.
+Возвращает 1, если `func(key, value)` возвращает что-то, кроме 0 для всех пар ключ-значение в `map`. В противном случае возвращает 0.
 
 :::note
 Обратите внимание, что `mapAll` является [функцией высшего порядка](/sql-reference/functions/overview#higher-order-functions).
-Вы можете передать ей лямбда-функцию в качестве первого аргумента.
+Вы можете передать лямбда-функцию в качестве первого аргумента.
 :::
 
 **Пример**
@@ -819,8 +940,8 @@ SELECT mapAll((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 
 ## mapSort(\[func,\], map) {#mapsortfunc-map}
 
-Сортирует элементы map в порядке возрастания.
-Если функция `func` задана, порядок сортировки определяется результатом применения функции `func` к ключам и значениям map.
+Сортирует элементы карты в порядке возрастания.
+Если функция `func` указана, порядок сортировки определяется результатом функции `func`, применяемой к ключам и значениям карты.
 
 **Примеры**
 
@@ -844,12 +965,12 @@ SELECT mapSort((k, v) -> v, map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
 └──────────────────────────────┘
 ```
 
-Для получения дополнительной информации см. [справочник](/sql-reference/functions/array-functions#sort) функции `arraySort`. 
+Для получения дополнительных сведений смотрите [справочник](/sql-reference/functions/array-functions#sort) по функции `arraySort`. 
 
 ## mapPartialSort {#mappartialsort}
 
-Сортирует элементы map в порядке возрастания с дополнительным аргументом `limit`, позволяющим частичную сортировку. 
-Если функция `func` задана, порядок сортировки определяется результатом применения функции `func` к ключам и значениям map.
+Сортирует элементы карты в порядке возрастания с дополнительным аргументом `limit`, позволяющим частичную сортировку. 
+Если функция `func` указана, порядок сортировки определяется результатом функции `func`, применяемой к ключам и значениям карты.
 
 **Синтаксис**
 
@@ -858,13 +979,13 @@ mapPartialSort([func,] limit, map)
 ```
 **Аргументы**
 
-- `func` – Необязательная функция, применяемая к ключам и значениям map. [Лямбда-функция](/sql-reference/functions/overview#higher-order-functions).
+- `func` – Необязательная функция, применяемая к ключам и значениям карты. [Лямбда-функция](/sql-reference/functions/overview#higher-order-functions).
 - `limit` – Элементы в диапазоне [1..limit] сортируются. [(U)Int](../data-types/int-uint.md).
-- `map` – Map для сортировки. [Map](../data-types/map.md).
+- `map` – Карта для сортировки. [Map](../data-types/map.md).
 
 **Возвращаемое значение**
 
-- Частично отсортированный map. [Map](../data-types/map.md).
+- Частично отсортированная карта. [Map](../data-types/map.md).
 
 **Пример**
 
@@ -880,8 +1001,8 @@ SELECT mapPartialSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
 
 ## mapReverseSort(\[func,\], map) {#mapreversesortfunc-map}
 
-Сортирует элементы map в порядке убывания.
-Если функция `func` задана, порядок сортировки определяется результатом применения функции `func` к ключам и значениям map.
+Сортирует элементы карты в порядке убывания.
+Если функция `func` указана, порядок сортировки определяется результатом функции `func`, применяемой к ключам и значениям карты.
 
 **Примеры**
 
@@ -905,12 +1026,12 @@ SELECT mapReverseSort((k, v) -> v, map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
 └──────────────────────────────┘
 ```
 
-Для получения дополнительной информации см. функцию [arrayReverseSort](/sql-reference/functions/array-functions#arrayreversesort).
+Для получения дополнительных сведений смотрите функцию [arrayReverseSort](/sql-reference/functions/array-functions#arrayreversesort).
 
 ## mapPartialReverseSort {#mappartialreversesort}
 
-Сортирует элементы map в порядке убывания с помощью дополнительного аргумента `limit`, позволяющего частичную сортировку.
-Если функция `func` задана, порядок сортировки определяется результатом применения функции `func` к ключам и значениям map.
+Сортирует элементы карты в порядке убывания с дополнительным аргументом `limit`, позволяющим частичную сортировку.
+Если функция `func` указана, порядок сортировки определяется результатом функции `func`, применяемой к ключам и значениям карты.
 
 **Синтаксис**
 
@@ -919,13 +1040,13 @@ mapPartialReverseSort([func,] limit, map)
 ```
 **Аргументы**
 
-- `func` – Необязательная функция, применяемая к ключам и значениям map. [Лямбда-функция](/sql-reference/functions/overview#higher-order-functions).
+- `func` – Необязательная функция, применяемая к ключам и значениям карты. [Лямбда-функция](/sql-reference/functions/overview#higher-order-functions).
 - `limit` – Элементы в диапазоне [1..limit] сортируются. [(U)Int](../data-types/int-uint.md).
-- `map` – Map для сортировки. [Map](../data-types/map.md).
+- `map` – Карта для сортировки. [Map](../data-types/map.md).
 
 **Возвращаемое значение**
 
-- Частично отсортированный map. [Map](../data-types/map.md).
+- Частично отсортированная карта. [Map](../data-types/map.md).
 
 **Пример**
 

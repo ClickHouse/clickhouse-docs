@@ -1,8 +1,8 @@
 ---
 description: 'Системная таблица, содержащая историю значений ошибок из таблицы `system.errors`,
-  периодически сбрасываемую на диск.'
-keywords: ['системная таблица', 'error_log']
-slug: /operations/system-tables/error_log
+  периодически сбрасываемых на диск.'
+keywords: ['системная таблица', 'журнал ошибок']
+slug: /operations/system-tables/system-error-log
 title: 'system.error_log'
 ---
 
@@ -10,9 +10,9 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-Содержит историю значений ошибок из таблицы `system.errors`, периодически сбрасываемую на диск.
+Содержит историю значений ошибок из таблицы `system.errors`, периодически сбрасываемых на диск.
 
-Столбцы:
+Колонки:
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
 - `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата события.
 - `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время события.
@@ -41,6 +41,6 @@ remote:     0
 
 **См. также**
 
-- [error_log setting](../../operations/server-configuration-parameters/settings.md#error_log) — Включение и отключение параметра.
-- [system.errors](../../operations/system-tables/errors.md) — Содержит коды ошибок с количеством их срабатываний.
+- [настройка error_log](../../operations/server-configuration-parameters/settings.md#error_log) — Включение и отключение настройки.
+- [system.errors](../../operations/system-tables/errors.md) — Содержит коды ошибок с количеством раз, когда они были вызваны.
 - [Мониторинг](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.
