@@ -5,34 +5,29 @@ import time
 import xxhash
 import argparse
 import os
+import re
+import yaml
 
-from anthropic import Anthropic
 from llama_index.core import Document
 from llama_index.core.node_parser import MarkdownNodeParser
 import json
 import math
 import shutil
 from openai import OpenAI
-import anthropic
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import frontmatter
+from markdown_it import MarkdownIt
 
 TRANSLATE_EXCLUDED_FILES = {"about-us/adopters.md", "index.md", "integrations/language-clients/java/jdbc-v1.md"}
 TRANSLATE_EXCLUDED_FOLDERS = {"whats-new", "changelogs"}
 IGNORE_FOLDERS = {"ru", "zh"}
-
 
 client = OpenAI(
     api_key=os.environ.get("OPENAI_API_KEY"),
 )
 print(f"OpenAI API Key available: {'Yes' if os.environ.get('ANTHROPIC_API_KEY') else 'No'}")
 
-anthropic_client = Anthropic(
-    api_key=os.environ.get("ANTHROPIC_API_KEY"),
-)
-print(f"Anthropic API Key available: {'Yes' if os.environ.get('ANTHROPIC_API_KEY') else 'No'}")
-
 MAX_CHUNK_SIZE = 30000
-
 
 def load_config(file_path):
     try:
@@ -49,7 +44,6 @@ def load_config(file_path):
     except FileNotFoundError as e:
         print(f"Config file not found at {file_path}. Exiting...")
         sys.exit(1)
-
 
 def format_glossary_prompt(glossary):
     glossary_text = "\n".join([f"- {key}: {value}" for key, value in glossary.items()])
@@ -92,59 +86,35 @@ def translate_text(config, text, model="gpt-4o-mini", translation_override_promp
     glossary = config["glossary"]
     prompt = config["prompt"] if "prompt" in config else f"""
         Translate the following ClickHouse documentation text from English to {language}. Ensure the following rules are followed:
-            - This content may be part of a document, so maintain the original html tags and markdown formatting used in Docusaurus, including any headings, code blocks, lists, links, and inline formatting like bold or italic text. Code blocks should be preserved using ` and ```.
-            - Ensure that no content, links, explicit heading ids (denoted by {{#my-explicit-id}}), or references are omitted or altered during translation, preserving the same amount of information as the original text. 
-            - Do not translate code, URLs, or any links within markdown. Mark down links must be preserved and never modified. Urls in text should be surrounded by white space and never have adjacent {language} characters.
+            - This content may be part of a document, so maintain the original HTML tags and markdown formatting used in Docusaurus, including any headings, lists, links, and inline formatting like bold or italic text.
+        IMPORTANT: 
+            - Ensure that no content, links, explicit heading ids (denoted by {{#my-explicit-id}}), or references are omitted or altered during translation, preserving the semantic meaning of the text. 
+            - Never translate URLs of markdown links like "[some text](../../sql-reference/statements/create/dictionary.md)". You may translate the text inside the square brackets if appropriate. Urls in text should be surrounded by white space and never have adjacent {language} characters.
             - Ensure the markdown is MDX 3 compatible - escaping < and > with &lt; and &gt; and avoiding the creation of unclosed xml tags.
-            - Do not add new code delimiters which are not present in the original content e.g. '```html', even if the content appears to contain this type.
-            - Do not translate terms which indicate setting names. These are denoted by lower case and underscore e.g. live_view_heartbeat_interval.
-            - Do not translate terms in all caps which are SQL statements. For example DESCRIBE TABLE, RENAME, SET ROLE etc.
-            - Translate the title, sidebar_label, keywords (list of single quoted strings) and description in yaml metadata blocks if they exist. Ensure these are wrapped in single quotes. Do not add entries.
-            - This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content. 
+            - Never translate terms which indicate setting names. These are denoted by lower case and underscore e.g. live_view_heartbeat_interval or max_os_cpu_wait_time_ratio_to_throw.
+            - Never translate terms in all caps which are SQL statements. For example DESCRIBE TABLE, RENAME, SET ROLE etc.
+            - This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content.
             - Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}.
+        
+        I suggest a two step approach in which you first translate, and afterwards compare the original text to the translation
+        and critically evaluate it and make modifications as appropriate.
+        
         """
     glossary_prompt = format_glossary_prompt(glossary)
-    prompt_content = f"{glossary_prompt}\n{prompt}\n{translation_override_prompt}"
+    prompt_content = f"{prompt}\n{glossary_prompt}\n{translation_override_prompt}"
     try:
-        if model=="claude-3-5-sonnet-20240620":
-            with anthropic_client.messages.stream(
-                    max_tokens=8192, # max allowed for claude-3-5-sonnet-20240620
-                    messages=[
-                        {
-                            "role": "user",
-                            "content": [
-                                {
-                                    "type": "text",
-                                    "text": text
-                                }
-                            ]
-                        }
-                    ],
-                    model=model,
-                    system=prompt_content
-            ) as stream:
-                full_response = ""
+        completion = client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": prompt_content},
+                {"role": "user", "content": text}
+            ]
+        )
+        return completion.choices[0].message.content
 
-                # Process each chunk as it arrives
-                for chunk in stream:
-                    if chunk.type == "content_block_delta" and hasattr(chunk.delta, "text"):
-                        # Add this chunk of text to our response
-                        full_response += chunk.delta.text
-                # Return the complete translated text
-                return full_response
-        else:
-            completion = client.chat.completions.create(
-                model=model,
-                messages=[
-                    {"role": "system", "content": prompt_content},
-                    {"role": "user", "content": text}
-                ]
-            )
-            return completion.choices[0].message.content
     except Exception as e:
         print(f"failed to translate: {e}")
         return None
-
 
 def split_text(text, input_file_path, max_chunk_size=MAX_CHUNK_SIZE):
     if len(text) <= max_chunk_size:
@@ -171,16 +141,153 @@ def split_text(text, input_file_path, max_chunk_size=MAX_CHUNK_SIZE):
 
     return chunks
 
+class QuotedStringDumper(yaml.SafeDumper):
+    def represent_str(self, data):
+        return yaml.ScalarNode('tag:yaml.org,2002:str', data, style="'")
+
+# Configure YAML dumper to use single quotes for strings
+QuotedStringDumper.add_representer(str, QuotedStringDumper.represent_str)
+def translate_frontmatter(frontmatter, glossary):
+    # Translate just the fields we need
+
+    frontmatter_json = json.dumps(frontmatter)
+
+    system_prompt = f"""
+    You are an expert translator of technical documentation. 
+    Translate the values for the following keys which are part of YAML frontmatter
+    of a markdown document:
+    - title
+    - sidebar_label
+    - description
+    
+    Respond with a JSON object containing only the translated fields.
+    
+    IMPORTANT: do not translate any SQL terms, or terms which are likely to be
+    specific features or functions of ClickHouse.
+    
+    You can use the following glossary for technical terms:
+    
+    {glossary}
+    """
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo-0125",
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": frontmatter_json}
+        ],
+        response_format={ "type": "json_object" }
+    )
+
+    translated_content = json.loads(completion.choices[0].message.content)
+
+    for key in ["title", "sidebar_label", "description"]:
+        if key in translated_content and key in frontmatter:
+            frontmatter[key] = translated_content[key]
+
+def extract_import_statements(text):
+    # Regular expression to match import statements
+    import_regex = r'^import\s+.+\s+from\s+[\'"].+[\'"];?$'
+
+    # Find all matches
+    import_statements = re.findall(import_regex, text, re.MULTILINE)
+
+    return import_statements
+
+def remove_import_statements(text):
+    # Regular expression to match import statements
+    import_regex = r'^import\s+.+\s+from\s+[\'"].+[\'"];?$'
+
+    # Remove all import statements
+    cleaned_text = re.sub(import_regex, '', text, flags=re.MULTILINE)
+
+    # Clean up any resulting multiple newlines
+    cleaned_text = re.sub(r'\n{2,}', '\n', cleaned_text)
+
+    return cleaned_text.strip()
+
+def replace_code_blocks_with_custom_placeholders(markdown_text):
+    lines = markdown_text.split('\n')
+    result_lines = []
+    code_blocks = []
+
+    in_code_block = False
+    current_block = {
+        'language': '',
+        'content': []
+    }
+
+    for line in lines:
+        if line.strip().startswith('```') and not in_code_block:
+            # Start of a code block
+            in_code_block = True
+            language_part = line.strip()[3:].strip()  # Remove ``` and whitespace
+            current_block = {
+                'language': language_part,
+                'content': []
+            }
+        elif line.strip() == '```' and in_code_block:
+            # End of a code block
+            in_code_block = False
+            code_blocks.append({
+                'language': current_block['language'],
+                'content': '\n'.join(current_block['content'])
+            })
+            result_lines.append(f"<CODEBLOCK_{len(code_blocks)}>")
+        elif in_code_block:
+            # Inside a code block
+            current_block['content'].append(line)
+        else:
+            # Outside a code block
+            result_lines.append(line)
+    return '\n'.join(result_lines), code_blocks
+
+def restore_code_blocks(modified_text, code_blocks):
+
+    restored_text = modified_text
+
+    # Replace each placeholder with its corresponding code block
+    for i, block in enumerate(code_blocks, 1):
+        language = block['language']
+        content = block['content']
+
+        # Create the code block with proper backticks and language
+        if language:
+            code_block = f"```{language}\n{content}\n```"
+        else:
+            code_block = f"```\n{content}\n```"
+
+        # Replace the placeholder
+        placeholder = f"<CODEBLOCK_{i}>"
+        restored_text = restored_text.replace(placeholder, code_block)
+
+    return restored_text
+
 def translate_file(config, input_file_path, output_file_path, model):
     print(f"Starting translation: input[{input_file_path}], output[{output_file_path}]")
     start_time = time.time()
 
     try:
         with open(input_file_path, "r", encoding="utf-8") as input_file:
-            original_text = input_file.read()
+            # Before splitting text into chunks, split the content and the frontmatter
+            metadata, original_text = frontmatter.parse(input_file.read())
             print(f" - length: {len(original_text)}")
+
+        if input_file_path == "/Users/sstruw/Desktop/clickhouse-docs/docs/operations/settings/settings.md":
+            pause_here = ""
+
+        # Translate the metadata
+        translate_frontmatter(metadata, config["glossary"])
+
+        # Next extract all import statements from the text
+        imports = extract_import_statements(original_text)
+        cleaned_text = remove_import_statements(original_text)
+
+        # Extract codeblocks and replace them with numbered placeholders
+        # that we will replace after translations are done.
+        cleaned_text, code_blocks = replace_code_blocks_with_custom_placeholders(cleaned_text)
+
         # Split text into chunks and translate
-        num_chunk = math.ceil(len(original_text) / MAX_CHUNK_SIZE)
+        num_chunk = math.ceil(len(cleaned_text) / MAX_CHUNK_SIZE)
         count = 1
         translated_text = ""
         chunks = split_text(original_text, input_file_path, MAX_CHUNK_SIZE)
@@ -218,6 +325,23 @@ def translate_file(config, input_file_path, output_file_path, model):
 
         c=0
         bt = False
+
+        # Now we work backwards
+        translated_text = restore_code_blocks(translated_text, code_blocks)
+
+        imports_text = "\n".join(imports)
+        translated_text = imports_text + "\n\n" + translated_text
+
+        yaml_str = yaml.dump(
+            metadata,
+            Dumper=QuotedStringDumper,
+            default_flow_style=False,
+            sort_keys=False,
+            allow_unicode=True
+        )
+        formatted_frontmatter = f"---\n{yaml_str}---"
+        translated_text = formatted_frontmatter + "\n\n" + translated_text
+
         with open(output_file_path, "w", encoding="utf-8") as output_file:
             lines = translated_text.splitlines()
             for line in lines:
