@@ -113,7 +113,7 @@ const sidebars = {
           items: [
             {
               type: "category",
-              label: "ClickHouse Observability Stack",
+              label: "ClickStack",
               collapsed: true,
               collapsible: true,
               link: { type: "doc", id: "use-cases/observability/clickhouse-stack/index" },
@@ -132,8 +132,9 @@ const sidebars = {
                 },
                 "use-cases/observability/clickhouse-stack/architecture",
                 "use-cases/observability/clickhouse-stack/deployment",
-                "use-cases/observability/clickhouse-stack/scaling",
+                "use-cases/observability/clickhouse-stack/config",
                 "use-cases/observability/clickhouse-stack/production",
+                "use-cases/observability/clickhouse-stack/scaling",
               ]
             },
             {

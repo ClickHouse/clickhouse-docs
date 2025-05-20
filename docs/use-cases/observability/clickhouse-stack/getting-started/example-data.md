@@ -28,7 +28,7 @@ import hyperdx_19 from '@site/static/images/use-cases/observability/hyperdx-19.p
 
 # ClickStack - example dataset {#clickstack-example-dataset}
 
-The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickhouse-stack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickhouse-stack/getting-started#complete-connection-credentials).
+The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickhouse-stack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickhouse-stack/getting-started#complete-connection-credentials) and created the `Logs` source.
 
 <VerticalStepper>
 
@@ -42,13 +42,20 @@ Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
 In order to populate the UI with sample data, download the following file:
 
-[Sample data](http://example.com)
+[Sample data](https://storage.googleapis.com/hyperdx/sample.tar.gz)
+
+```bash
+# curl
+curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
+# or wget
+# wget https://storage.googleapis.com/hyperdx/sample.tar.gz
+```
 
 This file contains example logs, metrics and traces from our public [Open Telemetry demo](http://example.com) - a simple ecommerce store with microservices. Copy this file to a directory of your choosing.
 
 ## Load sample data {#load-sample-data}
 
-To load this data we simply send it to the HTTP endpoint of the deployed OTel collector:
+To load this data, we simply send it to the HTTP endpoint of the deployed OTel collector:
 
 ```bash
 for filename in $(tar -tf sample.tar.gz); do
@@ -60,7 +67,7 @@ for filename in $(tar -tf sample.tar.gz); do
 done
 ```
 
-This simulates OLTP log, trace and metric sources sending data to the OTel collector. In production these sources may be language clients or even other OTel collectors.
+This simulates OLTP log, trace, and metric sources sending data to the OTel collector. In production, these sources may be language clients or even other OTel collectors.
 
 The data loaded covers a period of 15 minutes on `2025-05-15`. Navigate to this period with the following link:
 
@@ -76,7 +83,7 @@ Data loading will take a few minutes. Allow for the load to complete before prog
 
 By default, the `Logs` source will be pre-created. 
 
-Create a metrics source by clicking the `Logs` source followed by `Create New Source`.
+Create a metrics source by clicking the `Logs` source, followed by `Create New Source`.
 
 <Image img={hyperdx_3} alt="Source dropdown" size="sm"/>
 
@@ -119,7 +126,7 @@ Select `Sessions` for the `Source Data Type`. Complete the following fields, lea
 
 ## Correlate sources {#correlate-sources}
 
-Select the `Traces` source from the source drop down, followed by the edit button.
+Select the `Traces` source from the source drop-down, followed by the edit button.
 
 <Image img={hyperdx_7} alt="Edit source" size="sm"/>
 
@@ -127,7 +134,7 @@ Complete the `Correlated Session Source` field with the value `Sessions` before 
 
 <Image img={hyperdx_8} alt="Traces Source update" size="md"/>
 
-Select the `Logs` source from the source drop down, followed by the edit button.
+Select the `Logs` source from the source drop-down, followed by the edit button.
 
 Select `Configure Optional Fields` and complete the `Correlated Metric Source` and `Correlated Trace Source` with the value `Metrics` and `Traces` respectively.
 
@@ -135,17 +142,17 @@ Select `Configure Optional Fields` and complete the `Correlated Metric Source` a
 
 ## Explore sessions {#explore-sessions}
 
-Suppose we have reports our users are experiencing issues paying for goods. We can view their experience using HyperDX's session replay capabilities. 
+Suppose we have reports that our users are experiencing issues paying for goods. We can view their experience using HyperDX's session replay capabilities. 
 
 Select [`Client Sessions`](http://localhost:8080/sessions?from=1747312320000&to=1747312920000&sessionSource=l1324572572) from the left menu.
 
 <Image img={hyperdx_11} alt="Sessions" size="lg"/>
 
-This view allows us to see frontend sessions for our ecommerce store. Sessions remain Anonymous until users checkout and try to complete a purchase.
+This view allows us to see frontend sessions for our e-commerce store. Sessions remain Anonymous until users check out and try to complete a purchase.
 
 Note that some sessions with emails have an associated error, potentially confirming reports of failed transactions.
 
-Select a trace with a failure and associated email. The subsequent view allows us to replay the users session and review their issue. Press play to watch the session.
+Select a trace with a failure and associated email. The subsequent view allows us to replay the user's session and review their issue. Press play to watch the session.
 
 <Image img={hyperdx_12} alt="Session replay" size="lg"/>
 
@@ -176,7 +183,7 @@ Select the tab `Column Values` and scroll down. We can see the issue is associat
 
 <Image img={hyperdx_16} alt="Column values" size="lg"/>
 
-Scrolling up and returning to the trace we can see logs are correlated with the span, thanks to our earlier configuration. These provide further context.
+Scrolling up and returning to the trace, we can see logs are correlated with the span, thanks to our earlier configuration. These provide further context.
 
 <Image img={hyperdx_17} alt="Correlated log" size="lg"/>
 
@@ -184,7 +191,7 @@ We've established that a cache is filling in the Payment service which is preven
 
 ## Explore logs {#explore-logs}
 
-For further details we can return to the `Search` view:
+For further details, we can return to the `Search` view:
 
 [http://localhost:8080/search?from=1747312320000&to=1747312980694](http://localhost:8080/search?from=1747312320000&to=1747312980694)
 
@@ -198,7 +205,7 @@ We can see that while the issue is recent, the number of impacted payments is hi
 
 While an error has clearly been introduced in the code, we can use metrics to confirm the cache size. Navigate to the `Chart Explorer` view.
 
-Select `Metrics` as the data source. Complete the chart builder to plot `Maximum` of `visa_validation_cache.size (Gauge)`. The cache was clearly increasing before reaching a maximum size, after which errors were generated.
+Select `Metrics` as the data source. Complete the chart builder to plot the `Maximum` of `visa_validation_cache.size (Gauge)`. The cache was clearly increasing before reaching a maximum size, after which errors were generated.
 
 <Image img={hyperdx_19} alt="Metrics" size="lg"/>
 
