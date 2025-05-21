@@ -8,17 +8,27 @@ description: 'Landing page for the ClickHouse Observability Stack'
 
 ## ClickStack - The ClickHouse Observability Stack {#clickstack-clickhouse-observability}
 
-**ClickStack** is a production-grade observability platform built on ClickHouse, unifying logs, traces, and metrics in a single high-performance solution. Designed for monitoring and debugging complex systems, ClickStack enables developers and SREs to trace issues end-to-end without switching between tools or manually stitching together data using timestamps or correlation IDs.
+**ClickStack** is a production-grade observability platform built on ClickHouse, unifying logs, traces, metrics and session in a single high-performance solution. Designed for monitoring and debugging complex systems, ClickStack enables developers and SREs to trace issues end-to-end without switching between tools or manually stitching together data using timestamps or correlation IDs.
 
-At the core of ClickStack is a simple but powerful idea: all observability data should be ingested as wide, rich events. These events are stored in ClickHouse tables by data type—logs, traces, metrics, and sessions—but remain fully queryable and cross-correlatable at the database level.
+At the core of ClickStack is a simple but powerful idea: all observability data should be ingested as wide, rich events. These events are stored in ClickHouse tables by data type—logs, traces, metrics, and sessions - but remain fully queryable and cross-correlatable at the database level.
 
 ClickStack is built to handle high-cardinality workloads efficiently by leveraging ClickHouse’s column-oriented architecture, native JSON support, and fully parallelized execution engine. This enables sub-second queries across massive datasets, fast aggregations over wide time ranges, and deep inspection of individual traces. JSON is stored in a compressed, columnar format, allowing schema evolution without manual intervention or upfront definitions.
 
 The stack includes several key features designed for debugging and root cause analysis:
 
-- **Session replays**
-- **Log pattern recognition**
-- **Event deltas** for identifying anomalies and performance regressions
+- Correlate/search logs, metrics, session replays and traces all in one place
+- Schema agnostic, works on top of your existing Clickhouse schema
+- Blazing fast searches & visualizations optimized for Clickhouse
+- Intuitive full-text search and property search syntax (ex. level:err), SQL optional!
+- Analyze trends in anomalies with event deltas
+- Set up alerts in just a few clicks
+- Dashboard high cardinality events without a complex query language
+- Native JSON string querying
+- Live tail logs and traces to always get the freshest events
+- OpenTelemetry supported out of the box
+- Monitor health and performance from HTTP requests to DB queries (APM)
+- Event deltas for identifying anomalies and performance regressions
+- Log pattern recognition
 
 ClickStack consists of three core components:
 

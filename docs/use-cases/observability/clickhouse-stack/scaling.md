@@ -6,4 +6,4 @@ pagination_next: null
 description: 'Scaling the ClickHouse Observability Stack'
 ---
 
-
+Coming soon.

@@ -131,7 +131,20 @@ const sidebars = {
                   ]
                 },
                 "use-cases/observability/clickhouse-stack/architecture",
-                "use-cases/observability/clickhouse-stack/deployment",
+                {
+                  type: "category",
+                  label: "Deployment",
+                  collapsed: true,
+                  collapsible: true,
+                  link: { type: "doc", id: "use-cases/observability/clickhouse-stack/deployment/index" },
+                  items: [
+                    "use-cases/observability/clickhouse-stack/deployment/local-mode-only",
+                    "use-cases/observability/clickhouse-stack/deployment/all-in-one",
+                    "use-cases/observability/clickhouse-stack/deployment/docker-compose",
+                    "use-cases/observability/clickhouse-stack/deployment/helm",
+                    "use-cases/observability/clickhouse-stack/deployment/hyperdx-only"
+                  ]
+                },
                 "use-cases/observability/clickhouse-stack/config",
                 "use-cases/observability/clickhouse-stack/production",
                 "use-cases/observability/clickhouse-stack/scaling",

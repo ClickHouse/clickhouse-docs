@@ -1,0 +1,63 @@
+---
+slug: /use-cases/observability/clickhouse-stack/deployment/hyperdx-only
+title: 'HyperDX Only'
+pagination_prev: null
+pagination_next: null
+description: 'Deploying HyperDX only'
+---
+
+This option is designed for users who already have a running ClickHouse instance populated with observability or event data.
+
+HyperDX can be used independently of the rest of the stack and is compatible with any data schema - not just OpenTelemetry. This makes it suitable for custom observability pipelines already built on ClickHouse.
+
+To enable full functionality, you must provide a MongoDB instance for storing application state, including dashboards, saved searches, user settings, and alerts.
+
+In this mode, data ingestion is left entirely to the user. You can ingest data into ClickHouse using your own hosted OpenTelemetry Collector, direct ingestion from client libraries, ClickHouse-native table engines (such as Kafka or S3), ETL pipelines, or managed ingestion services like ClickPipes. This approach offers maximum flexibility and is suitable for teams that already operate ClickHouse and want to layer HyperDX on top for visualization, search, and alerting.
+
+
+### Suitable for {#suitable-for}
+
+- Existing ClickHouse users
+- Custom event pipelines
+
+## Deployment steps {#deployment-steps}
+<br/>
+
+<VerticalStepper headerLevel="h3">
+
+### Deploy with Docker {#deploy-hyperdx-with-docker}
+
+Run the following command, modifying the `YOUR_MONGODB_URI` as required. 
+
+```bash
+docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx:2-beta
+```
+
+### Navigate to the UI {#navigate-to-the-ui}
+
+Navigate to [http://localhost:8080](http://localhost:8080), create a user and connect to your ClickHouse instance.
+
+</VerticalStepper>
+
+## Using Docker Compose {#using-docker-compose}
+
+Users can modify the [Docker Compose configuration](/use-cases/observability/clickhouse-stack/deployment/docker-compose) to achieve the same effect as this guide, removing the OTel Collector and ClickHouse instance from the manifest.
+
+
+## ClickStack Open Telemetry collector {#otel-collector}
+
+Even if managing your own Open Telemetry collector, independent of the other components in the stack, we recommend using the ClickStack distribution of the collector. This ensures the default schema is used and best practices for ingestion applied.
+
+This image configuration can be found [here](https://github.com/hyperdxio/hyperdx/tree/v2/docker/otel-collector) and can be deployed with the following command:
+
+```bash
+docker run -e CLICKHOUSE_SERVER_ENDPOINT=CLICKHOUSE_ENDPOINT -e CLICKHOUSE_USER=USER -e CLICKHOUSE_PASSWORD=PASSWORD -p 4317:4127 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector:2-beta.16
+```
+
+For example,
+
+```bash
+docker run -e CLICKHOUSE_SERVER_ENDPOINT=myhost:9000 -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=password -p 4317:4127 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector:2-beta.16
+```
+
+This command exposes an OTLP endpoint on ports 4317 (HTTP) and 4318 (gRPC) for users to send OTel events.
