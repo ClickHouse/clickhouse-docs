@@ -1494,7 +1494,7 @@ A compromise between fastest retrieval and optimal data compression is to use a 
 
 ### A concrete example {#a-concrete-example}
 
-One concrete example is a the plaintext paste service https://pastila.nl that Alexey Milovidov developed and [blogged about](https://clickhouse.com/blog/building-a-paste-service-with-clickhouse/).
+One concrete example is a the plaintext paste service [https://pastila.nl](https://pastila.nl) that Alexey Milovidov developed and [blogged about](https://clickhouse.com/blog/building-a-paste-service-with-clickhouse/).
 
 On every change to the text-area, the data is saved automatically into a ClickHouse table row (one row per change).
 
