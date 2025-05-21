@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/grouparraymovingsum
+description: '入力値の移動合計を計算します。'
 sidebar_position: 144
-title: "groupArrayMovingSum"
-description: "入力値の移動合計を計算します。"
+slug: /sql-reference/aggregate-functions/reference/grouparraymovingsum
+title: 'groupArrayMovingSum'
 ---
 
 
@@ -10,16 +10,16 @@ description: "入力値の移動合計を計算します。"
 
 入力値の移動合計を計算します。
 
-``` sql
+```sql
 groupArrayMovingSum(numbers_for_summing)
 groupArrayMovingSum(window_size)(numbers_for_summing)
 ```
 
-この関数は、ウィンドウサイズをパラメータとして受け取ることができます。指定されていない場合、関数はカラム内の行数と等しいウィンドウサイズを取ります。
+この関数は、ウィンドウサイズをパラメーターとして取ることができます。指定しない場合、関数はカラム内の行数と等しいウィンドウサイズを取ります。
 
 **引数**
 
-- `numbers_for_summing` — 数値データ型の値を返す[式](/sql-reference/syntax#expressions)。
+- `numbers_for_summing` — [式](/sql-reference/syntax#expressions) で、数値データ型の値を生成します。
 - `window_size` — 計算ウィンドウのサイズ。
 
 **返される値**
@@ -28,9 +28,9 @@ groupArrayMovingSum(window_size)(numbers_for_summing)
 
 **例**
 
-サンプルテーブル：
+サンプルテーブル:
 
-``` sql
+```sql
 CREATE TABLE t
 (
     `int` UInt8,
@@ -40,7 +40,7 @@ CREATE TABLE t
 ENGINE = TinyLog
 ```
 
-``` text
+```text
 ┌─int─┬─float─┬──dec─┐
 │   1 │   1.1 │ 1.10 │
 │   2 │   2.2 │ 2.20 │
@@ -49,9 +49,9 @@ ENGINE = TinyLog
 └─────┴───────┴──────┘
 ```
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 SELECT
     groupArrayMovingSum(int) AS I,
     groupArrayMovingSum(float) AS F,
@@ -59,13 +59,13 @@ SELECT
 FROM t
 ```
 
-``` text
+```text
 ┌─I──────────┬─F───────────────────────────────┬─D──────────────────────┐
 │ [1,3,7,14] │ [1.1,3.3000002,7.7000003,15.47] │ [1.10,3.30,7.70,15.47] │
 └────────────┴─────────────────────────────────┴────────────────────────┘
 ```
 
-``` sql
+```sql
 SELECT
     groupArrayMovingSum(2)(int) AS I,
     groupArrayMovingSum(2)(float) AS F,
@@ -73,7 +73,7 @@ SELECT
 FROM t
 ```
 
-``` text
+```text
 ┌─I──────────┬─F───────────────────────────────┬─D──────────────────────┐
 │ [1,3,6,11] │ [1.1,3.3000002,6.6000004,12.17] │ [1.10,3.30,6.60,12.17] │
 └────────────┴─────────────────────────────────┴────────────────────────┘

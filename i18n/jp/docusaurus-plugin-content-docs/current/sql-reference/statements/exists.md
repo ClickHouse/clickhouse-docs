@@ -1,14 +1,16 @@
 ---
-slug: /sql-reference/statements/exists
+description: 'EXISTSステートメントに関するドキュメント'
+sidebar_label: 'EXISTS'
 sidebar_position: 45
-sidebar_label: EXISTS
+slug: /sql-reference/statements/exists
+title: 'EXISTSステートメント'
 ---
 
 
-# EXISTS ステートメント
+# EXISTSステートメント
 
-``` sql
+```sql
 EXISTS [TEMPORARY] [TABLE|DICTIONARY|DATABASE] [db.]name [INTO OUTFILE filename] [FORMAT format]
 ```
 
-存在しないテーブルまたはデータベースの場合は `0` の単一値を含む `UInt8` 型のカラムを返し、指定されたデータベースにテーブルが存在する場合は `1` を返します。
+指定されたデータベースにテーブルが存在しない場合は単一の `UInt8` 型のカラムが `0` の値を返し、テーブルが存在する場合は `1` の値を返します。

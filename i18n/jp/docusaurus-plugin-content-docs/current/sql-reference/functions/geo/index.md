@@ -1,8 +1,9 @@
 ---
-slug: /sql-reference/functions/geo/
-sidebar_label: Geo
+description: 'インデックスに関するドキュメント'
+sidebar_label: 'Geo'
 sidebar_position: 62
-title: "Geo 関数"
+slug: /sql-reference/functions/geo/
+title: 'ジオ関数'
 ---
 
-幾何オブジェクトを扱うための関数。たとえば、[球体上の点間の距離を計算](./coordinates.md)したり、[ジオハッシュを計算](./geohash.md)したり、[h3 インデックスを扱](./h3.md)ったりします。
+幾何学的オブジェクトを扱うための関数で、例えば [球上の点間の距離を計算する](./coordinates.md)、[ジオハッシュを計算する](./geohash.md)、および [h3インデックス](./h3.md)を扱うためのものです。

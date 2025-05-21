@@ -1,18 +1,19 @@
 ---
-slug: /sql-reference/data-types/geo
+description: 'ClickHouseで地理的オブジェクトや位置を表現するための幾何データ型のドキュメント'
+sidebar_label: 'Geo'
 sidebar_position: 54
-sidebar_label: Geo
-title: "幾何学"
+slug: /sql-reference/data-types/geo
+title: '幾何学的'
 ---
 
-ClickHouseは、地理的オブジェクト—場所、土地などを表現するためのデータ型をサポートしています。
+ClickHouseは、地理的オブジェクト—位置、土地など—を表現するためのデータ型をサポートしています。
 
 **関連情報**
-- [シンプルな地理的特徴の表現](https://en.wikipedia.org/wiki/GeoJSON)。
+- [単純な地理的特徴の表現](https://en.wikipedia.org/wiki/GeoJSON)。
 
 ## Point {#point}
 
-`Point`は、そのXおよびY座標によって表現され、[Tuple](tuple.md)([Float64](float.md), [Float64](float.md))として保存されます。
+`Point`は、[Tuple](tuple.md)([Float64](float.md), [Float64](float.md))として保存されるX座標とY座標によって表されます。
 
 **例**
 
@@ -25,7 +26,7 @@ SELECT p, toTypeName(p) FROM geo_point;
 ```
 結果:
 
-``` text
+```text
 ┌─p───────┬─toTypeName(p)─┐
 │ (10,10) │ Point         │
 └─────────┴───────────────┘
@@ -33,7 +34,7 @@ SELECT p, toTypeName(p) FROM geo_point;
 
 ## Ring {#ring}
 
-`Ring`は、穴のない単純な多角形で、ポイントの配列として保存されます: [Array](array.md)([Point](#point))。
+`Ring`は、点の配列として保存される穴のない単純な多角形です: [Array](array.md)([Point](#point))。
 
 **例**
 
@@ -46,7 +47,7 @@ SELECT r, toTypeName(r) FROM geo_ring;
 ```
 結果:
 
-``` text
+```text
 ┌─r─────────────────────────────┬─toTypeName(r)─┐
 │ [(0,0),(10,0),(10,10),(0,10)] │ Ring          │
 └───────────────────────────────┴───────────────┘
@@ -54,7 +55,7 @@ SELECT r, toTypeName(r) FROM geo_ring;
 
 ## LineString {#linestring}
 
-`LineString`は、ポイントの配列として保存された線です: [Array](array.md)([Point](#point))。
+`LineString`は、点の配列として保存される線です: [Array](array.md)([Point](#point))。
 
 **例**
 
@@ -67,7 +68,7 @@ SELECT l, toTypeName(l) FROM geo_linestring;
 ```
 結果:
 
-``` text
+```text
 ┌─r─────────────────────────────┬─toTypeName(r)─┐
 │ [(0,0),(10,0),(10,10),(0,10)] │ LineString    │
 └───────────────────────────────┴───────────────┘
@@ -88,7 +89,7 @@ SELECT l, toTypeName(l) FROM geo_multilinestring;
 ```
 結果:
 
-``` text
+```text
 ┌─l───────────────────────────────────────────────────┬─toTypeName(l)───┐
 │ [[(0,0),(10,0),(10,10),(0,10)],[(1,1),(2,2),(3,3)]] │ MultiLineString │
 └─────────────────────────────────────────────────────┴─────────────────┘
@@ -96,7 +97,7 @@ SELECT l, toTypeName(l) FROM geo_multilinestring;
 
 ## Polygon {#polygon}
 
-`Polygon`は、リングの配列として保存される穴のある多角形です: [Array](array.md)([Ring](#ring))。外側の配列の最初の要素は多角形の外形で、続くすべての要素は穴です。
+`Polygon`は穴のある多角形で、[Array](array.md)([Ring](#ring))として保存されます。外側の配列の最初の要素が多角形の外形で、残りの要素が穴です。
 
 **例**
 
@@ -110,7 +111,7 @@ SELECT pg, toTypeName(pg) FROM geo_polygon;
 
 結果:
 
-``` text
+```text
 ┌─pg────────────────────────────────────────────────────────────┬─toTypeName(pg)─┐
 │ [[(20,20),(50,20),(50,50),(20,50)],[(30,30),(50,50),(50,30)]] │ Polygon        │
 └───────────────────────────────────────────────────────────────┴────────────────┘
@@ -118,11 +119,11 @@ SELECT pg, toTypeName(pg) FROM geo_polygon;
 
 ## MultiPolygon {#multipolygon}
 
-`MultiPolygon`は、複数の多角形で構成され、配列として保存されます: [Array](array.md)([Polygon](#polygon))。
+`MultiPolygon`は複数の多角形から構成され、[Array](array.md)([Polygon](#polygon))として保存されます。
 
 **例**
 
-このマルチポリゴンは、穴のない最初の多角形と1つの穴を持つ2番目の多角形の2つの独立した多角形で構成されています:
+このマルチポリゴンは、穴のない最初の多角形と1つの穴を持つ2番目の多角形—合計2つの別々の多角形から構成されています:
 
 ```sql
 CREATE TABLE geo_multipolygon (mpg MultiPolygon) ENGINE = Memory();
@@ -131,7 +132,7 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 ```
 結果:
 
-``` text
+```text
 ┌─mpg─────────────────────────────────────────────────────────────────────────────────────────────┬─toTypeName(mpg)─┐
 │ [[[(0,0),(10,0),(10,10),(0,10)]],[[(20,20),(50,20),(50,50),(20,50)],[(30,30),(50,50),(50,30)]]] │ MultiPolygon    │
 └─────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────┘
@@ -139,4 +140,4 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 
 ## 関連コンテンツ {#related-content}
 
-- [ClickHouseにおける大規模な実世界データセットの探索: 100年以上の気象記録](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
+- [大規模な実世界のデータセットを探る: ClickHouseによる100年以上の気象記録](https://clickhouse.com/blog/real-world-data-noaa-climate-data)

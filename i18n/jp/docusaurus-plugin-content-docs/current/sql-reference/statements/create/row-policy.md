@@ -1,19 +1,20 @@
 ---
-slug: /sql-reference/statements/create/row-policy
+description: '行ポリシーのドキュメント'
+sidebar_label: '行ポリシー'
 sidebar_position: 41
-sidebar_label: ROW POLICY
-title: "CREATE ROW POLICY"
+slug: /sql-reference/statements/create/row-policy
+title: '行ポリシーの作成'
 ---
 
-Creates a [row policy](../../../guides/sre/user-management/index.md#row-policy-management), i.e. a filter used to determine which 行 a user can read from a テーブル.
+特定のユーザーがテーブルから読み取ることができる行を決定するために使用されるフィルタ、すなわち [行ポリシー](../../../guides/sre/user-management/index.md#row-policy-management) を作成します。
 
 :::tip
-Row policies make sense only for users with readonly access. If a user can modify a テーブル or copy パーティション between テーブル, it defeats the restrictions of row policies.
+行ポリシーは、読み取り専用アクセスを持つユーザーにのみ意味があります。ユーザーがテーブルを変更したり、テーブル間でパーティションをコピーしたりできる場合、行ポリシーの制限が無意味になります。
 :::
 
-Syntax:
+構文:
 
-``` sql
+```sql
 CREATE [ROW] POLICY [IF NOT EXISTS | OR REPLACE] policy_name1 [ON CLUSTER cluster_name1] ON [db1.]table1|db1.*
         [, policy_name2 [ON CLUSTER cluster_name2] ON [db2.]table2|db2.* ...]
     [IN access_storage_type]
@@ -22,78 +23,77 @@ CREATE [ROW] POLICY [IF NOT EXISTS | OR REPLACE] policy_name1 [ON CLUSTER cluste
     [TO {role1 [, role2 ...] | ALL | ALL EXCEPT role1 [, role2 ...]}]
 ```
 
-## USING Clause {#using-clause}
+## USING句 {#using-clause}
 
-Allows specifying a condition to filter 行. A user will see a 行 if the condition is calculated to non-zero for the 行.
+行をフィルタリングする条件を指定することを可能にします。条件がその行に対して非ゼロであれば、ユーザーはその行を見ることができます。
 
-## TO Clause {#to-clause}
+## TO句 {#to-clause}
 
-In the `TO` section you can provide a list of users and roles this policy should work for. For example, `CREATE ROW POLICY ... TO accountant, john@localhost`.
+`TO`セクションでは、このポリシーが機能するユーザーやロールのリストを提供できます。例えば、`CREATE ROW POLICY ... TO accountant, john@localhost`のようになります。
 
-Keyword `ALL` means all the ClickHouse users, including current user. Keyword `ALL EXCEPT` allows excluding some users from the all users list, for example, `CREATE ROW POLICY ... TO ALL EXCEPT accountant, john@localhost`
+キーワード`ALL`は、現在のユーザーを含むすべてのClickHouseユーザーを意味します。キーワード`ALL EXCEPT`を使用すると、すべてのユーザーリストから一部のユーザーを除外できます。例えば、`CREATE ROW POLICY ... TO ALL EXCEPT accountant, john@localhost`のようになります。
 
 :::note
-If there are no row policies defined for a テーブル, then any user can `SELECT` all the 行 from the テーブル. Defining one or more row policies for the テーブル makes access to the テーブル dependent on the row policies, no matter if those row policies are defined for the current user or not. For example, the following policy:
+テーブルに定義された行ポリシーがない場合、任意のユーザーはテーブルからすべての行を`SELECT`できます。テーブルに対して1つ以上の行ポリシーを定義すると、現在のユーザーに対して行ポリシーが定義されているかどうかにかかわらず、テーブルへのアクセスが行ポリシーに依存するようになります。例えば、次のポリシー：
 
 `CREATE ROW POLICY pol1 ON mydb.table1 USING b=1 TO mira, peter`
 
-forbids the users `mira` and `peter` from seeing the 行 with `b != 1`, and any non-mentioned user (e.g., the user `paul`) will see no 行 from `mydb.table1` at all.
+は、ユーザー`mira`と`peter`に`b != 1`の行を表示させないことになります。また、言及されていないユーザー（例えば、ユーザー`paul`）は、`mydb.table1`から行を一切見られません。
 
-If that's not desirable, it can be fixed by adding one more row policy, like the following:
+これが望ましくない場合は、次のようにさらに1つの行ポリシーを追加することで修正できます。
 
 `CREATE ROW POLICY pol2 ON mydb.table1 USING 1 TO ALL EXCEPT mira, peter`
 :::
 
-## AS Clause {#as-clause}
+## AS句 {#as-clause}
 
-It's allowed to have more than one policy enabled on the same テーブル for the same user at one time. So we need a way to combine the conditions from multiple policies.
+同じユーザーに対して同じテーブルで複数のポリシーを有効にすることが許可されています。そのため、複数のポリシーからの条件を結合する方法が必要です。
 
-By default, policies are combined using the boolean `OR` operator. For example, the following policies:
+デフォルトでは、ポリシーはブーリアンの`OR`演算子を使用して結合されます。例えば、次のポリシー：
 
 ```sql
 CREATE ROW POLICY pol1 ON mydb.table1 USING b=1 TO mira, peter
 CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 TO peter, antonio
 ```
 
-enable the user `peter` to see 行 with either `b=1` or `c=2`.
+は、ユーザー`peter`が`b=1`または`c=2`のいずれかの行を見ることを可能にします。
 
-The `AS` clause specifies how policies should be combined with other policies. Policies can be either permissive or restrictive. By default, policies are permissive, which means they are combined using the boolean `OR` operator.
+`AS`句は、ポリシーが他のポリシーとどのように結合されるべきかを指定します。ポリシーは、許可的または制限的であることができます。デフォルトでは、ポリシーは許可的であり、これはブーリアンの`OR`演算子を使用して結合されることを意味します。
 
-A policy can be defined as restrictive as an alternative. Restrictive policies are combined using the boolean `AND` operator.
+制限的に定義されたポリシーも代替手段として使用できます。制限的ポリシーは、ブーリアンの`AND`演算子を使用して結合されます。
 
-Here is the general formula:
+一般的な式は次の通りです：
 
 ```text
 row_is_visible = (one or more of the permissive policies' conditions are non-zero) AND
-                 (all of the restrictive policies's conditions are non-zero)
+                 (all of the restrictive policies' conditions are non-zero)
 ```
 
-For example, the following policies:
+例えば、次のポリシー：
 
 ```sql
 CREATE ROW POLICY pol1 ON mydb.table1 USING b=1 TO mira, peter
 CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 AS RESTRICTIVE TO peter, antonio
 ```
 
-enable the user `peter` to see 行 only if both `b=1` AND `c=2`.
+は、ユーザー`peter`が`b=1`かつ`c=2`の場合のみ行を見ることを可能にします。
 
-Database policies are combined with テーブル policies.
+データベースポリシーはテーブルポリシーと結合されます。
 
-For example, the following policies:
+例えば、次のポリシー：
 
 ```sql
 CREATE ROW POLICY pol1 ON mydb.* USING b=1 TO mira, peter
 CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 AS RESTRICTIVE TO peter, antonio
 ```
 
-enable the user `peter` to see table1 行 only if both `b=1` AND `c=2`, although
-any other テーブル in mydb would have only `b=1` policy applied for the user.
+は、ユーザー`peter`がテーブル1の行を見ることを`b=1`かつ`c=2`の場合に制限しますが、mydbの他のテーブルでは、ユーザーに対して`b=1`ポリシーのみが適用されるでしょう。
 
-## ON CLUSTER Clause {#on-cluster-clause}
+## ON CLUSTER句 {#on-cluster-clause}
 
-Allows creating row policies on a cluster, see [Distributed DDL](../../../sql-reference/distributed-ddl.md).
+クラスタ上で行ポリシーを作成することを可能にします。詳細は [分散DDL](../../../sql-reference/distributed-ddl.md) を参照してください。
 
-## Examples {#examples}
+## 例 {#examples}
 
 `CREATE ROW POLICY filter1 ON mydb.mytable USING a<1000 TO accountant, john@localhost`
 

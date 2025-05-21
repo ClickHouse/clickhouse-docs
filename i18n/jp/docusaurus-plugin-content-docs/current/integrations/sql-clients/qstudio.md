@@ -1,22 +1,28 @@
 ---
 slug: /integrations/qstudio
-sidebar_label: QStudio
-description: QStudioは無料のSQLツールです。
+sidebar_label: 'QStudio'
+description: 'QStudioは無料のSQLツールです。'
+title: 'QStudioをClickHouseに接続する'
 ---
-import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import qstudio_add_connection from '@site/static/images/integrations/sql-clients/qstudio-add-connection.png';
 import qstudio_running_query from '@site/static/images/integrations/sql-clients/qstudio-running-query.png';
-
-QStudioは無料のSQL GUIで、SQLスクリプトの実行、テーブルの簡単なブラウジング、グラフ作成、結果のエクスポートが可能です。すべてのオペレーティングシステムおよびすべてのデータベースで動作します。
+import Image from '@theme/IdealImage';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
 # QStudioをClickHouseに接続する
 
+<CommunityMaintainedBadge/>
+
+QStudioは無料のSQL GUIで、SQLスクリプトの実行、テーブルの簡単なブラウジング、結果のチャート作成およびエクスポートを可能にします。すべてのオペレーティングシステムとすべてのデータベースで動作します。
+
 QStudioはJDBCを使用してClickHouseに接続します。
 
-## 1. ClickHouseの詳細を集める {#1-gather-your-clickhouse-details}
+## 1. ClickHouseの詳細を収集する {#1-gather-your-clickhouse-details}
 
-QStudioはHTTP(S)経由でJDBCを使用してClickHouseに接続します。必要な情報は次のとおりです：
+QStudioはHTTP(S)経由でJDBCを使用してClickHouseに接続します。必要な情報は以下の通りです：
 
 - エンドポイント
 - ポート番号
@@ -31,31 +37,31 @@ QStudioは https://www.timestored.com/qstudio/download/ で入手できます。
 
 ## 3. データベースを追加する {#3-add-a-database}
 
-- QStudioを最初に開いたときに、メニューオプションの **Server->Add Server** をクリックするか、ツールバーの「サーバー追加」ボタンをクリックします。
+- QStudioを初めて開いたときに、メニューオプション **Server->Add Server** をクリックするか、ツールバーの追加サーバーボタンをクリックします。
 - 次に、詳細を設定します：
 
-<img src={qstudio_add_connection} alt="新しいデータベースを構成する" />
+<Image img={qstudio_add_connection} size="lg" border alt="ClickHouse接続設定を示すQStudioのデータベース接続構成画面" />
 
 1.   サーバータイプ: Clickhouse.com
-2.   ホストには必ず https:// を含める必要があります。
+2.    ホストの注意点：必ず https:// を含めてください
     ホスト: https://abc.def.clickhouse.cloud
     ポート: 8443
-3.   ユーザー名: default
+3.  ユーザー名: default
     パスワード: `XXXXXXXXXXX`
-4. 「追加」をクリック
+4.  追加をクリック
 
-QStudioがClickHouse JDBCドライバがインストールされていないことを検出すると、自動的にダウンロードする提案をします：
+QStudioがClickHouseのJDBCドライバーがインストールされていないことを検出した場合、ダウンロードを提案します：
 
 ## 4. ClickHouseにクエリを実行する {#4-query-clickhouse}
 
-- クエリエディタを開いてクエリを実行します。クエリは以下の方法で実行できます：
+- クエリエディタを開いてクエリを実行します。クエリを実行する方法は以下の通りです：
 - Ctrl + e - ハイライトされたテキストを実行
 - Ctrl + Enter - 現在の行を実行
 
-- サンプルクエリ：
+- 例のクエリ：
 
-<img src={qstudio_running_query} alt="サンプルクエリ" />
+<Image img={qstudio_running_query} size="lg" border alt="ClickHouseデータベースに対するサンプルSQLクエリの実行を示すQStudioインターフェース" />
 
 ## 次のステップ {#next-steps}
 
-QStudioの機能については [QStudio](https://www.timestored.com/qstudio) を、ClickHouseの機能については [ClickHouseのドキュメント](https://clickhouse.com/docs) を参照してください。
+[QStudio](https://www.timestored.com/qstudio)を参照してQStudioの機能について学び、[ClickHouseのドキュメント](https://clickhouse.com/docs)を参照してClickHouseの機能について学んでください。

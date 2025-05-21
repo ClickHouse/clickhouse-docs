@@ -1,19 +1,20 @@
 ---
-title: JSONEachRowWithProgress
-slug: /interfaces/formats/JSONEachRowWithProgress
-keywords: [JSONEachRowWithProgress]
-input_format: false
-output_format: true
 alias: []
+description: 'JSONEachRowWithProgressフォーマットのドキュメント'
+input_format: false
+keywords: ['JSONEachRowWithProgress']
+output_format: true
+slug: /interfaces/formats/JSONEachRowWithProgress
+title: 'JSONEachRowWithProgress'
 ---
 
-| 入力   | 出力  | エイリアス |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+| 入力 | 出力 | エイリアス |
+|------|------|-----------|
+| ✗    | ✔    |           |
 
 ## 説明 {#description}
 
-[`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) とは異なり、ClickHouse は進捗情報も JSON 値として出力します。
+ClickHouseは進捗情報もJSON値として出力するため、[`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md)とは異なります。
 
 ## 使用例 {#example-usage}
 

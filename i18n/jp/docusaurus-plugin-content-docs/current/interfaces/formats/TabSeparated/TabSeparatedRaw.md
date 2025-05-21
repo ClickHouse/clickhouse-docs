@@ -1,26 +1,27 @@
 ---
-title: TabSeparatedRaw
-slug: /interfaces/formats/TabSeparatedRaw
-keywords: [TabSeparatedRaw]
-input_format: true
-output_format: true
 alias: ['TSVRaw', 'Raw']
+description: 'TabSeparatedRawフォーマットのドキュメント'
+input_format: true
+keywords: ['TabSeparatedRaw']
+output_format: true
+slug: /interfaces/formats/TabSeparatedRaw
+title: 'TabSeparatedRaw'
 ---
 
-| 入力  | 出力  | エイリアス       |
+| 入力 | 出力 | エイリアス         |
 |-------|--------|-----------------|
 | ✔     | ✔      | `TSVRaw`, `Raw` |
 
 ## 説明 {#description}
 
-[`TabSeparated`](/interfaces/formats/TabSeparated) 形式とは異なり、行がエスケープされずに書き込まれます。
+行はエスケープなしで書かれる点で、[`TabSeparated`](/interfaces/formats/TabSeparated)フォーマットとは異なります。
 
 :::note
-この形式で解析する際には、各フィールド内にタブや改行を含めることはできません。
+このフォーマットで解析する際、各フィールドにはタブや改行が許可されていません。
 :::
 
-`TabSeparatedRaw` 形式と `RawBlob` 形式の比較については、[Raw Formats Comparison](../RawBLOB.md/#raw-formats-comparison)を参照してください。
+`TabSeparatedRaw`フォーマットと`RawBlob`フォーマットの比較については、[Raw Formats Comparison](../RawBLOB.md/#raw-formats-comparison)をご覧ください。
 
 ## 使用例 {#example-usage}
 
-## 形式設定 {#format-settings}
+## フォーマット設定 {#format-settings}

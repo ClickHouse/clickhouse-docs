@@ -1,30 +1,32 @@
 ---
-slug: '/sql-reference/data-types/object-data-type'
-sidebar_position: 26
-sidebar_label: 'オブジェクトデータ型'
+description: 'ClickHouseにおける非推奨のObjectデータ型に関するドキュメント'
 keywords: ['object', 'data type']
+sidebar_label: 'Objectデータ型'
+sidebar_position: 26
+slug: /sql-reference/data-types/object-data-type
+title: 'Objectデータ型'
 ---
 
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 
-# オブジェクトデータ型 
+# Objectデータ型 
 
 <DeprecatedBadge/>
 
-**この機能は本番環境には対応しておらず、非推奨です。** JSONドキュメントを扱う必要がある場合は、代わりに [このガイド](/integrations/data-formats/json/overview) を参照してください。JSONオブジェクトをサポートする新しい実装はベータ版です。詳細は [こちら](/sql-reference/data-types/newjson) をご覧ください。
+**この機能は本番環境向けではなく、非推奨です。** JSONドキュメントを操作する必要がある場合は、[このガイド](/integrations/data-formats/json/overview)を参照してください。JSONオブジェクトをサポートする新しい実装はベータ版です。詳細は[こちら](/sql-reference/data-types/newjson)を参照してください。
 
 <hr />
 
 JavaScript Object Notation (JSON) ドキュメントを単一のカラムに保存します。
 
-`JSON` は、[use_json_alias_for_old_object_type](/operations/settings/settings#use_json_alias_for_old_object_type) が有効な場合、`Object('json')` のエイリアスとして使用できます。
+`JSON` は、[use_json_alias_for_old_object_type](/operations/settings/settings#use_json_alias_for_old_object_type) が有効な場合に `Object('json')` の別名として使用できます。
 
 ## 例 {#example}
 
 **例 1**
 
-`JSON` カラムを持つテーブルを作成し、データを挿入する：
+`JSON` カラムを持つテーブルを作成し、その中にデータを挿入します:
 
 ```sql
 CREATE TABLE json
@@ -50,7 +52,7 @@ SELECT o.a, o.b.c, o.b.d[3] FROM json
 
 **例 2**
 
-順序が必要な `MergeTree` ファミリーのテーブルを作成するには、ソートキーをカラムに抽出する必要があります。例えば、圧縮されたHTTPアクセスログのJSON形式のファイルを挿入するには：
+順序付きの `MergeTree` ファミリーテーブルを作成するためには、ソートキーをそのカラムに抽出する必要があります。たとえば、圧縮されたHTTPアクセスログのJSON形式のファイルを挿入する場合:
 
 ```sql
 CREATE TABLE logs
@@ -70,7 +72,7 @@ FROM file('access.json.gz', JSONAsString)
 
 ## JSONカラムの表示 {#displaying-json-columns}
 
-`JSON` カラムを表示する際、ClickHouseはデフォルトでフィールド値のみを表示します（内部的にはタプルとして表現されます）。フィールド名も表示するには `output_format_json_named_tuples_as_objects = 1` を設定します：
+`JSON` カラムを表示する際、ClickHouseはデフォルトでフィールド値のみを表示します（内部的にはタプルとして表現されているため）。`output_format_json_named_tuples_as_objects = 1` を設定することでフィールド名も表示できます:
 
 ```sql
 SET output_format_json_named_tuples_as_objects = 1

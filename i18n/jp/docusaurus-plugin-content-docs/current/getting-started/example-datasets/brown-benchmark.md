@@ -1,11 +1,11 @@
 ---
-description: "機械生成ログデータの新しい分析ベンチマーク"
+description: '機械生成のログデータに対する新しい分析ベンチマーク'
+sidebar_label: 'ブラウン大学ベンチマーク'
 slug: /getting-started/example-datasets/brown-benchmark
-sidebar_label: ブラウン大学ベンチマーク
-title: "ブラウン大学ベンチマーク"
+title: 'ブラウン大学ベンチマーク'
 ---
 
-`MgBench`は、機械生成ログデータのための新しい分析ベンチマークです、 [Andrew Crotty](http://cs.brown.edu/people/acrotty/)。
+`MgBench` は、機械生成のログデータに対する新しい分析ベンチマークです。[Andrew Crotty](http://cs.brown.edu/people/acrotty/)。
 
 データをダウンロードする：
 ```bash
@@ -54,6 +54,7 @@ ENGINE = MergeTree()
 ORDER BY (machine_group, machine_name, log_time);
 ```
 
+
 ```sql
 CREATE TABLE mgbench.logs2 (
   log_time    DateTime,
@@ -65,6 +66,7 @@ CREATE TABLE mgbench.logs2 (
 ENGINE = MergeTree()
 ORDER BY log_time;
 ```
+
 
 ```sql
 CREATE TABLE mgbench.logs3 (
@@ -96,7 +98,7 @@ USE mgbench;
 ```
 
 ```sql
--- Q1.1: 深夜以降、各WebサーバーのCPU/ネットワーク利用率は？
+-- Q1.1: 深夜以降の各ウェブサーバーのCPU/ネットワーク使用率は？
 
 SELECT machine_name,
        MIN(cpu) AS cpu_min,
@@ -120,8 +122,9 @@ FROM (
 GROUP BY machine_name;
 ```
 
+
 ```sql
--- Q1.2: 過去1日間にオフラインになっていたコンピュータラボのマシンは？
+-- Q1.2: 過去1日間にオフラインだったコンピュータラボのマシンはどれか？
 
 SELECT machine_name,
        log_time
@@ -135,7 +138,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.3: 特定のワークステーションの過去10日間の1時間あたりの平均メトリクスは？
+-- Q1.3: 特定のワークステーションの過去10日間の時間ごとの平均メトリックは？
 
 SELECT dt,
        hr,
@@ -168,7 +171,7 @@ ORDER BY dt,
 ```
 
 ```sql
--- Q1.4: 1ヶ月間に、各サーバーがディスクI/Oでブロックされた回数は？
+-- Q1.4: 1か月間に、各サーバーがディスクI/Oでブロックされることは何回あったか？
 
 SELECT machine_name,
        COUNT(*) AS spikes
@@ -183,7 +186,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q1.5: 外部からアクセス可能なVMがメモリ不足になったのはどれですか？
+-- Q1.5: メモリが不足した外部からアクセス可能なVMはどれか？
 
 SELECT machine_name,
        dt,
@@ -204,7 +207,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.6: すべてのファイルサーバーでの合計1時間のネットワークトラフィックは？
+-- Q1.6: 全てのファイルサーバーの合計時間ごとのネットワークトラフィックは？
 
 SELECT dt,
        hr,
@@ -240,7 +243,7 @@ ORDER BY log_time;
 ```
 
 ```sql
--- Q2.2: 特定の2週間の期間にユーザーパスワードファイルが漏洩したか？
+-- Q2.2: 特定の2週間の期間中、ユーザーパスワードファイルが漏洩したか？
 
 SELECT *
 FROM logs2
@@ -251,8 +254,9 @@ WHERE status_code >= 200
   AND log_time < TIMESTAMP '2012-05-20 00:00:00';
 ```
 
+
 ```sql
--- Q2.3: 過去1ヶ月間のトップレベルリクエストの平均パスの深さは？
+-- Q2.3: 過去1か月のトップレベルリクエストの平均パス深度は？
 
 SELECT top_level,
        AVG(LENGTH(request) - LENGTH(REPLACE(request, '/', ''))) AS depth_avg
@@ -276,8 +280,9 @@ GROUP BY top_level
 ORDER BY top_level;
 ```
 
+
 ```sql
--- Q2.4: 過去3ヶ月間に過剰な数のリクエストを行ったクライアントは？
+-- Q2.4: 過去3か月で、過剰なリクエストを行ったクライアントは？
 
 SELECT client_ip,
        COUNT(*) AS num_requests
@@ -288,8 +293,9 @@ HAVING COUNT(*) >= 100000
 ORDER BY num_requests DESC;
 ```
 
+
 ```sql
--- Q2.5: 日次のユニークビジター数は？
+-- Q2.5: 日ごとのユニーク訪問者は何人か？
 
 SELECT dt,
        COUNT(DISTINCT client_ip)
@@ -302,8 +308,9 @@ GROUP BY dt
 ORDER BY dt;
 ```
 
+
 ```sql
--- Q2.6: 平均と最大のデータ転送速度（Gbps）は？
+-- Q2.6: 平均および最大データ転送速度は何 Gbps か？
 
 SELECT AVG(transfer) / 125000000.0 AS transfer_avg,
        MAX(transfer) / 125000000.0 AS transfer_max
@@ -315,8 +322,9 @@ FROM (
 ) AS r;
 ```
 
+
 ```sql
--- Q3.1: 週末に室内温度が氷点に達したか？
+-- Q3.1: 週末に屋内の温度は凍結に達したか？
 
 SELECT *
 FROM logs3
@@ -325,8 +333,9 @@ WHERE event_type = 'temperature'
   AND log_time >= '2019-11-29 17:00:00.000';
 ```
 
+
 ```sql
--- Q3.4: 過去6ヶ月間、各ドアが開けられた回数は？
+-- Q3.4: 過去6か月間、各ドアは開かれることがどのくらい頻繁だったか？
 
 SELECT device_name,
        device_floor,
@@ -339,13 +348,13 @@ GROUP BY device_name,
 ORDER BY ct DESC;
 ```
 
-以下のクエリ3.5ではUNIONを使用しています。SELECTクエリの結果を結合するモードを設定します。この設定は、UNION DISTINCTまたはUNION ALLを明示的に指定せずにUNIONで共有されたときのみに使用されます。
+クエリ3.5はUNIONを使用します。SELECTクエリ結果を組み合わせるためのモードを設定します。この設定は、UNION ALLやUNION DISTINCTを明示的に指定せずに共有されている場合にのみ使用されます。
 ```sql
 SET union_default_mode = 'DISTINCT'
 ```
 
 ```sql
--- Q3.5: 冬と夏に大きな温度変動が発生する建物の場所は？
+-- Q3.5: 冬と夏の間に建物のどこで大きな温度変化が発生するか？
 
 WITH temperature AS (
   SELECT dt,
@@ -398,8 +407,9 @@ WHERE dt >= DATE '2019-06-01'
   AND dt < DATE '2019-09-01';
 ```
 
+
 ```sql
--- Q3.6: 各デバイスカテゴリの月間電力消費メトリクスは？
+-- Q3.6: 各デバイスタイプの月ごとの電力消費メトリックは？
 
 SELECT yr,
        mo,
@@ -443,4 +453,4 @@ ORDER BY yr,
          mo;
 ```
 
-このデータは、[Playground](https://sql.clickhouse.com) にてインタラクティブクエリで利用可能です。 [例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。
+データは、[Playground](https://sql.clickhouse.com) でインタラクティブなクエリを実行するために利用可能です。 [例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。

@@ -1,17 +1,16 @@
----
-slug: '/sql-reference/functions/math-functions'
+description: '数学関数に関する文書'
+sidebar_label: '数学'
 sidebar_position: 125
-sidebar_label: '数学関数'
-keywords: ['数学', '関数', 'ClickHouse']
-description: 'ClickHouseでの数学関数の参照ガイド'
----
+slug: /sql-reference/functions/math-functions
+title: '数学関数'
+```
 
 
 # 数学関数
 
 ## e {#e}
 
-$e$ ([オイラーの定数](https://en.wikipedia.org/wiki/Euler%27s_constant))を返します。
+$e$（[オイラーの定数](https://en.wikipedia.org/wiki/Euler%27s_constant)）を返します。
 
 **構文**
 
@@ -19,26 +18,27 @@ $e$ ([オイラーの定数](https://en.wikipedia.org/wiki/Euler%27s_constant))�
 e()
 ```
 
-**戻り値**
+**返される値**
 
 タイプ: [Float64](../data-types/float.md)。
 
 ## pi {#pi}
 
-$\pi$ ([円周率](https://en.wikipedia.org/wiki/Pi))を返します。
+$\pi$（[円周率](https://en.wikipedia.org/wiki/Pi)）を返します。
 
 **構文**
 
 ```sql
 pi()
 ```
-**戻り値**
+
+**返される値**
 
 タイプ: [Float64](../data-types/float.md)。
 
 ## exp {#exp}
 
-$e^{x}$を返します。ここで、xは関数に渡される引数です。
+$e^{x}$を返します。ここで、xは関数への引数です。
 
 **構文**
 
@@ -48,7 +48,7 @@ exp(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
 **例**
 
@@ -66,7 +66,7 @@ SELECT round(exp(-1), 4);
 └───────────────────┘
 ```
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
@@ -84,9 +84,9 @@ log(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
@@ -102,9 +102,9 @@ exp2(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
@@ -120,7 +120,7 @@ intExp2(x)
 
 ## log2 {#log2}
 
-引数のバイナリ対数を返します。
+引数の二進数対数を返します。
 
 **構文**
 
@@ -130,9 +130,9 @@ log2(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
@@ -148,9 +148,9 @@ exp10(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
@@ -166,7 +166,7 @@ intExp10(x)
 
 ## log10 {#log10}
 
-引数の常用対数を返します。
+引数の10進法対数を返します。
 
 **構文**
 
@@ -176,9 +176,9 @@ log10(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
@@ -192,9 +192,9 @@ sqrt(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
@@ -208,15 +208,15 @@ cbrt(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
 ## erf {#erf}
 
-`x`が非負の場合、$erf(\frac{x}{\sigma\sqrt{2}})$は、標準偏差$\sigma$を持つ正規分布に従うランダム変数が、期待値から`x`以上に離れた値を取る確率です。
+もし `x` が非負であれば、$erf(\frac{x}{\sigma\sqrt{2}})$は、標準偏差$\sigma$を持つ正規分布に従うランダム変数が期待値から `x` よりも大きく離れる確率を返します。
 
 **構文**
 
@@ -226,17 +226,17 @@ erf(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
 **例**
 
-(3σルール)
+（3シグマルール）
 
-``` sql
+```sql
 SELECT erf(3 / sqrt(2));
 ```
 
@@ -248,7 +248,7 @@ SELECT erf(3 / sqrt(2));
 
 ## erfc {#erfc}
 
-大きな`x`値に対して精度を損なうことなく、$1-erf(x)$に近い値を返します。
+大きな `x` の値に対して精度を失わずに$1-erf(x)$に近い値を返します。
 
 **構文**
 
@@ -258,9 +258,9 @@ erfc(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
@@ -276,9 +276,9 @@ lgamma(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
@@ -294,9 +294,9 @@ gamma(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
@@ -312,9 +312,9 @@ sin(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
@@ -342,9 +342,9 @@ cos(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
@@ -360,9 +360,9 @@ tan(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
@@ -378,9 +378,9 @@ asin(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
@@ -396,9 +396,9 @@ acos(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
@@ -414,9 +414,9 @@ atan(x)
 
 **引数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 タイプ: [Float*](../data-types/float.md)。
 
@@ -434,28 +434,28 @@ pow(x, y)
 
 **引数**
 
-- `x` - [(U)Int8/16/32/64](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)
-- `y` - [(U)Int8/16/32/64](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)
+- `x` - [(U)Int8/16/32/64](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)
+- `y` - [(U)Int8/16/32/64](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)
 
-**戻り値**
+**返される値**
 
 タイプ: [Float64](../data-types/float.md)。
 
 ## cosh {#cosh}
 
-引数の[双曲線余弦](https://in.mathworks.com/help/matlab/ref/cosh.html)を返します。
+引数の[ハイパボリックコサイン](https://in.mathworks.com/help/matlab/ref/cosh.html)を返します。
 
 **構文**
 
-``` sql
+```sql
 cosh(x)
 ```
 
 **引数**
 
-- `x` — 角度（ラジアン）。値の範囲: $-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` — 角度（ラジアン）。範囲:$-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 - 値の範囲: $1 \le cosh(x) \lt +\infty$。
 
@@ -463,7 +463,7 @@ cosh(x)
 
 **例**
 
-``` sql
+```sql
 SELECT cosh(0);
 ```
 
@@ -477,27 +477,27 @@ SELECT cosh(0);
 
 ## acosh {#acosh}
 
-[双曲線余弦の逆関数](https://www.mathworks.com/help/matlab/ref/acosh.html)を返します。
+[逆ハイパボリックコサイン](https://www.mathworks.com/help/matlab/ref/acosh.html)を返します。
 
 **構文**
 
-``` sql
+```sql
 acosh(x)
 ```
 
 **引数**
 
-- `x` — 角度の双曲線余弦。値の範囲: $1 \le x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` — 角度のハイパボリックコサイン。範囲:$1 \le x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
-- 角度（ラジアン）。値の範囲: $0 \le acosh(x) \lt +\infty$。
+- 角度（ラジアン）。範囲:$0 \le acosh(x) \lt +\infty$。
 
 タイプ: [Float64](/sql-reference/data-types/float)。
 
 **例**
 
-``` sql
+```sql
 SELECT acosh(1);
 ```
 
@@ -511,19 +511,19 @@ SELECT acosh(1);
 
 ## sinh {#sinh}
 
-[双曲線サイン](https://www.mathworks.com/help/matlab/ref/sinh.html)を返します。
+[ハイパボリックサイン](https://www.mathworks.com/help/matlab/ref/sinh.html)を返します。
 
 **構文**
 
-``` sql
+```sql
 sinh(x)
 ```
 
 **引数**
 
-- `x` — 角度（ラジアン）。値の範囲: $-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` — 角度（ラジアン）。範囲:$-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 - 値の範囲: $-\infty \lt sinh(x) \lt +\infty$。
 
@@ -531,7 +531,7 @@ sinh(x)
 
 **例**
 
-``` sql
+```sql
 SELECT sinh(0);
 ```
 
@@ -545,27 +545,27 @@ SELECT sinh(0);
 
 ## asinh {#asinh}
 
-[双曲線サインの逆関数](https://www.mathworks.com/help/matlab/ref/asinh.html)を返します。
+[逆ハイパボリックサイン](https://www.mathworks.com/help/matlab/ref/asinh.html)を返します。
 
 **構文**
 
-``` sql
+```sql
 asinh(x)
 ```
 
 **引数**
 
-- `x` — 角度の双曲線サイン。値の範囲: $-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` — 角度のハイパボリックサイン。範囲:$-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
-- 角度（ラジアン）。値の範囲: $-\infty \lt asinh(x) \lt +\infty$。
+- 角度（ラジアン）。範囲:$-\infty \lt asinh(x) \lt +\infty$。
 
 タイプ: [Float64](/sql-reference/data-types/float)。
 
 **例**
 
-``` sql
+```sql
 SELECT asinh(0);
 ```
 
@@ -576,21 +576,22 @@ SELECT asinh(0);
 │        0 │
 └──────────┘
 ```
+
 ## tanh {#tanh}
 
-[双曲線タンジェント](https://www.mathworks.com/help/matlab/ref/tanh.html)を返します。
+[ハイパボリックタンジェント](https://www.mathworks.com/help/matlab/ref/tanh.html)を返します。
 
 **構文**
 
-``` sql
+```sql
 tanh(x)
 ```
 
 **引数**
 
-- `x` — 角度（ラジアン）。値の範囲: $-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` — 角度（ラジアン）。範囲:$-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 - 値の範囲: $-1 \lt tanh(x) \lt 1$。
 
@@ -598,7 +599,7 @@ tanh(x)
 
 **例**
 
-``` sql
+```sql
 SELECT tanh(0);
 ```
 
@@ -610,27 +611,27 @@ SELECT tanh(0);
 
 ## atanh {#atanh}
 
-[双曲線タンジェントの逆関数](https://www.mathworks.com/help/matlab/ref/atanh.html)を返します。
+[逆ハイパボリックタンジェント](https://www.mathworks.com/help/matlab/ref/atanh.html)を返します。
 
 **構文**
 
-``` sql
+```sql
 atanh(x)
 ```
 
 **引数**
 
-- `x` — 角度の双曲線タンジェント。値の範囲: $-1 \lt x \lt 1$。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` — 角度のハイパボリックタンジェント。範囲:$-1 \lt x \lt 1$。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
-- 角度（ラジアン）。値の範囲: $-\infty \lt atanh(x) \lt +\infty$。
+- 角度（ラジアン）。範囲:$-\infty \lt atanh(x) \lt +\infty$。
 
 タイプ: [Float64](/sql-reference/data-types/float)。
 
 **例**
 
-``` sql
+```sql
 SELECT atanh(0);
 ```
 
@@ -644,28 +645,28 @@ SELECT atanh(0);
 
 ## atan2 {#atan2}
 
-正のx軸と点`(x, y) ≠ (0, 0)`へのレイとの間の角度をラジアンで返します。
+点`(x, y) ≠ (0, 0)`へのレイと正の x 軸との間の角度をラジアンで返します。
 
 **構文**
 
-``` sql
+```sql
 atan2(y, x)
 ```
 
 **引数**
 
-- `y` — レイが通過する点のy座標。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
-- `x` — レイが通過する点のx座標。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `y` — レイが通過する点の y 座標。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
+- `x` — レイが通過する点の x 座標。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
-- 角度`θ`。範囲: $-\pi \lt 0 \le \pi$、ラジアンで。
+- 角度 `θ` で、$-\pi \lt 0 \le \pi$、ラジアンで。
 
 タイプ: [Float64](/sql-reference/data-types/float)。
 
 **例**
 
-``` sql
+```sql
 SELECT atan2(1, 1);
 ```
 
@@ -679,20 +680,20 @@ SELECT atan2(1, 1);
 
 ## hypot {#hypot}
 
-直角三角形の斜辺の長さを返します。[Hypot](https://en.wikipedia.org/wiki/Hypot)は、非常に大きな数や非常に小さな数を二乗するときに発生する問題を回避します。
+直角三角形の斜辺の長さを返します。[Hypot](https://en.wikipedia.org/wiki/Hypot)は非常に大きいまたは非常に小さい数値を二乗する際に発生する問題を回避します。
 
 **構文**
 
-``` sql
+```sql
 hypot(x, y)
 ```
 
 **引数**
 
-- `x` — 直角三角形の第一カテト。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
-- `y` — 直角三角形の第二カテト。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` — 直角三角形の第一カテトゥス。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
+- `y` — 直角三角形の第二カテトゥス。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 - 直角三角形の斜辺の長さ。
 
@@ -700,7 +701,7 @@ hypot(x, y)
 
 **例**
 
-``` sql
+```sql
 SELECT hypot(1, 1);
 ```
 
@@ -714,19 +715,19 @@ SELECT hypot(1, 1);
 
 ## log1p {#log1p}
 
-`log(1+x)`を計算します。小さなxの値に対して、[計算](https://en.wikipedia.org/wiki/Natural_logarithm#lnp1) `log1p(x)`は`log(1+x)`よりも正確です。
+`log(1+x)`を計算します。小さなxの値に対して、[計算](https://en.wikipedia.org/wiki/Natural_logarithm#lnp1)`log1p(x)`は`log(1+x)`よりも正確です。
 
 **構文**
 
-``` sql
+```sql
 log1p(x)
 ```
 
 **引数**
 
-- `x` — 値の範囲: $-1 \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` — 値の範囲: $-1 \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 - 値の範囲: $-\infty < log1p(x) \lt +\infty$。
 
@@ -734,7 +735,7 @@ log1p(x)
 
 **例**
 
-``` sql
+```sql
 SELECT log1p(0);
 ```
 
@@ -752,27 +753,25 @@ SELECT log1p(0);
 
 **構文**
 
-``` sql
+```sql
 sign(x)
 ```
 
 **引数**
 
-- `x` — 値の範囲: $-\infty$から$+\infty$。ClickHouseのすべての数値型をサポート。
+- `x` — 値の範囲: $-\infty$から$+\infty$。ClickHouseのすべての数値型をサポートします。
 
-**戻り値**
+**返される値**
 
-- `x < 0` の場合は -1
-- `x = 0` の場合は 0
-- `x > 0` の場合は 1
-
-タイプ: [Int8](../data-types/int-uint.md)。
+- `x < 0` の場合は-1
+- `x = 0` の場合は0
+- `x > 0` の場合は1
 
 **例**
 
-ゼロの値の符号:
+ゼロ値の符号:
 
-``` sql
+```sql
 SELECT sign(0);
 ```
 
@@ -786,7 +785,7 @@ SELECT sign(0);
 
 正の値の符号:
 
-``` sql
+```sql
 SELECT sign(1);
 ```
 
@@ -800,7 +799,7 @@ SELECT sign(1);
 
 負の値の符号:
 
-``` sql
+```sql
 SELECT sign(-1);
 ```
 
@@ -811,6 +810,7 @@ SELECT sign(-1);
 │       -1 │
 └──────────┘
 ```
+
 ## sigmoid {#sigmoid}
 
 [シグモイド関数](https://en.wikipedia.org/wiki/Sigmoid_function)を返します。
@@ -821,19 +821,19 @@ SELECT sign(-1);
 sigmoid(x)
 ```
 
-**パラメータ**
+**引数**
 
-- `x` — 入力値。値の範囲: $-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` — 入力値。範囲：$-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
-- シグモイド曲線に沿った対応する値、0から1の間。 [Float64](../data-types/float.md)。
+- 0から1の間のシグモイド曲線に沿った対応する値。[Float64](../data-types/float.md)。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT round(sigmoid(x), 5) FROM (SELECT arrayJoin([-1, 0, 1]) AS x);
 ```
 
@@ -851,21 +851,21 @@ SELECT round(sigmoid(x), 5) FROM (SELECT arrayJoin([-1, 0, 1]) AS x);
 
 **構文**
 
-``` sql
+```sql
 degrees(x)
 ```
 
 **引数**
 
-- `x` — ラジアンでの入力。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` — 入力値（ラジアン）。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
-- 度での値。 [Float64](/sql-reference/data-types/float)。
+- 値（度）。[Float64](/sql-reference/data-types/float)。
 
 **例**
 
-``` sql
+```sql
 SELECT degrees(3.141592653589793);
 ```
 
@@ -883,23 +883,23 @@ SELECT degrees(3.141592653589793);
 
 **構文**
 
-``` sql
+```sql
 radians(x)
 ```
 
 **引数**
 
-- `x` — 度での入力。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md) または [Decimal*](../data-types/decimal.md)。
+- `x` — 入力値（度）。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)、または[Decimal*](../data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
-- ラジアンでの値。
+- 値（ラジアン）。
 
 タイプ: [Float64](/sql-reference/data-types/float)。
 
 **例**
 
-``` sql
+```sql
 SELECT radians(180);
 ```
 
@@ -913,19 +913,19 @@ SELECT radians(180);
 
 ## factorial {#factorial}
 
-整数値の階乗を計算します。UInt(8|16|32|64)およびInt(8|16|32|64)を含む任意のネイティブ整数型で動作します。戻り値のタイプはUInt64です。
+整数の階乗を計算します。UInt(8|16|32|64)およびInt(8|16|32|64)を含む任意のネイティブ整数型で機能します。戻り値の型はUInt64です。
 
-階乗の0は1です。同様に、factorial()関数は任意の負の値に対して1を返します。入力引数の最大正の値は20であり、21以上の値は例外を引き起こします。
+階乗の0は1です。同様に、factorial()関数は任意の負の値に対して1を返します。入力引数の最大正の値は20であり、21以上の値では例外がスローされます。
 
 **構文**
 
-``` sql
+```sql
 factorial(n)
 ```
 
 **例**
 
-``` sql
+```sql
 SELECT factorial(10);
 ```
 
@@ -939,9 +939,9 @@ SELECT factorial(10);
 
 ## width_bucket {#width_bucket}
 
-`operand`が`low`から`high`までの範囲に広がる等幅ビンのヒストグラムにおいて、どのビンに属するかを返します。`operand < low`の場合は`0`を返し、`operand >= high`の場合は`count+1`を返します。
+`operand`が`low`から`high`までの範囲で`count`個の等幅バケットを持つヒストグラムのどのバケットに属するかを返します。`operand < low`の場合は`0`を返し、`operand >= high`の場合は`count+1`を返します。
 
-`operand`、`low`、`high`は任意のネイティブ数値型にできます。`count`は符号なしネイティブ整数のみで、その値はゼロにできません。
+`operand`、`low`、`high`は任意のネイティブ数値型であることができます。`count`は符号なしネイティブ整数のみで、値はゼロではあってはいけません。
 
 **構文**
 
@@ -952,7 +952,7 @@ widthBucket(operand, low, high, count)
 
 **例**
 
-``` sql
+```sql
 SELECT widthBucket(10.15, -8.6, 23, 18);
 ```
 
@@ -966,7 +966,7 @@ SELECT widthBucket(10.15, -8.6, 23, 18);
 
 ## proportionsZTest {#proportionsztest}
 
-2つの母集団`x`と`y`の比率を比較するための統計的テスト-2母比率Zテストの統計値を返します。
+2つの母集団 `x` と `y` の比例を比較するための統計的検定である二項Z検定のテスト統計量を返します。
 
 **構文**
 
@@ -976,23 +976,23 @@ proportionsZTest(successes_x, successes_y, trials_x, trials_y, conf_level, pool_
 
 **引数**
 
-- `successes_x`: 母集団`x`の成功数。 [UInt64](../data-types/int-uint.md)。
-- `successes_y`: 母集団`y`の成功数。 [UInt64](../data-types/int-uint.md)。
-- `trials_x`: 母集団`x`の試行数。 [UInt64](../data-types/int-uint.md)。
-- `trials_y`: 母集団`y`の試行数。 [UInt64](../data-types/int-uint.md)。
-- `conf_level`: テストの信頼レベル。 [Float64](../data-types/float.md)。
-- `pool_type`: プールの選択（標準誤差の推定方法）。`unpooled`または`pooled`のいずれかです。 [String](../data-types/string.md)。
+- `successes_x`: 母集団 `x` の成功数。[UInt64](../data-types/int-uint.md)。
+- `successes_y`: 母集団 `y` の成功数。[UInt64](../data-types/int-uint.md)。
+- `trials_x`: 母集団 `x` の試行数。[UInt64](../data-types/int-uint.md)。
+- `trials_y`: 母集団 `y` の試行数。[UInt64](../data-types/int-uint.md)。
+- `conf_level`: 検定の信頼水準。[Float64](../data-types/float.md)。
+- `pool_type`: プーリングの選択（標準誤差の推定方法）。`unpooled`または`pooled`のいずれか。[String](../data-types/string.md)。
 
 :::note
-引数`pool_type`について:プール版では、2つの比率が平均化され、標準誤差を推定するために1つの比率のみが使用されます。非プール版では、2つの比率が別々に使用されます。
+引数 `pool_type`について：プールドバージョンでは、2つの比率が平均化され、標準誤差の推定には1つの比率のみが使用されます。非プールドバージョンでは、2つの比率が別々に使用されます。
 :::
 
-**戻り値**
+**返される値**
 
-- `z_stat`: Z統計量。 [Float64](../data-types/float.md)。
-- `p_val`: P値。 [Float64](../data-types/float.md)。
-- `ci_low`: 下限信頼区間。 [Float64](../data-types/float.md)。
-- `ci_high`: 上限信頼区間。 [Float64](../data-types/float.md)。
+- `z_stat`: Z統計量。[Float64](../data-types/float.md)。
+- `p_val`: P値。[Float64](../data-types/float.md)。
+- `ci_low`: 下側信頼区間。[Float64](../data-types/float.md)。
+- `ci_high`: 上側信頼区間。[Float64](../data-types/float.md)。
 
 **例**
 
@@ -1008,4 +1008,3 @@ SELECT proportionsZTest(10, 11, 100, 101, 0.95, 'unpooled');
 ┌─proportionsZTest(10, 11, 100, 101, 0.95, 'unpooled')───────────────────────────────┐
 │ (-0.20656724435948853,0.8363478437079654,-0.09345975390115283,0.07563797172293502) │
 └────────────────────────────────────────────────────────────────────────────────────┘
-```

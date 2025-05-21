@@ -1,14 +1,14 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/covarsampmatrix
+description: 'N変数に対するサンプル共分散行列を返します。'
 sidebar_position: 125
-title: "covarSampMatrix"
-description: "N変数に関する標本共分散行列を返します。"
+slug: /sql-reference/aggregate-functions/reference/covarsampmatrix
+title: 'covarSampMatrix'
 ---
 
 
 # covarSampMatrix
 
-N変数に関する標本共分散行列を返します。
+N変数に対するサンプル共分散行列を返します。
 
 **構文**
 
@@ -18,11 +18,11 @@ covarSampMatrix(x[, ...])
 
 **引数**
 
-- `x` — 可変数のパラメータ。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+- `x` — 任意の数のパラメータ。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
 
 **返される値**
 
-- 標本共分散行列。[Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md)))。
+- サンプル共分散行列。 [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md)))。
 
 **例**
 

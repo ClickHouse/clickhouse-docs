@@ -1,10 +1,11 @@
 ---
 slug: /optimize/avoid-nullable-columns
-sidebar_label: Nullableカラムを避ける
-title: Nullableカラムを避ける
-description: 'Nullableカラム（例: Nullable(String)）はUInt8型の別のカラムを作成します。'
+sidebar_label: 'Nullableカラムを回避する'
+title: 'Nullableカラムを回避する'
+description: 'ClickHouseにおいてNullableカラムを避けるべき理由'
 ---
+```
 
-import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/cloud/bestpractices/avoidnullablecolumns.md';
+import Content from '@site/docs/best-practices/_snippets/_avoid_nullable_columns.md';
 
 <Content />

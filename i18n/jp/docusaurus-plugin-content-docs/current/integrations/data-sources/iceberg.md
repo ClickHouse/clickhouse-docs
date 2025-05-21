@@ -1,14 +1,15 @@
 ---
 slug: /integrations/iceberg
-sidebar_label: Iceberg
-title: Iceberg
+sidebar_label: 'アイスバーグ'
+title: 'アイスバーグ'
+description: 'ClickHouseをIcebergテーブルフォーマットと統合するために使用できるIcebergFunctionについてのページ'
 ---
 
-import IcebergFunction from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/table-functions/iceberg.md';
+import IcebergFunction from '@site/docs/sql-reference/table-functions/iceberg.md';
 
 
-# Iceberg統合
+# アイスバーグ統合
 
-ユーザーは、テーブル関数を介してIcebergテーブルフォーマットと統合できます。
+ユーザーはテーブル関数を使用してIcebergテーブルフォーマットと統合できます。 
 
 <IcebergFunction/>

@@ -1,18 +1,18 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/entropy
+description: 'カラムの値に対するシャノンエントロピーを計算します。'
 sidebar_position: 131
-title: "entropy"
-description: "値のカラムのシャノンエントロピーを計算します。"
+slug: /sql-reference/aggregate-functions/reference/entropy
+title: 'entropy'
 ---
 
 
 # entropy
 
-値のカラムの[シャノンエントロピー](https://en.wikipedia.org/wiki/Entropy_(information_theory))を計算します。
+カラムの値に対する [シャノンエントロピー](https://en.wikipedia.org/wiki/Entropy_(information_theory)) を計算します。
 
 **構文**
 
-``` sql
+```sql
 entropy(val)
 ```
 
@@ -30,7 +30,7 @@ entropy(val)
 
 クエリ:
 
-``` sql
+```sql
 CREATE TABLE entropy (`vals` UInt32,`strings` String) ENGINE = Memory;
 
 INSERT INTO entropy VALUES (1, 'A'), (1, 'A'), (1,'A'), (1,'A'), (2,'B'), (2,'B'), (2,'C'), (2,'D');
@@ -40,7 +40,7 @@ SELECT entropy(vals), entropy(strings) FROM entropy;
 
 結果:
 
-``` text
+```text
 ┌─entropy(vals)─┬─entropy(strings)─┐
 │             1 │             1.75 │
 └───────────────┴──────────────────┘

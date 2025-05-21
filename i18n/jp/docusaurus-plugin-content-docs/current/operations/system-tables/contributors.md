@@ -1,23 +1,23 @@
 ---
-description: "貢献者に関する情報を含むシステムテーブル。"
+description: '貢献者に関する情報を含むシステムテーブル。'
+keywords: ['system table', 'contributors']
 slug: /operations/system-tables/contributors
-title: "system.contributors"
-keywords: ["システムテーブル", "貢献者"]
+title: 'system.contributors'
 ---
 
-貢献者に関する情報を含みます。クエリ実行時の順序はランダムです。
+貢献者に関する情報を含みます。順序はクエリ実行時にランダムです。
 
-カラム：
+カラム:
 
-- `name` (String) — git log からの貢献者（著者）名。
+- `name` (String) — git log からの貢献者 (著者) 名。
 
 **例**
 
-``` sql
+```sql
 SELECT * FROM system.contributors LIMIT 10
 ```
 
-``` text
+```text
 ┌─name─────────────┐
 │ Olga Khvostikova │
 │ Max Vetrov       │
@@ -32,13 +32,13 @@ SELECT * FROM system.contributors LIMIT 10
 └──────────────────┘
 ```
 
-テーブル内の自身を見つけるには、次のクエリを使用します：
+テーブル内の自身を見つけるには、次のクエリを使用してください:
 
-``` sql
+```sql
 SELECT * FROM system.contributors WHERE name = 'Olga Khvostikova'
 ```
 
-``` text
+```text
 ┌─name─────────────┐
 │ Olga Khvostikova │
 └──────────────────┘

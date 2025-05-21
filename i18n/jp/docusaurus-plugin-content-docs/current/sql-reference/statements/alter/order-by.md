@@ -1,20 +1,22 @@
 ---
-slug: /sql-reference/statements/alter/order-by
+description: 'キー式の操作に関するドキュメント'
+sidebar_label: 'ORDER BY'
 sidebar_position: 41
-sidebar_label: ORDER BY
+slug: /sql-reference/statements/alter/order-by
+title: 'キー式の操作'
 ---
 
 
 # キー式の操作
 
-``` sql
+```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY ORDER BY new_expression
 ```
 
-このコマンドは、テーブルの [ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md) を `new_expression` （表現または表現のタプル）に変更します。主キーはそのままです。
+このコマンドは、テーブルの[ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)を `new_expression`（式または式のタプル）に変更します。主キーはそのままです。
 
-このコマンドは、メタデータのみを変更するという意味で軽量です。データ部分の行がソートキーの式によって順序付けられる特性を保持するためには、ソートキーに既存のカラムを含む式を追加することはできません（同じ `ALTER` クエリ内の `ADD COLUMN` コマンドによって追加されたカラムのみ、デフォルトカラム値なしで可能です）。
+このコマンドはメタデータのみを変更するため、軽量です。データパートの行がソートキー式によって順序付けられている特性を保つためには、既存のカラムを含む式をソートキーに追加することはできません（同じ`ALTER`クエリ内の`ADD COLUMN`コマンドで追加されたカラムのみが可能です。ただし、デフォルトカラム値は含まれません）。
 
 :::note    
-この機能は [`MergeTree`](../../../engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブル（[レプリケート](../../../engines/table-engines/mergetree-family/replication.md) テーブルを含む）にのみ適用されます。
+これは[`MergeTree`](../../../engines/table-engines/mergetree-family/mergetree.md)ファミリーのテーブル（[レプリケートされた](../../../engines/table-engines/mergetree-family/replication.md)テーブルを含む）に対してのみ機能します。
 :::

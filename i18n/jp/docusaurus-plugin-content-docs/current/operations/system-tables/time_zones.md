@@ -1,11 +1,14 @@
 ---
-description: "ClickHouseサーバーによってサポートされているタイムゾーンのリストを含むシステムテーブル。"
+description: 'ClickHouseサーバーがサポートするタイムゾーンのリストを含むシステムテーブル。'
+keywords: ['system table', 'time_zones']
 slug: /operations/system-tables/time_zones
-title: "system.time_zones"
-keywords: ["システムテーブル", "time_zones"]
+title: 'system.time_zones'
 ---
 
-ClickHouseサーバーによってサポートされているタイムゾーンのリストを含みます。このタイムゾーンのリストはClickHouseのバージョンによって異なる場合があります。
+
+# system.time_zones
+
+ClickHouseサーバーがサポートするタイムゾーンのリストを含みます。このタイムゾーンのリストは、ClickHouseのバージョンによって異なる場合があります。
 
 カラム:
 
@@ -13,11 +16,11 @@ ClickHouseサーバーによってサポートされているタイムゾーン�
 
 **例**
 
-``` sql
+```sql
 SELECT * FROM system.time_zones LIMIT 10
 ```
 
-``` text
+```text
 ┌─time_zone──────────┐
 │ Africa/Abidjan     │
 │ Africa/Accra       │

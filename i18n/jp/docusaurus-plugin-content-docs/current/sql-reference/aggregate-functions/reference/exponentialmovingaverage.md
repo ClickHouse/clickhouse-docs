@@ -1,13 +1,12 @@
----
-slug: /sql-reference/aggregate-functions/reference/exponentialMovingAverage
+description: '指定された時間の値の指数移動平均を計算します。'
 sidebar_position: 132
-title: "exponentialMovingAverage"
-description: "指定された時間に対する値の指数移動平均を計算します。"
----
+slug: /sql-reference/aggregate-functions/reference/exponentialMovingAverage
+title: 'exponentialMovingAverage'
+```
 
 ## exponentialMovingAverage {#exponentialmovingaverage}
 
-指定された時間に対する値の指数移動平均を計算します。
+指定された時間の値の指数移動平均を計算します。
 
 **構文**
 
@@ -15,28 +14,28 @@ description: "指定された時間に対する値の指数移動平均を計算
 exponentialMovingAverage(x)(value, timeunit)
 ```
 
-各 `value` は指定された `timeunit` に対応します。半減期 `x` は、指数的な重みが半分になる時間遅延です。この関数は重み付き平均を返します：時間が経つにつれて、対応する値の重みは少なくなります。
+各 `value` は、定義された `timeunit` に対応しています。半減期 `x` は、指数重みが半分に減衰する時間遅延です。この関数は加重平均を返します：時間点が古くなるほど、対応する値が考慮される重みが小さくなります。
 
 **引数**
 
-- `value` — 値。[整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md)または[小数](../../../sql-reference/data-types/decimal.md)。
-- `timeunit` — 時間単位。[整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md)または[小数](../../../sql-reference/data-types/decimal.md)。時間単位はタイムスタンプ（秒）ではなく、時間間隔のインデックスです。[intDiv](/sql-reference/functions/arithmetic-functions#intdiv)を使用して計算できます。
+- `value` — 値。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)。
+- `timeunit` — 時間単位。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)。timeunit はタイムスタンプ（秒）ではなく、時間間隔のインデックスです。これは [intDiv](/sql-reference/functions/arithmetic-functions#intdiv) を使用して計算できます。
 
 **パラメータ**
 
-- `x` — 半減期。[整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md)または[小数](../../../sql-reference/data-types/decimal.md)。
+- `x` — 半減期。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)。
 
-**戻り値**
+**返り値**
 
-- 過去 `x` 時間の値の[指数的に平滑化された移動平均](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average)を、最新の時間点で返します。
+- 最後の時間点での過去 `x` 時間の値の [指数平滑移動平均](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average) を返します。
 
 タイプ: [Float64](/sql-reference/data-types/float)。
 
 **例**
 
-入力テーブル:
+入力テーブル：
 
-``` text
+```text
 ┌──temperature─┬─timestamp──┐
 │          95  │         1  │
 │          95  │         2  │
@@ -61,21 +60,21 @@ exponentialMovingAverage(x)(value, timeunit)
 └──────────────┴────────────┘
 ```
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT exponentialMovingAverage(5)(temperature, timestamp);
 ```
 
-結果:
+結果：
 
-``` text
+```text
 ┌──exponentialMovingAverage(5)(temperature, timestamp)──┐
 │                                    92.25779635374204  │
 └───────────────────────────────────────────────────────┘
 ```
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -93,9 +92,9 @@ FROM
 )
 ```
 
-結果:
+結果：
 
-``` text
+```text
 ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────────────────────────────────────┐
 │     1 │    0 │                0.067 │ ███▎                                       │
 │     0 │    1 │                0.062 │ ███                                        │
@@ -159,7 +158,7 @@ SELECT
 FROM numbers_mt(10);
 
 
--- intDivを使用してtimeunitを計算
+-- intDivを使用してtimeunitを計算する
 SELECT
     value,
     time,
@@ -182,7 +181,7 @@ ORDER BY time ASC;
 └───────┴─────────────────────┴─────────────┴──────────┘
 
 
--- toRelativeHourNumを使用してtimeunitを計算
+-- toRelativeHourNumを使用してtimeunitを計算する
 SELECT
     value,
     time,
@@ -203,4 +202,3 @@ ORDER BY time ASC;
 │    10 │ 2020-01-01 08:00:00 │  9.98046875 │   438296 │
 │    10 │ 2020-01-01 09:00:00 │ 9.990234375 │   438297 │
 └───────┴─────────────────────┴─────────────┴──────────┘
-```

@@ -1,13 +1,12 @@
----
-slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedSum
+description: '時間におけるインデックス `t` での時系列の指数平滑移動平均値の合計を返します。'
 sidebar_position: 136
-title: "exponentialTimeDecayedSum"
-description: "Returns the sum of exponentially smoothed moving average values of a time series at the index `t` in time."
----
+slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedSum
+title: 'exponentialTimeDecayedSum'
+```
 
 ## exponentialTimeDecayedSum {#exponentialtimedecayedsum}
 
-時系列のインデックス `t` における指数平滑移動平均値の合計を返します。
+時間におけるインデックス `t` での時系列の指数平滑移動平均値の合計を返します。
 
 **構文**
 
@@ -17,16 +16,16 @@ exponentialTimeDecayedSum(x)(v, t)
 
 **引数**
 
-- `v` — 値。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)。
-- `t` — 時間。[整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md) 。
+- `v` — 値。 [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) または [Decimal](../../../sql-reference/data-types/decimal.md)。
+- `t` — 時間。[Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) または [Decimal](../../../sql-reference/data-types/decimal.md), [DateTime](../../data-types/datetime.md), [DateTime64](../../data-types/datetime64.md)。
 
 **パラメータ**
 
-- `x` — 半減期。[整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)。
+- `x` — 半減期。[Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) または [Decimal](../../../sql-reference/data-types/decimal.md)。
 
 **返される値**
 
-- 指定された時間点における指数平滑移動平均値の合計を返します。[Float64](../../data-types/float.md)。
+- 指定された時点における指数平滑移動平均値の合計を返します。[Float64](../../data-types/float.md)。
 
 **例**
 
@@ -103,4 +102,3 @@ FROM
 49. │     1 │   48 │                9.563 │ ███████████████████████████████████████████████▊  │
 50. │     1 │   49 │                9.653 │ ████████████████████████████████████████████████▎ │
     └───────┴──────┴──────────────────────┴───────────────────────────────────────────────────┘
-```

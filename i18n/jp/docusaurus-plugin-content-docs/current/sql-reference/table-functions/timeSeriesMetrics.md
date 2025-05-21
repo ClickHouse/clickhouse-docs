@@ -1,9 +1,9 @@
 ---
-slug: /sql-reference/table-functions/timeSeriesMetrics
+description: 'timeSeriesMetricsは、テーブルエンジンがTimeSeriesエンジンであるテーブル`db_name.time_series_table`によって使用されるメトリクステーブルを返します。'
+sidebar_label: 'timeSeriesMetrics'
 sidebar_position: 145
-sidebar_label: timeSeriesMetrics
-title: "timeSeriesMetrics"
-description: "timeSeriesMetricsは、テーブルエンジンがTimeSeriesエンジンである`db_name.time_series_table`によって使用されるメトリクステーブルを返します。"
+slug: /sql-reference/table-functions/timeSeriesMetrics
+title: 'timeSeriesMetrics'
 ---
 
 
@@ -11,19 +11,19 @@ description: "timeSeriesMetricsは、テーブルエンジンがTimeSeriesエン
 
 `timeSeriesMetrics(db_name.time_series_table)` - テーブルエンジンが [TimeSeries](../../engines/table-engines/integrations/time-series.md) エンジンであるテーブル `db_name.time_series_table` によって使用される [メトリクス](../../engines/table-engines/integrations/time-series.md#metrics-table) テーブルを返します:
 
-``` sql
+```sql
 CREATE TABLE db_name.time_series_table ENGINE=TimeSeries METRICS metrics_table
 ```
 
-この関数は、_metrics_ テーブルが内部の場合も機能します:
+この関数は、_metrics_ テーブルが内部の場合でも機能します:
 
-``` sql
+```sql
 CREATE TABLE db_name.time_series_table ENGINE=TimeSeries METRICS INNER UUID '01234567-89ab-cdef-0123-456789abcdef'
 ```
 
-次のクエリは同等です:
+以下のクエリは同等です:
 
-``` sql
+```sql
 SELECT * FROM timeSeriesMetrics(db_name.time_series_table);
 SELECT * FROM timeSeriesMetrics('db_name.time_series_table');
 SELECT * FROM timeSeriesMetrics('db_name', 'time_series_table');

@@ -1,9 +1,12 @@
 ---
-description: "すべてのテーブルに存在するプロジェクションに関する情報を含むシステムテーブル。"
+description: 'すべてのテーブルに存在するプロジェクションに関する情報を含むシステムテーブル。'
+keywords: ['system table', 'projections']
 slug: /operations/system-tables/projections
-title: "system.processors_profile_log"
-keywords: ["システムテーブル", "プロジェクション"]
+title: 'system.projections'
 ---
+
+
+# system.projections
 
 すべてのテーブルに存在するプロジェクションに関する情報を含みます。
 
@@ -12,8 +15,8 @@ keywords: ["システムテーブル", "プロジェクション"]
 - `database` ([String](../../sql-reference/data-types/string.md)) — データベース名。
 - `table` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
 - `name` ([String](../../sql-reference/data-types/string.md)) — プロジェクション名。
-- `type` ([Enum](../../sql-reference/data-types/enum.md)) — プロジェクションタイプ ('Normal' = 0, 'Aggregate' = 1)。
-- `sorting_key` ([Array(String)](../../sql-reference/data-types/array.md)) — プロジェクションのソートキー。
+- `type` ([Enum](../../sql-reference/data-types/enum.md)) — プロジェクションのタイプ ('Normal' = 0, 'Aggregate' = 1)。
+- `sorting_key` ([Array(String)](../../sql-reference/data-types/array.md)) — プロジェクションソートキー。
 - `query` ([String](../../sql-reference/data-types/string.md)) — プロジェクションクエリ。
 
 **例**

@@ -1,12 +1,14 @@
 ---
 slug: /architecture/introduction
-sidebar_label: はじめに
-title: はじめに
+sidebar_label: 'イントロダクション'
+title: 'イントロダクション'
 sidebar_position: 1
+description: 'ClickHouse Support and Services から ClickHouse ユーザーに提供されるアドバイスに基づいたデプロイメントの例があるページ'
 ---
-import ReplicationShardingTerminology from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_replication-sharding-terminology.md';
 
-これらのデプロイメント例は、ClickHouse サポートおよびサービス組織からの ClickHouse ユーザーへのアドバイスに基づいています。これらは実際に機能する例であり、試してみてから自分のニーズに合わせて調整することをお勧めします。ここにあなたの要件に正確に合った例が見つかるかもしれません。あるいは、データが2回ではなく3回レプリケートされる必要がある場合は、ここで示されているパターンに従うことで、もう1つのレプリカを追加できるはずです。
+import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
+
+これらのデプロイメント例は、ClickHouse Support and Services 組織から ClickHouse ユーザーに提供されたアドバイスに基づいています。これらは実働の例であり、試してみてからニーズに合わせて調整することをお勧めします。ここにあなたの要件に正確に合った例が見つかるかもしれません。また、データが2回の代わりに3回レプリケーションされる必要がある場合は、ここで示されたパターンに従って別のレプリカを追加できるはずです。
 
 <ReplicationShardingTerminology />
 
@@ -14,9 +16,9 @@ import ReplicationShardingTerminology from '@site/i18n/jp/docusaurus-plugin-cont
 
 ### 基本 {#basic}
 
-- [**スケールアウト**](/deployment-guides/horizontal-scaling.md) の例では、データを2つのノードにシャードし、分散テーブルを使用する方法が示されています。これにより、2つの ClickHouse ノードにデータが格納されます。また、2つの ClickHouse ノードは ClickHouse Keeper を実行して分散同期を提供しています。3つ目のノードは ClickHouse Keeper をスタンドアロンで実行し、ClickHouse Keeper の過半数を完成させます。
+- [**スケーリングアウト**](/deployment-guides/horizontal-scaling.md) の例は、データを2つのノードにシャーディングし、分散テーブルを使用する方法を示しています。これにより、2つの ClickHouse ノードにデータが配置されます。さらに、2つの ClickHouse ノードは ClickHouse Keeper を実行し、分散同期を提供します。3つ目のノードは、ClickHouse Keeper のクォーラムを完了させるためにスタンドアロンの ClickHouse Keeper を実行しています。
 
-- [**フォールトトレランスのためのレプリケーション**](/deployment-guides/replicated.md) の例では、データを2つのノードにレプリケートし、ReplicatedMergeTree テーブルを使用する方法が示されています。これにより、2つの ClickHouse ノードにデータが存在します。2つの ClickHouse サーバーノードに加えて、レプリケーションを管理するために3つの ClickHouse Keeper スタンドアロンノードがあります。
+- [**フォールトトレランスのためのレプリケーション**](/deployment-guides/replicated.md) の例は、データを2つのノードにレプリケーションし、ReplicatedMergeTree テーブルを使用する方法を示しています。これにより、2つの ClickHouse ノードにデータが配置されます。2つの ClickHouse サーバーノードに加え、レプリケーションを管理するために3つのスタンドアロンの ClickHouse Keeper ノードがあります。
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/vBjCJtw_Ei0"
@@ -32,8 +34,8 @@ import ReplicationShardingTerminology from '@site/i18n/jp/docusaurus-plugin-cont
 
 ### 中級 {#intermediate}
 
-- 近日中に公開予定
+- 近日公開
 
 ### 上級 {#advanced}
 
-- 近日中に公開予定
+- 近日公開

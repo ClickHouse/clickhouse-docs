@@ -1,27 +1,29 @@
 ---
-slug: /operations/ssl-zookeeper
+description: 'ClickHouseとZooKeeper間の安全なSSL/TLS通信を設定するためのガイド'
+sidebar_label: 'Zookeeperとの安全な通信'
 sidebar_position: 45
-sidebar_label: Zookeeperとの安全な通信
+slug: /operations/ssl-zookeeper
+title: 'ClickHouseとZookeeper間のオプションとしての安全な通信'
 ---
 
 
-# ClickHouseとZookeeper間のオプションの安全な通信
-import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
+# ClickHouseとZookeeper間のオプションとしての安全な通信
+import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 
-ClickHouseクライアントとのSSL通信のために`ssl.keyStore.location`、`ssl.keyStore.password`及び`ssl.trustStore.location`、`ssl.trustStore.password`を指定する必要があります。これらのオプションはZookeeperバージョン3.5.2から利用可能です。
+ClickHouseクライアントとのSSLを介した通信には、`ssl.keyStore.location`、`ssl.keyStore.password`、`ssl.trustStore.location`、`ssl.trustStore.password`を指定する必要があります。これらのオプションはZookeeperバージョン3.5.2から利用可能です。
 
-`zookeeper.crt`を信頼された証明書に追加することができます。
+`zookeeper.crt`を信頼された証明書に追加できます。
 
-``` bash
+```bash
 sudo cp zookeeper.crt /usr/local/share/ca-certificates/zookeeper.crt
 sudo update-ca-certificates
 ```
 
-`config.xml`のクライアントセクションは以下のようになります:
+`config.xml`のクライアントセクションは次のようになります:
 
-``` xml
+```xml
 <client>
     <certificateFile>/etc/clickhouse-server/client.crt</certificateFile>
     <privateKeyFile>/etc/clickhouse-server/client.key</privateKeyFile>
@@ -35,9 +37,9 @@ sudo update-ca-certificates
 </client>
 ```
 
-クラスタとマクロを用いてClickHouseの設定にZookeeperを追加します:
+ClickHouse設定にZookeeperをクラスタとマクロで追加します:
 
-``` xml
+```xml
 <clickhouse>
     <zookeeper>
         <node>
@@ -49,15 +51,15 @@ sudo update-ca-certificates
 </clickhouse>
 ```
 
-`clickhouse-server`を起動します。ログには以下のように表示されるはずです:
+`clickhouse-server`を開始します。ログには次のように表示されるはずです:
 
 ```text
 <Trace> ZooKeeper: initialized, hosts: secure://localhost:2281
 ```
 
-プレフィックス`secure://`は、接続がSSLで保護されていることを示します。
+`secure://`プレフィックスは、接続がSSLで保護されていることを示しています。
 
-トラフィックが暗号化されていることを確認するために、セキュアポートで`tcpdump`を実行します:
+トラフィックが暗号化されていることを確認するには、セキュアなポートで`tcpdump`を実行します:
 
 ```bash
 tcpdump -i any dst port 2281 -nnXS
@@ -75,4 +77,4 @@ SELECT * FROM system.zookeeper WHERE path = '/';
 ..../zookeeper/quota.
 ```
 
-暗号化された接続では、これを見ることはできません。
+暗号化された接続ではこれを見ることはできません。

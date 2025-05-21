@@ -1,10 +1,11 @@
 ---
-title: XML
-slug: /interfaces/formats/XML
-keywords: [XML]
-input_format: false
-output_format: true
 alias: []
+description: 'XMLフォーマットのドキュメント'
+input_format: false
+keywords: ['XML']
+output_format: true
+slug: /interfaces/formats/XML
+title: 'XML'
 ---
 
 | 入力 | 出力 | エイリアス |
@@ -13,14 +14,13 @@ alias: []
 
 ## 説明 {#description}
 
-`XML` フォーマットは出力専用であり、パースには適していません。
+`XML`フォーマットは出力専用であり、解析には適していません。
 
-カラム名が受け入れ可能な形式でない場合、「field」が要素名として使用されます。一般的に、XML構造はJSON構造に従います。
-JSONと同様に、無効なUTF-8シーケンスは置換文字 `�` に変更されるため、出力テキストは有効なUTF-8シーケンスで構成されます。
+カラム名が許容されるフォーマットでない場合は、'field'が要素名として使用されます。一般的に、XML構造はJSON構造に従います。JSONの場合と同様に、無効なUTF-8シーケンスは置換文字`�`に変換され、出力テキストは有効なUTF-8シーケンスで構成されます。
 
-文字列値において、文字 `<` と `&` はそれぞれ `<` と `&` にエスケープされます。
+文字列値では、文字`<`と`&`はそれぞれ`&lt;`および`&amp;`にエスケープされます。
 
-配列は `<array><elem>Hello</elem><elem>World</elem>...</array>` として出力され、タプルは `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>` として出力されます。
+配列は`<array><elem>Hello</elem><elem>World</elem>...</array>`として出力され、タプルは`<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`として出力されます。
 
 ## 使用例 {#example-usage}
 
@@ -47,7 +47,7 @@ JSONと同様に、無効なUTF-8シーケンスは置換文字 `�` に変更�
                         <field>8267016</field>
                 </row>
                 <row>
-                        <SearchPhrase>bathroom interior design</SearchPhrase>
+                        <SearchPhrase>バスルームインテリアデザイン</SearchPhrase>
                         <field>2166</field>
                 </row>
                 <row>
@@ -55,31 +55,31 @@ JSONと同様に、無効なUTF-8シーケンスは置換文字 `�` に変更�
                         <field>1655</field>
                 </row>
                 <row>
-                        <SearchPhrase>2014 spring fashion</SearchPhrase>
+                        <SearchPhrase>2014年春のファッション</SearchPhrase>
                         <field>1549</field>
                 </row>
                 <row>
-                        <SearchPhrase>freeform photos</SearchPhrase>
+                        <SearchPhrase>フリーフォームの写真</SearchPhrase>
                         <field>1480</field>
                 </row>
                 <row>
-                        <SearchPhrase>angelina jolie</SearchPhrase>
+                        <SearchPhrase>アンジェリーナ・ジョリー</SearchPhrase>
                         <field>1245</field>
                 </row>
                 <row>
-                        <SearchPhrase>omsk</SearchPhrase>
+                        <SearchPhrase>オムスク</SearchPhrase>
                         <field>1112</field>
                 </row>
                 <row>
-                        <SearchPhrase>photos of dog breeds</SearchPhrase>
+                        <SearchPhrase>犬種の写真</SearchPhrase>
                         <field>1091</field>
                 </row>
                 <row>
-                        <SearchPhrase>curtain designs</SearchPhrase>
+                        <SearchPhrase>カーテンデザイン</SearchPhrase>
                         <field>1064</field>
                 </row>
                 <row>
-                        <SearchPhrase>baku</SearchPhrase>
+                        <SearchPhrase>バクー</SearchPhrase>
                         <field>1000</field>
                 </row>
         </data>

@@ -7,6 +7,7 @@ import argparse
 import os
 import re
 import yaml
+from frontmatter.default_handlers import DEFAULT_POST_TEMPLATE, YAMLHandler
 
 from llama_index.core import Document
 from llama_index.core.node_parser import MarkdownNodeParser
@@ -16,7 +17,6 @@ import shutil
 from openai import OpenAI
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import frontmatter
-from markdown_it import MarkdownIt
 
 TRANSLATE_EXCLUDED_FILES = {"about-us/adopters.md", "index.md", "integrations/language-clients/java/jdbc-v1.md"}
 TRANSLATE_EXCLUDED_FOLDERS = {"whats-new", "changelogs"}
@@ -145,6 +145,28 @@ class QuotedStringDumper(yaml.SafeDumper):
     def represent_str(self, data):
         return yaml.ScalarNode('tag:yaml.org,2002:str', data, style="'")
 
+# Create a custom handler that preserves whitespace
+class yamlFrontMatterHandler(YAMLHandler):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def format(self, post, **kwargs):
+        """
+        Turn a post into a string, used in ``frontmatter.dumps``.
+        Changed from default handler to not remove the last empty line
+        """
+        start_delimiter = kwargs.pop("start_delimiter", self.START_DELIMITER)
+        end_delimiter = kwargs.pop("end_delimiter", self.END_DELIMITER)
+
+        metadata = self.export(post.metadata, **kwargs)
+
+        return DEFAULT_POST_TEMPLATE.format(
+            metadata=metadata,
+            content=post.content,
+            start_delimiter=start_delimiter,
+            end_delimiter=end_delimiter,
+        ).lstrip()
+
 # Configure YAML dumper to use single quotes for strings
 QuotedStringDumper.add_representer(str, QuotedStringDumper.represent_str)
 def translate_frontmatter(frontmatter, glossary):
@@ -197,13 +219,38 @@ def remove_import_statements(text):
     # Regular expression to match import statements
     import_regex = r'^import\s+.+\s+from\s+[\'"].+[\'"];?$'
 
-    # Remove all import statements
-    cleaned_text = re.sub(import_regex, '', text, flags=re.MULTILINE)
+    # Remove import statements line by line to have more control
+    lines = text.splitlines(True)  # Keep line endings
+    cleaned_lines = []
 
-    # Clean up any resulting multiple newlines
-    cleaned_text = re.sub(r'\n{2,}', '\n', cleaned_text)
+    import_line_indices = []
+    # First, identify all import lines
+    for i, line in enumerate(lines):
+        if re.match(import_regex, line):
+            import_line_indices.append(i)
 
-    return cleaned_text.strip()
+    # Now process the lines, handling consecutive import lines specially
+    skip_next_blank = False
+    for i, line in enumerate(lines):
+        if i in import_line_indices:
+            # This is an import line - skip it
+            # If this is the last of a sequence of imports, we might want to skip the next blank line
+            is_last_in_sequence = (i+1) not in import_line_indices
+            next_is_blank = (i+1 < len(lines) and lines[i+1].strip() == '')
+
+            if is_last_in_sequence and next_is_blank:
+                skip_next_blank = True
+            continue
+
+        if skip_next_blank and line.strip() == '':
+            # This is a blank line right after import(s) - skip it
+            skip_next_blank = False
+            continue
+
+        # For all other lines, keep them
+        cleaned_lines.append(line)
+
+    return ''.join(cleaned_lines)
 
 def replace_code_blocks_with_custom_placeholders(markdown_text):
     lines = markdown_text.split('\n')
@@ -269,11 +316,12 @@ def translate_file(config, input_file_path, output_file_path, model):
     try:
         with open(input_file_path, "r", encoding="utf-8") as input_file:
             # Before splitting text into chunks, split the content and the frontmatter
-            metadata, original_text = frontmatter.parse(input_file.read())
-            print(f" - length: {len(original_text)}")
+            # custom handler used below as library strips whitespace by default
+            post = frontmatter.load(input_file, handler=yamlFrontMatterHandler())
+            metadata = post.metadata
+            original_text = post.content
 
-        if input_file_path == "/Users/sstruw/Desktop/clickhouse-docs/docs/operations/settings/settings.md":
-            pause_here = ""
+            print(f" - length: {len(original_text)}")
 
         # Translate the metadata
         translate_frontmatter(metadata, config["glossary"])
@@ -290,7 +338,7 @@ def translate_file(config, input_file_path, output_file_path, model):
         num_chunk = math.ceil(len(cleaned_text) / MAX_CHUNK_SIZE)
         count = 1
         translated_text = ""
-        chunks = split_text(original_text, input_file_path, MAX_CHUNK_SIZE)
+        chunks = split_text(cleaned_text, input_file_path, MAX_CHUNK_SIZE)
         for chunk in chunks:
             print(f" - start [{count}/{len(chunks)}], [{input_file_path}]")
 

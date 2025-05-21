@@ -1,15 +1,16 @@
 ---
 slug: /integrations/postgresql/inserting-data
-title: PostgreSQL からデータを挿入する方法
-keywords: [postgres, postgresql, inserts]
+title: 'PostgreSQLからデータを挿入する方法'
+keywords: ['postgres', 'postgresql', 'inserts']
+description: 'ClickPipes、PeerDB、またはPostgresテーブル関数を使用してPostgreSQLからデータを挿入する方法を説明するページ'
 ---
 
-ClickHouse にデータを挿入する際のベストプラクティスについては、[このガイド](/guides/inserting-data)を読むことをお勧めします。挿入性能を最適化するための情報が得られます。
+We recommend reading [このガイド](/guides/inserting-data) to learn best practices on inserting data to ClickHouse to optimize for insert performance.
 
-PostgreSQL からのデータのバルクロードに関して、ユーザーは以下の方法を利用できます：
+For bulk loading data from PostgreSQL, users can use:
 
-- 管理型の統合サービスである [ClickPipes](/integrations/clickpipes/postgres) を使用する - 現在プライベートプレビュー中です。こちらから[サインアップしてください](https://clickpipes.peerdb.io/)。
-- `PeerDB by ClickHouse`、PostgreSQL データベースのレプリケーションのために特別に設計された ETL ツールであり、セルフホステッドの ClickHouse と ClickHouse Cloud の両方に対応しています。
-    - PeerDB は現在 ClickHouse Cloud にネイティブで利用可能です - 私たちの [新しい ClickPipe コネクタ](/integrations/clickpipes/postgres) による、ブレイジングファーストの Postgres から ClickHouse への CDC - 現在プライベートプレビュー中です。こちらから[サインアップしてください](https://clickpipes.peerdb.io/)。
-- データを直接読み込むための [Postgres テーブル関数](/sql-reference/table-functions/postgresql) を使用します。これは、タイムスタンプなどの既知のウォーターマークに基づくバッチレプリケーションが十分である場合や、一度限りの移行の場合に適しています。このアプローチは、数千万行規模にスケールすることができます。より大規模なデータセットを移行する場合は、それぞれのデータのチャンクを処理する複数のリクエストを考慮してください。各チャンクの前にステージングテーブルを使用し、最終テーブルにパーティションが移動されることを許可します。これにより、失敗したリクエストを再試行することができます。このバルクローディング戦略の詳細については、こちらを参照してください。
-- データは CSV 形式で Postgres からエクスポートできます。その後、ローカルファイルまたはオブジェクトストレージを介してテーブル関数を使用して ClickHouse に挿入できます。
+- using [ClickPipes](/integrations/clickpipes/postgres), the managed integration service for ClickHouse Cloud - now in public beta. Please [こちらからサインアップしてください](https://clickpipes.peerdb.io/)
+- `PeerDB by ClickHouse`, an ETL tool specifically designed for PostgreSQLデータベースのレプリケーションを、セルフマネージドのClickHouseおよびClickHouse Cloudの両方に行うためのものです。
+    - PeerDBは現在、ClickHouse Cloudでネイティブに利用可能です - 当社の[新しいClickPipeコネクタ](/integrations/clickpipes/postgres)を使用した超高速なPostgresからClickHouseへのCDC - 現在、パブリックベータ中です。 Please [こちらからサインアップしてください](https://clickhouse.com/cloud/clickpipes/postgres-cdc-connector)
+- The [Postgres Table Function](/sql-reference/table-functions/postgresql) to read data directly. This is typically appropriate for if batch replication based on a known watermark, e.g. a timestamp. is sufficient or if it's a once-off migration. This approach can scale to 10's of millions of 行. Users looking to migrate larger datasets should consider multiple requests, each dealing with a chunk of the data. Staging tables can be used for each chunk prior to its パーティション being moved to a final table. This allows failed requests to be retried. For further details on this bulk-loading strategy, see here.
+- Data can be exported from Postgres in CSV format. This can then be inserted into ClickHouse from either local files or via object storage using table functions.

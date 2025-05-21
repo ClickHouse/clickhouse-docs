@@ -1,15 +1,15 @@
----
-slug: '/sql-reference/statements/create/dictionary'
-sidebar_position: 38
+description: 'Dictionaryに関するドキュメント'
 sidebar_label: 'DICTIONARY'
+sidebar_position: 38
+slug: /sql-reference/statements/create/dictionary
 title: 'CREATE DICTIONARY'
----
+```
 
-指定された[構造](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields)、[ソース](../../../sql-reference/dictionaries/index.md#dictionary-sources)、[レイアウト](/sql-reference/dictionaries#storing-dictionaries-in-memory)および[有効期限](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)を持つ新しい[dictionary](../../../sql-reference/dictionaries/index.md)を作成します。
+Creates a new [dictionary](../../../sql-reference/dictionaries/index.md) with given [structure](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields), [source](../../../sql-reference/dictionaries/index.md#dictionary-sources), [layout](/sql-reference/dictionaries#storing-dictionaries-in-memory) and [lifetime](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
 
-## 構文 {#syntax}
+## Syntax {#syntax}
 
-``` sql
+```sql
 CREATE [OR REPLACE] DICTIONARY [IF NOT EXISTS] [db.]dictionary_name [ON CLUSTER cluster]
 (
     key1 type1  [DEFAULT|EXPRESSION expr1] [IS_OBJECT_ID],
@@ -25,34 +25,34 @@ SETTINGS(setting_name = setting_value, setting_name = setting_value, ...)
 COMMENT 'Comment'
 ```
 
-辞書構造は属性で構成されます。辞書属性はテーブルカラムの指定方法に類似しています。必須の属性プロパティはそのタイプのみであり、他のすべてのプロパティはデフォルト値を持つことができます。
+The dictionary structure consists of attributes. Dictionary attributes are specified similarly to table columns. The only required attribute property is its type, all other properties may have default values.
 
-`ON CLUSTER`句では、クラスタ上に辞書を作成することができます。[Distributed DDL](../../../sql-reference/distributed-ddl.md)を参照してください。
+`ON CLUSTER` clause allows creating dictionary on a cluster, see [Distributed DDL](../../../sql-reference/distributed-ddl.md).
 
-辞書の[レイアウト](/sql-reference/dictionaries#storing-dictionaries-in-memory)に応じて、1つ以上の属性を辞書キーとして指定できます。
+Depending on dictionary [layout](/sql-reference/dictionaries#storing-dictionaries-in-memory), one or more attributes can be specified as dictionary keys.
 
 ## SOURCE {#source}
 
-辞書のソースは次のいずれかであることができます：
-- 現在のClickHouseサービスのテーブル
-- リモートClickHouseサービスのテーブル
-- HTTP(S)で利用可能なファイル
-- 他のデータベース
+The source for a dictionary can be a:
+- table in the current ClickHouse service
+- table in a remote ClickHouse service
+- file available by HTTP(S)
+- another database
 
-### 現在のClickHouseサービスのテーブルから辞書を作成する {#create-a-dictionary-from-a-table-in-the-current-clickhouse-service}
+### Create a dictionary from a table in the current ClickHouse service {#create-a-dictionary-from-a-table-in-the-current-clickhouse-service}
 
-入力テーブル `source_table`:
+Input table `source_table`:
 
-``` text
+```text
 ┌─id─┬─value──┐
 │  1 │ First  │
 │  2 │ Second │
 └────┴────────┘
 ```
 
-辞書を作成する:
+Creating the dictionary:
 
-``` sql
+```sql
 CREATE DICTIONARY id_value_dictionary
 (
     id UInt64,
@@ -64,9 +64,9 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
 ```
 
-辞書を出力する:
+Output the dictionary:
 
-``` sql
+```sql
 SHOW CREATE DICTIONARY id_value_dictionary;
 ```
 
@@ -83,8 +83,8 @@ LAYOUT(FLAT())
 ```
 
 :::note
-[ClickHouse Cloud](https://clickhouse.com)のSQLコンソールを使用する場合、辞書を作成する際にはユーザー（`default`または`default_role`の役割を持つ他のユーザー）とパスワードを指定する必要があります。
-:::note
+When using the SQL console in [ClickHouse Cloud](https://clickhouse.com), you must specify a user (`default` or any other user with the role `default_role`) and password when creating a dictionary.
+:::
 
 ```sql
 CREATE USER IF NOT EXISTS clickhouse_admin
@@ -111,20 +111,20 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000);
 ```
 
-### リモートClickHouseサービスのテーブルから辞書を作成する {#create-a-dictionary-from-a-table-in-a-remote-clickhouse-service}
+### Create a dictionary from a table in a remote ClickHouse service {#create-a-dictionary-from-a-table-in-a-remote-clickhouse-service}
 
-入力テーブル（リモートClickHouseサービス内） `source_table`:
+Input table (in the remote ClickHouse service) `source_table`:
 
-``` text
+```text
 ┌─id─┬─value──┐
 │  1 │ First  │
 │  2 │ Second │
 └────┴────────┘
 ```
 
-辞書を作成する:
+Creating the dictionary:
 
-``` sql
+```sql
 CREATE DICTIONARY id_value_dictionary
 (
     id UInt64,
@@ -136,7 +136,7 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
 ```
 
-### HTTP(S)で利用可能なファイルから辞書を作成する {#create-a-dictionary-from-a-file-available-by-https}
+### Create a dictionary from a file available by HTTP(S) {#create-a-dictionary-from-a-file-available-by-https}
 
 ```sql
 CREATE DICTIONARY default.taxi_zone_dictionary
@@ -152,11 +152,11 @@ LIFETIME(MIN 0 MAX 0)
 LAYOUT(HASHED())
 ```
 
-### 他のデータベースから辞書を作成する {#create-a-dictionary-from-another-database}
+### Create a dictionary from another database {#create-a-dictionary-from-another-database}
 
-詳細については、[Dictionary sources](/sql-reference/dictionaries#dbms)を参照してください。
+Please see the details in [Dictionary sources](/sql-reference/dictionaries#dbms).
 
-**関連項目**
+**See Also**
 
-- 詳細については、[Dictionaries](../../../sql-reference/dictionaries/index.md)セクションを参照してください。
-- [system.dictionaries](../../../operations/system-tables/dictionaries.md) — このテーブルには[辞書](../../../sql-reference/dictionaries/index.md)に関する情報が含まれています。
+- For more information, see the [Dictionaries](../../../sql-reference/dictionaries/index.md) section.
+- [system.dictionaries](../../../operations/system-tables/dictionaries.md) — This table contains information about [Dictionaries](../../../sql-reference/dictionaries/index.md).

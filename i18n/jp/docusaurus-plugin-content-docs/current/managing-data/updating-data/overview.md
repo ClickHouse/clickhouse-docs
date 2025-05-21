@@ -1,49 +1,48 @@
 ---
-slug: '/updating-data/overview'
+slug: /updating-data/overview
 title: '概要'
-description: 'ClickHouseでのデータ更新方法'
-keywords: [update, updating data]
+description: 'ClickHouseでデータを更新する方法'
+keywords: ['update', 'updating data']
 ---
 
 ## ClickHouseとOLTPデータベースにおけるデータ更新の違い {#differences-between-updating-data-in-clickhouse-and-oltp-databases}
 
-データの更新を扱う際、ClickHouseとOLTPデータベースは、その基本的な設計哲学とターゲットユースケースが異なるため、大きく異なります。たとえば、行指向でACID準拠の関係データベースであるPostgreSQLは、強力でトランザクショナルな更新や削除操作をサポートし、Multi-Version Concurrency Control (MVCC)などのメカニズムを通じてデータの整合性と完全性を保証します。これにより、高い同時実行環境でも安全で信頼性のある修正が可能になります。
+更新の処理に関して、ClickHouseとOLTPデータベースは、その基本的な設計哲学とターゲットユースケースのために大きく異なります。例えば、行指向でACID準拠の関係データベースであるPostgreSQLは、マルチバージョン同時実行制御（MVCC）などのメカニズムを介してデータの一貫性と整合性を保証する、堅牢でトランザクション性のある更新および削除操作をサポートしています。これにより、高い同時実行性環境でも安全で信頼性の高い変更が可能になります。
 
-対照的に、ClickHouseは読み取り重視の分析と高スループットの追加専用操作に最適化された列指向データベースです。ClickHouseはネイティブにインプレースの更新や削除をサポートしていますが、これらは高I/Oを回避するために慎重に使用する必要があります。代わりに、削除や更新を追加操作に変換するためにテーブルを再構築することができ、これにより非同期で処理され、または読み取り時に処理されるため、リアルタイムでのデータ操作ではなく、高スループットのデータ取り込みと効率的なクエリパフォーマンスに焦点を当てています。
+対照的に、ClickHouseは列指向のデータベースであり、読み取り重視の分析と高スループットの追加専用操作に最適化されています。ClickHouseでは、インプレースの更新および削除をネイティブにサポートしていますが、高I/Oを避けるために慎重に使用する必要があります。別の方法として、テーブルを再構成し、削除や更新を追加操作に変換することができます。その際、非同期で処理されたり、読み取り時に処理されたりするため、高スループットなデータの取り込みと効率的なクエリパフォーマンスに重点を置いています。
 
-## ClickHouseでのデータ更新方法 {#methods-to-update-data-in-clickhouse}
+## ClickHouseでデータを更新する方法 {#methods-to-update-data-in-clickhouse}
 
-ClickHouseでデータを更新する方法はいくつかあり、それぞれには独自の利点とパフォーマンス特性があります。更新するデータモデルとデータの量に基づいて適切な方法を選択する必要があります。
+ClickHouseでデータを更新する方法はいくつかあり、それぞれに利点とパフォーマンス特性があります。更新するデータモデルやデータ量に応じて、適切な方法を選択する必要があります。
 
-どちらの操作においても、提出された変更の数が、ある時間間隔内にバックグラウンドで処理される変更の数を継続的に超える場合、適用される必要のある非物質化変更のキューは成長し続けます。これにより、最終的には `SELECT` クエリのパフォーマンスが劣化します。
+両方の操作において、提出されたミューテーションの数が一定の時間間隔において背景で処理されるミューテーションの数を常に超える場合、適用されるべき非マテリアライズドミューテーションのキューは増え続けます。これにより、最終的に `SELECT` クエリのパフォーマンスが劣化します。
 
-要するに、更新操作は慎重に発行されるべきであり、変更のキューは `system.mutations` テーブルを使用して密接に監視する必要があります。OLTPデータベースのように頻繁に更新を発行しないでください。頻繁な更新が必要な場合は、[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)を参照してください。
+要約すると、更新操作は慎重に行う必要があり、`system.mutations` テーブルを使用してミューテーションキューを注意深く追跡する必要があります。OLTPデータベースのように頻繁に更新を行わないでください。頻繁な更新の必要がある場合は、[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)を参照してください。
 
-| 方法                                                                                   | 構文                              | 使用するタイミング                                                                                                                                                                                                                              |
-|------------------------------------------------------------------------------------------|-----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [更新変更](/sql-reference/statements/alter/update)                                      | `ALTER TABLE [table] UPDATE`       | データを即座にディスクに更新する必要がある場合に使用します（例：コンプライアンスのため）。`SELECT` パフォーマンスに悪影響を与えます。                                                                                                                                   |
-| [軽量更新](/guides/developer/lightweight-update)                                        | `ALTER TABLE [table] UPDATE`       | `SET apply_mutations_on_fly = 1;`を有効にします。少量のデータを更新する場合に使用します。行はすぐに更新されたデータで返されますが、ディスク上では初めは内部的にだけ更新済みとしてマークされます。                                      |
-| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)       | `ENGINE = ReplacingMergeTree`      | 大量のデータを更新する場合に使用します。このテーブルエンジンはマージ時のデータの重複排除に最適化されています。                                                                                                                                                  |
-| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)     | `ENGINE = CollapsingMergeTree(Sign)` | 特定の行を頻繁に更新する場合、または時間経過によって変化するオブジェクトの最新の状態を維持する必要があるシナリオで使用します。たとえば、ユーザー活動や記事の統計を追跡する場合です。                                                        |
+| 方法                                                                                      | 構文                                | 使用のタイミング                                                                                                                                                                                                                                |
+|-------------------------------------------------------------------------------------------|--------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Update mutation](/sql-reference/statements/alter/update)                                | `ALTER TABLE [table] UPDATE`         | データをディスクに即時に更新する必要がある場合に使用します（例：コンプライアンスのため）。`SELECT` パフォーマンスに悪影響を及ぼします。                                                                                                                                             |
+| [Lightweight update](/guides/developer/lightweight-update)                               | `ALTER TABLE [table] UPDATE`         | `SET apply_mutations_on_fly = 1;` を有効にします。少量のデータを更新する際に使用します。行はすぐに更新されたデータで返されますが、最初はディスク上で内部的にのみ更新としてマークされます。                                                                                   |
+| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)         | `ENGINE = ReplacingMergeTree`        | 大量のデータを更新する際に使用します。このテーブルエンジンは、マージ時のデータデデュプリケーションに最適化されています。                                                                                                                                                  |
+| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)     | `ENGINE = CollapsingMergeTree(Sign)` | 個々の行を頻繁に更新する場合や、時間の経過に伴って変化するオブジェクトの最新の状態を維持する必要があるシナリオで使用します。例えば、ユーザー活動や記事の統計を追跡する際です。                                                                                                   |
 
-ClickHouseでデータを更新するさまざまな方法の概要は次のとおりです。
+以下に、ClickHouseでデータを更新するさまざまな方法の要約を示します。
 
-## 更新変更 {#update-mutations}
+## 更新ミューテーション {#update-mutations}
 
-更新変更は、`ALTER TABLE … UPDATE` コマンドを介して発行できます。例えば：
+更新ミューテーションは、`ALTER TABLE ... UPDATE` コマンドを使用して発行できます。例：
 
 ```sql
 ALTER TABLE posts_temp
-	(UPDATE AnswerCount = AnswerCount + 1 WHERE AnswerCount = 0)
+        (UPDATE AnswerCount = AnswerCount + 1 WHERE AnswerCount = 0)
 ```
+これらは非常にIO集約的で、`WHERE` 式に一致するすべてのパーツを再書き込みます。このプロセスに原子性はありません - ミューテーションが完了すると、パーツはすぐにミューテーションされたパーツに置き換えられ、その間に実行される `SELECT` クエリは、既にミューテーションされたパーツのデータとミューテーションされていないパーツのデータの両方を確認します。ユーザーは、[systems.mutations](/operations/system-tables/mutations) テーブルを介して進行状況の状態を追跡できます。これらはI/O集約的な操作であり、クラスターの `SELECT` パフォーマンスに影響を与える可能性があるため、控えめに使用する必要があります。
 
-これらは非常にI/O集約的で、`WHERE` 式に一致するすべてのパーツを書き換えます。このプロセスには原子的な性質はありません - パーツは準備ができ次第、変更されたパーツと交換され、変更中に実行を開始した `SELECT` クエリは、すでに変更されたパーツのデータとまだ変更されていないパーツのデータを同時に見ることになります。ユーザーは、[systems.mutations](/operations/system-tables/mutations) テーブルを介して進捗状況の状態を追跡できます。これらはI/O集約的な操作であり、クラスターの `SELECT` パフォーマンスに影響を与える可能性があるため、控えめに使用するべきです。
+[更新ミューテーション](/sql-reference/statements/alter/update)について詳しく読む。
 
-[更新変更](/sql-reference/statements/alter/update)の詳細を読む。
+## ライトウェイト更新 {#lightweight-updates}
 
-## 軽量更新 {#lightweight-updates}
-
-軽量更新は、行を即座に更新するメカニズムを提供し、以降の `SELECT` クエリは自動的に変更された値を返します（これにはオーバーヘッドがかかり、クエリが遅くなる可能性があります）。これは、通常の変更の原子的な制約に効果的に対処します。以下に例を示します。
+ライトウェイト更新は、行を更新するメカニズムを提供し、それにより即座に更新させ、後続の `SELECT` クエリが自動的に変更された値を返すようになります（これにはオーバーヘッドが発生し、クエリを遅くします）。これは、通常のミューテーションの原子性の制限に対処します。以下に例を示します：
 
 ```sql
 SET apply_mutations_on_fly = 1;
@@ -53,34 +52,37 @@ FROM posts
 WHERE Id = 404346
 
 ┌─ViewCount─┐
-│ 	26762   │
+│       26762   │
 └───────────┘
 
-1 行がセットに含まれています。経過時間: 0.115 秒。59.55百万行、238.25 MBを処理しました (517.83百万行/s., 2.07 GB/s.)
-ピークメモリ使用量: 113.65 MiB。
+1 row in set. Elapsed: 0.115 sec. Processed 59.55 million rows, 238.25 MB (517.83 million rows/s., 2.07 GB/s.)
+Peak memory usage: 113.65 MiB.
 
--- カウントを増加
+-increment count
 ALTER TABLE posts
-	(UPDATE ViewCount = ViewCount + 1 WHERE Id = 404346)
+        (UPDATE ViewCount = ViewCount + 1 WHERE Id = 404346)
 
 SELECT ViewCount
 FROM posts
 WHERE Id = 404346
 
 ┌─ViewCount─┐
-│ 	26763   │
+│       26763   │
 └───────────┘
 
-1 行がセットに含まれています。経過時間: 0.149 秒。59.55百万行、259.91 MBを処理しました (399.99百万行/s., 1.75 GB/s.)
+1 row in set. Elapsed: 0.149 sec. Processed 59.55 million rows, 259.91 MB (399.99 million rows/s., 1.75 GB/s.)
 ```
 
-軽量更新の場合、データを更新するために変更が使用されますが、それは単に即座に物質化されず、`SELECT` クエリ中に適用されます。それでもバックグラウンドとして非同期プロセスで適用され、変更と同じような重いオーバーヘッドがかかるため、I/O集約的な操作になります。この操作で使用できる式も制限されています（[詳細はこちら](/guides/developer/lightweight-update#support-for-subqueries-and-non-deterministic-functions)を参照）。
+ライトウェイト更新では、データを更新するためにミューテーションが依然として使用されます。これは、すぐにはマテリアライズされず、`SELECT` クエリ中に適用されます。バックグラウンドで非同期プロセスとして適用されるため、依然としてミューテーションと同様の重いオーバーヘッドが発生し、したがって、I/O集約的な操作となるため控えめに使用するべきです。この操作で使用できる式にも制限があります（詳細は、[こちら](/guides/developer/lightweight-update#support-for-subqueries-and-non-deterministic-functions)を参照）。
 
-[軽量更新](/guides/developer/lightweight-update)の詳細を読む。
+[ライトウェイト更新](/guides/developer/lightweight-update)について詳しく読む。
 
 ## Collapsing Merge Tree {#collapsing-merge-tree}
 
-更新はコストがかかりますが、挿入を利用して更新を実行できるという考えから、[`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) テーブルエンジンは、特定の行を削除するために `sign` カラムと組み合わせて利用できる方法です。`sign` カラムに `-1` を挿入すると、その行全体が削除されます。`sign` カラムに `1` を挿入すると、ClickHouseはその行を保持します。更新する行は、テーブル作成時の `ORDER BY ()` ステートメントで使用されるソートキーに基づいて特定されます。
+更新が高コストだが、挿入を活用して更新を実行できるというアイデアから、[`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) テーブルエンジンは、特定の行を更新するために削除するためのペアの行を`1`および`-1`のサイン列を使用して、ClickHouseに指示するために使用できます。
+`sign` 列に `-1` が挿入されると、全体の行が削除されます。
+`sign` 列に `1` が挿入されると、ClickHouseは行を保持します。
+更新する行は、テーブルを作成する際に使用される `ORDER BY ()` ステートメントで使用されるソートキーに基づいて特定されます。
 
 ```sql
 CREATE TABLE UAct
@@ -88,14 +90,14 @@ CREATE TABLE UAct
     UserID UInt64,
     PageViews UInt8,
     Duration UInt8,
-    Sign Int8 -- CollapsingMergeTreeテーブルエンジンと一緒に使用される特別なカラム
+    Sign Int8 -- CollapsingMergeTreeテーブルエンジンで使用される特別なカラム
 )
 ENGINE = CollapsingMergeTree(Sign)
 ORDER BY UserID
 
 INSERT INTO UAct VALUES (4324182021466249494, 5, 146, 1)
-INSERT INTO UAct VALUES (4324182021466249494, 5, 146, -1) -- sign = -1はこの行の状態を更新することを示します
-INSERT INTO UAct VALUES (4324182021466249494, 6, 185, 1) -- 行は新しい状態で置き換えられます
+INSERT INTO UAct VALUES (4324182021466249494, 5, 146, -1) -- sign = -1がこの行の状態を更新することを示します
+INSERT INTO UAct VALUES (4324182021466249494, 6, 185, 1) -- 行が新しい状態に置き換えられます
 
 SELECT
     UserID,
@@ -111,11 +113,13 @@ HAVING sum(Sign) > 0
 ```
 
 :::note
-上記の更新アプローチは、クライアント側で状態を維持することをユーザーに要求します。これはClickHouseの観点から最も効率的ですが、大規模に扱うには複雑です。
+上記の更新アプローチでは、ユーザーがクライアントサイドで状態を維持する必要があります。
+これはClickHouseの観点からは最も効率的ですが、大規模で扱うのは複雑になる可能性があります。
 
-[`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree)に関する文書を参照して、より包括的な概要を読むことをお勧めします。
+[`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree)に関する文書を読むことをお勧めします。
+詳細な概要が得られます。
 :::
 
-## その他のリソース {#more-resources}
+## さらなるリソース {#more-resources}
 
-- [ClickHouseにおける更新と削除の扱い](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)
+- [ClickHouseにおける更新と削除の処理](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

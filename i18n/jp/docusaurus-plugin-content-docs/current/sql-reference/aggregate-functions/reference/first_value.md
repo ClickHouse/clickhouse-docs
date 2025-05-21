@@ -1,18 +1,18 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/first_value
+description: 'ウィンドウ関数との互換性のために導入されたエイリアスで、時には `NULL` 値を処理する必要があります（デフォルトではすべてのClickHouse集約関数はNULL値を無視します）。'
 sidebar_position: 137
-title: "first_value"
-description: "これは `any` のエイリアスですが、ウィンドウ関数との互換性を考慮して導入されました。ウィンドウ関数では、時として `NULL` 値を処理する必要があります（デフォルトでは、すべての ClickHouse 集約関数は NULL 値を無視します）。"
+slug: /sql-reference/aggregate-functions/reference/first_value
+title: 'first_value'
 ---
 
 
 # first_value
 
-これは [`any`](../../../sql-reference/aggregate-functions/reference/any.md) のエイリアスですが、ウィンドウ関数との互換性を考慮して導入されました。[ウィンドウ関数](../../window-functions/index.md)では、時として `NULL` 値を処理する必要があります（デフォルトでは、すべての ClickHouse 集約関数は NULL 値を無視します）。
+これは [`any`](../../../sql-reference/aggregate-functions/reference/any.md) のエイリアスですが、時には `NULL` 値を処理する必要がある[ウィンドウ関数](../../window-functions/index.md)との互換性のために導入されました（デフォルトではすべてのClickHouse集約関数はNULL値を無視します）。
 
-`RESPECT NULLS` という修飾子を宣言して、NULL を尊重することができます。これは [ウィンドウ関数](../../window-functions/index.md) の場合でも、通常の集約処理でも同様です。
+これは、[ウィンドウ関数](../../window-functions/index.md)と通常の集約の両方で、NULLを尊重する修飾子（`RESPECT NULLS`）を宣言することをサポートしています。
 
-`any` と同様に、ウィンドウ関数がない場合、ソースストリームが順序付けられていないと結果はランダムになり、戻り値の型が入力の型と一致する場合（入力が Nullable である場合、または -OrNull 組み合わせが追加された場合にのみ Null が返されます）に結果が返されます。
+`any`と同様に、ウィンドウ関数なしでは、ソースストリームが順序付けられていない場合、結果はランダムになります。また、返される型が入力型と一致する場合（入力がNullableである場合のみNULLが返されます。または -OrNull 組み合わせが追加された場合のみです）。
 
 ## examples {#examples}
 
@@ -28,7 +28,7 @@ INSERT INTO test_data (a, b) Values (1,null), (2,3), (4, 5), (6,null);
 ```
 
 ### example1 {#example1}
-デフォルトでは、NULL 値は無視されます。
+デフォルトでは、NULL値は無視されます。
 ```sql
 select first_value(b) from test_data;
 ```
@@ -40,7 +40,7 @@ select first_value(b) from test_data;
 ```
 
 ### example2 {#example2}
-NULL 値は無視されます。
+NULL値は無視されます。
 ```sql
 select first_value(b) ignore nulls from test_data
 ```
@@ -52,7 +52,7 @@ select first_value(b) ignore nulls from test_data
 ```
 
 ### example3 {#example3}
-NULL 値は受け入れられます。
+NULL値は受け入れられます。
 ```sql
 select first_value(b) respect nulls from test_data
 ```
@@ -64,7 +64,7 @@ select first_value(b) respect nulls from test_data
 ```
 
 ### example4 {#example4}
-`ORDER BY` を使ったサブクエリで安定化された結果。
+`ORDER BY`を使ったサブクエリで安定した結果を得ます。
 ```sql
 SELECT
     first_value_respect_nulls(b),

@@ -1,35 +1,36 @@
 ---
-slug: /sql-reference/table-functions/mergeTreeIndex
+description: 'MergeTree テーブルのインデックスとマークファイルの内容を表します。
+  これは内部状態を調査するために使用できます。'
+sidebar_label: 'mergeTreeIndex'
 sidebar_position: 77
-sidebar_label: mergeTreeIndex
-title: "mergeTreeIndex"
-description: "Represents the contents of index and marks files of MergeTree tables. It can be used for introspection."
+slug: /sql-reference/table-functions/mergeTreeIndex
+title: 'mergeTreeIndex'
 ---
 
 
 # mergeTreeIndex テーブル関数
 
-MergeTree テーブルのインデックスおよびマークファイルの内容を表します。これは内部検証に使用できます。
+MergeTree テーブルのインデックスとマークファイルの内容を表します。これは内部状態を調査するために使用できます。
 
-``` sql
+```sql
 mergeTreeIndex(database, table, [with_marks = true])
 ```
 
 **引数**
 
-- `database` - インデックスおよびマークを読み取るデータベース名。
-- `table` - インデックスおよびマークを読み取るテーブル名。
-- `with_marks` - 結果にマークを持つカラムを含めるかどうか。
+- `database` - インデックスとマークを読み込むデータベース名。
+- `table` - インデックスとマークを読み込むテーブル名。
+- `with_marks` - 結果にマークのあるカラムを含めるかどうか。
 
 **返される値**
 
-ソーステーブルの主キーの値を持つカラム、すべてのデータパーツ内の可能なファイルのマークの値を持つカラム（有効な場合）および仮想カラムを含むテーブルオブジェクト：
+ソーステーブルの主キーの値を持つカラム、ソーステーブルのデータパーツ内のすべての可能なファイルのマークの値を持つカラム（有効な場合）、および仮想カラムを含むテーブルオブジェクト：
 
-- `part_name` - データパートの名前。
-- `mark_number` - データパート内の現在のマークの番号。
-- `rows_in_granule` - 現在のグラニュール内の行数。
+- `part_name` - データパーツの名前。
+- `mark_number` - データパーツ内の現在のマークの番号。
+- `rows_in_granule` - 現在のグラニュール内の行の数。
 
-マークカラムは、データパート内にカラムが存在しない場合や、そのサブストリームのいずれかのマークが書き込まれていない場合（例：コンパクトパーツの場合）に `(NULL, NULL)` 値を含むことがあります。
+マークカラムには、データパーツ内にカラムが存在しない場合や、そのサブストリームのいずれかにマークが書き込まれていない場合（例：コンパクトパーツ）の場合に `(NULL, NULL)` 値が含まれることがあります。
 
 ## 使用例 {#usage-example}
 

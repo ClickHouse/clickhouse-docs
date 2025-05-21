@@ -1,18 +1,17 @@
----
-description: "COVID-19 Open-Dataは、COVID-19の疫学データと、人口統計、経済、政府の対応などの関連要因に関する大規模なオープンソースデータベースです"
+description: 'COVID-19 Open-Dataは、COVID-19の疫学データと、人口統計、経済、政府の対応などの関連要因に関する大規模なオープンソースデータベースです'
+sidebar_label: 'COVID-19 Open-Data'
 slug: /getting-started/example-datasets/covid19
-sidebar_label: COVID-19 Open-Data
-title: "COVID-19 Open-Data"
----
+title: 'COVID-19 Open-Data'
+```
 
-COVID-19 Open-Dataは、最も大規模なCovid-19疫学データベースを構築し、強力な一連の広範な共変量を追加することを目指しています。これには、人口統計、経済、疫学、地理、健康、入院、移動、政府の対応、天候などに関連するオープンで公開されたライセンスデータが含まれています。
+COVID-19 Open-Dataは、強力な広範囲の共変量に加えて、最大のCovid-19疫学データベースを構築しようとしています。これには、人口統計、経済、疫学、地理、健康、入院、移動、政府の対応、天候などに関連するオープンで公に入手可能なライセンスされたデータが含まれています。
 
-詳細はGitHub [here](https://github.com/GoogleCloudPlatform/covid-19-open-data) をご覧ください。
+詳細はGitHubの[こちら](https://github.com/GoogleCloudPlatform/covid-19-open-data)をご覧ください。
 
-このデータをClickHouseに簡単に挿入できます...
+このデータをClickHouseに挿入するのは簡単です...
 
 :::note
-以下のコマンドは、[ClickHouse Cloud](https://clickhouse.cloud)の*Production*インスタンスで実行されました。ローカルインストールでも簡単に実行できます。
+以下のコマンドは、[ClickHouse Cloud](https://clickhouse.cloud)の**Production**インスタンスで実行されました。ローカルインストールでも簡単に実行できます。
 :::
 
 1. データがどのようなものか見てみましょう：
@@ -24,7 +23,7 @@ DESCRIBE url(
 );
 ```
 
-CSVファイルには10列があります：
+CSVファイルには10個のカラムがあります：
 
 ```response
 ┌─name─────────────────┬─type─────────────┐
@@ -43,7 +42,7 @@ CSVファイルには10列があります：
 10行のセットがあります。経過時間: 0.745秒。
 ```
 
-2. いくつかの行を表示してみましょう：
+2. それでは、いくつかの行を表示してみましょう：
 
 ```sql
 SELECT *
@@ -51,7 +50,7 @@ FROM url('https://storage.googleapis.com/covid19-open-data/v3/epidemiology.csv')
 LIMIT 100;
 ```
 
-`url`関数がCSVファイルからデータを簡単に読み取っていることに注意してください：
+`url`関数がCSVファイルからデータを簡単に読み取ることができることに注意してください：
 
 ```response
 ┌─c1─────────┬─c2───────────┬─c3────────────┬─c4───────────┬─c5────────────┬─c6─────────┬─c7───────────────────┬─c8──────────────────┬─c9───────────────────┬─c10───────────────┐
@@ -84,7 +83,7 @@ ENGINE = MergeTree
 ORDER BY (location_key, date);
 ```
 
-4. 次のコマンドは、全データセットを`covid19`テーブルに挿入します：
+4. 次のコマンドで、全データセットを`covid19`テーブルに挿入します：
 
 ```sql
 INSERT INTO covid19
@@ -106,7 +105,7 @@ INSERT INTO covid19
     );
 ```
 
-5. かなり早く進みます - 挿入された行の数を見てみましょう：
+5. 結構早く完了します - 挿入された行数を見てみましょう：
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -119,7 +118,7 @@ FROM covid19;
 └─────────────────────────────────┘
 ```
 
-6. COVID-19の合計症例数を確認しましょう：
+6. 確認されたCovid-19の累計ケース数を見てみましょう：
 
 ```sql
 SELECT formatReadableQuantity(sum(new_confirmed))
@@ -132,7 +131,7 @@ FROM covid19;
 └────────────────────────────────────────────┘
 ```
 
-7. 日付のデータは多くの0を含んでいます - これは、週末や毎日の数字が報告されなかった日です。ウィンドウ関数を使用して新規ケースの日次平均を平滑化できます：
+7. データには日付ごとに多くの0があることに気付くでしょう - 週末や、数字が報告されなかった日々です。ウィンドウ関数を使用して新規症例の1週間平均をスムーズにします：
 
 ```sql
 SELECT
@@ -143,7 +142,7 @@ SELECT
 FROM covid19;
 ```
 
-8. このクエリは、各地域に対する最新の値を特定します。`max(date)`は使用できません。なぜなら、すべての国が毎日報告しているわけではないからです。したがって、`ROW_NUMBER`を使用して最後の行を取得します：
+8. このクエリは各場所の最新の値を決定します。すべての国が毎日報告していないため、`max(date)`は使用できないので、`ROW_NUMBER`を使って最後の行を取得します：
 
 ```sql
 WITH latest_deaths_data AS
@@ -162,7 +161,7 @@ FROM latest_deaths_data
 WHERE rn=1;
 ```
 
-9. `lagInFrame`を使用して新しいケースの`LAG`を日毎に決定できます。このクエリでは、`US_DC`場所でフィルタリングします：
+9. `lagInFrame`を使用して、毎日の新規症例の`LAG`を決定できます。このクエリでは、`US_DC`という場所でフィルタリングします：
 
 ```sql
 SELECT
@@ -174,7 +173,7 @@ FROM covid19
 WHERE location_key = 'US_DC';
 ```
 
-レスポンスは次のようになります：
+レスポンスは以下のようになります：
 
 ```response
 ┌─confirmed_cases_delta─┬─new_confirmed─┬─location_key─┬───────date─┐
@@ -196,7 +195,7 @@ WHERE location_key = 'US_DC';
 │                     3 │            21 │ US_DC        │ 2020-03-23 │
 ```
 
-10. このクエリは、新しい症例の日次変化率を計算し、結果セットにシンプルな`increase`または`decrease`列を含めます：
+10. このクエリは毎日の新規症例の変化率を計算し、結果セットに単純な`increase`または`decrease`列を含めます：
 
 ```sql
 WITH confirmed_lag AS (
@@ -227,7 +226,7 @@ FROM confirmed_percent_change
 WHERE location_key = 'US_DC';
 ```
 
-結果は次のようになります：
+結果は以下のようになります：
 
 ```response
 ┌───────date─┬─new_confirmed─┬─percent_change─┬─trend─────┐
@@ -261,5 +260,5 @@ WHERE location_key = 'US_DC';
 ```
 
 :::note
-[GitHubリポジトリ](https://github.com/GoogleCloudPlatform/covid-19-open-data)に記載されているように、データセットは2022年9月15日以降に更新されていません。
+[GitHubリポジトリ](https://github.com/GoogleCloudPlatform/covid-19-open-data)に記載されているように、このデータセットは2022年9月15日以降更新されていません。
 :::

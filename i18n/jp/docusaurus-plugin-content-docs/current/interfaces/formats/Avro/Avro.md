@@ -1,10 +1,11 @@
 ---
-title: Avro
-slug: /interfaces/formats/Avro
-keywords: [Avro]
-input_format: true
-output_format: true
 alias: []
+description: 'Avroフォーマットに関するドキュメント'
+input_format: true
+keywords: ['Avro']
+output_format: true
+slug: /interfaces/formats/Avro
+title: 'Avro'
 ---
 
 import DataTypesMatching from './_snippets/data-types-matching.md'
@@ -15,8 +16,8 @@ import DataTypesMatching from './_snippets/data-types-matching.md'
 
 ## 説明 {#description}
 
-[Apache Avro](https://avro.apache.org/)は、ApacheのHadoopプロジェクト内で開発された行指向データシリアライゼーションフレームワークです。
-ClickHouseの`Avro`形式は、[Avroデータファイル](https://avro.apache.org/docs/current/spec.html#Object+Container+Files)の読み取りと書き込みをサポートしています。
+[Apache Avro](https://avro.apache.org/) は、ApacheのHadoopプロジェクト内で開発された行指向のデータシリアライズフレームワークです。  
+ClickHouseの `Avro` フォーマットは、[Avroデータファイル](https://avro.apache.org/docs/current/spec.html#Object+Container+Files)の読み書きをサポートしています。
 
 ## データ型の一致 {#data-types-matching}
 
@@ -32,13 +33,14 @@ AvroファイルからClickHouseテーブルにデータを挿入するには：
 $ cat file.avro | clickhouse-client --query="INSERT INTO {some_table} FORMAT Avro"
 ```
 
-取り込むAvroファイルのルートスキーマは`record`型である必要があります。
+取り込まれるAvroファイルのルートスキーマは `record` 型である必要があります。
 
-テーブルカラムとAvroスキーマのフィールドの対応を見つけるために、ClickHouseはそれらの名前を比較します。この比較は大文字と小文字を区別し、未使用のフィールドはスキップされます。
+テーブルカラムとAvroスキーマのフィールドの対応関係を見つけるために、ClickHouseはそれらの名前を比較します。  
+この比較は大文字と小文字を区別し、使用されていないフィールドはスキップされます。
 
-ClickHouseテーブルのカラムデータ型は、挿入されたAvroデータの対応するフィールドと異なる場合があります。データを挿入する際、ClickHouseは上記のテーブルに従ってデータ型を解釈し、その後、対応するカラムタイプに[キャスト](/sql-reference/functions/type-conversion-functions#cast)します。
+ClickHouseテーブルのカラムデータ型は、挿入されるAvroデータの対応するフィールドとは異なる場合があります。データを挿入する際、ClickHouseは上記のテーブルに従ってデータ型を解釈し、次に[キャスト](/sql-reference/functions/type-conversion-functions#cast)して対応するカラム型に変換します。
 
-データをインポートする際、スキーマにフィールドが見つからない場合で、[`input_format_avro_allow_missing_fields`](/operations/settings/settings-formats.md/#input_format_avro_allow_missing_fields)の設定が有効になっていると、エラーを投げる代わりにデフォルト値が使用されます。
+データをインポートする際、スキーマ内にフィールドが見つからない場合で、設定 [`input_format_avro_allow_missing_fields`](/operations/settings/settings-formats.md/#input_format_avro_allow_missing_fields) が有効になっている場合、エラーを投げる代わりにデフォルト値が使用されます。
 
 ### データの選択 {#selecting-data}
 
@@ -50,14 +52,15 @@ $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Avro" > file.avro
 
 カラム名は次の条件を満たす必要があります：
 
-- `[A-Za-z_]`で始まる
-- 続けて`[A-Za-z0-9_]`のみが続く
+- `[A-Za-z_]` で始まる
+- その後に `[A-Za-z0-9_]` のみが続く
 
-出力Avroファイルの圧縮と同期間隔は、それぞれ設定[`output_format_avro_codec`](/operations/settings/settings-formats.md/#output_format_avro_codec)および[`output_format_avro_sync_interval`](/operations/settings/settings-formats.md/#output_format_avro_sync_interval)で構成できます。
+出力Avroファイルの圧縮と同期間隔は、設定 [`output_format_avro_codec`](/operations/settings/settings-formats.md/#output_format_avro_codec) および [`output_format_avro_sync_interval`](/operations/settings/settings-formats.md/#output_format_avro_sync_interval) でそれぞれ構成できます。
 
-### データの例 {#example-data}
+### サンプルデータ {#example-data}
 
-ClickHouseの[`DESCRIBE`](/sql-reference/statements/describe-table)関数を使用すると、次の例のようにAvroファイルの推論された形式を迅速に表示できます。この例には、ClickHouseのS3パブリックバケットにある公開アクセス可能なAvroファイルのURLが含まれています：
+ClickHouseの [`DESCRIBE`](/sql-reference/statements/describe-table) 関数を使用すると、以下の例のようなAvroファイルの推測形式を迅速に表示できます。  
+この例では、ClickHouse S3公共バケットの公開アクセス可能なAvroファイルのURLが含まれています：
 
 ```sql title="クエリ"
 DESCRIBE url('https://clickhouse-public-datasets.s3.eu-central-1.amazonaws.com/hits.avro','Avro);
@@ -83,12 +86,12 @@ DESCRIBE url('https://clickhouse-public-datasets.s3.eu-central-1.amazonaws.com/h
 
 ## フォーマット設定 {#format-settings}
 
-| 設定                                         | 説明                                                                                                  | デフォルト |
-|---------------------------------------------|-----------------------------------------------------------------------------------------------------|---------|
-| `input_format_avro_allow_missing_fields`    | Avro/AvroConfluent形式の場合：スキーマにフィールドが見つからない場合、エラーの代わりにデフォルト値を使用 | `0`     |
-| `input_format_avro_null_as_default`         | Avro/AvroConfluent形式の場合：ヌルおよび非Nullableカラムの場合にデフォルトを挿入                       |   `0`   |
-| `format_avro_schema_registry_url`           | AvroConfluent形式の場合：ConfluentスキーマレジストリのURL。                                           |         |
-| `output_format_avro_codec`                  | 出力に使用される圧縮コーデック。可能な値：'null', 'deflate', 'snappy', 'zstd'。                    |         |
-| `output_format_avro_sync_interval`          | バイト単位の同期間隔。                                                                            | `16384` |
-| `output_format_avro_string_column_pattern`  | Avro形式の場合：AVRO文字列として選択するStringカラムの正規表現。                                     |         |
-| `output_format_avro_rows_in_file`           | ファイル内の最大行数（ストレージが許可する場合）                                                       | `1`     |
+| 設定                                     | 説明                                                                                         | デフォルト |
+|------------------------------------------|---------------------------------------------------------------------------------------------|------------|
+| `input_format_avro_allow_missing_fields` | Avro/AvroConfluentフォーマット：スキーマにフィールドが見つからない場合、エラーの代わりにデフォルト値を使用する | `0`        |
+| `input_format_avro_null_as_default`      | Avro/AvroConfluentフォーマット：nullおよび非Nullableカラムの場合にデフォルトを挿入                       | `0`        |
+| `format_avro_schema_registry_url`        | AvroConfluentフォーマット：ConfluentスキーマレジストリのURL。                                                |            |
+| `output_format_avro_codec`               | 出力に使用される圧縮コーデック。可能な値：'null', 'deflate', 'snappy', 'zstd'。                       |            |
+| `output_format_avro_sync_interval`       | バイト単位の同期間隔。                                                                               | `16384`    |
+| `output_format_avro_string_column_pattern`| Avroフォーマット：AVRO文字列として選択するStringカラムの正規表現。                                        |            |
+| `output_format_avro_rows_in_file`        | ファイル内の最大行数（ストレージによって許可される場合）                                               | `1`        |

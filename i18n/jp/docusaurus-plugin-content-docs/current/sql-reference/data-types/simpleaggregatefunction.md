@@ -1,23 +1,45 @@
 ---
-slug: '/sql-reference/data-types/simpleaggregatefunction'
-sidebar_position: 48
+description: 'SimpleAggregateFunction データ型のドキュメント'
 sidebar_label: 'SimpleAggregateFunction'
-keywords:
-  - SimpleAggregateFunction
-description: 'SimpleAggregateFunction は、集約関数の中間的な状態を保存するデータ型です。'
+sidebar_position: 48
+slug: /sql-reference/data-types/simpleaggregatefunction
+title: 'SimpleAggregateFunction タイプ'
 ---
 
 
-# SimpleAggregateFunction
+# SimpleAggregateFunction タイプ
 
-`SimpleAggregateFunction(name, types_of_arguments...)` データ型は、[`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md) が保持する完全な状態ではなく、集約関数の現在の値（中間状態）を保存します。この最適化は、次の特性を持つ関数に適用できます: 行セット `S1 UNION ALL S2` に関数 `f` を適用した結果は、行セットの部分にそれぞれ `f` を適用し、次にその結果に再度 `f` を適用することで得られます: `f(S1 UNION ALL S2) = f(f(S1) UNION ALL f(S2))`。この特性は、部分的な集約結果が結合された結果を計算するのに十分であることを保証するため、余分なデータを保存および処理する必要がありません。
+## 説明 {#description}
 
-集約関数の値を生成する一般的な方法は、[-SimpleState](/sql-reference/aggregate-functions/combinators#-simplestate) サフィックスを付けて集約関数を呼び出すことです。
+`SimpleAggregateFunction` データ型は、集約関数の中間状態を格納しますが、[`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md) 型が持つ完全な状態は格納しません。
 
-サポートされている集約関数は次のとおりです:
+この最適化は、次の性質が成り立つ関数に適用できます：
+
+> 行セット `S1 UNION ALL S2` に関数 `f` を適用した結果は、行セットの部分に `f` をそれぞれ適用し、その結果に再度 `f` を適用することによって得られます：`f(S1 UNION ALL S2) = f(f(S1) UNION ALL f(S2))`。
+
+この性質により、部分的な集約結果が結合された結果を計算するのに十分であり、余分なデータを保存したり処理したりする必要はありません。たとえば、`min` または `max` 関数の結果は、中間ステップから最終結果を計算するために余分なステップを必要とせず、`avg` 関数は合計とカウントを追跡する必要があります。これらは最終的な `Merge` ステップで平均を得るために分割されます。
+
+集約関数の値は、[`-SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 組み合わせ子を関数名に追加して集約関数を呼び出すことで一般的に生成されます。
+
+## 文法 {#syntax}
+
+```sql
+SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
+```
+
+**パラメータ**
+
+- `aggregate_function_name` - 集約関数の名前。
+- `Type` - 集約関数引数の型。
+
+## サポートされている関数 {#supported-functions}
+
+サポートされている集約関数は以下の通りです：
 
 - [`any`](/sql-reference/aggregate-functions/reference/any)
+- [`any_respect_nulls`](/sql-reference/aggregate-functions/reference/any)
 - [`anyLast`](/sql-reference/aggregate-functions/reference/anylast)
+- [`anyLast_respect_nulls`](/sql-reference/aggregate-functions/reference/anylast)
 - [`min`](/sql-reference/aggregate-functions/reference/min)
 - [`max`](/sql-reference/aggregate-functions/reference/max)
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
@@ -33,18 +55,17 @@ description: 'SimpleAggregateFunction は、集約関数の中間的な状態を
 - [`maxMap`](/sql-reference/aggregate-functions/reference/maxmap)
 
 :::note
-`SimpleAggregateFunction(func, Type)` の値は `Type` と同じように見え、保存されるため、`-Merge` / `-State` サフィックスのある関数を適用する必要はありません。
+`SimpleAggregateFunction(func, Type)` の値は同じ `Type` を持つため、`AggregateFunction` 型とは異なり `-Merge` / `-State` 組み合わせ子を適用する必要はありません。
 
-`SimpleAggregateFunction` は、同じ集約関数を持つ `AggregateFunction` よりも優れたパフォーマンスを持っています。
+`SimpleAggregateFunction` 型は、同じ集約関数に対して `AggregateFunction` よりも優れたパフォーマンスを持ちます。
 :::
 
-**パラメータ**
+## 例 {#example}
 
-- 集約関数の名前。
-- 集約関数の引数のタイプ。
-
-**例**
-
-``` sql
+```sql
 CREATE TABLE simple (id UInt64, val SimpleAggregateFunction(sum, Double)) ENGINE=AggregatingMergeTree ORDER BY id;
 ```
+## 関連コンテンツ {#related-content}
+
+- ブログ: [ClickHouse における集約コンビネーターの使用](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)  
+- [AggregateFunction](/sql-reference/data-types/aggregatefunction) 型。

@@ -1,14 +1,14 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/stddevsampstable
+description: '結果は varSamp の平方根に等しい。この関数は数値的に安定したアルゴリズムを使用します。'
 sidebar_position: 191
-title: "stddevSampStable"
-description: "結果は varSamp の平方根に等しい。この関数は数値的に安定したアルゴリズムを使用している点が異なります。"
+slug: /sql-reference/aggregate-functions/reference/stddevsampstable
+title: 'stddevSampStable'
 ---
 
 
 # stddevSampStable
 
-結果は [varSamp](../../../sql-reference/aggregate-functions/reference/varsamp.md) の平方根に等しい。[`stddevSamp`](../reference/stddevsamp.md) とは異なり、この関数は数値的に安定したアルゴリズムを使用している。処理速度は遅くなるが、計算誤差は低く抑えられる。
+結果は [varSamp](../../../sql-reference/aggregate-functions/reference/varsamp.md) の平方根に等しいです。[`stddevSamp`](../reference/stddevsamp.md) とは異なり、この関数は数値的に安定したアルゴリズムを使用します。動作は遅くなりますが、計算誤差は低くなります。
 
 **構文**
 
@@ -18,11 +18,11 @@ stddevSampStable(x)
 
 **パラメータ**
 
-- `x`: サンプル分散の平方根を求める値。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
+- `x`: 標本分散の平方根を求める値。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
 
 **返される値**
 
-`x` のサンプル分散の平方根。[Float64](../../data-types/float.md)。
+`x` の標本分散の平方根。[Float64](../../data-types/float.md)。
 
 **例**
 

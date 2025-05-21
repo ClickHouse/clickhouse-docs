@@ -1,11 +1,11 @@
 ---
-description: "既存のデータスキッピングインデックスに関する情報を含むシステムテーブル。"
+description: 'すべてのテーブル内に存在するデータスキッピングインデックスに関する情報を含むシステムテーブル。'
+keywords: ['system table', 'data_skipping_indices']
 slug: /operations/system-tables/data_skipping_indices
-title: "system.data_skipping_indices"
-keywords: ["system table", "data_skipping_indices"]
+title: 'system.data_skipping_indices'
 ---
 
-すべてのテーブルに存在するデータスキッピングインデックスに関する情報を含んでいます。
+すべてのテーブル内に存在するデータスキッピングインデックスに関する情報を含みます。
 
 カラム:
 
@@ -13,12 +13,12 @@ keywords: ["system table", "data_skipping_indices"]
 - `table` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
 - `name` ([String](../../sql-reference/data-types/string.md)) — インデックス名。
 - `type` ([String](../../sql-reference/data-types/string.md)) — インデックスタイプ。
-- `type_full` ([String](../../sql-reference/data-types/string.md)) — CREATE文からのインデックスタイプ表現。
+- `type_full` ([String](../../sql-reference/data-types/string.md)) — CREATE文からのインデックスタイプの表現。
 - `expr` ([String](../../sql-reference/data-types/string.md)) — インデックス計算のための式。
 - `granularity` ([UInt64](../../sql-reference/data-types/int-uint.md)) — ブロック内のグラニュール数。
-- `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 圧縮データのサイズ（バイト）。
-- `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 非圧縮データのサイズ（バイト）。
-- `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マークのサイズ（バイト）。
+- `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 圧縮データのサイズ（バイト単位）。
+- `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 非圧縮データのサイズ（バイト単位）。
+- `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マークのサイズ（バイト単位）。
 
 **例**
 

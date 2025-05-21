@@ -1,48 +1,52 @@
 ---
-sidebar_label: Kafkaテーブルエンジン
+sidebar_label: 'Kafka テーブルエンジン'
 sidebar_position: 5
 slug: /integrations/kafka/kafka-table-engine
-description: Kafkaテーブルエンジンの使用
+description: 'Kafka テーブルエンジンの使用'
+title: 'Kafka テーブルエンジンの使用'
 ---
+
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import Image from '@theme/IdealImage';
 import kafka_01 from '@site/static/images/integrations/data-ingestion/kafka/kafka_01.png';
 import kafka_02 from '@site/static/images/integrations/data-ingestion/kafka/kafka_02.png';
 import kafka_03 from '@site/static/images/integrations/data-ingestion/kafka/kafka_03.png';
 import kafka_04 from '@site/static/images/integrations/data-ingestion/kafka/kafka_04.png';
 
 
-# Kafkaテーブルエンジンの使用
+# Kafka テーブルエンジンの使用
 
 <CloudNotSupportedBadge/>
 
 :::note
-Kafkaテーブルエンジンは[ClickHouse Cloud](https://clickhouse.com/cloud)ではサポートされていません。[ClickPipes](../clickpipes/kafka.md)または[Kafka Connect](./kafka-clickhouse-connect-sink.md)をご検討ください。
+Kafka テーブルエンジンは [ClickHouse Cloud](https://clickhouse.com/cloud) ではサポートされていません。代わりに [ClickPipes](../clickpipes/kafka.md) または [Kafka Connect](./kafka-clickhouse-connect-sink.md) を検討してください。
 :::
 
-### KafkaからClickHouse {#kafka-to-clickhouse}
+### Kafka から ClickHouse へ {#kafka-to-clickhouse}
 
-Kafkaテーブルエンジンを使用するには、[ClickHouseのマテリアライズドビュー](../../../guides/developer/cascading-materialized-views.md)に広く精通している必要があります。
+Kafka テーブルエンジンを使用するには、[ClickHouse のマテリアライズドビュー](../../../guides/developer/cascading-materialized-views.md)にある程度精通している必要があります。
 
 #### 概要 {#overview}
 
-最初に、最も一般的なユースケース、すなわちKafkaテーブルエンジンを使用してKafkaからClickHouseにデータを挿入することに焦点を当てます。
+最初に、最も一般的な使用例に焦点を当てます：Kafka テーブルエンジンを使用して Kafka から ClickHouse にデータを挿入します。
 
-Kafkaテーブルエンジンは、ClickHouseがKafkaトピックから直接読み取ることを可能にします。このエンジンは、トピックのメッセージを表示するのに役立ちますが、設計上、一度限りの取得しか許可していません。つまり、テーブルに対してクエリが発行されると、キューからデータを消費し、結果を呼び出し元に返す前にコンシューマオフセットを増加させます。実際には、これらのオフセットをリセットしない限り、データを再読み込みすることはできません。
+Kafka テーブルエンジンは ClickHouse が Kafka トピックから直接読み取ることを可能にします。トピック上のメッセージを表示するのに便利ですが、このエンジンは設計上、一度限りの取得のみを許可します。すなわち、テーブルに対してクエリが発行されると、キューからデータを消費し、結果を呼び出し元に返す前にコンシューマオフセットを増加させます。実際には、これらのオフセットをリセットしない限り、データを再読することはできません。
 
-このテーブルエンジンから読み取ったデータを保持するためには、データをキャプチャして別のテーブルに挿入する手段が必要です。トリガーベースのマテリアライズドビューは、この機能をネイティブに提供します。マテリアライズドビューは、テーブルエンジンでの読み取りを開始し、一連のドキュメントを受け取ります。TO句はデータの宛先を決定します - 通常は[Merge Treeファミリー](../../../engines/table-engines/mergetree-family/index.md)のテーブルです。このプロセスは以下に視覚化されています。
+テーブルエンジンの読み取りからこのデータを永続化するには、データをキャプチャして別のテーブルに挿入する手段が必要です。トリガーベースのマテリアライズドビューは、この機能をネイティブに提供します。マテリアライズドビューはテーブルエンジンの読み取りを開始し、一括ドキュメントを受信します。TO 句はデータの宛先を決定します - 通常は[Merge Tree ファミリー](../../../engines/table-engines/mergetree-family/index.md)のテーブルです。このプロセスは以下のように可視化されます：
 
-<img src={kafka_01} class="image" alt="Kafkaテーブルエンジン" style={{width: '80%'}} />
+<Image img={kafka_01} size="lg" alt="Kafka テーブルエンジンのアーキテクチャ図" style={{width: '80%'}} />
 
-#### 手順 {#steps}
+#### ステップ {#steps}
 
 
 ##### 1. 準備 {#1-prepare}
 
-ターゲットトピックにデータが格納されている場合は、次の内容をデータセットで使用するように適応できます。あるいは、サンプルのGithubデータセットが[こちら](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson)で提供されています。このデータセットは、以下の例で使用され、簡略化のためにカラムのスキーマや行のサブセット（特に、[ClickHouseリポジトリ](https://github.com/ClickHouse/ClickHouse)に関連するGithubイベントに制限されています）を使用しています。このデータセットは、[ここ](https://ghe.clickhouse.tech/)で入手可能なフルデータセットと比較しても、ほとんどのクエリが正常に機能するためには十分です。
+ターゲットトピックにデータが投入されている場合、以下の手順をあなたのデータセットに合わせて適応できます。もしくは、サンプルの GitHub データセットが [こちら](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson) に提供されています。このデータセットは以下の例で使用され、完全なデータセット [こちら](https://ghe.clickhouse.tech/) に対して、スキーマと行のサブセットが限られています（特に、[ClickHouse レポジトリ](https://github.com/ClickHouse/ClickHouse) に関する GitHub イベントに限られています）が、簡潔さのために十分です。これは、データセットとともに公開されているほとんどのクエリが動作するのに十分です。
 
-##### 2. ClickHouseを構成する {#2-configure-clickhouse}
 
-このステップは、セキュアなKafkaに接続する場合に必要です。これらの設定は、SQLのDDLコマンドを介して渡すことはできず、ClickHouseのconfig.xmlに設定する必要があります。SASLで保護されたインスタンスに接続することを前提としています。これは、Confluent Cloudとやり取りする際の最も簡単な方法です。
+##### 2. ClickHouse を設定する {#2-configure-clickhouse}
+
+これは、セキュアな Kafka に接続する場合に必要です。これらの設定は SQL DDL コマンドを通じて渡すことができず、ClickHouseの config.xml で設定する必要があります。ここでは、SASL で保護されたインスタンスに接続することを前提としています。これは Confluent Cloud とやり取りする際の最も簡単な方法です。
 
 ```xml
 <clickhouse>
@@ -55,23 +59,23 @@ Kafkaテーブルエンジンは、ClickHouseがKafkaトピックから直接読
 </clickhouse>
 ```
 
-上記のスニペットを新しいファイルオにconf.d/ディレクトリに配置するか、既存の設定ファイルにマージしてください。設定可能な項目については、[こちら](../../../engines/table-engines/integrations/kafka.md#configuration)をご覧ください。
+上記のスニペットを conf.d/ ディレクトリ内の新しいファイルに配置するか、既存の設定ファイルにマージしてください。設定可能な設定については、[こちら](../../../engines/table-engines/integrations/kafka.md#configuration)を参照してください。
 
-このチュートリアルに使用するために、`KafkaEngine`というデータベースを作成します：
+また、このチュートリアルで使用するために `KafkaEngine` というデータベースを作成します：
 
 ```sql
 CREATE DATABASE KafkaEngine;
 ```
 
-データベースを作成したら、切り替える必要があります：
+データベースを作成したら、そのデータベースに切り替える必要があります：
 
 ```sql
 USE KafkaEngine;
 ```
 
-##### 3. 宛先テーブルを作成する {#3-create-the-destination-table}
+##### 3. 目的のテーブルを作成する {#3-create-the-destination-table}
 
-宛先テーブルを準備します。以下の例では、簡略化のためにGitHubの縮小されたスキーマを使用しています。MergeTreeテーブルエンジンを使用していますが、この例は[Merge Treeファミリー](../../../engines/table-engines/mergetree-family/index.md)のいかなるメンバーにも容易に適応できます。
+目的のテーブルを準備します。以下の例では、簡潔さのために減少した GitHub スキーマを使用しています。MergeTree テーブルエンジンを使用しますが、この例は[MergeTree ファミリー](../../../engines/table-engines/mergetree-family/index.md)のいかなるメンバーにも容易に適応できます。
 
 ```sql
 CREATE TABLE github
@@ -104,21 +108,21 @@ CREATE TABLE github
 ) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at)
 ```
 
-##### 4. トピックを作成し、データを格納する {#4-create-and-populate-the-topic}
+##### 4. トピックを作成してデータを追加する {#4-create-and-populate-the-topic}
 
-次に、トピックを作成します。これを行うために使用できるいくつかのツールがあります。ローカルマシンまたはDockerコンテナ内でKafkaを実行している場合、[RPK](https://docs.redpanda.com/current/get-started/rpk-install/)が便利です。次のコマンドを実行して、5つのパーティションを持つ`github`というトピックを作成できます。
+次に、トピックを作成します。これを行うために使用できるツールはいくつかあります。ローカルのマシンや Docker コンテナ内で Kafka を実行している場合は、[RPK](https://docs.redpanda.com/current/get-started/rpk-install/) がうまく機能します。次のコマンドを実行して、5つのパーティションを持つ `github` というトピックを作成します：
 
 ```bash
 rpk topic create -p 5 github --brokers <host>:<port>
 ```
 
-Confluent CloudでKafkaを実行している場合、[Confluent CLI](https://docs.confluent.io/platform/current/tutorials/examples/clients/docs/kcat.html#produce-records)を使用する方が好ましいかもしれません：
+Confluent Cloud で Kafka を実行している場合は、[Confluent CLI](https://docs.confluent.io/platform/current/tutorials/examples/clients/docs/kcat.html#produce-records) を使用することを好むかもしれません：
 
 ```bash
 confluent kafka topic create --if-not-exists github
 ```
 
-次に、このトピックにデータを格納する必要があります。これを行うために[kcat](https://github.com/edenhill/kcat)を使用します。認証が無効のローカルKafkaを実行している場合、次のようなコマンドを実行できます：
+このトピックにデータを追加する必要があります。これを行うには、[kcat](https://github.com/edenhill/kcat)を使用します。認証が無効なローカル Kafka を実行している場合、次のようなコマンドを実行できます：
 
 ```bash
 cat github_all_columns.ndjson |
@@ -127,7 +131,7 @@ kcat -P \
   -t github
 ```
 
-または、KafkaクラスターがSASLを使用して認証する場合は、次のようにします：
+SASL を使用して認証する Kafka クラスターの場合は、次のコマンドを実行します：
 
 ```bash
 cat github_all_columns.ndjson |
@@ -140,11 +144,11 @@ kcat -P \
   -X sasl.password=<password> \
 ```
 
-データセットには200,000行が含まれているため、数秒内に取り込まれるはずです。より大きなデータセットを扱いたい場合は、[ClickHouse/kafka-samples](https://github.com/ClickHouse/kafka-samples) GitHubリポジトリの[大きなデータセットセクション](https://github.com/ClickHouse/kafka-samples/tree/main/producer#large-datasets)を参照してください。
+データセットには200,000 行が含まれており、数秒で取り込まれるはずです。より大きなデータセットを扱いたい場合は、[ClickHouse/kafka-samples](https://github.com/ClickHouse/kafka-samples) GitHub リポジトリの [大規模データセットセクション](https://github.com/ClickHouse/kafka-samples/tree/main/producer#large-datasets) をご覧ください。
 
-##### 5. Kafkaテーブルエンジンを作成する {#5-create-the-kafka-table-engine}
+##### 5. Kafka テーブルエンジンを作成する {#5-create-the-kafka-table-engine}
 
-以下の例では、マージツリーテーブルと同じスキーマを持つテーブルエンジンを作成します。これは厳密には必要ではなく、ターゲットテーブルにエイリアスや一時カラムを持たせることができます。ただし、設定は重要です。トピックからJSONを消費するデータ型として`JSONEachRow`を使用することに注意してください。値`github`および`clickhouse`は、それぞれトピックとコンシューマグループの名前を表します。トピックは実際には値のリストで構成できます。
+以下の例では、マージツリーテーブルと同じスキーマを持つテーブルエンジンを作成します。これは厳密には必要ありませんが、ターゲットテーブルにエイリアスや一時的なカラムを持つことができます。ただし、設定は重要です。Kafka トピックから JSON を消費するためのデータ型として `JSONEachRow` の使用に注意してください。値 `github` と `clickhouse` は、それぞれトピック名とコンシューマグループ名を表します。トピックは実際には値のリストであることができます。
 
 ```sql
 CREATE TABLE github_queue
@@ -179,11 +183,12 @@ CREATE TABLE github_queue
             'JSONEachRow') settings kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
 ```
 
-エンジン設定とパフォーマンスの調整については、以下で説明します。この時点で、テーブル`github_queue`に対して単純な選択を行うことで、いくつかの行が読み取られるはずです。この操作によりコンシューマオフセットが進むことに注意してください。これにより、これらの行は[リセット](#common-operations)なしで再読み込みされません。制限および必要なパラメーター`stream_like_engine_allow_direct_select`にも注意してください。
+
+エンジンの設定やパフォーマンスチューニングについては以下で説明します。この時点で、テーブル `github_queue` に対する単純な選択を行うことでいくつかの行を読み取るべきです。これにより消費者オフセットが前進し、これらの行が再読されないようになります。`stream_like_engine_allow_direct_select.` の制限と必要なパラメータに注意してください。
 
 ##### 6. マテリアライズドビューを作成する {#6-create-the-materialized-view}
 
-マテリアライズドビューは、先に作成した2つのテーブルを接続し、Kafkaテーブルエンジンからデータを読み取り、ターゲットマージツリーテーブルに挿入します。いくつかのデータ変換を行うことができます。ここでは簡単な読み取りと挿入を行います。*を使用することで、カラム名が同じであること（大文字と小文字を区別すること）を前提とします。
+マテリアライズドビューは、以前に作成した2つのテーブルを接続し、Kafka テーブルエンジンからデータを読み取り、ターゲットのマージツリーテーブルに挿入します。さまざまなデータ変換を行うことができます。単純な読み取りと挿入を行います。* の使用により、カラム名が同じであることを前提としています（大文字と小文字を区別します）。
 
 ```sql
 CREATE MATERIALIZED VIEW github_mv TO github AS
@@ -191,7 +196,7 @@ SELECT *
 FROM github_queue;
 ```
 
-作成時点で、このマテリアライズドビューはKafkaエンジンに接続し、読み取りを開始し、ターゲットテーブルに行を挿入します。このプロセスは無限に続き、Kafkaに新しいメッセージが挿入されると、それらを消費します。さらにメッセージをKafkaに挿入するために挿入スクリプトを再実行してください。
+作成時に、マテリアライズドビューは Kafka エンジンに接続し、読み取りを開始し、ターゲットテーブルに行を挿入します。このプロセスは無限に続き、Kafka に新しいメッセージが挿入されると消費されます。お好きなタイミングで挿入スクリプトを再実行し、Kafka にさらにメッセージを挿入してください。
 
 ##### 7. 行が挿入されたことを確認する {#7-confirm-rows-have-been-inserted}
 
@@ -201,40 +206,40 @@ FROM github_queue;
 SELECT count() FROM github;
 ```
 
-200,000行が表示されるはずです：
+200,000 行が表示されるはずです：
 ```response
 ┌─count()─┐
 │  200000 │
 └─────────┘
 ```
 
-#### 共通操作 {#common-operations}
+#### 一般的な操作 {#common-operations}
 
 ##### メッセージ消費の停止と再開 {#stopping--restarting-message-consumption}
 
-メッセージの消費を停止するには、Kafkaエンジンタブルを切り離すことができます：
+メッセージ消費を停止するには、Kafka エンジンテーブルをデタッチします：
 
 ```sql
 DETACH TABLE github_queue;
 ```
 
-これにより、コンシューマグループのオフセットには影響しません。消費を再開し、前のオフセットから続けるには、テーブルを再接続します。
+これにより、コンシューマグループのオフセットには影響を与えません。消費を再開し、前のオフセットから続行するには、テーブルを再アタッチします。
 
 ```sql
 ATTACH TABLE github_queue;
 ```
 
-##### Kafkaメタデータの追加 {#adding-kafka-metadata}
+##### Kafka メタデータの追加 {#adding-kafka-metadata}
 
-ClickHouseに取り込まれた後、元のKafkaメッセージからのメタデータを追跡することは有用です。たとえば、特定のトピックやパーティションをどの程度消費したかを知りたい場合があります。この目的のために、Kafkaテーブルエンジンはいくつかの[仮想カラム](../../../engines/table-engines/index.md#table_engines-virtual_columns)を公開しています。これらは、スキーマおよびマテリアライズドビューのSELECTステートメントを変更することで、ターゲットテーブルのカラムとして永続化できます。
+ClickHouse に取り込まれた後、元の Kafka メッセージからのメタデータを追跡することは有用です。例えば、特定のトピックやパーティションからどれだけ消費したかを知りたいかもしれません。この目的のために、Kafka テーブルエンジンは複数の[仮想カラム](../../../engines/table-engines/index.md#table_engines-virtual_columns)を公開しています。これらは、スキーマやマテリアライズドビューの選択ステートメントを変更することで、ターゲットテーブルのカラムとして永続化できます。
 
-最初に、ターゲットテーブルへのカラム追加の前に上記で説明した停止操作を行います。
+まず、対象のテーブルにカラムを追加する前に、上記で説明した停止操作を実行します。
 
 ```sql
 DETACH TABLE github_queue;
 ```
 
-以下に、行の元となるトピックとパーティションを識別する情報カラムを追加します。
+以下に、ソーストピックと行が由来するパーティションを識別する情報カラムを追加します。
 
 ```sql
 ALTER TABLE github
@@ -242,9 +247,11 @@ ALTER TABLE github
    ADD COLUMN partition UInt64;
 ```
 
-次に、仮想カラムが必要に応じてマッピングされていることを確認する必要があります。仮想カラムは`_`で始まります。仮想カラムの詳細なリストは[こちら](../../../engines/table-engines/integrations/kafka.md#virtual-columns)にあります。
+次に、仮想カラムが必要なようにマッピングされていることを確認する必要があります。
+仮想カラムは `_` でプレフィックスされます。
+仮想カラムの完全なリストは [こちら](../../../engines/table-engines/integrations/kafka.md#virtual-columns)にあります。
 
-仮想カラムを持つテーブルを更新するには、マテリアライズドビューを削除し、Kafkaエンジンタブルを再接続し、再度マテリアライズドビューを作成する必要があります。
+仮想カラムでテーブルを更新するには、マテリアライズドビューを削除し、Kafka エンジンテーブルを再アタッチし、マテリアライズドビューを再作成する必要があります。
 
 ```sql
 DROP VIEW github_mv;
@@ -260,7 +267,7 @@ SELECT *, _topic as topic, _partition as partition
 FROM github_queue;
 ```
 
-新たに取り込まれた行にはメタデータが含まれるはずです。
+新たに消費された行にはメタデータが含まれるはずです。
 
 ```sql
 SELECT actor_login, event_type, created_at, topic, partition
@@ -268,7 +275,7 @@ FROM github
 LIMIT 10;
 ```
 
-結果は以下のようになります。
+結果は次のようになります：
 
 | actor_login | event_type | created_at | topic | partition |
 | :--- | :--- | :--- | :--- | :--- |
@@ -283,13 +290,14 @@ LIMIT 10;
 | jpn | CommitCommentEvent | 2011-02-12 12:24:31 | github | 0 |
 | Oxonium | CommitCommentEvent | 2011-02-12 12:31:28 | github | 0 |
 
-##### Kafkaエンジン設定の変更 {#modify-kafka-engine-settings}
 
-Kafkaエンジンタブルを削除して新しい設定で再作成することをお勧めします。このプロセスでは、マテリアライズドビューを変更する必要はありません。Kafkaエンジンタブルが再作成されると、メッセージ消費が再開されます。
+##### Kafka エンジン設定の変更 {#modify-kafka-engine-settings}
+
+Kafka エンジンテーブルを削除し、新しい設定で再作成することをお勧めします。このプロセス中、マテリアライズドビューを変更する必要はありません - Kafka エンジンテーブルを再作成すると、メッセージ消費が再開されます。
 
 ##### 問題のデバッグ {#debugging-issues}
 
-認証の問題のようなエラーは、KafkaエンジンDDLへの応答では報告されません。問題を診断するために、主要なClickHouseログファイルclickhouse-server.err.logを使用することをお勧めします。基礎となるKafkaクライアントライブラリ[librdkafka](https://github.com/edenhill/librdkafka)に対するさらなるトレースログを構成を通じて有効にできます。
+認証の問題などのエラーは、Kafka エンジンの DDL のレスポンスには報告されません。問題の診断には、ClickHouse のメインのログファイル clickhouse-server.err.log を使用することを推奨します。基盤となる Kafka クライアントライブラリ [librdkafka](https://github.com/edenhill/librdkafka) に関するさらなるトレースログは、設定を通じて有効化できます。
 
 ```xml
 <kafka>
@@ -299,19 +307,19 @@ Kafkaエンジンタブルを削除して新しい設定で再作成すること
 
 ##### 不正なメッセージの処理 {#handling-malformed-messages}
 
-Kafkaはしばしばデータの「ダンピンググラウンド」として使用されます。これにより、トピックには混合メッセージフォーマットや不整合なフィールド名が含まれることになります。これを避け、Kafka StreamsやksqlDBなどのKafka機能を利用して、メッセージが適切で一貫性のある形式でKafkaに挿入される前に確保してください。これらのオプションが不可能な場合、ClickHouseにはいくつかの機能があります。
+Kafka はデータの「ダンプ場」としてよく使用されます。これにより、トピックに混在したメッセージ形式や不一致なフィールド名が含まれることがあります。これを避けるために、Kafka Streams や ksqlDB などの機能を利用して、メッセージが整形され、一貫性を持つことを保証してから Kafka に挿入してください。これらのオプションが不可能な場合、ClickHouse には役立つ機能があります。
 
-* メッセージフィールドを文字列として扱います。必要であれば、マテリアライズドビューステートメントでクレンジングやキャスティングを実行するために関数を使用できます。これは本番環境でのソリューションではありませんが、一時的な取り込みには役立つかもしれません。
-* トピックからJSONを消費する場合、JSONEachRowフォーマットを使用し、設定[`input_format_skip_unknown_fields`](/operations/settings/formats#input_format_skip_unknown_fields)を利用します。データを書き込む際、デフォルトでClickHouseはターゲットテーブルに存在しないカラムが入力データに含まれていると、例外をスローします。ただし、このオプションが有効な場合、これらの余分なカラムは無視されます。これも本番レベルのソリューションではなく、他の人を混乱させる可能性があることに注意してください。
-* `kafka_skip_broken_messages`設定を検討してください。これは、不正なメッセージに対するブロックごとの許容レベルを指定する必要があります。これはkafka_max_block_sizeの文脈で考慮されます。この許容度を超えた場合（絶対的なメッセージで測定される）、通常の例外の振る舞いが元に戻り、他のメッセージがスキップされます。
+* メッセージフィールドを文字列として扱います。必要に応じて、マテリアライズドビューのステートメントでクリーニングやキャスティングを行う関数を使用できます。これは本番のソリューションを表すべきではありませんが、一時的な取り込みに役立つかもしれません。
+* トピックから JSON を消費している場合、JSONEachRow 形式を使用しているときは、設定 [`input_format_skip_unknown_fields`](/operations/settings/formats#input_format_skip_unknown_fields) を使用します。データを書き込むとき、デフォルトでは、ClickHouse は入力データにターゲットテーブルに存在しないカラムが含まれている場合、例外をスローします。しかし、このオプションが有効になっている場合、これらの過剰なカラムは無視されます。これも本番レベルのソリューションではなく、他の人を混乱させる可能性があります。
+* 設定 `kafka_skip_broken_messages` の検討をお勧めします。これは、ユーザーが不正なメッセージのブロックあたりの耐性レベルを指定することを求めます。これは kafka_max_block_size に関連して考慮されます。この耐性を超えると（絶対的なメッセージ数で測定）、通常の例外動作に戻り、他のメッセージはスキップされます。
 
-##### 配信のセマンティクスと重複の課題 {#delivery-semantics-and-challenges-with-duplicates}
+##### 配信のセマンティクスと重複に関する課題 {#delivery-semantics-and-challenges-with-duplicates}
 
-Kafkaテーブルエンジンは、少なくとも1回のセマンティクスを持っています。重複する可能性は、いくつかの既知の稀な状況で発生します。たとえば、メッセージがKafkaから読み取られ、ClickHouseに正常に挿入された場合、新しいオフセットをコミットする前にKafkaとの接続が失われる可能性があります。この場合、ブロックを再試行する必要があります。ブロックは、ターゲットテーブルとして分散テーブルまたはReplicatedMergeTreeを使用して[重複排除](https://engines/table-engines/mergetree-family/replication)できます。このアプローチは、重複行の可能性を減少させますが、同一のブロックを前提としています。Kafkaのリバランスのようなイベントは、この仮定を無効にし、稀な状況で重複を引き起こす可能性があります。
+Kafka テーブルエンジンには、少なくとも一度のセマンティクスがあります。重複は、いくつかの知られた稀な状況で発生する可能性があります。例えば、Kafka からメッセージを読み取って ClickHouse に正常に挿入された場合、新しいオフセットをコミットできる前に Kafka との接続が失われました。この状況では、ブロックの再試行が必要です。このブロックは、[分散テーブル](https://clickhouse.tech/docs/en/engines/table-engines/mergetree-family/replication)または ReplicatedMergeTree をターゲットテーブルとして使用して非重複化できます。この方法は、重複行の可能性を減らしますが、同じブロックに依存します。Kafka のリバランシングなどのイベントは、この仮定を無効にし、稀な状況で重複を引き起こす可能性があります。
 
-##### クオーラムベースの挿入 {#quorum-based-inserts}
+##### クォーラムベースの挿入 {#quorum-based-inserts}
 
-ClickHouseでより高い配信保証が必要な場合、[クオーラムベースの挿入](/operations/settings/settings#insert_quorum)が必要な場合があります。これはマテリアライズドビューやターゲットテーブルに設定できませんが、ユーザープロファイルに対して設定できます。：
+ClickHouse で高い配信保証が必要な場合は、[クォーラムベースの挿入](/operations/settings/settings#insert_quorum)が必要になることがあります。これは、マテリアライズドビューやターゲットテーブルでは設定できません。ただし、ユーザープロファイルに対して設定できます：
 
 ```xml
 <profiles>
@@ -321,17 +329,18 @@ ClickHouseでより高い配信保証が必要な場合、[クオーラムベー
 </profiles>
 ```
 
-### ClickHouseからKafka {#clickhouse-to-kafka}
+### ClickHouse から Kafka へ {#clickhouse-to-kafka}
 
-稀なユースケースですが、ClickHouseのデータもKafkaに保持できます。たとえば、選択的に行をKafkaテーブルエンジンに手動で挿入します。このデータは同じKafkaエンジンによって読み取られ、そのマテリアライズドビューはデータをマージツリーテーブルに配置します。最終的に、既存のソーステーブルからテーブルを読み取るためにKafkaに挿入する際にマテリアライズドビューを適用する方法を示します。
+使用例は少ないですが、ClickHouse データを Kafka に永続化することも可能です。例えば、Kafka テーブルエンジンに手動で行を挿入します。このデータは、同じ Kafka エンジンによって読み取られ、そのマテリアライズドビューがデータを Merge Tree テーブルに配置します。最後に、既存のソーステーブルからテーブルを読み取るために、マテリアライズドビューを Kafka に挿入する際のアプリケーションを示します。
 
-#### 手順 {#steps-1}
+#### ステップ {#steps-1}
 
-最初の目標は次のように最も良く示されます：
+私たちの最初の目的は、次のように示されています：
 
-<img src={kafka_02} class="image" alt="Kafkaテーブルエンジンによる挿入" style={{width: '80%'}} />
+<Image img={kafka_02} size="lg" alt="挿入を伴う Kafka テーブルエンジンの図" />
 
-[KafkaからClickHouse](#kafka-to-clickhouse)の手順の下でテーブルとビューを作成済みであり、トピックが完全に消費されていると仮定します。
+Kafka から ClickHouse へのステップで作成されたテーブルとビューがあることを前提とし、トピックが完全に消費されていることを確認します。
+
 
 ##### 1. 行を直接挿入する {#1-inserting-rows-directly}
 
@@ -341,26 +350,26 @@ ClickHouseでより高い配信保証が必要な場合、[クオーラムベー
 SELECT count() FROM github;
 ```
 
-200,000行が存在するはずです：
+200,000 行を持っているはずです：
 ```response
 ┌─count()─┐
 │  200000 │
 └─────────┘
 ```
 
-次に、GitHubターゲットテーブルからKafkaテーブルエンジンのgithub_queueに行を挿入します。JSONEachRow形式を利用し、SELECTを100に制限することに注意してください。
+次に、GitHub ターゲットテーブルから Kafka テーブルエンジンの `github_queue` に行を挿入します。JSONEachRow 形式を利用し、選択を 100 に制限することに注意してください。
 
 ```sql
 INSERT INTO github_queue SELECT * FROM github LIMIT 100 FORMAT JSONEachRow
 ```
 
-再度、GitHubでの行数を確認し、その数が100増えていることを確認してください。上記の図に示すように、行はKafkaテーブルエンジンを介してKafkaに挿入された後、同じエンジンによって再読み取りされ、GitHubターゲットテーブルにマテリアライズドビューによって挿入されます！
+GitHub で行の再カウントを行って、100 増えたことを確認します。上の図に示されているように、行が Kafka テーブルエンジンを経由して Kafka に挿入された後、同じエンジンによって再読され、GitHub ターゲットテーブルに挿入されます！
 
 ```sql
 SELECT count() FROM github;
 ```
 
-100行の追加を表示するはずです：
+追加で 100 行を確認できるはずです：
 ```response
 ┌─count()─┐
 │  200100 │
@@ -369,11 +378,11 @@ SELECT count() FROM github;
 
 ##### 2. マテリアライズドビューを使用する {#2-using-materialized-views}
 
-テーブルにドキュメントが挿入されると、マテリアライズドビューを利用してKafkaエンジン（およびトピック）にメッセージをプッシュすることができます。GitHubテーブルに行が挿入されると、マテリアライズドビューがトリガーされ、行がKafkaエンジンに再び挿入され、新しいトピックに流れることになります。これも以下のように示されます：
+マテリアライズドビューを使用して、何らかの文書がテーブルに挿入されたときに Kafka エンジン（およびトピック）にメッセージをプッシュできます。GitHub テーブルに行が挿入されると、マテリアライズドビューがトリガーされるため、行は Kafka エンジンに再び挿入され、新しいトピックに配信されます。これも最もよく示されています：
 
-<img src={kafka_03} class="image" alt="Kafkaテーブルエンジンによる挿入" style={{width: '80%'}} />
+<Image img={kafka_03} size="lg" alt="マテリアライズドビューを使用した Kafka テーブルエンジンの図"/>
 
-新しいKafkaトピック`github_out`を作成します。これに対してKafkaテーブルエンジン`github_out_queue`が指すことを確認します。
+新しい Kafka トピック `github_out` を作成します。Kafka テーブルエンジン `github_out_queue` がこのトピックを指すことを確認します。
 
 ```sql
 CREATE TABLE github_out_queue
@@ -408,7 +417,7 @@ CREATE TABLE github_out_queue
             'JSONEachRow') settings kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
 ```
 
-次に、新しいマテリアライズドビュー`github_out_mv`をGitHubテーブルにポイントさせ、このエンジンに行を挿入するようにトリガーします。したがって、GitHubテーブルへの追加は、新しいKafkaトピックへプッシュされることになります。
+次に、`github_out_mv` という新しいマテリアライズドビューを GitHub テーブルに向けて作成します。これにより、行が挿入されると、上記のエンジンに挿入されます。GitHub テーブルへの追加は、結果として新しい Kafka トピックにプッシュされます。
 
 ```sql
 CREATE MATERIALIZED VIEW github_out_mv TO github_out_queue AS
@@ -422,7 +431,7 @@ FROM github
 FORMAT JsonEachRow;
 ```
 
-もし[KafkaからClickHouse](#kafka-to-clickhouse)の一部として作成された元のgithubトピックに挿入すれば、ドキュメントは「github_clickhouse」トピックに自動的に表示されます。これを確認するために、ネイティブKafkaツールを利用します。たとえば、下記に示すように、[kcat](https://github.com/edenhill/kcat)を利用してKafkaトピックに100行を挿入します：
+もし元の github トピックに挿入が行われると、[Kafka から ClickHouse への](#kafka-to-clickhouse)の一部として作成されたドキュメントが「github_clickhouse」トピックに自動的に表示されます。これを確認するには、ネイティブな Kafka ツールを使用します。例えば、次のようにして [kcat](https://github.com/edenhill/kcat) を使用して、Confluent Cloud ホストされているトピックに 100 行を挿入します：
 
 ```sql
 head -n 10 github_all_columns.ndjson |
@@ -435,7 +444,7 @@ kcat -P \
   -X sasl.password=<password>
 ```
 
-`github_out`トピックを読み取ると、メッセージの配信が確認できます。
+`github_out` トピックを読み取ると、メッセージの配信を確認できます。
 
 ```sql
 kcat -C \
@@ -449,38 +458,38 @@ kcat -C \
 wc -l
 ```
 
-これは複雑な例ですが、Kafkaエンジンと一緒に使用されるマテリアライズドビューの力を示しています。
+この詳細な例は、Kafka エンジンと連携したマテリアライズドビューの力を示しています。
 
 ### クラスターとパフォーマンス {#clusters-and-performance}
 
-#### ClickHouseクラスターの使用 {#working-with-clickhouse-clusters}
+#### ClickHouse クラスターとの作業 {#working-with-clickhouse-clusters}
 
-Kafkaのコンシューマグループを通じて、複数のClickHouseインスタンスが同じトピックから読み取ることができます。各コンシューマは、トピックパーティションに1:1のマッピングで割り当てられます。Kafkaテーブルエンジンを使用してClickHouseの消費をスケールする際は、クラスター内のコンシューマの総数がトピックのパーティション数を超えることはできないことを考慮してください。従って、トピックのパーティショニングが事前に適切に構成されていることを確認する必要があります。
+Kafka コンシューマグループを介して、複数の ClickHouse インスタンスが同じトピックから読み取ることができます。各コンシューマにはトピックのパーティションが1:1で割り当てられます。Kafka テーブルエンジンを使用して ClickHouse 消費をスケールする場合、クラスター内のコンシューマの合計数はトピックのパーティション数を超えることはできません。したがって、トピックのパーティショニングが事前に適切に構成されていることを確認してください。
 
-複数のClickHouseインスタンスは、同じコンシューマグループIDを使用するように構成され、Kafkaテーブルエンジンの作成時に指定されます。そのため、各インスタンスは1つ以上のパーティションから読み取り、ローカルターゲットテーブルにセグメントを挿入します。ターゲットテーブルは、データの重複を処理するためにReplicatedMergeTreeを使用するように構成することもできます。このアプローチは、Kafka読み取りをClickHouseクラスターでスケールさせることが可能ですが、十分なKafkaパーティションが必要です。
+複数の ClickHouse インスタンスは、同じコンシューマグループ ID を使用してトピックから読み取るように構成できます - Kafka テーブルエンジンの作成中に指定されます。したがって、各インスタンスは1つ以上のパーティションから読み取って、ローカルのターゲットテーブルにセグメントを挿入します。ターゲットテーブルは、データの重複を処理するために ReplicatedMergeTree を使用するように構成することができます。このアプローチにより、十分な Kafka パーティションがある限り、ClickHouse クラスターと Kafka 読み取りのスケールを同時に行うことができます。
 
-<img src={kafka_04} class="image" alt="Kafkaテーブルエンジンによる挿入" style={{width: '80%'}} />
+<Image img={kafka_04} size="lg" alt="ClickHouse クラスターと Kafka テーブルエンジンの図" />
 
-#### パフォーマンスの調整 {#tuning-performance}
+#### パフォーマンスのチューニング {#tuning-performance}
 
-Kafkaエンジンタブルのスループットパフォーマンスを向上させたい場合は、以下の点を考慮してください。
+Kafka エンジンテーブルのスループットパフォーマンスを向上させるには、次のような点を考慮してください：
 
-* パフォーマンスはメッセージのサイズ、形式、ターゲットテーブルの種類によって異なります。単一のテーブルエンジンで秒間100k行の取得が可能であると考えられます。デフォルトでは、メッセージはブロックで読み取られ、パラメータkafka_max_block_sizeによって制御されます。デフォルトでは、これは[max_insert_block_size](/operations/settings/settings#max_insert_block_size)に設定されており、初期値は1,048,576です。メッセージが非常に大きくない限り、これを常に増加させるべきです。500kから1Mの間の値が一般的です。テストしてスループットパフォーマンスへの影響を評価してください。
-* テーブルエンジンのコンシューマ数は、kafka_num_consumersを使用して増やすことができます。ただし、デフォルトでは、挿入は単一スレッドで直線化されます。これを防ぐために、kafka_thread_per_consumerのデフォルト値を1から変更してください。1に設定することで、フラッシュを並行して実行できます。複数のコンシューマを持つKafkaエンジンタブルの作成は、マテリアライズドビューとkafka_thread_per_consumer=0を持つN個のKafkaエンジンを作成することと論理的に等しいです。
-* コンシューマを増やすことは、無償の操作ではありません。各コンシューマは自身のバッファとスレッドを維持し、サーバーへのオーバーヘッドが増加します。消費者のオーバーヘッドを意識し、各クラスター全体で線形にスケールアップします。
-* Kafkaメッセージのスループットが変動する場合、および遅延が許容される場合、stream_flush_interval_msを増加させて、大きなブロックがフラッシュされることを検討してください。
-* [background_message_broker_schedule_pool_size](/operations/server-configuration-parameters/settings#background_message_broker_schedule_pool_size)は、バックグラウンドタスクを実行するスレッド数を設定します。これらのスレッドはKafkaストリーミングに使用されます。この設定はClickHouseサーバーの起動時に適用され、ユーザーセッション内で変更することはできず、デフォルトでは16に設定されています。ログにタイムアウトが表示された場合、これを増やすことが適切かもしれません。
-* Kafkaとの通信にはlibrdkafkaライブラリが使用され、それ自体がスレッドを作成します。多数のKafkaテーブルやコンシューマが存在すると、文脈の切り替えの数が増大する可能性があります。可能であれば、クラスター全体にこの負荷を分散させ、ターゲットテーブルの複製を行い、または複数のトピックから読み込むためにテーブルエンジンを使用することを検討してください。値のリストがサポートされています。単一のテーブルから複数のマテリアライズドビューを読み取ることができ、それぞれ特定のトピックからのデータをフィルタリングします。
+* パフォーマンスは、メッセージサイズ、フォーマット、ターゲットテーブルタイプによって異なります。単一のテーブルエンジンでの 100k 行/秒は、達成可能な数値と見なすべきです。デフォルトでは、メッセージはブロックで読み取られ、パラメータ kafka_max_block_size によって制御されます。デフォルト値は [max_insert_block_size](/operations/settings/settings#max_insert_block_size) に設定されており、1,048,576 にデフォルト設定されています。メッセージが非常に大きくない限り、ほぼ常に増加されるべきです。500k から 1M の値は珍しくありません。テストしてスループットパフォーマンスへの影響を評価してください。
+* テーブルエンジンに対するコンシューマの数は、kafka_num_consumers を使用して増加させることができます。ただし、デフォルトでは、挿入は単一スレッドで線形化され、kafka_thread_per_consumer のデフォルト値は 1 です。これを 1 に設定すると、フラッシュが並行して行われることを保証します。N コンシューマを持つ Kafka エンジンテーブルを作成することは（そして kafka_thread_per_consumer=1）、機能的には N の Kafka エンジンを作成することに等しいことに注意してください。各々がマテリアライズドビューを持ち、kafka_thread_per_consumer=0 です。
+* コンシューマの数の増加は無償の操作ではありません。各コンシューマは独自のバッファとスレッドを維持し、サーバー上のオーバーヘッドを増加させます。コンシューマのオーバーヘッドに注意し、最初にクラスターで線形にスケールするようにしてください、可能であれば。
+* Kafka メッセージのスループットが変動する場合かつ遅延が許容できる場合、ストリームフラッシュ間隔を増加させ、大きなブロックがフラッシュされることを確認することを検討してください。
+* [background_message_broker_schedule_pool_size](/operations/server-configuration-parameters/settings#background_message_broker_schedule_pool_size) は、バックグラウンドタスクを実行するスレッドの数を設定します。これらのスレッドは Kafka ストリーミングに使用されます。この設定は ClickHouse サーバーの起動時に適用され、ユーザーセッションで変更することはできません。デフォルトは 16 に設定されています。ログにタイムアウトが表示される場合は、これを増加させることが適切な場合があります。
+* Kafka との通信には librdkafka ライブラリが使用され、これはスレッドを作成します。大量の Kafka テーブル、またはコンシューマを使用すると、文脈スイッチが大きくなります。この負荷をクラスター全体に分散させるか、ターゲットテーブルを繰り返す場合を除き、テーブルエンジンを使用して複数のトピックから読み取ることを検討してください - 値のリストがサポートされています。単一のテーブルから複数のマテリアライズドビューを読み取ることができ、それぞれ特定のトピックからのデータに対してフィルタリングします。
 
-設定の変更はテストするべきです。Kafkaコンシューマの遅れを監視して、適切にスケールされていることを確認してください。
+設定変更はテストされるべきです。適切にスケールされていることを確認するために、Kafka コンシューマの遅延を監視することをお勧めします。
 
 #### 追加設定 {#additional-settings}
 
-上記で検討した設定の他にも、興味を引く可能性がある設定は以下の通りです。
+上記で説明した設定に加えて、以下に関心を持つ可能性のある項目があります：
 
-* [Kafka_max_wait_ms](/operations/settings/settings#kafka_max_wait_ms) - メッセージをKafkaから読み取る際の待機時間（ミリ秒）。ユーザープロファイルレベルで設定され、デフォルトは5000です。
+* [Kafka_max_wait_ms](/operations/settings/settings#kafka_max_wait_ms) - リトライ前に Kafka からメッセージを読み取るための待機時間（ミリ秒単位）。ユーザープロファイルレベルで設定し、デフォルトは 5000 です。
 
-基礎となるlibrdkafkaからの[すべての設定](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md)は、ClickHouseの設定ファイル内の_kafka_要素に配置できます - 設定名はXML要素になり、ピリオドがアンダースコアに置き換えられます。たとえば：
+基盤となる librdkafka からの[すべての設定](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md)は、ClickHouse 設定ファイル内の _kafka_ 要素に配置されることもできます - 設定名は XML 要素で、ピリオドをアンダースコアに置き換えなければなりません：
 
 ```xml
 <clickhouse>
@@ -490,4 +499,4 @@ Kafkaエンジンタブルのスループットパフォーマンスを向上さ
 </clickhouse>
 ```
 
-これらは専門的な設定であり、Kafkaのドキュメントを参照して詳細な説明を読むことをお勧めします。
+これらは専門的な設定であり、詳しい説明については Kafka ドキュメントを参照することをお勧めします。

@@ -1,26 +1,27 @@
 ---
-description: "HTTPインターフェースを通じてアクセス可能な`/dashboard`ページで使用されるクエリを含みます。監視やトラブルシューティングに便利です。"
+description: 'HTTPインターフェースを通じてアクセス可能な `/dashboard` ページで使用されるクエリを含みます。監視とトラブルシューティングに役立ちます。'
+keywords: ['system table', 'dashboards', 'monitoring', 'troubleshooting']
 slug: /operations/system-tables/dashboards
-title: "system.dashboards"
-keywords: ["システムテーブル", "ダッシュボード", "監視", "トラブルシューティング"]
+title: 'system.dashboards'
 ---
 
-HTTPインターフェースを介してアクセス可能な`/dashboard`ページで使用されるクエリを含みます。 このテーブルは監視やトラブルシューティングに役立ちます。 テーブルには、ダッシュボード内の各チャートの行が含まれています。
+HTTPインターフェースを通じてアクセス可能な `/dashboard` ページで使用されるクエリを含みます。[HTTPインターフェース](/interfaces/http.md)からのデータが取得されます。このテーブルは監視およびトラブルシューティングに役立ちます。テーブルには、ダッシュボード内の各チャートに対応する行が含まれています。
 
 :::note
-`/dashboard`ページは、`system.dashboards`だけでなく、同じスキーマを持つ任意のテーブルからのクエリもレンダリングできます。 これにより、カスタムダッシュボードを作成するのに便利です。
+`/dashboard` ページは `system.dashboards` のクエリだけでなく、同じスキーマを持つ任意のテーブルからもクエリをレンダリングできます。
+これによりカスタムダッシュボードを作成するのに便利です。
 :::
 
 例:
 
-``` sql
+```sql
 SELECT *
 FROM system.dashboards
 WHERE title ILIKE '%CPU%'
 ```
 
-``` text
-Row 1:
+```text
+行 1:
 ──────
 dashboard: overview
 title:     CPU Usage (cores)
@@ -30,7 +31,7 @@ WHERE event_date >= toDate(now() - {seconds:UInt32}) AND event_time >= now() - {
 GROUP BY t
 ORDER BY t WITH FILL STEP {rounding:UInt32}
 
-Row 2:
+行 2:
 ──────
 dashboard: overview
 title:     CPU Wait
@@ -40,7 +41,7 @@ WHERE event_date >= toDate(now() - {seconds:UInt32}) AND event_time >= now() - {
 GROUP BY t
 ORDER BY t WITH FILL STEP {rounding:UInt32}
 
-Row 3:
+行 3:
 ──────
 dashboard: overview
 title:     OS CPU Usage (Userspace)
@@ -50,7 +51,7 @@ WHERE event_date >= toDate(now() - {seconds:UInt32}) AND event_time >= now() - {
 GROUP BY t
 ORDER BY t WITH FILL STEP {rounding:UInt32}
 
-Row 4:
+行 4:
 ──────
 dashboard: overview
 title:     OS CPU Usage (Kernel)

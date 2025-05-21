@@ -1,8 +1,9 @@
 ---
-slug: '/sql-reference/statements/explain'
-sidebar_position: 39
+description: 'Explainのドキュメント'
 sidebar_label: 'EXPLAIN'
-title: 'EXPLAIN ステートメント'
+sidebar_position: 39
+slug: /sql-reference/statements/explain
+title: 'EXPLAINステートメント'
 ---
 
 ステートメントの実行計画を表示します。
@@ -42,30 +43,30 @@ Union
     Expression (Before ORDER BY and SELECT)
       Aggregating
         Expression (Before GROUP BY)
-          SettingQuotaAndLimits (ストレージからの読み取り後に制限とクォータを設定)
+          SettingQuotaAndLimits (ストレージから読み取った後に制限とクォータを設定)
             ReadFromStorage (SystemNumbers)
   Expression (Projection)
-    MergingSorted (ORDER BYのためにソートされたストリームをマージ)
-      MergeSorting (ORDER BYのためにソートされたブロックをマージ)
-        PartialSorting (ORDER BYのために各ブロックをソート)
+    MergingSorted (ORDER BY のためにソートされたストリームをマージ)
+      MergeSorting (ORDER BY のためにソートされたブロックをマージ)
+        PartialSorting (ORDER BY のために各ブロックをソート)
           Expression (Before ORDER BY and SELECT)
             Aggregating
               Expression (Before GROUP BY)
-                SettingQuotaAndLimits (ストレージからの読み取り後に制限とクォータを設定)
+                SettingQuotaAndLimits (ストレージから読み取った後に制限とクォータを設定)
                   ReadFromStorage (SystemNumbers)
 ```
 
-## EXPLAIN タイプ {#explain-types}
+## EXPLAINのタイプ {#explain-types}
 
 - `AST` — 抽象構文木。
 - `SYNTAX` — ASTレベルの最適化後のクエリテキスト。
-- `QUERY TREE` — Query Treeレベルの最適化後のクエリツリー。
+- `QUERY TREE` — クエリツリーのクエリツリーレベルの最適化後の状態。
 - `PLAN` — クエリ実行計画。
 - `PIPELINE` — クエリ実行パイプライン。
 
 ### EXPLAIN AST {#explain-ast}
 
-クエリASTをダンプします。すべてのタイプのクエリをサポートし、`SELECT` のみではありません。
+クエリのASTをダンプします。すべてのタイプのクエリをサポートしており、`SELECT`だけでなく、他のクエリも含まれます。
 
 例:
 
@@ -99,7 +100,7 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
 
 ### EXPLAIN SYNTAX {#explain-syntax}
 
-構文最適化後のクエリを返します。
+最適化後のクエリを返します。
 
 例:
 
@@ -128,8 +129,8 @@ CROSS JOIN system.numbers AS c
 設定:
 
 - `run_passes` — クエリツリーをダンプする前にすべてのクエリツリーパスを実行します。デフォルト: `1`。
-- `dump_passes` — クエリツリーをダンプする前に使用されたパスに関する情報をダンプします。デフォルト: `0`。
-- `passes` — 実行するパスの数を指定します。`-1` に設定すると、すべてのパスが実行されます。デフォルト: `-1`。
+- `dump_passes` — クエリツリーをダンプする前に使用されたパスについての情報をダンプします。デフォルト: `0`。
+- `passes` — 実行すべきパスの数を指定します。`-1`に設定すると、すべてのパスを実行します。デフォルト: `-1`。
 
 例:
 ```sql
@@ -151,17 +152,17 @@ QUERY id: 0
 
 ### EXPLAIN PLAN {#explain-plan}
 
-クエリプランのステップをダンプします。
+クエリプランステップをダンプします。
 
 設定:
 
 - `header` — ステップの出力ヘッダーを印刷します。デフォルト: 0。
 - `description` — ステップの説明を印刷します。デフォルト: 1。
-- `indexes` — 使用されたインデックス、フィルタリングされたパーツの数、適用された各インデックスのフィルタリングされたグラニュールの数を表示します。デフォルト: 0。 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルでサポートされています。
+- `indexes` — 使用されたインデックス、フィルターされたパーツの数、および適用されたインデックスごとにフィルターされたグラニュールの数を示します。デフォルト: 0。 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md)テーブルでサポートされています。
 - `actions` — ステップアクションに関する詳細情報を印刷します。デフォルト: 0。
-- `json` — クエリプランのステップを[JSON](../../interfaces/formats.md#json)形式の行として印刷します。デフォルト: 0。不要なエスケープを避けるために[TSVRaw](../../interfaces/formats.md#tabseparatedraw)形式を使用することをお勧めします。
+- `json` — クエリプランステップを[JSON](../../interfaces/formats.md#json)フォーマットの行として印刷します。デフォルト: 0。他の不必要なエスケープを避けるために[TSVRaw](../../interfaces/formats.md#tabseparatedraw)フォーマットを使用することをお勧めします。
 
-`json=1`のとき、ステップ名にはユニークなステップ識別子を含む追加の接尾辞が含まれます。
+`json=1`の場合、ステップ名には一意のステップ識別子を含む追加の接尾辞が含まれます。
 
 例:
 
@@ -175,15 +176,15 @@ Union
   Expression (Before ORDER BY and SELECT)
     Aggregating
       Expression (Before GROUP BY)
-        SettingQuotaAndLimits (ストレージからの読み取り後に制限とクォータを設定)
+        SettingQuotaAndLimits (ストレージから読み取った後に制限とクォータを設定)
           ReadFromStorage (SystemNumbers)
 ```
 
 :::note    
-ステップおよびクエリコストの推定はサポートされていません。
+ステップとクエリコストの推定はサポートされていません。
 :::
 
-`json = 1`のとき、クエリプランはJSON形式で表されます。各ノードは常に `Node Type` と `Plans` のキーを持つ辞書です。`Node Type` はステップ名の文字列です。`Plans` は子ステップの説明の配列です。その他のオプションのキーはノードのタイプと設定に応じて追加される場合があります。
+`json = 1`の場合、クエリプランはJSONフォーマットで表されます。各ノードは、常に`Node Type`と`Plans`のキーを持つ辞書です。`Node Type`はステップ名の文字列です。`Plans`は子ステップの説明の配列です。他のオプションのキーは、ノードタイプと設定に応じて追加される場合があります。
 
 例:
 
@@ -224,7 +225,7 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 ]
 ```
 
-`description` = 1 の場合、`Description` キーがステップに追加されます:
+`description` = 1 の場合、`Description`キーがステップに追加されます:
 
 ```json
 {
@@ -233,7 +234,7 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 }
 ```
 
-`header` = 1 の場合、`Header` キーが列の配列としてステップに追加されます。
+`header` = 1 の場合、ステップにカラムの配列として`Header`キーが追加されます。
 
 例:
 
@@ -274,14 +275,14 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-`indexes` = 1 の場合、`Indexes` キーが追加されます。それには、使用されたインデックスの配列が含まれます。各インデックスは、`Type` キー（文字列 `MinMax`、`Partition`、`PrimaryKey` または `Skip`）とオプションのキーで説明されます：
+`indexes` = 1 の場合、`Indexes`キーが追加されます。このキーは使用されたインデックスの配列を含みます。各インデックスは、`Type`キー（`MinMax`、`Partition`、`PrimaryKey`または`Skip`の文字列）およびオプションのキーを持つJSONで記述されます。
 
-- `Name` — インデックス名（現在は `Skip` インデックスにのみ使用されます）。
-- `Keys` — インデックスによって使用されるカラムの配列。
+- `Name` — インデックス名（現在は`Skip`インデックスの場合のみ使用）。
+- `Keys` — インデックスで使用されるカラムの配列。
 - `Condition` — 使用された条件。
-- `Description` — インデックスの説明（現在は `Skip` インデックスにのみ使用されます）。
-- `Parts` — インデックスが適用される前後のパーツの数。
-- `Granules` — インデックスが適用される前後のグラニュールの数。
+- `Description` — インデックスの説明（現在は`Skip`インデックスの場合のみ使用）。
+- `Parts` — インデックスが適用される前/後のパーツの数。
+- `Granules` — インデックスが適用される前/後のグラニュールの数。
 
 例:
 
@@ -326,7 +327,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-`actions` = 1 の場合、追加されたキーはステップタイプに依存します。
+`actions` = 1 の場合、追加されるキーはステップタイプに依存します。
 
 例:
 
@@ -390,10 +391,10 @@ EXPLAIN json = 1, actions = 1, description = 0 SELECT 1 FORMAT TSVRaw;
 設定:
 
 - `header` — 各出力ポートのヘッダーを印刷します。デフォルト: 0。
-- `graph` — [DOT](https://en.wikipedia.org/wiki/DOT_(graph_description_language)) グラフ記述言語で記述されたグラフを印刷します。デフォルト: 0。
-- `compact` — `graph` 設定が有効な場合、コンパクトモードでグラフを印刷します。デフォルト: 1。
+- `graph` — [DOT](https://en.wikipedia.org/wiki/DOT_(graph_description_language))グラフ記述言語で記述されたグラフを印刷します。デフォルト: 0。
+- `compact` — `graph`設定が有効な場合、コンパクトモードでグラフを印刷します。デフォルト: 1。
 
-`compact=0` および `graph=1` の場合、プロセッサ名にはユニークなプロセッサ識別子を含む追加の接尾辞が含まれます。
+`compact=0`かつ`graph=1`の場合、プロセッサ名には一意のプロセッサ識別子を含む追加の接尾辞が含まれます。
 
 例:
 
@@ -418,11 +419,11 @@ ExpressionTransform
 ```
 ### EXPLAIN ESTIMATE {#explain-estimate}
 
-クエリを処理する際に読み取る必要がある行、マーク、およびパーツの推定数を表示します。[MergeTree](/engines/table-engines/mergetree-family/mergetree) ファミリーのテーブルで動作します。
+クエリ処理中にテーブルから読み取られる行、マーク、およびパーツの推定数を表示します。[MergeTree](/engines/table-engines/mergetree-family/mergetree)ファミリーのテーブルで機能します。
 
 **例**
 
-テーブルの作成:
+テーブルを作成する:
 
 ```sql
 CREATE TABLE ttt (i Int64) ENGINE = MergeTree() ORDER BY i SETTINGS index_granularity = 16, write_final_mark = 0;
@@ -446,12 +447,12 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 
 ### EXPLAIN TABLE OVERRIDE {#explain-table-override}
 
-テーブル関数を通じてアクセスされるテーブルスキーマでのテーブルオーバーライドの結果を表示します。
-また、オーバーライドが何らかの失敗を引き起こす場合、例外をスローして検証も行います。
+テーブル関数を通じてアクセスされるテーブルスキーマの上書きの結果を表示します。
+また、上書きが失敗を引き起こす可能性がある場合は例外を投げて検証を行います。
 
 **例**
 
-次のようなリモートMySQLテーブルを想定します:
+リモートMySQLテーブルが次のようになっていると仮定します:
 
 ```sql
 CREATE TABLE db.tbl (
@@ -474,5 +475,5 @@ PARTITION BY toYYYYMM(assumeNotNull(created))
 ```
 
 :::note    
-検証は完全ではないため、成功したクエリがオーバーライドが問題を引き起こさないことを保証するわけではありません。
+検証は完全ではないため、成功したクエリが上書きによって問題が発生しないことを保証するものではありません。
 :::

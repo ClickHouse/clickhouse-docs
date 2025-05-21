@@ -1,22 +1,23 @@
----
-slug: '/sql-reference/functions/type-conversion-functions'
-sidebar_position: 185
+description: '型変換関数のドキュメント'
 sidebar_label: '型変換'
----
+sidebar_position: 185
+slug: /sql-reference/functions/type-conversion-functions
+title: '型変換関数'
+```
 
 
 # 型変換関数
-## データ変換に関する一般的な問題 {#common-issues-with-data-conversion}
+## データ変換に関する一般的な問題{#common-issues-with-data-conversion}
 
-ClickHouseは一般的に[C++プログラムと同じ振る舞い](https://en.cppreference.com/w/cpp/language/implicit_conversion)をします。
+ClickHouseは一般に、[C++プログラムと同じ動作を使用します](https://en.cppreference.com/w/cpp/language/implicit_conversion)。
 
-`to<type>`関数と[cast](#cast)は、いくつかのケースで異なる振る舞いをします。例えば、[LowCardinality](../data-types/lowcardinality.md)の場合： [cast](#cast)は[LowCardinality](../data-types/lowcardinality.md)特性を削除しますが、`to<type>`関数は削除しません。 [Nullable](../data-types/nullable.md)についても同様です。この挙動はSQL標準と互換性がなく、[cast_keep_nullable](../../operations/settings/settings.md/#cast_keep_nullable)設定を使うことで変更できます。
+`to<type>`関数と[cast](#cast)は、特に[LowCardinality](../data-types/lowcardinality.md)の場合に異なる動作をします: [cast](#cast)は[LowCardinality](../data-types/lowcardinality.md)特性を削除しますが、`to<type>`関数は削除しません。[Nullable](../data-types/nullable.md)に関しても同様で、この動作はSQL標準と互換性がなく、[cast_keep_nullable](../../operations/settings/settings.md/#cast_keep_nullable)設定を使用して変更することができます。
 
 :::note
-より小さいデータ型（例えば、`Int64`から`Int32`へ）や互換性のないデータ型（例えば、`String`から`Int`へ）に変換される場合は、データ損失の可能性に注意してください。結果が予期した通りであるかを慎重に確認してください。
+データ型の値が小さいデータ型（例えば`Int64`から`Int32`）や、互換性のないデータ型（例えば`String`から`Int`）に変換される場合、データの損失の可能性があることに注意してください。結果が期待通りかどうかを慎重に確認してください。
 :::
 
-例：
+例:
 
 ```sql
 SELECT
@@ -49,7 +50,7 @@ SETTINGS cast_keep_nullable = 1
 ```
 ## toBool {#tobool}
 
-入力値を[`Bool`](../data-types/boolean.md)型の値に変換します。エラーが発生した場合は例外を投げます。
+入力値を[`Bool`](../data-types/boolean.md)型の値に変換します。エラーが発生した場合は例外をスローします。
 
 **構文**
 
@@ -59,20 +60,20 @@ toBool(expr)
 
 **引数**
 
-- `expr` — 数字または文字列を返す式。 [Expression](/sql-reference/syntax#expressions)。
+- `expr` — 数字または文字列を返す式。[Expression](/sql-reference/syntax#expressions)です。
 
-サポートされる引数：
-- 型（U）Int8/16/32/64/128/256の値。
-- 型Float32/64の値。
-- 文字列 `true` または `false`（大文字小文字を区別しない）。
+サポートされている引数:
+- (U)Int8/16/32/64/128/256型の値。
+- Float32/64型の値。
+- 文字列`true`または`false`（大文字と小文字を区別しない）です。
 
 **返される値**
 
-- 引数の評価に基づいて `true` または `false` を返します。 [Bool](../data-types/boolean.md)。
+- 引数の評価に基づいて`true`または`false`を返します。[Bool](../data-types/boolean.md)型です。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT
@@ -85,7 +86,7 @@ SELECT
 FORMAT Vertical
 ```
 
-結果：
+結果:
 
 ```response
 toBool(toUInt8(1)):      true
@@ -97,7 +98,7 @@ toBool('FALSE'):         false
 ```
 ## toInt8 {#toint8}
 
-入力値を[`Int8`](../data-types/int-uint.md)型の値に変換します。エラーが発生した場合は例外を投げます。
+入力値を[`Int8`](../data-types/int-uint.md)型の値に変換します。エラーが発生した場合は例外をスローします。
 
 **構文**
 
@@ -107,33 +108,31 @@ toInt8(expr)
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions)。
+- `expr` — 数字または数字の文字列表現を返す式。[Expression](/sql-reference/syntax#expressions)です。
 
-サポートされる引数：
-- 型（U）Int8/16/32/64/128/256の値またはその文字列表現。
-- 型Float32/64の値。
+サポートされている引数:
+- (U)Int8/16/32/64/128/256型の値またはその文字列表現。
+- Float32/64型の値。
 
-サポートされていない引数：
-- `NaN`や`Inf`を含むFloat32/64値の文字列表現。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt8('0xc0fe');`。
+サポートされていない引数:
+- Float32/64型の値の文字列表現（`NaN`や`Inf`を含む）。
+- 例えば、`SELECT toInt8('0xc0fe');`のようなバイナリおよび16進数の値の文字列表現。
 
 :::note
-入力値が[Int8](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。
-これはエラーとは見なされません。
-例： `SELECT toInt8(128) == -128;`。
+入力値が[Int8](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。これはエラーとは見なされません。例: `SELECT toInt8(128) == -128;`。
 :::
 
 **返される値**
 
-- 8ビット整数値。 [Int8](../data-types/int-uint.md)。
+- 8ビット整数値。[Int8](../data-types/int-uint.md)型です。
 
 :::note
-この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
+この関数は[ゼロへの丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT
@@ -143,7 +142,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-結果：
+結果:
 
 ```response
 Row 1:
@@ -155,12 +154,12 @@ toInt8('-8'): -8
 
 **参照**
 
-- [`toInt8OrZero`](#toint8orzero)。
-- [`toInt8OrNull`](#toInt8OrNull)。
-- [`toInt8OrDefault`](#toint8ordefault)。
+- [`toInt8OrZero`](#toint8orzero).
+- [`toInt8OrNull`](#toInt8OrNull).
+- [`toInt8OrDefault`](#toint8ordefault).
 ## toInt8OrZero {#toint8orzero}
 
-[`toInt8`](#toint8)と同様に、この関数は入力値を[Int8](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合は `0` を返します。
+[`toInt8`](#toint8)と同様に、この関数は入力値を[Int8](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合は`0`を返します。
 
 **構文**
 
@@ -170,40 +169,39 @@ toInt8OrZero(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [String](../data-types/string.md)。
+- `x` — 数字の文字列表現。[String](../data-types/string.md)。
 
-サポートされる引数：
+サポートされている引数:
 - (U)Int8/16/32/128/256の文字列表現。
 
-サポートされていない引数（`0`を返す）：
-- `NaN`や`Inf`を含む通常のFloat32/64の文字列表現。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt8OrZero('0xc0fe');`。
+サポートされていない引数（`0`を返す）:
+- 通常のFloat32/64型の値の文字列表現（`NaN`や`Inf`を含む）。
+- 例えば、`SELECT toInt8OrZero('0xc0fe');`のようなバイナリおよび16進数の値の文字列表現。
 
 :::note
-入力値が[Int8](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。
-これはエラーとは見なされません。
+入力値が[Int8](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。これはエラーとは見なされません。
 :::
 
 **返される値**
 
-- 成功した場合は8ビット整数値、それ以外の場合は`0`。 [Int8](../data-types/int-uint.md)。
+- 成功した場合は8ビット整数値、それ以外は`0`。[Int8](../data-types/int-uint.md)型です。
 
 :::note
-この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
+この関数は[ゼロへの丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 SELECT
     toInt8OrZero('-8'),
     toInt8OrZero('abc')
 FORMAT Vertical;
 ```
 
-結果：
+結果:
 
 ```response
 Row 1:
@@ -214,12 +212,12 @@ toInt8OrZero('abc'): 0
 
 **参照**
 
-- [`toInt8`](#toint8)。
-- [`toInt8OrNull`](#toInt8OrNull)。
-- [`toInt8OrDefault`](#toint8ordefault)。
+- [`toInt8`](#toint8).
+- [`toInt8OrNull`](#toInt8OrNull).
+- [`toInt8OrDefault`](#toint8ordefault).
 ## toInt8OrNull {#toInt8OrNull}
 
-[`toInt8`](#toint8)と同様に、この関数は入力値を[Int8](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合は `NULL` を返します。
+[`toInt8`](#toint8)と同様に、この関数は入力値を[Int8](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合は`NULL`を返します。
 
 **構文**
 
@@ -229,40 +227,39 @@ toInt8OrNull(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [String](../data-types/string.md)。
+- `x` — 数字の文字列表現。[String](../data-types/string.md)。
 
-サポートされる引数：
+サポートされている引数:
 - (U)Int8/16/32/128/256の文字列表現。
 
-サポートされていない引数（`\N`を返す）：
-- Float32/64の文字列表現、`NaN`や`Inf`を含む。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt8OrNull('0xc0fe');`。
+サポートされていない引数（`\N`を返す）:
+- Float32/64型の値の文字列表現（`NaN`や`Inf`を含む）。
+- 例えば、`SELECT toInt8OrNull('0xc0fe');`のようなバイナリおよび16進数の値の文字列表現。
 
 :::note
-入力値が[Int8](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。
-これはエラーとは見なされません。
+入力値が[Int8](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。これはエラーとは見なされません。
 :::
 
 **返される値**
 
-- 成功した場合は8ビット整数値、それ以外の場合は`NULL`。 [Int8](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
+- 成功した場合は8ビット整数値、それ以外は`NULL`。[Int8](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)型です。
 
 :::note
-この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
+この関数は[ゼロへの丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 SELECT
     toInt8OrNull('-8'),
     toInt8OrNull('abc')
 FORMAT Vertical;
 ```
 
-結果：
+結果:
 
 ```response
 Row 1:
@@ -273,13 +270,13 @@ toInt8OrNull('abc'): ᴺᵁᴸᴸ
 
 **参照**
 
-- [`toInt8`](#toint8)。
-- [`toInt8OrZero`](#toint8orzero)。
-- [`toInt8OrDefault`](#toint8ordefault)。
+- [`toInt8`](#toint8).
+- [`toInt8OrZero`](#toint8orzero).
+- [`toInt8OrDefault`](#toint8ordefault).
 ## toInt8OrDefault {#toint8ordefault}
 
 [`toInt8`](#toint8)と同様に、この関数は入力値を[Int8](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合はデフォルト値を返します。
-デフォルト値が渡されない場合は、エラーが発生した場合に `0` が返されます。
+`default`値が渡されない場合は、エラーが発生した場合に`0`が返されます。
 
 **構文**
 
@@ -289,43 +286,42 @@ toInt8OrDefault(expr[, default])
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)。
-- `default` (オプション) — `Int8`型に変換が失敗した場合に返すデフォルト値。 [Int8](../data-types/int-uint.md)。
+- `expr` — 数字または数字の文字列表現を返す式。[Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)です。
+- `default`（オプション） — `Int8`型への変換に失敗した場合に返すデフォルト値。[Int8](../data-types/int-uint.md)型です。
 
-サポートされる引数：
-- 型（U）Int8/16/32/64/128/256の値またはその文字列表現。
-- 型Float32/64の値。
+サポートされている引数:
+- (U)Int8/16/32/64/128/256型の値またはその文字列表現。
+- Float32/64型の値。
 
-デフォルト値が返される引数：
-- Float32/64の値の文字列表現、`NaN`や`Inf`を含む。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt8OrDefault('0xc0fe', CAST('-1', 'Int8'));`。
+デフォルト値が返される引数:
+- Float32/64型の値の文字列表現（`NaN`や`Inf`を含む）。
+- 例えば、`SELECT toInt8OrDefault('0xc0fe', CAST('-1', 'Int8'));`のようなバイナリおよび16進数の値の文字列表現。
 
 :::note
-入力値が[Int8](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。
-これはエラーとは見なされません。
+入力値が[Int8](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。これはエラーとは見なされません。
 :::
 
 **返される値**
 
-- 成功した場合は8ビット整数値、それ以外の場合は渡されたデフォルト値または渡されていない場合は`0`を返します。 [Int8](../data-types/int-uint.md)。
+- 成功した場合は8ビット整数値、それ以外は渡されたデフォルト値を返すか、指定されていない場合は`0`を返します。[Int8](../data-types/int-uint.md)型です。
 
 :::note
-- この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
-- デフォルト値の型はキャストする型と同じである必要があります。
+- この関数は[ゼロへの丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数値の小数点以下の桁を切り捨てます。
+- デフォルト値の型はキャスト型と同じであるべきです。
 :::
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 SELECT
     toInt8OrDefault('-8', CAST('-1', 'Int8')),
     toInt8OrDefault('abc', CAST('-1', 'Int8'))
 FORMAT Vertical;
 ```
 
-結果：
+結果:
 
 ```response
 Row 1:
@@ -336,12 +332,12 @@ toInt8OrDefault('abc', CAST('-1', 'Int8')): -1
 
 **参照**
 
-- [`toInt8`](#toint8)。
-- [`toInt8OrZero`](#toint8orzero)。
-- [`toInt8OrNull`](#toInt8OrNull)。
+- [`toInt8`](#toint8).
+- [`toInt8OrZero`](#toint8orzero).
+- [`toInt8OrNull`](#toInt8OrNull).
 ## toInt16 {#toint16}
 
-入力値を[`Int16`](../data-types/int-uint.md)型の値に変換します。エラーが発生した場合は例外を投げます。
+入力値を[`Int16`](../data-types/int-uint.md)型の値に変換します。エラーが発生した場合は例外をスローします。
 
 **構文**
 
@@ -351,33 +347,31 @@ toInt16(expr)
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions)。
+- `expr` — 数字または数字の文字列表現を返す式。[Expression](/sql-reference/syntax#expressions)です。
 
-サポートされる引数：
-- 型（U）Int8/16/32/64/128/256の値またはその文字列表現。
-- 型Float32/64の値。
+サポートされている引数:
+- (U)Int8/16/32/64/128/256型の値またはその文字列表現。
+- Float32/64型の値。
 
-サポートされていない引数：
-- `NaN`や`Inf`を含むFloat32/64の文字列表現。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt16('0xc0fe');`。
+サポートされていない引数:
+- Float32/64型の値の文字列表現（`NaN`や`Inf`を含む）。
+- 例えば、`SELECT toInt16('0xc0fe');`のようなバイナリおよび16進数の値の文字列表現。
 
 :::note
-入力値が[Int16](../data-types/int-uint.md)の範囲内で表現できない場合、オーバーフローやアンダーフローが発生します。
-これはエラーとは見なされません。
-例：`SELECT toInt16(32768) == -32768;`。
+入力値が[Int16](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。これはエラーとは見なされません。例: `SELECT toInt16(32768) == -32768;`。
 :::
 
 **返される値**
 
-- 16ビット整数値。 [Int16](../data-types/int-uint.md)。
+- 16ビット整数値。[Int16](../data-types/int-uint.md)型です。
 
 :::note
-この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
+この関数は[ゼロへの丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT
@@ -387,7 +381,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-結果：
+結果:
 
 ```response
 Row 1:
@@ -399,12 +393,12 @@ toInt16('-16'):  -16
 
 **参照**
 
-- [`toInt16OrZero`](#toint16orzero)。
-- [`toInt16OrNull`](#toint16ornull)。
-- [`toInt16OrDefault`](#toint16ordefault)。
+- [`toInt16OrZero`](#toint16orzero).
+- [`toInt16OrNull`](#toint16ornull).
+- [`toInt16OrDefault`](#toint16ordefault).
 ## toInt16OrZero {#toint16orzero}
 
-[`toInt16`](#toint16)と同様に、この関数は入力値を[Int16](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合は `0` を返します。
+[`toInt16`](#toint16)と同様に、この関数は入力値を[Int16](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合は`0`を返します。
 
 **構文**
 
@@ -414,40 +408,39 @@ toInt16OrZero(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [String](../data-types/string.md)。
+- `x` — 数字の文字列表現。[String](../data-types/string.md)。
 
-サポートされる引数：
+サポートされている引数:
 - (U)Int8/16/32/128/256の文字列表現。
 
-サポートされていない引数（`0`を返す）：
-- Float32/64の文字列表現、`NaN`や`Inf`を含む。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt16OrZero('0xc0fe');`。
+サポートされていない引数（`0`を返す）:
+- Float32/64型の値の文字列表現（`NaN`や`Inf`を含む）。
+- 例えば、`SELECT toInt16OrZero('0xc0fe');`のようなバイナリおよび16進数の値の文字列表現。
 
 :::note
-入力値が[Int16](../data-types/int-uint.md)の範囲内で表現できない場合、オーバーフローやアンダーフローが発生します。
-これはエラーとは見なされません。
+入力値が[Int16](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。これはエラーとは見なされません。
 :::
 
 **返される値**
 
-- 16ビット整数値が成功した場合、それ以外の時は`0`。[Int16](../data-types/int-uint.md)。
+- 成功した場合は16ビット整数値、それ以外は`0`。[Int16](../data-types/int-uint.md)型です。
 
 :::note
-この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
+この関数は[ゼロへの丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 SELECT
     toInt16OrZero('-16'),
     toInt16OrZero('abc')
 FORMAT Vertical;
 ```
 
-結果：
+結果:
 
 ```response
 Row 1:
@@ -458,12 +451,12 @@ toInt16OrZero('abc'): 0
 
 **参照**
 
-- [`toInt16`](#toint16)。
-- [`toInt16OrNull`](#toint16ornull)。
-- [`toInt16OrDefault`](#toint16ordefault)。
+- [`toInt16`](#toint16).
+- [`toInt16OrNull`](#toint16ornull).
+- [`toInt16OrDefault`](#toint16ordefault).
 ## toInt16OrNull {#toint16ornull}
 
-[`toInt16`](#toint16)と同様に、この関数は入力値を[Int16](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合は `NULL` を返します。
+[`toInt16`](#toint16)と同様に、この関数は入力値を[Int16](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合は`NULL`を返します。
 
 **構文**
 
@@ -473,40 +466,39 @@ toInt16OrNull(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [String](../data-types/string.md)。
+- `x` — 数字の文字列表現。[String](../data-types/string.md)。
 
-サポートされる引数：
+サポートされている引数:
 - (U)Int8/16/32/128/256の文字列表現。
 
-サポートされていない引数（`\N`を返す）：
-- Float32/64の文字列表現、`NaN`や`Inf`を含む。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt16OrNull('0xc0fe');`。
+サポートされていない引数（`\N`を返す）:
+- Float32/64型の値の文字列表現（`NaN`や`Inf`を含む）。
+- 例えば、`SELECT toInt16OrNull('0xc0fe');`のようなバイナリおよび16進数の値の文字列表現。
 
 :::note
-入力値が[Int16](../data-types/int-uint.md)の範囲内で表現できない場合、オーバーフローやアンダーフローが発生します。
-これはエラーとは見なされません。
+入力値が[Int16](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。これはエラーとは見なされません。
 :::
 
 **返される値**
 
-- 16ビット整数値が成功した場合、それ以外の場合は`NULL`。[Int16](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
+- 成功した場合は16ビット整数値、それ以外は`NULL`。[Int16](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)型です。
 
 :::note
-この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
+この関数は[ゼロへの丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 SELECT
     toInt16OrNull('-16'),
     toInt16OrNull('abc')
 FORMAT Vertical;
 ```
 
-結果：
+結果:
 
 ```response
 Row 1:
@@ -517,13 +509,13 @@ toInt16OrNull('abc'): ᴺᵁᴸᴸ
 
 **参照**
 
-- [`toInt16`](#toint16)。
-- [`toInt16OrZero`](#toint16orzero)。
-- [`toInt16OrDefault`](#toint16ordefault)。
+- [`toInt16`](#toint16).
+- [`toInt16OrZero`](#toint16orzero).
+- [`toInt16OrDefault`](#toint16ordefault).
 ## toInt16OrDefault {#toint16ordefault}
 
 [`toInt16`](#toint16)と同様に、この関数は入力値を[Int16](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合はデフォルト値を返します。
-デフォルト値が渡されていない場合は`0`が返されます。
+`default`値が渡されない場合は、エラーが発生した場合に`0`が返されます。
 
 **構文**
 
@@ -533,43 +525,42 @@ toInt16OrDefault(expr[, default])
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)。
-- `default` (オプション) — `Int16`型に変換が失敗した場合に返すデフォルト値。 [Int16](../data-types/int-uint.md)。
+- `expr` — 数字または数字の文字列表現を返す式。[Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)です。
+- `default`（オプション） — `Int16`型への変換に失敗した場合に返すデフォルト値。[Int16](../data-types/int-uint.md)型です。
 
-サポートされる引数：
-- 型（U）Int8/16/32/64/128/256の値またはその文字列表現。
-- 型Float32/64の値。
+サポートされている引数:
+- (U)Int8/16/32/64/128/256型の値またはその文字列表現。
+- Float32/64型の値。
 
-デフォルト値が返される引数：
-- Float32/64の値の文字列表現、`NaN`や`Inf`を含む。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt16OrDefault('0xc0fe', CAST('-1', 'Int16'));`。
+デフォルト値が返される引数:
+- Float32/64型の値の文字列表現（`NaN`や`Inf`を含む）。
+- 例えば、`SELECT toInt16OrDefault('0xc0fe', CAST('-1', 'Int16'));`のようなバイナリおよび16進数の値の文字列表現。
 
 :::note
-入力値が[Int16](../data-types/int-uint.md)の範囲内で表現できない場合、オーバーフローやアンダーフローが発生します。
-これはエラーとは見なされません。
+入力値が[Int16](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。これはエラーとは見なされません。
 :::
 
 **返される値**
 
-- 成功した場合は16ビット整数値、それ以外の場合は渡されたデフォルト値または渡されていない場合は`0`を返します。 [Int16](../data-types/int-uint.md)。
+- 成功した場合は16ビット整数値、それ以外は渡されたデフォルト値を返すか、指定されていない場合は`0`を返します。[Int16](../data-types/int-uint.md)型です。
 
 :::note
-- この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
-- デフォルト値のタイプはキャストする型と同じである必要があります。
+- この関数は[ゼロへの丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数値の小数点以下の桁を切り捨てます。
+- デフォルト値の型はキャスト型と同じであるべきです。
 :::
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 SELECT
     toInt16OrDefault('-16', CAST('-1', 'Int16')),
     toInt16OrDefault('abc', CAST('-1', 'Int16'))
 FORMAT Vertical;
 ```
 
-結果：
+結果:
 
 ```response
 Row 1:
@@ -580,12 +571,12 @@ toInt16OrDefault('abc', CAST('-1', 'Int16')): -1
 
 **参照**
 
-- [`toInt16`](#toint16)。
-- [`toInt16OrZero`](#toint16orzero)。
-- [`toInt16OrNull`](#toint16ornull)。
+- [`toInt16`](#toint16).
+- [`toInt16OrZero`](#toint16orzero).
+- [`toInt16OrNull`](#toint16ornull).
 ## toInt32 {#toint32}
 
-入力値を[`Int32`](../data-types/int-uint.md)型の値に変換します。エラーが発生した場合は例外を投げます。
+入力値を[`Int32`](../data-types/int-uint.md)型の値に変換します。エラーが発生した場合は例外をスローします。
 
 **構文**
 
@@ -595,33 +586,31 @@ toInt32(expr)
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions)。
+- `expr` — 数字または数字の文字列表現を返す式。[Expression](/sql-reference/syntax#expressions)です。
 
-サポートされる引数：
-- 型（U）Int8/16/32/64/128/256の値またはその文字列表現。
-- 型Float32/64の値。
+サポートされている引数:
+- (U)Int8/16/32/64/128/256型の値またはその文字列表現。
+- Float32/64型の値。
 
-サポートされていない引数：
-- `NaN`や`Inf`を含むFloat32/64の文字列表現。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt32('0xc0fe');`。
+サポートされていない引数:
+- Float32/64型の値の文字列表現（`NaN`や`Inf`を含む）。
+- 例えば、`SELECT toInt32('0xc0fe');`のようなバイナリおよび16進数の値の文字列表現。
 
 :::note
-入力値が[Int32](../data-types/int-uint.md)の範囲内で表現できない場合、オーバーフローやアンダーフローが発生します。
-これはエラーとして扱われません。
-例えば：`SELECT toInt32(2147483648) == -2147483648;`
+入力値が[Int32](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。これはエラーとは見なされません。例: `SELECT toInt32(2147483648) == -2147483648;`
 :::
 
 **返される値**
 
-- 32ビット整数値。 [Int32](../data-types/int-uint.md)。
+- 32ビット整数値。[Int32](../data-types/int-uint.md)型です。
 
 :::note
-この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
+この関数は[ゼロへの丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT
@@ -631,7 +620,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-結果：
+結果:
 
 ```response
 Row 1:
@@ -643,12 +632,12 @@ toInt32('-32'):  -32
 
 **参照**
 
-- [`toInt32OrZero`](#toint32orzero)。
-- [`toInt32OrNull`](#toint32ornull)。
-- [`toInt32OrDefault`](#toint32ordefault)。
+- [`toInt32OrZero`](#toint32orzero).
+- [`toInt32OrNull`](#toint32ornull).
+- [`toInt32OrDefault`](#toint32ordefault).
 ## toInt32OrZero {#toint32orzero}
 
-[`toInt32`](#toint32)と同様に、この関数は入力値を[Int32](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合は `0` を返します。
+[`toInt32`](#toint32)と同様に、この関数は入力値を[Int32](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合は`0`を返します。
 
 **構文**
 
@@ -658,40 +647,39 @@ toInt32OrZero(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [String](../data-types/string.md)。
+- `x` — 数字の文字列表現。[String](../data-types/string.md)。
 
-サポートされる引数：
+サポートされている引数:
 - (U)Int8/16/32/128/256の文字列表現。
 
-サポートされていない引数（`0`を返す）：
-- Float32/64の文字列表現、`NaN`や`Inf`を含む。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt32OrZero('0xc0fe');`。
+サポートされていない引数（`0`を返す）:
+- Float32/64型の値の文字列表現（`NaN`や`Inf`を含む）。
+- 例えば、`SELECT toInt32OrZero('0xc0fe');`のようなバイナリおよび16進数の値の文字列表現。
 
 :::note
-入力値が[Int32](../data-types/int-uint.md)の範囲内で表現できない場合、オーバーフローやアンダーフローが発生します。
-これはエラーとして扱われません。
+入力値が[Int32](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。これはエラーとは見なされません。
 :::
 
 **返される値**
 
-- 32ビット整数値が成功した場合、それ以外の場合は`0`。[Int32](../data-types/int-uint.md)。
+- 成功した場合は32ビット整数値、それ以外は`0`。[Int32](../data-types/int-uint.md)型です。
 
 :::note
-この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
+この関数は[ゼロへの丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 SELECT
     toInt32OrZero('-32'),
     toInt32OrZero('abc')
 FORMAT Vertical;
 ```
 
-結果：
+結果:
 
 ```response
 Row 1:
@@ -702,12 +690,12 @@ toInt32OrZero('abc'): 0
 
 **参照**
 
-- [`toInt32`](#toint32)。
-- [`toInt32OrNull`](#toint32ornull)。
-- [`toInt32OrDefault`](#toint32ordefault)。
+- [`toInt32`](#toint32).
+- [`toInt32OrNull`](#toint32ornull).
+- [`toInt32OrDefault`](#toint32ordefault).
 ## toInt32OrNull {#toint32ornull}
 
-[`toInt32`](#toint32)と同様に、この関数は入力値を[Int32](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合は `NULL` を返します。
+[`toInt32`](#toint32)と同様に、この関数は入力値を[Int32](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合は`NULL`を返します。
 
 **構文**
 
@@ -717,40 +705,39 @@ toInt32OrNull(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [String](../data-types/string.md)。
+- `x` — 数字の文字列表現。[String](../data-types/string.md)。
 
-サポートされる引数：
+サポートされている引数:
 - (U)Int8/16/32/128/256の文字列表現。
 
-サポートされていない引数（`\N`を返す）：
-- Float32/64の文字列表現、`NaN`や`Inf`を含む。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt32OrNull('0xc0fe');`。
+サポートされていない引数（`\N`を返す）:
+- Float32/64型の値の文字列表現（`NaN`や`Inf`を含む）。
+- 例えば、`SELECT toInt32OrNull('0xc0fe');`のようなバイナリおよび16進数の値の文字列表現。
 
 :::note
-入力値が[Int32](../data-types/int-uint.md)の範囲内で表現できない場合、オーバーフローやアンダーフローが発生します。
-これはエラーとは見なされません。
+入力値が[Int32](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。これはエラーとは見なされません。
 :::
 
 **返される値**
 
-- 成功した場合は32ビット整数値、それ以外の場合は`NULL`。[Int32](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
+- 成功した場合は32ビット整数値、それ以外は`NULL`。[Int32](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)型です。
 
 :::note
-この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
+この関数は[ゼロへの丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 SELECT
     toInt32OrNull('-32'),
     toInt32OrNull('abc')
 FORMAT Vertical;
 ```
 
-結果：
+結果:
 
 ```response
 Row 1:
@@ -761,13 +748,13 @@ toInt32OrNull('abc'): ᴺᵁᴸᴸ
 
 **参照**
 
-- [`toInt32`](#toint32)。
-- [`toInt32OrZero`](#toint32orzero)。
-- [`toInt32OrDefault`](#toint32ordefault)。
+- [`toInt32`](#toint32).
+- [`toInt32OrZero`](#toint32orzero).
+- [`toInt32OrDefault`](#toint32ordefault).
 ## toInt32OrDefault {#toint32ordefault}
 
 [`toInt32`](#toint32)と同様に、この関数は入力値を[Int32](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合はデフォルト値を返します。
-デフォルト値が渡されていない場合は`0`が返されます。
+`default`値が渡されない場合は、エラーが発生した場合に`0`が返されます。
 
 **構文**
 
@@ -777,43 +764,42 @@ toInt32OrDefault(expr[, default])
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)。
-- `default` (オプション) — `Int32`型に変換が失敗した場合に返すデフォルト値。 [Int32](../data-types/int-uint.md)。
+- `expr` — 数字または数字の文字列表現を返す式。[Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)です。
+- `default`（オプション） — `Int32`型への変換に失敗した場合に返すデフォルト値。[Int32](../data-types/int-uint.md)型です。
 
-サポートされる引数：
-- 型（U）Int8/16/32/64/128/256の値またはその文字列表現。
-- 型Float32/64の値。
+サポートされている引数:
+- (U)Int8/16/32/64/128/256型の値またはその文字列表現。
+- Float32/64型の値。
 
-デフォルト値が返される引数：
-- Float32/64の値の文字列表現、`NaN`や`Inf`を含む。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt32OrDefault('0xc0fe', CAST('-1', 'Int32'));`。
+デフォルト値が返される引数:
+- Float32/64型の値の文字列表現（`NaN`や`Inf`を含む）。
+- 例えば、`SELECT toInt32OrDefault('0xc0fe', CAST('-1', 'Int32'));`のようなバイナリおよび16進数の値の文字列表現。
 
 :::note
-入力値が[Int32](../data-types/int-uint.md)の範囲内で表現できない場合、オーバーフローやアンダーフローが発生します。
-これはエラーとは見なされません。
+入力値が[Int32](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。これはエラーとは見なされません。
 :::
 
 **返される値**
 
-- 成功した場合は32ビット整数値、それ以外の場合は渡されたデフォルト値または渡されていない場合は`0`を返します。 [Int32](../data-types/int-uint.md)。
+- 成功した場合は32ビット整数値、それ以外は渡されたデフォルト値を返すか、指定されていない場合は`0`を返します。[Int32](../data-types/int-uint.md)型です。
 
 :::note
-- この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
-- デフォル卜値の型はキャストする型と同じである必要があります。
+- この関数は[ゼロへの丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数値の小数点以下の桁を切り捨てます。
+- デフォルト値の型はキャスト型と同じであるべきです。
 :::
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 SELECT
     toInt32OrDefault('-32', CAST('-1', 'Int32')),
     toInt32OrDefault('abc', CAST('-1', 'Int32'))
 FORMAT Vertical;
 ```
 
-結果：
+結果:
 
 ```response
 Row 1:
@@ -824,12 +810,12 @@ toInt32OrDefault('abc', CAST('-1', 'Int32')): -1
 
 **参照**
 
-- [`toInt32`](#toint32)。
-- [`toInt32OrZero`](#toint32orzero)。
-- [`toInt32OrNull`](#toint32ornull)。
+- [`toInt32`](#toint32).
+- [`toInt32OrZero`](#toint32orzero).
+- [`toInt32OrNull`](#toint32ornull).
 ## toInt64 {#toint64}
 
-入力値を[`Int64`](../data-types/int-uint.md)型の値に変換します。エラーが発生した場合は例外を投げます。
+入力値を[`Int64`](../data-types/int-uint.md)型の値に変換します。エラーが発生した場合は例外をスローします。
 
 **構文**
 
@@ -839,33 +825,31 @@ toInt64(expr)
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions)。
+- `expr` — 数字または数字の文字列表現を返す式。[Expression](/sql-reference/syntax#expressions)です。
 
-サポートされる引数：
-- 型（U）Int8/16/32/64/128/256の値またはその文字列表現。
-- 型Float32/64の値。
+サポートされている引数:
+- (U)Int8/16/32/64/128/256型の値またはその文字列表現。
+- Float32/64型の値。
 
-サポートされていない引数：
-- `NaN`や`Inf`を含むFloat32/64の文字列表現。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt64('0xc0fe');`。
+サポートされていない引数:
+- Float32/64型の値の文字列表現（`NaN`や`Inf`を含む）。
+- 例えば、`SELECT toInt64('0xc0fe');`のようなバイナリおよび16進数の値の文字列表現。
 
 :::note
-入力値が[Int64](../data-types/int-uint.md)の範囲内で表現できない場合、オーバーフローやアンダーフローが発生します。
-これはエラーとは見なされません。
-例えば：`SELECT toInt64(9223372036854775808) == -9223372036854775808;`
+入力値が[Int64](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。これはエラーとは見なされません。例: `SELECT toInt64(9223372036854775808) == -9223372036854775808;`
 :::
 
 **返される値**
 
-- 64ビット整数値。 [Int64](../data-types/int-uint.md)。
+- 64ビット整数値。[Int64](../data-types/int-uint.md)型です。
 
 :::note
-この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
+この関数は[ゼロへの丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT
@@ -875,7 +859,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-結果：
+結果:
 
 ```response
 Row 1:
@@ -887,12 +871,12 @@ toInt64('-64'):  -64
 
 **参照**
 
-- [`toInt64OrZero`](#toint64orzero)。
-- [`toInt64OrNull`](#toint64ornull)。
-- [`toInt64OrDefault`](#toint64ordefault)。
+- [`toInt64OrZero`](#toint64orzero).
+- [`toInt64OrNull`](#toint64ornull).
+- [`toInt64OrDefault`](#toint64ordefault).
 ## toInt64OrZero {#toint64orzero}
 
-[`toInt64`](#toint64)と同様に、この関数は入力値を[Int64](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合は `0` を返します。
+[`toInt64`](#toint64)と同様に、この関数は入力値を[Int64](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合は`0`を返します。
 
 **構文**
 
@@ -902,40 +886,39 @@ toInt64OrZero(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [String](../data-types/string.md)。
+- `x` — 数字の文字列表現。[String](../data-types/string.md)。
 
-サポートされる引数：
+サポートされている引数:
 - (U)Int8/16/32/128/256の文字列表現。
 
-サポートされていない引数（`0`を返す）：
-- Float32/64の文字列表現、`NaN`や`Inf`を含む。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt64OrZero('0xc0fe');`。
+サポートされていない引数（`0`を返す）:
+- Float32/64型の値の文字列表現（`NaN`や`Inf`を含む）。
+- 例えば、`SELECT toInt64OrZero('0xc0fe');`のようなバイナリおよび16進数の値の文字列表現。
 
 :::note
-入力値が[Int64](../data-types/int-uint.md)の範囲内で表現できない場合、オーバーフローやアンダーフローが発生します。
-これはエラーとは見なされません。
+入力値が[Int64](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。これはエラーとは見なされません。
 :::
 
 **返される値**
 
-- 64ビット整数値が成功した場合、それ以外の場合は`0`。[Int64](../data-types/int-uint.md)。
+- 成功した場合は64ビット整数値、それ以外は`0`。[Int64](../data-types/int-uint.md)型です。
 
 :::note
-この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
+この関数は[ゼロへの丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 SELECT
     toInt64OrZero('-64'),
     toInt64OrZero('abc')
 FORMAT Vertical;
 ```
 
-結果：
+結果:
 
 ```response
 Row 1:
@@ -946,12 +929,12 @@ toInt64OrZero('abc'): 0
 
 **参照**
 
-- [`toInt64`](#toint64)。
-- [`toInt64OrNull`](#toint64ornull)。
-- [`toInt64OrDefault`](#toint64ordefault)。
+- [`toInt64`](#toint64).
+- [`toInt64OrNull`](#toint64ornull).
+- [`toInt64OrDefault`](#toint64ordefault).
 ## toInt64OrNull {#toint64ornull}
 
-[`toInt64`](#toint64)と同様に、この関数は入力値を[Int64](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合は `NULL` を返します。
+[`toInt64`](#toint64)と同様に、この関数は入力値を[Int64](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合は`NULL`を返します。
 
 **構文**
 
@@ -961,40 +944,39 @@ toInt64OrNull(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)。
+- `x` — 数字の文字列表現。[Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)。
 
-サポートされる引数：
+サポートされている引数:
 - (U)Int8/16/32/128/256の文字列表現。
 
-サポートされていない引数（`\N`を返す）：
-- Float32/64の文字列表現、`NaN`や`Inf`を含む。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt64OrNull('0xc0fe');`。
+サポートされていない引数（`\N`を返す）:
+- Float32/64型の値の文字列表現（`NaN`や`Inf`を含む）。
+- 例えば、`SELECT toInt64OrNull('0xc0fe');`のようなバイナリおよび16進数の値の文字列表現。
 
 :::note
-入力値が[Int64](../data-types/int-uint.md)の範囲内で表現できない場合、オーバーフローやアンダーフローが発生します。
-これはエラーとは見なされません。
+入力値が[Int64](../data-types/int-uint.md)の範囲内で表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。これはエラーとは見なされません。
 :::
 
 **返される値**
 
-- 64ビット整数値が成功した場合、それ以外の場合は`NULL`。[Int64](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
+- 成功した場合は64ビット整数値、それ以外は`NULL`。[Int64](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)型です。
 
 :::note
-この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
+この関数は[ゼロへの丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 SELECT
     toInt64OrNull('-64'),
     toInt64OrNull('abc')
 FORMAT Vertical;
 ```
 
-結果：
+結果:
 
 ```response
 Row 1:
@@ -1005,75 +987,14 @@ toInt64OrNull('abc'): ᴺᵁᴸᴸ
 
 **参照**
 
-- [`toInt64`](#toint64)。
-- [`toInt64OrZero`](#toint64orzero)。
-- [`toInt64OrDefault`](#toint64ordefault)。
-## toInt64OrDefault {#toint64ordefault}
-
-[`toInt64`](#toint64)と同様に、この関数は入力値を[Int64](../data-types/int-uint.md)型の値に変換しますが、エラーが発生した場合はデフォルト値を返します。
-デフォルト値が渡されていない場合は`0`が返されます。
-
-**構文**
-
-```sql
-toInt64OrDefault(expr[, default])
+- [`toInt64`](#toint64).
+- [`toInt64OrZero`](#toint64orzero).
+- [`toInt64OrDefault`](#toint64ordefault).
 ```
 
-**引数**
-
-- `expr` — 数字または数字の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)。
-- `default` (オプション) — `Int64`型に変換が失敗した場合に返すデフォルト値。 [Int64](../data-types/int-uint.md)。
-
-サポートされる引数：
-- 型（U）Int8/16/32/64/128/256の値またはその文字列表現。
-- 型Float32/64の値。
-
-デフォルト値が返される引数：
-- Float32/64の値の文字列表現、`NaN`や`Inf`を含む。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt64OrDefault('0xc0fe', CAST('-1', 'Int64'));`。
-
-:::note
-入力値が[Int64](../data-types/int-uint.md)の範囲内で表現できない場合、オーバーフローやアンダーフローが発生します。
-これはエラーとは見なされません。
-:::
-
-**返される値**
-
-- 成功した場合は64ビット整数値、それ以外の場合は渡されたデフォルト値または渡されていない場合は`0`を返します。 [Int64](../data-types/int-uint.md)。
-
-:::note
-- この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
-- デフォルト値の型はキャストする型と同じである必要があります。
-:::
-
-**例**
-
-クエリ：
-
-``` sql
-SELECT
-    toInt64OrDefault('-64', CAST('-1', 'Int64')),
-    toInt64OrDefault('abc', CAST('-1', 'Int64'))
-FORMAT Vertical;
-```
-
-結果：
-
-```response
-Row 1:
-──────
-toInt64OrDefault('-64', CAST('-1', 'Int64')): -64
-toInt64OrDefault('abc', CAST('-1', 'Int64')): -1
-```
-
-**参照**
-
-- [`toInt64`](#toint64)。
-- [`toInt64OrZero`](#toint64orzero)。
-- [`toInt64OrNull`](#toint64ornull)。
 ## toInt128 {#toint128}
 
-入力値を[`Int128`](../data-types/int-uint.md)型の値に変換します。エラーが発生した場合は例外を投げます。
+入力値を[`Int128`](../data-types/int-uint.md)型の値に変換します。エラー発生時には例外をスローします。
 
 **構文**
 
@@ -1083,32 +1004,32 @@ toInt128(expr)
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions)。
+- `expr` — 数値または数値の文字列表現を返す式。[式](/sql-reference/syntax#expressions)。
 
-サポートされる引数：
-- 型（U）Int8/16/32/64/128/256の値またはその文字列表現。
-- 型Float32/64の値。
+サポートされる引数:
+- (U)Int8/16/32/64/128/256型の値または文字列表現。
+- Float32/64型の値。
 
-サポートされていない引数：
+サポートされない引数:
 - `NaN`や`Inf`を含むFloat32/64の文字列表現。
-- バイナリや16進数の値の文字列表現、例：`SELECT toInt128('0xc0fe');`。
+- 例えば `SELECT toInt128('0xc0fe');` のようなバイナリや16進数の文字列表現。
 
 :::note
-入力値が[Int128](../data-types/int-uint.md)の範囲内で表現できない場合、オーバーフローやアンダーフローが発生します。
+入力値が[Int128](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
 これはエラーとは見なされません。
 :::
 
 **返される値**
 
-- 128ビット整数値。 [Int128](../data-types/int-uint.md)。
+- 128ビット整数値。[Int128](../data-types/int-uint.md)。
 
 :::note
-この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用しており、数字の小数部分を切り捨てます。
+この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT
@@ -1118,7 +1039,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-結果：
+結果:
 
 ```response
 Row 1:
@@ -1133,16 +1054,10 @@ toInt128('-128'): -128
 - [`toInt128OrZero`](#toint128orzero)。
 - [`toInt128OrNull`](#toint128ornull)。
 - [`toInt128OrDefault`](#toint128ordefault)。
-```yaml
-title: 'toInt128OrZero'
-sidebar_label: 'toInt128OrZero'
-keywords: ['ClickHouse', 'toInt128OrZero', 'データベース', '関数']
-description: 'toInt128OrZero: エラー時に0を返すInt128型への値の変換'
-```
 
 ## toInt128OrZero {#toint128orzero}
 
-Like [`toInt128`](#toint128), this function converts an input value to a value of type [Int128](../data-types/int-uint.md) but returns `0` in case of an error.
+[`toInt128`](#toint128) と同様に、この関数は入力値を[Int128](../data-types/int-uint.md)型の値に変換しますが、エラー発生時には `0` を返します。
 
 **構文**
 
@@ -1152,33 +1067,33 @@ toInt128OrZero(expr)
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [式](/sql-reference/syntax#expressions) / [文字列](../data-types/string.md)。
+- `expr` — 数値または数値の文字列表現を返す式。[式](/sql-reference/syntax#expressions) / [文字列](../data-types/string.md)。
 
 サポートされる引数:
 - (U)Int8/16/32/128/256の文字列表現。
 
-サポートされていない引数（`0`を返す）:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toInt128OrZero('0xc0fe');`。
+サポートされない引数 ( `0` を返す):
+- `NaN` や `Inf` を含むFloat32/64の文字列表現。
+- 例えば `SELECT toInt128OrZero('0xc0fe');` のようなバイナリや16進数の文字列表現。
 
 :::note
-If the input value cannot be represented within the bounds of [Int128](../data-types/int-uint.md), overflow or underflow of the result occurs.
-This is not considered an error.
+入力値が[Int128](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**戻り値**
+**返される値**
 
-- 成功すれば128ビット整数値、そうでなければ`0`。 [Int128](../data-types/int-uint.md)。
+- 成功した場合は128ビット整数値、失敗した場合は`0`。[Int128](../data-types/int-uint.md)。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     toInt128OrZero('-128'),
     toInt128OrZero('abc')
@@ -1194,14 +1109,15 @@ toInt128OrZero('-128'): -128
 toInt128OrZero('abc'):  0
 ```
 
-**関連項目**
+**参照**
 
-- [`toInt128`](#toint128).
-- [`toInt128OrNull`](#toint128ornull).
-- [`toInt128OrDefault`](#toint128ordefault).
+- [`toInt128`](#toint128)。
+- [`toInt128OrNull`](#toint128ornull)。
+- [`toInt128OrDefault`](#toint128ordefault)。
+
 ## toInt128OrNull {#toint128ornull}
 
-Like [`toInt128`](#toint128), this function converts an input value to a value of type [Int128](../data-types/int-uint.md) but returns `NULL` in case of an error.
+[`toInt128`](#toint128) と同様に、この関数は入力値を[Int128](../data-types/int-uint.md)型の値に変換しますが、エラー発生時には `NULL` を返します。
 
 **構文**
 
@@ -1211,33 +1127,33 @@ toInt128OrNull(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [式](/sql-reference/syntax#expressions) / [文字列](../data-types/string.md)。
+- `x` — 数値の文字列表現。[式](/sql-reference/syntax#expressions) / [文字列](../data-types/string.md)。
 
 サポートされる引数:
 - (U)Int8/16/32/128/256の文字列表現。
 
-サポートされていない引数（`\N`を返す）:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toInt128OrNull('0xc0fe');`。
+サポートされない引数 ( `\N` を返す):
+- `NaN` や `Inf` を含むFloat32/64の文字列表現。
+- 例えば`SELECT toInt128OrNull('0xc0fe');` のようなバイナリや16進数の文字列表現。
 
 :::note
-If the input value cannot be represented within the bounds of [Int128](../data-types/int-uint.md), overflow or underflow of the result occurs.
-This is not considered an error.
+入力値が[Int128](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**戻り値**
+**返される値**
 
-- 成功すれば128ビット整数値、そうでなければ`NULL`。 [Int128](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
+- 成功した場合は128ビット整数値、失敗した場合は`NULL`。[Int128](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     toInt128OrNull('-128'),
     toInt128OrNull('abc')
@@ -1253,15 +1169,16 @@ toInt128OrNull('-128'): -128
 toInt128OrNull('abc'):  ᴺᵁᴸᴸ
 ```
 
-**関連項目**
+**参照**
 
-- [`toInt128`](#toint128).
-- [`toInt128OrZero`](#toint128orzero).
-- [`toInt128OrDefault`](#toint128ordefault).
+- [`toInt128`](#toint128)。
+- [`toInt128OrZero`](#toint128orzero)。
+- [`toInt128OrDefault`](#toint128ordefault)。
+
 ## toInt128OrDefault {#toint128ordefault}
 
-Like [`toInt128`](#toint128), this function converts an input value to a value of type [Int128](../data-types/int-uint.md) but returns the default value in case of an error.
-If no `default` value is passed then `0` is returned in case of an error.
+[`toInt128`](#toint128) と同様に、この関数は入力値を[Int128](../data-types/int-uint.md)型の値に変換しますが、エラー発生時にはデフォルト値を返します。
+デフォルト値が指定されていない場合は、エラー発生時に`0`が返されます。
 
 **構文**
 
@@ -1271,37 +1188,36 @@ toInt128OrDefault(expr[, default])
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [式](/sql-reference/syntax#expressions) / [文字列](../data-types/string.md)。
-- `default` (オプション) — `Int128`型へのパースが失敗した場合に返されるデフォルト値。 [Int128](../data-types/int-uint.md)。
+- `expr` — 数値または数値の文字列表現を返す式。[式](/sql-reference/syntax#expressions) / [文字列](../data-types/string.md)。
+- `default` (オプション) — `Int128`型へのパースが失敗した場合に返すデフォルト値。[Int128](../data-types/int-uint.md)。
 
 サポートされる引数:
-- (U)Int8/16/32/64/128/256の値。
-- Float32/64の値。
-- (U)Int8/16/32/128/256の文字列表現。
+- (U)Int8/16/32/64/128/256型の値または文字列表現。
+- Float32/64型の値。
 
 デフォルト値が返される引数:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toInt128OrDefault('0xc0fe', CAST('-1', 'Int128'));`。
+- `NaN` や `Inf` を含むFloat32/64の文字列表現。
+- 例えば `SELECT toInt128OrDefault('0xc0fe', CAST('-1', 'Int128'));` のようなバイナリや16進数の文字列表現。
 
 :::note
-If the input value cannot be represented within the bounds of [Int128](../data-types/int-uint.md), overflow or underflow of the result occurs.
-This is not considered an error.
+入力値が[Int128](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**戻り値**
+**返される値**
 
-- 成功すれば128ビット整数値、そうでなければ渡されたデフォルト値が返されるか、そうでなければ`0`が返される。 [Int128](../data-types/int-uint.md)。
+- 成功した場合は128ビット整数値、失敗した場合は指定されたデフォルト値または `0` を返します。[Int128](../data-types/int-uint.md)。
 
 :::note
-- The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
-- The default value type should be the same as the cast type.
+- この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
+- デフォルト値の型はキャスト型と同じである必要があります。
 :::
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     toInt128OrDefault('-128', CAST('-1', 'Int128')),
     toInt128OrDefault('abc', CAST('-1', 'Int128'))
@@ -1317,14 +1233,15 @@ toInt128OrDefault('-128', CAST('-1', 'Int128')): -128
 toInt128OrDefault('abc', CAST('-1', 'Int128')):  -1
 ```
 
-**関連項目**
+**参照**
 
-- [`toInt128`](#toint128).
-- [`toInt128OrZero`](#toint128orzero).
-- [`toInt128OrNull`](#toint128ornull).
+- [`toInt128`](#toint128)。
+- [`toInt128OrZero`](#toint128orzero)。
+- [`toInt128OrNull`](#toint128ornull)。
+
 ## toInt256 {#toint256}
 
-Converts an input value to a value of type [`Int256`](../data-types/int-uint.md). Throws an exception in case of an error.
+入力値を[`Int256`](../data-types/int-uint.md)型の値に変換します。エラー発生時には例外をスローします。
 
 **構文**
 
@@ -1334,27 +1251,27 @@ toInt256(expr)
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [式](/sql-reference/syntax#expressions)。
+- `expr` — 数値または数値の文字列表現を返す式。[式](/sql-reference/syntax#expressions)。
 
 サポートされる引数:
-- (U)Int8/16/32/64/128/256の値または文字列表現。
-- Float32/64の型の値。
+- (U)Int8/16/32/64/128/256型の値や文字列表現。
+- Float32/64型の値。
 
-サポートされていない引数:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toInt256('0xc0fe');`。
+サポートされない引数:
+- `NaN` や `Inf` を含むFloat32/64の文字列表現。
+- 例えば `SELECT toInt256('0xc0fe');` のようなバイナリや16進数の文字列表現。
 
 :::note
-If the input value cannot be represented within the bounds of [Int256](../data-types/int-uint.md), the result over or under flows.
-This is not considered an error.
+入力値が[Int256](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**戻り値**
+**返される値**
 
-- 256ビット整数値。 [Int256](../data-types/int-uint.md)。
+- 256ビット整数値。[Int256](../data-types/int-uint.md)。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
@@ -1379,14 +1296,15 @@ toInt256(-256.256): -256
 toInt256('-256'):   -256
 ```
 
-**関連項目**
+**参照**
 
-- [`toInt256OrZero`](#toint256orzero).
-- [`toInt256OrNull`](#toint256ornull).
-- [`toInt256OrDefault`](#toint256ordefault).
+- [`toInt256OrZero`](#toint256orzero)。
+- [`toInt256OrNull`](#toint256ornull)。
+- [`toInt256OrDefault`](#toint256ordefault)。
+
 ## toInt256OrZero {#toint256orzero}
 
-Like [`toInt256`](#toint256), this function converts an input value to a value of type [Int256](../data-types/int-uint.md) but returns `0` in case of an error.
+[`toInt256`](#toint256) と同様に、この関数は入力値を[Int256](../data-types/int-uint.md)型の値に変換しますが、エラー発生時には `0` を返します。
 
 **構文**
 
@@ -1396,33 +1314,33 @@ toInt256OrZero(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [文字列](../data-types/string.md)。
+- `x` — 数値の文字列表現。[文字列](../data-types/string.md)。
 
 サポートされる引数:
 - (U)Int8/16/32/128/256の文字列表現。
 
-サポートされていない引数（`0`を返す）:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toInt256OrZero('0xc0fe');`。
+サポートされない引数 ( `0` を返す):
+- `NaN` や `Inf` を含むFloat32/64の文字列表現。
+- 例えば `SELECT toInt256OrZero('0xc0fe');` のようなバイナリや16進数の文字列表現。
 
 :::note
-If the input value cannot be represented within the bounds of [Int256](../data-types/int-uint.md), overflow or underflow of the result occurs.
-This is not considered an error.
+入力値が[Int256](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**戻り値**
+**返される値**
 
-- 成功すれば256ビット整数値、そうでなければ`0`。 [Int256](../data-types/int-uint.md)。
+- 成功した場合は256ビット整数値、失敗した場合は`0`。[Int256](../data-types/int-uint.md)。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     toInt256OrZero('-256'),
     toInt256OrZero('abc')
@@ -1438,14 +1356,15 @@ toInt256OrZero('-256'): -256
 toInt256OrZero('abc'):  0
 ```
 
-**関連項目**
+**参照**
 
-- [`toInt256`](#toint256).
-- [`toInt256OrNull`](#toint256ornull).
-- [`toInt256OrDefault`](#toint256ordefault).
+- [`toInt256`](#toint256)。
+- [`toInt256OrNull`](#toint256ornull)。
+- [`toInt256OrDefault`](#toint256ordefault)。
+
 ## toInt256OrNull {#toint256ornull}
 
-Like [`toInt256`](#toint256), this function converts an input value to a value of type [Int256](../data-types/int-uint.md) but returns `NULL` in case of an error.
+[`toInt256`](#toint256) と同様に、この関数は入力値を[Int256](../data-types/int-uint.md)型の値に変換しますが、エラー発生時には `NULL` を返します。
 
 **構文**
 
@@ -1455,33 +1374,33 @@ toInt256OrNull(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [文字列](../data-types/string.md)。
+- `x` — 数値の文字列表現。[文字列](../data-types/string.md)。
 
 サポートされる引数:
 - (U)Int8/16/32/128/256の文字列表現。
 
-サポートされていない引数（`\N`を返す）:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toInt256OrNull('0xc0fe');`。
+サポートされない引数 ( `\N` を返す):
+- `NaN` や `Inf` を含むFloat32/64の文字列表現。
+- 例えば `SELECT toInt256OrNull('0xc0fe');` のようなバイナリや16進数の文字列表現。
 
 :::note
-If the input value cannot be represented within the bounds of [Int256](../data-types/int-uint.md), overflow or underflow of the result occurs.
-This is not considered an error.
+入力値が[Int256](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**戻り値**
+**返される値**
 
-- 成功すれば256ビット整数値、そうでなければ`NULL`。 [Int256](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
+- 成功した場合は256ビット整数値、失敗した場合は`NULL`。[Int256](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     toInt256OrNull('-256'),
     toInt256OrNull('abc')
@@ -1497,15 +1416,16 @@ toInt256OrNull('-256'): -256
 toInt256OrNull('abc'):  ᴺᵁᴸᴸ
 ```
 
-**関連項目**
+**参照**
 
-- [`toInt256`](#toint256).
-- [`toInt256OrZero`](#toint256orzero).
-- [`toInt256OrDefault`](#toint256ordefault).
+- [`toInt256`](#toint256)。
+- [`toInt256OrZero`](#toint256orzero)。
+- [`toInt256OrDefault`](#toint256ordefault)。
+
 ## toInt256OrDefault {#toint256ordefault}
 
-Like [`toInt256`](#toint256), this function converts an input value to a value of type [Int256](../data-types/int-uint.md) but returns the default value in case of an error.
-If no `default` value is passed then `0` is returned in case of an error.
+[`toInt256`](#toint256) と同様に、この関数は入力値を[Int256](../data-types/int-uint.md)型の値に変換しますが、エラー発生時にはデフォルト値を返します。
+デフォルト値が指定されていない場合は、エラー発生時に`0`が返されます。
 
 **構文**
 
@@ -1515,36 +1435,36 @@ toInt256OrDefault(expr[, default])
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [式](/sql-reference/syntax#expressions) / [文字列](../data-types/string.md)。
-- `default` (オプション) — `Int256`型へのパースが失敗した場合に返されるデフォルト値。 [Int256](../data-types/int-uint.md)。
+- `expr` — 数値または数値の文字列表現を返す式。[式](/sql-reference/syntax#expressions) / [文字列](../data-types/string.md)。
+- `default` (オプション) — `Int256`型へのパースが失敗した場合に返すデフォルト値。[Int256](../data-types/int-uint.md)。
 
 サポートされる引数:
-- (U)Int8/16/32/64/128/256の値。
-- Float32/64の値。
+- (U)Int8/16/32/64/128/256型の値または文字列表現。
+- Float32/64型の値。
 
 デフォルト値が返される引数:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toInt256OrDefault('0xc0fe', CAST('-1', 'Int256'));`。
+- `NaN` や `Inf` を含むFloat32/64の文字列表現。
+- 例えば `SELECT toInt256OrDefault('0xc0fe', CAST('-1', 'Int256'));` のようなバイナリや16進数の文字列表現。
 
 :::note
-If the input value cannot be represented within the bounds of [Int256](../data-types/int-uint.md), overflow or underflow of the result occurs.
-This is not considered an error.
+入力値が[Int256](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**戻り値**
+**返される値**
 
-- 成功すれば256ビット整数値、そうでなければ渡されたデフォルト値が返されるか、そうでなければ`0`が返される。 [Int256](../data-types/int-uint.md)。
+- 成功した場合は256ビット整数値、失敗した場合は指定されたデフォルト値または `0` を返します。[Int256](../data-types/int-uint.md)。
 
 :::note
-- The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
-- The default value type should be the same as the cast type.
+- この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
+- デフォルト値の型はキャスト型と同じである必要があります。
 :::
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     toInt256OrDefault('-256', CAST('-1', 'Int256')),
     toInt256OrDefault('abc', CAST('-1', 'Int256'))
@@ -1560,14 +1480,15 @@ toInt256OrDefault('-256', CAST('-1', 'Int256')): -256
 toInt256OrDefault('abc', CAST('-1', 'Int256')):  -1
 ```
 
-**関連項目**
+**参照**
 
-- [`toInt256`](#toint256).
-- [`toInt256OrZero`](#toint256orzero).
-- [`toInt256OrNull`](#toint256ornull).
+- [`toInt256`](#toint256)。
+- [`toInt256OrZero`](#toint256orzero)。
+- [`toInt256OrNull`](#toint256ornull)。
+
 ## toUInt8 {#touint8}
 
-Converts an input value to a value of type [`UInt8`](../data-types/int-uint.md). Throws an exception in case of an error.
+入力値を[`UInt8`](../data-types/int-uint.md)型の値に変換します。エラー発生時には例外をスローします。
 
 **構文**
 
@@ -1577,28 +1498,28 @@ toUInt8(expr)
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [式](/sql-reference/syntax#expressions)。
+- `expr` — 数値または数値の文字列表現を返す式。[式](/sql-reference/syntax#expressions)。
 
 サポートされる引数:
-- (U)Int8/16/32/64/128/256の値または文字列表現。
-- Float32/64の型の値。
+- (U)Int8/16/32/64/128/256型の値や文字列表現。
+- Float32/64型の値。
 
-サポートされていない引数:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toUInt8('0xc0fe');`。
+サポートされない引数:
+- `NaN` や `Inf` を含むFloat32/64の文字列表現。
+- 例えば `SELECT toUInt8('0xc0fe');` のようなバイナリや16進数の文字列表現。
 
 :::note
-If the input value cannot be represented within the bounds of [UInt8](../data-types/int-uint.md), overflow or underflow of the result occurs.
-This is not considered an error.
-For example: `SELECT toUInt8(256) == 0;`.
+入力値が[UInt8](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
+例えば: `SELECT toUInt8(256) == 0;`。
 :::
 
-**戻り値**
+**返される値**
 
-- 8ビット符号なし整数値。 [UInt8](../data-types/int-uint.md)。
+- 8ビット符号なし整数値。[UInt8](../data-types/int-uint.md)。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
@@ -1623,14 +1544,15 @@ toUInt8(8.8): 8
 toUInt8('8'): 8
 ```
 
-**関連項目**
+**参照**
 
-- [`toUInt8OrZero`](#touint8orzero).
-- [`toUInt8OrNull`](#touint8ornull).
-- [`toUInt8OrDefault`](#touint8ordefault).
+- [`toUInt8OrZero`](#touint8orzero)。
+- [`toUInt8OrNull`](#touint8ornull)。
+- [`toUInt8OrDefault`](#touint8ordefault)。
+
 ## toUInt8OrZero {#touint8orzero}
 
-Like [`toUInt8`](#touint8), this function converts an input value to a value of type [UInt8](../data-types/int-uint.md) but returns `0` in case of an error.
+[`toUInt8`](#touint8) と同様に、この関数は入力値を[UInt8](../data-types/int-uint.md)型の値に変換しますが、エラー発生時には `0` を返します。
 
 **構文**
 
@@ -1640,33 +1562,33 @@ toUInt8OrZero(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [文字列](../data-types/string.md)。
+- `x` — 数値の文字列表現。[文字列](../data-types/string.md)。
 
 サポートされる引数:
 - (U)Int8/16/32/128/256の文字列表現。
 
-サポートされていない引数（`0`を返す）:
-- 通常のFloat32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toUInt8OrZero('0xc0fe');`。
+サポートされない引数 ( `0` を返す):
+- 通常のFloat32/64の文字列表現を含む `NaN` や `Inf`。
+- 例えば `SELECT toUInt8OrZero('0xc0fe');` のようなバイナリや16進数の文字列表現。
 
 :::note
-If the input value cannot be represented within the bounds of [UInt8](../data-types/int-uint.md), overflow or underflow of the result occurs.
-This is not considered an error.
+入力値が[UInt8](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**戻り値**
+**返される値**
 
-- 成功すれば8ビット符号なし整数値、そうでなければ`0`。 [UInt8](../data-types/int-uint.md)。
+- 成功した場合は8ビット符号なし整数値、失敗した場合は`0`。[UInt8](../data-types/int-uint.md)。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     toUInt8OrZero('-8'),
     toUInt8OrZero('abc')
@@ -1682,14 +1604,15 @@ toUInt8OrZero('-8'):  0
 toUInt8OrZero('abc'): 0
 ```
 
-**関連項目**
+**参照**
 
-- [`toUInt8`](#touint8).
-- [`toUInt8OrNull`](#touint8ornull).
-- [`toUInt8OrDefault`](#touint8ordefault).
+- [`toUInt8`](#touint8)。
+- [`toUInt8OrNull`](#touint8ornull)。
+- [`toUInt8OrDefault`](#touint8ordefault)。
+
 ## toUInt8OrNull {#touint8ornull}
 
-Like [`toUInt8`](#touint8), this function converts an input value to a value of type [UInt8](../data-types/int-uint.md) but returns `NULL` in case of an error.
+[`toUInt8`](#touint8) と同様に、この関数は入力値を[UInt8](../data-types/int-uint.md)型の値に変換しますが、エラー発生時には `NULL` を返します。
 
 **構文**
 
@@ -1699,33 +1622,33 @@ toUInt8OrNull(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [文字列](../data-types/string.md)。
+- `x` — 数値の文字列表現。[文字列](../data-types/string.md)。
 
 サポートされる引数:
 - (U)Int8/16/32/128/256の文字列表現。
 
-サポートされていない引数（`\N`を返す）:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toUInt8OrNull('0xc0fe');`。
+サポートされない引数 ( `\N` を返す):
+- `NaN` や `Inf` を含むFloat32/64の文字列表現。
+- 例えば `SELECT toUInt8OrNull('0xc0fe');` のようなバイナリや16進数の文字列表現。
 
 :::note
-If the input value cannot be represented within the bounds of [UInt8](../data-types/int-uint.md), overflow or underflow of the result occurs.
-This is not considered an error.
+入力値が[UInt8](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**戻り値**
+**返される値**
 
-- 成功すれば8ビット符号なし整数値、そうでなければ`NULL`。 [UInt8](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
+- 成功した場合は8ビット符号なし整数値、失敗した場合は`NULL`。[UInt8](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     toUInt8OrNull('8'),
     toUInt8OrNull('abc')
@@ -1741,15 +1664,16 @@ toUInt8OrNull('8'):   8
 toUInt8OrNull('abc'): ᴺᵁᴸᴸ
 ```
 
-**関連項目**
+**参照**
 
-- [`toUInt8`](#touint8).
-- [`toUInt8OrZero`](#touint8orzero).
-- [`toUInt8OrDefault`](#touint8ordefault).
+- [`toUInt8`](#touint8)。
+- [`toUInt8OrZero`](#touint8orzero)。
+- [`toUInt8OrDefault`](#touint8ordefault)。
+
 ## toUInt8OrDefault {#touint8ordefault}
 
-Like [`toUInt8`](#touint8), this function converts an input value to a value of type [UInt8](../data-types/int-uint.md) but returns the default value in case of an error.
-If no `default` value is passed then `0` is returned in case of an error.
+[`toUInt8`](#touint8) と同様に、この関数は入力値を[UInt8](../data-types/int-uint.md)型の値に変換しますが、エラー発生時にはデフォルト値を返します。
+デフォルト値が指定されていない場合は、エラー発生時に`0`が返されます。
 
 **構文**
 
@@ -1759,36 +1683,36 @@ toUInt8OrDefault(expr[, default])
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [式](/sql-reference/syntax#expressions) / [文字列](../data-types/string.md)。
-- `default` (オプション) — `UInt8`型へのパースが失敗した場合に返されるデフォルト値。 [UInt8](../data-types/int-uint.md)。
+- `expr` — 数値または数値の文字列表現を返す式。[式](/sql-reference/syntax#expressions) / [文字列](../data-types/string.md)。
+- `default` (オプション) — `UInt8`型へのパースが失敗した場合に返すデフォルト値。[UInt8](../data-types/int-uint.md)。
 
 サポートされる引数:
-- (U)Int8/16/32/64/128/256の値または文字列表現。
-- Float32/64の型の値。
+- (U)Int8/16/32/64/128/256型の値や文字列表現。
+- Float32/64型の値。
 
 デフォルト値が返される引数:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toUInt8OrDefault('0xc0fe', CAST('0', 'UInt8'));`。
+- `NaN` や `Inf` を含むFloat32/64の文字列表現。
+- 例えば `SELECT toUInt8OrDefault('0xc0fe', CAST('0', 'UInt8'));` のようなバイナリや16進数の文字列表現。
 
 :::note
-If the input value cannot be represented within the bounds of [UInt8](../data-types/int-uint.md), overflow or underflow of the result occurs.
-This is not considered an error.
+入力値が[UInt8](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**戻り値**
+**返される値**
 
-- 成功すれば8ビット符号なし整数値、そうでなければ渡されたデフォルト値が返されるか、そうでなければ`0`が返される。 [UInt8](../data-types/int-uint.md)。
+- 成功した場合は8ビット符号なし整数値、失敗した場合は指定されたデフォルト値または `0` を返します。[UInt8](../data-types/int-uint.md)。
 
 :::note
-- The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
-- The default value type should be the same as the cast type.
+- この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
+- デフォルト値の型はキャスト型と同じである必要があります。
 :::
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     toUInt8OrDefault('8', CAST('0', 'UInt8')),
     toUInt8OrDefault('abc', CAST('0', 'UInt8'))
@@ -1804,14 +1728,15 @@ toUInt8OrDefault('8', CAST('0', 'UInt8')):   8
 toUInt8OrDefault('abc', CAST('0', 'UInt8')): 0
 ```
 
-**関連項目**
+**参照**
 
-- [`toUInt8`](#touint8).
-- [`toUInt8OrZero`](#touint8orzero).
-- [`toUInt8OrNull`](#touint8ornull).
+- [`toUInt8`](#touint8)。
+- [`toUInt8OrZero`](#touint8orzero)。
+- [`toUInt8OrNull`](#touint8ornull)。
+
 ## toUInt16 {#touint16}
 
-Converts an input value to a value of type [`UInt16`](../data-types/int-uint.md). Throws an exception in case of an error.
+入力値を[`UInt16`](../data-types/int-uint.md)型の値に変換します。エラー発生時には例外をスローします。
 
 **構文**
 
@@ -1821,28 +1746,28 @@ toUInt16(expr)
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [式](/sql-reference/syntax#expressions)。
+- `expr` — 数値または数値の文字列表現を返す式。[式](/sql-reference/syntax#expressions)。
 
 サポートされる引数:
-- (U)Int8/16/32/64/128/256の値または文字列表現。
-- Float32/64の型の値。
+- (U)Int8/16/32/64/128/256型の値や文字列表現。
+- Float32/64型の値。
 
-サポートされていない引数:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toUInt16('0xc0fe');`。
+サポートされない引数:
+- `NaN` や `Inf` を含むFloat32/64の文字列表現。
+- 例えば `SELECT toUInt16('0xc0fe');` のようなバイナリや16進数の文字列表現。
 
 :::note
-If the input value cannot be represented within the bounds of [UInt16](../data-types/int-uint.md), overflow or underflow of the result occurs.
-This is not considered an error.
-For example: `SELECT toUInt16(65536) == 0;`.
+入力値が[UInt16](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
+例えば: `SELECT toUInt16(65536) == 0;`。
 :::
 
-**戻り値**
+**返される値**
 
-- 16ビット符号なし整数値。 [UInt16](../data-types/int-uint.md)。
+- 16ビット符号なし整数値。[UInt16](../data-types/int-uint.md)。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
@@ -1867,14 +1792,15 @@ toUInt16(16.16): 16
 toUInt16('16'):  16
 ```
 
-**関連項目**
+**参照**
 
-- [`toUInt16OrZero`](#touint16orzero).
-- [`toUInt16OrNull`](#touint16ornull).
-- [`toUInt16OrDefault`](#touint16ordefault).
+- [`toUInt16OrZero`](#touint16orzero)。
+- [`toUInt16OrNull`](#touint16ornull)。
+- [`toUInt16OrDefault`](#touint16ordefault)。
+
 ## toUInt16OrZero {#touint16orzero}
 
-Like [`toUInt16`](#touint16), this function converts an input value to a value of type [UInt16](../data-types/int-uint.md) but returns `0` in case of an error.
+[`toUInt16`](#touint16) と同様に、この関数は入力値を[UInt16](../data-types/int-uint.md)型の値に変換しますが、エラー発生時には `0` を返します。
 
 **構文**
 
@@ -1884,33 +1810,33 @@ toUInt16OrZero(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [文字列](../data-types/string.md)。
+- `x` — 数値の文字列表現。[文字列](../data-types/string.md)。
 
 サポートされる引数:
 - (U)Int8/16/32/128/256の文字列表現。
 
-サポートされていない引数（`0`を返す）:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toUInt16OrZero('0xc0fe');`。
+サポートされない引数 ( `0` を返す):
+- `NaN` や `Inf` を含むFloat32/64の文字列表現。
+- 例えば `SELECT toUInt16OrZero('0xc0fe');` のようなバイナリや16進数の文字列表現。
 
 :::note
-If the input value cannot be represented within the bounds of [UInt16](../data-types/int-uint.md), overflow or underflow of the result occurs.
-This is not considered as an error.
+入力値が[UInt16](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**戻り値**
+**返される値**
 
-- 成功すれば16ビット符号なし整数値、そうでなければ`0`。 [UInt16](../data-types/int-uint.md)。
+- 成功した場合は16ビット符号なし整数値、失敗した場合は`0`。[UInt16](../data-types/int-uint.md)。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     toUInt16OrZero('16'),
     toUInt16OrZero('abc')
@@ -1926,14 +1852,15 @@ toUInt16OrZero('16'):  16
 toUInt16OrZero('abc'): 0
 ```
 
-**関連項目**
+**参照**
 
-- [`toUInt16`](#touint16).
-- [`toUInt16OrNull`](#touint16ornull).
-- [`toUInt16OrDefault`](#touint16ordefault).
+- [`toUInt16`](#touint16)。
+- [`toUInt16OrNull`](#touint16ornull)。
+- [`toUInt16OrDefault`](#touint16ordefault)。
+
 ## toUInt16OrNull {#touint16ornull}
 
-Like [`toUInt16`](#touint16), this function converts an input value to a value of type [UInt16](../data-types/int-uint.md) but returns `NULL` in case of an error.
+[`toUInt16`](#touint16) と同様に、この関数は入力値を[UInt16](../data-types/int-uint.md)型の値に変換しますが、エラー発生時には `NULL` を返します。
 
 **構文**
 
@@ -1943,33 +1870,33 @@ toUInt16OrNull(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [文字列](../data-types/string.md)。
+- `x` — 数値の文字列表現。[文字列](../data-types/string.md)。
 
 サポートされる引数:
 - (U)Int8/16/32/128/256の文字列表現。
 
-サポートされていない引数（`\N`を返す）:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toUInt16OrNull('0xc0fe');`。
+サポートされない引数 ( `\N` を返す):
+- `NaN` や `Inf` を含むFloat32/64の文字列表現。
+- 例えば `SELECT toUInt16OrNull('0xc0fe');` のようなバイナリや16進数の文字列表現。
 
 :::note
-If the input value cannot be represented within the bounds of [UInt16](../data-types/int-uint.md), overflow or underflow of the result occurs.
-This is not considered an error.
+入力値が[UInt16](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**戻り値**
+**返される値**
 
-- 成功すれば16ビット符号なし整数値、そうでなければ`NULL`。 [UInt16](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
+- 成功した場合は16ビット符号なし整数値、失敗した場合は`NULL`。[UInt16](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     toUInt16OrNull('16'),
     toUInt16OrNull('abc')
@@ -1985,15 +1912,16 @@ toUInt16OrNull('16'):  16
 toUInt16OrNull('abc'): ᴺᵁᴸᴸ
 ```
 
-**関連項目**
+**参照**
 
-- [`toUInt16`](#touint16).
-- [`toUInt16OrZero`](#touint16orzero).
-- [`toUInt16OrDefault`](#touint16ordefault).
+- [`toUInt16`](#touint16)。
+- [`toUInt16OrZero`](#touint16orzero)。
+- [`toUInt16OrDefault`](#touint16ordefault)。
+
 ## toUInt16OrDefault {#touint16ordefault}
 
-Like [`toUInt16`](#touint16), this function converts an input value to a value of type [UInt16](../data-types/int-uint.md) but returns the default value in case of an error.
-If no `default` value is passed then `0` is returned in case of an error.
+[`toUInt16`](#touint16) と同様に、この関数は入力値を[UInt16](../data-types/int-uint.md)型の値に変換しますが、エラー発生時にはデフォルト値を返します。
+デフォルト値が指定されていない場合は、エラー発生時に`0`が返されます。
 
 **構文**
 
@@ -2003,36 +1931,36 @@ toUInt16OrDefault(expr[, default])
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [式](/sql-reference/syntax#expressions) / [文字列](../data-types/string.md)。
-- `default` (オプション) — `UInt16`型へのパースが失敗した場合に返されるデフォルト値。 [UInt16](../data-types/int-uint.md)。
+- `expr` — 数値または数値の文字列表現を返す式。[式](/sql-reference/syntax#expressions) / [文字列](../data-types/string.md)。
+- `default` (オプション) — `UInt16`型へのパースが失敗した場合に返すデフォルト値。[UInt16](../data-types/int-uint.md)。
 
 サポートされる引数:
-- (U)Int8/16/32/64/128/256の値または文字列表現。
-- Float32/64の型の値。
+- (U)Int8/16/32/64/128/256型の値や文字列表現。
+- Float32/64型の値。
 
 デフォルト値が返される引数:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toUInt16OrDefault('0xc0fe', CAST('0', 'UInt16'));`。
+- `NaN` や `Inf` を含むFloat32/64の文字列表現。
+- 例えば `SELECT toUInt16OrDefault('0xc0fe', CAST('0', 'UInt16'));` のようなバイナリや16進数の文字列表現。
 
 :::note
-If the input value cannot be represented within the bounds of [UInt16](../data-types/int-uint.md), overflow or underflow of the result occurs.
-This is not considered an error.
+入力値が[UInt16](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**戻り値**
+**返される値**
 
-- 成功すれば16ビット符号なし整数値、そうでなければ渡されたデフォルト値が返されるか、そうでなければ`0`が返される。 [UInt16](../data-types/int-uint.md)。
+- 成功した場合は16ビット符号なし整数値、失敗した場合は指定されたデフォルト値または `0` を返します。[UInt16](../data-types/int-uint.md)。
 
 :::note
-- The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
-- The default value type should be the same as the cast type.
+- この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
+- デフォルト値の型はキャスト型と同じである必要があります。
 :::
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     toUInt16OrDefault('16', CAST('0', 'UInt16')),
     toUInt16OrDefault('abc', CAST('0', 'UInt16'))
@@ -2048,14 +1976,15 @@ toUInt16OrDefault('16', CAST('0', 'UInt16')):  16
 toUInt16OrDefault('abc', CAST('0', 'UInt16')): 0
 ```
 
-**関連項目**
+**参照**
 
-- [`toUInt16`](#touint16).
-- [`toUInt16OrZero`](#touint16orzero).
-- [`toUInt16OrNull`](#touint16ornull).
+- [`toUInt16`](#touint16)。
+- [`toUInt16OrZero`](#touint16orzero)。
+- [`toUInt16OrNull`](#touint16ornull)。
+
 ## toUInt32 {#touint32}
 
-Converts an input value to a value of type [`UInt32`](../data-types/int-uint.md). Throws an exception in case of an error.
+入力値を[`UInt32`](../data-types/int-uint.md)型の値に変換します。エラー発生時には例外をスローします。
 
 **構文**
 
@@ -2065,28 +1994,28 @@ toUInt32(expr)
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [式](/sql-reference/syntax#expressions)。
+- `expr` — 数値または数値の文字列表現を返す式。[式](/sql-reference/syntax#expressions)。
 
 サポートされる引数:
-- (U)Int8/16/32/64/128/256の値または文字列表現。
-- Float32/64の型の値。
+- (U)Int8/16/32/64/128/256型の値や文字列表現。
+- Float32/64型の値。
 
-サポートされていない引数:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toUInt32('0xc0fe');`。
+サポートされない引数:
+- `NaN` や `Inf` を含むFloat32/64の文字列表現。
+- 例えば `SELECT toUInt32('0xc0fe');` のようなバイナリや16進数の文字列表現。
 
 :::note
-If the input value cannot be represented within the bounds of [UInt32](../data-types/int-uint.md), the result over or under flows.
-This is not considered an error.
-For example: `SELECT toUInt32(4294967296) == 0;`
+入力値が[UInt32](../data-types/int-uint.md)の範囲内に表現できない場合、結果はオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
+例えば: `SELECT toUInt32(4294967296) == 0;`
 :::
 
-**戻り値**
+**返される値**
 
-- 32ビット符号なし整数値。 [UInt32](../data-types/int-uint.md)。
+- 32ビット符号なし整数値。[UInt32](../data-types/int-uint.md)。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+この関数は[ゼロに向かう丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。つまり、数値の小数点以下の桁を切り捨てます。
 :::
 
 **例**
@@ -2111,70 +2040,13 @@ toUInt32(32.32): 32
 toUInt32('32'):  32
 ```
 
-**関連項目**
+**参照**
 
-- [`toUInt32OrZero`](#touint32orzero).
-- [`toUInt32OrNull`](#touint32ornull).
-- [`toUInt32OrDefault`](#touint32ordefault).
-## toUInt32OrZero {#touint32orzero}
-
-Like [`toUInt32`](#touint32), this function converts an input value to a value of type [UInt32](../data-types/int-uint.md) but returns `0` in case of an error.
-
-**構文**
-
-```sql
-toUInt32OrZero(x)
+- [`toUInt32OrZero`](#touint32orzero)。
+- [`toUInt32OrNull`](#touint32ornull)。
+- [`toUInt32OrDefault`](#touint32ordefault)。
 ```
 
-**引数**
-
-- `x` — 数字の文字列表現。 [文字列](../data-types/string.md)。
-
-サポートされる引数:
-- (U)Int8/16/32/128/256の文字列表現。
-
-サポートされていない引数（`0`を返す）:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toUInt32OrZero('0xc0fe');`。
-
-:::note
-If the input value cannot be represented within the bounds of [UInt32](../data-types/int-uint.md), overflow or underflow of the result occurs.
-This is not considered an error.
-:::
-
-**戻り値**
-
-- 成功すれば32ビット符号なし整数値、そうでなければ`0`。 [UInt32](../data-types/int-uint.md)
-
-:::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)
-, meaning it truncates fractional digits of numbers.
-:::
-
-**例**
-
-クエリ:
-
-``` sql
-SELECT
-    toUInt32OrZero('32'),
-    toUInt32OrZero('abc')
-FORMAT Vertical;
-```
-
-結果:
-
-```response
-Row 1:
-──────
-toUInt32OrZero('32'):  32
-toUInt32OrZero('abc'): 0
-```
-**関連項目**
-
-- [`toUInt32`](#touint32).
-- [`toUInt32OrNull`](#touint32ornull).
-- [`toUInt32OrDefault`](#touint32ordefault).
 ## toUInt32OrNull {#touint32ornull}
 
 Like [`toUInt32`](#touint32), this function converts an input value to a value of type [UInt32](../data-types/int-uint.md) but returns `NULL` in case of an error.
@@ -2187,41 +2059,40 @@ toUInt32OrNull(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [文字列](../data-types/string.md)。
+- `x` — 数の文字列表現。 [String](../data-types/string.md)。
 
-サポートされる引数:
-- (U)Int8/16/32/128/256の文字列表現。
+サポートされる引数：
+- (U)Int8/16/32/128/256 の文字列表現。
 
-サポートされていない引数（`\N`を返す）:
-- Float32/64の値の文字列表現、`NaN`および`Inf`を含む。
-- バイナリおよび16進数の値の文字列表現、例えば `SELECT toUInt32OrNull('0xc0fe');`。
+サポートされていない引数（`\N` を返す）：
+- Float32/64 値の文字列表現、`NaN` や `Inf` を含む。
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toUInt32OrNull('0xc0fe');`。
 
 :::note
-If the input value cannot be represented within the bounds of [UInt32](../data-types/int-uint.md), overflow or underflow of the result occurs.
-This is not considered an error.
+入力値が [UInt32](../data-types/int-uint.md) の範囲内に表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。
+これはエラーとは見なされません。
 :::
 
-**戻り値**
+**返される値**
 
-- 成功すれば32ビット符号なし整数値、そうでなければ`NULL`。 [UInt32](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
+- 成功した場合は 32 ビットの符号なし整数値、そうでない場合は `NULL`。 [UInt32](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)
-, meaning it truncates fractional digits of numbers.
+この関数は [zero 方向の丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero) を使用し、数の小数部分を切り捨てます。
 :::
 
 **例**
 
-クエリ:
+クエリ：
 
-``` sql
+```sql
 SELECT
     toUInt32OrNull('32'),
     toUInt32OrNull('abc')
 FORMAT Vertical;
 ```
 
-結果:
+結果：
 
 ```response
 Row 1:
@@ -2230,60 +2101,52 @@ toUInt32OrNull('32'):  32
 toUInt32OrNull('abc'): ᴺᵁᴸᴸ
 ```
 
-**関連項目**
+**参照**
 
-- [`toUInt32`](#touint32).
-- [`toUInt32OrZero`](#touint32orzero).
-- [`toUInt32OrDefault`](#touint32ordefault).
-```
-```yaml
-title: 'toUInt32OrDefault'
-sidebar_label: 'toUInt32OrDefault'
-keywords: ['ClickHouse', 'Function', 'UInt32', 'Default']
-description: 'ClickHouse documentation for the function toUInt32OrDefault.'
-```
-
+- [`toUInt32`](#touint32)。
+- [`toUInt32OrZero`](#touint32orzero)。
+- [`toUInt32OrDefault`](#touint32ordefault)。
 ## toUInt32OrDefault {#touint32ordefault}
 
-Like [`toUInt32`](#touint32), this function converts an input value to a value of type [UInt32](../data-types/int-uint.md) but returns the default value in case of an error.  
+Like [`toUInt32`](#touint32), this function converts an input value to a value of type [UInt32](../data-types/int-uint.md) but returns the default value in case of an error.
 If no `default` value is passed then `0` is returned in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toUInt32OrDefault(expr[, default])
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — Expression returning a number or a string representation of a number. [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md).
-- `default` (optional) — The default value to return if parsing to type `UInt32` is unsuccessful. [UInt32](../data-types/int-uint.md).
+- `expr` — 数または数の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)。
+- `default`（オプション） — `UInt32` 型に解析できなかった場合に返すデフォルト値。 [UInt32](../data-types/int-uint.md)。
 
-Supported arguments:
-- Values or string representations of type (U)Int8/16/32/64/128/256.
-- Values of type Float32/64.
+サポートされる引数：
+- (U)Int8/16/32/64/128/256 の値または文字列表現。
+- Float32/64 型の値。
 
-Arguments for which the default value is returned:
-- String representations of Float32/64 values, including `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toUInt32OrDefault('0xc0fe', CAST('0', 'UInt32'));`.
-
-:::note
-If the input value cannot be represented within the bounds of [UInt32](../data-types/int-uint.md), overflow or underflow of the result occurs.  
-This is not considered an error.
-:::
-
-**Returned value**
-
-- 32-bit unsigned integer value if successful, otherwise returns the default value if passed or `0` if not. [UInt32](../data-types/int-uint.md).
+デフォルト値が返される引数：
+- Float32/64 値の文字列表現、`NaN` および `Inf` を含む。
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toUInt32OrDefault('0xc0fe', CAST('0', 'UInt32'));`。
 
 :::note
-- The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
-- The default value type should be the same as the cast type.
+入力値が [UInt32](../data-types/int-uint.md) の範囲内に表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。
+これはエラーとは見なされません。
 :::
 
-**Example**
+**返される値**
 
-Query:
+- 成功した場合は 32 ビットの符号なし整数値、そうでない場合は渡されたデフォルト値を返すか、渡されなければ `0` を返します。 [UInt32](../data-types/int-uint.md)。
+
+:::note
+- この関数は [zero 方向の丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero) を使用し、数の小数部分を切り捨てます。
+- デフォルト値の型はキャストされた型と同じにする必要があります。
+:::
+
+**例**
+
+クエリ：
 
 ```sql
 SELECT
@@ -2292,7 +2155,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -2301,50 +2164,50 @@ toUInt32OrDefault('32', CAST('0', 'UInt32')):  32
 toUInt32OrDefault('abc', CAST('0', 'UInt32')): 0
 ```
 
-**See also**
+**参照**
 
-- [`toUInt32`](#touint32).
-- [`toUInt32OrZero`](#touint32orzero).
-- [`toUInt32OrNull`](#touint32ornull).
+- [`toUInt32`](#touint32)。
+- [`toUInt32OrZero`](#touint32orzero)。
+- [`toUInt32OrNull`](#touint32ornull)。
 ## toUInt64 {#touint64}
 
 Converts an input value to a value of type [`UInt64`](../data-types/int-uint.md). Throws an exception in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toUInt64(expr)
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — Expression returning a number or a string representation of a number. [Expression](/sql-reference/syntax#expressions).
+- `expr` — 数または数の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions)。
 
-Supported arguments:
-- Values or string representations of type (U)Int8/16/32/64/128/256.
-- Values of type Float32/64.
+サポートされる引数：
+- (U)Int8/16/32/64/128/256 の値または文字列表現。
+- Float32/64 型の値。
 
-Unsupported types:
-- String representations of Float32/64 values, including `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toUInt64('0xc0fe');`.
-
-:::note
-If the input value cannot be represented within the bounds of [UInt64](../data-types/int-uint.md), the result over or under flows.  
-This is not considered an error.  
-For example: `SELECT toUInt64(18446744073709551616) == 0;`
-:::
-
-**Returned value**
-
-- 64-bit unsigned integer value. [UInt64](../data-types/int-uint.md).
+サポートされていないタイプ：
+- Float32/64 値の文字列表現、`NaN` および `Inf` を含む。
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toUInt64('0xc0fe');`。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+入力値が [UInt64](../data-types/int-uint.md) の範囲内に表現できない場合、結果がオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
+例: `SELECT toUInt64(18446744073709551616) == 0;`
 :::
 
-**Example**
+**返される値**
 
-Query:
+- 64 ビットの符号なし整数値。 [UInt64](../data-types/int-uint.md)。
+
+:::note
+この関数は [zero 方向の丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero) を使用し、数の小数部分を切り捨てます。
+:::
+
+**例**
+
+クエリ：
 
 ```sql
 SELECT
@@ -2354,7 +2217,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -2364,48 +2227,48 @@ toUInt64(64.64): 64
 toUInt64('64'):  64
 ```
 
-**See also**
+**参照**
 
-- [`toUInt64OrZero`](#touint64orzero).
-- [`toUInt64OrNull`](#touint64ornull).
-- [`toUInt64OrDefault`](#touint64ordefault).
+- [`toUInt64OrZero`](#touint64orzero)。
+- [`toUInt64OrNull`](#touint64ornull)。
+- [`toUInt64OrDefault`](#touint64ordefault)。
 ## toUInt64OrZero {#touint64orzero}
 
 Like [`toUInt64`](#touint64), this function converts an input value to a value of type [UInt64](../data-types/int-uint.md) but returns `0` in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toUInt64OrZero(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A String representation of a number. [String](../data-types/string.md).
+- `x` — 数の文字列表現。 [String](../data-types/string.md)。
 
-Supported arguments:
-- String representations of (U)Int8/16/32/128/256.
+サポートされる引数：
+- (U)Int8/16/32/128/256 の文字列表現。
 
-Unsupported arguments (return `0`):
-- String representations of Float32/64 values, including `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toUInt64OrZero('0xc0fe');`.
-
-:::note
-If the input value cannot be represented within the bounds of [UInt64](../data-types/int-uint.md), overflow or underflow of the result occurs.  
-This is not considered an error.
-:::
-
-**Returned value**
-
-- 64-bit unsigned integer value if successful, otherwise `0`. [UInt64](../data-types/int-uint.md).
+サポートされていない引数（`0` を返す）：
+- Float32/64 値の文字列表現、`NaN` および `Inf` を含む。
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toUInt64OrZero('0xc0fe');`。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+入力値が [UInt64](../data-types/int-uint.md) の範囲内に表現できない場合、結果がオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**Example**
+**返される値**
 
-Query:
+- 成功した場合は 64 ビットの符号なし整数値、そうでない場合は `0`。 [UInt64](../data-types/int-uint.md)。
+
+:::note
+この関数は [zero 方向の丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero) を使用し、数の小数部分を切り捨てます。
+:::
+
+**例**
+
+クエリ：
 
 ```sql
 SELECT
@@ -2414,7 +2277,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -2423,48 +2286,48 @@ toUInt64OrZero('64'):  64
 toUInt64OrZero('abc'): 0
 ```
 
-**See also**
+**参照**
 
-- [`toUInt64`](#touint64).
-- [`toUInt64OrNull`](#touint64ornull).
-- [`toUInt64OrDefault`](#touint64ordefault).
+- [`toUInt64`](#touint64)。
+- [`toUInt64OrNull`](#touint64ornull)。
+- [`toUInt64OrDefault`](#touint64ordefault)。
 ## toUInt64OrNull {#touint64ornull}
 
 Like [`toUInt64`](#touint64), this function converts an input value to a value of type [UInt64](../data-types/int-uint.md) but returns `NULL` in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toUInt64OrNull(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A String representation of a number. [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md).
+- `x` — 数の文字列表現。 [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)。
 
-Supported arguments:
-- String representations of (U)Int8/16/32/128/256.
+サポートされる引数：
+- (U)Int8/16/32/128/256 の文字列表現。
 
-Unsupported arguments (return `\N`)
-- String representations of Float32/64 values, including `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toUInt64OrNull('0xc0fe');`.
-
-:::note
-If the input value cannot be represented within the bounds of [UInt64](../data-types/int-uint.md), overflow or underflow of the result occurs.  
-This is not considered an error.
-:::
-
-**Returned value**
-
-- 64-bit unsigned integer value if successful, otherwise `NULL`. [UInt64](../data-types/int-uint.md) / [NULL](../data-types/nullable.md).
+サポートされていない引数（`\N` を返す）：
+- Float32/64 値の文字列表現、`NaN` および `Inf` を含む。
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toUInt64OrNull('0xc0fe');`。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+入力値が [UInt64](../data-types/int-uint.md) の範囲内に表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。
+これはエラーとは見なされません。
 :::
 
-**Example**
+**返される値**
 
-Query:
+- 成功した場合は 64 ビットの符号なし整数値、そうでない場合は `NULL`。 [UInt64](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
+
+:::note
+この関数は [zero 方向の丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero) を使用し、数の小数部分を切り捨てます。
+:::
+
+**例**
+
+クエリ：
 
 ```sql
 SELECT
@@ -2473,7 +2336,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -2482,52 +2345,52 @@ toUInt64OrNull('64'):  64
 toUInt64OrNull('abc'): ᴺᵁᴸᴸ
 ```
 
-**See also**
+**参照**
 
-- [`toUInt64`](#touint64).
-- [`toUInt64OrZero`](#touint64orzero).
-- [`toUInt64OrDefault`](#touint64ordefault).
+- [`toUInt64`](#touint64)。
+- [`toUInt64OrZero`](#touint64orzero)。
+- [`toUInt64OrDefault`](#touint64ordefault)。
 ## toUInt64OrDefault {#touint64ordefault}
 
-Like [`toUInt64`](#touint64), this function converts an input value to a value of type [UInt64](../data-types/int-uint.md) but returns the default value in case of an error.  
+Like [`toUInt64`](#touint64), this function converts an input value to a value of type [UInt64](../data-types/int-uint.md) but returns the default value in case of an error.
 If no `default` value is passed then `0` is returned in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toUInt64OrDefault(expr[, default])
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — Expression returning a number or a string representation of a number. [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md).
-- `default` (optional) — The default value to return if parsing to type `UInt64` is unsuccessful. [UInt64](../data-types/int-uint.md).
+- `expr` — 数または数の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)。
+- `default`（オプション） — `UInt64` 型に解析できなかった場合に返すデフォルト値。 [UInt64](../data-types/int-uint.md)。
 
-Supported arguments:
-- Values or string representations of type (U)Int8/16/32/64/128/256.
-- Values of type Float32/64.
+サポートされる引数：
+- (U)Int8/16/32/64/128/256 の値または文字列表現。
+- Float32/64 型の値。
 
-Arguments for which the default value is returned:
-- String representations of Float32/64 values, including `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toUInt64OrDefault('0xc0fe', CAST('0', 'UInt64'));`.
-
-:::note
-If the input value cannot be represented within the bounds of [UInt64](../data-types/int-uint.md), overflow or underflow of the result occurs.  
-This is not considered an error.
-:::
-
-**Returned value**
-
-- 64-bit unsigned integer value if successful, otherwise returns the default value if passed or `0` if not. [UInt64](../data-types/int-uint.md).
+デフォルト値が返される引数：
+- Float32/64 値の文字列表現、`NaN` および `Inf` を含む。
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toUInt64OrDefault('0xc0fe', CAST('0', 'UInt64'));`。
 
 :::note
-- The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
-- The default value type should be the same as the cast type.
+入力値が [UInt64](../data-types/int-uint.md) の範囲内に表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。
+これはエラーとは見なされません。
 :::
 
-**Example**
+**返される値**
 
-Query:
+- 成功した場合は 64 ビットの符号なし整数値、そうでない場合は渡されたデフォルト値を返すか、渡されなければ `0` を返します。 [UInt64](../data-types/int-uint.md)。
+
+:::note
+- この関数は [zero 方向の丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero) を使用し、数の小数部分を切り捨てます。
+- デフォルト値の型はキャストされた型と同じにする必要があります。
+:::
+
+**例**
+
+クエリ：
 
 ```sql
 SELECT
@@ -2536,7 +2399,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -2545,49 +2408,49 @@ toUInt64OrDefault('64', CAST('0', 'UInt64')):  64
 toUInt64OrDefault('abc', CAST('0', 'UInt64')): 0
 ```
 
-**See also**
+**参照**
 
-- [`toUInt64`](#touint64).
-- [`toUInt64OrZero`](#touint64orzero).
-- [`toUInt64OrNull`](#touint64ornull).
+- [`toUInt64`](#touint64)。
+- [`toUInt64OrZero`](#touint64orzero)。
+- [`toUInt64OrNull`](#touint64ornull)。
 ## toUInt128 {#touint128}
 
 Converts an input value to a value of type [`UInt128`](../data-types/int-uint.md). Throws an exception in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toUInt128(expr)
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — Expression returning a number or a string representation of a number. [Expression](/sql-reference/syntax#expressions).
+- `expr` — 数または数の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions)。
 
-Supported arguments:
-- Values or string representations of type (U)Int8/16/32/64/128/256.
-- Values of type Float32/64.
+サポートされる引数：
+- (U)Int8/16/32/64/128/256 の値または文字列表現。
+- Float32/64 型の値。
 
-Unsupported arguments:
-- String representations of Float32/64 values, including `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toUInt128('0xc0fe');`.
-
-:::note
-If the input value cannot be represented within the bounds of [UInt128](../data-types/int-uint.md), the result over or under flows.  
-This is not considered an error.
-:::
-
-**Returned value**
-
-- 128-bit unsigned integer value. [UInt128](../data-types/int-uint.md).
+サポートされていない引数：
+- Float32/64 値の文字列表現、`NaN` および `Inf` を含む。
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toUInt128('0xc0fe');`。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+入力値が [UInt128](../data-types/int-uint.md) の範囲内に表現できない場合、結果がオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**Example**
+**返される値**
 
-Query:
+- 128 ビットの符号なし整数値。 [UInt128](../data-types/int-uint.md)。
+
+:::note
+この関数は [zero 方向の丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero) を使用し、数の小数部分を切り捨てます。
+:::
+
+**例**
+
+クエリ：
 
 ```sql
 SELECT
@@ -2597,7 +2460,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -2607,48 +2470,48 @@ toUInt128(128.8): 128
 toUInt128('128'): 128
 ```
 
-**See also**
+**参照**
 
-- [`toUInt128OrZero`](#touint128orzero).
-- [`toUInt128OrNull`](#touint128ornull).
-- [`toUInt128OrDefault`](#touint128ordefault).
+- [`toUInt128OrZero`](#touint128orzero)。
+- [`toUInt128OrNull`](#touint128ornull)。
+- [`toUInt128OrDefault`](#touint128ordefault)。
 ## toUInt128OrZero {#touint128orzero}
 
 Like [`toUInt128`](#touint128), this function converts an input value to a value of type [UInt128](../data-types/int-uint.md) but returns `0` in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toUInt128OrZero(expr)
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — Expression returning a number or a string representation of a number. [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md).
+- `expr` — 数または数の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)。
 
-Supported arguments:
-- String representations of (U)Int8/16/32/128/256.
+サポートされる引数：
+- (U)Int8/16/32/128/256 の文字列表現。
 
-Unsupported arguments (return `0`):
-- String representations of Float32/64 values, including `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toUInt128OrZero('0xc0fe');`.
-
-:::note
-If the input value cannot be represented within the bounds of [UInt128](../data-types/int-uint.md), overflow or underflow of the result occurs.  
-This is not considered an error.
-:::
-
-**Returned value**
-
-- 128-bit unsigned integer value if successful, otherwise `0`. [UInt128](../data-types/int-uint.md).
+サポートされていない引数（`0` を返す）：
+- Float32/64 値の文字列表現、`NaN` および `Inf` を含む。
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toUInt128OrZero('0xc0fe');`。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+入力値が [UInt128](../data-types/int-uint.md) の範囲内に表現できない場合、結果がオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**Example**
+**返される値**
 
-Query:
+- 成功した場合は 128 ビットの符号なし整数値、そうでない場合は `0`。 [UInt128](../data-types/int-uint.md)。
+
+:::note
+この関数は [zero 方向の丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero) を使用し、数の小数部分を切り捨てます。
+:::
+
+**例**
+
+クエリ：
 
 ```sql
 SELECT
@@ -2657,7 +2520,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -2666,48 +2529,48 @@ toUInt128OrZero('128'): 128
 toUInt128OrZero('abc'): 0
 ```
 
-**See also**
+**参照**
 
-- [`toUInt128`](#touint128).
-- [`toUInt128OrNull`](#touint128ornull).
-- [`toUInt128OrDefault`](#touint128ordefault).
+- [`toUInt128`](#touint128)。
+- [`toUInt128OrNull`](#touint128ornull)。
+- [`toUInt128OrDefault`](#touint128ordefault)。
 ## toUInt128OrNull {#touint128ornull}
 
 Like [`toUInt128`](#touint128), this function converts an input value to a value of type [UInt128](../data-types/int-uint.md) but returns `NULL` in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toUInt128OrNull(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A String representation of a number. [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md).
+- `x` — 数の文字列表現。 [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)。
 
-Supported arguments:
-- String representations of (U)Int8/16/32/128/256.
+サポートされる引数：
+- (U)Int8/16/32/128/256 の文字列表現。
 
-Unsupported arguments (return `\N`)
-- String representations of Float32/64 values, including `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toUInt128OrNull('0xc0fe');`.
-
-:::note
-If the input value cannot be represented within the bounds of [UInt128](../data-types/int-uint.md), overflow or underflow of the result occurs.  
-This is not considered an error.
-:::
-
-**Returned value**
-
-- 128-bit unsigned integer value if successful, otherwise `NULL`. [UInt128](../data-types/int-uint.md) / [NULL](../data-types/nullable.md).
+サポートされていない引数（`\N` を返す）：
+- Float32/64 値の文字列表現、`NaN` および `Inf` を含む。
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toUInt128OrNull('0xc0fe');`。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+入力値が [UInt128](../data-types/int-uint.md) の範囲内に表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。
+これはエラーとは見なされません。
 :::
 
-**Example**
+**返される値**
 
-Query:
+- 成功した場合は 128 ビットの符号なし整数値、そうでない場合は `NULL`。 [UInt128](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
+
+:::note
+この関数は [zero 方向の丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero) を使用し、数の小数部分を切り捨てます。
+:::
+
+**例**
+
+クエリ：
 
 ```sql
 SELECT
@@ -2716,7 +2579,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -2725,53 +2588,52 @@ toUInt128OrNull('128'): 128
 toUInt128OrNull('abc'): ᴺᵁᴸᴸ
 ```
 
-**See also**
+**参照**
 
-- [`toUInt128`](#touint128).
-- [`toUInt128OrZero`](#touint128orzero).
-- [`toUInt128OrDefault`](#touint128ordefault).
+- [`toUInt128`](#touint128)。
+- [`toUInt128OrZero`](#touint128orzero)。
+- [`toUInt128OrDefault`](#touint128ordefault)。
 ## toUInt128OrDefault {#touint128ordefault}
 
-Like [`toUInt128`](#toint128), this function converts an input value to a value of type [UInt128](../data-types/int-uint.md) but returns the default value in case of an error.  
+Like [`toUInt128`](#toint128), this function converts an input value to a value of type [UInt128](../data-types/int-uint.md) but returns the default value in case of an error.
 If no `default` value is passed then `0` is returned in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toUInt128OrDefault(expr[, default])
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — Expression returning a number or a string representation of a number. [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md).
-- `default` (optional) — The default value to return if parsing to type `UInt128` is unsuccessful. [UInt128](../data-types/int-uint.md).
+- `expr` — 数または数の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)。
+- `default`（オプション） — `UInt128` 型に解析できなかった場合に返すデフォルト値。 [UInt128](../data-types/int-uint.md)。
 
-Supported arguments:
-- (U)Int8/16/32/64/128/256.
-- Float32/64.
-- String representations of (U)Int8/16/32/128/256.
+サポートされる引数：
+- (U)Int8/16/32/64/128/256 の値または文字列表現。
+- Float32/64 型の値。
 
-Arguments for which the default value is returned:
-- String representations of Float32/64 values, including `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toUInt128OrDefault('0xc0fe', CAST('0', 'UInt128'));`.
-
-:::note
-If the input value cannot be represented within the bounds of [UInt128](../data-types/int-uint.md), overflow or underflow of the result occurs.  
-This is not considered an error.
-:::
-
-**Returned value**
-
-- 128-bit unsigned integer value if successful, otherwise returns the default value if passed or `0` if not. [UInt128](../data-types/int-uint.md).
+デフォルト値が返される引数：
+- Float32/64 値の文字列表現、`NaN` および `Inf` を含む。
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toUInt128OrDefault('0xc0fe', CAST('0', 'UInt128'));`。
 
 :::note
-- The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
-- The default value type should be the same as the cast type.
+入力値が [UInt128](../data-types/int-uint.md) の範囲内に表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。
+これはエラーとは見なされません。
 :::
 
-**Example**
+**返される値**
 
-Query:
+- 成功した場合は 128 ビットの符号なし整数値、そうでない場合は渡されたデフォルト値を返すか、渡されなければ `0` を返します。 [UInt128](../data-types/int-uint.md)。
+
+:::note
+- この関数は [zero 方向の丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero) を使用し、数の小数部分を切り捨てます。
+- デフォルト値の型はキャストされた型と同じにする必要があります。
+:::
+
+**例**
+
+クエリ：
 
 ```sql
 SELECT
@@ -2780,7 +2642,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -2789,49 +2651,49 @@ toUInt128OrDefault('128', CAST('0', 'UInt128')): 128
 toUInt128OrDefault('abc', CAST('0', 'UInt128')): 0
 ```
 
-**See also**
+**参照**
 
-- [`toUInt128`](#touint128).
-- [`toUInt128OrZero`](#touint128orzero).
-- [`toUInt128OrNull`](#touint128ornull).
+- [`toUInt128`](#touint128)。
+- [`toUInt128OrZero`](#touint128orzero)。
+- [`toUInt128OrNull`](#touint128ornull)。
 ## toUInt256 {#touint256}
 
 Converts an input value to a value of type [`UInt256`](../data-types/int-uint.md). Throws an exception in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toUInt256(expr)
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — Expression returning a number or a string representation of a number. [Expression](/sql-reference/syntax#expressions).
+- `expr` — 数または数の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions)。
 
-Supported arguments:
-- Values or string representations of type (U)Int8/16/32/64/128/256.
-- Values of type Float32/64.
+サポートされる引数：
+- (U)Int8/16/32/64/128/256 の値または文字列表現。
+- Float32/64 型の値。
 
-Unsupported arguments:
-- String representations of Float32/64 values, including `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toUInt256('0xc0fe');`.
-
-:::note
-If the input value cannot be represented within the bounds of [UInt256](../data-types/int-uint.md), the result over or under flows.  
-This is not considered an error.
-:::
-
-**Returned value**
-
-- 256-bit unsigned integer value. [Int256](../data-types/int-uint.md).
+サポートされていない引数：
+- Float32/64 値の文字列表現、`NaN` および `Inf` を含む。
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toUInt256('0xc0fe');`。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+入力値が [UInt256](../data-types/int-uint.md) の範囲内に表現できない場合、結果がオーバーフローまたはアンダーフローします。
+これはエラーとは見なされません。
 :::
 
-**Example**
+**返される値**
 
-Query:
+- 256 ビットの符号なし整数値。 [Int256](../data-types/int-uint.md)。
+
+:::note
+この関数は [zero 方向の丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero) を使用し、数の小数部分を切り捨てます。
+:::
+
+**例**
+
+クエリ：
 
 ```sql
 SELECT
@@ -2841,7 +2703,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -2851,48 +2713,48 @@ toUInt256(256.256): 256
 toUInt256('256'):   256
 ```
 
-**See also**
+**参照**
 
-- [`toUInt256OrZero`](#touint256orzero).
-- [`toUInt256OrNull`](#touint256ornull).
-- [`toUInt256OrDefault`](#touint256ordefault).
+- [`toUInt256OrZero`](#touint256orzero)。
+- [`toUInt256OrNull`](#touint256ornull)。
+- [`toUInt256OrDefault`](#touint256ordefault)。
 ## toUInt256OrZero {#touint256orzero}
 
 Like [`toUInt256`](#touint256), this function converts an input value to a value of type [UInt256](../data-types/int-uint.md) but returns `0` in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toUInt256OrZero(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A String representation of a number. [String](../data-types/string.md).
+- `x` — 数の文字列表現。 [String](../data-types/string.md)。
 
-Supported arguments:
-- String representations of (U)Int8/16/32/128/256.
+サポートされる引数：
+- (U)Int8/16/32/128/256 の文字列表現。
 
-Unsupported arguments (return `0`):
-- String representations of Float32/64 values, including `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toUInt256OrZero('0xc0fe');`.
-
-:::note
-If the input value cannot be represented within the bounds of [UInt256](../data-types/int-uint.md), overflow or underflow of the result occurs.  
-This is not considered an error.
-:::
-
-**Returned value**
-
-- 256-bit unsigned integer value if successful, otherwise `0`. [UInt256](../data-types/int-uint.md).
+サポートされていない引数（`0` を返す）：
+- Float32/64 値の文字列表現、`NaN` および `Inf` を含む。
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toUInt256OrZero('0xc0fe');`。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+入力値が [UInt256](../data-types/int-uint.md) の範囲内に表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。
+これはエラーとは見なされません。
 :::
 
-**Example**
+**返される値**
 
-Query:
+- 成功した場合は 256 ビットの符号なし整数値、そうでない場合は `0`。 [UInt256](../data-types/int-uint.md)。
+
+:::note
+この関数は [zero 方向の丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero) を使用し、数の小数部分を切り捨てます。
+:::
+
+**例**
+
+クエリ：
 
 ```sql
 SELECT
@@ -2901,7 +2763,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -2910,48 +2772,48 @@ toUInt256OrZero('256'): 256
 toUInt256OrZero('abc'): 0
 ```
 
-**See also**
+**参照**
 
-- [`toUInt256`](#touint256).
-- [`toUInt256OrNull`](#touint256ornull).
-- [`toUInt256OrDefault`](#touint256ordefault).
+- [`toUInt256`](#touint256)。
+- [`toUInt256OrNull`](#touint256ornull)。
+- [`toUInt256OrDefault`](#touint256ordefault)。
 ## toUInt256OrNull {#touint256ornull}
 
 Like [`toUInt256`](#touint256), this function converts an input value to a value of type [UInt256](../data-types/int-uint.md) but returns `NULL` in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toUInt256OrNull(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A String representation of a number. [String](../data-types/string.md).
+- `x` — 数の文字列表現。 [String](../data-types/string.md)。
 
-Supported arguments:
-- String representations of (U)Int8/16/32/128/256.
+サポートされる引数：
+- (U)Int8/16/32/128/256 の文字列表現。
 
-Unsupported arguments (return `\N`)
-- String representations of Float32/64 values, including `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toUInt256OrNull('0xc0fe');`.
-
-:::note
-If the input value cannot be represented within the bounds of [UInt256](../data-types/int-uint.md), overflow or underflow of the result occurs.  
-This is not considered an error.
-:::
-
-**Returned value**
-
-- 256-bit unsigned integer value if successful, otherwise `NULL`. [UInt256](../data-types/int-uint.md) / [NULL](../data-types/nullable.md).
+サポートされていない引数（`\N` を返す）：
+- Float32/64 値の文字列表現、`NaN` および `Inf` を含む。
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toUInt256OrNull('0xc0fe');`。
 
 :::note
-The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
+入力値が [UInt256](../data-types/int-uint.md) の範囲内に表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。
+これはエラーとは見なされません。
 :::
 
-**Example**
+**返される値**
 
-Query:
+- 成功した場合は 256 ビットの符号なし整数値、そうでない場合は `NULL`。 [UInt256](../data-types/int-uint.md) / [NULL](../data-types/nullable.md)。
+
+:::note
+この関数は [zero 方向の丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero) を使用し、数の小数部分を切り捨てます。
+:::
+
+**例**
+
+クエリ：
 
 ```sql
 SELECT
@@ -2960,7 +2822,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -2969,52 +2831,52 @@ toUInt256OrNull('256'): 256
 toUInt256OrNull('abc'): ᴺᵁᴸᴸ
 ```
 
-**See also**
+**参照**
 
-- [`toUInt256`](#touint256).
-- [`toUInt256OrZero`](#touint256orzero).
-- [`toUInt256OrDefault`](#touint256ordefault).
+- [`toUInt256`](#touint256)。
+- [`toUInt256OrZero`](#touint256orzero)。
+- [`toUInt256OrDefault`](#touint256ordefault)。
 ## toUInt256OrDefault {#touint256ordefault}
 
-Like [`toUInt256`](#touint256), this function converts an input value to a value of type [UInt256](../data-types/int-uint.md) but returns the default value in case of an error.  
+Like [`toUInt256`](#touint256), this function converts an input value to a value of type [UInt256](../data-types/int-uint.md) but returns the default value in case of an error.
 If no `default` value is passed then `0` is returned in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toUInt256OrDefault(expr[, default])
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — Expression returning a number or a string representation of a number. [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md).
-- `default` (optional) — The default value to return if parsing to type `UInt256` is unsuccessful. [UInt256](../data-types/int-uint.md).
+- `expr` — 数または数の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)。
+- `default`（オプション） — `UInt256` 型に解析できなかった場合に返すデフォルト値。 [UInt256](../data-types/int-uint.md)。
 
-Supported arguments:
-- Values or string representations of type (U)Int8/16/32/64/128/256.
-- Values of type Float32/64.
+サポートされる引数：
+- (U)Int8/16/32/64/128/256 の値または文字列表現。
+- Float32/64 型の値。
 
-Arguments for which the default value is returned:
-- String representations of Float32/64 values, including `NaN` and `Inf`
-- String representations of binary and hexadecimal values, e.g. `SELECT toUInt256OrDefault('0xc0fe', CAST('0', 'UInt256'));`
-
-:::note
-If the input value cannot be represented within the bounds of [UInt256](../data-types/int-uint.md), overflow or underflow of the result occurs.  
-This is not considered an error.
-:::
-
-**Returned value**
-
-- 256-bit unsigned integer value if successful, otherwise returns the default value if passed or `0` if not. [UInt256](../data-types/int-uint.md).
+デフォルト値が返される引数：
+- Float32/64 値の文字列表現、`NaN` および `Inf` を含む。
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toUInt256OrDefault('0xc0fe', CAST('0', 'UInt256'));`。
 
 :::note
-- The function uses [rounding towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero), meaning it truncates fractional digits of numbers.
-- The default value type should be the same as the cast type.
+入力値が [UInt256](../data-types/int-uint.md) の範囲内に表現できない場合、結果のオーバーフローまたはアンダーフローが発生します。
+これはエラーとは見なされません。
 :::
 
-**Example**
+**返される値**
 
-Query:
+- 成功した場合は 256 ビットの符号なし整数値、そうでない場合は渡されたデフォルト値を返すか、渡されなければ `0` を返します。 [UInt256](../data-types/int-uint.md)。
+
+:::note
+- この関数は [zero 方向の丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero) を使用し、数の小数部分を切り捨てます。
+- デフォルト値の型はキャストされた型と同じにする必要があります。
+:::
+
+**例**
+
+クエリ：
 
 ```sql
 SELECT
@@ -3023,7 +2885,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -3032,41 +2894,41 @@ toUInt256OrDefault('-256', CAST('0', 'UInt256')): 0
 toUInt256OrDefault('abc', CAST('0', 'UInt256')):  0
 ```
 
-**See also**
+**参照**
 
-- [`toUInt256`](#touint256).
-- [`toUInt256OrZero`](#touint256orzero).
-- [`toUInt256OrNull`](#touint256ornull).
+- [`toUInt256`](#touint256)。
+- [`toUInt256OrZero`](#touint256orzero)。
+- [`toUInt256OrNull`](#touint256ornull)。
 ## toFloat32 {#tofloat32}
 
 Converts an input value to a value of type [`Float32`](../data-types/float.md). Throws an exception in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toFloat32(expr)
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — Expression returning a number or a string representation of a number. [Expression](/sql-reference/syntax#expressions).
+- `expr` — 数または数の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions)。
 
-Supported arguments:
-- Values of type (U)Int8/16/32/64/128/256.
-- String representations of (U)Int8/16/32/128/256.
-- Values of type Float32/64, including `NaN` and `Inf`.
-- String representations of Float32/64, including `NaN` and `Inf` (case-insensitive).
+サポートされる引数：
+- (U)Int8/16/32/64/128/256 の値。
+- (U)Int8/16/32/128/256 の文字列表現。
+- Float32/64 型の値、`NaN` および `Inf` を含む。
+- Float32/64 型の文字列表現、`NaN` および `Inf` を含む（大文字・小文字を区別しない）。
 
-Unsupported arguments:
-- String representations of binary and hexadecimal values, e.g. `SELECT toFloat32('0xc0fe');`.
+サポートされていない引数：
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toFloat32('0xc0fe');`。
 
-**Returned value**
+**返される値**
 
-- 32-bit floating point value. [Float32](../data-types/float.md).
+- 32 ビットの浮動小数点値。 [Float32](../data-types/float.md)。
 
-**Example**
+**例**
 
-Query:
+クエリ：
 
 ```sql
 SELECT
@@ -3076,7 +2938,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -3086,38 +2948,38 @@ toFloat32('42.7'): 42.7
 toFloat32('NaN'):  nan
 ```
 
-**See also**
+**参照**
 
-- [`toFloat32OrZero`](#tofloat32orzero).
-- [`toFloat32OrNull`](#tofloat32ornull).
-- [`toFloat32OrDefault`](#tofloat32ordefault).
+- [`toFloat32OrZero`](#tofloat32orzero)。
+- [`toFloat32OrNull`](#tofloat32ornull)。
+- [`toFloat32OrDefault`](#tofloat32ordefault)。
 ## toFloat32OrZero {#tofloat32orzero}
 
 Like [`toFloat32`](#tofloat32), this function converts an input value to a value of type [Float32](../data-types/float.md) but returns `0` in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toFloat32OrZero(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A String representation of a number. [String](../data-types/string.md).
+- `x` — 数の文字列表現。 [String](../data-types/string.md)。
 
-Supported arguments:
-- String representations of (U)Int8/16/32/128/256, Float32/64.
+サポートされる引数：
+- (U)Int8/16/32/128/256、Float32/64 の文字列表現。
 
-Unsupported arguments (return `0`):
-- String representations of binary and hexadecimal values, e.g. `SELECT toFloat32OrZero('0xc0fe');`.
+サポートされていない引数（`0` を返す）：
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toFloat32OrZero('0xc0fe');`。
 
-**Returned value**
+**返される値**
 
-- 32-bit Float value if successful, otherwise `0`. [Float32](../data-types/float.md).
+- 成功した場合は 32 ビットの浮動小数点値、そうでない場合は `0`。 [Float32](../data-types/float.md)。
 
-**Example**
+**例**
 
-Query:
+クエリ：
 
 ```sql
 SELECT
@@ -3126,7 +2988,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -3135,38 +2997,38 @@ toFloat32OrZero('42.7'): 42.7
 toFloat32OrZero('abc'):  0
 ```
 
-**See also**
+**参照**
 
-- [`toFloat32`](#tofloat32).
-- [`toFloat32OrNull`](#tofloat32ornull).
-- [`toFloat32OrDefault`](#tofloat32ordefault).
+- [`toFloat32`](#tofloat32)。
+- [`toFloat32OrNull`](#tofloat32ornull)。
+- [`toFloat32OrDefault`](#tofloat32ordefault)。
 ## toFloat32OrNull {#tofloat32ornull}
 
 Like [`toFloat32`](#tofloat32), this function converts an input value to a value of type [Float32](../data-types/float.md) but returns `NULL` in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toFloat32OrNull(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A String representation of a number. [String](../data-types/string.md).
+- `x` — 数の文字列表現。 [String](../data-types/string.md)。
 
-Supported arguments:
-- String representations of (U)Int8/16/32/128/256, Float32/64.
+サポートされる引数：
+- (U)Int8/16/32/128/256、Float32/64 の文字列表現。
 
-Unsupported arguments (return `\N`):
-- String representations of binary and hexadecimal values, e.g. `SELECT toFloat32OrNull('0xc0fe');`.
+サポートされていない引数（`\N` を返す）：
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toFloat32OrNull('0xc0fe');`。
 
-**Returned value**
+**返される値**
 
-- 32-bit Float value if successful, otherwise `\N`. [Float32](../data-types/float.md).
+- 成功した場合は 32 ビットの浮動小数点値、そうでない場合は `\N`。 [Float32](../data-types/float.md)。
 
-**Example**
+**例**
 
-Query:
+クエリ：
 
 ```sql
 SELECT
@@ -3175,7 +3037,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -3184,43 +3046,43 @@ toFloat32OrNull('42.7'): 42.7
 toFloat32OrNull('abc'):  ᴺᵁᴸᴸ
 ```
 
-**See also**
+**参照**
 
-- [`toFloat32`](#tofloat32).
-- [`toFloat32OrZero`](#tofloat32orzero).
-- [`toFloat32OrDefault`](#tofloat32ordefault).
+- [`toFloat32`](#tofloat32)。
+- [`toFloat32OrZero`](#tofloat32orzero)。
+- [`toFloat32OrDefault`](#tofloat32ordefault)。
 ## toFloat32OrDefault {#tofloat32ordefault}
 
-Like [`toFloat32`](#tofloat32), this function converts an input value to a value of type [Float32](../data-types/float.md) but returns the default value in case of an error.  
+Like [`toFloat32`](#tofloat32), this function converts an input value to a value of type [Float32](../data-types/float.md) but returns the default value in case of an error.
 If no `default` value is passed then `0` is returned in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toFloat32OrDefault(expr[, default])
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — Expression returning a number or a string representation of a number. [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md).
-- `default` (optional) — The default value to return if parsing to type `Float32` is unsuccessful. [Float32](../data-types/float.md).
+- `expr` — 数または数の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)。
+- `default`（オプション） — `Float32` 型に解析できなかった場合に返すデフォルト値。 [Float32](../data-types/float.md)。
 
-Supported arguments:
-- Values of type (U)Int8/16/32/64/128/256.
-- String representations of (U)Int8/16/32/128/256.
-- Values of type Float32/64, including `NaN` and `Inf`.
-- String representations of Float32/64, including `NaN` and `Inf` (case-insensitive).
+サポートされる引数：
+- (U)Int8/16/32/64/128/256 の値。
+- (U)Int8/16/32/128/256 の文字列表現。
+- Float32/64 型の値、`NaN` および `Inf` を含む。
+- Float32/64 の文字列表現、`NaN` および `Inf` を含む（大文字・小文字を区別しない）。
 
-Arguments for which the default value is returned:
-- String representations of binary and hexadecimal values, e.g. `SELECT toFloat32OrDefault('0xc0fe', CAST('0', 'Float32'));`.
+デフォルト値が返される引数：
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toFloat32OrDefault('0xc0fe', CAST('0', 'Float32'));`。
 
-**Returned value**
+**返される値**
 
-- 32-bit Float value if successful, otherwise returns the default value if passed or `0` if not. [Float32](../data-types/float.md).
+- 成功した場合は 32 ビットの浮動小数点値、そうでない場合は渡されたデフォルト値を返すか、渡されなければ `0` を返します。 [Float32](../data-types/float.md)。
 
-**Example**
+**例**
 
-Query:
+クエリ：
 
 ```sql
 SELECT
@@ -3229,7 +3091,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -3238,41 +3100,41 @@ toFloat32OrDefault('8', CAST('0', 'Float32')):   8
 toFloat32OrDefault('abc', CAST('0', 'Float32')): 0
 ```
 
-**See also**
+**参照**
 
-- [`toFloat32`](#tofloat32).
-- [`toFloat32OrZero`](#tofloat32orzero).
-- [`toFloat32OrNull`](#tofloat32ornull).
+- [`toFloat32`](#tofloat32)。
+- [`toFloat32OrZero`](#tofloat32orzero)。
+- [`toFloat32OrNull`](#tofloat32ornull)。
 ## toFloat64 {#tofloat64}
 
 Converts an input value to a value of type [`Float64`](../data-types/float.md). Throws an exception in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toFloat64(expr)
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — Expression returning a number or a string representation of a number. [Expression](/sql-reference/syntax#expressions).
+- `expr` — 数または数の文字列表現を返す式。 [Expression](/sql-reference/syntax#expressions)。
 
-Supported arguments:
-- Values of type (U)Int8/16/32/64/128/256.
-- String representations of (U)Int8/16/32/128/256.
-- Values of type Float32/64, including `NaN` and `Inf`.
-- String representations of type Float32/64, including `NaN` and `Inf` (case-insensitive).
+サポートされる引数：
+- (U)Int8/16/32/64/128/256 の値。
+- (U)Int8/16/32/128/256 の文字列表現。
+- Float32/64 型の値、`NaN` および `Inf` を含む。
+- Float32/64 型の文字列表現、`NaN` および `Inf` を含む（大文字・小文字を区別しない）。
 
-Unsupported arguments:
-- String representations of binary and hexadecimal values, e.g. `SELECT toFloat64('0xc0fe');`.
+サポートされていない引数：
+- バイナリおよび16進数の値の文字列表現。例: `SELECT toFloat64('0xc0fe');`。
 
-**Returned value**
+**返される値**
 
-- 64-bit floating point value. [Float64](../data-types/float.md).
+- 64 ビットの浮動小数点値。 [Float64](../data-types/float.md)。
 
-**Example**
+**例**
 
-Query:
+クエリ：
 
 ```sql
 SELECT
@@ -3282,7 +3144,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果：
 
 ```response
 Row 1:
@@ -3292,38 +3154,40 @@ toFloat64('42.7'): 42.7
 toFloat64('NaN'):  nan
 ```
 
-**See also**
+**参照**
 
-- [`toFloat64OrZero`](#tofloat64orzero).
-- [`toFloat64OrNull`](#tofloat64ornull).
-- [`toFloat64OrDefault`](#tofloat64ordefault).
+- [`toFloat64OrZero`](#tofloat64orzero)。
+- [`toFloat64OrNull`](#tofloat64ornull)。
+- [`toFloat64OrDefault`](#tofloat64ordefault)。
+```
+
 ## toFloat64OrZero {#tofloat64orzero}
 
-Like [`toFloat64`](#tofloat64), this function converts an input value to a value of type [Float64](../data-types/float.md) but returns `0` in case of an error.
+[`toFloat64`](#tofloat64)と同様に、この関数は入力値を[Float64](../data-types/float.md)型の値に変換しますが、エラーが発生した場合は`0`を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 toFloat64OrZero(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A String representation of a number. [String](../data-types/string.md).
+- `x` — 数字の文字列表現。[String](../data-types/string.md)。
 
-Supported arguments:
-- String representations of (U)Int8/16/32/128/256, Float32/64.
+サポートされている引数:
+- (U)Int8/16/32/128/256、Float32/64の文字列表現。
 
-Unsupported arguments (return `0`):
-- String representations of binary and hexadecimal values, e.g. `SELECT toFloat64OrZero('0xc0fe');`.
+サポートされていない引数（`0`を返す）:
+- 2進数および16進数の値の文字列表現。例えば、`SELECT toFloat64OrZero('0xc0fe');`。
 
-**Returned value**
+**返される値**
 
-- 64-bit Float value if successful, otherwise `0`. [Float64](../data-types/float.md).
+- 成功した場合は64ビットのFloat値、そうでない場合は`0`。[Float64](../data-types/float.md)。
 
-**Example**
+**例**
 
-Query:
+クエリ:
 
 ```sql
 SELECT
@@ -3332,7 +3196,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果:
 
 ```response
 Row 1:
@@ -3341,38 +3205,38 @@ toFloat64OrZero('42.7'): 42.7
 toFloat64OrZero('abc'):  0
 ```
 
-**See also**
+**関連項目**
 
-- [`toFloat64`](#tofloat64).
-- [`toFloat64OrNull`](#tofloat64ornull).
-- [`toFloat64OrDefault`](#tofloat64ordefault).
+- [`toFloat64`](#tofloat64)。
+- [`toFloat64OrNull`](#tofloat64ornull)。
+- [`toFloat64OrDefault`](#tofloat64ordefault)。
 ## toFloat64OrNull {#tofloat64ornull}
 
-Like [`toFloat64`](#tofloat64), this function converts an input value to a value of type [Float64](../data-types/float.md) but returns `NULL` in case of an error.
+[`toFloat64`](#tofloat64)と同様に、この関数は入力値を[Float64](../data-types/float.md)型の値に変換しますが、エラーが発生した場合は`NULL`を返します。
 
-**Syntax**
+**構文**
 
 ```sql
 toFloat64OrNull(x)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — A String representation of a number. [String](../data-types/string.md).
+- `x` — 数字の文字列表現。[String](../data-types/string.md)。
 
-Supported arguments:
-- String representations of (U)Int8/16/32/128/256, Float32/64.
+サポートされている引数:
+- (U)Int8/16/32/128/256、Float32/64の文字列表現。
 
-Unsupported arguments (return `\N`):
-- String representations of binary and hexadecimal values, e.g. `SELECT toFloat64OrNull('0xc0fe');`.
+サポートされていない引数（`\N`を返す）:
+- 2進数および16進数の値の文字列表現。例えば、`SELECT toFloat64OrNull('0xc0fe');`。
 
-**Returned value**
+**返される値**
 
-- 64-bit Float value if successful, otherwise `\N`. [Float64](../data-types/float.md).
+- 成功した場合は64ビットのFloat値、そうでない場合は`\N`。[Float64](../data-types/float.md)。
 
-**Example**
+**例**
 
-Query:
+クエリ:
 
 ```sql
 SELECT
@@ -3381,7 +3245,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果:
 
 ```response
 Row 1:
@@ -3390,17 +3254,15 @@ toFloat64OrNull('42.7'): 42.7
 toFloat64OrNull('abc'):  ᴺᵁᴸᴸ
 ```
 
-**See also**
+**関連項目**
 
-- [`toFloat64`](#tofloat64).
-- [`toFloat64OrZero`](#tofloat64orzero).
-- [`toFloat64OrDefault`](#tofloat64ordefault).
-```
-
+- [`toFloat64`](#tofloat64)。
+- [`toFloat64OrZero`](#tofloat64orzero)。
+- [`toFloat64OrDefault`](#tofloat64ordefault)。
 ## toFloat64OrDefault {#tofloat64ordefault}
 
-Like [`toFloat64`](#tofloat64), this function converts an input value to a value of type [Float64](../data-types/float.md) but returns the default value in case of an error.
-If no `default` value is passed then `0` is returned in case of an error.
+[`toFloat64`](#tofloat64)と同様に、この関数は入力値を[Float64](../data-types/float.md)型の値に変換しますが、エラーが発生した場合はデフォルト値を返します。
+`default`値が渡されていない場合は、エラーの際に`0`を返します。
 
 **構文**
 
@@ -3410,21 +3272,21 @@ toFloat64OrDefault(expr[, default])
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [式](/sql-reference/syntax#expressions) / [文字列](../data-types/string.md)。
-- `default` (オプション) — `Float64`型へのパースが失敗した場合に返すデフォルト値。 [Float64](../data-types/float.md)。
+- `expr` — 数字または数字の文字列表現を返す式。[Expression](/sql-reference/syntax#expressions) / [String](../data-types/string.md)。
+- `default`（オプション） — `Float64`型への変換が失敗した場合に返すデフォルト値。[Float64](../data-types/float.md)。
 
-サポートされる引数:
+サポートされている引数:
 - (U)Int8/16/32/64/128/256型の値。
 - (U)Int8/16/32/128/256の文字列表現。
-- Float32/64型の値、`NaN`および`Inf`を含む。
-- Float32/64の文字列表現、`NaN`および`Inf`を含む（ケース非感知）。
+- Float32/64型の値（`NaN`および`Inf`を含む）。
+- Float32/64の文字列表現（`NaN`および`Inf`を含む、ケースインセンシティブ）。
 
 デフォルト値が返される引数:
-- 2進数および16進数の文字列表現、例: `SELECT toFloat64OrDefault('0xc0fe', CAST('0', 'Float64'));`。
+- 2進数および16進数の値の文字列表現。例えば、`SELECT toFloat64OrDefault('0xc0fe', CAST('0', 'Float64'));`。
 
 **返される値**
 
-- 成功した場合は64ビットのFloat値、失敗した場合は渡されたデフォルト値または渡されなかった場合は`0`が返されます。 [Float64](../data-types/float.md)。
+- 成功した場合は64ビットのFloat値、そうでない場合は渡されたデフォルト値を返すか、渡されていない場合は`0`を返します。[Float64](../data-types/float.md)。
 
 **例**
 
@@ -3446,16 +3308,15 @@ toFloat64OrDefault('8', CAST('0', 'Float64')):   8
 toFloat64OrDefault('abc', CAST('0', 'Float64')): 0
 ```
 
-**その他の情報**
+**関連項目**
 
-- [`toFloat64`](#tofloat64).
-- [`toFloat64OrZero`](#tofloat64orzero).
-- [`toFloat64OrNull`](#tofloat64ornull).
-
+- [`toFloat64`](#tofloat64)。
+- [`toFloat64OrZero`](#tofloat64orzero)。
+- [`toFloat64OrNull`](#tofloat64ornull)。
 ## toBFloat16 {#tobfloat16}
 
-Converts an input value to a value of type [`BFloat16`](../data-types/float.md/#bfloat16). 
-Throws an exception in case of an error.
+入力値を[`BFloat16`](/sql-reference/data-types/float#bfloat16)型の値に変換します。
+エラーが発生した場合には例外がスローされます。
 
 **構文**
 
@@ -3465,17 +3326,17 @@ toBFloat16(expr)
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [式](/sql-reference/syntax#expressions)。
+- `expr` — 数字または数字の文字列表現を返す式。[Expression](/sql-reference/syntax#expressions)。
 
-サポートされる引数:
+サポートされている引数:
 - (U)Int8/16/32/64/128/256型の値。
 - (U)Int8/16/32/128/256の文字列表現。
-- Float32/64型の値、`NaN`および`Inf`を含む。
-- Float32/64の文字列表現、`NaN`および`Inf`を含む（ケース非感知）。
+- Float32/64型の値（`NaN`および`Inf`を含む）。
+- Float32/64の文字列表現（`NaN`および`Inf`を含む、ケースインセンシティブ）。
 
 **返される値**
 
-- 16ビットのブレインフロート値。 [BFloat16](../data-types/float.md/#bfloat16)。
+- 16ビットのブレインフロート値。[BFloat16](/sql-reference/data-types/float#bfloat16)。
 
 **例**
 
@@ -3493,15 +3354,14 @@ SELECT toBFloat16('42.7');
 42.5
 ```
 
-**その他の情報**
+**関連項目**
 
-- [`toBFloat16OrZero`](#tobfloat16orzero).
-- [`toBFloat16OrNull`](#tobfloat16ornull).
-
+- [`toBFloat16OrZero`](#tobfloat16orzero)。
+- [`toBFloat16OrNull`](#tobfloat16ornull)。
 ## toBFloat16OrZero {#tobfloat16orzero}
 
-Converts a String input value to a value of type [`BFloat16`](../data-types/float.md/#bfloat16).
-If the string does not represent a floating point value, the function returns zero.
+文字列の入力値を[`BFloat16`](/sql-reference/data-types/float#bfloat16)型の値に変換します。
+もし文字列が浮動小数点値を表していない場合、関数はゼロを返します。
 
 **構文**
 
@@ -3511,50 +3371,48 @@ toBFloat16OrZero(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [文字列](../data-types/string.md)。
+- `x` — 数字の文字列表現。[String](../data-types/string.md)。
 
-サポートされる引数:
+サポートされている引数:
 
 - 数値の文字列表現。
 
 サポートされていない引数（`0`を返す）:
 
-- 2進数および16進数の文字列表現。
+- 2進数および16進数の値の文字列表現。
 - 数値。
 
 **返される値**
 
-- 16ビットのブレインフロート値、さもなくば`0`。 [BFloat16](../data-types/float.md/#bfloat16)。
+- 16ビットのブレインフロート値、そうでない場合は`0`。[BFloat16](/sql-reference/data-types/float#bfloat16)。
 
 :::note
-関数は文字列表現から変換する際に精度の静かな損失を許可します。
+この関数は文字列表現からの変換中に精度の目に見えない損失を許可します。
 :::
 
 **例**
 
 ```sql
-SELECT toBFloat16OrZero('0x5E'); -- unsupported arguments
+SELECT toBFloat16OrZero('0x5E'); -- サポートされていない引数
 
 0
 
-SELECT toBFloat16OrZero('12.3'); -- typical use
+SELECT toBFloat16OrZero('12.3'); -- 一般的な使用
 
 12.25
 
 SELECT toBFloat16OrZero('12.3456789');
 
-12.3125 -- silent loss of precision
+12.3125 -- 精度の目に見えない損失
 ```
 
-**その他の情報**
+**関連項目**
 
-- [`toBFloat16`](#tobfloat16).
-- [`toBFloat16OrNull`](#tobfloat16ornull).
-
+- [`toBFloat16`](#tobfloat16)。
+- [`toBFloat16OrNull`](#tobfloat16ornull)。
 ## toBFloat16OrNull {#tobfloat16ornull}
 
-Converts a String input value to a value of type [`BFloat16`](../data-types/float.md/#bfloat16) 
-but if the string does not represent a floating point value, the function returns `NULL`.
+文字列の入力値を[`BFloat16`](/sql-reference/data-types/float#bfloat16)型の値に変換しますが、もし文字列が浮動小数点値を表していない場合、関数は`NULL`を返します。
 
 **構文**
 
@@ -3564,51 +3422,50 @@ toBFloat16OrNull(x)
 
 **引数**
 
-- `x` — 数字の文字列表現。 [文字列](../data-types/string.md)。
+- `x` — 数字の文字列表現。[String](../data-types/string.md)。
 
-サポートされる引数:
+サポートされている引数:
 
 - 数値の文字列表現。
 
 サポートされていない引数（`NULL`を返す）:
 
-- 2進数および16進数の文字列表現。
+- 2進数および16進数の値の文字列表現。
 - 数値。
 
 **返される値**
 
-- 16ビットのブレインフロート値、さもなくば`NULL` (`\N`)。 [BFloat16](../data-types/float.md/#bfloat16)。
+- 16ビットのブレインフロート値、そうでない場合は`NULL`（`\N`）です。[BFloat16](/sql-reference/data-types/float#bfloat16)。
 
 :::note
-関数は文字列表現から変換する際に精度の静かな損失を許可します。
+この関数は文字列表現からの変換中に精度の目に見えない損失を許可します。
 :::
 
 **例**
 
 ```sql
-SELECT toBFloat16OrNull('0x5E'); -- unsupported arguments
+SELECT toBFloat16OrNull('0x5E'); -- サポートされていない引数
 
 \N
 
-SELECT toBFloat16OrNull('12.3'); -- typical use
+SELECT toBFloat16OrNull('12.3'); -- 一般的な使用
 
 12.25
 
 SELECT toBFloat16OrNull('12.3456789');
 
-12.3125 -- silent loss of precision
+12.3125 -- 精度の目に見えない損失
 ```
 
-**その他の情報**
+**関連項目**
 
-- [`toBFloat16`](#tobfloat16).
-- [`toBFloat16OrZero`](#tobfloat16orzero).
-
+- [`toBFloat16`](#tobfloat16)。
+- [`toBFloat16OrZero`](#tobfloat16orzero)。
 ## toDate {#todate}
 
-Converts the argument to [Date](../data-types/date.md) data type.
+引数を[Date](../data-types/date.md)データ型に変換します。
 
-If the argument is [DateTime](../data-types/datetime.md) or [DateTime64](../data-types/datetime64.md), it truncates it and leaves the date component of the DateTime:
+引数が[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)の場合、それを切り捨ててDateTimeのデートコンポーネントを残します：
 
 ```sql
 SELECT
@@ -3622,7 +3479,7 @@ SELECT
 └─────────────────────┴───────────────┘
 ```
 
-If the argument is a [String](../data-types/string.md), it is parsed as [Date](../data-types/date.md) or [DateTime](../data-types/datetime.md). If it was parsed as [DateTime](../data-types/datetime.md), the date component is being used:
+引数が[String](../data-types/string.md)の場合、それは[Date](../data-types/date.md)または[DateTime](../data-types/datetime.md)として解析されます。もしそれが[DateTime](../data-types/datetime.md)として解析された場合、日付部分が使用されます：
 
 ```sql
 SELECT
@@ -3635,7 +3492,7 @@ SELECT
 │ 2022-12-30 │ Date                             │
 └────────────┴──────────────────────────────────┘
 
-1 row in set. Elapsed: 0.001 sec.
+1行のセット。経過時間: 0.001秒。
 ```
 
 ```sql
@@ -3650,7 +3507,7 @@ SELECT
 └────────────┴───────────────────────────────────────────┘
 ```
 
-If the argument is a number and looks like a UNIX timestamp (is greater than 65535), it is interpreted as a [DateTime](../data-types/datetime.md), then truncated to [Date](../data-types/date.md) in the current timezone. The timezone argument can be specified as a second argument of the function. The truncation to [Date](../data-types/date.md) depends on the timezone:
+引数が数値で、UNIXタイムスタンプのように見える場合（65535より大きい）、それは[DateTime](../data-types/datetime.md)として解釈され、その後現在のタイムゾーンで[Date](../data-types/date.md)に切り捨てられます。タイムゾーン引数は関数の第二引数として指定できます。Dateへの切り捨てはタイムゾーンによります：
 
 ```sql
 SELECT
@@ -3677,9 +3534,9 @@ date_Amsterdam_2: 2022-12-30
 date_Samoa_2:     2022-12-31
 ```
 
-The example above demonstrates how the same UNIX timestamp can be interpreted as different dates in different time zones.
+上記の例は、同じUNIXタイムスタンプが異なるタイムゾーンで異なる日付として解釈される様子を示しています。
 
-If the argument is a number and it is smaller than 65536, it is interpreted as the number of days since 1970-01-01 (the first UNIX day) and converted to [Date](../data-types/date.md). It corresponds to the internal numeric representation of the `Date` data type. Example:
+引数が数値で、65536より小さい場合、それは1970-01-01以降の日数として解釈され[Date](../data-types/date.md)に変換されます。これは`Date`データ型の内部数値表現に対応します。例：
 
 ```sql
 SELECT toDate(12345)
@@ -3690,9 +3547,9 @@ SELECT toDate(12345)
 └───────────────┘
 ```
 
-This conversion does not depend on timezones.
+この変換はタイムゾーンに依存しません。
 
-If the argument does not fit in the range of the Date type, it results in an implementation-defined behavior, that can saturate to the maximum supported date or overflow:
+もし引数がDate型の範囲に収まらない場合、それは実装依存の動作を引き起こし、サポートされる最大日付に飽和するか、オーバーフローを引き起こす可能性があります：
 ```sql
 SELECT toDate(10000000000.)
 ```
@@ -3702,7 +3559,7 @@ SELECT toDate(10000000000.)
 └──────────────────────┘
 ```
 
-The function `toDate` can be also written in alternative forms:
+`toDate`関数は代替形で書くこともできます：
 
 ```sql
 SELECT
@@ -3716,16 +3573,15 @@ SELECT
 │ 2022-12-30 13:54:58 │    2022-12-30 │  2022-12-30 │          2022-12-30 │
 └─────────────────────┴───────────────┴─────────────┴─────────────────────┘
 ```
-
 ## toDateOrZero {#todateorzero}
 
-The same as [toDate](#todate) but returns lower boundary of [Date](../data-types/date.md) if an invalid argument is received. Only [String](../data-types/string.md) argument is supported.
+[Date](#todate)と同様ですが、無効な引数が受け取られた場合には[Date](../data-types/date.md)の下限を返します。サポートされるのは[String](../data-types/string.md)引数のみです。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT toDateOrZero('2022-12-30'), toDateOrZero('');
 ```
 
@@ -3736,16 +3592,15 @@ SELECT toDateOrZero('2022-12-30'), toDateOrZero('');
 │                 2022-12-30 │       1970-01-01 │
 └────────────────────────────┴──────────────────┘
 ```
-
 ## toDateOrNull {#todateornull}
 
-The same as [toDate](#todate) but returns `NULL` if an invalid argument is received. Only [String](../data-types/string.md) argument is supported.
+[Date](#todate)と同様ですが、無効な引数が受け取られた場合には`NULL`を返します。サポートされるのは[String](../data-types/string.md)引数のみです。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT toDateOrNull('2022-12-30'), toDateOrNull('');
 ```
 
@@ -3756,14 +3611,13 @@ SELECT toDateOrNull('2022-12-30'), toDateOrNull('');
 │                 2022-12-30 │             ᴺᵁᴸᴸ │
 └────────────────────────────┴──────────────────┘
 ```
-
 ## toDateOrDefault {#todateordefault}
 
-Like [toDate](#todate) but if unsuccessful, returns a default value which is either the second argument (if specified), or otherwise the lower boundary of [Date](../data-types/date.md).
+[Date](#todate)と同様ですが、失敗した場合には、指定されている場合は第二引数のデフォルト値を返します。指定されていない場合は、[Date](../data-types/date.md)の下限を返します。
 
 **構文**
 
-``` sql
+```sql
 toDateOrDefault(expr [, default_value])
 ```
 
@@ -3771,7 +3625,7 @@ toDateOrDefault(expr [, default_value])
 
 クエリ:
 
-``` sql
+```sql
 SELECT toDateOrDefault('2022-12-30'), toDateOrDefault('', '2023-01-01'::Date);
 ```
 
@@ -3782,37 +3636,36 @@ SELECT toDateOrDefault('2022-12-30'), toDateOrDefault('', '2023-01-01'::Date);
 │                    2022-12-30 │                                      2023-01-01 │
 └───────────────────────────────┴─────────────────────────────────────────────────┘
 ```
-
 ## toDateTime {#todatetime}
 
-Converts an input value to [DateTime](../data-types/datetime.md).
+入力値を[DateTime](../data-types/datetime.md)に変換します。
 
 **構文**
 
-``` sql
+```sql
 toDateTime(expr[, time_zone ])
 ```
 
 **引数**
 
-- `expr` — 値。 [文字列](../data-types/string.md)、[整数](../data-types/int-uint.md)、[日付](../data-types/date.md)または[DateTime](../data-types/datetime.md)。
-- `time_zone` — タイムゾーン。 [文字列](../data-types/string.md)。
+- `expr` — 値。[String](../data-types/string.md)、[Int](../data-types/int-uint.md)、[Date](../data-types/date.md)または[DateTime](../data-types/datetime.md)。
+- `time_zone` — タイムゾーン。[String](../data-types/string.md)。
 
 :::note
-`expr` が数値の場合、それはUnixエポックの始まりからの秒数として解釈されます（Unixタイムスタンプとして）。
-`expr` が [文字列](../data-types/string.md) の場合、Unixタイムスタンプまたは日付/日時の文字列として解釈される場合があります。
-したがって、短い数値の文字列表現（最大4桁）のパースはあいまいさのために明示的に無効化されています。例えば、文字列`'1999'`は年（不完全な日付/日時の文字列表現）またはUnixタイムスタンプの両方として解釈されます。長い数値の文字列は許可されます。
+`expr`が数値の場合、Unix Epochの始まりからの秒数として解釈されます（Unixタイムスタンプとして）。
+`expr`が[String](../data-types/string.md)の場合、Unixタイムスタンプとしてまたは日付/時刻の文字列表現として解釈される場合があります。
+したがって、短い数字の文字列表現（最大4桁）の解析はあいまいさのために明示的に無効になっています。例えば、文字列`'1999'`は、年（未完成の文字列表現）またはUnixタイムスタンプの両方の意味に取れます。長い数値の文字列は許可されています。
 :::
 
 **返される値**
 
-- 日時。 [DateTime](../data-types/datetime.md)
+- 日時。[DateTime](../data-types/datetime.md)
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT toDateTime('2022-12-30 13:44:17'), toDateTime(1685457500, 'UTC');
 ```
 
@@ -3823,16 +3676,15 @@ SELECT toDateTime('2022-12-30 13:44:17'), toDateTime(1685457500, 'UTC');
 │               2022-12-30 13:44:17 │           2023-05-30 14:38:20 │
 └───────────────────────────────────┴───────────────────────────────┘
 ```
-
 ## toDateTimeOrZero {#todatetimeorzero}
 
-The same as [toDateTime](#todatetime) but returns lower boundary of [DateTime](../data-types/datetime.md) if an invalid argument is received. Only [String](../data-types/string.md) argument is supported.
+[DateTime](#todatetime)と同様ですが、無効な引数が受け取られた場合には[DateTime](../data-types/datetime.md)の下限を返します。サポートされるのは[String](../data-types/string.md)引数のみです。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT toDateTimeOrZero('2022-12-30 13:44:17'), toDateTimeOrZero('');
 ```
 
@@ -3843,16 +3695,15 @@ SELECT toDateTimeOrZero('2022-12-30 13:44:17'), toDateTimeOrZero('');
 │                     2022-12-30 13:44:17 │  1970-01-01 00:00:00 │
 └─────────────────────────────────────────┴──────────────────────┘
 ```
-
 ## toDateTimeOrNull {#todatetimeornull}
 
-The same as [toDateTime](#todatetime) but returns `NULL` if an invalid argument is received. Only [String](../data-types/string.md) argument is supported.
+[DateTime](#todatetime)と同様ですが、無効な引数が受け取られた場合には`NULL`を返します。サポートされるのは[String](../data-types/string.md)引数のみです。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT toDateTimeOrNull('2022-12-30 13:44:17'), toDateTimeOrNull('');
 ```
 
@@ -3863,14 +3714,13 @@ SELECT toDateTimeOrNull('2022-12-30 13:44:17'), toDateTimeOrNull('');
 │                     2022-12-30 13:44:17 │                 ᴺᵁᴸᴸ │
 └─────────────────────────────────────────┴──────────────────────┘
 ```
-
 ## toDateTimeOrDefault {#todatetimeordefault}
 
-Like [toDateTime](#todatetime) but if unsuccessful, returns a default value which is either the third argument (if specified), or otherwise the lower boundary of [DateTime](../data-types/datetime.md).
+[DateTime](#todatetime)と同様ですが、失敗した場合には、指定されていれば第3引数のデフォルト値を返します。それ以外の場合は、[DateTime](../data-types/datetime.md)の下限を返します。
 
 **構文**
 
-``` sql
+```sql
 toDateTimeOrDefault(expr [, time_zone [, default_value]])
 ```
 
@@ -3878,7 +3728,7 @@ toDateTimeOrDefault(expr [, time_zone [, default_value]])
 
 クエリ:
 
-``` sql
+```sql
 SELECT toDateTimeOrDefault('2022-12-30 13:44:17'), toDateTimeOrDefault('', 'UTC', '2023-01-01'::DateTime('UTC'));
 ```
 
@@ -3889,30 +3739,29 @@ SELECT toDateTimeOrDefault('2022-12-30 13:44:17'), toDateTimeOrDefault('', 'UTC'
 │                        2022-12-30 13:44:17 │                                                     2023-01-01 00:00:00 │
 └────────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────────┘
 ```
-
 ## toDate32 {#todate32}
 
-Converts the argument to the [Date32](../data-types/date32.md) data type. If the value is outside the range, `toDate32` returns the border values supported by [Date32](../data-types/date32.md). If the argument has [Date](../data-types/date.md) type, it's borders are taken into account.
+引数を[Date32](../data-types/date32.md)データ型に変換します。値が範囲外であれば、`toDate32`は[Date32](../data-types/date32.md)がサポートする境界値を返します。引数が[Date](../data-types/date.md)型である場合、その境界が考慮されます。
 
 **構文**
 
-``` sql
+```sql
 toDate32(expr)
 ```
 
 **引数**
 
-- `expr` — 値。 [文字列](../data-types/string.md)、[UInt32](../data-types/int-uint.md)または[日付](../data-types/date.md)。
+- `expr` — 値。[String](../data-types/string.md)、[UInt32](../data-types/int-uint.md)または[Date](../data-types/date.md)。
 
 **返される値**
 
-- カレンダー日。 タイプ [Date32](../data-types/date32.md)。
+- カレンダー日付。型[Date32](../data-types/date32.md)。
 
 **例**
 
-1. 値が範囲内である場合:
+1. 値が範囲内の場合：
 
-``` sql
+```sql
 SELECT toDate32('1955-01-01') AS value, toTypeName(value);
 ```
 
@@ -3922,9 +3771,9 @@ SELECT toDate32('1955-01-01') AS value, toTypeName(value);
 └────────────┴────────────────────────────────────┘
 ```
 
-2. 値が範囲外である場合:
+2. 値が範囲外の場合：
 
-``` sql
+```sql
 SELECT toDate32('1899-01-01') AS value, toTypeName(value);
 ```
 
@@ -3934,9 +3783,9 @@ SELECT toDate32('1899-01-01') AS value, toTypeName(value);
 └────────────┴────────────────────────────────────┘
 ```
 
-3. [Date](../data-types/date.md)引数を使用:
+3. [Date](../data-types/date.md)引数の場合：
 
-``` sql
+```sql
 SELECT toDate32(toDate('1899-01-01')) AS value, toTypeName(value);
 ```
 
@@ -3945,16 +3794,15 @@ SELECT toDate32(toDate('1899-01-01')) AS value, toTypeName(value);
 │ 1970-01-01 │ Date32                                     │
 └────────────┴────────────────────────────────────────────┘
 ```
-
 ## toDate32OrZero {#todate32orzero}
 
-The same as [toDate32](#todate32) but returns the min value of [Date32](../data-types/date32.md) if an invalid argument is received.
+[Date32](#todate32)と同様ですが、無効な引数が受け取られた場合には[Date32](../data-types/date32.md)の最小値を返します。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT toDate32OrZero('1899-01-01'), toDate32OrZero('');
 ```
 
@@ -3965,16 +3813,15 @@ SELECT toDate32OrZero('1899-01-01'), toDate32OrZero('');
 │                   1900-01-01 │         1900-01-01 │
 └──────────────────────────────┴────────────────────┘
 ```
-
 ## toDate32OrNull {#todate32ornull}
 
-The same as [toDate32](#todate32) but returns `NULL` if an invalid argument is received.
+[Date32](#todate32)と同様ですが、無効な引数が受け取られた場合には`NULL`を返します。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT toDate32OrNull('1955-01-01'), toDate32OrNull('');
 ```
 
@@ -3985,16 +3832,15 @@ SELECT toDate32OrNull('1955-01-01'), toDate32OrNull('');
 │                   1955-01-01 │               ᴺᵁᴸᴸ │
 └──────────────────────────────┴────────────────────┘
 ```
-
 ## toDate32OrDefault {#todate32ordefault}
 
-Converts the argument to the [Date32](../data-types/date32.md) data type. If the value is outside the range, `toDate32OrDefault` returns the lower border value supported by [Date32](../data-types/date32.md). If the argument has [Date](../data-types/date.md) type, it's borders are taken into account. Returns default value if an invalid argument is received.
+引数を[Date32](../data-types/date32.md)データ型に変換します。値が範囲外の場合、`toDate32OrDefault`は[Date32](../data-types/date32.md)がサポートする下限値を返します。無効な引数が受け取られた場合はデフォルト値を返します。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     toDate32OrDefault('1930-01-01', toDate32('2020-01-01')),
     toDate32OrDefault('xx1930-01-01', toDate32('2020-01-01'));
@@ -4007,32 +3853,31 @@ SELECT
 │                                              1930-01-01 │                                                2020-01-01 │
 └─────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────┘
 ```
-
 ## toDateTime64 {#todatetime64}
 
-Converts an input value to a value of type [DateTime64](../data-types/datetime64.md).
+入力値を[DateTime64](../data-types/datetime64.md)型の値に変換します。
 
 **構文**
 
-``` sql
+```sql
 toDateTime64(expr, scale, [timezone])
 ```
 
 **引数**
 
-- `expr` — 値。 [文字列](../data-types/string.md)、[UInt32](../data-types/int-uint.md)、[浮動小数点](../data-types/float.md)または[DateTime](../data-types/datetime.md)。
-- `scale` - ティックサイズ（精度）：10<sup>-precision</sup>秒。 有効な範囲: [ 0 : 9 ]。
-- `timezone` (オプション) - 指定されたdatetime64オブジェクトのタイムゾーン。
+- `expr` — 値。[String](../data-types/string.md)、[UInt32](../data-types/int-uint.md)、[Float](../data-types/float.md)または[DateTime](../data-types/datetime.md)。
+- `scale` - タイム単位（精度）：10<sup>-precision</sup>秒。有効範囲：[ 0 : 9 ]。
+- `timezone`（オプション） - 指定されたdatetime64オブジェクトのタイムゾーン。
 
 **返される値**
 
-- サブ秒精度を持つカレンダー日と時間帯。 [DateTime64](../data-types/datetime64.md)。
+- サブ秒精度を持つカレンダー日付と時刻。[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
-1. 値が範囲内である場合:
+1. 値が範囲内の場合：
 
-``` sql
+```sql
 SELECT toDateTime64('1955-01-01 00:00:00.000', 3) AS value, toTypeName(value);
 ```
 
@@ -4042,9 +3887,9 @@ SELECT toDateTime64('1955-01-01 00:00:00.000', 3) AS value, toTypeName(value);
 └─────────────────────────┴────────────────────────────────────────────────────────┘
 ```
 
-2. 精度付きの小数として:
+2. 小数形式での精度：
 
-``` sql
+```sql
 SELECT toDateTime64(1546300800.000, 3) AS value, toTypeName(value);
 ```
 
@@ -4054,9 +3899,9 @@ SELECT toDateTime64(1546300800.000, 3) AS value, toTypeName(value);
 └─────────────────────────┴──────────────────────────────────────────┘
 ```
 
-小数点なしの値はUnixタイムスタンプ（秒単位）のものとして扱われます:
+小数点なしで値があっても、Unixタイムスタンプとして秒数で扱われます：
 
-``` sql
+```sql
 SELECT toDateTime64(1546300800000, 3) AS value, toTypeName(value);
 ```
 
@@ -4066,9 +3911,10 @@ SELECT toDateTime64(1546300800000, 3) AS value, toTypeName(value);
 └─────────────────────────┴────────────────────────────────────────────┘
 ```
 
-3. `timezone`を使用:
 
-``` sql
+3. `timezone`の指定：
+
+```sql
 SELECT toDateTime64('2019-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeName(value);
 ```
 
@@ -4077,26 +3923,25 @@ SELECT toDateTime64('2019-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeN
 │ 2019-01-01 00:00:00.000 │ DateTime64(3, 'Asia/Istanbul')                                      │
 └─────────────────────────┴─────────────────────────────────────────────────────────────────────┘
 ```
-
 ## toDateTime64OrZero {#todatetime64orzero}
 
-Like [toDateTime64](#todatetime64), this function converts an input value to a value of type [DateTime64](../data-types/datetime64.md) but returns the min value of [DateTime64](../data-types/datetime64.md) if an invalid argument is received.
+[toDateTime64](#todatetime64)と同様ですが、無効な引数が受け取られた場合には[DateTime64](../data-types/datetime64.md)の最小値を返します。
 
 **構文**
 
-``` sql
+```sql
 toDateTime64OrZero(expr, scale, [timezone])
 ```
 
 **引数**
 
-- `expr` — 値。 [文字列](../data-types/string.md)、[UInt32](../data-types/int-uint.md)、[浮動小数点](../data-types/float.md)または[DateTime](../data-types/datetime.md)。
-- `scale` - ティックサイズ（精度）：10<sup>-precision</sup>秒。 有効な範囲: [ 0 : 9 ]。
-- `timezone` (オプション) - 指定されたDateTime64オブジェクトのタイムゾーン。
+- `expr` — 値。[String](../data-types/string.md)、[UInt32](../data-types/int-uint.md)、[Float](../data-types/float.md)または[DateTime](../data-types/datetime.md)。
+- `scale` - タイム単位（精度）：10<sup>-precision</sup>秒。有効範囲：[ 0 : 9 ]。
+- `timezone`（オプション） - 指定されたDateTime64オブジェクトのタイムゾーン。
 
 **返される値**
 
-- サブ秒精度を持つカレンダー日と時間帯、さもなくば`DateTime64`の最小値：`1970-01-01 01:00:00.000`。 [DateTime64](../data-types/datetime64.md)。
+- サブ秒精度を持つカレンダー日付と時刻。そうでない場合は`DateTime64`の最小値：`1970-01-01 01:00:00.000`。[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -4114,31 +3959,30 @@ SELECT toDateTime64OrZero('2008-10-12 00:00:00 00:30:30', 3) AS invalid_arg
 └─────────────────────────┘
 ```
 
-**その他の情報**
+**関連項目**
 
-- [toDateTime64](#todatetime64).
-- [toDateTime64OrNull](#todatetime64ornull).
-- [toDateTime64OrDefault](#todatetime64ordefault).
-
+- [toDateTime64](#todatetime64)。
+- [toDateTime64OrNull](#todatetime64ornull)。
+- [toDateTime64OrDefault](#todatetime64ordefault)。
 ## toDateTime64OrNull {#todatetime64ornull}
 
-Like [toDateTime64](#todatetime64), this function converts an input value to a value of type [DateTime64](../data-types/datetime64.md) but returns `NULL` if an invalid argument is received.
+[toDateTime64](#todatetime64)と同様ですが、無効な引数が受け取られた場合には`NULL`を返します。
 
 **構文**
 
-``` sql
+```sql
 toDateTime64OrNull(expr, scale, [timezone])
 ```
 
 **引数**
 
-- `expr` — 値。 [文字列](../data-types/string.md)、[UInt32](../data-types/int-uint.md)、[浮動小数点](../data-types/float.md)または[DateTime](../data-types/datetime.md)。
-- `scale` - ティックサイズ（精度）：10<sup>-precision</sup>秒。 有効な範囲: [ 0 : 9 ]。
-- `timezone` (オプション) - 指定されたDateTime64オブジェクトのタイムゾーン。
+- `expr` — 値。[String](../data-types/string.md)、[UInt32](../data-types/int-uint.md)、[Float](../data-types/float.md)または[DateTime](../data-types/datetime.md)。
+- `scale` - タイム単位（精度）：10<sup>-precision</sup>秒。有効範囲：[ 0 : 9 ]。
+- `timezone`（オプション） - 指定されたDateTime64オブジェクトのタイムゾーン。
 
 **返される値**
 
-- サブ秒精度を持つカレンダー日と時間帯、さもなくば`NULL`。 [DateTime64](../data-types/datetime64.md)/[NULL](../data-types/nullable.md)。
+- サブ秒精度を持つカレンダー日付と時刻。そうでない場合は`NULL`。[DateTime64](../data-types/datetime64.md)/[NULL](../data-types/nullable.md)。
 
 **例**
 
@@ -4154,38 +3998,35 @@ SELECT
 
 ```response
 ┌───────────────valid_arg─┬─invalid_arg─┐
-│ 1976-10-18 00:00:00.300 │        ᴺᵁᴺᴸ │
+│ 1976-10-18 00:00:00.300 │        ᴺᵁᴸᴸ │
 └─────────────────────────┴─────────────┘
 ```
 
-**その他の情報**
+**関連項目**
 
-- [toDateTime64](#todatetime64).
-- [toDateTime64OrZero](#todatetime64orzero).
-- [toDateTime64OrDefault](#todatetime64ordefault).
-
+- [toDateTime64](#todatetime64)。
+- [toDateTime64OrZero](#todatetime64orzero)。
+- [toDateTime64OrDefault](#todatetime64ordefault)。
 ## toDateTime64OrDefault {#todatetime64ordefault}
 
-Like [toDateTime64](#todatetime64), this function converts an input value to a value of type [DateTime64](../data-types/datetime64.md),
-but returns either the default value of [DateTime64](../data-types/datetime64.md)
-or the provided default if an invalid argument is received.
+[toDateTime64](#todatetime64)と同様ですが、無効な引数が受け取られた場合には、[DateTime64](../data-types/datetime64.md)のデフォルト値または提供されたデフォルトを返します。
 
 **構文**
 
-``` sql
+```sql
 toDateTime64OrNull(expr, scale, [timezone, default])
 ```
 
 **引数**
 
-- `expr` — 値。 [文字列](../data-types/string.md)、[UInt32](../data-types/int-uint.md)、[浮動小数点](../data-types/float.md)または[DateTime](../data-types/datetime.md)。
-- `scale` - ティックサイズ（精度）：10<sup>-precision</sup>秒。 有効な範囲: [ 0 : 9 ]。
-- `timezone` (オプション) - 指定されたDateTime64オブジェクトのタイムゾーン。
-- `default` (オプション) - 無効な引数が渡された場合に返すデフォルト値。 [DateTime64](../data-types/datetime64.md)。
+- `expr` — 値。[String](../data-types/string.md)、[UInt32](../data-types/int-uint.md)、[Float](../data-types/float.md)または[DateTime](../data-types/datetime.md)。
+- `scale` - タイム単位（精度）：10<sup>-precision</sup>秒。有効範囲：[ 0 : 9 ]。
+- `timezone`（オプション） - 指定されたDateTime64オブジェクトのタイムゾーン。
+- `default`（オプション） - 無効な引数が受け取られた場合に返すデフォルト値。[DateTime64](../data-types/datetime64.md)。
 
 **返される値**
 
-- サブ秒精度を持つカレンダー日と時間帯、さもなくば`DateTime64`の最小値または提供された`default`値が返されます。 [DateTime64](../data-types/datetime64.md)。
+- サブ秒精度を持つカレンダー日付と時刻。そうでない場合は、`DateTime64`の最小値または提供されたデフォルト値。[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -4205,15 +4046,14 @@ SELECT
 └─────────────────────────┴──────────────────────────┘
 ```
 
-**その他の情報**
+**関連項目**
 
-- [toDateTime64](#todatetime64).
-- [toDateTime64OrZero](#todatetime64orzero).
-- [toDateTime64OrNull](#todatetime64ornull).
-
+- [toDateTime64](#todatetime64)。
+- [toDateTime64OrZero](#todatetime64orzero)。
+- [toDateTime64OrNull](#todatetime64ornull)。
 ## toDecimal32 {#todecimal32}
 
-Converts an input value to a value of type [`Decimal(9, S)`](../data-types/decimal.md) with scale of `S`. Throws an exception in case of an error.
+入力値を[`Decimal(9, S)`](../data-types/decimal.md)の型に変換します。エラーが発生した場合には例外がスローされます。
 
 **構文**
 
@@ -4223,32 +4063,32 @@ toDecimal32(expr, S)
 
 **引数**
 
-- `expr` — 数字または数字の文字列表現を返す式。 [式](/sql-reference/syntax#expressions)。
-- `S` — 数値の小数部が持つことができる桁数を指定するスケールパラメータ、0から9の間。 [UInt8](../data-types/int-uint.md)。
+- `expr` — 数字または数字の文字列表現を返す式。[Expression](/sql-reference/syntax#expressions)。
+- `S` — フラクション部分の数字が持つことができる桁数を指定する、0から9の間のスケールパラメータ。[UInt8](../data-types/int-uint.md)。
 
-サポートされる引数:
-- (U)Int8/16/32/64/128/256型の値または文字列表現。
-- Float32/64型の値または文字列表現。
+サポートされている引数:
+- (U)Int8/16/32/64/128/256型の値またはその文字列表現。
+- Float32/64型の値またはその文字列表現。
 
 サポートされていない引数:
-- Float32/64型の値 `NaN` および `Inf` の文字列表現（ケース非感知）。
-- 2進数および16進数の文字列表現、例: `SELECT toDecimal32('0xc0fe', 1);`。
+- Float32/64の値`NaN`および`Inf`の文字列表現（ケースインセンシティブ）。
+- 2進数および16進数の値の文字列表現。例えば、`SELECT toDecimal32('0xc0fe', 1);`。
 
 :::note
-オーバーフローが発生する可能性があります。もし`expr`の値が`Decimal32`の境界を超えると: `( -1 * 10^(9 - S), 1 * 10^(9 - S) )`。
-小数部に過剰な桁が含まれている場合は切り捨てられます（四捨五入ではない）。
-整数部に過剰な桁が含まれていると、例外が発生します。
+`expr`の値が`Decimal32`の境界を超えるとオーバーフローが発生する可能性があります。`( -1 * 10^(9 - S), 1 * 10^(9 - S) )`。
+フラクション部分の桁数が多すぎると切り捨てられます（丸められません）。
+整数部分の桁数が多すぎると例外が発生します。
 :::
 
 :::warning
-変換は余分な桁を削除し、Float32/Float64入力での操作が予期せぬ方法で行われる可能性があります。演算は浮動小数点命令を使用して行われるためです。
-たとえば、`toDecimal32(1.15, 2)`は`1.14`に等しいです。これは1.15 * 100が浮動小数点で114.99に等しいからです。
-文字列入力を使用することで元の整数型を使用して演算が行われるようにできます：`toDecimal32('1.15', 2) = 1.15`
+変換は余分な桁を切り捨て、Float32/Float64入力での動作が予期しないものになる可能性があります。操作は浮動小数点命令を使用して行われるためです。
+例えば: `toDecimal32(1.15, 2)`は`1.14`に等しいです。なぜなら、1.15 * 100の浮動小数点は114.99だからです。
+文字列入力を使用すれば、操作には基になる整数型が使われます：`toDecimal32('1.15', 2) = 1.15`
 :::
 
 **返される値**
 
-- タイプ `Decimal(9, S)` の値。 [Decimal32(S)](../data-types/int-uint.md)。
+- `Decimal(9, S)`型の値。[Decimal32(S)](../data-types/int-uint.md)。
 
 **例**
 
@@ -4275,15 +4115,14 @@ c:      4.2
 type_c: Decimal(9, 3)
 ```
 
-**その他の情報**
+**関連項目**
 
-- [`toDecimal32OrZero`](#todecimal32orzero).
-- [`toDecimal32OrNull`](#todecimal32ornull).
-- [`toDecimal32OrDefault`](#todecimal32ordefault).
-
+- [`toDecimal32OrZero`](#todecimal32orzero)。
+- [`toDecimal32OrNull`](#todecimal32ornull)。
+- [`toDecimal32OrDefault`](#todecimal32ordefault)。
 ## toDecimal32OrZero {#todecimal32orzero}
 
-Like [`toDecimal32`](#todecimal32), this function converts an input value to a value of type [Decimal(9, S)](../data-types/decimal.md) but returns `0` in case of an error.
+[`toDecimal32`](#todecimal32)と同様に、この関数は入力値を[Decimal(9, S)](../data-types/decimal.md)型の値に変換しますが、エラーが発生した場合は`0`を返します。
 
 **構文**
 
@@ -4293,32 +4132,32 @@ toDecimal32OrZero(expr, S)
 
 **引数**
 
-- `expr` — 数字の文字列表現。 [文字列](../data-types/string.md)。
-- `S` — 数値の小数部が持つことができる桁数を指定するスケールパラメータ、0から9の間。 [UInt8](../data-types/int-uint.md)。
+- `expr` — 数字の文字列表現。[String](../data-types/string.md)。
+- `S` — フラクション部分の桁数を指定する0から9の間のスケールパラメータ。[UInt8](../data-types/int-uint.md)。
 
-サポートされる引数:
-- (U)Int8/16/32/64/128/256型の値または文字列表現。
-- Float32/64型の値または文字列表現。
+サポートされている引数:
+- (U)Int8/16/32/64/128/256型の値の文字列表現。
+- Float32/64型の値の文字列表現。
 
 サポートされていない引数:
-- Float32/64型の値の`NaN`および`Inf`の文字列表現。
-- 2進数および16進数の文字列表現、例: `SELECT toDecimal32OrZero('0xc0fe', 1);`。
+- Float32/64の値`NaN`および`Inf`の文字列表現。
+- 2進数および16進数の値の文字列表現。例えば、`SELECT toDecimal32OrZero('0xc0fe', 1);`。
 
 :::note
-オーバーフローが発生する可能性があります。もし`expr`の値が`Decimal32`の境界を超えると: `( -1 * 10^(9 - S), 1 * 10^(9 - S) )`。
-小数部に過剰な桁が含まれている場合は切り捨てられます（四捨五入ではない）。
-整数部に過剰な桁が含まれているとエラーが発生します。
+`expr`の値が`Decimal32`の境界を超えるとオーバーフローが発生する可能性があります。`( -1 * 10^(9 - S), 1 * 10^(9 - S) )`。
+フラクション部分の桁数が多すぎると切り捨てられます（丸められません）。
+整数部分の桁数が多すぎるとエラーが発生します。
 :::
 
 **返される値**
 
-- 成功した場合は型 `Decimal(9, S)`の値、それ以外の場合は`0`で `S` 小数桁数の値。 [Decimal32(S)](../data-types/decimal.md)。
+- 成功した場合は`Decimal(9, S)`型の値、そうでない場合は`0`（`S`桁の小数部付き）を返します。[Decimal32(S)](../data-types/decimal.md)。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     toDecimal32OrZero(toString(-1.111), 5) AS a,
     toTypeName(a),
@@ -4338,11 +4177,12 @@ b:             0
 toTypeName(b): Decimal(9, 5)
 ```
 
-**その他の情報**
+**関連項目**
 
-- [`toDecimal32`](#todecimal32).
-- [`toDecimal32OrNull`](#todecimal32ornull).
-- [`toDecimal32OrDefault`](#todecimal32ordefault).
+- [`toDecimal32`](#todecimal32)。
+- [`toDecimal32OrNull`](#todecimal32ornull)。
+- [`toDecimal32OrDefault`](#todecimal32ordefault)。
+```
 
 ## toDecimal32OrNull {#todecimal32ornull}
 
@@ -4356,32 +4196,32 @@ toDecimal32OrNull(expr, S)
 
 **引数**
 
-- `expr` — 数字の文字列表現。 [文字列](../data-types/string.md)。
-- `S` — 数値の小数部が持つことができる桁数を指定するスケールパラメータ、0から9の間。 [UInt8](../data-types/int-uint.md)。
+- `expr` — 数字の文字列表現。 [String](../data-types/string.md).
+- `S` — 0から9までのスケールパラメータで、数字の小数部分が持つことができる桁数を指定します。 [UInt8](../data-types/int-uint.md).
 
 サポートされる引数:
-- (U)Int8/16/32/64/128/256型の値または文字列表現。
-- Float32/64型の値または文字列表現。
+- (U)Int8/16/32/64/128/256型の文字列表現。
+- Float32/64型の文字列表現。
 
-サポートされていない引数:
-- Float32/64型の値 `NaN` および `Inf` の文字列表現。
-- 2進数および16進数の文字列表現、例: `SELECT toDecimal32OrNull('0xc0fe', 1);`。
+サポートされない引数:
+- Float32/64値の`NaN`および`Inf`の文字列表現。
+- バイナリおよび16進数値の文字列表現、例えば `SELECT toDecimal32OrNull('0xc0fe', 1);`。
 
 :::note
-オーバーフローが発生する可能性があります。もし`expr`の値が`Decimal32`の境界を超えると: `( -1 * 10^(9 - S), 1 * 10^(9 - S) )`。
-小数部に過剰な桁が含まれている場合は切り捨てられます（四捨五入ではない）。
-整数部に過剰な桁が含まれているとエラーが発生します。
+`expr`の値が`Decimal32`の範囲を超えるとオーバーフローが発生する可能性があります: `( -1 * 10^(9 - S), 1 * 10^(9 - S) )`。
+分数の過剰な桁は破棄されます（丸められません）。
+整数部分の過剰な桁はエラーにつながります。
 :::
 
 **返される値**
 
-- 成功した場合は型 `Nullable(Decimal(9, S))`の値、それ以外の場合は同じ型の値`NULL`。 [Decimal32(S)](../data-types/decimal.md)。
+- 成功した場合は`Nullable(Decimal(9, S))`型の値、それ以外は同じ型の`NULL`の値。 [Decimal32(S)](../data-types/decimal.md).
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     toDecimal32OrNull(toString(-1.111), 5) AS a,
     toTypeName(a),
@@ -4401,58 +4241,56 @@ b:             ᴺᵁᴸᴸ
 toTypeName(b): Nullable(Decimal(9, 5))
 ```
 
-**その他の情報**
+**参照**
 
 - [`toDecimal32`](#todecimal32).
 - [`toDecimal32OrZero`](#todecimal32orzero).
 - [`toDecimal32OrDefault`](#todecimal32ordefault).
-```
-
 ## toDecimal32OrDefault {#todecimal32ordefault}
 
 Like [`toDecimal32`](#todecimal32), this function converts an input value to a value of type [Decimal(9, S)](../data-types/decimal.md) but returns the default value in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toDecimal32OrDefault(expr, S[, default])
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — A String representation of a number. [String](../data-types/string.md).
-- `S` — Scale parameter between 0 and 9, specifying how many digits the fractional part of a number can have. [UInt8](../data-types/int-uint.md).
-- `default` (optional) — The default value to return if parsing to type `Decimal32(S)` is unsuccessful. [Decimal32(S)](../data-types/decimal.md).
+- `expr` — 数字の文字列表現。 [String](../data-types/string.md).
+- `S` — 0から9までのスケールパラメータで、数字の小数部分が持つことができる桁数を指定します。 [UInt8](../data-types/int-uint.md).
+- `default` (オプション) — `Decimal32(S)`型へのパースが失敗した場合に返すデフォルト値。 [Decimal32(S)](../data-types/decimal.md).
 
-Supported arguments:
-- String representations of type (U)Int8/16/32/64/128/256.
-- String representations of type Float32/64.
+サポートされる引数:
+- (U)Int8/16/32/64/128/256型の文字列表現。
+- Float32/64型の文字列表現。
 
-Unsupported arguments:
-- String representations of Float32/64 values `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toDecimal32OrDefault('0xc0fe', 1);`.
+サポートされない引数:
+- Float32/64値の`NaN`および`Inf`の文字列表現。
+- バイナリおよび16進数値の文字列表現、例えば `SELECT toDecimal32OrDefault('0xc0fe', 1);`。
 
 :::note
-An overflow can occur if the value of `expr` exceeds the bounds of `Decimal32`: `( -1 * 10^(9 - S), 1 * 10^(9 - S) )`.
-Excessive digits in a fraction are discarded (not rounded).
-Excessive digits in the integer part will lead to an error.
+`expr`の値が`Decimal32`の範囲を超えるとオーバーフローが発生する可能性があります: `( -1 * 10^(9 - S), 1 * 10^(9 - S) )`。
+分数の過剰な桁は破棄されます（丸められません）。
+整数部分の過剰な桁はエラーにつながります。
 :::
 
 :::warning
-Conversions drop extra digits and could operate in an unexpected way when working with Float32/Float64 inputs as the operations are performed using floating point instructions.
-For example: `toDecimal32OrDefault(1.15, 2)` is equal to `1.14` because 1.15 * 100 in floating point is 114.99.
-You can use a String input so the operations use the underlying integer type: `toDecimal32OrDefault('1.15', 2) = 1.15`
+変換は余分な桁を削除し、Float32/Float64入力を扱う際に予期しない方法で動作する可能性があります。操作は浮動小数点命令を使用して行われます。
+例えば、`toDecimal32OrDefault(1.15, 2)`は`1.14`に等しいです。何故なら、浮動小数点では1.15 * 100は114.99だからです。
+文字列入力を使用すれば、操作は基礎となる整数型を使用します: `toDecimal32OrDefault('1.15', 2) = 1.15`
 :::
 
-**Returned value**
+**返される値**
 
-- Value of type `Decimal(9, S)` if successful, otherwise returns the default value if passed or `0` if not. [Decimal32(S)](../data-types/decimal.md).
+- 成功した場合は`Decimal(9, S)`型の値、それ以外は渡されたデフォルト値、または渡されなければ`0`を返します。 [Decimal32(S)](../data-types/decimal.md).
 
-**Examples**
+**例**
 
-Query:
+クエリ:
 
-``` sql
+```sql
 SELECT
     toDecimal32OrDefault(toString(0.0001), 5) AS a,
     toTypeName(a),
@@ -4461,7 +4299,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果:
 
 ```response
 Row 1:
@@ -4472,7 +4310,7 @@ b:             -1
 toTypeName(b): Decimal(9, 0)
 ```
 
-**See also**
+**参照**
 
 - [`toDecimal32`](#todecimal32).
 - [`toDecimal32OrZero`](#todecimal32orzero).
@@ -4481,44 +4319,44 @@ toTypeName(b): Decimal(9, 0)
 
 Converts an input value to a value of type [`Decimal(18, S)`](../data-types/decimal.md) with scale of `S`. Throws an exception in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toDecimal64(expr, S)
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — Expression returning a number or a string representation of a number. [Expression](/sql-reference/syntax#expressions).
-- `S` — Scale parameter between 0 and 18, specifying how many digits the fractional part of a number can have. [UInt8](../data-types/int-uint.md).
+- `expr` — 数字を返す式または数字の文字列表現。 [Expression](/sql-reference/syntax#expressions).
+- `S` — 0から18までのスケールパラメータで、数字の小数部分が持つことができる桁数を指定します。 [UInt8](../data-types/int-uint.md).
 
-Supported arguments:
-- Values or string representations of type (U)Int8/16/32/64/128/256.
-- Values or string representations of type Float32/64.
+サポートされる引数:
+- (U)Int8/16/32/64/128/256型の値または文字列表現。
+- Float32/64型の値または文字列表現。
 
-Unsupported arguments:
-- Values or string representations of Float32/64 values `NaN` and `Inf` (case-insensitive).
-- String representations of binary and hexadecimal values, e.g. `SELECT toDecimal64('0xc0fe', 1);`.
+サポートされない引数:
+- Float32/64値の`NaN`や`Inf`の値または文字列表現（大文字・小文字を区別しません）。
+- バイナリおよび16進数の文字列表現、例えば `SELECT toDecimal64('0xc0fe', 1);`。
 
 :::note
-An overflow can occur if the value of `expr` exceeds the bounds of `Decimal64`: `( -1 * 10^(18 - S), 1 * 10^(18 - S) )`.
-Excessive digits in a fraction are discarded (not rounded).
-Excessive digits in the integer part will lead to an exception.
+`expr`の値が`Decimal64`の範囲を超えるとオーバーフローが発生する可能性があります: `( -1 * 10^(18 - S), 1 * 10^(18 - S) )`。
+分数の過剰な桁は破棄されます（丸められません）。
+整数部分の過剰な桁は例外を引き起こします。
 :::
 
 :::warning
-Conversions drop extra digits and could operate in an unexpected way when working with Float32/Float64 inputs as the operations are performed using floating point instructions.
-For example: `toDecimal64(1.15, 2)` is equal to `1.14` because 1.15 * 100 in floating point is 114.99.
-You can use a String input so the operations use the underlying integer type: `toDecimal64('1.15', 2) = 1.15`
+変換は余分な桁を削除し、Float32/Float64入力を扱う際に予期しない方法で動作する可能性があります。操作は浮動小数点命令を使用して行われます。
+例えば、`toDecimal64(1.15, 2)`は`1.14`に等しいです。何故なら、浮動小数点では1.15 * 100は114.99だからです。
+文字列入力を使用することで、操作は基礎となる整数型を使用します: `toDecimal64('1.15', 2) = 1.15`
 :::
 
-**Returned value**
+**返される値**
 
-- Value of type `Decimal(18, S)`. [Decimal64(S)](../data-types/int-uint.md).
+- `Decimal(18, S)`型の値。 [Decimal64(S)](../data-types/int-uint.md).
 
-**Example**
+**例**
 
-Query:
+クエリ:
 
 ```sql
 SELECT
@@ -4528,7 +4366,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果:
 
 ```response
 Row 1:
@@ -4541,7 +4379,7 @@ c:      4.2
 type_c: Decimal(18, 3)
 ```
 
-**See also**
+**参照**
 
 - [`toDecimal64OrZero`](#todecimal64orzero).
 - [`toDecimal64OrNull`](#todecimal64ornull).
@@ -4550,40 +4388,40 @@ type_c: Decimal(18, 3)
 
 Like [`toDecimal64`](#todecimal64), this function converts an input value to a value of type [Decimal(18, S)](../data-types/decimal.md) but returns `0` in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toDecimal64OrZero(expr, S)
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — A String representation of a number. [String](../data-types/string.md).
-- `S` — Scale parameter between 0 and 18, specifying how many digits the fractional part of a number can have. [UInt8](../data-types/int-uint.md).
+- `expr` — 数字の文字列表現。 [String](../data-types/string.md).
+- `S` — 0から18までのスケールパラメータで、数字の小数部分が持つことができる桁数を指定します。 [UInt8](../data-types/int-uint.md).
 
-Supported arguments:
-- String representations of type (U)Int8/16/32/64/128/256.
-- String representations of type Float32/64.
+サポートされる引数:
+- (U)Int8/16/32/64/128/256型の文字列表現。
+- Float32/64型の文字列表現。
 
-Unsupported arguments:
-- String representations of Float32/64 values `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toDecimal64OrZero('0xc0fe', 1);`.
+サポートされない引数:
+- Float32/64値の`NaN`および`Inf`の文字列表現。
+- バイナリおよび16進数値の文字列表現、例えば `SELECT toDecimal64OrZero('0xc0fe', 1);`。
 
 :::note
-An overflow can occur if the value of `expr` exceeds the bounds of `Decimal64`: `( -1 * 10^(18 - S), 1 * 10^(18 - S) )`.
-Excessive digits in a fraction are discarded (not rounded).
-Excessive digits in the integer part will lead to an error.
+`expr`の値が`Decimal64`の範囲を超えるとオーバーフローが発生する可能性があります: `( -1 * 10^(18 - S), 1 * 10^(18 - S) )`。
+分数の過剰な桁は破棄されます（丸められません）。
+整数部分の過剰な桁はエラーにつながります。
 :::
 
-**Returned value**
+**返される値**
 
-- Value of type `Decimal(18, S)` if successful, otherwise `0` with `S` decimal places. [Decimal64(S)](../data-types/decimal.md).
+- 成功した場合は`Decimal(18, S)`型の値、それ以外は`0`で`s`桁の小数点以下を持つ値。 [Decimal64(S)](../data-types/decimal.md).
 
-**Example**
+**例**
 
-Query:
+クエリ:
 
-``` sql
+```sql
 SELECT
     toDecimal64OrZero(toString(0.0001), 18) AS a,
     toTypeName(a),
@@ -4592,7 +4430,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果:
 
 ```response
 Row 1:
@@ -4603,7 +4441,7 @@ b:             0
 toTypeName(b): Decimal(18, 18)
 ```
 
-**See also**
+**参照**
 
 - [`toDecimal64`](#todecimal64).
 - [`toDecimal64OrNull`](#todecimal64ornull).
@@ -4612,40 +4450,40 @@ toTypeName(b): Decimal(18, 18)
 
 Like [`toDecimal64`](#todecimal64), this function converts an input value to a value of type [Nullable(Decimal(18, S))](../data-types/decimal.md) but returns `0` in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toDecimal64OrNull(expr, S)
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — A String representation of a number. [String](../data-types/string.md).
-- `S` — Scale parameter between 0 and 18, specifying how many digits the fractional part of a number can have. [UInt8](../data-types/int-uint.md).
+- `expr` — 数字の文字列表現。 [String](../data-types/string.md).
+- `S` — 0から18までのスケールパラメータで、数字の小数部分が持つことができる桁数を指定します。 [UInt8](../data-types/int-uint.md).
 
-Supported arguments:
-- String representations of type (U)Int8/16/32/64/128/256.
-- String representations of type Float32/64.
+サポートされる引数:
+- (U)Int8/16/32/64/128/256型の文字列表現。
+- Float32/64型の文字列表現。
 
-Unsupported arguments:
-- String representations of Float32/64 values `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toDecimal64OrNull('0xc0fe', 1);`.
+サポートされない引数:
+- Float32/64値の`NaN`および`Inf`の文字列表現。
+- バイナリおよび16進数値の文字列表現、例えば `SELECT toDecimal64OrNull('0xc0fe', 1);`。
 
 :::note
-An overflow can occur if the value of `expr` exceeds the bounds of `Decimal64`: `( -1 * 10^(18 - S), 1 * 10^(18 - S) )`.
-Excessive digits in a fraction are discarded (not rounded).
-Excessive digits in the integer part will lead to an error.
+`expr`の値が`Decimal64`の範囲を超えるとオーバーフローが発生する可能性があります: `( -1 * 10^(18 - S), 1 * 10^(18 - S) )`。
+分数の過剰な桁は破棄されます（丸められません）。
+整数部分の過剰な桁はエラーにつながります。
 :::
 
-**Returned value**
+**返される値**
 
-- Value of type `Nullable(Decimal(18, S))` if successful, otherwise value `NULL` of the same type. [Decimal64(S)](../data-types/decimal.md).
+- 成功した場合は`Nullable(Decimal(18, S))`型の値、それ以外は同じ型の`NULL`の値。 [Decimal64(S)](../data-types/decimal.md).
 
-**Examples**
+**例**
 
-Query:
+クエリ:
 
-``` sql
+```sql
 SELECT
     toDecimal64OrNull(toString(0.0001), 18) AS a,
     toTypeName(a),
@@ -4654,7 +4492,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果:
 
 ```response
 Row 1:
@@ -4665,7 +4503,7 @@ b:             ᴺᵁᴸᴸ
 toTypeName(b): Nullable(Decimal(18, 18))
 ```
 
-**See also**
+**参照**
 
 - [`toDecimal64`](#todecimal64).
 - [`toDecimal64OrZero`](#todecimal64orzero).
@@ -4674,47 +4512,47 @@ toTypeName(b): Nullable(Decimal(18, 18))
 
 Like [`toDecimal64`](#todecimal64), this function converts an input value to a value of type [Decimal(18, S)](../data-types/decimal.md) but returns the default value in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toDecimal64OrDefault(expr, S[, default])
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — A String representation of a number. [String](../data-types/string.md).
-- `S` — Scale parameter between 0 and 18, specifying how many digits the fractional part of a number can have. [UInt8](../data-types/int-uint.md).
-- `default` (optional) — The default value to return if parsing to type `Decimal64(S)` is unsuccessful. [Decimal64(S)](../data-types/decimal.md).
+- `expr` — 数字の文字列表現。 [String](../data-types/string.md).
+- `S` — 0から18までのスケールパラメータで、数字の小数部分が持つことができる桁数を指定します。 [UInt8](../data-types/int-uint.md).
+- `default` (オプション) — `Decimal64(S)`型へのパースが失敗した場合に返すデフォルト値。 [Decimal64(S)](../data-types/decimal.md).
 
-Supported arguments:
-- String representations of type (U)Int8/16/32/64/128/256.
-- String representations of type Float32/64.
+サポートされる引数:
+- (U)Int8/16/32/64/128/256型の文字列表現。
+- Float32/64型の文字列表現。
 
-Unsupported arguments:
-- String representations of Float32/64 values `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toDecimal64OrDefault('0xc0fe', 1);`.
+サポートされない引数:
+- Float32/64値の`NaN`および`Inf`の文字列表現。
+- バイナリおよび16進数値の文字列表現、例えば `SELECT toDecimal64OrDefault('0xc0fe', 1);`。
 
 :::note
-An overflow can occur if the value of `expr` exceeds the bounds of `Decimal64`: `( -1 * 10^(18 - S), 1 * 10^(18 - S) )`.
-Excessive digits in a fraction are discarded (not rounded).
-Excessive digits in the integer part will lead to an error.
+`expr`の値が`Decimal64`の範囲を超えるとオーバーフローが発生する可能性があります: `( -1 * 10^(18 - S), 1 * 10^(18 - S) )`。
+分数の過剰な桁は破棄されます（丸められません）。
+整数部分の過剰な桁はエラーにつながります。
 :::
 
 :::warning
-Conversions drop extra digits and could operate in an unexpected way when working with Float32/Float64 inputs as the operations are performed using floating point instructions.
-For example: `toDecimal64OrDefault(1.15, 2)` is equal to `1.14` because 1.15 * 100 in floating point is 114.99.
-You can use a String input so the operations use the underlying integer type: `toDecimal64OrDefault('1.15', 2) = 1.15`
+変換は余分な桁を削除し、Float32/Float64入力を扱う際に予期しない方法で動作する可能性があります。操作は浮動小数点命令を使用して行われます。
+例えば: `toDecimal64OrDefault(1.15, 2)`は`1.14`に等しいです。何故なら、1.15 * 100の浮動小数点は114.99だからです。
+文字列入力を使用することで、操作は基礎となる整数型を使用します: `toDecimal64OrDefault('1.15', 2) = 1.15`
 :::
 
-**Returned value**
+**返される値**
 
-- Value of type `Decimal(18, S)` if successful, otherwise returns the default value if passed or `0` if not. [Decimal64(S)](../data-types/decimal.md).
+- 成功した場合は`Decimal(18, S)`型の値、それ以外は渡されたデフォルト値、または渡されなければ`0`を返します。 [Decimal64(S)](../data-types/decimal.md).
 
-**Examples**
+**例**
 
-Query:
+クエリ:
 
-``` sql
+```sql
 SELECT
     toDecimal64OrDefault(toString(0.0001), 18) AS a,
     toTypeName(a),
@@ -4723,7 +4561,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果:
 
 ```response
 Row 1:
@@ -4734,7 +4572,7 @@ b:             -1
 toTypeName(b): Decimal(18, 0)
 ```
 
-**See also**
+**参照**
 
 - [`toDecimal64`](#todecimal64).
 - [`toDecimal64OrZero`](#todecimal64orzero).
@@ -4743,44 +4581,44 @@ toTypeName(b): Decimal(18, 0)
 
 Converts an input value to a value of type [`Decimal(38, S)`](../data-types/decimal.md) with scale of `S`. Throws an exception in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toDecimal128(expr, S)
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — Expression returning a number or a string representation of a number. [Expression](/sql-reference/syntax#expressions).
-- `S` — Scale parameter between 0 and 38, specifying how many digits the fractional part of a number can have. [UInt8](../data-types/int-uint.md).
+- `expr` — 数字を返す式または数字の文字列表現。 [Expression](/sql-reference/syntax#expressions).
+- `S` — 0から38までのスケールパラメータで、数字の小数部分が持つことができる桁数を指定します。 [UInt8](../data-types/int-uint.md).
 
-Supported arguments:
-- Values or string representations of type (U)Int8/16/32/64/128/256.
-- Values or string representations of type Float32/64.
+サポートされる引数:
+- (U)Int8/16/32/64/128/256型の値または文字列表現。
+- Float32/64型の値または文字列表現。
 
-Unsupported arguments:
-- Values or string representations of Float32/64 values `NaN` and `Inf` (case-insensitive).
-- String representations of binary and hexadecimal values, e.g. `SELECT toDecimal128('0xc0fe', 1);`.
+サポートされない引数:
+- Float32/64値の`NaN`および`Inf`の値または文字列表現（大文字・小文字を区別しません）。
+- バイナリおよび16進数の文字列表現、例えば `SELECT toDecimal128('0xc0fe', 1);`。
 
 :::note
-An overflow can occur if the value of `expr` exceeds the bounds of `Decimal128`: `( -1 * 10^(38 - S), 1 * 10^(38 - S) )`.
-Excessive digits in a fraction are discarded (not rounded).
-Excessive digits in the integer part will lead to an exception.
+`expr`の値が`Decimal128`の範囲を超えるとオーバーフローが発生する可能性があります: `( -1 * 10^(38 - S), 1 * 10^(38 - S) )`。
+分数の過剰な桁は破棄されます（丸められません）。
+整数部分の過剰な桁は例外を引き起こします。
 :::
 
 :::warning
-Conversions drop extra digits and could operate in an unexpected way when working with Float32/Float64 inputs as the operations are performed using floating point instructions.
-For example: `toDecimal128(1.15, 2)` is equal to `1.14` because 1.15 * 100 in floating point is 114.99.
-You can use a String input so the operations use the underlying integer type: `toDecimal128('1.15', 2) = 1.15`
+変換は余分な桁を削除し、Float32/Float64入力を扱う際に予期しない方法で動作する可能性があります。操作は浮動小数点命令を使用して行われます。
+例えば、`toDecimal128(1.15, 2)`は`1.14`に等しいです。何故なら、1.15 * 100の浮動小数点は114.99だからです。
+文字列入力を使用することで、操作は基礎となる整数型を使用します: `toDecimal128('1.15', 2) = 1.15`
 :::
 
-**Returned value**
+**返される値**
 
-- Value of type `Decimal(38, S)`. [Decimal128(S)](../data-types/int-uint.md).
+- `Decimal(38, S)`型の値。 [Decimal128(S)](../data-types/int-uint.md).
 
-**Example**
+**例**
 
-Query:
+クエリ:
 
 ```sql
 SELECT
@@ -4790,7 +4628,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果:
 
 ```response
 Row 1:
@@ -4803,7 +4641,7 @@ c:      99.67
 type_c: Decimal(38, 3)
 ```
 
-**See also**
+**参照**
 
 - [`toDecimal128OrZero`](#todecimal128orzero).
 - [`toDecimal128OrNull`](#todecimal128ornull).
@@ -4812,40 +4650,40 @@ type_c: Decimal(38, 3)
 
 Like [`toDecimal128`](#todecimal128), this function converts an input value to a value of type [Decimal(38, S)](../data-types/decimal.md) but returns `0` in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toDecimal128OrZero(expr, S)
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — A String representation of a number. [String](../data-types/string.md).
-- `S` — Scale parameter between 0 and 38, specifying how many digits the fractional part of a number can have. [UInt8](../data-types/int-uint.md).
+- `expr` — 数字の文字列表現。 [String](../data-types/string.md).
+- `S` — 0から38までのスケールパラメータで、数字の小数部分が持つことができる桁数を指定します。 [UInt8](../data-types/int-uint.md).
 
-Supported arguments:
-- String representations of type (U)Int8/16/32/64/128/256.
-- String representations of type Float32/64.
+サポートされる引数:
+- (U)Int8/16/32/64/128/256型の文字列表現。
+- Float32/64型の文字列表現。
 
-Unsupported arguments:
-- String representations of Float32/64 values `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toDecimal128OrZero('0xc0fe', 1);`.
+サポートされない引数:
+- Float32/64値の`NaN`および`Inf`の文字列表現。
+- バイナリおよび16進数値の文字列表現、例えば `SELECT toDecimal128OrZero('0xc0fe', 1);`。
 
 :::note
-An overflow can occur if the value of `expr` exceeds the bounds of `Decimal128`: `( -1 * 10^(38 - S), 1 * 10^(38 - S) )`.
-Excessive digits in a fraction are discarded (not rounded).
-Excessive digits in the integer part will lead to an error.
+`expr`の値が`Decimal128`の範囲を超えるとオーバーフローが発生する可能性があります: `( -1 * 10^(38 - S), 1 * 10^(38 - S) )`。
+分数の過剰な桁は破棄されます（丸められません）。
+整数部分の過剰な桁はエラーにつながります。
 :::
 
-**Returned value**
+**返される値**
 
-- Value of type `Decimal(38, S)` if successful, otherwise `0` with `S` decimal places. [Decimal128(S)](../data-types/decimal.md).
+- 成功した場合は`Decimal(38, S)`型の値、それ以外は`0`で`s`桁の小数点以下を持つ値。 [Decimal128(S)](../data-types/decimal.md).
 
-**Example**
+**例**
 
-Query:
+クエリ:
 
-``` sql
+```sql
 SELECT
     toDecimal128OrZero(toString(0.0001), 38) AS a,
     toTypeName(a),
@@ -4854,7 +4692,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果:
 
 ```response
 Row 1:
@@ -4865,7 +4703,7 @@ b:             0
 toTypeName(b): Decimal(38, 38)
 ```
 
-**See also**
+**参照**
 
 - [`toDecimal128`](#todecimal128).
 - [`toDecimal128OrNull`](#todecimal128ornull).
@@ -4874,40 +4712,40 @@ toTypeName(b): Decimal(38, 38)
 
 Like [`toDecimal128`](#todecimal128), this function converts an input value to a value of type [Nullable(Decimal(38, S))](../data-types/decimal.md) but returns `0` in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toDecimal128OrNull(expr, S)
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — A String representation of a number. [String](../data-types/string.md).
-- `S` — Scale parameter between 0 and 38, specifying how many digits the fractional part of a number can have. [UInt8](../data-types/int-uint.md).
+- `expr` — 数字の文字列表現。 [String](../data-types/string.md).
+- `S` — 0から38までのスケールパラメータで、数字の小数部分が持つことができる桁数を指定します。 [UInt8](../data-types/int-uint.md).
 
-Supported arguments:
-- String representations of type (U)Int8/16/32/64/128/256.
-- String representations of type Float32/64.
+サポートされる引数:
+- (U)Int8/16/32/64/128/256型の文字列表現。
+- Float32/64型の文字列表現。
 
-Unsupported arguments:
-- String representations of Float32/64 values `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toDecimal128OrNull('0xc0fe', 1);`.
+サポートされない引数:
+- Float32/64値の`NaN`および`Inf`の文字列表現。
+- バイナリおよび16進数値の文字列表現、例えば `SELECT toDecimal128OrNull('0xc0fe', 1);`。
 
 :::note
-An overflow can occur if the value of `expr` exceeds the bounds of `Decimal128`: `( -1 * 10^(38 - S), 1 * 10^(38 - S) )`.
-Excessive digits in a fraction are discarded (not rounded).
-Excessive digits in the integer part will lead to an error.
+`expr`の値が`Decimal128`の範囲を超えるとオーバーフローが発生する可能性があります: `( -1 * 10^(38 - S), 1 * 10^(38 - S) )`。
+分数の過剰な桁は破棄されます（丸められません）。
+整数部分の過剰な桁はエラーにつながります。
 :::
 
-**Returned value**
+**返される値**
 
-- Value of type `Nullable(Decimal(38, S))` if successful, otherwise value `NULL` of the same type. [Decimal128(S)](../data-types/decimal.md).
+- 成功した場合は`Nullable(Decimal(38, S))`型の値、それ以外は同じ型の`NULL`の値。 [Decimal128(S)](../data-types/decimal.md).
 
-**Examples**
+**例**
 
-Query:
+クエリ:
 
-``` sql
+```sql
 SELECT
     toDecimal128OrNull(toString(1/42), 38) AS a,
     toTypeName(a),
@@ -4916,7 +4754,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果:
 
 ```response
 Row 1:
@@ -4927,7 +4765,7 @@ b:             ᴺᵁᴸᴸ
 toTypeName(b): Nullable(Decimal(38, 38))
 ```
 
-**See also**
+**参照**
 
 - [`toDecimal128`](#todecimal128).
 - [`toDecimal128OrZero`](#todecimal128orzero).
@@ -4936,56 +4774,56 @@ toTypeName(b): Nullable(Decimal(38, 38))
 
 Like [`toDecimal128`](#todecimal128), this function converts an input value to a value of type [Decimal(38, S)](../data-types/decimal.md) but returns the default value in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toDecimal128OrDefault(expr, S[, default])
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — A String representation of a number. [String](../data-types/string.md).
-- `S` — Scale parameter between 0 and 38, specifying how many digits the fractional part of a number can have. [UInt8](../data-types/int-uint.md).
-- `default` (optional) — The default value to return if parsing to type `Decimal128(S)` is unsuccessful. [Decimal128(S)](../data-types/decimal.md).
+- `expr` — 数字の文字列表現。 [String](../data-types/string.md).
+- `S` — 0から38までのスケールパラメータで、数字の小数部分が持つことができる桁数を指定します。 [UInt8](../data-types/int-uint.md).
+- `default` (オプション) — `Decimal128(S)`型へのパースが失敗した場合に返すデフォルト値。 [Decimal128(S)](../data-types/decimal.md).
 
-Supported arguments:
-- String representations of type (U)Int8/16/32/64/128/256.
-- String representations of type Float32/64.
+サポートされる引数:
+- (U)Int8/16/32/64/128/256型の文字列表現。
+- Float32/64型の文字列表現。
 
-Unsupported arguments:
-- String representations of Float32/64 values `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toDecimal128OrDefault('0xc0fe', 1);`.
+サポートされない引数:
+- Float32/64値の`NaN`および`Inf`の文字列表現。
+- バイナリおよび16進数値の文字列表現、例えば `SELECT toDecimal128OrDefault('0xc0fe', 1);`。
 
 :::note
-An overflow can occur if the value of `expr` exceeds the bounds of `Decimal128`: `( -1 * 10^(38 - S), 1 * 10^(38 - S) )`.
-Excessive digits in a fraction are discarded (not rounded).
-Excessive digits in the integer part will lead to an error.
+`expr`の値が`Decimal128`の範囲を超えるとオーバーフローが発生する可能性があります: `( -1 * 10^(38 - S), 1 * 10^(38 - S) )`。
+分数の過剰な桁は破棄されます（丸められません）。
+整数部分の過剰な桁はエラーにつながります。
 :::
 
 :::warning
-Conversions drop extra digits and could operate in an unexpected way when working with Float32/Float64 inputs as the operations are performed using floating point instructions.
-For example: `toDecimal128OrDefault(1.15, 2)` is equal to `1.14` because 1.15 * 100 in floating point is 114.99.
-You can use a String input so the operations use the underlying integer type: `toDecimal128OrDefault('1.15', 2) = 1.15`
+変換は余分な桁を削除し、Float32/Float64入力を扱う際に予期しない方法で動作する可能性があります。操作は浮動小数点命令を使用して行われます。
+例えば: `toDecimal128OrDefault(1.15, 2)`は`1.14`に等しいです。何故なら、1.15 * 100の浮動小数点は114.99だからです。
+文字列入力を使用することで、操作は基礎となる整数型を使用します: `toDecimal128OrDefault('1.15', 2) = 1.15`
 :::
 
-**Returned value**
+**返される値**
 
-- Value of type `Decimal(38, S)` if successful, otherwise returns the default value if passed or `0` if not. [Decimal128(S)](../data-types/decimal.md).
+- 成功した場合は`Decimal(38, S)`型の値、それ以外は渡されたデフォルト値、または渡されなければ`0`を返します。 [Decimal128(S)](../data-types/decimal.md).
 
-**Examples**
+**例**
 
-Query:
+クエリ:
 
-``` sql
+```sql
 SELECT
-    toDecimal128OrDefault(toString(1/42), 76) AS a,
+    toDecimal128OrDefault(toString(1/42), 38) AS a,
     toTypeName(a),
     toDecimal128OrDefault('Inf', 0, CAST('-1', 'Decimal128(0)')) AS b,
     toTypeName(b)
 FORMAT Vertical;
 ```
 
-Result:
+結果:
 
 ```response
 Row 1:
@@ -4996,7 +4834,7 @@ b:             -1
 toTypeName(b): Decimal(38, 0)
 ```
 
-**See also**
+**参照**
 
 - [`toDecimal128`](#todecimal128).
 - [`toDecimal128OrZero`](#todecimal128orzero).
@@ -5005,44 +4843,44 @@ toTypeName(b): Decimal(38, 0)
 
 Converts an input value to a value of type [`Decimal(76, S)`](../data-types/decimal.md) with scale of `S`. Throws an exception in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toDecimal256(expr, S)
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — Expression returning a number or a string representation of a number. [Expression](/sql-reference/syntax#expressions).
-- `S` — Scale parameter between 0 and 76, specifying how many digits the fractional part of a number can have. [UInt8](../data-types/int-uint.md).
+- `expr` — 数字を返す式または数字の文字列表現。 [Expression](/sql-reference/syntax#expressions).
+- `S` — 0から76までのスケールパラメータで、数字の小数部分が持つことができる桁数を指定します。 [UInt8](../data-types/int-uint.md).
 
-Supported arguments:
-- Values or string representations of type (U)Int8/16/32/64/128/256.
-- Values or string representations of type Float32/64.
+サポートされる引数:
+- (U)Int8/16/32/64/128/256型の値または文字列表現。
+- Float32/64型の値または文字列表現。
 
-Unsupported arguments:
-- Values or string representations of Float32/64 values `NaN` and `Inf` (case-insensitive).
-- String representations of binary and hexadecimal values, e.g. `SELECT toDecimal256('0xc0fe', 1);`.
+サポートされない引数:
+- Float32/64値の`NaN`および`Inf`の値または文字列表現（大文字・小文字を区別しません）。
+- バイナリおよび16進数の文字列表現、例えば `SELECT toDecimal256('0xc0fe', 1);`。
 
 :::note
-An overflow can occur if the value of `expr` exceeds the bounds of `Decimal256`: `( -1 * 10^(76 - S), 1 * 10^(76 - S) )`.
-Excessive digits in a fraction are discarded (not rounded).
-Excessive digits in the integer part will lead to an exception.
+`expr`の値が`Decimal256`の範囲を超えるとオーバーフローが発生する可能性があります: `( -1 * 10^(76 - S), 1 * 10^(76 - S) )`。
+分数の過剰な桁は破棄されます（丸められません）。
+整数部分の過剰な桁は例外を引き起こします。
 :::
 
 :::warning
-Conversions drop extra digits and could operate in an unexpected way when working with Float32/Float64 inputs as the operations are performed using floating point instructions.
-For example: `toDecimal256(1.15, 2)` is equal to `1.14` because 1.15 * 100 in floating point is 114.99.
-You can use a String input so the operations use the underlying integer type: `toDecimal256('1.15', 2) = 1.15`
+変換は余分な桁を削除し、Float32/Float64入力を扱う際に予期しない方法で動作する可能性があります。操作は浮動小数点命令を使用して行われます。
+例えば、`toDecimal256(1.15, 2)`は`1.14`に等しいです。何故なら、1.15 * 100の浮動小数点は114.99だからです。
+文字列入力を使用することで、操作は基礎となる整数型を使用します: `toDecimal256('1.15', 2) = 1.15`
 :::
 
-**Returned value**
+**返される値**
 
-- Value of type `Decimal(76, S)`. [Decimal256(S)](../data-types/int-uint.md).
+- `Decimal(76, S)`型の値。 [Decimal256(S)](../data-types/int-uint.md).
 
-**Example**
+**例**
 
-Query:
+クエリ:
 
 ```sql
 SELECT
@@ -5052,7 +4890,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果:
 
 ```response
 Row 1:
@@ -5065,7 +4903,7 @@ c:      99.67
 type_c: Decimal(76, 3)
 ```
 
-**See also**
+**参照**
 
 - [`toDecimal256OrZero`](#todecimal256orzero).
 - [`toDecimal256OrNull`](#todecimal256ornull).
@@ -5074,40 +4912,40 @@ type_c: Decimal(76, 3)
 
 Like [`toDecimal256`](#todecimal256), this function converts an input value to a value of type [Decimal(76, S)](../data-types/decimal.md) but returns `0` in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toDecimal256OrZero(expr, S)
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — A String representation of a number. [String](../data-types/string.md).
-- `S` — Scale parameter between 0 and 76, specifying how many digits the fractional part of a number can have. [UInt8](../data-types/int-uint.md).
+- `expr` — 数字の文字列表現。 [String](../data-types/string.md).
+- `S` — 0から76までのスケールパラメータで、数字の小数部分が持つことができる桁数を指定します。 [UInt8](../data-types/int-uint.md).
 
-Supported arguments:
-- String representations of type (U)Int8/16/32/64/128/256.
-- String representations of type Float32/64.
+サポートされる引数:
+- (U)Int8/16/32/64/128/256型の文字列表現。
+- Float32/64型の文字列表現。
 
-Unsupported arguments:
-- String representations of Float32/64 values `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toDecimal256OrZero('0xc0fe', 1);`.
+サポートされない引数:
+- Float32/64値の`NaN`および`Inf`の文字列表現。
+- バイナリおよび16進数値の文字列表現、例えば `SELECT toDecimal256OrZero('0xc0fe', 1);`。
 
 :::note
-An overflow can occur if the value of `expr` exceeds the bounds of `Decimal256`: `( -1 * 10^(76 - S), 1 * 10^(76 - S) )`.
-Excessive digits in a fraction are discarded (not rounded).
-Excessive digits in the integer part will lead to an error.
+`expr`の値が`Decimal256`の範囲を超えるとオーバーフローが発生する可能性があります: `( -1 * 10^(76 - S), 1 * 10^(76 - S) )`。
+分数の過剰な桁は破棄されます（丸められません）。
+整数部分の過剰な桁はエラーにつながります。
 :::
 
-**Returned value**
+**返される値**
 
-- Value of type `Decimal(76, S)` if successful, otherwise `0` with `S` decimal places. [Decimal256(S)](../data-types/decimal.md).
+- 成功した場合は`Decimal(76, S)`型の値、それ以外は`0`で`s`桁の小数点以下を持つ値。 [Decimal256(S)](../data-types/decimal.md).
 
-**Example**
+**例**
 
-Query:
+クエリ:
 
-``` sql
+```sql
 SELECT
     toDecimal256OrZero(toString(0.0001), 76) AS a,
     toTypeName(a),
@@ -5116,7 +4954,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果:
 
 ```response
 Row 1:
@@ -5127,7 +4965,7 @@ b:             0
 toTypeName(b): Decimal(76, 76)
 ```
 
-**See also**
+**参照**
 
 - [`toDecimal256`](#todecimal256).
 - [`toDecimal256OrNull`](#todecimal256ornull).
@@ -5136,40 +4974,40 @@ toTypeName(b): Decimal(76, 76)
 
 Like [`toDecimal256`](#todecimal256), this function converts an input value to a value of type [Nullable(Decimal(76, S))](../data-types/decimal.md) but returns `0` in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toDecimal256OrNull(expr, S)
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — A String representation of a number. [String](../data-types/string.md).
-- `S` — Scale parameter between 0 and 76, specifying how many digits the fractional part of a number can have. [UInt8](../data-types/int-uint.md).
+- `expr` — 数字の文字列表現。 [String](../data-types/string.md).
+- `S` — 0から76までのスケールパラメータで、数字の小数部分が持つことができる桁数を指定します。 [UInt8](../data-types/int-uint.md).
 
-Supported arguments:
-- String representations of type (U)Int8/16/32/64/128/256.
-- String representations of type Float32/64.
+サポートされる引数:
+- (U)Int8/16/32/64/128/256型の文字列表現。
+- Float32/64型の文字列表現。
 
-Unsupported arguments:
-- String representations of Float32/64 values `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toDecimal256OrNull('0xc0fe', 1);`.
+サポートされない引数:
+- Float32/64値の`NaN`および`Inf`の文字列表現。
+- バイナリおよび16進数値の文字列表現、例えば `SELECT toDecimal256OrNull('0xc0fe', 1);`。
 
 :::note
-An overflow can occur if the value of `expr` exceeds the bounds of `Decimal256`: `( -1 * 10^(76 - S), 1 * 10^(76 - S) )`.
-Excessive digits in a fraction are discarded (not rounded).
-Excessive digits in the integer part will lead to an error.
+`expr`の値が`Decimal256`の範囲を超えるとオーバーフローが発生する可能性があります: `( -1 * 10^(76 - S), 1 * 10^(76 - S) )`。
+分数の過剰な桁は破棄されます（丸められません）。
+整数部分の過剰な桁はエラーにつながります。
 :::
 
-**Returned value**
+**返される値**
 
-- Value of type `Nullable(Decimal(76, S))` if successful, otherwise value `NULL` of the same type. [Decimal256(S)](../data-types/decimal.md).
+- 成功した場合は`Nullable(Decimal(76, S))`型の値、それ以外は同じ型の`NULL`の値。 [Decimal256(S)](../data-types/decimal.md).
 
-**Examples**
+**例**
 
-Query:
+クエリ:
 
-``` sql
+```sql
 SELECT
     toDecimal256OrNull(toString(1/42), 76) AS a,
     toTypeName(a),
@@ -5178,7 +5016,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果:
 
 ```response
 Row 1:
@@ -5189,7 +5027,7 @@ b:             ᴺᵁᴸᴸ
 toTypeName(b): Nullable(Decimal(76, 76))
 ```
 
-**See also**
+**参照**
 
 - [`toDecimal256`](#todecimal256).
 - [`toDecimal256OrZero`](#todecimal256orzero).
@@ -5198,47 +5036,47 @@ toTypeName(b): Nullable(Decimal(76, 76))
 
 Like [`toDecimal256`](#todecimal256), this function converts an input value to a value of type [Decimal(76, S)](../data-types/decimal.md) but returns the default value in case of an error.
 
-**Syntax**
+**構文**
 
 ```sql
 toDecimal256OrDefault(expr, S[, default])
 ```
 
-**Arguments**
+**引数**
 
-- `expr` — A String representation of a number. [String](../data-types/string.md).
-- `S` — Scale parameter between 0 and 76, specifying how many digits the fractional part of a number can have. [UInt8](../data-types/int-uint.md).
-- `default` (optional) — The default value to return if parsing to type `Decimal256(S)` is unsuccessful. [Decimal256(S)](../data-types/decimal.md).
+- `expr` — 数字の文字列表現。 [String](../data-types/string.md).
+- `S` — 0から76までのスケールパラメータで、数字の小数部分が持つことができる桁数を指定します。 [UInt8](../data-types/int-uint.md).
+- `default` (オプション) — `Decimal256(S)`型へのパースが失敗した場合に返すデフォルト値。 [Decimal256(S)](../data-types/decimal.md).
 
-Supported arguments:
-- String representations of type (U)Int8/16/32/64/128/256.
-- String representations of type Float32/64.
+サポートされる引数:
+- (U)Int8/16/32/64/128/256型の文字列表現。
+- Float32/64型の文字列表現。
 
-Unsupported arguments:
-- String representations of Float32/64 values `NaN` and `Inf`.
-- String representations of binary and hexadecimal values, e.g. `SELECT toDecimal256OrDefault('0xc0fe', 1);`.
+サポートされない引数:
+- Float32/64値の`NaN`および`Inf`の文字列表現。
+- バイナリおよび16進数値の文字列表現、例えば `SELECT toDecimal256OrDefault('0xc0fe', 1);`。
 
 :::note
-An overflow can occur if the value of `expr` exceeds the bounds of `Decimal256`: `( -1 * 10^(76 - S), 1 * 10^(76 - S) )`.
-Excessive digits in a fraction are discarded (not rounded).
-Excessive digits in the integer part will lead to an error.
+`expr`の値が`Decimal256`の範囲を超えるとオーバーフローが発生する可能性があります: `( -1 * 10^(76 - S), 1 * 10^(76 - S) )`。
+分数の過剰な桁は破棄されます（丸められません）。
+整数部分の過剰な桁はエラーにつながります。
 :::
 
 :::warning
-Conversions drop extra digits and could operate in an unexpected way when working with Float32/Float64 inputs as the operations are performed using floating point instructions.
-For example: `toDecimal256OrDefault(1.15, 2)` is equal to `1.14` because 1.15 * 100 in floating point is 114.99.
-You can use a String input so the operations use the underlying integer type: `toDecimal256OrDefault('1.15', 2) = 1.15`
+変換は余分な桁を削除し、Float32/Float64入力を扱う際に予期しない方法で動作する可能性があります。操作は浮動小数点命令を使用して行われます。
+例えば: `toDecimal256OrDefault(1.15, 2)`は`1.14`に等しいです。何故なら、1.15 * 100の浮動小数点は114.99だからです。
+文字列入力を使用することで、操作は基礎となる整数型を使用します: `toDecimal256OrDefault('1.15', 2) = 1.15`
 :::
 
-**Returned value**
+**返される値**
 
-- Value of type `Decimal(76, S)` if successful, otherwise returns the default value if passed or `0` if not. [Decimal256(S)](../data-types/decimal.md).
+- 成功した場合は`Decimal(76, S)`型の値、それ以外は渡されたデフォルト値、または渡されなければ`0`を返します。 [Decimal256(S)](../data-types/decimal.md).
 
-**Examples**
+**例**
 
-Query:
+クエリ:
 
-``` sql
+```sql
 SELECT
     toDecimal256OrDefault(toString(1/42), 76) AS a,
     toTypeName(a),
@@ -5247,7 +5085,7 @@ SELECT
 FORMAT Vertical;
 ```
 
-Result:
+結果:
 
 ```response
 Row 1:
@@ -5258,41 +5096,43 @@ b:             -1
 toTypeName(b): Decimal(76, 0)
 ```
 
-**See also**
+**参照**
 
 - [`toDecimal256`](#todecimal256).
 - [`toDecimal256OrZero`](#todecimal256orzero).
 - [`toDecimal256OrNull`](#todecimal256ornull).
+```
+
 ## toString {#tostring}
 
-Functions for converting between numbers, strings (but not fixed strings), dates, and dates with times.
-All these functions accept one argument.
+数値、文字列（固定長文字列を除く）、日付、および時間を含む日付間で変換するための関数。
+これらの関数はすべて、1つの引数を受け付けます。
 
-When converting to or from a string, the value is formatted or parsed using the same rules as for the TabSeparated format (and almost all other text formats). If the string can't be parsed, an exception is thrown and the request is canceled.
+文字列への変換または文字列からの変換を行う場合、値はTabSeparated形式（およびほぼすべての他のテキスト形式）と同じルールでフォーマットまたは解析されます。文字列が解析できない場合、例外がスローされ、リクエストはキャンセルされます。
 
-When converting dates to numbers or vice versa, the date corresponds to the number of days since the beginning of the Unix epoch.
-When converting dates with times to numbers or vice versa, the date with time corresponds to the number of seconds since the beginning of the Unix epoch.
+日付を数値に変換する場合、またはその逆の場合、日付はUnixエポックの開始からの日数に対応します。
+時間を含む日付を数値に変換する場合、またはその逆の場合、時間を含む日付はUnixエポックの開始からの秒数に対応します。
 
-The date and date-with-time formats for the toDate/toDateTime functions are defined as follows:
+toDate/toDateTime関数のための日付および時間を含む日付形式は次のように定義されています：
 
 ```response
 YYYY-MM-DD
 YYYY-MM-DD hh:mm:ss
 ```
 
-As an exception, if converting from UInt32, Int32, UInt64, or Int64 numeric types to Date, and if the number is greater than or equal to 65536, the number is interpreted as a Unix timestamp (and not as the number of days) and is rounded to the date. This allows support for the common occurrence of writing `toDate(unix_timestamp)`, which otherwise would be an error and would require writing the more cumbersome `toDate(toDateTime(unix_timestamp))`.
+例外として、UInt32、Int32、UInt64、またはInt64の数値型からDateに変換する場合、数値が65536以上であれば、その数値はUnixタイムスタンプとして解釈され（日数としてではなく）、日付に丸められます。これにより、通常の発生である `toDate(unix_timestamp)` のサポートが可能になります。これ以外の場合はエラーとなり、より面倒な `toDate(toDateTime(unix_timestamp))` と書く必要があります。
 
-Conversion between a date and a date with time is performed the natural way: by adding a null time or dropping the time.
+日付と時間を含む日付間の変換は、自然な方法で行われます：null時間を追加するか、時間を削除することによって。
 
-Conversion between numeric types uses the same rules as assignments between different numeric types in C++.
+数値型間の変換は、C++における異なる数値型間の代入と同じルールを使用します。
 
-Additionally, the toString function of the DateTime argument can take a second String argument containing the name of the time zone. Example: `Asia/Yekaterinburg` In this case, the time is formatted according to the specified time zone.
+さらに、DateTime引数のtoString関数は、時間帯の名前を含む2つ目のString引数を受け取ることができます。例：`Asia/Yekaterinburg` この場合、時間は指定された時間帯に従ってフォーマットされます。
 
-**Example**
+**例**
 
-Query:
+クエリ：
 
-``` sql
+```sql
 SELECT
     now() AS ts,
     time_zone,
@@ -5302,7 +5142,7 @@ WHERE time_zone LIKE 'Europe%'
 LIMIT 10
 ```
 
-Result:
+結果：
 
 ```response
 ┌──────────────────ts─┬─time_zone─────────┬─str_tz_datetime─────┐
@@ -5319,18 +5159,12 @@ Result:
 └─────────────────────┴───────────────────┴─────────────────────┘
 ```
 
-Also see the `toUnixTimestamp` function.
-```
-```yaml
-title: 'タイプ変換関数'
-sidebar_label: 'タイプ変換関数'
-keywords: ['ClickHouse', 'タイプ変換', 'SQL']
-description: 'ClickHouseにおけるタイプ変換関数に関する詳細情報。'
-```
+`toUnixTimestamp`関数も参照してください。
 
 ## toFixedString {#tofixedstring}
 
-引数の [String](../data-types/string.md) 型を [FixedString(N)](../data-types/fixedstring.md) 型（固定長 N の文字列）に変換します。文字列のバイト数が N より少ない場合は、右側にヌルバイトが追加されます。文字列のバイト数が N より多い場合は、例外がスローされます。
+[String](../data-types/string.md)型の引数を[FixedString(N)](../data-types/fixedstring.md)型（長さNの固定長文字列）に変換します。
+文字列がNよりも少ないバイトである場合、右側にnullバイトでパディングされます。文字列がNを超えるバイトを持つ場合、例外がスローされます。
 
 **構文**
 
@@ -5340,22 +5174,22 @@ toFixedString(s, N)
 
 **引数**
 
-- `s` — 固定文字列に変換する文字列。 [String](../data-types/string.md)。
-- `N` — 長さ N。 [UInt8](../data-types/int-uint.md)。
+- `s` — 固定長文字列に変換するString。[String](../data-types/string.md)。
+- `N` — 長さN。[UInt8](../data-types/int-uint.md)
 
-**戻り値**
+**返される値**
 
-- `s` の N 長さの固定文字列。 [FixedString](../data-types/fixedstring.md)。
+- `s`の長さNの固定文字列。[FixedString](../data-types/fixedstring.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT toFixedString('foo', 8) AS s;
 ```
 
-結果:
+結果：
 
 ```response
 ┌─s─────────────┐
@@ -5364,7 +5198,7 @@ SELECT toFixedString('foo', 8) AS s;
 ```
 ## toStringCutToZero {#tostringcuttozero}
 
-String または FixedString 引数を受け取ります。最初に見つかったゼロバイトで内容が切り捨てられた文字列を返します。
+StringまたはFixedString引数を受け入れます。最初に見つかったゼロバイトでコンテンツを切り捨てたStringを返します。
 
 **構文**
 
@@ -5374,13 +5208,13 @@ toStringCutToZero(s)
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT toFixedString('foo', 8) AS s, toStringCutToZero(s) AS s_cut;
 ```
 
-結果:
+結果：
 
 ```response
 ┌─s─────────────┬─s_cut─┐
@@ -5388,13 +5222,13 @@ SELECT toFixedString('foo', 8) AS s, toStringCutToZero(s) AS s_cut;
 └───────────────┴───────┘
 ```
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT toFixedString('foo\0bar', 8) AS s, toStringCutToZero(s) AS s_cut;
 ```
 
-結果:
+結果：
 
 ```response
 ┌─s──────────┬─s_cut─┐
@@ -5403,7 +5237,7 @@ SELECT toFixedString('foo\0bar', 8) AS s, toStringCutToZero(s) AS s_cut;
 ```
 ## toDecimalString {#todecimalstring}
 
-数値を文字列に変換し、小数点以下の桁数はユーザーが指定します。
+数値を、出力で指定された小数桁数を持つStringに変換します。
 
 **構文**
 
@@ -5413,25 +5247,25 @@ toDecimalString(number, scale)
 
 **引数**
 
-- `number` — 文字列として表現される値。 [Int, UInt](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Decimal](../data-types/decimal.md)。
-- `scale` — 小数点以下の桁数。 [UInt8](../data-types/int-uint.md)。
-    * [Decimal](../data-types/decimal.md) および [Int, UInt](../data-types/int-uint.md) 型の最大スケールは 77 です（Decimal の有効数字の最大数です）。
-    * [Float](../data-types/float.md) の最大スケールは 60 です。
+- `number` — Stringとして表現される値、[Int, UInt](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Decimal](../data-types/decimal.md)。
+- `scale` — 小数桁数、[UInt8](../data-types/int-uint.md)。
+    * [Decimal](../data-types/decimal.md)および[Int, UInt](../data-types/int-uint.md)型の最大スケールは77です（これはDecimalの有効桁数の最大値です）。
+    * [Float](../data-types/float.md)の最大スケールは60です。
 
-**戻り値**
+**返される値**
 
-- 指定された小数点以下の桁数を持つ [String](../data-types/string.md) として表現された入力値。
-    リクエストされたスケールが元の数のスケールより小さい場合、数は一般的な算術に従って切り捨てられます。
+- 指定された小数桁数（スケール）で表現された入力値の[String](../data-types/string.md)。
+    要求されたスケールが元の数のスケールより小さい場合、数は四捨五入されます。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT toDecimalString(CAST('64.32', 'Float64'), 5);
 ```
 
-結果:
+結果：
 
 ```response
 ┌toDecimalString(CAST('64.32', 'Float64'), 5)─┐
@@ -5440,7 +5274,7 @@ SELECT toDecimalString(CAST('64.32', 'Float64'), 5);
 ```
 ## reinterpretAsUInt8 {#reinterpretasuint8}
 
-入力値を UInt8 型の値として扱うことでバイトの再解釈を行います。 [`CAST`](#cast) とは異なり、この関数は元の値を保持しようとはしません - 対象の型が入力型を表現できない場合、出力は意味を成しません。
+入力値をUInt8型の値として解釈するためにバイト再解釈を行います。[`CAST`](#cast)とは異なり、この関数は元の値を保存しようとしません - もしターゲット型が入力型を表現できない場合、出力は無意味になります。
 
 **構文**
 
@@ -5448,17 +5282,17 @@ SELECT toDecimalString(CAST('64.32', 'Float64'), 5);
 reinterpretAsUInt8(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: UInt8 として再解釈する値。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `x`: UInt8としてバイト再解釈される値。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 
-**戻り値**
+**返される値**
 
-- UInt8 として再解釈された値 `x`。 [UInt8](/sql-reference/data-types/int-uint)。
+- UInt8として再解釈された値 `x`。[UInt8](/sql-reference/data-types/int-uint)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -5468,7 +5302,7 @@ SELECT
     toTypeName(res);
 ```
 
-結果:
+結果：
 
 ```response
 ┌─x─┬─toTypeName(x)─┬─res─┬─toTypeName(res)─┐
@@ -5477,7 +5311,7 @@ SELECT
 ```
 ## reinterpretAsUInt16 {#reinterpretasuint16}
 
-入力値を UInt16 型の値として扱うことでバイトの再解釈を行います。 [`CAST`](#cast) とは異なり、この関数は元の値を保持しようとはしません - 対象の型が入力型を表現できない場合、出力は意味を成しません。
+入力値をUInt16型の値として解釈するためにバイト再解釈を行います。[`CAST`](#cast)とは異なり、この関数は元の値を保存しようとしません - もしターゲット型が入力型を表現できない場合、出力は無意味になります。
 
 **構文**
 
@@ -5485,17 +5319,17 @@ SELECT
 reinterpretAsUInt16(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: UInt16 として再解釈する値。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `x`: UInt16としてバイト再解釈される値。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 
-**戻り値**
+**返される値**
 
-- UInt16 として再解釈された値 `x`。 [UInt16](/sql-reference/data-types/int-uint)。
+- UInt16として再解釈された値 `x`。[UInt16](/sql-reference/data-types/int-uint)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -5505,7 +5339,7 @@ SELECT
     toTypeName(res);
 ```
 
-結果:
+結果：
 
 ```response
 ┌─x─┬─toTypeName(x)─┬─res─┬─toTypeName(res)─┐
@@ -5514,7 +5348,7 @@ SELECT
 ```
 ## reinterpretAsUInt32 {#reinterpretasuint32}
 
-入力値を UInt32 型の値として扱うことでバイトの再解釈を行います。 [`CAST`](#cast) とは異なり、この関数は元の値を保持しようとはしません - 対象の型が入力型を表現できない場合、出力は意味を成しません。
+入力値をUInt32型の値として解釈するためにバイト再解釈を行います。[`CAST`](#cast)とは異なり、この関数は元の値を保存しようとしません - もしターゲット型が入力型を表現できない場合、出力は無意味になります。
 
 **構文**
 
@@ -5522,17 +5356,17 @@ SELECT
 reinterpretAsUInt32(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: UInt32 として再解釈する値。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `x`: UInt32としてバイト再解釈される値。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 
-**戻り値**
+**返される値**
 
-- UInt32 として再解釈された値 `x`。 [UInt32](/sql-reference/data-types/int-uint)。
+- UInt32として再解釈された値 `x`。[UInt32](/sql-reference/data-types/int-uint)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -5542,7 +5376,7 @@ SELECT
     toTypeName(res)
 ```
 
-結果:
+結果：
 
 ```response
 ┌───x─┬─toTypeName(x)─┬─res─┬─toTypeName(res)─┐
@@ -5551,7 +5385,7 @@ SELECT
 ```
 ## reinterpretAsUInt64 {#reinterpretasuint64}
 
-入力値を UInt64 型の値として扱うことでバイトの再解釈を行います。 [`CAST`](#cast) とは異なり、この関数は元の値を保持しようとはしません - 対象の型が入力型を表現できない場合、出力は意味を成しません。
+入力値をUInt64型の値として解釈するためにバイト再解釈を行います。[`CAST`](#cast)とは異なり、この関数は元の値を保存しようとしません - もしターゲット型が入力型を表現できない場合、出力は無意味になります。
 
 **構文**
 
@@ -5559,17 +5393,17 @@ SELECT
 reinterpretAsUInt64(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: UInt64 として再解釈する値。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `x`: UInt64としてバイト再解釈される値。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 
-**戻り値**
+**返される値**
 
-- UInt64 として再解釈された値 `x`。 [UInt64](/sql-reference/data-types/int-uint)。
+- UInt64として再解釈された値 `x`。[UInt64](/sql-reference/data-types/int-uint)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -5579,7 +5413,7 @@ SELECT
     toTypeName(res)
 ```
 
-結果:
+結果：
 
 ```response
 ┌───x─┬─toTypeName(x)─┬─res─┬─toTypeName(res)─┐
@@ -5588,7 +5422,7 @@ SELECT
 ```
 ## reinterpretAsUInt128 {#reinterpretasuint128}
 
-入力値を UInt128 型の値として扱うことでバイトの再解釈を行います。 [`CAST`](#cast) とは異なり、この関数は元の値を保持しようとはしません - 対象の型が入力型を表現できない場合、出力は意味を成しません。
+入力値をUInt128型の値として解釈するためにバイト再解釈を行います。[`CAST`](#cast)とは異なり、この関数は元の値を保存しようとしません - もしターゲット型が入力型を表現できない場合、出力は無意味になります。
 
 **構文**
 
@@ -5596,17 +5430,17 @@ SELECT
 reinterpretAsUInt128(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: UInt128 として再解釈する値。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `x`: UInt128としてバイト再解釈される値。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 
-**戻り値**
+**返される値**
 
-- UInt128 として再解釈された値 `x`。 [UInt128](/sql-reference/data-types/int-uint)。
+- UInt128として再解釈された値 `x`。[UInt128](/sql-reference/data-types/int-uint)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -5616,7 +5450,7 @@ SELECT
     toTypeName(res)
 ```
 
-結果:
+結果：
 
 ```response
 ┌───x─┬─toTypeName(x)─┬─res─┬─toTypeName(res)─┐
@@ -5625,7 +5459,7 @@ SELECT
 ```
 ## reinterpretAsUInt256 {#reinterpretasuint256}
 
-入力値を UInt256 型の値として扱うことでバイトの再解釈を行います。 [`CAST`](#cast) とは異なり、この関数は元の値を保持しようとはしません - 対象の型が入力型を表現できない場合、出力は意味を成しません。
+入力値をUInt256型の値として解釈するためにバイト再解釈を行います。[`CAST`](#cast)とは異なり、この関数は元の値を保存しようとしません - もしターゲット型が入力型を表現できない場合、出力は無意味になります。
 
 **構文**
 
@@ -5633,17 +5467,17 @@ SELECT
 reinterpretAsUInt256(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: UInt256 として再解釈する値。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `x`: UInt256としてバイト再解釈される値。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 
-**戻り値**
+**返される値**
 
-- UInt256 として再解釈された値 `x`。 [UInt256](/sql-reference/data-types/int-uint)。
+- UInt256として再解釈された値 `x`。[UInt256](/sql-reference/data-types/int-uint)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -5653,7 +5487,7 @@ SELECT
     toTypeName(res)
 ```
 
-結果:
+結果：
 
 ```response
 ┌───x─┬─toTypeName(x)─┬─res─┬─toTypeName(res)─┐
@@ -5662,7 +5496,7 @@ SELECT
 ```
 ## reinterpretAsInt8 {#reinterpretasint8}
 
-入力値を Int8 型の値として扱うことでバイトの再解釈を行います。 [`CAST`](#cast) とは異なり、この関数は元の値を保持しようとはしません - 対象の型が入力型を表現できない場合、出力は意味を成しません。
+入力値をInt8型の値として解釈するためにバイト再解釈を行います。[`CAST`](#cast)とは異なり、この関数は元の値を保存しようとしません - もしターゲット型が入力型を表現できない場合、出力は無意味になります。
 
 **構文**
 
@@ -5670,17 +5504,17 @@ SELECT
 reinterpretAsInt8(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: Int8 として再解釈する値。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `x`: Int8としてバイト再解釈される値。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 
-**戻り値**
+**返される値**
 
-- Int8 として再解釈された値 `x`。 [Int8](/sql-reference/data-types/int-uint#integer-ranges)。
+- Int8として再解釈された値 `x`。[Int8](/sql-reference/data-types/int-uint#integer-ranges)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -5690,7 +5524,7 @@ SELECT
     toTypeName(res);
 ```
 
-結果:
+結果：
 
 ```response
 ┌─x─┬─toTypeName(x)─┬─res─┬─toTypeName(res)─┐
@@ -5699,7 +5533,7 @@ SELECT
 ```
 ## reinterpretAsInt16 {#reinterpretasint16}
 
-入力値を Int16 型の値として扱うことでバイトの再解釈を行います。 [`CAST`](#cast) とは異なり、この関数は元の値を保持しようとはしません - 対象の型が入力型を表現できない場合、出力は意味を成しません。
+入力値をInt16型の値として解釈するためにバイト再解釈を行います。[`CAST`](#cast)とは異なり、この関数は元の値を保存しようとしません - もしターゲット型が入力型を表現できない場合、出力は無意味になります。
 
 **構文**
 
@@ -5707,17 +5541,17 @@ SELECT
 reinterpretAsInt16(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: Int16 として再解釈する値。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `x`: Int16としてバイト再解釈される値。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 
-**戻り値**
+**返される値**
 
-- Int16 として再解釈された値 `x`。 [Int16](/sql-reference/data-types/int-uint#integer-ranges)。
+- Int16として再解釈された値 `x`。[Int16](/sql-reference/data-types/int-uint#integer-ranges)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -5727,7 +5561,7 @@ SELECT
     toTypeName(res);
 ```
 
-結果:
+結果：
 
 ```response
 ┌─x─┬─toTypeName(x)─┬─res─┬─toTypeName(res)─┐
@@ -5736,7 +5570,7 @@ SELECT
 ```
 ## reinterpretAsInt32 {#reinterpretasint32}
 
-入力値を Int32 型の値として扱うことでバイトの再解釈を行います。 [`CAST`](#cast) とは異なり、この関数は元の値を保持しようとはしません - 対象の型が入力型を表現できない場合、出力は意味を成しません。
+入力値をInt32型の値として解釈するためにバイト再解釈を行います。[`CAST`](#cast)とは異なり、この関数は元の値を保存しようとしません - もしターゲット型が入力型を表現できない場合、出力は無意味になります。
 
 **構文**
 
@@ -5744,17 +5578,17 @@ SELECT
 reinterpretAsInt32(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: Int32 として再解釈する値。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `x`: Int32としてバイト再解釈される値。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 
-**戻り値**
+**返される値**
 
-- Int32 として再解釈された値 `x`。 [Int32](/sql-reference/data-types/int-uint#integer-ranges)。
+- Int32として再解釈された値 `x`。[Int32](/sql-reference/data-types/int-uint#integer-ranges)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -5764,7 +5598,7 @@ SELECT
     toTypeName(res);
 ```
 
-結果:
+結果：
 
 ```response
 ┌───x─┬─toTypeName(x)─┬─res─┬─toTypeName(res)─┐
@@ -5773,7 +5607,7 @@ SELECT
 ```
 ## reinterpretAsInt64 {#reinterpretasint64}
 
-入力値を Int64 型の値として扱うことでバイトの再解釈を行います。 [`CAST`](#cast) とは異なり、この関数は元の値を保持しようとはしません - 対象の型が入力型を表現できない場合、出力は意味を成しません。
+入力値をInt64型の値として解釈するためにバイト再解釈を行います。[`CAST`](#cast)とは異なり、この関数は元の値を保存しようとしません - もしターゲット型が入力型を表現できない場合、出力は無意味になります。
 
 **構文**
 
@@ -5781,17 +5615,17 @@ SELECT
 reinterpretAsInt64(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: Int64 として再解釈する値。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `x`: Int64としてバイト再解釈される値。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 
-**戻り値**
+**返される値**
 
-- Int64 として再解釈された値 `x`。 [Int64](/sql-reference/data-types/int-uint#integer-ranges)。
+- Int64として再解釈された値 `x`。[Int64](/sql-reference/data-types/int-uint#integer-ranges)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -5801,7 +5635,7 @@ SELECT
     toTypeName(res);
 ```
 
-結果:
+結果：
 
 ```response
 ┌───x─┬─toTypeName(x)─┬─res─┬─toTypeName(res)─┐
@@ -5810,7 +5644,7 @@ SELECT
 ```
 ## reinterpretAsInt128 {#reinterpretasint128}
 
-入力値を Int128 型の値として扱うことでバイトの再解釈を行います。 [`CAST`](#cast) とは異なり、この関数は元の値を保持しようとはしません - 対象の型が入力型を表現できない場合、出力は意味を成しません。
+入力値をInt128型の値として解釈するためにバイト再解釈を行います。[`CAST`](#cast)とは異なり、この関数は元の値を保存しようとしません - もしターゲット型が入力型を表現できない場合、出力は無意味になります。
 
 **構文**
 
@@ -5818,17 +5652,17 @@ SELECT
 reinterpretAsInt128(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: Int128 として再解釈する値。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `x`: Int128としてバイト再解釈される値。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 
-**戻り値**
+**返される値**
 
-- Int128 として再解釈された値 `x`。 [Int128](/sql-reference/data-types/int-uint#integer-ranges)。
+- Int128として再解釈された値 `x`。[Int128](/sql-reference/data-types/int-uint#integer-ranges)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -5838,7 +5672,7 @@ SELECT
     toTypeName(res);
 ```
 
-結果:
+結果：
 
 ```response
 ┌───x─┬─toTypeName(x)─┬─res─┬─toTypeName(res)─┐
@@ -5847,7 +5681,7 @@ SELECT
 ```
 ## reinterpretAsInt256 {#reinterpretasint256}
 
-入力値を Int256 型の値として扱うことでバイトの再解釈を行います。 [`CAST`](#cast) とは異なり、この関数は元の値を保持しようとはしません - 対象の型が入力型を表現できない場合、出力は意味を成しません。
+入力値をInt256型の値として解釈するためにバイト再解釈を行います。[`CAST`](#cast)とは異なり、この関数は元の値を保存しようとしません - もしターゲット型が入力型を表現できない場合、出力は無意味になります。
 
 **構文**
 
@@ -5855,17 +5689,17 @@ SELECT
 reinterpretAsInt256(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: Int256 として再解釈する値。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `x`: Int256としてバイト再解釈される値。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 
-**戻り値**
+**返される値**
 
-- Int256 として再解釈された値 `x`。 [Int256](/sql-reference/data-types/int-uint#integer-ranges)。
+- Int256として再解釈された値 `x`。[Int256](/sql-reference/data-types/int-uint#integer-ranges)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -5875,7 +5709,7 @@ SELECT
     toTypeName(res);
 ```
 
-結果:
+結果：
 
 ```response
 ┌───x─┬─toTypeName(x)─┬─res─┬─toTypeName(res)─┐
@@ -5884,7 +5718,7 @@ SELECT
 ```
 ## reinterpretAsFloat32 {#reinterpretasfloat32}
 
-入力値を Float32 型の値として扱うことでバイトの再解釈を行います。 [`CAST`](#cast) とは異なり、この関数は元の値を保持しようとはしません - 対象の型が入力型を表現できない場合、出力は意味を成しません。
+入力値をFloat32型の値として解釈するためにバイト再解釈を行います。[`CAST`](#cast)とは異なり、この関数は元の値を保存しようとしません - もしターゲット型が入力型を表現できない場合、出力は無意味になります。
 
 **構文**
 
@@ -5892,23 +5726,23 @@ SELECT
 reinterpretAsFloat32(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: Float32 として再解釈する値。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `x`: Float32として再解釈される値。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 
-**戻り値**
+**返される値**
 
-- Float32 として再解釈された値 `x`。 [Float32](../data-types/float.md)。
+- Float32として再解釈された値 `x`。[Float32](../data-types/float.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT reinterpretAsUInt32(toFloat32(0.2)) as x, reinterpretAsFloat32(x);
 ```
 
-結果:
+結果：
 
 ```response
 ┌──────────x─┬─reinterpretAsFloat32(x)─┐
@@ -5917,7 +5751,7 @@ SELECT reinterpretAsUInt32(toFloat32(0.2)) as x, reinterpretAsFloat32(x);
 ```
 ## reinterpretAsFloat64 {#reinterpretasfloat64}
 
-入力値を Float64 型の値として扱うことでバイトの再解釈を行います。 [`CAST`](#cast) とは異なり、この関数は元の値を保持しようとはしません - 対象の型が入力型を表現できない場合、出力は意味を成しません。
+入力値をFloat64型の値として解釈するためにバイト再解釈を行います。[`CAST`](#cast)とは異なり、この関数は元の値を保存しようとしません - もしターゲット型が入力型を表現できない場合、出力は無意味になります。
 
 **構文**
 
@@ -5925,23 +5759,23 @@ SELECT reinterpretAsUInt32(toFloat32(0.2)) as x, reinterpretAsFloat32(x);
 reinterpretAsFloat64(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: Float64 として再解釈する値。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `x`: Float64として再解釈される値。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 
-**戻り値**
+**返される値**
 
-- Float64 として再解釈された値 `x`。 [Float64](../data-types/float.md)。
+- Float64として再解釈された値 `x`。[Float64](../data-types/float.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT reinterpretAsUInt64(toFloat64(0.2)) as x, reinterpretAsFloat64(x);
 ```
 
-結果:
+結果：
 
 ```response
 ┌───────────────────x─┬─reinterpretAsFloat64(x)─┐
@@ -5950,7 +5784,7 @@ SELECT reinterpretAsUInt64(toFloat64(0.2)) as x, reinterpretAsFloat64(x);
 ```
 ## reinterpretAsDate {#reinterpretasdate}
 
-文字列、固定文字列、または数値の値を受け取り、バイトをホスト順序（リトルエンディアン）で数値として解釈します。Unixエポックの開始からの日数として解釈された日付を返します。
+文字列、固定長文字列、または数値を受け入れ、ホスト順序（リトルエンディアン）でバイトを数として解釈します。Unixエポックの開始からの日数として解釈された数値から日付を返します。
 
 **構文**
 
@@ -5958,29 +5792,29 @@ SELECT reinterpretAsUInt64(toFloat64(0.2)) as x, reinterpretAsFloat64(x);
 reinterpretAsDate(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: Unixエポックの開始からの日数。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `x`: Unixエポックの開始からの日数。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 
-**戻り値**
+**返される値**
 
-- 日付。 [Date](../data-types/date.md)。
+- 日付。[Date](../data-types/date.md)。
 
 **実装の詳細**
 
 :::note
-提供された文字列が十分に長くない場合、関数は必要な数のヌルバイトでパディングされた文字列として機能します。文字列が必要以上に長い場合、余分なバイトは無視されます。
+提供された文字列が長さが足りない場合、関数は必要な数のnullバイトでパディングされているかのように動作します。文字列が必要な長さよりも長い場合、余分なバイトは無視されます。
 :::
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT reinterpretAsDate(65), reinterpretAsDate('A');
 ```
 
-結果:
+結果：
 
 ```response
 ┌─reinterpretAsDate(65)─┬─reinterpretAsDate('A')─┐
@@ -5989,7 +5823,7 @@ SELECT reinterpretAsDate(65), reinterpretAsDate('A');
 ```
 ## reinterpretAsDateTime {#reinterpretasdatetime}
 
-これらの関数は文字列を受け取り、文字列の最初に配置されたバイトをホスト順序（リトルエンディアン）で数値として解釈します。Unixエポックの開始からの秒数として解釈された日時を返します。
+これらの関数は文字列を受け取り、文字列の先頭に配置されているバイトをホスト順序（リトルエンディアン）で数として解釈します。Unixエポックの開始からの秒数として解釈される日付と時間を返します。
 
 **構文**
 
@@ -5997,29 +5831,29 @@ SELECT reinterpretAsDate(65), reinterpretAsDate('A');
 reinterpretAsDateTime(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: Unixエポックの開始からの秒数。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `x`: Unixエポックの開始からの秒数。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、[UUID](../data-types/uuid.md)、[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 
-**戻り値**
+**返される値**
 
-- 日付と時刻。 [DateTime](../data-types/datetime.md)。
+- 日付と時刻。[DateTime](../data-types/datetime.md)。
 
 **実装の詳細**
 
 :::note
-提供された文字列が十分に長くない場合、関数は必要な数のヌルバイトでパディングされた文字列として機能します。文字列が必要以上に長い場合、余分なバイトは無視されます。
+提供された文字列が長さが足りない場合、関数は必要な数のnullバイトでパディングされているかのように動作します。文字列が必要な長さよりも長い場合、余分なバイトは無視されます。
 :::
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT reinterpretAsDateTime(65), reinterpretAsDateTime('A');
 ```
 
-結果:
+結果：
 
 ```response
 ┌─reinterpretAsDateTime(65)─┬─reinterpretAsDateTime('A')─┐
@@ -6028,7 +5862,7 @@ SELECT reinterpretAsDateTime(65), reinterpretAsDateTime('A');
 ```
 ## reinterpretAsString {#reinterpretasstring}
 
-この関数は数値、日付、または日時を受け取り、ホスト順序（リトルエンディアン）で対応する値を表すバイトを含む文字列を返します。末尾のヌルバイトはドロップされます。例えば、UInt32 タイプの値 255 は 1 バイトの長さの文字列です。
+この関数は数値、日付、または時間を含む日付を受け取り、ホスト順序（リトルエンディアン）で対応する値を表すバイトを含む文字列を返します。末尾からnullバイトは削除されます。たとえば、UInt32型値の255は1バイトの長さの文字列です。
 
 **構文**
 
@@ -6036,17 +5870,17 @@ SELECT reinterpretAsDateTime(65), reinterpretAsDateTime('A');
 reinterpretAsString(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: 文字列に再解釈する値。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)。
+- `x`: 文字列に再解釈される値。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)。
 
-**戻り値**
+**返される値**
 
-- `x` を表すバイトを含む文字列。 [String](../data-types/fixedstring.md)。
+- `x`を表すバイトを含む文字列。[String](../data-types/fixedstring.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -6054,7 +5888,7 @@ SELECT
     reinterpretAsString(toDate('1970-03-07'));
 ```
 
-結果:
+結果：
 
 ```response
 ┌─reinterpretAsString(toDateTime('1970-01-01 01:01:05'))─┬─reinterpretAsString(toDate('1970-03-07'))─┐
@@ -6063,7 +5897,7 @@ SELECT
 ```
 ## reinterpretAsFixedString {#reinterpretasfixedstring}
 
-この関数は数値、日付、または日時を受け取り、ホスト順序（リトルエンディアン）で対応する値を表すバイトを含む FixedString を返します。末尾のヌルバイトはドロップされます。例えば、UInt32 タイプの値 255 は 1 バイトの長さの FixedString です。
+この関数は数値、日付、または時間を含む日付を受け取り、ホスト順序（リトルエンディアン）で対応する値を表すバイトを含むFixedStringを返します。末尾からnullバイトは削除されます。たとえば、UInt32型値の255は1バイトの長さのFixedStringです。
 
 **構文**
 
@@ -6071,17 +5905,17 @@ SELECT
 reinterpretAsFixedString(x)
 ```
 
-**引数**
+**パラメータ**
 
-- `x`: 文字列に再解釈する値。 [(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)。
+- `x`: 文字列に再解釈される値。[(U)Int*](../data-types/int-uint.md)、[Float](../data-types/float.md)、[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)。
 
-**戻り値**
+**返される値**
 
-- `x` を表すバイトを含む FixedString。 [FixedString](../data-types/fixedstring.md)。
+- `x`を表すバイトを含むFixedString。[FixedString](../data-types/fixedstring.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -6089,7 +5923,7 @@ SELECT
     reinterpretAsFixedString(toDate('1970-03-07'));
 ```
 
-結果:
+結果：
 
 ```response
 ┌─reinterpretAsFixedString(toDateTime('1970-01-01 01:01:05'))─┬─reinterpretAsFixedString(toDate('1970-03-07'))─┐
@@ -6099,10 +5933,10 @@ SELECT
 ## reinterpretAsUUID {#reinterpretasuuid}
 
 :::note
-ここにリストされた UUID 関数に加えて、専用の [UUID 関数のドキュメント](../functions/uuid-functions.md) があります。
+ここにリストされているUUID関数に加えて、専用の[UUID関数ドキュメント](../functions/uuid-functions.md)があります。
 :::
 
-16 バイトの文字列を受け取り、8 バイトの半分をリトルエンディアンのバイト順で解釈することによって UUID を返します。文字列が十分に長くない場合、関数は必要な数のヌルバイトでパディングされた文字列として機能します。文字列が 16 バイトより長い場合、末尾の余分なバイトは無視されます。
+16バイトの文字列を受け入れ、各8バイトの半分をリトルエンディアン順に解釈してUUIDを返します。文字列が長さが足りない場合、関数は必要な数のnullバイトでパディングされているかのように動作します。文字列が16バイトを超える場合、末尾の余分なバイトは無視されます。
 
 **構文**
 
@@ -6112,23 +5946,23 @@ reinterpretAsUUID(fixed_string)
 
 **引数**
 
-- `fixed_string` — ビッグエンディアンバイト文字列。 [FixedString](/sql-reference/data-types/fixedstring)。
+- `fixed_string` — ビッグエンディアンのバイト文字列。[FixedString](/sql-reference/data-types/fixedstring)。
 
-**戻り値**
+**返される値**
 
-- UUID 型の値。 [UUID](/sql-reference/data-types/uuid)。
+- UUID型の値。[UUID](/sql-reference/data-types/uuid)。
 
 **例**
 
-文字列から UUID への変換。
+文字列からUUID。
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT reinterpretAsUUID(reverse(unhex('000102030405060708090a0b0c0d0e0f')));
 ```
 
-結果:
+結果：
 
 ```response
 ┌─reinterpretAsUUID(reverse(unhex('000102030405060708090a0b0c0d0e0f')))─┐
@@ -6136,9 +5970,9 @@ SELECT reinterpretAsUUID(reverse(unhex('000102030405060708090a0b0c0d0e0f')));
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
-文字列から UUID への往復変換。
+文字列とUUIDの往復。
 
-クエリ:
+クエリ：
 
 ```sql
 WITH
@@ -6148,7 +5982,7 @@ WITH
 SELECT uuid = uuid2;
 ```
 
-結果:
+結果：
 
 ```response
 ┌─equals(uuid, uuid2)─┐
@@ -6157,7 +5991,7 @@ SELECT uuid = uuid2;
 ```
 ## reinterpret {#reinterpret}
 
-ソースのメモリ内バイトシーケンスを `x` 値に使用し、宛先型として再解釈します。
+`x`の値に対する同じソースのメモリ内バイトシーケンスを使用し、それを宛先型に再解釈します。
 
 **構文**
 
@@ -6168,22 +6002,22 @@ reinterpret(x, type)
 **引数**
 
 - `x` — 任意の型。
-- `type` — 目的の型。 [String](../data-types/string.md)。
+- `type` — 宛先型。[String](../data-types/string.md)。
 
-**戻り値**
+**返される値**
 
-- 目的の型の値。
+- 宛先型の値。
 
 **例**
 
-クエリ:
+クエリ：
 ```sql
 SELECT reinterpret(toInt8(-1), 'UInt8') as int_to_uint,
     reinterpret(toInt8(1), 'Float32') as int_to_float,
     reinterpret('1', 'UInt32') as string_to_int;
 ```
 
-結果:
+結果：
 
 ```text
 ┌─int_to_uint─┬─int_to_float─┬─string_to_int─┐
@@ -6192,7 +6026,8 @@ SELECT reinterpret(toInt8(-1), 'UInt8') as int_to_uint,
 ```
 ## CAST {#cast}
 
-入力値を指定されたデータ型に変換します。 [`reinterpret`](#reinterpret) 関数とは異なり、`CAST` は新しいデータ型を使用して同じ値を提示しようとします。変換ができない場合は、例外がスローされます。いくつかの構文のバリアントがサポートされています。
+入力値を指定されたデータ型に変換します。`reinterpret`関数とは異なり、`CAST`は新しいデータ型を使用して同じ値を表現しようとします。変換できない場合は例外が発生します。
+いくつかの構文バリアントがサポートされています。
 
 **構文**
 
@@ -6204,21 +6039,21 @@ x::t
 
 **引数**
 
-- `x` — 変換する値。任意の型で構いません。
-- `T` — 目的のデータ型の名前。 [String](../data-types/string.md)。
-- `t` — 目的のデータ型。
+- `x` — 変換する値。任意の型であり得ます。
+- `T` — ターゲットデータ型の名前。[String](../data-types/string.md)。
+- `t` — ターゲットデータ型。
 
-**戻り値**
+**返される値**
 
 - 変換された値。
 
 :::note
-入力値が対象型の範囲に収まらない場合、結果がオーバーフローします。たとえば、`CAST(-1, 'UInt8')` は `255` を返します。
+入力値がターゲット型の範囲に収まらない場合、結果がオーバーフローします。たとえば、`CAST(-1, 'UInt8')`は`255`を返します。
 :::
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -6227,7 +6062,7 @@ SELECT
     '1'::Int32 AS cast_string_to_int;
 ```
 
-結果:
+結果：
 
 ```yaml
 ┌─cast_int_to_uint─┬─cast_float_to_decimal─┬─cast_string_to_int─┐
@@ -6235,7 +6070,7 @@ SELECT
 └──────────────────┴───────────────────────┴────────────────────┘
 ```
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -6246,7 +6081,7 @@ SELECT
     CAST(timestamp, 'FixedString(22)') AS fixed_string;
 ```
 
-結果:
+結果：
 
 ```response
 ┌─timestamp───────────┬────────────datetime─┬───────date─┬─string──────────────┬─fixed_string──────────────┐
@@ -6254,19 +6089,19 @@ SELECT
 └─────────────────────┴─────────────────────┴────────────┴─────────────────────┴───────────────────────────┘
 ```
 
-[FixedString (N)](../data-types/fixedstring.md) への型変換は、[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md) 型の引数に対してのみ機能します。
+[FixedString (N)](../data-types/fixedstring.md)への変換は、[String](../data-types/string.md)型または[FixedString](../data-types/fixedstring.md)型の引数に対してのみ機能します。
 
-[Nullable](../data-types/nullable.md) への型変換とその逆もサポートされています。
+[Nullable](../data-types/nullable.md)型への変換とその逆もサポートされています。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT toTypeName(x) FROM t_null;
 ```
 
-結果:
+結果：
 
 ```response
 ┌─toTypeName(x)─┐
@@ -6275,13 +6110,13 @@ SELECT toTypeName(x) FROM t_null;
 └───────────────┘
 ```
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT toTypeName(CAST(x, 'Nullable(UInt16)')) FROM t_null;
 ```
 
-結果:
+結果：
 
 ```response
 ┌─toTypeName(CAST(x, 'Nullable(UInt16)'))─┐
@@ -6292,12 +6127,14 @@ SELECT toTypeName(CAST(x, 'Nullable(UInt16)')) FROM t_null;
 
 **参照**
 
-- [cast_keep_nullable](../../operations/settings/settings.md/#cast_keep_nullable) 設定
+- [cast_keep_nullable](../../operations/settings/settings.md/#cast_keep_nullable)設定
+```
+
 ## accurateCast(x, T) {#accuratecastx-t}
 
-`x` を `T` データ型に変換します。
+`x` をデータ型 `T` に変換します。
 
-[cast](#cast) との違いは、`accurateCast` は型 T の範囲に収まらない場合、数値型のオーバーフローを許可しません。たとえば、`accurateCast(-1, 'UInt8')` は例外をスローします。
+[cast](#cast) との違いは、`accurateCast` は `T` 型の制約に収まらない場合に、数値型のオーバーフローを許可しないことです。例えば、`accurateCast(-1, 'UInt8')` は例外をスローします。
 
 **例**
 
@@ -6328,7 +6165,7 @@ Code: 70. DB::Exception: Received from localhost:9000. DB::Exception: Value in c
 ```
 ## accurateCastOrNull(x, T) {#accuratecastornullx-t}
 
-入力値 `x` を指定されたデータ型 `T` に変換します。常に [Nullable](../data-types/nullable.md) 型を返し、キャスト値が対象型に表現できない場合は [NULL](/sql-reference/syntax#null) を返します。
+入力値 `x` を指定されたデータ型 `T` に変換します。常に [Nullable](../data-types/nullable.md) 型を返し、キャスト値がターゲット型に変換できない場合は [NULL](/sql-reference/syntax#null) を返します。
 
 **構文**
 
@@ -6339,7 +6176,7 @@ accurateCastOrNull(x, T)
 **引数**
 
 - `x` — 入力値。
-- `T` — 戻り値のデータ型の名前。
+- `T` — 戻り値のデータ型名。
 
 **戻り値**
 
@@ -6377,12 +6214,11 @@ SELECT
 │  ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ         │
 └───────┴──────┴──────────────┘
 ```
-
 ## accurateCastOrDefault(x, T[, default_value]) {#accuratecastordefaultx-t-default_value}
 
-入力値 `x` を指定されたデータ型 `T` に変換します。キャストした値がターゲット型に表現できない場合、指定した場合はデフォルト型の値または `default_value` を返します。
+入力値 `x` を指定されたデータ型 `T` に変換します。キャスト値がターゲット型に変換できない場合、デフォルトの型の値または指定された `default_value` を返します。
 
-**文法**
+**構文**
 
 ```sql
 accurateCastOrDefault(x, T)
@@ -6391,10 +6227,10 @@ accurateCastOrDefault(x, T)
 **引数**
 
 - `x` — 入力値。
-- `T` — 返されるデータ型の名前。
-- `default_value` — 返されるデータ型のデフォルト値。
+- `T` — 戻り値のデータ型名。
+- `default_value` — 戻り値のデータ型のデフォルト値。
 
-**返される値**
+**戻り値**
 
 - 指定されたデータ型 `T` に変換された値。
 
@@ -6402,7 +6238,7 @@ accurateCastOrDefault(x, T)
 
 クエリ:
 
-``` sql
+```sql
 SELECT toTypeName(accurateCastOrDefault(5, 'UInt8'));
 ```
 
@@ -6416,7 +6252,7 @@ SELECT toTypeName(accurateCastOrDefault(5, 'UInt8'));
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     accurateCastOrDefault(-1, 'UInt8') as uint8,
     accurateCastOrDefault(-1, 'UInt8', 5) as uint8_default,
@@ -6433,29 +6269,74 @@ SELECT
 │     0 │             5 │    0 │            5 │              │ Te                   │
 └───────┴───────────────┴──────┴──────────────┴──────────────┴──────────────────────┘
 ```
+## toInterval {#toInterval}
+
+数値と間隔単位（例: 'second' や 'day'）から [Interval](../../sql-reference/data-types/special-data-types/interval.md) データ型の値を作成します。
+
+**構文**
+
+```sql
+toInterval(value, unit)
+```
+
+**引数**
+
+- `value` — インターバルの長さ。整数またはその文字列表現、および浮動小数点数。[ (U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
+- `unit` — 作成するインターバルのタイプ。[String Literal](/sql-reference/syntax#string)。
+    可能な値:
+    
+    - `nanosecond`
+    - `microsecond`
+    - `millisecond`
+    - `second`
+    - `minute`
+    - `hour`
+    - `day`
+    - `week`
+    - `month`
+    - `quarter`
+    - `year`
+
+    `unit` 引数は大文字小文字を区別しません。
+
+**戻り値**
+
+- 結果インターバル。[Interval](../../sql-reference/data-types/special-data-types/interval.md)
+
+**例**
+
+```sql
+SELECT toDateTime('2025-01-01 00:00:00') + toInterval(1, 'hour')
+```
+
+```response
+┌─toDateTime('2025-01-01 00:00:00') + toInterval(1, 'hour') ─┐
+│                                        2025-01-01 01:00:00 │
+└────────────────────────────────────────────────────────────┘
+```
 ## toIntervalYear {#tointervalyear}
 
-`n` 年の間隔をデータ型 [IntervalYear](../data-types/special-data-types/interval.md) で返します。
+データ型 [IntervalYear](../data-types/special-data-types/interval.md) の `n` 年のインターバルを返します。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 toIntervalYear(n)
 ```
 
 **引数**
 
-- `n` — 年数。整数またはそれに対応する文字列、及び浮動小数点数。[(U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
+- `n` — 年数。整数またはその文字列表現、および浮動小数点数。[ (U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- `n` 年の間隔。[IntervalYear](../data-types/special-data-types/interval.md)。
+- `n` 年のインターバル。[IntervalYear](../data-types/special-data-types/interval.md)。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 WITH
     toDate('2024-06-15') AS date,
     toIntervalYear(1) AS interval_to_year
@@ -6471,27 +6352,27 @@ SELECT date + interval_to_year AS result
 ```
 ## toIntervalQuarter {#tointervalquarter}
 
-`n` 四半期の間隔をデータ型 [IntervalQuarter](../data-types/special-data-types/interval.md) で返します。
+データ型 [IntervalQuarter](../data-types/special-data-types/interval.md) の `n` 四半期のインターバルを返します。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 toIntervalQuarter(n)
 ```
 
 **引数**
 
-- `n` — 四半期の数。整数またはそれに対応する文字列、及び浮動小数点数。[(U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
+- `n` — 四半期数。整数またはその文字列表現、および浮動小数点数。[ (U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- `n` 四半期の間隔。[IntervalQuarter](../data-types/special-data-types/interval.md)。
+- `n` 四半期のインターバル。[IntervalQuarter](../data-types/special-data-types/interval.md)。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 WITH
     toDate('2024-06-15') AS date,
     toIntervalQuarter(1) AS interval_to_quarter
@@ -6507,27 +6388,27 @@ SELECT date + interval_to_quarter AS result
 ```
 ## toIntervalMonth {#tointervalmonth}
 
-`n` ヶ月の間隔をデータ型 [IntervalMonth](../data-types/special-data-types/interval.md) で返します。
+データ型 [IntervalMonth](../data-types/special-data-types/interval.md) の `n` ヶ月のインターバルを返します。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 toIntervalMonth(n)
 ```
 
 **引数**
 
-- `n` — ヶ月数。整数またはそれに対応する文字列、及び浮動小数点数。[(U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
+- `n` — ヶ月数。整数またはその文字列表現、および浮動小数点数。[ (U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- `n` ヶ月の間隔。[IntervalMonth](../data-types/special-data-types/interval.md)。
+- `n` ヶ月のインターバル。[IntervalMonth](../data-types/special-data-types/interval.md)。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 WITH
     toDate('2024-06-15') AS date,
     toIntervalMonth(1) AS interval_to_month
@@ -6543,27 +6424,27 @@ SELECT date + interval_to_month AS result
 ```
 ## toIntervalWeek {#tointervalweek}
 
-`n` 週間の間隔をデータ型 [IntervalWeek](../data-types/special-data-types/interval.md) で返します。
+データ型 [IntervalWeek](../data-types/special-data-types/interval.md) の `n` 週間のインターバルを返します。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 toIntervalWeek(n)
 ```
 
 **引数**
 
-- `n` — 週間数。整数またはそれに対応する文字列、及び浮動小数点数。[(U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
+- `n` — 週間数。整数またはその文字列表現、および浮動小数点数。[ (U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- `n` 週間の間隔。[IntervalWeek](../data-types/special-data-types/interval.md)。
+- `n` 週間のインターバル。[IntervalWeek](../data-types/special-data-types/interval.md)。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 WITH
     toDate('2024-06-15') AS date,
     toIntervalWeek(1) AS interval_to_week
@@ -6579,27 +6460,27 @@ SELECT date + interval_to_week AS result
 ```
 ## toIntervalDay {#tointervalday}
 
-`n` 日の間隔をデータ型 [IntervalDay](../data-types/special-data-types/interval.md) で返します。
+データ型 [IntervalDay](../data-types/special-data-types/interval.md) の `n` 日のインターバルを返します。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 toIntervalDay(n)
 ```
 
 **引数**
 
-- `n` — 日数。整数またはそれに対応する文字列、及び浮動小数点数。[(U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
+- `n` — 日数。整数またはその文字列表現、および浮動小数点数。[ (U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- `n` 日の間隔。[IntervalDay](../data-types/special-data-types/interval.md)。
+- `n` 日のインターバル。[IntervalDay](../data-types/special-data-types/interval.md)。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 WITH
     toDate('2024-06-15') AS date,
     toIntervalDay(5) AS interval_to_days
@@ -6615,27 +6496,27 @@ SELECT date + interval_to_days AS result
 ```
 ## toIntervalHour {#tointervalhour}
 
-`n` 時間の間隔をデータ型 [IntervalHour](../data-types/special-data-types/interval.md) で返します。
+データ型 [IntervalHour](../data-types/special-data-types/interval.md) の `n` 時間のインターバルを返します。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 toIntervalHour(n)
 ```
 
 **引数**
 
-- `n` — 時間数。整数またはそれに対応する文字列、及び浮動小数点数。[(U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
+- `n` — 時間数。整数またはその文字列表現、および浮動小数点数。[ (U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- `n` 時間の間隔。[IntervalHour](../data-types/special-data-types/interval.md)。
+- `n` 時間のインターバル。[IntervalHour](../data-types/special-data-types/interval.md)。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 WITH
     toDate('2024-06-15') AS date,
     toIntervalHour(12) AS interval_to_hours
@@ -6651,27 +6532,27 @@ SELECT date + interval_to_hours AS result
 ```
 ## toIntervalMinute {#tointervalminute}
 
-`n` 分の間隔をデータ型 [IntervalMinute](../data-types/special-data-types/interval.md) で返します。
+データ型 [IntervalMinute](../data-types/special-data-types/interval.md) の `n` 分のインターバルを返します。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 toIntervalMinute(n)
 ```
 
 **引数**
 
-- `n` — 分数。整数またはそれに対応する文字列、及び浮動小数点数。[(U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
+- `n` — 分数。整数またはその文字列表現、および浮動小数点数。[ (U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- `n` 分の間隔。[IntervalMinute](../data-types/special-data-types/interval.md)。
+- `n` 分のインターバル。[IntervalMinute](../data-types/special-data-types/interval.md)。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 WITH
     toDate('2024-06-15') AS date,
     toIntervalMinute(12) AS interval_to_minutes
@@ -6687,27 +6568,27 @@ SELECT date + interval_to_minutes AS result
 ```
 ## toIntervalSecond {#tointervalsecond}
 
-`n` 秒の間隔をデータ型 [IntervalSecond](../data-types/special-data-types/interval.md) で返します。
+データ型 [IntervalSecond](../data-types/special-data-types/interval.md) の `n` 秒のインターバルを返します。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 toIntervalSecond(n)
 ```
 
 **引数**
 
-- `n` — 秒数。整数またはそれに対応する文字列、及び浮動小数点数。[(U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
+- `n` — 秒数。整数またはその文字列表現、および浮動小数点数。[ (U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- `n` 秒の間隔。[IntervalSecond](../data-types/special-data-types/interval.md)。
+- `n` 秒のインターバル。[IntervalSecond](../data-types/special-data-types/interval.md)。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 WITH
     toDate('2024-06-15') AS date,
     toIntervalSecond(30) AS interval_to_seconds
@@ -6723,27 +6604,27 @@ SELECT date + interval_to_seconds AS result
 ```
 ## toIntervalMillisecond {#tointervalmillisecond}
 
-`n` ミリ秒の間隔をデータ型 [IntervalMillisecond](../data-types/special-data-types/interval.md) で返します。
+データ型 [IntervalMillisecond](../data-types/special-data-types/interval.md) の `n` ミリ秒のインターバルを返します。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 toIntervalMillisecond(n)
 ```
 
 **引数**
 
-- `n` — ミリ秒数。整数またはそれに対応する文字列、及び浮動小数点数。[(U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
+- `n` — ミリ秒数。整数またはその文字列表現、および浮動小数点数。[ (U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- `n` ミリ秒の間隔。[IntervalMilliseconds](../data-types/special-data-types/interval.md)。
+- `n` ミリ秒のインターバル。[IntervalMilliseconds](../data-types/special-data-types/interval.md)。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 WITH
     toDateTime('2024-06-15') AS date,
     toIntervalMillisecond(30) AS interval_to_milliseconds
@@ -6759,27 +6640,27 @@ SELECT date + interval_to_milliseconds AS result
 ```
 ## toIntervalMicrosecond {#tointervalmicrosecond}
 
-`n` マイクロ秒の間隔をデータ型 [IntervalMicrosecond](../data-types/special-data-types/interval.md) で返します。
+データ型 [IntervalMicrosecond](../data-types/special-data-types/interval.md) の `n` マイクロ秒のインターバルを返します。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 toIntervalMicrosecond(n)
 ```
 
 **引数**
 
-- `n` — マイクロ秒数。整数またはそれに対応する文字列、及び浮動小数点数。[(U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
+- `n` — マイクロ秒数。整数またはその文字列表現、および浮動小数点数。[ (U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- `n` マイクロ秒の間隔。[IntervalMicrosecond](../data-types/special-data-types/interval.md)。
+- `n` マイクロ秒のインターバル。[IntervalMicrosecond](../data-types/special-data-types/interval.md)。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 WITH
     toDateTime('2024-06-15') AS date,
     toIntervalMicrosecond(30) AS interval_to_microseconds
@@ -6795,27 +6676,27 @@ SELECT date + interval_to_microseconds AS result
 ```
 ## toIntervalNanosecond {#tointervalnanosecond}
 
-`n` ナノ秒の間隔をデータ型 [IntervalNanosecond](../data-types/special-data-types/interval.md) で返します。
+データ型 [IntervalNanosecond](../data-types/special-data-types/interval.md) の `n` ナノ秒のインターバルを返します。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 toIntervalNanosecond(n)
 ```
 
 **引数**
 
-- `n` — ナノ秒数。整数またはそれに対応する文字列、及び浮動小数点数。[(U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
+- `n` — ナノ秒数。整数またはその文字列表現、および浮動小数点数。[ (U)Int*](../data-types/int-uint.md)/[Float*](../data-types/float.md)/[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- `n` ナノ秒の間隔。[IntervalNanosecond](../data-types/special-data-types/interval.md)。
+- `n` ナノ秒のインターバル。[IntervalNanosecond](../data-types/special-data-types/interval.md)。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 WITH
     toDateTime('2024-06-15') AS date,
     toIntervalNanosecond(30) AS interval_to_nanoseconds
@@ -6831,34 +6712,34 @@ SELECT date + interval_to_nanoseconds AS result
 ```
 ## parseDateTime {#parsedatetime}
 
-[文字列](../data-types/string.md) を [DateTime](../data-types/datetime.md) に変換します。この際、[MySQL のフォーマット文字列](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format) に従います。
+[文字列](../data-types/string.md) を [DateTime](../data-types/datetime.md) に変換します。これは [MySQL 形式文字列](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format) に従います。
 
-この関数は、関数 [formatDateTime](/sql-reference/functions/date-time-functions#formatdatetime) の反対の操作です。
+この関数は、関数 [formatDateTime](/sql-reference/functions/date-time-functions#formatdatetime) の逆の操作です。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 parseDateTime(str[, format[, timezone]])
 ```
 
 **引数**
 
-- `str` — パースする文字列
-- `format` — フォーマット文字列。省略可能。指定しない場合は `%Y-%m-%d %H:%i:%s`。
-- `timezone` — [タイムゾーン](operations/server-configuration-parameters/settings.md#timezone)。省略可能。
+- `str` — 解析される文字列
+- `format` — 形式文字列。オプション。指定されていない場合は `%Y-%m-%d %H:%i:%s` となります。
+- `timezone` — [タイムゾーン](operations/server-configuration-parameters/settings.md#timezone)。オプション。
 
-**返される値**
+**戻り値**
 
-入力文字列から解析された [DateTime](../data-types/datetime.md) 値。
+入力文字列から MySQL スタイルの形式文字列に従って解析された [DateTime](../data-types/datetime.md) 値を返します。
 
-**サポートされているフォーマット指定子**
+**サポートされる形式指定子**
 
-[formatDateTime](/sql-reference/functions/date-time-functions#formatdatetime) にリストされたすべてのフォーマット指定子をサポートしていますが、次は除きます:
+[formatDateTime](/sql-reference/functions/date-time-functions#formatdatetime) にリストされているすべての形式指定子をサポートしていますが、以下は除外されます:
 - %Q: 四半期 (1-4)
 
 **例**
 
-``` sql
+```sql
 SELECT parseDateTime('2021-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 ┌─parseDateTime('2021-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')─┐
@@ -6866,7 +6747,7 @@ SELECT parseDateTime('2021-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 └───────────────────────────────────────────────────────────┘
 ```
 
-エイリアス: `TO_TIMESTAMP`.
+別名: `TO_TIMESTAMP`。
 ## parseDateTimeOrZero {#parsedatetimeorzero}
 
 [parseDateTime](#parsedatetime) と同様ですが、処理できない日付形式に遭遇した場合はゼロ日付を返します。
@@ -6874,39 +6755,39 @@ SELECT parseDateTime('2021-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 [parseDateTime](#parsedatetime) と同様ですが、処理できない日付形式に遭遇した場合は `NULL` を返します。
 
-エイリアス: `str_to_date`.
+別名: `str_to_date`。
 ## parseDateTimeInJodaSyntax {#parsedatetimeinjodasyntax}
 
-[parseDateTime](#parsedatetime) と似ていますが、フォーマット文字列は MySQL 構文ではなく [Joda](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html) の形式です。
+[parseDateTime](#parsedatetime) に似ていますが、形式文字列が MySQL 構文ではなく [Joda](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html) である点が異なります。
 
-この関数は、関数 [formatDateTimeInJodaSyntax](/sql-reference/functions/date-time-functions#formatdatetimeinjodasyntax) の反対の操作です。
+この関数は、関数 [formatDateTimeInJodaSyntax](/sql-reference/functions/date-time-functions#formatdatetimeinjodasyntax) の逆の操作です。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 parseDateTimeInJodaSyntax(str[, format[, timezone]])
 ```
 
 **引数**
 
-- `str` — パースする文字列
-- `format` — フォーマット文字列。省略可能。指定しない場合は `yyyy-MM-dd HH:mm:ss`。
-- `timezone` — [タイムゾーン](operations/server-configuration-parameters/settings.md#timezone)。省略可能。
+- `str` — 解析される文字列
+- `format` — 形式文字列。オプション。指定されていない場合は `yyyy-MM-dd HH:mm:ss` となります。
+- `timezone` — [タイムゾーン](operations/server-configuration-parameters/settings.md#timezone)。オプション。
 
-**返される値**
+**戻り値**
 
-入力文字列から取得された [DateTime](../data-types/datetime.md) 値を返します。
+入力文字列から Joda スタイルの形式文字列に従って解析された [DateTime](../data-types/datetime.md) 値を返します。
 
-**サポートされているフォーマット指定子**
+**サポートされる形式指定子**
 
-[formatDateTimeInJoda](/sql-reference/functions/date-time-functions#formatdatetime) にリストされているすべてのフォーマット指定子をサポートしていますが、次は除きます:
-- S: 秒の分数
+[formatDateTimeInJoda](/sql-reference/functions/date-time-functions#formatdatetime) にリストされているすべての形式指定子をサポートしていますが、以下は除外されます:
+- S: 秒の小数
 - z: タイムゾーン
-- Z: タイムゾーンのオフセット/id
+- Z: タイムゾーンオフセット/ID
 
 **例**
 
-``` sql
+```sql
 SELECT parseDateTimeInJodaSyntax('2023-02-24 14:53:31', 'yyyy-MM-dd HH:mm:ss', 'Europe/Minsk')
 
 ┌─parseDateTimeInJodaSyntax('2023-02-24 14:53:31', 'yyyy-MM-dd HH:mm:ss', 'Europe/Minsk')─┐
@@ -6921,24 +6802,24 @@ SELECT parseDateTimeInJodaSyntax('2023-02-24 14:53:31', 'yyyy-MM-dd HH:mm:ss', '
 [parseDateTimeInJodaSyntax](#parsedatetimeinjodasyntax) と同様ですが、処理できない日付形式に遭遇した場合は `NULL` を返します。
 ## parseDateTime64 {#parsedatetime64}
 
-[文字列](../data-types/string.md) を [DateTime64](../data-types/datetime64.md) に変換します。この際、[MySQL のフォーマット文字列](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format) に従います。
+[文字列](../data-types/string.md) を [DateTime64](../data-types/datetime64.md) に変換します。これは [MySQL 形式文字列](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format) に従います。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 parseDateTime64(str[, format[, timezone]])
 ```
 
 **引数**
 
-- `str` — パースする文字列。
-- `format` — フォーマット文字列。省略可能。指定しない場合は `%Y-%m-%d %H:%i:%s.%f`。
-- `timezone` — [タイムゾーン](/operations/server-configuration-parameters/settings.md#timezone)。省略可能。
+- `str` — 解析される文字列。
+- `format` — 形式文字列。オプション。指定されていない場合は `%Y-%m-%d %H:%i:%s.%f` となります。
+- `timezone` — [タイムゾーン](/operations/server-configuration-parameters/settings.md#timezone)。オプション。
 
-**返される値**
+**戻り値**
 
-入力文字列から取得された [DateTime64](../data-types/datetime64.md) 値を返します。
-返される値の精度は6です。
+入力文字列から MySQL スタイルの形式文字列に従って解析された [DateTime64](../data-types/datetime64.md) 値を返します。
+返される値の精度は 6 です。
 ## parseDateTime64OrZero {#parsedatetime64orzero}
 
 [parseDateTime64](#parsedatetime64) と同様ですが、処理できない日付形式に遭遇した場合はゼロ日付を返します。
@@ -6947,24 +6828,24 @@ parseDateTime64(str[, format[, timezone]])
 [parseDateTime64](#parsedatetime64) と同様ですが、処理できない日付形式に遭遇した場合は `NULL` を返します。
 ## parseDateTime64InJodaSyntax {#parsedatetime64injodasyntax}
 
-[文字列](../data-types/string.md) を [DateTime64](../data-types/datetime64.md) に変換します。この際、[Joda のフォーマット文字列](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html) に従います。
+[文字列](../data-types/string.md) を [DateTime64](../data-types/datetime64.md) に変換します。これは [Joda 形式文字列](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html) に従います。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 parseDateTime64InJodaSyntax(str[, format[, timezone]])
 ```
 
 **引数**
 
-- `str` — パースする文字列。
-- `format` — フォーマット文字列。省略可能。指定しない場合は `yyyy-MM-dd HH:mm:ss`。
-- `timezone` — [タイムゾーン](/operations/server-configuration-parameters/settings.md#timezone)。省略可能。
+- `str` — 解析される文字列。
+- `format` — 形式文字列。オプション。指定されていない場合は `yyyy-MM-dd HH:mm:ss` となります。
+- `timezone` — [タイムゾーン](/operations/server-configuration-parameters/settings.md#timezone)。オプション。
 
-**返される値**
+**戻り値**
 
-入力文字列から取得された [DateTime64](../data-types/datetime64.md) 値を返します。
-返される値の精度はフォーマット文字列内の `S` プレースホルダーの数に等しいですが、最大で6に制限されます。
+入力文字列から Joda スタイルの形式文字列に従って解析された [DateTime64](../data-types/datetime64.md) 値を返します。
+返される値の精度は形式文字列中の `S` プレースホルダーの数に等しくなります（ただし最大6）。
 ## parseDateTime64InJodaSyntaxOrZero {#parsedatetime64injodasyntaxorzero}
 
 [parseDateTime64InJodaSyntax](#parsedatetime64injodasyntax) と同様ですが、処理できない日付形式に遭遇した場合はゼロ日付を返します。
@@ -6974,34 +6855,34 @@ parseDateTime64InJodaSyntax(str[, format[, timezone]])
 ## parseDateTimeBestEffort {#parsedatetimebesteffort}
 ## parseDateTime32BestEffort {#parsedatetime32besteffort}
 
-[文字列](../data-types/string.md) で表現された日付と時刻を [DateTime](/sql-reference/data-types/datetime) データ型に変換します。
+[文字列](../data-types/string.md) で表現された日付と時間を [DateTime](/sql-reference/data-types/datetime) データ型に変換します。
 
-この関数は、[ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)、[RFC 1123 - 5.2.14 RFC-822 日付および時刻の仕様](https://tools.ietf.org/html/rfc1123#page-55)、ClickHouse のおよびその他のいくつかの日付と時刻の形式を解析します。
+この関数は [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)、[RFC 1123 - 5.2.14 RFC-822 Date and Time Specification](https://tools.ietf.org/html/rfc1123#page-55)、ClickHouseおよび他のいくつかの日付と時間の形式を解析します。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 parseDateTimeBestEffort(time_string [, time_zone])
 ```
 
 **引数**
 
-- `time_string` — 変換する日付と時刻を含む文字列。[文字列](../data-types/string.md)。
-- `time_zone` — タイムゾーン。この関数は `time_string` を指定されたタイムゾーンに従って解析します。[文字列](../data-types/string.md)。
+- `time_string` — 変換する日付と時間を含む文字列。[文字列](../data-types/string.md)。
+- `time_zone` — タイムゾーン。この関数は、`time_string` をタイムゾーンに従って解析します。[文字列](../data-types/string.md)。
 
-**サポートされている非標準形式**
+**サポートされる非標準形式**
 
-- 9..10 桁の [unix timestamp](https://en.wikipedia.org/wiki/Unix_time) を含む文字列。
-- 日付と時刻のコンポーネントを持つ文字列: `YYYYMMDDhhmmss`、`DD/MM/YYYY hh:mm:ss`、`DD-MM-YY hh:mm`、`YYYY-MM-DD hh:mm:ss` など。
-- 時間コンポーネントを持たない日付を含む文字列: `YYYY`、`YYYYMM`、`YYYY*MM`、`DD/MM/YYYY`、`DD-MM-YY` など。
-- 日と時きを含む文字列: `DD`、`DD hh`、`DD hh:mm`。この場合、`MM` は `01` に置き換えられます。
-- 日付と時刻の他にタイムゾーンのオフセット情報を含む文字列: `YYYY-MM-DD hh:mm:ss ±h:mm` など。例えば、`2020-12-12 17:36:00 -5:00` です。
-- [syslog タイムスタンプ](https://datatracker.ietf.org/doc/html/rfc3164#section-4.1.2): `Mmm dd hh:mm:ss`。例えば、`Jun  9 14:20:32` です。
+- 9〜10桁の [unix タイムスタンプ](https://en.wikipedia.org/wiki/Unix_time) を含む文字列。
+- 日付と時間の要素を含む文字列: `YYYYMMDDhhmmss`, `DD/MM/YYYY hh:mm:ss`, `DD-MM-YY hh:mm`, `YYYY-MM-DD hh:mm:ss` など。
+- 日付を含む文字列だが、時間要素は含まれない: `YYYY`, `YYYYMM`, `YYYY*MM`, `DD/MM/YYYY`, `DD-MM-YY` など。
+- 日と時間を含む文字列: `DD`, `DD hh`, `DD hh:mm`。この場合、`MM` は `01` に置き換えられます。
+- 日付と時間を含む文字列で、タイムゾーンオフセット情報も含まれる: `YYYY-MM-DD hh:mm:ss ±h:mm` など。例: `2020-12-12 17:36:00 -5:00`。
+- [syslog タイムスタンプ](https://datatracker.ietf.org/doc/html/rfc3164#section-4.1.2): `Mmm dd hh:mm:ss`。例えば `Jun  9 14:20:32`。
 
-セパレータを持つすべての形式の場合、関数は月の名前をその完全な名前または月名の最初の3文字で表したもので解析します。例: `24/DEC/18`、`24-Dec-18`、`01-September-2018`。
-年が指定されていない場合は、現在の年と同じとみなされます。結果の DateTime が将来（現在の瞬間の 1 秒後でも）にあたる場合には、現在の年が前の年に置き換えられます。
+分離文字を含むすべての形式に対して、関数は月の名前をその完全名または最初の3文字で解析します。例: `24/DEC/18`, `24-Dec-18`, `01-September-2018`。
+年が指定されない場合は、現在の年とみなされます。もし結果として得られた DateTime が未来の年であった場合（現在の瞬間の後の秒でも）、その年は前年に置き換えられます。
 
-**返される値**
+**戻り値**
 
 - `time_string` が [DateTime](../data-types/datetime.md) データ型に変換されます。
 
@@ -7009,7 +6890,7 @@ parseDateTimeBestEffort(time_string [, time_zone])
 
 クエリ:
 
-``` sql
+```sql
 SELECT parseDateTimeBestEffort('23/10/2020 12:12:57')
 AS parseDateTimeBestEffort;
 ```
@@ -7024,7 +6905,7 @@ AS parseDateTimeBestEffort;
 
 クエリ:
 
-``` sql
+```sql
 SELECT parseDateTimeBestEffort('Sat, 18 Aug 2018 07:22:16 GMT', 'Asia/Istanbul')
 AS parseDateTimeBestEffort;
 ```
@@ -7039,7 +6920,7 @@ AS parseDateTimeBestEffort;
 
 クエリ:
 
-``` sql
+```sql
 SELECT parseDateTimeBestEffort('1284101485')
 AS parseDateTimeBestEffort;
 ```
@@ -7054,7 +6935,7 @@ AS parseDateTimeBestEffort;
 
 クエリ:
 
-``` sql
+```sql
 SELECT parseDateTimeBestEffort('2018-10-23 10:12:12')
 AS parseDateTimeBestEffort;
 ```
@@ -7069,7 +6950,7 @@ AS parseDateTimeBestEffort;
 
 クエリ:
 
-``` sql
+```sql
 SELECT toYear(now()) as year, parseDateTimeBestEffort('10 20:19');
 ```
 
@@ -7083,7 +6964,7 @@ SELECT toYear(now()) as year, parseDateTimeBestEffort('10 20:19');
 
 クエリ:
 
-``` sql
+```sql
 WITH
     now() AS ts_now,
     formatDateTime(ts_around, '%b %e %T') AS syslog_arg
@@ -7108,11 +6989,11 @@ FROM (SELECT arrayJoin([ts_now - 30, ts_now + 30]) AS ts_around);
 - [RFC 1123](https://datatracker.ietf.org/doc/html/rfc1123)
 - [toDate](#todate)
 - [toDateTime](#todatetime)
-- [ISO 8601 の @xkcd による発表](https://xkcd.com/1179/)
+- [ISO 8601の発表 @xkcd](https://xkcd.com/1179/)
 - [RFC 3164](https://datatracker.ietf.org/doc/html/rfc3164#section-4.1.2)
 ## parseDateTimeBestEffortUS {#parsedatetimebesteffortus}
 
-この関数は、ISO 日付形式、例: `YYYY-MM-DD hh:mm:ss` の場合、及び月と日コンポーネントが明確に区別できるその他の日付形式、例: `YYYYMMDDhhmmss`、`YYYY-MM`、`DD hh`、または `YYYY-MM-DD hh:mm:ss ±h:mm` の場合は、[parseDateTimeBestEffort](#parsedatetimebesteffort) と同様に動作します。月と日コンポーネントが明確に区別できない場合、例: `MM/DD/YYYY`、`MM-DD-YYYY`、または `MM-DD-YY` の場合は、 `DD/MM/YYYY`、`DD-MM-YYYY`、または `DD-MM-YY` の代わりに米国日付形式を優先します。ただし例外として、月の値が12より大きく31以下の場合は、この関数は [parseDateTimeBestEffort](#parsedatetimebesteffort) の動作に従います。例: `15/08/2020` は `2020-08-15` として解析されます。
+この関数は、ISO 日付形式（例: `YYYY-MM-DD hh:mm:ss`）に対して [parseDateTimeBestEffort](#parsedatetimebesteffort) と同様に機能し、月と日から成る要素があいまいに抽出できる他の日付形式に対しても同様です。例: `YYYYMMDDhhmmss`, `YYYY-MM`, `DD hh`, `YYYY-MM-DD hh:mm:ss ±h:mm`。月と日から成る要素があいまいに抽出できない場合、例: `MM/DD/YYYY`, `MM-DD-YYYY`, または `MM-DD-YY` に対しては、`DD/MM/YYYY`, `DD-MM-YYYY`, または `DD-MM-YY` の代わりに米国の日付形式を優先します。この場合の例外として、月が 12 より大きくて 31 以下の場合は、[parseDateTimeBestEffort](#parsedatetimebesteffort) の動作に戻ります。例: `15/08/2020` は `2020-08-15` と解析されます。
 ## parseDateTimeBestEffortOrNull {#parsedatetimebesteffortornull}
 ## parseDateTime32BestEffortOrNull {#parsedatetime32besteffortornull}
 
@@ -7120,30 +7001,30 @@ FROM (SELECT arrayJoin([ts_now - 30, ts_now + 30]) AS ts_around);
 ## parseDateTimeBestEffortOrZero {#parsedatetimebesteffortorzero}
 ## parseDateTime32BestEffortOrZero {#parsedatetime32besteffortorzero}
 
-[parseDateTimeBestEffort](#parsedatetimebesteffort) と同様ですが、処理できない日付形式に遭遇した場合はゼロ日付またはゼロ日付時刻を返します。
+[parseDateTimeBestEffort](#parsedatetimebesteffort) と同様ですが、処理できない日付形式に遭遇した場合はゼロ日付またはゼロ日時を返します。
 ## parseDateTimeBestEffortUSOrNull {#parsedatetimebesteffortusornull}
 
 [parseDateTimeBestEffortUS](#parsedatetimebesteffortus) 関数と同様ですが、処理できない日付形式に遭遇した場合は `NULL` を返します。
 ## parseDateTimeBestEffortUSOrZero {#parsedatetimebesteffortusorzero}
 
-[parseDateTimeBestEffortUS](#parsedatetimebesteffortus) 関数と同様ですが、処理できない日付形式に遭遇した場合はゼロ日付 (`1970-01-01`) またはゼロ日付と時刻 (`1970-01-01 00:00:00`) を返します。
+[parseDateTimeBestEffortUS](#parsedatetimebesteffortus) 関数と同様ですが、処理できない日付形式に遭遇した場合はゼロ日付（`1970-01-01`）またはゼロ日時（`1970-01-01 00:00:00`）を返します。
 ## parseDateTime64BestEffort {#parsedatetime64besteffort}
 
-[parseDateTimeBestEffort](#parsedatetimebesteffort) 関数と同様ですが、ミリ秒とマイクロ秒を解析し、[DateTime](/sql-reference/data-types/datetime) データ型を返します。
+[parseDateTimeBestEffort](#parsedatetimebesteffort) 関数と同様ですが、ミリ秒とマイクロ秒も解析し、[DateTime](/sql-reference/data-types/datetime) データ型を返します。
 
-**文法**
+**構文**
 
-``` sql
+```sql
 parseDateTime64BestEffort(time_string [, precision [, time_zone]])
 ```
 
 **引数**
 
-- `time_string` — 変換する日付または日付と時刻を含む文字列。[文字列](../data-types/string.md)。
-- `precision` — 精度。ミリ秒には `3`、マイクロ秒には `6` を指定します。デフォルトは `3`。省略可能。[UInt8](../data-types/int-uint.md)。
-- `time_zone` — [タイムゾーン](/operations/server-configuration-parameters/settings.md#timezone)。関数は `time_string` を指定されたタイムゾーンに従って解析します。省略可能。[文字列](../data-types/string.md)。
+- `time_string` — 変換する日付または日付と時間を含む文字列。[文字列](../data-types/string.md)。
+- `precision` — 必要な精度。`3` — ミリ秒、`6` — マイクロ秒。デフォルト — `3`。オプション。[UInt8](../data-types/int-uint.md)。
+- `time_zone` — [タイムゾーン](/operations/server-configuration-parameters/settings.md#timezone)。この関数は、`time_string` をタイムゾーンに従って解析します。オプション。[文字列](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
 - `time_string` が [DateTime](../data-types/datetime.md) データ型に変換されます。
 
@@ -7174,26 +7055,26 @@ FORMAT PrettyCompactMonoBlock;
 ```
 ## parseDateTime64BestEffortUS {#parsedatetime64besteffortus}
 
-[parseDateTime64BestEffort](#parsedatetime64besteffort) と同様ですが、この関数は揺らぎがある場合は米国の日付形式 (`MM/DD/YYYY` など) を優先します。
+[parseDateTime64BestEffort](#parsedatetime64besteffort) と同様ですが、あいまいな場合には米国の日付形式（`MM/DD/YYYY` など）を優先します。
 ## parseDateTime64BestEffortOrNull {#parsedatetime64besteffortornull}
 
 [parseDateTime64BestEffort](#parsedatetime64besteffort) と同様ですが、処理できない日付形式に遭遇した場合は `NULL` を返します。
 ## parseDateTime64BestEffortOrZero {#parsedatetime64besteffortorzero}
 
-[parseDateTime64BestEffort](#parsedatetime64besteffort) と同様ですが、処理できない日付形式に遭遇した場合はゼロ日付またはゼロ日付時刻を返します。
+[parseDateTime64BestEffort](#parsedatetime64besteffort) と同様ですが、処理できない日付形式に遭遇した場合はゼロ日付またはゼロ日時を返します。
 ## parseDateTime64BestEffortUSOrNull {#parsedatetime64besteffortusornull}
 
-[parseDateTime64BestEffort](#parsedatetime64besteffort) と同様ですが、この関数は揺らぎがある場合は米国の日付形式 (`MM/DD/YYYY` など) を優先し、処理できない日付形式に遭遇した場合は `NULL` を返します。
+[parseDateTime64BestEffort](#parsedatetime64besteffort) と同様ですが、あいまいな場合には米国の日付形式（`MM/DD/YYYY` など）を優先し、処理できない日付形式に遭遇した場合は `NULL` を返します。
 ## parseDateTime64BestEffortUSOrZero {#parsedatetime64besteffortusorzero}
 
-[parseDateTime64BestEffort](#parsedatetime64besteffort) と同様ですが、この関数は揺らぎがある場合は米国の日付形式 (`MM/DD/YYYY` など) を優先し、処理できない日付形式に遭遇した場合はゼロ日付またはゼロ日付時刻を返します。
+[parseDateTime64BestEffort](#parsedatetime64besteffort) と同様ですが、あいまいな場合には米国の日付形式（`MM/DD/YYYY` など）を優先し、処理できない日付形式に遭遇した場合はゼロ日付またはゼロ日時を返します。
 ## toLowCardinality {#tolowcardinality}
 
 入力パラメータを同じデータ型の [LowCardinality](../data-types/lowcardinality.md) バージョンに変換します。
 
 `LowCardinality` データ型からデータを変換するには、[CAST](#cast) 関数を使用します。例えば、`CAST(x as String)`。
 
-**文法**
+**構文**
 
 ```sql
 toLowCardinality(expr)
@@ -7201,11 +7082,11 @@ toLowCardinality(expr)
 
 **引数**
 
-- `expr` — 結果として取得される [式](/sql-reference/syntax#expressions)、およびサポートされているデータ型の1つ。 
+- `expr` — さまざまな [サポートされているデータ型](/sql-reference/data-types) からなる [式](/sql-reference/syntax#expressions)。
 
-**返される値**
+**戻り値**
 
-- `expr` の結果。[LowCardinality](../data-types/lowcardinality.md) の型。
+- `expr` の結果。[LowCardinality](../data-types/lowcardinality.md) 型の値。
 
 **例**
 
@@ -7224,13 +7105,13 @@ SELECT toLowCardinality('1');
 ```
 ## toUnixTimestamp64Second {#tounixtimestamp64second}
 
-`DateTime64` を固定秒精度の `Int64` 値に変換します。入力値は、その精度に応じて適切にスケーリングされます。
+`DateTime64` を固定秒精度の `Int64` 値に変換します。入力値は、その精度に応じて適切にスケールアップまたはダウンされます。
 
 :::note
 出力値は UTC のタイムスタンプであり、`DateTime64` のタイムゾーンではありません。
 :::
 
-**文法**
+**構文**
 
 ```sql
 toUnixTimestamp64Second(value)
@@ -7238,11 +7119,11 @@ toUnixTimestamp64Second(value)
 
 **引数**
 
-- `value` — 任意の精度の `DateTime64` 値。[DateTime64](../data-types/datetime64.md)。
+- `value` — 任意の精度を持つ DateTime64 値。[DateTime64](../data-types/datetime64.md)。
 
-**返される値**
+**戻り値**
 
-- `value` が `Int64` データ型に変換されます。[Int64](../data-types/int-uint.md)。
+- `value` が [Int64](../data-types/int-uint.md) データ型に変換されます。
 
 **例**
 
@@ -7260,15 +7141,16 @@ SELECT toUnixTimestamp64Second(dt64);
 │                    1234567891 │
 └───────────────────────────────┘
 ```
+
 ## toUnixTimestamp64Milli {#tounixtimestamp64milli}
 
-`DateTime64` を固定ミリ秒精度の `Int64` 値に変換します。入力値は、その精度に応じて適切にスケーリングされます。
+`DateTime64` を固定ミリ秒精度の `Int64` 値に変換します。入力値は、その精度に応じて適切にスケールアップまたはスケールダウンされます。
 
 :::note
-出力値は UTC のタイムスタンプであり、`DateTime64` のタイムゾーンではありません。
+出力値はUTCのタイムスタンプであり、`DateTime64`のタイムゾーンではありません。
 :::
 
-**文法**
+**構文**
 
 ```sql
 toUnixTimestamp64Milli(value)
@@ -7276,11 +7158,11 @@ toUnixTimestamp64Milli(value)
 
 **引数**
 
-- `value` — 任意の精度の `DateTime64` 値。[DateTime64](../data-types/datetime64.md)。
+- `value` — 任意の精度を持つ DateTime64 値。 [DateTime64](../data-types/datetime64.md).
 
 **返される値**
 
-- `value` が `Int64` データ型に変換されます。[Int64](../data-types/int-uint.md)。
+- `value` は `Int64` データ型に変換されます。 [Int64](../data-types/int-uint.md).
 
 **例**
 
@@ -7300,13 +7182,13 @@ SELECT toUnixTimestamp64Milli(dt64);
 ```
 ## toUnixTimestamp64Micro {#tounixtimestamp64micro}
 
-`DateTime64` を固定マイクロ秒精度の `Int64` 値に変換します。入力値は、その精度に応じて適切にスケーリングされます。
+`DateTime64` を固定マイクロ秒精度の `Int64` 値に変換します。入力値は、その精度に応じて適切にスケールアップまたはスケールダウンされます。
 
 :::note
-出力値は UTC のタイムスタンプであり、`DateTime64` のタイムゾーンではありません。
+出力値はUTCのタイムスタンプであり、`DateTime64`のタイムゾーンではありません。
 :::
 
-**文法**
+**構文**
 
 ```sql
 toUnixTimestamp64Micro(value)
@@ -7314,11 +7196,11 @@ toUnixTimestamp64Micro(value)
 
 **引数**
 
-- `value` — 任意の精度の `DateTime64` 値。[DateTime64](../data-types/datetime64.md)。
+- `value` — 任意の精度を持つ DateTime64 値。 [DateTime64](../data-types/datetime64.md).
 
 **返される値**
 
-- `value` が `Int64` データ型に変換されます。[Int64](../data-types/int-uint.md)。
+- `value` は `Int64` データ型に変換されます。 [Int64](../data-types/int-uint.md).
 
 **例**
 
@@ -7338,13 +7220,13 @@ SELECT toUnixTimestamp64Micro(dt64);
 ```
 ## toUnixTimestamp64Nano {#tounixtimestamp64nano}
 
-`DateTime64` を固定ナノ秒精度の `Int64` 値に変換します。入力値は、その精度に応じて適切にスケーリングされます。
+`DateTime64` を固定ナノ秒精度の `Int64` 値に変換します。入力値は、その精度に応じて適切にスケールアップまたはスケールダウンされます。
 
 :::note
-出力値は UTC のタイムスタンプであり、`DateTime64` のタイムゾーンではありません。
+出力値はUTCのタイムスタンプであり、`DateTime64`のタイムゾーンではありません。
 :::
 
-**文法**
+**構文**
 
 ```sql
 toUnixTimestamp64Nano(value)
@@ -7352,11 +7234,11 @@ toUnixTimestamp64Nano(value)
 
 **引数**
 
-- `value` — 任意の精度の `DateTime64` 値。[DateTime64](../data-types/datetime64.md)。
+- `value` — 任意の精度を持つ DateTime64 値。 [DateTime64](../data-types/datetime64.md).
 
 **返される値**
 
-- `value` が `Int64` データ型に変換されます。[Int64](../data-types/int-uint.md)。
+- `value` は `Int64` データ型に変換されます。 [Int64](../data-types/int-uint.md).
 
 **例**
 
@@ -7374,42 +7256,41 @@ SELECT toUnixTimestamp64Nano(dt64);
 │               1234567891011 │
 └─────────────────────────────┘
 ```
-
 ## fromUnixTimestamp64Second {#fromunixtimestamp64second}
 
-`Int64`を固定の秒精度とオプションのタイムゾーンを持つ`DateTime64`値に変換します。入力値は、その精度に応じて適切にスケーリングされます。
+`Int64` を固定秒精度の `DateTime64` 値に変換します。オプションでタイムゾーンを指定できます。入力値は、その精度に応じて適切にスケールアップまたはスケールダウンされます。
 
 :::note
-入力値は、指定された（または暗黙の）タイムゾーンではなく、UTCタイムスタンプとして扱われることに注意してください。
+入力値はUTCタイムスタンプとして扱われ、指定された（または暗黙の）タイムゾーンのタイムスタンプではありません。
 :::
 
 **構文**
 
-``` sql
+```sql
 fromUnixTimestamp64Second(value[, timezone])
 ```
 
 **引数**
 
-- `value` — 任意の精度の値。[Int64](../data-types/int-uint.md)。
-- `timezone` — （オプション）結果のタイムゾーン名。[String](../data-types/string.md)。
+- `value` — 任意の精度の値。 [Int64](../data-types/int-uint.md).
+- `timezone` — (オプション) 結果のタイムゾーン名。 [String](../data-types/string.md).
 
 **返される値**
 
-- 精度`0`のDateTime64に変換された`value`。[DateTime64](../data-types/datetime64.md)。
+- `value` は精度 `0` の DateTime64 に変換されます。 [DateTime64](../data-types/datetime64.md).
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 WITH CAST(1733935988, 'Int64') AS i64
 SELECT
     fromUnixTimestamp64Second(i64, 'UTC') AS x,
     toTypeName(x);
 ```
 
-結果：
+結果:
 
 ```response
 ┌───────────────────x─┬─toTypeName(x)────────┐
@@ -7418,39 +7299,39 @@ SELECT
 ```
 ## fromUnixTimestamp64Milli {#fromunixtimestamp64milli}
 
-`Int64`を固定のミリ秒精度とオプションのタイムゾーンを持つ`DateTime64`値に変換します。入力値は、その精度に応じて適切にスケーリングされます。
+`Int64` を固定ミリ秒精度の `DateTime64` 値に変換します。オプションでタイムゾーンを指定できます。入力値は、その精度に応じて適切にスケールアップまたはスケールダウンされます。
 
 :::note
-入力値は、指定された（または暗黙の）タイムゾーンではなく、UTCタイムスタンプとして扱われることに注意してください。
+入力値はUTCタイムスタンプとして扱われ、指定された（または暗黙の）タイムゾーンのタイムスタンプではありません。
 :::
 
 **構文**
 
-``` sql
+```sql
 fromUnixTimestamp64Milli(value[, timezone])
 ```
 
 **引数**
 
-- `value` — 任意の精度の値。[Int64](../data-types/int-uint.md)。
-- `timezone` — （オプション）結果のタイムゾーン名。[String](../data-types/string.md)。
+- `value` — 任意の精度の値。 [Int64](../data-types/int-uint.md).
+- `timezone` — (オプション) 結果のタイムゾーン名。 [String](../data-types/string.md).
 
 **返される値**
 
-- 精度`3`のDateTime64に変換された`value`。[DateTime64](../data-types/datetime64.md)。
+- `value` は精度 `3` の DateTime64 に変換されます。 [DateTime64](../data-types/datetime64.md).
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 WITH CAST(1733935988123, 'Int64') AS i64
 SELECT
     fromUnixTimestamp64Milli(i64, 'UTC') AS x,
     toTypeName(x);
 ```
 
-結果：
+結果:
 
 ```response
 ┌───────────────────────x─┬─toTypeName(x)────────┐
@@ -7459,39 +7340,39 @@ SELECT
 ```
 ## fromUnixTimestamp64Micro {#fromunixtimestamp64micro}
 
-`Int64`を固定のマイクロ秒精度とオプションのタイムゾーンを持つ`DateTime64`値に変換します。入力値は、その精度に応じて適切にスケーリングされます。
+`Int64` を固定マイクロ秒精度の `DateTime64` 値に変換します。オプションでタイムゾーンを指定できます。入力値は、その精度に応じて適切にスケールアップまたはスケールダウンされます。
 
 :::note
-入力値は、指定された（または暗黙の）タイムゾーンではなく、UTCタイムスタンプとして扱われることに注意してください。
+入力値はUTCタイムスタンプとして扱われ、指定された（または暗黙の）タイムゾーンのタイムスタンプではありません。
 :::
 
 **構文**
 
-``` sql
+```sql
 fromUnixTimestamp64Micro(value[, timezone])
 ```
 
 **引数**
 
-- `value` — 任意の精度の値。[Int64](../data-types/int-uint.md)。
-- `timezone` — （オプション）結果のタイムゾーン名。[String](../data-types/string.md)。
+- `value` — 任意の精度の値。 [Int64](../data-types/int-uint.md).
+- `timezone` — (オプション) 結果のタイムゾーン名。 [String](../data-types/string.md).
 
 **返される値**
 
-- 精度`6`のDateTime64に変換された`value`。[DateTime64](../data-types/datetime64.md)。
+- `value` は精度 `6` の DateTime64 に変換されます。 [DateTime64](../data-types/datetime64.md).
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 WITH CAST(1733935988123456, 'Int64') AS i64
 SELECT
     fromUnixTimestamp64Micro(i64, 'UTC') AS x,
     toTypeName(x);
 ```
 
-結果：
+結果:
 
 ```response
 ┌──────────────────────────x─┬─toTypeName(x)────────┐
@@ -7500,39 +7381,39 @@ SELECT
 ```
 ## fromUnixTimestamp64Nano {#fromunixtimestamp64nano}
 
-`Int64`を固定のナノ秒精度とオプションのタイムゾーンを持つ`DateTime64`値に変換します。入力値は、その精度に応じて適切にスケーリングされます。
+`Int64` を固定ナノ秒精度の `DateTime64` 値に変換します。オプションでタイムゾーンを指定できます。入力値は、その精度に応じて適切にスケールアップまたはスケールダウンされます。
 
 :::note
-入力値は、指定された（または暗黙の）タイムゾーンではなく、UTCタイムスタンプとして扱われることに注意してください。
+入力値はUTCタイムスタンプとして扱われ、指定された（または暗黙の）タイムゾーンのタイムスタンプではありません。
 :::
 
 **構文**
 
-``` sql
+```sql
 fromUnixTimestamp64Nano(value[, timezone])
 ```
 
 **引数**
 
-- `value` — 任意の精度の値。[Int64](../data-types/int-uint.md)。
-- `timezone` — （オプション）結果のタイムゾーン名。[String](../data-types/string.md)。
+- `value` — 任意の精度の値。 [Int64](../data-types/int-uint.md).
+- `timezone` — (オプション) 結果のタイムゾーン名。 [String](../data-types/string.md).
 
 **返される値**
 
-- 精度`9`のDateTime64に変換された`value`。[DateTime64](../data-types/datetime64.md)。
+- `value` は精度 `9` の DateTime64 に変換されます。 [DateTime64](../data-types/datetime64.md).
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 WITH CAST(1733935988123456789, 'Int64') AS i64
 SELECT
     fromUnixTimestamp64Nano(i64, 'UTC') AS x,
     toTypeName(x);
 ```
 
-結果：
+結果:
 
 ```response
 ┌─────────────────────────────x─┬─toTypeName(x)────────┐
@@ -7541,33 +7422,33 @@ SELECT
 ```
 ## formatRow {#formatrow}
 
-任意の式を指定された形式の文字列に変換します。
+任意の表現を与えられたフォーマットに基づいて文字列に変換します。
 
 **構文**
 
-``` sql
+```sql
 formatRow(format, x, y, ...)
 ```
 
 **引数**
 
-- `format` — テキスト形式。たとえば、[CSV](/interfaces/formats.md/#csv)、[TSV](/interfaces/formats.md/#tabseparated)。
-- `x`,`y`, ... — 式。
+- `format` — テキストフォーマット。例: [CSV](/interfaces/formats.md/#csv), [TSV](/interfaces/formats.md/#tabseparated).
+- `x`,`y`, ... — 表現。
 
 **返される値**
 
-- 形式化された文字列。（テキスト形式の場合、通常は改行文字で終了します）。
+- フォーマットされた文字列。（テキストフォーマットの場合、通常は改行文字で終わります。）
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 SELECT formatRow('CSV', number, 'good')
 FROM numbers(3);
 ```
 
-結果：
+結果:
 
 ```response
 ┌─formatRow('CSV', number, 'good')─┐
@@ -7584,60 +7465,60 @@ FROM numbers(3);
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 SELECT formatRow('CustomSeparated', number, 'good')
 FROM numbers(3)
 SETTINGS format_custom_result_before_delimiter='<prefix>\n', format_custom_result_after_delimiter='<suffix>'
 ```
 
-結果：
+結果:
 
 ```response
 ┌─formatRow('CustomSeparated', number, 'good')─┐
 │ <prefix>
-0	good
+0    good
 <suffix>                   │
 │ <prefix>
-1	good
+1    good
 <suffix>                   │
 │ <prefix>
-2	good
+2    good
 <suffix>                   │
 └──────────────────────────────────────────────┘
 ```
 
-注: この関数では、行ベースの形式のみがサポートされています。
+注: この関数では行ベースのフォーマットのみがサポートされています。
 ## formatRowNoNewline {#formatrownonewline}
 
-任意の式を指定された形式の文字列に変換します。formatRowとは異なり、この関数は最後の`\n`をトリムします（もしあれば）。
+任意の表現を与えられたフォーマットに基づいて文字列に変換します。`formatRow` と異なり、この関数は最後の `\n` を削除します（存在する場合）。
 
 **構文**
 
-``` sql
+```sql
 formatRowNoNewline(format, x, y, ...)
 ```
 
 **引数**
 
-- `format` — テキスト形式。たとえば、[CSV](/interfaces/formats.md/#csv)、[TSV](/interfaces/formats.md/#tabseparated)。
-- `x`,`y`, ... — 式。
+- `format` — テキストフォーマット。例: [CSV](/interfaces/formats.md/#csv), [TSV](/interfaces/formats.md/#tabseparated).
+- `x`,`y`, ... — 表現。
 
 **返される値**
 
-- 形式化された文字列。
+- フォーマットされた文字列。
 
 **例**
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 SELECT formatRowNoNewline('CSV', number, 'good')
 FROM numbers(3);
 ```
 
-結果：
+結果:
 
 ```response
 ┌─formatRowNoNewline('CSV', number, 'good')─┐
@@ -7645,4 +7526,3 @@ FROM numbers(3);
 │ 1,"good"                                  │
 │ 2,"good"                                  │
 └───────────────────────────────────────────┘
-```

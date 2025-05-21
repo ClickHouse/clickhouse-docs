@@ -1,20 +1,23 @@
+
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_https from '@site/static/images/_snippets/connection-details-https.png';
+import Image from '@theme/IdealImage';
 
-ClickHouseにHTTP(S)で接続するには、次の情報が必要です:
+ClickHouseにHTTP(S)で接続するには、以下の情報が必要です。
 
-- HOST と PORT: 通常、ポートはTLSを使用する場合は8443、TLSを使用しない場合は8123です。
+- HOSTとPORT: 通常、ポートはTLSを使用している場合は8443、TLSを使用していない場合は8123です。
 
-- DATABASE NAME: デフォルトでは、`default`という名前のデータベースがあります。接続したいデータベースの名前を使用してください。
+- DATABASE NAME: デフォルトでは、`default`というデータベースがあります。接続したいデータベースの名前を使用してください。
 
-- USERNAME と PASSWORD: デフォルトでは、ユーザー名は`default`です。あなたのユースケースに適したユーザー名を使用してください。
+- USERNAMEとPASSWORD: デフォルトでは、ユーザー名は`default`です。使用例に適したユーザー名を使用してください。
 
-あなたのClickHouse Cloudサービスの詳細はClickHouse Cloudコンソールで確認できます。接続するサービスを選択し、**Connect**をクリックしてください:
+あなたのClickHouse Cloudサービスの詳細はClickHouse Cloudコンソールで確認できます。接続したいサービスを選択し、**Connect**をクリックします：
 
-<img src={cloud_connect_button} class="image" alt="ClickHouse Cloud service connect button" />
+<Image img={cloud_connect_button} size="md" alt="ClickHouse Cloud service connect button" border />
 
-**HTTPS**を選択すると、詳細は例の`curl`コマンドに表示されます。
+**HTTPS**を選択すると、詳細は例の`curl`コマンドで利用可能です。
 
-<img src={connection_details_https} class="image" alt="ClickHouse Cloud HTTPS connection details" />
+<Image img={connection_details_https} size="md" alt="ClickHouse Cloud HTTPS connection details" border/>
 
-セルフマネージドのClickHouseを使用している場合、接続の詳細はあなたのClickHouse管理者によって設定されています。
+セルフマネージドのClickHouseを使用している場合、接続の詳細はClickHouse管理者によって設定されます。
+```

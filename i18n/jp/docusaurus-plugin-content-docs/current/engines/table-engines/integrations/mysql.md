@@ -1,18 +1,19 @@
 ---
-slug: /engines/table-engines/integrations/mysql
+description: 'MySQLテーブルエンジンのドキュメント'
+sidebar_label: 'MySQL'
 sidebar_position: 138
-sidebar_label: MySQL
-title: "MySQL エンジンを使用して、リモート MySQL サーバーに保存されたデータに対して `SELECT` および `INSERT` クエリを実行できます。"
+slug: /engines/table-engines/integrations/mysql
+title: 'MySQLエンジンを使用すると、リモートMySQLサーバーに保存されたデータに対して `SELECT` および `INSERT` クエリを実行できます。'
 ---
 
 
 # MySQL テーブルエンジン
 
-MySQL エンジンを使用して、リモート MySQL サーバーに保存されたデータに対して `SELECT` および `INSERT` クエリを実行できます。
+MySQLエンジンを使用すると、リモートMySQLサーバーに保存されたデータに対して `SELECT` および `INSERT` クエリを実行できます。
 
 ## テーブルの作成 {#creating-a-table}
 
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1] [TTL expr1],
@@ -31,35 +32,31 @@ SETTINGS
 
 [CREATE TABLE](/sql-reference/statements/create/table) クエリの詳細な説明を参照してください。
 
-テーブルの構造は、元の MySQL テーブルの構造と異なる場合があります：
+テーブル構造は元のMySQLテーブル構造と異なる場合があります：
 
-- カラム名は元の MySQL テーブルと同じである必要がありますが、これらのカラムの一部だけを使用し、任意の順序で指定できます。
-- カラムタイプは、元の MySQL テーブルのものとは異なる場合があります。ClickHouse は値を ClickHouse データ型に変換しようとします。[cast](../../../engines/database-engines/mysql.md#data_types-support) 参照。
-- [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls) 設定は Nullable カラムの処理方法を定義します。デフォルト値：1。0の場合、テーブル関数は Nullable カラムを作成せず、null の代わりにデフォルト値を挿入します。これは、配列内の NULL 値にも適用されます。
-
-:::note
-MySQL テーブルエンジンは、現在のところ ClickHouse の MacOS ビルドで利用できません。 ([issue](https://github.com/ClickHouse/ClickHouse/issues/21191))
-:::
+- カラム名は元のMySQLテーブルと同じである必要がありますが、これらのカラムの一部だけを使用し、任意の順序で使用できます。
+- カラムタイプは元のMySQLテーブルのものと異なる場合があります。ClickHouseは値をClickHouseデータ型に[キャスト](../../../engines/database-engines/mysql.md#data_types-support)しようとします。
+- [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls) 設定はNullableカラムをどのように処理するかを定義します。デフォルト値：1。0の場合、テーブル関数はNullableカラムを作成せず、nullの代わりにデフォルト値を挿入します。これは配列内のNULL値にも適用されます。
 
 **エンジンパラメータ**
 
-- `host:port` — MySQL サーバーのアドレス。
+- `host:port` — MySQLサーバーのアドレス。
 - `database` — リモートデータベース名。
 - `table` — リモートテーブル名。
-- `user` — MySQL ユーザー。
-- `password` — ユーザーのパスワード。
+- `user` — MySQLユーザー。
+- `password` — ユーザーパスワード。
 - `replace_query` — `INSERT INTO` クエリを `REPLACE INTO` に変換するフラグ。`replace_query=1` の場合、クエリが置き換えられます。
 - `on_duplicate_clause` — `INSERT` クエリに追加される `ON DUPLICATE KEY on_duplicate_clause` 式。
-    例：`INSERT INTO t (c1,c2) VALUES ('a', 2) ON DUPLICATE KEY UPDATE c2 = c2 + 1` の場合、`on_duplicate_clause` は `UPDATE c2 = c2 + 1` です。[MySQL ドキュメント](https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html) で、`ON DUPLICATE KEY` 句と一緒に使用できる `on_duplicate_clause` を確認してください。
-    `on_duplicate_clause` を指定するには、`replace_query` パラメータに `0` を渡す必要があります。`replace_query = 1` と `on_duplicate_clause` を同時に渡すと、ClickHouse は例外を生成します。
+    例：`INSERT INTO t (c1,c2) VALUES ('a', 2) ON DUPLICATE KEY UPDATE c2 = c2 + 1` の場合、`on_duplicate_clause` は `UPDATE c2 = c2 + 1` です。`ON DUPLICATE KEY` 句で使用できる `on_duplicate_clause` を見つけるには、[MySQLドキュメント](https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html) を参照してください。
+    `on_duplicate_clause` を指定するには、`replace_query` パラメータに `0` を渡す必要があります。`replace_query = 1` と `on_duplicate_clause` を同時に渡すと、ClickHouseは例外を生成します。
 
-引数は [named collections](/operations/named-collections.md) を使用しても渡すことができます。この場合、`host` および `port` を別々に指定する必要があります。このアプローチは、本番環境で推奨されます。
+引数は[named collections](/operations/named-collections.md)を使用して渡すこともできます。この場合、`host` および `port` は別々に指定する必要があります。このアプローチは本番環境で推奨されます。
 
-シンプルな `WHERE` 句（`=, !=, >, >=, <, <=` など）は、MySQL サーバーで実行されます。
+`=, !=, >, >=, <, <=`のような単純な `WHERE` 条件はMySQLサーバーで実行されます。
 
-その他の条件や `LIMIT` サンプリング制約は、MySQL へのクエリが完了した後に ClickHouse でのみ実行されます。
+残りの条件と `LIMIT` サンプリング制約は、MySQLへのクエリが完了した後にのみClickHouseで実行されます。
 
-複数のレプリカをサポートしており、`|` で区切ってリストする必要があります。例えば：
+複数のレプリカを指定することもできます。これらは `|` で区切ります。例えば：
 
 ```sql
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
@@ -67,9 +64,9 @@ CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) EN
 
 ## 使用例 {#usage-example}
 
-MySQL でテーブルを作成：
+MySQLにテーブルを作成します：
 
-``` text
+```text
 mysql> CREATE TABLE `test`.`test` (
     ->   `int_id` INT NOT NULL AUTO_INCREMENT,
     ->   `int_nullable` INT NULL DEFAULT NULL,
@@ -90,9 +87,9 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-ClickHouse でプレーン引数を使用してテーブルを作成：
+ClickHouseで平易な引数を使用してテーブルを作成します：
 
-``` sql
+```sql
 CREATE TABLE mysql_table
 (
     `float_nullable` Nullable(Float32),
@@ -101,7 +98,7 @@ CREATE TABLE mysql_table
 ENGINE = MySQL('localhost:3306', 'test', 'test', 'bayonet', '123')
 ```
 
-または [named collections](/operations/named-collections.md) を使用：
+または[named collections](/operations/named-collections.md)を使用します：
 
 ```sql
 CREATE NAMED COLLECTION creds AS
@@ -118,13 +115,13 @@ CREATE TABLE mysql_table
 ENGINE = MySQL(creds, table='test')
 ```
 
-MySQL テーブルからデータを取得：
+MySQLテーブルからデータを取得します：
 
-``` sql
+```sql
 SELECT * FROM mysql_table
 ```
 
-``` text
+```text
 ┌─float_nullable─┬─int_id─┐
 │           ᴺᵁᴸᴸ │      1 │
 └────────────────┴────────┘
@@ -132,49 +129,49 @@ SELECT * FROM mysql_table
 
 ## 設定 {#mysql-settings}
 
-デフォルトの設定は非常に効率的ではなく、接続を再利用することさえありません。これらの設定により、サーバーが1秒あたりに実行するクエリの数を増やすことができます。
+デフォルトの設定はあまり効率的ではなく、接続を再利用すらしません。これらの設定を使用することで、サーバーが1秒あたりに実行するクエリの数を増やすことができます。
 
 ### connection_auto_close {#connection-auto-close}
 
-クエリ実行後に接続を自動的に閉じることを許可し、接続の再利用を無効にします。
+クエリ実行後に接続を自動的に閉じることを可能にし、接続再利用を無効にします。
 
 可能な値：
 
-- 1 — 自動的に接続を閉じることが許可されているため、接続の再利用が無効
-- 0 — 自動的に接続を閉じることが許可されていないため、接続の再利用が有効
+- 1 — 自動接続閉鎖が許可されているため、接続再利用は無効です。
+- 0 — 自動接続閉鎖は許可されていないため、接続再利用は有効です。
 
-デフォルト値：`1`。
+デフォルト値: `1`.
 
 ### connection_max_tries {#connection-max-tries}
 
-フェイルオーバーを伴うプールの再試行の回数を設定します。
+フェイルオーバー用プールの再試行回数を設定します。
 
 可能な値：
 
 - 正の整数。
-- 0 — フェイルオーバーを伴うプールに再試行はありません。
+- 0 — フェイルオーバー用プールに対する再試行はありません。
 
-デフォルト値：`3`。
+デフォルト値: `3`.
 
 ### connection_pool_size {#connection-pool-size}
 
-接続プールのサイズ（すべての接続が使用中の場合、クエリは接続が解放されるまで待機します）。
+接続プールのサイズ（すべての接続が使用中の場合、クエリはどの接続かが解放されるまで待機します）。
 
 可能な値：
 
 - 正の整数。
 
-デフォルト値：`16`。
+デフォルト値: `16`.
 
 ### connection_wait_timeout {#connection-wait-timeout}
 
-接続が空くのを待つためのタイムアウト（秒単位）（すでに connection_pool_size のアクティブ接続がある場合）、0 - 待機しない。
+無料の接続を待機するためのタイムアウト（秒単位）（activeな connection_pool_size の接続がすでに存在する場合）、0 - 待機しない。
 
 可能な値：
 
 - 正の整数。
 
-デフォルト値：`5`。
+デフォルト値: `5`.
 
 ### connect_timeout {#connect-timeout}
 
@@ -184,7 +181,7 @@ SELECT * FROM mysql_table
 
 - 正の整数。
 
-デフォルト値：`10`。
+デフォルト値: `10`.
 
 ### read_write_timeout {#read-write-timeout}
 
@@ -194,9 +191,9 @@ SELECT * FROM mysql_table
 
 - 正の整数。
 
-デフォルト値：`300`。
+デフォルト値: `300`.
 
-## 関連項目 {#see-also}
+## 参照 {#see-also}
 
-- [MySQL テーブル関数](../../../sql-reference/table-functions/mysql.md)
-- [辞書ソースとしての MySQL の使用](/sql-reference/dictionaries#mysql)
+- [MySQLテーブル機能](../../../sql-reference/table-functions/mysql.md)
+- [辞書ソースとしてMySQLを使用する](/sql-reference/dictionaries#mysql)

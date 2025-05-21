@@ -1,34 +1,33 @@
----
-description: "クラスターで実行された分散DDLクエリに関する情報を含むシステムテーブル。"
+description: 'クラスターで実行された分散 DDL クエリ（ON CLUSTER 句）に関する情報を含むシステムテーブル。'
+keywords: ['system table', 'distributed_ddl_queue']
 slug: /operations/system-tables/distributed_ddl_queue
-title: "system.distributed_ddl_queue"
-keywords: ["システムテーブル", "distributed_ddl_queue"]
----
+title: 'system.distributed_ddl_queue'
+```
 
-クラスターで実行された[分散DDLクエリ (ON CLUSTER句)](../../sql-reference/distributed-ddl.md)に関する情報を含みます。
+クラスターで実行された[分散 DDL クエリ (ON CLUSTER 句)](../../sql-reference/distributed-ddl.md)に関する情報を含みます。
 
 カラム:
 
-- `entry` ([String](../../sql-reference/data-types/string.md)) — クエリID。
+- `entry` ([String](../../sql-reference/data-types/string.md)) — クエリ ID。
 - `entry_version` ([Nullable(UInt8)](../../sql-reference/data-types/int-uint.md)) - エントリのバージョン
-- `initiator_host` ([Nullable(String)](../../sql-reference/data-types/string.md)) - DDL操作を開始したホスト
-- `initiator_port` ([Nullable(UInt16)](../../sql-reference/data-types/int-uint.md)) - 始動者によって使用されたポート
+- `initiator_host` ([Nullable(String)](../../sql-reference/data-types/string.md)) - DDL 操作を開始したホスト
+- `initiator_port` ([Nullable(UInt16)](../../sql-reference/data-types/int-uint.md)) - イニシエーターが使用したポート
 - `cluster` ([String](../../sql-reference/data-types/string.md)) — クラスター名。
 - `query` ([String](../../sql-reference/data-types/string.md)) — 実行されたクエリ。
-- `settings` ([Map(String, String)](../../sql-reference/data-types/map.md)) - DDL操作で使用された設定
-- `query_create_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — クエリ作成時間。
+- `settings` ([Map(String, String)](../../sql-reference/data-types/map.md)) - DDL 操作で使用された設定
+- `query_create_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — クエリ作成時刻。
 - `host` ([String](../../sql-reference/data-types/string.md)) — ホスト名
 - `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — ホストポート。
 - `status` ([Enum8](../../sql-reference/data-types/enum.md)) — クエリのステータス。
 - `exception_code` ([Enum8](../../sql-reference/data-types/enum.md)) — 例外コード。
 - `exception_text` ([Nullable(String)](../../sql-reference/data-types/string.md)) - 例外メッセージ
-- `query_finish_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — クエリ終了時間。
+- `query_finish_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — クエリ終了時刻。
 - `query_duration_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — クエリ実行の持続時間（ミリ秒単位）。
 
 
 **例**
 
-``` sql
+```sql
 SELECT *
 FROM system.distributed_ddl_queue
 WHERE cluster = 'test_cluster'
@@ -74,4 +73,3 @@ query_finish_time: 2023-09-01 16:15:14
 query_duration_ms: 154
 
 2 rows in set. Elapsed: 0.025 sec.
-```

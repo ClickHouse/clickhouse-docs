@@ -1,14 +1,14 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/maxintersections
+description: 'グループのインターバルが互いに交差する最大回数を計算する集約関数（すべてのインターバルが少なくとも1回交差する場合）。'
 sidebar_position: 163
-title: maxIntersections
-description: "グループの間隔が互いに交差する最大回数を計算する集約関数（すべての間隔が少なくとも一度交差する場合）。"
+slug: /sql-reference/aggregate-functions/reference/maxintersections
+title: 'maxIntersections'
 ---
 
 
 # maxIntersections
 
-グループの間隔が互いに交差する最大回数を計算する集約関数（すべての間隔が少なくとも一度交差する場合）。
+グループのインターバルが互いに交差する最大回数を計算する集約関数（すべてのインターバルが少なくとも1回交差する場合）。
 
 構文は次の通りです：
 
@@ -18,13 +18,13 @@ maxIntersections(start_column, end_column)
 
 **引数**
 
-- `start_column` – 各間隔の開始を表す数値カラム。`start_column` が `NULL` または 0 の場合、その間隔はスキップされます。
+- `start_column` – 各インターバルの開始を示す数値カラム。`start_column` が `NULL` または 0 の場合、そのインターバルはスキップされます。
 
-- `end_column` - 各間隔の終了を表す数値カラム。`end_column` が `NULL` または 0 の場合、その間隔はスキップされます。
+- `end_column` - 各インターバルの終了を示す数値カラム。`end_column` が `NULL` または 0 の場合、そのインターバルはスキップされます。
 
-**返される値**
+**戻り値**
 
-交差した間隔の最大数を返します。
+交差したインターバルの最大数を返します。
 
 **例**
 
@@ -35,11 +35,7 @@ CREATE TABLE my_events (
 )
 Engine = MergeTree
 ORDER BY tuple();
-```
-
-次のように挿入します：
-
-```sql
+    
 INSERT INTO my_events VALUES
    (1, 3),
    (1, 6),
@@ -47,7 +43,7 @@ INSERT INTO my_events VALUES
    (3, 7);
 ```
 
-間隔は次のようになります：
+インターバルは次のようになります：
 
 ```response
 1 - 3
@@ -56,15 +52,15 @@ INSERT INTO my_events VALUES
     3 - - - 7
 ```
 
-これらの間隔の中で3つが共通の値を持っています（その値は `4` ですが、共通の値は重要ではなく、交差のカウントを測定しています）。間隔 `(1,3)` と `(3,7)` は端点を共有していますが、`maxIntersections` 関数では交差しているとは見なされません。
+これらのインターバルのうち3つは共通の値を持っています（共通の値は `4` ですが、重要なのはその値ではなく、交差の数を測定しています）。インターバル `(1,3)` と `(3,7)` はエンドポイントを共有していますが、`maxIntersections` 関数によって交差しているとは見なされません。
 
 ```sql
 SELECT maxIntersections(start, end) FROM my_events;
 ```
 
-返答：
+レスポンス：
 ```response
 3
 ```
 
-最大の間隔が複数回発生している場合は、[`maxIntersectionsPosition` 関数](./maxintersectionsposition.md)を使用して、それらの発生の数と位置を特定できます。
+最大インターバルの複数の出現がある場合、[`maxIntersectionsPosition` 関数](./maxintersectionsposition.md)を使用して、それらの出現の数と位置を特定できます。

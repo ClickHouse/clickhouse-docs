@@ -1,49 +1,110 @@
----
-sidebar_label: クエリレベルのセッション設定
-title: クエリレベルのセッション設定
-description: "クエリレベルの設定"
+description: 'クエリレベルの設定'
+sidebar_label: 'クエリレベルのセッション設定'
 slug: /operations/settings/query-level
----
+title: 'クエリレベルのセッション設定'
+```
 
-特定の設定でステートメントを実行する方法はいくつかあります。  
-設定は階層で構成されており、各階層は前の設定の値を再定義します。
+## 概要 {#overview}
 
-設定を定義する優先順位は次の通りです：
+特定の設定でステートメントを実行する方法は複数あります。設定は層に分けて構成され、各層は前の設定値を再定義します。
 
-1. ユーザーに対して直接、または設定プロファイル内で設定を適用
+## 優先順位の順序 {#order-of-priority}
+
+設定を定義するための優先順位は次の通りです：
+
+1. ユーザーに直接設定を適用するか、設定プロファイル内で設定する。
 
     - SQL（推奨）
-    - `/etc/clickhouse-server/users.d` に1つ以上のXMLまたはYAMLファイルを追加
+    - `/etc/clickhouse-server/users.d` に1つ以上のXMLまたはYAMLファイルを追加する。
 
 2. セッション設定
 
-    - ClickHouse Cloud SQLコンソールまたは `clickhouse client` のインタラクティブモードから `SET setting=value` を送信します。同様に、HTTPプロトコルでClickHouseセッションを使用することもできます。この場合、`session_id` HTTPパラメータを指定する必要があります。
+    - ClickHouse Cloud SQLコンソールまたはインタラクティブモードの `clickhouse client` から `SET setting=value` を送信します。同様に、HTTPプロトコル内でClickHouseセッションを使用できます。その場合、`session_id` HTTPパラメーターを指定する必要があります。
 
 3. クエリ設定
 
-    - `clickhouse client` を非インタラクティブモードで起動する際に、起動パラメータ `--setting=value` を設定します。
-    - HTTP APIを使用する場合、CGIパラメータを渡します（`URL?setting_1=value&setting_2=value...`）。
-    - SELECTクエリの 
-    [SETTINGS](../../sql-reference/statements/select/index.md#settings-in-select-query) 
-    句内で設定を定義します。設定値はそのクエリにのみ適用され、クエリが実行された後にデフォルト値または前の値にリセットされます。
+    - インタラクティブモードではなく `clickhouse client` を起動する際に、スタートアップパラメーター `--setting=value` を設定します。
+    - HTTP APIを使用する場合は、CGIパラメーター（`URL?setting_1=value&setting_2=value...`）を渡します。
+    - SELECTクエリの `SELECT` 文の [SETTINGS](../../sql-reference/statements/select/index.md#settings-in-select-query) 句で設定を定義します。設定値はそのクエリにのみ適用され、クエリが実行された後にデフォルトまたは以前の値にリセットされます。
+
+## 設定をデフォルト値に戻す {#converting-a-setting-to-its-default-value}
+
+設定を変更し、デフォルト値に戻したい場合は、値を `DEFAULT` に設定します。文法は次のようになります：
+
+```sql
+SET setting_name = DEFAULT
+```
+
+例えば、`async_insert` のデフォルト値は `0` です。これを `1` に変更した場合：
+
+```sql
+SET async_insert = 1;
+
+SELECT value FROM system.settings where name='async_insert';
+```
+
+応答は次のとおりです：
+
+```response
+┌─value──┐
+│ 1      │
+└────────┘
+```
+
+次のコマンドはその値を 0 に戻します：
+
+```sql
+SET async_insert = DEFAULT;
+
+SELECT value FROM system.settings where name='async_insert';
+```
+
+設定は再びデフォルトに戻りました：
+
+```response
+┌─value───┐
+│ 0       │
+└─────────┘
+```
+
+## カスタム設定 {#custom_settings}
+
+一般的な [settings](/operations/settings/settings.md) に加えて、ユーザーはカスタム設定を定義できます。
+
+カスタム設定名は事前定義された接頭辞のいずれかで始める必要があります。これらの接頭辞のリストは、サーバー設定ファイル内の [custom_settings_prefixes](../../operations/server-configuration-parameters/settings.md#custom_settings_prefixes) パラメーターで宣言する必要があります。
+
+```xml
+<custom_settings_prefixes>custom_</custom_settings_prefixes>
+```
+
+カスタム設定を定義するには `SET` コマンドを使用します：
+
+```sql
+SET custom_a = 123;
+```
+
+カスタム設定の現在の値を取得するには `getSetting()` 関数を使用します：
+
+```sql
+SELECT getSetting('custom_a');
+```
 
 ## 例 {#examples}
 
-これらの例はすべて `async_insert` 設定の値を `1` に設定し、実行中のシステムでの設定の調査方法を示しています。
+これらの例はすべて、`async_insert` 設定の値を `1` に設定し、実行中のシステムにおける設定の確認方法を示しています。
 
-### SQLを使用してユーザーに設定を直接適用する {#using-sql-to-apply-a-setting-to-a-user-directly}
+### SQLを使用してユーザーに直接設定を適用する {#using-sql-to-apply-a-setting-to-a-user-directly}
 
-これは、設定 `async_inset = 1` を持つユーザー `ingester` を作成します：
+このコマンドは、`async_inset = 1` の設定を持つユーザー `ingester` を作成します：
 
 ```sql
 CREATE USER ingester
 IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f281276aae20f86dc3'
-
-# highlight-next-line
+-- highlight-next-line
 SETTINGS async_insert = 1
 ```
 
-#### 設定プロファイルと割り当てを調査する {#examine-the-settings-profile-and-assignment}
+#### 設定プロファイルと割り当てを確認する {#examine-the-settings-profile-and-assignment}
 
 ```sql
 SHOW ACCESS
@@ -59,22 +120,21 @@ SHOW ACCESS
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### SQLを使用して設定プロファイルを作成しユーザーに割り当てる {#using-sql-to-create-a-settings-profile-and-assign-to-a-user}
+### SQLを使用して設定プロファイルを作成し、ユーザーに割り当てる {#using-sql-to-create-a-settings-profile-and-assign-to-a-user}
 
-これは、設定 `async_inset = 1` を持つプロファイル `log_ingest` を作成します：
+これは、`async_inset = 1` の設定を持つプロファイル `log_ingest` を作成します：
 
 ```sql
 CREATE
 SETTINGS PROFILE log_ingest SETTINGS async_insert = 1
 ```
 
-これは、ユーザー `ingester` を作成し、そのユーザーに設定プロファイル `log_ingest` を割り当てます：
+次に、ユーザー `ingester` を作成し、ユーザーに設定プロファイル `log_ingest` を割り当てます：
 
 ```sql
 CREATE USER ingester
 IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f281276aae20f86dc3'
-
-# highlight-next-line
+-- highlight-next-line
 SETTINGS PROFILE log_ingest
 ```
 
@@ -110,7 +170,7 @@ SETTINGS PROFILE log_ingest
 </clickhouse>
 ```
 
-#### 設定プロファイルと割り当てを調査する {#examine-the-settings-profile-and-assignment-1}
+#### 設定プロファイルと割り当てを確認する {#examine-the-settings-profile-and-assignment-1}
 
 ```sql
 SHOW ACCESS
@@ -148,75 +208,12 @@ SELECT value FROM system.settings where name='async_insert';
 
 ```sql
 INSERT INTO YourTable
-
-# highlight-next-line
+-- highlight-next-line
 SETTINGS async_insert=1
 VALUES (...)
 ```
 
-## 設定をデフォルト値に戻す {#converting-a-setting-to-its-default-value}
+## 参照 {#see-also}
 
-設定を変更し、デフォルト値に戻したい場合は、値を `DEFAULT` に設定します。構文は以下のようになります：
-
-```sql
-SET setting_name = DEFAULT
-```
-
-例えば、`async_insert` のデフォルト値は `0` です。値を `1` に変更したとします：
-
-```sql
-SET async_insert = 1;
-
-SELECT value FROM system.settings where name='async_insert';
-```
-
-レスポンスは以下のようになります：
-
-```response
-┌─value──┐
-│ 1      │
-└────────┘
-```
-
-次のコマンドは値を0に戻します：
-
-```sql
-SET async_insert = DEFAULT;
-
-SELECT value FROM system.settings where name='async_insert';
-```
-
-設定はデフォルトに戻りました：
-
-```response
-┌─value───┐
-│ 0       │
-└─────────┘
-```
-
-## カスタム設定 {#custom_settings}
-
-一般的な [settings](/operations/settings/settings.md) に加えて、ユーザーはカスタム設定を定義できます。
-
-カスタム設定名は、定義済みのプレフィックスのいずれかで始める必要があります。これらのプレフィックスのリストは、サーバー設定ファイルの [custom_settings_prefixes](../../operations/server-configuration-parameters/settings.md#custom_settings_prefixes) パラメータで宣言する必要があります。
-
-```xml
-<custom_settings_prefixes>custom_</custom_settings_prefixes>
-```
-
-カスタム設定を定義するには `SET` コマンドを使用します：
-
-```sql
-SET custom_a = 123;
-```
-
-カスタム設定の現在の値を取得するには、`getSetting()` 関数を使用します：
-
-```sql
-SELECT getSetting('custom_a');
-```
-
-**参照**
-
-- ClickHouse設定の説明については [Settings](/operations/settings/settings.md) ページを参照してください。
+- ClickHouse設定の説明は [Settings](/operations/settings/settings.md) ページを参照してください。
 - [グローバルサーバー設定](/operations/server-configuration-parameters/settings.md)

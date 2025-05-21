@@ -1,20 +1,20 @@
 ---
-description: "システムデータベースで、データベースオブジェクトのメタデータに対するほぼ標準化されたDBMS非依存ビューを提供します。"
+description: 'データベースオブジェクトのメタデータに対してほぼ標準化されたDBMS非依存のビューを提供するシステムデータベース。'
+keywords: ['system database', 'information_schema']
 slug: /operations/system-tables/information_schema
-title: "INFORMATION_SCHEMA"
-keywords: ["システムデータベース", "information_schema"]
+title: 'INFORMATION_SCHEMA'
 ---
 
-`INFORMATION_SCHEMA` （または: `information_schema`）は、データベースオブジェクトのメタデータに対する（いくぶん）標準化された、[DBMS非依存ビュー](https://en.wikipedia.org/wiki/Information_schema)を提供するシステムデータベースです。`INFORMATION_SCHEMA` におけるビューは通常のシステムテーブルより劣りますが、ツールはそれらを使用して、DBMSを横断する基本情報を取得できます。`INFORMATION_SCHEMA` のビューの構造と内容は、後方互換性のある方法で進化することが期待されており、つまり、新しい機能だけが追加され、既存の機能は変更または削除されないということです。内部実装に関しては、`INFORMATION_SCHEMA`のビューは通常、[system.columns](../../operations/system-tables/columns.md)、[system.databases](../../operations/system-tables/databases.md)、および[system.tables](../../operations/system-tables/tables.md)のような通常のシステムテーブルにマップされます。
+`INFORMATION_SCHEMA`（または `information_schema`）は、データベースオブジェクトのメタデータに対して（やや）標準化された、[DBMS非依存のビュー](https://en.wikipedia.org/wiki/Information_schema)を提供するシステムデータベースです。`INFORMATION_SCHEMA`のビューは一般的に通常のシステムテーブルよりも劣りますが、ツールはそれを使用してDBMS間で基本情報を取得することができます。`INFORMATION_SCHEMA`のビューの構造と内容は、後方互換性のある形で進化することが望まれており、つまり新しい機能が追加されるだけで、既存の機能は変更されたり削除されたりしません。内部実装に関しては、`INFORMATION_SCHEMA`のビューは通常、[system.columns](../../operations/system-tables/columns.md)、[system.databases](../../operations/system-tables/databases.md)、および[system.tables](../../operations/system-tables/tables.md)といった通常のシステムテーブルにマッピングされます。
 
-``` sql
+```sql
 SHOW TABLES FROM INFORMATION_SCHEMA;
 
--- または：
+-- もしくは:
 SHOW TABLES FROM information_schema;
 ```
 
-``` text
+```text
 ┌─name────────────────────┐
 │ COLUMNS                 │
 │ KEY_COLUMN_USAGE        │
@@ -33,7 +33,7 @@ SHOW TABLES FROM information_schema;
 └─────────────────────────┘
 ```
 
-`INFORMATION_SCHEMA` には以下のビューが含まれています：
+`INFORMATION_SCHEMA`には以下のビューが含まれています：
 
 - [COLUMNS](#columns)
 - [KEY_COLUMN_USAGE](#key_column_usage)
@@ -43,11 +43,11 @@ SHOW TABLES FROM information_schema;
 - [TABLES](#tables)
 - [VIEWS](#views)
 
-互換性のために、ケースインセンシティブの等価ビュー、例えば `INFORMATION_SCHEMA.columns` が提供されています。これと同様に、これらのビューにあるすべてのカラムにも - 小文字（例えば `table_name`）と大文字（`TABLE_NAME`）の両方のバリアントが提供されています。
+互換性の理由から、大文字小文字を区別しない同等のビュー（例えば `INFORMATION_SCHEMA.columns`）が提供されています。これらのビュー内のすべてのカラムに対しても同様が適用され、小文字（例えば `table_name`）と大文字（`TABLE_NAME`）の両方が提供されています。
 
 ## COLUMNS {#columns}
 
-[system.columns](../../operations/system-tables/columns.md) システムテーブルから読み取ったカラムと、ClickHouseでサポートされていないか、意味を持たないカラム（常に `NULL`）を含みますが、標準では必要です。
+[system.columns](../../operations/system-tables/columns.md) システムテーブルから読み取られたカラムと、ClickHouse でサポートされていない、または意味をなさないカラム（常に `NULL`）が含まれていますが、標準に従う必要があります。
 
 カラム：
 
@@ -55,16 +55,16 @@ SHOW TABLES FROM information_schema;
 - `table_schema` ([String](../../sql-reference/data-types/string.md)) — テーブルが存在するデータベースの名前。
 - `table_name` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
 - `column_name` ([String](../../sql-reference/data-types/string.md)) — カラム名。
-- `ordinal_position` ([UInt64](../../sql-reference/data-types/int-uint.md)) — テーブル内でのカラムの順序位置、1から始まります。
-- `column_default` ([String](../../sql-reference/data-types/string.md)) — デフォルト値のための式、または未定義の場合は空の文字列。
-- `is_nullable` ([UInt8](../../sql-reference/data-types/int-uint.md)) — カラムタイプが `Nullable` かどうかを示すフラグ。
+- `ordinal_position` ([UInt64](../../sql-reference/data-types/int-uint.md)) — テーブル内のカラムの序数位置、1から始まります。
+- `column_default` ([String](../../sql-reference/data-types/string.md)) — デフォルト値の式、または定義されていない場合は空の文字列。
+- `is_nullable` ([UInt8](../../sql-reference/data-types/int-uint.md)) — カラムタイプが `Nullable` であるかどうかを示すフラグ。
 - `data_type` ([String](../../sql-reference/data-types/string.md)) — カラムタイプ。
-- `character_maximum_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — バイナリデータ、キャラクターデータ、またはテキストデータ及び画像の最大バイト長。ClickHouseでは、`FixedString` データタイプのみに意味があります。それ以外の場合は `NULL` 値が返されます。
-- `character_octet_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — バイナリデータ、キャラクターデータ、またはテキストデータ及び画像の最大バイト長。ClickHouseでは、`FixedString` データタイプのみに意味があります。それ以外の場合は `NULL` 値が返されます。
-- `numeric_precision` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — おおよその数値データ、正確な数値データ、整数データ、または貨幣データの精度。ClickHouseでは、整数タイプの場合はビット幅、`Decimal` タイプの場合は小数精度です。それ以外の場合は `NULL` 値が返されます。
-- `numeric_precision_radix` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — おおよその数値データ、正確な数値データ、整数データ、または貨幣データの精度の数体系の基数。ClickHouseでは、整数タイプの場合は2、`Decimal` タイプの場合は10です。それ以外の場合は `NULL` 値が返されます。
-- `numeric_scale` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — おおよその数値データ、正確な数値データ、整数データ、または貨幣データのスケール。ClickHouseでは、`Decimal` タイプのみの意味があります。それ以外の場合は `NULL` 値が返されます。
-- `datetime_precision` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — `DateTime64` データ型の小数精度。その他のデータ型については `NULL` 値が返されます。
+- `character_maximum_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — バイナリデータ、文字データ、またはテキストデータおよび画像の最大バイト長。ClickHouseでは `FixedString` データ型に対してのみ意味があります。そうでない場合は `NULL` 値が返されます。
+- `character_octet_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — バイナリデータ、文字データ、またはテキストデータおよび画像の最大バイト長。ClickHouseでは `FixedString` データ型に対してのみ意味があります。そうでない場合は `NULL` 値が返されます。
+- `numeric_precision` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 近似数値データ、正確な数値データ、整数データ、または貨幣データの精度。ClickHouseでは整数型のビット幅および `Decimal` 型の小数精度です。そうでない場合は `NULL` 値が返されます。
+- `numeric_precision_radix` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 近似数値データ、正確な数値データ、整数データ、または貨幣データの精度の数値システムの基数。ClickHouseでは整数型の場合は2、`Decimal` 型の場合は10です。そうでない場合は `NULL` 値が返されます。
+- `numeric_scale` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 近似数値データ、正確な数値データ、整数データ、または貨幣データのスケール。ClickHouseでは `Decimal` 型に対してのみ意味があります。そうでない場合は `NULL` 値が返されます。
+- `datetime_precision` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — `DateTime64` データ型の小数精度。他のデータ型では `NULL` 値が返されます。
 - `character_set_catalog` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`、サポートされていません。
 - `character_set_schema` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`、サポートされていません。
 - `character_set_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`、サポートされていません。
@@ -74,13 +74,13 @@ SHOW TABLES FROM information_schema;
 - `domain_catalog` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`、サポートされていません。
 - `domain_schema` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`、サポートされていません。
 - `domain_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`、サポートされていません。
-- `extra` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `MATERIALIZED`型カラムの場合は `STORED GENERATED`、`ALIAS`型カラムの場合は `VIRTUAL GENERATED`、`DEFAULT`型カラムの場合は `DEFAULT_GENERATED`、または `NULL`。
+- `extra` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `MATERIALIZED` 型のカラムには `STORED GENERATED`、 `ALIAS` 型のカラムには `VIRTUAL GENERATED`、`DEFAULT` 型のカラムには `DEFAULT_GENERATED` 、または `NULL`。
 
 **例**
 
 クエリ：
 
-``` sql
+```sql
 SELECT table_catalog,
        table_schema,
        table_name,
@@ -115,7 +115,7 @@ FORMAT Vertical;
 
 結果：
 
-``` text
+```text
 Row 1:
 ──────
 table_catalog:            default
@@ -145,13 +145,13 @@ domain_name:              ᴺᵁᴸᴸ
 
 ## SCHEMATA {#schemata}
 
-[system.databases](../../operations/system-tables/databases.md) システムテーブルから読み取ったカラムと、ClickHouseでサポートされていないか、意味を持たないカラム（常に `NULL`）を含みますが、標準では必要です。
+[system.databases](../../operations/system-tables/databases.md) システムテーブルから読み取られたカラムと、ClickHouse でサポートされていない、または意味をなさないカラム（常に `NULL`）が含まれていますが、標準に従う必要があります。
 
 カラム：
 
 - `catalog_name` ([String](../../sql-reference/data-types/string.md)) — データベースの名前。
 - `schema_name` ([String](../../sql-reference/data-types/string.md)) — データベースの名前。
-- `schema_owner` ([String](../../sql-reference/data-types/string.md)) — スキーマ所有者の名前、常に `'default'`。
+- `schema_owner` ([String](../../sql-reference/data-types/string.md)) — スキーマの所有者名、常に `'default'`。
 - `default_character_set_catalog` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`、サポートされていません。
 - `default_character_set_schema` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`、サポートされていません。
 - `default_character_set_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`、サポートされていません。
@@ -161,7 +161,7 @@ domain_name:              ᴺᵁᴸᴸ
 
 クエリ：
 
-``` sql
+```sql
 SELECT catalog_name,
        schema_name,
        schema_owner,
@@ -177,7 +177,7 @@ FORMAT Vertical;
 
 結果：
 
-``` text
+```text
 Row 1:
 ──────
 catalog_name:                  INFORMATION_SCHEMA
@@ -191,29 +191,30 @@ sql_path:                      ᴺᵁᴸᴸ
 
 ## TABLES {#tables}
 
-[system.tables](../../operations/system-tables/tables.md) システムテーブルから読み取ったカラムを含みます。
+[system.tables](../../operations/system-tables/tables.md) システムテーブルから読み取られたカラムが含まれています。
 
 カラム：
 
 - `table_catalog` ([String](../../sql-reference/data-types/string.md)) — テーブルが存在するデータベースの名前。
 - `table_schema` ([String](../../sql-reference/data-types/string.md)) — テーブルが存在するデータベースの名前。
 - `table_name` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
-- `table_type` ([String](../../sql-reference/data-types/string.md)) — テーブルタイプ。可能な値：
+- `table_type` ([String](../../sql-reference/data-types/string.md)) — テーブルのタイプ。可能な値：
     - `BASE TABLE`
     - `VIEW`
     - `FOREIGN TABLE`
     - `LOCAL TEMPORARY`
     - `SYSTEM VIEW`
-- `table_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 行の総数。確認できなかった場合はNULL。
-- `data_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — ディスク上のデータのサイズ。確認できなかった場合はNULL。
-- `table_collation` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — テーブルのデフォルト照合順序。常に `utf8mb4_0900_ai_ci`。
+- `table_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 行の総数。判別できなかった場合はNULL。
+- `data_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — ディスク上のデータのサイズ。判別できなかった場合はNULL。
+- `index_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 主キー、セカンダリインデックス、およびすべてのマークの合計サイズ。
+- `table_collation` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — テーブルのデフォルトの照合順序。常に `utf8mb4_0900_ai_ci`。
 - `table_comment` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — テーブル作成時に使用されるコメント。
 
 **例**
 
 クエリ：
 
-``` sql
+```sql
 SELECT table_catalog, 
        table_schema, 
        table_name, 
@@ -229,7 +230,7 @@ FORMAT Vertical;
 
 結果：
 
-``` text
+```text
 Row 1:
 ──────
 table_catalog:   default
@@ -242,7 +243,7 @@ table_comment:
 
 ## VIEWS {#views}
 
-[View](../../engines/table-engines/special/view.md) テーブルエンジンが使用される場合に、[system.tables](../../operations/system-tables/tables.md) システムテーブルから読み取ったカラムを含みます。
+[system.tables](../../operations/system-tables/tables.md) システムテーブルから読み取られたカラムが含まれていますが、テーブルエンジン [View](../../engines/table-engines/special/view.md) が使用されている場合。
 
 カラム：
 
@@ -251,19 +252,19 @@ table_comment:
 - `table_name` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
 - `view_definition` ([String](../../sql-reference/data-types/string.md)) — ビューのための `SELECT` クエリ。
 - `check_option` ([String](../../sql-reference/data-types/string.md)) — `NONE`、チェックなし。
-- `is_updatable` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`、ビューは更新されません。
-- `is_insertable_into` ([Enum8](../../sql-reference/data-types/enum.md)) — 作成されたビューが[マテリアライズド](#materialized-view)かどうかを示します。可能な値：
-    - `NO` — 作成されたビューはマテリアライズされていません。
-    - `YES` — 作成されたビューはマテリアライズされています。
-- `is_trigger_updatable` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`、トリガーは更新されません。
-- `is_trigger_deletable` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`、トリガーは削除されません。
-- `is_trigger_insertable_into` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`、データはトリガーに挿入されません。
+- `is_updatable` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`、ビューは更新されない。
+- `is_insertable_into` ([Enum8](../../sql-reference/data-types/enum.md)) — 作成されたビューが[マテリアライズド](https://clickhouse.com/docs/en/sql-reference/statements/create/view#materialized-view)であるかどうかを示します。可能な値：
+    - `NO` — 作成されたビューはマテリアライズドではない。
+    - `YES` — 作成されたビューはマテリアライズドである。
+- `is_trigger_updatable` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`、トリガーは更新されない。
+- `is_trigger_deletable` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`、トリガーは削除されない。
+- `is_trigger_insertable_into` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`、トリガーにデータは挿入されない。
 
 **例**
 
 クエリ：
 
-``` sql
+```sql
 CREATE VIEW v (n Nullable(Int32), f Float64) AS SELECT n, f FROM t;
 CREATE MATERIALIZED VIEW mv ENGINE = Null AS SELECT * FROM system.one;
 SELECT table_catalog,
@@ -284,7 +285,7 @@ FORMAT Vertical;
 
 結果：
 
-``` text
+```text
 Row 1:
 ──────
 table_catalog:              default
@@ -301,22 +302,22 @@ is_trigger_insertable_into: NO
 
 ## KEY_COLUMN_USAGE {#key_column_usage}
 
-制約によって制限された[system.tables](../../operations/system-tables/tables.md) システムテーブルからのカラムを含みます。
+制約によって制限された [system.tables](../../operations/system-tables/tables.md) システムテーブルからのカラムが含まれています。
 
 カラム：
 
-- `constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。常に `def`。
-- `constraint_schema` ([String](../../sql-reference/data-types/string.md)) — 制約に属するスキーマ（データベース）の名前。
+- `constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。常に `def`。
+- `constraint_schema` ([String](../../sql-reference/data-types/string.md)) — 制約が所属するスキーマ（データベース）の名前。
 - `constraint_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 制約の名前。
-- `table_catalog` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。常に `def`。
-- `table_schema` ([String](../../sql-reference/data-types/string.md)) — テーブルが属するスキーマ（データベース）の名前。
+- `table_catalog` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。常に `def`。
+- `table_schema` ([String](../../sql-reference/data-types/string.md)) — テーブルが所属するスキーマ（データベース）の名前。
 - `table_name` ([String](../../sql-reference/data-types/string.md)) — 制約を持つテーブルの名前。
 - `column_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 制約を持つカラムの名前。
-- `ordinal_position` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 現在使用されていません。常に `1`。
-- `position_in_unique_constraint` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt32](../../sql-reference/data-types/int-uint.md))) — 現在使用されていません。常に `NULL`。
-- `referenced_table_schema` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在使用されていません。常に `NULL`。
-- `referenced_table_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在使用されていません。常に `NULL`。
-- `referenced_column_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在使用されていません。常に `NULL`。
+- `ordinal_position` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 現在未使用。常に `1`。
+- `position_in_unique_constraint` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt32](../../sql-reference/data-types/int-uint.md))) — 現在未使用。常に `NULL`。
+- `referenced_table_schema` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在未使用。常にNULL。
+- `referenced_table_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在未使用。常にNULL。
+- `referenced_column_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在未使用。常にNULL。
 
 **例**
 
@@ -360,43 +361,43 @@ referenced_column_name:        ᴺᵁᴸᴸ
 
 ## REFERENTIAL_CONSTRAINTS {#referential_constraints}
 
-外部キーに関する情報を含みます。現在は空の結果（行なし）を返し、これはTableau Onlineのようなサードパーティツールとの互換性を提供するために十分です。
+外部キーに関する情報が含まれています。現在のところ、空の結果（行なし）を返し、これはTableau Onlineなどのサードパーティツールとの互換性を提供するのに十分です。
 
 カラム：
 
-- `constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `constraint_schema` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `constraint_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在使用されていません。
-- `unique_constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `unique_constraint_schema` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `unique_constraint_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在使用されていません。
-- `match_option` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `update_rule` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `delete_rule` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `table_name` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `referenced_table_name` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
+- `constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `constraint_schema` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `constraint_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在未使用。
+- `unique_constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `unique_constraint_schema` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `unique_constraint_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在未使用。
+- `match_option` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `update_rule` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `delete_rule` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `table_name` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `referenced_table_name` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
 
 ## STATISTICS {#statistics}
 
-テーブルインデックスに関する情報を提供します。現在は空の結果（行なし）を返し、これはTableau Onlineのようなサードパーティツールとの互換性を提供するために十分です。
+テーブルインデックスに関する情報を提供します。現在のところ、空の結果（行なし）を返し、これはTableau Onlineなどのサードパーティツールとの互換性を提供するのに十分です。
 
 カラム：
 
-- `table_catalog` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `table_schema` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `table_name` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `non_unique` ([Int32](../../sql-reference/data-types/int-uint.md)) — 現在使用されていません。
-- `index_schema` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `index_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在使用されていません。
-- `seq_in_index` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 現在使用されていません。
-- `column_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在使用されていません。
-- `collation` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在使用されていません。
-- `cardinality` ([Nullable](../../sql-reference/data-types/nullable.md)([Int64](../../sql-reference/data-types/int-uint.md))) — 現在使用されていません。
-- `sub_part` ([Nullable](../../sql-reference/data-types/nullable.md)([Int64](../../sql-reference/data-types/int-uint.md))) — 現在使用されていません。
-- `packed` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在使用されていません。
-- `nullable` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `index_type` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `comment` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `index_comment` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `is_visible` ([String](../../sql-reference/data-types/string.md)) — 現在使用されていません。
-- `expression` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在使用されていません。
+- `table_catalog` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `table_schema` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `table_name` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `non_unique` ([Int32](../../sql-reference/data-types/int-uint.md)) — 現在未使用。
+- `index_schema` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `index_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在未使用。
+- `seq_in_index` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 現在未使用。
+- `column_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在未使用。
+- `collation` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在未使用。
+- `cardinality` ([Nullable](../../sql-reference/data-types/nullable.md)([Int64](../../sql-reference/data-types/int-uint.md))) — 現在未使用。
+- `sub_part` ([Nullable](../../sql-reference/data-types/nullable.md)([Int64](../../sql-reference/data-types/int-uint.md))) — 現在未使用。
+- `packed` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在未使用。
+- `nullable` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `index_type` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `comment` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `index_comment` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `is_visible` ([String](../../sql-reference/data-types/string.md)) — 現在未使用。
+- `expression` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 現在未使用。

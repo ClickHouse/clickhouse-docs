@@ -1,8 +1,8 @@
 ---
-title: BigQueryからClickHouse Cloudへの移行
+title: 'BigQuery から ClickHouse Cloud への移行'
 slug: /migrations/bigquery/migrating-to-clickhouse-cloud
-description: BigQueryからClickHouse Cloudへのデータ移行の方法
-keywords: [移行, 移行作業, データ, ETL, ELT, BigQuery]
+description: 'BigQuery から ClickHouse Cloud へのデータ移行方法'
+keywords: ['migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'BigQuery']
 ---
 
 import bigquery_2 from '@site/static/images/migrations/bigquery-2.png';
@@ -16,74 +16,59 @@ import bigquery_9 from '@site/static/images/migrations/bigquery-9.png';
 import bigquery_10 from '@site/static/images/migrations/bigquery-10.png';
 import bigquery_11 from '@site/static/images/migrations/bigquery-11.png';
 import bigquery_12 from '@site/static/images/migrations/bigquery-12.png';
+import Image from '@theme/IdealImage';
 
-## なぜClickHouse Cloudを選ぶべきか？ {#why-use-clickhouse-cloud-over-bigquery}
+## ClickHouse Cloud を使う理由 {#why-use-clickhouse-cloud-over-bigquery}
 
-TL;DR: ClickHouseは、現代のデータ分析においてBigQueryよりも速く、安価で、より強力だからです。
+TLDR: ClickHouse は、現代のデータ分析において、BigQuery よりも速く、安価で、より強力だからです。
 
-<br />
+<Image img={bigquery_2} size="md" alt="ClickHouse vs BigQuery"/>
 
-<img src={bigquery_2}
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
-
-<br />
-## BigQueryからClickHouse Cloudへデータを読み込む {#loading-data-from-bigquery-to-clickhouse-cloud}
+## BigQuery から ClickHouse Cloud へのデータの読み込み {#loading-data-from-bigquery-to-clickhouse-cloud}
 ### データセット {#dataset}
 
-BigQueryからClickHouse Cloudへの典型的な移行を示すためのサンプルデータセットとして、Stack Overflowデータセットを使用します。このデータセットには、2008年から2024年4月までにStack Overflowで発生したすべての `post`、`vote`、`user`、`comment`、および `badge` が含まれています。このデータのBigQueryスキーマは以下に示されています。
+BigQuery から ClickHouse Cloud への典型的な移行を示すために、Stack Overflow のデータセットを使用します。このデータセットには、2008 年から 2024 年 4 月までの Stack Overflow に発生したすべての `post`、`vote`、`user`、`comment`、および `badge` が含まれています。このデータの BigQuery スキーマは以下に示されています。
 
-<br />
+<Image img={bigquery_3} size="lg" alt="Schema"/>
 
-<img src={bigquery_3}
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '1000px'}} />
+このデータセットを BigQuery インスタンスに読み込んで移行手順をテストしたいユーザーのために、GCS バケットに Parquet 形式のデータを提供し、DDL コマンドを使用してテーブルを作成し、データをロードする方法が [こちら](https://pastila.nl/?003fd86b/2b93b1a2302cfee5ef79fd374e73f431#hVPC52YDsUfXg2eTLrBdbA==) から入手できます。
 
-<br />
-
-このデータセットをBigQueryインスタンスに格納して移行手順をテストしたいユーザーのために、GCSバケットにParquet形式でこれらのテーブルのデータを提供しています。BigQueryでテーブルを作成しデータをロードするDDLコマンドは[こちら](https://pastila.nl/?003fd86b/2b93b1a2302cfee5ef79fd374e73f431#hVPC52YDsUfXg2eTLrBdbA==)から入手できます。
 ### データの移行 {#migrating-data}
 
-BigQueryとClickHouse Cloud間でのデータの移行は、主に2つのワークロードタイプに分類されます：
+BigQuery と ClickHouse Cloud の間でのデータ移行は、2 つの主なワークロードタイプに分かれます：
 
-- **初回の一括ロードと定期的な更新** - 初回データセットを移行し、定期的な更新を設定された間隔で行う必要があります（例：毎日）。ここでの更新は、変更された行を再送信することで処理されます（例：日付など比較に使用できるカラムによって特定されます）。削除はデータセットの完全な定期的再読み込みによって処理されます。
-- **リアルタイムレプリケーションまたはCDC** - 初回データセットを移行する必要があり、このデータセットの変更は数秒の遅延でClickHouseに反映される必要があります。これは効果的に[Change Data Capture (CDC)プロセス](https://en.wikipedia.org/wiki/Change_data_capture)であり、BigQueryのテーブルとClickHouseを同期させる必要があります。つまり、BigQueryテーブルでの挿入、更新、および削除を同等のClickHouseテーブルに適用する必要があります。
-#### Google Cloud Storage (GCS)を介した一括ロード {#bulk-loading-via-google-cloud-storage-gcs}
+- **初期の一括ロードと定期的な更新** - 初期データセットを移行し、その後定期的にセットされた間隔で更新を行わなければなりません。ここでの更新は、比較に使用できるカラム（例えば日付）によって特定された変更された行を再送信することによって処理されます。削除はデータセットの完全な定期的な再ロードによって処理されます。
+- **リアルタイムレプリケーションまたは CDC** - 初期データセットを移行し、このデータセットの変更を ClickHouse にほぼリアルタイムで反映させる必要があります。数秒の遅延のみが許容されます。これは実質的に [Change Data Capture (CDC) プロセス](https://en.wikipedia.org/wiki/Change_data_capture) であり、BigQuery のテーブルの挿入、更新、削除を ClickHouse の同等のテーブルに適用する必要があります。
 
-BigQueryは、Googleのオブジェクトストレージ（GCS）へのデータのエクスポートをサポートしています。サンプルデータセットについては：
+#### Google Cloud Storage (GCS) 経由での一括ロード {#bulk-loading-via-google-cloud-storage-gcs}
 
-1. 7つのテーブルをGCSにエクスポートします。そのためのコマンドは[こちら](https://pastila.nl/?014e1ae9/cb9b07d89e9bb2c56954102fd0c37abd#0Pzj52uPYeu1jG35nmMqRQ==)で入手できます。
+BigQuery は Google のオブジェクトストレージ (GCS) へのデータのエクスポートをサポートします。例示データセットについては：
 
-2. データをClickHouse Cloudにインポートします。その際、[gcsテーブル関数](/sql-reference/table-functions/gcs)を使用します。DDLおよびインポートクエリは[こちら](https://pastila.nl/?00531abf/f055a61cc96b1ba1383d618721059976#Wf4Tn43D3VCU5Hx7tbf1Qw==)で入手できます。ClickHouse Cloudインスタンスは複数のコンピュートノードで構成されているため、`gcs`テーブル関数の代わりに、[s3Clusterテーブル関数](/sql-reference/table-functions/s3Cluster)を使用しています。この関数はgcsバケットでも動作し、[ClickHouse Cloudサービスのすべてのノードを利用して](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#parallel-servers)データを並行してロードすることができます。
+1. 7 つのテーブルを GCS にエクスポートします。そのためのコマンドは [こちら](https://pastila.nl/?014e1ae9/cb9b07d89e9bb2c56954102fd0c37abd#0Pzj52uPYeu1jG35nmMqRQ==) で入手できます。
 
-<br />
+2. データを ClickHouse Cloud にインポートします。そのために [gcs テーブル関数](/sql-reference/table-functions/gcs) を使用できます。DDL およびインポートクエリは [こちら](https://pastila.nl/?00531abf/f055a61cc96b1ba1383d618721059976#Wf4Tn43D3VCU5Hx7tbf1Qw==) から入手できます。ClickHouse Cloud インスタンスは複数のコンピュート ノードで構成されているため、`gcs` テーブル関数ではなく、[s3Cluster テーブル関数](/sql-reference/table-functions/s3Cluster) を使用します。この関数は GCS バケットでも機能し、[ClickHouse Cloud サービスのすべてのノードを利用して](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#parallel-servers) データを並行してロードします。
 
-<img src={bigquery_4}
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '600px'}} />
-
-<br />
+<Image img={bigquery_4} size="md" alt="Bulk loading"/>
 
 このアプローチにはいくつかの利点があります：
 
-- BigQueryのエクスポート機能はデータのサブセットをエクスポートするためのフィルタをサポートしています。
-- BigQueryは、[Parquet、Avro、JSON、CSV](https://cloud.google.com/bigquery/docs/exporting-data)形式およびいくつかの[圧縮タイプ](https://cloud.google.com/bigquery/docs/exporting-data)へのエクスポートをサポートしており、すべてClickHouseに対応しています。
-- GCSは[オブジェクトライフサイクル管理](https://cloud.google.com/storage/docs/lifecycle)をサポートしており、ClickHouseにエクスポートおよびインポートされたデータを指定された期間後に削除することができます。
-- [Googleは、1日あたり最大50TBをGCSに無料でエクスポートすることを許可しています](https://cloud.google.com/bigquery/quotas#export_jobs)。ユーザーはGCSのストレージにのみ料金を支払います。
-- エクスポートは自動的に複数のファイルを生成し、各ファイルを最大1GBのテーブルデータに制限します。これはClickHouseにとって有益で、インポートを並行化することができます。
+- BigQuery エクスポート機能は、データのサブセットをエクスポートするためのフィルターをサポートしています。
+- BigQuery は [Parquet、Avro、JSON、および CSV](https://cloud.google.com/bigquery/docs/exporting-data) 形式およびいくつかの [圧縮タイプ](https://cloud.google.com/bigquery/docs/exporting-data) にエクスポートをサポートしており、これらはすべて ClickHouse でもサポートされています。
+- GCS は [オブジェクトライフサイクル管理](https://cloud.google.com/storage/docs/lifecycle) をサポートしており、エクスポートされ、ClickHouse にインポートされたデータは指定された期間経過後に削除されることがあります。
+- [Google は、1 日あたり最大 50TB を GCS に無料でエクスポートできることを許可](https://cloud.google.com/bigquery/quotas#export_jobs)しています。ユーザーは GCS ストレージにのみ料金を支払います。
+- エクスポートは自動的に複数のファイルを生成し、各ファイルの最大サイズは 1GB のテーブルデータに制限されます。これは ClickHouse にとって有益であり、インポートを並行化することを可能にします。
 
-次の例を試す前に、ユーザーは[エクスポートに必要な権限](https://cloud.google.com/bigquery/docs/exporting-data#required_permissions)および[ローカリティの推奨事項](https://cloud.google.com/bigquery/docs/exporting-data#data-locations)を確認し、エクスポートおよびインポートのパフォーマンスを最大化することをお勧めします。
-### スケジュールクエリを介したリアルタイムレプリケーションまたはCDC {#real-time-replication-or-cdc-via-scheduled-queries}
+以下の例を試す前に、ユーザーは [エクスポートに必要な権限](https://cloud.google.com/bigquery/docs/exporting-data#required_permissions) および [ローカリティの推奨事項](https://cloud.google.com/bigquery/docs/exporting-data#data-locations) を確認し、エクスポートおよびインポートのパフォーマンスを最大化することをお勧めします。
 
-Change Data Capture（CDC）は、2つのデータベース間でテーブルを同期させるプロセスです。更新と削除がリアルタイムで処理される必要がある場合、これはかなり複雑です。一つのアプローチは、BigQueryの[スケジュールクエリ機能](https://cloud.google.com/bigquery/docs/scheduling-queries)を使用して定期的なエクスポートをスケジュールすることです。ClickHouseへのデータ挿入にある程度の遅延を受け入れられるのであれば、このアプローチは実装とメンテナンスが容易です。具体例としては[このブログ投稿](https://clickhouse.com/blog/clickhouse-bigquery-migrating-data-for-realtime-queries#using-scheduled-queries)があります。
+### スケジュールされたクエリ経由でのリアルタイムレプリケーションまたは CDC {#real-time-replication-or-cdc-via-scheduled-queries}
+
+Change Data Capture (CDC) は、2 つのデータベース間でテーブルを同期し続けるプロセスです。更新と削除をほぼリアルタイムで処理する必要がある場合、これはかなり複雑になります。1 つのアプローチは、BigQuery の [スケジュールクエリ機能](https://cloud.google.com/bigquery/docs/scheduling-queries) を使用して、定期的なエクスポートをスケジュールすることです。ClickHouse にデータが挿入されるまでにいくつかの遅延を受け入れることができる場合、このアプローチは実装と維持が簡単です。例は [このブログ記事](https://clickhouse.com/blog/clickhouse-bigquery-migrating-data-for-realtime-queries#using-scheduled-queries) に示されています。
+
 ## スキーマの設計 {#designing-schemas}
 
-Stack Overflowデータセットには、関連するテーブルがいくつか含まれています。最初にプライマリテーブルの移行に焦点を当てることをお勧めします。これは必ずしも最も大きなテーブルではなく、むしろ最も多くの分析クエリが受信されると予想されるテーブルです。これにより、主要なClickHouseの概念に慣れることができます。このテーブルは、追加のテーブルが追加されることでClickHouseの機能を最大限に活用し、最適なパフォーマンスを得るために再モデル化が必要となる場合があります。このモデリングプロセスについては、[データモデリングドキュメント](/data-modeling/schema-design#next-data-modelling-techniques)で詳しく説明しています。
+Stack Overflow のデータセットには、いくつかの関連テーブルが含まれています。最初に主テーブルを移行することをお勧めします。これは必ずしも最も大きなテーブルである必要はなく、むしろ最も多くの分析クエリを受け取ることが期待されるテーブルです。これにより、ClickHouse の主要な概念に慣れることができます。このテーブルは、ClickHouse の機能を最大限に活用し、最適なパフォーマンスを得るために、追加のテーブルが追加されると変更する必要があるかもしれません。このモデリングプロセスについては、[データモデリングのドキュメント](/data-modeling/schema-design#next-data-modeling-techniques) で詳しく説明しています。
 
-この原則に従って、主要な `posts` テーブルに焦点を当てます。このテーブルのBigQueryスキーマは以下に示されています：
+この原則に従って、私たちは主要な `posts` テーブルに焦点を当てます。この BigQuery スキーマは以下に示されています：
 
 ```sql
 CREATE TABLE stackoverflow.posts (
@@ -111,9 +96,10 @@ CREATE TABLE stackoverflow.posts (
     closeddate TIMESTAMP
 );
 ```
+
 ### 型の最適化 {#optimizing-types}
 
-[ここで説明されているプロセス](/data-modeling/schema-design)を適用すると、以下のスキーマが得られます：
+[こちらで説明されたプロセス](/data-modeling/schema-design) を適用することにより、次のスキーマが得られます：
 
 ```sql
 CREATE TABLE stackoverflow.posts
@@ -136,89 +122,80 @@ CREATE TABLE stackoverflow.posts
    `AnswerCount` UInt16,
    `CommentCount` UInt8,
    `FavoriteCount` UInt8,
-   `ContentLicense`LowCardinality(String),
+   `ContentLicense` LowCardinality(String),
    `ParentId` String,
    `CommunityOwnedDate` DateTime,
    `ClosedDate` DateTime
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-COMMENT '最適化された型'
+COMMENT 'Optimized types'
 ```
 
-このテーブルに簡単な[`INSERT INTO SELECT`](/sql-reference/statements/insert-into)を使用して、gcsからエクスポートされたデータを読み込むことができます。ClickHouse Cloudでは、gcs互換の[`s3Cluster`テーブル関数](/sql-reference/table-functions/s3Cluster)を使用して、複数のノードでのロードを並行化できます：
+このテーブルにデータを追加するには、エクスポートされたデータを gcs から読み込むシンプルな [`INSERT INTO SELECT`](/sql-reference/statements/insert-into) を使用できます。ClickHouse Cloud では、gcs 互換の [`s3Cluster` テーブル関数](/sql-reference/table-functions/s3Cluster) を使用して、複数のノードにわたってロードを並行化することもできます：
 
 ```sql
 INSERT INTO stackoverflow.posts SELECT * FROM gcs( 'gs://clickhouse-public-datasets/stackoverflow/parquet/posts/*.parquet', NOSIGN);
 ```
 
-新しいスキーマでは、nullを保持していません。上記の挿入は、暗黙的に各型のデフォルト値（整数の場合は0、文字列の場合は空の値）に変換されます。ClickHouseはまた、あらゆる数値をそのターゲット精度に自動的に変換します。
-## ClickHouseの主キーはどのように異なるか？ {#how-are-clickhouse-primary-keys-different}
+新しいスキーマでは、Null を保持しません。上記の挿入は、これらをそれぞれの型のデフォルト値 - 整数の場合は 0、文字列の場合は空の値にimplicitly に変換します。ClickHouse はまた、数値を自動的にそのターゲット精度に変換します。
 
-[ここで説明されているように](/migrations/bigquery)、BigQueryと同様に、ClickHouseはテーブルの主キー列値の一意性を強制しません。
+## ClickHouse の主キーはどのように異なるか {#how-are-clickhouse-primary-keys-different}
 
-BigQueryのクラスターと同様に、ClickHouseのテーブルのデータは主キー列によってディスクに順序付けられます。このソート順は、クエリオプティマイザによって利用され、再ソートを防ぎ、結合に必要なメモリ使用量を最小化し、制限句のショートサーキットを可能にします。
-BigQueryとは異なり、ClickHouseは主キー列値に基づいて[sparseな主インデックス](/guides/best-practices/sparse-primary-indexes)を自動的に作成します。このインデックスは、主キー列にフィルタを含むすべてのクエリの実行を高速化するために使用されます。具体的には：
+[こちらで説明されたように](/migrations/bigquery)、BigQuery のように ClickHouse もテーブルの主キー列の値の一意性を強制しません。
 
-- メモリとディスクの効率は、ClickHouseがしばしば使用されるスケールでは最も重要です。データは、パーツとして知られるチャンクでClickHouseテーブルに書き込まれ、バックグラウンドでのマージに関するルールが適用されます。ClickHouseでは、各パーツには独自の主インデックスがあります。パーツがマージされると、マージされたパーツの主インデックスもマージされます。これらのインデックスは、各行ごとには作成されません。代わりに、パーツの主インデックスは、行のグループごとに1つのインデックスエントリを持ちます。この技術はスパースインデクシングと呼ばれます。
-- スパースインデクシングが可能なのは、ClickHouseが指定されたキーによってディスク上の行を順序付けて格納しているからです。単一の行を直接見つけるのではなく（B-Treeベースのインデックスのように）、スパース主インデックスは、インデックスエントリ上での二分探索を介してクエリに一致する可能性のある行のグループを迅速に特定できるようにします。特定された可能性のある一致行のグループは、並行してClickHouseエンジンにストリーミングされて一致を見つけます。このインデックス設計により、主インデックスは小さく（メインメモリに完全に収まる）なりながら、クエリの実行時間を大幅に短縮することができます。特にデータ分析のユースケースで典型的な範囲クエリに対しては、さらにその効果が顕著です。詳細については、[この詳細なガイド](/guides/best-practices/sparse-primary-indexes)をお勧めします。
+BigQuery におけるクラスタリングと同様に、ClickHouse テーブルのデータは主キー列によって順序付けられてディスクに保存されます。このソート順は、クエリオプティマイザによって利用され、ソートを防ぎ、結合のメモリ使用量を最小限に抑え、リミット句の短絡評価を可能にします。
+BigQuery とは対照的に、ClickHouse は主キー列の値に基づいて [（スパース）主インデックス](https://guides/best-practices/sparse-primary-indexes) を自動的に作成します。このインデックスは、主キー列にフィルターが含まれるすべてのクエリを高速化するために使用されます。具体的には：
 
-<br />
+- メモリとディスクの効率は、ClickHouse がしばしば使用されるスケールにおいて重要です。データは、パーツと呼ばれるチャンクで ClickHouse テーブルに書き込まれ、バックグラウンドでのマージのためにルールが適用されます。ClickHouse では、各パーツは独自の主インデックスを持っています。パーツがマージされると、マージされたパーツの主インデックスもマージされます。これらのインデックスは各行に対して構築されているわけではありません。代わりに、パーツの主インデックスは行のグループごとに 1 つのインデックスエントリを持つ - この手法をスパースインデックスと呼びます。
+- スパースインデックスは、ClickHouse がパートの行を指定されたキーで順序付けてディスクに保存するため可能です。単一の行を直接特定するのではなく（Bツリー ベースのインデックスのように）、スパース主インデックスは、クエリに一致する可能性のある行のグループを迅速に特定します（インデックスエントリに対する二分探索を介して）。特定されたグループの潜在的に一致する行は、その後、並行して ClickHouse エンジンにストリーミングされます。このインデックス設計により、主インデックスは小さく（メインメモリに完全に収まる）なる一方で、クエリの実行時間を大幅に短縮することができます。特に、データ分析ユースケースで一般的な範囲クエリに効果的です。詳細については、[この詳細ガイド](https://guides/best-practices/sparse-primary-indexes) をお勧めします。
 
-<img src={bigquery_5}
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
+<Image img={bigquery_5} size="md" alt="ClickHouse Primary keys"/>
 
-<br />
+ClickHouse で選択された主キーは、インデックスだけでなく、ディスクにデータが書き込まれる順序も決定します。これにより、圧縮レベルに劇的に影響を与え、これがクエリのパフォーマンスにも影響を与えることがあります。ほとんどのカラムの値が連続して書き込まれる順序付けキーは、選択された圧縮アルゴリズム（およびコーデック）がデータをより効果的に圧縮することを可能にします。
 
-ClickHouseで選択された主キーは、インデックスだけでなく、データがディスクに書き込まれる順序も決定します。これにより、圧縮レベルに劇的に影響を与え、クエリパフォーマンスに影響を与えることがあります。ほとんどのカラムの値が連続して書き込まれる順序を引き起こす順序キーは、選択された圧縮アルゴリズム（およびコーデック）がデータをより効果的に圧縮できるようにします。
+> テーブル内のすべてのカラムは、指定された順序付けキーの値に基づいてソートされます。キー自体に含まれているかどうかにかかわらず。たとえば、`CreationDate` がキーとして使用されている場合、他のすべてのカラムの値の順序は、`CreationDate` カラムの値の順序に対応します。複数の順序付けキーを指定することができ - これは `SELECT` クエリの `ORDER BY` 句と同じ意味で順序付けされます。
 
-> テーブル内のすべてのカラムは、指定された順序キーの値に基づいてソートされます。これには、それ自体に含まれているかどうかにかかわらず。たとえば、`CreationDate`がキーとして使われる場合、他のすべてのカラムの値の順序は`CreationDate`カラムの値の順序に対応します。複数の順序キーを指定することができます。これにより、`SELECT`クエリの`ORDER BY`句と同じセマンティクスで順序付けられます。
-### 順序キーの選択 {#choosing-an-ordering-key}
+### 順序付けキーの選択 {#choosing-an-ordering-key}
 
-順序キーを選定する際の考慮事項とステップについては、`posts`テーブルを例に[こちら](https://data-modeling/schema-design#choosing-an-ordering-key)をご覧ください。
+順序付けキーを選ぶ際の考慮事項や手順については、posts テーブルを例に [こちら](https://data-modeling/schema-design#choosing-an-ordering-key) でご覧ください。
+
 ## データモデリング技術 {#data-modeling-techniques}
 
-BigQueryから移行するユーザーは、[ClickHouseにおけるデータモデリングガイド](/data-modeling/schema-design)を読むことをお勧めします。このガイドでは、同じStack Overflowデータセットを使用し、ClickHouseの機能を活用した複数のアプローチを探ります。
+BigQuery から移行するユーザーは、ClickHouse におけるデータモデリングのガイド [を読むことをお勧めします](/data-modeling/schema-design)。このガイドでは、同じ Stack Overflow データセットを使用し、ClickHouse の機能を利用した複数のアプローチを探ります。
+
 ### パーティション {#partitions}
 
-BigQueryユーザーは、テーブルをパーティションに分割することで大規模データベースのパフォーマンスと管理性を向上させるテーブルパーティショニングの概念に慣れているでしょう。このパーティショニングは、指定されたカラムに基づいて範囲（例：日付）を使用するか、定義済みリスト、またはキーにハッシュを使用して達成できます。これにより、管理者は日付範囲や地理的位置などの特定の基準に基づいてデータを整理できます。
+BigQuery ユーザーは、データベースのパフォーマンスと管理性が向上するように大型データベースを小さく、より管理可能な部分に分割するテーブルのパーティショニングの概念に慣れているでしょう。このパーティショニングは、指定されたカラム（例えば、日付）の範囲、定義されたリスト、またはキーに対するハッシュを使用して達成できます。これにより、管理者は、日付範囲や地理的条件に基づいてデータを整理できます。
 
-パーティショニングは、パーティションプルーニングを通じてより迅速なデータアクセスを可能にし、効率的なインデックス作成によってクエリパフォーマンスを改善するのに役立ちます。また、個々のパーティションではなく、テーブル全体ではなく、バックアップやデータ削除などのメンテナンスタスクを実施できるようになります。さらに、パーティショニングは、複数のパーティション間で負荷を分散させることで、BigQueryデータベースのスケーラビリティを大幅に向上させることができます。
+パーティショニングは、パーティション プルーニングによるデータアクセスを迅速化し、効率的なインデックス作成を可能にすることで、クエリのパフォーマンス向上に役立ちます。また、バックアップやデータの削除などのメンテナンスタスクにも役立ちます。これにより、テーブル全体ではなく、個々のパーティションに対して操作が可能になります。さらに、パーティショニングは、データロードを複数のパーティションに分散させることにより、BigQuery データベースのスケーラビリティを大幅に向上させることができます。
 
-ClickHouseでは、テーブルが最初に定義される際に[`PARTITION BY`](/engines/table-engines/mergetree-family/custom-partitioning-key)句を介してパーティショニングが指定されます。この句には、いかなるカラムのSQL式も含めることができ、その結果が行が送信されるパーティションを定義します。
+ClickHouse では、パーティショニングはテーブルが初期に定義される際に [`PARTITION BY`](/engines/table-engines/mergetree-family/custom-partitioning-key) 句を介して指定されます。この句は、任意のカラムに対する SQL 式を含むことができ、その結果が行が送られるパーティションを決定します。
 
-<br />
+<Image img={bigquery_6} size="md" alt="Partitions"/>
 
-<img src={bigquery_6}
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
-
-<br />
-
-データパーツは、ディスク上の各パーティションに論理的に関連づけられ、独立してクエリを実行できます。以下の例では、`CreationDate`を使用して年ごとに`posts`テーブルをパーティショニングします。この式は、ClickHouseへの行の挿入において、各行に対して評価されます。その結果、新たに追加されたデータパーツがそのパーティションに属する形でルーティングされます。
+データパーツは、ディスク上の各パーティションに論理的に関連付けられ、個別にクエリされています。以下の例では、`toYear(CreationDate)` を使用して年ごとに posts テーブルをパーティショニングしています。ClickHouse に行が挿入されると、この式は各行に対して評価され、行はその結果として得られたパーティションにルーティングされ、新しいデータパーツがそのパーティションに属します。
 
 ```sql
 CREATE TABLE posts
 (
-	`Id` Int32 CODEC(Delta(4), ZSTD(1)),
-	`PostTypeId` Enum8('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
-	`AcceptedAnswerId` UInt32,
-	`CreationDate` DateTime64(3, 'UTC'),
+        `Id` Int32 CODEC(Delta(4), ZSTD(1)),
+        `PostTypeId` Enum8('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
+        `AcceptedAnswerId` UInt32,
+        `CreationDate` DateTime64(3, 'UTC'),
 ...
-	`ClosedDate` DateTime64(3, 'UTC')
+        `ClosedDate` DateTime64(3, 'UTC')
 )
 ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CreationDate)
 PARTITION BY toYear(CreationDate)
 ```
+
 #### アプリケーション {#applications}
 
-ClickHouseのパーティショニングには、BigQueryと同様のアプリケーションがありますが、いくつかの微妙な違いがあります。具体的には：
+ClickHouse におけるパーティショニングは、BigQuery でのアプリケーションと類似していますが、いくつかの微妙な違いがあります。具体的には：
 
-- **データ管理** - ClickHouseでは、ユーザーは主にパーティショニングをデータ管理機能と考えるべきです。キーに基づいて論理的にデータを分離することで、各パーティションは独立して操作できます（例：削除）。これにより、ユーザーはパーティションを効率的に移動し、サブセットを[ストレージ階層](/integrations/s3#storage-tiers)間で移動したり、[データを期限切れにしたり/クラスタから効率的に削除したり](https://sql-reference/statements/alter/partition)できます。例えば、2008年の投稿を削除する操作は以下のように行います：
+- **データ管理** - ClickHouse では、ユーザーは主にパーティショニングをデータ管理機能と見なすべきです。キーに基づいて論理的にデータを分離することにより、各パーティションは独立して操作できます（例えば、削除）。これにより、ユーザーはパーティションを移動させ、サブセットを [ストレージ層](/integrations/s3#storage-tiers) の間で効率的に移動させたり、時間経過でデータを削除/効率的にクラスタから削除したりできます。例えば、2008 年の投稿を削除する場合は：
 
 ```sql
 SELECT DISTINCT partition
@@ -226,50 +203,52 @@ FROM system.parts
 WHERE `table` = 'posts'
 
 ┌─partition─┐
-│ 2008  	│
-│ 2009  	│
-│ 2010  	│
-│ 2011  	│
-│ 2012  	│
-│ 2013  	│
-│ 2014  	│
-│ 2015  	│
-│ 2016  	│
-│ 2017  	│
-│ 2018  	│
-│ 2019  	│
-│ 2020  	│
-│ 2021  	│
-│ 2022  	│
-│ 2023  	│
-│ 2024  	│
+│ 2008      │
+│ 2009      │
+│ 2010      │
+│ 2011      │
+│ 2012      │
+│ 2013      │
+│ 2014      │
+│ 2015      │
+│ 2016      │
+│ 2017      │
+│ 2018      │
+│ 2019      │
+│ 2020      │
+│ 2021      │
+│ 2022      │
+│ 2023      │
+│ 2024      │
 └───────────┘
 
 17 rows in set. Elapsed: 0.002 sec.
 
-	ALTER TABLE posts
-	(DROP PARTITION '2008')
+ALTER TABLE posts
+(DROP PARTITION '2008')
 
 Ok.
 
 0 rows in set. Elapsed: 0.103 sec.
 ```
 
-- **クエリ最適化** - パーティションはクエリパフォーマンスを助ける可能性がありますが、これはアクセスパターンに大きく依存します。クエリが只に数個のパーティション（理想的には1つ）のみを対象にする場合、パフォーマンスは向上する可能性があります。しかし、パーティショニングキーが主キーに含まれている場合、その利点はほとんど存在しなくなります。特に多くのパーティションを対象とする必要があるクエリは、パーティショニングされていない場合よりもパフォーマンスが低下する可能性があります。また、パーティショニングは、[`GROUP BY`クエリの最適化](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)にも利用できる可能性があります。
+- **クエリの最適化** - パーティションはクエリのパフォーマンスに役立つ可能性がありますが、これはアクセスパターンによって大きく左右されます。クエリが少数のパーティション（理想的には 1 つ）を対象とする場合、パフォーマンスが向上する可能性があります。これは、パーティショニングキーが主キーに含まれていない場合に、フィルタリングによって役立つ場合があります。ただし、多くのパーティションをカバーする必要があるクエリは、パーティショニングを使用しない場合よりもパフォーマンスが低下する可能性があります（パーティショニングの結果としてパーツが増える可能性があるため）。特定のパーティションをターゲットにする利点は、パーティショニングキーがすでに主キーの先行エントリである場合にはあまり明確ではなくなるか、存在しない場合もあります。パーティショニングはまた、各パーティション内の値が一意である場合に、`GROUP BY` クエリの最適化にも使用できます。しかし、一般的にユーザーは主キーが最適化されていることを確認し、特定の予測可能なサブセットのデータをアクセスする場合を除いて、パーティショニングをクエリ最適化技術として考慮すべきです。
+
 #### 推奨事項 {#recommendations}
 
-ユーザーは、データ管理技術としてパーティショニングを考慮すべきです。特に、時系列データを扱う場合、クラスターからデータを期限切れにする必要がある場合に理想的です。例えば、最も古いパーティションは[単純に削除する](https://sql-reference/statements/alter/partition#drop-partitionpart)ことができます。
+ユーザーはパーティショニングをデータ管理技術と見なすべきです。時系列データを扱う場合、クラスタからデータを削除する必要がある場合に理想的です。例えば、古いパーティションは [単純に削除することができます](/sql-reference/statements/alter/partition#drop-partitionpart)。
 
-重要: パーティショニングキーの式が高いカーディナリティのセットを生成しないことを確認してください。すなわち、100以上のパーティションを作成することは避けるべきです。例えば、クライアント識別子や名前のような高いカーディナリティのカラムでデータをパーティショニングしないでください。代わりに、`ORDER BY`式の最初のカラムにクライアント識別子または名前を指定します。
+重要：パーティショニングキーの式が高いカーディナリティのセットを生じないことを確認してください。つまり、100 以上のパーティションの作成は避けるべきです。例えば、クライアント識別子や名前などの高いカーディナリティのカラムでデータをパーティショニングしないでください。代わりに、クライアント識別子または名前を `ORDER BY` 式の最初のカラムにしてください。
 
-> 内部的に、ClickHouseは挿入されたデータに対して[パーツを作成](https://guides/best-practices/sparse-primary-indexes#clickhouse-index-design)します。データが挿入されるにつれて、パーツの数が増加します。クエリパフォーマンスが低下するほどの過剰なパーツの数を回避するために、パーツはバックグラウンドの非同期プロセスで統合されます。事前に設定された制限を超えると、ClickHouseは挿入時に["too many parts"エラー](https://knowledgebase/exception-too-many-parts)をスローします。これは通常の操作では発生せず、ClickHouseが正しく設定されていないか、誤って使用されている場合にのみ発生します（例：小さな挿入が多すぎる）。パーツは独立してパーティションごとに作成されるため、パーティションの数が増えるとパーツの数も増加します。高カーディナリティのパーティショニングキーは、このエラーを引き起こす可能性があるため、避けるべきです。
-## マテリアライズドビューとプロジェクション {#materialized-views-vs-projections}
+> Internally, ClickHouse は挿入されたデータのために [parts](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design) を作成します。データが増えるにつれて、パーツの数が増える。クエリパフォーマンスを低下させる過剰な数のパーツを防ぐために、バックグラウンドの非同期プロセスでパーツが統合されます。パーツの数が [事前設定された限度](/operations/settings/merge-tree-settings#parts_to_throw_insert) を超えると、ClickHouse は挿入時に「["too many parts" エラー](https://knowledgebase/exception-too-many-parts)」として例外を発生させます。これは通常の操作では発生せず、ClickHouse が誤って設定されているか、適切に使用されていない場合（例えば、多数の小さな挿入の場合）にのみ発生します。パーツはパーティションごとに孤立して作成されるため、パーティションの数を増やすとパーツの数も増加します。したがって、高いカーディナリティのパーティショニングキーは、このエラーを引き起こす可能性があり、避けるべきです。
 
-ClickHouseのプロジェクションの概念により、ユーザーはテーブルに複数の`ORDER BY`句を指定できます。
+## 物化ビューとプロジェクション {#materialized-views-vs-projections}
 
-[ClickHouseデータモデリング](/data-modeling/schema-design)では、マテリアライズドビューを使用して、集計を事前計算し、行を変換し、異なるアクセスパターンに対するクエリを最適化する方法を探ります。この場合、マテリアライズドビューが異なる順序キーを持つターゲットテーブルに行を送信する例を[提供しました](/materialized-view/incremental-materialized-view#lookup-table)。
+ClickHouse のプロジェクションの概念により、ユーザーはテーブルのために複数の `ORDER BY` 句を指定できます。
 
-以下のクエリを考えます。
+[ClickHouse データモデリング](/data-modeling/schema-design) では、物化ビューを ClickHouse で使用して集計を事前に計算し、行を変換し、異なるアクセスパターンに対してクエリを最適化する方法を探ります。後者については、物化ビューが元のテーブルとは異なる順序キーでターゲットテーブルに行を送信する例を [提供しました](/materialized-view/incremental-materialized-view#lookup-table)。
+
+例えば、次のクエリを考えてみます：
 
 ```sql
 SELECT avg(Score)
@@ -277,14 +256,14 @@ FROM comments
 WHERE UserId = 8592047
 
    ┌──────────avg(Score)─┐
-   │ 0.18181818181818182  │
-   └────────────────────┘
+   │ 0.18181818181818182 │
+   └─────────────────────┘
 
 1 row in set. Elapsed: 0.040 sec. Processed 90.38 million rows, 361.59 MB (2.25 billion rows/s., 9.01 GB/s.)
 Peak memory usage: 201.93 MiB.
 ```
 
-このクエリでは、`UserId`が順序キーでないため、90百万行すべてをスキャンする必要があります（迅速に行われるとはいえ）。以前は、`PostId`のルックアップとして動作するマテリアライズドビューを使用してこの問題を解決しました。同じ問題はプロジェクションでも解決できます。以下のコマンドでは、`ORDER BY user_id`のためのプロジェクションを追加します。
+このクエリは、すべての 90m 行をスキャンする必要があります（もちろん速いですが）、`UserId` は順序キーではありません。以前は、物化ビューを使用して `PostId` のルックアップを行うことで解決しました。同じ問題は、プロジェクションでも解決できます。以下のコマンドは、`ORDER BY user_id` のためのプロジェクションを追加します。
 
 ```sql
 ALTER TABLE comments ADD PROJECTION comments_user_id (
@@ -294,46 +273,46 @@ SELECT * ORDER BY UserId
 ALTER TABLE comments MATERIALIZE PROJECTION comments_user_id
 ```
 
-注意: 最初にプロジェクションを作成し、次にそれをマテリアライズする必要があります。後者のコマンドは、データがディスクに2つの異なる順序で2回保存されることを引き起こします。データ作成時にプロジェクションを定義することもできます。そうすることで、データが挿入されるたびに自動的に維持されます。
+プロジェクションを作成する前にまず作成し、その後それを物化する必要があります。この後者のコマンドにより、データはディスク上に異なる順序で 2 回保存されます。データの作成時にプロジェクションを定義することも可能で、以下のように、データが挿入される際に自動的にメンテナンスされます。
 
 ```sql
 CREATE TABLE comments
 (
-	`Id` UInt32,
-	`PostId` UInt32,
-	`Score` UInt16,
-	`Text` String,
-	`CreationDate` DateTime64(3, 'UTC'),
-	`UserId` Int32,
-	`UserDisplayName` LowCardinality(String),
-	PROJECTION comments_user_id
-	(
-    	SELECT *
-    	ORDER BY UserId
-	)
+        `Id` UInt32,
+        `PostId` UInt32,
+        `Score` UInt16,
+        `Text` String,
+        `CreationDate` DateTime64(3, 'UTC'),
+        `UserId` Int32,
+        `UserDisplayName` LowCardinality(String),
+        PROJECTION comments_user_id
+        (
+        SELECT *
+        ORDER BY UserId
+        )
 )
 ENGINE = MergeTree
 ORDER BY PostId
 ```
 
-プロジェクションを`ALTER`コマンドで作成した場合、作成時は非同期で、`MATERIALIZE PROJECTION`コマンドが発行された際に作成されます。ユーザーは、次のクエリでこの操作の進捗を確認し、`is_done=1`になるまで待つことができます。
+プロジェクションが `ALTER` コマンドを介して作成されると、その作成は非同期であり、`MATERIALIZE PROJECTION` コマンドが発行されます。ユーザーは次のクエリでこの操作の進捗を確認し、`is_done=1` を待つことができます。
 
 ```sql
 SELECT
-	parts_to_do,
-	is_done,
-	latest_fail_reason
+        parts_to_do,
+        is_done,
+        latest_fail_reason
 FROM system.mutations
 WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
 
    ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
-1. │       	1 │   	0 │                	│
+1. │           1 │       0 │                    │
    └─────────────┴─────────┴────────────────────┘
 
 1 row in set. Elapsed: 0.003 sec.
 ```
 
-上記のクエリを繰り返すと、ストレージの追加でパフォーマンスが大幅に改善されていることがわかります。
+上記のクエリを繰り返すと、パフォーマンスが大幅に向上していることが確認できますが、追加のストレージが必要です。
 
 ```sql
 SELECT avg(Score)
@@ -348,7 +327,7 @@ WHERE UserId = 8592047
 Peak memory usage: 4.06 MiB.
 ```
 
-[`EXPLAIN`コマンド](/sql-reference/statements/explain)を使用して、このクエリがプロジェクションを使用したことも確認できます。
+次に [`EXPLAIN` コマンド](/sql-reference/statements/explain) を使用して、このクエリをサービスするためにプロジェクションが使用されたことも確認します：
 
 ```sql
 EXPLAIN indexes = 1
@@ -356,207 +335,53 @@ SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
 
-	┌─explain─────────────────────────────────────────────┐
- 1. │ Expression ((Projection + Before ORDER BY))     	│
- 2. │   Aggregating                                   	│
- 3. │ 	Filter                                      	│
- 4. │   	ReadFromMergeTree (comments_user_id)      	│
- 5. │   	Indexes:                                  	│
- 6. │     	PrimaryKey                              	│
- 7. │       	Keys:                                 	│
- 8. │         	UserId                              	│
- 9. │       	Condition: (UserId in [8592047, 8592047]) │
-10. │       	Parts: 2/2                            	│
-11. │       	Granules: 2/11360                     	│
-	└─────────────────────────────────────────────────────┘
+    ┌─explain─────────────────────────────────────────────┐
+ 1. │ Expression ((Projection + Before ORDER BY))         │
+ 2. │   Aggregating                                       │
+ 3. │   Filter                                            │
+ 4. │           ReadFromMergeTree (comments_user_id)      │
+ 5. │           Indexes:                                  │
+ 6. │           PrimaryKey                                │
+ 7. │           Keys:                                     │
+ 8. │           UserId                                    │
+ 9. │           Condition: (UserId in [8592047, 8592047]) │
+10. │           Parts: 2/2                                │
+11. │           Granules: 2/11360                         │
+    └─────────────────────────────────────────────────────┘
 
 11 rows in set. Elapsed: 0.004 sec.
 ```
+
 ### プロジェクションを使用するタイミング {#when-to-use-projections}
 
-プロジェクションは、新しいユーザーにとって魅力的な機能で、データが挿入される際に自動的に維持されます。さらに、クエリは単一のテーブルに送信され、プロジェクションが可能な限り活用され、応答時間を短縮します。
+プロジェクションは、新しいユーザーにとって魅力的な機能です。データが挿入される際に自動的にメンテナンスされます。さらに、クエリはプロジェクションが可能な限り利用される単一のテーブルに送信できます。これにより、応答時間が短縮されます。
 
-<br />
+<Image img={bigquery_7} size="md" alt="Projections"/>
 
-<img src={bigquery_7}
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '800px'}} />
+これは、ユーザーが適切な最適化されたターゲットテーブルを選択するか、フィルタに応じてクエリを再構築しなければならない物化ビューとは対照的です。これは、ユーザーアプリケーションにより大きな重みを置き、クライアント側の複雑さを増加させます。
 
-<br />
+これらの利点にもかかわらず、プロジェクションにはユーザーが認識すべきいくつかの制限があり、したがって節度を持って展開すべきです：
 
-これは、ユーザーが適切な最適化されたターゲットテーブルを選択する必要があるマテリアライズドビューとは対照的です。これにより、ユーザーアプリケーションに対する重要性が増し、クライアント側の複雑さも増します。
+- プロジェクションでは、ソーステーブルと（隠れた）ターゲットテーブルに異なる TTL を使用できません。物化ビューは異なる TTL を許可します。
+- プロジェクションは現在、（隠れた）ターゲットテーブルに対する `optimize_read_in_order` をサポートしていません。
+- プロジェクションを持つテーブルには、論理的な更新と削除はサポートされていません。
+- 物化ビューは連鎖することができ、1 つの物化ビューのターゲットテーブルが別の物化ビューのソーステーブルになることができ、そのように続きます。これはプロジェクションでは不可能です。
+- プロジェクションは結合をサポートしていませんが、物化ビューはサポートしています。
+- プロジェクションはフィルタ (`WHERE` 句) をサポートしていませんが、物化ビューはサポートしています。
 
-これらの利点にもかかわらず、プロジェクションにはいくつかの固有の制限があります。ユーザーはこれらを把握し、慎重に展開する必要があります：
+プロジェクションを使用することをお勧めする場合は：
 
-- プロジェクションは、ソーステーブルと（隠された）ターゲットテーブルに異なるTTLを使用することを許可しません。マテリアライズドビューは異なるTTLを許可します。
-- プロジェクションは、（隠された）ターゲットテーブルに対して`optimize_read_in_order`を現在サポートしていません。
-- プロジェクションを持つテーブルに対しては、軽量削除や更新がサポートされていません。
-- マテリアライズドビューはチェーン化できます。1つのマテリアライズドビューのターゲットテーブルが別のマテリアライズドビューのソーステーブルになることが可能ですが、これはプロジェクションでは不可能です。
-- プロジェクションは結合をサポートしませんが、マテリアライズドビューはサポートします。
-- プロジェクションはフィルタ (`WHERE`句)をサポートしませんが、マテリアライズドビューはサポートします。
-
-プロジェクションを使用することをお勧めするのは以下の場合です：
-
-- データの完全な再配置が必要な場合。プロジェクションの式は理論的には`GROUP BY`を使うことができますが、集計を維持する場合はマテリアライズドビューの方が効果的です。クエリオプティマイザが、単純な再配置を利用したプロジェクションを利用する可能性が高くなります。つまり、`SELECT * ORDER BY x`とすることです。この式で列のサブセットを選択して、ストレージフットプリントを削減できます。
-- ユーザーが、ストレージフットプリントの増加とデータの二重書き込みのオーバーヘッドを快く受け入れられる場合。挿入速度への影響をテストし、[ストレージのオーバーヘッドを評価](https://data-compression/compression-in-clickhouse)してください。
-## BigQueryクエリをClickHouseで書き換える {#rewriting-bigquery-queries-in-clickhouse}
-
-以下に、BigQueryとClickHouseを比較した例のクエリを示します。このリストは、ClickHouse機能を活用してクエリを大幅に簡素化する方法を示すことを目的としています。ここでの例は、完全なStack Overflowデータセット（2024年4月まで）を使用しています。
-
-**（質問が10件以上の）最も多くのビューを受けたユーザー:**
-
-_BigQuery_
-
-<img src={bigquery_8}
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '500px'}} />
-
-<br />
-
-_ClickHouse_
-
-```sql
-SELECT
-    OwnerDisplayName,
-    sum(ViewCount) AS total_views
-FROM stackoverflow.posts
-WHERE (PostTypeId = 'Question') AND (OwnerDisplayName != '')
-GROUP BY OwnerDisplayName
-HAVING count() > 10
-ORDER BY total_views DESC
-LIMIT 5
-
-   ┌─OwnerDisplayName─┬─total_views─┐
-1. │ Joan Venge       │    25520387 │
-2. │ Ray Vega         │    21576470 │
-3. │ anon             │    19814224 │
-4. │ Tim              │    19028260 │
-5. │ John             │    17638812 │
-   └──────────────────┴─────────────┘
-
-5 rows in set. Elapsed: 0.076 sec. Processed 24.35 million rows, 140.21 MB (320.82 million rows/s., 1.85 GB/s.)
-Peak memory usage: 323.37 MiB.
+- データの完全な再配置が必要な場合。この式のプロジェクションは理論的には `GROUP BY` を使用できますが、集約の維持には物化ビューの方が有効です。クエリオプティマイザは、単純な再配置を利用するプロジェクションを利用する可能性が高くなります。すなわち、`SELECT * ORDER BY x`。この式でストレージのフットプリントを減少させるために列のサブセットを選択することができます。
+- ユーザーは、データを二重で書き込むことに伴うストレージフットプリントとオーバーヘッドの増加に対して快適である。挿入速度への影響をテストし、[ストレージオーバーヘッドを評価してください](/data-compression/compression-in-clickhouse)。
 ```
 
-**最も多くのビューを受けたタグは:**
+## 条件式と配列 {#conditionals-and-arrays}
+
+条件式と配列関数はクエリを大幅に簡素化します。以下のクエリは、2022年から2023年にかけて最も大きな割合の増加を示すタグ（10000回以上出現するもの）を計算します。条件式、配列関数、`HAVING`および`SELECT`句内でエイリアスを再利用する能力により、以下のClickHouseクエリは簡潔です。
 
 _BigQuery_
 
-<br />
-
-<img src={bigquery_9}
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '400px'}} />
-
-<br />
-
-_ClickHouse_
-
-```sql
--- ClickHouse
-SELECT
-    arrayJoin(arrayFilter(t -> (t != ''), splitByChar('|', Tags))) AS tags,
-    sum(ViewCount) AS views
-FROM stackoverflow.posts
-GROUP BY tags
-ORDER BY views DESC
-LIMIT 5
-
-
-   ┌─tags───────┬──────views─┐
-1. │ javascript │ 8190916894 │
-2. │ python     │ 8175132834 │
-3. │ java       │ 7258379211 │
-4. │ c#         │ 5476932513 │
-5. │ android    │ 4258320338 │
-   └────────────┴────────────┘
-
-5 rows in set. Elapsed: 0.318 sec. Processed 59.82 million rows, 1.45 GB (188.01 million rows/s., 4.54 GB/s.)
-Peak memory usage: 567.41 MiB.
-```
-## 集計関数 {#aggregate-functions}
-
-可能な限り、ユーザーはClickHouseの集計関数を活用すべきです。以下に、[`argMax`関数](/sql-reference/aggregate-functions/reference/argmax)を使用して、毎年最も視聴された質問を計算する例を示します。
-
-_BigQuery_
-
-<br />
-
-<img src={bigquery_10}
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '500px'}} />
-
-<br />
-
-<img src={bigquery_11}
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '500px'}} />
-
-<br />
-
-_ClickHouse_
-
-```sql
--- ClickHouse
-SELECT
-    toYear(CreationDate) AS Year,
-    argMax(Title, ViewCount) AS MostViewedQuestionTitle,
-    max(ViewCount) AS MaxViewCount
-FROM stackoverflow.posts
-WHERE PostTypeId = 'Question'
-GROUP BY Year
-ORDER BY Year ASC
-FORMAT Vertical
-
-
-Row 1:
-──────
-Year:                    2008
-MostViewedQuestionTitle: How to find the index for a given item in a list?
-MaxViewCount:            6316987
-
-Row 2:
-──────
-Year:                    2009
-MostViewedQuestionTitle: How do I undo the most recent local commits in Git?
-MaxViewCount:            13962748
-
-…
-
-Row 16:
-───────
-Year:                    2023
-MostViewedQuestionTitle: How do I solve "error: externally-managed-environment" every time I use pip 3?
-MaxViewCount:            506822
-
-Row 17:
-───────
-Year:                    2024
-MostViewedQuestionTitle: Warning "Third-party cookie will be blocked. Learn more in the Issues tab"
-MaxViewCount:            66975
-
-17 rows in set. Elapsed: 0.225 sec. Processed 24.35 million rows, 1.86 GB (107.99 million rows/s., 8.26 GB/s.)
-Peak memory usage: 377.26 MiB.
-```
-## Conditionals and Arrays {#conditionals-and-arrays}
-
-条件付きおよび配列関数は、クエリを大幅に簡素化します。以下のクエリは、2022年から2023年にかけて最大の割合で増加したタグ（出現回数が10000を超えるもの）を計算します。条件付き、配列関数の活用、`HAVING`および`SELECT`句でのエイリアス再利用のおかげで、次の ClickHouse クエリは簡潔です。
-
-_BigQuery_
-
-<br />
-
-<img src={bigquery_12}
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '500px'}} />
-
-<br />
+<Image img={bigquery_12} size="sm" border alt="Conditionals and Arrays"/>
 
 _ClickHouse_
 
@@ -574,15 +399,15 @@ ORDER BY percent_change DESC
 LIMIT 5
 
 ┌─tag─────────┬─count_2023─┬─count_2022─┬──────percent_change─┐
-│ next.js   │   13788 │     10520 │   31.06463878326996 │
-│ spring-boot │     16573 │     17721 │  -6.478189718413183 │
-│ .net      │   11458 │     12968 │ -11.644046884639112 │
-│ azure     │   11996 │     14049 │ -14.613139725247349 │
-│ docker    │   13885 │     16877 │  -17.72826924216389 │
+│ next.js     │      13788 │      10520 │   31.06463878326996 │
+│ spring-boot │      16573 │      17721 │  -6.478189718413183 │
+│ .net        │      11458 │      12968 │ -11.644046884639112 │
+│ azure       │      11996 │      14049 │ -14.613139725247349 │
+│ docker      │      13885 │      16877 │  -17.72826924216389 │
 └─────────────┴────────────┴────────────┴─────────────────────┘
 
-5 行の結果。経過時間: 0.096 秒。5.08百万行を処理し、155.73 MB (53.10百万行/s., 1.63 GB/s.)。
-ピークメモリ使用量: 410.37 MiB。
+5 行がセットされました。経過時間: 0.096 秒。処理行数: 508万行、155.73 MB (5300万行/s., 1.63 GB/s.)
+ピークメモリ使用量: 410.37 MiB.
 ```
 
-これで、BigQuery から ClickHouse に移行するユーザー向けの基本ガイドは終了です。BigQuery から移行するユーザーは、[ClickHouse でのデータモデリング](/data-modeling/schema-design) ガイドを読むことをお勧めします。これにより、ClickHouse の高度な機能についてさらに学ぶことができます。
+これで、BigQueryからClickHouseに移行するユーザー向けの基本ガイドは終了です。BigQueryから移行するユーザーには、ClickHouseの高度な機能について学ぶために、[ClickHouseでのデータのモデリング](／data-modeling/schema-design) のガイドを読むことをお勧めします。

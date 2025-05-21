@@ -1,29 +1,28 @@
 ---
-slug: /engines/table-engines/integrations/hudi
+description: 'このエンジンは、Amazon S3 の既存の Apache Hudi テーブルとの読み取り専用統合を提供します。'
+sidebar_label: 'Hudi'
 sidebar_position: 86
-sidebar_label: Hudi
-title: "Hudi テーブルエンジン"
-description: "このエンジンは、Amazon S3 にある既存の Apache Hudi テーブルとのリードオンリー統合を提供します。"
+slug: /engines/table-engines/integrations/hudi
+title: 'Hudi テーブルエンジン'
 ---
-
 
 # Hudi テーブルエンジン
 
-このエンジンは、Amazon S3 にある既存の Apache [Hudi](https://hudi.apache.org/) テーブルとのリードオンリー統合を提供します。
+このエンジンは、Amazon S3 の既存の Apache [Hudi](https://hudi.apache.org/) テーブルとの読み取り専用統合を提供します。
 
 ## テーブルの作成 {#create-table}
 
-Hudi テーブルはすでに S3 に存在する必要があります。このコマンドでは、新しいテーブルを作成するための DDL パラメータは受け付けません。
+Hudi テーブルは既に S3 に存在している必要があります。このコマンドは新しいテーブルを作成するための DDL パラメータを受け取りません。
 
-``` sql
+```sql
 CREATE TABLE hudi_table
     ENGINE = Hudi(url, [aws_access_key_id, aws_secret_access_key,])
 ```
 
 **エンジンパラメータ**
 
-- `url` — 既存の Hudi テーブルへのパスを持つバケット URL。
-- `aws_access_key_id`, `aws_secret_access_key` - [AWS](https://aws.amazon.com/) アカウントユーザーの長期的な資格情報。これを使用してリクエストを認証できます。パラメータはオプションです。資格情報が指定されていない場合は、設定ファイルから使用されます。
+- `url` — 既存の Hudi テーブルへのパスを含むバケット URL。
+- `aws_access_key_id`, `aws_secret_access_key` - [AWS](https://aws.amazon.com/) アカウントユーザーの長期資格情報。これらを使用してリクエストを認証できます。パラメータはオプションです。資格情報が指定されていない場合、設定ファイルから使用されます。
 
 エンジンパラメータは、[Named Collections](/operations/named-collections.md) を使用して指定できます。
 
@@ -33,9 +32,9 @@ CREATE TABLE hudi_table
 CREATE TABLE hudi_table ENGINE=Hudi('http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/test_table/', 'ABC123', 'Abc+123')
 ```
 
-名前付きコレクションを使用する場合:
+ネームドコレクションを使用する場合：
 
-``` xml
+```xml
 <clickhouse>
     <named_collections>
         <hudi_conf>
@@ -51,6 +50,6 @@ CREATE TABLE hudi_table ENGINE=Hudi('http://mars-doc-test.s3.amazonaws.com/click
 CREATE TABLE hudi_table ENGINE=Hudi(hudi_conf, filename = 'test_table')
 ```
 
-## 参照 {#see-also}
+## その他 {#see-also}
 
 - [hudi テーブル関数](/sql-reference/table-functions/hudi.md)

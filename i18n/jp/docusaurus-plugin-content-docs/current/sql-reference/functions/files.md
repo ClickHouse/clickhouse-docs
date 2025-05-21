@@ -1,7 +1,9 @@
 ---
-slug: /sql-reference/functions/files
+description: 'ファイルに関するドキュメント'
+sidebar_label: 'ファイル'
 sidebar_position: 75
-sidebar_label: ファイル
+slug: /sql-reference/functions/files
+title: 'ファイル'
 ---
 
 ## file {#file}
@@ -12,19 +14,19 @@ sidebar_label: ファイル
 
 **構文**
 
-``` sql
+```sql
 file(path[, default])
 ```
 
 **引数**
 
-- `path` — [user_files_path](../../operations/server-configuration-parameters/settings.md#user_files_path) に対するファイルの相対パス。ワイルドカード `*`、`**`、`?`、`{abc,def}`、および `{N..M}`（ここで `N` と `M` は数字、`'abc'` と `'def'` は文字列）をサポートしています。
-- `default` — ファイルが存在しないか、アクセスできない場合に返される値。サポートされるデータ型: [String](../data-types/string.md) および [NULL](/operations/settings/formats#input_format_null_as_default)。
+- `path` — [user_files_path](../../operations/server-configuration-parameters/settings.md#user_files_path) に対するファイルのパス。ワイルドカード `*`、`**`、`?`、`{abc,def}` および `{N..M}` をサポートしています。ここで、`N`、`M` は数字、`'abc', 'def'` は文字列です。
+- `default` — ファイルが存在しない場合やアクセスできない場合に返される値。サポートされているデータ型: [String](../data-types/string.md) および [NULL](/operations/settings/formats#input_format_null_as_default)。
 
 **例**
 
-a.txt および b.txt から文字列としてデータをテーブルに挿入する:
+a.txt と b.txt から文字列としてテーブルにデータを挿入する:
 
-``` sql
+```sql
 INSERT INTO table SELECT file('a.txt'), file('b.txt');
 ```

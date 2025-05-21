@@ -1,11 +1,11 @@
 ---
-description: "現在のユーザーが利用可能なデータベースに関する情報を含むシステムテーブル。"
+description: '現在のユーザーが利用できるデータベースに関する情報を含むシステムテーブル。'
+keywords: ['system table', 'databases']
 slug: /operations/system-tables/databases
-title: "system.databases"
-keywords: ["システムテーブル", "データベース"]
+title: 'system.databases'
 ---
 
-現在のユーザーが利用可能なデータベースに関する情報を含みます。
+現在のユーザーが利用できるデータベースに関する情報を含みます。
 
 カラム:
 
@@ -14,28 +14,28 @@ keywords: ["システムテーブル", "データベース"]
 - `data_path` ([String](../../sql-reference/data-types/string.md)) — データパス。
 - `metadata_path` ([String](../../sql-reference/data-types/enum.md)) — メタデータパス。
 - `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — データベースUUID。
-- `comment` ([String](../../sql-reference/data-types/enum.md)) — データベースコメント。
+- `comment` ([String](../../sql-reference/data-types/enum.md)) — データベースのコメント。
 - `engine_full` ([String](../../sql-reference/data-types/enum.md)) — データベースエンジンのパラメータ。
-- `database` ([String](../../sql-reference/data-types/string.md)) – `name` のエイリアス。
+- `database` ([String](../../sql-reference/data-types/string.md)) – `name` の別名。
 
-このシステムテーブルの `name` カラムは `SHOW DATABASES` クエリの実装に使用されます。
+このシステムテーブルの `name` カラムは、`SHOW DATABASES` クエリの実装に使用されます。
 
 **例**
 
 データベースを作成します。
 
-``` sql
+```sql
 CREATE DATABASE test;
 ```
 
-ユーザーに利用可能なすべてのデータベースを確認します。
+ユーザーが利用できるすべてのデータベースを確認します。
 
-``` sql
+```sql
 SELECT * FROM system.databases;
 ```
 
-``` text
-┌─name────────────────┬─engine─────┬─data_path────────────────────┬─metadata_path─────────────────────────────────────────────────────────────────────────┬─uuid─────────────────────────────────┬─engine_full────────────────────────────────────────────┬─comment─┐
+```text
+┌─name────────────────┬─engine─────┬─data_path────────────────────┬─metadata_path─────────────────────────────────────────────────────────┬─uuid─────────────────────────────────┬─engine_full────────────────────────────────────────────┬─comment─┐
 │ INFORMATION_SCHEMA  │ Memory     │ /data/clickhouse_data/       │                                                                       │ 00000000-0000-0000-0000-000000000000 │ Memory                                                 │         │
 │ default             │ Atomic     │ /data/clickhouse_data/store/ │ /data/clickhouse_data/store/f97/f97a3ceb-2e8a-4912-a043-c536e826a4d4/ │ f97a3ceb-2e8a-4912-a043-c536e826a4d4 │ Atomic                                                 │         │
 │ information_schema  │ Memory     │ /data/clickhouse_data/       │                                                                       │ 00000000-0000-0000-0000-000000000000 │ Memory                                                 │         │

@@ -1,9 +1,9 @@
 ---
-slug: /engines/table-engines/integrations/embedded-rocksdb
+description: 'このエンジンは ClickHouse を RocksDB と統合することを可能にします'
+sidebar_label: 'EmbeddedRocksDB'
 sidebar_position: 50
-sidebar_label: EmbeddedRocksDB
-title: "EmbeddedRocksDB エンジン"
-description: "このエンジンは ClickHouse と RocksDB を統合できるようにします"
+slug: /engines/table-engines/integrations/embedded-rocksdb
+title: 'EmbeddedRocksDB エンジン'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -13,11 +13,11 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
-このエンジンは ClickHouse と [RocksDB](http://rocksdb.org/) を統合できるようにします。
+このエンジンは ClickHouse を [RocksDB](http://rocksdb.org/) と統合することを可能にします。
 
 ## テーブルの作成 {#creating-a-table}
 
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
@@ -27,24 +27,24 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 [ SETTINGS name=value, ... ]
 ```
 
-エンジンのパラメータ：
+エンジンパラメータ:
 
-- `ttl` - 値の有効期限。TTL は秒単位で受け付けます。TTL が 0 の場合、通常の RocksDB インスタンスが使用されます (TTLなし)。
-- `rocksdb_dir` - 既存の RocksDB のディレクトリのパスまたは作成された RocksDB の出力先パス。指定された `rocksdb_dir` でテーブルを開きます。
-- `read_only` - `read_only` が true に設定されている場合、読み取り専用モードが使用されます。TTL のあるストレージでは、圧縮はトリガーされず (手動または自動のいずれも)、期限切れのエントリは削除されません。
-- `primary_key_name` - カラムリストの任意のカラム名。
-- `primary key` は指定する必要があり、主キーにはカラムを 1 つしかサポートしていません。主キーはバイナリ形式で `rocksdb key` としてシリアライズされます。
-- 主キー以外のカラムは、対応する順序で `rocksdb` 値としてバイナリ形式でシリアライズされます。
-- `equals` または `in` フィルタリングを伴うクエリは `rocksdb` からのマルチキー検索に最適化されます。
+- `ttl` - 値の有効期限。TTLは秒単位で受け入れられます。TTLが0の場合、通常のRocksDBインスタンスが使用されます（TTLなし）。
+- `rocksdb_dir` - 既存のRocksDBのディレクトリへのパスまたは作成されたRocksDBの宛先パス。指定された `rocksdb_dir` でテーブルを開きます。
+- `read_only` - `read_only` が true に設定されている場合、読み取り専用モードが使用されます。TTLのあるストレージでは、圧縮はトリガーされず（手動でも自動でも）、期限切れのエントリは削除されません。
+- `primary_key_name` - カラムリスト内の任意のカラム名。
+- `primary key` は指定する必要があり、主キーとしてサポートされるのは1つのカラムのみです。主キーは `rocksdb key` としてバイナリでシリアル化されます。
+- 主キー以外のカラムは、対応する順序で `rocksdb` 値としてバイナリでシリアル化されます。
+- `equals` または `in` フィルタリングを持つクエリは、RocksDB からのマルチキーの検索用に最適化されます。
 
-エンジンの設定：
+エンジン設定:
 
-- `optimize_for_bulk_insert` - テーブルはバルク挿入のために最適化されています (挿入パイプラインは SST ファイルを作成し、memtables に書き込む代わりに rocksdb データベースにインポートします); デフォルト値: `1`。
-- `bulk_insert_block_size` - バルク挿入によって作成される SST ファイルの最小サイズ (行数の観点から); デフォルト値: `1048449`。
+- `optimize_for_bulk_insert` - テーブルはバルク挿入に最適化されています（挿入パイプラインは SST ファイルを作成し、メモリテーブルに書き込むのではなく、RocksDB データベースにインポートします）；デフォルト値: `1`。
+- `bulk_insert_block_size` - バルク挿入によって作成される SST ファイルの最小サイズ（行単位）；デフォルト値: `1048449`。
 
-例：
+例:
 
-``` sql
+```sql
 CREATE TABLE test
 (
     `key` String,
@@ -58,7 +58,7 @@ PRIMARY KEY key
 
 ## メトリクス {#metrics}
 
-`system.rocksdb` テーブルもあり、rocksdb の統計を公開しています：
+`system.rocksdb` テーブルも存在し、rocksdb の統計情報を公開します:
 
 ```sql
 SELECT
@@ -74,7 +74,7 @@ FROM system.rocksdb
 
 ## 設定 {#configuration}
 
-任意の [rocksdb オプション](https://github.com/facebook/rocksdb/wiki/Option-String-and-Option-Map) を設定を使用して変更することもできます：
+設定を使用して、任意の [rocksdb オプション](https://github.com/facebook/rocksdb/wiki/Option-String-and-Option-Map) を変更することもできます:
 
 ```xml
 <rocksdb>
@@ -98,15 +98,15 @@ FROM system.rocksdb
 </rocksdb>
 ```
 
-デフォルトでは、非常に単純な近似カウントの最適化はオフになっています。これは `count()` クエリのパフォーマンスに影響を与える可能性があります。この最適化を有効にするには、`optimize_trivial_approximate_count_query = 1` を設定してください。また、この設定は EmbeddedRocksDB エンジンの `system.tables` に影響を与えます。この設定をオンにすると、`total_rows` および `total_bytes` の近似値が確認できます。
+デフォルトでは、単純近似カウント最適化はオフになっており、これが `count()` クエリのパフォーマンスに影響を与える可能性があります。この最適化を有効にするには、`optimize_trivial_approximate_count_query = 1` を設定します。また、この設定は EmbeddedRocksDB エンジンの `system.tables` にも影響を与え、`total_rows` および `total_bytes` の近似値を見るために設定をオンにします。
 
 ## サポートされている操作 {#supported-operations}
 
 ### 挿入 {#inserts}
 
-新しい行が `EmbeddedRocksDB` に挿入されると、キーが既に存在する場合は値が更新され、それ以外の場合は新しいキーが作成されます。
+新しい行が `EmbeddedRocksDB` に挿入されると、キーがすでに存在する場合は値が更新され、存在しない場合は新しいキーが作成されます。
 
-例：
+例:
 
 ```sql
 INSERT INTO test VALUES ('some key', 1, 'value', 3.2);
@@ -138,22 +138,22 @@ ALTER TABLE test UPDATE v1 = v1 * 10 + 2 WHERE key LIKE 'some%' AND v3 > 3.1;
 
 ### ジョイン {#joins}
 
-EmbeddedRocksDB テーブルとの特別な `direct` ジョインがサポートされています。このダイレクトジョインはメモリ内でハッシュテーブルを構成することを避け、EmbeddedRocksDB からデータに直接アクセスします。
+EmbeddedRocksDB テーブルとの特別な `direct` ジョインがサポートされています。この直接ジョインは、メモリ内にハッシュテーブルを形成することを避け、EmbeddedRocksDB から直接データにアクセスします。
 
-大規模なジョインの場合、ハッシュテーブルが作成されないため、メモリ使用量がはるかに少なくなることがあります。
+大規模なジョインでは、ハッシュテーブルが作成されないため、メモリ使用量が大幅に削減される可能性があります。
 
-ダイレクトジョインを有効にするには：
+直接ジョインを有効にするには:
 ```sql
 SET join_algorithm = 'direct, hash'
 ```
 
 :::tip
-`join_algorithm` が `direct, hash` に設定されると、可能な場合はダイレクトジョインが使用され、それ以外はハッシュが使用されます。
+`join_algorithm` が `direct, hash` に設定されていると、可能な場合は直接ジョインが使用され、そのほかの場合はハッシュが使用されます。
 :::
 
 #### 例 {#example}
 
-##### EmbeddedRocksDB テーブルを作成してデータを挿入する {#create-and-populate-an-embeddedrocksdb-table}
+##### EmbeddedRocksDB テーブルを作成し、データを追加する {#create-and-populate-an-embeddedrocksdb-table}
 ```sql
 CREATE TABLE rdb
 (
@@ -174,8 +174,7 @@ INSERT INTO rdb
     FROM numbers_mt(10);
 ```
 
-##### テーブル `rdb` と結合するために別のテーブルを作成してデータを挿入する {#create-and-populate-a-table-to-join-with-table-rdb}
-
+##### テーブル `rdb` と結合するためにテーブルを作成し、データを追加する {#create-and-populate-a-table-to-join-with-table-rdb}
 ```sql
 CREATE TABLE t2
 (
@@ -189,8 +188,7 @@ INSERT INTO t2 SELECT number AS k
 FROM numbers_mt(10)
 ```
 
-##### ジョインアルゴリズムを `direct` に設定 {#set-the-join-algorithm-to-direct}
-
+##### ジョインアルゴリズムを `direct` に設定する {#set-the-join-algorithm-to-direct}
 ```sql
 SET join_algorithm = 'direct'
 ```
@@ -218,6 +216,6 @@ ORDER BY key ASC
 └─────┴─────────┴────────┴────────┘
 ```
 
-### ジョインに関する詳細情報 {#more-information-on-joins}
+### ジョインに関するさらなる情報 {#more-information-on-joins}
 - [`join_algorithm` 設定](/operations/settings/settings.md#join_algorithm)
 - [JOIN 句](/sql-reference/statements/select/join.md)

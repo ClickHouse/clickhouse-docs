@@ -1,21 +1,22 @@
 ---
-description: "ホテル、レストラン、カフェのメニューに関する歴史的データを含んだ130万件のレコードからなるデータセット。料理とその価格が含まれています。"
+description: 'ホテル、レストラン、カフェのメニューに関する歴史的データのレコードが1.3百万件含まれています。
+  料理とその価格が含まれています。'
+sidebar_label: 'ニューヨーク公共図書館 "What''s on the Menu?" データセット'
 slug: /getting-started/example-datasets/menus
-sidebar_label: ニューヨーク公共図書館「メニューは何ですか？」データセット
-title: "ニューヨーク公共図書館「メニューは何ですか？」データセット"
+title: 'ニューヨーク公共図書館 "What''s on the Menu?" データセット'
 ---
 
-このデータセットは、ニューヨーク公共図書館によって作成されました。ホテル、レストラン、カフェのメニューに関する歴史的データで、料理とその価格が含まれています。
+このデータセットはニューヨーク公共図書館によって作成されました。ホテル、レストラン、カフェのメニューに関する歴史的データが含まれており、料理とその価格が記録されています。
 
-ソース: http://menus.nypl.org/data  
+出典: http://menus.nypl.org/data  
 データはパブリックドメインです。
 
-このデータは図書館のアーカイブに由来しており、不完全で統計分析には難しい場合があります。それでも、とても美味しいデータです。  
-サイズは僅か130万レコードのメニューに関するもので、ClickHouse にとっては非常に小さなデータボリュームですが、良い例です。
+データは図書館のアーカイブから取得されたもので、不完全で統計分析が困難な場合があります。それでも非常においしいデータです。  
+サイズは1.3百万件の料理に関する記録に過ぎません — ClickHouseにとっては非常に小さいデータボリュームですが、それでも良い例です。
 
 ## データセットのダウンロード {#download-dataset}
 
-次のコマンドを実行します:
+コマンドを実行します。
 
 ```bash
 wget https://s3.amazonaws.com/menusdata.nypl.org/gzips/2021_08_01_07_01_17_data.tgz
@@ -23,11 +24,11 @@ wget https://s3.amazonaws.com/menusdata.nypl.org/gzips/2021_08_01_07_01_17_data.
 # オプション: チェックサムを検証
 md5sum 2021_08_01_07_01_17_data.tgz
 
-# チェックサムは次と等しいはず: db6126724de939a5481e3160a2d67d15
+# チェックサムは次の値と一致する必要があります: db6126724de939a5481e3160a2d67d15
 ```
 
-必要に応じて、http://menus.nypl.org/data から最新のリンクに置き換えてください。  
-ダウンロードサイズは約35MBです。
+必要に応じて、http://menus.nypl.org/data の最新リンクに置き換えてください。  
+ダウンロードサイズは約35 MBです。
 
 ## データセットの解凍 {#unpack-dataset}
 
@@ -35,17 +36,17 @@ md5sum 2021_08_01_07_01_17_data.tgz
 tar xvf 2021_08_01_07_01_17_data.tgz
 ```
 
-解凍後のサイズは約150MBです。
+解凍後のサイズは約150 MBです。
 
-データは正規化されており、4つのテーブルで構成されています:
-- `Menu` — メニューに関する情報: レストランの名前、メニューが表示された日など。
-- `Dish` — 料理に関する情報: 料理の名前といくつかの特徴。
-- `MenuPage` — メニューのページに関する情報、なぜなら各ページは何らかのメニューに属するからです。
+データは正規化され、4つのテーブルで構成されています:
+- `Menu` — メニューに関する情報: レストランの名前、メニューが表示された日付など。
+- `Dish` — 料理に関する情報: 料理名といくつかの特徴。
+- `MenuPage` — メニュー内のページに関する情報、なぜなら各ページはメニューに属しているからです。
 - `MenuItem` — メニューの項目。あるメニューページにおける料理とその価格: 料理とメニューページへのリンク。
 
 ## テーブルの作成 {#create-tables}
 
-価格を保存するために [Decimal](../../sql-reference/data-types/decimal.md) データ型を使用します。
+価格を保存するために [Decimal](../../sql-reference/data-types/decimal.md) データタイプを使用します。
 
 ```sql
 CREATE TABLE dish
@@ -112,7 +113,7 @@ CREATE TABLE menu_item
 
 ## データのインポート {#import-data}
 
-ClickHouse にデータをアップロードするため、次のコマンドを実行します:
+ClickHouseにデータをアップロードするには、次のコマンドを実行します。
 
 ```bash
 clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_default 0 --query "INSERT INTO dish FORMAT CSVWithNames" < Dish.csv
@@ -121,20 +122,20 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_default 0 --date_time_input_format best_effort --query "INSERT INTO menu_item FORMAT CSVWithNames" < MenuItem.csv
 ```
 
-データはヘッダー付きのCSVで表されるため、[CSVWithNames](../../interfaces/formats.md#csvwithnames) フォーマットを使用します。
+データはCSVヘッダー付きで表現されているため、[CSVWithNames](../../interfaces/formats.md#csvwithnames)形式を使用します。
 
-データフィールドにはダブルクォートのみが使用され、値の中にシングルクォートが含まれる可能性があるため、`format_csv_allow_single_quotes` を無効にします。
+`format_csv_allow_single_quotes`を無効にするのは、データフィールドには二重引用符のみが使用され、単一引用符が値の中に存在する場合があり、CSVパーサーに混乱を与えるべきでないからです。
 
-また、私たちのデータには [NULL](/operations/settings/formats#input_format_null_as_default) がないため、[input_format_null_as_default](/operations/settings/formats#input_format_null_as_default) を無効にします。そうでないと、ClickHouse は `\N` シーケンスを解析しようとして混乱する可能性があります。
+[輸入形式のNULLをデフォルトとして使用する](/operations/settings/formats#input_format_null_as_default)を無効にするのは、私たちのデータには[NULL](/operations/settings/formats#input_format_null_as_default)がないからです。そうでないと、ClickHouseは`\N`シーケンスを解析しようとし、データ内の`\`と混同する可能性があります。
 
-設定 [date_time_input_format best_effort](/operations/settings/formats#date_time_input_format) は、さまざまな形式の [DateTime](../../sql-reference/data-types/datetime.md) フィールドを解析可能にします。この設定なしでは固定の DateTime 形式のみが許可されます。
+設定 [date_time_input_format best_effort](/operations/settings/formats#date_time_input_format) は、さまざまな形式で[DateTime](../../sql-reference/data-types/datetime.md)フィールドを解析できるようにします。たとえば、秒のないISO-8601形式 '2000-01-01 01:02' が認識されます。この設定がないと、固定のDateTime形式のみが許可されます。
 
 ## データの非正規化 {#denormalize-data}
 
-データは [正規化された形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms) で複数のテーブルに提示されています。つまり、例えばメニューアイテムから料理の名前をクエリする場合、[JOIN](/sql-reference/statements/select/join) を行う必要があります。  
-典型的な分析タスクでは、毎回 `JOIN` を行うのを避けるために、事前に `JOIN` されたデータを扱う方がはるかに効率的です。これを「非正規化」データと呼びます。
+データは[正規化された形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms)で複数のテーブルに提示されており、例えばメニュー項目から料理名をクエリしたい場合は[JOIN](/sql-reference/statements/select/join)を実行する必要があります。  
+典型的な分析タスクでは、毎回`JOIN`を実行することを避けるために、事前に`JOIN`されたデータを扱う方がはるかに効率的です。これを「非正規化」データと呼びます。
 
-全てのデータを結合した `menu_item_denorm` テーブルを作成します:
+すべてのデータを`JOIN`したテーブル`menu_item_denorm`を作成します。
 
 ```sql
 CREATE TABLE menu_item_denorm
@@ -197,9 +198,9 @@ SELECT count() FROM menu_item_denorm;
 └─────────┘
 ```
 
-## クエリの実行 {#run-queries}
+## クエリを実行する {#run-queries}
 
-### 料理の平均歴史的価格 {#query-averaged-historical-prices}
+### 料理の歴史的価格の平均 {#query-averaged-historical-prices}
 
 クエリ:
 
@@ -239,9 +240,9 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴──────────────────────────────┘
 ```
 
-鵜呑みにしないでください。
+これは注意して見るべきです。
 
-### バーガーの価格 {#query-burger-prices}
+### ハンバーガーの価格 {#query-burger-prices}
 
 クエリ:
 
@@ -310,11 +311,11 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴─────────────────────────────┘
 ```
 
-ウォッカを得るためには `ILIKE '%vodka%'` と書く必要があり、これは間違いなく言えることです。
+ウォッカを手に入れるには`ILIKE '%vodka%'`を書かなければなりません、そしてこれは確かに声明を作ります。
 
 ### キャビア {#query-caviar}
 
-キャビアの価格を印刷しましょう。また、キャビアを含む任意の料理の名前も印刷します。
+キャビアの価格を表示しましょう。また、キャビアの料理名も表示しましょう。
 
 クエリ:
 
@@ -353,8 +354,8 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴──────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-少なくとも彼らはウォッカと一緒にキャビアを持っています。とても素敵です。
+少なくとも彼らはウォッカとキャビアを持っています。とても素晴らしいです。
 
 ## オンラインプレイグラウンド {#playground}
 
-データは ClickHouse Playground にアップロードされており、[例](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B)もあります。
+データはClickHouse Playgroundにアップロードされています、[例](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B)。

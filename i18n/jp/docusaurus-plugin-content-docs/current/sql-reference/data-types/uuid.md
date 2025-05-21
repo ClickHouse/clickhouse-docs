@@ -1,35 +1,37 @@
 ---
-slug: '/sql-reference/data-types/uuid'
-sidebar_position: 24
+description: 'ClickHouseのUUIDデータ型に関するドキュメント'
 sidebar_label: 'UUID'
-keywords: ['UUID', 'ClickHouse', 'データ型']
-description: 'UUIDの詳細な情報と使用方法について説明します。'
+sidebar_position: 24
+slug: /sql-reference/data-types/uuid
+title: 'UUID'
 ---
 
 
 # UUID
 
-Universally Unique Identifier (UUID) は、レコードを識別するために使用される16バイトの値です。UUIDの詳細については、[Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier)を参照してください。
+ユニバーサリー ユニーク識別子 (UUID) は、レコードを識別するために使用される16バイトの値です。UUIDに関する詳細情報については、[Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier)を参照してください。
 
-異なるUUIDのバリアントが存在します（[こちら](https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis)を参照）が、ClickHouseでは挿入されたUUIDが特定のバリアントに準拠しているかどうかの検証は行われません。UUIDは内部的に、SQLレベルで[8-4-4-4-12の表現](https://en.wikipedia.org/wiki/Universally_unique_identifier#Textual_representation)を持つ16バイトのランダムなバイト列として扱われます。
+異なるUUIDのバリアントが存在する一方で（[こちら](https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis)を参照）、ClickHouseは挿入されたUUIDが特定のバリアントに準拠しているかどうかを検証しません。
+UUIDは内部的には16バイトのランダムなバイトのシーケンスとして扱われ、SQLレベルでは[8-4-4-4-12表現](https://en.wikipedia.org/wiki/Universally_unique_identifier#Textual_representation)が使用されます。
 
 UUIDの例:
 
-``` text
+```text
 61f0c404-5cb3-11e7-907b-a6006ad3dba0
 ```
 
-デフォルトのUUIDは全ゼロです。これは、新しいレコードが挿入される際に、UUIDカラムの値が指定されない場合などに使用されます。
+デフォルトのUUIDはすべてゼロです。これは、例えば、新しいレコードが挿入される際にUUIDカラムの値が指定されない場合に使用されます:
 
-``` text
+```text
 00000000-0000-0000-0000-000000000000
 ```
 
-歴史的な理由から、UUIDはその後半でソートされます。したがって、UUIDはテーブルの主キー、ソートキー、またはパーティションキーに直接使用すべきではありません。
+歴史的な理由から、UUIDはその後半でソートされます。
+そのため、UUIDはテーブルの主キー、ソートキー、またはパーティションキーで直接使用されるべきではありません。
 
 例:
 
-``` sql
+```sql
 CREATE TABLE tab (uuid UUID) ENGINE = Memory;
 INSERT INTO tab SELECT generateUUIDv4() FROM numbers(50);
 SELECT * FROM tab ORDER BY uuid;
@@ -37,7 +39,7 @@ SELECT * FROM tab ORDER BY uuid;
 
 結果:
 
-``` text
+```text
 ┌─uuid─────────────────────────────────┐
 │ 36a0b67c-b74a-4640-803b-e44bb4547e3c │
 │ 3a00aeb8-2605-4eec-8215-08c0ecb51112 │
@@ -53,11 +55,11 @@ SELECT * FROM tab ORDER BY uuid;
 └──────────────────────────────────────┘
 ```
 
-回避策として、UUIDを直感的なソート順を持つ型に変換することができます。
+回避策として、UUIDを直感的なソート順序を持つ型（UInt128）に変換できます。
 
-UInt128への変換を使用した例:
+例: UInt128への変換を使用:
 
-``` sql
+```sql
 CREATE TABLE tab (uuid UUID) ENGINE = Memory;
 INSERT INTO tab SELECT generateUUIDv4() FROM numbers(50);
 SELECT * FROM tab ORDER BY toUInt128(uuid);
@@ -81,27 +83,27 @@ SELECT * FROM tab ORDER BY toUInt128(uuid);
 └──────────────────────────────────────┘
 ```
 
-## UUIDの生成 {#generating-uuids}
+## UUID生成 {#generating-uuids}
 
-ClickHouseは、ランダムなUUIDバージョン4の値を生成するために[generateUUIDv4](../../sql-reference/functions/uuid-functions.md)関数を提供しています。
+ClickHouseは、ランダムUUIDバージョン4の値を生成するための[generateUUIDv4](../../sql-reference/functions/uuid-functions.md)関数を提供します。
 
 ## 使用例 {#usage-example}
 
 **例 1**
 
-この例では、UUIDカラムを持つテーブルの作成と、そのテーブルへの値の挿入を示します。
+この例では、UUIDカラムを持つテーブルの作成と、テーブルに値を挿入することを示しています。
 
-``` sql
-CREATE TABLE t_uuid (x UUID, y String) ENGINE=TinyLog;
+```sql
+CREATE TABLE t_uuid (x UUID, y String) ENGINE=TinyLog
 
-INSERT INTO t_uuid SELECT generateUUIDv4(), 'Example 1';
+INSERT INTO t_uuid SELECT generateUUIDv4(), 'Example 1'
 
-SELECT * FROM t_uuid;
+SELECT * FROM t_uuid
 ```
 
 結果:
 
-``` text
+```text
 ┌────────────────────────────────────x─┬─y─────────┐
 │ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ Example 1 │
 └──────────────────────────────────────┴───────────┘
@@ -109,23 +111,23 @@ SELECT * FROM t_uuid;
 
 **例 2**
 
-この例では、レコードが挿入される際にUUIDカラムの値が指定されておらず、デフォルトのUUID値が挿入されます。
+この例では、レコードが挿入される際にUUIDカラムの値が指定されていないため、デフォルトのUUID値が挿入されます:
 
-``` sql
-INSERT INTO t_uuid (y) VALUES ('Example 2');
+```sql
+INSERT INTO t_uuid (y) VALUES ('Example 2')
 
-SELECT * FROM t_uuid;
+SELECT * FROM t_uuid
 ```
 
-``` text
+```text
 ┌────────────────────────────────────x─┬─y─────────┐
 │ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ Example 1 │
 │ 00000000-0000-0000-0000-000000000000 │ Example 2 │
 └──────────────────────────────────────┴───────────┘
 ```
 
-## 制約 {#restrictions}
+## 制限事項 {#restrictions}
 
-UUIDデータ型は、[String](../../sql-reference/data-types/string.md)データ型がサポートする関数（例えば、[min](/sql-reference/aggregate-functions/reference/min)、[max](/sql-reference/aggregate-functions/reference/max)、および[count](/sql-reference/aggregate-functions/reference/count)）のみをサポートします。
+UUIDデータ型は、[String](../../sql-reference/data-types/string.md)データ型がサポートする関数のみをサポートしています（例: [min](/sql-reference/aggregate-functions/reference/min)、[max](/sql-reference/aggregate-functions/reference/max)、および[count](/sql-reference/aggregate-functions/reference/count)）。
 
-UUIDデータ型は、[abs](/sql-reference/functions/arithmetic-functions#abs)などの算術演算や、[sum](/sql-reference/aggregate-functions/reference/sum)および[avg](/sql-reference/aggregate-functions/reference/avg)などの集約関数をサポートしていません。
+UUIDデータ型は、[abs](/sql-reference/functions/arithmetic-functions#abs)のような算術演算や、[sum](/sql-reference/aggregate-functions/reference/sum)、[avg](/sql-reference/aggregate-functions/reference/avg)のような集約関数にはサポートされていません。

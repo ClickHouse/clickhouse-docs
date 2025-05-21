@@ -1,61 +1,78 @@
 ---
-slug: /operations/settings/composable-protocols
+description: 'Composable protocols allows more flexible configuration of TCP access
+  to the ClickHouse server.'
+sidebar_label: 'Composable Protocols'
 sidebar_position: 64
-sidebar_label: コンプーザブルプロトコル
-title: "コンプーザブルプロトコル"
-description: "コンプーザブルプロトコルは、ClickHouseサーバーへのTCPアクセスのより柔軟な設定を可能にします。"
+slug: /operations/settings/composable-protocols
+title: 'Composable Protocols'
 ---
 
 
-# コンプーザブルプロトコル
+# Composable Protocols
 
-コンプレッサブルプロトコルは、ClickHouseサーバーへのTCPアクセスのより柔軟な設定を可能にします。この設定は、従来の設定と共存することも、置き換えることもできます。
+## Overview {#overview}
 
-## コンパイルプロトコルセクションは、設定xmlで`protocols`として示されます {#composable-protocols-section-is-denoted-as-protocols-in-configuration-xml}
-**例:**
-``` xml
+Composable protocols allow more flexible configuration of TCP access to the 
+ClickHouse server. This configuration can co-exist alongside, or replace, 
+conventional configuration.
+
+## Configuring composable protocols {#composable-protocols-section-is-denoted-as-protocols-in-configuration-xml}
+
+Composable protocols can be configured in an XML configuration file. The protocols
+section is denoted with `protocols` tags in the XML config file: 
+
+```xml
 <protocols>
 
 </protocols>
 ```
 
-## 基本モジュールはプロトコルレイヤーを定義します {#basic-modules-define-protocol-layers}
-**例:**
-``` xml
+### Configuring protocol layers {#basic-modules-define-protocol-layers}
+
+You can define protocol layers using basic modules. For example, to define an
+HTTP layer, you can add a new basic module to the `protocols` section:
+
+```xml
 <protocols>
 
-  <!-- plain_httpモジュール -->
+  <!-- plain_http module -->
   <plain_http>
     <type>http</type>
   </plain_http>
 
 </protocols>
 ```
-ここで:
-- `plain_http` - 他のレイヤーで参照できる名前
-- `type` - データを処理するためにインスタンス化されるプロトコルハンドラーを示します。プロトコルハンドラーのセットは事前に定義されています:
-  * `tcp` - ネイティブのClickHouseプロトコルハンドラー
-  * `http` - HTTP ClickHouseプロトコルハンドラー
-  * `tls` - TLS暗号化レイヤー
-  * `proxy1` - PROXYv1レイヤー
-  * `mysql` - MySQL互換プロトコルハンドラー
-  * `postgres` - PostgreSQL互換プロトコルハンドラー
-  * `prometheus` - Prometheusプロトコルハンドラー
-  * `interserver` - ClickHouseインターサーバーハンドラー
+Modules can be configured according to:
+
+- `plain_http` - name which can be referred to by another layer
+- `type` - denotes the protocol handler which will be instantiated to process data.
+   It has the following set of predefined protocol handlers:
+  * `tcp` - native clickhouse protocol handler
+  * `http` - HTTP clickhouse protocol handler
+  * `tls` - TLS encryption layer
+  * `proxy1` - PROXYv1 layer
+  * `mysql` - MySQL compatibility protocol handler
+  * `postgres` - PostgreSQL compatibility protocol handler
+  * `prometheus` - Prometheus protocol handler
+  * `interserver` - clickhouse interserver handler
 
 :::note
-`gRPC`プロトコルハンドラーは`コンプーザブルプロトコル`には実装されていません
+`gRPC` protocol handler is not implemented for `Composable protocols`
 :::
+ 
+### Configuring endpoints {#endpoint-ie-listening-port-is-denoted-by-port-and-optional-host-tags}
 
-## エンドポイント（すなわちリスニングポート）は`<port>`および（オプションの）`<host>`タグによって示されます {#endpoint-ie-listening-port-is-denoted-by-port-and-optional-host-tags}
-**例:**
-``` xml
+Endpoints (listening ports) are denoted by `<port>` and optional `<host>` tags.
+For example, to configure an endpoint on the previously added HTTP layer we 
+could modify our configuration as follows:
+
+```xml
 <protocols>
 
   <plain_http>
 
     <type>http</type>
-    <!-- エンドポイント -->
+    <!-- endpoint -->
     <host>127.0.0.1</host>
     <port>8123</port>
 
@@ -63,19 +80,25 @@ description: "コンプーザブルプロトコルは、ClickHouseサーバー�
 
 </protocols>
 ```
-`<host>`が省略された場合、ルート設定の`<listen_host>`が使用されます。
 
-## レイヤーの順序は`<impl>`タグによって定義され、別のモジュールを参照します {#layers-sequence-is-defined-by-impl-tag-referencing-another-module}
-**例:** HTTPSプロトコルの定義
-``` xml
+If the `<host>` tag is omitted, then the `<listen_host>` from the root config is
+used.
+
+### Configuring layer sequences {#layers-sequence-is-defined-by-impl-tag-referencing-another-module}
+
+Layers sequences are defined using the `<impl>` tag, and referencing another 
+module. For example, to configure a TLS layer on top of our plain_http module
+we could further modify our configuration as follows:
+
+```xml
 <protocols>
 
-  <!-- httpモジュール -->
+  <!-- http module -->
   <plain_http>
     <type>http</type>
   </plain_http>
 
-  <!-- plaintext_httpモジュールの上にTLSレイヤーとして設定されたhttpsモジュール -->
+  <!-- https module configured as a tls layer on top of plain_http module -->
   <https>
     <type>tls</type>
     <impl>plain_http</impl>
@@ -86,9 +109,12 @@ description: "コンプーザブルプロトコルは、ClickHouseサーバー�
 </protocols>
 ```
 
-## エンドポイントは任意のレイヤーに付加できます {#endpoint-can-be-attached-to-any-layer}
-**例:** HTTP（ポート8123）およびHTTPS（ポート8443）エンドポイントの定義
-``` xml
+### Attaching endpoints to layers {#endpoint-can-be-attached-to-any-layer}
+
+Endpoints can be attached to any layer. For example, we can define endpoints for
+HTTP (port 8123) and HTTPS (port 8443):
+
+```xml
 <protocols>
 
   <plain_http>
@@ -107,9 +133,13 @@ description: "コンプーザブルプロトコルは、ClickHouseサーバー�
 </protocols>
 ```
 
-## 追加のエンドポイントは任意のモジュールを参照して`<type>`タグを省略することで定義できます {#additional-endpoints-can-be-defined-by-referencing-any-module-and-omitting-type-tag}
-**例:** `another_http`エンドポイントが`plain_http`モジュールのために定義されています
-``` xml
+### Defining additional endpoints {#additional-endpoints-can-be-defined-by-referencing-any-module-and-omitting-type-tag}
+
+Additional endpoints can be defined by referencing any module and omitting the 
+`<type>` tag. For example, we can define `another_http` endpoint for the 
+`plain_http` module as follows:
+
+```xml
 <protocols>
 
   <plain_http>
@@ -134,9 +164,13 @@ description: "コンプーザブルプロトコルは、ClickHouseサーバー�
 </protocols>
 ```
 
-## 一部のモジュールはそのレイヤー固有のパラメーターを含むことができます {#some-modules-can-contain-specific-for-its-layer-parameters}
-**例:** TLSレイヤーのために、秘密鍵（`privateKeyFile`）および証明書ファイル（`certificateFile`）を指定できます
-``` xml
+### Specifying additional layer parameters {#some-modules-can-contain-specific-for-its-layer-parameters}
+
+Some modules can contain additional layer parameters. For example, the TLS layer
+allows a private key (`privateKeyFile`) and certificate files (`certificateFile`)
+to be specified as follows:
+
+```xml
 <protocols>
 
   <plain_http>

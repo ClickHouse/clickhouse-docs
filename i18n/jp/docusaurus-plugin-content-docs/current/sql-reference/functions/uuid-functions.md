@@ -1,13 +1,15 @@
 ---
-slug: '/sql-reference/functions/uuid-functions'
-sidebar_position: 205
+description: 'UUIDを扱うための関数のドキュメント'
 sidebar_label: 'UUIDs'
+sidebar_position: 205
+slug: /sql-reference/functions/uuid-functions
+title: 'UUIDを扱うための関数'
 ---
 
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 
-# UUIDsを扱う関数
+# UUIDを扱うための関数
 
 ## generateUUIDv4 {#generateuuidv4}
 
@@ -15,13 +17,13 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 **構文**
 
-``` sql
+```sql
 generateUUIDv4([expr])
 ```
 
 **引数**
 
-- `expr` — クエリ内で関数が複数回呼ばれた場合に[共通部分式の排除](/sql-reference/functions/overview#common-subexpression-elimination)を回避するために使用される任意の[式](/sql-reference/syntax#expressions)。この式の値は返されるUUIDに影響を与えません。省略可能。
+- `expr` — クエリ内で関数が複数回呼ばれる場合に[共通部分式排除](/sql-reference/functions/overview#common-subexpression-elimination)を回避するために使用される任意の[式](/sql-reference/syntax#expressions)。式の値は返されるUUIDには影響しません。省略可能。
 
 **返される値**
 
@@ -31,7 +33,7 @@ UUIDv4型の値。
 
 まず、UUID型のカラムを持つテーブルを作成し、次に生成されたUUIDv4をテーブルに挿入します。
 
-``` sql
+```sql
 CREATE TABLE tab (uuid UUID) ENGINE = Memory;
 
 INSERT INTO tab SELECT generateUUIDv4();
@@ -47,7 +49,7 @@ SELECT * FROM tab;
 └──────────────────────────────────────┘
 ```
 
-**行ごとに複数のUUIDが生成される例**
+**複数のUUIDを行ごとに生成する例**
 
 ```sql
 SELECT generateUUIDv4(1), generateUUIDv4(2);
@@ -61,11 +63,11 @@ SELECT generateUUIDv4(1), generateUUIDv4(2);
 
 [バージョン7](https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04)の[UUID](../data-types/uuid.md)を生成します。
 
-生成されたUUIDは、現在のUnixタイムスタンプをミリ秒（48ビット）で含み、次にバージョン「7」（4ビット）、ミリ秒内のUUIDを区別するためのカウンタ（42ビット）（バリアントフィールド「2」を含む、2ビット）およびランダムフィールド（32ビット）が続きます。
-任意の理想的なタイムスタンプ（unix_ts_ms）について、カウンタはランダムな値から始まり、新しいUUIDごとに1ずつ増加します。タイムスタンプが変更されるまで。
-カウンタがオーバーフローした場合、タイムスタンプフィールドが1増加し、カウンタはランダムな新しい開始値にリセットされます。
+生成されるUUIDは現在のUnixタイムスタンプをミリ秒単位で含み（48ビット）、続いてバージョン「7」（4ビット）、ミリ秒内のUUIDを区別するためのカウンタ（42ビット）、およびランダムフィールド（32ビット）を含みます。
+任意の指定されたタイムスタンプ（unix_ts_ms）について、カウンタはランダムな値から始まり、タイムスタンプが変わるまで新しいUUIDごとに1ずつ増加します。
+カウンタがオーバーフローした場合、タイムスタンプフィールドは1増加し、カウンタはランダムな新しい開始値にリセットされます。
 
-関数`generateUUIDv7`は、タイムスタンプ内のカウンタフィールドがすべての関数呼び出しで単調増加することを保証します。
+関数`generateUUIDv7`は、並行して実行されるスレッドやクエリ内でのすべての関数呼び出しに対して、タイムスタンプ内のカウンタフィールドが単調に増加することを保証します。
 
 ```text
  0                   1                   2                   3
@@ -82,18 +84,18 @@ SELECT generateUUIDv4(1), generateUUIDv4(2);
 ```
 
 :::note
-2024年4月現在、バージョン7のUUIDはドラフト状態であり、将来的にレイアウトが変更される可能성이あることに注意してください。
+2024年4月現在、バージョン7のUUIDはドラフト状態であり、そのレイアウトは今後変更される可能性があります。
 :::
 
 **構文**
 
-``` sql
+```sql
 generateUUIDv7([expr])
 ```
 
 **引数**
 
-- `expr` — クエリ内で関数が複数回呼ばれた場合に[共通部分式の排除](/sql-reference/functions/overview#common-subexpression-elimination)を回避するために使用される任意の[式](/sql-reference/syntax#expressions)。この式の値は返されるUUIDに影響を与えません。省略可能。
+- `expr` — クエリ内で関数が複数回呼ばれる場合に[共通部分式排除](/sql-reference/functions/overview#common-subexpression-elimination)を回避するために使用される任意の[式](/sql-reference/syntax#expressions)。式の値は返されるUUIDには影響しません。省略可能。
 
 **返される値**
 
@@ -103,7 +105,7 @@ UUIDv7型の値。
 
 まず、UUID型のカラムを持つテーブルを作成し、次に生成されたUUIDv7をテーブルに挿入します。
 
-``` sql
+```sql
 CREATE TABLE tab (uuid UUID) ENGINE = Memory;
 
 INSERT INTO tab SELECT generateUUIDv7();
@@ -119,7 +121,7 @@ SELECT * FROM tab;
 └──────────────────────────────────────┘
 ```
 
-**行ごとに複数のUUIDが生成される例**
+**複数のUUIDを行ごとに生成する例**
 
 ```sql
 SELECT generateUUIDv7(1), generateUUIDv7(2);
@@ -131,7 +133,7 @@ SELECT generateUUIDv7(1), generateUUIDv7(2);
 
 ## empty {#empty}
 
-入力UUIDが空かどうかを確認します。
+入力UUIDが空かどうかをチェックします。
 
 **構文**
 
@@ -139,9 +141,8 @@ SELECT generateUUIDv7(1), generateUUIDv7(2);
 empty(UUID)
 ```
 
-UUIDがすべてゼロ（ゼロUUID）を含む場合、それは空と見なされます。
-
-この関数は、[配列](/sql-reference/functions/array-functions#empty)や[文字列](string-functions.md#empty)にも機能します。
+UUIDは全てゼロ（ゼロUUID）を含む場合に空と見なされます。
+この関数は[配列](/sql-reference/functions/array-functions#empty)や[文字列](string-functions.md#empty)にも対応しています。
 
 **引数**
 
@@ -149,11 +150,11 @@ UUIDがすべてゼロ（ゼロUUID）を含む場合、それは空と見なさ
 
 **返される値**
 
-- 空のUUIDには`1`を、空でないUUIDには`0`を返します。[UInt8](../data-types/int-uint.md)。
+- 空のUUIDの場合は`1`、非空のUUIDの場合は`0`を返します。[UInt8](../data-types/int-uint.md)。
 
 **例**
 
-UUID値を生成するために、ClickHouseは[generateUUIDv4](#generateuuidv4)関数を提供します。
+UUID値を生成するために、ClickHouseは[generateUUIDv4](#generateuuidv4)関数を提供しています。
 
 クエリ:
 
@@ -171,7 +172,7 @@ SELECT empty(generateUUIDv4());
 
 ## notEmpty {#notempty}
 
-入力UUIDが空でないかどうかを確認します。
+入力UUIDが非空かどうかをチェックします。
 
 **構文**
 
@@ -179,9 +180,8 @@ SELECT empty(generateUUIDv4());
 notEmpty(UUID)
 ```
 
-UUIDがすべてゼロ（ゼロUUID）を含む場合、それは空と見なされます。
-
-この関数は、[配列](/sql-reference/functions/array-functions#notempty)や[文字列](string-functions.md#notempty)にも機能します。
+UUIDは全てゼロ（ゼロUUID）を含む場合に空と見なされます。
+この関数は[配列](/sql-reference/functions/array-functions#notempty)や[文字列](string-functions.md#notempty)にも対応しています。
 
 **引数**
 
@@ -189,11 +189,11 @@ UUIDがすべてゼロ（ゼロUUID）を含む場合、それは空と見なさ
 
 **返される値**
 
-- 空でないUUIDには`1`を、空のUUIDには`0`を返します。[UInt8](../data-types/int-uint.md)。
+- 非空のUUIDの場合は`1`、空のUUIDの場合は`0`を返します。[UInt8](../data-types/int-uint.md)。
 
 **例**
 
-UUID値を生成するために、ClickHouseは[generateUUIDv4](#generateuuidv4)関数を提供します。
+UUID値を生成するために、ClickHouseは[generateUUIDv4](#generateuuidv4)関数を提供しています。
 
 クエリ:
 
@@ -211,9 +211,9 @@ SELECT notEmpty(generateUUIDv4());
 
 ## toUUID {#touuid}
 
-String型の値をUUIDに変換します。
+文字列型の値をUUIDに変換します。
 
-``` sql
+```sql
 toUUID(string)
 ```
 
@@ -223,7 +223,7 @@ UUID型の値。
 
 **使用例**
 
-``` sql
+```sql
 SELECT toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0') AS uuid
 ```
 
@@ -239,14 +239,14 @@ SELECT toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0') AS uuid
 
 **引数**
 
-- `string` — 36文字の文字列またはFixedString(36)。[String](../syntax.md#string)。
-- `default` — 最初の引数がUUID型に変換できない場合にデフォルトとして使用されるUUID。[UUID](../data-types/uuid.md)。
+- `string` — 36文字の文字列またはFixedString(36)。 [String](../syntax.md#string)。
+- `default` — 最初の引数をUUID型に変換できない場合に使用されるデフォルトのUUID。[UUID](../data-types/uuid.md)。
 
 **返される値**
 
 UUID
 
-``` sql
+```sql
 toUUIDOrDefault(string, default)
 ```
 
@@ -256,9 +256,9 @@ UUID型の値。
 
 **使用例**
 
-この最初の例では、変換できる最初の引数をUUID型に変換します。
+この最初の例は、最初の引数がUUID型に変換できるため、UUID型として変換された値を返します。
 
-``` sql
+```sql
 SELECT toUUIDOrDefault('61f0c404-5cb3-11e7-907b-a6006ad3dba0', cast('59f0c404-5cb3-11e7-907b-a6006ad3dba0' as UUID));
 ```
 
@@ -270,7 +270,7 @@ SELECT toUUIDOrDefault('61f0c404-5cb3-11e7-907b-a6006ad3dba0', cast('59f0c404-5c
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-この第2の例では、最初の引数がUUID型に変換できないため、提供されたデフォルトUUID（第2引数）が返されます。
+この2番目の例は、最初の引数がUUID型に変換できないため、2番目の引数（提供されたデフォルトのUUID）を返します。
 
 ```sql
 SELECT toUUIDOrDefault('-----61f0c404-5cb3-11e7-907b-a6006ad3dba0', cast('59f0c404-5cb3-11e7-907b-a6006ad3dba0' as UUID));
@@ -286,9 +286,9 @@ SELECT toUUIDOrDefault('-----61f0c404-5cb3-11e7-907b-a6006ad3dba0', cast('59f0c4
 
 ## toUUIDOrNull {#touuidornull}
 
-String型の引数を受け取り、UUIDにパースを試みます。失敗した場合はNULLを返します。
+文字列型の引数を取り、それをUUIDにパースしようとします。失敗した場合、NULLを返します。
 
-``` sql
+```sql
 toUUIDOrNull(string)
 ```
 
@@ -298,7 +298,7 @@ Nullable(UUID)型の値。
 
 **使用例**
 
-``` sql
+```sql
 SELECT toUUIDOrNull('61f0c404-5cb3-11e7-907b-a6006ad3dba0T') AS uuid
 ```
 
@@ -312,9 +312,9 @@ SELECT toUUIDOrNull('61f0c404-5cb3-11e7-907b-a6006ad3dba0T') AS uuid
 
 ## toUUIDOrZero {#touuidorzero}
 
-String型の引数を受け取り、UUIDにパースを試みます。失敗した場合はゼロUUIDを返します。
+文字列型の引数を取り、それをUUIDにパースしようとします。失敗した場合、ゼロUUIDを返します。
 
-``` sql
+```sql
 toUUIDOrZero(string)
 ```
 
@@ -324,7 +324,7 @@ UUID型の値。
 
 **使用例**
 
-``` sql
+```sql
 SELECT toUUIDOrZero('61f0c404-5cb3-11e7-907b-a6006ad3dba0T') AS uuid
 ```
 
@@ -338,17 +338,17 @@ SELECT toUUIDOrZero('61f0c404-5cb3-11e7-907b-a6006ad3dba0T') AS uuid
 
 ## UUIDStringToNum {#uuidstringtonum}
 
-`xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`形式の36文字を含む`string`を受け取り、そのバイナリ表現として[FixedString(16)](../data-types/fixedstring.md)を返します。形式は`variant`（デフォルトは`Big-endian`）でオプション指定できます。
+`xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`形式で36文字を含む`string`を受け入れ、バイナリ表現として[FixedString(16)](../data-types/fixedstring.md)を返します。形式は`variant`によってオプションで指定できます（デフォルトは`Big-endian`）。
 
 **構文**
 
-``` sql
+```sql
 UUIDStringToNum(string[, variant = 1])
 ```
 
 **引数**
 
-- `string` — 36文字の[文字列](/sql-reference/data-types/string)または[FixedString](/sql-reference/data-types/string)
+- `string` — 36文字の[String](/sql-reference/data-types/string)または[FixedString](/sql-reference/data-types/string)
 - `variant` — [RFC4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1)で指定されたバリアントを表す整数。1 = `Big-endian`（デフォルト）、2 = `Microsoft`。
 
 **返される値**
@@ -357,7 +357,7 @@ FixedString(16)
 
 **使用例**
 
-``` sql
+```sql
 SELECT
     '612f3c40-5d3b-217e-707b-6a546a3d7b29' AS uuid,
     UUIDStringToNum(uuid) AS bytes
@@ -371,7 +371,7 @@ SELECT
 └──────────────────────────────────────┴──────────────────┘
 ```
 
-``` sql
+```sql
 SELECT
     '612f3c40-5d3b-217e-707b-6a546a3d7b29' AS uuid,
     UUIDStringToNum(uuid, 2) AS bytes
@@ -387,11 +387,11 @@ SELECT
 
 ## UUIDNumToString {#uuidnumtostring}
 
-UUIDのバイナリ表現としての`binary`を含み、指定された`variant`（デフォルトは`Big-endian`）によってオプションでその形式を指定し、テキスト形式の36文字を含む文字列を返します。
+バイナリ表現のUUIDを含む`binary`を受け入れ、その形式はオプションで`variant`（デフォルトは`Big-endian`）で指定できます。そしてテキスト形式の36文字を含む文字列を返します。
 
 **構文**
 
-``` sql
+```sql
 UUIDNumToString(binary[, variant = 1])
 ```
 
@@ -406,7 +406,7 @@ UUIDNumToString(binary[, variant = 1])
 
 **使用例**
 
-``` sql
+```sql
 SELECT
     'a/<@];!~p{jTj={)' AS bytes,
     UUIDNumToString(toFixedString(bytes, 16)) AS uuid
@@ -420,7 +420,7 @@ SELECT
 └──────────────────┴──────────────────────────────────────┘
 ```
 
-``` sql
+```sql
 SELECT
     '@</a;]~!p{jTj={)' AS bytes,
     UUIDNumToString(toFixedString(bytes, 16), 2) AS uuid
@@ -436,11 +436,11 @@ SELECT
 
 ## UUIDToNum {#uuidtonum}
 
-[UUID](../data-types/uuid.md)を受け取り、そのバイナリ表現を[FixedString(16)](../data-types/fixedstring.md)として返します。形式はオプションで`variant`（デフォルトは`Big-endian`）によって指定できます。この関数は、UUIDからUUIDを抽出するために`UUIDStringToNum(toString(uuid))`を2つの異なる関数を呼び出す必要がなくします。
+[UUID](../data-types/uuid.md)を受け入れ、そのバイナリ表現を[FixedString(16)](../data-types/fixedstring.md)として返します。形式はオプションで`variant`（デフォルトは`Big-endian`）で指定できます。この関数は、UUIDからバイトを抽出するためにUUIDStringToNum(toString(uuid))という2つの別々の関数を呼び出す代わりに使用されますので、UUIDから文字列への中間変換は必要ありません。
 
 **構文**
 
-``` sql
+```sql
 UUIDToNum(uuid[, variant = 1])
 ```
 
@@ -455,7 +455,7 @@ UUIDのバイナリ表現。
 
 **使用例**
 
-``` sql
+```sql
 SELECT
     toUUID('612f3c40-5d3b-217e-707b-6a546a3d7b29') AS uuid,
     UUIDToNum(uuid) AS bytes
@@ -469,7 +469,7 @@ SELECT
 └──────────────────────────────────────┴──────────────────┘
 ```
 
-``` sql
+```sql
 SELECT
     toUUID('612f3c40-5d3b-217e-707b-6a546a3d7b29') AS uuid,
     UUIDToNum(uuid, 2) AS bytes
@@ -485,26 +485,26 @@ SELECT
 
 ## UUIDv7ToDateTime {#uuidv7todatetime}
 
-UUIDバージョン7のタイムスタンプコンポーネントを返します。
+バージョン7のUUIDのタイムスタンプコンポーネントを返します。
 
 **構文**
 
-``` sql
+```sql
 UUIDv7ToDateTime(uuid[, timezone])
 ```
 
 **引数**
 
 - `uuid` — バージョン7の[UUID](../data-types/uuid.md)。
-- `timezone` — 返される値の[タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone)（省略可能）。[String](../data-types/string.md)。
+- `timezone` — 返される値の[タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone)（省略可）。[String](../data-types/string.md)。
 
 **返される値**
 
-- ミリ秒精度のタイムスタンプ。UUIDが無効なバージョン7 UUIDの場合は1970-01-01 00:00:00.000を返します。[DateTime64(3)](../data-types/datetime64.md)。
+- ミリ秒精度のタイムスタンプ。UUIDが有効なバージョン7 UUIDでない場合、1970-01-01 00:00:00.000を返します。[DateTime64(3)](../data-types/datetime64.md)。
 
 **使用例**
 
-``` sql
+```sql
 SELECT UUIDv7ToDateTime(toUUID('018f05c9-4ab8-7b86-b64e-c9f03fbd45d1'))
 ```
 
@@ -516,7 +516,7 @@ SELECT UUIDv7ToDateTime(toUUID('018f05c9-4ab8-7b86-b64e-c9f03fbd45d1'))
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-``` sql
+```sql
 SELECT UUIDv7ToDateTime(toUUID('018f05c9-4ab8-7b86-b64e-c9f03fbd45d1'), 'America/New_York')
 ```
 
@@ -530,7 +530,7 @@ SELECT UUIDv7ToDateTime(toUUID('018f05c9-4ab8-7b86-b64e-c9f03fbd45d1'), 'America
 
 ## serverUUID {#serveruuid}
 
-ClickHouseサーバーの最初の起動時に生成されたランダムなUUIDを返します。UUIDはClickHouseサーバーディレクトリ（例：`/var/lib/clickhouse/`）内のファイル`uuid`に保存され、サーバーの再起動の間も保持されます。
+ClickHouseサーバの最初の起動時に生成されたランダムなUUIDを返します。このUUIDはClickHouseサーバディレクトリ内の`uuid`ファイル（例：`/var/lib/clickhouse/`）に保存され、サーバの再起動間で保持されます。
 
 **構文**
 
@@ -540,21 +540,21 @@ serverUUID()
 
 **返される値**
 
-- サーバーのUUID。[UUID](../data-types/uuid.md)。
+- サーバのUUID。[UUID](../data-types/uuid.md)。
 
 ## generateSnowflakeID {#generatesnowflakeid}
 
 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)を生成します。
 
-生成されたSnowflake IDは、現在のUnixタイムスタンプをミリ秒（41 + 1の上位ゼロビット）で含み、次にマシンID（10ビット）およびカウンタ（12ビット）が続き、ミリ秒内でIDを区別します。
-任意の理想的なタイムスタンプ（unix_ts_ms）について、カウンタは0から始まり、新しいSnowflake IDごとに1ずつ増加します。タイムスタンプが変更されるまで。
-カウンタがオーバーフローした場合、タイムスタンプフィールドが1増加し、カウンタは0にリセットされます。
+生成されたSnowflake IDは現在のUnixタイムスタンプをミリ秒単位で含み（41 + 1の最高ビット）、続いてマシンID（10ビット）およびカウンタ（12ビット）が含まれ、ミリ秒内のIDを区別します。
+任意の指定されたタイムスタンプ（unix_ts_ms）について、カウンタは0から始まり、タイムスタンプが変更されるまで新しいSnowflake IDごとに1ずつ増加します。
+カウンタがオーバーフローした場合、タイムスタンプフィールドは1増加し、カウンタは0にリセットされます。
 
-関数`generateSnowflakeID`は、タイムスタンプ内のカウンタフィールドがすべての関数呼び出しで単調増加することを保証します。
+関数`generateSnowflakeID`は、並行して実行されるスレッドやクエリ内のすべての関数呼び出しでタイムスタンプ内のカウンタフィールドが単調に増加することを保証します。
 
 :::note
-生成されたSnowflake IDはUNIXエポック1970-01-01を基にしています。
-Snowflake IDのエポックに関する標準や推奨は存在しませんが、他のシステムの実装では異なるエポック（例：Twitter/X（2010-11-04）、Mastodon（2015-01-01））を使用することがあります。
+生成されたSnowflake IDはUNIXエポック1970-01-01に基づいています。
+Snowflake IDのエポックについて標準または推奨事項は存在しませんが、他のシステムの実装では異なるエポック（例：Twitter/X (2010-11-04) や Mastodon (2015-01-01)）を使用することがあります。
 :::
 
 ```text
@@ -569,14 +569,14 @@ Snowflake IDのエポックに関する標準や推奨は存在しませんが�
 
 **構文**
 
-``` sql
+```sql
 generateSnowflakeID([expr, [machine_id]])
 ```
 
 **引数**
 
-- `expr` — クエリ内で関数が複数回呼ばれた場合に[共通部分式の排除](/sql-reference/functions/overview#common-subexpression-elimination)を回避するために使用される任意の[式](/sql-reference/syntax#expressions)。この式の値は返されるSnowflake IDに影響を与えません。省略可能。
-- `machine_id` — マシンIDで、最下位10ビットが使用されます。[Int64](../data-types/int-uint.md)。省略可能。
+- `expr` — クエリ内で関数が複数回呼ばれる場合に[共通部分式排除](/sql-reference/functions/overview#common-subexpression-elimination)を回避するために使用される任意の[式](/sql-reference/syntax#expressions)。式の値は返されるSnowflake IDには影響しません。省略可能。
+- `machine_id` — マシンID、下位10ビットが使用されます。[Int64](../data-types/int-uint.md)。省略可能。
 
 **返される値**
 
@@ -586,7 +586,7 @@ UInt64型の値。
 
 まず、UInt64型のカラムを持つテーブルを作成し、次に生成されたSnowflake IDをテーブルに挿入します。
 
-``` sql
+```sql
 CREATE TABLE tab (id UInt64) ENGINE = Memory;
 
 INSERT INTO tab SELECT generateSnowflakeID();
@@ -602,7 +602,7 @@ SELECT * FROM tab;
 └─────────────────────┘
 ```
 
-**行ごとに複数のSnowflake IDが生成される例**
+**複数のSnowflake IDを行ごとに生成する例**
 
 ```sql
 SELECT generateSnowflakeID(1), generateSnowflakeID(2);
@@ -612,7 +612,7 @@ SELECT generateSnowflakeID(1), generateSnowflakeID(2);
 └────────────────────────┴────────────────────────┘
 ```
 
-**式とマシンIDを使用する例**
+**式とマシンIDによる例**
 
 ```sql
 SELECT generateSnowflakeID('expr', 1);
@@ -627,7 +627,7 @@ SELECT generateSnowflakeID('expr', 1);
 <DeprecatedBadge/>
 
 :::warning
-この関数は非推奨であり、設定[allow_deprecated_snowflake_conversion_functions](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions)が有効である場合にのみ使用できます。
+この関数は廃止予定であり、設定[allow_deprecated_snowflake_conversion_functions](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions)が有効な場合にのみ使用できます。
 将来的にこの関数は削除される予定です。
 :::
 
@@ -635,30 +635,31 @@ SELECT generateSnowflakeID('expr', 1);
 
 **構文**
 
-``` sql
+```sql
 snowflakeToDateTime(value[, time_zone])
 ```
 
 **引数**
 
 - `value` — Snowflake ID。[Int64](../data-types/int-uint.md)。
-- `time_zone` — [タイムゾーン](/operations/server-configuration-parameters/settings.md#timezone)。関数はタイムゾーンに従って`time_string`を解析します。省略可能。[String](../data-types/string.md)。
+- `time_zone` — [タイムゾーン](/operations/server-configuration-parameters/settings.md#timezone)。この関数は`time_string`をタイムゾーンに従って解析します。省略可。[String](../data-types/string.md)。
 
 **返される値**
 
-- `value`のタイムスタンプコンポーネントを[DateTime](../data-types/datetime.md)値として返します。
+- `value`のタイムスタンプコンポーネントとしての[DateTime](../data-types/datetime.md)値。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT snowflakeToDateTime(CAST('1426860702823350272', 'Int64'), 'UTC');
 ```
 
 結果:
 
 ```response
+
 ┌─snowflakeToDateTime(CAST('1426860702823350272', 'Int64'), 'UTC')─┐
 │                                              2021-08-15 10:57:56 │
 └──────────────────────────────────────────────────────────────────┘
@@ -669,7 +670,7 @@ SELECT snowflakeToDateTime(CAST('1426860702823350272', 'Int64'), 'UTC');
 <DeprecatedBadge/>
 
 :::warning
-この関数は非推奨であり、設定[allow_deprecated_snowflake_conversion_functions](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions)が有効である場合にのみ使用できます。
+この関数は廃止予定であり、設定[allow_deprecated_snowflake_conversion_functions](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions)が有効な場合にのみ使用できます。
 将来的にこの関数は削除される予定です。
 :::
 
@@ -677,30 +678,31 @@ SELECT snowflakeToDateTime(CAST('1426860702823350272', 'Int64'), 'UTC');
 
 **構文**
 
-``` sql
+```sql
 snowflakeToDateTime64(value[, time_zone])
 ```
 
 **引数**
 
 - `value` — Snowflake ID。[Int64](../data-types/int-uint.md)。
-- `time_zone` — [タイムゾーン](/operations/server-configuration-parameters/settings.md#timezone)。関数はタイムゾーンに従って`time_string`を解析します。省略可能。[String](../data-types/string.md)。
+- `time_zone` — [タイムゾーン](/operations/server-configuration-parameters/settings.md#timezone)。この関数は`time_string`をタイムゾーンに従って解析します。省略可。[String](../data-types/string.md)。
 
 **返される値**
 
-- `value`のタイムスタンプコンポーネントを、スケール=3の[DateTime64](../data-types/datetime64.md)として返します。すなわち、ミリ秒精度です。
+- `value`のタイムスタンプコンポーネントとしての[DateTime64](../data-types/datetime64.md)スケール= 3、つまりミリ秒精度。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT snowflakeToDateTime64(CAST('1426860802823350272', 'Int64'), 'UTC');
 ```
 
 結果:
 
 ```response
+
 ┌─snowflakeToDateTime64(CAST('1426860802823350272', 'Int64'), 'UTC')─┐
 │                                            2021-08-15 10:58:19.841 │
 └────────────────────────────────────────────────────────────────────┘
@@ -711,31 +713,31 @@ SELECT snowflakeToDateTime64(CAST('1426860802823350272', 'Int64'), 'UTC');
 <DeprecatedBadge/>
 
 :::warning
-この関数は非推奨であり、設定[allow_deprecated_snowflake_conversion_functions](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions)が有効である場合にのみ使用できます。
+この関数は廃止予定であり、設定[allow_deprecated_snowflake_conversion_functions](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions)が有効な場合にのみ使用できます。
 将来的にこの関数は削除される予定です。
 :::
 
-[DateTime](../data-types/datetime.md)値を指定された時刻の最初の[Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)に変換します。
+[DateTime](../data-types/datetime.md)値を指定された時間に最初の[Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)に変換します。
 
 **構文**
 
-``` sql
+```sql
 dateTimeToSnowflake(value)
 ```
 
 **引数**
 
-- `value` — 時間を含む日付。[DateTime](../data-types/datetime.md)。
+- `value` — 日付と時間。[DateTime](../data-types/datetime.md)。
 
 **返される値**
 
-- 入力値をその時が最初のSnowflake IDとして[UInt64](../data-types/int-uint.md)データ型に変換します。
+- 入力値がその時間の最初のSnowflake IDに変換された[Int64](../data-types/int-uint.md)データ型。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 WITH toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt SELECT dateTimeToSnowflake(dt);
 ```
 
@@ -752,40 +754,40 @@ WITH toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt SELECT dateTimeToS
 <DeprecatedBadge/>
 
 :::warning
-この関数は非推奨であり、設定[allow_deprecated_snowflake_conversion_functions](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions)が有効である場合にのみ使用できます。
+この関数は廃止予定であり、設定[allow_deprecated_snowflake_conversion_functions](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions)が有効な場合にのみ使用できます。
 将来的にこの関数は削除される予定です。
 :::
 
-[DateTime64](../data-types/datetime64.md)を指定された時刻の最初の[Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)に変換します。
+[DateTime64](../data-types/datetime64.md)を指定された時間に最初の[Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)に変換します。
 
 **構文**
 
-``` sql
+```sql
 dateTime64ToSnowflake(value)
 ```
 
 **引数**
 
-- `value` — 時間を含む日付。[DateTime64](../data-types/datetime64.md)。
+- `value` — 日付と時間。[DateTime64](../data-types/datetime64.md)。
 
 **返される値**
 
-- 入力値をその時の最初のSnowflake IDとして[UInt64](../data-types/int-uint.md)データ型に変換します。
+- 入力値がその時間の最初のSnowflake IDに変換された[Int64](../data-types/int-uint.md)データ型。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 WITH toDateTime64('2021-08-15 18:57:56.492', 3, 'Asia/Shanghai') AS dt64 SELECT dateTime64ToSnowflake(dt64);
 ```
 
 結果:
 
-```response
-┌─dateTime64ToSnowflake(dt64)─┐
-│         1426860704886947840 │
-└─────────────────────────────┘
+```yaml
+┌──────────────────────dt─┬─────────────────res─┐
+│ 2021-08-15 18:57:56.493 │ 6832626394434895872 │
+└─────────────────────────┴─────────────────────┘
 ```
 
 ## snowflakeIDToDateTime {#snowflakeidtodatetime}
@@ -794,19 +796,19 @@ WITH toDateTime64('2021-08-15 18:57:56.492', 3, 'Asia/Shanghai') AS dt64 SELECT 
 
 **構文**
 
-``` sql
+```sql
 snowflakeIDToDateTime(value[, epoch[, time_zone]])
 ```
 
 **引数**
 
 - `value` — Snowflake ID。[UInt64](../data-types/int-uint.md)。
-- `epoch` - Snowflake IDのエポック（1970-01-01からのミリ秒）。デフォルトは0（1970-01-01）。Twitter/Xエポック（2015-01-01）の場合、1288834974657を指定します。省略可能。[UInt*](../data-types/int-uint.md)。
-- `time_zone` — [タイムゾーン](/operations/server-configuration-parameters/settings.md#timezone)。関数はタイムゾーンに従って`time_string`を解析します。省略可能。[String](../data-types/string.md)。
+- `epoch` - Snowflake IDのエポック（1970-01-01からのミリ秒）デフォルトは0（1970-01-01）。Twitter/Xエポック（2015-01-01）の場合、1288834974657を指定します。省略可能。[UInt*](../data-types/int-uint.md)。
+- `time_zone` — [タイムゾーン](/operations/server-configuration-parameters/settings.md#timezone)。この関数は`time_string`をタイムゾーンに従って解析します。省略可。[String](../data-types/string.md)。
 
 **返される値**
 
-- `value`のタイムスタンプコンポーネントを[DateTime](../data-types/datetime.md)値として返します。
+`value`のタイムスタンプコンポーネントとしての[DateTime](../data-types/datetime.md)値。
 
 **例**
 
@@ -830,19 +832,19 @@ SELECT snowflakeIDToDateTime(7204436857747984384) AS res
 
 **構文**
 
-``` sql
+```sql
 snowflakeIDToDateTime64(value[, epoch[, time_zone]])
 ```
 
 **引数**
 
 - `value` — Snowflake ID。[UInt64](../data-types/int-uint.md)。
-- `epoch` - Snowflake IDのエポック（1970-01-01からのミリ秒）。デフォルトは0（1970-01-01）。Twitter/Xエポック（2015-01-01）の場合、1288834974657を指定します。省略可能。[UInt*](../data-types/int-uint.md)。
-- `time_zone` — [タイムゾーン](/operations/server-configuration-parameters/settings.md#timezone)。関数はタイムゾーンに従って`time_string`を解析します。省略可能。[String](../data-types/string.md)。
+- `epoch` - Snowflake IDのエポック（1970-01-01からのミリ秒）デフォルトは0（1970-01-01）。Twitter/Xエポック（2015-01-01）の場合、1288834974657を指定します。省略可能。[UInt*](../data-types/int-uint.md)。
+- `time_zone` — [タイムゾーン](/operations/server-configuration-parameters/settings.md#timezone)。この関数は`time_string`をタイムゾーンに従って解析します。省略可。[String](../data-types/string.md)。
 
 **返される値**
 
-- `value`のタイムスタンプコンポーネントを、スケール=3の[DateTime64](../data-types/datetime64.md)として返します。すなわち、ミリ秒精度です。
+`value`のタイムスタンプコンポーネントとしての[DateTime64](../data-types/datetime64.md)型の値、スケール= 3、すなわちミリ秒精度。
 
 **例**
 
@@ -862,22 +864,22 @@ SELECT snowflakeIDToDateTime64(7204436857747984384) AS res
 
 ## dateTimeToSnowflakeID {#datetimetosnowflakeid}
 
-[DateTime](../data-types/datetime.md)値を指定された時刻の最初の[Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)に変換します。
+[DateTime](../data-types/datetime.md)値を指定された時間に最初の[Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)に変換します。
 
 **構文**
 
-``` sql
+```sql
 dateTimeToSnowflakeID(value[, epoch])
 ```
 
 **引数**
 
-- `value` — 時間を含む日付。[DateTime](../data-types/datetime.md)。
-- `epoch` - Snowflake IDのエポック（1970-01-01からのミリ秒）。デフォルトは0（1970-01-01）。Twitter/Xエポック（2015-01-01）の場合、1288834974657を指定します。省略可能。[UInt*](../data-types/int-uint.md)。
+- `value` — 日付と時間。[DateTime](../data-types/datetime.md)。
+- `epoch` - Snowflake IDのエポック（1970-01-01からのミリ秒）デフォルトは0（1970-01-01）。Twitter/Xエポック（2015-01-01）の場合、1288834974657を指定します。省略可能。[UInt*](../data-types/int-uint.md)。
 
 **返される値**
 
-- 入力値をその時の最初のSnowflake IDとして[UInt64](../data-types/int-uint.md)に変換します。
+入力値がその時間の最初のSnowflake IDに変換された[UInt64](../data-types/int-uint.md)型。
 
 **例**
 
@@ -897,22 +899,22 @@ SELECT toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt, dateTimeToSnowf
 
 ## dateTime64ToSnowflakeID {#datetime64tosnowflakeid}
 
-[DateTime64](../data-types/datetime64.md)を指定された時刻の最初の[Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)に変換します。
+[DateTime64](../data-types/datetime64.md)を指定された時間に最初の[Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)に変換します。
 
 **構文**
 
-``` sql
+```sql
 dateTime64ToSnowflakeID(value[, epoch])
 ```
 
 **引数**
 
-- `value` — 時間を含む日付。[DateTime64](../data-types/datetime64.md)。
-- `epoch` - Snowflake IDのエポック（1970-01-01からのミリ秒）。デフォルトは0（1970-01-01）。Twitter/Xエポック（2015-01-01）の場合、1288834974657を指定します。省略可能。[UInt*](../data-types/int-uint.md)。
+- `value` — 日付と時間。[DateTime64](../data-types/datetime64.md)。
+- `epoch` - Snowflake IDのエポック（1970-01-01からのミリ秒）デフォルトは0（1970-01-01）。Twitter/Xエポック（2015-01-01）の場合、1288834974657を指定します。省略可能。[UInt*](../data-types/int-uint.md)。
 
 **返される値**
 
-- 入力値をその時の最初のSnowflake IDとして[UInt64](../data-types/int-uint.md)に変換します。
+入力値がその時間の最初のSnowflake IDに変換された[UInt64](../data-types/int-uint.md)型。
 
 **例**
 
@@ -930,6 +932,6 @@ SELECT toDateTime('2021-08-15 18:57:56.493', 3, 'Asia/Shanghai') AS dt, dateTime
 └─────────────────────────┴─────────────────────┘
 ```
 
-## 参照 {#see-also}
+## 関連項目 {#see-also}
 
 - [dictGetUUID](/sql-reference/functions/ext-dict-functions#other-functions)

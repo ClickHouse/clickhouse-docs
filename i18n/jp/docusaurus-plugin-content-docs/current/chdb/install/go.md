@@ -1,17 +1,17 @@
 ---
-title: chDBのGo用インストール
-sidebar_label: Go
+title: 'Go用のchDBのインストール'
+sidebar_label: 'Go'
 slug: /chdb/install/go
-description: Go用のchDBをインストールする方法
-keywords: [chdb, 埋め込み, clickhouse-lite, go, インストール]
+description: 'Go用のchDBをインストールする方法'
+keywords: ['chdb', '埋め込み', 'clickhouse-lite', 'go', 'インストール']
 ---
 
 
-# chDBのGo用インストール
+# Go用のchDBのインストール
 
 ## 要件 {#requirements}
 
-[libchdb](https://github.com/chdb-io/chdb)をインストールします：
+[libchdb](https://github.com/chdb-io/chdb)をインストールします:
 
 ```bash
 curl -sL https://lib.chdb.io | bash
@@ -19,7 +19,7 @@ curl -sL https://lib.chdb.io | bash
 
 ## インストール {#install}
 
-詳細は、[chdb-go](https://github.com/chdb-io/chdb-go)を参照してください。
+参照: [chdb-go](https://github.com/chdb-io/chdb-go)
 
 ## GitHubリポジトリ {#github-repository}
 

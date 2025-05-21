@@ -1,59 +1,60 @@
 ---
-sidebar_label: ClickHouse Kafka Connect Sink
+sidebar_label: 'ClickHouse Kafka Connect Sink'
 sidebar_position: 2
 slug: /integrations/kafka/clickhouse-kafka-connect-sink
-description: ClickHouseのオフィシャルKafkaコネクタ。
+description: 'ClickHouse の公式 Kafka コネクタです。'
+title: 'ClickHouse Kafka Connect Sink'
 ---
 
-import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
 
 # ClickHouse Kafka Connect Sink
 
 :::note
-お手伝いが必要な場合は、[リポジトリに問題を報告](https://github.com/ClickHouse/clickhouse-kafka-connect/issues)するか、[ClickHouseの公共Slack](https://clickhouse.com/slack)で質問をしてください。
+助けが必要な場合は、[リポジトリに問題を提出](https://github.com/ClickHouse/clickhouse-kafka-connect/issues)するか、[ClickHouse 公共 Slack](https://clickhouse.com/slack)で質問をしてください。
 :::
-**ClickHouse Kafka Connect Sink**は、KafkaトピックからClickHouseテーブルにデータを提供するKafkaコネクタです。
+**ClickHouse Kafka Connect Sink** は、Kafka トピックから ClickHouse テーブルにデータを配信する Kafka コネクタです。
 
 ### License {#license}
 
-Kafka Connector Sinkは、[Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0)の下で配布されています。
+Kafka Connector Sink は [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) の下で配布されています。
 
-### Requirements for the environment {#requirements-for-the-environment}
+### 環境要件 {#requirements-for-the-environment}
 
-[Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html)フレームワークv2.7以降が環境にインストールされている必要があります。
+[Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html) フレームワークバージョン 2.7 以降が環境にインストールされている必要があります。
 
-### Version compatibility matrix {#version-compatibility-matrix}
+### バージョン互換性マトリックス {#version-compatibility-matrix}
 
-| ClickHouse Kafka Connect version | ClickHouse version | Kafka Connect | Confluent platform |
-|----------------------------------|--------------------|---------------|--------------------|
-| 1.0.0                            | > 23.3             | > 2.7         | > 6.1              |
+| ClickHouse Kafka Connect バージョン | ClickHouse バージョン | Kafka Connect | Confluent プラットフォーム |
+|--------------------------------------|-----------------------|---------------|-------------------------|
+| 1.0.0                               | > 23.3                | > 2.7         | > 6.1                   |
 
-### Main Features {#main-features}
+### 主な機能 {#main-features}
 
-- 高度な一貫性を実現する機能が組み込まれています。これは、コネクタによって状態ストアとして使用される新しいClickHouseコア機能[KeeperMap](https://github.com/ClickHouse/ClickHouse/pull/39976)によって提供され、ミニマリストアーキテクチャを実現します。
-- 3rd-party状態ストアへのサポート: 現在はIn-memoryがデフォルトですが、KeeperMapを使用できます（Redisを近日中に追加予定）。
-- コア統合: ClickHouseによって構築、維持、サポートされています。
-- [ClickHouse Cloud](https://clickhouse.com/cloud)に対して継続的にテストされています。
-- 宣言されたスキーマとスキーマレスのデータ挿入。
-- ClickHouseのすべてのデータ型をサポート。
+- デフォルトで「一度だけ」のセマンティクスを持って出荷されます。これは、コネクタによって状態ストアとして使用される新しい ClickHouse コア機能である [KeeperMap](https://github.com/ClickHouse/ClickHouse/pull/39976) によって支えられており、ミニマリストアーキテクチャを実現しています。
+- サードパーティの状態ストアのサポート: 現在はインメモリがデフォルトですが、KeeperMap（近く Redis が追加される予定）を使用できます。
+- コア統合: ClickHouse によって構築、維持、サポートされます。
+- [ClickHouse Cloud](https://clickhouse.com/cloud) に対して継続的にテストされています。
+- スキーマが宣言されたデータとスキーマレスのデータの挿入をサポートしています。
+- ClickHouse のすべてのデータ型をサポートしています。
 
-### Installation instructions {#installation-instructions}
+### インストール手順 {#installation-instructions}
 
-#### Gather your connection details {#gather-your-connection-details}
+#### 接続詳細をまとめる {#gather-your-connection-details}
 
 <ConnectionDetails />
 
-#### General Installation Instructions {#general-installation-instructions}
+#### 一般的なインストール手順 {#general-installation-instructions}
 
-コネクタは、プラグインを実行するために必要なすべてのクラスファイルを含む単一のJARファイルとして配布されます。
+コネクタは、プラグインを実行するために必要なクラスファイルをすべて含む単一の JAR ファイルとして配布されています。
 
 プラグインをインストールするには、次の手順に従ってください。
 
-- [Releases](https://github.com/ClickHouse/clickhouse-kafka-connect/releases)ページからコネクタJARファイルを含むzipアーカイブをダウンロードします。
-- ZIPファイルの内容を抽出し、希望の場所にコピーします。
-- Confluent Platformがプラグインを見つけられるように、Connectプロパティファイルの[plugin.path](https://kafka.apache.org/documentation/#connectconfigs_plugin.path)構成にプラグインディレクトリのパスを追加します。
-- configにトピック名、ClickHouseインスタンスのホスト名、およびパスワードを提供します。
+- ClickHouse Kafka Connect Sink リポジトリの [リリース](https://github.com/ClickHouse/clickhouse-kafka-connect/releases) ページからコネクタ JAR ファイルを含む ZIP アーカイブをダウンロードします。
+- ZIP ファイルの内容を抽出し、希望する場所にコピーします。
+- Confluent Platform がプラグインを見つけられるようにするために、Connect プロパティファイル内の [plugin.path](https://kafka.apache.org/documentation/#connectconfigs_plugin.path) 設定にプラグインディレクトリへのパスを追加します。
+- 設定内でトピック名、ClickHouse インスタンスのホスト名、およびパスワードを指定します。
 
 ```yml
 connector.class=com.clickhouse.kafka.connect.ClickHouseSinkConnector
@@ -74,94 +75,95 @@ username=default
 schemas.enable=false
 ```
 
-- Confluent Platformを再起動します。
-- Confluent Platformを使用している場合、Confluent Control Center UIにログインし、ClickHouse Sinkが利用可能なコネクタのリストに表示されることを確認します。
+- Confluent Platform を再起動します。
+- Confluent Platform を使用している場合は、Confluent Control Center UI にログインし、ClickHouse Sink が使用可能なコネクタのリストにあることを確認します。
 
-### Configuration options {#configuration-options}
+### 設定オプション {#configuration-options}
 
-ClickHouse SinkをClickHouseサーバーに接続するには、次の情報を提供する必要があります。
+ClickHouse Sink を ClickHouse サーバーに接続するには、以下の情報を提供する必要があります。
 
-- 接続の詳細：ホスト名（**必須**）およびポート（オプション）
-- ユーザー認証情報：パスワード（**必須**）およびユーザー名（オプション）
-- コネクタクラス：`com.clickhouse.kafka.connect.ClickHouseSinkConnector`（**必須**）
-- topicsまたはtopics.regex：ポーリングするKafkaトピック - トピック名はテーブル名と一致する必要があります（**必須**）
-- キーおよび値のコンバータ：トピックのデータタイプに基づいて設定します。ワーカ構成で未定義の場合は必須です。
+- 接続詳細: ホスト名（**必須**）およびポート（オプション）
+- ユーザー資格情報: パスワード（**必須**）およびユーザー名（オプション）
+- コネクタクラス: `com.clickhouse.kafka.connect.ClickHouseSinkConnector` （**必須**）
+- トピックまたは topics.regex: ポーリングする Kafka トピック - トピック名はテーブル名と一致する必要があります（**必須**）
+- キーと値のコンバーター: トピックのデータの種類に基づいて設定します。ワーカー構成で定義されていない場合は必須です。
 
-設定オプションの完全な表：
+設定オプションの完全な表は次の通りです。
 
-| Property Name                                   | Description                                                                                                                                                                                                                                                      | Default Value                                            |
-|-------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-| `hostname` (Required)                           | サーバーのホスト名またはIPアドレス                                                                                                                                                                                                                               | N/A                                                      |
-| `port`                                          | ClickHouseポート - デフォルトは8443（クラウドでのHTTPS用）ですが、HTTP（セルフホスティングのデフォルト）の場合は8123を指定する必要があります。                                                                                                                                 | `8443`                                                   |
-| `ssl`                                           | ClickHouseへのssl接続を有効にします                                                                                                                                                                                                                             | `true`                                                   |
-| `jdbcConnectionProperties`                      | ClickHouseに接続する際の接続プロパティ。`?`で始まり、`param=value`の間は`&`で結合する必要があります。                                                                                                                                                   | `""`                                                     |
-| `username`                                      | ClickHouseデータベースのユーザー名                                                                                                                                                                                                                               | `default`                                                |
-| `password` (Required)                           | ClickHouseデータベースのパスワード                                                                                                                                                                                                                               | N/A                                                      |
-| `database`                                      | ClickHouseデータベース名                                                                                                                                                                                                                                        | `default`                                                |
-| `connector.class` (Required)                    | コネクタクラス（明示的に設定し、デフォルト値を保持）                                                                                                                                                                                                              | `"com.clickhouse.kafka.connect.ClickHouseSinkConnector"` |
-| `tasks.max`                                     | コネクタタスクの最大数                                                                                                                                                                                                                                           | `"1"`                                                    |
-| `errors.retry.timeout`                          | ClickHouse JDBCリトライタイムアウト                                                                                                                                                                                                                              | `"60"`                                                   |
-| `exactlyOnce`                                   | 一貫性のある接続を有効にします                                                                                                                                                                                                                                     | `"false"`                                                |
-| `topics` (Required)                             | ポーリングするKafkaトピック - トピック名はテーブル名と一致する必要があります。                                                                                                                                                                                  | `""`                                                     |
-| `key.converter` (Required* - See Description)   | キーのタイプに基づいて設定します。キーを送信する場合（ワーカ構成で未定義の場合）はここで必須です。                                                                                                                                                                | `"org.apache.kafka.connect.storage.StringConverter"`     |
-| `value.converter` (Required* - See Description) | トピックのデータタイプに基づいて設定します。サポートされているフォーマット：- JSON、String、Avro、Protobuf。この設定は、ワーカ構成で定義されていない場合にここで必要です。                                                                                                                              | `"org.apache.kafka.connect.json.JsonConverter"`          |
-| `value.converter.schemas.enable`                | コネクタ値コンバータスキーマサポート                                                                                                                                                                                                                             | `"false"`                                                |
-| `errors.tolerance`                              | コネクタエラーの耐久性。サポートされている値：none、all                                                                                                                                                                                                        | `"none"`                                                 |
-| `errors.deadletterqueue.topic.name`             | 設定されている場合（errors.tolerance=all）、失敗したバッチのためにDLQが使用されます（[トラブルシューティング](#troubleshooting)を参照）。                                                                                                                          | `""`                                                     |
-| `errors.deadletterqueue.context.headers.enable` | DLQの追加ヘッダーを追加します。                                                                                                                                                                                                                                  | `""`                                                     |
-| `clickhouseSettings`                            | ClickHouseの設定のカンマ区切りリスト（例： "insert_quorum=2, etc..."）                                                                                                                                                                                      | `""`                                                     |
-| `topic2TableMap`                                | トピック名とテーブル名をマッピングするカンマ区切りリスト（例： "topic1=table1, topic2=table2, etc..."）                                                                                                                                                        | `""`                                                     |
-| `tableRefreshInterval`                          | テーブル定義キャッシュをリフレッシュする時間（秒単位）                                                                                                                                                                                                          | `0`                                                      |
-| `keeperOnCluster`                               | セルフホストインスタンス用のON CLUSTERパラメータの構成を許可します（例：`ON CLUSTER clusterNameInConfigFileDefinition`）一貫性のあるconnect_stateテーブルのため（[分散DDLクエリ](/sql-reference/distributed-ddl)を参照）                                               | `""`                                                     |
-| `bypassRowBinary`                               | スキーマに基づくデータ（Avro、Protobufなど）でRowBinaryおよびRowBinaryWithDefaultsの使用を無効にします。データにコラムが欠けている場合にのみ使用すべきであり、Nullable/Defaultが受け入れられないときに使用します。                                                    | `"false"`                                                |
-| `dateTimeFormats`                               | DateTime64スキーマフィールドを解析するための日付時刻フォーマット、`;`で区切っています（例：`someDateField=yyyy-MM-dd HH:mm:ss.SSSSSSSSS;someOtherDateField=yyyy-MM-dd HH:mm:ss`）。                                                                                              | `""`                                                     |
-| `tolerateStateMismatch`                         | コネクタが"現在の"オフセットが格納される前に、"より早い"レコードを削除できるようにします（例：オフセット5が送信され、オフセット250が最後に記録されたオフセットである場合）。                                                                                                                  | `"false"`                                                |
+| プロパティ名                                   | 説明                                                                                                                                                        | デフォルト値                                      |
+|------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------|
+| `hostname` (必須)                             | サーバーのホスト名または IP アドレス                                                                                                                       | N/A                                              |
+| `port`                                        | ClickHouse ポート - デフォルトは 8443（クラウドの HTTPS 用）ですが、HTTP（セルフホストのデフォルト）の場合は 8123 です                                   | `8443`                                          |
+| `ssl`                                         | ClickHouse への ssl 接続を有効にします                                                                                                                     | `true`                                          |
+| `jdbcConnectionProperties`                    | ClickHouse に接続する際の接続プロパティ。 `?` で始まり、`param=value` の間に `&` で結合する必要があります                                                         | `""`                                            |
+| `username`                                    | ClickHouse データベースのユーザー名                                                                                                                       | `default`                                       |
+| `password` (必須)                             | ClickHouse データベースのパスワード                                                                                                                       | N/A                                              |
+| `database`                                    | ClickHouse データベース名                                                                                                                               | `default`                                       |
+| `connector.class` (必須)                      | コネクタクラス（明示的に設定してデフォルト値として保持）                                                                                                   | `"com.clickhouse.kafka.connect.ClickHouseSinkConnector"` |
+| `tasks.max`                                   | コネクタタスクの数                                                                                                                                          | `"1"`                                          |
+| `errors.retry.timeout`                        | ClickHouse JDBC 再試行タイムアウト                                                                                                                | `"60"`                                        |
+| `exactlyOnce`                                 | 一度だけの機能を有効にします                                                                                                                               | `"false"`                                      |
+| `topics` (必須)                               | ポーリングする Kafka トピック - トピック名はテーブル名と一致する必要があります                                                                            | `""`                                            |
+| `key.converter` (必須* - 説明を参照)           | キーの種類に応じて設定します。キーを渡す場合にここで必須です（ワーカー構成で定義されていない場合）。                                                                     | `"org.apache.kafka.connect.storage.StringConverter"` |
+| `value.converter` (必須* - 説明を参照)         | トピックのデータの種類に基づいて設定します。サポートされている形式: JSON, String, Avro, Protobuf。ワーカー構成で未定義の場合に必須です。                           | `"org.apache.kafka.connect.json.JsonConverter"`  |
+| `value.converter.schemas.enable`              | コネクタの値コンバーターのスキーマサポート                                                                                                                  | `"false"`                                      |
+| `errors.tolerance`                            | コネクタエラーの耐性。サポート: none, all                                                                                                                | `"none"`                                       |
+| `errors.deadletterqueue.topic.name`           | 設定されている場合（errors.tolerance=all とともに）、失敗したバッチのために DLQ が使用されます（[トラブルシューティング](#troubleshooting)を参照）                        | `""`                                            |
+| `errors.deadletterqueue.context.headers.enable` | DLQ のために追加のヘッダーが追加されます                                                                                                                  | `""`                                            |
+| `clickhouseSettings`                          | ClickHouse 設定のコンマ区切りリスト（例: "insert_quorum=2, etc..."）                                                                                          | `""`                                            |
+| `topic2TableMap`                              | トピック名をテーブル名にマッピングするためのコンマ区切りリスト（例: "topic1=table1, topic2=table2, etc..."）                                                    | `""`                                            |
+| `tableRefreshInterval`                        | テーブル定義キャッシュを更新する時間（秒）                                                                                                                | `0`                                             |
+| `keeperOnCluster`                             | セルフホストインスタンスに対する ON CLUSTER パラメータの構成を許可します（例: `ON CLUSTER clusterNameInConfigFileDefinition`）                            | `""`                                            |
+| `bypassRowBinary`                             | スキーマベースのデータ（Avro、Protobuf など）のために RowBinary および RowBinaryWithDefaults の使用を無効にすることを許可します - カラムが欠けるデータの場合にのみ使用すべきです。 | `"false"`                                      |
+| `dateTimeFormats`                             | DateTime64 スキーマフィールドの解析用の日付時間形式、`;` で区切る（例: `someDateField=yyyy-MM-dd HH:mm:ss.SSSSSSSSS;someOtherDateField=yyyy-MM-dd HH:mm:ss`）。                       | `""`                                            |
+| `tolerateStateMismatch`                       | コネクタに、AFTER_PROCESSING に保存された現在のオフセットよりも「早い」レコードをドロップさせることを許可します（例: オフセット 5 が送信され、オフセット 250 が最後に記録されたオフセットの場合）      | `"false"`                                      |
+| `ignorePartitionsWhenBatching`                | 挿入のためのメッセージ収集時にパーティションを無視します（ただし、`exactlyOnce` が `false` の場合のみ）。パフォーマンスノート: コネクタタスクが多いほど、各タスクに割り当てられる Kafka パーティションが少なくなる - これは収益の減少を意味する可能性があります。 | `"false"`                                      |
 
-### Target Tables {#target-tables}
+### 対象テーブル {#target-tables}
 
-ClickHouse Connect Sinkは、Kafkaトピックからメッセージを読み込み、適切なテーブルに書き込みます。ClickHouse Connect Sinkは、既存のテーブルにデータを書き込みます。データを挿入する前に、ClickHouseに適切なスキーマのターゲットテーブルが作成されていることを確認してください。
+ClickHouse Connect Sink は Kafka トピックからメッセージを読み取り、適切なテーブルに書き込みます。ClickHouse Connect Sink は既存のテーブルにデータを書き込むため、データを挿入する前に ClickHouse に適切なスキーマを持つターゲットテーブルが作成されていることを確認してください。
 
-各トピックには、ClickHouseに専用のターゲットテーブルが必要です。ターゲットテーブル名は、ソーストピック名と一致する必要があります。
+各トピックには ClickHouse に専用のターゲットテーブルが必要です。ターゲットテーブル名はソーストピック名と一致する必要があります。
 
-### Pre-processing {#pre-processing}
+### 前処理 {#pre-processing}
 
-ClickHouse Kafka Connect Sinkに送信される前に、送信メッセージを変換する必要がある場合は、[Kafka Connect Transformations](https://docs.confluent.io/platform/current/connect/transforms/overview.html)を使用してください。
+ClickHouse Kafka Connect Sink に送信される前にアウトバウンドメッセージを変換する必要がある場合は、[Kafka Connect Transformations](https://docs.confluent.io/platform/current/connect/transforms/overview.html) を使用してください。
 
-### Supported Data types {#supported-data-types}
+### サポートされているデータ型 {#supported-data-types}
 
-**スキーマが宣言された場合:**
+**スキーマが宣言されている場合:**
 
-| Kafka Connect Type                      | ClickHouse Type       | Supported | Primitive |
-| --------------------------------------- |-----------------------| --------- | --------- |
-| STRING                                  | String                | ✅        | Yes       |
-| INT8                                    | Int8                  | ✅        | Yes       |
-| INT16                                   | Int16                 | ✅        | Yes       |
-| INT32                                   | Int32                 | ✅        | Yes       |
-| INT64                                   | Int64                 | ✅        | Yes       |
-| FLOAT32                                 | Float32               | ✅        | Yes       |
-| FLOAT64                                 | Float64               | ✅        | Yes       |
-| BOOLEAN                                 | Boolean               | ✅        | Yes       |
-| ARRAY                                   | Array(T)              | ✅        | No        |
-| MAP                                     | Map(Primitive, T)     | ✅        | No        |
-| STRUCT                                  | Variant(T1, T2, …)    | ✅        | No        |
-| STRUCT                                  | Tuple(a T1, b T2, …)  | ✅        | No        |
-| STRUCT                                  | Nested(a T1, b T2, …) | ✅        | No        |
-| BYTES                                   | String                | ✅        | No        |
-| org.apache.kafka.connect.data.Time      | Int64 / DateTime64    | ✅        | No        |
-| org.apache.kafka.connect.data.Timestamp | Int32 / Date32        | ✅        | No        |
-| org.apache.kafka.connect.data.Decimal   | Decimal               | ✅        | No        |
+| Kafka Connect タイプ                  | ClickHouse タイプ       | サポート | 原始 |
+|---------------------------------------|------------------------|---------|------|
+| STRING                                | String                 | ✅      | はい  |
+| INT8                                  | Int8                   | ✅      | はい  |
+| INT16                                 | Int16                  | ✅      | はい  |
+| INT32                                 | Int32                  | ✅      | はい  |
+| INT64                                 | Int64                  | ✅      | はい  |
+| FLOAT32                               | Float32                | ✅      | はい  |
+| FLOAT64                               | Float64                | ✅      | はい  |
+| BOOLEAN                               | Boolean                | ✅      | はい  |
+| ARRAY                                 | Array(T)              | ✅      | いいえ |
+| MAP                                   | Map(Primitive, T)     | ✅      | いいえ |
+| STRUCT                                | Variant(T1, T2, ...)   | ✅      | いいえ |
+| STRUCT                                | Tuple(a T1, b T2, ...) | ✅      | いいえ |
+| STRUCT                                | Nested(a T1, b T2, ...) | ✅      | いいえ |
+| BYTES                                 | String                 | ✅      | いいえ |
+| org.apache.kafka.connect.data.Time      | Int64 / DateTime64     | ✅      | いいえ |
+| org.apache.kafka.connect.data.Timestamp | Int32 / Date32         | ✅      | いいえ |
+| org.apache.kafka.connect.data.Decimal   | Decimal                | ✅      | いいえ |
 
 **スキーマが宣言されていない場合:**
 
-レコードはJSONに変換され、[JSONEachRow](../../../sql-reference/formats.mdx#jsoneachrow)形式でClickHouseに値として送信されます。
+レコードは JSON に変換され、[JSONEachRow](../../../sql-reference/formats.mdx#jsoneachrow) フォーマットで ClickHouse に値として送信されます。
 
-### Configuration Recipes {#configuration-recipes}
+### 設定レシピ {#configuration-recipes}
 
-これらは、迅速に始めるための一般的な設定レシピです。
+ここでは、迅速に始めるための一般的な設定レシピをいくつか示します。
 
-#### Basic Configuration {#basic-configuration}
+#### 基本設定 {#basic-configuration}
 
-最も基本的な設定 - Kafka Connectを分散モードで実行し、SSLが有効になっている`localhost:8443`でClickHouseサーバーが実行されていることを前提とし、データはスキーマレスJSONです。
+迅速に開始するための最も基本的な設定 - これは、Kafka Connect が分散モードで実行され、`localhost:8443` で SSL が有効な ClickHouse サーバーが実行されていると仮定しています。データはスキーマレス JSON 形式です。
 
 ```json
 {
@@ -188,9 +190,9 @@ ClickHouse Kafka Connect Sinkに送信される前に、送信メッセージを
 }
 ```
 
-#### Basic Configuration with Multiple Topics {#basic-configuration-with-multiple-topics}
+#### 複数トピックを使った基本設定 {#basic-configuration-with-multiple-topics}
 
-コネクタは複数のトピックからデータを取得できます。
+コネクタは複数のトピックからデータを消費することができます。
 
 ```json
 {
@@ -204,7 +206,7 @@ ClickHouse Kafka Connect Sinkに送信される前に、送信メッセージを
 }
 ```
 
-#### Basic Configuration with DLQ {#basic-configuration-with-dlq}
+#### DLQ を使った基本設定 {#basic-configuration-with-dlq}
 
 ```json
 {
@@ -214,14 +216,14 @@ ClickHouse Kafka Connect Sinkに送信される前に、送信メッセージを
     ...
     "errors.tolerance": "all",
     "errors.deadletterqueue.topic.name": "<DLQ_TOPIC>",
-    "errors.deadletterqueue.context.headers.enable": "true",
+    "errors.deadletterqueue.context.headers.enable": "true"
   }
 }
 ```
 
-#### Using with different data formats {#using-with-different-data-formats}
+#### 異なるデータ形式を使用した例 {#using-with-different-data-formats}
 
-##### Avro Schema Support {#avro-schema-support}
+##### Avro スキーマサポート {#avro-schema-support}
 
 ```json
 {
@@ -231,12 +233,12 @@ ClickHouse Kafka Connect Sinkに送信される前に、送信メッセージを
     ...
     "value.converter": "io.confluent.connect.avro.AvroConverter",
     "value.converter.schema.registry.url": "<SCHEMA_REGISTRY_HOST>:<PORT>",
-    "value.converter.schemas.enable": "true",
+    "value.converter.schemas.enable": "true"
   }
 }
 ```
 
-##### Protobuf Schema Support {#protobuf-schema-support}
+##### Protobuf スキーマサポート {#protobuf-schema-support}
 
 ```json
 {
@@ -246,14 +248,14 @@ ClickHouse Kafka Connect Sinkに送信される前に、送信メッセージを
     ...
     "value.converter": "io.confluent.connect.protobuf.ProtobufConverter",
     "value.converter.schema.registry.url": "<SCHEMA_REGISTRY_HOST>:<PORT>",
-    "value.converter.schemas.enable": "true",
+    "value.converter.schemas.enable": "true"
   }
 }
 ```
 
-注意: クラスが見つからない問題が発生した場合、一部の環境にはprotobufコンバータが含まれておらず、依存関係とバンドルされた別リリースのjarが必要になることがあります。
+注意: クラスが見つからない問題に遭遇した場合、すべての環境に protobuf コンバータが付属しているわけではなく、依存関係と一緒にバンドルされた別のリリースの JAR が必要になることがあります。
 
-##### JSON Schema Support {#json-schema-support}
+##### JSON スキーマサポート {#json-schema-support}
 
 ```json
 {
@@ -261,14 +263,14 @@ ClickHouse Kafka Connect Sinkに送信される前に、送信メッセージを
   "config": {
     "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
     ...
-    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter"
   }
 }
 ```
 
-##### String Support {#string-support}
+##### 文字列サポート {#string-support}
 
-コネクタは、異なるClickHouseフォーマットでのString Converterをサポートしています：[JSON](/interfaces/formats#jsoneachrow)、[CSV](/interfaces/formats#csv)、および[TSV](/interfaces/formats#tabseparated)。
+コネクタは、さまざまな ClickHouse 形式での String Converter をサポートしています: [JSON](/interfaces/formats#jsoneachrow)、[CSV](/interfaces/formats#csv)、および [TSV](/interfaces/formats#tabseparated)。
 
 ```json
 {
@@ -283,86 +285,88 @@ ClickHouse Kafka Connect Sinkに送信される前に、送信メッセージを
 }
 ```
 
-### Logging {#logging}
+### ロギング {#logging}
 
-ロギングは自動的にKafka Connect Platformによって提供されます。
-ロギングの宛先と形式は、Kafka connectの[設定ファイル](https://docs.confluent.io/platform/current/connect/logging.html#log4j-properties-file)を介して構成することができます。
+ロギングは自動的に Kafka Connect プラットフォームによって提供されます。
+ロギングの宛先と形式は Kafka connect [設定ファイル](https://docs.confluent.io/platform/current/connect/logging.html#log4j-properties-file)を介して設定することができます。
 
-Confluent Platformを使用している場合、ログはCLIコマンドを実行することで表示できます。
+Confluent Platform を使用している場合、CLI コマンドを実行してログを確認できます。
 
 ```bash
 confluent local services connect log
 ```
 
-詳細については、公式の[チュートリアル](https://docs.confluent.io/platform/current/connect/logging.html)をご覧ください。
+詳細については、公式の [チュートリアル](https://docs.confluent.io/platform/current/connect/logging.html)を確認してください。
 
-### Monitoring {#monitoring}
+### モニタリング {#monitoring}
 
-ClickHouse Kafka Connectは、[Java Management Extensions (JMX)](https://www.oracle.com/technical-resources/articles/javase/jmx.html)を介してランタイムメトリクスを報告します。JMXはデフォルトでKafka Connectorに有効になっています。
+ClickHouse Kafka Connect は [Java Management Extensions (JMX)](https://www.oracle.com/technical-resources/articles/javase/jmx.html) を介してランタイムメトリックを報告します。JMX はデフォルトで Kafka Connector で有効になっています。
 
-ClickHouse Connectの`MBeanName`:
+ClickHouse Connect `MBeanName`:
 
 ```java
 com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
 ```
 
-ClickHouse Kafka Connectは、次のメトリクスを報告します。
+ClickHouse Kafka Connect は以下のメトリクスを報告します。
 
-| Name                 | Type | Description                                                                             |
-|----------------------|------|-----------------------------------------------------------------------------------------|
-| `receivedRecords`      | long | 受信したレコードの総数。                                                                     |
-| `recordProcessingTime` | long | レコードを統合構造にグループ化し変換するのに要した合計時間（ナノ秒単位）。                          |
-| `taskProcessingTime`   | long | ClickHouseにデータを処理し挿入するのに要した合計時間（ナノ秒単位）。                             |
+| 名前                  | タイプ | 説明                                                                                        |
+|----------------------|--------|------------------------------------------------------------------------------------------|
+| `receivedRecords`      | long   | 受信したレコードの総数。                                                                  |
+| `recordProcessingTime` | long   | レコードをグループ化して統一された構造に変換するのに費やしたナノ秒単位の総時間。                |
+| `taskProcessingTime`   | long   | ClickHouse にデータを処理して挿入するのに費やしたナノ秒単位の総時間。                       |
 
-### Limitations {#limitations}
+### 制限事項 {#limitations}
 
 - 削除はサポートされていません。
-- バッチサイズはKafka Consumerプロパティから引き継がれます。
-- KeeperMapで一貫性のある状態が変更された場合は、特定のトピックの内容をKeeperMapから削除する必要があります。（詳細は下のトラブルシューティングガイドを参照）
+- バッチサイズは Kafka Consumer プロパティから継承されます。
+- KeeperMap を使用して一度だけを実行している場合、オフセットが変更されたり巻き戻されたりしたときには、その特定のトピックの内容を KeeperMap から削除する必要があります。（詳細については以下のトラブルシューティングガイドを参照してください）
 
-### Tuning Performance {#tuning-performance}
+### パフォーマンスの調整 {#tuning-performance}
 
-「Sinkコネクタのバッチサイズを調整したい」と考えたことがあるなら、このセクションがあなたのためです。
+「シンクコネクタのバッチサイズを調整したい」と考えたことがある場合、ここはあなたのためのセクションです。
 
 ##### Connect Fetch vs Connector Poll {#connect-fetch-vs-connector-poll}
 
-Kafka Connect（私たちのSinkコネクタが構築されているフレームワーク）は、バックグラウンドでKafkaトピックからメッセージを取得します（コネクタとは独立しています）。
+Kafka Connect（私たちのシンクコネクタが構築されているフレームワーク）は、バックグラウンドで Kafka トピックからメッセージを取得します（コネクタとは独立しています）。
 
-このプロセスは、`fetch.min.bytes`と`fetch.max.bytes`を使用して制御できます。`fetch.min.bytes`はフレームワークがコネクタに値を渡す前に必要な最小量を設定し（`fetch.max.wait.ms`で設定された時間制限まで）、`fetch.max.bytes`は上限サイズを設定します。コネクタにより大きなバッチを渡したい場合は、最小フェッチまたは最大待機を増やすことがオプションになるかもしれません。
+このプロセスは `fetch.min.bytes` と `fetch.max.bytes` を使用して制御できます - `fetch.min.bytes` はフレームワークがコネクタに値を渡すために必要な最小量を設定し（`fetch.max.wait.ms` で設定された時間制限まで）、`fetch.max.bytes` は上限サイズを設定します。コネクタにより大きなバッチを渡したい場合、最小フェッチまたは最大待機時間を増やして大きなデータバンドルを構築することが選択肢となります。
 
-取得されたデータは、メッセージをポーリングするコネクタクライアントによって消費されます。各ポーリングの量は`max.poll.records`で制御されますが、フェッチはポーリングとは独立しています。
+このフェッチしたデータは、その後、メッセージをポーリングするコネクタクライアントに消費され、各ポーリングの量は `max.poll.records` によって制御されます - ただし、フェッチはポールとは独立して行われます！
 
-これらの設定を調整する際には、ユーザーは取得サイズが複数の`max.poll.records`バッチを生成するように目指すべきです（設定`fetch.min.bytes`と`fetch.max.bytes`は圧縮されたデータを表すことを忘れないでください） - そうすれば、各コネクタタスクは可能な限り大きなバッチを挿入します。
+これらの設定を調整するときは、ユーザーはフェッチサイズが `max.poll.records` の複数のバッチを生成することを目指すべきです（`fetch.min.bytes` と `fetch.max.bytes` の設定は圧縮されたデータを反映することを忘れないでください） - そうすれば、各コネクタタスクができる限り大きなバッチを挿入できます。
 
-ClickHouseは、頻繁ではなく小さなバッチよりも少し遅れて大きなバッチに最適化されています - バッチが大きいほど良いです。
+ClickHouse は頻繁な小さなバッチの代わりに、わずかな遅延で大きなバッチのために最適化されています - バッチが大きいほど、効果が高いです。
 
 ```properties
 consumer.max.poll.records=5000
 consumer.max.partition.fetch.bytes=5242880
 ```
 
-詳細については、[Confluentのドキュメンテーション](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)や[Kafkaのドキュメンテーション](https://kafka.apache.org/documentation/#consumerconfigs)を参照してください。
+詳細は、[Confluent ドキュメント](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)
+または [Kafka ドキュメント](https://kafka.apache.org/documentation/#consumerconfigs) を参照してください。
 
-#### Multiple high throughput topics {#multiple-high-throughput-topics}
+#### 高スループットの複数トピック {#multiple-high-throughput-topics}
 
-コネクタが複数トピックをサブスクライブするように構成されている場合、`topics2TableMap`を使用してトピックをテーブルにマッピングしており、挿入でボトルネックを経験している場合は、トピックごとに1つのコネクタを作成することを検討してください。この現象が発生する主な理由は、現在バッチがすべてのテーブルに[直列で挿入される](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/578ac07e8be1a920aaa3b26e49183595c3edd04b/src/main/java/com/clickhouse/kafka/connect/sink/ProxySinkTask.java#L95-L100)からです。
+コネクタが複数のトピックにサブスクライブするように設定されていて、トピックをテーブルにマッピングするために `topic2TableMap` を利用していて、挿入時にボトルネックが発生している場合、代わりにトピックごとに1つのコネクタを作成することを検討してください。これが発生する主な理由は、現在バッチがすべてのテーブルに[直列に](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/578ac07e8be1a920aaa3b26e49183595c3edd04b/src/main/java/com/clickhouse/kafka/connect/sink/ProxySinkTask.java#L95-L100)挿入されるからです。
 
-トピックごとに1つのコネクタを作成することは、可能な限り迅速な挿入率を確保するためのワークアラウンドです。
+トピックごとに1つのコネクタを作成することは、可能な限り高速な挿入速度を得るための回避策です。
 
-### Troubleshooting {#troubleshooting}
+### トラブルシューティング {#troubleshooting}
 
-#### "State mismatch for topic `[someTopic]` partition `[0]`" {#state-mismatch-for-topic-sometopic-partition-0}
+#### "トピック `[someTopic]` のパーティション `[0]` に対する状態の不一致" {#state-mismatch-for-topic-sometopic-partition-0}
 
-これは、KeeperMapに保存されたオフセットがKafkaに保存されたオフセットと異なる場合に発生します。通常はトピックが削除されたり、オフセットが手動で調整されたときです。
-これを修正するには、指定のトピックとパーティションに対して保存された古い値を削除する必要があります。
+これは、KeeperMap に保存されたオフセットが Kafka に保存されたオフセットと異なる場合に発生します。通常、トピックが削除された場合やオフセットが手動で調整された場合です。
+これを修正するには、その特定のトピックとパーティションの古い値を削除する必要があります。
 
-**注意: この調整は一貫性のある影響を与える可能性があります。**
+**注: この調整は一度だけの影響があるかもしれません。**
 
-#### "What errors will the connector retry?" {#what-errors-will-the-connector-retry}
+#### "コネクタはどのエラーを再試行しますか？" {#what-errors-will-the-connector-retry}
 
-現在のところ、焦点は一時的でリトライ可能なエラーの特定にあります。含まれるエラーは以下の通りです：
+現在のところ、焦点は一時的なエラーを特定し、再試行できるエラーを特定することにあります。
 
-- `ClickHouseException` - ClickHouseから投げられる可能性のあるジェネリックな例外です。通常、サーバーが過負荷の時に発生し、以下のエラーコードが特に一時的とみなされます：
+- `ClickHouseException` - これは ClickHouse によってスローされる一般的な例外です。
+  通常、サーバーが過負荷の際にスローされ、以下のエラーコードは特に一時的とされます：
   - 3 - UNEXPECTED_END_OF_FILE
   - 159 - TIMEOUT_EXCEEDED
   - 164 - READONLY
@@ -377,13 +381,13 @@ consumer.max.partition.fetch.bytes=5242880
   - 425 - SYSTEM_ERROR
   - 999 - KEEPER_EXCEPTION
   - 1002 - UNKNOWN_EXCEPTION
-- `SocketTimeoutException` - ソケットがタイムアウトした場合に発生します。
-- `UnknownHostException` - ホストを解決できない場合に発生します。
-- `IOException` - ネットワークに問題がある場合に発生します。
+- `SocketTimeoutException` - ソケットがタイムアウトした場合にスローされます。
+- `UnknownHostException` - ホストが解決できない場合にスローされます。
+- `IOException` - ネットワークに問題がある場合にスローされます。
 
-#### "All my data is blank/zeroes" {#all-my-data-is-blankzeroes}
-おそらく、あなたのデータのフィールドがテーブルのフィールドと一致していません - これはCDC（およびDebeziumフォーマット）で特に一般的です。
-一般的な解決策は、コネクタ設定にフラット変換を追加することです：
+#### "私のデータはすべて空白/ゼロです" {#all-my-data-is-blankzeroes}
+おそらく、データ内のフィールドがテーブル内のフィールドと一致していません - これは特に CDC（と Debezium 形式）では一般的です。
+一般的な解決策は、コネクタ設定にフラッテン変換を追加することです。
 
 ```properties
 transforms=flatten
@@ -391,10 +395,10 @@ transforms.flatten.type=org.apache.kafka.connect.transforms.Flatten$Value
 transforms.flatten.delimiter=_
 ```
 
-これにより、データがネストされたJSONからフラットなJSONに変換されます（`_`を区切り文字として使用）。テーブルのフィールドは「field1_field2_field3」形式（例：「before_id」、「after_id」など）になります。
+これにより、データはネストされた JSON からフラットな JSON に変換されます（`_` を区切りとして使用）。テーブル内のフィールドは「field1_field2_field3」という形式になります（例: "before_id", "after_id" など）。
 
-#### "I want to use my Kafka keys in ClickHouse" {#i-want-to-use-my-kafka-keys-in-clickhouse}
-Kafkaのキーはデフォルトでは値フィールドに保存されていませんが、`KeyToValue`変換を使用して、キーを値フィールドに移動させることができます（新しい`_key`フィールド名の下に）：
+#### "Kafka のキーを ClickHouse で使用したい" {#i-want-to-use-my-kafka-keys-in-clickhouse}
+Kafka のキーはデフォルトでは値フィールドに保存されませんが、`KeyToValue` 変換を使用してキーを新しい `_key` フィールド名の値フィールドに移動することができます。
 
 ```properties
 transforms=keyToValue

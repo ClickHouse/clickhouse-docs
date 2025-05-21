@@ -1,61 +1,61 @@
 ---
-slug: /engines/database-engines/backup
+description: 'バックアップからテーブル/データベースを読み取り専用モードで即座に接続することを可能にします。'
+sidebar_label: 'バックアップ'
 sidebar_position: 60
-sidebar_label: バックアップ
-title: "バックアップ"
-description: "バックアップからテーブル/データベースを読み取り専用モードで即座にアタッチすることを可能にします。"
+slug: /engines/database-engines/backup
+title: 'バックアップ'
 ---
 
 
 # バックアップ
 
-データベースバックアップでは、[バックアップ](../../operations/backup)からテーブル/データベースを読み取り専用モードで即座にアタッチすることができます。
+データベースのバックアップは、[バックアップ](../../operations/backup)からテーブル/データベースを読み取り専用モードで即座に接続することを可能にします。
 
-データベースバックアップは、増分バックアップと非増分バックアップの両方で動作します。
+データベースのバックアップは、増分バックアップと非増分バックアップの両方で動作します。
 
 ## データベースの作成 {#creating-a-database}
 
-``` sql
-    CREATE DATABASE backup_database
-    ENGINE = Backup('database_name_inside_backup', 'backup_destination')
+```sql
+CREATE DATABASE backup_database
+ENGINE = Backup('database_name_inside_backup', 'backup_destination')
 ```
 
-バックアップ先は、`Disk`、`S3`、`File`のような有効なバックアップ[先](../../operations/backup#configure-a-backup-destination)である必要があります。
+バックアップの宛先は、`Disk`、`S3`、`File`などの有効なバックアップ[宛先](../../operations/backup#configure-a-backup-destination)にすることができます。
 
-`Disk`バックアップ先を使用する場合、バックアップからデータベースを作成するクエリは次のようになります。
+`Disk` をバックアップの宛先に指定した場合、バックアップからデータベースを作成するクエリは次のようになります：
 
-``` sql
-    CREATE DATABASE backup_database
-    ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name')
+```sql
+CREATE DATABASE backup_database
+ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name'))
 ```
 
 **エンジンパラメータ**
 
-- `database_name_inside_backup` — バックアップ内のデータベースの名前。
-- `backup_destination` — バックアップの先。
+- `database_name_inside_backup` — バックアップ内のデータベース名。
+- `backup_destination` — バックアップの宛先。
 
-## 利用例 {#usage-example}
+## 使用例 {#usage-example}
 
-`Disk`バックアップ先を使った例を見てみましょう。まず`storage.xml`にバックアップディスクを設定します。
+`Disk` バックアップ宛先を用いた例を見てみましょう。まず、`storage.xml` でバックアップディスクを設定します：
 
-``` xml
+```xml
 <storage_configuration>
-	<disks>
-		<backups>
-			<type>local</type>
-			<path>/home/ubuntu/ClickHouseWorkDir/backups/</path>
-		</backups>
-	</disks>
+    <disks>
+        <backups>
+            <type>local</type>
+            <path>/home/ubuntu/ClickHouseWorkDir/backups/</path>
+        </backups>
+    </disks>
 </storage_configuration>
 <backups>
-	<allowed_disk>backups</allowed_disk>
-	<allowed_path>/home/ubuntu/ClickHouseWorkDir/backups/</allowed_path>
+    <allowed_disk>backups</allowed_disk>
+    <allowed_path>/home/ubuntu/ClickHouseWorkDir/backups/</allowed_path>
 </backups>
 ```
 
-使用例を示します。テストデータベースを作成し、テーブルを作成し、データを挿入してからバックアップを作成しましょう。
+使用例です。テストデータベース、テーブルを作成し、いくつかのデータを挿入した後、バックアップを作成します：
 
-``` sql
+```sql
 CREATE DATABASE test_database;
 
 CREATE TABLE test_database.test_table_1 (id UInt64, value String) ENGINE=MergeTree ORDER BY id;
@@ -70,15 +70,15 @@ INSERT INTO test_database.test_table_3 VALUES (0, 'test_database.test_table_3');
 BACKUP DATABASE test_database TO Disk('backups', 'test_database_backup');
 ```
 
-これで`test_database_backup`バックアップが作成されましたので、データベースバックアップを作成します。
+これで `test_database_backup` バックアップができたので、バックアップデータベースを作成します：
 
-``` sql
+```sql
 CREATE DATABASE test_database_backup ENGINE = Backup('test_database', Disk('backups', 'test_database_backup'));
 ```
 
-これで、任意のテーブルをデータベースからクエリすることができます。
+これで、データベースの任意のテーブルにクエリを実行できます：
 
-``` sql
+```sql
 SELECT id, value FROM test_database_backup.test_table_1;
 
 ┌─id─┬─value──────────────────────┐
@@ -98,9 +98,9 @@ SELECT id, value FROM test_database_backup.test_table_3;
 └────┴────────────────────────────┘
 ```
 
-このデータベースバックアップは、通常のデータベースのように操作することも可能です。例えば、内部のテーブルをクエリすることができます。
+このバックアップデータベースは、通常のデータベースと同様に操作することも可能です。例えば、中のテーブルにクエリを実行することもできます：
 
-``` sql
+```sql
 SELECT database, name FROM system.tables WHERE database = 'test_database_backup';
 
 ┌─database─────────────┬─name─────────┐

@@ -1,16 +1,17 @@
 ---
 slug: /cloud/security/connectivity
-title: 接続性の概要
+title: '接続性の概要'
+description: '接続性のランディングページ'
 ---
 
 
 # 接続性
 
-このセクションでは接続性について見ていき、以下のページが含まれています。
+このセクションでは接続性について見ていき、以下のページが含まれています：
 
-| ページ                                                                  | 説明                                                                                                                       |
+| ページ                                                                  | 説明                                                                                                                      |
 |-----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| [IPフィルターの設定](/cloud/security/setting-ip-filters)         | IPアクセリストを使用してClickHouseサービスへのトラフィックを制御する方法に関するガイド。                                      |
-| [プライベートネットワーキング](/cloud/security/private-link-overview) | クラウド仮想ネットワークにサービスを接続する方法に関する情報。                                                             |
-| [S3データへの安全なアクセス](/cloud/security/secure-s3)        | Amazon Simple Storage Service(S3)で認証し、安全にデータにアクセスするための役割ベースのアクセスを活用する方法に関するガイド。 |
-| [クラウドIPアドレス](/manage/security/cloud-endpoints-api)      | ClickHouse Cloudでサポートされている各クラウドとリージョンの静的IPおよびS3エンドポイントを一覧にした表。                       |
+| [IPフィルタの設定](/cloud/security/setting-ip-filters)          | IPアクセスリストを使用してClickHouseサービスへのトラフィックを制御する方法に関するガイドです。                                   |
+| [プライベートネットワーキング](/cloud/security/private-link-overview) | サービスをクラウド仮想ネットワークに接続する方法に関する情報です。                                                       |
+| [S3データへの安全なアクセス](/cloud/security/secure-s3)         | Amazon Simple Storage Service(S3)に対して役割ベースのアクセスを活用し、安全にデータにアクセスする方法に関するガイドです。       |
+| [クラウドIPアドレス](/manage/security/cloud-endpoints-api)        | 各サポートされているクラウドとリージョンの静的IPおよびS3エンドポイントのリストを含む表です。                              |

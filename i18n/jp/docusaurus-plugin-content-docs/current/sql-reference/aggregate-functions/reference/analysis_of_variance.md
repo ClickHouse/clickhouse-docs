@@ -1,14 +1,14 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/analysis_of_variance
+description: '一方向の分散分析（ANOVAテスト）のための統計的テストを提供します。これは、正規分布した観測のいくつかのグループに対して、すべてのグループが同じ平均を持つかどうかを調べるテストです。'
 sidebar_position: 101
-title: "analysisOfVariance"
-description: "1方向分散分析のための統計的検定（ANOVA検定）を提供します。これは、すべてのグループが同じ平均を持っているかどうかを調べるために、正規分布に従う観測値のいくつかのグループに対する検定です。"
+slug: /sql-reference/aggregate-functions/reference/analysis_of_variance
+title: 'analysisOfVariance'
 ---
 
 
 # analysisOfVariance
 
-1方向分散分析のための統計的検定（ANOVA検定）を提供します。これは、すべてのグループが同じ平均を持っているかどうかを調べるために、正規分布に従う観測値のいくつかのグループに対する検定です。 
+一方向の分散分析（ANOVAテスト）のための統計的テストを提供します。これは、正規分布した観測のいくつかのグループに対して、すべてのグループが同じ平均を持つかどうかを調べるテストです。 
 
 **構文**
 
@@ -16,18 +16,18 @@ description: "1方向分散分析のための統計的検定（ANOVA検定）を
 analysisOfVariance(val, group_no)
 ```
 
-別名: `anova`
+エイリアス: `anova`
 
 **パラメータ**
 - `val`: 値。 
-- `group_no`: `val` が属するグループ番号。
+- `group_no` : `val` が属するグループ番号。
 
 :::note
 グループは0から始まり、テストを実行するには少なくとも2つのグループが必要です。
-観測値の数が1より大きいグループが少なくとも1つ必要です。
+観測の数が1より大きいグループが少なくとも1つ必要です。
 :::
 
-**戻り値**
+**返される値**
 
 - `(f_statistic, p_value)`。[タプル](../../data-types/tuple.md)([Float64](../../data-types/float.md), [Float64](../../data-types/float.md))。
 

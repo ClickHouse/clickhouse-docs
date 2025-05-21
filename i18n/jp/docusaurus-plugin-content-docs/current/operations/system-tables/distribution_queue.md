@@ -1,41 +1,41 @@
 ---
-description: "シャードに送信されるキューにあるローカルファイルに関する情報を含むシステムテーブル。"
+description: 'シャードに送信するキューにあるローカルファイルに関する情報を含むシステムテーブル。'
+keywords: ['system table', 'distribution_queue']
 slug: /operations/system-tables/distribution_queue
-title: "system.distribution_queue"
-keywords: ["system table", "distribution_queue"]
+title: 'system.distribution_queue'
 ---
 
-シャードに送信されるキューにあるローカルファイルに関する情報を含みます。これらのローカルファイルは、非同期モードで分散テーブルに新しいデータを挿入することによって作成された新しいパーツを含んでいます。
+シャードに送信するキューにあるローカルファイルに関する情報を含みます。これらのローカルファイルは、分散テーブルに新しいデータを非同期モードで挿入することによって作成された新しいパーツを含んでいます。
 
 カラム:
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — データベースの名称。
+- `database` ([String](../../sql-reference/data-types/string.md)) — データベースの名前。
 
-- `table` ([String](../../sql-reference/data-types/string.md)) — テーブルの名称。
+- `table` ([String](../../sql-reference/data-types/string.md)) — テーブルの名前。
 
-- `data_path` ([String](../../sql-reference/data-types/string.md)) — ローカルファイルがあるフォルダへのパス。
+- `data_path` ([String](../../sql-reference/data-types/string.md)) — ローカルファイルのフォルダーへのパス。
 
-- `is_blocked` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ローカルファイルのサーバーへの送信がブロックされているかどうかを示すフラグ。
+- `is_blocked` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ローカルファイルをサーバーに送信することがブロックされているかどうかを示すフラグ。
 
 - `error_count` ([UInt64](../../sql-reference/data-types/int-uint.md)) — エラーの数。
 
-- `data_files` ([UInt64](../../sql-reference/data-types/int-uint.md)) — フォルダ内のローカルファイルの数。
+- `data_files` ([UInt64](../../sql-reference/data-types/int-uint.md)) — フォルダー内のローカルファイルの数。
 
-- `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — ローカルファイル内の圧縮データのサイズ（バイト）。
+- `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — ローカルファイル内の圧縮データのサイズ（バイト単位）。
 
-- `broken_data_files` ([UInt64](../../sql-reference/data-types/int-uint.md)) — エラーにより壊れたとしてマークされたファイルの数。
+- `broken_data_files` ([UInt64](../../sql-reference/data-types/int-uint.md)) — エラーのために壊れたとしてマークされたファイルの数。
 
-- `broken_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 壊れたファイル内の圧縮データのサイズ（バイト）。
+- `broken_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 壊れたファイル内の圧縮データのサイズ（バイト単位）。
 
 - `last_exception` ([String](../../sql-reference/data-types/string.md)) — 最後に発生したエラーに関するテキストメッセージ（あれば）。
 
 **例**
 
-``` sql
+```sql
 SELECT * FROM system.distribution_queue LIMIT 1 FORMAT Vertical;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 database:              default
@@ -48,6 +48,6 @@ data_compressed_bytes: 499
 last_exception:
 ```
 
-**関連項目**
+**参照**
 
-- [Distributed table engine](../../engines/table-engines/special/distributed.md)
+- [分散テーブルエンジン](../../engines/table-engines/special/distributed.md)

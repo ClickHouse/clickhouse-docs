@@ -1,13 +1,13 @@
 ---
-title: "varPopStable"
-slug: /sql-reference/aggregate-functions/reference/varpopstable
+description: '母集団分散を返します。`varPop`とは異なり、この関数は数値的に安定したアルゴリズムを使用します。処理速度は遅くなりますが、計算誤差は低くなります。'
 sidebar_position: 211
-description: "母集団分散を返します。varPop とは異なり、この関数は数値的に安定したアルゴリズムを使用します。処理速度は遅くなりますが、計算誤差が低くなります。"
+slug: /sql-reference/aggregate-functions/reference/varpopstable
+title: 'varPopStable'
 ---
 
 ## varPopStable {#varpopstable}
 
-母集団分散を返します。[`varPop`](../reference/varpop.md)とは異なり、この関数は[数値的に安定した](https://en.wikipedia.org/wiki/Numerical_stability)アルゴリズムを使用します。処理速度は遅くなりますが、計算誤差が低くなります。
+母集団分散を返します。[`varPop`](../reference/varpop.md)とは異なり、この関数は[数値的に安定](https://en.wikipedia.org/wiki/Numerical_stability)したアルゴリズムを使用します。処理速度は遅くなりますが、計算誤差は低くなります。
 
 **構文**
 

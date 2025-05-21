@@ -1,19 +1,21 @@
 ---
-slug: /interfaces/third-party/proxy
+description: 'ClickHouseのための利用可能なサードパーティプロキシソリューションについて説明します'
+sidebar_label: 'プロキシ'
 sidebar_position: 29
-sidebar_label: プロキシ
+slug: /interfaces/third-party/proxy
+title: 'サードパーティ開発者によるプロキシサーバー'
 ---
 
 
-# サードパーティ開発者のプロキシサーバー
+# サードパーティ開発者によるプロキシサーバー
 
 ## chproxy {#chproxy}
 
-[chproxy](https://github.com/Vertamedia/chproxy) は、ClickHouseデータベース用のHTTPプロキシおよびロードバランサーです。
+[chproxy](https://github.com/Vertamedia/chproxy) は、ClickHouseデータベースのためのHTTPプロキシおよびロードバランサーです。
 
 特徴:
 
-- ユーザー毎のルーティングとレスポンスキャッシュ。
+- ユーザーごとのルーティングとレスポンスキャッシュ。
 - 柔軟な制限。
 - 自動SSL証明書更新。
 
@@ -21,12 +23,12 @@ Goで実装されています。
 
 ## KittenHouse {#kittenhouse}
 
-[KittenHouse](https://github.com/VKCOM/kittenhouse) は、アプリケーション側でINSERTデータをバッファリングすることが不可能または不便な場合に、ClickHouseとアプリケーションサーバーの間のローカルプロキシとして設計されています。
+[KittenHouse](https://github.com/VKCOM/kittenhouse) は、INSERTデータをアプリケーション側でバッファリングすることが不可能または不便な場合に、ClickHouseとアプリケーションサーバーの間のローカルプロキシとして設計されています。
 
 特徴:
 
 - メモリ内およびディスク上のデータバッファリング。
-- テーブル毎のルーティング。
+- テーブルごとのルーティング。
 - ロードバランシングとヘルスチェック。
 
 Goで実装されています。
@@ -37,8 +39,8 @@ Goで実装されています。
 
 特徴:
 
-- リクエストをグループ化し、閾値またはインターバルで送信。
+- リクエストをグループ化し、しきい値または間隔で送信。
 - 複数のリモートサーバー。
-- 基本認証。
+- 基本的な認証。
 
 Goで実装されています。

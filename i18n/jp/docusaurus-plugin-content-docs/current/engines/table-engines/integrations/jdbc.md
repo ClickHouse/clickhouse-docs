@@ -1,9 +1,9 @@
 ---
-slug: /engines/table-engines/integrations/jdbc
+description: 'ClickHouseがJDBCを介して外部データベースに接続できるようにします。'
+sidebar_label: 'JDBC'
 sidebar_position: 100
-sidebar_label: JDBC
-title: "JDBC"
-description: "ClickHouseがJDBCを介して外部データベースに接続できるようにします。"
+slug: /engines/table-engines/integrations/jdbc
+title: 'JDBC'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -14,19 +14,19 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 <CloudNotSupportedBadge/>
 
 :::note
-clickhouse-jdbc-bridge は実験的なコードを含んでおり、もはやサポートされていません。信頼性の問題やセキュリティの脆弱性が含まれている可能性があります。自己責任で使用してください。  
-ClickHouseは、アドホッククエリシナリオに対してより良い代替手段を提供するClickHouse内蔵のテーブル関数の使用を推奨します（Postgres、MySQL、MongoDBなど）。
+clickhouse-jdbc-bridgeは実験的なコードを含んでおり、もはやサポートされていません。信頼性の問題やセキュリティの脆弱性が含まれている可能性があります。使用は自己責任で行ってください。 
+ClickHouseは、Postgres、MySQL、MongoDBなどのアドホッククエリシナリオに対して、より良い代替手段を提供する内蔵テーブル関数の使用を推奨しています。
 :::
 
-ClickHouseは、[JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity)を介して外部データベースに接続できます。
+ClickHouseが外部データベースに[JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity)を介して接続できるようにします。
 
-JDBC接続を実装するために、ClickHouseはデーモンとして実行されるべき別プログラム[clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge)を使用します。
+JDBC接続を実装するために、ClickHouseはデーモンとして実行する必要がある別のプログラム[clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge)を使用します。
 
 このエンジンは[Nullable](../../../sql-reference/data-types/nullable.md)データ型をサポートしています。
 
 ## テーブルの作成 {#creating-a-table}
 
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
 (
     columns list...
@@ -36,20 +36,21 @@ ENGINE = JDBC(datasource_uri, external_database, external_table)
 
 **エンジンパラメータ**
 
+
 - `datasource_uri` — 外部DBMSのURIまたは名前。
 
-    URI形式: `jdbc:<driver_name>://<host_name>:<port>/?user=<username>&password=<password>`。  
+    URI形式: `jdbc:<driver_name>://<host_name>:<port>/?user=<username>&password=<password>`。
     MySQLの例: `jdbc:mysql://localhost:3306/?user=root&password=root`。
 
-- `external_database` — 外部DBMSのデータベース。
+- `external_database` — 外部DBMS内のデータベース。
 
-- `external_table` — `external_database`のテーブル名、または`select * from table1 where column1=1`のような選択クエリ。
+- `external_table` — `external_database`内のテーブルの名前または、`select * from table1 where column1=1`のような選択クエリです。
 
 ## 使用例 {#usage-example}
 
-MySQLサーバーで、コンソールクライアントと直接接続してテーブルを作成する：
+MySQLサーバーで、コンソールクライアントを介して直接テーブルを作成する:
 
-``` text
+```text
 mysql> CREATE TABLE `test`.`test` (
     ->   `int_id` INT NOT NULL AUTO_INCREMENT,
     ->   `int_nullable` INT NULL DEFAULT NULL,
@@ -70,9 +71,9 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-ClickHouseサーバーでテーブルを作成し、そこからデータを選択する：
+ClickHouseサーバーでテーブルを作成し、そのデータを選択する:
 
-``` sql
+```sql
 CREATE TABLE jdbc_table
 (
     `int_id` Int32,
@@ -83,18 +84,18 @@ CREATE TABLE jdbc_table
 ENGINE JDBC('jdbc:mysql://localhost:3306/?user=root&password=root', 'test', 'test')
 ```
 
-``` sql
+```sql
 SELECT *
 FROM jdbc_table
 ```
 
-``` text
+```text
 ┌─int_id─┬─int_nullable─┬─float─┬─float_nullable─┐
 │      1 │         ᴺᵁᴸᴸ │     2 │           ᴺᵁᴸᴸ │
 └────────┴──────────────┴───────┴────────────────┘
 ```
 
-``` sql
+```sql
 INSERT INTO jdbc_table(`int_id`, `float`)
 SELECT toInt32(number), toFloat32(number * 1.0)
 FROM system.numbers

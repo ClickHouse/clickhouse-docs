@@ -1,111 +1,114 @@
 ---
-description: "MergeTree テーブルのパーツとカラムに関する情報を含むシステムテーブルです。"
+description: 'MergeTree テーブルのパーツとカラムに関する情報を含むシステムテーブルです。'
+keywords: ['system table', 'parts_columns']
 slug: /operations/system-tables/parts_columns
-title: "system.parts_columns"
-keywords: ["system table", "parts_columns"]
+title: 'system.parts_columns'
 ---
+
+
+# system.parts_columns
 
 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルのパーツとカラムに関する情報を含みます。
 
-各行は 1 つのデータパーツを説明します。
+各行は1つのデータパーツを記述しています。
 
 カラム:
 
-- `partition` ([String](../../sql-reference/data-types/string.md)) — パーティション名。パーティションの説明については、[ALTER](/sql-reference/statements/alter) クエリの説明を参照してください。
+- `partition` ([String](../../sql-reference/data-types/string.md)) — パーティション名です。パーティションとは何かを学ぶには、[ALTER](/sql-reference/statements/alter) クエリの説明を参照してください。
 
-    フォーマット:
+    形式:
 
-    - `YYYYMM` は月による自動パーティショニング。
-    - `any_string` は手動でのパーティショニング。
+    - `YYYYMM` は月ごとの自動パーティショニングです。
+    - `any_string` は手動でのパーティショニングです。
 
-- `name` ([String](../../sql-reference/data-types/string.md)) — データパーツの名前。
+- `name` ([String](../../sql-reference/data-types/string.md)) — データパーツの名前です。
 
-- `part_type` ([String](../../sql-reference/data-types/string.md)) — データパーツの保存形式。
+- `part_type` ([String](../../sql-reference/data-types/string.md)) — データパーツの保存形式です。
 
     可能な値:
 
-    - `Wide` — 各カラムがファイルシステム内の別々のファイルに保存されています。
-    - `Compact` — すべてのカラムがファイルシステム内の 1 つのファイルに保存されています。
+    - `Wide` — 各カラムがファイルシステム内の別々のファイルに保存されます。
+    - `Compact` — すべてのカラムがファイルシステム内の1つのファイルに保存されます。
 
-    データ保存形式は、[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルの `min_bytes_for_wide_part` と `min_rows_for_wide_part` 設定によって制御されます。
+    データ保存形式は、[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルの `min_bytes_for_wide_part` および `min_rows_for_wide_part` 設定によって制御されます。
 
-- `active` ([UInt8](../../sql-reference/data-types/int-uint.md)) — データパーツがアクティブであるかどうかを示すフラグ。データパーツがアクティブであれば、テーブルで使用されます。そうでない場合、削除されます。非アクティブなデータパーツはマージ後に残ります。
+- `active` ([UInt8](../../sql-reference/data-types/int-uint.md)) — データパーツがアクティブかどうかを示すフラグです。データパーツがアクティブな場合、それはテーブルで使用されます。そうでない場合は削除されます。非アクティブなデータパーツはマージ後に残ります。
 
-- `marks` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マークの数。データパーツ内の行数の概算を得るには、`marks` にインデックスのグラニュラリティ（通常は 8192）を掛けます（このヒントは適応グラニュラリティには適用されません）。
+- `marks` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マークの数です。データパーツ内の行の概算数を得るには、`marks` にインデックスの粒度（通常は 8192）を掛けます（このヒントは適応粒度には適用されません）。
 
-- `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 行数。
+- `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 行数です。
 
-- `bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) — データパーツファイルの合計サイズ（バイト単位）。
+- `bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) — データパーツファイルの総サイズ（バイト単位）です。
 
-- `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — データパーツ内の圧縮データの合計サイズ。すべての補助ファイル（例えば、マークのあるファイル）は含まれません。
+- `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — データパーツ内の圧縮データの総サイズです。すべての補助ファイル（例えば、マークを含むファイル）は含まれません。
 
-- `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — データパーツ内の非圧縮データの合計サイズ。すべての補助ファイル（例えば、マークのあるファイル）は含まれません。
+- `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — データパーツ内の非圧縮データの総サイズです。すべての補助ファイル（例えば、マークを含むファイル）は含まれません。
 
-- `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マークのあるファイルのサイズ。
+- `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マークのあるファイルのサイズです。
 
-- `modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — データパーツが存在するディレクトリが最後に変更された時刻。通常は、データパーツの作成時刻に対応しています。
+- `modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — データパーツのディレクトリが変更された時間です。これは通常、データパーツの作成時間に対応します。
 
-- `remove_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — データパーツが非アクティブになった時刻。
+- `remove_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — データパーツが非アクティブになった時間です。
 
-- `refcount` ([UInt32](../../sql-reference/data-types/int-uint.md)) — データパーツが使用されている場所の数。値が 2 より大きい場合、データパーツはクエリまたはマージで使用されています。
+- `refcount` ([UInt32](../../sql-reference/data-types/int-uint.md)) — データパーツが使用されている場所の数です。2より大きい値は、データパーツがクエリやマージに使用されていることを示します。
 
-- `min_date` ([Date](../../sql-reference/data-types/date.md)) — データパーツ内の最小の日付キーの値。
+- `min_date` ([Date](../../sql-reference/data-types/date.md)) — データパーツ内の日時キーの最小値です。
 
-- `max_date` ([Date](../../sql-reference/data-types/date.md)) — データパーツ内の最大の日付キーの値。
+- `max_date` ([Date](../../sql-reference/data-types/date.md)) — データパーツ内の日時キーの最大値です。
 
-- `partition_id` ([String](../../sql-reference/data-types/string.md)) — パーティションの ID。
+- `partition_id` ([String](../../sql-reference/data-types/string.md)) — パーティションのIDです。
 
-- `min_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 現在のパーツを構成するデータパーツの最小数（マージ後）。
+- `min_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マージ後に現在のパーツを構成するデータパーツの最小数です。
 
-- `max_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 現在のパーツを構成するデータパーツの最大数（マージ後）。
+- `max_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マージ後に現在のパーツを構成するデータパーツの最大数です。
 
-- `level` ([UInt32](../../sql-reference/data-types/int-uint.md)) — マージツリーの深さ。ゼロは現在のパーツが他のパーツのマージではなく、挿入によって作成されたことを意味します。
+- `level` ([UInt32](../../sql-reference/data-types/int-uint.md)) — マージツリーの深さです。ゼロは、現在のパーツが他のパーツをマージするのではなく、挿入によって作成されたことを意味します。
 
-- `data_version` ([UInt64](../../sql-reference/data-types/int-uint.md)) — データパーツに適用すべきミューテーションを決定するために使用される番号（`data_version` よりもバージョンが高いミューテーション）。
+- `data_version` ([UInt64](../../sql-reference/data-types/int-uint.md)) — どの変更がデータパーツに適用されるべきかを判断するために使用される番号（`data_version` より高いバージョンの変更）です。
 
-- `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 主キーの値が使用するメモリ量（バイト単位）。
+- `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 主キー値によって使用されるメモリの量（バイト単位）です。
 
-- `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 主キーの値のために予約されたメモリ量（バイト単位）。
+- `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 主キー値のために予約されたメモリの量（バイト単位）です。
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — データベースの名前。
+- `database` ([String](../../sql-reference/data-types/string.md)) — データベースの名前です。
 
-- `table` ([String](../../sql-reference/data-types/string.md)) — テーブルの名前。
+- `table` ([String](../../sql-reference/data-types/string.md)) — テーブルの名前です。
 
-- `engine` ([String](../../sql-reference/data-types/string.md)) — パラメータなしのテーブルエンジンの名前。
+- `engine` ([String](../../sql-reference/data-types/string.md)) — パラメータなしのテーブルエンジンの名前です。
 
-- `disk_name` ([String](../../sql-reference/data-types/string.md)) — データパーツが保存されているディスクの名前。
+- `disk_name` ([String](../../sql-reference/data-types/string.md)) — データパーツを保存しているディスクの名前です。
 
-- `path` ([String](../../sql-reference/data-types/string.md)) — データパーツファイルのフォルダへの絶対パス。
+- `path` ([String](../../sql-reference/data-types/string.md)) — データパーツファイルのフォルダへの絶対パスです。
 
-- `column` ([String](../../sql-reference/data-types/string.md)) — カラムの名前。
+- `column` ([String](../../sql-reference/data-types/string.md)) — カラムの名前です。
 
-- `type` ([String](../../sql-reference/data-types/string.md)) — カラムのタイプ。
+- `type` ([String](../../sql-reference/data-types/string.md)) — カラムの型です。
 
-- `column_position` ([UInt64](../../sql-reference/data-types/int-uint.md)) — テーブル内のカラムの順序位置（1 から始まります）。
+- `column_position` ([UInt64](../../sql-reference/data-types/int-uint.md)) — テーブル内のカラムの序数位置（1から始まります）です。
 
-- `default_kind` ([String](../../sql-reference/data-types/string.md)) — デフォルト値の表現タイプ（`DEFAULT`, `MATERIALIZED`, `ALIAS`）、または定義されていない場合は空文字列。
+- `default_kind` ([String](../../sql-reference/data-types/string.md)) — デフォルト値の式のタイプ（`DEFAULT`, `MATERIALIZED`, `ALIAS`）または未定義の場合は空の文字列です。
 
-- `default_expression` ([String](../../sql-reference/data-types/string.md)) — デフォルト値のための表現、または定義されていない場合は空文字列。
+- `default_expression` ([String](../../sql-reference/data-types/string.md)) — デフォルト値の式、または未定義の場合は空の文字列です。
 
-- `column_bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) — カラムの合計サイズ（バイト単位）。
+- `column_bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) — カラムの総サイズ（バイト単位）です。
 
-- `column_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — カラム内の圧縮データの合計サイズ（バイト単位）。
+- `column_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — カラム内の圧縮データの総サイズ（バイト単位）です。
 
-- `column_data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — カラム内の非圧縮データの合計サイズ（バイト単位）。
+- `column_data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — カラム内の非圧縮データの総サイズ（バイト単位）です。
 
-- `column_marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マーク付きカラムのサイズ（バイト単位）。
+- `column_marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マークのあるカラムのサイズ（バイト単位）です。
 
-- `bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `bytes_on_disk` のエイリアス。
+- `bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `bytes_on_disk` の別名です。
 
-- `marks_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `marks_bytes` のエイリアス。
+- `marks_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `marks_bytes` の別名です。
 
 **例**
 
-``` sql
+```sql
 SELECT * FROM system.parts_columns LIMIT 1 FORMAT Vertical;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 partition:                             tuple()
@@ -146,6 +149,6 @@ column_data_uncompressed_bytes:        2
 column_marks_bytes:                    48
 ```
 
-**関連事項**
+**関連情報**
 
 - [MergeTree ファミリー](../../engines/table-engines/mergetree-family/mergetree.md)

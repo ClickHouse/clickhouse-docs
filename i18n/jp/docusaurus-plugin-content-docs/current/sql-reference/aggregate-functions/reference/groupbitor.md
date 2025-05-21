@@ -1,16 +1,16 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/groupbitor
+description: '一連の数値にビット単位の `OR` を適用します。'
 sidebar_position: 152
-title: "groupBitOr"
-description: "一連の数値に対してビット単位の `OR` を適用します。"
+slug: /sql-reference/aggregate-functions/reference/groupbitor
+title: 'groupBitOr'
 ---
 
 
 # groupBitOr
 
-一連の数値に対してビット単位の `OR` を適用します。
+一連の数値にビット単位の `OR` を適用します。
 
-``` sql
+```sql
 groupBitOr(expr)
 ```
 
@@ -18,7 +18,7 @@ groupBitOr(expr)
 
 `expr` – `UInt*` または `Int*` 型の結果を返す式。
 
-**返される値**
+**返り値**
 
 `UInt*` または `Int*` 型の値。
 
@@ -26,7 +26,7 @@ groupBitOr(expr)
 
 テストデータ:
 
-``` text
+```text
 binary     decimal
 00101100 = 44
 00011100 = 28
@@ -36,15 +36,15 @@ binary     decimal
 
 クエリ:
 
-``` sql
+```sql
 SELECT groupBitOr(num) FROM t
 ```
 
-ここで `num` はテストデータを含むカラムです。
+ここで `num` はテストデータを持つカラムです。
 
 結果:
 
-``` text
+```text
 binary     decimal
 01111101 = 125
 ```

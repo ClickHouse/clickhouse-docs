@@ -1,37 +1,39 @@
 ---
-slug: '/sql-reference/data-types/lowcardinality'
-sidebar_position: 42
+description: '文字カラムのための LowCardinality 最適化に関するドキュメント'
 sidebar_label: 'LowCardinality(T)'
+sidebar_position: 42
+slug: /sql-reference/data-types/lowcardinality
+title: 'LowCardinality(T)'
 ---
 
 
 # LowCardinality(T)
 
-他のデータ型の内部表現を辞書エンコードに変更します。
+他のデータ型の内部表現をディクショナリーエンコードに変更します。
 
-## Syntax {#syntax}
+## 構文 {#syntax}
 
-``` sql
+```sql
 LowCardinality(data_type)
 ```
 
-**Parameters**
+**パラメータ**
 
-- `data_type` — [String](../../sql-reference/data-types/string.md)、[FixedString](../../sql-reference/data-types/fixedstring.md)、[Date](../../sql-reference/data-types/date.md)、[DateTime](../../sql-reference/data-types/datetime.md)、および [Decimal](../../sql-reference/data-types/decimal.md) を除く数値。`LowCardinality`は一部のデータ型には効率的ではありません。[allow_suspicious_low_cardinality_types](../../operations/settings/settings.md#allow_suspicious_low_cardinality_types) 設定の説明を参照してください。
+- `data_type` — [String](../../sql-reference/data-types/string.md)、[FixedString](../../sql-reference/data-types/fixedstring.md)、[Date](../../sql-reference/data-types/date.md)、[DateTime](../../sql-reference/data-types/datetime.md)、および [Decimal](../../sql-reference/data-types/decimal.md) を除く数値。`LowCardinality` はいくつかのデータ型に対して効率的ではありません。[allow_suspicious_low_cardinality_types](../../operations/settings/settings.md#allow_suspicious_low_cardinality_types) 設定の説明を参照してください。
 
-## Description {#description}
+## 説明 {#description}
 
-`LowCardinality`は、データの保存方法とデータ処理のルールを変更するスーパー構造です。ClickHouseは`LowCardinality`カラムに[辞書コーディング](https://en.wikipedia.org/wiki/Dictionary_coder)を適用します。辞書エンコードされたデータを扱うことは、多くのアプリケーションにおける[SELECT](../../sql-reference/statements/select/index.md)クエリのパフォーマンスを大幅に向上させます。
+`LowCardinality` はデータストレージ方式とデータ処理ルールを変更するスーパー構造体です。ClickHouse は `LowCardinality` - カラムに対して [ディクショナリーコーディング](https://en.wikipedia.org/wiki/Dictionary_coder) を適用します。ディクショナリーエンコードされたデータでの操作は、多くのアプリケーションにおける [SELECT](../../sql-reference/statements/select/index.md) クエリのパフォーマンスを大幅に向上させます。
 
-`LowCardinality`データ型の使用効率は、データの多様性に依存します。辞書に10,000未満の異なる値が含まれている場合、ClickHouseはデータの読み取りと保存の効率が主に高くなります。辞書に100,000を超える異なる値が含まれている場合、ClickHouseは通常のデータ型を使用する場合と比較してパフォーマンスが低下する可能性があります。
+`LowCardinality` データ型の使用効率はデータの多様性に依存します。ディクショナリーに10,000未満の異なる値が含まれている場合、ClickHouse は主にデータの読み取りおよび格納効率が高くなります。ディクショナリーに100,000を超える異なる値が含まれている場合、ClickHouse は通常のデータ型を使用した場合と比較してパフォーマンスが低下することがあります。
 
-文字列を扱う際には、[Enum](../../sql-reference/data-types/enum.md)の代わりに`LowCardinality`を使用することを検討してください。`LowCardinality`は使用時により柔軟性を提供し、同じかそれ以上の効率を示すことがよくあります。
+文字列を扱う際に `Enum` (../../sql-reference/data-types/enum.md) の代わりに `LowCardinality` を使用することを検討してください。`LowCardinality` は使用時により柔軟性を提供し、同等またはより高い効率をしばしば実現します。
 
-## Example {#example}
+## 例 {#example}
 
-`LowCardinality`カラムを持つテーブルを作成します：
+`LowCardinality` カラムを持つテーブルを作成します：
 
-``` sql
+```sql
 CREATE TABLE lc_t
 (
     `id` UInt16,
@@ -41,7 +43,7 @@ ENGINE = MergeTree()
 ORDER BY id
 ```
 
-## Related Settings and Functions {#related-settings-and-functions}
+## 関連設定および関数 {#related-settings-and-functions}
 
 設定：
 
@@ -55,8 +57,8 @@ ORDER BY id
 
 - [toLowCardinality](../../sql-reference/functions/type-conversion-functions.md#tolowcardinality)
 
-## Related content {#related-content}
+## 関連コンテンツ {#related-content}
 
-- ブログ: [スキーマとコーデックを用いたClickHouseの最適化](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)
-- ブログ: [ClickHouseにおける時系列データの処理](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
-- [文字列の最適化 (ロシア語の動画プレゼンテーション)](https://youtu.be/rqf-ILRgBdY?list=PL0Z2YDlm0b3iwXCpEFiOOYmwXzVmjJfEt)。 [英語のスライド](https://github.com/ClickHouse/clickhouse-presentations/raw/master/meetup19/string_optimization.pdf)
+- ブログ: [スキーマとコーデックを使用した ClickHouse の最適化](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)
+- ブログ: [ClickHouse における時系列データの扱い](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+- [文字列最適化 (ロシア語のビデオプレゼンテーション)](https://youtu.be/rqf-ILRgBdY?list=PL0Z2YDlm0b3iwXCpEFiOOYmwXzVmjJfEt)。 [英語のスライド](https://github.com/ClickHouse/clickhouse-presentations/raw/master/meetup19/string_optimization.pdf)

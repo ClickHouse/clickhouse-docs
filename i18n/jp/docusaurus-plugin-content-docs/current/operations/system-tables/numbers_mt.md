@@ -1,13 +1,13 @@
 ---
-description: "システムテーブルで `system.numbers` に似ていますが、読み取りが並列化されており、数値は任意の順序で返されます。"
+description: '`system.numbers` と類似したシステムテーブルですが、リードは並列化されており、数値は任意の順序で返されます。'
+keywords: ['system table', 'numbers_mt']
 slug: /operations/system-tables/numbers_mt
-title: "system.numbers_mt"
-keywords: ["システムテーブル", "numbers_mt"]
+title: 'system.numbers_mt'
 ---
 
-[`system.numbers`](../../operations/system-tables/numbers.md) と同じですが、読み取りが並列化されています。数値は任意の順序で返されます。
+[`system.numbers`](../../operations/system-tables/numbers.md) と同様ですが、リードは並列化されています。数値は任意の順序で返されます。
 
-テストに使用されます。
+テスト用に使用されます。
 
 **例**
 
@@ -29,5 +29,5 @@ SELECT * FROM system.numbers_mt LIMIT 10;
 │      9 │
 └────────┘
 
-10 行がセットに含まれています。経過時間: 0.001 秒。
+10 行の結果がセットされました。経過時間: 0.001 秒。
 ```

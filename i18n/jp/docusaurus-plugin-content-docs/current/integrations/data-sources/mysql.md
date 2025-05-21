@@ -1,10 +1,12 @@
 ---
 slug: /integrations/mysql
-sidebar_label: MySQL
-title: MySQL
+sidebar_label: 'MySQL'
+title: 'MySQL'
 hide_title: true
+description: 'MySQL統合に関するページ'
 ---
+```
 
-import MySQL from '@site/i18n/jp/docusaurus-plugin-content-docs/current/integrations/data-ingestion/dbms/mysql/index.md';
-
+```javascript
+import MySQL from '@site/docs/integrations/data-ingestion/dbms/mysql/index.md';
 <MySQL/>

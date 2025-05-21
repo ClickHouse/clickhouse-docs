@@ -1,8 +1,8 @@
 ---
-description: データウェアハウジングソリューションのパフォーマンスを比較するためのベンチマークデータセット。
+description: 'データウェアハウジングソリューションのパフォーマンスを比較するために使用されるベンチマークデータセットです。'
+sidebar_label: 'AMPLab ビッグデータベンチマーク'
 slug: /getting-started/example-datasets/amplab-benchmark
-sidebar_label: AMPLabビッグデータベンチマーク
-title: AMPLabビッグデータベンチマーク
+title: 'AMPLab ビッグデータベンチマーク'
 ---
 
 See https://amplab.cs.berkeley.edu/benchmark/
@@ -11,7 +11,7 @@ Sign up for a free account at https://aws.amazon.com. It requires a credit card,
 
 Run the following in the console:
 
-``` bash
+```bash
 $ sudo apt-get install s3cmd
 $ mkdir tiny; cd tiny;
 $ s3cmd sync s3://big-data-benchmark/pavlo/text-deflate/tiny/ .
@@ -26,7 +26,7 @@ $ cd ..
 
 Run the following ClickHouse queries:
 
-``` sql
+```sql
 CREATE TABLE rankings_tiny
 (
     pageURL String,
@@ -90,7 +90,7 @@ CREATE TABLE uservisits_5nodes_on_single
 
 Go back to the console:
 
-``` bash
+```bash
 $ for i in tiny/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO rankings_tiny FORMAT CSV"; done
 $ for i in tiny/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO uservisits_tiny FORMAT CSV"; done
 $ for i in 1node/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO rankings_1node FORMAT CSV"; done
@@ -101,7 +101,7 @@ $ for i in 5nodes/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i 
 
 Queries for obtaining data samples:
 
-``` sql
+```sql
 SELECT pageURL, pageRank FROM rankings_1node WHERE pageRank > 1000
 
 SELECT substring(sourceIP, 1, 8), sum(adRevenue) FROM uservisits_1node GROUP BY substring(sourceIP, 1, 8)

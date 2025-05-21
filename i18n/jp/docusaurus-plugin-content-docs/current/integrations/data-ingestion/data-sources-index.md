@@ -1,21 +1,21 @@
 ---
 slug: /integrations/index
-keywords: [AWS S3, PostgreSQL, Kafka, Apache Spark, MySQL, Cassandra, Redis, RabbitMQ, MongoDB, Google Cloud Storage, Hive, Hudi, Iceberg, MinIO, Delta Lake, RocksDB, Splunk, SQLite, NATS, EMQX, local files, JDBC, ODBC]
-description: データソースの概要ページ
+keywords: ['AWS S3', 'Azure Data Factory', 'PostgreSQL', 'Kafka', 'MySQL', 'Cassandra', 'Data Factory', 'Redis', 'RabbitMQ', 'MongoDB', 'Google Cloud Storage', 'Hive', 'Hudi', 'Iceberg', 'MinIO', 'Delta Lake', 'RocksDB', 'Splunk', 'SQLite', 'NATS', 'EMQX', 'local files', 'JDBC', 'ODBC']
+description: 'データソースの概要ページ'
+title: 'データソース'
 ---
 
 
 # データソース
 
 ClickHouseは、さまざまなソースからデータをデータベースに簡単に取り込むことができます。  
-詳細については、以下のページを参照してください。
+詳細情報は以下のページを参照してください：
 
-| データソース                                                                    |
+| データソース                                                                  |
 |-------------------------------------------------------------------------------|
 | [AWS S3](/integrations/s3)                                            |
 | [PostgreSQL](/integrations/postgresql)                                |
 | [Kafka](/integrations/kafka)                                          |
-| [Apache Spark](/integrations/apache-spark)                            |
 | [MySQL](/integrations/mysql)                                          |
 | [Cassandra](/integrations/cassandra)                                  |
 | [Redis](/integrations/redis)                                          |
@@ -31,6 +31,7 @@ ClickHouseは、さまざまなソースからデータをデータベースに�
 | [Splunk](/integrations/splunk)                                        |
 | [SQLite](/integrations/sqlite)                                        |
 | [NATS](/integrations/nats)                                            |
-| [Insert Local Files](/integrations/data-ingestion/insert-local-files) |
+| [EMQX](/integrations/emqx)                                            |
+| [ローカルファイルの挿入](/integrations/data-ingestion/insert-local-files) |
 | [JDBC](/integrations/jdbc/jdbc-with-clickhouse)                       |
 | [ODBC](/integrations/data-ingestion/dbms/odbc-with-clickhouse)        |

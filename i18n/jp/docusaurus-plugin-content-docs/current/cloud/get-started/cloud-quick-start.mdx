@@ -1,0 +1,323 @@
+---
+sidebar_position: 1
+slug: /cloud/get-started/cloud-quick-start
+sidebar_label: 'クラウドクイックスタート'
+keywords: ['clickhouse', 'install', 'getting started', 'quick start']
+pagination_next: cloud/get-started/sql-console
+title: 'ClickHouse Cloud クイックスタート'
+description: 'ClickHouse Cloud のクイックスタートガイド'
+---
+
+import Image from '@theme/IdealImage';
+import signup_page from '@site/static/images/_snippets/signup_page.png';
+import select_plan from '@site/static/images/_snippets/select_plan.png';
+import createservice1 from '@site/static/images/_snippets/createservice1.png';
+import scaling_limits from '@site/static/images/_snippets/scaling_limits.png';
+import createservice8 from '@site/static/images/_snippets/createservice8.png';
+import show_databases from '@site/static/images/_snippets/show_databases.png';
+import service_connect from '@site/static/images/_snippets/service_connect.png';
+import data_sources from '@site/static/images/_snippets/data_sources.png';
+import select_data_source from '@site/static/images/_snippets/select_data_source.png';
+import client_details from '@site/static/images/_snippets/client_details.png';
+import new_rows_from_csv from '@site/static/images/_snippets/new_rows_from_csv.png';
+import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
+
+
+# ClickHouse Cloud クイックスタート
+
+ClickHouse をすばやく立ち上げる最も簡単な方法は、新しいサービスを作成することです。[ClickHouse Cloud](https://console.clickhouse.cloud) で実行します。
+
+<VerticalStepper type="numbered">
+
+## ClickHouse サービスを作成する {#1-create-a-clickhouse-service}
+
+[ClickHouse Cloud](https://console.clickhouse.cloud) で無料の ClickHouse サービスを作成するには、次の手順を完了してサインアップする必要があります。
+
+  - [サインアップページ](https://console.clickhouse.cloud/signUp)でアカウントを作成します
+  - メールを使用してサインアップするか、Google SSO、Microsoft SSO、AWS Marketplace、Google Cloud、または Microsoft Azure 経由でサインアップすることができます
+  - メールとパスワードを使用してサインアップした場合は、受信したメールのリンクを介して次の 24 時間以内にメールアドレスを確認することを忘れないでください
+  - 作成したユーザー名とパスワードを使用してログインします
+
+<Image img={signup_page} size="md" alt='プランの選択' border/>
+<br/>
+
+ログインすると、ClickHouse Cloud はオンボーディングウィザードを開始し、新しい ClickHouse サービスを作成する手順を案内します。最初に、[プランを選択](/cloud/manage/cloud-tiers)するよう求められます。
+
+<Image img={select_plan} size="md" alt='プランの選択' border/>
+<br/>
+
+:::tip
+ほとんどのワークロードにはスケールティアをお勧めします。
+ティアの詳細は[こちら](/cloud/manage/cloud-tiers)で確認できます。
+:::
+
+プランを選択するには、最初のサービスをデプロイするための希望するリージョンを選択する必要があります。
+利用可能な正確なオプションは、選択したティアによって異なります。
+以下のステップでは、ユーザーが推奨されたスケールティアを選択したと仮定します。
+
+サービスを展開するための希望のリージョンを選択し、新しいサービスに名前を付けます：
+
+<Image img={createservice1} size="md" alt='新しい ClickHouse サービス' border/>
+<br/>
+
+デフォルトでは、スケールティアでは 4 VCPU と 16 GiB RAM を持つ 3 つのレプリカが作成されます。[垂直オートスケーリング](/manage/scaling#vertical-auto-scaling)は、スケールティアではデフォルトで有効になります。
+
+ユーザーは、必要に応じてサービスリソースをカスタマイズし、レプリカがスケールするための最小サイズと最大サイズを指定できます。準備ができたら、`Create service` を選択します。
+
+<Image img={scaling_limits} size="md" alt='スケーリング制限' border/>
+<br/>
+
+おめでとうございます！あなたの ClickHouse Cloud サービスは立ち上がりました。オンボーディングは完了です。データの取り込みとクエリの実行を始める方法の詳細について、引き続きお読みください。
+
+## ClickHouse に接続する {#2-connect-to-clickhouse}
+ClickHouse に接続する方法は 2 つあります：
+  - ウェブベースの SQL コンソールを使用して接続する
+  - アプリで接続する
+<br/>
+### SQL コンソールを使用して接続する {#connect-using-sql-console}
+
+迅速に始めるために、ClickHouse ではオンボーディングを完了した後にリダイレクトされるウェブベースの SQL コンソールを提供しています。
+
+<Image img={createservice8} size="md" alt='SQL コンソール' border/>
+
+クエリタブを作成し、接続が正常に動作していることを確認するために簡単なクエリを入力します：
+
+```sql
+SHOW databases
+```
+
+リストに 4 つのデータベースが表示され、あなたが追加したデータベースも表示されるはずです。
+
+<Image img={show_databases} size="md" alt='SQL コンソール' border/>
+<br/>
+
+以上で、あなたは新しい ClickHouse サービスの準備が整いました！
+
+### アプリで接続する {#connect-with-your-app}
+
+ナビゲーションメニューから接続ボタンを押します。モーダルが開き、サービスへの資格情報が表示され、インターフェースまたは言語クライアントとの接続方法に関する一連の指示が示されます。
+
+<Image img={service_connect} size="md" alt='サービス接続' border/>
+<br/>
+
+言語クライアントが表示されない場合は、[統合](/integrations) のリストを確認することをお勧めします。
+
+## データを追加する {#3-add-data}
+
+ClickHouse はデータを持つことで強化されます！データを追加する方法は多数あり、ほとんどはナビゲーションメニューからアクセス可能なデータソースページで利用できます。
+
+<Image img={data_sources} size="md" alt='データソース' border/>
+<br/>
+
+次の方法でデータをアップロードできます：
+  - S3、Postgres、Kafka、GCS などのデータソースからデータを取り込むために ClickPipe をセットアップする
+  - SQL コンソールを使用する
+  - ClickHouse クライアントを使用する
+  - ファイルをアップロードする - 受け入れられる形式は JSON、CSV、および TSV です
+  - ファイル URL からデータをアップロードする
+
+### ClickPipes {#clickpipes}
+
+[ClickPipes](http://clickhouse.com/docs/integrations/clickpipes) は、多様なソースからのデータ取り込みを数回のボタン操作で行えるようにするマネージド統合プラットフォームです。最も要求の厳しいワークロード向けに設計されており、ClickPipes の堅牢でスケーラブルなアーキテクチャは、一貫したパフォーマンスと信頼性を保証します。ClickPipes は、長期ストリーミングニーズや一回限りのデータロードジョブに使用できます。
+
+<Image img={select_data_source} size="md" alt='データソースの選択' border/>
+<br/>
+
+### SQL コンソールを使用してデータを追加する {#add-data-using-the-sql-console}
+
+ほとんどのデータベース管理システムと同様に、ClickHouse は論理的にテーブルを **データベース** にグループ化します。ClickHouse で新しいデータベースを作成するには、[`CREATE DATABASE`](../../sql-reference/statements/create/database.md) コマンドを使用します：
+
+```sql
+CREATE DATABASE IF NOT EXISTS helloworld
+```
+
+次のコマンドを実行して、`helloworld` データベースに `my_first_table` という名前のテーブルを作成します：
+
+```sql
+CREATE TABLE helloworld.my_first_table
+(
+    user_id UInt32,
+    message String,
+    timestamp DateTime,
+    metric Float32
+)
+ENGINE = MergeTree()
+PRIMARY KEY (user_id, timestamp)
+```
+
+上の例では、`my_first_table` は 4 つのカラムを持つ [`MergeTree`](../../engines/table-engines/mergetree-family/mergetree.md) テーブルです：
+
+  - `user_id`:  32 ビットの符号なし整数 ([UInt32](../../sql-reference/data-types/int-uint.md))
+  - `message`: [String](../../sql-reference/data-types/string.md) データ型で、他のデータベースシステムの `VARCHAR`、`BLOB`、`CLOB` などの型を置き換えます
+  - `timestamp`: [DateTime](../../sql-reference/data-types/datetime.md) 値で、時点を表します
+  - `metric`: 32 ビット浮動小数点数 ([Float32](../../sql-reference/data-types/float.md))
+
+:::note テーブルエンジン
+テーブルエンジンは以下を決定します：
+  - データがどのように、どこに保存されるか
+  - サポートされるクエリ
+  - データがレプリケートされるかどうか
+<br/>
+選択可能なテーブルエンジンは多数ありますが、単一ノード ClickHouse サーバーでのシンプルなテーブルの場合、[`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) が一般的な選択になります。
+:::
+
+#### 主キーの簡単な紹介 {#a-brief-intro-to-primary-keys}
+
+これ以上進む前に、ClickHouse における主キーの仕組みを理解することが重要です（主キーの実装は予想外かもしれません！）：
+
+  - ClickHouse の主キーは、テーブルの各行に対して **_一意ではありません_** 
+
+ClickHouse テーブルの主キーは、ディスクに書き込まれる際のデータのソート方法を決定します。8,192 行または 10MB のデータ（**インデックスの粒度**と呼ばれます）ごとに、主キーインデックスファイルにエントリが作成されます。この粒度の概念により、メモリに簡単に収容できる **スパースインデックス** が作成され、各グラニュールは `SELECT` クエリの際に処理されるカラムデータの最小データ量のストライプを表します。
+
+主キーは `PRIMARY KEY` パラメータを使用して定義できます。`PRIMARY KEY` が指定されていないテーブルを定義すると、そのキーは `ORDER BY` 句で指定されたタプルになります。両方の `PRIMARY KEY` と `ORDER BY` を指定すると、主キーはソート順のサブセットでなければなりません。
+
+主キーはソートキーでもあり、`(user_id, timestamp)` のタプルです。したがって、各カラムファイルに格納されるデータは `user_id` でソートされ、その後に `timestamp` でソートされます。
+
+ClickHouse のコア概念についての詳しい理解は、["コア概念"](../../managing-data/core-concepts/index.md)を参照してください。
+
+#### テーブルにデータを挿入する {#insert-data-into-your-table}
+
+ClickHouse では、馴染みのある [`INSERT INTO TABLE`](../../sql-reference/statements/insert-into.md) コマンドを使用できますが、[`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) テーブルへの各挿入により、ストレージ内に **パーツ** が作成されることを理解することが重要です。
+
+:::tip ClickHouse のベストプラクティス
+バッチごとに大量の行を挿入してください - 数万行、さらには数百万行を一度に。心配しないでください - ClickHouse はそのようなボリュームを簡単に処理できます - そして、あなたのサービスへの書き込みリクエストを減らすことで [お金を節約します](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous)。
+:::
+
+<br/>
+
+シンプルな例でも、一度に複数の行を挿入してみましょう：
+
+```sql
+INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES
+    (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
+    (102, 'バッチごとに大量の行を挿入する',                     yesterday(), 1.41421 ),
+    (102, '一般的に使用されるクエリに基づいてデータをソートする', today(),     2.718   ),
+    (101, 'グラニュールは最小のデータチャンクです',      now() + 5,   3.14159 )
+```
+
+:::note
+`timestamp` カラムは、さまざまな [**Date**](../../sql-reference/data-types/date.md) および [**DateTime**](../../sql-reference/data-types/datetime.md) 関数を使用して入力されます。ClickHouse には便利な関数が数百ありますので、[**関数**セクション](https://clickhouse.com/docs/en/sql-reference/functions/) でご覧いただけます。
+:::
+
+動作が確認できるかどうかを見てみましょう：
+
+```sql
+SELECT * FROM helloworld.my_first_table
+```
+
+### ClickHouse クライアントを使用してデータを追加する {#add-data-using-the-clickhouse-client}
+
+コマンドラインツールである [**clickhouse client**](/interfaces/cli) を使用して、ClickHouse Cloud サービスに接続することもできます。左メニューの `Connect` ボタンをクリックして、これらの詳細にアクセスします。ダイアログからドロップダウンメニューの `Native` を選択します：
+
+<Image img={client_details} size="md" alt='clickhouse client 接続詳細' border/>
+<br/>
+
+1. [ClickHouse](/interfaces/cli) をインストールします。
+
+2. 次のコマンドを実行し、ホスト名、ユーザー名、パスワードを置き換えます：
+
+```bash
+./clickhouse client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
+--secure --port 9440 \
+--user default \
+--password <password>
+```
+スマイリーフェイスのプロンプトが表示されれば、クエリを実行できる準備が整いました！
+```response
+:)
+```
+
+3. 次のクエリを実行してみましょう：
+
+<br/>
+
+```sql
+SELECT *
+FROM helloworld.my_first_table
+ORDER BY timestamp
+```
+
+応答が美しいテーブル形式で返ってくることに気づくでしょう：
+
+```response
+┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
+│     102 │ バッチごとに大量の行を挿入する                     │ 2022-03-21 00:00:00 │ 1.41421 │
+│     102 │ 一般的に使用されるクエリに基づいてデータをソートする │ 2022-03-22 00:00:00 │   2.718 │
+│     101 │ Hello, ClickHouse!                                 │ 2022-03-22 14:04:09 │      -1 │
+│     101 │ グラニュールは最小のデータチャンクです              │ 2022-03-22 14:04:14 │ 3.14159 │
+└─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
+
+4 行がセットにあります。経過時間: 0.008 秒。
+```
+
+4. [`FORMAT`](../../sql-reference/statements/select/format.md) 句を追加して、ClickHouse の [多くのサポートされた出力形式](/interfaces/formats/) のいずれかを指定します：
+
+<br/>
+
+```sql
+SELECT *
+FROM helloworld.my_first_table
+ORDER BY timestamp
+FORMAT TabSeparated
+```
+上記のクエリでは、出力がタブ区切りで返されます：
+```response
+クエリ ID: 3604df1c-acfd-4117-9c56-f86c69721121
+
+102 バッチごとに大量の行を挿入する      2022-03-21 00:00:00     1.41421
+102 一般的に使用されるクエリに基づいてデータをソートする  2022-03-22 00:00:00     2.718
+101 Hello, ClickHouse!  2022-03-22 14:04:09     -1
+101 グラニュールは最小のデータチャンクです       2022-03-22 14:04:14     3.14159
+
+4 行がセットにあります。経過時間: 0.005 秒。
+```
+
+5. `clickhouse client` を終了するには、**exit** コマンドを入力します：
+
+<br/>
+
+```bash
+exit
+```
+
+### ファイルをアップロードする {#upload-a-file}
+
+データベースを始める際によくある作業は、既にファイルにあるいくつかのデータを挿入することです。クリックストリームデータを表すサンプルデータがオンラインにあり、ユーザー ID、訪問した URL、およびイベントのタイムスタンプを含んでいます。
+
+CSV ファイル `data.csv` に以下のテキストがあるとします：
+
+```bash title="data.csv"
+102,これはファイル内のデータです,2022-02-22 10:43:28,123.45
+101,カンマ区切りです,2022-02-23 00:00:00,456.78
+103,FORMAT を使用して形式を指定します,2022-02-21 10:43:30,678.90
+```
+
+1. 次のコマンドで `my_first_table` にデータを挿入します：
+
+<br/>
+
+```bash
+./clickhouse client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
+--secure --port 9440 \
+--user default \
+--password <password> \
+--query='INSERT INTO helloworld.my_first_table FORMAT CSV' < data.csv
+```
+
+2. SQL コンソールからクエリを実行する際に、新しい行がテーブルに表示されることに注意してください：
+
+<br/>
+
+<Image img={new_rows_from_csv} size="md" alt='CSVファイルからの新しい行' />
+<br/>
+
+</VerticalStepper>
+
+## これから何をしますか？ {#whats-next}
+
+- [チュートリアル](/tutorial.md) では、2 百万行をテーブルに挿入し、いくつかの分析クエリを書く方法があります
+- データを挿入するための手順が記載された [例データセット](/getting-started/index.md) のリストがあります
+- [ClickHouse の使用開始に関する25分のビデオ](https://clickhouse.com/company/events/getting-started-with-clickhouse/)をご覧ください
+- 外部ソースからデータが来ている場合は、メッセージキュー、データベース、パイプラインなどへの接続ガイドの [コレクション](/integrations/index.mdx) を確認してください
+- UI/BI 可視化ツールを使用している場合は、[UI を ClickHouse に接続するためのユーザーガイド](/integrations/data-visualization)を確認してください
+- [主キー](/guides/best-practices/sparse-primary-indexes.md) に関するユーザーガイドは、主キーについて知っておくべきすべてのことと、それらを定義する方法を説明しています

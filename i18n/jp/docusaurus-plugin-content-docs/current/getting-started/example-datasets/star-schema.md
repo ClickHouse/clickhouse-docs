@@ -1,27 +1,28 @@
----
-description:  "スタースキーマベンチマーク（SSB）データセットとクエリ"
+description: 'スター スキーマ ベンチマーク (SSB) データセットとクエリ'
+sidebar_label: 'スター スキーマ ベンチマーク'
 slug: /getting-started/example-datasets/star-schema
-sidebar_label: スタースキーマベンチマーク
-title: "スタースキーマベンチマーク（SSB、2009）"
----
+title: 'スター スキーマ ベンチマーク (SSB, 2009)'
+```
 
-スタースキーマベンチマークは、基本的に [TPC-H](tpch.md) のテーブルとクエリを基にしていますが、TPC-Hとは異なり、スタースキーマレイアウトを使用しています。データの大部分は、巨大なファクトテーブルに保存されており、その周りに複数の小さなディメンジョンテーブルがあります。クエリは、ファクトテーブルを1つ以上のディメンジョンテーブルと結合し、フィルター条件を適用します。例えば、`MONTH = 'JANUARY'` のように。
+スター スキーマ ベンチマークは、概ね [TPC-H](tpch.md) のテーブルとクエリに基づいていますが、TPC-Hとは異なり、スタースキーマレイアウトを使用しています。
+データの大部分は、複数の小さなディメンションテーブルに囲まれた巨大なファクトテーブルにあります。
+クエリは、ファクトテーブルを1つ以上のディメンションテーブルに結合してフィルター条件を適用します。例えば、`MONTH = 'JANUARY'`のように。
 
 参考文献:
-- [スタースキーマベンチマーク](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O'Neil et. al), 2009
-- [データスキューがクエリパフォーマンスに及ぼす影響をテストするスタースキーマベンチマークのバリエーション](https://doi.org/10.1145/2479871.2479927) (Rabl. et. al.), 2013
+- [スター スキーマ ベンチマーク](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O'Neil et. al), 2009
+- [クエリパフォーマンスに対するデータスキューの影響をテストするためのスター スキーマ ベンチマークのバリエーション](https://doi.org/10.1145/2479871.2479927) (Rabl. et. al.), 2013
 
-まず、スタースキーマベンチマークリポジトリをチェックアウトし、データジェネレータをコンパイルします:
+まず、スター スキーマ ベンチマークリポジトリをチェックアウトし、データジェネレーターをコンパイルします:
 
-``` bash
+```bash
 git clone https://github.com/vadimtk/ssb-dbgen.git
 cd ssb-dbgen
 make
 ```
 
-次に、データを生成します。パラメータ `-s` はスケールファクタを指定します。例えば、 `-s 100` の場合、6億行が生成されます。
+次に、データを生成します。パラメータ `-s` はスケールファクターを指定します。例えば、`-s 100` では 6 億行が生成されます。
 
-``` bash
+```bash
 ./dbgen -s 1000 -T c
 ./dbgen -s 1000 -T l
 ./dbgen -s 1000 -T p
@@ -29,9 +30,9 @@ make
 ./dbgen -s 1000 -T d
 ```
 
-次に、ClickHouseでテーブルを作成します:
+次に、ClickHouse でテーブルを作成します:
 
-``` sql
+```sql
 CREATE TABLE customer
 (
         C_CUSTKEY       UInt32,
@@ -116,9 +117,9 @@ CREATE TABLE date
 ENGINE = MergeTree ORDER BY D_DATEKEY;
 ```
 
-データは次のようにインポートできます:
+データは以下のようにインポートできます:
 
-``` bash
+```bash
 clickhouse-client --query "INSERT INTO customer FORMAT CSV" < customer.tbl
 clickhouse-client --query "INSERT INTO part FORMAT CSV" < part.tbl
 clickhouse-client --query "INSERT INTO supplier FORMAT CSV" < supplier.tbl
@@ -126,9 +127,10 @@ clickhouse-client --query "INSERT INTO lineorder FORMAT CSV" < lineorder.tbl
 clickhouse-client --query "INSERT INTO date FORMAT CSV" < date.tbl
 ```
 
-ClickHouseの多くの使用例では、複数のテーブルが単一の非正規フラットテーブルに変換されます。このステップはオプショナルです。以下のクエリは、もともとの形式と非正規テーブル用に書き換えた形式が示されています。
+ClickHouseの多くの使用ケースでは、複数のテーブルが単一の非正規化されたフラット テーブルに変換されます。
+このステップはオプションですが、以下のクエリは元の形式と非正規化されたテーブル用に書き直された形式でリストされています。
 
-``` sql
+```sql
 SET max_memory_usage = 20000000000;
 
 CREATE TABLE lineorder_flat
@@ -178,7 +180,7 @@ INNER JOIN supplier AS s ON s.S_SUPPKEY = l.LO_SUPPKEY
 INNER JOIN part AS p ON p.P_PARTKEY = l.LO_PARTKEY;
 ```
 
-クエリは `./qgen -s <scaling_factor>` によって生成されます。例として、`s = 100` の場合のクエリ:
+クエリは `./qgen -s <scaling_factor>` によって生成されます。`s = 100` の例クエリ:
 
 Q1.1
 
@@ -195,9 +197,9 @@ WHERE
     AND LO_QUANTITY < 25;
 ```
 
-非正規テーブル:
+非正規化テーブル:
 
-``` sql
+```sql
 SELECT
     sum(LO_EXTENDEDPRICE * LO_DISCOUNT) AS revenue
 FROM
@@ -223,7 +225,7 @@ WHERE
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-非正規テーブル:
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -252,7 +254,7 @@ WHERE
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-非正規テーブル:
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -292,7 +294,7 @@ ORDER BY
     P_BRAND;
 ```
 
-非正規テーブル:
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -338,7 +340,7 @@ ORDER BY
     P_BRAND;
 ```
 
-非正規テーブル:
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -381,7 +383,7 @@ ORDER BY
     P_BRAND;
 ```
 
-非正規テーブル:
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -426,7 +428,7 @@ ORDER BY
     REVENUE DESC;
 ```
 
-非正規テーブル:
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -478,7 +480,7 @@ ORDER BY
     REVENUE DESC;
 ```
 
-非正規テーブル:
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -531,7 +533,7 @@ ORDER BY
     revenue DESC;
 ```
 
-非正規テーブル:
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -583,7 +585,7 @@ ORDER BY
     revenue DESC;
 ```
 
-非正規テーブル:
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -634,7 +636,7 @@ ORDER BY
     C_NATION
 ```
 
-非正規テーブル:
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -684,7 +686,7 @@ ORDER BY
     P_CATEGORY
 ```
 
-非正規テーブル:
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -741,7 +743,7 @@ ORDER BY
     P_BRAND
 ```
 
-非正規テーブル:
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -763,4 +765,3 @@ ORDER BY
     year ASC,
     S_CITY ASC,
     P_BRAND ASC;
-```

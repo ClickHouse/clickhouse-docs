@@ -1,66 +1,71 @@
 ---
-slug: /sql-reference/table-functions/mongodb
+description: 'リモートMongoDBサーバーに保存されているデータに対して、`SELECT`クエリを実行できるようにします。'
+sidebar_label: 'mongodb'
 sidebar_position: 135
-sidebar_label: mongodb
-title: "mongodb"
-description: "リモートの MongoDB サーバーに保存されたデータに対して、`SELECT` クエリを実行できるようにします。"
+slug: /sql-reference/table-functions/mongodb
+title: 'mongodb'
 ---
 
 
 # mongodb テーブル関数
 
-リモートの MongoDB サーバーに保存されたデータに対して、`SELECT` クエリを実行できるようにします。
+リモートMongoDBサーバーに保存されているデータに対して、`SELECT`クエリを実行できるようにします。
 
 **構文**
 
-``` sql
-mongodb(host:port, database, collection, user, password, structure [, options])
+```sql
+mongodb(host:port, database, collection, user, password, structure[, options[, oid_columns]])
 ```
 
 **引数**
 
-- `host:port` — MongoDB サーバーのアドレス。
+- `host:port` — MongoDBサーバーのアドレス。
 
-- `database` — リモートデータベースの名前。
+- `database` — リモートデータベース名。
 
-- `collection` — リモートコレクションの名前。
+- `collection` — リモートコレクション名。
 
-- `user` — MongoDB ユーザー。
+- `user` — MongoDBユーザー。
 
 - `password` — ユーザーパスワード。
 
-- `structure` - この関数から返される ClickHouse テーブルのスキーマ。
+- `structure` - この関数から返されるClickHouseテーブルのスキーマ。
 
-- `options` - MongoDB 接続文字列のオプション（オプションのパラメータ）。
+- `options` - MongoDB接続文字列オプション（オプションのパラメータ）。
+
+- `oid_columns` - WHERE句で`oid`として扱うべきカラムのカンマ区切りリスト。デフォルトは`_id`。
 
 :::tip
-MongoDB Atlas クラウドサービスを使用している場合は、次のオプションを追加してください：
+MongoDB Atlasのクラウドサービスを利用している場合、以下のオプションを追加してください：
 
 ```ini
 'connectTimeoutMS=10000&ssl=true&authSource=admin'
 ```
-
 :::
 
-また、URI を使用して接続することもできます：
-``` sql
-mongodb(uri, collection, structure)
+URIによって接続することも可能です：
+
+```sql
+mongodb(uri, collection, structure[, oid_columns])
 ```
+
 **引数**
 
 - `uri` — 接続文字列。
 
-- `collection` — リモートコレクションの名前。
+- `collection` — リモートコレクション名。
 
-- `structure` — この関数から返される ClickHouse テーブルのスキーマ。
+- `structure` — この関数から返されるClickHouseテーブルのスキーマ。
+
+- `oid_columns` - WHERE句で`oid`として扱うべきカラムのカンマ区切りリスト。デフォルトは`_id`。
 
 **返される値**
 
-元の MongoDB テーブルと同じカラムを持つテーブルオブジェクト。
+元のMongoDBテーブルと同じカラムを持つテーブルオブジェクト。
 
 **例**
 
-`test` という MongoDB データベースに `my_collection` というコレクションが定義されており、いくつかのドキュメントを挿入したとします：
+`test`というMongoDBデータベースに`my_collection`というコレクションがあり、いくつかのドキュメントを挿入したと仮定します：
 
 ```sql
 db.createUser({user:"test_user",pwd:"password",roles:[{role:"readWrite",db:"test"}]})
@@ -76,7 +81,7 @@ db.my_collection.insertOne(
 )
 ```
 
-`mongodb` テーブル関数を使用してコレクションをクエリします：
+`mongodb`テーブル関数を使用してコレクションをクエリしましょう：
 
 ```sql
 SELECT * FROM mongodb(
@@ -100,7 +105,7 @@ SELECT * FROM mongodb(
 )
 ```
 
-**関連項目**
+**関連情報**
 
-- [MongoDB テーブルエンジン](engines/table-engines/integrations/mongodb.md)
-- [MongoDB を辞書ソースとして使用する](sql-reference/dictionaries/index.md#mongodb)
+- [MongoDBテーブルエンジン](engines/table-engines/integrations/mongodb.md)
+- [MongoDBを辞書ソースとして使用する](sql-reference/dictionaries/index.md#mongodb)

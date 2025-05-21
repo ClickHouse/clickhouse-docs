@@ -1,66 +1,68 @@
 ---
-sidebar_label: セキュリティとコンプライアンス
+sidebar_label: 'セキュリティとコンプライアンス'
 slug: /cloud/security/security-and-compliance
-title: セキュリティとコンプライアンス
+title: 'セキュリティとコンプライアンス'
+description: 'このページでは、顧客データを保護するために ClickHouse Cloud で実施されているセキュリティとコンプライアンス対策について説明します。'
 ---
+
 import BetaBadge from '@theme/badges/BetaBadge';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 
 
-# セキュリティとコンプライアンス報告書
-ClickHouse Cloud は、顧客のセキュリティとコンプライアンスのニーズを評価し、追加の報告書が要求されるたびにプログラムを継続的に拡張しています。追加情報や報告書のダウンロードについては、[Trust Center](https://trust.clickhouse.com)をご覧ください。
+# セキュリティとコンプライアンスレポート
+ClickHouse Cloud は、顧客のセキュリティとコンプライアンスのニーズを評価し、追加のレポートが要求されるにつれてプログラムを継続的に拡張しています。追加の情報やレポートのダウンロードについては、私たちの [Trust Center](https://trust.clickhouse.com) を訪問してください。
 
-### SOC 2 Type II (2022年から) {#soc-2-type-ii-since-2022}
+### SOC 2 Type II (2022年より) {#soc-2-type-ii-since-2022}
 
-システムおよび組織の管理基準 (SOC) 2 は、セキュリティ、可用性、機密性、処理の整合性およびプライバシー基準に焦点を当てた報告書であり、組織のシステムに適用されるTrust Services Criteria (TSC)を含み、これらの管理基準に関する信頼できる当事者（顧客）への保証を提供することを目的としています。ClickHouseは、独立した外部監査人と連携し、ClickHouse Cloudのセキュリティ、可用性、機密性、処理の整合性に関する監査を年に少なくとも一度実施しています。
+システムおよび組織の管理 (SOC) 2 は、セキュリティ、可用性、機密性、処理の整合性、プライバシー基準に焦点を当てたレポートです。これは、組織のシステムに適用され、これらの管理策について依存する当事者（私たちの顧客）に対する保証を提供するように設計されています。ClickHouse は独立した外部監査人と協力し、年間少なくとも1回、私たちのシステムのセキュリティ、可用性および処理の整合性、そして私たちのシステムによって処理されるデータの機密性とプライバシーに関する監査を受けています。レポートは、私たちの ClickHouse Cloud と Bring Your Own Cloud (BYOC) 提供を対象としています。
 
-### ISO 27001 (2023年から) {#iso-27001-since-2023}
+### ISO 27001 (2023年より) {#iso-27001-since-2023}
 
-国際標準化機構 (ISO) 27001 は、情報セキュリティに関する国際標準です。企業は、リスク管理、ポリシーの策定と伝達、セキュリティ管理策の実施、およびコンポーネントが関連性を保ち、有効であることを確認するための監視プロセスを含む情報セキュリティ管理システム (ISMS) を実施する必要があります。ClickHouseは内部監査を実施し、2年間の証明書発行の間に独立した外部監査人と連携して監査と中間検査を受けています。
+国際標準化機構 (ISO) 27001 は、情報セキュリティに関する国際基準です。企業は、リスク管理、ポリシーの作成と通知、セキュリティ制御の実施、およびコンポーネントが関連性と効果を維持することを確認するためのプロセスを含む情報セキュリティ管理システム（ISMS）を実装する必要があります。ClickHouse は内部監査を実施し、独立した外部監査人と協力して、証明書発行の2年間にわたって監査と中間検査を行います。
 
-### 米国データプライバシーフレームワーク (2024年から) {#us-dpf-since-2024}
+### 米国データプライバシーフレームワーク (2024年より) {#us-dpf-since-2024}
 
-米国データプライバシーフレームワークは、米国の組織が欧州連合/欧州経済地域、英国、スイスからの個人データ移転のための信頼できるメカニズムを提供するために開発されました。このフレームワークは、EU、UK、スイスの法律に準拠しています (https://dataprivacyframework.gov/Program-Overview)。ClickHouseはこのフレームワークに自己認証し、[Data Privacy Framework List](https://dataprivacyframework.gov/list) に掲載されています。
+米国データプライバシーフレームワークは、米国の組織に対し、EU、英国、スイスから米国への個人データ転送のための信頼できるメカニズムを提供するために開発されており、EU、UK およびスイスの法律に準拠しています (https://dataprivacyframework.gov/Program-Overview)。ClickHouse はこのフレームワークに自己認証し、[データプライバシーフレームワークリスト](https://dataprivacyframework.gov/list) に掲載されています。
 
-### HIPAA (2024年から) {#hipaa-since-2024}
-
-<EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
-
-顧客は、ビジネスアソシエイト契約 (BAA) に署名し、HIPAA準拠地域にサービスをオンボードするために営業またはサポートに連絡する必要があります。さらに、顧客は、[shared responsibility model](/cloud/security/shared-responsibility-model) を確認し、使用ケースに適した管理策を選択し実施するべきです。
-
-1996年の健康保険の適用性と責任に関する法律 (HIPAA) は、米国のプライバシー法であり、保護された健康情報 (PHI) の管理に焦点を当てています。HIPAAには、電子的な個人健康情報 (ePHI) を保護することに焦点を当てた[セキュリティルール](https://www.hhs.gov/hipaa/for-professionals/security/index.html)など、いくつかの要件があります。ClickHouseは、指定されたサービスに格納されたePHIの機密性、整合性、およびセキュリティを確保するために、管理的、物理的、および技術的な保護策を実施しています。私たちは、2025年半ばにSOC 2にHIPAAを追加し、コンプライアンスプログラムの外部保証を提供する予定です。
-
-### PCIサービスプロバイダー (2025年から) {#pci-service-provider-since-2025}
+### HIPAA (2024年より) {#hipaa-since-2024}
 
 <EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
 
-顧客は、カード保有者データをロードするために、PCI準拠地域にサービスをオンボードするために営業またはサポートに連絡する必要があります。さらに、顧客は、[Trust Center](https://trust.clickhouse.com)で利用可能なPCI責任概要を確認し、使用ケースに適した管理策を選択し実施するべきです。
+顧客はビジネスアソシエイト契約（BAA）を完了し、ePHIをロードするためにHIPAA準拠の地域にサービスをオンボードするには営業またはサポートに連絡する必要があります。さらに、顧客は当社の[共有責任モデル](/cloud/security/shared-responsibility-model) を確認し、自身のユースケースに適した管理策を選択し実装する必要があります。
 
-[Payment Card Industry Data Security Standard (PCI DSS)](https://www.pcisecuritystandards.org/standards/pci-dss/)は、クレジットカードの支払いデータを保護するためにPCIセキュリティ基準評議会が作成した一連のルールです。ClickHouseは、クレジットカードデータの保管に関連するPCI基準に基づいて、合格のコンプライアンスレポート (ROC) を受けた資格あるセキュリティアセッサー (QSA) による外部監査を受けました。コンプライアンス証明書 (AOC) およびPCI責任概要のコピーをダウンロードするには、[Trust Center](https://trust.clickhouse.com)をご覧ください。
+1996年の健康保険の携行性と説明責任に関する法（HIPAA）は、保護された健康情報（PHI）の管理に焦点を当てた米国のプライバシー法です。HIPAA には、電子的な個人健康情報（ePHI）を保護することに重点を置く[セキュリティルール](https://www.hhs.gov/hipaa/for-professionals/security/index.html)など、いくつかの要件があります。ClickHouse は、指定されたサービスに保存された ePHI の機密性、整合性およびセキュリティを確保するために、行政的、物理的および技術的な保護策を実施しています。これらの活動は、私たちの[Trust Center](https://trust.clickhouse.com) でダウンロード可能な SOC 2 Type II レポートに組み込まれています。
+
+### PCIサービスプロバイダー (2025年より) {#pci-service-provider-since-2025}
+
+<EnterprisePlanFeatureBadge feature="PCI compliance" support="true"/>
+
+顧客はカード保有者データをロードするために、PCI準拠の地域にサービスをオンボードするには営業またはサポートに連絡する必要があります。さらに、顧客は当社の[PCI責任概要](https://trust.clickhouse.com) を確認し、自身のユースケースに適した管理策を選択し実装する必要があります。
+
+[Payment Card Industry Data Security Standard (PCI DSS)](https://www.pcisecuritystandards.org/standards/pci-dss/) は、クレジットカード支払いデータを保護するために PCI セキュリティ基準評議会によって作成された一連の規則です。ClickHouse は、クレジットカードデータの保存に関連する PCI 基準に対して合格のコンプライアンスレポート (ROC) を受ける外部監査を専門のセキュリティアセッサー (QSA) と共に受けました。コンプライアンス証明書 (AOC) および PCI 責任概要のコピーをダウンロードするには、私たちの [Trust Center](https://trust.clickhouse.com) を訪れてください。
 
 
 # プライバシーコンプライアンス
 
-上記の項目に加え、ClickHouseは一般データ保護規則 (GDPR)、カリフォルニア消費者プライバシー法 (CCPA)、およびその他の関連プライバシーフレームワークに関する内部コンプライアンスプログラムを維持しています。ClickHouseが収集する個人データ、どのように使用されるか、どのように保護されているか、その他のプライバシー関連情報の詳細は、以下の場所で確認できます。
+上記の項目に加えて、ClickHouse は一般データ保護規則 (GDPR)、カリフォルニア州消費者プライバシー法 (CCPA) およびその他の関連プライバシーフレームワークに対処する内部コンプライアンスプログラムを維持しています。ClickHouse が収集する個人データ、その使用方法、保護方法、その他のプライバシー関連情報の詳細については、以下の場所をご覧ください。
 
 ### 法的文書 {#legal-documents}
 
 - [プライバシーポリシー](https://clickhouse.com/legal/privacy-policy)
 - [クッキーポリシー](https://clickhouse.com/legal/cookie-policy)
 - [データプライバシーフレームワーク通知](https://clickhouse.com/legal/data-privacy-framework)
-- [データ処理付加条項 (DPA)](https://clickhouse.com/legal/agreements/data-processing-addendum)
+- [データ処理に関する付録 (DPA)](https://clickhouse.com/legal/agreements/data-processing-addendum)
 
 ### 処理場所 {#processing-locations}
 
 - [サブプロセッサーおよび関連会社](https://clickhouse.com/legal/agreements/subprocessors)
-- [データ処理場所](https://trust.clickhouse.com)
+- [データ処理場所](https://trust.clickhouse.com) 
 
-### その他の手続き {#additional-procedures}
+### 追加手続き {#additional-procedures}
 
 - [個人データアクセス](/cloud/security/personal-data-access)
 - [アカウント削除](/cloud/manage/close_account)
 
 
-# 決済コンプライアンス
+# 支払いコンプライアンス
 
-ClickHouseは、[PCI SAQ A v4.0](https://www.pcisecuritystandards.org/document_library/)に準拠したクレジットカードで支払うための安全な方法を提供しています。
+ClickHouse は、[PCI SAQ A v4.0](https://www.pcisecuritystandards.org/document_library/) に準拠したクレジットカード支払いのための安全な方法を提供します。

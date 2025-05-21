@@ -1,23 +1,24 @@
 ---
-title: TabSeparatedRawWithNamesAndTypes
-slug: /interfaces/formats/TabSeparatedRawWithNamesAndTypes
-keywords: [TabSeparatedRawWithNamesAndTypes, TSVRawWithNamesAndTypes, RawWithNamesAndTypes]
-input_format: true
-output_format: true
 alias: ['TSVRawWithNamesAndTypes', 'RawWithNamesAndTypes']
+description: 'TabSeparatedRawWithNamesAndTypes形式のドキュメント'
+input_format: true
+keywords: ['TabSeparatedRawWithNamesAndTypes', 'TSVRawWithNamesAndTypes', 'RawWithNamesAndTypes']
+output_format: true
+slug: /interfaces/formats/TabSeparatedRawWithNamesAndTypes
+title: 'TabSeparatedRawWithNamesAndTypes'
 ---
 
-| 入力  | 出力   | エイリアス                                           |
+| 入力 | 出力 | 別名                                             |
 |-------|--------|---------------------------------------------------|
 | ✔     | ✔      | `TSVRawWithNamesAndNames`, `RawWithNamesAndNames` |
 
 ## 説明 {#description}
 
-[`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md) フォーマットとは異なり、
+[`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md)形式とは異なり、
 行はエスケープなしで書き込まれます。
 
 :::note
-このフォーマットで解析する際は、各フィールドにタブや改行を使用することは許可されていません。
+この形式で解析する際、各フィールドにはタブまたは改行を含めることはできません。
 :::
 
 ## 使用例 {#example-usage}

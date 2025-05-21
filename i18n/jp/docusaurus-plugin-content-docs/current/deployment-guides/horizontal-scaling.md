@@ -1,15 +1,18 @@
 ---
 slug: /architecture/horizontal-scaling
-sidebar_label: スケーリングアウト
+sidebar_label: 'スケーリングアウト'
 sidebar_position: 10
-title: スケーリングアウト
+title: 'スケーリングアウト'
+description: 'スケーラビリティを提供するように設計されたアーキテクチャの例を説明するページ'
 ---
-import ReplicationShardingTerminology from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_replication-sharding-terminology.md';
-import ConfigFileNote from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_config-files.md';
+
+import Image from '@theme/IdealImage';
+import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
+import ConfigFileNote from '@site/docs/_snippets/_config-files.md';
 import scalingOut1 from '@site/static/images/deployment-guides/scaling-out-1.png';
 
 ## 説明 {#description}
-この例のアーキテクチャは、拡張性を提供するために設計されています。 それは3つのノードを含みます：2つのClickHouseと調整（ClickHouse Keeper）サーバー、および第3のサーバーは、クオーラムを三つにするためだけのClickHouse Keeperを持っています。この例では、データベース、テーブル、および両方のノードのデータをクエリできる分散テーブルを作成します。
+この例のアーキテクチャはスケーラビリティを提供することを目的としています。 それは、2つの統合された ClickHouse サーバー（ClickHouse Keeper を含む）と、クォーラムの3を完成させるための単独の ClickHouse Keeper サーバー、合計で3つのノードを含んでいます。この例を使って、データを両方のノードでクエリできるデータベース、テーブル、分散テーブルを作成します。
 
 ## レベル: 基本 {#level-basic}
 
@@ -18,33 +21,33 @@ import scalingOut1 from '@site/static/images/deployment-guides/scaling-out-1.png
 ## 環境 {#environment}
 ### アーキテクチャ図 {#architecture-diagram}
 
-<img src={scalingOut1} alt="2つのシャードと1つのレプリカのためのアーキテクチャ図" />
+<Image img={scalingOut1} size='md' alt='2つのシャードと1つのレプリカのアーキテクチャ図' />
 
 |ノード|説明|
 |----|-----------|
 |`chnode1`|データ + ClickHouse Keeper|
 |`chnode2`|データ + ClickHouse Keeper|
-|`chnode3`|ClickHouse Keeperのクオーラム用|
+|`chnode3`|ClickHouse Keeper のクォーラム用|
 
 :::note
-本番環境では、ClickHouse Keeperが専用ホストで実行されることを強くお勧めします。この基本構成では、Keeper機能がClickHouse Serverプロセス内で実行されます。 ClickHouse Keeperをスタンドアロンでデプロイするための手順は、[インストールドキュメント](/getting-started/install.md/#install-standalone-clickhouse-keeper)にあります。
+運用環境では、ClickHouse Keeper が専用のホストで実行されることを強くお勧めします。この基本設定は、ClickHouse サーバープロセス内で Keeper の機能を実行します。ClickHouse Keeper をスタンドアロンで展開するための手順は、[インストール手順](/getting-started/install/install.mdx)で入手できます。
 :::
 
 ## インストール {#install}
 
-[アーカイブタイプに関する手順](/getting-started/install.md/#available-installation-options)に従って、3つのサーバーにClickhouseをインストールします（.deb、.rpm、.tar.gzなど）。この例では、すべての3台のマシンでClickHouse ServerおよびClientのインストール手順に従います。
+3台のサーバーに ClickHouse をインストールします。 [アーカイタイプに応じた手順](/getting-started/install/install.mdx)（.deb、.rpm、.tar.gz など）に従ってください。この例では、すべてのマシンにおいて ClickHouse サーバーとクライアントのインストール手順に従います。
 
 ## 設定ファイルの編集 {#editing-configuration-files}
 
 <ConfigFileNote />
 
-## chnode1の設定 {#chnode1-configuration}
+## chnode1 の設定 {#chnode1-configuration}
 
-`chnode1`には5つの設定ファイルがあります。これらのファイルを1つのファイルに統合することもできますが、ドキュメントの明確さのために、個別に見る方が簡単かもしれません。設定ファイルを読み進めると、`chnode1`と`chnode2`のほとんどの設定が同じであることがわかります; 違いは強調されます。
+`chnode1` には、5つの設定ファイルがあります。これらのファイルを1つのファイルに統合することもできますが、文書の明確さのために、個別に見る方が簡単かもしれません。設定ファイルを読み進めると、`chnode1` と `chnode2` の間でほとんどの設定が同じであることがわかります。違いは強調表示されます。
 
 ### ネットワークおよびロギング設定 {#network-and-logging-configuration}
 
-これらの値は必要に応じてカスタマイズできます。この例の設定は、1000Mで3回ロールオーバーするデバッグログを提供します。ClickHouseはポート8123と9000でIPv4ネットワークをリッスンし、ポート9009をサーバー間通信に使用します。
+これらの値は、お好みに応じてカスタマイズできます。この例の設定では、1000M のデバッグログが3回ロールオーバーします。ClickHouse は、ポート8123 および9000 の IPv4 ネットワークでリッスンし、ポート9009 をサーバー間通信に使用します。
 
 ```xml title="network-and-logging.xml on chnode1"
 <clickhouse>
@@ -63,12 +66,12 @@ import scalingOut1 from '@site/static/images/deployment-guides/scaling-out-1.png
 </clickhouse>
 ```
 
-### ClickHouse Keeper の設定 {#clickhouse-keeper-configuration}
+### ClickHouse Keeper 設定 {#clickhouse-keeper-configuration}
 
-ClickHouse Keeperはデータレプリケーションと分散DDLクエリ実行の調整システムを提供します。 ClickHouse KeeperはApache ZooKeeperと互換性があります。この設定は、ポート9181でClickHouse Keeperを有効にします。強調された行は、このKeeperインスタンスの`server_id`が1であることを示しています。これは、3台のサーバーで唯一の違いです。 `chnode2`には`server_id`が2に設定され、`chnode3`には`server_id`が3に設定されます。 raft設定セクションはすべての3台のサーバーで同じであり、`server_id`とraft設定内の`server`インスタンスの関係を示すために強調されています。
+ClickHouse Keeper はデータのレプリケーションと分散 DDL クエリ実行のための調整システムを提供します。ClickHouse Keeper は Apache ZooKeeper と互換性があります。この設定は、ポート9181で ClickHouse Keeper を有効にします。強調表示された行は、このインスタンスの Keeper が `server_id` 1 であることを指定しています。これは、3つのサーバー間の `enable-keeper.xml` ファイルでの唯一の違いです。 `chnode2` は `server_id` が `2` に設定され、`chnode3` は `server_id` が `3` に設定されます。ラフト設定セクションは、3つのサーバーで同様であり、以下に強調表示されている「server_id」とラフト設定内の「server」インスタンスとの関係を示しています。
 
 :::note
-何らかの理由でKeeperノードが交換または再構築される場合、既存の`server_id`を再利用しないでください。 たとえば、`server_id`が`2`のKeeperノードが再構築された場合、`4`以上の`server_id`を付与してください。
+何らかの理由で Keeper ノードが置き換えられたり再構築されたりする場合は、既存の `server_id` を再利用しないでください。たとえば、`server_id` 2 の Keeper ノードが再構築される場合は、`4` 以上の server_id を付けてください。
 :::
 
 ```xml title="enable-keeper.xml on chnode1"
@@ -109,10 +112,9 @@ ClickHouse Keeperはデータレプリケーションと分散DDLクエリ実行
 </clickhouse>
 ```
 
-### マクロの設定 {#macros-configuration}
+### マクロ設定 {#macros-configuration}
 
-マクロ`shard`と`replica`は分散DDLの複雑さを軽減します。設定された値は、DDLクエリ内で自動的に置き換えられ、DDLを簡単にします。この設定のマクロは、各ノードのシャードとレプリカ番号を指定します。
-この2シャード1レプリカの例では、レプリカマクロは`replica_1`で、両方の`chnode1`と`chnode2`に設定されています。シャードマクロは`chnode1`が`1`で、`chnode2`が`2`です。
+マクロ `shard` と `replica` は、分散 DDL の複雑さを軽減します。設定された値は、DDL クエリに自動的に置換され、DDL が簡素化されます。この設定のマクロは、各ノードのシャードとレプリカ番号を指定します。この 2 シャード 1 レプリカの例では、`replica_1` マクロは、レプリカが1つだけなので、`chnode1` と `chnode2` の両方で使用されます。シャードマクロは `chnode1` で `1` に、`chnode2` で `2` に設定されています。
 
 ```xml title="macros.xml on chnode1"
 <clickhouse>
@@ -124,14 +126,14 @@ ClickHouse Keeperはデータレプリケーションと分散DDLクエリ実行
 </clickhouse>
 ```
 
-### レプリケーションおよびシャーディングの設定 {#replication-and-sharding-configuration}
+### レプリケーションおよびシャーディング設定 {#replication-and-sharding-configuration}
 
-上から始めましょう：
-- XMLの`remote_servers`セクションは、環境内の各クラスタを指定します。属性`replace=true`は、デフォルトのClickHouse構成のサンプル`remote_servers`をこのファイルで指定された`remote_servers`構成に置き換えます。この属性がないと、このファイル内のリモートサーバーはデフォルトのサンプルリストに追加されます。
-- この例では、`cluster_2S_1R`という名前のクラスタが1つあります。
-- クラスタ`cluster_2S_1R`には、値`mysecretphrase`のための秘密が作成されます。この秘密は、正しいサーバーが一緒に参加できるように、環境内のすべてのリモートサーバーで共有されます。
-- クラスタ`cluster_2S_1R`には2つのシャードがあり、それぞれのシャードには1つのレプリカがあります。このドキュメントの冒頭にあるアーキテクチャ図を見て、それを以下のXMLの2つの`shard`定義と比較してください。各シャードの定義には1つのレプリカがあります。そのレプリカはその特定のシャードのためのものです。そのレプリカのホストとポートが指定されています。設定内の最初のシャードのレプリカは`chnode1`に保存され、設定内の2番目のシャードのレプリカは`chnode2`に保存されます。
-- シャードの内部レプリケーションはtrueに設定されています。各シャードには、設定ファイル内で`internal_replication`パラメータを定義できます。このパラメータがtrueに設定されている場合、書き込み操作は最初の正常なレプリカを選択し、データを書き込みます。
+最初から説明すると：
+- XML の `remote_servers` セクションは、環境内の各クラスタを指定します。属性 `replace=true` は、このファイルで指定された `remote_servers` 設定で、デフォルトの ClickHouse 設定内のサンプル `remote_servers` を置き換えます。この属性がない場合、このファイルのリモートサーバーは、デフォルトのサンプルのリストに追加されます。
+- この例では、`cluster_2S_1R` という名前のクラスタが1つあります。
+- 値 `mysecretphrase` のクラスタ用の秘密が作成されます。この秘密は、正しいサーバーが一緒に参加することを保証するために、環境内のすべてのリモートサーバーで共有されます。
+- クラスタ `cluster_2S_1R` には2つのシャードがあり、それぞれのシャードに1つのレプリカがあります。この文書の冒頭のアーキテクチャ図を確認し、以下の XML の2つの `shard` 定義と比較してください。それぞれのシャード定義に1つのレプリカがあります。レプリカはその特定のシャードのためのものです。そのレプリカのホストとポートが指定されています。設定の最初のシャード用のレプリカは `chnode1` に保存され、設定の2番目のシャード用のレプリカは `chnode2` に保存されます。
+- シャードの内部レプリケーションが有効に設定されています。各シャードには、設定ファイル内で `internal_replication` パラメータを定義できます。このパラメータが `true` に設定されている場合、書き込み操作は最初の正常なレプリカを選択し、データを書き込みます。
 
 ```xml title="remote-servers.xml on chnode1"
 <clickhouse>
@@ -157,9 +159,9 @@ ClickHouse Keeperはデータレプリケーションと分散DDLクエリ実行
 </clickhouse>
 ```
 
-### Keeperの使用の設定 {#configuring-the-use-of-keeper}
+### Keeper の使用設定 {#configuring-the-use-of-keeper}
 
-上記のいくつかのファイルでClickHouse Keeperが設定されていました。この設定ファイル`use-keeper.xml`は、ClickHouse Serverがレプリケーションと分散DDLの調整にClickHouse Keeperを使用するように設定しています。このファイルでは、ClickHouse Serverがノード`chnode1`から`chnode3`でポート9181のKeeperを使用する必要があることを指定し、このファイルは`chnode1`と`chnode2`で同じです。
+上記のいくつかのファイルでは ClickHouse Keeper が設定されています。この設定ファイル `use-keeper.xml` は、ClickHouse サーバーがレプリケーションと分散 DDL の調整に ClickHouse Keeper を使用するよう設定しています。このファイルは、ClickHouse サーバーが `chnode1` から `chnode3` でポート9181 の Keeper を使用することを指定しており、`chnode1` と `chnode2` で同様のファイルとなります。
 
 ```xml title="use-keeper.xml on chnode1"
 <clickhouse>
@@ -180,9 +182,9 @@ ClickHouse Keeperはデータレプリケーションと分散DDLクエリ実行
 </clickhouse>
 ```
 
-## chnode2の設定 {#chnode2-configuration}
+## chnode2 の設定 {#chnode2-configuration}
 
-`chnode1`と`chnode2`の設定は非常に似ているため、ここでは違いのみを指摘します。
+設定は `chnode1` と `chnode2` で非常に似ているため、ここでは違いのみを指摘します。
 
 ### ネットワークおよびロギング設定 {#network-and-logging-configuration-1}
 
@@ -203,9 +205,9 @@ ClickHouse Keeperはデータレプリケーションと分散DDLクエリ実行
 </clickhouse>
 ```
 
-### ClickHouse Keeper の設定 {#clickhouse-keeper-configuration-1}
+### ClickHouse Keeper 設定 {#clickhouse-keeper-configuration-1}
 
-このファイルには`chnode1`と`chnode2`の間の2つの違いの1つがあります。Keeper設定の中で、`server_id`が2に設定されています。
+このファイルには、`chnode1` と `chnode2` の間の2つの違いの1つが含まれています。Keeper 設定で `server_id` が `2` に設定されています。
 
 ```xml title="enable-keeper.xml on chnode2"
 <clickhouse>
@@ -245,9 +247,9 @@ ClickHouse Keeperはデータレプリケーションと分散DDLクエリ実行
 </clickhouse>
 ```
 
-### マクロの設定 {#macros-configuration-1}
+### マクロ設定 {#macros-configuration-1}
 
-マクロの設定には`chnode1`と`chnode2`の間の違いの1つがあります。`shard`がこのノードで`2`に設定されています。
+マクロ設定には、`chnode1` と `chnode2` の間の違いの1つがあります。`shard` はこのノードで `2` に設定されています。
 
 ```xml title="macros.xml on chnode2"
 <clickhouse>
@@ -259,7 +261,7 @@ ClickHouse Keeperはデータレプリケーションと分散DDLクエリ実行
 </clickhouse>
 ```
 
-### レプリケーションおよびシャーディングの設定 {#replication-and-sharding-configuration-1}
+### レプリケーションおよびシャーディング設定 {#replication-and-sharding-configuration-1}
 
 ```xml title="remote-servers.xml on chnode2"
 <clickhouse>
@@ -285,7 +287,7 @@ ClickHouse Keeperはデータレプリケーションと分散DDLクエリ実行
 </clickhouse>
 ```
 
-### Keeperの使用の設定 {#configuring-the-use-of-keeper-1}
+### Keeper の使用設定 {#configuring-the-use-of-keeper-1}
 
 ```xml title="use-keeper.xml on chnode2"
 <clickhouse>
@@ -306,9 +308,9 @@ ClickHouse Keeperはデータレプリケーションと分散DDLクエリ実行
 </clickhouse>
 ```
 
-## chnode3の設定 {#chnode3-configuration}
+## chnode3 の設定 {#chnode3-configuration}
 
-`chnode3`はデータを保存せず、ClickHouse Keeperがクオーラムの3番目のノードを提供するためだけに使われるため、`chnode3`はネットワークおよびロギングを設定するための設定ファイルが2つだけあります。
+`chnode3` はデータを格納せず、ClickHouse Keeper のクォーラムにおける第3ノードを提供するだけなので、`chnode3` にはネットワークとロギング設定用の2つの設定ファイルのみがあります。 
 
 ### ネットワークおよびロギング設定 {#network-and-logging-configuration-2}
 
@@ -329,7 +331,7 @@ ClickHouse Keeperはデータレプリケーションと分散DDLクエリ実行
 </clickhouse>
 ```
 
-### ClickHouse Keeper の設定 {#clickhouse-keeper-configuration-2}
+### ClickHouse Keeper 設定 {#clickhouse-keeper-configuration-2}
 
 ```xml title="enable-keeper.xml on chnode3"
 <clickhouse>
@@ -371,7 +373,7 @@ ClickHouse Keeperはデータレプリケーションと分散DDLクエリ実行
 
 ## テスト {#testing}
 
-1. `chnode1`に接続し、上記で設定されたクラスタ`cluster_2S_1R`が存在することを確認します。
+1. `chnode1` に接続し、上記で設定されたクラスタ `cluster_2S_1R` が存在することを確認します。
 
 ```sql title="クエリ"
 SHOW CLUSTERS
@@ -396,9 +398,9 @@ CREATE DATABASE db1 ON CLUSTER cluster_2S_1R
 └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
-3. クラスタ上にMergeTreeテーブルエンジンを持つテーブルを作成します。
+3. クラスタ上に MergeTree テーブルエンジンを持つテーブルを作成します。
 :::note
-テーブルエンジンのパラメータは自動的にマクロに基づいて定義されるため、指定する必要はありません。
+テーブルエンジンにパラメータを指定する必要はありません; これらはマクロに基づいて自動的に定義されます。
 :::
 
 ```sql title="クエリ"
@@ -417,20 +419,20 @@ ORDER BY id
 └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
-4. `chnode1`に接続し、行を挿入します。
+4. `chnode1` に接続し、行を挿入します。
 
 ```sql title="クエリ"
 INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
 ```
 
-5. `chnode2`に接続し、行を挿入します。
+5. `chnode2` に接続し、行を挿入します。
 
 ```sql title="クエリ"
 INSERT INTO db1.table1 (id, column1) VALUES (2, 'def');
 ```
 
-6. 任意のノード、`chnode1`または`chnode2`に接続すると、そのノードのテーブルに挿入された行のみが表示されます。
-たとえば、`chnode2`で
+6. 任意のノード (`chnode1` または `chnode2`) に接続すると、そのノードのテーブルに挿入された行のみが表示されます。
+例えば、`chnode2` で:
 
 ```sql title="クエリ"
 SELECT * FROM db1.table1;
@@ -442,8 +444,8 @@ SELECT * FROM db1.table1;
 └────┴─────────┘
 ```
 
-7. 両方のノードの両方のシャードをクエリするための分散テーブルを作成します。
-（この例では、`rand()`関数がシャーディングキーとして設定されているため、各挿入をランダムに分散させます）
+7. 両方のノードで両方のシャードをクエリするための分散テーブルを作成します。
+（この例では、`rand()` 関数がシャーディングキーとして設定されており、各挿入をランダムに分散させます）
 
 ```sql title="クエリ"
 CREATE TABLE db1.table1_dist ON CLUSTER cluster_2S_1R
@@ -461,7 +463,7 @@ ENGINE = Distributed('cluster_2S_1R', 'db1', 'table1', rand())
 └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
-8. `chnode1`または`chnode2`のいずれかに接続し、分散テーブルをクエリして両方の行を確認します。
+8. `chnode1` または `chnode2` に接続し、分散テーブルをクエリして両方の行を確認します。
 
 ```sql title="クエリ"
 SELECT * FROM db1.table1_dist;
@@ -475,6 +477,7 @@ SELECT * FROM db1.table1_dist;
 │  1 │ abc     │
 └────┴─────────┘
 ```
+
 
 ## 詳細情報 {#more-information-about}
 

@@ -1,17 +1,18 @@
----
+description: 'WITH句のドキュメント'
+sidebar_label: 'WITH'
 slug: /sql-reference/statements/select/with
-sidebar_label: WITH
----
+title: 'WITH句'
+```
 
 
 # WITH句
 
-ClickHouseは共通テーブル式（[CTE](https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL)）をサポートしており、`WITH`句で定義されたコードは、`SELECT`クエリの残りのすべての使用箇所で置き換えられます。名前付きのサブクエリは、テーブルオブジェクトが許可されている場所で現在および子クエリのコンテキストに含めることができます。再帰は、現在のレベルのCTEをWITH式から隠すことで防がれます。
+ClickHouseは共通テーブル式（[CTE](https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL））をサポートし、`WITH`句で定義されたコードを`SELECT`クエリのすべての使用箇所に置き換えます。名前付きサブクエリは、テーブルオブジェクトが許可されている場所で現在及び子クエリのコンテキストに含めることができます。再帰は、現在のレベルのCTEをWITH式から隠すことで防止されます。
 
-CTEが呼ばれるすべての場所で同じ結果を保証するわけではないことに注意してください。なぜなら、クエリは使用ケースごとに再実行されるからです。
+CTEは呼び出されるすべての場所で同じ結果を保証しないことに注意してください。なぜなら、クエリは各使用ケースごとに再実行されるからです。
 
-そのような動作の例は以下の通りです。
-``` sql
+このような動作の例を以下に示します
+```sql
 with cte_numbers as
 (
     select
@@ -24,25 +25,25 @@ select
 from cte_numbers
 where num in (select num from cte_numbers)
 ```
-CTEが結果そのものを渡すのではなく、コードの一部だけを渡すので、常に `1000000` が表示されるわけではありません。
+CTEが結果を正確に渡すのではなくコードの一部だけを渡す場合、常に`1000000`が表示されることになります。
 
-ただし、`cte_numbers` を2回参照しているため、毎回ランダムな数が生成され、それに応じて異なるランダムな結果、`280501, 392454, 261636, 196227` などが表示されることになります。
+しかし、`cte_numbers`を2回参照するため、毎回ランダムな数が生成されるため、異なるランダムな結果、`280501, 392454, 261636, 196227`などが表示されます。
 
 ## 構文 {#syntax}
 
-``` sql
+```sql
 WITH <expression> AS <identifier>
 ```
 または
-``` sql
+```sql
 WITH <identifier> AS <subquery expression>
 ```
 
 ## 例 {#examples}
 
-**例 1:** 定数式を「変数」として使用
+**例1:** 定数式を「変数」として使用する
 
-``` sql
+```sql
 WITH '2019-08-01 15:23:00' as ts_upper_bound
 SELECT *
 FROM hits
@@ -51,9 +52,9 @@ WHERE
     EventTime <= ts_upper_bound;
 ```
 
-**例 2:** SELECT句のカラムリストから sum(bytes) 結果を削除
+**例2:** SELECT句のカラムリストから sum(bytes) 式の結果を排除する
 
-``` sql
+```sql
 WITH sum(bytes) as s
 SELECT
     formatReadableSize(s),
@@ -63,10 +64,10 @@ GROUP BY table
 ORDER BY s;
 ```
 
-**例 3:** スカラサブクエリの結果を使用
+**例3:** スカラサブクエリの結果を使用する
 
-``` sql
-/* この例は、最も巨大なテーブルのTOP 10を返します */
+```sql
+/* この例は最も大きなテーブルのTOP 10を返します */
 WITH
     (
         SELECT sum(bytes)
@@ -82,18 +83,18 @@ ORDER BY table_disk_usage DESC
 LIMIT 10;
 ```
 
-**例 4:** サブクエリでの式の再利用
+**例4:** サブクエリ内での式の再利用
 
-``` sql
+```sql
 WITH test1 AS (SELECT i + 1, j + 1 FROM test1)
 SELECT * FROM test1;
 ```
 
 ## 再帰クエリ {#recursive-queries}
 
-オプションの RECURSIVE 修飾子を使用すると、WITHクエリが自身の出力を参照できるようになります。例:
+オプションのRECURSIVE修飾子により、WITHクエリはその出力を参照することができます。例：
 
-**例:** 1から100までの整数を合計
+**例:** 1から100までの整数の合計
 
 ```sql
 WITH RECURSIVE test_table AS (
@@ -104,29 +105,29 @@ UNION ALL
 SELECT sum(number) FROM test_table;
 ```
 
-``` text
+```text
 ┌─sum(number)─┐
 │        5050 │
 └─────────────┘
 ```
 
 :::note
-再帰CTEは、バージョン **`24.3`** で導入された [新しいクエリアナライザー](/operations/analyzer) に依存しています。バージョン **`24.3+`** を使用していて、**`(UNKNOWN_TABLE)`** または **`(UNSUPPORTED_METHOD)`** 例外に遭遇した場合、これは新しいアナライザーがインスタンス、ロール、またはプロファイルで無効になっていることを示しています。アナライザーを有効にするには、設定 **`allow_experimental_analyzer`** を有効にするか、**`compatibility`** 設定をより新しいバージョンに更新してください。
-バージョン `24.8` からは新しいアナライザーが生産環境で完全に推奨され、設定 `allow_experimental_analyzer` は `enable_analyzer` に名前が変更されました。
+再帰CTEは、バージョン**`24.3`**で導入された[新しいクエリアナライザー](/operations/analyzer)に依存しています。バージョン**`24.3+`**を使用していて、**`(UNKNOWN_TABLE)`**または**`(UNSUPPORTED_METHOD)`**例外に遭遇した場合、新しいアナライザーがあなたのインスタンス、役割、またはプロファイルで無効になっていることを示唆しています。アナライザーを有効にするには、設定**`allow_experimental_analyzer`**を有効にするか、**`compatibility`**設定をより新しいバージョンに更新してください。
+バージョン`24.8`以降、新しいアナライザーは完全に本番用としてプロモーションされ、設定`allow_experimental_analyzer`は`enable_analyzer`に名前が変更されました。
 :::
 
-再帰的な `WITH` クエリの一般的な形式は、常に非再帰的な項、次に `UNION ALL`、その後に再帰的な項を含みます。再帰的な項にのみ、クエリ自身の出力への参照を含めることができます。再帰CTEクエリは次のように実行されます：
+再帰的な`WITH`クエリの一般的な形式は、常に非再帰の項、次に`UNION ALL`、最後に再帰の項です。再帰の項だけがクエリの自身の出力を参照することができます。再帰CTEクエリは以下のように実行されます：
 
-1. 非再帰的な項を評価します。非再帰的な項のクエリの結果を一時的な作業テーブルに置きます。
+1. 非再帰の項を評価します。非再帰項クエリの結果を一時作業テーブルに配置します。
 2. 作業テーブルが空でない限り、これらのステップを繰り返します：
-    1. 再帰的な項を評価し、作業テーブルの現在の内容を再帰的な自己参照に置き換えます。再帰的な項のクエリの結果を一時的な中間テーブルに置きます。
-    2. 作業テーブルの内容を中間テーブルの内容で置き換え、中間テーブルを空にします。
+    1. 再帰の項を評価し、作業テーブルの現在の内容を再帰自己参照に置き換えます。再帰項クエリの結果を一時的な中間テーブルに配置します。
+    2. 作業テーブルの内容を中間テーブルの内容で置き換え、その後中間テーブルを空にします。
 
-再帰クエリは通常、階層データまたはツリー構造データを操作するために使用されます。たとえば、ツリーのトラバーサルを実行するクエリを書くことができます：
+再帰クエリは通常、階層的または木構造のデータを扱うために使用されます。例えば、木の走査を行うクエリを書くことができます：
 
-**例:** ツリーのトラバーサル
+**例:** 木の走査
 
-まず、ツリーテーブルを作成します：
+まず、木テーブルを作成します：
 
 ```sql
 DROP TABLE IF EXISTS tree;
@@ -140,9 +141,9 @@ CREATE TABLE tree
 INSERT INTO tree VALUES (0, NULL, 'ROOT'), (1, 0, 'Child_1'), (2, 0, 'Child_2'), (3, 1, 'Child_1_1');
 ```
 
-そのツリーを以下のクエリでトラバースできます：
+このようなクエリで木を走査できます：
 
-**例:** ツリーのトラバーサル
+**例:** 木の走査
 ```sql
 WITH RECURSIVE search_tree AS (
     SELECT id, parent_id, data
@@ -167,9 +168,9 @@ SELECT * FROM search_tree;
 
 ### 探索順序 {#search-order}
 
-深さ優先の順序を作成するために、訪れた行の配列を各結果行に対して計算します：
+深さ優先の順序を作成するには、各結果行に対して既に訪れた行の配列を計算します：
 
-**例:** ツリーのトラバーサル深さ優先順序
+**例:** 深さ優先の木の走査
 ```sql
 WITH RECURSIVE search_tree AS (
     SELECT id, parent_id, data, [t.id] AS path
@@ -192,9 +193,9 @@ SELECT * FROM search_tree ORDER BY path;
 └────┴───────────┴───────────┴─────────┘
 ```
 
-幅優先の順序を作成するための標準的な方法は、探索の深さを追跡するカラムを追加することです：
+幅優先の順序を作成するには、検索の深さを追跡するカラムを追加するのが標準的なアプローチです：
 
-**例:** ツリーのトラバーサル幅優先順序
+**例:** 幅優先の木の走査
 ```sql
 WITH RECURSIVE search_tree AS (
     SELECT id, parent_id, data, [t.id] AS path, toUInt64(0) AS depth
@@ -233,9 +234,9 @@ CREATE TABLE graph
 INSERT INTO graph VALUES (1, 2, '1 -> 2'), (1, 3, '1 -> 3'), (2, 3, '2 -> 3'), (1, 4, '1 -> 4'), (4, 5, '4 -> 5');
 ```
 
-次のクエリでグラフをトラバースできます：
+このようなクエリでグラフを走査できます：
 
-**例:** サイクル検出なしでのグラフトラバース
+**例:** サイクル検出なしのグラフ走査
 ```sql
 WITH RECURSIVE search_graph AS (
     SELECT from, to, label FROM graph g
@@ -256,7 +257,7 @@ SELECT DISTINCT * FROM search_graph ORDER BY from;
 └──────┴────┴────────┘
 ```
 
-しかし、そのグラフにサイクルを追加すると、前のクエリは `Maximum recursive CTE evaluation depth` エラーで失敗します：
+しかし、このグラフにサイクルを追加すると、前のクエリは`Maximum recursive CTE evaluation depth`エラーで失敗します：
 
 ```sql
 INSERT INTO graph VALUES (5, 1, '5 -> 1');
@@ -275,9 +276,9 @@ SELECT DISTINCT * FROM search_graph ORDER BY from;
 Code: 306. DB::Exception: Received from localhost:9000. DB::Exception: Maximum recursive CTE evaluation depth (1000) exceeded, during evaluation of search_graph AS (SELECT from, to, label FROM graph AS g UNION ALL SELECT g.from, g.to, g.label FROM graph AS g, search_graph AS sg WHERE g.from = sg.to). Consider raising max_recursive_cte_evaluation_depth setting.: While executing RecursiveCTESource. (TOO_DEEP_RECURSION)
 ```
 
-サイクルを処理するための標準方法は、すでに訪れたノードの配列を計算することです：
+サイクルを処理する標準的な方法は、既に訪れたノードの配列を計算することです：
 
-**例:** サイクル検出を伴うグラフトラバース
+**例:** サイクル検出ありのグラフ走査
 ```sql
 WITH RECURSIVE search_graph AS (
     SELECT from, to, label, false AS is_cycle, [tuple(g.from, g.to)] AS path FROM graph g
@@ -299,7 +300,7 @@ SELECT * FROM search_graph WHERE is_cycle ORDER BY from;
 
 ### 無限クエリ {#infinite-queries}
 
-また、外側のクエリで `LIMIT` を使用する場合、無限再帰CTEクエリを使用することも可能です：
+`LIMIT`が外側のクエリで使用されている場合、無限再帰CTEクエリを使用することも可能です：
 
 **例:** 無限再帰CTEクエリ
 ```sql
@@ -315,4 +316,3 @@ SELECT sum(number) FROM (SELECT number FROM test_table LIMIT 100);
 ┌─sum(number)─┐
 │        5050 │
 └─────────────┘
-```

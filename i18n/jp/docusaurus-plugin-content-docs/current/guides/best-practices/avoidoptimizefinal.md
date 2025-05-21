@@ -1,10 +1,11 @@
 ---
 slug: /optimize/avoidoptimizefinal
-sidebar_label: 最終最適化を避ける
-title: 最終最適化を避ける
-description: OPTIMIZE TABLE ... FINAL クエリを使用すると、データパーツの予定外のマージが開始されます。
+sidebar_label: '最終最適化を避ける'
+title: '最終最適化を避ける'
+description: 'OPTIMIZE TABLE ... FINAL クエリを使用すると、データのパーツの予期しないマージが開始されます。'
 ---
+```
 
-import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/cloud/bestpractices/avoidoptimizefinal.md';
+import Content from '@site/docs/best-practices/_snippets/_avoid_optimize_final.md';
 
 <Content />

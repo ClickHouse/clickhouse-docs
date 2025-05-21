@@ -1,9 +1,10 @@
 ---
-sidebar_label: R2DBCドライバー
+sidebar_label: 'R2DBCドライバー'
 sidebar_position: 5
-keywords: [clickhouse, java, driver, integrate, r2dbc]
-description: ClickHouse R2DBCドライバー
+keywords: ['clickhouse', 'java', 'driver', 'integrate', 'r2dbc']
+description: 'ClickHouse R2DBCドライバー'
 slug: /integrations/java/r2dbc
+title: 'R2DBCドライバー'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,10 +12,11 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 
+# R2DBCドライバー
 
 ## R2DBCドライバー {#r2dbc-driver}
 
-[R2DBC](https://r2dbc.io/) の ClickHouse 用の非同期 Java クライアントのラッパーです。
+[R2DBC](https://r2dbc.io/) は、ClickHouse用の非同期Javaクライアントのラッパーです。
 
 ### 環境要件 {#environment-requirements}
 
@@ -25,10 +27,10 @@ import CodeBlock from '@theme/CodeBlock';
 ```xml
 <dependency>
     <groupId>com.clickhouse</groupId>
-    <!-- SPI 0.9.1.RELEASE の場合は clickhouse-r2dbc_0.9.1 に変更 -->
+    <!-- SPI 0.9.1.RELEASE のために clickhouse-r2dbc_0.9.1 に変更 -->
     <artifactId>clickhouse-r2dbc</artifactId>
     <version>0.7.1</version>
-    <!-- 全依存関係が含まれた uber jar を使用、サイズを小さくするために classifier を http または grpc に変更 -->
+    <!-- すべての依存関係が含まれた uber jar を使用し、より小さい jar のために classifier を http または grpc に変更 -->
     <classifier>all</classifier>
     <exclusions>
         <exclusion>
@@ -39,7 +41,7 @@ import CodeBlock from '@theme/CodeBlock';
 </dependency>
 ```
 
-### ClickHouse に接続する {#connect-to-clickhouse}
+### ClickHouseへの接続 {#connect-to-clickhouse}
 
 ```java showLineNumbers
 ConnectionFactory connectionFactory = ConnectionFactories
@@ -53,7 +55,7 @@ ConnectionFactory connectionFactory = ConnectionFactories
 
 ```java showLineNumbers
 connection
-    .createStatement("select domain, path,  toDate(cdate) as d, count(1) as count from clickdb.clicks where domain = :domain group by domain, path, d")
+    .createStatement("select domain, path, toDate(cdate) as d, count(1) as count from clickdb.clicks where domain = :domain group by domain, path, d")
     .bind("domain", domain)
     .execute()
     .flatMap(result -> result

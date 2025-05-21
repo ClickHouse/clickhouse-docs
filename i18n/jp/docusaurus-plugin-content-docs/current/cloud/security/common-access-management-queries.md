@@ -1,25 +1,26 @@
 ---
-sidebar_label: "一般的なアクセス管理クエリ"
-title: "一般的なアクセス管理クエリ"
-slug: "/cloud/security/common-access-management-queries"
+sidebar_label: 'アクセス管理クエリの一般的な例'
+title: 'アクセス管理クエリの一般的な例'
+slug: /cloud/security/common-access-management-queries
+description: 'この記事ではSQLユーザーおよびロールの定義の基本と、それらの特権と権限をデータベース、テーブル、行、およびカラムに適用する方法を示します。'
 ---
 
-import CommonUserRolesContent from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
+import CommonUserRolesContent from '@site/docs/_snippets/_users-and-roles-common.md';
 
 
-# 一般的なアクセス管理クエリ
+# アクセス管理クエリの一般的な例
 
 :::tip セルフマネージド
-セルフマネージドの ClickHouse を使用している場合は、[SQL ユーザーとロール](/guides/sre/user-management/index.md)を参照してください。
+セルフマネージドの ClickHouse を使用している場合は、[SQLユーザーとロール](/guides/sre/user-management/index.md)を参照してください。
 :::
 
-この記事では、SQL ユーザーとロールの定義と、それらの特権と許可をデータベース、テーブル、行、カラムに適用する基本を示します。
+この記事ではSQLユーザーおよびロールの定義の基本と、それらの特権と権限をデータベース、テーブル、行、およびカラムに適用する方法を示します。
 
-## 管理者ユーザー {#admin-user}
+## 管理ユーザー {#admin-user}
 
-ClickHouse Cloud サービスには、サービス作成時に作成される `default` という管理者ユーザーがあります。 パスワードはサービスの作成時に提供され、**Admin** ロールを持つ ClickHouse Cloud ユーザーによってリセットできます。
+ClickHouse Cloud サービスには、`default` という管理ユーザーがあり、サービスが作成されるときに作成されます。パスワードはサービスの作成時に提供され、**Admin** ロールを持つ ClickHouse Cloud ユーザーによってリセットできます。
 
-ClickHouse Cloud サービスに追加の SQL ユーザーを追加する場合、それらには SQL ユーザー名とパスワードが必要です。 管理者レベルの特権を持たせたい場合は、新しいユーザーに `default_role` のロールを割り当てます。 例えば、ユーザー `clickhouse_admin` を追加する場合：
+ClickHouse Cloud サービスに追加の SQL ユーザーを追加する場合、SQL ユーザー名とパスワードが必要です。管理者レベルの特権を持たせたい場合は、新しいユーザーに `default_role` を割り当てます。たとえば、ユーザー `clickhouse_admin` を追加する場合:
 
 ```sql
 CREATE USER IF NOT EXISTS clickhouse_admin
@@ -31,27 +32,27 @@ GRANT default_role TO clickhouse_admin;
 ```
 
 :::note
-SQL コンソールを使用する場合、SQL ステートメントは `default` ユーザーとして実行されません。 代わりに、ステートメントは `sql-console:${cloud_login_email}` という名前のユーザーとして実行されます。ここで、`cloud_login_email` は現在クエリを実行しているユーザーのメールアドレスです。
+SQL コンソールを使用する場合、SQL ステートメントは `default` ユーザーとして実行されません。代わりに、ステートメントは `sql-console:${cloud_login_email}` という名前のユーザーとして実行されます。ここで `cloud_login_email` は、現在クエリを実行しているユーザーのメールアドレスです。
 
-これらの自動生成された SQL コンソールユーザーは `default` ロールを持っています。
+これらの自動生成された SQL コンソールユーザーには、`default` ロールが与えられています。
 :::
 
-## パスワードなし認証 {#passwordless-authentication}
+## パスワードレス認証 {#passwordless-authentication}
 
-SQL コンソールには、`sql_console_admin` および `sql_console_read_only` の2つのロールがあります。 `sql_console_admin` は `default_role` と同じ権限を持ち、`sql_console_read_only` は読み取り専用の権限を持っています。
+SQLコンソールには2つのロールが用意されています: `sql_console_admin` は `default_role` と同じ権限を持ち、 `sql_console_read_only` は読み取り専用の権限を持ちます。
 
-管理者ユーザーにはデフォルトで `sql_console_admin` ロールが割り当てられているため、彼らにとっては何も変更されません。 ただし、`sql_console_read_only` ロールは、非管理者ユーザーに読み取り専用またはフルアクセスを任意のインスタンスに対して付与できます。このアクセスは管理者によって設定する必要があります。ロールは `GRANT` または `REVOKE` コマンドを使用してインスタンス固有の要件に適合させることができ、これらのロールに対する変更は永続化されます。
+管理ユーザーはデフォルトで `sql_console_admin` ロールが割り当てられるため、彼らにとっては何も変更はありません。しかし、`sql_console_read_only` ロールにより、非管理ユーザーも任意のインスタンスに対して読み取り専用またはフルアクセスを許可される可能性があります。これには管理者によるアクセスの設定が必要です。ロールは `GRANT` または `REVOKE` コマンドを使用して調整でき、インスタンス特有の要件により適合させることができ、これらのロールへの変更は永続化されます。
 
 ### グラニュラーアクセス制御 {#granular-access-control}
 
-このアクセス制御機能は、ユーザー レベルの粒度で手動で構成することもできます。 新しい `sql_console_*` ロールをユーザーに割り当てる前に、名前空間 `sql-console-role:<email>` に対応する SQL コンソールユーザー専用のデータベースロールを作成する必要があります。 例えば：
+このアクセス制御機能は、ユーザーレベルの細かい粒度のために手動で構成することもできます。新しい `sql_console_*` ロールをユーザーに割り当てる前に、名前空間 `sql-console-role:<email>` に一致する SQL コンソールユーザー特有のデータベースロールを作成する必要があります。たとえば:
 
 ```sql
 CREATE ROLE OR REPLACE sql-console-role:<email>;
 GRANT <some grants> TO sql-console-role:<email>;
 ```
 
-一致するロールが検出されると、それはテンプレートのロールの代わりにユーザーに割り当てられます。 これにより、`sql_console_sa_role` や `sql_console_pm_role` などのより複雑なアクセス制御構成を作成し、特定のユーザーに付与することができます。 例えば：
+一致するロールが検出されると、それは標準のロールの代わりにユーザーに割り当てられます。これにより、`sql_console_sa_role` や `sql_console_pm_role` のようなロールを作成し、それらを特定のユーザーに割り当てるなど、より複雑なアクセス制御設定が導入されます。例えば:
 
 ```sql
 CREATE ROLE OR REPLACE sql_console_sa_role;
@@ -61,9 +62,9 @@ GRANT <whatever level of access> TO sql_console_pm_role;
 CREATE ROLE OR REPLACE `sql-console-role:christoph@clickhouse.com`;
 CREATE ROLE OR REPLACE `sql-console-role:jake@clickhouse.com`;
 CREATE ROLE OR REPLACE `sql-console-role:zach@clickhouse.com`;
-GRANT sql_console_sa_role to `sql-console-role:christoph@clickhouse.com`;
-GRANT sql_console_sa_role to `sql-console-role:jake@clickhouse.com`;
-GRANT sql_console_pm_role to `sql-console-role:zach@clickhouse.com`;
+GRANT sql_console_sa_role TO `sql-console-role:christoph@clickhouse.com`;
+GRANT sql_console_sa_role TO `sql-console-role:jake@clickhouse.com`;
+GRANT sql_console_pm_role TO `sql-console-role:zach@clickhouse.com`;
 ```
 
 <CommonUserRolesContent />

@@ -1,15 +1,15 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/boundingRatio
+description: '値のグループ間の最も左側と右側のポイントの間の傾きを計算する集約関数。'
 sidebar_position: 114
-title: "boundingRatio"
-description: "値のグループ間で最も左と最も右のポイント間の傾きを計算する集約関数。"
+slug: /sql-reference/aggregate-functions/reference/boundingRatio
+title: 'boundingRatio'
 ---
 
-集約関数で、値のグループ間で最も左と最も右のポイント間の傾きを計算します。
+値のグループ間の最も左側と右側のポイントの間の傾きを計算する集約関数。
 
-例:
+例：
 
-サンプルデータ:
+サンプルデータ：
 ```sql
 SELECT
     number,
@@ -31,7 +31,7 @@ FROM numbers(10)
 └────────┴───────────────────────┘
 ```
 
-boundingRatio() 関数は、上記のデータにおける最も左と最も右のポイント間の線の傾きを返します。このポイントは `(0,0)` と `(9,13.5)` です。
+boundingRatio() 関数は、上記のデータにおける最も左側のポイント `(0,0)` と最も右側のポイント `(9,13.5)` の間の線の傾きを返します。
 
 ```sql
 SELECT boundingRatio(number, number * 1.5)

@@ -1,53 +1,54 @@
 ---
-description: 'ディクショナリに関する情報を含むシステムテーブル'
+description: '辞書に関する情報を含むシステムテーブル'
+keywords: ['system table', 'dictionaries']
 slug: /operations/system-tables/dictionaries
 title: 'system.dictionaries'
-keywords: ['system table', 'dictionaries']
 ---
-import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-[dictionaries](../../sql-reference/dictionaries/index.md) に関する情報を含みます。
+[dictionaries](../../sql-reference/dictionaries/index.md)に関する情報を含みます。
 
 カラム:
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — DDL クエリによって作成されたディクショナリを含むデータベースの名前。他のディクショナリの場合、空の文字列。
-- `name` ([String](../../sql-reference/data-types/string.md)) — [ディクショナリ名](../../sql-reference/dictionaries/index.md)。
-- `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — ディクショナリの UUID。
-- `status` ([Enum8](../../sql-reference/data-types/enum.md)) — ディクショナリのステータス。可能な値:
-    - `NOT_LOADED` — ディクショナリは使用されなかったため、ロードされませんでした。
-    - `LOADED` — ディクショナリが正常にロードされました。
-    - `FAILED` — エラーのため、ディクショナリをロードできませんでした。
-    - `LOADING` — ディクショナリが現在ロード中です。
-    - `LOADED_AND_RELOADING` — ディクショナリが正常にロードされ、現在再ロード中です（頻繁な理由: [SYSTEM RELOAD DICTIONARY](/sql-reference/statements/system#reload-dictionaries) クエリ、タイムアウト、ディクショナリ構成が変更された）。
-    - `FAILED_AND_RELOADING` — エラーのためディクショナリをロードできず、現在ロード中です。
-- `origin` ([String](../../sql-reference/data-types/string.md)) — ディクショナリを記述する構成ファイルのパス。
-- `type` ([String](../../sql-reference/data-types/string.md)) — ディクショナリの割り当てのタイプ。 [メモリ内のディクショナリの保存](/sql-reference/dictionaries#storing-dictionaries-in-memory)。
-- `key.names` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — ディクショナリによって提供される [キー名](/operations/system-tables/dictionaries) の配列。
-- `key.types` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — ディクショナリによって提供される対応する [キータイプ](/sql-reference/dictionaries#dictionary-key-and-fields) の配列。
-- `attribute.names` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — ディクショナリによって提供される [属性名](/sql-reference/dictionaries#dictionary-key-and-fields) の配列。
-- `attribute.types` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — ディクショナリによって提供される対応する [属性タイプ](/sql-reference/dictionaries#dictionary-key-and-fields) の配列。
-- `bytes_allocated` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — ディクショナリに割り当てられたRAMの量。
-- `query_count` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — ディクショナリがロードされて以来のクエリの数、または最後の成功したリブート以来のクエリの数。
-- `hit_rate` ([Float64](../../sql-reference/data-types/float.md)) — キャッシュディクショナリの場合、値がキャッシュにあった使用の割合。
+- `database` ([String](../../sql-reference/data-types/string.md)) — DDLクエリによって作成された辞書を含むデータベースの名前。その他の辞書については空の文字列。
+- `name` ([String](../../sql-reference/data-types/string.md)) — [辞書の名前](../../sql-reference/dictionaries/index.md)。
+- `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — 辞書のUUID。
+- `status` ([Enum8](../../sql-reference/data-types/enum.md)) — 辞書の状態。可能な値:
+    - `NOT_LOADED` — 辞書が使用されなかったためロードされていない。
+    - `LOADED` — 辞書が正常にロードされました。
+    - `FAILED` — エラーのため辞書をロードできなかった。
+    - `LOADING` — 現在辞書がロード中です。
+    - `LOADED_AND_RELOADING` — 辞書が正常にロードされており、現在再ロード中です（頻繁な理由: [SYSTEM RELOAD DICTIONARY](/sql-reference/statements/system#reload-dictionaries)クエリ、タイムアウト、辞書設定が変更された）。
+    - `FAILED_AND_RELOADING` — エラーのため辞書をロードできず、現在ロード中です。
+- `origin` ([String](../../sql-reference/data-types/string.md)) — 辞書を説明する設定ファイルへのパス。
+- `type` ([String](../../sql-reference/data-types/string.md)) — 辞書の割り当てタイプ。[メモリ内の辞書の格納](/sql-reference/dictionaries#storing-dictionaries-in-memory)。
+- `key.names` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 辞書によって提供される[キー名](/operations/system-tables/dictionaries)の配列。
+- `key.types` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 辞書によって提供される[キーの型](/sql-reference/dictionaries#dictionary-key-and-fields)の対応する配列。
+- `attribute.names` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 辞書によって提供される[属性名](/sql-reference/dictionaries#dictionary-key-and-fields)の配列。
+- `attribute.types` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 辞書によって提供される[属性の型](/sql-reference/dictionaries#dictionary-key-and-fields)の対応する配列。
+- `bytes_allocated` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 辞書に割り当てられたRAMの量。
+- `query_count` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 辞書がロードされてからのクエリの数（または最後の成功した再起動からの）。
+- `hit_rate` ([Float64](../../sql-reference/data-types/float.md)) — キャッシュ辞書の場合、値がキャッシュにあった使用の割合。
 - `found_rate` ([Float64](../../sql-reference/data-types/float.md)) — 値が見つかった使用の割合。
-- `element_count` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — ディクショナリに保存されているアイテムの数。
-- `load_factor` ([Float64](../../sql-reference/data-types/float.md)) — ディクショナリ内の充填率（ハッシュディクショナリの場合、ハッシュテーブル内の充填率）。
-- `source` ([String](../../sql-reference/data-types/string.md)) — ディクショナリの [データソース](../../sql-reference/dictionaries/index.md#dictionary-sources) を説明するテキスト。
-- `lifetime_min` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — ディクショナリがメモリ内で持つ最小の [ライフタイム](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime) で、この時間が経過すると ClickHouse はディクショナリを再ロードしようとします（`invalidate_query` が設定されている場合、変更があった場合のみ）。秒単位で設定。
-- `lifetime_max` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — ディクショナリがメモリ内で持つ最大の [ライフタイム](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime) で、この時間が経過すると ClickHouse はディクショナリを再ロードしようとします（`invalidate_query` が設定されている場合、変更があった場合のみ）。秒単位で設定。
-- `loading_start_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — ディクショナリのロード開始時刻。
-- `last_successful_update_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — ディクショナリのロードまたは更新の終了時刻。ディクショナリソースの問題を監視し、原因を調査するのに役立ちます。
-- `loading_duration` ([Float32](../../sql-reference/data-types/float.md)) — ディクショナリのロード時間。
-- `last_exception` ([String](../../sql-reference/data-types/string.md)) — ディクショナリを作成または再ロードする際に発生するエラーのテキスト、ディクショナリが作成できなかった場合。
-- `comment` ([String](../../sql-reference/data-types/string.md)) — ディクショナリへのコメントのテキスト。
+- `element_count` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 辞書に保存されている項目の数。
+- `load_factor` ([Float64](../../sql-reference/data-types/float.md)) — 辞書の充填率（ハッシュ辞書の場合、ハッシュテーブルの充填率）。
+- `source` ([String](../../sql-reference/data-types/string.md)) — 辞書のための[データソース](../../sql-reference/dictionaries/index.md#dictionary-sources)を説明するテキスト。
+- `lifetime_min` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — メモリ内の辞書の最小[有効期限](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。ClickHouseは辞書の再ロードを試みます（`invalidate_query`が設定されている場合は、変更があったときのみ）。秒単位で設定。
+- `lifetime_max` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — メモリ内の辞書の最大[有効期限](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。ClickHouseは辞書の再ロードを試みます（`invalidate_query`が設定されている場合は、変更があったときのみ）。秒単位で設定。
+- `loading_start_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 辞書のロード開始時間。
+- `last_successful_update_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 辞書のロードまたは更新の終了時間。辞書ソースに関する問題を監視し原因を調査するのに役立ちます。
+- `loading_duration` ([Float32](../../sql-reference/data-types/float.md)) — 辞書のロード時間。
+- `last_exception` ([String](../../sql-reference/data-types/string.md)) — 辞書を作成または再ロードする際にエラーが発生した場合のエラーテキスト。
+- `comment` ([String](../../sql-reference/data-types/string.md)) — 辞書へのコメントのテキスト。
 
 **例**
 
-ディクショナリを設定します:
+辞書を設定します:
 
-``` sql
+```sql
 CREATE DICTIONARY dictionary_with_comment
 (
     id UInt64,
@@ -57,16 +58,16 @@ PRIMARY KEY id
 SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() TABLE 'source_table'))
 LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
-COMMENT '一時的なディクショナリ';
+COMMENT '一時的な辞書';
 ```
 
-ディクショナリがロードされていることを確認します。
+辞書がロードされていることを確認します。
 
-``` sql
+```sql
 SELECT * FROM system.dictionaries LIMIT 1 FORMAT Vertical;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 database:                    default
@@ -92,5 +93,5 @@ loading_start_time:          1970-01-01 00:00:00
 last_successful_update_time: 1970-01-01 00:00:00
 loading_duration:            0
 last_exception:
-comment:                     一時的なディクショナリ
+comment:                     一時的な辞書
 ```

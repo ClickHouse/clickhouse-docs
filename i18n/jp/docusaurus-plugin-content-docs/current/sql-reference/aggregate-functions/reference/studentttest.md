@@ -1,47 +1,47 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/studentttest'
-sidebar_position: 194
+description: '二つの母集団からのサンプルに適用される学生のt検定。'
 sidebar_label: 'studentTTest'
+sidebar_position: 194
+slug: /sql-reference/aggregate-functions/reference/studentttest
 title: 'studentTTest'
-description: '二つの母集団からのサンプルに対して、スチューデントのt検定を適用します。'
 ---
 
 
 # studentTTest
 
-二つの母集団からのサンプルに対して、スチューデントのt検定を適用します。
+二つの母集団からのサンプルに学生のt検定を適用します。
 
 **構文**
 
-``` sql
+```sql
 studentTTest([confidence_level])(sample_data, sample_index)
 ```
 
-両方のサンプルの値は `sample_data` カラムに存在します。もし `sample_index` が 0 の場合、その行の値は最初の母集団からのサンプルに属します。そうでない場合は、第二の母集団からのサンプルに属します。帰無仮説は母集団の平均が等しいというものです。等しい分散を持つ正規分布が仮定されています。
+両方のサンプルの値は `sample_data` カラムにあります。`sample_index` が 0 に等しい場合、その行の値は最初の母集団からのサンプルに属します。それ以外の場合は、第二の母集団からのサンプルに属します。帰無仮説は、母集団の平均が等しいことです。等しい分散を持つ正規分布が想定されています。
 
 **引数**
 
-- `sample_data` — サンプルデータ。 [整数](../../../sql-reference/data-types/int-uint.md), [浮動小数点数](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)。
+- `sample_data` — サンプルデータ。[整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md) 又は [小数](../../../sql-reference/data-types/decimal.md)。
 - `sample_index` — サンプルインデックス。[整数](../../../sql-reference/data-types/int-uint.md)。
 
-**パラメーター**
+**パラメータ**
 
-- `confidence_level` — 信頼区間を計算するための信頼レベル。[浮動小数点数](../../../sql-reference/data-types/float.md)。
+- `confidence_level` — 信頼区間を計算するための信頼レベル。[浮動小数点](../../../sql-reference/data-types/float.md)。
 
-**戻り値**
+**返される値**
 
-[タプル](../../../sql-reference/data-types/tuple.md)として二つまたは四つの要素を返します（オプションの `confidence_level` が指定されている場合）:
+[タプル](../../../sql-reference/data-types/tuple.md)で、二つまたは四つの要素を含みます（オプションの `confidence_level` が指定された場合）:
 
 - 計算されたt統計量。[Float64](../../../sql-reference/data-types/float.md)。
 - 計算されたp値。[Float64](../../../sql-reference/data-types/float.md)。
-- [計算された信頼区間の下限。[Float64](../../../sql-reference/data-types/float.md)。]
-- [計算された信頼区間の上限。[Float64](../../../sql-reference/data-types/float.md)。]
+- [計算された信頼区間下限。[Float64](../../../sql-reference/data-types/float.md)。]
+- [計算された信頼区間上限。[Float64](../../../sql-reference/data-types/float.md)。]
 
 **例**
 
 入力テーブル:
 
-``` text
+```text
 ┌─sample_data─┬─sample_index─┐
 │        20.3 │            0 │
 │        21.1 │            0 │
@@ -54,19 +54,19 @@ studentTTest([confidence_level])(sample_data, sample_index)
 
 クエリ:
 
-``` sql
+```sql
 SELECT studentTTest(sample_data, sample_index) FROM student_ttest;
 ```
 
 結果:
 
-``` text
+```text
 ┌─studentTTest(sample_data, sample_index)───┐
 │ (-0.21739130434783777,0.8385421208415731) │
 └───────────────────────────────────────────┘
 ```
 
-**関連記事**
+**関連情報**
 
-- [スチューデントのt検定](https://en.wikipedia.org/wiki/Student%27s_t-test)
+- [学生のt検定](https://en.wikipedia.org/wiki/Student%27s_t-test)
 - [welchTTest関数](/sql-reference/aggregate-functions/reference/welchttest)

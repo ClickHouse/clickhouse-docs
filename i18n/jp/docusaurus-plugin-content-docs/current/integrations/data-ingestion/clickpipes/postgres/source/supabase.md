@@ -1,16 +1,18 @@
 ---
-sidebar_label: Supabase Postgres
-description: ClickPipesのソースとしてSupabaseインスタンスを設定する
+sidebar_label: 'Supabase Postgres'
+description: 'ClickPipesのソースとしてSupabaseインスタンスをセットアップする'
 slug: /integrations/clickpipes/postgres/source/supabase
+title: 'Supabaseソースセットアップガイド'
 ---
 
 import supabase_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-commands.jpg'
-import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg' 
+import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg'
+import Image from '@theme/IdealImage';
 
 
-# Supabaseソース設定ガイド
+# Supabaseソースセットアップガイド
 
-これは、ClickPipesで使用するためのSupabase Postgresの設定方法に関するガイドです。
+これは、ClickPipesで使用するためのSupabase Postgresのセットアップ方法に関するガイドです。
 
 :::note
 
@@ -19,13 +21,12 @@ ClickPipesは、シームレスなレプリケーションのためにIPv6経由
 :::
 
 
-## 権限とレプリケーションスロットを持つユーザーの作成 {#creating-a-user-with-permissions-and-replication-slot}
+## パーミッションとレプリケーションスロットを持つユーザーの作成 {#creating-a-user-with-permissions-and-replication-slot}
 
-CDCに適した必要な権限を持つClickPipes用の新しいユーザーを作成し、
-レプリケーションに使用する発行物も作成します。
+CDCに適した必要なパーミッションを持つClickPipes用の新しいユーザーを作成し、レプリケーションに使用するパブリケーションも作成しましょう。
 
-これには、あなたのSupabaseプロジェクトの**SQLエディタ**に移動します。
-ここで次のSQLコマンドを実行できます：
+そのためには、Supabaseプロジェクトの**SQLエディタ**に移動します。
+ここで、次のSQLコマンドを実行できます：
 ```sql
   CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -35,53 +36,53 @@ CDCに適した必要な権限を持つClickPipes用の新しいユーザーを�
 -- ユーザーにレプリケーション権限を付与
   ALTER USER clickpipes_user REPLICATION;
 
--- 発行物を作成します。ミラーを作成する際にこれを使用します
+-- パブリケーションを作成します。このパブリケーションをミラーの作成時に使用します
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 
-<img src={supabase_commands} alt="ユーザーと発行物のコマンド"/>
+<Image img={supabase_commands} alt="ユーザーとパブリケーションのコマンド" size="large" border/>
 
 
-**実行**をクリックして、発行物とユーザーを準備します。
+**Run**をクリックして、パブリケーションとユーザーを準備します。
 
 :::note
 
-`clickpipes_user`と`clickpipes_password`をお好みのユーザー名とパスワードに置き換えることを忘れないでください。
+`clickpipes_user` と `clickpipes_password` を希望のユーザー名とパスワードに置き換えることを忘れないでください。
 
-また、ClickPipesでミラーを作成する際には同じ発行物名を使用することを忘れないでください。
+また、ClickPipesでミラーを作成する際に同じパブリケーション名を使用することを忘れないでください。
 
 :::
 
 
-## `max_slot_wal_keep_size`を増加させる {#increase-max_slot_wal_keep_size}
+## `max_slot_wal_keep_size`を増やす {#increase-max_slot_wal_keep_size}
 
 
 :::warning
 
-このステップでは、あなたのSupabaseデータベースが再起動され、短時間のダウンタイムが発生する可能性があります。
+このステップでは、Supabaseデータベースが再起動され、一時的なダウンタイムが発生する可能性があります。
 
-Supabaseデータベースの`max_slot_wal_keep_size`パラメータを高い値（少なくとも100GBまたは`102400`）に増やすことができます。詳細については、[Supabase Docs](https://supabase.com/docs/guides/database/custom-postgres-config#cli-supported-parameters)を参照してください。
+Supabaseデータベースの`max_slot_wal_keep_size`パラメータを高い値（少なくとも100GBまたは`102400`）に増やすには、[Supabase Docs](https://supabase.com/docs/guides/database/custom-postgres-config#cli-supported-parameters)を参照してください。
 
-この値の推奨については、ClickPipesチームにお問い合わせください。
+この値のより良い推奨が必要な場合は、ClickPipesチームにお問い合わせください。
 
 :::
 
 ## Supabaseに使用する接続詳細 {#connection-details-to-use-for-supabase}
 
-あなたのSupabaseプロジェクトの`プロジェクト設定` -> `データベース`（`構成`の下）に移動します。
+Supabaseプロジェクトの`プロジェクト設定` -> `データベース`（`設定`の下）に移動します。
 
-**重要**：このページで`接続プールの表示`を無効にし、`接続パラメータ`セクションに移動して、パラメータをメモまたはコピーしてください。
+**重要**: このページで`コネクションプールを表示`を無効にし、`接続パラメータ`セクションに移動して、パラメータをメモまたはコピーしてください。
 
-<img src={supabase_connection_details} alt="Supabase接続詳細を特定する"/>
+<Image img={supabase_connection_details} size="lg" border alt="Supabase接続詳細を探す" border/>
 
 :::info
 
-CDCベースのレプリケーションには接続プールがサポートされていないため、無効にする必要があります。
+CDCベースのレプリケーションにはコネクションプールはサポートされていないため、無効にする必要があります。
 
 :::
 
 
-## 次は何ですか？ {#whats-next}
+## 次に何をするべきか？ {#whats-next}
 
-あなたは今、[ClickPipeを作成](../index.md)し、PostgresインスタンスからClickHouse Cloudにデータを取り込むことができます。
-Postgresインスタンスを設定する際に使用した接続詳細を必ずメモしておいてください。ClickPipeの作成プロセスで必要になります。
+これで、[ClickPipeを作成](../index.md)して、PostgresインスタンスからClickHouse Cloudにデータをインジェストすることができます。
+Postgresインスタンスをセットアップする際に使用した接続詳細をメモしておくことを忘れないでください。ClickPipeの作成プロセス中に必要になります。

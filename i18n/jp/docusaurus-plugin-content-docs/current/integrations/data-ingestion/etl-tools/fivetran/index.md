@@ -1,21 +1,26 @@
 ---
-sidebar_label: Fivetran
+sidebar_label: 'Fivetran'
 slug: /integrations/fivetran
 sidebar_position: 2
-description: ユーザーは dbt を使用して ClickHouse 内でデータを変換およびモデル化できます
+description: 'ユーザーは dbt を使用して ClickHouse でデータを変換およびモデル化できます'
+title: 'Fivetran および ClickHouse Cloud'
 ---
 
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Fivetran と ClickHouse Cloud
+
+# Fivetran および ClickHouse Cloud
+
+<ClickHouseSupportedBadge/>
 
 ## 概要 {#overview}
 
-[Fivetran](https://www.fivetran.com) は、データをクラウドデータプラットフォーム間で移動させる自動化されたデータ移動プラットフォームです。
+[Fivetran](https://www.fivetran.com) は、クラウドデータプラットフォーム間でデータを自動的に移動させるデータ移動プラットフォームです。
 
-[ClickHouse Cloud](https://clickhouse.com/cloud) は、ユーザーがさまざまなソースから ClickHouse にデータをロードできる[Fivetran の宛先](https://fivetran.com/docs/destinations/clickhouse)としてサポートされています。
+[ClickHouse Cloud](https://clickhouse.com/cloud) は [Fivetran のデスティネーション](https://fivetran.com/docs/destinations/clickhouse) としてサポートされており、ユーザーはさまざまなソースから ClickHouse にデータをロードできます。
 
 :::note
-[ClickHouse Cloud 宛先](https://fivetran.com/docs/destinations/clickhouse)は現在プライベートプレビュー中です。問題が発生した場合は、ClickHouse サポートにお問い合わせください。
+[ClickHouse Cloud デスティネーション](https://fivetran.com/docs/destinations/clickhouse) は現在、プライベートプレビュー中です。問題が発生した場合は、ClickHouse サポートにお問い合わせください。
 :::
 
 <div class='vimeo-container'>
@@ -30,13 +35,13 @@ description: ユーザーは dbt を使用して ClickHouse 内でデータを�
   </iframe>
 </div>
 
-## ClickHouse Cloud 宛先 {#clickhouse-cloud-destination}
+## ClickHouse Cloud デスティネーション {#clickhouse-cloud-destination}
 
-Fivetran ウェブサイトの公式ドキュメントをご覧ください：
+Fivetran の公式サイトでのドキュメントをご覧ください：
 
-- [ClickHouse 宛先の概要](https://fivetran.com/docs/destinations/clickhouse)
-- [ClickHouse 宛先のセットアップガイド](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
+- [ClickHouse デスティネーションの概要](https://fivetran.com/docs/destinations/clickhouse)
+- [ClickHouse デスティネーション設定ガイド](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
 
 ## お問い合わせ {#contact-us}
 
-質問がある場合や機能リクエストがある場合は、[サポートチケット](/about-us/support)を開いてください。
+ご質問がある場合や、機能リクエストがある場合は、[サポートチケット](/about-us/support)を開いてください。

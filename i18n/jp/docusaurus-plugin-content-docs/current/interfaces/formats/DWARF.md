@@ -1,61 +1,62 @@
 ---
-title: DWARF
-slug: /interfaces/formats/DWARF
-keywords: [DWARF]
-input_format: true
-output_format: false
 alias: []
+description: 'DWARFフォーマットに関するドキュメント'
+input_format: true
+keywords: ['DWARF']
+output_format: false
+slug: /interfaces/formats/DWARF
+title: 'DWARF'
 ---
 
-| Input | Output  | Alias |
+| 入力 | 出力  | エイリアス |
 |-------|---------|-------|
 | ✔     | ✗       |       |
 
 ## 説明 {#description}
 
-`DWARF` フォーマットは ELF ファイル（実行ファイル、ライブラリ、またはオブジェクトファイル）から DWARF デバッグシンボルを解析します。 
-これは `dwarfdump` に似ていますが、はるかに高速（毎秒数百 MB）で、SQL をサポートしています。 
-`.debug_info` セクション内の各デバッグ情報エントリ (DIE) に対して 1 行を生成し、DWARF エンコーディングがツリー内の子リストを終了するために使用する「null」エントリを含みます。
+`DWARF`フォーマットは、ELFファイル（実行可能ファイル、ライブラリ、またはオブジェクトファイル）からDWARFデバッグシンボルを解析します。 
+これは `dwarfdump`に似ていますが、はるかに高速（毎秒数百MB）で、SQLをサポートしています。 
+`.debug_info`セクションの各デバッグ情報エントリ（DIE）に対して1行を生成し、DWARFエンコーディングがツリー内の子のリストを終了させるために使用する「null」エントリーも含まれています。
 
 :::info
-`.debug_info` はコンパイルユニットに対応する *units* で構成されています：
-- 各ユニットは *DIE* のツリーであり、`compile_unit` DIE がそのルートです。
-- 各 DIE には *tag* と *attributes* のリストがあります。
-- 各属性には *name* と *value* があり（また、値がどのようにエンコードされるかを指定する *form* もあります）。
+`.debug_info`は、コンパイルユニットに対応する*ユニット*で構成されています： 
+- 各ユニットは、`compile_unit` DIEをルートとした*DIE*のツリーです。 
+- 各DIEには*タグ*と*属性*のリストがあります。 
+- 各属性には*名前*と*値*（および値のエンコード方式を指定する*フォーム*）があります。 
 
-DIE はソースコードからの要素を表しており、その *tag* によってそれが何の要素であるかを示します。例えば、以下のようなものがあります：
+DIEはソースコードの要素を表し、その*タグ*はそれがどのようなものであるかを示します。例えば、次のようなものがあります：
 
-- 関数 (tag = `subprogram`)
-- クラス/構造体/列挙型 (`class_type`/`structure_type`/`enumeration_type`)
-- 変数 (`variable`)
-- 関数の引数 (`formal_parameter`)
+- 関数（タグ = `subprogram`）
+- クラス/構造体/列挙体（`class_type`/`structure_type`/`enumeration_type`）
+- 変数（`variable`）
+- 関数引数（`formal_parameter`）
 
-ツリー構造は対応するソースコードを反映しています。例えば、`class_type` DIE はクラスのメソッドを表す `subprogram` DIE を含むことができます。
+ツリー構造は対応するソースコードを反映しています。例えば、`class_type` DIEは、そのクラスのメソッドを表す `subprogram` DIEを含むことができます。
 :::
 
-`DWARF` フォーマットは以下のカラムを出力します：
+`DWARF`フォーマットは以下のカラムを出力します：
 
-- `offset` - `.debug_info` セクション内の DIE の位置
-- `size` - エンコードされた DIE のバイト数（属性を含む）
-- `tag` - DIE のタイプ；通常の「DW_TAG_」接頭辞は省略されます
-- `unit_name` - この DIE を含むコンパイルユニットの名前
-- `unit_offset` - この DIE を含むコンパイルユニットが `.debug_info` セクション内に位置する場所
-- `ancestor_tags` - ツリー内の現在の DIE の先祖のタグの配列、内側から外側への順序で
-- `ancestor_offsets` - 先祖のオフセット、`ancestor_tags` に平行
-- 利便性のために属性配列から複製された一般的な属性のいくつか：
+- `offset` - `.debug_info`セクション内のDIEの位置
+- `size` - エンコードされたDIE内のバイト数（属性を含む）
+- `tag` - DIEのタイプ；従来の"DW_TAG_"プレフィックスは省略されます
+- `unit_name` - このDIEを含むコンパイルユニットの名前
+- `unit_offset` - `.debug_info`セクション内のこのDIEを含むコンパイルユニットの位置
+- `ancestor_tags` - ツリー内の現在のDIEの祖先のタグの配列、最も内側から外側への順序
+- `ancestor_offsets` - 祖先のオフセット、`ancestor_tags`に平行
+- 便利のために属性配列から複製された一般的な属性：
     - `name`
-    - `linkage_name` - 修飾された完全修飾名；通常は関数のみが持ちます（しかし全ての関数ではありません）
+    - `linkage_name` - マングルされた完全修飾名；通常は関数のみが持っています（ただし、すべての関数が持っているわけではありません）
     - `decl_file` - このエンティティが宣言されたソースコードファイルの名前
     - `decl_line` - このエンティティが宣言されたソースコード内の行番号
-- 属性を記述する平行配列：
-    - `attr_name` - 属性の名前；通常の「DW_AT_」接頭辞は省略されます
-    - `attr_form` - 属性がどのようにエンコードされ解釈されるか；通常の DW_FORM_ 接頭辞は省略されます
-    - `attr_int` - 属性の整数値；属性が数値の値を持たない場合は 0
-    - `attr_str` - 属性の文字列値；属性が文字列の値を持たない場合は空
+- 属性を説明する平行配列：
+    - `attr_name` - 属性の名前；従来の"DW_AT_"プレフィックスは省略されます
+    - `attr_form` - 属性がどのようにエンコードされ、解釈されるか；従来のDW_FORM_プレフィックスは省略されます
+    - `attr_int` - 属性の整数値；属性に数値がない場合は0
+    - `attr_str` - 属性の文字列値；属性に文字列値がない場合は空
 
 ## 使用例 {#example-usage}
 
-`DWARF` フォーマットは、関数定義（テンプレートインスタンス化やインクルードされたヘッダーファイルからの関数を含む）が最も多いコンパイルユニットを見つけるために使用できます：
+`DWARF`フォーマットを使用すると、関数定義が最も多いコンパイルユニット（テンプレートインスタンスやインクルードされたヘッダーファイルの関数を含む）を見つけることができます：
 
 ```sql title="クエリ"
 SELECT
@@ -74,8 +75,8 @@ LIMIT 3
 │ ./src/AggregateFunctions/AggregateFunctionUniqCombined.cpp │ 22649 │
 └────────────────────────────────────────────────────────────┴───────┘
 
-3 行が返されました。経過時間：1.487 秒。139.76 百万行を処理、1.12 GB（93.97 百万行/s、752.77 MB/s）。
-ピークメモリ使用量：271.92 MiB。
+3 rows in set. Elapsed: 1.487 sec. Processed 139.76 million rows, 1.12 GB (93.97 million rows/s., 752.77 MB/s.)
+ピークメモリ使用量: 271.92 MiB.
 ```
 
 ## フォーマット設定 {#format-settings}

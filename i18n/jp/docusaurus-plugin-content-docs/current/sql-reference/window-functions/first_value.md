@@ -1,13 +1,15 @@
 ---
-slug: /sql-reference/window-functions/first_value
-sidebar_label: first_value
+description: '最初の値ウィンドウ関数のドキュメント'
+sidebar_label: 'first_value'
 sidebar_position: 3
+slug: /sql-reference/window-functions/first_value
+title: 'first_value'
 ---
 
 
 # first_value
 
-オーダーフレーム内で評価された最初の値を返します。デフォルトでは、NULL引数はスキップされますが、`RESPECT NULLS`修飾子を使用することでこの動作をオーバーライドできます。
+順序付けられたフレーム内で評価された最初の値を返します。デフォルトでは、NULL引数はスキップされますが、`RESPECT NULLS`修飾子を使用することでこの動作を上書きできます。
 
 **構文**
 
@@ -22,8 +24,8 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 エイリアス: `any`.
 
 :::note
-`first_value(column_name)`の後にオプションの修飾子`RESPECT NULLS`を使用すると、`NULL`引数がスキップされないことが保証されます。
-詳細については、[NULL処理](../aggregate-functions/index.md/#null-processing)を参照してください。
+オプションの修飾子`RESPECT NULLS`を`first_value(column_name)`の後に使用すると、`NULL`引数がスキップされないことが保証されます。
+詳細については[NULL処理](../aggregate-functions/index.md/#null-processing)を参照してください。
 
 エイリアス: `firstValueRespectNulls`
 :::
@@ -32,13 +34,13 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 
 **返される値**
 
-- オーダーフレーム内で評価された最初の値。
+- 順序付けられたフレーム内で評価された最初の値。
 
 **例**
 
-この例では、`first_value`関数を使用してフィクションのプレミアリーグサッカー選手の給与データセットから最高給のサッカー選手を見つけます。
+この例では、`first_value`関数を使用して架空のプレミアリーグ選手の給与データセットから最高給のサッカー選手を見つけます。
 
-クエリ：
+クエリ:
 
 ```sql
 DROP TABLE IF EXISTS salaries;
@@ -67,7 +69,7 @@ SELECT player, salary,
 FROM salaries;
 ```
 
-結果：
+結果:
 
 ```response
    ┌─player──────────┬─salary─┬─highest_paid_player─┐

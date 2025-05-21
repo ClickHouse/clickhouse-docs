@@ -1,12 +1,13 @@
 ---
 slug: /integrations/postgresql
-sidebar_label: PostgreSQL
-title: PostgreSQL
+sidebar_label: 'PostgreSQL'
+title: 'PostgreSQL'
 hide_title: false
+description: 'Page describing how to integrate Postgres with ClickHouse'
 ---
 
-import PostgreSQL from '@site/i18n/jp/docusaurus-plugin-content-docs/current/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md';
+import PostgreSQL from '@site/docs/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md';
 
-ClickHouseへのPostgreSQLの完全な移行ガイドは、データモデリングや同等の概念に関するアドバイスを含む内容を、[こちら](/migrations/postgresql/overview)で確認できます。以下に、ClickHouseとPostgreSQLの接続方法を説明します。
+PostgreSQLからClickHouseへの完全な移行ガイドは、データモデリングや同等の概念に関するアドバイスを含み、[こちら](/migrations/postgresql/overview)にあります。以下では、ClickHouseとPostgreSQLを接続する方法について説明します。
 
 <PostgreSQL/>

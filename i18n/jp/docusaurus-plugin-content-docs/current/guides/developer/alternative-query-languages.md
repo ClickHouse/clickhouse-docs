@@ -1,19 +1,20 @@
 ---
 slug: /guides/developer/alternative-query-languages
-sidebar_label: 代替クエリ言語
-title: 代替クエリ言語
-description: ClickHouseで代替クエリ言語を使用する
+sidebar_label: '代替クエリ言語'
+title: '代替クエリ言語'
+description: 'ClickHouseで代替クエリ言語を使用する'
 ---
+
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 標準SQLに加えて、ClickHouseはデータをクエリするためのさまざまな代替クエリ言語をサポートしています。
 
-現在サポートされている方言は次の通りです：
-- `clickhouse`: ClickHouseのデフォルトの[SQL方言](../../sql-reference/syntax.md)
-- `prql`: [パイプラインリレーショナルクエリ言語 (PRQL)](https://prql-lang.org/)
+現在サポートされている方言は以下の通りです：
+- `clickhouse`: ClickHouseのデフォルトの [SQL方言](../../chdb/reference/sql-reference.md)
+- `prql`: [パイプライン式関係クエリ言語 (PRQL)](https://prql-lang.org/)
 - `kusto`: [Kustoクエリ言語 (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
 
-使用するクエリ言語は `dialect` を設定することで制御されます。
+使用されるクエリ言語は、`dialect` を設定することで制御されます。
 
 ## 標準SQL {#standard-sql}
 
@@ -23,14 +24,14 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 SET dialect = 'clickhouse'
 ```
 
-## パイプラインリレーショナルクエリ言語 (PRQL) {#pipelined-relational-query-language-prql}
+## パイプライン式関係クエリ言語 (PRQL) {#pipelined-relational-query-language-prql}
 
 <ExperimentalBadge/>
 
 PRQLを有効にするには：
 
 ```sql
-SET allow_experimental_prql_dialect = 1; -- このSETステートメントはClickHouseバージョン >= v25.1 の場合のみ必要です
+SET allow_experimental_prql_dialect = 1; -- このSET文はClickHouseバージョン >= v25.1 にのみ必要です
 SET dialect = 'prql'
 ```
 
@@ -44,7 +45,7 @@ aggregate {
 }
 ```
 
-内部では、ClickHouseはPRQLからSQLへのトランスパイレーションを使用してPRQLクエリを実行します。
+内部では、ClickHouseはPRQLをSQLに変換してPRQLクエリを実行します。
 
 ## Kustoクエリ言語 (KQL) {#kusto-query-language-kql}
 
@@ -53,7 +54,7 @@ aggregate {
 KQLを有効にするには：
 
 ```sql
-SET allow_experimental_kusto_dialect = 1; -- このSETステートメントはClickHouseバージョン >= 25.1 の場合のみ必要です
+SET allow_experimental_kusto_dialect = 1; -- このSET文はClickHouseバージョン >= 25.1 にのみ必要です
 SET dialect = 'kusto'
 ```
 
@@ -76,4 +77,4 @@ numbers(10) | project number
 └────────┘
 ```
 
-KQLクエリは、ClickHouseに定義されているすべての関数にアクセスできない場合があることに注意してください。
+KQLクエリはClickHouseで定義されたすべての関数にアクセスできない場合があることに注意してください。

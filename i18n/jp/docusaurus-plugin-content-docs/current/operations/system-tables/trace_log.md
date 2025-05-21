@@ -1,56 +1,60 @@
 ---
-description: "サンプリングクエリプロファイラーにより収集されたスタックトレースを含むシステムテーブル。"
+description: 'サンプリングクエリプロファイラーによって収集されたスタックトレースを含むシステムテーブルです。'
+keywords: ['システムテーブル', 'trace_log']
 slug: /operations/system-tables/trace_log
-title: "system.trace_log"
-keywords: ["system table", "trace_log"]
+title: 'system.trace_log'
 ---
-import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+
+
+# system.trace_log
 
 <SystemTableCloud/>
 
-[サンプリングクエリプロファイラー](../../operations/optimizing-performance/sampling-query-profiler.md)によって収集されたスタックトレースを含んでいます。
+[サンプリングクエリプロファイラー](../../operations/optimizing-performance/sampling-query-profiler.md)によって収集されたスタックトレースを含みます。
 
-ClickHouseは、[trace_log](../../operations/server-configuration-parameters/settings.md#trace_log)サーバー設定セクションが設定されると、このテーブルを作成します。また、設定については次も参照してください: [query_profiler_real_time_period_ns](../../operations/settings/settings.md#query_profiler_real_time_period_ns)、[query_profiler_cpu_time_period_ns](../../operations/settings/settings.md#query_profiler_cpu_time_period_ns)、[memory_profiler_step](../../operations/settings/settings.md#memory_profiler_step)、[memory_profiler_sample_probability](../../operations/settings/settings.md#memory_profiler_sample_probability)、[trace_profile_events](../../operations/settings/settings.md#trace_profile_events)。
+ClickHouseは、[trace_log](../../operations/server-configuration-parameters/settings.md#trace_log)サーバー設定セクションが設定されているときにこのテーブルを作成します。その他の設定も参照してください: [query_profiler_real_time_period_ns](../../operations/settings/settings.md#query_profiler_real_time_period_ns)、[query_profiler_cpu_time_period_ns](../../operations/settings/settings.md#query_profiler_cpu_time_period_ns)、[memory_profiler_step](../../operations/settings/settings.md#memory_profiler_step)、[memory_profiler_sample_probability](../../operations/settings/settings.md#memory_profiler_sample_probability)、[trace_profile_events](../../operations/settings/settings.md#trace_profile_events)。
 
-ログを分析するには、`addressToLine`、`addressToLineWithInlines`、`addressToSymbol`および`demangle`のイントロスペクション関数を使用します。
+ログを分析するには、`addressToLine`、`addressToLineWithInlines`、`addressToSymbol`、および`demangle`イントロスペクション関数を使用します。
 
 カラム:
 
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — サンプリング時の日時。
-- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — サンプリング時のタイムスタンプ。
-- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — マイクロ秒精度のサンプリング時のタイムスタンプ。
-- `timestamp_ns` ([UInt64](../../sql-reference/data-types/int-uint.md)) — サンプリング時のタイムスタンプ（ナノ秒単位）。
-- `revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ClickHouseサーバービルドのリビジョン。
+- `event_date` ([Date](../../sql-reference/data-types/date.md)) — サンプリングの瞬間の日付。
+- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — サンプリングの瞬間のタイムスタンプ。
+- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — マイクロ秒精度のサンプリングの瞬間のタイムスタンプ。
+- `timestamp_ns` ([UInt64](../../sql-reference/data-types/int-uint.md)) — ナノ秒単位のサンプリングの瞬間のタイムスタンプ。
+- `revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ClickHouseサーバーのビルドリビジョン。
 
-    `clickhouse-client`でサーバーに接続する際、`Connected to ClickHouse server version 19.18.1.`に類似した文字列が表示されます。このフィールドにはサーバーの`revision`が含まれますが、`version`は含まれません。
+    `clickhouse-client`でサーバーに接続すると、`Connected to ClickHouse server version 19.18.1.`のような文字列が表示されます。このフィールドにはサーバーの`revision`が含まれていますが、`version`は含まれていません。
 
-- `trace_type` ([Enum8](../../sql-reference/data-types/enum.md)) — トレースの種類:
-    - `Real` は、壁時計時間によるスタックトレースの収集を示します。
-    - `CPU` は、CPU時間によるスタックトレースの収集を示します。
-    - `Memory` は、メモリ割り当てが後続のウォーターマークを超えたときの割り当てと解放を収集します。
-    - `MemorySample` は、ランダムな割り当てと解放を収集します。
-    - `MemoryPeak` は、ピークメモリ使用量の更新を収集します。
-    - `ProfileEvent` は、プロファイルイベントのインクリメントを収集します。
+- `trace_type` ([Enum8](../../sql-reference/data-types/enum.md)) — トレースタイプ:
+    - `Real` は、実時間によるスタックトレースの収集を表します。
+    - `CPU` は、CPU時間によるスタックトレースの収集を表します。
+    - `Memory` は、メモリ割り当てがその後のウォーターマークを超えたときの割り当てと解放の収集を表します。
+    - `MemorySample` は、ランダムな割り当てと解放の収集を表します。
+    - `MemoryPeak` は、ピークメモリ使用量の更新の収集を表します。
+    - `ProfileEvent` は、プロファイルイベントの増分の収集を表します。
 - `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — スレッド識別子。
 - `query_id` ([String](../../sql-reference/data-types/string.md)) — [query_log](/operations/system-tables/query_log)システムテーブルから実行中のクエリの詳細を取得するために使用できるクエリ識別子。
-- `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — サンプリング時のスタックトレース。各要素はClickHouseサーバープロセス内の仮想メモリアドレスです。
-- `size` ([Int64](../../sql-reference/data-types/int-uint.md)) - トレースタイプが`Memory`、`MemorySample`または`MemoryPeak`の場合、割り当てられたメモリの量。その他のトレースタイプの場合は0。
-- `event` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) - トレースタイプが`ProfileEvent`の場合は更新されたプロファイルイベントの名前、その他のトレースタイプの場合は空文字列。
-- `increment` ([UInt64](../../sql-reference/data-types/int-uint.md)) - トレースタイプが`ProfileEvent`の場合はプロファイルイベントのインクリメントの量、その他のトレースタイプの場合は0。
-- `symbols` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)) — シンボル化が有効な場合、`trace`に対応するデマングリングされたシンボル名を含みます。
-- `lines` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)) — シンボル化が有効な場合、`trace`に対応する行番号付きのファイル名を含む文字列を含みます。
+- `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — サンプリングの瞬間のスタックトレース。各要素はClickHouseサーバープロセス内の仮想メモリアドレスです。
+- `size` ([Int64](../../sql-reference/data-types/int-uint.md)) - トレースタイプが`Memory`、`MemorySample`、または`MemoryPeak`の場合、割り当てられたメモリの量を、他のトレースタイプの場合は0です。
+- `event` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) - トレースタイプが`ProfileEvent`の場合は更新されたプロファイルイベントの名前、他のトレースタイプの場合は空の文字列です。
+- `increment` ([UInt64](../../sql-reference/data-types/int-uint.md)) - トレースタイプが`ProfileEvent`の場合はプロファイルイベントの増分の量、他のトレースタイプの場合は0です。
+- `symbols` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md))、シンボライズが有効な場合、`trace`に対応するデマングルされたシンボル名を含みます。
+- `lines` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md))、シンボライズが有効な場合、`trace`に対応するファイル名と行番号の文字列を含みます。
 
-シンボル化は、サーバーの設定ファイル内の`trace_log`の下にある`symbolize`で有効または無効にできます。
+シンボライズは、サーバーの設定ファイル内の`trace_log`の下で`symbolize`を使用して有効または無効にできます。
 
 **例**
 
-``` sql
+```sql
 SELECT * FROM system.trace_log LIMIT 1 \G
 ```
 
-``` text
-行 1:
+```text
+Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2020-09-10

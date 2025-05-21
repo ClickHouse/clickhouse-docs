@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/grouparraylast
+description: '引数の最後の値の配列を作成します。'
 sidebar_position: 142
-title: "groupArrayLast"
-description: "最後の引数の値の配列を作成します。"
+slug: /sql-reference/aggregate-functions/reference/grouparraylast
+title: 'groupArrayLast'
 ---
 
 
@@ -10,10 +10,10 @@ description: "最後の引数の値の配列を作成します。"
 
 構文: `groupArrayLast(max_size)(x)`
 
-最後の引数の値の配列を作成します。
-例えば、`groupArrayLast(1)(x)` は `[anyLast (x)]` と同等です。
+引数の最後の値の配列を作成します。  
+例えば、 `groupArrayLast(1)(x)` は `[anyLast (x)]` と同等です。
 
-いくつかのケースでは、実行順序に依存することができます。これは、`SELECT` が `ORDER BY` を使ったサブクエリからのものである場合、サブクエリの結果が十分に小さいときに適用されます。
+場合によっては、実行順序に依存することができます。これは、サブクエリからの `SELECT` が `ORDER BY` を使用し、サブクエリの結果が十分に小さい場合に当てはまります。
 
 **例**
 

@@ -1,20 +1,21 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/covarpopstable
+description: '母集団共分散の値を計算します'
 sidebar_position: 123
-title: "covarPopStable"
-description: "母集団の共分散の値を計算します"
+slug: /sql-reference/aggregate-functions/reference/covarpopstable
+title: 'covarPopStable'
 ---
 
 
 # covarPopStable
 
-母集団の共分散の値を計算します：
+母集団共分散の値を計算します:
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n}
 $$
 
-これは[CovarPop](../reference/covarpop.md)関数に似ていますが、数値的に安定したアルゴリズムを使用します。その結果、`covarPopStable`は`covarPop`よりも遅いですが、より正確な結果を生成します。
+これは、[covarPop](../reference/covarpop.md) 関数に似ていますが、数値的に安定したアルゴリズムを使用します。その結果、`covarPopStable` は `covarPop` よりも遅くなりますが、より正確な結果を生成します。
+
 
 **構文**
 
@@ -24,16 +25,16 @@ covarPop(x, y)
 
 **引数**
 
-- `x` — 第一の変数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
-- `y` — 第二の変数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+- `x` — 最初の変数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+- `y` — 2番目の変数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
 
 **返される値**
 
-- `x`と`y`の間の母集団の共分散。[Float64](../../data-types/float.md)。
+- `x` と `y` の間の母集団共分散。[Float64](../../data-types/float.md)。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 DROP TABLE IF EXISTS series;
@@ -52,7 +53,7 @@ FROM
 );
 ```
 
-結果：
+結果:
 
 ```reference
 ┌─covarPopStable(x_value, y_value)─┐

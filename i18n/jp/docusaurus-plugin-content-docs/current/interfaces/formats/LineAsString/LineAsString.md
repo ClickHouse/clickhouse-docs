@@ -1,10 +1,11 @@
 ---
-title: 'LineAsString'
-slug: /interfaces/formats/LineAsString
-keywords: [LineAsString]
-input_format: true
-output_format: true
 alias: []
+description: 'LineAsString形式のドキュメント'
+input_format: true
+keywords: ['LineAsString']
+output_format: true
+slug: /interfaces/formats/LineAsString
+title: 'LineAsString'
 ---
 
 | 入力 | 出力 | エイリアス |
@@ -13,9 +14,7 @@ alias: []
 
 ## 説明 {#description}
 
-`LineAsString` 形式は、入力データの各行を単一の文字列値として解釈します。  
-この形式は、[String](/sql-reference/data-types/string.md) 型の単一フィールドを持つテーブルに対してのみ解析可能です。  
-残りのカラムは [`DEFAULT`](/sql-reference/statements/create/table.md/#default)、[`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) に設定するか、省略する必要があります。
+`LineAsString` 形式は、入力データの各行を単一の文字列値として解釈します。この形式は、[String](/sql-reference/data-types/string.md) 型のフィールドを1つだけ持つテーブルに対してのみ解析可能です。残りのカラムは [`DEFAULT`](/sql-reference/statements/create/table.md/#default), [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) に設定するか、省略する必要があります。
 
 ## 使用例 {#example-usage}
 

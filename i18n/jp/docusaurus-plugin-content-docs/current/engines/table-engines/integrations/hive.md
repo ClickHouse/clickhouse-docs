@@ -1,10 +1,9 @@
----
-slug: /engines/table-engines/integrations/hive
+description: 'Hiveエンジンを使用すると、HDFS Hive テーブルに対して `SELECT` クエリを実行できます。'
+sidebar_label: 'Hive'
 sidebar_position: 84
-sidebar_label: Hive
-title: "Hive"
-description: "Hiveエンジンを使用すると、HDFS Hiveテーブルに対して `SELECT` クエリを実行できます。"
----
+slug: /engines/table-engines/integrations/hive
+title: 'Hive'
+```
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
@@ -13,17 +12,17 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
-Hiveエンジンを使用すると、HDFS Hiveテーブルに対して `SELECT` クエリを実行できます。現在、以下の入力フォーマットをサポートしています：
+Hiveエンジンを使用すると、HDFS Hive テーブルに対して `SELECT` クエリを実行できます。現在、以下の入力形式をサポートしています。
 
-- Text: `binary` を除く単純なスカラカラム型のみをサポート
+- Text: `binary` を除く単純スカラーカラム型のみサポート
 
-- ORC: `char` を除く単純なスカラカラム型をサポート；`array` のような複雑な型のみをサポート
+- ORC: `char` を除く単純スカラーカラム型をサポート; `array` のような複雑な型のみサポート
 
-- Parquet: すべての単純なスカラカラム型をサポート；`array` のような複雑な型のみをサポート
+- Parquet: すべての単純スカラーカラム型をサポート; `array` のような複雑な型のみサポート
 
 ## テーブルの作成 {#creating-a-table}
 
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
     name1 [type1] [ALIAS expr1],
@@ -32,16 +31,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE = Hive('thrift://host:port', 'database', 'table');
 PARTITION BY expr
 ```
-[CREATE TABLE](/sql-reference/statements/create/table) クエリの詳細な説明を参照してください。
+詳細な説明は [CREATE TABLE](/sql-reference/statements/create/table) クエリを参照してください。
 
-テーブル構造は元のHiveテーブル構造とは異なる場合があります：
-- カラム名は元のHiveテーブルと同じである必要がありますが、これらのカラムの一部だけを使用したり、任意の順序で使用したり、他のカラムから計算されたエイリアスカラムを使用することもできます。
-- カラム型は元のHiveテーブルのものと同じでなければなりません。
-- パーティションによる式は元のHiveテーブルと一致し、パーティションによる式のカラムはテーブル構造に含まれている必要があります。
+テーブル構造は元のHiveテーブルの構造とは異なる場合があります：
+- カラム名は元のHiveテーブルと同じである必要がありますが、これらのカラムの一部のみを使用し、任意の順序で使用できます。また、他のカラムから計算されたエイリアスカラムも使用できます。
+- カラム型は元のHiveテーブルのものと同じにする必要があります。
+- パーティション条件は元のHiveテーブルと一貫性があり、パーティション条件のカラムはテーブル構造に含まれている必要があります。
 
-**エンジンパラメータ**
+**エンジンパラメーター**
 
-- `thrift://host:port` — Hiveメタストアのアドレス
+- `thrift://host:port` — Hiveメタストアアドレス
 
 - `database` — リモートデータベース名。
 
@@ -49,12 +48,12 @@ PARTITION BY expr
 
 ## 使用例 {#usage-example}
 
-### HDFSファイルシステムのためのローカルキャッシュの使用方法 {#how-to-use-local-cache-for-hdfs-filesystem}
+### HDFSファイルシステム用のローカルキャッシュの使用方法 {#how-to-use-local-cache-for-hdfs-filesystem}
 
-リモートファイルシステムに対してローカルキャッシュを有効にすることを強くお勧めします。ベンチマークでは、キャッシュを使用するとほぼ2倍速くなります。
+リモートファイルシステム用のローカルキャッシュを有効にすることを強くお勧めします。ベンチマークによると、キャッシュを使用するとほぼ2倍の速度向上が見られます。
 
-キャッシュを使用する前に、`config.xml`に追加してください
-``` xml
+キャッシュを使用する前に、`config.xml`に追加してください。
+```xml
 <local_cache_for_remote_fs>
     <enable>true</enable>
     <root_dir>local_cache</root_dir>
@@ -63,18 +62,16 @@ PARTITION BY expr
 </local_cache_for_remote_fs>
 ```
 
-- enable: trueの場合、ClickHouseは起動後にリモートファイルシステム（HDFS）のためのローカルキャッシュを維持します。
-- root_dir: 必須。リモートファイルシステムのためのローカルキャッシュファイルを格納するルートディレクトリ。
+- enable: trueの場合、ClickHouseは起動後にリモートファイルシステム(HDFS)のローカルキャッシュを維持します。
+- root_dir: 必須。リモートファイルシステムのローカルキャッシュファイルを保存するためのルートディレクトリ。
 - limit_size: 必須。ローカルキャッシュファイルの最大サイズ（バイト単位）。
-- bytes_read_before_flush: リモートファイルシステムからファイルをダウンロードする際にローカルファイルシステムにフラッシュする前のバイト数を制御します。デフォルト値は1MBです。
+- bytes_read_before_flush: リモートファイルシステムからファイルをダウンロードする際に、ローカルファイルシステムに書き込む前に制御するバイト数。デフォルト値は1MBです。
 
-ClickHouseがリモートファイルシステムのためのローカルキャッシュを有効にして起動されると、ユーザーはクエリ内で `settings use_local_cache_for_remote_storage = 0` を使用してキャッシュを使用しないことを選択することもできます。`use_local_cache_for_remote_storage` はデフォルトで `1` です。
-
-### ORC入力フォーマットでHiveテーブルをクエリする {#query-hive-table-with-orc-input-format}
+### ORC入力形式でHiveテーブルをクエリする {#query-hive-table-with-orc-input-format}
 
 #### Hiveでのテーブル作成 {#create-table-in-hive}
 
-``` text
+```text
 hive > CREATE TABLE `test`.`test_orc`(
   `f_tinyint` tinyint,
   `f_smallint` smallint,
@@ -116,14 +113,14 @@ Time taken: 36.025 seconds
 
 hive > select * from test.test_orc;
 OK
-1	2	3	4	5	6.11	7.22	8	2021-11-05 12:38:16.314	2021-11-05	hello world	hello world	hello world                                                                                         	true	hello world	[1,2,3]	["hello world","hello world"]	[1.1,1.2]	[[1,2],[3,4]]	[["a","b"],["c","d"]]	[[1.11,2.22],[3.33,4.44]]	2021-09-18
+1    2    3    4    5    6.11    7.22    8    2021-11-05 12:38:16.314    2021-11-05    hello world    hello world    hello world                                                                                             true    hello world    [1,2,3]    ["hello world","hello world"]    [1.1,1.2]    [[1,2],[3,4]]    [["a","b"],["c","d"]]    [[1.11,2.22],[3.33,4.44]]    2021-09-18
 Time taken: 0.295 seconds, Fetched: 1 row(s)
 ```
 
 #### ClickHouseでのテーブル作成 {#create-table-in-clickhouse}
 
-上記のHiveテーブルからデータを取得するClickHouseのテーブル：
-``` sql
+上記で作成したHiveテーブルからデータを取得するClickHouse内のテーブル：
+```sql
 CREATE TABLE test.test_orc
 (
     `f_tinyint` Int8,
@@ -150,14 +147,13 @@ CREATE TABLE test.test_orc
 )
 ENGINE = Hive('thrift://202.168.117.26:9083', 'test', 'test_orc')
 PARTITION BY day
-
 ```
 
-``` sql
+```sql
 SELECT * FROM test.test_orc settings input_format_orc_allow_missing_columns = 1\G
 ```
 
-``` text
+```text
 SELECT *
 FROM test.test_orc
 SETTINGS input_format_orc_allow_missing_columns = 1
@@ -192,11 +188,11 @@ day:                  2021-09-18
 1 rows in set. Elapsed: 0.078 sec.
 ```
 
-### Parquet入力フォーマットでHiveテーブルをクエリする {#query-hive-table-with-parquet-input-format}
+### Parquet入力形式でHiveテーブルをクエリする {#query-hive-table-with-parquet-input-format}
 
 #### Hiveでのテーブル作成 {#create-table-in-hive-1}
 
-``` text
+```text
 hive >
 CREATE TABLE `test`.`test_parquet`(
   `f_tinyint` tinyint,
@@ -233,20 +229,20 @@ LOCATION
 OK
 Time taken: 0.51 seconds
 
-hive > insert into test.test_parquet partition(day='2021-09-18') select 1, 2, 3, 4, 5, 6.11, 7.22, 8.333, current_timestamp(), current_date(), 'hello world', 'hello world', 'hello world', true, 'hello world', array(1, 2, 3), array('hello world', 'hello world'), array(float(1.1), float(1.2)), array(array(1, 2), array(3, 4)), array(array('a', 'b'), array('c', 'd')), array(array(float(1.11), float(2.22)), array(float(3.33), float(4.44)));
+hive >  insert into test.test_parquet partition(day='2021-09-18') select 1, 2, 3, 4, 5, 6.11, 7.22, 8.333, current_timestamp(), current_date(), 'hello world', 'hello world', 'hello world', true, 'hello world', array(1, 2, 3), array('hello world', 'hello world'), array(float(1.1), float(1.2)), array(array(1, 2), array(3, 4)), array(array('a', 'b'), array('c', 'd')), array(array(float(1.11), float(2.22)), array(float(3.33), float(4.44)));
 OK
 Time taken: 36.025 seconds
 
 hive > select * from test.test_parquet;
 OK
-1	2	3	4	5	6.11	7.22	8	2021-12-14 17:54:56.743	2021-12-14	hello world	hello world	hello world                                                                                         	true	hello world	[1,2,3]	["hello world","hello world"]	[1.1,1.2]	[[1,2],[3,4]]	[["a","b"],["c","d"]]	[[1.11,2.22],[3.33,4.44]]	2021-09-18
+1    2    3    4    5    6.11    7.22    8    2021-12-14 17:54:56.743    2021-12-14    hello world    hello world    hello world                                                                                             true    hello world    [1,2,3]    ["hello world","hello world"]    [1.1,1.2]    [[1,2],[3,4]]    [["a","b"],["c","d"]]    [[1.11,2.22],[3.33,4.44]]    2021-09-18
 Time taken: 0.766 seconds, Fetched: 1 row(s)
 ```
 
 #### ClickHouseでのテーブル作成 {#create-table-in-clickhouse-1}
 
-上記のHiveテーブルからデータを取得するClickHouseのテーブル：
-``` sql
+上記で作成したHiveテーブルからデータを取得するClickHouse内のテーブル：
+```sql
 CREATE TABLE test.test_parquet
 (
     `f_tinyint` Int8,
@@ -276,11 +272,11 @@ ENGINE = Hive('thrift://localhost:9083', 'test', 'test_parquet')
 PARTITION BY day
 ```
 
-``` sql
+```sql
 SELECT * FROM test.test_parquet settings input_format_parquet_allow_missing_columns = 1\G
 ```
 
-``` text
+```text
 SELECT *
 FROM test_parquet
 SETTINGS input_format_parquet_allow_missing_columns = 1
@@ -315,11 +311,11 @@ day:                  2021-09-18
 1 rows in set. Elapsed: 0.357 sec.
 ```
 
-### Text入力フォーマットでHiveテーブルをクエリする {#query-hive-table-with-text-input-format}
+### Text入力形式でHiveテーブルをクエリする {#query-hive-table-with-text-input-format}
 
 #### Hiveでのテーブル作成 {#create-table-in-hive-2}
 
-``` text
+```text
 hive >
 CREATE TABLE `test`.`test_text`(
   `f_tinyint` tinyint,
@@ -362,14 +358,14 @@ Time taken: 36.025 seconds
 
 hive > select * from test.test_text;
 OK
-1	2	3	4	5	6.11	7.22	8	2021-12-14 18:11:17.239	2021-12-14	hello world	hello world	hello world                                                                                         	true	hello world	[1,2,3]	["hello world","hello world"]	[1.1,1.2]	[[1,2],[3,4]]	[["a","b"],["c","d"]]	[[1.11,2.22],[3.33,4.44]]	2021-09-18
+1    2    3    4    5    6.11    7.22    8    2021-12-14 18:11:17.239    2021-12-14    hello world    hello world    hello world                                                                                             true    hello world    [1,2,3]    ["hello world","hello world"]    [1.1,1.2]    [[1,2],[3,4]]    [["a","b"],["c","d"]]    [[1.11,2.22],[3.33,4.44]]    2021-09-18
 Time taken: 0.624 seconds, Fetched: 1 row(s)
 ```
 
 #### ClickHouseでのテーブル作成 {#create-table-in-clickhouse-2}
 
-上記のHiveテーブルからデータを取得するClickHouseのテーブル：
-``` sql
+上記で作成したHiveテーブルからデータを取得するClickHouse内のテーブル：
+```sql
 CREATE TABLE test.test_text
 (
     `f_tinyint` Int8,
@@ -392,11 +388,11 @@ ENGINE = Hive('thrift://localhost:9083', 'test', 'test_text')
 PARTITION BY day
 ```
 
-``` sql
+```sql
 SELECT * FROM test.test_text settings input_format_skip_unknown_fields = 1, input_format_with_names_use_header = 1, date_time_input_format = 'best_effort'\G
 ```
 
-``` text
+```text
 SELECT *
 FROM test.test_text
 SETTINGS input_format_skip_unknown_fields = 1, input_format_with_names_use_header = 1, date_time_input_format = 'best_effort'
@@ -420,4 +416,3 @@ f_varchar:   hello world
 f_char:      hello world
 f_bool:      true
 day:         2021-09-18
-```

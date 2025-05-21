@@ -1,15 +1,17 @@
 ---
-slug: '/sql-reference/statements/alter/view'
+description: 'ALTER TABLE ... MODIFY QUERY 文に関するドキュメント'
+sidebar_label: 'ビュー'
 sidebar_position: 50
-sidebar_label: 'VIEW'
+slug: /sql-reference/statements/alter/view
+title: 'ALTER TABLE ... MODIFY QUERY 文'
 ---
 
 
-# ALTER TABLE ... MODIFY QUERY ステートメント
+# ALTER TABLE ... MODIFY QUERY 文
 
-`ALTER TABLE ... MODIFY QUERY` ステートメントを使用すると、[マテリアライズドビュー](/sql-reference/statements/create/view#materialized-view)が作成されたときに指定された `SELECT` クエリを、インジェスションプロセスを中断することなく変更することができます。
+`ALTER TABLE ... MODIFY QUERY` 文を使用して、[物化ビュー](/sql-reference/statements/create/view#materialized-view) 作成時に指定された `SELECT` クエリを、データの取り込みプロセスを中断することなく変更できます。
 
-このコマンドは、`TO [db.]name` 句を使って作成されたマテリアライズドビューを変更するために作成されました。これは、基盤のストレージテーブルの構造を変更せず、マテリアライズドビューのカラムの定義も変更しないため、`TO [db.]name` 句なしで作成されたマテリアライズドビューに対するこのコマンドの適用は非常に制限されています。
+このコマンドは、`TO [db.]name` 節と共に作成された物化ビューを変更するために作成されました。これにより、基になるストレージテーブルの構造は変更されず、物化ビューのカラム定義も変更されません。そのため、`TO [db.]name` 節なしで作成された物化ビューには、このコマンドの適用は非常に限られています。
 
 **TOテーブルを使用した例**
 
@@ -42,14 +44,15 @@ ORDER BY ts, event_type;
 │ 2020-01-02 00:00:00 │ imp        │               2 │
 └─────────────────────┴────────────┴─────────────────┘
 
--- 新しいフィールド `cost` と新しい次元 `browser` を追加します。
+-- 新しい測定値 `cost` を追加し、
+-- 新しい次元 `browser` を追加します。
 
 ALTER TABLE events
   ADD COLUMN browser String,
   ADD COLUMN cost Float64;
 
--- マテリアライズドビューと TO（宛先テーブル）でカラムが一致する必要はないため、
--- 次の ALTER はインサートを壊すことはありません。
+-- カラムは物化ビューやTO
+-- （送信先テーブル）で一致する必要はないため、次のALTERは挿入を中断しません。
 
 ALTER TABLE events_by_day
     ADD COLUMN cost Float64,
@@ -63,7 +66,7 @@ SELECT Date '2020-01-02' + interval number * 900 second,
        10/(number+1)%33
 FROM numbers(100);
 
--- 新しいカラム `browser` と `cost` は空です。まだマテリアライズドビューを変更していないためです。
+-- 新しいカラム `browser` と `cost` は空です。まだ物化ビューを変更していません。
 
 SELECT ts, event_type, browser, sum(events_cnt) events_cnt, round(sum(cost),2) cost
 FROM events_by_day
@@ -117,7 +120,7 @@ ORDER BY ts, event_type;
 │ 2020-01-04 00:00:00 │ imp        │ chrome  │          1 │   0.1 │
 └─────────────────────┴────────────┴─────────┴────────────┴───────┘
 
--- !!! `MODIFY ORDER BY` 中にPRIMARY KEYが暗黙のうちに導入されました。
+-- !!! `MODIFY ORDER BY` 中に PRIMARY KEY が暗黙のうちに導入されました。
 
 SHOW CREATE TABLE events_by_day FORMAT TSVRaw
 
@@ -134,9 +137,9 @@ PRIMARY KEY (event_type, ts)
 ORDER BY (event_type, ts, browser)
 SETTINGS index_granularity = 8192
 
--- !!! カラムの定義は変更されていませんが、問題ではありません。
--- マテリアライズドビューをクエリしているのではなく、TO（ストレージ）テーブルをクエリしているためです。
--- SELECT セクションが更新されました。
+-- !!! カラムの定義は変更されていませんが、問題ありません。私たちは
+-- MATERIALIZED VIEW をクエリしているのではなく、TO（ストレージ）テーブルをクエリしています。
+-- SELECT セクションが更新されます。
 
 SHOW CREATE TABLE mv FORMAT TSVRaw;
 
@@ -159,9 +162,9 @@ GROUP BY
     browser
 ```
 
-**TOテーブルなしの例**
+**TOテーブルを使用しない例**
 
-アプリケーションは、`SELECT` セクションのみ変更でき、新しいカラムを追加できないため、非常に制限されています。
+適用は非常に限られています。新しいカラムを追加することなく、`SELECT` セクションのみを変更できます。
 
 ```sql
 CREATE TABLE src_table (`a` UInt32) ENGINE = MergeTree ORDER BY a;
@@ -191,10 +194,10 @@ SELECT * FROM mv;
 └───┘
 ```
 
-## ALTER LIVE VIEW ステートメント {#alter-live-view-statement}
+## ALTER LIVE VIEW 文 {#alter-live-view-statement}
 
-`ALTER LIVE VIEW ... REFRESH` ステートメントは、[ライブビュー](/sql-reference/statements/create/view#live-view)をリフレッシュします。 [Force Live View Refresh](/sql-reference/statements/create/view#live-view)を参照してください。
+`ALTER LIVE VIEW ... REFRESH` 文は [ライブビュー](/sql-reference/statements/create/view#live-view) をリフレッシュします。 [強制ライブビューのリフレッシュ](/sql-reference/statements/create/view#live-view) を参照してください。
 
-## ALTER TABLE ... MODIFY REFRESH ステートメント {#alter-table--modify-refresh-statement}
+## ALTER TABLE ... MODIFY REFRESH 文 {#alter-table--modify-refresh-statement}
 
-`ALTER TABLE ... MODIFY REFRESH` ステートメントは、[リフレッシュ可能なマテリアライズドビュー](../create/view.md#refreshable-materialized-view)のリフレッシュパラメータを変更します。 [リフレッシュパラメータの変更](../create/view.md#changing-refresh-parameters)を参照してください。
+`ALTER TABLE ... MODIFY REFRESH` 文は [リフレッシュ可能な物化ビュー](../create/view.md#refreshable-materialized-view) のリフレッシュパラメータを変更します。 [リフレッシュパラメータの変更](../create/view.md#changing-refresh-parameters)を参照してください。

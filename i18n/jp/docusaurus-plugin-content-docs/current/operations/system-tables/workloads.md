@@ -1,34 +1,37 @@
 ---
-description: "ローカルサーバーに存在するワークロードに関する情報を含むシステムテーブル。"
+description: 'ローカルサーバー上に存在するワークロードに関する情報を含むシステムテーブル。'
+keywords: ['system table', 'workloads']
 slug: /operations/system-tables/workloads
-title: "system.workloads"
-keywords: ["システムテーブル", "ワークロード"]
+title: 'system.workloads'
 ---
 
-ローカルサーバーに存在する [ワークロード](/operations/workload-scheduling.md#workload_entity_storage) に関する情報を含みます。このテーブルには、各ワークロードに対して1行が含まれます。
+
+# system.workloads
+
+ローカルサーバー上に存在する [ワークロード](/operations/workload-scheduling.md#workload_entity_storage) に関する情報を含みます。このテーブルは、各ワークロードの行を含んでいます。
 
 例:
 
-``` sql
+```sql
 SELECT *
 FROM system.workloads
 FORMAT Vertical
 ```
 
-``` text
-Row 1:
+```text
+行 1:
 ──────
 name:         production
 parent:       all
 create_query: CREATE WORKLOAD production IN `all` SETTINGS weight = 9
 
-Row 2:
+行 2:
 ──────
 name:         development
 parent:       all
 create_query: CREATE WORKLOAD development IN `all`
 
-Row 3:
+行 3:
 ──────
 name:         all
 parent:

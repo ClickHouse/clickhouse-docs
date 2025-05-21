@@ -1,14 +1,15 @@
 ---
 slug: /integrations/redis
-sidebar_label: Redis
-title: Redis
+sidebar_label: 'Redis'
+title: 'Redis'
+description: 'Redis テーブル関数を説明するページ'
 ---
 
-import RedisFunction from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/table-functions/redis.md';
+import RedisFunction from '@site/docs/sql-reference/table-functions/redis.md';
 
 
 # Redis 統合
 
-ユーザーは、テーブル関数を通じて Redis と統合することができます。
+ユーザーはテーブル関数を介して Redis と統合できます。
 
 <RedisFunction/>

@@ -1,10 +1,11 @@
----
-slug: /sql-reference/statements/
+description: 'ClickHouse SQL 文書'
+sidebar_label: 'ステートメントのリスト'
 sidebar_position: 1
-sidebar_label: ステートメントのリスト
----
+slug: /sql-reference/statements/
+title: 'ClickHouse SQL ステートメント'
+```
 
 
-# ClickHouse SQLステートメント
+# ClickHouse SQL ステートメント
 
-ユーザーはSQLステートメントを使用してClickHouseと対話します。ClickHouseは一般的なSQLステートメントである[SELECT](select/index.md)や[CREATE](create/index.md)をサポートしていますが、[KILL](kill.md)や[OPTIMIZE](optimize.md)のような専門的なステートメントも提供しています。
+ユーザーは SQL ステートメントを使用して ClickHouse と対話します。ClickHouse は、[SELECT](select/index.md) や [CREATE](create/index.md) などの一般的な SQL ステートメントをサポートしていますが、[KILL](kill.md) や [OPTIMIZE](optimize.md) のような特殊なステートメントも提供しています。

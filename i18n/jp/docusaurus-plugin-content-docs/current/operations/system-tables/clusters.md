@@ -1,32 +1,32 @@
 ---
-description: "設定ファイルに記載されているクラスタとそれに定義されたサーバーに関する情報を含むシステムテーブルです。"
+description: '設定ファイル内のクラスターおよびそれに定義されたサーバーに関する情報を含むシステムテーブル。'
+keywords: ['system table', 'clusters']
 slug: /operations/system-tables/clusters
-title: "system.clusters"
-keywords: ["システムテーブル", "クラスタ"]
+title: 'system.clusters'
 ---
 
-設定ファイルに記載されているクラスタとそれに含まれるサーバーに関する情報を含みます。
+設定ファイル内のクラスターおよびそれに含まれるサーバーに関する情報を含みます。
 
 カラム:
 
-- `cluster` ([String](../../sql-reference/data-types/string.md)) — クラスタ名。
-- `shard_num` ([UInt32](../../sql-reference/data-types/int-uint.md)) — クラスタ内のシャード番号、1から始まります。クラスタの変更により変わることがあります。
-- `shard_name` ([String](../../sql-reference/data-types/string.md)) — クラスタ内のシャードの名前。
+- `cluster` ([String](../../sql-reference/data-types/string.md)) — クラスター名。
+- `shard_num` ([UInt32](../../sql-reference/data-types/int-uint.md)) — クラスター内のシャード番号で、1から始まります。クラスターの変更によって変更される可能性があります。
+- `shard_name` ([String](../../sql-reference/data-types/string.md)) — クラスター内のシャードの名前。
 - `shard_weight` ([UInt32](../../sql-reference/data-types/int-uint.md)) — データ書き込み時のシャードの相対的な重み。
-- `replica_num` ([UInt32](../../sql-reference/data-types/int-uint.md)) — シャード内のレプリカ番号、1から始まります。
-- `host_name` ([String](../../sql-reference/data-types/string.md)) — 設定に指定されたホスト名。
+- `replica_num` ([UInt32](../../sql-reference/data-types/int-uint.md)) — シャード内のレプリカ番号で、1から始まります。
+- `host_name` ([String](../../sql-reference/data-types/string.md)) — 設定で指定されたホスト名。
 - `host_address` ([String](../../sql-reference/data-types/string.md)) — DNSから取得したホストのIPアドレス。
 - `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — サーバーに接続するために使用するポート。
 - `is_local` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ホストがローカルであるかどうかを示すフラグ。
 - `user` ([String](../../sql-reference/data-types/string.md)) — サーバーに接続するためのユーザー名。
-- `default_database` ([String](../../sql-reference/data-types/string.md)) — デフォルトのデータベース名。
+- `default_database` ([String](../../sql-reference/data-types/string.md)) — デフォルトデータベース名。
 - `errors_count` ([UInt32](../../sql-reference/data-types/int-uint.md)) — このホストがレプリカに到達できなかった回数。
-- `slowdowns_count` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ヘッジされたリクエストで接続を確立する際にレプリカを切り替える原因となったスローダウンの回数。
-- `estimated_recovery_time` ([UInt32](../../sql-reference/data-types/int-uint.md)) — レプリカエラー数がゼロになり、通常の状態に戻るまでの残り秒数。
-- `database_shard_name` ([String](../../sql-reference/data-types/string.md)) — `Replicated`データベースのシャード名（`Replicated`データベースに属するクラスタの場合）。
-- `database_replica_name` ([String](../../sql-reference/data-types/string.md)) — `Replicated`データベースのレプリカ名（`Replicated`データベースに属するクラスタの場合）。
-- `is_active` ([Nullable(UInt8)](../../sql-reference/data-types/int-uint.md)) — `Replicated`データベースレプリカのステータス（`Replicated`データベースに属するクラスタの場合）：1は「レプリカがオンライン」、0は「レプリカがオフライン」、`NULL`は「不明」を意味します。
-- `name` ([String](../../sql-reference/data-types/string.md)) - クラスタのエイリアス。
+- `slowdowns_count` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ヘッジリクエストによる接続確立時にレプリカが変更された遅延の回数。
+- `estimated_recovery_time` ([UInt32](../../sql-reference/data-types/int-uint.md)) — レプリカエラー数がゼロになるまでの残り秒数、正常に戻ったとみなされます。
+- `database_shard_name` ([String](../../sql-reference/data-types/string.md)) — `Replicated`データベースのシャード名（`Replicated`データベースに属するクラスター向け）。
+- `database_replica_name` ([String](../../sql-reference/data-types/string.md)) — `Replicated`データベースのレプリカ名（`Replicated`データベースに属するクラスター向け）。
+- `is_active` ([Nullable(UInt8)](../../sql-reference/data-types/int-uint.md)) — `Replicated`データベースのレプリカの状態（`Replicated`データベースに属するクラスター向け）：1 は「レプリカがオンライン」、0 は「レプリカがオフライン」、`NULL` は「不明」を意味します。
+- `name` ([String](../../sql-reference/data-types/string.md)) - クラスターへのエイリアス。
 
 **例**
 

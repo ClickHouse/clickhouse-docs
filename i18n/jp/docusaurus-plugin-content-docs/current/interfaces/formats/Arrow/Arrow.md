@@ -1,11 +1,13 @@
 ---
-title: Arrow
-slug: /interfaces/formats/Arrow
-keywords: [Arrow]
-input_format: true
-output_format: true
 alias: []
+description: 'Arrow形式のドキュメント'
+input_format: true
+keywords: ['Arrow']
+output_format: true
+slug: /interfaces/formats/Arrow
+title: 'Arrow'
 ---
+```
 
 | 入力 | 出力 | エイリアス |
 |-------|--------|-------|
@@ -13,14 +15,14 @@ alias: []
 
 ## 説明 {#description}
 
-[Apache Arrow](https://arrow.apache.org/) は、2つの組み込みの列指向ストレージフォーマットを提供しています。 ClickHouse は、これらのフォーマットの読み取りおよび書き込み操作をサポートしています。
-`Arrow` は Apache Arrow の "ファイルモード" フォーマットです。 メモリ内のランダムアクセス用に設計されています。
+[Apache Arrow](https://arrow.apache.org/) は、2つの組み込みの列指向ストレージフォーマットを提供します。ClickHouseはこれらのフォーマットの読み書き操作をサポートしています。
+`Arrow` はApache Arrowの「ファイルモード」フォーマットで、インメモリのランダムアクセス用に設計されています。
 
 ## データ型の対応 {#data-types-matching}
 
-以下の表は、サポートされているデータ型と、それらが `INSERT` および `SELECT` クエリにおける ClickHouse の [データ型](/sql-reference/data-types/index.md) にどのように対応しているかを示しています。
+以下の表は、サポートされているデータ型と、それらがClickHouseの [データ型](/sql-reference/data-types/index.md) にどのように対応するかを示しています。 `INSERT` および `SELECT` クエリでの使用があります。
 
-| Arrow データ型 (`INSERT`)              | ClickHouse データ型                                                                                       | Arrow データ型 (`SELECT`) |
+| Arrowデータ型 (`INSERT`)              | ClickHouseデータ型                                                                                       | Arrowデータ型 (`SELECT`) |
 |-----------------------------------------|------------------------------------------------------------------------------------------------------------|----------------------------|
 | `BOOL`                                  | [Bool](/sql-reference/data-types/boolean.md)                                                       | `BOOL`                     |
 | `UINT8`, `BOOL`                         | [UInt8](/sql-reference/data-types/int-uint.md)                                                     | `UINT8`                    |
@@ -47,23 +49,23 @@ alias: []
 | `FIXED_SIZE_BINARY`, `BINARY`           | [IPv6](/sql-reference/data-types/ipv6.md)                                                          | `FIXED_SIZE_BINARY`        |
 | `FIXED_SIZE_BINARY`, `BINARY`           | [Int128/UInt128/Int256/UInt256](/sql-reference/data-types/int-uint.md)                             | `FIXED_SIZE_BINARY`        |
 
-配列はネスト可能で、`Nullable` 型の値を引数として持つことができます。 `Tuple` および `Map` 型もネスト可能です。
+配列はネストでき、引数として `Nullable` 型の値を持つことができます。`Tuple` および `Map` 型もネスト可能です。
 
-`DICTIONARY` 型は `INSERT` クエリでサポートされており、`SELECT` クエリでは [LowCardinality](/sql-reference/data-types/lowcardinality.md) 型を `DICTIONARY` 型として出力する [`output_format_arrow_low_cardinality_as_dictionary`](/operations/settings/formats#output_format_arrow_low_cardinality_as_dictionary) 設定があります。
+`DICTIONARY` 型は `INSERT` クエリでサポートされており、`SELECT` クエリでは [`output_format_arrow_low_cardinality_as_dictionary`](/operations/settings/formats#output_format_arrow_low_cardinality_as_dictionary) 設定を使用して、[LowCardinality](/sql-reference/data-types/lowcardinality.md) 型を `DICTIONARY` 型として出力することができます。
 
-サポートされていない Arrow データ型: 
+サポートされていないArrowデータ型: 
 - `FIXED_SIZE_BINARY`
 - `JSON`
 - `UUID`
 - `ENUM`.
 
-ClickHouse テーブルのカラムのデータ型は、対応する Arrow データフィールドに一致する必要はありません。 データを挿入する際、ClickHouse は上記の表に従ってデータ型を解釈し、その後に [cast](/sql-reference/functions/type-conversion-functions#cast) を使用して ClickHouse テーブルカラムに設定されたデータ型にデータを変換します。
+ClickHouseテーブルカラムのデータ型は、対応するArrowデータフィールドと一致する必要はありません。データを挿入する際、ClickHouseは上記の表に従ってデータ型を解釈し、その後 [casts](/sql-reference/functions/type-conversion-functions#cast) を使用して、ClickHouseテーブルカラムに設定されたデータ型にデータを変換します。
 
 ## 使用例 {#example-usage}
 
 ### データの挿入 {#inserting-data}
 
-以下のコマンドを使用して、ファイルから ClickHouse テーブルに Arrow データを挿入できます。
+次のコマンドを使用して、ファイルからClickHouseテーブルにArrowデータを挿入することができます：
 
 ```bash
 $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT Arrow"
@@ -71,7 +73,7 @@ $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT 
 
 ### データの選択 {#selecting-data}
 
-以下のコマンドを使用して、ClickHouse テーブルからデータを選択し、Arrow フォーマットでファイルに保存できます。
+次のコマンドを使用して、ClickHouseテーブルからデータを選択し、Arrow形式でファイルに保存することができます：
 
 ```bash
 $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Arrow" > {filename.arrow}
@@ -81,13 +83,13 @@ $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Arrow" > {filenam
 
 | 設定                                                                                                                  | 説明                                                                                        | デフォルト      |
 |--------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|--------------|
-| `input_format_arrow_allow_missing_columns`                                                                               | Arrow 入力フォーマットを読み込む際に列が欠けているのを許可する                                            | `1`          |
-| `input_format_arrow_case_insensitive_column_matching`                                                                    | Arrow 列と CH 列が一致する際にケースを無視する。                                           | `0`          |
-| `input_format_arrow_import_nested`                                                                                       | 廃止された設定で、何もしない。                                                                    | `0`          |
-| `input_format_arrow_skip_columns_with_unsupported_types_in_schema_inference`                                             | Arrow フォーマットのスキーマ推測時にサポートされていない型の列をスキップする                        | `0`          |
-| `output_format_arrow_compression_method`                                                                                 | Arrow 出力フォーマットの圧縮方式。 サポートされているコーデック：lz4_frame、zstd、none（非圧縮） | `lz4_frame`  |
-| `output_format_arrow_fixed_string_as_fixed_byte_array`                                                                   | FixedString カラムのために Arrow FIXED_SIZE_BINARY 型を Binary の代わりに使う。                        | `1`          |
-| `output_format_arrow_low_cardinality_as_dictionary`                                                                      | LowCardinality 型を Dictionary Arrow 型として出力することを有効にする                                         | `0`          |
-| `output_format_arrow_string_as_string`                                                                                   | String カラムのために Arrow String 型を Binary の代わりに使う                                         | `1`          |
-| `output_format_arrow_use_64_bit_indexes_for_dictionary`                                                                  | Arrow フォーマットで辞書インデックスに常に 64 ビット整数を使用する                                  | `0`          |
-| `output_format_arrow_use_signed_indexes_for_dictionary`                                                                  | Arrow フォーマットで辞書インデックスに符号付き整数を使用する                                         | `1`          |
+| `input_format_arrow_allow_missing_columns`                                                                               | Arrow入力フォーマットを読み取る際に、欠落しているカラムを許可します                                            | `1`          |
+| `input_format_arrow_case_insensitive_column_matching`                                                                    | ArrowカラムとCHカラムをマッチングする際に、大文字小文字を無視します。                                           | `0`          |
+| `input_format_arrow_import_nested`                                                                                       | 廃止された設定で、何も行いません。                                                                    | `0`          |
+| `input_format_arrow_skip_columns_with_unsupported_types_in_schema_inference`                                             | フォーマットArrowのスキーマ推論中に、サポートされていない型のカラムをスキップします                        | `0`          |
+| `output_format_arrow_compression_method`                                                                                 | Arrow出力フォーマットの圧縮方法。サポートされているコーデック: lz4_frame, zstd, none (未圧縮) | `lz4_frame`  |
+| `output_format_arrow_fixed_string_as_fixed_byte_array`                                                                   | FixedStringカラムのためにArrow FIXED_SIZE_BINARY型を使用します。                        | `1`          |
+| `output_format_arrow_low_cardinality_as_dictionary`                                                                      | LowCardinality型をDictionary Arrow型として出力することを有効にします                                         | `0`          |
+| `output_format_arrow_string_as_string`                                                                                   | StringカラムのためにArrow String型を使用します。                                         | `1`          |
+| `output_format_arrow_use_64_bit_indexes_for_dictionary`                                                                  | Arrowフォーマットで辞書インデックスに常に64ビット整数を使用します                                  | `0`          |
+| `output_format_arrow_use_signed_indexes_for_dictionary`                                                                  | Arrowフォーマットで辞書インデックスに符号付き整数を使用します                                         | `1`          |

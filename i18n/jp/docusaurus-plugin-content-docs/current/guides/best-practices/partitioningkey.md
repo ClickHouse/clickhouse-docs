@@ -1,10 +1,12 @@
 ---
 slug: /optimize/partitioning-key
-sidebar_label: パーティションキー
-title: 低基数のパーティションキーを選択する
-description: テーブルに対して低基数のパーティションキーを使用するか、パーティションキーを使用しないことを検討してください。
+sidebar_label: 'パーティショニングキー'
+title: '低カーディナリティのパーティショニングキーを選択する'
+description: '低カーディナリティのパーティショニングキーを使用するか、テーブルにパーティショニングキーを使用しないことを検討してください。'
 ---
+```
 
-import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/cloud/bestpractices/partitioningkey.md';
+import Content from '@site/docs/best-practices/partionning_keys.md';
 
 <Content />
+

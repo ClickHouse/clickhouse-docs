@@ -1,10 +1,11 @@
 ---
-title: JSONStringsEachRow
-slug: /interfaces/formats/JSONStringsEachRow
-keywords: [JSONStringsEachRow]
-input_format: false
-output_format: true
 alias: []
+description: 'JSONStringsEachRowフォーマットのドキュメント'
+input_format: false
+keywords: ['JSONStringsEachRow']
+output_format: true
+slug: /interfaces/formats/JSONStringsEachRow
+title: 'JSONStringsEachRow'
 ---
 
 | 入力 | 出力 | エイリアス |
@@ -13,7 +14,7 @@ alias: []
 
 ## 説明 {#description}
 
-[`JSONEachRow`](./JSONEachRow.md) とは異なり、データフィールドが型付きJSON値ではなく、文字列として出力されます。
+データフィールドが型付きのJSON値ではなく、文字列で出力される点が[`JSONEachRow`](./JSONEachRow.md)と異なります。
 
 ## 使用例 {#example-usage}
 

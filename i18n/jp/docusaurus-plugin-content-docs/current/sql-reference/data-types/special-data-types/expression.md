@@ -1,7 +1,9 @@
 ---
-slug: /sql-reference/data-types/special-data-types/expression
+description: '式特殊データ型に関するドキュメント'
+sidebar_label: '式'
 sidebar_position: 58
-sidebar_label: 式
+slug: /sql-reference/data-types/special-data-types/expression
+title: '式'
 ---
 
 

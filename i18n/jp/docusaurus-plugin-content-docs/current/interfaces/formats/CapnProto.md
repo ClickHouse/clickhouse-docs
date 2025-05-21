@@ -1,31 +1,33 @@
 ---
-title: CapnProto
-slug: /interfaces/formats/CapnProto
-keywords: [CapnProto]
-input_format: true
-output_format: true
 alias: []
+description: 'Capnproto のドキュメント'
+input_format: true
+keywords: ['CapnProto']
+output_format: true
+slug: /interfaces/formats/CapnProto
+title: 'CapnProto'
 ---
+
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
-| 入力 | 出力 | エイリアス |
+| 入力 | 出力 | 別名 |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-`CapnProto`フォーマットは、[`Protocol Buffers`](https://developers.google.com/protocol-buffers/)フォーマットや[Thrift](https://en.wikipedia.org/wiki/Apache_Thrift)に似たバイナリメッセージフォーマットですが、[JSON](./JSON/JSON.md)や[MessagePack](https://msgpack.org/)とは異なります。  
-CapnProtoメッセージは厳密に型付けされており、自己記述型ではないため、外部のスキーマ記述が必要です。スキーマはその場で適用され、各クエリ用にキャッシュされます。
+`CapnProto` 形式は、[`Protocol Buffers`](https://developers.google.com/protocol-buffers/) 形式や [Thrift](https://en.wikipedia.org/wiki/Apache_Thrift) に似たバイナリメッセージ形式ですが、[JSON](./JSON/JSON.md) や [MessagePack](https://msgpack.org/) とは異なります。
+CapnProto メッセージは厳密に型付けされており、自己記述的ではないため、外部スキーマ説明が必要です。スキーマはオンザフライで適用され、各クエリに対してキャッシュされます。
 
-[フォーマットスキーマ](/interfaces/formats/#formatschema)も参照してください。
+詳細については、[Format Schema](/interfaces/formats/#formatschema) を参照してください。
 
-## データ型の対応 {#data_types-matching-capnproto}
+## データ型の一致 {#data_types-matching-capnproto}
 
-以下の表は、サポートされているデータ型と、それが`INSERT`および`SELECT`クエリにおけるClickHouseの[データ型](/sql-reference/data-types/index.md)にどのように対応するかを示しています。
+以下の表は、サポートされているデータ型とそれらが ClickHouse の [データ型](/sql-reference/data-types/index.md) とどのように一致するかを示しています。これは `INSERT` および `SELECT` クエリで使用されます。
 
-| CapnProtoデータ型（`INSERT`）                        | ClickHouseデータ型                                                                                                                                                           | CapnProtoデータ型（`SELECT`）                        |
+| CapnProto データ型 (`INSERT`)                       | ClickHouse データ型                                                                                                                                                           | CapnProto データ型 (`SELECT`)                       |
 |------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------|
 | `UINT8`, `BOOL`                                      | [UInt8](/sql-reference/data-types/int-uint.md)                                                                                                                         | `UINT8`                                              |
 | `INT8`                                               | [Int8](/sql-reference/data-types/int-uint.md)                                                                                                                          | `INT8`                                               |
@@ -49,20 +51,20 @@ CapnProtoメッセージは厳密に型付けされており、自己記述型�
 | `STRUCT(entries LIST(STRUCT(key Key, value Value)))` | [Map](/sql-reference/data-types/map.md)                                                                                                                                | `STRUCT(entries LIST(STRUCT(key Key, value Value)))` |
 
 - 整数型は、入力/出力中に相互に変換できます。
-- CapnProtoフォーマットの`Enum`を扱うには、[format_capn_proto_enum_comparising_mode](/operations/settings/settings-formats.md/#format_capn_proto_enum_comparising_mode)設定を使用してください。
-- 配列はネスト可能で、`Nullable`型の値を持つことができます。また、`Tuple`や`Map`型もネスト可能です。
+- CapnProto 形式の `Enum` を扱うには、[format_capn_proto_enum_comparising_mode](/operations/settings/settings-formats.md/#format_capn_proto_enum_comparising_mode) 設定を使用してください。
+- 配列はネスト可能で、`Nullable` 型の値を引数として持つことができます。 `Tuple` と `Map` 型もネスト可能です。
 
 ## 使用例 {#example-usage}
 
 ### データの挿入と選択 {#inserting-and-selecting-data-capnproto}
 
-次のコマンドを使用して、ファイルからClickHouseテーブルにCapnProtoデータを挿入できます。
+ファイルから ClickHouse テーブルに CapnProto データを挿入するには、次のコマンドを使用します。
 
 ```bash
 $ cat capnproto_messages.bin | clickhouse-client --query "INSERT INTO test.hits SETTINGS format_schema = 'schema:Message' FORMAT CapnProto"
 ```
 
-`schema.capnp`は次のようになります。
+ここで、`schema.capnp` は次のようになります。
 
 ```capnp
 struct Message {
@@ -71,15 +73,15 @@ struct Message {
 }
 ```
 
-次のコマンドを使用して、ClickHouseテーブルからデータを選択し、`CapnProto`フォーマットでファイルに保存できます。
+ClickHouse テーブルからデータを選択し、それを `CapnProto` 形式でファイルに保存するには、次のコマンドを使用します。
 
 ```bash
 $ clickhouse-client --query = "SELECT * FROM test.hits FORMAT CapnProto SETTINGS format_schema = 'schema:Message'"
 ```
 
-### 自動生成されたスキーマの使用 {#using-autogenerated-capn-proto-schema}
+### 自動生成スキーマの使用 {#using-autogenerated-capn-proto-schema}
 
-データに対する外部の`CapnProto`スキーマがない場合でも、自動生成されたスキーマを使用して`CapnProto`フォーマットでデータを出力/入力できます。
+データ用の外部 `CapnProto` スキーマがない場合でも、自動生成スキーマを使用して `CapnProto` 形式でデータを出力/入力できます。
 
 例えば：
 
@@ -89,9 +91,9 @@ FORMAT CapnProto
 SETTINGS format_capn_proto_use_autogenerated_schema=1
 ```
 
-この場合、ClickHouseはテーブル構造に従ってCapnProtoスキーマを自動生成し、関数[structureToCapnProtoSchema](/sql-reference/functions/other-functions.md#structure_to_capn_proto_schema)を使用してデータをCapnProtoフォーマットでシリアライズするためにこのスキーマを使用します。
+この場合、ClickHouse はテーブル構造に基づいて CapnProto スキーマを自動生成し、関数 [structureToCapnProtoSchema](/sql-reference/functions/other-functions.md#structure_to_capn_proto_schema) を使用して、このスキーマを使用してデータを CapnProto 形式でシリアライズします。
 
-自動生成されたスキーマでCapnProtoファイルを読み取ることも可能です（この場合、ファイルは同じスキーマを使用して作成されている必要があります）。
+自動生成スキーマを持つ CapnProto ファイルを読み込むこともできます（この場合、ファイルは同じスキーマを使用して作成されている必要があります）。
 
 ```bash
 $ cat hits.bin | clickhouse-client --query "INSERT INTO test.hits SETTINGS format_capn_proto_use_autogenerated_schema=1 FORMAT CapnProto"
@@ -99,9 +101,9 @@ $ cat hits.bin | clickhouse-client --query "INSERT INTO test.hits SETTINGS forma
 
 ## フォーマット設定 {#format-settings}
 
-設定[`format_capn_proto_use_autogenerated_schema`](../../operations/settings/settings-formats.md/#format_capn_proto_use_autogenerated_schema)はデフォルトで有効であり、[`format_schema`](/interfaces/formats#formatschema)が設定されていない場合に適用されます。
+設定 [`format_capn_proto_use_autogenerated_schema`](../../operations/settings/settings-formats.md/#format_capn_proto_use_autogenerated_schema) はデフォルトで有効であり、[`format_schema`](/interfaces/formats#formatschema) が設定されていない場合に適用されます。
 
-また、設定[`output_format_schema`](/operations/settings/formats#output_format_schema)を使用して、入力/出力中に自動生成されたスキーマをファイルに保存することもできます。
+また、設定 [`output_format_schema`](/operations/settings/formats#output_format_schema) を使用して、入力/出力中に自動生成されたスキーマをファイルに保存することもできます。
 
 例えば：
 
@@ -112,4 +114,5 @@ SETTINGS
     format_capn_proto_use_autogenerated_schema=1,
     output_format_schema='path/to/schema/schema.capnp'
 ```
-この場合、自動生成された`CapnProto`スキーマはファイル`path/to/schema/schema.capnp`に保存されます。
+
+この場合、自動生成された `CapnProto` スキーマは `path/to/schema/schema.capnp` ファイルに保存されます。

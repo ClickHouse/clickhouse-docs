@@ -1,11 +1,15 @@
 ---
-description: "ClickHouse Keeper または ZooKeeper に保存されているレプリケーションキューからのタスクに関する情報を含むシステムテーブルです。 `ReplicatedMergeTree` ファミリーのテーブルに対して使用されます。"
+description: 'ClickHouse KeeperまたはZooKeeperに格納されたレプリケーションキューからのタスクに関する情報を含むシステムテーブル。
+  `ReplicatedMergeTree`ファミリーのテーブル用。'
+keywords: ['system table', 'replication_queue']
 slug: /operations/system-tables/replication_queue
-title: "system.replication_queue"
-keywords: ["system table", "replication_queue"]
+title: 'system.replication_queue'
 ---
 
-ClickHouse Keeper または ZooKeeper に保存されているレプリケーションキューからのタスクに関する情報を含みます。対象は `ReplicatedMergeTree` ファミリーのテーブルです。
+
+# system.replication_queue
+
+`ReplicatedMergeTree`ファミリーのテーブル用に、ClickHouse KeeperまたはZooKeeperに格納されたレプリケーションキューからのタスクに関する情報を含みます。
 
 カラム:
 
@@ -13,43 +17,43 @@ ClickHouse Keeper または ZooKeeper に保存されているレプリケーシ
 
 - `table` ([String](../../sql-reference/data-types/string.md)) — テーブルの名前。
 
-- `replica_name` ([String](../../sql-reference/data-types/string.md)) — ClickHouse Keeper におけるレプリカ名。同じテーブルの異なるレプリカには異なる名前があります。
+- `replica_name` ([String](../../sql-reference/data-types/string.md)) — ClickHouse Keeperのレプリカ名。同じテーブルの異なるレプリカは異なる名前を持ちます。
 
 - `position` ([UInt32](../../sql-reference/data-types/int-uint.md)) — キュー内のタスクの位置。
 
-- `node_name` ([String](../../sql-reference/data-types/string.md)) — ClickHouse Keeper におけるノード名。
+- `node_name` ([String](../../sql-reference/data-types/string.md)) — ClickHouse Keeperのノード名。
 
-- `type` ([String](../../sql-reference/data-types/string.md)) — キュー内のタスクの種類。以下のいずれかです：
+- `type` ([String](../../sql-reference/data-types/string.md)) — キュー内のタスクのタイプの一つ：
 
-    - `GET_PART` — 他のレプリカからパートを取得します。
-    - `ATTACH_PART` — パートをアタッチします（デタッチフォルダーにある場合は自分のレプリカからのものかもしれません）。`GET_PART` とほぼ同じですが、いくつかの最適化があります。
+    - `GET_PART` — 別のレプリカからパーツを取得します。
+    - `ATTACH_PART` — パーツを添付します。これは、`detached`フォルダにある自分自身のレプリカからのものである可能性があります。最適化された`GET_PART`のように考えることができます。
     - `MERGE_PARTS` — パーツをマージします。
-    - `DROP_RANGE` — 指定された範囲の指定されたパーティション内のパーツを削除します。
-    - `CLEAR_COLUMN` — 注意：非推奨。指定されたパーティションから特定のカラムを削除します。
-    - `CLEAR_INDEX` — 注意：非推奨。指定されたパーティションから特定のインデックスを削除します。
+    - `DROP_RANGE` — 指定された範囲内の指定されたパーティションのパーツを削除します。
+    - `CLEAR_COLUMN` — NOTE: 非推奨。指定されたパーティションから特定のカラムを削除します。
+    - `CLEAR_INDEX` — NOTE: 非推奨。指定されたパーティションから特定のインデックスを削除します。
     - `REPLACE_RANGE` — 特定の範囲のパーツを削除し、新しいものと置き換えます。
-    - `MUTATE_PART` — パートに対して1つ以上の変異を適用します。
-    - `ALTER_METADATA` — /metadata および /columns パスに従って変更を適用します。
+    - `MUTATE_PART` — パーツに対して1つまたは複数の変異を適用します。
+    - `ALTER_METADATA` — グローバルな /metadata および /columns パスに従って変更を適用します。
 
 - `create_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — タスクが実行のために提出された日時。
 
-- `required_quorum` ([UInt32](../../sql-reference/data-types/int-uint.md)) — タスクの完了通知を待機しているレプリカの数。これは `GET_PARTS` タスクにのみ関連します。
+- `required_quorum` ([UInt32](../../sql-reference/data-types/int-uint.md)) — タスクの完了と完了の確認を待っているレプリカの数。これは`GET_PARTS`タスクにのみ関連するカラムです。
 
 - `source_replica` ([String](../../sql-reference/data-types/string.md)) — ソースレプリカの名前。
 
-- `new_part_name` ([String](../../sql-reference/data-types/string.md)) — 新しいパートの名前。
+- `new_part_name` ([String](../../sql-reference/data-types/string.md)) — 新しいパーツの名前。
 
-- `parts_to_merge` ([Array](../../sql-reference/data-types/array.md) ([String](../../sql-reference/data-types/string.md))) — マージまたは更新するパーツの名前。
+- `parts_to_merge` ([Array](../../sql-reference/data-types/array.md) ([String](../../sql-reference/data-types/string.md))) — マージまたは更新されるパーツの名前。
 
-- `is_detach` ([UInt8](../../sql-reference/data-types/int-uint.md)) — `DETACH_PARTS` タスクがキューに存在するかどうかを示すフラグ。
+- `is_detach` ([UInt8](../../sql-reference/data-types/int-uint.md)) — `DETACH_PARTS`タスクがキューにあるかどうかを示すフラグ。
 
-- `is_currently_executing` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 特定のタスクが現在実行中であるかどうかを示すフラグ。
+- `is_currently_executing` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 特定のタスクが現在実行中かどうかを示すフラグ。
 
-- `num_tries` ([UInt32](../../sql-reference/data-types/int-uint.md)) — タスクを完了するために失敗した試行の数。
+- `num_tries` ([UInt32](../../sql-reference/data-types/int-uint.md)) — タスクの完了に失敗した試行の回数。
 
-- `last_exception` ([String](../../sql-reference/data-types/string.md)) — 最後に発生したエラーに関するテキストメッセージ（あれば）。
+- `last_exception` ([String](../../sql-reference/data-types/string.md)) — 発生した最後のエラーに関するテキストメッセージ（あれば）。
 
-- `last_attempt_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — タスクが最後に試行された日時。
+- `last_attempt_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — タスクの最後の試行日時。
 
 - `num_postponed` ([UInt32](../../sql-reference/data-types/int-uint.md)) — アクションが延期された回数。
 
@@ -61,12 +65,12 @@ ClickHouse Keeper または ZooKeeper に保存されているレプリケーシ
 
 **例**
 
-``` sql
+```sql
 SELECT * FROM system.replication_queue LIMIT 1 FORMAT Vertical;
 ```
 
-``` text
-行 1:
+```text
+Row 1:
 ──────
 database:               merge
 table:                  visits_v2
@@ -89,6 +93,6 @@ postpone_reason:
 last_postpone_time:     1970-01-01 03:00:00
 ```
 
-**関連情報**
+**関連項目**
 
-- [ReplicatedMergeTree テーブルの管理](/sql-reference/statements/system#managing-replicatedmergetree-tables)
+- [Managing ReplicatedMergeTree Tables](/sql-reference/statements/system#managing-replicatedmergetree-tables)

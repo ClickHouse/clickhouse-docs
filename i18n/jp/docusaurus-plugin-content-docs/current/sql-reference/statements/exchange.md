@@ -1,17 +1,19 @@
 ---
-slug: /sql-reference/statements/exchange
+description: 'EXCHANGE文のドキュメント'
+sidebar_label: 'EXCHANGE'
 sidebar_position: 49
-sidebar_label: EXCHANGE
+slug: /sql-reference/statements/exchange
+title: 'EXCHANGE文'
 ---
 
 
-# EXCHANGE ステートメント
+# EXCHANGE文
 
 二つのテーブルまたは辞書の名前を原子的に交換します。
-この処理は、テンポラリ名を使用した [RENAME](./rename.md) クエリで実行することもできますが、その場合は操作が原子的ではありません。
+この作業は、一時的な名前を使用した[RENAME](./rename.md)クエリでも達成可能ですが、その場合、操作は原子的ではありません。
 
 :::note    
-`EXCHANGE` クエリは [Atomic](../../engines/database-engines/atomic.md) データベースエンジンでのみサポートされています。
+`EXCHANGE`クエリは、[Atomic](../../engines/database-engines/atomic.md)データベースエンジンのみに対応しています。
 :::
 
 **構文**
@@ -42,4 +44,4 @@ EXCHANGE DICTIONARIES [db0.]dict_A AND [db1.]dict_B [ON CLUSTER cluster]
 
 **関連項目**
 
-- [Dictionaries](../../sql-reference/dictionaries/index.md)
+- [Dictionary](../../sql-reference/dictionaries/index.md)

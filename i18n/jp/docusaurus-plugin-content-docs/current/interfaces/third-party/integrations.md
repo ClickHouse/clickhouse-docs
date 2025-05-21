@@ -1,14 +1,16 @@
 ---
-slug: /interfaces/third-party/integrations
+description: 'ClickHouse とさまざまなサードパーティシステムおよびツールを統合するためのドキュメント'
+sidebar_label: '統合'
 sidebar_position: 27
-sidebar_label: 統合
+slug: /interfaces/third-party/integrations
+title: 'サードパーティ開発者による統合ライブラリ'
 ---
 
 
-# サードパーティ開発者の統合ライブラリ
+# サードパーティ開発者による統合ライブラリ
 
 :::note 注意
-ClickHouse, Inc. は、以下にリストされているツールやライブラリのメンテナンスを行っておらず、その品質を確保するための広範なテストも実施していません。
+ClickHouse, Inc.は、以下にリストされているツールおよびライブラリを**維持**しておらず、その品質を保証するために広範なテストを行っていません。
 :::
 
 ## インフラストラクチャ製品 {#infrastructure-products}
@@ -46,12 +48,12 @@ ClickHouse, Inc. は、以下にリストされているツールやライブラ
     - [puppet](https://puppet.com)
         - [innogames/clickhouse](https://forge.puppet.com/innogames/clickhouse)
         - [mfedotov/clickhouse](https://forge.puppet.com/mfedotov/clickhouse)
-- 監視
+- モニタリング
     - [Graphite](https://graphiteapp.org)
         - [graphouse](https://github.com/ClickHouse/graphouse)
         - [carbon-clickhouse](https://github.com/lomik/carbon-clickhouse)
         - [graphite-clickhouse](https://github.com/lomik/graphite-clickhouse)
-        - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) - [\*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree) 内の古くなったパーティションを最適化し、[rollup configuration](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration) のルールが適用できる場合
+        - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) - [\*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree)の古いパーティションを最適化します。これは、[rollup configuration](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration)のルールが適用可能な場合です。
     - [Grafana](https://grafana.com/)
         - [clickhouse-grafana](https://github.com/Vertamedia/clickhouse-grafana)
     - [Prometheus](https://prometheus.io/)
@@ -69,15 +71,15 @@ ClickHouse, Inc. は、以下にリストされているツールやライブラ
     - [rsyslog](https://www.rsyslog.com/)
         - [omclickhouse](https://www.rsyslog.com/doc/master/configuration/modules/omclickhouse.html)
     - [fluentd](https://www.fluentd.org)
-        - [loghouse](https://github.com/flant/loghouse)（[Kubernetes](https://kubernetes.io) 用）
+        - [loghouse](https://github.com/flant/loghouse) (for [Kubernetes](https://kubernetes.io))
     - [logagent](https://www.sematext.com/logagent)
         - [logagent output-plugin-clickhouse](https://sematext.com/docs/logagent/output-plugin-clickhouse/)
-- 地理
+- Geo
     - [MaxMind](https://dev.maxmind.com/geoip/)
         - [clickhouse-maxmind-geoip](https://github.com/AlexeyKupershtokh/clickhouse-maxmind-geoip)
 - AutoML
     - [MindsDB](https://mindsdb.com/)
-        - [MindsDB](https://github.com/mindsdb/mindsdb) - ClickHouseと統合し、ClickHouseのデータを多種多様なAI/MLモデルで利用可能にします。
+        - [MindsDB](https://github.com/mindsdb/mindsdb) - ClickHouseと統合され、ClickHouseのデータをさまざまなAI/MLモデルに利用可能にします。
 
 ## プログラミング言語エコシステム {#programming-language-ecosystems}
 

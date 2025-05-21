@@ -1,13 +1,15 @@
 ---
-slug: /sql-reference/window-functions/row_number
-sidebar_label: row_number
+description: '行番号ウィンドウ関数のドキュメント'
+sidebar_label: '行番号'
 sidebar_position: 2
+slug: /sql-reference/window-functions/row_number
+title: '行番号'
 ---
 
 
-# row_number
+# 行番号
 
-現在の行をそのパーティション内で1から始まる番号を付けます。
+1から始まるパーティション内の現在の行に番号を付けます。
 
 **構文**
 
@@ -19,15 +21,15 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-ウィンドウ関数の構文の詳細については、[ウィンドウ関数 - 構文](./index.md/#syntax)を参照してください。
+ウィンドウ関数の構文に関する詳細については、[ウィンドウ関数 - 構文](./index.md/#syntax)を参照してください。
 
 **返される値**
 
-- そのパーティション内の現在の行の番号。 [UInt64](../data-types/int-uint.md)。
+- パーティション内の現在の行の番号。[UInt64](../data-types/int-uint.md)。
 
 **例**
 
-以下の例は、ビデオ教材[ClickHouseにおけるランキングウィンドウ関数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)で提供された例に基づいています。
+以下の例は、ビデオ指導「ClickHouseにおけるランク付けウィンドウ関数」に基づいています。[Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)。
 
 クエリ:
 

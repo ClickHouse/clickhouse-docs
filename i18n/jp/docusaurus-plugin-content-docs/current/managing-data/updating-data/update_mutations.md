@@ -1,16 +1,17 @@
 ---
 slug: /managing-data/update_mutations
-sidebar_label: 更新ミューテーション
-title: 更新ミューテーション
+sidebar_label: '更新の変異'
+title: '更新の変異'
 hide_title: false
+description: 'テーブルデータを更新を通じて操作する ALTER クエリについて説明するページ'
 ---
 
-更新ミューテーションは、テーブルデータを更新を通じて操作する `ALTER` クエリを指します。特に、`ALTER TABLE UPDATE` などのクエリがこのカテゴリに該当します。このようなクエリを実行すると、データパーツの新しいミューテatedバージョンが生成されます。つまり、これらのステートメントは、ミューテーションが行われる前に挿入されたすべてのデータに対して、全データパーツの書き換えを引き起こすことになり、大量の書き込みリクエストを伴うことになります。
+更新の変異は、テーブルデータを更新を通じて操作する `ALTER` クエリを指します。特に `ALTER TABLE UPDATE` のようなクエリです。このようなクエリを実行すると、新しい変異バージョンのデータパーツが生成されます。つまり、これらのステートメントは、変異の前に挿入されたすべてのデータのために、全体のデータパーツの書き換えをトリガーし、大量の書き込みリクエストを生成することになります。
 
 :::info
-更新の際には、デフォルトの MergeTree テーブルエンジンの代わりに、[ReplacingMergeTree](/guides/replacing-merge-tree) や [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) のような専門的なテーブルエンジンを使用することで、これらの大量の書き込みリクエストを回避できます。
+更新のためには、デフォルトの MergeTree テーブルエンジンの代わりに、[ReplacingMergeTree](/guides/replacing-merge-tree) や [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) などの専門のテーブルエンジンを使用することで、大量の書き込みリクエストを回避できます。
 :::
 
-import UpdateMutations from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/statements/alter/update.md';
+import UpdateMutations from '@site/docs/sql-reference/statements/alter/update.md';
 
 <UpdateMutations/>

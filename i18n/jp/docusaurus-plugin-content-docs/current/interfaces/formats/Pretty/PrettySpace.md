@@ -1,21 +1,22 @@
 ---
-title: PrettySpace
-slug: /interfaces/formats/PrettySpace
-keywords: [PrettySpace]
-input_format: false
-output_format: true
 alias: []
+description: 'PrettySpaceフォーマットのドキュメント'
+input_format: false
+keywords: ['PrettySpace']
+output_format: true
+slug: /interfaces/formats/PrettySpace
+title: 'PrettySpace'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| 入力   | 出力    | エイリアス |
+| Input | Output  | Alias |
 |-------|---------|-------|
 | ✗     | ✔       |       |
 
 ## 説明 {#description}
 
-[`PrettyCompact`](./PrettyCompact.md) フォーマットとは異なり、テーブルを表示する際にグリッドの代わりに空白（スペース文字）を使用します。
+[`PrettyCompact`](./PrettyCompact.md)フォーマットとは異なり、テーブルを表示するためにスペース文字を使用します。
 
 ## 使用例 {#example-usage}
 

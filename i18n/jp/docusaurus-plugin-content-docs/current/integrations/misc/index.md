@@ -1,13 +1,15 @@
 ---
 slug: /integrations/misc
-keywords: [Retool, Easypanel, Splunk]
+keywords: ['Retool', 'Easypanel', 'Splunk']
+title: 'ツール'
+description: 'ツールセクションのランディングページ'
 ---
 
 
 # ツール
 
-| ページ              |
-|-------------------|
-| [視覚インターフェース](/interfaces/third-party/gui) |
-| [プロキシ](/interfaces/third-party/proxy)         |
-| [統合](/interfaces/third-party/integrations)      |
+| ページ                  |
+|-----------------------|
+| [ビジュアルインターフェース](/interfaces/third-party/gui) |
+| [プロキシ](/interfaces/third-party/proxy)               |
+| [統合](/interfaces/third-party/integrations)            |

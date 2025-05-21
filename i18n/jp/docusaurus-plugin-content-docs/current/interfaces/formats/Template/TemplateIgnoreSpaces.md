@@ -1,10 +1,11 @@
 ---
-title: TemplateIgnoreSpaces
-slug: /interfaces/formats/TemplateIgnoreSpaces
-keywords: [TemplateIgnoreSpaces]
-input_format: true
-output_format: false
 alias: []
+description: 'TemplateIgnoreSpacesフォーマットのドキュメント'
+input_format: true
+keywords: ['TemplateIgnoreSpaces']
+output_format: false
+slug: /interfaces/formats/TemplateIgnoreSpaces
+title: 'TemplateIgnoreSpaces'
 ---
 
 | 入力 | 出力 | エイリアス |
@@ -13,11 +14,11 @@ alias: []
 
 ## 説明 {#description}
 
-[`Template`]に似ていますが、入力ストリーム内の区切り文字と値の間の空白文字をスキップします。 
-ただし、フォーマット文字列に空白文字が含まれている場合、これらの文字は入力ストリームで期待されます。 
-また、ある区切り文字を分割してその間のスペースを無視するための空のプレースホルダー（`${}`または`${:None}`）を指定することも可能です。 
-これらのプレースホルダーは空白文字をスキップするためだけに使用されます。
-すべての行でカラムの値の順序が同じであれば、このフォーマットを使用して`JSON`を読み取ることもできます。
+[`Template`] に似ていますが、入力ストリーム内のデリミタと値の間のホワイトスペース文字をスキップします。  
+ただし、フォーマット文字列にホワイトスペース文字が含まれている場合、これらの文字は入力ストリームで期待されます。  
+また、空のプレースホルダー（`${}` または `${:None}`）を指定して、一部のデリミタを別のパーツに分割し、その間のスペースを無視することができます。  
+このようなプレースホルダーはホワイトスペース文字をスキップするためだけに使用されます。  
+列の値がすべての行で同じ順序である場合、`JSON` をこのフォーマットを使用して読み込むことができます。
 
 :::note
 このフォーマットは入力専用です。

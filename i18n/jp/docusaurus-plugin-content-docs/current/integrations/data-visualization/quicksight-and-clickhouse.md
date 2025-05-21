@@ -1,11 +1,13 @@
 ---
-sidebar_label: QuickSight
+sidebar_label: 'QuickSight'
 slug: /integrations/quicksight
-keywords: [clickhouse, aws, amazon, QuickSight, mysql, connect, integrate, ui]
-description: Amazon QuickSightは、統合されたビジネスインテリジェンス（BI）でデータ駆動型の組織を支えます。
+keywords: ['clickhouse', 'aws', 'amazon', 'QuickSight', 'mysql', 'connect', 'integrate', 'ui']
+description: 'Amazon QuickSightは、統合されたビジネスインテリジェンス（BI）でデータ駆動型組織を支えます。'
+title: 'QuickSight'
 ---
 
-import MySQLOnPremiseSetup from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
+import MySQLOnPremiseSetup from '@site/docs/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
+import Image from '@theme/IdealImage';
 import quicksight_01 from '@site/static/images/integrations/data-visualization/quicksight_01.png';
 import quicksight_02 from '@site/static/images/integrations/data-visualization/quicksight_02.png';
 import quicksight_03 from '@site/static/images/integrations/data-visualization/quicksight_03.png';
@@ -13,17 +15,20 @@ import quicksight_04 from '@site/static/images/integrations/data-visualization/q
 import quicksight_05 from '@site/static/images/integrations/data-visualization/quicksight_05.png';
 import quicksight_06 from '@site/static/images/integrations/data-visualization/quicksight_06.png';
 import quicksight_07 from '@site/static/images/integrations/data-visualization/quicksight_07.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
 # QuickSight
 
-QuickSightは、公式のMySQLデータソースとDirect Queryモードを使用して、オンプレミスのClickHouseセットアップ（23.11以上）に接続できます。
+<CommunityMaintainedBadge/>
 
-## オンプレミスのClickHouseサーバーセットアップ {#on-premise-clickhouse-server-setup}
+QuickSightは、公式のMySQLデータソースとDirect Queryモードを使用して、オンプレミスのClickHouseセットアップ（23.11以降）に接続できます。
 
-ClickHouseサーバーをMySQLインターフェースでセットアップする方法については、[公式ドキュメント](/interfaces/mysql)を参照してください。
+## オンプレミスClickHouseサーバーの設定 {#on-premise-clickhouse-server-setup}
 
-サーバーの`config.xml`にエントリーを追加することに加え、
+ClickHouseサーバーをMySQLインターフェースで設定する方法については、[公式ドキュメント](/interfaces/mysql)を参照してください。
+
+サーバーの`config.xml`にエントリーを追加するだけでなく、
 
 ```xml
 <clickhouse>
@@ -31,24 +36,24 @@ ClickHouseサーバーをMySQLインターフェースでセットアップす�
 </clickhouse>
 ```
 
-MySQLインターフェースを使用するユーザーに対して[ダブルSHA1パスワード暗号化](/operations/settings/settings-users#user-namepassword)を使用することが**必須**です。
+MySQLインターフェースを使用するユーザーに対して、[Double SHA1パスワード暗号化](/operations/settings/settings-users#user-namepassword)を使用することが**必須**です。
 
-シェルからダブルSHA1で暗号化されたランダムパスワードを生成するには：
+シェルからDouble SHA1で暗号化されたランダムパスワードを生成するには、以下のコマンドを使用します：
 
 ```shell
 PASSWORD=$(base64 < /dev/urandom | head -c16); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
 ```
 
-出力は以下のようになります：
+出力は次のようになります：
 
 ```text
 LZOQYnqQN4L/T6L0
 fbc958cc745a82188a51f30de69eebfc67c40ee4
 ```
 
-最初の行は生成されたパスワードで、2行目はClickHouseを構成するために使用できるハッシュです。
+最初の行は生成されたパスワードで、2行目はClickHouseの設定に使用できるハッシュです。
 
-生成されたハッシュを使用した`mysql_user`の設定例：
+生成されたハッシュを使用する`mysql_user`の設定例はこちらです：
 
 `/etc/clickhouse-server/users.d/mysql_user.xml`
 
@@ -65,9 +70,9 @@ fbc958cc745a82188a51f30de69eebfc67c40ee4
 </users>
 ```
 
-`password_double_sha1_hex`エントリーを自分の生成したダブルSHA1ハッシュに置き換えます。
+`password_double_sha1_hex`エントリーを、生成したDouble SHA1ハッシュに置き換えてください。
 
-QuickSightには、MySQLユーザーのプロファイルにいくつかの追加設定が必要です。
+QuickSightはMySQLユーザーのプロファイルにいくつかの追加設定が必要です。
 
 `/etc/clickhouse-server/users.d/mysql_user.xml`
 
@@ -81,16 +86,17 @@ QuickSightには、MySQLユーザーのプロファイルにいくつかの追�
 </profiles>
 ```
 
-ただし、デフォルトのプロファイルではなく、MySQLユーザーが使用できる別のプロファイルに割り当てることをお勧めします。
+ただし、デフォルトのプロファイルではなく、自分のMySQLユーザーが使用できる異なるプロファイルに割り当てることをお勧めします。
 
-最後に、Clickhouseサーバーが希望するIPアドレスでリスニングするように構成します。 `config.xml`で、すべてのアドレスをリスニングするために以下のコメントを外します：
+最後に、Clickhouseサーバーが希望のIPアドレスでリッスンするように設定します。
+`config.xml`で以下のコメントを外して、すべてのアドレスをリッスンします：
 
 ```bash
 <listen_host>::</listen_host>
 ```
 
 `mysql`バイナリが利用可能な場合は、コマンドラインから接続をテストできます。
-上記のサンプルユーザー名（`mysql_user`）とパスワード（`LZOQYnqQN4L/T6L0`）を使用すると、コマンドラインは以下のようになります：
+上記のサンプルユーザー名（`mysql_user`）とパスワード（`LZOQYnqQN4L/T6L0`）を使用する場合、コマンドラインは次のようになります：
 
 ```bash
 mysql --protocol tcp -h localhost -u mysql_user -P 9004 --password=LZOQYnqQN4L/T6L0
@@ -112,43 +118,43 @@ Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 
 ## QuickSightをClickHouseに接続する {#connecting-quicksight-to-clickhouse}
 
-まず最初に、https://quicksight.aws.amazon.com に移動し、「データセット」に移動して「新しいデータセット」をクリックします：
+まず、https://quicksight.aws.amazon.com に移動し、Datasetsを選択して「New dataset」をクリックします：
 
-<img src={quicksight_01} class="image" alt="新しいデータセットの作成" style={{width: '75%', 'background-color': 'transparent'}}/>
+<Image size="md" img={quicksight_01} alt="Amazon QuickSightダッシュボードがDatasetsセクションのNew datasetボタンを表示" border />
 <br/>
 
-QuickSightにバンドルされている公式のMySQLコネクタ（単に**MySQL**と呼ばれる）を検索します：
+QuickSightにバンドルされている公式MySQLコネクタを検索します（名前は単に**MySQL**です）：
 
-<img src={quicksight_02} class="image" alt="MySQLコネクタの検索" style={{width: '75%', 'background-color': 'transparent'}}/>
+<Image size="md" img={quicksight_02} alt="QuickSightデータソース選択画面において検索結果でMySQLがハイライトされている" border />
 <br/>
 
-接続の詳細を指定します。デフォルトでMySQLインターフェースポートは9004ですので、サーバーの設定によって異なる場合があります。
+接続の詳細を指定します。MySQLインターフェースのポートはデフォルトで9004であることに注意してください。サーバーの設定によって異なる場合があります。
 
-<img src={quicksight_03} class="image" alt="接続の詳細を指定" style={{width: '75%', 'background-color': 'transparent'}}/>
+<Image size="md" img={quicksight_03} alt="QuickSight MySQL接続設定フォームにホスト名、ポート、データベース、認証情報フィールドがある" border />
 <br/>
 
-次に、ClickHouseからデータを取得する方法が2つあります。まず、リストからテーブルを選択できます：
+次に、ClickHouseからデータを取得する方法には2つのオプションがあります。まずは、リストからテーブルを選択することができます：
 
-<img src={quicksight_04} class="image" alt="リストからテーブルを選択" style={{width: '75%', 'background-color': 'transparent'}}/>
+<Image size="md" img={quicksight_04} alt="QuickSightテーブル選択インターフェースにClickHouseから利用可能なデータベーステーブルが表示" border />
 <br/>
 
 または、カスタムSQLを指定してデータを取得することもできます：
 
-<img src={quicksight_05} class="image" alt="データを取得するためのカスタムSQLの使用" style={{width: '75%', 'background-color': 'transparent'}}/>
+<Image size="md" img={quicksight_05} alt="QuickSightのカスタムSQLクエリエディタがClickHouseからデータを取得するために表示" border />
 <br/>
 
-「データを編集/プレビュー」をクリックすると、内包されたテーブル構造を見ることができるか、カスタムSQLを調整できます。データにアクセスする方法を決めた場合です：
+「Edit/Preview data」をクリックすると、インストロスペクトされたテーブル構造を確認したり、データにアクセスするために選択したカスタムSQLを調整することができるはずです：
 
-<img src={quicksight_06} class="image" alt="内包されたテーブル構造を表示" style={{width: '75%', 'background-color': 'transparent'}}/>
+<Image size="md" img={quicksight_06} alt="QuickSightデータプレビューがカラムとサンプルデータを含むテーブル構造を表示" border />
 <br/>
 
-UIの左下隅にある「Direct Query」モードが選択されていることを確認してください：
+UIの左下隅で「Direct Query」モードが選択されていることを確認してください：
 
-<img src={quicksight_07} class="image" alt="Direct Queryモードを選択" style={{width: '50%', 'background-color': 'transparent'}}/>
+<Image size="md" img={quicksight_07} alt="QuickSightインターフェースで左下隅にDirect Queryモードオプションがハイライトされている" border />
 <br/>
 
-これで、データセットを公開し、新しい視覚化を作成する準備が整いました！
+これで、データセットを公開して新しいビジュアライゼーションを作成する準備が整いました！
 
-## 既知の制限事項 {#known-limitations}
+## 知っておくべき制限事項 {#known-limitations}
 
-- SPICEインポートは期待通りに動作しません。代わりにDirect Queryモードを使用してください。[#58553](https://github.com/ClickHouse/ClickHouse/issues/58553)を参照してください。
+- SPICEインポートは期待通りに機能しません。代わりにDirect Queryモードを使用してください。詳細は [#58553](https://github.com/ClickHouse/ClickHouse/issues/58553) を参照してください。

@@ -1,14 +1,14 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/sum
+description: '合計を計算します。数値にのみ対応しています。'
 sidebar_position: 195
-title: "sum"
-description: "合計を計算します。数値のみに対応しています。"
+slug: /sql-reference/aggregate-functions/reference/sum
+title: '合計'
 ---
 
 
-# sum
+# 合計
 
-合計を計算します。数値のみに対応しています。
+合計を計算します。数値にのみ対応しています。
 
 **構文**
 
@@ -25,7 +25,7 @@ sum(num)
 
 **例**
 
-まず、`employees`というテーブルを作成し、いくつかの架空の従業員データを挿入します。
+まず、`employees` テーブルを作成し、いくつかの架空の従業員データを挿入します。
 
 クエリ:
 
@@ -47,7 +47,7 @@ INSERT INTO employees VALUES
     (71245, 'Anastasia Ivanovna', 89210);
 ```
 
-`sum`関数を使用して従業員の給与の合計をクエリします。
+`sum` 関数を使用して、従業員の給与の合計をクエリします。 
 
 クエリ:
 

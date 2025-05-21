@@ -1,23 +1,23 @@
 ---
-slug: /engines/table-engines/mergetree-family/graphitemergetree
+description: 'Graphiteデータのスリムと集約/平均化（ロールアップ）用に設計されています。'
+sidebar_label: 'GraphiteMergeTree'
 sidebar_position: 90
-sidebar_label:  GraphiteMergeTree
-title: "GraphiteMergeTree"
-description: "Graphiteデータのスリム化と集約/平均化(ロールアップ)専用に設計されています。"
+slug: /engines/table-engines/mergetree-family/graphitemergetree
+title: 'GraphiteMergeTree'
 ---
 
 
 # GraphiteMergeTree
 
-このエンジンは、[Graphite](http://graphite.readthedocs.io/en/latest/index.html)データのスリム化と集約/平均化（ロールアップ）を目的に設計されています。ClickHouseをGraphiteのデータストアとして使用したい開発者に役立つかもしれません。
+このエンジンは、[Graphite](http://graphite.readthedocs.io/en/latest/index.html)データのスリムと集約/平均化（ロールアップ）用に設計されています。ClickHouseをGraphiteのデータストアとして使用したい開発者にとって役立つかもしれません。
 
-ロールアップが不要な場合は、任意のClickHouseテーブルエンジンを使用してGraphiteデータを格納できますが、ロールアップが必要な場合は`GraphiteMergeTree`を使用してください。このエンジンは、ストレージのボリュームを削減し、Graphiteからのクエリの効率を向上させます。
+ロールアップが必要ない場合は、任意のClickHouseテーブルエンジンを使用してGraphiteデータを保存できますが、ロールアップが必要な場合は`GraphiteMergeTree`を使用してください。このエンジンは、ストレージの容量を削減し、Graphiteからのクエリの効率を向上させます。
 
 このエンジンは、[MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md)からプロパティを継承しています。
 
 ## テーブルの作成 {#creating-table}
 
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
     Path String,
@@ -34,35 +34,35 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 [CREATE TABLE](/sql-reference/statements/create/table)クエリの詳細な説明を参照してください。
 
-Graphiteデータのテーブルは、以下のデータを保存するために次のカラムを持つ必要があります。
+Graphiteデータ用のテーブルは、以下のデータのために次のカラムを持つ必要があります。
 
-- メトリック名（Graphiteセンサー）。データ型：`String`。
+- メトリック名（Graphiteセンサー）。データ型: `String`。
 
-- メトリックを測定する時刻。データ型：`DateTime`。
+- メトリックの測定時間。データ型: `DateTime`。
 
-- メトリックの値。データ型：`Float64`。
+- メトリックの値。データ型: `Float64`。
 
-- メトリックのバージョン。データ型：任意の数値（ClickHouseは、バージョンが同じ場合は最新の行または最後に書き込まれた行を保存します。他の行はデータパーツのマージ中に削除されます）。
+- メトリックのバージョン。データ型: 任意の数値（ClickHouseは、バージョンが同じである場合は、最も高いバージョンまたは最後に書き込まれた行を保存します。その他の行はデータパーツのマージ中に削除されます）。
 
-これらのカラムの名前は、ロールアップ設定で設定する必要があります。
+これらのカラムの名前はロールアップ設定で設定する必要があります。
 
-**GraphiteMergeTreeパラメーター**
+**GraphiteMergeTreeパラメータ**
 
-- `config_section` — ロールアップのルールが設定されている設定ファイルのセクション名。
+- `config_section` — ロールアップのルールが設定されている設定ファイル内のセクションの名前。
 
 **クエリ句**
 
-`GraphiteMergeTree`テーブルを作成する場合、`MergeTree`テーブルを作成するときと同じ[句](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table)が必要です。
+`GraphiteMergeTree`テーブルを作成する際には、`MergeTree`テーブルを作成する場合と同様に、同じ[句](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table)が必要です。
 
 <details markdown="1">
 
-<summary>テーブル作成のための非推奨方法</summary>
+<summary>テーブル作成のための非推奨メソッド</summary>
 
 :::note
-新しいプロジェクトでこの方法を使用しないでください。可能であれば、古いプロジェクトを上記で説明された方法に切り替えてください。
+新しいプロジェクトではこのメソッドを使用せず、可能であれば古いプロジェクトを上記のメソッドに切り替えてください。
 :::
 
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
     EventDate Date,
@@ -74,41 +74,44 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE [=] GraphiteMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, config_section)
 ```
 
-`config_section`を除くすべてのパラメーターは、`MergeTree`と同じ意味を持ちます。
+`config_section`を除くすべてのパラメータは、`MergeTree`の意味と同じです。
 
-- `config_section` — ロールアップのルールが設定されている設定ファイルのセクション名。
+- `config_section` — ロールアップのルールが設定されている設定ファイル内のセクションの名前。
 
 </details>
 
 ## ロールアップ設定 {#rollup-configuration}
 
-ロールアップの設定は、サーバー設定の[graphite_rollup](../../../operations/server-configuration-parameters/settings.md#graphite)パラメーターによって定義されます。パラメーターの名前は任意です。複数の設定を作成し、異なるテーブルで使用できます。
+ロールアップの設定は、サーバー設定の[graphite_rollup](../../../operations/server-configuration-parameters/settings.md#graphite)パラメータによって定義されます。このパラメータの名前は任意です。複数の設定を作成し、異なるテーブルで使用できます。
 
-ロールアップ設定の構造：
+ロールアップ設定構造:
 
       required-columns
       patterns
 
-### 必須カラム {#required-columns}
+### 必要なカラム {#required-columns}
 
 #### path_column_name {#path_column_name}
 
-`path_column_name` — メトリック名（Graphiteセンサー）を格納するカラムの名前。デフォルト値：`Path`。
+`path_column_name` — メトリック名（Graphiteセンサー）を格納するカラムの名前。デフォルト値: `Path`。
 
 #### time_column_name {#time_column_name}
-`time_column_name` — メトリックを測定する時刻を格納するカラムの名前。デフォルト値：`Time`。
+
+`time_column_name` — メトリックの測定時間を格納するカラムの名前。デフォルト値: `Time`。
 
 #### value_column_name {#value_column_name}
-`value_column_name` — `time_column_name`で設定された時におけるメトリックの値を格納するカラムの名前。デフォルト値：`Value`。
+
+`value_column_name` — `time_column_name`に設定された時間におけるメトリックの値を格納するカラムの名前。デフォルト値: `Value`。
 
 #### version_column_name {#version_column_name}
-`version_column_name` — メトリックのバージョンを格納するカラムの名前。デフォルト値：`Timestamp`。
+
+`version_column_name` — メトリックのバージョンを格納するカラムの名前。デフォルト値: `Timestamp`。
 
 ### パターン {#patterns}
 
-`patterns`セクションの構造：
+`patterns`セクションの構造:
 
-``` text
+```text
 pattern
     rule_type
     regexp
@@ -133,33 +136,33 @@ default
 ```
 
 :::important
-パターンは厳密に順序付けられなければなりません：
+パターンは厳密に順序付けられている必要があります：
 
 1. `function`または`retention`のないパターン。
 1. `function`と`retention`の両方を持つパターン。
-1. パターン`default`。
+1. `default`パターン。
 :::
 
-行を処理する際、ClickHouseは`pattern`セクション内のルールを確認します。各`pattern`（`default`を含む）セクションは、集約のための`function`パラメーター、`retention`パラメーターの両方を含むことができます。メトリック名が`regexp`に一致する場合、その`pattern`セクション（またはセクション）のルールが適用されます。そうでない場合は、`default`セクションのルールが使用されます。
+行を処理する際、ClickHouseは`pattern`セクション内のルールをチェックします。各`pattern`（`default`を含む）セクションには、集約のための`function`パラメータ、`retention`パラメータ、またはその両方を含めることができます。メトリック名が`regexp`に一致する場合、`pattern`セクション（またはセクション）のルールが適用されます。そうでない場合は、`default`セクションのルールが使用されます。
 
 `pattern`および`default`セクションのフィールド：
 
-- `rule_type` - ルールのタイプ。特定のメトリックのみに適用されます。エンジンは、通常メトリックとタグ付きメトリックを区別するために使用します。オプションのパラメーター。デフォルト値：`all`。
-パフォーマンスが重要でない場合や、単一のメトリックタイプのみが使用される場合（例：通常メトリック）には不要です。デフォルトでは、1種類のルールセットのみが作成されます。そうでない場合、特別なタイプのいずれかが定義されている場合、通常メトリック（root.branch.leaf）用とタグ付きメトリック（root.branch.leaf;tag1=value1）の2つの異なるセットが作成されます。
-デフォルトルールは、両方のセットに含まれます。
+- `rule_type` - ルールのタイプ。特定のメトリックのみに適用されます。エンジンは、それを使用してプレーンメトリックとタグ付きメトリックを区別します。オプションのパラメータ。デフォルト値: `all`。
+パフォーマンスが重要でない場合や、プレーンメトリックのみが使用される場合、例えばプレーンメトリックの場合は不要です。デフォルトでは、1つのタイプのルールセットのみが作成されます。そうでない場合、特別なタイプのいずれかが定義されていると、2つの異なるセットが作成されます。1つはプレーンメトリック用（root.branch.leaf）で、もう1つはタグ付きメトリック用（root.branch.leaf;tag1=value1）。
+デフォルトのルールは両方のセットに含まれます。
 有効な値：
-    - `all`（デフォルト） - `rule_type`が省略された場合に使用される汎用的なルール。
-    - `plain` - 通常メトリック用のルール。フィールド`regexp`は正規表現として処理されます。
-    - `tagged` - タグ付きメトリック用のルール（メトリックは`someName?tag1=value1&tag2=value2&tag3=value3`形式でDBに格納されます）。正規表現はタグ名でソートされる必要があり、最初のタグは存在する場合は`__name__`である必要があります。フィールド`regexp`は正規表現として処理されます。
-    - `tag_list` - タグ付きメトリック用のルール、Graphite形式でのメトリック記述を容易にする単純なDSL `someName;tag1=value1;tag2=value2`、`someName`、または`tag1=value1;tag2=value2`。フィールド`regexp`は`tagged`ルールに変換されます。タグ名によるソートは不要で、自動的に行われます。タグの値（名前ではない）は正規表現として設定できます（例：`env=(dev|staging)`）。
+    - `all`（デフォルト） - `rule_type`が省略されたときに使用される汎用ルール。
+    - `plain` - プレーンメトリック用のルール。フィールド`regexp`は正規表現として処理されます。
+    - `tagged` - タグ付きメトリック用のルール（メトリックは`someName?tag1=value1&tag2=value2&tag3=value3`の形式でDBに格納されます）。正規表現はタグの名前でソートされる必要があり、最初のタグは`__name__`である必要があります（存在する場合）。フィールド`regexp`は正規表現として処理されます。
+    - `tag_list` - タグ付きメトリック用のルール、Graphite形式でのメトリック記述を簡単にするためのDSL `someName;tag1=value1;tag2=value2`、`someName`、または`tag1=value1;tag2=value2`。フィールド`regexp`は`tagged`ルールに変換されます。タグの名前でソートする必要はなく、自動的に行われます。タグの値（名前ではなく）は正規表現として設定できます（例: `env=(dev|staging)`）。
 - `regexp` – メトリック名のパターン（正規表現またはDSL）。
 - `age` – データの最小年齢（秒単位）。
-- `precision`– データの年齢を秒単位でどれだけ正確に定義するか。86400（1日の秒数）の約数であるべきです。
-- `function` – `[age, age + precision]`の範囲内にあるデータに適用する集約関数の名前。受け入れられる関数：min / max / any / avg。平均は、平均の平均と同様におおよそ計算されます。
+- `precision`– データの年齢を定義する精度（秒単位）。86400（1日の秒数）で割り切れる数値にすべきです。
+- `function` – `[age, age + precision]`の範囲内にあるデータに適用する集約関数の名前。受け入れられる関数: min / max / any / avg。平均は不正確に計算され、複数の平均の平均のようになります。
 
 ### ルールタイプなしの設定例 {#configuration-example}
 
-``` xml
+```xml
 <graphite_rollup>
     <version_column_name>Version</version_column_name>
     <pattern>
@@ -194,7 +197,7 @@ default
 
 ### ルールタイプありの設定例 {#configuration-typed-example}
 
-``` xml
+```xml
 <graphite_rollup>
     <version_column_name>Version</version_column_name>
     <pattern>
@@ -267,5 +270,5 @@ default
 ```
 
 :::note
-データのロールアップはマージ中に行われます。通常、古いパーティションに対してはマージが開始されないため、ロールアップのためには[optimize](../../../sql-reference/statements/optimize.md)を使用してスケジュール外のマージをトリガーする必要があります。また、[graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer)などの追加ツールを使用することもできます。
+データのロールアップはマージ中に行われます。通常、古いパーティションではマージが開始されないため、ロールアップのためには、[optimize](../../../sql-reference/statements/optimize.md)を使用して、未スケジュールのマージをトリガーする必要があります。また、例えば[graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer)のような追加ツールを使用することもできます。
 :::

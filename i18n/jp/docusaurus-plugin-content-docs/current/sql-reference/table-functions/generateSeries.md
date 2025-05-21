@@ -1,8 +1,10 @@
 ---
-slug: /sql-reference/table-functions/generateSeries
+description: 'TODO: 説明を追加'
+sidebar_label: 'generateSeries'
 sidebar_position: 147
-sidebar_label: generateSeries
+slug: /sql-reference/table-functions/generateSeries
+title: 'TODO: タイトルを追加'
 ---
 
-### エイリアス {#alias-to}
+### Alias To {#alias-to}
 [generate_series](generate_series.md)

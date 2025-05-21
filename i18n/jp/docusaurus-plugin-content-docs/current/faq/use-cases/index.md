@@ -1,15 +1,17 @@
 ---
 slug: /faq/use-cases/
 sidebar_position: 2
-sidebar_label:  ClickHouseの使用例に関する質問
+sidebar_label: 'ClickHouseのユースケースに関する質問'
+title: 'ClickHouseのユースケースに関する質問'
+description: 'ClickHouseのユースケースに関する一般的な質問を一覧にしたランディングページ'
 ---
 
 
-# ClickHouseの使用例に関する質問
+# ClickHouseのユースケースに関する質問
 
-- [ClickHouseを時系列データベースとして使用できますか？](/knowledgebase/time-series)
-- [ClickHouseをキー・バリュー・ストレージとして使用できますか？](/knowledgebase/key-value)
+- [ClickHouseをタイムシリーズデータベースとして使用できますか？](/knowledgebase/time-series)
+- [ClickHouseをキー・バリュー ストレージとして使用できますか？](/knowledgebase/key-value)
 
-:::info お探しの情報が見つかりませんか？
-私たちの[ナレッジベース](/knowledgebase/)をご覧いただき、ここにある多くの役立つ記事もご覧ください。
+:::info 探している情報が見つかりませんか？
+[ナレッジベース](/knowledgebase/)をチェックし、ドキュメント内にある多くの役立つ記事もご覧ください。
 :::

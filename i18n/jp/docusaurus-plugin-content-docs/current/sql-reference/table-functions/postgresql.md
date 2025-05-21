@@ -1,23 +1,23 @@
 ---
-slug: /sql-reference/table-functions/postgresql
+description: 'リモートのPostgreSQLサーバーに保存されているデータに対して、`SELECT`および`INSERT`クエリを実行できるようにします。'
+sidebar_label: 'postgresql'
 sidebar_position: 160
-sidebar_label: postgresql
+slug: /sql-reference/table-functions/postgresql
 title: 'postgresql'
-description: 'リモートのPostgreSQLサーバーに保存されているデータに対して `SELECT` および `INSERT` クエリを実行することを可能にします。'
 ---
 
 
 # postgresql テーブル関数
 
-リモートのPostgreSQLサーバーに保存されているデータに対して `SELECT` および `INSERT` クエリを実行することを可能にします。
+リモートのPostgreSQLサーバーに保存されているデータに対して、`SELECT`および`INSERT`クエリを実行できるようにします。
 
 **構文**
 
-``` sql
+```sql
 postgresql({host:port, database, table, user, password[, schema, [, on_conflict]] | named_collection[, option=value [,..]]})
 ```
 
-**パラメータ**
+**パラメーター**
 
 - `host:port` — PostgreSQLサーバーのアドレス。
 - `database` — リモートデータベース名。
@@ -27,33 +27,33 @@ postgresql({host:port, database, table, user, password[, schema, [, on_conflict]
 - `schema` — 非デフォルトのテーブルスキーマ。オプション。
 - `on_conflict` — 衝突解決戦略。例: `ON CONFLICT DO NOTHING`。オプション。
 
-引数は[名前付きコレクション](operations/named-collections.md)を使用して渡すこともできます。この場合、`host` と `port` は別々に指定する必要があります。このアプローチは本番環境で推奨されます。
+引数は、[named collections](operations/named-collections.md)を使用して渡すこともできます。この場合、`host`と`port`は別々に指定する必要があります。このアプローチは、本番環境での使用が推奨されます。
 
 **返される値**
 
-元のPostgreSQLテーブルと同じカラムを持つテーブルオブジェクト。
+オリジナルのPostgreSQLテーブルと同じカラムを持つテーブルオブジェクト。
 
 :::note
-`INSERT` クエリでは、テーブル関数 `postgresql(...)` をカラム名リストを持つテーブル名から区別するために、キーワード `FUNCTION` または `TABLE FUNCTION` を使用する必要があります。以下の例を参照してください。
+`INSERT`クエリでは、テーブル関数`postgresql(...)`をカラム名のリストを持つテーブル名と区別するために、キーワード`FUNCTION`または`TABLE FUNCTION`を使用する必要があります。以下の例を参照してください。
 :::
 
 ## 実装の詳細 {#implementation-details}
 
-PostgreSQL側の `SELECT` クエリは `COPY (SELECT ...) TO STDOUT` として、リードオンリーのPostgreSQLトランザクション内で各 `SELECT` クエリの後にコミットされます。
+PostgreSQL側の`SELECT`クエリは、読み取り専用のPostgreSQLトランザクション内で`COPY (SELECT ...) TO STDOUT`として実行され、各`SELECT`クエリの後にコミットされます。
 
-単純な `WHERE` 句（`=`, `!=`, `>`, `>=`, `<`, `<=`, および `IN` など）はPostgreSQLサーバー上で実行されます。
+`=`, `!=`, `>`, `>=`, `<`, `<=`, `IN`などのシンプルな`WHERE`句は、PostgreSQLサーバー上で実行されます。
 
-すべての結合、集約、ソート、`IN [ array ]` 条件および `LIMIT` サンプリング制約は、PostgreSQLへのクエリが終了した後にClickHouse内でのみ実行されます。
+すべての結合、集計、ソート、`IN [ array ]`条件、`LIMIT`サンプリング制約は、PostgreSQLへのクエリが完了した後にClickHouseのみで実行されます。
 
-PostgreSQL側の `INSERT` クエリは `COPY "table_name" (field1, field2, ... fieldN) FROM STDIN` として、各 `INSERT` 文の後に自動コミットされるPostgreSQLトランザクション内で実行されます。
+PostgreSQL側の`INSERT`クエリは、PostgreSQLトランザクション内で`COPY "table_name" (field1, field2, ... fieldN) FROM STDIN`として実行され、各`INSERT`ステートメントの後に自動コミットされます。
 
 PostgreSQLの配列型はClickHouseの配列に変換されます。
 
 :::note
-注意が必要です。PostgreSQLでは、Integer[] のような配列データ型のカラムは異なる行に異なる次元の配列を含む場合がありますが、ClickHouseではすべての行で同じ次元の多次元配列を持つことのみが許可されます。
+注意してください。PostgreSQLでは、配列データ型のカラム（たとえばInteger[]）は、異なる行に異なる次元の配列を含むことができますが、ClickHouseではすべての行に同じ次元の多次元配列だけが許可されています。
 :::
 
-複数のレプリカのサポートがあり、`|` でリストする必要があります。例えば：
+複数のレプリカを`|`で列挙することがサポートされています。例えば：
 
 ```sql
 SELECT name FROM postgresql(`postgres{1|2|3}:5432`, 'postgres_database', 'postgres_table', 'user', 'password');
@@ -65,13 +65,13 @@ SELECT name FROM postgresql(`postgres{1|2|3}:5432`, 'postgres_database', 'postgr
 SELECT name FROM postgresql(`postgres1:5431|postgres2:5432`, 'postgres_database', 'postgres_table', 'user', 'password');
 ```
 
-PostgreSQL辞書ソースのためのレプリカの優先順位もサポートしています。マップ内の数が大きいほど優先順位は低くなります。最高の優先順位は `0` です。
+PostgreSQL辞書ソースのレプリカ優先度もサポートされています。マップ内の数値が大きいほど優先度が低くなります。最も高い優先度は`0`です。
 
 **例**
 
-PostgreSQLにおけるテーブル：
+PostgreSQLのテーブル：
 
-``` text
+```text
 postgres=# CREATE TABLE "public"."test" (
 "int_id" SERIAL,
 "int_nullable" INT NULL DEFAULT NULL,
@@ -92,13 +92,13 @@ postgresql> SELECT * FROM test;
 (1 row)
 ```
 
-プレーン引数を使用してClickHouseからデータを選択：
+ClickHouseからプレーン引数を使用してデータを選択：
 
 ```sql
 SELECT * FROM postgresql('localhost:5432', 'test', 'test', 'postgresql_user', 'password') WHERE str IN ('test');
 ```
 
-または [名前付きコレクション](operations/named-collections.md) を使用して：
+または[named collections](operations/named-collections.md)を使用：
 
 ```sql
 CREATE NAMED COLLECTION mypg AS
@@ -110,20 +110,20 @@ CREATE NAMED COLLECTION mypg AS
 SELECT * FROM postgresql(mypg, table='test') WHERE str IN ('test');
 ```
 
-``` text
+```text
 ┌─int_id─┬─int_nullable─┬─float─┬─str──┬─float_nullable─┐
 │      1 │         ᴺᵁᴸᴸ │     2 │ test │           ᴺᵁᴸᴸ │
 └────────┴──────────────┴───────┴──────┴────────────────┘
 ```
 
-挿入：
+挿入する：
 
 ```sql
 INSERT INTO TABLE FUNCTION postgresql('localhost:5432', 'test', 'test', 'postgrsql_user', 'password') (int_id, float) VALUES (2, 3);
 SELECT * FROM postgresql('localhost:5432', 'test', 'test', 'postgresql_user', 'password');
 ```
 
-``` text
+```text
 ┌─int_id─┬─int_nullable─┬─float─┬─str──┬─float_nullable─┐
 │      1 │         ᴺᵁᴸᴸ │     2 │ test │           ᴺᵁᴸᴸ │
 │      2 │         ᴺᵁᴸᴸ │     3 │      │           ᴺᵁᴸᴸ │
@@ -145,16 +145,16 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
         ENGINE PostgreSQL('localhost:5432', 'clickhouse', 'nice.table', 'postgrsql_user', 'password', 'nice.schema');
 ```
 
-**関連情報**
+**参照**
 
 - [PostgreSQLテーブルエンジン](../../engines/table-engines/integrations/postgresql.md)
-- [PostgreSQLを辞書ソースとして使用]( /sql-reference/dictionaries#postgresql)
+- [PostgreSQLを辞書ソースとして使用する](/sql-reference/dictionaries#postgresql)
 
 ## 関連コンテンツ {#related-content}
 
-- ブログ: [ClickHouseとPostgreSQL - データ天国での出会い - パート1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
-- ブログ: [ClickHouseとPostgreSQL - データ天国での出会い - パート2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)
+- ブログ: [ClickHouseとPostgreSQL - データの天国での出会い - パート1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
+- ブログ: [ClickHouseとPostgreSQL - データの天国での出会い - パート2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)
 
-### PeerDBを使用したPostgresデータのレプリケーションまたは移行 {#replicating-or-migrating-postgres-data-with-with-peerdb}
+### PeerDBを使用してPostgresデータをレプリケートまたは移行する {#replicating-or-migrating-postgres-data-with-with-peerdb}
 
-> テーブル関数に加えて、PostgresからClickHouseへの継続的なデータパイプラインを設定するために、ClickHouseによる[PeerDB](https://docs.peerdb.io/introduction)を使用することができます。PeerDBは、変更データキャプチャ（CDC）を使用してPostgresからClickHouseへデータをレプリケートするために特別に設計されたツールです。
+> テーブル関数に加えて、常にClickHouseの[PeerDB](https://docs.peerdb.io/introduction)を使用して、PostgresからClickHouseへの継続的なデータパイプラインを設定できます。PeerDBは、変更データキャプチャ（CDC）を使用してPostgresからClickHouseにデータをレプリケートするために特別に設計されたツールです。

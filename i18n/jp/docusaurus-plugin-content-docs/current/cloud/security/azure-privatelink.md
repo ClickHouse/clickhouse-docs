@@ -1,11 +1,13 @@
 ---
-title: Azure Private Link
-sidebar_label: Azure Private Link
+title: 'Azure プライベートリンク'
+sidebar_label: 'Azure プライベートリンク'
 slug: /cloud/security/azure-privatelink
-description: Azure Private Linkのセットアップ方法
-keywords: [azure, private link, privatelink]
+description: 'Azure プライベートリンクの設定方法'
+keywords: ['azure', 'private link', 'privatelink']
 ---
 
+import Image from '@theme/IdealImage';
+import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 import azure_pe from '@site/static/images/cloud/security/azure-pe.png';
 import azure_privatelink_pe_create from '@site/static/images/cloud/security/azure-privatelink-pe-create.png';
 import azure_private_link_center from '@site/static/images/cloud/security/azure-private-link-center.png';
@@ -24,134 +26,142 @@ import azure_privatelink_pe_filter from '@site/static/images/cloud/security/azur
 import azure_privatelink_pe_dns from '@site/static/images/cloud/security/azure-privatelink-pe-dns.png';
 
 
-# Azure Private Link
+# Azure プライベートリンク
+
+<ScalePlanFeatureBadge feature="Azure プライベートリンク"/>
+
+このガイドでは、Azure プライベートリンクを使用して、Azure（顧客所有および Microsoft パートナーサービスを含む）と ClickHouse Cloud の間で仮想ネットワーク経由のプライベート接続を提供する方法を示します。Azure プライベートリンクは、ネットワークアーキテクチャを簡素化し、パブリックインターネットへのデータ露出を排除することで、Azure 内のエンドポイント間の接続を安全にします。
+
+<Image img={azure_pe} size="lg" alt="プライベートリンクの概要" background='white' />
+
+AWS および GCP とは異なり、Azure はプライベートリンクを介したクロスリージョン接続をサポートしています。これにより、ClickHouse サービスがデプロイされている異なるリージョンにある VNet 間で接続を確立できます。
 
 :::note
-Azure Private LinkはClickHouse Cloudの**Production**サービスにのみ有効化できます。**Development**サービスはサポートされていません。
+リージョン間のトラフィックには追加料金が発生する場合があります。最新の Azure ドキュメントを確認してください。
 :::
 
-このガイドでは、Azure Private Linkを使用して、Azure（顧客所有およびMicrosoftパートナーサービスを含む）とClickHouse Cloudとの間に仮想ネットワーク経由でプライベート接続を提供する方法を示します。Azure Private Linkはネットワークアーキテクチャを簡素化し、パブリックインターネットへのデータ露出を排除することで、Azure内のエンドポイント間の接続を安全にします。
+**Azure プライベートリンクを有効にするための手順を完了してください：**
 
-<img src={azure_pe} alt="PrivateLinkの概要" />
+1. プライベートリンク用の Azure 接続エイリアスを取得します
+1. Azure にプライベートエンドポイントを作成します
+1. プライベートエンドポイント GUID を ClickHouse Cloud 組織に追加します
+1. プライベートエンドポイント GUID をサービスの許可リストに追加します
+1. プライベートリンクを使用して ClickHouse Cloud サービスにアクセスします
 
-AWSやGCPとは異なり、AzureはPrivate Linkを介したクロスリージョン接続をサポートしています。これにより、異なるリージョンにデプロイされたClickHouseサービス間で、VNet間の接続を確立できます。
 
-:::note
-リージョン間のトラフィックには追加料金が発生する場合があります。最新のAzureドキュメントを確認してください。
-:::
+## 注意 {#attention}
+ClickHouse は、Azure リージョン内で同じ公開された [プライベートリンクサービス](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) を再利用するために、サービスをグループ化しようとします。ただし、サービスを複数の ClickHouse 組織に分散させると、このグループ化は保証されません。
+すでに ClickHouse 組織内で他のサービスに対してプライベートリンクが構成されている場合、そのグループ化により多くの手順をスキップでき、そのまま最終ステップ「[プライベートエンドポイント GUID をサービスの許可リストに追加](#add-private-endpoint-guid-to-services-allow-list)」に進むことができます。
 
-Azure Private Linkを有効にするために、以下の手順を完了してください。
+ClickHouse の [Terraform プロバイダーリポジトリ](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/) で Terraform の例を見つけてください。
 
-1. Private Link用のAzure接続エイリアスを取得する
-2. Azureにプライベートエンドポイントを作成する
-3. プライベートエンドポイントのGUIDをClickHouse Cloud組織に追加する
-4. プライベートエンドポイントのGUIDをサービスの許可リストに追加する
-5. プライベートリンクを使用してClickHouse Cloudサービスにアクセスする
+## プライベートリンク用の Azure 接続エイリアスを取得する {#obtain-azure-connection-alias-for-private-link}
 
-Azure Private Linkの完全なTerraform例については、[こちら](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/PrivateLinkAzure)を参照してください。
+### オプション 1: ClickHouse Cloud コンソール {#option-1-clickhouse-cloud-console}
 
-## Private Link用のAzure接続エイリアスを取得する {#obtain-azure-connection-alias-for-private-link}
+ClickHouse Cloud コンソールで、プライベートリンクを介して接続したいサービスを開き、次に **設定** メニューを開きます。 **プライベートエンドポイントの設定** ボタンをクリックします。プライベートリンクの設定に使用される `サービス名` と `DNS名` をメモします。
 
-### オプション1: ClickHouse Cloudコンソール {#option-1-clickhouse-cloud-console}
+<Image img={azure_privatelink_pe_create} size="lg" alt="プライベートエンドポイント" border />
 
-ClickHouse Cloudコンソールで、PrivateLinkを介して接続したいサービスを開き、**設定**メニューを開きます。**プライベートエンドポイントを設定**ボタンをクリックします。プライベートリンクのセットアップに使用される**サービス名**をコピーします。
+`サービス名` と `DNS名` をメモしてください。次の手順で必要になります。
 
-<img src={azure_privatelink_pe_create} alt="プライベートエンドポイント" />
+### オプション 2: API {#option-2-api}
 
-### オプション2: API {#option-2-api}
+始める前に、ClickHouse Cloud API キーが必要です。新しいキーを[作成する](/cloud/manage/openapi)か、既存のキーを使用できます。
 
-始める前に、ClickHouse Cloud APIキーが必要です。新しいキーを[作成する](/cloud/manage/openapi)か、既存のキーを使用できます。プライベートリンク構成を管理するには、**Admin**キーが必要であることに注意してください。
-
-APIキーを取得したら、コマンドを実行する前に以下の環境変数を設定します:
+API キーを取得したら、次の環境変数を設定してからコマンドを実行します。
 
 ```bash
-REGION=<リージョンコード、Azure形式を使用>
+REGION=<リージョンコード、Azure 形式を使用、例: westus3>
 PROVIDER=azure
-KEY_ID=<キーID>
+KEY_ID=<キー ID>
 KEY_SECRET=<キーシークレット>
-ORG_ID=<ClickHouse組織ID>
+ORG_ID=<ClickHouse 組織 ID を設定>
+SERVICE_NAME=<お客様の ClickHouse サービス名>
 ```
 
-リージョンからインスタンスIDを取得します:
+リージョン、プロバイダー、サービス名でフィルタリングして ClickHouse の `INSTANCE_ID` を取得します：
 
-指定されたリージョンに少なくとも1つのClickHouse Cloudサービスが展開されている必要があります。
-
-```bash
-curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services | jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\") | .id " -r | head -1 | tee instance_id
+```shell
+INSTANCE_ID=$(curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
+"https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services" | \
+jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\" and .name==\"${SERVICE_NAME:?}\") | .id " -r)
 ```
 
-前の手順で受け取ったIDを使用して、`INSTANCE_ID`環境変数を作成します:
+プライベートリンク用に Azure 接続エイリアスとプライベート DNS ホスト名を取得します：
 
 ```bash
-INSTANCE_ID=$(cat instance_id)
-```
-
-Private Link用のAzure接続エイリアスとプライベートDNSホスト名を取得します:
-
-```bash
-curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}/privateEndpointConfig | jq  .result
+curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}/privateEndpointConfig" | jq  .result
 {
-  "endpointServiceId": "production-westus3-0-0.63c890a9-4d32-48cc-a08c-8cd92dfb1ad3.westus3.azure.privatelinkservice",
-  ...
+  "endpointServiceId": "production-westus3-0-0.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.westus3.azure.privatelinkservice",
+  "privateDnsHostname": "xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud"
 }
 ```
 
-`endpointServiceId`をメモしておきます。この値は次のステップで使用します。
+`endpointServiceId` をメモしてください。次の手順で使用します。
 
-## Azureにプライベートエンドポイントを作成する {#create-private-endpoint-in-azure}
+## Azure にプライベートエンドポイントを作成する {#create-private-endpoint-in-azure}
 
-このセクションでは、Azureにプライベートエンドポイントを作成します。AzureポータルまたはTerraformを使用できます。
+:::important
+このセクションでは、Azure プライベートリンクを介して ClickHouse を構成するための ClickHouse 固有の詳細を説明します。Azure 固有の手順は、どこを参照するかを案内するために提供されていますが、告知なしに変更される場合がありますので、具体的な使用ケースに基づいて Azure 設定を考慮してください。
 
-### オプション1: Azureポータルを使用してプライベートエンドポイントを作成する {#option-1-using-azure-portal-to-create-a-private-endpoint-in-azure}
+ClickHouse は、必要な Azure プライベートエンドポイントや DNS レコードの構成に責任を負いません。
 
-Azureポータルで、**プライベートリンクセンター → プライベートエンドポイント**を開きます。
+Azure 構成タスクに関しての問題には、直接 Azure サポートにお問い合わせください。
+:::
 
-<img src={azure_private_link_center} alt="Azureプライベートセンターを開く" />
+このセクションでは、Azure にプライベートエンドポイントを作成します。Azure ポータルまたは Terraform を使用できます。
 
-**作成**ボタンをクリックして、プライベートエンドポイント作成ダイアログを開きます。
+### オプション 1: Azure ポータルを使用して Azure にプライベートエンドポイントを作成する {#option-1-using-azure-portal-to-create-a-private-endpoint-in-azure}
 
-<img src={azure_private_link_center} alt="Azureプライベートセンターを開く" />
+Azure ポータルで、**プライベートリンクセンター → プライベートエンドポイント**を開きます。
+
+<Image img={azure_private_link_center} size="lg" alt="Azure プライベートセンターを開く" border />
+
+**作成** ボタンをクリックしてプライベートエンドポイント作成ダイアログを開きます。
+
+<Image img={azure_private_link_center} size="lg" alt="Azure プライベートセンターを開く" border />
 
 ---
 
-次の画面では、以下のオプションを指定します:
+次の画面で、以下のオプションを指定します：
 
-- **サブスクリプション** / **リソースグループ**: プライベートエンドポイント用のAzureサブスクリプションとリソースグループを選択してください。
+- **サブスクリプション** / **リソースグループ**: プライベートエンドポイント用の Azure サブスクリプションとリソースグループを選択してください。
 - **名前**: **プライベートエンドポイント**の名前を設定します。
-- **リージョン**: Private Linkを介してClickHouse Cloudに接続されるVNetが展開されているリージョンを選択します。
+- **リージョン**: プライベートリンクを介して ClickHouse Cloud に接続されるデプロイ済みの VNet のリージョンを選択します。
 
-上記の手順を完了したら、**次へ: リソース**ボタンをクリックします。
+これらの手順を完了したら、**次へ: リソース**ボタンをクリックします。
 
-<img src={azure_pe_create_basic} alt="プライベートエンドポイント基本情報の作成" />
+<Image img={azure_pe_create_basic} size="md" alt="プライベートエンドポイント基本作成" border />
 
 ---
 
-**Azureリソースに、リソースIDまたはエイリアスで接続**のオプションを選択します。
+**Azure リソースにリソース ID またはエイリアスで接続** オプションを選択します。
 
-**リソースIDまたはエイリアス**には、[Private Link用のAzure接続エイリアスを取得する](#obtain-azure-connection-alias-for-private-link)ステップで取得した`endpointServiceId`を使用してください。
+**リソース ID またはエイリアス** には、[プライベートリンク用の Azure 接続エイリアスを取得する](#obtain-azure-connection-alias-for-private-link) 手順で取得した `endpointServiceId` を使用します。
 
 **次へ: 仮想ネットワーク**ボタンをクリックします。
 
-<img src={azure_pe_resource} alt="プライベートエンドポイントリソース選択" />
+<Image img={azure_pe_resource} size="md" alt="プライベートエンドポイントリソース選択" border />
 
 ---
 
-- **仮想ネットワーク**: Private Linkを使用してClickHouse Cloudに接続したいVNetを選択してください
-- **サブネット**: プライベートエンドポイントが作成されるサブネットを選択してください
+- **仮想ネットワーク**: プライベートリンクを使用して ClickHouse Cloud に接続する VNet を選択します。
+- **サブネット**: プライベートエンドポイントを作成するサブネットを選択します。
 
 オプション:
 
-- **アプリケーションセキュリティグループ**: プライベートエンドポイントにASGを添付して、プライベートエンドポイントへのネットワークトラフィックをフィルタリングするためにネットワークセキュリティグループで使用できます。
+- **アプリケーションセキュリティグループ**: プライベートエンドポイントに ASG を添付し、ネットワークセキュリティグループでトラフィックをフィルタリングするのに使用できます。
 
 **次へ: DNS**ボタンをクリックします。
 
-<img src={azure_pe_create_vnet} alt="プライベートエンドポイント仮想ネットワーク選択" />
+<Image img={azure_pe_create_vnet} size="md" alt="プライベートエンドポイント仮想ネットワーク選択" border />
 
 **次へ: タグ**ボタンをクリックします。
 
 ---
 
-<img src={azure_pe_create_dns} alt="プライベートエンドポイントDNS構成" />
+<Image img={azure_pe_create_dns} size="md" alt="プライベートエンドポイント DNS 構成" border />
 
 オプションで、プライベートエンドポイントにタグを添付できます。
 
@@ -159,21 +169,21 @@ Azureポータルで、**プライベートリンクセンター → プライ�
 
 ---
 
-<img src={azure_pe_create_tags} alt="プライベートエンドポイントタグ" />
+<Image img={azure_pe_create_tags} size="md" alt="プライベートエンドポイントタグ" border />
 
 最後に、**作成**ボタンをクリックします。
 
-<img src={azure_pe_create_review} alt="プライベートエンドポイントレビュー" />
+<Image img={azure_pe_create_review} size="md" alt="プライベートエンドポイントレビュー" border />
 
-作成されたプライベートエンドポイントの**接続状況**は**保留中**の状態になります。サービスの許可リストにこのプライベートエンドポイントを追加すると、**承認済み**の状態に変更されます。
+作成されたプライベートエンドポイントの**接続状況**は**保留中**の状態になります。サービスの許可リストにこのプライベートエンドポイントが追加されると、**承認済み**の状態に変わります。
 
-プライベートエンドポイントに関連付けられたネットワークインターフェイスを開き、**プライベートIPv4アドレス**（この例では10.0.0.4）をコピーします。この情報は次の手順で必要になります。
+プライベートエンドポイントに関連付けられたネットワークインターフェースを開き、**プライベート IPv4 アドレス**（この例では 10.0.0.4）をコピーします。これらの情報は次の手順で必要になります。
 
-<img src={azure_pe_ip} alt="プライベートエンドポイントIPアドレス" />
+<Image img={azure_pe_ip} size="lg" alt="プライベートエンドポイント IP アドレス" border />
 
-### オプション2: Terraformを使用してAzureにプライベートエンドポイントを作成する {#option-2-using-terraform-to-create-a-private-endpoint-in-azure}
+### オプション 2: Terraform を使用して Azure にプライベートエンドポイントを作成する {#option-2-using-terraform-to-create-a-private-endpoint-in-azure}
 
-Terraformを使用してプライベートエンドポイントを作成するには、以下のテンプレートを使用してください:
+Terraform を使用してプライベートエンドポイントを作成するために、以下のテンプレートを使用してください：
 
 ```json
 resource "azurerm_private_endpoint" "example_clickhouse_cloud" {
@@ -192,29 +202,29 @@ resource "azurerm_private_endpoint" "example_clickhouse_cloud" {
 
 ### プライベートエンドポイントの `resourceGuid` を取得する {#obtaining-private-endpoint-resourceguid}
 
-Private Linkを使用するには、プライベートエンドポイント接続GUIDをサービスの許可リストに追加する必要があります。
+プライベートリンクを使用するためには、プライベートエンドポイント接続 GUID をサービスの許可リストに追加する必要があります。
 
-プライベートエンドポイントリソースGUIDはAzureポータルでのみ表示されます。前のステップで作成されたプライベートエンドポイントを開き、**JSONビュー**をクリックします:
+プライベートエンドポイントリソース GUID は Azure ポータルでのみ表示されます。前のステップで作成されたプライベートエンドポイントを開き、**JSON ビュー**をクリックします：
 
-<img src={azure_pe_view} alt="プライベートエンドポイントビュー" />
+<Image img={azure_pe_view} size="lg" alt="プライベートエンドポイントビュー" border />
 
-プロパティの下にある`resourceGuid`フィールドを見つけ、この値をコピーします:
+プロパティの下にある `resourceGuid` フィールドを見つけてこの値をコピーします：
 
-<img src={azure_pe_resource_guid} alt="プライベートエンドポイントリソースGUID" />
+<Image img={azure_pe_resource_guid} size="lg" alt="プライベートエンドポイントリソース GUID" border />
 
-## Private Link用DNSの設定 {#setting-up-dns-for-private-link}
+## プライベートリンクの DNS の設定 {#setting-up-dns-for-private-link}
 
-Private Linkを介してリソースにアクセスするには、プライベートDNSゾーン（`${location_code}.privatelink.azure.clickhouse.cloud`）を作成し、VNetにアタッチする必要があります。
+プライベートリンクを介してリソースにアクセスするには、プライベート DNS ゾーン (`${location_code}.privatelink.azure.clickhouse.cloud`) を作成して、VNet にアタッチする必要があります。
 
-### プライベートDNSゾーンを作成する {#create-private-dns-zone}
+### プライベート DNS ゾーンを作成する {#create-private-dns-zone}
 
-**オプション1: Azureポータルを使用する**
+**オプション 1: Azure ポータルを使用**
 
-以下のガイドに従って、[Azureポータルを使用してAzureプライベートDNSゾーンを作成してください](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal)。
+Azure ポータルを使用して [Azure プライベート DNS ゾーンを作成する手順](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal)に従ってください。
 
-**オプション2: Terraformを使用する**
+**オプション 2: Terraform を使用**
 
-プライベートDNSゾーンを作成するための以下のTerraformテンプレートを使用してください:
+プライベート DNS ゾーンを作成するために、次の Terraform テンプレートを使用します。
 
 ```json
 resource "azurerm_private_dns_zone" "clickhouse_cloud_private_link_zone" {
@@ -223,23 +233,23 @@ resource "azurerm_private_dns_zone" "clickhouse_cloud_private_link_zone" {
 }
 ```
 
-### ワイルドカードDNSレコードを作成する {#create-a-wildcard-dns-record}
+### ワイルドカード DNS レコードを作成する {#create-a-wildcard-dns-record}
 
-ワイルドカードレコードを作成し、プライベートエンドポイントを指すようにします。
+ワイルドカードレコードを作成し、プライベートエンドポイントにポイントします：
 
-**オプション1: Azureポータルを使用する**
+**オプション 1: Azure ポータルを使用**
 
-1. `MyAzureResourceGroup`リソースグループを開き、`${region_code}.privatelink.azure.clickhouse.cloud`プライベートゾーンを選択します。
+1. `MyAzureResourceGroup` リソースグループを開き、`${region_code}.privatelink.azure.clickhouse.cloud` プライベートゾーンを選択します。
 2. + レコードセットを選択します。
-3. 名前に `*` を入力します。
-4. IPアドレスに、プライベートエンドポイントのIPアドレスを入力します。
-5. **OK**を選択します。
+3. 名前には `*` と入力します。
+4. IP アドレスにはプライベートエンドポイントの IP アドレスを入力します。
+5. **OK** を選択します。
 
-<img src={azure_pl_dns_wildcard} alt="プライベートリンクDNSワイルドカード設定" />
+<Image img={azure_pl_dns_wildcard} size="lg" alt="プライベートリンク DNS ワイルドカードセットアップ" border />
 
-**オプション2: Terraformを使用する**
+**オプション 2: Terraform を使用**
 
-ワイルドカードDNSレコードを作成するための以下のTerraformテンプレートを使用してください:
+ワイルドカード DNS レコードを作成するために、次の Terraform テンプレートを使用します：
 
 ```json
 resource "azurerm_private_dns_a_record" "example" {
@@ -253,65 +263,60 @@ resource "azurerm_private_dns_a_record" "example" {
 
 ### 仮想ネットワークリンクを作成する {#create-a-virtual-network-link}
 
-プライベートDNSゾーンを仮想ネットワークにリンクするには、仮想ネットワークリンクを作成する必要があります。
+プライベート DNS ゾーンを仮想ネットワークにリンクするには、仮想ネットワークリンクを作成する必要があります。
 
-**オプション1: Azureポータルを使用する**
+**オプション 1: Azure ポータルを使用**
 
-以下のガイドに従って、[プライベートDNSゾーンに仮想ネットワークをリンクしてください](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal#link-the-virtual-network)。
+プライベート DNS ゾーンに仮想ネットワークをリンクする手順に従ってください：[プライベート DNS ゾーンに仮想ネットワークをリンクする](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal#link-the-virtual-network)。
 
-**オプション2: Terraformを使用する**
+**オプション 2: Terraform を使用**
 
-仮想ネットワークをプライベートDNSゾーンにリンクするための以下のTerraformテンプレートを使用してください:
+:::note
+DNS の設定方法はいくつかあります。特定の使用ケースに基づいて DNS を設定してください。
+:::
 
-```json
-resource "azurerm_private_dns_zone_virtual_network_link" "example" {
-  name                  = "test"
-  resource_group_name   = var.resource_group_name
-  private_dns_zone_name = var.zone_name
-  virtual_network_id    = var.virtual_network_id
-}
-```
+「DNS 名」は、[プライベートリンク用の Azure 接続エイリアスを取得する](#obtain-azure-connection-alias-for-private-link) 手順から取得し、プライベートエンドポイントの IP アドレスにポイントする必要があります。これにより、VPC/ネットワーク内のサービス/コンポーネントがそれを正しく解決できます。
 
-### DNS設定を確認する {#verify-dns-setup}
+### DNS 設定を確認する {#verify-dns-setup}
 
-`westus3.privatelink.azure.clickhouse.cloud`ドメイン内の任意のレコードは、プライベートエンドポイントIPにポイントされるべきです。（この例では10.0.0.4）。
+`xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud` ドメインはプライベートエンドポイント IP（この例では 10.0.0.4）にポイントされている必要があります。
 
 ```bash
-nslookup instance-id.westus3.privatelink.azure.clickhouse.cloud.
-Server:		127.0.0.53
-Address:	127.0.0.53#53
+nslookup xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud.
+Server: 127.0.0.53
+Address: 127.0.0.53#53
 
 Non-authoritative answer:
-Name:	instance-id.westus3.privatelink.azure.clickhouse.cloud
+Name: xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud
 Address: 10.0.0.4
 ```
 
-## プライベートエンドポイント_GUID_をClickHouse Cloud組織に追加する {#add-the-private-endpoint-guid-to-your-clickhouse-cloud-organization}
+## プライベートエンドポイント GUID を ClickHouse Cloud 組織に追加する {#add-the-private-endpoint-guid-to-your-clickhouse-cloud-organization}
 
-### オプション1: ClickHouse Cloudコンソール {#option-1-clickhouse-cloud-console-1}
+### オプション 1: ClickHouse Cloud コンソール {#option-1-clickhouse-cloud-console-1}
 
-エンドポイントを組織に追加するには、[サービスの許可リストにプライベートエンドポイントGUIDを追加します](#add-private-endpoint-guid-to-services-allow-list)手順に進みます。ClickHouse Cloudコンソールを使用して`プライベートエンドポイントGUID`をサービスの許可リストに追加すると、自動的に組織にも追加されます。
+エンドポイントを組織に追加するには、[プライベートエンドポイント GUID をサービスの許可リストに追加する](#add-private-endpoint-guid-to-services-allow-list) 手順に進みます。ClickHouse Cloud コンソールを使用して `プライベートエンドポイント GUID` をサービスの許可リストに追加すると、自動的に組織に追加されます。
 
 エンドポイントを削除するには、**組織の詳細 -> プライベートエンドポイント**を開き、削除ボタンをクリックしてエンドポイントを削除します。
 
-<img src={azure_pe_remove_private_endpoint} alt="プライベートエンドポイントを削除" />
+<Image img={azure_pe_remove_private_endpoint} size="lg" alt="プライベートエンドポイントを削除する" border />
 
-### オプション2: API {#option-2-api-1}
+### オプション 2: API {#option-2-api-1}
 
-コマンドを実行する前に、以下の環境変数を設定します:
+コマンドを実行する前に、次の環境変数を設定します：
 
 ```bash
 PROVIDER=azure
-KEY_ID=<キーID>
+KEY_ID=<キー ID>
 KEY_SECRET=<キーシークレット>
-ORG_ID=<ClickHouse組織IDを設定>
-ENDPOINT_ID=<プライベートエンドポイントresourceGuid>
-REGION=<リージョンコード、Azure形式を使用>
+ORG_ID=<ClickHouse 組織 ID を設定>
+ENDPOINT_ID=<プライベートエンドポイント resourceGuid>
+REGION=<リージョンコード、Azure 形式を使用>
 ```
 
-[プライベートエンドポイントの `resourceGuid` を取得する](#obtaining-private-endpoint-resourceguid) ステップからのデータを使用して、`VPC_ENDPOINT`環境変数を設定します。
+[プライベートエンドポイントの `resourceGuid` を取得する](#obtaining-private-endpoint-resourceguid) 手順からのデータを使用して `ENDPOINT_ID` 環境変数を設定します。
 
-プライベートエンドポイントを追加するために次のコマンドを実行します:
+次のコマンドを実行してプライベートエンドポイントを追加します：
 
 ```bash
 cat <<EOF | tee pl_config_org.json
@@ -321,7 +326,7 @@ cat <<EOF | tee pl_config_org.json
       {
         "cloudProvider": "azure",
         "id": "${ENDPOINT_ID:?}",
-        "description": "Azureプライベートエンドポイント",
+        "description": "Azure プライベートエンドポイント",
         "region": "${REGION:?}"
       }
     ]
@@ -330,7 +335,7 @@ cat <<EOF | tee pl_config_org.json
 EOF
 ```
 
-プライベートエンドポイントを削除するためのコマンドも実行できます:
+プライベートエンドポイントを削除するには、次のコマンドを実行します：
 
 ```bash
 cat <<EOF | tee pl_config_org.json
@@ -348,42 +353,42 @@ cat <<EOF | tee pl_config_org.json
 EOF
 ```
 
-プライベートエンドポイントを追加または削除した後、次のコマンドを実行して組織に適用します:
+プライベートエンドポイントを追加または削除した後、次のコマンドを実行して組織に適用します：
 
 ```bash
-curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} -X PATCH -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?} -d @pl_config_org.json
+curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}" -d @pl_config_org.json
 ```
 
-## サービスの許可リストにプライベートエンドポイント_GUID_を追加する {#add-private-endpoint-guid-to-services-allow-list}
+## プライベートエンドポイント GUID をサービスの許可リストに追加する {#add-private-endpoint-guid-to-services-allow-list}
 
-デフォルトでは、プライベートリンク接続が承認され、確立されていても、ClickHouse Cloudサービスはプライベートリンク接続を介して利用できません。プライベートリンクを使用して利用可能にする各サービスにプライベートエンドポイントGUIDを明示的に追加する必要があります。
+デフォルトでは、ClickHouse Cloud サービスはプライベートリンク接続が承認され、確立されていてもプライベートリンク経由では利用できません。プライベートリンクを使用して利用可能にすべき各サービスに対して、プライベートエンドポイント GUID を明示的に追加する必要があります。
 
-### オプション1: ClickHouse Cloudコンソール {#option-1-clickhouse-cloud-console-2}
+### オプション 1: ClickHouse Cloud コンソール {#option-1-clickhouse-cloud-console-2}
 
-ClickHouse Cloudコンソールで、PrivateLink経由で接続したいサービスを開き、**設定**に移動します。 [前のステップ](#obtaining-private-endpoint-resourceguid)で取得した`エンドポイントID`を入力します。
+ClickHouse Cloud コンソールで、プライベートリンク経由で接続したいサービスを開き、次に **設定** に移動します。[前の](#obtaining-private-endpoint-resourceguid) 手順から取得した `エンドポイント ID` を入力します。
 
 :::note
 既存のプライベートリンク接続からのアクセスを許可したい場合は、既存のエンドポイントドロップダウンメニューを使用してください。
 :::
 
-<img src={azure_privatelink_pe_filter} alt="プライベートエンドポイントフィルター" />
+<Image img={azure_privatelink_pe_filter} size="lg" alt="プライベートエンドポイントフィルター" border />
 
-### オプション2: API {#option-2-api-2}
+### オプション 2: API {#option-2-api-2}
 
-コマンドを実行する前に、以下の環境変数を設定します:
+コマンドを実行する前に次の環境変数を設定します：
 
 ```bash
 PROVIDER=azure
-KEY_ID=<キーID>
+KEY_ID=<キー ID>
 KEY_SECRET=<キーシークレット>
-ORG_ID=<ClickHouse組織IDを設定>
-ENDPOINT_ID=<プライベートエンドポイントresourceGuid>
-INSTANCE_ID=<インスタンスID>
+ORG_ID=<ClickHouse 組織 ID を設定>
+ENDPOINT_ID=<プライベートエンドポイント resourceGuid>
+INSTANCE_ID=<インスタンス ID>
 ```
 
-プライベートリンクを使用して利用可能な各サービスに対して実行します。
+プライベートリンクを使用して利用可能にすべき各サービスに対して実行します。
 
-プライベートエンドポイントをサービスの許可リストに追加するためのコマンドを実行します:
+プライベートエンドポイントをサービスの許可リストに追加するには、次のコマンドを実行します：
 
 ```bash
 cat <<EOF | tee pl_config.json
@@ -397,7 +402,7 @@ cat <<EOF | tee pl_config.json
 EOF
 ```
 
-サービスの許可リストからプライベートエンドポイントを削除するためのコマンドを実行できます:
+プライベートエンドポイントをサービスの許可リストから削除するには、次のコマンドを実行します：
 
 ```bash
 cat <<EOF | tee pl_config.json
@@ -411,46 +416,42 @@ cat <<EOF | tee pl_config.json
 EOF
 ```
 
-サービスの許可リストにプライベートエンドポイントを追加または削除した後、次のコマンドを実行して組織に適用します:
+サービスの許可リストにプライベートエンドポイントを追加または削除した後、次のコマンドを実行して組織に適用します：
 
 ```bash
-curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} -X PATCH -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID?} -d @pl_config.json | jq
+curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" -d @pl_config.json | jq
 ```
 
-## プライベートリンクを使用してClickHouse Cloudサービスにアクセスする {#access-your-clickhouse-cloud-service-using-private-link}
+## プライベートリンクを使用して ClickHouse Cloud サービスにアクセスする {#access-your-clickhouse-cloud-service-using-private-link}
 
-プライベートリンクが有効化されている各サービスには、公開エンドポイントとプライベートエンドポイントがあります。プライベートリンクを介して接続するには、`privateDnsHostname`であるプライベートエンドポイントを使用する必要があります。
+プライベートリンクが有効になっている各サービスには、公開エンドポイントとプライベートエンドポイントがあります。プライベートリンクを使用して接続するには、[プライベートリンク用の Azure 接続エイリアスを取得する](#obtain-azure-connection-alias-for-private-link) から取得した `privateDnsHostname`<sup>API</sup> または `DNS名`<sup>コンソール</sup> を使用する必要があります。
 
-:::note
-プライベートDNSホスト名は、Azure VNetからのみ利用可能です。Azure VNetの外部にあるマシンからDNSホストを解決しようとしないでください。
-:::
+### プライベート DNS ホスト名を取得する {#obtaining-the-private-dns-hostname}
 
-### プライベートDNSホスト名を取得する {#obtaining-the-private-dns-hostname}
+#### オプション 1: ClickHouse Cloud コンソール {#option-1-clickhouse-cloud-console-3}
 
-#### オプション1: ClickHouse Cloudコンソール {#option-1-clickhouse-cloud-console-3}
+ClickHouse Cloud コンソールで、**設定**に移動します。 **プライベートエンドポイントの設定** ボタンをクリックします。開いたフライアウトで **DNS名** をコピーします。
 
-ClickHouse Cloudコンソールで、**設定**に移動します。**プライベートエンドポイントを設定**ボタンをクリックします。開いたフライアウトで、**DNS名**をコピーします。
+<Image img={azure_privatelink_pe_dns} size="lg" alt="プライベートエンドポイント DNS 名" border />
 
-<img src={azure_privatelink_pe_dns} alt="プライベートエンドポイントDNS名" />
+#### オプション 2: API {#option-2-api-3}
 
-#### オプション2: API {#option-2-api-3}
-
-コマンドを実行する前に、以下の環境変数を設定します:
+コマンドを実行する前に、次の環境変数を設定します：
 
 ```bash
-KEY_ID=<キーID>
+KEY_ID=<キー ID>
 KEY_SECRET=<キーシークレット>
-ORG_ID=<ClickHouse組織IDを設定>
-INSTANCE_ID=<インスタンスID>
+ORG_ID=<ClickHouse 組織 ID を設定>
+INSTANCE_ID=<インスタンス ID>
 ```
 
-次のコマンドを実行します:
+次のコマンドを実行します：
 
 ```bash
-curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}/privateEndpointConfig | jq  .result
+curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}/privateEndpointConfig" | jq  .result
 ```
 
-次のようなレスポンスが返されます:
+次のような応答が返されるはずです：
 
 ```response
 {
@@ -459,43 +460,42 @@ curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} https://api.clickhouse.cloud/v1
 }
 ```
 
-この例では、`xxxxxxx.region_code.privatelink.azure.clickhouse.cloud`ホスト名への接続はプライベートリンクにルーティングされます。一方、`xxxxxxx.region_code.azure.clickhouse.cloud`はインターネット経由でルーティングされます。
+この例では、`xxxxxxx.region_code.privatelink.azure.clickhouse.cloud` ホスト名への接続はプライベートリンクにルーティングされます。一方で、`xxxxxxx.region_code.azure.clickhouse.cloud` はインターネットを介してルーティングされます。
 
-プライベートリンクを使用してClickHouse Cloudサービスに接続するには、`privateDnsHostname`を使用します。
+プライベートリンクを使用して ClickHouse Cloud サービスに接続するには、`privateDnsHostname` を使用します。
 
 ## トラブルシューティング {#troubleshooting}
 
-### DNS設定をテストする {#test-dns-setup}
+### DNS 設定をテストする {#test-dns-setup}
 
-`${region_code}.privatelink.azure.clickhouse.cloud.`ゾーン内のすべてのDNSレコードは、[Azureにプライベートエンドポイントを作成する](#create-private-endpoint-in-azure)ステップの内部IPアドレスを指すべきです。この例では、リージョンは`westus3`です。
-
-次のコマンドを実行します:
+次のコマンドを実行します：
 
 ```bash
-nslookup abcd.westus3.privatelink.azure.clickhouse.cloud.
+nslookup <dns名>
 ```
+ここで「dns名」は、[プライベートリンク用の Azure 接続エイリアスを取得する](#obtain-azure-connection-alias-for-private-link) 手順からの `privateDnsHostname`<sup>API</sup> または `DNS名`<sup>コンソール</sup> です。
 
-次のようなレスポンスを受け取るべきです:
+次の応答が返されるはずです：
 
 ```response
 Non-authoritative answer:
-Name:	abcd.westus3.privatelink.azure.clickhouse.cloud
+Name: <dns名>
 Address: 10.0.0.4
 ```
 
 ### ピアによる接続リセット {#connection-reset-by-peer}
 
-おそらく、プライベートエンドポイントGUIDがサービスの許可リストに追加されていません。[_サービスの許可リストにプライベートエンドポイントGUIDを追加する_ステップ](#add-private-endpoint-guid-to-services-allow-list)を再確認してください。
+おそらく、プライベートエンドポイント GUID がサービスの許可リストに追加されていない可能性があります。[_プライベートエンドポイント GUID をサービスの許可リストに追加する_ ステップ](#add-private-endpoint-guid-to-services-allow-list)を再確認してください。
 
-### プライベートエンドポイントが保留中の状態にある {#private-endpoint-is-in-pending-state}
+### プライベートエンドポイントが保留中の状態 {#private-endpoint-is-in-pending-state}
 
-おそらく、プライベートエンドポイントGUIDがサービスの許可リストに追加されていません。[_サービスの許可リストにプライベートエンドポイントGUIDを追加する_ステップ](#add-private-endpoint-guid-to-services-allow-list)を再確認してください。
+プライベートエンドポイント GUID がサービスの許可リストに追加されていない可能性が高いです。[_プライベートエンドポイント GUID をサービスの許可リストに追加する_ ステップ](#add-private-endpoint-guid-to-services-allow-list)を再確認してください。
 
-### 接続をテストする {#test-connectivity}
+### 接続性をテストする {#test-connectivity}
 
-プライベートリンク接続で問題が発生している場合は、`openssl`を使用して接続を確認してください。プライベートリンクエンドポイントの状態が`Accepted`であることを確認してください。
+プライベートリンクを使用した接続に問題がある場合は、`openssl` を使用して接続性を確認してください。プライベートリンクエンドポイントのステータスが `Accepted` であることを確認してください。
 
-OpenSSLが接続できるはずです（出力に「CONNECTED」が表示されます）。`errno=104`は期待されるものです。
+OpenSSL は接続できるはずです（出力に CONNECTED が表示されます）。`errno=104` は予想される結果です。
 
 ```bash
 openssl s_client -connect abcd.westus3.privatelink.azure.clickhouse.cloud.cloud:9440
@@ -523,24 +523,23 @@ Early data was not sent
 Verify return code: 0 (ok)
 ```
 
-### プライベートエンドポイントフィルターの確認 {#checking-private-endpoint-filters}
+### プライベートエンドポイントフィルターを確認する {#checking-private-endpoint-filters}
 
-コマンドを実行する前に、以下の環境変数を設定します:
+コマンドを実行する前に次の環境変数を設定します：
 
 ```bash
-KEY_ID=<キーID>
+KEY_ID=<キー ID>
 KEY_SECRET=<キーシークレット>
-ORG_ID=<ClickHouse組織IDを設定>
-INSTANCE_ID=<インスタンスID>
+ORG_ID=<ClickHouse 組織 ID を設定>
+INSTANCE_ID=<インスタンス ID>
 ```
 
-次のコマンドを実行してプライベートエンドポイントフィルターを確認します:
+次のコマンドを実行してプライベートエンドポイントフィルターを確認します：
 
 ```bash
-curl --silent --user ${KEY_ID:?}:${KEY_SECRET:?} -X GET -H "Content-Type: application/json" https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?} | jq .result.privateEndpointIds
-[]
+curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X GET -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" | jq .result.privateEndpointIds
 ```
 
-## さらなる情報 {#more-information}
+## さらに情報 {#more-information}
 
-Azure Private Linkに関する詳細情報は、[azure.microsoft.com/en-us/products/private-link](https://azure.microsoft.com/en-us/products/private-link)をご覧ください。
+Azure プライベートリンクに関する詳細情報は、[azure.microsoft.com/en-us/products/private-link](https://azure.microsoft.com/en-us/products/private-link) をご覧ください。

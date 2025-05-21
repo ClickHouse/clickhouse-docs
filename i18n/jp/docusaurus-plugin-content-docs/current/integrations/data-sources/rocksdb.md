@@ -1,10 +1,13 @@
 ---
 slug: /integrations/rocksdb
-sidebar_label: RocksDB
-title: RocksDB
+sidebar_label: 'RocksDB'
+title: 'RocksDB'
 hide_title: true
+description: 'RocksDBTableEngineについて説明するページ'
 ---
+```
 
-import RocksDBTableEngine from '@site/i18n/jp/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/embedded-rocksdb.md';
+```javascript
+import RocksDBTableEngine from '@site/docs/engines/table-engines/integrations/embedded-rocksdb.md';
 
 <RocksDBTableEngine/>

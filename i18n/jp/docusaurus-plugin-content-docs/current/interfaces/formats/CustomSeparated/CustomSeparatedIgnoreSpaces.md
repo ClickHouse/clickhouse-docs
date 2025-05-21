@@ -1,7 +1,8 @@
 ---
-title: CustomSeparatedIgnoreSpaces
+description: 'CustomSeparatedIgnoreSpacesフォーマットのドキュメント'
+keywords: ['CustomSeparatedIgnoreSpaces']
 slug: /interfaces/formats/CustomSeparatedIgnoreSpaces
-keywords: [CustomSeparatedIgnoreSpaces]
+title: 'CustomSeparatedIgnoreSpaces'
 ---
 
 ## 説明 {#description}

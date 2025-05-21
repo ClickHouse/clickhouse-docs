@@ -1,29 +1,38 @@
 ---
-slug: '/sql-reference/data-types/aggregatefunction'
-sidebar_position: 46
+description: 'ClickHouseにおけるAggregateFunctionデータ型のドキュメントであり、集約関数の中間状態を保存します'
+keywords: ['AggregateFunction', 'Type']
 sidebar_label: 'AggregateFunction'
-keywords: ['AggregateFunction', 'ClickHouse', 'SQL', 'データベース']
-description: 'Aggregate functions in ClickHouse provide a method for calculating and storing intermediate states.'
+sidebar_position: 46
+slug: /sql-reference/data-types/aggregatefunction
+title: 'AggregateFunctionタイプ'
 ---
 
 
-# AggregateFunction
+# AggregateFunctionタイプ
 
-集約関数は、`AggregateFunction(...)` データ型にシリアライズされ、通常は [マテリアライズドビュー](../../sql-reference/statements/create/view.md) を介してテーブルに格納できる実装依存の中間状態を持ちます。
-集約関数の状態を生成する一般的な方法は、`-State` サフィックスを付けて集約関数を呼び出すことです。
-将来的に集約の最終結果を得るには、同じ集約関数を `-Merge` サフィックスを付けて使用する必要があります。
+## 説明 {#description}
 
-`AggregateFunction(name, types_of_arguments...)` — パラメトリックデータ型。
+ClickHouseのすべての[集約関数](/sql-reference/aggregate-functions)は、特定の実装に依存した中間状態を持ち、それをシリアライズして`AggregateFunction`データ型としてテーブルに保存することができます。これは通常、[マテリアライズドビュー](../../sql-reference/statements/create/view.md)を介して行われます。
+
+`AggregateFunction`型で一般的に使用される2つの集約関数[コンビネータ](/sql-reference/aggregate-functions/combinators)があります：
+
+- [`-State`](/sql-reference/aggregate-functions/combinators#-state)集約関数コンビネータは、集約関数の名前に付加されると、`AggregateFunction`中間状態を生成します。
+- [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge)集約関数コンビネータは、中間状態から集約の最終結果を取得するために使用されます。
+
+## 構文 {#syntax}
+
+```sql
+AggregateFunction(集約関数名, 引数の型...)
+```
 
 **パラメータ**
 
-- 集約関数の名前。関数がパラメトリックである場合は、そのパラメータも指定します。
+- `集約関数名` - 集約関数の名前。関数がパラメトリックの場合は、そのパラメータも指定する必要があります。
+- `引数の型` - 集約関数引数の型。
 
-- 集約関数の引数の型。
+例えば：
 
-**例**
-
-``` sql
+```sql
 CREATE TABLE t
 (
     column1 AggregateFunction(uniq, UInt64),
@@ -32,34 +41,34 @@ CREATE TABLE t
 ) ENGINE = ...
 ```
 
-[uniq](/sql-reference/aggregate-functions/reference/uniq)、anyIf ([any](/sql-reference/aggregate-functions/reference/any)+[If](/sql-reference/aggregate-functions/combinators#-if)) および [quantiles](../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles) は、ClickHouse でサポートされている集約関数です。
-
-## 使用方法 {#usage}
+## 使用法 {#usage}
 
 ### データ挿入 {#data-insertion}
 
-データを挿入するには、集約 `-State` 関数を使って `INSERT SELECT` を使用します。
+`AggregateFunction`型のカラムを持つテーブルにデータを挿入するには、集約関数と[`-State`](/sql-reference/aggregate-functions/combinators#-state)集約関数コンビネータを使った`INSERT SELECT`を使用できます。
 
-**関数の例**
+例えば、`AggregateFunction(uniq, UInt64)`型および`AggregateFunction(quantiles(0.5, 0.9), UInt64)`型のカラムに挿入するには、次の集約関数をコンビネータと共に使用します。
 
-``` sql
+```sql
 uniqState(UserID)
 quantilesState(0.5, 0.9)(SendTiming)
 ```
 
-対応する関数 `uniq` および `quantiles` に対して、`-State` 関数は最終値の代わりに状態を返します。言い換えれば、これらは `AggregateFunction` 型の値を返します。
+`uniq`および`quantiles`関数とは異なり、`uniqState`と`quantilesState`（`-State`コンビネータが付加されたもの）は、最終的な値ではなく状態を返します。言い換えれば、これらは`AggregateFunction`型の値を返します。
 
-`SELECT` クエリの結果において、`AggregateFunction` 型の値は、すべての ClickHouse 出力形式に対して実装特有のバイナリ表現を持ちます。例えば、`TabSeparated` 形式にダンプされたデータは、`SELECT` クエリを通じて、後で `INSERT` クエリを使用して再ロードできます。
+`SELECT`クエリの結果では、`AggregateFunction`型の値は、すべてのClickHouse出力形式に対して実装に依存したバイナリ表現を持ちます。
+
+例えば、`SELECT`クエリで`TabSeparated`形式にデータをダンプすると、このダンプは`INSERT`クエリを使用して再ロードすることができます。
 
 ### データ選択 {#data-selection}
 
-`AggregatingMergeTree` テーブルからデータを選択する際は、挿入時に使用したのと同じ集約関数を使用して、`GROUP BY` 句を使いますが、`-Merge` サフィックスを使用します。
+`AggregatingMergeTree`テーブルからデータを選択する際には、`GROUP BY`句を使用し、データを挿入した時と同じ集約関数を使用しますが、[`-Merge`](/sql-reference/aggregate-functions/combinators#-merge)コンビネータを使用します。
 
-`-Merge` サフィックス付きの集約関数は、一連の状態を取り、それらを組み合わせて、完全なデータ集約の結果を返します。
+`-Merge`コンビネータが付加された集約関数は、一連の状態を取り、それらを組み合わせて完全なデータ集約の結果を返します。
 
-例えば、次の2つのクエリは、同じ結果を返します：
+例えば、次の2つのクエリは同じ結果を返します：
 
-``` sql
+```sql
 SELECT uniq(UserID) FROM table
 
 SELECT uniqMerge(state) FROM (SELECT uniqState(UserID) AS state FROM table GROUP BY RegionID)
@@ -67,8 +76,10 @@ SELECT uniqMerge(state) FROM (SELECT uniqState(UserID) AS state FROM table GROUP
 
 ## 使用例 {#usage-example}
 
-[AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) エンジンの説明を参照してください。
+[AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md)エンジンの説明を参照してください。
 
 ## 関連コンテンツ {#related-content}
 
 - ブログ: [ClickHouseにおける集約コンビネータの使用](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+- [MergeState](/sql-reference/aggregate-functions/combinators#-mergestate)コンビネータ。
+- [State](/sql-reference/aggregate-functions/combinators#-state)コンビネータ。

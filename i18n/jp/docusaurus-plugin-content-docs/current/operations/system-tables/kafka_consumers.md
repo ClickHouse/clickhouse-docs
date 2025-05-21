@@ -1,46 +1,47 @@
 ---
-description: "Kafka コンシューマに関する情報を含むシステムテーブル。"
+description: 'Kafka 消費者に関する情報を含むシステムテーブル。'
+keywords: ['system table', 'kafka_consumers']
 slug: /operations/system-tables/kafka_consumers
-title: "system.kafka_consumers"
-keywords: ["system table", "kafka_consumers"]
+title: 'system.kafka_consumers'
 ---
-import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-Kafka コンシューマに関する情報を含みます。
-[Kafka テーブルエンジン](../../engines/table-engines/integrations/kafka) に適用されます（ネイティブ ClickHouse 統合）。
+Kafka 消費者に関する情報を含みます。
+[Kafka テーブルエンジン](../../engines/table-engines/integrations/kafka)（ネイティブ ClickHouse 統合）に適用されます。
 
-カラム:
+カラム：
 
 - `database` (String) - Kafka エンジンを持つテーブルのデータベース。
 - `table` (String) - Kafka エンジンを持つテーブルの名前。
-- `consumer_id` (String) - Kafka コンシューマ識別子。テーブルには多数のコンシューマが存在する可能性があることに注意してください。これは `kafka_num_consumers` パラメータで指定されます。
+- `consumer_id` (String) - Kafka 消費者識別子。テーブルは複数の消費者を持つことができます。`kafka_num_consumers` パラメータによって指定されます。
 - `assignments.topic` (Array(String)) - Kafka トピック。
-- `assignments.partition_id` (Array(Int32)) - Kafka パーティション ID。1 つのパーティションには、1 つのコンシューマのみが割り当てられることに注意してください。
+- `assignments.partition_id` (Array(Int32)) - Kafka パーティション ID。1 つのパーティションに対しては 1 人の消費者のみが割り当てられます。
 - `assignments.current_offset` (Array(Int64)) - 現在のオフセット。
-- `exceptions.time` (Array(DateTime)) - 最近生成された 10 件の例外のタイムスタンプ。
-- `exceptions.text` (Array(String)) - 最近の 10 件の例外のテキスト。
-- `last_poll_time` (DateTime) - 最後のポーリングのタイムスタンプ。
-- `num_messages_read` (UInt64) - コンシューマによって読み取られたメッセージの数。
-- `last_commit_time` (DateTime) - 最後のコミットのタイムスタンプ。
-- `num_commits` (UInt64) - コンシューマのコミットの合計数。
-- `last_rebalance_time` (DateTime) - 最後の Kafka リバランスのタイムスタンプ。
-- `num_rebalance_revocations` (UInt64) - コンシューマがパーティションを取り消された回数。
-- `num_rebalance_assignments` (UInt64) - コンシューマが Kafka クラスターに割り当てられた回数。
-- `is_currently_used` (UInt8) - コンシューマが使用中であるか。
-- `last_used` (UInt64) - このコンシューマが最後に使用された時間、マイクロ秒単位の UNIX 時間。
-- `rdkafka_stat` (String) - ライブラリ内部の統計情報。詳細は https://github.com/ClickHouse/librdkafka/blob/master/STATISTICS.md を参照してください。`statistics_interval_ms` を 0 に設定すると無効になり、デフォルトは 3000（3 秒ごとに 1 回）。
+- `exceptions.time`, (Array(DateTime)) - 直近の 10 件の例外が生成された時刻のタイムスタンプ。
+- `exceptions.text`, (Array(String)) - 直近の 10 件の例外のテキスト。
+- `last_poll_time`, (DateTime) - 最も最近のポーリングのタイムスタンプ。
+- `num_messages_read`, (UInt64) - 消費者が読み取ったメッセージの数。
+- `last_commit_time`, (DateTime) - 最も最近のコミットのタイムスタンプ。
+- `num_commits`, (UInt64) - 消費者の総コミット数。
+- `last_rebalance_time`, (DateTime) - 最も最近の Kafka リバランスのタイムスタンプ。
+- `num_rebalance_revocations`, (UInt64) - 消費者がパーティションを取り消された回数。
+- `num_rebalance_assignments`, (UInt64) - 消費者が Kafka クラスターに割り当てられた回数。
+- `is_currently_used`, (UInt8) - 消費者が使用中かどうか。
+- `last_used`, (UInt64) - この消費者が使用された最終時間、マイクロ秒単位の Unix 時間。
+- `rdkafka_stat` (String) - ライブラリ内部の統計。詳細は https://github.com/ClickHouse/librdkafka/blob/master/STATISTICS.md を参照してください。`statistics_interval_ms` を 0 に設定すると無効化され、デフォルトは 3000（3 秒ごとに 1 回）です。
 
-例:
+例：
 
-``` sql
+```sql
 SELECT *
 FROM system.kafka_consumers
 FORMAT Vertical
 ```
 
-``` text
+```text
 Row 1:
 ──────
 database:                   test
@@ -60,5 +61,4 @@ num_rebalance_revocations:  0
 num_rebalance_assignments:  1
 is_currently_used:          1
 rdkafka_stat:               {...}
-
 ```

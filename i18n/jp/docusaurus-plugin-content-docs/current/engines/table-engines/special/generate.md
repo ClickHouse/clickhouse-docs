@@ -1,45 +1,45 @@
 ---
-slug: /engines/table-engines/special/generate
+description: 'GenerateRandomテーブルエンジンは、指定されたテーブルスキーマに対してランダムデータを生成します。'
+sidebar_label: 'GenerateRandom'
 sidebar_position: 140
-sidebar_label:  GenerateRandom
-title: "GenerateRandom テーブルエンジン"
-description: "GenerateRandom テーブルエンジンは、指定されたテーブルスキーマに対してランダムデータを生成します。"
+slug: /engines/table-engines/special/generate
+title: 'GenerateRandomテーブルエンジン'
 ---
 
-GenerateRandom テーブルエンジンは、指定されたテーブルスキーマに対してランダムデータを生成します。
+GenerateRandomテーブルエンジンは、指定されたテーブルスキーマに対してランダムデータを生成します。
 
 使用例:
 
-- 再現可能な大規模テーブルをポピュレートするためにテストで使用。
-- フェズテスト用のランダム入力を生成。
+- 再現可能な大規模テーブルを埋めるためのテストで使用。
+- ファジングテスト用のランダム入力を生成。
 
-## ClickHouse サーバーでの使用 {#usage-in-clickhouse-server}
+## ClickHouseサーバーでの使用 {#usage-in-clickhouse-server}
 
-``` sql
+```sql
 ENGINE = GenerateRandom([random_seed [,max_string_length [,max_array_length]]])
 ```
 
-`max_array_length` および `max_string_length` パラメータは、生成されたデータ内のすべての配列またはマップカラムおよび文字列の最大長さを指定します。
+`max_array_length`と`max_string_length`パラメータは、生成されたデータ内のすべての配列またはマップカラムおよび文字列の最大長を指定します。
 
-GenerateRandom テーブルエンジンは、`SELECT` クエリのみをサポートします。
+Generateテーブルエンジンは`SELECT`クエリのみをサポートします。
 
-それは、`AggregateFunction` を除いたテーブルに格納できるすべての [DataTypes](../../../sql-reference/data-types/index.md) をサポートしています。
+`AggregateFunction`を除くすべての[データ型](../../../sql-reference/data-types/index.md)をテーブルに保存することができます。
 
 ## 例 {#example}
 
-**1.** `generate_engine_table` テーブルを設定:
+**1.** `generate_engine_table`テーブルをセットアップ:
 
-``` sql
+```sql
 CREATE TABLE generate_engine_table (name String, value UInt32) ENGINE = GenerateRandom(1, 5, 3)
 ```
 
 **2.** データをクエリ:
 
-``` sql
+```sql
 SELECT * FROM generate_engine_table LIMIT 3
 ```
 
-``` text
+```text
 ┌─name─┬──────value─┐
 │ c4xJ │ 1412771199 │
 │ r    │ 1791099446 │
@@ -49,7 +49,7 @@ SELECT * FROM generate_engine_table LIMIT 3
 
 ## 実装の詳細 {#details-of-implementation}
 
-- サポートされていないもの:
+- サポートされていない機能:
     - `ALTER`
     - `SELECT ... SAMPLE`
     - `INSERT`

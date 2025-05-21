@@ -1,11 +1,13 @@
 ---
-slug: /sql-reference/functions/time-series-functions
+description: '時間系列関数に関するドキュメント'
+sidebar_label: '時間系列'
 sidebar_position: 172
-sidebar_label: 時系列
+slug: /sql-reference/functions/time-series-functions
+title: '時間系列関数'
 ---
 
 
-# 時系列関数
+# 時間系列関数
 
 以下の関数は系列データ分析に使用されます。
 
@@ -15,7 +17,7 @@ sidebar_label: 時系列
 
 **構文**
 
-``` sql
+```sql
 seriesOutliersDetectTukey(series);
 seriesOutliersDetectTukey(series, min_percentile, max_percentile, K);
 ```
@@ -23,27 +25,27 @@ seriesOutliersDetectTukey(series, min_percentile, max_percentile, K);
 **引数**
 
 - `series` - 数値の配列。
-- `min_percentile` - 四分位範囲 [(IQR)](https://en.wikipedia.org/wiki/Interquartile_range) を計算するために使用する最小パーセンタイル。値は[0.02,0.98]の範囲内でなければなりません。デフォルトは0.25です。
-- `max_percentile` - 四分位範囲(IQR) を計算するために使用する最大パーセンタイル。値は[0.02,0.98]の範囲内でなければなりません。デフォルトは0.75です。
-- `K` - 軽度または強度の外れ値を検出するための非負の定数値。デフォルト値は1.5です。
+- `min_percentile` - 四分位範囲を計算するために使用される最小パーセンタイル [(IQR)](https://en.wikipedia.org/wiki/Interquartile_range)。値は[0.02,0.98]の範囲内でなければならず、デフォルトは0.25です。
+- `max_percentile` - 四分位範囲 (IQR)を計算するために使用される最大パーセンタイル。値は[0.02,0.98]の範囲内でなければならず、デフォルトは0.75です。
+- `K` - 軽度または強い外れ値を検出するための非負の定数値。デフォルト値は1.5です。
 
-外れ値を検出するには、`series` に少なくとも4つのデータポイントが必要です。
+外れ値を検出するには、`series`に少なくとも4つのデータポイントが必要です。
 
 **返される値**
 
-- 入力配列と同じ長さの配列を返し、各値は系列内の対応する要素の可能な異常のスコアを表します。ゼロでないスコアは、可能な異常を示します。[配列](../data-types/array.md)。
+- 入力配列と同じ長さの配列を返します。各値は系列の対応する要素の潜在的な異常のスコアを表します。ゼロ以外のスコアは潜在的な異常を示します。 [Array](../data-types/array.md)。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4, 5, 12, 45, 12, 3, 3, 4, 5, 6]) AS print_0;
 ```
 
 結果:
 
-``` text
+```text
 ┌───────────print_0─────────────────┐
 │[0,0,0,0,0,0,0,0,0,27,0,0,0,0,0,0] │
 └───────────────────────────────────┘
@@ -51,13 +53,13 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4, 5, 12, 45, 12, 3, 3, 4,
 
 クエリ:
 
-``` sql
+```sql
 SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40, 3, 4, 5, 6], 0.2, 0.8, 1.5) AS print_0;
 ```
 
 結果:
 
-``` text
+```text
 ┌─print_0──────────────────────────────┐
 │ [0,0,0,0,0,0,0,0,0,19.5,0,0,0,0,0,0] │
 └──────────────────────────────────────┘
@@ -65,46 +67,45 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40,
 
 ## seriesPeriodDetectFFT {#seriesperioddetectfft}
 
-FFTを使用して、与えられた系列データの周期を見つけます。  
-FFT - [高速フーリエ変換](https://en.wikipedia.org/wiki/Fast_Fourier_transform)
+FFT - [Fast Fourier transform](https://en.wikipedia.org/wiki/Fast_Fourier_transform)を使用して、与えられた系列データの周期を見つけます。
 
 **構文**
 
-``` sql
+```sql
 seriesPeriodDetectFFT(series);
 ```
 
 **引数**
 
-- `series` - 数値の配列。
+- `series` - 数値の配列
 
 **返される値**
 
-- 系列データの周期と等しい実数値。データポイントの数が4未満の場合はNaNです。[Float64](../data-types/float.md)。
+- 系列データの周期に等しい実数値。データポイントの数が4未満のときはNaNを返します。[Float64](../data-types/float.md)。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT seriesPeriodDetectFFT([1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6]) AS print_0;
 ```
 
 結果:
 
-``` text
+```text
 ┌───────────print_0──────┐
 │                      3 │
 └────────────────────────┘
 ```
 
-``` sql
+```sql
 SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS print_0;
 ```
 
 結果:
 
-``` text
+```text
 ┌─print_0─┐
 │       6 │
 └─────────┘
@@ -112,36 +113,36 @@ SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS pr
 
 ## seriesDecomposeSTL {#seriesdecomposestl}
 
-STL [(Seasonal-Trend Decomposition Procedure Based on Loess)](https://www.wessa.net/download/stl.pdf) を使用して系列データを季節成分、傾向成分、残差成分に分解します。
+[STL (Seasonal-Trend Decomposition Procedure Based on Loess)](https://www.wessa.net/download/stl.pdf)を使用して系列データを季節成分、トレンド成分、残差成分に分解します。
 
 **構文**
 
-``` sql
+```sql
 seriesDecomposeSTL(series, period);
 ```
 
 **引数**
 
-- `series` - 数値の配列。
-- `period` - 正の整数。
+- `series` - 数値の配列
+- `period` - 正の整数
 
-`series`のデータポイントの数は、`period`の値の少なくとも2倍である必要があります。
+`series`のデータポイントの数は、`period`の値の2倍以上である必要があります。
 
 **返される値**
 
-- 季節成分を含む最初の配列、傾向を含む2番目の配列、残差成分を含む3番目の配列、基準（季節 + 傾向）成分を含む4番目の配列からなる4つの配列の配列。[配列](../data-types/array.md)。
+- 季節成分を含む最初の配列、トレンドを含む第二の配列、残差成分を含む第三の配列、およびベースライン（季節 + トレンド）成分を含む第四の配列からなる四つの配列を返します。[Array](../data-types/array.md)。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT seriesDecomposeSTL([10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34], 3) AS print_0;
 ```
 
 結果:
 
-``` text
+```text
 ┌───────────print_0──────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ [[
         -13.529999, -3.1799996, 16.71,      -13.53,     -3.1799996, 16.71,      -13.53,     -3.1799996,

@@ -1,23 +1,23 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/grouparrayarray
+description: '配列をより大きな配列に集約します。'
+keywords: ['groupArrayArray', 'array_concat_agg']
 sidebar_position: 111
-title: "groupArrayArray"
-description: "配列をそれらの配列の大きな配列に集計します。"
-keywords: ["groupArrayArray", "array_concat_agg"]
+slug: /sql-reference/aggregate-functions/reference/grouparrayarray
+title: 'groupArrayArray'
 ---
 
 
 # groupArrayArray
 
-配列をそれらの配列の大きな配列に集計します。  
-[`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 関数と、[Array](/sql-reference/aggregate-functions/combinators#-array) コンビネータを組み合わせます。
+配列をより大きな配列に集約します。
+[`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 関数と [Array](/sql-reference/aggregate-functions/combinators#-array) コンビネーターを組み合わせます。
 
-別名: `array_concat_agg`
+エイリアス: `array_concat_agg`
 
 **例**
 
-ユーザーのブラウジングセッションを記録したデータがあります。各セッションは特定のユーザーが訪れたページのシーケンスを記録します。  
-私たちは `groupArrayArray` 関数を使用して、各ユーザーのページ訪問パターンを分析できます。
+ユーザーのブラウジングセッションを記録したデータがあります。各セッションは、特定のユーザーが訪れたページのシーケンスを記録しています。 
+`groupArrayArray` 関数を使用して、各ユーザーのページ訪問パターンを分析できます。
 
 ```sql title="セットアップ"
 CREATE TABLE website_visits (

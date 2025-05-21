@@ -1,15 +1,16 @@
 ---
-slug: /sql-reference/statements/alter/settings-profile
+description: '設定プロファイルに関するドキュメント'
+sidebar_label: '設定プロファイル'
 sidebar_position: 48
-sidebar_label: 設定プロファイル
-title: ALTER SETTINGS PROFILE
+slug: /sql-reference/statements/alter/settings-profile
+title: '設定プロファイルの変更'
 ---
 
 設定プロファイルを変更します。
 
-構文:
+構文：
 
-``` sql
+```sql
 ALTER SETTINGS PROFILE [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]] 
     [ON CLUSTER cluster_name]
     [DROP ALL PROFILES]

@@ -1,14 +1,14 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/distinctdynamictypes
+description: 'Dynamicカラムに保存されている異なるデータ型のリストを計算します。'
 sidebar_position: 215
-title: "distinctDynamicTypes"
-description: "Dynamic カラムに格納されている異なるデータ型のリストを計算します。"
+slug: /sql-reference/aggregate-functions/reference/distinctdynamictypes
+title: 'distinctDynamicTypes'
 ---
 
 
 # distinctDynamicTypes
 
-[Dynamic](../../data-types/dynamic.md) カラムに格納されている異なるデータ型のリストを計算します。
+[Dynamic](../../data-types/dynamic.md)カラムに保存されている異なるデータ型のリストを計算します。
 
 **構文**
 
@@ -18,11 +18,11 @@ distinctDynamicTypes(dynamic)
 
 **引数**
 
-- `dynamic` — [Dynamic](../../data-types/dynamic.md) カラム。
+- `dynamic` — [Dynamic](../../data-types/dynamic.md)カラム。
 
 **返される値**
 
-- データ型名のソート済みリスト [Array(String)](../../data-types/array.md)。
+- データ型名のソートされたリスト [Array(String)](../../data-types/array.md)。
 
 **例**
 

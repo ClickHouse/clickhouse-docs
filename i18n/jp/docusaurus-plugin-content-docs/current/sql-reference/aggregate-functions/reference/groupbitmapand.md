@@ -1,27 +1,27 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/groupbitmapand
+description: 'ビットマップカラムの AND を計算し、UInt64 型の基数を返します。-State のサフィックスを追加すると、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md)を返します。'
 sidebar_position: 149
-title: groupBitmapAnd
-description: "ビットマップカラムのANDを計算し、UInt64型のカーディナリティを返します。サフィックスに -State を追加すると、ビットマップオブジェクトを返します。"
+slug: /sql-reference/aggregate-functions/reference/groupbitmapand
+title: 'groupBitmapAnd'
 ---
 
-ビットマップカラムのANDを計算し、UInt64型のカーディナリティを返します。サフィックスに -State を追加すると、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md)を返します。
+ビットマップカラムの AND を計算し、UInt64 型の基数を返します。-State のサフィックスを追加すると、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md)を返します。
 
-``` sql
+```sql
 groupBitmapAnd(expr)
 ```
 
 **引数**
 
-`expr` – `AggregateFunction(groupBitmap, UInt*)` 型の結果になる式。
+`expr` – `AggregateFunction(groupBitmap, UInt*)` 型を返す式.
 
 **戻り値**
 
-`UInt64` 型の値。
+`UInt64` 型の値.
 
 **例**
 
-``` sql
+```sql
 DROP TABLE IF EXISTS bitmap_column_expr_test2;
 CREATE TABLE bitmap_column_expr_test2
 (

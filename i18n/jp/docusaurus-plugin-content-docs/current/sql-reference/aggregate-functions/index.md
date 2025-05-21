@@ -1,42 +1,43 @@
----
-slug: /sql-reference/aggregate-functions/
-sidebar_label: 集約関数
+description: '集約関数に関する文書'
+sidebar_label: '集約関数'
 sidebar_position: 33
----
+slug: /sql-reference/aggregate-functions/
+title: '集約関数'
+```
 
 
 # 集約関数
 
-集約関数は、データベース専門家が期待する[通常の](http://www.sql-tutorial.com/sql-aggregate-functions-sql-tutorial)方法で動作します。
+集約関数は、データベースの専門家が期待するように [通常](http://www.sql-tutorial.com/sql-aggregate-functions-sql-tutorial) の方法で動作します。
 
-ClickHouse はまた、以下をサポートしています：
+ClickHouse はまた、次の機能もサポートしています：
 
-- カラムに加えて他のパラメータを受け付ける[パラメトリック集約関数](/sql-reference/aggregate-functions/parametric-functions)。
-- 集約関数の動作を変更する[コンビネータ](/sql-reference/aggregate-functions/combinators)。
+- 他のパラメータをカラムに加えて受け入れる [パラメトリック集約関数](/sql-reference/aggregate-functions/parametric-functions)
+- 集約関数の動作を変更する [コンビネータ](/sql-reference/aggregate-functions/combinators)
 
 ## NULL 処理 {#null-processing}
 
-集約中は、すべての `NULL` 引数がスキップされます。集約に複数の引数がある場合、それらのいずれかが NULL の行は無視されます。
+集約中に、すべての `NULL` 引数はスキップされます。集約に複数の引数がある場合、1つ以上の引数が NULL である行は無視されます。
 
-このルールには例外があります。`first_value`（`first` とそのエイリアス）、`last_value`（`last` とそのエイリアス）関数が `RESPECT NULLS` 修飾子の後に続く場合です。たとえば、`FIRST_VALUE(b) RESPECT NULLS` のようになります。
+このルールには例外があります。`RESPECT NULLS` 修飾子に続く [`first_value`](../../sql-reference/aggregate-functions/reference/first_value.md)、 [`last_value`](../../sql-reference/aggregate-functions/reference/last_value.md) およびそれらのエイリアス（それぞれ `any` と `anyLast`）です。たとえば、`FIRST_VALUE(b) RESPECT NULLS` のように使用します。
 
 **例：**
 
 次のテーブルを考えてみましょう：
 
-``` text
+```text
 ┌─x─┬────y─┐
 │ 1 │    2 │
 │ 2 │ ᴺᵁᴸᴸ │
 │ 3 │    2 │
 │ 3 │    3 │
-│ 3 │ ᴺᵁᴸᴹ │
+│ 3 │ ᴺᵁᴸᴸ │
 └───┴──────┘
 ```
 
-`y` カラムの値を合計する必要があるとしましょう：
+`y` カラムの値を合計したいとします：
 
-``` sql
+```sql
 SELECT sum(y) FROM t_null_big
 ```
 
@@ -46,36 +47,36 @@ SELECT sum(y) FROM t_null_big
 └────────┘
 ```
 
-次に、`y` カラムから配列を作成するために `groupArray` 関数を使用することができます：
+次に、`groupArray` 関数を使用して `y` カラムから配列を作成できます：
 
-``` sql
+```sql
 SELECT groupArray(y) FROM t_null_big
 ```
 
-``` text
+```text
 ┌─groupArray(y)─┐
 │ [2,2,3]       │
 └───────────────┘
 ```
 
-`groupArray` は結果の配列に `NULL` を含めません。
+`groupArray` は、結果の配列に `NULL` を含めません。
 
-[COALESCE](../../sql-reference/functions/functions-for-nulls.md#coalesce) を使用して NULL を意味のある値に変換できます。たとえば：`avg(COALESCE(column, 0))` は、NULL の場合は 0 を使用するか、カラムの値を集約に使います。
+[COALESCE](../../sql-reference/functions/functions-for-nulls.md#coalesce) を使用して、NULL を使用ケースに適した値に変更できます。たとえば、`avg(COALESCE(column, 0))` は、カラムの値を集約に使用するか、NULL の場合は 0 を使用します：
 
-``` sql
+```sql
 SELECT
     avg(y),
     avg(coalesce(y, 0))
 FROM t_null_big
 ```
 
-``` text
+```text
 ┌─────────────avg(y)─┬─avg(coalesce(y, 0))─┐
 │ 2.3333333333333335 │                 1.4 │
 └────────────────────┴─────────────────────┘
 ```
 
-また、NULL スキップ動作を回避するために [Tuple](sql-reference/data-types/tuple.md) を使用できます。`NULL` 値のみを含む `Tuple` は NULL ではないため、その NULL 値のために集約関数はその行をスキップしません。
+また、[Tuple](sql-reference/data-types/tuple.md) を使用して NULL スキッピングの動作を回避することもできます。`NULL` のみを含む `Tuple` は `NULL` ではないため、集約関数はその `NULL` 値のために行をスキップしません。
 
 ```sql
 SELECT
@@ -88,7 +89,7 @@ FROM t_null_big;
 └───────────────┴───────────────────────────────────────┘
 ```
 
-集約関数に引数としてカラムが使用されると、集約はスキップされることに注意してください。たとえば、パラメータなしの [`count`](../../sql-reference/aggregate-functions/reference/count.md)（`count()`）または定数だけのもの（`count(1)`）は、GROUP BY カラムの値に関係なくブロック内のすべての行をカウントしますが、`count(column)` は、カラムが NULL でない行の数だけを返します。
+カラムが集約された関数の引数として使用される場合、集約はスキップされることに注意してください。たとえば、引数のない [`count`](../../sql-reference/aggregate-functions/reference/count.md) （`count()`）や定数のもの（`count(1)`）はブロック内のすべての行をカウントします（GROUP BY カラムの値には依存しません）が、`count(column)` は、カラムが NULL でない行の数のみを返します。
 
 ```sql
 SELECT
@@ -110,7 +111,7 @@ GROUP BY v
 └──────┴─────────┴──────────┘
 ```
 
-ここに、`RESPECT NULLS` を使った `first_value` の例があります。NULL 入力が尊重され、最初に読み取られた値を返します、NULL であってもなくてもです。
+ここでは、`RESPECT NULLS` を使用した `first_value` の例を示します。NULL 入力が尊重され、最初に読み取った値が返されることがわかります。NULL であるかどうかにかかわらず：
 
 ```sql
 SELECT
@@ -133,4 +134,3 @@ ORDER BY col
 │ 1_9   │     5 │                 5 │                   5 │
 │ 2_14  │    11 │                11 │                ᴺᵁᴸᴸ │
 └───────┴───────┴───────────────────┴─────────────────────┘
-```

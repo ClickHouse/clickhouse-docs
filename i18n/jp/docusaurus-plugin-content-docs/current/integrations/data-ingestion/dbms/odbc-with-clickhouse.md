@@ -1,9 +1,12 @@
 ---
-sidebar_label: ODBC
+sidebar_label: 'ODBC'
 sidebar_position: 1
-title: ''
+title: 'ODBC'
+slug: /integrations/data-ingestion/dbms/odbc-with-clickhouse
+description: 'ODBC統合を説明するページ'
 ---
+```
 
-import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/odbc.md';
+import Content from '@site/docs/engines/table-engines/integrations/odbc.md';
 
 <Content />

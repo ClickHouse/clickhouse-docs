@@ -1,16 +1,17 @@
 ---
-description: "MergeTreeの削除されたテーブルのパーツに関する情報を含むシステムテーブル `system.dropped_tables`"
+description: '削除されたテーブルのパーツに関する情報を含むシステムテーブル
+  from `system.dropped_tables`'
+keywords: ['system table', 'dropped_tables_parts']
 slug: /operations/system-tables/dropped_tables_parts
-title: "system.dropped_tables_parts"
-keywords: ["システムテーブル", "dropped_tables_parts"]
+title: 'system.dropped_tables_parts'
 ---
 
-[system.dropped_tables](./dropped_tables.md) から削除された [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルのパーツに関する情報を含みます。
+[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) の削除されたテーブルのパーツに関する情報を [system.dropped_tables](./dropped_tables.md) から含みます。
 
 このテーブルのスキーマは [system.parts](./parts.md) と同じです。
 
-**関連記事**
+**関連情報**
 
-- [MergeTreeファミリ](../../engines/table-engines/mergetree-family/mergetree.md)
+- [MergeTree ファミリー](../../engines/table-engines/mergetree-family/mergetree.md)
 - [system.parts](./parts.md)
 - [system.dropped_tables](./dropped_tables.md)

@@ -1,18 +1,16 @@
 ---
-slug: migrations/postgresql
+slug: /migrations/postgresql
 pagination_prev: null
 pagination_next: null
-title: PostgreSQL
+title: 'PostgreSQL'
+description: 'PostgreSQL マイグレーションセクションのランディングページ'
 ---
 
-| ページ                                                                                                               | 説明                                                                                                                                                                 |
-|----------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [はじめに](./overview.md)                                                                                          | このセクションのはじめにのページ                                                                                                                                   |
-| [PostgreSQLへの接続](../../integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md)                | このページでは、PostgreSQLをClickHouseと統合するための以下のオプションについて説明します: ClickPipes、PeerDB、PostgreSQLテーブルエンジン、MaterializedPostgreSQLデータベースエンジン。 |
-| [PostgreSQLとClickHouseの比較](../../integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse.md)        | PostgresとClickHouseの比較 - 同等の概念と異なる概念を探ります。                                                                                                     |
-| [PostgreSQLからClickHouseへのデータのロード](./dataset.md)                                                      | PostgreSQLからClickHouseへの移行ガイドのパート1です。                                                                                                            |
-| [スキーマの設計](./designing-schemas.md)                                                                          | PostgreSQLからClickHouseへの移行ガイドのパート2です。                                                                                                            |
-| [データモデリング技術](./data-modeling-techniques.md)                                                            | PostgreSQLからClickHouseへの移行ガイドのパート3です。                                                                                                            |
-| [PostgreSQLクエリの書き換え](../../integrations/data-ingestion/dbms/postgresql/rewriting-postgres-queries.md)     | PostgreSQLからClickHouseへの移行ガイドのパート4です。                                                                                                            |
-| [PostgreSQLからデータを挿入する方法](../../integrations/data-ingestion/dbms/postgresql/inserting-data.md)        | PostgreSQLからClickHouseへデータを一括ロードする方法を学びます。                                                                                                   |
-| [PostgreSQLのデータ型マッピング](../../integrations/data-ingestion/dbms/postgresql/data-type-mappings.md)         | Postgresの同等のClickHouseデータ型を示す表です。                                                                                                                 |
+| ページ                                                                                                                 | 説明                                                                                                                                                             |
+|----------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [概要](./overview.md)                                                                                        | このセクションのイントロダクションページ                                                                                                                                      |
+| [PostgreSQL への接続](/integrations/postgresql/connecting-to-postgresql)            | このページでは、PostgreSQL を ClickHouse と統合するための以下のオプションについて説明します：ClickPipes、PeerDB、PostgreSQL テーブルエンジン、MaterializedPostgreSQL データベースエンジン。 |
+| [データの移行](/migrations/postgresql/dataset)   | PostgreSQL から ClickHouse への移行に関するガイドのパート 1です。実践的な例を使用して、リアルタイムレプリケーション (CDC) アプローチでの移行を効率的に実行する方法を示します。カバーされる多くの概念は、PostgreSQL から ClickHouse への手動の一括データ転送にも適用されます。                                                                                        |
+|[PostgreSQL クエリの書き換え](/migrations/postgresql/rewriting-queries)|PostgreSQL から ClickHouse への移行に関するガイドのパート 2です。実践的な例を使用して、リアルタイムレプリケーション (CDC) アプローチでの移行を効率的に実行する方法を示します。カバーされる多くの概念は、PostgreSQL から ClickHouse への手動の一括データ転送にも適用されます。|
+|[データモデリング技術](/migrations/postgresql/data-modeling-techniques)|PostgreSQL から ClickHouse への移行に関するガイドのパート 3です。実践的な例を使用して、PostgreSQL から移行する際に ClickHouse でデータをモデリングする方法を示します。|
+|[付録](/migrations/postgresql/appendix)|PostgreSQL からの移行に関連する追加情報|

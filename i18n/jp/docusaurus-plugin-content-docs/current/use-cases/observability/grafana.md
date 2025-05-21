@@ -1,8 +1,8 @@
 ---
-title: Grafanaの使用
-description: GrafanaとClickHouseを使用した可観測性
+title: 'Grafanaの使用'
+description: 'GrafanaとClickHouseを使った可観測性のための使用法'
 slug: /observability/grafana
-keywords: [可観測性, ログ, トレース, メトリクス, OpenTelemetry, Grafana, OTel]
+keywords: ['可観測性', 'ログ', 'トレース', 'メトリクス', 'OpenTelemetry', 'Grafana', 'OTel']
 ---
 
 import observability_15 from '@site/static/images/use-cases/observability/observability-15.png';
@@ -15,69 +15,52 @@ import observability_21 from '@site/static/images/use-cases/observability/observ
 import observability_22 from '@site/static/images/use-cases/observability/observability-22.png';
 import observability_23 from '@site/static/images/use-cases/observability/observability-23.png';
 import observability_24 from '@site/static/images/use-cases/observability/observability-24.png';
+import Image from '@theme/IdealImage';
 
 
-# GrafanaとClickHouseを使用した可観測性
+# GrafanaとClickHouseを使った可観測性
 
-Grafanaは、ClickHouseにおける可観測性データのための推奨ビジュアライゼーションツールです。これは、Grafana用の公式ClickHouseプラグインを使用して達成されます。ユーザーは、[こちら](/integrations/grafana)にあるインストール手順に従うことができます。
+Grafanaは、ClickHouseにおける可観測性データのための主要な可視化ツールです。これは、Grafana用の公式ClickHouseプラグインを使用することで実現されます。ユーザーは、[こちら](/integrations/grafana)で見つけられるインストール手順に従うことができます。
 
-プラグインのV4では、ログとトレースが新しいクエリビルダー体験の一級市民となります。これにより、SREがSQLクエリを書く必要が最小限になり、SQLベースの可観測性が簡素化され、この新興パラダイムの進展が促されます。その一環として、Open Telemetry (OTel) をプラグインの中心に配置しています。これは、今後数年間のSQLベースの可観測性の基盤となり、データの収集方法を決定すると信じています。
+プラグインのV4は、ログとトレースを新しいクエリビルダーの体験においてファーストクラスの市民にします。これにより、SREがSQLクエリを書く必要が最小限に抑えられ、SQLベースの可観測性が簡素化され、この新興パラダイムが前進します。このアプローチの一部は、Open Telemetry (OTel)をプラグインの中心に置くことです。私たちはこれが、今後数年間のSQLベースの可観測性の基盤であり、データがどのように収集されるかとなると考えています。
 
 ## Open Telemetry統合 {#open-telemetry-integration}
 
-GrafanaでClickhouseデータソースを構成すると、プラグインはログとトレースのためのデフォルトのデータベースとテーブルを指定し、これらのテーブルがOTelスキーマに準拠しているかどうかをユーザーが指定できるようにします。これにより、Grafanaで正しいログとトレースのレンダリングに必要なカラムをプラグインが返すことができます。デフォルトのOTelスキーマに変更を加え、自分のカラム名を使用したい場合は、それらを指定することができます。時間（Timestamp）、ログレベル（SeverityText）、またはメッセージ本文（Body）などのデフォルトOTelカラム名を使用する場合は、変更は必要ありません。
+GrafanaでClickhouseデータソースを構成すると、プラグインはユーザーに、ログとトレースのためのデフォルトのデータベースとテーブル、これらのテーブルがOTelスキーマに準拠するかどうかを指定することを許可します。これにより、Grafanaで正しいログとトレースのレンダリングに必要なカラムをプラグインが返すことが可能になります。デフォルトのOTelスキーマに変更を加え、自分自身のカラム名を使用することを好むユーザーは、それを指定できます。時間 (Timestamp)、ログレベル (SeverityText)、またはメッセージ本文 (Body)などのデフォルトのOTelカラム名を使用することで、変更は必要ありません。
 
-:::note HTTPまたはネイティブ
-ユーザーは、HTTPまたはネイティブプロトコルのいずれかを介してGrafanaをClickHouseに接続できます。後者は、Grafanaユーザーが発行する集約クエリで顕著なパフォーマンス向上を提供する可能性が低いです。対照的に、HTTPプロトコルは通常、ユーザーがプロキシや調査を行う際により単純です。
+:::note HTTPまたはNative
+ユーザーは、HTTPまたはNativeプロトコルを介してGrafanaをClickHouseに接続できます。後者は、Grafanaユーザーが発行する集約クエリでは顕著なパフォーマンスの利点がない可能性があります。一方で、HTTPプロトコルは通常、ユーザーがプロキシし観察するのがより簡単です。
 :::
 
-ログが正しくレンダリングされるためには、ログレベル、時間、メッセージのカラムが必要です。
+ログ構成には、ログが正しくレンダリングされるために時間、ログレベル、およびメッセージカラムが必要です。
 
-トレースの構成はやや複雑です（完全なリストは[こちら](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage)）。ここで必要なカラムは、完全なトレースプロファイルを構築する後続のクエリが抽象化できるようにするために必要です。これらのクエリは、データがOTelに似た構造であることを前提としているため、標準スキーマから大きく逸脱するユーザーは、ビューを使用してこの機能を活用する必要があります。
+トレース構成は若干複雑です（完全なリストは[こちら](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage)）。ここで必要なカラムは、完全なトレースプロファイルを構築する後続のクエリが抽象化できるようにするために必要です。これらのクエリは、データがOTelに似た構造になっていると仮定しますので、標準スキーマから大きく逸脱するユーザーは、この機能を活用するためにビューを使用する必要があります。
 
-<a href={observability_15} target="_blank">
-  <img src={observability_15}    
-    class="image"
-    alt="NEEDS ALT"
-    style={{width: '400px'}} />
-</a>
-<br />
+<Image img={observability_15} alt="コネクター設定" size="sm"/>
 
-構成が完了すると、ユーザーは[Grafana Explore](https://grafana.com/docs/grafana/latest/explore/)に移動し、ログとトレースを検索し始めることができます。
+構成が完了したら、ユーザーは[Grafana Explore](https://grafana.com/docs/grafana/latest/explore/)に移動し、ログとトレースの検索を開始できます。
 
 ## ログ {#logs}
 
-Grafanaのログの要件に従っている場合、ユーザーはクエリビルダーで`Query Type: Log`を選択し、`Run Query`をクリックすることができます。クエリビルダーは、ログをリストするためのクエリを生成し、次のようにレンダリングされることを確認します。
+Grafanaのログ要件に従う場合、ユーザーはクエリビルダーで`Query Type: Log`を選択し、`Run Query`をクリックできます。クエリビルダーがログをリストするためのクエリを作成し、正しくレンダリングされることを保証します。例えば：
 
 ```sql
 SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as traceID FROM "default"."otel_logs" WHERE ( timestamp >= $__fromTime AND timestamp <= $__toTime ) ORDER BY timestamp DESC LIMIT 1000
 ```
 
-<a href={observability_16} target="_blank">
-  <img src={observability_16}    
-    class="image"
-    alt="NEEDS ALT"
-    style={{width: '1450px'}} />
-</a>
-<br />
+<Image img={observability_16} alt="コネクターのログ設定" size="lg" border/>
 
-クエリビルダーはクエリを簡単に修正できる手段を提供し、ユーザーがSQLを書く必要を避けます。キーワードを含むログを見つけるなどのフィルタリングは、クエリビルダーから実行できます。より複雑なクエリを記述したいユーザーは、SQLエディタに切り替えることができます。適切なカラムが返され、`logs`がQuery Typeとして選択されている限り、結果はログとしてレンダリングされます。ログレンダリングに必要なカラムは[こちら](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)にリストされています。
+クエリビルダーは、ユーザーがSQLを書く必要を避けるシンプルな手段を提供します。フィルタリングやキーワードを含むログの検索もクエリビルダーから実行できます。より複雑なクエリを書きたいユーザーは、SQLエディタに切り替えることができます。適切なカラムが返され、`logs`がクエリタイプとして選択されている限り、結果はログとしてレンダリングされます。ログレンダリングに必要なカラムは[こちら](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)にリストされています。
 
 ### ログからトレースへ {#logs-to-traces}
 
-ログにトレースIDが含まれている場合、ユーザーは特定のログ行のトレースをナビゲートすることができるメリットがあります。
+ログにトレースIDが含まれている場合、ユーザーは特定のログ行のトレースに移動することができます。
 
-<a href={observability_17} target="_blank">
-  <img src={observability_17}    
-    class="image"
-    alt="NEEDS ALT"
-    style={{width: '1450px'}} />
-</a>
-<br />
+<Image img={observability_17} alt="ログからトレースへ" size="lg" border/>
 
 ## トレース {#traces}
 
-上記のログ体験と同様に、Grafanaがトレースをレンダリングするために必要なカラムが満たされている場合（例えば、OTelスキーマを使用している場合）、クエリビルダーは自動的に必要なクエリを形成することができます。`Query Type: Traces`を選択し、`Run Query`をクリックすると、次のようなクエリが生成され、実行されます（設定されたカラムによります - 次の例はOTelの使用を前提としています）。
+上記のログ体験に類似して、Grafanaがトレースをレンダリングするために必要なカラムが満たされている場合（例：OTelスキーマを使用）、クエリビルダーは必要なクエリを自動的に生成できます。`Query Type: Traces`を選択し、`Run Query`をクリックすると、次のようなクエリが生成されて実行されます（設定されたカラムによります - 次のクエリはOTelの使用を想定しています）：
 
 ```sql
 SELECT "TraceId" as traceID,
@@ -92,21 +75,15 @@ WHERE ( Timestamp >= $__fromTime AND Timestamp <= $__toTime )
   ORDER BY Timestamp DESC, Duration DESC LIMIT 1000
 ```
 
-このクエリは、Grafanaによって期待されるカラム名を返し、次のようにトレースのテーブルをレンダリングします。期間や他のカラムでのフィルタリングは、SQLを書く必要なしに実行できます。
+このクエリは、Grafanaが期待するカラム名を返し、次のようにトレースのテーブルをレンダリングします。持続時間や他のカラムでのフィルタリングが、SQLを書くことなく行えます。
 
-<a href={observability_18} target="_blank">
-  <img src={observability_18}    
-    class="image"
-    alt="NEEDS ALT"
-    style={{width: '1450px'}} />
-</a>
-<br />
+<Image img={observability_18} alt="トレース" size="lg" border/>
 
 より複雑なクエリを書きたいユーザーは、`SQL Editor`に切り替えることができます。
 
-### トレースの詳細を表示 {#view-trace-details}
+### トレース詳細の表示 {#view-trace-details}
 
-上記のように、トレースIDはクリック可能なリンクとしてレンダリングされます。トレースIDをクリックすると、ユーザーはリンク`View Trace`を通じて関連するスパンを表示することを選択できます。これは、必要な構造でスパンを取得するために次のクエリを発行します（OTelカラムを前提としています）。
+上記のように、トレースIDはクリック可能なリンクとしてレンダリングされます。トレースIDをクリックすると、ユーザーは関連するスパンを表示するために`View Trace`リンクを選択できます。これにより、以下のクエリが発行され（OTelカラムを仮定）、必要な構造でスパンを取得し、結果をウォーターフォールとしてレンダリングします。
 
 ```sql
 WITH '<trace_id>' as trace_id,
@@ -133,20 +110,14 @@ LIMIT 1000
 ```
 
 :::note
-上記のクエリがトレースIDの検索を行うためにマテリアライズドビュー`otel_traces_trace_id_ts`を使用していることに注意してください。詳しくは、[Accelerating Queries - マテリアライズドビューを使用したルックアップ](/use-cases/observability/schema-design#using-materialized-views-incremental--for-fast-lookups)を参照してください。
+上記のクエリが、トレースIDルックアップを行うためにマテリアライズドビュー`otel_traces_trace_id_ts`を使用していることに注意してください。[クエリの高速化 - マテリアライズドビューを使用したルックアップ](/use-cases/observability/schema-design#using-materialized-views-incremental--for-fast-lookups)を参照して詳細を確認してください。
 :::
 
-<a href={observability_19} target="_blank">
-  <img src={observability_19}    
-    class="image"
-    alt="NEEDS ALT"
-    style={{width: '1450px'}} />
-</a>
-<br />
+<Image img={observability_19} alt="トレース詳細" size="lg" border/>
 
 ### トレースからログへ {#traces-to-logs}
 
-ログにトレースIDが含まれている場合、ユーザーはトレースから関連するログにナビゲートすることができます。ログを表示するには、トレースIDをクリックし、`View Logs`を選択します。これは、デフォルトOTelカラムを前提とした次のクエリを発行します。
+ログにトレースIDが含まれている場合、ユーザーはトレースから関連するログに移動できます。ログを見るにはトレースIDをクリックし、`View Logs`を選択します。デフォルトのOTelカラムを仮定した場合、次のクエリが発行されます。
 
 ```sql
 SELECT Timestamp as "timestamp",
@@ -156,33 +127,21 @@ WHERE ( traceID = '<trace_id>' )
 ORDER BY timestamp ASC LIMIT 1000
 ```
 
-<a href={observability_20} target="_blank">
-  <img src={observability_20}    
-    class="image"
-    alt="NEEDS ALT"
-    style={{width: '1450px'}} />
-</a>
-<br />
+<Image img={observability_20} alt="トレースからログへ" size="lg" border/>
 
 ## ダッシュボード {#dashboards}
 
-ユーザーは、ClickHouseデータソースを使用してGrafanaにダッシュボードを構築できます。詳細については、GrafanaとClickHouseの[data source documentation](https://github.com/grafana/clickhouse-datasource)を推奨します。特に[マクロの概念](https://github.com/grafana/clickhouse-datasource?tab=readme-ov-file#macros)や[変数](https://grafana.com/docs/grafana/latest/dashboards/variables/)について確認してください。
+ユーザーはClickHouseデータソースを使用してGrafanaでダッシュボードを構築できます。詳細については、GrafanaとClickHouseの[データソースドキュメント](https://github.com/grafana/clickhouse-datasource)をお勧めします。特に、[マクロの概念](https://github.com/grafana/clickhouse-datasource?tab=readme-ov-file#macros)と[変数](https://grafana.com/docs/grafana/latest/dashboards/variables/)に注意してください。
 
-プラグインは、OTel仕様に準拠したログおよびトレースデータ用のシンプルなClickHouse OTelダッシュボードの例を含む、いくつかの既製のダッシュボードを提供します。これは、ユーザーがOTelのデフォルトカラム名に準拠する必要があり、データソース構成からインストールできます。
+プラグインは、OTel仕様に準拠したロギングとトレースデータ用のサンプルダッシュボード「Simple ClickHouse OTelダッシュボード」を含む、いくつかの即使用可能なダッシュボードを提供します。これは、ユーザーがOTelのデフォルトのカラム名に準拠する必要があり、データソース設定からインストールできます。
 
-<a href={observability_21} target="_blank">
-  <img src={observability_21}    
-    class="image"
-    alt="NEEDS ALT"
-    style={{width: '1450px'}} />
-</a>
-<br />
+<Image img={observability_21} alt="ダッシュボード" size="lg" border/>
 
-以下に、ビジュアライゼーションを構築するためのいくつかの簡単なヒントを提供します。
+以下に、視覚化を構築するための簡単なヒントを提供します。
 
 ### 時系列 {#time-series}
 
-統計とともに、折れ線グラフは可観測性ユースケースで最も一般的な視覚化形式です。Clickhouseプラグインは、クエリが`datetime`型の`time`という名前のカラムと数値型のカラムを返す場合、自動的に折れ線グラフをレンダリングします。例えば：
+統計とともに、折れ線グラフは可観測性のユースケースで最も一般的な視覚化形式です。Clickhouseプラグインは、クエリが`datetime`型の`time`という名前のカラムと数値カラムを返すと、自動的に折れ線グラフをレンダリングします。例：
 
 ```sql
 SELECT
@@ -197,23 +156,17 @@ ORDER BY time ASC
 LIMIT 100000
 ```
 
-<a href={observability_22} target="_blank">
-  <img src={observability_22}    
-    class="image"
-    alt="NEEDS ALT"
-    style={{width: '1450px'}} />
-</a>
-<br />
+<Image img={observability_22} alt="時系列" size="lg" border/>
 
 ### マルチラインチャート {#multi-line-charts}
 
-次の条件が満たされる場合、マルチラインチャートは自動的にレンダリングされます：
+マルチラインチャートは、以下の条件が満たされている場合に自動的にレンダリングされます：
 
-- フィールド1：エイリアスが`time`のdatetimeフィールド
-- フィールド2：グループ化する値。これは文字列である必要があります。
-- フィールド3以上：メトリック値
+- フィールド1：エイリアスがtimeのdatetimeフィールド
+- フィールド2：グループ化するための値。これは文字列である必要があります。
+- フィールド3+: メトリック値
 
-例えば：
+例：
 
 ```sql
 SELECT
@@ -228,40 +181,28 @@ ORDER BY time ASC
 LIMIT 100000
 ```
 
-<a href={observability_23} target="_blank">
-  <img src={observability_23}    
-    class="image"
-    alt="NEEDS ALT"
-    style={{width: '1450px'}} />
-</a>
-<br />
+<Image img={observability_23} alt="マルチラインチャート" size="lg" border/>
 
 ### 地理データの視覚化 {#visualizing-geo-data}
 
-前のセクションでは、IP辞書を使用して可観測性データを地理座標で強化する方法を探りました。`latitude`および`longitude`カラムがある場合、可観測性は`geohashEncode`関数を使用して視覚化できます。これにより、Grafana Geo Mapチャートに対応したジオハッシュが生成されます。以下に例のクエリと視覚化を示します。
+以前のセクションで、IPディクショナリを使用して可観測性データに地理座標を付加する方法を探求しました。`latitude`と`longitude`カラムがあると仮定すると、`geohashEncode`関数を使用して可観測性を視覚化できます。これにより、Grafana Geo Mapチャートに互換性のある地理ハッシュが生成されます。以下に例のクエリと視覚化を示します：
 
 ```sql
 WITH coords AS
-	(
-    	SELECT
-        	Latitude,
-        	Longitude,
-        	geohashEncode(Longitude, Latitude, 4) AS hash
-    	FROM otel_logs_v2
-    	WHERE (Longitude != 0) AND (Latitude != 0)
-	)
+        (
+        SELECT
+                Latitude,
+                Longitude,
+                geohashEncode(Longitude, Latitude, 4) AS hash
+        FROM otel_logs_v2
+        WHERE (Longitude != 0) AND (Latitude != 0)
+        )
 SELECT
-	hash,
-	count() AS heat,
-	round(log10(heat), 2) AS adj_heat
+        hash,
+        count() AS heat,
+        round(log10(heat), 2) AS adj_heat
 FROM coords
 GROUP BY hash
 ```
 
-<a href={observability_24} target="_blank">
-  <img src={observability_24}    
-    class="image"
-    alt="NEEDS ALT"
-    style={{width: '1450px'}} />
-</a>
-<br />
+<Image img={observability_24} alt="地理データの視覚化" size="lg" border/>

@@ -1,8 +1,8 @@
 ---
-slug: '/academic_overview'
-title: 'アーキテクチャ概要'
-description: '2024年のVLDB論文のドキュメント版'
-keywords: ['アーキテクチャ']
+slug: /academic_overview
+title: 'アーキテクチャの概要'
+description: '2024 VLDB論文のドキュメント版'
+keywords: ['architecture']
 ---
 
 import useBrokenLinks from "@docusaurus/useBrokenLinks";
@@ -19,6 +19,7 @@ import image_10 from '@site/static/images/managing-data/core-concepts/_vldb2024_
 import image_11 from '@site/static/images/managing-data/core-concepts/_vldb2024_10_Figure_0.png'
 import image_12 from '@site/static/images/managing-data/core-concepts/_vldb2024_10_Figure_12.png'
 import image_13 from '@site/static/images/managing-data/core-concepts/_vldb2024_10_Figure_13.png'
+import Image from '@theme/IdealImage';
 
 <!-- needed as docusaurus cannot resolve links to span ids, we need a custom span -->
 export function Anchor(props) {
@@ -28,393 +29,403 @@ export function Anchor(props) {
 
 This is the web version of our [VLDB 2024 scientific paper](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf). We also [blogged](https://clickhouse.com/blog/first-clickhouse-research-paper-vldb-lightning-fast-analytics-for-everyone) about its background and journey, and recommend watching the VLDB 2024 presentation by ClickHouse CTO and creator, Alexey Milovidov:
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/7QXKBKDOkJE?si=5uFerjqPSXQWqDkF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/7QXKBKDOkJE?si=5uFerjqPSXQWqDkF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ## ABSTRACT {#abstract}
 
-過去数十年の間に、ストレージおよび分析されるデータの量は指数関数的に増加しました。業種やセクターにわたる企業は、このデータを利用して製品を改善し、パフォーマンスを評価し、ビジネスクリティカルな意思決定を行うことに依存し始めています。しかし、データのボリュームがインターネット規模になっていく中で、企業は歴史的データと新しいデータをコスト効率的かつスケーラブルな方法で管理し、高い同時クエリ数を使用してリアルタイムのレイテンシ（使用ケースによっては1秒未満）を期待しつつ分析しなければなりません。
+Over the past several decades, the amount of data being stored and analyzed has increased exponentially. Businesses across industries and sectors have begun relying on this data to improve products, evaluate performance, and make business-critical decisions. However, as data volumes have increasingly become internetscale, businesses have needed to manage historical and new data in a cost-effective and scalable manner, while analyzing it using a high number of concurrent クエリ and an expectation of real-time latencies (e.g. less than one second, depending on the use case).
 
-この論文では、ペタバイト規模のデータセットに対して高性能な分析を目的として設計された人気のオープンソースOLAPデータベースであるClickHouseの概要を紹介します。そのストレージレイヤーは、従来のログ構造マージ（LSM）ツリーに基づくデータ形式と、バックグラウンドでの歴史的データの継続的変換（集約やアーカイブなど）を組み合わせたものです。クエリは便利なSQLダイアレクトで書かれ、最先端のベクトル化されたクエリ実行エンジンによって処理され、オプションでコードのコンパイルが行われます。ClickHouseは、クエリ内で無関係なデータを評価するのを避けるために、積極的にプルーニング技術を使用します。他のデータ管理システムは、テーブル関数、テーブルエンジン、またはデータベースエンジンレベルで統合できます。実際のベンチマークから、ClickHouseは市場で最も高速な分析データベースのひとつであることが示されています。
+This paper presents an overview of ClickHouse, a popular opensource OLAP database designed for high-performance analytics over petabyte-scale data sets with high ingestion rates. Its storage layer combines a data format based on traditional log-structured merge (LSM) trees with novel techniques for continuous transformation (e.g. aggregation, archiving) of historical data in the background. クエリs are written in a convenient SQL dialect and processed by a state-of-the-art vectorized クエリ execution engine with optional code compilation. ClickHouse makes aggressive use of pruning techniques to avoid evaluating irrelevant data in クエリs. Other data management systems can be integrated at the table function, table engine, or database engine level. Real-world benchmarks demonstrate that ClickHouse is amongst the fastest analytical databases on the market.
 ## 1 INTRODUCTION  {#1-introduction}
 
-この論文では、数兆行と数百カラムを対象とした高性能分析クエリ用に設計された列指向OLAPデータベースであるClickHouseを説明します。ClickHouseは[2009年に](https://clickhou.se/evolution)ウェブスケールのログファイルデータのフィルタと集約演算子として始まり、2016年にオープンソースとして公開されました。[Figure 1](#page-1-0)は、この論文で説明される主要な機能がClickHouseに導入された時期を示しています。
+This paper describes ClickHouse, a columnar OLAP database designed for high-performance analytical クエリs on tables with trillions of 行s and hundreds of カラムs. ClickHouse was [started](https://clickhou.se/evolution) in 2009 as a filter and aggregation operator for web-scale log file data and was open sourced in 2016. [Figure 1](#page-1-0) illustrates when major features described in this paper were introduced to ClickHouse.
 
-ClickHouseは、現代の分析データ管理の5つの主要な課題に対応するように設計されています。
+ClickHouse is designed to address five key challenges of modern analytical data management:
 
-1. **高い取り込みレートを持つ巨大データセット**。ウェブ分析、金融、電子商取引などの業界における多くのデータ駆動型アプリケーションは、大量かつ継続的に増加するデータ量が特徴です。巨大データセットを扱うために、分析データベースは効率的なインデクシングと圧縮戦略を提供するだけでなく、単一のサーバーが数十テラバイトのストレージに制限されているため、複数のノード（スケールアウト）にデータを分散できる必要があります。さらに、最近のデータは歴史的データよりもリアルタイムの洞察にとってはるかに重要です。このため、分析データベースは、新しいデータを一貫して高いレートでまたはバーストで取り込む能力が必要であり、同時にパラレル報告クエリを遅延させずに歴史データを常に「優先度を下げる」必要があります（e.g. 集約、アーカイブ等）。
+1. **Huge data sets with high ingestion rates**. Many datadriven applications in industries like web analytics, finance, and e-commerce are characterized by huge and continuously growing amounts of data. To handle huge data sets, analytical databases must not only provide efficient インデックスing and compression strategies, but also allow data distribution across multiple nodes (scale-out) as single servers are limited to several dozen terabytes of storage. Moreover, recent data is often more relevant for real-time insights than historical data. As a result, analytical databases must be able to ingest new data at consistently high rates or in bursts, as well as continuously "deprioritize" (e.g. aggregate, archive) historical data without slowing down parallel reporting クエリs.
 
-2. **低レイテンシを期待する多数の同時クエリ**。クエリは一般的に、アドホック（e.g. 探索的データ分析）または定期的（e.g. 定期的なダッシュボードクエリ）に分類できます。使用ケースがインタラクティブであればあるほど、クエリのレイテンシは低くなることが期待され、これがクエリの最適化や実行において課題を引き起こします。定期的なクエリは、ワークロードに合わせて物理データベースレイアウトを適応させる機会も提供します。その結果、データベースは、頻繁に実行されるクエリを最適化できるプルーニング技術を提供する必要があります。クエリの優先度に応じて、データベースはCPU、メモリ、ディスク、およびネットワークI/Oなどの共有システムリソースへの平等または優先的なアクセスを保証しなければなりません。
+2. **Many simultaneous クエリs with an expectation of low latencies**. クエリs can generally be categorized as ad-hoc (e.g. exploratory data analysis) or recurring (e.g. periodic dashboard クエリs). The more interactive a use case is, the lower クエリ latencies are expected, leading to challenges in クエリ optimization and execution. Recurring クエリs additionally provide an opportunity to adapt the physical database layout to the workload. As a result, databases should offer pruning techniques that allow optimizing frequent クエリs. Depending on the クエリ priority, databases must further grant equal or prioritized access to shared system resources such as CPU, memory, disk and network I/O, even if a large number of クエリs run simultaneously.
 
-3. **多様なデータストア、ストレージ場所、およびフォーマット**。既存のデータアーキテクチャと統合するために、最新の分析データベースは、任意のシステム、場所、またはフォーマットで外部データを読み書きする高いオープン性を示すことが求められます。
+3. **Diverse landscapes of data stores, storage locations, and formats**. To integrate with existing data architectures, modern analytical databases should exhibit a high degree of openness to read and write external data in any system, location, or format.
 
-4. **パフォーマンスのインストロスペクションをサポートする便利なクエリ言語**。OLAPデータベースの実際の使用は、追加の「ソフト」要件を示します。例えば、特異なプログラミング言語の代わりに、ユーザーはしばしばネストされたデータ型と幅広い通常の集約およびウィンドウ関数を使用して、表現力豊かなSQLダイアレクトでデータベースとインターフェースを持ちたいと考えます。分析データベースはまた、システムまたは個々のクエリのパフォーマンスを分析するための洗練されたツールも提供すべきです。
+4. **A convenient クエリ language with support for performance introspection**. Real-world usage of OLAP databases poses additional "soft" requirements. For example, instead of a niche programming language, users often prefer to interface with databases in an expressive SQL dialect with nested data types and a broad range of regular, aggregation, and window functions. Analytical databases should also provide sophisticated tooling to introspect the performance of the system or individual クエリs.
 
-5. **業界標準の堅牢性と多様なデプロイ**。コモディティハードウェアは信頼性が低いため、データベースはノード障害に対する堅牢性のためのデータレプリケーションを提供しなければなりません。また、データベースは古いラップトップから強力なサーバーまで、あらゆるハードウェアで動作する必要があります。最後に、JVMベースのプログラムでガベージコレクションのオーバーヘッドを避け、ベアメタルパフォーマンス（e.g. SIMD）を可能にするために、データベースはターゲットプラットフォーム向けのネイティブバイナリとしてデプロイされるのが理想的です。
+5. **Industry-grade robustness and versatile deployment**. As commodity hardware is unreliable, databases must provide data レプリケーション for robustness against node failures. Also, databases should run on any hardware, from old laptops to powerful servers. Finally, to avoid the overhead of garbage collection in JVM-based programs and enable bare-metal performance (e.g. SIMD), databases are ideally deployed as native binaries for the target platform.
 
-<Anchor id="page-1-0"/><img src={image_01}/>
+<Anchor id="page-1-0"/><Image img={image_01} size="lg" alt="Image 01"/>
 
-Figure 1: ClickHouseのタイムライン。
+Figure 1: ClickHouse timeline.
 ## 2 ARCHITECTURE {#2-architecture}
 
-<Anchor id="page-2-0"/><img src={image_02}/>
+<Anchor id="page-2-0"/><Image img={image_02} size="lg" alt="Image 02"/>
 
-Figure 2: ClickHouseデータベースエンジンの高レベルアーキテクチャ。
+Figure 2: The high-level architecture of the ClickHouse database engine.
 
-[Figure 2](#page-2-0)に示されているように、ClickHouseエンジンは3つの主要な層に分かれています：クエリ処理層（[Section 4](#page-6-0)で説明）、ストレージ層（[Section 3](#page-1-1)）、および統合層（[Section 5](#page-9-0)）。これに加え、アクセス層はユーザーセッションを管理し、異なるプロトコルを介してアプリケーションと通信します。スレッド処理、キャッシング、ロールベースのアクセス制御、バックアップ、および継続的監視のための独立したコンポーネントがあります。ClickHouseは、C++で構築され、依存関係のない単一の静的リンクバイナリとして提供されます。
+As shown by [Figure 2,](#page-2-0) the ClickHouse engine is split into three main layers: the クエリ processing layer (described in Section [4)](#page-6-0), the storage layer (Section [3)](#page-1-1), and the integration layer (Section [5)](#page-9-0). Besides these, an access layer manages user sessions and communication with applications via different protocols. There are orthogonal components for threading, caching, role-based access control, backups, and continuous monitoring. ClickHouse is built in C++ as a single, statically-linked binary without dependencies.
 
-クエリ処理は、受信したクエリの解析、論理および物理クエリプランの構築と最適化、実行という従来のパラダイムに従います。ClickHouseは、MonetDB/X100 [\[11\]](#page-12-0)と類似のベクトル化された実行モデルを使用しており、機会主義的なコードコンパイル [\[53\]](#page-13-0) と組み合わせています。クエリは、機能が豊富なSQLダイアレクトで記述、PRQL [\[76\]](#page-13-1)、またはKustoのKQL [\[50\]](#page-13-2)で処理できます。
+クエリ processing follows the traditional paradigm of parsing incoming クエリs, building and optimizing logical and physical クエリ plans, and execution. ClickHouse uses a vectorized execution model similar to MonetDB/X100 [\[11\]](#page-12-0), in combination with opportunistic code compilation [\[53\]](#page-13-0). クエリs can be written in a feature-rich SQL dialect, PRQL [\[76\]](#page-13-1), or Kusto's KQL [\[50\]](#page-13-2).
 
-ストレージ層は、テーブルデータの形式と場所をカプセル化した異なるテーブルエンジンで構成されています。テーブルエンジンは、3つのカテゴリに分類されます：最初のカテゴリは、ClickHouseでの主要な永続性形式を表すMergeTree*エンジンのファミリーです。LSMツリー [\[60\]](#page-13-3)のアイデアに基づき、テーブルは横方向にソートされたパーツに分割され、バックグラウンドプロセスによって連続的にマージされます。個々のMergeTree*テーブルエンジンは、その入力パーツから行を合わせる方法において異なります。例えば、行は集約されるか、古くなった場合は置き換えられます。
+The storage layer consists of different table engines that encapsulate the format and location of table data. Table engines fall into three categories: The first category is the MergeTree* family of table engines which represent the primary persistence format in ClickHouse. Based on the idea of LSM trees [\[60\]](#page-13-3), tables are split into horizontal, sorted パーツ, which are continuously merged by a background process. Individual MergeTree* table engines differ in the way the merge combines the 行s from its input パーツ. For example, 行s can be aggregated or replaced, if outdated.
 
-2番目のカテゴリは、クエリ実行を高速化または分散するために使用される特別な目的のテーブルエンジンです。このカテゴリには、内部または外部データソースに対して定期的に実行されるクエリの結果をキャッシュする辞書と呼ばれるメモリ内のキー値テーブルエンジンが含まれます。[辞書](https://clickhou.se/dictionaries)は、データの鮮度が優先されるシナリオで、アクセスレイテンシを大幅に低下させます。他の特別目的のテーブルエンジンの例には、テンポラリーテーブル用の純粋なメモリ内エンジンや、透明なデータシャーディングのための分散テーブルエンジンが含まれます。
+The second category are special-purpose table engines, which are used to speed up or distribute クエリ execution. This category includes in-memory key-value table engines called dictionaries. A [dictionary](https://clickhou.se/dictionaries) caches the result of a クエリ periodically executed against an internal or external data source. This significantly reduces access latencies in scenarios, where a degree of data staleness can be tolerated. Other examples of special-purpose table engines include a pure in-memory engine used for temporary tables and the Distributed table engine for transparent data シャーディング (see below).
 
-3番目のカテゴリのテーブルエンジンは、関係データベース（e.g. PostgreSQL、MySQL）、パブリッシュ/サブスクライブシステム（e.g. Kafka、RabbitMQ [\[24\]](#page-12-1)）、またはキー/値ストア（e.g. Redis）との双方向データ交換のための仮想テーブルエンジンです。仮想エンジンは、データレイク（e.g. Iceberg、DeltaLake、Hudi [\[36\]](#page-12-2)）やオブジェクトストレージ内のファイル（e.g. AWS S3、Google GCP）とも対話できます。
+The third category of table engines are virtual table engines for bidirectional data exchange with external systems such as relational databases (e.g. PostgreSQL, MySQL), publish/subscribe systems (e.g. Kafka, RabbitMQ [\[24\]](#page-12-1)), or key/value stores (e.g. Redis). Virtual engines can also interact with data lakes (e.g. Iceberg, DeltaLake, Hudi [\[36\]](#page-12-2)) or files in object storage (e.g. AWS S3, Google GCP).
 
-ClickHouseは、スケーラビリティと可用性のために、複数のクラスターノードにわたるテーブルのシャーディングとレプリケーションをサポートしています。シャーディングは、シャーディング式に従ってテーブルを一連のテーブルシャードに分割します。各シャードは独立したテーブルであり、通常は異なるノードに配置されています。クライアントは、シャードに直接読み書きでき、つまりそれらを別々のテーブルとして扱うことができ、あるいはすべてのテーブルシャードのグローバルビューを提供する分散特別テーブルエンジンも使用できます。シャーディングの主な目的は、個々のノードの容量を超えるデータセットを処理することです（通常は数十テラバイトのデータ）。シャーディングの別の用途は、テーブルの読み書き負荷を複数のノードに分散させ、つまり負荷分散を行うことです。それとは別に、シャードはノード障害に対する耐障害性のために複数のノードに複製できます。このために、各Merge-Tree*テーブルエンジンには対応するReplicatedMergeTree*エンジンがあり、Raftコンセンサスに基づくマルチマスター調整方式を利用します [\[59\]](#page-13-4) （Apache Zookeeperの代替品としてC++で書かれた[Keeper](https://clickhou.se/keeper)に実装されています）を利用して、各シャードが常に設定可能な数のレプリカを持つことを保証します。[Section 3.6](#page-5-0)では、レプリケーションメカニズムについて詳しく説明します。例えば、[Figure 2](#page-2-0)は、2つのシャードがあり、各シャードが2つのノードにレプリケートされるテーブルを示しています。
+ClickHouse supports シャーディング and レプリケーション of tables across multiple cluster nodes for scalability and availability. シャーディング partitions a table into a set of table シャードs according to a シャーディング expression. The individual シャードs are mutually independent tables and typically located on different nodes. Clients can read and write シャードs directly, i.e. treat them as separate tables, or use the Distributed special table engine, which provides a global view of all table シャードs. The main purpose of シャーディング is to process data sets which exceed the capacity of individual nodes (typically, a few dozens terabytes of data). Another use of シャーディング is to distribute the read-write load for a table over multiple nodes, i.e., load balancing. Orthogonal to that, a シャード can be replicated across multiple nodes for tolerance against node failures. To that end, each Merge-Tree* table engine has a corresponding ReplicatedMergeTree* engine which uses a multi-master coordination scheme based on Raft consensus [\[59\]](#page-13-4) (implemented by [Keeper](https://clickhou.se/keeper), a drop-in replacement for Apache Zookeeper written in C++) to guarantee that every シャード has, at all times, a configurable number of レプリカs. Section [3.6](#page-5-0) discusses the レプリケーション mechanism in detail. As an example, [Figure 2](#page-2-0) shows a table with two シャードs, each replicated to two nodes.
 
-最後に、ClickHouseデータベースエンジンは、オンプレミス、クラウド、スタンドアロン、またはプロセス内モードで操作できます。オンプレミスモードでは、ユーザーはClickHouseを単一のサーバーまたは複数のノードクラスタとしてローカルにセットアップし、シャーディングおよび/またはレプリケーションを行います。クライアントは、ネイティブ、MySQL、PostgreSQLのバイナリワイヤプロトコル、またはHTTP REST APIを介してデータベースと通信します。クラウドモードは、完全に管理され、自動スケーリングされるDBaaS提供のClickHouse Cloudが含まれます。この論文はオンプレミスモードに焦点を当てていますが、ClickHouse Cloudのアーキテクチャを次回の発表で説明する予定です。[スタンドアロンモード](https://clickhou.se/local-fastest-tool)では、ClickHouseをファイルの分析と変換のためのコマンドラインユーティリティに変えることができ、catやgrepのようなUnixツールに対するSQLベースの代替手段となります。この設定には事前の構成が不要ですが、スタンドアロンモードは単一のサーバーに制限されています。最近、Jupyterノートブック [\[37\]](#page-12-4) やPandasデータフレーム [\[61\]](#page-13-5)のようなインタラクティブなデータ分析使用ケースのために、chDBと呼ばれるプロセス内モードが開発されました [\[15\]](#page-12-3)。DuckDB [\[67\]](#page-13-6)からインスパイアを受けて、[chDB](https://clickhou.se/chdb-rocket-engine) はClickHouseをホストプロセスに高性能OLAPエンジンとして組み込みます。他のモードと比較して、これにより、データベースエンジンとアプリケーション間でソースおよび結果データを効率良く渡すことが可能になり、同じアドレス空間内で実行されます。
+Finally, the ClickHouse database engine can be operated in on-premise, cloud, standalone, or in-process modes. In the on-premise mode, users set up ClickHouse locally as a single server or multinode cluster with シャーディング and/or レプリケーション. Clients communicate with the database over the native, MySQL's, PostgreSQL's binary wire protocols, or an HTTP REST API. The cloud mode is represented by ClickHouse Cloud, a fully managed and autoscaling DBaaS offering. While this paper focuses on the on-premise mode, we plan to describe the architecture of ClickHouse Cloud in a follow-up publication. The [standalone mode](https://clickhou.se/local-fastest-tool) turns ClickHouse into a command line utility for analyzing and transforming files, making it a SQL-based alternative to Unix tools like cat and grep. While this requires no prior configuration, the standalone mode is restricted to a single server. Recently, an in-process mode called chDB [\[15\]](#page-12-3) has been developed for interactive data analysis use cases like Jupyter notebooks [\[37\]](#page-12-4) with Pandas dataframes [\[61\]](#page-13-5). Inspired by DuckDB [\[67\]](#page-13-6), [chDB](https://clickhou.se/chdb-rocket-engine) embeds ClickHouse as a high-performance OLAP engine into a host process. Compared to the other modes, this allows to pass source and result data between the database engine and the application efficiently without copying as they run in the same address space.
 ## <Anchor id="page-1-1"/>3 STORAGE LAYER {#3-storage-layer}
 
-このセクションでは、ClickHouseのネイティブストレージ形式としてのMergeTree*テーブルエンジンについて説明します。ディスク上の表現を説明し、ClickHouseにおける3つのデータプルーニング技術について議論します。その後、同時挿入に影響を与えずにデータを継続的に変換するためのマージ戦略を紹介します。最後に、更新や削除がどのように実装されているか、データの重複排除、データレプリケーション、ACID準拠について説明します。
+This section discusses MergeTree* table engines as ClickHouse's native storage format. We describe their on-disk representation and discuss three data pruning techniques in ClickHouse. Afterwards, we present merge strategies which continuously transform data without impacting simultaneous inserts. Finally, we explain how updates and deletes are implemented, as well as data deduplication, data レプリケーション, and ACID compliance.
 ### <Anchor id="page-2-2"/>3.1 On-Disk Format {#3-1-on-disk-format}
 
-MergeTree*テーブルエンジンの各テーブルは、不変のテーブルパーツのコレクションとして整理されています。パートは、行のセットがテーブルに挿入されるたびに作成されます。パーツは自己完結型であり、追加の中央カタログのルックアップなしに、その内容を解釈するために必要なすべてのメタデータを含みます。テーブルごとにパーツの数を低く保つために、バックグラウンドマージジョブが定期的に複数の小さなパーツを結合して、設定可能なパーツサイズに達するまで大きなパーツにします（デフォルトは150 GB）。パーツはテーブルの主キー列によってソートされているため（[Section 3.2](#page-3-0)参照）、効率的なk-wayマージソート [\[40\]](#page-12-5)がマージに使用されます。ソースパーツは非アクティブとしてマークされ、最終的に参照カウントがゼロ（すなわち、もうそれらから読み取るクエリがない）になると削除されます。
+Each table in the MergeTree* table engine is organized as a collection of immutable table parts. A part is created whenever a set of 行s is inserted into the table. Parts are self-contained in the sense that they include all metadata required to interpret their content without additional lookups to a central catalog. To keep the number of parts per table low, a background merge job periodically combines multiple smaller parts into a larger part until a configurable part size is reached (150 GB by default). Since parts are sorted by the table's 主キー columns (see Section [3.2)](#page-3-0), efficient k-way merge sort [\[40\]](#page-12-5) is used for merging. The source parts are marked as inactive and eventually deleted as soon as their reference count drops to zero, i.e. no further クエリs read from them.
 
-行は二つのモードで挿入できます：同期挿入モードでは、各INSERT文が新しいパートを作成し、テーブルに追加します。マージのオーバーヘッドを最小限に抑えるために、データベースクライアントは一度に例として20,000行を一括で挿入することが奨励されます。しかし、クライアント側のバッチ処理によって引き起こされる遅延は、データをリアルタイムで分析する必要がある場合にはしばしば受け入れられません。例えば、可観測性の使用ケースは、通常、数千のモニタリングエージェントが小さなイベントおよびメトリクスデータを継続的に送信することが含まれます。このようなシナリオでは、ClickHouseが複数の受信INSERTからの行を同じテーブルにバッファリングし、バッファサイズが設定可能なしきい値を超えるかタイムアウトが期限切れになるまで新しいパートを作成しない非同期挿入モードを利用できます。
+行s can be inserted in two modes: In synchronous insert mode, each INSERT statement creates a new part and appends it to the table. To minimize the overhead of merges, database clients are encouraged to insert tuples in bulk, e.g. 20,000 行s at once. However, delays caused by client-side batching are often unacceptable if the data should be analyzed in real-time. For example, observability use cases frequently involve thousands of monitoring agents continuously sending small amounts of event and metrics data. Such scenarios can utilize the asynchronous insert mode, in which ClickHouse buffers 行s from multiple incoming INSERTs into the same table and creates a new part only after the buffer size exceeds a configurable threshold or a timeout expires.
 
-<Anchor id="page-2-1"/><img src={image_03}/>
+<Anchor id="page-2-1"/><Image img={image_03} size="lg" alt="Image 03"/>
 
-Figure 3: MergeTree*-エンジンテーブルの挿入とマージ。
+Figure 3: Inserts and merges for MergeTree*-engine tables.
 
-[Figure 3](#page-2-1)は、MergeTree*-エンジンテーブルへの4つの同期および2つの非同期挿入を示しています。2つのマージによって、アクティブなパーツの数は最初の5から2に減少しました。
+[Figure 3](#page-2-1) illustrates four synchronous and two asynchronous inserts into a MergeTree*-engine table. Two merges reduced the number of active parts from initially five to two.
 
-LSMツリー [\[58\]](#page-13-7)およびそれらのさまざまなデータベースにおける実装 [\[13,](#page-12-6) [26,](#page-12-7) [56\]](#page-13-8) と比較して、ClickHouseはすべてのパーツを等しく扱い、階層を形成しません。その結果、マージの制限は同じレベルのパーツに留まらなくなります。これはパーツの暗黙の時間的順序付けも放棄するため、トゥームストーンに基づく更新および削除の代替メカニズムが必要です（[Section 3.4](#page-4-0)参照）。ClickHouseは、挿入をディスクに直接書き込みますが、他のLSMツリーに基づくストアは通常、先行書き込みログを使用します（[Section 3.7](#page-5-1)参照）。
+Compared to LSM trees [\[58\]](#page-13-7) and their implementation in various databases [\[13,](#page-12-6) [26,](#page-12-7) [56\]](#page-13-8), ClickHouse treats all parts as equal instead of arranging them in a hierarchy. As a result, merges are no longer limited to parts in the same level. Since this also forgoes the implicit chronological ordering of parts, alternative mechanisms for updates and deletes not based on tombstones are required (see Section [3.4)](#page-4-0). ClickHouse writes inserts directly to disk while other LSM-treebased stores typically use write-ahead logging (see Section [3.7)](#page-5-1).
 
-一つのパートはディスク上のディレクトリに対応し、各カラムのための1つのファイルを含みます。最適化として、小さなパート（デフォルトでは10 MB未満）のカラムは、読み書きの空間的局所性を高めるために、単一のファイルに連続して保存されます。パートの行はさらに8192のレコードのグループに論理的に分割され、これは「グラニュール」と呼ばれます。グラニュールは、ClickHouseにおけるスキャンおよびインデックスルックアップオペレーターによって処理される最小の分割不可能なデータユニットを表します。ただし、ディスク上のデータの読み取りおよび書き込みは、グラニュールレベルではなく、カラム内の隣接するグラニュールを結合するブロックの粒度で行われます。新しいブロックは設定可能なバイトサイズごとに形成されます（デフォルトは1 MB）、すなわち、ブロック内のグラニュールの数は可変で、カラムのデータ型および分布に依存します。ブロックはさらに、そのサイズとI/Oコストを削減するために圧縮されます。デフォルトでは、ClickHouseは一般的な圧縮アルゴリズムとしてLZ4 [\[75\]](#page-13-9)を使用しますが、ユーザーはGorilla [\[63\]](#page-13-10)やFPC [\[12\]](#page-12-8)のような特殊なコーデックを浮動小数点データ用に指定することもできます。圧縮アルゴリズムはチェーン化することもできます。例えば、最初に数値の論理的冗長性をデルタコーディング [\[23\]](#page-12-9) を使用して削減し、次に重みのある圧縮を実行し、最後にAESコーデックを使用してデータを暗号化することが可能です。ブロックは、ディスクからメモリにロードされる際にリアルタイムで解凍されます。圧縮にもかかわらず個々のグラニュールへの迅速なランダムアクセスを可能にするために、ClickHouseはまた、各カラムに対して、すべてのグラニュールIDをカラムファイル内の圧縮ブロックのオフセットおよび未圧縮ブロック内のグラニュールのオフセットに関連付けるマッピングを保存します。
+A part corresponds to a directory on disk, containing one file for each カラム. As an optimization, the カラムs of a small part (smaller than 10 MB by default) are stored consecutively in a single file to increase the spatial locality for reads and writes. The 行s of a part are further logically divided into groups of 8192 records, called granules. A granule represents the smallest indivisible data unit processed by the scan and インデックス lookup operators in ClickHouse. Reads and writes of on-disk data are, however, not performed at the granule level but at the granularity of blocks, which combine multiple neighboring granules within a column. New blocks are formed based on a configurable byte size per block (by default 1 MB), i.e., the number of granules in a block is variable and depends on the カラム's data type and distribution. Blocks are furthermore compressed to reduce their size and I/O costs. By default, ClickHouse employs LZ4 [\[75\]](#page-13-9) as a general-purpose compression algorithm, but users can also specify specialized codecs like Gorilla [\[63\]](#page-13-10) or FPC [\[12\]](#page-12-8) for floating-point data. Compression algorithms can also be chained. For example, it is possible to first reduce logical redundancy in numeric values using delta coding [\[23\]](#page-12-9), then perform heavy-weight compression, and finally encrypt the data using an AES codec. Blocks are decompressed on-the-fly when they are loaded from disk into memory. To enable fast random access to individual granules despite compression, ClickHouse additionally stores for each カラム a mapping that associates every granule id with the offset of its containing compressed block in the カラム file and the offset of the granule in the uncompressed block.
 
-カラムはさらに辞書エンコード [\[2,](#page-12-10) [77,](#page-13-11) [81\]](#page-13-12) されるか、Nullableを使用して作成可能です：LowCardinality(T) は、元のカラム値を整数IDに置き換え、ユニークな値が少ないデータのストレージオーバーヘッドを大幅に削減します。Nullable(T) は、カラムTに対して、カラム値がNULLかどうかを表す内部ビットマップを追加します。
+カラムs can further be dictionary-encoded [\[2,](#page-12-10) [77,](#page-13-11) [81\]](#page-13-12) or made nullable using two special wrapper data types: LowCardinality(T) replaces the original カラム values by integer ids and thus significantly reduces the storage overhead for data with few unique values. Nullable(T) adds an internal bitmap to カラム T, representing whether カラム values are NULL or not.
 
-最後に、テーブルは範囲、ハッシュ、またはラウンドロビンで、任意の分割式を使用してパーティション分割できます。パーティションプルーニングを可能にするために、ClickHouseはさらに各パーティションのパーティショニング式の最小値と最大値を保存します。ユーザーは、ハイパーログログ [\[30\]](#page-12-11) やt-digest [\[28\]](#page-12-12)統計などのより高度なカラム統計（例えば、基数推定を提供するもの）をオプションで作成できます。
+Finally, tables can be range, hash, or round-robin partitioned using arbitrary partitioning expressions. To enable partition pruning, ClickHouse additionally stores the partitioning expression's minimum and maximum values for each partition. Users can optionally create more advanced カラム statistics (e.g., HyperLogLog [\[30\]](#page-12-11) or t-digest [\[28\]](#page-12-12) statistics) that also provide cardinality estimates.
 ### <Anchor id="page-3-0"/>3.2 Data Pruning {#3-2-data-pruning}
 
-ほとんどの使用ケースでは、ペタバイトのデータをスキャンして単一のクエリに回答するのは遅すぎて高価です。ClickHouseは、検索中に大多数の行をスキップできる3つのデータプルーニング技術をサポートしています。
+In most use cases, scanning petabytes of data just to answer a single クエリ is too slow and expensive. ClickHouse supports three data pruning techniques that allow skipping the majority of 行s during searches and therefore speed up クエリs significantly.
 
-最初に、ユーザーはテーブルのために**主キーインデックス**を定義できます。主キー列は、各パート内の行のソート順序を決定し、すなわちインデックスはローカルにクラスタリングされます。ClickHouseはさらに、各グラニュールの最初の行の主キー列値からグラニュールのIDへのマッピングを各パートのために保存します。すなわち、インデックスはスパースです [\[31\]](#page-12-13)。結果として得られるデータ構造は通常、すべてをメモリ内に保持できる程度に小さく、例えば8.1百万の行をインデックス化するのにわずか1000エントリが必要です。主キーの主な目的は、頻繁にフィルタされる列に対する等価性と範囲の述語を、逐次スキャンの代わりにバイナリ検索を使用して評価することです（[Section 4.4](#page-7-0)参照）。また、ローカルソートは、パートマージやクエリ最適化に利用可能であり、例えば、ソートベースの集約や、主キー列がソート列の接頭辞を形成する場合には、物理実行計画からソートオペレーターを取り除くことができます。
+First, users can define a **主キー インデックス** for a table. The 主キー columns determine the sort order of the 行s within each part, i.e. the インデックス is locally clustered. ClickHouse additionally stores, for every part, a mapping from the 主キー column values of each granule's first 行 to the granule's id, i.e. the インデックス is sparse [\[31\]](#page-12-13). The resulting data structure is typically small enough to remain fully in-memory, e.g., only 1000 entries are required to index 8.1 million 行s. The main purpose of a 主キー is to evaluate equality and range predicates for frequently filtered columns using binary search instead of sequential scans (Section [4.4)](#page-7-0). The local sorting can furthermore be exploited for part merges and クエリ optimization, e.g. sort-based aggregation or to remove sorting operators from the physical execution plan when the 主キー columns form a prefix of the sorting columns.
 
-[Figure 4](#page-3-1)は、ページインプレッション統計のテーブルに対する列EventTimeの主キーインデックスを示しています。クエリ中の範囲述語に一致するグラニュールは、EventTimeを逐次スキャンする代わりに主キーインデックスでバイナリ検索することによって見つけることができます。
+[Figure 4](#page-3-1) shows a 主キー インデックス on column EventTime for a table with page impression statistics. Granules that match the range predicate in the クエリ can be found by binary searching the 主キー インデックス instead of scanning EventTime sequentially.
 
-<Anchor id="page-3-1"/><img src={image_04}/>
+<Anchor id="page-3-1"/><Image img={image_04} size="lg" alt="Image 04"/>
 
-Figure 4: 主キーインデックスによるフィルタ評価。
+Figure 4: Evaluating filters with a 主キー インデックス.
 
-次に、ユーザーは**テーブルプロジェクション**を作成できます。すなわち、異なる主キーによってソートされている同じ行を含むテーブルの別バージョンです [\[71\]](#page-13-13)。プロジェクションは、主テーブルの主キーとは異なる列でフィルタリングされるクエリを高速化し、挿入、マージ、スペース消費のオーバーヘッドを増加させます。デフォルトでは、プロジェクションは主テーブルへの新しい挿入からのみ遅延的に生成され、ユーザーがプロジェクションを完全に具現化しない限り既存のパーツからは生成されません。クエリオプティマイザーは、推定I/Oコストに基づいて主テーブルまたはプロジェクションのいずれから読むかを選択します。あるパートに対するプロジェクションが存在しない場合、クエリ実行は対応する主テーブルパートにフォールバックします。
+Second, users can create **table projections**, i.e., alternative versions of a table that contain the same 行s sorted by a different 主キー [\[71\]](#page-13-13). Projections allow to speed up クエリs that filter on columns different than the main table's 主キー at the cost of an increased overhead for inserts, merges, and space consumption. By default, projections are populated lazily only from parts newly inserted into the main table but not from existing parts unless the user materializes the projection in full. The クエリ optimizer chooses between reading from the main table or a projection based on estimated I/O costs. If no projection exists for a part, クエリ execution falls back to the corresponding main table part.
 
-第三に、**スキップインデックス**は、プロジェクションに対する軽量の代替手段を提供します。スキップインデックスのアイデアは、無関係な行のスキャンを避けることができる小さなメタデータを複数の連続するグラニュールのレベルで保存することです。スキップインデックスは、任意のインデックス式のために作成でき、設定可能なグラニュラリティ、すなわちスキップインデックスブロック内のグラニュール数を使用できます。利用可能なスキップインデックスタイプには、1. min-maxインデックス [\[51\]](#page-13-14) があり、これは各インデックスブロックのインデックス式の最小値と最大値を保存します。このインデックスタイプは、絶対的な範囲が小さなローカルクラスタデータに対してよく機能します。2. 固定数のユニークインデックスブロック値を保存するセットインデックス。これらのインデックスは、ローカル基数が小さい、すなわち「集中的にまとめられた」値を持つデータで最も良く使用されます。3. トークンやn-グラム値に対して設定可能な偽陽性率で構築されたブルームフィルターインデックス [\[9\]](#page-12-14)。これらのインデックスはテキスト検索をサポートしますが [\[73\]](#page-13-15)、min-maxおよびセットインデックスとは異なり、範囲または負の述語には使用できません。
+Third, **skipping インデックス** provide a lightweight alternative to projections. The idea of skipping インデックス is to store small amounts of metadata at the level of multiple consecutive granules which allows to avoid scanning irrelevant 行s. Skipping インデックス can be created for arbitrary index expressions and using a configurable granularity, i.e. number of granules in a skipping インデックス block. Available skipping インデックス types include: 1. Min-max インデックス [\[51\]](#page-13-14), storing the minimum and maximum values of the インデックス expression for each インデックス block. This インデックス type works well for locally clustered data with small absolute ranges, e.g. loosely sorted data. 2. Set インデックス, storing a configurable number of unique インデックス block values. These インデックス are best used with data with a small local cardinality, i.e. "clumped together" values. 3. Bloom filter インデックス [\[9\]](#page-12-14) build for row, token, or n-gram values with a configurable false positive rate. These インデックス support text search [\[73\]](#page-13-15), but unlike min-max and set インデックス, they cannot be used for range or negative predicates.
 ### <Anchor id="page-4-3"/>3.3 Merge-time Data Transformation {#3-3-merge-time-data-transformation}
 
-ビジネスインテリジェンスや可観測性の使用ケースは、高率またはバーストで生成されるデータを処理する必要があります。そして、最近生成されたデータは通常、歴史的データよりも意味のあるリアルタイムの洞察に関連性が高いです。このような使用ケースでは、データベースは高いデータ取り込みレートを維持しながら、集約やデータの老朽化といった技術を通じて歴史的データのボリュームを継続的に削減する必要があります。ClickHouseは、さまざまなマージ戦略を使用して、既存のデータを継続的にインクリメンタル変換することを可能にします。マージ時のデータ変換はINSERT文のパフォーマンスを妨げることはありませんが、テーブルが常に不要な（e.g. 古いまたは集約されていない）値を含まないことを保証することはできません。必要に応じて、すべてのマージ時変換はSELECT文でFINALキーワードを指定することで、クエリ時に適用できます。
+Business intelligence and observability use cases often need to handle data generated at constantly high rates or in bursts. Also, recently generated data is typically more relevant for meaningful real-time insights than historical data. Such use cases require databases to sustain high data ingestion rates while continuously reducing the volume of historical data through techniques like aggregation or data aging. ClickHouse allows a continuous incremental transformation of existing data using different merge strategies. Merge-time data transformation does not compromise the performance of INSERT statements, but it cannot guarantee that tables never contain unwanted (e.g. outdated or non-aggregated) values. If necessary, all merge-time transformations can be applied at クエリ time by specifying the keyword FINAL in SELECT statements.
 
-**置き換えマージ**は、含まれるパートの作成タイムスタンプに基づいて、タプルの最も最近挿入されたバージョンのみを保持し、古いバージョンは削除されます。タプルは、同じ主キー列値を持っている場合に等価と見なされます。どのタプルが保持されるかを明示的に制御するために、比較のための特別なバージョンカラムを指定することも可能です。置き換えマージは、通常、頻繁に更新される使用ケースでのマージ時アップデートメカニズムとして、あるいは挿入時のデータ重複排除の代替手段として使用されます（[Section 3.5](#page-5-2)参照）。
+**Replacing merges** retain only the most recently inserted version of a tuple based on the creation timestamp of its containing part, older versions are deleted. Tuples are considered equivalent if they have the same 主キー column values. For explicit control over which tuple is preserved, it is also possible to specify a special version column for comparison. Replacing merges are commonly used as a merge-time update mechanism (normally in use cases where updates are frequent), or as an alternative to insert-time data deduplication (Section [3.5)](#page-5-2).
 
-**集約マージ**は、同じ主キー列値を持つ行を集約された行にまとめます。非主キー列は、要約値を保持する部分的集約状態である必要があります。平均（avg()）のための合計とカウントなど、2つの部分的集約状態を新しい部分的集約状態に結合します。集約マージは、通常のテーブルではなく、マテリアライズドビューで使用されます。マテリアライズドビューは、ソーステーブルに対する変換クエリに基づいてポピュレートされます。他のデータベースとは異なり、ClickHouseはマテリアライズドビューをソーステーブルの全内容で周期的に更新しません。代わりに、マテリアライズドビューは、新しいパートがソーステーブルに挿入されたときに、変換クエリの結果でインクリメンタルに更新されます。
+**Aggregating merges** collapse 行s with equal 主キー column values into an aggregated 行. Non-primary key columns must be of a partial aggregation state that holds the summary values. Two partial aggregation states, e.g. a sum and a count for avg(), are combined into a new partial aggregation state. Aggregating merges are typically used in materialized views instead of normal tables. Materialized views are populated based on a transformation クエリ against a source table. Unlike other databases, ClickHouse does not refresh materialized views periodically with the entire content of the source table. Materialized views are rather updated incrementally with the result of the transformation クエリ when a new part is inserted into the source table.
 
-[Figure 5](#page-4-1)は、ページインプレッション統計のテーブルに対して定義されたマテリアライズドビューを示します。ソーステーブルに挿入された新しいパートについて、変換クエリは、地域ごとに最大及び平均レイテンシを計算し、その結果をマテリアライズドビューに挿入します。集約関数avg()およびmax()は、実際の結果の代わりに部分的集約状態を返します。マテリアライズドビューのために定義された集約マージは異なるパーツ内の部分的集約状態を継続的に結合します。最終的な結果を得るために、ユーザーはavg()およびmax()を使用してマテリアライズドビュー内の部分的集約状態を統合します。
+[Figure 5](#page-4-1) shows a materialized view defined on a table with page impression statistics. For new parts inserted into the source table, the transformation クエリ computes the maximum and average latencies, grouped by region, and inserts the result into a materialized view. Aggregation functions avg() and max() with extension -State return partial aggregation states instead of actual results. An aggregating merge defined for the materialized view continuously combines partial aggregation states in different parts. To obtain the final result, users consolidate the partial aggregation states in the materialized view using avg() and max() with -Merge extension.
 
-<Anchor id="page-4-1"/><img src={image_05}/>
+<Anchor id="page-4-1"/><Image img={image_05} size="lg" alt="Image 05"/>
 
-Figure 5: マテリアライズドビュー内の集約マージ。
+Figure 5: Aggregating merges in materialized views.
 
-**有効期限（TTL）マージ**は、歴史的データの老朽化を提供します。削除マージや集約マージとは異なり、TTLマージは一度に1つのパートのみを処理します。TTLマージは、トリガーとアクションを持つルールの観点で定義されます。トリガーは、各行のためのタイムスタンプを計算する式であり、TTLマージが実行される時間と比較されます。これにより、ユーザーは行の粒度でアクションを制御できますが、条件を満たす行がすべて満たしているかどうかを確認し、パート全体にアクションを実行することが十分であると認識しました。可能なアクションには、1. パートを他のボリュームに移動する（例：安価で遅いストレージ）、2. パートを再圧縮する（例：より重いコーデックで）、3. パートを削除する、4. ロールアップ（すなわち、グルーピングキーおよび集約関数を使用して行を集約する）が含まれます。
+**TTL (有効期限 (TTL)) merges** provide aging for historical data. Unlike deleting and aggregating merges, TTL merges process only one part at a time. TTL merges are defined in terms of rules with triggers and actions. A trigger is an expression computing a timestamp for every row, which is compared against the time at which the TTL merge runs. While this allows users to control actions at row granularity, we found it sufficient to check whether all rows satisfy a given condition and run the action on the entire part. Possible actions include 1. move the part to another volume (e.g. cheaper and slower storage), 2. re-compress the part (e.g. with a more heavy-weight codec), 3. delete the part, and 4. roll-up, i.e. aggregate the 行s using a grouping key and aggregate functions.
 
-例えば、[Listing 1](#page-4-2)に見られるロギングテーブル定義を考えましょう。ClickHouseは、タイムスタンプ列の値が1週間以上古いパーツを遅いが安価なS3オブジェクトストレージに移動します。
+As an example, consider the logging table definition in [Listing 1.](#page-4-2) ClickHouse will move parts with timestamp column values older than one week to slow but inexpensive S3 object storage.
 <Anchor id="page-4-2"/>
 ```
 1 CREATE TABLE tab ( ts DateTime , msg String )
 2 ENGINE MergeTree PRIMARY KEY ts
 3 TTL ( ts + INTERVAL 1 WEEK ) TO VOLUME 's3 '
 ```
-Listing 1: 1週間後にパートをオブジェクトストレージに移動。
+Listing 1: Move part to object storage after one week.
 ### <Anchor id="page-4-0"/>3.4 Updates and Deletes {#3-4-updates-and-deletes}
 
-MergeTree*テーブルエンジンの設計は、追加専用のワークロードを優先していますが、一部の使用ケースでは時折既存データを変更する必要があります。更新または削除のデータには、どちらも並行挿入をブロックせずに行う二つのアプローチがあります。
+The design of the MergeTree* table engines favors append-only workloads, yet some use cases require to modify existing data occasionally, e.g. for regulatory compliance. Two approaches for updating or deleting data exist, neither of which block parallel inserts.
 
-**ミューテーション**は、テーブル内のすべてのパーツをインプレースで再書き込みます。テーブル（削除）やカラム（更新）が一時的にサイズを倍増するのを防ぐため、この操作は非原子的です。すなわち、並行実行のSELECT文は、変異したパーツと未変異のパーツを読むことができます。ミューテーションは、操作の終了時にデータが物理的に変更されることを保証します。ただし、削除ミューテーションは、すべてのカラムをすべてのパーツに書き直すため、依然として高コストです。
+**Mutations** rewrite all parts of a table in-place. To prevent a table (delete) or column (update) from doubling temporarily in size, this operation is non-atomic, i.e. parallel SELECT statements may read mutated and non-mutated parts. Mutations guarantee that the data is physically changed at the end of the operation. Delete mutations are still expensive as they rewrite all columns in all parts.
 
-代替手段として、**軽量削除**は、行が削除されているかどうかを示す内部ビットマップカラムのみを更新します。ClickHouseは、削除された行を結果から除外するために、ビットマップカラムに対する追加フィルタを使用してSELECTクエリを修正します。削除された行は、将来の未指定の時間に通常のマージによって物理的に削除されます。カラム数に応じて、軽量削除はミューテーションよりもはるかに高速で行うことができ、SELECTは遅くなります。
+As an alternative, **軽量削除** only update an internal bitmap column, indicating if a row is deleted or not. ClickHouse amends SELECT クエリs with an additional filter on the bitmap column to exclude deleted 行s from the result. Deleted 行s are physically removed only by regular merges at an unspecified time in the future. Depending on the column count, 軽量削除 can be much faster than mutations, at the cost of slower SELECTs.
 
-同じテーブルに対する更新および削除操作は、論理的な矛盾を避けるために、まれで直列化されることが期待されます。
+Update and delete operations performed on the same table are expected to be rare and serialized to avoid logical conflicts.
 ### <Anchor id="page-5-2"/>3.5 Idempotent Inserts {#3-5-idempotent-inserts}
 
-実際に頻繁に発生する問題の一つは、クライアントがデータをテーブルに挿入するためにサーバーに送信した後の接続タイムアウトをどのように処理するかです。この状況では、クライアントはデータが正常に挿入されたかどうかを区別するのが難しくなります。この問題は、クライアントからサーバーへのデータの再送信によって解決され、主キーまたはユニーク制約によって重複した挿入を拒否することに依存しています。データベースは、バイナリツリー [\[39,](#page-12-15) [68\]](#page-13-16)、基数木 [\[45\]](#page-13-17)、またはハッシュテーブル [\[29\]](#page-12-16) に基づいたインデックス構造を使用して、必要なポイントルックアップを迅速に実行します。これらのデータ構造は各タプルをインデックス化するため、そのスペースおよび更新オーバーヘッドは大規模なデータセットおよび高取り込みレートでは過剰になります。
+A problem that frequently occurs in practice is how clients should handle connection timeouts after sending data to the server for insertion into a table. In this situation, it is difficult for clients to distinguish between whether the data was successfully inserted or not. The problem is traditionally solved by re-sending the data from the client to the server and relying on 主キー or unique constraints to reject duplicate inserts. Databases perform the required point lookups quickly using インデックス structures based on binary trees [\[39,](#page-12-15) [68\]](#page-13-16), radix trees [\[45\]](#page-13-17), or hash tables [\[29\]](#page-12-16). Since these data structures index every tuple, their space and update overhead becomes prohibitive for large data sets and high ingest rates.
 
-ClickHouseは、各挿入が最終的にパーツを作成するという事実に基づいた軽量の代替手段を提供します。具体的には、サーバーは最後に挿入されたN個のパーツのハッシュを保持し（例としてN=100）、既知のハッシュを持つパーツの再挿入を無視します。非レプリケートテーブルとレプリケートテーブルのハッシュは、それぞれKeeperにローカルに保存されます。その結果、挿入は冪等になります。すなわち、クライアントはタイムアウト後に同じ行のバッチを再送信するだけで、サーバーが重複排除を処理することが期待できます。重複排除プロセスをより厳密に制御するために、クライアントはオプションでパートハッシュとして機能する挿入トークンを提供することができます。ハッシュベースの重複排除は、新しい行をハッシュ化する際のオーバーヘッドを伴いますが、ハッシュを保存して比較するコストは無視できるものです。
-```
-```yaml
-title: 'データレプリケーション'
-sidebar_label: '3.6 データレプリケーション'
-keywords: 'ClickHouse, レプリケーション, データベース, 高可用性, 冗長性'
-description: 'ClickHouseにおけるデータレプリケーションのメカニズム、最適化の手法、ACID準拠などを解説します。'
+ClickHouse provides a more light-weight alternative based on the fact that each insert eventually creates a part. More specifically, the server maintains hashes of the N last inserted parts (e.g. N=100) and ignores re-inserts of parts with a known hash. Hashes for non-replicated and replicated tables are stored locally, respectively, in Keeper. As a result, inserts become idempotent, i.e. clients can simply re-send the same batch of 行s after a timeout and assume that the server takes care of deduplication. For more control over the deduplication process, clients can optionally provide an insert token that acts as a part hash. While hash-based deduplication incurs an overhead associated with hashing the new 行s, the cost of storing and comparing hashes is negligible.
 ```
 
 ### <Anchor id="page-5-0"/>3.6 データレプリケーション {#3-6-data-replication}
 
-レプリケーションは高可用性（ノードの障害に対する耐障害性）に必要不可欠ですが、負荷分散やゼロダウンタイムアップグレードのためにも使用されます [\[14\]](#page-12-17)。ClickHouseでは、レプリケーションはテーブルの状態という概念に基づいており、この状態はテーブルパーツのセット（セクション [3.1)](#page-2-2) と、カラム名やタイプなどのテーブルメタデータで構成されています。ノードは、以下の3つの操作を使用してテーブルの状態を進めます：1. 挿入は状態に新しいパーツを追加、2. マージは新しいパーツを追加し、状態から既存のパーツを削除、3. ミューテーションやDDLステートメントはパーツの追加、削除、およびテーブルメタデータの変更を行います。操作は単一ノード上でローカルに実行され、その状態遷移はグローバルなレプリケーションログに記録されます。
+レプリケーションは高可用性（ノード障害に対する耐性）の前提条件ですが、負荷分散やゼロダウンタイムアップグレードにも使用されます [\[14\]](#page-12-17)。ClickHouseでは、レプリケーションは、カラム名やタイプなどのテーブルメタデータと、一連のテーブルパーツ（セクション [3.1)](#page-2-2) で構成されるテーブルステートの概念に基づいています。ノードは、次の3つの操作を使用してテーブルのステートを進めます：1. INSERTは新しいパーツをステートに追加します、2. マージは新しいパーツを追加し、既存のパーツをステートから削除します、3. 変更およびDDLステートメントはパーツを追加および/または削除し、テーブルメタデータを変更しますが、具体的な操作に応じて異なります。操作はローカルで単一のノードで実行され、グローバルレプリケーションログにおけるステート遷移のシーケンスとして記録されます。
 
-レプリケーションログは通常3つのClickHouse Keeperプロセスのアンサンブルによって維持され、Raft合意アルゴリズム [\[59\]](#page-13-4) を利用して、ClickHouseノードのクラスターに対する分散型で耐障害性のある調整層を提供します。すべてのクラスターノードは最初にレプリケーションログの同じ位置を指します。ノードはローカルな挿入、マージ、ミューテーション、DDLステートメントを実行する間、レプリケーションログは他のすべてのノードで非同期的に再生されます。その結果、レプリケートされたテーブルは最終的には一貫性があります。つまり、ノードは最新の状態に収束している間、一時的に古いテーブルの状態を読み取ることができます。前述のほとんどの操作は、ノードの過半数（例：大多数のノードまたはすべてのノード）が新しい状態を採用するまで同期的に実行されることもあります。
+レプリケーションログは、通常、3つのClickHouse Keeperプロセスからなるアンサンブルによって維持され、Raft合意アルゴリズム [\[59\]](#page-13-4) を使用して、ClickHouseノードのクラスタに対する分散型でフォールトトレラントなコーディネーションレイヤーを提供します。すべてのクラスタノードは、初めにレプリケーションログの同じ位置を指します。ノードがローカルなINSERT、マージ、ミューテーション、DDLステートメントを実行している間、レプリケーションログはすべての他のノードで非同期に再生されます。その結果、レプリケートされたテーブルは最終的には一貫性があり、つまり、ノードは最新のステートに収束する際に一時的に古いテーブルステートを読み取ることがあります。前述のほとんどの操作は、ノードのクォーラム（例：多数のノードまたはすべてのノード）が新しいステートを採用するまで、代わりに同期して実行できます。
 
-例として、[図6](#page-5-3)は3つのClickHouseノードのクラスター内に存在する初期状態の空のレプリケートテーブルを示しています。ノード1は最初に2つのINSERTステートメントを受け取り、これをレプリケーションログ（1 2）に記録します。次に、ノード2は最初のログエントリーを取得して再生し（3）、ノード1から新しいパーツをダウンロードします（4）。ノード3は両方のログエントリーを再生します（3 4 5 6）。最後に、ノード3は両方のパーツを新しいパーツにマージし、入力パーツを削除し、レプリケーションログにマージエントリーを記録します（7）。
+例として、[図 6](#page-5-3) は、3つのClickHouseノードのクラスタ内で最初は空のレプリケーテッドテーブルを示しています。ノード1はまず2つのINSERTステートメントを受け取り、それらをレプリケーションログ（1 2）に記録します。次に、ノード2は最初のログエントリを再生するために、（3）それを取得し、ノード1から新しいパーツをダウンロードします（4）、一方でノード3は両方のログエントリ（3 4 5 6）を再生します。最後に、ノード3は両方のパーツを新しいパーツにマージし、入力パーツを削除し、レプリケーションログにマージエントリ（7）を記録します。
 
-<Anchor id="page-5-3"/><img src={image_06}/>
+<Anchor id="page-5-3"/><Image img={image_06} size="lg" alt="Image 06"/>
 
-図6: 三つのノードのクラスターにおけるレプリケーション。
+図 6: 三ノードクラスタにおけるレプリケーション。
 
-同期化をスピードアップするための3つの最適化があります。まず、クラスターに追加された新しいノードは、レプリケーションログを最初から再生するのではなく、最後のレプリケーションログエントリーを書いたノードの状態を単にコピーします。次に、マージはローカルで繰り返すことによって再生されるか、別のノードから結果パーツを取得することによって行われます。正確な動作は構成可能で、CPUの消費とネットワークI/Oのバランスを取ることができます。例えば、クロスデータセンターレプリケーションは通常、運用コストを最小限に抑えるためにローカルマージを好みます。3つ目に、ノードは互いに独立したレプリケーションログエントリーを並行して再生します。これにより、例えば、同じテーブルに連続して挿入された新しいパーツの取得や、異なるテーブルに対する操作が含まれます。
+3つの同期化を迅速化するための最適化が存在します：まず、クラスタに追加された新しいノードは、ゼロからレプリケーションログを再生するのではなく、最後のレプリケーションログエントリを書いたノードのステートを単にコピーします。次に、マージはローカルで繰り返すか、別のノードから結果パーツを取得することによって再生されます。正確な動作は設定可能であり、CPU消費とネットワークI/Oのバランスを取ることができます。たとえば、データセンター間のレプリケーションでは、運用コストを最小限に抑えるために通常ローカルのマージを優先します。第三に、ノードは互いに独立したレプリケーションログエントリを並行して再生します。これには、同じテーブルに連続して挿入された新しいパーツの取得や、異なるテーブルへの操作が含まれます。
 ### <Anchor id="page-5-1"/>3.7 ACID準拠 {#3-7-acid-compliance}
 
-同時読み取りと書き込み操作のパフォーマンスを最大化するために、ClickHouseはロックをできるだけ避けます。クエリは、クエリの開始時に作成されたすべての関与するテーブルのすべてのパーツのスナップショットに対して実行されます。これにより、並行 INSERT やマージによって挿入された新しいパーツ（セクション [3.1)](#page-2-2) が実行に参加しないことが保証されます。パーツが同時に変更または削除されるのを防ぐために（セクション [3.4)](#page-4-0)、処理されたパーツの参照カウントはクエリの実行中に増加します。形式的には、これはバージョン管理されたパーツに基づくMVCCバリアントによって実現されたスナップショット隔離に対応します [\[6\]](#page-12-18)。その結果、ステートメントは一般にACID準拠ではなく、スナップショットが取得された時点で行われる同時書き込みが単一のパーツにのみ影響する稀なケースを除きます。
+同時実行の読み取りおよび書き込み操作のパフォーマンスを最大化するために、ClickHouseはできるだけロックを避けます。クエリは、クエリの開始時に作成されたすべての関与テーブルのパーツのスナップショットに対して実行されます。これにより、並行するINSERTまたはマージによって挿入された新しいパーツ（セクション [3.1)](#page-2-2）が実行に参加しないことが保証されます。同時にパーツが修正または削除されるのを防ぐために（セクション [3.4)](#page-4-0)、処理されたパーツの参照カウントはクエリの実行中に増加します。形式的には、これはバージョン付きパーツに基づくMVCCのバリアントによって実現されるスナップショット隔離に対応します [\[6\]](#page-12-18)。その結果、ステートメントは通常ACID準拠ではなく、スナップショットが取得された時点で同時書き込みが単一のパーツにのみ影響する稀なケースを除きます。
 
-実際には、ClickHouseの書き込みが多い意思決定のユースケースのほとんどは、停電の際に新しいデータを失うリスクを小さく許容します。データベースは、デフォルトで新しく挿入されたパーツをディスクにコミット（fsync）することを強制せず、カーネルに書き込みをバッチ処理させ、原子性を犠牲にすることによってこれを活用します。
-## <Anchor id="page-6-0"/>4 クエリ処理層 {#4-query-processing-layer}
+実際には、ClickHouseの書き込みの多い意思決定を行うユースケースのほとんどは、停電の場合に新しいデータが失われる小さなリスクを許容します。データベースはこれを利用して、新しく挿入されたパーツのコミット（fsync）をデフォルトでディスクに強制せず、カーネルが原子性を犠牲にして書き込みをバッチ処理できるようにします。
+## <Anchor id="page-6-0"/>4 クエリ処理レイヤー {#4-query-processing-layer}
 
-<Anchor id="page-6-1"/><img src={image_07}/>
 
-図7: SIMDユニット、コア、およびノード間での並列化。
+<Anchor id="page-6-1"/><Image img={image_07} size="lg" alt="Image 07"/>
 
-[図7](#page-6-1)によって示されているように、ClickHouseはデータ要素、データチャンク、およびテーブルシャードのレベルでクエリを並列化します。複数のデータ要素は、SIMD命令を使用してオペレーター内で同時に処理できます。単一ノード上では、クエリエンジンが複数のスレッドでこれらのオペレーターを同時に実行します。ClickHouseは、MonetDB/X100 [\[11\]](#page-12-0) と同じベクトル化モデルを使用しており、即ちオペレーターは単一の行ではなく複数の行（データチャンク）を生成、渡し、消費して、仮想関数呼び出しのオーバーヘッドを最小限に抑えます。ソーステーブルが分離されたテーブルシャードに分割されている場合、複数のノードがシャードを同時にスキャンできます。その結果、すべてのハードウェアリソースが完全に活用され、ノードを追加することによって水平に、コアを追加することによって垂直にクエリ処理をスケールできます。
+図 7: SIMDユニット、コア、およびノード間の並列化。
 
-このセクションの残りでは、まずデータ要素、データチャンク、およびシャードの粒度での並列処理をより詳細に説明します。次に、クエリパフォーマンスを最大化するための主要な最適化をいくつか紹介します。最後に、ClickHouseが同時クエリの存在下で共有システムリソースをどのように管理するかについて説明します。
+[図 7](#page-6-1) に示すように、ClickHouseはデータ要素、データチャンク、テーブルシャードのレベルでクエリを並列化します。複数のデータ要素は、SIMD命令を使用してオペレーター内で同時に処理できます。単一のノード上で、クエリエンジンは複数のスレッドでオペレーターを同時に実行します。ClickHouseはMonetDB/X100 [\[11\]](#page-12-0) と同じベクトル化モデルを使用し、オペレーターは単一の行ではなく、複数の行（データチャンク）を生成、渡し、消費して、仮想関数呼び出しのオーバーヘッドを最小限に抑えます。もしソーステーブルが相互に排他的なテーブルシャードに分割されている場合、複数のノードが同時にシャードをスキャンできます。その結果、すべてのハードウェアリソースが十分に活用され、クエリ処理はノードを追加することによって水平方向に、コアを追加することで垂直にスケールできます。
+
+このセクションの残りでは、データ要素、データチャンク、およびシャードの粒度での並列処理を詳細に説明します。次に、クエリパフォーマンスを最大化するためのいくつかの重要な最適化を提示します。最後に、ClickHouseが同時クエリの存在下で共有システムリソースをどのように管理するかについて説明します。
 ### 4.1 SIMD並列化 {#4-1-simd-parallelization}
 
-オペレーター間で複数行を渡すことは、ベクトル化の機会を生み出します。ベクトル化は、手動で書かれたインストリンシック [\[64,](#page-13-18) [80\]](#page-13-19) またはコンパイラの自動ベクトル化 [\[25\]](#page-12-19) に基づいています。ベクトル化の恩恵を受けるコードは異なるコンピュートカーネルにコンパイルされます。例えば、クエリオペレーターの内部ホットループは、非ベクトル化カーネル、自動ベクトル化AVX2カーネル、手動でベクトル化されたAVX-512カーネルに基づいて実装することができます。最も速いカーネルは、`cpuid` 命令に基づいてランタイムで選ばれます。このアプローチにより、ClickHouseは15年前の古いシステムでも動作可能（その最低要件はSSE 4.2）でありながら、最近のハードウェア上での著しい速度向上を提供します。
+オペレーター間で複数の行を渡すことは、ベクトル化の機会を生み出します。ベクトル化は手動で記述されたインライン関数 [\[64,](#page-13-18) [80\]](#page-13-19) またはコンパイラーの自動ベクトル化 [\[25\]](#page-12-19) に基づきます。ベクトル化の恩恵を受けるコードは、異なる計算カーネルにコンパイルされます。たとえば、クエリオペレーターの内部ホットループは、非ベクトル化カーネル、自動ベクトル化されたAVX2カーネル、および手動ベクトル化されたAVX-512カーネルの観点から実装できます。最も速いカーネルは、cpuid命令に基づいて[ランタイム](https://clickhou.se/cpu-dispatch)で選択されます。このアプローチにより、ClickHouseは古いシステム（最低限SSE 4.2を必要とする）で動作できる一方で、最近のハードウェアで著しいスピードアップを提供します。
 ### 4.2 マルチコア並列化 {#4-2-multi-core-parallelization}
 
-<Anchor id="page-7-1"/><img src={image_08}/>
+<Anchor id="page-7-1"/><Image img={image_08} size="lg" alt="Image 08"/>
 
-図8: 三つのレーンを持つ物理オペレーター計画。
+図 8: 三つのレーンを持つ物理オペレーター計画。
 
-ClickHouseは、SQLクエリを物理計画オペレーターの指向グラフに変換する従来のアプローチ [\[31\]](#page-12-13) に従っています。オペレーター計画の入力は、ネイティブまたはサポートされているいずれかの外部形式からデータを読み取る特別なソースオペレーターによって表されます（セクション [5)](#page-9-0) 参照）。同様に、特別なシンクオペレーターは結果を希望の出力形式に変換します。物理オペレーター計画は、クエリコンパイル時に、構成可能な最大ワーカースレッド数（デフォルトではコアの数）とソーステーブルのサイズに基づいて、独立した実行レーンに展開されます。レーンは、並列オペレーターによって処理されるデータを重複しない範囲に分解します。並列処理の機会を最大化するために、レーンはできるだけ遅くマージされます。
+ClickHouseは、SQLクエリを物理計画オペレーターの有向グラフに変換する従来のアプローチ [\[31\]](#page-12-13) に従います。オペレーター計画の入力は、ネイティブ形式またはサポートされているサードパーティ形式（セクション [5)](#page-9-0) を使用してデータを読み取る特別なソースオペレーターによって表されます。同様に、特別なシンクオペレーターは結果を希望の出力形式に変換します。物理オペレーター計画は、クエリコンパイル時に、設定可能な最大スレッド数（デフォルトではコア数）とソーステーブルのサイズに基づいて独立した実行レーンに展開されます。レーンは、並列オペレーターによって処理されるデータを重複しない範囲に分解します。並列処理の機会を最大化するために、レーンはできるだけ遅くマージされます。
 
-例として、[図8](#page-7-1)のノード1のボックスは、ページインプレッション統計テーブルに対する典型的なOLAPクエリのオペレーターグラフを示しています。最初のステージでは、ソーステーブルの3つの不連続範囲が同時にフィルタリングされます。リパーティション交換オペレーターは、処理スレッドの均一な利用を維持するために、結果チャンクを第一および第二のステージの間で動的にルーティングします。スキャンされた範囲が著しく異なる選好性を持っている場合、第一ステージ後にレーンが不均衡になる可能性があります。第二ステージでは、フィルターを生き残った行がRegionIDごとにグループ化されます。アグリゲートオペレーターは、RegionIDをグループカラムとして、各グループの合計とカウントを部分的な集計状態として維持します。ローカル集計結果は最終的にグローバル集計結果に向けてGroupStateMergeオペレーターによってマージされます。このオペレーターはパイプラインブレイカーでもあり、集計結果が完全に計算されるまで第三のステージは開始できません。第三のステージでは、結果グループはまずリパーティション交換オペレーターによって3つの等しい不連続パーティションに分割され、その後AvgLatencyでソートされます。ソートは3つのステップで実行されます。最初に、ChunkSortオペレーターが各パーティションの個々のチャンクをソートします。次に、StreamSortオペレーターがローカルなソート済み結果を維持し、2-wayマージソートを使用して新しいソート済みチャンクと組み合わせます。最後に、MergeSortオペレーターがローカル結果をk-wayソートを使用して組み合わせ、最終結果を得ます。
+例として、[図 8](#page-7-1) のノード1のボックスは、ページインプレッション統計を持つテーブルに対する典型的なOLAPクエリのオペレーターグラフを示しています。最初の段階では、ソーステーブルの3つの相互に排他的な範囲が同時にフィルタリングされます。再分配交換オペレーターは、最初と次の段階の間で結果チャンクを動的にルーティングして、処理スレッドを均等に利用します。スキャンされた範囲が大きく異なる選択性を持っている場合、最初の段階の後にレーンが不均衡になることがあります。第二段階では、フィルターを通過した行がRegionIDでグループ化されます。集約オペレーターはRegionIDをグループ化カラムとして持ち、avg()の部分集約状態として各グループの合計およびカウントを維持します。ローカル集約結果は最終的にGroupStateMergeオペレーターによってグローバル集約結果にマージされます。このオペレーターはパイプラインブレイカーでもあり、集約結果が完全に計算されるまで第三段階は開始できません。第三段階では、結果グループは最初に再分配交換オペレーターによって等しいサイズの3つの排他的なパーティションに分割され、その後AvgLatencyでソートされます。ソートは3つのステップで実行されます。最初に、ChunkSortオペレーターが各パーティションの個々のチャンクをソートします。次に、StreamSortオペレーターがローカルなソート済み結果を維持し、2ウェイマージソートを使用して新しく受信したソート済みチャンクと組み合わせます。最後に、MergeSortオペレーターがローカルな結果をk-wayソートを使用して結合し、最終的な結果を得ます。
 
-オペレーターは状態マシンであり、入力ポートと出力ポートを介して互いに接続されています。オペレーターの3つの可能な状態はneed-chunk、ready、doneです。need-chunkからreadyに移動するには、チャンクがオペレーターの入力ポートに配置されます。readyからdoneに移動するには、オペレーターが入力チャンクを処理し、出力チャンクを生成します。doneからneed-chunkに移動するには、出力チャンクがオペレーターの出力ポートから削除されます。2つの接続されたオペレーターにおける最初と第三の状態遷移は、結合ステップでのみ行われます。ソースオペレーター（シンクオペレーター）は、状態としてreadyとdone（need-chunkとdone）しか持ちません。
+オペレーターは状態マシンであり、入力ポートと出力ポートを介して互いに接続されています。オペレーターの3つの可能な状態はneed-chunk、ready、およびdoneです。need-chunkからreadyに移行するためには、チャンクがオペレーターの入力ポートに置かれます。readyからdoneに移行するためには、オペレーターが入力チャンクを処理し、出力チャンクを生成します。doneからneed-chunkに移行するためには、出力チャンクがオペレーターの出力ポートから削除されます。2つの接続されたオペレーターの最初と3番目の状態遷移は、結合ステップでのみ実行できます。ソースオペレーター（シンクオペレーター）は、readyおよびdoneの状態のみを持ち（need-chunkおよびdone）。
 
-ワーカースレッドは物理オペレーター計画を継続的に移動し、状態遷移を実行します。CPUキャッシュをホットに保つために、計画には同じスレッドが同じレーン内の連続したオペレーターを処理すべきであるというヒントが含まれています。並列処理は、ステージ内の重複しない入力間で水平方向に行われ（例：[図8](#page-7-1) ではアグリゲートオペレーターが同時に実行）、パイプラインブレイカーにより分離されないステージを通じて垂直方向にも行われます（例：[図8](#page-7-1) では同じレーン内のフィルターとアグリゲートオペレーターが同時に実行できます）。新しいクエリが開始されたときや、同時クエリが終了したときに過剰または不足のサブスクリプションを避けるために、並列度はクエリ開始時に指定されたワーカースレッドの最大数との間で変更可能です（セクション [4.5)](#page-9-1) 参照）。
+ワーカースレッドは、物理オペレーター計画を継続的に走査し、状態遷移を実行します。CPUキャッシュを温かく保つために、計画には同じスレッドが同じレーン内で連続するオペレーターを処理すべきとのヒントが含まれています。並列処理は、ステージ内の排他的入力を通じて水平方向に（例えば、[図 8](#page-7-1) では集約オペレーターが同時に実行されます）およびパイプラインブレイカーで分離されていないステージ間で垂直に発生します（例：同じレーン内のフィルターオペレーターと集約オペレーターは同時に実行できます）。新しいクエリが開始されるときや同時クエリが完了する際に、オーバーおよびアンダーサブスクリプションを避けるために、並列度はクエリスタート時に指定されたワーカーの最大スレッド数の間で中間的に変更できます（セクション [4.5)](#page-9-1)。
 
-オペレーターはさらに、ランタイムでクエリの実行に影響を与える2つの方法でも動作します。第一に、オペレーターは新しいオペレーターを動的に作成し接続することができます。これは、メモリ消費が構成可能な閾値を超えた場合にクエリをキャンセルするのではなく、外部の集計、ソート、または結合アルゴリズムに切り替えるために主に使われます。第二に、オペレーターはワーカースレッドに非同期キューに移動するようリクエストすることができます。これにより、リモートデータを待機する際にワーカースレッドをより効果的に活用できます。
+また、オペレーターはランタイムでクエリ実行に影響を与える2つの方法があります。第一に、オペレーターは動的に新しいオペレーターを作成して接続できます。これは、メモリ消費が設定可能な閾値を超えた場合にクエリをキャンセルする代わりに、外部集約、ソート、または結合アルゴリズムに切り替えるために主に使用されます。第二に、オペレーターはワーカースレッドに非同期キューに移動するよう要求できます。これは、リモートデータを待っているときにワーカースレッドをより効果的に利用できます。
 
-ClickHouseのクエリ実行エンジンとモーセルトリブン並列性 [\[44\]](#page-12-20) は、通常、レーンが異なるコア / NUMAソケットで実行され、ワーカースレッドが他のレーンからタスクを盗むことができるという点で類似しています。さらに、中央のスケジューリングコンポーネントは存在せず、ワーカースレッドは物理オペレーター計画を継続的に走査することによって個別にタスクを選択します。モーセルトリブン並列性とは異なり、ClickHouseは最大の並列度を計画に組み込み、デフォルトのモーセルサイズ（約100,000行）と比較してソーステーブルをパーティション分割するためにはるかに大きな範囲を使用します。この場合、一部ではスタールが発生する可能性があります（例：異なるレーンのフィルターオペレーターのランタイムが大きく異なる場合）が、リパーティションなどの交換オペレーターを自由に使用することで、少なくともそのような不均衡がステージ間で蓄積することを避けることができます。
+ClickHouseのクエリ実行エンジンとモーサルドリブン並列性 [\[44\]](#page-12-20) の類似点は、レーンが通常異なるコア/NUMAソケットで実行され、ワーカースレッドが他のレーンからタスクを盗むことができるという点です。また、中央スケジューリングコンポーネントは存在せず、ワーカースレッドはオペレーター計画を継続的に走査することによって各自のタスクを選択します。モーサルドリブン並列性とは異なり、ClickHouseは最大並列度を計画に組み込み、デフォルトのモーサルサイズ（約10万行）と比較してソーステーブルをパーティショニングするためにはるかに大きな範囲を使用します。これは、一部の場合において停止を引き起こす可能性があります（例：異なるレーンのフィルターオペレーターのランタイムが大きく異なる場合）が、再分配オペレーターの自由な使用は、少なくともステージ間での不均衡が蓄積されるのを避けます。
 ### 4.3 マルチノード並列化 {#4-3-multi-node-parallelization}
 
-クエリのソーステーブルがシャーディングされている場合、クエリを受け取ったノード（イニシエータノード）のクエリオプティマイザは、他のノードでできるだけ多くの作業を実行しようとします。他のノードからの結果は、クエリ計画の異なるポイントに統合できます。クエリに応じて、リモートノードは以下のいずれかを実行します：1. 生のソーステーブルカラムをイニシエータノードにストリーム、2. ソースカラムをフィルタリングし、生き残った行を送信、3. フィルタリングと集計ステップを実行し、ローカル結果グループを部分的な集計状態と共に送信、または4. フィルター、集計、およびソートを含む全クエリを実行。
+クエリのソーステーブルがシャード化されている場合、クエリを受けたノード（イニシエーターノード）は、他のノードでできるだけ多くの作業を行おうとします。他のノードからの結果は、クエリ計画のさまざまなポイントに統合できます。クエリに応じて、リモートノードは以下の操作を実行できます：1. 生のソーステーブルカラムをイニシエーターノードにストリームします、2. ソースカラムをフィルターし、残った行を送信します、3. フィルタリングおよび集計ステップを実行し、部分集計状態を持つローカル結果グループを送信します、または4. フィルター、集計、およびソートを含む完全なクエリを実行します。
 
-[図8](#page-7-1)のノード2 ... Nは、ヒットテーブルのシャードを保持している他のノードで実行される計画フラグメントを示しています。これらのノードはローカルデータをフィルタリングし、グループ化し、結果をイニシエータノードに送信します。ノード1のGroupStateMergeオペレーターは、ローカルおよびリモート結果をマージしてから、結果グループを最終的にソートします。
-### <Anchor id="page-7-0"/>4.4 全体的パフォーマンス最適化 {#4-4-holistic-performance-optimization}
+[図 8](#page-7-1) のノード2 ... Nは、ヒットテーブルのシャードを保持する他のノードで実行される計画フラグメントを示しています。これらのノードはローカルデータをフィルタリングおよびグループ化し、結果をイニシエーターノードに送信します。ノード1のGroupStateMergeオペレーターは、ローカル結果とリモート結果をマージし、最終的に結果グループがソートされる前に処理されます。
+### <Anchor id="page-7-0"/>4.4 全体的なパフォーマンス最適化 {#4-4-holistic-performance-optimization}
 
-このセクションでは、クエリ実行の異なるステージに適用される選択された主要なパフォーマンス最適化を示します。
+このセクションでは、クエリ実行のさまざまなステージに適用される主要なパフォーマンス最適化を紹介します。
 
-**クエリ最適化**。最初の最適化セットは、クエリのASTから取得された意味論的クエリ表現の上に適用されます。このような最適化の例には、定数フォールディング（例：concat(lower('a'),upper('b')) は 'aB' になる）、特定の集計関数からスカラーの抽出（例：sum(a*2) は 2 * sum(a) になる）、共通部分式の排除、および等価フィルターの論理和をINリストに変換すること（例：x=c OR x=d は x IN (c,d) になる）があります。最適化された意味論的クエリ表現は、論理オペレーター計画に変換されます。論理計画の上に適用される最適化には、フィルタープッシュダウン、関数評価とソートステップの順序の再配置が含まれますが、よりコストが高いと推定されるものに基づきます。最終的に、論理クエリ計画は物理オペレーター計画に変換されます。この変換は、関与するテーブルエンジンの特性を利用することができます。例えば、MergeTree*-テーブルエンジンの場合、ORDER BYカラムが主キーのプレフィックスを形成するなら、データをディスク順に読み取ることができ、ソートオペレーターを計画から除去することができます。また、集約でのグループ化カラムが主キーのプレフィックスを形成する場合、ClickHouseはソート集約 [\[33\]](#page-12-21) を使用できます。すなわち、事前にソートされた入力中で同じ値の集約実行を直接行います。ハッシュ集約と比較して、ソート集約は記憶容量を大幅に軽減し、集約値は実行が完了した後すぐに次のオペレーターに渡されます。
+**クエリ最適化**。最初の最適化セットは、クエリのASTから得られた意味論的クエリ表現の上に適用されます。そのような最適化の例としては、定数畳み込み（例：concat(lower('a'),upper('b')) は 'aB' になる）、特定の集約関数からスカラを抽出する（例：sum(a*2) は 2 * sum(a) になる）、共通の部分式の排除、等しいフィルターの論理和をINリストに変換する（例：x=c OR x=d は x IN (c,d) になる）などがあります。最適化された意味論的クエリ表現は、その後、論理オペレーター計画に変換されます。論理プランの上に適用される最適化には、フィルタープッシュダウン、関数評価およびソートステップの順序付けが含まれます。どちらがより高価であると見積もられるかに応じて、最終的に論理クエリプランは物理オペレーター計画に変換されます。この変換は、関与するテーブルエンジンの特性を利用することができます。たとえば、MergeTree*-テーブルエンジンの場合、ORDER BYカラムが主キーのプレフィックスを形成する場合、データはディスク順に読み取られ、ソートオペレーターは計画から削除できます。また、集約のグループ化カラムが主キーのプレフィックスを形成する場合、ClickHouseはソート集約 [\[33\]](#page-12-21) を使用でき、事前にソートされた入力から同じ値の集約ランを直接集約できます。ハッシュ集約と比較して、ソート集約はメモリ集約度が大幅に低く、集約値はランが処理された後すぐに次のオペレーターに渡すことができます。
 
-**クエリコンパイル**。ClickHouseは[LLVMに基づくクエリコンパイル](https://clickhou.se/jit)を採用し、隣接する計画オペレーターを動的に融合します [\[38,](#page-12-22) [53\]](#page-13-0)。例えば、式a * b + c + 1は、三つのオペレーターではなく単一のオペレーターに結合できます。式だけでなく、ClickHouseは同時に複数の集計関数を評価するため（つまり、GROUP BYに対して）のコンパイルや、二つ以上のソートキーでのソートにもコンパイルを使用します。クエリコンパイルは、仮想呼び出しの数を減少させ、データをレジスタやCPUキャッシュに保持し、コードが必要のない分岐予測を助けます。さらに、ランタイムコンパイルにより、論理最適化やコンパイラに実装されたピー プホール最適化の豊富なセットが可能になり、利用可能な最速のローカルCPU命令へのアクセスも可能になります。コンパイルは、同じ通常、集約、またはソート式が構成可能な回数よりも多く異なるクエリで実行されるときだけ開始されます。コンパイルされたクエリオペレーターはキャッシュされ、将来のクエリに再利用することができます。[7]
+**クエリコンパイル**。ClickHouseは、[LLVMに基づくクエリコンパイル](https://clickhou.se/jit)を使用して、隣接するプランオペレーターを動的に融合します [\[38,](#page-12-22) [53\]](#page-13-0)。たとえば、式 a * b + c + 1 は3つのオペレーターではなく、単一のオペレーターとして結合できます。式の他に、ClickHouseはGROUP BY用の複数の集約関数を評価するためや、複数のソートキーによるソートのためにコンパイルを使用します。クエリコンパイルは、仮想呼び出しの数を減少させ、データをレジスタまたはCPUキャッシュに保持し、実行されるコードの量を減らすことで分岐予測器を助けます。さらに、ランタイムコンパイルは、論理最適化やコンパイラーに実装されたピーホール最適化などの豊富な最適化セットを有効にし、利用できる最速のローカルCPU命令にアクセスを提供します。コンパイルは、同じ通常の集約またはソート式が異なるクエリによって設定可能な回数以上に実行される場合にのみ開始されます。コンパイルされたクエリオペレーターはキャッシュされ、将来のクエリで再利用できます。[7]
 
-**主キーインデックス評価**。ClickHouseは、条件の論理積正規形においてフィルタークローズのサブセットが主キーのカラムのプレフィックスを構成する場合、主キーインデックスを使用してWHERE条件を評価します。主キーインデックスは、キー値が辞書式にソートされた範囲に対して、左から右に分析されます。主キーのカラムに対応するフィルター条件は三値論理を使用して評価されます-すべて真、すべて偽、または範囲内の値に対して混合の真偽です。後者の場合、範囲は再帰的に分析するためにサブ範囲に分割されます。フィルター条件における関数のための追加最適化があります。まず、関数はその単調性を記述する特性を持っており、例えば、toDayOfMonth(date)は月内で部分的に単調です。単調性特性により、ソートされた入力キー値範囲に対して、関数がソートされた結果を生成するかどうかを推測することができます。第二に、いくつかの関数は、与えられた関数結果の原像を計算することができます。これは、定数の比較を主キーのカラムに対する関数呼び出しと置き換えるために、キーコラムの値を原像と比較するために使用されます。例えば、toYear(k) = 2024は k >= 2024-01-01 && k < 2025-01-01 に置き換えることができます。
+**主キーインデックス評価**。ClickHouseは、条件の論理積形式のフィルタ句のサブセットが主キーのカラムのプレフィックスを構成する場合に、主キーインデックスを使用してWHERE条件を評価します。主キーインデックスは、辞書順にソートされたキー値の範囲に対して左から右に分析されます。主キーのカラムに対応するフィルタ句は三値論理を使用して評価されます - すべて真、すべて偽、または範囲内の値に対して混合の真/偽です。後者のケースでは、範囲は再帰的に分析されるサブ範囲に分割されます。フィルター条件の関数には追加の最適化が存在します。第一に、関数にはその単調性を記述する特性があります。たとえば、toDayOfMonth(date) は月内で区分的に単調です。単調性特性により、関数がソートされた入力キー値範囲のソートされた結果を生成するかどうかを推測することができます。第二に、いくつかの関数は指定された関数結果の前向きイメージを計算することができます。これは、定数の比較をキー列に対して関数呼び出しに置き換えるために使用され、キー列の値を前向きイメージと比較します。たとえば、toYear(k) = 2024 は k >= 2024-01-01 && k < 2025-01-01 に置き換えることができます。
 
-**データスキッピング**。ClickHouseは、セクション [3.2.](#page-3-0) で紹介したデータ構造を使用して、クエリ実行時のデータ読み込みを回避しようとします。さらに、異なるカラムのフィルターは、推定選好性の降順の順に従って、ヒューリスティックスおよび（オプションの）カラム統計に基づいて逐次評価されます。1つ以上の一致する行が含まれるデータチャンクのみが次の述部に渡されます。これにより、読み取るデータ量と各述部から実行される計算量が徐々に減少します。この最適化は、少なくとも1つの高選好の述部が存在する場合にのみ適用されます。そうでない場合、すべての述部を並行して評価するよりもクエリのレイテンシが悪化するからです。
+**データスキッピング**。ClickHouseは、セクション [3.2.](#page-3-0) で示されたデータ構造を使用して、クエリ実行時のデータ読み取りを回避しようとします。さらに、異なる列に対するフィルターは、推定選択性の降順および（オプションの）カラム統計に基づいて逐次評価されます。少なくとも1つの一致する行を含むデータチャンクのみが次の述語に渡されます。これにより、読み取るデータの量と述語間で実行される計算の数が徐々に減少します。最適化は、少なくとも1つの選択性が高い述語が存在する場合にのみ適用されます。そうでなければ、すべての述語を並行して評価する際のクエリレイテンシが悪化することになります。
 
-**ハッシュテーブル**。ハッシュテーブルは、集計とハッシュ結合のための基本的なデータ構造です。適切なタイプのハッシュテーブルを選択することはパフォーマンスにとって重要です。ClickHouseは[ハッシュテーブル](https://clickhou.se/hashtables)を多様にインスタンス化します（2024年3月時点で30以上）。これは、ハッシュ関数、アロケーター、セルタイプ、リサイズポリシーを変数ポイントとして持つ一般的なハッシュテーブルテンプレートから生成されます。グループ化カラムのデータ型、推定されるハッシュテーブルのカーディナリティ、その他の要因に応じて、各クエリオペレーターのために最速のハッシュテーブルが選択されます。ハッシュテーブルに対して実装されたさらなる最適化には、次のようなものがあります：
+**ハッシュテーブル**。ハッシュテーブルは、集約やハッシュ結合のための基本的なデータ構造です。適切な種類のハッシュテーブルを選択することは、パフォーマンスにとって重要です。ClickHouseは、ハッシュ関数、アロケーター、セルタイプ、リサイズポリシーを変化点として、汎用ハッシュテーブルテンプレートからさまざまなハッシュテーブルを[インスタンス化](https://clickhou.se/hashtables)します（2024年3月時点で30種類以上）。グループ化カラムのデータ型、推定ハッシュテーブルのカーディナリティなどの要因に基づいて、各クエリオペレーターに対して最速のハッシュテーブルが個別に選択されます。ハッシュテーブルに対して実装されているさらなる最適化には次のものがあります：
 
-- 256のサブテーブルを持つ二重レイアウト（ハッシュの最初のバイトに基づく）として、巨大なキーセットをサポート、
-- 文字列ハッシュテーブル [\[79\]](#page-13-20) が文字列長ごとに異なるハッシュ関数を持つ4つのサブテーブルを持つ、
-- キーが少数の場合、バケットインデックスとしてキーを直接使用するルックアップテーブル（すなわちハッシュなし）、
-- 比較が高コストである際に衝突解決を高速化するための埋め込まれたハッシュを持つ値（例えば、文字列、AST）、
-- ランタイムの統計から予測されるサイズに基づいてハッシュテーブルを作成し、不要なリサイズを避けること、
-- 単一メモリスラブ内で作成・破棄ライフサイクルが同じ多数の小規模ハッシュテーブルの割り当て、
-- ハッシュテーブルの再利用のために、パーハッシュマップおよびパーセルバージョンカウンタによる即時クリアリング、
-- ハッシュしたキーの値を取得する際のスピードアップのためのCPUプリフェッチ（__builtin_prefetch）の使用。
+- 256のサブテーブルを持つ2層レイアウト（ハッシュの最初のバイトに基づく）で、大規模なキーセットをサポート。
+- 文字列ハッシュテーブル [\[79\]](#page-13-20) は、4つのサブテーブルと異なる文字列長に対する異なるハッシュ関数を使用。
+- キーの数が少ない場合に、キーを直接バケットインデックスとして（ハッシュなし）使用するルックアップテーブル。
+- 比較が高価な場合に衝突解決を迅速化するために埋め込まれたハッシュを持つ値（例：文字列、AST）。
+- 実行時統計に基づいて予測されるサイズに基づいてハッシュテーブルを作成し、不必要なリサイズを避ける。
+- 単一のメモリスラブで同じ作成/破棄ライフサイクルを持つ複数の小さなハッシュテーブルを割り当てる。
+- ハッシュマップごととセルごとのバージョンカウンターを使用して、再利用のためにハッシュテーブルを瞬時にクリア。
+- ハッシュキーの後に値を取得する速度を上げるためにCPUのプリフェッチ (__builtin_prefetch) を使用。
 
-**結合**。ClickHouseは当初結合を初歩的にしかサポートしていなかったため、多くのユースケースは歴史的に非正規化テーブルに頼っていました。今日、データベースはSQLで利用可能なすべての結合タイプ（内側、左/右/完全外側、クロス、一致時）を[提供](https://clickhou.se/joins)し、ハッシュ結合（ナイーブ、グレース）、ソートマージ結合、迅速なキー-バリュー検索のためのインデックス結合などの異なる結合アルゴリズムも提供しています。
+**結合**。ClickHouseはもともと結合をわずかにサポートしていただけでしたが、歴史的に多くのユースケースは非正規化テーブルに頼ることがありました。今日では、データベースはSQLで利用可能なすべての結合タイプ（内部、左/右/完全外部、クロス、非同期）と、ハッシュ結合（ナイーブ、グレース）、ソートマージ結合、迅速なキー-値ルックアップを持つテーブルエンジンのためのインデックス結合などの異なる結合アルゴリズムを[提供](https://clickhou.se/joins)しています。
 
-結合はデータベース操作の中で最もコストがかかるため、古典的な結合アルゴリズムの並列バリアントを提供することが重要です。理想的には、調整可能なスペース/時間のトレードオフを持つことです。ClickHouseは、[\[7\]](#page-12-23) からの非ブロッキング、共有パーティションアルゴリズムをハッシュ結合に実装しています。例えば、[図9](#page-8-3) のクエリは、ページヒット統計テーブルでURL間のユーザー移動を自己結合を用いて計算します。結合のビルドフェーズは、ソーステーブルの3つの不連続範囲をカバーする3つのレーンに分割されます。グローバルハッシュテーブルの代わりに、パーティション化されたハッシュテーブルが使用されます。（通常3つの）ワーカースレッドは、ハッシュ関数のモジュロを計算することによってビルド側の各入力行のターゲットパーティションを決定します。ハッシュテーブルのパーティションへのアクセスは、Gather交換オペレーターを使用して同期されます。プローブフェーズは、入力タプルのターゲットパーティションを同様に見つけます。このアルゴリズムは、各タプルごとに2つの追加のハッシュ計算を導入しますが、ビルドフェーズにおけるロックの衝突を大幅に削減します。これは、ハッシュテーブルのパーティション数に依存します。
+結合はデータベースオペレーションの中で最もコストが高いため、理想的には設定可能な空間/時間のトレードオフを持った古典的な結合アルゴリズムの並列バリアントを提供することが重要です。ClickHouseは、[\[7\]](#page-12-23) からのノンブロッキングの共有パーティションアルゴリズムを実装しています。たとえば、[図 9](#page-8-3) のクエリは、ページヒット統計テーブルに対する自己結合を介して、ユーザーがURL間を移動する方法を計算します。結合のビルドフェーズは、ソーステーブルの3つの排他的な範囲をカバーする3つのレーンに分割されます。グローバルハッシュテーブルの代わりに、パーティション化されたハッシュテーブルが使用されます。（通常は3つの）ワーカースレッドは、ビルドサイドの各入力行のターゲットパーティションをハッシュ関数のモジュロを計算することによって決定します。ハッシュテーブルパーティションへのアクセスは、Gather交換オペレーターを使用して同期されます。プローブフェーズは、入力タプルのターゲットパーティションを同様に見つけます。このアルゴリズムは、各タプルごとに2つの追加のハッシュ計算を導入しますが、ビルドフェーズでは、大きくハッシュテーブルパーティション数によってロックコンテンションを大幅に削減します。
 
-<Anchor id="page-8-3"/><img src={image_09}/>
+<Anchor id="page-8-3"/><Image img={image_09} size="lg" alt="Image 09"/>
 
-図9: 三つのハッシュテーブルパーティションを持つ並列ハッシュ結合。
-### <Anchor id="page-9-1"/>4.5 ワークロード隔離 {#4-5-workload-isolation}
+図 9: 三つのハッシュテーブルパーティションによる並列ハッシュ結合。
+### <Anchor id="page-9-1"/>4.5 ワークロードの分離 {#4-5-workload-isolation}
 
-ClickHouseは並行制御、メモリ使用制限、およびI/Oスケジューリングを提供し、ユーザーがクエリをワークロードクラスに隔離できるようにします。特定のワークロードクラスに対して共有リソース（CPUコア、DRAM、ディスクおよびネットワークのI/O）に制限を設定することによって、これらのクエリが他の重要なビジネスクエリに影響を及ぼさないようにします。
+ClickHouseは同時実行制御、メモリ使用制限、およびI/Oスケジューリングを提供し、ユーザーがクエリをワークロードクラスに分離できるようにします。特定のワークロードクラスに対して共有リソース（CPUコア、DRAM、ディスクおよびネットワークI/O）に制限を設定することで、これらのクエリが他の重要なビジネスクエリに影響しないようにします。
 
-並行制御は、高い数の同時クエリがあるシナリオでスレッドの過剰サブスクリプションを防ぎます。より具体的には、クエリごとのワーカースレッドの数は、利用可能なCPUコア数に対する指定された比率に基づいて動的に調整されます。
+同時実行制御は、高い数の同時クエリがあるシナリオでスレッドのオーバサブスクリプションを防止します。より具体的には、クエリごとのワーカースレッドの数は、使用可能なCPUコアの数に対する指定された比率に基づいて動的に調整されます。
 
-ClickHouseは、サーバー、ユーザー、およびクエリレベルでのメモリアロケーションのバイトサイズを追跡し、それによって柔軟なメモリ使用制限を設定することを可能にします。メモリオーバーコミットにより、他のクエリに対するメモリ制限を保証しながら、保証されたメモリを超える追加の未使用メモリをクエリが使用できるようになります。さらに、集計、ソート、結合句に対するメモリ使用量を制限することができ、メモリ制限を超えた場合に外部アルゴリズムへのフォールバックが発生します。
+ClickHouseは、サーバー、ユーザー、およびクエリレベルでのメモリ割り当てのバイトサイズを追跡し、柔軟なメモリ使用制限を設定できるようにします。メモリオーバーコミットを利用すると、クエリは保証されたメモリを超える追加の空きメモリを使用でき、他のクエリに対するメモリ制限が保証されます。さらに、集約、ソート、および結合句のためのメモリ使用は制限でき、メモリ制限を超えた場合に外部アルゴリズムへのフォールバックを引き起こします。
 
-最後に、I/Oスケジューリングにより、ユーザーはワークロードクラスのためにローカルおよびリモートディスクアクセスを最大帯域幅、リクエストの混在、ポリシー（例：FIFO、SFC [\[32\]](#page-12-24)）に基づいて制限できます。
-### <Anchor id="page-9-0"/>5 統合層 {#5-integration-layer}
+最後に、I/Oスケジューリングは、特定のワークロードクラスに対して、最大帯域幅、進行中のリクエストおよびポリシー（例：FIFO、SFC [\[32\]](#page-12-24)）に基づいてローカルおよびリモートディスクアクセスを制限できるようにします。
+### <Anchor id="page-9-0"/>5 インテグレーションレイヤー {#5-integration-layer}
 
-リアルタイムの意思決定アプリケーションはしばしば、複数の場所におけるデータへの効率的で低レイテンシアクセスを必要とします。外部データをOLAPデータベースで利用可能にするためには2つのアプローチがあります。プッシュベースのデータアクセスでは、サードパーティコンポーネントがデータベースと外部データストアを橋渡しします。これに対するひとつの例は、リモートデータを目的のシステムにプッシュする特殊な抽出-変換-ロード（ETL）ツールです。プルベースモデルでは、データベース自体がリモートデータソースに接続し、クエリ用にローカルテーブルにデータをプルダウンするか、リモートシステムにデータをエクスポートします。プッシュベースのアプローチはより柔軟性がありますが、アーキテクチャのフットプリントが大きく、スケーラビリティのボトルネックを伴います。それに対して、データベース内のリモート接続は、ローカルデータとリモートデータ間の結合などの興味深い機能を提供し、全体のアーキテクチャをシンプルに保ちながら洞察への時間を短縮します。
+リアルタイムの意思決定アプリケーションは、しばしば複数の場所のデータに対する効率的で低遅延のアクセスに依存しています。OLAPデータベースに外部データを利用可能にするための2つのアプローチがあります。プッシュベースのデータアクセスでは、サードパーティコンポーネントがデータベースと外部データストレージの橋渡しをします。これに該当するものの一例は、リモートデータを宛先システムにプッシュする専門の抽出-変換-読み込み（ETL）ツールです。プルベースのモデルでは、データベース自体がリモートデータソースに接続し、ローカルテーブルのためにデータをプルします。プッシュベースのアプローチは、より柔軟で一般的ですが、より大きなアーキテクチャのフットプリントやスケーラビリティボトルネックが伴います。それに対して、データベース内でのリモート接続は、ローカルデータとリモートデータ間の結合のような面白い機能を提供し、全体のアーキテクチャをシンプルに保ちながら洞察までの時間を短縮します。
 
-このセクションの残りでは、リモートの場所にあるデータにアクセスすることを目的としたClickHouseのプルベースのデータ統合方法を探索します。SQLデータベースにおけるリモート接続のアイデアは新しくありません。例えば、SQL/MED標準 [\[35\]](#page-12-25) は、2001年に導入され、2011年からPostgreSQLによって実装されていますが、外部データを管理するための統一インターフェースとして外国データラッパーを提案しています。他のデータストアおよびストレージフォーマットとの最大の相互運用性は、ClickHouseの設計目標の1つです。2024年3月時点で、ClickHouseは、すべての分析データベースにおいて、私たちの知識の範囲内で最も組み込まれたデータ統合オプションを提供します。
+このセクションの残りでは、ClickHouseにおけるプルベースのデータ統合方法を探り、リモート場所のデータにアクセスすることを目指します。SQLデータベースにおけるリモート接続のアイデアは新しいものではありません。たとえば、SQL/MED標準 [\[35\]](#page-12-25) は2001年に導入され、PostgreSQLにより2011年から実装されている [\[65\]](#page-13-21) 外部データラッパーを、外部データを管理するための統一インターフェースとして提案しています。他のデータストアやストレージ形式との相互運用性を最大化することは、ClickHouseの設計目標の一つです。2024年3月の時点で、ClickHouseは、すべての分析データベースにわたって、知る限り最も多くの組み込みデータ統合オプションを提供しています。
 
-外部接続。ClickHouseは、外部システムやストレージ場所との接続のために、ODBC、MySQL、PostgreSQL、SQLite、Kafka、Hive、MongoDB、Redis、S3/GCP/Azureオブジェクトストアおよびさまざまなデータレイクを含む[50以上の](https://clickhou.se/query-integrations) 統合テーブル関数とエンジンを提供します。これらは次のボーナス図によってさらに分類されます（元のVLDB論文には含まれていません）。
+外部接続。ClickHouseは、ODBC、MySQL、PostgreSQL、SQLite、Kafka、Hive、MongoDB、Redis、S3/GCP/Azureオブジェクトストレージ、さまざまなデータレイクなど、外部システムやストレージロケーションとの接続のために [50+](https://clickhou.se/query-integrations) 統合テーブル関数およびエンジンを提供します。これらは次のボーナス図に分別され（元のvldb論文の一部ではありません）、カテゴリに分けて示します。
 
-<Anchor id="bonus-figure"/><img src={image_10}/>
+<Anchor id="bonus-figure"/><Image img={image_10} size="lg" alt="Image 10"/>
 
 ボーナス図: ClickBenchの相互運用性オプション。
 
-統合**テーブル関数**による一時的なアクセス。テーブル関数は、SELECTクエリのFROM句で呼び出して、探索的アドホッククエリのためにリモートデータを読み取ることができます。あるいは、INSERT INTO TABLE FUNCTIONステートメントを使用して、リモートストアへの書き込みに使用することもできます。
+統合 **テーブル関数** による一時的アクセス。テーブル関数は、SELECTクエリのFROM句で呼び出して、探索的なアドホッククエリのためにリモートデータを読み取ることができます。また、INSERT INTO TABLE FUNCTIONステートメントを使用してデータをリモートストレージに書き込むためにも使用できます。
 
-保持されたアクセス。リモートデータストアや処理システムとの永続的な接続を作成するためには、三つの方法があります。
+永続的アクセス。リモートデータストアおよび処理システムとの永久的な接続を作成するための3つのメソッドが存在します。
 
-第一に、統合**テーブルエンジン**は、MySQLテーブルのようなリモートデータソースを永続的なローカルテーブルとして表現します。ユーザーはCREATE TABLE AS構文を使用してテーブル定義を保存し、SELECTクエリとテーブル関数と組み合わせます。リモートカラムのサブセットのみを参照するカスタムスキーマを指定することや、カラム名と同等のClickHouseタイプを自動的に決定するためにスキーマ推論を使用することも可能です。また、受動的および能動的なランタイム動作を区別します。受動的テーブルエンジンは、クエリをリモートシステムに転送し、結果でローカルプロキシテーブルを埋めます。この対照的に、能動的テーブルエンジンは、リモートシステムから定期的にデータをプルするか、リモート変更にサブスクライブします。例えば、PostgreSQLの論理レプリケーションプロトコルを通じて取得されます。その結果、ローカルテーブルにはリモートテーブルの完全なコピーが含まれます。
+まず、統合 **テーブルエンジン** は、MySQLテーブルなどのリモートデータソースを永続的なローカルテーブルとして表現します。ユーザーはCREATE TABLE AS構文を使用してテーブル定義を保存し、SELECTクエリとテーブル関数を組み合わせます。リモートカラムのサブセットのみを参照するためにカスタムスキーマを指定したり、スキーマ推論を使用してカラム名と同等のClickHouse型を自動的に決定したりすることが可能です。また、パッシブおよびアクティブな実行時の動作を区別します：パッシブテーブルエンジンはクエリをリモートシステムに転送し、結果でローカルプロキシテーブルを埋めます。対照的に、アクティブテーブルエンジンは、リモートシステムから定期的にデータをプルしたり、PostgreSQLの論理レプリケーションプロトコルなどを介してリモートの変更にサブスクライブしたりします。その結果、ローカルテーブルはリモートテーブルのフルコピーを含みます。
 
-第二に、統合**データベースエンジン**は、リモートデータストア内のテーブルスキーマのすべてのテーブルをClickHouseにマッピングします。前者とは異なり、一般にリモートデータストアがリレーショナルデータベースであることが要求され、DDLステートメントに対して限定的なサポートを提供します。
+第二に、統合 **データベースエンジン** は、リモートデータストア内のテーブルスキーマのすべてのテーブルをClickHouseにマッピングします。前者とは異なり、通常はリモートデータストアがリレーショナルデータベースであることが求められ、DDLステートメントのサポートも制限的です。
 
-第三に、**ディクショナリ**は、対応する統合テーブル関数またはエンジンを用いて、ほぼすべての可能なデータソースに対する任意のクエリを使用して埋め込むことができます。ランタイム動作は能動的であり、データはリモートストレージから定常的な間隔でプルされます。
+第三に、**辞書** は、対応する統合テーブル関数またはエンジンを用いて、ほぼすべての可能なデータソースに対して任意のクエリを用いてポピュレートできます。ランタイム動作はアクティブであり、リモートストレージから定期的にデータがプルされます。
 
-データフォーマット。3rdパーティシステムと対話するために、現代の分析データベースは、あらゆる形式のデータを処理できる必要があります。ClickHouseは、ネイティブ形式のほかに、[90以上の](https://clickhou.se/query-formats)形式をサポートしています。これにより、CSV、JSON、Parquet、Avro、ORC、Arrow、Protobufなどが含まれます。各形式は、ClickHouseが読み取ることができる入力形式であるか（ClickHouseがエクスポートできる）、またはその両方であることができます。Parquetのような分析志向の形式のいくつかは、クエリ処理と統合されており、最適化器が埋め込まれた統計を活用でき、圧縮データ上でフィルターを直接評価できます。
+データ形式。サードパーティシステムと相互作用するために、現代の分析データベースは任意の形式のデータを処理することもできる必要があります。ClickHouseは、ネイティブ形式の他に、CSV、JSON、Parquet、Avro、ORC、Arrow、プロトバフなど [90+](https://clickhou.se/query-formats) の形式をサポートしています。各形式は入力形式（ClickHouseが読み取れる）、出力形式（ClickHouseがエクスポートできる）、またはその両方である可能性があります。Parquetのような分析指向の形式は、クエリ処理とも統合されており、すなわちオプティマイザーは埋め込まれた統計値を活用でき、フィルターは圧縮データ上で直接評価されます。
 
-互換性インターフェース。ネイティブバイナリワイヤプロトコルとHTTPのほか、クライアントはMySQLまたはPostgreSQLワイヤプロトコル互換のインターフェースを介してClickHouseと対話できます。この互換性機能は、ベンダーがまだネイティブなClickHouse接続を実装していない独自のアプリケーション（例：特定のビジネスインテリジェンスツール）からのアクセスを有効にするために便利です。
-## 6 パフォーマンスを特徴とする {#6-performance-as-a-feature}
+互換性インターフェース。ネイティブなバイナリワイヤプロトコルとHTTPの他に、クライアントはMySQLまたはPostgreSQLのワイヤプロトコル互換インターフェースを介してClickHouseと対話できます。この互換性機能は、ベンダーがまだネイティブなClickHouse接続を実装していないプロプライエタリアプリケーション（例：特定のビジネスインテリジェンスツール）からのアクセスを可能にするのに役立ちます。
+## 6 パフォーマンスを機能として {#6-performance-as-a-feature}
 
-このセクションでは、パフォーマンス分析のためのビルトインツールを紹介し、実際のクエリおよびベンチマーククエリを使用してパフォーマンスを評価します。
-### 6.1 ビルトインパフォーマンス分析ツール {#6-1-built-in-performance-analysis-tools}
+このセクションでは、パフォーマンス分析のための組み込みツールを紹介し、実世界のクエリおよびベンチマーククエリを使用してパフォーマンスを評価します。
+### 6.1 組み込みパフォーマンス分析ツール {#6-1-built-in-performance-analysis-tools}
 
-個々のクエリやバックグラウンド操作におけるパフォーマンスボトルネックを調査するために、多様なツールが利用可能です。ユーザーは、システムテーブルに基づく統一インターフェースを介してすべてのツールと相互作用します。
+個々のクエリやバックグラウンド操作におけるパフォーマンスボトルネックを調査するための幅広いツールが利用可能です。ユーザーはすべてのツールに、システムテーブルに基づいた統一インターフェースを通じて対話します。
 
-**サーバーおよびクエリメトリック**。アクティブパート数、ネットワークスループット、キャッシュヒット率などのサーバーレベルの統計は、読み取られたブロックの数やインデックス使用統計などのクエリごとの統計によって補完されます。メトリックは、リクエスト時に同期的（任意に）または構成可能な間隔で非同期的に計算されます。
+**サーバーおよびクエリメトリクス**。アクティブパート数、ネットワークスループット、キャッシュヒット率などのサーバーレベルの統計は、読み取ったブロック数やインデックス使用統計のようなクエリごとの統計で補完されます。メトリクスは、要求に応じて同期的に（要求時）、あるいは設定可能な間隔で非同期的に計算されます。
 
-**サンプリングプロファイラー**。サーバースレッドのコールスタックは、サンプリングプロファイラーを使用して収集できます。その結果は、オプションでフレームグラフビジュアライザーなどの外部ツールにエクスポートできます。
+**サンプリングプロファイラー**。サーバースレッドのコールスタックをサンプリングプロファイラーを使用して収集できます。結果は、オプションでflamegraphビジュアライザーなどの外部ツールにエクスポートできます。
 
-**OpenTelemetry統合**。OpenTelemetryは、複数のデータ処理システム間でデータ行をトレースするためのオープンスタンダードです [\[8\]](#page-12-26)。ClickHouseは、すべてのクエリ処理ステップに対して構成可能な粒度でOpenTelemetryログスパンを生成し、他のシステムからOpenTelemetryログスパンを収集・分析できます。
+**OpenTelemetry統合**。OpenTelemetryは、複数のデータ処理システムにおけるデータ行のトレーシングのためのオープンスタンダードです [\[8\]](#page-12-26)。ClickHouseは、すべてのクエリ処理ステップに対して設定可能な粒度でOpenTelemetryログスパンを生成し、他のシステムからのOpenTelemetryログスパンを収集・分析できます。
 
-**クエリの説明**。他のデータベースと同様に、SELECTクエリは、クエリのAST、論理および物理オペレーター計画、実行時の動作に関する詳細な洞察のためにEXPLAINによって前置されることができます。
+**クエリ説明**。他のデータベースと同様に、SELECTクエリはEXPLAINの前に置くことで、クエリのAST、論理及び物理オペレーター計画、実行時の振る舞いについての詳細情報が得られます。
 ### 6.2 ベンチマーク {#6-2-benchmarks}
 
-ベンチマークは、現実的でないという批判を受けている [\[10,](#page-12-27) [52,](#page-13-22) [66,](#page-13-23) [74\]](#page-13-24)ものの、データベースの強みや弱みを特定するためには依然有用です。以下では、ClickHouseのパフォーマンスを評価するためにベンチマークがいかに使用されるかを議論します。
+
+ベンチマークは現実的ではないと批判されることもありますが [\[10,](#page-12-27) [52,](#page-13-22) [66,](#page-13-23) [74\]](#page-13-24)、データベースの強みと弱みを特定するために役立ちます。以下では、ClickHouseのパフォーマンスを評価するためにベンチマークがどのように使用されるかを説明します。
+```
+```yaml
+title: '6.2.1 非正規化テーブル'
+sidebar_label: '非正規化テーブル'
+keywords: ['ClickHouse', '非正規化', 'テーブル', 'データベース']
+description: '非正規化ファクトテーブルにおけるフィルタおよび集約クエリのパフォーマンスを示します。'
 ```
 
 #### 6.2.1 非正規化テーブル {#6-2-1-denormalized-tables}
 
-非正規化ファクトテーブルに対するフィルタおよび集計クエリは、ClickHouseの主なユースケースを歴史的に代表しています。私たちは、クリックストリームやトラフィック分析で使用されるその場でのレポーティングクエリと定期的なレポーティングクエリをシミュレートした、ClickBenchという典型的なワークロードの実行時間を報告しています。ベンチマークは、世界最大の分析プラットフォームの1つから取得した1億件の匿名化されたページヒットを持つテーブルに対して実行される43のクエリから構成されています。オンラインダッシュボード [\[17\]](#page-12-28) は、2024年6月時点で45以上の商業および研究データベースの測定値（コールド/ホット実行時間、データインポート時間、ディスク上のサイズ）を示します。結果は、公開されているデータセットとクエリに基づいて独立した寄稿者によって提出されます [\[16\]](#page-12-29)。これらのクエリは、逐次的およびインデックススキャンのアクセスパスをテストし、CPU、IO、またはメモリに制約されたリレーショナルオペレーターを定期的に露出させます。
+フィルタおよび集約クエリは、非正規化されたファクトテーブルに対して ClickHouse の歴史的な主要利用ケースを表しています。私たちは、クリックストリームおよびトラフィック分析で使用されるアドホックおよび定期レポートのクエリをシミュレートするこの種の典型的なワークロードである ClickBench の実行時間を報告します。このベンチマークは、1億件の匿名化されたページヒットが記録されたテーブルに対して43のクエリから構成されており、ウェブ上で最大規模の分析プラットフォームの1つから取得されています。2024年6月の時点で、オンラインダッシュボード [\[17\]](#page-12-28) は、商業用および研究用データベース45件以上の測定値（コールド/ホット実行時間、データインポート時間、ディスクサイズ）を示しています。結果は、公開されているデータセットとクエリに基づいて独立した貢献者によって提出されます [\[16\]](#page-12-29)。クエリは、逐次およびインデックススキャンアクセス経路をテストし、CPU、IO、またはメモリに制約のあるリレーショナルオペレーターを定期的に露出します。
 
-[Figure 10](#page-10-0) は、分析用に頻繁に使用されるデータベース内で、すべてのClickBenchクエリを逐次実行した場合の総相対コールドおよびホット実行時間を示しています。測定は、16 vCPU、32 GB RAM、および5000 IOPS / 1000 MiB/sのディスクを持つ単一ノードのAWS EC2 c6a.4xlargeインスタンスで行われました。Redshift（[ra3.4xlarge](https://clickhou.se/redshift-sizes)、12 vCPU、96 GB RAM）およびSnowfake（[warehouse size S](https://clickhou.se/snowflake-sizes)：2x8 vCPU、2x16 GB RAM）には同様のシステムが使用されました。物理データベース設計はわずかに調整されており、主キーを指定していますが、個々のカラムの圧縮を変更したり、プロジェクションを作成したり、スキッピングインデックスを作成したりはありません。また、各コールドクエリ実行の前にLinuxページキャッシュをフラッシュしますが、データベースやオペレーティングシステムのノブは調整しません。各クエリについて、データベース間での最速の実行時間が基準として使用されます。他のデータベースの相対クエリ実行時間は、( + 10)/(_ + 10)として計算されます。データベースの総相対実行時間は、各クエリの比率の幾何平均です。研究データベースUmbra [\[54\]](#page-13-25) が全体のホット実行時間で最高の性能を達成していますが、ClickHouseはホットおよびコールド実行時間の点で他のすべての商用グレードのデータベースを上回っています。
+[Figure 10](#page-10-0) は、分析に頻繁に使用されるデータベースにおけるすべての ClickBench クエリを逐次実行した場合の総相対コールドおよびホット実行時間を示します。測定は、16 vCPU、32 GB RAM、5000 IOPS / 1000 MiB/s のディスクを備えた単一ノードの AWS EC2 c6a.4xlarge インスタンスで行われました。Redshift の比較可能なシステムは ([ra3.4xlarge](https://clickhou.se/redshift-sizes)、12 vCPUs、96 GB RAM)、および Snowfake の ([warehouse size S](https://clickhou.se/snowflake-sizes): 2x8 vCPUs、2x16 GB RAM) を使用しています。物理データベース設計は軽く調整されており、例えば主キーは指定しますが、個々のカラムの圧縮を変更したり、プロジェクションを作成したり、スキッピングインデックスを作成したりはしません。また、各コールドクエリの実行前に Linux ページキャッシュをフラッシュしますが、データベースやオペレーティングシステムの設定は調整しません。すべてのクエリに対して、データベース間での最速の実行時間がベースラインとして使用されます。他のデータベースの相対クエリ実行時間は ( + 10)/(_ + 10) として計算されます。データベースの総相対実行時間は、各クエリの比率の幾何平均です。研究データベース Umbra [\[54\]](#page-13-25) が全体のホット実行時間で最高の結果を達成する一方で、ClickHouse はホットおよびコールド実行時間において他のすべての商用データベースを上回っています。
 
-<Anchor id="page-10-0"/><img src={image_11}/>
+<Anchor id="page-10-0"/><Image img={image_11} size="lg" alt="Image 11"/>
 
-Figure 10: ClickBenchの相対コールドおよびホット実行時間。
+Figure 10: ClickBench の相対コールドおよびホット実行時間。
 
-SELECTのパフォーマンスを多様なワークロードに渡って追跡するために、私たちは [use](https://clickhou.se/performance-over-years) 「VersionsBench」と呼ばれる4つのベンチマークの組み合わせを使用しています [\[19\]](#page-12-30)。このベンチマークは、新しいリリースが公開されるたびに月に1回実行され、そのパフォーマンス [\[20\]](#page-12-31) を評価し、パフォーマンスを低下させた可能性のあるコード変更を特定します：個別のベンチマークには、1. 上記のClickBench、2. 15 MgBench [\[21\]](#page-12-32) クエリ、3. 6億行の非正規化スター スキーマ ベンチマーク [\[57\]](#page-13-26) ファクトテーブルに対する13のクエリ。4. 34億行 [\[70\]](#page-13-27) を持つ [NYC Taxi Rides](https://clickhou.se/nyc-taxi-rides-benchmark) に対する4つのクエリ。
+さまざまなワークロードでの SELECT のパフォーマンスを時間の経過とともに追跡するために、私たちは [use](https://clickhou.se/performance-over-years) と呼ばれる 4 つのベンチマークの組み合わせである VersionsBench [\[19\]](#page-12-30) を使用します。このベンチマークは、新しいリリースが公開されるたびに月に1回実行され、そのパフォーマンスを評価し [\[20\]](#page-12-31) 、パフォーマンスを低下させる可能性のあるコード変更を特定します。個々のベンチマークには、1. 上述の ClickBench、2. 15 の MgBench [\[21\]](#page-12-32) クエリ、3. 6 億行の非正規化されたスタースキーマベンチマーク [\[57\]](#page-13-26) ファクトテーブルに対する 13 のクエリ、4. 34 億行の [NYC タクシーライド](https://clickhou.se/nyc-taxi-rides-benchmark) に対する 4 つのクエリが含まれます [\[70\]](#page-13-27)。
 
-[Figure 11](#page-10-5) は、2018年3月から2024年3月までの77のClickHouseバージョンにおけるVersionsBenchの実行時間の推移を示しています。個々のクエリの相対実行時間の違いを補うために、私たちは幾何平均を使用して、すべてのバージョンにわたる最小クエリ実行時間への比率を重みとして実行時間を正規化します。VersionBenchのパフォーマンスは、過去6年間で1.72倍向上しました。長期サポート（LTS）のリリース日がx軸にマークされています。いくつかの期間においてパフォーマンスが一時的に低下したものの、LTSリリースは一般に前のLTSバージョンと比較して同等かそれ以上のパフォーマンスを持っています。2022年8月の大幅な改善は、セクション [4.4.](#page-7-0) で説明されているカラムごとのフィルター評価技術によって引き起こされました。
+[Figure 11](#page-10-5) は、2018年3月から2024年3月の間に 77 の ClickHouse バージョンの VersionsBench 実行時間の推移を示します。個々のクエリの相対実行時間の違いを補うために、すべてのバージョンでの最小クエリ実行時間に対する比率を重みとして幾何平均を用いて実行時間を正規化します。VersionBench のパフォーマンスは、過去6年間で 1.72 × 向上しました。長期サポート (LTS) リリースの日付は x 軸にマークされています。いくつかの期間においてパフォーマンスが一時的に低下したものの、LTS リリースは一般的に前の LTS バージョンと比較して同等またはそれ以上のパフォーマンスを持っています。2022年8月の大幅な改善は、セクション [4.4.](#page-7-0) で説明されているカラムごとのフィルター評価技術によるものでした。
 
-<Anchor id="page-10-5"/><img src={image_12}/>
+<Anchor id="page-10-5"/><Image img={image_12} size="lg" alt="Image 12"/>
 
-Figure 11: VersionsBench 2018-2024の相対ホット実行時間。
+Figure 11: VersionsBench 2018-2024 の相対ホット実行時間。
+
+```yaml
+title: '6.2.2 正規化テーブル'
+sidebar_label: '正規化テーブル'
+keywords: ['ClickHouse', '正規化', 'テーブル']
+description: '正規化テーブルにおけるTPC-Hクエリの実行時間を示します。'
+```
+
 #### 6.2.2 正規化テーブル {#6-2-2-normalized-tables}
 
-古典的なデータウェアハウジングでは、データはしばしばスターまたはスノーフレークスキーマを使用してモデルされます。私たちは、TPC-Hクエリ（スケールファクター100）の実行時間を示しますが、正規化テーブルがClickHouseにとって新興のユースケースであることを指摘します。[Figure 12](#page-10-6) は、セクション [4.4.](#page-7-0) で説明されている平行ハッシュジョインアルゴリズムに基づくTPC-Hクエリのホット実行時間を示しています。測定は、64 vCPUs、128 GB RAM、および5000 IOPS / 1000 MiB/sのディスクを持つ単一ノードのAWS EC2 c6i.16xlargeインスタンスで行われました。5回の実行の中で最速のものが記録されました。参考までに、同じサイズのSnowfakeシステム（ウェアハウスサイズL、8x8 vCPUs、8x16 GB RAM）で同様の測定を行いました。11のクエリの結果はテーブルから除外されています：クエリQ2、Q4、Q13、Q17、およびQ20-22は、ClickHouse v24.6 の時点でサポートされていない相関サブクエリを含んでいます。クエリQ7-Q9およびQ19は、ジョインのためのジョイン再順序付けやジョイン発生条件のプッシュダウンなど、計画レベルの最適化に依存しており（ClickHouse v24.6時点ではどちらも欠落しています）、実行時間を達成するためには必要です。自動サブクエリデコリレーションとジョインのためのよりよいオプティマイザサポートが2024年の実装に向けて計画されています [\[18\]](#page-12-33)。残りの11のクエリのうち、5（6）のクエリがClickHouse（Snowfake）でより早く実行されました。前述の最適化はパフォーマンスにとって重要であることが知られているため [\[27\]](#page-12-34)、実装されるとこれらのクエリの実行時間がさらに改善されると予想されます。
+古典的なデータウェアハウジングでは、データはしばしばスタースキーマまたはスノーフレークスキーマを使用してモデル化されます。私たちは TPC-H クエリ (スケールファクター 100) の実行時間を示しますが、正規化テーブルは ClickHouse の新たな利用ケースであることに注意します。 [Figure 12](#page-10-6) は、セクション [4.4.](#page-7-0) で説明されている並列ハッシュ結合アルゴリズムに基づく TPC-H クエリのホット実行時間を示します。測定は、64 vCPU、128 GB RAM、5000 IOPS / 1000 MiB/s のディスクを備えた単一ノードの AWS EC2 c6i.16xlarge インスタンスで行われ、最も早い5回の実行が記録されました。参考のため、同程度のサイズの Snowfake システム (warehouse size L、8x8 vCPUs、8x16 GB RAM) でも同様の測定を行いました。11のクエリの結果は、このテーブルから除外されています：Q2、Q4、Q13、Q17、およびQ20-22のクエリには、ClickHouse v24.6 ではサポートされていない関連サブクエリが含まれています。Q7-Q9およびQ19のクエリは、結合のための計画レベルの拡張最適化（ClickHouse v24.6 では未実装）に依存しており、実行可能な実行時間を達成しています。自動サブクエリデコリレーションと、結合のためのより良い最適化サポートは、2024年に実装が計画されています [\[18\]](#page-12-33)。残りの11のクエリのうち、ClickHouse で実行された 5 （6）クエリが Snowfake よりも速かったです。前述の最適化はパフォーマンスにとって重要であることが知られているため [\[27\]](#page-12-34)、実装後にこれらのクエリの実行時間がさらに改善されることを期待しています。
 
-<Anchor id="page-10-6"/><img src={image_13}/>
+<Anchor id="page-10-6"/><Image img={image_13} size="lg" alt="Image 13"/>
 
-Figure 12: TPC-Hクエリのホット実行時間（秒単位）。
+Figure 12: TPC-H クエリのホット実行時間（秒単位）。
+
 ## 7 関連研究 {#7-related-work}
 
-分析データベースは、近年の数十年間にわたり、学術的および商業的に大きな関心を集めてきました [\[1\]](#page-12-35)。Sybase IQ [\[48\]](#page-13-28)、Teradata [\[72\]](#page-13-29)、Vertica [\[42\]](#page-12-36)、およびGreenplum [\[47\]](#page-13-30)のような初期のシステムは、高価なバッチETLジョブと、オンプレミスとしての性質から生じる制限された弾力性を特徴としていました。2010年代初頭には、Snowfake [\[22\]](#page-12-37)、BigQuery [\[49\]](#page-13-31)、およびRedshift [\[4\]](#page-12-38)のようなクラウドネイティブなデータウェアハウスおよびデータベース・アズ・ア・サービス（DBaaS）オファリングの出現により、組織の分析にかかるコストと複雑さが劇的に削減され、高可用性と自動的なリソーススケーリングの利点が得られました。最近では、分析実行カーネル（例えば、Photon [\[5\]](#page-12-39)やVelox [\[62\]](#page-13-32)）が、異なる分析、ストリーミング、機械学習アプリケーションで使用するための修正されたデータ処理を提供しています。
+分析データベースは、近年の学術および商業的関心の対象となっています [\[1\]](#page-12-35)。Sybase IQ [\[48\]](#page-13-28)、Teradata [\[72\]](#page-13-29)、Vertica [\[42\]](#page-12-36)、Greenplum [\[47\]](#page-13-30) のような初期のシステムは、高価なバッチETLジョブとオンプレミスの性質に起因する限られた弾力性を特徴としていました。2010年代初頭、クラウドネイティブなデータウェアハウスやデータベース-as-a-service（DBaaS）オファリングの登場は、Snowfake [\[22\]](#page-12-37)、BigQuery [\[49\]](#page-13-31)、Redshift [\[4\]](#page-12-38) のようなツールで、分析のコストと複雑さを劇的に削減し、同時に高い可用性と自動リソーススケーリングの恩恵を受けました。最近では、分析実行カーネル（例：Photon [\[5\]](#page-12-39) および Velox [\[62\]](#page-13-32)）が、さまざまな分析、ストリーミング、機械学習アプリケーションで使用されるための共同処理データを提供します。
 
-ClickHouseと目標および設計原則の点で最も類似するデータベースは、Druid [\[78\]](#page-13-33)およびPinot [\[34\]](#page-12-40)です。両方のシステムは、高いデータインジェスションレートを持つリアルタイム分析をターゲットとしています。ClickHouseと同様に、テーブルはセグメントと呼ばれる水平パーツに分割されます。ClickHouseは、より小さなパーツを継続的にマージし、オプションでセクション [3.3,](#page-4-3) の技術を使用してデータボリュームを削減しますが、DruidおよびPinotではパーツは永遠に不変であり続けます。また、DruidおよびPinotでは、テーブルの作成、変更、検索に特別なノードが必要ですが、ClickHouseはこれらのタスクに対して単一のバイナリを使用します。
+ClickHouse と目標と設計原則が最も似ているデータベースは、Druid [\[78\]](#page-13-33) と Pinot [\[34\]](#page-12-40) です。両システムは、高いデータ取り込み率でリアルタイム分析をターゲットとしています。ClickHouse のように、テーブルはセグメントと呼ばれる水平パーツに分割されています。ClickHouse は、小さなパーツを継続的にマージし、セクション [3.3,](#page-4-3) のテクニックを使ってオプションでデータボリュームを削減しますが、Druid と Pinot のパーツは永続的に不変です。また、Druid と Pinot は、テーブルを作成、変更、検索するために専門のノードを必要としますが、ClickHouse はこれらのタスクに対してモノリシックバイナリを使用します。
 
-Snowfake [\[22\]](#page-12-37)は、共有ディスクアーキテクチャに基づく人気のあるプロプライエタリなクラウドデータウェアハウスです。テーブルをマイクロパーティションに分割するアプローチは、ClickHouseにおけるパーツの概念に似ています。Snowfakeは持続性のためにハイブリッドPAXページを使用しますが、ClickHouseのストレージ形式は厳密に列指向です。Snowfakeは、良好なパフォーマンスのソースとして自動的に作成された軽量インデックスを使用して、ローカルキャッシュとデータプルーニングを強調します [\[31,](#page-12-13) [51\]](#page-13-14)。ClickHouseの主キーと同様に、ユーザーはオプションで同じ値を持つデータを共置するためにクラスタ化インデックスを作成できます。
+Snowfake [\[22\]](#page-12-37) は、共有ディスクアーキテクチャに基づく人気のあるプロプライエタリなクラウドデータウェアハウスです。テーブルをマイクロパーティションに分けるアプローチは、ClickHouse におけるパーツの概念に似ています。Snowfake は、永続性のためにハイブリッド PAX ページ [\[3\]](#page-12-41) を使用しますが、ClickHouse のストレージフォーマットは厳密に列指向です。Snowfake はまた、良好なパフォーマンスを引き出すために自動的に作成された軽量インデックスを使用してローカルキャッシュとデータプルーニングを強調します [\[31,](#page-12-13) [51\]](#page-13-14)。ClickHouse における主キーのように、ユーザーはオプションでクラスタ化インデックスを作成して同じ値を持つデータを共同配置することができます。
 
-Photon [\[5\]](#page-12-39)とVelox [\[62\]](#page-13-32)は、複雑なデータ管理システムのコンポーネントとして使用されるように設計されたクエリ実行エンジンです。両方のシステムは、クエリプランを入力として受け取り、それをParquet（Photon）またはArrow（Velox）ファイル上でローカルノードで実行します [\[46\]](#page-13-34)。ClickHouseはこれらの一般的な形式でデータを消費し生成できますが、ストレージにはネイティブファイル形式を好みます。VeloxとPhotonはクエリプランを最適化せず（Veloxは基本的な式の最適化を実行しますが）、データ特性に基づいて計算カーネルを動的に切り替えるなど、実行時適応技術を利用します。同様に、ClickHouseのプランオペレーターは、クエリのメモリ消費に基づいて、主に外部集計またはジョインオペレーターに切り替えるために、実行時に他のオペレーターを作成できます。Photonの論文は、コード生成デザイン [\[38,](#page-12-22) [41,](#page-12-42) [53\]](#page-13-0) が、解釈されたベクトル化デザイン [\[11\]](#page-12-0) よりも開発およびデバッグが難しいことを指摘しています。Veloxのビルドにおけるコード生成の（実験的な）サポートは、実行時に生成されたC++コードから生成された共有ライブラリを構築してリンクしますが、ClickHouseはLLVMのリクエストベースのコンパイルAPIと直接やり取りします。
+Photon [\[5\]](#page-12-39) と Velox [\[62\]](#page-13-32) は、複雑なデータ管理システムでコンポーネントとして使用するために設計されたクエリ実行エンジンです。両システムは、クエリプランを入力として受け取り、その後パラケット（Photon）または Arrow（Velox）ファイル [\[46\]](#page-13-34) の上でローカルノードで実行されます。ClickHouse は、これらの一般的なフォーマットでデータを消費および生成できますが、ストレージにはネイティブファイルフォーマットを好みます。Velox と Photon はクエリプランを最適化しません（Velox は基本的な式の最適化を行います）が、データ特性に応じて計算カーネルを動的に切り替えるなどの実行時適応技術を利用します。同様に、ClickHouse の計画オペレーターは、主にクエリメモリ消費に基づいて外部集約または結合オペレーターに切り替えるために、他のオペレーターを実行時に作成することができます。Photon 論文では、コード生成の設計 [\[38,](#page-12-22) [41,](#page-12-42) [53\]](#page-13-0) は、解釈されたベクタライズデザイン [\[11\]](#page-12-0) よりも開発およびデバッグが難しいことを指摘しています。Velox のコード生成に対する（実験的）サポートは、実行時に生成された C++ コードから生成された共有ライブラリをビルドおよびリンクしますが、ClickHouse は LLVM のオンデマンドコンパイル API と直接対話します。
 
-DuckDB [\[67\]](#page-13-6)もホストプロセスによって埋め込まれることを意図していますが、クエリ最適化とトランザクションも提供しています。OLAPクエリと時折のOLTPステートメントを混ぜたものとして設計されました。したがってDuckDBは、ハイブリッドワークロードでの優れたパフォーマンスを達成するために、順序を保持する辞書や参照フレーム [\[2\]](#page-12-10) などの軽量圧縮手法を利用するDataBlocks [\[43\]](#page-12-43) ストレージ形式を選択しました。それに対して、ClickHouseは追加のみのユースケース、すなわち、更新や削除のない、またはごく稀なユースケースに最適化されています。ブロックはLZ4のような重い技術を用いて圧縮されており、ユーザーが頻繁なクエリを迅速化するためにデータプルーニングを多用し、残りのクエリに対してはI/Oコストが解凍コストを上回ることを想定しています。DuckDBはHyperのMVCCスキームに基づくシリアライズ可能なトランザクションを提供します [\[55\]](#page-13-35)。一方、ClickHouseはスナップショットアイソレーションのみを提供します。
+DuckDB [\[67\]](#page-13-6) もホストプロセスによって組み込まれることを目的としていますが、さらにクエリ最適化とトランザクションを提供します。OLAP クエリと時折の OLTP ステートメントを混合するために設計されました。DuckDB は、ハイブリッドワークロードで良好なパフォーマンスを達成するために、順序を保持する辞書やフレームオブリファレンス [\[2\]](#page-12-10) のような軽量の圧縮方法を採用した DataBlocks [\[43\]](#page-12-43) ストレージフォーマットを選択しました。それに対して、ClickHouse は追加専用のユースケース（すなわち、更新や削除がないか、稀であること）に最適化されています。ブロックは、LZ4 などの重い圧縮技術を使用して圧縮され、ユーザーが頻繁なクエリを高速化するためにデータプルーニングを寛大に使用することを前提とし、残りのクエリに対する非圧縮コストが、デコンプレッションコストを上回ると想定されています。DuckDB はまた、Hyper の MVCC スキームに基づく可視性トランザクションを提供します [\[55\]](#page-13-35)、一方 ClickHouse はスナップショット隔離のみを提供します。
+
 ## 8 結論と展望 {#8-conclusion-and-outlook}
 
-私たちは、オープンソースの高性能OLAPデータベースであるClickHouseのアーキテクチャを紹介しました。書き込み最適化されたストレージ層と最新のベクトル化クエリエンジンを基盤に、ClickHouseはペタバイト規模のデータセットに対するリアルタイム分析を高いインジェスションレートで実現します。データをバックグラウンドで非同期にマージおよび変換することにより、ClickHouseはデータメンテナンスと並列挿入を効率的に切り離します。ストレージ層は、スパース主インデックス、スキッピングインデックス、プロジェクションテーブルを使用して積極的なデータプルーニングを可能にします。私たちはClickHouseの更新と削除の実装、冪等挿入、および高可用性のためのノード間データレプリケーションを説明しました。クエリ処理層は、多くのテクニックを使用してクエリを最適化し、サーバーおよびクラスターリソース全体での実行を並列化します。統合テーブルエンジンおよび関数は、他のデータ管理システムやデータ形式とシームレスに対話するための便利な方法を提供します。ベンチマークを通じて、ClickHouseが市場で最も高速な分析データベースの一つであることを示し、ClickHouseの実世界でのデプロイメントでの典型的なクエリのパフォーマンスにおける重大な改善を示しました。
+私たちは、オープンソースの高性能 OLAP データベースである ClickHouse のアーキテクチャを紹介しました。書き込み最適化ストレージレイヤーと最先端のベクタライズドクエリエンジンを基盤に、ClickHouse はペタバイト規模のデータセットに対するリアルタイム分析を高い取り込み率で可能にします。データをバックグラウンドで非同期にマージおよび変換することによって、ClickHouse はデータメンテナンスと並列挿入を効率的に切り離します。ストレージレイヤーは、スパース主インデックス、スキッピングインデックス、プロジェクションテーブルを使用して積極的なデータプルーニングを可能にします。私たちは、更新と削除、冪等性のある挿入、そして高可用性のためのノード間データレプリケーションに対する ClickHouse の実装を説明しました。クエリ処理レイヤーは豊富な技術を使用してクエリを最適化し、すべてのサーバーおよびクラスターリソースにわたって実行を並列化します。統合テーブルエンジンおよび関数は、他のデータ管理システムおよびデータフォーマットとシームレスに対話する便利な方法を提供します。ベンチマークを通じて、ClickHouse が市場で最も高速な分析データベースの1つであることを示し、ClickHouse の実世界の展開における典型的なクエリのパフォーマンスの大きな改善を示しました。
 
-2024年に計画されているすべての機能と改善については、公開ロードマップ [\[18\]](#page-12-33) で確認できます。計画されている改善には、ユーザートランザクションのサポート、PromQL [\[69\]](#page-13-36) の代替クエリ言語、新しいデータ型（たとえば、JSON）の半構造化データのための新しいデータ型、ジョインの計画レベルの最適化の改善、および軽量削除を補完するための軽量更新の実装が含まれます。
-## お礼 {#acknowledgements}
+2024年に計画されているすべての機能および強化については、公開されたロードマップ [\[18\]](#page-12-33) を参照してください。計画されている改善には、ユーザートランザクションのサポート、代替クエリ言語としての PromQL [\[69\]](#page-13-36)、半構造化データ（例：JSON）用の新しいデータ型、結合の計画レベルの最適化の改善、軽量削除を補完する軽量更新の実装が含まれています。
 
-バージョン24.6に従い、SELECT * FROM system.contributors はClickHouseに貢献した1994の個人を返します。ClickHouse Inc.のエンジニアリングチーム全体と、このデータベースを一緒に構築するために尽力している素晴らしいオープンソースコミュニティに感謝いたします。
-```
-```md
-## REFERENCES {#references}
+## 9 謝辞 {#acknowledgements}
+
+バージョン 24.6 に従い、SELECT * FROM system.contributors は、ClickHouse に貢献した1994人の個人を返します。私たちは、ClickHouse Inc. の全エンジニアリングチームと、共にこのデータベースを構築するために彼らの努力と献身に感謝します。
+## 参考文献 {#references}
 
 - <Anchor id="page-12-35"/>[1] Daniel Abadi, Peter Boncz, Stavros Harizopoulos, Stratos Idreaos, and Samuel Madden. 2013. 現代の列指向データベースシステムの設計と実装. https://doi.org/10.1561/9781601987556
-- <Anchor id="page-12-10"/>[2] Daniel Abadi, Samuel Madden, and Miguel Ferreira. 2006. 列指向データベースシステムにおける圧縮と実行の統合. In Proceedings of the 2006 ACM SIGMOD International Conference on Management of Data (SIGMOD '06). 671–682.https://doi.org/10.1145/1142473.1142548
-- <Anchor id="page-12-41"/>[3] Anastassia Ailamaki, David J. DeWitt, Mark D. Hill, and Marios Skounakis. 2001. キャッシュパフォーマンスのための関係の織り交ぜ. In Proceedings of the 27th International Conference on Very Large Data Bases (VLDB '01). Morgan Kaufmann Publishers Inc., San Francisco, CA, USA, 169–180.
-- <Anchor id="page-12-38"/>[4] Nikos Armenatzoglou, Sanuj Basu, Naga Bhanoori, Mengchu Cai, Naresh Chainani, Kiran Chinta, Venkatraman Govindaraju, Todd J. Green, Monish Gupta, Sebastian Hillig, Eric Hotinger, Yan Leshinksy, Jintian Liang, Michael McCreedy, Fabian Nagel, Ippokratis Pandis, Panos Parchas, Rahul Pathak, Orestis Polychroniou, Foyzur Rahman, Gaurav Saxena, Gokul Soundararajan, Sriram Subramanian, and Doug Terry. 2022. Amazon Redshiftの再発明. In Proceedings of the 2022 International Conference on Management of Data (Philadelphia, PA, USA) (SIGMOD '22). Association for Computing Machinery, New York, NY, USA, 2205–2217. https://doi.org/10.1145/3514221.3526045
-- <Anchor id="page-12-39"/>[5] Alexander Behm, Shoumik Palkar, Utkarsh Agarwal, Timothy Armstrong, David Cashman, Ankur Dave, Todd Greenstein, Shant Hovsepian, Ryan Johnson, Arvind Sai Krishnan, Paul Leventis, Ala Luszczak, Prashanth Menon, Mostafa Mokhtar, Gene Pang, Sameer Paranjpye, Greg Rahn, Bart Samwel, Tom van Bussel, Herman van Hovell, Maryann Xue, Reynold Xin, and Matei Zaharia. 2022. Photon: レイクハウスシステムのための高速クエリエンジン (SIGMOD '22). Association for Computing Machinery, New York, NY, USA, 2326–2339. [https://doi.org/10.1145/3514221.](https://doi.org/10.1145/3514221.3526054) [3526054](https://doi.org/10.1145/3514221.3526054)
-- <Anchor id="page-12-18"/>[6] Philip A. Bernstein and Nathan Goodman. 1981. 分散データベースシステムにおける同時実行制御. ACM Computing Survey 13, 2 (1981), 185–221. https://doi.org/10.1145/356842.356846
-- <Anchor id="page-12-23"/>[7] Spyros Blanas, Yinan Li, and Jignesh M. Patel. 2011. マルチコアCPU用のメインメモリハッシュ結合アルゴリズムの設計と評価. In Proceedings of the 2011 ACM SIGMOD International Conference on Management of Data (Athens, Greece) (SIGMOD '11). Association for Computing Machinery, New York, NY, USA, 37–48. https://doi.org/10.1145/1989323.1989328
+- <Anchor id="page-12-10"/>[2] Daniel Abadi, Samuel Madden, and Miguel Ferreira. 2006. 列指向データベースシステムにおける圧縮と実行の統合. ACM SIGMOD 国際データ管理会議 (SIGMOD '06) 論文集. 671–682.https://doi.org/10.1145/1142473.1142548
+- <Anchor id="page-12-41"/>[3] Anastassia Ailamaki, David J. DeWitt, Mark D. Hill, and Marios Skounakis. 2001. キャッシュ性能のための関係の織り交ぜ. 第27回非常に大きなデータベース国際会議 (VLDB '01) 論文集. Morgan Kaufmann Publishers Inc., サンフランシスコ, CA, USA, 169–180.
+- <Anchor id="page-12-38"/>[4] Nikos Armenatzoglou, Sanuj Basu, Naga Bhanoori, Mengchu Cai, Naresh Chainani, Kiran Chinta, Venkatraman Govindaraju, Todd J. Green, Monish Gupta, Sebastian Hillig, Eric Hotinger, Yan Leshinksy, Jintian Liang, Michael McCreedy, Fabian Nagel, Ippokratis Pandis, Panos Parchas, Rahul Pathak, Orestis Polychroniou, Foyzur Rahman, Gaurav Saxena, Gokul Soundararajan, Sriram Subramanian, and Doug Terry. 2022. Amazon Redshiftの再発明. 2022年国際データ管理会議 (フィラデルフィア, PA, USA) 論文集 (SIGMOD '22). コンピュータ機械協会, ニューヨーク, NY, USA, 2205–2217. https://doi.org/10.1145/3514221.3526045
+- <Anchor id="page-12-39"/>[5] Alexander Behm, Shoumik Palkar, Utkarsh Agarwal, Timothy Armstrong, David Cashman, Ankur Dave, Todd Greenstein, Shant Hovsepian, Ryan Johnson, Arvind Sai Krishnan, Paul Leventis, Ala Luszczak, Prashanth Menon, Mostafa Mokhtar, Gene Pang, Sameer Paranjpye, Greg Rahn, Bart Samwel, Tom van Bussel, Herman van Hovell, Maryann Xue, Reynold Xin, and Matei Zaharia. 2022. Photon: レイクハウスシステムのための高速クエリエンジン (SIGMOD '22). コンピュータ機械協会, ニューヨーク, NY, USA, 2326–2339. [https://doi.org/10.1145/3514221.](https://doi.org/10.1145/3514221.3526054) [3526054](https://doi.org/10.1145/3514221.3526054)
+- <Anchor id="page-12-18"/>[6] Philip A. Bernstein and Nathan Goodman. 1981. 分散データベースシステムにおける同時制御. ACM Computing Survey 13, 2 (1981), 185–221. https://doi.org/10.1145/356842.356846
+- <Anchor id="page-12-23"/>[7] Spyros Blanas, Yinan Li, and Jignesh M. Patel. 2011. マルチコアCPUのためのメインメモリハッシュ結合アルゴリズムの設計と評価. 2011年ACM SIGMOD国際データ管理会議 (アテネ, ギリシャ) 論文集 (SIGMOD '11). コンピュータ機械協会, ニューヨーク, NY, USA, 37–48. https://doi.org/10.1145/1989323.1989328
 - <Anchor id="page-12-26"/><Anchor id="page-12-14"/>[8] Daniel Gomez Blanco. 2023. 実践的OpenTelemetry. Springer Nature.
-- [9] Burton H. Bloom. 1970. 許容誤差でのハッシュコーディングにおける空間/時間トレードオフ. Commun. ACM 13, 7 (1970), 422–426. [https://doi.org/10.1145/362686.](https://doi.org/10.1145/362686.362692) [362692](https://doi.org/10.1145/362686.362692)
-- <Anchor id="page-12-27"/>[10] Peter Boncz, Thomas Neumann, and Orri Erling. 2014. TPC-Hの分析: 影に隠れたメッセージと影響力のあるベンチマークから学んだ教訓. In Performance Characterization and Benchmarking. 61–76. [https://doi.org/10.1007/978-3-319-](https://doi.org/10.1007/978-3-319-04936-6_5) [04936-6_5](https://doi.org/10.1007/978-3-319-04936-6_5)
-- <Anchor id="page-12-0"/>[11] Peter Boncz, Marcin Zukowski, and Niels Nes. 2005. MonetDB/X100: ハイパーパイプライニングクエリ実行. In CIDR.
-- <Anchor id="page-12-8"/>[12] Martin Burtscher and Paruj Ratanaworabhan. 2007. 倍精度浮動小数点データの高スループット圧縮. In Data Compression Conference (DCC). 293–302. https://doi.org/10.1109/DCC.2007.44
-- <Anchor id="page-12-6"/>[13] Jef Carpenter and Eben Hewitt. 2016. Cassandra: 定義ガイド (第2版). O'Reilly Media, Inc.
+- [9] Burton H. Bloom. 1970. 許容誤差を伴うハッシュコーディングにおける時間/空間トレードオフ. Commun. ACM 13, 7 (1970), 422–426. [https://doi.org/10.1145/362686.](https://doi.org/10.1145/362686.362692) [362692](https://doi.org/10.1145/362686.362692)
+- <Anchor id="page-12-27"/>[10] Peter Boncz, Thomas Neumann, and Orri Erling. 2014. TPC-H分析: 影響力のあるベンチマークからの隠されたメッセージと教訓. パフォーマンスキャラクタリゼーションとベンチマーキング. 61–76. [https://doi.org/10.1007/978-3-319-](https://doi.org/10.1007/978-3-319-04936-6_5) [04936-6_5](https://doi.org/10.1007/978-3-319-04936-6_5)
+- <Anchor id="page-12-0"/>[11] Peter Boncz, Marcin Zukowski, and Niels Nes. 2005. MonetDB/X100: ハイパーパイプライン化クエリ実行. CIDR.
+- <Anchor id="page-12-8"/>[12] Martin Burtscher and Paruj Ratanaworabhan. 2007. 倍精度浮動小数点データの高スループット圧縮. データ圧縮会議 (DCC). 293–302. https://doi.org/10.1109/DCC.2007.44
+- <Anchor id="page-12-6"/>[13] Jef Carpenter and Eben Hewitt. 2016. Cassandra: 完全ガイド (第2版). O'Reilly Media, Inc.
 - <Anchor id="page-12-17"/>[14] Bernadette Charron-Bost, Fernando Pedone, and André Schiper (Eds.). 2010. レプリケーション: 理論と実践. Springer-Verlag.
-- <Anchor id="page-12-3"/>[15] chDB. 2024. chDB - 埋め込みOLAP SQLエンジン. 2024-06-20にhttps://github.com/chdb-io/chdbから取得
-- <Anchor id="page-12-29"/>[16] ClickHouse. 2024. ClickBench: 分析データベースのベンチマーク. 2024-06-20にhttps://github.com/ClickHouse/ClickBenchから取得
-- <Anchor id="page-12-28"/>[17] ClickHouse. 2024. ClickBench: 比較測定. 2024-06-20にhttps://benchmark.clickhouse.comから取得
-- <Anchor id="page-12-33"/>[18] ClickHouse. 2024. ClickHouseロードマップ2024 (GitHub). 2024-06-20にhttps://github.com/ClickHouse/ClickHouse/issues/58392から取得
-- <Anchor id="page-12-30"/>[19] ClickHouse. 2024. ClickHouseバージョンベンチマーク. 2024-06-20にhttps://github.com/ClickHouse/ClickBench/tree/main/versionsから取得
-- <Anchor id="page-12-31"/>[20] ClickHouse. 2024. ClickHouseバージョンベンチマーク結果. 2024-06-20にhttps://benchmark.clickhouse.com/versions/から取得
-- <Anchor id="page-12-32"/>[21] Andrew Crotty. 2022. MgBench. 2024-06-20にhttps://github.com/から取得 [https://github.com/andrewcrotty/mgbench](https://github.com/andrewcrotty/mgbench)
-- <Anchor id="page-12-37"/>[22] Benoit Dageville, Thierry Cruanes, Marcin Zukowski, Vadim Antonov, Artin Avanes, Jon Bock, Jonathan Claybaugh, Daniel Engovatov, Martin Hentschel, Jiansheng Huang, Allison W. Lee, Ashish Motivala, Abdul Q. Munir, Steven Pelley, Peter Povinec, Greg Rahn, Spyridon Triantafyllis, and Philipp Unterbrunner. 2016. Snowfake Elastic Data Warehouse. In Proceedings of the 2016 International Conference on Management of Data (San Francisco, California, USA) (SIGMOD '16). Association for Computing Machinery, New York, NY, USA, 215–226. [https:](https://doi.org/10.1145/2882903.2903741) [//doi.org/10.1145/2882903.2903741](https://doi.org/10.1145/2882903.2903741)
-- <Anchor id="page-12-9"/>[23] Patrick Damme, Annett Ungethüm, Juliana Hildebrandt, Dirk Habich, and Wolfgang Lehner. 2019. 総合実験調査から軽量整数圧縮アルゴリズムのコストベースセレクション戦略への移行. ACM Trans. Database Syst. 44, 3, Article 9 (2019), 46ページ. https://doi.org/10.1145/3323991
-- <Anchor id="page-12-1"/>[24] Philippe Dobbelaere and Kyumars Sheykh Esmaili. 2017. Kafka対RabbitMQ: 2つの業界の参照プロデュース/サブスクライブ実装の比較研究: 業界論文 (DEBS '17). Association for Computing Machinery, New York, NY, USA, 227–238. https://doi.org/10.1145/3093742.3093908
-- <Anchor id="page-12-19"/>[25] LLVM documentation. 2024. LLVMにおける自動ベクタ化. 2024-06-20にhttps://llvm.org/docs/Vectorizers.htmlから取得
-- <Anchor id="page-12-7"/>[26] Siying Dong, Andrew Kryczka, Yanqin Jin, and Michael Stumm. 2021. RocksDB: 大規模アプリケーションにサービスを提供するキーバリューストアの開発優先度の進化. ACM Transactions on Storage 17, 4, Article 26 (2021), 32ページ. https://doi.org/10.1145/3483840
-- <Anchor id="page-12-34"/>[27] Markus Dreseler, Martin Boissier, Tilmann Rabl, and Matthias Ufacker. 2020. TPC-Hボトルネックの定量化と最適化. Proc. VLDB Endow. 13, 8 (2020), 1206–1220. https://doi.org/10.14778/3389133.3389138
-- <Anchor id="page-12-12"/>[28] Ted Dunning. 2021. t-digest: 分布の効率的な推定. Software Impacts 7 (2021). https://doi.org/10.1016/j.simpa.2020.100049
-- <Anchor id="page-12-16"/>[29] Martin Faust, Martin Boissier, Marvin Keller, David Schwalb, Holger Bischof, Katrin Eisenreich, Franz Färber, and Hasso Plattner. 2016. SAP HANAにおけるハッシュインデックスを用いたフットプリント削減と一意性強制. In Database and Expert Systems Applications. 137–151. [https://doi.org/10.1007/978-3-319-44406-](https://doi.org/10.1007/978-3-319-44406-2_11) [2_11](https://doi.org/10.1007/978-3-319-44406-2_11)
-- <Anchor id="page-12-11"/>[30] Philippe Flajolet, Eric Fusy, Olivier Gandouet, and Frederic Meunier. 2007. HyperLogLog: ほぼ最適な基数推定アルゴリズムの分析. In AofA: Algorithmsの分析, Vol. DMTCS Proceedings vol. AH, 2007年のアルゴリズム分析に関する会議 (AofA 07). Discrete Mathematics and Theoretical Computer Science, 137–156. https://doi.org/10.46298/dmtcs.3545
-- <Anchor id="page-12-13"/>[31] Hector Garcia-Molina, Jefrey D. Ullman, and Jennifer Widom. 2009. データベースシステム - 完全版 (第2版).
-- <Anchor id="page-12-24"/>[32] Pawan Goyal, Harrick M. Vin, and Haichen Chen. 1996. 開始時公平キューイング: 統合サービスパケットスイッチングネットワークのためのスケジューリングアルゴリズム. 26, 4 (1996), 157–168. https://doi.org/10.1145/248157.248171
+- <Anchor id="page-12-3"/>[15] chDB. 2024. chDB - 組み込みOLAP SQLエンジン. https://github.com/chdb-io/chdb
+- <Anchor id="page-12-29"/>[16] ClickHouse. 2024. ClickBench: 分析データベースのためのベンチマーク. https://github.com/ClickHouse/ClickBench
+- <Anchor id="page-12-28"/>[17] ClickHouse. 2024. ClickBench: 比較測定. https://benchmark.clickhouse.com
+- <Anchor id="page-12-33"/>[18] ClickHouse. 2024. ClickHouse ロードマップ 2024 (GitHub). https://github.com/ClickHouse/ClickHouse/issues/58392
+- <Anchor id="page-12-30"/>[19] ClickHouse. 2024. ClickHouse バージョンベンチマーク. https://github.com/ClickHouse/ClickBench/tree/main/versions
+- <Anchor id="page-12-31"/>[20] ClickHouse. 2024. ClickHouse バージョンベンチマーク結果. https://benchmark.clickhouse.com/versions/
+- <Anchor id="page-12-32"/>[21] Andrew Crotty. 2022. MgBench. https://github.com/andrewcrotty/mgbench
+- <Anchor id="page-12-37"/>[22] Benoit Dageville, Thierry Cruanes, Marcin Zukowski, Vadim Antonov, Artin Avanes, Jon Bock, Jonathan Claybaugh, Daniel Engovatov, Martin Hentschel, Jiansheng Huang, Allison W. Lee, Ashish Motivala, Abdul Q. Munir, Steven Pelley, Peter Povinec, Greg Rahn, Spyridon Triantafyllis, and Philipp Unterbrunner. 2016. Snowflake Elastic Data Warehouse. 2016年国際データ管理会議 (サンフランシスコ, カリフォルニア, USA) 論文集 (SIGMOD '16). コンピュータ機械協会, ニューヨーク, NY, USA, 215–226. [https:](https://doi.org/10.1145/2882903.2903741) [//doi.org/10.1145/2882903.2903741](https://doi.org/10.1145/2882903.2903741)
+- <Anchor id="page-12-9"/>[23] Patrick Damme, Annett Ungethüm, Juliana Hildebrandt, Dirk Habich, and Wolfgang Lehner. 2019. 包括的実験調査から軽量整数圧縮アルゴリズムのコストベース選択戦略への移行. ACM Trans. Database Syst. 44, 3, Article 9 (2019), 46ページ. https://doi.org/10.1145/3323991
+- <Anchor id="page-12-1"/>[24] Philippe Dobbelaere and Kyumars Sheykh Esmaili. 2017. Kafka対RabbitMQ: 2つの業界リファレンスのパブリッシュ/サブスクライブ実装の比較研究: 業界論文 (DEBS '17). コンピュータ機械協会, ニューヨーク, NY, USA, 227–238. https://doi.org/10.1145/3093742.3093908
+- <Anchor id="page-12-19"/>[25] LLVMドキュメンテーション. 2024. LLVMにおける自動ベクトル化. https://llvm.org/docs/Vectorizers.html
+- <Anchor id="page-12-7"/>[26] Siying Dong, Andrew Kryczka, Yanqin Jin, and Michael Stumm. 2021. RocksDB: 大規模アプリケーションにサービスを提供するキー・バリュー・ストアにおける開発優先順位の進化. ACM Transactions on Storage 17, 4, Article 26 (2021), 32ページ. https://doi.org/10.1145/3483840
+- <Anchor id="page-12-34"/>[27] Markus Dreseler, Martin Boissier, Tilmann Rabl, and Matthias Ufacker. 2020. TPC-Hのボトルネックを定量化し、それらの最適化. Proc. VLDB Endow. 13, 8 (2020), 1206–1220. https://doi.org/10.14778/3389133.3389138
+- <Anchor id="page-12-12"/>[28] Ted Dunning. 2021. t-digest: 分布の効率的推定. Software Impacts 7 (2021). https://doi.org/10.1016/j.simpa.2020.100049
+- <Anchor id="page-12-16"/>[29] Martin Faust, Martin Boissier, Marvin Keller, David Schwalb, Holger Bischof, Katrin Eisenreich, Franz Färber, and Hasso Plattner. 2016. SAP HANAにおけるハッシュインデックスを用いたフットプリント削減と一意性保証. データベースと専門システムアプリケーションの会議. 137–151. [https://doi.org/10.1007/978-3-319-44406-](https://doi.org/10.1007/978-3-319-44406-2_11) [2_11](https://doi.org/10.1007/978-3-319-44406-2_11)
+- <Anchor id="page-12-11"/>[30] Philippe Flajolet, Eric Fusy, Olivier Gandouet, and Frederic Meunier. 2007. HyperLogLog: ほぼ最適なカーディナリティ推定アルゴリズムの分析. AofA: アルゴリズムの分析, Vol. DMTCS Proceedings vol. AH, 2007年アルゴリズム分析会議 (AofA 07). 離散数学と理論計算機科学, 137–156. https://doi.org/10.46298/dmtcs.3545
+- <Anchor id="page-12-13"/>[31] Hector Garcia-Molina, Jefrey D. Ullman, and Jennifer Widom. 2009. データベースシステム - 完全な書籍 (第2版).
+- <Anchor id="page-12-24"/>[32] Pawan Goyal, Harrick M. Vin, and Haichen Chen. 1996. スタートタイムフェアキューイング: 統合サービスパケットスイッチングネットワークのためのスケジューリングアルゴリズム. 26, 4 (1996), 157–168. https://doi.org/10.1145/248157.248171
 - <Anchor id="page-12-21"/>[33] Goetz Graefe. 1993. 大規模データベースのためのクエリ評価技術. ACM Comput. Surv. 25, 2 (1993), 73–169. https://doi.org/10.1145/152610.152611
-- <Anchor id="page-12-40"/>[34] Jean-François Im, Kishore Gopalakrishna, Subbu Subramaniam, Mayank Shrivastava, Adwait Tumbde, Xiaotian Jiang, Jennifer Dai, Seunghyun Lee, Neha Pawar, Jialiang Li, and Ravi Aringunram. 2018. Pinot: 5億人のユーザー向けのリアルタイムOLAP. In Proceedings of the 2018 International Conference on Management of Data (Houston, TX, USA) (SIGMOD '18). Association for Computing Machinery, New York, NY, USA, 583–594. https://doi.org/10.1145/3183713.3190661
-- <Anchor id="page-12-25"/>[35] ISO/IEC 9075-9:2001 2001. 情報技術 — データベース言語 — SQL — 部分9: 外部データの管理 (SQL/MED). 標準. International Organization for Standardization.
+- <Anchor id="page-12-40"/>[34] Jean-François Im, Kishore Gopalakrishna, Subbu Subramaniam, Mayank Shrivastava, Adwait Tumbde, Xiaotian Jiang, Jennifer Dai, Seunghyun Lee, Neha Pawar, Jialiang Li, and Ravi Aringunram. 2018. Pinot: リアルタイムOLAPを530百万ユーザーに提供. 2018年国際データ管理会議 (ヒューストン, TX, USA) 論文集 (SIGMOD '18). コンピュータ機械協会, ニューヨーク, NY, USA, 583–594. https://doi.org/10.1145/3183713.3190661
+- <Anchor id="page-12-25"/>[35] ISO/IEC 9075-9:2001 2001. 情報技術 — データベース言語 — SQL — 第9部: 外部データの管理 (SQL/MED). 標準. 国際標準化機構.
 - <Anchor id="page-12-2"/>[36] Paras Jain, Peter Kraft, Conor Power, Tathagata Das, Ion Stoica, and Matei Zaharia. 2023. レイクハウスストレージシステムの分析と比較. CIDR.
-- <Anchor id="page-12-4"/>[37] Project Jupyter. 2024. Jupyterノートブック. 2024-06-20に[https:](https://jupyter.org/) [//jupyter.org/](https://jupyter.org/)から取得
-- <Anchor id="page-12-22"/>[38] Timo Kersten, Viktor Leis, Alfons Kemper, Thomas Neumann, Andrew Pavlo, and Peter Boncz. 2018. コンパイルされたベクタ化クエリに関する全ての質問. Proc. VLDB Endow. 11, 13 (sep 2018), 2209–2222. https://doi.org/10.14778/3275366.3284966
-- <Anchor id="page-12-15"/>[39] Changkyu Kim, Jatin Chhugani, Nadathur Satish, Eric Sedlar, Anthony D. Nguyen, Tim Kaldewey, Victor W. Lee, Scott A. Brandt, and Pradeep Dubey. 2010. FAST: 現代のCPUおよびGPU上での高速アーキテクチャ感度のあるツリー検索. In Proceedings of the 2010 ACM SIGMOD International Conference on Management of Data (Indianapolis, Indiana, USA) (SIGMOD '10). Association for Computing Machinery, New York, NY, USA, 339–350. https://doi.org/10.1145/1807167.1807206
-- <Anchor id="page-12-5"/>[40] Donald E. Knuth. 1973. コンピュータプログラミングの技法, 第3巻: ソートと検索. Addison-Wesley.
-- <Anchor id="page-12-42"/>[41] André Kohn, Viktor Leis, and Thomas Neumann. 2018. コンパイルクエリの適応実行. In 2018 IEEE 34th International Conference on Data Engineering (ICDE). 197–208. https://doi.org/10.1109/ICDE.2018.00027
-- <Anchor id="page-12-36"/>[42] Andrew Lamb, Matt Fuller, Ramakrishna Varadarajan, Nga Tran, Ben Vandiver, Lyric Doshi, and Chuck Bear. 2012. Vertica分析データベース: C-Store 7年後. Proc. VLDB Endow. 5, 12 (aug 2012), 1790–1801. [https://doi.org/10.](https://doi.org/10.14778/2367502.2367518) [14778/2367502.2367518](https://doi.org/10.14778/2367502.2367518)
-- <Anchor id="page-12-43"/>[43] Harald Lang, Tobias Mühlbauer, Florian Funke, Peter A. Boncz, Thomas Neumann, and Alfons Kemper. 2016. データブロック: 圧縮ストレージを使用したハイブリッドOLTPおよびOLAP (ベクタ化とコンパイルの両方を使用). In Proceedings of the 2016 International Conference on Management of Data (San Francisco, California, USA) (SIGMOD '16). Association for Computing Machinery, New York, NY, USA, 311–326. https://doi.org/10.1145/2882903.2882925
-- <Anchor id="page-12-20"/>[44] Viktor Leis, Peter Boncz, Alfons Kemper, and Thomas Neumann. 2014. モーセルドリブンパラレリズム: マルチコア時代のNUMA意識のあるクエリ評価フレームワーク. In Proceedings of the 2014 ACM SIGMOD International Conference on Management of Data (Snowbird, Utah, USA) (SIGMOD '14). Association for Computing Machinery, New York, NY, USA, 743–754. [https://doi.org/10.1145/2588555.](https://doi.org/10.1145/2588555.2610507) [2610507](https://doi.org/10.1145/2588555.2610507)
-- <Anchor id="page-13-17"/>[45] Viktor Leis, Alfons Kemper, and Thomas Neumann. 2013. 適応型ラジックスツリー: メインメモリデータベースのためのARTfulインデキシング. In 2013 IEEE 29th International Conference on Data Engineering (ICDE). 38–49. [https://doi.org/10.1109/ICDE.](https://doi.org/10.1109/ICDE.2013.6544812) [2013.6544812](https://doi.org/10.1109/ICDE.2013.6544812)
-- <Anchor id="page-13-34"/>[46] Chunwei Liu, Anna Pavlenko, Matteo Interlandi, and Brandon Haynes. 2023. 分析DBMSのための一般的なオープンフォーマットの深堀り. 16, 11 (jul 2023), 3044–3056. https://doi.org/10.14778/3611479.3611507
-- <Anchor id="page-13-30"/>[47] Zhenghua Lyu, Huan Hubert Zhang, Gang Xiong, Gang Guo, Haozhou Wang, Jinbao Chen, Asim Praveen, Yu Yang, Xiaoming Gao, Alexandra Wang, Wen Lin, Ashwin Agrawal, Junfeng Yang, Hao Wu, Xiaoliang Li, Feng Guo, Jiang Wu, Jesse Zhang, and Venkatesh Raghavan. 2021. Greenplum: トランザクショナルおよび分析ワークロードのためのハイブリッドデータベース (SIGMOD '21). Association for Computing Machinery, New York, NY, USA, 2530–2542. [https:](https://doi.org/10.1145/3448016.3457562) [//doi.org/10.1145/3448016.3457562](https://doi.org/10.1145/3448016.3457562)
-- <Anchor id="page-13-28"/>[48] Roger MacNicol and Blaine French. 2004. Sybase IQ Multiplex - 分析のために設計. In Proceedings of the Thirtieth International Conference on Very Large Data Bases - Volume 30 (Toronto, Canada) (VLDB '04). VLDB Endowment, 1227–1230.
-- <Anchor id="page-13-31"/>[49] Sergey Melnik, Andrey Gubarev, Jing Jing Long, Geofrey Romer, Shiva Shivakumar, Matt Tolton, Theo Vassilakis, Hossein Ahmadi, Dan Delorey, Slava Min, Mosha Pasumansky, and Jef Shute. 2020. Dremel: WebスケールでのインタラクティブSQL分析の10年. Proc. VLDB Endow. 13, 12 (aug 2020), 3461–3472. https://doi.org/10.14778/3415478.3415568
-- <Anchor id="page-13-2"/>[50] Microsoft. 2024. Kustoクエリ言語. 2024-06-20に[https:](https://github.com/microsoft/Kusto-Query-Language) [//github.com/microsoft/Kusto-Query-Language](https://github.com/microsoft/Kusto-Query-Language)から取得
-- <Anchor id="page-13-14"/>[51] Guido Moerkotte. 1998. 小さな物化集計: データウェアハウジングのための軽量インデックス構造. In Proceedings of the 24rd International Conference on Very Large Data Bases (VLDB '98). 476–487.
-- <Anchor id="page-13-22"/>[52] Jalal Mostafa, Sara Wehbi, Suren Chilingaryan, and Andreas Kopmann. 2022. SciTS: 科学実験と工業インターネットオブシングスにおける時系列データベースのベンチマーク. In Proceedings of the 34th International Conference on Scientific and Statistical Database Management (SSDBM '22). Article 12. [https:](https://doi.org/10.1145/3538712.3538723) [//doi.org/10.1145/3538712.3538723](https://doi.org/10.1145/3538712.3538723)
-- <Anchor id="page-13-0"/>[53] Thomas Neumann. 2011. 現代のハードウェア用の効率的なクエリプランのコンパイル. Proc. VLDB Endow. 4, 9 (jun 2011), 539–550. [https://doi.org/10.14778/](https://doi.org/10.14778/2002938.2002940) [2002938.2002940](https://doi.org/10.14778/2002938.2002940)
-- <Anchor id="page-13-25"/>[54] Thomas Neumann and Michael J. Freitag. 2020. Umbra: メモリ内性能を持つディスクベースシステム. In 10th Conference on Innovative Data Systems Research, CIDR 2020, Amsterdam, The Netherlands, January 12-15, 2020, Online Proceedings. www.cidrdb.org. [http://cidrdb.org/cidr2020/papers/p29-neumann](http://cidrdb.org/cidr2020/papers/p29-neumann-cidr20.pdf)[cidr20.pdf](http://cidrdb.org/cidr2020/papers/p29-neumann-cidr20.pdf)
-- <Anchor id="page-13-35"/>[55] Thomas Neumann, Tobias Mühlbauer, and Alfons Kemper. 2015. メインメモリデータベースシステムのための高速直列化可能なマルチバージョン同時実行制御. In Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data (Melbourne, Victoria, Australia) (SIGMOD '15). Association for Computing Machinery, New York, NY, USA, 677–689. [https://doi.org/10.1145/2723372.](https://doi.org/10.1145/2723372.2749436) [2749436](https://doi.org/10.1145/2723372.2749436)
-- <Anchor id="page-13-8"/>[56] LevelDB on GitHub. 2024. LevelDB. 2024-06-20に[https://github.](https://github.com/google/leveldb) [com/google/leveldb](https://github.com/google/leveldb)から取得
-- <Anchor id="page-13-26"/>[57] Patrick O'Neil, Elizabeth O'Neil, Xuedong Chen, and Stephen Revilak. 2009. スターシェマベンチマークと拡張ファクトテーブルインデキシング. In Performance Evaluation and Benchmarking. Springer Berlin Heidelberg, 237–252. [https:](https://doi.org/10.1007/978-3-642-10424-4_17) [//doi.org/10.1007/978-3-642-10424-4_17](https://doi.org/10.1007/978-3-642-10424-4_17)
-- <Anchor id="page-13-7"/>[58] Patrick E. O'Neil, Edward Y. C. Cheng, Dieter Gawlick, and Elizabeth J. O'Neil. 1996. ログ構造マージツリー (LSMツリー). Acta Informatica 33 (1996), 351–385. https://doi.org/10.1007/s002360050048
-- <Anchor id="page-13-4"/>[59] Diego Ongaro and John Ousterhout. 2014. 理解可能なコンセンサスアルゴリズムの探索. In Proceedings of the 2014 USENIX Conference on USENIX Annual Technical Conference (USENIX ATC'14). 305–320. [https://doi.org/doi/10.](https://doi.org/doi/10.5555/2643634.2643666) [5555/2643634.2643666](https://doi.org/doi/10.5555/2643634.2643666)
+- <Anchor id="page-12-4"/>[37] Project Jupyter. 2024. Jupyter Notebooks. https://jupyter.org/
+- <Anchor id="page-12-22"/>[38] Timo Kersten, Viktor Leis, Alfons Kemper, Thomas Neumann, Andrew Pavlo, and Peter Boncz. 2018. コンパイル済みおよびベクトル化されたクエリについて知っておくべきすべてのこと. Proc. VLDB Endow. 11, 13 (2018年9月), 2209–2222. https://doi.org/10.14778/3275366.3284966
+- <Anchor id="page-12-15"/>[39] Changkyu Kim, Jatin Chhugani, Nadathur Satish, Eric Sedlar, Anthony D. Nguyen, Tim Kaldewey, Victor W. Lee, Scott A. Brandt, and Pradeep Dubey. 2010. FAST: 現代のCPUおよびGPU上でのアーキテクチャに敏感な木検索. 2010年ACM SIGMOD国際データ管理会議 (インディアナポリス, インディアナ, USA) 論文集 (SIGMOD '10). コンピュータ機械協会, ニューヨーク, NY, USA, 339–350. https://doi.org/10.1145/1807167.1807206
+- <Anchor id="page-12-5"/>[40] Donald E. Knuth. 1973. コンピュータプログラミングの技法, 第III巻: ソートと検索. Addison-Wesley.
+- <Anchor id="page-12-42"/>[41] André Kohn, Viktor Leis, and Thomas Neumann. 2018. コンパイル済みクエリの適応実行. 2018年IEEE第34回国際データ工学会議 (ICDE). 197–208. https://doi.org/10.1109/ICDE.2018.00027
+- <Anchor id="page-12-36"/>[42] Andrew Lamb, Matt Fuller, Ramakrishna Varadarajan, Nga Tran, Ben Vandiver, Lyric Doshi, and Chuck Bear. 2012. Vertica分析データベース: C-Store 7年後. Proc. VLDB Endow. 5, 12 (2012年8月), 1790–1801. [https://doi.org/10.](https://doi.org/10.14778/2367502.2367518) [14778/2367502.2367518](https://doi.org/10.14778/2367502.2367518)
+- <Anchor id="page-12-43"/>[43] Harald Lang, Tobias Mühlbauer, Florian Funke, Peter A. Boncz, Thomas Neumann, and Alfons Kemper. 2016. データブロック: ベクトル化とコンパイルの両方を使用した圧縮ストレージでのハイブリッドOLTPとOLAP. 2016年国際データ管理会議 (サンフランシスコ, カリフォルニア, USA) (SIGMOD '16). コンピュータ機械協会, ニューヨーク, NY, USA, 311–326. https://doi.org/10.1145/2882903.2882925
+- <Anchor id="page-12-20"/>[44] Viktor Leis, Peter Boncz, Alfons Kemper, and Thomas Neumann. 2014. モルセルトドライブ並列性: 多コア時代のNUMAを意識したクエリ評価フレームワーク. 2014年ACM SIGMOD国際データ管理会議 (スノーバード, ユタ, USA) 論文集 (SIGMOD '14). コンピュータ機械協会, ニューヨーク, NY, USA, 743–754. [https://doi.org/10.1145/2588555.](https://doi.org/10.1145/2588555.2610507) [2610507](https://doi.org/10.1145/2588555.2610507)
+- <Anchor id="page-13-17"/>[45] Viktor Leis, Alfons Kemper, and Thomas Neumann. 2013. 適応型ラジックス木: メインメモリデータベースのためのARTfulインデクシング. 2013年IEEE第29回国際データ工学会議 (ICDE). 38–49. [https://doi.org/10.1109/ICDE.](https://doi.org/10.1109/ICDE.2013.6544812) [2013.6544812](https://doi.org/10.1109/ICDE.2013.6544812)
+- <Anchor id="page-13-34"/>[46] Chunwei Liu, Anna Pavlenko, Matteo Interlandi, and Brandon Haynes. 2023. 分析DBMSのための一般的なオープンフォーマットの深堀り. 16, 11 (2023年7月), 3044–3056. https://doi.org/10.14778/3611479.3611507
+- <Anchor id="page-13-30"/>[47] Zhenghua Lyu, Huan Hubert Zhang, Gang Xiong, Gang Guo, Haozhou Wang, Jinbao Chen, Asim Praveen, Yu Yang, Xiaoming Gao, Alexandra Wang, Wen Lin, Ashwin Agrawal, Junfeng Yang, Hao Wu, Xiaoliang Li, Feng Guo, Jiang Wu, Jesse Zhang, and Venkatesh Raghavan. 2021. Greenplum: トランザクションおよび分析ワークロードのためのハイブリッドデータベース (SIGMOD '21). コンピュータ機械協会, ニューヨーク, NY, USA, 2530–2542. [https:](https://doi.org/10.1145/3448016.3457562) [//doi.org/10.1145/3448016.3457562](https://doi.org/10.1145/3448016.3457562)
+- <Anchor id="page-13-28"/>[48] Roger MacNicol and Blaine French. 2004. Sybase IQ Multiplex - 分析のために設計されました. 第三十回データベース会議 (トロント, カナダ) (VLDB '04). VLDB Endowment, 1227–1230.
+- <Anchor id="page-13-31"/>[49] Sergey Melnik, Andrey Gubarev, Jing Jing Long, Geofrey Romer, Shiva Shivakumar, Matt Tolton, Theo Vassilakis, Hossein Ahmadi, Dan Delorey, Slava Min, Mosha Pasumansky, and Jef Shute. 2020. Dremel: ウェブスケールのインタラクティブSQL分析の10年. Proc. VLDB Endow. 13, 12 (2020年8月), 3461–3472. https://doi.org/10.14778/3415478.3415568
+- <Anchor id="page-13-2"/>[50] Microsoft. 2024. Kusto Query Language. https://github.com/microsoft/Kusto-Query-Language
+- <Anchor id="page-13-14"/>[51] Guido Moerkotte. 1998. 小さなマテリアライズド集計: データウェアハウジングのための軽量インデックス構造. 第24回国際データベース会議 (VLDB '98) 論文集. 476–487.
+- <Anchor id="page-13-22"/>[52] Jalal Mostafa, Sara Wehbi, Suren Chilingaryan, and Andreas Kopmann. 2022. SciTS: 科学的実験と産業用IoTにおける時系列データベースのベンチマーク. 第34回科学的および統計的データベース管理に関する国際会議 (SSDBM '22) 論文集. Article 12. [https:](https://doi.org/10.1145/3538712.3538723) [//doi.org/10.1145/3538712.3538723](https://doi.org/10.1145/3538712.3538723)
+- <Anchor id="page-13-0"/>[53] Thomas Neumann. 2011. 現代のハードウェア向けに効率的なクエリプランをコンパイルする. Proc. VLDB Endow. 4, 9 (2011年6月), 539–550. [https://doi.org/10.14778/](https://doi.org/10.14778/2002938.2002940) [2002938.2002940](https://doi.org/10.14778/2002938.2002940)
+- <Anchor id="page-13-25"/>[54] Thomas Neumann and Michael J. Freitag. 2020. Umbra: メモリ内性能を持つディスクベースシステム. 第10回革新的データシステム研究会議, CIDR 2020, アムステルダム, オランダ, 2020年1月12-15, オンライン議事録. www.cidrdb.org. [http://cidrdb.org/cidr2020/papers/p29-neumann](http://cidrdb.org/cidr2020/papers/p29-neumann-cidr20.pdf)[cidr20.pdf](http://cidrdb.org/cidr2020/papers/p29-neumann-cidr20.pdf)
+- <Anchor id="page-13-35"/>[55] Thomas Neumann, Tobias Mühlbauer, and Alfons Kemper. 2015. メインメモリデータベースシステムのための高速な可視化マルチバージョン同時制御. 2015年ACM SIGMOD国際データ管理会議 (メルボルン, ビクトリア, オーストラリア) 論文集 (SIGMOD '15). コンピュータ機械協会, ニューヨーク, NY, USA, 677–689. [https://doi.org/10.1145/2723372.](https://doi.org/10.1145/2723372.2749436) [2749436](https://doi.org/10.1145/2723372.2749436)
+- <Anchor id="page-13-8"/>[56] LevelDB on GitHub. 2024. LevelDB. https://github.com/google/leveldb
+- <Anchor id="page-13-26"/>[57] Patrick O'Neil, Elizabeth O'Neil, Xuedong Chen, and Stephen Revilak. 2009. スター スキーマベンチマークと拡張されたファクトテーブルインデクシング. パフォーマンス評価とベンチマーキング. Springer Berlin Heidelberg, 237–252. [https:](https://doi.org/10.1007/978-3-642-10424-4_17) [//doi.org/10.1007/978-3-642-10424-4_17](https://doi.org/10.1007/978-3-642-10424-4_17)
+- <Anchor id="page-13-7"/>[58] Patrick E. O'Neil, Edward Y. C. Cheng, Dieter Gawlick, and Elizabeth O'Neil. 1996. ログ構造マージツリー (LSMツリー). Acta Informatica 33 (1996), 351–385. https://doi.org/10.1007/s002360050048
+- <Anchor id="page-13-4"/>[59] Diego Ongaro and John Ousterhout. 2014. 理解可能なコンセンサスアルゴリズムを求めて. 2014年USENIXカンファレンスのUSENIX年次技術会議論文集 (USENIX ATC'14). 305–320. [https://doi.org/doi/10.](https://doi.org/doi/10.5555/2643634.2643666) [5555/2643634.2643666](https://doi.org/doi/10.5555/2643634.2643666)
 - <Anchor id="page-13-3"/>[60] Patrick O'Neil, Edward Cheng, Dieter Gawlick, and Elizabeth O'Neil. 1996. ログ構造マージツリー (LSM-ツリー). Acta Inf. 33, 4 (1996), 351–385. [https:](https://doi.org/10.1007/s002360050048) [//doi.org/10.1007/s002360050048](https://doi.org/10.1007/s002360050048)
-- <Anchor id="page-13-5"/>[61] Pandas. 2024. Pandas Dataframes. 2024-06-20に[https://pandas.](https://pandas.pydata.org/) [pydata.org/](https://pandas.pydata.org/)から取得
-- <Anchor id="page-13-32"/>[62] Pedro Pedreira, Orri Erling, Masha Basmanova, Kevin Wilfong, Laith Sakka, Krishna Pai, Wei He, and Biswapesh Chattopadhyay. 2022. Velox: メタの統一された実行エンジン. Proc. VLDB Endow. 15, 12 (aug 2022), 3372–3384. [https:](https://doi.org/10.14778/3554821.3554829) [//doi.org/10.14778/3554821.3554829](https://doi.org/10.14778/3554821.3554829)
+- <Anchor id="page-13-5"/>[61] Pandas. 2024. Pandas Dataframes. https://pandas.pydata.org/
+- <Anchor id="page-13-32"/>[62] Pedro Pedreira, Orri Erling, Masha Basmanova, Kevin Wilfong, Laith Sakka, Krishna Pai, Wei He, and Biswapesh Chattopadhyay. 2022. Velox: Metaの統一実行エンジン. Proc. VLDB Endow. 15, 12 (2022年8月), 3372–3384. [https:](https://doi.org/10.14778/3554821.3554829) [//doi.org/10.14778/3554821.3554829](https://doi.org/10.14778/3554821.3554829)
 - <Anchor id="page-13-10"/>[63] Tuomas Pelkonen, Scott Franklin, Justin Teller, Paul Cavallaro, Qi Huang, Justin Meza, and Kaushik Veeraraghavan. 2015. Gorilla: 高速でスケーラブルなメモリ内時系列データベース. Proceedings of the VLDB Endowment 8, 12 (2015), 1816–1827. https://doi.org/10.14778/2824032.2824078
-- <Anchor id="page-13-18"/>[64] Orestis Polychroniou, Arun Raghavan, and Kenneth A. Ross. 2015. メモリ内データベースのためのSIMDベクタ化の再考. In Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data (SIGMOD '15). 1493–1508. https://doi.org/10.1145/2723372.2747645
-- <Anchor id="page-13-21"/>[65] PostgreSQL. 2024. PostgreSQL - 外部データラッパー. 2024-06-20にhttps://wiki.postgresql.org/wiki/Foreign_data_wrappersから取得
-- <Anchor id="page-13-23"/>[66] Mark Raasveldt, Pedro Holanda, Tim Gubner, and Hannes Mühleisen. 2018. 公平なベンチマーキングは難しい: データベースパフォーマンステストにおける一般的な落とし穴. In Proceedings of the Workshop on Testing Database Systems (Houston, TX, USA) (DBTest'18). Article 2, 6ページ. https://doi.org/10.1145/3209950.3209955
-- <Anchor id="page-13-6"/>[67] Mark Raasveldt and Hannes Mühleisen. 2019. DuckDB: 埋め込み可能な分析データベース (SIGMOD '19). Association for Computing Machinery, New York, NY, USA, 1981–1984. https://doi.org/10.1145/3299869.3320212
-- <Anchor id="page-13-16"/>[68] Jun Rao and Kenneth A. Ross. 1999. メインメモリにおける意思決定支援のためのキャッシュ意識のあるインデキシング. In Proceedings of the 25th International Conference on Very Large Data Bases (VLDB '99). San Francisco, CA, USA, 78–89.
-- <Anchor id="page-13-36"/>[69] Navin C. Sabharwal and Piyush Kant Pandey. 2020. Prometheusクエリ言語 (PromQL) の利用. In Monitoring Microservices and Containerized Applications. https://doi.org/10.1007/978-1-4842-6216-0_5
-- <Anchor id="page-13-27"/>[70] Todd W. Schneider. 2022. ニューヨーク市タクシーおよび有料車両データ. 2024-06-20にhttps://github.com/toddwschneider/nyc-taxi-dataから取得
-- <Anchor id="page-13-13"/>[71] Mike Stonebraker, Daniel J. Abadi, Adam Batkin, Xuedong Chen, Mitch Cherniack, Miguel Ferreira, Edmond Lau, Amerson Lin, Sam Madden, Elizabeth O'Neil, Pat O'Neil, Alex Rasin, Nga Tran, and Stan Zdonik. 2005. C-Store: 列指向DBMS. In Proceedings of the 31st International Conference on Very Large Data Bases (VLDB '05). 553–564.
-- <Anchor id="page-13-29"/>[72] Teradata. 2024. Teradata Database. 2024-06-20に[https://www.](https://www.teradata.com/resources/datasheets/teradata-database) [teradata.com/resources/datasheets/teradata-database](https://www.teradata.com/resources/datasheets/teradata-database)から取得
-- <Anchor id="page-13-15"/>[73] Frederik Transier. 2010. メモリ内テキスト検索エンジンのためのアルゴリズムとデータ構造. Ph.D. 論文. https://doi.org/10.5445/IR/1000015824
-- <Anchor id="page-13-24"/>[74] Adrian Vogelsgesang, Michael Haubenschild, Jan Finis, Alfons Kemper, Viktor Leis, Tobias Muehlbauer, Thomas Neumann, and Manuel Then. 2018. 現実を見ろ: ベンチマークが現実世界を表さない理由. In Proceedings of the Workshop on Testing Database Systems (Houston, TX, USA) (DBTest'18). Article 1, 6ページ. https://doi.org/10.1145/3209950.3209952
-- <Anchor id="page-13-9"/>[75] LZ4 website. 2024. LZ4. 2024-06-20にhttps://lz4.org/から取得
-- <Anchor id="page-13-11"/><Anchor id="page-13-1"/>[76] PRQL website. 2024. PRQL. 2024-06-20にhttps://prql-lang.orgから取得
-- [77] Till Westmann, Donald Kossmann, Sven Helmer, and Guido Moerkotte. 2000. 圧縮データベースの実装とパフォーマンス. SIGMOD Rec.
-- <Anchor id="page-13-33"/>29, 3 (sep 2000), 55–67. https://doi.org/10.1145/362084.362137 [78] Fangjin Yang, Eric Tschetter, Xavier Léauté, Nelson Ray, Gian Merlino, and Deep Ganguli. 2014. Druid: リアルタイム分析データストア. In Proceedings of the 2014 ACM SIGMOD International Conference on Management of Data (Snowbird, Utah, USA) (SIGMOD '14). Association for Computing Machinery, New York, NY, USA, 157–168. https://doi.org/10.1145/2588555.2595631
+- <Anchor id="page-13-18"/>[64] Orestis Polychroniou, Arun Raghavan, and Kenneth A. Ross. 2015. メモリ内データベースのためのSIMDベクトル化の再考. 2015年ACM SIGMOD国際データ管理会議 (SIGMOD '15) 論文集. 1493–1508. https://doi.org/10.1145/2723372.2747645
+- <Anchor id="page-13-21"/>[65] PostgreSQL. 2024. PostgreSQL - 外部データラッパー. https://wiki.postgresql.org/wiki/Foreign_data_wrappers
+- <Anchor id="page-13-23"/>[66] Mark Raasveldt, Pedro Holanda, Tim Gubner, and Hannes Mühleisen. 2018. 公正なベンチマーキングの考慮すべき難しさ: データベースパフォーマンステストにおける一般的な落とし穴. データベースシステムのテストに関するワークショップ (ヒューストン, TX, USA) (DBTest'18). Article 2, 6ページ. https://doi.org/10.1145/3209950.3209955
+- <Anchor id="page-13-6"/>[67] Mark Raasveldt and Hannes Mühleisen. 2019. DuckDB: 組み込み可能な分析データベース (SIGMOD '19). コンピュータ機械協会, ニューヨーク, NY, USA, 1981–1984. https://doi.org/10.1145/3299869.3320212
+- <Anchor id="page-13-16"/>[68] Jun Rao and Kenneth A. Ross. 1999. メインメモリにおける意思決定支援のためのキャッシュ意識型インデクシング. 第25回非常に大きなデータベース国際会議 (VLDB '99). サンフランシスコ, CA, USA, 78–89.
+- <Anchor id="page-13-36"/>[69] Navin C. Sabharwal and Piyush Kant Pandey. 2020. Prometheus クエリ言語 (PromQL) の作業. マイクロサービスおよびコンテナ化アプリケーションの監視に関する書籍. https://doi.org/10.1007/978-1-4842-6216-0_5
+- <Anchor id="page-13-27"/>[70] Todd W. Schneider. 2022. ニューヨーク市タクシーおよび依頼車両データ. https://github.com/toddwschneider/nyc-taxi-data
+- <Anchor id="page-13-13"/>[71] Mike Stonebraker, Daniel J. Abadi, Adam Batkin, Xuedong Chen, Mitch Cherniack, Miguel Ferreira, Edmond Lau, Amerson Lin, Sam Madden, Elizabeth O'Neil, Pat O'Neil, Alex Rasin, Nga Tran, and Stan Zdonik. 2005. C-Store: 列指向DBMS. 第31回非常に大きなデータベース国際会議 (VLDB '05) 論文集. 553–564.
+- <Anchor id="page-13-29"/>[72] Teradata. 2024. Teradata データベース. https://www.teradata.com/resources/datasheets/teradata-database
+- <Anchor id="page-13-15"/>[73] Frederik Transier. 2010. メモリ内テキスト検索エンジンのためのアルゴリズムとデータ構造. 博士論文. https://doi.org/10.5445/IR/1000015824
+- <Anchor id="page-13-24"/>[74] Adrian Vogelsgesang, Michael Haubenschild, Jan Finis, Alfons Kemper, Viktor Leis, Tobias Muehlbauer, Thomas Neumann, and Manuel Then. 2018. 現実を把握する: ベンチマークが現実世界をいかに表現できないか. データベースシステムのテストに関するワークショップ (ヒューストン, TX, USA) (DBTest'18). Article 1, 6ページ. https://doi.org/10.1145/3209950.3209952
+- <Anchor id="page-13-9"/>[75] LZ4ウェブサイト. 2024. LZ4. https://lz4.org/
+- <Anchor id="page-13-11"/><Anchor id="page-13-1"/>[76] PRQLウェブサイト. 2024. PRQL. https://prql-lang.org [77] Till Westmann, Donald Kossmann, Sven Helmer, and Guido Moerkotte. 2000. 圧縮データベースの実装とパフォーマンス. SIGMOD Rec.
+- <Anchor id="page-13-33"/>29, 3 (2000年9月), 55–67. https://doi.org/10.1145/362084.362137 [78] Fangjin Yang, Eric Tschetter, Xavier Léauté, Nelson Ray, Gian Merlino, and Deep Ganguli. 2014. Druid: リアルタイム分析データストア. 2014年ACM SIGMOD国際データ管理会議 (スノーバード, ユタ, USA) 論文集 (SIGMOD '14). コンピュータ機械協会, ニューヨーク, NY, USA, 157–168. https://doi.org/10.1145/2588555.2595631
 - <Anchor id="page-13-20"/>[79] Tianqi Zheng, Zhibin Zhang, and Xueqi Cheng. 2020. SAHA: 分析データベースのための文字列適応ハッシュテーブル. Applied Sciences 10, 6 (2020). [https:](https://doi.org/10.3390/app10061915) [//doi.org/10.3390/app10061915](https://doi.org/10.3390/app10061915)
-- <Anchor id="page-13-19"/>[80] Jingren Zhou and Kenneth A. Ross. 2002. SIMD命令を使用したデータベース操作の実装. In Proceedings of the 2002 ACM SIGMOD International Conference on Management of Data (SIGMOD '02). 145–156. [https://doi.org/10.](https://doi.org/10.1145/564691.564709) [1145/564691.564709](https://doi.org/10.1145/564691.564709)
-- <Anchor id="page-13-12"/>[81] Marcin Zukowski, Sandor Heman, Niels Nes, and Peter Boncz. 2006. スーパー・スカラーRAM-CPUキャッシュ圧縮. In Proceedings of the 22nd International Conference on Data Engineering (ICDE '06). 59. [https://doi.org/10.1109/ICDE.](https://doi.org/10.1109/ICDE.2006.150) [2006.150](https://doi.org/10.1109/ICDE.2006.150)
+- <Anchor id="page-13-19"/>[80] Jingren Zhou and Kenneth A. Ross. 2002. SIMD命令を利用したデータベース操作の実装. 2002年ACM SIGMOD国際データ管理会議 (SIGMOD '02) 論文集. 145–156. [https://doi.org/10.](https://doi.org/10.1145/564691.564709) [1145/564691.564709](https://doi.org/10.1145/564691.564709)
+- <Anchor id="page-13-12"/>[81] Marcin Zukowski, Sandor Heman, Niels Nes, and Peter Boncz. 2006. スーパー スカラ RAM-CPU キャッシュ圧縮. 第22回データ工学国際会議 (ICDE '06) 論文集. 59. [https://doi.org/10.1109/ICDE.](https://doi.org/10.1109/ICDE.2006.150) [2006.150](https://doi.org/10.1109/ICDE.2006.150)

@@ -1,6 +1,8 @@
 ---
+description: 'ALTER NAMED COLLECTION のドキュメント'
+sidebar_label: 'NAMED COLLECTION'
 slug: /sql-reference/statements/alter/named-collection
-sidebar_label: NAMED COLLECTION
+title: 'ALTER NAMED COLLECTION'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

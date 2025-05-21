@@ -1,171 +1,168 @@
 ---
-title: BigQuery対ClickHouse Cloud
+title: 'BigQueryとClickHouse Cloudの比較'
 slug: /migrations/bigquery/biquery-vs-clickhouse-cloud
-description: BigQueryがClickHouse Cloudと異なる点
-keywords: [migrate, migration, migrating, data, etl, elt, BigQuery]
+description: 'BigQueryがClickHouse Cloudと異なる点'
+keywords: ['migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'BigQuery']
 ---
+```
 
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
+import Image from '@theme/IdealImage';
 
 
-# BigQuery対ClickHouse Cloud: 同等および異なる概念
+# BigQuery vs ClickHouse Cloud: 同等及び異なる概念
 
 ## リソースの組織 {#resource-organization}
 
-ClickHouse Cloudにおけるリソースの組織方法は、[BigQueryのリソース階層](https://cloud.google.com/bigquery/docs/resource-hierarchy)に似ています。以下のClickHouse Cloudのリソース階層を示す図に基づいて、具体的な違いを説明します。
+ClickHouse Cloudにおけるリソースの組織化は、[BigQueryのリソース階層](https://cloud.google.com/bigquery/docs/resource-hierarchy)に似ています。以下の図に基づいて具体的な違いを説明します。
 
-<img src={bigquery_1}    
-  class="image"
-  alt="NEEDS ALT"
-  style={{width: '600px'}} />
-
-<br />
+<Image img={bigquery_1} size="md" alt="リソースの組織"/>
 
 ### 組織 {#organizations}
 
-BigQueryと同様に、組織はClickHouse Cloudリソース階層のルートノードです。ClickHouse Cloudアカウントに最初に設定したユーザーは、自動的にそのユーザーが所有する組織に割り当てられます。このユーザーは、他のユーザーをその組織に招待することができます。
+BigQueryと同様に、組織はClickHouse Cloudリソース階層のルートノードです。ClickHouse Cloudアカウントに設定された最初のユーザーは、自動的にユーザーが所有する組織に割り当てられます。ユーザーは追加のユーザーを組織に招待することができます。
 
-### BigQueryプロジェクト対ClickHouse Cloudサービス {#bigquery-projects-vs-clickhouse-cloud-services}
+### BigQueryプロジェクトとClickHouse Cloudサービス {#bigquery-projects-vs-clickhouse-cloud-services}
 
-組織内で、ClickHouse Cloudにおけるサービスは、BigQueryプロジェクトに緩やかに相当します。なぜなら、ClickHouse Cloud内に保存されたデータはサービスに関連付けられるからです。[ClickHouse Cloudには、いくつかのサービスタイプが利用可能です](/cloud/manage/cloud-tiers)。各ClickHouse Cloudサービスは、特定のリージョンに展開され、以下を含みます。
+組織内では、ClickHouse Cloudに保存されたデータがサービスに関連付けられているため、BigQueryプロジェクトにおおむね相当するサービスを作成することができます。ClickHouse Cloudには[利用可能なサービスの種類がいくつかあります](/cloud/manage/cloud-tiers)。各ClickHouse Cloudサービスは特定のリージョンにデプロイされ、以下を含みます：
 
-1. 計算ノードのグループ（現在、開発ティアサービスには2ノード、プロダクションティアサービスには3ノード）。これらのノードに対して、ClickHouse Cloudは[手動および自動での垂直および水平方向のスケーリングをサポートしています](/manage/scaling#how-scaling-works-in-clickhouse-cloud)。
-2. サービスがすべてのデータを保存するオブジェクトストレージフォルダー。
-3. エンドポイント（またはClickHouse Cloud UIコンソールを介して作成された複数のエンドポイント） - サービスに接続するために使用するサービスURL（例:`https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`）
+1. 計算ノードのグループ（現在、Developmentティアサービスには2ノード、Productionティアサービスには3ノード）。これらのノードに対して、ClickHouse Cloudは[縦横のスケーリング](/manage/scaling#how-scaling-works-in-clickhouse-cloud)を手動または自動でサポートしています。
+2. サービスがすべてのデータを保存するオブジェクトストレージフォルダ。
+3. エンドポイント（またはClickHouse Cloud UIコンソール経由で作成された複数のエンドポイント） - サービスに接続するために使用するサービスURL（例えば、`https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`）
 
-### BigQueryデータセット対ClickHouse Cloudデータベース {#bigquery-datasets-vs-clickhouse-cloud-databases}
+### BigQueryデータセットとClickHouse Cloudデータベース {#bigquery-datasets-vs-clickhouse-cloud-databases}
 
-ClickHouseは論理的にテーブルをデータベースにグループ化します。BigQueryデータセットと同様に、ClickHouseデータベースはテーブルデータの整理とアクセス制御を行う論理的コンテナです。
+ClickHouseは論理的にテーブルをデータベースにグループ化します。BigQueryデータセットのように、ClickHouseデータベースはテーブルデータのアクセスを整理し制御する論理コンテナです。
 
-### BigQueryフォルダー {#bigquery-folders}
+### BigQueryフォルダ {#bigquery-folders}
 
-ClickHouse Cloudには、現在BigQueryのフォルダーに相当する概念はありません。
+ClickHouse Cloudには、現在BigQueryフォルダに相当する概念はありません。
 
 ### BigQueryスロット予約とクォータ {#bigquery-slot-reservations-and-quotas}
 
-BigQueryスロット予約のように、ClickHouse Cloudでは[垂直および水平方向のオートスケーリングを構成する]( /manage/scaling#configuring-vertical-auto-scaling)ことができます。垂直オートスケーリングでは、サービスの計算ノードのメモリとCPUコアの最小および最大サイズを設定できます。サービスは、その範囲内で必要に応じてスケールします。これらの設定は、初回のサービス作成フローでも利用可能です。サービス内の各計算ノードは同じサイズです。サービス内の計算ノードの数は[水平方向のスケーリング]( /manage/scaling#manual-horizontal-scaling)を使用して変更できます。
+BigQueryのスロット予約と同様に、ClickHouse Cloudでは[縦横の自動スケーリングを構成できます](/manage/scaling#configuring-vertical-auto-scaling)。縦の自動スケーリングのために、サービスの計算ノードのメモリとCPUコアの最小および最大サイズを設定できます。その後、サービスは必要に応じてこれらの範囲内でスケールします。これらの設定は、初期サービス作成フローの間でも利用可能です。サービス内の各計算ノードは同じサイズです。サービス内の計算ノードの数は[水平スケーリング](/manage/scaling#manual-horizontal-scaling)で変更できます。
 
-さらに、BigQueryのクォータに似て、ClickHouse Cloudは同時実行制御、メモリ使用量制限、I/Oスケジューリングを提供し、ユーザーがクエリをワークロードクラスに隔離することを可能にします。特定のワークロードクラスに対して共有リソース（CPUコア、DRAM、ディスクおよびネットワークI/O）の制限を設定することで、これらのクエリが他の重要なビジネスクエリに影響を及ぼさないようにします。同時実行制御は、高数の同時クエリがあるシナリオにおいてスレッドのオーバーサブスクリプションを防止します。
+さらに、BigQueryクォータに似て、ClickHouse Cloudは同時実行制御、メモリ使用制限、およびI/Oスケジューリングを提供し、ユーザーがクエリをワークロードクラスに分離できるようにします。特定のワークロードクラスに対して共有リソース（CPUコア、DRAM、デスクトップおよびネットワークI/O）に制限を設定することで、これらのクエリが他の重要なビジネスクエリに影響を与えないようにします。同時実行制御は、高い数の同時クエリがあるシナリオでスレッドの過剰予約を防止します。
 
-ClickHouseは、サーバー、ユーザー、クエリレベルでのメモリ割り当てのバイトサイズを追跡し、柔軟なメモリ使用制限を可能にします。メモリオーバーコミットにより、保証されたメモリを超えて追加の空きメモリをクエリが使用できるようにし、他のクエリのためのメモリ制限を保証します。さらに、集計、ソート、および結合句に対するメモリ使用量を制限できるため、メモリ制限を超えた場合には外部アルゴリズムにフォールバックすることができます。
+ClickHouseは、サーバー、ユーザー、クエリレベルでのメモリ割り当てのバイトサイズを追跡し、柔軟なメモリ使用制限を可能にします。メモリのオーバーコミットにより、クエリは保証されたメモリを超えて追加の空きメモリを使用することができますが、他のクエリのメモリ制限を保証します。さらに、集計、ソート、結合句のメモリ使用量を制限することができ、メモリ制限が超過した場合は外部アルゴリズムにフォールバックします。
 
-最後に、I/Oスケジューリングは、ユーザーがワークロードクラスに対して最大帯域幅、処理中のリクエスト、およびポリシーに基づいてローカルおよびリモートディスクアクセスを制限できるようにします。
+最後に、I/Oスケジューリングを使用すると、ユーザーはワークロードクラスに対して、最大帯域幅、進行中のリクエスト、およびポリシーに基づいてローカルおよびリモートディスクアクセスを制限できます。
 
 ### 権限 {#permissions}
 
-ClickHouse Cloudは、[クラウドコンソール]( /cloud/get-started/sql-console)とデータベースを通じて、[ユーザーアクセスを制御します](/cloud/security/cloud-access-management)。コンソールアクセスは、[clickhouse.cloud](https://console.clickhouse.cloud)ユーザーインターフェースを介して管理されます。データベースアクセスは、データベースユーザーアカウントとロールを介して管理されます。さらに、コンソールユーザーには、SQLコンソールを通じてデータベースと対話できるようにするロールが付与されることがあります。[SQLコンソール]( /integrations/sql-clients/sql-console)を介して。
+ClickHouse Cloudは、[クラウドコンソール](/cloud/get-started/sql-console)とデータベースの2つの場所でユーザーアクセスを[制御](/cloud/security/cloud-access-management)します。コンソールアクセスは、[clickhouse.cloud](https://console.clickhouse.cloud)ユーザーインターフェースを介して管理されます。データベースアクセスは、データベースユーザーアカウントとロールを介して管理されます。さらに、コンソールユーザーはデータベース内でロールを付与され、SQLコンソールを介してデータベースと相互作用できるようになります。
 
 ## データ型 {#data-types}
 
-ClickHouseは数値に関してより詳細な精度を提供します。例えば、BigQueryは[`INT64`、`NUMERIC`、`BIGNUMERIC`、`FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)という数値型を提供します。これに対し、ClickHouseは小数、浮動小数点数、整数のための複数の精度型を提供しています。これらのデータ型を使用することで、ClickHouseユーザーはストレージとメモリのオーバーヘッドを最適化し、結果としてクエリの高速化とリソース消費の低減を実現できます。以下に、それぞれのBigQuery型に対するClickHouse型の対応を示します。
+ClickHouseは数値に関してより細かい精度を提供します。例えば、BigQueryは数値型[`INT64`, `NUMERIC`, `BIGNUMERIC`, `FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)を提供しています。これに対して、ClickHouseは小数、浮動小数点、整数のために複数の精度タイプを提供しています。これらのデータ型を使用することにより、ClickHouseユーザーはストレージとメモリオーバーヘッドを最適化し、より迅速なクエリと低いリソース消費を実現できます。以下に、各BigQuery型に対するClickHouse型の対応関係を示します：
 
 | BigQuery | ClickHouse |
 |----------|------------|
 | [ARRAY](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#array_type)    | [Array(t)](/sql-reference/data-types/array)   |
-| [NUMERIC](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types)  | [Decimal(P, S)、Decimal32(S)、Decimal64(S)、Decimal128(S)](/sql-reference/data-types/decimal)    |
+| [NUMERIC](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types)  | [Decimal(P, S), Decimal32(S), Decimal64(S), Decimal128(S)](/sql-reference/data-types/decimal)    |
 | [BIG NUMERIC](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types) | [Decimal256(S)](/sql-reference/data-types/decimal) |
 | [BOOL](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#boolean_type)     | [Bool](/sql-reference/data-types/boolean)       |
 | [BYTES](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#bytes_type)    | [FixedString](/sql-reference/data-types/fixedstring) |
-| [DATE](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type)     | [Date32](/sql-reference/data-types/date32) (範囲が狭い) |
-| [DATETIME](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type) | [DateTime](/sql-reference/data-types/datetime)、[DateTime64](/sql-reference/data-types/datetime64) (範囲が狭く、精度が高い) |
+| [DATE](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type)     | [Date32](/sql-reference/data-types/date32)（より狭い範囲） |
+| [DATETIME](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type) | [DateTime](/sql-reference/data-types/datetime)、[DateTime64](/sql-reference/data-types/datetime64)（狭い範囲、高精度） |
 | [FLOAT64](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#floating_point_types)  | [Float64](/sql-reference/data-types/float)    |
 | [GEOGRAPHY](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#geography_type) | [Geo Data Types](/sql-reference/data-types/float) |
-| [INT64](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_types)    | [UInt8、UInt16、UInt32、UInt64、UInt128、UInt256、Int8、Int16、Int32、Int64、Int128、Int256](/sql-reference/data-types/int-uint) |
-| [INTERVAL](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_types) | NA - [式としてサポート]( /sql-reference/data-types/special-data-types/interval#usage-remarks) または [関数を通じて]( /sql-reference/functions/date-time-functions#addyears) |
+| [INT64](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_types)    | [UInt8, UInt16, UInt32, UInt64, UInt128, UInt256, Int8, Int16, Int32, Int64, Int128, Int256](/sql-reference/data-types/int-uint) |
+| [INTERVAL](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_types) | NA - [式としてサポート](/sql-reference/data-types/special-data-types/interval#usage-remarks)または[関数を介して](/sql-reference/functions/date-time-functions#addyears) |
 | [JSON](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#json_type)     | [JSON](/integrations/data-formats/json/inference)       |
 | [STRING](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#string_type)   | [String (bytes)](/sql-reference/data-types/string) |
 | [STRUCT](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#constructing_a_struct)   | [Tuple](/sql-reference/data-types/tuple)、[Nested](/sql-reference/data-types/nested-data-structures/nested) |
 | [TIME](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#time_type)     | [DateTime64](/sql-reference/data-types/datetime64) |
 | [TIMESTAMP](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#timestamp_type) | [DateTime64](/sql-reference/data-types/datetime64) |
 
-ClickHouse型の選択肢が複数存在する場合は、データの実際の範囲を考慮し、必要な最小限の型を選択してください。また、さらなる圧縮のために[適切なコーデック](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)を利用することを検討してください。
+ClickHouse型の複数のオプションが提示された場合は、データの実際の範囲を考慮し、必要な最低値を選択してください。また、さらなる圧縮のために[適切なコーデック](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)を利用することも検討してください。
 
 ## クエリ加速技術 {#query-acceleration-techniques}
 
-### 主キーおよび外部キー、主インデックス {#primary-and-foreign-keys-and-primary-index}
+### 主キー、外部キー、主インデックス {#primary-and-foreign-keys-and-primary-index}
 
-BigQueryでは、テーブルに[主キーと外部キー制約](https://cloud.google.com/bigquery/docs/information-schema-table-constraints)を持たせることができます。通常、主キーおよび外部キーは、リレーショナルデータベースでデータの整合性を確保するために使用されます。主キーの値は通常、各行で一意であり、`NULL`ではありません。行内の各外部キーの値は、主キーが設定されたテーブルの主キー列に存在するか、`NULL`である必要があります。BigQueryではこれらの制約は強制されませんが、クエリオプティマイザーはこの情報を利用してクエリを最適化することができます。
+BigQueryでは、テーブルに[主キーと外部キーの制約](https://cloud.google.com/bigquery/docs/information-schema-table-constraints)を設定できます。通常、主キーと外部キーは、データの整合性を保証するためにリレーショナルデータベースで使用されます。主キーの値は通常、各行において一意であり、`NULL`ではありません。行の外部キーの各値は、主キーのテーブルの主キーのカラムに存在する必要があるか、`NULL`でなければなりません。BigQueryでは、これらの制約は強制されませんが、クエリオプティマイザーはこの情報を使用してクエリをよりよく最適化する可能性があります。
 
-ClickHouseでもテーブルに主キーを持たせることができます。BigQueryと同様に、ClickHouseはテーブルの主キー列の値の一意性を強制しません。BigQueryとは異なり、ClickHouseのテーブルデータは主キー列で[順序付けられた形でディスクに保存されます](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files)。クエリオプティマイザーはこのソート順序を利用して再ソートを防ぎ、結合に必要なメモリ使用量を最小限に抑え、制限句のショートサーキットを有効にします。ClickHouseでは、主キー列の値に基づいて[（スパース）主インデックス](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales)が自動的に作成されます。このインデックスは、主キー列にフィルターを含むすべてのクエリの速度を向上させるために使用されます。現在、ClickHouseは外部キー制約をサポートしていません。
+ClickHouseでは、テーブルにも主キーがあります。BigQueryと同様に、ClickHouseはテーブルの主キーのカラム値の一意性を強制しません。BigQueryと異なり、テーブルのデータは[主キーのカラムで](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files)ディスク上に順序付けて保存されます。クエリオプティマイザーはこのソート順を利用して再ソートを防ぎ、結合におけるメモリ使用量を最小限に抑え、制限句のショートサーキットを可能にします。BigQueryとは異なり、ClickHouseは[主キーのカラム値に基づいて](https://guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales)自動的に（スパース）主インデックスを作成します。このインデックスは、主キーのカラムに対するフィルタを含むすべてのクエリを高速化するために使用されます。ClickHouseは現在、外部キーの制約をサポートしていません。
 
-## セカンダリインデックス（ClickHouse専用） {#secondary-indexes-only-available-in-clickhouse}
+## セカンダリインデックス（ClickHouseのみ利用可能） {#secondary-indexes-only-available-in-clickhouse}
 
-テーブルの主キー列の値から作成された主インデックスに加えて、ClickHouseでは主キー以外のカラムにセカンダリインデックスを作成することができます。ClickHouseは、さまざまなクエリタイプに適したいくつかのタイプのセカンダリインデックスを提供しています：
+ClickHouseでは、テーブルの主キーのカラム以外にセカンダリインデックスを作成することもできます。ClickHouseは、さまざまなタイプのクエリに適したいくつかのタイプのセカンダリインデックスを提供しています：
 
-- **ブルームフィルターインデックス**:
-  - 等価条件のあるクエリを加速するために使用されます（例：=、IN）。
-  - 確率的データ構造を使用して、データブロックに値が存在するかどうかを判定します。
-- **トークンブルームフィルターインデックス**:
-  - ブルームフィルターインデックスに似ていますが、トークン化された文字列用で、全文検索クエリに適しています。
-- **最小・最大インデックス**:
-  - 各データパーツのカラムの最小値と最大値を保持します。
-  - 指定された範囲に含まれないデータパーツの読み取りをスキップするのに役立ちます。
+- **ブルームフィルターインデックス**：
+  - 等価条件（例：=、IN）を持つクエリの速度を上げるために使用。
+  - 確率的データ構造を使用して、データブロック内に値が存在するかどうかを判断します。
+- **トークンブルームフィルターインデックス**：
+  - ブルームフィルターインデックスに似ていますが、トークン化された文字列に使用され、全文検索クエリに適しています。
+- **ミニマックスインデックス**：
+  - 各データ部分のカラムの最小値と最大値を保持します。
+  - 指定された範囲に含まれないデータ部分の読み取りをスキップします。
 
 ## 検索インデックス {#search-indexes}
 
-BigQueryの[検索インデックス](https://cloud.google.com/bigquery/docs/search-index)に似て、ClickHouseのテーブルに文字列値を持つカラムに対して[全文検索インデックス](/engines/table-engines/mergetree-family/invertedindexes)を作成できます。
+BigQueryの[検索インデックス](https://cloud.google.com/bigquery/docs/search-index)と同様に、ClickHouseのテーブルで文字列値を持つカラムに対して[全文インデックス](/engines/table-engines/mergetree-family/invertedindexes)が作成できます。
 
-## ベクトルインデックス {#vector-indexes}
+## ベクターインデックス {#vector-indexes}
 
-BigQueryは最近、[ベクトルインデックス](https://cloud.google.com/bigquery/docs/vector-index)をPre-GA機能として導入しました。同様に、ClickHouseはベクトル検索ユースケースを加速するための[インデックス]( /engines/table-engines/mergetree-family/annindexes)に実験的に対応しています。
+BigQueryは最近、[ベクターインデックス](https://cloud.google.com/bigquery/docs/vector-index)をPre-GA機能として導入しました。同様に、ClickHouseもベクター検索ユースケースを加速するための[インデックス](https://engines/table-engines/mergetree-family/annindexes)を実験的にサポートしています。
 
 ## パーティショニング {#partitioning}
 
-BigQueryと同様に、ClickHouseはテーブルを小さく、管理可能な部分（パーティションと呼ばれる）に分けることで、大規模なテーブルのパフォーマンスと管理性を向上させるためのテーブルパーティショニングを利用します。ClickHouseのパーティショニングについての詳細は[こちら]( /engines/table-engines/mergetree-family/custom-partitioning-key)で説明しています。
+BigQueryと同様に、ClickHouseはテーブルパーティショニングを利用して、大きなテーブルのパフォーマンスと管理性を向上させています。テーブルをより小さく管理しやすい部分（パーティション）に分割します。ClickHouseのパーティショニングについて詳細は[こちら](/engines/table-engines/mergetree-family/custom-partitioning-key)で説明します。
 
 ## クラスタリング {#clustering}
 
-クラスタリングにより、BigQueryは指定された数のカラムの値に基づいてテーブルデータを自動的にソートし、最適なサイズのブロックに配置します。クラスタリングはクエリパフォーマンスを向上させ、BigQueryがクエリの実行コストをより良く推定できるようにします。クラスタリングされたカラムを使用すると、不要なデータのスキャンを排除することもできます。
+クラスタリングを使用すると、BigQueryは指定された数カラムの値に基づいてテーブルデータを自動的にソートし、最適なサイズのブロックに配置します。クラスタリングはクエリパフォーマンスを向上させ、BigQueryがクエリの実行コストをより正確に見積もれるようにします。クラスタリングされたカラムを使用すると、クエリは不要なデータのスキャンを排除します。
 
-ClickHouseでは、データが自動的に[ディスク上でクラスタリングされる]( /guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files)ため、テーブルの主キー列に基づいて論理的に配置され、クエリが主インデックスデータ構造を利用することで迅速に特定されたり、剪定されたりします。
+ClickHouseでは、データが自動的に[ディスク上でクラスタリング](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files)され、テーブルの主キーのカラムに基づいて論理的に配置され、クエリが主インデックスデータ構造を利用して迅速に見つけることができるブロックとして整理されています。
 
 ## マテリアライズドビュー {#materialized-views}
 
-BigQueryとClickHouseの両方は、性能と効率を向上させるために基底テーブルに対する変換クエリの結果に基づく事前計算された結果を持つマテリアライズドビューをサポートしています。
+BigQueryとClickHouseの両方は、パフォーマンスと効率を向上させるためにベーステーブルに対する変換クエリの結果に基づいて事前計算された結果であるマテリアライズドビューをサポートしています。
 
 ## マテリアライズドビューのクエリ {#querying-materialized-views}
 
-BigQueryのマテリアライズドビューは直接クエリでき、オプティマイザーが基底テーブルへのクエリを処理するために使用することができます。基底テーブルに対する変更がマテリアライズドビューを無効にする可能性がある場合、データは直接基底テーブルから読み取られます。基底テーブルに対する変更がマテリアライズドビューを無効にしない場合、残りのデータはマテリアライズドビューから読み取られ、変更のみが基底テーブルから読み取られます。
+BigQueryのマテリアライズドビューは、直接クエリすることもでき、オプティマイザーがベーステーブルへのクエリを処理するために使用することもできます。ベーステーブルに対する変更がマテリアライズドビューを無効にする可能性がある場合、データはベーステーブルから直接読み取られます。ベーステーブルに対する変更がマテリアライズドビューを無効にしない場合、残りのデータはマテリアライズドビューから読み取られ、変更された部分だけがベーステーブルから読み取られます。
 
-ClickHouseでは、マテリアライズドビューは直接クエリのみ可能です。ただし、基底テーブルに変更があった際、BigQueryではマテリアライズドビューが変更後5分以内に自動的に更新されますが、頻度は[30分ごと](https://cloud.google.com/bigquery/docs/materialized-views-manage#refresh)までです。一方、ClickHouseではマテリアライズドビューは常に基底テーブルと同期しています。
+ClickHouseでは、マテリアライズドビューは直接クエリすることができます。ただし、BigQuery（変更の発生から5分以内、最大でも[30分ごと](https://cloud.google.com/bigquery/docs/materialized-views-manage#refresh)にマテリアライズドビューが自動的に更新される）と比較して、ClickHouseのマテリアライズドビューは常にベーステーブルと同期しています。
 
 **マテリアライズドビューの更新**
 
-BigQueryでは、マテリアライズドビューが定期的に基底テーブルに対してビューの変換クエリを実行することで完全に更新されます。更新の合間に、BigQueryはマテリアライズドビューのデータを新しい基底テーブルデータと結合し、一貫したクエリ結果を提供します。
+BigQueryは、マテリアライズドビューを定期的に完全に更新し、ビューの変換クエリをベーステーブルに対して実行します。更新の間、BigQueryはマテリアライズドビューのデータを新しいベーステーブルのデータと組み合わせて、一貫したクエリ結果を提供します。
 
-ClickHouseでは、マテリアライズドビューは段階的に更新されます。この段階的更新メカニズムは高いスケーラビリティと低コストを提供します：段階的に更新されたマテリアライズドビューは、基底テーブルに数十億または数兆の行が含まれるシナリオに特に適しています。マテリアライズドビューを更新するために基底テーブルを繰り返しクエリするのではなく、ClickHouseは新しく挿入された基底テーブル行の値から（のみ）部分的な結果を計算します。この部分的な結果は、以前に計算された部分的な結果とバックグラウンドで段階的に統合されます。これにより、マテリアライズドビューを基底テーブル全体から繰り返し更新することに比べ、計算コストが大幅に削減されます。
+ClickHouseでは、マテリアライズドビューは増分更新されます。この増分更新メカニズムは高いスケーラビリティと低い計算コストを提供します：増分更新されるマテリアライズドビューは、ベーステーブルに数十億または数兆の行が含まれているシナリオに特にエンジニアリングされています。マテリアライズドビューを更新するために永続的に成長し続けるベーステーブルにクエリを繰り返し実行するかわりに、ClickHouseは新たに挿入されたベーステーブルの行の値のみから部分的な結果を計算します。この部分的な結果は、バックグラウンドで以前に計算された部分的な結果と増分的にマージされます。そのため、マテリアライズドビューをベーステーブル全体から繰り返し更新することに比べて、計算コストが劇的に低く抑えられます。
 
 ## トランザクション {#transactions}
 
-ClickHouseとは対照的に、BigQueryはセッションを使用する際に、単一のクエリ内または複数のクエリにまたがってマルチステートメントトランザクションをサポートしています。マルチステートメントトランザクションでは、1つまたは複数のテーブルに対して行の挿入や削除といった変更操作を行い、変更を原子性でコミットまたはロールバックできます。マルチステートメントトランザクションは、[ClickHouseの2024年のロードマップ](https://github.com/ClickHouse/ClickHouse/issues/58392)にあります。
+ClickHouseとは対照的に、BigQueryは単一のクエリ内またはセッションを使用する複数のクエリを越えてマルチステートメントトランザクションをサポートしています。マルチステートメントトランザクションを使用すると、1つ以上のテーブルにわたる行の挿入や削除などの変異操作を実行でき、変更を原子的にコミットまたはロールバックできます。マルチステートメントトランザクションは[ClickHouseの2024年のロードマップ](https://github.com/ClickHouse/ClickHouse/issues/58392)にあります。
 
 ## 集約関数 {#aggregate-functions}
 
-ClickHouseはBigQueryと比較して、かなり多くのビルトイン集約関数を提供しています：
+BigQueryに比べて、ClickHouseは組み込みの集約関数が大幅に多く提供されています：
 
 - BigQueryには[18の集約関数](https://cloud.google.com/bigquery/docs/reference/standard-sql/aggregate_functions)と[4つの近似集約関数](https://cloud.google.com/bigquery/docs/reference/standard-sql/approximate_aggregate_functions)があります。
-- ClickHouseには[150を超えるビルトイン集約関数](/sql-reference/aggregate-functions/reference)と、[ビルトイン集約関数の動作を拡張する強力な集約コンビネーター](/sql-reference/aggregate-functions/combinators)があります。たとえば、150を超えるビルトイン集約関数を、テーブル行の代わりに配列に適用することができます。これを行うためには[-Array suffix](/sql-reference/aggregate-functions/combinators#-array)を呼び出すだけです。[-Map suffix](/sql-reference/aggregate-functions/combinators#-map)を使用すれば、マップに任意の集約関数を適用できます。そして[-ForEach suffix](/sql-reference/aggregate-functions/combinators#-foreach)を使えば、ネストされた配列に任意の集約関数を適用できます。
+- ClickHouseには[150以上の事前構築された集約関数](/sql-reference/aggregate-functions/reference)があり、さらに、[組み合わせを使用して](https://sql-reference/aggregate-functions/combinators)事前構築された集約関数の動作を拡張するための強力な[集約コンビネータ](/sql-reference/aggregate-functions/combinators)があります。たとえば、配列に対して150以上の事前構築された集約関数を適用することができ、[-Arrayサフィックス](/sql-reference/aggregate-functions/combinators#-array)を使って簡単に呼び出すことができます。[-Mapサフィックス](/sql-reference/aggregate-functions/combinators#-map)を使えば、マップに対して任意の集約関数を適用できます。また、[-ForEachサフィックス](/sql-reference/aggregate-functions/combinators#-foreach)を使うと、ネストされた配列に対して任意の集約関数を適用できます。
 
 ## データソースとファイル形式 {#data-sources-and-file-formats}
 
-ClickHouseはBigQueryと比較して、かなり多くのファイル形式とデータソースをサポートしています：
+BigQueryに比べて、ClickHouseは大幅に多くのファイル形式とデータソースをサポートしています：
 
-- ClickHouseは、ほぼすべてのデータソースから90以上のファイル形式でデータをロードするためのネイティブサポートを持っています。
-- BigQueryは5つのファイル形式と19のデータソースをサポートしています。
+- ClickHouseは実質的にすべてのデータソースから90以上のファイル形式をネイティブにサポートしています。
+- BigQueryは5つのファイル形式と19のデータソースをサポートします。
 
-## SQL言語機能 {#sql-language-features}
+## SQL言語の特徴 {#sql-language-features}
 
-ClickHouseは、解析タスクにより親しみやすくする多くの拡張と改善を提供する標準SQLを提供しています。例えば、ClickHouse SQLは[ラムダ関数](/sql-reference/functions/overview#arrow-operator-and-lambda)や高階関数をサポートしているため、変換を適用する際に配列をアンネスト/エクスプロードする必要がありません。これは、BigQueryなどの他のシステムに対する大きな利点です。
+ClickHouseは、標準SQLに対して分析タスクにより適した多くの拡張と改善を提供しています。例えば、ClickHouse SQL [はラムダ関数](/sql-reference/functions/overview#arrow-operator-and-lambda)や高階関数をサポートしているため、変換を適用する際に配列をネスト解除（アンネスト）する必要がありません。これは、BigQueryのような他のシステムに対する大きな利点です。
 
 ## 配列 {#arrays}
 
-BigQueryの8つの配列関数と比較して、ClickHouseは広範囲の問題を優雅で簡単にモデル化し解決するための80以上の[ビルトイン配列関数](/sql-reference/functions/array-functions)を持っています。
+BigQueryの8つの配列関数に対し、ClickHouseは美しくシンプルに幅広い問題をモデル化し解決するために80以上の[組み込み配列関数](/sql-reference/functions/array-functions)を提供しています。
 
-ClickHouseにおける典型的なデザインパターンは、[`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)集約関数を使用して、テーブルの特定の行の値を（一時的に）配列に変換することです。これは、その後配列関数で便利に処理でき、結果は[`arrayJoin`](/sql-reference/functions/array-join)集約関数を介して個々のテーブル行に戻すことができます。
+ClickHouseの一般的なデザインパターンは、[`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)集約関数を使用してテーブルの特定の行の値を（一時的に）配列に変換することです。これにより、配列関数を介して便利に処理され、[`arrayJoin`](/sql-reference/functions/array-join)集約関数を介して再び個々のテーブルの行に変換することができます。
 
-ClickHouse SQLは[高階ラムダ関数](/sql-reference/functions/overview#arrow-operator-and-lambda)をサポートしているため、配列を一時的にテーブルに戻すのではなく、高階ビルトイン配列関数のいずれかを単に呼び出すことで、多くの高度な配列操作を実現できます。これは、通常、BigQueryで[フィルタリング](https://cloud.google.com/bigquery/docs/arrays#filtering_arrays)や[ジッピング](https://cloud.google.com/bigquery/docs/arrays#zipping_arrays)のための要件となるものです。ClickHouseではこれらの操作は単純な関数呼び出しとして扱われ、各々高階関数[`arrayFilter`](/sql-reference/functions/array-functions#arrayfilterfunc-arr1-)と[`arrayZip`](/sql-reference/functions/array-functions#arrayzip)を呼び出すことで実行されます。
+ClickHouse SQLが[高階ラムダ関数](/sql-reference/functions/overview#arrow-operator-and-lambda)をサポートしているため、配列をテーブルに戻して一時的に変換する代わりに、場合によってはBigQueryで必要な[フィルタリング](https://cloud.google.com/bigquery/docs/arrays#filtering_arrays)や[ジッパリング](https://cloud.google.com/bigquery/docs/arrays#zipping_arrays)を行うための簡単な関数呼び出しとして、[arrayFilter](/sql-reference/functions/array-functions#arrayfilterfunc-arr1-)や[arrayZip](/sql-reference/functions/array-functions#arrayzip)のような高階関数を利用することができます。
 
-次に、BigQueryからClickHouseへの配列操作のマッピングを提供します：
+以下では、BigQueryからClickHouseへの配列操作のマッピングを提供します：
 
 | BigQuery | ClickHouse |
 |----------|------------|
@@ -175,11 +172,11 @@ ClickHouse SQLは[高階ラムダ関数](/sql-reference/functions/overview#arrow
 | [ARRAY_TO_STRING](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#array_to_string) | [arrayStringConcat](/sql-reference/functions/splitting-merging-functions#arraystringconcat) |
 | [GENERATE_ARRAY](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#generate_array) | [range](/sql-reference/functions/array-functions#rangeend-rangestart--end--step) |
 
-**サブクエリ内の各行に対して1つの要素を持つ配列を作成する**
+**サブクエリ内の各行に対して1つの要素を持つ配列を作成**
 
-_ BigQuery_
+_BigQuery_
 
-[ARRAY function](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#array)
+[ARRAY関数](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#array)
 
 ```sql
 SELECT ARRAY
@@ -194,7 +191,7 @@ SELECT ARRAY
  *-----------*/
 ```
 
-_ ClickHouse_
+_ClickHouse_
 
 [groupArray](/sql-reference/aggregate-functions/reference/grouparray)集約関数
 
@@ -213,9 +210,9 @@ FROM
    └───────────┘
 ```
 
-**配列を行の集合に変換する**
+**配列を行のセットに変換**
 
-_ BigQuery_
+_BigQuery_
 
 [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator)演算子
 
@@ -240,7 +237,7 @@ ORDER BY offset;
  *----------+--------*/
 ```
 
-_ ClickHouse_
+_ClickHouse_
 
 [ARRAY JOIN](/sql-reference/statements/select/array-join)句
 
@@ -266,7 +263,7 @@ ARRAY JOIN element, arrayEnumerate(element) AS num;
 
 **日付の配列を返す**
 
-_ BigQuery_
+_BigQuery_
 
 [GENERATE_DATE_ARRAY](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#generate_date_array)関数
 
@@ -280,7 +277,7 @@ SELECT GENERATE_DATE_ARRAY('2016-10-05', '2016-10-08') AS example;
  *--------------------------------------------------*/
 ```
 
-_ ClickHouse_
+_ClickHouse_
 
 [range](/sql-reference/functions/array-functions#rangeend-rangestart--end--step) + [arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-)関数
 
@@ -294,7 +291,7 @@ SELECT arrayMap(x -> (toDate('2016-10-05') + x), range(toUInt32((toDate('2016-10
 
 **タイムスタンプの配列を返す**
 
-_ BigQuery_
+_BigQuery_
 
 [GENERATE_TIMESTAMP_ARRAY](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#generate_timestamp_array)関数
 
@@ -309,7 +306,7 @@ SELECT GENERATE_TIMESTAMP_ARRAY('2016-10-05 00:00:00', '2016-10-07 00:00:00',
  *--------------------------------------------------------------------------*/
 ```
 
-_ ClickHouse_
+_ClickHouse_
 
 [range](/sql-reference/functions/array-functions#rangeend-rangestart--end--step) + [arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-)関数
 
@@ -325,9 +322,9 @@ Query id: b324c11f-655b-479f-9337-f4d34fd02190
 
 **配列のフィルタリング**
 
-_ BigQuery_
+_BigQuery_
 
-[`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator)演算子を介して配列を一時的にテーブルに戻す必要があります。
+一時的に配列をテーブルに戻すことが必要です[`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator)演算子を介して
 
 ```sql
 WITH Sequences AS
@@ -336,7 +333,7 @@ WITH Sequences AS
    UNION ALL SELECT [5, 10] AS some_numbers)
 SELECT
   ARRAY(SELECT x * 2
-        FROM UNNEST(some_numbers) AS x
+        FROM UNNEST(s.some_numbers) AS x
         WHERE x < 5) AS doubled_less_than_five
 FROM Sequences;
 
@@ -349,7 +346,7 @@ FROM Sequences;
  *------------------------*/
 ```
 
-_ ClickHouse_
+_ClickHouse_
 
 [arrayFilter](/sql-reference/functions/array-functions#arrayfilterfunc-arr1-)関数
 
@@ -375,11 +372,11 @@ FROM Sequences;
    └────────────────────────┘
 ```
 
-**配列のジッピング**
+**配列のジッパリング**
 
-_ BigQuery_
+_BigQuery_
 
-[`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator)演算子を介して配列を一時的にテーブルに戻す必要があります。
+一時的に配列をテーブルに戻すことが必要です[`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator)演算子を介して
 
 ```sql
 WITH
@@ -410,7 +407,7 @@ SELECT
  *------------------------------*/
 ```
 
-_ ClickHouse_
+_ClickHouse_
 
 [arrayZip](/sql-reference/functions/array-functions#arrayzip)関数
 
@@ -430,9 +427,9 @@ FROM Combinations;
 
 **配列の集約**
 
-_ BigQuery_
+_BigQuery_
 
-[`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator)演算子を通じて配列を一時的にテーブルに戻す必要があります。
+配列をテーブルに戻すことが必要です[`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator)演算子を介して
 
 ```sql
 WITH Sequences AS
@@ -453,9 +450,9 @@ FROM Sequences AS s;
  *--------------------+------*/
 ```
 
-_ ClickHouse_
+_ClickHouse_
 
-[arraySum](/sql-reference/functions/array-functions#arraysum)、[arrayAvg](/sql-reference/functions/array-functions#arrayavg)などの関数、または引数として[引数のあるどの集約関数名でも]( /sql-reference/functions/array-functions#arrayreduce)使用できます。
+[arraySum](/sql-reference/functions/array-functions#arraysum)、[arrayAvg](/sql-reference/functions/array-functions#arrayavg)などの関数や、[arrayReduce](/sql-reference/functions/array-functions#arrayreduce)関数の引数として使える90以上の既存の集約関数も利用可能です。
 
 ```sql
 WITH Sequences AS
@@ -479,4 +476,3 @@ FROM Sequences;
    ┌─some_numbers─┬─sums─┐
 3. │ [5,10]       │   15 │
    └──────────────┴──────┘
-```

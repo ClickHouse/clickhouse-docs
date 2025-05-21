@@ -1,11 +1,12 @@
 ---
-title: JSONLines
+description: 'JSONLines 形式のドキュメント'
+keywords: ['JSONLines']
 slug: /interfaces/formats/JSONLines
-keywords: [JSONLines]
+title: 'JSONLines'
 ---
 
 ## 説明 {#description}
 
-## 使用例 {#example-usage}
+## サンプル使用法 {#example-usage}
 
-## フォーマット設定 {#format-settings}
+## 形式設定 {#format-settings}

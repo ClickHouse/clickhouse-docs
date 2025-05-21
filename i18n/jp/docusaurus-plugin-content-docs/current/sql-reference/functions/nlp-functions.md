@@ -1,7 +1,9 @@
 ---
-slug: '/sql-reference/functions/nlp-functions'
-sidebar_position: 130
+description: '自然言語処理 (NLP) 関数のドキュメント'
 sidebar_label: 'NLP'
+sidebar_position: 130
+slug: /sql-reference/functions/nlp-functions
+title: '自然言語処理 (NLP) 関数'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
@@ -14,22 +16,22 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 <CloudNotSupportedBadge/>
 
 :::warning
-これは実験的な機能であり、現在開発中で一般使用には適していません。将来のリリースでは予測できない後方互換性のない変更が行われる可能性があります。`allow_experimental_nlp_functions = 1`を設定して有効にしてください。
+これは現在開発中の実験機能であり、一般的な使用には適していません。今後のリリースで予測不可能な後方互換性のない方法で変更される可能性があります。`allow_experimental_nlp_functions = 1` を設定して有効にしてください。
 :::
 
 ## detectCharset {#detectcharset}
 
-`detectCharset` 関数は、非UTF8エンコードされた入力文字列の文字セットを検出します。
+`detectCharset` 関数は、非 UTF8 エンコードの入力文字列の文字セットを検出します。
 
 *構文*
 
-``` sql
-detectCharset('分析対象のテキスト')
+```sql
+detectCharset('text_to_be_analyzed')
 ```
 
 *引数*
 
-- `text_to_be_analyzed` — 分析対象の文字列のコレクション（または文）。 [String](/sql-reference/data-types/string)。
+- `text_to_be_analyzed` — 解析する文字列のコレクション（または文）。 [String](/sql-reference/data-types/string)。
 
 *戻り値*
 
@@ -53,28 +55,28 @@ SELECT detectCharset('Ich bleibe für ein paar Tage.');
 
 ## detectLanguage {#detectlanguage}
 
-UTF8エンコードされた入力文字列の言語を検出します。この関数は、[CLD2ライブラリ](https://github.com/CLD2Owners/cld2)を使用して検出を行い、2文字のISO言語コードを返します。
+UTF8 エンコードの入力文字列の言語を検出します。この関数は [CLD2 ライブラリ](https://github.com/CLD2Owners/cld2) を使用して検出を行い、2 文字の ISO 言語コードを返します。
 
-`detectLanguage` 関数は、入力文字列に200文字以上を提供することで最良の結果を得られます。
+`detectLanguage` 関数は、入力文字列に 200 文字以上を提供する場合に最も効果的です。
 
 *構文*
 
-``` sql
-detectLanguage('分析対象のテキスト')
+```sql
+detectLanguage('text_to_be_analyzed')
 ```
 
 *引数*
 
-- `text_to_be_analyzed` — 分析対象の文字列のコレクション（または文）。 [String](/sql-reference/data-types/string)。
+- `text_to_be_analyzed` — 解析する文字列のコレクション（または文）。 [String](/sql-reference/data-types/string)。
 
 *戻り値*
 
-- 検出された言語の2文字ISOコード
+- 検出された言語の 2 文字の ISO コード
 
-その他の可能な結果:
+他の可能な結果:
 
-- `un` = 不明、言語を検出できない。
-- `other` = 検出された言語に2文字コードがない。
+- `un` = 未知、言語を検出できません。
+- `other` = 検出された言語には 2 文字のコードがありません。
 
 *例*
 
@@ -92,21 +94,21 @@ fr
 
 ## detectLanguageMixed {#detectlanguagemixed}
 
-`detectLanguage` 関数に似ていますが、`detectLanguageMixed` はテキスト内の特定の言語の割合にマッピングされた2文字の言語コードの `Map` を返します。
+`detectLanguage` 関数に似ていますが、`detectLanguageMixed` は 2 文字の言語コードの `Map` を返し、テキスト内の特定の言語の割合をマッピングします。
 
 *構文*
 
-``` sql
-detectLanguageMixed('分析対象のテキスト')
+```sql
+detectLanguageMixed('text_to_be_analyzed')
 ```
 
 *引数*
 
-- `text_to_be_analyzed` — 分析対象の文字列のコレクション（または文）。 [String](/sql-reference/data-types/string)。
+- `text_to_be_analyzed` — 解析する文字列のコレクション（または文）。 [String](/sql-reference/data-types/string)。
 
 *戻り値*
 
-- `Map(String, Float32)`: キーは2文字のISOコード、値はその言語のテキストに見つかった割合
+- `Map(String, Float32)`: キーは 2 文字の ISO コード、値はその言語で見つかったテキストの割合
 
 *例*
 
@@ -126,17 +128,17 @@ SELECT detectLanguageMixed('二兎を追う者は一兎をも得ず二兎を追�
 
 ## detectProgrammingLanguage {#detectprogramminglanguage}
 
-ソースコードからプログラミング言語を判別します。ソースコード内のすべてのユニグラムとバイグラムのコマンドを計算し、さまざまなプログラミング言語のコマンドに対するユニグラムとバイグラムのウェイトを持つマークアップされた辞書を使用して、プログラミング言語の最大ウェイトを見つけ、それを返します。
+ソースコードからプログラミング言語を判断します。ソースコード内のコマンドのすべてのユニグラムとバイグラムを計算します。次に、さまざまなプログラミング言語のユニグラムとバイグラムの重みを持つマークアップされた辞書を使用して、プログラミング言語の最大の重みを見つけて返します。
 
 *構文*
 
-``` sql
-detectProgrammingLanguage('ソースコード')
+```sql
+detectProgrammingLanguage('source_code')
 ```
 
 *引数*
 
-- `source_code` — 分析対象のソースコードの文字列表現。 [String](/sql-reference/data-types/string)。
+- `source_code` — 解析するソースコードの文字列表現。 [String](/sql-reference/data-types/string)。
 
 *戻り値*
 
@@ -160,26 +162,26 @@ SELECT detectProgrammingLanguage('#include <iostream>');
 
 ## detectLanguageUnknown {#detectlanguageunknown}
 
-`detectLanguage` 関数に似ていますが、`detectLanguageUnknown` 関数は非UTF8エンコードされた文字列で動作します。文字セットがUTF-16またはUTF-32の場合は、このバージョンを使用すると良いでしょう。
+`detectLanguage` 関数に似ていますが、`detectLanguageUnknown` 関数は非 UTF8 エンコード文字列で動作します。文字セットが UTF-16 または UTF-32 の場合は、このバージョンを優先してください。
 
 *構文*
 
-``` sql
-detectLanguageUnknown('分析対象のテキスト')
+```sql
+detectLanguageUnknown('text_to_be_analyzed')
 ```
 
 *引数*
 
-- `text_to_be_analyzed` — 分析対象の文字列のコレクション（または文）。 [String](/sql-reference/data-types/string)。
+- `text_to_be_analyzed` — 解析する文字列のコレクション（または文）。 [String](/sql-reference/data-types/string)。
 
 *戻り値*
 
-- 検出された言語の2文字ISOコード
+- 検出された言語の 2 文字の ISO コード
 
-その他の可能な結果:
+他の可能な結果:
 
-- `un` = 不明、言語を検出できない。
-- `other` = 検出された言語に2文字コードがない。
+- `un` = 未知、言語を検出できません。
+- `other` = 検出された言語には 2 文字のコードがありません。
 
 *例*
 
@@ -199,34 +201,34 @@ SELECT detectLanguageUnknown('Ich bleibe für ein paar Tage.');
 
 ## detectTonality {#detecttonality}
 
-テキストデータの感情を判定します。各単語が `-12` から `6` の範囲でトナリティを持つマークアップされた感情辞書を使用します。各テキストについて、その単語の平均感情値を計算し、`[-1,1]` の範囲で返します。
+テキストデータの感情を判断します。各単語のトーナリティが `-12` から `6` の範囲で設定された感情辞書を使用します。各テキストについて、その単語の平均感情値を計算し、`[-1,1]` の範囲で返します。
 
 :::note
-この関数は現在の形では制限されています。現在、`/contrib/nlp-data/tonality_ru.zst` に埋め込まれた感情辞書を使用しており、ロシア語にのみ対応しています。
+この関数は現在の形式で制限されています。現在、`/contrib/nlp-data/tonality_ru.zst` に埋め込まれた感情辞書を使用しており、ロシア語に対してのみ機能します。
 :::
 
 *構文*
 
-``` sql
+```sql
 detectTonality(text)
 ```
 
 *引数*
 
-- `text` — 分析対象のテキスト。 [String](/sql-reference/data-types/string)。
+- `text` — 解析するテキスト。 [String](/sql-reference/data-types/string)。
 
 *戻り値*
 
-- `text` 内の単語の平均感情値。 [Float32](../data-types/float.md)。
+- `text` の単語の平均感情値。 [Float32](../data-types/float.md)。
 
 *例*
 
 クエリ:
 
 ```sql
-SELECT detectTonality('Шарик - хороший пёс'), -- Шарикは良い犬です 
-       detectTonality('Шарик - пёс'), -- Шарикは犬です
-       detectTonality('Шарик - плохой пёс'); -- Шарикは悪い犬です
+SELECT detectTonality('Шарик - хороший пёс'), -- Sharik is a good dog 
+       detectTonality('Шарик - пёс'), -- Sharik is a dog
+       detectTonality('Шарик - плохой пёс'); -- Sharkik is a bad dog
 ```
 
 結果:
@@ -239,30 +241,30 @@ SELECT detectTonality('Шарик - хороший пёс'), -- Шарикは良
 
 ## lemmatize {#lemmatize}
 
-与えられた単語に対してレマタイゼーションを行います。操作に必要な辞書は、[こちら](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models)から取得できます。
+与えられた単語のレマタイゼーションを実行します。操作するための辞書が必要で、これは [ここ](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) で取得できます。
 
 *構文*
 
-``` sql
+```sql
 lemmatize('language', word)
 ```
 
 *引数*
 
 - `language` — 適用されるルールの言語。 [String](/sql-reference/data-types/string)。
-- `word` — レマタイゼーションを行う単語。小文字である必要があります。 [String](/sql-reference/data-types/string)。
+- `word` — レマタイゼーションする必要がある単語。小文字である必要があります。 [String](/sql-reference/data-types/string)。
 
 *例*
 
 クエリ:
 
-``` sql
+```sql
 SELECT lemmatize('en', 'wolves');
 ```
 
 結果:
 
-``` text
+```text
 ┌─lemmatize("wolves")─┐
 │              "wolf" │
 └─────────────────────┘
@@ -270,9 +272,9 @@ SELECT lemmatize('en', 'wolves');
 
 *設定*
 
-この設定は、辞書 `en.bin` を使用して英語（`en`）のレマタイゼーションを行うことを指定します。 `.bin` ファイルは [こちら](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) からダウンロードできます。
+この設定は、辞書 `en.bin` を英語（`en`）の単語のレマタイゼーションに使用することを指定しています。 `.bin` ファイルは [ここ](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) からダウンロードできます。
 
-``` xml
+```xml
 <lemmatizers>
     <lemmatizer>
         <!-- highlight-start -->
@@ -285,39 +287,39 @@ SELECT lemmatize('en', 'wolves');
 
 ## stem {#stem}
 
-与えられた単語に対してステミングを行います。
+与えられた単語のステミングを実行します。
 
 *構文*
 
-``` sql
+```sql
 stem('language', word)
 ```
 
 *引数*
 
-- `language` — 適用されるルールの言語。2文字の [ISO 639-1 コード](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) を使用します。
+- `language` — 適用されるルールの言語。2 文字の [ISO 639-1 コード](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) を使用します。
 - `word` — ステミングが必要な単語。小文字である必要があります。 [String](/sql-reference/data-types/string)。
 
 *例*
 
 クエリ:
 
-``` sql
+```sql
 SELECT arrayMap(x -> stem('en', x), ['I', 'think', 'it', 'is', 'a', 'blessing', 'in', 'disguise']) as res;
 ```
 
 結果:
 
-``` text
+```text
 ┌─res────────────────────────────────────────────────┐
 │ ['I','think','it','is','a','bless','in','disguis'] │
 └────────────────────────────────────────────────────┘
 ```
 
-*stem()のサポート言語*
+*stem() がサポートする言語*
 
 :::note
-stem() 関数は [Snowball stemming](https://snowballstem.org/) ライブラリを使用しており、最新の言語情報はSnowballのウェブサイトをご覧ください。
+`stem()` 関数は、[Snowball ステミング](https://snowballstem.org/) ライブラリを使用しており、最新の言語などについては Snowball ウェブサイトを参照してください。
 :::
 
 - アラビア語
@@ -348,45 +350,45 @@ stem() 関数は [Snowball stemming](https://snowballstem.org/) ライブラリ�
 - スウェーデン語
 - タミル語
 - トルコ語
-- ヘブライ語
+- イディッシュ
 
 ## synonyms {#synonyms}
 
-特定の単語の同義語を見つけます。同義語拡張には2種類のタイプがあり: `plain` と `wordnet` です。
+与えられた単語の同義語を見つけます。同義語拡張には `plain` と `wordnet` の 2 種類があります。
 
-`plain` 拡張タイプでは、各行が特定の同義語セットに対応する単純なテキストファイルへのパスを提供する必要があります。この行の単語は空白またはタブ文字で区切る必要があります。
+`plain` 拡張タイプでは、各行が特定の同義語セットに対応するシンプルなテキストファイルへのパスを提供する必要があります。この行の単語はスペースまたはタブ文字で区切られている必要があります。
 
-`wordnet` 拡張タイプでは、WordNetシソーラスが含まれるディレクトリへのパスを提供する必要があります。シソーラスはWordNet感覚インデックスを含む必要があります。
+`wordnet` 拡張タイプでは、WordNet シソーラスを含むディレクトリへのパスを提供する必要があります。シソーラスには WordNet センスインデックスが含まれている必要があります。
 
 *構文*
 
-``` sql
+```sql
 synonyms('extension_name', word)
 ```
 
 *引数*
 
-- `extension_name` — 検索が行われる拡張の名前。 [String](/sql-reference/data-types/string)。
+- `extension_name` — 検索が実行される拡張の名前。 [String](/sql-reference/data-types/string)。
 - `word` — 拡張で検索される単語。 [String](/sql-reference/data-types/string)。
 
 *例*
 
 クエリ:
 
-``` sql
+```sql
 SELECT synonyms('list', 'important');
 ```
 
 結果:
 
-``` text
+```text
 ┌─synonyms('list', 'important')────────────┐
 │ ['important','big','critical','crucial'] │
 └──────────────────────────────────────────┘
 ```
 
 *設定*
-``` xml
+```xml
 <synonyms_extensions>
     <extension>
         <name>en</name>

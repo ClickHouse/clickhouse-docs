@@ -1,0 +1,388 @@
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+`clickhouse-jdbc`は標準のJDBCインターフェースを実装しています。 [clickhouse-client](/integrations/sql-clients/sql-console) の上に構築されており、カスタムタイプマッピング、トランザクションサポート、標準的な同期の `UPDATE` および `DELETE` ステートメントなどの追加機能を提供しますので、レガシーアプリケーションやツールと簡単に組み合わせて使用することができます。
+
+:::note
+最新のJDBC（0.7.2）バージョンはClient-V1を使用しています。
+:::
+
+`clickhouse-jdbc` APIは同期であり、一般的にSQLのパースやタイプマッピング/変換など、オーバーヘッドが多くなります。パフォーマンスが重要な場合や、ClickHouseにより直接アクセスする方法を好む場合は、[clickhouse-client](/integrations/sql-clients/sql-console)の使用を検討してください。
+
+## 環境要件 {#environment-requirements}
+
+- [OpenJDK](https://openjdk.java.net) バージョン >= 8
+
+### セットアップ {#setup}
+
+<Tabs groupId="client-v1-compression-deps">
+    <TabItem value="maven" label="Maven">
+
+        ```xml
+        <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
+        <dependency>
+            <groupId>com.clickhouse</groupId>
+            <artifactId>clickhouse-jdbc</artifactId>
+            <version>0.7.2</version>
+            <!-- すべての依存関係が含まれたuber jarを使用し、サイズを小さくするためにclassifierをhttpに変更 -->
+            <classifier>shaded-all</classifier>
+        </dependency>
+        ```
+
+    </TabItem>
+    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+
+        ```kotlin
+        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+        // すべての依存関係が含まれたuber jarを使用し、サイズを小さくするためにclassifierをhttpに変更
+        implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
+        ```
+    </TabItem>
+    <TabItem value="gradle" label="Gradle">
+
+        ```groovy
+        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+        // すべての依存関係が含まれたuber jarを使用し、サイズを小さくするためにclassifierをhttpに変更
+        implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
+        ```
+
+    </TabItem>
+</Tabs>
+
+`0.5.0` バージョン以降、ClientにパッケージされたApache HTTP Clientを使用しています。パッケージの共有バージョンがないため、ロガーを依存関係として追加する必要があります。
+
+<Tabs groupId="client-v1-compression-deps">
+    <TabItem value="maven" label="Maven" >
+
+        ```xml
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.16</version>
+        </dependency>
+        ```
+
+    </TabItem>
+    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+
+        ```kotlin
+        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+        implementation("org.slf4j:slf4j-api:2.0.16")
+        ```
+    </TabItem>
+    <TabItem value="gradle" label="Gradle">
+
+        ```groovy
+        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+        implementation 'org.slf4j:slf4j-api:2.0.16'
+        ```
+
+    </TabItem>
+</Tabs>
+
+## 設定 {#configuration}
+
+**ドライバー クラス**: `com.clickhouse.jdbc.ClickHouseDriver`
+
+**URL構文**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`、例えば:
+
+- `jdbc:ch://localhost` は `jdbc:clickhouse:http://localhost:8123` と同じ意味です。
+- `jdbc:ch:https://localhost` は `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT` と同じ意味です。
+- `jdbc:ch:grpc://localhost` は `jdbc:clickhouse:grpc://localhost:9100` と同じ意味です。
+
+**接続プロパティ**:
+
+| プロパティ                     | デフォルト | 説明                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `continueBatchOnError`        | `false` | エラーが発生した場合にバッチ処理を続行するかどうか                                                                                                                                                                                                                                                                                                                                                                             |
+| `createDatabaseIfNotExist`    | `false` | データベースが存在しない場合、それを作成するかどうか                                                                                                                                                                                                                                                                                                                                                                            |
+| `custom_http_headers`          |         | カンマ区切りのカスタムHTTPヘッダー、例えば: `User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                                                                                |
+| `custom_http_params`           |         | カンマ区切りのカスタムHTTPクエリパラメータ、例えば: `extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                                                            |
+| `nullAsDefault`                | `0`     | `0` - NULL値をそのまま扱い、非NULLカラムにNULLを挿入するときは例外をスロー; `1` - NULL値をそのまま扱い、挿入時のNULLチェックを無効にする; `2` - NULLを対応するデータ型のデフォルト値に置き換える（クエリおよび挿入両方に対して）                                                                                                                             |
+| `jdbcCompliance`               | `true`  | 標準的な同期のUPDATE/DELETEおよび擬似トランザクションをサポートするかどうか                                                                                                                                                                                                                                                                                                                                                     |
+| `typeMappings`                 |         | ClickHouseデータ型とJavaクラスの間のマッピングをカスタマイズし、[`getColumnType()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html#getColumnType-int-) と [`getObject(Class<>?>`)](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-java.lang.String-java.lang.Class-)の結果に影響を与えます。例えば: `UInt128=java.lang.String,UInt256=java.lang.String` |
+| `wrapperObject`                | `false` | [`getObject()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-int-)が配列の場合は java.sql.Array / タプルの場合は java.sql.Structを返すべきかどうか                                                                                                                                                                                                                       |
+
+注: さらなる詳細については、[JDBC特有の設定](https://github.com/ClickHouse/clickhouse-java/blob/main/clickhouse-jdbc/src/main/java/com/clickhouse/jdbc/JdbcConfig.java)を参照してください。
+
+## サポートされているデータ型 {#supported-data-types}
+
+JDBCドライバーは、クライアントライブラリと同じデータフォーマットをサポートしています。
+
+:::note
+- AggregatedFunction - :warning: `SELECT * FROM table ...`はサポートしていません。
+- Decimal - 一貫性のために21.9以降では `SET output_format_decimal_trailing_zeros=1` を使用します。
+- Enum - 文字列と整数の両方として扱うことができます。
+- UInt64 - `long` (in client-v1) にマッピングされます。
+:::
+
+## 接続の作成 {#creating-connection}
+
+```java
+String url = "jdbc:ch://my-server/system"; // デフォルトでhttpプロトコルとポート8123を使用
+
+Properties properties = new Properties();
+
+ClickHouseDataSource dataSource = new ClickHouseDataSource(url, properties);
+try (Connection conn = dataSource.getConnection("default", "password");
+    Statement stmt = conn.createStatement()) {
+}
+```
+
+## シンプルなステートメント {#simple-statement}
+
+```java showLineNumbers
+
+try (Connection conn = dataSource.getConnection(...);
+    Statement stmt = conn.createStatement()) {
+    ResultSet rs = stmt.executeQuery("select * from numbers(50000)");
+    while(rs.next()) {
+        // ...
+    }
+}
+```
+
+## 挿入 {#insert}
+
+:::note
+- `Statement` の代わりに `PreparedStatement` を使用する
+:::
+
+使いやすいですが、入力関数（以下を参照）と比較してパフォーマンスが遅くなります。
+
+```java showLineNumbers
+try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except (description))")) {
+    ps.setString(1, "test"); // id
+    ps.setObject(2, LocalDateTime.now()); // タイムスタンプ
+    ps.addBatch(); // パラメータはバイナリ形式でバッファストリームに即座に書き込まれます
+    ...
+    ps.executeBatch(); // 手元のデータをすべてClickHouseにストリームします
+}
+```
+
+### 入力テーブル関数を使用して {#with-input-table-function}
+
+優れたパフォーマンス特性を持つオプション：
+
+```java showLineNumbers
+try (PreparedStatement ps = conn.prepareStatement(
+    "insert into mytable select col1, col2 from input('col1 String, col2 DateTime64(3), col3 Int32')")) {
+    // カラム定義はパースされ、ドライバーは3つのパラメータがあることを認識します: col1, col2, col3
+    ps.setString(1, "test"); // col1
+    ps.setObject(2, LocalDateTime.now()); // col2, setTimestampは遅く推奨されません
+    ps.setInt(3, 123); // col3
+    ps.addBatch(); // パラメータはバイナリ形式でバッファストリームに即座に書き込まれます
+    ...
+    ps.executeBatch(); // 手元のデータをすべてClickHouseにストリームします
+}
+```
+- 入力関数のドキュメントは、可能な限り [input function doc](/sql-reference/table-functions/input/) を参照してください。
+
+### プレースホルダーを使用した挿入 {#insert-with-placeholders}
+
+このオプションは、小規模な挿入の場合にのみ推奨されます。なぜなら、長いSQL式が必要となり（クライアント側で解析され、CPUとメモリを消費します）：
+
+```java showLineNumbers
+try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(trim(?),?,?)")) {
+    ps.setString(1, "test"); // id
+    ps.setObject(2, LocalDateTime.now()); // タイムスタンプ
+    ps.setString(3, null); // 説明
+    ps.addBatch(); // パラメータをクエリに追加します
+    ...
+    ps.executeBatch(); // 構成されたクエリを発行します: insert into mytable values(...)(...)...(...)
+}
+```
+
+## 日時とタイムゾーンの処理 {#handling-datetime-and-time-zones}
+
+`java.sql.Timestamp` の代わりに `java.time.LocalDateTime` または `java.time.OffsetDateTime` を、`java.sql.Date` の代わりに `java.time.LocalDate` を使用してください。
+
+```java showLineNumbers
+try (PreparedStatement ps = conn.prepareStatement("select date_time from mytable where date_time > ?")) {
+    ps.setObject(2, LocalDateTime.now());
+    ResultSet rs = ps.executeQuery();
+    while(rs.next()) {
+        LocalDateTime dateTime = (LocalDateTime) rs.getObject(1);
+    }
+    ...
+}
+```
+
+## `AggregateFunction` の処理 {#handling-aggregatefunction}
+
+:::note
+現時点では、`groupBitmap` のみがサポートされています。
+:::
+
+```java showLineNumbers
+// 入力関数を使用したバッチ挿入
+try (ClickHouseConnection conn = newConnection(props);
+        Statement s = conn.createStatement();
+        PreparedStatement stmt = conn.prepareStatement(
+                "insert into test_batch_input select id, name, value from input('id Int32, name Nullable(String), desc Nullable(String), value AggregateFunction(groupBitmap, UInt32)')")) {
+    s.execute("drop table if exists test_batch_input;"
+            + "create table test_batch_input(id Int32, name Nullable(String), value AggregateFunction(groupBitmap, UInt32))engine=Memory");
+    Object[][] objs = new Object[][] {
+            new Object[] { 1, "a", "aaaaa", ClickHouseBitmap.wrap(1, 2, 3, 4, 5) },
+            new Object[] { 2, "b", null, ClickHouseBitmap.wrap(6, 7, 8, 9, 10) },
+            new Object[] { 3, null, "33333", ClickHouseBitmap.wrap(11, 12, 13) }
+    };
+    for (Object[] v : objs) {
+        stmt.setInt(1, (int) v[0]);
+        stmt.setString(2, (String) v[1]);
+        stmt.setString(3, (String) v[2]);
+        stmt.setObject(4, v[3]);
+        stmt.addBatch();
+    }
+    int[] results = stmt.executeBatch();
+    ...
+}
+
+// クエリパラメータとしてビットマップを使用
+try (PreparedStatement stmt = conn.prepareStatement(
+    "SELECT bitmapContains(my_bitmap, toUInt32(1)) as v1, bitmapContains(my_bitmap, toUInt32(2)) as v2 from {tt 'ext_table'}")) {
+    stmt.setObject(1, ClickHouseExternalTable.builder().name("ext_table")
+            .columns("my_bitmap AggregateFunction(groupBitmap,UInt32)").format(ClickHouseFormat.RowBinary)
+            .content(new ByteArrayInputStream(ClickHouseBitmap.wrap(1, 3, 5).toBytes()))
+            .asTempTable()
+            .build());
+    ResultSet rs = stmt.executeQuery();
+    Assert.assertTrue(rs.next());
+    Assert.assertEquals(rs.getInt(1), 1);
+    Assert.assertEquals(rs.getInt(2), 0);
+    Assert.assertFalse(rs.next());
+}
+```
+
+<br/>
+
+## HTTPライブラリの設定 {#configuring-http-library}
+
+ClickHouse JDBCコネクタは、[`HttpClient`](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html)、[`HttpURLConnection`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html)、および[Apache `HttpClient`](https://hc.apache.org/httpcomponents-client-5.2.x/)の3つのHTTPライブラリをサポートしています。
+
+:::note
+`HttpClient`はJDK 11以降でのみサポートされます。
+:::
+
+JDBCドライバーはデフォルトで`HttpClient`を使用します。ClickHouse JDBCコネクタで使用されるHTTPライブラリを変更するには、次のプロパティを設定します。
+
+```java
+properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
+```
+
+対応する値の完全なリストは次のとおりです。
+
+| プロパティ値              | HTTPライブラリ        |
+|---------------------------|---------------------|
+| HTTP_CLIENT               | `HttpClient`        |
+| HTTP_URL_CONNECTION       | `HttpURLConnection` |
+| APACHE_HTTP_CLIENT        | Apache `HttpClient` |
+
+<br/>
+
+## SSLを使用してClickHouseに接続する {#connect-to-clickhouse-with-ssl}
+
+SSLを使用してClickHouseに安全なJDBC接続を確立するには、JDBCプロパティにSSLパラメータを含めるように設定する必要があります。これには通常、JDBC URLまたはプロパティオブジェクトに`sslmode`や`sslrootcert`などのSSLプロパティを指定することが含まれます。
+
+## SSLプロパティ {#ssl-properties}
+
+| 名称                   | デフォルト値 | オプション値         | 説明                                                                                       |
+|------------------------|---------------|---------------------|---------------------------------------------------------------------------------------------|
+| `ssl`                  | false         | true, false         | 接続に対してSSL/TLSを有効にするかどうか                                                  |
+| `sslmode`              | strict        | strict, none        | SSL/TLS証明書を検証するかどうか                                                           |
+| `sslrootcert`          |               |                     | SSL/TLSルート証明書へのパス                                                              |
+| `sslcert`              |               |                     | SSL/TLS証明書へのパス                                                                      |
+| `sslkey`               |               |                     | PKCS#8形式のRSAキー                                                                        |
+| `key_store_type`       |               | JKS, PKCS12         | `KeyStore`/`TrustStore`ファイルのタイプまたは形式を指定                                      |
+| `trust_store`          |               |                     | `TrustStore`ファイルへのパス                                                                |
+| `key_store_password`   |               |                     | `KeyStore`設定で指定された `KeyStore`ファイルにアクセスするために必要なパスワード                   |
+
+これらのプロパティは、Javaアプリケーションが暗号化された接続を介してClickHouseサーバーと通信できるようにし、データの転送中のセキュリティを向上させます。
+
+```java showLineNumbers
+  String url = "jdbc:ch://your-server:8443/system";
+
+  Properties properties = new Properties();
+  properties.setProperty("ssl", "true");
+  properties.setProperty("sslmode", "strict"); // NONEで全てのサーバーを信頼; STRICTで信頼されたサーバーのみ
+  properties.setProperty("sslrootcert", "/mine.crt");
+  try (Connection con = DriverManager
+          .getConnection(url, properties)) {
+
+      try (PreparedStatement stmt = con.prepareStatement(
+
+          // ここにコードを記述します
+
+      }
+  }
+```
+
+## 大量挿入時のJDBCタイムアウトの解決 {#resolving-jdbc-timeout-on-large-inserts}
+
+ClickHouseに大量の挿入を行う際に、長い実行時間のためにJDBCタイムアウトエラーが発生することがあります。
+
+```plaintext
+Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https://hostname.aws.clickhouse.cloud:8443]
+```
+
+これらのエラーはデータ挿入プロセスを中断し、システムの安定性に影響を及ぼす可能性があります。この問題を解決するには、クライアントのOSでいくつかのタイムアウト設定を調整する必要があります。
+
+### Mac OS {#mac-os}
+
+Mac OSでは、次の設定を調整することで問題を解決できます。
+
+- `net.inet.tcp.keepidle`: 60000
+- `net.inet.tcp.keepintvl`: 45000
+- `net.inet.tcp.keepinit`: 45000
+- `net.inet.tcp.keepcnt`: 8
+- `net.inet.tcp.always_keepalive`: 1
+
+### Linux {#linux}
+
+Linuxでは、同様の設定だけでは問題は解決しないかもしれません。Linuxがソケットのキープアライブ設定を処理する方法の違いにより、追加の手順が必要です。次の手順に従ってください。
+
+1. `/etc/sysctl.conf` または関連する設定ファイルで、次のLinuxカーネルパラメータを調整します。
+
+- `net.inet.tcp.keepidle`: 60000
+- `net.inet.tcp.keepintvl`: 45000
+- `net.inet.tcp.keepinit`: 45000
+- `net.inet.tcp.keepcnt`: 8
+- `net.inet.tcp.always_keepalive`: 1
+- `net.ipv4.tcp_keepalive_intvl`: 75
+- `net.ipv4.tcp_keepalive_probes`: 9
+- `net.ipv4.tcp_keepalive_time`: 60（この値はデフォルトの300秒から下げることを検討できます）
+
+2. カーネルパラメータを変更した後、次のコマンドを実行して変更を適用します。
+
+```shell
+sudo sysctl -p
+   ```
+
+これらの設定を行った後、クライアントがソケットでキープアライブオプションを有効にしていることを確認する必要があります。
+
+```java
+properties.setProperty("socket_keepalive", "true");
+```
+
+:::note
+現在、ソケットのキープアライブを設定する際にはApache HTTP Clientライブラリを使用する必要があります。`clickhouse-java`によってサポートされる他の2つのHTTPクライアントライブラリではソケットオプションを設定することができません。詳細なガイドについては、[HTTPライブラリの設定](/integrations/language-clients/java/jdbc-v1#configuring-http-library)を参照してください。
+:::
+
+または、JDBC URLに同等のパラメータを追加することもできます。
+
+JDBCドライバーのデフォルトのソケットおよび接続タイムアウトは30秒です。大量データ挿入操作をサポートするために、タイムアウトを増加させることが可能です。`ClickHouseClient`の `options` メソッドを使用し、`ClickHouseClientOption`によって定義されている`SOCKET_TIMEOUT`および`CONNECTION_TIMEOUT`オプションを設定します。
+
+```java showLineNumbers
+final int MS_12H = 12 * 60 * 60 * 1000; // 12時間をミリ秒に
+final String sql = "insert into table_a (c1, c2, c3) select c1, c2, c3 from table_b;";
+
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP)) {
+    client.read(servers).write()
+        .option(ClickHouseClientOption.SOCKET_TIMEOUT, MS_12H)
+        .option(ClickHouseClientOption.CONNECTION_TIMEOUT, MS_12H)
+        .query(sql)
+        .executeAndWait();
+}
+```

@@ -1,14 +1,15 @@
 ---
-sidebar_label: Confluent Platform
+sidebar_label: 'Confluentプラットフォーム'
 sidebar_position: 1
 slug: /integrations/kafka/cloud/confluent
-description: Kafka Connectivity with Confluent Cloud
+description: 'Confluent CloudとのKafka接続'
+title: 'ClickHouseとConfluent Cloudの統合'
 ---
 
 
 # ClickHouseとConfluent Cloudの統合
 
-Confluentプラットフォームは、ClickHouseとの統合のための2つのオプションを提供します。
+Confluentプラットフォームは、ClickHouseとの統合に2つのオプションを提供しています。
 
 * [Confluent Cloud上のClickHouse Connect Sink](./custom-connector.md) カスタムコネクタ機能を使用
-* [Confluent Platform用HTTP Sink Connector](./kafka-connect-http.md) これはApache KafkaをHTTPまたはHTTPSを介してAPIと統合するものです。
+* [ConfluentプラットフォームのHTTP Sinkコネクタ](./kafka-connect-http.md) HTTPまたはHTTPSを介してApache KafkaとAPIを統合

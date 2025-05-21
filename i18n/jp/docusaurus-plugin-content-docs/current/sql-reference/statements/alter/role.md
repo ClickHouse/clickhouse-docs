@@ -1,15 +1,16 @@
 ---
-slug: /sql-reference/statements/alter/role
+description: '役割に関するドキュメント'
+sidebar_label: '役割'
 sidebar_position: 46
-sidebar_label: ROLE
-title: "ALTER ROLE"
+slug: /sql-reference/statements/alter/role
+title: '役割の変更'
 ---
 
-ロールを変更します。
+役割を変更します。
 
-構文：
+構文:
 
-``` sql
+```sql
 ALTER ROLE [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]] 
     [ON CLUSTER cluster_name]
     [DROP ALL PROFILES]

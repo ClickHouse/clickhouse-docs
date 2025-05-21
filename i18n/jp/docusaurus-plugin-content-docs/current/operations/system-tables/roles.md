@@ -1,18 +1,20 @@
 ---
-description: "システムテーブルには設定されたロールに関する情報が含まれています。"
+description: '設定された役割に関する情報を含むシステムテーブル。'
+keywords: ['システムテーブル', '役割']
 slug: /operations/system-tables/roles
-title: "system.roles"
-keywords: ["システムテーブル", "ロール"]
+title: 'system.roles'
 ---
 
-設定された [ロール](../../guides/sre/user-management/index.md#role-management) に関する情報が含まれています。
+# system.roles
+
+設定された[役割](../../guides/sre/user-management/index.md#role-management)に関する情報を含みます。
 
 カラム:
 
-- `name` ([String](../../sql-reference/data-types/string.md)) — ロール名。
-- `id` ([UUID](../../sql-reference/data-types/uuid.md)) — ロールID。
-- `storage` ([String](../../sql-reference/data-types/string.md)) — ロールのストレージへのパス。 `access_control_path` パラメータで設定されています。
+- `name` ([String](../../sql-reference/data-types/string.md)) — 役割名。
+- `id` ([UUID](../../sql-reference/data-types/uuid.md)) — 役割ID。
+- `storage` ([String](../../sql-reference/data-types/string.md)) — 役割のストレージへのパス。 `access_control_path` パラメータで設定されています。
 
-## 関連情報 {#see-also}
+## See Also {#see-also}
 
 - [SHOW ROLES](/sql-reference/statements/show#show-roles)

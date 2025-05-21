@@ -1,10 +1,12 @@
 ---
-sidebar_title: クエリ API エンドポイント
+sidebar_title: 'クエリAPIエンドポイント'
 slug: /cloud/get-started/query-endpoints
-description: 保存したクエリから REST API エンドポイントを簡単に作成
-keywords: [api, クエリ api エンドポイント, クエリエンドポイント, クエリ rest api]
+description: '保存されたクエリからREST APIエンドポイントを簡単に立ち上げることができます'
+keywords: ['api', 'query api endpoints', 'query endpoints', 'query rest api']
+title: 'クエリAPIエンドポイント'
 ---
 
+import Image from '@theme/IdealImage';
 import endpoints_testquery from '@site/static/images/cloud/sqlconsole/endpoints-testquery.png';
 import endpoints_savequery from '@site/static/images/cloud/sqlconsole/endpoints-savequery.png';
 import endpoints_configure from '@site/static/images/cloud/sqlconsole/endpoints-configure.png';
@@ -13,19 +15,19 @@ import endpoints_curltest from '@site/static/images/cloud/sqlconsole/endpoints-c
 import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints-monitoring.png';
 
 
-# クエリ API エンドポイント
+# クエリAPIエンドポイント
 
-**クエリ API エンドポイント** 機能は、ClickHouse Cloud コンソール内の保存された SQL クエリから直接 API エンドポイントを作成することを可能にします。ネイティブドライバを介して ClickHouse Cloud サービスに接続することなく、HTTP 経由で API エンドポイントにアクセスして、保存されたクエリを実行できるようになります。
+**クエリAPIエンドポイント**機能を使用すると、ClickHouse Cloudコンソール内の保存済みSQLクエリから直接APIエンドポイントを作成できます。ネイティブドライバを介してClickHouse Cloudサービスに接続することなく、HTTPを介してAPIエンドポイントにアクセスして、保存されたクエリを実行することができます。
 
 ## クイックスタートガイド {#quick-start-guide}
 
-続行する前に、API キーと管理コンソールの役割を持っていることを確認してください。このガイドに従って [API キーを作成](/cloud/manage/openapi)できます。
+進む前に、APIキーと管理コンソールロールを持っていることを確認してください。 このガイドに従って、[APIキーを作成](/cloud/manage/openapi)できます。
 
 ### 保存されたクエリの作成 {#creating-a-saved-query}
 
 保存されたクエリがある場合は、この手順をスキップできます。
 
-新しいクエリタブを開いてください。デモのために、約 45 億件のレコードを含む [youtube データセット](/getting-started/example-datasets/youtube-dislikes) を使用します。例のクエリとして、ユーザー入力パラメータ `year` による平均動画閲覧数で上位 10 のアップローダーを返します:
+新しいクエリタブを開きます。デモンストレーションのために、約45億レコードを含む[youtubeデータセット](/getting-started/example-datasets/youtube-dislikes)を使用します。クエリの例として、ユーザー入力の`year`パラメータに基づいて、1ビデオあたりの平均ビューで上位10件のアップローダーを返します：
 
 ```sql
 with sum(view_count) as view_sum,
@@ -44,57 +46,55 @@ order by per_upload desc
 limit 10
 ```
 
-このクエリには、パラメータ (`year`) が含まれていることに注意してください。SQL コンソールクエリエディタは ClickHouse のクエリパラメータ式を自動的に検出し、各パラメータの入力を提供します。このクエリが正常に動作するか確認するために、すぐに実行してみましょう:
+このクエリにはパラメータ（`year`）が含まれていることに注意してください。SQLコンソールクエリエディタは、ClickHouseクエリパラメータ式を自動的に検出し、それぞれのパラメータに対する入力を提供します。このクエリが機能することを確認するために、さっそく実行してみましょう：
 
-<img src={endpoints_testquery} alt="例のクエリをテスト"/>
+<Image img={endpoints_testquery} size="md" alt="例のクエリをテスト" />
 
-次のステップでは、クエリを保存します:
+次のステップでは、クエリを保存します：
 
-<img src={endpoints_savequery} alt="例のクエリを保存"/>
+<Image img={endpoints_savequery} size="md" alt="例のクエリを保存" />
 
-保存されたクエリに関する詳細なドキュメントは [こちら](/cloud/get-started/sql-console#saving-a-query) で見つかります。
+保存されたクエリに関する詳細なドキュメントは[こちら](/cloud/get-started/sql-console#saving-a-query)にあります。
 
-### クエリ API エンドポイントの設定 {#configuring-the-query-api-endpoint}
+### クエリAPIエンドポイントの構成 {#configuring-the-query-api-endpoint}
 
-クエリ API エンドポイントは、クエリビューから **共有** ボタンをクリックし、`API エンドポイント` を選択することで設定できます。どの API キーがエンドポイントにアクセスできるか指定するよう求められます:
+クエリAPIエンドポイントは、クエリビューから直接**共有**ボタンをクリックし、`APIエンドポイント`を選択することで構成できます。エンドポイントにアクセスできるAPIキーを指定するよう求められます：
 
-<img src={endpoints_configure} alt="クエリエンドポイントの設定"/>
+<Image img={endpoints_configure} size="md" alt="クエリエンドポイントを構成" />
 
-API キーを選択すると、クエリ API エンドポイントが自動的にプロビジョニングされます。テストリクエストを送信できるように例の `curl` コマンドが表示されます:
+APIキーを選択すると、クエリAPIエンドポイントが自動的にプロビジョニングされます。テストリクエストを送信できるように、例の`curl`コマンドが表示されます：
 
-<img src={endpoints_completed} alt="エンドポイント curl コマンド"/>
+<Image img={endpoints_completed} size="md" alt="エンドポイントcurlコマンド" />
 
-### クエリ API パラメータ {#query-api-parameters}
+### クエリAPIパラメータ {#query-api-parameters}
 
-クエリ内のクエリパラメータは、`{parameter_name: type}` の構文で指定できます。これらのパラメータは自動的に検出され、例のリクエストペイロードにはこれらのパラメータを渡すための `queryVariables` オブジェクトが含まれます。
+クエリ内のクエリパラメータは、`{parameter_name: type}`の構文で指定できます。これらのパラメータは自動的に検出され、例のリクエストペイロードにはこれらのパラメータを渡すための`queryVariables`オブジェクトが含まれます。
 
-### テストとモニタリング {#testing-and-monitoring}
+### テストと監視 {#testing-and-monitoring}
 
-クエリ API エンドポイントが作成されると、`curl` または他の HTTP クライアントを使用して動作確認を行えます:
+クエリAPIエンドポイントが作成されると、それが機能するかどうかを`curl`や他のHTTPクライアントを使用してテストできます：
 
+<Image img={endpoints_curltest} size="md" alt="エンドポイントcurlテスト" />
 
-<img src={endpoints_curltest} class="image" alt="エンドポイント curl テスト" style={{width: '80%', background:'none'}} />
+最初のリクエストを送信すると、**共有**ボタンのすぐ右に新しいボタンが表示されるはずです。それをクリックすると、クエリに関する監視データが含まれるフライアウトが開きます：
 
-最初のリクエストを送信した後、**共有** ボタンのすぐ右側に新しいボタンが表示されます。これをクリックすると、クエリに関するモニタリングデータを含むフライアウトが開きます:
+<Image img={endpoints_monitoring} size="md" alt="エンドポイント監視" />
 
-<img src={endpoints_monitoring} alt="エンドポイントモニタリング"/>
-
-
-## 実装詳細 {#implementation-details}
+## 実装の詳細 {#implementation-details}
 
 ### 説明 {#description}
 
-このルートは、指定されたクエリエンドポイントでクエリを実行します。異なるバージョン、フォーマット、およびクエリ変数をサポートします。レスポンスはストリーム (_バージョン 2 のみ_) でストリーミングされるか、単一のペイロードとして返されます。
+このルートは、指定されたクエリエンドポイント上でクエリを実行します。さまざまなバージョン、フォーマット、およびクエリ変数をサポートしています。レスポンスはストリーミング（_バージョン2のみ_）または単一のペイロードとして返されます。
 
 ### 認証 {#authentication}
 
 - **必須**: はい
-- **メソッド**: OpenAPI キー/シークレットによるベーシック認証
+- **方法**: OpenAPIキー/シークレット経由のベーシック認証
 - **権限**: クエリエンドポイントに対する適切な権限。
 
-### URL パラメータ {#url-parameters}
+### URLパラメータ {#url-parameters}
 
-- `queryEndpointId` (必須): 実行するクエリエンドポイントの一意の識別子。
+- `queryEndpointId`（必須）：実行するクエリエンドポイントの一意の識別子。
 
 ### クエリパラメータ {#query-parameters}
 
@@ -104,19 +104,19 @@ API キーを選択すると、クエリ API エンドポイントが自動的�
 
 #### V2 {#v2}
 
-- `format` (オプション): レスポンスの形式。ClickHouse がサポートするすべての形式をサポートしています。
-- `param_:name` クエリ変数をクエリで使用します。 `name` はクエリ内の変数名と一致する必要があります。これはリクエストのボディがストリームの場合のみ使用するべきです。
-- `:clickhouse_setting` サポートされている任意の [ClickHouse 設定](/operations/settings/settings) をクエリパラメータとして渡すことができます。
+- `format`（オプション）：レスポンスのフォーマット。ClickHouseがサポートするすべてのフォーマットをサポートします。
+- `param_:name` クエリに使用されるクエリ変数。`name`はクエリ内の変数名と一致する必要があります。これはリクエストのボディがストリームの場合にのみ使用されるべきです。
+- `:clickhouse_setting` 任意のサポートされた[ClickHouse設定](/operations/settings/settings)をクエリパラメータとして渡すことができます。
 
 ### ヘッダー {#headers}
 
-- `x-clickhouse-endpoint-version` (オプション): クエリエンドポイントのバージョン。サポートされているバージョンは `1` と `2` です。提供されない場合、デフォルトバージョンはエンドポイントの最後に保存されたものです。
-- `x-clickhouse-endpoint-upgrade` (オプション): このヘッダーを設定すると、エンドポイントのバージョンをアップグレードします。このヘッダーは `x-clickhouse-endpoint-version` ヘッダーと組み合わせて機能します。
+- `x-clickhouse-endpoint-version`（オプション）：クエリエンドポイントのバージョン。サポートされているバージョンは`1`と`2`です。指定されていない場合、デフォルトのバージョンは最後に保存されたものです。
+- `x-clickhouse-endpoint-upgrade`（オプション）：エンドポイントバージョンをアップグレードするためにこのヘッダーを設定します。これは`x-clickhouse-endpoint-version`ヘッダーと組み合わせて機能します。
 
 ### リクエストボディ {#request-body}
 
-- `queryVariables` (オプション): クエリで使用される変数を含むオブジェクト。
-- `format` (オプション): レスポンスの形式。クエリ API エンドポイントがバージョン 2 の場合、ClickHouse がサポートする任意の形式が可能です。v1 にサポートされている形式は以下の通りです:
+- `queryVariables`（オプション）：クエリで使用される変数を含むオブジェクト。
+- `format`（オプション）：レスポンスのフォーマット。クエリAPIエンドポイントがバージョン2の場合、ClickHouseがサポートする任意のフォーマットが可能です。v1でサポートされているフォーマットは以下の通りです：
   - TabSeparated
   - TabSeparatedWithNames
   - TabSeparatedWithNamesAndTypes
@@ -128,32 +128,32 @@ API キーを選択すると、クエリ API エンドポイントが自動的�
 
 ### レスポンス {#responses}
 
-- **200 OK**: クエリが正常に実行されました。
+- **200 OK**: クエリは正常に実行されました。
 - **400 Bad Request**: リクエストが不正でした。
 - **401 Unauthorized**: 認証なしまたは権限不足でリクエストが行われました。
 - **404 Not Found**: 指定されたクエリエンドポイントが見つかりませんでした。
 
 ### エラーハンドリング {#error-handling}
 
-- リクエストに有効な認証資格情報が含まれていることを確認します。
-- `queryEndpointId` と `queryVariables` が正しいことを検証します。
+- リクエストに有効な認証情報が含まれていることを確認してください。
+- `queryEndpointId`と`queryVariables`が正しいことを検証してください。
 - サーバーエラーを適切に処理し、適切なエラーメッセージを返します。
 
-### エンドポイントのバージョンのアップグレード {#upgrading-the-endpoint-version}
+### エンドポイントバージョンのアップグレード {#upgrading-the-endpoint-version}
 
-`v1` から `v2` にエンドポイントのバージョンをアップグレードするには、リクエストに `x-clickhouse-endpoint-upgrade` ヘッダーを含め、`1` に設定します。これによりアップグレードプロセスがトリガーされ、`v2` で利用可能な機能と改善点を使用できるようになります。
+エンドポイントのバージョンを`v1`から`v2`にアップグレードするには、リクエストに`x-clickhouse-endpoint-upgrade`ヘッダーを含めて`1`に設定します。これによりアップグレードプロセスがトリガーされ、`v2`で利用可能な機能や改善を使用できます。
 
 ## 例 {#examples}
 
 ### 基本リクエスト {#basic-request}
 
-**クエリ API エンドポイント SQL:**
+**クエリAPIエンドポイントSQL:**
 
 ```sql
 SELECT database, name as num_tables FROM system.tables limit 3;
 ```
 
-#### バージョン 1 {#version-1}
+#### バージョン1 {#version-1}
 
 **cURL:**
 
@@ -209,7 +209,7 @@ fetch(
 }
 ```
 
-#### バージョン 2 {#version-2}
+#### バージョン2 {#version-2}
 
 **cURL:**
 
@@ -247,9 +247,9 @@ fetch(
 {"database":"INFORMATION_SCHEMA","num_tables":"REFERENTIAL_CONSTRAINTS"}
 ```
 
-### クエリ変数を使用したリクエストおよび JSONCompactEachRow 形式のバージョン 2 {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
+### クエリ変数を含むリクエストとJSONCompactEachRowフォーマットでのバージョン2 {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
 
-**クエリ API エンドポイント SQL:**
+**クエリAPIエンドポイントSQL:**
 
 ```sql
 SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: String}) AND database = {database: String};
@@ -298,11 +298,11 @@ fetch(
 ["query_views_log", "system"]
 ```
 
-### 配列を含むクエリ変数のリクエストで、テーブルにデータを挿入 {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
+### 配列をクエリ変数に含めてテーブルにデータを挿入するリクエスト {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
 
-**テーブル SQL:**
+**テーブルSQL:**
 
-```SQL
+```sql
 CREATE TABLE default.t_arr
 (
     `arr` Array(Array(Array(UInt32)))
@@ -311,7 +311,7 @@ ENGINE = MergeTree
 ORDER BY tuple()
 ```
 
-**クエリ API エンドポイント SQL:**
+**クエリAPIエンドポイントSQL:**
 
 ```sql
   INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
@@ -361,9 +361,9 @@ fetch(
 OK
 ```
 
-### ClickHouse 設定 max_threads を 8 に設定したリクエスト {#request-with-clickhouse-settings-max_threads-set-to-8}
+### ClickHouse設定max_threadsを8に設定したリクエスト {#request-with-clickhouse-settings-max_threads-set-to-8}
 
-**クエリ API エンドポイント SQL:**
+**クエリAPIエンドポイントSQL:**
 
 ```sql
 SELECT * from system.tables;
@@ -397,9 +397,9 @@ fetch(
   .catch((error) => console.error("Error:", error));
 ```
 
-### ストリームとしてのレスポンスを解析するリクエスト {#request-and-parse-the-response-as-a-stream}
+### ストリームからのリクエストとレスポンスをストリームとして解析 {#request-and-parse-the-response-as-a-stream}
 
-**クエリ API エンドポイント SQL:**
+**クエリAPIエンドポイントSQL:**
 
 ```sql
 SELECT name, database from system.tables;
@@ -429,7 +429,7 @@ async function fetchAndLogChunks(
   });
 
   if (!response.ok) {
-    console.error(`HTTP error! Status: ${response.status}`);
+    console.error(`HTTPエラー！ステータス: ${response.status}`);
     return;
   }
 
@@ -469,7 +469,7 @@ fetchAndLogChunks(endpointUrl, openApiKeyId, openApiKeySecret).catch((err) =>
 
 ### ファイルからテーブルにストリームを挿入 {#insert-a-stream-from-a-file-into-a-table}
 
-以下の内容でファイル `./samples/my_first_table_2024-07-11.csv` を作成します:
+`./samples/my_first_table_2024-07-11.csv`というファイルを作成し、以下の内容を記入します：
 
 ```csv
 "user_id","json","name"
@@ -477,7 +477,7 @@ fetchAndLogChunks(endpointUrl, openApiKeyId, openApiKeySecret).catch((err) =>
 "2","{""name"":""Jane"",""age"":25}","Jane"
 ```
 
-**テーブル作成 SQL:**
+**テーブル作成SQL:**
 
 ```sql
 create table default.my_first_table
@@ -489,7 +489,7 @@ create table default.my_first_table
 ORDER BY user_id;
 ```
 
-**クエリ API エンドポイント SQL:**
+**クエリAPIエンドポイントSQL:**
 
 ```sql
 INSERT INTO default.my_first_table
@@ -504,4 +504,3 @@ cat ./samples/my_first_table_2024-07-11.csv | curl --user '<openApiKeyId:openApi
                                                    -H 'x-clickhouse-endpoint-version: 2' \
                                                    "https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=CSV" \
                                                    --data-binary @-
-```

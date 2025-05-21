@@ -1,19 +1,20 @@
 ---
-title: ArrowStream
-slug: /interfaces/formats/ArrowStream
-keywords: [ArrowStream]
-input_format: true
-output_format: true
 alias: []
+description: 'ArrowStreamフォーマットに関するドキュメント'
+input_format: true
+keywords: ['ArrowStream']
+output_format: true
+slug: /interfaces/formats/ArrowStream
+title: 'ArrowStream'
 ---
 
-| 入力  | 出力  | エイリアス |
+| Input | Output | Alias |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-`ArrowStream` は Apache Arrow の「ストリームモード」フォーマットです。メモリ内ストリーム処理のために設計されています。
+`ArrowStream` はApache Arrowの「ストリームモード」フォーマットです。これは、メモリ内ストリーム処理のために設計されています。
 
 ## 使用例 {#example-usage}
 

@@ -1,7 +1,7 @@
 ---
+description: 'ClickHouseのループテーブル関数は、無限ループでクエリ結果を返すために使用されます。'
 slug: /sql-reference/table-functions/loop
-title: "loop"
-description: "ClickHouseのloopテーブル関数は、無限ループでクエリ結果を返すために使用されます。"
+title: 'loop'
 ---
 
 
@@ -9,7 +9,7 @@ description: "ClickHouseのloopテーブル関数は、無限ループでクエ�
 
 **構文**
 
-``` sql
+```sql
 SELECT ... FROM loop(database, table);
 SELECT ... FROM loop(database.table);
 SELECT ... FROM loop(table);
@@ -32,15 +32,15 @@ SELECT ... FROM loop(other_table_function(...));
 
 ClickHouseからデータを選択する:
 
-``` sql
+```sql
 SELECT * FROM loop(test_database, test_table);
 SELECT * FROM loop(test_database.test_table);
 SELECT * FROM loop(test_table);
 ```
 
-または、他のテーブル関数を使用する:
+または他のテーブル関数を使用する:
 
-``` sql
+```sql
 SELECT * FROM loop(numbers(3)) LIMIT 7;
    ┌─number─┐
 1. │      0 │
@@ -56,7 +56,7 @@ SELECT * FROM loop(numbers(3)) LIMIT 7;
 7. │      0 │
    └────────┘
 ``` 
-``` sql
+```sql
 SELECT * FROM loop(mysql('localhost:3306', 'test', 'test', 'user', 'password'));
 ...
 ```

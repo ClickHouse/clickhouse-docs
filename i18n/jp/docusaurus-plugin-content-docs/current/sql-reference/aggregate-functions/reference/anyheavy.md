@@ -1,16 +1,16 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/anyheavy
+description: '重み付きヒッターアルゴリズムを使用して、頻繁に発生する値を選択します。 各クエリの実行スレッドで、半数以上のケースで発生する値がある場合、この値が返されます。 通常、結果は非決定的です。'
 sidebar_position: 104
-title: "anyHeavy"
-description: "重みのあるヒッターアルゴリズムを使用して頻繁に発生する値を選択します。クエリの各実行スレッドで半数以上のケースで発生する値がある場合、この値が返されます。通常、結果は非決定論的です。"
+slug: /sql-reference/aggregate-functions/reference/anyheavy
+title: 'anyHeavy'
 ---
 
 
 # anyHeavy
 
-[重みのあるヒッター](https://doi.org/10.1145/762471.762473)アルゴリズムを使用して頻繁に発生する値を選択します。クエリの各実行スレッドで半数以上のケースで発生する値がある場合、この値が返されます。通常、結果は非決定論的です。
+[重み付きヒッター](https://doi.org/10.1145/762471.762473)アルゴリズムを使用して、頻繁に発生する値を選択します。各クエリの実行スレッドで半数以上のケースで発生する値がある場合、この値が返されます。通常、結果は非決定的です。
 
-``` sql
+```sql
 anyHeavy(column)
 ```
 
@@ -20,14 +20,14 @@ anyHeavy(column)
 
 **例**
 
-[OnTime](../../../getting-started/example-datasets/ontime.md)データセットを取り、`AirlineID`カラムの中で頻繁に発生する値を選択します。
+[OnTime](../../../getting-started/example-datasets/ontime.md)データセットを取得し、`AirlineID`カラムにある頻繁に発生する値を選択します。
 
-``` sql
+```sql
 SELECT anyHeavy(AirlineID) AS res
 FROM ontime
 ```
 
-``` text
+```text
 ┌───res─┐
 │ 19690 │
 └───────┘

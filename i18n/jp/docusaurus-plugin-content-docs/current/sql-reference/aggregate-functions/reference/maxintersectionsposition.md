@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/maxintersectionsposition
+description: '最大交差数関数の出現位置を計算する集約関数。'
 sidebar_position: 164
-title: maxIntersectionsPosition
-description: "maxIntersections関数の出現位置を計算する集約関数。"
+slug: /sql-reference/aggregate-functions/reference/maxintersectionsposition
+title: 'maxIntersectionsPosition'
 ---
 
 
@@ -24,7 +24,7 @@ maxIntersectionsPosition(start_column, end_column)
 
 **返される値**
 
-最大数の交差したインターバルの開始位置を返します。
+交差しているインターバルの最大数の開始位置を返します。
 
 **例**
 
@@ -35,11 +35,7 @@ CREATE TABLE my_events (
 )
 Engine = MergeTree
 ORDER BY tuple();
-```
 
-次のデータを挿入します：
-
-```sql
 INSERT INTO my_events VALUES
    (1, 3),
    (1, 6),
@@ -47,7 +43,7 @@ INSERT INTO my_events VALUES
    (3, 7);
 ```
 
-インターバルは以下のようになります：
+インターバルは次のようになります：
 
 ```response
 1 - 3
@@ -56,7 +52,7 @@ INSERT INTO my_events VALUES
     3 - - - 7
 ```
 
-これらのインターバルのうち、3つが値4を共通して持ち、2番目のインターバルから始まることに注意してください：
+これらのインターバルのうち、3つは4の値を共有しており、2番目のインターバルから始まります：
 
 ```sql
 SELECT maxIntersectionsPosition(start, end) FROM my_events;
@@ -67,4 +63,4 @@ SELECT maxIntersectionsPosition(start, end) FROM my_events;
 2
 ```
 
-言い換えれば、`(1,6)`行は交差する3つのインターバルの開始位置であり、3は交差するインターバルの最大数です。
+言い換えれば、 `(1,6)` 行が交差する3つのインターバルの開始であり、3は交差するインターバルの最大数です。

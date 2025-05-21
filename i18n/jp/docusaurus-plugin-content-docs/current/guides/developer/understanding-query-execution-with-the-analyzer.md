@@ -1,7 +1,8 @@
 ---
 slug: /guides/developer/understanding-query-execution-with-the-analyzer
-sidebar_label: クエリ実行の理解 - アナライザーを使用して
-title: クエリ実行の理解 - アナライザーを使用して
+sidebar_label: 'クエリ実行の理解 - アナライザーを使用して'
+title: 'クエリ実行の理解 - アナライザーを使用して'
+description: 'ClickHouseがクエリをどのように実行するかを理解するためにアナライザーを使用する方法を説明します'
 ---
 
 import analyzer1 from '@site/static/images/guides/developer/analyzer1.png';
@@ -9,11 +10,12 @@ import analyzer2 from '@site/static/images/guides/developer/analyzer2.png';
 import analyzer3 from '@site/static/images/guides/developer/analyzer3.png';
 import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
+import Image from '@theme/IdealImage';
 
 
 # クエリ実行の理解 - アナライザーを使用して
 
-ClickHouseはクエリを非常に迅速に処理しますが、クエリの実行は単純なものではありません。`SELECT` クエリがどのように実行されるのかを理解してみましょう。これを示すために、ClickHouseのテーブルにデータを追加しましょう：
+ClickHouseはクエリを非常に迅速に処理しますが、クエリの実行は単純な話ではありません。`SELECT` クエリがどのように実行されるかを理解してみましょう。これを説明するために、まずClickHouseのテーブルにデータを追加しましょう：
 
 ```sql
 CREATE TABLE session_events(
@@ -31,15 +33,15 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
    type Enum(\'type1\', \'type2\')', 1, 10, 2) LIMIT 1000;
 ```
 
-ClickHouseにデータが追加されたので、クエリを実行してその実行を理解したいと思います。クエリの実行は多くのステップに分解されます。クエリの実行の各ステップは、対応する `EXPLAIN` クエリを使用して分析およびトラブルシューティングすることができます。これらのステップは、以下のチャートに要約されています：
+ClickHouseにデータが追加されたので、いくつかのクエリを実行してその実行を理解したいと思います。クエリの実行は多くのステップに分解されます。クエリ実行の各ステップは、対応する `EXPLAIN` クエリを使用して分析およびトラブルシューティングできます。これらのステップは以下のチャートにまとめられています：
 
-<img src={analyzer1} class="image" alt="Explain query steps" style={{width: '600px'}} />
+<Image img={analyzer1} alt="クエリのステップを説明" size="md"/>
 
-クエリ実行中の各エンティティを見てみましょう。いくつかのクエリを実行し、それらを `EXPLAIN` ステートメントを使用して調べてみます。
+クエリ実行中の各エンティティを見てみましょう。いくつかのクエリを選んで、それらを `EXPLAIN` ステートメントを使って検証します。
 
 ## パーサー {#parser}
 
-パーサーの目標は、クエリテキストをAST（抽象構文木）に変換することです。このステップは `EXPLAIN AST` を使用して可視化することができます：
+パーサーの目標は、クエリテキストをAST（抽象構文木）に変換することです。このステップは、`EXPLAIN AST`を使用して視覚化できます：
 
 ```sql
 EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
@@ -62,21 +64,21 @@ EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
 └────────────────────────────────────────────────────┘
 ```
 
-出力は以下のように可視化された抽象構文木です：
+出力は、以下に示すように視覚化された抽象構文木です：
 
-<img src={analyzer2} class="image" alt="AST output" style={{width: '600px'}} />
+<Image img={analyzer2} alt="AST出力" size="md"/>
 
-各ノードには対応する子供があり、全体の木はクエリの構造を表しています。これはクエリを処理するための論理的な構造です。エンドユーザーの立場から見ると（クエリの実行に興味がない限り）、あまり役に立たないかもしれません。このツールは主に開発者によって使用されます。
+各ノードには対応する子があり、全体の木はクエリの全体構造を示しています。これはクエリを処理するための論理的な構造です。エンドユーザーの観点から（クエリ実行に関心がない限り）、これはあまり役に立たないですが、このツールは主に開発者によって使用されます。
 
 ## アナライザー {#analyzer}
 
-現時点でClickHouseにはアナライザーの2つのアーキテクチャがあります。古いアーキテクチャを使用するには、`enable_analyzer=0` を設定します。新しいアーキテクチャはデフォルトで有効になっています。ここでは新しいアーキテクチャのみを説明します。古いアーキテクチャは、新しいアナライザーが一般的に利用可能になり次第、非推奨となります。
+ClickHouseには現在、アナライザー用の2つのアーキテクチャがあります。`enable_analyzer=0`を設定することで古いアーキテクチャを使用できますが、新しいアーキテクチャはデフォルトで有効です。ここでは、新しいアーキテクチャのみを説明します。古いものは、一般に利用可能になるとともに非推奨となります。
 
 :::note
-新しいアーキテクチャは、ClickHouseのパフォーマンスを改善するためのより良いフレームワークを提供するはずです。しかし、クエリ処理ステップの基本的なコンポーネントであるため、一部のクエリに悪影響を及ぼす可能性もあり、[既知の非互換性](https://operations/analyzer#known-incompatibilities)もあります。クエリまたはユーザーのレベルで `enable_analyzer` 設定を変更することで、古いアナライザーに戻ることができます。
+新しいアーキテクチャはClickHouseのパフォーマンスを向上させるためのより良いフレームワークを提供します。しかし、これはクエリ処理ステップの基本的なコンポーネントであるため、いくつかのクエリに対して負の影響を及ぼす可能性もあり、[既知の非互換性](/operations/analyzer#known-incompatibilities)があります。クエリやユーザーのレベルで `enable_analyzer` 設定を変更することで、古いアナライザーに戻ることができます。
 :::
 
-アナライザーはクエリ実行の重要なステップです。ASTをクエリツリーに変換します。ASTに対するクエリツリーの主な利点は、多くのコンポーネントが解決される点です。たとえば、どのテーブルから読み取るかやエイリアスも解決され、異なるデータ型が使用されていることが知られています。これらの利点により、アナライザーは最適化を適用できます。これらの最適化の方法は「パス」を通じて行われます。各パスは異なる最適化を探します。すべてのパスは[こちら](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249)で見ることができます。次のクエリで確認しましょう：
+アナライザーはクエリ実行の重要なステップです。ASTを取得し、クエリツリーに変換します。ASTに対するクエリツリーの主な利点は、多くのコンポーネントが解決されることです。例えば、どのテーブルから読み取るかがわかり、エイリアスも解決され、使用されるさまざまなデータ型がツリーに知らされています。これらのすべての利点により、アナライザーは最適化を適用できます。これらの最適化の方法は「パス」を介して行われ、それぞれのパスは異なる最適化を探します。すべてのパスは[こちら](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249)で確認できます。以前のクエリを使って実践してみましょう：
 
 ```sql
 EXPLAIN QUERY TREE passes=0 SELECT min(timestamp) AS minimum_date, max(timestamp) AS maximum_date FROM session_events SETTINGS allow_experimental_analyzer=1;
@@ -123,11 +125,11 @@ EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestam
 └───────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-二つの実行の間で、エイリアスとプロジェクションの解決を確認できます。
+二回の実行の間で、エイリアスとプロジェクションの解決が確認できます。
 
 ## プランナー {#planner}
 
-プランナーはクエリツリーを取り、それからクエリプランを構築します。クエリツリーは、特定のクエリで何をするかを教え、クエリプランはそれをどのようにするかを示します。クエリプランの一部として追加の最適化が行われます。`EXPLAIN PLAN` または `EXPLAIN` を使用してクエリプランを表示できます（`EXPLAIN` は `EXPLAIN PLAN` を実行します）。
+プランナーは、クエリツリーを受け取り、そこからクエリプランを構築します。クエリツリーは、特定のクエリで何をしたいかを示し、クエリプランはそれをどのように実行するかを示します。追加の最適化は、クエリプランの一部として行われます。`EXPLAIN PLAN` または `EXPLAIN` を使用してクエリプランを見ることができます（`EXPLAIN`は `EXPLAIN PLAN`を実行します）。
 
 ```sql
 EXPLAIN PLAN WITH
@@ -145,7 +147,7 @@ SELECT type, min(timestamp) AS minimum_date, max(timestamp) AS maximum_date, cou
 └──────────────────────────────────────────────────┘
 ```
 
-この出力は一部の情報を提供しますが、例えば、プロジェクションの上に必要なカラム名を知りたい場合もあります。クエリにヘッダーを追加できます：
+これにより、情報が得られますが、さらに知りたい場合もあります。例えば、どのカラムに対してプロジェクションが必要なのかを知りたいかもしれません。クエリにヘッダーを追加できます：
 
 ```SQL
 EXPLAIN header = 1
@@ -181,7 +183,7 @@ GROUP BY type
 └──────────────────────────────────────────────────┘
 ```
 
-これで、最後のプロジェクション（`minimum_date`、`maximum_date`、`percentage`）を作成するために必要なカラム名がわかりますが、実行する必要があるすべてのアクションの詳細も知りたい場合があります。そのためには `actions=1` を設定できます。
+これで、最後のプロジェクションに必要なカラム名（`minimum_date`、`maximum_date`、および `percentage`）が分かりましたが、実行する必要のあるすべてのアクションの詳細を知りたい場合もあります。その場合は、`actions=1`を設定します。
 
 ```sql
 EXPLAIN actions = 1
@@ -209,7 +211,7 @@ GROUP BY type
 │          ALIAS min(timestamp) :: 1 -> minimum_date DateTime : 6                                                                            │
 │          ALIAS max(timestamp) :: 2 -> maximum_date DateTime : 1                                                                            │
 │          FUNCTION divide(count() :: 3, total_rows :: 4) -> divide(count(), total_rows) Nullable(Float64) : 2                               │
-│          FUNCTION multiply(divide(count() :: 3, total_rows :: 4) :: 2, 100 UInt8 : 5) -> multiply(divide(count(), total_rows), 100) Nullable(Float64) : 4 │
+│          FUNCTION multiply(divide(count(), total_rows) :: 2, 100 :: 5) -> multiply(divide(count(), total_rows), 100) Nullable(Float64) : 4 │
 │          ALIAS multiply(divide(count(), total_rows), 100) :: 4 -> percentage Nullable(Float64) : 5                                         │
 │ Positions: 0 6 1 5                                                                                                                         │
 │   Aggregating                                                                                                                              │
@@ -236,11 +238,11 @@ GROUP BY type
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-これで、使用されているすべての入力、関数、エイリアス、データ型が確認できます。プランナーが適用しようとしているいくつかの最適化は[こちら](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h)で確認できます。
+これで、使用されているすべての入力、関数、エイリアス、データ型が確認できます。プランナーが適用するいくつかの最適化の詳細はこちらで確認できます：[こちら](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h)。
 
 ## クエリパイプライン {#query-pipeline}
 
-クエリパイプラインはクエリプランから生成されます。クエリパイプラインはクエリプランに非常に似ていますが、ツリーではなくグラフです。ClickHouseがクエリをどのように実行し、どのリソースが使用されるかを強調します。クエリパイプラインを分析することは、入力/出力のボトルネックを確認するのに非常に有用です。前のクエリをとり、クエリパイプラインの実行を見てみましょう：
+クエリパイプラインは、クエリプランから生成されます。クエリパイプラインは、クエリプランと非常に似ていますが、木ではなくグラフです。ClickHouseがクエリをどのように実行し、どのリソースが使用されるかを示します。クエリパイプラインを分析することは、入出力の観点からボトルネックを特定するのに非常に役立ちます。前のクエリを使用して、クエリパイプラインの実行を見てみましょう：
 
 ```sql
 EXPLAIN PIPELINE
@@ -269,7 +271,7 @@ GROUP BY type;
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
-括弧の中には、クエリプランステップが含まれ、次にプロセッサが示されています。これは素晴らしい情報ですが、これはグラフであるため、そのように可視化できると良いでしょう。設定 `graph` を1に設定し、出力形式をTSVに指定できます：
+括弧内はクエリプランのステップで、次にプロセッサを示しています。これは非常に有用な情報ですが、これはグラフであるため、視覚化することができればより良いでしょう。`graph`という設定を1に設定し、出力形式をTSVに指定できます：
 
 ```sql
 EXPLAIN PIPELINE graph=1 WITH
@@ -332,9 +334,9 @@ digraph
 
 この出力をコピーして[こちら](https://dreampuf.github.io/GraphvizOnline)に貼り付けると、次のグラフが生成されます：
 
-<img src={analyzer3} class="image" alt="Graph output" style={{width: '600px'}} />
+<Image img={analyzer3} alt="グラフ出力" size="md"/>
 
-白い長方形はパイプラインノードに対応し、灰色の長方形はクエリプランステップに対応し、`x` の後に数字が続くものは使用されている入力/出力の数に対応します。コンパクトではない形式で表示したい場合は、`compact=0`を追加できます：
+白い矩形はパイプラインノードを、灰色の矩形はクエリプランのステップを表し、`x`の後に数字が続くのは、使用されている入出力の数に対応します。コンパクトな形ではなく、すっきりとした形で表示したい場合は、`compact=0`を追加できます：
 
 ```sql
 EXPLAIN PIPELINE graph = 1, compact = 0
@@ -372,9 +374,9 @@ digraph
 }
 ```
 
-<img src={analyzer4} class="image" alt="Compact graph output" style={{width: '600px'}} />
+<Image img={analyzer4} alt="コンパクトグラフ出力" size="md" />
 
-ClickHouseはなぜテーブルから複数のスレッドを使用して読み込まないのでしょうか？テーブルにさらにデータを追加してみましょう：
+ClickHouseがテーブルを複数のスレッドを使用して読み取らない理由は何でしょう？テーブルへのデータをさらに追加してみましょう：
 
 ```sql
 INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
@@ -384,7 +386,7 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
    type Enum(\'type1\', \'type2\')', 1, 10, 2) LIMIT 1000000;
 ```
 
-再度 `EXPLAIN` クエリを実行しましょう：
+では、もう一度`EXPLAIN`クエリを実行してみましょう：
 
 ```sql
 EXPLAIN PIPELINE graph = 1, compact = 0
@@ -426,13 +428,15 @@ digraph
   n4 -> n6;
   n5 -> n7;
   n6 -> n7;
+  n7 -> n8;
+  n7 -> n9;
 }
 ```
 
-<img src={analyzer5} class="image" alt="Parallel graph output" style={{width: '600px'}} />
+<Image img={analyzer5} alt="並列グラフ出力" size="md" />
 
-したがって、エグゼキュータはデータの量が十分多くないため、操作を並列化しないことを決定しました。行を追加することで、エグゼキュータはグラフに示されているように複数のスレッドを使用することを選択しました。
+実行者は、データの量がどのように複数のスレッドを使用しないことを判断しました。行を追加することで、実行者が複数のスレッドを使用することを決定したことが示されています。
 
-## エグゼキュータ {#executor}
+## 実行者 {#executor}
 
-最後に、クエリ実行の最終ステップはエグゼキュータによって行われます。エグゼキュータはクエリパイプラインを取り、それを実行します。`SELECT`、`INSERT`、または `INSERT SELECT` に応じて異なるタイプのエグゼキュータがあります。
+最後のクエリ実行ステップは、実行者によって行われます。クエリパイプラインを取得して実行します。`SELECT`、`INSERT`、または `INSERT SELECT`のいずれの場合でも、さまざまなタイプの実行者があります。

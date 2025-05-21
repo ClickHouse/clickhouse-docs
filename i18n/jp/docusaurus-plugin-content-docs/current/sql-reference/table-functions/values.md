@@ -1,34 +1,34 @@
 ---
-slug: /sql-reference/table-functions/values
-sidebar_position: 210
-sidebar_label: values
-title: 'values'
-description: 'カラムに値を埋める一時ストレージを作成します。'
+description: 'カラムに値を充填する一時ストレージを作成します。'
 keywords: ['values', 'table function']
+sidebar_label: 'values'
+sidebar_position: 210
+slug: /sql-reference/table-functions/values
+title: 'values'
 ---
 
 
 # Values テーブル関数 {#values-table-function}
 
-`Values` テーブル関数は、カラムに値を埋める一時ストレージを作成することを可能にします。これは、短時間のテストやサンプルデータの生成に便利です。
+`Values` テーブル関数を使用すると、カラムに値を充填する一時ストレージを作成できます。これは、迅速なテストやサンプルデータの生成に便利です。
 
 :::note
-Values は大文字と小文字を区別しない関数です。つまり、`VALUES` または `values` はどちらも有効です。
+Values は大文字と小文字を区別しない関数です。つまり、`VALUES` と `values` の両方が有効です。
 :::
 
 ## 構文 {#syntax}
 
-`VALUES` テーブル関数の基本的な構文は次の通りです：
+`VALUES` テーブル関数の基本的な構文は次のとおりです：
 
 ```sql
-VALUES([構造,] values...)
+VALUES([structure,] values...)
 ```
 
-一般的には次のように使用されます：
+一般的に次のように使用されます：
 
 ```sql
 VALUES(
-    ['カラム1の名前 タイプ1, カラム2の名前 タイプ2, ...'],
+    ['column1_name Type1, column2_name Type2, ...'],
     (value1_row1, value2_row1, ...),
     (value1_row2, value2_row2, ...),
     ...
@@ -37,13 +37,13 @@ VALUES(
 
 ## 引数 {#arguments}
 
-- `カラム1の名前 タイプ1, ...` (オプション)。 [String](/sql-reference/data-types/string) 
-  カラム名とタイプを指定します。この引数を省略すると、カラムは `c1`, `c2` などと名前付けされます。
+- `column1_name Type1, ...` (オプション)。 [String](/sql-reference/data-types/string) 
+  カラムの名前とタイプを指定します。この引数が省略された場合、カラムは `c1`, `c2` などと名付けられます。
 - `(value1_row1, value2_row1)`。 [Tuples](/sql-reference/data-types/tuple) 
-   任意のタイプの値を含むタプル。
+   任意のタイプの値を含むタプルです。
 
 :::note
-カンマで区切られたタプルは、単一の値に置き換えることもできます。この場合、各値は新しい行と見なされます。詳細については、[例](#examples) セクションを参照してください。
+コンマで区切られたタプルは単一の値に置き換えることもできます。この場合、各値は新しい行として扱われます。詳細は [例](#examples) セクションを参照してください。
 :::
 
 ## 戻り値 {#returned-value}
@@ -52,7 +52,7 @@ VALUES(
 
 ## 例 {#examples}
 
-```sql title="Query"
+```sql title="クエリ"
 SELECT *
 FROM VALUES(
     'person String, place String',
@@ -69,7 +69,7 @@ FROM VALUES(
 )
 ```
 
-```response title="Response"
+```response title="レスポンス"
     ┌─person───┬─place─────┐
  1. │ Noah     │ Paris     │
  2. │ Emma     │ Tokyo     │
@@ -84,9 +84,10 @@ FROM VALUES(
     └──────────┴───────────┘
 ```
 
-`VALUES` はタプルの代わりに単一の値でも使用できます。例えば：
+`VALUES` はタプルではなく単一の値とともに使用することもできます。例えば：
 
-```sql title="Query"
+```sql title="クエリ"
+SELECT *
 FROM VALUES(
     'person String',
     'Noah',
@@ -102,7 +103,7 @@ FROM VALUES(
 )
 ```
 
-```response title="Response"
+```response title="レスポンス"
     ┌─person───┐
  1. │ Noah     │
  2. │ Emma     │
@@ -117,12 +118,13 @@ FROM VALUES(
     └──────────┘
 ```
 
-または、行の仕様を提供せずに使用することもできます（`'カラム1の名前 タイプ1, カラム2の名前 タイプ2, ...'`は[構文](#syntax)において）が、この場合、カラムは自動的に名前付けされます。
+また、行の仕様を提供せずに（`'column1_name Type1, column2_name Type2, ...'`
+を [構文](#syntax) で）使用することもでき、その場合、カラムは自動的に名付けられます。
 
 例えば：
 
-```sql title="Query"
--- 値のタプル
+```sql title="クエリ"
+-- タプルを値として
 SELECT *
 FROM VALUES(
     ('Noah', 'Paris'),
@@ -136,8 +138,26 @@ FROM VALUES(
     ('Mason', 'Venice'),
     ('Isabella', 'Prague')
 )
+```
 
+```response title="レスポンス"
+    ┌─c1───────┬─c2────────┐
+ 1. │ Noah     │ Paris     │
+ 2. │ Emma     │ Tokyo     │
+ 3. │ Liam     │ Sydney    │
+ 4. │ Olivia   │ Berlin    │
+ 5. │ Ilya     │ London    │
+ 6. │ Sophia   │ London    │
+ 7. │ Jackson  │ Madrid    │
+ 8. │ Alexey   │ Amsterdam │
+ 9. │ Mason    │ Venice    │
+10. │ Isabella │ Prague    │
+    └──────────┴───────────┘
+```   
+
+```sql
 -- 単一の値
+SELECT *
 FROM VALUES(
     'Noah',
     'Emma',
@@ -152,20 +172,7 @@ FROM VALUES(
 )
 ```
 
-```response title="Response"
-    ┌─c1───────┬─c2────────┐
- 1. │ Noah     │ Paris     │
- 2. │ Emma     │ Tokyo     │
- 3. │ Liam     │ Sydney    │
- 4. │ Olivia   │ Berlin    │
- 5. │ Ilya     │ London    │
- 6. │ Sophia   │ London    │
- 7. │ Jackson  │ Madrid    │
- 8. │ Alexey   │ Amsterdam │
- 9. │ Mason    │ Venice    │
-10. │ Isabella │ Prague    │
-    └──────────┴───────────┘
-    
+```response title="レスポンス"
     ┌─c1───────┐
  1. │ Noah     │
  2. │ Emma     │
@@ -180,6 +187,6 @@ FROM VALUES(
     └──────────┘
 ```
 
-## 関連項目 {#see-also}
+## その他の情報 {#see-also}
 
-- [Values フォーマット](/interfaces/formats/Values)
+- [Values 形式](/interfaces/formats/Values)

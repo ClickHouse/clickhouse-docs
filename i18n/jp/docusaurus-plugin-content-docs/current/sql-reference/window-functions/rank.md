@@ -1,14 +1,15 @@
 ---
-slug: /sql-reference/window-functions/rank
-sidebar_label: rank
+description: 'ウィンドウ関数 rank のドキュメント'
+sidebar_label: 'rank'
 sidebar_position: 6
+slug: /sql-reference/window-functions/rank
+title: 'rank'
 ---
 
 
 # rank
 
-現在の行をパーティション内でギャップを持つランクを付けます。言い換えれば、もし遭遇する行の値が以前の行の値と等しい場合、その行はその以前の行と同じランクを受け取ります。
-次の行のランクは、前の行のランクに、前のランクが与えられた回数に等しいギャップを加えたものになります。
+現在の行をそのパーティション内でギャップを持ってランク付けします。言い換えれば、遭遇した行の値が前の行の値と等しい場合、その行は前の行と同じランクを受け取ります。次の行のランクは、前の行のランクに、前のランクが与えられた回数に等しいギャップを加えたものになります。
 
 [dense_rank](./dense_rank.md) 関数は、ギャップなしで同じ動作を提供します。
 
@@ -17,7 +18,7 @@ sidebar_position: 6
 ```sql
 rank ()
   OVER ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
-        [ROWS または RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
+        [ROWS or RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
 FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
@@ -26,11 +27,11 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 **戻り値**
 
-- ギャップを含むパーティション内の現在の行の番号。[UInt64](../data-types/int-uint.md)。
+- パーティション内の現在の行の数値、ギャップを含む。[UInt64](../data-types/int-uint.md)。
 
 **例**
 
-以下の例は、動画教材 [ClickHouseにおけるランク付けウィンドウ関数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA) で提供された例に基づいています。
+以下の例は、動画の指導 [ClickHouse におけるウィンドウ関数のランク付け](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA) に提供されている例に基づいています。
 
 クエリ:
 
@@ -70,6 +71,6 @@ FROM salaries;
 4. │ Douglas Benson  │ 150000 │    4 │
 5. │ Michael Stanley │ 150000 │    4 │
 6. │ Scott Harrison  │ 150000 │    4 │
-7. │ James Henderson │ 140000 │  7 │
+7. │ James Henderson │ 140000 │    7 │
    └─────────────────┴────────┴──────┘
 ```

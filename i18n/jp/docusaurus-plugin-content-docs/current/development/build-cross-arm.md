@@ -1,12 +1,14 @@
 ---
-slug: /development/build-cross-arm
+description: 'AARCH64アーキテクチャ用にソースからClickHouseをビルドするためのガイド'
+sidebar_label: 'AARCH64のLinuxでビルド'
 sidebar_position: 25
-sidebar_label: AARCH64 用の Linux でのビルド
+slug: /development/build-cross-arm
+title: 'Linux上でAARCH64用にClickHouseをビルドする方法'
 ---
 
 
-# AARCH64 用の Linux で ClickHouse をビルドする方法
+# Linux上でAARCH64用にClickHouseをビルドする方法
 
-Aarch64 マシンで Aarch64 用の ClickHouse をビルドするために特別な手順は必要ありません。
+Aarch64マシン上でAarch64用にClickHouseをビルドするために特別な手順は必要ありません。
 
-x86 Linux マシン上で AArch64 用に ClickHouse をクロスコンパイルするには、次のフラグを `cmake` に渡します: `-DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-aarch64.cmake`
+x86 Linuxマシン上でAArch64用にClickHouseをクロスコンパイルするには、`cmake`に次のフラグを渡します: `-DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-aarch64.cmake`

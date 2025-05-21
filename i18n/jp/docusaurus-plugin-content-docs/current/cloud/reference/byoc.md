@@ -1,11 +1,12 @@
 ---
-title: AWS向けBYOC（Bring Your Own Cloud）
+title: 'BYOC (Bring Your Own Cloud) for AWS'
 slug: /cloud/reference/byoc
-sidebar_label: BYOC（お客様クラウド環境の活用）
-keywords: [BYOC, cloud, bring your own cloud]
-description: ClickHouseを独自のクラウドインフラストラクチャにデプロイします
+sidebar_label: 'BYOC (Bring Your Own Cloud)'
+keywords: ['BYOC', 'cloud', 'bring your own cloud']
+description: 'ClickHouseを自分のクラウドインフラストラクチャにデプロイする'
 ---
 
+import Image from '@theme/IdealImage';
 import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
 import byoc4 from '@site/static/images/cloud/reference/byoc-4.png';
 import byoc3 from '@site/static/images/cloud/reference/byoc-3.png';
@@ -17,374 +18,333 @@ import byoc_plb from '@site/static/images/cloud/reference/byoc-plb.png';
 import byoc_security from '@site/static/images/cloud/reference/byoc-securitygroup.png';
 import byoc_inbound from '@site/static/images/cloud/reference/byoc-inbound-rule.png';
 
+## Overview {#overview}
 
-## 概要 {#overview}
+BYOC (Bring Your Own Cloud)は、自分のクラウドインフラストラクチャにClickHouse Cloudをデプロイすることを可能にします。これは、ClickHouse Cloudのマネージドサービスを使用することを妨げる特定の要件や制約がある場合に便利です。
 
-BYOC (Bring Your Own Cloud) は、独自のクラウドインフラストラクチャにClickHouse Cloudをデプロイできるようにします。これは、ClickHouse Cloudのマネージドサービスを利用できない特定の要件や制約がある場合に便利です。
+**アクセスを希望される場合は、[お問い合わせください](https://clickhouse.com/cloud/bring-your-own-cloud)。** 詳細情報については、[利用規約](https://clickhouse.com/legal/agreements/terms-of-service)をご参照ください。
 
-**アクセスをご希望の場合は、[お問い合わせ](https://clickhouse.com/cloud/bring-your-own-cloud)ください。** 詳細については、[利用規約](https://clickhouse.com/legal/agreements/terms-of-service)を参照してください。
+BYOCは現在、AWSのみでサポートされています。GCPやAzureの待機リストには[こちら](https://clickhouse.com/cloud/bring-your-own-cloud)から参加できます。
 
-BYOCは現在、AWSのみでサポートされており、GCPとMicrosoft Azureは開発中です。
-
-:::note
-BYOCは大規模なデプロイメント専用に設計されており、顧客には契約の締結が求められます。
+:::note 
+BYOCは大規模デプロイメント専用に設計されており、顧客にコミットした契約に署名することを要求します。
 :::
 
-## 用語集 {#glossary}
+## Glossary {#glossary}
 
-- **ClickHouse VPC:** ClickHouse Cloudが所有するVPC。
-- **Customer BYOC VPC:** 顧客のクラウドアカウントに属し、ClickHouse Cloudによってプロビジョニングおよび管理される、ClickHouse Cloud BYOCデプロイメント専用のVPC。
-- **Customer VPC:** 顧客のクラウドアカウントによって所有され、Customer BYOC VPCに接続する必要があるアプリケーション用のその他のVPC。
+- **ClickHouse VPC:**  ClickHouse Cloudが所有するVPC。
+- **Customer BYOC VPC:** 顧客のクラウドアカウントが所有し、ClickHouse Cloudによってプロビジョニングおよび管理されている、ClickHouse Cloud BYOCデプロイメント専用のVPC。
+- **Customer VPC:** 顧客のクラウドアカウントが所有する他のVPCで、Customer BYOC VPCに接続する必要のあるアプリケーションに使用されます。
 
-## アーキテクチャ {#architecture}
+## Architecture {#architecture}
 
-メトリクスとログは顧客のBYOC VPC内に保存されます。ログは現在、EBSにローカル保存されています。将来のアップデートでは、ログは顧客のBYOC VPC内のClickHouseサービスであるLogHouseに保存される予定です。メトリクスは、顧客のBYOC VPC内にローカルに保存されたPrometheusとThanosスタックを経由して実装されています。
-
-<br />
-
-<img src={byoc1}
-    alt='BYOC Architecture'
-    class='image'
-    style={{width: '800px'}}
-/>
+メトリクスとログは、顧客のBYOC VPC内に保存されます。ログは現在EBSにローカル保存されています。将来のアップデートでは、ログはLogHouseに保存される予定で、これは顧客のBYOC VPC内のClickHouseサービスです。メトリクスは、顧客のBYOC VPC内にローカルに保存されたPrometheusおよびThanosスタックを介して実装されます。
 
 <br />
 
-## オンボーディングプロセス {#onboarding-process}
+<Image img={byoc1} size="lg" alt="BYOC Architecture" background='black'/>
 
-顧客は、[私たち](https://clickhouse.com/cloud/bring-your-own-cloud)に連絡することで、オンボーディングプロセスを開始できます。顧客は、専用のAWSアカウントを持ち、使用するリージョンを把握している必要があります。現在のところ、BYOCサービスは、ClickHouse Cloudでサポートされているリージョンでのみ立ち上げることが許可されています。
+<br />
 
-### 専用AWSアカウントの準備 {#prepare-a-dedicated-aws-account}
+## Onboarding Process {#onboarding-process}
 
-顧客は、ClickHouse BYOCデプロイメントをホスティングするための専用のAWSアカウントを準備する必要があります。これにより、より良い分離が保証されます。この情報と初期の組織管理者のメールがあれば、ClickHouseサポートに連絡できます。
+顧客は、[こちらから](https://clickhouse.com/cloud/bring-your-own-cloud)オンボーディングプロセスを開始できます。顧客は、専用のAWSアカウントを持っており、使用するリージョンを知っている必要があります。この時点では、ClickHouse CloudでサポートしているリージョンのみにBYOCサービスを起動することが許可されています。
 
-### CloudFormationテンプレートの適用 {#apply-cloudformation-template}
+### Prepare a Dedicated AWS Account {#prepare-a-dedicated-aws-account}
 
-BYOCセットアップは、[CloudFormationスタック](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml)を通じて初期化され、BYOCコントローラーをClickHouse Cloudからインフラストラクチャを管理するための役割を作成します。ClickHouseを実行するためのS3、VPC、およびコンピュートリソースはこのスタックには含まれていません。
+顧客はClickHouse BYOCデプロイメントをホストするために専用のAWSアカウントを準備して、より良い隔離を確保する必要があります。これと初期の組織管理者のメールアドレスで、ClickHouseサポートに連絡できます。
+
+### Apply CloudFormation Template {#apply-cloudformation-template}
+
+BYOCのセットアップは、[CloudFormationスタック](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml)を介して初期化され、ClickHouse CloudからのBYOCコントローラーがインフラストラクチャを管理できるようにする役割のみが作成されます。S3、VPC、そしてClickHouseを実行するためのコンピュータリソースはこのスタックには含まれていません。
 
 <!-- TODO: Add Screenshot for the rest of onboarding, once self-served onboarding is implemented. -->
 
-### BYOCインフラストラクチャのセットアップ {#setup-byoc-infrastructure}
+### Setup BYOC Infrastructure {#setup-byoc-infrastructure}
 
-CloudFormationスタックを作成した後、クラウドコンソールからS3、VPC、およびEKSクラスターなどのインフラストラクチャをセットアップするように促されます。この段階で特定の設定が決定される必要があります。なぜなら、後で変更することはできないからです。具体的には：
+CloudFormationスタックを作成した後、S3、VPC、およびEKSクラスターを含むインフラストラクチャのセットアップを行うよう求められます。この段階で特定の設定を決定する必要があります。なぜなら、それらは後で変更できないからです。具体的には：
 
-- **使用したいリージョン**: ClickHouse Cloudの[公開リージョン](/cloud/reference/supported-regions)のいずれかを選択できます。
-- **BYOCのVPC CIDR範囲**: デフォルトでは、BYOC VPC CIDR範囲に`10.0.0.0/16`が使用されます。他のアカウントでVPCピアリングを使用する予定がある場合は、CIDR範囲が重複しないようにしてください。BYOC用に適切なCIDR範囲を割り当て、必要な作業負荷を収容できるように最小サイズを`/22`にしてください。
-- **BYOC VPCのアベイラビリティゾーン**: VPCピアリングを使用する予定がある場合は、ソースおよびBYOCアカウント間でアベイラビリティゾーンを一致させることで、AZ間のトラフィックコストを削減できます。AWSでは、アベイラビリティゾーンのサフィックス（`a, b, c`）はアカウントにより異なる物理ゾーンIDを表す場合があります。詳しくは[AWSガイド](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html)を参照してください。
+- **使用するリージョン**: ClickHouse Cloud用に用意されている[公開リージョン](/cloud/reference/supported-regions)から1つを選択できます。
+- **BYOCのVPC CIDR範囲**: デフォルトでは、BYOC VPC CIDR範囲には`10.0.0.0/16`を使用します。別のアカウントとのVPCピアリングを使用する予定がある場合、CIDR範囲が重複しないようにすることを確認してください。BYOC用に適切なCIDR範囲を割り当て、必要なワークロードを収容するために最小サイズは`/22`が必要です。
+- **BYOC VPCのアベイラビリティゾーン**: VPCピアリングを使用する予定がある場合、ソースとBYOCアカウント間でアベイラビリティゾーンを揃えることで、クロスAZトラフィックコストを削減するのに役立ちます。AWSでは、アベイラビリティゾーンのサフィックス（`a, b, c`）がアカウントによって異なる物理ゾーンIDを表すことがあります。詳細については[AWSガイド](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html)を参照してください。
 
-### オプション: VPCピアリングのセットアップ {#optional-setup-vpc-peering}
+### Optional: Setup VPC Peering {#optional-setup-vpc-peering}
 
-ClickHouse BYOCのためにVPCピアリングを作成または削除するには、以下の手順に従ってください。
+ClickHouse BYOCのためのVPCピアリングを作成または削除するには、次の手順に従います。
 
-#### ステップ1 ClickHouse BYOCのプライベートロードバランサーを有効にする {#step-1-enable-private-load-balancer-for-clickhouse-byoc}
-ClickHouseサポートに連絡してプライベートロードバランサーを有効にします。
+#### Step 1 Enable Private Load Balancer for ClickHouse BYOC {#step-1-enable-private-load-balancer-for-clickhouse-byoc}
+ClickHouseサポートに連絡して、プライベートロードバランサーを有効にします。
 
-#### ステップ2 ピア接続を作成する {#step-2-create-a-peering-connection}
+#### Step 2 Create a peering connection {#step-2-create-a-peering-connection}
 1. ClickHouse BYOCアカウントのVPCダッシュボードに移動します。
-2. ピア接続を選択します。
-3. ピア接続の作成をクリックします。
-4. VPCリクエスターにClickHouse VPC IDを設定します。
-5. VPCアセプターにターゲットVPC IDを設定します。（対象アカウントを選択します）
-6. ピア接続の作成をクリックします。
+2. ピアリング接続を選択します。
+3. ピアリング接続の作成をクリックします。
+4. VPCリクエスターをClickHouse VPC IDに設定します。
+5. VPCアクセプターをターゲットVPC IDに設定します。（該当する場合は別のアカウントを選択）
+6. ピアリング接続を作成するをクリックします。
 
 <br />
 
-<img src={byoc_vpcpeering}
-    alt='BYOC Create Peering Connection'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_vpcpeering} size="lg" alt="BYOC Create Peering Connection" border />
 
 <br />
 
-#### ステップ3 ピア接続リクエストを承認する {#step-3-accept-the-peering-connection-request}
-ピアアカウントへ移動し、(VPC -> ピア接続 -> アクション -> リクエストを承認)ページで、顧客はこのVPCピアリングリクエストを承認できます。
+#### Step 3 Accept the peering connection request {#step-3-accept-the-peering-connection-request}
+ピアリングアカウントに移動し、（VPC -> ピアリング接続 -> アクション -> リクエストを承認）ページで顧客はこのVPCピアリングリクエストを承認できます。
 
 <br />
 
-<img src={byoc_vpcpeering2}
-    alt='BYOC Accept Peering Connection'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_vpcpeering2} size="lg" alt="BYOC Accept Peering Connection" border />
 
 <br />
 
-#### ステップ4 ClickHouse VPCのルートテーブルに宛先を追加する {#step-4-add-destination-to-clickhouse-vpc-route-tables}
+#### Step 4 Add destination to ClickHouse VPC route tables {#step-4-add-destination-to-clickhouse-vpc-route-tables}
 ClickHouse BYOCアカウントで、
 1. VPCダッシュボードのルートテーブルを選択します。
-2. ClickHouse VPC IDを検索します。プライベートサブネットに接続されている各ルートテーブルを編集します。
-3. ルートタブの下で編集ボタンをクリックします。
-4. もう一つのルートを追加をクリックします。
-5. ターゲットVPCのCIDR範囲を宛先として入力します。
-6. ターゲットとして「ピア接続」を選択し、ピア接続のIDを指定します。
+2. ClickHouse VPC IDを検索します。プライベートサブネットに接続された各ルートテーブルを編集します。
+3. ルートタブの下にある編集ボタンをクリックします。
+4. 別のルートを追加をクリックします。
+5. 目的地にターゲットVPCのCIDR範囲を入力します。
+6. 「ピアリング接続」と、ターゲットのピアリング接続のIDを選択します。
 
 <br />
 
-<img src={byoc_vpcpeering3}
-    alt='BYOC Add route table'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_vpcpeering3} size="lg" alt="BYOC Add route table" border />
 
 <br />
 
-#### ステップ5 ターゲットVPCのルートテーブルに宛先を追加する {#step-5-add-destination-to-the-target-vpc-route-tables}
-ピアAWSアカウントで、
+#### Step 5 Add destination to the target VPC route tables {#step-5-add-destination-to-the-target-vpc-route-tables}
+ピアリングAWSアカウントで、
 1. VPCダッシュボードのルートテーブルを選択します。
 2. ターゲットVPC IDを検索します。
-3. ルートタブの下で編集ボタンをクリックします。
-4. もう一つのルートを追加をクリックします。
-5. ClickHouse VPCのCIDR範囲を宛先として入力します。
-6. ターゲットとして「ピア接続」を選択し、ピア接続のIDを指定します。
+3. ルートタブの下にある編集ボタンをクリックします。
+4. 別のルートを追加をクリックします。
+5. 目的地にClickHouse VPCのCIDR範囲を入力します。
+6. 「ピアリング接続」と、ターゲットのピアリング接続のIDを選択します。
 
 <br />
 
-<img src={byoc_vpcpeering4}
-    alt='BYOC Add route table'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_vpcpeering4} size="lg" alt="BYOC Add route table" border />
 
 <br />
 
-#### ステップ6 セキュリティグループを編集してピアVPCアクセスを許可する {#step-6-edit-security-group-to-allow-peered-vpc-access}
+#### Step 6 Edit Security Group to allow Peered VPC access {#step-6-edit-security-group-to-allow-peered-vpc-access}
 ClickHouse BYOCアカウントで、
-1. ClickHouse BYOCアカウントで、EC2に移動し、infra-xx-xxx-ingress-privateの名前のプライベートロードバランサーを見つけます。
+1. ClickHouse BYOCアカウント内でEC2に移動し、infra-xx-xxx-ingress-privateのような名前のプライベートロードバランサーを見つけます。
 
 <br />
 
-<img src={byoc_plb}
-    alt='BYOC Private Load Balancer'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_plb} size="lg" alt="BYOC Private Load Balancer" border />
 
 <br />
 
-2. 詳細ページのセキュリティタブの下で、名前のパターンが`k8s-istioing-istioing-xxxxxxxxx`の関連セキュリティグループを見つけます。
+2. 詳細ページのセキュリティタブの下で、`k8s-istioing-istioing-xxxxxxxxx`のような命名パターンに従った関連付けられたセキュリティグループを見つけます。
 
 <br />
 
-<img src={byoc_security}
-    alt='BYOC Private Load Balancer Security Group'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_security} size="lg" alt="BYOC Private Load Balancer Security Group" border />
 
 <br />
 
-3. このセキュリティグループのインバウンドルールを編集し、ピアVPC CIDR範囲（または必要に応じて必要なCIDR範囲）を追加します。
+3. このセキュリティグループのインバウンドルールを編集し、ピアリングされたVPC CIDR範囲を追加します（または必要に応じて要求されるCIDR範囲を指定します）。
 
 <br />
 
-<img src={byoc_inbound}
-    alt='BYOC Security Group Inbound Rule'
-    class='image'
-    style={{width: '800px'}}
-/>
+<Image img={byoc_inbound} size="lg" alt="BYOC Security Group Inbound Rule" border />
 
 <br />
 
 ---
-ClickHouseサービスは、ピアVPCからアクセスできるようになりました。
+ClickHouseサービスは、ピアリングされたVPCからアクセス可能であるべきです。
 
-ClickHouseにプライベートにアクセスするために、ユーザーのピアVPCからの安全な接続のためにプライベートロードバランサーとエンドポイントがプロビジョニングされます。プライベートエンドポイントは、`-private`のサフィックス付きの公開エンドポイント形式に従います。例えば：
+ClickHouseにプライベートにアクセスするには、ユーザーのピアードVPCからの安全な接続のためにプライベートロードバランサーとエンドポイントがプロビジョニングされます。プライベートエンドポイントは、`-private`サフィックスのある公開エンドポイント形式に従います。例えば：
 - **公開エンドポイント**: `h5ju65kv87.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`
 - **プライベートエンドポイント**: `h5ju65kv87-private.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`
 
-オプションとして、ピアリングが機能していることを確認した後、ClickHouse BYOCの公開ロードバランサーの削除をリクエストできます。
+オプションとして、ピアリングの動作を確認した後、ClickHouse BYOCの公開ロードバランサーの削除を要求できます。
 
-## アップグレードプロセス {#upgrade-process}
+## Upgrade Process {#upgrade-process}
 
-私たちは、ClickHouseデータベースバージョンのアップグレード、ClickHouse Operator、EKS、その他のコンポーネントを含むソフトウェアを定期的にアップグレードします。
+私たちは定期的にソフトウェアをアップグレードし、ClickHouseデータベースバージョンアップグレード、ClickHouseオペレーター、EKS、その他のコンポーネントを含みます。
 
-シームレスなアップグレード（例：ロールアップグレードおよび再起動）を目指していますが、ClickHouseバージョンの変更やEKSノードのアップグレードなど、一部はサービスに影響を与える可能性があります。顧客は、メンテナンスウィンドウ（例：毎週火曜日午前1時PDT）を指定することができ、そうしたアップグレードはスケジュールされた時間内にのみ行われます。
+シームレスなアップグレードを目指しますが（例：ロールアップグレードや再起動）、ClickHouseバージョンの変更やEKSノードのアップグレードなど、一部はサービスに影響を与える可能性があります。顧客はメンテナンスウィンドウを指定でき（例：毎週火曜日の午前1時PDT）、その期間中のアップグレードのみが発生することを保証します。
 
 :::note
-メンテナンスウィンドウは、セキュリティと脆弱性修正には適用されません。これらはオフサイクルのアップグレードとして扱われ、適切な時期に調整するためのタイムリーなコミュニケーションが行われます。
+メンテナンスウィンドウは、セキュリティおよび脆弱性修正には適用されません。これらはオフサイクルアップグレードとして扱われ、適切な時間を調整し運用への影響を最小限に抑えるためにタイムリーなコミュニケーションが行われます。
 :::
 
-## CloudFormation IAMロール {#cloudformation-iam-roles}
+## CloudFormation IAM Roles {#cloudformation-iam-roles}
 
-### ブートストラップIAMロール {#bootstrap-iam-role}
+### Bootstrap IAM role {#bootstrap-iam-role}
 
-ブートストラップIAMロールには、次の権限があります：
+ブートストラップIAMロールは次の権限を持っています：
 
 - **EC2およびVPC操作**: VPCおよびEKSクラスターのセットアップに必要です。
-- **S3操作（例：`s3:CreateBucket`）**: ClickHouse BYOCストレージ用のバケットを作成するために必要です。
-- **`route53:*`権限**: Route 53で外部DNSを構成するために必要です。
-- **IAM操作（例：`iam:CreatePolicy`）**: コントローラーが追加の役割を作成するために必要です（詳細は次のセクションを参照）。
-- **EKS操作**: `clickhouse-cloud`プレフィックスで始まるリソースに制限されます。
+- **S3操作（例：`s3:CreateBucket`）**: ClickHouse BYOCストレージのバケットを作成するために必要です。
+- **`route53:*`権限**: Route 53でレコードを設定するために外部DNSに必要です。
+- **IAM操作（例：`iam:CreatePolicy`）**: コントローラーが追加のロールを作成するために必要です（詳細については次のセクションを参照してください）。
+- **EKS操作**: `clickhouse-cloud`プレフィックスで始まる名前のリソースに制限されます。
 
-### コントローラーによって作成された追加IAMロール {#additional-iam-roles-created-by-the-controller}
+### Additional IAM roles created by the controller {#additional-iam-roles-created-by-the-controller}
 
-CloudFormationを介して作成された`ClickHouseManagementRole`に加えて、コントローラーはいくつかの追加のロールを作成します。
+CloudFormation経由で作成された`ClickHouseManagementRole`に加えて、コントローラーはいくつかの追加のロールを作成します。
 
 これらのロールは、顧客のEKSクラスター内で実行されるアプリケーションによって引き受けられます：
-- **ステートエクスポーターロール**
-  - ClickHouseのコンポーネントで、サービスのヘルス情報をClickHouse Cloudに報告します。
-  - ClickHouse Cloudが所有するSQSキューへの書き込み権限が必要です。
-- **ロードバランサーコントローラー**
+- **State Exporter Role**
+  - ClickHouseサービスの健康情報をClickHouse Cloudに報告するClickHouseコンポーネント。
+  - ClickHouse Cloud所有のSQSキューへの書き込み権限が必要です。
+- **Load-Balancer Controller**
   - 標準のAWSロードバランサーコントローラー。
-  - ClickHouseサービスのボリュームを管理するためのEBS CSIコントローラー。
+  - ClickHouseサービス用のボリュームを管理するEBS CSIコントローラー。
 - **External-DNS**
-  - Route 53へのDNS設定を伝播します。
+  - DNS構成をRoute 53に伝播します。
 - **Cert-Manager**
-  - BYOCサービスドメイン向けのTLS証明書を準備します。
+  - BYOCサービスドメインのTLS証明書をプロビジョニングします。
 - **Cluster Autoscaler**
   - 必要に応じてノードグループのサイズを調整します。
 
-**K8s-control-plane**および**k8s-worker**ロールは、AWS EKSサービスによって引き受けられます。
+**K8s-control-plane**および**k8s-worker**ロールは、AWS EKSサービスによって引き受けることを意図しています。
 
-最後に、**`data-plane-mgmt`**は、ClickHouse Cloudコントロールプレーンコンポーネントが`ClickHouseCluster`やIstio Virtual Service/Gatewayなどの必要なカスタムリソースを調整できるようにします。
+最後に、**`data-plane-mgmt`**は、ClickHouse Cloudコントロールプレーンコンポーネントが`ClickHouseCluster`やIstioの仮想サービス/ゲートウェイのような必要なカスタムリソースを調整することを許可します。
 
-## ネットワーク境界 {#network-boundaries}
+## Network Boundaries {#network-boundaries}
 
-このセクションでは、顧客BYOC VPCへの入出力トラフィックをカバーします：
+このセクションでは、顧客のBYOC VPCへのさまざまなネットワークトラフィックについて説明します：
 
-- **インバウンド**: 顧客BYOC VPCに入るトラフィック。
-- **アウトバウンド**: 顧客BYOC VPCから発生し、外部に送信されるトラフィック。
-- **パブリック**: 公開インターネットからアクセスできるネットワークエンドポイント。
-- **プライベート**: VPCピアリング、VPCプライベートリンク、またはTailscaleのようなプライベート接続を介してのみアクセス可能なネットワークエンドポイント。
+- **Inbound**: 顧客のBYOC VPCに入るトラフィック。
+- **Outbound**: 顧客のBYOC VPCから発信し、外部宛に送信されるトラフィック。
+- **Public**: 公開インターネットからアクセス可能なネットワークエンドポイント。
+- **Private**: VPCピアリング、VPC Private Link、またはTailscaleなどのプライベート接続を通じてのみアクセス可能なネットワークエンドポイント。
 
-**Istioのインバウンドは、ClickHouseクライアントトラフィックを受け入れるためにAWS NLBの背後にデプロイされます。**
+**Istioのingressは、ClickHouseクライアントトラフィックを受け入れるためにAWS NLBの背後にデプロイされます。**
 
-*インバウンド、パブリック（プライベートである可能性あり）*
+*Inbound, Public (can be Private)*
 
-IstioインバウンドゲートウェイはTLSを終了します。CertManagerによりLet's Encryptから提供された証明書は、EKSクラスター内のシークレットとして保存されます。IstioとClickHouse間のトラフィックは、[AWSによって暗号化されています](https://docs.aws.amazon.com/whitepapers/latest/logical-separation/encrypting-data-at-rest-and--in-transit.html#:~:text=All%20network%20traffic%20between%20AWS,supported%20Amazon%20EC2%20instance%20types)これは、同じVPC内にあるためです。
+Istio ingressゲートウェイはTLSを終了させます。証明書はLet's EncryptによってCertManagerによりプロビジョニングされ、EKSクラスター内に秘密情報として保存されています。IstioとClickHouse間のトラフィックは、同じVPC内に存在するため、[AWSによって暗号化されています](https://docs.aws.amazon.com/whitepapers/latest/logical-separation/encrypting-data-at-rest-and--in-transit.html#:~:text=All%20network%20traffic%20between%20AWS,supported%20Amazon%20EC2%20instance%20types)。
 
-デフォルトでは、インバウンドは公開アクセス可能で、IP許可リストフィルタリングが行われます。顧客はVPCピアリングを設定してプライベートにし、公開接続を無効にすることができます。アクセスを制限するために[IPフィルター](/cloud/security/setting-ip-filters)を設定することを強くお勧めします。
+デフォルトでは、インバウンドはIP許可リストフィルタリング付きで公開にアクセス可能です。顧客はVPCピアリングを構成してプライベートにし、公開接続を無効にすることができます。[IPフィルタ](/cloud/security/setting-ip-filters)の設定を強く推奨します。
 
-### アクセスのトラブルシューティング {#troubleshooting-access}
+### Troubleshooting access {#troubleshooting-access}
 
-*インバウンド、パブリック（プライベートである可能性あり）*
+*Inbound, Public (can be Private)*
 
-ClickHouse Cloudのエンジニアは、Tailscaleを介してトラブルシューティングアクセスが必要です。彼らはBYOCデプロイメントのために、時限的証明書ベースの認証を提供されています。
+ClickHouse Cloudエンジニアは、トラブルシューティングアクセスのためにTailscaleを介してアクセスを要求します。彼らは、BYOCデプロイメント用のオンデマンド証明書ベースの認証が提供されています。
 
-### 請求スキャパー {#billing-scraper}
+### Billing scraper {#billing-scraper}
 
-*アウトバウンド、プライベート*
+*Outbound, Private*
 
-請求スキャパーは、ClickHouseから請求データを収集し、ClickHouse Cloudが所有するS3バケットに送信します。
+Billing scraperは、ClickHouseから請求データを収集し、ClickHouse Cloudが所有するS3バケットに送信します。
 
-これは、ClickHouseサーバーコンテナと一緒にサイドカーとして実行され、定期的にCPUとメモリのメトリクスをスキャンします。同じリージョン内のリクエストは、VPCゲートウェイサービスエンドポイントを通じてルーティングされます。
+これは、ClickHouseサーバーコンテナと一緒にサイドカーとして実行され、CPUおよびメモリメトリクスを定期的にスクレイプします。同じリージョン内のリクエストは、VPCゲートウェイサービスエンドポイントを通じてルーティングされます。
 
-### アラート {#alerts}
+### Alerts {#alerts}
 
-*アウトバウンド、パブリック*
+*Outbound, Public*
 
-AlertManagerは、顧客のClickHouseクラスターが正常でない場合にClickHouse Cloudにアラートを送信するように設定されています。
+AlertManagerは、顧客のClickHouseクラスターが健康でないときにClickHouse Cloudにアラートを送信するように設定されています。
 
-メトリクスとログは顧客のBYOC VPC内に保存されます。ログは現在、EBSにローカルで保存されています。将来のアップデートでは、BYOC VPC内のClickHouseサービスであるLogHouseに保存される予定です。メトリクスは、BYOC VPCにローカルに保存されたPrometheusとThanosスタックを利用します。
+メトリクスとログは、顧客のBYOC VPC内に保存されます。ログは現在EBSにローカル保存されています。将来のアップデートでは、これらはBYOC VPC内のClickHouseサービスであるLogHouseに保存されます。メトリクスは、BYOC VPC内でローカルに保存されたPrometheusおよびThanosスタックを使用しています。
 
-### サービス状態 {#service-state}
+### Service state {#service-state}
 
-*アウトバウンド*
+*Outbound*
 
-ステートエクスポーターは、ClickHouseサービス状態情報をClickHouse Cloudが所有するSQSに送信します。
+State Exporterは、ClickHouseサービスの状態情報をClickHouse Cloudが所有するSQSに送信します。
 
-## 機能 {#features}
+## Features {#features}
 
-### サポートされている機能 {#supported-features}
+### Supported features {#supported-features}
 
 - **SharedMergeTree**: ClickHouse CloudとBYOCは同じバイナリと設定を使用しています。したがって、SharedMergeTreeなど、ClickHouseコアのすべての機能がBYOCでサポートされています。
-- **サービス状態を管理するためのコンソールアクセス**：
-  - 開始、停止、終了などの操作をサポート。
-  - サービスと状態を表示。
-- **バックアップおよび復元。**
-- **手動の垂直および水平スケーリング。**
-- **アイドル状態。**
-- **倉庫**: コンピュート-コンピュート分離。
-- **Tailscaleを介したゼロトラストネットワーク。**
+- **サービス状態管理のためのコンソールアクセス**:
+  - 開始、停止、終了などの操作をサポートします。
+  - サービスとそのステータスを表示できます。
+- **バックアップと復元**。
+- **手動の垂直および水平スケーリング**。
+- **アイドリング**。
+- **ウェアハウス**: コンピュート-コンピュートの分離。
+- **Tailscaleによるゼロトラストネットワーク**。
 - **監視**:
-  - クラウドコンソールにサービスの健康を監視するための組み込みの健康ダッシュボードが含まれています。
-  - Prometheusを使用した中央集権的な監視のためのPrometheusスクリーピング、Grafana、およびDatadog。セットアップ手順については[Prometheusドキュメント](/integrations/prometheus)を参照してください。
-- **VPCピアリング。**
-- **統合**: 完全なリストは[このページ](/integrations)を参照してください。
-- **安全なS3。**
-- **[AWS PrivateLink](https://aws.amazon.com/privatelink/)。**
+  - クラウドコンソールには、サービスの健康を監視するためのビルトインの健康ダッシュボードが含まれています。
+  - Prometheus、Grafana、Datadogを用いた中央集権的監視のためのPrometheusスクレイピング。設定手順については[Prometheusのドキュメント](/integrations/prometheus)を参照してください。
+- **VPCピアリング**。
+- **統合**: このページの[全リスト](/integrations)をご覧ください。
+- **セキュアS3**。
+- **[AWS PrivateLink](https://aws.amazon.com/privatelink/)**。
 
-### 計画中の機能（現在未サポート） {#planned-features-currently-unsupported}
+### Planned features (currently unsupported) {#planned-features-currently-unsupported}
 
-- [AWS KMS](https://aws.amazon.com/kms/)別名CMEK（顧客管理暗号化キー）。
-- データの取り込みのためのClickPipes。
-- オートスケーリング。
-- MySQLインターフェース。
+- [AWS KMS](https://aws.amazon.com/kms/) 別名CMEK (顧客管理暗号化キー)
+- ClickPipesによる取り込み
+- 自動スケーリング
+- MySQLインターフェース
 
 ## FAQ {#faq}
 
-### コンピュート {#compute}
+### Compute {#compute}
 
-#### この単一のEKSクラスターで複数のサービスを作成できますか？ {#can-i-create-multiple-services-in-this-single-eks-cluster}
+#### Can I create multiple services in this single EKS cluster? {#can-i-create-multiple-services-in-this-single-eks-cluster}
 
-はい。インフラストラクチャは、すべてのAWSアカウントとリージョンの組み合わせごとに、一度だけプロビジョニングする必要があります。
+はい。インフラストラクチャは、すべてのAWSアカウントとリージョンの組み合わせに対して一度だけプロビジョニングされる必要があります。
 
-### BYOCでサポートされているリージョンはどれですか？ {#which-regions-do-you-support-for-byoc}
+### Which regions do you support for BYOC? {#which-regions-do-you-support-for-byoc}
 
-BYOCは、ClickHouse Cloudと同じセットの[リージョン](/cloud/reference/supported-regions#aws-regions)をサポートしています。
+BYOCは、ClickHouse Cloudと同じセットの[リージョン](/cloud/reference/supported-regions#aws-regions)をサポートします。
 
-#### 資源オーバーヘッドはありますか？ ClickHouseインスタンス以外のサービスを運用するために必要なリソースは何ですか？ {#will-there-be-some-resource-overhead-what-are-the-resources-needed-to-run-services-other-than-clickhouse-instances}
+#### Will there be some resource overhead? What are the resources needed to run services other than ClickHouse instances? {#will-there-be-some-resource-overhead-what-are-the-resources-needed-to-run-services-other-than-clickhouse-instances}
 
-ClickHouseインスタンス（ClickHouseサーバーとClickHouse Keeper）に加えて、`clickhouse-operator`、`aws-cluster-autoscaler`、Istioなど、監視スタックのサービスを実行します。
+ClickHouseインスタンス（ClickHouseサーバーおよびClickHouse Keeper）に加えて、`clickhouse-operator`、`aws-cluster-autoscaler`、Istioなどのサービスを実行し、私たちの監視スタックを実行します。
 
-現在、このワークロードを実行するために、専用ノードグループに3つのm5.xlargeノード（各AZに1つ）があります。
+現在、これらのワークロードを実行するために、専用ノードグループに3つのm5.xlargeノード（各AZに1つ）があります。
 
-### ネットワークとセキュリティ {#network-and-security}
+### Network and Security {#network-and-security}
 
-#### インストール完了後、インストール中に設定された権限を取り消すことはできますか？ {#can-we-revoke-permissions-set-up-during-installation-after-setup-is-complete}
+#### Can we revoke permissions set up during installation after setup is complete? {#can-we-revoke-permissions-set-up-during-installation-after-setup-is-complete}
 
-現時点では不可能です。
+現時点ではこれは不可能です。
 
-#### ClickHouseエンジニアが顧客のインフラにアクセスしてトラブルシューティングを行うための将来的なセキュリティコントロールについて検討していますか？ {#have-you-considered-some-future-security-controls-for-clickhouse-engineers-to-access-customer-infra-for-troubleshooting}
+#### Have you considered some future security controls for ClickHouse engineers to access customer infra for troubleshooting? {#have-you-considered-some-future-security-controls-for-clickhouse-engineers-to-access-customer-infra-for-troubleshooting}
 
-はい。顧客がエンジニアのクラスターへのアクセスを承認できる顧客管理メカニズムの実装が我々のロードマップに含まれています。現時点では、エンジニアはクラスターに短期間のアクセスを得るために、内部のエスカレーションプロセスを経なければなりません。これは、私たちのセキュリティチームによってログと監査されます。
+はい。顧客がエンジニアのクラスタへのアクセスを承認できる制御メカニズムの実装は、私たちのロードマップにあります。現時点では、エンジニアはクラスタへのオンデマンドアクセスを取得するために、内部のエスカレーションプロセスを経なければなりません。これは、私たちのセキュリティチームによってログ記録され、監査されます。
 
-#### 作成されたVPC IP範囲のサイズはどのくらいですか？ {#what-is-the-size-of-the-vpc-ip-range-created}
+#### What is the size of the VPC IP range created? {#what-is-the-size-of-the-vpc-ip-range-created}
 
-デフォルトでは、BYOC VPCに`10.0.0.0/16`を使用しています。将来のスケーリングの可能性を考慮して、少なくとも/22を予約することをお勧めしますが、サイズを制限したい場合は/23を使用することも可能です。ただし、サーバーポッドが30以内に制限される可能性がある場合は、/23を選択してください。
+デフォルトでは、BYOC VPCには`10.0.0.0/16`を使用します。将来のスケーリングに備えて少なくとも/22を予約することをお勧めしますが、サイズを制限したい場合は、30のサーバーポッドに制限される可能性がある場合は/23を使用することも可能です。
 
-#### メンテナンスの頻度を決定できますか？ {#can-i-decide-maintenance-frequency}
+#### Can I decide maintenance frequency {#can-i-decide-maintenance-frequency}
 
-サポートに連絡してメンテナンスウィンドウをスケジュールしてください。最低でも週に1回の更新計画が期待されます。
+サポートに連絡して、メンテナンスウィンドウをスケジュールしてください。最低でも週に1回の更新スケジュールが期待されます。
 
-## 可視性 {#observability}
+## Observability {#observability}
 
-### 組み込みの監視ツール {#built-in-monitoring-tools}
+### Built-in Monitoring Tools {#built-in-monitoring-tools}
 
-#### 可視性ダッシュボード {#observability-dashboard}
+#### Observability Dashboard {#observability-dashboard}
 
-ClickHouse Cloudには、メモリ使用量、クエリレート、I/Oなどのメトリクスを表示する高度な可視性ダッシュボードが含まれています。これは、ClickHouse CloudのWebコンソールインターフェースの**監視**セクションでアクセスできます。
-
-<br />
-
-<img src={byoc3}
-    alt='Observability dashboard'
-    class='image'
-    style={{width: '800px'}}
-/>
+ClickHouse Cloudには、メモリ使用量、クエリレート、I/Oなどのメトリクスを表示する高度な可観測性ダッシュボードが含まれています。これは、ClickHouse Cloudのウェブコンソールの**監視**セクションでアクセスできます。
 
 <br />
 
-#### 高度なダッシュボード {#advanced-dashboard}
-
-`system.metrics`、`system.events`、`system.asynchronous_metrics`などのシステムテーブルからのメトリクスを使用して、サーバーのパフォーマンスおよびリソース利用状況を詳細に監視するダッシュボードをカスタマイズできます。
+<Image img={byoc3} size="lg" alt="Observability dashboard" border />
 
 <br />
 
-<img src={byoc4}
-    alt='Advanced dashboard'
-    class='image'
-    style={{width: '800px'}}
-/>
+#### Advanced Dashboard {#advanced-dashboard}
+
+`system.metrics`、`system.events`、`system.asynchronous_metrics`などのシステムテーブルからメトリクスを使用して、サーバーのパフォーマンスやリソース利用状況を詳細に監視するためにダッシュボードをカスタマイズできます。
 
 <br />
 
-#### Prometheus統合 {#prometheus-integration}
+<Image img={byoc4} size="lg" alt="Advanced dashboard" border />
 
-ClickHouse Cloudは、監視用のメトリクスをスクリーピングするために使用できるPrometheusエンドポイントを提供します。これにより、GrafanaやDatadog等のツールと統合して表示できます。
+<br />
 
-**HTTPSエンドポイント /metrics_all を介したサンプルリクエスト**
+#### Prometheus Integration {#prometheus-integration}
+
+ClickHouse Cloudは、監視のためにメトリクスをスクレイプするのに使用できるPrometheusエンドポイントを提供します。これにより、GrafanaやDatadogなどのツールとの統合が可能になります。
+
+**HTTPSエンドポイントを介したサンプルリクエスト /metrics_all**
 
 ```bash
 curl --user <username>:<password> https://i6ro4qarho.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud:8443/metrics_all
@@ -394,22 +354,22 @@ curl --user <username>:<password> https://i6ro4qarho.mhp0y4dmph.us-west-2.aws.by
 
 ```bash
 
-# HELP ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes The amount of bytes stored on disk `s3disk` in system database
+# HELP ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes ディスク`s3disk`に保存されているバイト数
 
 # TYPE ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes gauge
 ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes{hostname="c-jet-ax-16-server-43d5baj-0"} 62660929
 
-# HELP ClickHouse_CustomMetric_NumberOfBrokenDetachedParts The number of broken detached parts
+# HELP ClickHouse_CustomMetric_NumberOfBrokenDetachedParts 壊れたデタッチパーツの数
 
 # TYPE ClickHouse_CustomMetric_NumberOfBrokenDetachedParts gauge
 ClickHouse_CustomMetric_NumberOfBrokenDetachedParts{hostname="c-jet-ax-16-server-43d5baj-0"} 0
 
-# HELP ClickHouse_CustomMetric_LostPartCount The age of the oldest mutation (in seconds)
+# HELP ClickHouse_CustomMetric_LostPartCount 最も古いミューテーションの年齢（秒単位）
 
 # TYPE ClickHouse_CustomMetric_LostPartCount gauge
 ClickHouse_CustomMetric_LostPartCount{hostname="c-jet-ax-16-server-43d5baj-0"} 0
 
-# HELP ClickHouse_CustomMetric_NumberOfWarnings The number of warnings issued by the server. It usually indicates about possible misconfiguration
+# HELP ClickHouse_CustomMetric_NumberOfWarnings サーバーによって発行された警告の数。これは通常、誤った設定を示します
 
 # TYPE ClickHouse_CustomMetric_NumberOfWarnings gauge
 ClickHouse_CustomMetric_NumberOfWarnings{hostname="c-jet-ax-16-server-43d5baj-0"} 2
@@ -424,7 +384,7 @@ ClickHouseErrorMetric_FILE_DOESNT_EXIST{hostname="c-jet-ax-16-server-43d5baj-0",
 # TYPE ClickHouseErrorMetric_UNKNOWN_ACCESS_TYPE counter
 ClickHouseErrorMetric_UNKNOWN_ACCESS_TYPE{hostname="c-jet-ax-16-server-43d5baj-0",table="system.errors"} 8
 
-# HELP ClickHouse_CustomMetric_TotalNumberOfErrors The total number of errors on server since the last restart
+# HELP ClickHouse_CustomMetric_TotalNumberOfErrors サーバーの最後の再起動以降のエラーの合計数
 
 # TYPE ClickHouse_CustomMetric_TotalNumberOfErrors gauge
 ClickHouse_CustomMetric_TotalNumberOfErrors{hostname="c-jet-ax-16-server-43d5baj-0"} 9
@@ -432,16 +392,16 @@ ClickHouse_CustomMetric_TotalNumberOfErrors{hostname="c-jet-ax-16-server-43d5baj
 
 **認証**
 
-ClickHouseのユーザー名とパスワードのペアを使用して認証できます。メトリクスをスクリーピングするために最小限の権限を持つ専用ユーザーを作成することをお勧めします。最低でも、レプリカ間の`system.custom_metrics`テーブルに対する`READ`権限が必要です。例えば：
+ClickHouseのユーザー名とパスワードのペアを使用して認証できます。メトリクスをスクレイプするために最小限の権限を持つ専用ユーザーを作成することをお勧めします。少なくとも、レプリカ間で`system.custom_metrics`テーブルに対する`READ`権限が必要です。例えば：
 
 ```sql
 GRANT REMOTE ON *.* TO scraping_user
 GRANT SELECT ON system.custom_metrics TO scraping_user
 ```
 
-**Prometheusの構成**
+**Prometheusの設定**
 
-以下に示したのは、構成の一例です。`targets`エンドポイントは、ClickHouseサービスにアクセスするのと同じものです。
+以下に例の設定を示します。`targets`エンドポイントは、ClickHouseサービスにアクセスするのに使用される同じものです。
 
 ```bash
 global:
@@ -462,4 +422,5 @@ scrape_configs:
    honor_labels: true
 ```
 
-また、[このブログ投稿](https://clickhouse.com/blog/clickhouse-cloud-now-supports-prometheus-monitoring)および[ClickHouseのPrometheusセットアップドキュメント](/integrations/prometheus)もご覧ください。
+また、[このブログ投稿](https://clickhouse.com/blog/clickhouse-cloud-now-supports-prometheus-monitoring)および[ClickHouseのPrometheus設定ドキュメント](/integrations/prometheus)もご覧ください。
+

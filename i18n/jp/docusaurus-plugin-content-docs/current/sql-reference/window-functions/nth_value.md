@@ -1,20 +1,21 @@
----
-slug: /sql-reference/window-functions/nth_value
-sidebar_label: nth_value
+description: 'nth_value ウィンドウ関数のドキュメント'
+sidebar_label: 'nth_value'
 sidebar_position: 5
----
+slug: /sql-reference/window-functions/nth_value
+title: 'nth_value'
+```
 
 
 # nth_value
 
-順序付けられたフレーム内で、n番目の行（オフセット）に対して評価された最初の非NULL値を返します。
+指定された順序のフレーム内で nth 行 (オフセット) に対して評価された最初の非 NULL 値を返します。
 
 **構文**
 
 ```sql
 nth_value (x, offset)
   OVER ([[PARTITION BY grouping_column] [ORDER BY sorting_column] 
-        [ROWS or RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
+        [ROWS または RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
 FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
@@ -24,15 +25,15 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 **パラメータ**
 
 - `x` — カラム名。
-- `offset` — 現在の行に対して評価するn番目の行。
+- `offset` — 現在の行に対して評価する nth 行。
 
 **返される値**
 
-- 順序付けられたフレーム内で、n番目の行（オフセット）に対して評価された最初の非NULL値。
+- 指定された順序のフレーム内で nth 行 (オフセット) に対して評価された最初の非 NULL 値。
 
 **例**
 
-この例では、`nth_value` 関数を使用して、プレミアリーグのサッカー選手の給料の架空のデータセットから3番目に高い給料を見つけます。
+この例では、`nth_value` 関数を使用して、プレミアリーグのサッカー選手の架空のデータセットから3番目に高い給与を見つけます。
 
 クエリ:
 
@@ -73,4 +74,3 @@ SELECT player, salary, nth_value(player,3) OVER(ORDER BY salary DESC) AS third_h
 6. │ James Henderson │ 140000 │ Charles Juarez       │
 7. │ Michael Stanley │ 100000 │ Charles Juarez       │
    └─────────────────┴────────┴──────────────────────┘
-```

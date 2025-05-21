@@ -1,26 +1,26 @@
 ---
-title: clickhouse-localデータベースの使用
-sidebar_label: clickhouse-localデータベースの使用
+title: 'clickhouse-local データベースの使用'
+sidebar_label: 'clickhouse-local データベースの使用'
 slug: /chdb/guides/clickhouse-local
-description: chDBを使用したclickhouse-localデータベースの使い方を学びましょう
-keywords: [chdb, clickhouse-local]
+description: 'chDBを使用してclickhouse-localデータベースを使用する方法を学びます'
+keywords: ['chdb', 'clickhouse-local']
 ---
 
-[clickhouse-local](/operations/utilities/clickhouse-local) は、埋め込まれたClickHouseのバージョンを持つCLIです。
-サーバーのインストールを必要とせずに、ユーザーにClickHouseの力を提供します。
-このガイドでは、chDBを使ってclickhouse-localデータベースを使用する方法を学びます。
+[clickhouse-local](/operations/utilities/clickhouse-local) は、ClickHouseの埋め込みバージョンを持つCLIです。  
+これにより、ユーザーはサーバーをインストールすることなくClickHouseの機能を利用できます。  
+このガイドでは、chDBからclickhouse-localデータベースを使用する方法について学びます。
 
 ## セットアップ {#setup}
 
-まず、仮想環境を作成しましょう：
+まずは仮想環境を作成しましょう：
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-次に、chDBをインストールします。
-バージョンは2.0.2以上であることを確認してください：
+次に、chDBをインストールします。  
+バージョン2.0.2以上であることを確認してください：
 
 ```bash
 pip install "chdb>=2.0.2"
@@ -32,7 +32,8 @@ pip install "chdb>=2.0.2"
 pip install ipython
 ```
 
-`ipython`を使用して、ガイドの残りの部分のコマンドを実行します。以下のコマンドで起動できます：
+`ipython`を使用して、ガイドの残りのコマンドを実行します。  
+以下のコマンドで起動できます：
 
 ```bash
 ipython
@@ -40,14 +41,14 @@ ipython
 
 ## clickhouse-localのインストール {#installing-clickhouse-local}
 
-clickhouse-localのダウンロードとインストールは、[ClickHouseのダウンロードとインストール](/install)と同じです。
-以下のコマンドを実行することで行えます：
+clickhouse-localのダウンロードとインストールは、[ClickHouseのダウンロードとインストール](/install) と同様です。  
+次のコマンドを実行することで行えます：
 
 ```bash
 curl https://clickhouse.com/ | sh
 ```
 
-データをディレクトリに永続化するためにclickhouse-localを起動するには、`--path`を渡す必要があります：
+データをディレクトリに保存するためにclickhouse-localを起動するには、`--path`を渡す必要があります：
 
 ```bash
 ./clickhouse -m --path demo.chdb
@@ -55,13 +56,13 @@ curl https://clickhouse.com/ | sh
 
 ## clickhouse-localへのデータの取り込み {#ingesting-data-into-clickhouse-local}
 
-デフォルトのデータベースはメモリ内にのみデータを保存するため、データをディスクに永続化するには名前付きデータベースを作成する必要があります。
+デフォルトのデータベースはメモリ内のデータのみを保存するため、名前付きデータベースを作成して取り込むデータがディスクに永続化されるようにする必要があります。
 
 ```sql
 CREATE DATABASE foo;
 ```
 
-テーブルを作成して、ランダムな数値をいくつか挿入しましょう：
+テーブルを作成し、ランダムな数値を挿入してみましょう：
 
 ```sql
 CREATE TABLE foo.randomNumbers
@@ -70,7 +71,7 @@ SELECT rand() AS number
 FROM numbers(10_000_000);
 ```
 
-どのようなデータがあるか確認するためのクエリを書くことにしましょう：
+どのようなデータがあるかを確認するためにクエリを実行してみましょう：
 
 ```sql
 SELECT quantilesExact(0, 0.5, 0.75, 0.99)(number) AS quants
@@ -81,8 +82,8 @@ FROM foo.randomNumbers
 └───────────────────────────────────────┘
 ```
 
-これが終わったら、CLIから`exit;`してください。1つのプロセスのみがこのディレクトリのロックを保持できます。
-これを行わないと、chDBからデータベースに接続しようとしたときに以下のエラーが発生します：
+これが完了したら、CLIから`exit;`して終了してください。  
+このディレクトリには1つのプロセスしかロックを取得できないため、これを行わないと、chDBからデータベースに接続しようとしたときに次のエラーが表示されます：
 
 ```text
 ChdbError: Code: 76. DB::Exception: Cannot lock file demo.chdb/status. Another server instance in same directory is already running. (CANNOT_OPEN_FILE)
@@ -115,7 +116,7 @@ Row 1:
 quants: [0,9976599,2147776478,4209286886]
 ```
 
-また、このデータベースにchDBからデータを挿入することもできます：
+chDBからこのデータベースにデータを挿入することも可能です：
 
 ```python
 sess.query("""

@@ -1,11 +1,15 @@
 ---
-sidebar_label: Explo
+sidebar_label: 'Explo'
 sidebar_position: 131
 slug: /integrations/explo
-keywords: [clickhouse, Explo, connect, integrate, ui]
-description: Exploはデータに関する質問をするための使いやすいオープンソースのUIツールです。
+keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
+description: 'Exploは、データに関する質問を行うための使いやすいオープンソースのUIツールです。'
+title: 'ExploをClickHouseに接続する'
 ---
-import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+```
+
+import Image from '@theme/IdealImage';
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import explo_01 from '@site/static/images/integrations/data-visualization/explo_01.png';
 import explo_02 from '@site/static/images/integrations/data-visualization/explo_02.png';
 import explo_03 from '@site/static/images/integrations/data-visualization/explo_03.png';
@@ -22,53 +26,56 @@ import explo_13 from '@site/static/images/integrations/data-visualization/explo_
 import explo_14 from '@site/static/images/integrations/data-visualization/explo_14.png';
 import explo_15 from '@site/static/images/integrations/data-visualization/explo_15.png';
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
 # ExploをClickHouseに接続する
 
-顧客向けの分析ツール。美しいビジュアライゼーションのために設計されています。シンプルさを追求してエンジニアリングされています。
+<CommunityMaintainedBadge/>
+
+あらゆるプラットフォーム向けの顧客向け分析。美しい視覚化のために設計され、シンプルさのためにエンジニアリングされています。
 
 ## 目標 {#goal}
 
-このガイドでは、ClickHouseからExploにデータを接続し、結果を可視化します。 チャートは以下のようになります：
-<img src={explo_15} class="image" alt="Explo Dashboard" />
+このガイドでは、ClickHouseからExploにデータを接続し、その結果を視覚化します。 チャートは次のようになります：
+<Image img={explo_15} size="md" alt="Explo Dashboard" />
 
 <p/>
 
-:::tip データを追加
-作業するデータセットがない場合は、サンプルの1つを追加できます。このガイドでは [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) データセットを使用しているので、それを選択することができます。同じドキュメントカテゴリーには他にもいくつかの例があります。
+:::tip データを追加する
+作業するデータセットがない場合は、例の1つを追加できます。このガイドでは [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) データセットを使用しているので、それを選択することができます。 同じドキュメントカテゴリには他にもいくつかの選択肢があります。
 :::
 
-## 1. 接続情報を収集する {#1-gather-your-connection-details}
+## 1. 接続の詳細を収集する {#1-gather-your-connection-details}
 <ConnectionDetails />
 
 ## 2. ExploをClickHouseに接続する {#2--connect-explo-to-clickhouse}
 
-1. Exploのアカウントにサインアップします。
+1. Exploアカウントにサインアップします。
 
-2. 左側のサイドバーでExploの**データ**タブをクリックします。
+2. 左側のサイドバーのExplo **データ** タブをクリックします。
 
-<img src={explo_01} class="image" alt="Data Tab" />
+<Image img={explo_01} size="sm" alt="Data Tab" border />
 
-3. 右上の**データソースを接続**をクリックします。
+3. 右上の **データソースを接続** をクリックします。
 
-<img src={explo_02} class="image" alt="Connect Data Source" />
+<Image img={explo_02} size="sm" alt="Connect Data Source" border />
 
-4. **Getting Started**ページの情報を入力します。
+4. **はじめに** ページの情報を入力します。
 
-<img src={explo_03} class="image" alt="Getting Started" />
+<Image img={explo_03} size="md" alt="Getting Started" border />
 
-5. **Clickhouse**を選択します。
+5. **Clickhouse** を選択します。
 
-<img src={explo_04} class="image" alt="Clickhouse" />
+<Image img={explo_04} size="md" alt="Clickhouse" border />
 
-6. **Clickhouseの認証情報**を入力します。
+6. **Clickhouseのクレデンシャル** を入力します。
 
-<img src={explo_05} class="image" alt="Credentials" />
+<Image img={explo_05} size="md" alt="Credentials" border />
 
-7. **セキュリティ**設定を構成します。
+7. **セキュリティ** を設定します。
 
-<img src={explo_06} class="image" alt="Security" />
+<Image img={explo_06} size="md" alt="Security" border />
 
 8. Clickhouse内で、**ExploのIPをホワイトリストに追加**します。
 `
@@ -77,54 +84,54 @@ import explo_16 from '@site/static/images/integrations/data-visualization/explo_
 
 ## 3. ダッシュボードを作成する {#3-create-a-dashboard}
 
-1. 左側のナビゲーションバーで**ダッシュボード**タブに移動します。
+1. 左側のナビゲーションバーから **ダッシュボード** タブに移動します。
 
-<img src={explo_07} class="image" alt="Dashboard" />
+<Image img={explo_07} size="sm" alt="Dashboard" border />
 
-2. 右上の**ダッシュボードを作成**をクリックし、ダッシュボードに名前を付けます。これでダッシュボードが作成されました！
+2. 右上の **ダッシュボードを作成** をクリックし、ダッシュボードに名前を付けます。これでダッシュボードが作成されました！
 
-<img src={explo_08} class="image" alt="Create Dashboard" />
+<Image img={explo_08} size="sm" alt="Create Dashboard" border />
 
-3. 次のような画面が表示されるはずです：
+3. 今、次のような画面が表示されるはずです：
 
-<img src={explo_09} class="image" alt="Explo Dashboard" />
+<Image img={explo_09} size="md" alt="Explo Dashboard" border />
 
 ## 4. SQLクエリを実行する {#4-run-a-sql-query}
 
-1. スキーマタイトルの右側のサイドバーからテーブル名を取得します。その後、データセットエディターに以下のコマンドを入力します：
+1. スキーマタイトルの下にある右側のサイドバーからテーブル名を取得します。それから、データセットエディタに次のコマンドを入力します：
 `
 SELECT * FROM YOUR_TABLE_NAME
 LIMIT 100
 `
 
-<img src={explo_10} class="image" alt="Explo Dashboard" />
+<Image img={explo_10} size="md" alt="Explo Dashboard" border />
 
-2. 実行をクリックし、プレビュータブに移動してデータを確認します。
+2. 今、実行をクリックし、プレビュータブに移動してデータを確認します。
 
-<img src={explo_11} class="image" alt="Explo Dashboard" />
+<Image img={explo_11} size="md" alt="Explo Dashboard" border />
 
 ## 5. チャートを作成する {#5-build-a-chart}
 
-1. 左側からバーグラフアイコンを画面にドラッグします。
+1. 左側から、バーグラフアイコンを画面にドラッグします。
 
-<img src={explo_16} class="image" alt="Explo Dashboard" />
+<Image img={explo_16} size="sm" alt="Explo Dashboard" border />
 
 2. データセットを選択します。次のような画面が表示されるはずです：
 
-<img src={explo_12} class="image" alt="Explo Dashboard" />
+<Image img={explo_12} size="sm" alt="Explo Dashboard" border />
 
-3. **X軸**に**county**を、**Y軸**セクションに**Price**を次のように入力します：
+3. X軸に **郡** を、Y軸セクションに **価格** をこのように入力します：
 
-<img src={explo_13} class="image" alt="Explo Dashboard" />
+<Image img={explo_13} size="sm" alt="Explo Dashboard" border />
 
-4. 次に、集計を**AVG**に変更します。
+4. そして、集計を **AVG** に変更します。
 
-<img src={explo_14} class="image" alt="Explo Dashboard" />
+<Image img={explo_14} size="sm" alt="Explo Dashboard" border />
 
-5. これで、価格別に分けた住宅の平均価格が得られました！
+5. これで、価格別に分かれた住宅の平均価格が得られました！
 
-<img src={explo_15} class="image" alt="Explo Dashboard" />
+<Image img={explo_15} size="md" alt="Explo Dashboard" />
 
-## 詳細を学ぶ {#learn-more}
+## さらに学ぶ {#learn-more}
 
-Exploについての詳細情報やダッシュボードの作成方法については、<a href="https://docs.explo.co/" target="_blank">Exploのドキュメントを訪れて</a>ください。
+Exploやダッシュボードの作成方法についての詳細情報は、<a href="https://docs.explo.co/" target="_blank">Exploのドキュメントを訪問することでご覧いただけます</a>。

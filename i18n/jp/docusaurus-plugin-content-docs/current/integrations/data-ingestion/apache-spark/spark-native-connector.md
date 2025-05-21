@@ -1,37 +1,36 @@
 ---
-sidebar_label: Spark ネイティブコネクタ
+sidebar_label: 'Sparkネイティブコネクタ'
 sidebar_position: 2
 slug: /integrations/apache-spark/spark-native-connector
-description: ClickHouseとApache Sparkの導入
-keywords: [ clickhouse, Apache Spark, マイグレーション, データ ]
+description: 'ClickHouseとのApache Sparkの導入'
+keywords: ['clickhouse', 'Apache Spark', 'migrating', 'data']
+title: 'Sparkコネクタ'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 
-# Spark コネクタ
+# Sparkコネクタ
 
-このコネクタは、ClickHouse特有の最適化（高度なパーティショニングや述語プッシュダウンなど）を活用して、
-クエリのパフォーマンスとデータ処理を改善します。
-コネクタは、[ClickHouseの公式JDBCコネクタ](https://github.com/ClickHouse/clickhouse-java)に基づいており、
-独自のカタログを管理します。
+このコネクタは、ClickHouse特有の最適化、例えば高度なパーティショニングや述語プッシュダウンを活用して、クエリパフォーマンスやデータ処理を向上させます。
+コネクタは[ClickHouseの公式JDBCコネクタ](https://github.com/ClickHouse/clickhouse-java)に基づいており、自身のカタログを管理します。
 
-Spark 3.0以前は、Sparkには組み込みのカタログ概念がなかったため、ユーザーは通常、HiveメタストアやAWS Glueなどの外部カタログシステムに依存していました。
-これらの外部ソリューションでは、ユーザーはSparkでそれらにアクセスする前にデータソーステーブルを手動で登録する必要がありました。
-しかし、Spark 3.0でカタログの概念が導入されたため、Sparkはカタログプラグインを登録することでテーブルを自動的に検出できるようになりました。
+Spark 3.0以前は、Sparkには組み込みのカタログ概念が欠如していたため、ユーザーは通常、Hive MetastoreやAWS Glueなどの外部カタログシステムに依存していました。
+これらの外部ソリューションを使用する場合、ユーザーはSparkでデータソーステーブルにアクセスする前に手動でそれらを登録する必要がありました。
+しかし、Spark 3.0でカタログ概念が導入されて以来、Sparkはカタログプラグインを登録することでテーブルを自動的に発見できるようになりました。
 
-Sparkのデフォルトカタログは`spark_catalog`であり、テーブルは`{catalog name}.{database}.{table}`で識別されます。新しいカタログ機能により、単一のSparkアプリケーション内で複数のカタログを追加して操作することが可能になりました。
+Sparkのデフォルトカタログは`spark_catalog`であり、テーブルは`{catalog name}.{database}.{table}`によって識別されます。新しいカタログ機能により、単一のSparkアプリケーションで複数のカタログを追加して操作することが可能です。
 
 <TOCInline toc={toc}></TOCInline>
 ## 要件 {#requirements}
 
-- Java 8または17
-- Scala 2.12または2.13
-- Apache Spark 3.3または3.4または3.5
+- Java 8 または 17
+- Scala 2.12 または 2.13
+- Apache Spark 3.3 または 3.4 または 3.5
 ## 互換性マトリックス {#compatibility-matrix}
 
-| Version | 互換性のあるSparkバージョン | ClickHouse JDBCバージョン |
+| バージョン | 互換性のあるSparkバージョン | ClickHouse JDBCバージョン |
 |---------|---------------------------|-------------------------|
 | main    | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
 | 0.8.1   | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
@@ -45,10 +44,10 @@ Sparkのデフォルトカタログは`spark_catalog`であり、テーブルは
 | 0.1.2   | Spark 3.2                 | 依存しない              |
 ## インストールとセットアップ {#installation--setup}
 
-ClickHouseをSparkと統合するために、異なるプロジェクトセットアップに適した複数のインストールオプションがあります。
-ClickHouse Sparkコネクタをプロジェクトのビルドファイル（Mavenの`pom.xml`やSBTの`build.sbt`など）に直接依存関係として追加できます。
-または、必要なJARファイルを`$SPARK_HOME/jars/`フォルダーに置くか、`spark-submit`コマンドの`--jars`フラグを使用してSparkオプションとして直接渡すこともできます。
-どちらのアプローチでも、Spark環境でClickHouseコネクタが利用できることが保証されます。
+ClickHouseをSparkと統合するためには、さまざまなプロジェクトセットアップに適した複数のインストールオプションがあります。
+ClickHouse Sparkコネクタをプロジェクトのビルドファイル（Mavenの場合は`pom.xml`、SBTの場合は`build.sbt`など）に依存関係として直接追加できます。
+または、必要なJARファイルを`$SPARK_HOME/jars/`フォルダに置くか、`spark-submit`コマンドの`--jars`フラグを使用して直接渡すことができます。
+どちらの方法でも、Spark環境でClickHouseコネクタを利用可能にすることができます。
 ### 依存関係としてインポート {#import-as-a-dependency}
 
 <Tabs>
@@ -74,7 +73,7 @@ ClickHouse Sparkコネクタをプロジェクトのビルドファイル（Mave
 </dependency>
 ```
 
-SNAPSHOTバージョンを使用したい場合は、次のリポジトリを追加してください。
+SNAPSHOTバージョンを使用したい場合は、以下のリポジトリを追加してください。
 
 ```maven
 <repositories>
@@ -96,7 +95,7 @@ dependencies {
 }
 ```
 
-SNAPSHOTバージョンを使用したい場合は、次のリポジトリを追加してください：
+SNAPSHOTバージョンを使用したい場合は、以下のリポジトリを追加してください:
 
 ```gradle
 repositories {
@@ -115,68 +114,67 @@ libraryDependencies += "com.clickhouse.spark" %% clickhouse-spark-runtime-{{ spa
 </TabItem>
 <TabItem value="Spark SQL/Shell CLI" label="Spark SQL/Shell CLI">
 
-Sparkのシェルオプション（Spark SQL CLI、Spark Shell CLI、Spark Submitコマンド）を使用する場合、依存関係は必要なJARを渡すことで登録できます：
+Sparkのシェルオプション（Spark SQL CLI、Spark Shell CLI、Spark Submitコマンド）を使って作業する際、必要なJARを渡すことで依存関係を登録できます:
 
 ```text
 $SPARK_HOME/bin/spark-sql \
   --jars /path/clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}.jar,/path/clickhouse-jdbc-{{ clickhouse_jdbc_version }}-all.jar
 ```
 
-JARファイルをSparkクライアントノードにコピーするのを避けたい場合は、次のようにします：
+JARファイルをSparkクライアントノードにコピーしたくない場合は、以下の代わりに使用できます:
 
 ```text
   --repositories https://{maven-central-mirror or private-nexus-repo} \
   --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all
 ```
 
-注：SQLのみのユースケースでは、[Apache Kyuubi](https://github.com/apache/kyuubi)がプロダクション用に推奨されます。
+注: SQL専用の使用例では、[Apache Kyuubi](https://github.com/apache/kyuubi)が推奨されています 
+生産向け。
 
 </TabItem>
 </Tabs>
 ### ライブラリのダウンロード {#download-the-library}
 
-バイナリJARの名前パターンは次のとおりです：
+バイナリJARの名前パターンは以下の通りです:
 
 ```bash
 clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${version}.jar
 ```
 
-利用可能なすべてのリリース済みJARファイルは、[Maven Central Repository](https://repo1.maven.org/maven2/com/clickhouse/spark/)
-にあり、すべてのデイリービルドSNAPSHOT JARファイルは、[Sonatype OSS Snapshots Repository](https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/)にあります。
+利用可能なすべてのリリースされたJARファイルは、[Maven Central Repository](https://repo1.maven.org/maven2/com/clickhouse/spark/)で見つけることができ、
+すべての日次ビルドSNAPSHOT JARファイルは、[Sonatype OSS Snapshots Repository](https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/)で見つけることができます。
 
 :::important
-[clickhouse-jdbc JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)を「all」分類子付きで含めることが重要です。
-コネクタは[clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client)と
-[clickhouse-client](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client)の両方に依存しており、いずれもclickhouse-jdbc:allにバンドルされています。
-フルJDBCパッケージを使用したくない場合は、[clickhouse-client JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client)と
-[clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client)を個別に追加することもできます。
+「all」クラス分類の[clickhouse-jdbc JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)を含めることが不可欠です。
+コネクタは、[clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client)と[clickhouse-client](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client)の両方を必要とするため、これらはclickhouse-jdbc:allにバンドルされています。
+あるいは、フルJDBCパッケージを使用したくない場合は、[clickhouse-client JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client)と[clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client)を個別に追加できます。
 
-いずれにせよ、パッケージのバージョンが[互換性マトリックス](#compatibility-matrix)に従って互換性があることを確認してください。
+いずれにしても、パッケージのバージョンは、[互換性マトリックス](#compatibility-matrix)に従って互換性があることを確認してください。
 :::
-## カタログを登録する (必須) {#register-the-catalog-required}
+## カタログの登録（必須） {#register-the-catalog-required}
 
-ClickHouseのテーブルにアクセスするためには、次の設定を使用して新しいSparkカタログを構成する必要があります：
+ClickHouseテーブルにアクセスするには、以下の設定を持つ新しいSparkカタログを構成する必要があります:
 
-| プロパティ                                     | 値                                    | デフォルト値  | 必須 |
-|----------------------------------------------|------------------------------------------|----------------|----------|
-| `spark.sql.catalog.<catalog_name>`           | `com.clickhouse.spark.ClickHouseCatalog` | N/A            | はい      |
-| `spark.sql.catalog.<catalog_name>.host`      | `<clickhouse_host>`                      | `localhost`    | いいえ       |
-| `spark.sql.catalog.<catalog_name>.protocol`  | `http`                                   | `http`         | いいえ       |
-| `spark.sql.catalog.<catalog_name>.http_port` | `<clickhouse_port>`                      | `8123`         | いいえ       |
-| `spark.sql.catalog.<catalog_name>.user`      | `<clickhouse_username>`                  | `default`      | いいえ       |
-| `spark.sql.catalog.<catalog_name>.password`  | `<clickhouse_password>`                  | (空の文字列) | いいえ       |
-| `spark.sql.catalog.<catalog_name>.database`  | `<database>`                             | `default`      | いいえ       |
-| `spark.<catalog_name>.write.format`          | `json`                                   | `arrow`        | いいえ       |
+| プロパティ                                   | 値                                       | デフォルト値      | 必須     |
+|----------------------------------------------|-----------------------------------------|------------------|----------|
+| `spark.sql.catalog.<catalog_name>`           | `com.clickhouse.spark.ClickHouseCatalog` | N/A              | はい     |
+| `spark.sql.catalog.<catalog_name>.host`      | `<clickhouse_host>`                     | `localhost`      | いいえ   |
+| `spark.sql.catalog.<catalog_name>.protocol`  | `http`                                  | `http`           | いいえ   |
+| `spark.sql.catalog.<catalog_name>.http_port` | `<clickhouse_port>`                     | `8123`           | いいえ   |
+| `spark.sql.catalog.<catalog_name>.user`      | `<clickhouse_username>`                 | `default`        | いいえ   |
+| `spark.sql.catalog.<catalog_name>.password`  | `<clickhouse_password>`                 | (空文字列)      | いいえ   |
+| `spark.sql.catalog.<catalog_name>.database`  | `<database>`                            | `default`        | いいえ   |
+| `spark.<catalog_name>.write.format`          | `json`                                  | `arrow`          | いいえ   |
 
-これらの設定は、次のいずれかで設定できます：
+これらの設定は次のいずれかで設定できます:
 
-* `spark-defaults.conf`の編集または作成。
-* `spark-submit`コマンド（または`spark-shell`や`spark-sql` CLIコマンド）に設定を渡す。
-* コンテキストを初期化する際に設定を追加する。
+* `spark-defaults.conf`を編集/作成する
+* `spark-submit`コマンド（または`spark-shell`/`spark-sql` CLIコマンド）に設定を渡す
+* コンテキストを初期化する際に設定を追加する
 
 :::important
-ClickHouse クラスターで作業する場合、各インスタンスにユニークなカタログ名を設定する必要があります。
-例えば：
+ClickHouseクラスタで作業する場合、各インスタンスに対してユニークなカタログ名を設定する必要があります。
+例えば:
 
 ```text
 spark.sql.catalog.clickhouse1                com.clickhouse.spark.ClickHouseCatalog
@@ -198,10 +196,19 @@ spark.sql.catalog.clickhouse2.database       default
 spark.sql.catalog.clickhouse2.option.ssl     true
 ```
 
-このようにすることで、Spark SQLから`clickhouse1.<ck_db>.<ck_table>`でclickhouse1テーブル`<ck_db>.<ck_table>`にアクセスし、`clickhouse2.<ck_db>.<ck_table>`でclickhouse2テーブル`<ck_db>.<ck_table>`にアクセスできるようになります。
+このようにすることで、Spark SQLからclickhouse1テーブル`<ck_db>.<ck_table>`に`clickhouse1.<ck_db>.<ck_table>`でアクセスでき、
+clickhouse2テーブル`<ck_db>.<ck_table>`には`clickhouse2.<ck_db>.<ck_table>`でアクセスできるようになります。
 
 :::
-## データの読み込み {#read-data}
+## ClickHouse Cloud設定 {#clickhouse-cloud-settings}
+
+[ClickHouse Cloud](https://clickhouse.com)に接続する際は、SSLを有効にし、適切なSSLモードを設定してください。例えば:
+
+```text
+spark.sql.catalog.clickhouse.option.ssl        true
+spark.sql.catalog.clickhouse.option.ssl_mode   NONE
+```
+## データの読み取り {#read-data}
 
 <Tabs groupId="spark_apis">
 <TabItem value="Java" label="Java" default>
@@ -233,7 +240,7 @@ public static void main(String[] args) {
 </TabItem>
 <TabItem value="Scala" label="Scala">
 
-```scala
+```java
 object NativeSparkRead extends App {
   val spark = SparkSession.builder
     .appName("example")
@@ -267,6 +274,7 @@ packages = [
     "com.clickhouse:clickhouse-client:0.7.0",
     "com.clickhouse:clickhouse-http-client:0.7.0",
     "org.apache.httpcomponents.client5:httpclient5:5.2.1"
+
 ]
 
 spark = (SparkSession.builder
@@ -352,7 +360,7 @@ df.show()
 </TabItem>
 <TabItem value="Scala" label="Scala">
 
-```scala
+```java
 object NativeSparkWrite extends App {
   // Sparkセッションを作成
   val spark: SparkSession = SparkSession.builder
@@ -375,7 +383,7 @@ object NativeSparkWrite extends App {
     StructField("id", DataTypes.IntegerType, nullable = false),
     StructField("name", StringType, nullable = true)
   )
-  // dfを作成
+  // DataFrameを作成
   val df: DataFrame = spark.createDataFrame(
     spark.sparkContext.parallelize(rows),
     StructType(schema)
@@ -395,12 +403,13 @@ from pyspark.sql import SparkSession
 from pyspark.sql import Row
 
 
-# 互換性のあるパッケージの組み合わせを自由に使用できます。
+# 互換性マトリックスに従う他のパッケージの組み合わせを自由に使用できます。
 packages = [
     "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
     "com.clickhouse:clickhouse-client:0.7.0",
     "com.clickhouse:clickhouse-http-client:0.7.0",
     "org.apache.httpcomponents.client5:httpclient5:5.2.1"
+
 ]
 
 spark = (SparkSession.builder
@@ -431,7 +440,7 @@ df.writeTo("clickhouse.default.example_table").append()
 <TabItem value="SparkSQL" label="Spark SQL">
 
 ```sql
-    -- resultTalbeはSparkの中間dfで、clickhouse.default.example_tableに挿入したいものです
+    -- resultTalbeはSparkの中間dfで、clickhouse.default.example_tableに挿入したいものです。
    INSERT INTO TABLE clickhouse.default.example_table
                 SELECT * FROM resultTable;
                 
@@ -441,8 +450,8 @@ df.writeTo("clickhouse.default.example_table").append()
 </Tabs>
 ## DDL操作 {#ddl-operations}
 
-Spark SQLを使用してClickHouseインスタンスでDDL操作を行うことができ、すべての変更は直ちにClickHouseに保持されます。
-Spark SQLでは、ClickHouseと同様に、クエリをそのまま記述することができるため、CREATE TABLEやTRUNCATEなどのコマンドを修正なしで直接実行できます。例えば：
+Spark SQLを使用してClickHouseインスタンスでDDL操作を実行でき、すべての変更は即座にClickHouseに永続化されます。
+Spark SQLでは、ClickHouseでどのように書かれるかと同じようにクエリを書くことができますので、CREATE TABLEやTRUNCATEなどのコマンドを直接実行できます。例えば:
 
 ```sql
 
@@ -462,105 +471,106 @@ TBLPROPERTIES (
 );
 ```
 
-上記の例は、アプリケーション内で実行できるSpark SQLクエリを示しており、Java、Scala、PySpark、またはシェルを使用して実行することができます。
-## 構成 {#configurations}
+上記の例はSpark SQLクエリを示しており、あなたのアプリケーションでJava、Scala、PySpark、またはシェルのいずれかのAPIを使用して実行できます。
+
+## Configurations {#configurations}
 
 以下はコネクタで利用可能な調整可能な構成です：
 
 <br/>
 
-| キー                                                 | デフォルト                                             | 説明                                                                                                                                                                                                                                                                                                                                                                                                                | 以降 |
-|----------------------------------------------------|--------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------|
-| spark.clickhouse.ignoreUnsupportedTransform        | false                                                  | ClickHouseは、`cityHash64(col_1, col_2)`のような複雑な式をシャーディングキーまたはパーティション値として使用することをサポートしていますが、これは現在Sparkにサポートされていません。`true`の場合、サポートされていない式を無視します。それ以外の場合、例外で早期に失敗します。`spark.clickhouse.write.distributed.convertLocal`が有効な場合、サポートされていないシャーディングキーを無視するとデータが壊れる可能性があります。                            | 0.4.0 |
-| spark.clickhouse.read.compression.codec            | lz4                                                    | 読み込みのためのデータをデコンプレッションする際に使用されるコーデック。サポートされているコーデック：none、lz4。                                                                                                                                                                                                                                                                                             | 0.5.0 |
-| spark.clickhouse.read.distributed.convertLocal     | true                                                   | 分散テーブルを読み取る際、自己ではなくローカルテーブルを読み取ります。`true`の場合、`spark.clickhouse.read.distributed.useClusterNodes`を無視します。                                                                                                                                                                                                                                                                                  | 0.1.0 |
-| spark.clickhouse.read.fixedStringAs                | binary                                                 | ClickHouseのFixedString型を指定されたSparkデータ型として読み取ります。サポートされている型：binary、string                                                                                                                                                                                                                                                                                                          | 0.8.0 |
-| spark.clickhouse.read.format                       | json                                                   | 読み込みのためのシリアライズフォーマット。サポートされているフォーマット：json、binary                                                                                                                                                                                                                                                                                                                                | 0.6.0 |
-| spark.clickhouse.read.runtimeFilter.enabled        | false                                                  | 読み込みのためのランタイムフィルタを有効にします。                                                                                                                                                                                                                                                                                                                                                                  | 0.8.0 |
-| spark.clickhouse.read.splitByPartitionId           | true                                                   | `true`の場合、仮想カラム`_partition_id`によって入力パーティションフィルタを構成します。パーティション値によってSQL述語を組み立てることには既知の問題があります。この機能にはClickHouse Server v21.6以上が必要です。                                                                                                                                                                | 0.4.0 |
-| spark.clickhouse.useNullableQuerySchema            | false                                                  | `true`の場合、`CREATE/REPLACE TABLE ... AS SELECT ...`を実行してテーブルを作成する際にクエリスキーマのすべてのフィールドをnullableとしてマークします。この構成はSPARK-43390（Spark 3.5で利用可能）を必要とし、このパッチがない場合は常に`true`として動作します。                                                                                                                               | 0.8.0 |
-| spark.clickhouse.write.batchSize                   | 10000                                                  | ClickHouseに対する書き込み時のバッチあたりのレコード数。                                                                                                                                                                                                                                                                                                                                                         | 0.1.0 |
-| spark.clickhouse.write.compression.codec           | lz4                                                    | 書き込みのためのデータを圧縮する際に使用されるコーデック。サポートされているコーデック：none、lz4。                                                                                                                                                                                                                                                                                                                        | 0.3.0 |
-| spark.clickhouse.write.distributed.convertLocal    | false                                                  | 分散テーブルに書き込む際、自己ではなくローカルテーブルに書き込みます。`true`の場合、`spark.clickhouse.write.distributed.useClusterNodes`を無視します。                                                                                                                                                                                                                                         | 0.1.0 |
-| spark.clickhouse.write.distributed.useClusterNodes | true                                                   | 分散テーブルを書き込む際にクラスターのすべてのノードに書き込みます。                                                                                                                                                                                                                                                                                                                                                  | 0.1.0 |
-| spark.clickhouse.write.format                      | arrow                                                  | 書き込みのためのシリアライズフォーマット。サポートされているフォーマット：json、arrow                                                                                                                                                                                                                                                                                                                             | 0.4.0 |
-| spark.clickhouse.write.localSortByKey              | true                                                   | `true`の場合、書き込む前にソートキーによるローカルソートを行います。                                                                                                                                                                                                                                                                                                                                                   | 0.3.0 |
-| spark.clickhouse.write.localSortByPartition        | spark.clickhouse.write.repartitionByPartitionの値    | `true`の場合、書き込む前にパーティションによるローカルソートを行います。設定されていない場合、`spark.clickhouse.write.repartitionByPartition`と等しくなります。                                                                                                                                                                                                                                          | 0.3.0 |
-| spark.clickhouse.write.maxRetry                    | 3                                                      | 再試行可能なコードで失敗した単一のバッチ書き込みに対して再試行する最大回数。                                                                                                                                                                                                                                                                                                                                             | 0.1.0 |
-| spark.clickhouse.write.repartitionByPartition      | true                                                   | 書き込む前にClickHouseパーティションキーによってデータを再パーティションするかどうか。                                                                                                                                                                                                                                                                                                                                                     | 0.3.0 |
-| spark.clickhouse.write.repartitionNum              | 0                                                      | 書き込む前にClickHouseテーブルの分配に合うようにデータを再パーティションすることが必要である場合、この設定で再パーティション数を指定します。1未満の値は要件なしを意味します。                                                                                                                                                                                                                                   | 0.1.0 |
-| spark.clickhouse.write.repartitionStrictly         | false                                                  | `true`の場合、Sparkは書き込み時にデータソーステーブルにレコードを渡す前に、必要な分配を満たすために受信レコードを厳密に各パーティションに分配します。そうでない場合、Sparkはクエリを高速化するために特定の最適化を適用しますが、分配要件を破る可能性があります。この構成はSPARK-37523（Spark 3.4で利用可能）を必要とし、このパッチがない場合は常に`true`として動作します。            | 0.3.0 |
-| spark.clickhouse.write.retryInterval               | 10s                                                    | 書き込みの再試行間の秒数の間隔。                                                                                                                                                                                                                                                                                                                                                                               | 0.1.0 |
-| spark.clickhouse.write.retryableErrorCodes         | 241                                                    | 書き込みが失敗したときにClickHouseサーバーから返される再試行可能なエラーコード。                                                                                                                                                                                                                                                                                                                                     | 0.1.0 |
+| Key                                                | Default                                                | Description                                                                                                                                                                                                                                                                                                                                                                                                     | Since |
+|----------------------------------------------------|--------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------|
+| spark.clickhouse.ignoreUnsupportedTransform        | false                                                  | ClickHouseは、例えば `cityHash64(col_1, col_2)` のように、シャーディングキーやパーティション値として複雑な式を使用することをサポートしますが、これは現在Sparkによってサポートされていません。`true`の場合、サポートされていない式は無視され、そうでなければ例外と共に早期に失敗します。注意、`spark.clickhouse.write.distributed.convertLocal` が有効な場合、サポートされていないシャーディングキーの無視はデータを破損させる可能性があります。 | 0.4.0 |
+| spark.clickhouse.read.compression.codec            | lz4                                                    | 読み取りのためにデータを圧縮解除する際に使用されるコーデック。サポートされているコーデック：none, lz4。                                                                                                                                                                                                                                                                                                     | 0.5.0 |
+| spark.clickhouse.read.distributed.convertLocal     | true                                                   | 分散テーブルを読み取る際、自己の代わりにローカルテーブルを読み取ります。`true`の場合、`spark.clickhouse.read.distributed.useClusterNodes`は無視されます。                                                                                                                                                                                                                                                                                | 0.1.0 |
+| spark.clickhouse.read.fixedStringAs                | binary                                                 | ClickHouseのFixedString型を指定されたSparkデータ型として読み取ります。サポートされている型：binary, string                                                                                                                                                                                                                                                                                                   | 0.8.0 |
+| spark.clickhouse.read.format                       | json                                                   | 読み取りのためのシリアライズフォーマット。サポートされているフォーマット：json, binary                                                                                                                                                                                                                                                                                                                  | 0.6.0 |
+| spark.clickhouse.read.runtimeFilter.enabled        | false                                                  | 読み取りのためのランタイムフィルターを有効にします。                                                                                                                                                                                                                                                                                                                                                          | 0.8.0 |
+| spark.clickhouse.read.splitByPartitionId           | true                                                   | `true`の場合、仮想カラム `_partition_id` によって入力パーティションフィルターを構築します。パーティション値によってSQL述語を組み立てる際に既知の問題があります。この機能はClickHouse Server v21.6+が必要です。                                                                                                                                                                   | 0.4.0 |
+| spark.clickhouse.useNullableQuerySchema            | false                                                  | `true`の場合、テーブルの作成時に `CREATE/REPLACE TABLE ... AS SELECT ...` を実行する際、クエリスキーマのすべてのフィールドをnullableとしてマークします。この設定はSPARK-43390（Spark 3.5で利用可能）が必要であり、このパッチがない場合は常に`true`として動作します。                                                                                                                      | 0.8.0 |
+| spark.clickhouse.write.batchSize                   | 10000                                                  | ClickHouseへの書き込み時のバッチごとのレコード数です。                                                                                                                                                                                                                                                                                                                                                     | 0.1.0 |
+| spark.clickhouse.write.compression.codec           | lz4                                                    | 書き込みのためにデータを圧縮する際に使用されるコーデック。サポートされているコーデック：none, lz4。                                                                                                                                                                                                                                                                                                     | 0.3.0 |
+| spark.clickhouse.write.distributed.convertLocal    | false                                                  | 分散テーブルを書き込む際、自己の代わりにローカルテーブルを書き込みます。`true`の場合、`spark.clickhouse.write.distributed.useClusterNodes`は無視されます。                                                                                                                                                                                                                                          | 0.1.0 |
+| spark.clickhouse.write.distributed.useClusterNodes | true                                                   | 分散テーブルを作成する際、クラスターのすべてのノードに書き込みます。                                                                                                                                                                                                                                                                                                                                             | 0.1.0 |
+| spark.clickhouse.write.format                      | arrow                                                  | 書き込みのためのシリアライズフォーマット。サポートされているフォーマット：json, arrow                                                                                                                                                                                                                                                                                                                | 0.4.0 |
+| spark.clickhouse.write.localSortByKey              | true                                                   | `true`の場合、書き込む前にソートキーでローカルソートを行います。                                                                                                                                                                                                                                                                                                                                             | 0.3.0 |
+| spark.clickhouse.write.localSortByPartition        | value of spark.clickhouse.write.repartitionByPartition | `true`の場合、書き込む前にパーティションでローカルソートを行います。未設定の場合、これは`spark.clickhouse.write.repartitionByPartition`と等しくなります。                                                                                                                                                                                                                                                  | 0.3.0 |
+| spark.clickhouse.write.maxRetry                    | 3                                                      | リトライ可能なコードで失敗した単一バッチ書き込みの最大リトライ回数です。                                                                                                                                                                                                                                                                                                                                         | 0.1.0 |
+| spark.clickhouse.write.repartitionByPartition      | true                                                   | 書き込む前にClickHouseのパーティションキーによってデータを再パーティションするかどうかを示します。                                                                                                                                                                                                                                                                                                          | 0.3.0 |
+| spark.clickhouse.write.repartitionNum              | 0                                                      | 書き込む前にClickHouseのテーブルの分布を満たすためにデータを再パーティションする必要があります。この設定で再パーティション数を指定します。1未満の値は必要がないことを意味します。                                                                                                                                                                                                                              | 0.1.0 |
+| spark.clickhouse.write.repartitionStrictly         | false                                                  | `true`の場合、Sparkはデータソーステーブルへの書き込み時にレコードを必要な分布を満たすようにパーティションに厳密に分配します。そうでなければ、Sparkはクエリを速度アップするために特定の最適化を適用することがありますが、分布要件を破る可能性があります。この設定はSPARK-37523（Spark 3.4で利用可能）が必要であり、このパッチがない場合は常に`true`として動作します。                               | 0.3.0 |
+| spark.clickhouse.write.retryInterval               | 10s                                                    | 書き込みのリトライ間隔（秒単位）です。                                                                                                                                                                                                                                                                                                                                                                        | 0.1.0 |
+| spark.clickhouse.write.retryableErrorCodes         | 241                                                    | 書き込みが失敗した際にClickHouseサーバーから返されるリトライ可能なエラーコードです。                                                                                                                                                                                                                                                                                                                      | 0.1.0 |
 
-## サポートされているデータ型 {#supported-data-types}
+## Supported Data Types {#supported-data-types}
 
-このセクションでは、SparkとClickHouse間のデータ型のマッピングを示します。以下の表は、ClickHouseからSparkへの読み込み時と、SparkからClickHouseへのデータ挿入時のデータ型変換の迅速な参照を提供します。
+このセクションでは、SparkとClickHouseのデータ型のマッピングを概説します。以下の表は、ClickHouseからSparkにデータを読み取る際およびSparkからClickHouseへデータを挿入する際のデータ型変換のためのクイックリファレンスを提供します。
 
-### ClickHouseからSparkへのデータの読み込み {#reading-data-from-clickhouse-into-spark}
+### Reading data from ClickHouse into Spark {#reading-data-from-clickhouse-into-spark}
 
-| ClickHouseデータ型                                          | Sparkデータ型                  | サポート | プリミティブである | メモ                                 |
-|-------------------------------------------------------------------|--------------------------------|-----------|------------------|--------------------------------------|
-| `Nothing`                                                         | `NullType`                     | ✅         | はい              |                                      |
-| `Bool`                                                            | `BooleanType`                  | ✅         | はい              |                                      |
-| `UInt8`, `Int16`                                                  | `ShortType`                    | ✅         | はい              |                                      |
-| `Int8`                                                            | `ByteType`                     | ✅         | はい              |                                      |
-| `UInt16`,`Int32`                                                  | `IntegerType`                  | ✅         | はい              |                                      |
-| `UInt32`,`Int64`, `UInt64`                                        | `LongType`                     | ✅         | はい              |                                      |
-| `Int128`,`UInt128`, `Int256`, `UInt256`                           | `DecimalType(38, 0)`           | ✅         | はい              |                                      |
-| `Float32`                                                         | `FloatType`                    | ✅         | はい              |                                      |
-| `Float64`                                                         | `DoubleType`                   | ✅         | はい              |                                      |
-| `String`, `JSON`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6`       | `StringType`                   | ✅         | はい              |                                      |
-| `FixedString`                                                     | `BinaryType`, `StringType`     | ✅         | はい              | 設定 `READ_FIXED_STRING_AS` によって制御される |
-| `Decimal`                                                         | `DecimalType`                  | ✅         | はい              | 精度とスケールは`Decimal128`まで   |
-| `Decimal32`                                                       | `DecimalType(9, scale)`        | ✅         | はい              |                                      |
-| `Decimal64`                                                       | `DecimalType(18, scale)`       | ✅         | はい              |                                      |
-| `Decimal128`                                                      | `DecimalType(38, scale)`       | ✅         | はい              |                                      |
-| `Date`, `Date32`                                                  | `DateType`                     | ✅         | はい              |                                      |
-| `DateTime`, `DateTime32`, `DateTime64`                            | `TimestampType`                | ✅         | はい              |                                      |
-| `Array`                                                           | `ArrayType`                    | ✅         | いいえ            | 配列要素型も変換される               |
-| `Map`                                                             | `MapType`                      | ✅         | いいえ            | キーは`StringType`に制限されている  |
-| `IntervalYear`                                                    | `YearMonthIntervalType(Year)`  | ✅         | はい              |                                      |
-| `IntervalMonth`                                                   | `YearMonthIntervalType(Month)` | ✅         | はい              |                                      |
-| `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | `DayTimeIntervalType`          | ✅         | いいえ            | 特定の間隔型が使用される             |
-| `Object`                                                          |                                | ❌         |                  |                                      |
-| `Nested`                                                          |                                | ❌         |                  |                                      |
-| `Tuple`                                                           |                                | ❌         |                  |                                      |
-| `Point`                                                           |                                | ❌         |                  |                                      |
-| `Polygon`                                                         |                                | ❌         |                  |                                      |
-| `MultiPolygon`                                                    |                                | ❌         |                  |                                      |
-| `Ring`                                                            |                                | ❌         |                  |                                      |
-| `IntervalQuarter`                                                 |                                | ❌         |                  |                                      |
-| `IntervalWeek`                                                    |                                | ❌         |                  |                                      |
-| `Decimal256`                                                      |                                | ❌         |                  |                                      |
-| `AggregateFunction`                                               |                                | ❌         |                  |                                      |
-| `SimpleAggregateFunction`                                         |                                | ❌         |                  |                                      |
+| ClickHouse Data Type                                              | Spark Data Type                | Supported | Is Primitive | Notes                                              |
+|-------------------------------------------------------------------|--------------------------------|-----------|--------------|----------------------------------------------------|
+| `Nothing`                                                         | `NullType`                     | ✅         | Yes          |                                                    |
+| `Bool`                                                            | `BooleanType`                  | ✅         | Yes          |                                                    |
+| `UInt8`, `Int16`                                                  | `ShortType`                    | ✅         | Yes          |                                                    |
+| `Int8`                                                            | `ByteType`                     | ✅         | Yes          |                                                    |
+| `UInt16`,`Int32`                                                  | `IntegerType`                  | ✅         | Yes          |                                                    |
+| `UInt32`,`Int64`, `UInt64`                                        | `LongType`                     | ✅         | Yes          |                                                    |
+| `Int128`,`UInt128`, `Int256`, `UInt256`                           | `DecimalType(38, 0)`           | ✅         | Yes          |                                                    |
+| `Float32`                                                         | `FloatType`                    | ✅         | Yes          |                                                    |
+| `Float64`                                                         | `DoubleType`                   | ✅         | Yes          |                                                    |
+| `String`, `JSON`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6`       | `StringType`                   | ✅         | Yes          |                                                    |
+| `FixedString`                                                     | `BinaryType`, `StringType`     | ✅         | Yes          | `READ_FIXED_STRING_AS` によって制御される               |
+| `Decimal`                                                         | `DecimalType`                  | ✅         | Yes          | 精度およびスケールは `Decimal128` まで                |
+| `Decimal32`                                                       | `DecimalType(9, scale)`        | ✅         | Yes          |                                                    |
+| `Decimal64`                                                       | `DecimalType(18, scale)`       | ✅         | Yes          |                                                    |
+| `Decimal128`                                                      | `DecimalType(38, scale)`       | ✅         | Yes          |                                                    |
+| `Date`, `Date32`                                                  | `DateType`                     | ✅         | Yes          |                                                    |
+| `DateTime`, `DateTime32`, `DateTime64`                            | `TimestampType`                | ✅         | Yes          |                                                    |
+| `Array`                                                           | `ArrayType`                    | ✅         | No           | 配列要素型も変換される                               |
+| `Map`                                                             | `MapType`                      | ✅         | No           | キーは `StringType` に制限される                      |
+| `IntervalYear`                                                    | `YearMonthIntervalType(Year)`  | ✅         | Yes          |                                                    |
+| `IntervalMonth`                                                   | `YearMonthIntervalType(Month)` | ✅         | Yes          |                                                    |
+| `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | `DayTimeIntervalType`          | ✅         | No           | 特定の間隔タイプが使用される                          |
+| `Object`                                                          |                                | ❌         |              |                                                    |
+| `Nested`                                                          |                                | ❌         |              |                                                    |
+| `Tuple`                                                           |                                | ❌         |              |                                                    |
+| `Point`                                                           |                                | ❌         |              |                                                    |
+| `Polygon`                                                         |                                | ❌         |              |                                                    |
+| `MultiPolygon`                                                    |                                | ❌         |              |                                                    |
+| `Ring`                                                            |                                | ❌         |              |                                                    |
+| `IntervalQuarter`                                                 |                                | ❌         |              |                                                    |
+| `IntervalWeek`                                                    |                                | ❌         |              |                                                    |
+| `Decimal256`                                                      |                                | ❌         |              |                                                    |
+| `AggregateFunction`                                               |                                | ❌         |              |                                                    |
+| `SimpleAggregateFunction`                                         |                                | ❌         |              |                                                    |
 
-### SparkからClickHouseへのデータの挿入 {#inserting-data-from-spark-into-clickhouse}
+### Inserting data from Spark into ClickHouse {#inserting-data-from-spark-into-clickhouse}
 
-| Sparkデータ型                     | ClickHouseデータ型 | サポート | プリミティブである | メモ                                  |
-|-----------------------------------|----------------------|-----------|------------------|----------------------------------------|
-| `BooleanType`                     | `UInt8`              | ✅         | はい              |                                        |
-| `ByteType`                        | `Int8`               | ✅         | はい              |                                        |
-| `ShortType`                       | `Int16`              | ✅         | はい              |                                        |
-| `IntegerType`                     | `Int32`              | ✅         | はい              |                                        |
-| `LongType`                        | `Int64`              | ✅         | はい              |                                        |
-| `FloatType`                       | `Float32`            | ✅         | はい              |                                        |
-| `DoubleType`                      | `Float64`            | ✅         | はい              |                                        |
-| `StringType`                      | `String`             | ✅         | はい              |                                        |
-| `VarcharType`                     | `String`             | ✅         | はい              |                                        |
-| `CharType`                        | `String`             | ✅         | はい              |                                        |
-| `DecimalType`                     | `Decimal(p, s)`      | ✅         | はい              | 精度とスケールは`Decimal128`まで   |
-| `DateType`                        | `Date`               | ✅         | はい              |                                        |
-| `TimestampType`                   | `DateTime`           | ✅         | はい              |                                        |
-| `ArrayType` (リスト、タプル、または配列) | `Array`              | ✅         | いいえ            | 配列要素型も変換される               |
-| `MapType`                         | `Map`                | ✅         | いいえ            | キーは`StringType`に制限されている  |
-| `Object`                          |                      | ❌         |                  |                                        |
-| `Nested`                          |                      | ❌         |                  |                                        |
+| Spark Data Type                     | ClickHouse Data Type | Supported | Is Primitive | Notes                                  |
+|-------------------------------------|----------------------|-----------|--------------|----------------------------------------|
+| `BooleanType`                       | `UInt8`              | ✅         | Yes          |                                        |
+| `ByteType`                          | `Int8`               | ✅         | Yes          |                                        |
+| `ShortType`                         | `Int16`              | ✅         | Yes          |                                        |
+| `IntegerType`                       | `Int32`              | ✅         | Yes          |                                        |
+| `LongType`                          | `Int64`              | ✅         | Yes          |                                        |
+| `FloatType`                         | `Float32`            | ✅         | Yes          |                                        |
+| `DoubleType`                        | `Float64`            | ✅         | Yes          |                                        |
+| `StringType`                        | `String`             | ✅         | Yes          |                                        |
+| `VarcharType`                       | `String`             | ✅         | Yes          |                                        |
+| `CharType`                          | `String`             | ✅         | Yes          |                                        |
+| `DecimalType`                       | `Decimal(p, s)`      | ✅         | Yes          | 精度およびスケールは `Decimal128` まで |
+| `DateType`                          | `Date`               | ✅         | Yes          |                                        |
+| `TimestampType`                     | `DateTime`           | ✅         | Yes          |                                        |
+| `ArrayType` (list, tuple, or array) | `Array`              | ✅         | No           | 配列要素型も変換される                   |
+| `MapType`                           | `Map`                | ✅         | No           | キーは `StringType` に制限される        |
+| `Object`                            |                      | ❌         |              |                                        |
+| `Nested`                            |                      | ❌         |              |                                        |
 
-## 貢献とサポート {#contributing-and-support}
+## Contributing and Support {#contributing-and-support}
 
-プロジェクトに貢献したい場合や問題を報告したい場合は、あなたのご意見を歓迎します！  
-[GitHubリポジトリ](https://github.com/ClickHouse/spark-clickhouse-connector)を訪れて、問題を開いたり、改善を提案したり、プルリクエストを提出してください。  
-貢献は歓迎されます！開始する前にリポジトリの貢献ガイドラインを確認してください。  
-私たちのClickHouse Sparkコネクタの改善にご協力いただきありがとうございます！
+プロジェクトに貢献したり、問題を報告したりしたい場合は、あなたの意見を歓迎します！
+私たちの [GitHubリポジトリ](https://github.com/ClickHouse/spark-clickhouse-connector) を訪れて、問題を開く、改善を提案する、またはプルリクエストを提出してください。
+貢献をお待ちしております！始める前にリポジトリの貢献ガイドラインを確認してください。
+私たちのClickHouse Sparkコネクタを改善する手助けをしていただきありがとうございます！

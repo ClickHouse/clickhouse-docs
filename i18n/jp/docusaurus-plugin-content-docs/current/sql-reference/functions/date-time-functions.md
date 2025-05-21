@@ -1,18 +1,18 @@
 ---
-slug: '/sql-reference/functions/date-time-functions'
-sidebar_position: 45
+description: '日付と時間を扱う関数のドキュメント'
 sidebar_label: '日付と時間'
-keywords: ['ClickHouse', 'SQL', '日付', '時間', '関数']
-description: '日付と時間を扱うための関数のリファレンス'
+sidebar_position: 45
+slug: /sql-reference/functions/date-time-functions
+title: '日付と時間を扱う関数'
 ---
 
-# 日付と時間を扱うための関数
+# 日付と時間を扱う関数
 
-このセクションのほとんどの関数は、オプションのタイムゾーン引数を受け付けます。例: `Europe/Amsterdam`。この場合、指定されたタイムゾーンがローカル（デフォルト）のものではなく使用されます。
+このセクションのほとんどの関数は、オプションのタイムゾーン引数を受け入れます。例えば、`Europe/Amsterdam`です。この場合、指定されたタイムゾーンがローカル（デフォルト）のものではなくなります。
 
 **例**
 
-``` sql
+```sql
 SELECT
     toDateTime('2016-06-15 23:00:00') AS time,
     toDate(time) AS date_local,
@@ -20,20 +20,20 @@ SELECT
     toString(time, 'US/Samoa') AS time_samoa
 ```
 
-``` text
+```text
 ┌────────────────time─┬─date_local─┬─date_yekat─┬─time_samoa──────────┐
 │ 2016-06-15 23:00:00 │ 2016-06-15 │ 2016-06-16 │ 2016-06-15 09:00:00 │
 └─────────────────────┴────────────┴────────────┴─────────────────────┘
 ```
 ## makeDate {#makedate}
 
-[Date](../data-types/date.md)を作成します。
+[Date](../data-types/date.md)を作成します
 - 年、月、日引数から、または
-- 年と年の日数引数から。
+- 年と年の日引数から。
 
 **構文**
 
-``` sql
+```sql
 makeDate(year, month, day);
 makeDate(year, day_of_year);
 ```
@@ -44,47 +44,47 @@ makeDate(year, day_of_year);
 
 **引数**
 
-- `year` — 年。 [Integer](../data-types/int-uint.md), [Float](../data-types/float.md) または [Decimal](../data-types/decimal.md)。
-- `month` — 月。 [Integer](../data-types/int-uint.md), [Float](../data-types/float.md) または [Decimal](../data-types/decimal.md)。
-- `day` — 日。 [Integer](../data-types/int-uint.md), [Float](../data-types/float.md) または [Decimal](../data-types/decimal.md)。
-- `day_of_year` — 年の日数。 [Integer](../data-types/int-uint.md), [Float](../data-types/float.md) または [Decimal](../data-types/decimal.md)。
+- `year` — 年。[Integer](../data-types/int-uint.md)、[Float](../data-types/float.md)または[Decimal](../data-types/decimal.md)。
+- `month` — 月。[Integer](../data-types/int-uint.md)、[Float](../data-types/float.md)または[Decimal](../data-types/decimal.md)。
+- `day` — 日。[Integer](../data-types/int-uint.md)、[Float](../data-types/float.md)または[Decimal](../data-types/decimal.md)。
+- `day_of_year` — 年の日。[Integer](../data-types/int-uint.md)、[Float](../data-types/float.md)または[Decimal](../data-types/decimal.md)。
 
-**返される値**
+**戻り値**
 
 - 引数から作成された日付。[Date](../data-types/date.md)。
 
 **例**
 
-年、月、日から日付を作成します。
+年、月、日から日付を作成:
 
-``` sql
+```sql
 SELECT makeDate(2023, 2, 28) AS Date;
 ```
 
 結果:
 
-``` text
+```text
 ┌───────date─┐
 │ 2023-02-28 │
 └────────────┘
 ```
 
-年と年の日数引数から日付を作成します。
+年と年の日引数から日付を作成:
 
-``` sql
+```sql
 SELECT makeDate(2023, 42) AS Date;
 ```
 
 結果:
 
-``` text
+```text
 ┌───────date─┐
 │ 2023-02-11 │
 └────────────┘
 ```
 ## makeDate32 {#makedate32}
 
-年、月、日（またはオプションで年と日）から[Date32](../../sql-reference/data-types/date32.md)タイプの日付を作成します。
+年、月、日（またはオプションで年と日）の値から[Date32](../../sql-reference/data-types/date32.md)型の日時を作成します。
 
 **構文**
 
@@ -94,21 +94,21 @@ makeDate32(year, [month,] day)
 
 **引数**
 
-- `year` — 年。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) または [Decimal](../../sql-reference/data-types/decimal.md)。
-- `month` — 月（オプション）。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) または [Decimal](../../sql-reference/data-types/decimal.md)。
-- `day` — 日。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) または [Decimal](../../sql-reference/data-types/decimal.md)。
+- `year` — 年。[Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md)または[Decimal](../../sql-reference/data-types/decimal.md)。
+- `month` — 月（オプショナル）。[Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md)または[Decimal](../../sql-reference/data-types/decimal.md)。
+- `day` — 日。[Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md)または[Decimal](../../sql-reference/data-types/decimal.md)。
 
 :::note
-`month`が省略されている場合、`day`には`1`から`365`の値を取る必要があります。それ以外の場合は、`1`から`31`の値を取る必要があります。
+`month`が省略されると、`day`は`1`から`365`の間の値を取らなければならず、そうでない場合は`1`から`31`の間の値を取る必要があります。
 :::
 
-**返される値**
+**戻り値**
 
 - 引数から作成された日付。[Date32](../../sql-reference/data-types/date32.md)。
 
 **例**
 
-年、月、日から日付を作成します。
+年、月、日から日付を作成:
 
 クエリ:
 
@@ -122,11 +122,11 @@ SELECT makeDate32(2024, 1, 1);
 2024-01-01
 ```
 
-年と年の日数から日付を作成します。
+年と年の日から日付を作成:
 
 クエリ:
 
-``` sql
+```sql
 SELECT makeDate32(2024, 100);
 ```
 
@@ -141,40 +141,40 @@ SELECT makeDate32(2024, 100);
 
 **構文**
 
-``` sql
+```sql
 makeDateTime(year, month, day, hour, minute, second[, timezone])
 ```
 
 **引数**
 
-- `year` — 年。[Integer](../data-types/int-uint.md), [Float](../data-types/float.md) または [Decimal](../data-types/decimal.md)。
-- `month` — 月。[Integer](../data-types/int-uint.md), [Float](../data-types/float.md) または [Decimal](../data-types/decimal.md)。
-- `day` — 日。[Integer](../data-types/int-uint.md), [Float](../data-types/float.md) または [Decimal](../data-types/decimal.md)。
-- `hour` — 時。[Integer](../data-types/int-uint.md), [Float](../data-types/float.md) または [Decimal](../data-types/decimal.md)。
-- `minute` — 分。[Integer](../data-types/int-uint.md), [Float](../data-types/float.md) または [Decimal](../data-types/decimal.md)。
-- `second` — 秒。[Integer](../data-types/int-uint.md), [Float](../data-types/float.md) または [Decimal](../data-types/decimal.md)。
-- `timezone` — 返される値の[タイムゾーン](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。
+- `year` — 年。[Integer](../data-types/int-uint.md)、[Float](../data-types/float.md)または[Decimal](../data-types/decimal.md)。
+- `month` — 月。[Integer](../data-types/int-uint.md)、[Float](../data-types/float.md)または[Decimal](../data-types/decimal.md)。
+- `day` — 日。[Integer](../data-types/int-uint.md)、[Float](../data-types/float.md)または[Decimal](../data-types/decimal.md)。
+- `hour` — 時。[Integer](../data-types/int-uint.md)、[Float](../data-types/float.md)または[Decimal](../data-types/decimal.md)。
+- `minute` — 分。[Integer](../data-types/int-uint.md)、[Float](../data-types/float.md)または[Decimal](../data-types/decimal.md)。
+- `second` — 秒。[Integer](../data-types/int-uint.md)、[Float](../data-types/float.md)または[Decimal](../data-types/decimal.md)。
+- `timezone` — 戻り値の[Timezone](../../operations/server-configuration-parameters/settings.md#timezone)（オプショナル）。
 
-**返される値**
+**戻り値**
 
-- 引数から作成された時間を伴う日付。[DateTime](../data-types/datetime.md)。
+- 引数から作成された日時。[DateTime](../data-types/datetime.md)。
 
 **例**
 
-``` sql
+```sql
 SELECT makeDateTime(2023, 2, 28, 17, 12, 33) AS DateTime;
 ```
 
 結果:
 
-``` text
+```text
 ┌────────────DateTime─┐
 │ 2023-02-28 17:12:33 │
 └─────────────────────┘
 ```
 ## makeDateTime64 {#makedatetime64}
 
-コンポーネントから[DateTime64](../../sql-reference/data-types/datetime64.md)データ型の値を作成します: 年、月、日、時、分、秒。オプションのサブ秒精度を含みます。
+コンポーネントから[DateTime64](../../sql-reference/data-types/datetime64.md)データタイプの値を作成します：年、月、日、時、分、秒。オプションでミリ秒精度を指定できます。
 
 **構文**
 
@@ -184,21 +184,21 @@ makeDateTime64(year, month, day, hour, minute, second[, precision])
 
 **引数**
 
-- `year` — 年（0-9999）。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) または [Decimal](../../sql-reference/data-types/decimal.md)。
-- `month` — 月（1-12）。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) または [Decimal](../../sql-reference/data-types/decimal.md)。
-- `day` — 日（1-31）。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) または [Decimal](../../sql-reference/data-types/decimal.md)。
-- `hour` — 時間（0-23）。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) または [Decimal](../../sql-reference/data-types/decimal.md)。
-- `minute` — 分（0-59）。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) または [Decimal](../../sql-reference/data-types/decimal.md)。
-- `second` — 秒（0-59）。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) または [Decimal](../../sql-reference/data-types/decimal.md)。
-- `precision` — サブ秒コンポーネントの精度（0-9）のオプション。 [Integer](../../sql-reference/data-types/int-uint.md)。
+- `year` — 年（0-9999）。[Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md)または[Decimal](../../sql-reference/data-types/decimal.md)。
+- `month` — 月（1-12）。[Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md)または[Decimal](../../sql-reference/data-types/decimal.md)。
+- `day` — 日（1-31）。[Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md)または[Decimal](../../sql-reference/data-types/decimal.md)。
+- `hour` — 時間（0-23）。[Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md)または[Decimal](../../sql-reference/data-types/decimal.md)。
+- `minute` — 分（0-59）。[Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md)または[Decimal](../../sql-reference/data-types/decimal.md)。
+- `second` — 秒（0-59）。[Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md)または[Decimal](../../sql-reference/data-types/decimal.md)。
+- `precision` — サブ秒コンポーネントの精度のオプション（0-9）。[Integer](../../sql-reference/data-types/int-uint.md)。
 
-**返される値**
+**戻り値**
 
-- 提供された引数から作成された日付と時間。[DateTime64](../../sql-reference/data-types/datetime64.md)。
+- 引数から作成された日時。[DateTime64](../../sql-reference/data-types/datetime64.md)。
 
 **例**
 
-``` sql
+```sql
 SELECT makeDateTime64(2023, 5, 15, 10, 30, 45, 779, 5);
 ```
 
@@ -209,12 +209,12 @@ SELECT makeDateTime64(2023, 5, 15, 10, 30, 45, 779, 5);
 ```
 ## timestamp {#timestamp}
 
-最初の引数'exp'を[DateTime64(6)](../data-types/datetime64.md)型に変換します。
-第二の引数'expr_time'が提供される場合、指定された時間を変換された値に追加します。
+最初の引数 'expr' を[DateTime64(6)](../data-types/datetime64.md)型に変換します。
+2つ目の引数'expr_time'が提供されると、指定された時間を変換された値に加えます。
 
 **構文**
 
-``` sql
+```sql
 timestamp(expr[, expr_time])
 ```
 
@@ -222,42 +222,42 @@ timestamp(expr[, expr_time])
 
 **引数**
 
-- `expr` - 日付または時間を伴う日付。 [String](../data-types/string.md)。
-- `expr_time` - オプションのパラメータ。追加する時間。 [String](../data-types/string.md)。
+- `expr` - 日付または日時を含む日付。[String](../data-types/string.md)。
+- `expr_time` - オプションのパラメータ。加算する時間。[String](../data-types/string.md)。
 
 **例**
 
-``` sql
+```sql
 SELECT timestamp('2023-12-31') as ts;
 ```
 
 結果:
 
-``` text
+```text
 ┌─────────────────────────ts─┐
 │ 2023-12-31 00:00:00.000000 │
 └────────────────────────────┘
 ```
 
-``` sql
+```sql
 SELECT timestamp('2023-12-31 12:00:00', '12:00:00.11') as ts;
 ```
 
 結果:
 
-``` text
+```text
 ┌─────────────────────────ts─┐
 │ 2024-01-01 00:00:00.110000 │
 └────────────────────────────┘
 ```
 
-**返される値**
+**戻り値**
 
 - [DateTime64](../data-types/datetime64.md)(6)
 ## timeZone {#timezone}
 
-現在のセッションのタイムゾーンを返します。すなわち、設定 [session_timezone](../../operations/settings/settings.md#session_timezone) の値です。
-関数が分散テーブルのコンテキストで実行されると、各シャードに関連した値を持つ通常のカラムを生成します。それ以外の場合は、定数値を生成します。
+現在のセッションのタイムゾーンを返します。つまり、設定[session_timezone](../../operations/settings/settings.md#session_timezone)の値です。
+関数が分散テーブルのコンテキストで実行される場合、各シャードに関連する値を含む通常のカラムを生成します。そうでない場合は、一定の値を生成します。
 
 **構文**
 
@@ -267,7 +267,7 @@ timeZone()
 
 エイリアス: `timezone`.
 
-**返される値**
+**戻り値**
 
 - タイムゾーン。[String](../data-types/string.md)。
 
@@ -290,18 +290,18 @@ SELECT timezone()
 - [serverTimeZone](#servertimezone)
 ## serverTimeZone {#servertimezone}
 
-サーバーのタイムゾーンを返します。すなわち、設定 [timezone](../../operations/server-configuration-parameters/settings.md#timezone) の値です。
-関数が分散テーブルのコンテキストで実行されると、各シャードに関連した値を持つ通常のカラムを生成します。それ以外の場合は、定数値を生成します。
+サーバーのタイムゾーン、つまり設定[timezone](../../operations/server-configuration-parameters/settings.md#timezone)の値を返します。
+関数が分散テーブルのコンテキストで実行される場合、各シャードに関連する値を含む通常のカラムを生成します。そうでない場合は、一定の値を生成します。
 
 **構文**
 
-``` sql
+```sql
 serverTimeZone()
 ```
 
 エイリアス: `serverTimezone`.
 
-**返される値**
+**戻り値**
 
 - タイムゾーン。[String](../data-types/string.md)。
 
@@ -324,11 +324,11 @@ SELECT serverTimeZone()
 - [timeZone](#timezone)
 ## toTimeZone {#totimezone}
 
-日付または時間を伴う日付を指定されたタイムゾーンに変換します。データの内部値（Unix秒数）は変更せず、値のタイムゾーン属性と値の文字列表現のみが変更されます。
+日付または日時を指定されたタイムゾーンに変換します。データの内部値（Unix秒数）は変更せず、値のタイムゾーン属性と値の文字列表現のみが変更されます。
 
 **構文**
 
-``` sql
+```sql
 toTimezone(value, timezone)
 ```
 
@@ -336,12 +336,12 @@ toTimezone(value, timezone)
 
 **引数**
 
-- `value` — 時間または日付と時間。[DateTime64](../data-types/datetime64.md)。
-- `timezone` — 返される値のタイムゾーン。[String](../data-types/string.md)。この引数は定数です。なぜなら、`toTimezone`はカラムのタイムゾーンを変更するからです（タイムゾーンは`DateTime*`タイプの属性です）。
+- `value` — 時間または日時。[DateTime64](../data-types/datetime64.md)。
+- `timezone` — 戻り値のタイムゾーン。[String](../data-types/string.md)。この引数は定数であるため、`toTimezone`はカラムのタイムゾーンを変更します（タイムゾーンは`DateTime*`型の属性です）。
 
-**返される値**
+**戻り値**
 
-- 日付と時間。[DateTime](../data-types/datetime.md)。
+- 日時。[DateTime](../data-types/datetime.md)。
 
 **例**
 
@@ -384,7 +384,7 @@ int32samoa: 1546300800
 
 **構文**
 
-``` sql
+```sql
 timeZoneOf(value)
 ```
 
@@ -392,33 +392,33 @@ timeZoneOf(value)
 
 **引数**
 
-- `value` — 日付と時間。[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)。
+- `value` — 日時。[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md) 。
 
-**返される値**
+**戻り値**
 
 - タイムゾーン名。[String](../data-types/string.md)。
 
 **例**
 
-``` sql
+```sql
 SELECT timezoneOf(now());
 ```
 
 結果:
-``` text
+```text
 ┌─timezoneOf(now())─┐
 │ Etc/UTC           │
 └───────────────────┘
 ```
 ## timeZoneOffset {#timezoneoffset}
 
-[UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time)から秒単位のタイムゾーンオフセットを返します。
-関数は[サマータイム](https://en.wikipedia.org/wiki/Daylight_saving_time)や指定された日付と時間における歴史的なタイムゾーンの変更を考慮します。
-オフセットを計算するために[IANAタイムゾーンデータベース](https://www.iana.org/time-zones)が使用されます。
+[UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time)からの秒単位のタイムゾーンオフセットを返します。
+関数は[夏時間](https://en.wikipedia.org/wiki/Daylight_saving_time)と指定された日時における歴史的なタイムゾーンの変更を考慮に入れます。
+[ IANAタイムゾーンドータベース](https://www.iana.org/time-zones)を使用してオフセットを計算します。
 
 **構文**
 
-``` sql
+```sql
 timeZoneOffset(value)
 ```
 
@@ -426,29 +426,29 @@ timeZoneOffset(value)
 
 **引数**
 
-- `value` — 日付と時間。[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)。
+- `value` — 日時。[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)。
 
-**返される値**
+**戻り値**
 
-- UTCからのオフセット（秒）。[Int32](../data-types/int-uint.md)。
+- 秒単位でのUTCからのオフセット。[Int32](../data-types/int-uint.md)。
 
 **例**
 
-``` sql
+```sql
 SELECT toDateTime('2021-04-21 10:20:30', 'America/New_York') AS Time, toTypeName(Time) AS Type,
        timeZoneOffset(Time) AS Offset_in_seconds, (Offset_in_seconds / 3600) AS Offset_in_hours;
 ```
 
 結果:
 
-``` text
+```text
 ┌────────────────Time─┬─Type─────────────────────────┬─Offset_in_seconds─┬─Offset_in_hours─┐
 │ 2021-04-21 10:20:30 │ DateTime('America/New_York') │            -14400 │              -4 │
 └─────────────────────┴──────────────────────────────┴───────────────────┴─────────────────┘
 ```
 ## toYear {#toyear}
 
-日付または時間を伴う日付の年のコンポーネント（西暦）を返します。
+日付または日時の年の部分（西暦）を返します。
 
 **構文**
 
@@ -460,9 +460,9 @@ toYear(value)
 
 **引数**
 
-- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または[DateTime64](../data-types/datetime64.md)。
 
-**返される値**
+**戻り値**
 
 - 指定された日付/時間の年。[UInt16](../data-types/int-uint.md)。
 
@@ -481,7 +481,7 @@ SELECT toYear(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toQuarter {#toquarter}
 
-日付または時間を伴う日付の四半期（1-4）を返します。
+日付または日時の四半期（1-4）を返します。
 
 **構文**
 
@@ -493,9 +493,9 @@ toQuarter(value)
 
 **引数**
 
-- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)。
 
-**返される値**
+**戻り値**
 
 - 指定された日付/時間の年の四半期（1, 2, 3または4）。[UInt8](../data-types/int-uint.md)。
 
@@ -514,7 +514,7 @@ SELECT toQuarter(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toMonth {#tomonth}
 
-日付または時間を伴う日付の月のコンポーネント（1-12）を返します。
+日付または日時の月の部分（1-12）を返します。
 
 **構文**
 
@@ -526,11 +526,11 @@ toMonth(value)
 
 **引数**
 
-- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)。
 
-**返される値**
+**戻り値**
 
-- 指定された日付/時間の年の月（1 - 12）。[UInt8](../data-types/int-uint.md)。
+- 指定された日付/時間の月（1 - 12）。[UInt8](../data-types/int-uint.md)。
 
 **例**
 
@@ -547,7 +547,7 @@ SELECT toMonth(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toDayOfYear {#todayofyear}
 
-日付または時間を伴う日付の年内の日数（1-366）を返します。
+日付または日時の年内の日の数（1-366）を返します。
 
 **構文**
 
@@ -559,9 +559,9 @@ toDayOfYear(value)
 
 **引数**
 
-- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)。
 
-**返される値**
+**戻り値**
 
 - 指定された日付/時間の年の日（1 - 366）。[UInt16](../data-types/int-uint.md)。
 
@@ -580,7 +580,7 @@ SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toDayOfMonth {#todayofmonth}
 
-日付または時間を伴う日付のその月の日数（1-31）を返します。
+日付または日時の月内の日の数（1-31）を返します。
 
 **構文**
 
@@ -592,11 +592,11 @@ toDayOfMonth(value)
 
 **引数**
 
-- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)。
 
-**返される値**
+**戻り値**
 
-- 指定された日付/時間のその月の日数（1 - 31）。[UInt8](../data-types/int-uint.md)。
+- 指定された日付/時間の月の日（1 - 31）。[UInt8](../data-types/int-uint.md)。
 
 **例**
 
@@ -613,11 +613,11 @@ SELECT toDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toDayOfWeek {#todayofweek}
 
-日付または時間を伴う日付のその週の日数を返します。
+日付または日時の週内の日の数を返します。
 
-`toDayOfWeek()`の二引数形式は、週の初めの日を月曜日または日曜日に指定でき、戻り値が0から6または1から7の範囲になるかを指定できます。モード引数を省略すると、デフォルトモードは0です。日付のタイムゾーンを第三引数として指定できます。
+`toDayOfWeek()`の2引数形式では、週の最初の日が月曜日か日曜日か、戻り値が0から6の範囲か1から7の範囲であるかを指定できます。モード引数が省略されると、デフォルトモードは0です。日時のタイムゾーンを3番目の引数として指定できます。
 
-| モード | 週の初めの日 | 範囲                                          |
+| モード | 週の最初の日 | 範囲                                          |
 |------|-------------------|------------------------------------------------|
 | 0    | 月曜日            | 1-7: 月曜日 = 1, 火曜日 = 2, ..., 日曜日 = 7  |
 | 1    | 月曜日            | 0-6: 月曜日 = 0, 火曜日 = 1, ..., 日曜日 = 6  |
@@ -626,7 +626,7 @@ SELECT toDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 
 **構文**
 
-``` sql
+```sql
 toDayOfWeek(t[, mode[, timezone]])
 ```
 
@@ -634,19 +634,19 @@ toDayOfWeek(t[, mode[, timezone]])
 
 **引数**
 
-- `t` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)
-- `mode` - 週の初めの日を決定します。可能な値は0, 1, 2または3です。上の表で違いを確認してください。
+- `t` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)。
+- `mode` - 週の最初の日を決定します。可能な値は0, 1, 2または3です。上記の表での違いを参照してください。
 - `timezone` - オプションのパラメータで、他の変換関数と同様に動作します。
 
-最初の引数は、[parseDateTime64BestEffort()](type-conversion-functions.md#parsedatetime64besteffort)によりサポートされる形式の[String](../data-types/string.md)としても指定できます。文字列引数のサポートは、特定のサードパーティツールが期待するMySQLとの互換性のためにのみ存在しています。文字列引数のサポートは、将来のMySQL互換性設定に依存する可能性があるため、一般的に文字列解析は遅いため、使用しないことが推奨されます。
+最初の引数は、[parseDateTime64BestEffort()](type-conversion-functions.md#parsedatetime64besteffort)でサポートされる形式の[String](../data-types/string.md)としても指定できます。文字列引数のサポートは、特定のサードパーティツールによって期待されるMySQLとの互換性の理由でのみ存在します。文字列引数のサポートは、将来的に新しいMySQL互換性設定に依存するようにされる可能性があり、文字列パースは一般的に遅いため、使用することは推奨されません。
 
-**返される値**
+**戻り値**
 
-- 指定された日付/時間における週の日数（1-7）、選択したモードに応じて
+- 指定された日付/時間の週の日（1-7）、選択したモードに応じて。
 
 **例**
 
-次の日付は2023年4月21日で、金曜日です。
+以下の日付は2023年4月21日金曜日です。
 
 ```sql
 SELECT
@@ -663,9 +663,9 @@ SELECT
 ```
 ## toHour {#tohour}
 
-時間を伴う日付の時間コンポーネント（0-24）を返します。
+日時の時間部分（0-24）を返します。
 
-時計が前に進められた場合、通常は1時間進められ、午前2時に発生し、逆に戻される場合は1時間戻され、午前3時になると想定されます（これは常に正確に発生するわけではなく、タイムゾーンに依存します）。
+時計が進められる場合、1時間進むと仮定し、午前2時に行われ、時計が元に戻される場合は、1時間戻ると仮定し、午前3時に行われます（正確にいつ行われるかはタイムゾーンによります）。
 
 **構文**
 
@@ -677,11 +677,11 @@ toHour(value)
 
 **引数**
 
-- `value` - [DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)
+- `value` - [DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md) 。
 
-**返される値**
+**戻り値**
 
-- 指定された日付/時間のその日の時間（0 - 23）。[UInt8](../data-types/int-uint.md)。
+- 指定された日付/時間の時間（0 - 23）。[UInt8](../data-types/int-uint.md)。
 
 **例**
 
@@ -698,7 +698,7 @@ SELECT toHour(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toMinute {#tominute}
 
-時間を伴う日付の分コンポーネント（0-59）を返します。
+日時の分部分（0-59）を返します。
 
 **構文**
 
@@ -710,11 +710,11 @@ toMinute(value)
 
 **引数**
 
-- `value` - [DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)
+- `value` - [DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)。
 
-**返される値**
+**戻り値**
 
-- 指定された日付/時間のその時間の分（0 - 59）。[UInt8](../data-types/int-uint.md)。
+- 指定された日付/時間の時間の分（0 - 59）。[UInt8](../data-types/int-uint.md)。
 
 **例**
 
@@ -731,7 +731,7 @@ SELECT toMinute(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toSecond {#tosecond}
 
-時間を伴う日付の秒コンポーネント（0-59）を返します。うるう秒は考慮されません。
+日時の秒部分（0-59）を返します。うるう秒は考慮されません。
 
 **構文**
 
@@ -743,11 +743,11 @@ toSecond(value)
 
 **引数**
 
-- `value` - [DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)
+- `value` - [DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)。
 
-**返される値**
+**戻り値**
 
-- 指定された日付/時間のその分の秒（0 - 59）。[UInt8](../data-types/int-uint.md)。
+- 指定された日付/時間の分の秒（0 - 59）。[UInt8](../data-types/int-uint.md)。
 
 **例**
 
@@ -764,7 +764,7 @@ SELECT toSecond(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toMillisecond {#tomillisecond}
 
-時間を伴う日付のミリ秒コンポーネント（0-999）を返します。
+日時のミリ秒部分（0-999）を返します。
 
 **構文**
 
@@ -774,7 +774,7 @@ toMillisecond(value)
 
 **引数**
 
-- `value` - [DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)
+- `value` - [DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md) 。
 
 エイリアス: `MILLISECOND`
 
@@ -790,29 +790,29 @@ SELECT toMillisecond(toDateTime64('2023-04-21 10:20:30.456', 3))
 └────────────────────────────────────────────────────────────┘
 ```
 
-**返される値**
+**戻り値**
 
-- 指定された日付/時間のその分のミリ秒（0 - 59）。[UInt16](../data-types/int-uint.md)。
+- 指定された日付/時間の分のミリ秒（0 - 59）。[UInt16](../data-types/int-uint.md)。
 ## toUnixTimestamp {#tounixtimestamp}
 
-文字列、日付、または時間を伴う日付を[Unixタイムスタンプ](https://en.wikipedia.org/wiki/Unix_time)に`UInt32`表現で変換します。
+文字列、日付または日時を[Unix Timestamp](https://en.wikipedia.org/wiki/Unix_time)に変換し、`UInt32`形式で返します。
 
-関数が文字列で呼び出されると、オプションのタイムゾーン引数を受け付けます。
+関数が文字列で呼び出された場合、オプションのタイムゾーン引数を受け入れます。
 
 **構文**
 
-``` sql
+```sql
 toUnixTimestamp(date)
 toUnixTimestamp(str, [timezone])
 ```
 
-**返される値**
+**戻り値**
 
 - Unixタイムスタンプを返します。[UInt32](../data-types/int-uint.md)。
 
 **例**
 
-``` sql
+```sql
 SELECT
     '2017-11-05 08:07:47' AS dt_str,
     toUnixTimestamp(dt_str) AS from_str,
@@ -826,7 +826,7 @@ FORMAT Vertical;
 
 結果:
 
-``` text
+```text
 Row 1:
 ──────
 dt_str:          2017-11-05 08:07:47
@@ -839,19 +839,19 @@ from_date32:     1509840000
 ```
 
 :::note
-`toStartOf*`、`toLastDayOf*`、`toMonday`、`timeSlot`関数の返り値の型は、設定パラメータ [enable_extended_results_for_datetime_functions](/operations/settings/settings#enable_extended_results_for_datetime_functions) によって決まります。このパラメータはデフォルトで`0`です。
+`toStartOf*`、`toLastDayOf*`、`toMonday`、`timeSlot`関数の戻り値の型は、設定パラメータ[enable_extended_results_for_datetime_functions](/operations/settings/settings#enable_extended_results_for_datetime_functions)により決まります。このパラメータはデフォルトでは`0`です。
 
-動作
+動作は以下の通りです。
 * `enable_extended_results_for_datetime_functions = 0`:
-  * 関数 `toStartOfYear`、`toStartOfISOYear`、`toStartOfQuarter`、`toStartOfMonth`、`toStartOfWeek`、`toLastDayOfWeek`、`toLastDayOfMonth`、`toMonday`は、引数が `Date` または `DateTime`の場合、`Date` または `DateTime`を返します。
-  * 関数 `toStartOfDay`、`toStartOfHour`、`toStartOfFifteenMinutes`、`toStartOfTenMinutes`、`toStartOfFiveMinutes`、`toStartOfMinute`、`timeSlot`は、引数が`Date`または`DateTime`の場合、`DateTime`を返し、`Date32`や`DateTime64`を引数に指定しても正常な範囲（`Date`の場合1970年から2149年、`DateTime`の場合2106年）を超える時間を指定すると不正確な結果が得られます。
+  * 関数`toStartOfYear`、`toStartOfISOYear`、`toStartOfQuarter`、`toStartOfMonth`、`toStartOfWeek`、`toLastDayOfWeek`、`toLastDayOfMonth`、`toMonday`は引数が`Date`または`DateTime`であれば`Date`または`DateTime`を返し、引数が`Date32`または`DateTime64`であれば`Date32`または`DateTime64`を返しません。
+  * 関数`toStartOfDay`、`toStartOfHour`、`toStartOfFifteenMinutes`、`toStartOfTenMinutes`、`toStartOfFiveMinutes`、`toStartOfMinute`、`timeSlot`は引数が`Date`または`DateTime`であれば`DateTime`を返し、引数が`Date32`または`DateTime64`であれば`DateTime64`を返すことを含め、通常の範囲外の時間を渡すと（1970年から2149年の`Date` / 2106年の`DateTime`）は誤った結果になります。
 * `enable_extended_results_for_datetime_functions = 1`:
-  * 関数 `toStartOfYear`、`toStartOfISOYear`、`toStartOfQuarter`、`toStartOfMonth`、`toStartOfWeek`、`toLastDayOfWeek`、`toLastDayOfMonth`、`toMonday`は引数が`Date`または`DateTime`の場合は`Date`または`DateTime`を返し、引数が`Date32`または`DateTime64`の場合は`Date32`または`DateTime64`を返します。
-  * 関数 `toStartOfDay`、`toStartOfHour`、`toStartOfFifteenMinutes`、`toStartOfTenMinutes`、`toStartOfFiveMinutes`、`toStartOfMinute`、`timeSlot`は引数が`Date`または`DateTime`の場合は`DateTime`を返し、引数が`Date32`または`DateTime64`の場合は`DateTime64`を返します。
+  * 関数`toStartOfYear`、`toStartOfISOYear`、`toStartOfQuarter`、`toStartOfMonth`、`toStartOfWeek`、`toLastDayOfWeek`、`toLastDayOfMonth`、`toMonday`は引数が`Date`または`DateTime`であれば`Date`または`DateTime`を返し、引数が`Date32`または`DateTime64`であれば`Date32`または`DateTime64`を返します。
+  * 関数`toStartOfDay`、`toStartOfHour`、`toStartOfFifteenMinutes`、`toStartOfTenMinutes`、`toStartOfFiveMinutes`、`toStartOfMinute`、`timeSlot`は引数が`Date`や`DateTime`の時は`DateTime`を返し、引数が`Date32`や`DateTime64`の時は`DateTime64`を返します。
 :::
 ## toStartOfYear {#tostartofyear}
 
-日付または時間を伴う日付を年の初めの初日まで切り下げます。日付は`Date`オブジェクトとして返されます。
+日付または日時を年の最初の日に切り下げます。日付を`Date`オブジェクトとして返します。
 
 **構文**
 
@@ -861,11 +861,11 @@ toStartOfYear(value)
 
 **引数**
 
-- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)。
 
-**返される値**
+**戻り値**
 
-- 入力された日付/時間の年の初日。[Date](../data-types/date.md)。
+- 入力された日付/時間の年の最初の日。[Date](../data-types/date.md)。
 
 **例**
 
@@ -882,7 +882,7 @@ SELECT toStartOfYear(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toStartOfISOYear {#tostartofisoyear}
 
-日付または時間を伴う日付をISO年の初日まで切り下げます。これは「通常の」年と異なる場合があります。（詳細は[ISO週日付](https://en.wikipedia.org/wiki/ISO_week_date)を参照）。
+日付または日時をISO年の最初の日に切り下げます。ISO年は通常の年と異なることがあります。（詳細は[https://en.wikipedia.org/wiki/ISO_week_date](https://en.wikipedia.org/wiki/ISO_week_date)を参照してください）。
 
 **構文**
 
@@ -892,11 +892,11 @@ toStartOfISOYear(value)
 
 **引数**
 
-- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)。
 
-**返される値**
+**戻り値**
 
-- 入力された日付/時間の年の初日。[Date](../data-types/date.md)。
+- 入力された日付/時間のISO年の最初の日。[Date](../data-types/date.md)。
 
 **例**
 
@@ -913,7 +913,7 @@ SELECT toStartOfISOYear(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toStartOfQuarter {#tostartofquarter}
 
-日付または時間を伴う日付を四半期の初日まで切り下げます。四半期の初日は、1月1日、4月1日、7月1日、または10月1日です。
+日付または日時を四半期の最初の日に切り下げます。四半期の最初の日は、1月1日、4月1日、7月1日、または10月1日です。
 日付を返します。
 
 **構文**
@@ -924,11 +924,11 @@ toStartOfQuarter(value)
 
 **引数**
 
-- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)。
 
-**返される値**
+**戻り値**
 
-- 指定された日付/時間の四半期の初日。[Date](../data-types/date.md)。
+- 指定された日付/時間の四半期の最初の日。[Date](../data-types/date.md)。
 
 **例**
 
@@ -945,7 +945,7 @@ SELECT toStartOfQuarter(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toStartOfMonth {#tostartofmonth}
 
-日付または時間を伴う日付を月の初日まで切り下げます。日付を返します。
+日付または日時を月の最初の日に切り下げます。日付を返します。
 
 **構文**
 
@@ -955,11 +955,11 @@ toStartOfMonth(value)
 
 **引数**
 
-- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)。
 
-**返される値**
+**戻り値**
 
-- 指定された日付/時間の月の初日。[Date](../data-types/date.md)。
+- 指定された日付/時間の月の最初の日。[Date](../data-types/date.md)。
 
 **例**
 
@@ -976,11 +976,11 @@ SELECT toStartOfMonth(toDateTime('2023-04-21 10:20:30'))
 ```
 
 :::note
-不正な日付を解析する動作は実装に依存します。ClickHouseはゼロ日付を返すか、例外をスローするか、「自然」のオーバーフローを実行する可能性があります。
+不正な日付の解析の動作は、実装によって異なります。ClickHouseはゼロ日付を返すこともあれば、例外をスローしたり、"自然"オーバーフローを行うこともあります。
 :::
 ## toLastDayOfMonth {#tolastdayofmonth}
 
-日付または時間を伴う日付をその月の最終日まで切り上げます。日付を返します。
+日時を月の最終日に切り下げます。日付を返します。
 
 **構文**
 
@@ -992,9 +992,9 @@ toLastDayOfMonth(value)
 
 **引数**
 
-- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)。
 
-**返される値**
+**戻り値**
 
 - 指定された日付/時間の月の最終日。[Date](../data-types/date.md)。
 
@@ -1013,7 +1013,7 @@ SELECT toLastDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toMonday {#tomonday}
 
-日付または時間を伴う日付を最近の月曜日まで切り下げます。日付を返します。
+日付または日時を最寄りの月曜日に切り下げます。日付を返します。
 
 **構文**
 
@@ -1023,18 +1023,18 @@ toMonday(value)
 
 **引数**
 
-- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)。
 
-**返される値**
+**戻り値**
 
-- 指定された日付の直近の月曜日の日時。[Date](../data-types/date.md)。
+- 指定された日付に最も近い月曜日の日付。[Date](../data-types/date.md)。
 
 **例**
 
 ```sql
 SELECT
     toMonday(toDateTime('2023-04-21 10:20:30')), /* 金曜日 */
-    toMonday(toDate('2023-04-24')), /* 既に月曜日 */
+    toMonday(toDate('2023-04-24')); /* すでに月曜日 */
 ```
 
 結果:
@@ -1044,26 +1044,32 @@ SELECT
 │                                  2023-04-17 │                     2023-04-24 │
 └─────────────────────────────────────────────┴────────────────────────────────┘
 ```
+```yaml
+title: 'toStartOfWeek'
+sidebar_label: 'toStartOfWeek'
+keywords: ['toStartOfWeek', 'ClickHouse', '関数']
+description: '日付を最も近い日曜日または月曜日に切り捨てて、日付を返します。'
+```
 
 ## toStartOfWeek {#tostartofweek}
 
-指定した日付または日時を最も近い日曜日または月曜日に丸めます。日付を返します。mode 引数は `toWeek()` 関数の mode 引数とまったく同じように機能します。モードが指定されていない場合、デフォルトで 0 になります。
+日付または時間付きの日付を最も近い日曜日または月曜日に切り捨てます。日付を返します。mode引数は`toWeek()`関数のmode引数と正確に同じように機能します。modeが指定されていない場合は、デフォルトで0になります。
 
 **構文**
 
-``` sql
+```sql
 toStartOfWeek(t[, mode[, timezone]])
 ```
 
 **引数**
 
 - `t` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)
-- `mode` - [toWeek()](#toweek) 関数で説明されているように、週の最初の日を決定します。
-- `timezone` - オプションのパラメータで、他の変換関数と同様に動作します。
+- `mode` - [toWeek()](#toweek)関数で説明されるように、週の最初の日を決定します
+- `timezone` - オプションのパラメーターで、他の変換関数のように機能します
 
 **返される値**
 
-- 指定した日付以前の最も近い日曜日または月曜日の日付。 [Date](../data-types/date.md)。
+- 指定された日付に基づき、最も近い日曜日または月曜日の日付（modeに応じて）。[Date](../data-types/date.md)。
 
 **例**
 
@@ -1089,24 +1095,24 @@ toStartOfWeek(toDate('2023-04-24'), 1):              2023-04-24
 
 ## toLastDayOfWeek {#tolastdayofweek}
 
-指定した日付または日時を最も近い土曜日または日曜日に丸めます。日付を返します。
-mode 引数は `toWeek()` 関数の mode 引数とまったく同じように機能します。モードが指定されていない場合、モードは 0 と見なされます。
+日付または時間付きの日付を最も近い土曜日または日曜日に切り上げます。日付を返します。
+mode引数は`toWeek()`関数のmode引数と正確に同じように機能します。modeが指定されていない場合、modeは0と見なされます。
 
 **構文**
 
-``` sql
+```sql
 toLastDayOfWeek(t[, mode[, timezone]])
 ```
 
 **引数**
 
 - `t` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)
-- `mode` - [toWeek](#toweek) 関数で説明されているように、週の最終日を決定します。
-- `timezone` - オプションのパラメータで、他の変換関数と同様に動作します。
+- `mode` - [toWeek](#toweek)関数で説明されるように、週の最終日を決定します
+- `timezone` - オプションのパラメーターで、他の変換関数のように機能します
 
 **返される値**
 
-- 指定した日付以降の最も近い日曜日または土曜日の日付。 [Date](../data-types/date.md)。
+- 指定された日付に基づき、最も近い日曜日または月曜日の日付（modeに応じて）。[Date](../data-types/date.md)。
 
 **例**
 
@@ -1132,7 +1138,7 @@ toLastDayOfWeek(toDate('2023-04-22'), 1):              2023-04-23
 
 ## toStartOfDay {#tostartofday}
 
-日時をその日の開始時刻に丸めます。
+時間付きの日付をその日の開始時刻に切り捨てます。
 
 **構文**
 
@@ -1146,7 +1152,7 @@ toStartOfDay(value)
 
 **返される値**
 
-- 指定した日付/時刻のその日の開始時刻。 [DateTime](../data-types/datetime.md)。
+- 指定された日付/時間の開始時刻。[DateTime](../data-types/datetime.md)。
 
 **例**
 
@@ -1164,7 +1170,7 @@ SELECT toStartOfDay(toDateTime('2023-04-21 10:20:30'))
 
 ## toStartOfHour {#tostartofhour}
 
-日時をその時刻の開始時刻に丸めます。
+時間付きの日付をその時の開始時刻に切り捨てます。
 
 **構文**
 
@@ -1178,7 +1184,7 @@ toStartOfHour(value)
 
 **返される値**
 
-- 指定した日付/時刻のその時刻の開始時刻。 [DateTime](../data-types/datetime.md)。
+- 指定された日付/時間の開始時刻。[DateTime](../data-types/datetime.md)。
 
 **例**
 
@@ -1198,7 +1204,7 @@ SELECT
 
 ## toStartOfMinute {#tostartofminute}
 
-日時をその分の開始時刻に丸めます。
+時間付きの日付をその分の開始時刻に切り捨てます。
 
 **構文**
 
@@ -1212,7 +1218,7 @@ toStartOfMinute(value)
 
 **返される値**
 
-- 指定した日付/時刻のその分の開始時刻。 [DateTime](../data-types/datetime.md)。
+- 指定された日付/時間の開始時刻。[DateTime](../data-types/datetime.md)。
 
 **例**
 
@@ -1238,31 +1244,31 @@ toStartOfMinute(toDateTime64('2023-04-21 10:20:30.5300', 8)): 2023-04-21 10:20:0
 
 **構文**
 
-``` sql
+```sql
 toStartOfSecond(value, [timezone])
 ```
 
 **引数**
 
-- `value` — 日時。 [DateTime64](../data-types/datetime64.md)。
-- `timezone` — 返される値の [Timezone](../../operations/server-configuration-parameters/settings.md#timezone) (オプション)。指定されていない場合、関数は `value` パラメータのタイムゾーンを使用します。 [String](../data-types/string.md)。
+- `value` — 日付と時間。[DateTime64](../data-types/datetime64.md)。
+- `timezone` — 戻り値の[タイムゾーン](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。指定しない場合、関数は`value`パラメータのタイムゾーンを使用します。[String](../data-types/string.md)。
 
 **返される値**
 
-- サブ秒のない入力値。 [DateTime64](../data-types/datetime64.md)。
+- サブ秒のない入力値。[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
 タイムゾーンなしのクエリ:
 
-``` sql
+```sql
 WITH toDateTime64('2020-01-01 10:20:30.999', 3) AS dt64
 SELECT toStartOfSecond(dt64);
 ```
 
 結果:
 
-``` text
+```text
 ┌───toStartOfSecond(dt64)─┐
 │ 2020-01-01 10:20:30.000 │
 └─────────────────────────┘
@@ -1270,54 +1276,54 @@ SELECT toStartOfSecond(dt64);
 
 タイムゾーンありのクエリ:
 
-``` sql
+```sql
 WITH toDateTime64('2020-01-01 10:20:30.999', 3) AS dt64
 SELECT toStartOfSecond(dt64, 'Asia/Istanbul');
 ```
 
 結果:
 
-``` text
+```text
 ┌─toStartOfSecond(dt64, 'Asia/Istanbul')─┐
 │                2020-01-01 13:20:30.000 │
 └────────────────────────────────────────┘
 ```
 
-**参照**
+**関連事項**
 
-- [Timezone](../../operations/server-configuration-parameters/settings.md#timezone) サーバー構成パラメーター。
+- [タイムゾーン](../../operations/server-configuration-parameters/settings.md#timezone)サーバー構成パラメーター。
 
 ## toStartOfMillisecond {#tostartofmillisecond}
 
-日時をミリ秒の開始時刻に丸めます。
+時間付きの日付をミリ秒の開始時刻に切り捨てます。
 
 **構文**
 
-``` sql
+```sql
 toStartOfMillisecond(value, [timezone])
 ```
 
 **引数**
 
-- `value` — 日時。 [DateTime64](../../sql-reference/data-types/datetime64.md)。
-- `timezone` — 返される値の [Timezone](../../operations/server-configuration-parameters/settings.md#timezone) (オプション)。指定されていない場合、関数は `value` パラメータのタイムゾーンを使用します。[String](../../sql-reference/data-types/string.md)。
+- `value` — 日付と時間。[DateTime64](../../sql-reference/data-types/datetime64.md)。
+- `timezone` — 戻り値の[タイムゾーン](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。指定しない場合、関数は`value`パラメータのタイムゾーンを使用します。[String](../../sql-reference/data-types/string.md)。
 
 **返される値**
 
-- サブミリ秒のある入力値。 [DateTime64](../../sql-reference/data-types/datetime64.md)。
+- サブミリ秒のある入力値。[DateTime64](../../sql-reference/data-types/datetime64.md)。
 
 **例**
 
 タイムゾーンなしのクエリ:
 
-``` sql
+```sql
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
 SELECT toStartOfMillisecond(dt64);
 ```
 
 結果:
 
-``` text
+```text
 ┌────toStartOfMillisecond(dt64)─┐
 │ 2020-01-01 10:20:30.999000000 │
 └───────────────────────────────┘
@@ -1325,54 +1331,49 @@ SELECT toStartOfMillisecond(dt64);
 
 タイムゾーンありのクエリ:
 
-``` sql
-WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
+```sql
 SELECT toStartOfMillisecond(dt64, 'Asia/Istanbul');
 ```
 
 結果:
 
-``` text
+```text
 ┌─toStartOfMillisecond(dt64, 'Asia/Istanbul')─┐
 │               2020-01-01 12:20:30.999000000 │
 └─────────────────────────────────────────────┘
 ```
 
-**参照**
-
-- [Timezone](../../operations/server-configuration-parameters/settings.md#timezone) サーバー構成パラメーター。
-
 ## toStartOfMicrosecond {#tostartofmicrosecond}
 
-日時をマイクロ秒の開始時刻に丸めます。
+時間付きの日付をマイクロ秒の開始時刻に切り捨てます。
 
 **構文**
 
-``` sql
+```sql
 toStartOfMicrosecond(value, [timezone])
 ```
 
 **引数**
 
-- `value` — 日時。 [DateTime64](../../sql-reference/data-types/datetime64.md)。
-- `timezone` — 返される値の [Timezone](../../operations/server-configuration-parameters/settings.md#timezone) (オプション)。指定されていない場合、関数は `value` パラメータのタイムゾーンを使用します。 [String](../../sql-reference/data-types/string.md)。
+- `value` — 日付と時間。[DateTime64](../../sql-reference/data-types/datetime64.md)。
+- `timezone` — 戻り値の[タイムゾーン](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。指定しない場合、関数は`value`パラメータのタイムゾーンを使用します。[String](../../sql-reference/data-types/string.md)。
 
 **返される値**
 
-- サブマイクロ秒のある入力値。 [DateTime64](../../sql-reference/data-types/datetime64.md)。
+- サブマイクロ秒のある入力値。[DateTime64](../../sql-reference/data-types/datetime64.md)。
 
 **例**
 
 タイムゾーンなしのクエリ:
 
-``` sql
+```sql
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
 SELECT toStartOfMicrosecond(dt64);
 ```
 
 結果:
 
-``` text
+```text
 ┌────toStartOfMicrosecond(dt64)─┐
 │ 2020-01-01 10:20:30.999999000 │
 └───────────────────────────────┘
@@ -1380,54 +1381,54 @@ SELECT toStartOfMicrosecond(dt64);
 
 タイムゾーンありのクエリ:
 
-``` sql
+```sql
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
 SELECT toStartOfMicrosecond(dt64, 'Asia/Istanbul');
 ```
 
 結果:
 
-``` text
+```text
 ┌─toStartOfMicrosecond(dt64, 'Asia/Istanbul')─┐
 │               2020-01-01 12:20:30.999999000 │
 └─────────────────────────────────────────────┘
 ```
 
-**参照**
+**関連事項**
 
-- [Timezone](../../operations/server-configuration-parameters/settings.md#timezone) サーバー構成パラメーター。
+- [タイムゾーン](../../operations/server-configuration-parameters/settings.md#timezone)サーバー構成パラメーター。
 
 ## toStartOfNanosecond {#tostartofnanosecond}
 
-日時をナノ秒の開始時刻に丸めます。
+時間付きの日付をナノ秒の開始時刻に切り捨てます。
 
 **構文**
 
-``` sql
+```sql
 toStartOfNanosecond(value, [timezone])
 ```
 
 **引数**
 
-- `value` — 日時。 [DateTime64](../../sql-reference/data-types/datetime64.md)。
-- `timezone` — 返される値の [Timezone](../../operations/server-configuration-parameters/settings.md#timezone) (オプション)。指定されていない場合、関数は `value` パラメータのタイムゾーンを使用します。 [String](../../sql-reference/data-types/string.md)。
+- `value` — 日付と時間。[DateTime64](../../sql-reference/data-types/datetime64.md)。
+- `timezone` — 戻り値の[タイムゾーン](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。指定しない場合、関数は`value`パラメータのタイムゾーンを使用します。[String](../../sql-reference/data-types/string.md)。
 
 **返される値**
 
-- ナノ秒のある入力値。 [DateTime64](../../sql-reference/data-types/datetime64.md)。
+- サブナノ秒のある入力値。[DateTime64](../../sql-reference/data-types/datetime64.md)。
 
 **例**
 
 タイムゾーンなしのクエリ:
 
-``` sql
+```sql
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
 SELECT toStartOfNanosecond(dt64);
 ```
 
 結果:
 
-``` text
+```text
 ┌─────toStartOfNanosecond(dt64)─┐
 │ 2020-01-01 10:20:30.999999999 │
 └───────────────────────────────┘
@@ -1435,26 +1436,26 @@ SELECT toStartOfNanosecond(dt64);
 
 タイムゾーンありのクエリ:
 
-``` sql
+```sql
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
 SELECT toStartOfNanosecond(dt64, 'Asia/Istanbul');
 ```
 
 結果:
 
-``` text
+```text
 ┌─toStartOfNanosecond(dt64, 'Asia/Istanbul')─┐
 │              2020-01-01 12:20:30.999999999 │
 └────────────────────────────────────────────┘
 ```
 
-**参照**
+**関連事項**
 
-- [Timezone](../../operations/server-configuration-parameters/settings.md#timezone) サーバー構成パラメーター。
+- [タイムゾーン](../../operations/server-configuration-parameters/settings.md#timezone)サーバー構成パラメーター。
 
 ## toStartOfFiveMinutes {#tostartoffiveminutes}
 
-日時を5分間隔の開始時刻に丸めます。
+時間付きの日付を5分間隔の開始時刻に切り捨てます。
 
 **構文**
 
@@ -1468,7 +1469,7 @@ toStartOfFiveMinutes(value)
 
 **返される値**
 
-- 指定した日付/時刻の5分間隔の開始時刻。 [DateTime](../data-types/datetime.md)。
+- 指定された日付/時間の5分間隔の開始時刻。[DateTime](../data-types/datetime.md)。
 
 **例**
 
@@ -1492,7 +1493,7 @@ toStartOfFiveMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 
 ## toStartOfTenMinutes {#tostartoftenminutes}
 
-日時を10分間隔の開始時刻に丸めます。
+時間付きの日付を10分間隔の開始時刻に切り捨てます。
 
 **構文**
 
@@ -1506,7 +1507,7 @@ toStartOfTenMinutes(value)
 
 **返される値**
 
-- 指定した日付/時刻の10分間隔の開始時刻。 [DateTime](../data-types/datetime.md)。
+- 指定された日付/時間の10分間隔の開始時刻。[DateTime](../data-types/datetime.md)。
 
 **例**
 
@@ -1530,7 +1531,7 @@ toStartOfTenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 
 ## toStartOfFifteenMinutes {#tostartoffifteenminutes}
 
-日時を15分間隔の開始時刻に丸めます。
+時間付きの日付を15分間隔の開始時刻に切り捨てます。
 
 **構文**
 
@@ -1544,7 +1545,7 @@ toStartOfFifteenMinutes(value)
 
 **返される値**
 
-- 指定した日付/時刻の15分間隔の開始時刻。 [DateTime](../data-types/datetime.md)。
+- 指定された日付/時間の15分間隔の開始時刻。[DateTime](../data-types/datetime.md)。
 
 **例**
 
@@ -1568,32 +1569,32 @@ toStartOfFifteenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:15:00
 
 ## toStartOfInterval {#tostartofinterval}
 
-この関数は、`toStartOf*()` 関数を一般化し、`toStartOfInterval(date_or_date_with_time, INTERVAL x unit [, time_zone])` 構文を使用します。
-例えば、
-- `toStartOfInterval(t, INTERVAL 1 YEAR)` は `toStartOfYear(t)` と同じ結果を返します、
-- `toStartOfInterval(t, INTERVAL 1 MONTH)` は `toStartOfMonth(t)` と同じ結果を返します、
-- `toStartOfInterval(t, INTERVAL 1 DAY)` は `toStartOfDay(t)` と同じ結果を返します、
-- `toStartOfInterval(t, INTERVAL 15 MINUTE)` は `toStartOfFifteenMinutes(t)` と同じ結果を返します。
+この関数は、`toStartOf*()`関数を一般化し、`toStartOfInterval(date_or_date_with_time, INTERVAL x unit [, time_zone])`構文を使用します。
+例えば:
+- `toStartOfInterval(t, INTERVAL 1 YEAR)`は`toStartOfYear(t)`と同じ結果を返します。
+- `toStartOfInterval(t, INTERVAL 1 MONTH)`は`toStartOfMonth(t)`と同じ結果を返します。
+- `toStartOfInterval(t, INTERVAL 1 DAY)`は`toStartOfDay(t)`と同じ結果を返します。
+- `toStartOfInterval(t, INTERVAL 15 MINUTE)`は`toStartOfFifteenMinutes(t)`と同じ結果を返します。
 
 計算は特定の時点に対して行われます:
 
-| インターバル    | スタート                  |
-|-------------|------------------------|
-| YEAR        | year 0                 |
-| QUARTER     | 1900 Q1                |
-| MONTH       | 1900 January           |
-| WEEK        | 1970, 1st week (01-05) |
-| DAY         | 1970-01-01             |
-| HOUR        | (*)                    |
-| MINUTE      | 1970-01-01 00:00:00    |
-| SECOND      | 1970-01-01 00:00:00    |
-| MILLISECOND | 1970-01-01 00:00:00    |
-| MICROSECOND | 1970-01-01 00:00:00    |
-| NANOSECOND  | 1970-01-01 00:00:00    |
+| インターバル     | 開始                   |
+|------------------|------------------------|
+| YEAR             | year 0                 |
+| QUARTER          | 1900 Q1                |
+| MONTH            | 1900年1月             |
+| WEEK             | 1970年第1週 (01-05)    |
+| DAY              | 1970-01-01             |
+| HOUR             | (*)                    |
+| MINUTE           | 1970-01-01 00:00:00    |
+| SECOND           | 1970-01-01 00:00:00    |
+| MILLISECOND      | 1970-01-01 00:00:00    |
+| MICROSECOND      | 1970-01-01 00:00:00    |
+| NANOSECOND       | 1970-01-01 00:00:00    |
 
-(*) 時間のインターバルは特別です：計算は常に現在の日の 00:00:00（真夜中）に対して行われます。その結果、1から23の間の時間の値のみが有用です。
+(*) 時間のインターバルは特別です: 計算は常に当日の00:00:00 (真夜中) を基準にして行われます。その結果、1から23の範囲の時間値だけが有用です。
 
-もしユニット `WEEK` が指定された場合、`toStartOfInterval` は週が月曜日に始まると仮定します。この動作は、週がデフォルトで日曜日から始まる関数 `toStartOfWeek` とは異なります。
+`WEEK`が指定されている場合、`toStartOfInterval`は週が月曜日から始まることを想定します。この動作は、週がデフォルトで日曜日から始まる`toStartOfWeek`関数とは異なります。
 
 **構文**
 
@@ -1601,46 +1602,49 @@ toStartOfFifteenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:15:00
 toStartOfInterval(value, INTERVAL x unit[, time_zone])
 toStartOfInterval(value, INTERVAL x unit[, origin[, time_zone]])
 ```
+
 エイリアス: `time_bucket`, `date_bin`.
 
-2番目のオーバーロードは、TimescaleDBの `time_bucket()` 関数、またはPostgreSQLの `date_bin()` 関数をエミュレートします。 例えば、
+2番目のオーバーロードは、TimescaleDBの`time_bucket()`関数、およびPostgreSQLの`date_bin()`関数をエミュレートします。例:
 
-``` SQL
+```SQL
 SELECT toStartOfInterval(toDateTime('2023-01-01 14:45:00'), INTERVAL 1 MINUTE, toDateTime('2023-01-01 14:35:30'));
 ```
 
 結果:
 
-``` reference
+```reference
 ┌───toStartOfInterval(...)─┐
 │      2023-01-01 14:44:30 │
 └──────────────────────────┘
 ```
 
-**参照**
+**関連事項**
 - [date_trunc](#date_trunc)
 
-## toTime {#totime}
+## toTimeWithFixedDate {#totimewithfixeddate}
 
-日時を特定の固定日付に変換し、時間を保持します。
+時間付きの日付を特定の固定日付に変換し、時間を保持します。
 
 **構文**
 
 ```sql
-toTime(date[,timezone])
+toTimeWithFixedDate(date[,timezone])
 ```
+
+エイリアス: `toTime` - `use_legacy_to_time`設定が有効な場合のみ使用できます。
 
 **引数**
 
-- `date` — 時間に変換する日付。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
-- `timezone` (オプション) — 返される値のタイムゾーン。 [String](../data-types/string.md)。
+- `date` — 時間に変換する日付。[Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `timezone`（オプション） — 戻り値のタイムゾーン。[String](../data-types/string.md)。
 
 **返される値**
 
-- 日付が `1970-01-02` に設定された時刻を保持する DateTime。 [DateTime](../data-types/datetime.md)。
+- 時刻を保持しつつ、日付を`1970-01-02`に等しくしたDateTime。[DateTime](../data-types/datetime.md)。
 
 :::note
-もし、`date` 入力引数にサブ秒成分が含まれている場合、それらは返される `DateTime` 値において秒精度で切り捨てられます。
+入力引数`date`がサブ秒の要素を含んでいる場合、戻り値の`DateTime`では秒精度で切り捨てられます。
 :::
 
 **例**
@@ -1661,7 +1665,7 @@ SELECT toTime(toDateTime64('1970-12-10 01:20:30.3000',3)) AS result, toTypeName(
 
 ## toRelativeYearNum {#torelativeyearnum}
 
-日付または日時を、過去の特定の基準点から経過した年数に変換します。
+日付または時間付きの日付を、過去の特定の固定ポイントから経過した年数に変換します。
 
 **構文**
 
@@ -1671,11 +1675,11 @@ toRelativeYearNum(date)
 
 **引数**
 
-- `date` — 日付または日時。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` — 日付または時間付きの日付。[Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **返される値**
 
-- 過去の基準点からの年数。 [UInt16](../data-types/int-uint.md)。
+- 過去の固定参照点からの年数。[UInt16](../data-types/int-uint.md)。
 
 **例**
 
@@ -1697,7 +1701,7 @@ SELECT
 
 ## toRelativeQuarterNum {#torelativequarternum}
 
-日付または日時を、過去の特定の基準点から経過した四半期数に変換します。
+日付または時間付きの日付を、過去の特定の固定ポイントから経過した四半期数に変換します。
 
 **構文**
 
@@ -1707,11 +1711,11 @@ toRelativeQuarterNum(date)
 
 **引数**
 
-- `date` — 日付または日時。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` — 日付または時間付きの日付。[Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **返される値**
 
-- 過去の基準点からの四半期数。 [UInt32](../data-types/int-uint.md)。
+- 過去の固定参照点からの四半期数。[UInt32](../data-types/int-uint.md)。
 
 **例**
 
@@ -1733,7 +1737,7 @@ SELECT
 
 ## toRelativeMonthNum {#torelativemonthnum}
 
-日付または日時を、過去の特定の基準点から経過した月数に変換します。
+日付または時間付きの日付を、過去の特定の固定ポイントから経過した月数に変換します。
 
 **構文**
 
@@ -1743,11 +1747,11 @@ toRelativeMonthNum(date)
 
 **引数**
 
-- `date` — 日付または日時。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` — 日付または時間付きの日付。[Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **返される値**
 
-- 過去の基準点からの月数。 [UInt32](../data-types/int-uint.md)。
+- 過去の固定参照点からの月数。[UInt32](../data-types/int-uint.md)。
 
 **例**
 
@@ -1769,7 +1773,7 @@ SELECT
 
 ## toRelativeWeekNum {#torelativeweeknum}
 
-日付または日時を、過去の特定の基準点から経過した週数に変換します。
+日付または時間付きの日付を、過去の特定の固定ポイントから経過した週数に変換します。
 
 **構文**
 
@@ -1779,11 +1783,11 @@ toRelativeWeekNum(date)
 
 **引数**
 
-- `date` — 日付または日時。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` — 日付または時間付きの日付。[Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **返される値**
 
-- 過去の基準点からの週数。 [UInt32](../data-types/int-uint.md)。
+- 過去の固定参照点からの週数。[UInt32](../data-types/int-uint.md)。
 
 **例**
 
@@ -1805,7 +1809,7 @@ SELECT
 
 ## toRelativeDayNum {#torelativedaynum}
 
-日付または日時を、過去の特定の基準点から経過した日数に変換します。
+日付または時間付きの日付を、過去の特定の固定ポイントから経過した日数に変換します。
 
 **構文**
 
@@ -1815,11 +1819,11 @@ toRelativeDayNum(date)
 
 **引数**
 
-- `date` — 日付または日時。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` — 日付または時間付きの日付。[Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **返される値**
 
-- 過去の基準点からの日数。 [UInt32](../data-types/int-uint.md)。
+- 過去の固定参照点からの日数。[UInt32](../data-types/int-uint.md)。
 
 **例**
 
@@ -1841,7 +1845,7 @@ SELECT
 
 ## toRelativeHourNum {#torelativehournum}
 
-日付または日時を、過去の特定の基準点から経過した時間数に変換します。
+日付または時間付きの日付を、過去の特定の固定ポイントから経過した時間数に変換します。
 
 **構文**
 
@@ -1851,11 +1855,11 @@ toRelativeHourNum(date)
 
 **引数**
 
-- `date` — 日付または日時。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` — 日付または時間付きの日付。[Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **返される値**
 
-- 過去の基準点からの時間数。 [UInt32](../data-types/int-uint.md)。
+- 過去の固定参照点からの時間数。[UInt32](../data-types/int-uint.md)。
 
 **例**
 
@@ -1877,7 +1881,7 @@ SELECT
 
 ## toRelativeMinuteNum {#torelativeminutenum}
 
-日付または日時を、過去の特定の基準点から経過した分数に変換します。
+日付または時間付きの日付を、過去の特定の固定ポイントから経過した分数に変換します。
 
 **構文**
 
@@ -1887,11 +1891,11 @@ toRelativeMinuteNum(date)
 
 **引数**
 
-- `date` — 日付または日時。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` — 日付または時間付きの日付。[Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **返される値**
 
-- 過去の基準点からの分数。 [UInt32](../data-types/int-uint.md)。
+- 過去の固定参照点からの分数。[UInt32](../data-types/int-uint.md)。
 
 **例**
 
@@ -1913,7 +1917,7 @@ SELECT
 
 ## toRelativeSecondNum {#torelativesecondnum}
 
-日付または日時を、過去の特定の基準点から経過した秒数に変換します。
+日付または時間付きの日付を、過去の特定の固定ポイントから経過した秒数に変換します。
 
 **構文**
 
@@ -1923,11 +1927,11 @@ toRelativeSecondNum(date)
 
 **引数**
 
-- `date` — 日付または日時。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` — 日付または時間付きの日付。[Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **返される値**
 
-- 過去の基準点からの秒数。 [UInt32](../data-types/int-uint.md)。
+- 過去の固定参照点からの秒数。[UInt32](../data-types/int-uint.md)。
 
 **例**
 
@@ -1949,7 +1953,7 @@ SELECT
 
 ## toISOYear {#toisoyear}
 
-日付または日時を、ISO年を UInt16 型で返します。
+日付または時間付きの日付をISO年を含むUInt16番号に変換します。
 
 **構文**
 
@@ -1959,11 +1963,11 @@ toISOYear(value)
 
 **引数**
 
-- `value` — 日付または日時の値。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)
+- `value` — 日付または時間付きの日付の値。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)
 
 **返される値**
 
-- 入力値をISO年数に変換。 [UInt16](../data-types/int-uint.md)。
+- 入力値をISO年番号に変換したもの。[UInt16](../data-types/int-uint.md)。
 
 **例**
 
@@ -1985,7 +1989,7 @@ SELECT
 
 ## toISOWeek {#toisoweek}
 
-日付または日時を、ISO週数で UInt8 型の数値に変換します。
+日付または時間付きの日付を含むUInt8番号に変換し、ISO週番号を返します。
 
 **構文**
 
@@ -1995,11 +1999,11 @@ toISOWeek(value)
 
 **引数**
 
-- `value` — 日付または日時の値。
+- `value` — 日付または時間付きの日付の値。
 
 **返される値**
 
-- 現在のISO週数に変換された `value`。 [UInt8](../data-types/int-uint.md)。
+- `value`を現在のISO週番号に変換したもの。[UInt8](../data-types/int-uint.md)。
 
 **例**
 
@@ -2021,58 +2025,55 @@ SELECT
 
 ## toWeek {#toweek}
 
-この関数は、日付または日時の週番号を返します。2引数形式の `toWeek()`を使うと、週の開始日が日曜日か月曜日か、返される値が0から53の範囲か1から53の範囲かを指定できます。mode 引数を省略すると、デフォルトのモードは 0 です。
+この関数は、日付または日付時間の週番号を返します。`toWeek()`の2引数形式を使用すると、週の始まりを日曜日または月曜日に指定でき、戻り値が0から53の範囲または1から53の範囲になるかどうかを指定できます。mode引数が省略された場合は、デフォルトのmodeは0です。
 
-`toISOWeek()` は `toWeek(date,3)` と同等の互換性関数です。
+`toISOWeek()`は、`toWeek(date,3)`と等しい互換性関数です。
 
-mode 引数がどのように機能するかを示す以下の表があります。
+以下の表は、mode引数の動作を説明しています。
 
-| モード | 週の最初の日 | 範囲 | 週 1は ... の最初の週 |
-|------|-------------------|-------|-------------------------------|
-| 0    | 日曜日            | 0-53  | この年に日曜日がある週    |
-| 1    | 月曜日            | 0-53  | この年に4日以上ある週 |
-| 2    | 日曜日            | 1-53  | この年に日曜日がある週    |
-| 3    | 月曜日            | 1-53  | この年に4日以上ある週 |
-| 4    | 日曜日            | 0-53  | この年に4日以上ある週 |
-| 5    | 月曜日            | 0-53  | この年に月曜日がある週    |
-| 6    | 日曜日            | 1-53  | この年に4日以上ある週 |
-| 7    | 月曜日            | 1-53  | この年に月曜日がある週    |
-| 8    | 日曜日            | 1-53  | 1月1日を含む            |
-| 9    | 月曜日            | 1-53  | 1月1日を含む            |
+| モード | 週の最初の日 | 範囲 | 週1は次の週の最初の週 ... |
+|--------|---------------|-------|-----------------------------|
+| 0      | 日曜日      | 0-53  | その年のこの日に日曜日がある場合 |
+| 1      | 月曜日      | 0-53  | その年に4日以上ある場合    |
+| 2      | 日曜日      | 1-53  | その年のこの日に日曜日がある場合 |
+| 3      | 月曜日      | 1-53  | その年に4日以上ある場合    |
+| 4      | 日曜日      | 0-53  | その年に4日以上ある場合    |
+| 5      | 月曜日      | 0-53  | その年のこの日に月曜日がある場合 |
+| 6      | 日曜日      | 1-53  | その年に4日以上ある場合    |
+| 7      | 月曜日      | 1-53  | その年のこの日に月曜日がある場合 |
+| 8      | 日曜日      | 1-53  | 1月1日を含む               |
+| 9      | 月曜日      | 1-53  | 1月1日を含む               |
 
-「この年に4日以上ある週」という意味のモード値の場合、週はISO 8601:1988に従って番号が付けられます:
+4日以上ある年の意味を持つモード値の場合、週はISO 8601:1988に従って番号付けされます。
 
-- 1月1日を含む週が4日以上新年にある場合、それは週1です。
+- 1月1日を含む週に4日以上の新しい年がある場合、その週は週1になります。
+- そうでない場合は、前の年の最後の週と見なされ、次の週は週1になります。
 
-- そうでない場合、それは前の年の最後の週であり、次の週は週1です。
-
-「1月1日を含む」という意味のモード値の場合、1月1日を含む週が週1です。
-新年に含まれる日数は関係ありません。たとえ新年に1日しか含まれなくてもかまいません。
-すなわち、12月の最後の週が翌年の1月1日を含む場合、それは翌年の週1となります。
+1月1日を含むという意味のモード値の場合、週は1月1日が含まれている週であり、その年に含まれる日数は関係ありません。たとえ次の年の最終週が1月1日を含んでいる場合でも、次の年の週1になります。
 
 **構文**
 
-``` sql
-toWeek(t[, mode[, time_zone]])
+```sql
+toWeek(t[, mode[, timezone]])
 ```
 
 エイリアス: `WEEK`
 
 **引数**
 
-- `t` – 日付または日時。
-- `mode` – オプションのパラメータ、範囲の値は \[0,9\]、デフォルトは 0。
-- `Timezone` – オプションのパラメータで、他の変換関数と同様に動作します。
+- `t` – 日付またはDateTime。
+- `mode` – オプションのパラメーター、値の範囲は\[0,9\]、デフォルトは0。
+- `timezone` – オプションのパラメーターで、他の変換関数のように機能します。
 
-最初の引数は [String](../data-types/string.md) としても指定できます。これは [parseDateTime64BestEffort()](type-conversion-functions.md#parsedatetime64besteffort) がサポートする形式です。文字列引数のサポートは、特定の3rdパーティツールが期待するMySQLとの互換性のためだけに存在します。文字列引数のサポートは、将来的に新しいMySQL互換設定に依存する可能性があり、文字列解析は一般的に遅いため、使用しないことをお勧めします。
+最初の引数は、[String](../data-types/string.md)としても指定できます。`parseDateTime64BestEffort()`でサポートされている形式です。文字列引数のサポートは、特定のサードパーティツールによって期待されるMySQLとの互換性の理由でのみ存在します。文字列引数のサポートは将来的にMySQL互換設定の新しいものに依存する可能性があり、文字列解析は一般的に遅いため、使用しないことをお勧めします。
 
 **例**
 
-``` sql
+```sql
 SELECT toDate('2016-12-27') AS date, toWeek(date) AS week0, toWeek(date,1) AS week1, toWeek(date,9) AS week9;
 ```
 
-``` text
+```text
 ┌───────date─┬─week0─┬─week1─┬─week9─┐
 │ 2016-12-27 │    52 │    52 │     1 │
 └────────────┴───────┴───────┴───────┘
@@ -2080,45 +2081,45 @@ SELECT toDate('2016-12-27') AS date, toWeek(date) AS week0, toWeek(date,1) AS we
 
 ## toYearWeek {#toyearweek}
 
-日付に対して年と週を返します。結果の年は、年の最初と最後の週の場合、日付の年と異なる場合があります。
+日付の年と週を返します。結果の年は、年の最初および最後の週の場合、日付引数の年とは異なる場合があります。
 
-mode 引数は `toWeek()` に対する mode 引数のように機能します。単一引数構文の場合、モード値は 0 が使用されます。
+mode引数は、`toWeek()`のmode引数と同様に機能します。シングル引数構文の場合は、モード値0が使用されます。
 
-`toISOYear()` は `intDiv(toYearWeek(date,3),100)` と同等の互換性関数です。
+`toISOYear()`は、`intDiv(toYearWeek(date,3),100)`に等しい互換性関数です。
 
 :::warning
-`toYearWeek()` が返す週番号は、`toWeek()` が返すものとは異なる場合があります。 `toWeek()` は常に、指定された年の文脈における週番号を返し、`toWeek()` が `0` を返す場合、`toYearWeek()` は前の年の最後の週に対応する値を返します。以下の例の `prev_yearWeek` を参照してください。
+`toYearWeek()`が返す週番号は、`toWeek()`が返すものとは異なる場合があります。`toWeek()`は常に与えられた年のコンテキスト内の週番号を返し、もし`toWeek()`が`0`を返す場合、`toYearWeek()`は前の年の最後の週に対応する値を返します。以下の例の`prev_yearWeek`を参照してください。
 :::
 
 **構文**
 
-``` sql
+```sql
 toYearWeek(t[, mode[, timezone]])
 ```
 
 エイリアス: `YEARWEEK`
 
-最初の引数は [String](../data-types/string.md) としても指定できます。これは [parseDateTime64BestEffort()](type-conversion-functions.md#parsedatetime64besteffort) がサポートする形式です。文字列引数のサポートは、特定の3rdパーティツールが期待するMySQLとの互換性のためだけに存在します。文字列引数のサポートは、将来的に新しいMySQL互換設定に依存する可能性があり、文字列解析は一般的に遅いため、使用しないことをお勧めします。
+最初の引数は、[String](../data-types/string.md)としても指定できます。`parseDateTime64BestEffort()`でサポートされている形式です。文字列引数のサポートは、特定のサードパーティツールによるMySQLとの互換性の理由でのみ存在します。文字列引数のサポートは将来的にMySQL互換設定に依存する可能性があります。文字列解析は一般的に遅いため、使用しないことをお勧めします。
 
 **例**
 
-``` sql
+```sql
 SELECT toDate('2016-12-27') AS date, toYearWeek(date) AS yearWeek0, toYearWeek(date,1) AS yearWeek1, toYearWeek(date,9) AS yearWeek9, toYearWeek(toDate('2022-01-01')) AS prev_yearWeek;
 ```
 
-``` text
+```text
 ┌───────date─┬─yearWeek0─┬─yearWeek1─┬─yearWeek9─┬─prev_yearWeek─┐
 │ 2016-12-27 │    201652 │    201652 │    201701 │        202152 │
-└────────────┴───────────┴───────────┴───────────┴───────────────┘
+└────────────┴───────────┴───────────┴───────────┴─────────────────┘
 ```
 
 ## toDaysSinceYearZero {#todayssinceyearzero}
 
-指定した日付の、[西暦 0000 年 1 月 1 日](https://en.wikipedia.org/wiki/Year_zero) からの日数を返します。ISO 8601 で定義された [延長グレゴリオ暦](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar)と同じ計算です。この計算は、MySQL の [`TO_DAYS()`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_to-days) 関数と同様です。
+指定された日付から、[プロレプティック・グレゴリオ暦による0000年1月1日](https://ja.wikipedia.org/wiki/Year_zero)から経過した日数を返します。この計算はMySQLの[`TO_DAYS()`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_to-days)関数と同じです。
 
 **構文**
 
-``` sql
+```sql
 toDaysSinceYearZero(date[, time_zone])
 ```
 
@@ -2127,98 +2128,90 @@ toDaysSinceYearZero(date[, time_zone])
 **引数**
 
 - `date` — 年ゼロから経過した日数を計算する日付。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
-- `time_zone` — タイムゾーンを表す文字列型定数値または式。[String types](../data-types/string.md)
+- `time_zone` — タイムゾーンを表す文字列型の定数値または式。[String types](../data-types/string.md)
 
 **返される値**
 
-日付 0000-01-01 から経過した日数。[UInt32](../data-types/int-uint.md)。
+0000-01-01から経過した日数。 [UInt32](../data-types/int-uint.md)。
 
 **例**
 
-``` sql
+```sql
 SELECT toDaysSinceYearZero(toDate('2023-09-08'));
 ```
 
 結果:
 
-``` text
+```text
 ┌─toDaysSinceYearZero(toDate('2023-09-08')))─┐
 │                                     713569 │
 └────────────────────────────────────────────┘
 ```
 
-**参照**
+**関連事項**
 
 - [fromDaysSinceYearZero](#fromdayssinceyearzero)
-```
-```yaml
-title: '日付と時間の関数'
-sidebar_label: '日付と時間の関数'
-keywords: 'ClickHouse, 日付, 時間, クエリ'
-description: 'ClickHouseで使用される日付と時間に関連する関数のリファレンスです。'
 ```
 
 ## fromDaysSinceYearZero {#fromdayssinceyearzero}
 
-[1 January 0000](https://en.wikipedia.org/wiki/Year_zero) から経過した日数に対する、[ISO 8601 によって定義された先行 Gregorian calendar](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar) の対応する日付を返します。計算は MySQL の [`FROM_DAYS()`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_from-days) 関数と同じです。
+指定された日数が[0000年1月1日](https://en.wikipedia.org/wiki/Year_zero)から経過している場合に、その日数に対応する日付を[ISO 8601で定義されたプロレプティックグレゴリオ暦](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar)で返します。計算はMySQLの[`FROM_DAYS()`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_from-days)関数と同じです。
 
-**結果は、[Date](../data-types/date.md) 型の範囲内で表現できない場合は未定義です。**
+[Date](../data-types/date.md)タイプの範囲内で表現できない場合、結果は未定義です。
 
 **構文**
 
-``` sql
+```sql
 fromDaysSinceYearZero(days)
 ```
 
-エイリアス: `FROM_DAYS`
+別名: `FROM_DAYS`
 
 **引数**
 
 - `days` — 年ゼロから経過した日数。
 
-**返される値**
+**戻り値**
 
-年ゼロから経過した日数に対応する日付。 [Date](../data-types/date.md)。
+年ゼロから経過した日数に対応する日付。[Date](../data-types/date.md)。
 
 **例**
 
-``` sql
+```sql
 SELECT fromDaysSinceYearZero(739136), fromDaysSinceYearZero(toDaysSinceYearZero(toDate('2023-09-08')));
 ```
 
 結果:
 
-``` text
+```text
 ┌─fromDaysSinceYearZero(739136)─┬─fromDaysSinceYearZero(toDaysSinceYearZero(toDate('2023-09-08')))─┐
 │                    2023-09-08 │                                                       2023-09-08 │
 └───────────────────────────────┴──────────────────────────────────────────────────────────────────┘
 ```
 
-**も参照**
+**関連機能**
 
 - [toDaysSinceYearZero](#todayssinceyearzero)
-
 ## fromDaysSinceYearZero32 {#fromdayssinceyearzero32}
 
-[fromDaysSinceYearZero](#fromdayssinceyearzero) と同様ですが、[Date32](../data-types/date32.md) を返します。
-
+[fromDaysSinceYearZero](#fromdayssinceyearzero)と同様ですが、[Date32](../data-types/date32.md)を返します。
 ## age {#age}
 
-`startdate` と `enddate` の間の差の `unit` コンポーネントを返します。差は1ナノ秒の精度で計算されます。
-例えば、`2021-12-29` と `2022-01-01` の違いは、`day` 単位で3日、`month` 単位で0ヶ月、`year` 単位で0年です。
+`startdate`と`enddate`の差の`unit`コンポーネントを返します。差は1ナノ秒の精度で計算されます。
+例: `2021-12-29`と`2022-01-01`の差は、`day`単位で3日、`month`単位で0ヶ月、`year`単位で0年です。
 
-`age` の代替として `date_diff` 関数を参照してください。
+`age`の代替機能として、`date_diff`関数を参照してください。
 
 **構文**
 
-``` sql
+```sql
 age('unit', startdate, enddate, [timezone])
 ```
 
 **引数**
 
-- `unit` — 結果の間隔のタイプ。 [String](../data-types/string.md)。
-    可能な値:
+- `unit` — 結果の間隔のタイプ。[String](../data-types/string.md)。
+    使用可能な値:
 
     - `nanosecond`, `nanoseconds`, `ns`
     - `microsecond`, `microseconds`, `us`, `u`
@@ -2232,31 +2225,31 @@ age('unit', startdate, enddate, [timezone])
     - `quarter`, `quarters`, `qq`, `q`
     - `year`, `years`, `yyyy`, `yy`
 
-- `startdate` — 引き算の最初の時間値（被減数）。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
+- `startdate` — 最初に引く時間の値（被減数）。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
 
-- `enddate` — 引き算の第二の時間値（減数）。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
+- `enddate` — 引かれる2番目の時間の値（減数）。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
 
-- `timezone` — [タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone) （オプション）。指定された場合、`startdate` と `enddate` の両方に適用されます。指定されない場合は、`startdate` と `enddate` のタイムゾーンが使用されます。異なる場合、結果は未定義です。 [String](../data-types/string.md)。
+- `timezone` — [タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。指定された場合、`startdate`と`enddate`の両方に適用されます。指定されていない場合は、`startdate`と`enddate`のタイムゾーンが使用されます。異なる場合、結果は未定義です。[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-`enddate` と `startdate` の違いを `unit` で表した値。 [Int](../data-types/int-uint.md)。
+`enddate`と`startdate`の差を`unit`で表現した値。[Int](../data-types/int-uint.md)。
 
 **例**
 
-``` sql
+```sql
 SELECT age('hour', toDateTime('2018-01-01 22:30:00'), toDateTime('2018-01-02 23:00:00'));
 ```
 
 結果:
 
-``` text
+```text
 ┌─age('hour', toDateTime('2018-01-01 22:30:00'), toDateTime('2018-01-02 23:00:00'))─┐
 │                                                                                24 │
 └───────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-``` sql
+```sql
 SELECT
     toDate('2022-01-01') AS e,
     toDate('2021-12-29') AS s,
@@ -2267,33 +2260,32 @@ SELECT
 
 結果:
 
-``` text
+```text
 ┌──────────e─┬──────────s─┬─day_age─┬─month__age─┬─year_age─┐
 │ 2022-01-01 │ 2021-12-29 │       3 │          0 │        0 │
 └────────────┴────────────┴─────────┴────────────┴──────────┘
 ```
-
 ## date_diff {#date_diff}
 
-`startdate` と `enddate` の間に交差する指定された `unit` 境界の数を返します。
-差は相対単位を使用して計算されます。例えば、`2021-12-29` と `2022-01-01` の違いは、単位 `day` では3日（[toRelativeDayNum](#torelativedaynum)を参照）、単位 `month` では1ヶ月（[toRelativeMonthNum](#torelativemonthnum)を参照）、単位 `year` では1年（[toRelativeYearNum](#torelativeyearnum)を参照）です。
+`startdate`と`enddate`間に越えた指定された`unit`境界の数を返します。
+差は相対的な単位を使用して計算されます。例: `2021-12-29`と`2022-01-01`の差は、`day`単位で3日（[toRelativeDayNum](#torelativedaynum)参照）、`month`単位で1ヶ月（[toRelativeMonthNum](#torelativemonthnum)参照）、`year`単位で1年（[toRelativeYearNum](#torelativeyearnum)参照）です。
 
-単位 `week` が指定された場合、`date_diff` は週が月曜日から始まると仮定します。この動作は、週がデフォルトで日曜日から始まる `toWeek()` 関数とは異なります。
+`week`単位が指定された場合、`date_diff`は週が月曜日から始まると仮定します。この動作は、週がデフォルトで日曜日から始まる`toWeek()`関数とは異なります。
 
-`date_diff` の代替として、`age` 関数を参照してください。
+`date_diff`の代替として、`age`関数を参照してください。
 
 **構文**
 
-``` sql
+```sql
 date_diff('unit', startdate, enddate, [timezone])
 ```
 
-エイリアス: `dateDiff`, `DATE_DIFF`, `timestampDiff`, `timestamp_diff`, `TIMESTAMP_DIFF`.
+別名: `dateDiff`, `DATE_DIFF`, `timestampDiff`, `timestamp_diff`, `TIMESTAMP_DIFF`.
 
 **引数**
 
-- `unit` — 結果の間隔のタイプ。 [String](../data-types/string.md)。
-    可能な値:
+- `unit` — 結果の間隔のタイプ。[String](../data-types/string.md)。
+    使用可能な値:
 
     - `nanosecond`, `nanoseconds`, `ns`
     - `microsecond`, `microseconds`, `us`, `u`
@@ -2307,31 +2299,31 @@ date_diff('unit', startdate, enddate, [timezone])
     - `quarter`, `quarters`, `qq`, `q`
     - `year`, `years`, `yyyy`, `yy`
 
-- `startdate` — 引き算の最初の時間値（被減数）。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
+- `startdate` — 最初に引く時間の値（被減数）。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
 
-- `enddate` — 引き算の第二の時間値（減数）。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
+- `enddate` — 引かれる2番目の時間の値（減数）。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
 
-- `timezone` — [タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone) （オプション）。指定された場合、`startdate` と `enddate` の両方に適用されます。指定されない場合は、`startdate` と `enddate` のタイムゾーンが使用されます。異なる場合、結果は未定義です。 [String](../data-types/string.md)。
+- `timezone` — [タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。指定された場合、`startdate`と`enddate`の両方に適用されます。指定されていない場合は、`startdate`と`enddate`のタイムゾーンが使用されます。異なる場合、結果は未定義です。[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-`enddate` と `startdate` の違いを `unit` で表した値。 [Int](../data-types/int-uint.md)。
+`enddate`と`startdate`の差を`unit`で表現した値。[Int](../data-types/int-uint.md)。
 
 **例**
 
-``` sql
+```sql
 SELECT dateDiff('hour', toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:00'));
 ```
 
 結果:
 
-``` text
+```text
 ┌─dateDiff('hour', toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:00'))─┐
 │                                                                                     25 │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-``` sql
+```sql
 SELECT
     toDate('2022-01-01') AS e,
     toDate('2021-12-29') AS s,
@@ -2342,32 +2334,31 @@ SELECT
 
 結果:
 
-``` text
+```text
 ┌──────────e─┬──────────s─┬─day_diff─┬─month__diff─┬─year_diff─┐
 │ 2022-01-01 │ 2021-12-29 │        3 │           1 │         1 │
 └────────────┴────────────┴──────────┴─────────────┴───────────┘
 ```
-
 ## date\_trunc {#date_trunc}
 
-日付と時間データを指定された日付の部分に切り捨てます。
+日付と時刻データを指定された日付の部分に切り捨てます。
 
 **構文**
 
-``` sql
+```sql
 date_trunc(unit, value[, timezone])
 ```
 
-エイリアス: `dateTrunc`.
+別名: `dateTrunc`。
 
 **引数**
 
-- `unit` — 結果を切り捨てる間隔のタイプ。 [String Literal](/sql-reference/syntax#string)。
-    可能な値:
+- `unit` — 結果を切り捨てるための間隔のタイプ。[String Literal](/sql-reference/syntax#string)。
+    使用可能な値:
 
-    - `nanosecond` - DateTime64 のみと互換性があります
-    - `microsecond` - DateTime64 のみと互換性があります
-    - `milisecond` - DateTime64 のみと互換性があります
+    - `nanosecond` - DateTime64専用
+    - `microsecond` - DateTime64専用
+    - `millisecond` - DateTime64専用
     - `second`
     - `minute`
     - `hour`
@@ -2377,33 +2368,40 @@ date_trunc(unit, value[, timezone])
     - `quarter`
     - `year`
 
-    `unit` 引数は大文字小文字を区別しません。
+    `unit`引数は大文字と小文字を区別しません。
 
-- `value` — 日付と時間。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
+- `value` — 日付と時刻。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
+- `timezone` — 戻り値の[タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。指定されていない場合、関数は`value`パラメータのタイムゾーンを使用します。[String](../data-types/string.md)。
 
-- `timezone` — 返される値のタイムゾーン名（オプション）。指定されない場合、関数は `value` パラメーターのタイムゾーンを使用します。 [String](../data-types/string.md)。
+**戻り値**
 
-**返される値**
+`unit`引数が年、四半期、月、または週の場合、
+- かつ`value`引数がDate32またはDateTime64の場合、[Date32](../data-types/date32.md)が返され、
+- そうでない場合、[Date](../data-types/date.md)が返されます。
 
-- 指定された日付の部分に切り捨てられた値。 [DateTime](../data-types/datetime.md)。
+`unit`引数が日、時間、分、または秒の場合、
+- かつ`value`引数がDate32またはDateTime64の場合、[DateTime64](../data-types/datetime64.md)が返され、
+- そうでない場合、[DateTime](../data-types/datetime.md)が返されます。
+
+`unit`引数がミリ秒、マイクロ秒、またはナノ秒の場合、スケール3または6または9（`unit`引数に応じて）の[DateTime64](../data-types/datetime64.md)が返されます。
 
 **例**
 
 タイムゾーンなしのクエリ:
 
-``` sql
+```sql
 SELECT now(), date_trunc('hour', now());
 ```
 
 結果:
 
-``` text
+```text
 ┌───────────────now()─┬─date_trunc('hour', now())─┐
 │ 2020-09-28 10:40:45 │       2020-09-28 10:00:00 │
 └─────────────────────┴───────────────────────────┘
 ```
 
-指定されたタイムゾーンでのクエリ:
+指定されたタイムゾーンを使用したクエリ:
 
 ```sql
 SELECT now(), date_trunc('hour', now(), 'Asia/Istanbul');
@@ -2417,34 +2415,33 @@ SELECT now(), date_trunc('hour', now(), 'Asia/Istanbul');
 └─────────────────────┴────────────────────────────────────────────┘
 ```
 
-**も参照**
+**関連機能**
 
 - [toStartOfInterval](#tostartofinterval)
-
 ## date\_add {#date_add}
 
-提供された日付または日付と時間に、時間間隔または日付間隔を追加します。
+指定された日付または日付時刻に時間または日付の間隔を追加します。
 
-追加の結果がデータ型の範囲を超える場合、結果は未定義です。
+追加の結果がデータ型の範囲外になる場合、結果は未定義です。
 
 **構文**
 
-``` sql
+```sql
 date_add(unit, value, date)
 ```
 
 代替構文:
 
-``` sql
+```sql
 date_add(date, INTERVAL value unit)
 ```
 
-エイリアス: `dateAdd`, `DATE_ADD`.
+別名: `dateAdd`, `DATE_ADD`。
 
 **引数**
 
-- `unit` — 追加する間隔のタイプ。これは [String](../data-types/string.md) ではなく、引用符で囲まない必要があります。
-    可能な値:
+- `unit` — 追加する間隔のタイプ。注意: これは[String](../data-types/string.md)ではなく、引用符で囲まれてはいけません。
+    使用可能な値:
 
     - `second`
     - `minute`
@@ -2455,13 +2452,12 @@ date_add(date, INTERVAL value unit)
     - `quarter`
     - `year`
 
-- `value` — 追加する間隔の値。 [Int](../data-types/int-uint.md)。
+- `value` — 追加する間隔の値。[Int](../data-types/int-uint.md)。
+- `date` — `value`を追加する日付または日付時刻。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
 
-- `date` — `value` が追加される日付または日付と時間。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
+**戻り値**
 
-**返される値**
-
-`value` を `unit` で表した日付または日付と時間を `date` に追加した結果。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
+`value`を追加して得られた日付または日付時刻。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -2489,35 +2485,34 @@ SELECT date_add(toDate('2018-01-01'), INTERVAL 3 YEAR);
 └───────────────────────────────────────────────┘
 ```
 
-**も参照**
+**関連機能**
 
 - [addDate](#adddate)
-
 ## date\_sub {#date_sub}
 
-提供された日付または日付と時間から、時間間隔または日付間隔を引き算します。
+指定された日付または日付時刻から時間間隔または日付間隔を引きます。
 
-引き算の結果がデータ型の範囲を超える場合、結果は未定義です。
+引き算の結果がデータ型の範囲外になる場合、結果は未定義です。
 
 **構文**
 
-``` sql
+```sql
 date_sub(unit, value, date)
 ```
 
 代替構文:
 
-``` sql
+```sql
 date_sub(date, INTERVAL value unit)
 ```
 
-エイリアス: `dateSub`, `DATE_SUB`.
+別名: `dateSub`, `DATE_SUB`。
 
 **引数**
 
-- `unit` — 引き算する間隔のタイプ。これは [String](../data-types/string.md) ではなく、引用符で囲まない必要があります。
+- `unit` — 引く間隔のタイプ。注意: これは[String](../data-types/string.md)ではなく、引用符で囲まれてはいけません。
 
-    可能な値:
+    使用可能な値:
 
     - `second`
     - `minute`
@@ -2528,66 +2523,62 @@ date_sub(date, INTERVAL value unit)
     - `quarter`
     - `year`
 
-- `value` — 引き算する間隔の値。 [Int](../data-types/int-uint.md)。
+- `value` — 引く間隔の値。[Int](../data-types/int-uint.md)。
+- `date` — `value`を引く日付または日付時刻。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
 
-- `date` — `value` が引き算される日付または日付と時間。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
+**戻り値**
 
-**返される値**
-
-`value` を `unit` で表した日付または日付と時間から `date` を引き算した結果。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
+`value`を`unit`で表現して`date`から引いた結果の日付または日付時刻。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
-``` sql
+```sql
 SELECT date_sub(YEAR, 3, toDate('2018-01-01'));
 ```
 
 結果:
 
-``` text
+```text
 ┌─minus(toDate('2018-01-01'), toIntervalYear(3))─┐
 │                                     2015-01-01 │
 └────────────────────────────────────────────────┘
 ```
 
-``` sql
+```sql
 SELECT date_sub(toDate('2018-01-01'), INTERVAL 3 YEAR);
 ```
 
 結果:
 
-``` text
+```text
 ┌─minus(toDate('2018-01-01'), toIntervalYear(3))─┐
 │                                     2015-01-01 │
 └────────────────────────────────────────────────┘
 ```
 
-**も参照**
+**関連機能**
 
 - [subDate](#subdate)
-
 ## timestamp\_add {#timestamp_add}
 
-指定された時間値を提供された日付または日付 時間値に追加します。
+指定された時間値を提供された日付または日付時刻と追加します。
 
-追加の結果がデータ型の範囲を超える場合、結果は未定義です。
+追加がデータ型の範囲外になる場合、結果は未定義です。
 
 **構文**
 
-``` sql
+```sql
 timestamp_add(date, INTERVAL value unit)
 ```
 
-エイリアス: `timeStampAdd`, `TIMESTAMP_ADD`.
+別名: `timeStampAdd`, `TIMESTAMP_ADD`。
 
 **引数**
 
-- `date` — 日付または日付と時間。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
-
-- `value` — 追加する間隔の値。 [Int](../data-types/int-uint.md)。
-
-- `unit` — 追加する間隔のタイプ。 [String](../data-types/string.md)。
-    可能な値:
+- `date` — 日付または日付時刻。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
+- `value` — 追加する間隔の値。[Int](../data-types/int-uint.md)。
+- `unit` — 追加する間隔のタイプ。[String](../data-types/string.md)。
+    使用可能な値:
 
     - `second`
     - `minute`
@@ -2598,9 +2589,9 @@ timestamp_add(date, INTERVAL value unit)
     - `quarter`
     - `year`
 
-**返される値**
+**戻り値**
 
-指定された `value` を `unit` で表した内容を `date` に追加した日付または日付と時間。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
+指定された`value`を`unit`で表現して`date`に追加した結果の日付または日付時刻。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -2618,22 +2609,22 @@ select timestamp_add(toDate('2018-01-01'), INTERVAL 3 MONTH);
 
 ## timestamp\_sub {#timestamp_sub}
 
-指定された間隔を提供された日付または日付と時間から引き算します。
+指定された時間間隔を提供された日付または日付時刻から引きます。
 
-引き算の結果がデータ型の範囲を超える場合、結果は未定義です。
+引き算の結果がデータ型の範囲外になる場合、結果は未定義です。
 
 **構文**
 
-``` sql
+```sql
 timestamp_sub(unit, value, date)
 ```
 
-エイリアス: `timeStampSub`, `TIMESTAMP_SUB`.
+別名: `timeStampSub`, `TIMESTAMP_SUB`。
 
 **引数**
 
-- `unit` — 引き算する間隔のタイプ。 [String](../data-types/string.md)。
-    可能な値:
+- `unit` — 引く間隔のタイプ。[String](../data-types/string.md)。
+    使用可能な値:
 
     - `second`
     - `minute`
@@ -2644,13 +2635,12 @@ timestamp_sub(unit, value, date)
     - `quarter`
     - `year`
 
-- `value` — 引き算する間隔の値。 [Int](../data-types/int-uint.md)。
+- `value` — 引く間隔の値。[Int](../data-types/int-uint.md)。
+- `date` — 日付または日付時刻。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
 
-- `date` — 日付または日付と時間。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
+**戻り値**
 
-**返される値**
-
-`value` を `unit` で表した内容を `date` から引き算した日付または日付と時間。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
+`value`を`unit`で表現して`date`から引いた結果の日付または日付時刻。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -2665,28 +2655,26 @@ select timestamp_sub(MONTH, 5, toDateTime('2018-12-18 01:02:03'));
 │                                          2018-07-18 01:02:03 │
 └──────────────────────────────────────────────────────────────┘
 ```
-
 ## addDate {#adddate}
 
-提供された日付、日付と時間または文字列で表現された日付に時間間隔を追加します。
+時間間隔を提供された日付、時刻付きの日付、または文字列形式の日付/時刻に追加します。
 
-追加の結果がデータ型の範囲を超える場合、結果は未定義です。
+追加の結果がデータ型の範囲外になる場合、結果は未定義です。
 
 **構文**
 
-``` sql
+```sql
 addDate(date, interval)
 ```
 
 **引数**
 
-- `date` — `interval` が追加される日付または日付と時間。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、[DateTime64](../data-types/datetime64.md)、または [String](../data-types/string.md)
+- `date` — `interval`を追加する日付または日時。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、[DateTime64](../data-types/datetime64.md)、または[String](../data-types/string.md)
+- `interval` — 追加する間隔。[Interval](../data-types/special-data-types/interval.md)。
 
-- `interval` — 追加する間隔。 [Interval](../data-types/special-data-types/interval.md)。
+**戻り値**
 
-**返される値**
-
-`date` に `interval` を追加した結果の日付または日付と時間。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
+`date`に`interval`を追加して得られる日付または日付時刻。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -2702,33 +2690,31 @@ SELECT addDate(toDate('2018-01-01'), INTERVAL 3 YEAR);
 └──────────────────────────────────────────────────┘
 ```
 
-エイリアス: `ADDDATE`
+別名: `ADDDATE`
 
-**も参照**
+**関連機能**
 
 - [date_add](#date_add)
-
 ## subDate {#subdate}
 
-提供された日付、日付と時間または文字列で表現された日付から時間間隔を引き算します。
+指定された時間間隔を提供された日付、時刻付きの日付、または文字列形式の日付/時刻から引きます。
 
-引き算の結果がデータ型の範囲を超える場合、結果は未定義です。
+引き算の結果がデータ型の範囲外になる場合、結果は未定義です。
 
 **構文**
 
-``` sql
+```sql
 subDate(date, interval)
 ```
 
 **引数**
 
-- `date` — `interval` が引き算される日付または日付と時間。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、[DateTime64](../data-types/datetime64.md)、または [String](../data-types/string.md)
+- `date` — 引かれる日付または時刻付きの日付。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、[DateTime64](../data-types/datetime64.md)、または[String](../data-types/string.md)
+- `interval` — 引く間隔。[Interval](../data-types/special-data-types/interval.md)。
 
-- `interval` — 引き算する間隔。 [Interval](../data-types/special-data-types/interval.md)。
+**戻り値**
 
-**返される値**
-
-`date` から `interval` を引き算した結果の日付または日付と時間。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
+`date`から引かれる`interval`を加えた結果の日付または日付時刻。[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -2744,119 +2730,115 @@ SELECT subDate(toDate('2018-01-01'), INTERVAL 3 YEAR);
 └──────────────────────────────────────────────────┘
 ```
 
-エイリアス: `SUBDATE`
+別名: `SUBDATE`
 
-**も参照**
+**関連機能**
 
 - [date_sub](#date_sub)
-
 ## now {#now}
 
-クエリ分析の瞬間における現在の日付と時間を返します。この関数は定数式です。
+クエリ解析の瞬間に現在の日付と時刻を返します。この関数は定数式です。
 
-エイリアス: `current_timestamp`.
+別名: `current_timestamp`。
 
 **構文**
 
-``` sql
+```sql
 now([timezone])
 ```
 
 **引数**
 
-- `timezone` — 返される値のタイムゾーン名（オプション）。 [String](../data-types/string.md)。
+- `timezone` — 戻り値の[タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- 現在の日付と時間。 [DateTime](../data-types/datetime.md)。
+- 現在の日付と時刻。[DateTime](../data-types/datetime.md)。
 
 **例**
 
 タイムゾーンなしのクエリ:
 
-``` sql
+```sql
 SELECT now();
 ```
 
 結果:
 
-``` text
+```text
 ┌───────────────now()─┐
 │ 2020-10-17 07:42:09 │
 └─────────────────────┘
 ```
 
-指定されたタイムゾーンでのクエリ:
+指定したタイムゾーンを使ったクエリ:
 
-``` sql
+```sql
 SELECT now('Asia/Istanbul');
 ```
 
 結果:
 
-``` text
+```text
 ┌─now('Asia/Istanbul')─┐
 │  2020-10-17 10:42:23 │
 └──────────────────────┘
 ```
-
 ## now64 {#now64}
 
-クエリ分析の瞬間におけるサブ秒精度の現在の日付と時間を返します。この関数は定数式です。
+クエリ解析の瞬間にサブ秒精度で現在の日付と時刻を返します。この関数は定数式です。
 
 **構文**
 
-``` sql
+```sql
 now64([scale], [timezone])
 ```
 
 **引数**
 
-- `scale` - ティックサイズ（精度）：10<sup>-precision</sup>秒。有効範囲: [ 0 : 9 ]。通常使用されるのは - 3（デフォルト）（ミリ秒）、6（マイクロ秒）、9（ナノ秒）です。
+- `scale` - ティックサイズ（精度）：10<sup>-precision</sup>秒。有効範囲: [ 0 : 9 ]。通常は - 3（デフォルト）（ミリ秒）、6（マイクロ秒）、9（ナノ秒）を使用します。
+- `timezone` — 戻り値の[タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。[String](../data-types/string.md)。
 
-- `timezone` — 返される値のタイムゾーン名（オプション）。 [String](../data-types/string.md)。
+**戻り値**
 
-**返される値**
-
-- サブ秒精度の現在の日付と時間。 [DateTime64](../data-types/datetime64.md)。
+- サブ秒精度の現在の日付と時刻。[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
-``` sql
+```sql
 SELECT now64(), now64(9, 'Asia/Istanbul');
 ```
 
 結果:
 
-``` text
+```text
 ┌─────────────────now64()─┬─────now64(9, 'Asia/Istanbul')─┐
 │ 2022-08-21 19:34:26.196 │ 2022-08-21 22:34:26.196542766 │
 └─────────────────────────┴───────────────────────────────┘
 ```
-
 ## nowInBlock {#nowInBlock}
 
-各データブロックの処理の瞬間における現在の日付と時間を返します。[now](#now) 関数とは異なり、これは定数式ではなく、長時間のクエリでは異なるブロックで返される値が異なります。
+各データブロックの処理時点で現在の日付と時刻を返します。[now](#now)関数とは異なり、これは定数式ではなく、長時間実行されるクエリの異なるブロックで異なる値が返されます。
 
-この関数は、長時間の INSERT SELECT クエリで現在の時刻を生成するために使うのが最適です。
+この関数は長時間実行されるINSERT SELECTクエリで現在の時間を生成するために使用する意義があります。
 
 **構文**
 
-``` sql
+```sql
 nowInBlock([timezone])
 ```
 
 **引数**
 
-- `timezone` — 返される値のタイムゾーン名（オプション）。 [String](../data-types/string.md)。
+- `timezone` — 戻り値の[タイムゾーン名](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- 各データブロックの処理の瞬間における現在の日付と時間。 [DateTime](../data-types/datetime.md)。
+- 各データブロックの処理時に現在の日付と時刻。[DateTime](../data-types/datetime.md)。
 
 **例**
 
-``` sql
+```sql
 SELECT
     now(),
     nowInBlock(),
@@ -2868,17 +2850,16 @@ FORMAT PrettyCompactMonoBlock
 
 結果:
 
-``` text
+```text
 ┌───────────────now()─┬────────nowInBlock()─┬─sleep(1)─┐
 │ 2022-08-21 19:41:19 │ 2022-08-21 19:41:19 │        0 │
 │ 2022-08-21 19:41:19 │ 2022-08-21 19:41:20 │        0 │
 │ 2022-08-21 19:41:19 │ 2022-08-21 19:41:21 │        0 │
 └─────────────────────┴─────────────────────┴──────────┘
 ```
-
 ## today {#today}
 
-クエリ分析の瞬間における現在の日付を返します。これは 'toDate(now())' と同じで、エイリアス: `curdate`, `current_date` があります。
+クエリ解析の瞬間の現在の日付を返します。これは'toDate(now())'と同じであり、別名: `curdate`, `current_date`があります。
 
 **構文**
 
@@ -2890,9 +2871,9 @@ today()
 
 - なし
 
-**返される値**
+**戻り値**
 
-- 現在の日付。 [DateTime](../data-types/datetime.md)。
+- 現在の日付。[DateTime](../data-types/datetime.md)。
 
 **例**
 
@@ -2904,7 +2885,7 @@ SELECT today() AS today, curdate() AS curdate, current_date() AS current_date FO
 
 **結果**:
 
-2024年3月3日に上記のクエリを実行すると、以下の結果が返されます:
+2024年3月3日に上記のクエリを実行すると、以下のような応答が返されるでしょう:
 
 ```response
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━┓
@@ -2913,15 +2894,13 @@ SELECT today() AS today, curdate() AS curdate, current_date() AS current_date FO
 │ 2024-03-03 │ 2024-03-03 │   2024-03-03 │
 └────────────┴────────────┴──────────────┘
 ```
-
 ## yesterday {#yesterday}
 
-引数はゼロで、クエリ分析の瞬間に昨日の日付を返します。
-'today() - 1' と同じです。
-
+引数なしで、クエリ解析の1つの時点における昨日の日付を返します。
+'today() - 1'と同じです。
 ## timeSlot {#timeslot}
 
-時間を30分の長さの間隔に切り上げます。
+時間を30分間隔の開始時刻に丸めます。
 
 **構文**
 
@@ -2931,16 +2910,16 @@ timeSlot(time[, time_zone])
 
 **引数**
 
-- `time` — 30分の長さの間隔の開始に切り上げる時間。 [DateTime](../data-types/datetime.md)/[Date32](../data-types/date32.md)/[DateTime64](../data-types/datetime64.md)。
-- `time_zone` — タイムゾーンを表す文字列型定数値または式。 [String](../data-types/string.md)。
+- `time` — 30分間隔の開始時刻に丸める時間。[DateTime](../data-types/datetime.md)/[Date32](../data-types/date32.md)/[DateTime64](../data-types/datetime64.md)。
+- `time_zone` — タイムゾーンを表す文字列型の定数値または式。[String](../data-types/string.md)。
 
 :::note
-この関数は、`Date32` と `DateTime64` の拡張型の値を引数として受け取ることができますが、通常の範囲（`Date` 用の1970年から2149年 / `DateTime` 用の2106年）を超える時間を渡すと間違った結果を生成します。
+この関数は拡張型の`Date32`および`DateTime64`の値を引数として取ることができますが、通常の範囲（`Date`の場合は1970年から2149年、`DateTime`は2106年）の外に時間を渡すと不正確な結果が得られます。
 :::
 
 **戻り値の型**
 
-- 30分の長さの間隔の開始に切り上げられた時間を返します。 [DateTime](../data-types/datetime.md)。
+- 30分間隔の開始時刻に丸められた時間を返します。[DateTime](../data-types/datetime.md)。
 
 **例**
 
@@ -2957,31 +2936,29 @@ SELECT timeSlot(toDateTime('2000-01-02 03:04:05', 'UTC'));
 │                                2000-01-02 03:00:00 │
 └────────────────────────────────────────────────────┘
 ```
-
 ## toYYYYMM {#toyyyymm}
 
-日付または日付と時間を年と月の番号を含む UInt32 数（YYYY * 100 + MM）に変換します。第二のオプショナルタイムゾーン引数を受け取ります。提供された場合、タイムゾーンは文字列定数でなければなりません。
+日付または日時をUInt32番号に変換し、年と月の数（YYYY * 100 + MM）を返します。第二のオプションのタイムゾーン引数を受け取ります。提供された場合、タイムゾーンは文字列定数でなければなりません。
 
-この関数は `YYYYMMDDToDate()` 関数の逆です。
+この関数は`YYYYMMDDToDate()`の逆です。
 
 **例**
 
-``` sql
+```sql
 SELECT
     toYYYYMM(now(), 'US/Eastern')
 ```
 
 結果:
 
-``` text
+```text
 ┌─toYYYYMM(now(), 'US/Eastern')─┐
 │                        202303 │
 └───────────────────────────────┘
 ```
-
 ## toYYYYMMDD {#toyyyymmdd}
 
-日付または日付と時間を年、月、日の番号を含む UInt32 数（YYYY * 10000 + MM * 100 + DD）に変換します。第二のオプショナルタイムゾーン引数を受け取ります。提供された場合、タイムゾーンは文字列定数でなければなりません。
+日付または日時をUInt32番号に変換し、年と月の数（YYYY * 10000 + MM * 100 + DD）を返します。第二のオプションのタイムゾーン引数を受け取ります。提供された場合、タイムゾーンは文字列定数でなければなりません。
 
 **例**
 
@@ -2996,10 +2973,9 @@ SELECT toYYYYMMDD(now(), 'US/Eastern')
 │                        20230302 │
 └─────────────────────────────────┘
 ```
-
 ## toYYYYMMDDhhmmss {#toyyyymmddhhmmss}
 
-日付または日付と時間を年、月、日、時、分、秒の番号を含む UInt64 数（YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss）に変換します。第二のオプショナルタイムゾーン引数を受け取ります。提供された場合、タイムゾーンは文字列定数でなければなりません。
+日付または日時をUInt64番号に変換し、年、月、日、時間、分、秒の数（YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss）を返します。第二のオプションのタイムゾーン引数を受け取ります。提供された場合、タイムゾーンは文字列定数でなければなりません。
 
 **例**
 
@@ -3014,14 +2990,13 @@ SELECT toYYYYMMDDhhmmss(now(), 'US/Eastern')
 │                        20230302112209 │
 └───────────────────────────────────────┘
 ```
-
 ## YYYYMMDDToDate {#yyyymmddtodate}
 
-年、月、日を含む数を [Date](../data-types/date.md) に変換します。
+年、月、日を表す数字を[Date](../data-types/date.md)に変換します。
 
-この関数は `toYYYYMMDD()` 関数の逆です。
+この関数は`toYYYYMMDD()`の逆です。
 
-入力が有効な Date 値をエンコードしていない場合、出力は未定義になります。
+入力が有効なDate値としてエンコードされていない場合、出力は未定義です。
 
 **構文**
 
@@ -3031,11 +3006,11 @@ YYYYMMDDToDate(yyyymmdd);
 
 **引数**
 
-- `yyyymmdd` - 年、月、日を表す数。 [Integer](../data-types/int-uint.md)、[Float](../data-types/float.md) または [Decimal](../data-types/decimal.md)。
+- `yyyymmdd` - 年、月、日を表す数。[Integer](../data-types/int-uint.md)、[Float](../data-types/float.md)または[Decimal](../data-types/decimal.md)。
 
-**返される値**
+**戻り値**
 
-- 引数から作成された日付。 [Date](../data-types/date.md)。
+- 引数から生成された日付。[Date](../data-types/date.md)。
 
 **例**
 
@@ -3050,18 +3025,16 @@ SELECT YYYYMMDDToDate(20230911);
 │           2023-09-11 │
 └──────────────────────┘
 ```
-
 ## YYYYMMDDToDate32 {#yyyymmddtodate32}
 
-`YYYYMMDDToDate()` 関数と同様ですが、[Date32](../data-types/date32.md) を生成します。
-
+`YYYYMMDDToDate()`関数と同様ですが、[Date32](../data-types/date32.md)を生成します。
 ## YYYYMMDDhhmmssToDateTime {#yyyymmddhhmmsstodatetime}
 
-年、月、日、時、分、秒の番号を含む数を [DateTime](../data-types/datetime.md) に変換します。
+年、月、日、時間、分、秒を表す数字を[DateTime](../data-types/datetime.md)に変換します。
 
-入力が有効な DateTime 値をエンコードしていない場合、出力は未定義になります。
+入力が有効なDateTime値としてエンコードされていない場合、出力は未定義です。
 
-この関数は `toYYYYMMDDhhmmss()` 関数の逆です。
+この関数は`toYYYYMMDDhhmmss()`の逆です。
 
 **構文**
 
@@ -3071,13 +3044,12 @@ YYYYMMDDhhmmssToDateTime(yyyymmddhhmmss[, timezone]);
 
 **引数**
 
-- `yyyymmddhhmmss` - 年、月、日、時、分、秒を表す数。 [Integer](../data-types/int-uint.md)、[Float](../data-types/float.md) または [Decimal](../data-types/decimal.md)。
+- `yyyymmddhhmmss` - 年、月、日を表す数字。[Integer](../data-types/int-uint.md)、[Float](../data-types/float.md)または[Decimal](../data-types/decimal.md)。
+- `timezone` - 戻り値の[タイムゾーン](../../operations/server-configuration-parameters/settings.md#timezone)（オプション）。
 
-- `timezone` - 返される値のための [タイムゾーン](../../operations/server-configuration-parameters/settings.md#timezone) （オプション）。
+**戻り値**
 
-**返される値**
-
-- 引数から作成された日付と時間。 [DateTime](../data-types/datetime.md)。
+- 引数から生成された日付時刻。[DateTime](../data-types/datetime.md)。
 
 **例**
 
@@ -3092,35 +3064,33 @@ SELECT YYYYMMDDToDateTime(20230911131415);
 │                           2023-09-11 13:14:15 │
 └───────────────────────────────────────────────┘
 ```
-
 ## YYYYMMDDhhmmssToDateTime64 {#yyyymmddhhmmsstodatetime64}
 
-`YYYYMMDDhhmmssToDate()` 関数と同様ですが、[DateTime64](../data-types/datetime64.md) を生成します。
+`YYYYMMDDhhmmssToDate()`関数に似ていますが、[DateTime64](../data-types/datetime64.md)を生成します。
 
-追加のオプショナルな `precision` パラメーターを、`timezone` パラメーターの後に受け取ります。
-
+`timezone`パラメータの後に、追加のオプションの`precision`パラメータを受け取ります。
 ## changeYear {#changeyear}
 
-日付または日付 時間の年のコンポーネントを変更します。
+日付または日時の年のコンポーネントを変更します。
 
 **構文**
-``` sql
+```sql
 
 changeYear(date_or_datetime, value)
 ```
 
 **引数**
 
-- `date_or_datetime` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)
-- `value` - 年の新しい値。 [Integer](../../sql-reference/data-types/int-uint.md)。
+- `date_or_datetime` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)
+- `value` - 年の新しい値。[Integer](../../sql-reference/data-types/int-uint.md)。
 
-**返される値**
+**戻り値**
 
-- `date_or_datetime` と同じ型。
+- `date_or_datetime`と同じ型。
 
 **例**
 
-``` sql
+```sql
 SELECT changeYear(toDate('1999-01-01'), 2000), changeYear(toDateTime64('1999-01-01 00:00:00.000', 3), 2000);
 ```
 
@@ -3131,29 +3101,28 @@ SELECT changeYear(toDate('1999-01-01'), 2000), changeYear(toDateTime64('1999-01-
 │                             2000-01-01 │                                      2000-01-01 00:00:00.000 │
 └────────────────────────────────────────┴──────────────────────────────────────────────────────────────┘
 ```
-
 ## changeMonth {#changemonth}
 
-日付または日付 時間の月のコンポーネントを変更します。
+日付または日時の月のコンポーネントを変更します。
 
 **構文**
 
-``` sql
+```sql
 changeMonth(date_or_datetime, value)
 ```
 
 **引数**
 
-- `date_or_datetime` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)
-- `value` - 月の新しい値。 [Integer](../../sql-reference/data-types/int-uint.md)。
+- `date_or_datetime` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)
+- `value` - 月の新しい値。[Integer](../../sql-reference/data-types/int-uint.md)。
 
-**返される値**
+**戻り値**
 
-- `date_or_datetime` と同じ型の値を返します。
+- `date_or_datetime`と同じ型の値を返します。
 
 **例**
 
-``` sql
+```sql
 SELECT changeMonth(toDate('1999-01-01'), 2), changeMonth(toDateTime64('1999-01-01 00:00:00.000', 3), 2);
 ```
 
@@ -3164,29 +3133,28 @@ SELECT changeMonth(toDate('1999-01-01'), 2), changeMonth(toDateTime64('1999-01-0
 │                           1999-02-01 │                                    1999-02-01 00:00:00.000 │
 └──────────────────────────────────────┴────────────────────────────────────────────────────────────┘
 ```
-
 ## changeDay {#changeday}
 
-日付または日付 時間の日のコンポーネントを変更します。
+日付または日時の日のコンポーネントを変更します。
 
 **構文**
 
-``` sql
+```sql
 changeDay(date_or_datetime, value)
 ```
 
 **引数**
 
-- `date_or_datetime` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)
-- `value` - 日の新しい値。 [Integer](../../sql-reference/data-types/int-uint.md)。
+- `date_or_datetime` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)
+- `value` - 新しい日の値。[Integer](../../sql-reference/data-types/int-uint.md)。
 
-**返される値**
+**戻り値**
 
-- `date_or_datetime` と同じ型の値を返します。
+- `date_or_datetime`と同じ型の値を返します。
 
 **例**
 
-``` sql
+```sql
 SELECT changeDay(toDate('1999-01-01'), 5), changeDay(toDateTime64('1999-01-01 00:00:00.000', 3), 5);
 ```
 
@@ -3200,26 +3168,26 @@ SELECT changeDay(toDate('1999-01-01'), 5), changeDay(toDateTime64('1999-01-01 00
 
 ## changeHour {#changehour}
 
-日付または日付時刻の時間コンポーネントを変更します。
+日付または日時の時間コンポーネントを変更します。
 
 **構文**
 
-``` sql
+```sql
 changeHour(date_or_datetime, value)
 ```
 
 **引数**
 
-- `date_or_datetime` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または [DateTime64](../data-types/datetime64.md)
-- `value` - 時間の新しい値。[Integer](../../sql-reference/data-types/int-uint.md)。
+- `date_or_datetime` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)
+- `value` - 時間の新しい値。 [Integer](../../sql-reference/data-types/int-uint.md)。
 
 **戻り値**
 
-- `date_or_datetime` と同じ型の値を返します。入力が [Date](../data-types/date.md) の場合は [DateTime](../data-types/datetime.md) を返します。入力が [Date32](../data-types/date32.md) の場合は [DateTime64](../data-types/datetime64.md) を返します。
+- `date_or_datetime` と同じタイプの値を返します。入力が [Date](../data-types/date.md) の場合は [DateTime](../data-types/datetime.md) を返し、入力が [Date32](../data-types/date32.md) の場合は [DateTime64](../data-types/datetime64.md) を返します。
 
 **例**
 
-``` sql
+```sql
 SELECT changeHour(toDate('1999-01-01'), 14), changeHour(toDateTime64('1999-01-01 00:00:00.000', 3), 14);
 ```
 
@@ -3232,26 +3200,26 @@ SELECT changeHour(toDate('1999-01-01'), 14), changeHour(toDateTime64('1999-01-01
 ```
 ## changeMinute {#changeminute}
 
-日付または日付時刻の分コンポーネントを変更します。
+日付または日時の分コンポーネントを変更します。
 
 **構文**
 
-``` sql
+```sql
 changeMinute(date_or_datetime, value)
 ```
 
 **引数**
 
-- `date_or_datetime` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または [DateTime64](../data-types/datetime64.md)
-- `value` - 分の新しい値。[Integer](../../sql-reference/data-types/int-uint.md)。
+- `date_or_datetime` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)
+- `value` - 分の新しい値。 [Integer](../../sql-reference/data-types/int-uint.md)。
 
 **戻り値**
 
-- `date_or_datetime` と同じ型の値を返します。入力が [Date](../data-types/date.md) の場合は [DateTime](../data-types/datetime.md) を返します。入力が [Date32](../data-types/date32.md) の場合は [DateTime64](../data-types/datetime64.md) を返します。
+- `date_or_datetime` と同じタイプの値を返します。入力が [Date](../data-types/date.md) の場合は [DateTime](../data-types/datetime.md) を返し、入力が [Date32](../data-types/date32.md) の場合は [DateTime64](../data-types/datetime64.md) を返します。
 
 **例**
 
-``` sql
+```sql
     SELECT changeMinute(toDate('1999-01-01'), 15), changeMinute(toDateTime64('1999-01-01 00:00:00.000', 3), 15);
 ```
 
@@ -3264,26 +3232,26 @@ changeMinute(date_or_datetime, value)
 ```
 ## changeSecond {#changesecond}
 
-日付または日付時刻の秒コンポーネントを変更します。
+日付または日時の秒コンポーネントを変更します。
 
 **構文**
 
-``` sql
+```sql
 changeSecond(date_or_datetime, value)
 ```
 
 **引数**
 
-- `date_or_datetime` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または [DateTime64](../data-types/datetime64.md)
-- `value` - 秒の新しい値。[Integer](../../sql-reference/data-types/int-uint.md)。
+- `date_or_datetime` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)
+- `value` - 秒の新しい値。 [Integer](../../sql-reference/data-types/int-uint.md)。
 
 **戻り値**
 
-- `date_or_datetime` と同じ型の値を返します。入力が [Date](../data-types/date.md) の場合は [DateTime](../data-types/datetime.md) を返します。入力が [Date32](../data-types/date32.md) の場合は [DateTime64](../data-types/datetime64.md) を返します。
+- `date_or_datetime` と同じタイプの値を返します。入力が [Date](../data-types/date.md) の場合は [DateTime](../data-types/datetime.md) を返し、入力が [Date32](../data-types/date32.md) の場合は [DateTime64](../data-types/datetime64.md) を返します。
 
 **例**
 
-``` sql
+```sql
 SELECT changeSecond(toDate('1999-01-01'), 15), changeSecond(toDateTime64('1999-01-01 00:00:00.000', 3), 15);
 ```
 
@@ -3296,7 +3264,7 @@ SELECT changeSecond(toDate('1999-01-01'), 15), changeSecond(toDateTime64('1999-0
 ```
 ## addYears {#addyears}
 
-指定された年数を日付、日付時刻、または文字列エンコードされた日付/日付時刻に追加します。
+指定された年数を日付、日時、または文字列エンコードされた日付 / 日時に追加します。
 
 **構文**
 
@@ -3306,12 +3274,12 @@ addYears(date, num)
 
 **引数**
 
-- `date`: 指定された年数を追加する日付/日付時刻。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 追加する年数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date`: 指定された年数を追加する日付 / 日時。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 追加する年数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date` に `num` 年を追加します。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` に `num` 年を加算した値を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3333,7 +3301,7 @@ SELECT
 ```
 ## addQuarters {#addquarters}
 
-指定された四半期数を日付、日付時刻、または文字列エンコードされた日付/日付時刻に追加します。
+指定された四半期数を日付、日時、または文字列エンコードされた日付 / 日時に追加します。
 
 **構文**
 
@@ -3343,12 +3311,12 @@ addQuarters(date, num)
 
 **引数**
 
-- `date`: 指定された四半期数を追加する日付/日付時刻。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 追加する四半期数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date`: 指定された四半期数を追加する日付 / 日時。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 追加する四半期数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date` に `num` 四半期を追加します。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` に `num` 四半期を加算した値を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3370,7 +3338,7 @@ SELECT
 ```
 ## addMonths {#addmonths}
 
-指定された月数を日付、日付時刻、または文字列エンコードされた日付/日付時刻に追加します。
+指定された月数を日付、日時、または文字列エンコードされた日付 / 日時に追加します。
 
 **構文**
 
@@ -3380,12 +3348,12 @@ addMonths(date, num)
 
 **引数**
 
-- `date`: 指定された月数を追加する日付/日付時刻。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 追加する月数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date`: 指定された月数を追加する日付 / 日時。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 追加する月数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date` に `num` ヶ月を追加します。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` に `num` 月を加算した値を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3407,7 +3375,7 @@ SELECT
 ```
 ## addWeeks {#addweeks}
 
-指定された週数を日付、日付時刻、または文字列エンコードされた日付/日付時刻に追加します。
+指定された週数を日付、日時、または文字列エンコードされた日付 / 日時に追加します。
 
 **構文**
 
@@ -3417,12 +3385,12 @@ addWeeks(date, num)
 
 **引数**
 
-- `date`: 指定された週数を追加する日付/日付時刻。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 追加する週数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date`: 指定された週数を追加する日付 / 日時。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 追加する週数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date` に `num` 週を追加します。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` に `num` 週間を加算した値を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3444,7 +3412,7 @@ SELECT
 ```
 ## addDays {#adddays}
 
-指定された日数を日付、日付時刻、または文字列エンコードされた日付/日付時刻に追加します。
+指定された日数を日付、日時、または文字列エンコードされた日付 / 日時に追加します。
 
 **構文**
 
@@ -3454,12 +3422,12 @@ addDays(date, num)
 
 **引数**
 
-- `date`: 指定された日数を追加する日付/日付時刻。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 追加する日数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date`: 指定された日数を追加する日付 / 日時。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 追加する日数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date` に `num` 日を追加します。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` に `num` 日を加算した値を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3481,7 +3449,7 @@ SELECT
 ```
 ## addHours {#addhours}
 
-指定された時間数を日付、日付時刻、または文字列エンコードされた日付/日付時刻に追加します。
+指定された時間数を日付、日時、または文字列エンコードされた日付 / 日時に追加します。
 
 **構文**
 
@@ -3491,12 +3459,12 @@ addHours(date, num)
 
 **引数**
 
-- `date`: 指定された時間数を追加する日付/日付時刻。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 追加する時間数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date`: 指定された時間数を追加する日付 / 日時。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 追加する時間数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date` に `num` 時間を追加します。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` に `num` 時間を加算した値を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3518,7 +3486,7 @@ SELECT
 ```
 ## addMinutes {#addminutes}
 
-指定された分数を日付、日付時刻、または文字列エンコードされた日付/日付時刻に追加します。
+指定された分数を日付、日時、または文字列エンコードされた日付 / 日時に追加します。
 
 **構文**
 
@@ -3528,12 +3496,12 @@ addMinutes(date, num)
 
 **引数**
 
-- `date`: 指定された分数を追加する日付/日付時刻。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 追加する分数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date`: 指定された分数を追加する日付 / 日時。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 追加する分数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date` に `num` 分を追加します。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` に `num` 分を加算した値を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3555,7 +3523,7 @@ SELECT
 ```
 ## addSeconds {#addseconds}
 
-指定された秒数を日付、日付時刻、または文字列エンコードされた日付/日付時刻に追加します。
+指定された秒数を日付、日時、または文字列エンコードされた日付 / 日時に追加します。
 
 **構文**
 
@@ -3565,12 +3533,12 @@ addSeconds(date, num)
 
 **引数**
 
-- `date`: 指定された秒数を追加する日付/日付時刻。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 追加する秒数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date`: 指定された秒数を追加する日付 / 日時。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 追加する秒数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date` に `num` 秒を追加します。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` に `num` 秒を加算した値を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3592,7 +3560,7 @@ SELECT
 ```
 ## addMilliseconds {#addmilliseconds}
 
-指定されたミリ秒数を日付時刻、または文字列エンコードされた日付時刻に追加します。
+指定されたミリ秒数を日時または文字列エンコードされた日時に追加します。
 
 **構文**
 
@@ -3602,12 +3570,12 @@ addMilliseconds(date_time, num)
 
 **引数**
 
-- `date_time`: 指定されたミリ秒数を追加する日付時刻。[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 追加するミリ秒数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date_time`: 指定されたミリ秒数を追加する日時。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 追加するミリ秒数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date_time` に `num` ミリ秒を追加します。[DateTime64](../data-types/datetime64.md)。
+- `date_time` に `num` ミリ秒を加算した値を返します。 [DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3627,7 +3595,7 @@ SELECT
 ```
 ## addMicroseconds {#addmicroseconds}
 
-指定されたマイクロ秒数を日付時刻、または文字列エンコードされた日付時刻に追加します。
+指定されたマイクロ秒数を日時または文字列エンコードされた日時に追加します。
 
 **構文**
 
@@ -3637,12 +3605,12 @@ addMicroseconds(date_time, num)
 
 **引数**
 
-- `date_time`: 指定されたマイクロ秒数を追加する日付時刻。[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 追加するマイクロ秒数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date_time`: 指定されたマイクロ秒数を追加する日時。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 追加するマイクロ秒数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date_time` に `num` マイクロ秒を追加します。[DateTime64](../data-types/datetime64.md)。
+- `date_time` に `num` マイクロ秒を加算した値を返します。 [DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3662,7 +3630,7 @@ SELECT
 ```
 ## addNanoseconds {#addnanoseconds}
 
-指定されたナノ秒数を日付時刻、または文字列エンコードされた日付時刻に追加します。
+指定されたナノ秒数を日時または文字列エンコードされた日時に追加します。
 
 **構文**
 
@@ -3672,12 +3640,12 @@ addNanoseconds(date_time, num)
 
 **引数**
 
-- `date_time`: 指定されたナノ秒数を追加する日付時刻。[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 追加するナノ秒数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date_time`: 指定されたナノ秒数を追加する日時。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 追加するナノ秒数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date_time` に `num` ナノ秒を追加します。[DateTime64](../data-types/datetime64.md)。
+- `date_time` に `num` ナノ秒を加算した値を返します。 [DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3697,7 +3665,7 @@ SELECT
 ```
 ## addInterval {#addinterval}
 
-他の間隔または間隔のタプルに間隔を追加します。
+インターバルを別のインターバルまたはインターバルのタプルに追加します。
 
 **構文**
 
@@ -3707,15 +3675,15 @@ addInterval(interval_1, interval_2)
 
 **引数**
 
-- `interval_1`: 最初の間隔または間隔のタプル。[interval](../data-types/special-data-types/interval.md)、[tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
-- `interval_2`: 追加される2番目の間隔。[interval](../data-types/special-data-types/interval.md)。
+- `interval_1`: 最初のインターバルまたはインターバルのタプル。 [interval](../data-types/special-data-types/interval.md)、[tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
+- `interval_2`: 追加される第2のインターバル。 [interval](../data-types/special-data-types/interval.md)。
 
 **戻り値**
 
-- 間隔のタプルを返します。[tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
+- インターバルのタプルを返します。 [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
 
 :::note
-同じタイプの間隔は1つの間隔に結合されます。たとえば、`toIntervalDay(1)` と `toIntervalDay(2)` を渡すと、結果は `(3)` になります。 `(1,1)` ではありません。
+同じタイプのインターバルは、単一のインターバルに結合されます。例えば `toIntervalDay(1)` と `toIntervalDay(2)` を渡すと、結果は `(3)` になります。
 :::
 
 **例**
@@ -3743,7 +3711,7 @@ SELECT addInterval(INTERVAL 2 DAY, INTERVAL 1 DAY);
 ```
 ## addTupleOfIntervals {#addtupleofintervals}
 
-日付または日付時刻に間隔のタプルを逐次追加します。
+インターバルのタプルを日付または日時に順次追加します。
 
 **構文**
 
@@ -3753,12 +3721,12 @@ addTupleOfIntervals(interval_1, interval_2)
 
 **引数**
 
-- `date`: 最初の間隔または間隔のタプル。[date](../data-types/date.md)/[date32](../data-types/date32.md)/[datetime](../data-types/datetime.md)/[datetime64](../data-types/datetime64.md)。
-- `intervals`: `date` に追加する間隔のタプル。[tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
+- `date`: 最初のインターバルまたはインターバルのタプル。 [date](../data-types/date.md)/[date32](../data-types/date32.md)/[datetime](../data-types/datetime.md)/[datetime64](../data-types/datetime64.md)。
+- `intervals`: `date` に追加されるインターバルのタプル。 [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
 
 **戻り値**
 
-- `intervals` が追加された `date` を返します。[date](../data-types/date.md)/[date32](../data-types/date32.md)/[datetime](../data-types/datetime.md)/[datetime64](../data-types/datetime64.md)。
+- `intervals`を追加した`date` を返します。 [date](../data-types/date.md)/[date32](../data-types/date32.md)/[datetime](../data-types/datetime.md)/[datetime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3778,7 +3746,7 @@ SELECT addTupleOfIntervals(date, (INTERVAL 1 DAY, INTERVAL 1 MONTH, INTERVAL 1 Y
 ```
 ## subtractYears {#subtractyears}
 
-日付、日付時刻、または文字列エンコードされた日付/日付時刻から指定された年数を減算します。
+指定された年数を日付、日時、または文字列エンコードされた日付 / 日時から引きます。
 
 **構文**
 
@@ -3788,12 +3756,12 @@ subtractYears(date, num)
 
 **引数**
 
-- `date`: 指定された年数を減算する日付/日付時刻。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 減算する年数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date`: 指定された年数を引く日付 / 日時。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 引く年数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date` から `num` 年を引きます。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` から `num` 年を引いた値を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3815,7 +3783,7 @@ SELECT
 ```
 ## subtractQuarters {#subtractquarters}
 
-日付、日付時刻、または文字列エンコードされた日付/日付時刻から指定された四半期数を減算します。
+指定された四半期数を日付、日時、または文字列エンコードされた日付 / 日時から引きます。
 
 **構文**
 
@@ -3825,12 +3793,12 @@ subtractQuarters(date, num)
 
 **引数**
 
-- `date`: 指定された四半期数を減算する日付/日付時刻。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 減算する四半期数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date`: 指定された四半期数を引く日付 / 日時。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 引く四半期数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date` から `num` 四半期を引きます。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` から `num` 四半期を引いた値を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3852,7 +3820,7 @@ SELECT
 ```
 ## subtractMonths {#subtractmonths}
 
-日付、日付時刻、または文字列エンコードされた日付/日付時刻から指定された月数を減算します。
+指定された月数を日付、日時、または文字列エンコードされた日付 / 日時から引きます。
 
 **構文**
 
@@ -3862,12 +3830,12 @@ subtractMonths(date, num)
 
 **引数**
 
-- `date`: 指定された月数を減算する日付/日付時刻。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 減算する月数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date`: 指定された月数を引く日付 / 日時。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 引く月数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date` から `num` ヶ月を引きます。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` から `num` 月を引いた値を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3889,7 +3857,7 @@ SELECT
 ```
 ## subtractWeeks {#subtractweeks}
 
-日付、日付時刻、または文字列エンコードされた日付/日付時刻から指定された週数を減算します。
+指定された週数を日付、日時、または文字列エンコードされた日付 / 日時から引きます。
 
 **構文**
 
@@ -3899,12 +3867,12 @@ subtractWeeks(date, num)
 
 **引数**
 
-- `date`: 指定された週数を減算する日付/日付時刻。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 減算する週数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date`: 指定された週数を引く日付 / 日時。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 引く週数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date` から `num` 週を引きます。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` から `num` 週間を引いた値を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3926,7 +3894,7 @@ SELECT
 ```
 ## subtractDays {#subtractdays}
 
-日付、日付時刻、または文字列エンコードされた日付/日付時刻から指定された日数を減算します。
+指定された日数を日付、日時、または文字列エンコードされた日付 / 日時から引きます。
 
 **構文**
 
@@ -3936,12 +3904,12 @@ subtractDays(date, num)
 
 **引数**
 
-- `date`: 指定された日数を減算する日付/日付時刻。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 減算する日数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date`: 指定された日数を引く日付 / 日時。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 引く日数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date` から `num` 日を引きます。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` から `num` 日を引いた値を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3963,7 +3931,7 @@ SELECT
 ```
 ## subtractHours {#subtracthours}
 
-日付、日付時刻、または文字列エンコードされた日付/日付時刻から指定された時間数を減算します。
+指定された時間数を日付、日時、または文字列エンコードされた日付 / 日時から引きます。
 
 **構文**
 
@@ -3973,12 +3941,12 @@ subtractHours(date, num)
 
 **引数**
 
-- `date`: 指定された時間数を減算する日付/日付時刻。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[Datetime](../data-types/datetime.md)/[Datetime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
-- `num`: 減算する時間数。[(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
+- `date`: 指定された時間数を引く日付 / 日時。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[Datetime](../data-types/datetime.md)/[Datetime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `num`: 引く時間数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **戻り値**
 
-- `date` から `num` 時間を引きます。[Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[Datetime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` から `num` 時間を引いた値を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[Datetime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -3998,19 +3966,10 @@ SELECT
 │      2023-12-31 12:00:00 │           2023-12-31 12:00:00 │              2023-12-31 12:00:00.000 │
 └──────────────────────────┴───────────────────────────────┴──────────────────────────────────────┘
 ```
-```yaml
-title: 'subtract, formatDateTime, and date functions'
-sidebar_label: '日付関数'
-keywords:
-  - subtract
-  - formatDateTime
-  - date functions
-description: 'Subtracts specific time intervals and formats date and time in ClickHouse.'
-```
 
 ## subtractMinutes {#subtractminutes}
 
-指定された分数を日付、時間付きの日付、または文字列形式の日付/時間から減算します。
+指定された分数を日付、時間付き日付、または文字列でエンコードされた日付 / 時間付き日付から減算します。
 
 **構文**
 
@@ -4020,12 +3979,12 @@ subtractMinutes(date, num)
 
 **パラメータ**
 
-- `date`: 指定された分数を減算する日付/時間付きの日付。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `date`: 減算する対象の日付 / 時間付き日付。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 減算する分数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返される値**
 
-- `date` から `num` 分を引いた結果を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` から `num` 分を減算した結果を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -4047,7 +4006,7 @@ SELECT
 ```
 ## subtractSeconds {#subtractseconds}
 
-指定された秒数を日付、時間付きの日付、または文字列形式の日付/時間から減算します。
+指定された秒数を日付、時間付き日付、または文字列でエンコードされた日付 / 時間付き日付から減算します。
 
 **構文**
 
@@ -4057,12 +4016,12 @@ subtractSeconds(date, num)
 
 **パラメータ**
 
-- `date`: 指定された秒数を減算する日付/時間付きの日付。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `date`: 減算対象の日付 / 時間付き日付。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 減算する秒数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返される値**
 
-- `date` から `num` 秒を引いた結果を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `date` から `num` 秒を減算した結果を返します。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -4084,7 +4043,7 @@ SELECT
 ```
 ## subtractMilliseconds {#subtractmilliseconds}
 
-指定されたミリ秒数を時間付きの日付、または文字列形式の時間付きの日付から減算します。
+指定されたミリ秒を時間付き日付または文字列でエンコードされた時間付き日付から減算します。
 
 **構文**
 
@@ -4094,12 +4053,12 @@ subtractMilliseconds(date_time, num)
 
 **パラメータ**
 
-- `date_time`: 指定されたミリ秒数を減算する時間付きの日付。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `date_time`: 減算対象の時間付き日付。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 減算するミリ秒数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返される値**
 
-- `date_time` から `num` ミリ秒を引いた結果を返します。 [DateTime64](../data-types/datetime64.md)。
+- `date_time` から `num` ミリ秒を減算した結果を返します。 [DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -4119,7 +4078,7 @@ SELECT
 ```
 ## subtractMicroseconds {#subtractmicroseconds}
 
-指定されたマイクロ秒数を時間付きの日付、または文字列形式の時間付きの日付から減算します。
+指定されたマイクロ秒を時間付き日付または文字列でエンコードされた時間付き日付から減算します。
 
 **構文**
 
@@ -4129,12 +4088,12 @@ subtractMicroseconds(date_time, num)
 
 **パラメータ**
 
-- `date_time`: 指定されたマイクロ秒数を減算する時間付きの日付。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `date_time`: 減算対象の時間付き日付。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 減算するマイクロ秒数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返される値**
 
-- `date_time` から `num` マイクロ秒を引いた結果を返します。 [DateTime64](../data-types/datetime64.md)。
+- `date_time` から `num` マイクロ秒を減算した結果を返します。 [DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -4154,7 +4113,7 @@ SELECT
 ```
 ## subtractNanoseconds {#subtractnanoseconds}
 
-指定されたナノ秒数を時間付きの日付、または文字列形式の時間付きの日付から減算します。
+指定されたナノ秒を時間付き日付または文字列でエンコードされた時間付き日付から減算します。
 
 **構文**
 
@@ -4164,12 +4123,12 @@ subtractNanoseconds(date_time, num)
 
 **パラメータ**
 
-- `date_time`: 指定されたナノ秒数を減算する時間付きの日付。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
+- `date_time`: 減算対象の時間付き日付。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 減算するナノ秒数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返される値**
 
-- `date_time` から `num` ナノ秒を引いた結果を返します。 [DateTime64](../data-types/datetime64.md)。
+- `date_time` から `num` ナノ秒を減算した結果を返します。 [DateTime64](../data-types/datetime64.md)。
 
 **例**
 
@@ -4189,7 +4148,7 @@ SELECT
 ```
 ## subtractInterval {#subtractinterval}
 
-他のインターバルまたはインターバルのタプルに否定されたインターバルを加算します。
+別の間隔または間隔のタプルに対して、反転された間隔を加算します。
 
 **構文**
 
@@ -4199,15 +4158,15 @@ subtractInterval(interval_1, interval_2)
 
 **パラメータ**
 
-- `interval_1`: 最初のインターバルまたはタプルのインターバル。 [interval](../data-types/special-data-types/interval.md)、[tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
-- `interval_2`: 否定される第2のインターバル。 [interval](../data-types/special-data-types/interval.md)。
+- `interval_1`: 最初の間隔または間隔のタプル。 [interval](../data-types/special-data-types/interval.md)、[tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
+- `interval_2`: 反転される2番目の間隔。 [interval](../data-types/special-data-types/interval.md)。
 
 **返される値**
 
-- インターバルのタプルを返します。 [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
+- 間隔のタプルを返します。 [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
 
 :::note
-同じタイプのインターバルは1つのインターバルに結合されます。例えば、`toIntervalDay(2)` と `toIntervalDay(1)` が渡された場合、結果は `(1)` になります。
+同じ型の間隔は単一の間隔に統合されます。たとえば、 `toIntervalDay(2)` と `toIntervalDay(1)` が渡された場合、結果は `(1)` になります。(2,1) ではなく。
 :::
 
 **例**
@@ -4235,7 +4194,7 @@ SELECT subtractInterval(INTERVAL 2 DAY, INTERVAL 1 DAY);
 ```
 ## subtractTupleOfIntervals {#subtracttupleofintervals}
 
-タプルのインターバルを日付または日時から逐次減算します。
+日付または時間付き日付から、間隔のタプルを順次減算します。
 
 **構文**
 
@@ -4245,8 +4204,8 @@ subtractTupleOfIntervals(interval_1, interval_2)
 
 **パラメータ**
 
-- `date`: 最初のインターバルまたはタプルのインターバル。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
-- `intervals`: `date` から減算するインターバルのタプル。 [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
+- `date`: 最初の間隔または間隔のタプル。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `intervals`: `date` から減算する間隔のタプル。 [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
 
 **返される値**
 
@@ -4269,10 +4228,10 @@ WITH toDate('2018-01-01') AS date SELECT subtractTupleOfIntervals(date, (INTERVA
 ```
 ## timeSlots {#timeslots}
 
-'StartTime' から開始し、'Duration' 秒間続く時間間隔に対して、この間隔を 'Size' 秒に切り捨てた時間の点の配列を返します。 'Size' は省略可能なパラメータで、デフォルトは1800（30分）です。
-これは、例えば、対応するセッション内のページビューを検索する際に必要です。
-'StartTime' 引数として DateTime と DateTime64 を受け取ります。 DateTime の場合、'Duration' と 'Size' 引数は `UInt32` でなければなりません。 'DateTime64' の場合、それらは `Decimal64` でなければなりません。
-DateTime/DateTime64 の配列を返します（返り値の型は 'StartTime' の型と一致します）。 DateTime64 の場合、返り値のスケールは 'StartTime' のスケールと異なる場合があります --- 与えられたすべての引数の中で最高のスケールが採用されます。
+'StartTime' から始まり、'Duration' 秒間続く時間間隔について、この間隔から下方向に 'Size' 秒単位で切り捨てたポイントの配列を返します。 'Size' はオプションのパラメータで、デフォルトで1800（30分）に設定されています。
+これは、たとえば、対応するセッションでのページビューを検索する際に必要です。
+'StartTime' 引数には DateTime と DateTime64 を受け入れます。DateTime の場合、'Duration' と 'Size' 引数は `UInt32` でなければなりません。 'DateTime64' の場合、それらは `Decimal64` でなければなりません。
+DateTime/DateTime64 の配列を返します（返される型は 'StartTime' の型に一致します）。DateTime64 の場合、返された値のスケールは 'StartTime' のスケールとは異なることがあります --- すべての引数の中で最大のスケールが採用されます。
 
 **構文**
 
@@ -4290,7 +4249,7 @@ SELECT timeSlots(toDateTime64('1980-12-12 21:01:02.1234', 4, 'UTC'), toDecimal64
 
 結果:
 
-``` text
+```text
 ┌─timeSlots(toDateTime('2012-01-01 12:20:00'), toUInt32(600))─┐
 │ ['2012-01-01 12:00:00','2012-01-01 12:30:00']               │
 └─────────────────────────────────────────────────────────────┘
@@ -4303,9 +4262,9 @@ SELECT timeSlots(toDateTime64('1980-12-12 21:01:02.1234', 4, 'UTC'), toDecimal64
 ```
 ## formatDateTime {#formatdatetime}
 
-指定されたフォーマット文字列に従って時間をフォーマットします。フォーマットは定数式であるため、単一の結果列に対して複数のフォーマットを持つことはできません。
+指定されたフォーマット文字列に従って時間をフォーマットします。フォーマットは定数式なので、単一の結果カラムに対して複数のフォーマットを持つことはできません。
 
-formatDateTime は MySQL の日時フォーマットスタイルを使用します。詳細は https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format を参照してください。
+formatDateTime は MySQL の日時フォーマットスタイルを使用します。参照: https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format.
 
 この関数の逆操作は [parseDateTime](/sql-reference/functions/type-conversion-functions#parsedatetime) です。
 
@@ -4313,7 +4272,7 @@ formatDateTime は MySQL の日時フォーマットスタイルを使用しま�
 
 **構文**
 
-``` sql
+```sql
 formatDateTime(Time, Format[, Timezone])
 ```
 
@@ -4323,59 +4282,61 @@ formatDateTime(Time, Format[, Timezone])
 
 **置換フィールド**
 
-置換フィールドを使用して、結果の文字列のパターンを定義できます。「例」カラムは `2018-01-02 22:33:44` のフォーマット結果を示しています。
+置換フィールドを使用して、結果文字列のパターンを定義できます。 "Example" 列には `2018-01-02 22:33:44` のフォーマット結果が示されています。
 
-| プレースホルダー | 説明                                                                                                                                                                                         | 例         |
-|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
-| %a       | 省略された曜日名 (月曜日-日曜日)                                                                                                                                                                   | Mon       |
-| %b       | 省略された月名 (1月-12月)                                                                                                                                                                  | Jan       |
-| %c       | 整数で表された月 (01-12)、下記の「注 4」を参照                                                                                                                                              | 01        |
-| %C       | 100で割って整数に切り捨てた年 (00-99)                                                                                                                                                | 20        |
-| %d       | ゼロパディングされた月の日 (01-31)                                                                                                                                                               | 02        |
-| %D       | 短縮されたMM/DD/YY形式の日付で、%m/%d/%y と等しい                                                                                                                                     | 01/02/18  |
-| %e       | スペースパディングされた月の日 (1-31)                                                                                                                                                               | &nbsp; 2  |
-| %f       | 小数秒、下記の「注 1」及び「注 2」を参照                                                                                                                                                  | 123456    |
-| %F       | 短縮されたYYYY-MM-DD形式の日付で、%Y-%m-%d と等しい                                                                                                                                     | 2018-01-02 |
-| %g       | ISO 8601に準拠した2桁の年形式で、4桁の表記から省略されたもの                                                                                              | 18       |
-| %G       | ISO週番号用の4桁の年形式、ISO 8601で定義された週ベースの年から計算される、通常は%Vと共に使用される                                                                                         | 2018      |
-| %h       | 12時間形式の時 (01-12)                                                                                                                                                                   | 09        |
-| %H       | 24時間形式の時 (00-23)                                                                                                                                                                   | 22        |
-| %i       | 分 (00-59)                                                                                                                                                                               | 33        |
-| %I       | 12時間形式の時 (01-12)                                                                                                                                                                   | 10        |
-| %j       | 年の日 (001-366)                                                                                                                                                                           | 002       |
-| %k       | 24時間形式の時 (00-23)、下記の「注 4」を参照                                                                                                                                             | 14        |
-| %l       | 12時間形式の時 (01-12)、下記の「注 4」を参照                                                                                                                                             | 09        |
-| %m       | 整数で表された月 (01-12)                                                                                                                                                                  | 01        |
-| %M       | 月の完全な名前 (1月-12月)、下記の「注 3」を参照                                                                                                                                           | January   |
-| %n       | 改行文字 ('')                                                                                                                                                                                |           |
-| %p       | AMまたはPMの指定                                                                                                                                                                              | PM        |
-| %Q       | 四半期 (1-4)                                                                                                                                                                                 | 1         |
-| %r       | 12時間形式のHH:MM AM/PM時間、%h:%i %pと等しい                                                                                                                                               | 10:30 PM  |
-| %R       | 24時間形式のHH:MM時間、%H:%iと等しい                                                                                                                                                          | 22:33     |
-| %s       | 秒 (00-59)                                                                                                                                                                                 | 44        |
-| %S       | 秒 (00-59)                                                                                                                                                                                 | 44        |
-| %t       | 水平タブ文字 (')                                                                                                                                                                            |           |
-| %T       | ISO 8601時間形式 (HH:MM:SS)、%H:%i:%Sと等しい                                                                                                                                                 | 22:33:44  |
-| %u       | 月曜日を1とするISO 8601に準拠した曜日 (1-7)                                                                                                                                                     | 2         |
-| %V       | ISO 8601週番号 (01-53)                                                                                                                                                                      | 01        |
-| %w       | 日曜日を0とする整数で表された曜日 (0-6)                                                                                                                                               | 2         |
-| %W       | 完全な曜日名 (月曜日-日曜日)                                                                                                                                                                   | Monday    |
-| %y       | 年の下2桁 (00-99)                                                                                                                                                                    | 18        |
-| %Y       | 年                                                                                                                                                                                                    | 2018      |
-| %z       | UTCからの時間オフセットを +HHMM または -HHMM で表現                                                                                                                                             | -0500     |
-| %%       | %記号                                                                                                                                                                                                | %         |
+| プレースホルダー | 説明                                                                                                                                                                           | 例       |
+|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+| %a             | 曜日名の省略形 (月-日)                                                                                                                                                          | Mon      |
+| %b             | 月名の省略形 (1月-12月)                                                                                                                                                          | Jan      |
+| %c             | 月を整数として表したもの (01-12)、以下の 'Note 4' を参照                                                                                                                                  | 01       |
+| %C             | 100で割った年を整数に切り捨てたもの (00-99)                                                                                                                                          | 20       |
+| %d             | ゼロ埋めされた日 (01-31)                                                                                                                                                        | 02       |
+| %D             | 短い MM/DD/YY 日付、%m/%d/%y と同等                                                                                                                                           | 01/02/18 |
+| %e             | スペースでパディングされた日 ( 1-31)、以下の 'Note 5' を参照                                                                                                                    | &nbsp; 2 |
+| %f             | 小数秒、以下の 'Note 1' と 'Note 2' を参照                                                                                                                                      | 123456   |
+| %F             | 短い YYYY-MM-DD 日付、%Y-%m-%d と同等                                                                                                                                          | 2018-01-02 |
+| %g             | ISO 8601 に合わせた2桁の年形式、4桁表記から略されたもの                                                                                                                        | 18       |
+| %G             | ISO 週番号に対する4桁の年形式、通常は %V とともに使用される                                                                                                                       | 2018     |
+| %h             | 12時間形式の時 (01-12)                                                                                                                                                          | 09       |
+| %H             | 24時間形式の時 (00-23)                                                                                                                                                          | 22       |
+| %i             | 分 (00-59)                                                                                                                                                                    | 33       |
+| %I             | 12時間形式の時 (01-12)                                                                                                                                                          | 10       |
+| %j             | 年の通日 (001-366)                                                                                                                                                               | 002      |
+| %k             | 24時間形式の時 (00-23)、以下の 'Note 4' を参照                                                                                                                                  | 14       |
+| %l             | 12時間形式の時 (01-12)、以下の 'Note 4' を参照                                                                                                                                  | 09       |
+| %m             | 月を整数として表したもの (01-12)                                                                                                                                                  | 01       |
+| %M             | 月名の完全な形式 (1月-12月)、以下の 'Note 3' を参照                                                                                                                              | January   |
+| %n             | 改行文字 ('')                                                                                                                                                                 |          |
+| %p             | AM または PM の指定                                                                                                                                                            | PM       |
+| %Q             | 四半期 (1-4)                                                                                                                                                                   | 1        |
+| %r             | 12時間の HH:MM AM/PM 時間、%h:%i %p と同等                                                                                                                                        | 10:30 PM |
+| %R             | 24時間の HH:MM 時間、%H:%i と同等                                                                                                                                               | 22:33    |
+| %s             | 秒 (00-59)                                                                                                                                                                    | 44       |
+| %S             | 秒 (00-59)                                                                                                                                                                    | 44       |
+| %t             | 水平方向のタブ文字 (')                                                                                                                                                            |          |
+| %T             | ISO 8601 時間フォーマット (HH:MM:SS)、%H:%i:%S と同等                                                                                                                             | 22:33:44 |
+| %u             | ISO 8601 曜日を1から始めた数値で表したもの (1-7)                                                                                                                                     | 2        |
+| %V             | ISO 8601 週番号 (01-53)                                                                                                                                                         | 01       |
+| %w             | 日曜日を0とした整数で表した曜日 (0-6)                                                                                                                                           | 2        |
+| %W             | 完全な曜日名 (月曜日-日曜日)                                                                                                                                                        | Monday    |
+| %y             | 年の最後の2桁 (00-99)                                                                                                                                                           | 18       |
+| %Y             | 年                                                                                                                                                                           | 2018     |
+| %z             | UTCからの時間オフセット (+HHMM または -HHMM)                                                                                                                                                          | -0500    |
+| %%             | % 記号                                                                                                                                                                        | %        |
 
-注 1: ClickHouseバージョン23.4未満では、%f は日付、Date32、DateTime（小数秒がない場合）または精度が0のDateTime64の場合は単一のゼロ (0) を出力します。以前の挙動は設定 `formatdatetime_f_prints_single_zero = 1` を使用して復元できます。
+ノート 1: ClickHouse のバージョンが v23.4 より前の場合、%f はフォーマット値が Date、Date32 または DateTime（小数秒がない）または精度が 0 の DateTime64 の場合、単一のゼロ (0) を表示します。以前の動作は設定 `formatdatetime_f_prints_single_zero = 1` を使用することで復元できます。
 
-注 2: ClickHouseバージョン25.1未満では、%f はDateTime64のスケールが指定した桁数に応じて出力されます。以前の挙動は設定 `formatdatetime_f_prints_scale_number_of_digits= 1`を用いて復元できます。
+ノート 2: ClickHouse のバージョンが v25.1 より前の場合、%f は固定6桁ではなく、DateTime64 のスケールによって指定された桁数として表示されます。以前の動作は設定 `formatdatetime_f_prints_scale_number_of_digits= 1` で復元できます。
 
-注 3: ClickHouseバージョン23.4未満では、%M は完全な月名 (1月-12月) ではなく分 (00-59) を出力します。以前の挙動は設定 `formatdatetime_parsedatetime_m_is_month_name = 0` を使用して復元できます。
+ノート 3: ClickHouse のバージョンが v23.4 より前の場合、%M は完全な月名 (1月-12月) の代わりに分 (00-59) を表示します。以前の動作は設定 `formatdatetime_parsedatetime_m_is_month_name = 0` で復元できます。
 
-注 4: ClickHouseバージョン23.11未満では、関数 `parseDateTime()` はフォーマッタ %c（間隔）と %l/%k（時）に対し、先頭にゼロを必要としました（例: `07`）。以降のバージョンでは先頭のゼロを省略できます（例: `7`）。以前の挙動は設定 `parsedatetime_parse_without_leading_zeros = 0` を使って復元できます。関数 `formatDateTime()` は、デフォルトで%0と%l/%kに対し、既存の使用ケースを崩さないように先頭ゼロを出力します。この挙動は設定 `formatdatetime_format_without_leading_zeros = 1` で変更できます。
+ノート 4: ClickHouse のバージョンが v23.11 より前のとき、関数 `parseDateTime` はフォーマッタ `%c` (月) と `%l`/%`k` (時間) に先頭のゼロを必須としました。後のバージョンでは、先頭のゼロを省略できます。以前の動作は設定 `parsedatetime_parse_without_leading_zeros = 0` で復元できます。この動作は `formatDateTime` のデフォルトで、既存の利用ケースを壊さないように `%c` と `%l`/%`k` については先頭のゼロを表示します。この動作は設定 `formatdatetime_format_without_leading_zeros = 1` で変更できます。
+
+ノート 5: ClickHouse のバージョンが v25.5 より前のとき、関数 `parseDateTime` はフォーマッタ `%e` に対して単一桁の日がスペースでパディングされることが必須でした。後のバージョンでは、スペースパディングはオプションで、`3` および ` 3` は機能します。以前の動作を保持するには、設定 `parsedatetime_e_requires_space_padding = 1` を設定します。同様に、`formatDateTime` の `%e` フォーマッタも以前は単にスペースパディングを行いましたが、現在はセレクティブに小さいゼロを付けません。以前の動作を保持するには設定 `formatdatetime_e_with_space_padding = 1` を設定します。
 
 **例**
 
-``` sql
+```sql
 SELECT formatDateTime(toDate('2010-01-04'), '%g')
 ```
 
@@ -4387,7 +4348,7 @@ SELECT formatDateTime(toDate('2010-01-04'), '%g')
 └────────────────────────────────────────────┘
 ```
 
-``` sql
+```sql
 SELECT formatDateTime(toDateTime64('2010-01-04 12:34:56.123456', 7), '%f')
 ```
 
@@ -4399,7 +4360,7 @@ SELECT formatDateTime(toDateTime64('2010-01-04 12:34:56.123456', 7), '%f')
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-さらに、`formatDateTime` 関数には、タイムゾーンの名前を含む第三の文字列引数を与えることができます。例: `Asia/Istanbul`。この場合、時間は指定されたタイムゾーンに従ってフォーマットされます。
+さらに、`formatDateTime` 関数は第3の文字列引数としてタイムゾーンの名前を取ることもできます。例: `Asia/Istanbul`。この場合、時間は指定されたタイムゾーンに従ってフォーマットされます。
 
 **例**
 
@@ -4431,43 +4392,43 @@ LIMIT 10
 - [formatDateTimeInJodaSyntax](#formatdatetimeinjodasyntax)
 ## formatDateTimeInJodaSyntax {#formatdatetimeinjodasyntax}
 
-formatDateTimeと似ていますが、MySQLスタイルではなくJodaスタイルで日時をフォーマットします。 https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html を参照してください。
+formatDateTime と似ていますが、MySQL スタイルではなく Joda スタイルで日付時刻をフォーマットします。参照: https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html.
 
 この関数の逆操作は [parseDateTimeInJodaSyntax](/sql-reference/functions/type-conversion-functions#parsedatetimeinjodasyntax) です。
 
 **置換フィールド**
 
-置換フィールドを使用して、結果の文字列のパターンを定義できます。
+置換フィールドを使用して、結果文字列のパターンを定義できます。
 
-| プレースホルダー | 説明                              | 表示                       | 例                                |
-| ----------- | ----------------------------------------- | ------------------------ | --------------------------------- |
-| G           | 時代                                      | テキスト                  | AD                                |
-| C           | 時代の世紀 (>=0)                          | 数字                     | 20                                |
-| Y           | 時代の年 (>=0)                          | 年                        | 1996                              |
-| x           | 週年 (未サポート)                          | 年                        | 1996                              |
-| w           | 週年の週 (未サポート)                 | 数字                    | 27                                |
-| e           | 曜日                                   | 数字                    | 2                                 |
-| E           | 曜日                                   | テキスト                 | Tuesday; Tue                      |
-| y           | 年                                     | 年                        | 1996                              |
-| D           | 年の日                                 | 数字                    | 189                               |
-| M           | 年の月                                 | 月                        | July; Jul; 07                     |
-| d           | 月の日                                 | 数字                    | 10                                |
-| a           | 日の半分                               | テキスト                 | PM                                |
-| K           | 半日の時 (0~11)                           | 数字                    | 0                                 |
-| h           | 半日の時 (1~12)                          | 数字                    | 12                                |
-| H           | 一日の時 (0~23)                        | 数字                    | 0                                 |
-| k           | 一日の時 (1~24)                          | 数字                    | 24                                |
-| m           | 時の分                                 | 数字                    | 30                                |
-| s           | 分の秒                                 | 数字                    | 55                                |
-| S           | 秒の小数                                 | 数字                    | 978                               |
-| z           | タイムゾーン                             | テキスト                 | Eastern Standard Time; EST         |
-| Z           | タイムゾーンオフセット                  | ゾーン                     | -0800; -0812                      |
-| '           | テキストのエスケープ                     | デリミタ                |                                   |
-| ''          | シングルクォート                         | リテラル                  | '                                 |
+| プレースホルダー | 説明                           | 表示         | 例                              |
+|----------------|--------------------------------|--------------|---------------------------------|
+| G              | 時代                           | テキスト      | AD                              |
+| C              | 時代の世紀 (>=0)               | 数字         | 20                              |
+| Y              | 時代の年 (>=0)                 | 年          | 1996                            |
+| x              | 週年 (未対応)                  | 年           | 1996                            |
+| w              | 週年の週 (未対応)              | 数字         | 27                              |
+| e              | 曜日                           | 数字         | 2                               |
+| E              | 曜日                           | テキスト      | Tuesday; Tue                    |
+| y              | 年                             | 年          | 1996                            |
+| D              | 年の日                         | 数字         | 189                             |
+| M              | 年の月                        | 月           | July; Jul; 07                   |
+| d              | 月の日                         | 数字         | 10                              |
+| a              | 日の半日                      | テキスト      | PM                              |
+| K              | 半日の時間 (0~11)              | 数字         | 0                               |
+| h              | 半日の時計時間 (1~12)          | 数字         | 12                              |
+| H              | 一日の時間 (0~23)              | 数字         | 0                               |
+| k              | 一日の時計時間 (1~24)          | 数字         | 24                              |
+| m              | 一時間の分                    | 数字         | 30                              |
+| s              | 一分の秒                       | 数字         | 55                              |
+| S              | 小数秒                        | 数字         | 978                             |
+| z              | タイムゾーン                    | テキスト      | 東部標準時間; EST               |
+| Z              | タイムゾーンオフセット         | ゾーン       | -0800; -0812                     |
+| '              | テキストのエスケープ           | デリミタ     |                                 |
+| ''             | シングルクオート               | リテラル     | '                               |
 
 **例**
 
-``` sql
+```sql
 SELECT formatDateTimeInJodaSyntax(toDateTime('2010-01-04 12:34:56'), 'yyyy-MM-dd HH:mm:ss')
 ```
 
@@ -4484,7 +4445,7 @@ SELECT formatDateTimeInJodaSyntax(toDateTime('2010-01-04 12:34:56'), 'yyyy-MM-dd
 
 **構文**
 
-``` sql
+```sql
 dateName(date_part, date)
 ```
 
@@ -4492,11 +4453,11 @@ dateName(date_part, date)
 
 - `date_part` — 日付部分。可能な値: 'year', 'quarter', 'month', 'week', 'dayofyear', 'day', 'weekday', 'hour', 'minute', 'second'。 [String](../data-types/string.md)。
 - `date` — 日付。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
-- `timezone` — タイムゾーン。省略可能。 [String](../data-types/string.md)。
+- `timezone` — タイムゾーン。オプション。[String](../data-types/string.md)。
 
 **返される値**
 
-指定された日付部分。[String](/sql-reference/data-types/string)
+指定された日付の部分。 [String](/sql-reference/data-types/string)
 
 **例**
 
@@ -4515,23 +4476,30 @@ SELECT
 │ 2021                         │ April                         │ 14                          │
 └──────────────────────────────┴───────────────────────────────┴─────────────────────────────┘
 ```
+```yaml
+title: 'monthName'
+sidebar_label: 'monthName'
+keywords: ['month', 'date', 'time']
+description: '月の名前を返します。'
+```
+
 ## monthName {#monthname}
 
 月の名前を返します。
 
 **構文**
 
-``` sql
+```sql
 monthName(date)
 ```
 
 **引数**
 
-- `date` — 日付または時間付きの日付。 [Date](../data-types/date.md)、[DateTime](../data-types/datetime.md) または [DateTime64](../data-types/datetime64.md)。
+- `date` — 日付または時間付きの日付。[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
 
 **返される値**
 
-月の名前。[String](/sql-reference/data-types/string)
+- 月の名前。[String](/sql-reference/data-types/string)
 
 **例**
 
@@ -4550,11 +4518,11 @@ SELECT monthName(date_value);
 
 ## fromUnixTimestamp {#fromunixtimestamp}
 
-この関数はUnixタイムスタンプをカレンダーの日付と一日の時間に変換します。
+この関数はUnixタイムスタンプをカレンダー日付と時間に変換します。
 
-次の2つの方法で呼び出すことができます：
+次の2つの方法で呼び出すことができます:
 
-単一の引数が[Integer](../data-types/int-uint.md)型の場合、[DateTime](../data-types/datetime.md)型の値を返します。つまり、[toDateTime](../../sql-reference/functions/type-conversion-functions.md#todatetime)のように動作します。
+単一の引数を型[Integer](../data-types/int-uint.md)として与えると、[DateTime](../data-types/datetime.md)型の値を返します。つまり、[toDateTime](../../sql-reference/functions/type-conversion-functions.md#todatetime)のように動作します。
 
 エイリアス: `FROM_UNIXTIME`。
 
@@ -4572,7 +4540,7 @@ SELECT fromUnixTimestamp(423543535);
 └──────────────────────────────┘
 ```
 
-2つまたは3つの引数があり、最初の引数が[Integer](../data-types/int-uint.md)、[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)または[DateTime64](../data-types/datetime64.md)型の場合、2番目の引数は定数のフォーマット文字列、3番目の引数はオプションの定数タイムゾーン文字列で、関数は[String](/sql-reference/data-types/string)型の値を返します。つまり、[formatDateTime](#formatdatetime)のように動作します。この場合、[MySQLのdatetimeフォーマットスタイル](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format)が使用されます。
+2つまたは3つの引数があり、最初の引数が[Integer](../data-types/int-uint.md)、[Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)型の値で、2番目の引数が定数の形式文字列、3番目の引数がオプションの定数のタイムゾーン文字列である場合、この関数は[String](/sql-reference/data-types/string)型の値を返します。つまり、[formatDateTime](#formatdatetime)のように動作します。この場合、[MySQLのdatetime形式スタイル](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format)が使用されます。
 
 **例:**
 
@@ -4591,13 +4559,14 @@ SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime;
 **関連情報**
 
 - [fromUnixTimestampInJodaSyntax](#fromunixtimestampinjodasyntax)
+
 ## fromUnixTimestampInJodaSyntax {#fromunixtimestampinjodasyntax}
 
-[fromUnixTimestamp](#fromunixtimestamp)と同様ですが、2つまたは3つの引数を使用して呼び出された場合、フォーマッティングはMySQLスタイルではなく[Jodaスタイル](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)で行われます。
+[fromUnixTimestamp](#fromunixtimestamp)と同様ですが、2つまたは3つの引数で呼び出すとき、フォーマッティングがMySQLスタイルの代わりに[Jodaスタイル](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)を使用して行われます。
 
 **例:**
 
-``` sql
+```sql
 SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') AS DateTime;
 ```
 
@@ -4608,13 +4577,14 @@ SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') A
 │ 2009-02-11 06:42:23 │
 └─────────────────────┘
 ```
+
 ## toModifiedJulianDay {#tomodifiedjulianday}
 
-テキスト形式`YYYY-MM-DD`の[旧暦グレゴリオ暦](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar)の日付を[Int32]の[修正ユリウス日](https://en.wikipedia.org/wiki/Julian_day#Variants)番号に変換します。この関数は、`0000-01-01`から`9999-12-31`までの日付をサポートしています。引数が日付として解析できない場合や、日付が無効な場合は例外が発生します。
+テキスト形式`YYYY-MM-DD`の[プロレプティックグレゴリオ暦](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar)の日付を[Int32]である[修正版ユリウス日](https://en.wikipedia.org/wiki/Julian_day#Variants)番号に変換します。この関数は`0000-01-01`から`9999-12-31`までの日付をサポートしています。引数が日付として解析できない場合や、日付が無効な場合は例外を発生させます。
 
 **構文**
 
-``` sql
+```sql
 toModifiedJulianDay(date)
 ```
 
@@ -4624,28 +4594,29 @@ toModifiedJulianDay(date)
 
 **返される値**
 
-- 修正ユリウス日番号。[Int32](../data-types/int-uint.md)。
+- 修正版ユリウス日番号。[Int32](../data-types/int-uint.md)。
 
 **例**
 
-``` sql
+```sql
 SELECT toModifiedJulianDay('2020-01-01');
 ```
 
 結果:
 
-``` text
+```text
 ┌─toModifiedJulianDay('2020-01-01')─┐
 │                             58849 │
 └───────────────────────────────────┘
 ```
+
 ## toModifiedJulianDayOrNull {#tomodifiedjuliandayornull}
 
 [toModifiedJulianDay()](#tomodifiedjulianday)と似ていますが、例外を発生させる代わりに`NULL`を返します。
 
 **構文**
 
-``` sql
+```sql
 toModifiedJulianDayOrNull(date)
 ```
 
@@ -4655,97 +4626,100 @@ toModifiedJulianDayOrNull(date)
 
 **返される値**
 
-- 修正ユリウス日番号。[Nullable(Int32)](../data-types/int-uint.md)。
+- 修正版ユリウス日番号。[Nullable(Int32)](../data-types/int-uint.md)。
 
 **例**
 
-``` sql
+```sql
 SELECT toModifiedJulianDayOrNull('2020-01-01');
 ```
 
 結果:
 
-``` text
+```text
 ┌─toModifiedJulianDayOrNull('2020-01-01')─┐
 │                                   58849 │
 └─────────────────────────────────────────┘
 ```
+
 ## fromModifiedJulianDay {#frommodifiedjulianday}
 
-[修正ユリウス日](https://en.wikipedia.org/wiki/Julian_day#Variants)番号をテキスト形式`YYYY-MM-DD`の[旧暦グレゴリオ暦](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar)の日付に変換します。この関数は、`-678941`から`2973483`までの日数をサポートします（これはそれぞれ`0000-01-01`と`9999-12-31`を表します）。日数がサポート範囲外の場合は例外が発生します。
+[修正版ユリウス日](https://en.wikipedia.org/wiki/Julian_day#Variants)番号をテキスト形式`YYYY-MM-DD`の[プロレプティックグレゴリオ暦](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar)日付に変換します。この関数は`-678941`から`2973483`までの所定の日数をサポートしています（これはそれぞれ`0000-01-01`と`9999-12-31`を表します）。日数がサポートされている範囲外の場合、例外を発生させます。
 
 **構文**
 
-``` sql
+```sql
 fromModifiedJulianDay(day)
 ```
 
 **引数**
 
-- `day` — 修正ユリウス日番号。[Any integral types](../data-types/int-uint.md)。
+- `day` — 修正版ユリウス日番号。[任意の整数型](../data-types/int-uint.md)。
 
 **返される値**
 
-- テキスト形式の日付。[String](../data-types/string.md)。
+- テキスト形式の日付。[String](../data-types/string.md)
 
 **例**
 
-``` sql
+```sql
 SELECT fromModifiedJulianDay(58849);
 ```
 
 結果:
 
-``` text
+```text
 ┌─fromModifiedJulianDay(58849)─┐
 │ 2020-01-01                   │
 └──────────────────────────────┘
 ```
+
 ## fromModifiedJulianDayOrNull {#frommodifiedjuliandayornull}
 
-[fromModifiedJulianDay()](#frommodifiedjulianday)と似ていますが、例外を発生させる代わりに`NULL`を返します。
+[fromModifiedJulianDayOrNull()](#frommodifiedjuliandayornull)と似ていますが、例外を発生させる代わりに`NULL`を返します。
 
 **構文**
 
-``` sql
+```sql
 fromModifiedJulianDayOrNull(day)
 ```
 
 **引数**
 
-- `day` — 修正ユリウス日番号。[Any integral types](../data-types/int-uint.md)。
+- `day` — 修正版ユリウス日番号。[任意の整数型](../data-types/int-uint.md)。
 
 **返される値**
 
-- テキスト形式の日付。[Nullable(String)](../data-types/string.md)。
+- テキスト形式の日付。[Nullable(String)](../data-types/string.md)
 
 **例**
 
-``` sql
+```sql
 SELECT fromModifiedJulianDayOrNull(58849);
 ```
 
 結果:
 
-``` text
+```text
 ┌─fromModifiedJulianDayOrNull(58849)─┐
 │ 2020-01-01                         │
 └────────────────────────────────────┘
 ```
+
 ## toUTCTimestamp {#toutctimestamp}
 
-DateTime/DateTime64型の値を他のタイムゾーンからUTCタイムゾーンのタイムスタンプに変換します。この関数は、主にApache Sparkや類似のフレームワークとの互換性を考慮して含まれています。
+DateTime/DateTime64型の値を他のタイムゾーンからUTCタイムゾーンのタイムスタンプに変換します。この関数は主にApache Sparkや類似のフレームワークとの互換性のために含まれています。
 
 **構文**
 
-``` sql
+```sql
 toUTCTimestamp(time_val, time_zone)
 ```
 
 **引数**
 
-- `time_val` — DateTime/DateTime64型の定数値または式。[DateTime/DateTime64 types](../data-types/datetime.md)
-- `time_zone` — タイムゾーンを表すString型の定数値または式。[String types](../data-types/string.md)
+- `time_val` — 定数のDateTime/DateTime64型の値または式。[DateTime/DateTime64型](../data-types/datetime.md)
+- `time_zone` — タイムゾーンを表す定数の文字列型の値または式。[文字列型](../data-types/string.md)
 
 **返される値**
 
@@ -4753,31 +4727,32 @@ toUTCTimestamp(time_val, time_zone)
 
 **例**
 
-``` sql
+```sql
 SELECT toUTCTimestamp(toDateTime('2023-03-16'), 'Asia/Shanghai');
 ```
 
 結果:
 
-``` text
+```text
 ┌─toUTCTimestamp(toDateTime('2023-03-16'), 'Asia/Shanghai')┐
 │                                     2023-03-15 16:00:00 │
 └─────────────────────────────────────────────────────────┘
 ```
+
 ## fromUTCTimestamp {#fromutctimestamp}
 
-UTCタイムゾーンから他のタイムゾーンのタイムスタンプにDateTime/DateTime64型の値を変換します。この関数は、主にApache Sparkや類似のフレームワークとの互換性を考慮して含まれています。
+DateTime/DateTime64型の値をUTCタイムゾーンから他のタイムゾーンのタイムスタンプに変換します。この関数は主にApache Sparkや類似のフレームワークとの互換性のために含まれています。
 
 **構文**
 
-``` sql
+```sql
 fromUTCTimestamp(time_val, time_zone)
 ```
 
 **引数**
 
-- `time_val` — DateTime/DateTime64型の定数値または式。[DateTime/DateTime64 types](../data-types/datetime.md)
-- `time_zone` — タイムゾーンを表すString型の定数値または式。[String types](../data-types/string.md)
+- `time_val` — 定数のDateTime/DateTime64型の値または式。[DateTime/DateTime64型](../data-types/datetime.md)
+- `time_zone` — タイムゾーンを表す定数の文字列型の値または式。[文字列型](../data-types/string.md)
 
 **返される値**
 
@@ -4785,23 +4760,24 @@ fromUTCTimestamp(time_val, time_zone)
 
 **例**
 
-``` sql
+```sql
 SELECT fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00', 3), 'Asia/Shanghai');
 ```
 
 結果:
 
-``` text
+```text
 ┌─fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00',3), 'Asia/Shanghai')─┐
 │                                                 2023-03-16 18:00:00.000 │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
+
 ## UTCTimestamp {#utctimestamp}
 
-クエリ解析の瞬間の現在の日付と時間を返します。この関数は定数式です。
+クエリ解析の瞬間における現在の日付と時間を返します。この関数は定数式です。
 
 :::note
-この関数は`now('UTC')`が提供するのと同じ結果を返します。これはMySQLのサポートのために追加され、[`now`](#now)の使用が推奨されます。
+この関数は、`now('UTC')`と同じ結果を返します。MySQLのサポートのために追加されたものであり、[`now`](#now)の使用が推奨されます。
 :::
 
 **構文**
@@ -4814,7 +4790,7 @@ UTCTimestamp()
 
 **返される値**
 
-- クエリ解析の瞬間の現在の日付と時間。[DateTime](../data-types/datetime.md)を返します。
+- クエリ解析の瞬間における現在の日付と時間を返します。[DateTime](../data-types/datetime.md)。
 
 **例**
 
@@ -4833,7 +4809,7 @@ SELECT UTCTimestamp();
 ```
 ## timeDiff {#timediff}
 
-2つの日付または時間付き日付の間の差を返します。差は秒単位で計算されます。これは`dateDiff`と同じであり、MySQLのサポートのために追加されました。`dateDiff`が推奨されます。
+2つの日付または時間付き日付の差を返します。差は秒単位で計算されます。`dateDiff`と同じであり、MySQLのサポートのために追加されただけです。`dateDiff`が推奨されます。
 
 **構文**
 
@@ -4843,12 +4819,12 @@ timeDiff(first_datetime, second_datetime)
 
 **引数**
 
-- `first_datetime` — DateTime/DateTime64型の定数値または式。[DateTime/DateTime64 types](../data-types/datetime.md)
-- `second_datetime` — DateTime/DateTime64型の定数値または式。[DateTime/DateTime64 types](../data-types/datetime.md)
+- `first_datetime` — 定数のDateTime/DateTime64型の値または式。[DateTime/DateTime64型](../data-types/datetime.md)
+- `second_datetime` — 定数のDateTime/DateTime64型の値または式。[DateTime/DateTime64型](../data-types/datetime.md)
 
 **返される値**
 
-2つの日付または時間付き日付の間の差を秒単位で返します。
+2つの日付または時間付き日付の差を秒単位で返します。
 
 **例**
 
@@ -4865,6 +4841,6 @@ timeDiff(toDateTime64('1927-01-01 00:00:00', 3), toDate32('1927-01-02'));
 │                                                                    86400 │
 └──────────────────────────────────────────────────────────────────────────┘
 ```
-## 関連コンテンツ {#related-content}
+## 関連情報 {#related-content}
 
-- ブログ: [ClickHouseにおける時系列データの取り扱い](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+- ブログ: [ClickHouseでの時系列データの操作](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

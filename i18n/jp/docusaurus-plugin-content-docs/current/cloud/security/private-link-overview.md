@@ -1,13 +1,14 @@
 ---
-sidebar_label: プライベートリンクの概要
+sidebar_label: 'プライベートリンク概要'
 slug: /cloud/security/private-link-overview
-title: プライベートリンクの概要
+title: 'プライベートリンク概要'
+description: 'プライベートリンクのランディングページ'
 ---
 
 
-# プライベートリンクの概要
+# プライベートリンク概要
 
-ClickHouse Cloudは、サービスをクラウド仮想ネットワークに接続する機能を提供します。プロバイダーに応じたガイドを参照してください：
+ClickHouse Cloudは、サービスをクラウドの仮想ネットワークに接続する機能を提供します。プロバイダーごとのガイドは以下を参照してください：
 
 - [AWS Private Link](/cloud/security/aws-privatelink.md)
 - [GCP Private Service Connect](/cloud/security/gcp-private-service-connect.md)

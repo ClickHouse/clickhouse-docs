@@ -1,21 +1,23 @@
----
-slug: /sql-reference/aggregate-functions/parametric-functions
+description: 'パラメトリック集約関数に関するドキュメント'
+sidebar_label: 'パラメトリック'
 sidebar_position: 38
-sidebar_label: パラメトリック
----
+slug: /sql-reference/aggregate-functions/parametric-functions
+title: 'パラメトリック集約関数'
+```
+
 
 # パラメトリック集約関数
 
-いくつかの集約関数は、引数カラム（圧縮に使用）だけでなく、一連のパラメータ（初期化用の定数）を受け取ることができます。構文は、1つのかっこではなく2つのかっこを使用します。最初のかっこはパラメータ用、2番目のかっこは引数用です。
+いくつかの集約関数は、圧縮に使用される引数カラムだけでなく、初期化のための定数であるパラメータのセットを受け入れることができます。構文は、1組の括弧の代わりに2組の括弧を使用します。最初の括弧はパラメータ用、2番目の括弧は引数用です。
 ## histogram {#histogram}
 
-適応ヒストグラムを計算します。正確な結果は保証されません。
+適応ヒストグラムを計算します。正確な結果を保証するものではありません。
 
-``` sql
+```sql
 histogram(number_of_bins)(values)
 ```
 
-この関数は[A Streaming Parallel Decision Tree Algorithm](http://jmlr.org/papers/volume11/ben-haim10a/ben-haim10a.pdf)を使用しています。ヒストグラムビンの境界は、新しいデータが関数に入ると調整されます。一般的な場合、ビンの幅は等しくありません。
+この関数は[A Streaming Parallel Decision Tree Algorithm](http://jmlr.org/papers/volume11/ben-haim10a/ben-haim10a.pdf)を使用します。ヒストグラムのビンの境界は、新しいデータが関数に入ると調整されます。一般的なケースでは、ビンの幅は等しくありません。
 
 **引数**
 
@@ -23,11 +25,11 @@ histogram(number_of_bins)(values)
 
 **パラメータ**
 
-`number_of_bins` — ヒストグラムのビンの上限数。この関数は自動的にビンの数を計算します。指定されたビン数に達しようとしますが、失敗した場合はより少ないビンを使用します。
+`number_of_bins` — ヒストグラムにおけるビンの上限です。この関数は自動的にビンの数を計算します。指定されたビンの数に到達しようとしますが、失敗した場合は、より少ないビンを使用します。
 
 **返される値**
 
-- 以下の形式の[タプル](../../sql-reference/data-types/tuple.md)の[配列](../../sql-reference/data-types/array.md):
+- 次の形式の[タプル](../../sql-reference/data-types/tuple.md)の[配列](../../sql-reference/data-types/array.md):
 
         ```
         [(lower_1, upper_1, height_1), ... (lower_N, upper_N, height_N)]
@@ -39,7 +41,7 @@ histogram(number_of_bins)(values)
 
 **例**
 
-``` sql
+```sql
 SELECT histogram(5)(number + 1)
 FROM (
     SELECT *
@@ -48,15 +50,15 @@ FROM (
 )
 ```
 
-``` text
+```text
 ┌─histogram(5)(plus(number, 1))───────────────────────────────────────────┐
 │ [(1,4.5,4),(4.5,8.5,4),(8.5,12.75,4.125),(12.75,17,4.625),(17,20,3.25)] │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-ヒストグラムを視覚化するには、例えば[bar](/sql-reference/functions/other-functions#bar)関数を使用できます:
+ヒストグラムを視覚化するには、例えば[bar](/sql-reference/functions/other-functions#bar)関数を使用します:
 
-``` sql
+```sql
 WITH histogram(5)(rand() % 100) AS hist
 SELECT
     arrayJoin(hist).3 AS height,
@@ -69,7 +71,7 @@ FROM
 )
 ```
 
-``` text
+```text
 ┌─height─┬─bar───┐
 │  2.125 │ █▋    │
 │   3.25 │ ██▌   │
@@ -79,50 +81,50 @@ FROM
 └────────┴───────┘
 ```
 
-この場合、ヒストグラムビンの境界が不明であることを忘れないでください。
+この場合、ヒストグラムのビンの境界がわからないことを覚えておいてください。
 ## sequenceMatch {#sequencematch}
 
-シーケンスがパターンに一致するイベントチェーンを含むかどうかをチェックします。
+シーケンスにパターンと一致するイベントチェーンが含まれているかをチェックします。
 
 **構文**
 
-``` sql
+```sql
 sequenceMatch(pattern)(timestamp, cond1, cond2, ...)
 ```
 
 :::note
-同じ秒に発生するイベントは、順序が未定義でシーケンス内に配置される可能性があり、その結果に影響を与える場合があります。
+同じ秒に発生するイベントは、結果に影響を与える未定義の順序でシーケンスに配置される可能性があります。
 :::
 
 **引数**
 
-- `timestamp` — 時間データを含むカラム。一般的なデータ型は`Date`および`DateTime`です。サポートされている[UInt](../../sql-reference/data-types/int-uint.md)データ型のいずれかを使用できます。
+- `timestamp` — 時間データを含むと見なされるカラム。典型的なデータ型は`Date`と`DateTime`です。また、サポートされている[UInt](../../sql-reference/data-types/int-uint.md)データ型の任意を使用できます。
 
-- `cond1`, `cond2` — イベントのチェーンを説明する条件。データ型: `UInt8`。最大32の条件引数を渡すことができます。この関数は、これらの条件で説明されたイベントのみを考慮します。シーケンスに条件で説明されていないデータが含まれている場合、関数はそれらをスキップします。
+- `cond1`, `cond2` — イベントチェーンを説明する条件。データ型: `UInt8`。条件引数は最大32まで指定できます。関数は、これらの条件で説明されたイベントのみを考慮します。シーケンスに条件で説明されていないデータが含まれている場合、関数はそれらをスキップします。
 
 **パラメータ**
 
-- `pattern` — パターン文字列。詳細は[パターン構文](#pattern-syntax)を参照してください。
+- `pattern` — パターン文字列。参照[パターン構文](#pattern-syntax)。
 
 **返される値**
 
-- パターンが一致すれば1。
-- パターンが一致しなければ0。
+- パターンに一致した場合は1。
+- パターンに一致しなかった場合は0。
 
-タイプ: `UInt8`.
+型: `UInt8`。
 #### パターン構文 {#pattern-syntax}
 
-- `(?N)` — 番号`N`の位置にある条件引数と一致します。条件は`[1, 32]`の範囲で番号付けされます。例えば、`(?1)`は`cond1`パラメータに渡された引数と一致します。
+- `(?N)` — ポジション`N`の条件引数と一致します。条件は`[1, 32]`の範囲で番号付けされています。例えば、`(?1)`は`cond1`パラメータに渡された引数と一致します。
 
-- `.*` — 任意の数のイベントと一致します。このパターンのこの要素と一致させるには条件引数は必要ありません。
+- `.*` — 任意の数のイベントと一致します。このパターンのこの要素と一致させるために条件引数は必要ありません。
 
-- `(?t operator value)` — 二つのイベントの間に必要な秒数を設定します。例えば、パターン`(?1)(?t>1800)(?2)`は、1800秒以上離れて発生するイベントに一致します。これらのイベントの間には任意の数のイベントが含まれる可能性があります。`>=`、`>`、`<`、`<=`、`==`演算子を使用できます。
+- `(?t operator value)` — 2つのイベントを区切るべき秒数を設定します。例えば、パターン`(?1)(?t>1800)(?2)`は、1800秒以上の間隔で発生するイベントと一致します。これらのイベントの間には任意の数のイベントが存在できます。`>=`、`>`、`<`、`<=`、`==`演算子を使用できます。
 
 **例**
 
 `t`テーブルのデータを考えてみましょう:
 
-``` text
+```text
 ┌─time─┬─number─┐
 │    1 │      1 │
 │    2 │      3 │
@@ -132,78 +134,78 @@ sequenceMatch(pattern)(timestamp, cond1, cond2, ...)
 
 クエリを実行します:
 
-``` sql
+```sql
 SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2) FROM t
 ```
 
-``` text
+```text
 ┌─sequenceMatch('(?1)(?2)')(time, equals(number, 1), equals(number, 2))─┐
 │                                                                     1 │
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
-この関数は、number 2がnumber 1の後に続くイベントチェーンを見つけました。条件で説明されていないnumber 3がその間に存在するため、スキップされました。この例で与えられたイベントチェーンを検索する際にこの数字を考慮に入れたければ、条件を作成する必要があります。
+関数は、1の後に2が続くイベントチェーンを見つけました。条件で説明されていないイベント間の3をスキップしました。例に示したイベントチェーンを検索する際にこの数を考慮したい場合は、それについての条件を設定する必要があります。
 
-``` sql
+```sql
 SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 3) FROM t
 ```
 
-``` text
+```text
 ┌─sequenceMatch('(?1)(?2)')(time, equals(number, 1), equals(number, 2), equals(number, 3))─┐
 │                                                                                        0 │
 └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-この場合、関数はパターンに一致するイベントチェーンを見つけることができませんでした。なぜなら、number 3のイベントが1と2の間に発生したからです。同じ場合にnumber 4の条件をチェックした場合、シーケンスはパターンに一致します。
+この場合、関数はパターンに一致するイベントチェーンを見つけられませんでした。なぜなら、1と2の間で3のイベントが発生したからです。同じ場合に4の条件をチェックすれば、シーケンスはパターンに一致します。
 
-``` sql
+```sql
 SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 4) FROM t
 ```
 
-``` text
+```text
 ┌─sequenceMatch('(?1)(?2)')(time, equals(number, 1), equals(number, 2), equals(number, 4))─┐
 │                                                                                        1 │
 └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**参照**
+**関連情報**
 
 - [sequenceCount](#sequencecount)
 ## sequenceCount {#sequencecount}
 
-パターンに一致するイベントチェーンの数をカウントします。この関数は、重複しないイベントチェーンを検索します。現在のチェーンが一致した後、次のチェーンを探し始めます。
+パターンに一致したイベントチェーンの数をカウントします。この関数は、オーバーラップしないイベントチェーンを検索します。現在のチェーンが一致した後は、次のチェーンの検索を開始します。
 
 :::note
-同じ秒に発生するイベントは、順序が未定義でシーケンス内に配置される可能性があり、その結果に影響を与える場合があります。
+同じ秒に発生するイベントは、結果に影響を与える未定義の順序でシーケンスに配置される可能性があります。
 :::
 
 **構文**
 
-``` sql
+```sql
 sequenceCount(pattern)(timestamp, cond1, cond2, ...)
 ```
 
 **引数**
 
-- `timestamp` — 時間データを含むカラム。一般的なデータ型は`Date`および`DateTime`です。サポートされている[UInt](../../sql-reference/data-types/int-uint.md)データ型のいずれかを使用できます。
+- `timestamp` — 時間データを含むと見なされるカラム。典型的なデータ型は`Date`と`DateTime`です。また、サポートされている[UInt](../../sql-reference/data-types/int-uint.md)データ型の任意を使用できます。
 
-- `cond1`, `cond2` — イベントのチェーンを説明する条件。データ型: `UInt8`。最大32の条件引数を渡すことができます。この関数は、これらの条件で説明されたイベントのみを考慮します。シーケンスに条件で説明されていないデータが含まれている場合、関数はそれらをスキップします。
+- `cond1`, `cond2` — イベントチェーンを説明する条件。データ型: `UInt8`。条件引数は最大32まで指定できます。関数は、これらの条件で説明されたイベントのみを考慮します。シーケンスに条件で説明されていないデータが含まれている場合、関数はそれらをスキップします。
 
 **パラメータ**
 
-- `pattern` — パターン文字列。詳細は[パターン構文](#pattern-syntax)を参照してください。
+- `pattern` — パターン文字列。参照[パターン構文](#pattern-syntax)。
 
 **返される値**
 
-- 一致する重複しないイベントチェーンの数。
+- 一致した非オーバーラップイベントチェーンの数。
 
-タイプ: `UInt64`.
+型: `UInt64`。
 
 **例**
 
 `t`テーブルのデータを考えてみましょう:
 
-``` text
+```text
 ┌─time─┬─number─┐
 │    1 │      1 │
 │    2 │      3 │
@@ -214,13 +216,13 @@ sequenceCount(pattern)(timestamp, cond1, cond2, ...)
 └──────┴────────┘
 ```
 
-次に、number 1の後にnumber 2が発生する回数をカウントします（その間に任意の他の数字があっても構いません）:
+1の後に数が2である回数をカウントします。2の間に任意の数が間に入る場合は次のようにします:
 
-``` sql
+```sql
 SELECT sequenceCount('(?1).*(?2)')(time, number = 1, number = 2) FROM t
 ```
 
-``` text
+```text
 ┌─sequenceCount('(?1).*(?2)')(time, equals(number, 1), equals(number, 2))─┐
 │                                                                       2 │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -230,36 +232,36 @@ SELECT sequenceCount('(?1).*(?2)')(time, number = 1, number = 2) FROM t
 パターンに一致する最長のイベントチェーンのイベントタイムスタンプを返します。
 
 :::note
-同じ秒に発生するイベントは、順序が未定義でシーケンス内に配置される可能性があり、その結果に影響を与える場合があります。
+同じ秒に発生するイベントは、結果に影響を与える未定義の順序でシーケンスに配置される可能性があります。
 :::
 
 **構文**
 
-``` sql
+```sql
 sequenceMatchEvents(pattern)(timestamp, cond1, cond2, ...)
 ```
 
 **引数**
 
-- `timestamp` — 時間データを含むカラム。一般的なデータ型は`Date`および`DateTime`です。サポートされている[UInt](../../sql-reference/data-types/int-uint.md)データ型のいずれかを使用できます。
+- `timestamp` — 時間データを含むと見なされるカラム。典型的なデータ型は`Date`と`DateTime`です。また、サポートされている[UInt](../../sql-reference/data-types/int-uint.md)データ型の任意を使用できます。
 
-- `cond1`, `cond2` — イベントのチェーンを説明する条件。データ型: `UInt8`。最大32の条件引数を渡すことができます。この関数は、これらの条件で説明されたイベントのみを考慮します。シーケンスに条件で説明されていないデータが含まれている場合、関数はそれらをスキップします。
+- `cond1`, `cond2` — イベントチェーンを説明する条件。データ型: `UInt8`。条件引数は最大32まで指定できます。関数は、これらの条件で説明されたイベントのみを考慮します。シーケンスに条件で説明されていないデータが含まれている場合、関数はそれらをスキップします。
 
 **パラメータ**
 
-- `pattern` — パターン文字列。詳細は[パターン構文](#pattern-syntax)を参照してください。
+- `pattern` — パターン文字列。参照[パターン構文](#pattern-syntax)。
 
 **返される値**
 
-- 一致した条件引数(?N)のイベントチェーンからのタイムスタンプの配列。配列内の位置はパターン内の条件引数の位置に対応します。
+- マッチした条件引数(?N)のタイムスタンプの配列。配列内の位置はパターン内の条件引数の位置と一致します。
 
-タイプ: 配列。
+型: Array。
 
 **例**
 
 `t`テーブルのデータを考えてみましょう:
 
-``` text
+```text
 ┌─time─┬─number─┐
 │    1 │      1 │
 │    2 │      3 │
@@ -270,74 +272,74 @@ sequenceMatchEvents(pattern)(timestamp, cond1, cond2, ...)
 └──────┴────────┘
 ```
 
-最長チェーンのイベントのタイムスタンプを返します:
+最長のチェーンのイベントのタイムスタンプを返します:
 
-``` sql
+```sql
 SELECT sequenceMatchEvents('(?1).*(?2).*(?1)(?3)')(time, number = 1, number = 2, number = 4) FROM t
 ```
 
-``` text
+```text
 ┌─sequenceMatchEvents('(?1).*(?2).*(?1)(?3)')(time, equals(number, 1), equals(number, 2), equals(number, 4))─┐
 │ [1,3,4]                                                                                                    │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**参照**
+**関連情報**
 
 - [sequenceMatch](#sequencematch)
 ## windowFunnel {#windowfunnel}
 
-スライディングウィンドウ内のイベントチェーンを検索し、チェーンから発生した最大イベント数を計算します。
+スライディングタイムウィンドウ内のイベントチェーンを検索し、チェーンから発生したイベントの最大数を計算します。
 
-この関数は以下のアルゴリズムに従って動作します:
+この関数は次のアルゴリズムに従って機能します:
 
-- 関数は、チェーン内の最初の条件をトリガーするデータを検索し、イベントカウンタを1に設定します。これがスライディングウィンドウの開始時点です。
+- 関数は、チェーン内の最初の条件をトリガーするデータを検索し、イベントカウンタを1に設定します。これがスライディングウィンドウが開始される時点です。
 
-- チェーン内のイベントがウィンドウ内で連続して発生した場合、カウンタが増加します。イベントのシーケンスが中断された場合、カウンタは増加しません。
+- チェーンのイベントがウィンドウ内で連続して発生する場合、カウンタは増加します。イベントのシーケンスが中断されると、カウンタは増加しません。
 
-- データに複数のイベントチェーンが異なる完了ポイントで存在する場合、関数は最長のチェーンのサイズのみを出力します。
+- データに異なる完了ポイントで複数のイベントチェーンがある場合、関数は最長のチェーンのサイズのみを出力します。
 
 **構文**
 
-``` sql
+```sql
 windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 ```
 
 **引数**
 
-- `timestamp` — タイムスタンプを含むカラムの名前。サポートされているデータ型: [Date](../../sql-reference/data-types/date.md)、[DateTime](/sql-reference/data-types/datetime) およびその他の符号なし整数型（タイムスタンプが`UInt64`型をサポートしているものの、その値はInt64の最大値である2^63 - 1を超えてはならないことに注意してください）。
-- `cond` — 条件またはイベントチェーンを説明するデータ。 [UInt8](../../sql-reference/data-types/int-uint.md)。
+- `timestamp` — タイムスタンプを含むカラムの名前。サポートされているデータ型: [Date](../../sql-reference/data-types/date.md)、[DateTime](/sql-reference/data-types/datetime) およびその他の符号なし整数型 (タイムスタンプは`UInt64`型をサポートしていますが、その値はInt64の最大値である2^63 - 1を超えることはできません）。
+- `cond` — イベントチェーンを説明する条件またはデータ。[UInt8](../../sql-reference/data-types/int-uint.md)。
 
 **パラメータ**
 
-- `window` — スライディングウィンドウの長さ。これは最初の条件と最後の条件の間の時間間隔です。`window`の単位は`timestamp`自体によって異なり、次の式で決定されます：`timestamp of cond1 <= timestamp of cond2 <= ... <= timestamp of condN <= timestamp of cond1 + window`。
-- `mode` — オプションの引数。1つ以上のモードを設定できます。
-    - `'strict_deduplication'` — シーケンス内のイベントに対して同じ条件が成立した場合、そのような繰り返しイベントはさらなる処理を中断します。注意: 複数の条件が同じイベントに当てはまると予期しない動作をすることがあります。
-    - `'strict_order'` — 他のイベントの介入を許可しません。例えば、`A->B->D->C`の場合、`D`で`A->B->C`の検索が停止し、最大イベントレベルは2になります。
-    - `'strict_increase'` — 厳密に増加するタイムスタンプを持つイベントのみを対象とします。
-    - `'strict_once'` — チェーン内で条件を満たしたイベントを一度だけカウントします、たとえ条件を複数回満たしたとしても。
+- `window` — スライディングウィンドウの長さであり、最初の条件と最後の条件の間の時間間隔です。`window`の単位は`timestamp`自体によって異なり、次の式を用いて決定されます: `timestamp of cond1 <= timestamp of cond2 <= ... <= timestamp of condN <= timestamp of cond1 + window`。
+- `mode` — オプションの引数です。1つ以上のモードを設定できます。
+    - `'strict_deduplication'` — シーケンス内のイベントに同じ条件が当てはまる場合、その繰り返しイベントはさらなる処理を中断します。注意: 同じイベントに複数の条件が当てはまると予期しない結果を生じることがあります。
+    - `'strict_order'` — 他のイベントの介入を許可しません。例: `A->B->D->C`の場合、Dで`A->B->C`の検索を停止し、最大イベントレベルは2となります。
+    - `'strict_increase'` —  時間が厳密に増加しているイベントのみに条件を適用します。
+    - `'strict_once'` — チェーン内の各イベントを一度だけカウントします。条件に何度も合致しても。
 
 **返される値**
 
-スライディングウィンドウ内のチェーンから連続してトリガーされた条件の最大数。
-選択されたすべてのチェーンが分析されます。
+スライディングタイムウィンドウ内でチェーンからトリガーされた条件の最大数。
+選択内のすべてのチェーンが分析されます。
 
-タイプ: `Integer`.
+型: `Integer`。
 
 **例**
 
-ユーザーがオンラインストアで電話を選択して購入するのに十分な期間かどうかを判断します。
+ユーザーがオンラインストアで電話を選択して購入するまでに必要な時間が十分であるかを判断します。
 
-次のイベントチェーンを設定します:
+次のイベントのチェーンを設定します:
 
-1. ユーザーがストアのアカウントにログインしました（`eventID = 1003`）。
-2. ユーザーが電話を検索しました（`eventID = 1007, product = 'phone'`）。
-3. ユーザーが注文を出しました（`eventID = 1009`）。
-4. ユーザーが再度注文を出しました（`eventID = 1010`）。
+1. ユーザーがストアのアカウントにログインしました (`eventID = 1003`)。
+2. ユーザーが電話を検索しました (`eventID = 1007, product = 'phone'`)。
+3. ユーザーが注文を行いました (`eventID = 1009`)。
+4. ユーザーが再度注文を行いました (`eventID = 1010`)。
 
 入力テーブル:
 
-``` text
+```text
 ┌─event_date─┬─user_id─┬───────────timestamp─┬─eventID─┬─product─┐
 │ 2019-01-28 │       1 │ 2019-01-29 10:00:00 │    1003 │ phone   │
 └────────────┴─────────┴─────────────────────┴─────────┴─────────┘
@@ -352,11 +354,11 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 └────────────┴─────────┴─────────────────────┴─────────┴─────────┘
 ```
 
-ユーザー`user_id`が2019年1月から2月の間にチェーンを通過した場合、どの地点まで到達できるかを調べます。
+ユーザー`user_id`が2019年1月から2月にかけてチェーンをどれだけ進むことができたかを調べます。
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     level,
     count() AS c
@@ -375,44 +377,44 @@ ORDER BY level ASC;
 
 結果:
 
-``` text
+```text
 ┌─level─┬─c─┐
 │     4 │ 1 │
 └───────┴───┘
 ```
 ## retention {#retention}
 
-この関数は、イベントに対して特定の条件が満たされたかどうかを示す1〜32の引数のセットを引数として受け取ります。
-任意の条件を引数として指定できます（[WHERE](/sql-reference/statements/select/where)と同様）。
+この関数は、イベントに対してある条件が満たされたかどうかを示す`UInt8`型の引数1から32のセットを引数として受け取ります。
+どの条件も引数として指定できます（[WHERE](/sql-reference/statements/select/where)のように）。
 
-最初の条件を除いて、条件はペアで適用されます: 2番目の条件の結果は、最初と2番目の条件が真であれば真になります。3番目の条件は、最初と3番目の条件が真であれば真になります。等々。
+条件は、最初を除いてペアで適用されます: 2番目の条件が満たされると、1番目と2番目が真である場合、3番目の条件が満たされると、1番目と3番目が真である場合、など。
 
 **構文**
 
-``` sql
+```sql
 retention(cond1, cond2, ..., cond32);
 ```
 
 **引数**
 
-- `cond` — `UInt8`（1または0）結果を返す式。
+- `cond` — `UInt8`結果（1または0）を返す式。
 
 **返される値**
 
 1または0の配列。
 
-- 1 — イベントに対して条件が満たされた。
-- 0 — イベントに対して条件が満たされなかった。
+- 1 — 条件が満たされたイベント。
+- 0 — 条件が満たされていないイベント。
 
-タイプ: `UInt8`.
+型: `UInt8`。
 
 **例**
 
-サイトのトラフィックを判断するための`retention`関数の計算の例を考えてみましょう。
+`retention`関数を使ってサイトのトラフィックを計算する例を考えてみましょう。
 
 **1.** 例を示すためのテーブルを作成します。
 
-``` sql
+```sql
 CREATE TABLE retention_test(date Date, uid Int32) ENGINE = Memory;
 
 INSERT INTO retention_test SELECT '2020-01-01', number FROM numbers(5);
@@ -424,13 +426,13 @@ INSERT INTO retention_test SELECT '2020-01-03', number FROM numbers(15);
 
 クエリ:
 
-``` sql
+```sql
 SELECT * FROM retention_test
 ```
 
 結果:
 
-``` text
+```text
 ┌───────date─┬─uid─┐
 │ 2020-01-01 │   0 │
 │ 2020-01-01 │   1 │
@@ -469,11 +471,11 @@ SELECT * FROM retention_test
 └────────────┴─────┘
 ```
 
-**2.** `retention`関数を使用して、ユニークID `uid`でユーザーをグループ化します。
+**2.** `retention`関数を使用して、ユーザーを一意のID `uid`でグループ化します。
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     uid,
     retention(date = '2020-01-01', date = '2020-01-02', date = '2020-01-03') AS r
@@ -485,7 +487,7 @@ ORDER BY uid ASC
 
 結果:
 
-``` text
+```text
 ┌─uid─┬─r───────┐
 │   0 │ [1,1,1] │
 │   1 │ [1,1,1] │
@@ -505,11 +507,11 @@ ORDER BY uid ASC
 └─────┴─────────┘
 ```
 
-**3.** 日ごとのサイト訪問者数を合計します。
+**3.** サイトへの訪問の総数を日別に計算します。
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     sum(r[1]) AS r1,
     sum(r[2]) AS r2,
@@ -527,7 +529,7 @@ FROM
 
 結果:
 
-``` text
+```text
 ┌─r1─┬─r2─┬─r3─┐
 │  5 │  5 │  5 │
 └────┴────┴────┘
@@ -535,19 +537,19 @@ FROM
 
 ここで:
 
-- `r1` - 2020-01-01の間にサイトを訪れたユニークな訪問者の数（`cond1`条件）。
-- `r2` - 2020-01-01から2020-01-02の間にサイトを訪れた特定の時間帯のユニークな訪問者の数（`cond1`および`cond2`条件）。
-- `r3` - 2020-01-01および2020-01-03の間にサイトを訪れた特定の時間帯のユニークな訪問者の数（`cond1`および`cond3`条件）。
+- `r1` - 2020年1月1日にサイトを訪れたユニークビジターの数（`cond1`条件）。
+- `r2` - 2020年1月1日から2020年1月2日の間にサイトを訪れたユニークビジターの数（`cond1`と`cond2`条件）。
+- `r3` - 2020年1月1日および2020年1月3日にサイトを訪れたユニークビジターの数（`cond1`と`cond3`条件）。
 ## uniqUpTo(N)(x) {#uniquptonx}
 
-指定された制限`N`までの引数の異なる値の数を計算します。引数の異なる値の数が`N`を超える場合、この関数は`N` + 1を返します。そうでない場合は、正確な値を計算します。
+指定された制限`N`まで引数の異なる値の数を計算します。異なる引数の数が`N`を超える場合、この関数は`N` + 1を返します。それ以外の場合は、正確な値を計算します。
 
-小さな`N`（最大10）の使用が推奨されます。`N`の最大値は100です。
+小さな`N`（最大10）での使用を推奨します。`N`の最大値は100です。
 
-集約関数の状態について、この関数は1 + `N` * 値のバイト数に等しい量のメモリを使用します。
-文字列を扱う場合、この関数は8バイトの非暗号化ハッシュを保存し、文字列に対して計算を近似します。
+集約関数の状態のために、この関数は1 + `N` * 値のサイズのバイト数に相当するメモリを使用します。
+文字列を扱う際、この関数は8バイトの非暗号化ハッシュを保存します; 文字列の計算は近似されます。
 
-例えば、ユーザーがウェブサイトで行ったすべての検索クエリをログに記録するテーブルがあるとしましょう。テーブルの各行は単一の検索クエリを表し、ユーザーID、検索クエリ、およびクエリのタイムスタンプのカラムがあります。`uniqUpTo`を使用して、少なくとも5人のユニークユーザーが使用したキーワードのみを表示するレポートを生成できます。
+例えば、サイトのユーザーによるすべての検索クエリを記録するテーブルがあるとします。テーブルの各行は単一の検索クエリを表し、カラムにはユーザーID、検索クエリ、およびクエリのタイムスタンプがあります。`uniqUpTo`を使用して、少なくとも5人のユニークユーザーが生成したキーワードのみを表示するレポートを生成できます。
 
 ```sql
 SELECT SearchPhrase
@@ -556,10 +558,10 @@ GROUP BY SearchPhrase
 HAVING uniqUpTo(4)(UserID) >= 5
 ```
 
-`uniqUpTo(4)(UserID)`は各`SearchPhrase`についてユニークな`UserID`の数を計算しますが、最大で4つのユニーク値のみをカウントします。4つを超えるユニークな`UserID`の値がある場合、この関数は5を返します（4 + 1）。その後、`HAVING`句は、ユニークな`UserID`の値が5未満である`SearchPhrase`の値をフィルタリングします。これにより、少なくとも5人のユニークユーザーが使用した検索キーワードのリストが得られます。
+`uniqUpTo(4)(UserID)`は各`SearchPhrase`のユニークな`UserID`値の数を計算しますが、4つのユニーク値までしかカウントしません。`SearchPhrase`に対するユニークな`UserID`の数が4を超える場合、関数は5を返します（4 + 1）。`HAVING`句は次に、ユニークな`UserID`の数が5未満である`SearchPhrase`値をフィルタリングします。これにより、少なくとも5人のユニークユーザーによって使用された検索キーワードのリストが得られます。
 ## sumMapFiltered {#summapfiltered}
 
-この関数は[sumMap](/sql-reference/aggregate-functions/reference/summap)と同様に動作しますが、フィルタリングするためのキーの配列も受け入れます。これは、高い基数のキーで作業する際に特に役立ちます。
+この関数は[sumMap](/sql-reference/aggregate-functions/reference/summap)と同じように動作しますが、フィルタリングに使用するキーの配列もパラメータとして受け入れます。これは、高い基数のキーで作業する際に特に便利です。
 
 **構文**
 
@@ -567,13 +569,13 @@ HAVING uniqUpTo(4)(UserID) >= 5
 
 **パラメータ**
 
-- `keys_to_keep`: フィルタリングするための[配列](../data-types/array.md)のキー。
+- `keys_to_keep`: フィルタリングに使用する[配列](../data-types/array.md)のキー。
 - `keys`: [配列](../data-types/array.md)のキー。
 - `values`: [配列](../data-types/array.md)の値。
 
 **返される値**
 
-- 並べ替えられた順序のキーと、対応するキーに対して合計された値の2つの配列のタプルを返します。
+- ソートされた順序のキーと、それに対応するキーの合計値を持つ二つの配列のタプルを返します。
 
 **例**
 
@@ -608,7 +610,7 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_
 ```
 ## sumMapFilteredWithOverflow {#summapfilteredwithoverflow}
 
-この関数は[sumMap](/sql-reference/aggregate-functions/reference/summap)と同様に動作しますが、フィルタリングするためのキーの配列も受け入れます。これは、高い基数のキーで作業する際に特に役立ちます。[sumMapFiltered](#summapfiltered)関数と異なり、オーバーフロー付きの合計を行います。つまり、引数のデータ型と同じデータ型で合計を返します。
+この関数は、[sumMap](/sql-reference/aggregate-functions/reference/summap)と同じように動作しますが、フィルタリングに使用するキーの配列もパラメータとして受け入れます。これは、高い基数のキーで作業する際に特に便利です。[sumMapFiltered](#summapfiltered)関数とは異なり、オーバーフローを伴う加算を行うため、合計値のデータ型を引数のデータ型と同じにします。
 
 **構文**
 
@@ -616,19 +618,15 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_
 
 **パラメータ**
 
-- `keys_to_keep`: フィルタリングするための[配列](../data-types/array.md)のキー。
+- `keys_to_keep`: フィルタリングに使用する[配列](../data-types/array.md)のキー。
 - `keys`: [配列](../data-types/array.md)のキー。
 - `values`: [配列](../data-types/array.md)の値。
 
 **返される値**
 
-- 並べ替えられた順序のキーと、対応するキーに対して合計された値の2つの配列のタプルを返します。
+- ソートされた順序のキーと、それに対応するキーの合計値を持つ二つの配列のタプルを返します。
 
 **例**
-
-この例では、テーブル`sum_map`を作成し、データを挿入し、`sumMapFilteredWithOverflow`と`sumMapFiltered`および`toTypeName`関数を使用して結果を比較します。`requests`が作成されたテーブルで`UInt8`型であった場合、`sumMapFiltered`はオーバーフローを避けるために合計値の型を`UInt64`に昇格させるのに対し、`sumMapFilteredWithOverflow`は型をそのまま`UInt8`のまま保持します。つまり、オーバーフローが発生します。
-
-クエリ:
 
 ```sql
 CREATE TABLE sum_map
@@ -657,35 +655,42 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) as summap
 結果:
 
 ```response
-   ┌─summap_overflow─────────────┬─toTypeName(summap_overflow)─────────────────────┐
-1. │ ([1,4,8],[10,20,10])            │ Tuple(Array(UInt8), Array(UInt8))              │
-   └────────────────────────────────┴───────────────────────────────────────────────┘
+   ┌─summap_overflow──────────┬─toTypeName(summap_overflow)────────────────┐
+1. │ ([1,4,8],[10,20,10])     │ Tuple(Array(UInt8), Array(UInt8))         │
+   └────────────────────────────┴───────────────────────────────────────────┘
 ```
 
 ```response
    ┌─summap───────────────┬─toTypeName(summap)─────────────────┐
 1. │ ([1,4,8],[10,20,10]) │ Tuple(Array(UInt8), Array(UInt64)) │
-   └──────────────────────┴───────────────────────────────────┘
+   └──────────────────────┴────────────────────────────────────┘
 ```
+```yaml
+title: 'sequenceNextNode'
+sidebar_label: 'sequenceNextNode'
+keywords: ['ClickHouse', 'sequenceNextNode', 'event chain']
+description: '次のイベントを返す関数、イベントチェーンに一致するイベントを処理します。'
+```
+
 ## sequenceNextNode {#sequencenextnode}
 
-イベントチェーンに一致する次のイベントの値を返します。
+イベントチェーンに一致した次のイベントの値を返します。
 
-_実験的な関数です。 `SET allow_experimental_funnel_functions = 1` を使用して有効にします。_
+_実験的な関数であり、`SET allow_experimental_funnel_functions = 1` で有効にします。_
 
 **構文**
 
-``` sql
+```sql
 sequenceNextNode(direction, base)(timestamp, event_column, base_condition, event1, event2, event3, ...)
 ```
 
 **パラメータ**
 
-- `direction` — 方向を指定するために使用します。
-    - forward — 前方に移動します。
-    - backward — 後方に移動します。
+- `direction` — 方向へのナビゲーションに使用します。
+    - forward — 前に進む。
+    - backward — 後ろに戻る。
 
-- `base` — 基準点を設定するために使用します。
+- `base` — 基準点を設定するのに使用します。
     - head — 基準点を最初のイベントに設定します。
     - tail — 基準点を最後のイベントに設定します。
     - first_match — 基準点を最初に一致した `event1` に設定します。
@@ -693,25 +698,25 @@ sequenceNextNode(direction, base)(timestamp, event_column, base_condition, event
 
 **引数**
 
-- `timestamp` — タイムスタンプを含むカラムの名前。サポートされているデータ型： [Date](../../sql-reference/data-types/date.md), [DateTime](/sql-reference/data-types/datetime) とその他の符号なし整数型。
-- `event_column` — 返される次のイベントの値を含むカラムの名前。サポートされているデータ型： [String](../../sql-reference/data-types/string.md) と [Nullable(String)](../../sql-reference/data-types/nullable.md)。
+- `timestamp` — タイムスタンプを含むカラムの名前。サポートされているデータ型: [Date](../../sql-reference/data-types/date.md)、[DateTime](/sql-reference/data-types/datetime) および他の符号なし整数型。
+- `event_column` — 次のイベントの値を返すカラムの名前。サポートされているデータ型: [String](../../sql-reference/data-types/string.md) および [Nullable(String)](../../sql-reference/data-types/nullable.md)。
 - `base_condition` — 基準点が満たさなければならない条件。
-- `event1`, `event2`, ... — イベントのチェーンを説明する条件。 [UInt8](../../sql-reference/data-types/int-uint.md)。
+- `event1`, `event2`, ... — イベントチェーンを説明する条件。 [UInt8](../../sql-reference/data-types/int-uint.md)。
 
 **返される値**
 
 - `event_column[next_index]` — パターンが一致し、次の値が存在する場合。
-- `NULL` - パターンが一致しないか、次の値が存在しない場合。
+- `NULL` - パターンが一致しない場合や次の値が存在しない場合。
 
-型: [Nullable(String)](../../sql-reference/data-types/nullable.md)。
+タイプ: [Nullable(String)](../../sql-reference/data-types/nullable.md)。
 
 **例**
 
-イベントが A->B->C->D->E の場合に、B->C の後のイベント（D）を知りたいときに使用できます。
+イベントが A->B->C->D->E のとき、B->C の後に続くイベント D を知りたい場合に使用できます。
 
-A->Bの後のイベントを検索するクエリ文：
+A->B の後のイベントを検索するクエリ文:
 
-``` sql
+```sql
 CREATE TABLE test_flow (
     dt DateTime,
     id int,
@@ -727,15 +732,15 @@ SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'A', page = 'A',
 
 結果:
 
-``` text
+```text
 ┌─id─┬─next_flow─┐
 │  1 │ C         │
 └────┴───────────┘
 ```
 
-**`forward` と `head` の動作**
+**`forward` と `head` に関する動作**
 
-``` sql
+```sql
 ALTER TABLE test_flow DELETE WHERE 1 = 1 settings mutations_sync = 1;
 
 INSERT INTO test_flow VALUES (1, 1, 'Home') (2, 1, 'Gift') (3, 1, 'Exit');
@@ -743,49 +748,49 @@ INSERT INTO test_flow VALUES (1, 2, 'Home') (2, 2, 'Home') (3, 2, 'Gift') (4, 2,
 INSERT INTO test_flow VALUES (1, 3, 'Gift') (2, 3, 'Home') (3, 3, 'Gift') (4, 3, 'Basket');
 ```
 
-``` sql
+```sql
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = 'Home', page = 'Gift') FROM test_flow GROUP BY id;
 
                   dt   id   page
- 1970-01-01 09:00:01    1   Home // 基準点、一致した Home
- 1970-01-01 09:00:02    1   Gift // 一致した Gift
+ 1970-01-01 09:00:01    1   Home // 基準点、Homeに一致
+ 1970-01-01 09:00:02    1   Gift // Giftに一致
  1970-01-01 09:00:03    1   Exit // 結果
 
- 1970-01-01 09:00:01    2   Home // 基準点、一致した Home
- 1970-01-01 09:00:02    2   Home // Gift と一致しない
+ 1970-01-01 09:00:01    2   Home // 基準点、Homeに一致
+ 1970-01-01 09:00:02    2   Home // Giftに一致しない
  1970-01-01 09:00:03    2   Gift
  1970-01-01 09:00:04    2   Basket
 
- 1970-01-01 09:00:01    3   Gift // 基準点、Home と一致しない
+ 1970-01-01 09:00:01    3   Gift // 基準点、Homeに一致しない
  1970-01-01 09:00:02    3   Home
  1970-01-01 09:00:03    3   Gift
  1970-01-01 09:00:04    3   Basket
 ```
 
-**`backward` と `tail` の動作**
+**`backward` と `tail` に関する動作**
 
-``` sql
+```sql
 SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page = 'Basket', page = 'Gift') FROM test_flow GROUP BY id;
 
                  dt   id   page
 1970-01-01 09:00:01    1   Home
 1970-01-01 09:00:02    1   Gift
-1970-01-01 09:00:03    1   Exit // 基準点、Basket と一致しない
+1970-01-01 09:00:03    1   Exit // 基準点、Basketに一致しない
 
 1970-01-01 09:00:01    2   Home
 1970-01-01 09:00:02    2   Home // 結果
-1970-01-01 09:00:03    2   Gift // 一致した Gift
-1970-01-01 09:00:04    2   Basket // 基準点、一致した Basket
+1970-01-01 09:00:03    2   Gift // Giftに一致
+1970-01-01 09:00:04    2   Basket // 基準点、Basketに一致
 
 1970-01-01 09:00:01    3   Gift
 1970-01-01 09:00:02    3   Home // 結果
-1970-01-01 09:00:03    3   Gift // 基準点、一致した Gift
-1970-01-01 09:00:04    3   Basket // 基準点、一致した Basket
+1970-01-01 09:00:03    3   Gift // 基準点、Giftに一致
+1970-01-01 09:00:04    3   Basket // 基準点、Basketに一致
 ```
 
-**`forward` と `first_match` の動作**
+**`forward` と `first_match` に関する動作**
 
-``` sql
+```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
 
                  dt   id   page
@@ -796,7 +801,7 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:01    2   Home
 1970-01-01 09:00:02    2   Home
 1970-01-01 09:00:03    2   Gift // 基準点
-1970-01-01 09:00:04    2   Basket // 結果
+1970-01-01 09:00:04    2   Basket  結果
 
 1970-01-01 09:00:01    3   Gift // 基準点
 1970-01-01 09:00:02    3   Home // 結果
@@ -804,28 +809,29 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:04    3   Basket
 ```
 
-``` sql
+```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
 
                  dt   id   page
 1970-01-01 09:00:01    1   Home
 1970-01-01 09:00:02    1   Gift // 基準点
-1970-01-01 09:00:03    1   Exit // Home と一致しない
+1970-01-01 09:00:03    1   Exit // Homeに一致しない
 
 1970-01-01 09:00:01    2   Home
 1970-01-01 09:00:02    2   Home
 1970-01-01 09:00:03    2   Gift // 基準点
-1970-01-01 09:00:04    2   Basket // Home と一致しない
+1970-01-01 09:00:04    2   Basket // Homeに一致しない
 
 1970-01-01 09:00:01    3   Gift // 基準点
-1970-01-01 09:00:02    3   Home // 一致した Home
+1970-01-01 09:00:02    3   Home // Homeに一致
 1970-01-01 09:00:03    3   Gift // 結果
 1970-01-01 09:00:04    3   Basket
 ```
 
-**`backward` と `last_match` の動作**
 
-``` sql
+**`backward` と `last_match` に関する動作**
+
+```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
 
                  dt   id   page
@@ -844,28 +850,29 @@ SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:04    3   Basket
 ```
 
-``` sql
+```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
 
                  dt   id   page
-1970-01-01 09:00:01    1   Home // Home と一致、結果は null
+1970-01-01 09:00:01    1   Home // Homeに一致、結果はNULL
 1970-01-01 09:00:02    1   Gift // 基準点
 1970-01-01 09:00:03    1   Exit
 
 1970-01-01 09:00:01    2   Home // 結果
-1970-01-01 09:00:02    2   Home // Home と一致
+1970-01-01 09:00:02    2   Home // Homeに一致
 1970-01-01 09:00:03    2   Gift // 基準点
 1970-01-01 09:00:04    2   Basket
 
 1970-01-01 09:00:01    3   Gift // 結果
-1970-01-01 09:00:02    3   Home // Home と一致
+1970-01-01 09:00:02    3   Home // Homeに一致
 1970-01-01 09:00:03    3   Gift // 基準点
 1970-01-01 09:00:04    3   Basket
 ```
 
+
 **`base_condition` の動作**
 
-``` sql
+```sql
 CREATE TABLE test_flow_basecond
 (
     `dt` DateTime,
@@ -880,42 +887,41 @@ ORDER BY id;
 INSERT INTO test_flow_basecond VALUES (1, 1, 'A', 'ref4') (2, 1, 'A', 'ref3') (3, 1, 'B', 'ref2') (4, 1, 'B', 'ref1');
 ```
 
-``` sql
+```sql
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, ref = 'ref1', page = 'A') FROM test_flow_basecond GROUP BY id;
 
                   dt   id   page   ref
- 1970-01-01 09:00:01    1   A      ref4 // ヘッドは、ヘッドの ref カラムが 'ref1' と一致しないため基準点になれません。
+ 1970-01-01 09:00:01    1   A      ref4 // 基準点にはなれません、headのrefカラムが 'ref1' に一致しないため。
  1970-01-01 09:00:02    1   A      ref3
  1970-01-01 09:00:03    1   B      ref2
  1970-01-01 09:00:04    1   B      ref1
  ```
 
-``` sql
+```sql
 SELECT id, sequenceNextNode('backward', 'tail')(dt, page, ref = 'ref4', page = 'B') FROM test_flow_basecond GROUP BY id;
 
                   dt   id   page   ref
  1970-01-01 09:00:01    1   A      ref4
  1970-01-01 09:00:02    1   A      ref3
  1970-01-01 09:00:03    1   B      ref2
- 1970-01-01 09:00:04    1   B      ref1 // テールは、テールの ref カラムが 'ref4' と一致しないため基準点になれません。
+ 1970-01-01 09:00:04    1   B      ref1 // tailは基準点になれません、tailのrefカラムが 'ref4' に一致しないため。
 ```
 
-``` sql
+```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, ref = 'ref3', page = 'A') FROM test_flow_basecond GROUP BY id;
 
                   dt   id   page   ref
- 1970-01-01 09:00:01    1   A      ref4 // この行は、ref カラムが 'ref3' と一致しないため基準点になれません。
+ 1970-01-01 09:00:01    1   A      ref4 // この行は基準点になれません、refカラムが 'ref3' に一致しないため。
  1970-01-01 09:00:02    1   A      ref3 // 基準点
  1970-01-01 09:00:03    1   B      ref2 // 結果
  1970-01-01 09:00:04    1   B      ref1
 ```
 
-``` sql
+```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, ref = 'ref2', page = 'B') FROM test_flow_basecond GROUP BY id;
 
                   dt   id   page   ref
  1970-01-01 09:00:01    1   A      ref4
  1970-01-01 09:00:02    1   A      ref3 // 結果
  1970-01-01 09:00:03    1   B      ref2 // 基準点
- 1970-01-01 09:00:04    1   B      ref1 // この行は、ref カラムが 'ref2' と一致しないため基準点になれません。
-```
+ 1970-01-01 09:00:04    1   B      ref1 // この行は基準点になれません、refカラムが 'ref2' に一致しないため。

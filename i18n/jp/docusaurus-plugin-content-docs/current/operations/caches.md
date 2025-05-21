@@ -1,32 +1,35 @@
 ---
-slug: '/operations/caches'
-sidebar_position: 65
-sidebar_label: 'キャッシュ'
-title: 'キャッシュの種類'
 description: 'クエリを実行する際、ClickHouseは異なるキャッシュを使用します。'
+sidebar_label: 'キャッシュ'
+sidebar_position: 65
+slug: /operations/caches
+title: 'キャッシュの種類'
 ---
+
+
+# キャッシュの種類
 
 クエリを実行する際、ClickHouseは異なるキャッシュを使用します。
 
-主要なキャッシュの種類:
+主なキャッシュの種類:
 
-- `mark_cache` — [MergeTree](../engines/table-engines/mergetree-family/mergetree.md) 系のテーブルエンジンによって使用されるマークのキャッシュ。
-- `uncompressed_cache` — [MergeTree](../engines/table-engines/mergetree-family/mergetree.md) 系のテーブルエンジンによって使用される非圧縮データのキャッシュ。
-- `skipping_index_cache` — [MergeTree](../engines/table-engines/mergetree-family/mergetree.md) 系のテーブルエンジンによって使用されるメモリ内スキップインデックスグラニュールのキャッシュ。
-- オペレーティングシステムのページキャッシュ（実際のデータを含むファイルに対して間接的に使用される）。
+- `mark_cache` — [MergeTree](../engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブルエンジンによって使用されるマークのキャッシュ。
+- `uncompressed_cache` — [MergeTree](../engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブルエンジンによって使用される非圧縮データのキャッシュ。
+- オペレーティングシステムのページキャッシュ（実際のデータを含むファイルのために間接的に使用されます）。
 
 追加のキャッシュの種類:
 
 - DNSキャッシュ。
 - [Regexp](../interfaces/formats.md#data-format-regexp) キャッシュ。
-- コンパイルされた式キャッシュ。
-- [Avro形式](../interfaces/formats.md#data-format-avro) スキーマキャッシュ。
+- コンパイルされた式のキャッシュ。
+- [Vector Similarity Index](../engines/table-engines/mergetree-family/annindexes.md) キャッシュ。
+- [Avroフォーマット](../interfaces/formats.md#data-format-avro) スキーマのキャッシュ。
 - [Dictionaries](../sql-reference/dictionaries/index.md) データキャッシュ。
 - スキーマ推論キャッシュ。
-- [ファイルシステムキャッシュ](storing-data.md)（S3、Azure、ローカルおよびその他のディスク上）。
+- S3、Azure、ローカルおよびその他のディスク上の[ファイルシステムキャッシュ](storing-data.md)。
+- [ユーザ空間ページキャッシュ](/operations/userspace-page-cache)
 - [クエリキャッシュ](query-cache.md)。
+- [クエリ条件キャッシュ](query-condition-cache.md)。
 - フォーマットスキーマキャッシュ。
 
-キャッシュの1つを削除するには、[SYSTEM DROP ... CACHE](../sql-reference/statements/system.md#drop-mark-cache) ステートメントを使用します。
-
-フォーマットスキーマキャッシュを削除するには、[SYSTEM DROP FORMAT SCHEMA CACHE](/sql-reference/statements/system#system-drop-schema-format) ステートメントを使用します。
+キャッシュのうちの1つを削除するには、[SYSTEM DROP ... CACHE](../sql-reference/statements/system.md) ステートメントを使用します。

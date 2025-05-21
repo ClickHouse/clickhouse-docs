@@ -1,7 +1,8 @@
 ---
+description: 'ClickHouseのネイティブクライアントとインターフェース'
+keywords: ['クライアント', 'インターフェース', 'CLI', 'SQLコンソール', 'ドライバー']
 slug: /interfaces/natives-clients-and-interfaces
-keywords: [clients, interfaces, CLI, SQL console, drivers]
-description: ClickHouseのネイティブクライアントとインターフェース
+title: 'ネイティブクライアントとインターフェース'
 ---
 
 
@@ -9,10 +10,10 @@ description: ClickHouseのネイティブクライアントとインターフェ
 
 ClickHouseは、ClickHouseに接続するためのさまざまなネイティブクライアントとインターフェースを提供しています。
 
-詳細については、以下のページをご覧ください：
+詳細については、以下のページを参照してください：
 
-| セクション                                                     | 概要                                                                             |
+| セクション                                                    | 概要                                                                                |
 |--------------------------------------------------------------|-------------------------------------------------------------------------------------|
-| [コマンドラインクライアント](/interfaces/cli)               | コマンドラインオプションと設定ファイルをサポートするネイティブのコマンドラインクライアント。 |
-| [ドライバー & インターフェース](/interfaces/overview)         | 複数のネットワークインターフェース、ライブラリ、およびビジュアルインターフェース。                    |
-| [SQLコンソール](/integrations/sql-clients/sql-console) | ClickHouse Cloud内のデータと簡単に対話するための迅速で簡単な方法。                 |
+| [コマンドラインクライアント](/interfaces/cli)        | コマンドラインオプションと設定ファイルをサポートするネイティブのコマンドラインクライアントです。   |
+| [ドライバー & インターフェース](/interfaces/overview) | 多数のネットワークインターフェース、ライブラリ、視覚的インターフェースがあります。                  |
+| [SQLコンソール](/integrations/sql-clients/sql-console) | ClickHouse Cloud内のデータと対話するための迅速で簡単な方法です。                        |

@@ -1,25 +1,25 @@
 ---
-description: "サーバーがサポートするデータベースエンジンのリストを含むシステムテーブルです。"
+description: 'サーバーによってサポートされているデータベースエンジンのリストを含むシステムテーブル。'
+keywords: ['system table', 'database_engines']
 slug: /operations/system-tables/database_engines
-title: "system.database_engines"
-keywords: ["システムテーブル", "database_engines"]
+title: 'system.database_engines'
 ---
 
-サーバーがサポートするデータベースエンジンのリストを含みます。
+サーバーによってサポートされているデータベースエンジンのリストを含みます。
 
-このテーブルには次のカラムが含まれています（カラムタイプは括弧内に示されています）：
+このテーブルには次のカラムが含まれています（カラムのタイプは括弧内に示されています）：
 
 - `name` (String) — データベースエンジンの名前。
 
 例：
 
-``` sql
+```sql
 SELECT *
 FROM system.database_engines
 WHERE name in ('Atomic', 'Lazy', 'Ordinary')
 ```
 
-``` text
+```text
 ┌─name─────┐
 │ Ordinary │
 │ Atomic   │

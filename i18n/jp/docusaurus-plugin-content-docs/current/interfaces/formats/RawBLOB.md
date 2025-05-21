@@ -1,40 +1,40 @@
 ---
-title: RawBLOB
+description: 'RawBLOBフォーマットのドキュメント'
+keywords: ['RawBLOB']
 slug: /interfaces/formats/RawBLOB
-keywords: [RawBLOB]
+title: 'RawBLOB'
 ---
 
 ## 説明 {#description}
 
-`RawBLOB` フォーマットは、すべての入力データを単一の値として読み込みます。 [`String`](/sql-reference/data-types/string.md) 型のフィールドが1つだけのテーブルの解析が可能です。
-結果はデリミタやエスケープなしのバイナリ形式で出力されます。複数の値が出力される場合、フォーマットは曖昧となり、データを再読み込みすることは不可能です。
+`RawBLOB`フォーマットは、すべての入力データを単一の値として読み取ります。 [`String`](/sql-reference/data-types/string.md)型またはそれに類似した単一フィールドのテーブルのみを解析することが可能です。 結果は、区切り文字やエスケープなしでバイナリフォーマットとして出力されます。 1つ以上の値が出力される場合、フォーマットは曖昧になり、データを再度読み取ることが不可能になります。
 
-### Raw フォーマットの比較 {#raw-formats-comparison}
+### Rawフォーマットの比較 {#raw-formats-comparison}
 
-以下は、`RawBLOB` と [`TabSeparatedRaw`](./TabSeparated/TabSeparatedRaw.md) フォーマットの比較です。
+以下は、`RawBLOB`と[`TabSeparatedRaw`](./TabSeparated/TabSeparatedRaw.md)フォーマットの比較です。
 
 `RawBLOB`:
-- データはエスケープなしのバイナリ形式で出力されます；
-- 値の間にデリミタはありません；
-- 各値の終わりには改行がありません。
+- データはバイナリフォーマットで出力され、エスケープはありません。
+- 値の間に区切り文字はありません。
+- 各値の最後に改行はありません。
 
 `TabSeparatedRaw`:
-- データはエスケープなしで出力されます；
-- 行はタブで区切られた値を含みます；
+- データはエスケープなしで出力されます。
+- 行はタブで区切られた値を含みます。
 - 各行の最後の値の後には改行があります。
 
-以下は、`RawBLOB` と [RowBinary](./RowBinary/RowBinary.md) フォーマットの比較です。
+以下は、`RawBLOB`と[RowBinary](./RowBinary/RowBinary.md)フォーマットの比較です。
 
 `RawBLOB`:
-- String フィールドは長さのプレフィックスなしで出力されます。
+- Stringフィールドは長さのプレフィックスなしで出力されます。
 
 `RowBinary`:
-- String フィールドは長さが varint 形式で表示され（unsigned [LEB128] (https://en.wikipedia.org/wiki/LEB128)）、その後に文字列のバイトが続きます。
+- Stringフィールドは、バイナリ形式の長さ（unsigned [LEB128] (https://en.wikipedia.org/wiki/LEB128)）で表現され、その後に文字列のバイトが続きます。
 
-`RawBLOB` 入力に空のデータが渡されると、ClickHouse は例外を投げます：
+空のデータが`RawBLOB`入力に渡されると、ClickHouseは例外をスローします：
 
 ```text
-コード: 108. DB::Exception: No data to insert
+Code: 108. DB::Exception: No data to insert
 ```
 
 ## 使用例 {#example-usage}

@@ -1,38 +1,35 @@
 ---
 slug: /materialized-view/refreshable-materialized-view
-title: リフレッシュ可能なマテリアライズドビュー
-description: マテリアライズドビューを使用してクエリを高速化する方法
-keywords: [リフレッシュ可能なマテリアライズドビュー, リフレッシュ, マテリアライズドビュー, クエリの高速化, クエリ最適化]
+title: 'リフレッシュ可能なマテリアライズドビュー'
+description: 'マテリアライズドビューを使用してクエリを高速化する方法'
+keywords: ['リフレッシュ可能なマテリアライズドビュー', 'リフレッシュ', 'マテリアライズドビュー', 'クエリを高速化', 'クエリ最適化']
 ---
 
 import refreshableMaterializedViewDiagram from '@site/static/images/materialized-view/refreshable-materialized-view-diagram.png';
+import Image from '@theme/IdealImage';
 
-[リフレッシュ可能なマテリアライズドビュー](/sql-reference/statements/create/view#refreshable-materialized-view)は、従来のOLTPデータベースにおけるマテリアライズドビューに概念的に類似しており、特定のクエリの結果を保存し、迅速な取得を可能にすることで、リソース集約型のクエリを繰り返し実行する必要を減らします。ClickHouseの[増分マテリアライズドビュー](/materialized-view/incremental-materialized-view)とは異なり、これは全データセットに対して定期的にクエリを実行する必要があります。その結果は、クエリ用にターゲットテーブルに保存されます。この結果セットは理論的には元のデータセットよりも小さいため、その後のクエリはより速く実行されることが期待されます。
+[リフレッシュ可能なマテリアライズドビュー](/sql-reference/statements/create/view#refreshable-materialized-view)は、伝統的なOLTPデータベースにおけるマテリアライズドビューに概念的に類似しており、特定のクエリの結果を迅速に取得するために保存し、リソース集約型のクエリを何度も実行する必要を減らします。ClickHouseの[インクリメンタルマテリアライズドビュー](/materialized-view/incremental-materialized-view)とは異なり、これはフルデータセットに対して定期的にクエリを実行することを必要とします - その結果はターゲットテーブルに保存され、クエリの対象となります。この結果セットは理論的には元のデータセットよりも小さく、次のクエリの実行を速くできます。
 
-以下の図は、リフレッシュ可能なマテリアライズドビューの動作を説明します。
+この図は、リフレッシュ可能なマテリアライズドビューがどのように機能するかを説明しています：
 
-<img src={refreshableMaterializedViewDiagram}
-  class="image"
-  alt="リフレッシュ可能なマテリアライズドビューの図"
-  style={{width: '100%', background: 'none'}} />
+<Image img={refreshableMaterializedViewDiagram} size="lg" alt="リフレッシュ可能なマテリアライズドビューの図"/>
 
-次のビデオもご覧いただけます：
+以下のビデオもご覧いただけます：
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-KhFJSY8yrs?si=VPRSZb20vaYkuR_C" title="YouTubeビデオプレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+## いつリフレッシュ可能なマテリアライズドビューを使用すべきか? {#when-should-refreshable-materialized-views-be-used}
 
-## リフレッシュ可能なマテリアライズドビューはいつ使用すべきか？ {#when-should-refreshable-materialized-views-be-used}
+ClickHouseのインクリメンタルマテリアライズドビューは非常に強力で、リフレッシュ可能なマテリアライズドビューのアプローチよりもはるかにスケールが良いことが一般的です。特に、単一テーブルに対して集約を行う必要がある場合においてです。各データブロックが挿入される際に、集約を計算し、最終テーブルでインクリメンタル状態をマージすることにより、クエリはデータのサブセットでのみ実行されます。この方法は、ペタバイトのデータにスケールし、通常は好まれる方法です。
 
-ClickHouseの増分マテリアライズドビューは非常に強力で、リフレッシュ可能なマテリアライズドビューで使用されるアプローチよりも通常はスケールが良好です。特に、単一のテーブルに対して集計を実行する必要がある場合で、そのデータの各ブロックに対してのみ集計を行い、最終テーブルで増分状態をマージすることにより、クエリはデータのサブセットでのみ実行されます。この方法は数ペタバイトのデータにまでスケールし、通常は好ましい方法です。
+ただし、インクリメンタルプロセスが必要ない、または適用できないユースケースもあります。一部の問題はインクリメンタルアプローチと互換性がないか、リアルタイムの更新が必要ない場合があり、定期的な再構築がより適切です。例えば、複雑な結合を使用するため、フルデータセットに対してビューの完全な再計算を定期的に実行したい場合があります。
 
-しかし、この増分プロセスが必要ない、あるいは適用できないユースケースもあります。いくつかの問題は増分アプローチと互換性がなく、リアルタイム更新を必要としないため、定期的な再構築がより適切です。たとえば、複雑な結合を使用しているため、完全なデータセットに対するビューの完全な再計算を定期的に実行したい場合があります。
+> リフレッシュ可能なマテリアライズドビューは、非正規化などのタスクを実行するバッチプロセスを実行できます。リフレッシュ可能なマテリアライズドビュー間に依存関係を構築することも可能で、一つのビューが別のビューの結果に依存し、完了するまで実行されないようにできます。これは、スケジュールされたワークフローやシンプルなDAG（例: [dbt](https://www.getdbt.com/)ジョブ）を置き換えられます。リフレッシュ可能なマテリアライズドビュー間の依存関係の設定方法の詳細は、[CREATE VIEW](/sql-reference/statements/create/view#refresh-dependencies)を参照してください。`Dependencies` セクション。
 
-> リフレッシュ可能なマテリアライズドビューは、非正規化などのタスクを実行するバッチプロセスを実行できます。リフレッシュ可能なマテリアライズドビュー間に依存関係を作成することができ、あるビューが別のビューの結果に依存し、完了した後にのみ実行されるようにできます。これは、スケジュールされたワークフローや[dbt](https://www.getdbt.com/)ジョブなどのシンプルなDAGを置き換えることができます。リフレッシュ可能なマテリアライズドビュー間の依存関係の設定方法については、[CREATE VIEW](/sql-reference/statements/create/view#refresh-dependencies)、`Dependencies`セクションをご覧ください。
+## リフレッシュ可能なマテリアライズドビューをどのようにリフレッシュしますか? {#how-do-you-refresh-a-refreshable-materialized-view}
 
-## リフレッシュ可能なマテリアライズドビューをどのようにリフレッシュしますか？ {#how-do-you-refresh-a-refreshable-materialized-view}
-
-リフレッシュ可能なマテリアライズドビューは、作成時に定義されたインターバルで自動的にリフレッシュされます。
-たとえば、以下のマテリアライズドビューは毎分リフレッシュされます：
+リフレッシュ可能なマテリアライズドビューは、作成時に定義された間隔で自動的にリフレッシュされます。
+例えば、以下のマテリアライズドビューは毎分リフレッシュされます：
 
 ```sql
 CREATE MATERIALIZED VIEW table_name_mv
@@ -40,18 +37,18 @@ REFRESH EVERY 1 MINUTE TO table_name AS
 ...
 ```
 
-マテリアライズドビューを強制的にリフレッシュしたい場合は、`SYSTEM REFRESH VIEW`句を使うことができます：
+マテリアライズドビューを強制的にリフレッシュしたい場合は、`SYSTEM REFRESH VIEW`句を使用できます：
 
 ```sql
 SYSTEM REFRESH VIEW table_name_mv;
 ```
 
 ビューをキャンセル、停止、または開始することもできます。
-詳細については、[リフレッシュ可能なマテリアライズドビューの管理](/sql-reference/statements/system#refreshable-materialized-views)のドキュメントをご覧ください。
+詳細については、[リフレッシュ可能なマテリアライズドビューの管理](/sql-reference/statements/system#refreshable-materialized-views)に関するドキュメントを参照してください。
 
-## リフレッシュ可能なマテリアライズドビューは最後にいつリフレッシュされましたか？ {#when-was-a-refreshable-materialized-view-last-refreshed}
+## リフレッシュ可能なマテリアライズドビューが最後にリフレッシュされたのはいつですか? {#when-was-a-refreshable-materialized-view-last-refreshed}
 
-リフレッシュ可能なマテリアライズドビューが最後にリフレッシュされた時期を知るには、次のように[`system.view_refreshes`](/operations/system-tables/view_refreshes)システムテーブルをクエリします：
+リフレッシュ可能なマテリアライズドビューが最後にリフレッシュされたのはいつかを確認するには、以下のように[`system.view_refreshes`](/operations/system-tables/view_refreshes)システムテーブルをクエリします：
 
 ```sql
 SELECT database, view, status,
@@ -66,7 +63,7 @@ FROM system.view_refreshes;
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
 
-## リフレッシュレートを変更するにはどうすればよいですか？ {#how-can-i-change-the-refresh-rate}
+## リフレッシュレートを変更するにはどうすればよいですか? {#how-can-i-change-the-refresh-rate}
 
 リフレッシュ可能なマテリアライズドビューのリフレッシュレートを変更するには、[`ALTER TABLE...MODIFY REFRESH`](/sql-reference/statements/alter/view#alter-table--modify-refresh-statement)構文を使用します。
 
@@ -75,7 +72,7 @@ ALTER TABLE table_name_mv
 MODIFY REFRESH EVERY 30 SECONDS;
 ```
 
-その後、リフレッシュ可能なマテリアライズドビューが最後にリフレッシュされた時期を確認するために、[リフレッシュ可能なマテリアライズドビューは最後にいつリフレッシュされましたか？](/materialized-view/refreshable-materialized-view#when-was-a-refreshable-materialized-view-last-refreshed)のクエリを使用できます：
+これを行ったら、[リフレッシュ可能なマテリアライズドビューが最後にリフレッシュされたのはいつか?](/materialized-view/refreshable-materialized-view#when-was-a-refreshable-materialized-view-last-refreshed)クエリを使用して、レートが更新されたかどうかを確認できます：
 
 ```text
 ┌─database─┬─view─────────────┬─status────┬───last_success_time─┬───last_refresh_time─┬───next_refresh_time─┬─read_rows─┬─written_rows─┐
@@ -83,11 +80,11 @@ MODIFY REFRESH EVERY 30 SECONDS;
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
 
-## 新しい行を追加するための `APPEND` の使用 {#using-append-to-add-new-rows}
+## `APPEND`を使用して新しい行を追加する {#using-append-to-add-new-rows}
 
-`APPEND`機能を使用すると、ビュー全体を置き換える代わりに、テーブルの末尾に新しい行を追加できます。
+`APPEND`機能を使用すると、ビュー全体を置き換えるのではなく、テーブルの末尾に新しい行を追加できます。
 
-この機能の一例は、特定の時点での値のスナップショットをキャプチャすることです。たとえば、[Kafka](https://kafka.apache.org/)や[Redpanda](https://www.redpanda.com/)などのストリーミングデータプラットフォームからのメッセージのストリームによって人口が増加した`events`テーブルを考えてみましょう。
+この機能の一つの用途は、特定の時点における値のスナップショットを取得することです。例えば、次のように[Kafka](https://kafka.apache.org/)や[Redpanda](https://www.redpanda.com/)からのメッセージのストリームによって人口された`events`テーブルがあるとします。
 
 ```sql
 SELECT *
@@ -110,7 +107,7 @@ Query id: 7662bc39-aaf9-42bd-b6c7-bc94f2881036
 └─────────────────────┴──────┴───────┘
 ```
 
-このデータセットには`uuid`カラムに`4096`の値があります。次のクエリを記述して、合計カウントが最も高いものを見つけることができます：
+このデータセットには、`uuid`カラムに`4096`の値があります。次のように、合計カウントが最も高いものを見つけるクエリを書けます：
 
 ```sql
 SELECT
@@ -135,7 +132,7 @@ LIMIT 10
 └──────┴─────────┘
 ```
 
-10秒ごとに各`uuid`のカウントをキャプチャし、`events_snapshot`という新しいテーブルに保存したいとしましょう。`events_snapshot`のスキーマは次のようになります：
+例えば、`uuid`ごとのカウントを10秒ごとにキャプチャして新しいテーブル`events_snapshot`に保存した場合、`events_snapshot`のスキーマは次のようになります：
 
 ```sql
 CREATE TABLE events_snapshot (
@@ -147,7 +144,7 @@ ENGINE = MergeTree
 ORDER BY uuid;
 ```
 
-次に、次のようにこのテーブルをポピュレートするためのリフレッシュ可能なマテリアライズドビューを作成します：
+次に、このテーブルをポピュレートするためのリフレッシュ可能なマテリアライズドビューを作成できます：
 
 ```sql
 CREATE MATERIALIZED VIEW events_snapshot_mv
@@ -160,7 +157,7 @@ FROM events
 GROUP BY ALL;
 ```
 
-その後、特定の`uuid`のカウントを時間経過とともに取得するために`events_snapshot`をクエリできます：
+その後、特定の`uuid`に対する時間の経過に伴うカウントを取得するために`events_snapshot`をクエリできます：
 
 ```sql
 SELECT *
@@ -183,11 +180,11 @@ FORMAT PrettyCompactMonoBlock
 
 ## 例 {#examples}
 
-リフレッシュ可能なマテリアライズドビューをいくつかの例のデータセットで使用する方法を見てみましょう。
+リフレッシュ可能なマテリアライズドビューを利用したいくつかの例データセットを見てみましょう。
 
 ### Stack Overflow {#stack-overflow}
 
-[非正規化データガイド](/data-modeling/denormalization)では、Stack Overflowデータセットを使用してデータを非正規化するさまざまな技術を示しています。`votes`、`users`、`badges`、`posts`、および`postlinks`というテーブルにデータをポピュレートします。
+[非正規化データガイド](/data-modeling/denormalization)では、Stack Overflowデータセットを使用してデータを非正規化するさまざまな技術を示しています。以下のテーブルにデータを投入します: `votes`, `users`, `badges`, `posts`, および `postlinks`。
 
 そのガイドでは、次のクエリで`postlinks`データセットを`posts`テーブルに非正規化する方法を示しました：
 
@@ -199,18 +196,18 @@ SELECT
 FROM posts
 LEFT JOIN (
     SELECT
-   	 PostId,
-   	 groupArray((CreationDate, RelatedPostId, LinkTypeId)) AS Related
+         PostId,
+         groupArray((CreationDate, RelatedPostId, LinkTypeId)) AS Related
     FROM postlinks
     GROUP BY PostId
 ) AS postlinks ON posts_types_codecs_ordered.Id = postlinks.PostId;
 ```
 
-このデータを`posts_with_links`テーブルに1回挿入する方法を示しましたが、本番システムではこの操作を定期的に実行したいでしょう。
+このデータを`posts_with_links`テーブルに一度だけ挿入する方法を示しましたが、実稼働システムではこの操作を定期的に実行することが望ましいです。
 
-`posts`テーブルと`postlinks`テーブルはどちらも更新される可能性があります。したがって、増分マテリアライズドビューを使用してこの結合を実装するのではなく、このクエリを設定された間隔で実行するようにスケジュールし、結果を`post_with_links`テーブルに保存するのが十分かもしれません。
+`posts`と`postlinks`テーブルの両方は更新される可能性があります。そのため、インクリメンタルマテリアライズドビューを使ってこの結合を実装しようとするよりも、単にこのクエリを設定された間隔で実行し、結果を`post_with_links`テーブルに保存する方が十分かもしれません。
 
-ここで、リフレッシュ可能なマテリアライズドビューが役立ちます。次のクエリで作成できます：
+ここでリフレッシュ可能なマテリアライズドビューが役に立ち、次のクエリで作成できます：
 
 ```sql
 CREATE MATERIALIZED VIEW posts_with_links_mv
@@ -222,24 +219,24 @@ SELECT
 FROM posts
 LEFT JOIN (
     SELECT
-   	 PostId,
-   	 groupArray((CreationDate, RelatedPostId, LinkTypeId)) AS Related
+         PostId,
+         groupArray((CreationDate, RelatedPostId, LinkTypeId)) AS Related
     FROM postlinks
     GROUP BY PostId
 ) AS postlinks ON posts_types_codecs_ordered.Id = postlinks.PostId;
 ```
 
-このビューは即座に実行され、以降は設定された間隔ごとに実行され、ソーステーブルの更新が反映されるようになります。重要なことは、クエリが再実行されると、結果セットが原子的かつ透過的に更新されることです。
+ビューはすぐに実行され、その後も指定された毎時実行され、ソーステーブルの更新が反映されるようにします。重要なのは、クエリが再実行される時、結果セットが原子的かつ透過的に更新されることです。
 
 :::note
-ここでの構文は、[`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view)句を含む限り、増分マテリアライズドビューと同じです：
+ここでの構文はインクリメンタルマテリアライズドビューと同じですが、[`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view)句が含まれます：
 :::
 
 ### IMDb {#imdb}
 
-[dbtとClickHouseの統合ガイド](/integrations/dbt#dbt)では、`actors`、`directors`、`genres`、`movie_directors`、`movies`、および`roles`というテーブルでIMDbデータセットをポピュレートしました。
+[dbtとClickHouseの統合ガイド](/integrations/dbt#dbt)では、`actors`, `directors`, `genres`, `movie_directors`, `movies`, および `roles`テーブルを使用してIMDbデータセットを投入しました。
 
-次のクエリを使用して、各俳優の要約を計算できます。ムービーの出現頻度によって並べ替えます。
+次に、映画の出演数が最も多い俳優の要約を計算するために次のクエリを使用できます。
 
 ```sql
 SELECT
@@ -278,50 +275,50 @@ LIMIT 5;
 Peak memory usage: 1.38 GiB.
 ```
 
-結果を返すのにそれほど時間はかかりませんが、さらに迅速で計算負荷の少ないものにしたいとしましょう。
-このデータセットは絶えず更新されており、映画も新しい俳優や監督とともに常にリリースされています。
+結果を取得するのにそれほど時間はかかりませんが、さらに迅速で計算コストが低くなることを望んでいると仮定しましょう。
+例えば、このデータセットは常に更新されるので、映画が常にリリースされ、新しい俳優や監督が現れています。
 
-リフレッシュ可能なマテリアライズドビューの出番です。結果用のターゲットテーブルをまず作成しましょう：
+リフレッシュ可能なマテリアライズドビューの出番です。まず、結果のためのターゲットテーブルを作成しましょう：
 
 ```sql
 CREATE TABLE imdb.actor_summary
 (
-	`id` UInt32,
-	`name` String,
-	`num_movies` UInt16,
-	`avg_rank` Float32,
-	`unique_genres` UInt16,
-	`uniq_directors` UInt16,
-	`updated_at` DateTime
+        `id` UInt32,
+        `name` String,
+        `num_movies` UInt16,
+        `avg_rank` Float32,
+        `unique_genres` UInt16,
+        `uniq_directors` UInt16,
+        `updated_at` DateTime
 )
 ENGINE = MergeTree
 ORDER BY num_movies
 ```
 
-次に、ビューを定義できます：
+では、ビューを定義できます：
 
 ```sql
 CREATE MATERIALIZED VIEW imdb.actor_summary_mv
 REFRESH EVERY 1 MINUTE TO imdb.actor_summary AS
 SELECT
-	id,
-	any(actor_name) AS name,
-	uniqExact(movie_id) AS num_movies,
-	avg(rank) AS avg_rank,
-	uniqExact(genre) AS unique_genres,
-	uniqExact(director_name) AS uniq_directors,
-	max(created_at) AS updated_at
+        id,
+        any(actor_name) AS name,
+        uniqExact(movie_id) AS num_movies,
+        avg(rank) AS avg_rank,
+        uniqExact(genre) AS unique_genres,
+        uniqExact(director_name) AS uniq_directors,
+        max(created_at) AS updated_at
 FROM
 (
-	SELECT
-    	imdb.actors.id AS id,
-    	concat(imdb.actors.first_name, ' ', imdb.actors.last_name) AS actor_name,
-    	imdb.movies.id AS movie_id,
-    	imdb.movies.rank AS rank,
-    	genre,
-    	concat(imdb.directors.first_name, ' ', imdb.directors.last_name) AS director_name,
-    	created_at
-	FROM imdb.actors
+        SELECT
+        imdb.actors.id AS id,
+        concat(imdb.actors.first_name, ' ', imdb.actors.last_name) AS actor_name,
+        imdb.movies.id AS movie_id,
+        imdb.movies.rank AS rank,
+        genre,
+        concat(imdb.directors.first_name, ' ', imdb.directors.last_name) AS director_name,
+        created_at
+        FROM imdb.actors
     INNER JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
     LEFT JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
     LEFT JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
@@ -332,7 +329,7 @@ GROUP BY id
 ORDER BY num_movies DESC;
 ```
 
-このビューは即座に実行され、その後、設定どおりに毎分実行され、ソーステーブルの更新が反映されるようになります。俳優の要約を取得するための前のクエリが、文法的に簡素化され、著しく高速になります！
+ビューは即座に実行され、その後毎分実行されて、ソーステーブルの更新が反映されるようにします。俳優の要約取得のための以前のクエリは構文的にシンプルになり、大幅に高速化されます。
 
 ```sql
 SELECT *
@@ -353,20 +350,20 @@ LIMIT 5
 5 rows in set. Elapsed: 0.007 sec.
 ```
 
-新しい俳優 "Clicky McClickHouse" をソースデータに追加すると、彼は多くの映画に出演したことになります！
+もし新しい俳優「Clicky McClickHouse」をソースデータに追加した場合、彼は多くの映画に出演していると仮定します！
 
 ```sql
 INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
 INSERT INTO imdb.roles SELECT
-	845466 AS actor_id,
-	id AS movie_id,
-	'Himself' AS role,
-	now() AS created_at
+        845466 AS actor_id,
+        id AS movie_id,
+        'Himself' AS role,
+        now() AS created_at
 FROM imdb.movies
 LIMIT 10000, 910;
 ```
 
-60秒も経たないうちに、ターゲットテーブルはClickyの俳優としての多才な側面を反映するために更新されます：
+60秒も経たないうちに、ターゲットテーブルはClickyの俳優としての多才さを反映するように更新されます：
 
 ```sql
 SELECT *

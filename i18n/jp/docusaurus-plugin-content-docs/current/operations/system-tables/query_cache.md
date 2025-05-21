@@ -1,10 +1,14 @@
 ---
-description: "クエリキャッシュの内容を示すシステムテーブル。"
+description: 'クエリキャッシュの内容を表示するシステムテーブル。'
+keywords: ['system table', 'query_cache']
 slug: /operations/system-tables/query_cache
-title: "system.query_cache"
-keywords: ["システムテーブル", "query_cache"]
+title: 'system.query_cache'
 ---
-import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+
+
+# system.query_cache
 
 <SystemTableCloud/>
 
@@ -16,19 +20,19 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 - `query_id` ([String](../../sql-reference/data-types/string.md)) — クエリのID。
 - `result_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — クエリキャッシュエントリのサイズ。
 - `tag` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — クエリキャッシュエントリのタグ。
-- `stale` ([UInt8](../../sql-reference/data-types/int-uint.md)) — クエリキャッシュエントリが古いかどうか。
+- `stale` ([UInt8](../../sql-reference/data-types/int-uint.md)) — クエリキャッシュエントリが古くなっているかどうか。
 - `shared` ([UInt8](../../sql-reference/data-types/int-uint.md)) — クエリキャッシュエントリが複数のユーザー間で共有されているかどうか。
 - `compressed` ([UInt8](../../sql-reference/data-types/int-uint.md)) — クエリキャッシュエントリが圧縮されているかどうか。
 - `expires_at` ([DateTime](../../sql-reference/data-types/datetime.md)) — クエリキャッシュエントリが古くなる時刻。
-- `key_hash` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — クエリ文字列のハッシュで、クエリキャッシュエントリを見つけるためのキーとして使用されます。
+- `key_hash` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — クエリ文字列のハッシュで、クエリキャッシュエントリを探すためのキーとして使用されます。
 
 **例**
 
-``` sql
+```sql
 SELECT * FROM system.query_cache FORMAT Vertical;
 ```
 
-``` text
+```text
 行 1:
 ──────
 query:       SELECT 1 SETTINGS use_query_cache = 1

@@ -1,11 +1,11 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/max
+description: '値のグループに対して最大値を計算する集約関数。'
 sidebar_position: 162
-title: max
-description: "値のグループ内で最大値を計算する集約関数。"
+slug: /sql-reference/aggregate-functions/reference/max
+title: 'max'
 ---
 
-値のグループ内で最大値を計算する集約関数。
+値のグループに対して最大値を計算する集約関数です。
 
 例:
 

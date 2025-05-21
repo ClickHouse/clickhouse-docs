@@ -1,36 +1,36 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/contingency
+description: '`contingency`関数は、テーブル内の2つのカラム間の関連性を測定する値であるコンティンジェンシー係数を計算します。この計算は、異なる分母を持つ平方根に基づいていますが、`cramersV`関数に似ています。'
 sidebar_position: 116
-title: "contingency"
-description: "`contingency` 関数は、テーブル内の 2 つのカラム間の関連性を測定する値である連関係数を計算します。計算は、`cramersV` 関数に似ていますが、平方根の分母が異なります。"
+slug: /sql-reference/aggregate-functions/reference/contingency
+title: 'contingency'
 ---
 
 
 # contingency
 
-`contingency` 関数は、[連関係数](https://en.wikipedia.org/wiki/Contingency_table#Cram%C3%A9r's_V_and_the_contingency_coefficient_C)を計算します。これは、テーブル内の 2 つのカラム間の関連性を測定する値です。計算は、[ `cramersV` 関数](./cramersv.md)に似ていますが、平方根の分母が異なります。
+`contingency`関数は、[コンティンジェンシー係数](https://en.wikipedia.org/wiki/Contingency_table#Cram%C3%A9r's_V_and_the_contingency_coefficient_C)を計算します。これは、テーブル内の2つのカラム間の関連性を測定する値です。この計算は、[ `cramersV`関数](./cramersv.md)に似ていますが、平方根に異なる分母を持ちます。
 
 **構文**
 
-``` sql
+```sql
 contingency(column1, column2)
 ```
 
 **引数**
 
-- `column1` と `column2` は比較されるカラムです。
+- `column1`と`column2`は比較されるカラムです。
 
-**返り値**
+**返される値**
 
-- 0 から 1 の間の値です。結果が大きいほど、2 つのカラムの関連性はより強くなります。
+- 0から1の間の値です。結果が大きいほど、2つのカラムの関連性が近いことを示します。
 
-**戻り値の型**は常に [Float64](../../../sql-reference/data-types/float.md) です。
+**返り値の型**は常に[Float64](../../../sql-reference/data-types/float.md)です。
 
 **例**
 
-以下で比較される 2 つのカラムは、互いに小さな関連性を持っています。比較のために `cramersV` の結果も含めています。
+以下で比較される2つのカラムは、互いに小さな関連性を持っています。比較のために`cramersV`の結果も含めています：
 
-``` sql
+```sql
 SELECT
     cramersV(a, b),
     contingency(a ,b)

@@ -1,32 +1,32 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/groupbitmap
+description: '符号なし整数カラムからのビットマップまたは集計計算、UInt64型のカーディナリティを返し、サフィックス-Stateを追加すると、ビットマップオブジェクトを返します。'
 sidebar_position: 148
-title: "groupBitmap"
-description: "無符号整数カラムからのビットマップまたは集約計算。UInt64タイプの基数を返し、-Stateサフィックスを追加するとビットマップオブジェクトを返す。"
+slug: /sql-reference/aggregate-functions/reference/groupbitmap
+title: 'groupBitmap'
 ---
 
 
 # groupBitmap
 
-無符号整数カラムからのビットマップまたは集約計算。UInt64タイプの基数を返し、-Stateサフィックスを追加すると [ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md) を返す。
+符号なし整数カラムからのビットマップまたは集計計算、UInt64型のカーディナリティを返し、サフィックス-Stateを追加すると、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md)を返します。
 
-``` sql
+```sql
 groupBitmap(expr)
 ```
 
 **引数**
 
-`expr` – `UInt*`タイプを生成する式。
+`expr` – `UInt*` 型の結果を生成する式です。
 
 **戻り値**
 
-`UInt64`タイプの値。
+`UInt64`型の値です。
 
 **例**
 
-テストデータ：
+テストデータ:
 
-``` text
+```text
 UserID
 1
 1
@@ -34,15 +34,15 @@ UserID
 3
 ```
 
-クエリ：
+クエリ:
 
-``` sql
+```sql
 SELECT groupBitmap(UserID) as num FROM t
 ```
 
-結果：
+結果:
 
-``` text
+```text
 num
 3
 ```

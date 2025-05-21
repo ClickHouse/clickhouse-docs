@@ -1,34 +1,34 @@
 ---
-slug: '/sql-reference/statements/select/prewhere'
+description: 'PREWHERE句のドキュメント'
 sidebar_label: 'PREWHERE'
-keywords: ['PREWHERE', 'ClickHouse', 'SQL', '句, クエリ']
-description: 'ClickHouseのPREWHERE句についての詳細な説明と使用例。'
+slug: /sql-reference/statements/select/prewhere
+title: 'PREWHERE句'
 ---
 
 
-# PREWHERE 句
+# PREWHERE句
 
-Prewhereはフィルタリングをより効率的に適用するための最適化です。`PREWHERE`句が明示的に指定されていなくても、デフォルトで有効になっています。これは、[WHERE](../../../sql-reference/statements/select/where.md)条件の一部を自動的にprewhereステージに移動させることによって機能します。`PREWHERE`句の役割は、デフォルトで発生する方法よりも効果的に制御すると考える場合に、この最適化を制御することです。
+Prewhereは、フィルタリングをより効率的に適用するための最適化です。`PREWHERE`句を明示的に指定しなくても、デフォルトで有効になっています。これは、[WHERE](../../../sql-reference/statements/select/where.md)条件の一部を自動的にprewhereステージに移動させることによって機能します。`PREWHERE`句の役割は、この最適化を制御することだけで、デフォルトの動作よりも優れた方法を知っていると考える場合に使用します。
 
-Prewhere最適化を使用すると、最初にprewhere式を実行するために必要なカラムだけが読み取られます。その後、クエリの残りの部分を実行するために必要な他のカラムが読み取られますが、prewhere式が少なくともいくつかの行に対して`true`であるブロックのみが対象となります。prewhere式がすべての行に対して`false`であるブロックが多数ある場合と、prewhereがクエリの他の部分に比べて必要なカラムが少ない場合、ディスクから読み取るデータ量が大幅に少なくなることがあります。
+prewhere最適化では、最初にprewhere式を実行するために必要なカラムのみが読み取られます。次に、クエリの残りを実行するために必要な他のカラムが読み取られますが、prewhere式が少なくともいくつかの行で`true`となるブロックだけです。すべての行に対してprewhere式が`false`であり、prewhereがクエリの他の部分よりも少ないカラムを必要とする場合、これによりクエリ実行のためにディスクから読み取るデータ量を大幅に減らすことができます。
 
-## Prewhereの手動制御 {#controlling-prewhere-manually}
+## 手動でのPrewhereの制御 {#controlling-prewhere-manually}
 
-この句は`WHERE`句と同じ意味を持ちます。違いは、テーブルから読み取るデータです。クエリ内の少数のカラムで使用されるフィルタリング条件に対して`PREWHERE`を手動で制御する場合、強力なデータフィルタリングを提供します。これにより、読み取るデータの量が減少します。
+この句は`WHERE`句と同じ意味を持ちます。違いはテーブルからどのデータが読み取られるかにあります。クエリ内の少数のカラムによって使用されるフィルタ条件のために手動で`PREWHERE`を制御することができますが、それにより強力なデータフィルタリングが提供されます。これにより、読み取るデータの量が削減されます。
 
 クエリは同時に`PREWHERE`と`WHERE`を指定することができます。この場合、`PREWHERE`が`WHERE`の前に来ます。
 
-[optimize_move_to_prewhere](../../../operations/settings/settings.md#optimize_move_to_prewhere)設定が0に設定されている場合、`WHERE`から`PREWHERE`への式の一部を自動的に移動するヒューリスティックは無効になります。
+[optimize_move_to_prewhere](../../../operations/settings/settings.md#optimize_move_to_prewhere)設定が0に設定されている場合、`WHERE`から`PREWHERE`に自動的に式の一部を移動させるためのヒューリスティクスが無効になります。
 
-クエリに[FINAL](/sql-reference/statements/select/from#final-modifier)修飾子がある場合、`PREWHERE`最適化は常に正しいとは限りません。これは、[optimize_move_to_prewhere](../../../operations/settings/settings.md#optimize_move_to_prewhere)および[optimize_move_to_prewhere_if_final](../../../operations/settings/settings.md#optimize_move_to_prewhere_if_final)の両方の設定がオンになっている場合のみ有効になります。
+クエリに[FINAL](/sql-reference/statements/select/from#final-modifier)修飾子がある場合、`PREWHERE`最適化は常に正しくなりません。両方の設定[optimize_move_to_prewhere](../../../operations/settings/settings.md#optimize_move_to_prewhere)および[optimize_move_to_prewhere_if_final](../../../operations/settings/settings.md#optimize_move_to_prewhere_if_final)がオンになっている場合のみ有効です。
 
-:::note
-`PREWHERE`セクションは`FINAL`の前に実行されるため、`ORDER BY`セクションにフィールドがない場合、`FROM ... FINAL`クエリの結果が歪む可能性があります。
+:::note    
+`PREWHERE`セクションは`FINAL`の前に実行されるため、テーブルの`ORDER BY`セクションに含まれていないフィールドを使って`PREWHERE`を使用する場合、`FROM ... FINAL`クエリの結果が歪む可能性があります。
 :::
 
 ## 制限事項 {#limitations}
 
-`PREWHERE`は、[*MergeTree](../../../engines/table-engines/mergetree-family/index.md)ファミリーのテーブルのみでサポートされています。
+`PREWHERE`は[*MergeTree](../../../engines/table-engines/mergetree-family/index.md)ファミリーのテーブルによってのみサポートされています。
 
 ## 例 {#example}
 
@@ -51,22 +51,22 @@ SELECT count()
 FROM mydata
 WHERE (B = 0) AND (C = 'x');
 
-1 行がセットに含まれています。経過時間: 0.074 秒。処理された行数: 10.00 百万行、168.89 MB (134.98 百万行/s., 2.28 GB/s.)
+1 row in set. Elapsed: 0.074 sec. Processed 10.00 million rows, 168.89 MB (134.98 million rows/s., 2.28 GB/s.)
 
--- PREWHEREにどの述語が移動されるかを見るためにトレースを有効にしましょう
+-- トレーシングを有効にして、どの条件がPREWHEREに移動したかを確認しましょう
 set send_logs_level='debug';
 
-MergeTreeWhereOptimizer: 条件 "B = 0" がPREWHEREに移動されました
+MergeTreeWhereOptimizer: condition "B = 0" moved to PREWHERE  
 -- Clickhouseは自動的に`B = 0`をPREWHEREに移動しますが、Bは常に0なので意味がありません。
 
--- 他の述語`C = 'x'`を移動しましょう
+-- 他の条件 `C = 'x'` を移動しましょう 
 
 SELECT count()
 FROM mydata
 PREWHERE C = 'x'
 WHERE B = 0;
 
-1 行がセットに含まれています。経過時間: 0.069 秒。処理された行数: 10.00 百万行、158.89 MB (144.90 百万行/s., 2.30 GB/s.)
+1 row in set. Elapsed: 0.069 sec. Processed 10.00 million rows, 158.89 MB (144.90 million rows/s., 2.30 GB/s.)
 
--- 手動の`PREWHERE`を使用したこのクエリは、わずかに少ないデータを処理します: 158.89 MB VS 168.89 MB
+-- この手動での`PREWHERE`を使用したクエリは、158.89 MBと168.89 MBで若干少ないデータを処理します
 ```

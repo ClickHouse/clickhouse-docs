@@ -1,17 +1,21 @@
 ---
-description: "Sensor.Communityからの200億以上のレコードのデータ。貢献者駆動型のグローバルセンサーネットワークがオープンな環境データを作成します。"
+description: 'Sensor.Communityによる200億件以上のデータを持つ、寄稿者主導のグローバルセンサーネットワークが作成したオープン環境データ。'
+sidebar_label: '環境センサーデータ'
 slug: /getting-started/example-datasets/environmental-sensors
-sidebar_label: 環境センサーデータ
-title: "環境センサーデータ"
+title: '環境センサーデータ'
 ---
 
-[Sensor.Community](https://sensor.community/en/)は、貢献者駆動のグローバルセンサーネットワークで、オープンな環境データを作成します。データは、世界中のセンサーから収集されます。誰でもセンサーを購入して、好きな場所に設置できます。データをダウンロードするためのAPIは[GitHub](https://github.com/opendata-stuttgart/meta/wiki/APIs)にあり、データは[Database Contents License (DbCL)](https://opendatacommons.org/licenses/dbcl/1-0/)の下で自由に利用できます。
+import Image from '@theme/IdealImage';
+import no_events_per_day from '@site/static/images/getting-started/example-datasets/sensors_01.png';
+import sensors_02 from '@site/static/images/getting-started/example-datasets/sensors_02.png';
+
+[Sensor.Community](https://sensor.community/en/)は、寄稿者主導のグローバルセンサーネットワークで、オープン環境データを作成しています。データは世界中のセンサーから収集されます。誰でもセンサーを購入して好きな場所に設置することができます。データをダウンロードするためのAPIは[GitHub](https://github.com/opendata-stuttgart/meta/wiki/APIs)にあり、データは[Database Contents License (DbCL)](https://opendatacommons.org/licenses/dbcl/1-0/)の下で自由に利用可能です。
 
 :::important
-データセットには200億以上のレコードが含まれているため、リソースがそのようなボリュームに対応できない限り、コマンドを単純にコピーして貼り付けないように注意してください。以下のコマンドは、[ClickHouse Cloud](https://clickhouse.cloud)の**Production**インスタンスで実行されました。
+データセットには200億件以上のレコードがありますので、リソースがその量を処理できる場合を除き、以下のコマンドをコピー＆ペーストする際は注意してください。以下のコマンドは、[ClickHouse Cloud](https://clickhouse.cloud)の**Production**インスタンスで実行されました。
 :::
 
-1. データはS3にあるため、`s3`テーブル関数を使用してファイルからテーブルを作成できます。また、データをそのままでクエリすることも可能です。ClickHouseに挿入する前にいくつかの行を見てみましょう：
+1. データはS3にあり、`s3`テーブル関数を使用してファイルからテーブルを作成できます。また、データをそのままクエリすることもできます。ClickHouseに挿入する前に、いくつかの行を見てみましょう：
 
 ```sql
 SELECT *
@@ -23,7 +27,7 @@ LIMIT 10
 SETTINGS format_csv_delimiter = ';';
 ```
 
-データはCSVファイル形式ですが、区切り文字としてセミコロンが使用されています。行は次のようになります：
+データはCSVファイルですが、区切り記号としてセミコロンを使用しています。行は次のようになります：
 
 ```response
 ┌─sensor_id─┬─sensor_type─┬─location─┬────lat─┬────lon─┬─timestamp───────────┬──pressure─┬─altitude─┬─pressure_sealevel─┬─temperature─┐
@@ -40,7 +44,7 @@ SETTINGS format_csv_delimiter = ';';
 └───────────┴─────────────┴──────────┴────────┴────────┴─────────────────────┴───────────┴──────────┴───────────────────┴─────────────┘
 ```
 
-2. 次に、ClickHouseにデータを格納するための`MergeTree`テーブルを使用します：
+2. ClickHouseにデータを格納するために、以下の`MergeTree`テーブルを使用します：
 
 ```sql
 CREATE TABLE sensors
@@ -69,9 +73,9 @@ ENGINE = MergeTree
 ORDER BY (timestamp, sensor_id);
 ```
 
-3. ClickHouse Cloudサービスには、`default`という名前のクラスタがあります。`s3Cluster`テーブル関数を使用すると、クラスタ内のノードからS3ファイルを並行して読み取ることができます。（クラスタを持っていない場合は、`s3`関数を使用してクラスタ名を削除してください。）
+3. ClickHouse Cloudサービスには、`default`という名前のクラスターがあります。クラスター内のノードからS3ファイルを並行して読み込む`s3Cluster`テーブル関数を使用します。（クラスターがない場合は、`s3`関数を使用し、クラスター名を削除してください。）
 
-このクエリはしばらく時間がかかります。圧縮されていないデータは約1.67Tです：
+このクエリはしばらく時間がかかります - 解凍されると約1.67Tのデータがあります：
 
 ```sql
 INSERT INTO sensors
@@ -109,13 +113,13 @@ SETTINGS
     parallel_distributed_insert_select = 1;
 ```
 
-ここに返信があります - 行数と処理速度を示します。入力速度は1秒間に600万行以上です！
+ここに結果が表示されます - 行数と処理速度を示しています。入力は1秒あたり600万行以上の速度です！
 
 ```response
 0 rows in set. Elapsed: 3419.330 sec. Processed 20.69 billion rows, 1.67 TB (6.05 million rows/s., 488.52 MB/s.)
 ```
 
-4. `sensors`テーブルに必要なストレージディスクのサイズを確認しましょう：
+4. `sensors`テーブルに必要なストレージディスクのサイズを確認してみましょう：
 
 ```sql
 SELECT
@@ -132,7 +136,7 @@ GROUP BY
 ORDER BY size DESC;
 ```
 
-1.67Tは310 GiBに圧縮され、206.9億行があります：
+1.67Tは310 GiBに圧縮され、20.69億行あります：
 
 ```response
 ┌─disk_name─┬─compressed─┬─uncompressed─┬─compr_rate─┬────────rows─┬─part_count─┐
@@ -140,7 +144,7 @@ ORDER BY size DESC;
 └───────────┴────────────┴──────────────┴────────────┴─────────────┴────────────┘
 ```
 
-5. 今、ClickHouseにデータが入ったので、データを分析してみましょう。新しいセンサーが展開されるにつれてデータの量が時間とともに増加することに注意してください：
+5. データがClickHouseに取り込まれたので、分析してみましょう。センサーが展開されるにつれて、データ量が時間と共に増加することに注意してください：
 
 ```sql
 SELECT
@@ -153,9 +157,9 @@ ORDER BY date ASC;
 
 SQLコンソールで結果を視覚化するためのチャートを作成できます：
 
-![1日あたりのイベント数](./images/sensors_01.png)
+<Image img={no_events_per_day} size="md" alt="日ごとのイベント数"/>
 
-6. このクエリは、非常に暑くて湿度の高い日の数をカウントします：
+6. このクエリは、過剰に暑く湿度の高い日数をカウントします：
 
 ```sql
 WITH
@@ -166,8 +170,6 @@ GROUP BY day
 ORDER BY day asc;
 ```
 
-結果の視覚化は次のとおりです：
+結果の視覚化は次の通りです：
 
-![暑くて湿度の高い日](./images/sensors_02.png)
-
-
+<Image img={sensors_02} size="md" alt="暑くて湿度の高い日"/>

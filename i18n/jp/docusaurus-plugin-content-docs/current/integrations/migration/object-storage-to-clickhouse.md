@@ -1,24 +1,31 @@
 ---
-title: オブジェクトストレージからClickHouse Cloudへ
-description: オブジェクトストレージからClickHouse Cloudへのデータ移行
-keywords: [オブジェクトストレージ, s3, azure blob, gcs, マイグレーション]
+title: 'オブジェクトストレージから ClickHouse Cloud への移行'
+description: 'オブジェクトストレージから ClickHouse Cloud へのデータ移行'
+keywords: ['オブジェクトストレージ', 's3', 'azure blob', 'gcs', '移行']
+slug: /integrations/migration/object-storage-to-clickhouse
 ---
 
+import Image from '@theme/IdealImage';
 import object_storage_01 from '@site/static/images/integrations/migration/object-storage-01.png';
 
 
-# クラウドオブジェクトストレージからClickHouse Cloudへデータを移動する
+# Cloud オブジェクトストレージから ClickHouse Cloud へのデータ移行
 
-<img src={object_storage_01} class="image" alt="セルフマネージドClickHouseのマイグレーション" style={{width: '90%', padding: '30px'}} />
+<Image img={object_storage_01} size='md' alt='セルフマネージド ClickHouse の移行' background='white' />
 
-クラウドオブジェクトストレージをデータレイクとして使用していて、そのデータをClickHouse Cloudにインポートしたい場合、または現在のデータベースシステムが直接クラウドオブジェクトストレージにデータをオフロードできる場合は、クラウドオブジェクトストレージに保存されたデータをClickHouse Cloudのテーブルにマイグレーションするためのテーブル関数のいずれかを使用できます。
+Cloud オブジェクトストレージをデータレイクとして使用していて、このデータを ClickHouse Cloud にインポートしたい場合、
+または現在のデータベースシステムが直接 Cloud オブジェクトストレージにデータをオフロードできる場合、以下の
+テーブル関数のいずれかを使用して、Cloud オブジェクトストレージに保存されたデータを ClickHouse Cloud のテーブルに移行できます：
 
 - [s3](/sql-reference/table-functions/s3.md) または [s3Cluster](/sql-reference/table-functions/s3Cluster.md)
 - [gcs](/sql-reference/table-functions/gcs)
 - [azureBlobStorage](/sql-reference/table-functions/azureBlobStorage)
 
-現在のデータベースシステムが直接クラウドオブジェクトストレージにデータをオフロードできない場合は、[サードパーティのETL/ELTツール](./etl-tool-to-clickhouse.md)または[clickhouse-local](./clickhouse-local-etl.md)を使用して、現在のデータベースシステムからクラウドオブジェクトストレージにデータを移動し、次のステップでそのデータをClickHouse Cloudのテーブルにマイグレーションすることができます。
+現在のデータベースシステムが直接 Cloud オブジェクトストレージにデータをオフロードできない場合は、[サードパーティの ETL/ELT ツール](./etl-tool-to-clickhouse.md)または [clickhouse-local](./clickhouse-local-etl.md)を使用して
+現在のデータベースシステムから Cloud オブジェクトストレージにデータを移動し、次のステップでそのデータを ClickHouse Cloud のテーブルに移行できます。
 
-これは二段階のプロセス（データをクラウドオブジェクトストレージにオフロードし、その後ClickHouseにロードする）ですが、利点は、[堅牢なClickHouse Cloud](https://clickhouse.com/blog/getting-data-into-clickhouse-part-3-s3)によるクラウドオブジェクトストレージからの高並列リードのサポートにより、ペタバイトスケールに拡張できることです。また、[Parquet](/interfaces/formats/#data-format-parquet)のような高度な圧縮形式を活用することも可能です。
+このプロセスは二段階（データを Cloud オブジェクトストレージにオフロードし、次に ClickHouse にロードする）ですが、メリットは
+Cloud オブジェクトストレージからの高並列読み取りをサポートする [堅固な ClickHouse Cloud](https://clickhouse.com/blog/getting-data-into-clickhouse-part-3-s3) により、ペタバイト規模にスケールできることです。
+また、[Parquet](/interfaces/formats/#data-format-parquet) のような高度で圧縮されたフォーマットを活用することもできます。
 
-データをClickHouse CloudにS3を使用して取得する方法を示す具体的なコード例を含む[ブログ記事](https://clickhouse.com/blog/getting-data-into-clickhouse-part-3-s3)があります。
+[ブログ記事](https://clickhouse.com/blog/getting-data-into-clickhouse-part-3-s3) では、S3 を使用して ClickHouse Cloud にデータを取り込む方法を具体的なコード例とともに紹介しています。

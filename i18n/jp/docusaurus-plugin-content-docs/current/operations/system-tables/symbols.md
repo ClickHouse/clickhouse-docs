@@ -1,26 +1,26 @@
 ---
-description: "C++の専門家とClickHouseのエンジニアにとって有用なシステムテーブルで、`clickhouse`バイナリの内部情報が含まれています。"
+description: 'C++エキスパートやClickHouseエンジニアにとって有用なシステムテーブルで、`clickhouse` バイナリのイントロスペクション情報を含みます。'
+keywords: ['system table', 'symbols']
 slug: /operations/system-tables/symbols
-title: "system.symbols"
-keywords: ["system table", "symbols"]
+title: 'system.symbols'
 ---
 
-`clickhouse`バイナリの内部情報を取得するための情報を含みます。アクセスするには内部情報の権限が必要です。このテーブルはC++の専門家とClickHouseのエンジニアにのみ有用です。
+`clickhouse` バイナリのイントロスペクション情報を含みます。アクセスするにはイントロスペクション権限が必要です。このテーブルはC++エキスパートとClickHouseエンジニアにのみ役立ちます。
 
 カラム:
 
-- `symbol` ([String](../../sql-reference/data-types/string.md)) — バイナリ内のシンボル名。符号化されています。`demangle(symbol)` を適用すると、可読な名前を取得できます。
+- `symbol` ([String](../../sql-reference/data-types/string.md)) — バイナリ内のシンボル名。マングルされています。`demangle(symbol)`を適用して可読名を取得できます。
 - `address_begin` ([UInt64](../../sql-reference/data-types/int-uint.md)) — バイナリ内のシンボルの開始アドレス。
 - `address_end` ([UInt64](../../sql-reference/data-types/int-uint.md)) — バイナリ内のシンボルの終了アドレス。
-- `name` ([String](../../sql-reference/data-types/string.md)) — `event` の別名。
+- `name` ([String](../../sql-reference/data-types/string.md)) — `event`の別名。
 
 **例**
 
-``` sql
+```sql
 SELECT address_begin, address_end - address_begin AS size, demangle(symbol) FROM system.symbols ORDER BY size DESC LIMIT 10
 ```
 
-``` text
+```text
 ┌─address_begin─┬─────size─┬─demangle(symbol)──────────────────────────────────────────────────────────────────┐
 │      25000976 │ 29466000 │ icudt70_dat                                                                       │
 │     400605288 │  2097272 │ arena_emap_global                                                                 │

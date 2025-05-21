@@ -1,20 +1,19 @@
 ---
-slug: '/sql-reference/statements/select/'
-sidebar_position: 32
+description: 'SELECTクエリのドキュメント'
 sidebar_label: 'SELECT'
-keywords: ['SELECT', 'ClickHouse', SQL']
-description: 'ClickHouseのSELECTクエリに関する詳細情報'
-
+sidebar_position: 32
+slug: /sql-reference/statements/select/
+title: 'SELECTクエリ'
 ---
 
 
-# SELECT クエリ
+# SELECTクエリ
 
-`SELECT` クエリはデータの取得を行います。デフォルトでは、要求されたデータはクライアントに返されますが、[INSERT INTO](../../../sql-reference/statements/insert-into.md) と組み合わせることで、異なるテーブルへ転送することも可能です。
+`SELECT`クエリはデータの取得を行います。デフォルトでは、要求されたデータがクライアントに返されますが、[INSERT INTO](../../../sql-reference/statements/insert-into.md)と組み合わせることで、別のテーブルに転送することも可能です。
 
 ## 構文 {#syntax}
 
-``` sql
+```sql
 [WITH expr_list(subquery)]
 SELECT [DISTINCT [ON (column1, column2, ...)]] expr_list
 [FROM [db.]table | (subquery) | table_function] [FINAL]
@@ -36,9 +35,9 @@ SELECT [DISTINCT [ON (column1, column2, ...)]] expr_list
 [FORMAT format]
 ```
 
-全ての構文はオプションですが、`SELECT` 直後の表現リストは必須であり、詳細については [以下](#select-clause) で説明します。
+すべての句はオプションですが、`SELECT`の直後に必要な式のリストは必須で、詳細は[以下](#select-clause)に記載されています。
 
-各オプショナルな句の詳細は別々のセクションで扱い、実行順にリストされています。
+各オプションの特定の詳細は、実行される順番にリストされた別のセクションで扱われます:
 
 - [WITH句](../../../sql-reference/statements/select/with.md)
 - [SELECT句](#select-clause)
@@ -61,33 +60,33 @@ SELECT [DISTINCT [ON (column1, column2, ...)]] expr_list
 - [INTO OUTFILE句](../../../sql-reference/statements/select/into-outfile.md)
 - [FORMAT句](../../../sql-reference/statements/select/format.md)
 
-## SELECT 句 {#select-clause}
+## SELECT句 {#select-clause}
 
-[表現](/sql-reference/syntax#expressions)は、`SELECT` 句で指定され、上記の構文での全ての操作が終了した後に計算されます。これらの表現は、結果のそれぞれの行に適用されるかのように動作します。`SELECT` 句の表現に集約関数が含まれている場合、ClickHouseは [GROUP BY](/sql-reference/statements/select/group-by) 集約中に集約関数とその引数として使用される表現を処理します。
+`SELECT`句で指定された[式](/sql-reference/syntax#expressions)は、上記のすべての句の操作が完了した後に計算されます。これらの式は、結果の個別の行に適用されるかのように機能します。`SELECT`句に集約関数が含まれている場合、ClickHouseは[GROUP BY](/sql-reference/statements/select/group-by)集約の際に集約関数とその引数として使用される式を処理します。
 
-結果に全てのカラムを含めたい場合は、アスタリスク（`*`）を使用してください。例えば、`SELECT * FROM ...` と記述します。
+結果にすべてのカラムを含める場合は、アスタリスク（`*`）を使います。例えば、`SELECT * FROM ...`のようにします。
 
 ### 動的カラム選択 {#dynamic-column-selection}
 
-動的カラム選択（COLUMNS式とも呼ばれます）は、結果の特定のカラムを[re2](https://en.wikipedia.org/wiki/RE2_(software))正規表現に一致させることができます。
+動的カラム選択（COLUMNS式とも呼ばれます）は、結果のいくつかのカラムを[re2](https://en.wikipedia.org/wiki/RE2_(software))正規表現と一致させることを可能にします。
 
-``` sql
+```sql
 COLUMNS('regexp')
 ```
 
-例えば、次のようなテーブルを考えます：
+例えば、次のテーブルを考えてみます。
 
-``` sql
+```sql
 CREATE TABLE default.col_names (aa Int8, ab Int8, bc Int8) ENGINE = TinyLog
 ```
 
-以下のクエリは、名前に `a` シンボルを含む全てのカラムからデータを選択します。
+以下のクエリは、名前に`a`の文字を含むすべてのカラムからデータを選択します。
 
-``` sql
+```sql
 SELECT COLUMNS('a') FROM col_names
 ```
 
-``` text
+```text
 ┌─aa─┬─ab─┐
 │  1 │  1 │
 └────┴────┘
@@ -95,68 +94,68 @@ SELECT COLUMNS('a') FROM col_names
 
 選択されたカラムはアルファベット順では返されません。
 
-複数の `COLUMNS` 式をクエリ内で使用し、それに対して関数を適用することができます。
+クエリ内で複数の`COLUMNS`式を使用し、それに関数を適用することもできます。
 
 例えば：
 
-``` sql
+```sql
 SELECT COLUMNS('a'), COLUMNS('c'), toTypeName(COLUMNS('c')) FROM col_names
 ```
 
-``` text
+```text
 ┌─aa─┬─ab─┬─bc─┬─toTypeName(bc)─┐
 │  1 │  1 │  1 │ Int8           │
 └────┴────┴────┴────────────────┘
 ```
 
-`COLUMNS` 式によって返される各カラムは、関数の別々の引数として渡されます。また、関数がサポートしている場合は他の引数も関数に渡すことができます。関数を使用する際は注意してください。もし渡した引数の数が関数がサポートする数と一致しない場合、ClickHouseは例外をスローします。
+`COLUMNS`式で返された各カラムは、個別の引数として関数に渡されます。また、関数がサポートしている場合は、他の引数を渡すこともできます。関数を使用する際は注意が必要です。渡した引数の数が関数でサポートされていない場合、ClickHouseは例外をスローします。
 
 例えば：
 
-``` sql
+```sql
 SELECT COLUMNS('a') + COLUMNS('c') FROM col_names
 ```
 
-``` text
-Received exception from server (version 19.14.1):
-Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of arguments for function plus does not match: passed 3, should be 2.
+```text
+サーバーからの例外を受信しました (バージョン 19.14.1):
+コード: 42. DB::Exception: localhost:9000から受信しました。DB::Exception: 関数plusの引数の数が一致しません: 3を渡しましたが、2である必要があります。
 ```
 
-この例では、`COLUMNS('a')` が2つのカラム `aa` と `ab` を返し、`COLUMNS('c')` が `bc` カラムを返します。`+` 演算子は3つの引数には適用できないため、ClickHouseは関連するメッセージを伴って例外をスローします。
+この例では、`COLUMNS('a')`は2つのカラムを返します：`aa`および`ab`。`COLUMNS('c')`は`bc`カラムを返します。`+`演算子は3つの引数には適用できないため、ClickHouseは関連するメッセージを含む例外をスローします。
 
-`COLUMNS` 式に一致したカラムは異なるデータ型を持つことがあります。もし `COLUMNS` がどのカラムにも一致せず、`SELECT` の唯一の表現である場合、ClickHouseは例外をスローします。
+`COLUMNS`式に一致したカラムは異なるデータ型を持つことができます。`COLUMNS`が一致するカラムを持たず、かつ`SELECT`内で唯一の式の場合、ClickHouseは例外をスローします。
 
 ### アスタリスク {#asterisk}
 
-クエリの任意の部分に表現の代わりにアスタリスクを置くことができます。クエリが解析されると、アスタリスクは全テーブルカラムのリストに展開されます（`MATERIALIZED` および `ALIAS` カラムを除く）。アスタリスクを使用する場合が正当化されるのはほんの数ケースです：
+クエリのいずれかの部分に式の代わりにアスタリスクを置くことができます。クエリが分析されると、アスタリスクはすべてのテーブルカラムのリスト（`MATERIALIZED`および`ALIAS`カラムを除く）に展開されます。アスタリスクを使用することが正当化されるのは、いくつかのケースだけです：
 
-- テーブルダンプを作成する場合。
-- システムテーブルのようにカラムが少ないテーブルの場合。
-- テーブル内のカラムについての情報を取得する場合。この場合は `LIMIT 1` を設定します。しかし、`DESC TABLE` クエリを使用する方が良いです。
-- `PREWHERE`を使用して少数のカラムに強いフィルタをかける場合。
-- サブクエリ内において（外部クエリに必要でないカラムがサブクエリから除外されるため）。
+- テーブルダンプを作成するとき。
+- システムテーブルなど、カラムがわずかしか含まれていないテーブルの場合。
+- テーブル内のカラムが何であるかの情報を取得するとき。この場合、`LIMIT 1`を設定します。しかし、`DESC TABLE`クエリを使用する方が良いです。
+- `PREWHERE`で少数のカラムに対して強力なフィルタリングがあるとき。
+- サブクエリ内（外部クエリに必要のないカラムがサブクエリから除外されるため）。
 
-その他のすべてのケースでは、アスタリスクの使用は推奨されません。アスタリスクを使うことは、カラム指向DBMSの利点ではなく欠点だけをもたらすからです。言い換えれば、アスタリスクの使用は推奨されません。
+その他のすべてのケースでは、アスタリスクの使用は推奨されません。というのも、これにより列指向DBMSの欠点のみが与えられ、利点が得られないからです。言い換えれば、アスタリスクの使用は推奨されません。
 
 ### 極値 {#extreme-values}
 
-結果に加えて、結果カラムの最小値と最大値も取得できます。これを行うには、**extremes** 設定を 1 に設定します。最小値と最大値は数値型、日付、および時刻付きの日付に対して計算されます。他のカラムに対しては、デフォルトの値が出力されます。
+結果に加えて、結果カラムの最小値と最大値も取得できます。これを行うには、**extremes**設定を1に設定します。最小値と最大値は数値型、日付、および時刻付きの日付について計算されます。他のカラムについては、デフォルト値が出力されます。
 
-追加で2行（それぞれ最小値と最大値）が計算されます。これらの追加行は、`XML`、`JSON*`、`TabSeparated*`、`CSV*`、`Vertical`、`Template` および `Pretty*` [形式](../../../interfaces/formats.md)で出力され、他の行とは別に出力されます。他のフォーマットでは出力されません。
+追加の二行が計算されます - それぞれ最小値と最大値です。これらの追加の二行は、`XML`、`JSON*`、`TabSeparated*`、`CSV*`、`Vertical`、`Template`および`Pretty*`の[形式](../../../interfaces/formats.md)で出力され、他の行とは別に出力されます。他の形式では出力されません。
 
-`JSON*` および `XML` フォーマットでは、極値は別の 'extremes' フィールドに出力されます。`TabSeparated*`、`CSV*` および `Vertical` フォーマットでは、行は主な結果の後に、そして 'totals' が存在する場合はその後に来ます。その前に空の行（他のデータの後）が置かれます。`Pretty*` フォーマットでは、行は主な結果の後に別のテーブルとして出力され、もし存在すれば `totals` の後に表示されます。`Template` フォーマットでは、極値は指定されたテンプレートに従って出力されます。
+`JSON*`および`XML`形式では、極値は別の'extremes'フィールドに出力されます。`TabSeparated*`、`CSV*`、`Vertical`形式では、行は主な結果の後、存在する場合は'totals'の後に来ます。その他のデータの後に空の行が前置されます。`Pretty*`形式では、その行は主な結果の後、存在する場合は'totals'の後に別のテーブルとして出力されます。`Template`形式では、極値は指定されたテンプレートに従って出力されます。
 
-極値は `LIMIT` の前、ただし `LIMIT BY` の後に計算されます。しかし、`LIMIT offset, size` を使用する場合、`offset` 前の行も `extremes` に含まれます。ストリームリクエストでは、結果には `LIMIT` を通過した少数の行も含まれることがあります。
+極値は`LIMIT`の前に行に対して計算されますが、`LIMIT BY`の後に計算されます。ただし、`LIMIT offset, size`を使用する場合、`offset`の前の行も`extremes`に含まれます。ストリームリクエストでは、結果に`LIMIT`を通過した少数の行が含まれることがあります。
 
 ### 注意事項 {#notes}
 
-クエリの任意の部分で同義語（`AS` エイリアス）を使用できます。
+クエリの任意の部分で同義語（`AS`エイリアス）を使用できます。
 
-`GROUP BY`、`ORDER BY`、および `LIMIT BY` 句は位置引数をサポートできます。これを有効にするには、[enable_positional_arguments](/operations/settings/settings#enable_positional_arguments) 設定をオンにします。例えば、`ORDER BY 1,2` と記述すると、テーブルの行が最初のカラムで、次に2番目のカラムでソートされます。
+`GROUP BY`、`ORDER BY`、および`LIMIT BY`句は位置引数をサポートできます。これを有効にするには、[enable_positional_arguments](/operations/settings/settings#enable_positional_arguments)設定をオンにします。すると、例えば`ORDER BY 1,2`はテーブルの行を最初のカラム、その後の第二のカラムでソートします。
 
 ## 実装の詳細 {#implementation-details}
 
-クエリが `DISTINCT`、`GROUP BY`、および `ORDER BY` 句及び `IN` と `JOIN` のサブクエリを省略する場合、クエリは完全にストリーム処理され、O(1) のRAMを使用します。さもなくば、適切な制限が指定されていない場合、クエリは多くのRAMを消費する可能性があります：
+クエリが`DISTINCT`、`GROUP BY`および`ORDER BY`句、および`IN`および`JOIN`サブクエリを省略する場合、そのクエリは完全にストリーム処理され、O(1)のRAM量を使用します。そうでなければ、適切な制限が指定されていない場合に、クエリはRAMを大量に消費する可能性があります：
 
 - `max_memory_usage`
 - `max_rows_to_group_by`
@@ -172,15 +171,15 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 - `max_bytes_before_external_group_by`
 - `max_bytes_ratio_before_external_group_by`
 
-詳細については、「設定」セクションを参照してください。外部ソート（ディスクに一時テーブルを保存すること）や外部集計を使用することも可能です。
+詳細については、「設定」セクションを参照してください。外部ソーティング（ディスクへの一時テーブルの保存）や外部集約を使用することも可能です。
 
-## SELECT 修飾子 {#select-modifiers}
+## SELECT修飾子 {#select-modifiers}
 
-`SELECT` クエリで以下の修飾子を使用できます。
+`SELECT`クエリで以下の修飾子を使用することができます。
 
 ### APPLY {#apply}
 
-クエリの外部テーブル式から返された各行に対して関数を適用できるようにします。
+クエリの外部テーブル式によって返された各行に対していくつかの関数を呼び出すことを可能にします。
 
 **構文:**
 
@@ -204,11 +203,11 @@ SELECT * APPLY(sum) FROM columns_transformers;
 
 ### EXCEPT {#except}
 
-結果から除外する1つ以上のカラム名を指定します。全ての一致するカラム名が出力から除外されます。
+結果から除外する1つ以上のカラム名を指定します。すべての一致するカラム名は出力から省略されます。
 
 **構文:**
 
-``` sql
+```sql
 SELECT <expr> EXCEPT ( col_name1 [, col_name2, col_name3, ...] ) FROM [db.]table_name
 ```
 
@@ -227,13 +226,13 @@ SELECT * EXCEPT (i) from columns_transformers;
 
 ### REPLACE {#replace}
 
-1つ以上の[表現エイリアス](/sql-reference/syntax#expression-aliases)を指定します。各エイリアスは `SELECT *` ステートメントのカラム名と一致しなければなりません。出力カラムリストでは、一致するエイリアスのカラムがその `REPLACE` 内の表現に置き換えられます。
+1つ以上の[式エイリアス](/sql-reference/syntax#expression-aliases)を指定します。各エイリアスは`SELECT *`ステートメントのカラム名と一致しなければなりません。出力カラムリストでは、エイリアスに一致するカラムはその`REPLACE`における式によって置き換えられます。
 
-この修飾子はカラムの名前や順序を変更するものではありませんが、値や値の型を変更することが可能です。
+この修飾子はカラムの名前や順序を変更しません。ただし、値や値の型を変更することはできます。
 
 **構文:**
 
-``` sql
+```sql
 SELECT <expr> REPLACE( <expr> AS col_name) from [db.]table_name
 ```
 
@@ -252,11 +251,11 @@ SELECT * REPLACE(i + 1 AS i) from columns_transformers;
 
 ### 修飾子の組み合わせ {#modifier-combinations}
 
-各修飾子を個別に使用したり、組み合わせて使用できます。
+各修飾子を単独で使用することも、組み合わせて使用することもできます。
 
 **例:**
 
-同じ修飾子を複数回使用する。
+同じ修飾子を複数回使用する場合。
 
 ```sql
 SELECT COLUMNS('[jk]') APPLY(toString) APPLY(length) APPLY(max) from columns_transformers;
@@ -268,7 +267,7 @@ SELECT COLUMNS('[jk]') APPLY(toString) APPLY(length) APPLY(max) from columns_tra
 └──────────────────────────┴──────────────────────────┘
 ```
 
-単一のクエリで複数の修飾子を使用する。
+単一のクエリ内で複数の修飾子を使用する場合。
 
 ```sql
 SELECT * REPLACE(i + 1 AS i) EXCEPT (j) APPLY(sum) from columns_transformers;
@@ -282,9 +281,9 @@ SELECT * REPLACE(i + 1 AS i) EXCEPT (j) APPLY(sum) from columns_transformers;
 
 ## SELECTクエリにおけるSETTINGS {#settings-in-select-query}
 
-`SELECT` クエリ内で必要な設定を指定できます。設定値はこのクエリにのみ適用され、クエリの実行後にデフォルトまたは前の値にリセットされます。
+必要な設定を`SELECT`クエリ内で直接指定することができます。設定値はこのクエリにのみ適用され、クエリが実行された後、デフォルトまたは前の値にリセットされます。
 
-設定を行う他の方法については [こちら](/operations/settings/overview) を参照してください。
+設定を行う他の方法については、[こちら](/operations/settings/overview)を参照してください。
 
 **例**
 
