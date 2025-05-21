@@ -1,8 +1,12 @@
 ---
-slug: /sql-reference/statements/parallel_with
-sidebar_position: 53
-sidebar_label: PARALLEL WITH
+'description': 'Documentation for PARALLEL WITH Clause'
+'sidebar_label': 'PARALLEL WITH'
+'sidebar_position': 53
+'slug': '/sql-reference/statements/parallel_with'
+'title': 'PARALLEL WITH Clause'
 ---
+
+
 
 
 # PARALLEL WITH 子句
@@ -11,19 +15,19 @@ sidebar_label: PARALLEL WITH
 
 ## 语法 {#syntax}
 
-``` sql
+```sql
 statement1 PARALLEL WITH statement2 [PARALLEL WITH statement3 ...]
 ```
 
-并行执行语句 `statement1`、`statement2`、`statement3` 等。这些语句的输出将被丢弃。
+并行执行语句 `statement1`、`statement2`、`statement3` 等。那些语句的输出会被丢弃。
 
-在许多情况下，并行执行语句可能比按顺序执行相同的语句更快。例如，`statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` 可能比 `statement1; statement2; statement3` 要快。
+在许多情况下，并行执行语句可能比仅仅顺序执行相同的语句更快。例如，`statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` 很可能比 `statement1; statement2; statement3` 更快。
 
 ## 示例 {#examples}
 
 并行创建两个表：
 
-``` sql
+```sql
 CREATE TABLE table1(x Int32) ENGINE = MergeTree ORDER BY tuple()
 PARALLEL WITH
 CREATE TABLE table2(y String) ENGINE = MergeTree ORDER BY tuple();
@@ -31,7 +35,7 @@ CREATE TABLE table2(y String) ENGINE = MergeTree ORDER BY tuple();
 
 并行删除两个表：
 
-``` sql
+```sql
 DROP TABLE table1
 PARALLEL WITH
 DROP TABLE table2;
@@ -43,7 +47,7 @@ DROP TABLE table2;
 
 ## 与 UNION 的比较 {#comparison-with-union}
 
-`PARALLEL WITH` 子句与 [UNION](select/union.md) 有些相似，也是在并行执行它的操作数。然而，两者之间存在一些差异：
-- `PARALLEL WITH` 不会返回其操作数执行的任何结果，只能重新抛出任何异常；
-- `PARALLEL WITH` 不要求其操作数具有相同的结果列集合；
-- `PARALLEL WITH` 可以执行任何语句（不仅限于 `SELECT`）。
+`PARALLEL WITH` 子句与 [UNION](select/union.md) 有些相似，后者也同时并行执行其操作数。然而，它们之间有一些区别：
+- `PARALLEL WITH` 不会返回执行操作数的任何结果，只有在出现异常时可以重新抛出该异常；
+- `PARALLEL WITH` 不要求其操作数具有相同的结果列集；
+- `PARALLEL WITH` 可以执行任何语句（不仅仅是 `SELECT`）。

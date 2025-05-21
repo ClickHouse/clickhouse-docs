@@ -1,26 +1,30 @@
-    ---
-title: CustomSeparatedWithNames
-slug: /interfaces/formats/CustomSeparatedWithNames
-keywords: ['CustomSeparatedWithNames']
-input_format: true
-output_format: true
-alias: []
 ---
+'alias': []
+'description': 'CustomSeparatedWithNames格式的文档'
+'input_format': true
+'keywords':
+- 'CustomSeparatedWithNames'
+'output_format': true
+'slug': '/interfaces/formats/CustomSeparatedWithNames'
+'title': '自定义分隔带命名'
+---
+
+
 
 | Input | Output | Alias |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## Description {#description}
+## 描述 {#description}
 
-此外，还会打印带有列名称的表头行，类似于 [TabSeparatedWithNames](../TabSeparated/TabSeparatedWithNames.md)。
+也会打印带有列名的标题行，类似于 [TabSeparatedWithNames](../TabSeparated/TabSeparatedWithNames.md)。
 
-## Example Usage {#example-usage}
+## 示例用法 {#example-usage}
 
-## Format Settings {#format-settings}
+## 格式设置 {#format-settings}
 
 :::note
-如果设置 [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 的值为 `1`，输入数据的列将根据其名称映射到表中的列， 
-如果设置 [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 的值为 `1`，则将跳过未知名称的列。
-否则，第一行将被跳过。
+如果设置 [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 为 `1`，输入数据的列将根据其名称映射到表的列，
+如果设置 [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 为 `1`，则未知名称的列将被跳过。
+否则，将跳过第一行。
 :::

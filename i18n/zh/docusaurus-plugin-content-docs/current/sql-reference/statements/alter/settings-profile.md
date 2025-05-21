@@ -1,15 +1,18 @@
 ---
-slug: /sql-reference/statements/alter/settings-profile
-sidebar_position: 48
-sidebar_label: 设置配置文件
-title: ALTER 设置配置文件
+'description': 'Settings Profile 的文档'
+'sidebar_label': '设置配置文件'
+'sidebar_position': 48
+'slug': '/sql-reference/statements/alter/settings-profile'
+'title': '修改设置配置文件'
 ---
+
+
 
 更改设置配置文件。
 
 语法：
 
-``` sql
+```sql
 ALTER SETTINGS PROFILE [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]] 
     [ON CLUSTER cluster_name]
     [DROP ALL PROFILES]

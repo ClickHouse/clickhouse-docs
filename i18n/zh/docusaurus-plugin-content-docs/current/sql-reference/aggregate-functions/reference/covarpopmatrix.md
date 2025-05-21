@@ -1,9 +1,11 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/covarpopmatrix
-sidebar_position: 122
-title: 'covarPopMatrix'
-description: '返回 N 个变量的总体协方差矩阵。'
+'description': 'Returns the population covariance matrix over N variables.'
+'sidebar_position': 122
+'slug': '/sql-reference/aggregate-functions/reference/covarpopmatrix'
+'title': 'covarPopMatrix'
 ---
+
+
 
 
 # covarPopMatrix
@@ -18,11 +20,11 @@ covarPopMatrix(x[, ...])
 
 **参数**
 
-- `x` — 可变参数数量。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
+- `x` — 变量数量的参数。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
 
 **返回值**
 
-- 总体协方差矩阵。 [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md))。
+- 总体协方差矩阵。 [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md)))。
 
 **示例**
 

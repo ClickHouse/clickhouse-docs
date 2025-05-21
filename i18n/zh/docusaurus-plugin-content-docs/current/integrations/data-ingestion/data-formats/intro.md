@@ -1,18 +1,28 @@
 ---
-slug: /integrations/data-formats
-sidebar_label: 概述
-sidebar_position: 1
-keywords: ['clickhouse', 'CSV', 'TSV', 'Parquet', 'clickhouse-client', 'clickhouse-local']
+'slug': '/integrations/data-formats'
+'sidebar_label': '概述'
+'sidebar_position': 1
+'keywords':
+- 'clickhouse'
+- 'CSV'
+- 'TSV'
+- 'Parquet'
+- 'clickhouse-client'
+- 'clickhouse-local'
+'title': '从各种数据格式导入到 ClickHouse'
+'description': '描述如何将各种数据格式导入到 ClickHouse'
 ---
+
+
 
 
 # 从各种数据格式导入到 ClickHouse
 
-在本部分文档中，您可以找到加载各种文件类型的示例。
+在本节文档中，您可以找到从各种文件类型加载的示例。
 
 ### [**二进制**](/integrations/data-ingestion/data-formats/binary.md) {#binary}
 
-导出并加载二进制格式，例如 ClickHouse 原生格式、MessagePack、Protocol Buffers 和 Cap’n Proto。
+导出和加载二进制格式，如 ClickHouse Native、MessagePack、Protocol Buffers 和 Cap'n Proto。
 
 ### [**CSV 和 TSV**](/integrations/data-ingestion/data-formats/csv-tsv.md) {#csv-and-tsv}
 
@@ -20,7 +30,7 @@ keywords: ['clickhouse', 'CSV', 'TSV', 'Parquet', 'clickhouse-client', 'clickhou
 
 ### [**JSON**](/integrations/data-ingestion/data-formats/json/intro.md) {#json}
 
-加载和导出多种格式的 JSON，包括对象格式和行分隔的 NDJSON。
+以各种格式加载和导出 JSON，包括作为对象和行分隔的 NDJSON。
 
 ### [**Parquet 数据**](/integrations/data-ingestion/data-formats/parquet.md) {#parquet-data}
 
@@ -28,10 +38,10 @@ keywords: ['clickhouse', 'CSV', 'TSV', 'Parquet', 'clickhouse-client', 'clickhou
 
 ### [**SQL 数据**](/integrations/data-ingestion/data-formats/sql.md) {#sql-data}
 
-需要 SQL 转储以导入到 MySQL 或 Postgresql 吗？不必再找了。
+需要一个 SQL 转储以导入到 MySQL 或 Postgresql 吗？您可以找到您所需的内容。
 
-如果您希望连接像 Grafana、Tableau 等 BI 工具，请查看文档的 [可视化类别](../../data-visualization/index.md)。
+如果您希望连接像 Grafana、Tableau 等 BI 工具，请查看文档中的 [可视化类别](../../data-visualization/index.md)。
 
 ## 相关内容 {#related-content}
 
-- 博客: [ClickHouse 中数据格式的介绍](https://clickhouse.com/blog/data-formats-clickhouse-csv-tsv-parquet-native)
+- 博客：[ClickHouse 中数据格式简介](https://clickhouse.com/blog/data-formats-clickhouse-csv-tsv-parquet-native)

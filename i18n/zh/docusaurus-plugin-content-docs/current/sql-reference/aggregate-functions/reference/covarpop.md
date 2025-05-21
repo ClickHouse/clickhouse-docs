@@ -1,9 +1,11 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/covarpop
-sidebar_position: 121
-title: 'covarPop'
-description: '计算总体协方差'
+'description': 'Calculates the population covariance'
+'sidebar_position': 121
+'slug': '/sql-reference/aggregate-functions/reference/covarpop'
+'title': 'covarPop'
 ---
+
+
 
 
 # covarPop
@@ -15,7 +17,7 @@ $$
 $$
 
 :::note
-此函数使用了数值不稳定的算法。如果您在计算中需要 [数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`covarPopStable`](../reference/covarpopstable.md) 函数。它运行较慢但提供较低的计算误差。
+此函数使用了数值不稳定的算法。如果您需要计算中的 [数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`covarPopStable`](../reference/covarpopstable.md) 函数。尽管其速度较慢，但提供了更低的计算误差。
 :::
 
 **语法**
@@ -31,7 +33,7 @@ covarPop(x, y)
 
 **返回值**
 
-- `x` 和 `y` 之间的总体协方差。[Float64](../../data-types/float.md)。
+- `x` 和 `y` 之间的总体协方差。 [Float64](../../data-types/float.md)。
 
 **示例**
 

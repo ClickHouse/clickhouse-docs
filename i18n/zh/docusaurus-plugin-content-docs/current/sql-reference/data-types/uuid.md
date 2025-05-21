@@ -1,35 +1,37 @@
 ---
-slug: /sql-reference/data-types/uuid
-sidebar_position: 24
-sidebar_label: UUID
+'description': 'Documentation for the UUID data type in ClickHouse'
+'sidebar_label': 'UUID'
+'sidebar_position': 24
+'slug': '/sql-reference/data-types/uuid'
+'title': 'UUID'
 ---
+
+
 
 
 # UUID
 
-通用唯一识别码 (UUID) 是一个 16 字节的值，用于标识记录。有关 UUID 的详细信息，请参见 [Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier)。
+通用唯一标识符 (UUID) 是一个 16 字节的值，用于识别记录。有关 UUID 的详细信息，请参见 [Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier)。
 
-虽然存在不同的 UUID 变体（见 [here](https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis)），但 ClickHouse 不会验证插入的 UUID 是否符合特定变体。
-UUID 在内部被视为 16 个随机字节的序列，在 SQL 层面上采用 [8-4-4-4-12 表示法](https://en.wikipedia.org/wiki/Universally_unique_identifier#Textual_representation)。
+虽然存在不同的 UUID 变体 (参见 [这里](https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis))，但 ClickHouse 不会验证插入的 UUID 是否符合特定变体。UUID 在内部被视为一个 16 字节随机字节序列，在 SQL 层级使用 [8-4-4-4-12 表示法](https://en.wikipedia.org/wiki/Universally_unique_identifier#Textual_representation)。
 
 示例 UUID 值：
 
-``` text
+```text
 61f0c404-5cb3-11e7-907b-a6006ad3dba0
 ```
 
-默认的 UUID 为全零。当插入新记录但未指定 UUID 列的值时使用：
+默认的 UUID 是全零值。例如，在插入新记录时，如果没有为 UUID 列指定值，则使用此默认 UUID：
 
-``` text
+```text
 00000000-0000-0000-0000-000000000000
 ```
 
-由于历史原因，UUID 按其后半部分排序。
-因此，不应直接在表的主键、排序键或分区键中使用 UUID。
+由于历史原因，UUID 按其后半部分排序。因此，不应直接在表的主键、排序键或分区键中使用 UUID。
 
 示例：
 
-``` sql
+```sql
 CREATE TABLE tab (uuid UUID) ENGINE = Memory;
 INSERT INTO tab SELECT generateUUIDv4() FROM numbers(50);
 SELECT * FROM tab ORDER BY uuid;
@@ -37,7 +39,7 @@ SELECT * FROM tab ORDER BY uuid;
 
 结果：
 
-``` text
+```text
 ┌─uuid─────────────────────────────────┐
 │ 36a0b67c-b74a-4640-803b-e44bb4547e3c │
 │ 3a00aeb8-2605-4eec-8215-08c0ecb51112 │
@@ -53,11 +55,11 @@ SELECT * FROM tab ORDER BY uuid;
 └──────────────────────────────────────┘
 ```
 
-作为解决方法，可以将 UUID 转换为具有直观排序顺序的类型。
+作为一种变通方法，可以将 UUID 转换为具有直观排序顺序的数据类型。
 
 使用转换为 UInt128 的示例：
 
-``` sql
+```sql
 CREATE TABLE tab (uuid UUID) ENGINE = Memory;
 INSERT INTO tab SELECT generateUUIDv4() FROM numbers(50);
 SELECT * FROM tab ORDER BY toUInt128(uuid);
@@ -81,17 +83,17 @@ SELECT * FROM tab ORDER BY toUInt128(uuid);
 └──────────────────────────────────────┘
 ```
 
-## 生成 UUIDs {#generating-uuids}
+## 生成 UUID {#generating-uuids}
 
-ClickHouse 提供了 [generateUUIDv4](../../sql-reference/functions/uuid-functions.md) 函数来生成随机的 UUID 版本 4 值。
+ClickHouse 提供 [generateUUIDv4](../../sql-reference/functions/uuid-functions.md) 函数来生成随机的 UUID 版本 4 值。
 
-## 使用示例 {#usage-example}
+## 用法示例 {#usage-example}
 
 **示例 1**
 
-此示例演示了创建一个具有 UUID 列的表以及向表中插入值。
+此示例展示了创建一个带有 UUID 列的表并向表中插入值。
 
-``` sql
+```sql
 CREATE TABLE t_uuid (x UUID, y String) ENGINE=TinyLog
 
 INSERT INTO t_uuid SELECT generateUUIDv4(), 'Example 1'
@@ -101,7 +103,7 @@ SELECT * FROM t_uuid
 
 结果：
 
-``` text
+```text
 ┌────────────────────────────────────x─┬─y─────────┐
 │ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ Example 1 │
 └──────────────────────────────────────┴───────────┘
@@ -109,15 +111,15 @@ SELECT * FROM t_uuid
 
 **示例 2**
 
-在此示例中，插入记录时未指定 UUID 列值，即插入默认的 UUID 值：
+在此示例中，当插入记录时未指定 UUID 列的值，即插入默认的 UUID 值：
 
-``` sql
+```sql
 INSERT INTO t_uuid (y) VALUES ('Example 2')
 
 SELECT * FROM t_uuid
 ```
 
-``` text
+```text
 ┌────────────────────────────────────x─┬─y─────────┐
 │ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ Example 1 │
 │ 00000000-0000-0000-0000-000000000000 │ Example 2 │

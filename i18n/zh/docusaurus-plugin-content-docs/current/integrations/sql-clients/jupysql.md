@@ -1,29 +1,34 @@
 ---
-slug: /integrations/jupysql
-sidebar_label: Jupyter notebooks
-description: JupySQL 是一个多平台数据库工具，用于 Jupyter。
+'slug': '/integrations/jupysql'
+'sidebar_label': 'Jupyter notebooks'
+'description': 'JupySQL 是用于 Jupyter 的跨平台数据库工具。'
+'title': '使用 JupySQL 与 ClickHouse'
 ---
 
+import Image from '@theme/IdealImage';
 import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql-plot-1.png';
 import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql-plot-2.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# 使用 JupySQL 与 ClickHouse
-在本指南中，我们将展示如何与 ClickHouse 进行集成。
+# 使用 JupySQL 连接 ClickHouse
 
-我们将使用 JupySQL 在 ClickHouse 上运行查询。
-一旦数据加载完成，我们将通过 SQL 绘图进行可视化。
+<CommunityMaintainedBadge/>
 
-JupySQL 与 ClickHouse 之间的集成得益于 clickhouse_sqlalchemy 库的使用。该库允许两个系统之间的轻松通信，并使用户能够连接到 ClickHouse 并传递 SQL 方言。连接后，用户可以直接从 ClickHouse 原生 UI 或直接从 Jupyter notebook 运行 SQL 查询。
+在本指南中，我们将展示如何与 ClickHouse 集成。
+
+我们将使用 JupySQL 在 ClickHouse 上运行查询。数据加载完成后，我们将通过 SQL 绘图对其进行可视化。
+
+JupySQL 与 ClickHouse 之间的集成得益于 clickhouse_sqlalchemy 库的使用。该库允许两个系统之间的轻松通信，使用户能够连接到 ClickHouse 并传递 SQL 方言。一旦连接，用户可以直接从 ClickHouse 原生 UI 或者直接从 Jupyter Notebook 中运行 SQL 查询。
+
 
 ```python
 
-# 安装所需的包
+# Install required packages
 %pip install --quiet jupysql clickhouse_sqlalchemy
 ```
 
     注意：您可能需要重启内核以使用更新的包。
-
 
 
 ```python
@@ -31,20 +36,18 @@ import pandas as pd
 from sklearn_evaluation import plot
 
 
-# 导入 jupysql Jupyter 扩展以创建 SQL 单元
+# Import jupysql Jupyter extension to create SQL cells
 %load_ext sql
 %config SqlMagic.autocommit=False
 ```
 
-**您需要确保您的 ClickHouse 正在运行并且可访问以进行后续步骤。您可以使用本地版本或云版本。**
+**您需要确保您的 ClickHouse 已启动并可访问以继续后续步骤。您可以使用本地版本或云版本。**
 
-**注意：** 您需要根据您尝试连接的实例类型调整连接字符串（url、user、password）。在下面的示例中，我们使用了本地实例。要了解更多信息，请查看 [本指南](/getting-started/quick-start)。
-
+**注意：** 您需要根据您要连接的实例类型（url、用户、密码）调整连接字符串。在下面的示例中，我们使用了本地实例。要了解更多信息，请查看 [本指南](/getting-started/quick-start)。
 
 ```python
 %sql clickhouse://default:@localhost:8123/default
 ```
-
 
 ```sql
 %%sql
@@ -402,7 +405,7 @@ WHERE trip_distance < 6.3
 ```response
 <AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
 ```
-<img src={jupysql_plot_1} alt="直方图示例" />
+<Image img={jupysql_plot_1} size="md" alt="显示短途数据集的行程距离分布的直方图，分为 10 个箱" border />
 
 
 ```python
@@ -412,4 +415,4 @@ ax.set_title("Trip distance from trips < 6.3")
 _ = ax.set_xlabel("Trip distance")
 ```
 
-<img src={jupysql_plot_2} alt="第二个直方图示例" />
+<Image img={jupysql_plot_2} size="md" alt="显示行程距离分布的直方图，分为 50 个箱和网格，标题为 'Trip distance from trips < 6.3'" border />

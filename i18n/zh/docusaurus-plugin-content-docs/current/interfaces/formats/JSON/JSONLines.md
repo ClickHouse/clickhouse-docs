@@ -1,8 +1,12 @@
 ---
-title: JSONLines
-slug: /interfaces/formats/JSONLines
-keywords: ['JSONLines']
+'description': 'JSONLines格式的文档'
+'keywords':
+- 'JSONLines'
+'slug': '/interfaces/formats/JSONLines'
+'title': 'JSONLines'
 ---
+
+
 
 ## 描述 {#description}
 

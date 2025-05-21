@@ -1,21 +1,46 @@
 ---
-slug: /integrations/index
-keywords: ['AWS S3', 'PostgreSQL', 'Kafka', 'Apache Spark', 'MySQL', 'Cassandra', 'Redis', 'RabbitMQ', 'MongoDB', 'Google Cloud Storage', 'Hive', 'Hudi', 'Iceberg', 'MinIO', 'Delta Lake', 'RocksDB', 'Splunk', 'SQLite', 'NATS', 'EMQX', 'local files', 'JDBC', 'ODBC']
-description: '数据源概述页面'
+'slug': '/integrations/index'
+'keywords':
+- 'AWS S3'
+- 'Azure Data Factory'
+- 'PostgreSQL'
+- 'Kafka'
+- 'MySQL'
+- 'Cassandra'
+- 'Data Factory'
+- 'Redis'
+- 'RabbitMQ'
+- 'MongoDB'
+- 'Google Cloud Storage'
+- 'Hive'
+- 'Hudi'
+- 'Iceberg'
+- 'MinIO'
+- 'Delta Lake'
+- 'RocksDB'
+- 'Splunk'
+- 'SQLite'
+- 'NATS'
+- 'EMQX'
+- 'local files'
+- 'JDBC'
+- 'ODBC'
+'description': '数据源概述页面'
+'title': '数据源'
 ---
+
+
 
 
 # 数据源
 
-ClickHouse 允许您轻松地从多种来源将数据导入到数据库中。
-有关更多信息，请参见下列页面：
+ClickHouse 允许您轻松地从多种来源将数据导入数据库。有关更多信息，请参见以下页面：
 
 | 数据源                                                                   |
 |-------------------------------------------------------------------------------|
 | [AWS S3](/integrations/s3)                                            |
 | [PostgreSQL](/integrations/postgresql)                                |
 | [Kafka](/integrations/kafka)                                          |
-| [Apache Spark](/integrations/apache-spark)                            |
 | [MySQL](/integrations/mysql)                                          |
 | [Cassandra](/integrations/cassandra)                                  |
 | [Redis](/integrations/redis)                                          |
@@ -32,6 +57,6 @@ ClickHouse 允许您轻松地从多种来源将数据导入到数据库中。
 | [SQLite](/integrations/sqlite)                                        |
 | [NATS](/integrations/nats)                                            |
 | [EMQX](/integrations/emqx)                                            |
-| [插入本地文件](/integrations/data-ingestion/insert-local-files) |
+| [插入本地文件](/integrations/data-ingestion/insert-local-files)           |
 | [JDBC](/integrations/jdbc/jdbc-with-clickhouse)                       |
 | [ODBC](/integrations/data-ingestion/dbms/odbc-with-clickhouse)        |

@@ -1,10 +1,10 @@
 ---
-slug: /optimize/avoid-nullable-columns
-sidebar_label: 避免 Nullable 列
-title: 避免 Nullable 列
-description: Nullable 列（例如 Nullable(String)）会创建一个单独的 UInt8 类型的列。
+'slug': '/optimize/avoid-nullable-columns'
+'sidebar_label': '避免使用Nullable列'
+'title': '避免使用Nullable列'
+'description': '为什么在ClickHouse中应避免使用Nullable列'
 ---
 
-import Content from '@site/i18n/zh/docusaurus-plugin-content-docs/current/cloud/bestpractices/avoidnullablecolumns.md';
+import Content from '@site/docs/best-practices/_snippets/_avoid_nullable_columns.md';
 
-<Content />
+It seems that you have provided "<Content />" which appears to be a directive or placeholder rather than a specific text for translation. Please provide the actual text you would like me to translate from English to Chinese, and I'll be happy to assist you!

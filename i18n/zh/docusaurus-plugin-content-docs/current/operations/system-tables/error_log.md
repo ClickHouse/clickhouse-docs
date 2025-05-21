@@ -1,10 +1,14 @@
 ---
-description: '包含来自表 `system.errors` 的错误值历史记录的系统表，定期刷新到磁盘。'
-slug: /operations/system-tables/error_log
-title: 'system.error_log'
-keywords: ['system table', 'error_log']
+'description': 'System table containing the history of error values from table `system.errors`,
+  periodically flushed to disk.'
+'keywords':
+- 'system table'
+- 'error_log'
+'slug': '/operations/system-tables/system-error-log'
+'title': 'system.error_log'
 ---
-import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
@@ -15,18 +19,18 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 - `event_date` ([Date](../../sql-reference/data-types/date.md)) — 事件日期。
 - `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 事件时间。
 - `code` ([Int32](../../sql-reference/data-types/int-uint.md)) — 错误的代码编号。
-- `error` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) - 错误名称。
-- `value` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 该错误发生的次数。
-- `remote` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 远程异常（即在分布式查询中接收到的异常）。
+- `error` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) - 错误的名称。
+- `value` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 此错误发生的次数。
+- `remote` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 远程异常（即在分布式查询中收到的异常）。
 
 **示例**
 
-``` sql
+```sql
 SELECT * FROM system.error_log LIMIT 1 FORMAT Vertical;
 ```
 
-``` text
-行 1:
+```text
+Row 1:
 ──────
 hostname:   clickhouse.eu-central1.internal
 event_date: 2024-06-18

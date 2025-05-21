@@ -1,8 +1,12 @@
 ---
-title: ODBCDriver2
-slug: /interfaces/formats/ODBCDriver2
-keywords: ['ODBCDriver2']
+'description': 'ODBCDriver2 格式的文档'
+'keywords':
+- 'ODBCDriver2'
+'slug': '/interfaces/formats/ODBCDriver2'
+'title': 'ODBCDriver2'
 ---
+
+
 
 ## 描述 {#description}
 

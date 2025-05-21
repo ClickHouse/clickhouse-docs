@@ -1,21 +1,23 @@
 ---
-title: 'PrettyCompactMonoBlock'
-slug: '/interfaces/formats/PrettyCompactMonoBlock'
-keywords: ['PrettyCompactMonoBlock']
-input_format: false
-output_format: true
-alias: []
+'alias': []
+'description': 'PrettyCompactMonoBlock格式的文档'
+'input_format': false
+'keywords':
+- 'PrettyCompactMonoBlock'
+'output_format': true
+'slug': '/interfaces/formats/PrettyCompactMonoBlock'
+'title': 'PrettyCompactMonoBlock'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 | 输入 | 输出  | 别名 |
-|-------|---------|-------|
-| ✗     | ✔       |       |
+|------|-------|------|
+| ✗    | ✔     |      |
 
 ## 描述 {#description}
 
-与 [`PrettyCompact`](./PrettyCompact.md) 格式不同的是，它缓冲最多 `10,000` 行，然后作为一个单一表输出，而不是按 [块](/development/architecture#block) 输出。
+与 [`PrettyCompact`](./PrettyCompact.md) 格式不同，最多会缓冲 `10,000` 行，然后作为单个表输出，而不是通过 [blocks](/development/architecture#block) 输出。
 
 ## 示例用法 {#example-usage}
 

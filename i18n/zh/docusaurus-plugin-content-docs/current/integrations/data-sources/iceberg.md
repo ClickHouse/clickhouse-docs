@@ -1,14 +1,16 @@
 ---
-slug: /integrations/iceberg
-sidebar_label: '冰山'
-title: '冰山'
+'slug': '/integrations/iceberg'
+'sidebar_label': 'Iceberg'
+'title': 'Iceberg'
+'description': 'Page describing the IcebergFunction which can be used to integrate
+  ClickHouse with the Iceberg table format'
 ---
 
-import IcebergFunction from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/table-functions/iceberg.md';
+import IcebergFunction from '@site/docs/sql-reference/table-functions/iceberg.md';
 
 
-# 冰山集成
+# Iceberg 集成
 
-用户可以通过表函数与冰山表格式集成。
+用户可以通过表函数与 Iceberg 表格式集成。
 
 <IcebergFunction/>

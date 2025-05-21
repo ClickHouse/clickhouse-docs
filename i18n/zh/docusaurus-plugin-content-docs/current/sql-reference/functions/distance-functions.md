@@ -1,15 +1,19 @@
 ---
-slug: /sql-reference/functions/distance-functions
-sidebar_position: 55
-sidebar_label: Distance
+'description': 'Distance Functions 的文档'
+'sidebar_label': '距离'
+'sidebar_position': 55
+'slug': '/sql-reference/functions/distance-functions'
+'title': 'Distance Functions'
 ---
+
+
 
 
 # 距离函数
 
 ## L1Norm {#l1norm}
 
-计算向量的绝对值之和。
+计算一个向量的绝对值之和。
 
 **语法**
 
@@ -25,7 +29,7 @@ L1Norm(vector)
 
 **返回值**
 
-- L1-范数或 [出租车几何](https://en.wikipedia.org/wiki/Taxicab_geometry) 距离。 [UInt](../data-types/int-uint.md), [Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
+- L1 范数或 [出租车几何](https://en.wikipedia.org/wiki/Taxicab_geometry) 距离。 [UInt](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
 
 **示例**
 
@@ -61,7 +65,7 @@ L2Norm(vector)
 
 **返回值**
 
-- L2-范数或 [欧几里得距离](https://en.wikipedia.org/wiki/Euclidean_distance)。 [Float](../data-types/float.md)。
+- L2 范数或 [欧几里得距离](https://en.wikipedia.org/wiki/Euclidean_distance)。 [Float](../data-types/float.md)。
 
 **示例**
 
@@ -81,7 +85,7 @@ SELECT L2Norm((1, 2));
 
 ## L2SquaredNorm {#l2squarednorm}
 
-计算向量值的平方和的平方根（即 [L2Norm](#l2norm) 的平方）。
+计算向量值的平方和的平方根（[L2Norm](#l2norm)）的平方。
 
 **语法**
 
@@ -97,7 +101,7 @@ L2SquaredNorm(vector)
 
 **返回值**
 
-- L2-范数的平方。 [Float](../data-types/float.md)。
+- L2 范数的平方。 [Float](../data-types/float.md)。
 
 **示例**
 
@@ -117,7 +121,7 @@ SELECT L2SquaredNorm((1, 2));
 
 ## LinfNorm {#linfnorm}
 
-计算向量的绝对值的最大值。
+计算向量的绝对值中的最大值。
 
 **语法**
 
@@ -133,7 +137,7 @@ LinfNorm(vector)
 
 **返回值**
 
-- Linf-范数或最大绝对值。 [Float](../data-types/float.md)。
+- Linf 范数或最大绝对值。 [Float](../data-types/float.md)。
 
 **示例**
 
@@ -153,7 +157,7 @@ SELECT LinfNorm((1, -2));
 
 ## LpNorm {#lpnorm}
 
-计算向量绝对值的泛化`p`次方和的平方根。
+计算向量的绝对值的 `p` 次方和的平方根。
 
 **语法**
 
@@ -166,11 +170,11 @@ LpNorm(vector, p)
 **参数**
 
 - `vector` — [元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
-- `p` — 幂。可能的值：实数在 `[1; inf)`。 [UInt](../data-types/int-uint.md) 或 [Float](../data-types/float.md)。
+- `p` — 指数。可能的值：实数在 `[1; inf)` 内。[UInt](../data-types/int-uint.md) 或 [Float](../data-types/float.md)。
 
 **返回值**
 
-- [Lp-范数](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)。 [Float](../data-types/float.md)。
+- [Lp 范数](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)。 [Float](../data-types/float.md)。
 
 **示例**
 
@@ -190,7 +194,7 @@ SELECT LpNorm((1, -2), 2);
 
 ## L1Distance {#l1distance}
 
-计算 `L1` 空间中两点之间的距离（向量的值为坐标）（1-范数 ([出租车几何](https://en.wikipedia.org/wiki/Taxicab_geometry) 距离)）。
+计算两个点之间的距离（向量的值是坐标）在 `L1` 空间中的距离（1-范数（[出租车几何](https://en.wikipedia.org/wiki/Taxicab_geometry) 距离））。
 
 **语法**
 
@@ -202,8 +206,8 @@ L1Distance(vector1, vector2)
 
 **参数**
 
-- `vector1` — 第一个向量。 [元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
-- `vector2` — 第二个向量。 [元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
+- `vector1` — 第一个向量。[元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
+- `vector2` — 第二个向量。[元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
 
 **返回值**
 
@@ -227,7 +231,7 @@ SELECT L1Distance((1, 2), (2, 3));
 
 ## L2Distance {#l2distance}
 
-计算欧几里得空间中两点之间的距离（向量的值为坐标）([欧几里得距离](https://en.wikipedia.org/wiki/Euclidean_distance))。
+计算两个点之间的距离（向量的值是坐标）在欧几里得空间中的距离（[欧几里得距离](https://en.wikipedia.org/wiki/Euclidean_distance)）。
 
 **语法**
 
@@ -239,8 +243,8 @@ L2Distance(vector1, vector2)
 
 **参数**
 
-- `vector1` — 第一个向量。 [元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
-- `vector2` — 第二个向量。 [元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
+- `vector1` — 第一个向量。[元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
+- `vector2` — 第二个向量。[元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
 
 **返回值**
 
@@ -264,7 +268,7 @@ SELECT L2Distance((1, 2), (2, 3));
 
 ## L2SquaredDistance {#l2squareddistance}
 
-计算两个向量对应元素之间差异的平方和。
+计算两个向量对应元素之间差值的平方和。
 
 **语法**
 
@@ -276,12 +280,12 @@ L2SquaredDistance(vector1, vector2)
 
 **参数**
 
-- `vector1` — 第一个向量。 [元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
-- `vector2` — 第二个向量。 [元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
+- `vector1` — 第一个向量。[元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
+- `vector2` — 第二个向量。[元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
 
 **返回值**
 
-- 两个向量对应元素之间差异的平方和。 [Float](../data-types/float.md)。
+- 两个向量对应元素之间差值的平方和。 [Float](../data-types/float.md)。
 
 **示例**
 
@@ -301,7 +305,7 @@ SELECT L2SquaredDistance([1, 2, 3], [0, 0, 0])
 
 ## LinfDistance {#linfdistance}
 
-计算 `L_{inf}` 空间中两点之间的距离（向量的值为坐标）([最大范数](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm))）。
+计算两个点之间的距离（向量的值是坐标）在 `L_{inf}` 空间中的距离（[最大范数](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm) )）。
 
 **语法**
 
@@ -313,8 +317,8 @@ LinfDistance(vector1, vector2)
 
 **参数**
 
-- `vector1` — 第一个向量。 [元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
-- `vector1` — 第二个向量。 [元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
+- `vector1` — 第一个向量。[元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
+- `vector2` — 第二个向量。[元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
 
 **返回值**
 
@@ -338,7 +342,7 @@ SELECT LinfDistance((1, 2), (2, 3));
 
 ## LpDistance {#lpdistance}
 
-计算 `Lp` 空间中两点之间的距离（向量的值为坐标）([p-范数距离](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm))。
+计算两个点之间的距离（向量的值是坐标）在 `Lp` 空间中的距离（[p-范数距离](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)）。
 
 **语法**
 
@@ -350,9 +354,9 @@ LpDistance(vector1, vector2, p)
 
 **参数**
 
-- `vector1` — 第一个向量。 [元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
-- `vector2` — 第二个向量。 [元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
-- `p` — 幂。可能的值：实数在 `[1; inf)`。 [UInt](../data-types/int-uint.md) 或 [Float](../data-types/float.md)。
+- `vector1` — 第一个向量。[元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
+- `vector2` — 第二个向量。[元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
+- `p` — 指数。可能的值：实数从 `[1;inf)`。 [UInt](../data-types/int-uint.md) 或 [Float](../data-types/float.md)。
 
 **返回值**
 
@@ -376,7 +380,7 @@ SELECT LpDistance((1, 2), (2, 3), 3);
 
 ## L1Normalize {#l1normalize}
 
-计算给定向量的单位向量（元组的值为坐标）在 `L1` 空间中（[出租车几何](https://en.wikipedia.org/wiki/Taxicab_geometry)）。
+计算给定向量的单位向量（元组的值是坐标）在 `L1` 空间中的表示（[出租车几何](https://en.wikipedia.org/wiki/Taxicab_geometry)）。
 
 **语法**
 
@@ -392,7 +396,7 @@ L1Normalize(tuple)
 
 **返回值**
 
-- 单位向量。 [Tuple](../data-types/tuple.md) 的 [Float](../data-types/float.md)。
+- 单位向量。 [元组](../data-types/tuple.md) 的 [Float](../data-types/float.md)。
 
 **示例**
 
@@ -412,7 +416,7 @@ SELECT L1Normalize((1, 2));
 
 ## L2Normalize {#l2normalize}
 
-计算给定向量的单位向量（元组的值为坐标）在欧几里得空间中（使用 [欧几里得距离](https://en.wikipedia.org/wiki/Euclidean_distance)）。
+计算给定向量的单位向量（元组的值是坐标）在欧几里得空间中的表示（使用 [欧几里得距离](https://en.wikipedia.org/wiki/Euclidean_distance)）。
 
 **语法**
 
@@ -428,7 +432,7 @@ L2Normalize(tuple)
 
 **返回值**
 
-- 单位向量。 [Tuple](../data-types/tuple.md) 的 [Float](../data-types/float.md)。
+- 单位向量。 [元组](../data-types/tuple.md) 的 [Float](../data-types/float.md)。
 
 **示例**
 
@@ -448,7 +452,7 @@ SELECT L2Normalize((3, 4));
 
 ## LinfNormalize {#linfnormalize}
 
-计算给定向量的单位向量（元组的值为坐标）在 `L_{inf}` 空间中（使用 [最大范数](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm) )）。
+计算给定向量的单位向量（元组的值是坐标）在 `L_{inf}` 空间中的表示（使用 [最大范数](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm) )）。
 
 **语法**
 
@@ -464,7 +468,7 @@ LinfNormalize(tuple)
 
 **返回值**
 
-- 单位向量。 [Tuple](../data-types/tuple.md) 的 [Float](../data-types/float.md)。
+- 单位向量。 [元组](../data-types/tuple.md) 的 [Float](../data-types/float.md)。
 
 **示例**
 
@@ -484,7 +488,7 @@ SELECT LinfNormalize((3, 4));
 
 ## LpNormalize {#lpnormalize}
 
-计算给定向量的单位向量（元组的值为坐标）在 `Lp` 空间中（使用 [p-范数](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)）。
+计算给定向量的单位向量（元组的值是坐标）在 `Lp` 空间中的表示（使用 [p-范数](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)）。
 
 **语法**
 
@@ -497,11 +501,11 @@ LpNormalize(tuple, p)
 **参数**
 
 - `tuple` — [元组](../data-types/tuple.md)。
-- `p` — 幂。可能的值：任何数字在 [1;inf) 中。 [UInt](../data-types/int-uint.md) 或 [Float](../data-types/float.md)。
+- `p` — 指数。可能的值：任何数字从 [1;inf)。[UInt](../data-types/int-uint.md) 或 [Float](../data-types/float.md)。
 
 **返回值**
 
-- 单位向量。 [Tuple](../data-types/tuple.md) 的 [Float](../data-types/float.md)。
+- 单位向量。 [元组](../data-types/tuple.md) 的 [Float](../data-types/float.md)。
 
 **示例**
 
@@ -521,7 +525,7 @@ SELECT LpNormalize((3, 4),5);
 
 ## cosineDistance {#cosinedistance}
 
-计算两个向量之间的余弦距离（元组的值为坐标）。返回值越小，向量越相似。
+计算两个向量之间的余弦距离（元组的值是坐标）。返回值越小，向量的相似度越高。
 
 **语法**
 
@@ -531,12 +535,12 @@ cosineDistance(vector1, vector2)
 
 **参数**
 
-- `vector1` — 第一个元组。 [元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
-- `vector2` — 第二个元组。 [元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
+- `vector1` — 第一个元组。[元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
+- `vector2` — 第二个元组。[元组](../data-types/tuple.md) 或 [数组](../data-types/array.md)。
 
 **返回值**
 
-- 两个向量之间的角度余弦减去1。 [Float](../data-types/float.md)。
+- 两个向量之间的夹角余弦值减去 1。 [Float](../data-types/float.md)。
 
 **示例**
 

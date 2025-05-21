@@ -1,15 +1,18 @@
 ---
-slug: '/cloud/reference/changelogs/release-notes'
-title: '云发布说明'
-sidebar_label: '云发布说明'
-keywords:
-  - 'ClickHouse'
-  - 'Release Notes'
-  - 'Cloud'
-description: '有关 ClickHouse 云服务的发布说明和更新的详细信息。'
+'slug': '/cloud/reference/changelogs/release-notes'
+'title': 'Cloud Release Notes'
+'description': 'Landing page for Cloud release notes'
 ---
 
-<!-- 
-以下目录是通过 https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh 
-从 YAML 前言字段 title、slug、description 自动生成的。如果您发现目录中有错误，请直接编辑文件的前言部分。
+<!-- 下面的内容目录是通过 YAML front matter 自动生成的
+     使用 https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh
+     如果您发现错误，请编辑页面本身的 frontmatter。
 -->
+
+| 页面 | 描述 |
+|-----|-----|
+| [v24.5 云端变更日志](/changelogs/24.5) | v24.5 的快速发布变更日志 |
+| [v24.10 云端变更日志](/changelogs/24.10) | v24.10 的快速发布变更日志 |
+| [v24.8 云端变更日志](/changelogs/24.8) | v24.8 的快速发布变更日志 |
+| [v24.12 云端变更日志](/changelogs/24.12) | v24.12 的快速发布变更日志 |
+| [v24.6 云端变更日志](/changelogs/24.6) | v24.6 的快速发布变更日志 |

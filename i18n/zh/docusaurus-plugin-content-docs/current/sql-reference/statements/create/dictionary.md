@@ -1,15 +1,18 @@
 ---
-slug: /sql-reference/statements/create/dictionary
-sidebar_position: 38
-sidebar_label: 字典
-title: '创建字典'
+'description': '字典文档'
+'sidebar_label': '字典'
+'sidebar_position': 38
+'slug': '/sql-reference/statements/create/dictionary'
+'title': '创建字典'
 ---
 
-创建一个新的 [字典](../../../sql-reference/dictionaries/index.md) ，带有给定的 [结构](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields)、 [源](../../../sql-reference/dictionaries/index.md#dictionary-sources)、 [布局](/sql-reference/dictionaries#storing-dictionaries-in-memory) 和 [生存时间](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。
+
+
+创建一个新的 [字典](../../../sql-reference/dictionaries/index.md)，具有给定的 [结构](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields)、[源](../../../sql-reference/dictionaries/index.md#dictionary-sources)、[布局](/sql-reference/dictionaries#storing-dictionaries-in-memory) 和 [生存时间](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。
 
 ## 语法 {#syntax}
 
-``` sql
+```sql
 CREATE [OR REPLACE] DICTIONARY [IF NOT EXISTS] [db.]dictionary_name [ON CLUSTER cluster]
 (
     key1 type1  [DEFAULT|EXPRESSION expr1] [IS_OBJECT_ID],
@@ -25,25 +28,25 @@ SETTINGS(setting_name = setting_value, setting_name = setting_value, ...)
 COMMENT 'Comment'
 ```
 
-字典结构由属性组成。字典属性的指定方式类似于表列。唯一必需的属性是其类型，所有其他属性可以有默认值。
+字典结构由属性组成。字典属性的指定方式类似于表列。唯一所需的属性是其类型，所有其他属性可以有默认值。
 
-`ON CLUSTER` 子句允许在集群上创建字典，详见 [分布式 DDL](../../../sql-reference/distributed-ddl.md)。
+`ON CLUSTER` 子句允许在集群上创建字典，请参见 [分布式 DDL](../../../sql-reference/distributed-ddl.md)。
 
-根据字典 [布局](/sql-reference/dictionaries#storing-dictionaries-in-memory)，可以指定一个或多个属性作为字典键。
+根据字典的 [布局](/sql-reference/dictionaries#storing-dictionaries-in-memory)，一个或多个属性可以作为字典键进行指定。
 
 ## 源 {#source}
 
 字典的源可以是：
 - 当前 ClickHouse 服务中的表
 - 远程 ClickHouse 服务中的表
-- 通过 HTTP(S) 可用的文件
+- 可通过 HTTP(S) 访问的文件
 - 另一个数据库
 
 ### 从当前 ClickHouse 服务中的表创建字典 {#create-a-dictionary-from-a-table-in-the-current-clickhouse-service}
 
 输入表 `source_table`：
 
-``` text
+```text
 ┌─id─┬─value──┐
 │  1 │ First  │
 │  2 │ Second │
@@ -52,7 +55,7 @@ COMMENT 'Comment'
 
 创建字典：
 
-``` sql
+```sql
 CREATE DICTIONARY id_value_dictionary
 (
     id UInt64,
@@ -66,7 +69,7 @@ LIFETIME(MIN 0 MAX 1000)
 
 输出字典：
 
-``` sql
+```sql
 SHOW CREATE DICTIONARY id_value_dictionary;
 ```
 
@@ -83,8 +86,8 @@ LAYOUT(FLAT())
 ```
 
 :::note
-在 [ClickHouse Cloud](https://clickhouse.com) 的 SQL 控制台中，创建字典时必须指定用户（`default` 或任何具有 `default_role` 角色的用户）和密码。
-:::note
+在 [ClickHouse Cloud](https://clickhouse.com) 中使用 SQL 控制台时，创建字典时必须指定用户（`default` 或任何其他具有 `default_role` 角色的用户）和密码。
+:::
 
 ```sql
 CREATE USER IF NOT EXISTS clickhouse_admin
@@ -115,7 +118,7 @@ LIFETIME(MIN 0 MAX 1000);
 
 输入表（在远程 ClickHouse 服务中） `source_table`：
 
-``` text
+```text
 ┌─id─┬─value──┐
 │  1 │ First  │
 │  2 │ Second │
@@ -124,7 +127,7 @@ LIFETIME(MIN 0 MAX 1000);
 
 创建字典：
 
-``` sql
+```sql
 CREATE DICTIONARY id_value_dictionary
 (
     id UInt64,
@@ -136,7 +139,7 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
 ```
 
-### 从通过 HTTP(S) 可用的文件创建字典 {#create-a-dictionary-from-a-file-available-by-https}
+### 从可通过 HTTP(S) 获取的文件创建字典 {#create-a-dictionary-from-a-file-available-by-https}
 
 ```sql
 CREATE DICTIONARY default.taxi_zone_dictionary
@@ -154,9 +157,9 @@ LAYOUT(HASHED())
 
 ### 从另一个数据库创建字典 {#create-a-dictionary-from-another-database}
 
-详情请见 [字典源](/sql-reference/dictionaries#dbms)。
+请查看 [字典源](/sql-reference/dictionaries#dbms) 中的详细信息。
 
-**另请参见**
+**另请参阅**
 
 - 有关更多信息，请参见 [字典](../../../sql-reference/dictionaries/index.md) 部分。
 - [system.dictionaries](../../../operations/system-tables/dictionaries.md) — 此表包含有关 [字典](../../../sql-reference/dictionaries/index.md) 的信息。

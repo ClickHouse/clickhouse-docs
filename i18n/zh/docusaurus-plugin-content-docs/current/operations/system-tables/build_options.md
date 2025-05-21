@@ -1,24 +1,28 @@
 ---
-description: '包含有关 ClickHouse 服务器构建选项的信息的系统表。'
-slug: /operations/system-tables/build_options
-title: 'system.build_options'
-keywords: ['system table', 'build_options']
+'description': '包含有关 ClickHouse 服务器构建选项的信息的系统表。'
+'slug': '/operations/system-tables/build_options'
+'title': '系统.构建选项'
+'keywords':
+- 'system table'
+- 'build_options'
 ---
+
+
 
 包含有关 ClickHouse 服务器构建选项的信息。
 
 列：
 
-- `name` (String) — 构建选项的名称，例如 `USE_ODBC`
-- `value` (String) — 构建选项的值，例如 `1`
+- `name` (字符串) — 构建选项名称，例如 `USE_ODBC`
+- `value` (字符串) — 构建选项的值，例如 `1`
 
 **示例**
 
-``` sql
+```sql
 SELECT * FROM system.build_options LIMIT 5
 ```
 
-``` text
+```text
 ┌─name─────────────┬─value─┐
 │ USE_BROTLI       │ 1     │
 │ USE_BZIP2        │ 1     │

@@ -1,61 +1,65 @@
 ---
-slug: /sql-reference/data-types/tuple
-sidebar_position: 34
-sidebar_label: Tuple(T1, T2, ...)
+'description': 'Documentation for the Tuple data type in ClickHouse'
+'sidebar_label': 'Tuple(T1, T2, ...)'
+'sidebar_position': 34
+'slug': '/sql-reference/data-types/tuple'
+'title': 'Tuple(T1, T2, ...)'
 ---
+
+
 
 
 # Tuple(T1, T2, ...)
 
-一个元素的元组，每个元素都有一个单独的 [type](/sql-reference/data-types)。 元组必须包含至少一个元素。
+一个包含多个元素的元组，每个元素都有一个单独的 [类型](/sql-reference/data-types)。元组必须至少包含一个元素。
 
-元组用于临时列分组。当查询中使用 IN 表达式时，可以对列进行分组，并用于指定 lambda 函数的某些形式参数。有关更多信息，请参见 [IN operators](../../sql-reference/operators/in.md) 和 [Higher order functions](/sql-reference/functions/overview#higher-order-functions) 部分。
+元组用于临时列分组。当在查询中使用 IN 表达式时，可以对列进行分组，并用于指定某些 lambda 函数的形式参数。有关更多信息，请参见 [IN 运算符](../../sql-reference/operators/in.md) 和 [高级函数](/sql-reference/functions/overview#higher-order-functions) 部分。
 
-元组可以是查询的结果。在这种情况下，对于 JSON 以外的文本格式，值在括号中以逗号分隔。在 JSON 格式中，元组作为数组输出（在方括号中）。
+元组可以是查询的结果。在这种情况下，对于除 JSON 以外的文本格式，值用逗号分隔并放在括号中。在 JSON 格式中，元组以数组的形式输出（用方括号包围）。
 
 ## 创建元组 {#creating-tuples}
 
-您可以使用函数来创建一个元组：
+您可以使用函数来创建元组：
 
-``` sql
+```sql
 tuple(T1, T2, ...)
 ```
 
 创建元组的示例：
 
-``` sql
+```sql
 SELECT tuple(1, 'a') AS x, toTypeName(x)
 ```
 
-``` text
+```text
 ┌─x───────┬─toTypeName(tuple(1, 'a'))─┐
 │ (1,'a') │ Tuple(UInt8, String)      │
 └─────────┴───────────────────────────┘
 ```
 
-元组可以包含单个元素
+一个元组可以包含单个元素
 
 示例：
 
-``` sql
+```sql
 SELECT tuple('a') AS x;
 ```
 
-``` text
+```text
 ┌─x─────┐
 │ ('a') │
 └───────┘
 ```
 
-语法 `(tuple_element1, tuple_element2)` 可用于创建一个包含多个元素的元组，而无需调用 `tuple()` 函数。
+语法 `(tuple_element1, tuple_element2)` 可用于创建多个元素的元组，而无需调用 `tuple()` 函数。
 
 示例：
 
-``` sql
+```sql
 SELECT (1, 'a') AS x, (today(), rand(), 'someString') AS y, ('a') AS not_a_tuple;
 ```
 
-``` text
+```text
 ┌─x───────┬─y──────────────────────────────────────┬─not_a_tuple─┐
 │ (1,'a') │ ('2022-09-21',2006973416,'someString') │ a           │
 └─────────┴────────────────────────────────────────┴─────────────┘
@@ -63,15 +67,15 @@ SELECT (1, 'a') AS x, (today(), rand(), 'someString') AS y, ('a') AS not_a_tuple
 
 ## 数据类型检测 {#data-type-detection}
 
-在动态创建元组时，ClickHouse 会推断元组参数的类型为能够容纳提供的参数值的最小类型。如果值为 [NULL](/operations/settings/formats#input_format_null_as_default)，则推断的类型为 [Nullable](../../sql-reference/data-types/nullable.md)。
+在动态创建元组时，ClickHouse 会推断元组参数的类型为可以容纳提供的参数值的最小类型。如果值为 [NULL](/operations/settings/formats#input_format_null_as_default)，则推断出的类型为 [Nullable](../../sql-reference/data-types/nullable.md)。
 
 自动数据类型检测的示例：
 
-``` sql
+```sql
 SELECT tuple(1, NULL) AS x, toTypeName(x)
 ```
 
-``` text
+```text
 ┌─x─────────┬─toTypeName(tuple(1, NULL))──────┐
 │ (1, NULL) │ Tuple(UInt8, Nullable(Nothing)) │
 └───────────┴─────────────────────────────────┘
@@ -79,19 +83,19 @@ SELECT tuple(1, NULL) AS x, toTypeName(x)
 
 ## 引用元组元素 {#referring-to-tuple-elements}
 
-元组元素可以通过名称或索引进行引用：
+可以通过名称或索引引用元组元素：
 
-``` sql
+```sql
 CREATE TABLE named_tuples (`a` Tuple(s String, i Int64)) ENGINE = Memory;
 INSERT INTO named_tuples VALUES (('y', 10)), (('x',-10));
 
-SELECT a.s FROM named_tuples; -- 通过名称
-SELECT a.2 FROM named_tuples; -- 通过索引
+SELECT a.s FROM named_tuples; -- by name
+SELECT a.2 FROM named_tuples; -- by index
 ```
 
 结果：
 
-``` text
+```text
 ┌─a.s─┐
 │ y   │
 │ x   │
@@ -105,7 +109,7 @@ SELECT a.2 FROM named_tuples; -- 通过索引
 
 ## 与元组的比较操作 {#comparison-operations-with-tuple}
 
-两个元组通过从左到右顺序比较其元素进行比较。如果第一个元组的元素大于（小于）第二个元组的相应元素，则第一个元组大于（小于）第二个元组；否则（两个元素相等），比较下一个元素。
+通过顺序比较元组的元素（从左到右）来比较两个元组。如果第一个元组的元素大于（小于）第二个元组的相应元素，则第一个元组大于（小于）第二个元组；否则（两个元素相等），比较下一个元素。
 
 示例：
 
@@ -113,7 +117,7 @@ SELECT a.2 FROM named_tuples; -- 通过索引
 SELECT (1, 'z') > (1, 'a') c1, (2022, 01, 02) > (2023, 04, 02) c2, (1,2,3) = (3,2,1) c3;
 ```
 
-``` text
+```text
 ┌─c1─┬─c2─┬─c3─┐
 │  1 │  0 │  0 │
 └────┴────┴────┘
@@ -167,7 +171,7 @@ SELECT * FROM test;
 │   2 │        2 │     0 │
 └─────┴──────────┴───────┘
 
--- 让我们为每个 key 找到最大 duration 的值，如果 duration 相等，则选择最大 value
+-- Let's find a value for each key with the biggest duration, if durations are equal, select the biggest value
 
 SELECT
     key,

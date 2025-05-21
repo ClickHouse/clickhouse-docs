@@ -1,20 +1,24 @@
 ---
-slug: /sql-reference/functions/arithmetic-functions
-sidebar_position: 5
-sidebar_label: 算术
+'description': 'Documentation for Arithmetic Functions'
+'sidebar_label': 'Arithmetic'
+'sidebar_position': 5
+'slug': '/sql-reference/functions/arithmetic-functions'
+'title': 'Arithmetic Functions'
 ---
+
+
 
 
 # 算术函数
 
-算术函数适用于任何两个类型为 `UInt8`、`UInt16`、`UInt32`、`UInt64`、`Int8`、`Int16`、`Int32`、`Int64`、`Float32` 或 `Float64` 的操作数。
+算术函数适用于任何两个操作数类型为 `UInt8`, `UInt16`, `UInt32`, `UInt64`, `Int8`, `Int16`, `Int32`, `Int64`, `Float32` 或 `Float64` 的操作数。
 
-在执行操作之前，两个操作数都会被转换为结果类型。结果类型的确定如下（除非在下面的函数文档中另有说明）：
-- 如果两个操作数的位宽都不超过 32 位，结果类型的大小将是两个操作数中较大者的下一个更大类型的大小（整数大小推广）。例如，`UInt8 + UInt16 = UInt32` 或 `Float32 * Float32 = Float64`。
-- 如果其中一个操作数有 64 位或更多，则结果类型的大小将与两个操作数中较大者的大小相同。例如，`UInt32 + UInt128 = UInt128` 或 `Float32 * Float64 = Float64`。
-- 如果其中一个操作数是带符号的，则结果类型也将是带符号的，否则它将是无符号的。例如，`UInt32 * Int32 = Int64`。
+在执行操作之前，两个操作数都会被转换为结果类型。结果类型的确定方式如下（除非在下面的函数文档中另有说明）：
+- 如果两个操作数的位宽均不超过 32 位，则结果类型的大小将为两个操作数中较大的操作数的下一个更大类型的大小（整数大小提升）。例如，`UInt8 + UInt16 = UInt32` 或 `Float32 * Float32 = Float64`。
+- 如果一个操作数的位数为 64 位或更高，则结果类型的大小将与较大的操作数的大小相同。例如，`UInt32 + UInt128 = UInt128` 或 `Float32 * Float64 = Float64`。
+- 如果一个操作数是有符号的，则结果类型也将是有符号的，否则将是无符号的。例如，`UInt32 * Int32 = Int64`。
 
-这些规则确保结果类型将是可以表示所有可能结果的最小类型。虽然这在值范围边界附近引入了溢出的风险，但它确保使用 64 位的最大本机整数宽度快速执行计算。这种行为也保证了与许多其他提供 64 位整数（BIGINT）作为最大整数类型的数据库的兼容性。
+这些规则确保结果类型将是能够表示所有可能结果的最小类型。尽管这在值范围边界附近引入了溢出的风险，但它确保了计算使用最大的本机整数宽度（64 位）快速执行。这种行为还确保了与许多其他数据库的兼容性，这些数据库提供的最大整数类型为 64 位整数（BIGINT）。
 
 示例：
 
@@ -28,7 +32,7 @@ SELECT toTypeName(0), toTypeName(0 + 0), toTypeName(0 + 0 + 0), toTypeName(0 + 0
 └───────────────┴────────────────────────┴─────────────────────────────────┴──────────────────────────────────────────┘
 ```
 
-溢出产生的方式与 C++ 中相同。
+溢出以与 C++ 相同的方式产生。
 
 ## plus {#plus}
 
@@ -40,17 +44,17 @@ SELECT toTypeName(0), toTypeName(0 + 0), toTypeName(0 + 0 + 0), toTypeName(0 + 0
 plus(a, b)
 ```
 
-可以将整数与日期或带时间的日期相加。前一种操作会增加日期中的天数，而后一种操作会增加带时间日期中的秒数。
+可以将一个整数与日期或日期时间相加。前者操作会增加日期中的天数，后者操作会增加日期时间中的秒数。
 
-别名：`a + b`（操作符）
+别名：`a + b`（运算符）
 
 ## minus {#minus}
 
-计算两个值 `a` 和 `b` 的差。结果始终为有符号类型。
+计算两个值 `a` 和 `b` 的差值。结果总是有符号的。
 
-与 `plus` 类似，可以从日期或带时间的日期中减去一个整数。
+与 `plus` 类似，可以从日期或日期时间中减去一个整数。
 
-此外，支持带时间的日期之间的减法，得到它们之间的时间差。
+另外，支持日期时间之间的减法，结果为它们之间的时间差。
 
 **语法**
 
@@ -58,7 +62,7 @@ plus(a, b)
 minus(a, b)
 ```
 
-别名：`a - b`（操作符）
+别名：`a - b`（运算符）
 
 ## multiply {#multiply}
 
@@ -70,13 +74,13 @@ minus(a, b)
 multiply(a, b)
 ```
 
-别名：`a * b`（操作符）
+别名：`a * b`（运算符）
 
 ## divide {#divide}
 
-计算两个值 `a` 和 `b` 的商。结果类型始终为 [Float64](../data-types/float.md)。整数除法使用 `intDiv` 函数提供。
+计算两个值 `a` 和 `b` 的商。结果类型始终为 [Float64](../data-types/float.md)。整数除法由 `intDiv` 函数提供。
 
-除以 0 返回 `inf`、`-inf` 或 `nan`。
+除以 0 返回 `inf`, `-inf`, 或 `nan`。
 
 **语法**
 
@@ -84,15 +88,25 @@ multiply(a, b)
 divide(a, b)
 ```
 
-别名：`a / b`（操作符）
+别名：`a / b`（运算符）
+
+## divideOrNull {#divideornull}
+
+像 [divide](#divide)，但当除数为零时返回 null。
+
+**语法**
+
+```sql
+divideOrNull(a, b)
+```
 
 ## intDiv {#intdiv}
 
-对两个值 `a` 和 `b` 进行整数除法，即计算商并向下取整到下一个较小的整数。
+对两个值 `a` 和 `b` 执行整数除法，即计算出商并向下舍入到下一个最小的整数。
 
-结果的宽度与被除数（第一个参数）相同。
+结果与被除数（第一个参数）具有相同的宽度。
 
-在除以零、商不适合被除数范围时，或在将最小负数除以负一时会抛出异常。
+当除以零时、商不在被除数范围内时，或将一个最小的负数除以负一时，会抛出异常。
 
 **语法**
 
@@ -129,7 +143,7 @@ Code: 153. DB::Exception: Received from localhost:9000. DB::Exception: Cannot pe
 
 ## intDivOrZero {#intdivorzero}
 
-与 `intDiv` 相同，但在除以零或将最小负数除以负一时返回零。
+与 `intDiv` 相同，但在除以零或将一个最小的负数除以负一时返回零。
 
 **语法**
 
@@ -137,9 +151,19 @@ Code: 153. DB::Exception: Received from localhost:9000. DB::Exception: Cannot pe
 intDivOrZero(a, b)
 ```
 
+## intDivOrNull {#intdivornull}
+
+像 [intDiv](#intdiv)，但在除数为零时返回 null。
+
+**语法**
+
+```sql
+intDivOrNull(a, b)
+```
+
 ## isFinite {#isfinite}
 
-如果 Float32 或 Float64 参数不是无穷大且不是 NaN，则返回 1；否则此函数返回 0。
+如果 Float32 或 Float64 参数是有限的且不是 NaN，则返回 1，否则返回 0。
 
 **语法**
 
@@ -149,7 +173,7 @@ isFinite(x)
 
 ## isInfinite {#isinfinite}
 
-如果 Float32 或 Float64 参数是无穷大，则返回 1；否则此函数返回 0。请注意，对于 NaN 返回 0。
+如果 Float32 或 Float64 参数是无限的，则返回 1，否则返回 0。请注意，对于 NaN 返回的是 0。
 
 **语法**
 
@@ -159,7 +183,7 @@ isInfinite(x)
 
 ## ifNotFinite {#ifnotfinite}
 
-检查浮点值是否是有限的。
+检查一个浮点值是否为有限。
 
 **语法**
 
@@ -169,13 +193,13 @@ ifNotFinite(x,y)
 
 **参数**
 
-- `x` — 要检查是否为无穷大的值。[Float\*](../data-types/float.md)。
-- `y` — 回退值。[Float\*](../data-types/float.md)。
+- `x` — 要检查是否为无限的值。[Float\*](../data-types/float.md)。
+- `y` — 后备值。[Float\*](../data-types/float.md)。
 
 **返回值**
 
-- 如果 `x` 是有限的，则返回 `x`。
-- 如果 `x` 不是有限的，则返回 `y`。
+- 如果 `x` 是有限的，返回 `x`。
+- 如果 `x` 不是有限的，返回 `y`。
 
 **示例**
 
@@ -189,11 +213,11 @@ ifNotFinite(x,y)
     │     inf │                            42 │
     └─────────┴───────────────────────────────┘
 
-您可以使用 [三元操作符](/sql-reference/functions/conditional-functions#if) 获得类似的结果：`isFinite(x) ? x : y`。
+您可以使用 [三元运算符](/sql-reference/functions/conditional-functions#if) 来获取类似的结果：`isFinite(x) ? x : y`。
 
 ## isNaN {#isnan}
 
-如果 Float32 和 Float64 参数是 NaN，则返回 1；否则此函数返回 0。
+如果 Float32 或 Float64 参数是 NaN，则返回 1，否则返回 0。
 
 **语法**
 
@@ -203,13 +227,13 @@ isNaN(x)
 
 ## modulo {#modulo}
 
-计算两个值 `a` 和 `b` 除法的余数。
+计算两个值 `a` 和 `b` 之间除法的余数。
 
 如果两个输入都是整数，则结果类型为整数。如果其中一个输入是浮点数，则结果类型为 [Float64](../data-types/float.md)。
 
-余数的计算方式与 C++ 中相同。对于负数使用截断除法。
+余数的计算方式与 C++ 相同。对于负数使用截断除法。
 
-在除以零或将最小负数除以负一时会抛出异常。
+当除以零或将一个最小的负数除以负一时会抛出异常。
 
 **语法**
 
@@ -217,11 +241,11 @@ isNaN(x)
 modulo(a, b)
 ```
 
-别名：`a % b`（操作符）
+别名：`a % b`（运算符）
 
 ## moduloOrZero {#moduloorzero}
 
-与 [modulo](#modulo) 相似，但在除数为零时返回零。
+像 [modulo](#modulo)，但当除数为零时返回零。
 
 **语法**
 
@@ -229,9 +253,19 @@ modulo(a, b)
 moduloOrZero(a, b)
 ```
 
+## moduloOrNull {#moduloornull}
+
+像 [modulo](#modulo)，但当除数为零时返回 null。
+
+**语法**
+
+```sql
+moduloOrNull(a, b)
+```
+
 ## positiveModulo(a, b) {#positivemoduloa-b}
 
-与 [modulo](#modulo) 相似，但始终返回非负数。
+像 [modulo](#modulo)，但始终返回非负数。
 
 此函数的速度比 `modulo` 慢 4-5 倍。
 
@@ -261,9 +295,19 @@ SELECT positiveModulo(-1, 10)
 └────────────────────────┘
 ```
 
+## positiveModuloOrNull(a, b) {#positivemoduloornulla-b}
+
+像 [positiveModulo](#positivemoduloa-b)，但在除数为零时返回 null。
+
+**语法**
+
+```sql
+positiveModuloOrNull(a, b)
+```
+
 ## negate {#negate}
 
-对值 `a` 取反。结果始终为有符号类型。
+取值 `a` 的相反数。结果总是有符号的。
 
 **语法**
 
@@ -275,7 +319,7 @@ negate(a)
 
 ## abs {#abs}
 
-计算 `a` 的绝对值。如果 `a` 是无符号类型，则没有影响。如果 `a` 是带符号类型，则返回一个无符号数。
+计算 `a` 的绝对值。如果 `a` 是无符号类型则无效。如果 `a` 是有符号类型，则返回无符号数。
 
 **语法**
 
@@ -287,7 +331,7 @@ abs(a)
 
 返回两个值 `a` 和 `b` 的最大公约数。
 
-在除以零或将最小负数除以负一时会抛出异常。
+当除以零或将一个最小的负数除以负一时会抛出异常。
 
 **语法**
 
@@ -299,7 +343,7 @@ gcd(a, b)
 
 返回两个值 `a` 和 `b` 的最小公倍数。
 
-在除以零或将最小负数除以负一时会抛出异常。
+当除以零或将一个最小的负数除以负一时会抛出异常。
 
 **语法**
 
@@ -309,7 +353,7 @@ lcm(a, b)
 
 ## max2 {#max2}
 
-返回两个值 `a` 和 `b` 中较大的一个。返回值类型为 [Float64](../data-types/float.md)。
+返回两个值 `a` 和 `b` 中较大的值。返回值的类型为 [Float64](../data-types/float.md)。
 
 **语法**
 
@@ -335,7 +379,7 @@ SELECT max2(-1, 2);
 
 ## min2 {#min2}
 
-返回两个值 `a` 和 `b` 中较小的一个。返回值类型为 [Float64](../data-types/float.md)。
+返回两个值 `a` 和 `b` 中较小的值。返回值的类型为 [Float64](../data-types/float.md)。
 
 **语法**
 
@@ -361,11 +405,11 @@ SELECT min2(-1, 2);
 
 ## multiplyDecimal {#multiplydecimal}
 
-将两个十进制数 `a` 和 `b` 相乘。结果值类型为 [Decimal256](../data-types/decimal.md)。
+将两个十进制数 `a` 和 `b` 相乘。结果值的类型为 [Decimal256](../data-types/decimal.md)。
 
-结果的规模可以通过 `result_scale` 显式指定。如果未指定 `result_scale`，则假定为输入值的最大规模。
+可以通过 `result_scale` 明确指定结果的刻度。如果未指定 `result_scale`，则假设为输入值的最大刻度。
 
-此函数的执行速度明显慢于普通的 `multiply`。如果不需要控制结果精度和/或需要快速计算，建议使用 `multiply`。
+此函数的执行速度显著慢于常规的 `multiply`。如果不需要控制结果精度或希望快速计算，考虑使用 `multiply`。
 
 **语法**
 
@@ -377,11 +421,11 @@ multiplyDecimal(a, b[, result_scale])
 
 - `a` — 第一个值。[Decimal](../data-types/decimal.md)。
 - `b` — 第二个值。[Decimal](../data-types/decimal.md)。
-- `result_scale` — 结果的规模。[Int/UInt](../data-types/int-uint.md)。
+- `result_scale` — 结果的刻度。[Int/UInt](../data-types/int-uint.md)。
 
 **返回值**
 
-- 带有给定规模的乘法结果。[Decimal256](../data-types/decimal.md)。
+- 具有给定刻度的乘积结果。[Decimal256](../data-types/decimal.md)。
 
 **示例**
 
@@ -391,7 +435,7 @@ multiplyDecimal(a, b[, result_scale])
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**与常规乘法的比较：**
+**与常规乘法的区别：**
 
 ```sql
 SELECT toDecimal64(-12.647, 3) * toDecimal32(2.1239, 4);
@@ -434,11 +478,12 @@ Code: 407. DB::Exception: Received from localhost:9000. DB::Exception: Decimal m
 
 ## divideDecimal {#dividedecimal}
 
-将两个十进制数 `a` 和 `b` 相除。结果值类型为 [Decimal256](../data-types/decimal.md)。
 
-结果的规模可以通过 `result_scale` 显式指定。如果未指定 `result_scale`，则假定为输入值的最大规模。
+将两个十进制数 `a` 和 `b` 相除。结果值的类型为 [Decimal256](../data-types/decimal.md)。
 
-此函数的执行速度明显慢于普通的 `divide`。如果不需要控制结果精度和/或需要快速计算，建议使用 `divide`。
+可以通过 `result_scale` 明确指定结果的刻度。如果未指定 `result_scale`，则假设为输入值的最大刻度。
+
+此函数的执行速度显著慢于常规的 `divide`。如果不需要控制结果精度或希望快速计算，考虑使用 `divide`。
 
 **语法**
 
@@ -450,11 +495,11 @@ divideDecimal(a, b[, result_scale])
 
 - `a` — 第一个值：[Decimal](../data-types/decimal.md)。
 - `b` — 第二个值：[Decimal](../data-types/decimal.md)。
-- `result_scale` — 结果的规模：[Int/UInt](../data-types/int-uint.md)。
+- `result_scale` — 结果的刻度：[Int/UInt](../data-types/int-uint.md)。
 
 **返回值**
 
-- 带有给定规模的除法结果。[Decimal256](../data-types/decimal.md)。
+- 具有给定刻度的除法结果。[Decimal256](../data-types/decimal.md)。
 
 **示例**
 
@@ -464,7 +509,7 @@ divideDecimal(a, b[, result_scale])
 └──────────────────────────────────────────────────────────────┘
 ```
 
-**与常规除法的比较：**
+**与常规除法的区别：**
 
 ```sql
 SELECT toDecimal64(-12, 1) / toDecimal32(2.1, 1);
@@ -500,7 +545,7 @@ DB::Exception: Decimal result's scale is less than argument's one: While process
 
 ## byteSwap {#byteswap}
 
-反转一个整数的字节，即更改其 [字节序](https://en.wikipedia.org/wiki/Endianness)。
+反转整数的字节，即改变其 [字节序](https://en.wikipedia.org/wiki/Endianness)。
 
 **语法**
 
@@ -522,15 +567,23 @@ byteSwap(3351772109)
 └──────────────────────┘
 ```
 
-以上示例的计算过程如下：
-1. 将十进制整数转换为其在大端格式下的等效十六进制格式，即 3351772109 -> C7 C7 FB CD （4 字节）
+上述示例可以通过以下步骤得出：
+1. 将十进制整数转换为其在大字节序中的等效十六进制格式，即 3351772109 -> C7 C7 FB CD（4 字节）
 2. 反转字节，即 C7 C7 FB CD -> CD FB C7 C7
-3. 将结果重新转换为假设为大端的整数，即 CD FB C7 C7  -> 3455829959
+3. 假定为大字节序，将结果转换回整数，即 CD FB C7 C7 -> 3455829959
 
-此函数的一个用例是反转 IPv4：
+此函数的一个用例是反转 IPv4 地址：
 
 ```result
 ┌─toIPv4(byteSwap(toUInt32(toIPv4('205.251.199.199'))))─┐
 │ 199.199.251.205                                       │
 └───────────────────────────────────────────────────────┘
 ```
+
+<!-- 
+以下标签内的内容在文档框架构建时将被
+从 system.functions 生成的文档所替换。请勿修改或删除这些标签。
+-->
+
+<!--AUTOGENERATED_START-->
+<!--AUTOGENERATED_END-->

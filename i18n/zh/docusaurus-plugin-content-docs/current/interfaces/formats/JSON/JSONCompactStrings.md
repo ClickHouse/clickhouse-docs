@@ -1,19 +1,23 @@
 ---
-title: 'JSONCompactStrings'
-slug: '/interfaces/formats/JSONCompactStrings'
-keywords: ['JSONCompactStrings']
-input_format: false
-output_format: true
-alias: []
+'alias': []
+'description': 'JSONCompactStrings格式的文档'
+'input_format': false
+'keywords':
+- 'JSONCompactStrings'
+'output_format': true
+'slug': '/interfaces/formats/JSONCompactStrings'
+'title': 'JSONCompactStrings'
 ---
 
-| 输入 | 输出 | 别名 |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+
+
+| 输入   | 输出   | 别名   |
+|--------|--------|--------|
+| ✗      | ✔      |        |
 
 ## 描述 {#description}
 
-`JSONCompactStrings` 格式与 [JSONStrings](./JSONStrings.md) 仅在于数据行作为数组输出，而不是作为对象输出。
+`JSONCompactStrings` 格式与 [JSONStrings](./JSONStrings.md) 的不同之处在于数据行输出为数组，而不是对象。
 
 ## 示例用法 {#example-usage}
 

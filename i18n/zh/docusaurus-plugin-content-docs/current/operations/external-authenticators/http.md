@@ -1,16 +1,18 @@
 ---
-slug: /operations/external-authenticators/http
-title: 'HTTP'
+'description': 'Documentation for Http'
+'slug': '/operations/external-authenticators/http'
+'title': 'HTTP'
 ---
-import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-<SelfManaged/>
+import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
-HTTP 服务器可用于对 ClickHouse 用户进行身份验证。HTTP 身份验证只能作为外部身份验证器用于在 `users.xml` 中或本地访问控制路径中定义的现有用户。目前，仅支持使用 GET 方法的 [Basic](https://datatracker.ietf.org/doc/html/rfc7617) 身份验证方案。
+<SelfManaged />
 
-## HTTP 身份验证服务器定义 {#http-auth-server-definition}
+HTTP 服务器可用于验证 ClickHouse 用户。HTTP 认证只能用作现有用户的外部认证，这些用户在 `users.xml` 中定义或在本地访问控制路径中定义。目前，支持使用 GET 方法的 [Basic](https://datatracker.ietf.org/doc/html/rfc7617) 认证方案。
 
-要定义 HTTP 身份验证服务器，必须向 `config.xml` 中添加 `http_authentication_servers` 部分。
+## HTTP 认证服务器定义 {#http-auth-server-definition}
+
+要定义 HTTP 认证服务器，您必须在 `config.xml` 中添加 `http_authentication_servers` 部分。
 
 **示例**
 ```xml
@@ -25,36 +27,45 @@ HTTP 服务器可用于对 ClickHouse 用户进行身份验证。HTTP 身份验�
           <max_tries>3</max_tries>
           <retry_initial_backoff_ms>50</retry_initial_backoff_ms>
           <retry_max_backoff_ms>1000</retry_max_backoff_ms>
+          <forward_headers>
+            <name>Custom-Auth-Header-1</name>
+            <name>Custom-Auth-Header-2</name>
+          </forward_headers>
+
         </basic_auth_server>
     </http_authentication_servers>
 </clickhouse>
 
 ```
 
-注意，可以在 `http_authentication_servers` 部分中使用不同的名称定义多个 HTTP 服务器。
+注意，您可以在 `http_authentication_servers` 部分内使用不同的名称定义多个 HTTP 服务器。
 
 **参数**
-- `uri` - 用于发起身份验证请求的 URI
+- `uri` - 用于进行认证请求的 URI
 
-与服务器通信时使用的套接字的超时（以毫秒为单位）：
-- `connection_timeout_ms` - 默认：1000 毫秒。
-- `receive_timeout_ms` - 默认：1000 毫秒。
-- `send_timeout_ms` - 默认：1000 毫秒。
+与服务器通信所用的套接字的超时（以毫秒为单位）：
+- `connection_timeout_ms` - 默认: 1000 毫秒。
+- `receive_timeout_ms` - 默认: 1000 毫秒。
+- `send_timeout_ms` - 默认: 1000 毫秒。
 
 重试参数：
-- `max_tries` - 发起身份验证请求的最大尝试次数。默认：3
-- `retry_initial_backoff_ms` - 重试时的初始退避间隔。默认：50 毫秒
-- `retry_max_backoff_ms` - 最大退避间隔。默认：1000 毫秒
+- `max_tries` - 进行认证请求的最大尝试次数。默认: 3
+- `retry_initial_backoff_ms` - 重试时的初始退避时间。默认: 50 毫秒
+- `retry_max_backoff_ms` - 最大退避时间。默认: 1000 毫秒
 
-### 在 `users.xml` 中启用 HTTP 身份验证 {#enabling-http-auth-in-users-xml}
+转发头信息：
 
-为了为用户启用 HTTP 身份验证，请在用户定义中指定 `http_authentication` 部分，而不是 `password` 或类似部分。
+该部分定义了从客户端请求头转发到外部 HTTP 认证器的哪些头信息
+
+### 在 `users.xml` 中启用 HTTP 认证 {#enabling-http-auth-in-users-xml}
+
+为了为用户启用 HTTP 认证，在用户定义中指定 `http_authentication` 部分，而不是 `password` 或类似部分。
 
 参数：
-- `server` - 在主 `config.xml` 文件中配置的 HTTP 身份验证服务器的名称，如前所述。
-- `scheme` - HTTP 身份验证方案。目前仅支持 `Basic`。默认：Basic
+- `server` - 在主 `config.xml` 文件中配置的 HTTP 认证服务器的名称，如前所述。
+- `scheme` - HTTP 认证方案。目前仅支持 `Basic`。默认: Basic
 
-示例（放入 `users.xml`）：
+示例（放入 `users.xml` 中）：
 ```xml
 <clickhouse>
     <!- ... -->
@@ -69,18 +80,18 @@ HTTP 服务器可用于对 ClickHouse 用户进行身份验证。HTTP 身份验�
 ```
 
 :::note
-请注意，HTTP 身份验证不能与任何其他身份验证机制一起使用。存在任何其他部分，如 `password` 和 `http_authentication`，将导致 ClickHouse 关闭。
+请注意，HTTP 认证不能与任何其他认证机制同时使用。与 `http_authentication` 共同存在的任何其他部分如 `password` 将导致 ClickHouse 关闭。
 :::
 
-### 使用 SQL 启用 HTTP 身份验证 {#enabling-http-auth-using-sql}
+### 使用 SQL 启用 HTTP 认证 {#enabling-http-auth-using-sql}
 
-当 ClickHouse 中启用 [SQL 驱动的访问控制和账户管理](/operations/access-rights#access-control-usage) 时，可以使用 SQL 语句创建通过 HTTP 身份验证识别的用户。
+当 ClickHouse 中启用了 [SQL 驱动的访问控制和账户管理](/operations/access-rights#access-control-usage) 时，可以使用 SQL 语句创建通过 HTTP 认证识别的用户。
 
 ```sql
 CREATE USER my_user IDENTIFIED WITH HTTP SERVER 'basic_server' SCHEME 'Basic'
 ```
 
-...或者，`Basic` 是默认的，无需显式方案定义。
+...或者，`Basic` 是默认的，无需显式定义方案
 
 ```sql
 CREATE USER my_user IDENTIFIED WITH HTTP SERVER 'basic_server'
@@ -88,4 +99,4 @@ CREATE USER my_user IDENTIFIED WITH HTTP SERVER 'basic_server'
 
 ### 传递会话设置 {#passing-session-settings}
 
-如果 HTTP 身份验证服务器的响应体为 JSON 格式并包含 `settings` 子对象，ClickHouse 将尝试将其键值对解析为字符串值，并将它们设置为已认证用户当前会话的会话设置。如果解析失败，服务器的响应体将被忽略。
+如果来自 HTTP 认证服务器的响应主体具有 JSON 格式并包含 `settings` 子对象，ClickHouse 将尝试将其键值对解析为字符串值，并将它们作为已认证用户当前会话的会话设置。如果解析失败，将忽略来自服务器的响应主体。

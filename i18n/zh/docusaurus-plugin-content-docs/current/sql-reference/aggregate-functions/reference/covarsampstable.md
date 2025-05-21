@@ -1,14 +1,17 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/covarsampstable
-sidebar_position: 126
-title: 'covarSampStable'
-description: '类似于 covarSamp，但速度较慢，同时提供较低的计算误差。'
+'description': 'Similar to covarSamp but works slower while providing a lower computational
+  error.'
+'sidebar_position': 126
+'slug': '/sql-reference/aggregate-functions/reference/covarsampstable'
+'title': 'covarSampStable'
 ---
+
+
 
 
 # covarSampStable
 
-计算 `Σ((x - x̅)(y - y̅)) / (n - 1)` 的值。类似于 [covarSamp](../reference/covarsamp.md) 但速度较慢，同时提供较低的计算误差。
+计算 `Σ((x - x̅)(y - y̅)) / (n - 1)` 的值。与 [covarSamp](../reference/covarsamp.md) 类似，但计算速度较慢，同时提供较低的计算误差。
 
 **语法**
 
@@ -18,12 +21,12 @@ covarSampStable(x, y)
 
 **参数**
 
-- `x` — 第一个变量。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
-- `y` — 第二个变量。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
+- `x` — 第一个变量。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+- `y` — 第二个变量。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
 
 **返回值**
 
-- `x` 和 `y` 之间的样本协方差。对于 `n <= 1`，返回 `inf`。[Float64](../../data-types/float.md)。
+- `x` 和 `y` 之间的样本协方差。当 `n <= 1` 时，返回 `inf`。[Float64](../../data-types/float.md)。
 
 **示例**
 

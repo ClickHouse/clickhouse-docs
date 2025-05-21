@@ -1,24 +1,30 @@
 ---
-slug: /integrations/qstudio
-sidebar_label: QStudio
-description: QStudio 是一个免费的 SQL 工具。
+'slug': '/integrations/qstudio'
+'sidebar_label': 'QStudio'
+'description': 'QStudio is a free SQL tool.'
+'title': 'Connect QStudio to ClickHouse'
 ---
-import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import qstudio_add_connection from '@site/static/images/integrations/sql-clients/qstudio-add-connection.png';
 import qstudio_running_query from '@site/static/images/integrations/sql-clients/qstudio-running-query.png';
+import Image from '@theme/IdealImage';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-QStudio 是一个免费的 SQL GUI，它允许运行 SQL 脚本、轻松浏览表格、生成图表和导出结果。它在每个操作系统上均可使用，兼容所有数据库。
 
+# 连接 QStudio 到 ClickHouse
 
-# 将 QStudio 连接到 ClickHouse
+<CommunityMaintainedBadge/>
 
-QStudio 使用 JDBC 连接到 ClickHouse。
+QStudio 是一个免费的 SQL GUI，它允许运行 SQL 脚本、轻松浏览表格、图表和导出结果。它可以在每个操作系统上与每个数据库一起使用。
 
-## 1. 收集您的 ClickHouse 详情 {#1-gather-your-clickhouse-details}
+QStudio 通过 JDBC 连接到 ClickHouse。
 
-QStudio 通过 HTTP(S) 使用 JDBC 连接到 ClickHouse；您需要：
+## 1. 收集你的 ClickHouse 详细信息 {#1-gather-your-clickhouse-details}
 
-- 终端节点
+QStudio 使用 HTTP(S) 上的 JDBC 连接到 ClickHouse；你需要：
+
+- 端点
 - 端口号
 - 用户名
 - 密码
@@ -27,35 +33,35 @@ QStudio 通过 HTTP(S) 使用 JDBC 连接到 ClickHouse；您需要：
 
 ## 2. 下载 QStudio {#2-download-qstudio}
 
-QStudio 可在 https://www.timestored.com/qstudio/download/ 上下载。
+QStudio 可在 https://www.timestored.com/qstudio/download/ 下载。
 
 ## 3. 添加数据库 {#3-add-a-database}
 
-- 当您第一次打开 QStudio 时，点击菜单选项 **Server->Add Server** 或工具栏上的添加服务器按钮。
+- 当你第一次打开 QStudio 时，点击菜单选项 **Server->Add Server** 或者工具栏上的添加服务器按钮。
 - 然后设置详细信息：
 
-<img src={qstudio_add_connection} alt="配置新数据库" />
+<Image img={qstudio_add_connection} size="lg" border alt="QStudio 数据库连接配置屏幕显示 ClickHouse 连接设置" />
 
-1.   服务器类型：Clickhouse.com
-2.    关于主机的说明：您必须包含 https://
-    主机： https://abc.def.clickhouse.cloud
-    端口： 8443
-3.  用户名：default
-    密码： `XXXXXXXXXXX`
- 4. 点击添加
+1.  服务器类型: Clickhouse.com
+2.  对于主机，你必须包含 https://
+    主机: https://abc.def.clickhouse.cloud
+    端口: 8443
+3.  用户名: default
+    密码: `XXXXXXXXXXX`
+4.  点击添加
 
-如果 QStudio 检测到您没有安装 ClickHouse JDBC 驱动程序，它将提供下载选项：
+如果 QStudio 检测到你没有安装 ClickHouse JDBC 驱动，它将为你提供下载。
 
 ## 4. 查询 ClickHouse {#4-query-clickhouse}
 
-- 打开查询编辑器并运行查询。您可以通过以下方式运行查询 
+- 打开查询编辑器并运行查询。你可以通过以下方式运行查询：
 - Ctrl + e - 运行高亮文本
 - Ctrl + Enter - 运行当前行
 
 - 示例查询：
 
-<img src={qstudio_running_query} alt="示例查询" />
+<Image img={qstudio_running_query} size="lg" border alt="QStudio 界面显示针对 ClickHouse 数据库的示例 SQL 查询执行" />
 
 ## 后续步骤 {#next-steps}
 
-请参阅 [QStudio](https://www.timestored.com/qstudio) 以了解 QStudio 的功能，并查看 [ClickHouse 文档](https://clickhouse.com/docs) 以了解 ClickHouse 的功能。
+查看 [QStudio](https://www.timestored.com/qstudio) 以了解 QStudio 的功能，查看 [ClickHouse 文档](https://clickhouse.com/docs) 以了解 ClickHouse 的功能。

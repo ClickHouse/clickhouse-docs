@@ -1,49 +1,53 @@
 ---
-slug: /sql-reference/functions/time-series-functions
-sidebar_position: 172
-sidebar_label: 时间序列
+'description': '时间序列函数文档'
+'sidebar_label': '时间序列'
+'sidebar_position': 172
+'slug': '/sql-reference/functions/time-series-functions'
+'title': '时间序列函数'
 ---
+
+
 
 
 # 时间序列函数
 
-以下函数用于序列数据分析。
+以下函数用于系列数据分析。
 
 ## seriesOutliersDetectTukey {#seriesoutliersdetecttukey}
 
-使用 [Tukey Fences](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences) 检测序列数据中的异常值。
+使用[Tukey Fences](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences)检测系列数据中的异常值。
 
 **语法**
 
-``` sql
+```sql
 seriesOutliersDetectTukey(series);
 seriesOutliersDetectTukey(series, min_percentile, max_percentile, K);
 ```
 
 **参数**
 
-- `series` - 数值类型的数组。
-- `min_percentile` - 用于计算四分位间距 [(IQR)](https://en.wikipedia.org/wiki/Interquartile_range) 的最小百分位数。值的范围必须在 [0.02,0.98] 之间。默认值为 0.25。
-- `max_percentile` - 用于计算四分位间距 (IQR) 的最大百分位数。值的范围必须在 [0.02,0.98] 之间。默认值为 0.75。
-- `K` - 用于检测轻度或重度异常值的非负常数值。默认值为 1.5。
+- `series` - 数值的数组。
+- `min_percentile` - 用于计算四分位差的最小百分位数 [（IQR）](https://en.wikipedia.org/wiki/Interquartile_range)。该值必须在 [0.02,0.98] 范围内。默认值为 0.25。
+- `max_percentile` - 用于计算四分位差的最大百分位数。该值必须在 [0.02,0.98] 范围内。默认值为 0.75。
+- `K` - 用于检测温和或更强异常值的非负常量值。默认值为 1.5。
 
-在 `series` 中至少需要四个数据点以检测异常值。
+在 `series` 中至少需要四个数据点才能检测到异常值。
 
 **返回值**
 
-- 返回一个长度与输入数组相同的数组，其中每个值表示相应元素在序列中可能异常的得分。非零得分表示可能的异常。 [数组](../data-types/array.md)。
+- 返回一个与输入数组长度相同的数组，其中每个值表示相应元素在系列中的可能异常得分。非零得分表示可能的异常。 [数组](../data-types/array.md)。
 
 **示例**
 
 查询：
 
-``` sql
+```sql
 SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4, 5, 12, 45, 12, 3, 3, 4, 5, 6]) AS print_0;
 ```
 
 结果：
 
-``` text
+```text
 ┌───────────print_0─────────────────┐
 │[0,0,0,0,0,0,0,0,0,27,0,0,0,0,0,0] │
 └───────────────────────────────────┘
@@ -51,13 +55,13 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4, 5, 12, 45, 12, 3, 3, 4,
 
 查询：
 
-``` sql
+```sql
 SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40, 3, 4, 5, 6], 0.2, 0.8, 1.5) AS print_0;
 ```
 
 结果：
 
-``` text
+```text
 ┌─print_0──────────────────────────────┐
 │ [0,0,0,0,0,0,0,0,0,19.5,0,0,0,0,0,0] │
 └──────────────────────────────────────┘
@@ -65,46 +69,45 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40,
 
 ## seriesPeriodDetectFFT {#seriesperioddetectfft}
 
-使用 FFT 找到给定序列数据的周期。
-FFT - [快速傅里叶变换](https://en.wikipedia.org/wiki/Fast_Fourier_transform)
+使用 FFT - [快速傅里叶变换](https://en.wikipedia.org/wiki/Fast_Fourier_transform) 查找给定系列数据的周期。
 
 **语法**
 
-``` sql
+```sql
 seriesPeriodDetectFFT(series);
 ```
 
 **参数**
 
-- `series` - 数值类型的数组。
+- `series` - 数值的数组
 
 **返回值**
 
-- 一个实值，等于序列数据的周期。当数据点数量少于四个时返回 NaN。 [Float64](../data-types/float.md)。
+- 返回一个实数值，等于系列数据的周期。当数据点的数量少于四个时，返回 NaN。 [Float64](../data-types/float.md)。
 
 **示例**
 
 查询：
 
-``` sql
+```sql
 SELECT seriesPeriodDetectFFT([1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6]) AS print_0;
 ```
 
 结果：
 
-``` text
+```text
 ┌───────────print_0──────┐
 │                      3 │
 └────────────────────────┘
 ```
 
-``` sql
+```sql
 SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS print_0;
 ```
 
 结果：
 
-``` text
+```text
 ┌─print_0─┐
 │       6 │
 └─────────┘
@@ -112,36 +115,36 @@ SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS pr
 
 ## seriesDecomposeSTL {#seriesdecomposestl}
 
-使用 STL [(基于 Loess 的季节性-趋势分解程序)](https://www.wessa.net/download/stl.pdf) 对序列数据进行分解为季节、趋势和残差组件。
+使用 STL [（基于 Loess 的季节-趋势分解程序）](https://www.wessa.net/download/stl.pdf)将系列数据分解为季节、趋势和残差成分。
 
 **语法**
 
-``` sql
+```sql
 seriesDecomposeSTL(series, period);
 ```
 
 **参数**
 
-- `series` - 数值类型的数组。
-- `period` - 正整数。
+- `series` - 数值的数组
+- `period` - 正整数
 
-`series` 中的数据点数量应至少是 `period` 值的两倍。
+`series` 中的数据点数量应至少为 `period` 值的两倍。
 
 **返回值**
 
-- 返回一个包含四个数组的数组，其中第一个数组包括季节性组件，第二个数组是趋势，第三个数组是残差组件，第四个数组是基线（季节性 + 趋势）组件。 [数组](../data-types/array.md)。
+- 返回一个包含四个数组的数组，其中第一个数组包含季节成分，第二个数组 - 趋势，第三个数组 - 残差成分，第四个数组 - 基线（季节 + 趋势）成分。 [数组](../data-types/array.md)。
 
 **示例**
 
 查询：
 
-``` sql
+```sql
 SELECT seriesDecomposeSTL([10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34], 3) AS print_0;
 ```
 
 结果：
 
-``` text
+```text
 ┌───────────print_0──────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ [[
         -13.529999, -3.1799996, 16.71,      -13.53,     -3.1799996, 16.71,      -13.53,     -3.1799996,

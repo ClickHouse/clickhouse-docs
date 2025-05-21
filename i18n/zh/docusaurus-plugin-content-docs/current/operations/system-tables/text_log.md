@@ -1,26 +1,31 @@
 ---
-description: '系统表，包含日志条目。'
-slug: /operations/system-tables/text_log
-title: 'system.text_log'
-keywords: ['系统表', 'text_log']
+'description': 'System table containing logging entries.'
+'keywords':
+- 'system table'
+- 'text_log'
+'slug': '/operations/system-tables/text_log'
+'title': 'system.text_log'
 ---
 
-import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+
+
+# system.text_log
 
 <SystemTableCloud/>
 
-包含日志条目。写入此表的日志级别可以通过 `text_log.level` 服务器设置进行限制。
+包含日志条目。可以通过 `text_log.level` 服务器设置限制写入此表的日志级别。
 
 列：
 
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器的主机名。
-- `event_date` (Date) — 条目的日期。
-- `event_time` (DateTime) — 条目的时间。
-- `event_time_microseconds` (DateTime64) — 带有微秒精度的条目时间。
-- `microseconds` (UInt32) — 条目的微秒数。
+- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器主机名。
+- `event_date` (Date) — 日志条目的日期。
+- `event_time` (DateTime) — 日志条目的时间。
+- `event_time_microseconds` (DateTime64) — 日志条目的时间，精确到微秒。
+- `microseconds` (UInt32) — 日志条目的微秒。
 - `thread_name` (String) — 进行日志记录的线程名称。
 - `thread_id` (UInt64) — 操作系统线程 ID。
-- `level` (`Enum8`) — 条目级别。可能的值：
+- `level` (`Enum8`) — 日志条目级别。可能的值：
     - `1` 或 `'Fatal'`。
     - `2` 或 `'Critical'`。
     - `3` 或 `'Error'`。
@@ -30,11 +35,11 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
     - `7` 或 `'Debug'`。
     - `8` 或 `'Trace'`。
 - `query_id` (String) — 查询的 ID。
-- `logger_name` (LowCardinality(String)) — 记录器的名称（例如 `DDLWorker`）。
-- `message` (String) — 消息本身。
-- `revision` (UInt32) — ClickHouse 版本号。
+- `logger_name` (LowCardinality(String)) — 日志记录器的名称（例如 `DDLWorker`）。
+- `message` (String) — 消息内容。
+- `revision` (UInt32) — ClickHouse 版本。
 - `source_file` (LowCardinality(String)) — 进行日志记录的源文件。
-- `source_line` (UInt64) — 进行日志记录的源行。
+- `source_line` (UInt64) — 进行日志记录的源代码行。
 - `message_format_string` (LowCardinality(String)) — 用于格式化消息的格式字符串。
 - `value1` (String) - 用于格式化消息的参数 1。
 - `value2` (String) - 用于格式化消息的参数 2。
@@ -49,12 +54,12 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 **示例**
 
-``` sql
+```sql
 SELECT * FROM system.text_log LIMIT 1 \G
 ```
 
-``` text
-行 1:
+```text
+Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2020-09-10
@@ -66,11 +71,11 @@ thread_id:               564917
 level:                   Information
 query_id:
 logger_name:             DNSCacheUpdater
-message:                 更新周期 15 秒
+message:                 Update period 15 seconds
 revision:                54440
 source_file:             /ClickHouse/src/Interpreters/DNSCacheUpdater.cpp; void DB::DNSCacheUpdater::start()
 source_line:             45
-message_format_string:   更新周期 {} 秒
+message_format_string:   Update period {} seconds
 value1:                  15
 value2:                  
 value3:                  

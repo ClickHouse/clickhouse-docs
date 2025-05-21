@@ -1,11 +1,15 @@
 ---
-title: TSKV
-slug: /interfaces/formats/TSKV
-keywords: ['TSKV']
-input_format: true
-output_format: true
-alias: []
+'alias': []
+'description': 'TSKV 格式的文档'
+'input_format': true
+'keywords':
+- 'TSKV'
+'output_format': true
+'slug': '/interfaces/formats/TSKV'
+'title': 'TSKV'
 ---
+
+
 
 | 输入 | 输出 | 别名 |
 |-------|--------|-------|
@@ -13,7 +17,7 @@ alias: []
 
 ## 描述 {#description}
 
-与 [`TabSeparated`](./TabSeparated.md) 格式类似，但是以 `name=value` 格式输出值。 
+类似于 [`TabSeparated`](./TabSeparated.md) 格式，但以 `name=value` 格式输出值。 
 名称的转义方式与 [`TabSeparated`](./TabSeparated.md) 格式相同，`=` 符号也会被转义。
 
 ```text
@@ -30,29 +34,29 @@ SearchPhrase=baku       count()=1000
 ```
 
 
-```sql title="查询"
+```sql title="Query"
 SELECT * FROM t_null FORMAT TSKV
 ```
 
-```text title="响应"
+```text title="Response"
 x=1    y=\N
 ```
 
 :::note
-当有大量小列时，这种格式效率低下，通常没有使用它的理由。 
-尽管如此，就效率而言，它并不比 [`JSONEachRow`](../JSON/JSONEachRow.md) 格式更差。
+当存在大量小列时，这种格式效率低下，通常没有理由使用它。 
+尽管如此，就效率而言，它并不比 [`JSONEachRow`](../JSON/JSONEachRow.md) 格式差。
 :::
 
-在解析时，支持不同列值的任何顺序。 
-可以省略某些值，因为它们被视为等于其默认值。
+在解析时，不同列的值支持任何顺序。 
+某些值可以省略，因为它们被视为等于其默认值。
 在这种情况下，零和空行被用作默认值。 
-表中可以指定的复杂值不支持作为默认值。
+复杂值不能作为默认值在表中指定。
 
-解析允许添加一个额外的字段 `tskv`，不带等号或值。此字段将被忽略。
+解析允许添加一个额外的字段 `tskv`，不带等号或值。 该字段将被忽略。
 
-在导入时，如果设置 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 为 `1`，则会跳过未知名称的列。
+在导入过程中，如果设置 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 为 `1`，则将跳过未知名称的列。
 
-[NULL](/sql-reference/syntax.md) 格式为 `\N`。
+[NULL](/sql-reference/syntax.md) 被格式化为 `\N`。
 
 ## 示例用法 {#example-usage}
 

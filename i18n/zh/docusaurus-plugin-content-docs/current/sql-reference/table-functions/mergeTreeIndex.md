@@ -1,35 +1,41 @@
 ---
-slug: /sql-reference/table-functions/mergeTreeIndex
-sidebar_position: 77
-sidebar_label: mergeTreeIndex
-title: "mergeTreeIndex"
-description: "表示 MergeTree 表的索引和标记文件的内容。可用于内部审查。"
+'description': '表示MergeTree表的索引和标记文件的内容。可用于内省。'
+'sidebar_label': 'MergeTree索引'
+'sidebar_position': 77
+'slug': '/sql-reference/table-functions/mergeTreeIndex'
+'title': 'mergeTreeIndex'
 ---
+
+
 
 
 # mergeTreeIndex 表函数
 
-表示 MergeTree 表的索引和标记文件的内容。可用于内部审查。
+表示 MergeTree 表的索引和标记文件的内容。可用于自省。
 
-``` sql
+## 语法 {#syntax}
+
+```sql
 mergeTreeIndex(database, table, [with_marks = true])
 ```
 
-**参数**
+## 参数 {#arguments}
 
-- `database`- 要读取索引和标记的数据库名称。
-- `table`- 要读取索引和标记的表名称。
-- `with_marks` - 是否将包含标记的列纳入结果。
+| 参数         | 描述                                            |
+|--------------|---------------------------------------------------|
+| `database`   | 读取索引和标记的数据库名称。                       |
+| `table`      | 读取索引和标记的表名称。                         |
+| `with_marks` | 是否将带有标记的列包含在结果中。                  |
 
-**返回值**
+## 返回值 {#returned_value}
 
-一个包含源表主键值的列的表对象，以及（如果启用）源表数据分片中所有可能文件的标记值的列和虚拟列：
+一个表对象，包含源表的主键列的值、所有可能的数据部分文件的标记值列（如果启用），以及虚拟列：
 
-- `part_name` - 数据分片的名称。
-- `mark_number` - 当前数据分片中的标记编号。
-- `rows_in_granule` - 当前粒度中的行数。
+- `part_name` - 数据部分的名称。
+- `mark_number` - 当前数据部分中的标记编号。
+- `rows_in_granule` - 当前颗粒中的行数。
 
-如果列在数据分片中缺失，或者其某个子流的标记未被写入（例如，在压缩分片中），标记列可能包含 `(NULL, NULL)` 值。
+当数据部分中缺少列或者其某个子流的标记未被写入（例如，在紧凑部分中），标记列可能包含 `(NULL, NULL)` 值。
 
 ## 使用示例 {#usage-example}
 

@@ -1,13 +1,17 @@
 ---
-slug: /sql-reference/window-functions/first_value
-sidebar_label: 'first_value'
-sidebar_position: 3
+'description': 'Documentation for the first_value window function'
+'sidebar_label': 'first_value'
+'sidebar_position': 3
+'slug': '/sql-reference/window-functions/first_value'
+'title': 'first_value'
 ---
+
+
 
 
 # first_value
 
-返回在其有序范围内评估的第一个值。默认情况下，NULL参数会被跳过，但可以使用 `RESPECT NULLS` 修饰符来覆盖此行为。
+返回其有序范围内评估的第一个值。默认情况下，会跳过 NULL 参数，但可以使用 `RESPECT NULLS` 修饰符来覆盖此行为。
 
 **语法**
 
@@ -19,16 +23,16 @@ FROM table_name
 WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-别名: `any`.
+别名：`any`。
 
 :::note
-在 `first_value(column_name)` 后使用可选修饰符 `RESPECT NULLS` 将确保 `NULL` 参数不被跳过。
+在 `first_value(column_name)` 后使用可选的修饰符 `RESPECT NULLS` 将确保不跳过 `NULL` 参数。
 有关更多信息，请参见 [NULL 处理](../aggregate-functions/index.md/#null-processing)。
 
-别名: `firstValueRespectNulls`
+别名：`firstValueRespectNulls`
 :::
 
-有关窗口函数语法的更多详细信息，请参见: [窗口函数 - 语法](./index.md/#syntax)。
+有关窗口函数语法的更多细节，请参见：[窗口函数 - 语法](./index.md/#syntax)。
 
 **返回值**
 
@@ -36,9 +40,9 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 
 **示例**
 
-在这个例子中，`first_value` 函数用于从虚构的英超联赛足球运动员薪资数据集中查找薪水最高的足球运动员。
+在此示例中，`first_value` 函数用于从虚构的英超联赛足球运动员薪资数据集中找到薪资最高的足球运动员。
 
-查询:
+查询：
 
 ```sql
 DROP TABLE IF EXISTS salaries;
@@ -67,7 +71,7 @@ SELECT player, salary,
 FROM salaries;
 ```
 
-结果:
+结果：
 
 ```response
    ┌─player──────────┬─salary─┬─highest_paid_player─┐

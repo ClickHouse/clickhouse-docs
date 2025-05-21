@@ -1,42 +1,46 @@
 ---
-title: 'ParquetMetadata'
-slug: /interfaces/formats/ParquetMetadata
-keywords: ['ParquetMetadata']
+'description': 'ParquetMetadata 格式的文档'
+'keywords':
+- 'ParquetMetadata'
+'slug': '/interfaces/formats/ParquetMetadata'
+'title': 'ParquetMetadata'
 ---
+
+
 
 ## 描述 {#description}
 
-用于读取 Parquet 文件元数据的特殊格式 (https://parquet.apache.org/docs/file-format/metadata/)。它总是输出一行，具有以下结构/内容：
+读取 Parquet 文件元数据的特殊格式 (https://parquet.apache.org/docs/file-format/metadata/)。它始终输出一行，结构/内容如下：
 - `num_columns` - 列的数量
 - `num_rows` - 行的总数
 - `num_row_groups` - 行组的总数
-- `format_version` - parquet 格式版本，总是 1.0 或 2.6
-- `total_uncompressed_size` - 数据的总解压字节大小，计算为所有行组的 total_byte_size 的总和
-- `total_compressed_size` - 数据的总压缩字节大小，计算为所有行组的 total_compressed_size 的总和
+- `format_version` - parquet 格式版本，始终为 1.0 或 2.6
+- `total_uncompressed_size` - 数据的总未压缩字节大小，计算为所有行组的 total_byte_size 之和
+- `total_compressed_size` - 数据的总压缩字节大小，计算为所有行组的 total_compressed_size 之和
 - `columns` - 列元数据的列表，具有以下结构：
-    - `name` - 列名称
-    - `path` - 列路径（对于嵌套列，与名称不同）
+    - `name` - 列名
+    - `path` - 列路径（对于嵌套列与列名不同）
     - `max_definition_level` - 最大定义级别
     - `max_repetition_level` - 最大重复级别
     - `physical_type` - 列的物理类型
     - `logical_type` - 列的逻辑类型
-    - `compression` - 用于该列的压缩方式
-    - `total_uncompressed_size` - 列的总解压字节大小，计算为所有行组中的列的 total_uncompressed_size 的总和
-    - `total_compressed_size` - 列的总压缩字节大小，计算为所有行组中的列的 total_compressed_size 的总和
+    - `compression` - 用于此列的压缩类型
+    - `total_uncompressed_size` - 列的总未压缩字节大小，计算为所有行组中该列的 total_uncompressed_size 之和
+    - `total_compressed_size` - 列的总压缩字节大小，计算为所有行组中该列的 total_compressed_size 之和
     - `space_saved` - 通过压缩节省的空间百分比，计算为 (1 - total_compressed_size/total_uncompressed_size)。
-    - `encodings` - 用于该列的编码列表
+    - `encodings` - 此列使用的编码列表
 - `row_groups` - 行组元数据的列表，具有以下结构：
     - `num_columns` - 行组中的列数
     - `num_rows` - 行组中的行数
-    - `total_uncompressed_size` - 行组的总解压字节大小
+    - `total_uncompressed_size` - 行组的总未压缩字节大小
     - `total_compressed_size` - 行组的总压缩字节大小
     - `columns` - 列块元数据的列表，具有以下结构：
-        - `name` - 列名称
+        - `name` - 列名
         - `path` - 列路径
         - `total_compressed_size` - 列的总压缩字节大小
-        - `total_uncompressed_size` - 行组的总解压字节大小
+        - `total_uncompressed_size` - 行组的总未压缩字节大小
         - `have_statistics` - 布尔标志，指示列块元数据是否包含列统计信息
-        - `statistics` - 列块统计信息（如果 have_statistics = false，所有字段为 NULL），具有以下结构：
+        - `statistics` - 列块统计信息（如果 have_statistics = false，则所有字段为 NULL），具有以下结构：
             - `num_values` - 列块中非空值的数量
             - `null_count` - 列块中 NULL 值的数量
             - `distinct_count` - 列块中不同值的数量

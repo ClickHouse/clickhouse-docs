@@ -1,27 +1,29 @@
 ---
-description: 'YouTube 视频的 dislike 汇总。'
-slug: /getting-started/example-datasets/youtube-dislikes
-sidebar_label: YouTube Dislikes
-title: 'YouTube 不喜欢数据集'
+'description': 'A collection is dislikes of YouTube videos.'
+'sidebar_label': 'YouTube Dislikes'
+'slug': '/getting-started/example-datasets/youtube-dislikes'
+'title': 'YouTube dataset of dislikes'
 ---
 
-在 2021 年 11 月，YouTube 从所有视频中移除了公开的 ***dislike*** 计数。虽然创作者仍然可以看到不喜欢的数量，但观众只能看到视频获得的 ***likes*** 数量。
+
+
+在2021年11月，YouTube 从其所有视频中移除了公开的 ***不喜欢*** 数量。虽然创作者仍然可以看到不喜欢的数量，但观众只能看到视频收到的 ***喜欢*** 数量。
 
 :::important
-该数据集包含超过 45.5 亿条记录，因此在复制和粘贴下面的命令时要小心，除非您的资源能够处理那种规模。下面的命令是在 [ClickHouse Cloud](https://clickhouse.cloud) 的 **Production** 实例上执行的。
+该数据集包含超过 45.5 亿条记录，因此在复制和粘贴下面的命令时要小心，除非您的资源能够处理这种规模。下面的命令是在 [ClickHouse Cloud](https://clickhouse.cloud) 的 **生产** 实例上执行的。
 :::
 
-数据以 JSON 格式存储，可以从 [archive.org](https://archive.org/download/dislikes_youtube_2021_12_video_json_files) 下载。我们还在 S3 中提供了相同的数据，以便可以更有效地下载到 ClickHouse Cloud 实例中。
+数据采用 JSON 格式，您可以从 [archive.org](https://archive.org/download/dislikes_youtube_2021_12_video_json_files) 下载。我们已经将相同的数据放在 S3 上，以便可以更高效地下载到 ClickHouse Cloud 实例中。
 
-以下是创建 ClickHouse Cloud 中的表并插入数据的步骤。
+以下是在 ClickHouse Cloud 中创建表并插入数据的步骤。
 
 :::note
-以下步骤同样可以在本地安装的 ClickHouse上轻松运行。唯一的变化是使用 `s3` 函数，而不是 `s3cluster` （除非您已经配置了集群 - 在这种情况下，将 `default` 更改为您的集群名称）。
+下面的步骤同样可以很容易地在本地安装的 ClickHouse 上工作。唯一的变化是使用 `s3` 函数而不是 `s3cluster`（除非您配置了集群 - 在这种情况下，将 `default` 更改为您的集群名称）。
 :::
 
-## 逐步说明 {#step-by-step-instructions}
+## 步骤说明 {#step-by-step-instructions}
 
-1. 让我们看看数据的样子。`s3cluster` 表函数返回一个表，因此我们可以 `DESCRIBE` 结果：
+1. 让我们看看数据是什么样的。`s3cluster` 表函数返回一个表，因此我们可以 `DESCRIBE` 结果：
 
 ```sql
 DESCRIBE s3(
@@ -58,7 +60,7 @@ ClickHouse 从 JSON 文件中推断出以下模式：
 └─────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-2. 根据推断出的模式，我们清理了数据类型并添加了一个主键。定义以下表：
+2. 根据推断的模式，我们清理了数据类型并添加了主键。定义以下表：
 
 ```sql
 CREATE TABLE youtube
@@ -89,10 +91,10 @@ ENGINE = MergeTree
 ORDER BY (uploader, upload_date)
 ```
 
-3. 以下命令从 S3 文件流式传输记录到 `youtube` 表中。
+3. 以下命令将 S3 文件中的记录流式传输到 `youtube` 表中。
 
 :::important
-这插入大量数据 - 46.5 亿行。如果您不想要整个数据集，只需添加 `LIMIT` 子句和所需的行数。
+这插入了大量数据 - 46.5 亿行。如果您不想要整个数据集，只需添加一个 `LIMIT` 子句来指定所需的行数。
 :::
 
 ```sql
@@ -126,13 +128,13 @@ FROM s3(
 )
 ```
 
-关于我们的 `INSERT` 命令的几点评论：
+关于我们的 `INSERT` 命令的一些注释：
 
-- `parseDateTimeBestEffortUSOrZero` 函数在输入的日期字段可能不符合正确格式时非常有用。如果 `fetch_date` 没有被正确解析，则将其设置为 `0`
-- `upload_date` 列包含有效日期，但也包含像 "4 hours ago" 这样的字符串 - 这显然不是有效日期。我们决定将原始值存储在 `upload_date_str` 中，并尝试使用 `toDate(parseDateTimeBestEffortUSOrZero(upload_date::String))` 进行解析。如果解析失败，我们将得到 `0`
-- 我们使用 `ifNull` 以避免在表中出现 `NULL` 值。如果传入的值为 `NULL`，`ifNull` 函数将值设置为空字符串
+- `parseDateTimeBestEffortUSOrZero` 函数在输入的日期字段可能格式不正确时非常有用。如果 `fetch_date` 没有正确解析，它将被设置为 `0`
+- `upload_date` 列包含有效日期，但也包含字符串，如 "4 hours ago" - 这显然不是一个有效的日期。我们决定在 `upload_date_str` 中存储原始值，并尝试使用 `toDate(parseDateTimeBestEffortUSOrZero(upload_date::String))` 进行解析。如果解析失败，我们将得到 `0`
+- 我们使用 `ifNull` 来避免在表中出现 `NULL` 值。如果输入值为 `NULL`，`ifNull` 函数将值设置为空字符串
 
-4. 在 ClickHouse Cloud 的 SQL 控制台中打开一个新标签页（或一个新的 `clickhouse-client` 窗口），并观察计数的增加。插入 45.6 亿行数据需要一些时间，具体取决于服务器资源。 （如果不调整任何设置，大约需要 4.5 小时。）
+4. 在 ClickHouse Cloud 的 SQL 控制台中打开一个新标签（或新的 `clickhouse-client` 窗口），并观察计数的增加。插入 45.6 亿行数据将需要一段时间，这取决于您的服务器资源。（在未进行任何设置调整的情况下，它大约需要 4.5 小时。）
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -145,7 +147,7 @@ FROM youtube
 └─────────────────────────────────┘
 ```
 
-5. 数据插入后，可以继续计算您最喜欢的视频或频道的不喜欢次数。让我们看看 ClickHouse 上传了多少视频：
+5. 数据插入后，您可以计算最喜欢的视频或频道的不喜欢数量。让我们看看 ClickHouse 上传了多少个视频：
 
 ```sql
 SELECT count()
@@ -162,10 +164,10 @@ WHERE uploader = 'ClickHouse';
 ```
 
 :::note
-上述查询运行得如此迅速，是因为我们选择 `uploader` 作为主键的第一列 - 因此只需处理 237k 行。
+上面的查询运行得很快，因为我们选择 `uploader` 作为主键的第一列 - 因此它只需处理 237k 行。
 :::
 
-6. 让我们看看 ClickHouse 视频的喜欢和不喜欢情况：
+6. 让我们看看 ClickHouse 视频的喜欢和不喜欢：
 
 ```sql
 SELECT
@@ -192,7 +194,7 @@ ORDER BY dislike_count DESC;
 84 rows in set. Elapsed: 0.013 sec. Processed 155.65 thousand rows, 16.94 MB (11.96 million rows/s., 1.30 GB/s.)
 ```
 
-7. 以下是标题或描述字段中包含 **ClickHouse** 的视频搜索：
+7. 这是一个搜索 `title` 或 `description` 字段中包含 **ClickHouse** 的视频的查询：
 
 ```sql
 SELECT
@@ -208,7 +210,7 @@ ORDER BY
     view_count DESC;
 ```
 
-这个查询需要处理每一行，并解析两个字符串列。尽管如此，我们依然以 415 万行/秒的速度获得了不错的性能：
+此查询需要处理每一行，并且还要解析两个字符串列。即便如此，我们以每秒 4.15M 行的速度获得了不错的性能：
 
 ```response
 1174 rows in set. Elapsed: 1099.368 sec. Processed 4.56 billion rows, 1.98 TB (4.15 million rows/s., 1.80 GB/s.)
@@ -225,9 +227,9 @@ ORDER BY
 
 ## 问题 {#questions}
 
-### 如果某人禁用评论，是否会降低有人实际点击喜欢或不喜欢的机会？ {#if-someone-disables-comments-does-it-lower-the-chance-someone-will-actually-click-like-or-dislike}
+### 如果某人禁用评论，是否降低了人们实际点击喜欢或不喜欢的机会？ {#if-someone-disables-comments-does-it-lower-the-chance-someone-will-actually-click-like-or-dislike}
 
-当评论被禁用时，人们是否更倾向于通过喜欢或不喜欢来表达自己对视频的看法？
+当评论被禁用时，人们是否更有可能通过喜欢或不喜欢来表达他们对视频的感受？
 
 ```sql
 SELECT
@@ -261,8 +263,8 @@ ORDER BY
 │ < 100.00 thousand │ false               │  0.01293351460515323 │
 │ < 1.00 billion    │ false               │ 0.004761811192464957 │
 │ < 1.00 million    │ false               │ 0.010472604018980551 │
-│ < 10.00 million   │ false               │ 0.00788902538420125 │
-│ < 100.00 million  │ false               │ 0.00579152804250582 │
+│ < 10.00 million   │ false               │  0.00788902538420125 │
+│ < 100.00 million  │ false               │  0.00579152804250582 │
 │ < 10.00           │ true                │  0.09819517478134059 │
 │ < 100.00          │ true                │  0.07403784478585775 │
 │ < 1.00 thousand   │ true                │  0.03846294910067627 │
@@ -278,9 +280,10 @@ ORDER BY
 22 rows in set. Elapsed: 8.460 sec. Processed 4.56 billion rows, 77.48 GB (538.73 million rows/s., 9.16 GB/s.)
 ```
 
-启用评论似乎与更高的参与率相关。
+启用评论似乎与更高的参与率相关联。
 
-### 视频数量随时间的变化 - 显著事件？ {#how-does-the-number-of-videos-change-over-time---notable-events}
+
+### 视频数量如何随时间变化 - 显著事件？ {#how-does-the-number-of-videos-change-over-time---notable-events}
 
 ```sql
 SELECT
@@ -316,11 +319,11 @@ ORDER BY month ASC;
 │ 2006-10-01 │    404873 │     897590 │  27357846117 │
 ```
 
-显著的上传者峰值出现在 [新冠疫情](https://www.theverge.com/2020/3/27/21197642/youtube-with-me-style-videos-views-coronavirus-cook-workout-study-home-beauty) 周围。
+在 COVID 期间出现的上传者激增 [是显而易见的](https://www.theverge.com/2020/3/27/21197642/youtube-with-me-style-videos-views-coronavirus-cook-workout-study-home-beauty)。
 
-### 随时间推移字幕的增加及其时间 {#more-subtitles-over-time-and-when}
+### 随时间变化的更多字幕以及何时变化 {#more-subtitles-over-time-and-when}
 
-随着语音识别技术的进步，创建视频字幕变得比以往更容易，YouTube 在 2009 年底添加了自动字幕功能 - 那时是否出现了跳跃？
+随着语音识别技术的进步，创建视频字幕比以往任何时候都容易，YouTube 在 2009 年底添加了自动字幕 - 当时是一个跳跃吗？
 
 ```sql
 SELECT
@@ -349,11 +352,13 @@ ORDER BY month ASC;
 │ 2015-11-01 │ 0.31125409712077234 │   0.0055053878526505895 │
 │ 2015-12-01 │  0.3190967954651779 │    0.007842698344405541 │
 │ 2016-01-01 │ 0.32636021432496176 │    0.007263418859783877 │
+
 ```
 
-数据结果显示出 2009 年的跳跃。显然在那时，YouTube 移除了社区字幕功能，允许用户为其他人的视频上传字幕。这促成了一场非常成功的运动，促使创作者为听障人士添加字幕。
+数据显示在 2009 年有一个激增。当时 YouTube 正在取消其社区字幕功能，该功能允许用户为他人的视频上传字幕。
+这促使了一场非常成功的运动，要求创作者为听障人士添加字幕。
 
-### 随时间推移的顶级上传者 {#top-uploaders-over-time}
+### 随时间变化的顶级上传者 {#top-uploaders-over-time}
 
 ```sql
 WITH uploaders AS
@@ -396,7 +401,7 @@ ORDER BY
 │ 2008-09-01 │ WWE                        │     3717092 │   0.07872802579349912 │
 ```
 
-### 随着观看次数增加，喜欢比例变化如何？ {#how-do-like-ratio-changes-as-views-go-up}
+### 随着观看次数增加，喜欢比例是如何变化的？ {#how-do-like-ratio-changes-as-views-go-up}
 
 ```sql
 SELECT
@@ -444,7 +449,7 @@ ORDER BY
 └───────────────────┴─────────────────────┴────────────┘
 ```
 
-### 观看次数的分布情况如何？ {#how-are-views-distributed}
+### 观看次数如何分布？ {#how-are-views-distributed}
 
 ```sql
 SELECT

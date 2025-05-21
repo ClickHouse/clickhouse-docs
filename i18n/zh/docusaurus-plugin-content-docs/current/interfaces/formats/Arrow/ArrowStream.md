@@ -1,15 +1,19 @@
 ---
-title: ArrowStream
-slug: /interfaces/formats/ArrowStream
-keywords: [ArrowStream]
-input_format: true
-output_format: true
-alias: []
+'alias': []
+'description': 'ArrowStream格式文档'
+'input_format': true
+'keywords':
+- 'ArrowStream'
+'output_format': true
+'slug': '/interfaces/formats/ArrowStream'
+'title': 'ArrowStream'
 ---
 
-| 输入  | 输出  | 别名  |
-|-------|--------|-------|
-| ✔     | ✔      |       |
+
+
+| 输入 | 输出 | 别名 |
+|------|------|------|
+| ✔    | ✔    |      |
 
 ## 描述 {#description}
 

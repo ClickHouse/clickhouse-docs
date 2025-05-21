@@ -1,20 +1,27 @@
 ---
-sidebar_label: '亚马逊 Glue'
-sidebar_position: 1
-slug: /integrations/glue
-description: '集成 ClickHouse 和 亚马逊 Glue'
-keywords: [ 'clickhouse', 'amazon', 'aws', 'glue', 'migrating', 'data' ]
+'sidebar_label': 'Amazon Glue'
+'sidebar_position': 1
+'slug': '/integrations/glue'
+'description': '将ClickHouse和Amazon Glue集成'
+'keywords':
+- 'clickhouse'
+- 'amazon'
+- 'aws'
+- 'glue'
+- 'migrating'
+- 'data'
+'title': 'Integrating Amazon Glue with ClickHouse'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# 集成亚马逊 Glue 与 ClickHouse
+# 将 Amazon Glue 与 ClickHouse 集成
 
-[亚马逊 Glue](https://aws.amazon.com/glue/) 是由亚马逊网络服务（AWS）提供的完全托管的无服务器数据集成服务。它简化了数据发现、准备和转换的过程，以便用于分析、机器学习和应用程序开发。
+[Amazon Glue](https://aws.amazon.com/glue/) 是由亚马逊网络服务（AWS）提供的完全托管的无服务器数据集成服务。它简化了发现、准备和转换数据以进行分析、机器学习和应用开发的过程。
 
-虽然目前还没有 Glue ClickHouse 连接器可用，但可以利用官方 JDBC 连接器与 ClickHouse 进行连接和集成：
+尽管目前还没有 Glue ClickHouse 连接器，但可以利用官方 JDBC 连接器与 ClickHouse 进行连接和集成：
 
 <Tabs>
 <TabItem value="Java" label="Java" default>
@@ -30,7 +37,7 @@ import scala.collection.JavaConverters._
 import com.amazonaws.services.glue.log.GlueLogger
 
 
-// 初始化 Glue 作业
+// Initialize Glue job
 object GlueJob {
   def main(sysArgs: Array[String]) {
     val sc: SparkContext = new SparkContext()
@@ -42,20 +49,20 @@ object GlueJob {
     val args = GlueArgParser.getResolvedOptions(sysArgs, Seq("JOB_NAME").toArray)
     Job.init(args("JOB_NAME"), glueContext, args.asJava)
 
-    // JDBC 连接详细信息
+    // JDBC connection details
     val jdbcUrl = "jdbc:ch://{host}:{port}/{schema}"
     val jdbcProperties = new java.util.Properties()
     jdbcProperties.put("user", "default")
     jdbcProperties.put("password", "*******")
     jdbcProperties.put("driver", "com.clickhouse.jdbc.ClickHouseDriver")
 
-    // 从 ClickHouse 加载表
+    // Load the table from ClickHouse
     val df: DataFrame = spark.read.jdbc(jdbcUrl, "my_table", jdbcProperties)
 
-    // 显示 Spark df，或将其用于您喜欢的任何用途
+    // Show the Spark df, or use it for whatever you like
     df.show()
 
-    // 提交作业
+    // Commit the job
     Job.commit()
   }
 }
@@ -84,7 +91,7 @@ job.init(args['JOB_NAME'], args)
 jdbc_url = "jdbc:ch://{host}:{port}/{schema}"
 query = "select * from my_table"
 
-# 对于云使用，请添加 ssl 选项
+# For cloud usage, please add ssl options
 df = (spark.read.format("jdbc")
     .option("driver", 'com.clickhouse.jdbc.ClickHouseDriver')
     .option("url", jdbc_url)
@@ -93,9 +100,9 @@ df = (spark.read.format("jdbc")
     .option("query", query)
     .load())
 
-logger.info("行数：")
+logger.info("num of rows:")
 logger.info(str(df.count()))
-logger.info("数据样本：")
+logger.info("Data sample:")
 logger.info(str(df.take(10)))
 
 
@@ -105,4 +112,4 @@ job.commit()
 </TabItem>
 </Tabs>
 
-有关更多详情，请访问我们的 [Spark & JDBC 文档](/integrations/apache-spark/spark-jdbc#read-data)。
+有关更多详细信息，请访问我们的 [Spark & JDBC 文档](/integrations/apache-spark/spark-jdbc#read-data)。

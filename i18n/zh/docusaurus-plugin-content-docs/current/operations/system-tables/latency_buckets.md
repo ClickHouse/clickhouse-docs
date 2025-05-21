@@ -1,11 +1,18 @@
 ---
-description: '包含 `latency_log` 使用的桶边界的信息的系统表。'
-slug: /operations/system-tables/latency_buckets
-title: 'system.latency_buckets'
-keywords: ['system table', 'latency_buckets']
+'description': 'System table containing information about bucket bounds used by `latency_log`.'
+'keywords':
+- 'system table'
+- 'latency_buckets'
+'slug': '/operations/system-tables/latency_buckets'
+'title': 'system.latency_buckets'
 ---
 
-包含 [latency_log](../../operations/system-tables/latency_log.md) 使用的桶边界。
+
+
+
+# system.latency_buckets
+
+包含由 [latency_log](../../operations/system-tables/latency_log.md) 使用的桶边界。
 
 **示例**
 

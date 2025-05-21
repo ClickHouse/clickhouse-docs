@@ -1,29 +1,33 @@
 ---
-description: '系统表，包含通过 jemalloc 分配器在不同大小类别 (bins) 中的内存分配信息，汇总自所有区域。'
-slug: /operations/system-tables/jemalloc_bins
-title: 'system.jemalloc_bins'
-keywords: ['system table', 'jemalloc_bins']
+'description': 'System table containing information about memory allocations done
+  via jemalloc allocator in different size classes (bins) aggregated from all arenas.'
+'keywords':
+- 'system table'
+- 'jemalloc_bins'
+'slug': '/operations/system-tables/jemalloc_bins'
+'title': 'system.jemalloc_bins'
 ---
-import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-包含通过 jemalloc 分配器在不同大小类别 (bins) 中的内存分配信息，汇总自所有区域。
-由于 jemalloc 中的线程本地缓存，这些统计数据可能并不完全准确。
+包含通过 jemalloc 分配器在不同大小类别（桶）中进行的内存分配的信息，这些信息是从所有区域聚合而来的。
+由于 jemalloc 中的线程局部缓存，这些统计信息可能并不是绝对准确的。
 
 列：
 
-- `index` (UInt64) — 按大小排序的 bin 的索引
-- `large` (Bool) — 对于大分配为 True，对于小分配为 False
-- `size` (UInt64) — 此 bin 中分配的大小
+- `index` (UInt64) — 按大小排序的桶的索引
+- `large` (Bool) — 对于大分配为真，对于小分配为假
+- `size` (UInt64) — 此桶中分配的大小
 - `allocations` (UInt64) — 分配的数量
-- `deallocations` (UInt64) — 释放的数量
+- `deallocations` (UInt64) — 取消分配的数量
 
 **示例**
 
 查找对当前总体内存使用贡献最大的分配大小。
 
-``` sql
+```sql
 SELECT
     *,
     allocations - deallocations AS active_allocations,
@@ -34,7 +38,7 @@ ORDER BY allocated_bytes DESC
 LIMIT 10
 ```
 
-``` text
+```text
 ┌─index─┬─large─┬─────size─┬─allocactions─┬─deallocations─┬─active_allocations─┬─allocated_bytes─┐
 │    82 │     1 │ 50331648 │            1 │             0 │                  1 │        50331648 │
 │    10 │     0 │      192 │       512336 │        370710 │             141626 │        27192192 │

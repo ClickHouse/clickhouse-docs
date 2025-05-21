@@ -1,18 +1,20 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/avgweighted
-sidebar_position: 113
-title: 'avgWeighted'
-description: '计算加权算术平均数。'
+'description': 'Calculates the weighted arithmetic mean.'
+'sidebar_position': 113
+'slug': '/sql-reference/aggregate-functions/reference/avgweighted'
+'title': 'avgWeighted'
 ---
+
+
 
 
 # avgWeighted
 
-计算[加权算术平均数](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean)。
+计算加权算术平均数 [weighted arithmetic mean](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean)。
 
 **语法**
 
-``` sql
+```sql
 avgWeighted(x, weight)
 ```
 
@@ -27,8 +29,8 @@ avgWeighted(x, weight)
 
 **返回值**
 
-- 如果所有权重均为0或提供的权重参数为空，返回 `NaN`。
-- 否则返回加权平均数。
+- 如果所有权重均为 0 或提供的权重参数为空，则返回 `NaN`。
+- 否则返回加权平均值。
 
 **返回类型** 始终为 [Float64](../../../sql-reference/data-types/float.md)。
 
@@ -36,14 +38,14 @@ avgWeighted(x, weight)
 
 查询：
 
-``` sql
+```sql
 SELECT avgWeighted(x, w)
 FROM values('x Int8, w Int8', (4, 1), (1, 0), (10, 2))
 ```
 
 结果：
 
-``` text
+```text
 ┌─avgWeighted(x, weight)─┐
 │                      8 │
 └────────────────────────┘
@@ -53,14 +55,14 @@ FROM values('x Int8, w Int8', (4, 1), (1, 0), (10, 2))
 
 查询：
 
-``` sql
+```sql
 SELECT avgWeighted(x, w)
 FROM values('x Int8, w Float64', (4, 1), (1, 0), (10, 2))
 ```
 
 结果：
 
-``` text
+```text
 ┌─avgWeighted(x, weight)─┐
 │                      8 │
 └────────────────────────┘
@@ -70,14 +72,14 @@ FROM values('x Int8, w Float64', (4, 1), (1, 0), (10, 2))
 
 查询：
 
-``` sql
+```sql
 SELECT avgWeighted(x, w)
 FROM values('x Int8, w Int8', (0, 0), (1, 0), (10, 0))
 ```
 
 结果：
 
-``` text
+```text
 ┌─avgWeighted(x, weight)─┐
 │                    nan │
 └────────────────────────┘
@@ -87,14 +89,14 @@ FROM values('x Int8, w Int8', (0, 0), (1, 0), (10, 0))
 
 查询：
 
-``` sql
+```sql
 CREATE table test (t UInt8) ENGINE = Memory;
 SELECT avgWeighted(t) FROM test
 ```
 
 结果：
 
-``` text
+```text
 ┌─avgWeighted(x, weight)─┐
 │                    nan │
 └────────────────────────┘

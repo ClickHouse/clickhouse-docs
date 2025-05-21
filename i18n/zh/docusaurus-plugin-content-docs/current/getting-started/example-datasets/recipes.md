@@ -1,22 +1,26 @@
 ---
-description: 'RecipeNLG 数据集，包含 220 万个食谱'
-slug: /getting-started/example-datasets/recipes
-sidebar_label: 食谱数据集
-title: '食谱数据集'
+'description': 'The RecipeNLG dataset, containing 2.2 million recipes'
+'sidebar_label': 'Recipes Dataset'
+'slug': '/getting-started/example-datasets/recipes'
+'title': 'Recipes Dataset'
 ---
 
-RecipeNLG 数据集可从 [这里](https://recipenlg.cs.put.poznan.pl/dataset) 下载。该数据集包含 220 万个食谱，大小略低于 1 GB。
+
+
+The RecipeNLG 数据集可以从 [这里](https://recipenlg.cs.put.poznan.pl/dataset) 下载。它包含 220 万个食谱。大小稍微少于 1 GB。
+
 ## 下载并解压数据集 {#download-and-unpack-the-dataset}
 
 1. 访问下载页面 [https://recipenlg.cs.put.poznan.pl/dataset](https://recipenlg.cs.put.poznan.pl/dataset)。
-2. 接受条款和条件并下载压缩文件。
-3. 可选：使用 `md5sum dataset.zip` 验证压缩文件，其值应为 `3a168dfd0912bb034225619b3586ce76`。
-4. 使用 `unzip dataset.zip` 解压缩文件。您将在 `dataset` 目录中获得 `full_dataset.csv` 文件。
+2. 接受条款和条件并下载 zip 文件。
+3. 可选：使用 `md5sum dataset.zip` 验证 zip 文件，它应该等于 `3a168dfd0912bb034225619b3586ce76`。
+4. 使用 `unzip dataset.zip` 解压 zip 文件。您将在 `dataset` 目录中获得 `full_dataset.csv` 文件。
+
 ## 创建表 {#create-a-table}
 
 运行 clickhouse-client 并执行以下 CREATE 查询：
 
-``` sql
+```sql
 CREATE TABLE recipes
 (
     title String,
@@ -27,11 +31,12 @@ CREATE TABLE recipes
     NER Array(String)
 ) ENGINE = MergeTree ORDER BY title;
 ```
+
 ## 插入数据 {#insert-the-data}
 
 运行以下命令：
 
-``` bash
+```bash
 clickhouse-client --query "
     INSERT INTO recipes
     SELECT
@@ -48,39 +53,42 @@ clickhouse-client --query "
 
 这是一个解析自定义 CSV 的示例，因为它需要多次调整。
 
-解释：
-- 数据集是 CSV 格式，但在插入时需要一些预处理；我们使用表函数 [input](../../sql-reference/table-functions/input.md) 进行预处理；
+说明：
+- 数据集采用 CSV 格式，但在插入时需要一些预处理；我们使用表函数 [input](../../sql-reference/table-functions/input.md) 进行预处理；
 - CSV 文件的结构在表函数 `input` 的参数中指定；
-- 字段 `num` （行号）是多余的 - 我们从文件中解析并忽略它；
-- 我们使用 `FORMAT CSVWithNames`，但 CSV 中的头将被忽略（通过命令行参数 `--input_format_with_names_use_header 0`），因为头部不包含第一个字段的名称；
-- 文件仅使用双引号来括起来 CSV 字符串；某些字符串没有用双引号括起来，单引号不能解析为字符串包围 - 这就是我们添加 `--format_csv_allow_single_quote 0` 参数的原因；
-- 某些来自 CSV 的字符串无法解析，因为它们的值开头包含 `\M/` 序列；在 CSV 中，唯一可以以反斜杠开头的值为 `\N`，它被解析为 SQL NULL。我们添加了 `--input_format_allow_errors_num 10` 参数，最多可以跳过十条格式不正确的记录；
-- 对于成分、方向和 NER 字段，有数组；这些数组以不寻常的形式表示：它们被序列化为字符串形式的 JSON 然后放入 CSV - 我们将它们解析为 String，并使用 [JSONExtract](../../sql-reference/functions/json-functions.md) 函数将其转换为 Array。
+- 字段 `num`（行号）是多余的 - 我们从文件中解析并忽略它；
+- 我们使用 `FORMAT CSVWithNames`，但 CSV 中的标题将被忽略（通过命令行参数 `--input_format_with_names_use_header 0`），因为标题不包含第一个字段的名称；
+- 文件仅使用双引号来括起来 CSV 字符串；一些字符串没有用双引号括起来，单引号不能被解析为字符串的括起来 - 这就是为什么我们还添加了 `--format_csv_allow_single_quote 0` 参数；
+- CSV 中的一些字符串无法解析，因为它们的值开头含有 `\M/` 序列；在 CSV 中唯一可以以反斜杠开头的值是 `\N`，被解析为 SQL NULL。我们添加了 `--input_format_allow_errors_num 10` 参数，最多可以跳过十条格式错误的记录；
+- 这里有用于成分、步骤和 NER 字段的数组；这些数组以不寻常的形式表示：它们被序列化为字符串作为 JSON 然后放入 CSV 中 - 我们将其解析为字符串，然后使用 [JSONExtract](../../sql-reference/functions/json-functions.md) 函数将其转换为数组。
+
 ## 验证插入的数据 {#validate-the-inserted-data}
 
 通过检查行数：
 
 查询：
 
-``` sql
+```sql
 SELECT count() FROM recipes;
 ```
 
 结果：
 
-``` text
+```text
 ┌─count()─┐
 │ 2231142 │
 └─────────┘
 ```
-## 示例查询 {#example-queries}
-### 按食谱数量排序的主要成分： {#top-components-by-the-number-of-recipes}
 
-在这个示例中，我们学习如何使用 [arrayJoin](../../sql-reference/functions/array-join.md) 函数将数组扩展为一组行。
+## 示例查询 {#example-queries}
+
+### 按食谱数量排名的组件： {#top-components-by-the-number-of-recipes}
+
+在此示例中，我们学习如何使用 [arrayJoin](../../sql-reference/functions/array-join.md) 函数将数组扩展为一组行。
 
 查询：
 
-``` sql
+```sql
 SELECT
     arrayJoin(NER) AS k,
     count() AS c
@@ -92,7 +100,7 @@ LIMIT 50
 
 结果：
 
-``` text
+```text
 ┌─k────────────────────┬──────c─┐
 │ salt                 │ 890741 │
 │ sugar                │ 620027 │
@@ -146,11 +154,12 @@ LIMIT 50
 │ Cheddar cheese       │  58354 │
 └──────────────────────┴────────┘
 
-结果中有 50 行。耗时：0.112 秒。处理了 223 万行，361.57 MB（每秒 1999 万行，3.24 GB/s。）
+50 rows in set. Elapsed: 0.112 sec. Processed 2.23 million rows, 361.57 MB (19.99 million rows/s., 3.24 GB/s.)
 ```
+
 ### 最复杂的草莓食谱 {#the-most-complex-recipes-with-strawberry}
 
-``` sql
+```sql
 SELECT
     title,
     length(NER),
@@ -163,7 +172,7 @@ LIMIT 10
 
 结果：
 
-``` text
+```text
 ┌─title────────────────────────────────────────────────────────────┬─length(NER)─┬─length(directions)─┐
 │ Chocolate-Strawberry-Orange Wedding Cake                         │          24 │                126 │
 │ Strawberry Cream Cheese Crumble Tart                             │          19 │                 47 │
@@ -177,16 +186,16 @@ LIMIT 10
 │ Watermelon Cake                                                  │          16 │                 36 │
 └──────────────────────────────────────────────────────────────────┴─────────────┴────────────────────┘
 
-共10行. 耗时：0.215秒。处理了223万行，1.48 GB (每秒1035万行，6.86 GB/s.)
+10 rows in set. Elapsed: 0.215 sec. Processed 2.23 million rows, 1.48 GB (10.35 million rows/s., 6.86 GB/s.)
 ```
 
-在这个例子中，我们使用了 [has](../../sql-reference/functions/array-functions.md#hasarr-elem) 函数来按数组元素进行过滤，并按步骤数排序。
+在此示例中，我们使用 [has](../../sql-reference/functions/array-functions.md#hasarr-elem) 函数按数组元素过滤，并按步骤数量排序。
 
-有一个结婚蛋糕需要整整126个步骤来制作！显示该步骤：
+有一个婚礼蛋糕需要 126 个步骤来制作！ 显示这些步骤：
 
 查询：
 
-``` sql
+```sql
 SELECT arrayJoin(directions)
 FROM recipes
 WHERE title = 'Chocolate-Strawberry-Orange Wedding Cake'
@@ -194,138 +203,139 @@ WHERE title = 'Chocolate-Strawberry-Orange Wedding Cake'
 
 结果：
 
-``` text
+```text
 ┌─arrayJoin(directions)───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ 在烤箱中将一个烤架放在中心位置，一个烤架放在底部的三分之一处，预热至350华氏度。                                                                                              │
-│ 用黄油涂抹一个直径5英寸、高2英寸的蛋糕模具、一个直径8英寸、高2英寸的蛋糕模具和一个直径12英寸、高2英寸的蛋糕模具。                                                                │
-│ 在模具中撒上面粉；用烘焙纸铺底部。                                                                                                                                                 │
-│ 在一个重的小锅中，将1/3杯橙汁和2盎司无糖巧克力混合。                                                                                                                        │
-│ 在中低火上搅拌混合物，直到巧克力融化。                                                                                                                                            │
-│ 取出火源。                                                                                                                                                                       │
-│ 逐渐搅拌入1 2/3杯橙汁。                                                                                                                                                         │
-│ 在中等碗中，将3杯面粉、2/3杯可可粉、2茶匙小苏打、1茶匙盐和1/2茶匙泡打粉过筛。                                                                                               │
-│ 使用电动搅拌器，在大碗中打发1杯（2条）黄油和3杯糖，直到混合均匀（混合物看起来会有些颗粒感）。                                                                                │
-│ 分次加入4个鸡蛋，每次加入后搅打均匀。                                                                                                                                           │
-│ 将1汤匙橙皮和1汤匙香草提取物搅拌入混合物中。                                                                                                                                 │
-│ 交替加入干成分和橙汁混合物，每次加入3次，每次都要充分搅打。                                                                                                                  │
-│ 加入1杯巧克力豆。                                                                                                                                                              │
-│ 转移1杯加2汤匙的面糊到准备好的5英寸模具中，将3杯面糊转移到准备好的8英寸模具中，将剩余的面糊（约6杯）放入12英寸模具中。                                                        │
-│ 将5英寸和8英寸模具放在烤箱的中心架上。                                                                                                                                         │
-│ 将12英寸模具放在烤箱的下层架上。                                                                                                                                              │
-│ 烤蛋糕，直到插入中心的测试器干净取出，约35分钟。                                                                                                                             │
-│ 将烤好的蛋糕从模具中转移到架子上，完全冷却。                                                                                                                                  │
-│ 在一个6英寸的纸板蛋糕圆上标记一个直径4英寸的圆。                                                                                                                               │
-│ 剪下标记的圆。                                                                                                                                                                   │
-│ 在一个8英寸的纸板蛋糕圆上标记一个直径7英寸的圆。                                                                                                                               │
-│ 剪下标记的圆。                                                                                                                                                                   │
-│ 在一个12英寸的纸板蛋糕圆上标记一个直径11英寸的圆。                                                                                                                             │
-│ 剪下标记的圆。                                                                                                                                                                   │
-│ 切开5英寸蛋糕的边缘以松开。                                                                                                                                                    │
-│ 将4英寸的纸板放在模具上。                                                                                                                                                      │
-│ 固定纸板和模具；将蛋糕翻转到纸板上。                                                                                                                                              │
-│ 剥去烘焙纸。将蛋糕连同纸板用铝箔包好。                                                                                                                                         │
-│ 按照同样的方法转移、剥去烘焙纸并包好8英寸蛋糕和12英寸蛋糕，使用7英寸纸板和11英寸纸板。                                                                                      │
-│ 使用剩余的材料，再做一批蛋糕面糊，并按上述方式烤制另外3层蛋糕。                                                                                                            │
-│ 在模具中冷却蛋糕。                                                                                                                                                           │
-│ 将蛋糕在模具中用铝箔紧紧包好。                                                                                                                                               │
-│ （可以提前准备。                                                                                                                                                                 │
-│ 在室温下放置最多1天，或者将所有蛋糕层双重包裹并冷冻最多1周。                                                                                                              │
-│ 使用时，将蛋糕层带到室温。）                                                                                                                                                  │
-│ 将第一个12英寸的蛋糕放在工作台上的纸板上。                                                                                                                                  │
-│ 在蛋糕顶部和边缘涂抹2 3/4杯甘那许。                                                                                                                                                    │
-│ 在甘那许上涂抹2/3杯果酱，边缘留出1/2英寸的巧克力边框。                                                                                                                         │
-│ 用汤匙将1 3/4杯白巧克力糖霜滴在果酱上。                                                                                                                                          │
-│ 轻轻地将糖霜抹在果酱上，边缘留出1/2英寸的巧克力边框。                                                                                                                            │
-│ 在第二个12英寸的纸板上擦一些可可粉。                                                                                                                                             │
-│ 切开第二个12英寸的蛋糕的边缘以松开。                                                                                                                                           │
-│ 将纸板（可可面朝下）放在模具上。                                                                                                                                                 │
-│ 将蛋糕翻转到纸板上。                                                                                                                                                           │
-│ 剥去烘焙纸。                                                                                                                                                                      │
-│ 小心地将蛋糕从纸板上滑到第一个12英寸蛋糕的填充物上。                                                                                                                            │
-│ 放入冰箱中。                                                                                                                                                                       │
-│ 将第一个8英寸蛋糕放在工作台上的纸板上。                                                                                                                                     │
-│ 在蛋糕顶部涂抹1杯甘那许，直到边缘。                                                                                                                                                 │
-│ 在甘那许上涂抹1/4杯果酱，留出1/2英寸的巧克力边框。                                                                                                                            │
-│ 用汤匙将1杯白巧克力糖霜滴在果酱上。                                                                                                                                              │
-│ 轻轻抹平糖霜，边缘留出1/2英寸的巧克力边框。                                                                                                                                  │
-│ 在第二个8英寸的纸板上涂一些可可粉。                                                                                                                                           │
-│ 切开第二个8英寸蛋糕的边缘以松开。                                                                                                                                             │
-│ 将纸板（可可面朝下）放在模具上。                                                                                                                                                 │
-│ 将蛋糕翻转到纸板上。                                                                                                                                                           │
-│ 剥去烘焙纸。                                                                                                                                                                        │
-│ 将蛋糕从纸板上滑到第一个8英寸蛋糕的填充物上。                                                                                                                                  │
-│ 放入冰箱中。                                                                                                                                                                       │
-│ 将第一个5英寸蛋糕放在工作台上的纸板上。                                                                                                                                     │
-│ 在蛋糕顶部涂抹1/2杯甘那许，直到边缘。                                                                                                                                            │
-│ 在甘那许上涂抹2汤匙果酱，留出1/2英寸的巧克力边框。                                                                                                                          │
-│ 用汤匙将1/3杯白巧克力糖霜滴在果酱上。                                                                                                                                              │
-│ 轻轻抹平糖霜，边缘留出1/2英寸的巧克力边框。                                                                                                                                  │
-│ 在第二个6英寸的纸板上涂一些可可粉。                                                                                                                                          │
-│ 切开第二个5英寸蛋糕的边缘以松开。                                                                                                                                           │
-│ 将纸板（可可面朝下）放在模具上。                                                                                                                                                 │
-│ 将蛋糕翻转到纸板上。                                                                                                                                                           │
-│ 剥去烘焙纸。                                                                                                                                                                      │
-│ 将蛋糕从纸板上滑到第一个5英寸蛋糕的填充物上。                                                                                                                                  │
-│ 所有蛋糕冷藏1小时以定型填充物。                                                                                                                                                     │
-│ 将12英寸的层叠蛋糕放在其纸板上，放在旋转蛋糕架上。                                                                                                                        │
-│ 在蛋糕的顶部和侧面涂抹2 2/3杯糖霜作为第一层。                                                                                                                                     │
-│ 将蛋糕放入冰箱中。                                                                                                                                                             │
-│ 将8英寸的层叠蛋糕放在其纸板上，放在蛋糕架上。                                                                                                                                 │
-│ 在蛋糕的顶部和侧面涂抹1 1/4杯糖霜作为第一层。                                                                                                                                  │
-│ 将蛋糕放入冰箱中。                                                                                                                                                             │
-│ 将5英寸的层叠蛋糕放在其纸板上，放在蛋糕架上。                                                                                                                                  │
-│ 在蛋糕的顶部和侧面涂抹3/4杯糖霜作为第一层。                                                                                                                                      │
-│ 将所有蛋糕放入冰箱中，直到第一层糖霜定型，约1小时。                                                                                                                            │
-│ （蛋糕可以提前制作到这一点，最多1天；覆盖好并保持在冰箱中。）                                                                                                                   │
-│ 准备第二批糖霜，使用剩余的糖霜材料，并遵循第一批的指示。                                                                                                                      │
-│ 用小星形嘴将2杯糖霜放入裱花袋中。                                                                                                                                               │
-│ 将12英寸蛋糕放在其纸板上，放在大型平盘上。                                                                                                                                     │
-│ 将盘子放在蛋糕架上。                                                                                                                                                          │
-│ 使用抹刀将2 1/2杯糖霜涂抹在蛋糕的顶部和侧面；抹平顶部。                                                                                                                       │
-│ 使用装满糖霜的裱花袋在蛋糕的顶部边缘挤出装饰边。                                                                                                                               │
-│ 将蛋糕在盘子上放入冰箱中。                                                                                                                                                     │
-│ 将8英寸蛋糕放在其纸板上，放在蛋糕架上。                                                                                                                                         │
-│ 使用抹刀将1 1/2杯糖霜涂抹在蛋糕的顶部和侧面；抹平顶部。                                                                                                                      │
-│ 使用裱花袋在蛋糕的顶部边缘挤出装饰边。                                                                                                                                           │
-│ 将蛋糕放在其纸板上放入冰箱中。                                                                                                                                                 │
-│ 将5英寸蛋糕放在其纸板上，放在蛋糕架上。                                                                                                                                         │
-│ 使用抹刀将3/4杯糖霜涂抹在蛋糕的顶部和侧面；抹平顶部。                                                                                                                        │
-│ 使用裱花袋在蛋糕的顶部边缘挤出装饰边，如有必要，则适量将更多糖霜放入袋内。                                                                                                      │
-│ 将蛋糕放在其纸板上放入冰箱中。                                                                                                                                                 │
-│ 在糖霜定型之前，将所有蛋糕冷藏约2小时。                                                                                                                                            │
-│ （可以提前2天准备。                                                                                                                                                              │
-│ 轻轻覆盖；保持在冰箱中。）                                                                                                                                                      │
-│ 将12英寸蛋糕放在工作台上的盘子上。                                                                                                                                             │
-│ 直直地将1根木制的支撑棍推入蛋糕的中心，并完全穿透。                                                                                                                            │
-│ 在糖霜顶部标记支撑棍1/4英寸。                                                                                                                                                     │
-│ 拔出支撑棍，并在标记处用锯齿刀切断。                                                                                                                                           │
-│ 再切出4根支撑棍，长度与之相同。                                                                                                                                                  │
-│ 将1根切割好的支撑棍重新插入蛋糕的中心。                                                                                                                                          │
-│ 将剩下的4根切割支撑棍插入蛋糕，定位在蛋糕边缘内侧3 1/2英寸，并均匀间隔。                                                                                                      │
-│ 将8英寸蛋糕放在其纸板上，放在工作台上。                                                                                                                                       │
-│ 直直地将1根支撑棍推入蛋糕的中心，并完全穿透。                                                                                                                                  │
-│ 在糖霜顶部标记支撑棍1/4英寸。                                                                                                                                                     │
-│ 拔出支撑棍，并在标记处用锯齿刀切断。                                                                                                                                           │
-│ 再切出3根支撑棍，长度与之相同。                                                                                                                                                  │
-│ 将1根切割好的支撑棍重新插入蛋糕的中心。                                                                                                                                          │
-│ 将剩下的3根切割支撑棍插入蛋糕，定位在边缘内侧2 1/2英寸，并均匀间隔。                                                                                                           │
-│ 使用大型金属抹刀作为辅助工具，将8英寸的蛋糕放置在12英寸蛋糕中心的支撑棍上，确保居中。                                                                                           │
-│ 小心地将5英寸蛋糕放在8英寸蛋糕的支撑棍上，确保居中。                                                                                                                           │
-│ 使用柑橘剥皮器从橙子上切出长条的橙皮。                                                                                                                                           │
-│ 将条切成长段。                                                                                                                                                                     │
-│ 要制作橙皮卷，围绕木勺的把手将橙皮段缠绕；轻轻地从把手上滑下橙皮，以保持卷曲形状。                                                                                             │
-│ 用橙皮卷、常春藤或薄荷枝和一些浆果装饰蛋糕。                                                                                                                                     │
-│ （组装好的蛋糕可以提前最多8小时制作。                                                                                                                                           │
-│ 让其在凉爽的室温下静置。）                                                                                                                                                       │
-│ 拆下顶部和中间的蛋糕层。                                                                                                                                                           │
-│ 从蛋糕中取出支撑棍。                                                                                                                                                               │
-│ 将顶部和中间蛋糕切成片。                                                                                                                                                           │
-│ 切割12英寸蛋糕：从边缘向内3英寸，直刀下切，切到底部，形成中心直径6英寸的圆形。                                                                                                   │
-│ 切割蛋糕的外部分，切割内部分并与草莓搭配食用。                                                                                                                                    │
+│ Position 1 rack in center and 1 rack in bottom third of oven and preheat to 350F.                                                                                           │
+│ Butter one 5-inch-diameter cake pan with 2-inch-high sides, one 8-inch-diameter cake pan with 2-inch-high sides and one 12-inch-diameter cake pan with 2-inch-high sides.   │
+│ Dust pans with flour; line bottoms with parchment.                                                                                                                          │
+│ Combine 1/3 cup orange juice and 2 ounces unsweetened chocolate in heavy small saucepan.                                                                                    │
+│ Stir mixture over medium-low heat until chocolate melts.                                                                                                                    │
+│ Remove from heat.                                                                                                                                                           │
+│ Gradually mix in 1 2/3 cups orange juice.                                                                                                                                   │
+│ Sift 3 cups flour, 2/3 cup cocoa, 2 teaspoons baking soda, 1 teaspoon salt and 1/2 teaspoon baking powder into medium bowl.                                                 │
+│ using electric mixer, beat 1 cup (2 sticks) butter and 3 cups sugar in large bowl until blended (mixture will look grainy).                                                 │
+│ Add 4 eggs, 1 at a time, beating to blend after each.                                                                                                                       │
+│ Beat in 1 tablespoon orange peel and 1 tablespoon vanilla extract.                                                                                                          │
+│ Add dry ingredients alternately with orange juice mixture in 3 additions each, beating well after each addition.                                                            │
+│ Mix in 1 cup chocolate chips.                                                                                                                                               │
+│ Transfer 1 cup plus 2 tablespoons batter to prepared 5-inch pan, 3 cups batter to prepared 8-inch pan and remaining batter (about 6 cups) to 12-inch pan.                   │
+│ Place 5-inch and 8-inch pans on center rack of oven.                                                                                                                        │
+│ Place 12-inch pan on lower rack of oven.                                                                                                                                    │
+│ Bake cakes until tester inserted into center comes out clean, about 35 minutes.                                                                                             │
+│ Transfer cakes in pans to racks and cool completely.                                                                                                                        │
+│ Mark 4-inch diameter circle on one 6-inch-diameter cardboard cake round.                                                                                                    │
+│ Cut out marked circle.                                                                                                                                                      │
+│ Mark 7-inch-diameter circle on one 8-inch-diameter cardboard cake round.                                                                                                    │
+│ Cut out marked circle.                                                                                                                                                      │
+│ Mark 11-inch-diameter circle on one 12-inch-diameter cardboard cake round.                                                                                                  │
+│ Cut out marked circle.                                                                                                                                                      │
+│ Cut around sides of 5-inch-cake to loosen.                                                                                                                                  │
+│ Place 4-inch cardboard over pan.                                                                                                                                            │
+│ Hold cardboard and pan together; turn cake out onto cardboard.                                                                                                              │
+│ Peel off parchment.Wrap cakes on its cardboard in foil.                                                                                                                     │
+│ Repeat turning out, peeling off parchment and wrapping cakes in foil, using 7-inch cardboard for 8-inch cake and 11-inch cardboard for 12-inch cake.                        │
+│ Using remaining ingredients, make 1 more batch of cake batter and bake 3 more cake layers as described above.                                                               │
+│ Cool cakes in pans.                                                                                                                                                         │
+│ Cover cakes in pans tightly with foil.                                                                                                                                      │
+│ (Can be prepared ahead.                                                                                                                                                     │
+│ Let stand at room temperature up to 1 day or double-wrap all cake layers and freeze up to 1 week.                                                                           │
+│ Bring cake layers to room temperature before using.)                                                                                                                        │
+│ Place first 12-inch cake on its cardboard on work surface.                                                                                                                  │
+│ Spread 2 3/4 cups ganache over top of cake and all the way to edge.                                                                                                         │
+│ Spread 2/3 cup jam over ganache, leaving 1/2-inch chocolate border at edge.                                                                                                 │
+│ Drop 1 3/4 cups white chocolate frosting by spoonfuls over jam.                                                                                                             │
+│ Gently spread frosting over jam, leaving 1/2-inch chocolate border at edge.                                                                                                 │
+│ Rub some cocoa powder over second 12-inch cardboard.                                                                                                                        │
+│ Cut around sides of second 12-inch cake to loosen.                                                                                                                          │
+│ Place cardboard, cocoa side down, over pan.                                                                                                                                 │
+│ Turn cake out onto cardboard.                                                                                                                                               │
+│ Peel off parchment.                                                                                                                                                         │
+│ Carefully slide cake off cardboard and onto filling on first 12-inch cake.                                                                                                  │
+│ Refrigerate.                                                                                                                                                                │
+│ Place first 8-inch cake on its cardboard on work surface.                                                                                                                   │
+│ Spread 1 cup ganache over top all the way to edge.                                                                                                                          │
+│ Spread 1/4 cup jam over, leaving 1/2-inch chocolate border at edge.                                                                                                         │
+│ Drop 1 cup white chocolate frosting by spoonfuls over jam.                                                                                                                  │
+│ Gently spread frosting over jam, leaving 1/2-inch chocolate border at edge.                                                                                                 │
+│ Rub some cocoa over second 8-inch cardboard.                                                                                                                                │
+│ Cut around sides of second 8-inch cake to loosen.                                                                                                                           │
+│ Place cardboard, cocoa side down, over pan.                                                                                                                                 │
+│ Turn cake out onto cardboard.                                                                                                                                               │
+│ Peel off parchment.                                                                                                                                                         │
+│ Slide cake off cardboard and onto filling on first 8-inch cake.                                                                                                             │
+│ Refrigerate.                                                                                                                                                                │
+│ Place first 5-inch cake on its cardboard on work surface.                                                                                                                   │
+│ Spread 1/2 cup ganache over top of cake and all the way to edge.                                                                                                            │
+│ Spread 2 tablespoons jam over, leaving 1/2-inch chocolate border at edge.                                                                                                   │
+│ Drop 1/3 cup white chocolate frosting by spoonfuls over jam.                                                                                                                │
+│ Gently spread frosting over jam, leaving 1/2-inch chocolate border at edge.                                                                                                 │
+│ Rub cocoa over second 6-inch cardboard.                                                                                                                                     │
+│ Cut around sides of second 5-inch cake to loosen.                                                                                                                           │
+│ Place cardboard, cocoa side down, over pan.                                                                                                                                 │
+│ Turn cake out onto cardboard.                                                                                                                                               │
+│ Peel off parchment.                                                                                                                                                         │
+│ Slide cake off cardboard and onto filling on first 5-inch cake.                                                                                                             │
+│ Chill all cakes 1 hour to set filling.                                                                                                                                      │
+│ Place 12-inch tiered cake on its cardboard on revolving cake stand.                                                                                                         │
+│ Spread 2 2/3 cups frosting over top and sides of cake as a first coat.                                                                                                      │
+│ Refrigerate cake.                                                                                                                                                           │
+│ Place 8-inch tiered cake on its cardboard on cake stand.                                                                                                                    │
+│ Spread 1 1/4 cups frosting over top and sides of cake as a first coat.                                                                                                      │
+│ Refrigerate cake.                                                                                                                                                           │
+│ Place 5-inch tiered cake on its cardboard on cake stand.                                                                                                                    │
+│ Spread 3/4 cup frosting over top and sides of cake as a first coat.                                                                                                         │
+│ Refrigerate all cakes until first coats of frosting set, about 1 hour.                                                                                                      │
+│ (Cakes can be made to this point up to 1 day ahead; cover and keep refrigerate.)                                                                                            │
+│ Prepare second batch of frosting, using remaining frosting ingredients and following directions for first batch.                                                            │
+│ Spoon 2 cups frosting into pastry bag fitted with small star tip.                                                                                                           │
+│ Place 12-inch cake on its cardboard on large flat platter.                                                                                                                  │
+│ Place platter on cake stand.                                                                                                                                                │
+│ Using icing spatula, spread 2 1/2 cups frosting over top and sides of cake; smooth top.                                                                                     │
+│ Using filled pastry bag, pipe decorative border around top edge of cake.                                                                                                    │
+│ Refrigerate cake on platter.                                                                                                                                                │
+│ Place 8-inch cake on its cardboard on cake stand.                                                                                                                           │
+│ Using icing spatula, spread 1 1/2 cups frosting over top and sides of cake; smooth top.                                                                                     │
+│ Using pastry bag, pipe decorative border around top edge of cake.                                                                                                           │
+│ Refrigerate cake on its cardboard.                                                                                                                                          │
+│ Place 5-inch cake on its cardboard on cake stand.                                                                                                                           │
+│ Using icing spatula, spread 3/4 cup frosting over top and sides of cake; smooth top.                                                                                        │
+│ Using pastry bag, pipe decorative border around top edge of cake, spooning more frosting into bag if necessary.                                                             │
+│ Refrigerate cake on its cardboard.                                                                                                                                          │
+│ Keep all cakes refrigerated until frosting sets, about 2 hours.                                                                                                             │
+│ (Can be prepared 2 days ahead.                                                                                                                                              │
+│ Cover loosely; keep refrigerated.)                                                                                                                                          │
+│ Place 12-inch cake on platter on work surface.                                                                                                                              │
+│ Press 1 wooden dowel straight down into and completely through center of cake.                                                                                              │
+│ Mark dowel 1/4 inch above top of frosting.                                                                                                                                  │
+│ Remove dowel and cut with serrated knife at marked point.                                                                                                                   │
+│ Cut 4 more dowels to same length.                                                                                                                                           │
+│ Press 1 cut dowel back into center of cake.                                                                                                                                 │
+│ Press remaining 4 cut dowels into cake, positioning 3 1/2 inches inward from cake edges and spacing evenly.                                                                 │
+│ Place 8-inch cake on its cardboard on work surface.                                                                                                                         │
+│ Press 1 dowel straight down into and completely through center of cake.                                                                                                     │
+│ Mark dowel 1/4 inch above top of frosting.                                                                                                                                  │
+│ Remove dowel and cut with serrated knife at marked point.                                                                                                                   │
+│ Cut 3 more dowels to same length.                                                                                                                                           │
+│ Press 1 cut dowel back into center of cake.                                                                                                                                 │
+│ Press remaining 3 cut dowels into cake, positioning 2 1/2 inches inward from edges and spacing evenly.                                                                      │
+│ Using large metal spatula as aid, place 8-inch cake on its cardboard atop dowels in 12-inch cake, centering carefully.                                                      │
+│ Gently place 5-inch cake on its cardboard atop dowels in 8-inch cake, centering carefully.                                                                                  │
+│ Using citrus stripper, cut long strips of orange peel from oranges.                                                                                                         │
+│ Cut strips into long segments.                                                                                                                                              │
+│ To make orange peel coils, wrap peel segment around handle of wooden spoon; gently slide peel off handle so that peel keeps coiled shape.                                   │
+│ Garnish cake with orange peel coils, ivy or mint sprigs, and some berries.                                                                                                  │
+│ (Assembled cake can be made up to 8 hours ahead.                                                                                                                            │
+│ Let stand at cool room temperature.)                                                                                                                                        │
+│ Remove top and middle cake tiers.                                                                                                                                           │
+│ Remove dowels from cakes.                                                                                                                                                   │
+│ Cut top and middle cakes into slices.                                                                                                                                       │
+│ To cut 12-inch cake: Starting 3 inches inward from edge and inserting knife straight down, cut through from top to bottom to make 6-inch-diameter circle in center of cake. │
+│ Cut outer portion of cake into slices; cut inner portion into slices and serve with strawberries.                                                                           │
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-共126行. 耗时：0.011秒。处理了8.19千行，5.34 MB (每秒737.75千行，480.59 MB/s.)
+126 rows in set. Elapsed: 0.011 sec. Processed 8.19 thousand rows, 5.34 MB (737.75 thousand rows/s., 480.59 MB/s.)
 ```
+
 ### 在线演示 {#online-playground}
 
-数据集也可以在 [在线演示](https://sql.clickhouse.com?query_id=HQXNQZE26Z1QWYP9KC76ML) 中查看。
+该数据集也可以在 [在线演示](https://sql.clickhouse.com?query_id=HQXNQZE26Z1QWYP9KC76ML) 中使用。

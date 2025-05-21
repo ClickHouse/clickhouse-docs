@@ -1,67 +1,66 @@
 ---
-slug: /sql-reference/table-functions/mongodb
-sidebar_position: 135
-sidebar_label: mongodb
-title: 'mongodb'
-description: '允许对存储在远程 MongoDB 服务器上的数据执行 `SELECT` 查询。'
+'description': 'Allows `SELECT` queries to be performed on data that is stored on
+  a remote MongoDB server.'
+'sidebar_label': 'mongodb'
+'sidebar_position': 135
+'slug': '/sql-reference/table-functions/mongodb'
+'title': 'mongodb'
 ---
+
+
 
 
 # mongodb 表函数
 
 允许对存储在远程 MongoDB 服务器上的数据执行 `SELECT` 查询。
 
-**语法**
+## 语法 {#syntax}
 
-``` sql
-mongodb(host:port, database, collection, user, password, structure [, options])
+```sql
+mongodb(host:port, database, collection, user, password, structure[, options[, oid_columns]])
 ```
 
-**参数**
+## 参数 {#arguments}
 
-- `host:port` — MongoDB 服务器地址。
-
-- `database` — 远程数据库名称。
-
-- `collection` — 远程集合名称。
-
-- `user` — MongoDB 用户。
-
-- `password` — 用户密码。
-
-- `structure` - 从此函数返回的 ClickHouse 表的模式。
-
-- `options` - MongoDB 连接字符串选项（可选参数）。
+| 参数         | 描述                                                                                               |
+|--------------|----------------------------------------------------------------------------------------------------|
+| `host:port`  | MongoDB 服务器地址。                                                                                   |
+| `database`   | 远程数据库名称。                                                                                       |
+| `collection` | 远程集合名称。                                                                                       |
+| `user`       | MongoDB 用户。                                                                                         |
+| `password`   | 用户密码。                                                                                            |
+| `structure`  | 从此函数返回的 ClickHouse 表的模式。                                                                    |
+| `options`    | MongoDB 连接字符串选项（可选参数）。                                                                   |
+| `oid_columns`| 在 WHERE 子句中应视为 `oid` 的列的以逗号分隔的列表。默认是 `_id`。                                       |
 
 :::tip
-如果您使用的是 MongoDB Atlas 云服务，请添加以下选项：
+如果您使用 MongoDB Atlas 云服务，请添加以下选项：
 
 ```ini
 'connectTimeoutMS=10000&ssl=true&authSource=admin'
 ```
-
 :::
 
-此外，您还可以通过 URI 连接：
-``` sql
-mongodb(uri, collection, structure)
+您也可以通过 URI 连接：
+
+```sql
+mongodb(uri, collection, structure[, oid_columns])
 ```
-**参数**
 
-- `uri` — 连接字符串。
+| 参数         | 描述                                                                                               |
+|--------------|----------------------------------------------------------------------------------------------------|
+| `uri`        | 连接字符串。                                                                                        |
+| `collection` | 远程集合名称。                                                                                       |
+| `structure`  | 从此函数返回的 ClickHouse 表的模式。                                                                    |
+| `oid_columns`| 在 WHERE 子句中应视为 `oid` 的列的以逗号分隔的列表。默认是 `_id`。                                       |
 
-- `collection` — 远程集合名称。
+## 返回值 {#returned_value}
 
-- `structure` — 从此函数返回的 ClickHouse 表的模式。
+一个与原始 MongoDB 表具有相同列的表对象。
 
-**返回值**
+## 示例 {#examples}
 
-具有与原始 MongoDB 表相同列的表对象。
-
-
-**示例**
-
-假设我们在名为 `test` 的 MongoDB 数据库中有一个名为 `my_collection` 的集合，并且我们插入了一些文档：
+假设我们在名为 `test` 的 MongoDB 数据库中有一个名称为 `my_collection` 的集合，并插入了一些文档：
 
 ```sql
 db.createUser({user:"test_user",pwd:"password",roles:[{role:"readWrite",db:"test"}]})
@@ -91,7 +90,7 @@ SELECT * FROM mongodb(
 )
 ```
 
-或：
+或者：
 
 ```sql
 SELECT * FROM mongodb(
@@ -101,7 +100,7 @@ SELECT * FROM mongodb(
 )
 ```
 
-**另请参阅**
+## 相关 {#related}
 
-- [MongoDB 表引擎](engines/table-engines/integrations/mongodb.md)
-- [使用 MongoDB 作为字典源](sql-reference/dictionaries/index.md#mongodb)
+- [`MongoDB` 表引擎](engines/table-engines/integrations/mongodb.md)
+- [将 MongoDB 用作字典源](sql-reference/dictionaries/index.md#mongodb)

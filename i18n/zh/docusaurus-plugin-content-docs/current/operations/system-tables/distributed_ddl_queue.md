@@ -1,33 +1,38 @@
 ---
-description: '包含有关在集群上执行的分布式 ddl 查询（使用 ON CLUSTER 子句的查询）的系统表信息。'
-slug: /operations/system-tables/distributed_ddl_queue
-title: 'system.distributed_ddl_queue'
-keywords: ['system table', 'distributed_ddl_queue']
+'description': 'System table containing information about distributed ddl queries
+  (queries using the ON CLUSTER clause) that were executed on a cluster.'
+'keywords':
+- 'system table'
+- 'distributed_ddl_queue'
+'slug': '/operations/system-tables/distributed_ddl_queue'
+'title': 'system.distributed_ddl_queue'
 ---
 
-包含有关[分布式 ddl 查询 (ON CLUSTER 子句)](../../sql-reference/distributed-ddl.md)的信息，这些查询在集群上执行。
+
+
+包含关于在集群上执行的 [分布式 DDL 查询 (ON CLUSTER 子句)](../../sql-reference/distributed-ddl.md) 的信息。
 
 列：
 
 - `entry` ([String](../../sql-reference/data-types/string.md)) — 查询 ID。
-- `entry_version` ([Nullable(UInt8)](../../sql-reference/data-types/int-uint.md)) - 项目的版本
+- `entry_version` ([Nullable(UInt8)](../../sql-reference/data-types/int-uint.md)) - 条目的版本
 - `initiator_host` ([Nullable(String)](../../sql-reference/data-types/string.md)) - 发起 DDL 操作的主机
 - `initiator_port` ([Nullable(UInt16)](../../sql-reference/data-types/int-uint.md)) - 发起者使用的端口
 - `cluster` ([String](../../sql-reference/data-types/string.md)) — 集群名称。
 - `query` ([String](../../sql-reference/data-types/string.md)) — 执行的查询。
-- `settings` ([Map(String, String)](../../sql-reference/data-types/map.md)) - DDL 操作中使用的参数
+- `settings` ([Map(String, String)](../../sql-reference/data-types/map.md)) - DDL 操作中使用的设置
 - `query_create_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 查询创建时间。
 - `host` ([String](../../sql-reference/data-types/string.md)) — 主机名
 - `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 主机端口。
 - `status` ([Enum8](../../sql-reference/data-types/enum.md)) — 查询的状态。
 - `exception_code` ([Enum8](../../sql-reference/data-types/enum.md)) — 异常代码。
-- `exception_text` ([Nullable(String)](../../sql-reference/data-types/string.md)) - 异常消息
+- `exception_text` ([Nullable(String)](../../sql-reference/data-types/string.md)) - 异常信息
 - `query_finish_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 查询完成时间。
 - `query_duration_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 查询执行的持续时间（以毫秒为单位）。
 
 **示例**
 
-``` sql
+```sql
 SELECT *
 FROM system.distributed_ddl_queue
 WHERE cluster = 'test_cluster'

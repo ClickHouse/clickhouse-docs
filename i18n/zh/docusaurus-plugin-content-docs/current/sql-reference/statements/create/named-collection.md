@@ -1,6 +1,8 @@
 ---
-slug: /sql-reference/statements/create/named-collection
-sidebar_label: 命名集合
+'description': 'CREATE NAMED COLLECTION 的文档'
+'sidebar_label': '命名集合'
+'slug': '/sql-reference/statements/create/named-collection'
+'title': '创建命名集合'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -33,7 +35,6 @@ CREATE NAMED COLLECTION foobar AS a = '1', b = '2' OVERRIDABLE;
 - [创建命名集合](/sql-reference/statements/alter/named-collection)
 - [删除命名集合](/sql-reference/statements/drop#drop-function)
 
-
-**另见**
+**另请参阅**
 
 - [命名集合指南](/operations/named-collections.md)

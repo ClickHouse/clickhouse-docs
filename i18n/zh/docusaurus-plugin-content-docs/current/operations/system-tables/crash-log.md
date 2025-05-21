@@ -1,14 +1,17 @@
 ---
-description: '包含 fatal 错误的堆栈跟踪信息的系统表。'
-slug: /operations/system-tables/crash-log
-title: 'system.crash_log'
-keywords: ['system table', 'crash_log']
+'description': 'System table containing information about stack traces for fatal errors.'
+'keywords':
+- 'system table'
+- 'crash_log'
+'slug': '/operations/system-tables/crash-log'
+'title': 'system.crash_log'
 ---
-import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-包含 fatal 错误的堆栈跟踪信息。该表在数据库中默认不存在，仅在发生 fatal 错误时创建。
+包含有关致命错误的堆栈跟踪信息。该表在数据库中默认情况下不存在，仅在发生致命错误时创建。
 
 列：
 
@@ -19,7 +22,7 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 - `signal` ([Int32](../../sql-reference/data-types/int-uint.md)) — 信号编号。
 - `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 线程 ID。
 - `query_id` ([String](../../sql-reference/data-types/string.md)) — 查询 ID。
-- `trace` ([Array](../../sql-reference/data-types/array.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 崩溃时的堆栈跟踪。每个元素都是 ClickHouse 服务器进程中的虚拟内存地址。
+- `trace` ([Array](../../sql-reference/data-types/array.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 崩溃时的堆栈跟踪。每个元素是 ClickHouse 服务器进程中的虚拟内存地址。
 - `trace_full` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 崩溃时的堆栈跟踪。每个元素包含 ClickHouse 服务器进程中调用的方法。
 - `version` ([String](../../sql-reference/data-types/string.md)) — ClickHouse 服务器版本。
 - `revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ClickHouse 服务器修订版。
@@ -29,13 +32,13 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 查询：
 
-``` sql
+```sql
 SELECT * FROM system.crash_log ORDER BY event_time DESC LIMIT 1;
 ```
 
 结果（不完整）：
 
-``` text
+```text
 Row 1:
 ──────
 hostname:     clickhouse.eu-central1.internal
@@ -52,5 +55,5 @@ revision:     54442
 build_id:
 ```
 
-**另请参阅**
+**另见**
 - [trace_log](../../operations/system-tables/trace_log.md) 系统表

@@ -1,16 +1,20 @@
 ---
-slug: /sql-reference/window-functions/rank
-sidebar_label: 'rank'
-sidebar_position: 6
+'description': '窗口函数排名的文档'
+'sidebar_label': '排名'
+'sidebar_position': 6
+'slug': '/sql-reference/window-functions/rank'
+'title': 'rank'
 ---
+
+
 
 
 # rank
 
-在其分区内为当前行进行排名，允许存在间隙。换句话说，如果它遇到的任何行的值与之前行的值相等，则该行将获得与之前行相同的排名。
-下一行的排名等于之前行的排名加上与之前排名相同的次数所对应的间隙。
+在其分区内对当前行进行排名，带有间隙。换句话说，如果它遇到的任何行的值等于之前某行的值，那么它将获得与该行相同的排名。
+下一行的排名等于前一行的排名加上一个间隙，该间隙等于前一排名被赋予的次数。
 
-[dense_rank](./dense_rank.md) 函数提供相同的行为，但在排名中不允许存在间隙。
+[dense_rank](./dense_rank.md) 函数提供相同的行为，但排名中没有间隙。
 
 **语法**
 
@@ -26,11 +30,11 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 **返回值**
 
-- 当前行在其分区内的排名数字，包括间隙。[UInt64](../data-types/int-uint.md)。
+- 当前行在其分区内的一个数字，包括间隙。 [UInt64](../data-types/int-uint.md)。
 
 **示例**
 
-以下示例基于视频讲解中的示例 [在 ClickHouse 中的排名窗口函数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)。
+以下示例基于视频教程 [在 ClickHouse 中的排名窗口函数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA) 中提供的示例。
 
 查询：
 

@@ -1,34 +1,47 @@
 ---
-slug: /tutorial
-sidebar_label: 高级教程
-sidebar_position: 0.5
-keywords: ['clickhouse', '安装', '教程', '字典', '字典表']
+'slug': '/tutorial'
+'sidebar_label': '高级教程'
+'title': '高级教程'
+'description': '学习如何使用纽约市出租车示例数据集在 ClickHouse 中进行数据摄取和查询。'
+'sidebar_position': 0.5
+'keywords':
+- 'clickhouse'
+- 'install'
+- 'tutorial'
+- 'dictionary'
+- 'dictionaries'
+- 'example'
+- 'advanced'
+- 'taxi'
+- 'new york'
+- 'nyc'
 ---
-import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
+
+
 
 
 # 高级教程
 
-## 本教程的期望内容是什么？ {#what-to-expect-from-this-tutorial}
+## 概述 {#overview}
 
-在本教程中，您将创建一个表并插入一个大型数据集（包含两百万行的 [纽约出租车数据](/getting-started/example-datasets/nyc-taxi.md)）。然后，您将对数据集执行查询，包括如何创建字典并使用它执行 JOIN 的示例。
+学习如何使用纽约市出租车示例数据集在 ClickHouse 中导入和查询数据。
 
-:::note
-本教程假设您可以访问正在运行的 ClickHouse 服务。如果没有，请查看 [快速入门](./quick-start.mdx)。
-:::
+### 先决条件 {#prerequisites}
 
-## 1. 创建新表 {#1-create-a-new-table}
+您需要访问正在运行的 ClickHouse 服务以完成本教程。有关说明，请参阅 [快速入门](./quick-start.mdx) 指南。
 
-纽约市出租车数据包含数百万次出租车行程的详细信息，列包括接送时间和地点、费用、小费金额、过路费、付款类型等。让我们创建一个表来存储这些数据...
+<VerticalStepper>
 
-1. 连接到 SQL 控制台
+## 创建新表 {#create-a-new-table}
 
-  <SQLConsoleDetail />
+纽约市出租车数据集包含有关数百万次出租车乘车的详细信息，列包括小费金额、费用、支付类型等。创建一个表以存储这些数据。
 
-  如果您使用的是自管理的 ClickHouse，您可以通过 https://_hostname_:8443/play 连接到 SQL 控制台（请向您的 ClickHouse 管理员确认详细信息）。
+1. 连接到 SQL 控制台：
+- 对于 ClickHouse Cloud，从下拉菜单中选择一个服务，然后从左侧导航菜单中选择 **SQL 控制台**。
+- 对于自管理的 ClickHouse，连接到 SQL 控制台 `https://_hostname_:8443/play`。请向您的 ClickHouse 管理员查询详细信息。
 
 2. 在 `default` 数据库中创建以下 `trips` 表：
-    ```sql
+```sql
     CREATE TABLE trips
     (
         `trip_id` UInt32,
@@ -80,14 +93,15 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
     ENGINE = MergeTree
     PARTITION BY toYYYYMM(pickup_date)
     ORDER BY pickup_datetime;
-    ```
+```
 
-## 2. 插入数据集 {#2-insert-the-dataset}
+## 添加数据集 {#add-the-dataset}
 
-现在您已经创建了一个表，让我们添加纽约出租车数据。它存储在 S3 的 CSV 文件中，您可以从那里加载数据。
+现在您已经创建了一个表，将从 S3 中的 CSV 文件中添加纽约市出租车数据。
 
-1. 以下命令从 S3 中的两个不同文件 `trips_1.tsv.gz` 和 `trips_2.tsv.gz` 向您的 `trips` 表插入约 2,000,000 行：
-    ```sql
+1. 以下命令从 S3 中的两个不同文件 `trips_1.tsv.gz` 和 `trips_2.tsv.gz` 向您的 `trips` 表插入大约 2,000,000 行：
+
+```sql
     INSERT INTO trips
     SELECT * FROM s3(
         'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{1..2}.gz',
@@ -138,59 +152,54 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
         `dropoff_ntaname` String,
         `dropoff_puma` UInt16
     ") SETTINGS input_format_try_infer_datetimes = 0
-    ```
+```
 
-2. 等待 `INSERT` 完成 - 下载 150 MB 的数据可能需要一些时间。
-
-    :::note
-    `s3` 函数聪明地知道如何解压数据，`TabSeparatedWithNames` 格式告诉 ClickHouse 数据是以制表符分隔，并且跳过每个文件的标题行。
-    :::
+2. 等待 `INSERT` 完成。下载 150 MB 的数据可能需要一段时间。
 
 3. 插入完成后，验证是否成功：
-    ```sql
+```sql
     SELECT count() FROM trips
-    ```
+```
 
-    您应该看到大约 2M 行（确切地说是 1,999,657 行）。
+    此查询应返回 1,999,657 行。
 
-    :::note
-    请注意，ClickHouse 是多么迅速以及处理了多么少的行以确定计数？您可以在 0.001 秒内获得计数，仅处理了 6 行。
-    :::
+## 分析数据 {#analyze-the-data}
 
-4. 如果您运行一个需要遍历每一行的查询，您会注意到需要处理的行数显著增加，但运行时间仍然非常快：
-    ```sql
-    SELECT DISTINCT(pickup_ntaname) FROM trips
-    ```
+运行一些查询以分析数据。探索以下示例或尝试您自己的 SQL 查询。
 
-    这个查询需要处理 2M 行并返回 190 个值，但请注意，它在大约 1 秒内完成。`pickup_ntaname` 列表示纽约市出租车行程起始的邻里名称。
-
-## 3. 分析数据 {#3-analyze-the-data}
-
-让我们运行一些查询来分析这 2M 行的数据...
-
-1. 我们将从一些简单的计算开始，比如计算平均小费金额：
-    ```sql
+- 计算平均小费金额：
+```sql
     SELECT round(avg(tip_amount), 2) FROM trips
-    ```
-
-    响应为：
-    ```response
+```
+    <details>
+    <summary>预期输出</summary>
+    <p>
+    
+```response
     ┌─round(avg(tip_amount), 2)─┐
     │                      1.68 │
     └───────────────────────────┘
-    ```
+```
 
-2. 该查询根据乘客数量计算平均费用：
-    ```sql
+    </p>
+    </details>
+
+- 根据乘客人数计算平均费用：
+```sql
     SELECT
         passenger_count,
         ceil(avg(total_amount),2) AS average_total_amount
     FROM trips
     GROUP BY passenger_count
-    ```
+```
+    
+    <details>
+    <summary>预期输出</summary>
+    <p>
 
-    `passenger_count` 的范围为 0 到 9：
-    ```response
+    `passenger_count` 范围从 0 到 9：
+
+```response
     ┌─passenger_count─┬─average_total_amount─┐
     │               0 │                22.69 │
     │               1 │                15.97 │
@@ -203,10 +212,13 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
     │               8 │                36.41 │
     │               9 │                 9.81 │
     └─────────────────┴──────────────────────┘
-    ```
+```
 
-3. 这是一个计算每个邻里每日接送次数的查询：
-    ```sql
+    </p>
+    </details>
+
+- 计算每个社区每日接客数量：
+```sql
     SELECT
         pickup_date,
         pickup_ntaname,
@@ -214,10 +226,13 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
     FROM trips
     GROUP BY pickup_date, pickup_ntaname
     ORDER BY pickup_date ASC
-    ```
+```
 
-    结果如下所示：
-    ```response
+    <details>
+    <summary>预期输出</summary>
+    <p>
+
+```response
     ┌─pickup_date─┬─pickup_ntaname───────────────────────────────────────────┬─number_of_trips─┐
     │  2015-07-01 │ Brooklyn Heights-Cobble Hill                             │              13 │
     │  2015-07-01 │ Old Astoria                                              │               5 │
@@ -228,10 +243,13 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
     │  2015-07-01 │ SoHo-TriBeCa-Civic Center-Little Italy                   │             621 │
     │  2015-07-01 │ Park Slope-Gowanus                                       │              29 │
     │  2015-07-01 │ Bushwick South                                           │               5 │
-    ```
+```
 
-4. 该查询计算行程长度并按该值分组结果：
-    ```sql
+    </p>
+    </details>
+
+- 计算每次乘车的分钟数，然后按乘车时长分组结果：
+```sql
     SELECT
         avg(tip_amount) AS avg_tip,
         avg(fare_amount) AS avg_fare,
@@ -242,10 +260,12 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
     WHERE trip_minutes > 0
     GROUP BY trip_minutes
     ORDER BY trip_minutes DESC
-    ```
-
-    结果如下所示：
-    ```response
+```
+    <details>
+    <summary>预期输出</summary>
+    <p>
+    
+```response
     ┌──────────────avg_tip─┬───────────avg_fare─┬──────avg_passenger─┬──count─┬─trip_minutes─┐
     │   1.9600000381469727 │                  8 │                  1 │      1 │        27511 │
     │                    0 │                 12 │                  2 │      1 │        27500 │
@@ -254,10 +274,13 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
     │   0.9715789457909146 │ 13.646616541353383 │ 2.0526315789473686 │    133 │         1437 │
     │   0.9682692398245518 │ 14.134615384615385 │  2.076923076923077 │    104 │         1436 │
     │   1.1022105210705808 │ 13.778947368421052 │  2.042105263157895 │     95 │         1435 │
-    ```
+```
+    </p>
+    </details>
 
-5. 该查询显示每个邻里按小时分解的接送次数：
-    ```sql
+
+- 显示每个社区按小时划分的接客数量：
+```sql
     SELECT
         pickup_ntaname,
         toHour(pickup_datetime) as pickup_hour,
@@ -266,10 +289,12 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
     WHERE pickup_ntaname != ''
     GROUP BY pickup_ntaname, pickup_hour
     ORDER BY pickup_ntaname, pickup_hour
-    ```
+```
+    <details>
+    <summary>预期输出</summary>
+    <p>
 
-    结果如下所示：
-    ```response
+```response
     ┌─pickup_ntaname───────────────────────────────────────────┬─pickup_hour─┬─pickups─┐
     │ Airport                                                  │           0 │    3509 │
     │ Airport                                                  │           1 │    1184 │
@@ -305,10 +330,14 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
     │ Allerton-Pelham Gardens                                  │          23 │       1 │
     │ Annadale-Huguenot-Prince's Bay-Eltingville               │          23 │       1 │
     │ Arden Heights                                            │          11 │       1 │
-    ```
+```
 
-7. 让我们查看前往拉瓜迪亚或 JFK 机场的行程：
-    ```sql
+    </p>
+    </details>
+
+    
+7. 检索前往拉瓜迪亚或 JFK 机场的乘车记录：
+```sql
     SELECT
         pickup_datetime,
         dropoff_datetime,
@@ -325,10 +354,13 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
     FROM trips
     WHERE dropoff_nyct2010_gid IN (132, 138)
     ORDER BY pickup_datetime
-    ```
+```
 
-    响应为：
-    ```response
+    <details>
+    <summary>预期输出</summary>
+    <p>
+
+```response
     ┌─────pickup_datetime─┬────dropoff_datetime─┬─total_amount─┬─pickup_nyct2010_gid─┬─dropoff_nyct2010_gid─┬─airport_code─┬─year─┬─day─┬─hour─┐
     │ 2015-07-01 00:04:14 │ 2015-07-01 00:15:29 │         13.3 │                 -34 │                  132 │ JFK          │ 2015 │   1 │    0 │
     │ 2015-07-01 00:09:42 │ 2015-07-01 00:12:55 │          6.8 │                  50 │                  138 │ LGA          │ 2015 │   1 │    0 │
@@ -339,26 +371,33 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
     │ 2015-07-01 00:38:26 │ 2015-07-01 00:49:00 │         13.3 │                 -11 │                  138 │ LGA          │ 2015 │   1 │    0 │
     │ 2015-07-01 00:41:48 │ 2015-07-01 00:44:45 │          6.3 │                 -94 │                  132 │ JFK          │ 2015 │   1 │    0 │
     │ 2015-07-01 01:06:18 │ 2015-07-01 01:14:43 │        11.76 │                  37 │                  132 │ JFK          │ 2015 │   1 │    1 │
-    ```
+```
 
-## 4. 创建字典 {#4-create-a-dictionary}
+    </p>
+    </details>
 
-如果您是 ClickHouse 新手，理解 ***字典*** 的工作原理非常重要。简单地说，字典可以被视为存储在内存中的键值对映射。字典的详细信息和所有选项将在教程的最后链接。
+## 创建字典 {#create-a-dictionary}
 
-1. 让我们看一下如何创建与 ClickHouse 服务中的表关联的字典。该表以及字典将基于一个包含 265 行的 CSV 文件，每一行对应纽约市的一个邻里。这些邻里映射到纽约市的区名（纽约市有 5 个区：布朗克斯、布鲁克林、曼哈顿、皇后区和斯塔顿岛），并且该文件还将纽瓦克机场 (EWR) 算作一个区。
+字典是存储在内存中的键值对映射。有关详细信息，请参见 [字典](/sql-reference/dictionaries/index.md) 
 
-  这是 CSV 文件的一部分（为了清晰以表格形式显示）。该文件中的 `LocationID` 列映射到您 `trips` 表中的 `pickup_nyct2010_gid` 和 `dropoff_nyct2010_gid` 列：
+创建一个与您 ClickHouse 服务中表相关联的字典。
+该表和字典基于包含纽约市每个社区的行的 CSV 文件。
 
-    | LocationID      | Borough |  Zone      | service_zone |
-    | ----------- | ----------- |   ----------- | ----------- |
-    | 1      | EWR       |  纽瓦克机场   | EWR        |
-    | 2    |   皇后区     |   牙买加湾   |      区域   |
-    | 3   |   布朗克斯     |  Allerton/Pelham Gardens    |    区域     |
-    | 4     |    曼哈顿    |    字母城市  |     黄区    |
-    | 5     |  斯塔顿岛      |   阿登高地   |    区域     |
+社区与五个纽约市区（布朗克斯、布鲁克林、曼哈顿、皇后区和斯塔滕岛）的名称映射，以及纽瓦克机场（EWR）。
 
-2. 文件的 URL 是 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`。运行以下 SQL，它创建一个名为 `taxi_zone_dictionary` 的字典，并从 S3 中的 CSV 文件填充字典：
-  ```sql
+以下是您正在使用的 CSV 文件的表格格式摘录。文件中的 `LocationID` 列映射到您 `trips` 表中的 `pickup_nyct2010_gid` 和 `dropoff_nyct2010_gid` 列：
+
+  | LocationID      | Borough |  Zone      | service_zone |
+  | ----------- | ----------- |   ----------- | ----------- |
+  | 1      | EWR       |  纽瓦克机场   | EWR        |
+  | 2    |   皇后区     |   牙买加湾   |      区域   |
+  | 3   |   布朗克斯     |  阿莱顿/佩尔汉姆花园    |    区域     |
+  | 4     |    曼哈顿    |    字母城  |     黄区    |
+  | 5     |  斯塔滕岛      |   阿登高地   |    区域     |
+
+
+1. 运行以下 SQL 命令，创建名为 `taxi_zone_dictionary` 的字典，并从 S3 中的 CSV 文件填充该字典。文件的 URL 为 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`。 
+```sql
   CREATE DICTIONARY taxi_zone_dictionary
   (
     `LocationID` UInt16 DEFAULT 0,
@@ -370,52 +409,45 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
   SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
   LIFETIME(MIN 0 MAX 0)
   LAYOUT(HASHED_ARRAY())
-  ```
+```
 
   :::note
-  将 `LIFETIME` 设置为 0 意味着这个字典将永远不会与其源更新。这样做是为了不对我们的 S3 存储桶发送不必要的流量，但一般来说，您可以根据需要指定任何生命周期值。
-
-    例如：
-
-    ```sql
-    LIFETIME(MIN 1 MAX 10)
-    ```
-    指定字典在 1 到 10 秒之间的随机时间后更新。（随机时间是必要的，以便在大量服务器上更新时分散字典源的负担。）
+  将 `LIFETIME` 设置为 0 禁用自动更新，以避免不必要的流量到我们的 S3 存储桶。在其他情况下，您可以以不同的方式进行配置。有关详细信息，请参见 [使用 LIFETIME 刷新字典数据](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。
   :::
 
-3. 验证是否成功 - 你应该获得 265 行（每个邻里一行）：
-    ```sql
+3. 验证是否成功。以下应该返回 265 行，或每个社区一行：
+```sql
     SELECT * FROM taxi_zone_dictionary
-    ```
+```
 
-4. 使用 `dictGet` 函数（[或其变体](./sql-reference/functions/ext-dict-functions.md)）从字典中检索值。您传入字典的名称、所需的值和键（在我们的示例中是 `taxi_zone_dictionary` 的 `LocationID` 列）。
+4. 使用 `dictGet` 函数 ([或其变体](./sql-reference/functions/ext-dict-functions.md)) 从字典中检索值。您传入字典的名称、所需的值和键（在我们的示例中是 `taxi_zone_dictionary` 的 `LocationID` 列）。
 
-    例如，以下查询返回 `LocationID` 为 132 的 `Borough`（如上面所见为 JFK 机场）：
-    ```sql
+    例如，以下查询返回 `LocationID` 为 132 的 `Borough`，对应于 JFK 机场）：
+```sql
     SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
-    ```
+```
 
-    查尔斯在皇后区，注意检索值的时间基本上为 0：
-    ```response
+    JFK 在皇后区。请注意，检索该值的时间几乎为 0：
+```response
     ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
-    │ 皇后区                                          │
+    │ Queens                                          │
     └─────────────────────────────────────────────────┘
 
     1 rows in set. Elapsed: 0.004 sec.
-    ```
+```
 
-5. 使用 `dictHas` 函数查看字典中是否存在键。比如，以下查询返回 1（在 ClickHouse 中为“真”）：
-    ```sql
+5. 使用 `dictHas` 函数查看字典中是否存在某个键。例如，以下查询返回 `1`（在 ClickHouse 中表示 "真"）：
+```sql
     SELECT dictHas('taxi_zone_dictionary', 132)
-    ```
+```
 
-6. 以下查询返回 0，因为 4567 不是字典中的 `LocationID` 的值：
-    ```sql
+6. 以下查询返回 0，因为 4567 不是字典中 `LocationID` 的值：
+```sql
     SELECT dictHas('taxi_zone_dictionary', 4567)
-    ```
+```
 
 7. 使用 `dictGet` 函数在查询中检索一个区的名称。例如：
-    ```sql
+```sql
     SELECT
         count(1) AS total,
         dictGetOrDefault('taxi_zone_dictionary','Borough', toUInt64(pickup_nyct2010_gid), 'Unknown') AS borough_name
@@ -423,29 +455,30 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
     WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
     GROUP BY borough_name
     ORDER BY total DESC
-    ```
+```
 
-    该查询汇总了在拉瓜迪亚或 JFK 机场结束的每个区的出租车行程数量。结果如下所示，并且请注意，有相当多的行程的接送邻里是未知的：
-    ```response
+    此查询汇总了在拉瓜迪亚或 JFK 机场结束的每个区的出租车乘车数量。结果类似于以下内容，并且请注意有不少于乘车社区未知的行程：
+```response
     ┌─total─┬─borough_name──┐
     │ 23683 │ Unknown       │
-    │  7053 │ 曼哈顿     │
-    │  6828 │ 布鲁克林      │
-    │  4458 │ 皇后区        │
-    │  2670 │ 布朗克斯         │
-    │   554 │ 斯塔顿岛 │
+    │  7053 │ Manhattan     │
+    │  6828 │ Brooklyn      │
+    │  4458 │ Queens        │
+    │  2670 │ Bronx         │
+    │   554 │ Staten Island │
     │    53 │ EWR           │
     └───────┴───────────────┘
 
     7 rows in set. Elapsed: 0.019 sec. Processed 2.00 million rows, 4.00 MB (105.70 million rows/s., 211.40 MB/s.)
-    ```
+```
 
-## 5. 执行 JOIN {#5-perform-a-join}
 
-让我们编写一些查询，将 `taxi_zone_dictionary` 与您的 `trips` 表进行连接。
+## 执行连接 {#perform-a-join}
 
-1. 我们可以从一个简单的 JOIN 开始，它在功能上类似于上面之前的机场查询：
-    ```sql
+编写一些将 `taxi_zone_dictionary` 与您的 `trips` 表连接的查询。
+
+1. 首先使用一个简单的 `JOIN` 与上面的机场查询相似：
+```sql
     SELECT
         count(1) AS total,
         Borough
@@ -454,28 +487,28 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
     WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
     GROUP BY Borough
     ORDER BY total DESC
-    ```
+```
 
-    响应类似于：
-    ```response
+    响应与使用 `dictGet` 查询的结果相同：
+```response
     ┌─total─┬─Borough───────┐
-    │  7053 │ 曼哈顿     │
-    │  6828 │ 布鲁克林      │
-    │  4458 │ 皇后区        │
-    │  2670 │ 布朗克斯         │
-    │   554 │ 斯塔顿岛 │
+    │  7053 │ Manhattan     │
+    │  6828 │ Brooklyn      │
+    │  4458 │ Queens        │
+    │  2670 │ Bronx         │
+    │   554 │ Staten Island │
     │    53 │ EWR           │
     └───────┴───────────────┘
 
     6 rows in set. Elapsed: 0.034 sec. Processed 2.00 million rows, 4.00 MB (59.14 million rows/s., 118.29 MB/s.)
-    ```
+```
 
     :::note
-    请注意，上面的 `JOIN` 查询的输出与之前使用 `dictGetOrDefault` 的查询是相同的（只是 `Unknown` 值不包含在内）。在后台，ClickHouse 实际上调用的是 `taxi_zone_dictionary` 字典的 `dictGet` 函数，但 `JOIN` 语法对 SQL 开发人员来说更为熟悉。
+    请注意，上述 `JOIN` 查询的输出与之前使用 `dictGetOrDefault` 的查询相同（只是 `未知` 值未包含在内）。在后台，ClickHouse 实际上调用 `taxi_zone_dictionary` 字典的 `dictGet` 函数，但对于 SQL 开发人员而言，`JOIN` 语法更加熟悉。
     :::
 
-2. 我们在 ClickHouse 中不常使用 `SELECT *` - 您应该仅检索您实际需要的列！但要找到一个花费很长时间的查询很困难，因此此查询故意选择每一列并返回每一行（除了默认情况下内置的 10,000 行响应最大限制），并且也与字典进行每一行的右连接：
-    ```sql
+2. 此查询返回 1000 次小费金额最高的行程的行，然后将每一行与字典进行内部连接：
+```sql
     SELECT *
     FROM trips
     JOIN taxi_zone_dictionary
@@ -483,14 +516,18 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
     WHERE tip_amount > 0
     ORDER BY tip_amount DESC
     LIMIT 1000
-    ```
+```
+        :::note
+        通常，我们在 ClickHouse 中避免频繁使用 `SELECT *`。您应该只检索您实际需要的列。然而，此查询对于示例目的来说会更慢。
+        :::
 
-#### 恭喜！ {#congrats}
+</VerticalStepper>
 
-做得好 - 您完成了本教程，并且希望您对如何使用 ClickHouse 有了更好的理解。以下是您可以做的下一步：
+## 下一步 {#next-steps}
 
-- 阅读 [ClickHouse 中主键的工作原理](./guides/best-practices/sparse-primary-indexes.md) - 这些知识将使您在成为 ClickHouse 专家的旅程中走得更远
-- [集成外部数据源](/integrations/index.mdx)，例如文件、Kafka、PostgreSQL、数据管道或大量其他数据源
-- [将您最喜欢的 UI/BI 工具](./integrations/data-visualization/index.md) 连接到 ClickHouse
-- 查看 [SQL 参考](./sql-reference/index.md) 并浏览各种函数。ClickHouse 拥有一个惊人的函数集合，用于转换、处理和分析数据
-- 了解有关 [字典](./sql-reference/dictionaries/index.md) 的更多信息
+通过以下文档深入了解 ClickHouse：
+
+- [ClickHouse 中主索引简介](./guides/best-practices/sparse-primary-indexes.md)：了解 ClickHouse 如何使用稀疏主索引在查询期间有效定位相关数据。 
+- [集成外部数据源](/integrations/index.mdx)：查看数据源集成选项，包括文件、Kafka、PostgreSQL、数据管道等。
+- [在 ClickHouse 中可视化数据](./integrations/data-visualization/index.md)：将您喜欢的 UI/BI 工具连接到 ClickHouse。
+- [SQL 参考](./sql-reference/index.md)：浏览 ClickHouse 中可用的 SQL 函数，以转换、处理和分析数据。

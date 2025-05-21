@@ -1,11 +1,15 @@
 ---
-title: 'JSONStringsEachRow'
-slug: '/interfaces/formats/JSONStringsEachRow'
-keywords: ['JSONStringsEachRow']
-input_format: false
-output_format: true
-alias: []
+'alias': []
+'description': 'JSONStringsEachRow格式的文档'
+'input_format': false
+'keywords':
+- 'JSONStringsEachRow'
+'output_format': true
+'slug': '/interfaces/formats/JSONStringsEachRow'
+'title': 'JSONStringsEachRow'
 ---
+
+
 
 | 输入 | 输出 | 别名 |
 |-------|--------|-------|
@@ -13,7 +17,7 @@ alias: []
 
 ## 描述 {#description}
 
-与 [`JSONEachRow`](./JSONEachRow.md) 的区别在于数据字段以字符串输出，而不是以类型化的 JSON 值输出。
+与 [`JSONEachRow`](./JSONEachRow.md) 的不同之处在于数据字段以字符串格式输出，而不是以类型化的 JSON 值输出。
 
 ## 示例用法 {#example-usage}
 

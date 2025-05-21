@@ -1,10 +1,16 @@
 ---
-description: '用于实现 `SHOW PROCESSLIST` 查询的系统表。'
-slug: /operations/system-tables/processes
-title: 'system.processes'
-keywords: ['system table', 'processes']
+'description': 'System table used for implementing the `SHOW PROCESSLIST` query.'
+'keywords':
+- 'system table'
+- 'processes'
+'slug': '/operations/system-tables/processes'
+'title': 'system.processes'
 ---
-import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+
+
+# system.processes
 
 <SystemTableCloud/>
 
@@ -12,17 +18,17 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 列：
 
-- `user` (String) – 发起查询的用户。请注意，在分布式处理的情况下，查询会以 `default` 用户的身份发送到远程服务器。该字段包含某个特定查询的用户名，而不是该查询发起的查询的用户名。
-- `address` (String) – 请求发起的 IP 地址。在分布式处理的情况下也是如此。要追踪某个分布式查询最初从哪里发起，请查看查询请求服务器上的 `system.processes`。
-- `elapsed` (Float64) – 自请求执行开始以来的时间（以秒为单位）。
-- `read_rows` (UInt64) – 从表中读取的行数。在请求服务器上，对于分布式处理，这是所有远程服务器的总和。
-- `read_bytes` (UInt64) – 从表中读取的未压缩字节数。在请求服务器上，对于分布式处理，这是所有远程服务器的总和。
-- `total_rows_approx` (UInt64) – 应该读取的总行数的近似值。在请求服务器上，对于分布式处理，这是所有远程服务器的总和。在请求处理期间，当新的处理源变得可知时，它可以被更新。
-- `memory_usage` (Int64) – 请求使用的 RAM 数量。它可能不包括某些类型的专用内存。请参见 [max_memory_usage](../../operations/settings/query-complexity.md#settings_max_memory_usage) 设置。
+- `user` (String) – 执行查询的用户。请注意，对于分布式处理，查询是以 `default` 用户身份发送到远程服务器。该字段包含特定查询的用户名，而不是此查询所启动的查询的用户名。
+- `address` (String) – 发起请求的 IP 地址。对于分布式处理也是如此。要追踪分布式查询最初是从哪里发出的，请查看查询请求发起者服务器上的 `system.processes`。
+- `elapsed` (Float64) – 请求执行开始以来经过的时间（以秒为单位）。
+- `read_rows` (UInt64) – 从表中读取的行数。对于分布式处理，在请求者服务器上，这是所有远程服务器的总和。
+- `read_bytes` (UInt64) – 从表中读取的未压缩字节数。对于分布式处理，在请求者服务器上，这是所有远程服务器的总和。
+- `total_rows_approx` (UInt64) – 应该读取的总行数的近似值。对于分布式处理，在请求者服务器上，这是所有远程服务器的总和。在请求处理期间，当新的处理源被知晓时，可能会更新此值。
+- `memory_usage` (Int64) – 请求使用的 RAM 量。它可能不包括某些类型的专用内存。请参阅 [max_memory_usage](/operations/settings/settings#max_memory_usage) 设置。
 - `query` (String) – 查询文本。对于 `INSERT`，它不包括要插入的数据。
 - `query_id` (String) – 查询 ID（如果已定义）。
 - `is_cancelled` (UInt8) – 查询是否被取消。
-- `is_all_data_sent` (UInt8) – 是否所有数据已发送到客户端（换句话说，查询在服务器上已完成）。
+- `is_all_data_sent` (UInt8) – 是否将所有数据发送到客户端（换句话说，查询在服务器上已完成）。
 
 ```sql
 SELECT * FROM system.processes LIMIT 10 FORMAT Vertical;

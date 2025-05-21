@@ -1,58 +1,60 @@
 ---
-description:  'TPC-H 基准数据集和查询。'
-slug: /getting-started/example-datasets/tpch
-sidebar_label: TPC-H
-title: 'TPC-H (1999)'
+'description': 'The TPC-H benchmark data set and queries.'
+'sidebar_label': 'TPC-H'
+'slug': '/getting-started/example-datasets/tpch'
+'title': 'TPC-H (1999)'
 ---
 
-一个流行的基准，模拟了批发供应商的内部数据仓库。数据以第三范式形式存储，要求在查询运行时进行大量连接。尽管它的年代较久，且基于不切实际的假设（数据均匀且独立分布），但TPC-H 仍然是迄今为止最流行的OLAP基准。
+
+
+一个热门的基准测试模型，模拟了批发供应商的内部数据仓库。数据以 3NF 形式存储，需要在查询运行时进行大量的关联。尽管它已有些年头且假设数据是均匀独立分布的，但 TPC-H 迄今仍然是最受欢迎的 OLAP 基准测试。
 
 **参考文献**
 
 - [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
-- [用于决策支持和网络商务的新TPC基准](https://doi.org/10.1145/369275.369291) (Poess et. al., 2000)
-- [TPC-H 分析：从一个有影响力的基准中获得的隐藏信息和经验教训](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
-- [量化TPC-H 瓶颈及其优化](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
+- [新 TPC 基准测试用于决策支持和网络商务](https://doi.org/10.1145/369275.369291) (Poess et. al., 2000)
+- [TPC-H 分析：从一个有影响力的基准测试中隐含的消息和教训](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al., 2013)
+- [量化 TPC-H 瓶颈及其优化](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al., 2020)
 
-## 数据生成与导入 {#data-generation-and-import}
+## 数据生成和导入 {#data-generation-and-import}
 
-首先，克隆 TPC-H 仓库并编译数据生成器：
+首先，检出 TPC-H 仓库并编译数据生成器：
 
-``` bash
+```bash
 git clone https://github.com/gregrahn/tpch-kit.git
 cd tpch-kit/dbgen
 make
 ```
 
-然后，生成数据。参数 `-s` 指定缩放因子。例如，使用 `-s 100`，为 'lineitem' 表生成 600 百万行数据。
+然后，生成数据。参数 `-s` 指定缩放因子。例如，使用 `-s 100`，为表 'lineitem' 生成 600 万行数据。
 
-``` bash
+```bash
 ./dbgen -s 100
 ```
 
 缩放因子为 100 的详细表大小：
 
-| 表名      | 行数           | ClickHouse 中的压缩大小 |
-|-----------|----------------|---------------------|
-| nation    | 25             | 2 kB                |
-| region    | 5              | 1 kB                |
-| part      | 20.000.000     | 895 MB              |
-| supplier  | 1.000.000      | 75 MB               |
-| partsupp  | 80.000.000     | 4.37 GB             |
-| customer  | 15.000.000     | 1.19 GB             |
-| orders    | 150.000.000    | 6.15 GB             |
-| lineitem  | 600.00.00      | 26.69 GB            |
+| 表名     | 行数           | 在 ClickHouse 中压缩后大小 |
+|----------|----------------|---------------------------|
+| nation   | 25             | 2 kB                      |
+| region   | 5              | 1 kB                      |
+| part     | 20.000.000     | 895 MB                    |
+| supplier | 1.000.000      | 75 MB                     |
+| partsupp | 80.000.000     | 4.37 GB                   |
+| customer | 15.000.000     | 1.19 GB                   |
+| orders   | 150.000.000    | 6.15 GB                   |
+| lineitem | 600.00.00      | 26.69 GB                  |
 
-（ClickHouse 中的压缩大小来自 `system.tables.total_bytes`，并基于下面的表定义。）
+（ClickHouse 中的压缩大小取自 `system.tables.total_bytes`，根据下面的表定义。）
 
 现在在 ClickHouse 中创建表。
 
 我们尽可能遵循 TPC-H 规范的规则：
-- 只为规范第 1.4.2.2 节中提到的列创建主键。
-- 替换参数已被规范第 2.1.x.4 节中的查询验证值替换。
-- 根据第 1.4.2.1 节，表定义不使用可选的 `NOT NULL` 约束，即使 `dbgen` 默认生成它们。ClickHouse 中 `SELECT` 查询的性能不会受到 `NOT NULL` 约束存在或缺失的影响。
-- 根据第 1.3.1 节，我们使用 ClickHouse 的本地数据类型（例如 `Int32`，`String`）来实现规范中提到的抽象数据类型（例如 `Identifier`，`Variable text, size N`）。这样做的唯一效果是可读性更佳，由 `dbgen` 生成的 SQL-92 数据类型（例如 `INTEGER`，`VARCHAR(40)`）在 ClickHouse 中也能正常工作。
-
+- 仅为规范第 1.4.2.2 节中提到的列创建主键。
+- 替代参数被替换为规范第 2.1.x.4 节中查询验证的值。
+- 根据第 1.4.2.1 节，表定义不使用可选的 `NOT NULL` 约束，即便 `dbgen` 默认生成它们。
+  ClickHouse 中 `SELECT` 查询的性能不受 `NOT NULL` 约束存在或缺失的影响。
+- 根据第 1.3.1 节，我们使用 ClickHouse 的原生数据类型（例如 `Int32`, `String`）来实现规范中提到的抽象数据类型（例如 `Identifier`, `Variable text, size N`）。这个选择的唯一影响是可读性的提升，`dbgen` 生成的 SQL-92 数据类型（例如 `INTEGER`, `VARCHAR(40)`）在 ClickHouse 中同样有效。
 
 ```sql
 CREATE TABLE nation (
@@ -120,8 +122,8 @@ CREATE TABLE orders  (
     o_shippriority   Int32,
     o_comment        String)
 ORDER BY (o_orderkey);
--- 以下是另一种排序键，不符合官方 TPC-H 规则，但推荐在
--- "量化TPC-H瓶颈及其优化" 第 4.5 节中使用：
+-- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
+-- "Quantifying TPC-H Choke Points and Their Optimizations":
 -- ORDER BY (o_orderdate, o_orderkey);
 
 CREATE TABLE lineitem (
@@ -142,14 +144,14 @@ CREATE TABLE lineitem (
     l_shipmode       String,
     l_comment        String)
 ORDER BY (l_orderkey, l_linenumber);
--- 以下是另一种排序键，不符合官方 TPC-H 规则，但推荐在
--- "量化TPC-H瓶颈及其优化" 第 4.5 节中使用：
+-- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
+-- "Quantifying TPC-H Choke Points and Their Optimizations":
 -- ORDER BY (l_shipdate, l_orderkey, l_linenumber);
 ```
 
-数据可以通过以下方式导入：
+数据可以如下导入：
 
-``` bash
+```bash
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO nation FORMAT CSV" < nation.tbl
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO region FORMAT CSV" < region.tbl
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO part FORMAT CSV" < part.tbl
@@ -161,10 +163,10 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMA
 ```
 
 :::note
-您也可以选择从公共 S3 桶中导入数据，而不是使用 tpch-kit 自行生成表。确保首先使用上述 `CREATE` 语句创建空表。
+如果不使用 tpch-kit 并自己生成表，您还可以从公共 S3 存储桶导入数据。确保首先使用上述 `CREATE` 语句创建空表。
 
 ```sql
--- 缩放因子 1
+-- Scaling factor 1
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/nation.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/region.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/part.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -174,7 +176,7 @@ INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/orders.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/lineitem.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 
--- 缩放因子 100
+-- Scaling factor 100
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/nation.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/region.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/part.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -183,21 +185,21 @@ INSERT INTO partsupp SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/customer.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/orders.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/lineitem.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-
 ````
 :::
 
-## 查询 {#queries}
+## Queries {#queries}
 
 :::note
-设置 [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) 应该启用，以根据 SQL 标准生成正确的结果。
+Setting [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) should be enabled to produce correct results according to SQL standard.
 :::
 
-这些查询由 `./qgen -s <scaling_factor>` 生成。缩放因子 `s = 100` 的示例查询：
+The queries are generated by `./qgen -s <scaling_factor>`. Example queries for `s = 100`:
 
-**正确性**
+**Correctness**
 
-查询的结果与官方结果一致，除非另有说明。要验证，请生成缩放因子为 1 的 TPC-H 数据库（使用 `dbgen`，见上文）并与 [tpch-kit 中的期望结果](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers) 进行比较。
+The result of the queries agrees with the official results unless mentioned otherwise. To verify, generate a TPC-H database with scale
+factor = 1 (`dbgen`, see above) and compare with the [expected results in tpch-kit](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers).
 
 **Q1**
 
@@ -228,6 +230,8 @@ ORDER BY
 **Q2**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     s_acctbal,
     s_name,
@@ -274,9 +278,9 @@ ORDER BY
 ```
 
 ::::note
-截至2025年2月，由于相关子查询，查询无法直接运行。相应问题： https://github.com/ClickHouse/ClickHouse/issues/6697
+直到 v25.5 之前，由于相关子查询，该查询无法即刻工作。对应的问题： https://github.com/ClickHouse/ClickHouse/issues/6697
 
-以下替代实现可行，并已验证返回参考结果。
+这个替代公式是有效的，并已验证返回参考结果。
 
 ```sql
 WITH MinSupplyCost AS (
@@ -359,6 +363,8 @@ ORDER BY
 **Q4**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     o_orderpriority,
     count(*) AS order_count
@@ -383,9 +389,9 @@ ORDER BY
 ```
 
 ::::note
-截至2025年2月，由于相关子查询，查询无法直接运行。相应问题： https://github.com/ClickHouse/ClickHouse/issues/6697
+直到 v25.5 之前，由于相关子查询，该查询无法即刻工作。对应的问题： https://github.com/ClickHouse/ClickHouse/issues/6697
 
-以下替代实现可行，并已验证返回参考结果。
+这个替代公式是有效的，并已验证返回参考结果。
 
 ```sql
 WITH ValidLineItems AS (
@@ -459,9 +465,9 @@ WHERE
 ```
 
 ::::note
-截至2025年2月，由于 Decimal 加法的错误，查询无法直接运行。相应问题： https://github.com/ClickHouse/ClickHouse/issues/70136
+截止至 2025 年 2 月，由于 Decimal 加法的错误，该查询无法即刻工作。对应的问题： https://github.com/ClickHouse/ClickHouse/issues/70136
 
-以下替代实现可行，并已验证返回参考结果。
+这个替代公式是有效的，并已验证返回参考结果。
 
 ```sql
 SELECT
@@ -817,6 +823,8 @@ ORDER BY
 **Q17**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     sum(l_extendedprice) / 7.0 AS avg_yearly
 FROM
@@ -837,9 +845,9 @@ WHERE
 ```
 
 ::::note
-截至2025年2月，由于相关子查询，查询无法直接运行。相应问题： https://github.com/ClickHouse/ClickHouse/issues/6697
+直到 v25.5 之前，由于相关子查询，该查询无法即刻工作。对应的问题： https://github.com/ClickHouse/ClickHouse/issues/6697
 
-以下替代实现可行，并已验证返回参考结果。
+这个替代公式是有效的，并已验证返回参考结果。
 
 ```sql
 WITH AvgQuantity AS (
@@ -948,6 +956,8 @@ WHERE
 **Q20**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     s_name,
     s_address
@@ -988,12 +998,14 @@ ORDER BY
 ```
 
 ::::note
-截至2025年2月，由于相关子查询，查询无法直接运行。相应问题： https://github.com/ClickHouse/ClickHouse/issues/6697
+直到 v25.5 之前，由于相关子查询，该查询无法即刻工作。对应的问题： https://github.com/ClickHouse/ClickHouse/issues/6697
 ::::
 
 **Q21**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     s_name,
     count(*) AS numwait
@@ -1035,12 +1047,14 @@ ORDER BY
     s_name;
 ```
 ::::note
-截至2025年2月，由于相关子查询，查询无法直接运行。相应问题： https://github.com/ClickHouse/ClickHouse/issues/6697
+直到 v25.5 之前，由于相关子查询，该查询无法即刻工作。对应的问题： https://github.com/ClickHouse/ClickHouse/issues/6697
 ::::
 
 **Q22**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     cntrycode,
     count(*) AS numcust,
@@ -1080,5 +1094,5 @@ ORDER BY
 ```
 
 ::::note
-截至2025年2月，由于相关子查询，查询无法直接运行。相应问题： https://github.com/ClickHouse/ClickHouse/issues/6697
+直到 v25.5 之前，由于相关子查询，该查询无法即刻工作。对应的问题： https://github.com/ClickHouse/ClickHouse/issues/6697
 ::::

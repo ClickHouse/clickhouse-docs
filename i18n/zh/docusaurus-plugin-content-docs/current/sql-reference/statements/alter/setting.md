@@ -1,23 +1,27 @@
 ---
-slug: /sql-reference/statements/alter/setting
-sidebar_position: 38
-sidebar_label: SETTING
+'description': '表设置操作文档'
+'sidebar_label': '设置'
+'sidebar_position': 38
+'slug': '/sql-reference/statements/alter/setting'
+'title': '表设置操作'
 ---
+
+
 
 
 # 表设置操作
 
-有一组查询可以更改表的设置。您可以修改设置或将其重置为默认值。单个查询可以同时更改多个设置。
-如果指定名称的设置不存在，则查询将引发异常。
+有一组查询用于更改表设置。您可以修改设置或将它们重置为默认值。单个查询可以同时更改多个设置。
+如果指定名称的设置不存在，则查询会引发异常。
 
 **语法**
 
-``` sql
+```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY|RESET SETTING ...
 ```
 
 :::note    
-这些查询只能应用于 [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) 表。
+这些查询仅适用于 [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) 表。
 :::
 
 ## MODIFY SETTING {#modify-setting}
@@ -40,7 +44,7 @@ ALTER TABLE example_table MODIFY SETTING max_part_loading_threads=8, max_parts_i
 
 ## RESET SETTING {#reset-setting}
 
-将表设置重置为其默认值。如果某个设置处于默认状态，则不采取任何行动。
+将表设置重置为默认值。如果某个设置处于默认状态，则不执行任何操作。
 
 **语法**
 
@@ -57,6 +61,6 @@ CREATE TABLE example_table (id UInt32, data String) ENGINE=MergeTree() ORDER BY 
 ALTER TABLE example_table RESET SETTING max_part_loading_threads;
 ```
 
-**另见**
+**另请参见**
 
 - [MergeTree 设置](../../../operations/settings/merge-tree-settings.md)

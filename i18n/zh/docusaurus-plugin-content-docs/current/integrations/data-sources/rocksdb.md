@@ -1,9 +1,11 @@
-slug: '/integrations/rocksdb'
-sidebar_label: 'RocksDB'
-title: 'RocksDB'
-hide_title: true
-```
+---
+'slug': '/integrations/rocksdb'
+'sidebar_label': 'RocksDB'
+'title': 'RocksDB'
+'hide_title': true
+'description': 'Page describing the RocksDBTableEngine'
+---
 
-import RocksDBTableEngine from '@site/i18n/zh/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/embedded-rocksdb.md';
+import RocksDBTableEngine from '@site/docs/engines/table-engines/integrations/embedded-rocksdb.md';
 
 <RocksDBTableEngine/>

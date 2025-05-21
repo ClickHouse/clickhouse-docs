@@ -1,22 +1,24 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/groupbitor
-sidebar_position: 152
-title: 'groupBitOr'
-description: '对一系列数字应用按位 `OR` 操作。'
+'description': '对一系列数字应用按位 `OR` 运算。'
+'sidebar_position': 152
+'slug': '/sql-reference/aggregate-functions/reference/groupbitor'
+'title': 'groupBitOr'
 ---
+
+
 
 
 # groupBitOr
 
-对一系列数字应用按位 `OR` 操作。
+应用位运算 `或` 操作于一系列数字。
 
-``` sql
+```sql
 groupBitOr(expr)
 ```
 
 **参数**
 
-`expr` – 结果为 `UInt*` 或 `Int*` 类型的表达式。
+`expr` – 一个返回 `UInt*` 或 `Int*` 类型的表达式。
 
 **返回值**
 
@@ -26,7 +28,7 @@ groupBitOr(expr)
 
 测试数据：
 
-``` text
+```text
 binary     decimal
 00101100 = 44
 00011100 = 28
@@ -36,7 +38,7 @@ binary     decimal
 
 查询：
 
-``` sql
+```sql
 SELECT groupBitOr(num) FROM t
 ```
 
@@ -44,7 +46,7 @@ SELECT groupBitOr(num) FROM t
 
 结果：
 
-``` text
+```text
 binary     decimal
 01111101 = 125
 ```

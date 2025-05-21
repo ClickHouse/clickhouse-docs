@@ -1,10 +1,16 @@
 ---
-sidebar_title: 查询 API 端点
-slug: /cloud/get-started/query-endpoints
-description: 轻松从您保存的查询中启动 REST API 端点
-keywords: [api, 查询 api 端点, 查询端点, 查询 rest api]
+'sidebar_title': 'Query API Endpoints'
+'slug': '/cloud/get-started/query-endpoints'
+'description': '轻松地从您的保存查询中启动REST API端点'
+'keywords':
+- 'api'
+- 'query api endpoints'
+- 'query endpoints'
+- 'query rest api'
+'title': '查询API端点'
 ---
 
+import Image from '@theme/IdealImage';
 import endpoints_testquery from '@site/static/images/cloud/sqlconsole/endpoints-testquery.png';
 import endpoints_savequery from '@site/static/images/cloud/sqlconsole/endpoints-savequery.png';
 import endpoints_configure from '@site/static/images/cloud/sqlconsole/endpoints-configure.png';
@@ -15,17 +21,17 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 
 # 查询 API 端点
 
-**查询 API 端点** 功能使您能够直接从 ClickHouse Cloud 控制台中的任何保存的 SQL 查询创建 API 端点。您可以通过 HTTP 访问 API 端点，以在不需要通过原生驱动程序连接到 ClickHouse Cloud 服务的情况下执行保存的查询。
+**查询 API 端点** 特性允许您直接从 ClickHouse Cloud 控制台中的任何已保存 SQL 查询创建 API 端点。您将能够通过 HTTP 访问 API 端点，以执行您的已保存查询，而无需通过本地驱动程序连接到 ClickHouse Cloud 服务。
 
 ## 快速入门指南 {#quick-start-guide}
 
-在继续之前，请确保您拥有 API 密钥和管理员控制台角色。您可以按照本指南[创建 API 密钥](/cloud/manage/openapi)。
+在继续之前，请确保您拥有 API 密钥和管理员控制台角色。您可以按照本指南 [创建 API 密钥](/cloud/manage/openapi)。
 
-### 创建保存的查询 {#creating-a-saved-query}
+### 创建已保存的查询 {#creating-a-saved-query}
 
-如果您已有一个保存的查询，可以跳过此步骤。
+如果您已经有了保存的查询，可以跳过此步骤。
 
-打开一个新的查询选项卡。为了演示，我们将使用[youtube 数据集](/getting-started/example-datasets/youtube-dislikes)，该数据集包含大约 45 亿条记录。作为示例查询，我们将返回按每个视频平均观看次数排序的前 10 位上传者，用户可以输入 `year` 参数：
+打开一个新的查询标签。为了演示，我们将使用 [youtube 数据集](/getting-started/example-datasets/youtube-dislikes)，该数据集包含大约 45 亿条记录。作为示例查询，我们将返回按平均每个视频观看次数排序的前 10 位上传者，并使用用户输入的 `year` 参数：
 
 ```sql
 with sum(view_count) as view_sum,
@@ -44,56 +50,55 @@ order by per_upload desc
 limit 10
 ```
 
-请注意，此查询包含一个参数（`year`）。SQL 控制台查询编辑器会自动检测 ClickHouse 查询参数表达式，并为每个参数提供一个输入框。我们快速运行这个查询以确保它有效：
+请注意，这个查询包含一个参数 (`year`)。SQL 控制台查询编辑器会自动检测 ClickHouse 查询参数表达式，并为每个参数提供输入。让我们快速运行此查询，以确保它能正常工作：
 
-<img src={endpoints_testquery} alt="测试示例查询"/>
+<Image img={endpoints_testquery} size="md" alt="测试示例查询" />
 
-接下来的步骤是保存该查询：
+下一步，我们将保存查询：
 
-<img src={endpoints_savequery} alt="保存示例查询"/>
+<Image img={endpoints_savequery} size="md" alt="保存示例查询" />
 
-有关保存查询的更多文档可以在[这里](/cloud/get-started/sql-console#saving-a-query)找到。
+有关已保存查询的更多文档，请查看 [这里](/cloud/get-started/sql-console#saving-a-query)。
 
 ### 配置查询 API 端点 {#configuring-the-query-api-endpoint}
 
-可以通过单击查询视图中的 **分享** 按钮并选择 `API Endpoint` 直接配置查询 API 端点。系统将提示您指定可以访问该端点的 API 密钥：
+查询 API 端点可以直接从查询视图配置，方法是单击 **共享** 按钮并选择 `API 端点`。系统会提示您指定哪些 API 密钥可以访问该端点：
 
-<img src={endpoints_configure} alt="配置查询端点"/>
+<Image img={endpoints_configure} size="md" alt="配置查询端点" />
 
-选择一个 API 密钥后，查询 API 端点将自动开通。将显示一个示例 `curl` 命令，以便您可以发送测试请求：
+选择 API 密钥后，查询 API 端点将自动配置。将显示一个示例 `curl` 命令，以便您可以发送测试请求：
 
-<img src={endpoints_completed} alt="端点 curl 命令"/>
+<Image img={endpoints_completed} size="md" alt="端点 curl 命令" />
 
 ### 查询 API 参数 {#query-api-parameters}
 
-查询中的参数可以使用语法 `{parameter_name: type}` 指定。这些参数将被自动检测，示例请求负载将包含一个 `queryVariables` 对象，通过该对象可以传递这些参数。
+查询中的查询参数可以使用语法 `{parameter_name: type}` 指定。这些参数将被自动检测，并且示例请求有效负载将包含一个 `queryVariables` 对象，您可以通过它传递这些参数。
 
 ### 测试和监控 {#testing-and-monitoring}
 
-创建查询 API 端点后，您可以使用 `curl` 或任何其他 HTTP 客户端来测试它是否正常工作：
+一旦创建了查询 API 端点，您可以使用 `curl` 或任何其他 HTTP 客户端测试它是否正常工作：
 
-<img src={endpoints_curltest} class="image" alt="端点 curl 测试" style={{width: '80%', background:'none'}} />
+<Image img={endpoints_curltest} size="md" alt="端点 curl 测试" />
 
-在发送第一个请求之后，应该立即在 **分享** 按钮右侧出现一个新按钮。单击它将打开一个飞出窗口，显示有关查询的监控数据：
+在您发送完第一个请求后，**共享** 按钮的右侧应该立即出现一个新按钮。单击它将打开一个包含有关查询的监控数据的浮动窗口：
 
-<img src={endpoints_monitoring} alt="端点监控"/>
-
+<Image img={endpoints_monitoring} size="md" alt="端点监控" />
 
 ## 实施细节 {#implementation-details}
 
 ### 描述 {#description}
 
-此路由在指定的查询端点上运行查询。它支持不同的版本、格式和查询变量。响应可以以流的形式传输（仅限 _version 2_）或作为单个有效负载返回。
+此路由在指定的查询端点上运行查询。它支持不同的版本、格式和查询变量。响应可以是流式传输的（仅适用于 _version 2_）或作为单个有效负载返回。
 
 ### 身份验证 {#authentication}
 
 - **必需**：是
-- **方法**：通过 OpenAPI 密钥/秘密的基本身份验证
-- **权限**：对查询端点的适当权限。
+- **方法**：通过 OpenAPI 密钥/密钥进行基本身份验证
+- **权限**：适用于查询端点的适当权限。
 
 ### URL 参数 {#url-parameters}
 
-- `queryEndpointId` （必需）：要运行的查询端点的唯一标识符。
+- `queryEndpointId`（必需）：要运行的查询端点的唯一标识符。
 
 ### 查询参数 {#query-parameters}
 
@@ -103,19 +108,19 @@ limit 10
 
 #### V2 {#v2}
 
-- `format` （可选）：响应的格式。支持 ClickHouse 支持的所有格式。
-- `param_:name` 查询变量。在查询中使用。`name` 应与查询中的变量名匹配。当请求的主体是流时，仅应使用此项。
-- `:clickhouse_setting` 任何支持的[ClickHouse 设置](/operations/settings/settings)都可以作为查询参数传递。
+- `format`（可选）：响应的格式。支持 ClickHouse 支持的所有格式。
+- `param_:name` 查询变量将在查询中使用。`name` 应与查询中的变量名匹配。这仅在请求正文为流时使用。
+- `:clickhouse_setting` 可以作为查询参数传递的任何受支持的 [ClickHouse 设置](/operations/settings/settings)。
 
 ### 头部 {#headers}
 
-- `x-clickhouse-endpoint-version` （可选）：查询端点的版本。支持的版本是 `1` 和 `2`。如果未提供，默认版本为最后保存的端点。
-- `x-clickhouse-endpoint-upgrade` （可选）：设置此头部以升级端点版本。这与 `x-clickhouse-endpoint-version` 头部结合使用。
+- `x-clickhouse-endpoint-version`（可选）：查询端点的版本。支持的版本为 `1` 和 `2`。如果未提供，则默认版本为该端点最后保存的版本。
+- `x-clickhouse-endpoint-upgrade`（可选）：设置此头以升级端点版本。这与 `x-clickhouse-endpoint-version` 头一起工作。
 
 ### 请求主体 {#request-body}
 
-- `queryVariables` （可选）：一个包含将在查询中使用的变量的对象。
-- `format` （可选）：响应的格式。如果查询 API 端点是版本 2，则可以使用任何 ClickHouse 支持的格式。v1 的支持格式为：
+- `queryVariables`（可选）：一个对象，包含将在查询中使用的变量。
+- `format`（可选）：响应的格式。如果查询 API 端点是版本 2，则可能使用任何 ClickHouse 支持的格式。v1 支持的格式包括：
   - TabSeparated
   - TabSeparatedWithNames
   - TabSeparatedWithNamesAndTypes
@@ -128,19 +133,19 @@ limit 10
 ### 响应 {#responses}
 
 - **200 OK**：查询成功执行。
-- **400 Bad Request**：请求格式不正确。
-- **401 Unauthorized**：未进行身份验证或权限不足。
-- **404 Not Found**：指定的查询端点未找到。
+- **400 Bad Request**：请求格式错误。
+- **401 Unauthorized**：请求未带身份验证或权限不足。
+- **404 Not Found**：找不到指定的查询端点。
 
 ### 错误处理 {#error-handling}
 
 - 确保请求包含有效的身份验证凭据。
-- 验证 `queryEndpointId` 和 `queryVariables` 以确保它们是正确的。
-- 以优雅的方式处理任何服务器错误，返回适当的错误消息。
+- 验证 `queryEndpointId` 和 `queryVariables` 确保它们正确。
+- 优雅地处理任何服务器错误，返回适当的错误消息。
 
 ### 升级端点版本 {#upgrading-the-endpoint-version}
 
-要将端点版本从 `v1` 升级到 `v2`，请在请求中包含 `x-clickhouse-endpoint-upgrade` 头并将其设置为 `1`。这将触发升级过程，并允许您使用在 `v2` 中可用的功能和改进。
+要将端点版本从 `v1` 升级到 `v2`，请在请求中包含 `x-clickhouse-endpoint-upgrade` 头，并将其设置为 `1`。这将触发升级过程，并允许您使用 `v2` 中可用的功能和改进。
 
 ## 示例 {#examples}
 
@@ -246,7 +251,7 @@ fetch(
 {"database":"INFORMATION_SCHEMA","num_tables":"REFERENTIAL_CONSTRAINTS"}
 ```
 
-### 使用查询变量和版本 2 的请求，以 JSONCompactEachRow 格式 {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
+### 带有查询变量且在 JSONCompactEachRow 格式上使用版本 2 的请求 {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
 
 **查询 API 端点 SQL：**
 
@@ -297,7 +302,7 @@ fetch(
 ["query_views_log", "system"]
 ```
 
-### 带有数组的查询变量的请求，将数据插入表中 {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
+### 带有查询变量数组的请求，该数组将数据插入到表中 {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
 
 **表 SQL：**
 
@@ -360,7 +365,7 @@ fetch(
 OK
 ```
 
-### 请求查询 ClickHouse 设置 max_threads 设为 8 {#request-with-clickhouse-settings-max_threads-set-to-8}
+### 请求并将 ClickHouse 设置 max_threads 设置为 8` {#request-with-clickhouse-settings-max_threads-set-to-8}
 
 **查询 API 端点 SQL：**
 
@@ -396,7 +401,7 @@ fetch(
   .catch((error) => console.error("Error:", error));
 ```
 
-### 请求并将响应解析为流 {#request-and-parse-the-response-as-a-stream}
+### 请求并将响应解析为流` {#request-and-parse-the-response-as-a-stream}
 
 **查询 API 端点 SQL：**
 
@@ -450,7 +455,7 @@ const endpointUrl =
   "https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONEachRow";
 const openApiKeyId = "<myOpenApiKeyId>";
 const openApiKeySecret = "<myOpenApiKeySecret>";
-// 使用示例
+// Usage example
 fetchAndLogChunks(endpointUrl, openApiKeyId, openApiKeySecret).catch((err) =>
   console.error(err)
 );
@@ -466,9 +471,9 @@ fetchAndLogChunks(endpointUrl, openApiKeyId, openApiKeySecret).catch((err) =>
 > Stream ended.
 ```
 
-### 从文件向表中插入流 {#insert-a-stream-from-a-file-into-a-table}
+### 从文件将流插入到表中的请求 {#insert-a-stream-from-a-file-into-a-table}
 
-创建一个文件 ./samples/my_first_table_2024-07-11.csv，内容如下：
+创建一个文件 `./samples/my_first_table_2024-07-11.csv`，内容如下：
 
 ```csv
 "user_id","json","name"

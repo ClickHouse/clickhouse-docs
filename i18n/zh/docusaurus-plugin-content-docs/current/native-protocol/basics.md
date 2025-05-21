@@ -1,7 +1,12 @@
 ---
-slug: /native-protocol/basics
-sidebar_position: 1
+'slug': '/native-protocol/basics'
+'sidebar_position': 1
+'title': '基础'
+'description': '原生协议基础'
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 
 # 基础
@@ -9,11 +14,8 @@ sidebar_position: 1
 :::note
 客户端协议参考正在进行中。
 
-大多数示例仅在 Go 中提供。
+大多数示例仅使用 Go 语言。
 :::
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 本文档描述了 ClickHouse TCP 客户端的二进制协议。
 
@@ -27,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 ## 字符串 {#string}
 
-可变长度字符串编码为 *(长度, 值)*，其中 *长度* 是 [varint](#varint)，*值* 是 utf8 字符串。
+可变长度字符串编码为 *(长度, 值)*，其中 *长度* 是 [varint](#varint)，*值* 是 UTF-8 字符串。
 
 :::important
 验证长度以防止 OOM：
@@ -41,12 +43,12 @@ import TabItem from '@theme/TabItem';
 ```go
 s := "Hello, world!"
 
-// 以 uvarint 写入字符串长度。
+// Writing string length as uvarint.
 buf := make([]byte, binary.MaxVarintLen64)
 n := binary.PutUvarint(buf, uint64(len(s)))
 buf = buf[:n]
 
-// 写入字符串值。
+// Writing string value.
 buf = append(buf, s...)
 ```
 
@@ -59,13 +61,13 @@ r := bytes.NewReader([]byte{
     0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
 })
 
-// 读取长度。
+// Read length.
 n, err := binary.ReadUvarint(r)
 if err != nil {
-	panic(err)
+        panic(err)
 }
 
-// 检查 n 以防止 OOM 或在 make() 中的运行时异常。
+// Check n to prevent OOM or runtime exception in make().
 const maxSize = 1024 * 1024 * 10 // 10 MB
 if n > maxSize || n < 0 {
     panic("invalid n")
@@ -73,7 +75,7 @@ if n > maxSize || n < 0 {
 
 buf := make([]byte, n)
 if _, err := io.ReadFull(r, buf); err != nil {
-	panic(err)
+        panic(err)
 }
 
 fmt.Println(string(buf))
@@ -113,18 +115,18 @@ data := []byte{
 ## 整数 {#integers}
 
 :::tip
-ClickHouse 使用 **小端字节序** 处理固定大小的整数。
+ClickHouse 使用 **小端字节序** 来表示固定大小的整数。
 :::
 
 ### Int32 {#int32}
 ```go
 v := int32(1000)
 
-// 编码。
+// Encode.
 buf := make([]byte, 8)
 binary.LittleEndian.PutUint32(buf, uint32(v))
 
-// 解码。
+// Decode.
 d := int32(binary.LittleEndian.Uint32(buf))
 fmt.Println(d) // 1000
 ```
@@ -148,4 +150,4 @@ fmt.Println(d) // 1000
 
 ## 布尔值 {#boolean}
 
-布尔值由单个字节表示，`1` 为 `true`，`0` 为 `false`。
+布尔值由一个字节表示，`1` 表示 `true`，而 `0` 表示 `false`。

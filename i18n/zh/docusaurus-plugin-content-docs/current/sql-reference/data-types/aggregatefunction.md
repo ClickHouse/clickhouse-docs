@@ -1,25 +1,43 @@
 ---
-slug: /sql-reference/data-types/aggregatefunction
-sidebar_position: 46
-sidebar_label: AggregateFunction
+'description': 'Documentation for the AggregateFunction data type in ClickHouse, which
+  stores intermediate states of aggregate functions'
+'keywords':
+- 'AggregateFunction'
+- 'Type'
+'sidebar_label': 'AggregateFunction'
+'sidebar_position': 46
+'slug': '/sql-reference/data-types/aggregatefunction'
+'title': 'AggregateFunction Type'
 ---
 
 
-# AggregateFunction
 
-聚合函数具有实现定义的中间状态，可以序列化为 `AggregateFunction(...)` 数据类型并存储在表中，通常通过 [物化视图](../../sql-reference/statements/create/view.md) 实现。生成聚合函数状态的常见方法是调用带有 `-State` 后缀的聚合函数。要在将来获取聚合的最终结果，必须使用相同的聚合函数并添加 `-Merge` 后缀。
 
-`AggregateFunction(name, types_of_arguments...)` — 参数化数据类型。
+# AggregateFunction 类型
+
+## 描述 {#description}
+
+所有 [聚合函数](/sql-reference/aggregate-functions) 在 ClickHouse 中都有一个特定实现的中间状态，该状态可以序列化为 `AggregateFunction` 数据类型并存储在表中。这通常是通过 [物化视图](../../sql-reference/statements/create/view.md) 完成的。
+
+有两种聚合函数 [组合器](/sql-reference/aggregate-functions/combinators) 通常与 `AggregateFunction` 类型一起使用：
+
+- [`-State`](/sql-reference/aggregate-functions/combinators#-state) 聚合函数组合器，当附加到聚合函数名称时，会生成 `AggregateFunction` 的中间状态。
+- [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge) 聚合函数组合器，用于从中间状态获取聚合的最终结果。
+
+## 语法 {#syntax}
+
+```sql
+AggregateFunction(aggregate_function_name, types_of_arguments...)
+```
 
 **参数**
 
-- 聚合函数的名称。如果函数是参数化的，请同时指定其参数。
+- `aggregate_function_name` - 聚合函数的名称。如果该函数是参数化的，则应同时指定其参数。
+- `types_of_arguments` - 聚合函数参数的数据类型。
 
-- 聚合函数参数的类型。
+例如：
 
-**示例**
-
-``` sql
+```sql
 CREATE TABLE t
 (
     column1 AggregateFunction(uniq, UInt64),
@@ -28,43 +46,45 @@ CREATE TABLE t
 ) ENGINE = ...
 ```
 
-[uniq](/sql-reference/aggregate-functions/reference/uniq)、anyIf ([any](/sql-reference/aggregate-functions/reference/any)+[If](/sql-reference/aggregate-functions/combinators#-if)) 和 [quantiles](../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles) 是 ClickHouse 中支持的聚合函数。
-
-## 用法 {#usage}
+## 使用方法 {#usage}
 
 ### 数据插入 {#data-insertion}
 
-要插入数据，使用带有聚合 `-State` 函数的 `INSERT SELECT`。
+要将数据插入到具有 `AggregateFunction` 类型列的表中，可以使用 `INSERT SELECT` 结合聚合函数和 [`-State`](/sql-reference/aggregate-functions/combinators#-state) 聚合函数组合器。
 
-**函数示例**
+例如，要插入到类型为 `AggregateFunction(uniq, UInt64)` 和 `AggregateFunction(quantiles(0.5, 0.9), UInt64)` 的列中，可以使用以下聚合函数和组合器。
 
-``` sql
+```sql
 uniqState(UserID)
 quantilesState(0.5, 0.9)(SendTiming)
 ```
 
-与相应的函数 `uniq` 和 `quantiles` 相比，`-State` 函数返回状态，而不是最终值。换句话说，它们返回 `AggregateFunction` 类型的值。
+与函数 `uniq` 和 `quantiles` 相比，`uniqState` 和 `quantilesState`（附加了 `-State` 组合器）返回的是状态，而不是最终值。换句话说，它们返回的是 `AggregateFunction` 类型的值。
 
-在 `SELECT` 查询的结果中，`AggregateFunction` 类型的值具有实现特定的二进制表示，适用于所有 ClickHouse 输出格式。如果将数据导出到，比如说 `TabSeparated` 格式的 `SELECT` 查询中，那么可以使用 `INSERT` 查询将其加载回来。
+在 `SELECT` 查询的结果中，类型为 `AggregateFunction` 的值在所有 ClickHouse 输出格式中都有特定实现的二进制表示。
+
+如果您将数据转储到例如 `TabSeparated` 格式中，可以使用 `SELECT` 查询进行此操作，则可以使用 `INSERT` 查询将此转储加载回去。
 
 ### 数据选择 {#data-selection}
 
-从 `AggregatingMergeTree` 表选择数据时，请使用 `GROUP BY` 子句和与插入数据时相同的聚合函数，但使用 `-Merge` 后缀。
+从 `AggregatingMergeTree` 表中选择数据时，使用 `GROUP BY` 子句和与插入数据时相同的聚合函数，但要使用 [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge) 组合器。
 
-带有 `-Merge` 后缀的聚合函数接受一组状态，结合这些状态并返回完整数据聚合的结果。
+附加具有 `-Merge` 组合器的聚合函数接受一组状态，将其组合，并返回完整数据聚合的结果。
 
 例如，以下两个查询返回相同的结果：
 
-``` sql
+```sql
 SELECT uniq(UserID) FROM table
 
 SELECT uniqMerge(state) FROM (SELECT uniqState(UserID) AS state FROM table GROUP BY RegionID)
 ```
 
-## 用法示例 {#usage-example}
+## 使用示例 {#usage-example}
 
-请参阅 [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) 引擎说明。
+请参见 [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) 引擎描述。
 
 ## 相关内容 {#related-content}
 
 - 博客: [在 ClickHouse 中使用聚合组合器](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+- [MergeState](/sql-reference/aggregate-functions/combinators#-mergestate) 组合器。
+- [State](/sql-reference/aggregate-functions/combinators#-state) 组合器。

@@ -1,30 +1,34 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/groupbitmapor
-sidebar_position: 150
-title: 'groupBitmapOr'
-description: '计算位图列的 OR，返回 UInt64 类型的基数，如果添加后缀 -State，则返回一个 [位图对象](../../../sql-reference/functions/bitmap-functions.md)。这等同于 `groupBitmapMerge`。'
+'description': 'Calculations the OR of a bitmap column, return cardinality of type
+  UInt64, if add suffix -State, then return a bitmap object. This is equivalent to
+  `groupBitmapMerge`.'
+'sidebar_position': 150
+'slug': '/sql-reference/aggregate-functions/reference/groupbitmapor'
+'title': 'groupBitmapOr'
 ---
+
+
 
 
 # groupBitmapOr
 
-计算位图列的 OR，返回 UInt64 类型的基数，如果添加后缀 -State，则返回一个 [位图对象](../../../sql-reference/functions/bitmap-functions.md)。这等同于 `groupBitmapMerge`。
+计算位图列的 OR，返回 UInt64 类型的基数，如果添加后缀 -State，则返回一个 [位图对象](../../../sql-reference/functions/bitmap-functions.md)。这等价于 `groupBitmapMerge`。
 
-``` sql
+```sql
 groupBitmapOr(expr)
 ```
 
 **参数**
 
-`expr` – 结果为 `AggregateFunction(groupBitmap, UInt*)` 类型的表达式。
+`expr` - 一个结果为 `AggregateFunction(groupBitmap, UInt*)` 类型的表达式。
 
 **返回值**
 
-返回 `UInt64` 类型的值。
+UInt64 类型的值。
 
 **示例**
 
-``` sql
+```sql
 DROP TABLE IF EXISTS bitmap_column_expr_test2;
 CREATE TABLE bitmap_column_expr_test2
 (

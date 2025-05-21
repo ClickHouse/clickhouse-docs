@@ -1,19 +1,21 @@
 ---
-slug: /operations/external-authenticators/
-sidebar_position: 48
-sidebar_label: 外部用户认证器和目录
-title: '外部用户认证器和目录'
-pagination_next: 'operations/external-authenticators/kerberos'
+'description': 'Overview of external authentication methods supported by ClickHouse'
+'pagination_next': 'operations/external-authenticators/kerberos'
+'sidebar_label': 'External User Authenticators and Directories'
+'sidebar_position': 48
+'slug': '/operations/external-authenticators/'
+'title': 'External User Authenticators and Directories'
 ---
-import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
+
+import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-ClickHouse 支持使用外部服务进行用户身份验证和管理。
+ClickHouse 支持使用外部服务进行身份验证和用户管理。
 
-支持以下外部认证器和目录：
+以下外部身份验证器和目录受到支持：
 
-- [LDAP](/operations/external-authenticators/ldap#ldap-external-authenticator) [认证器](./ldap.md#ldap-external-authenticator) 和 [目录](./ldap.md#ldap-external-user-directory)
-- Kerberos [认证器](/operations/external-authenticators/kerberos#kerberos-as-an-external-authenticator-for-existing-users)
-- [SSL X.509 认证](./operations/external-authenticators/ssl-x509)
-- HTTP [认证器](./http.md)
+- [LDAP](/operations/external-authenticators/ldap#ldap-external-authenticator) [身份验证器](./ldap.md#ldap-external-authenticator) 和 [目录](./ldap.md#ldap-external-user-directory)
+- Kerberos [身份验证器](/operations/external-authenticators/kerberos#kerberos-as-an-external-authenticator-for-existing-users)
+- [SSL X.509 身份验证](/operations/external-authenticators/ssl-x509)
+- HTTP [身份验证器](./http.md)

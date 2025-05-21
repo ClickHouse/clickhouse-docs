@@ -1,10 +1,14 @@
 ---
-slug: /sql-reference/data-types/special-data-types/set
-sidebar_position: 59
-sidebar_label: '集合'
+'description': 'IN表达式中使用的特殊数据类型Set的文档'
+'sidebar_label': '集合'
+'sidebar_position': 59
+'slug': '/sql-reference/data-types/special-data-types/set'
+'title': 'Set'
 ---
 
 
-# 集合
+
+
+# Set
 
 用于 [IN](/sql-reference/operators/in) 表达式的右半部分。

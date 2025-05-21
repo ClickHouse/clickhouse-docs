@@ -1,34 +1,42 @@
 ---
-description: '包含在本地服务器上运行的工作负载的信息的系统表。'
-slug: /operations/system-tables/workloads
-title: 'system.workloads'
-keywords: ['系统表', '工作负载']
+'description': 'System table containing information for workloads residing on the
+  local server.'
+'keywords':
+- 'system table'
+- 'workloads'
+'slug': '/operations/system-tables/workloads'
+'title': 'system.workloads'
 ---
 
-包含在本地服务器上运行的 [工作负载](/operations/workload-scheduling.md#workload_entity_storage) 的信息。该表为每个工作负载包含一行。
+
+
+
+# system.workloads
+
+包含位于本地服务器上的 [工作负载](/operations/workload-scheduling.md#workload_entity_storage) 的信息。该表包含每个工作负载的一行。
 
 示例：
 
-``` sql
+```sql
 SELECT *
 FROM system.workloads
 FORMAT Vertical
 ```
 
-``` text
-行 1:
+```text
+Row 1:
 ──────
 name:         production
 parent:       all
 create_query: CREATE WORKLOAD production IN `all` SETTINGS weight = 9
 
-行 2:
+Row 2:
 ──────
 name:         development
 parent:       all
 create_query: CREATE WORKLOAD development IN `all`
 
-行 3:
+Row 3:
 ──────
 name:         all
 parent:
@@ -37,6 +45,6 @@ create_query: CREATE WORKLOAD `all`
 
 列：
 
-- `name`（`String`） - 工作负载名称。
-- `parent`（`String`） - 父工作负载名称。
-- `create_query`（`String`） - 工作负载的定义。
+- `name` (`String`) - 工作负载名称。
+- `parent` (`String`) - 父工作负载名称。
+- `create_query` (`String`) - 工作负载的定义。

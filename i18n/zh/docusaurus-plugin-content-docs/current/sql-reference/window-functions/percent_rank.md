@@ -1,17 +1,21 @@
 ---
-slug: /sql-reference/window-functions/percent_rank
-sidebar_label: 'percent_rank'
-sidebar_position: 8
+'description': 'Documentation for the percent_rank window function'
+'sidebar_label': 'percent_rank'
+'sidebar_position': 8
+'slug': '/sql-reference/window-functions/percent_rank'
+'title': 'percent_rank'
 ---
+
+
 
 
 # percent_rank
 
-返回窗口分区中行的相对排名（即百分位）。
+返回窗口分区内行的相对排名（即百分位）。
 
 **语法**
 
-别名： `percentRank`（区分大小写）
+别名：`percentRank`（区分大小写）
 
 ```sql
 percent_rank ()
@@ -21,11 +25,12 @@ FROM table_name
 WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column] RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 ```
 
-默认且必需的窗口框架定义为 `RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`。
+默认且必需的窗口框架定义是 `RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`。
 
 有关窗口函数语法的更多详细信息，请参见：[窗口函数 - 语法](./index.md/#syntax)。
 
 **示例**
+
 
 查询：
 

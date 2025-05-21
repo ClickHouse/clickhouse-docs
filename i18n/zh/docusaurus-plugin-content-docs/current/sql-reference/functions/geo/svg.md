@@ -1,16 +1,19 @@
 ---
-slug: /sql-reference/functions/geo/svg
-sidebar_label: SVG
-title: '从地理数据生成SVG图像的函数'
+'description': '用于Svg生成的文档'
+'sidebar_label': 'SVG'
+'slug': '/sql-reference/functions/geo/svg'
+'title': '生成SVG图像的函数'
 ---
+
+
 
 ## Svg {#svg}
 
-返回Geo数据中选择的SVG元素标签字符串。
+返回一个选定的 SVG 元素标签字符串，以表示地理数据。
 
 **语法**
 
-``` sql
+```sql
 Svg(geometry,[style])
 ```
 
@@ -23,8 +26,8 @@ Svg(geometry,[style])
 
 **返回值**
 
-- 几何图形的SVG表示。 [String](../../data-types/string).
-  - SVG 圆
+- 几何图形的 SVG 表示。 [String](../../data-types/string).
+  - SVG 圆形
   - SVG 多边形
   - SVG 路径
 
@@ -32,13 +35,13 @@ Svg(geometry,[style])
 
 **圆形**
 
-查询:
+查询：
 
 ```sql
 SELECT SVG((0., 0.))
 ```
 
-结果:
+结果：
 
 ```response
 <circle cx="0" cy="0" r="5" style=""/>
@@ -46,13 +49,13 @@ SELECT SVG((0., 0.))
 
 **多边形**
 
-查询:
+查询：
 
 ```sql
 SELECT SVG([(0., 0.), (10, 0), (10, 10), (0, 10)])
 ```
 
-结果:
+结果：
 
 ```response
 <polygon points="0,0 0,10 10,10 10,0 0,0" style=""/>
@@ -60,13 +63,13 @@ SELECT SVG([(0., 0.), (10, 0), (10, 10), (0, 10)])
 
 **路径**
 
-查询:
+查询：
 
 ```sql
 SELECT SVG([[(0., 0.), (10, 0), (10, 10), (0, 10)], [(4., 4.), (5, 4), (5, 5), (4, 5)]])
 ```
 
-结果:
+结果：
 
 ```response
 <g fill-rule="evenodd"><path d="M 0,0 L 0,10 L 10,10 L 10,0 L 0,0M 4,4 L 5,4 L 5,5 L 4,5 L 4,4 z " style=""/></g>

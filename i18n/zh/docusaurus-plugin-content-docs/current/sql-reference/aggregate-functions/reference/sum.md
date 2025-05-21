@@ -1,9 +1,11 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/sum
-sidebar_position: 195
-title: 'sum'
-description: '计算总和。仅适用于数字。'
+'description': '计算总和。仅适用于数字。'
+'sidebar_position': 195
+'slug': '/sql-reference/aggregate-functions/reference/sum'
+'title': 'sum'
 ---
+
+
 
 
 # sum
@@ -17,15 +19,15 @@ sum(num)
 ```
 
 **参数**
-- `num`: 数值列。[(U)Int*](../../data-types/int-uint.md)，[Float*](../../data-types/float.md)，[Decimal*](../../data-types/decimal.md)。
+- `num`: 数值列。 [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md)。
 
 **返回值**
 
-- 值的总和。[(U)Int*](../../data-types/int-uint.md)，[Float*](../../data-types/float.md)，[Decimal*](../../data-types/decimal.md)。
+- 值的总和。 [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md)。
 
 **示例**
 
-首先创建一个表 `employees` 并插入一些虚构的员工数据。
+首先，我们创建一个表`employees`，并向其中插入一些虚构的员工数据。
 
 查询：
 
@@ -47,7 +49,7 @@ INSERT INTO employees VALUES
     (71245, 'Anastasia Ivanovna', 89210);
 ```
 
-我们使用 `sum` 函数查询员工工资的总额。
+我们使用`sum`函数查询员工工资的总额。
 
 查询：
 

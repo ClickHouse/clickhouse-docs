@@ -1,14 +1,18 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/last_value
-sidebar_position: 160
-title: 'last_value'
-description: '选择最后遇到的值，类似于 `anyLast`，但可以接受 NULL。'
+'description': '选择最后遇到的值，类似于 `anyLast`，但可以接受 NULL。'
+'sidebar_position': 160
+'slug': '/sql-reference/aggregate-functions/reference/last_value'
+'title': 'last_value'
 ---
+
+
 
 
 # last_value
 
-选择最后遇到的值，类似于 `anyLast`，但可以接受 NULL。主要应该与 [Window Functions](../../window-functions/index.md) 一起使用。如果没有 Window Functions，结果将是随机的如果源流没有排序。
+选择最后遇到的值，类似于 `anyLast`，但可以接受 NULL。
+主要应与 [Window Functions](../../window-functions/index.md) 一起使用。
+如果源流未排序，则在没有窗口函数的情况下，结果将是随机的。
 
 ## examples {#examples}
 
@@ -60,7 +64,7 @@ select last_value(b) respect nulls from test_data
 ```
 
 ### example4 {#example4}
-使用子查询和 `ORDER BY` 稳定结果。
+使用 `ORDER BY` 的子查询稳定化结果。
 ```sql
 SELECT
     last_value_respect_nulls(b),

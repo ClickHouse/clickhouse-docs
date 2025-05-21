@@ -1,26 +1,32 @@
 ---
-description: '包含所有缓存文件模式的信息的系统表。'
-slug: /operations/system-tables/schema_inference_cache
-title: 'system.schema_inference_cache'
-keywords: ['system table', 'schema_inference_cache']
+'description': 'System table containing information about all cached file schemas.'
+'keywords':
+- 'system table'
+- 'schema_inference_cache'
+'slug': '/operations/system-tables/schema_inference_cache'
+'title': 'system.schema_inference_cache'
 ---
-import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+
+
+# system.schema_inference_cache
 
 <SystemTableCloud/>
 
-包含所有缓存文件模式的信息。
+包含所有缓存文件架构的信息。
 
 列：
-- `storage` ([String](/sql-reference/data-types/string.md)) — 存储名称：文件、URL、S3 或 HDFS。
-- `source` ([String](/sql-reference/data-types/string.md)) — 文件来源。
+- `storage` ([String](/sql-reference/data-types/string.md)) — 存储名称：文件、URL、S3或HDFS。
+- `source` ([String](/sql-reference/data-types/string.md)) — 文件源。
 - `format` ([String](/sql-reference/data-types/string.md)) — 格式名称。
-- `additional_format_info` ([String](/sql-reference/data-types/string.md)) - 识别模式所需的其他信息。例如，特定格式的设置。
-- `registration_time` ([DateTime](/sql-reference/data-types/datetime.md)) — 模式添加到缓存中的时间戳。
-- `schema` ([String](/sql-reference/data-types/string.md)) - 缓存的模式。
+- `additional_format_info` ([String](/sql-reference/data-types/string.md)) - 识别架构所需的附加信息。例如，格式特定的设置。
+- `registration_time` ([DateTime](/sql-reference/data-types/datetime.md)) — 架构添加到缓存中的时间戳。
+- `schema` ([String](/sql-reference/data-types/string.md)) - 缓存的架构。
 
 **示例**
 
-假设我们有一个文件 `data.jsonl`，内容如下：
+假设我们有一个文件 `data.jsonl`，其内容如下：
 ```json
 {"id" :  1, "age" :  25, "name" :  "Josh", "hobbies" :  ["football", "cooking", "music"]}
 {"id" :  2, "age" :  19, "name" :  "Alan", "hobbies" :  ["tennis", "art"]}
@@ -29,7 +35,7 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 ```
 
 :::tip
-将 `data.jsonl` 放在 `user_files_path` 目录中。您可以通过查看 ClickHouse 配置文件找到此路径。默认路径是：
+将 `data.jsonl` 放在 `user_files_path` 目录中。你可以通过查看你的 ClickHouse 配置文件找到这个路径。默认路径为：
 ```sql
 <user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
 ```
@@ -50,7 +56,7 @@ DESCRIBE file('data.jsonl') SETTINGS input_format_try_infer_integers=0;
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-让我们看看 `system.schema_inference_cache` 表的内容：
+让我们查看 `system.schema_inference_cache` 表的内容：
 
 ```sql
 SELECT *
@@ -68,5 +74,6 @@ registration_time:      2022-12-29 17:49:52
 schema:                 id Nullable(Float64), age Nullable(Float64), name Nullable(String), hobbies Array(Nullable(String))
 ```
 
-**另见**
-- [从输入数据自动推断模式](/interfaces/schema-inference.md)
+
+**另请参见**
+- [从输入数据自动推断架构](/interfaces/schema-inference.md)

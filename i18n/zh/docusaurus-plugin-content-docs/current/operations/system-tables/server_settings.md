@@ -1,15 +1,20 @@
 ---
-description: '包含有关服务器全球设置的信息，这些设置在 `config.xml` 中指定。'
-slug: /operations/system-tables/server_settings
-title: 'system.server_settings'
-keywords: ['system table', 'server_settings']
+'description': '包含有关服务器全局设置的系统表，这些设置在 `config.xml` 中指定。'
+'keywords':
+- 'system table'
+- 'server_settings'
+'slug': '/operations/system-tables/server_settings'
+'title': '系统.服务器设置'
 ---
-import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+
+
+# system.server_settings
 
 <SystemTableCloud/>
 
-包含有关服务器全球设置的信息，这些设置在 `config.xml` 中指定。
-目前，表中仅显示 `config.xml` 第一层的设置，不支持嵌套配置（例如 [logger](../../operations/server-configuration-parameters/settings.md#logger)）。
+包含有关服务器的全局设置的信息，这些设置在 `config.xml` 中指定。目前，该表仅显示 `config.xml` 的第一层设置，并不支持嵌套的配置（例如 [logger](../../operations/server-configuration-parameters/settings.md#logger)）。
 
 列：
 
@@ -18,7 +23,7 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 - `default` ([String](../../sql-reference/data-types/string.md)) — 服务器设置默认值。
 - `changed` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 显示设置是否在 `config.xml` 中指定。
 - `description` ([String](../../sql-reference/data-types/string.md)) — 服务器设置的简短描述。
-- `type` ([String](../../sql-reference/data-types/string.md)) — 服务器设置值类型。
+- `type` ([String](../../sql-reference/data-types/string.md)) — 服务器设置值的类型。
 - `changeable_without_restart` ([Enum8](../../sql-reference/data-types/enum.md)) — 设置是否可以在服务器运行时更改。值：
     - `'No' `
     - `'IncreaseOnly'`
@@ -30,36 +35,36 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 以下示例显示如何获取名称包含 `thread_pool` 的服务器设置的信息。
 
-``` sql
+```sql
 SELECT *
 FROM system.server_settings
 WHERE name LIKE '%thread_pool%'
 ```
 
-``` text
+```text
 ┌─name──────────────────────────────────────────┬─value─┬─default─┬─changed─┬─description─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─type───┬─changeable_without_restart─┬─is_obsolete─┐
-│ max_thread_pool_size                          │ 10000 │ 10000   │       0 │ 可能从操作系统分配并用于查询执行和后台操作的最大线程数。                                                               │ UInt64 │                         No │           0 │
-│ max_thread_pool_free_size                     │ 1000  │ 1000    │       0 │ 一旦分配，始终保留在全局线程池中并在任务不足时保持空闲的最大线程数。                                                        │ UInt64 │                         No │           0 │
-│ thread_pool_queue_size                        │ 10000 │ 10000   │       0 │ 将被放入队列并等待执行的最大任务数。                                                                                         │ UInt64 │                         No │           0 │
-│ max_io_thread_pool_size                       │ 100   │ 100     │       0 │ 将用于IO操作的最大线程数。                                                                                                     │ UInt64 │                         No │           0 │
-│ max_io_thread_pool_free_size                  │ 0     │ 0       │       0 │ IO线程池的最大空闲大小。                                                                                                        │ UInt64 │                         No │           0 │
-│ io_thread_pool_queue_size                     │ 10000 │ 10000   │       0 │ IO线程池的队列大小。                                                                                                            │ UInt64 │                         No │           0 │
-│ max_active_parts_loading_thread_pool_size     │ 64    │ 64      │       0 │ 启动时加载活动数据分片的线程数（活动分片）。                                                                                   │ UInt64 │                         No │           0 │
-│ max_outdated_parts_loading_thread_pool_size   │ 32    │ 32      │       0 │ 启动时加载不活动数据分片的线程数（过时分片）。                                                                                 │ UInt64 │                         No │           0 │
-│ max_unexpected_parts_loading_thread_pool_size │ 32    │ 32      │       0 │ 启动时加载不活动数据分片的线程数（意外分片）。                                                                               │ UInt64 │                         No │           0 │
-│ max_parts_cleaning_thread_pool_size           │ 128   │ 128     │       0 │ 用于并发删除不活动数据分片的线程数。                                                                                           │ UInt64 │                         No │           0 │
-│ max_backups_io_thread_pool_size               │ 1000  │ 1000    │       0 │ 将用于备份查询的IO操作的最大线程数。                                                                                            │ UInt64 │                         No │           0 │
-│ max_backups_io_thread_pool_free_size          │ 0     │ 0       │       0 │ 备份IO线程池的最大空闲大小。                                                                                                     │ UInt64 │                         No │           0 │
-│ backups_io_thread_pool_queue_size             │ 0     │ 0       │       0 │ 备份IO线程池的队列大小。                                                                                                         │ UInt64 │                         No │           0 │
+│ max_thread_pool_size                          │ 10000 │ 10000   │       0 │ The maximum number of threads that could be allocated from the OS and used for query execution and background operations.                           │ UInt64 │                         No │           0 │
+│ max_thread_pool_free_size                     │ 1000  │ 1000    │       0 │ The maximum number of threads that will always stay in a global thread pool once allocated and remain idle in case of insufficient number of tasks. │ UInt64 │                         No │           0 │
+│ thread_pool_queue_size                        │ 10000 │ 10000   │       0 │ The maximum number of tasks that will be placed in a queue and wait for execution.                                                                  │ UInt64 │                         No │           0 │
+│ max_io_thread_pool_size                       │ 100   │ 100     │       0 │ The maximum number of threads that would be used for IO operations                                                                                  │ UInt64 │                         No │           0 │
+│ max_io_thread_pool_free_size                  │ 0     │ 0       │       0 │ Max free size for IO thread pool.                                                                                                                   │ UInt64 │                         No │           0 │
+│ io_thread_pool_queue_size                     │ 10000 │ 10000   │       0 │ Queue size for IO thread pool.                                                                                                                      │ UInt64 │                         No │           0 │
+│ max_active_parts_loading_thread_pool_size     │ 64    │ 64      │       0 │ The number of threads to load active set of data parts (Active ones) at startup.                                                                    │ UInt64 │                         No │           0 │
+│ max_outdated_parts_loading_thread_pool_size   │ 32    │ 32      │       0 │ The number of threads to load inactive set of data parts (Outdated ones) at startup.                                                                │ UInt64 │                         No │           0 │
+│ max_unexpected_parts_loading_thread_pool_size │ 32    │ 32      │       0 │ The number of threads to load inactive set of data parts (Unexpected ones) at startup.                                                              │ UInt64 │                         No │           0 │
+│ max_parts_cleaning_thread_pool_size           │ 128   │ 128     │       0 │ The number of threads for concurrent removal of inactive data parts.                                                                                │ UInt64 │                         No │           0 │
+│ max_backups_io_thread_pool_size               │ 1000  │ 1000    │       0 │ The maximum number of threads that would be used for IO operations for BACKUP queries                                                               │ UInt64 │                         No │           0 │
+│ max_backups_io_thread_pool_free_size          │ 0     │ 0       │       0 │ Max free size for backups IO thread pool.                                                                                                           │ UInt64 │                         No │           0 │
+│ backups_io_thread_pool_queue_size             │ 0     │ 0       │       0 │ Queue size for backups IO thread pool.                                                                                                              │ UInt64 │                         No │           0 │
 └───────────────────────────────────────────────┴───────┴─────────┴─────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────┴────────────────────────────┴─────────────┘
 
 ```
 
-使用 `WHERE changed` 可以很有用，例如，当您想检查配置文件中的设置是否正确加载并正在使用时。
+使用 `WHERE changed` 可以很有用，例如，当您想检查配置文件中的设置是否正确加载并被使用时。
 
 <!-- -->
 
-``` sql
+```sql
 SELECT * FROM system.server_settings WHERE changed AND name='max_thread_pool_size'
 ```
 

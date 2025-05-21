@@ -1,24 +1,29 @@
 ---
-sidebar_label: '插入本地文件'
-sidebar_position: 2
+'sidebar_label': '插入本地文件'
+'sidebar_position': 2
+'title': '插入本地文件'
+'slug': '/integrations/data-ingestion/insert-local-files'
+'description': '了解如何插入本地文件'
 ---
+
+
 
 
 # 插入本地文件
 
-您可以使用 `clickhouse-client` 将本地文件流式传输到您的 ClickHouse 服务中。这使您能够使用 ClickHouse 的许多强大而便捷的函数来预处理数据。让我们看一个例子...
+您可以使用 `clickhouse-client` 将本地文件流式传输到您的 ClickHouse 服务中。这使您能够使用许多强大且方便的 ClickHouse 函数对数据进行预处理。让我们看一个例子...
 
-1. 假设我们有一个名为 `comments.tsv` 的 TSV 文件，包含一些 Hacker News 评论，并且标题行包含列名。插入数据时，您需要指定一个 [输入格式](/interfaces/formats)，在我们的例子中是 `TabSeparatedWithNames`：
+1. 假设我们有一个名为 `comments.tsv` 的 TSV 文件，其中包含一些 Hacker News 的评论，头行包含列名。在插入数据时，您需要指定一个 [输入格式](/interfaces/formats)，在我们这里是 `TabSeparatedWithNames`：
 
 ```text
-id	type	author	timestamp	comment	children
-19464423	comment	adrianmonk	2019-03-22 16:58:19	"It&#x27;s an apples and oranges comparison in the first place. There are security expenses related to prison populations. You need staff, facilities, equipment, etc. to manage prisoners behavior (prevent fights, etc.) and keep them from escaping. The two things have a different mission, so of course they&#x27;re going to have different costs.<p>It&#x27;s like saying a refrigerator is more expensive than a microwave. It doesn&#x27;t mean anything because they do different things."	[]
-19464461	comment	sneakernets	2019-03-22 17:01:10	"Because the science is so solid that it&#x27;s beating a dead horse at this point.<p>But with anti-vaxxers, It&#x27;s like telling someone the red apple you&#x27;re holding is red, yet they insist that it&#x27;s green. You can&#x27;t argue &quot;the merits&quot; with people like this."	[19464582]
-19465288	comment	derefr	2019-03-22 18:15:21	"Because we&#x27;re talking about the backend-deployment+ops-jargon terms &quot;website&quot; and &quot;webapp&quot;, not their general usage. Words can have precise jargon meanings <i>which are different</i> in different disciplines. This is where ops people tend to draw the line: a web<i>site</i> is something you can deploy to e.g. an S3 bucket and it&#x27;ll be fully functional, with no other dependencies that you have to maintain for it. A <i>webapp</i> is something that <i>does</i> have such dependencies that you need to set up and maintain—e.g. a database layer.<p>But even ignoring that, I also define the terms this way because of the prefix &quot;web.&quot; A webapp isn&#x27;t &quot;an app on the web&quot;, but rather &quot;an app powered by the web.&quot; An entirely-offline JavaScript SPA that is just <i>served over</i> the web, <i>isn&#x27;t</i> a web-app. It&#x27;s just a program that runs in a browser, just like a Flash or ActiveX or Java applet is a program that runs in a browser. (Is a Flash game a &quot;web game&quot;? It&#x27;s usually considered a <i>browser game</i>, but that&#x27;s not the same thing.)<p>We already have a term for the thing that {Flash, ActiveX, Java} applets are: apps. Offline JavaScript SPAs are just apps too. We don&#x27;t need to add the prefix &quot;web&quot;; it&#x27;s meaningless here. In any of those cases, if you took the exact same program, and slammed it into an Electron wrapper instead of into a domain-fronted S3 bucket, it would clearly not be a &quot;web app&quot; in any sense. Your SPA would just be &quot;a JavaScript <i>app</i> that uses a browser DOM as its graphics toolkit.&quot; Well, that&#x27;s just as true before you put it in the Electron wrapper.<p>So &quot;web app&quot;, then, has a specific meaning, above and beyond &quot;app.&quot; You need something extra. That something extra is a backend, which your browser—driven by the app&#x27;s logic—interacts with <i>over the web</i>. That&#x27;s what makes an app &quot;a web app.&quot; (This definition intentionally encompasses both server-rendered dynamic HTML, and client-rendered JavaScript SPA apps. You don&#x27;t need a frontend <i>app</i>; you just need a <i>web backend</i> that something is interacting with. That something can be the browser directly, by clicking links and submitting forms; or it can be a JavaScript frontend, using AJAX.)<p>A &quot;web site&quot;, then, is a &quot;web app&quot; without the &quot;app&quot; part. If it&#x27;s clear in the above definition what an &quot;app&quot; is, and what a &quot;web app&quot; is, then you can subtract one from the other to derive a definition of a &quot;web not-app.&quot; That&#x27;s a website: something powered by a web backend, which does not do any app things. If we decide that &quot;app things&quot; are basically &quot;storing state&quot;, then a &quot;site&quot; is an &quot;app&quot; with no persistent state.<p>And since the definition of &quot;web&quot; here is about a backend, then the difference between a &quot;web app&quot; and a &quot;web site&quot; (a web not-app) is probably defined by the properties of the backend. So the difference about the ability of the web backend to store state. So a &quot;web site&quot; is a &quot;web app&quot; where the backend does no app things—i.e., stores no state."	[]
-19465534	comment	bduerst	2019-03-22 18:36:40	"Apple included: <a href=""https:&#x2F;&#x2F;www.theguardian.com&#x2F;commentisfree&#x2F;2018&#x2F;mar&#x2F;04&#x2F;apple-users-icloud-services-personal-data-china-cybersecurity-law-privacy"" rel=""nofollow"">https:&#x2F;&#x2F;www.theguardian.com&#x2F;commentisfree&#x2F;2018&#x2F;mar&#x2F;04&#x2F;apple-...</a>"	[]
-19466269	comment	CalChris	2019-03-22 19:55:13	"&gt; It has the same A12 CPU ... with 3 GB of RAM on the <i>system-on-a-chip</i><p>Actually that&#x27;s <i>package-on-package</i>. The LPDDR4X DRAM is glued (well, reflow soldered) to the back of the A12 Bionic.<p><a href=""https:&#x2F;&#x2F;www.techinsights.com&#x2F;about-techinsights&#x2F;overview&#x2F;blog&#x2F;apple-iphone-xs-teardown&#x2F;"" rel=""nofollow"">https:&#x2F;&#x2F;www.techinsights.com&#x2F;about-techinsights&#x2F;overview&#x2F;blo...</a><p><a href=""https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Package_on_package"" rel=""nofollow"">https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Package_on_package</a>"	[19468341]
-19466980	comment	onetimemanytime	2019-03-22 21:07:25	"&gt;&gt;<i>The insanity, here, is that you can&#x27;t take the land the motorhome is on and build a studio on it.</i><p>apple and oranges. The permit to built the studio makes that building legit, kinda forever. A motor home, they can chase out with a new law, or just by enforcing existing laws."	[]
-19467048	comment	karambahh	2019-03-22 21:15:41	"I think you&#x27;re comparing apples to oranges here.<p>If you reclaim a parking space for another use (such as building accommodation for families or an animal shelter), you&#x27;re not depriving the car of anything, it&#x27;s an expensive, large piece of metal and is not sentient.<p>Next, you&#x27;ll say that you&#x27;re depriving car owners from the practicality of parking their vehicles anywhere they like. I&#x27;m perfectly fine with depriving car owners from this convenience to allow a human being to have a roof over their head. (speaking from direct experience as I&#x27;ve just minutes ago had to park my car 1km away from home because the city is currently building housing and has restricted parking space nearby)<p>Then, some might argue that one should be ashamed of helping animals while humans are suffering. That&#x27;s the exact same train of thought with «we can&#x27;t allow more migrants in, we have to take care of our &quot;own&quot; homeless people».<p>This is a false dichotomy. Western societies inequalities are growing larger and larger. Me trying to do my part is insignificant. Me donating to human or animal causes is a small dent into the mountains of inequalities we live on top of. Us collectively, we do make a difference, by donating, voting and generally keeping our eyes open about the world we live in...<p>Finally, an entirely anecdotal pov: I&#x27;ve witnessed several times extremely poor people going out of their ways to show solidarity to animals or humans. I&#x27;ve also witnessed an awful lot of extremely wealthy individuals complaining about the poor inconveniencing them by just being there, whose wealth was a direct consequences of their ancestors exploiting whose very same poor people."	[19467512]
+id      type    author  timestamp       comment children
+19464423        comment adrianmonk      2019-03-22 16:58:19     "It&#x27;s an apples and oranges comparison in the first place. There are security expenses related to prison populations. You need staff, facilities, equipment, etc. to manage prisoners behavior (prevent fights, etc.) and keep them from escaping. The two things have a different mission, so of course they&#x27;re going to have different costs.<p>It&#x27;s like saying a refrigerator is more expensive than a microwave. It doesn&#x27;t mean anything because they do different things."   []
+19464461        comment sneakernets     2019-03-22 17:01:10     "Because the science is so solid that it&#x27;s beating a dead horse at this point.<p>But with anti-vaxxers, It&#x27;s like telling someone the red apple you&#x27;re holding is red, yet they insist that it&#x27;s green. You can&#x27;t argue &quot;the merits&quot; with people like this." [19464582]
+19465288        comment derefr  2019-03-22 18:15:21     "Because we&#x27;re talking about the backend-deployment+ops-jargon terms &quot;website&quot; and &quot;webapp&quot;, not their general usage. Words can have precise jargon meanings <i>which are different</i> in different disciplines. This is where ops people tend to draw the line: a web<i>site</i> is something you can deploy to e.g. an S3 bucket and it&#x27;ll be fully functional, with no other dependencies that you have to maintain for it. A <i>webapp</i> is something that <i>does</i> have such dependencies that you need to set up and maintain—e.g. a database layer.<p>But even ignoring that, I also define the terms this way because of the prefix &quot;web.&quot; A webapp isn&#x27;t &quot;an app on the web&quot;, but rather &quot;an app powered by the web.&quot; An entirely-offline JavaScript SPA that is just <i>served over</i> the web, <i>isn&#x27;t</i> a web-app. It&#x27;s just a program that runs in a browser, just like a Flash or ActiveX or Java applet is a program that runs in a browser. (Is a Flash game a &quot;web game&quot;? It&#x27;s usually considered a <i>browser game</i>, but that&#x27;s not the same thing.)<p>We already have a term for the thing that {Flash, ActiveX, Java} applets are: apps. Offline JavaScript SPAs are just apps too. We don&#x27;t need to add the prefix &quot;web&quot;; it&#x27;s meaningless here. In any of those cases, if you took the exact same program, and slammed it into an Electron wrapper instead of into a domain-fronted S3 bucket, it would clearly not be a &quot;web app&quot; in any sense. Your SPA would just be &quot;a JavaScript <i>app</i> that uses a browser DOM as its graphics toolkit.&quot; Well, that&#x27;s just as true before you put it in the Electron wrapper.<p>So &quot;web app&quot;, then, has a specific meaning, above and beyond &quot;app.&quot; You need something extra. That something extra is a backend, which your browser—driven by the app&#x27;s logic—interacts with <i>over the web</i>. That&#x27;s what makes an app &quot;a web app.&quot; (This definition intentionally encompasses both server-rendered dynamic HTML, and client-rendered JavaScript SPA apps. You don&#x27;t need a frontend <i>app</i>; you just need a <i>web backend</i> that something is interacting with. That something can be the browser directly, by clicking links and submitting forms; or it can be a JavaScript frontend, using AJAX.)<p>A &quot;web site&quot;, then, is a &quot;web app&quot; without the &quot;app&quot; part. If it&#x27;s clear in the above definition what an &quot;app&quot; is, and what a &quot;web app&quot; is, then you can subtract one from the other to derive a definition of a &quot;web not-app.&quot; That&#x27;s a website: something powered by a web backend, which does not do any app things. If we decide that &quot;app things&quot; are basically &quot;storing state&quot;, then a &quot;site&quot; is an &quot;app&quot; with no persistent state.<p>And since the definition of &quot;web&quot; here is about a backend, then the difference between a &quot;web app&quot; and a &quot;web site&quot; (a web not-app) is probably defined by the properties of the backend. So the difference about the ability of the web backend to store state. So a &quot;web site&quot; is a &quot;web app&quot; where the backend does no app things—i.e., stores no state."       []
+19465534        comment bduerst 2019-03-22 18:36:40     "Apple included: <a href=""https:&#x2F;&#x2F;www.theguardian.com&#x2F;commentisfree&#x2F;2018&#x2F;mar&#x2F;04&#x2F;apple-users-icloud-services-personal-data-china-cybersecurity-law-privacy"" rel=""nofollow"">https:&#x2F;&#x2F;www.theguardian.com&#x2F;commentisfree&#x2F;2018&#x2F;mar&#x2F;04&#x2F;apple-...</a>"        []
+19466269        comment CalChris        2019-03-22 19:55:13     "&gt; It has the same A12 CPU ... with 3 GB of RAM on the <i>system-on-a-chip</i><p>Actually that&#x27;s <i>package-on-package</i>. The LPDDR4X DRAM is glued (well, reflow soldered) to the back of the A12 Bionic.<p><a href=""https:&#x2F;&#x2F;www.techinsights.com&#x2F;about-techinsights&#x2F;overview&#x2F;blog&#x2F;apple-iphone-xs-teardown&#x2F;"" rel=""nofollow"">https:&#x2F;&#x2F;www.techinsights.com&#x2F;about-techinsights&#x2F;overview&#x2F;blo...</a><p><a href=""https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Package_on_package"" rel=""nofollow"">https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Package_on_package</a>"       [19468341]
+19466980        comment onetimemanytime 2019-03-22 21:07:25     "&gt;&gt;<i>The insanity, here, is that you can&#x27;t take the land the motorhome is on and build a studio on it.</i><p>apple and oranges. The permit to built the studio makes that building legit, kinda forever. A motor home, they can chase out with a new law, or just by enforcing existing laws."      []
+19467048        comment karambahh       2019-03-22 21:15:41     "I think you&#x27;re comparing apples to oranges here.<p>If you reclaim a parking space for another use (such as building accommodation for families or an animal shelter), you&#x27;re not depriving the car of anything, it&#x27;s an expensive, large piece of metal and is not sentient.<p>Next, you&#x27;ll say that you&#x27;re depriving car owners from the practicality of parking their vehicles anywhere they like. I&#x27;m perfectly fine with depriving car owners from this convenience to allow a human being to have a roof over their head. (speaking from direct experience as I&#x27;ve just minutes ago had to park my car 1km away from home because the city is currently building housing and has restricted parking space nearby)<p>Then, some might argue that one should be ashamed of helping animals while humans are suffering. That&#x27;s the exact same train of thought with «we can&#x27;t allow more migrants in, we have to take care of our &quot;own&quot; homeless people».<p>This is a false dichotomy. Western societies inequalities are growing larger and larger. Me trying to do my part is insignificant. Me donating to human or animal causes is a small dent into the mountains of inequalities we live on top of. Us collectively, we do make a difference, by donating, voting and generally keeping our eyes open about the world we live in...<p>Finally, an entirely anecdotal pov: I&#x27;ve witnessed several times extremely poor people going out of their ways to show solidarity to animals or humans. I&#x27;ve also witnessed an awful lot of extremely wealthy individuals complaining about the poor inconveniencing them by just being there, whose wealth was a direct consequences of their ancestors exploiting whose very same poor people."      [19467512]
 ```
 
 2. 让我们为我们的 Hacker News 数据创建表：
@@ -37,7 +42,7 @@ ENGINE = MergeTree
 ORDER BY toYYYYMMDD(timestamp)
 ```
 
-3. 我们想将 `author` 列转换为小写，这可以通过 [`lower` function](/sql-reference/functions/string-functions#lower) 容易地做到。我们还想将 `comment` 字符串拆分为标记并将结果存储在 `tokens` 列中，这可以使用 [`extractAll` function](/sql-reference/functions/string-search-functions#extractall) 来完成。您将在一个 `clickhouse-client` 命令中完成所有这些操作 - 注意 `comments.tsv` 文件是如何通过 `<` 操作符被传输给 `clickhouse-client` 的：
+3. 我们想将 `author` 列中的内容转换为小写，这可以很容易地使用 [`lower` 函数](/sql-reference/functions/string-functions#lower) 来完成。我们还希望将 `comment` 字符串分割成标记，并将结果存储在 `tokens` 列中，这可以使用 [`extractAll` 函数](/sql-reference/functions/string-search-functions#extractall) 来完成。您可以在一个 `clickhouse-client` 命令中完成所有这些操作 - 请注意，`comments.tsv` 文件通过 `<` 操作符被传递给 `clickhouse-client`：
 
 ```bash
 clickhouse-client \
@@ -49,22 +54,22 @@ clickhouse-client \
     INSERT INTO hackernews
     SELECT
         id,
-	   	type,
-   		lower(author),
-		timestamp,
-		comment,
-		children,
-		extractAll(comment, '\\w+') as tokens
+                type,
+                lower(author),
+                timestamp,
+                comment,
+                children,
+                extractAll(comment, '\\w+') as tokens
     FROM input('id UInt32, type String, author String, timestamp DateTime, comment String, children Array(UInt32)')
     FORMAT TabSeparatedWithNames
 " < comments.tsv
 ```
 
 :::note
-`input` 函数在这里非常有用，因为它允许我们在将数据插入 `hackernews` 表时进行转换。`input` 的参数是输入原始数据的格式，您将在许多其他表函数中看到这一点（您为输入数据指定模式）。
+这里的 `input` 函数非常有用，因为它允许我们在将数据插入到 `hackernews` 表时进行转换。`input` 的参数是传入原始数据的格式，您将在许多其他表函数中看到此内容（在这些函数中您为传入数据指定架构）。
 :::
 
-4. 就这样！数据已上传到 ClickHouse：
+4. 就这些！数据已经上传到 ClickHouse：
 
 ```sql
 SELECT *
@@ -86,7 +91,7 @@ LIMIT 7
 
 ```
 
-5. 另一个选择是使用像 `cat` 这样的工具将文件流式传输到 `clickhouse-client`。例如，以下命令与使用 `<` 操作符的结果相同：
+5. 另一个选择是使用像 `cat` 这样的工具将文件流式传输到 `clickhouse-client`。例如，以下命令的结果与使用 `<` 操作符相同：
 
 ```bash
 cat comments.tsv | clickhouse-client \
@@ -98,20 +103,20 @@ cat comments.tsv | clickhouse-client \
     INSERT INTO hackernews
     SELECT
         id,
-	   	type,
-   		lower(author),
-		timestamp,
-		comment,
-		children,
-		extractAll(comment, '\\w+') as tokens
+                type,
+                lower(author),
+                timestamp,
+                comment,
+                children,
+                extractAll(comment, '\\w+') as tokens
     FROM input('id UInt32, type String, author String, timestamp DateTime, comment String, children Array(UInt32)')
     FORMAT TabSeparatedWithNames
 "
 ```
 
-访问 [关于 `clickhouse-client` 的文档页面](/interfaces/cli)以获取关于如何在本地操作系统上安装 `clickhouse-client` 的详细信息。
+访问 [关于 `clickhouse-client` 的文档页面](/interfaces/cli)，以获取有关如何在您的本地操作系统上安装 `clickhouse-client` 的详细信息。
 
 ## 相关内容 {#related-content}
 
 - 博客: [将数据导入 ClickHouse - 第 1 部分](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1)
-- 博客: [探索大规模的现实世界数据集：ClickHouse 中的 100 多年天气记录](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
+- 博客: [探索大规模的真实世界数据集：ClickHouse 中的 100 多年的气象记录](https://clickhouse.com/blog/real-world-data-noaa-climate-data)

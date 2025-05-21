@@ -1,16 +1,19 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/maxintersectionsposition
-sidebar_position: 164
-title: maxIntersectionsPosition
-description: '聚合函数，用于计算 maxIntersections 函数的出现位置。'
+'description': 'Aggregate function that calculates the positions of the occurrences
+  of the maxIntersections function.'
+'sidebar_position': 164
+'slug': '/sql-reference/aggregate-functions/reference/maxintersectionsposition'
+'title': 'maxIntersectionsPosition'
 ---
+
+
 
 
 # maxIntersectionsPosition
 
-聚合函数，用于计算 [`maxIntersections` 函数](./maxintersections.md) 的出现位置。
+聚合函数计算 [`maxIntersections` 函数](./maxintersections.md) 的出现位置。
 
-语法为：
+语法如下：
 
 ```sql
 maxIntersectionsPosition(start_column, end_column)
@@ -24,7 +27,7 @@ maxIntersectionsPosition(start_column, end_column)
 
 **返回值**
 
-返回交叉区间的最大数量的起始位置。
+返回最多交叉区间的起始位置。
 
 **示例**
 
@@ -35,11 +38,7 @@ CREATE TABLE my_events (
 )
 Engine = MergeTree
 ORDER BY tuple();
-```
 
-插入数据到 my_events 表：
-
-```sql
 INSERT INTO my_events VALUES
    (1, 3),
    (1, 6),
@@ -47,7 +46,7 @@ INSERT INTO my_events VALUES
    (3, 7);
 ```
 
-这些区间的表示如下：
+这些区间如下所示：
 
 ```response
 1 - 3
@@ -56,7 +55,7 @@ INSERT INTO my_events VALUES
     3 - - - 7
 ```
 
-注意，这三个区间有值 4 是共同的，并且是从第 2 个区间开始的：
+注意，这三个区间的公共值为 4，并且从第 2 个区间开始：
 
 ```sql
 SELECT maxIntersectionsPosition(start, end) FROM my_events;
@@ -67,4 +66,4 @@ SELECT maxIntersectionsPosition(start, end) FROM my_events;
 2
 ```
 
-换句话说， `(1,6)` 行是三个交叉区间的起始位置，并且交叉的最大数量是 3。
+换句话说， `(1,6)` 行是交叉的 3 个区间的起点，而 3 是交叉区间的最大数量。

@@ -1,18 +1,22 @@
 ---
-slug: /sql-reference/window-functions/lagInFrame
-sidebar_label: lagInFrame
-sidebar_position: 9
+'description': 'lagInFrame窗口函数的文档'
+'sidebar_label': 'lagInFrame'
+'sidebar_position': 9
+'slug': '/sql-reference/window-functions/lagInFrame'
+'title': 'lagInFrame'
 ---
+
+
 
 
 # lagInFrame
 
-返回在有序框架内当前行之前指定物理偏移行处评估的值。
+返回在有序框架中，当前行之前的指定物理偏移行的值。
 
 :::warning
-`lagInFrame` 的行为与标准 SQL 的 `lag` 窗口函数不同。
-Clickhouse 窗口函数 `lagInFrame` 遵循窗口框架。
-要获得与 `lag` 相同的行为，请使用 `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`。
+`lagInFrame`的行为与标准SQL `lag`窗口函数不同。
+ClickHouse窗口函数`lagInFrame`遵循窗口框架。
+要获得与`lag`相同的行为，请使用`ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`。
 :::
 
 **语法**
@@ -25,20 +29,20 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-有关窗口函数语法的更多详细信息，请参见: [Window Functions - Syntax](./index.md/#syntax).
+有关窗口函数语法的更多详细信息，请参见：[窗口函数 - 语法](./index.md/#syntax)。
 
 **参数**
-- `x` — 列名称。
-- `offset` — 应用的偏移量。[(U)Int*](../data-types/int-uint.md)。 （可选 - 默认值为`1`）。
-- `default` — 如果计算的行超出窗口框架的边界，则返回的值。 （可选 - 略去时默认为列类型的默认值）。
+- `x` — 列名。
+- `offset` — 应用的偏移量。[(U)Int*](../data-types/int-uint.md)。 (可选 - 默认值为`1`)。
+- `default` — 如果计算的行超出窗口框架的边界，则返回的值。 (可选 - 省略时为列类型的默认值)。
 
 **返回值**
 
-- 在有序框架内指定物理偏移行之前评估的值。
+- 在有序框架中，当前行之前的指定物理偏移行的评估值。
 
 **示例**
 
-该示例查看某个特定股票的历史数据，并使用 `lagInFrame` 函数计算股票收盘价的逐日变化和百分比变化。
+此示例查看特定股票的历史数据，并使用`lagInFrame`函数计算股票收盘价的日常增量和百分比变化。
 
 查询：
 
@@ -46,11 +50,11 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 CREATE TABLE stock_prices
 (
     `date`   Date,
-    `open`   Float32, -- 开盘价
-    `high`   Float32, -- 日内最高价
-    `low`    Float32, -- 日内最低价
-    `close`  Float32, -- 收盘价
-    `volume` UInt32   -- 成交量
+    `open`   Float32, -- opening price
+    `high`   Float32, -- daily high
+    `low`    Float32, -- daily low
+    `close`  Float32, -- closing price
+    `volume` UInt32   -- trade volume
 )
 Engine = Memory;
 

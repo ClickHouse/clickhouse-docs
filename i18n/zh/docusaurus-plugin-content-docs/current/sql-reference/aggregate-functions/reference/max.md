@@ -1,9 +1,11 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/max
-sidebar_position: 162
-title: 'max'
-description: '聚合函数，用于计算一组值中的最大值。'
+'description': '在一组值中计算最大值的聚合函数。'
+'sidebar_position': 162
+'slug': '/sql-reference/aggregate-functions/reference/max'
+'title': '最大值'
 ---
+
+
 
 聚合函数，用于计算一组值中的最大值。
 

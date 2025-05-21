@@ -1,21 +1,23 @@
 ---
-title: PrettyMonoBlock
-slug: /interfaces/formats/PrettyMonoBlock
-keywords: ['PrettyMonoBlock']
-input_format: false
-output_format: true
-alias: []
+'alias': []
+'description': '关于PrettyMonoBlock格式的文档'
+'input_format': false
+'keywords':
+- 'PrettyMonoBlock'
+'output_format': true
+'slug': '/interfaces/formats/PrettyMonoBlock'
+'title': 'PrettyMonoBlock'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| 输入   | 输出    | 别名   |
-|--------|---------|--------|
-| ✗      | ✔       |        |
+| 输入 | 输出  | 别名 |
+|-------|---------|-------|
+| ✗     | ✔       |       |
 
 ## 描述 {#description}
 
-与 [`Pretty`](/interfaces/formats/Pretty) 格式不同的是，最多缓存 `10,000` 行，并作为一个单一的表输出，而不是通过 [块](/development/architecture#block) 输出。
+与 [`Pretty`](/interfaces/formats/Pretty) 格式不同的是，最多会缓冲 `10,000` 行，然后作为一个单独的表输出，而不是按 [块](/development/architecture#block) 输出。
 
 ## 示例用法 {#example-usage}
 

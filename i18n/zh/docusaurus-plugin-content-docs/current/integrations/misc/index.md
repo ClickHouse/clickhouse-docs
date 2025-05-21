@@ -1,7 +1,14 @@
 ---
-slug: /integrations/misc
-keywords: ['Retool', 'Easypanel', 'Splunk']
+'slug': '/integrations/misc'
+'keywords':
+- 'Retool'
+- 'Easypanel'
+- 'Splunk'
+'title': '工具'
+'description': '工具部分的首页'
 ---
+
+
 
 
 # 工具

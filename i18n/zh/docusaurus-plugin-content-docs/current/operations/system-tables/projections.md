@@ -1,9 +1,17 @@
 ---
-description: '包含所有表中现有投影的信息的系统表。'
-slug: /operations/system-tables/projections
-title: 'system.processors_profile_log'
-keywords: ['系统表', '投影']
+'description': 'System table containing information about existing projections in
+  all tables.'
+'keywords':
+- 'system table'
+- 'projections'
+'slug': '/operations/system-tables/projections'
+'title': 'system.projections'
 ---
+
+
+
+
+# system.projections
 
 包含所有表中现有投影的信息。
 

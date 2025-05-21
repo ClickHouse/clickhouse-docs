@@ -1,20 +1,23 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/corrstable
-sidebar_position: 119
-title: 'corrStable'
-description: '计算 Pearson 相关系数，但使用数值稳定算法。'
+'description': 'Calculates the Pearson correlation coefficient, but uses a numerically
+  stable algorithm.'
+'sidebar_position': 119
+'slug': '/sql-reference/aggregate-functions/reference/corrstable'
+'title': 'corrStable'
 ---
+
+
 
 
 # corrStable
 
-计算 [Pearson 相关系数](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)： 
+计算[皮尔逊相关系数](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient): 
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{\sqrt{\Sigma{(x - \bar{x})^2} * \Sigma{(y - \bar{y})^2}}}
 $$
 
-类似于 [`corr`](../reference/corr.md) 函数，但使用数值稳定算法。因此，`corrStable` 的速度比 `corr` 慢，但产生更准确的结果。
+与[`corr`](../reference/corr.md)函数类似，但使用数值稳定的算法。因此，`corrStable`比`corr`更慢，但能产生更准确的结果。
 
 **语法**
 
@@ -29,7 +32,7 @@ corrStable(x, y)
 
 **返回值**
 
-- Pearson 相关系数。 [Float64](../../data-types/float.md)。
+- 皮尔逊相关系数。[Float64](../../data-types/float.md)。
 
 ***示例**
 

@@ -1,10 +1,10 @@
 ---
-slug: /optimize/bulk-inserts
-sidebar_label: 批量插入
-title: 批量插入
-description: 发送较少的插入操作但每个操作包含更多数据将减少所需的写入次数。
+'slug': '/optimize/bulk-inserts'
+'sidebar_label': '批量插入'
+'title': '批量插入'
+'description': '发送包含更多数据的较少数量的插入将减少所需的写入次数。'
 ---
 
-import Content from '@site/i18n/zh/docusaurus-plugin-content-docs/current/cloud/bestpractices/bulkinserts.md';
+import Content from '@site/docs/best-practices/_snippets/_bulk_inserts.md';
 
-<Content />
+请提供需要翻译的具体内容。

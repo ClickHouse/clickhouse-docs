@@ -1,66 +1,89 @@
 ---
-slug: /sql-reference/statements/alter/comment
-sidebar_position: 51
-sidebar_label: COMMENT
+'description': 'ALTER TABLE ... MODIFY COMMENT 文档，允许添加、修改或删除表注释'
+'sidebar_label': '修改表格 ... 注释'
+'sidebar_position': 51
+'slug': '/sql-reference/statements/alter/comment'
+'title': 'ALTER TABLE ... MODIFY COMMENT'
+'keywords':
+- 'ALTER TABLE'
+- 'MODIFY COMMENT'
 ---
+
+
 
 
 # ALTER TABLE ... MODIFY COMMENT
 
-添加、修改或删除表的注释，无论之前是否已设置。注释的更改将在 [system.tables](../../../operations/system-tables/tables.md) 和 `SHOW CREATE TABLE` 查询中反映出来。
+添加、修改或删除表注释，无论之前是否设置过。注释更改反映在 [`system.tables`](../../../operations/system-tables/tables.md) 和 `SHOW CREATE TABLE` 查询中。
 
-**语法**
+## 语法 {#syntax}
 
-``` sql
+```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
 
-**示例**
+## 示例 {#examples}
 
-创建带注释的表（有关更多信息，请参见 [COMMENT](/sql-reference/statements/create/table#comment-clause) 子句）：
+要创建一个带注释的表：
 
-``` sql
+```sql
 CREATE TABLE table_with_comment
 (
     `k` UInt64,
     `s` String
 )
 ENGINE = Memory()
-COMMENT '临时表';
+COMMENT 'The temporary table';
 ```
 
-修改表注释：
+要修改表注释：
 
-``` sql
-ALTER TABLE table_with_comment MODIFY COMMENT '新表注释';
-SELECT comment FROM system.tables WHERE database = currentDatabase() AND name = 'table_with_comment';
+```sql
+ALTER TABLE table_with_comment 
+MODIFY COMMENT 'new comment on a table';
 ```
 
-新注释的输出：
+要查看修改后的注释：
 
-```text
+```sql title="Query"
+SELECT comment 
+FROM system.tables 
+WHERE database = currentDatabase() AND name = 'table_with_comment';
+```
+
+```text title="Response"
 ┌─comment────────────────┐
-│ 新表注释              │
+│ new comment on a table │
 └────────────────────────┘
 ```
 
-删除表注释：
+要删除表注释：
 
-``` sql
+```sql
 ALTER TABLE table_with_comment MODIFY COMMENT '';
-SELECT comment FROM system.tables WHERE database = currentDatabase() AND name = 'table_with_comment';
 ```
 
-删除注释的输出：
+要验证注释是否已删除：
 
-```text
+```sql title="Query"
+SELECT comment 
+FROM system.tables 
+WHERE database = currentDatabase() AND name = 'table_with_comment';
+```
+
+```text title="Response"
 ┌─comment─┐
 │         │
 └─────────┘
 ```
 
-**注意事项**
+## 注意事项 {#caveats}
 
-对于复制表，不同副本上的注释可能不同。修改注释仅适用于单个副本。
+对于 Replicated 表，不同副本上的注释可能不同。修改注释只适用于单个副本。
 
-该功能自版本 23.9 起可用。在之前的 ClickHouse 版本中无法使用。
+该功能自版本 23.9 开始可用。在之前的 ClickHouse 版本中不支持此功能。
+
+## 相关内容 {#related-content}
+
+- [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 子句
+- [`ALTER DATABASE ... MODIFY COMMENT`](./database-comment.md)

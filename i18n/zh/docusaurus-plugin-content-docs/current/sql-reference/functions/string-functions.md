@@ -1,23 +1,26 @@
 ---
-slug: '/sql-reference/functions/string-functions'
-sidebar_position: 170
-sidebar_label: '字符串'
+'description': '用于处理字符串的函数文档'
+'sidebar_label': '字符串'
+'sidebar_position': 170
+'slug': '/sql-reference/functions/string-functions'
+'title': '与字符串相关的函数'
 ---
 
 import VersionBadge from '@theme/badges/VersionBadge';
 
-# 字符串操作函数
 
-有关在字符串中 [搜索](string-search-functions.md) 和 [替换](string-replace-functions.md) 的函数单独进行了描述。
+# 工作字符串的函数
+
+函数用于描述 [搜索](string-search-functions.md) 字符串和 [替换](string-replace-functions.md) 字符串功能另行说明。
 ## empty {#empty}
 
-检查输入字符串是否为空。如果字符串包含至少一个字节，即使该字节是空格或空字节，也被视为非空。
+检查输入字符串是否为空。只要字符串包含至少一个字节，即使这个字节是空格或空字节，也被视为非空。
 
-此函数也适用于 [数组](/sql-reference/functions/array-functions#empty) 和 [UUID](uuid-functions.md#empty)。
+该函数也适用于 [数组](/sql-reference/functions/array-functions#empty) 和 [UUIDs](uuid-functions.md#empty)。
 
 **语法**
 
-``` sql
+```sql
 empty(x)
 ```
 
@@ -27,7 +30,7 @@ empty(x)
 
 **返回值**
 
-- 为空字符串时返回 `1`，非空字符串时返回 `0`。 [UInt8](../data-types/int-uint.md)。
+- 如果字符串为空，则返回 `1`；如果字符串非空，则返回 `0`。 [UInt8](../data-types/int-uint.md)。
 
 **示例**
 
@@ -44,13 +47,13 @@ SELECT empty('');
 ```
 ## notEmpty {#notempty}
 
-检查输入字符串是否非空。如果字符串包含至少一个字节，即使该字节是空格或空字节，也被视为非空。
+检查输入字符串是否非空。只要字符串包含至少一个字节，即使这个字节是空格或空字节，也被视为非空。
 
-此函数也适用于 [数组](/sql-reference/functions/array-functions#notempty) 和 [UUID](uuid-functions.md#notempty)。
+该函数也适用于 [数组](/sql-reference/functions/array-functions#notempty) 和 [UUIDs](uuid-functions.md#notempty)。
 
 **语法**
 
-``` sql
+```sql
 notEmpty(x)
 ```
 
@@ -60,7 +63,7 @@ notEmpty(x)
 
 **返回值**
 
-- 非空字符串时返回 `1`，空字符串时返回 `0`。 [UInt8](../data-types/int-uint.md)。
+- 如果字符串非空，则返回 `1`；如果字符串为空，则返回 `0`。 [UInt8](../data-types/int-uint.md)。
 
 **示例**
 
@@ -77,9 +80,9 @@ SELECT notEmpty('text');
 ```
 ## length {#length}
 
-返回字符串的字节长度而不是字符或Unicode代码点的数量。该函数也适用于数组。
+返回字符串的字节长度，而不是字符或 Unicode 码点长度。该函数也适用于数组。
 
-别名: `OCTET_LENGTH`
+别名： `OCTET_LENGTH`
 
 **语法**
 
@@ -89,11 +92,11 @@ length(s)
 
 **参数**
 
-- `s` — 输入字符串或数组。 [字符串](../data-types/string)/[数组](../data-types/array)。
+- `s` — 一个输入字符串或数组。 [字符串](../data-types/string)/[数组](../data-types/array)。
 
 **返回值**
 
-- 字符串或数组 `s` 的字节长度。 [UInt64](../data-types/int-uint.md)。
+- 字符串或数组 `s` 的长度（以字节为单位）。 [UInt64](../data-types/int-uint)。
 
 **示例**
 
@@ -103,7 +106,7 @@ length(s)
 SELECT length('Hello, world!');
 ```
 
-结果：
+结果： 
 
 ```response
 ┌─length('Hello, world!')─┐
@@ -117,7 +120,7 @@ SELECT length('Hello, world!');
 SELECT length([1, 2, 3, 4]);
 ```
 
-结果：
+结果： 
 
 ```response
 ┌─length([1, 2, 3, 4])─┐
@@ -126,7 +129,7 @@ SELECT length([1, 2, 3, 4]);
 ```
 ## lengthUTF8 {#lengthutf8}
 
-返回字符串在Unicode代码点中的长度，而不是在字节或字符中。假设字符串包含有效的UTF-8编码文本。如果该假设被违反，则不会抛出异常，结果是未定义的。
+返回字符串的 Unicode 码点长度，而不是以字节或字符计算的长度。假定字符串包含有效的 UTF-8 编码文本。如果违反此假设，则不会抛出异常，结果未定义。
 
 别名：
 - `CHAR_LENGTH`
@@ -140,11 +143,11 @@ lengthUTF8(s)
 
 **参数**
 
-- `s` — 包含有效UTF-8编码文本的字符串。 [字符串](../data-types/string.md)。
+- `s` — 包含有效 UTF-8 编码文本的字符串。 [字符串](../data-types/string.md)。
 
 **返回值**
 
-- 字符串 `s` 在Unicode代码点中的长度。 [UInt64](../data-types/int-uint.md)。
+- 字符串 `s` 的 Unicode 码点长度。 [UInt64](../data-types/int-uint.md)。
 
 **示例**
 
@@ -154,7 +157,7 @@ lengthUTF8(s)
 SELECT lengthUTF8('Здравствуй, мир!');
 ```
 
-结果：
+结果： 
 
 ```response
 ┌─lengthUTF8('Здравствуй, мир!')─┐
@@ -163,23 +166,23 @@ SELECT lengthUTF8('Здравствуй, мир!');
 ```
 ## left {#left}
 
-返回字符串 `s` 的子字符串，指定的 `offset` 从左侧开始。
+返回字符串 `s` 从左侧开始的指定 `offset` 的子字符串。
 
 **语法**
 
-``` sql
+```sql
 left(s, offset)
 ```
 
 **参数**
 
-- `s` — 计算子字符串的字符串。 [字符串](../data-types/string.md) 或 [固定字符串](../data-types/fixedstring.md)。
-- `offset` — 偏移量的字节数。 [(U)Int*](../data-types/int-uint.md)。
+- `s` — 要计算子字符串的字符串。 [字符串](../data-types/string.md) 或 [FixedString](../data-types/fixedstring.md)。
+- `offset` — 偏移字节数。 [(U)Int*](../data-types/int-uint)。
 
 **返回值**
 
-- 对于正的 `offset`：返回 `s` 的子字符串，包含 `offset` 个字节，从字符串的左侧开始。
-- 对于负的 `offset`：返回 `s` 的子字符串，包含 `length(s) - |offset|` 个字节，从字符串的左侧开始。
+- 对于正的 `offset`：从字符串的左侧开始，返回 `s` 中 `offset` 个字节的子字符串。
+- 对于负的 `offset`：从字符串的左侧开始，返回 `s` 中 `length(s) - |offset|` 个字节的子字符串。
 - 如果 `length` 为 0，则返回空字符串。
 
 **示例**
@@ -209,23 +212,23 @@ He
 ```
 ## leftUTF8 {#leftutf8}
 
-返回UTF-8编码字符串 `s` 的子字符串，指定的 `offset` 从左侧开始。
+返回 UTF-8 编码字符串 `s` 从左侧开始的指定 `offset` 的子字符串。
 
 **语法**
 
-``` sql
+```sql
 leftUTF8(s, offset)
 ```
 
 **参数**
 
-- `s` — 计算子字符串的UTF-8编码字符串。 [字符串](../data-types/string.md) 或 [固定字符串](../data-types/fixedstring.md)。
-- `offset` — 偏移量的字节数。 [(U)Int*](../data-types/int-uint.md)。
+- `s` — 要计算子字符串的 UTF-8 编码字符串。 [字符串](../data-types/string.md) 或 [FixedString](../data-types/fixedstring.md)。
+- `offset` — 偏移字节数。 [(U)Int*](../data-types/int-uint)。
 
 **返回值**
 
-- 对于正的 `offset`：返回 `s` 的子字符串，包含 `offset` 个字节，从字符串的左侧开始。
-- 对于负的 `offset`：返回 `s` 的子字符串，包含 `length(s) - |offset|` 个字节，从字符串的左侧开始。
+- 对于正的 `offset`：从字符串的左侧开始，返回 `s` 中 `offset` 个字节的子字符串。
+- 对于负的 `offset`：从字符串的左侧开始，返回 `s` 中 `length(s) - |offset|` 个字节的子字符串。
 - 如果 `length` 为 0，则返回空字符串。
 
 **示例**
@@ -255,21 +258,21 @@ SELECT leftUTF8('Привет', -4);
 ```
 ## leftPad {#leftpad}
 
-从左侧用空格或指定的字符串（如有必要可多次填充）填充字符串，直到结果字符串达到指定的 `length`。
+从左侧用空格或指定字符串（如有需要可多次）填充字符串，直到结果字符串达到指定的 `length`。
 
 **语法**
 
-``` sql
+```sql
 leftPad(string, length[, pad_string])
 ```
 
-别名: `LPAD`
+别名： `LPAD`
 
 **参数**
 
-- `string` — 应该被填充的输入字符串。 [字符串](../data-types/string.md)。
-- `length` — 结果字符串的长度。 [UInt或Int](../data-types/int-uint.md)。如果值小于输入字符串长度，则输入字符串将缩短为 `length` 个字符。
-- `pad_string` — 用于填充输入字符串的字符串。 [字符串](../data-types/string.md)。可选。如果未指定，则对输入字符串进行空格填充。
+- `string` — 应填充的输入字符串。 [字符串](../data-types/string.md)。
+- `length` — 结果字符串的长度。 [UInt 或 Int](../data-types/int-uint.md)。如果该值小于输入字符串长度，则将输入字符串缩短到 `length` 字符。
+- `pad_string` — 用于填充输入字符串的字符串。 [字符串](../data-types/string.md)。可选。如果未指定，则默认用空格填充输入字符串。
 
 **返回值**
 
@@ -277,7 +280,7 @@ leftPad(string, length[, pad_string])
 
 **示例**
 
-``` sql
+```sql
 SELECT leftPad('abc', 7, '*'), leftPad('def', 7);
 ```
 
@@ -290,19 +293,19 @@ SELECT leftPad('abc', 7, '*'), leftPad('def', 7);
 ```
 ## leftPadUTF8 {#leftpadutf8}
 
-从左侧用空格或指定的字符串（如有必要可多次填充）填充字符串，直到结果字符串达到指定的长度。与 [leftPad](#leftpad) 不同，测量字符串长度是按代码点计算的。
+从左侧用空格或指定字符串（如有需要可多次）填充字符串，直到结果字符串达到给定长度。与 [leftPad](#leftpad) 不同，`length` 是按码点计算的。
 
 **语法**
 
-``` sql
+```sql
 leftPadUTF8(string, length[, pad_string])
 ```
 
 **参数**
 
-- `string` — 应该被填充的输入字符串。 [字符串](../data-types/string.md)。
-- `length` — 结果字符串的长度。 [UInt或Int](../data-types/int-uint.md)。如果值小于输入字符串长度，则输入字符串将缩短为 `length` 个字符。
-- `pad_string` — 用于填充输入字符串的字符串。 [字符串](../data-types/string.md)。可选。如果未指定，则对输入字符串进行空格填充。
+- `string` — 应填充的输入字符串。 [字符串](../data-types/string.md)。
+- `length` — 结果字符串的长度。 [UInt 或 Int](../data-types/int-uint.md)。如果该值小于输入字符串长度，则将输入字符串缩短到 `length` 字符。
+- `pad_string` — 用于填充输入字符串的字符串。 [字符串](../data-types/string.md)。可选。如果未指定，则默认用空格填充输入字符串。
 
 **返回值**
 
@@ -310,7 +313,7 @@ leftPadUTF8(string, length[, pad_string])
 
 **示例**
 
-``` sql
+```sql
 SELECT leftPadUTF8('абвг', 7, '*'), leftPadUTF8('дежз', 7);
 ```
 
@@ -323,23 +326,23 @@ SELECT leftPadUTF8('абвг', 7, '*'), leftPadUTF8('дежз', 7);
 ```
 ## right {#right}
 
-返回字符串 `s` 的子字符串，指定的 `offset` 从右侧开始。
+返回字符串 `s` 从右侧开始的指定 `offset` 的子字符串。
 
 **语法**
 
-``` sql
+```sql
 right(s, offset)
 ```
 
 **参数**
 
-- `s` — 计算子字符串的字符串。 [字符串](../data-types/string.md) 或 [固定字符串](../data-types/fixedstring.md)。
-- `offset` — 偏移量的字节数。 [(U)Int*](../data-types/int-uint.md)。
+- `s` — 要计算子字符串的字符串。 [字符串](../data-types/string.md) 或 [FixedString](../data-types/fixedstring.md)。
+- `offset` — 偏移字节数。 [(U)Int*](../data-types/int-uint)。
 
 **返回值**
 
-- 对于正的 `offset`：返回 `s` 的子字符串，包含 `offset` 个字节，从字符串的右侧开始。
-- 对于负的 `offset`：返回 `s` 的子字符串，包含 `length(s) - |offset|` 个字节，从字符串的右侧开始。
+- 对于正的 `offset`：从字符串的右侧开始，返回 `s` 中 `offset` 个字节的子字符串。
+- 对于负的 `offset`：从字符串的右侧开始，返回 `s` 中 `length(s) - |offset|` 个字节的子字符串。
 - 如果 `length` 为 0，则返回空字符串。
 
 **示例**
@@ -369,23 +372,23 @@ lo
 ```
 ## rightUTF8 {#rightutf8}
 
-返回UTF-8编码字符串 `s` 的子字符串，指定的 `offset` 从右侧开始。
+返回 UTF-8 编码字符串 `s` 从右侧开始的指定 `offset` 的子字符串。
 
 **语法**
 
-``` sql
+```sql
 rightUTF8(s, offset)
 ```
 
 **参数**
 
-- `s` — 计算子字符串的UTF-8编码字符串。 [字符串](../data-types/string.md) 或 [固定字符串](../data-types/fixedstring.md)。
-- `offset` — 偏移量的字节数。 [(U)Int*](../data-types/int-uint.md)。
+- `s` — 要计算子字符串的 UTF-8 编码字符串。 [字符串](../data-types/string.md) 或 [FixedString](../data-types/fixedstring.md)。
+- `offset` — 偏移字节数。 [(U)Int*](../data-types/int-uint)。
 
 **返回值**
 
-- 对于正的 `offset`：返回 `s` 的子字符串，包含 `offset` 个字节，从字符串的右侧开始。
-- 对于负的 `offset`：返回 `s` 的子字符串，包含 `length(s) - |offset|` 个字节，从字符串的右侧开始。
+- 对于正的 `offset`：从字符串的右侧开始，返回 `s` 中 `offset` 个字节的子字符串。
+- 对于负的 `offset`：从字符串的右侧开始，返回 `s` 中 `length(s) - |offset|` 个字节的子字符串。
 - 如果 `length` 为 0，则返回空字符串。
 
 **示例**
@@ -415,29 +418,29 @@ SELECT rightUTF8('Привет', -4);
 ```
 ## rightPad {#rightpad}
 
-从右侧用空格或指定的字符串（如有必要可多次填充）填充字符串，直到结果字符串达到指定的 `length`。
+从右侧用空格或指定字符串（如有需要可多次）填充字符串，直到结果字符串达到指定的 `length`。
 
 **语法**
 
-``` sql
+```sql
 rightPad(string, length[, pad_string])
 ```
 
-别名: `RPAD`
+别名： `RPAD`
 
 **参数**
 
-- `string` — 应该被填充的输入字符串。 [字符串](../data-types/string.md)。
-- `length` — 结果字符串的长度。 [UInt或Int](../data-types/int-uint.md)。如果值小于输入字符串长度，则输入字符串将缩短为 `length` 个字符。
-- `pad_string` — 用于填充输入字符串的字符串。 [字符串](../data-types/string.md)。可选。如果未指定，则对输入字符串进行空格填充。
+- `string` — 应填充的输入字符串。 [字符串](../data-types/string.md)。
+- `length` — 结果字符串的长度。 [UInt 或 Int](../data-types/int-uint.md)。如果该值小于输入字符串长度，则将输入字符串缩短到 `length` 字符。
+- `pad_string` — 用于填充输入字符串的字符串。 [字符串](../data-types/string.md)。可选。如果未指定，则默认用空格填充输入字符串。
 
 **返回值**
 
-- 给定长度的填充字符串。 [字符串](../data-types/string.md)。
+- 给定长度的右填充字符串。 [字符串](../data-types/string.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT rightPad('abc', 7, '*'), rightPad('abc', 7);
 ```
 
@@ -450,27 +453,27 @@ SELECT rightPad('abc', 7, '*'), rightPad('abc', 7);
 ```
 ## rightPadUTF8 {#rightpadutf8}
 
-从右侧用空格或指定的字符串（如有必要可多次填充）填充字符串，直到结果字符串达到指定的长度。与 [rightPad](#rightpad) 不同，测量字符串长度是按代码点计算的。
+从右侧用空格或指定字符串（如有需要可多次）填充字符串，直到结果字符串达到给定长度。与 [rightPad](#rightpad) 不同，`length` 是按码点计算的。
 
 **语法**
 
-``` sql
+```sql
 rightPadUTF8(string, length[, pad_string])
 ```
 
 **参数**
 
-- `string` — 应该被填充的输入字符串。 [字符串](../data-types/string.md)。
-- `length` — 结果字符串的长度。 [UInt或Int](../data-types/int-uint.md)。如果值小于输入字符串长度，则输入字符串将缩短为 `length` 个字符。
-- `pad_string` — 用于填充输入字符串的字符串。 [字符串](../data-types/string.md)。可选。如果未指定，则对输入字符串进行空格填充。
+- `string` — 应填充的输入字符串。 [字符串](../data-types/string.md)。
+- `length` — 结果字符串的长度。 [UInt 或 Int](../data-types/int-uint.md)。如果该值小于输入字符串长度，则将输入字符串缩短到 `length` 字符。
+- `pad_string` — 用于填充输入字符串的字符串。 [字符串](../data-types/string.md)。可选。如果未指定，则默认用空格填充输入字符串。
 
 **返回值**
 
-- 给定长度的填充字符串。 [字符串](../data-types/string.md)。
+- 给定长度的右填充字符串。 [字符串](../data-types/string.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT rightPadUTF8('абвг', 7, '*'), rightPadUTF8('абвг', 7);
 ```
 
@@ -483,7 +486,7 @@ SELECT rightPadUTF8('абвг', 7, '*'), rightPadUTF8('абвг', 7);
 ```
 ## compareSubstrings {#comparesubstrings}
 
-按字典顺序比较两个字符串。
+比较两个字符串的字典序。
 
 **语法**
 
@@ -493,11 +496,11 @@ compareSubstrings(string1, string2, string1_offset, string2_offset, num_bytes);
 
 **参数**
 
-- `string1` — 第一个待比较的字符串。 [字符串](../data-types/string.md)
-- `string2` - 第二个待比较的字符串。 [字符串](../data-types/string.md)
-- `string1_offset` — 在 `string1` 中开始比较的位置（从零开始）。 [UInt*](../data-types/int-uint.md)。
-- `string2_offset` — 在 `string2` 中开始比较的位置（从零开始）。 [UInt*](../data-types/int-uint.md)。
-- `num_bytes` — 在两个字符串中要比较的最大字节数。如果 `string_offset` + `num_bytes` 超过输入字符串的结尾，`num_bytes` 将相应减少。 [UInt*](../data-types/int-uint.md)。
+- `string1` — 第一个要比较的字符串。 [字符串](../data-types/string.md)
+- `string2` - 第二个要比较的字符串。[字符串](../data-types/string.md)
+- `string1_offset` — 在 `string1` 中比较开始的起始位置（零基）。 [UInt*](../data-types/int-uint.md)。
+- `string2_offset` — 在 `string2` 中比较开始的起始位置（零基）。 [UInt*](../data-types/int-uint.md)。
+- `num_bytes` — 两个字符串中要比较的最大字节数。如果 `string_offset` + `num_bytes` 超过输入字符串的末尾，则 `num_bytes` 将相应减少。 [UInt*](../data-types/int-uint.md)。
 
 **返回值**
 
@@ -522,23 +525,23 @@ SELECT compareSubstrings('Saxony', 'Anglo-Saxon', 0, 6, 5) AS result,
 ```
 ## lower {#lower}
 
-将字符串中的ASCII拉丁符号转换为小写。
+将字符串中的 ASCII 拉丁符号转换为小写。
 
 **语法**
 
-``` sql
+```sql
 lower(input)
 ```
 
-别名: `lcase`
+别名： `lcase`
 
 **参数**
 
-- `input`: 字符串类型 [字符串](../data-types/string.md)。
+- `input`：字符串类型 [字符串](../data-types/string.md)。
 
 **返回值**
 
-- [字符串](../data-types/string.md) 数据类型的值。
+- [字符串](../data-types/string.md) 数据类型值。
 
 **示例**
 
@@ -555,15 +558,15 @@ SELECT lower('CLICKHOUSE');
 ```
 ## upper {#upper}
 
-将字符串中的ASCII拉丁符号转换为大写。
+将字符串中的 ASCII 拉丁符号转换为大写。
 
 **语法**
 
-``` sql
+```sql
 upper(input)
 ```
 
-别名: `ucase`
+别名： `ucase`
 
 **参数**
 
@@ -571,7 +574,7 @@ upper(input)
 
 **返回值**
 
-- [字符串](../data-types/string.md) 数据类型的值。
+- [字符串](../data-types/string.md) 数据类型值。
 
 **示例**
 
@@ -581,17 +584,17 @@ upper(input)
 SELECT upper('clickhouse');
 ```
 
-``` response
+```response
 ┌─upper('clickhouse')─┐
 │ CLICKHOUSE          │
 └─────────────────────┘
 ```
 ## lowerUTF8 {#lowerutf8}
 
-将字符串转换为小写，假设字符串包含有效的UTF-8编码文本。如果该假设被违反，则不会抛出异常，结果是未定义的。
+将字符串转换为小写，假设字符串包含有效的 UTF-8 编码文本。如果违反此假设，则不会抛出异常，结果未定义。
 
 :::note
-不会检测语言，例如，对于土耳其语，结果可能不完全正确（i/İ vs. i/I）。如果某个代码点的UTF-8字节序列的大写和小写长度不同（如 `ẞ` 和 `ß`），则该代码点的结果可能不正确。
+不会检测语言，例如对于土耳其语，结果可能不完全正确（i/İ 与 i/I）。如果某个代码点的大写和小写的 UTF-8 字节序列长度不同（如 `ẞ` 和 `ß`），则此代码点的结果可能不正确。
 :::
 
 **语法**
@@ -606,7 +609,7 @@ lowerUTF8(input)
 
 **返回值**
 
-- [字符串](../data-types/string.md) 数据类型的值。
+- [字符串](../data-types/string.md) 数据类型值。
 
 **示例**
 
@@ -618,17 +621,17 @@ SELECT lowerUTF8('MÜNCHEN') as Lowerutf8;
 
 结果：
 
-``` response
+```response
 ┌─Lowerutf8─┐
 │ münchen   │
 └───────────┘
 ```
 ## upperUTF8 {#upperutf8}
 
-将字符串转换为大写，假设字符串包含有效的UTF-8编码文本。如果该假设被违反，则不会抛出异常，结果是未定义的。
+将字符串转换为大写，假设字符串包含有效的 UTF-8 编码文本。如果违反此假设，则不会抛出异常，结果未定义。
 
 :::note
-不会检测语言，例如，对于土耳其语，结果可能不完全正确（i/İ vs. i/I）。如果某个代码点的UTF-8字节序列的大写和小写长度不同（如 `ẞ` 和 `ß`），则该代码点的结果可能不正确。
+不会检测语言，例如对于土耳其语，结果可能不完全正确（i/İ 与 i/I）。如果某个代码点的大写和小写的 UTF-8 字节序列长度不同（如 `ẞ` 和 `ß`），则此代码点的结果可能不正确。
 :::
 
 **语法**
@@ -643,7 +646,7 @@ upperUTF8(input)
 
 **返回值**
 
-- [字符串](../data-types/string.md) 数据类型的值。
+- [字符串](../data-types/string.md) 数据类型值。
 
 **示例**
 
@@ -655,18 +658,18 @@ SELECT upperUTF8('München') as Upperutf8;
 
 结果：
 
-``` response
+```response
 ┌─Upperutf8─┐
 │ MÜNCHEN   │
 └───────────┘
 ```
 ## isValidUTF8 {#isvalidutf8}
 
-如果字节集合构成有效的UTF-8编码文本，则返回 1；否则返回 0。
+如果字节集合构成有效的 UTF-8 编码文本，则返回 1；否则返回 0。
 
 **语法**
 
-``` sql
+```sql
 isValidUTF8(input)
 ```
 
@@ -676,44 +679,46 @@ isValidUTF8(input)
 
 **返回值**
 
-- 如果字节集合构成有效的UTF-8编码文本，则返回 `1`，否则返回 `0`。
+- 如果字节集合构成有效的 UTF-8 编码文本，则返回 `1`；否则返回 `0`。
 
 查询：
 
-``` sql
+```sql
 SELECT isValidUTF8('\xc3\xb1') AS valid, isValidUTF8('\xc3\x28') AS invalid;
 ```
 
 结果：
 
-``` response
+```response
 ┌─valid─┬─invalid─┐
 │     1 │       0 │
 └───────┴─────────┘
 ```
 ## toValidUTF8 {#tovalidutf8}
 
-将无效的UTF-8字符替换为 `�` (U+FFFD) 字符。所有连在一起的无效字符都会合并成一个替代字符。
+用 `�` (U+FFFD) 字符替换无效的 UTF-8 字符。所有连续的无效字符都折叠为一个替代字符。
 
 **语法**
 
-``` sql
+```sql
 toValidUTF8(input_string)
 ```
 
 **参数**
 
-- `input_string` — 任何字节集合，表示为 [字符串](../data-types/string.md) 数据类型对象。
+- `input_string` — 表示为 [字符串](../data-types/string.md) 数据类型对象的任何字节集合。
 
 **返回值**
 
-- 一个有效的UTF-8字符串。
+- 有效的 UTF-8 字符串。
 
 **示例**
 
-``` sql
+```sql
 SELECT toValidUTF8('\x61\xF0\x80\x80\x80b');
 ```
+
+结果：
 
 ```result
 ┌─toValidUTF8('a����b')─┐
@@ -722,28 +727,28 @@ SELECT toValidUTF8('\x61\xF0\x80\x80\x80b');
 ```
 ## repeat {#repeat}
 
-按指定次数与自身连接字符串。
+将字符串按指定次数与自身连接重复。
 
 **语法**
 
-``` sql
+```sql
 repeat(s, n)
 ```
 
-别名: `REPEAT`
+别名： `REPEAT`
 
 **参数**
 
 - `s` — 要重复的字符串。 [字符串](../data-types/string.md)。
-- `n` — 重复字符串的次数。 [UInt* 或 Int*](../data-types/int-uint.md)。
+- `n` — 字符串重复的次数。 [UInt* 或 Int*](../data-types/int-uint.md)。
 
 **返回值**
 
-一个包含字符串 `s` 重复 `n` 次的字符串。如果 `n` &lt;= 0，函数返回空字符串。 [字符串](../data-types/string.md)。
+一个字符串，其中包含字符串 `s` 重复 `n` 次。如果 `n` &lt;= 0，则函数返回空字符串。 [字符串](../data-types/string.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT repeat('abc', 10);
 ```
 
@@ -756,15 +761,15 @@ SELECT repeat('abc', 10);
 ```
 ## space {#space}
 
-连接一个空格(` `)，按指定次数与自身连接。
+将空格 (` `) 按指定次数与自身连接重复。
 
 **语法**
 
-``` sql
+```sql
 space(n)
 ```
 
-别名: `SPACE`.
+别名： `SPACE`。
 
 **参数**
 
@@ -772,19 +777,19 @@ space(n)
 
 **返回值**
 
-一个包含字符串 ` ` 重复 `n` 次的字符串。如果 `n` &lt;= 0，函数返回空字符串。 [字符串](../data-types/string.md)。
+包含字符串 ` ` 重复 `n` 次的字符串。如果 `n` &lt;= 0，则函数返回空字符串。 [字符串](../data-types/string.md)。
 
 **示例**
 
 查询：
 
-``` sql
+```sql
 SELECT space(3);
 ```
 
 结果：
 
-``` text
+```text
 ┌─space(3) ────┐
 │              │
 └──────────────┘
@@ -794,14 +799,14 @@ SELECT space(3);
 反转字符串中的字节序列。
 ## reverseUTF8 {#reverseutf8}
 
-反转字符串中的Unicode代码点序列。假设字符串包含有效的UTF-8编码文本。如果该假设被违反，则不会抛出异常，结果是未定义的。
+反转字符串中的 Unicode 码点序列。假定字符串包含有效的 UTF-8 编码文本。如果违反此假设，则不会抛出异常，结果未定义。
 ## concat {#concat}
 
 连接给定的参数。
 
 **语法**
 
-``` sql
+```sql
 concat(s1, s2, ...)
 ```
 
@@ -809,19 +814,19 @@ concat(s1, s2, ...)
 
 任意类型的值。
 
-非 [字符串](../data-types/string.md) 或 [固定字符串](../data-types/fixedstring.md) 类型的参数会使用其默认序列化转换为字符串。由于这会降低性能，因此不建议使用非String/FixedString参数。
+不是 [字符串](../data-types/string.md) 或 [FixedString](../data-types/fixedstring.md) 类型的参数会使用默认的序列化转换为字符串。由于这样会降低性能，因此不建议使用非字符串/固定字符串参数。
 
 **返回值**
 
-由连接参数创建的字符串。
+通过连接参数创建的字符串。
 
-如果任何参数为 `NULL`，函数将返回 `NULL`。
+如果任何参数为 `NULL`，则函数返回 `NULL`。
 
 **示例**
 
 查询：
 
-``` sql
+```sql
 SELECT concat('Hello, ', 'World!');
 ```
 
@@ -847,36 +852,36 @@ SELECT concat(42, 144);
 └─────────────────┘
 ```
 
-:::note `||` 运算符
-使用 `||` 运算符进行字符串连接，作为 `concat()` 的简洁替代。例如，`'Hello, ' || 'World!'` 相当于 `concat('Hello, ', 'World!')`。
+:::note `||` 操作符
+使用 `||` 操作符作为 `concat()` 的简洁替代方案进行字符串连接。例如，`'Hello, ' || 'World!'` 等价于 `concat('Hello, ', 'World!')`。
 :::
 ## concatAssumeInjective {#concatassumeinjective}
 
-与 [concat](#concat) 相似，但假设 `concat(s1, s2, ...) → sn` 是单射。可以用于优化 GROUP BY。
+类似于 [concat](#concat)，但假设 `concat(s1, s2, ...) → sn` 是单射。如果可以用于优化 GROUP BY。
 
-如果函数对不同的参数返回不同的结果，则称该函数为单射。换句话说：不同的参数永远不会产生相同的结果。
+如果一个函数返回不同的参数，则被称为单射。换句话说：不同的参数永远不会产生相同的结果。
 
 **语法**
 
-``` sql
+```sql
 concatAssumeInjective(s1, s2, ...)
 ```
 
 **参数**
 
-字符串或固定字符串类型的值。
+字符串或 FixedString 类型的值。
 
 **返回值**
 
-由连接参数创建的字符串。
+通过连接参数创建的字符串。
 
-如果任何参数值为 `NULL`，该函数将返回 `NULL`。
+如果任何参数值为 `NULL`，则函数返回 `NULL`。
 
 **示例**
 
 输入表：
 
-``` sql
+```sql
 CREATE TABLE key_val(`key1` String, `key2` String, `value` UInt32) ENGINE = TinyLog;
 INSERT INTO key_val VALUES ('Hello, ','World',1), ('Hello, ','World',2), ('Hello, ','World!',3), ('Hello',', World!',2);
 SELECT * from key_val;
@@ -891,7 +896,7 @@ SELECT * from key_val;
 └─────────┴──────────┴───────┘
 ```
 
-``` sql
+```sql
 SELECT concat(key1, key2), sum(value) FROM key_val GROUP BY concatAssumeInjective(key1, key2);
 ```
 
@@ -906,30 +911,30 @@ SELECT concat(key1, key2), sum(value) FROM key_val GROUP BY concatAssumeInjectiv
 ```
 ## concatWithSeparator {#concatwithseparator}
 
-用给定的分隔符连接给定的字符串。
+使用指定的分隔符连接给定的字符串。
 
 **语法**
 
-``` sql
+```sql
 concatWithSeparator(sep, expr1, expr2, expr3...)
 ```
 
-别名: `concat_ws`
+别名： `concat_ws`
 
 **参数**
 
-- sep — 分隔符。 常量 [字符串](../data-types/string.md) 或 [固定字符串](../data-types/fixedstring.md)。
-- exprN — 要连接的表达式。非 [字符串](../data-types/string.md) 或 [固定字符串](../data-types/fixedstring.md) 类型的参数会使用其默认序列化转换为字符串。由于这会降低性能，因此不建议使用非String/FixedString参数。
+- sep — 分隔符。 常量 [字符串](../data-types/string.md) 或 [FixedString](../data-types/fixedstring.md)。
+- exprN — 要连接的表达式。不是 [字符串](../data-types/string.md) 或 [FixedString](../data-types/fixedstring.md) 类型的参数会使用默认的序列化转换为字符串。由于这样会降低性能，因此不建议使用非字符串/固定字符串参数。
 
 **返回值**
 
-由连接参数创建的字符串。
+通过连接参数创建的字符串。
 
-如果任何参数值为 `NULL`，该函数将返回 `NULL`。
+如果任何参数值为 `NULL`，则函数返回 `NULL`。
 
 **示例**
 
-``` sql
+```sql
 SELECT concatWithSeparator('a', '1', '2', '3', '4')
 ```
 
@@ -942,12 +947,12 @@ SELECT concatWithSeparator('a', '1', '2', '3', '4')
 ```
 ## concatWithSeparatorAssumeInjective {#concatwithseparatorassumeinjective}
 
-与 `concatWithSeparator` 类似，但假设 `concatWithSeparator(sep, expr1, expr2, expr3...) → result` 是单射。可以用于优化 GROUP BY。
+类似于 `concatWithSeparator`，但假设 `concatWithSeparator(sep, expr1, expr2, expr3...) → result` 是单射。如果可以用于优化 GROUP BY。
 
-如果函数对不同的参数返回不同的结果，则称该函数为单射。换句话说：不同的参数永远不会产生相同的结果。
+一个函数被称为单射，如果它返回不同的参数所产生不同的结果。换句话说：不同的参数永远不会产生相同的结果。
 ## substring {#substring}
 
-返回字符串 `s` 的子字符串，该子字符串始于指定字节索引 `offset`。字节计数从 1 开始。如果 `offset` 为 0，将返回空字符串。如果 `offset` 为负，则子字符串从字符串末尾的 `pos` 个字符开始，而不是从开头开始。可选参数 `length` 指定返回的子字符串的最大字节数。
+返回字符串 `s` 中从指定字节索引 `offset` 开始的子字符串。字节计数从 1 开始。如果 `offset` 是 0，则返回空字符串。如果 `offset` 为负，则子字符串从字符串末尾开始的 `pos` 个字符开始，而不是从开头。可选参数 `length` 指定返回的子字符串的最大字节数。
 
 **语法**
 
@@ -962,17 +967,17 @@ substring(s, offset[, length])
 
 **参数**
 
-- `s` — 要计算子字符串的字符串。 [字符串](../data-types/string.md)、[固定字符串](../data-types/fixedstring.md) 或 [枚举](../data-types/enum.md)
-- `offset` — 子字符串在 `s` 中的起始位置。 [(U)Int*](../data-types/int-uint.md)。
+- `s` — 要计算子字符串的字符串。 [字符串](../data-types/string.md)、[FixedString](../data-types/fixedstring.md) 或 [枚举](../data-types/enum.md)。
+- `offset` — 在 `s` 中子字符串的起始位置。 [(U)Int*](../data-types/int-uint.md)。
 - `length` — 子字符串的最大长度。 [(U)Int*](../data-types/int-uint.md)。可选。
 
 **返回值**
 
-一个包含 `s` 的子字符串，长度为 `length`，从索引 `offset` 开始。 [字符串](../data-types/string.md)。
+从索引 `offset` 开始的 `s` 的子字符串，长度为 `length`。 [字符串](../data-types/string.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT 'database' AS db, substr(db, 5), substr(db, 5, 1)
 ```
 
@@ -985,9 +990,9 @@ SELECT 'database' AS db, substr(db, 5), substr(db, 5, 1)
 ```
 ## substringUTF8 {#substringutf8}
 
-返回字符串 `s` 的子字符串，该子字符串始于指定的字节索引 `offset` 以处理Unicode代码点。字节计数从1开始。如果 `offset` 为0，则返回空字符串。如果 `offset` 为负，则子字符串从字符串末尾的 `pos` 个字符开始，而不是从开头开始。可选参数 `length` 指定返回的子字符串的最大字节数。
+返回字符串 `s` 中从指定字节索引 `offset` 开始的子字符串，适用于 Unicode 码点。字节计数从 1 开始。如果 `offset` 是 0，则返回空字符串。如果 `offset` 为负，则子字符串从字符串末尾开始的 `pos` 个字符开始，而不是从开头。可选参数 `length` 指定返回的子字符串的最大字节数。
 
-假设字符串包含有效的UTF-8编码文本。如果该假设被违反，则不会抛出异常，结果是未定义的。
+假定字符串包含有效的 UTF-8 编码文本。如果违反此假设，则不会抛出异常，结果未定义。
 
 **语法**
 
@@ -997,17 +1002,17 @@ substringUTF8(s, offset[, length])
 
 **参数**
 
-- `s` — 要计算子字符串的字符串。 [字符串](../data-types/string.md)、[固定字符串](../data-types/fixedstring.md) 或 [枚举](../data-types/enum.md)
-- `offset` — 子字符串在 `s` 中的起始位置。 [(U)Int*](../data-types/int-uint.md)。
+- `s` — 要计算子字符串的字符串。 [字符串](../data-types/string.md)、[FixedString](../data-types/fixedstring.md) 或 [枚举](../data-types/enum.md)。
+- `offset` — 在 `s` 中子字符串的起始位置。 [(U)Int*](../data-types/int-uint.md)。
 - `length` — 子字符串的最大长度。 [(U)Int*](../data-types/int-uint.md)。可选。
 
 **返回值**
 
-包含 `s` 的子字符串，长度为 `length`，从索引 `offset` 开始。
+从索引 `offset` 开始的 `s` 的子字符串，长度为 `length`。
 
 **实现细节**
 
-假设字符串包含有效的UTF-8编码文本。如果该假设被违反，则不会抛出异常，结果是未定义的。
+假定字符串包含有效的 UTF-8 编码文本。如果违反此假设，则不会抛出异常，结果未定义。
 
 **示例**
 
@@ -1018,28 +1023,28 @@ SELECT 'Täglich grüßt das Murmeltier.' AS str,
 ```
 
 ```response
-Täglich grüßt das Murmeltier.	grüßt das Murmeltier.	grüßt
+Täglich grüßt das Murmeltier.    grüßt das Murmeltier.    grüßt
 ```
 ## substringIndex {#substringindex}
 
-返回字符串 `s` 在 `count` 次出现分隔符 `delim` 之前的子字符串，如同在Spark或MySQL中一样。
+返回字符串 `s` 中 `count` 个分隔符 `delim` 之前的子字符串，如在 Spark 或 MySQL 中。
 
 **语法**
 
 ```sql
 substringIndex(s, delim, count)
 ```
-别名: `SUBSTRING_INDEX`
+别名： `SUBSTRING_INDEX`
 
 **参数**
 
 - s — 要提取子字符串的字符串。 [字符串](../data-types/string.md)。
-- delim — 分隔符字符。 [字符串](../data-types/string.md)。
-- count — 在提取子字符串之前要计数的分隔符出现的次数。如果计数为正，则返回最后一个分隔符左侧的所有内容（从左计数）。如果计数为负，则返回最后一个分隔符右侧的所有内容（从右计数）。 [UInt 或 Int](../data-types/int-uint.md)
+- delim — 分隔的字符。 [字符串](../data-types/string.md)。
+- count — 提取子字符串之前要计数的分隔符出现次数。如果计数为正，则返回最后一个分隔符左侧的所有内容（从左数起）。如果计数为负，则返回最后一个分隔符右侧的所有内容（从右数起）。 [UInt 或 Int](../data-types/int-uint.md)
 
 **示例**
 
-``` sql
+```sql
 SELECT substringIndex('www.clickhouse.com', '.', 2)
 ```
 
@@ -1051,9 +1056,9 @@ SELECT substringIndex('www.clickhouse.com', '.', 2)
 ```
 ## substringIndexUTF8 {#substringindexutf8}
 
-返回字符串 `s` 在 `count` 次出现分隔符 `delim` 之前的子字符串，专门针对Unicode代码点。
+返回字符串 `s` 中 `count` 个分隔符 `delim` 之前的子字符串，专门适用于 Unicode 码点。
 
-假设字符串包含有效的UTF-8编码文本。如果该假设被违反，则不会抛出异常，结果是未定义的。
+假定字符串包含有效的 UTF-8 编码文本。如果违反此假设，则不会抛出异常，结果未定义。
 
 **语法**
 
@@ -1064,16 +1069,16 @@ substringIndexUTF8(s, delim, count)
 **参数**
 
 - `s` — 要提取子字符串的字符串。 [字符串](../data-types/string.md)。
-- `delim` — 分隔符字符。 [字符串](../data-types/string.md)。
-- `count` — 在提取子字符串之前要计数的分隔符出现的次数。如果计数为正，则返回最后一个分隔符左侧的所有内容（从左计数）。如果计数为负，则返回最后一个分隔符右侧的所有内容（从右计数）。 [UInt 或 Int](../data-types/int-uint.md)
+- delim — 分隔的字符。 [字符串](../data-types/string.md)。
+- count — 提取子字符串之前要计数的分隔符出现次数。如果计数为正，则返回最后一个分隔符左侧的所有内容（从左数起）。如果计数为负，则返回最后一个分隔符右侧的所有内容（从右数起）。 [UInt 或 Int](../data-types/int-uint.md)
 
 **返回值**
 
-在 `count` 次出现 `delim` 之前的子字符串 [字符串](../data-types/string.md) 的 `s`。
+返回字符串 `s` 中 `count` 个分隔符 `delim` 之前的子字符串。 [字符串](../data-types/string.md)
 
 **实现细节**
 
-假设字符串包含有效的UTF-8编码文本。如果该假设被违反，则不会抛出异常，结果是未定义的。
+假定字符串包含有效的 UTF-8 编码文本。如果违反此假设，则不会抛出异常，结果未定义。
 
 **示例**
 
@@ -1081,12 +1086,14 @@ substringIndexUTF8(s, delim, count)
 SELECT substringIndexUTF8('www.straßen-in-europa.de', '.', 2)
 ```
 
+结果：
+
 ```response
 www.straßen-in-europa
 ```
 ## appendTrailingCharIfAbsent {#appendtrailingcharifabsent}
 
-如果 `s` 非空且不以字符 `c` 结尾，则将字符 `c` 附加到字符串 `s`。
+如果 `s` 非空且不以字符 `c` 结尾，则附加字符 `c` 到字符串 `s`。
 
 **语法**
 
@@ -1095,16 +1102,111 @@ appendTrailingCharIfAbsent(s, c)
 ```
 ## convertCharset {#convertcharset}
 
-返回将字符串 `s` 从编码 `from` 转换为编码 `to` 的结果。
+返回字符串 `s` 从编码 `from` 转换为编码 `to`。
 
 **语法**
 
 ```sql
 convertCharset(s, from, to)
 ```
+## base32Encode {#base32encode}
+
+使用 [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) 编码字符串。
+
+**语法**
+
+```sql
+base32Encode(plaintext)
+```
+
+**参数**
+
+- `plaintext` — [字符串](../data-types/string.md) 列或常量。
+
+**返回值**
+
+- 包含参数编码值的字符串。 [字符串](../data-types/string.md) 或 [FixedString](../data-types/fixedstring.md)。
+
+**示例**
+
+```sql
+SELECT base32Encode('Encoded');
+```
+
+结果：
+
+```result
+┌─base32Encode('Encoded')─┐
+│ IVXGG33EMVSA====        │
+└─────────────────────────┘
+```
+## base32Decode {#base32decode}
+
+接受一个字符串并使用 [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) 编码方案对其进行解码。
+
+**语法**
+
+```sql
+base32Decode(encoded)
+```
+
+**参数**
+
+- `encoded` — [字符串](../data-types/string.md) 或 [FixedString](../data-types/fixedstring.md)。如果字符串不是有效的 Base32 编码值，则会抛出异常。
+
+**返回值**
+
+- 包含参数解码值的字符串。 [字符串](../data-types/string.md)。
+
+**示例**
+
+```sql
+SELECT base32Decode('IVXGG33EMVSA====');
+```
+
+结果：
+
+```result
+┌─base32Decode('IVXGG33EMVSA====')─┐
+│ Encoded                          │
+└──────────────────────────────────┘
+```
+## tryBase32Decode {#trybase32decode}
+
+类似于 `base32Decode`，但在发生错误时返回空字符串。
+
+**语法**
+
+```sql
+tryBase32Decode(encoded)
+```
+
+**参数**
+
+- `encoded` — [字符串](../data-types/string.md) 或 [FixedString](../data-types/fixedstring.md)。如果字符串不是有效的 Base32 编码值，则在发生错误时返回空字符串。
+
+**返回值**
+
+- 包含参数解码值的字符串。
+
+**示例**
+
+查询：
+
+```sql
+SELECT tryBase32Decode('IVXGG33EMVSA====') as res, tryBase32Decode('invalid') as res_invalid;
+```
+
+结果：
+
+```response
+┌─res─────┬─res_invalid─┐
+│ Encoded │             │
+└─────────┴─────────────┘
+```
 ## base58Encode {#base58encode}
 
-使用 [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58) 中的“比特币”字母表对字符串进行编码。
+使用 [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58) 在 “比特币” 字母表中编码字符串。
 
 **语法**
 
@@ -1118,11 +1220,11 @@ base58Encode(plaintext)
 
 **返回值**
 
-- 一个包含参数编码值的字符串。 [字符串](../data-types/string.md) 或 [固定字符串](../data-types/fixedstring.md)。
+- 包含参数编码值的字符串。 [字符串](../data-types/string.md) 或 [FixedString](../data-types/fixedstring.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT base58Encode('Encoded');
 ```
 
@@ -1135,7 +1237,7 @@ SELECT base58Encode('Encoded');
 ```
 ## base58Decode {#base58decode}
 
-接受一个字符串，并使用 [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58) 编码方案中的“比特币”字母表对其进行解码。
+接受一个字符串并使用 “比特币” 字母表的 [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58) 编码方案对其进行解码。
 
 **语法**
 
@@ -1145,15 +1247,15 @@ base58Decode(encoded)
 
 **参数**
 
-- `encoded` — [字符串](../data-types/string.md) 或 [固定字符串](../data-types/fixedstring.md)。如果该字符串不是有效的 Base58 编码值，则抛出异常。
+- `encoded` — [字符串](../data-types/string.md) 或 [FixedString](../data-types/fixedstring.md)。如果字符串不是有效的 Base58 编码值，则会抛出异常。
 
 **返回值**
 
-- 一个包含参数解码值的字符串。 [字符串](../data-types/string.md)。
+- 包含参数解码值的字符串。 [字符串](../data-types/string.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT base58Decode('3dc8KtHrwM');
 ```
 
@@ -1166,7 +1268,7 @@ SELECT base58Decode('3dc8KtHrwM');
 ```
 ## tryBase58Decode {#trybase58decode}
 
-像 `base58Decode` 但在出错时返回空字符串。
+类似于 `base58Decode`，但在发生错误时返回空字符串。
 
 **语法**
 
@@ -1176,11 +1278,11 @@ tryBase58Decode(encoded)
 
 **参数**
 
-- `encoded`: [字符串](../data-types/string.md) 或 [固定字符串](../data-types/fixedstring.md)。如果该字符串不是有效的 Base58 编码值，在出错时返回空字符串。
+- `encoded` — [字符串](../data-types/string.md) 或 [FixedString](../data-types/fixedstring.md)。如果字符串不是有效的 Base58 编码值，则在发生错误时返回空字符串。
 
 **返回值**
 
-- 一个包含参数解码值的字符串。
+- 包含参数解码值的字符串。
 
 **示例**
 
@@ -1190,6 +1292,8 @@ tryBase58Decode(encoded)
 SELECT tryBase58Decode('3dc8KtHrwM') as res, tryBase58Decode('invalid') as res_invalid;
 ```
 
+结果：
+
 ```response
 ┌─res─────┬─res_invalid─┐
 │ Encoded │             │
@@ -1197,9 +1301,9 @@ SELECT tryBase58Decode('3dc8KtHrwM') as res, tryBase58Decode('invalid') as res_i
 ```
 ## base64Encode {#base64encode}
 
-根据 [RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-4) 将字符串或固定字符串编码为Base64。
+将字符串或 FixedString 编码为 base64，符合 [RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-4)。
 
-别名: `TO_BASE64`.
+别名： `TO_BASE64`。
 
 **语法**
 
@@ -1213,11 +1317,11 @@ base64Encode(plaintext)
 
 **返回值**
 
-- 一个包含参数编码值的字符串。
+- 包含参数编码值的字符串。
 
 **示例**
 
-``` sql
+```sql
 SELECT base64Encode('clickhouse');
 ```
 
@@ -1228,10 +1332,9 @@ SELECT base64Encode('clickhouse');
 │ Y2xpY2tob3VzZQ==           │
 └────────────────────────────┘
 ```
-
 ## base64URLEncode {#base64urlencode}
 
-将URL（String或FixedString）编码为base64，并进行URL特定的修改，遵循[RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-5)。
+将 URL（字符串或 FixedString）编码为 base64，并进行 URL 特殊修改，符合 [RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-5)。
 
 **语法**
 
@@ -1241,7 +1344,7 @@ base64URLEncode(url)
 
 **参数**
 
-- `url` — [String](../data-types/string.md) 列或常量。
+- `url` — [字符串](../data-types/string.md) 列或常量。
 
 **返回值**
 
@@ -1249,7 +1352,7 @@ base64URLEncode(url)
 
 **示例**
 
-``` sql
+```sql
 SELECT base64URLEncode('https://clickhouse.com');
 ```
 
@@ -1262,9 +1365,9 @@ SELECT base64URLEncode('https://clickhouse.com');
 ```
 ## base64Decode {#base64decode}
 
-接受一个字符串并将其从base64解码，遵循[RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-4)。在发生错误时抛出异常。
+接受一个字符串，并根据 [RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-4) 对其进行 base64 解码。发生错误时抛出异常。
 
-别名：`FROM_BASE64`。
+别名： `FROM_BASE64`。
 
 **语法**
 
@@ -1274,7 +1377,7 @@ base64Decode(encoded)
 
 **参数**
 
-- `encoded` — [String](../data-types/string.md) 列或常量。如果字符串不是有效的Base64编码值，则会抛出异常。
+- `encoded` — [字符串](../data-types/string.md) 列或常量。如果字符串不是有效的 Base64 编码值，则会抛出异常。
 
 **返回值**
 
@@ -1282,7 +1385,7 @@ base64Decode(encoded)
 
 **示例**
 
-``` sql
+```sql
 SELECT base64Decode('Y2xpY2tob3VzZQ==');
 ```
 
@@ -1295,7 +1398,7 @@ SELECT base64Decode('Y2xpY2tob3VzZQ==');
 ```
 ## base64URLDecode {#base64urldecode}
 
-接受一个base64编码的URL，并根据[RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-5)对其进行解码，进行URL特定的修改。在发生错误时抛出异常。
+接受一个 base64 编码的 URL，并根据 URL 特殊修改从 base64 进行解码，符合 [RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-5)。发生错误时抛出异常。
 
 **语法**
 
@@ -1305,7 +1408,7 @@ base64URLDecode(encodedUrl)
 
 **参数**
 
-- `encodedURL` — [String](../data-types/string.md) 列或常量。如果字符串不是有效的Base64编码值，并且带有URL特定的修改，则会抛出异常。
+- `encodedURL` — [字符串](../data-types/string.md) 列或常量。如果字符串不是有效的带有 URL 特殊修改的 Base64 编码值，则会抛出异常。
 
 **返回值**
 
@@ -1313,7 +1416,7 @@ base64URLDecode(encodedUrl)
 
 **示例**
 
-``` sql
+```sql
 SELECT base64URLDecode('aHR0cDovL2NsaWNraG91c2UuY29t');
 ```
 
@@ -1326,7 +1429,7 @@ SELECT base64URLDecode('aHR0cDovL2NsaWNraG91c2UuY29t');
 ```
 ## tryBase64Decode {#trybase64decode}
 
-像 `base64Decode`，但在发生错误时返回空字符串。
+类似于 `base64Decode`，但在发生错误时返回空字符串。
 
 **语法**
 
@@ -1336,7 +1439,7 @@ tryBase64Decode(encoded)
 
 **参数**
 
-- `encoded` — [String](../data-types/string.md) 列或常量。如果字符串不是有效的Base64编码值，则返回空字符串。
+- `encoded` — [字符串](../data-types/string.md) 列或常量。如果字符串不是有效的 Base64 编码值，则返回空字符串。
 
 **返回值**
 
@@ -1350,6 +1453,8 @@ tryBase64Decode(encoded)
 SELECT tryBase64Decode('RW5jb2RlZA==') as res, tryBase64Decode('invalid') as res_invalid;
 ```
 
+结果：
+
 ```response
 ┌─res────────┬─res_invalid─┐
 │ clickhouse │             │
@@ -1357,7 +1462,7 @@ SELECT tryBase64Decode('RW5jb2RlZA==') as res, tryBase64Decode('invalid') as res
 ```
 ## tryBase64URLDecode {#trybase64urldecode}
 
-像 `base64URLDecode`，但在发生错误时返回空字符串。
+类似于 `base64URLDecode`，但在发生错误时返回空字符串。
 
 **语法**
 
@@ -1367,7 +1472,7 @@ tryBase64URLDecode(encodedUrl)
 
 **参数**
 
-- `encodedURL` — [String](../data-types/string.md) 列或常量。如果字符串不是有效的Base64编码值，并且带有URL特定的修改，则返回空字符串。
+- `encodedURL` — [字符串](../data-types/string.md) 列或常量。如果字符串不是有效的带有 URL 特殊修改的 Base64 编码值，则返回空字符串。
 
 **返回值**
 
@@ -1380,6 +1485,8 @@ tryBase64URLDecode(encodedUrl)
 ```sql
 SELECT tryBase64URLDecode('aHR0cDovL2NsaWNraG91c2UuY29t') as res, tryBase64Decode('aHR0cHM6Ly9jbGlja') as res_invalid;
 ```
+
+结果：
 
 ```response
 ┌─res────────────────────┬─res_invalid─┐
@@ -1397,7 +1504,7 @@ endsWith(str, suffix)
 ```
 ## endsWithUTF8 {#endswithutf8}
 
-返回字符串 `str` 是否以 `suffix` 结尾，`endsWithUTF8` 与 `endsWith` 的区别在于 `endsWithUTF8` 通过UTF-8字符来匹配 `str` 和 `suffix`。
+返回字符串 `str` 是否以 `suffix` 结尾，`endsWithUTF8` 和 `endsWith` 的区别在于 `endsWithUTF8` 是按照 UTF-8 字符匹配 `str` 和 `suffix`。
 
 **语法**
 
@@ -1407,7 +1514,7 @@ endsWithUTF8(str, suffix)
 
 **示例**
 
-``` sql
+```sql
 SELECT endsWithUTF8('中国', '\xbd'), endsWith('中国', '\xbd')
 ```
 
@@ -1430,18 +1537,18 @@ startsWith(str, prefix)
 
 **示例**
 
-``` sql
+```sql
 SELECT startsWith('Spider-Man', 'Spi');
 ```
 ## startsWithUTF8 {#startswithutf8}
 
 <VersionBadge minVersion='23.8' />
 
-返回字符串 `str` 是否以 `prefix` 开头，`startsWithUTF8` 与 `startsWith` 的区别在于 `startsWithUTF8` 通过UTF-8字符来匹配 `str` 和 `suffix`。
+返回字符串 `str` 是否以 `prefix` 开头，`startsWithUTF8` 和 `startsWith` 的区别在于 `startsWithUTF8` 是按照 UTF-8 字符匹配 `str` 和 `prefix`。
 
 **示例**
 
-``` sql
+```sql
 SELECT startsWithUTF8('中国', '\xe4'), startsWith('中国', '\xe4')
 ```
 
@@ -1454,26 +1561,26 @@ SELECT startsWithUTF8('中国', '\xe4'), startsWith('中国', '\xe4')
 ```
 ## trim {#trim}
 
-删除字符串开头或结尾处的指定字符。如果没有特别说明，函数将删除空格（ASCII字符32）。
+从字符串的开头或结尾删除指定字符。如果未指定，函数将删除空格（ASCII字符 32）。
 
 **语法**
 
-``` sql
+```sql
 trim([[LEADING|TRAILING|BOTH] trim_character FROM] input_string)
 ```
 
 **参数**
 
-- `trim_character` — 要修剪的字符。 [String](../data-types/string.md)。
-- `input_string` — 要修剪的字符串。 [String](../data-types/string.md)。
+- `trim_character` — 要修剪的字符。 [字符串](../data-types/string.md)。
+- `input_string` — 要修剪的字符串。 [字符串](../data-types/string.md)。
 
 **返回值**
 
-无前导和/或尾部指定字符的字符串。 [String](../data-types/string.md)。
+去掉前导和/或尾部指定字符的字符串。 [字符串](../data-types/string.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT trim(BOTH ' ()' FROM '(   Hello, world!   )');
 ```
 
@@ -1486,28 +1593,28 @@ SELECT trim(BOTH ' ()' FROM '(   Hello, world!   )');
 ```
 ## trimLeft {#trimleft}
 
-删除字符串开头处连续出现的空格（ASCII字符32）。
+从字符串的开头删除连续出现的空格（ASCII字符 32）。
 
 **语法**
 
-``` sql
+```sql
 trimLeft(input_string[, trim_characters])
 ```
 
-别名：`ltrim`。
+别名： `ltrim`。
 
 **参数**
 
-- `input_string` — 要修剪的字符串。 [String](../data-types/string.md)。
-- `trim_characters` — 要修剪的字符。 可选。 [String](../data-types/string.md)。如果未指定，则使用 `' '` （单空格）作为修剪字符。
+- `input_string` — 要修剪的字符串。 [字符串](../data-types/string.md)。
+- `trim_characters` — 要修剪的字符。可选。 [字符串](../data-types/string.md)。如果未指定，则使用 `' '`（单个空格）作为修剪字符。
 
 **返回值**
 
-无前导常规空格的字符串。 [String](../data-types/string.md)。
+去掉前导普通空格的字符串。 [字符串](../data-types/string.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT trimLeft('     Hello, world!     ');
 ```
 
@@ -1520,11 +1627,11 @@ SELECT trimLeft('     Hello, world!     ');
 ```
 ## trimRight {#trimright}
 
-删除字符串结尾处连续出现的空格（ASCII字符32）。
+从字符串的末尾删除连续出现的空白字符（ASCII字符32）。
 
 **语法**
 
-``` sql
+```sql
 trimRight(input_string[, trim_characters])
 ```
 
@@ -1532,16 +1639,16 @@ trimRight(input_string[, trim_characters])
 
 **参数**
 
-- `input_string` — 要修剪的字符串。 [String](../data-types/string.md)。
-- `trim_characters` — 要修剪的字符。 可选。 [String](../data-types/string.md)。如果未指定，则使用 `' '` （单空格）作为修剪字符。
+- `input_string` — 要修剪的字符串。[String](../data-types/string.md)。
+- `trim_characters` — 要修剪的字符。可选。[String](../data-types/string.md)。如果未指定，则使用 `' '`（单个空白）作为修剪字符。
 
 **返回值**
 
-无尾部常规空格的字符串。 [String](../data-types/string.md)。
+一个没有尾部空白的字符串。[String](../data-types/string.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT trimRight('     Hello, world!     ');
 ```
 
@@ -1554,11 +1661,11 @@ SELECT trimRight('     Hello, world!     ');
 ```
 ## trimBoth {#trimboth}
 
-从字符串的两端删除连续出现的空格（ASCII字符32）。
+从字符串的两端删除连续出现的空白字符（ASCII字符32）。
 
 **语法**
 
-``` sql
+```sql
 trimBoth(input_string[, trim_characters])
 ```
 
@@ -1566,16 +1673,16 @@ trimBoth(input_string[, trim_characters])
 
 **参数**
 
-- `input_string` — 要修剪的字符串。 [String](../data-types/string.md)。
-- `trim_characters` — 要修剪的字符。 可选。 [String](../data-types/string.md)。如果未指定，则使用 `' '` （单空格）作为修剪字符。
+- `input_string` — 要修剪的字符串。[String](../data-types/string.md)。
+- `trim_characters` — 要修剪的字符。可选。[String](../data-types/string.md)。如果未指定，则使用 `' '`（单个空白）作为修剪字符。
 
 **返回值**
 
-无前导和尾部常规空格的字符串。 [String](../data-types/string.md)。
+一个没有前置和尾部空白的字符串。[String](../data-types/string.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT trimBoth('     Hello, world!     ');
 ```
 
@@ -1588,40 +1695,40 @@ SELECT trimBoth('     Hello, world!     ');
 ```
 ## CRC32 {#crc32}
 
-返回字符串的CRC32校验和，使用CRC-32-IEEE 802.3多项式和初始值`0xffffffff`（zlib实现）。
+返回一个字符串的CRC32校验和，使用CRC-32-IEEE 802.3多项式和初始值 `0xffffffff`（zlib实现）。
 
 结果类型为UInt32。
 ## CRC32IEEE {#crc32ieee}
 
-返回字符串的CRC32校验和，使用CRC-32-IEEE 802.3多项式。
+返回一个字符串的CRC32校验和，使用CRC-32-IEEE 802.3多项式。
 
 结果类型为UInt32。
 ## CRC64 {#crc64}
 
-返回字符串的CRC64校验和，使用CRC-64-ECMA多项式。
+返回一个字符串的CRC64校验和，使用CRC-64-ECMA多项式。
 
 结果类型为UInt64。
 ## normalizeUTF8NFC {#normalizeutf8nfc}
 
-将字符串转换为[NFC标准化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)，假设字符串是有效的UTF8编码文本。
+将字符串转换为[NFC规范形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)，假设字符串是有效的UTF8编码文本。
 
 **语法**
 
-``` sql
+```sql
 normalizeUTF8NFC(words)
 ```
 
 **参数**
 
-- `words` — UTF8编码的输入字符串。 [String](../data-types/string.md)。
+- `words` — UTF8编码的输入字符串。[String](../data-types/string.md)。
 
 **返回值**
 
-- 转换为NFC标准化形式的字符串。 [String](../data-types/string.md)。
+- 转换为NFC规范形式的字符串。[String](../data-types/string.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT length('â'), normalizeUTF8NFC('â') AS nfc, length(nfc) AS nfc_len;
 ```
 
@@ -1634,25 +1741,25 @@ SELECT length('â'), normalizeUTF8NFC('â') AS nfc, length(nfc) AS nfc_len;
 ```
 ## normalizeUTF8NFD {#normalizeutf8nfd}
 
-将字符串转换为[NFD标准化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)，假设字符串是有效的UTF8编码文本。
+将字符串转换为[NFD规范形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)，假设字符串是有效的UTF8编码文本。
 
 **语法**
 
-``` sql
+```sql
 normalizeUTF8NFD(words)
 ```
 
 **参数**
 
-- `words` — UTF8编码的输入字符串。 [String](../data-types/string.md)。
+- `words` — UTF8编码的输入字符串。[String](../data-types/string.md)。
 
 **返回值**
 
-- 转换为NFD标准化形式的字符串。 [String](../data-types/string.md)。
+- 转换为NFD规范形式的字符串。[String](../data-types/string.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT length('â'), normalizeUTF8NFD('â') AS nfd, length(nfd) AS nfd_len;
 ```
 
@@ -1665,25 +1772,25 @@ SELECT length('â'), normalizeUTF8NFD('â') AS nfd, length(nfd) AS nfd_len;
 ```
 ## normalizeUTF8NFKC {#normalizeutf8nfkc}
 
-将字符串转换为[NFKC标准化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)，假设字符串是有效的UTF8编码文本。
+将字符串转换为[NFKC规范形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)，假设字符串是有效的UTF8编码文本。
 
 **语法**
 
-``` sql
+```sql
 normalizeUTF8NFKC(words)
 ```
 
 **参数**
 
-- `words` — UTF8编码的输入字符串。 [String](../data-types/string.md)。
+- `words` — UTF8编码的输入字符串。[String](../data-types/string.md)。
 
 **返回值**
 
-- 转换为NFKC标准化形式的字符串。 [String](../data-types/string.md)。
+- 转换为NFKC规范形式的字符串。[String](../data-types/string.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT length('â'), normalizeUTF8NFKC('â') AS nfkc, length(nfkc) AS nfkc_len;
 ```
 
@@ -1696,25 +1803,25 @@ SELECT length('â'), normalizeUTF8NFKC('â') AS nfkc, length(nfkc) AS nfkc_len;
 ```
 ## normalizeUTF8NFKD {#normalizeutf8nfkd}
 
-将字符串转换为[NFKD标准化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)，假设字符串是有效的UTF8编码文本。
+将字符串转换为[NFKD规范形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)，假设字符串是有效的UTF8编码文本。
 
 **语法**
 
-``` sql
+```sql
 normalizeUTF8NFKD(words)
 ```
 
 **参数**
 
-- `words` — UTF8编码的输入字符串。 [String](../data-types/string.md)。
+- `words` — UTF8编码的输入字符串。[String](../data-types/string.md)。
 
 **返回值**
 
-- 转换为NFKD标准化形式的字符串。 [String](../data-types/string.md)。
+- 转换为NFKD规范形式的字符串。[String](../data-types/string.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT length('â'), normalizeUTF8NFKD('â') AS nfkd, length(nfkd) AS nfkd_len;
 ```
 
@@ -1727,28 +1834,28 @@ SELECT length('â'), normalizeUTF8NFKD('â') AS nfkd, length(nfkd) AS nfkd_len;
 ```
 ## encodeXMLComponent {#encodexmlcomponent}
 
-转义在XML中具有特殊含义的字符，以便它们可以随后放入XML文本节点或属性中。
+转义在XML中具有特殊含义的字符，使其可以之后放入XML文本节点或属性中。
 
-以下字符被替换：`<`、`&`、`>`、`"`、`'`。
+以下字符被替换：`<`，`&`，`>`，`"`，`'`。
 另请参阅[XML和HTML字符实体引用列表](https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references)。
 
 **语法**
 
-``` sql
+```sql
 encodeXMLComponent(x)
 ```
 
 **参数**
 
-- `x` — 输入字符串。 [String](../data-types/string.md)。
+- `x` — 输入字符串。[String](../data-types/string.md)。
 
 **返回值**
 
-- 转义后的字符串。 [String](../data-types/string.md)。
+- 转义后的字符串。[String](../data-types/string.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT encodeXMLComponent('Hello, "world"!');
 SELECT encodeXMLComponent('<123>');
 SELECT encodeXMLComponent('&clickhouse');
@@ -1765,27 +1872,27 @@ Hello, &quot;world&quot;!
 ```
 ## decodeXMLComponent {#decodexmlcomponent}
 
-取消转义XML中具有特殊含义的子字符串。这些子字符串是：`&quot;` `&amp;` `&apos;` `&gt;` `&lt;`
+取消转义在XML中具有特殊含义的子字符串。这些子字符串包括：`&quot;` `&amp;` `&apos;` `&gt;` `&lt;`
 
-此函数还将数字字符引用替换为Unicode字符。 支持十进制（如`&#10003;`）和十六进制（`&#x2713;`）形式。
+此函数还将数字字符引用替换为Unicode字符。支持十进制（如`&#10003;`）和十六进制（如`&#x2713;`）形式。
 
 **语法**
 
-``` sql
+```sql
 decodeXMLComponent(x)
 ```
 
 **参数**
 
-- `x` — 输入字符串。 [String](../data-types/string.md)。
+- `x` — 输入字符串。[String](../data-types/string.md)。
 
 **返回值**
 
-- 取消转义的字符串。 [String](../data-types/string.md)。
+- 取消转义后的字符串。[String](../data-types/string.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT decodeXMLComponent('&apos;foo&apos;');
 SELECT decodeXMLComponent('&lt; &#x3A3; &gt;');
 ```
@@ -1798,27 +1905,27 @@ SELECT decodeXMLComponent('&lt; &#x3A3; &gt;');
 ```
 ## decodeHTMLComponent {#decodehtmlcomponent}
 
-取消转义HTML中具有特殊含义的子字符串。例如：`&hbar;` `&gt;` `&diamondsuit;` `&heartsuit;` `&lt;` 等。
+取消转义在HTML中具有特殊含义的子字符串。例如：`&hbar;` `&gt;` `&diamondsuit;` `&heartsuit;` `&lt;` 等等。
 
-此函数还将数字字符引用替换为Unicode字符。 支持十进制（如`&#10003;`）和十六进制（`&#x2713;`）形式。
+此函数还将数字字符引用替换为Unicode字符。支持十进制（如`&#10003;`）和十六进制（如`&#x2713;`）形式。
 
 **语法**
 
-``` sql
+```sql
 decodeHTMLComponent(x)
 ```
 
 **参数**
 
-- `x` — 输入字符串。 [String](../data-types/string.md)。
+- `x` — 输入字符串。[String](../data-types/string.md)。
 
 **返回值**
 
-- 取消转义的字符串。 [String](../data-types/string.md)。
+- 取消转义后的字符串。[String](../data-types/string.md)。
 
 **示例**
 
-``` sql
+```sql
 SELECT decodeHTMLComponent(''CH');
 SELECT decodeHTMLComponent('I&heartsuit;ClickHouse');
 ```
@@ -1833,48 +1940,48 @@ I♥ClickHouse'
 
 此函数从HTML或XHTML中提取纯文本。
 
-它并不完全符合HTML、XML或XHTML规格，但实现合理准确且快速。规则如下：
+它不完全符合HTML、XML或XHTML规范，但实现合理准确且快速。规则如下：
 
-1. 跳过注释。例如：`<!-- test -->`。注释必须以`-->`结束。不允许嵌套注释。
-注意：像`<!-->`和`<!--->`这样的结构在HTML中不是有效的注释，但它们会被其他规则跳过。
-2. CDATA将逐字粘贴。注意：CDATA是特定于XML/XHTML的，并在“尽力而为”的基础上进行处理。
-3. `script`和`style`元素及其所有内容被移除。注意：假定结束标签不能出现在内容中。例如，在JS字符串字面量中必须像`"<\/script>"`一样转义。
-注意：在`script`或`style`内部可以有注释和CDATA，因此不会在CDATA内部搜索结束标签。例如：`<script><![CDATA[</script>]]></script>`。但是，它们仍会在注释内部被搜索。有时变得复杂：`<script>var x = "<!--"; </script> var y = "-->"; alert(x + y);</script>`。
-注意：`script`和`style`可以是XML命名空间的名称，因此它们不被视为通常的`script`或`style`元素。例如：`<script:a>Hello</script:a>`。
-注意：结束标签名称后的空格是可能的：`</script >`，但结束标签之前则不可以：`< / script>`。
-4. 跳过没有内部内容的其他标签或类似标签的元素。例如：`<a>.</a>`。
-注意：预计此HTML是非法的：`<a test=">"></a>`。
-注意：还跳过像标签一样的内容：`<>`、`<!>`等。
-注意：没有结束的标签将跳过到输入的末尾：`<hello   `
-5. HTML和XML实体不被解码。必须由单独的函数处理。
-6. 文本中的空格被压缩或按照特定规则插入。
-    - 开头和结尾的空格被移除。
-    - 连续的空格被压缩。
-    - 但是如果文本由其他元素分隔且没有空格，则会插入空格。
-    - 这可能导致不自然的示例：`Hello<b>world</b>`，`Hello<!-- -->world` - HTML中没有空格，但函数插入了它。还考虑：`Hello<p>world</p>`，`Hello<br>world`。这种行为在数据分析中是合理的，例如将HTML转换为单词集合。
-7. 还注意，正确处理空格需要支持`<pre></pre>`和CSS的`display`及`white-space`属性。
+1. 注释被跳过。例如：`<!-- test -->`。注释必须以 `-->` 结束。禁止嵌套注释。
+注意：像 `<!-->` 和 `<!--->` 的结构在HTML中不是有效注释，但它们会被其他规则跳过。
+2. CDATA原样粘贴。注意：CDATA是XML/XHTML特定的，以“尽力而为”的方式进行处理。
+3. `script` 和 `style` 元素及其所有内容被移除。注意：假设在内容中无法出现关闭标签。例如，在JS字符串字面量中必须像这样转义 `"<\/script>"`。
+注意：在 `script` 或 `style` 中可能存在注释和CDATA - 然后在CDATA内不会搜索关闭标签。例如：`<script><![CDATA[</script>]]></script>`。但它们在注释中仍然被搜索。有时这变得复杂：`<script>var x = "<!--"; </script> var y = "-->"; alert(x + y);</script>`
+注意：`script` 和 `style` 可能是XML命名空间的名称 - 在这种情况下，它们不被视为普通的 `script` 或 `style` 元素。示例：`<script:a>Hello</script:a>`。
+注意：在关闭标签名称后可能会有空白：`</script >`，但在前面不能有空白：`< / script>`。
+4. 其他标签或类似标签的元素在没有内部内容时被跳过。例如：`<a>.</a>`
+注意：预期这个HTML是非法的：`<a test=">"></a>`
+注意：它还会跳过类似标签的内容：`<>`，`<!>` 等等。
+注意：没有结束的标签会被跳过至输入的末尾：`<hello   `
+5. HTML和XML实体不会被解码。它们必须通过单独的函数处理。
+6. 文本中的空白被压缩或按照特定规则插入。
+    - 开头和结尾的空白被移除。
+    - 连续的空白被压缩。
+    - 但如果文本是通过其他元素分隔且没有空白，则会插入空白。
+    - 这可能导致不自然的示例：`Hello<b>world</b>`，`Hello<!-- -->world` - HTML中没有空白，但该函数会插入它。再考虑：`Hello<p>world</p>`，`Hello<br>world`。这种行为对于数据分析是合理的，例如将HTML转换为单词袋。
+7. 还要注意，正确处理空白需要支持 `<pre></pre>` 和CSS `display` 与 `white-space` 属性。
 
 **语法**
 
-``` sql
+```sql
 extractTextFromHTML(x)
 ```
 
 **参数**
 
-- `x` — 输入文本。 [String](../data-types/string.md)。
+- `x` — 输入文本。[String](../data-types/string.md)。
 
 **返回值**
 
-- 提取的文本。 [String](../data-types/string.md)。
+- 提取的文本。[String](../data-types/string.md)。
 
 **示例**
 
-第一个示例包含几个标签和一个注释，并显示空格处理。
-第二个示例显示CDATA和script标签处理。
-第三个示例从通过[url](../../sql-reference/table-functions/url.md)函数接收的完整HTML响应中提取文本。
+第一个示例包含几个标签和一个注释，并且还展示了空白处理。
+第二个示例展示了 `CDATA` 和 `script` 标签的处理。
+在第三个示例中，文本从通过[url](../../sql-reference/table-functions/url.md)函数接收到的完整HTML响应中提取。
 
-``` sql
+```sql
 SELECT extractTextFromHTML(' <p> A text <i>with</i><b>tags</b>. <!-- comments --> </p> ');
 SELECT extractTextFromHTML('<![CDATA[The content within <b>CDATA</b>]]> <script>alert("Script");</script>');
 SELECT extractTextFromHTML(html) FROM url('http://www.donothingfor2minutes.com/', RawBLOB, 'html String');
@@ -1889,9 +1996,9 @@ Do Nothing for 2 Minutes 2:00 &nbsp;
 ```
 ## ascii {#ascii}
 
-返回字符串 `s` 第一个字符的ASCII码点（作为Int32）。
+返回字符串 `s` 的第一个字符的ASCII代码点（以Int32表示）。
 
-如果`s`为空，则结果为0。如果第一个字符不是ASCII字符或不属于UTF-16的拉丁-1补充范围，则结果未定义。
+如果 `s` 为空，则结果为0。如果第一个字符不是ASCII字符或不属于UTF-16的Latin-1补充范围，则结果未定义。
 
 **语法**
 
@@ -1900,7 +2007,7 @@ ascii(s)
 ```
 ## soundex {#soundex}
 
-返回字符串的[Soundex码](https://en.wikipedia.org/wiki/Soundex)。
+返回字符串的[Sounex代码](https://en.wikipedia.org/wiki/Soundex)。
 
 **语法**
 
@@ -1910,15 +2017,15 @@ soundex(val)
 
 **参数**
 
-- `val` — 输入值。 [String](../data-types/string.md)
+- `val` — 输入值。[String](../data-types/string.md)
 
 **返回值**
 
-- 输入值的Soundex码。 [String](../data-types/string.md)
+- 输入值的Soundex代码。[String](../data-types/string.md)
 
 **示例**
 
-``` sql
+```sql
 select soundex('aksel');
 ```
 
@@ -1932,25 +2039,25 @@ select soundex('aksel');
 ## punycodeEncode {#punycodeencode}
 
 返回字符串的[Punycode](https://en.wikipedia.org/wiki/Punycode)表示。
-字符串必须为UTF8编码，否则行为未定义。
+字符串必须是UTF8编码，否则行为未定义。
 
 **语法**
 
-``` sql
+```sql
 punycodeEncode(val)
 ```
 
 **参数**
 
-- `val` — 输入值。 [String](../data-types/string.md)
+- `val` — 输入值。[String](../data-types/string.md)
 
 **返回值**
 
-- 输入值的Punycode表示。 [String](../data-types/string.md)
+- 输入值的Punycode表示。[String](../data-types/string.md)
 
 **示例**
 
-``` sql
+```sql
 select punycodeEncode('München');
 ```
 
@@ -1963,26 +2070,26 @@ select punycodeEncode('München');
 ```
 ## punycodeDecode {#punycodedecode}
 
-返回[Punycode](https://en.wikipedia.org/wiki/Punycode)编码字符串的UTF8编码纯文本。
-如果给定无效的Punycode编码字符串，则会抛出异常。
+返回[Punycode](https://en.wikipedia.org/wiki/Punycode)编码字符串的UTF8编码明文。
+如果未提供有效的Punycode编码字符串，将抛出异常。
 
 **语法**
 
-``` sql
+```sql
 punycodeEncode(val)
 ```
 
 **参数**
 
-- `val` — Punycode编码字符串。 [String](../data-types/string.md)
+- `val` — Punycode编码字符串。[String](../data-types/string.md)
 
 **返回值**
 
-- 输入值的纯文本。 [String](../data-types/string.md)
+- 输入值的明文。[String](../data-types/string.md)
 
 **示例**
 
-``` sql
+```sql
 select punycodeDecode('Mnchen-3ya');
 ```
 
@@ -1995,12 +2102,12 @@ select punycodeDecode('Mnchen-3ya');
 ```
 ## tryPunycodeDecode {#trypunycodedecode}
 
-像 `punycodeDecode`，但如果未提供有效的Punycode编码字符串，则返回空字符串。
+类似于 `punycodeDecode`，但如果没有提供有效的Punycode编码字符串，则返回空字符串。
 ## idnaEncode {#idnaencode}
 
-根据[国际化域名在应用程序中的机制](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）机制返回域名的ASCII表示（ToASCII算法）。
-输入字符串必须为UTF编码且可转换为ASCII字符串，否则将抛出异常。
-注意：未执行百分号解码或制表符、空格或控制字符的修剪。
+根据[应用程序中的国际化域名](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）机制，返回域名的ASCII表示（ToASCII算法）。
+输入字符串必须是UTF编码且可转换为ASCII字符串，否则将抛出异常。
+注意：不执行百分比解码或修剪制表符、空格或控制字符。
 
 **语法**
 
@@ -2010,15 +2117,15 @@ idnaEncode(val)
 
 **参数**
 
-- `val` — 输入值。 [String](../data-types/string.md)
+- `val` — 输入值。[String](../data-types/string.md)
 
 **返回值**
 
-- 输入值的IDNA机制下的ASCII表示。 [String](../data-types/string.md)
+- 根据IDNA机制的输入值的ASCII表示。[String](../data-types/string.md)
 
 **示例**
 
-``` sql
+```sql
 select idnaEncode('straße.münchen.de');
 ```
 
@@ -2031,12 +2138,12 @@ select idnaEncode('straße.münchen.de');
 ```
 ## tryIdnaEncode {#tryidnaencode}
 
-像 `idnaEncode`，但在发生错误时返回空字符串，而不是抛出异常。
+类似于 `idnaEncode`，但在出现错误时返回空字符串，而不是抛出异常。
 ## idnaDecode {#idnadecode}
 
-根据[国际化域名在应用程序中的机制](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）机制返回域名的Unicode（UTF-8）表示（ToUnicode算法）。
-在发生错误时（例如，输入无效），返回输入字符串。
-注意，重复应用`idnaEncode()`和`idnaDecode()`可能不会返回原始字符串，因为会出现大小写规范化问题。
+根据[应用程序中的国际化域名](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）机制，返回域名的Unicode（UTF-8）表示（ToUnicode算法）。
+如果出现错误（例如因为输入无效），则返回输入字符串。
+注意，重复应用 `idnaEncode()` 和 `idnaDecode()` 不一定返回原始字符串，因为大小写归一化问题。
 
 **语法**
 
@@ -2046,15 +2153,15 @@ idnaDecode(val)
 
 **参数**
 
-- `val` — 输入值。 [String](../data-types/string.md)
+- `val` — 输入值。[String](../data-types/string.md)
 
 **返回值**
 
-- 输入值的IDNA机制下的Unicode（UTF-8）表示。 [String](../data-types/string.md)
+- 根据IDNA机制的输入值的Unicode（UTF-8）表示。[String](../data-types/string.md)
 
 **示例**
 
-``` sql
+```sql
 select idnaDecode('xn--strae-oqa.xn--mnchen-3ya.de');
 ```
 
@@ -2077,13 +2184,13 @@ byteHammingDistance(string1, string2)
 
 **示例**
 
-``` sql
+```sql
 SELECT byteHammingDistance('karolin', 'kathrin');
 ```
 
 结果：
 
-``` text
+```text
 ┌─byteHammingDistance('karolin', 'kathrin')─┐
 │                                         3 │
 └───────────────────────────────────────────┘
@@ -2092,7 +2199,7 @@ SELECT byteHammingDistance('karolin', 'kathrin');
 别名：`mismatches`
 ## stringJaccardIndex {#stringjaccardindex}
 
-计算两个字节字符串之间的[杰卡德相似性指数](https://en.wikipedia.org/wiki/Jaccard_index)。
+计算两个字节字符串之间的[Jaccard相似性指数](https://en.wikipedia.org/wiki/Jaccard_index)。
 
 **语法**
 
@@ -2102,20 +2209,20 @@ stringJaccardIndex(string1, string2)
 
 **示例**
 
-``` sql
+```sql
 SELECT stringJaccardIndex('clickhouse', 'mouse');
 ```
 
 结果：
 
-``` text
+```text
 ┌─stringJaccardIndex('clickhouse', 'mouse')─┐
 │                                       0.4 │
 └───────────────────────────────────────────┘
 ```
 ## stringJaccardIndexUTF8 {#stringjaccardindexutf8}
 
-与[stringJaccardIndex](#stringjaccardindex)类似，但适用于UTF8编码的字符串。
+类似于[stringJaccardIndex](#stringjaccardindex)，但适用于UTF8编码字符串。
 ## editDistance {#editdistance}
 
 计算两个字节字符串之间的[编辑距离](https://en.wikipedia.org/wiki/Edit_distance)。
@@ -2128,13 +2235,13 @@ editDistance(string1, string2)
 
 **示例**
 
-``` sql
+```sql
 SELECT editDistance('clickhouse', 'mouse');
 ```
 
 结果：
 
-``` text
+```text
 ┌─editDistance('clickhouse', 'mouse')─┐
 │                                   6 │
 └─────────────────────────────────────┘
@@ -2153,13 +2260,13 @@ editDistanceUTF8(string1, string2)
 
 **示例**
 
-``` sql
+```sql
 SELECT editDistanceUTF8('我是谁', '我是我');
 ```
 
 结果：
 
-``` text
+```text
 ┌─editDistanceUTF8('我是谁', '我是我')──┐
 │                                   1 │
 └─────────────────────────────────────┘
@@ -2178,13 +2285,13 @@ damerauLevenshteinDistance(string1, string2)
 
 **示例**
 
-``` sql
+```sql
 SELECT damerauLevenshteinDistance('clickhouse', 'mouse');
 ```
 
 结果：
 
-``` text
+```text
 ┌─damerauLevenshteinDistance('clickhouse', 'mouse')─┐
 │                                                 6 │
 └───────────────────────────────────────────────────┘
@@ -2201,13 +2308,13 @@ jaroSimilarity(string1, string2)
 
 **示例**
 
-``` sql
+```sql
 SELECT jaroSimilarity('clickhouse', 'click');
 ```
 
 结果：
 
-``` text
+```text
 ┌─jaroSimilarity('clickhouse', 'click')─┐
 │                    0.8333333333333333 │
 └───────────────────────────────────────┘
@@ -2224,23 +2331,23 @@ jaroWinklerSimilarity(string1, string2)
 
 **示例**
 
-``` sql
+```sql
 SELECT jaroWinklerSimilarity('clickhouse', 'click');
 ```
 
 结果：
 
-``` text
+```text
 ┌─jaroWinklerSimilarity('clickhouse', 'click')─┐
 │                           0.8999999999999999 │
 └──────────────────────────────────────────────┘
 ```
 ## initcap {#initcap}
 
-将每个单词的首字母转换为大写，其他字母转换为小写。单词是由非字母数字字符分隔的字母数字字符序列。
+将每个单词的第一个字母转换为大写，其余字母转换为小写。单词是由字母数字字符组成并由非字母数字字符分隔的序列。
 
 :::note
-由于 `initCap` 仅将每个单词的首字母转换为大写，因此您可能会观察到包含撇号或大写字母的单词出现意外行为。例如：
+因为 `initCap` 只将每个单词的第一个字母转换为大写，你可能会观察到对于包含撇号或大写字母的单词的意外行为。例如：
 
 ```sql
 SELECT initCap('mother''s daughter'), initCap('joe McAdam');
@@ -2254,7 +2361,7 @@ SELECT initCap('mother''s daughter'), initCap('joe McAdam');
 └───────────────────────────────┴───────────────────────┘
 ```
 
-这是已知行为，目前没有计划修复。
+这是已知的行为，目前没有计划修复它。
 :::
 
 **语法**
@@ -2265,11 +2372,11 @@ initcap(val)
 
 **参数**
 
-- `val` — 输入值。 [String](../data-types/string.md)。
+- `val` — 输入值。[String](../data-types/string.md)。
 
 **返回值**
 
-- `val` 中每个单词首字母转换为大写。 [String](../data-types/string.md)。
+- 将每个单词的第一个字母转换为大写的 `val`。[String](../data-types/string.md)。
 
 **示例**
 
@@ -2288,12 +2395,12 @@ SELECT initcap('building for fast');
 ```
 ## initcapUTF8 {#initcaputf8}
 
-与[initcap](#initcap)类似，`initcapUTF8`将每个单词的首字母转换为大写，其他字母转换为小写。假设字符串包含有效的UTF-8编码文本。
-如果违反了这一假设，则不会抛出异常，结果是未定义的。
+类似于[initcap](#initcap)，`initcapUTF8`将每个单词的第一个字母转换为大写，其余字母转换为小写。假设字符串包含有效的UTF-8编码文本。
+如果这个假设被违反，将不会抛出异常，结果是未定义的。
 
 :::note
-此函数无法检测语言，例如，对于土耳其语，结果可能不完全正确（i/İ与i/I）。
-如果UTF-8字节序列的长度在大小写之间不同，则该代码点的结果可能不正确。
+此函数不检测语言，例如，对于土耳其语，结果可能不完全正确（i/İ与i/I）。
+如果UTF-8字节序列的上层和下层字符长度不同，结果可能不正确。
 :::
 
 **语法**
@@ -2304,11 +2411,11 @@ initcapUTF8(val)
 
 **参数**
 
-- `val` — 输入值。 [String](../data-types/string.md)。
+- `val` — 输入值。[String](../data-types/string.md)。
 
 **返回值**
 
-- `val` 中每个单词首字母转换为大写。 [String](../data-types/string.md)。
+- 将每个单词的第一个字母转换为大写的 `val`。[String](../data-types/string.md)。
 
 **示例**
 
@@ -2327,7 +2434,7 @@ SELECT initcapUTF8('не тормозит');
 ```
 ## firstLine {#firstline}
 
-返回多行字符串中的第一行。
+返回多行字符串的第一行。
 
 **语法**
 
@@ -2337,11 +2444,11 @@ firstLine(val)
 
 **参数**
 
-- `val` — 输入值。 [String](../data-types/string.md)
+- `val` — 输入值。[String](../data-types/string.md)
 
 **返回值**
 
-- 输入值的第一行，如果没有行分隔符，则返回整个值。 [String](../data-types/string.md)
+- 输入值的第一行或如果没有行分隔符则返回整个值。[String](../data-types/string.md)
 
 **示例**
 
@@ -2358,7 +2465,7 @@ select firstLine('foo\nbar\nbaz');
 ```
 ## stringCompare {#stringcompare}
 
-比较两个字符串的字典序。
+按字典顺序比较两个字符串。
 
 **语法**
 
@@ -2368,19 +2475,19 @@ stringCompare(string1, string2[, str1_off, string2_offset, num_bytes]);
 
 **参数**
 
-- `string1` — 要比较的第一个字符串。 [String](../data-types/string.md)
-- `string2` - 要比较的第二个字符串。[String](../data-types/string.md)
-- `string1_offset` — 在 `string1` 中开始比较的位置（零基础）所对应的正数。可选。
-- `string2_offset` — 在 `string2` 中开始比较的位置（零基础）所对应的正数。可选。
-- `num_bytes` — 在两个字符串中要比较的最大字节数。如果 `string_offset` + `num_bytes` 超过输入字符串的结尾，则 `num_bytes` 将相应减少。
+- `string1` — 第一个要比较的字符串。[String](../data-types/string.md)
+- `string2` - 第二个要比较的字符串。[String](../data-types/string.md)
+- `string1_offset` — 在 `string1` 中开始比较的零基位置。可选的正数。
+- `string2_offset` — 在 `string2` 中开始比较的零基索引。可选的正数。
+- `num_bytes` — 在两个字符串中比较的最大字节数。如果 `string_offset` + `num_bytes` 超过输入字符串的末尾，则 `num_bytes` 将相应减少。
 
 **返回值**
 
-- -1 — 如果 `string1`[`string1_offset`: `string1_offset` + `num_bytes`] < `string2`[`string2_offset`:`string2_offset` + `num_bytes`] 且 `string1_offset` < len(`string1`) 且 `string2_offset` < len(`string2`)。
-如果 `string1_offset` >= len(`string1`) 且 `string2_offset` < len(`string2`)。
-- 0 — 如果 `string1`[`string1_offset`: `string1_offset` + `num_bytes`] = `string2`[`string2_offset`:`string2_offset` + `num_bytes`] 且 `string1_offset` < len(`string1`) 且 `string2_offset` < len(`string2`)。
-如果 `string1_offset` >= len(`string1`) 且 `string2_offset` >= len(`string2`)。
-- 1 — 如果 `string1`[`string1_offset`: `string1_offset` + `num_bytes`] > `string2`[`string2_offset`:`string2_offset` + `num_bytes`] 且 `string1_offset` < len(`string1`) 且 `string2_offset` < len(`string2`)。
+- -1 — 如果 `string1`[`string1_offset`: `string1_offset` + `num_bytes`] < `string2`[`string2_offset`:`string2_offset` + `num_bytes`]，且 `string1_offset` < len(`string1`) 以及 `string2_offset` < len(`string2`)。
+如果 `string1_offset` >= len(`string1`) 并且 `string2_offset` < len(`string2`)。
+- 0 — 如果 `string1`[`string1_offset`: `string1_offset` + `num_bytes`] = `string2`[`string2_offset`:`string2_offset` + `num_bytes`]，且 `string1_offset` < len(`string1`) 以及 `string2_offset` < len(`string2`)。
+如果 `string1_offset` >= len(`string1`) 并且 `string2_offset` >= len(`string2`)。
+- 1 — 如果 `string1`[`string1_offset`: `string1_offset` + `num_bytes`] > `string2`[`string2_offset`:`string2_offset` + `num_bytes`] 以及 `string1_offset` < len(`string1`) 以及 `string2_offset` < len(`string2`)。
 如果 `string1_offset` < len(`string1`) 且 `string2_offset` >= len(`string2`)。
 
 **示例**
@@ -2409,3 +2516,196 @@ SELECT
    ┌─result2─┬─result1─┬─result3─┐
 1. │      -1 │       0 │       1 │
    └─────────┴─────────┴─────────┘
+```
+## sparseGrams {#sparsegrams}
+
+查找给定字符串的所有子字符串，其长度至少为 `n`，其中子字符串边界的(n-1)-gram的哈希值严格大于任何(n-1)-gram的哈希值。
+使用[crc32](./string-functions.md#crc32)作为哈希函数。
+
+**语法**
+
+```sql
+sparseGrams(s[, min_ngram_length]);
+```
+
+**参数**
+
+- `s` — 输入字符串。[String](../data-types/string.md)
+- `min_ngram_length` — 提取的ngram的最小长度。默认和最小值为3。
+- `max_ngram_length` — 提取的ngram的最大长度。默认值为100。不得小于'min_ngram_length'
+
+**返回值**
+
+- 选定子字符串的数组。[Array](../data-types/array.md)([String](../data-types/string.md))。
+
+**示例**
+
+```sql
+SELECT sparseGrams('alice', 3) AS result
+```
+结果：
+```result
+   ┌─result─────────────────────┐
+1. │ ['ali','lic','lice','ice'] │
+   └────────────────────────────┘
+```
+## sparseGramsUTF8 {#sparsegramsutf8}
+
+查找给定字符串的所有子字符串，其长度至少为 `n`，其中子字符串边界的(n-1)-gram的哈希值严格高于任何(n-1)-gram的哈希值。
+使用[crc32](./string-functions.md#crc32)作为哈希函数。
+期望UTF-8字符串，在无效UTF-8序列的情况下抛出异常。
+
+**语法**
+
+```sql
+sparseGramsUTF8(s[, min_ngram_length]);
+```
+
+**参数**
+
+- `s` — 输入字符串。[String](../data-types/string.md)
+- `min_ngram_length` — 提取的ngram的最小长度。默认和最小值为3。
+- `max_ngram_length` — 提取的ngram的最大长度。默认值为100。不得小于'min_ngram_length'
+
+**返回值**
+
+- 选定子字符串的数组。[Array](../data-types/array.md)([String](../data-types/string.md))。
+
+**示例**
+
+```sql
+SELECT sparseGramsUTF8('алиса', 3) AS result
+```
+结果：
+```result
+   ┌─result──────────────┐
+1. │ ['али','лис','иса'] │
+   └─────────────────────┘
+```
+## sparseGramsHashes {#sparsegramshashes}
+
+查找给定字符串的所有子字符串的哈希值，该字符串的长度至少为 `n`，其中子字符串边界的(n-1)-gram的哈希值严格大于任何(n-1)-gram的哈希值。
+使用[crc32](./string-functions.md#crc32)作为哈希函数。
+
+**语法**
+
+```sql
+sparseGramsHashes(s[, min_ngram_length]);
+```
+
+**参数**
+
+- `s` — 输入字符串。[String](../data-types/string.md)
+- `min_ngram_length` — 提取的ngram的最小长度。默认和最小值为3。
+- `max_ngram_length` — 提取的ngram的最大长度。默认值为100。不得小于'min_ngram_length'
+
+**返回值**
+
+- 选定子字符串的crc32哈希数组。[Array](../data-types/array.md)([UInt32](../data-types/int-uint.md))。
+
+**示例**
+
+```sql
+SELECT sparseGramsHashes('alice', 3) AS result
+```
+结果：
+```result
+   ┌─result────────────────────────────────────────┐
+1. │ [1265796434,3725069146,1689963195,3410985998] │
+   └───────────────────────────────────────────────┘
+```
+## sparseGramsHashesUTF8 {#sparsegramshashesutf8}
+
+查找给定字符串的所有子字符串的哈希值，该字符串的长度至少为 `n`，其中子字符串边界的(n-1)-gram的哈希值严格高于任何(n-1)-gram的哈希值。
+使用[crc32](./string-functions.md#crc32)作为哈希函数。
+期望UTF-8字符串，在无效UTF-8序列的情况下抛出异常。
+
+**语法**
+
+```sql
+sparseGramsUTF8(s[, min_ngram_length]);
+```
+
+**参数**
+
+- `s` — 输入字符串。[String](../data-types/string.md)
+- `min_ngram_length` — 提取的ngram的最小长度。默认和最小值为3。
+- `max_ngram_length` — 提取的ngram的最大长度。默认值为100。不得小于'min_ngram_length'
+
+**返回值**
+
+- 选定子字符串的crc32哈希数组。[Array](../data-types/array.md)([UInt32](../data-types/int-uint.md))。
+
+**示例**
+
+```sql
+SELECT sparseGramsHashesUTF8('алиса', 3) AS result
+```
+结果：
+```result
+   ┌─result───────────────────────────┐
+1. │ [417784657,728683856,3071092609] │
+   └──────────────────────────────────┘
+```
+## stringBytesUniq {#stringbytesuniq}
+
+计算字符串中不同字节的数量。
+
+**语法**
+
+```sql
+stringBytesUniq(s)
+```
+
+**参数**
+
+- `s` — 要分析的字符串。[String](../data-types/string.md)。
+
+**返回值**
+
+- 字符串中不同字节的数量。[UInt16](../data-types/int-uint.md)。
+
+**示例**
+
+```sql
+SELECT stringBytesUniq('Hello');
+```
+
+结果：
+
+```result
+┌─stringBytesUniq('Hello')─┐
+│                        4 │
+└──────────────────────────┘
+```
+## stringBytesEntropy {#stringbytesentropy}
+
+计算字符串中字节分布的香农熵。
+
+**语法**
+
+```sql
+stringBytesEntropy(s)
+```
+
+**参数**
+
+- `s` — 要分析的字符串。[String](../data-types/string.md)。
+
+**返回值**
+
+- 字符串中字节分布的香农熵。[Float64](../data-types/float.md)。
+
+**示例**
+
+```sql
+SELECT stringBytesEntropy('Hello, world!');
+```
+
+结果：
+
+```result
+┌─stringBytesEntropy('Hello, world!')─┐
+│                         3.07049960  │
+└─────────────────────────────────────┘
+```

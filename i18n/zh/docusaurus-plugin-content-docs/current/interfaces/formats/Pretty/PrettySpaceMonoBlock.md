@@ -1,10 +1,12 @@
 ---
-title: 'PrettySpaceMonoBlock'
-slug: '/interfaces/formats/PrettySpaceMonoBlock'
-keywords: ['PrettySpaceMonoBlock']
-input_format: false
-output_format: true
-alias: []
+'alias': []
+'description': 'PrettySpaceMonoBlock 格式的文档'
+'input_format': false
+'keywords':
+- 'PrettySpaceMonoBlock'
+'output_format': true
+'slug': '/interfaces/formats/PrettySpaceMonoBlock'
+'title': 'PrettySpaceMonoBlock'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
@@ -15,7 +17,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## 描述 {#description}
 
-与 [`PrettySpace`](./PrettySpace.md) 格式不同的是，这种格式最多缓冲 `10,000` 行，然后作为一个整体表格输出，而不是按 [blocks](/development/architecture#block) 输出。
+与 [`PrettySpace`](./PrettySpace.md) 格式不同的是，最多可以缓冲 `10,000` 行，然后作为单个表输出，而不是通过 [blocks](/development/architecture#block)。
 
 ## 示例用法 {#example-usage}
 

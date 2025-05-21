@@ -1,22 +1,24 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/anylast
-sidebar_position: 105
-title: 'anyLast'
-description: '选择列的最后一个值。'
+'description': 'Selects the last encountered value of a column.'
+'sidebar_position': 105
+'slug': '/sql-reference/aggregate-functions/reference/anylast'
+'title': 'anyLast'
 ---
+
+
 
 
 # anyLast
 
-选择列的最后一个值。
+选择列中最后遇到的值。
 
 :::warning
 由于查询可以以任意顺序执行，因此此函数的结果是非确定性的。
-如果您需要一个任意但确定的结果，请使用函数 [`min`](../reference/min.md) 或 [`max`](../reference/max.md)。
+如果需要一个任意的但确定的结果，请使用函数 [`min`](../reference/min.md) 或 [`max`](../reference/max.md)。
 :::
 
-默认情况下，函数从不返回 NULL，即忽略输入列中的 NULL 值。
-但是，如果与 `RESPECT NULLS` 修饰符一起使用，函数会返回读取到的第一个值，无论它是否为 NULL。
+默认情况下，该函数永远不会返回 NULL，即忽略输入列中的 NULL 值。
+然而，如果使用 `RESPECT NULLS` 修饰符，则函数返回第一个读取的值，无论是否为 NULL。
 
 **语法**
 
@@ -36,7 +38,7 @@ anyLast(column) [RESPECT NULLS]
 
 **返回值**
 
-- 遇到的最后一个值。
+- 最后遇到的值。
 
 **示例**
 
@@ -52,6 +54,6 @@ SELECT anyLast(city), anyLastRespectNulls(city) FROM tab;
 
 ```response
 ┌─anyLast(city)─┬─anyLastRespectNulls(city)─┐
-│ Valencia      │ ᴺᵁᴸᴸ                     │
+│ Valencia      │ ᴺᵁᴸᴸ                      │
 └───────────────┴───────────────────────────┘
 ```

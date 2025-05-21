@@ -1,10 +1,11 @@
 ---
-slug: /integrations/hudi
-sidebar_label: Hudi
-title: Hudi
-hide_title: true
+'slug': '/integrations/hudi'
+'sidebar_label': 'Hudi'
+'title': 'Hudi'
+'hide_title': true
+'description': 'Page describing the Hudi table engine'
 ---
 
-import HudiTableEngine from '@site/i18n/zh/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/hudi.md';
+import HudiTableEngine from '@site/docs/engines/table-engines/integrations/hudi.md';
 
 <HudiTableEngine/>

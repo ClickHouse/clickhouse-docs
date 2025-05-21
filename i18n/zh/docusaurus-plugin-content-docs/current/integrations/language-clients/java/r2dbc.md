@@ -1,9 +1,15 @@
 ---
-sidebar_label: R2DBC 驱动
-sidebar_position: 5
-keywords: [clickhouse, java, driver, integrate, r2dbc]
-description: ClickHouse R2DBC 驱动
-slug: /integrations/java/r2dbc
+'sidebar_label': 'R2DBC Driver'
+'sidebar_position': 5
+'keywords':
+- 'clickhouse'
+- 'java'
+- 'driver'
+- 'integrate'
+- 'r2dbc'
+'description': 'ClickHouse R2DBC Driver'
+'slug': '/integrations/java/r2dbc'
+'title': 'R2DBC driver'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,10 +17,11 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 
+# R2DBC 驱动
 
 ## R2DBC 驱动 {#r2dbc-driver}
 
-[R2DBC](https://r2dbc.io/) 是 ClickHouse 的异步 Java 客户端的封装。
+[R2DBC](https://r2dbc.io/) 是 ClickHouse 的异步 Java 客户端的包装器。
 
 ### 环境要求 {#environment-requirements}
 
@@ -25,10 +32,10 @@ import CodeBlock from '@theme/CodeBlock';
 ```xml
 <dependency>
     <groupId>com.clickhouse</groupId>
-    <!-- 更改为 clickhouse-r2dbc_0.9.1 以兼容 SPI 0.9.1.RELEASE -->
+    <!-- change to clickhouse-r2dbc_0.9.1 for SPI 0.9.1.RELEASE -->
     <artifactId>clickhouse-r2dbc</artifactId>
     <version>0.7.1</version>
-    <!-- 使用包含所有依赖项的 uber jar，将分类器更改为 http 或 grpc 以获得更小的 jar -->
+    <!-- use uber jar with all dependencies included, change classifier to http or grpc for smaller jar -->
     <classifier>all</classifier>
     <exclusions>
         <exclusion>

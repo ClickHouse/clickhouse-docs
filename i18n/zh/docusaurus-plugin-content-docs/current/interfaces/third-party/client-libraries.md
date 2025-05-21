@@ -1,15 +1,19 @@
 ---
-slug: /interfaces/third-party/client-libraries
-sidebar_position: 26
-sidebar_label: '第三方客户端库'
-description: '第三方客户端库'
+'description': 'Overview of available third-party client libraries for different programming
+  languages'
+'sidebar_label': 'Client Libraries'
+'sidebar_position': 26
+'slug': '/interfaces/third-party/client-libraries'
+'title': 'Client Libraries from Third-party Developers'
 ---
+
+
 
 
 # 第三方开发者的客户端库
 
 :::note
-ClickHouse Inc **不** 维护下面列出的库，并且没有进行任何广泛的测试来确保它们的质量。
+ClickHouse Inc **不** 维护下面列出的库，并且没有进行过 extensive 测试以确保它们的质量。
 :::
 
 ### Python {#python}
@@ -27,6 +31,7 @@ ClickHouse Inc **不** 维护下面列出的库，并且没有进行任何广泛
  - [SeasClick C++ client](https://github.com/SeasX/SeasClick)
  - [one-ck](https://github.com/lizhichao/one-ck)
  - [glushkovds/phpclickhouse-laravel](https://packagist.org/packages/glushkovds/phpclickhouse-laravel)
+ - [glushkovds/php-clickhouse-schema-builder](https://packagist.org/packages/glushkovds/php-clickhouse-schema-builder)
  - [kolya7k ClickHouse PHP extension](https://github.com//kolya7k/clickhouse-php)
  - [hyvor/clickhouse-php](https://github.com/hyvor/clickhouse-php)
 ### Go {#go}
@@ -81,3 +86,4 @@ ClickHouse Inc **不** 维护下面列出的库，并且没有进行任何广泛
  - [nim-clickhouse](https://github.com/leonardoce/nim-clickhouse)
 ### Haskell {#haskell}
  - [hdbc-clickhouse](https://github.com/zaneli/hdbc-clickhouse)
+ - [ClickHaskell](https://clickhaskell.dev/)

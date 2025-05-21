@@ -1,13 +1,19 @@
 ---
-title: 安装 chDB 以用于 C 和 C++
-sidebar_label: C 和 C++
-slug: /chdb/install/c
-description: 如何安装 chDB 以用于 C 和 C++
-keywords: [chdb, 嵌入式, clickhouse-lite, 安装]
+'title': '为 C 和 C++ 安装 chDB'
+'sidebar_label': 'C 和 C++'
+'slug': '/chdb/install/c'
+'description': '如何为 C 和 C++ 安装 chDB'
+'keywords':
+- 'chdb'
+- 'embedded'
+- 'clickhouse-lite'
+- 'install'
 ---
 
 
-# 安装 chDB 以用于 C 和 C++
+
+
+# 安装 chDB 用于 C 和 C++
 
 ## 需求 {#requirements}
 
@@ -17,7 +23,8 @@ keywords: [chdb, 嵌入式, clickhouse-lite, 安装]
 curl -sL https://lib.chdb.io | bash
 ```
 
-## 使用 {#usage}
+
+## 使用方法 {#usage}
 
 按照 [libchdb](https://github.com/chdb-io/chdb/blob/main/bindings.md) 的说明开始使用。
 
@@ -33,7 +40,7 @@ struct local_result
 {
     char * buf;
     size_t len;
-    void * _vec; // std::vector<char> *, 用于释放
+    void * _vec; // std::vector<char> *, for freeing
     double elapsed;
     uint64_t rows_read;
     uint64_t bytes_read;

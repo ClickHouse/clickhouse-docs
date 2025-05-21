@@ -1,9 +1,9 @@
 ---
-slug: /engines/table-engines/integrations/jdbc
-sidebar_position: 100
-sidebar_label: 'JDBC'
-title: 'JDBC'
-description: '允许 ClickHouse 通过 JDBC 连接到外部数据库。'
+'description': 'Allows ClickHouse to connect to external databases via JDBC.'
+'sidebar_label': 'JDBC'
+'sidebar_position': 100
+'slug': '/engines/table-engines/integrations/jdbc'
+'title': 'JDBC'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -14,19 +14,19 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 <CloudNotSupportedBadge/>
 
 :::note
-clickhouse-jdbc-bridge 包含实验性代码，并且不再支持。它可能存在可靠性问题和安全漏洞。使用时请谨慎。
-ClickHouse 推荐使用内置的表函数，提供更好的解决方案用于临时查询场景（Postgres、MySQL、MongoDB 等）。
+clickhouse-jdbc-bridge 包含实验性代码，且不再受到支持。它可能存在可靠性问题和安全漏洞。使用它需自行承担风险。 
+ClickHouse 推荐使用 ClickHouse 内置的表函数，这为临时查询场景（Postgres, MySQL, MongoDB 等）提供了更好的替代方案。
 :::
 
 允许 ClickHouse 通过 [JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity) 连接到外部数据库。
 
-要实现 JDBC 连接，ClickHouse 使用独立程序 [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge)，该程序应作为守护进程运行。
+为了实现 JDBC 连接，ClickHouse 使用单独的程序 [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge)，该程序应作为守护进程运行。
 
-该引擎支持 [Nullable](../../../sql-reference/data-types/nullable.md) 数据类型。
+此引擎支持 [Nullable](../../../sql-reference/data-types/nullable.md) 数据类型。
 
 ## 创建表 {#creating-a-table}
 
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
 (
     columns list...
@@ -38,18 +38,18 @@ ENGINE = JDBC(datasource_uri, external_database, external_table)
 
 - `datasource_uri` — 外部 DBMS 的 URI 或名称。
 
-    URI 格式：`jdbc:<driver_name>://<host_name>:<port>/?user=<username>&password=<password>`。
-    MySQL 示例：`jdbc:mysql://localhost:3306/?user=root&password=root`。
+    URI 格式: `jdbc:<driver_name>://<host_name>:<port>/?user=<username>&password=<password>`。
+    MySQL 的示例: `jdbc:mysql://localhost:3306/?user=root&password=root`。
 
 - `external_database` — 外部 DBMS 中的数据库。
 
-- `external_table` — `external_database` 中的表名或类似 `select * from table1 where column1=1` 的查询语句。
+- `external_table` — `external_database` 中表的名称或像 `select * from table1 where column1=1` 这样的查询。
 
 ## 使用示例 {#usage-example}
 
-通过直接连接 MySQL 服务器的控制台客户端创建表：
+通过直接连接其控制台客户端在 MySQL 服务器中创建表：
 
-``` text
+```text
 mysql> CREATE TABLE `test`.`test` (
     ->   `int_id` INT NOT NULL AUTO_INCREMENT,
     ->   `int_nullable` INT NULL DEFAULT NULL,
@@ -72,7 +72,7 @@ mysql> select * from test;
 
 在 ClickHouse 服务器中创建表并从中选择数据：
 
-``` sql
+```sql
 CREATE TABLE jdbc_table
 (
     `int_id` Int32,
@@ -83,18 +83,18 @@ CREATE TABLE jdbc_table
 ENGINE JDBC('jdbc:mysql://localhost:3306/?user=root&password=root', 'test', 'test')
 ```
 
-``` sql
+```sql
 SELECT *
 FROM jdbc_table
 ```
 
-``` text
+```text
 ┌─int_id─┬─int_nullable─┬─float─┬─float_nullable─┐
 │      1 │         ᴺᵁᴸᴸ │     2 │           ᴺᵁᴸᴸ │
 └────────┴──────────────┴───────┴────────────────┘
 ```
 
-``` sql
+```sql
 INSERT INTO jdbc_table(`int_id`, `float`)
 SELECT toInt32(number), toFloat32(number * 1.0)
 FROM system.numbers
@@ -102,4 +102,4 @@ FROM system.numbers
 
 ## 另请参阅 {#see-also}
 
-- [JDBC 表函数](../../../sql-reference/table-functions/jdbc.md).
+- [JDBC 表函数](../../../sql-reference/table-functions/jdbc.md)。

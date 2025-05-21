@@ -1,10 +1,10 @@
 ---
-title: 分布式 DDL 查询 (ON CLUSTER 子句)
-slug: zh/sql-reference/other/distributed-ddl
-description: 分布式 DDL 的页面
-sidebar_label: 分布式 DDL
+'description': 'Documentation for Distributed Ddl'
+'sidebar_label': '分布式 DDL'
+'slug': '/sql-reference/other/distributed-ddl'
+'title': 'Page for Distributed DDL'
 ---
 
-import Content from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/distributed-ddl.md';
+import Content from '@site/docs/sql-reference/distributed-ddl.md';
 
-<Content/>
+I'm sorry, but I need the specific text you would like translated from the ClickHouse documentation in order to assist you. Please provide the text, and I will translate it for you while adhering to the specified guidelines.

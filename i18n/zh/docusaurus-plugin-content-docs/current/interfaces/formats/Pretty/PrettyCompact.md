@@ -1,25 +1,27 @@
 ---
-title: 'PrettyCompact'
-slug: '/interfaces/formats/PrettyCompact'
-keywords: ['PrettyCompact']
-input_format: false
-output_format: true
-alias: []
+'alias': []
+'description': 'Documentation for the PrettyCompact format'
+'input_format': false
+'keywords':
+- 'PrettyCompact'
+'output_format': true
+'slug': '/interfaces/formats/PrettyCompact'
+'title': 'PrettyCompact'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Input | Output  | Alias |
-|-------|---------|-------|
-| ✗     | ✔       |       |
+| 输入  | 输出   | 别名  |
+|-------|--------|-------|
+| ✗     | ✔      |       |
 
 ## 描述 {#description}
 
-与 [`Pretty`](./Pretty.md) 格式不同，表格在行之间绘制了网格。 
-因此，结果更加紧凑。
+与 [`Pretty`](./Pretty.md) 格式不同的是，表格在行之间绘制了网格。 
+因此结果更加紧凑。
 
 :::note
-该格式在交互模式下的命令行客户端中默认使用。
+此格式在交互模式下的命令行客户端中默认使用。
 :::
 
 ## 示例用法 {#example-usage}

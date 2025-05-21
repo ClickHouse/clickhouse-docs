@@ -1,11 +1,16 @@
 ---
-description: '展示分配给 ClickHouse 用户帐户的权限的系统表。'
-slug: /operations/system-tables/grants
-title: 'system.grants'
-keywords: ['system table', 'grants']
+'description': 'System table showing which privileges are granted to ClickHouse user
+  accounts.'
+'keywords':
+- 'system table'
+- 'grants'
+'slug': '/operations/system-tables/grants'
+'title': 'system.grants'
 ---
 
-分配给 ClickHouse 用户帐户的权限。
+
+
+授予 ClickHouse 用户帐户的权限。
 
 列：
 - `user_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 用户名。
@@ -14,14 +19,14 @@ keywords: ['system table', 'grants']
 
 - `access_type` ([Enum8](../../sql-reference/data-types/enum.md)) — ClickHouse 用户帐户的访问参数。
 
-- `database` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 数据库名称。
+- `database` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 数据库的名称。
 
-- `table` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 表名称。
+- `table` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 表的名称。
 
-- `column` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 被授予访问权限的列名称。
+- `column` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 授予访问权限的列的名称。
 
-- `is_partial_revoke` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 逻辑值。它显示是否撤销了一些权限。可能的值：
-  - `0` — 该行描述的是一个授权。
-  - `1` — 该行描述的是部分撤销。
+- `is_partial_revoke` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 逻辑值。它指示是否有某些权限已被撤回。可能的值：
+  - `0` — 该行描述一个授予。
+  - `1` — 该行描述一个部分撤回。
 
-- `grant_option` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 权限以 `WITH GRANT OPTION` 形式授予，参见 [GRANT](../../sql-reference/statements/grant.md#granting-privilege-syntax)。
+- `grant_option` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 权限以 `WITH GRANT OPTION` 方式授予，请参见 [GRANT](../../sql-reference/statements/grant.md#granting-privilege-syntax)。

@@ -1,29 +1,31 @@
 ---
-description:  '星型模式基准 (SSB) 数据集和查询'
-slug: /getting-started/example-datasets/star-schema
-sidebar_label: 星型模式基准
-title: '星型模式基准 (SSB, 2009)'
+'description': '星型模式基准测试（SSB）数据集和查询'
+'sidebar_label': '星型模式基准测试'
+'slug': '/getting-started/example-datasets/star-schema'
+'title': '星型模式基准测试 (SSB, 2009)'
 ---
 
-星型模式基准大致基于[TPC-H](tpch.md)的表和查询，但与TPC-H不同，它使用星型模式布局。
-大部分数据位于一个巨大的事实表中，该表周围环绕着多个小的维度表。
-查询将事实表与一个或多个维度表连接，以应用过滤条件，例如`MONTH = 'JANUARY'`。
 
-参考资料：
+
+星型模式基准（Star Schema Benchmark）大致基于 [TPC-H](tpch.md) 的表和查询，但与 TPC-H 不同的是，它使用星型模式布局。
+大部分数据位于一个巨大的事实表中，周围被多个小的维度表所环绕。
+查询将事实表与一个或多个维度表连接，以应用过滤条件，例如 `MONTH = 'JANUARY'`。
+
+参考文献：
 - [星型模式基准](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O'Neil 等人), 2009
-- [测试数据倾斜对查询性能影响的星型模式基准变体](https://doi.org/10.1145/2479871.2479927) (Rabl 等人), 2013
+- [星型模式基准的变体以测试数据倾斜对查询性能的影响](https://doi.org/10.1145/2479871.2479927) (Rabl 等人), 2013
 
-首先，检查星型模式基准库并编译数据生成器：
+首先，查看星型模式基准的代码库并编译数据生成器：
 
-``` bash
+```bash
 git clone https://github.com/vadimtk/ssb-dbgen.git
 cd ssb-dbgen
 make
 ```
 
-然后，生成数据。参数`-s`指定缩放因子。例如，使用`-s 100`将生成6亿行。
+然后，生成数据。参数 `-s` 指定规模因子。例如，使用 `-s 100` 将生成 6 亿行。
 
-``` bash
+```bash
 ./dbgen -s 1000 -T c
 ./dbgen -s 1000 -T l
 ./dbgen -s 1000 -T p
@@ -31,9 +33,9 @@ make
 ./dbgen -s 1000 -T d
 ```
 
-现在在ClickHouse中创建表：
+现在在 ClickHouse 中创建表：
 
-``` sql
+```sql
 CREATE TABLE customer
 (
         C_CUSTKEY       UInt32,
@@ -120,7 +122,7 @@ ENGINE = MergeTree ORDER BY D_DATEKEY;
 
 数据可以如下导入：
 
-``` bash
+```bash
 clickhouse-client --query "INSERT INTO customer FORMAT CSV" < customer.tbl
 clickhouse-client --query "INSERT INTO part FORMAT CSV" < part.tbl
 clickhouse-client --query "INSERT INTO supplier FORMAT CSV" < supplier.tbl
@@ -128,10 +130,10 @@ clickhouse-client --query "INSERT INTO lineorder FORMAT CSV" < lineorder.tbl
 clickhouse-client --query "INSERT INTO date FORMAT CSV" < date.tbl
 ```
 
-在ClickHouse的许多用例中，多个表被转换为一个单一的去规范化平面表。
-这一步是可选的，下面的查询以原始格式和去规范化表的格式列出。
+在 ClickHouse 的许多用例中，多张表被转换为一个单一的非规范化平面表。
+这一步是可选的，下面的查询以其原始形式和重写为非规范化表的格式列出。
 
-``` sql
+```sql
 SET max_memory_usage = 20000000000;
 
 CREATE TABLE lineorder_flat
@@ -181,7 +183,7 @@ INNER JOIN supplier AS s ON s.S_SUPPKEY = l.LO_SUPPKEY
 INNER JOIN part AS p ON p.P_PARTKEY = l.LO_PARTKEY;
 ```
 
-查询由`./qgen -s <scaling_factor>`生成。对于`s = 100`的示例查询：
+查询通过 `./qgen -s <scaling_factor>` 生成。对于 `s = 100` 的示例查询：
 
 Q1.1
 
@@ -198,9 +200,9 @@ WHERE
     AND LO_QUANTITY < 25;
 ```
 
-去规范化表：
+非规范化表：
 
-``` sql
+```sql
 SELECT
     sum(LO_EXTENDEDPRICE * LO_DISCOUNT) AS revenue
 FROM
@@ -226,7 +228,7 @@ WHERE
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-去规范化表：
+非规范化表：
 
 ```sql
 SELECT
@@ -255,7 +257,7 @@ WHERE
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-去规范化表：
+非规范化表：
 
 ```sql
 SELECT
@@ -295,7 +297,7 @@ ORDER BY
     P_BRAND;
 ```
 
-去规范化表：
+非规范化表：
 
 ```sql
 SELECT
@@ -341,7 +343,7 @@ ORDER BY
     P_BRAND;
 ```
 
-去规范化表：
+非规范化表：
 
 ```sql
 SELECT
@@ -384,7 +386,7 @@ ORDER BY
     P_BRAND;
 ```
 
-去规范化表：
+非规范化表：
 
 ```sql
 SELECT
@@ -429,7 +431,7 @@ ORDER BY
     REVENUE DESC;
 ```
 
-去规范化表：
+非规范化表：
 
 ```sql
 SELECT
@@ -481,7 +483,7 @@ ORDER BY
     REVENUE DESC;
 ```
 
-去规范化表：
+非规范化表：
 
 ```sql
 SELECT
@@ -534,7 +536,7 @@ ORDER BY
     revenue DESC;
 ```
 
-去规范化表：
+非规范化表：
 
 ```sql
 SELECT
@@ -586,7 +588,7 @@ ORDER BY
     revenue DESC;
 ```
 
-去规范化表：
+非规范化表：
 
 ```sql
 SELECT
@@ -637,7 +639,7 @@ ORDER BY
     C_NATION
 ```
 
-去规范化表：
+非规范化表：
 
 ```sql
 SELECT
@@ -687,7 +689,7 @@ ORDER BY
     P_CATEGORY
 ```
 
-去规范化表：
+非规范化表：
 
 ```sql
 SELECT
@@ -744,7 +746,7 @@ ORDER BY
     P_BRAND
 ```
 
-去规范化表：
+非规范化表：
 
 ```sql
 SELECT

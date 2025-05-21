@@ -1,37 +1,46 @@
 ---
-description: '包含来自 ClickHouse Keeper 或 ZooKeeper 中的复制队列的任务信息，适用于 `ReplicatedMergeTree` 系列的表。'
-slug: /operations/system-tables/replication_queue
-title: 'system.replication_queue'
-keywords: ['system table', 'replication_queue']
+'description': 'System table containing information about tasks from replication queues
+  stored in ClickHouse Keeper, or ZooKeeper, for tables in the `ReplicatedMergeTree`
+  family.'
+'keywords':
+- 'system table'
+- 'replication_queue'
+'slug': '/operations/system-tables/replication_queue'
+'title': 'system.replication_queue'
 ---
 
-包含来自 ClickHouse Keeper 或 ZooKeeper 中的复制队列的任务信息，适用于 `ReplicatedMergeTree` 系列的表。
 
-列：
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — 数据库的名称。
 
-- `table` ([String](../../sql-reference/data-types/string.md)) — 表的名称。
+# system.replication_queue
 
-- `replica_name` ([String](../../sql-reference/data-types/string.md)) — 在 ClickHouse Keeper 中的副本名称。相同表的不同副本有不同的名称。
+包含存储在 ClickHouse Keeper 或 ZooKeeper 中的与 `ReplicatedMergeTree` 家族表相关的复制队列的任务信息。
 
-- `position` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 队列中任务的位置。
+列:
+
+- `database` ([String](../../sql-reference/data-types/string.md)) — 数据库名称。
+
+- `table` ([String](../../sql-reference/data-types/string.md)) — 表名称。
+
+- `replica_name` ([String](../../sql-reference/data-types/string.md)) — 在 ClickHouse Keeper 中的副本名称。同一表的不同副本具有不同的名称。
+
+- `position` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 任务在队列中的位置。
 
 - `node_name` ([String](../../sql-reference/data-types/string.md)) — 在 ClickHouse Keeper 中的节点名称。
 
-- `type` ([String](../../sql-reference/data-types/string.md)) — 队列中任务的类型之一：
+- `type` ([String](../../sql-reference/data-types/string.md)) — 队列中任务的类型，可以是以下之一：
 
     - `GET_PART` — 从另一个副本获取部分。
-    - `ATTACH_PART` — 附加部分，可能来自我们自己的副本（如果在 `detached` 文件夹中找到）。您可以将其视为带有某些优化的 `GET_PART`，它们几乎是相同的。
-    - `MERGE_PARTS` — 合并这些部分。
-    - `DROP_RANGE` — 删除指定范围内指定分区的部分。
-    - `CLEAR_COLUMN` — 注意：已弃用。 从指定分区中删除特定列。
-    - `CLEAR_INDEX` — 注意：已弃用。 从指定分区中删除特定索引。
-    - `REPLACE_RANGE` — 删除某个范围的部分并用新部分替换。
+    - `ATTACH_PART` — 附加部分，可能来自我们自己的副本（如果在 `detached` 文件夹中找到）。您可以将其视为优化过的 `GET_PART`，因为它们几乎是相同的。
+    - `MERGE_PARTS` — 合并部分。
+    - `DROP_RANGE` — 删除指定分区中指定范围内的部分。
+    - `CLEAR_COLUMN` — 注意：已弃用。删除指定分区中特定列。
+    - `CLEAR_INDEX` — 注意：已弃用。删除指定分区中特定索引。
+    - `REPLACE_RANGE` — 删除某个范围的部分并用新部分替换它们。
     - `MUTATE_PART` — 对部分应用一个或多个变更。
-    - `ALTER_METADATA` — 根据全局 /metadata 和 /columns 路径应用更改。
+    - `ALTER_METADATA` — 根据全局 /metadata 和 /columns 路径应用修改。
 
-- `create_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 提交任务执行的日期和时间。
+- `create_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 提交执行任务的日期和时间。
 
 - `required_quorum` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 等待任务完成并确认的副本数量。此列仅与 `GET_PARTS` 任务相关。
 
@@ -47,25 +56,25 @@ keywords: ['system table', 'replication_queue']
 
 - `num_tries` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 完成任务的失败尝试次数。
 
-- `last_exception` ([String](../../sql-reference/data-types/string.md)) — 有关最后一次发生的错误的文本消息（如果有）。
+- `last_exception` ([String](../../sql-reference/data-types/string.md)) — 有关发生的最后一个错误的文本消息（如果有的话）。
 
-- `last_attempt_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 上一次尝试任务的日期和时间。
+- `last_attempt_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 最后一次尝试任务的日期和时间。
 
-- `num_postponed` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 操作被推迟的次数。
+- `num_postponed` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 动作被推迟的次数。
 
 - `postpone_reason` ([String](../../sql-reference/data-types/string.md)) — 任务被推迟的原因。
 
-- `last_postpone_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 上一次推迟任务的日期和时间。
+- `last_postpone_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 最后一次推迟任务的日期和时间。
 
-- `merge_type` ([String](../../sql-reference/data-types/string.md)) — 当前合并的类型。如果是变更则为空。
+- `merge_type` ([String](../../sql-reference/data-types/string.md)) — 当前合并的类型。如果是变更，则为空。
 
 **示例**
 
-``` sql
+```sql
 SELECT * FROM system.replication_queue LIMIT 1 FORMAT Vertical;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 database:               merge
@@ -89,6 +98,6 @@ postpone_reason:
 last_postpone_time:     1970-01-01 03:00:00
 ```
 
-**参见**
+**另请参见**
 
 - [管理 ReplicatedMergeTree 表](/sql-reference/statements/system#managing-replicatedmergetree-tables)

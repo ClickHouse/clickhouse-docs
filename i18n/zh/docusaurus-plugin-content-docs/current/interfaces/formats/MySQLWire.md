@@ -1,8 +1,12 @@
 ---
-title: MySQLWire
-slug: /interfaces/formats/MySQLWire
-keywords: ['MySQLWire']
+'description': 'MySQLWire格式的文档'
+'keywords':
+- 'MySQLWire'
+'slug': '/interfaces/formats/MySQLWire'
+'title': 'MySQLWire'
 ---
+
+
 
 ## 描述 {#description}
 

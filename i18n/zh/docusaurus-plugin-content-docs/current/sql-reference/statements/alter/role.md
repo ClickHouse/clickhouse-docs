@@ -1,15 +1,18 @@
 ---
-slug: /sql-reference/statements/alter/role
-sidebar_position: 46
-sidebar_label: 角色
-title: "ALTER ROLE"
+'description': '角色的文档'
+'sidebar_label': '角色'
+'sidebar_position': 46
+'slug': '/sql-reference/statements/alter/role'
+'title': '修改角色'
 ---
 
-更改角色。
+
+
+变更角色。
 
 语法：
 
-``` sql
+```sql
 ALTER ROLE [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]] 
     [ON CLUSTER cluster_name]
     [DROP ALL PROFILES]

@@ -1,38 +1,41 @@
 ---
-slug: /sql-reference/table-functions/format
-sidebar_position: 65
-sidebar_label: format
-title: 'format'
-description: '根据指定的输入格式解析参数中的数据。如果未指定结构参数，则从数据中提取。'
+'description': 'Parses data from arguments according to specified input format. If
+  structure argument is not specified, it''s extracted from the data.'
+'slug': '/sql-reference/table-functions/format'
+'sidebar_position': 65
+'sidebar_label': 'format'
+'title': 'format'
 ---
+
+
 
 
 # format 表函数
 
-根据指定的输入格式解析参数中的数据。如果未指定结构参数，则从数据中提取。
+根据指定的输入格式解析来自参数的数据。如果未指定结构参数，则会从数据中提取。
 
-**语法**
+## 语法 {#syntax}
 
-``` sql
+```sql
 format(format_name, [structure], data)
 ```
 
-**参数**
+## 参数 {#arguments}
 
 - `format_name` — 数据的 [格式](/sql-reference/formats)。
 - `structure` - 表的结构。可选。格式为 'column1_name column1_type, column2_name column2_type, ...'。
-- `data` — 字符串字面量或返回包含指定格式数据的字符串的常量表达式。
+- `data` — 字符串字面量或常量表达式，返回包含指定格式数据的字符串。
 
-**返回值**
+## 返回值 {#returned_value}
 
-根据指定的格式和指定或提取的结构，从 `data` 参数解析的数据表。
+一个表，包含从 `data` 参数中根据指定格式和指定或提取的结构解析的数据。
 
-**示例**
+## 示例 {#examples}
 
-不带 `structure` 参数的情况：
+未包含 `structure` 参数：
 
-**查询：**
-``` sql
+**查询:**
+```sql
 SELECT * FROM format(JSONEachRow,
 $$
 {"a": "Hello", "b": 111}
@@ -42,7 +45,7 @@ $$
 $$)
 ```
 
-**结果：**
+**结果:**
 
 ```response
 ┌───b─┬─a─────┐
@@ -53,7 +56,7 @@ $$)
 └─────┴───────┘
 ```
 
-**查询：**
+**查询:**
 ```sql
 DESC format(JSONEachRow,
 $$
@@ -64,7 +67,7 @@ $$
 $$)
 ```
 
-**结果：**
+**结果:**
 
 ```response
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -73,9 +76,9 @@ $$)
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-带 `structure` 参数的情况：
+包含 `structure` 参数：
 
-**查询：**
+**查询:**
 ```sql
 SELECT * FROM format(JSONEachRow, 'a String, b UInt32',
 $$
@@ -86,7 +89,7 @@ $$
 $$)
 ```
 
-**结果：**
+**结果:**
 ```response
 ┌─a─────┬───b─┐
 │ Hello │ 111 │
@@ -96,6 +99,6 @@ $$)
 └───────┴─────┘
 ```
 
-**另见**
+## 相关 {#related}
 
-- [Formats](../../interfaces/formats.md)
+- [格式](../../interfaces/formats.md)

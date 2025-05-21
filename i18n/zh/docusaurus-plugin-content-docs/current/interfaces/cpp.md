@@ -1,13 +1,18 @@
 ---
-slug: /interfaces/cpp
-sidebar_position: 24
-sidebar_label: C++ 客户端库
+'description': 'Documentation for the ClickHouse C++ client library and integration
+  with u-server framework'
+'sidebar_label': 'C++ Client Library'
+'sidebar_position': 24
+'slug': '/interfaces/cpp'
+'title': 'C++ Client Library'
 ---
+
+
 
 
 # C++ 客户端库
 
-请查看 [clickhouse-cpp](https://github.com/ClickHouse/clickhouse-cpp) 仓库中的 README。
+请参阅 [clickhouse-cpp](https://github.com/ClickHouse/clickhouse-cpp) 库的 README。
 
 
 # userver 异步框架

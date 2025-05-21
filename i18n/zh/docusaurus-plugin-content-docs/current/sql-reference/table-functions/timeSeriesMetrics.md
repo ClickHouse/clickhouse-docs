@@ -1,29 +1,32 @@
 ---
-slug: /sql-reference/table-functions/timeSeriesMetrics
-sidebar_position: 145
-sidebar_label: timeSeriesMetrics
-title: 'timeSeriesMetrics'
-description: 'timeSeriesMetrics 返回由表 `db_name.time_series_table` 使用的指标表，该表的引擎是 TimeSeries 引擎。'
+'description': 'timeSeriesMetrics 返回由表 `db_name.time_series_table` 使用的指标表，该表的引擎为 TimeSeries
+  引擎。'
+'sidebar_label': '时间序列指标'
+'sidebar_position': 145
+'slug': '/sql-reference/table-functions/timeSeriesMetrics'
+'title': 'timeSeriesMetrics'
 ---
+
+
 
 
 # timeSeriesMetrics 表函数
 
-`timeSeriesMetrics(db_name.time_series_table)` - 返回由表 `db_name.time_series_table` 使用的 [指标](../../engines/table-engines/integrations/time-series.md#metrics-table) 表，该表的引擎是 [TimeSeries](../../engines/table-engines/integrations/time-series.md) 引擎：
+`timeSeriesMetrics(db_name.time_series_table)` - 返回表 `db_name.time_series_table` 使用的 [metrics](../../engines/table-engines/integrations/time-series.md#metrics-table) 表，该表的引擎为 [TimeSeries](../../engines/table-engines/integrations/time-series.md) 引擎：
 
-``` sql
+```sql
 CREATE TABLE db_name.time_series_table ENGINE=TimeSeries METRICS metrics_table
 ```
 
-该函数即使在 _metrics_ 表是内部表的情况下也能工作：
+如果 _metrics_ 表为内部表，该函数也可以正常工作：
 
-``` sql
+```sql
 CREATE TABLE db_name.time_series_table ENGINE=TimeSeries METRICS INNER UUID '01234567-89ab-cdef-0123-456789abcdef'
 ```
 
 以下查询是等效的：
 
-``` sql
+```sql
 SELECT * FROM timeSeriesMetrics(db_name.time_series_table);
 SELECT * FROM timeSeriesMetrics('db_name.time_series_table');
 SELECT * FROM timeSeriesMetrics('db_name', 'time_series_table');

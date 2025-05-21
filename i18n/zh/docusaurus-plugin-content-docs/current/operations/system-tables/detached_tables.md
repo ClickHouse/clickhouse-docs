@@ -1,11 +1,15 @@
 ---
-description: '包含关于每个分离表的信息的系统表。'
-slug: /operations/system-tables/detached_tables
-title: 'system.detached_tables'
-keywords: ['系统表', 'detached_tables']
+'description': 'System table containing information about each detached table.'
+'keywords':
+- 'system table'
+- 'detached_tables'
+'slug': '/operations/system-tables/detached_tables'
+'title': 'system.detached_tables'
 ---
 
-包含关于每个分离表的信息。
+
+
+包含每个已分离表的信息。
 
 列：
 
@@ -17,7 +21,8 @@ keywords: ['系统表', 'detached_tables']
 
 - `metadata_path` ([String](../../sql-reference/data-types/string.md)) - 文件系统中表元数据的路径。
 
-- `is_permanently` ([UInt8](../../sql-reference/data-types/int-uint.md)) - 表示表是永久分离的标志。
+- `is_permanently` ([UInt8](../../sql-reference/data-types/int-uint.md)) - 标志，指示表已被永久分离。
+
 
 **示例**
 

@@ -1,10 +1,12 @@
 ---
-title: PrettyCompactNoEscapesMonoBlock
-slug: /interfaces/formats/PrettyCompactNoEscapesMonoBlock
-keywords: ['PrettyCompactNoEscapesMonoBlock']
-input_format: false
-output_format: true
-alias: []
+'alias': []
+'description': '基于 PrettyCompactNoEscapesMonoBlock 格式的文档'
+'input_format': false
+'keywords':
+- 'PrettyCompactNoEscapesMonoBlock'
+'output_format': true
+'slug': '/interfaces/formats/PrettyCompactNoEscapesMonoBlock'
+'title': 'PrettyCompactNoEscapesMonoBlock'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
@@ -15,8 +17,8 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## 描述 {#description}
 
-与 [`PrettyCompactNoEscapes`](./PrettyCompactNoEscapes.md) 格式不同的是，最多将 `10,000` 行缓冲， 
-然后作为一个单独的表输出，而不是通过 [块](/development/architecture#block)。
+与 [`PrettyCompactNoEscapes`](./PrettyCompactNoEscapes.md) 格式不同的是，最多会缓冲 `10,000` 行，
+然后作为一个单一的表输出，而不是按 [块](/development/architecture#block) 输出。
 
 ## 示例用法 {#example-usage}
 

@@ -1,11 +1,15 @@
 ---
-description: '包含当前所有活动角色的系统表，包括当前用户的当前角色和授予当前角色的角色'
-slug: /operations/system-tables/enabled-roles
-title: 'system.enabled_roles'
-keywords: ['system table', 'enabled_roles']
+'description': '系统表，包含当前所有活跃角色，包括当前用户的当前角色以及当前角色的授权角色'
+'keywords':
+- 'system table'
+- 'enabled_roles'
+'slug': '/operations/system-tables/enabled-roles'
+'title': 'system.enabled_roles'
 ---
 
-包含当前所有活动角色，包括当前用户的当前角色和授予当前角色的角色。
+
+
+包含当前所有活动角色，包括当前用户的当前角色和为当前角色授予的角色。
 
 列：
 

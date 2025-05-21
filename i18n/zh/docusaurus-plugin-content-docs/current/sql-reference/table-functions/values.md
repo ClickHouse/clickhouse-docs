@@ -1,30 +1,34 @@
 ---
-slug: /sql-reference/table-functions/values
-sidebar_position: 210
-sidebar_label: values
-title: 'values'
-description: '创建一个临时存储，用于填充列的值。'
-keywords: ['values', 'table function']
+'description': '创建一个临时存储，用值填充列。'
+'keywords':
+- 'values'
+- 'table function'
+'sidebar_label': '值'
+'sidebar_position': 210
+'slug': '/sql-reference/table-functions/values'
+'title': 'values'
 ---
+
+
 
 
 # Values 表函数 {#values-table-function}
 
-`Values` 表函数允许您创建临时存储，用于填充列的值。它对于快速测试或生成示例数据非常有用。
+`Values` 表函数允许你创建临时存储，用于填充列的值。它对于快速测试或生成示例数据非常有用。
 
 :::note
-Values 是一个不区分大小写的函数，即 `VALUES` 和 `values` 都是有效的。
+Values 是一个不区分大小写的函数。即 `VALUES` 或 `values` 都有效。
 :::
 
 ## 语法 {#syntax}
 
-`VALUES` 表函数的基本语法为：
+`VALUES` 表函数的基本语法是：
 
 ```sql
 VALUES([structure,] values...)
 ```
 
-它通常被使用为：
+它通常用作：
 
 ```sql
 VALUES(
@@ -37,13 +41,13 @@ VALUES(
 
 ## 参数 {#arguments}
 
-- `column1_name Type1, ...` （可选）。[String](/sql-reference/data-types/string) 
-  指定列的名称和类型。如果省略此参数，列将命名为 `c1`，`c2` 等。
-- `(value1_row1, value2_row1)`。[Tuples](/sql-reference/data-types/tuple) 
-  包含任何类型的值。
+- `column1_name Type1, ...`（可选）。 [String](/sql-reference/data-types/string) 
+  指定列的名称和类型。如果省略此参数，列将命名为 `c1`、`c2` 等。
+- `(value1_row1, value2_row1)`。 [Tuples](/sql-reference/data-types/tuple) 
+  包含任意类型的值。
 
 :::note
-用逗号分隔的元组也可以被单个值替换。在这种情况下，每个值被视为新的一行。详情请参见 [示例](#examples) 部分。
+用逗号分隔的元组也可以用单个值替代。在这种情况下，每个值将被视为新的一行。有关详细信息，请参见 [示例](#examples) 部分。
 :::
 
 ## 返回值 {#returned-value}
@@ -52,7 +56,7 @@ VALUES(
 
 ## 示例 {#examples}
 
-```sql title="查询"
+```sql title="Query"
 SELECT *
 FROM VALUES(
     'person String, place String',
@@ -69,7 +73,7 @@ FROM VALUES(
 )
 ```
 
-```response title="响应"
+```response title="Response"
     ┌─person───┬─place─────┐
  1. │ Noah     │ Paris     │
  2. │ Emma     │ Tokyo     │
@@ -86,7 +90,8 @@ FROM VALUES(
 
 `VALUES` 也可以与单个值一起使用，而不是元组。例如：
 
-```sql title="查询"
+```sql title="Query"
+SELECT *
 FROM VALUES(
     'person String',
     'Noah',
@@ -102,7 +107,7 @@ FROM VALUES(
 )
 ```
 
-```response title="响应"
+```response title="Response"
     ┌─person───┐
  1. │ Noah     │
  2. │ Emma     │
@@ -117,13 +122,12 @@ FROM VALUES(
     └──────────┘
 ```
 
-或者在没有提供行规格的情况下 (`'column1_name Type1, column2_name Type2, ...'`
-在[语法](#syntax)中)，在这种情况下，列会被自动命名。
+或者在不提供行规范（在 [语法](#syntax) 中的 `'column1_name Type1, column2_name Type2, ...'`）的情况下，此时列名将自动生成。
 
 例如：
 
-```sql title="查询"
--- 元组作为值
+```sql title="Query"
+-- tuples as values
 SELECT *
 FROM VALUES(
     ('Noah', 'Paris'),
@@ -137,8 +141,26 @@ FROM VALUES(
     ('Mason', 'Venice'),
     ('Isabella', 'Prague')
 )
+```
 
--- 单个值
+```response title="Response"
+    ┌─c1───────┬─c2────────┐
+ 1. │ Noah     │ Paris     │
+ 2. │ Emma     │ Tokyo     │
+ 3. │ Liam     │ Sydney    │
+ 4. │ Olivia   │ Berlin    │
+ 5. │ Ilya     │ London    │
+ 6. │ Sophia   │ London    │
+ 7. │ Jackson  │ Madrid    │
+ 8. │ Alexey   │ Amsterdam │
+ 9. │ Mason    │ Venice    │
+10. │ Isabella │ Prague    │
+    └──────────┴───────────┘
+```
+
+```sql
+-- single values
+SELECT *
 FROM VALUES(
     'Noah',
     'Emma',
@@ -153,20 +175,7 @@ FROM VALUES(
 )
 ```
 
-```response title="响应"
-    ┌─c1───────┬─c2────────┐
- 1. │ Noah     │ Paris     │
- 2. │ Emma     │ Tokyo     │
- 3. │ Liam     │ Sydney    │
- 4. │ Olivia   │ Berlin    │
- 5. │ Ilya     │ London    │
- 6. │ Sophia   │ London    │
- 7. │ Jackson  │ Madrid    │
- 8. │ Alexey   │ Amsterdam │
- 9. │ Mason    │ Venice    │
-10. │ Isabella │ Prague    │
-    └──────────┴───────────┘
-    
+```response title="Response"
     ┌─c1───────┐
  1. │ Noah     │
  2. │ Emma     │
@@ -181,6 +190,6 @@ FROM VALUES(
     └──────────┘
 ```
 
-## 另请参见 {#see-also}
+## 另见 {#see-also}
 
 - [Values 格式](/interfaces/formats/Values)

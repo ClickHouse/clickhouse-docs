@@ -1,13 +1,17 @@
 ---
-slug: /sql-reference/window-functions/row_number
-sidebar_label: row_number
-sidebar_position: 2
+'description': '窗口函数row_number的文档'
+'sidebar_label': '行号'
+'sidebar_position': 2
+'slug': '/sql-reference/window-functions/row_number'
+'title': 'row_number'
 ---
+
+
 
 
 # row_number
 
-对当前行在其分区内进行编号，从 1 开始。
+对当前行在其分区内进行编号，从1开始。
 
 **语法**
 
@@ -19,7 +23,7 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-有关窗口函数语法的更多详细信息，请参见: [窗口函数 - 语法](./index.md/#syntax)。
+有关窗口函数语法的更多详细信息，请参见：[窗口函数 - 语法](./index.md/#syntax)。
 
 **返回值**
 
@@ -27,9 +31,9 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 **示例**
 
-以下示例基于视频教程中的示例 [点击屋中的排名窗口函数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)。
+以下示例基于视频教程中提供的示例，[在 ClickHouse 中的排名窗口函数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)。
 
-查询:
+查询：
 
 ```sql
 CREATE TABLE salaries
@@ -55,7 +59,7 @@ SELECT player, salary,
 FROM salaries;
 ```
 
-结果:
+结果：
 
 ```response
    ┌─player──────────┬─salary─┬─row_number─┐

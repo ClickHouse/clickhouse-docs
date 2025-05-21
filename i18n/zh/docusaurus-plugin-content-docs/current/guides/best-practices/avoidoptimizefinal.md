@@ -1,10 +1,10 @@
 ---
-slug: /optimize/avoidoptimizefinal
-sidebar_label: 避免 Optimize Final
-title: 避免 Optimize Final
-description: 使用 OPTIMIZE TABLE ... FINAL 查询将开始对数据部分进行非计划的合并。
+'slug': '/optimize/avoidoptimizefinal'
+'sidebar_label': '避免使用 OPTIMIZE FINAL'
+'title': '避免使用 OPTIMIZE FINAL'
+'description': '使用 OPTIMIZE TABLE ... FINAL 查询将启动数据部分的未调度合并。'
 ---
 
-import Content from '@site/i18n/zh/docusaurus-plugin-content-docs/current/cloud/bestpractices/avoidoptimizefinal.md';
+import Content from '@site/docs/best-practices/_snippets/_avoid_optimize_final.md';
 
-<Content />
+Your request seems to be missing the original text that you would like translated. Please provide the specific ClickHouse documentation text that you want to be translated into Chinese, and I'll be happy to assist you!

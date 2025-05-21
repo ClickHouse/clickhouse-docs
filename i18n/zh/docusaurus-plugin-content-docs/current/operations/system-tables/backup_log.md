@@ -1,11 +1,16 @@
 ---
-description: '包含有关 `BACKUP` 和 `RESTORE` 操作的信息的系统表日志条目。'
-slug: /operations/system-tables/backup_log
-title: 'system.backup_log'
-keywords: ['system table', 'backup_log']
+'description': '系统表，包含有关 `BACKUP` 和 `RESTORE` 操作的日志条目信息。'
+'keywords':
+- 'system table'
+- 'backup_log'
+'slug': '/operations/system-tables/backup_log'
+'title': '系统.备份日志'
 ---
 
-import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+
+
+# system.backup_log
 
 <SystemTableCloud/>
 
@@ -18,7 +23,7 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 - `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 条目的日期和时间。
 - `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 带有微秒精度的条目时间。
 - `id` ([String](../../sql-reference/data-types/string.md)) — 备份或恢复操作的标识符。
-- `name` ([String](../../sql-reference/data-types/string.md)) — 备份存储的名称（`FROM` 或 `TO` 子句的内容）。
+- `name` ([String](../../sql-reference/data-types/string.md)) — 备份存储的名称（来自 `FROM` 或 `TO` 子句的内容）。
 - `status` ([Enum8](../../sql-reference/data-types/enum.md)) — 操作状态。可能的值：
     - `'CREATING_BACKUP'`
     - `'BACKUP_CREATED'`
@@ -26,16 +31,16 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
     - `'RESTORING'`
     - `'RESTORED'`
     - `'RESTORE_FAILED'`
-- `error` ([String](../../sql-reference/data-types/string.md)) — 失败操作的错误信息（成功操作为空字符串）。
+- `error` ([String](../../sql-reference/data-types/string.md)) — 失败操作的错误消息（成功操作为一个空字符串）。
 - `start_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 操作的开始时间。
 - `end_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 操作的结束时间。
-- `num_files` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 存储在备份中的文件数量。
-- `total_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 存储在备份中的文件的总大小。
-- `num_entries` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 备份中的条目数量，即如果备份存储为文件夹，则文件夹内的文件数量；如果备份存储为归档，则归档内的文件数量。如果是增量备份，或者包含空文件或重复文件，则与 `num_files` 不同。以下总是成立：`num_entries <= num_files`。
+- `num_files` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 备份中存储的文件数量。
+- `total_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 备份中存储的文件的总大小。
+- `num_entries` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 备份中的条目数量，即如果备份存储为文件夹，则文件夹内的文件数量；如果备份存储为归档，则归档内的文件数量。在增量备份或包含空文件或重复文件的情况下，其与 `num_files` 不同。以下总是成立：`num_entries <= num_files`。
 - `uncompressed_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 备份的未压缩大小。
-- `compressed_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 备份的压缩大小。如果备份未作为归档存储，则等于 `uncompressed_size`。
-- `files_read` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 在恢复操作期间读取的文件数量。
-- `bytes_read` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 在恢复操作期间读取的文件的总大小。
+- `compressed_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 备份的压缩大小。如果备份没有作为归档存储，则等于 `uncompressed_size`。
+- `files_read` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 恢复操作期间读取的文件数量。
+- `bytes_read` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 恢复操作期间读取的文件的总大小。
 
 **示例**
 
@@ -141,7 +146,7 @@ files_read:              57
 bytes_read:              4290364870
 ```
 
-这实际上与系统表 `system.backups` 中写入的信息是相同的：
+这基本上与系统表 `system.backups` 中记录的信息相同：
 
 ```sql
 SELECT * FROM system.backups ORDER BY start_time
@@ -153,6 +158,6 @@ SELECT * FROM system.backups ORDER BY start_time
 └──────────────────────────────────────┴───────────────────────────────┴────────────────┴───────┴─────────────────────┴─────────────────────┴───────────┴────────────┴─────────────┴───────────────────┴─────────────────┴────────────┴────────────┘
 ```
 
-**另请参阅**
+**另请参见**
 
 - [备份和恢复](../../operations/backup.md)

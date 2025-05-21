@@ -1,22 +1,24 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/groupbitand
-sidebar_position: 147
-title: 'groupBitAnd'
-description: '应用位元的 `AND` 运算于一系列数字。'
+'description': '对一系列数字应用按位`AND`运算。'
+'sidebar_position': 147
+'slug': '/sql-reference/aggregate-functions/reference/groupbitand'
+'title': 'groupBitAnd'
 ---
+
+
 
 
 # groupBitAnd
 
-应用位元的 `AND` 运算于一系列数字。
+对一系列数字应用按位 `AND` 操作。
 
-``` sql
+```sql
 groupBitAnd(expr)
 ```
 
 **参数**
 
-`expr` – 结果为 `UInt*` 或 `Int*` 类型的表达式。
+`expr` – 一个返回 `UInt*` 或 `Int*` 类型的表达式。
 
 **返回值**
 
@@ -26,7 +28,7 @@ groupBitAnd(expr)
 
 测试数据：
 
-``` text
+```text
 binary     decimal
 00101100 = 44
 00011100 = 28
@@ -36,7 +38,7 @@ binary     decimal
 
 查询：
 
-``` sql
+```sql
 SELECT groupBitAnd(num) FROM t
 ```
 
@@ -44,7 +46,7 @@ SELECT groupBitAnd(num) FROM t
 
 结果：
 
-``` text
+```text
 binary     decimal
 00000100 = 4
 ```

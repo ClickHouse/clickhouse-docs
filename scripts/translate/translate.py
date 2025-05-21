@@ -88,7 +88,9 @@ def translate_text(config, text, model="gpt-4o-mini", translation_override_promp
         Translate the following ClickHouse documentation text from English to {language}. Ensure the following rules are followed:
             - This content may be part of a document, so maintain the original HTML tags and markdown formatting used in Docusaurus, including any headings, lists, links, and inline formatting like bold or italic text.
         IMPORTANT: 
-            - Ensure that no content, links, explicit heading ids (denoted by {{#my-explicit-id}}), or references are omitted or altered during translation, preserving the semantic meaning of the text. 
+            - Ensure that no content, links, explicit heading ids (denoted by {{#my-explicit-id}}), or references are omitted or altered during translation, preserving the semantic meaning of the text.
+            - Never translate components, for example <DeprecatedBadge/>, <CloudBadge/>, <VersionHistory/> etc.
+            - Never translate any comments, for example <!-- example comment -->
             - Never translate URLs of markdown links like "[some text](../../sql-reference/statements/create/dictionary.md)". You may translate the text inside the square brackets if appropriate. Urls in text should be surrounded by white space and never have adjacent {language} characters.
             - Ensure the markdown is MDX 3 compatible - escaping < and > with &lt; and &gt; and avoiding the creation of unclosed xml tags.
             - Never translate terms which indicate setting names. These are denoted by lower case and underscore e.g. live_view_heartbeat_interval or max_os_cpu_wait_time_ratio_to_throw.
@@ -326,13 +328,14 @@ def translate_file(config, input_file_path, output_file_path, model):
         # Translate the metadata
         translate_frontmatter(metadata, config["glossary"])
 
-        # Next extract all import statements from the text
-        imports = extract_import_statements(original_text)
-        cleaned_text = remove_import_statements(original_text)
-
         # Extract codeblocks and replace them with numbered placeholders
         # that we will replace after translations are done.
-        cleaned_text, code_blocks = replace_code_blocks_with_custom_placeholders(cleaned_text)
+        # We do this first so that the next step doesn't remove import statements inside codeblocks
+        cleaned_text, code_blocks = replace_code_blocks_with_custom_placeholders(original_text)
+
+        # Next extract all import statements from the text
+        imports = extract_import_statements(cleaned_text)
+        cleaned_text = remove_import_statements(original_text)
 
         # Split text into chunks and translate
         num_chunk = math.ceil(len(cleaned_text) / MAX_CHUNK_SIZE)

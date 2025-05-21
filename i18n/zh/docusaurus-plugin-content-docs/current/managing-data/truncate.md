@@ -1,12 +1,13 @@
 ---
-slug: /managing-data/truncate
-sidebar_label: 清空表
-title: 清空表
-hide_title: false
+'slug': '/managing-data/truncate'
+'sidebar_label': '截断表'
+'title': 'Truncate Table'
+'hide_title': false
+'description': '截断允许删除表或数据库中的数据，同时保留其存在。'
 ---
 
-清空操作允许从表或数据库中移除数据，同时保持它们的存在。这是一个轻量级操作，无法逆转。
+import Truncate from '@site/docs/sql-reference/statements/truncate.md';
 
-import Truncate from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/statements/truncate.md';
+Truncate 允许从表或数据库中移除数据，同时保留其存在。这是一项轻量级的操作，无法逆转。
 
-<Truncate/>
+&lt;Truncate/&gt;

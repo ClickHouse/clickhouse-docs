@@ -1,11 +1,20 @@
 ---
-title: '语言集成索引'
-slug: /chdb/install
-description: 'chDB语言集成的索引页面'
-keywords: ['python', 'NodeJS', 'Go', 'Rust', 'Bun', 'C', 'C++']
+'title': 'Language Integrations Index'
+'slug': '/chdb/install'
+'description': 'Index page for chDB language integrations'
+'keywords':
+- 'python'
+- 'NodeJS'
+- 'Go'
+- 'Rust'
+- 'Bun'
+- 'C'
+- 'C++'
 ---
 
-以下是有关如何设置chDB的说明，适用于以下语言和运行时：
+
+
+以下是如何设置 chDB 的说明，适用于以下语言和运行时：
 
 | 语言                                   |
 |----------------------------------------|
@@ -14,4 +23,4 @@ keywords: ['python', 'NodeJS', 'Go', 'Rust', 'Bun', 'C', 'C++']
 | [Go](/chdb/install/go)         |
 | [Rust](/chdb/install/rust)     |
 | [Bun](/chdb/install/bun)       |
-| [C和C++](/chdb/install/c)       |
+| [C 和 C++](/chdb/install/c)    |
