@@ -171,28 +171,28 @@ Have you noticed a typo or found some wonky formatting? For small contributions 
 
 1. Each page in Clickhouse.com/docs has an **Edit this page** link at the top:
 
-    ![The ClickHouse Docs website with the edit button highlighted.](./images/readme-edit-this-page.png)
+    ![The ClickHouse Docs website with the edit button highlighted.](./static/images/contribute/readme-edit-this-page.png)
 
     Click this button to edit this page in GitHub.
 
 1. Once you're in GitHub, click the pencil icon to edit this page:
 
-    ![README Pencil Icon](./images/readme-pencil-icon.png)
+    ![README Pencil Icon](./static/images/contribute/readme-pencil-icon.png)
 
 1. GitHub will _fork_ the repository for you. This creates a copy of the `clickhouse-docs` repository on your personal GitHub account.
 1. Make your changes in the textbox. Once you're done, click **Commit changes**:
 
-    ![README Commit Changes](./images/readme-commit-changes.png)
+    ![README Commit Changes](./static/images/contribute/readme-commit-changes.png)
 
 1. In the **Propose changes** popup, enter a descriptive title to explain the changes you just made. Keep this title to 10 words or less. If your changes are fairly complex and need further explanation, enter your comments into the **Extended description** field.
 1. Make sure **Create a new branch** is selected, and click **Propose changes**:
 
-    ![README Propose Changes](./images/readme-propose-changes.png)
+    ![README Propose Changes](./static/images/contribute/readme-propose-changes.png)
 
 1. A new page should open with a new pull request. Double-check that the title and description are accurate.
 1. If you've spoken to someone on the docs team about your changes, tag them into the **Reviewers** section:
 
-    ![README Create Pull Request](./images/readme-create-pull-request.png)
+    ![README Create Pull Request](./static/images/contribute/readme-create-pull-request.png)
 
     If you haven't mentioned your changes to anyone yet, leave the **Reviewers** section blank.
 
