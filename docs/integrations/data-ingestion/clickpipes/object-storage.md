@@ -124,10 +124,11 @@ Object Storage ClickPipes are scaled based on the minimum ClickHouse service siz
 To increase the throughput on large ingest jobs, we recommend scaling the ClickHouse service before creating the ClickPipe.
 
 ## Limitations {#limitations}
-- Any changes to the destination table, its materialized views (including cascading materialized views), or the materialized view's target tables won't be picked up automatically by the pipe and can result in errors. You must stop the pipe, make the necessary modifications, and then restart the pipe for the changes to be picked up and avoid errors and duplicate data due to retries.
+- Any changes to the destination table, its materialized views (including cascading materialized views), or the materialized view's target tables can result in temporary errors that will be retried. For best results we recommend to stop the pipe, make the necessary modifications, and then restart the pipe for the changes to be picked up and avoid errors.
 - There are limitations on the types of views that are supported. Please read the section on [exactly-once semantics](#exactly-once-semantics) and [view support](#view-support) for more information.
 - Role authentication is not available for S3 ClickPipes for ClickHouse Cloud instances deployed into GCP or Azure. It is only supported for AWS ClickHouse Cloud instances.
 - ClickPipes will only attempt to ingest objects at 10GB or smaller in size. If a file is greater than 10GB an error will be appended to the ClickPipes dedicated error table.
+- Azure Blob Storage pipes with continuous ingest on containers with over 100k files will have a latency of around 10–15 seconds in detecting new files. Latency increases with file count.
 - S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](/sql-reference/table-functions/s3), nor Azure with the [AzureBlobStorage Table function](/sql-reference/table-functions/azureBlobStorage).
   - `?` — Substitutes any single character
   - `*` — Substitutes any number of any characters except / including empty string
