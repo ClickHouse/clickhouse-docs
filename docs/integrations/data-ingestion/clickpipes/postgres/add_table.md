@@ -3,14 +3,18 @@ title: 'Adding specific tables to a ClickPipe'
 description: 'Describes the steps need to add specific tables to a ClickPipe.'
 sidebar_label: 'Add Table'
 slug: /integrations/clickpipes/postgres/add_table
+show_title: false
 ---
 
 import Image from '@theme/IdealImage';
 import add_table from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/add_table.png'
 
+# Adding specific tables to a ClickPipe
+
 There are scenarios where it would be useful to add specific tables to a pipe. This becomes a common necessity as your transactional or analytical workload scales.
 
-## Steps to add specific tables {#add-tables-steps}
+## Steps to add specific tables to a ClickPipe {#add-tables-steps}
+
 This can be done by the following steps:
 1. [Pause](./pause_and_resume.md) the pipe.
 2. Click on Edit Table settings.
