@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Going to production with ClickStack'
 ---
+
 import Image from '@theme/IdealImage';
 import connect_cloud from '@site/static/images/use-cases/observability/connect-cloud.png';
 import hyperdx_cloud from '@site/static/images/use-cases/observability/hyperdx-cloud.png';

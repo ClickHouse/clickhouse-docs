@@ -18,7 +18,7 @@ By default, the Helm chart provisions all core components, including:
 * **OpenTelemetry Collector**
 * **MongoDB** (for persistent application state)
 
-However, it can be easily customized to integrate with an existing ClickHouse deployment—for example, one hosted in **ClickHouse Cloud**.
+However, it can be easily customized to integrate with an existing ClickHouse deployment - for example, one hosted in **ClickHouse Cloud**.
 
 The chart supports standard Kubernetes best practices, including:
 
@@ -92,6 +92,8 @@ To connect to the deployed ClickHouse instance, use the Host `http://my-hyperdx-
 
 <Image img={hyperdx_24} alt="HyperDX Create connection" size="md"/>
 
+
+Alternatively use your credentials for an externally hosted cluster e.g. ClickHouse Cloud.
 
 ### Customizing values (Optional) {#customizing-values}
 
@@ -189,7 +191,7 @@ hyperdx:
 
 ## Production notes {#production-notes}
 
-By default, this chart also installs clickhouse and the otel-collector. However, for production, it is recommended that you use the clickhouse and otel-collector operators instead.
+By default, this chart also installs clickhouse and the otel-collector. However, for production, it is recommended that you manage the clickhouse and otel-collector separately.
 
 To disable clickhouse and otel-collector, set the following values:
 
