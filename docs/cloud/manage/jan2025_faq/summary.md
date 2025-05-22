@@ -39,7 +39,7 @@ Below we provide an overview of the new tiers, describe how they relate to use c
 
 **Basic: A taste of ClickHouse**
 
-* Basic tier is designed to offer a budget-friendly option for organizations with smaller data volumes and less demanding workloads. It allows you to run single-replica deployments with up to 12GB of memory and \< 1TB of storage and is ideal for small-scale use cases that do not require reliability guarantees.
+* Basic tier is designed to offer a budget-friendly option for organizations with smaller data volumes and less demanding workloads. It allows you to run single-replica deployments with up to 12GB of memory and less than 1TB of storage and is ideal for small-scale use cases that do not require reliability guarantees.
 
 **Scale: Enhanced SLAs and scalability**
 
