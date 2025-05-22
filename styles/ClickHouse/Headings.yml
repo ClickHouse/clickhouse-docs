@@ -34,3 +34,5 @@ exceptions:
   - AggregatingMergeTree
   - DigitalOcean Spaces
   - Azure Blob Storage
+  - VPC
+  - BYOC
