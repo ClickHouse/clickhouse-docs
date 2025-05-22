@@ -371,9 +371,11 @@ For details on configuring the wider OTel collector, including [`receivers`](htt
 
 If you are managing your own OpenTelemetry Collector - such as when using the HyperDX only distribution - you are responsible for defining its configuration. We [recommend still using the official ClickStack distribution of the collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) where possible, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 
-If you’re using a ClickStack distribution that includes the OpenTelemetry Collector - such as the [All-in-One](/use-cases/observability/clickstack/deployment/all-in-one), [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose), or [Helm](/use-cases/observability/clickstack/deployment/helm) chart - you can override the default configuration in the following ways:
+If you're using a ClickStack distribution that includes the OpenTelemetry Collector - such as the [All-in-One](/use-cases/observability/clickstack/deployment/all-in-one), [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose), or [Helm](/use-cases/observability/clickstack/deployment/helm) chart - you can override the default configuration in the following ways:
 
 #### All-in-One {#all-in-one}
+
+
 
 In the [All-in-One](/use-cases/observability/clickstack/deployment/all-in-one) distribution, the OpenTelemetry Collector config is located at `/etc/otelcol-contrib/config.yaml` inside the container. To override it:
 
@@ -390,9 +392,32 @@ docker run \
 
 ##### Docker Compose {#docker-compose-otel}
 
-With Docker Compose, there are two ways to override the collector configuration:
+With Docker Compose, there are several to modify the collector configuration:
 
-**Option 1 – Replace the default config**
+**Option 1 – Modify the environment variables**
+
+Environment variables `CLICKHOUSE_SERVER_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD` allow the target ClickHouse cluster to be modified e.g.
+
+```yaml
+  otel-collector:
+    image: hyperdx/hyperdx-otel-collector:2-nightly
+    environment:
+      CLICKHOUSE_ENDPOINT: 'https://mxl4k3ul6a.us-east-2.aws.clickhouse-staging.com:8443'
+      HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+      CLICKHOUSE_USER: 'default'
+      CLICKHOUSE_PASSWORD: 'password'
+    ports:
+      - '13133:13133' # health_check extension
+      - '24225:24225' # fluentd receiver
+      - '4317:4317' # OTLP gRPC receiver
+      - '4318:4318' # OTLP http receiver
+      - '8888:8888' # metrics extension
+    restart: always
+    networks:
+      - internal
+```
+
+**Option 2 – Replace the default config**
 
 Mount a custom file to replace the default config at `/etc/otelcol-contrib/config.yaml`.
 
@@ -412,7 +437,7 @@ Mount a custom file to replace the default config at `/etc/otelcol-contrib/confi
       - ./config.yaml:/etc/otelcol-contrib/config.yaml
 ```
 
-**Option 2 – Merge in additional settings**
+**Option 3 – Merge in additional settings**
 
 Provide an additional file like `config-extras.yaml` that is merged into the base config. This file is listed second in the command array.
 

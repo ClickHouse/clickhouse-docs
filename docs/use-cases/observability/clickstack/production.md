@@ -37,7 +37,7 @@ Refer to the [Docker networking documentation](https://docs.docker.com/network/)
 
 In production, you must set a strong, random value for the `EXPRESS_SESSION_SECRET` environment variable to protect session data and prevent tampering.
 
-Here’s how to add it to your `docker-compose.yml` file for the app service:
+Here's how to add it to your `docker-compose.yml` file for the app service:
 
 ```yaml
   app:

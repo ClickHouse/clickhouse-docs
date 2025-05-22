@@ -9,7 +9,7 @@ description: 'Deploying HyperDX only'
 import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
-
+import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
 
 This option is designed for users who already have a running ClickHouse instance populated with observability or event data.
 
@@ -18,7 +18,6 @@ HyperDX can be used independently of the rest of the stack and is compatible wit
 To enable full functionality, you must provide a MongoDB instance for storing application state, including dashboards, saved searches, user settings, and alerts.
 
 In this mode, data ingestion is left entirely to the user. You can ingest data into ClickHouse using your own hosted OpenTelemetry Collector, direct ingestion from client libraries, ClickHouse-native table engines (such as Kafka or S3), ETL pipelines, or managed ingestion services like ClickPipes. This approach offers maximum flexibility and is suitable for teams that already operate ClickHouse and want to layer HyperDX on top for visualization, search, and alerting.
-
 
 ### Suitable for {#suitable-for}
 
@@ -51,6 +50,8 @@ On clicking `Register` you'll be prompted for connection details.
 ### Complete connection details {#complete-connection-details}
 
 Connect to your own external ClickHouse cluster e.g. ClickHouse Cloud.
+
+<Image img={hyperdx_2} alt="HyperDX Login" size="md"/>
 
 If prompted to create a source, retain all default values and complete the `Table` field with the value `otel_logs`. All other settings should be auto-detected, allowing you to click `Save New Source`.
 

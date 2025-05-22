@@ -6,7 +6,13 @@ pagination_next: null
 description: 'Deploying ClickStack with Local Mode Only - The ClickHouse Observability Stack'
 ---
 
+import Image from '@theme/IdealImage';
+import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
+import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
+
 This mode includes the UI with all application state stored locally in the browser. 
+
+**User authentication is disabled for this distribution of HyperDX**
 
 It does not include a MongoDB instance, meaning dashboards, saved searches, and alerts are not persisted across users.
 
@@ -29,8 +35,18 @@ Local mode deploys the HyperDX UI only, accessible on port 8080.
 docker run -p 8080:8080 hyperdx/hyperdx-local:2-beta.16-ui
 ```
 
-### Navigate to the UI {#navigate-to-the-ui}
+### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
 
-Navigate to [http://localhost:8080](http://localhost:8080).
+Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
+
+**You will not be prompted to create a user as authentication is not enabled in this deployment mode.**
+
+Connect to your own external ClickHouse cluster e.g. ClickHouse Cloud.
+
+<Image img={hyperdx_2} alt="Create login" size="md"/>
+
+Create a source, retain all default values and complete the `Table` field with the value `otel_logs`. All other settings should be auto-detected, allowing you to click `Save New Source`.
+
+<Image img={hyperdx_logs} alt="Create logs source" size="md"/>
 
 </VerticalStepper>
