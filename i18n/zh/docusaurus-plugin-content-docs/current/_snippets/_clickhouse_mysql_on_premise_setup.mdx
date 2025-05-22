@@ -1,0 +1,88 @@
+请参考[官方文档](/interfaces/mysql)了解如何设置启用MySQL接口的ClickHouse服务器。
+
+除了在服务器的`config.xml`中添加条目
+
+```xml
+<clickhouse>
+    <mysql_port>9004</mysql_port>
+</clickhouse>
+```
+
+外，还_要求_为使用MySQL接口的用户使用[Double SHA1密码加密](/operations/settings/settings-users#user-namepassword)。
+
+从shell生成一个用Double SHA1加密的随机密码：
+
+```shell
+PASSWORD=$(base64 < /dev/urandom | head -c16); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
+```
+
+输出应该如下所示：
+
+```
+LZOQYnqQN4L/T6L0
+fbc958cc745a82188a51f30de69eebfc67c40ee4
+```
+
+第一行是生成的密码，第二行是我们可以用来配置ClickHouse的哈希。
+
+以下是使用生成的哈希的`mysql_user`示例配置：
+
+`/etc/clickhouse-server/users.d/mysql_user.xml`
+
+```xml
+<users>
+    <mysql_user>
+        <password_double_sha1_hex>fbc958cc745a82188a51f30de69eebfc67c40ee4</password_double_sha1_hex>
+        <networks>
+            <ip>::/0</ip>
+        </networks>
+        <profile>default</profile>
+        <quota>default</quota>
+    </mysql_user>
+</users>
+```
+
+用您自己生成的Double SHA1哈希替换`password_double_sha1_hex`条目。
+
+此外，建议使用`use_mysql_types_in_show_columns`来在`SHOW [FULL] COLUMNS`查询结果中显示原生MySQL类型，而不是ClickHouse类型，这样可以让BI工具在使用MySQL连接器时正确地查看数据库模式。
+
+例如：
+
+`/etc/clickhouse-server/users.d/mysql_user.xml`
+
+```xml
+<profiles>
+    <default>
+        <use_mysql_types_in_show_columns>1</use_mysql_types_in_show_columns>
+    </default>
+</profiles>
+```
+
+或者将其分配给不同的配置文件，而不是默认的配置文件。
+
+如果您有可用的`mysql`二进制文件，可以从命令行测试连接。
+使用上述示例用户名(`mysql_user`)和密码(`LZOQYnqQN4L/T6L0`)，命令行将是：
+
+```bash
+mysql --protocol tcp -h localhost -u mysql_user -P 9004 --password=LZOQYnqQN4L/T6L0
+```
+
+```
+mysql> show databases;
++--------------------+
+| name               |
++--------------------+
+| INFORMATION_SCHEMA |
+| default            |
+| information_schema |
+| system             |
++--------------------+
+4 rows in set (0.00 sec)
+Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
+```
+
+最后，配置Clickhouse服务器以侦听所需的IP地址。 例如，在`config.xml`中取消注释以下以在所有地址上侦听：
+
+```bash
+<listen_host>::</listen_host> 
+```

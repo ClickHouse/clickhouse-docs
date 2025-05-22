@@ -1,0 +1,338 @@
+---
+'slug': '/getting-started/quick-start'
+'sidebar_label': '快速入门'
+'sidebar_position': 1
+'keywords':
+- 'clickhouse'
+- 'install'
+- 'getting started'
+- 'quick start'
+'pagination_next': 'getting-started/index'
+'title': '快速入门'
+'description': 'ClickHouse 快速入门指南'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import {VerticalStepper} from '@clickhouse/click-ui/bundled';
+
+**欢迎使用 ClickHouse！**
+
+在这个快速入门教程中，我们将通过 8 个简单的步骤帮助您完成设置。您将下载适合您操作系统的二进制文件，学习如何运行 ClickHouse 服务器，使用 ClickHouse 客户端创建一个表，然后向其插入数据并运行查询以选择该数据。
+
+让我们开始吧？
+
+<VerticalStepper>
+
+## 下载 ClickHouse {#download-the-binary}
+
+ClickHouse 本地支持 Linux、FreeBSD 和 macOS，并且可以通过 [WSL](https://learn.microsoft.com/en-us/windows/wsl/about) 在 Windows 上运行。下载 ClickHouse 的最简单方法是运行以下 `curl` 命令。它会确定您的操作系统是否受支持，然后下载适合的 ClickHouse 二进制文件。
+
+:::note
+我们建议您在一个新的、空的子目录中运行下面的命令，因为一些配置文件将在 ClickHouse 服务器首次运行时创建在二进制文件所在的目录中。
+:::
+
+```bash
+curl https://clickhouse.com/ | sh
+```
+
+您应该看到：
+
+```
+Successfully downloaded the ClickHouse binary, you can run it as:
+    ./clickhouse
+
+You can also install it:
+sudo ./clickhouse install
+```
+
+此时，您可以忽略运行 `install` 命令的提示。
+
+:::note
+对于 Mac 用户：如果您收到关于无法验证二进制文件开发者的错误，请参见 ["修复 MacOS 中的开发者验证错误"](https://clickhouse.com/docs/knowledgebase/fix-developer-verification-error-in-macos)。
+:::
+
+
+## 启动服务器
+
+运行下面的命令来启动 ClickHouse 服务器：
+
+```bash
+./clickhouse server
+```
+
+您应该看到终端充满了日志。这是正常的。在 ClickHouse 中，[默认日志级别](https://clickhouse.com/docs/knowledgebase/why_default_logging_verbose) 设置为 `trace` 而不是 `warning`。
+
+## 启动客户端
+
+使用 `clickhouse-client` 连接到您的 ClickHouse 服务。打开一个新的终端，切换到存储 `clickhouse` 二进制文件的目录，然后运行以下命令：
+
+```bash
+./clickhouse client
+```
+
+您应该看到一个微笑的面孔，表明它已连接到您在 localhost 上运行的服务：
+
+```response
+my-host :)
+```
+
+## 创建一个表
+
+使用 `CREATE TABLE` 定义一个新表。典型的 SQL DDL 命令在 ClickHouse 中可以使用，只需增加 `ENGINE` 子句即可。使用 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree) 来利用 ClickHouse 的性能优势：
+
+```sql
+CREATE TABLE my_first_table
+(
+    user_id UInt32,
+    message String,
+    timestamp DateTime,
+    metric Float32
+)
+ENGINE = MergeTree
+PRIMARY KEY (user_id, timestamp)
+```
+
+## 插入数据
+
+您可以在 ClickHouse 中使用熟悉的 `INSERT INTO TABLE` 命令，但需要理解的是，每次向 `MergeTree` 表插入时，会在存储中创建我们称之为 **part** 的数据片段。这些部分稍后会被 ClickHouse 在后台合并。
+
+在 ClickHouse 中，我们尽量一次大批量插入大量行（成千上万甚至几百万行）以最小化需要在后台处理过程中合并的 [**parts**](/parts) 的数量。
+
+在本指南中，我们暂时不必担心这一点。运行以下命令向您的表插入几行数据：
+
+```sql
+INSERT INTO my_first_table (user_id, message, timestamp, metric) VALUES
+    (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
+    (102, 'Insert a lot of rows per batch',                     yesterday(), 1.41421 ),
+    (102, 'Sort your data based on your commonly-used queries', today(),     2.718   ),
+    (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
+```
+
+## 查询您的新表
+
+您可以像在任何 SQL 数据库中一样编写 `SELECT` 查询：
+
+```sql
+SELECT *
+FROM my_first_table
+ORDER BY timestamp
+```
+注意响应以漂亮的表格格式返回：
+
+```text
+┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
+│     102 │ Insert a lot of rows per batch                     │ 2022-03-21 00:00:00 │ 1.41421 │
+│     102 │ Sort your data based on your commonly-used queries │ 2022-03-22 00:00:00 │   2.718 │
+│     101 │ Hello, ClickHouse!                                 │ 2022-03-22 14:04:09 │      -1 │
+│     101 │ Granules are the smallest chunks of data read      │ 2022-03-22 14:04:14 │ 3.14159 │
+└─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
+
+4 rows in set. Elapsed: 0.008 sec.
+```
+
+## 插入您自己的数据
+
+下一步是将您的数据导入 ClickHouse。我们有很多 [表函数](/sql-reference/table-functions/index.md) 和 [集成](/integrations) 用于数据摄取。下面的选项卡中有一些示例，或者您可以查看我们的 [集成](/integrations) 页面，了解与 ClickHouse 集成的技术的详细列表。
+
+<Tabs groupId="read_data">
+    <TabItem value="S3" label="S3" default>
+
+        使用 [`s3` 表函数](/sql-reference/table-functions/s3.md) 从 S3 读取文件。这是一个表函数 - 意味着结果是一个可以作为：
+
+        1. `SELECT` 查询的源（允许您运行随机查询并将数据保留在 S3），或者...
+        2. 将结果表插入到 `MergeTree` 表中（当您准备将数据移动到 ClickHouse 时）
+
+        一个随机查询看起来像：
+
+```sql
+SELECT
+passenger_count,
+avg(toFloat32(total_amount))
+FROM s3(
+'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_0.gz',
+'TabSeparatedWithNames'
+)
+GROUP BY passenger_count
+ORDER BY passenger_count;
+```
+
+        将数据移动到 ClickHouse 表的过程如下，其中 `nyc_taxi` 是一个 `MergeTree` 表：
+
+```sql
+INSERT INTO nyc_taxi
+SELECT * FROM s3(
+'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_0.gz',
+'TabSeparatedWithNames'
+)
+SETTINGS input_format_allow_errors_num=25000;
+```
+
+        查看我们的 [AWS S3 文档页面集合](/integrations/data-ingestion/s3/index.md)，以获取有关如何与 ClickHouse 一起使用 S3 的更多详细信息和示例。
+        <br/>
+    </TabItem>
+    <TabItem value="GCS" label="GCS">
+
+        用于在 AWS S3 中读取数据的 [`s3` 表函数](/sql-reference/table-functions/s3.md) 也适用于 Google Cloud Storage 中的文件。
+
+        例如：
+
+```sql
+SELECT
+*
+FROM s3(
+'https://storage.googleapis.com/my-bucket/trips.parquet',
+'MY_GCS_HMAC_KEY',
+'MY_GCS_HMAC_SECRET_KEY',
+'Parquet'
+)
+LIMIT 1000
+```
+
+        在 [`s3` 表函数页面](/sql-reference/table-functions/s3.md) 上找到更多详细信息。
+        <br/>
+    </TabItem>
+    <TabItem value="URL" label="Web">
+
+        [`url` 表函数](/sql-reference/table-functions/url) 读取来自网络的文件：
+
+```sql
+--By default, ClickHouse prevents redirects to protect from SSRF attacks.
+--The URL below requires a redirect, so we must set max_http_get_redirects > 0.
+SET max_http_get_redirects=10;
+
+SELECT *
+FROM url(
+'http://prod2.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
+'CSV'
+);
+```
+
+        在 [`url` 表函数页面](/sql-reference/table-functions/url) 上找到更多详细信息。
+        <br/>
+    </TabItem>
+    <TabItem value="local_file" label="Local">
+
+        使用 [`file` 表引擎](/sql-reference/table-functions/file) 读取本地文件。为简便起见，请将文件复制到 `user_files` 目录（该目录位于您下载 ClickHouse 二进制文件的目录中）。
+
+```sql
+DESCRIBE TABLE file('comments.tsv')
+
+Query id: 8ca9b2f9-65a2-4982-954a-890de710a336
+
+┌─name──────┬─type────────────────────┐
+│ id        │ Nullable(Int64)         │
+│ type      │ Nullable(String)        │
+│ author    │ Nullable(String)        │
+│ timestamp │ Nullable(DateTime64(9)) │
+│ comment   │ Nullable(String)        │
+│ children  │ Array(Nullable(Int64))  │
+└───────────┴─────────────────────────┘
+```
+
+        注意 ClickHouse 通过分析一大批行来推断列的名称和数据类型。如果 ClickHouse 无法从文件名确定文件格式，您可以将其指定为第二个参数：
+
+```sql
+SELECT count()
+FROM file(
+'comments.tsv',
+'TabSeparatedWithNames'
+)
+```
+
+        查看 [`file` 表函数](/sql-reference/table-functions/file) 文档页面以获取更多详细信息。
+        <br/>
+    </TabItem>
+    <TabItem value="PostgreSQL" label="PostgreSQL">
+
+        使用 [`postgresql` 表函数](/sql-reference/table-functions/postgresql) 从 PostgreSQL 中的表读取数据：
+
+```sql
+SELECT *
+FROM
+postgresql(
+'localhost:5432',
+'my_database',
+'my_table',
+'postgresql_user',
+'password')
+;
+```
+
+        查看 [`postgresql` 表函数](/sql-reference/table-functions/postgresql) 文档页面以获取更多详细信息。
+        <br/>
+    </TabItem>
+    <TabItem value="MySQL" label="MySQL">
+
+        使用 [`mysql` 表函数](/sql-reference/table-functions/mysql) 从 MySQL 中的表读取数据：
+
+```sql
+SELECT *
+FROM
+mysql(
+'localhost:3306',
+'my_database',
+'my_table',
+'postgresql_user',
+'password')
+;
+```
+
+        查看 [`mysql` 表函数](/sql-reference/table-functions/mysql) 文档页面以获取更多详细信息。
+        <br/>
+    </TabItem>
+    <TabItem value="Other DBMS" label="ODBC/JDBC">
+
+        ClickHouse 可以从任何 ODBC 或 JDBC 数据源读取数据：
+
+```sql
+SELECT *
+FROM
+odbc(
+'DSN=mysqlconn',
+'my_database',
+'my_table'
+);
+```
+
+        查看 [`odbc` 表函数](/sql-reference/table-functions/odbc) 和 [`jdbc` 表函数](/sql-reference/table-functions/jdbc) 文档页面以获取更多详细信息。
+        <br/>
+    </TabItem>
+    <TabItem value="messagequeue" label="消息队列">
+
+        消息队列可以使用相应的表引擎将数据流式传输到 ClickHouse，包括：
+
+        - **Kafka**：使用 [`Kafka` 表引擎](/engines/table-engines/integrations/kafka) 与 Kafka 集成
+        - **Amazon MSK**：与 [Amazon Managed Streaming for Apache Kafka (MSK)](/integrations/kafka/cloud/amazon-msk/) 集成
+        - **RabbitMQ**：使用 [`RabbitMQ` 表引擎](/engines/table-engines/integrations/rabbitmq) 与 RabbitMQ 集成
+        <br/>
+    </TabItem>
+    <TabItem value="datalake" label="数据湖">
+
+        ClickHouse 提供表函数以从以下来源读取数据：
+
+        - **Hadoop**：使用 [`hdfs` 表函数](/sql-reference/table-functions/hdfs) 与 Apache Hadoop 集成
+        - **Hudi**：使用 [`hudi` 表函数](/sql-reference/table-functions/hudi) 从 S3 中现有的 Apache Hudi 表读取
+        - **Iceberg**：使用 [`iceberg` 表函数](/sql-reference/table-functions/iceberg) 从 S3 中现有的 Apache Iceberg 表读取
+        - **DeltaLake**：使用 [`deltaLake` 表函数](/sql-reference/table-functions/deltalake) 从 S3 中现有的 Delta Lake 表读取
+        <br/>
+    </TabItem>
+    <TabItem value="Other" label="其他">
+
+        查看我们的 [ClickHouse 集成长列表](/integrations)，了解如何将现有框架和数据源连接到 ClickHouse。
+        <br/>
+    </TabItem>
+</Tabs>
+
+## 探索
+
+- 查看我们的 [核心概念](/managing-data/core-concepts) 部分，了解 ClickHouse 在内部如何工作的基础知识。
+- 查看 [高级教程](tutorial.md)，深入了解 ClickHouse 的关键概念和功能。
+- 通过在 [ClickHouse Academy](https://learn.clickhouse.com/visitor_class_catalog) 参加我们的免费在线培训课程来继续学习。
+- 我们有一个 [示例数据集](/getting-started/example-datasets/) 列表以及插入它们的说明。
+- 如果您的数据来自外部来源，请查看我们的 [集成指南集合](/integrations/)，了解如何连接到消息队列、数据库、数据管道等。
+- 如果您使用 UI/BI 可视化工具，请查看 [将 UI 连接到 ClickHouse 的用户指南](/integrations/data-visualization/)。
+- 有关主键的信息，请查看 [主键](/guides/best-practices/sparse-primary-indexes.md) 的用户指南，里面包含有关主键及其定义的所有信息。
+
+</VerticalStepper>
