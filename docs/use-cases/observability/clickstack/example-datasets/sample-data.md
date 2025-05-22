@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Getting started with ClickStack and a sample dataset with logs, sessions, traces and metrics'
 ---
+
 import Image from '@theme/IdealImage';
 import hyperdx from '@site/static/images/use-cases/observability/hyperdx.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';

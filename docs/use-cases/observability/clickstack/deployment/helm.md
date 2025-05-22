@@ -189,6 +189,9 @@ hyperdx:
 
 </VerticalStepper>
 
+## Using ClickHouse Cloud {#using-clickhouse-cloud}
+
+
 ## Production notes {#production-notes}
 
 By default, this chart also installs clickhouse and the otel-collector. However, for production, it is recommended that you manage the clickhouse and otel-collector separately.
