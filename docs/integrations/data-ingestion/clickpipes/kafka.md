@@ -123,7 +123,7 @@ The supported formats are:
 
 ### Supported Data Types {#supported-data-types}
 
-#### Standard Types Support {#standard-types-support}
+#### Standard types support {#standard-types-support}
 The following standard ClickHouse data types are currently supported in ClickPipes:
 
 - Base numeric types - \[U\]Int8/16/32/64 and Float32/64
@@ -142,7 +142,7 @@ The following standard ClickHouse data types are currently supported in ClickPip
 - Map with keys and values using any of the above types (including Nullables)
 - Tuple and Array with elements using any of the above types (including Nullables, one level depth only)
 
-#### Variant Type Support (Experimental) {#variant-type-support}
+#### Variant type support (experimental) {#variant-type-support}
 Variant type support is automatic if your Cloud service is running ClickHouse 25.3 or later.  Otherwise, you will
 have to submit a support ticket to enable it on your service.
 
@@ -153,7 +153,7 @@ appropriate variant type.  Variant types are not otherwise supported for Avro da
 in the source data stream.  Because of the way ClickPipes determines the correct variant subtype to use, only one integer or datetime
 type can be used in the Variant definition - for example, `Variant(Int64, UInt32)` is not supported.
 
-#### JSON Type Support (Experimental) {#json-type-support}
+#### JSON type support (experimental) {#json-type-support}
 JSON type support is automatic if your Cloud service is running ClickHouse 25.3 or later.  Otherwise, you will
 have to submit a support ticket to enable it on your service.
 
