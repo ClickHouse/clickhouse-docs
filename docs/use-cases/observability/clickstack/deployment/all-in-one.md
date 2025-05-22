@@ -78,18 +78,18 @@ docker run -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4999:4318 hyperdx/hyperdx-a
 
 ## Using ClickHouse Cloud {#using-clickhouse-cloud}
 
-This distribution can be used with ClickHouse Cloud. While the local ClickHouse instance will still be deployed (and ignored), the OTel collector can be configured to use a ClickHouse Cloud instance by setting the environment variables `CLICKHOUSE_SERVER_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD`. 
+This distribution can be used with ClickHouse Cloud. While the local ClickHouse instance will still be deployed (and ignored), the OTel collector can be configured to use a ClickHouse Cloud instance by setting the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD`. 
 
 For example:
 
 ```bash
-export CLICKHOUSE_SERVER_ENDPOINT=<HTTPS ENDPOINT>
+export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 
-docker run -e CLICKHOUSE_SERVER_ENDPOINT=${CLICKHOUSE_SERVER_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-all-in-one:2-nightly
+docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-all-in-one:2-nightly
 ```
 
-The `CLICKHOUSE_SERVER_ENDPOINT` should be the ClickHouse Cloud HTTPS endpoint, including the port `8443` e.g. `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
+The `CLICKHOUSE_ENDPOINT` should be the ClickHouse Cloud HTTPS endpoint, including the port `8443` e.g. `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 
 On connecting to the HyperDX UI and creating a connection to ClickHouse, use your Cloud credentials.

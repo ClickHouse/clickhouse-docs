@@ -375,7 +375,17 @@ If you're using a ClickStack distribution that includes the OpenTelemetry Collec
 
 #### All-in-One {#all-in-one}
 
+Users can override the target ClickHouse cluster for the OTel collector using the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD`. For example:
 
+```bash
+export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
+export CLICKHOUSE_USER=<CLICKHOUSE_USER>
+export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
+
+docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-all-in-one:2-nightly
+```
+
+This can be used to configure the all-in-one image for use with [ClickHouse Cloud](/use-cases/observability/clickstack/deployment/all-in-one#using-clickhouse-cloud) or other self-managed clusters.
 
 In the [All-in-One](/use-cases/observability/clickstack/deployment/all-in-one) distribution, the OpenTelemetry Collector config is located at `/etc/otelcol-contrib/config.yaml` inside the container. To override it:
 
@@ -396,7 +406,7 @@ With Docker Compose, there are several to modify the collector configuration:
 
 **Option 1 – Modify the environment variables**
 
-Environment variables `CLICKHOUSE_SERVER_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD` allow the target ClickHouse cluster to be modified e.g.
+Environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD` allow the target ClickHouse cluster to be modified e.g.
 
 ```yaml
   otel-collector:
@@ -425,7 +435,7 @@ Mount a custom file to replace the default config at `/etc/otelcol-contrib/confi
   otel-collector:
     image: ${OTEL_COLLECTOR_IMAGE_NAME}:${IMAGE_VERSION}
     environment:
-      CLICKHOUSE_SERVER_ENDPOINT: 'ch-server:9000'
+      CLICKHOUSE_ENDPOINT: 'ch-server:9000'
       HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
     ports:
       - '13133:13133'
@@ -449,7 +459,7 @@ Provide an additional file like `config-extras.yaml` that is merged into the bas
       "--config=/etc/otelcol-contrib/config-extras.yaml"
     ]
     environment:
-      CLICKHOUSE_SERVER_ENDPOINT: 'ch-server:9000'
+      CLICKHOUSE_ENDPOINT: 'ch-server:9000'
       HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
     ports:
       - '13133:13133'

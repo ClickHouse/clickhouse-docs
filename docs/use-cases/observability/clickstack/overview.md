@@ -8,9 +8,11 @@ description: 'Overview for ClickStack - The ClickHouse Observability Stack'
 
 import Image from '@theme/IdealImage';
 import architecture from '@site/static/images/use-cases/observability/clickstack-simple-architecture.png';
-
+import landing_image from '@site/static/images/use-cases/observability/hyperdx-landing.png';
 
 ## ClickStack - The ClickHouse Observability Stack {#clickstack-clickhouse-observability}
+
+<Image img={landing_image} alt="Landing page" size="lg"/>
 
 **ClickStack** is a production-grade observability platform built on ClickHouse, unifying logs, traces, metrics and session in a single high-performance solution. Designed for monitoring and debugging complex systems, ClickStack enables developers and SREs to trace issues end-to-end without switching between tools or manually stitching together data using timestamps or correlation IDs.
 

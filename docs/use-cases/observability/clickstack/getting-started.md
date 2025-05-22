@@ -71,6 +71,7 @@ If you've connected to the local cluster:
 - [Example dataset](/use-cases/observability/clickstack/getting-started/sample-data) - Load an example dataset from our public demo. Diagnose a simple issue.
 - [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - Load local files and monitor system on OSX or Linux using a local OTel collector.
 
+<br/>
 Alternatively, if you've connected to the demo cluster, you can explore the dataset with the following guide: 
 
 - [Remote demo dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data) - Explore a demo dataset in our demo ClickHouse service.
@@ -95,7 +96,7 @@ Copy the the HTTP connection details specifically the HTTPS endpoint (endpoint) 
 
 <Image img={connect_cloud} alt="Connect Cloud" size="md"/>
 
-::: Production note
+:::note Deploying to production
 While we will use the `default` user to connect HyperDX, we recommend creating a dedicated user when [going to production](/use-cases/observability/clickstack/production#create-a-user).
 :::
 
