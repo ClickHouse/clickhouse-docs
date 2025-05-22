@@ -108,31 +108,32 @@ HYPERDX_LOG_LEVEL=debug
 
 ## Using ClickHouse Cloud {#using-clickhouse-cloud}
 
-This distribution can be used with ClickHouse Cloud. While the local ClickHouse instance will still be deployed (and ignored), the OTel collector can be configured to use a ClickHouse Cloud instance by setting the environment variables `CLICKHOUSE_SERVER_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD` in the [`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/v2/docker-compose.yml) file. 
+This distribution can be used with ClickHouse Cloud. Users should:
 
-Specifically, add the environment variables to the OTel collector service:
+- Remove the ClickHouse service  from the [`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/86465a20270b895320eb21dca13560b65be31e68/docker-compose.yml#L89) file. This is optional if testing, as the deployed ClickHouse instance will simply be ignored - although waste local resources. If removing the service, ensure [any references](https://github.com/hyperdxio/hyperdx/blob/86465a20270b895320eb21dca13560b65be31e68/docker-compose.yml#L65) to the service such as `depends_on` are removed.
+- Modify the OTel collector to use a ClickHouse Cloud instance by setting the environment variables `CLICKHOUSE_SERVER_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD` in the compose file. Specifically, add the environment variables to the OTel collector service:
 
-```bash
-  otel-collector:
-    image: ${OTEL_COLLECTOR_IMAGE_NAME}:${IMAGE_VERSION}
-    environment:
-      CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_SERVER_ENDPOINT>' # https endpoint here
-      CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
-      CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
-      HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
-    ports:
-      - '13133:13133' # health_check extension
-      - '24225:24225' # fluentd receiver
-      - '4317:4317' # OTLP gRPC receiver
-      - '4318:4318' # OTLP http receiver
-      - '8888:8888' # metrics extension
-    restart: always
-    networks:
-      - internal
-    depends_on:
-      - ch-server
-```
+    ```bash
+    otel-collector:
+        image: ${OTEL_COLLECTOR_IMAGE_NAME}:${IMAGE_VERSION}
+        environment:
+        CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_SERVER_ENDPOINT>' # https endpoint here
+        CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
+        CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
+        HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+        ports:
+        - '13133:13133' # health_check extension
+        - '24225:24225' # fluentd receiver
+        - '4317:4317' # OTLP gRPC receiver
+        - '4318:4318' # OTLP http receiver
+        - '8888:8888' # metrics extension
+        restart: always
+        networks:
+        - internal
+        depends_on:
+        - ch-server
+    ```
 
-The `CLICKHOUSE_SERVER_ENDPOINT` should be the ClickHouse Cloud HTTPS endpoint, including the port `8443` e.g. `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
+    The `CLICKHOUSE_SERVER_ENDPOINT` should be the ClickHouse Cloud HTTPS endpoint, including the port `8443` e.g. `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 
-On connecting to the HyperDX UI and creating a connection to ClickHouse, use your Cloud credentials.
+- On connecting to the HyperDX UI and creating a connection to ClickHouse, use your Cloud credentials.
