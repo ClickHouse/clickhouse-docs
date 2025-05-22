@@ -79,13 +79,13 @@ The names of the files in S3 start with `RC_YYYY-MM` where `YYYY-MM` goes from `
 
 ## Load data {#load-data}
 
-2. We are going to start with one month of data, but if you want to simply insert every row - skip ahead to step 8 below. The following file has 86M records from December, 2017:
+2. The following file has 86M records from December, 2017:
 
 ```sql
 INSERT INTO reddit
     SELECT *
     FROM s3(
-        'https://clickhouse-public-datasets.s3.eu-central-1.amazonaws.com/reddit/original/RC_2017-12.xz',
+        'https://your-bucket.s3.amazonaws.com/reddit/original/RC_2017-12.xz',
         'JSONEachRow'
     );
 
@@ -205,7 +205,7 @@ INSERT INTO reddit
     SELECT *
     FROM s3Cluster(
         'default',
-        'https://clickhouse-public-datasets.s3.eu-central-1.amazonaws.com/reddit/original/RC_2005*',
+        'https://your-bucket.s3.amazonaws.com/reddit/original/RC_2005*',
         'JSONEachRow'
     )
     SETTINGS zstd_window_log_max = 31;
@@ -218,7 +218,7 @@ INSERT INTO reddit
 SELECT *
 FROM s3Cluster(
     'default',
-    'https://clickhouse-public-datasets.s3.amazonaws.com/reddit/original/RC_2023*',
+    'https://your-bucket.s3.amazonaws.com/reddit/original/RC_2023*',
     'JSONEachRow'
     )
 SETTINGS zstd_window_log_max = 31;
@@ -230,7 +230,7 @@ If you do not have a cluster, use `s3` instead of `s3Cluster`:
 INSERT INTO reddit
 SELECT *
 FROM s3(
-    'https://clickhouse-public-datasets.s3.amazonaws.com/reddit/original/RC_2005*',
+    'https://your-bucket.s3.amazonaws.com/reddit/original/RC_2005*',
     'JSONEachRow'
     )
 SETTINGS zstd_window_log_max = 31;
