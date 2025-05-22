@@ -3,6 +3,7 @@ slug: /use-cases/observability/clickstack/deployment/all-in-one
 title: 'All in one'
 pagination_prev: null
 pagination_next: null
+sidebar_position: 0
 description: 'Deploying ClickStack with All In One - The ClickHouse Observability Stack'
 ---
 

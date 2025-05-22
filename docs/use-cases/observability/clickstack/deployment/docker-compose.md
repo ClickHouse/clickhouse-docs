@@ -3,6 +3,7 @@ slug: /use-cases/observability/clickstack/deployment/docker-compose
 title: 'Docker Compose'
 pagination_prev: null
 pagination_next: null
+sidebar_position: 2
 description: 'Deploying ClickStack with Docker Compose - The ClickHouse Observability Stack'
 ---
 

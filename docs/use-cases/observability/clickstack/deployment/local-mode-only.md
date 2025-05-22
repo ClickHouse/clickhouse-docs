@@ -3,6 +3,7 @@ slug: /use-cases/observability/clickstack/deployment/local-mode-only
 title: 'Local Mode Only'
 pagination_prev: null
 pagination_next: null
+sidebar_position: 5
 description: 'Deploying ClickStack with Local Mode Only - The ClickHouse Observability Stack'
 ---
 

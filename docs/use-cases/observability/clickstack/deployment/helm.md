@@ -3,6 +3,7 @@ slug: /use-cases/observability/clickstack/deployment/helm
 title: 'Helm'
 pagination_prev: null
 pagination_next: null
+sidebar_position: 1
 description: 'Deploying ClickStack with Helm - The ClickHouse Observability Stack'
 ---
 
