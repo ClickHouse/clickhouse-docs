@@ -15,7 +15,7 @@ All ClickStack components are distributed separately as individual Docker images
 
 * **ClickHouse**
 * **HyperDX**
-* **OpenTelemetry Collector**
+* **OpenTelemetry (OTel) Collector**
 * **MongoDB**
 
 These images can be combined and deployed locally using Docker Compose.
@@ -66,7 +66,7 @@ On clicking `Register` you'll be prompted for connection details.
 
 ### Complete connection details {#complete-connection-details}
 
-To use the in-built ClickHouse instance, simply click **Create** and accept the default settings.  
+To connect to the deployed ClickHouse instance, simply click **Create** and accept the default settings.  
 
 If you prefer to connect to your own **external ClickHouse cluster** e.g. ClickHouse Cloud, you can manually enter your connection credentials.
 
@@ -105,3 +105,34 @@ HYPERDX_APP_PORT=8080
 HYPERDX_APP_URL=http://localhost
 HYPERDX_LOG_LEVEL=debug
 ```
+
+## Using ClickHouse Cloud {#using-clickhouse-cloud}
+
+This distribution can be used with ClickHouse Cloud. While the local ClickHouse instance will still be deployed (and ignored), the OTel collector can be configured to use a ClickHouse Cloud instance by setting the environment variables `CLICKHOUSE_SERVER_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD` in the [`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/v2/docker-compose.yml) file. 
+
+Specifically, add the environment variables to the OTel collector service:
+
+```bash
+  otel-collector:
+    image: ${OTEL_COLLECTOR_IMAGE_NAME}:${IMAGE_VERSION}
+    environment:
+      CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_SERVER_ENDPOINT>' # https endpoint here
+      CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
+      CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
+      HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+    ports:
+      - '13133:13133' # health_check extension
+      - '24225:24225' # fluentd receiver
+      - '4317:4317' # OTLP gRPC receiver
+      - '4318:4318' # OTLP http receiver
+      - '8888:8888' # metrics extension
+    restart: always
+    networks:
+      - internal
+    depends_on:
+      - ch-server
+```
+
+The `CLICKHOUSE_SERVER_ENDPOINT` should be the ClickHouse Cloud HTTPS endpoint, including the port `8443` e.g. `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
+
+On connecting to the HyperDX UI and creating a connection to ClickHouse, use your Cloud credentials.
