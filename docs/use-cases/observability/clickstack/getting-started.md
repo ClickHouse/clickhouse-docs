@@ -2,7 +2,7 @@
 slug: /use-cases/observability/clickstack/getting-started
 title: 'Getting Started'
 pagination_prev: null
-pagination_next: null
+pagination_next: use-cases/observability/clickstack/example-datasets/index
 description: 'Getting started with ClickStack - The ClickHouse Observability Stack'
 ---
 
@@ -11,12 +11,14 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 import hyperdx from '@site/static/images/use-cases/observability/hyperdx-1.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
+import connect_cloud from '@site/static/images/use-cases/observability/connect-cloud-creds.png';
+import hyperdx_cloud from '@site/static/images/use-cases/observability/hyperdx-cloud.png';
 
 # Getting started with ClickStack {#getting-started-with-clickstack}
 
 Getting started with **ClickStack** is straightforward thanks to the availability of prebuilt Docker images. These images are based on the official ClickHouse Debian package and are available in multiple distributions to suit different use cases.
 
-## Single image distribution {#single-image-distribution}
+## Local deployment {#local-deployment}
 
 The simplest option is a **single-image distribution** that includes all core components of the stack bundled together:
 
@@ -28,7 +30,7 @@ This all-in-one image allows you to launch the full stack with a single command,
 
 <VerticalStepper headerLevel="h3">
 
-### Run with docker {#run-with-docker}
+### Deploy stack with docker {#deploy-stack-with-docker}
 
 The following will run an OpenTelemetry collector (on port 4317 and 4318), Clickhouse (on port 8123), and the HyperDX UI (on port 8080).
 
@@ -62,16 +64,87 @@ If prompted to create a source, retain all default values and complete the `Tabl
 
 ### Explore the product {#explore-the-product}
 
-With the stack deployed, try one of our getting started guides.
+With the stack deployed, try one of our same datasets.
 
 If you've connected to the local cluster:
 
-- [Example dataset](/use-cases/observability/clickstack/getting-started/example-data) - Load an example dataset from our public demo. Diagnose a simple issue.
+- [Example dataset](/use-cases/observability/clickstack/getting-started/sample-data) - Load an example dataset from our public demo. Diagnose a simple issue.
 - [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - Load local files and monitor system on OSX or Linux using a local OTel collector.
 
 Alternatively, if you've connected to the demo cluster, you can explore the dataset with the following guide: 
 
 - [Remote demo dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data) - Explore a demo dataset in our demo ClickHouse service.
+
+</VerticalStepper>
+
+## Deploy with ClickHouse Cloud {#deploy-with-clickhouse-cloud}
+
+Users can deploy ClickStack against ClickHouse Cloud, benefiting from a fully managed, secure backend while retaining complete control over ingestion, schema, and observability workflows.
+
+<VerticalStepper headerLevel="h3">
+
+### Create a ClickHouse Cloud service {#create-a-service}
+
+Follow the [getting started guide for ClickHouse Cloud](/cloud/get-started/cloud-quick-start#1-create-a-clickhouse-service) to create a service.
+
+### Copy connection details {#copy-cloud-connection-details}
+
+To find the connection details for HyperDX, navigate to the ClickHouse Cloud console and click the <b>Connect</b> button on the sidebar. 
+
+Copy the the HTTP connection details specifically the HTTPS endpoint (endpoint) and password.
+
+<Image img={connect_cloud} alt="Connect Cloud" size="md"/>
+
+::: Production note
+While we will use the `default` user to connect HyperDX, we recommend creating a dedicated user when [going to production](/use-cases/observability/clickstack/production#create-a-user).
+:::
+
+### Deploy with docker {#deploy-with-docker}
+
+Open a terminal and export the credentials copied above:
+
+```bash
+export CLICKHOUSE_USER=default
+export CLICKHOUSE_SERVER_ENDPOINT=<YOUR HTTPS ENDPOINT>
+export CLICKHOUSE_PASSWORD=<YOUR_PASSWORD>
+```
+
+Run the following docker command:
+
+```bash
+docker run -e CLICKHOUSE_SERVER_ENDPOINT=${CLICKHOUSE_SERVER_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-all-in-one:2-nightly
+```
+
+This will expose an OpenTelemetry collector (on port 4317 and 4318), and the HyperDX UI (on port 8080).
+
+### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui-cloud}
+
+Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
+
+Create a user, providing a username and password which means the requirements. 
+
+On clicking `Register` you'll be prompted for connection details.
+
+<Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
+
+### Complete connection details {#complete-cloud-connection-details}
+
+Using the copied Cloud credentials, complete the connection details and click `Create`.
+
+<Image img={hyperdx_cloud} alt="HyperDX Cloud" size="md"/>
+
+If prompted to create a source, retain all default values and complete the `Table` field with the value `otel_logs`. All other settings should be auto-detected, allowing you to click `Save New Source`.
+
+<Image img={hyperdx_logs} alt="Create logs source" size="md"/>
+
+### Explore the product {#explore-the-product-cloud}
+
+With the stack deployed, try one of our same datasets.
+
+If you've connected to the local cluster:
+
+- [Example dataset](/use-cases/observability/clickstack/getting-started/sample-data) - Load an example dataset from our public demo. Diagnose a simple issue.
+- [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - Load local files and monitor system on OSX or Linux using a local OTel collector.
 
 </VerticalStepper>
 
@@ -83,11 +156,11 @@ Authentication is not supported.
 
 This mode is is intended to be used for quick testing, development, demos and debugging use cases where deploying a full HyperDX instance is not necessary.
 
-### Hosted Version
+### Hosted Version {#hosted-version}
 
 You can use HyperDX's hosted local mode available at [play.hyperdx.io](https://play.hyperdx.io).
 
-### Self-Hosted Version
+### Self-Hosted Version {#self-hosted-version}
 
 <VerticalStepper headerLevel="h3">
 

@@ -120,7 +120,7 @@ Create a user on initial login.
 
 #### Connect to ClickHouse Cloud {#connect-to-clickhouse-cloud}
 
-Using the credentials created earlier, complete the connection credentials on accessing HyperDX and click `Create`.
+Using the credentials created earlier, complete the connection details and click `Create`.
 
 <Image img={hyperdx_cloud} alt="HyperDX Cloud" size="md"/>
 

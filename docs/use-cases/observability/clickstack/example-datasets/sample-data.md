@@ -7,7 +7,7 @@ pagination_next: null
 description: 'Getting started with ClickStack and a sample dataset with logs, sessions, traces and metrics'
 ---
 import Image from '@theme/IdealImage';
-import hyperdx from '@site/static/images/use-cases/observability/hyperdx-1.png';
+import hyperdx from '@site/static/images/use-cases/observability/hyperdx.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
 import hyperdx_3 from '@site/static/images/use-cases/observability/hyperdx-3.png';
 import hyperdx_4 from '@site/static/images/use-cases/observability/hyperdx-4.png';
@@ -29,7 +29,7 @@ import hyperdx_19 from '@site/static/images/use-cases/observability/hyperdx-19.p
 
 # ClickStack - Sample logs, traces and metrics {#clickstack-sample-dataset}
 
-The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) and created the `Logs` source.
+The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) or a [ClickHouse Cloud instance](/use-cases/observability/clickstack/getting-started#complete-cloud-connection-details) and created the `Logs` source.
 
 <VerticalStepper>
 
@@ -48,7 +48,7 @@ In order to populate the UI with sample data, download the following file:
 ```bash
 # curl
 curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
-# or wget
+# or
 # wget https://storage.googleapis.com/hyperdx/sample.tar.gz
 ```
 
@@ -69,10 +69,6 @@ done
 ```
 
 This simulates OLTP log, trace, and metric sources sending data to the OTel collector. In production, these sources may be language clients or even other OTel collectors.
-
-The data loaded covers a period of 15 minutes on `2025-05-15`. Navigate to this period with the following link:
-
-[http://localhost:8080/search?from=1747312320000&to=1747312980694](http://localhost:8080/search?from=1747312320000&to=1747312980694)
 
 You should see data has started to load, with logs shown in the `Search` view:
 
@@ -126,6 +122,8 @@ Select `Sessions` for the `Source Data Type`. Complete the following fields, lea
 <Image img={hyperdx_6} alt="Sessions source" size="md"/>
 
 ## Correlate sources {#correlate-sources}
+
+Correlating sources allows HyperDX to link logs, traces, metrics, and sessions - enabling rich context when navigating incidents and debugging issues.
 
 Select the `Traces` source from the source drop-down, followed by the edit button.
 
@@ -192,9 +190,7 @@ We've established that a cache is filling in the Payment service which is preven
 
 ## Explore logs {#explore-logs}
 
-For further details, we can return to the `Search` view:
-
-[http://localhost:8080/search?from=1747312320000&to=1747312980694](http://localhost:8080/search?from=1747312320000&to=1747312980694)
+For further details, we can return to the [`Search` view](http://localhost:8080/search):
 
 Select `Logs` from the sources and apply a filter to the `payment` Service.
 

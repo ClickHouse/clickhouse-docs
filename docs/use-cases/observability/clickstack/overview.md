@@ -1,8 +1,8 @@
 ---
 slug: /use-cases/observability/clickstack/overview
-title: 'ClickStack - The ClickHouse Observability Stack'
+title: 'Overview'
 pagination_prev: null
-pagination_next: null
+pagination_next: use-cases/observability/clickstack/getting-started
 description: 'Overview for ClickStack - The ClickHouse Observability Stack'
 ---
 
