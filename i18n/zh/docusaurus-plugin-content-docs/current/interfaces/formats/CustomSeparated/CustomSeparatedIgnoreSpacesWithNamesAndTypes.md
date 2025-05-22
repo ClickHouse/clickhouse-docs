@@ -1,9 +1,9 @@
 ---
-'description': '自定义分隔忽略空格带名称和类型格式的文档'
+'description': 'CustomSeparatedIgnoreSpacesWithNamesAndTypes 格式的文档'
 'keywords':
 - 'CustomSeparatedIgnoreSpacesWithNamesAndTypes'
 'slug': '/interfaces/formats/CustomSeparatedIgnoreSpacesWithNamesAndTypes'
-'title': '自定义分隔忽略空格带名称和类型'
+'title': 'CustomSeparatedIgnoreSpacesWithNamesAndTypes'
 ---
 
 ## 描述 {#description}

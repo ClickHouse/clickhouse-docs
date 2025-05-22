@@ -1,13 +1,22 @@
+---
+'description': 'GRANT 语句的文档'
+'sidebar_label': 'GRANT'
+'sidebar_position': 38
+'slug': '/sql-reference/statements/grant'
+'title': 'GRANT 语句'
+---
+
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+
 
 # GRANT 语句
 
-- 将 [权限](#privileges) 授予 ClickHouse 用户账户或角色。
-- 将角色分配给用户账户或其他角色。
+- 将[权限](#privileges)授予 ClickHouse 用户帐户或角色。
+- 将角色分配给用户帐户或其他角色。
 
-要撤销权限，请使用 [REVOKE](../../sql-reference/statements/revoke.md) 语句。您还可以使用 [SHOW GRANTS](../../sql-reference/statements/show.md#show-grants) 语句列出已授予的权限。
+要撤销权限，请使用 [REVOKE](../../sql-reference/statements/revoke.md) 语句。您还可以使用 [SHOW GRANTS](../../sql-reference/statements/show.md#show-grants) 语句列出授予的权限。
 
-## 授予权限语法 {#granting-privilege-syntax}
+## 授权权限语法 {#granting-privilege-syntax}
 
 ```sql
 GRANT [ON CLUSTER cluster_name] privilege[(column_name [,...])] [,...] ON {db.table[*]|db[*].*|*.*|table[*]|*} TO {user | role | CURRENT_USER} [,...] [WITH GRANT OPTION] [WITH REPLACE OPTION]
@@ -15,10 +24,10 @@ GRANT [ON CLUSTER cluster_name] privilege[(column_name [,...])] [,...] ON {db.ta
 
 - `privilege` — 权限类型。
 - `role` — ClickHouse 用户角色。
-- `user` — ClickHouse 用户账户。
+- `user` — ClickHouse 用户帐户。
 
-`WITH GRANT OPTION` 子句授予 `user` 或 `role` 执行 `GRANT` 查询的权限。用户可以授予其拥有的同等范围及更小范围的权限。
-`WITH REPLACE OPTION` 子句将 `user` 或 `role` 的旧权限替换为新权限，如果未指定，则附加权限。
+`WITH GRANT OPTION` 子句授予 `user` 或 `role` 执行 `GRANT` 查询的权限。用户可以授予他们具有的相同范围及更低范围的权限。
+`WITH REPLACE OPTION` 子句可以将 `user` 或 `role` 的旧权限替换为新权限，如果未指定，它将附加权限。
 
 ## 分配角色语法 {#assigning-role-syntax}
 
@@ -27,10 +36,10 @@ GRANT [ON CLUSTER cluster_name] role [,...] TO {user | another_role | CURRENT_US
 ```
 
 - `role` — ClickHouse 用户角色。
-- `user` — ClickHouse 用户账户。
+- `user` — ClickHouse 用户帐户。
 
-`WITH ADMIN OPTION` 子句将 [ADMIN OPTION](#admin-option) 权限授予 `user` 或 `role`。
-`WITH REPLACE OPTION` 子句将 `user` 或 `role` 的旧角色替换为新角色，如果未指定则附加角色。
+`WITH ADMIN OPTION` 子句授予 `user` 或 `role` [ADMIN OPTION](#admin-option) 权限。
+`WITH REPLACE OPTION` 子句可以将 `user` 或 `role` 的旧角色替换为新角色，如果未指定，它将附加角色。
 
 ## 授予当前权限语法 {#grant-current-grants-syntax}
 ```sql
@@ -39,13 +48,14 @@ GRANT CURRENT GRANTS{(privilege[(column_name [,...])] [,...] ON {db.table|db.*|*
 
 -   `privilege` — 权限类型。
 -   `role` — ClickHouse 用户角色。
--   `user` — ClickHouse 用户账户。
+-   `user` — ClickHouse 用户帐户。
 
-使用 `CURRENT GRANTS` 语句允许您将所有指定权限授予给给定的用户或角色。如果没有指定任何权限，则给定用户或角色将接收当前用户的所有可用权限。
+使用 `CURRENT GRANTS` 语句可以为给定用户或角色授予所有指定的权限。
+如果未指定任何权限，则给定用户或角色将接收 `CURRENT_USER` 的所有可用权限。
 
-## 用法 {#usage}
+## 使用方法 {#usage}
 
-要使用 `GRANT`，您的账户必须拥有 `GRANT OPTION` 权限。您只能在自己的账户权限范围内授予权限。
+要使用 `GRANT`，您的账户必须具有 `GRANT OPTION` 权限。您只能在您账户权限的范围内授予权限。
 
 例如，管理员通过以下查询将权限授予 `john` 账户：
 
@@ -59,26 +69,26 @@ GRANT SELECT(x,y) ON db.table TO john WITH GRANT OPTION
 - `SELECT x FROM db.table`。
 - `SELECT y FROM db.table`。
 
-`john` 不能执行 `SELECT z FROM db.table`。`SELECT * FROM db.table` 也不可用。处理此查询时，ClickHouse 不会返回任何数据，即使是 `x` 和 `y`。唯一的例外是如果表中只包含 `x` 和 `y` 列。在这种情况下，ClickHouse 会返回所有数据。
+`john` 无法执行 `SELECT z FROM db.table`。`SELECT * FROM db.table` 也不可用。处理此查询时，ClickHouse 不会返回任何数据，即使是 `x` 和 `y`。唯一的例外是，如果表只包含 `x` 和 `y` 列。在这种情况下，ClickHouse 返回所有数据。
 
-此外，`john` 拥有 `GRANT OPTION` 权限，因此它可以授予其他用户相同或更小范围的权限。
+此外，`john` 还拥有 `GRANT OPTION` 权限，因此可以授予其他用户与其相同或更小范围的权限。
 
-对 `system` 数据库的访问始终是允许的（因为此数据库用于处理查询）。
+始终允许访问 `system` 数据库（因为该数据库用于处理查询）。
 
-您可以在一次查询中将多个权限授予多个账户。查询 `GRANT SELECT, INSERT ON *.* TO john, robin` 允许账户 `john` 和 `robin` 在服务器上的所有数据库中的所有表上执行 `INSERT` 和 `SELECT` 查询。
+您可以在一个查询中授予多个账户多个权限。查询 `GRANT SELECT, INSERT ON *.* TO john, robin` 允许账户 `john` 和 `robin` 在服务器上对所有数据库的所有表执行 `INSERT` 和 `SELECT` 查询。
 
-## 通配符授予 {#wildcard-grants}
+## 通配符授权 {#wildcard-grants}
 
-指定权限时可以使用星号（`*`）代替表或数据库名称。例如，查询 `GRANT SELECT ON db.* TO john` 允许 `john` 在 `db` 数据库中的所有表上执行 `SELECT` 查询。
-此外，您可以省略数据库名称。在这种情况下，权限将授予当前数据库。
-例如，`GRANT SELECT ON * TO john` 授予当前数据库中所有表的权限，`GRANT SELECT ON mytable TO john` 授予当前数据库中 `mytable` 表的权限。
+在指定权限时，您可以使用星号 (`*`) 来代替表或数据库名称。例如，查询 `GRANT SELECT ON db.* TO john` 允许 `john` 在 `db` 数据库中的所有表上执行 `SELECT` 查询。
+此外，您可以省略数据库名称。在这种情况下，权限被授予当前数据库。
+例如，`GRANT SELECT ON * TO john` 授予当前数据库中所有表的权限，`GRANT SELECT ON mytable TO john` 授予当前数据库中的 `mytable` 表的权限。
 
 :::note
-以下描述的功能自 24.10 ClickHouse 版本开始可用。
+以下描述的功能从 24.10 版本的 ClickHouse 开始提供。
 :::
 
-您还可以在表或数据库名称的末尾放置星号。此功能允许您授予表路径的抽象前缀上的权限。
-示例：`GRANT SELECT ON db.my_tables* TO john`。此查询允许 `john` 在所有前缀为 `my_tables*` 的 `db` 数据库表上执行 `SELECT` 查询。
+您还可以在表或数据库名称的末尾放置星号。这一特性使您能够在表路径的抽象前缀上授予权限。
+示例：`GRANT SELECT ON db.my_tables* TO john`。这个查询允许 `john` 在所有以 `my_tables` 为前缀的 `db` 数据库表上执行 `SELECT` 查询。
 
 更多示例：
 
@@ -101,10 +111,10 @@ SELECT * FROM db.other_table -- granted
 SELECT * FROM db2.my_tables -- granted
 ```
 
-在授予路径内创建的所有新表将自动继承其父级的所有权限。
-例如，如果您运行 `GRANT SELECT ON db.* TO john` 查询，然后创建一个新表 `db.new_table`，用户 `john` 将能够执行查询 `SELECT * FROM db.new_table`。
+所有在授予路径内新创建的表将自动继承来自其父表的所有权限。
+例如，如果您运行查询 `GRANT SELECT ON db.* TO john`，然后创建一个新表 `db.new_table`，用户 `john` 将能够运行查询 `SELECT * FROM db.new_table`。
 
-您只能为前缀指定星号：
+您只能对前缀指定星号：
 ```sql
 GRANT SELECT ON db.* TO john -- correct
 GRANT SELECT ON db*.* TO john -- correct
@@ -119,9 +129,9 @@ GRANT SELECT(foo) ON db.table* TO john -- wrong
 
 权限是授予用户执行特定类型查询的许可。
 
-权限具有层次结构，允许的查询集取决于权限范围。
+权限具有分层结构，允许的查询集取决于权限范围。
 
-ClickHouse 中权限的层次结构如下：
+ClickHouse 中权限的层次结构如下所示：
 
 - [`ALL`](#all)
     - [`ACCESS MANAGEMENT`](#access-management)
@@ -321,24 +331,24 @@ ClickHouse 中权限的层次结构如下：
     - `UNDROP TABLE` 
 - [`NONE`](#none)
 
-有关如何处理此层次结构的示例：
+如何处理此层次结构的示例：
 
-- `ALTER` 权限包括所有其他 `ALTER*` 权限。
+- `ALTER` 权限包含所有其他 `ALTER*` 权限。
 - `ALTER CONSTRAINT` 包括 `ALTER ADD CONSTRAINT` 和 `ALTER DROP CONSTRAINT` 权限。
 
-权限在不同级别上应用。知道某一层级表明可用于权限的语法。
+权限适用于不同级别。了解一个级别指示可用于权限的语法。
 
 级别（从低到高）：
 
-- `COLUMN` — 权限可以授予列、表、数据库或全局。
-- `TABLE` — 权限可以授予表、数据库或全局。
-- `VIEW` — 权限可以授予视图、数据库或全局。
-- `DICTIONARY` — 权限可以授予字典、数据库或全局。
-- `DATABASE` — 权限可以授予数据库或全局。
-- `GLOBAL` — 权限只能全局授予。
-- `GROUP` — 将不同级别的权限分组。当授予 `GROUP` 级别的权限时，仅授予与所使用的语法对应的该组中的权限。
+- `COLUMN` — 权限可以针对列、表、数据库或全局授予。
+- `TABLE` — 权限可以针对表、数据库或全局授予。
+- `VIEW` — 权限可以针对视图、数据库或全局授予。
+- `DICTIONARY` — 权限可以针对字典、数据库或全局授予。
+- `DATABASE` — 权限可以针对数据库或全局授予。
+- `GLOBAL` — 权限只能针对全局授予。
+- `GROUP` — 将不同级别的权限分组。当授予 `GROUP` 级别的权限时，仅授予与所用语法对应的权限。
 
-允许的语法示例：
+允许语法的示例：
 
 - `GRANT SELECT(x) ON db.table TO user`
 - `GRANT SELECT ON db.* TO user`
@@ -348,13 +358,13 @@ ClickHouse 中权限的层次结构如下：
 - `GRANT CREATE USER(x) ON db.table TO user`
 - `GRANT CREATE USER ON db.* TO user`
 
-特殊权限 [ALL](#all) 授予用户账户或角色所有权限。
+特殊权限 [ALL](#all) 授予用户帐户或角色所有权限。
 
-默认情况下，用户账户或角色没有权限。
+默认情况下，用户帐户或角色没有任何权限。
 
-如果用户或角色没有权限，则显示为 [NONE](#none) 权限。
+如果用户或角色没有权限，则以 [NONE](#none) 权限显示。
 
-某些查询由于其实现需要一组权限。例如，执行 [RENAME](../../sql-reference/statements/optimize.md) 查询需要以下权限：`SELECT`、`CREATE TABLE`、`INSERT` 和 `DROP TABLE`。
+某些查询由于其实现需要一组权限。例如，要执行 [RENAME](../../sql-reference/statements/optimize.md) 查询，您需要以下权限：`SELECT`、`CREATE TABLE`、`INSERT` 和 `DROP TABLE`。
 
 ### SELECT {#select}
 
@@ -364,7 +374,7 @@ ClickHouse 中权限的层次结构如下：
 
 **描述**
 
-被授予此权限的用户可以在指定数据库和表中对指定列列表执行 `SELECT` 查询。如果用户包含其他列，则指定的查询将不会返回任何数据。
+具有此权限的用户可以在指定表和数据库中的指定列列表上执行 `SELECT` 查询。如果用户包含其他列，则指定查询返回无数据。
 
 考虑以下权限：
 
@@ -372,7 +382,7 @@ ClickHouse 中权限的层次结构如下：
 GRANT SELECT(x,y) ON db.table TO john
 ```
 
-此权限允许 `john` 执行涉及 `db.table` 中 `x` 和/或 `y` 列数据的任何 `SELECT` 查询，例如 `SELECT x FROM db.table`。`john` 不能执行 `SELECT z FROM db.table`。`SELECT * FROM db.table` 也不可用。处理此查询时，ClickHouse 不会返回任何数据，即使是 `x` 和 `y`。唯一的例外是如果表中只包含 `x` 和 `y` 列，在这种情况下 ClickHouse 会返回所有的数据。
+该权限允许 `john` 执行涉及 `db.table` 中 `x` 和/或 `y` 列数据的任何 `SELECT` 查询，例如 `SELECT x FROM db.table`。 `john` 无法执行 `SELECT z FROM db.table`。 `SELECT * FROM db.table` 也不可用。处理此查询时，ClickHouse 不会返回任何数据，即使是 `x` 和 `y`。唯一的例外是，如果表只包含 `x` 和 `y` 列，在这种情况下 ClickHouse 返回所有数据。
 
 ### INSERT {#insert}
 
@@ -382,7 +392,7 @@ GRANT SELECT(x,y) ON db.table TO john
 
 **描述**
 
-被授予此权限的用户可以对指定数据库和表中的指定列列表执行 `INSERT` 查询。如果用户包括其他列，则指定的查询不插入任何数据。
+具有此权限的用户可以在指定表和数据库中的指定列列表上执行 `INSERT` 查询。如果用户包含其他列，则指定查询不会插入任何数据。
 
 **示例**
 
@@ -428,21 +438,21 @@ GRANT INSERT(x,y) ON db.table TO john
         - `ALTER VIEW MODIFY QUERY`。级别：`VIEW`。别名：`ALTER TABLE MODIFY QUERY`
         - `ALTER VIEW MODIFY SQL SECURITY`。级别：`VIEW`。别名：`ALTER TABLE MODIFY SQL SECURITY`
 
-关于如何处理此层次结构的示例：
+如何处理此层次结构的示例：
 
-- `ALTER` 权限包括所有其他 `ALTER*` 权限。
+- `ALTER` 权限包含所有其他 `ALTER*` 权限。
 - `ALTER CONSTRAINT` 包括 `ALTER ADD CONSTRAINT` 和 `ALTER DROP CONSTRAINT` 权限。
 
-**注意事项**
+**注意**
 
-- `MODIFY SETTING` 权限允许修改表引擎设置。此权限不会影响其他设置或服务器配置参数。
+- `MODIFY SETTING` 权限允许修改表引擎设置。它不会影响设置或服务器配置参数。
 - `ATTACH` 操作需要 [CREATE](#create) 权限。
 - `DETACH` 操作需要 [DROP](#drop) 权限。
-- 要通过 [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation) 查询停止突变，您需要有启动此突变的权限。例如，如果要停止 `ALTER UPDATE` 查询，则需要 `ALTER UPDATE`、`ALTER TABLE` 或 `ALTER` 权限。
+- 要通过 [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation) 查询停止变更，您需要拥有启动该变更的权限。例如，如果要停止 `ALTER UPDATE` 查询，则需要 `ALTER UPDATE`、`ALTER TABLE` 或 `ALTER` 权限。
 
 ### BACKUP {#backup}
 
-允许在查询中执行 [`BACKUP`]。有关备份的更多信息，请参见 ["备份和恢复"](../../operations/backup.md)。
+允许执行 [`BACKUP`] 查询。有关备份的更多信息，请参见 ["备份与恢复"](../../operations/backup.md)。
 
 ### CREATE {#create}
 
@@ -456,7 +466,7 @@ GRANT INSERT(x,y) ON db.table TO john
     - `CREATE VIEW`。级别：`VIEW`
     - `CREATE DICTIONARY`。级别：`DICTIONARY`
 
-**注意事项**
+**注意**
 
 - 要删除创建的表，用户需要 [DROP](#drop) 权限。
 
@@ -468,14 +478,15 @@ GRANT INSERT(x,y) ON db.table TO john
 GRANT CLUSTER ON *.* TO <username>
 ```
 
-默认情况下，带有 `ON CLUSTER` 的查询要求用户具有 `CLUSTER` 授权。
-如果您尝试在未先授予 `CLUSTER` 权限的情况下在查询中使用 `ON CLUSTER`，则会得到以下错误：
+默认情况下，带有 `ON CLUSTER` 的查询要求用户拥有 `CLUSTER` 权限。
+如果您尝试在没有首先授予 `CLUSTER` 权限的情况下在查询中使用 `ON CLUSTER`，将会收到以下错误：
 
 ```text
 Not enough privileges. To execute this query, it's necessary to have the grant CLUSTER ON *.*. 
 ```
 
-可以通过在 `config.xml` 的 `access_control_improvements` 部分中将 `on_cluster_queries_require_cluster_grant` 设置为 `false` 来更改默认行为。
+通过设置 `on_cluster_queries_require_cluster_grant` 设置，可以更改默认行为，
+该设置位于 `config.xml` 的 `access_control_improvements` 部分（见下文），设置为 `false`。
 
 ```yaml title="config.xml"
 <access_control_improvements>
@@ -485,7 +496,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 ### DROP {#drop}
 
-允许执行 [DROP](../../sql-reference/statements/drop.md) 和 [DETACH](../../sql-reference/statements/detach.md) 查询，根据以下权限层次结构：
+允许根据以下权限层次结构执行 [DROP](../../sql-reference/statements/drop.md) 和 [DETACH](../../sql-reference/statements/detach.md) 查询：
 
 - `DROP`。级别：`GROUP`
     - `DROP DATABASE`。级别：`DATABASE`
@@ -507,7 +518,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 ### SHOW {#show}
 
-允许根据以下权限层次结构执行 `SHOW`、`DESCRIBE`、`USE` 和 `EXISTS` 查询：
+允许执行 `SHOW`、`DESCRIBE`、`USE` 和 `EXISTS` 查询，依据以下权限层次结构：
 
 - `SHOW`。级别：`GROUP`
     - `SHOW DATABASES`。级别：`DATABASE`。允许执行 `SHOW DATABASES`、`SHOW CREATE DATABASE`、`USE <database>` 查询。
@@ -515,9 +526,9 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
     - `SHOW COLUMNS`。级别：`COLUMN`。允许执行 `SHOW CREATE TABLE`、`DESCRIBE` 查询。
     - `SHOW DICTIONARIES`。级别：`DICTIONARY`。允许执行 `SHOW DICTIONARIES`、`SHOW CREATE DICTIONARY`、`EXISTS <dictionary>` 查询。
 
-**注意事项**
+**注意**
 
-如果用户具有与指定表、字典或数据库相关的任何其他权限，则授予 `SHOW` 权限。
+如果用户对指定的表、字典或数据库有任何其他权限，则用户拥有 `SHOW` 权限。
 
 ### KILL QUERY {#kill-query}
 
@@ -525,7 +536,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 权限级别：`GLOBAL`。
 
-**注意事项**
+**注意**
 
 `KILL QUERY` 权限允许一个用户终止其他用户的查询。
 
@@ -558,7 +569,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
         - `SHOW_SETTINGS_PROFILES`。级别：`GLOBAL`。别名：`SHOW PROFILES`、`SHOW CREATE SETTINGS PROFILE`、`SHOW CREATE PROFILE`
     - `ALLOW SQL SECURITY NONE`。级别：`GLOBAL`。别名：`CREATE SQL SECURITY NONE`、`SQL SECURITY NONE`、`SECURITY NONE`
 
-`ROLE ADMIN` 权限允许用户分配和撤销任何角色，包括那些未授予管理员选项的角色。
+`ROLE ADMIN` 权限允许用户分配和撤销任何角色，包括未分配给管理员选项的角色。
 
 ### SYSTEM {#system}
 
@@ -588,7 +599,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
         - `SYSTEM FLUSH DISTRIBUTED`。级别：`TABLE`。别名：`FLUSH DISTRIBUTED`
         - `SYSTEM FLUSH LOGS`。级别：`GLOBAL`。别名：`FLUSH LOGS`
 
-`SYSTEM RELOAD EMBEDDED DICTIONARIES` 权限隐式授予 `SYSTEM RELOAD DICTIONARY ON *.*` 权限。
+`SYSTEM RELOAD EMBEDDED DICTIONARIES` 权限由 `SYSTEM RELOAD DICTIONARY ON *.*` 权限隐式授予。
 
 ### INTROSPECTION {#introspection}
 
@@ -623,11 +634,11 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
     - `SQLITE`。级别：`GLOBAL`
     - `URL`。级别：`GLOBAL`
 
-`SOURCES` 权限启用对所有数据源的使用。您还可以单独为每个源授予权限。要使用数据源，您需要额外的权限。
+`SOURCES` 权限启用使用所有源。您还可以单独授予每个源的权限。要使用源，您需要额外的权限。
 
 示例：
 
-- 要使用 [MySQL 表引擎](../../engines/table-engines/integrations/mysql.md) 创建表，您需要 `CREATE TABLE (ON db.table_name)` 和 `MYSQL` 权限。
+- 要创建一个使用 [MySQL 表引擎](../../engines/table-engines/integrations/mysql.md) 的表，您需要 `CREATE TABLE (ON db.table_name)` 和 `MYSQL` 权限。
 - 要使用 [mysql 表函数](../../sql-reference/table-functions/mysql.md)，您需要 `CREATE TEMPORARY TABLE` 和 `MYSQL` 权限。
 
 ### dictGet {#dictget}
@@ -645,15 +656,14 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 ### displaySecretsInShowAndSelect {#displaysecretsinshowandselect}
 
-允许用户在 `SHOW` 和 `SELECT` 查询中查看机密，只要
+允许用户在 `SHOW` 和 `SELECT` 查询中查看秘密，如果同时启用
 [`display_secrets_in_show_and_select` 服务器设置](../../operations/server-configuration-parameters/settings#display_secrets_in_show_and_select)
 和
-[`format_display_secrets_in_show_and_select` 格式设置](../../operations/settings/formats#format_display_secrets_in_show_and_select)
-已启用。
+[`format_display_secrets_in_show_and_select` 格式设置](../../operations/settings/formats#format_display_secrets_in_show_and_select)。
 
 ### NAMED COLLECTION ADMIN {#named-collection-admin}
 
-允许在指定的命名集合上执行某些操作。在 23.7 版本之前称为 NAMED COLLECTION CONTROL，在 23.7 版本之后添加了 NAMED COLLECTION ADMIN，同时保留了 NAMED COLLECTION CONTROL 作为别名。
+允许在指定的命名集合上进行某些操作。在 23.7 之前，称为 NAMED COLLECTION CONTROL，23.7 之后增加了 NAMED COLLECTION ADMIN，并保留了 NAMED COLLECTION CONTROL 作为别名。
 
 - `NAMED COLLECTION ADMIN`。级别：`NAMED_COLLECTION`。别名：`NAMED COLLECTION CONTROL`
     - `CREATE NAMED COLLECTION`。级别：`NAMED_COLLECTION`
@@ -661,13 +671,13 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
     - `ALTER NAMED COLLECTION`。级别：`NAMED_COLLECTION`
     - `SHOW NAMED COLLECTIONS`。级别：`NAMED_COLLECTION`。别名：`SHOW NAMED COLLECTIONS`
     - `SHOW NAMED COLLECTIONS SECRETS`。级别：`NAMED_COLLECTION`。别名：`SHOW NAMED COLLECTIONS SECRETS`
-    - `NAMED COLLECTION`。级别：`NAMED_COLLECTION`。别名：`NAMED COLLECTION USAGE, USE NAMED COLLECTION`
+    - `NAMED COLLECTION`。级别：`NAMED_COLLECTION`。别名：`NAMED COLLECTION USAGE`、`USE NAMED COLLECTION`
 
-与所有其他授予（CREATE、DROP、ALTER、SHOW）不同，NAMED COLLECTION 授予仅在 23.7 版本中添加，而所有其他授予则在早些时候添加 - 在 22.12 版本中。
+与其他所有权限（CREATE、DROP、ALTER、SHOW）不同，NAMED COLLECTION 的授予仅在 23.7 中添加，而其他权限则是在 22.12 之前添加。
 
 **示例**
 
-假设一个命名集合称为 abc，我们将 CREATE NAMED COLLECTION 权限授予用户 john。
+假设命名集合名为 abc，我们授予用户 john 创建命名集合的权限。
 - `GRANT CREATE NAMED COLLECTION ON abc TO john`
 
 ### TABLE ENGINE {#table-engine}
@@ -683,11 +693,11 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 <CloudNotSupportedBadge/>
 
-将所有权限授予调控实体的用户账户或角色。
+向用户帐户或角色授予对受管实体的所有权限。
 
 :::note
-权限 `ALL` 在 ClickHouse Cloud 中不受支持，在其中 `default` 用户具有有限的权限。用户可以通过授予 `default_role` 将最大权限授予用户。有关更多详细信息，请参见 [此处](/cloud/security/cloud-access-management/overview#initial-settings)。
-用户还可以使用 `GRANT CURRENT GRANTS` 作为默认用户，以获得与 `ALL` 类似的效果。
+在 ClickHouse Cloud 中不支持权限 `ALL`，其中 `default` 用户具有有限权限。用户可以通过授予 `default_role` 将最大权限授予给用户。更多详细信息请参见[这里](/cloud/security/cloud-access-management/overview#initial-settings)。
+用户还可以以默认用户的身份使用 `GRANT CURRENT GRANTS` 来实现类似于 `ALL` 的效果。
 :::
 
 ### NONE {#none}

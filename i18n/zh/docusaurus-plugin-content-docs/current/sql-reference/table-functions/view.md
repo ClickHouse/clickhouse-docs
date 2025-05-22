@@ -1,7 +1,15 @@
+---
+'description': '将子查询转换为表。该函数实现视图。'
+'sidebar_label': '视图'
+'sidebar_position': 210
+'slug': '/sql-reference/table-functions/view'
+'title': '视图'
+---
+
 
 # view 表函数
 
-将子查询转换为一个表。该函数实现了视图（参见 [CREATE VIEW](/sql-reference/statements/create/view)）。结果表不存储数据，而仅仅存储指定的 `SELECT` 查询。在从表中读取数据时，ClickHouse 执行查询并从结果中删除所有不必要的列。
+将子查询转换为一个表。该函数实现了视图（请参见 [CREATE VIEW](/sql-reference/statements/create/view)）。生成的表不存储数据，而仅存储指定的 `SELECT` 查询。在从表中读取数据时，ClickHouse 执行查询并从结果中删除所有不必要的列。
 
 ## 语法 {#syntax}
 
@@ -59,4 +67,4 @@ SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 
 ## 相关 {#related}
 
-- [View 表引擎](/engines/table-engines/special/view/)
+- [视图表引擎](/engines/table-engines/special/view/)

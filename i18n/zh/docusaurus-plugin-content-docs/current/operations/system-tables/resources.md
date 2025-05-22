@@ -1,7 +1,16 @@
+---
+'description': '系统表包含有关本地服务器上资源的信息，每个资源有一行.'
+'keywords':
+- 'system table'
+- 'resources'
+'slug': '/operations/system-tables/resources'
+'title': 'system.resources'
+---
+
 
 # system.resources
 
-包含关于本地服务器上存在的 [资源](/operations/workload-scheduling.md#workload_entity_storage) 的信息。该表为每个资源包含一行。
+包含有关位于本地服务器上的 [resources](/operations/workload-scheduling.md#workload_entity_storage) 的信息。该表为每个资源包含一行。
 
 示例：
 

@@ -1,3 +1,12 @@
+---
+'description': '系统表包含有关MergeTree表设置的信息。'
+'keywords':
+- 'system table'
+- 'merge_tree_settings'
+'slug': '/operations/system-tables/merge_tree_settings'
+'title': 'system.merge_tree_settings'
+---
+
 
 # system.merge_tree_settings
 
@@ -5,23 +14,23 @@
 
 列：
 
-- `name` ([String](../../sql-reference/data-types/string.md)) — 设置名称。
-- `value` ([String](../../sql-reference/data-types/string.md)) — 设置值。
-- `default` ([String](../../sql-reference/data-types/string.md)) — 设置默认值。
-- `changed` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 是否在配置中明确定义或明确更改了设置。
-- `description` ([String](../../sql-reference/data-types/string.md)) — 设置描述。
-- `min` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 设置的最小值（如果通过 [constraints](/operations/settings/constraints-on-settings) 设置了任何值）。如果设置没有最小值，则包含 [NULL](/operations/settings/formats#input_format_null_as_default)。
-- `max` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 设置的最大值（如果通过 [constraints](/operations/settings/constraints-on-settings) 设置了任何值）。如果设置没有最大值，则包含 [NULL](/operations/settings/formats#input_format_null_as_default)。
-- `readonly` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 显示当前用户是否可以更改设置：
-    - `0` — 当前用户可以更改设置。
-    - `1` — 当前用户无法更改设置。
-- `type` ([String](../../sql-reference/data-types/string.md)) — 设置类型（具体实现的字符串值）。
+- `name` ([字符串](../../sql-reference/data-types/string.md)) — 设置名称。
+- `value` ([字符串](../../sql-reference/data-types/string.md)) — 设置值。
+- `default` ([字符串](../../sql-reference/data-types/string.md)) — 设置默认值。
+- `changed` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 设置是否在配置中明确指定或明确更改。
+- `description` ([字符串](../../sql-reference/data-types/string.md)) — 设置描述。
+- `min` ([Nullable](../../sql-reference/data-types/nullable.md)([字符串](../../sql-reference/data-types/string.md))) — 设置的最小值，如果通过 [constraints](/operations/settings/constraints-on-settings) 设置了值。如果设置没有最小值，则包含 [NULL](/operations/settings/formats#input_format_null_as_default)。
+- `max` ([Nullable](../../sql-reference/data-types/nullable.md)([字符串](../../sql-reference/data-types/string.md))) — 设置的最大值，如果通过 [constraints](/operations/settings/constraints-on-settings) 设置了值。如果设置没有最大值，则包含 [NULL](/operations/settings/formats#input_format_null_as_default)。
+- `readonly` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 显示当前用户是否可以更改该设置：
+    - `0` — 当前用户可以更改该设置。
+    - `1` — 当前用户无法更改该设置。
+- `type` ([字符串](../../sql-reference/data-types/string.md)) — 设置类型（实现特定的字符串值）。
 - `is_obsolete` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) - 显示设置是否已过时。
-- `tier` ([Enum8](../../sql-reference/data-types/enum.md)) — 此功能的支持级别。 ClickHouse 功能按照级别进行组织，具体取决于其开发的当前状态和使用时可能的期望。值：
-    - `'Production'` — 该功能稳定、安全使用，并且与其他 **production** 功能的交互没有问题。
-    - `'Beta'` — 该功能稳定且安全。与其他功能一起使用的结果未知，并且不保证正确性。欢迎进行测试和报告。
-    - `'Experimental'` — 该功能正在开发中。仅面向开发人员和 ClickHouse 爱好者。该功能可能有效或无效，并可能随时被删除。
-    - `'Obsolete'` — 不再支持。要么已经被移除，要么将在未来的版本中移除。
+- `tier` ([Enum8](../../sql-reference/data-types/enum.md)) — 该功能的支持级别。ClickHouse 的功能按层级组织，具体取决于其开发的当前状态和使用时的期望。值：
+    - `'Production'` — 该功能稳定、安全可用，并且与其他 **生产** 特性之间没有问题。
+    - `'Beta'` — 该功能稳定且安全。与其他特性一起使用的结果未知，且正确性不能保证。欢迎进行测试和报告。
+    - `'Experimental'` — 该功能正在开发中。仅适用于开发者和 ClickHouse 爱好者。该功能可能有效也可能无效，并且可能随时被移除。
+    - `'Obsolete'` — 不再支持。要么已被移除，要么将在未来版本中被移除。
 
 **示例**
 ```sql

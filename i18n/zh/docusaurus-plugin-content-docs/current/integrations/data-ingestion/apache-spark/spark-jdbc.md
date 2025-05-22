@@ -1,10 +1,25 @@
+---
+'sidebar_label': 'Spark JDBC'
+'sidebar_position': 3
+'slug': '/integrations/apache-spark/spark-jdbc'
+'description': 'Apache Spark与ClickHouse的介绍'
+'keywords':
+- 'clickhouse'
+- 'Apache Spark'
+- 'jdbc'
+- 'migrating'
+- 'data'
+'title': 'Spark JDBC'
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 
+
 # Spark JDBC
 JDBC 是 Spark 中最常用的数据源之一。
-在本节中，我们将提供如何在 Spark 中使用 [ClickHouse 官方 JDBC 连接器](/integrations/language-clients/java/jdbc) 的详细信息。
+在本节中，我们将提供有关如何在 Spark 中使用 [ClickHouse 官方 JDBC 连接器](/integrations/language-clients/java/jdbc) 的详细信息。
 
 <TOCInline toc={toc}></TOCInline>
 
@@ -332,12 +347,11 @@ INSERT INTO TABLE jdbcTable
 </TabItem>
 </Tabs>
 
-
 ## 并行性 {#parallelism}
 
-在使用 Spark JDBC 时，Spark 使用单个分区读取数据。要实现更高的并发，您必须指定 `partitionColumn`、`lowerBound`、`upperBound` 和 `numPartitions`，这描述了在从多个工作节点并行读取时如何对表进行分区。
-更多信息，请访问 Apache Spark 的官方文档，了解 [JDBC 配置](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option)。
+使用 Spark JDBC 时，Spark 使用单个分区读取数据。要实现更高的并发性，您必须指定 `partitionColumn`、`lowerBound`、`upperBound` 和 `numPartitions`，这些选项描述了如何在从多个工作节点并行读取时对表进行分区。
+有关更多信息，请访问 Apache Spark 的官方文档，了解 [JDBC 配置](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option)。
 
 ## JDBC 限制 {#jdbc-limitations}
 
-* 截至今天，您只能通过 JDBC 将数据插入到现有表中（当前没有在 DF 插入时自动创建表的方法，和其他连接器的情况不同）。
+* 截至目前，您只能通过 JDBC 向现有表中插入数据（目前没有方法在 DF 插入时自动创建表，正如 Spark 在使用其他连接器时所做的那样）。

@@ -1,6 +1,6 @@
 ---
 'alias': []
-'description': 'PrettySpace格式的文档'
+'description': 'PrettySpace 格式的 Documentation'
 'input_format': false
 'keywords':
 - 'PrettySpace'
@@ -11,13 +11,13 @@
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Input | Output  | Alias |
+| 输入 | 输出  | 别名 |
 |-------|---------|-------|
 | ✗     | ✔       |       |
 
 ## 描述 {#description}
 
-与 [`PrettyCompact`](./PrettyCompact.md) 格式不同，使用空白（空格字符）来显示表格，而不是使用网格。
+与 [`PrettyCompact`](./PrettyCompact.md) 格式不同，使用空白（空格字符）来显示表，而不是网格。
 
 ## 示例用法 {#example-usage}
 

@@ -1,9 +1,17 @@
+---
+'description': '该函数绘制值 `x` 的频率直方图，以及这些值在区间 `[min_x, max_x]` 上的重复率 `y`。'
+'sidebar_label': 'sparkbar'
+'sidebar_position': 187
+'slug': '/sql-reference/aggregate-functions/reference/sparkbar'
+'title': 'sparkbar'
+---
+
 
 # sparkbar
 
-该函数绘制值 `x` 的频率直方图，以及这些值在区间 `[min_x, max_x]` 内的重复率 `y`。落入同一桶的所有 `x` 的重复值会被平均，因此数据应预先聚合。负的重复值会被忽略。
+该函数为值 `x` 绘制频率直方图，以及这些值在区间 `[min_x, max_x]` 内的重复率 `y`。所有落在同一桶中的 `x` 的重复次数会被平均，因此数据应该预先进行聚合。负重复次数会被忽略。
 
-如果没有指定区间，那么最小的 `x` 将用作区间起始，最大的 `x` 将作为区间结束。否则，将忽略区间外的值。
+如果没有指定区间，则使用最小 `x` 作为区间开始，最大 `x` 作为区间结束。否则，区间外的值会被忽略。
 
 **语法**
 
@@ -13,13 +21,13 @@ sparkbar(buckets[, min_x, max_x])(x, y)
 
 **参数**
 
-- `buckets` — 段的数量。类型：[整数](../../../sql-reference/data-types/int-uint.md)。
-- `min_x` — 区间起始。可选参数。
+- `buckets` — 段数。类型: [Integer](../../../sql-reference/data-types/int-uint.md)。
+- `min_x` — 区间开始。可选参数。
 - `max_x` — 区间结束。可选参数。
 
-**参数**
+**参数说明**
 
-- `x` — 带值的字段。
+- `x` — 值的字段。
 - `y` — 值的频率字段。
 
 **返回值**
@@ -52,4 +60,4 @@ SELECT sparkbar(9, toDate('2020-01-01'), toDate('2020-01-10'))(event_date,cnt) F
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
-此函数的别名为 sparkBar。
+该函数的别名是 sparkBar。

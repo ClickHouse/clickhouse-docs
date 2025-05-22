@@ -1,4 +1,15 @@
-| Input | Output  | Alias |
+---
+'alias': []
+'description': 'MySQLDump 格式的文档'
+'input_format': true
+'keywords':
+- 'MySQLDump'
+'output_format': false
+'slug': '/interfaces/formats/MySQLDump'
+'title': 'MySQLDump'
+---
+
+| 输入 | 输出  | 别名 |
 |-------|---------|-------|
 | ✔     | ✗       |       |
 
@@ -6,11 +17,11 @@
 
 ClickHouse 支持读取 MySQL [转储](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html)。
 
-它读取属于转储中单个表的 `INSERT` 查询的所有数据。 
-如果有多个表，默认情况下它会读取第一个表的数据。
+它从转储中与单个表相关的所有 `INSERT` 查询中读取数据。 
+如果有多个表，默认情况下，它从第一个表读取数据。
 
 :::note
-此格式支持模式推断：如果转储包含指定表的 `CREATE` 查询，则从中推断结构；否则，从 `INSERT` 查询的数据中推断模式。
+此格式支持模式推断：如果转储中包含指定表的 `CREATE` 查询，则结构将根据它推断，否则模式是从 `INSERT` 查询的数据中推断的。
 :::
 
 ## 示例用法 {#example-usage}
@@ -72,5 +83,5 @@ SETTINGS input_format_mysql_dump_table_name = 'test2'
 ## 格式设置 {#format-settings}
 
 您可以使用 [`input_format_mysql_dump_table_name`](/operations/settings/settings-formats.md/#input_format_mysql_dump_table_name) 设置指定要读取数据的表名。
-如果设置 `input_format_mysql_dump_map_columns` 为 `1` 且转储包含指定表的 `CREATE` 查询或 `INSERT` 查询中的列名，则输入数据的列将按名称映射到表中的列。
-如果设置 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 为 `1`，则将跳过名称未知的列。
+如果设置 `input_format_mysql_dump_map_columns` 为 `1`，并且转储中包含指定表或列名的 `CREATE` 查询或 `INSERT` 查询，则输入数据的列将按名称映射到表的列。
+如果设置 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 为 `1`，则未知名称的列将被跳过。

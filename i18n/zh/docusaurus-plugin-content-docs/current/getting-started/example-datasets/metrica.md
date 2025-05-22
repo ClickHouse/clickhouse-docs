@@ -1,13 +1,20 @@
+---
+'description': '数据集由两个表组成，包含带有点击和访问的匿名化网络分析数据'
+'sidebar_label': '网络分析数据'
+'slug': '/getting-started/example-datasets/metrica'
+'title': '匿名化的网络分析'
+---
 
-# 匿名化网络分析数据
 
-该数据集由包含匿名化网络分析数据的两个表组成，其中包括点击量（`hits_v1`）和访问量（`visits_v1`）。
+# 匿名网站分析数据
 
-这些表可以作为压缩的 `tsv.xz` 文件下载。除了本文中处理的示例外，还有一个扩展版本（7.5GB）的 `hits` 表，包含一亿行数据，作为 TSV 格式提供，地址为 [https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz](https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz)。
+该数据集由两个包含匿名网站分析数据的表构成，分别为点击量（`hits_v1`）和访问量（`visits_v1`）。
+
+这些表可以作为压缩的 `tsv.xz` 文件下载。除了本文档中讨论的示例外，一个扩展版（7.5GB）的 `hits` 表包含1亿行，作为TSV文件可在 [https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz](https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz) 下载。
 
 ## 下载并导入数据 {#download-and-ingest-the-data}
 
-### 下载点击量压缩 TSV 文件 {#download-the-hits-compressed-tsv-file}
+### 下载点击量压缩TSV文件： {#download-the-hits-compressed-tsv-file}
 
 ```bash
 curl https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz | unxz --threads=`nproc` > hits_v1.tsv
@@ -36,7 +43,7 @@ clickhouse-client --query "CREATE TABLE datasets.hits_v1 ( WatchID UInt64,  Java
 clickhouse-client --query="CREATE TABLE default.hits_100m_obfuscated (WatchID UInt64, JavaEnable UInt8, Title String, GoodEvent Int16, EventTime DateTime, EventDate Date, CounterID UInt32, ClientIP UInt32, RegionID UInt32, UserID UInt64, CounterClass Int8, OS UInt8, UserAgent UInt8, URL String, Referer String, Refresh UInt8, RefererCategoryID UInt16, RefererRegionID UInt32, URLCategoryID UInt16, URLRegionID UInt32, ResolutionWidth UInt16, ResolutionHeight UInt16, ResolutionDepth UInt8, FlashMajor UInt8, FlashMinor UInt8, FlashMinor2 String, NetMajor UInt8, NetMinor UInt8, UserAgentMajor UInt16, UserAgentMinor FixedString(2), CookieEnable UInt8, JavascriptEnable UInt8, IsMobile UInt8, MobilePhone UInt8, MobilePhoneModel String, Params String, IPNetworkID UInt32, TraficSourceID Int8, SearchEngineID UInt16, SearchPhrase String, AdvEngineID UInt8, IsArtifical UInt8, WindowClientWidth UInt16, WindowClientHeight UInt16, ClientTimeZone Int16, ClientEventTime DateTime, SilverlightVersion1 UInt8, SilverlightVersion2 UInt8, SilverlightVersion3 UInt32, SilverlightVersion4 UInt16, PageCharset String, CodeVersion UInt32, IsLink UInt8, IsDownload UInt8, IsNotBounce UInt8, FUniqID UInt64, OriginalURL String, HID UInt32, IsOldCounter UInt8, IsEvent UInt8, IsParameter UInt8, DontCountHits UInt8, WithHash UInt8, HitColor FixedString(1), LocalEventTime DateTime, Age UInt8, Sex UInt8, Income UInt8, Interests UInt16, Robotness UInt8, RemoteIP UInt32, WindowName Int32, OpenerName Int32, HistoryLength Int16, BrowserLanguage FixedString(2), BrowserCountry FixedString(2), SocialNetwork String, SocialAction String, HTTPError UInt16, SendTiming UInt32, DNSTiming UInt32, ConnectTiming UInt32, ResponseStartTiming UInt32, ResponseEndTiming UInt32, FetchTiming UInt32, SocialSourceNetworkID UInt8, SocialSourcePage String, ParamPrice Int64, ParamOrderID String, ParamCurrency FixedString(3), ParamCurrencyID UInt16, OpenstatServiceName String, OpenstatCampaignID String, OpenstatAdID String, OpenstatSourceID String, UTMSource String, UTMMedium String, UTMCampaign String, UTMContent String, UTMTerm String, FromTag String, HasGCLID UInt8, RefererHash UInt64, URLHash UInt64, CLID UInt32) ENGINE = MergeTree() PARTITION BY toYYYYMM(EventDate) ORDER  BY (CounterID, EventDate, intHash32(UserID)) SAMPLE BY intHash32(UserID) SETTINGS index_granularity = 8192"
 ```
 
-### 导入点击量数据: {#import-the-hits-data}
+### 导入点击量数据： {#import-the-hits-data}
 
 ```bash
 cat hits_v1.tsv | clickhouse-client --query "INSERT INTO datasets.hits_v1 FORMAT TSV" --max_insert_block_size=100000
@@ -52,7 +59,7 @@ clickhouse-client --query "SELECT COUNT(*) FROM datasets.hits_v1"
 8873898
 ```
 
-### 下载访问量压缩 TSV 文件: {#download-the-visits-compressed-tsv-file}
+### 下载访问量压缩TSV文件： {#download-the-visits-compressed-tsv-file}
 
 ```bash
 curl https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | unxz --threads=`nproc` > visits_v1.tsv
@@ -74,7 +81,7 @@ clickhouse-client --query "CREATE TABLE datasets.visits_v1 ( CounterID UInt32,  
 cat visits_v1.tsv | clickhouse-client --query "INSERT INTO datasets.visits_v1 FORMAT TSV" --max_insert_block_size=100000
 ```
 
-验证数量
+验证计数
 ```bash
 clickhouse-client --query "SELECT COUNT(*) FROM datasets.visits_v1"
 ```
@@ -83,9 +90,9 @@ clickhouse-client --query "SELECT COUNT(*) FROM datasets.visits_v1"
 1680609
 ```
 
-## 示例 JOIN {#an-example-join}
+## 一个示例 JOIN {#an-example-join}
 
-点击量和访问量数据集用于 ClickHouse 测试例程，这是测试套件中的一个查询。测试的其余部分在本页面末尾的 *下一步* 部分中引用。
+点击量和访问量数据集用于 ClickHouse 的测试例程，这是测试套件中的一个查询。其余测试在本页末尾的 *下一步* 部分中提到。
 
 ```sql
 clickhouse-client --query "SELECT
@@ -127,10 +134,10 @@ FORMAT PrettyCompact"
 
 ## 下一步 {#next-steps}
 
-[ClickHouse 中稀疏主索引的实用介绍](/guides/best-practices/sparse-primary-indexes.md) 使用点击量数据集讨论 ClickHouse 相较于传统关系数据库的索引差异、ClickHouse 如何构建和使用稀疏主索引以及索引最佳实践。
+[ClickHouse 中稀疏主索引的实用介绍](/guides/best-practices/sparse-primary-indexes.md) 使用点击量数据集讨论 ClickHouse 索引与传统关系数据库的差异、ClickHouse 如何构建和使用稀疏主索引以及索引最佳实践。
 
-关于这些表的额外查询示例可以在 ClickHouse 的 [有状态测试](https://github.com/ClickHouse/ClickHouse/blob/d7129855757f38ceec3e4ecc6dafacdabe9b178f/tests/queries/1_stateful/00172_parallel_join.sql) 中找到。
+有关这些表的其他查询示例可以在 ClickHouse 的 [有状态测试](https://github.com/ClickHouse/ClickHouse/blob/d7129855757f38ceec3e4ecc6dafacdabe9b178f/tests/queries/1_stateful/00172_parallel_join.sql) 中找到。
 
 :::note
-测试套件使用数据库名称 `test`，表名为 `hits` 和 `visits`。您可以重命名您的数据库和表，或编辑测试文件中的 SQL。
+测试套件使用数据库名称 `test`，表名为 `hits` 和 `visits`。 您可以重命名您的数据库和表，或者编辑测试文件中的 SQL。
 :::

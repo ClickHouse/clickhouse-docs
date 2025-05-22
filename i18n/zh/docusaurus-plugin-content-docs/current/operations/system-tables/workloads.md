@@ -1,7 +1,16 @@
+---
+'description': '系统表包含本地服务器上驻留的工作负载的信息。'
+'keywords':
+- 'system table'
+- 'workloads'
+'slug': '/operations/system-tables/workloads'
+'title': 'system.workloads'
+---
+
 
 # system.workloads
 
-包含在本地服务器上驻留的 [工作负载](/operations/workload-scheduling.md#workload_entity_storage) 的信息。该表为每个工作负载包含一行。
+包含有关本地服务器上 [工作负载](/operations/workload-scheduling.md#workload_entity_storage) 的信息。该表为每个工作负载包含一行。
 
 示例：
 

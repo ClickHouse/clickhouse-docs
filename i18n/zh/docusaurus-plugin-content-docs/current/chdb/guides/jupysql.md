@@ -11,15 +11,15 @@
 import Image from '@theme/IdealImage';
 import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png';
 
-[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) 是一个 Python 库，它允许您在 Jupyter 笔记本和 IPython shell 中运行 SQL。在本指南中，我们将学习如何使用 chDB 和 JupySQL 查询数据。
+[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) 是一个 Python 库，允许你在 Jupyter 笔记本和 IPython shell 中运行 SQL。在本指南中，我们将学习如何使用 chDB 和 JupySQL 查询数据。
 
 <div class='vimeo-container'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/2wjl3OijCto?si=EVf2JhjS5fe4j6Cy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## 设置 {#setup}
+## 安装 {#setup}
 
-首先，我们来创建一个虚拟环境：
+让我们先创建一个虚拟环境：
 
 ```bash
 python -m venv .venv
@@ -45,12 +45,12 @@ jupyter lab
 ```
 
 :::note
-如果您使用 Jupyter Lab，您需要在继续本指南的其他部分之前创建一个笔记本。
+如果你使用的是 Jupyter Lab，你需要先创建一个笔记本，然后才能继续后面的指南。
 :::
 
 ## 下载数据集 {#downloading-a-dataset}
 
-我们将使用 [Jeff Sackmann 的 tennis_atp](https://github.com/JeffSackmann/tennis_atp) 数据集，其中包含有关球员及其排名随时间变化的元数据。让我们首先下载排名文件：
+我们将使用 [Jeff Sackmann 的 tennis_atp](https://github.com/JeffSackmann/tennis_atp) 数据集，该数据集包含关于球员及其排名随时间变化的元数据。让我们开始下载排名文件：
 
 ```python
 from urllib.request import urlretrieve
@@ -74,13 +74,13 @@ for file in files:
 from chdb import dbapi
 ```
 
-我们将创建一个 chDB 连接。我们持久化的数据将保存到 `atp.chdb` 目录中：
+我们将创建一个 chDB 连接。任何我们持久化的数据将保存到 `atp.chdb` 目录：
 
 ```python
 conn = dbapi.connect(path="atp.chdb")
 ```
 
-现在让我们加载 `sql` magic 并创建到 chDB 的连接：
+现在让我们加载 `sql` 魔法并创建与 chDB 的连接：
 
 ```python
 %load_ext sql
@@ -93,10 +93,9 @@ conn = dbapi.connect(path="atp.chdb")
 %config SqlMagic.displaylimit = None
 ```
 
-## 在 CSV 文件中查询数据 {#querying-data-in-csv-files}
+## 查询 CSV 文件中的数据 {#querying-data-in-csv-files}
 
-我们已经下载了一些以 `atp_rankings` 为前缀的文件。让我们使用 `DESCRIBE` 子句了解架构：
-
+我们下载了一堆以 `atp_rankings` 为前缀的文件。让我们使用 `DESCRIBE` 子句来了解模式：
 
 ```python
 %%sql
@@ -116,7 +115,7 @@ SETTINGS describe_compact_output=1,
 +--------------+-------+
 ```
 
-我们还可以直接针对这些文件写一个 `SELECT` 查询，看看数据的样子：
+我们还可以直接对这些文件编写 `SELECT` 查询，以查看数据的样子：
 
 ```python
 %sql SELECT * FROM file('atp_rankings*.csv') LIMIT 1
@@ -130,7 +129,7 @@ SETTINGS describe_compact_output=1,
 +--------------+------+--------+--------+
 ```
 
-数据的格式有点奇怪。让我们清理一下日期，并使用 `REPLACE` 子句返回清理后的 `ranking_date`：
+数据格式有点奇怪。让我们清理一下这些数据，并使用 `REPLACE` 子句返回清理后的 `ranking_date`：
 
 ```python
 %%sql
@@ -161,7 +160,7 @@ SETTINGS schema_inference_make_columns_nullable=0
 
 ## 将 CSV 文件导入 chDB {#importing-csv-files-into-chdb}
 
-现在我们将把这些 CSV 文件中的数据存储在一个表中。默认数据库不会将数据持久化到磁盘，因此我们需要首先创建另一个数据库：
+现在我们将把这些 CSV 文件中的数据存储在一个表中。默认数据库不会将数据持久化到磁盘，因此我们需要先创建另一个数据库：
 
 ```python
 %sql CREATE DATABASE atp
@@ -204,10 +203,9 @@ SETTINGS schema_inference_make_columns_nullable=0
 +--------------+------+--------+--------+
 ```
 
-看起来很好 - 输出与直接查询 CSV 文件时的结果相同。
+看起来不错 - 输出，如预期的，跟直接查询 CSV 文件时相同。
 
-我们将对球员元数据遵循相同的流程。这次数据都在一个 CSV 文件中，所以让我们下载那个文件：
-
+我们将对球员元数据执行相同的过程。这次数据都在一个 CSV 文件中，所以让我们下载该文件：
 
 ```python
 _ = urlretrieve(
@@ -216,9 +214,9 @@ _ = urlretrieve(
 )
 ```
 
-然后根据 CSV 文件的内容创建一个名为 `players` 的表。我们还会清理一下 `dob` 字段，使其成为 `Date32` 类型。
+然后根据 CSV 文件的内容创建一个名为 `players` 的表。我们还将清理 `dob` 字段，以使其成为 `Date32` 类型。
 
-> 在 ClickHouse 中，`Date` 类型仅支持1970年以后的日期。由于 `dob` 列包含1970年之前的日期，我们将使用 `Date32` 类型代替。
+> 在 ClickHouse 中，`Date` 类型仅支持从 1970 年开始的日期。由于 `dob` 列包含 1970 年之前的日期，因此我们将使用 `Date32` 类型。
 
 ```python
 %%sql
@@ -236,8 +234,7 @@ FROM file('atp_players.csv')
 SETTINGS schema_inference_make_columns_nullable=0
 ```
 
-完成运行后，我们可以查看我们所摄取的数据：
-
+一旦运行完成，我们可以查看我们所摄取的数据：
 
 ```python
 %sql SELECT * FROM atp.players LIMIT 10
@@ -262,9 +259,9 @@ SETTINGS schema_inference_make_columns_nullable=0
 
 ## 查询 chDB {#querying-chdb}
 
-数据摄取完成，现在是玩乐的时间 - 查询数据！
+数据摄取完成，现在是有趣的部分 - 查询数据！
 
-网球选手根据他们在比赛中的表现获得积分。每名选手在52周滚动期间累计积分。我们将写一个查询，查找每名球员在当时的排名下所累积的最高积分：
+网球选手根据他们在比赛中的表现获得积分。每位球员在 52 周的滚动期间获得积分。我们将编写一个查询，找出每位球员累积的最大积分以及他们当时的排名：
 
 ```python
 %%sql
@@ -296,11 +293,11 @@ LIMIT 10
 +------------+-----------+-----------+------+------------+
 ```
 
-很有趣的是，这个列表中的一些球员在积分总数上没有成为第一。
+有趣的是，这个列表中的一些球员在积分总数上没有达到第一名，但依然累积了很多积分。
 
 ## 保存查询 {#saving-queries}
 
-我们可以使用 `--save` 参数在与 `%%sql` magic 相同的行上保存查询。`--no-execute` 参数表示将跳过查询执行。
+我们可以使用 `--save` 参数在与 `%%sql` 魔法相同的行上保存查询。`--no-execute` 参数意味着将跳过查询执行。
 
 ```python
 %%sql --save best_points --no-execute
@@ -314,7 +311,7 @@ GROUP BY ALL
 ORDER BY maxPoints DESC
 ```
 
-当我们运行已保存的查询时，它将在执行前转换为公用表表达式（CTE）。在以下查询中，我们计算排名为1的球员所获得的最高积分：
+当我们运行一个保存的查询时，它将在执行之前被转换为公共表表达式 (CTE)。在下面的查询中，我们计算了球员在排名第一时获得的最大积分：
 
 ```python
 %sql select * FROM best_points WHERE rank=1
@@ -349,7 +346,7 @@ ORDER BY maxPoints DESC
 rank = 10
 ```
 
-然后我们可以在查询中使用 `{{variable}}` 语法。以下查询查找首次进入前10名和最后进入前10名之间天数最少的球员：
+然后我们可以在查询中使用 `{{variable}}` 语法。以下查询找出在首次进入前 10 名以及最后一次在前 10 名之间天数最少的球员：
 
 ```python
 %%sql
@@ -387,7 +384,7 @@ LIMIT 10
 
 JupySQL 还具有有限的图表功能。我们可以创建箱线图或直方图。
 
-我们将创建一个直方图，但首先让我们编写（并保存）一个查询，计算每位球员在前100名中达到的排名。我们将能够使用此信息创建一个计数每位球员达到每个排名的直方图：
+我们将创建一个直方图，但首先让我们编写（并保存）一个计算每个球员在前 100 名中取得的排名的查询。我们将能够利用此查询创建一个计算获得每项排名的球员数量的直方图：
 
 ```python
 %%sql --save players_per_rank --no-execute
@@ -396,8 +393,7 @@ FROM atp.rankings
 WHERE rank <= 100
 ```
 
-然后我们可以通过运行以下命令创建一个直方图：
-
+然后，我们可以通过运行以下命令来创建直方图：
 
 ```python
 from sql.ggplot import ggplot, geom_histogram, aes

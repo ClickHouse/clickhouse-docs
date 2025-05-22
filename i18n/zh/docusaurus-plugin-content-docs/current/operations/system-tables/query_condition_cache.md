@@ -1,4 +1,14 @@
+---
+'description': '系统表，显示查询条件缓存的内容。'
+'keywords':
+- 'system table'
+- 'query_condition_cache'
+'slug': '/operations/system-tables/query_condition_cache'
+'title': 'system.query_condition_cache'
+---
+
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
 
 # system.query_condition_cache
 
@@ -9,10 +19,10 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 列：
 
 - `table_uuid` ([String](../../sql-reference/data-types/string.md)) — 表的 UUID。
-- `part_name` ([String](../../sql-reference/data-types/string.md)) — 部分名称。
+- `part_name` ([String](../../sql-reference/data-types/string.md)) — 分片名称。
 - `condition` ([String](/sql-reference/data-types/string.md)) — 哈希过滤条件。仅在设置 query_condition_cache_store_conditions_as_plaintext = true 时设置。
 - `condition_hash` ([String](/sql-reference/data-types/string.md)) — 过滤条件的哈希值。
-- `entry_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 条目的字节大小。
+- `entry_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 条目的大小（字节）。
 - `matching_marks` ([String](../../sql-reference/data-types/string.md)) — 匹配标记。
 
 **示例**

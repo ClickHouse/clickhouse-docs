@@ -1,7 +1,14 @@
+---
+'description': '对一系列数字应用位运算 `XOR`。'
+'sidebar_position': 153
+'slug': '/sql-reference/aggregate-functions/reference/groupbitxor'
+'title': 'groupBitXor'
+---
+
 
 # groupBitXor
 
-对一系列数字应用按位 `XOR` 运算。
+对一系列数字执行按位 `XOR` 操作。
 
 ```sql
 groupBitXor(expr)
@@ -9,7 +16,7 @@ groupBitXor(expr)
 
 **参数**
 
-`expr` – 产生 `UInt*` 或 `Int*` 类型的表达式。
+`expr` – 结果为 `UInt*` 或 `Int*` 类型的表达式。
 
 **返回值**
 

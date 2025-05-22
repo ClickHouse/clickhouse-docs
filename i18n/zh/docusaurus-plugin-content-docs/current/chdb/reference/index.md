@@ -1,7 +1,7 @@
 ---
 'title': 'chDB 技术参考'
 'slug': '/chdb/reference'
-'description': 'chDB的数据格式'
+'description': 'chDB 的数据格式'
 'keywords':
 - 'chdb'
 - 'data formats'

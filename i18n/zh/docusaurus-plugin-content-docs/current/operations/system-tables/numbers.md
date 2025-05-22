@@ -1,11 +1,20 @@
+---
+'description': '系统表包含一个名为 `number` 的 UInt64 列，该列包含从零开始几乎所有的自然数。'
+'keywords':
+- 'system table'
+- 'numbers'
+'slug': '/operations/system-tables/numbers'
+'title': 'system.numbers'
+---
+
 
 # system.numbers
 
-这个表包含一个名为 `number` 的单列 UInt64，几乎包含从零开始的所有自然数。
+此表包含一个名为 `number` 的 UInt64 列，该列包含从零开始几乎所有的自然数。
 
-您可以使用这个表进行测试，或者在需要进行穷举搜索时使用。
+您可以将此表用于测试，或者如果您需要进行暴力搜索时使用。
 
-从这个表的读取并不会并行化。
+从此表的读取没有并行化。
 
 **示例**
 

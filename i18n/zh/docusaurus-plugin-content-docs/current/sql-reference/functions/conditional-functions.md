@@ -1,3 +1,11 @@
+---
+'description': 'Conditional Functions 的文档'
+'sidebar_label': 'Conditional'
+'sidebar_position': 40
+'slug': '/sql-reference/functions/conditional-functions'
+'title': '条件函数'
+---
+
 
 # 条件函数
 
@@ -5,11 +13,11 @@
 
 执行条件分支。
 
-如果条件 `cond` 的值评估为非零值，则函数返回表达式 `then` 的结果。如果 `cond` 的值评估为零或 `NULL`，则返回 `else` 表达式的结果。
+如果条件 `cond` 评估为非零值，则函数返回表达式 `then` 的结果。如果 `cond` 评估为零或 `NULL`，则返回 `else` 表达式的结果。
 
-设置 [short_circuit_function_evaluation](/operations/settings/settings#short_circuit_function_evaluation) 控制是否使用短路求值。如果启用，`then` 表达式仅在 `cond` 为 `true` 的行上进行评估，而 `else` 表达式在 `cond` 为 `false` 的行上进行评估。例如，使用短路求值时，在执行查询 `SELECT if(number = 0, 0, intDiv(42, number)) FROM numbers(10)` 时不会抛出除零异常。
+设置 [short_circuit_function_evaluation](/operations/settings/settings#short_circuit_function_evaluation) 控制是否使用短路求值。如果启用，`then` 表达式仅在 `cond` 为 `true` 的行上进行评估，而 `else` 表达式则在 `cond` 为 `false` 的行上进行评估。例如，在短路评估下，当执行查询 `SELECT if(number = 0, 0, intDiv(42, number)) FROM numbers(10)` 时，不会抛出除以零的异常。
 
-`then` 和 `else` 必须是相似的类型。
+`then` 和 `else` 必须是类似类型。
 
 **语法**
 
@@ -20,9 +28,9 @@ if(cond, then, else)
 
 **参数**
 
-- `cond` – 待评估的条件。UInt8，Nullable(UInt8) 或 NULL。
-- `then` – 如果 `condition` 为真，则返回的表达式。
-- `else` – 如果 `condition` 为 `false` 或 NULL，则返回的表达式。
+- `cond` – 被评估的条件。UInt8, Nullable(UInt8) 或 NULL。
+- `then` – 如果 `condition` 为真则返回的表达式。
+- `else` – 如果 `condition` 为 `false` 或 NULL 时返回的表达式。
 
 **返回值**
 
@@ -44,7 +52,7 @@ SELECT if(1, plus(2, 2), plus(2, 6));
 
 ## multiIf {#multiif}
 
-允许在查询中更紧凑地编写 [CASE](../../sql-reference/operators/index.md#conditional-expression) 运算符。
+允许在查询中更简洁地编写 [CASE](../../sql-reference/operators/index.md#conditional-expression) 运算符。
 
 **语法**
 
@@ -52,22 +60,22 @@ SELECT if(1, plus(2, 2), plus(2, 6));
 multiIf(cond_1, then_1, cond_2, then_2, ..., else)
 ```
 
-设置 [short_circuit_function_evaluation](/operations/settings/settings#short_circuit_function_evaluation) 控制是否使用短路求值。如果启用，`then_i` 表达式仅在 `((NOT cond_1) AND (NOT cond_2) AND ... AND (NOT cond_{i-1}) AND cond_i)` 为 `true` 的行上进行评估；`cond_i` 仅在 `((NOT cond_1) AND (NOT cond_2) AND ... AND (NOT cond_{i-1}))` 为 `true` 的行上进行评估。例如，使用短路求值时，在执行查询 `SELECT multiIf(number = 2, intDiv(1, number), number = 5) FROM numbers(10)` 时不会抛出除零异常。
+设置 [short_circuit_function_evaluation](/operations/settings/settings#short_circuit_function_evaluation) 控制是否使用短路求值。如果启用，则 `then_i` 表达式仅在 `((NOT cond_1) AND (NOT cond_2) AND ... AND (NOT cond_{i-1}) AND cond_i)` 为 `true` 的行上进行评估，`cond_i` 仅在 `((NOT cond_1) AND (NOT cond_2) AND ... AND (NOT cond_{i-1}))` 为 `true` 的行上进行评估。例如，在短路评估下，当执行查询 `SELECT multiIf(number = 2, intDiv(1, number), number = 5) FROM numbers(10)` 时，不会抛出除以零的异常。
 
 **参数**
 
 该函数接受 `2N+1` 个参数：
-- `cond_N` — 第 N 个评估的条件，控制是否返回 `then_N`。
-- `then_N` — 当 `cond_N` 为真时函数的结果。
-- `else` — 如果没有条件为真，则函数的结果。
+- `cond_N` — 第 N 个被评估的条件，用于控制是否返回 `then_N`。
+- `then_N` — 当 `cond_N` 为真时，函数的结果。
+- `else` — 如果没有条件为真时函数的结果。
 
 **返回值**
 
-根据条件 `cond_N` 返回 `then_N` 或 `else` 表达式中的任何结果。
+根据条件 `cond_N` 返回任一 `then_N` 或 `else` 表达式的结果。
 
 **示例**
 
-假设此表：
+假设有这样一个表：
 
 ```text
 ┌─left─┬─right─┐
@@ -97,7 +105,7 @@ FROM LEFT_RIGHT
 
 ## 直接使用条件结果 {#using-conditional-results-directly}
 
-条件总是返回 `0`，`1` 或 `NULL`。因此，您可以像这样直接使用条件结果：
+条件总是返回 `0`、`1` 或 `NULL`。因此，您可以像这样直接使用条件结果：
 
 ```sql
 SELECT left < right AS is_small
@@ -114,7 +122,7 @@ FROM LEFT_RIGHT
 
 ## 条件中的 NULL 值 {#null-values-in-conditionals}
 
-当条件中涉及 `NULL` 值时，结果也将是 `NULL`。
+当条件中涉及 `NULL` 值时，结果也将为 `NULL`。
 
 ```sql
 SELECT
@@ -128,9 +136,9 @@ SELECT
 └───────────────┴───────────────┴──────────────────┴────────────────────┘
 ```
 
-因此，如果类型为 `Nullable`，您应小心构建查询。
+因此，如果类型是 `Nullable`，您应该仔细构造查询。
 
-以下示例通过未将等于条件添加到 `multiIf` 来说明这一点。
+以下示例演示了未能将相等条件添加到 `multiIf` 时的失败。
 
 ```sql
 SELECT
@@ -150,7 +158,7 @@ FROM LEFT_RIGHT
 
 ## greatest {#greatest}
 
-在一组值中返回最大的值。所有列表成员必须是可比较的类型。
+返回一组值中的最大值。所有列表成员必须是可比较的类型。
 
 示例：
 
@@ -164,7 +172,7 @@ SELECT greatest(1, 2, toUInt8(3), 3.) result,  toTypeName(result) type;
 ```
 
 :::note
-返回的类型为 Float64，因为 UInt8 必须提升为 64 位以进行比较。
+返回的类型为 Float64，因为 UInt8 必须提升到 64 位进行比较。
 :::
 
 ```sql
@@ -186,12 +194,12 @@ SELECT greatest(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3))
 ```
 
 :::note
-返回的类型为 DateTime64，因为 DateTime32 必须提升为 64 位以进行比较。
+返回的类型为 DateTime64，因为 DateTime32 必须提升到 64 位进行比较。
 :::
 
 ## least {#least}
 
-在一组值中返回最小的值。所有列表成员必须是可比较的类型。
+返回一组值中的最小值。所有列表成员必须是可比较的类型。
 
 示例：
 
@@ -205,7 +213,7 @@ SELECT least(1, 2, toUInt8(3), 3.) result,  toTypeName(result) type;
 ```
 
 :::note
-返回的类型为 Float64，因为 UInt8 必须提升为 64 位以进行比较。
+返回的类型为 Float64，因为 UInt8 必须提升到 64 位进行比较。
 :::
 
 ```sql
@@ -227,7 +235,7 @@ SELECT least(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3))
 ```
 
 :::note
-返回的类型为 DateTime64，因为 DateTime32 必须提升为 64 位以进行比较。
+返回的类型为 DateTime64，因为 DateTime32 必须提升到 64 位进行比较。
 :::
 
 ## clamp {#clamp}
@@ -243,8 +251,8 @@ clamp(value, min, max)
 **参数**
 
 - `value` – 输入值。
-- `min` – 限制下界。
-- `max` – 限制上界。
+- `min` – 下限限制。
+- `max` – 上限限制。
 
 **返回值**
 
@@ -265,11 +273,11 @@ SELECT clamp(1, 2, 3) result,  toTypeName(result) type;
 
 ClickHouse 中的 CASE 表达式提供了类似于 SQL CASE 运算符的条件逻辑。它评估条件并根据第一个匹配的条件返回值。
 
-ClickHouse 支持两种 CASE 形式：
+ClickHouse 支持两种形式的 CASE：
 
 1. `CASE WHEN ... THEN ... ELSE ... END`
 <br/>
-这种形式允许完全灵活，并通过 [multiIf](/sql-reference/functions/conditional-functions#multiif) 函数内部实现。每个条件独立评估，表达式可以包含非常量值。
+此形式允许完全的灵活性，并使用 [multiIf](/sql-reference/functions/conditional-functions#multiif) 函数在内部实现。每个条件是独立评估的，表达式可以包含非常量值。
 
 ```sql
 SELECT
@@ -302,7 +310,7 @@ WHERE number < 5
 
 2. `CASE <expr> WHEN <val1> THEN ... WHEN <val2> THEN ... ELSE ... END`
 <br/>
-这种更简洁的形式优化了常量值匹配，并内部使用 `caseWithExpression()`。
+这种更简洁的形式优化了常量值匹配，并在内部使用 `caseWithExpression()`。
 
 例如，以下是有效的：
 
@@ -364,15 +372,15 @@ WHERE number < 3
 3 rows in set. Elapsed: 0.001 sec.
 ```
 
-### 注意事项 {#caveats}
+### 注意事项  {#caveats}
 
-ClickHouse 在评估任何条件之前确定 CASE 表达式（或其内部等效项，例如 `multiIf`）的结果类型。当返回表达式的类型不同（例如不同的时区或数值类型）时，这一点很重要。
+ClickHouse 在评估任何条件之前确定 CASE 表达式（或其内部等效物，例如 `multiIf`）的结果类型。当返回表达式的类型不同，例如时区或数字类型不同时，这一点非常重要。
 
 - 结果类型是根据所有分支中最大的兼容类型选择的。
-- 一旦选择了这种类型，所有其他分支会隐式转换为该类型——即使它们的逻辑在运行时从未执行。
-- 对于类型如 DateTime64，其中时区是类型签名的一部分，这可能会导致意外行为：第一次遇到的时区可能会用于所有分支，即使其他分支指定了不同的时区。
+- 一旦选择了该类型，所有其他分支都被隐式转换为此类型 - 即使它们的逻辑在运行时永远不会执行。
+- 对于像 DateTime64 这样的类型，其中时区是类型签名的一部分，这可能会导致意外行为：第一个遇到的时区可能被用于所有分支，即使其他分支指定了不同的时区。
 
-例如，下面所有行返回的时间戳都在第一个匹配分支的时区中，即 `Asia/Kolkata`
+例如，下面所有行都返回第一个匹配分支的时间戳，即 `Asia/Kolkata`
 
 ```sql
 SELECT
@@ -402,9 +410,9 @@ WHERE number < 3
 3 rows in set. Elapsed: 0.011 sec.
 ```
 
-在这里，ClickHouse 看到了多个 `DateTime64(3, <timezone>)` 返回类型。它推断公共类型为 `DateTime64(3, 'Asia/Kolkata'`，作为它看到的第一个类型，隐式转换其他分支为该类型。
+在这里，ClickHouse 看到多个 `DateTime64(3, <timezone>)` 返回类型。它推断出公共类型为 `DateTime64(3, 'Asia/Kolkata'`，将其他分支隐式转换为此类型。
 
-这可以通过转换为字符串来解决，以保留预期的时区格式：
+这可以通过转换为字符串以保留预期的时区格式来解决：
 
 ```sql
 SELECT

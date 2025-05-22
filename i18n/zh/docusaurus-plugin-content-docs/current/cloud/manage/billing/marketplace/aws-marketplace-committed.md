@@ -1,7 +1,7 @@
 ---
 'slug': '/cloud/billing/marketplace/aws-marketplace-committed-contract'
-'title': 'AWS Marketplace 订阅合同'
-'description': '通过 AWS Marketplace 订阅 ClickHouse Cloud（订阅合同）'
+'title': 'AWS Marketplace 承诺合同'
+'description': '通过 AWS Marketplace 订阅 ClickHouse Cloud（承诺合同）'
 'keywords':
 - 'aws'
 - 'amazon'
@@ -21,15 +21,15 @@ import aws_marketplace_payg_10 from '@site/static/images/cloud/manage/billing/ma
 import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-11.png';
 import aws_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-12.png';
 
-开始通过一个承诺合同在 [AWS Marketplace](https://aws.amazon.com/marketplace) 上使用 ClickHouse Cloud。承诺合同，也称为私有报价，允许客户在一段时间内承诺在 ClickHouse Cloud 上消费一定金额。
+开始使用 [AWS Marketplace](https://aws.amazon.com/marketplace) 上的 ClickHouse Cloud 中的承诺合同。承诺合同，也称为私人优惠，允许客户承诺在一段时间内在 ClickHouse Cloud 上支出一定金额。
 
-## 前提条件 {#prerequisites}
+## 先决条件 {#prerequisites}
 
-- 根据特定合同条款从 ClickHouse 获得的私有报价。
+- 具有特定合同条款的 ClickHouse 私人优惠。
 
 ## 注册步骤 {#steps-to-sign-up}
 
-1. 您应该已收到一封包含审查和接受您的私有报价的链接的电子邮件。
+1. 您应该收到一封电子邮件，其中包含一个链接，以查看和接受您的私人优惠。
 
 <br />
 
@@ -37,11 +37,11 @@ import aws_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/ma
 
 <br />
 
-2. 点击电子邮件中的 **审核报价** 链接。这将带您进入 AWS Marketplace 页面，查看私有报价的详细信息。在接受私有报价时，在合同选项的下拉列表中选择1作为单位数量。
+2. 点击电子邮件中的 **Review Offer** 链接。这应该会将您带到包含私人优惠详情的 AWS Marketplace 页面。在接受私人优惠时，在合同选项下拉列表中选择 1 作为单位数量。
 
-3. 完成 AWS 门户上的订阅步骤，并点击 **设置您的帐户**。 此时重定向到 ClickHouse Cloud 是非常重要的，您可以注册一个新帐户或使用现有帐户登录。如果不完成此步骤，我们将无法将您的 AWS Marketplace 订阅与 ClickHouse Cloud 关联。
+3. 完成 AWS 门户上的订阅步骤，然后点击 **Set up your account**。此时重定向到 ClickHouse Cloud 是非常重要的，并且需要注册新帐户或使用现有帐户登录。如果未完成此步骤，我们将无法将您的 AWS Marketplace 订阅与 ClickHouse Cloud 关联。
 
-4. 一旦您重定向到 ClickHouse Cloud，您可以选择使用现有帐户登录或注册新帐户。此步骤非常重要，以便我们能够将您的 ClickHouse Cloud 组织与 AWS Marketplace 账单绑定。
+4. 一旦您重定向到 ClickHouse Cloud，您可以使用现有帐户登录或注册新帐户。此步骤非常重要，以便我们能够将您的 ClickHouse Cloud 组织绑定到 AWS Marketplace 账单。
 
 <br />
 
@@ -49,7 +49,7 @@ import aws_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/ma
 
 <br />
 
-如果您是新的 ClickHouse Cloud 用户，请在页面底部点击 **注册**。系统会提示您创建新用户并验证电子邮件。验证您的电子邮件后，您可以离开 ClickHouse Cloud 登陆页面，使用新用户名登录 [https://console.clickhouse.cloud](https://console.clickhouse.cloud)。
+如果您是新用户，请在页面底部点击 **Register**。系统会提示您创建新用户并验证电子邮件。在验证您的电子邮件后，您可以离开 ClickHouse Cloud 登录页面，并在 [https://console.clickhouse.cloud](https://console.clickhouse.cloud) 使用新用户名登录。
 
 <br />
 
@@ -57,7 +57,7 @@ import aws_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/ma
 
 <br />
 
-请注意，如果您是新用户，还需要提供一些关于您业务的基本信息。请参见以下屏幕截图。
+请注意，如果您是新用户，您还需要提供一些关于您业务的基本信息。请参见下面的截图。
 
 <br />
 
@@ -71,11 +71,11 @@ import aws_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/ma
 
 <br />
 
-如果您是现有的 ClickHouse Cloud 用户，只需使用您的凭据登录。
+如果您是现有的 ClickHouse Cloud 用户，只需使用您的凭据登录即可。
 
-5. 成功登录后，将创建一个新的 ClickHouse Cloud 组织。该组织将与您的 AWS 账单账户相连，所有使用情况将通过您的 AWS 账户进行计费。
+5. 成功登录后，将创建一个新的 ClickHouse Cloud 组织。该组织将与您的 AWS 账单帐户连接，所有使用情况将通过您的 AWS 账户进行计费。
 
-6. 登录后，您可以确认您的账单确实与 AWS Marketplace 绑定，并开始设置您的 ClickHouse Cloud 资源。
+6. 登录后，您可以确认您的计费确实与 AWS Marketplace 绑定，并开始设置您的 ClickHouse Cloud 资源。
 
 <br />
 
@@ -95,4 +95,4 @@ import aws_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/ma
 
 <br />
 
-如果您遇到任何问题，请随时联系我们的 [支持团队](https://clickhouse.com/support/program)。
+如果您遇到任何问题，请随时联系 [我们的支持团队](https://clickhouse.com/support/program)。

@@ -1,13 +1,26 @@
+---
+'slug': '/examples/aggregate-function-combinators/sumMap'
+'title': 'sumMap'
+'description': '使用 sumMap 组合器的示例'
+'keywords':
+- 'sum'
+- 'map'
+- 'combinator'
+- 'examples'
+- 'sumMap'
+'sidebar_label': 'sumMap'
+---
+
 
 # sumMap {#summap}
 
 ## 描述 {#description}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可以应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum) 函数，以计算 Map 中每个键对应值的总和，使用 `sumMap` 聚合组合器函数。
+[`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可以应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum) 函数，以根据每个键计算 Map 中值的总和，使用 `sumMap` 聚合组合器函数。
 
 ## 示例用法 {#example-usage}
 
-在这个例子中，我们将创建一个表，存储状态代码及其在不同时间段的计数，每行包含一个状态代码与其相应计数的 Map。我们将使用 `sumMap` 计算每个状态代码在每个时间段内的总计数。
+在这个例子中，我们将创建一个表，用于存储状态码及其在不同时间段内的计数，每行包含一个状态码到其对应计数的 Map。我们将使用 `sumMap` 计算每个时间段内每个状态码的总计数。
 
 ```sql title="Query"
 CREATE TABLE metrics(
@@ -29,7 +42,7 @@ FROM metrics
 GROUP BY timeslot;
 ```
 
-`sumMap` 函数将计算每个状态代码在每个时间段内的总计数。例如：
+`sumMap` 函数将计算每个时间段内每个状态码的总计数。例如：
 - 在时间段 '2000-01-01 00:00:00':
   - 状态 'a': 15
   - 状态 'b': 25

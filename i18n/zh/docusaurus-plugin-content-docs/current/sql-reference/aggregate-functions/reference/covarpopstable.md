@@ -1,3 +1,10 @@
+---
+'description': '计算总体协方差的值'
+'sidebar_position': 123
+'slug': '/sql-reference/aggregate-functions/reference/covarpopstable'
+'title': 'covarPopStable'
+---
+
 
 # covarPopStable
 
@@ -7,8 +14,7 @@ $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n}
 $$
 
-它与[covarPop](../reference/covarpop.md)函数类似，但使用了数值稳定的算法。因此，`covarPopStable`比`covarPop`慢，但产生更准确的结果。
-
+它与[covarPop](../reference/covarpop.md)函数类似，但使用了数值稳定的算法。因此，`covarPopStable`比`covarPop`更慢，但产生更准确的结果。
 
 **语法**
 
@@ -20,8 +26,6 @@ covarPop(x, y)
 
 - `x` — 第一个变量。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
 - `y` — 第二个变量。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
-
-
 
 **返回值**
 

@@ -1,6 +1,13 @@
+---
+'description': '返回指数平滑移动平均值的和，时间序列在索引 `t` 的时间上。'
+'sidebar_position': 136
+'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedSum'
+'title': 'exponentialTimeDecayedSum'
+---
+
 ## exponentialTimeDecayedSum {#exponentialtimedecayedsum}
 
-返回时间序列在时间索引 `t` 处的指数加权移动平均值的总和。
+返回时间序列在索引 `t` 处的指数平滑移动平均值的总和。
 
 **语法**
 
@@ -11,7 +18,7 @@ exponentialTimeDecayedSum(x)(v, t)
 **参数**
 
 - `v` — 值。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)。
-- `t` — 时间。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)，[DateTime](../../data-types/datetime.md)，[DateTime64](../../data-types/datetime64.md)。
+- `t` — 时间。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)、[日期时间](../../data-types/datetime.md)、[日期时间64](../../data-types/datetime64.md)。
 
 **参数**
 
@@ -19,7 +26,7 @@ exponentialTimeDecayedSum(x)(v, t)
 
 **返回值**
 
-- 返回在给定时间点的指数加权移动平均值的总和。 [Float64](../../data-types/float.md)。
+- 返回给定时间点的指数平滑移动平均值的总和。 [Float64](../../data-types/float.md)。
 
 **示例**
 

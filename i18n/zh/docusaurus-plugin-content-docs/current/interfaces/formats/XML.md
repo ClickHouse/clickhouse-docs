@@ -1,17 +1,28 @@
+---
+'alias': []
+'description': 'XML 格式的文档'
+'input_format': false
+'keywords':
+- 'XML'
+'output_format': true
+'slug': '/interfaces/formats/XML'
+'title': 'XML'
+---
+
 | 输入 | 输出 | 别名 |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+|------|------|------|
+| ✗    | ✔    |      |
 
 ## 描述 {#description}
 
 `XML` 格式仅适用于输出，而不适用于解析。
 
-如果列名没有可接受的格式，则使用 'field' 作为元素名称。通常，XML 结构遵循 JSON 结构。
-与 JSON 一样，非法的 UTF-8 字节序列会被替换为替代字符 `�`，因此输出文本将由有效的 UTF-8 字节序列组成。
+如果列名没有符合要求的格式，则使用 'field' 作为元素名称。一般而言，XML 结构遵循 JSON 结构。
+与 JSON 一样，无效的 UTF-8 字符序列会被替换为替代字符 `�`，因此输出文本将由有效的 UTF-8 字符序列组成。
 
 在字符串值中，字符 `<` 和 `&` 被转义为 `<` 和 `&`。
 
-数组输出为 `<array><elem>Hello</elem><elem>World</elem>...</array>`，元组为 `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`。
+数组的输出形式为 `<array><elem>Hello</elem><elem>World</elem>...</array>`，而元组的输出形式为 `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`。
 
 ## 示例用法 {#example-usage}
 

@@ -1,6 +1,17 @@
+---
+'alias': []
+'description': 'LineAsStringWithNames 格式的文档'
+'input_format': true
+'keywords':
+- 'LineAsStringWithNames'
+'output_format': true
+'slug': '/interfaces/formats/LineAsStringWithNames'
+'title': 'LineAsStringWithNames'
+---
+
 | 输入 | 输出 | 别名 |
-|------|------|------|
-| ✗    | ✔    |      |
+|-------|--------|-------|
+| ✗     | ✔      |       |
 
 ## 描述 {#description}
 

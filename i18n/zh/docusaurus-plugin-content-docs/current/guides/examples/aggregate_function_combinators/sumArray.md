@@ -1,15 +1,28 @@
+---
+'slug': '/examples/aggregate-function-combinators/sumArray'
+'title': 'sumArray'
+'description': '使用 sumArray 组合器的示例'
+'keywords':
+- 'sum'
+- 'array'
+- 'combinator'
+- 'examples'
+- 'sumArray'
+'sidebar_label': 'sumArray'
+---
+
 
 # sumArray {#sumarray}
 
 ## 描述 {#description}
 
-[`Array`](/sql-reference/aggregate-functions/combinators#-array) 组合器可以应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum) 函数，以计算数组中所有元素的和，使用 `sumArray` 聚合组合器函数。
+[`Array`](/sql-reference/aggregate-functions/combinators#-array) 组合器可以应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum) 函数，以使用 `sumArray` 聚合组合器函数计算数组中所有元素的总和。
 
-当你需要计算数据集中多个数组中所有元素的总和时，`sumArray` 函数非常有用。
+当您需要计算数据集中多个数组中所有元素的总和时，`sumArray` 函数非常有用。
 
 ## 示例用法 {#example-usage}
 
-在这个例子中，我们将使用一个样本数据集，展示不同产品类别的每日销售额，以演示 `sumArray` 的工作原理。我们将计算每一天所有类别的总销售额。
+在这个例子中，我们将使用一个关于不同产品类别的每日销售的示例数据集来演示 `sumArray` 的工作原理。我们将计算每一天所有类别的总销售额。
 
 ```sql title="Query"
 CREATE TABLE daily_category_sales
@@ -32,9 +45,9 @@ FROM daily_category_sales
 GROUP BY date, category_sales;
 ```
 
-`sumArray` 函数将对每个 `category_sales` 数组中的所有元素进行求和。例如，在 `2024-01-01`，它计算 `100 + 200 + 150 = 450`。这给出了与 `arraySum` 相同的结果。
+`sumArray` 函数将对每个 `category_sales` 数组中的所有元素求和。例如，在 `2024-01-01`，它计算 `100 + 200 + 150 = 450`。这与 `arraySum` 得到的结果相同。
 
-## 另请参见 {#see-also}
+## 另请参阅 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`arraySum`](/sql-reference/functions/array-functions#arraysum)
 - [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)

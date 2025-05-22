@@ -1,6 +1,6 @@
 ---
 'alias': []
-'description': 'PrettySpaceNoEscapes格式的文档'
+'description': 'PrettySpaceNoEscapes 格式的 Documentation'
 'input_format': false
 'keywords':
 - 'PrettySpaceNoEscapes'
@@ -15,13 +15,13 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 |-------|---------|-------|
 | ✗     | ✔       |       |
 
-## 描述 {#description}
+## Description {#description}
 
-与 [`PrettySpace`](./PrettySpace.md) 格式不同的是，未使用 [ANSI 转义序列](http://en.wikipedia.org/wiki/ANSI_escape_code)。 
-这对于在浏览器中显示该格式以及使用 'watch' 命令行工具是必要的。
+与 [`PrettySpace`](./PrettySpace.md) 格式不同的是，不使用 [ANSI-escape sequences](http://en.wikipedia.org/wiki/ANSI_escape_code)。 
+这是在浏览器中显示该格式，以及使用 'watch' 命令行工具所必需的。
 
-## 示例用法 {#example-usage}
+## Example Usage {#example-usage}
 
-## 格式设置 {#format-settings}
+## Format Settings {#format-settings}
 
 <PrettyFormatSettings/>

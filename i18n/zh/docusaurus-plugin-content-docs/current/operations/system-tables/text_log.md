@@ -1,19 +1,29 @@
+---
+'description': '系统表包含日志条目。'
+'keywords':
+- 'system table'
+- 'text_log'
+'slug': '/operations/system-tables/text_log'
+'title': 'system.text_log'
+---
+
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
 
 # system.text_log
 
 <SystemTableCloud/>
 
-包含日志条目。写入此表的日志级别可以限制为 `text_log.level` 服务器设置。
+包含日志条目。写入此表的日志级别可以通过 `text_log.level` 服务器设置进行限制。
 
 列：
 
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器的主机名。
+- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器的 hostname。
 - `event_date` (Date) — 条目的日期。
 - `event_time` (DateTime) — 条目的时间。
-- `event_time_microseconds` (DateTime64) — 带有微秒精度的条目时间。
+- `event_time_microseconds` (DateTime64) — 精确到微秒的条目时间。
 - `microseconds` (UInt32) — 条目的微秒数。
-- `thread_name` (String) — 进行日志记录的线程名称。
+- `thread_name` (String) — 记录日志的线程名称。
 - `thread_id` (UInt64) — 操作系统线程 ID。
 - `level` (`Enum8`) — 条目级别。可能的值：
     - `1` 或 `'Fatal'`。
@@ -25,11 +35,11 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
     - `7` 或 `'Debug'`。
     - `8` 或 `'Trace'`。
 - `query_id` (String) — 查询的 ID。
-- `logger_name` (LowCardinality(String)) — 日志记录器的名称（即 `DDLWorker`）。
+- `logger_name` (LowCardinality(String)) — 日志记录器的名称（即 `DDLWorker`）。
 - `message` (String) — 消息内容。
-- `revision` (UInt32) — ClickHouse 修订版本。
-- `source_file` (LowCardinality(String)) — 进行日志记录的源文件。
-- `source_line` (UInt64) — 进行日志记录的源代码行。
+- `revision` (UInt32) — ClickHouse 修订版。
+- `source_file` (LowCardinality(String)) — 记录日志的源文件。
+- `source_line` (UInt64) — 记录日志的源行。
 - `message_format_string` (LowCardinality(String)) — 用于格式化消息的格式字符串。
 - `value1` (String) - 用于格式化消息的参数 1。
 - `value2` (String) - 用于格式化消息的参数 2。

@@ -1,13 +1,26 @@
+---
+'slug': '/examples/aggregate-function-combinators/quantilesTimingIf'
+'title': 'quantilesTimingIf'
+'description': '使用 quantilesTimingIf 组合器的示例'
+'keywords':
+- 'quantilesTiming'
+- 'if'
+- 'combinator'
+- 'examples'
+- 'quantilesTimingIf'
+'sidebar_label': 'quantilesTimingIf'
+---
+
 
 # quantilesTimingIf {#quantilestimingif}
 
 ## 描述 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming) 函数，以计算当条件为真时的行的时间值的分位数，使用 `quantilesTimingIf` 聚合组合器函数。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming) 函数，以计算条件为真的行的时间值的分位数，使用 `quantilesTimingIf` 聚合组合器函数。
 
 ## 示例用法 {#example-usage}
 
-在这个例子中，我们将创建一个表，存储不同端点的 API 响应时间，并将使用 `quantilesTimingIf` 计算成功请求的响应时间分位数。
+在这个例子中，我们将创建一个表来存储不同端点的 API 响应时间，并且我们将使用 `quantilesTimingIf` 来计算成功请求的响应时间分位数。
 
 ```sql title="Query"
 CREATE TABLE api_responses(
@@ -49,13 +62,13 @@ FROM api_responses
 GROUP BY endpoint;
 ```
 
-`quantilesTimingIf` 函数将仅计算成功请求（is_successful = 1）的分位数。返回的数组按顺序包含以下分位数：
+`quantilesTimingIf` 函数只会计算成功请求的分位数（is_successful = 1）。返回的数组按顺序包含以下分位数：
 - 0（最小值）
-- 0.25（第一四分位数）
+- 0.25（第一个四分位数）
 - 0.5（中位数）
-- 0.75（第三四分位数）
-- 0.95（95百分位数）
-- 0.99（99百分位数）
+- 0.75 （第三个四分位数）
+- 0.95（95 百分位数）
+- 0.99（99 百分位数）
 - 1.0（最大值）
 
 ```response title="Response"
@@ -66,6 +79,6 @@ GROUP BY endpoint;
    └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
 
-## 另请参见 {#see-also}
+## 另见 {#see-also}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
 - [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

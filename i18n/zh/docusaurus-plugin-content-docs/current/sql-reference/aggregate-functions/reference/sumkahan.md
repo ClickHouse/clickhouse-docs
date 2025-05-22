@@ -1,6 +1,13 @@
-计算使用 [Kahan 补偿求和算法](https://en.wikipedia.org/wiki/Kahan_summation_algorithm) 的数字总和。
-比 [sum](./sum.md) 函数慢。
-补偿仅对 [Float](../../../sql-reference/data-types/float.md) 类型有效。
+---
+'description': '使用Kahan补偿求和算法计算数字的总和'
+'sidebar_position': 197
+'slug': '/sql-reference/aggregate-functions/reference/sumkahan'
+'title': 'sumKahan'
+---
+
+计算使用 [Kahan补偿求和算法](https://en.wikipedia.org/wiki/Kahan_summation_algorithm) 的数字总和。  
+速度慢于 [sum](./sum.md) 函数。  
+补偿仅适用于 [Float](../../../sql-reference/data-types/float.md) 类型。
 
 **语法**
 

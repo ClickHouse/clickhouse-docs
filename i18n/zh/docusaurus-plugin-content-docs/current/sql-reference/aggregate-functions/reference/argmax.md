@@ -1,7 +1,15 @@
+---
+'description': '计算最大 `val` 值的 `arg` 值。'
+'sidebar_position': 109
+'slug': '/sql-reference/aggregate-functions/reference/argmax'
+'title': 'argMax'
+---
+
 
 # argMax
 
-计算最大 `val` 值的 `arg` 值。如果有多行的 `val` 值相等且为最大，返回哪个关联的 `arg` 是不确定的。`arg` 和 `max` 两部分都表现为 [聚合函数](/sql-reference/aggregate-functions/index.md)，处理时都 [跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，并在有可用的非 `Null` 值时返回非 `Null` 值。
+计算最大 `val` 值的 `arg` 值。如果存在多个行的 `val` 值相同且为最大，则返回哪个相关的 `arg` 是不确定的。
+这两个部分 `arg` 和 `max` 的行为类似于 [聚合函数](/sql-reference/aggregate-functions/index.md)，在处理过程中均会 [跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，并在有可用的非 `Null` 值时返回非 `Null` 值。
 
 **语法**
 
@@ -99,6 +107,6 @@ SELECT argMax(a, tuple(b)) FROM test;
 └─────────────────────┘
 ```
 
-**另见**
+**参见**
 
 - [Tuple](/sql-reference/data-types/tuple.md)

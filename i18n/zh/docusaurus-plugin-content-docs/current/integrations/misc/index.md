@@ -5,14 +5,14 @@
 - 'Easypanel'
 - 'Splunk'
 'title': '工具'
-'description': '工具部分的落地页'
+'description': '工具部分的登录页面'
 ---
 
 
 # 工具
 
-| 页面              |
-|-------------------|
-| [可视化界面](/interfaces/third-party/gui) |
-| [代理](/interfaces/third-party/proxy)         |
-| [集成](/interfaces/third-party/integrations)      |
+| 页面                                      |
+|-------------------------------------------|
+| [可视化接口](/interfaces/third-party/gui)             |
+| [代理](/interfaces/third-party/proxy)                 |
+| [集成](/interfaces/third-party/integrations)          |

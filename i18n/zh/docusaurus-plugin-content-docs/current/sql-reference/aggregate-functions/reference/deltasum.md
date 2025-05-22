@@ -1,10 +1,17 @@
+---
+'description': '对连续行之间的算术差进行求和。'
+'sidebar_position': 129
+'slug': '/sql-reference/aggregate-functions/reference/deltasum'
+'title': 'deltaSum'
+---
+
 
 # deltaSum
 
-对连续行之间的算术差值进行求和。如果差值为负，则将其忽略。
+计算连续行之间的算术差。如果差值为负，则会被忽略。
 
 :::note
-必须对底层数据进行排序，以确保此函数正常工作。如果您希望在一个 [物化视图](/sql-reference/statements/create/view#materialized-view) 中使用此函数，您可能希望使用 [deltaSumTimestamp](/sql-reference/aggregate-functions/reference/deltasumtimestamp) 方法。
+底层数据必须经过排序才能正确使用此函数。如果您希望在 [物化视图](/sql-reference/statements/create/view#materialized-view) 中使用此函数，您可能更想使用 [deltaSumTimestamp](/sql-reference/aggregate-functions/reference/deltasumtimestamp) 方法。
 :::
 
 **语法**
@@ -19,7 +26,7 @@ deltaSum(value)
 
 **返回值**
 
-- 一个获得的算术差值，类型为 `Integer` 或 `Float`。
+- 返回一个 `Integer` 或 `Float` 类型的算术差值。
 
 **示例**
 
@@ -65,6 +72,6 @@ SELECT deltaSum(arrayJoin([2.25, 3, 4.5]));
 └─────────────────────────────────────┘
 ```
 
-## 另请参见 {#see-also}
+## 另见 {#see-also}
 
 - [runningDifference](/sql-reference/functions/other-functions#runningDifference)

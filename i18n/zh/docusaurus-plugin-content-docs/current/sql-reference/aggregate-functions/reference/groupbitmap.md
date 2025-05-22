@@ -1,7 +1,14 @@
+---
+'description': '从无符号整数列进行 Bitmap 或聚合计算，返回类型为 UInt64 的基数，如果添加后缀 -State，则返回一个位图对象'
+'sidebar_position': 148
+'slug': '/sql-reference/aggregate-functions/reference/groupbitmap'
+'title': 'groupBitmap'
+---
+
 
 # groupBitmap
 
-从无符号整数列中计算位图或聚合，返回 UInt64 类型的基数，如果添加后缀 -State，则返回 [bitmap object](../../../sql-reference/functions/bitmap-functions.md)。
+Bitmap 或聚合计算来自一个无符号整数列，返回 UInt64 类型的基数，如果添加后缀 -State，则返回 [bitmap 对象](../../../sql-reference/functions/bitmap-functions.md)。
 
 ```sql
 groupBitmap(expr)

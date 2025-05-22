@@ -1,6 +1,11 @@
-请参考[官方文档](/interfaces/mysql)了解如何设置启用MySQL接口的ClickHouse服务器。
+---
+null
+...
+---
 
-除了在服务器的`config.xml`中添加条目
+请参考 [官方文档](/interfaces/mysql) 了解如何设置启用 MySQL 接口的 ClickHouse 服务器。
+
+除了在服务器的 `config.xml` 中添加条目
 
 ```xml
 <clickhouse>
@@ -8,24 +13,26 @@
 </clickhouse>
 ```
 
-外，还_要求_为使用MySQL接口的用户使用[Double SHA1密码加密](/operations/settings/settings-users#user-namepassword)。
+外，还 **要求** 使用
+[Double SHA1 密码加密](/operations/settings/settings-users#user-namepassword)
+为将使用 MySQL 接口的用户。
 
-从shell生成一个用Double SHA1加密的随机密码：
+从 shell 中生成使用 Double SHA1 加密的随机密码：
 
 ```shell
 PASSWORD=$(base64 < /dev/urandom | head -c16); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
 ```
 
-输出应该如下所示：
+输出应如下所示：
 
 ```
 LZOQYnqQN4L/T6L0
 fbc958cc745a82188a51f30de69eebfc67c40ee4
 ```
 
-第一行是生成的密码，第二行是我们可以用来配置ClickHouse的哈希。
+第一行是生成的密码，第二行是我们可以用来配置 ClickHouse 的哈希值。
 
-以下是使用生成的哈希的`mysql_user`示例配置：
+以下是使用生成的哈希值的 `mysql_user` 的示例配置：
 
 `/etc/clickhouse-server/users.d/mysql_user.xml`
 
@@ -42,9 +49,10 @@ fbc958cc745a82188a51f30de69eebfc67c40ee4
 </users>
 ```
 
-用您自己生成的Double SHA1哈希替换`password_double_sha1_hex`条目。
+将 `password_double_sha1_hex` 条目替换为您自己的生成的 Double SHA1 哈希。
 
-此外，建议使用`use_mysql_types_in_show_columns`来在`SHOW [FULL] COLUMNS`查询结果中显示原生MySQL类型，而不是ClickHouse类型，这样可以让BI工具在使用MySQL连接器时正确地查看数据库模式。
+此外，建议使用 `use_mysql_types_in_show_columns`
+在 `SHOW [FULL] COLUMNS` 查询结果中显示原生 MySQL 类型，而不是 ClickHouse 类型，这样可以让 BI 工具在使用 MySQL 连接器时正确地探查数据库模式。
 
 例如：
 
@@ -60,8 +68,8 @@ fbc958cc745a82188a51f30de69eebfc67c40ee4
 
 或者将其分配给不同的配置文件，而不是默认的配置文件。
 
-如果您有可用的`mysql`二进制文件，可以从命令行测试连接。
-使用上述示例用户名(`mysql_user`)和密码(`LZOQYnqQN4L/T6L0`)，命令行将是：
+如果您有可用的 `mysql` 二进制文件，您可以从命令行测试连接。
+使用上面的示例用户名 (`mysql_user`) 和密码 (`LZOQYnqQN4L/T6L0`)，命令行应为：
 
 ```bash
 mysql --protocol tcp -h localhost -u mysql_user -P 9004 --password=LZOQYnqQN4L/T6L0
@@ -81,7 +89,7 @@ mysql> show databases;
 Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 ```
 
-最后，配置Clickhouse服务器以侦听所需的IP地址。 例如，在`config.xml`中取消注释以下以在所有地址上侦听：
+最后，配置 Clickhouse 服务器以监听所需的 IP 地址。 例如，在 `config.xml` 中，取消注释以下内容以监听所有地址：
 
 ```bash
 <listen_host>::</listen_host> 

@@ -1,3 +1,11 @@
+---
+'description': '将字典数据以 ClickHouse 表的形式显示。与 Dictionary 引擎的工作方式相同。'
+'sidebar_label': '字典'
+'sidebar_position': 47
+'slug': '/sql-reference/table-functions/dictionary'
+'title': '字典'
+---
+
 
 # dictionary 表函数
 
@@ -11,7 +19,7 @@ dictionary('dict')
 
 ## 参数 {#arguments}
 
-- `dict` — 字典名称。 [String](../../sql-reference/data-types/string.md)。
+- `dict` — 字典名称。 [字符串](../../sql-reference/data-types/string.md)。
 
 ## 返回值 {#returned_value}
 
@@ -19,7 +27,7 @@ dictionary('dict')
 
 ## 示例 {#examples}
 
-输入表 `dictionary_source_table`:
+输入表 `dictionary_source_table`：
 
 ```text
 ┌─id─┬─value─┐
@@ -28,20 +36,20 @@ dictionary('dict')
 └────┴───────┘
 ```
 
-创建字典:
+创建字典：
 
 ```sql
 CREATE DICTIONARY new_dictionary(id UInt64, value UInt64 DEFAULT 0) PRIMARY KEY id
 SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() USER 'default' TABLE 'dictionary_source_table')) LAYOUT(DIRECT());
 ```
 
-查询:
+查询：
 
 ```sql
 SELECT * FROM dictionary('new_dictionary');
 ```
 
-结果:
+结果：
 
 ```text
 ┌─id─┬─value─┐
@@ -52,4 +60,4 @@ SELECT * FROM dictionary('new_dictionary');
 
 ## 相关 {#related}
 
-- [Dictionary engine](/engines/table-engines/special/dictionary)
+- [字典引擎](/engines/table-engines/special/dictionary)

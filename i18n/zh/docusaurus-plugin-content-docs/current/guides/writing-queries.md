@@ -1,4 +1,12 @@
-ClickHouse 是一个 SQL 数据库，您可以通过编写您已经熟悉的 `SELECT` 查询来查询数据。例如：
+---
+'sidebar_position': 3
+'sidebar_label': '选择数据'
+'title': '选择 ClickHouse 数据'
+'slug': '/guides/writing-queries'
+'description': '了解 Selecting ClickHouse Data'
+---
+
+ClickHouse 是一个 SQL 数据库，您可以通过编写与您熟悉的相同类型的 `SELECT` 查询来查询数据。例如：
 
 ```sql
 SELECT *
@@ -7,7 +15,7 @@ ORDER BY timestamp
 ```
 
 :::note
-有关语法和可用子句及选项的更多详细信息，请参阅 [SQL 参考](../sql-reference/statements/select/index.md)。
+查看 [SQL 参考](../sql-reference/statements/select/index.md) 以获取有关语法和可用子句及选项的更多详细信息。
 :::
 
 请注意，响应以漂亮的表格格式返回：
@@ -23,7 +31,7 @@ ORDER BY timestamp
 4 rows in set. Elapsed: 0.008 sec.
 ```
 
-添加一个 `FORMAT` 子句以指定 ClickHouse 的 [许多支持的输出格式](../interfaces/formats.md) 之一：
+添加一个 `FORMAT` 子句以指定 ClickHouse 的 [多种支持的输出格式](../interfaces/formats.md) 中的一种：
 ```sql
 SELECT *
 FROM helloworld.my_first_table
@@ -45,5 +53,5 @@ Query id: 3604df1c-acfd-4117-9c56-f86c69721121
 ```
 
 :::note
-ClickHouse 支持超过 70 种输入和输出格式，因此在成千上万的函数和所有数据格式之间，您可以使用 ClickHouse 执行一些令人印象深刻且快速的 ETL 类数据转换。实际上，您甚至不需要一个运行中的 ClickHouse 服务器来转换数据 - 您可以使用 `clickhouse-local` 工具。有关 `clickhouse-local` 的详细信息，请查看 [文档页面](../operations/utilities/clickhouse-local.md)。
+ClickHouse 支持 70 多种输入和输出格式，因此在成千上万的函数和所有数据格式之间，您可以使用 ClickHouse 执行一些令人印象深刻且快速的 ETL 类数据转换。实际上，您甚至不需要运行中的 ClickHouse 服务器来转换数据 - 您可以使用 `clickhouse-local` 工具。查看 [`clickhouse-local` 的文档页面](../operations/utilities/clickhouse-local.md) 以获取详细信息。
 :::

@@ -1,15 +1,15 @@
 ---
-'description': '为LoongArch64架构从源代码构建ClickHouse的指南'
-'sidebar_label': '在Linux上为LoongArch64构建'
+'description': '为 LoongArch64 架构从源代码构建 ClickHouse 的指南'
+'sidebar_label': '在 Linux 上为 LoongArch64 构建'
 'sidebar_position': 35
 'slug': '/development/build-cross-loongarch'
-'title': '在Linux上为LoongArch64构建'
+'title': '在 Linux 上为 LoongArch64 构建'
 ---
 
 
-# 在 LoongArch64 上构建 Linux 
+# 在 LoongArch64 上构建
 
-ClickHouse 对 LoongArch64 的支持为实验性。
+ClickHouse 对 LoongArch64 提供实验性支持
 
 ## 构建 ClickHouse {#build-clickhouse}
 

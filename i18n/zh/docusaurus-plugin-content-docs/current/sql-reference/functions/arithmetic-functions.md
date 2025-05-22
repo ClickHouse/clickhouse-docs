@@ -1,14 +1,22 @@
+---
+'description': 'Documentation for Arithmetic Functions'
+'sidebar_label': 'Arithmetic'
+'sidebar_position': 5
+'slug': '/sql-reference/functions/arithmetic-functions'
+'title': '算术函数'
+---
+
 
 # 算术函数
 
-算术函数可以处理任何类型为 `UInt8`、`UInt16`、`UInt32`、`UInt64`、`Int8`、`Int16`、`Int32`、`Int64`、`Float32` 或 `Float64` 的两个操作数。
+算术函数适用于任何两个操作数，其类型为 `UInt8`、 `UInt16`、 `UInt32`、 `UInt64`、 `Int8`、 `Int16`、 `Int32`、 `Int64`、 `Float32` 或 `Float64`。
 
-在执行操作之前，两个操作数都会被转换为结果类型。结果类型的确定方式如下（除非在下面的函数文档中另有说明）：
-- 如果两个操作数都宽度不超过 32 位，结果类型的大小将是两个操作数中的较大者之后的下一个更大类型的大小（整数大小提升）。例如，`UInt8 + UInt16 = UInt32` 或 `Float32 * Float32 = Float64`。
-- 如果其中一个操作数有 64 位或更多，结果类型的大小将与两个操作数中的较大者相同。比如，`UInt32 + UInt128 = UInt128` 或 `Float32 * Float64 = Float64`。
-- 如果其中一个操作数是有符号的，结果类型也将是有符号的，否则将是无符号的。例如，`UInt32 * Int32 = Int64`。
+在执行操作之前，两个操作数都被强制转换为结果类型。结果类型的确定方式如下（除非函数文档中另有说明）：
+- 如果两个操作数的位宽均不超过 32 位，则结果类型的大小将是介于两个操作数中较大者之后的下一个更大类型的大小（整数大小提升）。例如，`UInt8 + UInt16 = UInt32` 或 `Float32 * Float32 = Float64`。
+- 如果其中一个操作数具有 64 位或更多，结果类型的大小将与两个操作数中较大的一个相同。例如，`UInt32 + UInt128 = UInt128` 或 `Float32 * Float64 = Float64`。
+- 如果其中一个操作数是有符号的，结果类型也将是有符号的，否则它将是无符号的。例如，`UInt32 * Int32 = Int64`。
 
-这些规则确保结果类型是能表示所有可能结果的最小类型。虽然这会在值范围边界附近引入溢出的风险，但它确保了计算使用 64 位的最大原生整数宽度快速执行。这种行为还保证与许多提供 64 位整数（BIGINT）作为最大整数类型的其他数据库的兼容性。
+这些规则确保结果类型是能够表示所有可能结果的最小类型。虽然这带来了在值范围边界附近溢出的风险，但它确保了使用最大原生整数宽度（64 位）快速执行计算。这种行为也确保与许多提供 64 位整数（BIGINT）作为最大整数类型的其他数据库的兼容性。
 
 示例：
 
@@ -22,7 +30,7 @@ SELECT toTypeName(0), toTypeName(0 + 0), toTypeName(0 + 0 + 0), toTypeName(0 + 0
 └───────────────┴────────────────────────┴─────────────────────────────────┴──────────────────────────────────────────┘
 ```
 
-溢出行为与 C++ 中的相同。
+溢出以与 C++ 相同的方式产生。
 
 ## plus {#plus}
 
@@ -34,17 +42,17 @@ SELECT toTypeName(0), toTypeName(0 + 0), toTypeName(0 + 0 + 0), toTypeName(0 + 0
 plus(a, b)
 ```
 
-可以将整数与日期或日期时间相加。前一种操作增加日期中的天数，后一种操作增加日期时间中的秒数。
+可以将整数与日期或日期时间相加。前者操作会增加日期中的天数，后者操作会增加带时间的日期中的秒数。
 
 别名： `a + b`（操作符）
 
 ## minus {#minus}
 
-计算两个值 `a` 和 `b` 的差。结果始终为有符号。
+计算两个值 `a` 和 `b` 的差。结果始终是有符号的。
 
-类似于 `plus`，可以从日期或日期时间中减去一个整数。
+与 `plus` 类似，可以从日期或日期时间中减去一个整数。
 
-此外，支持日期时间之间的减法，结果为它们之间的时间差。
+此外，支持带时间的日期之间的减法，结果为它们之间的时间差。
 
 **语法**
 
@@ -56,7 +64,7 @@ minus(a, b)
 
 ## multiply {#multiply}
 
-计算两个值 `a` 和 `b` 的积。
+计算两个值 `a` 和 `b` 的乘积。
 
 **语法**
 
@@ -70,7 +78,7 @@ multiply(a, b)
 
 计算两个值 `a` 和 `b` 的商。结果类型始终为 [Float64](../data-types/float.md)。整数除法由 `intDiv` 函数提供。
 
-除以 0 返回 `inf`、`-inf` 或 `nan`。
+除以 0 将返回 `inf`、 `-inf` 或 `nan`。
 
 **语法**
 
@@ -82,7 +90,7 @@ divide(a, b)
 
 ## divideOrNull {#divideornull}
 
-与 [divide](#divide) 类似，但在除数为零时返回 null。
+类似于 [divide](#divide)，但在除数为零时返回 null。
 
 **语法**
 
@@ -92,11 +100,11 @@ divideOrNull(a, b)
 
 ## intDiv {#intdiv}
 
-对两个值 `a` 和 `b` 执行整数除法，即计算商并向下舍入到下一个最小整数。
+执行两个值 `a` 除以 `b` 的整数除法，即计算商并向下舍入到下一个最小整数。
 
 结果与被除数（第一个参数）的宽度相同。
 
-除以零、商不适合被除数范围内或将最小负数除以负一时将引发异常。
+当除以零、商不适合被除数范围或者将最小负数除以负一时会抛出异常。
 
 **语法**
 
@@ -143,7 +151,7 @@ intDivOrZero(a, b)
 
 ## intDivOrNull {#intdivornull}
 
-与 [intDiv](#intdiv) 相似，但在除数为零时返回 null。
+类似于 [intDiv](#intdiv)，但在除数为零时返回 null。
 
 **语法**
 
@@ -153,7 +161,7 @@ intDivOrNull(a, b)
 
 ## isFinite {#isfinite}
 
-如果 Float32 或 Float64 参数不是无限且不是 NaN，则返回 1，否则返回 0。
+如果 Float32 或 Float64 参数不是无穷大且不是 NaN，则返回 1，否则该函数返回 0。
 
 **语法**
 
@@ -163,7 +171,7 @@ isFinite(x)
 
 ## isInfinite {#isinfinite}
 
-如果 Float32 或 Float64 参数是无限，则返回 1，否则返回 0。注意，NaN 返回 0。
+如果 Float32 或 Float64 参数是无穷大，则返回 1，否则该函数返回 0。注意，对于 NaN，返回 0。
 
 **语法**
 
@@ -183,8 +191,8 @@ ifNotFinite(x,y)
 
 **参数**
 
-- `x` — 要检查无限的值。 [Float\*](../data-types/float.md)。
-- `y` — 默认值。 [Float\*](../data-types/float.md)。
+- `x` — 要检查无限大的值。[Float*](../data-types/float.md)。
+- `y` — 备用值。[Float*](../data-types/float.md)。
 
 **返回值**
 
@@ -203,11 +211,11 @@ ifNotFinite(x,y)
     │     inf │                            42 │
     └─────────┴───────────────────────────────┘
 
-您可以通过使用 [三元运算符](/sql-reference/functions/conditional-functions#if) 获取类似结果： `isFinite(x) ? x : y`。
+您可以使用 [三元运算符](/sql-reference/functions/conditional-functions#if) 来获得类似的结果： `isFinite(x) ? x : y`。
 
 ## isNaN {#isnan}
 
-如果 Float32 或 Float64 参数是 NaN，则返回 1，否则返回 0。
+如果 Float32 和 Float64 参数是 NaN，则返回 1，否则该函数返回 0。
 
 **语法**
 
@@ -219,11 +227,11 @@ isNaN(x)
 
 计算两个值 `a` 除以 `b` 的余数。
 
-如果两个输入都是整数，结果类型为整数。如果其中一个输入是浮点数，则结果类型为 [Float64](../data-types/float.md)。
+如果两个输入都是整数，则结果类型为整数。如果其中一个输入是浮点数，则结果类型为 [Float64](../data-types/float.md)。
 
 余数的计算方式与 C++ 相同。对于负数，使用截断除法。
 
-除以零或将最小负数除以负一时将引发异常。
+除以零或将最小负数除以负一时会抛出异常。
 
 **语法**
 
@@ -235,7 +243,7 @@ modulo(a, b)
 
 ## moduloOrZero {#moduloorzero}
 
-与 [modulo](#modulo) 相似，但在除数为零时返回零。
+类似于 [modulo](#modulo)，但在除数为零时返回零。
 
 **语法**
 
@@ -245,7 +253,7 @@ moduloOrZero(a, b)
 
 ## moduloOrNull {#moduloornull}
 
-与 [modulo](#modulo) 相似，但在除数为零时返回 null。
+类似于 [modulo](#modulo)，但在除数为零时返回 null。
 
 **语法**
 
@@ -255,9 +263,9 @@ moduloOrNull(a, b)
 
 ## positiveModulo(a, b) {#positivemoduloa-b}
 
-与 [modulo](#modulo) 相似，但始终返回非负数。
+类似于 [modulo](#modulo)，但始终返回一个非负数。
 
-该函数比 `modulo` 慢 4-5 倍。
+此函数的速度比 `modulo` 慢 4 到 5 倍。
 
 **语法**
 
@@ -287,7 +295,7 @@ SELECT positiveModulo(-1, 10)
 
 ## positiveModuloOrNull(a, b) {#positivemoduloornulla-b}
 
-与 [positiveModulo](#positivemoduloa-b) 相似，但在除数为零时返回 null。
+类似于 [positiveModulo](#positivemoduloa-b)，但在除数为零时返回 null。
 
 **语法**
 
@@ -297,7 +305,7 @@ positiveModuloOrNull(a, b)
 
 ## negate {#negate}
 
-对值 `a` 取反。结果始终为有符号。
+取反值 `a`。结果始终是有符号的。
 
 **语法**
 
@@ -309,7 +317,7 @@ negate(a)
 
 ## abs {#abs}
 
-计算 `a` 的绝对值。如果 `a` 为无符号类型，则没有影响。如果 `a` 为有符号类型，则返回无符号数。
+计算 `a` 的绝对值。如果 `a` 是无符号类型，则没有任何效果。如果 `a` 是有符号类型，则返回无符号数字。
 
 **语法**
 
@@ -321,7 +329,7 @@ abs(a)
 
 返回两个值 `a` 和 `b` 的最大公约数。
 
-除以零或将最小负数除以负一时将引发异常。
+除以零或将最小负数除以负一时会抛出异常。
 
 **语法**
 
@@ -333,7 +341,7 @@ gcd(a, b)
 
 返回两个值 `a` 和 `b` 的最小公倍数。
 
-除以零或将最小负数除以负一时将引发异常。
+除以零或将最小负数除以负一时会抛出异常。
 
 **语法**
 
@@ -343,7 +351,7 @@ lcm(a, b)
 
 ## max2 {#max2}
 
-返回两个值 `a` 和 `b` 中较大的值。返回值类型为 [Float64](../data-types/float.md)。
+返回两个值 `a` 和 `b` 中较大的一个。返回值的类型为 [Float64](../data-types/float.md)。
 
 **语法**
 
@@ -369,7 +377,7 @@ SELECT max2(-1, 2);
 
 ## min2 {#min2}
 
-返回两个值 `a` 和 `b` 中较小的值。返回值类型为 [Float64](../data-types/float.md)。
+返回两个值 `a` 和 `b` 中较小的一个。返回值的类型为 [Float64](../data-types/float.md)。
 
 **语法**
 
@@ -395,11 +403,11 @@ SELECT min2(-1, 2);
 
 ## multiplyDecimal {#multiplydecimal}
 
-对两个小数 `a` 和 `b` 进行乘法运算。结果值的类型为 [Decimal256](../data-types/decimal.md)。
+将两个十进制数 `a` 和 `b` 相乘。结果值的类型将为 [Decimal256](../data-types/decimal.md)。
 
-结果的比例可以通过 `result_scale` 显式指定。如果未指定 `result_scale`，则默认为输入值的最大比例。
+可以通过 `result_scale` 显式指定结果的刻度。如果没有指定 `result_scale`，则假定为输入值的最大刻度。
 
-该函数的工作速度明显慢于常规的 `multiply`。如果不需要对结果精度进行控制和/或希望快速计算，请考虑使用 `multiply`。
+此函数的工作速度显著慢于通常的 `multiply`。如果不需要控制结果的精度，和/或希望快速计算，考虑使用 `multiply`。
 
 **语法**
 
@@ -409,13 +417,13 @@ multiplyDecimal(a, b[, result_scale])
 
 **参数**
 
-- `a` — 第一个值。 [Decimal](../data-types/decimal.md)。
-- `b` — 第二个值。 [Decimal](../data-types/decimal.md)。
-- `result_scale` — 结果比例。 [Int/UInt](../data-types/int-uint.md)。
+- `a` — 第一个值。[Decimal](../data-types/decimal.md)。
+- `b` — 第二个值。[Decimal](../data-types/decimal.md)。
+- `result_scale` — 结果的刻度。[Int/UInt](../data-types/int-uint.md)。
 
 **返回值**
 
-- 带有给定比例的乘积结果。 [Decimal256](../data-types/decimal.md)。
+- 乘法结果及给定刻度。[Decimal256](../data-types/decimal.md)。
 
 **示例**
 
@@ -468,11 +476,11 @@ Code: 407. DB::Exception: Received from localhost:9000. DB::Exception: Decimal m
 
 ## divideDecimal {#dividedecimal}
 
-对两个小数 `a` 和 `b` 进行除法运算。结果值的类型为 [Decimal256](../data-types/decimal.md)。
+将两个十进制数 `a` 和 `b` 相除。结果值的类型将为 [Decimal256](../data-types/decimal.md)。
 
-结果的比例可以通过 `result_scale` 显式指定。如果未指定 `result_scale`，则默认为输入值的最大比例。
+可以通过 `result_scale` 显式指定结果的刻度。如果没有指定 `result_scale`，则假定为输入值的最大刻度。
 
-该函数的工作速度明显慢于常规的 `divide`。如果不需要对结果精度进行控制和/或希望快速计算，请考虑使用 `divide`。
+此函数的工作速度显著慢于通常的 `divide`。如果不需要控制结果的精度，和/或希望快速计算，考虑使用 `divide`。
 
 **语法**
 
@@ -482,13 +490,13 @@ divideDecimal(a, b[, result_scale])
 
 **参数**
 
-- `a` — 第一个值： [Decimal](../data-types/decimal.md)。
-- `b` — 第二个值： [Decimal](../data-types/decimal.md)。
-- `result_scale` — 结果比例： [Int/UInt](../data-types/int-uint.md)。
+- `a` — 第一个值：[Decimal](../data-types/decimal.md)。
+- `b` — 第二个值：[Decimal](../data-types/decimal.md)。
+- `result_scale` — 结果的刻度：[Int/UInt](../data-types/int-uint.md)。
 
 **返回值**
 
-- 带有给定比例的除法结果。 [Decimal256](../data-types/decimal.md)。
+- 以给定刻度的结果。[Decimal256](../data-types/decimal.md)。
 
 **示例**
 
@@ -534,7 +542,7 @@ DB::Exception: Decimal result's scale is less than argument's one: While process
 
 ## byteSwap {#byteswap}
 
-反转一个整数的字节，即改变其 [字节序](https://en.wikipedia.org/wiki/Endianness)。
+反转整数的字节，即改变其 [字节序](https://en.wikipedia.org/wiki/Endianness)。
 
 **语法**
 
@@ -556,10 +564,10 @@ byteSwap(3351772109)
 └──────────────────────┘
 ```
 
-以上示例可以通过以下方式进行计算：
+上述示例可按如下方式处理：
 1. 将十进制整数转换为其等效的十六进制格式（大端格式），即 3351772109 -> C7 C7 FB CD（4 字节）
 2. 反转字节，即 C7 C7 FB CD -> CD FB C7 C7
-3. 假设大端格式将结果转换回整数，即 CD FB C7 C7 -> 3455829959
+3. 将结果重新转换为整数（假设为大端），即 CD FB C7 C7 -> 3455829959
 
 此函数的一个用例是反转 IPv4：
 

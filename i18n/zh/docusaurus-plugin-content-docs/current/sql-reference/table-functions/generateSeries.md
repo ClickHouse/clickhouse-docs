@@ -7,4 +7,4 @@
 ---
 
 ### Alias To {#alias-to}
-[生成系列](generate_series.md)
+[生成序列](generate_series.md)

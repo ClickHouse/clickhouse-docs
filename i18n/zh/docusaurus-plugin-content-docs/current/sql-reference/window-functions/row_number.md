@@ -1,3 +1,11 @@
+---
+'description': '关于 row_number 窗口函数的文档'
+'sidebar_label': 'row_number'
+'sidebar_position': 2
+'slug': '/sql-reference/window-functions/row_number'
+'title': 'row_number'
+---
+
 
 # row_number
 
@@ -13,7 +21,7 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-关于窗口函数语法的更多细节，请参见: [窗口函数 - 语法](./index.md/#syntax)。
+有关窗口函数语法的更多详细信息，请参见：[窗口函数 - 语法](./index.md/#syntax)。
 
 **返回值**
 
@@ -21,9 +29,9 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 **示例**
 
-以下示例基于视频教程中提供的示例 [在 ClickHouse 中的排名窗口函数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)。
+以下示例基于视频教学中提供的示例，[ClickHouse中的排名窗口函数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)。
 
-查询:
+查询：
 
 ```sql
 CREATE TABLE salaries
@@ -49,7 +57,7 @@ SELECT player, salary,
 FROM salaries;
 ```
 
-结果:
+结果：
 
 ```response
    ┌─player──────────┬─salary─┬─row_number─┐

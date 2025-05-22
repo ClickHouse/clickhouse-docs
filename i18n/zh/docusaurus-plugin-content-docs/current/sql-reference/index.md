@@ -1,5 +1,5 @@
 ---
-'description': 'ClickHouse SQL 参考文档'
+'description': 'ClickHouse SQL 参考的文档'
 'keywords':
 - 'clickhouse'
 - 'docs'
@@ -18,11 +18,12 @@ import { ViewAllLink } from '/src/components/view_all_link'
 import { VideoContainer } from '/src/components/video_container'
 import LinksDeployment from './sql-reference-links.json'
 
-# ClickHouse SQL参考
 
-ClickHouse支持一种基于SQL的声明性查询语言，在许多情况下与ANSI SQL标准相同。
+# ClickHouse SQL 参考
 
-支持的查询包括 GROUP BY、ORDER BY、FROM 中的子查询、JOIN 子句、IN 操作符、窗口函数和标量子查询。
+ClickHouse 支持基于 SQL 的声明性查询语言，在许多情况下与 ANSI SQL 标准相同。
+
+支持的查询包括 GROUP BY、ORDER BY、FROM 中的子查询、JOIN 子句、IN 运算符、窗口函数和标量子查询。
 
 <HorizontalDivide />
 

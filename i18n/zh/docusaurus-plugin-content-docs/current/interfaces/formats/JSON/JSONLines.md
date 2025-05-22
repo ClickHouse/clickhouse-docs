@@ -1,5 +1,5 @@
 ---
-'description': 'JSONLines格式的文档'
+'description': 'JSONLines 格式的文档'
 'keywords':
 - 'JSONLines'
 'slug': '/interfaces/formats/JSONLines'

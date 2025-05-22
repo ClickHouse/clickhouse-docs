@@ -1,11 +1,19 @@
+---
+'description': 'ClickHouse 中 Tuple 数据类型的文档'
+'sidebar_label': '元组(T1, T2, ... )'
+'sidebar_position': 34
+'slug': '/sql-reference/data-types/tuple'
+'title': '元组(T1, T2, ... )'
+---
+
 
 # Tuple(T1, T2, ...)
 
-一个包含各自具有单独 [类型](/sql-reference/data-types) 的元素的元组。元组必须至少包含一个元素。
+一个元组由多个元素组成，每个元素都有其单独的 [类型](/sql-reference/data-types)。元组必须至少包含一个元素。
 
-元组用于临时列分组。当在查询中使用 IN 表达式时，可以对列进行分组，并且可以用于指定某些lambda函数的形式参数。有关更多信息，请参见 [IN 操作符](../../sql-reference/operators/in.md) 和 [高阶函数](/sql-reference/functions/overview#higher-order-functions) 部分。
+元组用于临时列分组。在查询中使用 IN 表达式时，可以对列进行分组，并用于指定某些 lambda 函数的正式参数。有关更多信息，请参见 [IN 操作符](../../sql-reference/operators/in.md) 和 [高阶函数](/sql-reference/functions/overview#higher-order-functions) 部分。
 
-元组可以是查询的结果。在这种情况下，对于 JSON 以外的文本格式，值以逗号分隔，并放在括号中。在 JSON 格式中，元组以数组形式输出（用方括号括起来）。
+元组可以作为查询的结果。在这种情况下，对于除了 JSON 以外的文本格式，值在括号中用逗号分隔。在 JSON 格式中，元组输出为数组（在方括号中）。
 
 ## 创建元组 {#creating-tuples}
 
@@ -41,7 +49,7 @@ SELECT tuple('a') AS x;
 └───────┘
 ```
 
-语法 `(tuple_element1, tuple_element2)` 可用于创建多个元素的元组，而无需调用 `tuple()` 函数。
+语法 `(tuple_element1, tuple_element2)` 可用于在不调用 `tuple()` 函数的情况下创建多个元素的元组。
 
 示例：
 
@@ -57,9 +65,9 @@ SELECT (1, 'a') AS x, (today(), rand(), 'someString') AS y, ('a') AS not_a_tuple
 
 ## 数据类型检测 {#data-type-detection}
 
-在快速创建元组时，ClickHouse 会推断元组参数的类型为能够容纳提供的参数值的最小类型。如果值为 [NULL](/operations/settings/formats#input_format_null_as_default)，则推断的类型为 [Nullable](../../sql-reference/data-types/nullable.md)。
+在动态创建元组时，ClickHouse 将推断元组参数的类型为能够容纳提供的参数值的最小类型。如果值为 [NULL](/operations/settings/formats#input_format_null_as_default)，则推断的类型为 [Nullable](../../sql-reference/data-types/nullable.md)。
 
-自动数据类型检测示例：
+自动数据类型检测的示例：
 
 ```sql
 SELECT tuple(1, NULL) AS x, toTypeName(x)
@@ -73,7 +81,7 @@ SELECT tuple(1, NULL) AS x, toTypeName(x)
 
 ## 引用元组元素 {#referring-to-tuple-elements}
 
-可以通过名称或索引引用元组元素：
+可以通过名称或索引来引用元组元素：
 
 ```sql
 CREATE TABLE named_tuples (`a` Tuple(s String, i Int64)) ENGINE = Memory;
@@ -99,7 +107,7 @@ SELECT a.2 FROM named_tuples; -- by index
 
 ## 与元组的比较操作 {#comparison-operations-with-tuple}
 
-两个元组通过从左到右依次比较它们的元素进行比较。如果第一个元组的元素大于（小于）第二个元组的对应元素，则第一个元组大于（小于）第二个元组，否则（两个元素相等）比较下一个元素。
+两个元组通过从左到右依次比较其元素进行比较。如果第一个元组的元素大于（小于）第二个元组的对应元素，则第一个元组大于（小于）第二个元组，否则（如果两个元素相等），则比较下一个元素。
 
 示例：
 
@@ -113,7 +121,7 @@ SELECT (1, 'z') > (1, 'a') c1, (2022, 01, 02) > (2023, 04, 02) c2, (1,2,3) = (3,
 └────┴────┴────┘
 ```
 
-现实世界示例：
+现实生活中的示例：
 
 ```sql
 CREATE TABLE test

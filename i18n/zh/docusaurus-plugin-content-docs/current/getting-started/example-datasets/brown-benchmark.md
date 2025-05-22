@@ -1,4 +1,11 @@
-`MgBench` 是一个用于机器生成的日志数据的新分析基准，[Andrew Crotty](http://cs.brown.edu/people/acrotty/)。
+---
+'description': '用于机器生成日志数据的新分析基准'
+'sidebar_label': '布朗大学基准测试'
+'slug': '/getting-started/example-datasets/brown-benchmark'
+'title': '布朗大学基准测试'
+---
+
+`MgBench` 是一种新的分析基准，用于机器生成的日志数据， [Andrew Crotty](http://cs.brown.edu/people/acrotty/)。
 
 下载数据：
 ```bash
@@ -47,6 +54,7 @@ ENGINE = MergeTree()
 ORDER BY (machine_group, machine_name, log_time);
 ```
 
+
 ```sql
 CREATE TABLE mgbench.logs2 (
   log_time    DateTime,
@@ -58,6 +66,7 @@ CREATE TABLE mgbench.logs2 (
 ENGINE = MergeTree()
 ORDER BY log_time;
 ```
+
 
 ```sql
 CREATE TABLE mgbench.logs3 (
@@ -112,6 +121,7 @@ FROM (
 ) AS r
 GROUP BY machine_name;
 ```
+
 
 ```sql
 -- Q1.2: Which computer lab machines have been offline in the past day?
@@ -244,6 +254,7 @@ WHERE status_code >= 200
   AND log_time < TIMESTAMP '2012-05-20 00:00:00';
 ```
 
+
 ```sql
 -- Q2.3: What was the average path depth for top-level requests in the past month?
 
@@ -269,6 +280,7 @@ GROUP BY top_level
 ORDER BY top_level;
 ```
 
+
 ```sql
 -- Q2.4: During the last 3 months, which clients have made an excessive number of requests?
 
@@ -280,6 +292,7 @@ GROUP BY client_ip
 HAVING COUNT(*) >= 100000
 ORDER BY num_requests DESC;
 ```
+
 
 ```sql
 -- Q2.5: What are the daily unique visitors?
@@ -295,6 +308,7 @@ GROUP BY dt
 ORDER BY dt;
 ```
 
+
 ```sql
 -- Q2.6: What are the average and maximum data transfer rates (Gbps)?
 
@@ -308,6 +322,7 @@ FROM (
 ) AS r;
 ```
 
+
 ```sql
 -- Q3.1: Did the indoor temperature reach freezing over the weekend?
 
@@ -317,6 +332,7 @@ WHERE event_type = 'temperature'
   AND event_value <= 32.0
   AND log_time >= '2019-11-29 17:00:00.000';
 ```
+
 
 ```sql
 -- Q3.4: Over the past 6 months, how frequently were each door opened?
@@ -332,7 +348,7 @@ GROUP BY device_name,
 ORDER BY ct DESC;
 ```
 
-下面的查询 3.5 使用了 UNION。设置组合 SELECT 查询结果的模式。此设置仅在与 UNION 一起共享时使用，而未显式指定 UNION ALL 或 UNION DISTINCT。
+下面的查询 3.5 使用了 UNION。 设置用于组合 SELECT 查询结果的模式。 当共享与 UNION 时未明确指定 UNION ALL 或 UNION DISTINCT 时，仅使用该设置。
 ```sql
 SET union_default_mode = 'DISTINCT'
 ```
@@ -390,6 +406,7 @@ FROM temperature
 WHERE dt >= DATE '2019-06-01'
   AND dt < DATE '2019-09-01';
 ```
+
 
 ```sql
 -- Q3.6: For each device category, what are the monthly power consumption metrics?

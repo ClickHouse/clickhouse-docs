@@ -1,3 +1,8 @@
+---
+null
+...
+---
+
 import mysql_1 from '@site/static/images/_snippets/mysql1.png';
 import mysql_2 from '@site/static/images/_snippets/mysql2.png';
 import mysql_3 from '@site/static/images/_snippets/mysql3.png';
@@ -6,69 +11,69 @@ import mysql_5 from '@site/static/images/_snippets/mysql5.png';
 import Image from '@theme/IdealImage';
 
 <br/>
-1. 创建您的 ClickHouse Cloud 服务后，在 `Connect your app` 屏幕上，从下拉菜单中选择 MySQL。
+1. 在创建您的 ClickHouse Cloud 服务后，在 `连接您的应用` 屏幕上，从下拉菜单中选择 MySQL。
 <br/>
 
-<Image size="md" img={mysql_1} alt="ClickHouse Cloud 凭证屏幕显示 MySQL 接口选择下拉菜单" border />
+<Image size="md" img={mysql_1} alt="ClickHouse Cloud 凭证屏幕显示 MySQL 界面选择下拉菜单" border />
 
 
-2. 切换开关以为该特定服务启用 MySQL 接口。这将为该服务开放端口 `3306`，并提示您您独特的 MySQL 用户名的 MySQL 连接屏幕。
+2. 切换开关以启用该特定服务的 MySQL 接口。这将为该服务暴露端口 `3306` 并提示您显示包含您独特 MySQL 用户名的 MySQL 连接屏幕。
 
-<Image size="md" img={mysql_2} alt="ClickHouse Cloud MySQL 接口启用切换按钮和连接详情" border />
+<Image size="md" img={mysql_2} alt="ClickHouse Cloud MySQL 接口启用开关和连接详情" border />
 <br/>
 
 或者，为了为现有服务启用 MySQL 接口：
 
-3. 确保您的服务处于 `Running` 状态，然后单击要为其启用 MySQL 接口的服务。从左侧菜单中选择“Connect”：
+3. 确保您的服务处于 `运行中` 状态，然后点击您想要启用 MySQL 接口的服务。从左侧菜单中选择 “连接”：
 
 <br/>
-<Image size="md" img={mysql_3} alt="ClickHouse Cloud 服务连接屏幕，突出显示 Connect 选项" border />
+<Image size="md" img={mysql_3} alt="ClickHouse Cloud 服务连接屏幕，突出显示连接选项" border />
 <br/>
 
 
-4. 从 `Connect With` 下拉菜单中选择 MySQL。
+4. 从 `以连接` 下拉菜单中选择 MySQL。
 
 <br/>
 <Image size="md" img={mysql_4} alt="ClickHouse Cloud 连接屏幕显示 MySQL 选项选择" border />
 <br/>
 
-5. 切换开关以为该特定服务启用 MySQL 接口。这将为该服务开放端口 `3306`，并提示您您独特的 MySQL 用户名的 MySQL 连接屏幕。
+5. 切换开关以启用该特定服务的 MySQL 接口。这将为该服务暴露端口 `3306` 并提示您显示包含您独特 MySQL 用户名的 MySQL 连接屏幕。
 
-<Image size="md" img={mysql_5} alt="ClickHouse Cloud 连接屏幕，启用 MySQL 接口，显示连接详情" border />
+<Image size="md" img={mysql_5} alt="ClickHouse Cloud 连接屏幕，启用 MySQL 接口显示连接详情" border />
 
 ## 在 ClickHouse Cloud 中创建多个 MySQL 用户 {#creating-multiple-mysql-users-in-clickhouse-cloud}
 
-默认情况下，有一个内置的 `mysql4<subdomain>` 用户，它使用与 `default` 相同的密码。`<subdomain>` 部分是您 ClickHouse Cloud 主机名的第一个段。这种格式对于使用实现安全连接的工具是必要的，但这些工具在其 TLS 握手中不提供 [SNI 信息](https://www.cloudflare.com/learning/ssl/what-is-sni)，这使得在用户名中没有额外提示的情况下无法进行内部路由（MySQL 控制台客户端就是这样的工具之一）。
+默认情况下，有一个内置的 `mysql4<subdomain>` 用户，使用与 `default` 用户相同的密码。`<subdomain>` 部分是您的 ClickHouse Cloud 主机名的第一个段。这种格式是必要的，以便与实现安全连接但不在其 TLS 握手中提供 [SNI 信息](https://www.cloudflare.com/learning/ssl/what-is-sni) 的工具一起使用，这使得在没有用户名中的额外提示的情况下进行内部路由变得不可能（MySQL 控制台客户端就是其中一种工具）。
 
-因此，我们 _强烈建议_ 在创建 intended to be used with the MySQL interface 的新用户时遵循 `mysql4<subdomain>_<username>` 格式，其中 `<subdomain>` 是识别您的 Cloud 服务的提示，`<username>` 是您选择的任意后缀。
+因此，我们 _强烈建议_ 在创建打算用于 MySQL 接口的新用户时遵循 `mysql4<subdomain>_<username>` 格式，其中 `<subdomain>` 是用于识别您的 Cloud 服务的提示，而 `<username>` 是您选择的任意后缀。
 
 :::tip
-对于主机名如 `foobar.us-east1.aws.clickhouse.cloud`，`<subdomain>` 部分等于 `foobar`，一个自定义的 MySQL 用户名可以是 `mysql4foobar_team1`。
+对于 ClickHouse Cloud 主机名如 `foobar.us-east1.aws.clickhouse.cloud`，`<subdomain>` 部分等于 `foobar`，而自定义 MySQL 用户名可以是 `mysql4foobar_team1`。
 :::
 
-如果您需要应用额外的设置，可以创建额外的用户来与 MySQL 接口一起使用。
+您可以创建额外的用户以供 MySQL 接口使用，例如，如果您需要应用额外设置。
 
-1. 可选 - 创建 [settings profile](/sql-reference/statements/create/settings-profile) 应用于您自定义的用户。例如，`my_custom_profile`，包含一个将默认应用于我们稍后创建的用户的额外设置：
+1. 可选 - 创建一个 [设置配置文件](/sql-reference/statements/create/settings-profile)，以便应用于您自定义的用户。例如，`my_custom_profile`，其中包含将默认为我们稍后连接时应用的额外设置：
 
 ```sql
 CREATE SETTINGS PROFILE my_custom_profile SETTINGS prefer_column_name_to_alias=1;
 ```
 
-    `prefer_column_name_to_alias` 仅作为示例，可以在此使用其他设置。
-2. [创建用户](/sql-reference/statements/create/user)，使用以下格式：`mysql4<subdomain>_<username>`（[见上文](#creating-multiple-mysql-users-in-clickhouse-cloud)）。密码必须采用双 SHA1 格式。例如：
+    `prefer_column_name_to_alias` 仅作为示例，您可以在其中使用其他设置。
+2. 使用以下格式 [创建用户](/sql-reference/statements/create/user)：`mysql4<subdomain>_<username>`（[见上文](#creating-multiple-mysql-users-in-clickhouse-cloud)）。密码必须为双 SHA1 格式。例如：
 
 ```sql
 CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$';
 ```
 
-    或者如果您想为该用户使用自定义配置文件：
+    或者，如果您希望为该用户使用自定义配置文件：
 
 ```sql
 CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$' SETTINGS PROFILE 'my_custom_profile';
 ```
 
     其中 `my_custom_profile` 是您之前创建的配置文件的名称。
-3. [授予](/sql-reference/statements/grant) 新用户与所需表或数据库交互的必要权限。例如，如果您想仅授予访问 `system.query_log` 的权限：
+3. [授予](/sql-reference/statements/grant) 新用户与所需表或数据库交互所需的权限。例如，如果您只想授予对 `system.query_log` 的访问权限：
 
 ```sql
 GRANT SELECT ON system.query_log TO mysql4foobar_team1;
@@ -76,7 +81,7 @@ GRANT SELECT ON system.query_log TO mysql4foobar_team1;
 
 4. 使用创建的用户通过 MySQL 接口连接到您的 ClickHouse Cloud 服务。
 
-### 在 ClickHouse Cloud 中排查多个 MySQL 用户问题 {#troubleshooting-multiple-mysql-users-in-clickhouse-cloud}
+### 在 ClickHouse Cloud 中的多个 MySQL 用户故障排除 {#troubleshooting-multiple-mysql-users-in-clickhouse-cloud}
 
 如果您创建了一个新的 MySQL 用户，并且在通过 MySQL CLI 客户端连接时看到以下错误：
 
@@ -84,4 +89,4 @@ GRANT SELECT ON system.query_log TO mysql4foobar_team1;
 ERROR 2013 (HY000): Lost connection to MySQL server at 'reading authorization packet', system error: 54
 ```
 
-在这种情况下，请确保用户名遵循 `mysql4<subdomain>_<username>` 格式，如上文所述（[上文](#creating-multiple-mysql-users-in-clickhouse-cloud)）。
+在这种情况下，确保用户名遵循 `mysql4<subdomain>_<username>` 格式，如上所述（[见上文](#creating-multiple-mysql-users-in-clickhouse-cloud)）。

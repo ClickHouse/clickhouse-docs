@@ -1,38 +1,46 @@
+---
+'description': '窗口函数的概述页面'
+'sidebar_label': '窗口函数'
+'sidebar_position': 1
+'slug': '/sql-reference/window-functions/'
+'title': '窗口函数'
+---
 
-# 窗口函数 
 
-窗口函数允许在与当前行相关的一组行上执行计算。您可以执行的一些计算类似于可以使用聚合函数完成的计算，但窗口函数不会使行分组为单个输出——个别行仍然会被返回。
+# 窗口函数
+
+窗口函数让您可以在与当前行相关的一组行上执行计算。您可以执行的一些计算类似于可以通过聚合函数完成的计算，但窗口函数不会导致行被聚合为单个输出 - 单独的行仍然会被返回。
 
 ## 标准窗口函数 {#standard-window-functions}
 
-ClickHouse 支持用于定义窗口和窗口函数的标准语法。下表指示特定功能当前是否得到支持。
+ClickHouse 支持定义窗口和窗口函数的标准语法。下表指示当前是否支持某个功能。
 
-| 功能                                                                  | 支持？                                                                                                                                                                       |
-|--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 临时窗口规格（`count(*) over (partition by id order by time desc)`） | ✅                                                                                                                                                                                  |
-| 涉及窗口函数的表达式，例如`(count(*) over ()) / 2)`             | ✅                                                                                                                                                                                   |
-| `WINDOW` 子句（`select ... from table window w as (partition by id)`）            | ✅                                                                                                                                                                                   |
-| `ROWS` 框架                                                                       | ✅                                                                                                                                                                                   |
-| `RANGE` 框架                                                                      | ✅（默认）                                                                                                                                                                      |
-| `INTERVAL` 语法用于 `DateTime` `RANGE OFFSET` 框架                              | ❌（请改为指定秒数（`RANGE` 适用于任何数字类型。））                                                                                                                                 |
-| `GROUPS` 框架                                                                     | ❌                                                                                                                                                                               |
-| 在框架上计算聚合函数（`sum(value) over (order by time)`）   | ✅（支持所有聚合函数）                                                                                                                                                       |
-| `rank()`, `dense_rank()`, `row_number()`                                           | ✅ <br/>别名：`denseRank()`                                                                                                                                                                                   |
-| `percent_rank()` | ✅  高效计算数据集中某个值在分区内的相对位置。该函数有效替代较冗长且计算密集型的手动 SQL 计算形式，即`ifNull((rank() OVER(PARTITION BY x ORDER BY y) - 1) / nullif(count(1) OVER(PARTITION BY x) - 1, 0), 0)` <br/>别名：`percentRank()`| 
-| `lag/lead(value, offset)`                                                          | ❌ <br/> 您可以使用以下解决方法之一：<br/> 1) `any(value) over (.... rows between <offset> preceding and <offset> preceding)`，或者对于`lead`使用`following` <br/> 2) `lagInFrame/leadInFrame`，其类似，但尊重窗口框架。要获得与`lag/lead`相同的行为，请使用`rows between unbounded preceding and unbounded following`                                                                 |
-| ntile(buckets) | ✅ <br/> 指定窗口，例如`(partition by x order by y rows between unbounded preceding and unbounded following)`。 |
+| 特性                                                                              | 是否支持？                                                                                                                                                                                                  |
+|---------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 临时窗口规范 (`count(*) over (partition by id order by time desc)`)            | ✅                                                                                                                                                                                                         |
+| 涉及窗口函数的表达式，例如 `(count(*) over ()) / 2)`                           | ✅                                                                                                                                                                                                         |
+| `WINDOW` 子句 (`select ... from table window w as (partition by id)`)            | ✅                                                                                                                                                                                                         |
+| `ROWS` 框架                                                                       | ✅                                                                                                                                                                                                         |
+| `RANGE` 框架                                                                      | ✅ (默认)                                                                                                                                                                                                    |
+| 对 `DateTime` 的 `RANGE OFFSET` 框架使用 `INTERVAL` 语法                         | ❌ (请改用秒数来指定 ( `RANGE` 可与任何数字类型一起使用)。)                                                                                                                                                      |
+| `GROUPS` 框架                                                                     | ❌                                                                                                                                                                                                         |
+| 计算框架内的聚合函数 (`sum(value) over (order by time)`)                        | ✅ (支持所有聚合函数)                                                                                                                                                                                         |
+| `rank()`, `dense_rank()`, `row_number()`                                          | ✅ <br/>别名：`denseRank()`                                                                                                                                                                               |
+| `percent_rank()`                                                                 | ✅  高效计算给定值在数据集的分区中的相对位置。此函数有效地替代了更冗长和计算密集型的手动 SQL 计算表达式 `ifNull((rank() OVER(PARTITION BY x ORDER BY y) - 1) / nullif(count(1) OVER(PARTITION BY x) - 1, 0), 0)` <br/>别名：`percentRank()` |
+| `lag/lead(value, offset)`                                                         | ❌ <br/> 您可以使用以下一种解决方法：<br/> 1) `any(value) over (.... rows between <offset> preceding and <offset> preceding)`，或对 `lead` 使用 `following` <br/> 2) `lagInFrame/leadInFrame`，它们是类似的，但遵守窗口框架。要获得与 `lag/lead` 相同的行为，请使用 `rows between unbounded preceding and unbounded following`                                                                 |
+| ntile(buckets)                                                                    | ✅ <br/> 例如，指定窗口 (partition by x order by y rows between unbounded preceding and unbounded following)。 |
 
-## ClickHouse特定窗口函数 {#clickhouse-specific-window-functions}
+## ClickHouse 特定窗口函数 {#clickhouse-specific-window-functions}
 
-此外，还有以下ClickHouse特定窗口函数：
+还有以下 ClickHouse 特定的窗口函数：
 
 ### nonNegativeDerivative(metric_column, timestamp_column[, INTERVAL X UNITS]) {#nonnegativederivativemetric_column-timestamp_column-interval-x-units}
 
 通过 `timestamp_column` 查找给定 `metric_column` 的非负导数。 
 `INTERVAL` 可以省略，默认值为 `INTERVAL 1 SECOND`。
-计算的值对于每一行如下：
-- 第1行为`0`，
-- 对于第$i$行为 ${\text{metric}_i - \text{metric}_{i-1} \over \text{timestamp}_i - \text{timestamp}_{i-1}}  * \text{interval}$。
+对于每一行，计算值如下：
+- 第一行为 `0`，
+- 对于第 $i_{th}$ 行，值为 ${\text{metric}_i - \text{metric}_{i-1} \over \text{timestamp}_i - \text{timestamp}_{i-1}}  * \text{interval}$。
 
 ## 语法 {#syntax}
 
@@ -44,9 +52,9 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]])
 ```
 
-- `PARTITION BY` - 定义如何将结果集划分为组。
-- `ORDER BY` - 定义在计算聚合函数时如何对组内的行进行排序。
-- `ROWS or RANGE` - 定义框架的边界，聚合函数在框架内计算。
+- `PARTITION BY` - 定义如何将结果集分成组。
+- `ORDER BY` - 定义在计算 aggregate_function 时如何对组内的行进行排序。
+- `ROWS or RANGE` - 定义框架的边界，aggregate_function 在框架内计算。
 - `WINDOW` - 允许多个表达式使用相同的窗口定义。
 
 ```text
@@ -70,18 +78,18 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 这些函数只能用作窗口函数。
 
-- [`row_number()`](./row_number.md) - 对当前行进行编号，从 1 开始。
-- [`first_value(x)`](./first_value.md) - 返回在其有序框架内评估的第一个值。
-- [`last_value(x)`](./last_value.md) - 返回在其有序框架内评估的最后一个值。
-- [`nth_value(x, offset)`](./nth_value.md) - 返回在有序框架内针对第 n 行（偏移量）评估的第一个非 NULL 值。
-- [`rank()`](./rank.md) - 在其分区内对当前行进行排名，带间隙。
-- [`dense_rank()`](./dense_rank.md) - 在其分区内对当前行进行排名，无间隙。
-- [`lagInFrame(x)`](./lagInFrame.md) - 返回在有序框架内，当前行之前的指定物理偏移行所评估的值。
-- [`leadInFrame(x)`](./leadInFrame.md) - 返回在有序框架内，当前行之后的偏移行所评估的值。
+- [`row_number()`](./row_number.md) - 在其分区内按从 1 开始给当前行编号。
+- [`first_value(x)`](./first_value.md) - 返回其有序框架内评估的第一个值。
+- [`last_value(x)`](./last_value.md) - 返回其有序框架内评估的最后一个值。
+- [`nth_value(x, offset)`](./nth_value.md) - 返回在其有序框架中与第 n 行（偏移）相对应的第一个非 NULL 值。
+- [`rank()`](./rank.md) - 在其分区内按间隔为当前行排名。
+- [`dense_rank()`](./dense_rank.md) - 在其分区内按当前行排名，不留间隔。
+- [`lagInFrame(x)`](./lagInFrame.md) - 返回在有序框架内比当前行向前偏移指定行数的行评估的值。
+- [`leadInFrame(x)`](./leadInFrame.md) - 返回在有序框架内比当前行向后偏移行的行评估的值。
 
 ## 示例 {#examples}
 
-让我们来看看一些如何使用窗口函数的示例。
+让我们看看如何使用窗口函数的一些示例。
 
 ### 行编号 {#numbering-rows}
 
@@ -143,7 +151,7 @@ FROM salaries;
 
 ### 聚合函数 {#aggregation-functions}
 
-将每个玩家的薪水与其团队的平均水平进行比较。
+将每个球员的薪水与其团队的平均薪水进行比较。
 
 ```sql
 SELECT
@@ -165,7 +173,7 @@ FROM salaries;
 └─────────────────┴────────┴───────────────────────────┴─────────┴────────┘
 ```
 
-将每个玩家的薪水与其团队的最高水平进行比较。
+将每个球员的薪水与其团队的最大薪水进行比较。
 
 ```sql
 SELECT
@@ -507,7 +515,7 @@ ORDER BY
 
 以下示例解决常见的现实世界问题。
 
-### 每个部门的最大/总薪资 {#maximumtotal-salary-per-department}
+### 每个部门的最高/总薪水 {#maximumtotal-salary-per-department}
 
 ```sql
 CREATE TABLE employees
@@ -604,7 +612,7 @@ ORDER BY
 └───────┴─────────────────────┴───────┴───────────────┘
 ```
 
-### 移动/滑动平均（每三行） {#moving--sliding-average-per-3-rows}
+### 移动/滑动平均（每 3 行） {#moving--sliding-average-per-3-rows}
 
 ```sql
 CREATE TABLE sensors
@@ -652,11 +660,7 @@ ORDER BY
 └──────────┴─────────────────────┴───────┴───────────────────┘
 ```
 
-### 移动/滑动平均（每10秒） {#moving--sliding-average-per-10-seconds}
-
-### 移动/滑动平均（每10天） {#moving--sliding-average-per-10-days}
-
-温度以秒级精度存储，但使用 `Range` 和 `ORDER BY toDate(ts)` 我们形成一个大小为 10 单位的框架，由于 `toDate(ts)` 单位为天。
+### 移动/滑动平均（每 10 秒） {#moving--sliding-average-per-10-seconds}
 
 ```sql
 SELECT
@@ -682,6 +686,10 @@ ORDER BY
 └──────────┴─────────────────────┴───────┴────────────────────────────┘
 ```
 
+### 移动/滑动平均（每 10 天） {#moving--sliding-average-per-10-days}
+
+温度以秒为精度存储，但使用 `Range` 和 `ORDER BY toDate(ts)` 我们形成一个大小为 10 个单位的框架，由于 `toDate(ts)`，单位为天。
+
 ```sql
 CREATE TABLE sensors
 (
@@ -705,17 +713,45 @@ insert into sensors values('ambient_temp', '2020-01-01 00:00:00', 16),
                           ('ambient_temp', '2020-03-01 12:00:00', 16);
 ```
 
-## 参考文献 {#references}
+```sql
+SELECT
+    metric,
+    ts,
+    value,
+    round(avg(value) OVER (PARTITION BY metric ORDER BY toDate(ts) 
+       Range BETWEEN 10 PRECEDING AND CURRENT ROW),2) AS moving_avg_10_days_temp
+FROM sensors
+ORDER BY
+    metric ASC,
+    ts ASC;
+
+┌─metric───────┬──────────────────ts─┬─value─┬─moving_avg_10_days_temp─┐
+│ ambient_temp │ 2020-01-01 00:00:00 │    16 │                      16 │
+│ ambient_temp │ 2020-01-01 12:00:00 │    16 │                      16 │
+│ ambient_temp │ 2020-01-02 11:00:00 │     9 │                    12.5 │
+│ ambient_temp │ 2020-01-02 12:00:00 │     9 │                    12.5 │
+│ ambient_temp │ 2020-02-01 10:00:00 │    10 │                      10 │
+│ ambient_temp │ 2020-02-01 12:00:00 │    10 │                      10 │
+│ ambient_temp │ 2020-02-10 12:00:00 │    12 │                      11 │
+│ ambient_temp │ 2020-02-10 13:00:00 │    12 │                      11 │
+│ ambient_temp │ 2020-02-20 12:00:01 │    16 │                   13.33 │
+│ ambient_temp │ 2020-03-01 12:00:00 │    16 │                      16 │
+│ ambient_temp │ 2020-03-01 12:00:00 │    16 │                      16 │
+│ ambient_temp │ 2020-03-01 12:00:00 │    16 │                      16 │
+└──────────────┴─────────────────────┴───────┴─────────────────────────┘
+```
+
+## 参考资料 {#references}
 
 ### GitHub 问题 {#github-issues}
 
-窗口函数初步支持的路线图在[此问题中](https://github.com/ClickHouse/ClickHouse/issues/18097)。
+窗口函数的初始支持路线图在 [此问题中](https://github.com/ClickHouse/ClickHouse/issues/18097)。
 
-与窗口函数相关的所有 GitHub 问题都带有[comp-window-functions](https://github.com/ClickHouse/ClickHouse/labels/comp-window-functions)标签。
+所有与窗口函数相关的 GitHub 问题都有 [comp-window-functions](https://github.com/ClickHouse/ClickHouse/labels/comp-window-functions) 标签。
 
 ### 测试 {#tests}
 
-这些测试包含当前支持的语法示例：
+这些测试包含当前支持语法的示例：
 
 https://github.com/ClickHouse/ClickHouse/blob/master/tests/performance/window_functions.xml
 

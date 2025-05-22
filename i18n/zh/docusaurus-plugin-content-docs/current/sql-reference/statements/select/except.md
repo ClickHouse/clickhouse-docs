@@ -1,12 +1,19 @@
+---
+'description': 'EXCEPT 子句 的文档'
+'sidebar_label': 'EXCEPT'
+'slug': '/sql-reference/statements/select/except'
+'title': 'EXCEPT 子句'
+---
+
 
 # EXCEPT 子句
 
-`EXCEPT` 子句仅返回来自第一个查询而不包含第二个查询的行。
+`EXCEPT` 子句仅返回第一个查询的结果中不包含第二个查询的行。
 
 - 两个查询必须具有相同数量的列，并且列的顺序和数据类型必须相同。
-- `EXCEPT` 的结果可以包含重复行。如果不希望出现重复行，请使用 `EXCEPT DISTINCT`。
-- 如果没有指定括号，则多个 `EXCEPT` 语句是从左到右执行的。
-- `EXCEPT` 运算符的优先级与 `UNION` 子句相同，但低于 `INTERSECT` 子句的优先级。
+- `EXCEPT` 的结果可以包含重复的行。如果不希望出现重复行，请使用 `EXCEPT DISTINCT`。
+- 如果没有指定括号，多个 `EXCEPT` 语句将从左到右依次执行。
+- `EXCEPT` 操作符与 `UNION` 子句的优先级相同，低于 `INTERSECT` 子句的优先级。
 
 ## 语法 {#syntax}
 
@@ -21,9 +28,9 @@ SELECT column1 [, column2 ]
 FROM table2
 [WHERE condition]
 ```
-条件可以是基于您的要求的任何表达式。
+条件可以是根据您的要求的任何表达式。
 
-此外，可以使用 `EXCEPT()` 从结果中排除同一个表中的列，语法与 BigQuery（Google Cloud）相同，如下所示：
+此外，可以使用 `EXCEPT()` 来排除结果中的某些列，语法与 BigQuery (Google Cloud) 中的用法相同，如下所示：
 
 ```sql
 SELECT column1 [, column2 ] EXCEPT (column3 [, column4]) 
@@ -33,11 +40,11 @@ FROM table1
 
 ## 示例 {#examples}
 
-本节中的示例展示了 `EXCEPT` 子句的用法。
+本节的示例演示了 `EXCEPT` 子句的用法。
 
 ### 使用 `EXCEPT` 子句过滤数字 {#filtering-numbers-using-the-except-clause}
 
-这是一个简单的示例，返回 1 到 10 的数字，但不包括 3 到 8 的数字：
+这是一个简单的示例，它返回数字 1 到 10 中不包括数字 3 到 8 的结果：
 
 查询：
 
@@ -62,7 +69,7 @@ FROM numbers(3, 8)
 
 ### 使用 `EXCEPT()` 排除特定列 {#excluding-specific-columns-using-except}
 
-可以使用 `EXCEPT()` 快速从结果中排除列。例如，我们想从一个表中选择所有列，而排除少数选择的列，如下例所示：
+`EXCEPT()` 可以快速排除结果中的列。例如，如果我们想选择表中的所有列，但排除一些特定的列，如下例所示：
 
 查询：
 
@@ -103,8 +110,8 @@ LIMIT 5
 
 ### 使用 `EXCEPT` 和 `INTERSECT` 处理加密货币数据 {#using-except-and-intersect-with-cryptocurrency-data}
 
-`EXCEPT` 和 `INTERSECT` 通常可以在不同的布尔逻辑中互换使用，如果您有两个共享相同列（或列）的表时，它们都非常有用。
-例如，假设我们有几百万行历史加密货币数据，其中包含交易价格和交易量：
+`EXCEPT` 和 `INTERSECT` 在不同的布尔逻辑中通常可以互换使用，它们都在两个共享一个或多个公共列的表中非常有用。
+例如，假设我们有几百万行的历史加密货币数据，其中包含交易价格和交易量：
 
 查询：
 
@@ -151,7 +158,7 @@ LIMIT 10;
 └────────────┴─────────────┴─────────────┴──────────┴──────────────┴───────────────┘
 ```
 
-现在假设我们有一个名为 `holdings` 的表，其中包含我们拥有的加密货币列表以及币的数量：
+现在假设我们有一个名为 `holdings` 的表，包含我们拥有的加密货币列表，以及每种货币的数量：
 
 ```sql
 CREATE TABLE holdings
@@ -171,9 +178,7 @@ INSERT INTO holdings VALUES
    ('Bitcoin Diamond', 5000);
 ```
 
-我们可以使用 `EXCEPT` 来回答一个问题，例如 **“我们拥有的币中哪种从未低于 $10 交易过？”**：
-
-查询：
+我们可以使用 `EXCEPT` 来回答这样的问题 **“我们拥有的哪些币的交易价格从未低于 $10？”**：
 
 ```sql
 SELECT crypto_name FROM holdings
@@ -191,11 +196,11 @@ WHERE price < 10;
 └─────────────┘
 ```
 
-这意味着在我们拥有的四种加密货币中，只有比特币从未低于 $10（基于我们在本示例中拥有的有限数据）。
+这意味着在我们拥有的四种加密货币中，只有比特币从未跌破 $10（基于我们在此示例中的有限数据）。
 
 ### 使用 `EXCEPT DISTINCT` {#using-except-distinct}
 
-注意在上一个查询中，我们的结果中有多个比特币持有量。您可以在 `EXCEPT` 中添加 `DISTINCT` 来消除结果中的重复行：
+注意在之前的查询中，我们在结果中有多个比特币的持有记录。您可以在 `EXCEPT` 后添加 `DISTINCT` 以消除结果中的重复行：
 
 ```sql
 SELECT crypto_name FROM holdings

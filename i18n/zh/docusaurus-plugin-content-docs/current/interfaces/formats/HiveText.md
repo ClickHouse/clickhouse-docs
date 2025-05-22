@@ -1,5 +1,5 @@
 ---
-'description': 'HiveText格式的文档'
+'description': 'HiveText 格式的文档'
 'keywords':
 - 'HiveText'
 'slug': '/interfaces/formats/HiveText'

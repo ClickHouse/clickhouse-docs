@@ -1,16 +1,16 @@
 ---
 'description': '不同编程语言可用的第三方客户端库概述'
-'sidebar_label': '客户端库'
+'sidebar_label': 'Client Libraries'
 'sidebar_position': 26
 'slug': '/interfaces/third-party/client-libraries'
-'title': '来自第三方开发者的客户端库'
+'title': '第三方开发者的客户端库'
 ---
 
 
-# 来自第三方开发者的客户端库
+# 第三方开发者的客户端库
 
 :::note
-ClickHouse Inc **不** 维护以下列出的库，也没有进行 extensive testing 以确保其质量。
+ClickHouse Inc **不** 维护以下列出的库，并且没有进行任何广泛的测试以确保其质量。
 :::
 
 ### Python {#python}

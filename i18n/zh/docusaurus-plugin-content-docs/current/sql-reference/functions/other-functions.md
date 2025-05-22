@@ -1,11 +1,21 @@
+---
+'description': 'Other Functions 的文档'
+'sidebar_label': '其他'
+'sidebar_position': 140
+'slug': '/sql-reference/functions/other-functions'
+'title': '其他功能'
+---
+
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
+
+
 # 其他函数
 ## hostName {#hostname}
 
-返回执行此函数的主机名称。如果该函数在远程服务器（分布式处理）上执行，则返回远程服务器名称。如果该函数在分布式表的上下文中执行，则生成一个包含与每个分片相关值的正常列。否则，它会产生一个常量值。
+返回此函数执行的主机名称。如果在远程服务器（分布式处理）上执行该函数，则返回远程服务器名称。如果在分布式表的上下文中执行该函数，则会生成一个正常列，包含每个分片相关的值。否则，它会生成一个常量值。
 
 **语法**
 
@@ -15,11 +25,11 @@ hostName()
 
 **返回值**
 
-- 主机名。 [字符串](../data-types/string.md)。
+- 主机名。[String](../data-types/string.md)。
 
 ## getMacro {#getMacro}
 
-从服务器配置的 [macros](../../operations/server-configuration-parameters/settings.md#macros) 部分返回一个命名值。
+从服务器配置的 [macros](../../operations/server-configuration-parameters/settings.md#macros) 部分返回命名值。
 
 **语法**
 
@@ -29,15 +39,15 @@ getMacro(name);
 
 **参数**
 
-- `name` — 要从 `<macros>` 部分检索的宏名称。 [字符串](/sql-reference/data-types/string)。
+- `name` — 从 `<macros>` 部分检索的宏名称。[String](/sql-reference/data-types/string)。
 
 **返回值**
 
-- 指定宏的值。 [字符串](../data-types/string.md)。
+- 指定宏的值。[String](../data-types/string.md)。
 
 **示例**
 
-服务器配置文件中的示例 `<macros>` 部分：
+服务器配置文件中的 `<macros>` 部分的示例：
 
 ```xml
 <macros>
@@ -59,7 +69,7 @@ SELECT getMacro('test');
 └──────────────────┘
 ```
 
-可以通过以下方式获取相同的值：
+可以如下获取相同的值：
 
 ```sql
 SELECT * FROM system.macros
@@ -74,7 +84,7 @@ WHERE macro = 'test';
 
 ## fqdn {#fqdn}
 
-返回 ClickHouse 服务器的完全限定域名。
+返回 ClickHouse 服务器的完全合格域名。
 
 **语法**
 
@@ -82,11 +92,11 @@ WHERE macro = 'test';
 fqdn();
 ```
 
-别名：`fullHostName`, `FQDN`。
+别名：`fullHostName`，`FQDN`。
 
 **返回值**
 
-- 完全限定域名的字符串。 [字符串](../data-types/string.md)。
+- 完全合格域名的字符串。[String](../data-types/string.md)。
 
 **示例**
 
@@ -104,7 +114,7 @@ SELECT FQDN();
 
 ## basename {#basename}
 
-提取字符串中最后一个斜杠或反斜杠后的尾部。此函数通常用于从路径中提取文件名。
+提取字符串最后一个斜杠或反斜杠后的部分。此函数通常用于从路径中提取文件名。
 
 ```sql
 basename(expr)
@@ -112,14 +122,14 @@ basename(expr)
 
 **参数**
 
-- `expr` — 类型为 [字符串](../data-types/string.md) 的值。反斜杠必须进行转义。
+- `expr` — [String](../data-types/string.md) 类型的值。反斜杠必须被转义。
 
 **返回值**
 
-包含：
+一个字符串，包含：
 
-- 输入字符串中最后一个斜杠或反斜杠后的尾部。如果输入字符串以斜杠或反斜杠结尾（例如 `/` 或 `c:\`），则函数返回空字符串。
-- 如果没有斜杠或反斜杠，则返回原始字符串。
+- 输入字符串最后一个斜杠或反斜杠后的部分。如果输入字符串以斜杠或反斜杠结尾（例如 `/` 或 `c:\`），则函数返回空字符串。
+- 如果没有斜杠或反斜杠则返回原始字符串。
 
 **示例**
 
@@ -167,9 +177,9 @@ SELECT 'some-file-name' AS a, basename(a)
 
 ## visibleWidth {#visiblewidth}
 
-计算在文本格式（制表符分隔）下输出值时的近似宽度。此函数由系统用于实现 [Pretty formats](../../interfaces/formats.md)。
+计算以文本格式（制表符分隔）输出值时的近似宽度。此函数由系统使用，以实现 [Pretty formats](../../interfaces/formats.md)。
 
-`NULL` 在 `Pretty` 格式中表示为对应于 `NULL` 的字符串。
+`NULL` 被表示为与 `Pretty` 格式中的 `NULL` 相对应的字符串。
 
 **语法**
 
@@ -197,7 +207,7 @@ SELECT visibleWidth(NULL)
 
 返回传递参数的类型名称。
 
-如果传递 `NULL`，则函数返回类型 `Nullable(Nothing)`，对应于 ClickHouse 的内部 `NULL` 表示。
+如果传递 `NULL`，则该函数返回类型 `Nullable(Nothing)`，对应于 ClickHouse 的内部 `NULL` 表示。
 
 **语法**
 
@@ -211,7 +221,7 @@ toTypeName(value)
 
 **返回值**
 
-- 输入值的数据类型名称。 [字符串](../data-types/string.md)。
+- 输入值的数据类型名称。[String](../data-types/string.md)。
 
 **示例**
 
@@ -231,7 +241,7 @@ SELECT toTypeName(123);
 
 ## blockSize {#blockSize}
 
-在 ClickHouse 中，查询是以 [块](/development/architecture#block)（块）进行处理的。此函数返回调用函数的块的大小（行数）。
+在 ClickHouse 中，查询以 [blocks](/development/architecture#block)（块）处理。此函数返回调用该函数的块的大小（行数）。
 
 **语法**
 
@@ -268,7 +278,7 @@ FROM test;
 
 ## byteSize {#bytesize}
 
-返回其参数在内存中未压缩字节大小的估计值。
+返回其参数在内存中未压缩字节大小的估算值。
 
 **语法**
 
@@ -282,11 +292,11 @@ byteSize(argument [, ...])
 
 **返回值**
 
-- 参数在内存中的字节大小估计值。 [UInt64](../data-types/int-uint.md)。
+- 参数在内存中的字节大小估算值。[UInt64](../data-types/int-uint.md)。
 
 **示例**
 
-对于 [字符串](../data-types/string.md) 参数，该函数返回字符串长度 + 9（终止零 + 长度）。
+对于 [String](../data-types/string.md) 参数，函数返回字符串长度 + 9（终止零 + 长度）。
 
 查询：
 
@@ -345,7 +355,7 @@ byteSize(Float32): 4
 byteSize(Float64): 8
 ```
 
-如果该函数有多个参数，则该函数会累计它们的字节大小。
+如果函数有多个参数，函数会累积它们的字节大小。
 
 查询：
 
@@ -363,7 +373,7 @@ SELECT byteSize(NULL, 1, 0.3, '');
 
 ## materialize {#materialize}
 
-将常量转换为包含单个值的完整列。完整列和常量在内存中表示不同。函数通常对正常和常量参数执行不同的代码，尽管结果通常应该相同。此函数可用于调试此行为。
+将常量转换为包含单个值的完整列。完整列和常量在内存中表示方式不同。函数通常会为正常和常量参数执行不同的代码，尽管结果通常应该相同。此函数可用于调试此行为。
 
 **语法**
 
@@ -373,7 +383,7 @@ materialize(x)
 
 **参数**
 
-- `x` — 常量。 [常量](overview.md/#constants)。
+- `x` — 一个常量。[常量](overview.md/#constants)。
 
 **返回值**
 
@@ -381,7 +391,7 @@ materialize(x)
 
 **示例**
 
-在下面的示例中，`countMatches` 函数期望一个常量的第二个参数。可以使用 `materialize` 函数将常量转换为完整列以调试此行为，验证该函数对非恒定参数抛出错误。
+在下面的示例中，`countMatches` 函数期望第二个参数为常量。可以使用 `materialize` 函数将常量转换为完整列来调试此行为，验证函数是否对于非常量参数抛出错误。
 
 查询：
 
@@ -399,7 +409,7 @@ Code: 44. DB::Exception: Received from localhost:9000. DB::Exception: Illegal ty
 
 ## ignore {#ignore}
 
-接受任意参数，并无条件返回 `0`。参数仍会在内部被评估，因此对基准测试等情况非常有用。
+接受任意参数并无条件返回 `0`。参数仍然在内部进行评估，使其对基准测试等非常有用。
 
 **语法**
 
@@ -409,7 +419,7 @@ ignore([arg1[, arg2[, ...]])
 
 **参数**
 
-- 接受任意类型的任意数量参数，包括 `NULL`。
+- 接受任意数量的任意类型的参数，包括 `NULL`。
 
 **返回值**
 
@@ -443,7 +453,7 @@ sleep(seconds)
 
 **参数**
 
-- `seconds`: [UInt*](../data-types/int-uint.md) 或 [Float](../data-types/float.md) 暂停查询执行的秒数，最多 3 秒。可以是浮点值以指定小数秒。
+- `seconds`：[UInt*](../data-types/int-uint.md) 或 [Float](../data-types/float.md) 当前查询执行暂停的秒数，最大为 3 秒。可以是浮点值以指定小数秒。
 
 **返回值**
 
@@ -451,7 +461,7 @@ sleep(seconds)
 
 **示例**
 
-此函数不返回任何值。但是，如果您使用 `clickhouse client` 运行该函数，您会看到类似以下内容：
+此函数不返回任何值。然而，如果您使用 `clickhouse client` 运行此函数，您会看到类似下面的内容：
 
 ```response
 SELECT sleep(2)
@@ -465,21 +475,21 @@ Query id: 8aa9943e-a686-45e1-8317-6e8e3a5596ac
 1 row in set. Elapsed: 2.012 sec.
 ```
 
-这个查询在完成之前会暂停 2 秒。在此期间，不会返回任何结果，查询将看起来像是挂起或未响应。
+该查询将在完成之前暂停 2 秒。在此期间，不会返回结果，查询将看起来像是挂起或无响应。
 
 **实现细节**
 
-`sleep()` 函数通常不在生产环境中使用，因为它可能会对查询性能和系统响应产生负面影响。然而，它在以下情况下可能会很有用：
+`sleep()` 函数通常不在生产环境中使用，因为它会对查询性能和系统响应性产生负面影响。然而，在以下场景中可能会有用：
 
-1. **测试**：在测试或基准测试 ClickHouse 时，您可能希望模拟延迟或引入暂停，以观察系统在某些条件下的表现。
-2. **调试**：如果您需要在特定时间检查系统的状态或查询的执行，可以使用 `sleep()` 引入暂停，允许您检查或收集相关信息。
-3. **模拟**：在某些情况下，您可能希望模拟在处理外部系统或网络延迟时发生的真实场景。
+1. **测试**：在测试或基准测试 ClickHouse 时，您可能希望模拟延迟或引入暂停以观察系统在特定条件下的行为。
+2. **调试**：如果您需要检查系统的状态或在特定时间点查询的执行情况，可以使用 `sleep()` 引入暂停，让您可以检查或收集相关信息。
+3. **模拟**：在某些情况下，您可能希望模拟现实世界的场景，其中发生延迟或暂停，例如网络延迟或外部系统依赖。
 
-谨慎使用 `sleep()` 函数，仅在必要时使用，因为它可能会对您的 ClickHouse 系统的整体性能和响应性产生影响。
+重要的是要谨慎使用 `sleep()` 函数，并仅在必要时使用，因为它可能会影响 ClickHouse 系统的整体性能和响应性。
 
 ## sleepEachRow {#sleepeachrow}
 
-在结果集中，每个行执行查询时暂停指定的秒数。
+在结果集中的每一行上暂停查询的执行指定的秒数。
 
 **语法**
 
@@ -489,11 +499,11 @@ sleepEachRow(seconds)
 
 **参数**
 
-- `seconds`: [UInt*](../data-types/int-uint.md) 或 [Float*](../data-types/float.md) 每行在结果集中暂停查询执行的秒数，最多 3 秒。可以是浮点值以指定小数秒。
+- `seconds`：[UInt*](../data-types/int-uint.md) 或 [Float*](../data-types/float.md)，每行结果集中查询执行暂停的秒数，最大为 3 秒。可以是浮点值以指定小数秒。
 
 **返回值**
 
-该函数返回接收到的相同输入值，而不修改它们。
+此函数返回与接收的输入值相同的值，而不做修改。
 
 **示例**
 
@@ -511,19 +521,19 @@ SELECT number, sleepEachRow(0.5) FROM system.numbers LIMIT 5;
 └────────┴───────────────────┘
 ```
 
-但是输出将被延迟，每行之间暂停 0.5 秒。
+但输出将会延迟，每一行之间有 0.5 秒的暂停。
 
-`sleepEachRow()` 函数主要用于测试和调试目的，与 `sleep()` 函数类似。它允许您模拟延迟或在每行的处理过程中引入暂停，适用于以下场景：
+`sleepEachRow()` 函数主要用于测试和调试目的，类似于 `sleep()` 函数。它允许您在处理每一行时模拟延迟或引入暂停，这在以下场景中可能会很有用：
 
-1. **测试**：在特定条件下测试或基准测试 ClickHouse 的性能时，您可以使用 `sleepEachRow()` 模拟处理每一行时的延迟或引入暂停。
-2. **调试**：如果您需要检查处理的每一行的系统状态或查询执行，可以使用 `sleepEachRow()` 引入暂停，允许您检查或收集相关信息。
-3. **模拟**：在某些情况下，您可能希望模拟处理每一行时发生的真实场景中的延迟或暂停，例如处理外部系统或网络延迟。
+1. **测试**：在特定条件下测试或基准测试 ClickHouse 的性能时，您可以使用 `sleepEachRow()` 模拟延迟或为每个处理的行引入暂停。
+2. **调试**：如果您需要检查系统的状态或查询执行情况，可以使用 `sleepEachRow()` 引入暂停，使您可以检查或收集相关信息。
+3. **模拟**：在某些情况下，您可能希望模拟实际世界的场景，在处理的每一行中发生延迟或暂停，例如处理外部系统或网络延迟。
 
-与 [`sleep()` 函数](#sleep) 一样，谨慎使用 `sleepEachRow()`，仅在必要时使用，因为它可能显著影响您的 ClickHouse 系统的整体性能和响应性，尤其是在处理大型结果集时。
+与 [`sleep()` 函数](#sleep) 一样，重要的是要谨慎使用 `sleepEachRow()` 并仅在必要时使用，因为它可能会显著影响 ClickHouse 系统总体性能和响应性，尤其是在处理大型结果集时。
 
 ## currentDatabase {#currentdatabase}
 
-返回当前数据库的名称。在 `CREATE TABLE` 查询中指定数据库时非常有用。
+返回当前数据库的名称。在 `CREATE TABLE` 查询的表引擎参数中特别有用，您需要指定数据库。
 
 **语法**
 
@@ -533,7 +543,7 @@ currentDatabase()
 
 **返回值**
 
-- 返回当前数据库名称。 [字符串](../data-types/string.md)。
+- 返回当前数据库名称。[String](../data-types/string.md)。
 
 **示例**
 
@@ -553,7 +563,7 @@ SELECT currentDatabase()
 
 ## currentUser {#currentUser}
 
-返回当前用户的名称。在分布式查询的情况下，返回发起查询的用户的名称。
+返回当前用户的名称。如果是分布式查询，则返回发起查询的用户名称。
 
 **语法**
 
@@ -561,12 +571,12 @@ SELECT currentDatabase()
 currentUser()
 ```
 
-别名：`user()`, `USER()`, `current_user()`。别名不区分大小写。
+别名：`user()`，`USER()`，`current_user()`。别名不区分大小写。
 
 **返回值**
 
-- 当前用户的名称。 [字符串](../data-types/string.md)。
-- 在分布式查询中，发起查询的用户的登录名。 [字符串](../data-types/string.md)。
+- 当前用户的名称。[String](../data-types/string.md)。
+- 在分布式查询中，发起查询的用户的登录名称。[String](../data-types/string.md)。
 
 **示例**
 
@@ -584,7 +594,7 @@ SELECT currentUser();
 
 ## currentSchemas {#currentschemas}
 
-返回一个只有一个元素的数组，包含当前数据库模式的名称。
+返回当前数据库模式名称的单元素数组。
 
 **语法**
 
@@ -596,15 +606,15 @@ currentSchemas(bool)
 
 **参数**
 
-- `bool`: 布尔值。 [布尔](../data-types/boolean.md)。
+- `bool`：布尔值。[Bool](../data-types/boolean.md)。
 
 :::note
-布尔参数会被忽略。它仅存在于与 PostgreSQL 中此函数的 [实现](https://www.postgresql.org/docs/7.3/functions-misc.html) 兼容的原因。
+布尔参数被忽略。它的存在仅为与 [PostgreSQL 中此函数的实现](https://www.postgresql.org/docs/7.3/functions-misc.html) 兼容。
 :::
 
 **返回值**
 
-- 返回一个只有一个元素的数组，包含当前数据库的名称。
+- 返回当前数据库名称的单元素数组。
 
 **示例**
 
@@ -620,9 +630,9 @@ SELECT currentSchemas(true);
 
 ## isConstant {#isconstant}
 
-返回参数是否为常量表达式。
+返回参数是否是常量表达式。
 
-常量表达式是结果在查询分析期间已知的表达式，即在执行之前。例如，对于 [literals](../../sql-reference/syntax.md#literals) 的表达式是常量表达式。
+常量表达式是指在查询分析期间已知结果的表达式，即在执行前已知的表达式。例如，针对 [literals](../../sql-reference/syntax.md#literals) 的表达式就是常量表达式。
 
 此函数主要用于开发、调试和演示。
 
@@ -638,8 +648,8 @@ isConstant(x)
 
 **返回值**
 
-- 如果 `x` 是常量，则返回 `1`。 [UInt8](../data-types/int-uint.md)。
-- 如果 `x` 不是常量，则返回 `0`。 [UInt8](../data-types/int-uint.md)。
+- 如果 `x` 是常量，则返回 `1`。[UInt8](../data-types/int-uint.md)。
+- 如果 `x` 不是常量，则返回 `0`。[UInt8](../data-types/int-uint.md)。
 
 **示例**
 
@@ -687,7 +697,7 @@ SELECT isConstant(number) FROM numbers(1)
 
 ## hasColumnInTable {#hascolumnintable}
 
-给定数据库名称、表名称和列名称作为常量字符串，如果给定的列存在则返回 1，否则返回 0。
+给定数据库名称、表名称和列名称作为常量字符串，如果给定列存在，则返回 1，否则返回 0。
 
 **语法**
 
@@ -697,21 +707,21 @@ hasColumnInTable(\['hostname'\[, 'username'\[, 'password'\]\],\] 'database', 'ta
 
 **参数**
 
-- `database` : 数据库名称。 [字符串字面量](/sql-reference/syntax#string)
-- `table` : 表名称。 [字符串字面量](/sql-reference/syntax#string)
-- `column` : 列名称。 [字符串字面量](/sql-reference/syntax#string)
-- `hostname` : 执行检查的远程服务器名称。 [字符串字面量](/sql-reference/syntax#string)
-- `username` : 远程服务器的用户名。 [字符串字面量](/sql-reference/syntax#string)
-- `password` : 远程服务器的密码。 [字符串字面量](/sql-reference/syntax#string)
+- `database`：数据库名称。[字符串常量](/sql-reference/syntax#string)
+- `table`：表名称。[字符串常量](/sql-reference/syntax#string)
+- `column`：列名称。[字符串常量](/sql-reference/syntax#string)
+- `hostname`：执行检查的远程服务器名称。[字符串常量](/sql-reference/syntax#string)
+- `username`：远程服务器的用户名。[字符串常量](/sql-reference/syntax#string)
+- `password`：远程服务器的密码。[字符串常量](/sql-reference/syntax#string)
 
 **返回值**
 
 - 如果给定列存在，则返回 `1`。
-- 否则返回 `0`。
+- 否则，返回 `0`。
 
 **实现细节**
 
-对于嵌套数据结构中的元素，函数检查列的存在性。对于嵌套数据结构本身，函数返回 0。
+对于嵌套数据结构的元素，函数检查列的存在性。对于嵌套数据结构本身，函数返回 `0`。
 
 **示例**
 
@@ -735,7 +745,7 @@ SELECT hasColumnInTable('system','metrics','non-existing_column')
 
 ## hasThreadFuzzer {#hasthreadfuzzer}
 
-返回线程模糊测试是否有效。它可用于测试以防止运行时间过长。
+返回 Thread Fuzzer 是否有效。可用于测试以防止运行时间过长。
 
 **语法**
 
@@ -747,15 +757,15 @@ hasThreadFuzzer();
 
 构建条形图。
 
-`bar(x, min, max, width)` 画出一种带宽与 `(x - min)` 成比例且当 `x = max` 时等于 `width` 个字符的带。
+`bar(x, min, max, width)` 绘制宽度与 `(x - min)` 成比例的带，当 `x = max` 时宽度为 `width` 个字符。
 
 **参数**
 
-- `x` — 要显示的大小。
+- `x` — 显示的大小。
 - `min, max` — 整数常量。值必须适合 `Int64`。
 - `width` — 常量，正整数，可以是小数。
 
-带的绘制精度为符号的八分之一。
+该带的绘制精度为符号的八分之一。
 
 示例：
 
@@ -800,26 +810,26 @@ ORDER BY h ASC
 
 ## transform {#transform}
 
-根据一些元素的显式定义的映射转换值。有两个变体的函数：
+根据某些元素到其他元素的显式定义映射来转换值。此函数有两种变体：
 ### transform(x, array_from, array_to, default) {#transformx-array_from-array_to-default}
 
 `x` – 要转换的内容。
 
-`array_from` – 常量值数组，以进行转换。
+`array_from` – 要转换的常量数组。
 
-`array_to` – 常量值数组，将 'from' 中的值转换为。
+`array_to` – 要将 `from` 中的值转换为的常量数组。
 
-`default` – 如果 'x' 不等于 'from' 中的任何值，则使用哪个值。
+`default` – 如果 `x` 不等于 `from` 中的任何值，则使用的值。
 
-`array_from` 和 `array_to` 必须有相同数量的元素。
+`array_from` 和 `array_to` 必须具有相同数量的元素。
 
 签名：
 
-对于 `x` 等于 `array_from` 中的某个元素，函数返回 `array_to` 中相应的元素，即相同数组索引处的元素。否则，它返回 `default`。如果存在多个匹配的 `array_from` 元素，则返回对应于第一个元素的元素。
+对于 `x` 等于 `array_from` 中的任何元素，该函数返回 `array_to` 中相应的元素，即相同数组索引的元素。否则，返回 `default`。如果在 `array_from` 中存在多个匹配元素，则返回与第一个匹配元素对应的元素。
 
 `transform(T, Array(T), Array(U), U) -> U`
 
-`T` 和 `U` 可以是数字、字符串或日期或日期时间类型。相同的字母（T 或 U）意味着类型必须是互相兼容的，而不一定相等。例如，第一个参数可以是 `Int64` 类型，而第二个参数可以是 `Array(UInt16)` 类型。
+`T` 和 `U` 可以是数值、字符串或日期或日期时间类型。相同的字母（T 或 U）表示类型必须相互兼容且不必相等。例如，第一个参数可以是 `Int64` 类型，而第二个参数可以是 `Array(UInt16)` 类型。
 
 示例：
 
@@ -843,7 +853,7 @@ ORDER BY c DESC
 
 ### transform(x, array_from, array_to) {#transformx-array_from-array_to}
 
-类似于另一个变体，但没有 'default' 参数。如果无法找到匹配项，则返回 `x`。
+与其他变体类似，但是没有 `default` 参数。在找不到匹配时，将返回 `x`。
 
 示例：
 
@@ -873,7 +883,7 @@ LIMIT 10
 
 ## formatReadableDecimalSize {#formatreadabledecimalsize}
 
-给定大小（字节数），此函数返回可读的、四舍五入的大小，带后缀（KB、MB 等）作为字符串。
+给定大小（字节数），该函数返回一个可读的、四舍五入的大小字符串及其后缀（KB，MB 等）。
 
 此函数的反向操作是 [parseReadableSize](#parsereadablesize)、[parseReadableSizeOrZero](#parsereadablesizeorzero) 和 [parseReadableSizeOrNull](#parsereadablesizeornull)。
 
@@ -906,7 +916,7 @@ SELECT
 
 ## formatReadableSize {#formatreadablesize}
 
-给定大小（字节数），此函数返回可读的、四舍五入的大小，带后缀（KiB、MiB 等）作为字符串。
+给定大小（字节数），该函数返回一个可读的、四舍五入的大小字符串及其后缀（KiB，MiB 等）。
 
 此函数的反向操作是 [parseReadableSize](#parsereadablesize)、[parseReadableSizeOrZero](#parsereadablesizeorzero) 和 [parseReadableSizeOrNull](#parsereadablesizeornull)。
 
@@ -919,7 +929,7 @@ formatReadableSize(x)
 别名：`FORMAT_BYTES`。
 
 :::note
-此函数接受任何数字类型作为输入，但内部会将其转换为 Float64。对大值的结果可能不够理想。
+此函数接受任何数值类型作为输入，但内部将其转换为 Float64。 对于大值，结果可能不理想。
 :::
 
 **示例**
@@ -945,7 +955,7 @@ SELECT
 
 ## formatReadableQuantity {#formatreadablequantity}
 
-给定一个数字，此函数返回带有后缀（千、百万、十亿等）作为字符串的四舍五入数字。
+给定一个数字，该函数返回带后缀（千、百万、十亿等）的四舍五入数字字符串。
 
 **语法**
 
@@ -954,7 +964,7 @@ formatReadableQuantity(x)
 ```
 
 :::note
-此函数接受任何数字类型作为输入，但内部会将其转换为 Float64。对大值的结果可能不够理想。
+此函数接受任何数值类型作为输入，但内部将其转换为 Float64。 对于大值，结果可能不理想。
 :::
 
 **示例**
@@ -980,7 +990,7 @@ SELECT
 
 ## formatReadableTimeDelta {#formatreadabletimedelta}
 
-给定时间间隔（δ）以秒为单位，返回带年/月/日/小时/分钟/秒/毫秒/微秒/纳秒的时间间隔作为字符串。
+给定时间间隔（秒），该函数返回带年/月/日/小时/分钟/秒/毫秒/微秒/纳秒的时间增量字符串。
 
 **语法**
 
@@ -989,19 +999,19 @@ formatReadableTimeDelta(column[, maximum_unit, minimum_unit])
 ```
 
 :::note
-此函数接受任何数字类型作为输入，但内部会将其转换为 Float64。对大值的结果可能不够理想。
+此函数接受任何数值类型作为输入，但内部将其转换为 Float64。 对于大值，结果可能不理想。
 :::
 
 **参数**
 
-- `column` — 带有数字时间间隔的列。
-- `maximum_unit` — 可选。最大单位以显示。
-  - 可接受的值：`nanoseconds`、`microseconds`、`milliseconds`、`seconds`、`minutes`、`hours`、`days`、`months`、`years`。
+- `column` — 一个具有数值时间增量的列。
+- `maximum_unit` — 可选。最大单位显示。
+  - 可接受值：`nanoseconds`，`microseconds`，`milliseconds`，`seconds`，`minutes`，`hours`，`days`，`months`，`years`。
   - 默认值：`years`。
-- `minimum_unit` — 可选。最小单位以显示。所有较小的单位都会被截断。
-  - 可接受的值：`nanoseconds`、`microseconds`、`milliseconds`、`seconds`、`minutes`、`hours`、`days`、`months`、`years`。
-  - 如果显式指定的值大于 `maximum_unit`，则会抛出异常。
-  - 默认值：如果 `maximum_unit` 为 `seconds` 或更大，则为 `seconds`；否则为 `nanoseconds`。
+- `minimum_unit` — 可选。最小单位显示。所有较小的单位都被截断。
+  - 可接受值：`nanoseconds`，`microseconds`，`milliseconds`，`seconds`，`minutes`，`hours`，`days`，`months`，`years`。
+  - 如果明确指定的值大于 `maximum_unit`，则会引发异常。
+  - 默认值：如果 `maximum_unit` 大于或等于 `seconds` 则为 `seconds`，否则为 `nanoseconds`。
 
 **示例**
 
@@ -1049,10 +1059,10 @@ SELECT
 
 ## parseReadableSize {#parsereadablesize}
 
-给定一个包含字节大小的字符串以及 `B`、`KiB`、`KB`、`MiB`、`MB` 等单位（即 [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 或十进制字节单位），此函数返回相应的字节数。  
-如果该函数无法解析输入值，则会抛出异常。
+给定包含字节大小和 `B`、`KiB`、`KB`、`MiB`、`MB` 等作为单位的字符串（即 [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 或十进制字节单位），该函数返回相应的字节数。
+如果无法解析输入值，则会抛出异常。
 
-此函数的反向操作为 [formatReadableSize](#formatreadablesize) 和 [formatReadableDecimalSize](#formatreadabledecimalsize)。
+此函数的反向操作是 [formatReadableSize](#formatreadablesize) 和 [formatReadableDecimalSize](#formatreadabledecimalsize)。
 
 **语法**
 
@@ -1062,11 +1072,11 @@ parseReadableSize(x)
 
 **参数**
 
-- `x` : 具有 ISO/IEC 80000-13 或十进制字节单位的可读大小 ([字符串](../../sql-reference/data-types/string.md))。
+- `x`：带有 ISO/IEC 80000-13 或十进制字节单位的可读大小（[String](../../sql-reference/data-types/string.md)）。
 
 **返回值**
 
-- 字节数，四舍五入到最接近的整数 ([UInt64](../../sql-reference/data-types/int-uint.md))。
+- 字节数，向上舍入到最接近的整数（[UInt64](../../sql-reference/data-types/int-uint.md)）。
 
 **示例**
 
@@ -1087,10 +1097,10 @@ SELECT
 
 ## parseReadableSizeOrNull {#parsereadablesizeornull}
 
-给定一个包含字节大小的字符串以及 `B`、`KiB`、`KB`、`MiB`、`MB` 等单位（即 [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 或十进制字节单位），此函数返回相应的字节数。  
-如果该函数无法解析输入值，则返回 `NULL`。
+给定包含字节大小和 `B`、`KiB`、`KB`、`MiB`、`MB` 等作为单位的字符串（即 [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 或十进制字节单位），该函数返回相应的字节数。
+如果无法解析输入值，则返回 `NULL`。
 
-此函数的反向操作为 [formatReadableSize](#formatreadablesize) 和 [formatReadableDecimalSize](#formatreadabledecimalsize)。
+此函数的反向操作是 [formatReadableSize](#formatreadablesize) 和 [formatReadableDecimalSize](#formatreadabledecimalsize)。
 
 **语法**
 
@@ -1100,11 +1110,11 @@ parseReadableSizeOrNull(x)
 
 **参数**
 
-- `x` : 具有 ISO/IEC 80000-13 或十进制字节单位的可读大小 ([字符串](../../sql-reference/data-types/string.md))。
+- `x`：带有 ISO/IEC 80000-13 或十进制字节单位的可读大小（[String](../../sql-reference/data-types/string.md)）。
 
 **返回值**
 
-- 字节数，四舍五入到最接近的整数，或者如果无法解析输入则返回 NULL（Nullable([UInt64](../../sql-reference/data-types/int-uint.md))）。
+- 字节数，向上舍入到最接近的整数，或在无法解析输入时返回 NULL（Nullable([UInt64](../../sql-reference/data-types/int-uint.md)））。
 
 **示例**
 
@@ -1126,9 +1136,9 @@ SELECT
 
 ## parseReadableSizeOrZero {#parsereadablesizeorzero}
 
-给定一个包含字节大小的字符串以及 `B`、`KiB`、`KB`、`MiB`、`MB` 等单位（即 [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 或十进制字节单位），此函数返回相应的字节数。如果该函数无法解析输入值，则返回 `0`。
+给定包含字节大小和 `B`、`KiB`、`KB`、`MiB`、`MB` 等作为单位的字符串（即 [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 或十进制字节单位），该函数返回相应的字节数。如果无法解析输入值，则返回 `0`。
 
-此函数的反向操作为 [formatReadableSize](#formatreadablesize) 和 [formatReadableDecimalSize](#formatreadabledecimalsize)。
+此函数的反向操作是 [formatReadableSize](#formatreadablesize) 和 [formatReadableDecimalSize](#formatreadabledecimalsize)。
 
 **语法**
 
@@ -1138,11 +1148,11 @@ parseReadableSizeOrZero(x)
 
 **参数**
 
-- `x` : 具有 ISO/IEC 80000-13 或十进制字节单位 ([字符串](../../sql-reference/data-types/string.md))。
+- `x`：带有 ISO/IEC 80000-13 或十进制字节单位的可读大小（[String](../../sql-reference/data-types/string.md)）。
 
 **返回值**
 
-- 字节数，四舍五入到最接近的整数，或者如果无法解析输入则返回 0 ([UInt64](../../sql-reference/data-types/int-uint.md))。
+- 字节数，向上舍入到最接近的整数，或在无法解析输入时返回 0（[UInt64](../../sql-reference/data-types/int-uint.md)）。
 
 **示例**
 
@@ -1164,7 +1174,7 @@ SELECT
 
 ## parseTimeDelta {#parsetimedelta}
 
-解析一个数字序列后跟类似时间单位的内容。
+解析一串数字后跟类似于时间单位的内容。
 
 **语法**
 
@@ -1174,13 +1184,15 @@ parseTimeDelta(timestr)
 
 **参数**
 
-- `timestr` — 一个数字序列后跟类似时间单位的内容。
+- `timestr` — 一串数字后跟类似于时间单位的内容。
 
 **返回值**
 
-- 带有秒数的浮点数。
+- 一个浮点数，表示秒数。
 
 **示例**
+
+查询：
 
 ```sql
 SELECT parseTimeDelta('11s+22min')
@@ -1204,7 +1216,7 @@ SELECT parseTimeDelta('1yr2mo')
 
 ## least {#least}
 
-返回一个或多个输入参数中的最小参数。 `NULL` 参数会被忽略。
+返回一个或多个输入参数中的最小值。`NULL` 参数被忽略。
 
 **语法**
 
@@ -1213,12 +1225,12 @@ least(a, b)
 ```
 
 :::note
-版本 [24.12](/whats-new/changelog/2024#a-id2412a-clickhouse-release-2412-2024-12-19) 引入了一个向后不兼容的更改，使得 `NULL` 值被忽略，而之前如果其中一个参数为 `NULL` 则返回 `NULL`。要保持之前的行为，请将设置 `least_greatest_legacy_null_behavior` （默认值：`false`）设置为 `true`。
+版本 [24.12](/whats-new/changelog/2024#a-id2412a-clickhouse-release-2412-2024-12-19) 引入了不向后兼容的更改，使得 `NULL` 值被忽略，而之前如果其中一个参数为 `NULL`，则返回 `NULL`。要保留先前的行为，请将设置 `least_greatest_legacy_null_behavior`（默认值：`false`）设置为 `true`。
 :::
 
 ## greatest {#greatest}
 
-返回一个或多个输入参数中的最大参数。 `NULL` 参数会被忽略。
+返回一个或多个输入参数中的最大值。`NULL` 参数被忽略。
 
 **语法**
 
@@ -1227,12 +1239,12 @@ greatest(a, b)
 ```
 
 :::note
-版本 [24.12](/whats-new/changelog/2024#a-id2412a-clickhouse-release-2412-2024-12-19) 引入了一个向后不兼容的更改，使得 `NULL` 值被忽略，而之前如果其中一个参数为 `NULL` 则返回 `NULL`。要保持之前的行为，请将设置 `least_greatest_legacy_null_behavior` （默认值：`false`）设置为 `true`。
+版本 [24.12](/whats-new/changelog/2024#a-id2412a-clickhouse-release-2412-2024-12-19) 引入了不向后兼容的更改，使得 `NULL` 值被忽略，而之前如果其中一个参数为 `NULL`，则返回 `NULL`。要保留先前的行为，请将设置 `least_greatest_legacy_null_behavior`（默认值：`false`）设置为 `true`。
 :::
 
 ## uptime {#uptime}
 
-返回服务器的运行时间（以秒为单位）。如果在分布式表的上下文中执行，则此函数生成一个与每个分片相关的正常列的值。否则，它会产生一个常量值。
+返回服务器的运行时间，单位为秒。如果在分布式表的上下文中执行此函数，则会生成一个正常列，包含每个分片相关的值。否则，它会生成一个常量值。
 
 **语法**
 
@@ -1242,7 +1254,7 @@ uptime()
 
 **返回值**
 
-- 时间值，以秒为单位。 [UInt32](../data-types/int-uint.md)。
+- 时间值（秒）。[UInt32](../data-types/int-uint.md)。
 
 **示例**
 
@@ -1262,7 +1274,7 @@ SELECT uptime() as Uptime;
 
 ## version {#version}
 
-返回 ClickHouse 的当前版本，格式为：
+以以下格式返回 ClickHouse 的当前版本字符串：
 
 - 主版本
 - 次版本
@@ -1273,7 +1285,7 @@ SELECT uptime() as Uptime;
 major_version.minor_version.patch_version.number_of_commits_since_the_previous_stable_release
 ```
 
-如果在分布式表的上下文中执行，则此函数生成一个与每个分片相关的正常列的值。否则，它会产生一个常量值。
+如果在分布式表的上下文中执行此函数，则会生成一个正常列，包含每个分片相关的值。否则，它会生成一个常量值。
 
 **语法**
 
@@ -1287,7 +1299,7 @@ version()
 
 **返回值**
 
-- 当前 ClickHouse 的版本。 [字符串](../data-types/string)。
+- 当前的 ClickHouse 版本。[String](../data-types/string)。
 
 **实现细节**
 
@@ -1311,7 +1323,7 @@ SELECT version()
 
 ## buildId {#buildid}
 
-返回由编译器生成的运行 ClickHouse 服务器二进制文件的构建 ID。如果在分布式表的上下文中执行，则此函数生成一个与每个分片相关的正常列的值。否则，它会产生一个常量值。
+返回编译器为正在运行的 ClickHouse 服务器二进制文件生成的构建 ID。如果在分布式表的上下文中执行此函数，则会生成一个正常列，包含每个分片相关的值。否则，它会生成一个常量值。
 
 **语法**
 
@@ -1321,7 +1333,7 @@ buildId()
 
 ## blockNumber {#blocknumber}
 
-返回包含行的 [块](../../development/architecture.md#block) 的单调递增序列号。返回的块编号是基于最佳努力更新的，即可能不完全准确。
+返回包含行的 [block](../../development/architecture.md#block) 的单调递增序列号。返回的块编号在最努力的基础上更新，即可能不是完全准确的。
 
 **语法**
 
@@ -1331,7 +1343,7 @@ blockNumber()
 
 **返回值**
 
-- 行所在数据块的序列号。 [UInt64](../data-types/int-uint.md)。
+- 行所在数据块的序列号。[UInt64](../data-types/int-uint.md)。
 
 **示例**
 
@@ -1374,7 +1386,7 @@ FROM
 
 ## rowNumberInBlock {#rowNumberInBlock}
 
-返回每个通过 `rowNumberInBlock` 处理的 [块](../../development/architecture.md#block) 的当前行编号。返回的数字从每个块的 0 开始。
+针对每个由 `rowNumberInBlock` 处理的 [block](../../development/architecture.md#block)，返回当前行的编号。每个块的返回编号从 0 开始。
 
 **语法**
 
@@ -1384,7 +1396,7 @@ rowNumberInBlock()
 
 **返回值**
 
-- 从 0 开始的数据块中的行的序号。 [UInt64](../data-types/int-uint.md)。
+- 数据块中从 0 开始的行号。[UInt64](../data-types/int-uint.md)。
 
 **示例**
 
@@ -1427,7 +1439,7 @@ FROM
 
 ## rowNumberInAllBlocks {#rownumberinallblocks}
 
-返回每行通过 `rowNumberInAllBlocks` 处理的唯一行编号。返回的数字从 0 开始。
+针对每行由 `rowNumberInAllBlocks` 处理的返回唯一的行号。返回的数字从 0 开始。
 
 **语法**
 
@@ -1437,7 +1449,7 @@ rowNumberInAllBlocks()
 
 **返回值**
 
-- 从 0 开始的数据块中的行的序号。 [UInt64](../data-types/int-uint.md)。
+- 数据块中从 0 开始的行号。[UInt64](../data-types/int-uint.md)。
 
 **示例**
 
@@ -1481,7 +1493,7 @@ SETTINGS max_block_size = 2
 
 ## normalizeQuery {#normalizequery}
 
-用占位符 `?` 替换文字、文字序列和复杂别名（包含空格、超过两个数字或至少 36 字节长，如 UUID）。
+用占位符 `?` 替换文字、文字序列和复杂别名（包含空格、数字超过两个或至少 36 字节长的内容，如 UUID）。
 
 **语法**
 
@@ -1491,11 +1503,11 @@ normalizeQuery(x)
 
 **参数**
 
-- `x` — 字符序列。 [字符串](../data-types/string.md)。
+- `x` — 字符序列。[String](../data-types/string.md)。
 
 **返回值**
 
-- 带有占位符的字符序列。 [字符串](../data-types/string.md)。
+- 用占位符的字符序列。[String](../data-types/string.md)。
 
 **示例**
 
@@ -1515,7 +1527,7 @@ SELECT normalizeQuery('[1, 2, 3, x]') AS query;
 
 ## normalizeQueryKeepNames {#normalizequerykeepnames}
 
-用占位符 `?` 替换文字、文字序列，但不替换复杂别名（包含空格、超过两个数字或至少 36 字节长，如 UUID）。这有助于更好地分析复杂查询日志。
+用占位符 `?` 替换文字、文字序列，但不替换复杂别名（包含空格、数字超过两个或至少 36 字节长的内容，如 UUID）。这有助于更好地分析复杂查询日志。
 
 **语法**
 
@@ -1525,11 +1537,11 @@ normalizeQueryKeepNames(x)
 
 **参数**
 
-- `x` — 字符序列。 [字符串](../data-types/string.md)。
+- `x` — 字符序列。[String](../data-types/string.md)。
 
 **返回值**
 
-- 带有占位符的字符序列。 [字符串](../data-types/string.md)。
+- 用占位符的字符序列。[String](../data-types/string.md)。
 
 **示例**
 
@@ -1549,7 +1561,7 @@ SELECT normalizeQuery('SELECT 1 AS aComplexName123'), normalizeQueryKeepNames('S
 
 ## normalizedQueryHash {#normalizedqueryhash}
 
-返回没有文字值的相似查询的相同 64 位哈希值。对分析查询日志有帮助。
+返回相似查询的相同 64 位哈希值，且不包含文字的值。这对于分析查询日志可能很有帮助。
 
 **语法**
 
@@ -1559,11 +1571,11 @@ normalizedQueryHash(x)
 
 **参数**
 
-- `x` — 字符序列。 [字符串](../data-types/string.md)。
+- `x` — 字符序列。[String](../data-types/string.md)。
 
 **返回值**
 
-- 哈希值。 [UInt64](/sql-reference/data-types/int-uint#integer-ranges)。
+- 哈希值。[UInt64](/sql-reference/data-types/int-uint#integer-ranges)。
 
 **示例**
 
@@ -1583,7 +1595,7 @@ SELECT normalizedQueryHash('SELECT 1 AS `xyz`') != normalizedQueryHash('SELECT 1
 
 ## normalizedQueryHashKeepNames {#normalizedqueryhashkeepnames}
 
-类似于 [normalizedQueryHash](#normalizedqueryhash)，它返回没有文字值的相似查询的相同 64 位哈希值，但在哈希之前不将复杂别名（包含空格、超过两个数字或至少 36 字节长，如 UUID）替换为占位符。对分析查询日志有帮助。
+与 [normalizedQueryHash](#normalizedqueryhash) 类似，它返回相同的 64 位哈希值，但不包含文字的值，并且在哈希前不替换复杂别名（包含空格、数字超过两个或至少 36 字节长的内容，如 UUID）。这对于分析查询日志可能很有帮助。
 
 **语法**
 
@@ -1593,11 +1605,11 @@ normalizedQueryHashKeepNames(x)
 
 **参数**
 
-- `x` — 字符序列。 [字符串](../data-types/string.md)。
+- `x` — 字符序列。[String](../data-types/string.md)。
 
 **返回值**
 
-- 哈希值。 [UInt64](/sql-reference/data-types/int-uint#integer-ranges)。
+- 哈希值。[UInt64](/sql-reference/data-types/int-uint#integer-ranges)。
 
 **示例**
 
@@ -1621,7 +1633,7 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 
 <DeprecatedBadge/>
 
-提供对当前行的某一列的指定偏移之前或之后的行的访问的窗口函数。
+窗口函数，提供对给定列的指定偏移量之前或之后的行的访问。
 
 **语法**
 
@@ -1629,27 +1641,27 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 neighbor(column, offset[, default_value])
 ```
 
-函数的结果取决于影响的数据块和数据在块中的顺序。
+函数的结果取决于受影响的数据块及数据在块中的顺序。
 
 :::note
-仅在当前处理的数据块内返回邻居。由于这种容易出错的行为，函数已被弃用，请使用适当的窗口函数代替。
+仅在当前处理的数据块内返回邻居。由于此行为可能出错，因此该函数已被弃用，请改用适当的窗口函数。
 :::
 
-在计算 `neighbor()` 的过程中，行的顺序可能与返回给用户的行的顺序不同。为避免这种情况，可以创建带有 [ORDER BY](../../sql-reference/statements/select/order-by.md) 的子查询，并在子查询外部调用该函数。
+在计算 `neighbor()` 时，行的顺序可能与返回给用户的行的顺序不同。为避免这种情况，可以创建带有 [ORDER BY](../../sql-reference/statements/select/order-by.md) 的子查询，并在子查询外部调用函数。
 
 **参数**
 
-- `column` — 列名或标量表达式。
-- `offset` — 在 `column` 中查找当前行之前或之后的行数。 [Int64](../data-types/int-uint.md)。
-- `default_value` — 可选。 如果偏移超出块边界，则返回的值。类型为影响的数据块的类型。
+- `column` — 列名称或标量表达式。
+- `offset` — 在 `column` 中向当前行查看的行数。[Int64](../data-types/int-uint.md)。
+- `default_value` — 可选。如果偏移超出块边界，则返回的值。受影响数据块的类型。
 
 **返回值**
 
-- 当前行的 `column` 值与 `offset` 距离，如果 `offset` 不在块边界外。
-- 如果 `offset` 超出块边界，则返回 `column` 的默认值或 `default_value`（如果提供）。
+- `column` 的值与当前行的 `offset` 距离，如果 `offset` 不超出块边界。
+- `column` 的默认值或 `default_value`（如果提供）。
 
 :::note
-返回类型将是受影响的数据块的类型或默认值的类型。
+返回类型将是受影响数据块的类型或默认值类型。
 :::
 
 **示例**
@@ -1700,7 +1712,7 @@ SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
 └────────┴──────────────────────────┘
 ```
 
-此函数可用于计算年比年指标值：
+此函数可用于计算同比的指标值：
 
 查询：
 
@@ -1739,15 +1751,15 @@ FROM numbers(16)
 
 ## runningDifference {#runningDifference}
 
-计算数据块中两个连续行值之间的差。对于第一行返回 0，对于后续行返回与前一行的差。
+计算数据块中两个连续行值之间的差值。对第一行返回 0，对后续行返回与前一行的差值。
 
 :::note
-仅在当前处理的数据块内返回差异。由于这种容易出错的行为，函数已被弃用，请使用适当的窗口函数代替。
+仅在当前处理的数据块内部返回差值。由于此行为可能出错，因此该函数已被弃用，请改用适当的窗口函数。
 :::
 
-函数的结果取决于影响的数据块和数据在块中的顺序。
+函数的结果取决于受影响的数据块及数据在块中的顺序。
 
-在计算 `runningDifference()` 的过程中，行的顺序可能与返回给用户的行的顺序不同。为避免这种情况，可以创建带有 [ORDER BY](../../sql-reference/statements/select/order-by.md) 的子查询，并在子查询外部调用该函数。
+在计算 `runningDifference()` 时，行的顺序可能与返回给用户的行的顺序不同。为避免这种情况，可以创建带有 [ORDER BY](../../sql-reference/statements/select/order-by.md) 的子查询，并在子查询外部调用函数。
 
 **语法**
 
@@ -1788,7 +1800,7 @@ FROM
 └─────────┴─────────────────────┴───────┘
 ```
 
-请注意，块大小会影响结果。 `runningDifference` 的内部状态会在每个新块上重置。
+请注意，块大小会影响结果。`runningDifference` 的内部状态会在每个新块上重置。
 
 查询：
 
@@ -1834,17 +1846,17 @@ WHERE diff != 1
 ## runningDifferenceStartingWithFirstValue {#runningdifferencestartingwithfirstvalue}
 
 :::note
-此函数已被弃用（请参见 `runningDifference` 的注释）。
+此函数已被弃用（请参见 `runningDifference` 的说明）。
 :::
 
-与 [runningDifference](/sql-reference/functions/other-functions#runningDifference) 相同，但将第一行的值作为第一行上的值返回。
+与 [runningDifference](/sql-reference/functions/other-functions#runningDifference) 类似，但将第一行的值作为第一行的值返回。
 
 ## runningConcurrency {#runningconcurrency}
 
-计算并发事件的数量。每个事件都有一个开始时间和结束时间。开始时间包括在事件内，而结束时间不包括在内。具有开始时间和结束时间的列必须属于相同的数据类型。该函数计算每个事件开始时间的总活动（并发）事件数量。
+计算并发事件的数量。每个事件都有开始时间和结束时间。开始时间包含在事件中，而结束时间则被排除。具有开始时间和结束时间的列必须为相同数据类型。函数计算每个事件开始时间的活跃（并发）事件总数。
 
 :::tip
-事件必须按升序排列开始时间。如果违反此要求，函数将引发异常。每个数据块单独处理。如果来自不同数据块的事件重叠，则不能正确处理。
+事件必须按开始时间升序排列。如果不符合此要求，函数将引发异常。每个数据块都单独处理。如果来自不同数据块的事件重叠，则不能正确处理它们。
 :::
 
 **语法**
@@ -1855,12 +1867,12 @@ runningConcurrency(start, end)
 
 **参数**
 
-- `start` — 事件的开始时间的列。 [日期](../data-types/date.md)、[日期时间](../data-types/datetime.md) 或 [日期时间64](../data-types/datetime64.md)。
-- `end` — 事件的结束时间的列。 [日期](../data-types/date.md)、[日期时间](../data-types/datetime.md) 或 [日期时间64](../data-types/datetime64.md)。
+- `start` — 事件的开始时间列。[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
+- `end` — 事件的结束时间列。[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
 
 **返回值**
 
-- 每个事件开始时间的并发事件数量。 [UInt32](../data-types/int-uint.md)。
+- 每个事件开始时间的并发事件数量。[UInt32](../data-types/int-uint.md)
 
 **示例**
 
@@ -1891,9 +1903,10 @@ SELECT start, runningConcurrency(start, end) FROM example_table;
 │ 2021-03-11 │                              2 │
 └────────────┴────────────────────────────────┘
 ```
+
 ## MACNumToString {#macnumtostring}
 
-将 UInt64 数字解释为大端格式的 MAC 地址。以字符串格式返回相应的 MAC 地址，格式为 AA:BB:CC:DD:EE:FF（十六进制形式的带冒号分隔数字）。
+将一个UInt64数字解释为大端格式的MAC地址。返回对应的MAC地址，格式为AA:BB:CC:DD:EE:FF（以冒号分隔的16进制数字），类型为字符串。
 
 **语法**
 
@@ -1902,7 +1915,7 @@ MACNumToString(num)
 ```
 ## MACStringToNum {#macstringtonum}
 
-MACNumToString 的逆函数。如果 MAC 地址格式无效，则返回 0。
+MACNumToString的反向函数。如果MAC地址格式无效，则返回0。
 
 **语法**
 
@@ -1911,7 +1924,7 @@ MACStringToNum(s)
 ```
 ## MACStringToOUI {#macstringtooui}
 
-给定格式为 AA:BB:CC:DD:EE:FF（十六进制形式的带冒号分隔数字）的 MAC 地址，返回前面三个八位字节作为 UInt64 数字。如果 MAC 地址格式无效，则返回 0。
+给定格式为AA:BB:CC:DD:EE:FF（以冒号分隔的16进制数字）的MAC地址，返回前三个八位字节作为UInt64数字。如果MAC地址格式无效，则返回0。
 
 **语法**
 
@@ -1920,8 +1933,8 @@ MACStringToOUI(s)
 ```
 ## getSizeOfEnumType {#getsizeofenumtype}
 
-返回 [Enum](../data-types/enum.md) 中字段的数量。
-如果类型不是 `Enum`，则抛出异常。
+返回[Enum](../data-types/enum.md)中的字段数量。
+如果类型不是`Enum`，则抛出异常。
 
 **语法**
 
@@ -1931,11 +1944,11 @@ getSizeOfEnumType(value)
 
 **参数:**
 
-- `value` — `Enum` 类型的值。
+- `value` — 类型为`Enum`的值。
 
 **返回值**
 
-- 具有 `Enum` 输入值的字段数量。
+- 具有`Enum`输入值的字段数量。
 
 **示例**
 
@@ -1950,7 +1963,7 @@ SELECT getSizeOfEnumType( CAST('a' AS Enum8('a' = 1, 'b' = 2) ) ) AS x
 ```
 ## blockSerializedSize {#blockserializedsize}
 
-返回不考虑压缩的磁盘大小。
+返回未考虑压缩的磁盘大小。
 
 ```sql
 blockSerializedSize(value[, value[, ...]])
@@ -1962,17 +1975,17 @@ blockSerializedSize(value[, value[, ...]])
 
 **返回值**
 
-- 写入磁盘的值块的字节数，不包括压缩。
+- 将写入磁盘的值块数量（不压缩）。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT blockSerializedSize(maxState(1)) as x
 ```
 
-结果:
+结果：
 
 ```text
 ┌─x─┐
@@ -1995,17 +2008,17 @@ toColumnTypeName(value)
 
 **返回值**
 
-- 用于表示 `value` 的内部数据类型名称。
+- 用于表示`value`的内部数据类型名称。
 
 **示例**
 
-`toTypeName` 和 `toColumnTypeName` 的区别:
+`toTypeName`与`toColumnTypeName`的区别：
 
 ```sql
 SELECT toTypeName(CAST('2018-01-01 01:02:03' AS DateTime))
 ```
 
-结果:
+结果：
 
 ```text
 ┌─toTypeName(CAST('2018-01-01 01:02:03', 'DateTime'))─┐
@@ -2013,13 +2026,13 @@ SELECT toTypeName(CAST('2018-01-01 01:02:03' AS DateTime))
 └─────────────────────────────────────────────────────┘
 ```
 
-查询:
+查询：
 
 ```sql
 SELECT toColumnTypeName(CAST('2018-01-01 01:02:03' AS DateTime))
 ```
 
-结果:
+结果：
 
 ```text
 ┌─toColumnTypeName(CAST('2018-01-01 01:02:03', 'DateTime'))─┐
@@ -2027,10 +2040,10 @@ SELECT toColumnTypeName(CAST('2018-01-01 01:02:03' AS DateTime))
 └───────────────────────────────────────────────────────────┘
 ```
 
-示例显示 `DateTime` 数据类型内部存储为 `Const(UInt32)`。
+示例显示`DateTime`数据类型在内部存储为`Const(UInt32)`。
 ## dumpColumnStructure {#dumpcolumnstructure}
 
-输出 RAM 中数据结构的详细描述
+输出RAM中数据结构的详细描述
 
 ```sql
 dumpColumnStructure(value)
@@ -2042,7 +2055,7 @@ dumpColumnStructure(value)
 
 **返回值**
 
-- 用于表示 `value` 的列结构描述。
+- 用于表示`value`的列结构的描述。
 
 **示例**
 
@@ -2069,23 +2082,23 @@ defaultValueOfArgumentType(expression)
 
 **参数:**
 
-- `expression` — 任意类型的值或产生任意类型值的表达式。
+- `expression` — 任意类型的值或结果为任意类型值的表达式。
 
 **返回值**
 
-- 数字为 `0`。
-- 字符串为空字符串。
-- `ᴺᵁᴸᴸ` 对于 [Nullable](../data-types/nullable.md)。
+- 数字返回`0`。
+- 字符串返回空字符串。
+- 对于[Nullable](../data-types/nullable.md)返回`ᴺᵁᴸᴸ`。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT defaultValueOfArgumentType( CAST(1 AS Int8) )
 ```
 
-结果:
+结果：
 
 ```text
 ┌─defaultValueOfArgumentType(CAST(1, 'Int8'))─┐
@@ -2093,13 +2106,13 @@ SELECT defaultValueOfArgumentType( CAST(1 AS Int8) )
 └─────────────────────────────────────────────┘
 ```
 
-查询:
+查询：
 
 ```sql
 SELECT defaultValueOfArgumentType( CAST(1 AS Nullable(Int8) ) )
 ```
 
-结果:
+结果：
 
 ```text
 ┌─defaultValueOfArgumentType(CAST(1, 'Nullable(Int8)'))─┐
@@ -2122,19 +2135,19 @@ defaultValueOfTypeName(type)
 
 **返回值**
 
-- 数字为 `0`。
-- 字符串为空字符串。
-- `ᴺᵁᴸᴸ` 对于 [Nullable](../data-types/nullable.md)。
+- 数字返回`0`。
+- 字符串返回空字符串。
+- 对于[Nullable](../data-types/nullable.md)返回`ᴺᵁᴸᴸ`。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT defaultValueOfTypeName('Int8')
 ```
 
-结果:
+结果：
 
 ```text
 ┌─defaultValueOfTypeName('Int8')─┐
@@ -2142,13 +2155,13 @@ SELECT defaultValueOfTypeName('Int8')
 └────────────────────────────────┘
 ```
 
-查询:
+查询：
 
 ```sql
 SELECT defaultValueOfTypeName('Nullable(Int8)')
 ```
 
-结果:
+结果：
 
 ```text
 ┌─defaultValueOfTypeName('Nullable(Int8)')─┐
@@ -2157,9 +2170,9 @@ SELECT defaultValueOfTypeName('Nullable(Int8)')
 ```
 ## indexHint {#indexhint}
 
-此函数用于调试和自省。它会忽略其参数并始终返回 1。参数不会被评估。
+此函数用于调试和自省。它忽略其参数并始终返回1。参数不会被计算。
 
-但在索引分析过程中，此函数的参数假定不被 `indexHint` 包围。这使得可以选择索引范围内的数据，但不需通过该条件进一步过滤。ClickHouse 中的索引是稀疏的，使用 `indexHint` 将返回比直接指定相同条件更多的数据。
+但在索引分析过程中，此函数的参数假定未被`indexHint`包装。这允许根据相应条件选择索引范围内的数据，但不需要进一步按照该条件过滤。ClickHouse中的索引是稀疏的，使用`indexHint`将生成比直接指定相同条件更多的数据。
 
 **语法**
 
@@ -2173,9 +2186,9 @@ SELECT * FROM table WHERE indexHint(<expression>)
 
 **示例**
 
-以下是来自表 [ontime](../../getting-started/example-datasets/ontime.md) 的测试数据示例。
+这是一张来自表[ontime](../../getting-started/example-datasets/ontime.md)的测试数据示例。
 
-表:
+表：
 
 ```sql
 SELECT count() FROM ontime
@@ -2187,17 +2200,17 @@ SELECT count() FROM ontime
 └─────────┘
 ```
 
-该表在字段 `(FlightDate, (Year, FlightDate))` 上有索引。
+该表在字段`(FlightDate, (Year, FlightDate))`上具有索引。
 
-创建一个不使用索引的查询:
+创建一个不使用索引的查询：
 
 ```sql
 SELECT FlightDate AS k, count() FROM ontime GROUP BY k ORDER BY k
 ```
 
-ClickHouse 处理了整个表 (`Processed 4.28 million rows`)。
+ClickHouse处理了整个表（`处理了428万行`）。
 
-结果:
+结果：
 
 ```text
 ┌──────────k─┬─count()─┐
@@ -2210,15 +2223,15 @@ ClickHouse 处理了整个表 (`Processed 4.28 million rows`)。
 └────────────┴─────────┘
 ```
 
-要应用索引，选择特定日期:
+要应用索引，选择特定日期：
 
 ```sql
 SELECT FlightDate AS k, count() FROM ontime WHERE k = '2017-09-15' GROUP BY k ORDER BY k
 ```
 
-ClickHouse 现在使用索引处理的行数显著减少 (`Processed 32.74 thousand rows`)。
+ClickHouse现在使用索引处理显著较小的行数（`处理了32740行`）。
 
-结果:
+结果：
 
 ```text
 ┌──────────k─┬─count()─┐
@@ -2226,9 +2239,9 @@ ClickHouse 现在使用索引处理的行数显著减少 (`Processed 32.74 thous
 └────────────┴─────────┘
 ```
 
-现在将表达式 `k = '2017-09-15'` 包裹在函数 `indexHint` 中:
+现在将表达式`k = '2017-09-15'`包装在功能`indexHint`中：
 
-查询:
+查询：
 
 ```sql
 SELECT
@@ -2240,11 +2253,11 @@ GROUP BY k
 ORDER BY k ASC
 ```
 
-ClickHouse 以与之前相同的方式使用索引 (`Processed 32.74 thousand rows`)。
-生成结果时未使用表达式 `k = '2017-09-15'`。
-在示例中，`indexHint` 函数允许查看相邻日期。
+ClickHouse以与之前相同的方式使用索引（`处理了32740行`）。
+生成结果时未使用表达式`k = '2017-09-15'`。
+在此示例中，`indexHint`函数允许查看相邻日期。
 
-结果:
+结果：
 
 ```text
 ┌──────────k─┬─count()─┐
@@ -2256,10 +2269,10 @@ ClickHouse 以与之前相同的方式使用索引 (`Processed 32.74 thousand ro
 ```
 ## replicate {#replicate}
 
-创建一个只包含单个值的数组。
+创建一个包含单一值的数组。
 
 :::note
-此函数用于 [arrayJoin](/sql-reference/functions/array-join) 的内部实现。
+此函数用于[ 如果](../sql-reference/functions/array-join)内部实现。
 :::
 
 **语法**
@@ -2270,22 +2283,22 @@ replicate(x, arr)
 
 **参数**
 
-- `x` — 填充结果数组的值。
-- `arr` — 数组。[Array](../data-types/array.md)。
+- `x` — 用于填充结果数组的值。
+- `arr` — 一个数组。[Array](../data-types/array.md)。
 
 **返回值**
 
-与 `arr` 长度相同的数组，填充值 `x`。[Array](../data-types/array.md)。
+与`arr`相同长度的数组，填充值`x`。[Array](../data-types/array.md)。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT replicate(1, ['a', 'b', 'c']);
 ```
 
-结果:
+结果：
 
 ```text
 ┌─replicate(1, ['a', 'b', 'c'])─┐
@@ -2294,7 +2307,7 @@ SELECT replicate(1, ['a', 'b', 'c']);
 ```
 ## revision {#revision}
 
-返回当前 ClickHouse [服务器修订号](../../operations/system-tables/metrics#revision)。
+返回当前ClickHouse [服务器修订版](../../operations/system-tables/metrics#revision)。
 
 **语法**
 
@@ -2304,17 +2317,17 @@ revision()
 
 **返回值**
 
-- 当前 ClickHouse 服务器修订号。[UInt32](../data-types/int-uint.md)。
+- 当前ClickHouse服务器修订版。[UInt32](../data-types/int-uint.md)。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT revision();
 ```
 
-结果:
+结果：
 
 ```response
 ┌─revision()─┐
@@ -2323,7 +2336,7 @@ SELECT revision();
 ```
 ## filesystemAvailable {#filesystemavailable}
 
-返回承载数据库持久性的文件系统中自由空间的数量。返回的值始终小于总自由空间 ([filesystemUnreserved](#filesystemunreserved))，因为操作系统保留了一部分空间。
+返回承载数据库持久性的文件系统中的可用空闲空间量。返回的值总是小于总的可用空间（[filesystemUnreserved](#filesystemunreserved)），因为一部分空间被保留给操作系统。
 
 **语法**
 
@@ -2333,17 +2346,17 @@ filesystemAvailable()
 
 **返回值**
 
-- 可用的剩余空间量（以字节为单位）。[UInt64](../data-types/int-uint.md)。
+- 以字节为单位的剩余可用空间量。[UInt64](../data-types/int-uint.md)。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT formatReadableSize(filesystemAvailable()) AS "Available space";
 ```
 
-结果:
+结果：
 
 ```text
 ┌─Available space─┐
@@ -2352,7 +2365,7 @@ SELECT formatReadableSize(filesystemAvailable()) AS "Available space";
 ```
 ## filesystemUnreserved {#filesystemunreserved}
 
-返回承载数据库持久性的文件系统中的总自由空间量。（以前称为 `filesystemFree`）。另请参见 [`filesystemAvailable`](#filesystemavailable)。
+返回承载数据库持久性的文件系统上的可用空间总量。（之前称为`filesystemFree`）。另见[`filesystemAvailable`](#filesystemavailable)。
 
 **语法**
 
@@ -2362,17 +2375,17 @@ filesystemUnreserved()
 
 **返回值**
 
-- 自由空间的数量（以字节为单位）。[UInt64](../data-types/int-uint.md)。
+- 以字节为单位的可用空闲空间量。[UInt64](../data-types/int-uint.md)。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT formatReadableSize(filesystemUnreserved()) AS "Free space";
 ```
 
-结果:
+结果：
 
 ```text
 ┌─Free space─┐
@@ -2381,7 +2394,7 @@ SELECT formatReadableSize(filesystemUnreserved()) AS "Free space";
 ```
 ## filesystemCapacity {#filesystemcapacity}
 
-返回以字节为单位的文件系统容量。需要配置到数据目录的 [path](../../operations/server-configuration-parameters/settings.md#path)。
+返回文件系统的容量（以字节为单位）。需要配置数据目录的[path](../../operations/server-configuration-parameters/settings.md#path)。
 
 **语法**
 
@@ -2395,13 +2408,13 @@ filesystemCapacity()
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT formatReadableSize(filesystemCapacity()) AS "Capacity";
 ```
 
-结果:
+结果：
 
 ```text
 ┌─Capacity──┐
@@ -2410,7 +2423,7 @@ SELECT formatReadableSize(filesystemCapacity()) AS "Capacity";
 ```
 ## initializeAggregation {#initializeaggregation}
 
-根据单个值计算聚合函数的结果。此函数可用于初始化带有组合器 [-State](/sql-reference/aggregate-functions/combinators#-state) 的聚合函数。您可以创建聚合函数的状态并将其插入类型为 [AggregateFunction](/sql-reference/data-types/aggregatefunction) 的列中，或将初始化的聚合用作默认值。
+根据单个值计算聚合函数的结果。此函数可用于初始化聚合函数与组合器[-State](/sql-reference/aggregate-functions/combinators#-state)。您可以创建聚合函数的状态并将其插入到[AggregateFunction](/sql-reference/data-types/aggregatefunction)类型的列中，或将初始化的聚合作为默认值使用。
 
 **语法**
 
@@ -2420,24 +2433,24 @@ initializeAggregation (aggregate_function, arg1, arg2, ..., argN)
 
 **参数**
 
-- `aggregate_function` — 要初始化的聚合函数名称。[String](../data-types/string.md)。
+- `aggregate_function` — 要初始化的聚合函数的名称。[String](../data-types/string.md)。
 - `arg` — 聚合函数的参数。
 
 **返回值**
 
-- 每一行传递给函数的聚合结果。
+- 传递给函数的每一行的聚合结果。
 
-返回类型与 `initializeAggregation` 作为第一个参数所接受的函数的返回类型相同。
+返回类型与作为第一个参数传递给`initializeAggregation`的函数的返回类型相同。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT uniqMerge(state) FROM (SELECT initializeAggregation('uniqState', number % 3) AS state FROM numbers(10000));
 ```
 
-结果:
+结果：
 
 ```text
 ┌─uniqMerge(state)─┐
@@ -2445,13 +2458,13 @@ SELECT uniqMerge(state) FROM (SELECT initializeAggregation('uniqState', number %
 └──────────────────┘
 ```
 
-查询:
+查询：
 
 ```sql
 SELECT finalizeAggregation(state), toTypeName(state) FROM (SELECT initializeAggregation('sumState', number % 3) AS state FROM numbers(5));
 ```
 
-结果:
+结果：
 
 ```text
 ┌─finalizeAggregation(state)─┬─toTypeName(state)─────────────┐
@@ -2463,7 +2476,7 @@ SELECT finalizeAggregation(state), toTypeName(state) FROM (SELECT initializeAggr
 └────────────────────────────┴───────────────────────────────┘
 ```
 
-在 `AggregatingMergeTree` 表引擎和 `AggregateFunction` 列的示例:
+带有`AggregatingMergeTree`表引擎和`AggregateFunction`列的示例：
 
 ```sql
 CREATE TABLE metrics
@@ -2484,7 +2497,7 @@ INSERT INTO metrics VALUES (0, initializeAggregation('sumState', toUInt64(42)))
 - [arrayReduce](../../sql-reference/functions/array-functions.md#arrayreduce)
 ## finalizeAggregation {#finalizeaggregation}
 
-给定聚合函数的状态，此函数返回聚合的结果（或在使用 [-State](/sql-reference/aggregate-functions/combinators#-state) 组合器时返回最终状态）。
+给定聚合函数的状态，此函数返回聚合的结果（当使用[-State](/sql-reference/aggregate-functions/combinators#-state)组合器时返回最终状态）。
 
 **语法**
 
@@ -2494,7 +2507,7 @@ finalizeAggregation(state)
 
 **参数**
 
-- `state` — 聚合的状态。[AggregateFunction](../data-types/aggregatefunction)。
+- `state` — 聚合状态。[AggregateFunction](/sql-reference/data-types/aggregatefunction)。
 
 **返回值**
 
@@ -2506,13 +2519,13 @@ finalizeAggregation(state)
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT finalizeAggregation(( SELECT countState(number) FROM numbers(10)));
 ```
 
-结果:
+结果：
 
 ```text
 ┌─finalizeAggregation(_subquery16)─┐
@@ -2520,13 +2533,13 @@ SELECT finalizeAggregation(( SELECT countState(number) FROM numbers(10)));
 └──────────────────────────────────┘
 ```
 
-查询:
+查询：
 
 ```sql
 SELECT finalizeAggregation(( SELECT sumState(number) FROM numbers(10)));
 ```
 
-结果:
+结果：
 
 ```text
 ┌─finalizeAggregation(_subquery20)─┐
@@ -2534,15 +2547,15 @@ SELECT finalizeAggregation(( SELECT sumState(number) FROM numbers(10)));
 └──────────────────────────────────┘
 ```
 
-请注意，`NULL` 值会被忽略。
+请注意，`NULL`值被忽略。
 
-查询:
+查询：
 
 ```sql
 SELECT finalizeAggregation(arrayReduce('anyState', [NULL, 2, 3]));
 ```
 
-结果:
+结果：
 
 ```text
 ┌─finalizeAggregation(arrayReduce('anyState', [NULL, 2, 3]))─┐
@@ -2550,9 +2563,9 @@ SELECT finalizeAggregation(arrayReduce('anyState', [NULL, 2, 3]));
 └────────────────────────────────────────────────────────────┘
 ```
 
-组合示例:
+组合示例：
 
-查询:
+查询：
 
 ```sql
 WITH initializeAggregation('sumState', number) AS one_row_sum_state
@@ -2563,7 +2576,7 @@ SELECT
 FROM numbers(10);
 ```
 
-结果:
+结果：
 
 ```text
 ┌─number─┬─one_row_sum─┬─cumulative_sum─┐
@@ -2586,11 +2599,11 @@ FROM numbers(10);
 - [initializeAggregation](#initializeaggregation)
 ## runningAccumulate {#runningaccumulate}
 
-对数据块中每一行的聚合函数状态进行累积。
+为数据块中的每一行累积聚合函数的状态。
 
 :::note
-对于每个新的数据块，状态会被重置。
-由于这种容易出错的行为，函数已被弃用，请改用适当的窗口函数。
+每个新数据块都会重置状态。
+由于这种易出错的行为，此函数已被弃用，请使用适当的窗口函数。
 :::
 
 **语法**
@@ -2601,26 +2614,26 @@ runningAccumulate(agg_state[, grouping]);
 
 **参数**
 
-- `agg_state` — 聚合函数的状态。[AggregateFunction](../data-types/aggregatefunction)。
-- `grouping` — 分组键。可选。如果 `grouping` 值发生变化，则函数的状态会被重置。可以是任何支持的数据类型，这些数据类型定义了相等操作符。[UInt8](/sql-reference/data-types/int-uint#integer-ranges)。
+- `agg_state` — 聚合函数的状态。[AggregateFunction](/sql-reference/data-types/aggregatefunction)。
+- `grouping` — 分组键。可选。如果更改`grouping`值，函数的状态将被重置。它可以是定义了相等操作符的任何[支持的数据类型](../data-types/index.md)。
 
 **返回值**
 
-- 每行结果包含聚合函数的结果，累积到当前行之前的所有输入行的结果。`runningAccumulate` 在每个新的数据块或在 `grouping` 值变化时重置状态。
+- 每个结果行包含聚合函数的结果，总计从0到当前的位置。`runningAccumulate`在每个新数据块或`grouping`值发生更改时重置状态。
 
-返回类型取决于使用的聚合函数。
+类型取决于所使用的聚合函数。
 
 **示例**
 
-考虑如何使用 `runningAccumulate` 找到不分组和分组情况下数字的累计总和。
+考虑如何可以使用`runningAccumulate`找到数字的累积和，既有分组也没有分组。
 
-查询:
+查询：
 
 ```sql
 SELECT k, runningAccumulate(sum_k) AS res FROM (SELECT number as k, sumState(k) AS sum_k FROM numbers(10) GROUP BY k ORDER BY k);
 ```
 
-结果:
+结果：
 
 ```text
 ┌─k─┬─res─┐
@@ -2637,18 +2650,18 @@ SELECT k, runningAccumulate(sum_k) AS res FROM (SELECT number as k, sumState(k) 
 └───┴─────┘
 ```
 
-子查询生成每个数字 `0` 到 `9` 的 `sumState`。`sumState` 返回包含单个数字和的 [sum](../../sql-reference/aggregate-functions/reference/sum.md) 函数状态。
+子查询为从`0`到`9`的每个数字生成`sumState`。`sumState`返回的状态表示单个数字的[sum](../../sql-reference/aggregate-functions/reference/sum.md)函数的和。
 
-整个查询如下：
+整个查询的步骤：
 
-1. 对于第一行，`runningAccumulate` 取 `sumState(0)` 并返回 `0`。
-2. 对于第二行，函数将 `sumState(0)` 和 `sumState(1)` 进行合并，得到 `sumState(0 + 1)`，返回 `1` 作为结果。
-3. 对于第三行，函数合并 `sumState(0 + 1)` 与 `sumState(2)`，得到 `sumState(0 + 1 + 2)`，返回 `3` 作为结果。
-4. 直到块结束，这些操作重复进行。
+1. 对于第一行，`runningAccumulate`采用`sumState(0)`返回`0`。
+2. 对于第二行，函数合并`sumState(0)`和`sumState(1)`生成`sumState(0 + 1)`并返回`1`作为结果。
+3. 对于第三行，函数合并`sumState(0 + 1)`和`sumState(2)`生成`sumState(0 + 1 + 2)`并返回`3`作为结果。
+4. 这些操作重复进行直到数据块结束。
 
-以下示例显示 `groupping` 参数的使用：
+以下示例展示了`groupping`参数的用法：
 
-查询:
+查询：
 
 ```sql
 SELECT
@@ -2667,7 +2680,7 @@ FROM
 );
 ```
 
-结果:
+结果：
 
 ```text
 ┌─grouping─┬─item─┬─res─┐
@@ -2689,13 +2702,13 @@ FROM
 └──────────┴──────┴─────┘
 ```
 
-如您所见，`runningAccumulate` 分别为每组行合并状态。
+如您所见，`runningAccumulate`为每组行分别合并状态。
 ## joinGet {#joinget}
 
-该函数让您能够像从 [字典](../../sql-reference/dictionaries/index.md) 一样从表中提取数据。使用指定的连接键从 [Join](../../engines/table-engines/special/join.md#creating-a-table) 表中获取数据。
+该函数允许您从表中提取数据，使用方式与从[字典](../../sql-reference/dictionaries/index.md)相同。使用指定的连接键从[Join](../../engines/table-engines/special/join.md#creating-a-table)表获取数据。
 
 :::note
-仅支持使用 `ENGINE = Join(ANY, LEFT, <join_keys>)` 语句创建的表。
+仅支持使用`ENGINE = Join (ANY, LEFT, <join_keys>)`语句创建的表。
 :::
 
 **语法**
@@ -2706,26 +2719,26 @@ joinGet(join_storage_table_name, `value_column`, join_keys)
 
 **参数**
 
-- `join_storage_table_name` — 指定要搜索的位置的 [标识符](/sql-reference/syntax#identifiers)。
+- `join_storage_table_name` — 一个[标识符](/sql-reference/syntax#identifiers)，指示搜索执行的位置。
 - `value_column` — 表中包含所需数据的列的名称。
 - `join_keys` — 键的列表。
 
 :::note
-标识符在默认数据库中进行查找（请参阅配置文件中的 `default_database` 设置）。要覆盖默认数据库，请使用 `USE db_name` 或通过分隔符 `db_name.db_table` 指定数据库和表，如示例所示。
+在默认数据库中查找标识符（请参见配置文件中的设置`default_database`）。要覆盖默认数据库，请使用`USE db_name`或通过分隔符`db_name.db_table`指定数据库和表，如示例所示。
 :::
 
 **返回值**
 
-- 返回与键列表对应的值列表。
+- 返回与键列表相对应的值列表。
 
 :::note
-如果某个键在源表中不存在，则根据表创建过程中设置的 [join_use_nulls](../../operations/settings/settings.md#join_use_nulls) 返回 `0` 或 `null`。
-有关 `join_use_nulls` 的更多信息，请参阅 [Join 操作](../../engines/table-engines/special/join.md)。
+如果某个键在源表中不存在，则根据表创建时的设置[join_use_nulls](../../operations/settings/settings.md#join_use_nulls)，将返回`0`或`null`。
+有关`join_use_nulls`的更多信息，请参见[Join操作](../../engines/table-engines/special/join.md)。
 :::
 
 **示例**
 
-输入表:
+输入表：
 
 ```sql
 CREATE DATABASE db_test;
@@ -2742,13 +2755,13 @@ SELECT * FROM db_test.id_val;
 └────┴─────┘
 ```
 
-查询:
+查询：
 
 ```sql
 SELECT number, joinGet(db_test.id_val, 'val', toUInt32(number)) from numbers(4);
 ```
 
-结果:
+结果：
 
 ```text
    ┌─number─┬─joinGet('db_test.id_val', 'val', toUInt32(number))─┐
@@ -2759,7 +2772,7 @@ SELECT number, joinGet(db_test.id_val, 'val', toUInt32(number)) from numbers(4);
    └────────┴────────────────────────────────────────────────────┘
 ```
 
-在表创建过程中可以使用设置 `join_use_nulls` 来改变当源表中不存在键时返回的内容。
+在创建表时可以使用设置`join_use_nulls`来更改如果源表中不存在键时返回的内容。
 
 ```sql
 CREATE DATABASE db_test;
@@ -2776,13 +2789,13 @@ SELECT * FROM db_test.id_val_nulls;
 └────┴─────┘
 ```
 
-查询:
+查询：
 
 ```sql
 SELECT number, joinGet(db_test.id_val_nulls, 'val', toUInt32(number)) from numbers(4);
 ```
 
-结果:
+结果：
 
 ```text
    ┌─number─┬─joinGet('db_test.id_val_nulls', 'val', toUInt32(number))─┐
@@ -2794,7 +2807,7 @@ SELECT number, joinGet(db_test.id_val_nulls, 'val', toUInt32(number)) from numbe
 ```
 ## joinGetOrNull {#joingetornull}
 
-像 [joinGet](#joinget) 一样但当键缺失时返回 `NULL` 而不是返回默认值。
+类似于[joinGet](#joinget)，但在缺少键时返回`NULL`，而不是返回默认值。
 
 **语法**
 
@@ -2804,25 +2817,25 @@ joinGetOrNull(join_storage_table_name, `value_column`, join_keys)
 
 **参数**
 
-- `join_storage_table_name` — 指定要搜索的位置的 [标识符](/sql-reference/syntax#identifiers)。
+- `join_storage_table_name` — 一个[标识符](/sql-reference/syntax#identifiers)，指示搜索执行的位置。
 - `value_column` — 表中包含所需数据的列的名称。
 - `join_keys` — 键的列表。
 
 :::note
-标识符在默认数据库中进行查找（请参阅配置文件中的 `default_database` 设置）。要覆盖默认数据库，请使用 `USE db_name` 或通过分隔符 `db_name.db_table` 指定数据库和表，如示例所示。
+在默认数据库中查找标识符（请参见配置文件中的设置`default_database`）。要覆盖默认数据库，请使用`USE db_name`或通过分隔符`db_name.db_table`指定数据库和表，如示例所示。
 :::
 
 **返回值**
 
-- 返回与键列表对应的值列表。
+- 返回与键列表相对应的值列表。
 
 :::note
-如果某个键在源表中不存在，则返回该键的 `NULL`。
+如果某个键在源表中不存在，则为该键返回`NULL`。
 :::
 
 **示例**
 
-输入表:
+输入表：
 
 ```sql
 CREATE DATABASE db_test;
@@ -2839,13 +2852,13 @@ SELECT * FROM db_test.id_val;
 └────┴─────┘
 ```
 
-查询:
+查询：
 
 ```sql
 SELECT number, joinGetOrNull(db_test.id_val, 'val', toUInt32(number)) from numbers(4);
 ```
 
-结果:
+结果：
 
 ```text
    ┌─number─┬─joinGetOrNull('db_test.id_val', 'val', toUInt32(number))─┐
@@ -2860,11 +2873,11 @@ SELECT number, joinGetOrNull(db_test.id_val, 'val', toUInt32(number)) from numbe
 <CloudNotSupportedBadge/>
 
 :::note
-此函数在 ClickHouse Cloud 中不可用。
+此函数在ClickHouse Cloud中不可用。
 :::
 
-评估一个外部 catboost 模型。[CatBoost](https://catboost.ai) 是 Yandex 开发的开源梯度提升库，用于机器学习。
-接受 catboost 模型的路径和模型参数（特征）。返回 Float64。
+评估外部catboost模型。[CatBoost](https://catboost.ai)是由Yandex开发的开源梯度提升库，用于机器学习。
+接受catboost模型的路径和模型参数（特征）。返回Float64。
 
 **语法**
 
@@ -2879,13 +2892,13 @@ SELECT feat1, ..., feat_n, catboostEvaluate('/path/to/model.bin', feat_1, ..., f
 FROM data_table
 ```
 
-**前提条件**
+**先决条件**
 
-1. 构建 catboost 评估库
+1. 构建catboost评估库
 
-在评估 catboost 模型之前，必须使 `libcatboostmodel.<so|dylib>` 库可用。请参阅 [CatBoost 文档](https://catboost.ai/docs/concepts/c-plus-plus-api_dynamic-c-pluplus-wrapper.html) 了解如何编译它。
+在评估catboost模型之前，必须提供`libcatboostmodel.<so|dylib>`库。请参见[CatBoost文档](https://catboost.ai/docs/concepts/c-plus-plus-api_dynamic-c-pluplus-wrapper.html)了解如何编译它。
 
-接下来，在 ClickHouse 配置中指定 `libcatboostmodel.<so|dylib>` 的路径：
+接下来，在clickhouse配置中指定`libcatboostmodel.<so|dylib>`的路径：
 
 ```xml
 <clickhouse>
@@ -2895,8 +2908,8 @@ FROM data_table
 </clickhouse>
 ```
 
-出于安全和隔离的原因，模型评估不会在服务器进程中运行，而是在 clickhouse-library-bridge 进程中运行。
-在首次执行 `catboostEvaluate()` 时，如果库桥进程尚未运行，服务器将启动该流程。这两个进程通过 HTTP 接口进行通信。默认情况下，使用端口 `9012`。可以通过以下方式指定其他端口 - 这在端口 `9012` 已分配给其他服务时非常有用。
+出于安全和隔离原因，模型评估不会在服务器进程中运行，而是在clickhouse-library-bridge进程中运行。
+第一次执行`catboostEvaluate()`时，服务器将启动库桥接进程（如果未运行）。两个进程通过HTTP接口进行通信。默认使用9012端口。如果9012端口已分配给其他服务，可以按如下方式指定其他端口，方便使用。
 
 ```xml
 <library_bridge>
@@ -2904,12 +2917,12 @@ FROM data_table
 </library_bridge>
 ```
 
-2. 使用 libcatboost 训练 catboost 模型
+2. 使用libcatboost训练catboost模型
 
-有关如何从训练数据集训练 catboost 模型，请参阅 [训练和应用模型](https://catboost.ai/docs/features/training.html#training)。
+请参见[训练和应用模型](https://catboost.ai/docs/features/training.html#training)了解如何从训练数据集中训练catboost模型。
 ## throwIf {#throwif}
 
-如果参数 `x` 为 true，则抛出异常。
+如果参数`x`为真，则抛出异常。
 
 **语法**
 
@@ -2920,10 +2933,10 @@ throwIf(x[, message[, error_code]])
 **参数**
 
 - `x` - 要检查的条件。
-- `message` - 提供自定义错误消息的常量字符串。可选。
+- `message` - 提供自定义错误信息的常量字符串。可选。
 - `error_code` - 提供自定义错误代码的常量整数。可选。
 
-要使用 `error_code` 参数，配置参数 `allow_custom_error_code_in_throwif` 必须启用。
+要使用`error_code`参数，必须启用配置参数`allow_custom_error_code_in_throwif`。
 
 **示例**
 
@@ -2931,7 +2944,7 @@ throwIf(x[, message[, error_code]])
 SELECT throwIf(number = 3, 'Too many') FROM numbers(10);
 ```
 
-结果:
+结果：
 
 ```text
 ↙ Progress: 0.00 rows, 0.00 B (0.00 rows/s., 0.00 B/s.) Received exception from server (version 19.14.1):
@@ -2939,7 +2952,7 @@ Code: 395. DB::Exception: Received from localhost:9000. DB::Exception: Too many.
 ```
 ## identity {#identity}
 
-返回其参数。用于调试和测试。允许取消使用索引，并获取完全扫描的查询性能。当查询分析可能使用索引时，分析器会忽略 `identity` 函数中的所有内容。还禁用了常量折叠。
+返回其参数。用于调试和测试。允许取消使用索引，并获取完全扫描的查询性能。当分析查询以查看是否可以使用索引时，分析器会忽略`identity`函数中的所有内容。这也会禁用常量折叠。
 
 **语法**
 
@@ -2949,13 +2962,13 @@ identity(x)
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT identity(42);
 ```
 
-结果:
+结果：
 
 ```text
 ┌─identity(42)─┐
@@ -2964,7 +2977,7 @@ SELECT identity(42);
 ```
 ## getSetting {#getsetting}
 
-返回当前 [自定义设置](/operations/settings/query-level#custom_settings) 的值。
+返回当前[自定义设置](/operations/settings/query-level#custom_settings)的值。
 
 **语法**
 
@@ -2982,14 +2995,12 @@ getSetting('custom_setting');
 
 **示例**
 
-查询:
-
 ```sql
 SET custom_a = 123;
 SELECT getSetting('custom_a');
 ```
 
-结果:
+结果：
 
 ```text
 123
@@ -3000,7 +3011,7 @@ SELECT getSetting('custom_a');
 - [自定义设置](/operations/settings/query-level#custom_settings)
 ## getSettingOrDefault {#getsettingordefault}
 
-返回当前 [自定义设置](/operations/settings/query-level#custom_settings) 的值或在当前配置文件中没有设置自定义设置时返回第二个参数中指定的默认值。
+返回当前[自定义设置](/operations/settings/query-level#custom_settings)的值，或如果在当前配置文件中未设置自定义设置，则返回第二个参数中指定的默认值。
 
 **语法**
 
@@ -3011,15 +3022,13 @@ getSettingOrDefault('custom_setting', default_value);
 **参数**
 
 - `custom_setting` — 设置名称。[String](../data-types/string.md)。
-- `default_value` — 如果未设置 custom_setting，则返回的值。该值可以是任何数据类型或 Null。
+- `default_value` — 如果未设置custom_setting，则返回的值。值可以是任何数据类型或Null。
 
 **返回值**
 
-- 设置的当前值或如果未设置，则为 default_value。
+- 设置的当前值或如果未设置则为default_value。
 
 **示例**
-
-查询:
 
 ```sql
 SELECT getSettingOrDefault('custom_undef1', 'my_value');
@@ -3027,7 +3036,7 @@ SELECT getSettingOrDefault('custom_undef2', 100);
 SELECT getSettingOrDefault('custom_undef3', NULL);
 ```
 
-结果:
+结果：
 
 ```text
 my_value
@@ -3040,7 +3049,7 @@ NULL
 - [自定义设置](/operations/settings/query-level#custom_settings)
 ## isDecimalOverflow {#isdecimaloverflow}
 
-检查 [Decimal](../data-types/decimal.md) 值是否超出其精度或超出指定的精度。
+检查[Decimal](../data-types/decimal.md)值是否超出其精度或指定精度的范围。
 
 **语法**
 
@@ -3051,16 +3060,16 @@ isDecimalOverflow(d, [p])
 **参数**
 
 - `d` — 值。[Decimal](../data-types/decimal.md)。
-- `p` — 精度。可选。如果省略，则使用第一个参数的初始精度。此参数可以在从/到另一个数据库或文件迁移数据时提供帮助。[UInt8](/sql-reference/data-types/int-uint#integer-ranges)。
+- `p` — 精度。可选。如果省略，则使用第一个参数的初始精度。该参数有助于在数据迁移到/从另一个数据库或文件时使用。[UInt8](/sql-reference/data-types/int-uint#integer-ranges)。
 
 **返回值**
 
-- `1` — Decimal 值的数字超过其精度所允许的位数，
-- `0` — Decimal 值满足指定的精度。
+- `1` — Decimal值的数字位数超过其精度允许的位数，
+- `0` — Decimal值满足指定的精度。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT isDecimalOverflow(toDecimal32(1000000000, 0), 9),
@@ -3069,14 +3078,14 @@ SELECT isDecimalOverflow(toDecimal32(1000000000, 0), 9),
        isDecimalOverflow(toDecimal32(-1000000000, 0));
 ```
 
-结果:
+结果：
 
 ```text
 1    1    1    1
 ```
 ## countDigits {#countdigits}
 
-返回表示值所需的小数位数。
+返回表示一个值所需的小数位数。
 
 **语法**
 
@@ -3086,19 +3095,19 @@ countDigits(x)
 
 **参数**
 
-- `x` — [Int](../data-types/int-uint.md) 或 [Decimal](../data-types/decimal.md) 值。
+- `x` — [Int](../data-types/int-uint.md)或[Decimal](../data-types/decimal.md)值。
 
 **返回值**
 
 - 位数。[UInt8](/sql-reference/data-types/int-uint#integer-ranges)。
 
 :::note
-对于 `Decimal` 值，会考虑它们的比例：计算结果在其底层整数类型 `(value * scale)` 上。例如：`countDigits(42) = 2`，`countDigits(42.000) = 5`，`countDigits(0.04200) = 4`。也就是说，您可以通过 `countDecimal(x) > 18` 检查 `Decimal64` 的溢出。这是 [isDecimalOverflow](#isdecimaloverflow) 的慢变体。
+对于`Decimal`值，考虑它们的尺度：在基础整数类型上计算结果，即`(value * scale)`。例如：`countDigits(42) = 2`，`countDigits(42.000) = 5`，`countDigits(0.04200) = 4`。也就是说，您可以通过`countDecimal(x) > 18`检查`Decimal64`的十进制溢出。这是[isDecimalOverflow](#isdecimaloverflow)的慢速变体。
 :::
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT countDigits(toDecimal32(1, 9)), countDigits(toDecimal32(-1, 9)),
@@ -3106,7 +3115,7 @@ SELECT countDigits(toDecimal32(1, 9)), countDigits(toDecimal32(-1, 9)),
        countDigits(toDecimal128(1, 38)), countDigits(toDecimal128(-1, 38));
 ```
 
-结果:
+结果：
 
 ```text
 10    10    19    19    39    39
@@ -3121,15 +3130,15 @@ SELECT countDigits(toDecimal32(1, 9)), countDigits(toDecimal32(-1, 9)),
 errorCodeToName(1)
 ```
 
-结果:
+结果：
 
 ```text
 UNSUPPORTED_METHOD
 ```
 ## tcpPort {#tcpport}
 
-返回此服务器侦听的 [native interface](../../interfaces/tcp.md) TCP 端口号。
-如果在分布式表环境中执行，则此函数生成带有每个分片相关值的普通列。否则，它生成一个常量值。
+返回此服务器监听的[native interface](../../interfaces/tcp.md) TCP端口号。
+如果在分布式表的上下文中执行，此函数将生成一个包含与每个分片相关的值的常量列。否则，它产生一个常量值。
 
 **语法**
 
@@ -3143,17 +3152,17 @@ tcpPort()
 
 **返回值**
 
-- TCP 端口号。[UInt16](../data-types/int-uint.md)。
+- TCP端口号。[UInt16](../data-types/int-uint.md)。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT tcpPort();
 ```
 
-结果:
+结果：
 
 ```text
 ┌─tcpPort()─┐
@@ -3166,9 +3175,9 @@ SELECT tcpPort();
 - [tcp_port](../../operations/server-configuration-parameters/settings.md#tcp_port)
 ## currentProfiles {#currentprofiles}
 
-返回当前用户的当前 [设置配置文件](../../guides/sre/user-management/index.md#settings-profiles-management) 列表。
+返回当前用户的列表 [设置配置文件](../../guides/sre/user-management/index.md#settings-profiles-management)。
 
-命令 [SET PROFILE](/sql-reference/functions/other-functions#currentprofiles) 可以用来更改当前设置配置文件。如果未使用 `SET PROFILE` 命令，该函数返回当前用户定义中指定的配置文件（参见 [CREATE USER](/sql-reference/statements/create/user)）。
+可使用命令[SET PROFILE](/sql-reference/functions/other-functions#currentprofiles)来更改当前设置配置文件。如果未使用命令`SET PROFILE`，则该函数返回当前用户定义中指定的配置文件（请参见[CREATE USER](/sql-reference/statements/create/user)）。
 
 **语法**
 
@@ -3178,10 +3187,10 @@ currentProfiles()
 
 **返回值**
 
-- 当前用户设置配置文件列表。[Array](../data-types/array.md)([String](../data-types/string.md)).
+- 当前用户设置配置文件的列表。[Array](../data-types/array.md)([String](../data-types/string.md)).
 ## enabledProfiles {#enabledprofiles}
 
-返回分配给当前用户的设置配置文件，包括明确和隐式分配的配置文件。显式分配的配置文件与 [currentProfiles](#currentprofiles) 函数返回的配置文件相同。隐式分配的配置文件包括已分配配置文件的父配置文件，通过授权角色分配的配置文件，通过自己的设置分配的配置文件，以及主默认配置文件（请参见主服务器配置文件中的 `default_profile` 部分）。
+返回分配给当前用户的设置配置文件，包括显式和隐式配置文件。显式分配的配置文件与[当前配置文件](#currentprofiles)函数返回的相同。隐式分配的配置文件包括其他分配的配置文件的父级配置文件，通过授权角色分配的配置文件，按其自身设置分配的配置文件，以及主默认配置文件（请参见主服务器配置文件中的`default_profile`部分）。
 
 **语法**
 
@@ -3194,7 +3203,7 @@ enabledProfiles()
 - 启用的设置配置文件列表。[Array](../data-types/array.md)([String](../data-types/string.md)).
 ## defaultProfiles {#defaultprofiles}
 
-返回在当前用户定义中指定的所有配置文件（参见 [CREATE USER](/sql-reference/statements/create/user) 语句）。
+返回在当前用户的定义中指定的所有配置文件（请参见[CREATE USER](/sql-reference/statements/create/user)语句）。
 
 **语法**
 
@@ -3204,10 +3213,10 @@ defaultProfiles()
 
 **返回值**
 
-- 默认设置配置文件列表。[Array](../data-types/array.md)([String](../data-types/string.md)).
+- 默认设置配置文件的列表。[Array](../data-types/array.md)([String](../data-types/string.md)).
 ## currentRoles {#currentroles}
 
-返回分配给当前用户的角色。可以通过 [SET ROLE](/sql-reference/statements/set-role) 语句更改角色。如果未执行 `SET ROLE` 语句，则函数 `currentRoles` 的返回结果与 `defaultRoles` 相同。
+返回分配给当前用户的角色。角色可以通过[SET ROLE](/sql-reference/statements/set-role)语句进行更改。如果未使用任何`SET ROLE`语句，则函数`currentRoles`返回与`defaultRoles`相同的内容。
 
 **语法**
 
@@ -3220,7 +3229,7 @@ currentRoles()
 - 当前用户的当前角色列表。[Array](../data-types/array.md)([String](../data-types/string.md)).
 ## enabledRoles {#enabledroles}
 
-返回当前角色的名称，以及分配给某些当前角色的角色。
+返回当前角色名及授予当前角色的一些角色。
 
 **语法**
 
@@ -3230,10 +3239,10 @@ enabledRoles()
 
 **返回值**
 
-- 当前用户的启用角色列表。[Array](../data-types/array.md)([String](../data-types/string.md)).
+- 当前用户的启用角色的列表。[Array](../data-types/array.md)([String](../data-types/string.md)).
 ## defaultRoles {#defaultroles}
 
-返回默认情况下当前用户登录时启用的角色。这些角色最初是分配给当前用户的所有角色（请参阅 [GRANT](../../sql-reference/statements/grant.md#select)），但可以通过 [SET DEFAULT ROLE](/sql-reference/statements/set-role#set-default-role) 语句进行更改。
+返回当前用户登录时默认启用的角色。最初，这些是授予当前用户的所有角色（见[GRANT](../../sql-reference/statements/grant.md#select)），但可以通过[SET DEFAULT ROLE](/sql-reference/statements/set-role#set-default-role)语句进行更改。
 
 **语法**
 
@@ -3246,7 +3255,7 @@ defaultRoles()
 - 当前用户的默认角色列表。[Array](../data-types/array.md)([String](../data-types/string.md)).
 ## getServerPort {#getserverport}
 
-返回服务器端口号。当端口未被服务器使用时，抛出异常。
+返回服务器的端口号。当该端口未被服务器使用时，会抛出异常。
 
 **语法**
 
@@ -3256,7 +3265,7 @@ getServerPort(port_name)
 
 **参数**
 
-- `port_name` — 服务器端口的名称。[String](/sql-reference/data-types/string). 可能的值：
+- `port_name` — 服务器端口的名称。[String](/sql-reference/data-types/string)。可能的值：
 
   - 'tcp_port'
   - 'tcp_port_secure'
@@ -3271,17 +3280,17 @@ getServerPort(port_name)
 
 **返回值**
 
-- 服务器端口的数字。[UInt16](../data-types/int-uint.md)。
+- 服务器端口号。[UInt16](../data-types/int-uint.md)。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT getServerPort('tcp_port');
 ```
 
-结果:
+结果：
 
 ```text
 ┌─getServerPort('tcp_port')─┐
@@ -3290,9 +3299,9 @@ SELECT getServerPort('tcp_port');
 ```
 ## queryID {#queryid}
 
-返回当前查询的 ID。查询的其他参数可以通过 `query_id` 从 [system.query_log](../../operations/system-tables/query_log.md) 表中提取。
+返回当前查询的ID。查询的其他参数可以通过`query_id`从[system.query_log](../../operations/system-tables/query_log.md)表中提取。
 
-与 [initialQueryID](#initialqueryid) 函数相比，`queryID` 在不同分片上可能返回不同的结果（见示例）。
+与[initialQueryID](#initialqueryid)函数不同，`queryID`在不同的分片上可以返回不同的结果（见示例）。
 
 **语法**
 
@@ -3302,11 +3311,11 @@ queryID()
 
 **返回值**
 
-- 当前查询的 ID。[String](../data-types/string.md)
+- 当前查询的ID。[String](../data-types/string.md)
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 CREATE TABLE tmp (str String) ENGINE = Log;
@@ -3314,7 +3323,7 @@ INSERT INTO tmp (*) VALUES ('a');
 SELECT count(DISTINCT t) FROM (SELECT queryID() AS t FROM remote('127.0.0.{1..3}', currentDatabase(), 'tmp') GROUP BY queryID());
 ```
 
-结果:
+结果：
 
 ```text
 ┌─count()─┐
@@ -3323,9 +3332,9 @@ SELECT count(DISTINCT t) FROM (SELECT queryID() AS t FROM remote('127.0.0.{1..3}
 ```
 ## initialQueryID {#initialqueryid}
 
-返回初始当前查询的 ID。查询的其他参数可以通过 `initial_query_id` 从 [system.query_log](../../operations/system-tables/query_log.md) 表中提取。
+返回初始当前查询的ID。查询的其他参数可以通过`initial_query_id`从[system.query_log](../../operations/system-tables/query_log.md)表中提取。
 
-与 [queryID](/sql-reference/functions/other-functions#queryid) 函数相比，`initialQueryID` 在不同分片上返回相同的结果（见示例）。
+与[queryID](/sql-reference/functions/other-functions#queryid)函数不同，`initialQueryID`在不同的分片上返回相同的结果（见示例）。
 
 **语法**
 
@@ -3335,11 +3344,11 @@ initialQueryID()
 
 **返回值**
 
-- 初始当前查询的 ID。[String](../data-types/string.md)
+- 初始当前查询的ID。[String](../data-types/string.md)
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 CREATE TABLE tmp (str String) ENGINE = Log;
@@ -3347,7 +3356,7 @@ INSERT INTO tmp (*) VALUES ('a');
 SELECT count(DISTINCT t) FROM (SELECT initialQueryID() AS t FROM remote('127.0.0.{1..3}', currentDatabase(), 'tmp') GROUP BY queryID());
 ```
 
-结果:
+结果：
 
 ```text
 ┌─count()─┐
@@ -3358,7 +3367,7 @@ SELECT count(DISTINCT t) FROM (SELECT initialQueryID() AS t FROM remote('127.0.0
 
 返回初始当前查询的开始时间。
 
-`initialQueryStartTime` 在不同分片上返回相同的结果（见示例）。
+`initialQueryStartTime`在不同的分片上返回相同的结果（见示例）。
 
 **语法**
 
@@ -3372,7 +3381,7 @@ initialQueryStartTime()
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 CREATE TABLE tmp (str String) ENGINE = Log;
@@ -3380,7 +3389,7 @@ INSERT INTO tmp (*) VALUES ('a');
 SELECT count(DISTINCT t) FROM (SELECT initialQueryStartTime() AS t FROM remote('127.0.0.{1..3}', currentDatabase(), 'tmp') GROUP BY queryID());
 ```
 
-结果:
+结果：
 
 ```text
 ┌─count()─┐
@@ -3389,10 +3398,10 @@ SELECT count(DISTINCT t) FROM (SELECT initialQueryStartTime() AS t FROM remote('
 ```
 ## partitionID {#partitionid}
 
-计算 [分区 ID](../../engines/table-engines/mergetree-family/custom-partitioning-key.md)。
+计算[分区ID](../../engines/table-engines/mergetree-family/custom-partitioning-key.md)。
 
 :::note
-此函数很慢，不应该在大量行上调用。
+此函数较慢，不应对大量行调用。
 :::
 
 **语法**
@@ -3403,16 +3412,16 @@ partitionID(x[, y, ...]);
 
 **参数**
 
-- `x` — 要返回分区 ID 的列。
-- `y, ...` — 要返回分区 ID 的剩余 N 列（可选）。
+- `x` — 要返回分区ID的列。
+- `y, ...` — 其他要返回分区ID的N列（可选）。
 
 **返回值**
 
-- 行所属的分区 ID。[String](../data-types/string.md)。
+- 行所属的分区ID。[String](../data-types/string.md)。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 DROP TABLE IF EXISTS tab;
@@ -3431,7 +3440,7 @@ INSERT INTO tab VALUES (1, 1), (1, 2), (1, 3), (2, 4), (2, 5), (2, 6);
 SELECT i, j, partitionID(i), _partition_id FROM tab ORDER BY i, j;
 ```
 
-结果:
+结果：
 
 ```response
 ┌─i─┬─j─┬─partitionID(i)─┬─_partition_id─┐
@@ -3447,8 +3456,8 @@ SELECT i, j, partitionID(i), _partition_id FROM tab ORDER BY i, j;
 ```
 ## shardNum {#shardnum}
 
-返回在分布式查询中处理部分数据的分片索引。索引从 `1` 开始。
-如果查询未分布，则返回常量值 `0`。
+返回处理分布式查询部分数据的分片索引。索引从`1`开始。
+如果查询未分布，则返回常量值`0`。
 
 **语法**
 
@@ -3458,13 +3467,13 @@ shardNum()
 
 **返回值**
 
-- 分片索引或常量 `0`。[UInt32](../data-types/int-uint.md)。
+- 分片索引或常量`0`。[UInt32](../data-types/int-uint.md)。
 
 **示例**
 
-在以下示例中，使用两个分片的配置。查询在每个分片上执行 [system.one](../../operations/system-tables/one.md) 表。
+在以下示例中使用了两分片的配置。查询在每个分片上的[system.one](../../operations/system-tables/one.md)表上执行。
 
-查询:
+查询：
 
 ```sql
 CREATE TABLE shard_num_example (dummy UInt8)
@@ -3472,7 +3481,7 @@ CREATE TABLE shard_num_example (dummy UInt8)
 SELECT dummy, shardNum(), shardCount() FROM shard_num_example;
 ```
 
-结果:
+结果：
 
 ```text
 ┌─dummy─┬─shardNum()─┬─shardCount()─┐
@@ -3486,8 +3495,8 @@ SELECT dummy, shardNum(), shardCount() FROM shard_num_example;
 - [分布式表引擎](../../engines/table-engines/special/distributed.md)
 ## shardCount {#shardcount}
 
-返回分布式查询的总分片数。
-如果查询未分布，则返回常量值 `0`。
+返回分布式查询的分片总数。
+如果查询未分布，则返回常量值`0`。
 
 **语法**
 
@@ -3497,11 +3506,11 @@ shardCount()
 
 **返回值**
 
-- 总分片数或 `0`。[UInt32](../data-types/int-uint.md)。
+- 分片总数或`0`。[UInt32](../data-types/int-uint.md)。
 
 **另请参见**
 
-- [shardNum()](#shardnum) 函数示例也包含 `shardCount()` 函数调用。
+- [shardNum()](#shardnum)函数示例还包含`shardCount()`函数调用。
 ## getOSKernelVersion {#getoskernelversion}
 
 返回当前操作系统内核版本的字符串。
@@ -3522,13 +3531,13 @@ getOSKernelVersion()
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT getOSKernelVersion();
 ```
 
-结果:
+结果：
 
 ```text
 ┌─getOSKernelVersion()────┐
@@ -3537,7 +3546,7 @@ SELECT getOSKernelVersion();
 ```
 ## zookeeperSessionUptime {#zookeepersessionuptime}
 
-返回当前 ZooKeeper 会话的运行时间（以秒为单位）。
+返回当前ZooKeeper会话的运行时间（以秒为单位）。
 
 **语法**
 
@@ -3551,17 +3560,17 @@ zookeeperSessionUptime()
 
 **返回值**
 
-- 当前 ZooKeeper 会话的运行时间（以秒为单位）。[UInt32](../data-types/int-uint.md)。
+- 当前ZooKeeper会话的运行时间（以秒为单位）。[UInt32](../data-types/int-uint.md)。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT zookeeperSessionUptime();
 ```
 
-结果:
+结果：
 
 ```text
 ┌─zookeeperSessionUptime()─┐
@@ -3570,7 +3579,7 @@ SELECT zookeeperSessionUptime();
 ```
 ## generateRandomStructure {#generaterandomstructure}
 
-生成随机的表结构，格式为 `column1_name column1_type, column2_name column2_type, ...`。
+生成随机的表结构，格式为`column1_name column1_type, column2_name column2_type, ...`。
 
 **语法**
 
@@ -3580,10 +3589,10 @@ generateRandomStructure([number_of_columns, seed])
 
 **参数**
 
-- `number_of_columns` — 结果表结构中的所需列数。如果设置为 0 或 `Null`，列数将随机确定为 1 到 128。默认值：`Null`。
-- `seed` - 用于生成稳定结果的随机种子。如果未指定种子或将其设置为 `Null`，则生成随机种子。
+- `number_of_columns` — 所需结果表结构中的列数。如果设置为0或`Null`，列数将在1到128之间随机生成。默认值：`Null`。
+- `seed` - 用于生成稳定结果的随机种子。如果未指定种子或设置为`Null`，则随机生成。
 
-所有参数必须为常量。
+所有参数必须是常量。
 
 **返回值**
 
@@ -3591,13 +3600,13 @@ generateRandomStructure([number_of_columns, seed])
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT generateRandomStructure()
 ```
 
-结果:
+结果：
 
 ```text
 ┌─generateRandomStructure()─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -3605,13 +3614,13 @@ SELECT generateRandomStructure()
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-查询:
+查询：
 
 ```sql
 SELECT generateRandomStructure(1)
 ```
 
-结果:
+结果：
 
 ```text
 ┌─generateRandomStructure(1)─┐
@@ -3619,13 +3628,13 @@ SELECT generateRandomStructure(1)
 └────────────────────────────┘
 ```
 
-查询:
+查询：
 
 ```sql
 SELECT generateRandomStructure(NULL, 33)
 ```
 
-结果:
+结果：
 
 ```text
 ┌─generateRandomStructure(NULL, 33)─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -3633,12 +3642,12 @@ SELECT generateRandomStructure(NULL, 33)
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**注意**: 复杂类型（数组、元组、映射、嵌套）的最大嵌套深度限制为 16。
+**注意**：复杂类型（Array, Tuple, Map, Nested）的最大嵌套深度限制为16。
 
-此函数可以与 [generateRandom](../../sql-reference/table-functions/generate.md) 一起使用，以生成完全随机的表。
+此函数可与[generateRandom](../../sql-reference/table-functions/generate.md)一起使用，以生成完全随机的表。
 ## structureToCapnProtoSchema {#structure_to_capn_proto_schema}
 
-将 ClickHouse 表结构转换为 CapnProto 模式。
+将ClickHouse表结构转换为CapnProto模式。
 
 **语法**
 
@@ -3648,22 +3657,22 @@ structureToCapnProtoSchema(structure)
 
 **参数**
 
-- `structure` — 表结构，格式为 `column1_name column1_type, column2_name column2_type, ...`。
-- `root_struct_name` — CapnProto 模式中的根结构名称。默认值 - `Message`；
+- `structure` — 表结构，格式为`column1_name column1_type, column2_name column2_type, ...`。
+- `root_struct_name` — CapnProto模式中的根结构名称。默认值 - `Message`；
 
 **返回值**
 
-- CapnProto 模式。[String](../data-types/string.md)。
+- CapnProto模式。[String](../data-types/string.md)。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT structureToCapnProtoSchema('column1 String, column2 UInt32, column3 Array(String)') FORMAT RawBLOB
 ```
 
-结果:
+结果：
 
 ```text
 @0xf96402dd754d0eb7;
@@ -3676,13 +3685,13 @@ struct Message
 }
 ```
 
-查询:
+查询：
 
 ```sql
 SELECT structureToCapnProtoSchema('column1 Nullable(String), column2 Tuple(element1 UInt32, element2 Array(String)), column3 Map(String, String)') FORMAT RawBLOB
 ```
 
-结果:
+结果：
 
 ```text
 @0xd1c8320fecad2b7f;
@@ -3717,13 +3726,13 @@ struct Message
 }
 ```
 
-查询:
+查询：
 
 ```sql
 SELECT structureToCapnProtoSchema('column1 String, column2 UInt32', 'Root') FORMAT RawBLOB
 ```
 
-结果:
+结果：
 
 ```text
 @0x96ab2d4ab133c6e1;
@@ -3736,7 +3745,7 @@ struct Root
 ```
 ## structureToProtobufSchema {#structure_to_protobuf_schema}
 
-将 ClickHouse 表结构转换为 Protobuf 模式。
+将ClickHouse表结构转换为Protobuf模式。
 
 **语法**
 
@@ -3746,22 +3755,22 @@ structureToProtobufSchema(structure)
 
 **参数**
 
-- `structure` — 表结构，格式为 `column1_name column1_type, column2_name column2_type, ...`。
-- `root_message_name` — Protobuf 模式中的根消息名称。默认值 - `Message`；
+- `structure` — 表结构，格式为`column1_name column1_type, column2_name column2_type, ...`。
+- `root_message_name` — Protobuf模式中的根消息名称。默认值 - `Message`；
 
 **返回值**
 
-- Protobuf 模式。[String](../data-types/string.md)。
+- Protobuf模式。[String](../data-types/string.md)。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT structureToProtobufSchema('column1 String, column2 UInt32, column3 Array(String)') FORMAT RawBLOB
 ```
 
-结果:
+结果：
 
 ```text
 syntax = "proto3";
@@ -3774,13 +3783,13 @@ message Message
 }
 ```
 
-查询:
+查询：
 
 ```sql
 SELECT structureToProtobufSchema('column1 Nullable(String), column2 Tuple(element1 UInt32, element2 Array(String)), column3 Map(String, String)') FORMAT RawBLOB
 ```
 
-结果:
+结果：
 
 ```text
 syntax = "proto3";
@@ -3798,13 +3807,13 @@ message Message
 }
 ```
 
-查询:
+查询：
 
 ```sql
 SELECT structureToProtobufSchema('column1 String, column2 UInt32', 'Root') FORMAT RawBLOB
 ```
 
-结果:
+结果：
 
 ```text
 syntax = "proto3";
@@ -3817,9 +3826,9 @@ message Root
 ```
 ## formatQuery {#formatquery}
 
-返回给定 SQL 查询的格式化版本，可能是多行。
+返回给定SQL查询的格式化版本，可能是多行。
 
-如果查询不规范，则抛出异常。可以使用 `formatQueryOrNull()` 函数以返回 `NULL` 作为替代。
+如果查询格式不正确，则会抛出异常。要返回`NULL`，可以使用函数`formatQueryOrNull()`。
 
 **语法**
 
@@ -3830,21 +3839,21 @@ formatQueryOrNull(query)
 
 **参数**
 
-- `query` - 要格式化的 SQL 查询。[String](../data-types/string.md)
+- `query` - 要格式化的SQL查询。[String](../data-types/string.md)
 
 **返回值**
 
-- 格式化查询。[String](../data-types/string.md)。
+- 格式化的查询。[String](../data-types/string.md)。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT formatQuery('select a,    b FRom tab WHERE a > 3 and  b < 3');
 ```
 
-结果:
+结果：
 
 ```result
 ┌─formatQuery('select a,    b FRom tab WHERE a > 3 and  b < 3')─┐
@@ -3857,9 +3866,9 @@ WHERE (a > 3) AND (b < 3)            │
 ```
 ## formatQuerySingleLine {#formatquerysingleline}
 
-与 formatQuery() 类似，但返回的格式化字符串不包含换行符。
+类似于 formatQuery()，但返回的格式化字符串不包含换行符。
 
-如果查询格式不正确，则会抛出异常。要返回 `NULL`，可以使用 `formatQuerySingleLineOrNull()` 函数。
+如果查询格式不正确，则抛出异常。要返回 `NULL`，可以使用函数 `formatQuerySingleLineOrNull()`。
 
 **语法**
 
@@ -3870,11 +3879,11 @@ formatQuerySingleLineOrNull(query)
 
 **参数**
 
-- `query` - 要格式化的 SQL 查询。 [String](../data-types/string.md)
+- `query` - 要格式化的 SQL 查询。[字符串](../data-types/string.md)
 
 **返回值**
 
-- 格式化后的查询。 [String](../data-types/string.md)。
+- 格式化后的查询。[字符串](../data-types/string.md)。
 
 **示例**
 
@@ -3901,13 +3910,13 @@ variantElement(variant, type_name, [, default_value])
 
 **参数**
 
-- `variant` — Variant 列。 [Variant](../data-types/variant.md)。
-- `type_name` — 要提取的变体类型名称。 [String](../data-types/string.md)。
-- `default_value` - 如果变体中没有指定类型的变体，则使用的默认值。可以是任意类型。可选。
+- `variant` — Variant 列。[Variant](../data-types/variant.md)。
+- `type_name` — 要提取的变体类型的名称。[字符串](../data-types/string.md)。
+- `default_value` - 如果变体中没有指定类型的变体，则使用的默认值。可以是任何类型。可选。
 
 **返回值**
 
-- 具有指定类型的 `Variant` 列的子列。
+- 指定类型的 `Variant` 列的子列。
 
 **示例**
 
@@ -3937,11 +3946,11 @@ variantType(variant)
 
 **参数**
 
-- `variant` — Variant 列。 [Variant](../data-types/variant.md)。
+- `variant` — Variant 列。[Variant](../data-types/variant.md)。
 
 **返回值**
 
-- Enum8 列，每行的变体类型名称。
+- 每行的变体类型名称的 Enum8 列。
 
 **示例**
 
@@ -3971,7 +3980,7 @@ SELECT toTypeName(variantType(v)) FROM test LIMIT 1;
 ```
 ## minSampleSizeConversion {#minsamplesizeconversion}
 
-计算比较两个样本中转化率（比例）的 A/B 测试所需的最小样本量。
+计算用于比较两个样本中转化率（比例）的 A/B 测试所需的最低样本量。
 
 **语法**
 
@@ -3979,26 +3988,26 @@ SELECT toTypeName(variantType(v)) FROM test LIMIT 1;
 minSampleSizeConversion(baseline, mde, power, alpha)
 ```
 
-使用 [这篇文章](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a) 中描述的公式。假设处理组和对照组的大小相同。返回一个组所需的样本量（即整个实验所需的样本量是返回值的两倍）。
+使用 [这篇文章](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a) 中描述的公式。假设处理组和对照组的大小相等。返回一个组所需的样本量（即整个实验所需的样本量是返回值的两倍）。
 
 **参数**
 
-- `baseline` — 基线转化率。 [Float](../data-types/float.md)。
-- `mde` — 检测到的最小效果（MDE），以百分比点表示（例如，对于基线转化率 0.25，MDE 0.03 表示期望变更为 0.25 ± 0.03）。 [Float](../data-types/float.md)。
-- `power` — 测试所需的统计功效（1 - 类型 II 错误的概率）。 [Float](../data-types/float.md)。
-- `alpha` — 测试所需的显著性水平（类型 I 错误的概率）。 [Float](../data-types/float.md)。
+- `baseline` — 基线转化率。[浮点数](../data-types/float.md)。
+- `mde` — 可检测的最小效应（MDE），以百分点表示（例如，对于基线转化率 0.25，MDE 0.03 表示预期变化为 0.25 ± 0.03）。[浮点数](../data-types/float.md)。
+- `power` — 测试所需的统计功效（1 - 第二类错误的概率）。[浮点数](../data-types/float.md)。
+- `alpha` — 测试所需的显著性水平（第一类错误的概率）。[浮点数](../data-types/float.md)。
 
 **返回值**
 
-一个命名的 [Tuple](../data-types/tuple.md)，包含 3 个元素：
+一个命名的 [元组](../data-types/tuple.md)，包含 3 个元素：
 
-- `"minimum_sample_size"` — 所需的样本量。 [Float64](../data-types/float.md)。
-- `"detect_range_lower"` — 在返回的所需样本量下不可检测的值范围的下限（即所有小于或等于 `"detect_range_lower"` 的值都是使用提供的 `alpha` 和 `power` 可检测的）。计算公式为 `baseline - mde`。 [Float64](../data-types/float.md)。
-- `"detect_range_upper"` — 在返回的所需样本量下不可检测的值范围的上限（即所有大于或等于 `"detect_range_upper"` 的值都是使用提供的 `alpha` 和 `power` 可检测的）。计算公式为 `baseline + mde`。 [Float64](../data-types/float.md)。
+- `"minimum_sample_size"` — 所需的样本量。[Float64](../data-types/float.md)。
+- `"detect_range_lower"` — 使用返回的所需样本量无法检测的值范围的下限（即所有小于或等于 `"detect_range_lower"` 的值都可以在提供的 `alpha` 和 `power` 下检测到）。计算为 `baseline - mde`。[Float64](../data-types/float.md)。
+- `"detect_range_upper"` — 使用返回的所需样本量无法检测的值范围的上限（即所有大于或等于 `"detect_range_upper"` 的值都可以在提供的 `alpha` 和 `power` 下检测到）。计算为 `baseline + mde`。[Float64](../data-types/float.md)。
 
 **示例**
 
-以下查询计算基线转化率为 25%、MDE 为 3%、显著性水平为 5% 且所需统计功效为 80%的 A/B 测试所需的样本量：
+以下查询计算基线转化率为 25%、MDE 为 3%、显著性水平为 5% 和所需统计功效为 80%的 A/B 测试所需的样本量：
 
 ```sql
 SELECT minSampleSizeConversion(0.25, 0.03, 0.80, 0.05) AS sample_size;
@@ -4013,7 +4022,7 @@ SELECT minSampleSizeConversion(0.25, 0.03, 0.80, 0.05) AS sample_size;
 ```
 ## minSampleSizeContinuous {#minsamplesizecontinuous}
 
-计算比较两个样本中连续指标均值的 A/B 测试所需的最小样本量。
+计算用于比较两个样本中连续指标均值的 A/B 测试所需的最低样本量。
 
 **语法**
 
@@ -4021,29 +4030,29 @@ SELECT minSampleSizeConversion(0.25, 0.03, 0.80, 0.05) AS sample_size;
 minSampleSizeContinous(baseline, sigma, mde, power, alpha)
 ```
 
-别名：`minSampleSizeContinous`
+别名： `minSampleSizeContinous`
 
-使用 [这篇文章](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a) 中描述的公式。假设处理组和对照组的大小相同。返回一个组所需的样本量（即整个实验所需的样本量是返回值的两倍）。还假设处理组和对照组中的测试指标方差相等。
+使用 [这篇文章](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a) 中描述的公式。假设处理组和对照组的大小相等。返回一个组所需的样本量（即整个实验所需的样本量是返回值的两倍）。还假设测试指标在处理组和对照组中的方差相等。
 
 **参数**
 
-- `baseline` — 指标的基线值。 [Integer](../data-types/int-uint.md) 或 [Float](../data-types/float.md)。
-- `sigma` — 指标的基线标准差。 [Integer](../data-types/int-uint.md) 或 [Float](../data-types/float.md)。
-- `mde` — 检测到的最小效果（MDE），以基线值的百分比表示（例如，对于基线值 112.25，MDE 0.03 表示期望变更为 112.25 ± 112.25\*0.03）。 [Integer](../data-types/int-uint.md) 或 [Float](../data-types/float.md)。
-- `power` — 测试所需的统计功效（1 - 类型 II 错误的概率）。 [Integer](../data-types/int-uint.md) 或 [Float](../data-types/float.md)。
-- `alpha` — 测试所需的显著性水平（类型 I 错误的概率）。 [Integer](../data-types/int-uint.md) 或 [Float](../data-types/float.md)。
+- `baseline` — 指标的基线值。[整数](../data-types/int-uint.md) 或 [浮点数](../data-types/float.md)。
+- `sigma` — 指标的基线标准差。[整数](../data-types/int-uint.md) 或 [浮点数](../data-types/float.md)。
+- `mde` — 可检测的最小效应 (MDE)，占基线值的百分比（例如，对于基线值 112.25，MDE 0.03 表示预期变化为 112.25 ± 112.25\*0.03）。[整数](../data-types/int-uint.md) 或 [浮点数](../data-types/float.md)。
+- `power` — 测试所需的统计功效（1 - 第二类错误的概率）。[整数](../data-types/int-uint.md) 或 [浮点数](../data-types/float.md)。
+- `alpha` — 测试所需的显著性水平（第一类错误的概率）。[整数](../data-types/int-uint.md) 或 [浮点数](../data-types/float.md)。
 
 **返回值**
 
-一个命名的 [Tuple](../data-types/tuple.md)，包含 3 个元素：
+一个命名的 [元组](../data-types/tuple.md)，包含 3 个元素：
 
-- `"minimum_sample_size"` — 所需的样本量。 [Float64](../data-types/float.md)。
-- `"detect_range_lower"` — 在返回的所需样本量下不可检测的值范围的下限（即所有小于或等于 `"detect_range_lower"` 的值都是使用提供的 `alpha` 和 `power` 可检测的）。计算公式为 `baseline * (1 - mde)`。 [Float64](../data-types/float.md)。
-- `"detect_range_upper"` — 在返回的所需样本量下不可检测的值范围的上限（即所有大于或等于 `"detect_range_upper"` 的值都是使用提供的 `alpha` 和 `power` 可检测的）。计算公式为 `baseline * (1 + mde)`。 [Float64](../data-types/float.md)。
+- `"minimum_sample_size"` — 所需的样本量。[Float64](../data-types/float.md)。
+- `"detect_range_lower"` — 使用返回的所需样本量无法检测的值范围的下限（即所有小于或等于 `"detect_range_lower"` 的值都可以在提供的 `alpha` 和 `power` 下检测到）。计算为 `baseline * (1 - mde)`。[Float64](../data-types/float.md)。
+- `"detect_range_upper"` — 使用返回的所需样本量无法检测的值范围的上限（即所有大于或等于 `"detect_range_upper"` 的值都可以在提供的 `alpha` 和 `power` 下检测到）。计算为 `baseline * (1 + mde)`。[Float64](../data-types/float.md)。
 
 **示例**
 
-以下查询计算基线值为 112.25、标准差为 21.1、MDE 为 3%、显著性水平为 5% 且所需统计功效为 80% 的指标的 A/B 测试所需的样本量：
+以下查询计算在基线值为 112.25、标准差为 21.1、MDE 为 3%、显著性水平为 5% 和所需统计功效为 80%的指标进行 A/B 测试所需的样本量：
 
 ```sql
 SELECT minSampleSizeContinous(112.25, 21.1, 0.03, 0.80, 0.05) AS sample_size;
@@ -4066,7 +4075,7 @@ SELECT minSampleSizeContinous(112.25, 21.1, 0.03, 0.80, 0.05) AS sample_size;
 connectionId()
 ```
 
-别名：`connection_id`。
+别名： `connection_id`。
 
 **参数**
 
@@ -4074,11 +4083,11 @@ connectionId()
 
 **返回值**
 
-当前连接 ID。 [UInt64](../data-types/int-uint.md)。
+当前连接 ID。[UInt64](../data-types/int-uint.md)。
 
 **实现细节**
 
-此函数在调试场景中或 MySQL 处理程序的内部用途中特别有用。它是为与 [MySQL 的 `CONNECTION_ID` 函数](https://dev.mysql.com/doc/refman/8.0/en/information-functions.html#function_connection-id) 兼容而创建的。通常在生产查询中不使用。
+此函数在调试场景中最为有用，或在 MySQL 处理程序的内部目的中。它是为与 [MySQL 的 `CONNECTION_ID` 函数](https://dev.mysql.com/doc/refman/8.0/en/information-functions.html#function_connection-id) 兼容而创建的。通常在生产查询中不会使用。
 
 **示例**
 
@@ -4093,18 +4102,20 @@ SELECT connectionId();
 ```
 ## getClientHTTPHeader {#getclienthttpheader}
 
-获取 HTTP 头的值。
+获取 HTTP 标头的值。
 
-如果没有该头或当前请求不是通过 HTTP 接口进行的，则该函数返回空字符串。某些 HTTP 头（例如，`Authentication` 和 `X-ClickHouse-*`）是受限的。
+如果没有该标头或当前请求不是通过 HTTP 接口执行的，则该函数返回一个空字符串。
+某些 HTTP 标头（例如 `Authentication` 和 `X-ClickHouse-*`）受到限制。
 
-该函数需要设置 `allow_get_client_http_header` 启用。出于安全原因，该设置默认未启用，因为某些头（例如，`Cookie`）可能包含敏感信息。
+该函数需要启用设置 `allow_get_client_http_header`。
+该设置出于安全原因默认不启用，因为某些标头（如 `Cookie`）可能包含敏感信息。
 
-对于此函数，HTTP 头是区分大小写的。
+对于此函数，HTTP 标头是区分大小写的。
 
-如果该函数在分布式查询的上下文中使用，则仅在发起节点上返回非空结果。
+如果在分布式查询的上下文中使用该函数，则仅在发起节点上返回非空结果。
 ## showCertificate {#showcertificate}
 
-如果当前服务器的安全套接字层（SSL）证书已配置，则显示有关其的信息。有关如何配置 ClickHouse 以使用 OpenSSL 证书验证连接的更多信息，请参见 [Configuring SSL-TLS](/guides/sre/configuring-ssl)。
+显示当前服务器的安全套接层（SSL）证书的信息（如果已配置）。有关如何配置 ClickHouse 以使用 OpenSSL 证书验证连接的更多信息，请参见 [配置 SSL-TLS](/guides/sre/configuring-ssl)。
 
 **语法**
 
@@ -4114,7 +4125,7 @@ showCertificate()
 
 **返回值**
 
-- 与配置的 SSL 证书相关的键值对地图。 [Map](../data-types/map.md)([String](../data-types/string.md), [String](../data-types/string.md))。
+- 与配置的 SSL 证书相关的键值对映射。[映射](../data-types/map.md)([字符串](../data-types/string.md), [字符串](../data-types/string.md))。
 
 **示例**
 
@@ -4131,7 +4142,7 @@ SELECT showCertificate() FORMAT LineAsString;
 ```
 ## lowCardinalityIndices {#lowcardinalityindices}
 
-返回 [LowCardinality](../data-types/lowcardinality.md) 列中值在字典中的位置。位置从 1 开始。由于 LowCardinality 具有每个部分的字典，因此该函数可能会在不同的部分中返回相同值的不同位置。
+返回低基数列中某个值在字典中的位置。位置从 1 开始。由于低基数具有每个部分的字典，因此对于在不同部分中相同的值，此函数可能会返回不同的位置信息。
 
 **语法**
 
@@ -4141,11 +4152,11 @@ lowCardinalityIndices(col)
 
 **参数**
 
-- `col` — 低基数列。 [LowCardinality](../data-types/lowcardinality.md)。
+- `col` — 低基数列。[LowCardinality](../data-types/lowcardinality.md)。
 
 **返回值**
 
-- 当前部分字典中值的位置。 [UInt64](../data-types/int-uint.md)。
+- 当前部分中该值在字典中的位置。[UInt64](../data-types/int-uint.md)。
 
 **示例**
 
@@ -4183,7 +4194,7 @@ SELECT s, lowCardinalityIndices(s) FROM test;
 ```
 ## lowCardinalityKeys {#lowcardinalitykeys}
 
-返回 [LowCardinality](../data-types/lowcardinality.md) 列的字典值。如果块的大小小于或大于字典大小，结果将被截断或用默认值扩展。由于 LowCardinality 具有每个部分的字典，因此该函数可能会在不同的部分中返回不同的字典值。
+返回低基数列的字典值。如果块的大小小于或大于字典大小，则结果将被截断或用默认值扩展。由于低基数具有每个部分的字典，因此此函数可能会在不同部分中返回不同的字典值。
 
 **语法**
 
@@ -4193,11 +4204,11 @@ lowCardinalityIndices(col)
 
 **参数**
 
-- `col` — 低基数列。 [LowCardinality](../data-types/lowcardinality.md)。
+- `col` — 低基数列。[LowCardinality](../data-types/lowcardinality.md)。
 
 **返回值**
 
-- 字典键。 [UInt64](../data-types/int-uint.md)。
+- 字典键。[UInt64](../data-types/int-uint.md)。
 
 **示例**
 
@@ -4235,7 +4246,7 @@ SELECT s, lowCardinalityKeys(s) FROM test;
 ```
 ## displayName {#displayname}
 
-返回 [config](/operations/configuration-files) 中的 `display_name` 的值，或者如果未设置，则返回服务器的完全合格域名 (FQDN)。
+返回 [config](/operations/configuration-files) 中的 `display_name` 的值，或者如果未设置，则返回服务器的完全限定域名（FQDN）。
 
 **语法**
 
@@ -4245,11 +4256,11 @@ displayName()
 
 **返回值**
 
-- 配置中 `display_name` 的值或服务器 FQDN（如果未设置）。 [String](../data-types/string.md)。
+- 来自配置的 `display_name` 的值或未设置时的服务器 FQDN。[字符串](../data-types/string.md)。
 
 **示例**
 
-在 `config.xml` 中可以设置 `display_name`。以配置为 'production' 的服务器为例：
+可以在 `config.xml` 中设置 `display_name`。以服务器的 `display_name` 配置为 'production' 为例：
 
 ```xml
 <!-- It is the name that will be shown in the clickhouse-client.
@@ -4276,17 +4287,17 @@ SELECT displayName();
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
-返回 [transaction](/guides/developer/transactional#transactions-commit-and-rollback) 的 ID。
+返回一个 [transaction](/guides/developer/transactional#transactions-commit-and-rollback) 的 ID。
 
 :::note
-此函数是实验性功能集的一部分。通过将此设置添加到配置中来启用实验性事务支持：
+此函数是实验功能集的一部分。通过将此设置添加到配置中启用实验事务支持：
 ```xml
 <clickhouse>
   <allow_experimental_transactions>1</allow_experimental_transactions>
 </clickhouse>
 ```
 
-有关更多信息，请参见页面 [Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback)。
+有关更多信息，请参见页面 [事务性（ACID）支持](/guides/developer/transactional#transactions-commit-and-rollback)。
 :::
 
 **语法**
@@ -4297,11 +4308,11 @@ transactionID()
 
 **返回值**
 
-- 返回由 `start_csn`、`local_tid` 和 `host_id` 组成的元组。 [Tuple](../data-types/tuple.md)。
+- 返回一个由 `start_csn`、`local_tid` 和 `host_id` 组成的元组。[元组](../data-types/tuple.md)。
 
-- `start_csn`: 全局顺序号，表示此事务开始时看到的最新提交时间戳。 [UInt64](../data-types/int-uint.md)。
-- `local_tid`: 每个事务在特定 `start_csn` 内由此主机启动的唯一局部顺序号。 [UInt64](../data-types/int-uint.md)。
-- `host_id`: 启动此事务的主机的 UUID。 [UUID](../data-types/uuid.md)。
+- `start_csn`：全局顺序号，指当此事务开始时看到的最新提交时间戳。[UInt64](../data-types/int-uint.md)。
+- `local_tid`：在特定 start_csn 内，此主机启动的每个事务的唯一本地顺序号。[UInt64](../data-types/int-uint.md)。
+- `host_id`：启动此事务的主机的 UUID。[UUID](../data-types/uuid.md)。
 
 **示例**
 
@@ -4328,7 +4339,7 @@ ROLLBACK;
 返回可供读取的 [transaction](/guides/developer/transactional#transactions-commit-and-rollback) 的最新快照（提交序列号）。
 
 :::note
-此函数是实验性功能集的一部分。通过将此设置添加到配置中来启用实验性事务支持：
+此函数是实验功能集的一部分。通过将此设置添加到配置中启用实验事务支持：
 
 ```xml
 <clickhouse>
@@ -4336,7 +4347,7 @@ ROLLBACK;
 </clickhouse>
 ```
 
-有关更多信息，请参见页面 [Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback)。
+有关更多信息，请参见页面 [事务性（ACID）支持](/guides/developer/transactional#transactions-commit-and-rollback)。
 :::
 
 **语法**
@@ -4347,7 +4358,7 @@ transactionLatestSnapshot()
 
 **返回值**
 
-- 返回一个事务的最新快照（CSN）。 [UInt64](../data-types/int-uint.md)
+- 返回事务的最新快照（CSN）。[UInt64](../data-types/int-uint.md)
 
 **示例**
 
@@ -4371,10 +4382,10 @@ ROLLBACK;
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
-返回可用于某些运行中的 [transaction](/guides/developer/transactional#transactions-commit-and-rollback) 的最旧快照（提交序列号）。
+返回可供某个正在运行的 [transaction](/guides/developer/transactional#transactions-commit-and-rollback) 访问的最旧快照（提交序列号）。
 
 :::note
-此函数是实验性功能集的一部分。通过将此设置添加到配置中来启用实验性事务支持：
+此函数是实验功能集的一部分。通过将此设置添加到配置中启用实验事务支持：
 
 ```xml
 <clickhouse>
@@ -4382,7 +4393,7 @@ ROLLBACK;
 </clickhouse>
 ```
 
-有关更多信息，请参见页面 [Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback)。
+有关更多信息，请参见页面 [事务性（ACID）支持](/guides/developer/transactional#transactions-commit-and-rollback)。
 :::
 
 **语法**
@@ -4393,7 +4404,7 @@ transactionOldestSnapshot()
 
 **返回值**
 
-- 返回一个事务的最旧快照（CSN）。 [UInt64](../data-types/int-uint.md)
+- 返回事务的最旧快照（CSN）。[UInt64](../data-types/int-uint.md)
 
 **示例**
 
@@ -4414,7 +4425,7 @@ ROLLBACK;
 ```
 ## getSubcolumn {#getsubcolumn}
 
-接受一个表表达式或标识符及一个常量字符串作为子列名称，并返回从表达式中提取的请求的子列。
+接受一个表表达式或标识符以及一个包含子列名称的常量字符串，并返回从表达式中提取的请求的子列。
 
 **语法**
 
@@ -4424,8 +4435,8 @@ getSubcolumn(col_name, subcol_name)
 
 **参数**
 
-- `col_name` — 表表达式或标识符。 [Expression](../syntax.md/#expressions), [Identifier](../syntax.md/#identifiers)。
-- `subcol_name` — 子列的名称。 [String](../data-types/string.md)。
+- `col_name` — 表表达式或标识符。[表达式](../syntax.md/#expressions)、[标识符](../syntax.md/#identifiers)。
+- `subcol_name` — 子列的名称。[字符串](../data-types/string.md)。
 
 **返回值**
 
@@ -4451,10 +4462,10 @@ SELECT getSubcolumn(arr, 'subcolumn1'), getSubcolumn(arr, 'subcolumn2') FROM t_a
 ```
 ## getTypeSerializationStreams {#gettypeserializationstreams}
 
-枚举数据类型的流路径。
+列出数据类型的流路径。
 
 :::note
-此函数仅供开发人员使用。
+此函数适用于开发者使用。
 :::
 
 **语法**
@@ -4465,11 +4476,11 @@ getTypeSerializationStreams(col)
 
 **参数**
 
-- `col` — 列或数据类型的字符串表示形式，从中检测数据类型。
+- `col` — 列或数据类型的字符串表示形式，从中将检测数据类型。
 
 **返回值**
 
-- 返回包含所有序列化子流路径的数组。[Array](../data-types/array.md)([String](../data-types/string.md))。
+- 返回一个包含所有序列化子流路径的数组。[数组](../data-types/array.md)([字符串](../data-types/string.md))。
 
 **示例**
 
@@ -4502,7 +4513,7 @@ SELECT getTypeSerializationStreams('Map(String, Int64)');
 ```
 ## globalVariable {#globalvariable}
 
-接受一个常量字符串参数并返回该名称的全局变量值。此函数旨在与 MySQL 兼容，对于 ClickHouse 的正常操作并不需要或有用。仅定义了几个虚拟全局变量。
+接受一个常量字符串参数，并返回具有该名称的全局变量的值。该函数旨在与 MySQL 兼容，且在 ClickHouse 的正常操作中并不需要或有用。仅定义了少数虚拟全局变量。
 
 **语法**
 
@@ -4512,7 +4523,7 @@ globalVariable(name)
 
 **参数**
 
-- `name` — 全局变量名称。 [String](../data-types/string.md)。
+- `name` — 全局变量名称。[字符串](../data-types/string.md)。
 
 **返回值**
 
@@ -4535,7 +4546,7 @@ SELECT globalVariable('max_allowed_packet');
 ```
 ## getMaxTableNameLengthForDatabase {#getmaxtablenamelengthfordatabase}
 
-返回指定数据库中最大表名称长度。
+返回指定数据库中的最大表名长度。
 
 **语法**
 
@@ -4545,11 +4556,11 @@ getMaxTableNameLengthForDatabase(database_name)
 
 **参数**
 
-- `database_name` — 指定数据库的名称。 [String](../data-types/string.md)。
+- `database_name` — 指定数据库的名称。[字符串](../data-types/string.md)。
 
 **返回值**
 
-- 返回最大表名称的长度。
+- 返回最大表名的长度。
 
 **示例**
 
@@ -4578,7 +4589,7 @@ getServerSetting('server_setting');
 
 **参数**
 
-- `server_setting` — 设置名称。 [String](../data-types/string.md)。
+- `server_setting` — 设置名称。[字符串](../data-types/string.md)。
 
 **返回值**
 
@@ -4599,7 +4610,7 @@ SELECT getServerSetting('allow_use_jemalloc_memory');
 ```
 ## getMergeTreeSetting {#getmergetreesetting}
 
-返回合并树设置之一的当前值。
+返回其中一个合并树设置的当前值。
 
 **语法**
 
@@ -4609,7 +4620,7 @@ getMergeTreeSetting('merge_tree_setting');
 
 **参数**
 
-- `merge_tree_setting` — 设置名称。 [String](../data-types/string.md)。
+- `merge_tree_setting` — 设置名称。[字符串](../data-types/string.md)。
 
 **返回值**
 

@@ -1,10 +1,25 @@
+---
+'sidebar_label': 'R2DBC Driver'
+'sidebar_position': 5
+'keywords':
+- 'clickhouse'
+- 'java'
+- 'driver'
+- 'integrate'
+- 'r2dbc'
+'description': 'ClickHouse R2DBC 驱动程序'
+'slug': '/integrations/java/r2dbc'
+'title': 'R2DBC 驱动程序'
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-# R2DBC 驱动
 
-## R2DBC 驱动 {#r2dbc-driver}
+# R2DBC 驱动程序
+
+## R2DBC 驱动程序 {#r2dbc-driver}
 
 [R2DBC](https://r2dbc.io/) 的 ClickHouse 异步 Java 客户端包装器。
 

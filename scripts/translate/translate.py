@@ -102,7 +102,6 @@ def translate_text(config, text, model="gpt-4o-mini", translation_override_promp
             - If the only thing you're given is something that doesn't need to be translated, just return it as is (even if it's blank space). Eg. Given "<Content/>" return "<Content/>".
               You should absolutely NEVER provide a response like "I'm sorry, but it seems that you have not provided any specific content to translate." in this case.
             
-            
         I suggest a two step approach in which you first translate, and afterwards compare the original text to the translation
         and critically evaluate it and make modifications as appropriate.
         
@@ -187,18 +186,42 @@ def translate_frontmatter(frontmatter, glossary):
     if not fields_to_translate:
         return
 
+    # Check if any field has mixed-case content (not just pure ALL CAPS)
+    has_translatable_content = False
+    for value in fields_to_translate.values():
+        # Remove pure ALL CAPS words/phrases to see if there's mixed-case content left
+        # Pattern matches: word boundaries + sequences of caps/digits/underscores/spaces between caps words
+        pure_caps_pattern = r'\b[A-Z][A-Z0-9_]*(?:\s+[A-Z][A-Z0-9_]*)*\b'
+        remaining_text = re.sub(pure_caps_pattern, '', value).strip()
+
+        # If there's any non-whitespace content left after removing pure ALL CAPS, it's translatable
+        if remaining_text and not remaining_text.isspace():
+            has_translatable_content = True
+            break
+
+    # If no translatable content (only pure ALL CAPS), return original frontmatter
+    if not has_translatable_content:
+        return frontmatter
+
     system_prompt = f"""
-    You are an expert translator of technical documentation. 
-    
-    You will receive a JSON object containing frontmatter fields from a markdown document.
-    Translate the values while preserving the JSON structure.
-    
-    IMPORTANT: do not translate any SQL terms which are in all caps such as PARALLEL WITH, ALTER, SELECT etc
-    
-    You can use the following glossary for technical terms. If you don't find the term there
-    you should try to translate it as best you can while still maintaining the meaning:
-    
-    {glossary}
+You are a translator. 
+
+You will receive a JSON object containing frontmatter fields from a markdown document.
+Translate the values while preserving the JSON structure.
+
+EXTREMELY IMPORTANT: DO NOT translate any words that are in ALL CAPITAL LETTERS.
+This includes:
+- Single words like DATABASE, TABLE, INDEX, CREATE, SELECT
+- Multi-word phrases like CREATE DATABASE, ALTER TABLE, DROP INDEX
+- Any uppercase words within mixed-case sentences like "SELECT statement" or "Documentation for CREATE DATABASE"
+
+For mixed-case phrases:
+- "SELECT statement" → translate to something like "SELECT 语句" (Chinese), "SELECT ステートメント" (Japanese), "Инструкция SELECT" (Russian)
+- "CREATE DATABASE command" → "CREATE DATABASE 命令" (Chinese), "CREATE DATABASE コマンド" (Japanese), "Команда CREATE DATABASE" (Russian)
+
+IMPORTANT: Keep ALL CAPS words exactly as they are, only translate the lowercase/mixed-case words around them. Adjust word order as needed for proper grammar in the target language.
+
+You can use the following glossary for translating technical terms: {glossary}
     """
 
     # Define the JSON schema for the response
@@ -234,6 +257,8 @@ def translate_frontmatter(frontmatter, glossary):
     for key, translated_value in translated_content.items():
         if key in frontmatter:
             frontmatter[key] = translated_value
+
+    return frontmatter
 
 # We need to apply a transformation from @site/docs to @site/i18n/{lang_code}/docusaurus-plugin-content-docs/current/
 def replaceSnippetImports(import_statements, lang_code):
@@ -404,7 +429,7 @@ def translate_file(config, input_file_path, output_file_path, model):
             print(f" - length: {len(original_text)}")
 
         # Translate the metadata
-        translate_frontmatter(metadata, config["glossary"])
+        metadata = translate_frontmatter(metadata, config["glossary"])
 
         # Extract codeblocks and replace them with numbered placeholders
         # that we will replace after translations are done.
@@ -489,7 +514,7 @@ def translate_file(config, input_file_path, output_file_path, model):
             allow_unicode=True
         )
 
-        if not yaml_str:
+        if yaml_str != "":
             formatted_frontmatter = f"---\n{yaml_str}---\n\n"
             translated_text = formatted_frontmatter + translated_text
 

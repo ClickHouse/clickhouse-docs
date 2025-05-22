@@ -2,18 +2,18 @@
 'title': '如何查询 Parquet 文件'
 'sidebar_label': '查询 Parquet 文件'
 'slug': '/chdb/guides/querying-parquet'
-'description': '了解如何使用 chDB 查询 Parquet 文件。'
+'description': '学习如何使用 chDB 查询 Parquet 文件。'
 'keywords':
 - 'chdb'
 - 'parquet'
 ---
 
-许多世界数据存储在 Amazon S3 存储桶中。
+许多世界上的数据存储在 Amazon S3 桶中。
 在本指南中，我们将学习如何使用 chDB 查询这些数据。
 
 ## 设置 {#setup}
 
-我们首先创建一个虚拟环境：
+首先，让我们创建一个虚拟环境：
 
 ```bash
 python -m venv .venv
@@ -27,7 +27,7 @@ source .venv/bin/activate
 pip install "chdb>=2.0.2"
 ```
 
-接下来，我们将安装 IPython：
+接下来，我们要安装 IPython：
 
 ```bash
 pip install ipython
@@ -39,19 +39,19 @@ pip install ipython
 ipython
 ```
 
-您也可以将代码放在 Python 脚本中或您喜欢的笔记本中使用。
+您也可以在 Python 脚本或您最喜欢的笔记本中使用这些代码。
 
 ## 探索 Parquet 元数据 {#exploring-parquet-metadata}
 
-我们将要探索 [Amazon reviews](/getting-started/example-datasets/amazon-reviews) 数据集中的一个 Parquet 文件。
+我们将探索来自 [Amazon reviews](/getting-started/example-datasets/amazon-reviews) 数据集的 Parquet 文件。
 但首先，让我们安装 `chDB`：
 
 ```python
 import chdb
 ```
 
-在查询 Parquet 文件时，我们可以使用 [`ParquetMetadata`](/interfaces/formats/ParquetMetadata) 输入格式，以便返回 Parquet 元数据，而不是文件的内容。
-让我们使用 `DESCRIBE` 子句来查看使用此格式时返回的字段：
+在查询 Parquet 文件时，我们可以使用 [`ParquetMetadata`](/interfaces/formats/ParquetMetadata) 输入格式，使其返回 Parquet 元数据而不是文件内容。
+让我们使用 `DESCRIBE` 子句查看使用此格式时返回的字段：
 
 ```python
 query = """
@@ -77,8 +77,8 @@ columns Array(Tuple(name String, path String, max_definition_level UInt64, max_r
 row_groups      Array(Tuple(num_columns UInt64, num_rows UInt64, total_uncompressed_size UInt64, total_compressed_size UInt64, columns Array(Tuple(name String, path String, total_compressed_size UInt64, total_uncompressed_size UInt64, have_statistics Bool, statistics Tuple(num_values Nullable(UInt64), null_count Nullable(UInt64), distinct_count Nullable(UInt64), min Nullable(String), max Nullable(String))))))
 ```
 
-现在让我们查看该文件的元数据。
-`columns` 和 `row_groups` 都包含多个属性的元组数组，因此我们暂时将其排除。
+现在我们来看看该文件的元数据。
+`columns` 和 `row_groups` 都包含许多属性的元组数组，因此我们暂时将其排除。
 
 ```python
 query = """
@@ -104,11 +104,11 @@ total_uncompressed_size: 14615827169
 total_compressed_size:   9272262304
 ```
 
-从这个输出中，我们了解到此 Parquet 文件有超过 4000 万行，分成 42 个行组，每行有 15 列数据。
-行组是将数据水平逻辑分区为行的方式。
-每个行组都有相关的元数据，并且查询工具可以利用这些元数据高效地查询文件。
+从此输出中，我们了解到该 Parquet 文件有超过 4000 万行，分为 42 个行组，每行有 15 列数据。
+行组是将数据水平逻辑分区为行。
+每个行组都有相关的元数据，查询工具可以利用这些元数据高效地查询文件。
 
-让我们看一下其中一个行组：
+让我们看看其中一个行组：
 
 ```python
 query = """
@@ -153,8 +153,8 @@ chdb.query(query, 'DataFrame')
 
 ## 查询 Parquet 文件 {#querying-parquet-files}
 
-接下来，我们来查询文件的内容。
-我们可以通过调整上述查询以去掉 `ParquetMetadata`，然后计算所有评论中最受欢迎的 `star_rating`：
+接下来，让我们查询文件的内容。
+我们可以通过调整上述查询以移除 `ParquetMetadata`，然后计算所有评论中最受欢迎的 `star_rating`：
 
 ```python
 query = """
@@ -178,5 +178,5 @@ chdb.query(query, 'DataFrame')
 4            5  27078664                   27.08 million
 ```
 
-有趣的是，5 星评价的数量超过了所有其他评分的总和！
-看起来人们喜欢亚马逊上的产品，或者如果他们不喜欢，他们就不会提交评分。
+有趣的是，五星评价的数量超过了所有其他评级的总和！
+看起来人们喜欢 Amazon 上的产品，或者如果他们不喜欢，那么他们根本就不提交评级。

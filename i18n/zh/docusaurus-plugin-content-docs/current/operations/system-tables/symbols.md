@@ -1,18 +1,27 @@
-包含有关 `clickhouse` 二进制文件的自省信息。访问它需要自省权限。   
-该表对 C++ 专家和 ClickHouse 工程师来说才是有用的。  
+---
+'description': '该系统表对 C++ 专家和 ClickHouse 工程师非常有用，包含有关 `clickhouse` 二进制文件的自省信息。'
+'keywords':
+- 'system table'
+- 'symbols'
+'slug': '/operations/system-tables/symbols'
+'title': 'system.symbols'
+---
 
-列：  
+包含有关 `clickhouse` 二进制文件的自省信息。访问此信息需要自省权限。  
+该表仅对 C++ 专家和 ClickHouse 工程师有用。
 
-- `symbol` ([String](../../sql-reference/data-types/string.md)) — 二进制中的符号名称。它是被修改过的。您可以应用 `demangle(symbol)` 以获得可读名称。  
-- `address_begin` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 二进制中符号的起始地址。  
-- `address_end` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 二进制中符号的结束地址。  
-- `name` ([String](../../sql-reference/data-types/string.md)) — `event` 的别名。  
+列：
 
-**示例**  
+- `symbol` ([String](../../sql-reference/data-types/string.md)) — 二进制中的符号名称。它是经过编译的。您可以应用 `demangle(symbol)` 来获取可读名称。
+- `address_begin` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 符号在二进制中的起始地址。
+- `address_end` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 符号在二进制中的结束地址。
+- `name` ([String](../../sql-reference/data-types/string.md)) — `event` 的别名。
+
+**示例**
 
 ```sql
 SELECT address_begin, address_end - address_begin AS size, demangle(symbol) FROM system.symbols ORDER BY size DESC LIMIT 10
-```  
+```
 
 ```text
 ┌─address_begin─┬─────size─┬─demangle(symbol)──────────────────────────────────────────────────────────────────┐

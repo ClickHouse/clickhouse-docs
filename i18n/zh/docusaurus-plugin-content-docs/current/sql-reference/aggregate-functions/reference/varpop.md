@@ -1,3 +1,10 @@
+---
+'description': '计算人口方差。'
+'sidebar_position': 210
+'slug': '/en/sql-reference/aggregate-functions/reference/varPop'
+'title': 'varPop'
+---
+
 ## varPop {#varpop}
 
 计算总体方差：
@@ -16,11 +23,11 @@ varPop(x)
 
 **参数**
 
-- `x`：要计算总体方差的值的总体。[(U)Int*](../../data-types/int-uint.md)，[Float*](../../data-types/float.md)，[Decimal*](../../data-types/decimal.md)。
+- `x`：要计算总体方差的值的总体。 [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md)。
 
 **返回值**
 
-- 返回 `x` 的总体方差。[`Float64`](../../data-types/float.md)。
+- 返回 `x` 的总体方差。 [`Float64`](../../data-types/float.md)。
 
 **示例**
 

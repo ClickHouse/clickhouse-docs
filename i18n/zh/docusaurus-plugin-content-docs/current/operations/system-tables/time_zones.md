@@ -1,3 +1,12 @@
+---
+'description': '系统表包含 ClickHouse 服务器支持的时区列表。'
+'keywords':
+- 'system table'
+- 'time_zones'
+'slug': '/operations/system-tables/time_zones'
+'title': 'system.time_zones'
+---
+
 
 # system.time_zones
 

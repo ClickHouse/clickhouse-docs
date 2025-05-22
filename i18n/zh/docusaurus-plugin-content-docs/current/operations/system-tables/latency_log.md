@@ -1,4 +1,11 @@
+---
+'description': '包含所有延迟桶的历史记录，定期刷新到磁盘。'
+'slug': '/operations/system-tables/latency_log'
+'title': 'system.latency_log'
+---
+
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
 
 # latency_log
 
@@ -43,7 +50,7 @@ LatencyEvent_DiskS3ReadConnectMicroseconds:            [1,1,1,1,1,1,1,1,1,1]
 LatencyEvent_DiskS3WriteConnectMicroseconds:           [329,362,362,363,363,363,363,363,363,363]
 ```
 
-**另见**
+**另请参见**
 
 - [latency_log_setting](../../operations/server-configuration-parameters/settings.md#latency_log) - 启用和禁用该设置。
 - [latency_buckets](../../operations/system-tables/latency_buckets.md) - 延迟日志桶的边界。

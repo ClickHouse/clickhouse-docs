@@ -11,7 +11,7 @@
 - 'install'
 ---
 
-## Requirements {#requirements}
+## 要求 {#requirements}
 
 安装 [libchdb](https://github.com/chdb-io/chdb):
 
@@ -19,10 +19,10 @@
 curl -sL https://lib.chdb.io | bash
 ```
 
-## Usage {#usage}
+## 用法 {#usage}
 
-此绑定仍在进行中。按照 [chdb-rust](https://github.com/chdb-io/chdb-rust) 上的说明开始使用。
+此绑定仍在进行中。请按照 [chdb-rust](https://github.com/chdb-io/chdb-rust) 中的说明开始。
 
-## GitHub repository {#github-repository}
+## GitHub 仓库 {#github-repository}
 
 您可以在 [chdb-io/chdb-rust](https://github.com/chdb-io/chdb-rust) 找到该项目的 GitHub 仓库。

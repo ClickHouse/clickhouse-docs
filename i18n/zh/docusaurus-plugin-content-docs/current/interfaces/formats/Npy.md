@@ -1,19 +1,30 @@
-| Input | Output | Alias |
+---
+'alias': []
+'description': 'Npy 格式的文档'
+'input_format': true
+'keywords':
+- 'Npy'
+'output_format': true
+'slug': '/interfaces/formats/Npy'
+'title': 'Npy'
+---
+
+| 输入  | 输出   | 别名  |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 描述 {#description}
 
-`Npy` 格式设计用于从 `.npy` 文件加载 NumPy 数组到 ClickHouse。 
+`Npy` 格式旨在将 `.npy` 文件中的 NumPy 数组加载到 ClickHouse 中。 
 NumPy 文件格式是一种用于高效存储数值数据数组的二进制格式。 
-在导入过程中，ClickHouse 将顶层维度视为具有单列的行数组。
+在导入过程中，ClickHouse 将最上层的维度视为具有单一列的行数组。
 
-下表列出了支持的 Npy 数据类型及其对应的 ClickHouse 类型：
+下面的表格列出了支持的 Npy 数据类型及其在 ClickHouse 中对应的类型：
 
 ## 数据类型匹配 {#data_types-matching}
 
-| Npy 数据类型 (`INSERT`) | ClickHouse 数据类型                                            | Npy 数据类型 (`SELECT`) |
-|--------------------------|-----------------------------------------------------------------|-------------------------|
+| Npy 数据类型 (`INSERT`) | ClickHouse 数据类型                                          | Npy 数据类型 (`SELECT`) |
+|--------------------------|-----------------------------------------------------------|-------------------------|
 | `i1`                     | [Int8](/sql-reference/data-types/int-uint.md)           | `i1`                    |
 | `i2`                     | [Int16](/sql-reference/data-types/int-uint.md)          | `i2`                    |
 | `i4`                     | [Int32](/sql-reference/data-types/int-uint.md)          | `i4`                    |
@@ -29,7 +40,7 @@ NumPy 文件格式是一种用于高效存储数值数据数组的二进制格�
 
 ## 示例用法 {#example-usage}
 
-### 使用 Python 将数组保存为 .npy 格式 {#saving-an-array-in-npy-format-using-python}
+### 使用 Python 保存 .npy 格式数组 {#saving-an-array-in-npy-format-using-python}
 
 ```Python
 import numpy as np
@@ -53,7 +64,7 @@ FROM file('example_array.npy', Npy)
 
 ### 选择数据 {#selecting-data}
 
-您可以从 ClickHouse 表中选择数据并使用以下与 clickhouse-client 的命令将其保存为 Npy 格式的文件：
+您可以从 ClickHouse 表中选择数据，并使用以下命令将其保存到 Npy 格式的文件中，使用 clickhouse-client：
 
 ```bash
 $ clickhouse-client --query="SELECT {column} FROM {some_table} FORMAT Npy" > {filename.npy}

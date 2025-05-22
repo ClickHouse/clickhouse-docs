@@ -1,10 +1,21 @@
-| Input | Output | Alias |
+---
+'alias': []
+'description': 'JSONStrings 格式的文档'
+'input_format': true
+'keywords':
+- 'JSONStrings'
+'output_format': true
+'slug': '/interfaces/formats/JSONStrings'
+'title': 'JSONStrings'
+---
+
+| 输入 | 输出 | 别名 |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 描述 {#description}
 
-与 [JSON](./JSON.md) 格式的不同之处在于数据字段以字符串输出，而不是作为类型化的 JSON 值。
+与 [JSON](./JSON.md) 格式的不同之处在于数据字段以字符串形式输出，而不是以类型化的 JSON 值输出。
 
 ## 示例用法 {#example-usage}
 

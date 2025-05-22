@@ -1,4 +1,12 @@
-这个数据集包含了从2005年12月到2023年3月的在Reddit上公开可用的评论，共有超过140亿行数据。原始数据以压缩文件的JSON格式存储，行的数据格式如下所示：
+---
+'description': '数据集包含自 2005 年 12 月至 2023 年 3 月在 Reddit 上公开可用的评论，数据以 JSON 格式存储，超过 14B
+  行数据'
+'sidebar_label': 'Reddit 评论'
+'slug': '/getting-started/example-datasets/reddit-comments'
+'title': 'Reddit 评论数据集'
+---
+
+这个数据集包含从2005年12月到2023年3月的公开可用Reddit评论，数据量超过140亿行。原始数据为JSON格式，存储在压缩文件中，行数据如下所示：
 
 ```json
 {"controversiality":0,"body":"A look at Vietnam and Mexico exposes the myth of market liberalisation.","subreddit_id":"t5_6","link_id":"t3_17863","stickied":false,"subreddit":"reddit.com","score":2,"ups":2,"author_flair_css_class":null,"created_utc":1134365188,"author_flair_text":null,"author":"frjo","id":"c13","edited":false,"parent_id":"t3_17863","gilded":0,"distinguished":null,"retrieved_on":1473738411}
@@ -8,12 +16,12 @@
 {"gilded":0,"retrieved_on":1473738411,"distinguished":null,"author_flair_text":null,"author":"rjoseph","edited":false,"id":"c17","parent_id":"t3_17817","subreddit":"reddit.com","author_flair_css_class":null,"created_utc":1134367754,"score":1,"ups":1,"body":"Saft is by far the best extension you could tak onto your Safari","controversiality":0,"link_id":"t3_17817","stickied":false,"subreddit_id":"t5_6"}
 ```
 
-感谢Percona提供了[获取此数据集的动机](https://www.percona.com/blog/big-data-set-reddit-comments-analyzing-clickhouse/)，我们已经下载并存储在一个S3桶中。
+特别感谢Percona提供的[获取该数据集的动力](https://www.percona.com/blog/big-data-set-reddit-comments-analyzing-clickhouse/)，我们已将其下载并存储在S3桶中。
 
 ## 创建表 {#creating-a-table}
 
 :::note
-以下命令是在最低内存设置为720GB的ClickHouse Cloud生产实例上执行的。要在自己的集群上运行此命令，请在` s3Cluster`函数调用中将`default`替换为您的集群名称。如果您没有集群，则将`s3Cluster`函数替换为`s3`函数。
+以下命令在设置最低内存为720GB的ClickHouse Cloud生产实例上执行。要在您自己的集群上运行此命令，请将`s3Cluster`函数调用中的`default`替换为您的集群名称。如果您没有集群，请将`s3Cluster`函数替换为`s3`函数。
 :::
 
 1. 让我们为Reddit数据创建一个表：
@@ -61,17 +69,17 @@ ORDER BY (subreddit, created_date, author);
 ```
 
 :::note
-S3中的文件名以`RC_YYYY-MM`开头，其中`YYYY-MM`的范围是`2005-12`到`2023-02`。不过，压缩格式有时会更改，因此文件扩展名并不一致。例如：
+S3中的文件名以`RC_YYYY-MM`开头，`YYYY-MM`的范围从`2005-12`到`2023-02`。不过，压缩方式有几次变化，因此文件扩展名并不一致。例如：
 
 - 文件名最初为`RC_2005-12.bz2`到`RC_2017-11.bz2`
-- 然后变成`RC_2017-12.xz`到`RC_2018-09.xz`
-- 最后是`RC_2018-10.zst`到`RC_2023-02.zst`
+- 然后变为`RC_2017-12.xz`到`RC_2018-09.xz`
+- 最后为`RC_2018-10.zst`到`RC_2023-02.zst`
 :::
 
 
 ## 加载数据 {#load-data}
 
-2. 我们将从一个月的数据开始，但如果您想要直接插入每一行，请跳到下面的第8步。以下文件包含2017年12月的8600万条记录：
+2. 我们将从一个月的数据开始，但如果您想要简单地插入每一行 - 请跳到下面的步骤8。以下文件包含来自2017年12月的8600万条记录：
 
 ```sql
 INSERT INTO reddit
@@ -83,7 +91,7 @@ INSERT INTO reddit
 
 ```
 
-3. 这将花费一些时间，具体取决于您的资源，但完成后请验证它是否成功：
+3. 这将需要一些时间，具体取决于您的资源，但完成后请验证其是否有效：
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -113,7 +121,7 @@ FROM reddit;
 
 ## 示例查询 {#example-queries}
 
-5. 此查询返回评论数量最多的前10个子版块：
+5. 此查询返回评论数最多的前10个子版块：
 
 ```sql
 SELECT
@@ -152,7 +160,7 @@ LIMIT 20;
 20 rows in set. Elapsed: 0.368 sec. Processed 85.97 million rows, 367.43 MB (233.34 million rows/s., 997.25 MB/s.)
 ```
 
-6. 这是2017年12月评论数量最多的前10个作者：
+6. 这是2017年12月评论数最多的前10位作者：
 
 ```sql
 SELECT
@@ -189,7 +197,7 @@ LIMIT 10;
 TRUNCATE TABLE reddit;
 ```
 
-8. 这是一个有趣的数据集，看起来我们可以找到一些很棒的信息，所以让我们插入从2005年到2023年的整个数据集。出于实用原因，逐年插入数据效果很好，从...
+8. 这是一个有趣的数据集，看起来我们可以找到一些很棒的信息，所以让我们继续插入从2005年到2023年的整个数据集。出于实际原因，按年份插入数据效果很好，从...
 
 ```sql
 INSERT INTO reddit
@@ -227,7 +235,7 @@ FROM s3(
 SETTINGS zstd_window_log_max = 31;
 ```
 
-8. 为了验证它是否成功，这里是每年的行数（截至2023年2月）：
+9. 为了验证它是否有效，以下是每年的行数（截至2023年2月）：
 
 ```sql
 SELECT
@@ -262,7 +270,7 @@ GROUP BY year;
 └──────┴─────────────────────────────────┘
 ```
 
-9. 让我们看看插入了多少行，以及该表使用的磁盘空间是多少：
+10. 让我们看看插入了多少行以及表使用了多少磁盘空间：
 
 ```sql
 SELECT
@@ -274,7 +282,7 @@ FROM system.parts
 WHERE (table = 'reddit') AND active;
 ```
 
-请注意，磁盘存储的压缩率约为未压缩大小的1/3：
+请注意，磁盘存储的压缩量约为未压缩大小的1/3：
 
 ```response
 ┌───────count─┬─formatReadableQuantity(sum(rows))─┬─disk_size─┬─uncompressed_size─┐
@@ -286,7 +294,7 @@ WHERE (table = 'reddit') AND active;
 
 ## 示例查询 - 每月的评论、作者和子版块 {#example-query-comments}
 
-10. 以下查询显示我们每个月有多少评论、作者和子版块：
+11. 以下查询显示了每个月我们有多少评论、作者和子版块：
 
 ```sql
 SELECT
@@ -302,7 +310,7 @@ GROUP BY firstOfMonth
 ORDER BY firstOfMonth ASC;
 ```
 
-这是一个庞大的查询，需要处理全部14.69亿行数据，但我们仍然获得了令人印象深刻的响应时间（大约48秒）：
+这是一个需要处理所有146.9亿行的大查询，但我们仍然得到了不错的响应时间（大约48秒）：
 
 ```response
 ┌─firstOfMonth─┬─────────c─┬─bar_count─────────────────┬──authors─┬─bar_authors───────────────┬─subreddits─┬─bar_subreddits────────────┐
@@ -516,7 +524,7 @@ ORDER BY firstOfMonth ASC;
 
 ## 更多查询 {#more-queries}
 
-11. 这是2022年的前10个子版块：
+12. 这是2022年评论数最多的前10个子版块：
 
 ```sql
 SELECT
@@ -546,7 +554,7 @@ LIMIT 10;
 10 rows in set. Elapsed: 5.956 sec. Processed 14.69 billion rows, 126.19 GB (2.47 billion rows/s., 21.19 GB/s.)
 ```
 
-12. 让我们看看哪些子版块在2018年至2019年之间评论数量增长最快：
+13. 让我们看看哪个子版块在2018到2019年期间评论数量增长最大：
 
 ```sql
 SELECT
@@ -575,7 +583,7 @@ LIMIT 50
 SETTINGS joined_subquery_requires_alias = 0;
 ```
 
-看起来2019年在Reddit上，表情包和青少年比较活跃：
+看来2019年表情包和青少年在Reddit上很活跃：
 
 ```response
 ┌─subreddit────────────┬─────diff─┐
@@ -636,7 +644,7 @@ SETTINGS joined_subquery_requires_alias = 0;
 
 ## 其他查询 {#other-queries}
 
-13. 还有一个查询：让我们将ClickHouse的提及与其他技术如Snowflake和Postgres进行比较。这个查询很大，因为它需要三次搜索14.69亿条评论中的子字符串，但性能实际上相当令人印象深刻。（不幸的是，ClickHouse用户在Reddit上还不是很活跃）：
+14. 还有一个查询：让我们将ClickHouse的提及与其他技术进行比较，例如Snowflake和Postgres。这个查询很大，因为它必须在146.9亿条评论中搜索三次子字符串，但性能实际上相当出色。（不幸的是，ClickHouse用户在Reddit上尚不够活跃）：
 
 ```sql
 SELECT

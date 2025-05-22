@@ -1,13 +1,20 @@
-这个数据集包含超过1.5亿条亚马逊产品的客户评论。数据以snappy压缩的Parquet文件存储在AWS S3中，总大小为49GB（压缩后）。接下来，让我们一步步将其插入到ClickHouse中。
+---
+'description': '超过1.5亿条客户对亚马逊产品的评价'
+'sidebar_label': '亚马逊客户评价'
+'slug': '/getting-started/example-datasets/amazon-reviews'
+'title': '亚马逊客户评价'
+---
+
+这个数据集包含超过1.5亿条亚马逊产品的客户评论。数据存储在AWS S3中的snappy压缩Parquet文件中，总大小为49GB（压缩后）。让我们逐步将其插入到ClickHouse中。
 
 :::note
-下面的查询是在**Production**实例的ClickHouse Cloud上执行的。有关更多信息，请参见
+下面的查询是在**生产**实例的ClickHouse Cloud上执行的。有关更多信息，请参见
 ["Playground specifications"](/getting-started/playground#specifications)。
 :::
 
 ## 加载数据集 {#loading-the-dataset}
 
-1. 在不将数据插入ClickHouse的情况下，我们可以原地查询数据。让我们抓取一些行，以便可以查看它们的外观：
+1. 在不将数据插入ClickHouse的情况下，我们可以直接查询它。让我们抓取一些行，以便可以查看它们的样子：
 
 ```sql
 SELECT *
@@ -15,7 +22,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_review
 LIMIT 3
 ```
 
-这些行的外观如下：
+这些行的样子如下：
 
 ```response
 Row 1:
@@ -73,7 +80,7 @@ review_headline:   but overall this case is pretty sturdy and provides good prot
 review_body:       The front piece was a little difficult to secure to the phone at first, but overall this case is pretty sturdy and provides good protection for the phone, which is what I need. I would buy this case again.
 ```
 
-2. 让我们定义一个新的`MergeTree`表，命名为`amazon_reviews`，以将此数据存储在ClickHouse中：
+2. 让我们定义一个新的`MergeTree`表，命名为`amazon_reviews`，以在ClickHouse中存储这些数据：
 
 ```sql
 CREATE DATABASE amazon
@@ -105,7 +112,7 @@ ENGINE = MergeTree
 ORDER BY (review_date, product_category)
 ```
 
-3. 以下`INSERT`命令使用`s3Cluster`表函数，它允许使用集群中的所有节点并行处理多个S3文件。我们还使用通配符插入任何以`https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet`开头的文件：
+3. 以下`INSERT`命令使用`s3Cluster`表函数，该函数允许通过集群中的所有节点并行处理多个S3文件。我们还使用了通配符，以插入任何以`https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet`开头的文件：
 
 ```sql
 INSERT INTO amazon.amazon_reviews SELECT *
@@ -114,17 +121,17 @@ FROM s3Cluster('default',
 ```
 
 :::tip
-在ClickHouse Cloud中，集群的名称为`default`。将`default`更改为您的集群名称……或者如果您没有集群，可以使用`s3`表函数（而不是`s3Cluster`）。
+在ClickHouse Cloud中，集群的名称是`default`。如果没有集群，请将`default`更改为您集群的名称...或者使用`s3`表函数（而不是`s3Cluster`）。
 :::
 
-5. 该查询不会很长——平均每秒约有30万行。在大约5分钟内，您应该看到所有行都已插入：
+5. 该查询不会花费太长时间 - 平均约每秒300,000行。在大约5分钟内，您应该可以看到所有行已插入：
 
 ```sql runnable
 SELECT formatReadableQuantity(count())
 FROM amazon.amazon_reviews
 ```
 
-6. 让我们看看我们的数据使用了多少空间：
+6. 让我们看看我们的数据占用了多少空间：
 
 ```sql runnable
 SELECT
@@ -140,11 +147,11 @@ GROUP BY disk_name
 ORDER BY size DESC
 ```
 
-原始数据约为70G，但在ClickHouse中压缩后占用约30G。
+原始数据大约为70G，但在ClickHouse中压缩后约占30G。
 
 ## 示例查询 {#example-queries}
 
-7. 让我们运行一些查询。以下是数据集中最有帮助的前10条评论：
+7. 让我们运行一些查询。以下是数据集中前10条最有帮助的评论：
 
 ```sql runnable
 SELECT
@@ -156,7 +163,7 @@ LIMIT 10
 ```
 
 :::note
-此查询使用[projection](/data-modeling/projections)以加快性能。
+此查询使用[投影](/data-modeling/projections)来加快性能。
 :::
 
 8. 以下是亚马逊上评论最多的前10种产品：
@@ -171,7 +178,7 @@ ORDER BY 2 DESC
 LIMIT 10;
 ```
 
-9. 以下是每种产品按月的平均评论评分（一个实际的[亚马逊面试问题](https://datalemur.com/questions/sql-avg-review-ratings)！）：
+9. 这是每个产品每月的平均评价评分（一个实际的[亚马逊工作面试问题](https://datalemur.com/questions/sql-avg-review-ratings)！）：
 
 ```sql runnable
 SELECT
@@ -188,7 +195,7 @@ ORDER BY
 LIMIT 20;
 ```
 
-10. 以下是每个产品类别的总投票数。此查询很快，因为`product_category`在主键中：
+10. 以下是每个产品类别的投票总数。该查询执行很快，因为`product_category`在主键中：
 
 ```sql runnable
 SELECT
@@ -199,7 +206,7 @@ GROUP BY product_category
 ORDER BY 1 DESC
 ```
 
-11. 让我们找出在评论中**"awful"**出现频率最高的产品。这是一个庞大的任务——需要解析超过1.51亿个字符串，寻找一个单词：
+11. 让我们找出在评论中出现**“awful”**一词最频繁的产品。这是一项巨大的任务 - 超过1.51亿个字符串需要解析以查找一个单词：
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT
@@ -214,9 +221,9 @@ ORDER BY count DESC
 LIMIT 50;
 ```
 
-注意这样大量数据的查询时间。结果也是一种乐趣的阅读！
+注意如此大量数据的查询时间。结果也很有趣！
 
-12. 我们可以再次运行相同的查询，这次我们在评论中搜索**awesome**：
+12. 我们可以再次运行相同的查询，只不过这次我们在评论中搜索**awesome**：
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT 

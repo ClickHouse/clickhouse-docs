@@ -1,3 +1,7 @@
+---
+'sidebar_label': '选项卡示例'
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
@@ -7,7 +11,7 @@ import CodeBlock from '@theme/CodeBlock';
 <Tabs groupId="deployMethod">
 <TabItem value="serverless" label="ClickHouse Cloud" default>
 
-云端
+云
 
 </TabItem>
 <TabItem value="selfmanaged" label="Self-managed">

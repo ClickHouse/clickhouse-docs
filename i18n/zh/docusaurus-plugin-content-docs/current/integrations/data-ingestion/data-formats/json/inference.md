@@ -1,19 +1,30 @@
+---
+'title': 'JSON 模式推断'
+'slug': '/integrations/data-formats/json/inference'
+'description': '如何使用 JSON 模式推断'
+'keywords':
+- 'json'
+- 'schema'
+- 'inference'
+- 'schema inference'
+---
+
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
-ClickHouse 可以自动确定 JSON 数据的结构。这可以用来直接查询 JSON 数据，例如在磁盘上使用 `clickhouse-local` 或 S3 存储桶中，和/或在将数据加载到 ClickHouse 之前自动创建模式。
+ClickHouse 可以自动确定 JSON 数据的结构。这可以直接用于查询 JSON 数据，例如在磁盘上使用 `clickhouse-local` 或 S3 存储桶，和/或在将数据加载到 ClickHouse 之前自动创建模式。
 
 ## 何时使用类型推断 {#when-to-use-type-inference}
 
-* **一致的结构** - 用于推断类型的数据包含您感兴趣的所有键。类型推断基于对数据的抽样，直到达到 [最大行数](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) 或 [字节数](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)。抽样后的数据，如果有额外的列，将会被忽略，且无法被查询。
-* **一致的类型** - 特定键的数据类型需要兼容，即必须能够自动将一种类型转换为另一种类型。
+* **一致的结构** - 您将要推断类型的数据包含您感兴趣的所有键。类型推断是基于对数据进行采样，直到达到 [最大行数](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) 或 [字节数](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)。在采样之后的数据中，额外的列将被忽略，无法查询。
+* **一致的类型** - 特定键的数据类型需要兼容，即必须能够自动将一种类型强制转换为另一种类型。
 
-如果您的 JSON 更动态，添加了新键并且同一路径可能有多种类型，请参见 [“处理半结构化和动态数据”](/integrations/data-formats/json/inference#working-with-semi-structured-data)。
+如果您有更动态的 JSON，其中新键被添加并且同一路径可能有多种类型，请参见 ["处理半结构化和动态数据"](/integrations/data-formats/json/inference#working-with-semi-structured-data)。
 
 ## 检测类型 {#detecting-types}
 
-以下假设 JSON 结构一致，并且每个路径只有一种类型。
+以下假设 JSON 一致结构且每个路径只有一种类型。
 
-我们之前的示例使用了简单版本的 [Python PyPI 数据集](https://clickpy.clickhouse.com/) 的 `NDJSON` 格式。在本节中，我们探讨了具有嵌套结构的更复杂的数据集——包含 250 万篇学术论文的 [arXiv 数据集](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download)。该数据集中每一行以 `NDJSON` 形式分布，代表发表的学术论文。示例行如下：
+我们之前的示例使用了 `NDJSON` 格式的简单版本 [Python PyPI 数据集](https://clickpy.clickhouse.com/)。在本节中，我们探讨一个具有嵌套结构的更复杂数据集 - [arXiv 数据集](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download)，包含 250 万篇学术论文。此数据集中每一行以 `NDJSON` 形式分布，代表一篇已发布的学术论文。示例行如下所示：
 
 ```json
 {
@@ -49,17 +60,17 @@ ClickHouse 可以自动确定 JSON 数据的结构。这可以用来直接查询
 }
 ```
 
-这些数据需要比前面的示例更复杂的模式。我们在下面概述定义该模式的过程，引入复杂的类型，如 `Tuple` 和 `Array`。
+该数据需要比前面的示例更复杂的模式。我们在下面概述定义此模式的过程，介绍了 `Tuple` 和 `Array` 等复杂类型。
 
-该数据集存储在公共 S3 存储桶中，路径为 `s3://datasets-documentation/arxiv/arxiv.json.gz`。
+此数据集存储在公共 S3 存储桶中，位于 `s3://datasets-documentation/arxiv/arxiv.json.gz`。
 
-您可以看到，上述数据集包含嵌套的 JSON 对象。虽然用户应该起草和版本化他们的模式，但推断允许从数据中推断出类型。这允许自动生成模式 DDL，避免手动构建，加速开发过程。
+您可以看到上面的数据集包含嵌套的 JSON 对象。虽然用户应该起草并版本化他们的模式，但推断允许从数据中推断类型。这使得可以自动生成模式 DDL，避免手动构建并加速开发过程。
 
 :::note 自动格式检测
-除了检测模式，JSON 模式推断将自动根据文件扩展名和内容推断数据的格式。上述文件被自动检测为 NDJSON 格式。
+除了检测模式外，JSON 模式推断将自动根据文件扩展名和内容推断数据格式。上述文件由于自动检测被识别为 NDJSON。
 :::
 
-使用 [s3 函数](/sql-reference/table-functions/s3) 结合 `DESCRIBE` 命令可以显示将要推断的类型。
+使用 [s3 function](/sql-reference/table-functions/s3) 和 `DESCRIBE` 命令显示将被推断的类型。
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.json.gz')
@@ -83,21 +94,21 @@ SETTINGS describe_compact_output = 1
 │ authors_parsed │ Array(Array(Nullable(String)))                                          │
 └────────────────┴─────────────────────────────────────────────────────────────────────────┘
 ```
-:::note 避免 null
-您可以看到许多列被检测为 Nullable。我们 [不建议在不绝对需要时使用 Nullable](/sql-reference/data-types/nullable#storage-features) 类型。您可以使用 [schema_inference_make_columns_nullable](/operations/settings/formats#schema_inference_make_columns_nullable) 来控制何时应用 Nullable 的行为。
+:::note 避免 Null
+您会看到，很多列被检测为 Nullable。我们 [不建议在不绝对需要时使用 Nullable](/sql-reference/data-types/nullable#storage-features) 类型。您可以使用 [schema_inference_make_columns_nullable](/operations/settings/formats#schema_inference_make_columns_nullable) 来控制何时应用 Nullable 的行为。
 :::
 
-我们可以看到大多数列已自动检测为 `String`，`update_date` 列被正确检测为 `Date`。`versions` 列被创建为 `Array(Tuple(created String, version String))` 来存储对象的列表，而 `authors_parsed` 被定义为 `Array(Array(String))` 用于嵌套数组。
+我们可以看到大多数列已自动检测为 `String`，而 `update_date` 列被正确检测为 `Date`。 `versions` 列已创建为 `Array(Tuple(created String, version String))` 以存储对象列表，`authors_parsed` 被定义为 `Array(Array(String))` 用于嵌套数组。
 
 :::note 控制类型检测
-日期和日期时间的自动检测可以通过设置 [`input_format_try_infer_dates`](/operations/settings/formats#input_format_try_infer_dates) 和 [`input_format_try_infer_datetimes`](/operations/settings/formats#input_format_try_infer_datetimes) 来控制（默认情况下均已启用）。将对象推断为元组的推断由设置 [`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects) 控制。您可以在 [这里](/interfaces/schema-inference#text-formats) 找到其他控制 JSON 模式推断的设置，例如数字的自动检测。
+日期和日期时间的自动检测可以通过设置 [`input_format_try_infer_dates`](/operations/settings/formats#input_format_try_infer_dates) 和 [`input_format_try_infer_datetimes`](/operations/settings/formats#input_format_try_infer_datetimes) 分别进行控制（两者默认启用）。对对象作为元组推断的控制由设置 [`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects) 控制。其他控制 JSON 模式推断的设置，如数字的自动检测，可以在 [此处]( /interfaces/schema-inference#text-formats) 找到。
 :::
 
 ## 查询 JSON {#querying-json}
 
-以下假设 JSON 结构一致，并且每个路径只有一种类型。
+以下假设 JSON 是一致结构并且每个路径只有一种类型。
 
-我们可以依赖模式推断来就地查询 JSON 数据。下面，我们找出每年最高作者，利用日期和数组的自动检测事实。
+我们可以依赖模式推断直接查询 JSON 数据。下面，我们找出每年的顶级作者，利用日期和数组的自动检测。
 
 ```sql
 SELECT
@@ -137,11 +148,11 @@ LIMIT 1 BY year
 18 rows in set. Elapsed: 20.172 sec. Processed 2.52 million rows, 1.39 GB (124.72 thousand rows/s., 68.76 MB/s.)
 ```
 
-模式推断允许我们查询 JSON 文件而无需指定模式，加速临时数据分析任务。
+模式推断使我们能够在无需指定模式的情况下查询 JSON 文件，从而加速临时数据分析任务。
 
 ## 创建表 {#creating-tables}
 
-我们可以依赖模式推断来为表创建模式。以下 `CREATE AS EMPTY` 命令会导致推断表的 DDL 并创建表。这不会加载任何数据：
+我们可以依赖模式推断为表创建模式。以下的 `CREATE AS EMPTY` 命令导致推断表的 DDL 并创建表。这不会加载任何数据：
 
 ```sql
 CREATE TABLE arxiv
@@ -152,7 +163,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.j
 SETTINGS schema_inference_make_columns_nullable = 0
 ```
 
-为了确认表模式，我们使用 `SHOW CREATE TABLE` 命令：
+要确认表模式，我们使用 `SHOW CREATE TABLE` 命令：
 
 ```sql
 SHOW CREATE TABLE arxiv
@@ -178,11 +189,11 @@ ENGINE = MergeTree
 ORDER BY update_date
 ```
 
-上述数据是该数据的正确模式。模式推断基于对数据的抽样，逐行读取数据。根据格式提取列值，使用递归解析器和启发式方法确定每个值的类型。模式推断中从数据读取的最大行数和字节数分别由设置 [`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) （默认 25000 行）和 [`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference) （默认 32MB）控制。如果检测不正确，用户可以提供提示，如 [这里](/operations/settings/formats#schema_inference_make_columns_nullable) 所述。
+上述即为该数据的正确模式。模式推断基于对数据的采样，逐行读取数据。根据格式提取列值，使用递归解析器和启发式方法来确定每个值的类型。在模式推断中读取的最大行数和字节由设置 [`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) （默认 25000）和 [`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference) （默认 32MB）控制。如果检测不正确，用户可以根据 [此处]( /operations/settings/formats#schema_inference_make_columns_nullable) 的描述提供提示。
 
-### 从片段创建表 {#creating-tables-from-snippets}
+### 从代码片段创建表 {#creating-tables-from-snippets}
 
-上述示例使用 S3 上的文件来创建表模式。用户可能希望从单行片段创建模式。这可以通过使用 [format](/sql-reference/table-functions/format) 函数来实现，如下所示：
+上述示例使用 S3 上的文件创建表模式。用户可以希望从单行代码片段创建模式。这可以通过使用 [format](/sql-reference/table-functions/format) 函数实现，如下所示：
 
 ```sql
 CREATE TABLE arxiv
@@ -215,9 +226,9 @@ ORDER BY update_date
 
 ## 加载 JSON 数据 {#loading-json-data}
 
-以下假设 JSON 结构一致，并且每个路径只有一种类型。
+以下假设 JSON 是一致结构并且每个路径只有一种类型。
 
-前面的命令创建了一个可以加载数据的表。您现在可以使用以下 `INSERT INTO SELECT` 将数据插入表中：
+之前的命令创建了一个可以加载数据的表。您现在可以使用以下的 `INSERT INTO SELECT` 将数据插入到您的表中：
 
 ```sql
 INSERT INTO arxiv SELECT *
@@ -227,9 +238,9 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.j
 Peak memory usage: 870.67 MiB.
 ```
 
-有关从其他源（例如文件）加载数据的示例，请参见 [这里](/sql-reference/statements/insert-into)。
+有关从其他源（例如文件）加载数据的示例，请参见 [此处]( /sql-reference/statements/insert-into)。
 
-加载后，我们可以查询数据，选择使用格式 `PrettyJSONEachRow` 来显示行的原始结构：
+数据加载后，我们可以查询数据，选择使用格式 `PrettyJSONEachRow` 来显示行的原始结构：
 
 ```sql
 SELECT *
@@ -269,19 +280,19 @@ FORMAT PrettyJSONEachRow
 
 ## 处理错误 {#handling-errors}
 
-有时候，您可能会遇到坏数据。例如，特定列没有正确的类型或格式不正确的 JSON 对象。为此，您可以使用设置 [`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num) 和 [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio) 来允许忽略某些行，如果数据触发插入错误。此外，可以提供 [提示](/operations/settings/formats#schema_inference_hints) 来辅助推断。
+有时，您可能会遇到坏数据。例如，特定列没有正确的类型或 JSON 对象格式不正确。为此，您可以使用设置 [`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num) 和 [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio) 来允许某些行被忽略，如果数据触发插入错误。此外，可以提供 [提示](/operations/settings/formats#schema_inference_hints) 来帮助推断。
 
 ## 处理半结构化和动态数据 {#working-with-semi-structured-data}
 
 <PrivatePreviewBadge/>
 
-我们之前的示例使用了具有已知键名和类型的静态 JSON。这往往并非如此——可以添加键或更改它们的类型。这在观察数据等使用场景中很常见。
+我们之前的示例使用了具有静态且众所周知的键名和类型的 JSON。情况往往并非如此 - 键可以被添加或其类型可以更改。这在可观察性数据等用例中很常见。
 
-ClickHouse 通过专用的 [`JSON`](/sql-reference/data-types/newjson) 类型来处理这个问题。
+ClickHouse 通过专用的 [`JSON`](/sql-reference/data-types/newjson) 类型来处理此问题。
 
-如果您知道您的 JSON 非常动态，具有许多唯一键和相同键的多种类型，我们建议不使用与 `JSONEachRow` 的模式推断来尝试为每个键推断列——即使数据以换行分隔的 JSON 格式存在。
+如果您知道您的 JSON 动态性很高，具有许多唯一键和相同键的多种类型，我们建议不要使用 `JSONEachRow` 进行模式推断以尝试为每个键推断列 - 即使数据是换行分隔的 JSON 格式。
 
-考虑以下来自上述 [Python PyPI 数据集](https://clickpy.clickhouse.com/) 扩展版本的示例。这里，我们添加了一个任意的 `tags` 列，包含随机键值对。
+考虑以下从扩展版本上面的 [Python PyPI 数据集](https://clickpy.clickhouse.com/) 数据集的示例。在这里，我们添加了一个任意的 `tags` 列，其中包含随机键值对。
 
 ```json
 {
@@ -300,7 +311,7 @@ ClickHouse 通过专用的 [`JSON`](/sql-reference/data-types/newjson) 类型来
 }
 ```
 
-这些数据的样本以换行分隔的 JSON 格式公开可用。如果我们尝试对该文件进行模式推断，您会发现性能较差，并且响应极其冗长：
+这部分数据以换行分隔的 JSON 格式公开提供。如果我们尝试对该文件进行模式推断，您会发现性能较差，返回极为冗长的响应：
 
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample_rows.json.gz')
@@ -310,11 +321,11 @@ DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi
 9 rows in set. Elapsed: 127.066 sec.
 ```
 
-此问题的主要原因是推断使用了 `JSONEachRow` 格式。这试图为 JSON 中的每个键推断 **一个列类型**——有效地试图将静态模式应用于数据而不使用 [`JSON`](/sql-reference/data-types/newjson) 类型。
+这里的主要问题是使用 `JSONEachRow` 格式进行推断。这试图推断 **JSON 中每个键的列类型** - 实际上试图对数据应用静态模式，而没有使用 [`JSON`](/sql-reference/data-types/newjson) 类型。
 
-由于拥有数以千计的唯一列，这种推断方法效率很低。作为替代，用户可以使用 `JSONAsObject` 格式。
+对于成千上万的唯一列，这种推断方法速度很慢。作为替代，用户可以使用 `JSONAsObject` 格式。
 
-`JSONAsObject` 将整个输入视为单个 JSON 对象，并将其存储在单列类型为 [`JSON`](/sql-reference/data-types/newjson) 中，使其更适合于高度动态或嵌套的 JSON 负载。
+`JSONAsObject` 将整个输入视为一个单独的 JSON 对象，并将其存储在单个类型为 [`JSON`](/sql-reference/data-types/newjson) 的列中，使其更适合处理高度动态或嵌套的 JSON 负载。
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample_rows.json.gz', 'JSONAsObject')
@@ -327,14 +338,14 @@ SETTINGS describe_compact_output = 1
 1 row in set. Elapsed: 0.005 sec.
 ```
 
-这种格式在字段具有多种类型且无法调和的情况下也至关重要。例如，考虑以下换行分隔的 JSON 的 `sample.json` 文件：
+在列具有无法调和的多种类型的情况下，此格式也是必不可少的。例如，考虑一个 `sample.json` 文件，其换行分隔的 JSON 内容如下：
 
 ```json
 {"a":1}
 {"a":"22"}
 ```
 
-在本例中，ClickHouse 能够强制类型冲突并将列 `a` 解析为 `Nullable(String)`。
+在这种情况下，ClickHouse 能够强制类型冲突，并将列 `a` 解析为 `Nullable(String)`。
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/sample.json')
@@ -348,17 +359,17 @@ SETTINGS describe_compact_output = 1
 ```
 
 :::note 类型强制转换
-此类型强制转换可以通过多个设置进行控制。上述示例依赖于设置 [`input_format_json_read_numbers_as_strings`](/operations/settings/formats#input_format_json_read_numbers_as_strings)。
+这种类型的强制转换可以通过多个设置来控制。上述示例依赖设置 [`input_format_json_read_numbers_as_strings`](/operations/settings/formats#input_format_json_read_numbers_as_strings)。
 :::
 
-然而，有些类型是不兼容的。考虑以下示例：
+但是，一些类型是互不兼容的。考虑以下示例：
 
 ```json
 {"a":1}
 {"a":{"b":2}}
 ```
 
-在这种情况下，任何形式的类型转换都是不可能的。因此，`DESCRIBE` 命令将失败：
+在这种情况下，这里任何形式的类型转换都是不可能的。因此 `DESCRIBE` 命令失败：
 
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json')
@@ -370,7 +381,7 @@ Code: 636. DB::Exception: Received from sql-clickhouse.clickhouse.com:9440. DB::
 Code: 53. DB::Exception: Automatically defined type Tuple(b Int64) for column 'a' in row 1 differs from type defined by previous rows: Int64. You can specify the type for this column using setting schema_inference_hints.
 ```
 
-在这种情况下，`JSONAsObject` 将每行视为单个 [`JSON`](/sql-reference/data-types/newjson) 类型（支持相同列具有多种类型）。这是至关重要的：
+在这种情况下，`JSONAsObject` 将每一行视为一个单独的 [`JSON`](/sql-reference/data-types/newjson) 类型（该类型支持同一列具有多种类型）。这一点至关重要：
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json', JSONAsObject)
@@ -385,4 +396,4 @@ SETTINGS enable_json_type = 1, describe_compact_output = 1
 
 ## 进一步阅读 {#further-reading}
 
-要了解更多关于数据类型推断的信息，您可以参考 [此](/interfaces/schema-inference) 文档页面。
+欲了解有关数据类型推断的更多信息，您可以参考 [此]( /interfaces/schema-inference) 文档页面。

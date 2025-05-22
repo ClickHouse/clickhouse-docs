@@ -1,3 +1,10 @@
+---
+'description': '计算总和。仅适用于数字。'
+'sidebar_position': 195
+'slug': '/sql-reference/aggregate-functions/reference/sum'
+'title': 'sum'
+---
+
 
 # sum
 
@@ -10,15 +17,15 @@ sum(num)
 ```
 
 **参数**
-- `num`: 数值列。[(U)Int*](../../data-types/int-uint.md)，[Float*](../../data-types/float.md)，[Decimal*](../../data-types/decimal.md)。
+- `num`: 数值列。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md)。
 
 **返回值**
 
-- 值的总和。[(U)Int*](../../data-types/int-uint.md)，[Float*](../../data-types/float.md)，[Decimal*](../../data-types/decimal.md)。
+- 值的总和。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md)。
 
 **示例**
 
-首先我们创建一个表 `employees` 并插入一些虚构的员工数据。
+首先，我们创建一个表 `employees` 并向其中插入一些虚构的员工数据。
 
 查询：
 
@@ -49,7 +56,6 @@ SELECT sum(salary) FROM employees;
 ```
 
 结果：
-
 
 ```response
    ┌─sum(salary)─┐

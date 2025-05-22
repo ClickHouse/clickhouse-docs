@@ -1,54 +1,58 @@
 ---
-'title': '如何使用 chDB 查询 Pandas 数据框'
+'title': '如何使用 chDB 查询 Pandas DataFrames'
 'sidebar_label': '查询 Pandas'
 'slug': '/chdb/guides/pandas'
-'description': '了解如何使用 chDB 查询 Pandas 数据框'
+'description': '了解如何使用 chDB 查询 Pandas DataFrames'
 'keywords':
 - 'chdb'
 - 'pandas'
 ---
 
-[Pandas](https://pandas.pydata.org/) 是一个流行的Python数据处理和分析库。在 chDB 的版本2中，我们改进了查询 Pandas DataFrames 的性能，并引入了 `Python` 表函数。在本指南中，我们将学习如何使用 `Python` 表函数查询 Pandas。
+[Pandas](https://pandas.pydata.org/) 是一个流行的 Python 数据处理和分析库。
+在 chDB 的版本 2 中，我们优化了查询 Pandas DataFrames 的性能，并引入了 `Python` 表函数。
+在本指南中，我们将学习如何使用 `Python` 表函数查询 Pandas。
 
-## 设置 {#setup}
+## Setup {#setup}
 
-我们首先创建一个虚拟环境：
+首先，我们创建一个虚拟环境：
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-然后我们将安装 chDB。确保您使用的是版本 2.0.2 或更高版本：
+现在我们将安装 chDB。
+确保您安装的版本是 2.0.2 或更高版本：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-现在我们将安装 Pandas 和其他一些库：
+接下来，我们将安装 Pandas 和其他几个库：
 
 ```bash
 pip install pandas requests ipython
 ```
 
-我们将使用 `ipython` 在本指南的其余部分运行命令，您可以通过运行以下命令启动它：
+我们将使用 `ipython` 来运行指南中的命令，您可以通过运行以下命令来启动：
 
 ```bash
 ipython
 ```
 
-您还可以在 Python 脚本或您喜欢的笔记本中使用代码。
+您也可以在 Python 脚本或您喜欢的笔记本中使用这些代码。
 
-## 从 URL 创建 Pandas DataFrame {#creating-a-pandas-dataframe-from-a-url}
+## Creating a Pandas DataFrame from a URL {#creating-a-pandas-dataframe-from-a-url}
 
-我们将从 [StatsBomb GitHub 仓库](https://github.com/statsbomb/open-data/tree/master?tab=readme-ov-file) 查询一些数据。首先，让我们导入 requests 和 pandas：
+我们将从 [StatsBomb GitHub repository](https://github.com/statsbomb/open-data/tree/master?tab=readme-ov-file) 查询一些数据。
+首先，让我们导入 requests 和 pandas：
 
 ```python
 import requests
 import pandas as pd
 ```
 
-然后，我们将加载其中一个比赛 JSON 文件到一个 DataFrame 中：
+然后，我们将一个比赛的 JSON 文件加载到 DataFrame 中：
 
 ```python
 response = requests.get(
@@ -109,7 +113,7 @@ referee_country_name                                                       Brazi
 Name: 0, dtype: object
 ```
 
-接下来，我们将加载其中一个事件 JSON 文件，并向该 DataFrame 添加一个名为 `match_id` 的列：
+接下来，我们将加载一个事件的 JSON 文件，并向该 DataFrame 添加一个名为 `match_id` 的列：
 
 ```python
 response = requests.get(
@@ -119,7 +123,7 @@ events_df = pd.json_normalize(response.json(), sep='_')
 events_df["match_id"] = 3943077
 ```
 
-然后，再次让我们查看第一行：
+再来看看第一行的数据：
 
 ```python
 with pd.option_context("display.max_rows", None):
@@ -151,9 +155,10 @@ match_id                                                          3943077
 Name: 0, dtype: object
 ```
 
-## 查询 Pandas DataFrames {#querying-pandas-dataframes}
+## Querying Pandas DataFrames {#querying-pandas-dataframes}
 
-接下来，让我们看看如何使用 chDB 查询这些 DataFrames。我们将导入库：
+接下来，让我们看看如何使用 chDB 查询这些 DataFrames。
+我们将导入库：
 
 ```python
 import chdb
@@ -166,7 +171,7 @@ SELECT *
 FROM Python(<name-of-variable>)
 ```
 
-因此，如果我们想要列出 `matches_df` 中的列，我们可以写如下内容：
+因此，如果我们想列出 `matches_df` 中的列，可以写如下内容：
 
 ```python
 chdb.query("""
@@ -221,7 +226,7 @@ SETTINGS describe_compact_output=1
 41            referee_country_name  String
 ```
 
-然后，我们可以通过写以下查询来找出哪些裁判执裁过多于一场比赛：
+然后，我们可以通过编写以下查询来找出哪些裁判主裁了超过一场比赛：
 
 ```python
 chdb.query("""
@@ -247,7 +252,7 @@ ORDER BY count DESC
 9                  Raphael Claus      2
 ```
 
-现在，让我们探索 `events_df`。
+现在，让我们来探索一下 `events_df`。
 
 ```python
 chdb.query("""
@@ -274,9 +279,10 @@ LIMIT 10
 9  Carlos Eccehomo Cuesta Figueroa       50
 ```
 
-## 连接 Pandas DataFrames {#joining-pandas-dataframes}
+## Joining Pandas DataFrames {#joining-pandas-dataframes}
 
-我们还可以在查询中连接 DataFrames。例如，要获取比赛概览，我们可以写以下查询：
+我们还可以在查询中将 DataFrames 连接在一起。
+例如，为了获取比赛概况，我们可以编写以下查询：
 
 ```python
 chdb.query("""
@@ -304,9 +310,10 @@ away_shots                         19
 Name: 0, dtype: object
 ```
 
-## 从 DataFrame 填充表 {#populating-a-table-from-a-dataframe}
+## Populating a table from a DataFrame {#populating-a-table-from-a-dataframe}
 
-我们还可以从 DataFrames 创建并填充 ClickHouse 表。如果我们想在 chDB 中创建一个表，我们需要使用有状态会话 API。
+我们还可以从 DataFrames 创建并填充 ClickHouse 表。
+如果我们想在 chDB 中创建一个表，则需要使用有状态会话 API。
 
 让我们导入会话模块：
 
@@ -336,7 +343,7 @@ FROM Python(events_df)
 """)
 ```
 
-然后我们可以运行返回顶级传球接收者的查询：
+然后，我们可以运行返回顶级传接者的查询：
 
 ```python
 sess.query("""
@@ -363,9 +370,9 @@ LIMIT 10
 9  Carlos Eccehomo Cuesta Figueroa       50
 ```
 
-## 连接 Pandas DataFrame 和表 {#joining-a-pandas-dataframe-and-table}
+## Joining a Pandas DataFrame and table {#joining-a-pandas-dataframe-and-table}
 
-最后，我们还可以更新我们的连接查询，将 `matches_df` DataFrame 与 `statsbomb.events` 表连接：
+最后，我们还可以更新我们的连接查询，将 `matches_df` DataFrame 与 `statsbomb.events` 表连接起来：
 
 ```python
 sess.query("""

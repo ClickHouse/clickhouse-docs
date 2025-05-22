@@ -1,8 +1,9 @@
 ---
-{}
+null
+...
 ---
 
-[//]: # (此文件包含在 FAQ > 故障排除中)
+[//]: # (This file is included in FAQ > Troubleshooting)
 
 - [安装](#troubleshooting-installation-errors)
 - [连接到服务器](#troubleshooting-accepts-no-connections)
@@ -14,17 +15,17 @@
 ### 您无法通过 Apt-get 从 ClickHouse 仓库获取 Deb 包 {#you-cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
 
 - 检查防火墙设置。
-- 如果出于某种原因无法访问仓库，请按照 [安装指南](../getting-started/install.md) 中的说明下载软件包并使用 `sudo dpkg -i <packages>` 命令手动安装。您还需要 `tzdata` 包。
+- 如果由于某种原因无法访问该仓库，请按照 [安装指南](../getting-started/install.md) 中的描述下载包，并使用 `sudo dpkg -i <packages>` 命令手动安装它们。您还需要 `tzdata` 包。
 
 ### 您无法通过 Apt-get 更新 ClickHouse 仓库中的 Deb 包 {#you-cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
 
-- 当 GPG 密钥发生更改时，可能会出现此问题。
+- 该问题可能发生在 GPG 密钥更改时。
 
 请使用 [设置](../getting-started/install.md#setup-the-debian-repository) 页面中的手册更新仓库配置。
 
-### 您在执行 `apt-get update` 时收到不同的警告 {#you-get-different-warnings-with-apt-get-update}
+### 您在使用 `apt-get update` 时收到不同的警告 {#you-get-different-warnings-with-apt-get-update}
 
-- 完整的警告信息如下：
+- 完成的警告信息为以下之一：
 
 ```bash
 N: Skipping acquire of configured file 'main/binary-i386/Packages' as repository 'https://packages.clickhouse.com/deb stable InRelease' doesn't support architecture 'i386'
@@ -56,7 +57,7 @@ sudo apt-get autoclean
 
 ### 您无法通过 Yum 获取软件包，因为签名错误 {#you-cant-get-packages-with-yum-because-of-wrong-signature}
 
-可能的问题：缓存错误，可能在 2022-09 更新 GPG 密钥后已损坏。
+可能的问题：缓存不正确，可能在 2022-09 更新 GPG 密钥后损坏。
 
 解决方案是清除 Yum 的缓存和库目录：
 
@@ -65,11 +66,11 @@ sudo find /var/lib/yum/repos/ /var/cache/yum/ -name 'clickhouse-*' -type d -exec
 sudo rm -f /etc/yum.repos.d/clickhouse.repo
 ```
 
-之后请参阅 [安装指南](../getting-started/install.md#from-rpm-packages)
+之后，请遵循 [安装指南](../getting-started/install.md#from-rpm-packages)
 
 ### 您无法运行 Docker 容器 {#you-cant-run-docker-container}
 
-您正在运行简单的 `docker run clickhouse/clickhouse-server` 命令，但它崩溃，出现类似以下的堆栈跟踪：
+您执行简单的 `docker run clickhouse/clickhouse-server`，并出现类似于以下的堆栈跟踪崩溃：
 
 ```bash
 $ docker run -it clickhouse/clickhouse-server
@@ -92,18 +93,18 @@ Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread
  (version 24.10.1.2812 (official build))
 ```
 
-原因是 Docker Daemon 的版本低于 `20.10.10`。修复方法是升级，或运行 `docker run [--privileged | --security-opt seccomp=unconfined]`。后者具有安全隐患。
+原因是 Docker 守护进程版本低于 `20.10.10`。解决方法是升级它，或者运行 `docker run [--privileged | --security-opt seccomp=unconfined]`。后者具有安全隐患。
 
 ## 连接到服务器 {#troubleshooting-accepts-no-connections}
 
 可能的问题：
 
 - 服务器未运行。
-- 意外的或错误的配置参数。
+- 意外或错误的配置参数。
 
 ### 服务器未运行 {#server-is-not-running}
 
-**检查服务器是否在运行**
+**检查服务器是否正在运行**
 
 命令：
 
@@ -121,24 +122,24 @@ $ sudo service clickhouse-server start
 
 `clickhouse-server` 的主日志默认位于 `/var/log/clickhouse-server/clickhouse-server.log`。
 
-如果服务器成功启动，您应该会看到以下字符串：
+如果服务器成功启动，您应该看到以下字符串：
 
 - `<Information> Application: starting up.` — 服务器已启动。
 - `<Information> Application: Ready for connections.` — 服务器正在运行并准备接受连接。
 
-如果 `clickhouse-server` 启动失败，出现配置错误，您应该会看到 `<Error>` 字符串和错误描述。例如：
+如果 `clickhouse-server` 因配置错误启动失败，您应看到带有错误描述的 `<Error>` 字符串。例如：
 
 ```text
 2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
-如果您在文件的末尾没有看到错误，请从字符串开始查看整个文件：
+如果您在文件末尾未看到错误，请从以下字符串开始查看整个文件：
 
 ```text
 <Information> Application: starting up.
 ```
 
-如果您尝试在服务器上启动第二个 `clickhouse-server` 实例，您会看到以下日志：
+如果您尝试在服务器上启动第二个 `clickhouse-server` 实例，您将看到以下日志：
 
 ```text
 2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Starting ClickHouse 19.1.0 with revision 54413
@@ -156,7 +157,7 @@ Revision: 54413
 
 **查看 system.d 日志**
 
-如果在 `clickhouse-server` 日志中未找到任何有用的信息或者没有日志，您可以使用以下命令查看 `system.d` 日志：
+如果在 `clickhouse-server` 日志中找不到任何有用的信息，或者没有任何日志，您可以使用以下命令查看 `system.d` 日志：
 
 ```bash
 $ sudo journalctl -u clickhouse-server
@@ -168,7 +169,7 @@ $ sudo journalctl -u clickhouse-server
 $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
 ```
 
-此命令以交互应用程序的形式启动服务器，具有自动启动脚本的标准参数。在此模式下，`clickhouse-server` 会在控制台打印所有事件消息。
+此命令以交互应用程序的标准参数启动服务器。在此模式下，`clickhouse-server` 会将所有事件消息打印到控制台。
 
 ### 配置参数 {#configuration-parameters}
 
@@ -176,13 +177,13 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
 
 - Docker 设置。
 
-    如果在 IPv6 网络中运行 ClickHouse，请确保设置了 `network=host`。
+    如果您在 IPv6 网络中的 Docker 中运行 ClickHouse，请确保设置 `network=host`。
 
 - 端点设置。
 
     检查 [listen_host](../operations/server-configuration-parameters/settings.md#listen_host) 和 [tcp_port](../operations/server-configuration-parameters/settings.md#tcp_port) 设置。
 
-    ClickHouse 服务器默认只接受本地主机连接。
+    ClickHouse 服务器默认仅接受本地连接。
 
 - HTTP 协议设置。
 
@@ -193,9 +194,9 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
     检查：
 
     - [tcp_port_secure](../operations/server-configuration-parameters/settings.md#tcp_port_secure) 设置。
-    - [SSL 证书](../operations/server-configuration-parameters/settings.md#openssl) 设置。
+    - [SSL 证书](../operations/server-configuration-parameters/settings.md#openssl) 的设置。
 
-    连接时使用正确的参数。例如，`clickhouse_client` 中使用 `port_secure` 参数。
+    连接时使用适当的参数。例如，在使用 `clickhouse_client` 时使用 `port_secure` 参数。
 
 - 用户设置。
 
@@ -203,19 +204,19 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
 
 ## 查询处理 {#troubleshooting-does-not-process-queries}
 
-如果 ClickHouse 无法处理查询，它会向客户端发送错误描述。在 `clickhouse-client` 中，您将在控制台中看到错误描述。如果您使用 HTTP 接口，ClickHouse 会在响应正文中发送错误描述。例如：
+如果 ClickHouse 无法处理查询，它会向客户端发送错误描述。在 `clickhouse-client` 中，您将在控制台中收到错误描述。如果您使用 HTTP 接口，ClickHouse 会在响应体中发送错误描述。例如：
 
 ```bash
 $ curl 'http://localhost:8123/' --data-binary "SELECT a"
 Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that there are no tables (FROM clause) in your query, context: required_names: 'a' source_tables: table_aliases: private_aliases: column_aliases: public_columns: 'a' masked_columns: array_join_columns: source_columns: , e.what() = DB::Exception
 ```
 
-如果您以 `stack-trace` 参数启动 `clickhouse-client`，ClickHouse 将返回服务器的堆栈跟踪及错误描述。
+如果您以 `stack-trace` 参数启动 `clickhouse-client`，ClickHouse 会返回带有错误描述的服务器堆栈跟踪。
 
-您可能会看到关于连接断开的消息。在这种情况下，您可以重复查询。如果每次执行查询时连接都断开，请检查服务器日志中的错误。
+您可能会看到有关连接中断的消息。在这种情况下，您可以重复查询。如果每次执行查询时连接都会中断，请检查服务器日志中的错误。
 
 ## 查询处理效率 {#troubleshooting-too-slow}
 
-如果您发现 ClickHouse 的工作过于缓慢，您需要对服务器资源和网络进行负载分析，以优化查询。
+如果您发现 ClickHouse 的工作速度太慢，您需要分析服务器资源和网络的负载以优化您的查询。
 
-您可以使用 clickhouse-benchmark 实用程序来分析查询。它显示每秒处理的查询数量、每秒处理的行数和查询处理时间的百分位数。
+您可以使用 clickhouse-benchmark 工具来分析查询。它显示每秒处理的查询数量、每秒处理的行数以及查询处理时间的百分位数。

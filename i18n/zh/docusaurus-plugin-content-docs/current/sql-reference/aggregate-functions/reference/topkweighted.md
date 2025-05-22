@@ -1,7 +1,14 @@
+---
+'description': '返回指定列中大约最频繁值的数组。结果数组按值的近似频率降序排序（不是按值本身排序）。此外，值的权重也被考虑在内。'
+'sidebar_position': 203
+'slug': '/sql-reference/aggregate-functions/reference/topkweighted'
+'title': 'topKWeighted'
+---
+
 
 # topKWeighted
 
-返回指定列中大约最常见值的数组。结果数组按值的近似频率降序排列（而不是按值本身）。此外，还考虑值的权重。
+返回指定列中大约最频繁值的数组。结果数组按值的近似频率降序排序（而不是按值本身排序）。此外，还考虑了值的权重。
 
 **语法**
 
@@ -20,7 +27,7 @@ topKWeighted(N, load_factor, 'counts')(column, weight)
 **参数**
 
 - `column` — 值。
-- `weight` — 权重。每个值在频率计算中都按 `weight` 倍计算。 [UInt64](../../../sql-reference/data-types/int-uint.md)。
+- `weight` — 权重。每个值在频率计算中记为 `weight` 次。[UInt64](../../../sql-reference/data-types/int-uint.md)。
 
 **返回值**
 
@@ -58,7 +65,7 @@ FROM VALUES('k Char, w UInt64', ('y', 1), ('y', 1), ('x', 5), ('y', 1), ('z', 10
 └─────────────────────────────────────┘
 ```
 
-**另见**
+**另请参阅**
 
 - [topK](../../../sql-reference/aggregate-functions/reference/topk.md)
 - [approx_top_k](../../../sql-reference/aggregate-functions/reference/approxtopk.md)

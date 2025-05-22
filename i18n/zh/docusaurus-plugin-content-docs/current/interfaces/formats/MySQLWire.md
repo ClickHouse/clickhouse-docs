@@ -1,5 +1,5 @@
 ---
-'description': 'MySQLWire格式的文档'
+'description': 'MySQLWire 格式的文档'
 'keywords':
 - 'MySQLWire'
 'slug': '/interfaces/formats/MySQLWire'

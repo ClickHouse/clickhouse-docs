@@ -11,15 +11,17 @@
 ## 概述 {#overview}
 
 :::note
-基于 XML 的设置配置文件和 [配置文件](/operations/configuration-files) 当前不支持 ClickHouse Cloud。要为你的 ClickHouse Cloud 服务指定设置，你必须使用 [SQL 驱动的设置配置文件](/operations/access-rights#settings-profiles-management)。
+基于 XML 的设置配置文件和 [配置文件](/operations/configuration-files) 当前不 
+支持 ClickHouse Cloud。要为你的 ClickHouse Cloud 
+服务指定设置，你必须使用 [SQL 驱动的设置配置文件](/operations/access-rights#settings-profiles-management)。
 :::
 
-ClickHouse 设置主要分为两大类：
+ClickHouse 的设置主要分为两个组：
 
-- 全球服务器设置
+- 全局服务器设置
 - 会话设置
 
-两者之间的主要区别是，全球服务器设置适用于 ClickHouse 服务器的全局，而会话设置适用于用户会话或甚至单个查询。
+两者的主要区别在于，全局服务器设置适用于 ClickHouse 服务器的所有实例，而会话设置则适用于用户会话或甚至单个查询。
 
 ## 查看非默认设置 {#see-non-default-settings}
 
@@ -29,7 +31,7 @@ ClickHouse 设置主要分为两大类：
 SELECT name, value FROM system.settings WHERE changed
 ```
 
-如果没有设置被更改为非默认值，则 ClickHouse 将不会返回任何内容。
+如果没有设置从默认值更改，ClickHouse 将不返回任何内容。
 
 要检查特定设置的值，你可以在查询中指定该设置的 `name`：
 
@@ -37,7 +39,7 @@ SELECT name, value FROM system.settings WHERE changed
 SELECT name, value FROM system.settings WHERE name = 'max_threads'
 ```
 
-这将返回类似于以下内容的结果：
+这将返回类似以下内容：
 
 ```response
 ┌─name────────┬─value─────┐
@@ -49,5 +51,7 @@ SELECT name, value FROM system.settings WHERE name = 'max_threads'
 
 ## 进一步阅读 {#further-reading}
 
-- 查看 [全球服务器设置](/operations/server-configuration-parameters/settings.md)，了解更多关于如何在全局服务器级别配置你的 ClickHouse 服务器的信息。
-- 查看 [会话设置](/operations/settings/settings-query-level.md)，了解更多关于如何在会话级别配置你的 ClickHouse 服务器的信息。
+- 请参阅 [全局服务器设置](/operations/server-configuration-parameters/settings.md) 以了解如何在全局服务器级别配置你的 
+  ClickHouse 服务器。
+- 请参阅 [会话设置](/operations/settings/settings-query-level.md) 以了解如何在会话级别配置你的 ClickHouse 
+  服务器。

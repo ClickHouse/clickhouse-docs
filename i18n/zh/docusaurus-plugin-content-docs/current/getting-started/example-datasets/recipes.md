@@ -1,13 +1,20 @@
-The RecipeNLG 数据集可从 [这里](https://recipenlg.cs.put.poznan.pl/dataset) 下载。它包含 220 万个食谱。文件大小略小于 1 GB。
+---
+'description': 'RecipeNLG 数据集，包含 220 万个食谱'
+'sidebar_label': '食谱数据集'
+'slug': '/getting-started/example-datasets/recipes'
+'title': '食谱数据集'
+---
 
-## 下载和解压数据集 {#download-and-unpack-the-dataset}
+The RecipeNLG 数据集可以从 [这里](https://recipenlg.cs.put.poznan.pl/dataset) 下载。它包含 220 万个食谱，大小略少于 1 GB。
+
+## 下载并解压数据集 {#download-and-unpack-the-dataset}
 
 1. 访问下载页面 [https://recipenlg.cs.put.poznan.pl/dataset](https://recipenlg.cs.put.poznan.pl/dataset)。
 2. 接受条款和条件并下载 zip 文件。
-3. 选项：使用 `md5sum dataset.zip` 验证 zip 文件，结果应该等于 `3a168dfd0912bb034225619b3586ce76`。
-4. 使用 `unzip dataset.zip` 解压 zip 文件。您将在 `dataset` 目录下得到 `full_dataset.csv` 文件。
+3. 选项：使用 `md5sum dataset.zip` 验证 zip 文件，结果应为 `3a168dfd0912bb034225619b3586ce76`。
+4. 使用 `unzip dataset.zip` 解压 zip 文件。您将在 `dataset` 目录中获得 `full_dataset.csv` 文件。
 
-## 创建一个表 {#create-a-table}
+## 创建表 {#create-a-table}
 
 运行 clickhouse-client 并执行以下 CREATE 查询：
 
@@ -42,16 +49,16 @@ clickhouse-client --query "
 " --input_format_with_names_use_header 0 --format_csv_allow_single_quote 0 --input_format_allow_errors_num 10 < full_dataset.csv
 ```
 
-这是一个演示如何解析自定义 CSV 的示例，因为它需要多次调优。
+这是一个解析自定义 CSV 的示例，因为它需要多次调整。
 
-说明：
-- 数据集采用 CSV 格式，但在插入时需要一些预处理；我们使用表函数 [input](../../sql-reference/table-functions/input.md) 来执行预处理；
+解释：
+- 数据集采用 CSV 格式，但在插入时需要进行一些预处理；我们使用表函数 [input](../../sql-reference/table-functions/input.md) 来执行预处理；
 - CSV 文件的结构在表函数 `input` 的参数中指定；
-- 字段 `num`（行号）是多余的 - 我们从文件中解析并忽略它；
-- 我们使用 `FORMAT CSVWithNames`，但 CSV 中的标题将被忽略（通过命令行参数 `--input_format_with_names_use_header 0`），因为标题不包含第一个字段的名称；
-- 文件仅使用双引号来括起 CSV 字符串；有些字符串没有用双引号括起，单引号不能被解析为字符串括起 - 这就是为什么我们还添加了 `--format_csv_allow_single_quote 0` 参数；
-- CSV 中的一些字符串无法解析，因为它们的值开头包含 `\M/` 序列；在 CSV 中，以反斜杠开头的唯一值可以是 `\N`，它被解析为 SQL NULL。我们添加了 `--input_format_allow_errors_num 10` 参数，最多可以跳过十个格式错误的记录；
-- 对于成分、步骤和 NER 字段有数组；这些数组以不寻常的形式表示：它们被序列化为 JSON 字符串，然后放置在 CSV 中 - 我们将它们解析为字符串，然后使用 [JSONExtract](../../sql-reference/functions/json-functions.md) 函数将其转换为数组。
+- 字段 `num`（行号）是多余的 - 我们从文件中解析它并忽略；
+- 我们使用 `FORMAT CSVWithNames` 但 CSV 中的表头将被忽略（通过命令行参数 `--input_format_with_names_use_header 0`），因为表头不包含第一个字段的名称；
+- 文件仅使用双引号来括起 CSV 字符串；一些字符串未使用双引号括起，单引号不得被解析为字符串括起 - 这就是我们添加 `--format_csv_allow_single_quote 0` 参数的原因；
+- CSV 中的一些字符串无法解析，因为它们的值开头包含 `\M/` 序列；在 CSV 中唯一可以以反斜杠开头的值是 `\N`，它被解析为 SQL NULL。我们添加 `--input_format_allow_errors_num 10` 参数，最多可以跳过十条格式不正确的记录；
+- 对于配料、方向和 NER 字段，有数组；这些数组以不寻常的形式表示：它们被序列化为字符串形式的 JSON，然后放置在 CSV 中 - 我们将它们解析为字符串，然后使用 [JSONExtract](../../sql-reference/functions/json-functions.md) 函数将其转换为数组。
 
 ## 验证插入的数据 {#validate-the-inserted-data}
 
@@ -73,9 +80,9 @@ SELECT count() FROM recipes;
 
 ## 示例查询 {#example-queries}
 
-### 按食谱数量排名的顶级成分： {#top-components-by-the-number-of-recipes}
+### 按食谱数量查看顶级成分 {#top-components-by-the-number-of-recipes}
 
-在这个示例中，我们学习如何使用 [arrayJoin](../../sql-reference/functions/array-join.md) 函数将数组扩展为一组行。
+在这个例子中，我们学习如何使用 [arrayJoin](../../sql-reference/functions/array-join.md) 函数将数组扩展为一组行。
 
 查询：
 
@@ -180,9 +187,9 @@ LIMIT 10
 10 rows in set. Elapsed: 0.215 sec. Processed 2.23 million rows, 1.48 GB (10.35 million rows/s., 6.86 GB/s.)
 ```
 
-在这个示例中，我们运用 [has](../../sql-reference/functions/array-functions.md#hasarr-elem) 函数通过数组元素过滤并按步骤数量排序。
+在此示例中，我们使用 [has](../../sql-reference/functions/array-functions.md#hasarr-elem) 函数按数组元素筛选并按步骤数量排序。
 
-有一个结婚蛋糕需要整个 126 步才能制作！ 显示这些步骤：
+有一个婚礼蛋糕需要 126 个步骤才能制作完成！显示这些步骤：
 
 查询：
 
@@ -327,6 +334,6 @@ WHERE title = 'Chocolate-Strawberry-Orange Wedding Cake'
 126 rows in set. Elapsed: 0.011 sec. Processed 8.19 thousand rows, 5.34 MB (737.75 thousand rows/s., 480.59 MB/s.)
 ```
 
-### 在线演示 {#online-playground}
+### 在线游乐场 {#online-playground}
 
-数据集也可在 [在线演示](https://sql.clickhouse.com?query_id=HQXNQZE26Z1QWYP9KC76ML) 中使用。
+数据集也可以在 [在线游乐场](https://sql.clickhouse.com?query_id=HQXNQZE26Z1QWYP9KC76ML) 中找到。

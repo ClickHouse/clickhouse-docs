@@ -1,10 +1,18 @@
+---
+'sidebar_label': '正则表达式和模板'
+'sidebar_position': 3
+'slug': '/integrations/data-formats/templates-regexp'
+'title': '在 ClickHouse 中使用模板和正则表达式导入和导出自定义文本数据'
+'description': '页面描述了如何在 ClickHouse 中使用模板和正则表达式导入和导出自定义文本'
+---
+
 
 # 使用模板和正则表达式在 ClickHouse 中导入和导出自定义文本数据
 
-我们经常需要处理自定义文本格式的数据。这可能是非标准格式、无效的 JSON 或损坏的 CSV。使用标准解析器如 CSV 或 JSON 并不总是有效。但 ClickHouse 提供了强大的模板和正则表达式格式来应对这些情况。
+我们经常需要处理自定义文本格式的数据。这可能是非标准格式、无效 JSON 或损坏的 CSV。使用像 CSV 或 JSON 这样的标准解析器在所有情况下都无法正常工作。但是，ClickHouse 为我们提供了强大的模板和正则表达式格式。
 
 ## 基于模板的导入 {#importing-based-on-a-template}
-假设我们想要从以下 [日志文件](assets/error.log) 导入数据：
+假设我们想从以下 [日志文件](assets/error.log) 导入数据：
 
 ```bash
 head error.log
@@ -16,13 +24,13 @@ head error.log
 2023/01/16 05:34:55 [error]  client: 9.9.7.6, server: example.com "GET /h5/static/cert/icon_yanzhengma.png HTTP/1.1"
 ```
 
-我们可以使用 [模板](/interfaces/formats.md/#format-template) 格式来导入这些数据。我们必须定义一个包含每行输入数据的值占位符的模板字符串：
+我们可以使用 [Template](/interfaces/formats.md/#format-template) 格式来导入这些数据。我们必须定义一个模板字符串，其中包含每行输入数据的值占位符：
 
 ```response
 <time> [error] client: <ip>, server: <host> "<request>"
 ```
 
-让我们创建一个表来导入数据：
+让我们创建一个表来导入我们的数据：
 ```sql
 CREATE TABLE error_log
 (
@@ -35,15 +43,15 @@ ENGINE = MergeTree
 ORDER BY (host, request, time)
 ```
 
-为了使用给定的模板导入数据，我们必须将模板字符串保存在一个文件中（在我们的案例中是 [row.template](assets/row.template)）：
+要使用给定模板导入数据，我们必须将我们的模板字符串保存在一个文件中（在我们的例子中是 [row.template](assets/row.template)）：
 
 ```response
 ${time:Escaped} [error]  client: ${ip:CSV}, server: ${host:CSV} ${request:JSON}
 ```
 
-我们在 `${name:escaping}` 格式中定义列的名称和转义规则。这里有多种选项，例如 CSV、JSON、Escaped 或 Quoted，具体实现了[各自的转义规则](/interfaces/formats.md/#format-template)。
+我们在 `${name:escaping}` 格式中定义列的名称和转义规则。这里提供了多个选项，例如 CSV、JSON、Escaped 或 Quoted，它们实现了 [各自的转义规则](/interfaces/formats.md/#format-template)。
 
-现在我们可以使用给定文件作为导入数据时 `format_template_row` 设置选项的参数（*注意，模板和数据文件 **不应有** 额外的 `\n` 符号在文件末尾*）：
+现在我们可以将给定的文件作为 `format_template_row` 设置选项的参数，在导入数据时使用（*注意，模板和数据文件 **不应该有** 多余的 `\n` 符号在文件末尾*）：
 
 ```sql
 INSERT INTO error_log FROM INFILE 'error.log'
@@ -51,7 +59,7 @@ SETTINGS format_template_row = 'row.template'
 FORMAT Template
 ```
 
-我们可以确认数据已加载到表中：
+我们可以确保我们的数据已成功加载到表中：
 
 ```sql
 SELECT
@@ -72,7 +80,7 @@ GROUP BY request
 ```
 
 ### 跳过空格 {#skipping-whitespaces}
-考虑使用 [TemplateIgnoreSpaces](/interfaces/formats.md/#templateignorespaces)，它允许在模板中跳过分隔符之间的空格：
+考虑使用 [TemplateIgnoreSpaces](/interfaces/formats.md/#templateignorespaces)，它允许在模板的分隔符之间跳过空格：
 ```text
 Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
@@ -80,9 +88,9 @@ TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 
 ## 使用模板导出数据 {#exporting-data-using-templates}
 
-我们也可以使用模板将数据导出为任何文本格式。在这种情况下，我们需要创建两个文件：
+我们也可以使用模板将数据导出到任何文本格式。在这种情况下，我们必须创建两个文件：
 
-[结果集模板](assets/output.results)，定义整个结果集的布局：
+[结果集模板](assets/output.results)，它定义了整个结果集的布局：
 
 ```response
 == Top 10 IPs ==
@@ -90,13 +98,13 @@ ${data}
 --- ${rows_read:XML} rows read in ${time:XML} ---
 ```
 
-这里，`rows_read` 和 `time` 是每个请求的系统指标。而 `data` 代表生成的行（`${data}` 应始终作为文件中的第一个占位符），基于在 [**行模板文件**](assets/output.rows) 中定义的模板：
+这里，`rows_read` 和 `time` 是每个请求的系统指标。`data` 代表生成的行（`${data}` 应始终作为此文件中的第一个占位符），基于在 [**行模板文件**](assets/output.rows) 中定义的模板：
 
 ```response
 ${ip:Escaped} generated ${total:Escaped} requests
 ```
 
-现在让我们使用这些模板导出以下查询：
+现在让我们使用这些模板来导出以下查询：
 
 ```sql
 SELECT
@@ -138,9 +146,9 @@ SETTINGS format_template_resultset = 'html.results',
 
 ### 导出到 XML {#exporting-to-xml}
 
-模板格式可以用来生成所有想象中的文本格式文件，包括 XML。只需使用相关模板并进行导出。
+模板格式可用于生成所有想象中的文本格式文件，包括 XML。只需放置相关模板并进行导出。
 
-此外，考虑使用 [XML](/interfaces/formats.md/#xml) 格式以获取包含元数据的标准 XML 结果：
+还可以考虑使用 [XML](/interfaces/formats.md/#xml) 格式，以获取包括元数据在内的标准 XML 结果：
 
 ```sql
 SELECT *
@@ -182,7 +190,7 @@ FORMAT XML
 
 ## 基于正则表达式导入数据 {#importing-data-based-on-regular-expressions}
 
-[Regexp](/interfaces/formats.md/#data-format-regexp) 格式解决了输入数据需要以更复杂的方式解析的更复杂情况。让我们解析我们的 [error.log](assets/error.log) 示例文件，但这次捕获文件名和协议，以将它们保存到单独的列中。首先，让我们为此准备一个新表：
+[Regexp](/interfaces/formats.md/#data-format-regexp) 格式解决了更复杂的情况，当输入数据需要以更复杂的方式解析时。让我们解析我们的 [error.log](assets/error.log) 示例文件，但这次捕获文件名和协议，以将它们保存到单独的列中。首先，让我们为此准备一个新表：
 
 ```sql
 CREATE TABLE error_log
@@ -206,7 +214,7 @@ SETTINGS
 FORMAT Regexp
 ```
 
-ClickHouse 将根据每个捕获组的顺序将数据插入到相关列中。让我们检查数据：
+ClickHouse 将根据捕获组的顺序将数据插入到相关列中。让我们查看数据：
 
 ```sql
 SELECT * FROM error_log LIMIT 5
@@ -221,7 +229,7 @@ SELECT * FROM error_log LIMIT 5
 └─────────────────────┴─────────┴─────────────┴──────────────────────────────┴──────────┘
 ```
 
-默认情况下，如果行不匹配，ClickHouse 将引发错误。如果您希望跳过不匹配的行，请使用 [format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_skip_unmatched) 选项来启用此功能：
+默认情况下，如果有未匹配的行，ClickHouse 会引发错误。如果你想跳过未匹配的行，可以使用 [format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_skip_unmatched) 选项来启用它：
 
 ```sql
 SET format_regexp_skip_unmatched = 1;
@@ -229,13 +237,13 @@ SET format_regexp_skip_unmatched = 1;
 
 ## 其他格式 {#other-formats}
 
-ClickHouse 支持许多格式，包括文本和二进制格式，以涵盖各种场景和平台。在以下文章中探索更多格式和使用方法：
+ClickHouse 支持多种格式，包括文本和二进制格式，以覆盖各种场景和平台。在以下文章中探索更多格式和使用方式：
 
 - [CSV 和 TSV 格式](csv-tsv.md)
 - [Parquet](parquet.md)
 - [JSON 格式](/integrations/data-ingestion/data-formats/json/intro.md)
 - **正则表达式和模板**
-- [本地和二进制格式](binary.md)
+- [原生和二进制格式](binary.md)
 - [SQL 格式](sql.md)
 
-还请查看 [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - 一种便携式的全功能工具，用于在无需 Clickhouse 服务器的情况下处理本地/远程文件。
+还可以查看 [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - 一个便携式全功能工具，用于处理本地/远程文件，无需 Clickhouse 服务器。

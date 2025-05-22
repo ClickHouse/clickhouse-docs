@@ -1,3 +1,10 @@
+---
+'description': '计算算术平均值。'
+'sidebar_position': 112
+'slug': '/sql-reference/aggregate-functions/reference/avg'
+'title': 'avg'
+---
+
 
 # avg
 
@@ -15,8 +22,8 @@ avg(x)
 
 **返回值**
 
-- 算术平均值，总是以 [Float64](../../../sql-reference/data-types/float.md) 的形式返回。
-- 如果输入参数 `x` 为空，则返回 `NaN`。
+- 算术平均值，始终为 [Float64](../../../sql-reference/data-types/float.md)。
+- 如果输入参数 `x` 为空，返回 `NaN`。
 
 **示例**
 

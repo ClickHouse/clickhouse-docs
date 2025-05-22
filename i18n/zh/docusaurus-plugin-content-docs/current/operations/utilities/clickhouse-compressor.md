@@ -1,5 +1,5 @@
 ---
-'description': 'Clickhouse 压缩器文档'
+'description': 'Clickhouse Compressor 的文档'
 'slug': '/operations/utilities/clickhouse-compressor'
 'title': 'clickhouse-compressor'
 ---
@@ -13,12 +13,12 @@
 $ ./clickhouse-compressor < input_file > output_file
 ```
 
-从 LZ4 格式解压缩数据：
+从 LZ4 格式解压数据：
 ```bash
 $ ./clickhouse-compressor --decompress < input_file > output_file
 ```
 
-以级别 5 使用 ZSTD 压缩数据：
+使用 ZSTD 级别 5 压缩数据：
 
 ```bash
 $ ./clickhouse-compressor --codec 'ZSTD(5)' < input_file > output_file

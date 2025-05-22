@@ -1,13 +1,21 @@
+---
+'description': 'dense_rank 窗口函数的文档'
+'sidebar_label': 'dense_rank'
+'sidebar_position': 7
+'slug': '/sql-reference/window-functions/dense_rank'
+'title': 'dense_rank'
+---
+
 
 # dense_rank
 
-在其分区内对当前行进行排名，没有间隙。换句话说，如果遇到的任何新行的值与之前行之一的值相等，则它将获得下一个连续的排名，且排名之间不会有空缺。
+在其分区内对当前行进行排名，不留空缺。换句话说，如果遇到的任何新行的值与之前行的一个值相等，则它将获得下一个连续的排名，而不会在排名中留空缺。
 
-[rank](./rank.md) 函数提供相同的行为，但排名之间会有间隙。
+[rank](./rank.md) 函数提供了相同的行为，但在排名中会留有空缺。
 
 **语法**
 
-别名: `denseRank` (区分大小写)
+别名： `denseRank`（区分大小写）
 
 ```sql
 dense_rank ()
@@ -21,11 +29,11 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 **返回值**
 
-- 当前行在其分区内的一个数字，排名之间没有间隙。[UInt64](../data-types/int-uint.md)。
+- 当前行在其分区内的数字，排名不留空缺。[UInt64](../data-types/int-uint.md)。
 
 **示例**
 
-以下示例基于视频教学中的示例，[在ClickHouse中的排名窗口函数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)。
+以下示例基于视频教程 [在 ClickHouse 中的排名窗口函数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA) 中提供的示例。
 
 查询：
 

@@ -1,8 +1,17 @@
+---
+'description': '系统表，包含关于系统中发生的事件数量的信息。'
+'keywords':
+- 'system table'
+- 'events'
+'slug': '/operations/system-tables/events'
+'title': 'system.events'
+---
+
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-包含关于系统中发生的事件数量的信息。例如，在该表中，您可以找到自 ClickHouse 服务器启动以来处理了多少个 `SELECT` 查询。
+包含系统中发生的事件数量的信息。例如，在该表中，您可以找到自 ClickHouse 服务器启动以来处理的 `SELECT` 查询的数量。
 
 列：
 
@@ -29,9 +38,9 @@ SELECT * FROM system.events LIMIT 5
 └───────────────────────────────────────┴───────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**另请参见**
+**另见**
 
-- [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) — 包含定期计算的度量。
-- [system.metrics](/operations/system-tables/metrics) — 包含即时计算的度量。
-- [system.metric_log](/operations/system-tables/metric_log) — 包含来自 `system.metrics` 和 `system.events` 表的度量值历史记录。
-- [Monitoring](../../operations/monitoring.md) — ClickHouse 监控的基本概念。
+- [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) — 包含定期计算的指标。
+- [system.metrics](/operations/system-tables/metrics) — 包含即时计算的指标。
+- [system.metric_log](/operations/system-tables/metric_log) — 包含来自表 `system.metrics` 和 `system.events` 的指标值历史。
+- [监控](../../operations/monitoring.md) — ClickHouse 监控的基本概念。

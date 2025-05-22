@@ -2,10 +2,11 @@
 'slug': '/integrations/iceberg'
 'sidebar_label': '冰山'
 'title': '冰山'
-'description': '页面描述了可以用于将ClickHouse与冰山表格式集成的IcebergFunction'
+'description': '页面描述了IcebergFunction，它可以用来将ClickHouse与Iceberg表格式集成'
 ---
 
 import IcebergFunction from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/table-functions/iceberg.md';
+
 
 # Iceberg 集成
 

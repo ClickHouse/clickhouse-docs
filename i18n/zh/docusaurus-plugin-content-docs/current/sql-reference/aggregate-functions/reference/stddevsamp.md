@@ -1,3 +1,10 @@
+---
+'description': '结果等于 varSamp 的平方根'
+'sidebar_position': 190
+'slug': '/sql-reference/aggregate-functions/reference/stddevsamp'
+'title': 'stddevSamp'
+---
+
 
 # stddevSamp
 
@@ -6,7 +13,7 @@
 别名： `STDDEV_SAMP`。
 
 :::note
-此函数使用数值不稳定算法。如果您需要计算中的 [数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`stddevSampStable`](../reference/stddevsampstable.md) 函数。它的速度较慢，但提供了更低的计算误差。
+此函数使用数值不稳定的算法。如果您需要计算中的 [数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`stddevSampStable`](../reference/stddevsampstable.md) 函数。它运行较慢，但提供较低的计算误差。
 :::
 
 **语法**
@@ -17,7 +24,7 @@ stddevSamp(x)
 
 **参数**
 
-- `x`：要计算样本方差平方根的值。 [(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
+- `x`：要查找其样本方差平方根的值。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
 
 **返回值**
 

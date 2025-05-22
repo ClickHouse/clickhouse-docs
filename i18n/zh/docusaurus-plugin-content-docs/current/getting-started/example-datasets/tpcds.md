@@ -1,11 +1,16 @@
-类似于[星型模式基准测试 (SSB)](star-schema.md)，TPC-DS基于[TPC-H](tpch.md)，但采取了相反的路线，即通过将数据存储在一个复杂的雪花模式中来扩展所需的连接数量（24个表而不是8个）。
-数据分布是偏斜的（例如，正态分布和泊松分布）。
-它包含99个具有随机替换的报告和临时查询。
+---
+'description': 'TPC-DS基准数据集和查询。'
+'sidebar_label': 'TPC-DS'
+'slug': '/getting-started/example-datasets/tpcds'
+'title': 'TPC-DS (2012)'
+---
+
+类似于 [Star Schema Benchmark (SSB)](star-schema.md)，TPC-DS 基于 [TPC-H](tpch.md)，但采取了相反的路线，即通过存储在复杂的雪花模式中扩展所需的连接数（24 个表而不是 8 个表）。数据分布是不均匀的（例如，正态分布和泊松分布）。它包含 99 个带有随机替换的报告和即席查询。
 
 参考文献
-- [TPC-DS的构建](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar), 2006
+- [TPC-DS 的制作](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar), 2006
 
-首先，检查TPC-DS仓库并编译数据生成器：
+首先，检查 TPC-DS 存储库并编译数据生成器：
 
 ```bash
 git clone https://github.com/gregrahn/tpcds-kit.git
@@ -13,20 +18,19 @@ cd tpcds-kit/tools
 make
 ```
 
-然后，生成数据。参数`-scale`指定比例因子。
+然后，生成数据。参数 `-scale` 指定了比例因子。
 
 ```bash
 ./dsdgen -scale 1
 ```
 
-接着，生成查询（使用相同的比例因子）：
+接下来，生成查询（使用相同的比例因子）：
 
 ```bash
 ./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # generates 99 queries in out/query_0.sql
 ```
 
-现在在ClickHouse中创建表。
-您可以使用tools/tpcds.sql中的原始表定义，或使用“调优”的表定义，其中在适当的地方正确定义主键索引和LowCardinality类型列类型。
+现在在 ClickHouse 中创建表。您可以使用 tools/tpcds.sql 中的原始表定义，或者使用经过“调优”的表定义，在适当的地方正确定义主键索引和 LowCardinality 类型的列类型。
 
 ```sql
 CREATE TABLE call_center(
@@ -583,6 +587,5 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_site FORMA
 然后运行生成的查询。
 
 ::::warning
-TPC-DS大量使用相关子查询，而在写作时（2024年9月）ClickHouse不支持这些查询 ([issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697))。
-因此，上述基准查询中的许多都将因错误而失败。
+TPC-DS 大量使用相关子查询，而在撰写本文时（2024 年 9 月），ClickHouse 不支持这些查询 ([issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697))。因此，上述许多基准查询将因错误而失败。
 ::::

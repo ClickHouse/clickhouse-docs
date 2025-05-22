@@ -1,15 +1,22 @@
-一个流行的基准测试，它模拟了批发供应商的内部数据仓库。数据以第三范式存储，需要在查询运行时进行大量连接。尽管它有些陈旧，并且假设数据是均匀和独立分布的，但到目前为止，TPC-H 仍然是最受欢迎的 OLAP 基准测试。
+---
+'description': 'TPC-H基准数据集和查询。'
+'sidebar_label': 'TPC-H'
+'slug': '/getting-started/example-datasets/tpch'
+'title': 'TPC-H (1999)'
+---
+
+一个流行的基准测试，它模拟了批发供应商的内部数据仓库。数据以第三范式表示，查询运行时需要大量连接。尽管它已经存在很久，并且假设数据是均匀和独立分布的，这种假设并不现实，但到目前为止，TPC-H 仍然是最流行的 OLAP 基准测试。
 
 **参考文献**
 
 - [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
-- [用于决策支持和网页商业的新 TPC 基准](https://doi.org/10.1145/369275.369291) (Poess et. al., 2000)
-- [TPC-H 分析：从一个有影响力的基准学习到的隐藏信息和教训](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
+- [用于决策支持和网络商务的新 TPC 基准](https://doi.org/10.1145/369275.369291) (Poess et. al., 2000)
+- [TPC-H 分析：有影响的基准中隐藏的信息和经历的教训](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
 - [量化 TPC-H 瓶颈及其优化](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
 
-## 数据生成和导入 {#data-generation-and-import}
+## 数据生成与导入 {#data-generation-and-import}
 
-首先，检查 TPC-H 仓库并编译数据生成器：
+首先，检出 TPC-H 仓库，并编译数据生成器：
 
 ```bash
 git clone https://github.com/gregrahn/tpch-kit.git
@@ -17,35 +24,35 @@ cd tpch-kit/dbgen
 make
 ```
 
-然后，生成数据。参数 `-s` 指定比例因子。例如，使用 `-s 100`，将为表 'lineitem' 生成 6 亿行。
+然后，生成数据。参数 `-s` 指定规模因子。例如，使用 `-s 100`，将为表 'lineitem' 生成 6 亿行。
 
 ```bash
 ./dbgen -s 100
 ```
 
-比例因子为 100 时的详细表大小：
+规模因子为 100 时，详细的表大小：
 
-| 表      | 大小（行数） | 在 ClickHouse 中压缩后的大小 |
-|----------|----------------|---------------------------------|
-| nation   | 25             | 2 kB                            |
-| region   | 5              | 1 kB                            |
-| part     | 20,000,000     | 895 MB                          |
-| supplier | 1,000,000      | 75 MB                           |
-| partsupp | 80,000,000     | 4.37 GB                         |
-| customer | 15,000,000     | 1.19 GB                         |
-| orders   | 150,000,000    | 6.15 GB                         |
-| lineitem | 600,000,000    | 26.69 GB                        |
+| 表名    | 行数          | 在 ClickHouse 中的压缩大小 |
+|---------|---------------|-----------------------------|
+| nation  | 25            | 2 kB                        |
+| region  | 5             | 1 kB                        |
+| part    | 20.000.000    | 895 MB                      |
+| supplier| 1.000.000     | 75 MB                       |
+| partsupp| 80.000.000    | 4.37 GB                     |
+| customer| 15.000.000    | 1.19 GB                     |
+| orders  | 150.000.000   | 6.15 GB                     |
+| lineitem| 600.00.00     | 26.69 GB                    |
 
-（ClickHouse 中的压缩大小取自 `system.tables.total_bytes`，并基于以下表定义。）
+（ClickHouse 中的压缩大小是从 `system.tables.total_bytes` 获取的，基于以下表定义。）
 
 现在在 ClickHouse 中创建表。
 
-我们尽可能严格遵循 TPC-H 规范的规则：
-- 仅为规范第 1.4.2.2 节中提到的列创建主键。
-- 替代参数已被第 2.1.x.4 节中的查询验证值替换。
-- 根据第 1.4.2.1 节，表定义不使用可选的 `NOT NULL` 约束，即使 `dbgen` 默认生成它们。
-  ClickHouse 中的 `SELECT` 查询性能不受 `NOT NULL` 约束存在与否的影响。
-- 根据第 1.3.1 节，我们使用 ClickHouse 的原生数据类型（例如 `Int32`，`String`）来实现规范中提到的抽象数据类型（例如 `Identifier`，`Variable text, size N`）。这唯一的效果是更好的可读性，由 `dbgen` 生成的 SQL-92 数据类型（例如 `INTEGER`，`VARCHAR(40)`）在 ClickHouse 中也能工作。
+我们尽可能遵循 TPC-H 规范的规则：
+- 主键仅为规范第 1.4.2.2 部分中提到的列创建。
+- 替换参数已在规范第 2.1.x.4 部分中用查询验证的值替换。
+- 根据第 1.4.2.1 部分，表定义不使用可选的 `NOT NULL` 约束，即使 `dbgen` 默认生成它们。
+  ClickHouse 中 `SELECT` 查询的性能不受 `NOT NULL` 约束的存在或缺失的影响。
+- 根据第 1.3.1 部分，我们使用 ClickHouse 的原生数据类型（例如 `Int32`、`String`）来实现规范中提到的抽象数据类型（例如 `Identifier`、`Variable text, size N`）。这唯一的效果是可读性更好，由 `dbgen` 生成的 SQL-92 数据类型（例如 `INTEGER`、`VARCHAR(40)`）在 ClickHouse 中也能工作。
 
 ```sql
 CREATE TABLE nation (
@@ -154,7 +161,7 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMA
 ```
 
 :::note
-可以选择从公共 S3 桶导入数据，而不是使用 tpch-kit 自行生成表。请确保首先使用上述 `CREATE` 语句创建空表。
+您可以选择从公共 S3 存储桶中导入数据，而不是使用 tpch-kit 并自己生成表。确保首先使用上述 `CREATE` 语句创建空表。
 
 ```sql
 -- Scaling factor 1
@@ -271,7 +278,7 @@ ORDER BY
 ::::note
 在 v25.5 之前，由于相关子查询，该查询无法开箱即用。相关问题： https://github.com/ClickHouse/ClickHouse/issues/6697
 
-此替代公式有效，并已验证返回参考结果。
+这个替代公式有效，并已验证返回参考结果。
 
 ```sql
 WITH MinSupplyCost AS (
@@ -382,7 +389,7 @@ ORDER BY
 ::::note
 在 v25.5 之前，由于相关子查询，该查询无法开箱即用。相关问题： https://github.com/ClickHouse/ClickHouse/issues/6697
 
-此替代公式有效，并已验证返回参考结果。
+这个替代公式有效，并已验证返回参考结果。
 
 ```sql
 WITH ValidLineItems AS (
@@ -456,9 +463,9 @@ WHERE
 ```
 
 ::::note
-截至 2025 年 2 月，由于 Decimal 加法中的 bug，该查询无法开箱即用。相关问题： https://github.com/ClickHouse/ClickHouse/issues/70136
+截至 2025 年 2 月，该查询由于小数加法的错误而无法开箱即用。相关问题： https://github.com/ClickHouse/ClickHouse/issues/70136
 
-此替代公式有效，并已验证返回参考结果。
+这个替代公式有效，并已验证返回参考结果。
 
 ```sql
 SELECT
@@ -838,7 +845,7 @@ WHERE
 ::::note
 在 v25.5 之前，由于相关子查询，该查询无法开箱即用。相关问题： https://github.com/ClickHouse/ClickHouse/issues/6697
 
-此替代公式有效，并已验证返回参考结果。
+这个替代公式有效，并已验证返回参考结果。
 
 ```sql
 WITH AvgQuantity AS (

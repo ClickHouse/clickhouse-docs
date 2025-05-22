@@ -1,32 +1,42 @@
+---
+'description': 'ClickHouse 中 JSON 数据类型的文档，它提供了对 JSON 数据的原生支持'
+'keywords':
+- 'json'
+- 'data type'
+'sidebar_label': 'JSON'
+'sidebar_position': 63
+'slug': '/sql-reference/data-types/newjson'
+'title': 'JSON 数据类型'
+---
+
 import {CardSecondary} from '@clickhouse/click-ui/bundled';
 
 <CardSecondary
   badgeState="success"
   badgeText=""
-  description="查看我们的 JSON 最佳实践指南，了解使用 JSON 类型的示例、先进特性和注意事项。"
+  description="请查看我们的 JSON 最佳实践指南，以获取使用 JSON 类型的示例、先进特性和注意事项。"
   icon="book"
-  infoText="了解更多"
+  infoText="阅读更多"
   infoUrl="/docs/best-practices/use-json-where-appropriate"
-  title="寻找指南？"
+  title="寻找指南吗？"
 />
 <br/>
 
-`JSON` 类型在单列中存储 JavaScript 对象表示法（JSON）文档。
+`JSON` 类型在单列中存储 JavaScript 对象表示法 (JSON) 文档。
 
-如果您想使用 `JSON` 类型，并且查看此页面上的示例，请使用：
+如果您想使用 `JSON` 类型，并且想要查看本页上的示例，请使用：
 
 ```sql
 SET enable_json_type = 1
 ```
 
-但是，如果您使用 ClickHouse Cloud，您必须先 [联系支持](https://clickhouse.com/docs/about-us/support) 以启用使用 `JSON` 类型。
+但是，如果您使用的是 ClickHouse Cloud，则必须首先 [联系支持团队](https://clickhouse.com/docs/about-us/support) 以启用 `JSON` 类型的使用。
 
 :::note
-在 ClickHouse 开源版本中，JSON 数据类型在版本 25.3 中标记为生产就绪。 不建议在之前的版本中在生产中使用此类型。
+在 ClickHouse 开源版本中，JSON 数据类型在 25.3 版本中被标记为生产就绪。在以前的版本中，不建议在生产环境中使用该类型。
 :::
 
-
-要声明 `JSON` 类型的列，可以使用以下语法：
+要声明一个 `JSON` 类型的列，您可以使用以下语法：
 
 ```sql
 <column_name> JSON
@@ -38,19 +48,20 @@ SET enable_json_type = 1
     SKIP REGEXP 'paths_regexp'
 )
 ```
-其中上面语法中的参数定义如下：
+上述语法中的参数定义如下：
 
-| 参数                        | 描述                                                                                                                                                                                                                                                                                                                                                  | 默认值       |
-|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
-| `max_dynamic_paths`         | 一个可选参数，指示可以在单个数据块中单独存储多少路径作为子列（例如，在 MergeTree 表的单个数据分片中）。 <br/><br/>如果超过此限制，所有其他路径将一起存储在单个结构中。                                                                                                               | `1024`        |
-| `max_dynamic_types`         | 一个可选参数，范围在 `1` 和 `255` 之间，指示可以在单个路径列中存储多少种不同的数据类型，类型为 `Dynamic`，在单个数据块中存储（例如，在 MergeTree 表的单个数据分片中）。 <br/><br/>如果超过此限制，所有新类型将转换为 `String` 类型。              | `32`          |
-| `some.path TypeName`        | 特定路径的可选类型提示。此类路径将始终作为指定类型的子列存储。                                                                                                                                                                                                                                                                              |               |
-| `SKIP path.to.skip`         | 特定路径的可选提示，该路径在 JSON 解析期间应被跳过。此类路径将永远不会存储在 JSON 列中。如果指定的路径是嵌套 JSON 对象，则整个嵌套对象将被跳过。                                                                                                                                                                                               |               |
-| `SKIP REGEXP 'path_regexp'` | 用于在 JSON 解析期间跳过路径的可选提示，使用正则表达式。所有匹配此正则表达式的路径将永远不会存储在 JSON 列中。                                                                                                                                                                                                                                   |               |
+| 参数                         | 描述                                                                                                                                                                                                                                                                                                                                                     | 默认值       |
+|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| `max_dynamic_paths`          | 一个可选参数，指示可以单独存储为子列的路径数量，这些路径跨单块数据单独存储（例如，跨 MergeTree 表的单个数据部分）。 <br/><br/>如果超出此限制，所有其他路径将一起存储在一个结构中。                                                                                                                            | `1024`      |
+| `max_dynamic_types`          | 一个介于 `1` 和 `255` 之间的可选参数，指示在单个路径列中可以存储多少种不同的数据类型（类型为 `Dynamic`），这些数据类型跨单块数据单独存储（例如，跨 MergeTree 表的单个数据部分）。 <br/><br/>如果超出此限制，所有新类型将被转换为 `String` 类型。                                         | `32`        |
+| `some.path TypeName`         | 特定路径的可选类型提示。这样的路径将始终作为具有指定类型的子列存储。                                                                                                                                                                                                                                                                                 |             |
+| `SKIP path.to.skip`          | 对特定路径的可选提示，在 JSON 解析期间应跳过该路径。这样的路径将永远不会存储在 JSON 列中。如果指定的路径是嵌套的 JSON 对象，则整个嵌套对象将被跳过。                                                                                                                                                                                        |             |
+| `SKIP REGEXP 'path_regexp'`  | 使用正则表达式的可选提示，用于在 JSON 解析期间跳过路径。所有与此正则表达式匹配的路径将永远不会存储在 JSON 列中。                                                                                                                                                                                                                                   |             |
+
 
 ## 创建 JSON {#creating-json}
 
-在本节中，我们将查看您可以创建 `JSON` 的各种方式。
+在本节中，我们将看看创建 `JSON` 的各种方法。
 
 ### 在表列定义中使用 `JSON` {#using-json-in-a-table-column-definition}
 
@@ -82,9 +93,9 @@ SELECT json FROM test;
 └───────────────────────────────────┘
 ```
 
-### 使用 CAST 将类型转换为 `::JSON` {#using-cast-with-json}
+### 使用 CAST 与 `::JSON` {#using-cast-with-json}
 
-可以使用特殊语法 `::JSON` 对各种类型进行转换。
+可以使用特殊语法 `::JSON` 将各种类型强制转换。
 
 #### 从 `String` 转换为 `JSON` {#cast-from-string-to-json}
 
@@ -124,7 +135,7 @@ SELECT map('a', map('b', 42), 'c', [1,2,3], 'd', 'Hello, World!')::JSON AS json;
 └────────────────────────────────────────────────┘
 ```
 
-#### 从已弃用的 `Object('json')` 转换为 `JSON` {#cast-from-deprecated-objectjson-to-json}
+#### 从弃用的 `Object('json')` 转换为 `JSON` {#cast-from-deprecated-objectjson-to-json}
 
 ```sql title="Query"
 SET allow_experimental_object_type = 1;
@@ -138,7 +149,7 @@ SELECT '{"a" : {"b" : 42},"c" : [1, 2, 3], "d" : "Hello, World!"}'::Object('json
 ```
 
 :::note
-JSON 路径以扁平化方式存储。这意味着当从类似 `a.b.c` 的路径格式化 JSON 对象时，无法知道该对象应构造为 `{ "a.b.c" : ... }` 还是 `{ "a" : {"b" : {"c" : ... }}}`。我们将始终假定后者。
+JSON 路径是以扁平化方式存储的。这意味着当从路径如 `a.b.c` 格式化 JSON 对象时，无法确定对象应该构造为 `{ "a.b.c" : ... }` 还是 `{ "a" : {"b" : {"c" : ... }}}`。我们的实现将始终假设后者。
 
 例如：
 
@@ -163,10 +174,11 @@ SELECT CAST('{"a.b.c" : 42}', 'JSON') as json
 ```
 :::
 
-## 作为子列读取 JSON 路径 {#reading-json-paths-as-sub-columns}
+## 将 JSON 路径作为子列读取 {#reading-json-paths-as-sub-columns}
 
-`JSON` 类型支持将每个路径读取为单独的子列。
-如果请求的路径类型在 JSON 类型声明中未指定，则该路径的子列将始终具有类型 [Dynamic](/sql-reference/data-types/dynamic.md)。
+`JSON` 类型支持将每个路径作为单独的子列读取。
+如果请求路径的类型未在 JSON 类型声明中指定，
+则此路径的子列将始终具有类型 [Dynamic](/sql-reference/data-types/dynamic.md)。
 
 例如：
 
@@ -196,7 +208,7 @@ SELECT json.a.b, json.a.g, json.c, json.d FROM test;
 └──────────┴──────────┴─────────┴────────────┘
 ```
 
-如果在数据中未找到请求的路径，则将用 `NULL` 值填充：
+如果在数据中未找到请求的路径，则它将填充为 `NULL` 值：
 
 ```sql title="Query"
 SELECT json.non.existing.path FROM test;
@@ -210,7 +222,7 @@ SELECT json.non.existing.path FROM test;
 └────────────────────────┘
 ```
 
-让我们来检查返回的子列的数据类型：
+让我们检查返回的子列的数据类型：
 
 ```sql title="Query"
 SELECT toTypeName(json.a.b), toTypeName(json.a.g), toTypeName(json.c), toTypeName(json.d) FROM test;
@@ -224,9 +236,10 @@ SELECT toTypeName(json.a.b), toTypeName(json.a.g), toTypeName(json.c), toTypeNam
 └──────────────────────┴──────────────────────┴────────────────────┴────────────────────┘
 ```
 
-如我们所见，对于 `a.b`，类型为 `UInt32`，正如我们在 JSON 类型声明中指定的那样，而对于所有其他子列，类型为 `Dynamic`。
+如我们所见，对于 `a.b`，类型为 `UInt32`，因为我们在 JSON 类型声明中指定了它，
+而对于所有其他子列，类型为 `Dynamic`。
 
-也可以使用特殊语法 `json.some.path.:TypeName` 读取 `Dynamic` 类型的子列：
+还可以使用特殊语法 `json.some.path.:TypeName` 读取 `Dynamic` 类型的子列：
 
 ```sql title="Query"
 SELECT
@@ -245,7 +258,7 @@ FROM test
 └─────────────────────┴───────────────────────┴────────────────┴─────────────────────┘
 ```
 
-`Dynamic` 子列可以转换为任何数据类型。在这种情况下，如果 `Dynamic` 中的内部类型无法转换为请求的类型，将引发异常：
+`Dynamic` 子列可以转换为任何数据类型。在这种情况下，如果 `Dynamic` 内部的内部类型无法转换为请求的类型，则会抛出异常：
 
 ```sql title="Query"
 SELECT json.a.g::UInt64 AS uint 
@@ -274,9 +287,9 @@ while executing 'FUNCTION CAST(__table1.json.a.g :: 2, 'UUID'_String :: 1) -> CA
 (NOT_IMPLEMENTED)
 ```
 
-## 作为子列读取 JSON 子对象 {#reading-json-sub-objects-as-sub-columns}
+## 将 JSON 子对象作为子列读取 {#reading-json-sub-objects-as-sub-columns}
 
-`JSON` 类型支持使用特殊语法 `json.^some.path` 将嵌套对象作为类型 `JSON` 的子列读取：
+`JSON` 类型支持使用特殊语法 `json.^some.path` 将嵌套对象作为类型为 `JSON` 的子列读取：
 
 ```sql title="Query"
 CREATE TABLE test (json JSON) ENGINE = Memory;
@@ -305,14 +318,14 @@ SELECT json.^a.b, json.^d.e.f FROM test;
 ```
 
 :::note
-将子对象读取为子列可能效率不高，因为这可能需要对 JSON 数据进行几乎完整的扫描。
+将子对象作为子列读取可能效率不高，因为这可能需要对 JSON 数据进行近乎完全扫描。
 :::
 
 ## 路径的类型推断 {#type-inference-for-paths}
 
-在解析 `JSON` 时，ClickHouse 尝试检测每个 JSON 路径的最合适数据类型。
-它的工作方式类似于 [输入数据的自动模式推断](/interfaces/schema-inference.md)，并由以下设置控制：
- 
+在解析 `JSON` 时，ClickHouse 尝试检测每个 JSON 路径最适合的数据类型。
+它的工作方式类似于 [自动架构推断输入数据](/interfaces/schema-inference.md)，并受相同设置的控制：
+
 - [input_format_try_infer_dates](/operations/settings/formats#input_format_try_infer_dates)
 - [input_format_try_infer_datetimes](/operations/settings/formats#input_format_try_infer_datetimes)
 - [schema_inference_make_columns_nullable](/operations/settings/formats#schema_inference_make_columns_nullable)
@@ -365,10 +378,10 @@ SELECT JSONAllPathsWithTypes('{"a" : [1, 2, 3]}'::JSON) AS paths_with_types sett
 └──────────────────────┘
 ```
 
-## 处理 JSON 对象数组 {#handling-arrays-of-json-objects}
+## 处理 JSON 对象的数组 {#handling-arrays-of-json-objects}
 
-包含对象数组的 JSON 路径被解析为类型 `Array(JSON)` 并插入到路径的 `Dynamic` 列中。
-要读取对象数组，您可以将它从 `Dynamic` 列中提取为子列：
+包含对象数组的 JSON 路径被解析为类型 `Array(JSON)`，并插入到路径的 `Dynamic` 列中。
+要读取对象数组，您可以将其作为子列从 `Dynamic` 列中提取：
 
 ```sql title="Query"
 CREATE TABLE test (json JSON) ENGINE = Memory;
@@ -399,8 +412,8 @@ SELECT json.a.b, dynamicType(json.a.b) FROM test;
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────┘
 ```
 
-如您所见，嵌套的 `JSON` 类型的 `max_dynamic_types`/`max_dynamic_paths` 参数与默认值相比有所减少。
-这是为了避免在 JSON 对象的嵌套数组中子列数量失控。
+正如您所注意到的，嵌套的 `JSON` 类型的 `max_dynamic_types`/`max_dynamic_paths` 参数比默认值减少。
+这是为了避免在 JSON 对象的嵌套数组中子列数量的快速增长。
 
 让我们尝试从嵌套的 `JSON` 列中读取子列：
 
@@ -416,7 +429,7 @@ SELECT json.a.b.:`Array(JSON)`.c, json.a.b.:`Array(JSON)`.f, json.a.b.:`Array(JS
 └───────────────────────────┴─────────────────────────────────────────────────────────────┴───────────────────────────┘
 ```
 
-我们可以使用特殊语法避免编写 `Array(JSON)` 子列名称：
+我们可以通过特殊语法避免写入 `Array(JSON)` 子列名称：
 
 ```sql title="Query"
 SELECT json.a.b[].c, json.a.b[].f, json.a.b[].d FROM test;
@@ -430,7 +443,7 @@ SELECT json.a.b[].c, json.a.b[].f, json.a.b[].d FROM test;
 └───────────────────────────┴─────────────────────────────────────────────────────────────┴───────────────────────────┘
 ```
 
-路径后面的 `[]` 数量表示数组级别。例如，`json.path[][]` 将被转换为 `json.path.:Array(Array(JSON))`
+路径后面的 `[]` 数量表示数组级别。例如，`json.path[][]` 将转换为 `json.path.:Array(Array(JSON))`
 
 让我们检查 `Array(JSON)` 中的路径和类型：
 
@@ -462,7 +475,7 @@ SELECT json.a.b[].c.:Int64, json.a.b[].f[][].g.:Float64, json.a.b[].f[][].h.:Dat
 └────────────────────────────────────┴──────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────┘
 ```
 
-我们也可以从嵌套的 `JSON` 列中读取子对象子列：
+我们还可以从嵌套的 `JSON` 列中读取子对象的子列：
 
 ```sql title="Query"
 SELECT json.a.b[].^k FROM test
@@ -478,12 +491,12 @@ SELECT json.a.b[].^k FROM test
 
 ## 从数据中读取 JSON 类型 {#reading-json-type-from-data}
 
-所有文本格式 
-([`JSONEachRow`](../../interfaces/formats/JSON/JSONEachRow.md), 
-[`TSV`](../../interfaces/formats/TabSeparated/TabSeparated.md), 
-[`CSV`](../../interfaces/formats/CSV/CSV.md), 
-[`CustomSeparated`](../../interfaces/formats/CustomSeparated/CustomSeparated.md), 
-[`Values`](../../interfaces/formats/Values.md) 等) 都支持读取 `JSON` 类型。
+所有文本格式
+([`JSONEachRow`](../../interfaces/formats/JSON/JSONEachRow.md)，
+[`TSV`](../../interfaces/formats/TabSeparated/TabSeparated.md)，
+[`CSV`](../../interfaces/formats/CSV/CSV.md)，
+[`CustomSeparated`](../../interfaces/formats/CustomSeparated/CustomSeparated.md)，
+[`Values`](../../interfaces/formats/Values.md) 等等) 都支持读取 `JSON` 类型。
 
 示例：
 
@@ -507,7 +520,7 @@ SELECT json FROM format(JSONEachRow, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP d
 └───────────────────────────────────────────────────────────────┘
 ```
 
-对于像 `CSV`/`TSV`/等文本格式，`JSON` 是从包含 JSON 对象的字符串中解析的：
+对于 `CSV`/`TSV` 等文本格式，`JSON` 是从包含 JSON 对象的字符串中解析的：
 
 ```sql title="Query"
 SELECT json FROM format(TSV, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP REGEXP \'b.*\')',
@@ -528,21 +541,22 @@ SELECT json FROM format(TSV, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP REGEXP \'
 └───────────────────────────────────────────────────────────────┘
 ```
 
-## 达到 JSON 内部动态路径的限制 {#reaching-the-limit-of-dynamic-paths-inside-json}
+## 达到 JSON 中动态路径的限制 {#reaching-the-limit-of-dynamic-paths-inside-json}
 
-`JSON` 数据类型只能在内部以作为单独的子列存储的路径数量有限。
-默认情况下，此限制为 `1024`，但您可以使用参数 `max_dynamic_paths` 在类型声明中更改它。
+`JSON` 数据类型只能内部存储有限数量的路径作为单独的子列。
+默认情况下，此限制为 `1024`，但您可以使用参数 `max_dynamic_paths` 在类型声明中进行更改。
 
-当达到限制时，插入到 `JSON` 列中的所有新路径将存储在一个共享数据结构中。
+当达到限制时，所有插入到 `JSON` 列的新路径将存储在单个共享数据结构中。
 仍然可以将这些路径作为子列读取，
-但提取该路径的值将需要读取整个共享数据结构。
-此限制有助于避免出现大量不同子列的情况，这可能使表变得无法使用。
+但这将需要读取整个共享数据结构以提取该路径的值。
+此限制的设置是为了避免在不同的子列中拥有巨大的数量，这可能会使表变得不可用。
 
 让我们看看在几种不同情况下达到限制时会发生什么。
 
-### 在数据解析期间达到限制 {#reaching-the-limit-during-data-parsing}
+### 在数据解析过程中达到限制 {#reaching-the-limit-during-data-parsing}
 
-在从数据解析 `JSON` 对象时，当当前数据块的限制达到时，所有新路径将存储在一个共享数据结构中。我们可以使用以下两种自省函数 `JSONDynamicPaths`, `JSONSharedDataPaths`：
+在从数据解析 `JSON` 对象时，当当前数据块达到限制时，
+所有新路径将存储在共享数据结构中。我们可以使用以下两种自省函数 `JSONDynamicPaths`、`JSONSharedDataPaths`：
 
 ```sql title="Query"
 SELECT json, JSONDynamicPaths(json), JSONSharedDataPaths(json) FROM format(JSONEachRow, 'json JSON(max_dynamic_paths=3)', '
@@ -564,17 +578,18 @@ SELECT json, JSONDynamicPaths(json), JSONSharedDataPaths(json) FROM format(JSONE
 └────────────────────────────────────────────────────────────────┴────────────────────────┴───────────────────────────┘
 ```
 
-如我们所见，在插入路径 `e` 和 `f.g` 后，限制达到了，它们被插入到共享数据结构中。
+如我们所见，在插入路径 `e` 和 `f.g` 后达到了限制，
+它们被插入到共享数据结构中。
 
-### 在 MergeTree 表引擎的数据分片合并期间 {#during-merges-of-data-parts-in-mergetree-table-engines}
+### 在 MergeTree 表引擎的数据部分合并期间 {#during-merges-of-data-parts-in-mergetree-table-engines}
 
-在 `MergeTree` 表中合并多个数据分片时，结果数据分片中的 `JSON` 列可能达到动态路径的限制，
-并且无法将所有路径作为子列存储。
-在这种情况下，ClickHouse 会选择在合并后哪些路径将保留为子列，哪些路径将存储在共享数据结构中。
-在大多数情况下，ClickHouse 尝试保留包含最大数量非空值的路径，并将最少见的路径移至共享数据结构。这确实取决于实现。
+在将多个数据部分合并到 `MergeTree` 表中时，结果数据部分中的 `JSON` 列可能达到动态路径的限制
+而无法将源部分中的所有路径存储为子列。
+在这种情况下，ClickHouse 选择合并后哪些路径将作为子列保留，哪些路径将存储在共享数据结构中。
+在大多数情况下，ClickHouse 尝试保留包含最多非 NULL 值的路径，并将最少见的路径移动到共享数据结构中。不过，这取决于实现。
 
-让我们看一个合并的示例。
-首先，让我们创建一个包含 `JSON` 列的表，将动态路径的限制设置为 `3`，然后插入具有 `5` 个不同路径的值：
+让我们看看这样合并的示例。
+首先，让我们创建一个包含 `JSON` 列的表，将动态路径的限制设置为 `3`，然后插入具有 `5` 不同路径的值：
 
 ```sql title="Query"
 CREATE TABLE test (id UInt64, json JSON(max_dynamic_paths=3)) engine=MergeTree ORDER BY id;
@@ -586,7 +601,7 @@ INSERT INTO test SELECT number, formatRow('JSONEachRow', number as d) FROM numbe
 INSERT INTO test SELECT number, formatRow('JSONEachRow', number as e) FROM numbers(1);
 ```
 
-每次插入都会创建一个单独的数据分片，`JSON` 列只包含一个路径：
+每次插入都会创建一个包含单一路径的 `JSON` 列的单独数据部分：
 
 ```sql title="Query"
 SELECT
@@ -628,9 +643,9 @@ ORDER BY _part ASC
 └─────────┴───────────────┴───────────────────┴───────────┘
 ```
 
-如我们所见，ClickHouse 保留了最多的路径 `a`、`b` 和 `c`，并将路径 `d` 和 `e` 移至共享数据结构中。
+如我们所见，ClickHouse 保留了最常见的路径 `a`、`b` 和 `c`，并将路径 `d` 和 `e` 移动到共享数据结构中。
 
-## 自省功能 {#introspection-functions}
+## 自省函数 {#introspection-functions}
 
 有几个函数可以帮助检查 JSON 列的内容：
 - [`JSONAllPaths`](../functions/json-functions.md#jsonallpaths)
@@ -640,11 +655,11 @@ ORDER BY _part ASC
 - [`JSONSharedDataPaths`](../functions/json-functions.md#jsonshareddatapaths)
 - [`JSONSharedDataPathsWithTypes`](../functions/json-functions.md#jsonshareddatapathswithtypes)
 - [`distinctDynamicTypes`](../aggregate-functions/reference/distinctdynamictypes.md)
-- [`distinctJSONPaths 和 distinctJSONPathsAndTypes`](../aggregate-functions/reference/distinctjsonpaths.md)
+- [`distinctJSONPaths and distinctJSONPathsAndTypes`](../aggregate-functions/reference/distinctjsonpaths.md)
 
 **示例**
 
-让我们检查 [GH Archive](https://www.gharchive.org/) 数据集中 `2020-01-01` 的内容：
+让我们调查日期为 `2020-01-01` 的 [GH Archive](https://www.gharchive.org/) 数据集的内容：
 
 ```sql title="Query"
 SELECT arrayJoin(distinctJSONPaths(json))
@@ -768,9 +783,9 @@ SETTINGS date_time_input_format = 'best_effort'
 └─arrayJoin(distinctJSONPathsAndTypes(json))──────────────────┘
 ```
 
-## 使用 ALTER MODIFY COLUMN 修改为 JSON 类型 {#alter-modify-column-to-json-type}
+## ALTER MODIFY COLUMN 到 JSON 类型 {#alter-modify-column-to-json-type}
 
-可以更改现有表并将列的类型更改为新的 `JSON` 类型。目前仅支持从 `String` 类型进行 `ALTER`。
+可以更改现有表的列类型为新的 `JSON` 类型。目前仅支持从 `String` 类型进行 `ALTER`。
 
 **示例**
 
@@ -790,9 +805,9 @@ SELECT json, json.a, json.b, json.c FROM test;
 └──────────────────────────────┴────────┴─────────┴────────────┘
 ```
 
-## 比较 JSON 类型的值 {#comparison-between-values-of-the-json-type}
+## 比较 JSON 类型值 {#comparison-between-values-of-the-json-type}
 
-JSON 对象的比较方式与 Map 相似。
+JSON 对象的比较与 Map 类似。
 
 例如：
 
@@ -826,18 +841,18 @@ SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 └────────────┴─────────────────────┴────────────────────┴──────────────────────┴───────────────────────┘
 ```
 
-**注意：** 当两个路径包含不同数据类型的值时，依据 `Variant` 数据类型的 [比较规则](/sql-reference/data-types/variant#comparing-values-of-variant-data) 进行比较。
+**注意：** 当 2 个路径包含不同数据类型的值时，它们将根据 `Variant` 数据类型的 [比较规则](/sql-reference/data-types/variant#comparing-values-of-variant-data) 进行比较。
 
-## 更好使用 JSON 类型的提示 {#tips-for-better-usage-of-the-json-type}
+## 有关更好使用 JSON 类型的提示 {#tips-for-better-usage-of-the-json-type}
 
-在创建 `JSON` 列并将数据加载到其中之前，请考虑以下提示：
+在创建 `JSON` 列并加载数据之前，请考虑以下提示：
 
-- 调查您的数据并尽可能多地指定带类型的路径提示。这会使存储和读取更有效。
-- 考虑您将需要哪些路径以及您将永远不需要哪些路径。将不需要的路径指定在 `SKIP` 部分，必要时在 `SKIP REGEXP` 部分。这将改善存储。
-- 不要将 `max_dynamic_paths` 参数设置为过高的值，因为这可能使存储和读取效率降低。
-  虽然这在很大程度上取决于系统参数（如内存、CPU等），但一个经验法则是不要将 `max_dynamic_paths` 设置为大于 10,000。
+- 调查您的数据并尽可能多地指定带有类型的路径提示。这将使存储和读取变得更高效。
+- 考虑您将需要哪些路径，以及哪些路径您将永远不需要。在 `SKIP` 部分指定您不需要的路径，在 `SKIP REGEXP` 部分指定（如有必要）。这将改善存储。
+- 不要将 `max_dynamic_paths` 参数设置为非常高的值，因为这可能会使存储和读取变得不够高效。
+  虽然取决于内存、CPU 等系统参数，但一般经验法则是不要将 `max_dynamic_paths` > 10 000。
 
 ## 进一步阅读 {#further-reading}
 
-- [我们是如何为 ClickHouse 构建一个强大的新 JSON 数据类型的](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)
-- [十亿文档 JSON 挑战：ClickHouse 与 MongoDB、Elasticsearch 等的比较](https://clickhouse.com/blog/json-bench-clickhouse-vs-mongodb-elasticsearch-duckdb-postgresql)
+- [我们如何为 ClickHouse 构建了一个全新的强大 JSON 数据类型](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)
+- [十亿文档 JSON 挑战：ClickHouse 对比 MongoDB、Elasticsearch 等](https://clickhouse.com/blog/json-bench-clickhouse-vs-mongodb-elasticsearch-duckdb-postgresql)

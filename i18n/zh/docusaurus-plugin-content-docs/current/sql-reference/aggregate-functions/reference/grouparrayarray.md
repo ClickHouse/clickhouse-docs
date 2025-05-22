@@ -1,15 +1,25 @@
+---
+'description': '将数组聚合成一个更大的包含那些数组的数组。'
+'keywords':
+- 'groupArrayArray'
+- 'array_concat_agg'
+'sidebar_position': 111
+'slug': '/sql-reference/aggregate-functions/reference/grouparrayarray'
+'title': 'groupArrayArray'
+---
+
 
 # groupArrayArray
 
-将数组聚合成一个更大的数组，该数组由这些数组组成。 
-结合了 [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 函数和 [Array](/sql-reference/aggregate-functions/combinators#-array) 组合器。
+将数组聚合成一个更大的数组，这些数组的组合。
+将 [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 函数与 [Array](/sql-reference/aggregate-functions/combinators#-array) 组合器结合使用。
 
-别名： `array_concat_agg`
+别名: `array_concat_agg`
 
 **示例**
 
-我们拥有捕捉用户浏览会话的数据。每个会话记录特定用户访问的页面顺序。 
-我们可以使用 `groupArrayArray` 函数来分析每个用户的页面访问模式。
+我们有数据记录用户的浏览会话。每个会话记录特定用户访问的页面序列。
+我们可以使用 `groupArrayArray` 函数分析每个用户的页面访问模式。
 
 ```sql title="Setup"
 CREATE TABLE website_visits (

@@ -1,7 +1,14 @@
+---
+'description': '计算序列的偏度。'
+'sidebar_position': 185
+'slug': '/sql-reference/aggregate-functions/reference/skewpop'
+'title': 'skewPop'
+---
+
 
 # skewPop
 
-计算序列的 [偏度](https://en.wikipedia.org/wiki/Skewness)。
+计算一个序列的 [偏度](https://en.wikipedia.org/wiki/Skewness)。
 
 ```sql
 skewPop(expr)
@@ -9,7 +16,7 @@ skewPop(expr)
 
 **参数**
 
-`expr` — [表达式](/sql-reference/syntax#expressions)，返回一个数字。
+`expr` — [表达式](/sql-reference/syntax#expressions) 返回一个数字。
 
 **返回值**
 

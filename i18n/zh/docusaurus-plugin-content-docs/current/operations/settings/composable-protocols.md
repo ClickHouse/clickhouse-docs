@@ -1,5 +1,5 @@
 ---
-'description': '可组合协议允许对TCP访问ClickHouse服务器进行更灵活的配置。'
+'description': '可组合协议允许更灵活地配置 TCP 访问 ClickHouse 服务器。'
 'sidebar_label': '可组合协议'
 'sidebar_position': 64
 'slug': '/operations/settings/composable-protocols'
@@ -11,11 +11,11 @@
 
 ## 概述 {#overview}
 
-可组合协议允许对 ClickHouse 服务器的 TCP 访问进行更灵活的配置。此配置可以与传统配置共存或替代传统配置。
+可组合协议允许更灵活地配置对 ClickHouse 服务器的 TCP 访问。此配置可以与常规配置共存或替代。
 
 ## 配置可组合协议 {#composable-protocols-section-is-denoted-as-protocols-in-configuration-xml}
 
-可组合协议可以在 XML 配置文件中进行配置。协议部分在 XML 配置文件中用 `protocols` 标签表示：
+可组合协议可以在 XML 配置文件中配置。协议部分用 `protocols` 标签在 XML 配置文件中表示：
 
 ```xml
 <protocols>
@@ -25,7 +25,7 @@
 
 ### 配置协议层 {#basic-modules-define-protocol-layers}
 
-您可以使用基本模块定义协议层。例如，要定义 HTTP 层，您可以将一个新的基本模块添加到 `protocols` 部分：
+您可以使用基本模块定义协议层。例如，要定义 HTTP 层，您可以向 `protocols` 部分添加一个新的基本模块：
 
 ```xml
 <protocols>
@@ -37,28 +37,28 @@
 
 </protocols>
 ```
-模块可以按照以下方式进行配置：
+模块可以根据以下内容进行配置：
 
-- `plain_http` - 可被其他层引用的名称
-- `type` - 表示将被实例化以处理数据的协议处理器。
-   它具有以下预定义协议处理器：
-  * `tcp` - 原生 clickhouse 协议处理器
-  * `http` - HTTP clickhouse 协议处理器
+- `plain_http` - 可以被另一个层引用的名称
+- `type` - 表示将实例化以处理数据的协议处理程序。
+   它有以下预定义的协议处理程序集：
+  * `tcp` - 本地 ClickHouse 协议处理程序
+  * `http` - HTTP ClickHouse 协议处理程序
   * `tls` - TLS 加密层
   * `proxy1` - PROXYv1 层
-  * `mysql` - MySQL 兼容协议处理器
-  * `postgres` - PostgreSQL 兼容协议处理器
-  * `prometheus` - Prometheus 协议处理器
-  * `interserver` - clickhouse 服务器间处理器
+  * `mysql` - MySQL 兼容协议处理程序
+  * `postgres` - PostgreSQL 兼容协议处理程序
+  * `prometheus` - Prometheus 协议处理程序
+  * `interserver` - ClickHouse 服务器间处理程序
 
 :::note
-`gRPC` 协议处理器尚未为 `可组合协议` 实现
+`gRPC` 协议处理程序未为 `Composable protocols` 实现
 :::
-
+ 
 ### 配置端点 {#endpoint-ie-listening-port-is-denoted-by-port-and-optional-host-tags}
 
-端点（监听端口）由 `<port>` 和可选的 `<host>` 标签表示。
-例如，要在先前添加的 HTTP 层上配置一个端点，我们可以按如下方式修改配置：
+端点（监听端口）用 `<port>` 和可选的 `<host>` 标签表示。
+例如，要在之前添加的 HTTP 层上配置一个端点，我们可以按如下方式修改我们的配置：
 
 ```xml
 <protocols>
@@ -79,7 +79,8 @@
 
 ### 配置层序列 {#layers-sequence-is-defined-by-impl-tag-referencing-another-module}
 
-层序列使用 `<impl>` 标签定义，并引用另一个模块。例如，要在我们的 plain_http 模块上配置 TLS 层，我们可以进一步按如下方式修改配置：
+层序列由 `<impl>` 标签定义，并引用另一个模块。
+例如，要在我们的 plain_http 模块上配置一个 TLS 层，我们可以进一步按如下方式修改我们的配置：
 
 ```xml
 <protocols>
@@ -102,7 +103,7 @@
 
 ### 将端点附加到层 {#endpoint-can-be-attached-to-any-layer}
 
-端点可以附加到任何层。例如，我们可以定义 HTTP（端口 8123）和 HTTPS（端口 8443）的端点：
+端点可以附加到任何层。例如，我们可以为 HTTP（端口 8123）和 HTTPS（端口 8443）定义端点：
 
 ```xml
 <protocols>
@@ -123,9 +124,9 @@
 </protocols>
 ```
 
-### 定义额外的端点 {#additional-endpoints-can-be-defined-by-referencing-any-module-and-omitting-type-tag}
+### 定义附加端点 {#additional-endpoints-can-be-defined-by-referencing-any-module-and-omitting-type-tag}
 
-可以通过引用任何模块并省略 `<type>` 标签来定义额外的端点。例如，我们可以为 `plain_http` 模块定义 `another_http` 端点，如下所示：
+可以通过引用任何模块并省略 `<type>` 标签定义附加端点。例如，我们可以为 `plain_http` 模块定义 `another_http` 端点，如下所示：
 
 ```xml
 <protocols>
@@ -152,9 +153,9 @@
 </protocols>
 ```
 
-### 指定额外的层参数 {#some-modules-can-contain-specific-for-its-layer-parameters}
+### 指定附加层参数 {#some-modules-can-contain-specific-for-its-layer-parameters}
 
-某些模块可以包含额外的层参数。例如，TLS 层允许指定私钥 (`privateKeyFile`) 和证书文件 (`certificateFile`)，如下所示：
+某些模块可以包含附加层参数。例如，TLS 层允许指定私钥（`privateKeyFile`）和证书文件（`certificateFile`），具体如下：
 
 ```xml
 <protocols>

@@ -1,13 +1,26 @@
+---
+'slug': '/examples/aggregate-function-combinators/avgMap'
+'title': 'avgMap'
+'description': '使用 avgMap 组合器的示例'
+'keywords':
+- 'avg'
+- 'map'
+- 'combinator'
+- 'examples'
+- 'avgMap'
+'sidebar_label': 'avgMap'
+---
+
 
 # avgMap {#avgmap}
 
 ## 描述 {#description}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可以应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg) 函数，以计算 Map 中每个键的值的算术平均值，使用 `avgMap` 聚合组合器函数。
+[`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可以应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg) 函数，以根据每个键计算 Map 中值的算术平均值，使用 `avgMap` 聚合组合器函数。
 
 ## 示例用法 {#example-usage}
 
-在此示例中，我们将创建一个表，该表存储状态码及其在不同时间段内的计数，其中每行包含一个状态码到其对应计数的 Map。我们将使用 `avgMap` 来计算每个时间段内每个状态码的平均计数。
+在这个示例中，我们将创建一个表，用于存储不同时间段的状态码及其计数，每行包含一个状态码及其对应计数的 Map。我们将使用 `avgMap` 来计算每个状态码在每个时间段内的平均计数。
 
 ```sql title="Query"
 CREATE TABLE metrics(
@@ -29,7 +42,7 @@ FROM metrics
 GROUP BY timeslot;
 ```
 
-`avgMap` 函数将计算每个时间段内每个状态码的平均计数。例如：
+`avgMap` 函数将计算每个状态码在每个时间段内的平均计数。例如：
 - 在时间段 '2000-01-01 00:00:00':
   - 状态 'a': 15
   - 状态 'b': 25

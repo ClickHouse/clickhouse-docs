@@ -1,24 +1,29 @@
+---
+null
+...
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 :::note
-`clickhouse-jdbc` 实现了最新 Java 客户端的标准 JDBC 接口。
-如果性能/直接访问至关重要，我们建议直接使用最新的 Java 客户端。
+`clickhouse-jdbc` 实现了使用最新的 java 客户端的标准 JDBC 接口。
+如果性能/直接访问至关重要，建议直接使用最新的 java 客户端。
 :::
 
-## 从 0.7.x 的更改 {#changes-from-07x}
-在 0.8 中，我们尝试使驱动程序更严格地遵循 JDBC 规范，因此有一些移除的特性可能会影响您：
+## 从 0.7.x 的变更 {#changes-from-07x}
+在 0.8 中，我们试图使驱动程序更加严格地遵循 JDBC 规范，因此有一些被移除的功能可能会影响您：
 
-| 旧特性                           | 备注                                                                                                                                                                                                                                                                                                           |
+| 旧特性                           | 备注                                                                                                                                                                                                                                                                                                               |
 |----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 事务支持                         | 驱动程序的早期版本仅 **模拟** 了事务支持，可能会产生意想不到的结果。                                                                                                                                                                                                                                            |
-| 响应列重命名                     | `ResultSet` 现在是只读的 - 为了效率考虑，它们不再可变                                                                                                                                                                                                                                                             |
-| 多语句 SQL                       | 多语句支持仅是 **模拟**，现在严格遵循 1:1 的关系                                                                                                                                                                                                                                                               |
-| 命名参数                         | 不是 JDBC 规范的一部分                                                                                                                                                                                                                                                                                       |
-| 基于流的 `PreparedStatement`     | 驱动程序的早期版本允许对 `PreparedStatement` 的非 JDBC 使用 - 如果您需要这种选项，我们建议查看 [Java 客户端](/integrations/language-clients/java/client/client.mdx) 及其 [示例](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)。 |
+| 事务支持                         | 驱动程序的早期版本只 **模拟** 事务支持，可能会产生意想不到的结果。                                                                                                                                                                                                                                                     |
+| 响应列重命名                     | `ResultSet` 是可变的 - 为了效率，现在是只读的                                                                                                                                                                                                                                                                     |
+| 多语句 SQL                       | 多语句支持仅 **模拟**，现在严格遵循 1:1                                                                                                                                                                                                                                                                               |
+| 命名参数                         | 不属于 JDBC 规范                                                                                                                                                                                                                                                                                                   |
+| 基于流的 `PreparedStatement`     | 驱动程序的早期版本允许对 `PreparedStatement` 进行非 JDBC 使用 - 如果您希望使用这些选项，我们建议您查看 [Java Client](/integrations/language-clients/java/client/client.mdx) 及其 [示例](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)。 |
 
 :::note
-`Date` 是不带时区存储的，而 `DateTime` 是带时区存储的。如果不小心，可能会导致意想不到的结果。
+`Date` 是以无时区方式存储的，而 `DateTime` 是以带时区方式存储的。如果不小心，可能会导致意想不到的结果。
 :::
 
 ## 环境要求 {#environment-requirements}
@@ -60,33 +65,32 @@ implementation 'com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all'
 
 ## 配置 {#configuration}
 
-**驱动程序类**: `com.clickhouse.jdbc.ClickHouseDriver`
+**驱动类**: `com.clickhouse.jdbc.ClickHouseDriver`
 
-**URL 语法**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`， 例如：
+**URL 语法**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`，例如：
 
 - `jdbc:clickhouse:http://localhost:8123`
 - `jdbc:clickhouse:https://localhost:8443?ssl=true`
 
-**连接属性**:
+**连接属性**：
 
-除了标准的 JDBC 属性，驱动程序还支持底层 [java 客户端](/integrations/language-clients/java/client/client.mdx) 提供的 ClickHouse 特定属性。
-在可能的情况下，如果特性不被支持，方法将抛出 `SQLFeatureNotSupportedException`。其他自定义属性包括：
+除了标准的 JDBC 属性之外，驱动程序还支持底层 [java client](/integrations/language-clients/java/client/client.mdx) 提供的 ClickHouse 特定属性。
+如果特性不受支持的方法将尽可能返回 `SQLFeatureNotSupportedException`。其他自定义属性包括：
 
-| 属性                            | 默认值  | 描述                                                        |
-|----------------------------------|---------|------------------------------------------------------------|
-| `disable_frameworks_detection`    | `true`  | 禁用用户代理的框架检测                                      |
-| `jdbc_ignore_unsupported_values`  | `false` | 抑制 `SQLFeatureNotSupportedException`                      |
-| `clickhouse.jdbc.v1`             | `false` | 使用旧版 JDBC 实现，而不是新的 JDBC                        |
-| `default_query_settings`          | `null`  | 允许在查询操作中传递默认查询设置                           |
+| 属性                               | 默认    | 描述                                                         |
+|------------------------------------|---------|--------------------------------------------------------------|
+| `disable_frameworks_detection`      | `true`  | 禁用针对用户代理的框架检测                                   |
+| `jdbc_ignore_unsupported_values`    | `false` | 抑制 `SQLFeatureNotSupportedException`                       |
+| `clickhouse.jdbc.v1`                | `false` | 使用旧的 JDBC 实现而不是新的 JDBC                           |
+| `default_query_settings`            | `null`  | 允许在查询操作中传递默认查询设置                           |
 
 ## 支持的数据类型 {#supported-data-types}
 
-JDBC 驱动程序支持与底层 [java 客户端](/integrations/language-clients/java/client/client.mdx) 相同的数据格式。
+JDBC 驱动程序支持与底层 [java client](/integrations/language-clients/java/client/client.mdx) 相同的数据格式。
 
 ### 处理日期、时间和时区 {#handling-dates-times-and-timezones}
-`java.sql.Date`、`java.sql.Time` 和 `java.sql.Timestamp` 可能会使时区的计算变得复杂 - 尽管当然被支持，
-您可能希望考虑使用 [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) 包。`ZonedDateTime` 和
-`OffsetDateTime` 都是 `java.sql.Timestamp`、`java.sql.Date` 和 `java.sql.Time` 的良好替代品。
+`java.sql.Date`、`java.sql.Time` 和 `java.sql.Timestamp` 可能会使时区计算复杂 - 尽管支持这些类型，您可能希望考虑使用 [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) 包。`ZonedDateTime` 和
+`OffsetDateTime` 是 java.sql.Timestamp、java.sql.Date 和 java.sql.Time 的两个优秀替代品。
 
 ## 创建连接 {#creating-connection}
 
@@ -170,20 +174,20 @@ try (HikariDataSource ds = new HikariDataSource(poolConfig);
 ```
 
 ## 更多信息 {#more-information}
-有关更多信息，请参阅我们的 [GitHub 仓库](https://github.com/ClickHouse/clickhouse-java) 和 [Java 客户端文档](/integrations/language-clients/java/client/client.mdx)。
+有关更多信息，请参见我们的 [GitHub 仓库](https://github.com/ClickHouse/clickhouse-java) 和 [Java Client 文档](/integrations/language-clients/java/client/client.mdx)。
 
 ## 故障排除 {#troubleshooting}
 ### 日志记录 {#logging}
-该驱动程序使用 [slf4j](https://www.slf4j.org/) 进行日志记录，并将使用 `classpath` 上第一个可用的实现。
+驱动程序使用 [slf4j](https://www.slf4j.org/) 进行日志记录，并将使用 `classpath` 上的第一个可用实现。
 
-### 解决大型插入的 JDBC 超时问题 {#resolving-jdbc-timeout-on-large-inserts}
+### 解决大型插入中的 JDBC 超时 {#resolving-jdbc-timeout-on-large-inserts}
 
-在 ClickHouse 中执行执行时间较长的大型插入时，您可能会遇到诸如以下的 JDBC 超时错误：
+在 ClickHouse 中执行大型插入并且执行时间较长时，您可能会遇到 JDBC 超时错误，例如：
 
 ```plaintext
 Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https://hostname.aws.clickhouse.cloud:8443]
 ```
-这些错误可能会中断数据插入过程并影响系统稳定性。为了解决这个问题，您可能需要调整客户端操作系统中的一些超时设置。
+这些错误可能会干扰数据插入过程并影响系统稳定性。为了解决此问题，您可能需要在客户端的操作系统中调整一些超时设置。
 
 #### Mac OS {#mac-os}
 
@@ -197,7 +201,7 @@ Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https:/
 
 #### Linux {#linux}
 
-在 Linux 上，仅调整等效设置可能无法解决问题。由于 Linux 在处理套接字的保活设置方面的差异，需要额外步骤。请按照以下步骤操作：
+在 Linux 上，单独调整等效设置可能无法解决此问题。由于 Linux 处理套接字保持活动设置的方式不同，需要额外步骤。请按照以下步骤操作：
 
 1. 在 `/etc/sysctl.conf` 或相关配置文件中调整以下 Linux 内核参数：
 
@@ -208,7 +212,7 @@ Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https:/
  - `net.inet.tcp.always_keepalive`: 1
  - `net.ipv4.tcp_keepalive_intvl`: 75
  - `net.ipv4.tcp_keepalive_probes`: 9
- - `net.ipv4.tcp_keepalive_time`: 60 (您可能考虑将此值从默认的 300 秒降低)
+ - `net.ipv4.tcp_keepalive_time`: 60（您可以考虑将此值从默认的 300 秒降低）
 
 2. 修改内核参数后，通过运行以下命令应用更改：
 
@@ -216,7 +220,7 @@ Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https:/
 sudo sysctl -p
 ```
 
-在设置这些参数之后，您需要确保客户端在套接字上启用保持活动选项：
+设置这些设置后，您还需要确保您的客户端在套接字上启用了 Keep Alive 选项：
 
 ```java
 properties.setProperty("socket_keepalive", "true");

@@ -7,6 +7,7 @@
 
 import RedisFunction from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/table-functions/redis.md';
 
+
 # Redis 集成
 
 用户可以通过表函数与 Redis 集成。

@@ -1,6 +1,13 @@
+---
+'description': '返回时间序列在索引 `t` 处的累积指数衰减。'
+'sidebar_position': 134
+'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedCount'
+'title': 'exponentialTimeDecayedCount'
+---
+
 ## exponentialTimeDecayedCount {#exponentialtimedecayedcount}
 
-返回时间序列在索引 `t` 处的累积指数衰减。
+返回时间序列在时间索引 `t` 上的累积指数衰减。
 
 **语法**
 
@@ -10,19 +17,19 @@ exponentialTimeDecayedCount(x)(t)
 
 **参数**
 
-- `t` — 时间, [整数](../../../sql-reference/data-types/int-uint.md), [浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md), [日期时间](../../data-types/datetime.md), [日期时间64](../../data-types/datetime64.md)。
+- `t` — 时间。 [整数](../../../sql-reference/data-types/int-uint.md)， [浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)， [日期时间](../../data-types/datetime.md)， [日期时间64](../../data-types/datetime64.md)。
 
 **参数**
 
-- `x` — 半衰期. [整数](../../../sql-reference/data-types/int-uint.md), [浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)。
+- `x` — 半衰期。 [整数](../../../sql-reference/data-types/int-uint.md)， [浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)。
 
 **返回值**
 
-- 返回给定时间点的累积指数衰减. [Float64](../../data-types/float.md)。
+- 返回给定时间点上的累积指数衰减。 [Float64](../../data-types/float.md)。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT
@@ -40,7 +47,7 @@ FROM
 );
 ```
 
-结果:
+结果：
 
 ```response
     ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────────────────────┐

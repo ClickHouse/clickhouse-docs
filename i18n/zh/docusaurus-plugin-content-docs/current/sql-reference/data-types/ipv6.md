@@ -1,6 +1,14 @@
+---
+'description': 'ClickHouse 中 IPv6 数据类型的文档，用于将 IPv6 地址存储为 16 字节值'
+'sidebar_label': 'IPv6'
+'sidebar_position': 30
+'slug': '/sql-reference/data-types/ipv6'
+'title': 'IPv6'
+---
+
 ## IPv6 {#ipv6}
 
-IPv6 地址。以 16 字节存储为 UInt128 大端格式。
+IPv6 地址。以 UInt128 大端格式存储，占用 16 字节。
 
 ### 基本用法 {#basic-usage}
 
@@ -17,7 +25,7 @@ DESCRIBE TABLE hits;
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┘
 ```
 
-或者你可以使用 `IPv6` 域作为键：
+或者您可以使用 `IPv6` 域作为键：
 
 ```sql
 CREATE TABLE hits (url String, from IPv6) ENGINE = MergeTree() ORDER BY from;

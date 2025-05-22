@@ -1,11 +1,27 @@
+---
+'sidebar_label': 'Amazon Glue'
+'sidebar_position': 1
+'slug': '/integrations/glue'
+'description': '集成 ClickHouse 和 Amazon Glue'
+'keywords':
+- 'clickhouse'
+- 'amazon'
+- 'aws'
+- 'glue'
+- 'migrating'
+- 'data'
+'title': '将 Amazon Glue 与 ClickHouse 集成'
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 # 将 Amazon Glue 与 ClickHouse 集成
 
-[Amazon Glue](https://aws.amazon.com/glue/) 是由亚马逊网络服务（AWS）提供的完全托管的无服务器数据集成服务。它简化了发现、准备和转换数据以进行分析、机器学习和应用开发的过程。
+[Amazon Glue](https://aws.amazon.com/glue/) 是由亚马逊网络服务（AWS）提供的完全托管的无服务器数据集成服务。它简化了发现、准备和转换数据以进行分析、机器学习和应用开发的流程。
 
-虽然尚未提供 Glue ClickHouse 连接器，但可以利用官方 JDBC 连接器来连接和集成 ClickHouse：
+尽管尚无 Glue ClickHouse 连接器，但可以利用官方 JDBC 连接器与 ClickHouse 连接和集成：
 
 <Tabs>
 <TabItem value="Java" label="Java" default>

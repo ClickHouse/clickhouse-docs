@@ -1,8 +1,8 @@
 ---
-'title': '为 C 和 C++ 安装 chDB'
+'title': '安装 chDB 适用于 C 和 C++'
 'sidebar_label': 'C 和 C++'
 'slug': '/chdb/install/c'
-'description': '如何为 C 和 C++ 安装 chDB'
+'description': '如何安装 chDB 适用于 C 和 C++'
 'keywords':
 - 'chdb'
 - 'embedded'
@@ -11,9 +11,9 @@
 ---
 
 
-# 安装 chDB for C 和 C++
+# Installing chDB for C and C++
 
-## 需求 {#requirements}
+## Requirements {#requirements}
 
 安装 [libchdb](https://github.com/chdb-io/chdb):
 
@@ -22,7 +22,7 @@ curl -sL https://lib.chdb.io | bash
 ```
 
 
-## 用法 {#usage}
+## Usage {#usage}
 
 按照 [libchdb](https://github.com/chdb-io/chdb/blob/main/bindings.md) 的说明开始使用。
 

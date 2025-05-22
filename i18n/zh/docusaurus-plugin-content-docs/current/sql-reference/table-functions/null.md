@@ -1,7 +1,15 @@
+---
+'description': '使用 Null 表引擎创建指定结构的临时表。此功能用于方便的测试编写和演示。'
+'sidebar_label': 'null 函数'
+'sidebar_position': 140
+'slug': '/sql-reference/table-functions/null'
+'title': 'null'
+---
+
 
 # null 表函数
 
-创建一个具有指定结构的临时表，使用 [Null](../../engines/table-engines/special/null.md) 表引擎。根据 `Null` 引擎的特性，表的数据会被忽略，并且在查询执行后表会立即被删除。该函数用于方便测试编写和演示。
+创建一个具有指定结构的临时表，使用 [Null](../../engines/table-engines/special/null.md) 表引擎。根据 `Null` 引擎的属性，表数据被忽略，并且表在查询执行后立即被删除。该函数用于方便测试编写和演示。
 
 ## 语法 {#syntax}
 
@@ -15,7 +23,7 @@ null('structure')
 
 ## 返回值 {#returned_value}
 
-具有指定结构的临时 `Null` 引擎表。
+一个具有指定结构的临时 `Null` 引擎表。
 
 ## 示例 {#example}
 

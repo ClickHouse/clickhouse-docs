@@ -1,6 +1,14 @@
+---
+'description': 'ClickHouse 中 IPv4 数据类型的文档'
+'sidebar_label': 'IPv4'
+'sidebar_position': 28
+'slug': '/sql-reference/data-types/ipv4'
+'title': 'IPv4'
+---
+
 ## IPv4 {#ipv4}
 
-IPv4 地址。以 4 字节形式存储为 UInt32。
+IPv4 地址。以 UInt32 的形式存储在 4 字节中。
 
 ### 基本用法 {#basic-usage}
 
@@ -17,13 +25,13 @@ DESCRIBE TABLE hits;
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┘
 ```
 
-或者您可以使用 IPv4 域作为键：
+或者可以将 IPv4 域作为键：
 
 ```sql
 CREATE TABLE hits (url String, from IPv4) ENGINE = MergeTree() ORDER BY from;
 ```
 
-`IPv4` 域支持自定义输入格式作为 IPv4 字符串：
+`IPv4` 域支持自定义输入格式，如 IPv4 字符串：
 
 ```sql
 INSERT INTO hits (url, from) VALUES ('https://wikipedia.org', '116.253.40.133')('https://clickhouse.com', '183.247.232.58')('https://clickhouse.com/docs/en/', '116.106.34.242');
@@ -65,4 +73,4 @@ SELECT toIPv4('127.0.0.1') = toIPv6('::ffff:127.0.0.1');
 
 **另见**
 
-- [操作 IPv4 和 IPv6 地址的函数](../functions/ip-address-functions.md)
+- [处理 IPv4 和 IPv6 地址的函数](../functions/ip-address-functions.md)

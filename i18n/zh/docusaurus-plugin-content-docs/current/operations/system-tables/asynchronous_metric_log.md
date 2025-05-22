@@ -1,8 +1,17 @@
+---
+'description': '系统表包含 `system.asynchronous_metrics` 的历史值，这些值每个时间间隔（默认每秒一次）保存一次。'
+'keywords':
+- 'system table'
+- 'asynchronous_metric_log'
+'slug': '/operations/system-tables/asynchronous_metric_log'
+'title': 'system.asynchronous_metric_log'
+---
+
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-包含 `system.asynchronous_metrics` 的历史值，这些值每个时间间隔（默认每秒一次）保存一次。 默认启用。
+包含 `system.asynchronous_metrics` 的历史值，这些值每个时间间隔（默认一秒）保存一次。默认情况下启用。
 
 列：
 
@@ -46,6 +55,6 @@ value:      0
 
 **另见**
 
-- [asynchronous_metric_log 设置](../../operations/server-configuration-parameters/settings.md#asynchronous_metric_log) — 启用和禁用该设置。
-- [system.asynchronous_metrics](../system-tables/asynchronous_metrics.md) — 包含周期性在后台计算的指标。
-- [system.metric_log](../system-tables/metric_log.md) — 包含来自 `system.metrics` 和 `system.events` 表的指标值历史，定期刷新到磁盘。
+- [asynchronous_metric_log 设置](../../operations/server-configuration-parameters/settings.md#asynchronous_metric_log) — 启用和禁用设置。
+- [system.asynchronous_metrics](../system-tables/asynchronous_metrics.md) — 包含定期在后台计算的指标。
+- [system.metric_log](../system-tables/metric_log.md) — 包含来自表 `system.metrics` 和 `system.events` 的指标值历史，定期刷新到磁盘。

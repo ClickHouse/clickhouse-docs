@@ -1,3 +1,11 @@
+---
+'sidebar_label': '插件配置'
+'sidebar_position': 3
+'slug': '/integrations/grafana/config'
+'description': 'Grafana中ClickHouse数据源插件的配置选项'
+'title': '在Grafana中配置ClickHouse数据源'
+---
+
 import Image from '@theme/IdealImage';
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 import config_common from '@site/static/images/integrations/data-visualization/grafana/config_common.png';
@@ -9,15 +17,16 @@ import alias_table_config_example from '@site/static/images/integrations/data-vi
 import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+
 # 在 Grafana 中配置 ClickHouse 数据源
 
 <ClickHouseSupportedBadge/>
 
-修改配置的最简单方法是在 Grafana 用户界面上的插件配置页面进行修改，但数据源也可以通过 [YAML 文件进行配置](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)。
+修改配置的最简单方法是在 Grafana UI 的插件配置页面上进行，但数据源也可以通过 [YAML 文件](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources) 进行配置。
 
-本页面展示了 ClickHouse 插件可用配置选项的列表，以及为那些使用 YAML 进行数据源配置的配置代码片段。
+本页显示了 ClickHouse 插件中可用于配置的选项列表，以及为那些通过 YAML 进行数据源配置的配置片段。
 
-有关所有选项的快速概述，完整的配置选项列表可以在 [这里](#all-yaml-options) 找到。
+有关所有选项的快速概述，完整的配置选项列表可以在 [此处](#all-yaml-options) 找到。
 
 ## 常见设置 {#common-settings}
 
@@ -47,7 +56,7 @@ secureJsonData:
   tlsClientKey:  <string> # TLS client key
 ```
 
-请注意，从用户界面保存配置时，会添加 `version` 属性。这显示了保存配置时使用的插件版本。
+请注意，当从 UI 保存配置时，会添加一个 `version` 属性。这显示了保存配置时插件的版本。
 
 ### HTTP 协议 {#http-protocol}
 
@@ -57,7 +66,7 @@ secureJsonData:
 
 #### HTTP 路径 {#http-path}
 
-如果您的 HTTP 服务器使用不同的 URL 路径公开，可以在此处添加。
+如果您的 HTTP 服务器在不同的 URL 路径下暴露，可以在这里添加该路径。
 
 ```yaml
 jsonData:
@@ -65,18 +74,17 @@ jsonData:
   path: additional/path/example
 ```
 
-#### 自定义 HTTP 标头 {#custom-http-headers}
+#### 自定义 HTTP 头 {#custom-http-headers}
 
-您可以向发送到服务器的请求添加自定义标头。
+您可以向发送到服务器的请求添加自定义头。
 
-标头可以是纯文本或安全的。
-所有标头键以纯文本存储，而安全标头值则保存在安全配置中（类似于 `password` 字段）。
+头可以是纯文本或安全的。所有头键以纯文本形式存储，而安全头值则保存在安全配置中（类似于 `password` 字段）。
 
-:::warning 通过 HTTP 传输安全值
-尽管安全标头值安全地存储在配置中，但如果禁用安全连接，值仍将通过 HTTP 发送。
+:::warning 通过 HTTP 的安全值
+虽然安全头值在配置中安全存储，但如果禁用了安全连接，值仍会通过 HTTP 发送。
 :::
 
-纯文本/安全标头的示例 YAML：
+示例 YAML 用于纯/安全头：
 ```yaml
 jsonData:
   httpHeaders:
@@ -90,9 +98,9 @@ secureJsonData:
   secureHttpHeaders.X-Example-Secure-Header: secure header value
 ```
 
-## 附加设置 {#additional-settings}
+## 其他设置 {#additional-settings}
 
-这些附加设置是可选的。
+这些额外设置是可选的。
 
 <Image size="sm" img={config_additional} alt="示例附加设置" border />
 
@@ -109,20 +117,17 @@ jsonData:
 
 ### OpenTelemetry {#opentelemetry}
 
-OpenTelemetry (OTel) 已深度集成于插件中。
-OpenTelemetry 数据可以通过我们的 [导出插件](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) 导出到 ClickHouse。
-为了最佳使用，建议为 [日志](#logs) 和 [跟踪](#traces) 配置 OTel。
+OpenTelemetry (OTel) 在插件中深度集成。OpenTelemetry 数据可以通过我们的 [exporter plugin](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) 导出到 ClickHouse。为了最佳使用，建议将 OTel 配置用于 [日志](#logs) 和 [跟踪](#traces)。
 
-还需要配置这些默认值以启用 [数据链接](./query-builder.md#data-links)，这是一项启用强大可观察性工作流的功能。
+还需要配置这些默认值以启用 [数据链接](./query-builder.md#data-links)，该功能支持强大的可观察性工作流程。
 
 ### 日志 {#logs}
 
-为了加速 [日志查询构建](./query-builder.md#logs)，您可以设置默认数据库/表以及日志查询的列。这将预加载查询构建器，使其具有可运行的日志查询，从而使在探索页面浏览变得更快，增强可观察性。
+要加快 [日志的查询构建](./query-builder.md#logs)，您可以设置默认数据库/表以及日志查询的列。这将预先加载查询构建器，生成可运行的日志查询，这使得在探索页面浏览更快，实现可观察性。
 
-如果您使用 OpenTelemetry，您应该启用 "**使用 OTel**" 开关，并将 **默认日志表** 设置为 `otel_logs`。
-这将自动覆盖默认列，以使用所选的 OTel 架构版本。
+如果您正在使用 OpenTelemetry，则应启用 "**使用 OTel**" 切换，并将 **默认日志表** 设置为 `otel_logs`。这将自动覆盖默认列，以使用所选的 OTel 架构版本。
 
-虽然对日志不需要 OpenTelemetry，但使用单一的日志/跟踪数据集有助于通过 [数据链接](./query-builder.md#data-links) 启用更顺畅的可观察性工作流。
+虽然并不要求 OpenTelemetry 用于日志，但使用单一的日志/跟踪数据集有助于启用更流畅的可观察性工作流程和 [数据链接](./query-builder.md#data-links)。
 
 示例日志配置屏幕：
 <Image size="sm" img={config_logs} alt="日志配置" border />
@@ -145,11 +150,9 @@ jsonData:
 
 ### 跟踪 {#traces}
 
-为了加速 [跟踪查询构建](./query-builder.md#traces)，您可以设置默认数据库/表以及跟踪查询的列。这将预加载查询构建器，使其具有可运行的跟踪搜索查询，从而使在探索页面浏览变得更快，增强可观察性。
+要加快 [跟踪的查询构建](./query-builder.md#traces)，您可以设置默认数据库/表以及跟踪查询的列。这将预先加载查询构建器，生成可运行的跟踪搜索查询，这使得在探索页面浏览更快，实现可观察性。
 
-如果您使用 OpenTelemetry，您应该启用 "**使用 OTel**" 开关，并将 **默认跟踪表** 设置为 `otel_traces`。
-这将自动覆盖默认列，以使用所选的 OTel 架构版本。
-虽然 OpenTelemetry 不是必需的，但此功能在使用其跟踪的架构时效果最好。
+如果您正在使用 OpenTelemetry，则应启用 "**使用 OTel**" 切换，并将 **默认跟踪表** 设置为 `otel_traces`。这将自动覆盖默认列，以使用所选的 OTel 架构版本。尽管 OpenTelemetry 不是必需的，但在使用其架构进行跟踪时，此功能效果最佳。
 
 示例跟踪配置屏幕：
 <Image size="sm" img={config_traces} alt="跟踪配置" border />
@@ -179,19 +182,19 @@ jsonData:
 
 ### 列别名 {#column-aliases}
 
-列别名是一种以不同名称和类型查询数据的便捷方式。
-通过别名，您可以将嵌套架构扁平化，以便在 Grafana 中轻松选择。
+列别名是一种以不同名称和类型查询数据的便捷方式。通过别名，您可以将嵌套架构扁平化，以便在 Grafana 中轻松选择。
 
-如果您符合以下条件，别名可能对您相关：
-- 您了解您的架构及其大多数嵌套属性/类型
-- 您以 Map 类型存储数据
+如果：
+- 您了解您的架构及其大部分嵌套属性/类型
+- 您将数据存储在 Map 类型中
 - 您将 JSON 存储为字符串
-- 您经常对所选列应用函数进行转换
+- 您经常应用函数以转换所选择的列
 
-#### 表定义的别名列 {#table-defined-alias-columns}
+则别名化可能与您相关。
 
-ClickHouse 内置了列别名，并与 Grafana 默认兼容。
-别名列可以直接在表上定义。
+#### 表定义的 ALIAS 列 {#table-defined-alias-columns}
+
+ClickHouse 内置了列别名功能，并与 Grafana 开箱即用。别名列可以直接在表上定义。
 
 ```sql
 CREATE TABLE alias_example (
@@ -200,19 +203,15 @@ CREATE TABLE alias_example (
 )
 ```
 
-在上述示例中，我们创建了一个名为 `TimestampDate` 的别名，将纳秒时间戳转换为 `Date` 类型。
-该数据不会像第一列那样存储在磁盘上，而是在查询时计算。
-表定义的别名不会通过 `SELECT *` 返回，但可以在服务器设置中配置。
+在上面的示例中，我们创建了一个名为 `TimestampDate` 的别名，该别名将纳秒时间戳转换为 `Date` 类型。该数据不像第一列那样存储在磁盘上，而是在查询时计算。表定义的别名不会与 `SELECT *` 一起返回，但这可以在服务器设置中进行配置。
 
 有关更多信息，请阅读 [ALIAS](/sql-reference/statements/create/table#alias) 列类型的文档。
 
 #### 列别名表 {#column-alias-tables}
 
-默认情况下，Grafana 将根据 `DESC table` 的响应提供列建议。
-在某些情况下，您可能希望完全覆盖 Grafana 所看到的列。
-这有助于在选择列时隐藏您的架构，从而根据您表的复杂程度改善用户体验。
+默认情况下，Grafana 将根据 `DESC table` 的响应提供列建议。在某些情况下，您可能希望完全覆盖 Grafana 看到的列。这有助于在选择列时模糊化您的架构，这可以根据表的复杂性改善用户体验。
 
-与表定义的别名相比，这种方法的好处在于您可以轻松更新它们，而无需更改表。在某些架构中，这可能包含成千上万条条目，这可能会使底层表定义变得繁琐。这也允许隐藏您希望用户忽略的列。
+与表定义的别名相比，这种方法的好处是您可以轻松更新它们，而无需修改表。在某些架构中，这可能有成千上万条条目，这可能使底层的表定义变得杂乱。它还允许隐藏那些您希望用户忽略的列。
 
 Grafana 要求别名表具有以下列结构：
 ```sql
@@ -223,7 +222,7 @@ CREATE TABLE aliases (
 )
 ```
 
-以下是如何使用别名表复制 `ALIAS` 列的行为：
+以下是我们如何使用别名表复制 `ALIAS` 列的行为：
 ```sql
 CREATE TABLE example_table (
   TimestampNanos DateTime(9)
@@ -236,20 +235,19 @@ INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
 ('TimestampDate', 'toDate(TimestampNanos)', 'Date'); -- Add new column that converts TimestampNanos to a Date
 ```
 
-然后我们可以配置此表在 Grafana 中使用。请注意，名称可以是任意名称，甚至可以在一个单独的数据库中定义：
+然后我们可以配置这个表用于 Grafana。请注意，名称可以是任何名称，甚至可以在单独的数据库中定义：
 <Image size="md" img={alias_table_config_example} alt="示例别名表配置" border />
 
-现在 Grafana 将看到别名表的结果，而不是 `DESC example_table` 的结果：
+现在 Grafana 将看到别名表的结果，而不是来自 `DESC example_table` 的结果：
 <Image size="md" img={alias_table_select_example} alt="示例别名表选择" border />
 
-这两种类型的别名都可以用于执行复杂的类型转换或 JSON 字段提取。
+这两种类型的别名均可用于执行复杂的类型转换或 JSON 字段提取。
 
 ## 所有 YAML 选项 {#all-yaml-options}
 
-这些是插件提供的所有 YAML 配置选项。
-一些字段具有示例值，而其他字段则仅显示字段的类型。
+这些是插件提供的所有 YAML 配置选项。某些字段具有示例值，而另一些则仅显示字段的类型。
 
-有关使用 YAML 配置数据源的更多信息，请参见 [Grafana 文档](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)。
+有关通过 YAML 配置数据源的更多信息，请参阅 [Grafana 文档](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)。
 
 ```yaml
 datasources:

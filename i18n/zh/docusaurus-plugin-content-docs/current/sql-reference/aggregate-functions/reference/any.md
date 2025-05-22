@@ -1,15 +1,22 @@
+---
+'description': '选择列的第一个遇到的值。'
+'sidebar_position': 102
+'slug': '/sql-reference/aggregate-functions/reference/any'
+'title': 'any'
+---
+
 
 # any
 
-选择列中首次遇到的值。
+选择列中遇到的第一个值。
 
 :::warning
 由于查询可以以任意顺序执行，因此此函数的结果是非确定性的。
-如果您需要一个任意但确定的结果，请使用函数 [`min`](../reference/min.md) 或 [`max`](../reference/max.md)。
+如果您需要一个任意但确定的结果，请使用 [`min`](../reference/min.md) 或 [`max`](../reference/max.md) 函数。
 :::
 
 默认情况下，此函数永远不会返回 NULL，即忽略输入列中的 NULL 值。
-但是，如果使用 `RESPECT NULLS` 修饰符，该函数将返回第一个读取的值，无论是否为 NULL。
+但是，如果使用 `RESPECT NULLS` 修饰符，则该函数将返回第一个读取的值，无论是 NULL 还是非 NULL。
 
 **语法**
 
@@ -27,26 +34,26 @@ any(column) [RESPECT NULLS]
 - `anyValueRespectNulls`, `any_value_respect_nulls`
 
 **参数**
-- `column`：列名称。
+- `column`: 列的名称。
 
 **返回值**
 
-首次遇到的值。
+遇到的第一个值。
 
 :::note
-该函数的返回类型与输入类型相同，LowCardinality 类型会被丢弃。
-这意味着如果没有任何行作为输入，它将返回该类型的默认值（整数为 0，Nullable() 列为 Null）。
+函数的返回类型与输入相同，LowCardinality 除外，这部分会被丢弃。
+这意味着如果给定输入中没有行，则它会返回该类型的默认值（整数为 0，或 Nullable() 列为 Null）。
 您可以使用 `-OrNull` [组合器](../../../sql-reference/aggregate-functions/combinators.md) 来修改此行为。
 :::
 
 **实现细节**
 
-在某些情况下，您可以依赖执行顺序。
-这适用于 `SELECT` 来自使用 `ORDER BY` 的子查询的情况。
+在某些情况下，您可以依赖执行的顺序。
+这适用于 `SELECT` 语句来自使用 `ORDER BY` 的子查询的情况。
 
-当 `SELECT` 查询具有 `GROUP BY` 子句或至少一个聚合函数时，ClickHouse（与 MySQL 相比）要求 `SELECT`、`HAVING` 和 `ORDER BY` 子句中的所有表达式必须从键或聚合函数计算得出。
-换句话说，从表中选择的每一列必须在键或者聚合函数内部使用。
-要获得类似 MySQL 的行为，您可以将其他列放入 `any` 聚合函数中。
+当 `SELECT` 查询具有 `GROUP BY` 子句或至少一个聚合函数时，ClickHouse（与 MySQL 相比）要求 `SELECT`、`HAVING` 和 `ORDER BY` 子句中的所有表达式都必须从键或聚合函数中计算得出。
+换句话说，从表中选择的每一列必须在键中使用或在聚合函数内使用。
+要获得与 MySQL 相同的行为，您可以将其他列放入 `any` 聚合函数中。
 
 **示例**
 

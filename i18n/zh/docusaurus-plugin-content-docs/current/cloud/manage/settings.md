@@ -8,12 +8,13 @@
 import Image from '@theme/IdealImage';
 import cloud_settings_sidebar from '@site/static/images/cloud/manage/cloud-settings-sidebar.png';
 
+
 # 配置设置
 
-要为特定的 [用户](/operations/access-rights#user-account-management) 或 [角色](/operations/access-rights#role-management) 指定您的 ClickHouse Cloud 服务的设置，您必须使用 [SQL 驱动的设置配置文件](/operations/access-rights#settings-profiles-management)。应用设置配置文件确保您配置的设置能够持续存在，即使在您的服务停止、闲置或升级时。要了解有关设置配置文件的更多信息，请参见 [此页面](/operations/settings/settings-profiles.md)。
+要为特定的 [用户](/operations/access-rights#user-account-management) 或 [角色](/operations/access-rights#role-management) 指定 ClickHouse Cloud 服务的设置，您必须使用 [基于 SQL 的设置轮廓](/operations/access-rights#settings-profiles-management)。应用设置轮廓可确保您配置的设置保持有效，即使当您的服务停止、闲置或升级时。要了解有关设置轮廓的更多信息，请参见 [此页面](/operations/settings/settings-profiles.md)。
 
-请注意，基于 XML 的设置配置文件和 [配置文件](/operations/configuration-files.md) 当前不支持 ClickHouse Cloud。
+请注意，当前不支持基于 XML 的设置轮廓和 [配置文件](/operations/configuration-files.md) 用于 ClickHouse Cloud。
 
-要了解可以为您的 ClickHouse Cloud 服务指定的设置，请按类别查看 [我们文档](/operations/settings) 中的所有可能设置。
+要了解您可以为 ClickHouse Cloud 服务指定的设置，您可以在 [我们的文档](/operations/settings) 中查看按类别列出的所有可能设置。
 
 <Image img={cloud_settings_sidebar} size="sm" alt="Cloud settings sidebar" border/>

@@ -1,12 +1,19 @@
-数据集包含 0.5 万亿条记录。
+---
+'description': '探索包含 0.5 万亿条记录的 WikiStat 数据集。'
+'sidebar_label': 'WikiStat'
+'slug': '/getting-started/example-datasets/wikistat'
+'title': 'WikiStat'
+---
 
-请观看 FOSDEM 2023 的视频： https://www.youtube.com/watch?v=JlcI2Vfz_uk
+该数据集包含 0.5 万亿条记录。
 
-以及演示文稿： https://presentations.clickhouse.com/fosdem2023/
+请观看 FOSDEM 2023 的视频: https://www.youtube.com/watch?v=JlcI2Vfz_uk
 
-数据源： https://dumps.wikimedia.org/other/pageviews/
+以及演示文稿: https://presentations.clickhouse.com/fosdem2023/
 
-获取链接列表：
+数据来源: https://dumps.wikimedia.org/other/pageviews/
+
+获取链接列表:
 ```shell
 for i in {2015..2023}; do
   for j in {01..12}; do
@@ -17,15 +24,15 @@ for i in {2015..2023}; do
 done | sort | uniq | tee links.txt
 ```
 
-下载数据：
+下载数据:
 ```shell
 sed -r 's!pageviews-([0-9]{4})([0-9]{2})[0-9]{2}-[0-9]+\.gz!https://dumps.wikimedia.org/other/pageviews/\1/\1-\2/\0!' \
   links.txt | xargs -P3 wget --continue
 ```
 
-（这将花费大约 3 天）
+（大约需要 3 天时间）
 
-创建一个表：
+创建表:
 
 ```sql
 CREATE TABLE wikistat
@@ -40,7 +47,7 @@ ENGINE = MergeTree
 ORDER BY (path, time);
 ```
 
-加载数据：
+加载数据:
 
 ```shell
 clickhouse-local --query "
@@ -57,7 +64,7 @@ clickhouse-local --query "
 " | clickhouse-client --query "INSERT INTO wikistat FORMAT Native"
 ```
 
-或者加载清理后的数据：
+或者加载清理后的数据:
 
 ```sql
 INSERT INTO wikistat WITH

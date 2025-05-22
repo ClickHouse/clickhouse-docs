@@ -24,7 +24,7 @@ curl -sL https://lib.chdb.io | bash
 
 ## Install {#install}
 
-参见: [chdb-bun](https://github.com/chdb-io/chdb-bun)
+请参见: [chdb-bun](https://github.com/chdb-io/chdb-bun)
 
 ## GitHub repository {#github-repository}
 

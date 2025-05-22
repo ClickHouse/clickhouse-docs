@@ -1,27 +1,34 @@
+---
+'description': 'Documentation for Introspection Functions'
+'sidebar_label': 'Introspection'
+'sidebar_position': 100
+'slug': '/sql-reference/functions/introspection'
+'title': '内省函数'
+---
+
 
 # 反射函数
 
 您可以使用本章中描述的函数来反射 [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) 和 [DWARF](https://en.wikipedia.org/wiki/DWARF) 进行查询分析。
 
 :::note    
-这些函数较慢，可能会引发安全问题。
+这些函数比较慢，并且可能涉及安全性考虑。
 :::
 
-为正确操作反射函数：
+为了正确操作反射函数：
 
-- 安装 `clickhouse-common-static-dbg` 软件包。
-
+- 安装 `clickhouse-common-static-dbg` 包。
 - 将 [allow_introspection_functions](../../operations/settings/settings.md#allow_introspection_functions) 设置为 1。
 
         出于安全原因，反射函数默认是禁用的。
 
-ClickHouse 将分析器报告保存到 [trace_log](/operations/system-tables/trace_log) 系统表中。确保该表和分析器配置正确。
+ClickHouse 将分析器报告保存到 [trace_log](/operations/system-tables/trace_log) 系统表中。请确保表和分析器配置正确。
 
 ## addressToLine {#addresstoline}
 
 将 ClickHouse 服务器进程中的虚拟内存地址转换为 ClickHouse 源代码中的文件名和行号。
 
-如果您使用的是官方 ClickHouse 软件包，您需要安装 `clickhouse-common-static-dbg` 软件包。
+如果使用官方的 ClickHouse 包，则需要安装 `clickhouse-common-static-dbg` 包。
 
 **语法**
 
@@ -31,13 +38,13 @@ addressToLine(address_of_binary_instruction)
 
 **参数**
 
-- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — 运行进程中指令的地址。
+- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — 正在运行的进程中的指令地址。
 
 **返回值**
 
-- 源代码文件名和行号，以冒号分隔。
-        例如，`/build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199`，其中 `199` 是行号。
-- 如果该函数无法找到调试信息，则返回二进制名称。
+- 源代码文件名和在此文件中的行号，以冒号分隔。
+        例如 `/build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199`，其中 `199` 是行号。
+- 如果函数找不到调试信息，则返回二进制的名称。
 - 如果地址无效，则返回空字符串。
 
 类型: [String](../../sql-reference/data-types/string.md)。
@@ -50,7 +57,7 @@ addressToLine(address_of_binary_instruction)
 SET allow_introspection_functions=1;
 ```
 
-从 `trace_log` 系统表中选择第一行：
+从 `trace_log` 系统表中选择第一条记录：
 
 ```sql
 SELECT * FROM system.trace_log LIMIT 1 \G;
@@ -82,7 +89,7 @@ Row 1:
 addressToLine(94784076370703): /build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199
 ```
 
-对整个堆栈跟踪应用函数：
+将该函数应用于整个堆栈跟踪：
 
 ```sql
 SELECT
@@ -92,7 +99,7 @@ LIMIT 1
 \G
 ```
 
-[小时前](https://en.wikipedia.org/wiki/Hour) 函数允许通过 `addressToLine` 函数处理 `trace` 数组的每个单独元素。您在输出的 `trace_source_code_lines` 列中看到的就是该处理的结果。
+[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 函数允许通过 `addressToLine` 函数处理 `trace` 数组中的每个单独元素。您可以在输出的 `trace_source_code_lines` 列中看到这一处理结果。
 
 ```text
 Row 1:
@@ -109,10 +116,10 @@ trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 
 ## addressToLineWithInlines {#addresstolinewithinlines}
 
-与 `addressToLine` 类似，但返回包含所有内联函数的数组。因此，它的速度比 `addressToLine` 慢。
+与 `addressToLine` 类似，但返回一个数组，其中包含所有内联函数。因此，它比 `addressToLine` 更慢。
 
 :::note
-如果您使用官方 ClickHouse 软件包，您需要安装 `clickhouse-common-static-dbg` 软件包。
+如果使用官方的 ClickHouse 包，则需要安装 `clickhouse-common-static-dbg` 包。
 :::
 
 **语法**
@@ -123,11 +130,11 @@ addressToLineWithInlines(address_of_binary_instruction)
 
 **参数**
 
-- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — 运行进程中指令的地址。
+- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — 正在运行的进程中的指令地址。
 
 **返回值**
 
-- 一个数组，其第一个元素是以冒号分隔的源代码文件名和行号。从第二个元素开始，列出内联函数的源代码文件名、行号和函数名。如果该函数无法找到调试信息，则返回一个包含二进制名称的单一元素数组；如果地址无效，则返回空数组。[Array(String)](../data-types/array.md)。
+- 一个数组，第一个元素是源代码文件名和行号，以冒号分隔。从第二个元素开始，列出内联函数的源代码文件名、行号和函数名。如果函数找不到调试信息，则返回一个仅包含二进制名称的数组，否则如果地址无效，则返回空数组。 [Array(String)](../data-types/array.md)。
 
 **示例**
 
@@ -137,7 +144,7 @@ addressToLineWithInlines(address_of_binary_instruction)
 SET allow_introspection_functions=1;
 ```
 
-对地址应用函数。
+将该函数应用于地址。
 
 ```sql
 SELECT addressToLineWithInlines(531055181::UInt64);
@@ -149,7 +156,7 @@ SELECT addressToLineWithInlines(531055181::UInt64);
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-对整个堆栈跟踪应用函数：
+将该函数应用于整个堆栈跟踪：
 
 ```sql
 SELECT
@@ -159,7 +166,7 @@ WHERE
     query_id = '5e173544-2020-45de-b645-5deebe2aae54';
 ```
 
-[arrayJoin](/sql-reference/functions/array-join) 函数将数组分割成行。
+[ arrayJoin](/sql-reference/functions/array-join) 函数会将数组拆分为行。
 
 ```text
 ┌────────ta─┬─addressToLineWithInlines(arrayJoin(trace))───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -207,6 +214,7 @@ WHERE
 
 ```
 
+
 ## addressToSymbol {#addresstosymbol}
 
 将 ClickHouse 服务器进程中的虚拟内存地址转换为 ClickHouse 对象文件中的符号。
@@ -219,12 +227,12 @@ addressToSymbol(address_of_binary_instruction)
 
 **参数**
 
-- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — 运行进程中指令的地址。
+- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — 正在运行的进程中的指令地址。
 
 **返回值**
 
-- 来自 ClickHouse 对象文件的符号。[String](../data-types/string.md)。
-- 如果地址无效，返回空字符串。[String](../data-types/string.md)。
+- ClickHouse 对象文件中的符号。 [String](../data-types/string.md)。
+- 如果地址无效，则返回空字符串。 [String](../data-types/string.md)。
 
 **示例**
 
@@ -234,7 +242,7 @@ addressToSymbol(address_of_binary_instruction)
 SET allow_introspection_functions=1;
 ```
 
-从 `trace_log` 系统表中选择第一行：
+从 `trace_log` 系统表中选择第一条记录：
 
 ```sql
 SELECT * FROM system.trace_log LIMIT 1 \G;
@@ -266,7 +274,7 @@ Row 1:
 addressToSymbol(94138803686098): _ZNK2DB24IAggregateFunctionHelperINS_20AggregateFunctionSumImmNS_24AggregateFunctionSumDataImEEEEE19addBatchSinglePlaceEmPcPPKNS_7IColumnEPNS_5ArenaE
 ```
 
-对整个堆栈跟踪应用函数：
+将该函数应用于整个堆栈跟踪：
 
 ```sql
 SELECT
@@ -276,7 +284,7 @@ LIMIT 1
 \G
 ```
 
-[arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 函数允许通过 `addressToSymbols` 函数处理 `trace` 数组的每个单独元素。您在输出的 `trace_symbols` 列中看到的就是该处理的结果。
+[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 函数允许通过 `addressToSymbols` 函数处理 `trace` 数组中的每个单独元素。您可以在输出的 `trace_symbols` 列中看到这一处理结果。
 
 ```text
 Row 1:
@@ -304,7 +312,7 @@ clone
 
 ## demangle {#demangle}
 
-将您可以使用 [addressToSymbol](#addresstosymbol) 函数获取的符号转换为 C++ 函数名。
+将您可以使用 [addressToSymbol](#addresstosymbol) 函数获取的符号转换为 C++ 函数名称。
 
 **语法**
 
@@ -314,11 +322,11 @@ demangle(symbol)
 
 **参数**
 
-- `symbol` ([String](../data-types/string.md)) — 来自对象文件的符号。
+- `symbol` ([String](../data-types/string.md)) — 对象文件中的符号。
 
 **返回值**
 
-- C++ 函数的名称，如果符号无效，则返回空字符串。[String](../data-types/string.md)。
+- C++ 函数的名称，如果符号无效，则返回空字符串。 [String](../data-types/string.md)。
 
 **示例**
 
@@ -328,7 +336,7 @@ demangle(symbol)
 SET allow_introspection_functions=1;
 ```
 
-从 `trace_log` 系统表中选择第一行：
+从 `trace_log` 系统表中选择第一条记录：
 
 ```sql
 SELECT * FROM system.trace_log LIMIT 1 \G;
@@ -360,7 +368,7 @@ Row 1:
 demangle(addressToSymbol(94138803686098)): DB::IAggregateFunctionHelper<DB::AggregateFunctionSum<unsigned long, unsigned long, DB::AggregateFunctionSumData<unsigned long> > >::addBatchSinglePlace(unsigned long, char*, DB::IColumn const**, DB::Arena*) const
 ```
 
-对整个堆栈跟踪应用函数：
+将该函数应用于整个堆栈跟踪：
 
 ```sql
 SELECT
@@ -370,7 +378,7 @@ LIMIT 1
 \G
 ```
 
-[arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 函数允许通过 `demangle` 函数处理 `trace` 数组的每个单独元素。您在输出的 `trace_functions` 列中看到的就是该处理的结果。
+[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 函数允许通过 `demangle` 函数处理 `trace` 数组中的每个单独元素。您可以在输出的 `trace_functions` 列中看到这一处理结果。
 
 ```text
 Row 1:
@@ -398,7 +406,7 @@ clone
 
 ## tid {#tid}
 
-返回当前处理的 [Block](/development/architecture/#block) 的线程 ID。
+返回当前 [Block](/development/architecture/#block) 正在处理的线程的 ID。
 
 **语法**
 
@@ -408,7 +416,7 @@ tid()
 
 **返回值**
 
-- 当前线程 ID。[Uint64](/sql-reference/data-types/int-uint#integer-ranges)。
+- 当前线程 ID。 [Uint64](/sql-reference/data-types/int-uint#integer-ranges)。
 
 **示例**
 
@@ -428,7 +436,7 @@ SELECT tid();
 
 ## logTrace {#logtrace}
 
-为每个 [Block](/development/architecture/#block) 发送追踪日志消息到服务器日志。
+为每个 [Block](/development/architecture/#block) 向服务器日志发出追踪日志消息。
 
 **语法**
 
@@ -438,11 +446,11 @@ logTrace('message')
 
 **参数**
 
-- `message` — 发送到服务器日志的消息。[String](/sql-reference/data-types/string)。
+- `message` — 发送到服务器日志的消息。 [String](/sql-reference/data-types/string)。
 
 **返回值**
 
-- 总是返回 0。
+- 始终返回 0。
 
 **示例**
 

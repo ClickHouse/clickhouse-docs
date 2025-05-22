@@ -1,3 +1,12 @@
+---
+'description': '系统表包含关于在之前的 ClickHouse 版本中设置更改的信息。'
+'keywords':
+- 'system table'
+- 'settings_changes'
+'slug': '/operations/system-tables/settings_changes'
+'title': 'system.settings_changes'
+---
+
 
 # system.settings_changes
 
@@ -5,9 +14,9 @@
 
 列：
 
-- `type` ([Enum](../../sql-reference/data-types/enum.md)) - 设置类型：`Core`（一般/查询设置），`MergeTree`。
-- `version` ([String](../../sql-reference/data-types/string.md)) — 设置更改时的 ClickHouse 版本
-- `changes` ([Array](../../sql-reference/data-types/array.md) of [Tuple](../../sql-reference/data-types/tuple.md)) — 设置更改的描述：（设置名称，先前值，新值，变更原因）
+- `type` ([Enum](../../sql-reference/data-types/enum.md)) - 设置类型：`Core` （一般/查询设置），`MergeTree`。
+- `version` ([String](../../sql-reference/data-types/string.md)) — 更改设置的 ClickHouse 版本
+- `changes` ([Array](../../sql-reference/data-types/array.md) of [Tuple](../../sql-reference/data-types/tuple.md)) — 设置更改的描述： (设置名称， 以前的值， 新的值， 更改原因)
 
 **示例**
 

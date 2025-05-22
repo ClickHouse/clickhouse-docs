@@ -1,6 +1,6 @@
 ---
-'description': '实现 IN 操作符的函数的文档'
-'sidebar_label': 'IN 操作符'
+'description': '关于实现 IN 操作符的函数的文档'
+'sidebar_label': 'IN Operator'
 'sidebar_position': 90
 'slug': '/sql-reference/functions/in-functions'
 'title': '实现 IN 操作符的函数'

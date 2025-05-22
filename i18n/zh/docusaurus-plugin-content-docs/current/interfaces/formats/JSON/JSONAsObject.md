@@ -1,8 +1,19 @@
+---
+'alias': []
+'description': 'JSONAsObject 格式的文档'
+'input_format': true
+'keywords':
+- 'JSONAsObject'
+'output_format': false
+'slug': '/interfaces/formats/JSONAsObject'
+'title': 'JSONAsObject'
+---
+
 ## 描述 {#description}
 
-在此格式中，单个 JSON 对象被解释为单个 [JSON](/sql-reference/data-types/newjson.md) 值。如果输入包含多个 JSON 对象（以逗号分隔），则它们被解释为单独的行。如果输入数据被方括号括起来，则它被解释为 JSON 数组。
+在这种格式中，单个 JSON 对象被解释为单个 [JSON](/sql-reference/data-types/newjson.md) 值。如果输入包含多个 JSON 对象（用逗号分隔），则它们被解释为单独的行。如果输入数据用方括号括起来，则被解释为 JSON 数组。
 
-此格式只能解析为单字段类型为 [JSON](/sql-reference/data-types/newjson.md) 的表。其余列必须设置为 [`DEFAULT`](/sql-reference/statements/create/table.md/#default) 或 [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view)。
+此格式仅能解析为具有单个 [JSON](/sql-reference/data-types/newjson.md) 类型字段的表。其余列必须设置为 [`DEFAULT`](/sql-reference/statements/create/table.md/#default) 或 [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view)。
 
 ## 示例用法 {#example-usage}
 
@@ -21,7 +32,7 @@ SELECT * FROM json_as_object FORMAT JSONEachRow;
 {"json":{"any json stucture":"1"}}
 ```
 
-### JSON 对象数组 {#an-array-of-json-objects}
+### JSON 对象的数组 {#an-array-of-json-objects}
 
 ```sql title="Query"
 SET enable_json_type = 1;
@@ -35,7 +46,7 @@ SELECT * FROM json_square_brackets FORMAT JSONEachRow;
 {"field":{"id":"2","name":"name2"}}
 ```
 
-### 默认值列 {#columns-with-default-values}
+### 带默认值的列 {#columns-with-default-values}
 
 ```sql title="Query"
 SET enable_json_type = 1;

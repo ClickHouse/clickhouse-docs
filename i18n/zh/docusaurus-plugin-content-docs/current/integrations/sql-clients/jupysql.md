@@ -1,17 +1,26 @@
+---
+'slug': '/integrations/jupysql'
+'sidebar_label': 'Jupyter 笔记本'
+'description': 'JupySQL 是一个用于 Jupyter 的多平台 DATABASE 工具。'
+'title': '使用 JupySQL 与 ClickHouse'
+---
+
 import Image from '@theme/IdealImage';
 import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql-plot-1.png';
 import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql-plot-2.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+
 # 使用 JupySQL 与 ClickHouse
 
 <CommunityMaintainedBadge/>
 
-在本指南中，我们将展示如何与 ClickHouse 集成。
+在本指南中，我们将展示与 ClickHouse 的集成。
 
-我们将使用 JupySQL 在 ClickHouse 上运行查询。数据加载完成后，我们将通过 SQL 绘图来可视化数据。
+我们将使用 JupySQL 运行 ClickHouse 上的查询。
+数据加载完成后，我们将通过 SQL 绘图对其进行可视化。
 
-JupySQL 与 ClickHouse 之间的集成得益于 clickhouse_sqlalchemy 库的使用。该库允许两个系统之间的轻松通信，并使用户能够连接到 ClickHouse 并传递 SQL 方言。连接后，用户可以直接从 ClickHouse 原生 UI 或者 Jupyter notebook 中运行 SQL 查询。
+JupySQL 与 ClickHouse 之间的集成得益于 clickhouse_sqlalchemy 库。该库允许这两个系统之间的轻松通信，使用户能够连接到 ClickHouse 并传递 SQL 语法。一旦连接成功，用户可以直接从 Clickhouse 原生用户界面或 Jupyter 笔记本中运行 SQL 查询。
 
 ```python
 
@@ -19,7 +28,7 @@ JupySQL 与 ClickHouse 之间的集成得益于 clickhouse_sqlalchemy 库的使�
 %pip install --quiet jupysql clickhouse_sqlalchemy
 ```
 
-    注意：您可能需要重启内核以使用已更新的包。
+    注意：您可能需要重新启动内核以使用更新的包。
 
 ```python
 import pandas as pd
@@ -31,9 +40,9 @@ from sklearn_evaluation import plot
 %config SqlMagic.autocommit=False
 ```
 
-**您需要确保您的 ClickHouse 正在运行并且可访问用于后续阶段。您可以使用本地版本或云版本。**
+**您需要确保您的 Clickhouse 正在运行并可访问，以便进行下一步。您可以使用本地版本或云版本。**
 
-**注意：** 您需要根据您尝试连接的实例类型 (url, user, password) 来调整连接字符串。在下面的示例中，我们使用了一个本地实例。要了解更多信息，请查看[本指南](/getting-started/quick-start)。
+**注意：** 您需要根据您要连接的实例类型调整连接字符串（url、用户、密码）。在下面的示例中，我们使用了本地实例。要了解更多信息，请查看 [本指南](/getting-started/quick-start)。
 
 ```python
 %sql clickhouse://default:@localhost:8123/default
@@ -358,7 +367,7 @@ WHERE trip_distance < 6.3
 ```response
 <AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
 ```
-<Image img={jupysql_plot_1} size="md" alt="显示短途旅行数据集的旅行距离分布的直方图，包含 10 个分箱" border />
+<Image img={jupysql_plot_1} size="md" alt="直方图显示短途数据集中的行程距离分布，分为 10 个区间" border />
 
 ```python
 ax = %sqlplot histogram --table short-trips --column trip_distance --bins 50 --with short-trips
@@ -367,4 +376,4 @@ ax.set_title("Trip distance from trips < 6.3")
 _ = ax.set_xlabel("Trip distance")
 ```
 
-<Image img={jupysql_plot_2} size="md" alt="显示旅行距离分布的直方图，包含 50 个分箱和网格，标题为 '来自小于 6.3 的旅行的旅行距离'" border />
+<Image img={jupysql_plot_2} size="md" alt="直方图显示行程距离分布，分为 50 个区间和网格，标题为'Trip distance from trips < 6.3'" border />

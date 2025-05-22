@@ -1,17 +1,23 @@
+---
+'description': '配置 ClickHouse 的 LDAP 认证指南'
+'slug': '/operations/external-authenticators/ldap'
+'title': 'LDAP'
+---
+
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-LDAP 服务器可用于验证 ClickHouse 用户。实现这一点有两种不同的方法：
+LDAP 服务器可以用来验证 ClickHouse 用户。有两种不同的方法可以实现这一点：
 
-- 将 LDAP 用作现有用户的外部身份验证器，这些用户在 `users.xml` 中定义或在本地访问控制路径中定义。
-- 将 LDAP 用作外部用户目录，并允许在 LDAP 服务器上存在的本地未定义用户进行身份验证。
+- 使用 LDAP 作为现有用户的外部验证器，这些用户定义在 `users.xml` 或本地访问控制路径中。
+- 使用 LDAP 作为外部用户目录，并允许在 LDAP 服务器上存在的本地未定义用户进行身份验证。
 
 对于这两种方法，必须在 ClickHouse 配置中定义一个内部命名的 LDAP 服务器，以便配置的其他部分可以引用它。
 
 ## LDAP 服务器定义 {#ldap-server-definition}
 
-要定义 LDAP 服务器，必须在 `config.xml` 中添加 `ldap_servers` 部分。
+要定义 LDAP 服务器，您必须在 `config.xml` 中添加 `ldap_servers` 部分。
 
 **示例**
 
@@ -50,44 +56,44 @@ LDAP 服务器可用于验证 ClickHouse 用户。实现这一点有两种不同
 </clickhouse>
 ```
 
-请注意，您可以在 `ldap_servers` 部分内使用不同的名称定义多个 LDAP 服务器。
+请注意，您可以在 `ldap_servers` 部分中使用不同的名称定义多个 LDAP 服务器。
 
 **参数**
 
-- `host` — LDAP 服务器主机名或 IP，此参数为必填项，不能为空。
-- `port` — LDAP 服务器端口，如果 `enable_tls` 设置为 `true`，默认为 `636`，否则为 `389`。
-- `bind_dn` — 用于构造要绑定的 DN 的模板。
-    - 每次身份验证尝试时，结果 DN 将通过将模板中所有 `{user_name}` 子字符串替换为实际用户名来构造。
-- `user_dn_detection` — 具有 LDAP 搜索参数的部分，用于检测绑定用户的实际用户 DN。
-    - 当服务器为 Active Directory 时，这主要用于后续角色映射中的搜索过滤器。生成的用户 DN 将在允许的地方替换 `{user_dn}` 子字符串。默认情况下，用户 DN 设置为等于绑定 DN，但一旦进行了搜索，它将使用实际检测到的用户 DN 值进行更新。
-        - `base_dn` — 用于构造 LDAP 搜索的基 DN 的模板。
-            - 每次进行 LDAP 搜索时，结果 DN 将通过将模板中所有 `{user_name}` 和 `{bind_dn}` 子字符串替换为实际用户名和绑定 DN 来构造。
+- `host` — LDAP 服务器的主机名或 IP，此参数是必需的，不能为空。
+- `port` — LDAP 服务器端口，默认为 `636`（如果 `enable_tls` 设置为 `true`），否则为 `389`。
+- `bind_dn` — 用于构造绑定所需 DN 的模板。
+    - 结果 DN 将通过在每次身份验证尝试中用实际用户名替换模板中的所有 `{user_name}` 子字符串来构造。
+- `user_dn_detection` — 包含用于检测已绑定用户实际用户 DN 的 LDAP 搜索参数的部分。
+    - 这主要用于在服务器为 Active Directory 时的搜索过滤器中的进一步角色映射。结果用户 DN 将在替换 `{user_dn}` 子字符串时使用。默认情况下，用户 DN 被设置为等于绑定 DN，但一旦执行搜索，它将被更新为实际检测到的用户 DN 值。
+        - `base_dn` — 用于构造 LDAP 搜索基本 DN 的模板。
+            - 结果的 DN 将通过在 LDAP 搜索期间用实际用户名和绑定 DN 替换模板中所有的 `{user_name}` 和 `{bind_dn}` 子字符串来构造。
         - `scope` — LDAP 搜索的范围。
-            - 接受的值有：`base`，`one_level`，`children`，`subtree`（默认）。
+            - 可接受的值为：`base`，`one_level`，`children`，`subtree`（默认）。
         - `search_filter` — 用于构造 LDAP 搜索的搜索过滤器的模板。
-            - 每次进行 LDAP 搜索时，结果过滤器将通过将模板中所有 `{user_name}`，`{bind_dn}`，和 `{base_dn}` 子字符串替换为实际用户名、绑定 DN 和基 DN 来构造。
-            - 请注意，特殊字符必须在 XML 中正确转义。
-- `verification_cooldown` — 成功绑定尝试后的一段时间（以秒为单位），在此期间用户将被视为对所有连续请求成功通过身份验证，而无需联系 LDAP 服务器。
-    - 指定 `0`（默认）以禁用缓存，强制每次身份验证请求都联系 LDAP 服务器。
-- `enable_tls` — 触发使用 LDAP 服务器的安全连接的标志。
-    - 对于明文 `ldap://` 协议（不推荐）指定 `no`。
-    - 对于使用 SSL/TLS 的 LDAP `ldaps://` 协议（推荐，默认）指定 `yes`。
-    - 对于传统的 StartTLS 协议（明文 `ldap://` 协议，升级到 TLS）指定 `starttls`。
+            - 结果过滤器将通过在 LDAP 搜索期间用实际用户名、绑定 DN 和基础 DN 替换模板中所有的 `{user_name}`、`{bind_dn}` 和 `{base_dn}` 子字符串来构造。
+            - 注意，特殊字符必须在 XML 中正确转义。
+- `verification_cooldown` — 在成功绑定尝试之后的一段时间（以秒为单位），在此时间段内，用户将被视为已成功验证，所有后续请求无需联系 LDAP 服务器。
+    - 指定 `0`（默认值）以禁用缓存，并强制每个身份验证请求都联系 LDAP 服务器。
+- `enable_tls` — 触发使用与 LDAP 服务器的安全连接的标志。
+    - 对于纯文本的 `ldap://` 协议，请指定 `no`（不推荐）。
+    - 对于 SSL/TLS `ldaps://` 协议，请指定 `yes`（推荐，默认）。
+    - 对于旧版 StartTLS 协议（纯文本 `ldap://` 协议，升级为 TLS），请指定 `starttls`。
 - `tls_minimum_protocol_version` — SSL/TLS 的最低协议版本。
-    - 接受的值有：`ssl2`，`ssl3`，`tls1.0`，`tls1.1`，`tls1.2`（默认）。
+    - 可接受的值为：`ssl2`，`ssl3`，`tls1.0`，`tls1.1`，`tls1.2`（默认）。
 - `tls_require_cert` — SSL/TLS 对等证书验证行为。
-    - 接受的值有：`never`，`allow`，`try`，`demand`（默认）。
+    - 可接受的值为：`never`，`allow`，`try`，`demand`（默认）。
 - `tls_cert_file` — 证书文件的路径。
 - `tls_key_file` — 证书密钥文件的路径。
 - `tls_ca_cert_file` — CA 证书文件的路径。
 - `tls_ca_cert_dir` — 包含 CA 证书的目录路径。
-- `tls_cipher_suite` — 允许的加密套件（以 OpenSSL 表示法）。
+- `tls_cipher_suite` — 允许的密码套件（以 OpenSSL 记法表示）。
 
-## LDAP 外部身份验证器 {#ldap-external-authenticator}
+## LDAP 外部验证器 {#ldap-external-authenticator}
 
-可以将远程 LDAP 服务器用作验证本地定义用户（在 `users.xml` 中定义或在本地访问控制路径中定义）的密码的方法。为此，在用户定义中指定先前定义的 LDAP 服务器名称，而不是 `password` 或类似部分。
+可以使用远程 LDAP 服务器作为对本地定义用户（在 `users.xml` 或本地访问控制路径中定义的用户）验证密码的方法。要实现这一点，请在用户定义的 `password` 或类似部分中指定之前定义的 LDAP 服务器名称。
 
-在每次登录尝试时，ClickHouse 尝试使用提供的凭据“绑定”到由 [LDAP 服务器定义](#ldap-server-definition) 中的 `bind_dn` 参数定义的指定 DN，如果成功，则用户被认为已通过身份验证。这通常被称为“简单绑定”方法。
+在每次登录尝试中，ClickHouse 会尝试使用提供的凭据“绑定”到 LDAP 服务器上由 `bind_dn` 参数定义的指定 DN，如果成功，用户将被视为已验证。这通常被称为“简单绑定”方法。
 
 **示例**
 
@@ -106,9 +112,9 @@ LDAP 服务器可用于验证 ClickHouse 用户。实现这一点有两种不同
 </clickhouse>
 ```
 
-请注意，用户 `my_user` 是指 `my_ldap_server`。此 LDAP 服务器必须在主 `config.xml` 文件中按前述方式配置。
+请注意，用户 `my_user` 引用 `my_ldap_server`。这个 LDAP 服务器必须如前所述在主要的 `config.xml` 文件中进行配置。
 
-当启用基于 SQL 的 [访问控制和帐户管理](/operations/access-rights#access-control-usage) 时，通过 LDAP 服务器进行身份验证的用户也可以使用 [CREATE USER](/sql-reference/statements/create/user) 语句创建。
+当启用 SQL 驱动的 [访问控制和账户管理](/operations/access-rights#access-control-usage) 时，可以使用 [CREATE USER](/sql-reference/statements/create/user) 语句创建通过 LDAP 服务器验证的用户。
 
 查询：
 
@@ -118,13 +124,13 @@ CREATE USER my_user IDENTIFIED WITH ldap SERVER 'my_ldap_server';
 
 ## LDAP 外部用户目录 {#ldap-external-user-directory}
 
-除了本地定义的用户外，远程 LDAP 服务器可以用作用户定义的来源。为此，在 `config.xml` 文件的 `users_directories` 部分中的 `ldap` 部分指定先前定义的 LDAP 服务器名称（见 [LDAP 服务器定义](#ldap-server-definition)）。
+除了本地定义的用户外，远程 LDAP 服务器还可以用作用户定义的来源。要实现这一点，请在 `config.xml` 文件的 `users_directories` 部分中的 `ldap` 部分中指定之前定义的 LDAP 服务器名称（请参见 [LDAP 服务器定义](#ldap-server-definition)）。
 
-在每次登录尝试时，ClickHouse 尝试在本地查找用户定义并如常进行身份验证。如果未定义用户，ClickHouse 将假定定义存在于外部 LDAP 目录中，并将尝试使用提供的凭据“绑定”到 LDAP 服务器上的指定 DN。如果成功，用户将被视为存在并经过身份验证。用户将从 `roles` 部分中指定的列表中分配角色。此外，可以进行 LDAP “搜索”，结果可以转换并视为角色名称，然后在 `role_mapping` 部分也配置的情况下分配给用户。这意味着必须启用基于 SQL 的 [访问控制和帐户管理](/operations/access-rights#access-control-usage)，并使用 [CREATE ROLE](/sql-reference/statements/create/role) 语句创建角色。
+在每次登录尝试中，ClickHouse 会尝试在本地查找用户定义并按常规方式进行身份验证。如果未定义用户，ClickHouse 将假定定义存在于外部 LDAP 目录中，并将尝试使用提供的凭据在 LDAP 服务器上对指定 DN 进行“绑定”。如果成功，用户将被视为存在且已验证。用户将被分配来自 `roles` 部分中指定列表的角色。此外，如果 `role_mapping` 部分也配置了，LDAP “搜索”可以执行，并且结果可以被转换并视为角色名称，然后分配给用户。这一切意味着 SQL 驱动的 [访问控制和账户管理](/operations/access-rights#access-control-usage) 已启用，并且角色通过 [CREATE ROLE](/sql-reference/statements/create/role) 语句创建。
 
 **示例**
 
-进入 `config.xml`。
+插入 `config.xml`。
 
 ```xml
 <clickhouse>
@@ -161,22 +167,22 @@ CREATE USER my_user IDENTIFIED WITH ldap SERVER 'my_ldap_server';
 </clickhouse>
 ```
 
-请注意，在 `user_directories` 部分中的 `ldap` 部分提到的 `my_ldap_server` 必须是先前定义并在 `config.xml` 中配置的 LDAP 服务器（见 [LDAP 服务器定义](#ldap-server-definition)）。
+请注意，在 `user_directories` 部分中的 `ldap` 部分中提到的 `my_ldap_server` 必须是一个在 `config.xml` 中配置过并且被定义的 LDAP 服务器（见 [LDAP 服务器定义](#ldap-server-definition)）。
 
 **参数**
 
-- `server` — 在上述 `ldap_servers` 配置部分中定义的 LDAP 服务器名称之一。此参数为必填项，不能为空。
-- `roles` — 包含从 LDAP 服务器检索的每个用户将分配的本地定义角色的列表的部分。
-    - 如果未在此指定角色或在角色映射中（下文）分配角色，则用户将在身份验证后无法执行任何操作。
+- `server` — 在上述 `ldap_servers` 配置部分中定义的 LDAP 服务器名称之一。此参数是必需的，不能为空。
+- `roles` — 列出将分配给从 LDAP 服务器获取的每个用户的本地定义角色的部分。
+    - 如果在此处未指定角色或在角色映射期间未分配角色（如下所述），用户将在身份验证后将无法执行任何操作。
 - `role_mapping` — 包含 LDAP 搜索参数和映射规则的部分。
-    - 当用户通过 LDAP 进行身份验证并仍然绑定时，使用 `search_filter` 和已登录用户的名称进行 LDAP 搜索。对于在搜索过程中找到的每个条目，提取指定属性的值。对于每个具有指定前缀的属性值，删除前缀，剩余的值将成为在 ClickHouse 中定义的本地角色的名称，预计该角色将事先通过 [CREATE ROLE](/sql-reference/statements/create/role) 语句创建。
-    - 可以在同一 `ldap` 部分内定义多个 `role_mapping` 部分。所有部分将被应用。
-        - `base_dn` — 用于构造 LDAP 搜索基 DN 的模板。
-            - 每次进行 LDAP 搜索时，结果 DN 将通过将模板中所有 `{user_name}`，`{bind_dn}`，和 `{user_dn}` 子字符串替换为实际用户名、绑定 DN 和用户 DN 来构造。
+    - 当用户进行身份验证时，同时仍然绑定到 LDAP，会使用 `search_filter` 和登录用户的名称执行 LDAP 搜索。在该搜索期间找到的每个条目的指定属性值都会被提取。对于每个具有指定前缀的属性值，将去掉前缀，剩余的值将成为在 ClickHouse 中预先定义的本地角色的名称，预计这些角色已经通过 [CREATE ROLE](/sql-reference/statements/create/role) 语句创建。
+    - 可以在同一 `ldap` 部分中定义多个 `role_mapping` 部分。它们都会被应用。
+        - `base_dn` — 用于构造 LDAP 搜索的基本 DN 的模板。
+            - 结果的 DN 将通过在每次 LDAP 搜索期间用实际用户名、绑定 DN 和用户 DN 替换模板中的所有 `{user_name}`、`{bind_dn}` 和 `{user_dn}` 子字符串来构造。
         - `scope` — LDAP 搜索的范围。
-            - 接受的值有：`base`，`one_level`，`children`，`subtree`（默认）。
+            - 可接受的值为：`base`，`one_level`，`children`，`subtree`（默认）。
         - `search_filter` — 用于构造 LDAP 搜索的搜索过滤器的模板。
-            - 每次进行 LDAP 搜索时，结果过滤器将通过将模板中所有 `{user_name}`，`{bind_dn}`，`{user_dn}` 和 `{base_dn}` 子字符串替换为实际用户名、绑定 DN、用户 DN 和基 DN 来构造。
-            - 请注意，特殊字符必须在 XML 中正确转义。
-        - `attribute` — LDAP 搜索将返回的属性名称。默认为 `cn`。
-        - `prefix` — 预期出现在 LDAP 搜索返回的原始字符串列表中每个字符串前面的前缀。将从原始字符串中删除前缀，结果字符串将被视为本地角色名称。默认为空。
+            - 结果的过滤器将通过在每次 LDAP 搜索中用实际用户名、绑定 DN、用户 DN 和基础 DN 替换模板中的所有 `{user_name}`、`{bind_dn}`、`{user_dn}` 和 `{base_dn}` 子字符串来构造。
+            - 注意，特殊字符必须在 XML 中正确转义。
+        - `attribute` — LDAP 搜索将返回其值的属性名称。默认为 `cn`。
+        - `prefix` — 期望在 LDAP 搜索返回的原始字符串列表中的每个字符串前面出现的前缀。前缀将从原始字符串中去掉，结果字符串将被视为本地角色名称。默认为空。

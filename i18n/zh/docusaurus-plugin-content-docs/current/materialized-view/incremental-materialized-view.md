@@ -14,21 +14,21 @@ import Image from '@theme/IdealImage';
 
 ## 背景 {#background}
 
-增量物化视图（Materialized Views）使用户能够将计算成本从查询时间转移到插入时间，从而加快 `SELECT` 查询的速度。
+增量物化视图（Materialized Views）允许用户将计算成本从查询时间转移到插入时间，从而获得更快的 `SELECT` 查询。
 
-与 Postgres 等事务性数据库不同，在 ClickHouse 中，物化视图仅仅是一个触发器，在数据块插入到表中时执行查询。该查询的结果插入到第二个“目标”表中。如果插入更多行，结果将再次发送到目标表，更新和合并中间结果。这个合并的结果相当于对所有原始数据执行查询。
+与Postgres等事务性数据库不同，ClickHouse的物化视图仅是一个触发器，它会在数据块插入表时运行查询，该查询的结果将插入到第二个“目标”表中。如果插入更多的行，结果将再次发送到目标表，其中的中间结果将被更新和合并。这个合并的结果等同于对所有原始数据运行查询。
 
-物化视图的主要动力在于插入到目标表的结果代表了对行的聚合、过滤或转换的结果。这些结果通常会是原始数据的更小表示（在聚合的情况下是部分快照）。这一点，以及从目标表读取结果的查询变得简单，确保了查询时间比对原始数据执行相同计算时更快，从而将计算（及其查询延迟）从查询时间转移到插入时间。
+物化视图的主要动机是插入到目标表中的结果表示对行的聚合、过滤或转换的结果。这些结果通常是原始数据的较小表示（在聚合的情况下是一个部分快照）。这加之从目标表读取结果的查询相对简单，确保查询时间比对原始数据执行相同计算时要快，将计算（以及查询延迟）从查询时间转移到插入时间。
 
-在 ClickHouse 中，物化视图随着数据流入其基础表而实时更新，更像是不断更新的索引。这与其他数据库形成对比，通常物化视图是查询的静态快照，需要刷新（类似于 ClickHouse [可刷新物化视图](/sql-reference/statements/create/view#refreshable-materialized-view)）。
+ClickHouse中的物化视图在数据流入它们基于的表时实时更新，更像是不断更新的索引。这与其他数据库不同，后者的物化视图通常是查询的静态快照，必须刷新（类似于ClickHouse的 [可刷新物化视图](/sql-reference/statements/create/view#refreshable-materialized-view)）。
 
-<Image img={materializedViewDiagram} size="md" alt="物化视图图"/>
+<Image img={materializedViewDiagram} size="md" alt="物化视图图示"/>
 
 ## 示例 {#example}
 
-为了示例用途，我们将使用在 ["模式设计"](/data-modeling/schema-design) 中记录的 Stack Overflow 数据集。
+为了举例，我们将使用“堆栈溢出”数据集，该数据集在 [“模式设计”](/data-modeling/schema-design) 中有文档。
 
-假设我们想获得每一篇帖子每天的点赞和点踩数。
+假设我们想要获取每天每个帖子的点赞和点踩的数量。
 
 ```sql
 CREATE TABLE votes
@@ -48,7 +48,7 @@ INSERT INTO votes SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.
 0 rows in set. Elapsed: 29.359 sec. Processed 238.98 million rows, 2.13 GB (8.14 million rows/s., 72.45 MB/s.)
 ```
 
-在 ClickHouse 中，由于 [`toStartOfDay`](/sql-reference/functions/date-time-functions#tostartofday) 函数，这个查询相对简单：
+由于 [`toStartOfDay`](/sql-reference/functions/date-time-functions#tostartofday) 函数，这在ClickHouse中是一个相当简单的查询：
 
 ```sql
 SELECT toStartOfDay(CreationDate) AS day,
@@ -76,11 +76,11 @@ LIMIT 10
 Peak memory usage: 363.22 MiB.
 ```
 
-这个查询在 ClickHouse 上已经很快，但是我们能做得更好吗？
+这个查询在ClickHouse中已经很快，但我们能做得更好吗？
 
-如果我们希望使用物化视图在插入时间计算这一点，我们需要一个表来接收结果。这个表应该仅保留每一天的 1 行。如果收到更新为一个已有日期，则其他列应该合并到现有日期的行中。为了使逐步状态的合并发生，必须存储其他列的部分状态。
+如果我们想在插入时间使用物化视图来计算这一点，我们需要一个接收结果的表。这个表每天只应保留1行。如果接收到某一天的更新，其他列应合并到该天的现有行中。为了实现增量状态的合并，必须存储其他列的部分状态。
 
-这在 ClickHouse 中需要一种特殊的引擎类型：[SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree)。该引擎用一行合并所有具有相同排序键的行，并包含数值列的总和。以下表将合并具有相同日期的行，累计所有数值列：
+这需要在ClickHouse中使用一种特殊的引擎类型：[SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree)。该引擎用包含数值列的汇总值的行替换所有具有相同排序键的行。以下表将合并任何具有相同日期的行，汇总任何数值列：
 
 ```sql
 CREATE TABLE up_down_votes_per_day
@@ -93,7 +93,7 @@ ENGINE = SummingMergeTree
 ORDER BY Day
 ```
 
-为了演示我们的物化视图，假设我们的投票表是空的，尚未接收到任何数据。我们的物化视图在插入新数据到 `votes` 时执行上述 `SELECT`，并将结果发送到 `up_down_votes_per_day`：
+为了展示我们的物化视图，假设我们的投票表是空的，还没有接收到任何数据。我们的物化视图对输入到 `votes` 中的数据执行上述 `SELECT`，结果发送到 `up_down_votes_per_day`：
 
 ```sql
 CREATE MATERIALIZED VIEW up_down_votes_per_day_mv TO up_down_votes_per_day AS
@@ -104,9 +104,9 @@ FROM votes
 GROUP BY Day
 ```
 
-此处的 `TO` 子句是关键，表示结果将发送到 `up_down_votes_per_day`。
+这里的 `TO` 子句是关键，表示结果将发送到 `up_down_votes_per_day`。
 
-我们可以从之前的插入中重新填充我们的投票表：
+我们可以从我们之前的插入中重新填充我们的 `votes` 表：
 
 ```sql
 INSERT INTO votes SELECT toUInt32(Id) AS Id, toInt32(PostId) AS PostId, VoteTypeId, CreationDate, UserId, BountyAmount
@@ -116,7 +116,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 Peak memory usage: 283.49 MiB.
 ```
 
-完成后，我们可以确认我们的 `up_down_votes_per_day` 的行数——我们应该每一天有 1 行：
+完成后，我们可以确认我们的 `up_down_votes_per_day` 的大小 - 我们应该有每天1行：
 
 ```sql
 SELECT count()
@@ -128,12 +128,12 @@ FINAL
 └─────────┘
 ```
 
-通过存储查询结果，我们有效地将行数从 2.38 亿（在 `votes` 中）减少到 5000。然而，关键在于如果新投票插入到 `votes` 表中，新值将发送到 `up_down_votes_per_day`，在其各自的日期中将自动在后台异步合并，保留每天只有一行。因此，`up_down_votes_per_day` 将始终保持小且最新。
+通过存储我们的查询结果，我们有效地将行数从2.38亿（在 `votes` 中）减少到5000。这里的关键是，如果新的投票插入到 `votes` 表中，新的值将被发送到 `up_down_votes_per_day` 的相应日期，并将自动在后台异步合并 - 保留每天只有1行。因此，`up_down_votes_per_day` 将始终保持小且最新。
 
-由于行的合并是异步的，用户查询时可能每天会有多于一票。为了确保在查询时合并任何未完成的行，我们有两个选择：
+由于行的合并是异步的，在用户查询时可能会出现每天多于一个投票。为了确保在查询时合并任何未处理的行，我们有两个选择：
 
-- 在表名上使用 `FINAL` 修饰符。我们在上述计数查询中进行了此操作。
-- 按照用于我们最终表的排序键进行聚合，即 `CreationDate`，并对度量进行求和。通常，后者更有效和灵活（表可以用于其他目的），但是前者对于某些查询可能更简单。我们在下面展示了这两种方式：
+- 在表名上使用 `FINAL` 修饰符。我们在上面的计数查询中做到了这一点。
+- 根据我们最终表中使用的排序键（即 `CreationDate`）进行聚合，并求和指标。通常这更高效和灵活（表可以用于其他目的），但前者对某些查询可能更简单。我们在下面展示了两者：
 
 ```sql
 SELECT
@@ -170,17 +170,17 @@ LIMIT 10
 Peak memory usage: 567.61 KiB.
 ```
 
-这使我们查询的速度从 0.133 秒提高到 0.004 秒——超过 25 倍的改进！
+这使我们的查询速度从0.133秒提升到0.004秒 - 提高了25倍以上！
 
 :::important 重要提示: `ORDER BY` = `GROUP BY`
-在大多数情况下，物化视图转换中使用的 `GROUP BY` 子句中的列，应与目标表中使用的 `ORDER BY` 子句一致，如果使用 `SummingMergeTree` 或 `AggregatingMergeTree` 表引擎。这些引擎依赖于 `ORDER BY` 列在后台合并操作期间合并具有相同值的行。`GROUP BY` 和 `ORDER BY` 列之间的不对齐可能导致查询性能低效、合并不理想，甚至数据不一致。
+在大多数情况下，物化视图转换中的 `GROUP BY` 子句中使用的列应与目标表中 `ORDER BY` 子句中的列一致，如果使用 `SummingMergeTree` 或 `AggregatingMergeTree` 表引擎。这些引擎依赖于 `ORDER BY` 列在后台合并操作中合并具有相同值的行。`GROUP BY` 和 `ORDER BY` 列之间的不对齐可能导致查询性能低效、合并不佳，甚至数据不一致。
 :::
 
 ### 更复杂的示例 {#a-more-complex-example}
 
-上述示例使用物化视图来计算和维护每天的两个汇总。汇总代表了维护部分状态的最简单聚合形式——我们只需将新值添加到到现有值即可。然而，ClickHouse 物化视图可以用于任何聚合类型。
+上述示例使用物化视图计算和维护每天的两个总和。总和代表维护部分状态的最简单聚合形式 - 我们可以在新值到达时将其添加到现有值中。然而，ClickHouse的物化视图可以用于任何聚合类型。
 
-假设我们希望每日计算每篇帖子的某些统计信息：`Score` 的 99.9 百分位数和 `CommentCount` 的平均值。计算这个的查询可能如下：
+假设我们希望计算每一天帖子的某些统计数据：`Score` 的99.9百分位数和 `CommentCount` 的平均值。计算此的查询可能如下所示：
 
 ```sql
 SELECT
@@ -209,17 +209,17 @@ LIMIT 10
 Peak memory usage: 658.84 MiB.
 ```
 
-同样，我们可以创建一个物化视图，在新的帖子插入我们的 `posts` 表时执行上述查询。
+如前所述，我们可以创建一个物化视图，在新的帖子插入我们的 `posts` 表时执行上述查询。
 
-为了示例的目的，为了避免从 S3 中加载帖子数据，我们将创建一个与 `posts` 具有相同架构的重复表 `posts_null`。然而，这个表将不存储任何数据，仅在行插入时被物化视图使用。为避免数据存储，我们可以使用 [`Null` 表引擎类型](/engines/table-engines/special/null)。
+为了示例并避免从S3加载帖子数据，我们将创建一个与 `posts` 具有相同模式的重复表 `posts_null`。然而，这个表将不存储任何数据，仅在插入行时由物化视图使用。为了防止存储数据，我们可以使用 [`Null` 表引擎类型](/engines/table-engines/special/null)。
 
 ```sql
 CREATE TABLE posts_null AS posts ENGINE = Null
 ```
 
-空表引擎是一种强大的优化——可以将其视为 `/dev/null`。当 `posts_null` 表在插入时接收到行时，我们的物化视图将计算并存储我们的汇总统计——这只是一个触发器。然而，原始数据不会被存储。虽然在我们的案例中，我们可能仍然希望存储原始帖子，这种方法可以在避免存储原始数据开销的同时计算聚合。
+Null表引擎是一种强大的优化 - 可以将其视为 `/dev/null`。我们的物化视图将在 `posts_null` 表在插入时间接收行时计算和存储我们的摘要统计数据 - 这只是一个触发器。但是，原始数据将不会被存储。虽然在我们的情况下，我们可能仍然希望存储原始帖子，但这种方法可以用于计算聚合，同时避免存储原始数据的开销。
 
-因此，物化视图如下所示：
+因此，物化视图变为：
 
 ```sql
 CREATE MATERIALIZED VIEW post_stats_mv TO post_stats_per_day AS
@@ -230,11 +230,11 @@ FROM posts_null
 GROUP BY Day
 ```
 
-注意，我们在聚合函数的结尾处附加后缀 `State`。这确保返回函数的聚合状态，而不是最终结果。这将包含额外的信息以允许此部分状态与其他状态合并。例如，在平均数的情况下，这将包括列的计数和总和。
+请注意，我们在聚合函数的末尾附加了后缀 `State`。这确保返回的是函数的聚合状态而不是最终结果。这将包含其他信息，以允许此部分状态与其他状态合并。例如，在平均数的情况下，它将包括列的计数和总和。
 
-> 部分聚合状态是计算正确结果所必需的。例如，对于计算平均数，仅仅对子范围的平均数进行求平均会产生不正确的结果。
+> 部分聚合状态对于计算正确的结果是必要的。例如，对于计算平均值，简单地对子范围的平均值求平均将产生不正确的结果。
 
-现在，我们为这个视图创建目标表 `post_stats_per_day`，以存储这些部分聚合状态：
+现在我们为该视图创建目标表 `post_stats_per_day`，它存储这些部分聚合状态：
 
 ```sql
 CREATE TABLE post_stats_per_day
@@ -247,10 +247,10 @@ ENGINE = AggregatingMergeTree
 ORDER BY Day
 ```
 
-虽然之前的 `SummingMergeTree` 足以存储计数，但我们需要一种更高级的引擎类型来处理其他函数：[`AggregatingMergeTree`](/engines/table-engines/mergetree-family/aggregatingmergetree)。
-为了确保 ClickHouse 知道将存储聚合状态，我们将 `Score_quantiles` 和 `AvgCommentCount` 定义为类型 `AggregateFunction`，指定聚合状态的函数源和对应列的类型。与 `SummingMergeTree` 类似，具有相同 `ORDER BY` 键值的行将合并（在上述示例中为 `Day`）。
+虽然之前的 `SummingMergeTree` 对存储计数足够，但对于其他函数，我们需要更高级的引擎类型：[`AggregatingMergeTree`](/engines/table-engines/mergetree-family/aggregatingmergetree)。
+为了确保ClickHouse知道将存储聚合状态，我们将 `Score_quantiles` 和 `AvgCommentCount` 定义为 `AggregateFunction` 类型，指定部分状态的函数源及其源列的类型。与 `SummingMergeTree` 一样，具有相同 `ORDER BY` 键值的行将被合并（上例中的 `Day`）。
 
-通过物化视图填充我们的 `post_stats_per_day`，我们可以简单地将所有行从 `posts` 插入 `posts_null`：
+通过我们的物化视图填充 `post_stats_per_day`，我们只需将所有行从 `posts` 插入 `posts_null`：
 
 ```sql
 INSERT INTO posts_null SELECT * FROM posts
@@ -258,9 +258,9 @@ INSERT INTO posts_null SELECT * FROM posts
 0 rows in set. Elapsed: 13.329 sec. Processed 119.64 million rows, 76.99 GB (8.98 million rows/s., 5.78 GB/s.)
 ```
 
-> 在生产中，您可能会将物化视图附加到 `posts` 表。我们在此使用 `posts_null` 是为了演示空表。
+> 在生产中，您可能会将物化视图附加到 `posts` 表。我们在此使用 `posts_null` 来演示空表。
 
-我们的最终查询需要使用我们函数的 `Merge` 后缀（由于列存储部分聚合状态）：
+我们的最终查询需要使用函数的 `Merge` 后缀（因为列存储部分聚合状态）：
 
 ```sql
 SELECT
@@ -273,19 +273,19 @@ ORDER BY Day DESC
 LIMIT 10
 ```
 
-请注意，我们在此处使用了 `GROUP BY` 而不是使用 `FINAL`。
+注意我们在这里使用 `GROUP BY` 而不是使用 `FINAL`。
 
 ## 其他应用 {#other-applications}
 
-以上主要关注于使用物化视图按增量更新数据的部分聚合，从而将计算从查询时间移至插入时间。除了这个常见用例，物化视图还有许多其他应用。
+上述内容主要集中在使用物化视图增量更新数据的部分聚合上，从而将计算从查询转移到插入时间。除了这种常见用例外，物化视图还有许多其他应用。
 
 ### 过滤和转换 {#filtering-and-transformation}
 
-在某些情况下，我们可能希望在插入时仅插入行和列的子集。在这种情况下，我们的 `posts_null` 表可以接收插入，使用 `SELECT` 查询在插入到 `posts` 表之前对行进行过滤。例如，假设我们希望转换 `posts` 表中的 `Tags` 列。它包含以管道分隔的标签名称列表。通过将这些转换为数组，我们可以更容易按单个标签值进行聚合。
+在某些情况下，我们可能希望仅在插入时插入部分行和列。在这种情况下，我们的 `posts_null` 表可以接收插入，使用一个在插入到 `posts` 表之前过滤行的 `SELECT` 查询。例如，假设我们希望转换 `posts` 表中的 `Tags` 列。它包含一个以管道分隔的标签名称列表。通过将这些转换为数组，我们可以更容易地按单独标签值进行聚合。
 
-> 我们可以在执行 `INSERT INTO SELECT` 时执行此转换。物化视图使我们能够将此逻辑封装在 ClickHouse DDL 中，并保持我们的 `INSERT` 简单，转换应用于任何新行。
+> 我们可以在运行 `INSERT INTO SELECT` 时执行此转换。物化视图允许我们在ClickHouse DDL中封装该逻辑，并保持我们的 `INSERT` 简单，对任何新行应用转换。
 
-我们的物化视图用于该转换如下所示：
+我们这个转换的物化视图如下所示：
 
 ```sql
 CREATE MATERIALIZED VIEW posts_mv TO posts AS
@@ -294,7 +294,7 @@ CREATE MATERIALIZED VIEW posts_mv TO posts AS
 
 ### 查找表 {#lookup-table}
 
-用户在选择 ClickHouse 排序键时应考虑他们的访问模式。应使用在过滤和聚合子句中经常使用的列。这对于用户在一个单一的列集合中无法概括的更复杂的访问模式的场景是有限制的。例如，考虑以下 `comments` 表：
+用户在选择ClickHouse排序键时应考虑其访问模式。频繁用于过滤和聚合子句的列应当被使用。这对于访问模式更为多样化的场景可能是有约束的，这无法封装在一组列中。例如，考虑以下 `comments` 表：
 
 ```sql
 CREATE TABLE comments
@@ -313,9 +313,9 @@ ORDER BY PostId
 0 rows in set. Elapsed: 46.357 sec. Processed 90.38 million rows, 11.14 GB (1.95 million rows/s., 240.22 MB/s.)
 ```
 
-此排序键优化了按 `PostId` 过滤的查询。
+这里的排序键优化了按 `PostId` 过滤查询的表。
 
-假设用户希望按特定的 `UserId` 进行过滤并计算其平均 `Score`：
+假设用户希望基于特定的 `UserId` 进行过滤并计算其平均 `Score`：
 
 ```sql
 SELECT avg(Score)
@@ -330,9 +330,9 @@ WHERE UserId = 8592047
 Peak memory usage: 217.08 MiB.
 ```
 
-虽然迅速（在 ClickHouse 中数据量小），但我们可以从处理的行数看出这需要对整个表进行扫描——9038万次。对于较大数据集，我们可以使用物化视图查找 `UserId` 的过滤列中的 `PostId`。这些值可以用于执行高效查找。
+虽然速度很快（对于ClickHouse来说，数据很小），但从处理的行数来看，我们可以看出这需要进行全表扫描 - 9038万。对于更大的数据集，我们可以使用物化视图查找排序键值 `PostId` 来过滤列 `UserId`。然后可以使用这些值执行高效查找。
 
-在此示例中，我们的物化视图可以非常简单，仅在插入时从 `comments` 中选择 `PostId` 和 `UserId`。这些结果随后被发送到一个按 `UserId` 排序的表 `comments_posts_users`。我们在下面创建 `Comments` 表的空版本，并用此填充我们的视图和 `comments_posts_users` 表：
+在这个示例中，我们的物化视图可以非常简单，仅在插入时选择 `comments` 中的 `PostId` 和 `UserId`。这些结果将被发送到一个按 `UserId` 排序的表 `comments_posts_users`。我们在下面创建一个 `Comments` 表的空版本，用于填充我们的视图和 `comments_posts_users` 表：
 
 ```sql
 CREATE TABLE comments_posts_users (
@@ -352,7 +352,7 @@ INSERT INTO comments_null SELECT * FROM comments
 0 rows in set. Elapsed: 5.163 sec. Processed 90.38 million rows, 17.25 GB (17.51 million rows/s., 3.34 GB/s.)
 ```
 
-现在，我们可以在子查询中使用这个视图，以加速我们之前的查询：
+我们现在可以在子查询中使用这个视图来加速我们之前的查询：
 
 ```sql
 SELECT avg(Score)
@@ -372,27 +372,27 @@ WHERE PostId IN (
 
 ### 链接 {#chaining}
 
-物化视图可以链接，从而建立复杂的工作流。对于实际示例，我们建议阅读这篇 [博客文章](https://clickhouse.com/blog/chaining-materialized-views)。
+物化视图可以串联起来，从而建立复杂的工作流。对于实际示例，我们推荐阅读这篇 [博客文章](https://clickhouse.com/blog/chaining-materialized-views)。
 
-## 物化视图与 JOIN {#materialized-views-and-joins}
+## 物化视图与JOINs {#materialized-views-and-joins}
 
 :::note 可刷新物化视图
-以下内容仅适用于增量物化视图。可刷新物化视图定期对完整目标数据集执行其查询，并完全支持 JOIN。如果可以容忍结果新鲜度的降低，请考虑在复杂 JOIN 中使用它们。
+以下内容仅适用于增量物化视图。可刷新物化视图周期性地执行其查询以涵盖整个目标数据集，并全面支持JOINs。如果可以容忍结果的新鲜度降低，请考虑在复杂JOIN中使用它们。
 :::
 
-ClickHouse 中的增量物化视图完全支持 `JOIN` 操作，但有一个关键限制：**物化视图仅在插入到源表（查询中的最左侧表）时触发。** 在 JOIN 中的右侧表不触发更新，即使它们的数据发生变化。这种行为在建立**增量**物化视图时尤其重要，其中数据在插入时被聚合或转换。
+ClickHouse中的增量物化视图完全支持 `JOIN` 操作，但有一个关键限制：**物化视图只在对源表（查询中的最左侧表）进行插入时触发。** JOIN中的右侧表不会触发更新，即使它们的数据发生变化。此行为在构建增量物化视图时尤为重要，其中数据在插入时间被聚合或转换。
 
-当使用 `JOIN` 定义增量物化视图时，`SELECT` 查询中的最左侧表作为源。当往这个表插入新行时，ClickHouse *仅* 用这些新插入的行执行物化视图查询。JOIN 中的右侧表在执行期间被完全读取，但单独对它们的更改不会触发视图。
+当使用 `JOIN` 定义增量物化视图时，`SELECT` 查询中的最左侧表充当源。当新的行插入到此表时，ClickHouse仅使用那些新插入的行执行物化视图查询。JOIN中的右侧表在执行期间会被完全读取，但仅对它们的变化不会触发视图。
 
-这种行为使物化视图中的 JOIN 类似于针对静态维度数据的快照 JOIN。
+这种行为使得物化视图中的JOIN类似于针对静态维度数据的快照连接。
 
-这在使用引用或维度表丰富数据时效果很好。然而，对右侧表的任何更新（如用户元数据）不会追溯更新物化视图。要查看更新的数据，必须在源表中插入新数据。
+这对于用参考或维度表丰富数据非常有效。然而，右侧表的任何更新（例如，用户元数据）都不会回溯更新物化视图。要查看更新的数据，必须在源表中插入新行。
 
 ### 示例 {#materialized-views-and-joins-example}
 
-让我们通过使用 [Stack Overflow 数据集](/data-modeling/schema-design) 来走过一个具体示例。我们将使用物化视图来计算 **每用户的每日徽章**，包括用户表中的显示名称。
+让我们通过使用 [堆栈溢出数据集](/data-modeling/schema-design) 来逐步演示一个具体的例子。我们将使用物化视图计算 **每个用户的每日徽章**，包括来自 `users` 表的用户显示名称。
 
-作为提醒，我们的表结构是：
+作为提醒，我们的表模式是：
 
 ```sql
 CREATE TABLE badges
@@ -423,14 +423,14 @@ ENGINE = MergeTree
 ORDER BY Id;
 ```
 
-我们假设我们的 `users` 表已预填充：
+我们将假设我们的 `users` 表已经预填充：
 
 ```sql
 INSERT INTO users
 SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/users.parquet');
 ```
 
-物化视图及其相关联的目标表定义如下：
+物化视图及其关联的目标表被定义为：
 
 ```sql
 CREATE TABLE daily_badges_by_user
@@ -458,11 +458,11 @@ LEFT JOIN users AS u ON b.UserId = u.Id
 GROUP BY Day, b.UserId, u.DisplayName;
 ```
 
-:::note 分组与排序对齐
-物化视图中的 `GROUP BY` 子句必须包括 `DisplayName`、`UserId` 和 `Day` 以匹配 `SummingMergeTree` 目标表中的 `ORDER BY`。这确保了行被正确聚合和合并。省略其中任何一个可能导致不正确的结果或低效的合并。
+:::note 分组和排序对齐
+物化视图中的 `GROUP BY` 子句必须包括 `DisplayName`、`UserId` 和 `Day`，以匹配 `SummingMergeTree` 目标表中的 `ORDER BY`。这确保行被正确聚合和合并。省略其中任何一个都可能导致不正确的结果或低效的合并。
 :::
 
-如果我们现在填充徽章，视图将被触发——填充我们的 `daily_badges_by_user` 表。
+如果我们现在填充徽章，视图将被触发 - 填充我们的 `daily_badges_by_user` 表。
 
 ```sql
 INSERT INTO badges SELECT *
@@ -471,7 +471,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 0 rows in set. Elapsed: 433.762 sec. Processed 1.16 billion rows, 28.50 GB (2.67 million rows/s., 65.70 MB/s.)
 ```
 
-假设我们希望查看特定用户获得的徽章，我们可以写出以下查询：
+假设我们希望查看特定用户获得的徽章，可以写以下查询：
 
 ```sql
 SELECT *
@@ -493,7 +493,7 @@ WHERE DisplayName = 'gingerwizard'
 8 rows in set. Elapsed: 0.018 sec. Processed 32.77 thousand rows, 642.14 KB (1.86 million rows/s., 36.44 MB/s.)
 ```
 
-现在，如果该用户获得新徽章并插入一行，视图将被更新：
+现在，如果该用户收到新徽章并插入了一行，我们的视图将得到更新：
 
 ```sql
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
@@ -520,10 +520,10 @@ WHERE DisplayName = 'gingerwizard'
 ```
 
 :::warning
-注意此处插入的延迟。插入的用户行与整个 `users` 表进行 JOIN，显著影响插入性能。我们在下面的 ["在物化视图的过滤和 JOIN 中使用源表"](/materialized-view/incremental-materialized-view#using-source-table-in-filters-and-joins-in-materialized-views) 中提议了应对策略。
+注意这里的插入延迟。插入的用户行与整个 `users` 表进行连接，这显著影响插入性能。我们稍后将在 ["在物化视图中使用源表进行过滤和连接"](/materialized-view/incremental-materialized-view#using-source-table-in-filters-and-joins-in-materialized-views) 中提出解决方法。
 :::
 
-相反，如果我们为新用户插入徽章，然后再插入用户的行，物化视图将无法捕获用户的指标。
+相反，如果我们为新用户插入一个徽章，然后插入用户的行，则我们的物化视图将无法捕获用户的指标。
 
 ```sql
 INSERT INTO badges VALUES (53505059, 23923286, 'Good Answer', now(), 'Bronze', 0);
@@ -539,7 +539,7 @@ WHERE DisplayName = 'brand_new_user';
 0 rows in set. Elapsed: 0.017 sec. Processed 32.77 thousand rows, 644.32 KB (1.98 million rows/s., 38.94 MB/s.)
 ```
 
-在此案例中，视图仅在徽章插入时执行，而在用户行存在之前。如果我们为用户插入另一枚徽章，则插入一行，这是预期的：
+在这种情况下，视图只针对徽章插入执行，而在用户行存在之前。如果我们为该用户插入另一个徽章，行将被插入，正如预期的那样：
 
 ```sql
 INSERT INTO badges VALUES (53505060, 23923286, 'Teacher', now(), 'Bronze', 0);
@@ -558,27 +558,27 @@ WHERE DisplayName = 'brand_new_user'
 
 但是请注意，这个结果是不正确的。
 
-### 物化视图中 JOIN 的最佳实践 {#join-best-practices}
+### 物化视图中的JOIN最佳实践 {#join-best-practices}
 
-- **使用最左侧表作为触发器。** 只有在 `SELECT` 语句左侧的表会触发物化视图。对右侧表的更改不会触发更新。
+- **使用最左侧表作为触发器。** 只有在 `SELECT` 语句左侧的表会触发物化视图。右侧表的更改不会触发更新。
 
-- **预插入连接数据。** 确保在将行插入源表之前，连接表中的数据存在。JOIN 在插入时被评估，因此缺失数据将导致未匹配的行或空值。
+- **在插入之前连接数据。** 确保连接表中的数据在将行插入源表之前存在。JOIN在插入时计算，因此缺少数据将导致不匹配的行或空值。
 
-- **限制从连接中提取的列。** 仅选择连接表中所需的列，以最小化内存使用并减小插入时间延迟（见下文）。
+- **限制从JOIN中提取的列。** 仅从连接表中选择所需的列，以最小化内存使用并减少插入时间延迟（请见下文）。
 
-- **评估插入时间性能。** JOIN 增加了插入的成本，尤其是与大型右侧表的情况。使用具有代表性的生产数据对插入速率进行基准测试。
+- **评估插入时性能。** JOIN增加了插入的成本，尤其是与大右侧表配合使用时。使用代表性的生产数据进行插入速率的基准测试。
 
-- **简单查找时优先使用字典。** 使用 [字典](/dictionary) 进行键值查找（例如，将用户 ID 映射到名称），以避免费用高昂的 JOIN 操作。
+- **对于简单查找，优先使用字典。** 使用 [字典](/dictionary) 进行键值查找（例如，将用户ID映射到名称），以避免昂贵的JOIN操作。
 
-- **对齐 `GROUP BY` 和 `ORDER BY` 以提高合并效率。** 使用 `SummingMergeTree` 或 `AggregatingMergeTree` 时，确保 `GROUP BY` 与目标表中的 `ORDER BY` 子句匹配，以允许有效的行合并。
+- **对齐 `GROUP BY` 和 `ORDER BY` 以提高合并效率。** 使用 `SummingMergeTree` 或 `AggregatingMergeTree` 时，确保 `GROUP BY` 与目标表中的 `ORDER BY` 子句匹配，以允许高效的行合并。
 
-- **使用显式列别名。** 当表具有重叠列名时，使用别名以防止歧义并确保目标表中的结果正确。
+- **使用显式列别名。** 当表具有重叠的列名时，使用别名以防止歧义，并确保在目标表中获得正确结果。
 
-- **考虑插入量和频率。** JOIN 在适度插入工作负载中效果较好。对于高吞吐量的引入，考虑使用暂存表、预连接或其他方法，如字典和 [可刷新物化视图](/materialized-view/refreshable-materialized-view)。
+- **考虑插入量和频率。** JOIN在适度的插入负载中效果良好。对于高吞吐量摄取，考虑使用中间表、预连接或其他方法，例如字典和 [可刷新物化视图](/materialized-view/refreshable-materialized-view)。
 
-### 在物化视图的过滤和 JOIN 中使用源表 {#using-source-table-in-filters-and-joins-in-materialized-views}
+### 在过滤和连接中使用源表 {#using-source-table-in-filters-and-joins-in-materialized-views}
 
-在 ClickHouse 中使用物化视图时，了解源表在物化视图的查询执行过程中如何被处理非常重要。具体来说，物化视图查询中的源表将被插入的数据块替换。这种行为可能会导致一些意外结果，如果没有正确理解。
+在使用ClickHouse中的物化视图时，了解源表在物化视图查询执行过程中的处理方式至关重要。具体而言，在物化视图查询中，源表会被插入的数据块替换。如果没有适当地理解，这种行为可能会导致一些意想不到的结果。
 
 #### 示例场景 {#example-scenario}
 
@@ -621,17 +621,17 @@ SELECT * FROM mvw2;
 
 #### 解释 {#explanation}
 
-在上述示例中，我们有两个物化视图 `mvw1` 和 `mvw2`，它们执行类似的操作，但在如何引用源表 `t0` 上有些不同。
+在上面的示例中，我们有两个物化视图 `mvw1` 和 `mvw2`，它们执行类似的操作，但在引用源表 `t0` 的方式上略有不同。
 
-在 `mvw1` 中，表 `t0` 在 JOIN 右侧的 `(SELECT * FROM t0)` 子查询中被直接引用。当数据插入到 `t0` 中时，物化视图的查询将使用插入的数据块替换 `t0` 执行。这意味着 JOIN 操作仅在新插入的行上进行，而不是在整个表上。
+在 `mvw1` 中，表 `t0` 直接在JOIN右侧的 `(SELECT * FROM t0)` 子查询中被引用。当数据插入到 `t0` 时，物化视图的查询使用插入的数据块执行，这意味着JOIN操作仅在新插入的行上执行，而不是在整个表上。
 
-在与 `vt0` 连接的第二种情况下，视图从 `t0` 读取所有数据。这确保 JOIN 操作考虑到 `t0` 中的所有行，而不仅仅是新插入的数据块。
+在与 `vt0` 进行连接的第二种情况下，视图会读取 `t0` 中的所有数据。这确保JOIN操作考虑到 `t0` 中的所有行，而不仅仅是新插入的数据块。
 
-关键区别在于 ClickHouse 如何处理物化视图查询中的源表。当通过插入触发物化视图时，源表（在本例中为 `t0`）被插入的数据块替换。这种行为可以优化查询，但也需要谨慎考虑，以避免意外结果。
+关键区别在于ClickHouse如何处理物化视图查询中的源表。当物化视图由于插入而被触发时，源表（在本例中为 `t0`）会被插入的数据块替换。可以利用这种行为来优化查询，但也需要仔细考虑，以避免意外结果。
 
 ### 用例和注意事项 {#use-cases-and-caveats}
 
-实际上，您可以使用这种行为优化仅需处理源表数据子集的物化视图。例如，您可以使用子查询来过滤源表，然后将其与其他表连接。这可以帮助减少物化视图处理的数据量并改善性能。
+在实践中，您可以利用这种行为来优化仅需要处理源表数据的子集的物化视图。例如，您可以使用子查询在与其他表进行连接之前过滤源表。这可以帮助减少物化视图处理的数据量，提高性能。
 
 ```sql
 CREATE TABLE t0 (id UInt32, value String) ENGINE = MergeTree() ORDER BY id;
@@ -647,11 +647,11 @@ JOIN (SELECT * FROM t1 WHERE t1.id IN (SELECT id FROM t0)) AS t1
 ON t0.id = t1.id;
 ```
 
-在这个例子中，使用 `IN (SELECT id FROM t0)` 子查询构建的集合仅包含新插入的行，这可以帮助在对比中过滤 `t1`。
+在此示例中，从 `IN (SELECT id FROM t0)` 子查询构建的集合仅包含新插入的行，这有助于根据它过滤 `t1` 。
 
-#### 使用 Stack Overflow 示例 {#example-with-stack-overflow}
+#### 使用Stack Overflow的示例 {#example-with-stack-overflow}
 
-考虑我们之前的物化视图示例，用于计算 **每用户的每日徽章**，包括来自 `users` 表的用户显示名称。
+考虑我们之前的物化视图示例，计算 **每个用户的每日徽章**，包括来自 `users` 表的用户显示名称。
 
 ```sql
 CREATE MATERIALIZED VIEW daily_badges_by_user_mv TO daily_badges_by_user
@@ -667,7 +667,7 @@ LEFT JOIN users AS u ON b.UserId = u.Id
 GROUP BY Day, b.UserId, u.DisplayName;
 ```
 
-此视图显著影响了 `badges` 表上的插入延迟，例如：
+此视图对 `badges` 表的插入延迟产生了显著影响，例如：
 
 ```sql
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
@@ -675,7 +675,7 @@ INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
 1 row in set. Elapsed: 7.517 sec.
 ```
 
-使用上述方法，我们可以优化这个视图。我们将在插入徽章的行中使用用户 ID，对 `users` 表添加过滤：
+使用上述方法，我们可以优化此视图。我们将使用插入徽章行中的用户ID对 `users` 表添加筛选：
 
 ```sql
 CREATE MATERIALIZED VIEW daily_badges_by_user_mv TO daily_badges_by_user
@@ -704,7 +704,7 @@ GROUP BY
     u.DisplayName
 ```
 
-不仅可以加速初始徽章插入：
+这样不仅加快了最初的徽章插入：
 
 ```sql
 INSERT INTO badges SELECT *
@@ -714,7 +714,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 Peak memory usage: 1.99 GiB.
 ```
 
-还可以使未来徽章插入保持高效：
+同时也确保未来的徽章插入效率：
 
 ```sql
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
@@ -722,15 +722,15 @@ INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
 1 row in set. Elapsed: 0.583 sec.
 ```
 
-在上述操作中，仅从 users 表检索用户 ID 为 `2936484` 的一行。此查找也经过了 `Id` 的表排序键优化。
+在上述操作中，仅为用户ID `2936484` 从用户表中检索到一行。此查找也被优化，使用了 `Id` 的表排序键。
 
-## 物化视图与 UNION {#materialized-views-and-unions}
+## 物化视图与UNIONS {#materialized-views-and-unions}
 
-`UNION ALL` 查询通常用于将来自多个源表的数据合并到单个结果集中。
+`UNION ALL` 查询通常用于将多个源表中的数据组合到一个结果集中。
 
-虽然增量物化视图中不直接支持 `UNION ALL`，但您可以通过为每个 `SELECT` 分支创建单独的物化视图，将它们的结果写入共享目标表，来实现相同的结果。
+尽管在增量物化视图中不直接支持 `UNION ALL`，但可以通过为每个 `SELECT` 分支创建独立的物化视图并将其结果写入共享目标表来实现相同的结果。
 
-对于我们的示例，我们将使用 Stack Overflow 数据集。考虑以下 `badges` 和 `comments` 表，这两者分别代表用户获得的徽章和他们在帖子上所做的评论：
+在我们的示例中，我们将使用堆栈溢出数据集。考虑下面代表用户获得的徽章和他们对帖子的评论的 `badges` 和 `comments` 表：
 
 ```sql
 CREATE TABLE stackoverflow.comments
@@ -759,7 +759,7 @@ ENGINE = MergeTree
 ORDER BY UserId
 ```
 
-这些可以使用以下 `INSERT INTO` 命令填充：
+这些可以用以下 `INSERT INTO` 命令填充：
 
 ```sql
 INSERT INTO stackoverflow.badges SELECT *
@@ -768,7 +768,7 @@ INSERT INTO stackoverflow.comments SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/*.parquet')
 ```
 
-假设我们想要创建一个统一的用户活动视图，通过将这两个表合并显示每个用户的最后一次活动：
+假设我们想要创建一个统一的用户活动视图，通过组合这两个表来显示每个用户的最后活动：
 
 ```sql
 SELECT
@@ -797,7 +797,7 @@ ORDER BY last_activity DESC
 LIMIT 10
 ```
 
-假设我们有一个目标表，接收此查询的结果。请注意使用 [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) 表引擎和 [AggregateFunction](/sql-reference/data-types/aggregatefunction) 来确保结果正确合并：
+让我们假设我们有一个目标表来接收此查询的结果。注意使用 [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) 表引擎和 [AggregateFunction](/sql-reference/data-types/aggregatefunction)，以确保结果正确合并：
 
 ```sql
 CREATE TABLE user_activity
@@ -811,7 +811,7 @@ ENGINE = AggregatingMergeTree
 ORDER BY UserId
 ```
 
-希望这个表在新行插入到 `badges` 或 `comments` 中时更新，一个幼稚的解决方案可能是尝试创建具有上一个 UNION 查询的物化视图：
+希望这个表在新行插入到 `badges` 或 `comments` 中时更新，那么对此问题的简单方法可能是尝试使用上一个联合查询创建一个物化视图：
 
 ```sql
 CREATE MATERIALIZED VIEW user_activity_mv TO user_activity AS
@@ -840,7 +840,7 @@ GROUP BY UserId
 ORDER BY last_activity DESC
 ```
 
-虽然这在语法上有效，但会产生意外结果——视图将仅触发对 `comments` 表的插入。例如：
+虽然在语法上是有效的，但它会产生意外的结果 - 该视图只会触发对 `comments` 表的插入。例如：
 
 ```sql
 INSERT INTO comments VALUES (99999999, 23121, 1, 'The answer is 42', now(), 2936484, 'gingerwizard');
@@ -861,7 +861,7 @@ GROUP BY UserId
 1 row in set. Elapsed: 0.005 sec.
 ```
 
-对 `badges` 表的插入将不会触发视图更新，导致 `user_activity` 不会收到更新：
+插入到 `badges` 表时将触发视图，导致 `user_activity` 不接收更新：
 
 ```sql
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
@@ -882,7 +882,7 @@ GROUP BY UserId;
 1 row in set. Elapsed: 0.005 sec.
 ```
 
-为了解决这个问题，我们只需为每个 SELECT 语句创建一个物化视图：
+为了解决这个问题，我们只是为每个 `SELECT` 语句创建一个物化视图：
 
 ```sql
 DROP TABLE user_activity_mv;
@@ -907,7 +907,7 @@ FROM stackoverflow.badges
 GROUP BY UserId;
 ```
 
-现在，向任一表插入数据都会导致结果正确。例如，如果我们向 `comments` 表插入：
+无论插入到哪个表现在都能产生正确的结果。例如，如果我们插入到 `comments` 表：
 
 ```sql
 INSERT INTO comments VALUES (99999999, 23121, 1, 'The answer is 42', now(), 2936484, 'gingerwizard');
@@ -928,7 +928,7 @@ GROUP BY UserId;
 1 row in set. Elapsed: 0.006 sec.
 ```
 
-同样，对 `badges` 表的插入也会反映在 `user_activity` 表中：
+同样，插入到 `badges` 表的更改也会反映在 `user_activity` 表中：
 
 ```sql
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
@@ -951,11 +951,11 @@ GROUP BY UserId
 
 ## 并行与顺序处理 {#materialized-views-parallel-vs-sequential}
 
-如前所述，表可以作为多个物化视图的源。这些视图的执行顺序取决于设置 [`parallel_view_processing`](/operations/settings/settings#parallel_view_processing)。
+如前面的示例所示，一张表可以作为多个物化视图的源。这些视图的执行顺序取决于设置 [`parallel_view_processing`](/operations/settings/settings#parallel_view_processing)。
 
-默认情况下，此设置等于 `0`（`false`），这意味着物化视图按 `uuid` 顺序顺序执行。
+默认情况下，此设置等于 `0` （`false`），这意味着物化视图按 `uuid` 顺序顺序执行。
 
-例如，考虑以下 `source` 表和三个物化视图，每个视图向一个 `target` 表发送行：
+例如，考虑以下 `source` 表和3个物化视图，每个视图将行发送到一个 `target` 表：
 
 ```sql
 CREATE TABLE source
@@ -1000,9 +1000,9 @@ AS SELECT
 FROM source;
 ```
 
-请注意，每个视图在将其行插入 `target` 表之前暂停 1 秒，同时包括它们的名称和插入时间。
+请注意，每个视图在向 `target` 表插入行之前都会暂停1秒，并包括其名称和插入时间。
 
-向 `source` 表插入一行需要 ~3 秒，每个视图顺序执行：
+向 `source` 表插入一行大约需要3秒，每个视图顺序执行：
 
 ```sql
 INSERT INTO source VALUES ('test')
@@ -1010,7 +1010,7 @@ INSERT INTO source VALUES ('test')
 1 row in set. Elapsed: 3.786 sec.
 ```
 
-我们可以通过 `SELECT` 确认从每个行到达的情况：
+我们可以通过 `SELECT` 确认每一行的到达：
 
 ```sql
 SELECT
@@ -1048,7 +1048,7 @@ ORDER BY uuid ASC
 3 rows in set. Elapsed: 0.004 sec.
 ```
 
-相反，考虑在启用 `parallel_view_processing=1` 时插入一行会发生什么。在启用此选项时，视图会并行执行，因此无法保证行到达目标表的顺序：
+相反，考虑在启用 `parallel_view_processing=1` 时插入一行会发生什么。在启用此项后，视图将并行执行，从而不确保行到达目标表的顺序：
 
 ```sql
 TRUNCATE target;
@@ -1074,39 +1074,39 @@ ORDER BY now ASC
 3 rows in set. Elapsed: 0.004 sec.
 ```
 
-尽管每个视图到达的行的顺序相同，但这并不保证——如各行的插入时间相似所示。还要注意插入性能已得到改善。
+尽管来自每个视图的行到达顺序相同，但这并不保证 - 如每行的插入时间相似所示。此外，请注意，这改善了插入性能。
 
 ### 何时使用并行处理 {#materialized-views-when-to-use-parallel}
 
-启用 `parallel_view_processing=1` 可以显著提高插入吞吐量，如上所示，尤其是当多个物化视图附加到单个表时。然而，了解权衡是很重要的：
+启用 `parallel_view_processing=1` 可以显著提高插入吞吐量，如上所示，尤其是当多个物化视图附加到同一表时。然而，理解权衡是很重要的：
 
-- **增加插入压力**：所有物化视图同时执行，增加 CPU 和内存使用。如果每个视图执行重计算或 JOIN，这可能会造成系统超负荷。
-- **需要严格的执行顺序**：在某些罕见的工作流中，视图执行的顺序非常重要（例如，链式依赖），并行执行可能导致状态不一致或竞争条件。虽然可以设计来绕过这个问题，但这种设置是脆弱的，可能会在未来的版本中失效。
+- **增加插入压力**: 所有物化视图同时执行，增加CPU和内存使用。如果每个视图执行繁重的计算或JOIN，这可能会导致系统过载。
+- **严格执行顺序的需求**: 在某些稀有工作流中，视图执行的顺序很重要（例如，串联依赖关系），并行执行可能导致不一致状态或竞争条件。虽然可以设计来避免这种情况，但这种设置是脆弱的，并且可能在未来版本中破裂。
 
 :::note 历史默认值和稳定性
-顺序执行曾经是很长时间以来的默认设置，部分原因是由于错误处理的复杂性。历史上，一个物化视图的失败可能会阻止其他视图执行。较新版本通过块隔离失败改善了这一点，但顺序执行仍然提供更清晰的失败语义。
+顺序执行在很长一段时间内是默认设置，部分原因是处理错误的复杂性。历史上，一个物化视图中的失败可能会导致其他视图无法执行。较新版本通过每个块隔离失败来改善这一问题，但顺序执行仍提供了更清晰的故障语义。
 :::
 
-一般来说，当满足以下条件时启用 `parallel_view_processing=1`：
+一般情况下，当：
 
 - 您有多个独立的物化视图
 - 您的目标是最大化插入性能
-- 您了解系统能够处理并发视图执行的能力
+- 您了解系统处理并发视图执行的能力
 
-当：
-- 物化视图之间存在依赖时，保持禁用
-- 需要可预测、顺序的执行
-- 想调试或审计插入行为并希望重放确定性
+请将其保持为禁用状态，当：
+- 物化视图之间有依赖关系
+- 您需要可预测的、有序执行
+- 您正在调试或审计插入行为并希望获得确定性的重放
 
-## 物化视图与公用表表达式（CTE） {#materialized-views-common-table-expressions-ctes}
+## 物化视图与公共表表达式（CTEs） {#materialized-views-common-table-expressions-ctes}
 
-**非递归** 公用表表达式（CTE）在物化视图中是支持的。
+**非递归**公共表表达式（CTEs）在物化视图中得到支持。
 
-:::note 公用表表达式 **不** 被物化
-ClickHouse 不对 CTE 进行物化；而是直接将 CTE 定义替换到查询中，这可能导致同一表达式多次评估（如果 CTE 被多次使用）。
+:::note 公共表表达式 **不是** 物化的
+ClickHouse不会对CTE进行物化；相反，它将CTE定义直接替换为查询中，这可能导致对相同表达式的多次评估（如果CTE被使用超过一次）。
 :::
 
-考虑以下示例，它计算每种帖子类型的每日活动。
+考虑以下示例，该示例计算每种帖子类型的每日活动。
 
 ```sql
 CREATE TABLE daily_post_activity
@@ -1143,7 +1143,7 @@ FROM filtered_posts
 GROUP BY Day, PostTypeId;
 ```
 
-虽然此处并不严格需要 CTE，但为了示例，视图将按预期工作：
+虽然这里严格没有必要使用CTE，但为了举例，视图会按预期工作：
 
 ```sql
 INSERT INTO posts
@@ -1182,10 +1182,10 @@ LIMIT 10
 Peak memory usage: 989.53 KiB.
 ```
 
-在 ClickHouse 中，CTE 被内联，这意味着在优化期间，它们有效地被复制粘贴到查询中，而 **不** 被物化。这意味着：
+在ClickHouse中，CTE是内联的，这意味着在优化期间它们实际上被复制粘贴到查询中，**而不是**物化。这意味着：
 
-- 如果您的 CTE 引用不同于源表（即物化视图所附加的表）的表，并且在 `JOIN` 或 `IN` 子句中使用，它将表现得像子查询或连接，而不是触发器。
-- 物化视图仍然仅在主源表插入时触发，但 CTE 将在每次插入时重新执行，这可能导致不必要的开销，特别是当被引用的表很大时。
+- 如果您的CTE引用的表与物化视图附加的源表不同（即附加的源表），并且在 `JOIN` 或 `IN` 子句中使用，它将表现得像子查询或连接，而不是触发器。
+- 物化视图仍然只在插入主源表时被触发，但CTE将在每次插入时被重新执行，这可能会导致不必要的开销，尤其是当引用的表很大时。
 
 例如，
 
@@ -1196,6 +1196,6 @@ WITH recent_users AS (
 SELECT * FROM stackoverflow.posts WHERE OwnerUserId IN (SELECT Id FROM recent_users)
 ```
 
-在这种情况下，用户 CTE 在每次插入帖子时都会重新评估，并且物化视图不会在插入新用户时更新 - 只有在插入帖子时更新。
+在这种情况下，users CTE在每次插入到posts时都会被重新评估，当新用户被插入时，物化视图不会更新 - 只在帖子插入时更新。
 
-一般来说，使用 CTE 应用于操作与物化视图附加的源表相同的逻辑，或者确保引用的表较小，不太可能造成性能瓶颈。或者，考虑遵循物化视图与 JOIN 的 [相同优化](/materialized-view/incremental-materialized-view#join-best-practices)。
+一般来说，在物化视图附加到的源表上运行的逻辑中使用CTE，或者确保引用的表很小且不太可能引起性能瓶颈。或者，考虑同样的优化，如使用物化视图中的JOIN。

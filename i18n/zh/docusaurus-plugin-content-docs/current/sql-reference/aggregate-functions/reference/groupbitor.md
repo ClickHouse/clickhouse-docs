@@ -1,7 +1,14 @@
+---
+'description': '对一系列数字应用位运算 `OR`。'
+'sidebar_position': 152
+'slug': '/sql-reference/aggregate-functions/reference/groupbitor'
+'title': 'groupBitOr'
+---
+
 
 # groupBitOr
 
-对一系列数字应用位运算的 `OR`。
+对一系列数字应用按位 `OR` 操作。
 
 ```sql
 groupBitOr(expr)

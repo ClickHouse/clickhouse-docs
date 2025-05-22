@@ -1,13 +1,27 @@
+---
+'slug': '/examples/aggregate-function-combinators/sumIf'
+'title': 'sumIf'
+'description': '使用 sumIf 组合器的示例'
+'keywords':
+- 'sum'
+- 'if'
+- 'combinator'
+- 'examples'
+- 'sumIf'
+'sidebar_label': 'sumIf'
+---
+
 
 # sumIf {#sumif}
 
 ## 描述 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum) 函数，以计算条件为真时行的值的总和，使用 `sumIf` 汇总组合器函数。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum)
+函数，以计算条件为真的行的值之和，使用 `sumIf` 聚合组合器函数。
 
 ## 示例用法 {#example-usage}
 
-在这个例子中，我们将创建一个存储销售数据和成功标志的表，并使用 `sumIf` 计算成功交易的总销售额。
+在此示例中，我们将创建一个存储销售数据及成功标志的表，并使用 `sumIf` 计算成功交易的总销售额。
 
 ```sql title="Query"
 CREATE TABLE sales(
@@ -29,7 +43,8 @@ SELECT
 FROM sales;
 ```
 
-`sumIf` 函数将仅对 `is_successful = 1` 的金额进行求和。在这种情况下，它将求和：100.50 + 200.75 + 300.00 + 175.25。
+`sumIf` 函数将仅对 `is_successful = 1` 的金额进行求和。
+在这种情况下，它将求和：100.50 + 200.75 + 300.00 + 175.25。
 
 ```response title="Response"
    ┌─total_successful_sales─┐
@@ -39,7 +54,8 @@ FROM sales;
 
 ### 按价格方向计算交易量 {#calculate-trading-vol-price-direction}
 
-在这个例子中，我们将使用 [ClickHouse playground](https://sql.clickhouse.com/) 上可用的 `stock` 表来计算 2002 年上半年按价格方向的交易量。
+在此示例中，我们将使用 [ClickHouse playground](https://sql.clickhouse.com/) 提供的 `stock` 表，
+计算 2002 年上半年按价格方向的交易量。
 
 ```sql title="Query"
 SELECT 
@@ -73,7 +89,8 @@ ORDER BY month;
 
 ### 按股票符号计算交易量 {#calculate-trading-volume}
 
-在这个例子中，我们将使用 [ClickHouse playground](https://sql.clickhouse.com/) 上可用的 `stock` 表来计算 2006 年时三家最大科技公司的股票符号的交易量。
+在此示例中，我们将使用 [ClickHouse playground](https://sql.clickhouse.com/) 提供的 `stock` 表，
+计算 2006 年三家当时最大的科技公司的股票符号交易量。
 
 ```sql title="Query"
 SELECT 
@@ -106,6 +123,6 @@ ORDER BY month;
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
 ```
 
-## 另见 {#see-also}
+## 另请参阅 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

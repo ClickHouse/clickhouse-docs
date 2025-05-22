@@ -1,11 +1,19 @@
+---
+'description': 'leadInFrame 窗口函数的文档'
+'sidebar_label': 'leadInFrame'
+'sidebar_position': 10
+'slug': '/sql-reference/window-functions/leadInFrame'
+'title': 'leadInFrame'
+---
+
 
 # leadInFrame
 
-返回在有序框架中当前行之后的偏移行评估的值。
+返回在有序框架内当前行之后的偏移行所评估的值。
 
 :::warning
 `leadInFrame` 的行为与标准 SQL 的 `lead` 窗口函数不同。
-Clickhouse 窗口函数 `leadInFrame` 尊重窗口框架。
+Clickhouse 窗口函数 `leadInFrame` 遵循窗口框架。
 要获得与 `lead` 相同的行为，请使用 `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`。
 :::
 
@@ -23,16 +31,16 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 **参数**
 - `x` — 列名。
-- `offset` — 应用的偏移量。[(U)Int*](../data-types/int-uint.md)。 (可选 - 默认值为 `1`)。
-- `default` — 如果计算的行超出窗口框架的边界时返回的值。 (可选 - 省略时为列类型的默认值)。
+- `offset` — 应用的偏移量。[(U)Int*](../data-types/int-uint.md)。 （可选 - 默认为 `1`）。
+- `default` — 如果计算的行超过窗口框架的边界，则返回的值。 （可选 - 省略时为列类型的默认值）。
 
 **返回值**
 
-- 在有序框架中，当前行之后的偏移行评估的值。
+- 在有序框架内当前行之后偏移行所评估的值。
 
 **示例**
 
-本示例查看诺贝尔奖得主的 [历史数据](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)，并使用 `leadInFrame` 函数返回物理类别中连续得主的列表。
+该示例查看诺贝尔奖获奖者的 [历史数据](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)，并使用 `leadInFrame` 函数返回物理学类别中的连续获奖者列表。
 
 查询：
 

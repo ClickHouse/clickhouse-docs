@@ -1,10 +1,21 @@
-| Input | Output | Alias |
+---
+'alias': []
+'description': 'LineAsStringWithNamesAndTypes 格式的 文档'
+'input_format': false
+'keywords':
+- 'LineAsStringWithNamesAndTypes'
+'output_format': true
+'slug': '/interfaces/formats/LineAsStringWithNamesAndTypes'
+'title': 'LineAsStringWithNamesAndTypes'
+---
+
+| 输入 | 输出 | 别名 |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
 ## 描述 {#description}
 
-`LineAsStringWithNames` 格式与 [`LineAsString`](./LineAsString.md) 格式类似，但打印两行标题：一行为列名，另一行为类型。
+`LineAsStringWithNames` 格式类似于 [`LineAsString`](./LineAsString.md) 格式，但打印两个标题行：一个包含列名，另一个包含类型。
 
 ## 示例用法 {#example-usage}
 

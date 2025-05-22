@@ -1,15 +1,35 @@
+---
+'slug': '/examples/aggregate-function-combinators/avgMergeState'
+'title': 'avgMergeState'
+'description': '使用 avgMergeState 组合器的示例'
+'keywords':
+- 'avg'
+- 'MergeState'
+- 'combinator'
+- 'examples'
+- 'avgMergeState'
+'sidebar_label': 'avgMergeState'
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 # avgMergeState {#avgMergeState}
 
-## Description {#description}
+## 描述 {#description}
 
-[`MergeState`](/sql-reference/aggregate-functions/combinators#-state) 组合器可以应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg) 函数，以合并类型为 `AverageFunction(avg, T)` 的部分聚合状态，并返回一个新的中间聚合状态。
+[`MergeState`](/sql-reference/aggregate-functions/combinators#-state) 组合器
+可以应用于[`avg`](/sql-reference/aggregate-functions/reference/avg)
+函数，以合并类型为 `AverageFunction(avg, T)` 的部分聚合状态并
+返回一个新的中间聚合状态。
 
-## Example Usage {#example-usage}
+## 示例用法 {#example-usage}
 
-`MergeState` 组合器在多层聚合场景中尤其有用，在这些场景中，您希望组合预聚合状态并将它们保持为状态（而不是最终化）以便进一步处理。为了说明这一点，我们将查看一个示例，在该示例中，我们将单个服务器性能指标转换为多个层级的分层聚合：服务器级别 → 区域级别 → 数据中心级别。
+`MergeState` 组合器对于多层聚合场景尤其有用，在这些场景中，您想要
+结合预聚合的状态并将其保持为状态（而不是最终确定它们）以进行后续处理。
+为了说明这一点，我们将查看一个示例，其中我们将个别服务器性能指标
+转换为跨多个级别的分层聚合：服务器级别 → 区域级别 → 数据中心级别。
 
 首先，我们创建一个表来存储原始数据：
 
@@ -26,7 +46,8 @@ ENGINE = MergeTree()
 ORDER BY (region, server_id, timestamp);
 ```
 
-我们将创建一个服务器级别的聚合目标表，并定义一个作为插入触发器的增量物化视图：
+我们将创建一个服务器级别的聚合目标表，并定义一个增量
+物化视图作为插入触发器：
 
 ```sql
 CREATE TABLE server_performance
@@ -50,7 +71,7 @@ FROM raw_server_metrics
 GROUP BY server_id, region, datacenter;
 ```
 
-我们将在区域级和数据中心级别执行相同操作：
+我们将在区域和数据中心级别做同样的事情：
 
 ```sql
 CREATE TABLE region_performance
@@ -90,7 +111,7 @@ FROM region_performance
 GROUP BY datacenter;
 ```
 
-然后，我们将插入示例原始数据到源表中：
+然后，我们将向源表插入示例原始数据：
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -106,7 +127,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
 我们将为每个级别编写三个查询：
 
 <Tabs>
-  <TabItem value="Service level" label="Service level" default>
+  <TabItem value="服务级别" label="服务级别" default>
 ```sql
 SELECT
     server_id,
@@ -127,7 +148,7 @@ ORDER BY region, server_id;
 └───────────┴────────────┴─────────────────┘
 ```
   </TabItem>
-  <TabItem value="Regional level" label="Regional level">
+  <TabItem value="区域级别" label="区域级别">
 ```sql
 SELECT
     region,
@@ -145,7 +166,7 @@ ORDER BY datacenter, region;
 └────────────┴────────────┴────────────────────┘
 ```
   </TabItem>
-  <TabItem value="Datacenter level" label="Datacenter level">
+  <TabItem value="数据中心级别" label="数据中心级别">
 ```sql
 SELECT
     datacenter,
@@ -163,7 +184,7 @@ ORDER BY datacenter;
   </TabItem>
 </Tabs>
 
-我们还可以插入更多数据：
+我们可以插入更多数据：
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -172,7 +193,8 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 301, 'eu-central', 'dc2', 135);
 ```
 
-让我们再次检查数据中心级别的性能。注意整个聚合链是如何自动更新的：
+让我们再次检查数据中心级别的性能。请注意整个
+聚合链是如何自动更新的：
 
 ```sql
 SELECT
@@ -190,7 +212,7 @@ ORDER BY datacenter;
 └────────────┴────────────────────┘
 ```
 
-## See also {#see-also}
+## 另请参见 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
 - [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)

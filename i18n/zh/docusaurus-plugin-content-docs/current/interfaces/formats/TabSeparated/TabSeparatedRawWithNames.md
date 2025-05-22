@@ -2,7 +2,7 @@
 'alias':
 - 'TSVRawWithNames'
 - 'RawWithNames'
-'description': 'TabSeparatedRawWithNames格式的文档'
+'description': 'TabSeparatedRawWithNames 格式的文档'
 'input_format': true
 'keywords':
 - 'TabSeparatedRawWithNames'
@@ -13,16 +13,17 @@
 'title': 'TabSeparatedRawWithNames'
 ---
 
-| Input | Output | Alias                             |
-|-------|--------|-----------------------------------|
-| ✔     | ✔      | `TSVRawWithNames`, `RawWithNames` |
+| 输入   | 输出   | 别名                             |
+|--------|--------|-----------------------------------|
+| ✔      | ✔      | `TSVRawWithNames`，`RawWithNames` |
 
 ## 描述 {#description}
 
-与 [`TabSeparatedWithNames`](./TabSeparatedWithNames.md) 格式不同的是，行是以不转义的方式写入的。
+与 [`TabSeparatedWithNames`](./TabSeparatedWithNames.md) 格式不同，
+行是以未转义的方式书写的。
 
 :::note
-在使用该格式解析时，字段中不允许使用制表符或换行符。
+使用此格式解析时，每个字段中不允许包含制表符或换行符。
 :::
 
 ## 示例用法 {#example-usage}

@@ -1,8 +1,16 @@
-此数据集包含过去128年的历史气象观测数据。每一行都是某一时刻和气象站的测量值。
+---
+'description': '过去 128 年的天气观测数据，共 1.31 亿行'
+'sidebar_label': '台湾历史天气数据集'
+'sidebar_position': 1
+'slug': '/getting-started/example-datasets/tw-weather'
+'title': '台湾历史天气数据集'
+---
 
-该数据集的来源可以在 [这里](https://github.com/Raingel/historical_weather) 获得，气象站编号的列表可以在 [这里](https://github.com/Raingel/weather_station_list) 找到。
+这个数据集包含过去128年的历史气象观测测量记录。每一行都是某个时间点和天气站的测量值。
 
-> 气象数据集的来源包括由中央气象局建立的气象站（站点编号以C0、C1和4开头）和属于农业委员会的农业气象站（站点编号不包括上述提到的内容）：
+该数据集的来源可以在[这里](https://github.com/Raingel/historical_weather)找到，天气站编号的列表可以在[这里](https://github.com/Raingel/weather_station_list)找到。
+
+> 气象数据集的来源包括中央气象局建立的气象站（站代码以C0、C1和4开头）以及属于农业委员会的农业气象站（站代码不包括上述提到的情况）：
 
     - StationId
     - MeasuredDate，观测时间
@@ -10,16 +18,16 @@
     - SeaPres，海平面气压
     - Td，露点温度
     - RH，相对湿度
-    - 其他可用的元素
+    - 其他可用元素
 
 ## 下载数据 {#downloading-the-data}
 
-- 一个 [预处理版本](#pre-processed-data) 的数据，适用于ClickHouse，已被清理、重构并丰富。该数据集涵盖了1896年到2023年。
-- [下载原始数据](#original-raw-data) 并转换为ClickHouse所需的格式。希望添加自己列的用户可能希望探索或完成他们的方案。
+- 一份适用于ClickHouse的[预处理版本](#pre-processed-data)，已清理、重组和增强。该数据集涵盖1896年至2023年。
+- [下载原始原始数据](#original-raw-data)并转换为ClickHouse要求的格式。希望添加自己列的用户可以探索或完成自己的方法。
 
 ### 预处理数据 {#pre-processed-data}
 
-该数据集已从每行一个测量值重构为每个气象站编号和测量日期一行，即
+该数据集已从每行一个测量值重组为每个天气站ID和测量日期一行，例如：
 
 ```csv
 StationId,MeasuredDate,StnPres,Tx,RH,WS,WD,WSGust,WDGust,Precp,GloblRad,TxSoil0cm,TxSoil5cm,TxSoil20cm,TxSoil50cm,TxSoil100cm,SeaPres,Td,PrecpHour,SunShine,TxSoil10cm,EvapA,Visb,UVI,Cloud Amount,TxSoil30cm,TxSoil200cm,TxSoil300cm,TxSoil500cm,VaporPressure
@@ -29,11 +37,11 @@ C0X100,2016-01-01 03:00:00,1021.3,15.8,74,1.5,353.0,,,,,,,,,,,,,,,,,,,,,,,
 C0X100,2016-01-01 04:00:00,1021.2,15.8,74,1.7,8.0,,,,,,,,,,,,,,,,,,,,,,,
 ```
 
-此查询简单，并且确保结果表的稀疏程度更少，并且有些元素为null，因为它们在该气象站不可测量。
+查询变得简单，并且确保结果表更少稀疏，某些元素为null，因为它们在该气象站不可用。
 
-此数据集可以在以下Google CloudStorage位置获得。可以将数据集下载到本地文件系统（并使用ClickHouse客户端插入），或直接插入到ClickHouse中（详见 [从URL插入](#inserting-from-url)）。
+该数据集可在以下Google Cloud Storage位置找到。用户可以将数据集下载到本地文件系统（并使用ClickHouse客户端插入）或直接插入ClickHouse中（请参见[从URL插入](#inserting-from-url)）。
 
-下载方法：
+下载方式如下：
 
 ```bash
 wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/preprocessed_weather_daily_1896_2023.tar.gz
@@ -54,13 +62,13 @@ md5sum daily_weather_preprocessed_1896_2023.csv
 # Checksum should be equal to: 1132248c78195c43d93f843753881754
 ```
 
-### 原始数据 {#original-raw-data}
+### 原始原始数据 {#original-raw-data}
 
-以下是下载原始数据以进行所需转换和转化的步骤。
+以下是下载原始原始数据以进行转换和处理的步骤。
 
 #### 下载 {#download}
 
-下载原始数据：
+要下载原始原始数据：
 
 ```bash
 mkdir tw_raw_weather_data && cd tw_raw_weather_data
@@ -87,7 +95,7 @@ cat *.csv | md5sum
 # Checksum should be equal to: b26db404bf84d4063fac42e576464ce1
 ```
 
-#### 检索台湾气象站 {#retrieve-the-taiwan-weather-stations}
+#### 检索台湾天气站 {#retrieve-the-taiwan-weather-stations}
 
 ```bash
 wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw/main/data/weather_sta_list.csv
@@ -97,9 +105,9 @@ wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw
 sed -i '1s/^\xEF\xBB\xBF//' weather_sta_list.csv
 ```
 
-## 创建表模式 {#create-table-schema}
+## 创建表结构 {#create-table-schema}
 
-在ClickHouse中创建MergeTree表（通过ClickHouse客户端）。
+在ClickHouse中创建MergeTree表（来自ClickHouse客户端）。
 
 ```bash
 CREATE TABLE tw_weather_data (
@@ -138,19 +146,19 @@ ENGINE = MergeTree
 ORDER BY (MeasuredDate);
 ```
 
-## 插入到ClickHouse {#inserting-into-clickhouse}
+## 插入到ClickHouse中 {#inserting-into-clickhouse}
 
 ### 从本地文件插入 {#inserting-from-local-file}
 
-可以通过以下方式从本地文件插入数据（通过ClickHouse客户端）：
+可以通过以下方式从本地文件插入数据（来自ClickHouse客户端）：
 
 ```sql
 INSERT INTO tw_weather_data FROM INFILE '/path/to/daily_weather_preprocessed_1896_2023.csv'
 ```
 
-其中 `/path/to` 表示用户到本地文件的特定路径。
+其中`/path/to`表示本地文件在磁盘上的具体用户路径。
 
-在将数据插入ClickHouse后，样本响应输出如下：
+插入数据后，示例响应输出如下：
 
 ```response
 Query id: 90e4b524-6e14-4855-817c-7e6f98fbeabb
@@ -167,7 +175,7 @@ INSERT INTO tw_weather_data SELECT *
 FROM url('https://storage.googleapis.com/taiwan-weather-observaiton-datasets/daily_weather_preprocessed_1896_2023.csv', 'CSVWithNames')
 
 ```
-要了解如何加快速度，请参见我们关于 [调优大数据加载](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2) 的博客文章。
+要了解如何加速这一过程，请参阅我们关于[优化大数据加载](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)的博客文章。
 
 ## 检查数据行和大小 {#check-data-rows-and-sizes}
 
@@ -184,7 +192,7 @@ FROM tw_weather_data;
 └─────────────────────────────────┘
 ```
 
-2. 让我们看看这个表占用了多少磁盘空间：
+2. 让我们查看该表使用了多少磁盘空间：
 
 ```sql
 SELECT
@@ -202,7 +210,7 @@ WHERE (`table` = 'tw_weather_data') AND active
 
 ## 示例查询 {#sample-queries}
 
-### Q1: 检索特定年份每个气象站的最高露点温度 {#q1-retrieve-the-highest-dew-point-temperature-for-each-weather-station-in-the-specific-year}
+### Q1：检索特定年份每个天气站的最高露点温度 {#q1-retrieve-the-highest-dew-point-temperature-for-each-weather-station-in-the-specific-year}
 
 ```sql
 SELECT
@@ -248,7 +256,7 @@ GROUP BY StationId
 30 rows in set. Elapsed: 0.045 sec. Processed 6.41 million rows, 187.33 MB (143.92 million rows/s., 4.21 GB/s.)
 ```
 
-### Q2: 按特定时间段、字段和气象站抓取原始数据 {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
+### Q2：以特定时间范围、字段和天气站raw数据获取 {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
 
 ```sql
 SELECT
@@ -286,8 +294,8 @@ LIMIT 10
 10 rows in set. Elapsed: 0.009 sec. Processed 91.70 thousand rows, 2.33 MB (9.67 million rows/s., 245.31 MB/s.)
 ```
 
-## 鸣谢 {#credits}
+## 致谢 {#credits}
 
-我们要感谢中央气象局和农业委员会农业气象观测网络（站）的努力，为准备、清理和分发此数据集而付出的努力。我们对此表示感谢。
+我们要感谢中央气象局和农业委员会农业气象观测网络（站）的努力，他们为准备、清理和分发此数据集做出了贡献。我们对此表示感谢。
 
-Ou, J.-H., Kuo, C.-H., Wu, Y.-F., Lin, G.-C., Lee, M.-H., Chen, R.-K., Chou, H.-P., Wu, H.-Y., Chu, S.-C., Lai, Q.-J., Tsai, Y.-C., Lin, C.-C., Kuo, C.-C., Liao, C.-T., Chen, Y.-N., Chu, Y.-W., Chen, C.-Y., 2023. 针对台湾水稻病害的早期预警应用导向深度学习模型。生态信息学 73, 101950. https://doi.org/10.1016/j.ecoinf.2022.101950 [2022年12月13日]
+Ou, J.-H., Kuo, C.-H., Wu, Y.-F., Lin, G.-C., Lee, M.-H., Chen, R.-K., Chou, H.-P., Wu, H.-Y., Chu, S.-C., Lai, Q.-J., Tsai, Y.-C., Lin, C.-C., Kuo, C.-C., Liao, C.-T., Chen, Y.-N., Chu, Y.-W., Chen, C.-Y., 2023. 面向应用的深度学习模型用于台湾稻瘟病的早期预警。生态信息学73, 101950. https://doi.org/10.1016/j.ecoinf.2022.101950 [2022年12月13日]

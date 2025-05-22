@@ -1,14 +1,21 @@
-数据集由纽约公共图书馆创建。它包含酒店、餐厅和咖啡馆的菜单的历史数据，包括菜肴及其价格。
+---
+'description': '数据集包含130万条酒店、餐厅和咖啡馆菜单的历史数据记录，及其菜品和价格。'
+'sidebar_label': '纽约公共图书馆 "菜单上有什么？" 数据集'
+'slug': '/getting-started/example-datasets/menus'
+'title': '纽约公共图书馆 "菜单上有什么？" 数据集'
+---
 
-来源: http://menus.nypl.org/data  
+数据集由纽约公共图书馆创建。它包含酒店、餐馆和咖啡馆菜单上菜肴及其价格的历史数据。
+
+来源: [http://menus.nypl.org/data](http://menus.nypl.org/data)  
 数据属于公共领域。
 
-这些数据来自图书馆的档案，可能是不完整的，难以进行统计分析。不过，它们确实非常美味。  
-数据的大小约为130万条关于菜单的菜肴记录——对ClickHouse来说，这是一个非常小的数据量，但它仍然是一个很好的示例。
+数据来自图书馆的档案，可能不完整，难以进行统计分析。然而，这些数据也非常美味。  
+数据量仅为130万个记录，关于菜单中的菜肴——对于ClickHouse来说，这是一个非常小的数据量，但仍然是一个很好的例子。
 
 ## 下载数据集 {#download-dataset}
 
-运行命令：
+运行命令:
 
 ```bash
 wget https://s3.amazonaws.com/menusdata.nypl.org/gzips/2021_08_01_07_01_17_data.tgz
@@ -19,7 +26,7 @@ md5sum 2021_08_01_07_01_17_data.tgz
 # Checksum should be equal to: db6126724de939a5481e3160a2d67d15
 ```
 
-如果需要，请将链接替换为 http://menus.nypl.org/data 的最新链接。  
+如有需要，请将链接替换为 http://menus.nypl.org/data 中的最新链接。  
 下载大小约为35 MB。
 
 ## 解压数据集 {#unpack-dataset}
@@ -30,11 +37,11 @@ tar xvf 2021_08_01_07_01_17_data.tgz
 
 解压后的大小约为150 MB。
 
-数据是以规范化形式存在的，由四个表组成：
-- `Menu` — 关于菜单的信息：餐厅名称、菜单被查看的日期等。
-- `Dish` — 关于菜肴的信息：菜肴的名称及一些特征。
+数据被归一化，包含四个表:
+- `Menu` — 关于菜单的信息：餐厅名称、菜单查看日期等。
+- `Dish` — 关于菜肴的信息：菜肴名称及一些特征。
 - `MenuPage` — 关于菜单中页面的信息，因为每个页面属于某个菜单。
-- `MenuItem` — 菜单的一项。某个菜单页面上一个菜肴及其价格：指向菜肴和菜单页面的链接。
+- `MenuItem` — 菜单中的一项。某个菜单页面上的菜肴及其价格：链接到菜肴和菜单页面。
 
 ## 创建表 {#create-tables}
 
@@ -114,20 +121,20 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_default 0 --date_time_input_format best_effort --query "INSERT INTO menu_item FORMAT CSVWithNames" < MenuItem.csv
 ```
 
-我们使用 [CSVWithNames](../../interfaces/formats.md#csvwithnames) 格式，因为数据以带标题的CSV形式表示。
+我们使用 [CSVWithNames](../../interfaces/formats.md#csvwithnames) 格式，因为数据以带有表头的CSV格式表示。
 
-我们禁用 `format_csv_allow_single_quotes`，因为数据字段只使用双引号，而单引号可能出现在值内，不应干扰CSV解析器。
+我们禁用 `format_csv_allow_single_quotes`，因为数据字段仅使用双引号，单引号可以在值内部出现，并且不应混淆CSV解析器。
 
-我们禁用 [input_format_null_as_default](/operations/settings/formats#input_format_null_as_default)，因为我们的数据没有 [NULL](/operations/settings/formats#input_format_null_as_default)。否则ClickHouse会尝试解析 `\N` 序列，并可能与数据中的 `\` 混淆。
+我们禁用 [input_format_null_as_default](/operations/settings/formats#input_format_null_as_default)，因为我们的数据没有 [NULL](/operations/settings/formats#input_format_null_as_default)。否则，ClickHouse将尝试解析 `\N` 序列，并可能会将其与数据中的 `\` 混淆。
 
-设置 [date_time_input_format best_effort](/operations/settings/formats#date_time_input_format) 可以解析多种格式的 [DateTime](../../sql-reference/data-types/datetime.md) 字段。例如，像 '2000-01-01 01:02' 的ISO-8601格式（没有秒）将被识别。如果没有此设置，只有固定的DateTime格式是允许的。
+设置 [date_time_input_format best_effort](/operations/settings/formats#date_time_input_format) 允许以多种格式解析 [DateTime](../../sql-reference/data-types/datetime.md) 字段。例如，没有秒的ISO-8601格式如 '2000-01-01 01:02' 将被识别。没有该设置，仅允许固定的DateTime格式。
 
-## 非规范化数据 {#denormalize-data}
+## 反规范化数据 {#denormalize-data}
 
-数据以多个表呈现，处于 [规范化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms)。这意味着如果要查询，例如菜单项中的菜肴名称，就需要执行 [JOIN](/sql-reference/statements/select/join)。  
-对于典型的分析任务，处理预先JOIN的数据效率更高，以避免每次都执行 `JOIN`。这称为“非规范化”数据。
+数据以 [规范化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms) 展示在多个表中。这意味着如果您想查询菜单项中的菜肴名称，您需要执行 [JOIN](/sql-reference/statements/select/join)。  
+对于典型的分析任务，处理预先参与的（pre-JOINed）数据更为高效，以避免每次都进行 `JOIN`。这被称为“反规范化”数据。
 
-我们将创建一个表 `menu_item_denorm`，其中包含所有JOIN在一起的数据：
+我们将创建一个名为 `menu_item_denorm` 的表，其中将包含所有连接在一起的数据：
 
 ```sql
 CREATE TABLE menu_item_denorm
@@ -190,9 +197,9 @@ SELECT count() FROM menu_item_denorm;
 └─────────┘
 ```
 
-## 执行一些查询 {#run-queries}
+## 运行一些查询 {#run-queries}
 
-### 菜肴历史价格的平均值 {#query-averaged-historical-prices}
+### 菜肴的平均历史价格 {#query-averaged-historical-prices}
 
 查询：
 
@@ -232,7 +239,7 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴──────────────────────────────┘
 ```
 
-请持保留态度。
+对此请谨慎对待。
 
 ### 汉堡价格 {#query-burger-prices}
 
@@ -303,11 +310,11 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴─────────────────────────────┘
 ```
 
-要获取伏特加我们需要写 `ILIKE '%vodka%'`，这肯定是一个声明。
+要获取伏特加，我们必须写 `ILIKE '%vodka%'`，这无疑是一个声明。
 
 ### 鱼子酱 {#query-caviar}
 
-让我们打印鱼子酱的价格。同时打印任何带鱼子酱的菜肴名称。
+让我们打印鱼子酱的价格。同时让我们打印任何包含鱼子酱的菜肴名称。
 
 查询：
 
@@ -346,8 +353,8 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴──────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-至少他们有鱼子酱和伏特加。非常不错。
+至少他们有鱼子酱和伏特加。非常好。
 
 ## 在线游乐场 {#playground}
 
-数据已上传到ClickHouse Playground， [示例](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B)。
+数据已上传到ClickHouse Playground，[示例](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B)。

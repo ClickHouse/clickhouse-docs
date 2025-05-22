@@ -1,3 +1,11 @@
+---
+'description': 'ALTER ROW POLICY 的文档'
+'sidebar_label': 'ROW POLICY'
+'sidebar_position': 47
+'slug': '/sql-reference/statements/alter/row-policy'
+'title': 'ALTER ROW POLICY'
+---
+
 
 # ALTER ROW POLICY
 

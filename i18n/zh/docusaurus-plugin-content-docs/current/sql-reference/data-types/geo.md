@@ -1,11 +1,19 @@
-ClickHouse支持用于表示地理对象的数据类型——位置、土地等。
+---
+'description': 'ClickHouse 中用于表示地理对象和位置的几何数据类型的文档'
+'sidebar_label': 'Geo'
+'sidebar_position': 54
+'slug': '/sql-reference/data-types/geo'
+'title': '几何'
+---
 
-**另见**
+ClickHouse 支持用于表示地理对象的数据类型——位置、土地等。
+
+**另请参阅**
 - [表示简单地理特征](https://en.wikipedia.org/wiki/GeoJSON)。
 
 ## Point {#point}
 
-`Point`由其X和Y坐标表示，以[Tuple](tuple.md)([Float64](float.md), [Float64](float.md))的形式存储。
+`Point` 由其 X 和 Y 坐标表示，存储为 [Tuple](tuple.md)([Float64](float.md), [Float64](float.md))。
 
 **示例**
 
@@ -26,7 +34,7 @@ SELECT p, toTypeName(p) FROM geo_point;
 
 ## Ring {#ring}
 
-`Ring`是一个没有孔的简单多边形，以点的数组存储：[Array](array.md)([Point](#point))。
+`Ring` 是一个没有孔的简单多边形，存储为一个点的数组：[Array](array.md)([Point](#point))。
 
 **示例**
 
@@ -47,7 +55,7 @@ SELECT r, toTypeName(r) FROM geo_ring;
 
 ## LineString {#linestring}
 
-`LineString`是以点的数组存储的线：[Array](array.md)([Point](#point))。
+`LineString` 是一条线，存储为一个点的数组：[Array](array.md)([Point](#point))。
 
 **示例**
 
@@ -68,7 +76,7 @@ SELECT l, toTypeName(l) FROM geo_linestring;
 
 ## MultiLineString {#multilinestring}
 
-`MultiLineString`是多个以`LineString`存储的线：[Array](array.md)([LineString](#linestring))。
+`MultiLineString` 是多条线，存储为一个 `LineString` 的数组：[Array](array.md)([LineString](#linestring))。
 
 **示例**
 
@@ -89,11 +97,11 @@ SELECT l, toTypeName(l) FROM geo_multilinestring;
 
 ## Polygon {#polygon}
 
-`Polygon`是带孔的多边形，以环的数组存储：[Array](array.md)([Ring](#ring))。外部数组的第一个元素是多边形的外形，后续的所有元素是孔。
+`Polygon` 是一个带孔的多边形，存储为一个环的数组：[Array](array.md)([Ring](#ring))。外数组的第一个元素是多边形的外部形状，后续的所有元素都是孔。
 
 **示例**
 
-这是一个带一个孔的多边形：
+这是一个带有一个孔的多边形：
 
 ```sql
 CREATE TABLE geo_polygon (pg Polygon) ENGINE = Memory();
@@ -110,7 +118,7 @@ SELECT pg, toTypeName(pg) FROM geo_polygon;
 
 ## MultiPolygon {#multipolygon}
 
-`MultiPolygon`由多个多边形组成，以多边形的数组存储：[Array](array.md)([Polygon](#polygon))。
+`MultiPolygon` 由多个多边形组成，存储为一个多边形的数组：[Array](array.md)([Polygon](#polygon))。
 
 **示例**
 
@@ -131,4 +139,4 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 
 ## 相关内容 {#related-content}
 
-- [探索大量现实世界数据集：ClickHouse中的100多年天气记录](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
+- [在 ClickHouse 中探索大规模的现实世界数据集：100 多年的气象记录](https://clickhouse.com/blog/real-world-data-noaa-climate-data)

@@ -1,7 +1,15 @@
+---
+'description': '提供对存储在 Amazon S3、Azure、HDFS 或本地的 Apache Iceberg 表的只读表状接口。'
+'sidebar_label': 'iceberg'
+'sidebar_position': 90
+'slug': '/sql-reference/table-functions/iceberg'
+'title': 'iceberg'
+---
+
 
 # iceberg 表函数 {#iceberg-table-function}
 
-提供了一个只读的表状接口，用于访问存储在 Amazon S3、Azure、HDFS 或本地的 Apache [Iceberg](https://iceberg.apache.org/) 表。
+提供对存储在 Amazon S3、Azure、HDFS 或本地的 Apache [Iceberg](https://iceberg.apache.org/) 表的只读表接口。
 
 ## 语法 {#syntax}
 
@@ -21,11 +29,12 @@ icebergLocal(named_collection[, option=value [,..]])
 
 ## 参数 {#arguments}
 
-参数的描述与表函数 `s3`、`azureBlobStorage`、`HDFS` 和 `file` 的参数描述相对应。 `format` 代表 Iceberg 表中数据文件的格式。
+参数的描述与表函数 `s3`、`azureBlobStorage`、`HDFS` 和 `file` 中参数的描述相符。
+`format` 代表 Iceberg 表中数据文件的格式。
 
 ### 返回值 {#returned-value}
 
-一个具有指定结构的表，用于读取指定 Iceberg 表中的数据。
+具有指定结构的表，用于读取指定 Iceberg 表中的数据。
 
 ### 示例 {#example}
 
@@ -34,12 +43,12 @@ SELECT * FROM icebergS3('http://test.s3.amazonaws.com/clickhouse-bucket/test_tab
 ```
 
 :::important
-ClickHouse 目前支持通过 `icebergS3`、`icebergAzure`、`icebergHDFS` 和 `icebergLocal` 表函数，以及 `IcebergS3`、`icebergAzure`、`IcebergHDFS` 和 `IcebergLocal` 表引擎读取 Iceberg 格式的 v1 和 v2。
+ClickHouse 目前支持通过 `icebergS3`、`icebergAzure`、`icebergHDFS` 和 `icebergLocal` 表函数以及 `IcebergS3`、`icebergAzure`、`IcebergHDFS` 和 `IcebergLocal` 表引擎读取 Iceberg 格式的 v1 和 v2。
 :::
 
 ## 定义命名集合 {#defining-a-named-collection}
 
-下面是一个配置命名集合以存储 URL 和凭证的示例：
+以下是配置命名集合以存储 URL 和凭据的示例：
 
 ```xml
 <clickhouse>
@@ -60,17 +69,17 @@ SELECT * FROM icebergS3(iceberg_conf, filename = 'test_table')
 DESCRIBE icebergS3(iceberg_conf, filename = 'test_table')
 ```
 
-## 架构演变 {#schema-evolution}
-目前，借助 CH，您可以读取架构随时间变化的 iceberg 表。我们目前支持读取已添加和删除列以及其顺序发生变化的表。您还可以将一个必需值的列更改为允许 NULL 的列。此外，我们支持简单类型的合法类型转换，即：
+## 模式演进 {#schema-evolution}
+目前，通过 ClickHouse，您可以读取模式随时间变化的 iceberg 表。我们目前支持读取添加和删除列的表，以及列的顺序发生变化的表。您还可以将一个必需值的列更改为允许 NULL 的列。此外，我们支持简单类型的允许类型转换，即：
 * int -> long
 * float -> double
-* decimal(P, S) -> decimal(P', S) 其中 P' > P。
+* decimal(P, S) -> decimal(P', S)，其中 P' > P。
 
-目前，不可以更改嵌套结构或数组和映射中元素的类型。
+当前，无法更改嵌套结构或数组和地图中元素的类型。
 
 ## 分区修剪 {#partition-pruning}
 
-ClickHouse 在对 Iceberg 表进行 SELECT 查询时支持分区修剪，这有助于通过跳过无关的数据文件来优化查询性能。要启用分区修剪，请设置 `use_iceberg_partition_pruning = 1`。有关 Iceberg 分区修剪的更多信息，请访问 https://iceberg.apache.org/spec/#partitioning
+ClickHouse 支持在 SELECT 查询期间对 Iceberg 表进行分区修剪，这有助于通过跳过不相关的数据文件来优化查询性能。要启用分区修剪，需要设置 `use_iceberg_partition_pruning = 1`。有关 iceberg 分区修剪的更多信息，请访问 https://iceberg.apache.org/spec/#partitioning
 
 ## 时间旅行 {#time-travel}
 
@@ -87,21 +96,21 @@ SELECT * FROM example_table ORDER BY 1
 SETTINGS iceberg_snapshot_id = 3547395809148285433
 ```
 
-注意：您无法在同一查询中同时指定 `iceberg_timestamp_ms` 和 `iceberg_snapshot_id` 参数。
+注意：您不能在同一查询中同时指定 `iceberg_timestamp_ms` 和 `iceberg_snapshot_id` 参数。
 
 ### 重要考虑事项 {#important-considerations}
 
 - **快照** 通常在以下情况下创建：
     - 新数据写入表时
-    - 进行某种数据压缩时
+    - 执行某种数据压缩
 
-- **架构更改通常不会创建快照** - 这导致在对经历过架构演变的表使用时间旅行时出现重要行为。
+- **模式变化通常不会创建快照** - 这在使用经历模式演进的表进行时间旅行时会导致重要的行为。
 
 ### 示例场景 {#example-scenarios}
 
-所有场景均在 Spark 中编写，因为 CH 目前不支持向 Iceberg 表写入数据。
+所有场景均在 Spark 中编写，因为 ClickHouse 目前不支持写入 Iceberg 表。
 
-#### 场景 1：无新快照的架构更改 {#scenario-1}
+#### 场景 1: 模式变化而没有新的快照 {#scenario-1}
 
 考虑以下操作序列：
 
@@ -160,12 +169,12 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 不同时间戳的查询结果：
 
-- 在 ts1 和 ts2：只有原始的两个列出现
-- 在 ts3：所有三个列出现，其中第一行的价格为 NULL
+- 在 ts1 和 ts2：仅出现原始的两列
+- 在 ts3：出现所有三列，第一行的价格为 NULL
 
-#### 场景 2：历史与当前架构差异 {#scenario-2}
+#### 场景 2: 历史与当前模式差异 {#scenario-2}
 
-在当前时刻的时间旅行查询中，可能会显示与当前表不同的架构：
+当前时刻的时间旅行查询可能显示与当前表不同的模式：
 
 ```sql
 -- Create a table
@@ -205,11 +214,11 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
     +------------+------------+-----+
 ```
 
-这种情况发生是因为 `ALTER TABLE` 不会创建新快照，但对于当前表，Spark 从最新的元数据文件获取 `schema_id` 的值，而不是快照。
+这是因为 `ALTER TABLE` 不会创建新快照，而 Spark 在当前表上采用最新元数据文件的 `schema_id` 值，而不是快照。
 
-#### 场景 3：历史与当前架构差异 {#scenario-3}
+#### 场景 3: 历史与当前模式差异 {#scenario-3}
 
-第二点是，在进行时间旅行时，您无法获取写入数据之前表的状态：
+第二种情况是，在进行时间旅行时，您无法获取写入表之前的状态：
 
 ```sql
 -- Create a table
@@ -226,49 +235,49 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
   SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- Finises with error: Cannot find a snapshot older than ts.
 ```
 
-在 ClickHouse 中，其行为与 Spark 保持一致。您可以在脑海中将 Spark 的 Select 查询替换为 ClickHouse 的 Select 查询，它将以相同的方式工作。
+在 Clickhouse 中，该行为与 Spark 一致。您可以将 Spark 的选择查询在思维中替换为 Clickhouse 的选择查询，效果是相同的。
 
 ## 元数据文件解析 {#metadata-file-resolution}
 
-在 ClickHouse 中使用 `iceberg` 表函数时，系统需要找到正确的 metadata.json 文件，该文件描述了 Iceberg 表的结构。以下是解析过程的工作原理：
+在 ClickHouse 中使用 `iceberg` 表函数时，系统需要找到描述 Iceberg 表结构的正确 metadata.json 文件。以下是此解析过程的工作方式：
 
-### 候选者搜索（按优先级顺序） {#candidate-search}
+### 候选项搜索（优先顺序） {#candidate-search}
 
 1. **直接路径指定**：
-   * 如果设置了 `iceberg_metadata_file_path`，系统将通过将其与 Iceberg 表目录路径组合来使用该确切路径。
-   * 提供此设置时，所有其他解析设置将被忽略。
+   * 如果您设置了 `iceberg_metadata_file_path`，系统将使用此确切路径，并将其与 Iceberg 表目录路径组合。
+   * 提供此设置时，忽略所有其他解析设置。
 
 2. **表 UUID 匹配**：
    * 如果指定了 `iceberg_metadata_table_uuid`，系统将：
      * 仅查看 `metadata` 目录中的 `.metadata.json` 文件
-     * 过滤出包含与您指定的 UUID（不区分大小写）匹配的 `table-uuid` 字段的文件
+     * 筛选包含与您指定的 UUID（不区分大小写）匹配的 `table-uuid` 字段的文件
 
 3. **默认搜索**：
-   * 如果未提供上述两个设置，则所有 `metadata` 目录中的 `.metadata.json` 文件均成为候选者
+   * 如果未提供上述设置，则 `metadata` 目录中的所有 `.metadata.json` 文件都成为候选项
 
 ### 选择最新文件 {#most-recent-file}
 
 在使用上述规则识别候选文件后，系统确定哪个是最新的：
 
 * 如果启用了 `iceberg_recent_metadata_file_by_last_updated_ms_field`：
-  * 选择具有最大的 `last-updated-ms` 值的文件
+  * 选择具有最大 `last-updated-ms` 值的文件
 
 * 否则：
   * 选择具有最高版本号的文件
-  * （版本将以 `V` 的形式出现在格式为 `V.metadata.json` 或 `V-uuid.metadata.json` 的文件名中）
+  * （版号以 `V` 的形式出现在格式为 `V.metadata.json` 或 `V-uuid.metadata.json` 的文件名中）
 
-**注意**：所有提到的设置都是表函数设置（不是全局或查询级别设置），必须如下所示进行指定：
+**注意**：所有提及的设置均为表函数设置（不是全局或查询级别的设置），并必须如下所示进行指定：
 
 ```sql
 SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table', 
     SETTINGS iceberg_metadata_table_uuid = 'a90eed4c-f74b-4e5b-b630-096fb9d09021');
 ```
 
-**注意**：虽然 Iceberg Catalogs 通常处理元数据解析，但 ClickHouse 中的 `iceberg` 表函数直接解释存储在 S3 中的文件为 Iceberg 表，这就是为什么理解这些解析规则很重要。
+**注意**：虽然 Iceberg Catalogs 通常处理元数据解析，但 ClickHouse 中的 `iceberg` 表函数直接将存储在 S3 中的文件解释为 Iceberg 表，因此理解这些解析规则非常重要。
 
 ## 元数据缓存 {#metadata-cache}
 
-`Iceberg` 表引擎和表函数支持元数据缓存，存储清单文件、清单列表和元数据 json 的信息。缓存存储在内存中。该功能通过设置 `use_iceberg_metadata_files_cache` 控制，默认情况下启用。
+`Iceberg` 表引擎和表函数支持元数据缓存，存储清单文件、清单列表和元数据 JSON 的信息。缓存存储在内存中。此功能由设置 `use_iceberg_metadata_files_cache` 控制，默认为启用状态。
 
 ## 别名 {#aliases}
 

@@ -1,3 +1,12 @@
+---
+'description': '系统表包含关于 `latency_log` 使用的桶边界的信息。'
+'keywords':
+- 'system table'
+- 'latency_buckets'
+'slug': '/operations/system-tables/latency_buckets'
+'title': 'system.latency_buckets'
+---
+
 
 # system.latency_buckets
 

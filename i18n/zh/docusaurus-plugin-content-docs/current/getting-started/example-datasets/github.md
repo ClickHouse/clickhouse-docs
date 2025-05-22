@@ -1,42 +1,34 @@
+---
+'description': '包含 ClickHouse 存储库所有提交和更改的数据集'
+'sidebar_label': 'Github Repo'
+'sidebar_position': 1
+'slug': '/getting-started/example-datasets/github'
+'title': '使用 GitHub 数据编写查询'
+---
+
 import Image from '@theme/IdealImage';
 import superset_github_lines_added_deleted from '@site/static/images/getting-started/example-datasets/superset-github-lines-added-deleted.png'
 import superset_commits_authors from '@site/static/images/getting-started/example-datasets/superset-commits-authors.png'
 import superset_authors_matrix from '@site/static/images/getting-started/example-datasets/superset-authors-matrix.png'
 import superset_authors_matrix_v2 from '@site/static/images/getting-started/example-datasets/superset-authors-matrix_v2.png'
 
-This dataset contains all of the commits and changes for the ClickHouse repository. It can be generated using the native `git-import` tool distributed with ClickHouse.
+这个数据集包含了 ClickHouse 存储库的所有提交和更改。可以使用 ClickHouse 自带的 `git-import` 工具生成。
 
-该数据集包含 ClickHouse 仓库的所有提交和更改。可以使用与 ClickHouse 一起分发的原生 `git-import` 工具生成。
+生成的数据为以下每个表提供一个 `tsv` 文件：
 
-The generated data provides a `tsv` file for each of the following tables:
-
-生成的数据为以下每个表提供了一个 `tsv` 文件：
-
-- `commits` - commits with statistics.
 - `commits` - 带有统计信息的提交。
-- `file_changes` - files changed in every commit with the info about the change and statistics.
-- `file_changes` - 每次提交中更改的文件，带有更改信息和统计信息。
-- `line_changes` - every changed line in every changed file in every commit with full info about the line and the information about the previous change of this line.
-- `line_changes` - 每次提交中每个更改文件中每个更改行的详细信息，包括该行的完整信息以及该行的上一个更改的信息。
+- `file_changes` - 每个提交中更改的文件及其更改的信息和统计数据。
+- `line_changes` - 每个提交中每个更改文件的每一行的更改，包含该行的完整信息及其之前更改的信息。
 
-As of November 8th, 2022, each TSV is approximately the following size and number of rows:
+截至 2022 年 11 月 8 日，每个 TSV 文件的大小和行数大约如下：
 
-截至2022年11月8日，每个 TSV 的大小和行数大致如下：
-
-- `commits` - 7.8M - 266,051 rows
 - `commits` - 7.8M - 266,051 行
-- `file_changes` - 53M - 266,051 rows
 - `file_changes` - 53M - 266,051 行
-- `line_changes` - 2.7G - 7,535,157 rows
 - `line_changes` - 2.7G - 7,535,157 行
-
-## Generating the data {#generating-the-data}
 
 ## 生成数据 {#generating-the-data}
 
-This is optional. We distribute the data freely - see [Downloading and inserting the data](#downloading-and-inserting-the-data).
-
-这是可选的。我们免费分发数据 - 请参阅 [下载和插入数据](#downloading-and-inserting-the-data)。
+这是可选的。我们免费分发数据 - 请参阅[下载和插入数据](#downloading-and-inserting-the-data)。
 
 ```bash
 git clone git@github.com:ClickHouse/ClickHouse.git
@@ -44,21 +36,15 @@ cd ClickHouse
 clickhouse git-import --skip-paths 'generated\.cpp|^(contrib|docs?|website|libs/(libcityhash|liblz4|libdivide|libvectorclass|libdouble-conversion|libcpuid|libzstd|libfarmhash|libmetrohash|libpoco|libwidechar_width))/' --skip-commits-with-messages '^Merge branch '
 ```
 
-This will take around 3 minutes (as of November 8th 2022 on a MacBook Pro 2021) to complete for the ClickHouse repository.
+这将大约需要 3 分钟（截至 2022 年 11 月 8 日，在 MacBook Pro 2021 上）来完成 ClickHouse 存储库的操作。
 
-这将在 ClickHouse 仓库中大约花费 3 分钟 (截止到 2022 年 11 月 8 日在 MacBook Pro 2021 上)。
-
-A full list of available options can be obtained from the tools native help.
-
-可以从工具的本地帮助中获取可用选项的完整列表。
+可以从工具的本地帮助中获得可用选项的完整列表。
 
 ```bash
 clickhouse git-import -h
 ```
 
-This help also provides the DDL for each of the above tables e.g.
-
-此帮助还提供上述每个表的 DDL，例如
+该帮助还提供了每个上述表的 DDL，例如：
 
 ```sql
 CREATE TABLE git.commits
@@ -79,35 +65,26 @@ CREATE TABLE git.commits
 ) ENGINE = MergeTree ORDER BY time;
 ```
 
-**These queries should work on any repository. Feel free to explore and report your findings** Some guidelines with respect to execution times (as of November 2022):
+**这些查询应该在任何存储库中工作。欢迎探索并报告您的发现** 关于运行时间的一些指南（截至 2022 年 11 月）：
 
-**这些查询应该适用于任何仓库。请随意探索并报告您的发现** 关于执行时间的一些指导 (截至2022年11月)：
-
-- Linux - `~/clickhouse git-import` - 160 mins
 - Linux - `~/clickhouse git-import` - 160 分钟
-
-## Downloading and inserting the data {#downloading-and-inserting-the-data}
 
 ## 下载和插入数据 {#downloading-and-inserting-the-data}
 
-The following data can be used to reproduce a working environment. Alternatively, this dataset is available in play.clickhouse.com - see [Queries](#queries) for further details.
-
-以下数据可用于重现工作环境。或者，此数据集可在 play.clickhouse.com 中获得 - 有关更多详细信息，请参阅 [查询](#queries)。
-
-Generated files for the following repositories can be found below:
+以下数据可用于重现工作环境。或者，这个数据集在 play.clickhouse.com 上可用 - 详见[查询](#queries)。
 
 以下存储库的生成文件可以在下面找到：
 
-- ClickHouse (Nov 8th 2022)
+- ClickHouse（2022年11月8日）
     - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/commits.tsv.xz - 2.5 MB
     - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/file_changes.tsv.xz - 4.5MB
     - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/line_changes.tsv.xz - 127.4 MB
-- Linux (Nov 8th 2022)
+- Linux（2022年11月8日）
     - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/commits.tsv.xz - 44 MB
     - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/file_changes.tsv.xz - 467MB
     - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/line_changes.tsv.xz - 1.1G
 
-要插入此数据，请通过执行以下查询来准备数据库：
+要插入这些数据，请通过执行以下查询准备数据库：
 
 ```sql
 DROP DATABASE IF EXISTS git;
@@ -202,8 +179,6 @@ CREATE TABLE git.line_changes
 ) ENGINE = MergeTree ORDER BY time;
 ```
 
-Insert the data using `INSERT INTO SELECT` and the [s3 function](/sql-reference/table-functions/s3). For example, below, we insert the ClickHouse files into each of their respective tables:
-
 使用 `INSERT INTO SELECT` 和 [s3 函数](/sql-reference/table-functions/s3) 插入数据。例如，下面我们将 ClickHouse 文件插入到各自的表中：
 
 *commits*
@@ -233,25 +208,15 @@ FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhou
 0 rows in set. Elapsed: 50.535 sec. Processed 7.54 million rows, 2.09 GB (149.11 thousand rows/s., 41.40 MB/s.)
 ```
 
-## Queries {#queries}
-
 ## 查询 {#queries}
 
-The tool suggests several queries via its help output. We have answered these in addition to some additional supplementary questions of interest. These queries are of approximately increasing complexity vs. the tool's arbitrary order.
+该工具通过其帮助输出建议了几条查询。我们对这些查询进行了回答，并增加了一些额外的补充问题。这些查询的复杂性大致是逐渐增加的，与工具的任意顺序相对应。
 
-该工具通过其帮助输出建议了几个查询。我们在此基础上回答了这些问题，并提出了一些其他补充问题。这些查询的复杂性大致与工具的任意顺序相关。
-
-This dataset is available in [play.clickhouse.com](https://sql.clickhouse.com?query_id=DCQPNPAIMAQXRLHYURLKVJ) in the `git_clickhouse` databases. We provide a link to this environment for all queries, adapting the database name as required. Note that play results may vary from the those presented here due to differences in time of data collection.
-
-此数据集可在 [play.clickhouse.com](https://sql.clickhouse.com?query_id=DCQPNPAIMAQXRLHYURLKVJ) 的 `git_clickhouse` 数据库中获得。我们为所有查询提供了此环境的链接，并根据需要调整数据库名称。请注意，由于数据收集时间的不同，播放结果可能与此处呈现的结果不同。
-
-### History of a single file {#history-of-a-single-file}
+该数据集可在 [play.clickhouse.com](https://sql.clickhouse.com?query_id=DCQPNPAIMAQXRLHYURLKVJ) 的 `git_clickhouse` 数据库中找到。我们为所有查询提供了此环境的链接，并根据需要调整数据库名称。请注意，由于采集数据时间的不同，播放结果可能与此处所示有所不同。
 
 ### 单个文件的历史 {#history-of-a-single-file}
 
-The simplest of queries. Here we look at all commit messages for the `StorageReplicatedMergeTree.cpp`. Since these are likely more interesting, we sort by the most recent messages first.
-
-最简单的查询。在这里，我们查看 `StorageReplicatedMergeTree.cpp` 的所有提交消息。由于这些消息可能更有趣，我们按最新消息进行排序。
+最简单的查询。我们查看 `StorageReplicatedMergeTree.cpp` 的所有提交信息。由于这些信息可能更有趣，我们按最近的信息排序。
 
 [play](https://sql.clickhouse.com?query_id=COAZRFX2YFULDBXRQTCQ1S)
 
@@ -287,9 +252,8 @@ LIMIT 10
 10 rows in set. Elapsed: 0.006 sec. Processed 12.10 thousand rows, 1.60 MB (1.93 million rows/s., 255.40 MB/s.)
 ```
 
-We can also review the line changes, excluding renames i.e. we won't show changes before a rename event when the file existed under a different name:
 
-我们还可以查看行更改，排除重命名，即我们不会显示文件在重命名事件发生前以不同名称存在时的更改：
+我们还可以查看行更改，排除重命名的情况，即不会显示重命名事件之前的更改，当文件以不同名称存在时：
 
 [play](https://sql.clickhouse.com?query_id=AKS9SYLARFMZCHGAAQNEBN)
 
@@ -323,21 +287,13 @@ LIMIT 10
 10 rows in set. Elapsed: 0.258 sec. Processed 7.54 million rows, 654.92 MB (29.24 million rows/s., 2.54 GB/s.)
 ```
 
-Note a more complex variant of this query exists where we find the [line-by-line commit history of a file](#line-by-line-commit-history-of-a-file) considering renames.
+请注意，这个查询还有一个更复杂的变体，其中我们查找 [逐行提交历史](#line-by-line-commit-history-of-a-file)，考虑重命名。
 
-请注意，存在此查询的更复杂变体，我们查找在考虑重命名情况下[逐行提交的文件历史](#line-by-line-commit-history-of-a-file)。
+### 查找当前活跃文件 {#find-the-current-active-files}
 
-### Find the current active files {#find-the-current-active-files}
+这对于后续分析很重要，当我们只想考虑存储库中的当前文件。我们估算这组文件为那些未被重命名或删除（然后重新添加/重命名）的文件。
 
-### 查找当前活动文件 {#find-the-current-active-files}
-
-This is important for later analysis when we only want to consider the current files in the repository. We estimate this set as the files which haven't been renamed or deleted (and then re-added/re-named).
-
-这对后续分析很重要，因为我们只想考虑存储库中的当前文件。我们将此集合估算为未被重命名或删除（然后重新添加/重命名）的文件。
-
-**Note there appears to have been a broken commit history in relation to files under the `dbms`, `libs`, `tests/testflows/` directories during their renames. We also thus exclude these.**
-
-**请注意，在重命名期间，与 `dbms`、`libs`、`tests/testflows/` 目录下的文件相关的提交历史似乎存在损坏。因此我们也排除了这些文件。**
+**请注意，涉及 `dbms`、`libs`、`tests/testflows/` 目录下文件的重命名在提交历史中似乎存在断裂。因此我们也排除这些。**
 
 [play](https://sql.clickhouse.com?query_id=2HNFWPCFWEEY92WTAPMA7W)
 
@@ -379,9 +335,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.085 sec. Processed 532.10 thousand rows, 8.68 MB (6.30 million rows/s., 102.64 MB/s.)
 ```
 
-Note that this allows for files to be renamed and then re-renamed to their original values. First we aggregate `old_path` for a list of deleted files as a result of renaming. We union this with the last operation for every `path`. Finally, we filter this list to those where the final event is not a `Delete`.
-
-请注意，这允许文件被重命名，然后再重新命名为其原始值。我们首先聚合因重命名而删除的文件的 `old_path` 列表。将其与每个 `path` 的最后一个操作合并。最后，我们过滤此列表，以确保最终事件不是 `Delete`。
+请注意，这允许文件被重命名然后再次重命名为其原始值。首先，我们将因重命名而删除的文件的 `old_path` 聚合。然后，我们将每个 `path` 的最后操作与之联接。最后，我们将此列表筛选为最终事件不是 `Delete` 的文件。
 
 [play](https://sql.clickhouse.com?query_id=1OXCKMOH2JVMSHD3NS2WW6)
 
@@ -416,13 +370,9 @@ FROM
 1 row in set. Elapsed: 0.089 sec. Processed 532.10 thousand rows, 8.68 MB (6.01 million rows/s., 97.99 MB/s.)
 ```
 
-Note that we skipped import of several directories during import i.e.
-
-请注意，我们在导入过程中跳过导入了几个目录，例如
+注意，我们在导入时跳过了几个目录，例如：
 
 `--skip-paths 'generated\.cpp|^(contrib|docs?|website|libs/(libcityhash|liblz4|libdivide|libvectorclass|libdouble-conversion|libcpuid|libzstd|libfarmhash|libmetrohash|libpoco|libwidechar_width))/'`
-
-Applying this pattern to `git list-files`, reports 18155.
 
 将此模式应用于 `git list-files`，报告 18155。
 
@@ -431,17 +381,11 @@ git ls-files | grep -v -E 'generated\.cpp|^(contrib|docs?|website|libs/(libcityh
    18155
 ```
 
-**Our current solution is therefore an estimate of the current files**
-
 **因此，我们当前的解决方案是对当前文件的估算**
 
-The difference here is caused by a few factors:
+这里的差异归因于几个因素：
 
-导致这里差异的原因有几个因素：
-
-- A rename can occur alongside other modifications to the file. These are listed as separate events in file_changes but with the same time. The `argMax` function has no way of distinguishing these - it picks the first value. The natural ordering of the inserts (the only means of knowing the correct order) is not maintained across the union so modified events can be selected. For example, below the `src/Functions/geometryFromColumn.h` file has several modifications before being renamed to `src/Functions/geometryConverters.h`. Our current solution may pick a Modify event as the latest change causing `src/Functions/geometryFromColumn.h` to be retained.
-
-- 文件可以与其他修改一起重命名。这些在 file_changes 中列为单独的事件，但时间相同。 `argMax` 函数无法区分这些事件 - 它选择第一个值。插入的自然排序（知道正确顺序的唯一手段）在联合过程中没有得到维护，因此可以选择修改事件。例如，在 `src/Functions/geometryFromColumn.h` 文件在重命名为 `src/Functions/geometryConverters.h` 之前有多次修改。我们当前的解决方案可能会选择一个 Modify 事件作为最新更改，导致 `src/Functions/geometryFromColumn.h` 被保留。
+- 重命名可以与文件的其他修改同时发生。这些会在 file_changes 中作为单独的事件列出，但时间相同。`argMax` 函数无法区分这些 - 它选取第一个值。插入的自然排序（唯一知道正确顺序的手段）在联接跨越时不被保持，因此可能选择修改事件。例如，下面的 `src/Functions/geometryFromColumn.h` 文件在重命名为 `src/Functions/geometryConverters.h` 之前有几次修改。我们目前的解决方案可能会将 Modify 事件选为最新更改，从而造成 `src/Functions/geometryFromColumn.h` 被保留。
 
 [play](https://sql.clickhouse.com?query_id=SCXWMR9GBMJ9UNZYQXQBFA)
 
@@ -470,22 +414,13 @@ WHERE (path = 'src/Functions/geometryFromColumn.h') OR (old_path = 'src/Function
 └─────────────┴────────────────────────────────────┴────────────────────────────────────┴─────────────────────┴──────────────────────────────────────────┘
 11 rows in set. Elapsed: 0.030 sec. Processed 266.05 thousand rows, 6.61 MB (8.89 million rows/s., 220.82 MB/s.)
 ```
+- 提交历史断裂 - 缺失删除事件。源和原因待定。
 
-- Broken commit history - missing delete events. Source and cause TBD.
+这些差异不应对我们的分析产生实质性影响。**我们欢迎此查询的改进版本**。
 
-- 提交历史损坏 - 缺少删除事件。源和原因待定。
+### 列出更改最多的文件 {#list-files-with-most-modifications}
 
-These differences shouldn't meaningfully impact our analysis. **We welcome improved versions of this query**.
-
-这些差异不应对我们的分析产生实质性影响。**我们欢迎对该查询的改进版本**。
-
-### List files with most modifications {#list-files-with-most-modifications}
-
-### 列出修改次数最多的文件 {#list-files-with-most-modifications}
-
-Limiting to current files, we consider the number of modifications to be the sum of deletes and additions.
-
-限制为当前文件，我们将修改次数视为删除和添加的总和。
+限制为当前文件，我们将更改的次数视为删除和添加的总和。
 
 [play](https://sql.clickhouse.com?query_id=MHXPSBNPTDMJYR3OYSXVR7)
 
@@ -538,9 +473,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.134 sec. Processed 798.15 thousand rows, 16.46 MB (5.95 million rows/s., 122.62 MB/s.)
 ```
 
-### What day of the week do commits usually occur? {#what-day-of-the-week-do-commits-usually-occur}
-
-### 提交通常发生在星期几？ {#what-day-of-the-week-do-commits-usually-occur}
+### 提交通常发生在哪一天？ {#what-day-of-the-week-do-commits-usually-occur}
 
 [play](https://sql.clickhouse.com?query_id=GED2STFSYJDRAA59H8RLIV)
 
@@ -563,17 +496,11 @@ GROUP BY dayOfWeek(time) AS day_of_week
 7 rows in set. Elapsed: 0.262 sec. Processed 62.78 thousand rows, 251.14 KB (239.73 thousand rows/s., 958.93 KB/s.)
 ```
 
-This makes sense with some productivity drop-off on Fridays. Great to see people committing code at weekends! Big thanks to our contributors!
+这在周五有一些生产力下降是有道理的。很高兴看到人们在周末提交代码！非常感谢我们的贡献者！
 
-这在周五的生产力下降是合理的。很高兴看到人们在周末提交代码！非常感谢我们的贡献者！
+### 子目录/文件的历史 - 随时间推移的行数、提交和贡献者 {#history-of-subdirectoryfile---number-of-lines-commits-and-contributors-over-time}
 
-### History of subdirectory/file - number of lines, commits and contributors over time {#history-of-subdirectoryfile---number-of-lines-commits-and-contributors-over-time}
-
-### 子目录/文件的历史 - 行数、提交和贡献者数量随时间变化 {#history-of-subdirectoryfile---number-of-lines-commits-and-contributors-over-time}
-
-This would produce a large query result that is unrealistic to show or visualize if unfiltered. We, therefore, allow a file or subdirectory to be filtered in the following example. Here we group by week using the `toStartOfWeek` function - adapt as required.
-
-这将产生一个庞大的查询结果，如果不加过滤，实际显示或可视化是不现实的。因此，在以下示例中，我们允许对文件或子目录进行过滤。在这里，我们使用 `toStartOfWeek` 函数按周分组 - 根据需要进行调整。
+这将产生一个巨大的查询结果，如果没有过滤则不切实际地展示或可视化。因此，在以下示例中，我们允许对文件或子目录进行过滤。在这里，我们使用 `toStartOfWeek` 函数按周分组 - 根据需要进行调整。
 
 [play](https://sql.clickhouse.com?query_id=REZRXDVU7CAWT5WKNJSTNY)
 
@@ -605,29 +532,19 @@ LIMIT 10
 10 rows in set. Elapsed: 0.043 sec. Processed 266.05 thousand rows, 15.85 MB (6.12 million rows/s., 364.61 MB/s.)
 ```
 
-This data visualizes well. Below we use Superset.
-
-该数据的可视化效果很好。下面我们使用 Superset。
-
-**For lines added and deleted:**
+这些数据可视化效果很好。下面我们使用 Superset。
 
 **对于添加和删除的行：**
 
-<Image img={superset_github_lines_added_deleted} alt="For lines added and deleted" size="md"/>
-
-**For commits and authors:**
+<Image img={superset_github_lines_added_deleted} alt="添加和删除的行" size="md"/>
 
 **对于提交和作者：**
 
-<Image img={superset_commits_authors} alt="For commits and authors" size="md"/>
+<Image img={superset_commits_authors} alt="针对提交和作者" size="md"/>
 
-### List files with maximum number of authors {#list-files-with-maximum-number-of-authors}
+### 最大作者数量的文件列表 {#list-files-with-maximum-number-of-authors}
 
-### 列出作者最多的文件 {#list-files-with-maximum-number-of-authors}
-
-Limit to current files only.
-
-限制为当前文件。
+仅限于当前文件。
 
 [play](https://sql.clickhouse.com?query_id=CYQFNQNK9TAMPU2OZ8KG5Y)
 
@@ -680,13 +597,9 @@ LIMIT 10
 10 rows in set. Elapsed: 0.239 sec. Processed 798.15 thousand rows, 14.13 MB (3.35 million rows/s., 59.22 MB/s.)
 ```
 
-### Oldest lines of code in the repository {#oldest-lines-of-code-in-the-repository}
+### 存储库中最古老的代码行 {#oldest-lines-of-code-in-the-repository}
 
-### 仓库中最旧的代码行 {#oldest-lines-of-code-in-the-repository}
-
-Limited to current files only.
-
-限制为当前文件。
+仅限于当前文件。
 
 [play](https://sql.clickhouse.com?query_id=VWPBPGRZVGTHOCQYWNQZNT)
 
@@ -741,13 +654,9 @@ LIMIT 10
 10 rows in set. Elapsed: 1.101 sec. Processed 8.07 million rows, 905.86 MB (7.33 million rows/s., 823.13 MB/s.)
 ```
 
-### Files with longest history {#files-with-longest-history}
+### 历史最长的文件 {#files-with-longest-history}
 
-### 最长历史的文件 {#files-with-longest-history}
-
-Limited to current files only.
-
-限制为当前文件。
+仅限于当前文件。
 
 [play](https://sql.clickhouse.com?query_id=VWPBPGRZVGTHOCQYWNQZNT)
 
@@ -801,21 +710,13 @@ LIMIT 10
 10 rows in set. Elapsed: 0.124 sec. Processed 798.15 thousand rows, 14.71 MB (6.44 million rows/s., 118.61 MB/s.)
 ```
 
-Our core data structure, the Merge Tree, is obviously under constant evolution with a long history of edits!
+我们的核心数据结构 Merge Tree 显然在不断演变，并且有着悠久的编辑历史！
 
-我们的核心数据结构，Merge Tree，显然在不断发展，具有较长的编辑历史！
+### 月度文档和代码贡献者分布 {#distribution-of-contributors-with-respect-to-docs-and-code-over-the-month}
 
-### Distribution of contributors with respect to docs and code over the month {#distribution-of-contributors-with-respect-to-docs-and-code-over-the-month}
+**在数据采集期间，由于 `docs/` 文件夹的非常混乱的提交历史，相关更改已被过滤掉。因此该查询的结果不准确。**
 
-### 每月文档和代码贡献者的分布 {#distribution-of-contributors-with-respect-to-docs-and-code-over-the-month}
-
-**During data capture the changes on the `docs/` folder have been filtered out due to a very commit dirty history. The results of this query are therefore not accurate.**
-
-**在数据捕获期间，由于 `docs/` 文件夹的提交历史非常混乱，因此过滤掉了该文件夹的更改。因此，该查询的结果不准确。**
-
-Do we write more docs at certain times of the month e.g., around release dates? We can use the `countIf` function to compute a simple ratio, visualizing the result using the `bar` function.
-
-我们是在每个月的某些时候写更多的文档，例如在发布日期附近？我们可以使用 `countIf` 函数计算简单的比例，使用 `bar` 函数可视化结果。
+我们是否在每月的某些时间（例如，在发布日期附近）写更多的文档？我们可以使用 `countIf` 函数计算简单的比率，使用 `bar` 函数可视化结果。
 
 [play](https://sql.clickhouse.com?query_id=BA4RZUXUHNQBH9YK7F2T9J)
 
@@ -872,17 +773,11 @@ FROM
 31 rows in set. Elapsed: 0.043 sec. Processed 7.54 million rows, 40.53 MB (176.71 million rows/s., 950.40 MB/s.)
 ```
 
-Maybe a little more near the end of the month, but overall we keep a good even distribution. Again this is unreliable due to the filtering of the docs filter during data insertion.
-
-可能在月底的时候多一点，但总体上我们保持良好的均匀分布。同样，这由于数据插入期间对文档过滤的过滤而不可靠。
-
-### Authors with the most diverse impact {#authors-with-the-most-diverse-impact}
+也许在月末时略多，但总体上我们保持良好的均匀分布。由于在数据插入时过滤了文档过滤，这又不可靠。
 
 ### 影响最广泛的作者 {#authors-with-the-most-diverse-impact}
 
-We consider diversity here to be the number of unique files an author has contributed to.
-
-我们在这里将多样性视为作者贡献的独特文件数量。
+我们在这里将“多样性”视为作者贡献的独特文件数量。
 
 [play](https://sql.clickhouse.com?query_id=MT8WBABUKYBYSBA78W5TML)
 
@@ -912,9 +807,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.041 sec. Processed 266.05 thousand rows, 4.92 MB (6.56 million rows/s., 121.21 MB/s.)
 ```
 
-Let's see who has the most diverse commits in their recent work. Rather than limit by date, we'll restrict to an author's last N commits (in this case, we've used 3 but feel free to modify):
-
-让我们看看谁在最近的工作中具有最广泛的提交。我们不会限制日期，而是将限制为作者的最后 N 次提交（在这种情况下，我们使用了 3 次，但可以根据需要进行修改）：
+让我们看看谁在最近的工作中贡献最多样化。我们不限制日期，而是限制某位作者的最近 N 次提交（在这种情况下，我们使用 3，欢迎您进行修改）：
 
 [play](https://sql.clickhouse.com?query_id=4Q3D67FWRIVWTY8EIDDE5U)
 
@@ -959,13 +852,9 @@ LIMIT 10
 10 rows in set. Elapsed: 0.106 sec. Processed 266.05 thousand rows, 21.04 MB (2.52 million rows/s., 198.93 MB/s.)
 ```
 
-### Favorite files for an author {#favorite-files-for-an-author}
-
 ### 作者的最爱文件 {#favorite-files-for-an-author}
 
-Here we select our founder [Alexey Milovidov](https://github.com/alexey-milovidov) and limit our analysis to current files.
-
-在这里，我们选择我们的创始人 [Alexey Milovidov](https://github.com/alexey-milovidov)，并将我们的分析限制为当前文件。
+在这里我们选择我们的创始人 [Alexey Milovidov](https://github.com/alexey-milovidov)，将我们的分析限制在当前文件上。
 
 [play](https://sql.clickhouse.com?query_id=OKGZBACRHVGCRAGCZAJKMF)
 
@@ -1018,9 +907,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.106 sec. Processed 798.15 thousand rows, 13.97 MB (7.51 million rows/s., 131.41 MB/s.)
 ```
 
-This makes sense because Alexey has been responsible for maintaining the Change log. But what if we use the base name of the file to identify his popular files - this allows for renames and should focus on code contributions.
-
-这很合理，因为 Alexey 一直负责维护更改日志。但是如果我们使用文件的基本名称来识别他受欢迎的文件怎么办 - 这允许重命名并应关注代码贡献。
+这很合理，因为 Alexey 一直负责维护变更日志。但是，如果我们使用文件的基本名称来识别他受欢迎的文件 - 这允许重命名，并且应该侧重于代码贡献。
 
 [play](https://sql.clickhouse.com?query_id=P9PBDZGOSVTKXEXU73ZNAJ)
 
@@ -1049,21 +936,13 @@ LIMIT 10
 10 rows in set. Elapsed: 0.032 sec. Processed 266.05 thousand rows, 5.68 MB (8.22 million rows/s., 175.50 MB/s.)
 ```
 
-This is maybe more reflective of his areas of interest.
+这或许更能反映他的兴趣领域。
 
-这可能更能反映他的兴趣领域。
+### 最大文件和最少作者的关系 {#largest-files-with-lowest-number-of-authors}
 
-### Largest files with lowest number of authors {#largest-files-with-lowest-number-of-authors}
+为此，我们首先需要识别最大文件。通过从提交历史记录重建每个文件的完整文件，来进行估算将是非常昂贵的！
 
-### 最大文件与最少作者 {#largest-files-with-lowest-number-of-authors}
-
-For this, we first need to identify the largest files. Estimating this via a full file reconstruction, for every file, from the history of commits will be very expensive!
-
-为此，我们首先需要识别最大的文件。通过完整的文件重构来估算每个文件的大小非常昂贵，这需要根据提交的历史记录。
-
-To estimate, assuming we restrict to current files, we sum line additions and subtract deletions. We can then compute a ratio of length to the number of authors.
-
-为了估算，假设我们限制为当前文件，我们将行添加相加并减去删除。然后我们可以计算长度与作者数量的比率。
+为了进行估算，假设我们限制为当前文件，我们对行添加进行求和并减去删除。然后我们可以计算长度与作者数量之间的比例。
 
 [play](https://sql.clickhouse.com?query_id=PVSDOHZYUMRDDUZFEYJC7J)
 
@@ -1118,9 +997,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.138 sec. Processed 798.15 thousand rows, 16.57 MB (5.79 million rows/s., 120.11 MB/s.)
 ```
 
-Text dictionaries aren't maybe realistic, so lets restrict to code only via a file extension filter!
-
-文本字典可能不太现实，因此让我们通过文件扩展名过滤仅限制为代码！
+文本字典可能并不现实，因此让我们通过文件扩展名过滤仅限于代码！
 
 [play](https://sql.clickhouse.com?query_id=BZHGWUIZMPZZUHS5XRBK2M)
 
@@ -1174,9 +1051,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.140 sec. Processed 798.15 thousand rows, 16.84 MB (5.70 million rows/s., 120.32 MB/s.)
 ```
 
-There is some recency bias in this - newer files have fewer opportunities for commits. What about if we restrict to files at least 1 yr old?
-
-这其中存在一些近期偏差 - 新文件的提交机会较少。如果我们限制为至少 1 年前的文件呢？
+这里存在一些近期偏见 - 较新的文件有更少的提交机会。如果我们限制到至少 1 年的文件会怎样？
 
 [play](https://sql.clickhouse.com?query_id=RMHHZEDHFUCBGRQVQA2732)
 
@@ -1233,11 +1108,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.143 sec. Processed 798.15 thousand rows, 18.00 MB (5.58 million rows/s., 125.87 MB/s.)
 ```
 
-### Commits and lines of code distribution by time; by weekday, by author; for specific subdirectories {#commits-and-lines-of-code-distribution-by-time-by-weekday-by-author-for-specific-subdirectories}
-
-### 根据时间、星期几、作者的提交和代码行分布；特定子目录 {#commits-and-lines-of-code-distribution-by-time-by-weekday-by-author-for-specific-subdirectories}
-
-We interpret this as the number of lines added and removed by the day of the week. In this case, we focus on the [Functions directory](https://github.com/ClickHouse/ClickHouse/tree/master/src/Functions)
+### 提交和代码行随时间的分布; 按星期几，按作者; 针对特定子目录 {#commits-and-lines-of-code-distribution-by-time-by-weekday-by-author-for-specific-subdirectories}
 
 我们将其解释为按星期几添加和删除的行数。在这种情况下，我们关注 [Functions 目录](https://github.com/ClickHouse/ClickHouse/tree/master/src/Functions)
 
@@ -1266,9 +1137,7 @@ GROUP BY toDayOfWeek(time) AS dayOfWeek
 7 rows in set. Elapsed: 0.034 sec. Processed 266.05 thousand rows, 14.66 MB (7.73 million rows/s., 425.56 MB/s.)
 ```
 
-And by time of day,
-
-按时间段：
+以及每日的时间，
 
 [play](https://sql.clickhouse.com?query_id=Q4VDVKEGHHRBCUJHNCVTF1)
 
@@ -1312,9 +1181,7 @@ GROUP BY toHour(time) AS hourOfDay
 24 rows in set. Elapsed: 0.039 sec. Processed 266.05 thousand rows, 14.66 MB (6.77 million rows/s., 372.89 MB/s.)
 ```
 
-This distribution makes sense given most of our development team is in Amsterdam. The `bar` functions helps us visualize these distributions:
-
-考虑到我们大部分开发团队位于阿姆斯特丹，这种分布是合理的。`bar` 函数帮助我们可视化这些分布：
+这种分布是有道理的，因为我们的大多数开发团队都在阿姆斯特丹。`bar` 函数帮助我们可视化这些分布：
 
 [play](https://sql.clickhouse.com?query_id=9AZ8CENV8N91YGW7T6IB68)
 
@@ -1366,11 +1233,7 @@ FROM
 24 rows in set. Elapsed: 0.038 sec. Processed 266.05 thousand rows, 14.66 MB (7.09 million rows/s., 390.69 MB/s.)
 ```
 
-### Matrix of authors that shows what authors tends to rewrite another authors code {#matrix-of-authors-that-shows-what-authors-tends-to-rewrite-another-authors-code}
-
-### 显示作者倾向于重写其他作者代码的作者矩阵 {#matrix-of-authors-that-shows-what-authors-tends-to-rewrite-another-authors-code}
-
-The `sign = -1` indicates a code deletion. We exclude punctuation and the insertion of empty lines.
+### 作者矩阵显示哪些作者倾向于重写其他作者的代码 {#matrix-of-authors-that-shows-what-authors-tends-to-rewrite-another-authors-code}
 
 `sign = -1` 表示代码删除。我们排除标点符号和空行的插入。
 
@@ -1416,25 +1279,17 @@ LIMIT 100
 20 rows in set. Elapsed: 0.098 sec. Processed 7.54 million rows, 42.16 MB (76.67 million rows/s., 428.99 MB/s.)
 ```
 
-A Sankey chart (SuperSet) allows this to be visualized nicely. Note we increase our `LIMIT BY` to 3, to get the top 3 code removers for each author, to improve the variety in the visual.
-
-Sankey 图 (SuperSet) 可以很好地可视化这个。请注意，我们将 `LIMIT BY` 增加到 3，以获取每个作者的前 3 个代码删除者，以提高可视化的多样性。
+Sankey 图（SuperSet）可以很好地可视化这个。请注意，我们增加了 `LIMIT BY` 到 3，以获取每个作者的前 3 个代码删除者，从而改善视觉效果。
 
 <Image img={superset_authors_matrix} alt="Superset authors matrix" size="md"/>
 
-Alexey clearly likes removing other peoples code. Lets exclude him for a more balanced view of code removal.
-
-显然，Alexey 喜欢删除其他人的代码。为了更平衡地观察代码删除，让我们排除他。
+Alexey 显然喜欢删除别人的代码。让我们排除他，以便更均衡地查看代码删除。
 
 <Image img={superset_authors_matrix_v2} alt="Superset authors matrix v2" size="md"/>
 
-### Who is the highest percentage contributor per day of week? {#who-is-the-highest-percentage-contributor-per-day-of-week}
+### 哪位作者在每个星期几的贡献比例最高？ {#who-is-the-highest-percentage-contributor-per-day-of-week}
 
-### 每周最高百分比贡献者是谁？ {#who-is-the-highest-percentage-contributor-per-day-of-week}
-
-If we consider by just number of commits:
-
-如果我们仅按提交次数考虑：
+如果仅考虑提交数量：
 
 [play](https://sql.clickhouse.com?query_id=WXPKFJCAHOKYKEVTWNFVCY)
 
@@ -1465,9 +1320,7 @@ LIMIT 1 BY day_of_week
 7 rows in set. Elapsed: 0.012 sec. Processed 62.78 thousand rows, 395.47 KB (5.44 million rows/s., 34.27 MB/s.)
 ```
 
-OK, some possible advantages here to the longest contributor - our founder Alexey. Lets limit our analysis to the last year.
-
-好的，这里对最长贡献者 - 我们的创始人 Alexey 可能有一些优势。让我们将分析限制为过去一年。
+好的，这里有可能的优势是最长的贡献者 - 我们的创始人 Alexey。让我们将分析限制在过去一年。
 
 [play](https://sql.clickhouse.com?query_id=8YRJGHFTNJAWJ96XCJKKEH)
 
@@ -1499,13 +1352,9 @@ LIMIT 1 BY day_of_week
 7 rows in set. Elapsed: 0.004 sec. Processed 21.82 thousand rows, 140.02 KB (4.88 million rows/s., 31.29 MB/s.)
 ```
 
-This is still a little simple and doesn't reflect people's work.
+这还是有点简单，不能反映人们的工作。
 
-这仍然有些简单，并不能反映人们的工作。
-
-A better metric might be who is the top contributor each day as a fraction of the total work performed in the last year. Note that we treat the deletion and adding code equally.
-
-一个更好的指标可能是每一天的顶级贡献者占去年总工作的比例。请注意，我们对删除和添加代码的处理是相同的。
+一个更好的度量标准可能是在过去一年中，每一天的顶级贡献者占总工作量的比例。请注意，我们将删除和添加代码视为相等。
 
 [play](https://sql.clickhouse.com?query_id=VQF4KMRDSUEXGS1JFVDJHV)
 
@@ -1553,13 +1402,9 @@ INNER JOIN
 7 rows in set. Elapsed: 0.014 sec. Processed 106.12 thousand rows, 1.38 MB (7.61 million rows/s., 98.65 MB/s.)
 ```
 
-### Distribution of code age across repository {#distribution-of-code-age-across-repository}
+### 存储库中的代码年龄分布 {#distribution-of-code-age-across-repository}
 
-### 存储库中代码年龄的分布 {#distribution-of-code-age-across-repository}
-
-We limit the analysis to the current files. For brevity, we restrict the results to a depth of 2 with 5 files per root folder. Adjust as required.
-
-我们将分析限制为当前文件。为了简洁起见，我们将结果限制为深度为 2，每个根文件夹 5 个文件。根据需要调整。
+我们将分析限制为当前文件。为了简洁起见，我们将结果深度限制为 2，并按根文件夹限制为 5 个文件。根据需要进行调整。
 
 [play](https://sql.clickhouse.com?query_id=6YWAUQYPZINZDJGBEZBNWG)
 
@@ -1640,13 +1485,9 @@ LIMIT 5 BY root
 24 rows in set. Elapsed: 0.129 sec. Processed 798.15 thousand rows, 15.11 MB (6.19 million rows/s., 117.08 MB/s.)
 ```
 
-### What percentage of code for an author has been removed by other authors? {#what-percentage-of-code-for-an-author-has-been-removed-by-other-authors}
+### 某个作者的代码有多少百分比被其他作者删除了？ {#what-percentage-of-code-for-an-author-has-been-removed-by-other-authors}
 
-### 作者的代码中有多少百分比被其他作者删除？ {#what-percentage-of-code-for-an-author-has-been-removed-by-other-authors}
-
-For this question, we need the number of lines written by an author divided by the total number of lines they have had removed by another contributor.
-
-对于这个问题，我们需要作者编写的行数与他们被另一位贡献者删除的行数总和的比率。
+对于这个问题，我们需要某个作者编写的行数，与他们被另一位贡献者删除的总行数的比率。
 
 [play](https://sql.clickhouse.com?query_id=T4DTWTB36WFSEYAZLMGRNF)
 
@@ -1694,13 +1535,9 @@ LIMIT 10
 10 rows in set. Elapsed: 0.126 sec. Processed 15.07 million rows, 73.51 MB (119.97 million rows/s., 585.16 MB/s.)
 ```
 
-### List files that were rewritten most number of times? {#list-files-that-were-rewritten-most-number-of-times}
+### 列出被重写次数最多的文件？ {#list-files-that-were-rewritten-most-number-of-times}
 
-### 列出重写次数最多的文件 {#list-files-that-were-rewritten-most-number-of-times}
-
-The simplest approach to this question might be to simply count the most number of line modifications per path (restricted to current files) e.g.:
-
-对此问题最简单的方法可能是简单地计算每个路径的行修改最多的文件（限制为当前文件），例如：
+这个问题的最简单方法可能是简单地按照路径计算行更改次数（限制为当前文件），例如：
 
 ```sql
 WITH current_files AS
@@ -1751,13 +1588,9 @@ LIMIT 10
 10 rows in set. Elapsed: 0.160 sec. Processed 8.07 million rows, 98.99 MB (50.49 million rows/s., 619.49 MB/s.)
 ```
 
-This doesn't capture the notion of a "re-write" however, where a large portion of the file changes in any commit. This requires a more complex query. If we consider a rewrite to be when over 50% of the file are deleted, and 50% added. You can adjust the query to your own interpretation of what constitutes this.
+但是这并没有捕捉到“重写”的概念，即在任何一次提交中文件的大部分发生了变化。这需要更复杂的查询。如果我们认为重写是当文件超过 50% 被删除，且 50% 被添加时。您可以根据自己对重写的定义调整查询。
 
-但是，这并不能捕捉到“重写”的概念，其中大部分文件在任何提交中都发生了变化。这需要更复杂的查询。如果我们认为重写是当超过 50% 的文件被删除，50% 被添加时。您可以根据自己的理解调整查询。
-
-The query is limited to the current files only. We list all file changes by grouping by `path` and `commit_hash`, returning the number of lines added and removed. Using a window function, we estimate the file's total size at any moment in time by performing a cumulative sum and estimating the impact of any change on file size as `lines added - lines removed`. Using this statistic, we can calculate the percentage of the file that has been added or removed for each change. Finally, we count the number of file changes that constitute a rewrite per file i.e. `(percent_add >= 0.5) AND (percent_delete >= 0.5) AND current_size > 50`. Note we require files to be more than 50 lines to avoid early contributions to a file being counted as a rewrite. This also avoids a bias to very small files, which may be more likely to be rewritten.
-
-查询仅限于当前文件。我们通过 `path` 和 `commit_hash` 分组列出所有文件更改，返回添加和删除的行数。使用窗口函数，我们通过执行累加和估算文件在任何时刻的总大小，并将任何更改对文件大小的影响估算为 `lines added - lines removed`。使用此统计数据，我们可以计算每次更改中已添加或删除的文件所占比例。最后，我们计算每个文件构成重写的文件更改次数，即`(percent_add >= 0.5) AND (percent_delete >= 0.5) AND current_size > 50`。请注意，我们要求文件超过 50 行，以避免早期对文件的贡献被计算为重写。这也避免了偏向于非常小文件的情况，因为它们可能更容易被重写。
+该查询仅限于当前文件。我们通过按 `path` 和 `commit_hash` 分组列出所有文件更改，返回添加和删除的行数。使用窗口函数，我们估算文件在任何时刻的总大小，通过执行累积求和并估算任何变更对文件大小的影响为 `lines added - lines removed`。使用这个统计数据，我们可以计算每次更改添加或删除的文件百分比。最后，我们计算每个文件构成重写的文件更改次数，即 `(percent_add >= 0.5) AND (percent_delete >= 0.5) AND current_size > 50`。注意我们要求文件行数超过 50，以避免记录较早对文件的贡献也被视为重写。这也避免了对非常小文件的偏见，因为它们更可能被重写。
 
 [play](https://sql.clickhouse.com?query_id=5PL1QLNSH6QQTR8H9HINNP)
 
@@ -1843,21 +1676,13 @@ LIMIT 10
 10 rows in set. Elapsed: 0.299 sec. Processed 798.15 thousand rows, 31.52 MB (2.67 million rows/s., 105.29 MB/s.)
 ```
 
-### What weekday does the code have the highest chance to stay in the repository? {#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository}
+### 哪一天的代码在存储库中保留的机会最大？ {#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository}
 
-### 哪一天的代码在仓库中留下的机会最高？ {#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository}
+为此，我们需要唯一标识代码行。我们通过路径和行内容进行估算（因为同一行可能在文件中出现多次）。
 
-For this, we need to identify a line of code uniquely. We estimate this(as the same line may appear multiple times in a file) using the path and line contents.
+我们查询添加的行，将此与删除的行联接 - 过滤掉后者比前者发生得更晚的情况。这样，我们就得到了被删除的行，从而可以计算这两个事件之间的时间。
 
-为此，我们需要唯一标识一行代码。我们使用路径和行内容来估算这一点（因为同一行可能在文件中出现多次）。
-
-We query for lines added, joining this with the lines removed - filtering to cases where the latter occurs more recently than the former. This gives us the deleted lines from which we can compute the time between these two events.
-
-我们查询已添加的行，并将其与已删除的行连接 - 过滤出后者发生在前者之后的情况。这会给我们已删除的行，从中我们可以计算这两个事件之间的时间。
-
-Finally, we aggregate across this dataset to compute the average number of days lines stay in the repository by the day of the week.
-
-最后，我们对该数据集进行汇总，以计算按星期几行在仓库中停留的平均天数。
+最后，我们汇总该数据集，计算按星期几行在存储库中保留的平均天数。
 
 [play](https://sql.clickhouse.com?query_id=GVF23LEZTNZI22BT8LZBBE)
 
@@ -1913,13 +1738,10 @@ GROUP BY dayOfWeek(added_day) AS day_of_week_added
 7 rows in set. Elapsed: 3.965 sec. Processed 15.07 million rows, 1.92 GB (3.80 million rows/s., 483.50 MB/s.)
 ```
 
-### Files sorted by average code age {#files-sorted-by-average-code-age}
-
 ### 按平均代码年龄排序的文件 {#files-sorted-by-average-code-age}
 
-This query uses the same principle as [What weekday does the code have the highest chance to stay in the repository](#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository) - by aiming to uniquely identify a line of code using the path and line contents. This allows us to identify the time between when a line was added and removed. We filter to current files and code only, however, and average the time for each file across lines.
-
-此查询使用与 [这一天的代码停留在库中的机会最大](#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository) 相同的原则 - 旨在通过使用路径和行内容唯一标识代码行。这使我们能够识别一行添加和删除之间的时间。然而，我们仅对当前文件和代码进行过滤，并在行之间对每个文件的时间进行平均。
+该查询使用与 [哪一天的代码在存储库中保留的机会最大](#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository) 相同的原理 - 通过使用路径和行内容唯一标识一行代码。
+这使我们能够识别行被添加和删除之间的时间。我们筛选为当前文件和代码，并计算每个文件中每行的平均时间。
 
 [play](https://sql.clickhouse.com?query_id=3CYYT7HEHWRFHVCM9JCKSU)
 
@@ -2006,17 +1828,11 @@ LIMIT 10
 10 rows in set. Elapsed: 3.134 sec. Processed 16.13 million rows, 1.83 GB (5.15 million rows/s., 582.99 MB/s.)
 ```
 
-### Who tends to write more tests / CPP code / comments? {#who-tends-to-write-more-tests--cpp-code--comments}
+### 谁倾向于写更多的测试 / CPP 代码 / 注释？ {#who-tends-to-write-more-tests--cpp-code--comments}
 
-### 谁倾向于编写更多的测试 / CPP 代码 / 注释？ {#who-tends-to-write-more-tests--cpp-code--comments}
+我们可以通过几种方法来解决这个问题。关注代码与测试的比例，这个查询相对简单 - 计算对包含 `tests` 的文件夹的贡献数量，并计算与总贡献的比率。
 
-There are a few ways we can address this question. Focusing on the code to test ratio, this query is relatively simple - count the number of contributions to folders containing `tests` and compute the ratio to total contributions.
-
-我们可以通过几种方式来解决这个问题。聚焦于代码和测试的比率，该查询相对简单 - 计算对包含 `tests` 的文件夹的贡献数量，并计算与总贡献的比率。
-
-Note we limit to users with more than 20 changes to focus on regular committers and avoid a bias to one-off contributions.
-
-请注意，我们将限制为更改超过 20 次的用户，以关注常规提交者，避免对一次性贡献的偏差。
+请注意，我们限制为具有 20 次以上更改的用户，以关注常规提交者，避免对一次性贡献的偏见。
 
 [play](https://sql.clickhouse.com?query_id=JGKZSEQDPDTDKZXD3ZCGLE)
 
@@ -2058,9 +1874,7 @@ LIMIT 20
 20 rows in set. Elapsed: 0.034 sec. Processed 266.05 thousand rows, 4.65 MB (7.93 million rows/s., 138.76 MB/s.)
 ```
 
-We can plot this distribution as a histogram.
-
-我们可以将此分布绘制为直方图。
+我们可以将这个分布绘制为直方图。
 
 [play](https://sql.clickhouse.com?query_id=S5AJIIRGSUAY1JXEVHQDAK)
 
@@ -2101,13 +1915,9 @@ SELECT
 10 rows in set. Elapsed: 0.051 sec. Processed 266.05 thousand rows, 4.65 MB (5.24 million rows/s., 91.64 MB/s.)
 ```
 
-Most contributors write more code than tests, as you'd expect.
+大多数贡献者写的代码比测试多，这是可以预见的。
 
-大多数贡献者编写的代码比测试多，这是可以预期的。
-
-What about who adds the most comments when contributing code?
-
-那么，谁在贡献代码时添加最多的注释呢？
+那么谁在贡献代码时添加的注释最多？
 
 [play](https://sql.clickhouse.com?query_id=EXPHDIURBTOXXOK1TGNNYD)
 
@@ -2147,17 +1957,11 @@ LIMIT 10
 10 rows in set. Elapsed: 0.290 sec. Processed 7.54 million rows, 394.57 MB (26.00 million rows/s., 1.36 GB/s.)
 ```
 
-Note we sort by code contributions. Surprisingly high % for all our largest contributors and part of what makes our code so readable.
+请注意，我们按代码贡献进行排序。所有最大贡献者的百分比令人惊讶，部分原因使我们的代码如此可读。
 
-请注意，我们按代码贡献进行排序。对我们所有最大贡献者来说，这个百分比出乎意料地高，这也是我们代码如此容易阅读的一部分。
+### 作者的提交比例随时间变化吗？ {#how-does-an-authors-commits-change-over-time-with-respect-to-codecomments-percentage}
 
-### How does an authors commits change over time with respect to code/comments percentage? {#how-does-an-authors-commits-change-over-time-with-respect-to-codecomments-percentage}
-
-### 作者的提交如何随着时间的推移而改变，涉及代码/注释的百分比？ {#how-does-an-authors-commits-change-over-time-with-respect-to-codecomments-percentage}
-
-To compute this by author is trivial,
-
-对于每位作者来计算这一点是微不足道的，
+按作者计算这个问题是微不足道的，
 
 ```sql
 SELECT
@@ -2191,17 +1995,11 @@ LIMIT 10
 10 rows in set. Elapsed: 0.145 sec. Processed 7.54 million rows, 51.09 MB (51.83 million rows/s., 351.44 MB/s.)
 ```
 
-Ideally, however, we want to see how this changes in aggregate across all authors from the first day they start committing. Do they slowly reduce the number of comments they write?
+但理想情况下，我们希望了解这一比例在所有作者的整体变化，从他们开始提交的第一天起。他们是否慢慢减少写的注释数量？
 
-理想情况下，我们希望看到这些变化是如何随着所有作者在第一次提交的第一天开始的聚合而变化的。他们是否逐渐减少了写注释的数量？
+为此，我们首先计算每位作者的注释比率随时间的变化 - 类似于 [谁倾向于写更多的测试 / CPP 代码 / 注释？](#who-tends-to-write-more-tests--cpp-code--comments)。这与每位作者的开始日期联接，使我们能够根据周偏移量计算注释比率。
 
-To compute this, we first work out each author's comments ratio over time - similar to [Who tends to write more tests / CPP code / comments?](#who-tends-to-write-more-tests--cpp-code--comments). This is joined against each author's start date, allowing us to calculate the comment ratio by week offset.
-
-要计算这一点，我们首先计算每位作者随时间推移的评论比率 - 类似于 [谁倾向于写更多的测试 / CPP 代码 / 注释？](#who-tends-to-write-more-tests--cpp-code--comments)。这与每位作者的开始日期连接，从而允许我们按周偏移计算注释比率。
-
-After calculating the average by-week offset across all authors, we sample these results by selecting every 10th week.
-
-在计算所有作者的平均周偏移后，我们通过选择每第 10 周来对这些结果进行采样。
+在所有作者中计算每周的平均值后，我们通过选择每第 10 周来对这些结果进行抽样。
 
 [play](https://sql.clickhouse.com?query_id=SBHEWR8XC4PRHY13HPPKCN)
 
@@ -2275,17 +2073,11 @@ LIMIT 20
 20 rows in set. Elapsed: 0.167 sec. Processed 15.07 million rows, 101.74 MB (90.51 million rows/s., 610.98 MB/s.)
 ```
 
-Encouragingly, our comment % is pretty constant and doesn't degrade the longer authors contribute.
+令人鼓舞的是，我们的注释百分比相对稳定，随着作者的贡献时间并未下降。
 
-令人鼓舞的是，我们的评论百分比相对稳定，并且随着作者的贡献时间延长并没有下降。
+### 代码被重写的平均时间和中位数（代码衰退的半衰期）是什么？ {#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay}
 
-### What is the average time before code will be rewritten and the median (half-life of code decay)? {#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay}
-
-### 代码将被重写的平均时间是多少，中位数（代码衰退的半衰期）是多少？ {#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay}
-
-We can use the same principle as [List files that were rewritten most number of times](#list-files-that-were-rewritten-most-number-of-times) to identify rewrites but consider all files. A window function is used to compute the time between rewrites for each file. From this, we can calculate an average and median across all files.
-
-我们可以使用与 [列出重写次数最多的文件](#list-files-that-were-rewritten-most-number-of-times) 相同的原理来识别重写，但考虑所有文件。使用窗口函数计算每个文件的重写时间。由此，我们可以计算所有文件的平均值和中位数。
+我们可以使用相同的原理 [列出被重写次数最多的文件](#list-files-that-were-rewritten-most-number-of-times) 来识别重写，但考虑所有文件。使用窗口函数计算每个文件的重写之间的时间。由此，我们可以计算所有文件的平均值和中位数。
 
 [play](https://sql.clickhouse.com?query_id=WSHUEPJP9TNJUH7QITWWOR)
 
@@ -2343,13 +2135,9 @@ FROM rewrites
 1 row in set. Elapsed: 0.388 sec. Processed 266.05 thousand rows, 22.85 MB (685.82 thousand rows/s., 58.89 MB/s.)
 ```
 
-### What is the worst time to write code in sense that the code has highest chance to be re-written? {#what-is-the-worst-time-to-write-code-in-sense-that-the-code-has-highest-chance-to-be-re-written}
+### 写代码的最佳时机是在代码被重写的几率最大的情况下？ {#what-is-the-worst-time-to-write-code-in-sense-that-the-code-has-highest-chance-to-be-re-written}
 
-### 什么时段写代码最糟糕，因为代码被重写的概率最高？ {#what-is-the-worst-time-to-write-code-in-sense-that-the-code-has-highest-chance-to-be-re-written}
-
-Similar to [What is the average time before code will be rewritten and the median (half-life of code decay)?](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) and [List files that were rewritten most number of times](#list-files-that-were-rewritten-most-number-of-times)，仅是在我们每天的基础上进行汇总。根据需要调整，例如年份的月份。
-
-与 [代码将被重写的平均时间](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) 和 [列出重写次数最多的文件](#list-files-that-were-rewritten-most-number-of-times) 类似，这里按星期几聚合。根据需要调整，例如年份的月份。
+类似于 [代码重写的平均时间和中位数（代码衰退的半衰期）是什么？](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) 和 [列出被重写次数最多的文件](#list-files-that-were-rewritten-most-number-of-times)，除了我们按星期几进行汇总。根据需要进行调整，例如年中的月份。
 
 [play](https://sql.clickhouse.com?query_id=8PQNWEWHAJTGN6FTX59KH2)
 
@@ -2411,13 +2199,9 @@ GROUP BY dayOfWeek
 7 rows in set. Elapsed: 0.466 sec. Processed 7.54 million rows, 701.52 MB (16.15 million rows/s., 1.50 GB/s.)
 ```
 
-### Which authors code is the most sticky? {#which-authors-code-is-the-most-sticky}
+### 哪位作者的代码最"粘"？ {#which-authors-code-is-the-most-sticky}
 
-### 哪些作者的代码最具粘性？ {#which-authors-code-is-the-most-sticky}
-
-We define "sticky" as how long does an author's code stay before its rewritten. Similar to the previous question [What is the average time before code will be rewritten and the median (half-life of code decay)?](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) - using the same metric for rewrites i.e. 50% additions and 50% deletions to the file. We compute the average rewrite time per author and only consider contributors with more than two files.
-
-我们将“粘性”定义为作者的代码在重写之前停留多长时间。与之前的问题 [代码将被重写的平均时间](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) 类似 - 使用相同的重写度量，即文件的 50% 添加和 50% 删除。我们计算每位作者的平均重写时间，仅考虑贡献超过两个文件的贡献者。
+我们将 "粘" 定义为作者的代码在重写之前保持的时间。与之前的问题相似 [代码重写的平均时间和中位数（代码衰退的半衰期）是什么？](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) - 使用相同的重写指标，即对文件进行 50% 添加和 50% 删除。我们计算每位作者的平均重写时间，仅考虑贡献超过两个文件的贡献者。
 
 [play](https://sql.clickhouse.com?query_id=BKHLVVWN5SET1VTIFQ8JVK)
 
@@ -2492,17 +2276,11 @@ LIMIT 10
 10 rows in set. Elapsed: 0.555 sec. Processed 7.54 million rows, 720.60 MB (13.58 million rows/s., 1.30 GB/s.)
 ```
 
-### Most consecutive days of commits by an author {#most-consecutive-days-of-commits-by-an-author}
-
 ### 作者连续提交天数最多 {#most-consecutive-days-of-commits-by-an-author}
 
-This query first requires us to calculate the days when an author has committed. Using a window function, partitioning by author, we can compute the days between their commits. For each commit, if the time since the last commit was 1 day we mark it as consecutive (1) and 0 otherwise - storing this result in `consecutive_day`.
+此查询首先需要计算作者提交的日期。使用窗口函数，按作者进行分区，我们可以计算他们提交之间的天数。对于每次提交，如果从上次提交到现在的时间为1天，我们将其标记为连续（1），否则标记为0 - 将此结果存储在 `consecutive_day` 中。
 
-此查询首先要求我们计算作者提交的天数。使用窗口函数，按作者进行分区，我们可以计算他们提交之间的天数。对于每个提交，如果距离上次提交的时间为 1 天，则将其标记为连续 (1)，否则标记为 0 - 将此结果存储在 `consecutive_day` 中。
-
-Our subsequent array functions compute each author's longest sequence of consecutive ones. First, the `groupArray` function is used to collate all `consecutive_day` values for an author. This array of 1s and 0s, is then split on 0 values into subarrays. Finally, we calculate the longest subarray.
-
-随后，我们的数组函数计算每位作者最长的连续 1 的序列。首先，使用 `groupArray` 函数收集所有作者的 `consecutive_day` 值。该数组中的 1s 和 0s，然后在 0 值处分割为子数组。最后，我们计算最长的子数组。
+我们稍后的数组函数计算每位作者最长的连续 1 的序列。首先，使用 `groupArray` 函数收集作者的所有 `consecutive_day` 值。这个由 1 和 0 组成的数组，然后在 0 值处分割为子数组。最后，我们可以计算出最长的子数组。
 
 [play](https://sql.clickhouse.com?query_id=S3E64UYCAMDAYJRSXINVFR)
 
@@ -2553,13 +2331,9 @@ LIMIT 10
 10 rows in set. Elapsed: 0.025 sec. Processed 62.78 thousand rows, 395.47 KB (2.54 million rows/s., 16.02 MB/s.)
 ```
 
-### Line by line commit history of a file {#line-by-line-commit-history-of-a-file}
+### 文件的逐行提交历史 {#line-by-line-commit-history-of-a-file}
 
-### 文件逐行提交历史 {#line-by-line-commit-history-of-a-file}
-
-Files can be renamed. When this occurs, we get a rename event, where the `path` column is set to the new path of the file and the `old_path` represents the previous location e.g.
-
-文件可以被重命名。当这种情况发生时，我们会收到一个重命名事件，其中 `path` 列设置为文件的新路径，`old_path` 表示以前的位置，例如
+文件可能会被重命名。当这种情况发生时，我们会收到一个重命名事件，其中 `path` 列设置为文件的新路径，`old_path` 列表示之前的位置，例如：
 
 [play](https://sql.clickhouse.com?query_id=AKTW3Z8JZAPQ4H9BH2ZFRX)
 
@@ -2580,17 +2354,11 @@ WHERE (path = 'src/Storages/StorageReplicatedMergeTree.cpp') AND (change_type = 
 1 row in set. Elapsed: 0.135 sec. Processed 266.05 thousand rows, 20.73 MB (1.98 million rows/s., 154.04 MB/s.)
 ```
 
-This makes viewing the full history of a file challenging since we don't have a single value connecting all line or file changes.
+这使得查看文件的完整历史记录变得具有挑战性，因为我们没有单一值能够连接所有行或文件更改。
 
-这使得查看文件的完整历史变得具有挑战性，因为我们没有单一的值连接所有行或文件更改。
+为了解决这个问题，我们可以使用用户自定义函数（UDFs）。目前无法递归，所以要识别文件的历史记录，我们必须定义一系列 UDFs，并明确使它们相互调用。
 
-To address this, we can use User Defined Functions (UDFs). These cannot, currently, be recursive, so to identify the history of a file we must define a series of UDFs which call each other explicitly.
-
-为了解决这个问题，我们可以使用用户定义函数 (UDFs)。这些当前不能递归，因此要识别文件的历史，我们必须定义一系列 UDF，彼此显式调用。
-
-This means we can only track renames to a maximum depth - the below example is 5 deep. It is unlikely a file will be renamed more times than this, so for now, this is sufficient.
-
-这意味着我们只能跟踪最大 5 层的文件重命名。文件重命名超过这个次数的可能性不大，因此就目前而言，这样的深度是足够的。
+这意味着我们只能追踪重命名到最大深度 - 下面的示例深度为 5。文件被重命名的次数不太可能超出这个深度，因此现在这已经足够。
 
 ```sql
 CREATE FUNCTION file_path_history AS (n) -> if(empty(n),  [], arrayConcat([n], file_path_history_01((SELECT if(empty(old_path), Null, old_path) FROM git.file_changes WHERE path = n AND (change_type = 'Rename' OR change_type = 'Add') LIMIT 1))));
@@ -2601,11 +2369,7 @@ CREATE FUNCTION file_path_history_04 AS (n) -> if(isNull(n), [], arrayConcat([n]
 CREATE FUNCTION file_path_history_05 AS (n) -> if(isNull(n), [], [n]);
 ```
 
-By calling `file_path_history('src/Storages/StorageReplicatedMergeTree.cpp')` we recurse through the rename history, with each function calling the next level with the `old_path`. The results are combined using `arrayConcat`.
-
-通过调用 `file_path_history('src/Storages/StorageReplicatedMergeTree.cpp')` ，我们递归遍历重命名历史记录，每个函数使用 `old_path` 调用下一级。结果通过 `arrayConcat` 组合。
-
-For example,
+通过调用 `file_path_history('src/Storages/StorageReplicatedMergeTree.cpp')`，我们递归遍历重命名历史记录，每个函数使用 `old_path` 调用下一层。结果使用 `arrayConcat` 组合。
 
 例如，
 
@@ -2619,9 +2383,7 @@ SELECT file_path_history('src/Storages/StorageReplicatedMergeTree.cpp') AS paths
 1 row in set. Elapsed: 0.074 sec. Processed 344.06 thousand rows, 6.27 MB (4.65 million rows/s., 84.71 MB/s.)
 ```
 
-We can use this capability to now assemble the commits for the entire history of a file. In this example, we show one commit for each of the `path` values.
-
-我们可以利用此功能现在为文件的整个历史组装提交。在这个例子中，我们为每个 `path` 值展示一个提交。
+我们可以利用这个能力，现在组装文件的整个历史提交。在这个示例中，我们显示每个 `path` 值的每个提交。
 
 ```sql
 SELECT
@@ -2646,21 +2408,13 @@ FORMAT PrettyCompactMonoBlock
 3 rows in set. Elapsed: 0.170 sec. Processed 611.53 thousand rows, 41.76 MB (3.60 million rows/s., 246.07 MB/s.)
 ```
 
-## Unsolved Questions {#unsolved-questions}
-
 ## 未解决的问题 {#unsolved-questions}
 
 ### Git blame {#git-blame}
 
-### Git 责任追踪 {#git-blame}
+由于当前无法在数组函数中保持状态，因此很难获得精确结果。这在使用 `arrayFold` 或 `arrayReduce` 时是可能的，这允许在每次迭代中保持状态。
 
-This is particularly difficult to get an exact result due to the inability to currently keep state in array functions. This will be possible with an `arrayFold` or `arrayReduce`, which allows state to be held on each iteration.
-
-由于当前无法在数组函数中保持状态，因此特别难以获得准确结果。这可以通过 `arrayFold` 或 `arrayReduce` 实现，这允许在每次迭代中保持状态。
-
-An approximate solution, sufficient for a high-level analysis, may look something like this:
-
-一种近似解决方案，对于高层分析是足够的，可能如下所示：
+一个近似的解决方案，足以进行高层分析，可能是这样的：
 
 ```sql
 SELECT
@@ -2698,19 +2452,11 @@ LIMIT 20
 20 rows in set. Elapsed: 0.547 sec. Processed 7.88 million rows, 679.20 MB (14.42 million rows/s., 1.24 GB/s.)
 ```
 
-We welcome exact and improved solutions here.
-
-我们欢迎在这里提供准确和改进的解决方案。
-
-## Related Content {#related-content}
+我们欢迎更精确和改进的解决方案。
 
 ## 相关内容 {#related-content}
 
-- Blog: [Git commits and our community](https://clickhouse.com/blog/clickhouse-git-community-commits)
-- 博客：[Git 提交和我们的社区](https://clickhouse.com/blog/clickhouse-git-community-commits)
-- Blog: [Window and array functions for Git commit sequences](https://clickhouse.com/blog/clickhouse-window-array-functions-git-commits)
+- 博客：[Git 提交与我们的社区](https://clickhouse.com/blog/clickhouse-git-community-commits)
 - 博客：[Git 提交序列的窗口和数组函数](https://clickhouse.com/blog/clickhouse-window-array-functions-git-commits)
-- Blog: [Building a Real-time Analytics Apps with ClickHouse and Hex](https://clickhouse.com/blog/building-real-time-applications-with-clickhouse-and-hex-notebook-keeper-engine)
-- 博客：[使用 ClickHouse 和 Hex 构建实时分析应用](https://clickhouse.com/blog/building-real-time-applications-with-clickhouse-and-hex-notebook-keeper-engine)
-- Blog: [A Story of Open-source GitHub Activity using ClickHouse + Grafana](https://clickhouse.com/blog/introduction-to-clickhouse-and-grafana-webinar)
-- 博客：[使用 ClickHouse 和 Grafana 的开源 GitHub 活动的故事](https://clickhouse.com/blog/introduction-to-clickhouse-and-grafana-webinar)
+- 博客：[使用 ClickHouse 和 Hex 构建实时分析应用程序](https://clickhouse.com/blog/building-real-time-applications-with-clickhouse-and-hex-notebook-keeper-engine)
+- 博客：[使用 ClickHouse + Grafana 的开源 GitHub 活动故事](https://clickhouse.com/blog/introduction-to-clickhouse-and-grafana-webinar)

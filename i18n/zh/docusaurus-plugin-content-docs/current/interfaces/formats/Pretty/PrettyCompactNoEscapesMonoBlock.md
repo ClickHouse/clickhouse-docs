@@ -1,6 +1,6 @@
 ---
 'alias': []
-'description': 'PrettyCompactNoEscapesMonoBlock格式的文档'
+'description': 'PrettyCompactNoEscapesMonoBlock 格式的文档'
 'input_format': false
 'keywords':
 - 'PrettyCompactNoEscapesMonoBlock'
@@ -11,16 +11,16 @@
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Input | Output  | Alias |
+| 输入 | 输出  | 别名 |
 |-------|---------|-------|
 | ✗     | ✔       |       |
 
-## Description {#description}
+## 描述 {#description}
 
-与 [`PrettyCompactNoEscapes`](./PrettyCompactNoEscapes.md) 格式不同的是，最多可以缓冲 `10,000` 行，然后作为一个单独的表输出，而不是按 [块](/development/architecture#block)。
+与 [`PrettyCompactNoEscapes`](./PrettyCompactNoEscapes.md) 格式不同的是，最多可以缓冲 `10,000` 行，然后作为一个单独的表输出，而不是按 [块](/development/architecture#block) 输出。
 
-## Example Usage {#example-usage}
+## 示例用法 {#example-usage}
 
-## Format Settings {#format-settings}
+## 格式设置 {#format-settings}
 
 <PrettyFormatSettings/>

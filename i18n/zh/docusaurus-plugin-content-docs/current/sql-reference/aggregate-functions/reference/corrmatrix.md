@@ -1,3 +1,10 @@
+---
+'description': '计算 N 个变量的相关矩阵。'
+'sidebar_position': 118
+'slug': '/sql-reference/aggregate-functions/reference/corrmatrix'
+'title': 'corrMatrix'
+---
+
 
 # corrMatrix
 
@@ -11,7 +18,7 @@ corrMatrix(x[, ...])
 
 **参数**
 
-- `x` — 可变数量的参数。 [(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+- `x` — 变量数量的参数。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
 
 **返回值**
 

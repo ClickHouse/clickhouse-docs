@@ -1,3 +1,16 @@
+---
+'slug': '/examples/aggregate-function-combinators/groupArrayDistinct'
+'title': 'groupArrayDistinct'
+'description': '使用 groupArrayDistinct 组合器的示例'
+'keywords':
+- 'groupArray'
+- 'Distinct'
+- 'combinator'
+- 'examples'
+- 'groupArrayDistinct'
+'sidebar_label': 'groupArrayDistinct'
+---
+
 
 # groupArrayDistinct {#sumdistinct}
 
@@ -7,9 +20,9 @@
 
 ## 示例用法 {#example-usage}
 
-在这个例子中，我们将利用我们 [SQL playground](https://sql.clickhouse.com/) 中可用的 `hits` 数据集。
+在这个例子中，我们将使用在我们的 [SQL playground](https://sql.clickhouse.com/) 中可用的 `hits` 数据集。
 
-想象一下，您想了解，在您的网站上，每个不同的登录页面域名 (`URLDomain`) 上记录的所有唯一用户代理操作系统代码 (`OS`)。这可以帮助您理解与您网站不同部分互动的操作系统的多样性。
+想象一下，你想要找出你的网站上每个独特的登录页面域名 (`URLDomain`) 对应的所有唯一的用户代理操作系统代码 (`OS`)，这些记录是为了了解访问该域名的访客所使用的操作系统类型。这将帮助你理解与网站不同部分交互的操作系统的多样性。
 
 ```sql runnable
 SELECT
@@ -22,6 +35,6 @@ ORDER BY URLDomain ASC
 LIMIT 20;
 ```
 
-## 另请参阅 {#see-also}
+## 另请参见 {#see-also}
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
 - [`Distinct combinator`](/sql-reference/aggregate-functions/combinators#-distinct)

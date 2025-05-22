@@ -1,6 +1,6 @@
 ---
-'description': '描述可用于ClickHouse的第三方代理解决方案'
-'sidebar_label': '代理'
+'description': '描述可用的第三方代理解决方案用于 ClickHouse'
+'sidebar_label': 'Proxies'
 'sidebar_position': 29
 'slug': '/interfaces/third-party/proxy'
 'title': '第三方开发者的代理服务器'
@@ -15,23 +15,23 @@
 
 特点：
 
-- 每用户路由和响应缓存。
+- 用户级路由和响应缓存。
 - 灵活的限制。
-- 自动 SSL 证书续期。
+- 自动 SSL 证书续订。
 
-使用 Go 实现。
+用 Go 实现。
 
 ## KittenHouse {#kittenhouse}
 
-[KittenHouse](https://github.com/VKCOM/kittenhouse) 旨在成为 ClickHouse 与应用服务器之间的本地代理，以防在您的应用程序侧缓冲 INSERT 数据变得不可能或不方便。
+[KittenHouse](https://github.com/VKCOM/kittenhouse) 旨在充当 ClickHouse 与应用服务器之间的本地代理，以防在应用程序端缓存 INSERT 数据不便或不可能。
 
 特点：
 
 - 内存和磁盘数据缓冲。
-- 每表路由。
+- 每个表的路由。
 - 负载均衡和健康检查。
 
-使用 Go 实现。
+用 Go 实现。
 
 ## ClickHouse-Bulk {#clickhouse-bulk}
 
@@ -39,8 +39,8 @@
 
 特点：
 
-- 分组请求，并按阈值或间隔发送。
-- 支持多个远程服务器。
-- 基本认证。
+- 按阈值或间隔分组请求并发送。
+- 多个远程服务器。
+- 基本身份验证。
 
-使用 Go 实现。
+用 Go 实现。

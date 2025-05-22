@@ -1,19 +1,27 @@
+---
+'description': '处理嵌入式字典的函数的文档'
+'sidebar_label': '嵌入式字典'
+'sidebar_position': 60
+'slug': '/sql-reference/functions/ym-dict-functions'
+'title': '处理嵌入式字典的函数'
+---
 
-# 函数用于处理嵌入式字典
+
+# 用于处理嵌入字典的函数
 
 :::note
-为了使以下函数正常工作，服务器配置必须指定获取所有嵌入式字典的路径和地址。这些字典在首次调用任何这些函数时加载。如果无法加载参考列表，将引发异常。
+为了使下面的函数正常工作，服务器配置必须指定获取所有嵌入字典的路径和地址。这些字典在第一次调用任何这些函数时加载。如果无法加载参考列表，将抛出异常。
 
-因此，本节中显示的示例将在[ClickHouse Fiddle](https://fiddle.clickhouse.com/)和快速释放及生产部署中默认抛出异常，除非事先进行配置。
+因此，本节中显示的示例在默认情况下会在 [ClickHouse Fiddle](https://fiddle.clickhouse.com/) 和快速发布及生产部署中抛出异常，除非首先进行配置。
 :::
 
 有关创建参考列表的信息，请参见["字典"](../dictionaries#embedded-dictionaries)部分。
 
 ## 多个地理数据库 {#multiple-geobases}
 
-ClickHouse 支持同时处理多个替代地理数据库（区域层次结构），以支持不同的视角，即某些地区属于哪些国家。
+ClickHouse支持同时使用多个替代地理数据库（区域层级），以支持对某些地区属于哪些国家的不同视角。
 
-'clickhouse-server' 配置指定了包含区域层次结构的文件：
+'clickhouse-server' 配置指定了包含区域层级的文件：
 
 ```<path_to_regions_hierarchy_file>/opt/geo/regions_hierarchy.txt</path_to_regions_hierarchy_file>```
 
@@ -34,7 +42,7 @@ regionToCountry(RegionID, 'ua') – Uses the dictionary for the 'ua' key: /opt/g
 
 ### regionToName {#regiontoname}
 
-接受区域 ID 和地理数据库，并返回该区域在相应语言中的名称字符串。如果具有指定 ID 的区域不存在，则返回空字符串。
+接受区域 ID 和地理数据库，并返回该区域在相应语言中的名称字符串。如果指定 ID 的区域不存在，则返回空字符串。
 
 **语法**
 
@@ -43,13 +51,13 @@ regionToName(id\[, lang\])
 ```
 **参数**
 
-- `id` — 来自地理数据库的区域 ID。 [UInt32](../data-types/int-uint).
-- `geobase` — 字典键。请参阅[多个地理数据库](#multiple-geobases)。 [String](../data-types/string). 可选。
+- `id` — 来自地理数据库的区域 ID。[UInt32](../data-types/int-uint)。
+- `geobase` — 字典键。参见[多个地理数据库](#multiple-geobases)。 [String](../data-types/string)。可选。
 
 **返回值**
 
-- 相应语言中区域的名称，由 `geobase` 指定。 [String](../data-types/string).
-- 否则，返回空字符串。 
+- 区域在 `geobase` 指定的相应语言中的名称。[String](../data-types/string)。
+- 否则返回空字符串。
 
 **示例**
 
@@ -73,7 +81,7 @@ SELECT regionToName(number::UInt32,'en') FROM numbers(0,5);
 
 ### regionToCity {#regiontocity}
 
-接受来自地理数据库的区域 ID。如果该区域是城市或城市的一部分，则返回相应城市的区域 ID。否则，返回 0。
+接受来自地理数据库的区域 ID。如果该区域是城市或城市的一部分，则返回适当城市的区域 ID。否则返回 0。
 
 **语法**
 
@@ -83,13 +91,13 @@ regionToCity(id [, geobase])
 
 **参数**
 
-- `id` — 来自地理数据库的区域 ID。 [UInt32](../data-types/int-uint).
-- `geobase` — 字典键。请参阅[多个地理数据库](#multiple-geobases)。 [String](../data-types/string). 可选。
+- `id` — 来自地理数据库的区域 ID。[UInt32](../data-types/int-uint)。
+- `geobase` — 字典键。参见[多个地理数据库](#multiple-geobases)。 [String](../data-types/string)。可选。
 
 **返回值**
 
-- 如果存在，则为相应城市的区域 ID。 [UInt32](../data-types/int-uint).
-- 如果不存在，则为 0。
+- 适当城市的区域 ID（如果存在）。[UInt32](../data-types/int-uint)。
+- 如果不存在，则返回 0。
 
 **示例**
 
@@ -121,7 +129,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 
 ### regionToArea {#regiontoarea}
 
-将区域转换为区域（地理数据库中的类型 5）。在其他方面，该函数与['regionToCity'](#regiontocity)相同。
+将区域转换为区域（地理数据库中的类型 5）。在其他方面，该函数与 ['regionToCity'](#regiontocity) 相同。
 
 **语法**
 
@@ -131,13 +139,13 @@ regionToArea(id [, geobase])
 
 **参数**
 
-- `id` — 来自地理数据库的区域 ID。 [UInt32](../data-types/int-uint).
-- `geobase` — 字典键。请参阅[多个地理数据库](#multiple-geobases)。 [String](../data-types/string). 可选。
+- `id` — 来自地理数据库的区域 ID。[UInt32](../data-types/int-uint)。
+- `geobase` — 字典键。参见[多个地理数据库](#multiple-geobases)。 [String](../data-types/string)。可选。
 
 **返回值**
 
-- 如果存在，则为相应区域的区域 ID。 [UInt32](../data-types/int-uint).
-- 如果不存在，则为 0。
+- 适当区域的区域 ID（如果存在）。[UInt32](../data-types/int-uint)。
+- 如果不存在，则返回 0。
 
 **示例**
 
@@ -173,7 +181,7 @@ LIMIT 15
 
 ### regionToDistrict {#regiontodistrict}
 
-将区域转换为联邦区（地理数据库中的类型 4）。在其他方面，该函数与'regionToCity'相同。
+将区域转换为联邦区（地理数据库中的类型 4）。在其他方面，该函数与 'regionToCity' 相同。
 
 **语法**
 
@@ -183,13 +191,13 @@ regionToDistrict(id [, geobase])
 
 **参数**
 
-- `id` — 来自地理数据库的区域 ID。 [UInt32](../data-types/int-uint).
-- `geobase` — 字典键。请参阅[多个地理数据库](#multiple-geobases)。 [String](../data-types/string). 可选。
+- `id` — 来自地理数据库的区域 ID。[UInt32](../data-types/int-uint)。
+- `geobase` — 字典键。参见[多个地理数据库](#multiple-geobases)。 [String](../data-types/string)。可选。
 
 **返回值**
 
-- 如果存在，则为相应城市的区域 ID。 [UInt32](../data-types/int-uint).
-- 如果不存在，则为 0。
+- 适当城市的区域 ID（如果存在）。[UInt32](../data-types/int-uint)。
+- 如果不存在，则返回 0。
 
 **示例**
 
@@ -225,7 +233,7 @@ LIMIT 15
 
 ### regionToCountry {#regiontocountry}
 
-将区域转换为国家（地理数据库中的类型 3）。在其他方面，该函数与'regionToCity'相同。
+将区域转换为国家（地理数据库中的类型 3）。在其他方面，该函数与 'regionToCity' 相同。
 
 **语法**
 
@@ -235,13 +243,13 @@ regionToCountry(id [, geobase])
 
 **参数**
 
-- `id` — 来自地理数据库的区域 ID。 [UInt32](../data-types/int-uint).
-- `geobase` — 字典键。请参阅[多个地理数据库](#multiple-geobases)。 [String](../data-types/string). 可选。
+- `id` — 来自地理数据库的区域 ID。[UInt32](../data-types/int-uint)。
+- `geobase` — 字典键。参见[多个地理数据库](#multiple-geobases)。 [String](../data-types/string)。可选。
 
 **返回值**
 
-- 如果存在，则为相应国家的区域 ID。 [UInt32](../data-types/int-uint).
-- 如果不存在，则为 0。
+- 适当国家的区域 ID（如果存在）。[UInt32](../data-types/int-uint)。
+- 如果不存在，则返回 0。
 
 **示例**
 
@@ -273,7 +281,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToCountry(number::UInt32) AS id
 
 ### regionToContinent {#regiontocontinent}
 
-将区域转换为洲（地理数据库中的类型 1）。在其他方面，该函数与'regionToCity'相同。
+将区域转换为大陆（地理数据库中的类型 1）。在其他方面，该函数与 'regionToCity' 相同。
 
 **语法**
 
@@ -283,13 +291,13 @@ regionToContinent(id [, geobase])
 
 **参数**
 
-- `id` — 来自地理数据库的区域 ID。 [UInt32](../data-types/int-uint).
-- `geobase` — 字典键。请参阅[多个地理数据库](#multiple-geobases)。 [String](../data-types/string). 可选。
+- `id` — 来自地理数据库的区域 ID。[UInt32](../data-types/int-uint)。
+- `geobase` — 字典键。参见[多个地理数据库](#multiple-geobases)。 [String](../data-types/string)。可选。
 
 **返回值**
 
-- 如果存在，则为相应洲的区域 ID。 [UInt32](../data-types/int-uint).
-- 如果不存在，则为 0。
+- 适当大陆的区域 ID（如果存在）。[UInt32](../data-types/int-uint)。
+- 如果不存在，则返回 0。
 
 **示例**
 
@@ -321,7 +329,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToContinent(number::UInt32) AS 
 
 ### regionToTopContinent {#regiontotopcontinent}
 
-查找该地区在层次结构中的最高洲。
+查找该区域层级中的最高大陆。
 
 **语法**
 
@@ -331,13 +339,13 @@ regionToTopContinent(id[, geobase])
 
 **参数**
 
-- `id` — 来自地理数据库的区域 ID。 [UInt32](../data-types/int-uint).
-- `geobase` — 字典键。请参阅[多个地理数据库](#multiple-geobases)。 [String](../data-types/string). 可选。
+- `id` — 来自地理数据库的区域 ID。[UInt32](../data-types/int-uint)。
+- `geobase` — 字典键。参见[多个地理数据库](#multiple-geobases)。 [String](../data-types/string)。可选。
 
 **返回值**
 
-- 顶级洲的标识符（当您沿着区域的层次结构向上爬时）。 [UInt32](../data-types/int-uint).
-- 如果没有，则为 0。
+- 顶级大陆的标识符（即当你沿着区域层级向上攀爬时的大陆）。[UInt32](../data-types/int-uint)。
+- 如果不存在，则返回 0。
 
 **示例**
 
@@ -369,7 +377,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 
 ### regionToPopulation {#regiontopopulation}
 
-获取区域的人口。人口可以在包含地理数据库的文件中记录。请参见["字典"](../dictionaries#embedded-dictionaries)部分。如果该区域未记录人口，则返回 0。在地理数据库中，人口可能记录在子区域，但未记录在父区域。
+获取区域的人口。人口可能会记录在地理数据库文件中。请参见["字典"](../dictionaries#embedded-dictionaries)部分。如果该区域没有记录人口，则返回 0。在地理数据库中，子区域的人口可能有记录，但父区域的人口没有。
 
 **语法**
 
@@ -379,13 +387,13 @@ regionToPopulation(id[, geobase])
 
 **参数**
 
-- `id` — 来自地理数据库的区域 ID。 [UInt32](../data-types/int-uint).
-- `geobase` — 字典键。请参阅[多个地理数据库](#multiple-geobases)。 [String](../data-types/string). 可选。
+- `id` — 来自地理数据库的区域 ID。[UInt32](../data-types/int-uint)。
+- `geobase` — 字典键。参见[多个地理数据库](#multiple-geobases)。 [String](../data-types/string)。可选。
 
 **返回值**
 
-- 区域的人口。 [UInt32](../data-types/int-uint).
-- 如果没有，则为 0。
+- 区域的人口。[UInt32](../data-types/int-uint)。
+- 如果不存在，则返回 0。
 
 **示例**
 
@@ -417,7 +425,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToPopulation(number::UInt32) AS
 
 ### regionIn {#regionin}
 
-检查 `lhs` 区域是否属于 `rhs` 区域。如果属于，则返回等于 1 的 UInt8 数字，若不属于则返回 0。
+检查 `lhs` 区域是否属于 `rhs` 区域。如果属于，则返回等于 1 的 UInt8 数字；如果不属于，则返回 0。
 
 **语法**
 
@@ -427,18 +435,18 @@ regionIn(lhs, rhs\[, geobase\])
 
 **参数**
 
-- `lhs` — 来自地理数据库的左侧区域 ID。 [UInt32](../data-types/int-uint).
-- `rhs` — 来自地理数据库的右侧区域 ID。 [UInt32](../data-types/int-uint).
-- `geobase` — 字典键。请参阅[多个地理数据库](#multiple-geobases)。 [String](../data-types/string). 可选。
+- `lhs` — 来自地理数据库的左侧区域 ID。[UInt32](../data-types/int-uint)。
+- `rhs` — 来自地理数据库的右侧区域 ID。[UInt32](../data-types/int-uint)。
+- `geobase` — 字典键。参见[多个地理数据库](#multiple-geobases)。 [String](../data-types/string)。可选。
 
 **返回值**
 
-- 如果属于，则为 1。 [UInt8](../data-types/int-uint).
+- 如果属于，则为 1。[UInt8](../data-types/int-uint)。
 - 如果不属于，则为 0。
 
 **实现细节**
 
-该关系是自反的 — 任何区域也属于自身。
+关系是自反的——任何区域也属于自己。
 
 **示例**
 
@@ -465,7 +473,7 @@ USA is not in Boulder
 
 ### regionHierarchy {#regionhierarchy}
 
-接受一个 UInt32 数字 — 来自地理数据库的区域 ID。返回一个区域 ID 数组，包括传递的区域及沿着链的所有父区域。
+接受一个 UInt32 数字——来自地理数据库的区域 ID。返回由传入的区域及沿着链条的所有父区域组成的区域 ID 数组。
 
 **语法**
 
@@ -475,12 +483,12 @@ regionHierarchy(id\[, geobase\])
 
 **参数**
 
-- `id` — 来自地理数据库的区域 ID。 [UInt32](../data-types/int-uint).
-- `geobase` — 字典键。请参阅[多个地理数据库](#multiple-geobases)。 [String](../data-types/string). 可选。
+- `id` — 来自地理数据库的区域 ID。[UInt32](../data-types/int-uint)。
+- `geobase` — 字典键。参见[多个地理数据库](#multiple-geobases)。 [String](../data-types/string)。可选。
 
 **返回值**
 
-- 包括传递区域及沿着链的所有父区域的区域 ID 数组。 [Array](../data-types/array)([UInt32](../data-types/int-uint)).
+- 由传入区域及沿着链条的所有父区域组成的区域 ID 数组。[Array](../data-types/array)([UInt32](../data-types/int-uint))。
 
 **示例**
 

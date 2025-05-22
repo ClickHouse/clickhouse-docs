@@ -1,3 +1,12 @@
+---
+'description': '系统表包含有关 ClickHouse 服务器构建选项的信息。'
+'slug': '/operations/system-tables/build_options'
+'title': 'system.build_options'
+'keywords':
+- 'system table'
+- 'build_options'
+---
+
 包含有关 ClickHouse 服务器构建选项的信息。
 
 列：

@@ -8,10 +8,11 @@
 
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
+
 # WATCH 语句
 
 <DeprecatedBadge/>
 
-此功能已被弃用，并将在将来移除。
+此功能已被弃用，将在将来移除。
 
-为了方便您查阅，旧文档位于 [这里](https://pastila.nl/?007cd3ec/47276db1eb25eb10c6ee043a44fdf597#AESDirdloBX4wF5BjPSZSA==)。
+为方便起见，旧文档位于 [这里](https://pastila.nl/?007cd3ec/47276db1eb25eb10c6ee043a44fdf597#AESDirdloBX4wF5BjPSZSA==)

@@ -1,3 +1,12 @@
+---
+'description': '系统表包含有关普通和聚合函数的信息。'
+'keywords':
+- 'system table'
+- 'functions'
+'slug': '/operations/system-tables/functions'
+'title': 'system.functions'
+---
+
 包含关于普通函数和聚合函数的信息。
 
 列：
@@ -5,7 +14,7 @@
 - `name` ([String](../../sql-reference/data-types/string.md)) – 函数的名称。
 - `is_aggregate` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 函数是否为聚合函数。
 - `case_insensitive` ([UInt8](../../sql-reference/data-types/int-uint.md)) - 函数名称是否可以不区分大小写使用。
-- `alias_to` ([String](../../sql-reference/data-types/string.md)) - 如果函数名称是别名，则为原函数名称。
+- `alias_to` ([String](../../sql-reference/data-types/string.md)) - 如果函数名称是别名，则为原始函数名称。
 - `create_query` ([String](../../sql-reference/data-types/enum.md)) - 未使用。
 - `origin` ([Enum8](../../sql-reference/data-types/string.md)) - 未使用。
 - `description` ([String](../../sql-reference/data-types/string.md)) - 对函数所做操作的高级描述。
@@ -13,7 +22,7 @@
 - `arguments` ([String](../../sql-reference/data-types/string.md)) - 函数接受的参数。
 - `returned_value` ([String](../../sql-reference/data-types/string.md)) - 函数返回的值。
 - `examples` ([String](../../sql-reference/data-types/string.md)) - 函数的示例用法。
-- `introduced_in` ([String](../../sql-reference/data-types/string.md)) - 首次引入该函数的 ClickHouse 版本。
+- `introduced_in` ([String](../../sql-reference/data-types/string.md)) - 函数首次引入的 ClickHouse 版本。
 - `categories` ([String](../../sql-reference/data-types/string.md)) - 函数的类别。
 
 **示例**

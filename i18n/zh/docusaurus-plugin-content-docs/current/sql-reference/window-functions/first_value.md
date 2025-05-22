@@ -1,7 +1,15 @@
+---
+'description': 'first_value 窗口函数的文档'
+'sidebar_label': 'first_value'
+'sidebar_position': 3
+'slug': '/sql-reference/window-functions/first_value'
+'title': 'first_value'
+---
+
 
 # first_value
 
-返回在其有序范围内计算的第一个值。默认情况下，NULL 参数会被跳过，但可以使用 `RESPECT NULLS` 修饰符来覆盖此行为。
+返回在其有序范围内评估的第一个值。默认情况下，NULL 参数会被跳过，但可以使用 `RESPECT NULLS` 修饰符来覆盖此行为。
 
 **语法**
 
@@ -13,10 +21,11 @@ FROM table_name
 WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-别名: `any`.
+别名: `any`。
 
 :::note
-在 `first_value(column_name)` 后使用可选修饰符 `RESPECT NULLS` 将确保 `NULL` 参数不会被跳过。有关更多信息，请参见 [NULL 处理](../aggregate-functions/index.md/#null-processing)。
+在 `first_value(column_name)` 后使用可选修饰符 `RESPECT NULLS` 将确保 `NULL` 参数不会被跳过。
+有关更多信息，请参见 [NULL 处理](../aggregate-functions/index.md/#null-processing)。
 
 别名: `firstValueRespectNulls`
 :::
@@ -25,13 +34,13 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 
 **返回值**
 
-- 在其有序范围内计算的第一个值。
+- 在其有序范围内评估的第一个值。
 
 **示例**
 
-在此示例中，`first_value` 函数用于从虚构的英超足球运动员薪资数据集中找到薪水最高的足球运动员。
+在这个示例中，`first_value` 函数用于从虚构的英超足球运动员薪资数据集中找到工资最高的足球运动员。
 
-查询：
+查询:
 
 ```sql
 DROP TABLE IF EXISTS salaries;
@@ -60,7 +69,7 @@ SELECT player, salary,
 FROM salaries;
 ```
 
-结果：
+结果:
 
 ```response
    ┌─player──────────┬─salary─┬─highest_paid_player─┐

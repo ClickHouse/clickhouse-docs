@@ -1,10 +1,21 @@
+---
+'alias': []
+'description': 'ProtobufList 格式的文档'
+'input_format': true
+'keywords':
+- 'ProtobufList'
+'output_format': true
+'slug': '/interfaces/formats/ProtobufList'
+'title': 'ProtobufList'
+---
+
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
-| 输入 | 输出 | 别名 |
-|-------|--------|-------|
-| ✔     | ✔      |       |
+| 输入   | 输出   | 别名   |
+|--------|--------|--------|
+| ✔      | ✔      |        |
 
 ## 描述 {#description}
 
@@ -22,7 +33,7 @@ SELECT * FROM test.table FORMAT ProtobufList SETTINGS format_schema = 'schemafil
 cat protobuflist_messages.bin | clickhouse-client --query "INSERT INTO test.table FORMAT ProtobufList SETTINGS format_schema='schemafile:MessageType'"
 ```
 
-其中文件 `schemafile.proto` 的内容如下：
+文件 `schemafile.proto` 的内容如下：
 
 ```capnp title="schemafile.proto"
 syntax = "proto3";

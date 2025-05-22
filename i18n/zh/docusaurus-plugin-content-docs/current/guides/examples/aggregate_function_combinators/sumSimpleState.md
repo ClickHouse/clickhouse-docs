@@ -1,15 +1,29 @@
+---
+'slug': '/examples/aggregate-function-combinators/sumSimpleState'
+'title': 'sumSimpleState'
+'description': '使用 sumSimpleState 组合器的示例'
+'keywords':
+- 'sum'
+- 'state'
+- 'simple'
+- 'combinator'
+- 'examples'
+- 'sumSimpleState'
+'sidebar_label': 'sumSimpleState'
+---
+
 
 # sumSimpleState {#sumsimplestate}
 
 ## 描述 {#description}
 
-[`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 组合器可以应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum) 函数，以返回所有输入值的总和。它以 [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction) 类型返回结果。
+[`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 组合器可以应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum) 函数，以返回所有输入值的总和。它返回的结果类型为 [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction)。
 
 ## 示例用法 {#example-usage}
 
 ### 跟踪点赞和点踩 {#tracking-post-votes}
 
-让我们看一个实际的例子，使用一个跟踪帖子投票的表。对于每个帖子，我们希望维护点赞、点踩和整体评分的运行总数。使用 `SimpleAggregateFunction` 类型与 sum 适合这个用例，因为我们只需要存储运行总数，而不是聚合的整个状态。因此，它会更快，并且不需要合并部分聚合状态。
+让我们来看一个实际的示例，使用一个跟踪帖子投票的表。对于每个帖子，我们想要维护点赞、点踩和总体得分的累积总数。使用 `SimpleAggregateFunction` 类型与 sum 结合非常适合这个用例，因为我们只需要存储运行总数，而不是聚合的整个状态。因此，这将更快，并且不需要合并部分聚合状态。
 
 首先，我们创建一个用于原始数据的表：
 
@@ -86,7 +100,7 @@ ORDER BY post_id ASC;
 └─────────┴───────────────┴─────────────────┴─────────────┘
 ```
 
-## 另见 {#see-also}
+## 另请参阅 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`SimpleState 组合器`](/sql-reference/aggregate-functions/combinators#-simplestate)
 - [`SimpleAggregateFunction 类型`](/sql-reference/data-types/simpleaggregatefunction)

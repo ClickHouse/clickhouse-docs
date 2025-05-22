@@ -1,3 +1,11 @@
+---
+'description': 'MOVE 访问实体语句的文档'
+'sidebar_label': 'MOVE'
+'sidebar_position': 54
+'slug': '/sql-reference/statements/move'
+'title': 'MOVE 访问实体语句'
+---
+
 
 # MOVE access entity statement
 
@@ -9,7 +17,7 @@
 MOVE {USER, ROLE, QUOTA, SETTINGS PROFILE, ROW POLICY} name1 [, name2, ...] TO access_storage_type
 ```
 
-当前，ClickHouse中有五个访问存储：
+当前，ClickHouse 中有五个访问存储：
  - `local_directory`
  - `memory`
  - `replicated`

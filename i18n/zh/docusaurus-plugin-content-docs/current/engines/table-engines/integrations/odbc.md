@@ -1,4 +1,13 @@
+---
+'description': '允许 ClickHouse 通过 ODBC 连接到外部数据库。'
+'sidebar_label': 'ODBC'
+'sidebar_position': 150
+'slug': '/engines/table-engines/integrations/odbc'
+'title': 'ODBC'
+---
+
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+
 
 # ODBC
 
@@ -6,9 +15,9 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 允许 ClickHouse 通过 [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) 连接到外部数据库。
 
-为了安全地实现 ODBC 连接，ClickHouse 使用一个单独的程序 `clickhouse-odbc-bridge`。如果直接从 `clickhouse-server` 加载 ODBC 驱动程序，驱动程序问题可能导致 ClickHouse 服务器崩溃。ClickHouse 在需要时自动启动 `clickhouse-odbc-bridge`。ODBC 桥程序与 `clickhouse-server` 从同一个包中安装。
+为了安全地实现 ODBC 连接，ClickHouse 使用一个单独的程序 `clickhouse-odbc-bridge`。如果 ODBC 驱动程序是直接从 `clickhouse-server` 加载的，驱动程序问题可能会导致 ClickHouse 服务器崩溃。ClickHouse 会在需要时自动启动 `clickhouse-odbc-bridge`。ODBC 桥接程序与 `clickhouse-server` 在同一个软件包中安装。
 
-该引擎支持 [Nullable](../../../sql-reference/data-types/nullable.md) 数据类型。
+此引擎支持 [Nullable](../../../sql-reference/data-types/nullable.md) 数据类型。
 
 ## 创建表 {#creating-a-table}
 
@@ -26,25 +35,25 @@ ENGINE = ODBC(connection_settings, external_database, external_table)
 
 表结构可以与源表结构不同：
 
-- 列名应与源表中的列名相同，但可以只使用其中一些列并以任意顺序排列。
-- 列类型可以与源表中的不同。ClickHouse 尝试将值 [cast](/sql-reference/functions/type-conversion-functions#cast) 为 ClickHouse 数据类型。
-- [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls) 设置定义如何处理 Nullable 列。默认值：1。如果为 0，则表函数不创建 Nullable 列，并插入默认值代替 null。这同样适用于数组中的 NULL 值。
+- 列名应与源表中的列名相同，但您可以仅使用这些列中的一部分，并且可以按任何顺序排列。
+- 列类型可以与源表中的类型不同。ClickHouse 会尝试将值 [cast](/sql-reference/functions/type-conversion-functions#cast) 为 ClickHouse 数据类型。
+- [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls) 设置定义了如何处理 Nullable 列。默认值：1。如果为 0，表函数不创建 Nullable 列，而是插入默认值而不是 null。这同样适用于数组中的 NULL 值。
 
 **引擎参数**
 
-- `connection_settings` — 在 `odbc.ini` 文件中包含连接设置的部分名称。
-- `external_database` — 外部 DBMS 中某个数据库的名称。
-- `external_table` — `external_database` 中某个表的名称。
+- `connection_settings` — `odbc.ini` 文件中连接设置的节名称。
+- `external_database` — 外部 DBMS 中的数据库名称。
+- `external_table` — `external_database` 中的表名称。
 
 ## 使用示例 {#usage-example}
 
-**通过 ODBC 从本地 MySQL 安装检索数据**
+**通过 ODBC 从本地 MySQL 安装中检索数据**
 
-此示例已在 Ubuntu Linux 18.04 和 MySQL 服务器 5.7 上进行了检查。
+此示例已在 Ubuntu Linux 18.04 和 MySQL 服务器 5.7 中检查。
 
-确保安装了 unixODBC 和 MySQL Connector。
+确保已安装 unixODBC 和 MySQL Connector。
 
-默认情况下（如果从包安装），ClickHouse 以用户 `clickhouse` 启动。因此，您需要在 MySQL 服务器中创建并配置此用户。
+默认情况下（如果是通过软件包安装），ClickHouse 作为用户 `clickhouse` 启动。因此，您需要在 MySQL 服务器中创建并配置此用户。
 
 ```bash
 $ sudo mysql
@@ -68,7 +77,7 @@ USER = clickhouse
 PASSWORD = clickhouse
 ```
 
-您可以使用 unixODBC 安装中的 `isql` 实用工具检查连接。
+您可以使用 unixODBC 安装中的 `isql` 实用程序检查连接。
 
 ```bash
 $ isql -v mysqlconn
@@ -104,7 +113,7 @@ mysql> select * from test.test;
 1 row in set (0,00 sec)
 ```
 
-在 ClickHouse 中的表，从 MySQL 表中检索数据：
+ClickHouse 中的表，从 MySQL 表中检索数据：
 
 ```sql
 CREATE TABLE odbc_t
@@ -125,7 +134,7 @@ SELECT * FROM odbc_t
 └────────┴────────────────┘
 ```
 
-## 另请参见 {#see-also}
+## 另见 {#see-also}
 
 - [ODBC 字典](/sql-reference/dictionaries#mysql)
 - [ODBC 表函数](../../../sql-reference/table-functions/odbc.md)

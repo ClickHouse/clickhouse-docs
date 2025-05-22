@@ -1,19 +1,29 @@
+---
+'description': '系统表，其中包含所有服务器线程的堆栈跟踪。允许开发人员检查服务器状态。'
+'keywords':
+- 'system table'
+- 'stack_trace'
+'slug': '/operations/system-tables/stack_trace'
+'title': 'system.stack_trace'
+---
+
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
 
 # system.stack_trace
 
 <SystemTableCloud/>
 
-包含所有服务器线程的堆栈跟踪。允许开发者深入检查服务器状态。
+包含所有服务器线程的堆栈跟踪。允许开发人员检查服务器状态。
 
-要分析堆栈帧，请使用 `addressToLine`、`addressToLineWithInlines`、`addressToSymbol` 和 `demangle` [内部函数](../../sql-reference/functions/introspection.md)。
+要分析堆栈帧，请使用 `addressToLine`、`addressToLineWithInlines`、`addressToSymbol` 和 `demangle` [内部检查函数](../../sql-reference/functions/introspection.md)。
 
 列：
 
 - `thread_name` ([String](../../sql-reference/data-types/string.md)) — 线程名称。
 - `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 线程标识符。
-- `query_id` ([String](../../sql-reference/data-types/string.md)) — 查询标识符，可用于获取从 [query_log](../system-tables/query_log.md) 系统表中运行的查询的详细信息。
-- `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 一个 [堆栈跟踪](https://en.wikipedia.org/wiki/Stack_trace)，表示调用的方法存储的物理地址列表。
+- `query_id` ([String](../../sql-reference/data-types/string.md)) — 可以用于获取来自 [query_log](../system-tables/query_log.md) 系统表中正在运行的查询详情的查询标识符。
+- `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 表示调用方法存储的物理地址列表的 [堆栈跟踪](https://en.wikipedia.org/wiki/Stack_trace)。
 
 :::tip
 查看知识库中的一些实用查询，包括 [如何查看当前正在运行的线程](/knowledgebase/find-expensive-queries) 和 [故障排除的有用查询](/knowledgebase/useful-queries-for-troubleshooting)。
@@ -21,13 +31,13 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 **示例**
 
-启用内部函数：
+启用内部检查函数：
 
 ```sql
 SET allow_introspection_functions = 1;
 ```
 
-从 ClickHouse 对象文件中获取符号：
+从 ClickHouse 对象文件获取符号：
 
 ```sql
 WITH arrayMap(x -> demangle(addressToSymbol(x)), trace) AS all SELECT thread_name, thread_id, query_id, arrayStringConcat(all, '\n') AS res FROM system.stack_trace LIMIT 1 \G;
@@ -89,9 +99,9 @@ res:       /lib/x86_64-linux-gnu/libc-2.27.so
 /lib/x86_64-linux-gnu/libc-2.27.so
 ```
 
-**另见**
+**参见**
 
-- [内部函数](../../sql-reference/functions/introspection.md) — 可用的内部函数及其用法。
+- [内部检查函数](../../sql-reference/functions/introspection.md) — 可用的内部检查函数及其用法。
 - [system.trace_log](../system-tables/trace_log.md) — 包含由采样查询分析器收集的堆栈跟踪。
-- [arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) — `arrayMap` 函数的描述及使用示例。
-- [arrayFilter](/sql-reference/functions/array-functions#arrayfilterfunc-arr1-) — `arrayFilter` 函数的描述及使用示例。
+- [arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) — `arrayMap` 函数的描述和使用示例。
+- [arrayFilter](/sql-reference/functions/array-functions#arrayfilterfunc-arr1-) — `arrayFilter` 函数的描述和使用示例。

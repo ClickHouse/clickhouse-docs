@@ -1,15 +1,31 @@
+---
+'slug': '/examples/aggregate-function-combinators/avgResample'
+'title': 'avgResample'
+'description': '使用 avg 的 Resample 组合器示例'
+'keywords':
+- 'avg'
+- 'Resample'
+- 'combinator'
+- 'examples'
+- 'avgResample'
+'sidebar_label': 'avgResample'
+---
+
 
 # countResample {#countResample}
 
-## Description {#description}
+## 描述 {#description}
 
-[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 组合器可应用于 [`count`](/sql-reference/aggregate-functions/reference/count) 聚合函数，以在固定数量的区间（`N`）中计算指定键列的值。
+[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
+组合器可以应用于[`count`](/sql-reference/aggregate-functions/reference/count)
+聚合函数，以计算指定键列在固定数量的区间（`N`）中的值。
 
-## Example Usage {#example-usage}
+## 示例用法 {#example-usage}
 
-### Basic example {#basic-example}
+### 基本示例 {#basic-example}
 
-让我们来看一个例子。我们将创建一个包含员工 `name`、`age` 和 `wage` 的表，并向其中插入一些数据：
+我们来看一个示例。我们将创建一个表，该表包含员工的`name`、`age` 和
+`wage`，并插入一些数据：
 
 ```sql
 CREATE TABLE employee_data 
@@ -30,7 +46,10 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-让我们获取年龄在区间 `[30,60)` 和 `[60,75)` 之间的人的平均工资（`[` 是不包含，`)` 是包含）。由于我们使用整数表示年龄，因此我们在区间 `[30, 59]` 和 `[60,74]` 中获得年龄。为此，我们将 `Resample` 组合器应用于 `avg` 聚合函数。
+让我们获取年龄在区间 `[30,60)` 
+和 `[60,75)`（`[` 是排他性的，`)` 是包含性的）中的人的平均工资。由于我们使用整数 
+表示年龄，我们得到年龄在区间 `[30, 59]` 和 `[60,74]`。 
+为此，我们将`Resample` 组合器应用于 `avg` 聚合函数。
 
 ```sql
 WITH avg_wage AS
@@ -49,6 +68,6 @@ FROM avg_wage;
 └──────────────────┘
 ```
 
-## See also {#see-also}
+## 另请参阅 {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)
 - [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)

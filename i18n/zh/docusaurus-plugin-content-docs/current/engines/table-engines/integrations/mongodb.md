@@ -1,10 +1,18 @@
+---
+'description': 'MongoDB 引擎是只读的表引擎，允许从远程集合中读取数据。'
+'sidebar_label': 'MongoDB'
+'sidebar_position': 135
+'slug': '/engines/table-engines/integrations/mongodb'
+'title': 'MongoDB'
+---
+
 
 # MongoDB
 
-MongoDB 引擎是只读表引擎，允许从远程 [MongoDB](https://www.mongodb.com/) 集合中读取数据。
+MongoDB 引擎是一个只读表引擎，允许从远程 [MongoDB](https://www.mongodb.com/) 集合中读取数据。
 
-仅支持 MongoDB v3.6+ 服务器。
-[种子列表(`mongodb+srv`)](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list) 尚不支持。
+只支持 MongoDB 服务器 v3.6+。
+[种子列表(`mongodb+srv`)](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list) 目前不支持。
 
 ## 创建表 {#creating-a-table}
 
@@ -31,14 +39,14 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name
 
 - `options` — MongoDB 连接字符串选项（可选参数）。
 
-- `oid_columns` - 应该在 WHERE 子句中视为 `oid` 的列的以逗号分隔的列表。默认为 `_id`。
+- `oid_columns` - 需要在 WHERE 子句中视为 `oid` 的列的以逗号分隔的列表。默认为 `_id`。
 
 :::tip
-如果您使用的是 MongoDB Atlas 云服务，连接网址可以从“Atlas SQL”选项中获得。
-种子列表(`mongodb**+srv**`) 尚不支持，但将在未来版本中添加。
+如果您使用的是 MongoDB Atlas 云服务，连接 URL 可以从 'Atlas SQL' 选项中获得。
+种子列表(`mongodb**+srv**`) 目前不支持，但将在未来版本中添加。
 :::
 
-或者，您可以传入一个 URI：
+作为替代，您可以传递 URI：
 
 ```sql
 ENGINE = MongoDB(uri, collection[, oid_columns]);
@@ -50,30 +58,30 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 
 - `collection` — 远程集合名称。
 
-- `oid_columns` - 应该在 WHERE 子句中视为 `oid` 的列的以逗号分隔的列表。默认为 `_id`。
+- `oid_columns` - 需要在 WHERE 子句中视为 `oid` 的列的以逗号分隔的列表。默认为 `_id`。
 
 ## 类型映射 {#types-mappings}
 
 | MongoDB                 | ClickHouse                                                            |
 |-------------------------|-----------------------------------------------------------------------|
-| bool, int32, int64      | *任何数字类型*, String                                            |
+| bool, int32, int64      | *任何数字类型*, String                                               |
 | double                  | Float64, String                                                       |
 | date                    | Date, Date32, DateTime, DateTime64, String                            |
 | string                  | String                                                                |
-| document                | String(作为 JSON)                                                       |
-| array                   | Array, String(作为 JSON)                                                |
+| document                | String(作为 JSON)                                                    |
+| array                   | Array, String(作为 JSON)                                             |
 | oid                     | String                                                                |
-| binary                  | 如果在列中则为 String，如果在数组或文档中则为 base64 编码的字符串 |
+| binary                  | 如果在列中则为 String，如果在数组或文档中则为 base64 编码字符串     |
 | uuid (binary subtype 4) | UUID                                                                  |
-| *其他*                 | String                                                                |
+| *其他*                  | String                                                                |
 
-如果在 MongoDB 文档中未找到键（例如，列名称不匹配），将插入默认值或 `NULL`（如果该列是可空的）。
+如果在 MongoDB 文档中未找到键（例如，列名不匹配），则将插入默认值或 `NULL`（如果该列是可空的）。
 
 ### OID {#oid}
 
 如果您希望将 `String` 视为 WHERE 子句中的 `oid`，只需将列的名称放在表引擎的最后一个参数中。
-这在通过 `_id` 列查询记录时可能是必要的，默认情况下该列在 MongoDB 中具有 `oid` 类型。
-如果表中的 `_id` 字段具有其他类型，例如 `uuid`，则需要指定空的 `oid_columns`，否则将使用该参数的默认值 `_id`。
+当按 `_id` 列查询记录时，这可能是必要的，因为在 MongoDB 中 `_id` 默认具有 `oid` 类型。
+如果表中的 `_id` 字段具有其他类型，例如 `uuid`，则需要指定空的 `oid_columns`，否则将使用此参数的默认值 `_id`。
 
 ```javascript
 db.sample_oid.insertMany([
@@ -89,7 +97,7 @@ db.sample_oid.find();
 ]
 ```
 
-默认情况下，仅将 `_id` 视为 `oid` 列。
+默认情况下，只有 `_id` 被视为 `oid` 列。
 
 ```sql
 CREATE TABLE sample_oid
@@ -102,7 +110,7 @@ SELECT count() FROM sample_oid WHERE _id = '67bf6cc44ebc466d33d42fb2'; --will ou
 SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; --will output 0
 ```
 
-在这种情况下，输出将为 `0`，因为 ClickHouse 不知道 `another_oid_column` 具有 `oid` 类型，因此让我们修复它：
+在这种情况下，输出将是 `0`，因为 ClickHouse 并不知道 `another_oid_column` 具有 `oid` 类型，因此我们来修复它：
 
 ```sql
 CREATE TABLE sample_oid
@@ -125,13 +133,13 @@ SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea4
 ## 支持的子句 {#supported-clauses}
 
 仅支持具有简单表达式的查询（例如，`WHERE field = <constant> ORDER BY field2 LIMIT <constant>`）。
-这样的表达式被翻译成 MongoDB 查询语言，并在服务器端执行。
-您可以通过使用 [mongodb_throw_on_unsupported_query](../../../operations/settings/settings.md#mongodb_throw_on_unsupported_query) 来禁用所有这些限制。
-在这种情况下，ClickHouse 会尽力转换查询，但可能会导致全表扫描和在 ClickHouse 端的处理。
+此类表达式将被转换为 MongoDB 查询语言，并在服务器端执行。
+您可以使用 [mongodb_throw_on_unsupported_query](../../../operations/settings/settings.md#mongodb_throw_on_unsupported_query) 禁用所有这些限制。
+在这种情况下，ClickHouse 会尽力转换查询，但这可能会导致全表扫描和在 ClickHouse 端的处理。
 
 :::note
-最好显式设置字面量的类型，因为 Mongo 需要严格类型的过滤器。\
-例如，您希望按 `Date` 进行过滤：
+明确设置文字的类型总是更好，因为 Mongo 要求严格的类型过滤。\
+例如，您想按 `Date` 进行过滤：
 
 ```sql
 SELECT * FROM mongo_table WHERE date = '2024-01-01'
@@ -143,15 +151,17 @@ SELECT * FROM mongo_table WHERE date = '2024-01-01'
 SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024-01-01')
 ```
 
-这适用于 `Date`、`Date32`、`DateTime`、`Bool`、`UUID`。
+这适用于 `Date`，`Date32`，`DateTime`，`Bool`，`UUID`。
 
 :::
 
+
 ## 使用示例 {#usage-example}
 
-假设 MongoDB 加载了 [sample_mflix](https://www.mongodb.com/docs/atlas/sample-data/sample-mflix) 数据集。
 
-在 ClickHouse 中创建一个表，以便从 MongoDB 集合中读取数据：
+假设 MongoDB 中已加载 [sample_mflix](https://www.mongodb.com/docs/atlas/sample-data/sample-mflix) 数据集
+
+在 ClickHouse 中创建一个表，以允许从 MongoDB 集合读取数据：
 
 ```sql
 CREATE TABLE sample_mflix_table
@@ -228,6 +238,6 @@ LIMIT 3;
 ```
 
 ## 故障排除 {#troubleshooting}
-您可以在 DEBUG 级别的日志中看到生成的 MongoDB 查询。
+您可以在 DEBUG 级别的日志中查看生成的 MongoDB 查询。
 
 实现细节可以在 [mongocxx](https://github.com/mongodb/mongo-cxx-driver) 和 [mongoc](https://github.com/mongodb/mongo-c-driver) 文档中找到。

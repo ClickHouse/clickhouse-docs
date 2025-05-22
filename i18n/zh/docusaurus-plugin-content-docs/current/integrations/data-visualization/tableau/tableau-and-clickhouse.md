@@ -1,5 +1,5 @@
 ---
-'sidebar_label': 'Tableau 桌面版'
+'sidebar_label': 'Tableau Desktop'
 'sidebar_position': 1
 'slug': '/integrations/tableau'
 'keywords':
@@ -28,155 +28,171 @@ import tableau_workbook5 from '@site/static/images/integrations/data-visualizati
 import tableau_workbook6 from '@site/static/images/integrations/data-visualization/tableau_workbook6.png';
 import tableau_workbook7 from '@site/static/images/integrations/data-visualization/tableau_workbook7.png';
 
+
 # 连接 Tableau 到 ClickHouse
 
-ClickHouse 提供了一个官方的 Tableau 连接器，该连接器在 [Tableau Exchange](https://exchange.tableau.com/products/1064) 上有售。此连接器基于 ClickHouse 的高级 [JDBC driver](/integrations/language-clients/java/jdbc)。
+ClickHouse 提供了一个官方的 Tableau 连接器，附有在
+[Tableau Exchange](https://exchange.tableau.com/products/1064) 上的展示。
+该连接器基于 ClickHouse 的高级 [JDBC 驱动](/integrations/language-clients/java/jdbc)。
 
-通过此连接器，Tableau 将 ClickHouse 数据库和表集成作为数据源。要启用此功能，请遵循以下设置指南。
+使用此连接器，Tableau 将 ClickHouse 数据库和表作为数据源集成。要启用此功能，
+请按照以下设置指南进行操作。
 
 <TOCInline toc={toc}/>
 
-## 使用前所需配置 {#setup-required-prior-usage}
+## 使用前所需的设置 {#setup-required-prior-usage}
 
-1. 收集连接详细信息
+1. 收集您的连接详情
    <ConnectionDetails />
 
-2. 下载并安装  <a href="https://www.tableau.com/products/desktop/download" target="_blank">Tableau desktop</a>。
-3. 按照 `clickhouse-tableau-connector-jdbc` 的说明下载兼容版本的<a href="https://github.com/ClickHouse/clickhouse-java/releases/" target="_blank">ClickHouse JDBC driver</a>。
+2. 下载并安装 <a href="https://www.tableau.com/products/desktop/download" target="_blank">Tableau
+   desktop</a>。
+3. 按照 `clickhouse-tableau-connector-jdbc` 的说明下载兼容版本的
+   <a href="https://github.com/ClickHouse/clickhouse-java/releases/" target="_blank">ClickHouse JDBC 驱动</a>。
 
 :::note
-确保下载 **clickhouse-jdbc-x.x.x-shaded-all.jar** JAR 文件。目前建议使用版本 `0.8.X`。
+确保您下载 **clickhouse-jdbc-x.x.x-shaded-all.jar** JAR 文件。目前，我们建议使用版本 `0.8.X`。
 :::
 
-4. 将 JDBC 驱动程序存储在以下文件夹中（根据您的操作系统，如果文件夹不存在，您可以创建它）：
+4. 将 JDBC 驱动存储在以下文件夹中（根据您的操作系统，如果文件夹不存在，您可以创建它）：
     - macOS: `~/Library/Tableau/Drivers`
     - Windows: `C:\Program Files\Tableau\Drivers`
 5. 在 Tableau 中配置 ClickHouse 数据源，并开始构建数据可视化！
 
 ## 在 Tableau 中配置 ClickHouse 数据源 {#configure-a-clickhouse-data-source-in-tableau}
 
-现在您已经安装并设置了 `clickhouse-jdbc` 驱动程序，让我们看看如何在 Tableau 中定义连接到 ClickHouse 的 **TPCD** 数据库的数据源。
+现在您已经安装并设置了 `clickhouse-jdbc` 驱动，接下来我们看看如何定义一个
+连接 ClickHouse 中 **TPCD** 数据库的数据源。
 
-1. 启动 Tableau。（如果您之前已经运行，请重新启动。）
+1. 启动 Tableau。（如果您已经运行它，则重新启动。）
 
-2. 从左侧菜单中，在 **连接到服务器** 部分下单击 **更多**。在可用连接器列表中搜索 **ClickHouse by ClickHouse**：
+2. 从左侧菜单中，在 **到服务器** 部分下单击 **更多**。在可用连接器列表中搜索 **ClickHouse by ClickHouse**：
 
-<Image size="md" img={tableau_connecttoserver} alt="Tableau 连接屏幕显示连接器选择菜单，ClickHouse by ClickHouse 选项已突出显示" border />
+<Image size="md" img={tableau_connecttoserver} alt="Tableau connection screen showing the connector selection menu with ClickHouse by ClickHouse option highlighted" border />
 <br/>
 
 :::note
-在您的连接器列表中看不到 **ClickHouse by ClickHouse** 连接器？这可能与旧的 Tableau Desktop 版本有关。为解决此问题，请考虑升级您的 Tableau Desktop 应用程序，或 [手动安装连接器](#install-the-connector-manually)。
+在您的连接器列表中看不到 **ClickHouse by ClickHouse** 连接器？这可能与您的 Tableau Desktop 版本过旧有关。
+要解决此问题，考虑升级您的 Tableau Desktop 应用程序，或 [手动安装连接器](#install-the-connector-manually)。
 :::
 
-3. 单击 **ClickHouse by ClickHouse**，将弹出以下对话框：
+3. 单击 **ClickHouse by ClickHouse**，随后将弹出以下对话框：
 
-<Image size="md" img={tableau_connector_details} alt="Tableau 连接器安装对话框显示 ClickHouse JDBC 连接器详细信息和安装按钮" border />
-<br/>
- 
-4. 单击 **安装并重新启动 Tableau**。重新启动应用程序。
-5. 重新启动后，连接器的全名将显示为：`ClickHouse JDBC by ClickHouse, Inc.`。单击它将弹出以下对话框：
-
-<Image size="md" img={tableau_connector_dialog} alt="Tableau 中的 ClickHouse 连接对话框显示服务器、端口、数据库、用户名和密码字段" border />
+<Image size="md" img={tableau_connector_details} alt="Tableau connector installation dialog showing ClickHouse JDBC connector details and install button" border />
 <br/>
 
-6. 输入您的连接详细信息：
+4. 单击 **安装并重新启动 Tableau**。重新启动该应用程序。
+5. 重新启动后，连接器将显示其完整名称：`ClickHouse JDBC by ClickHouse, Inc.`。点击它后将弹出以下对话框：
 
-    | 设置       | 值                                                   |
-    |------------|-----------------------------------------------------|
-    | 服务器     | **您的 ClickHouse 主机（不带前缀或后缀）**         |
-    | 端口       | **8443**                                            |
-    | 数据库     | **default**                                        |
-    | 用户名     | **default**                                        |
-    | 密码       | *\*****                                            |
+<Image size="md" img={tableau_connector_dialog} alt="ClickHouse connection dialog in Tableau showing fields for server, port, database, username and password" border />
+<br/>
+
+6. 输入您的连接详情：
+
+    | 设置  | 值                                                  |
+    | ----------- |--------------------------------------------------------|
+    | 服务器      | **您的 ClickHouse 主机（无前缀或后缀）**               |
+    | 端口   | **8443**                                               |
+    | 数据库 | **default**                                            |
+    | 用户名 | **default**                                            |
+    | 密码 | *\*****                                                |
 
 :::note
-在使用 ClickHouse cloud 时，必须启用 SSL 选框以进行安全连接。
+在使用 ClickHouse Cloud 时，必须为安全连接启用 SSL 复选框。
 :::
 <br/>
 
 :::note
-我们的 ClickHouse 数据库名为 **TPCD**，但您必须在上面的对话框中将 **数据库** 设置为 **default**，然后在下一步中选择 **TPCD** 作为 **模式**。 （这可能是与连接器中的一个错误有关，因此该行为可能会改变，但目前您必须将 **default** 用作数据库。）
+我们的 ClickHouse 数据库名为 **TPCD**，但您必须在上述对话框中将 **数据库** 设置为 **default**，然后
+在下一步中选择 **TPCD** 作为 **架构**。 （这可能是连接器中的一个错误，因此此行为可能会改变，但目前您必须将数据库设置为 **default**。）
 :::
 
 7. 单击 **登录** 按钮，您应该会看到一个新的 Tableau 工作簿：
 
-<Image size="md" img={tableau_newworkbook} alt="新的 Tableau 工作簿显示初始连接屏幕和数据库选择选项" border />
+<Image size="md" img={tableau_newworkbook} alt="New Tableau workbook showing the initial connection screen with database selection options" border />
 <br/>
 
-8. 从 **模式** 下拉菜单中选择 **TPCD**，您应该会看到 **TPCD** 中的表列表：
+8. 从 **架构** 下拉菜单中选择 **TPCD**，您应该会看到 **TPCD** 中的表列表：
 
-<Image size="md" img={tableau_tpcdschema} alt="Tableau 模式选择显示 TPCD 数据库表，包括 CUSTOMER、LINEITEM、NATION、ORDERS 和其他" border />
+<Image size="md" img={tableau_tpcdschema} alt="Tableau schema selection showing TPCD database tables including CUSTOMER, LINEITEM, NATION, ORDERS, and others" border />
 <br/>
 
-现在您准备好在 Tableau 中构建一些可视化了！
+您现在可以开始在 Tableau 中构建可视化内容！
 
 ## 在 Tableau 中构建可视化 {#building-visualizations-in-tableau}
 
-现在您在 Tableau 中配置了 ClickHouse 数据源，让我们来可视化数据...
+现在您已在 Tableau 中配置了 ClickHouse 数据源，让我们来可视化这些数据...
 
-1. 将 **CUSTOMER** 表拖到工作簿上。注意列出现，但数据表为空：
+1. 将 **CUSTOMER** 表拖到工作簿中。请注意，列出现，但数据表为空：
 
-<Image size="md" img={tableau_workbook1} alt="Tableau 工作簿将 CUSTOMER 表拖到画布上，显示列头但无数据" border />
+<Image size="md" img={tableau_workbook1} alt="Tableau workbook with CUSTOMER table dragged to canvas showing column headers but no data" border />
 <br/>
 
-2. 单击 **立即更新** 按钮，100 行来自 **CUSTOMER** 的数据将填充表格。
+2. 单击 **立即更新** 按钮，**CUSTOMER** 中的 100 行将填充到表中。
 
-3. 将 **ORDERS** 表拖到工作簿中，然后将 **Custkey** 设置为两个表之间的关系字段：
+3. 将 **ORDERS** 表拖入工作簿，然后将 **Custkey** 设置为两个表之间的关系字段：
 
-<Image size="md" img={tableau_workbook2} alt="Tableau 关系编辑器显示使用 Custkey 字段连接 CUSTOMER 和 ORDERS 表" border />
+<Image size="md" img={tableau_workbook2} alt="Tableau relationship editor showing connection between CUSTOMER and ORDERS tables using Custkey field" border />
 <br/>
 
-4. 现在您有 **ORDERS** 和 **LINEITEM** 表相互关联作为您的数据源，因此您可以利用此关系回答有关数据的问题。在工作簿底部选择 **Sheet 1** 选项卡。
+4. 现在您有了相互关联的 **ORDERS** 和 **LINEITEM** 表作为您的数据源，因此您可以利用
+   这种关系来回答有关数据的问题。选择工作簿底部的 **Sheet 1** 标签。
 
-<Image size="md" img={tableau_workbook3} alt="Tableau 工作表显示可用于分析的 ClickHouse 表中的维度和度量" border />
+<Image size="md" img={tableau_workbook3} alt="Tableau worksheet showing the dimensions and measures from ClickHouse tables available for analysis" border />
 <br/>
 
-5. 假设您想知道每年订购了多少特定项。将 **OrderDate** 从 **ORDERS** 拖到 **列** 部分（横向字段），然后将 **Quantity** 从 **LINEITEM** 拖到 **行**。Tableau 将生成以下折线图：
+5. 假设您想知道每年订购了多少特定商品。将 **OrderDate** 从 **ORDERS** 拖到
+   **列** 部分（水平字段），然后将 **Quantity** 从 **LINEITEM** 拖到 **行**。Tableau 将生成以下折线图：
 
-<Image size="sm" img={tableau_workbook4} alt="Tableau 折线图显示来自 ClickHouse 数据按年份订购的数量" border />
+<Image size="sm" img={tableau_workbook4} alt="Tableau line chart showing quantity ordered by year from ClickHouse data" border />
 <br/>
 
-这不是一个令人兴奋的折线图，但该数据集是通过脚本生成的，旨在测试查询性能，因此您会注意到 TCPD 数据的模拟订单变化不多。
+虽然这不是一个很激动人心的折线图，但数据集是通过脚本生成的，构建用于测试查询性能，因此
+您会注意到 TCPD 数据的模拟订单变化不大。
 
-6. 假设您想知道按季度和运输模式（空运、邮件、船运、卡车等）计算的平均订单金额（以美元为单位）：
+6. 假设您想知道按季度以及按运输方式（航空、邮件、船舶、
+   卡车等）的平均订单金额（以美元为单位）：
 
-    - 单击 **新工作表** 选项卡创建新工作表
-    - 将 **OrderDate** 从 **ORDERS** 拖到 **列** 并将其从 **年** 更改为 **季度**
-    - 将 **Shipmode** 从 **LINEITEM** 拖到 **行**
+    - 单击 **新工作表** 标签以创建新工作表
+    - 将 **OrderDate** 从 **ORDERS** 拖入 **列**，并将其从 **年** 更改为 **季度**
+    - 将 **Shipmode** 从 **LINEITEM** 拖入 **行**
 
-您应该会看到以下内容：
+您应该看到以下内容：
 
-<Image size="sm" img={tableau_workbook5} alt="Tableau 交叉表视图，季度作为列，运输模式作为行" border />
+<Image size="sm" img={tableau_workbook5} alt="Tableau crosstab view with quarters as columns and shipment modes as rows" border />
 <br/>
 
-7. **Abc** 值只是填充空间，直到您将度量拖到表中。将 **Totalprice** 从 **ORDERS** 拖到表中。请注意，默认计算是 **总和** **Totalprices**：
+7. **Abc** 值只是填充空间，直到您将一个度量拖到表中。将 **Totalprice** 从
+   **ORDERS** 拖到表中。请注意，默认计算为 **SUM** **Totalprices**：
 
-<Image size="md" img={tableau_workbook6} alt="Tableau 交叉表显示按季度和运输模式计算的总价格" border />
+<Image size="md" img={tableau_workbook6} alt="Tableau crosstab showing sum of total price by quarter and shipment mode" border />
 <br/>
 
-8. 单击 **SUM** 将 **测量** 改为 **平均值**。从同一下拉菜单中选择 **格式** 更改 **数字** 为 **货币（标准）**：
+8. 单击 **SUM** 并将 **度量** 更改为 **平均值**。从同一下拉菜单中，选择 **格式** 将
+   **数字** 更改为 **货币（标准）**：
 
-<Image size="md" img={tableau_workbook7} alt="Tableau 交叉表显示按季度和运输模式计算的平均订单价格和货币格式" border />
+<Image size="md" img={tableau_workbook7} alt="Tableau crosstab showing average order price by quarter and shipment mode with currency formatting" border />
 <br/>
 
-干得好！您已成功将 Tableau 连接到 ClickHouse，并为分析和可视化 ClickHouse 数据打开了一个全新的世界。
+做得好！您已经成功将 Tableau 连接到 ClickHouse，并为分析和可视化您的 ClickHouse 数据打开了一个全新的可能性。
 
 ## 手动安装连接器 {#install-the-connector-manually}
 
-如果您使用的是未包含连接器的过时 Tableau Desktop 版本，可以按照以下步骤手动安装它：
+如果您使用的 Tableau Desktop 版本已过期，且默认情况下不包括连接器，您可以通过以下步骤手动安装：
 
 1. 从 [Tableau Exchange](https://exchange.tableau.com/products/1064) 下载最新的 taco 文件
 2. 将 taco 文件放置在
    * macOS: `~/Documents/My Tableau Repository/Connectors`
-   * Windows: `C:\Users\[Windows User]\Documents\My Tableau Repository\Connectors`
-3. 重新启动 Tableau Desktop，如果您的设置成功，您将在 `新数据源` 部分中设置连接器。
+   * Windows: `C:\Users\[Windows 用户]\Documents\My Tableau Repository\Connectors`
+3. 重新启动 Tableau Desktop，如果您的设置顺利完成，您将在 `新数据源` 部分下看到该连接器。
 
 ## 连接和分析提示 {#connection-and-analysis-tips}
 
 有关优化您的 Tableau-ClickHouse 集成的更多指导，请访问 [连接提示](/integrations/tableau/connection-tips) 和 [分析提示](/integrations/tableau/analysis-tips)。
 
 ## 测试 {#tests}
-该连接器正在与 [TDVT framework](https://tableau.github.io/connector-plugin-sdk/docs/tdvt) 测试，并且目前保持 97% 的覆盖率。
+该连接器正在使用 [TDVT 框架](https://tableau.github.io/connector-plugin-sdk/docs/tdvt) 测试，目前保持 97% 的覆盖率。
 
 ## 总结 {#summary}
-您可以使用通用的 ODBC/JDBC ClickHouse 驱动程序将 Tableau 连接到 ClickHouse。然而，此连接器简化了连接设置过程。如果您在使用连接器时遇到任何问题，请随时在 <a href="https://github.com/ClickHouse/clickhouse-tableau-connector-jdbc/issues" target="_blank"  >GitHub</a> 上联系我们。
+您可以使用通用的 ODBC/JDBC ClickHouse 驱动连接 Tableau 到 ClickHouse。 However, this
+connector streamlines the connection setup process. 如果您在使用连接器时遇到任何问题，请随时在 <a href="https://github.com/ClickHouse/clickhouse-tableau-connector-jdbc/issues" target="_blank"  >GitHub</a> 上联系我们。

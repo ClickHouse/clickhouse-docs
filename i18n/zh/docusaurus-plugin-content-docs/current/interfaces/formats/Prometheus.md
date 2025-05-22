@@ -1,20 +1,32 @@
-| 输入 | 输出 | 别名 |
-|------|------|------|
-| ✗    | ✔    |      |
+---
+'alias': []
+'description': 'Prometheus 格式的文档'
+'input_format': false
+'keywords':
+- 'Prometheus'
+'output_format': true
+'slug': '/interfaces/formats/Prometheus'
+'title': 'Prometheus'
+---
+
+| Input | Output | Alias |
+|-------|--------|-------|
+| ✗     | ✔      |       |
 
 ## 描述 {#description}
 
-以 [Prometheus 基于文本的暴露格式](https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format) 展示指标。
+以 [Prometheus 文本格式](https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format) 暴露指标。
 
-对于这种格式，输出表必须根据以下规则正确构建：
+对于此格式，输出表必须按照以下规则正确结构化：
 
-- 列 `name` ([String](/sql-reference/data-types/string.md)) 和 `value` （数字）是必需的。
-- 行可以选择性地包含 `help` ([String](/sql-reference/data-types/string.md)) 和 `timestamp`（数字）。
-- 列 `type` ([String](/sql-reference/data-types/string.md)) 应为 `counter`、`gauge`、`histogram`、`summary`、`untyped` 或空。
-- 每个指标值还可以有一些 `labels` ([Map(String, String)](/sql-reference/data-types/map.md))。
-- 若干连续的行可能表示同一指标但具有不同的标签。表应该按指标名称排序（例如，使用 `ORDER BY name`）。
+- 列 `name` ([String](/sql-reference/data-types/string.md)) 和 `value` (数字) 是必需的。
+- 行可以选择性地包含 `help` ([String](/sql-reference/data-types/string.md)) 和 `timestamp` (数字)。
+- 列 `type` ([String](/sql-reference/data-types/string.md)) 应该是 `counter`、`gauge`、`histogram`、`summary`、`untyped` 或空。
+- 每个指标值也可能有一些 `labels` ([Map(String, String)](/sql-reference/data-types/map.md))。
+- 多个连续行可以引用一个具有不同标签的指标。表格应按指标名称排序（例如，使用 `ORDER BY name`）。
 
-对于 `histogram` 和 `summary` 标签有特殊要求 - 详见 [Prometheus 文档](https://prometheus.io/docs/instrumenting/exposition_formats/#histograms-and-summaries)。 特殊规则适用于带有标签 `{'count':''}` 和 `{'sum':''}` 的行，它们分别转换为 `<metric_name>_count` 和 `<metric_name>_sum`。
+对于 `histogram` 和 `summary` 标签有特别的要求 - 详情请参见 [Prometheus 文档](https://prometheus.io/docs/instrumenting/exposition_formats/#histograms-and-summaries)。 
+特殊规则适用于标签 `{'count':''}` 和 `{'sum':''}` 的行，它们分别被转换为 `<metric_name>_count` 和 `<metric_name>_sum`。
 
 ## 示例用法 {#example-usage}
 
@@ -41,7 +53,7 @@
 └─────────────────────────────────────┴───────────┴───────────────────────────────────────────┴────────────────────────────────┴──────────┴───────────────┘
 ```
 
-将格式化为：
+将被格式化为：
 
 ```text
 

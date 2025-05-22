@@ -12,7 +12,7 @@
 
 ## 设置 {#setup}
 
-我们首先创建一个虚拟环境：
+让我们首先创建一个虚拟环境：
 
 ```bash
 python -m venv .venv
@@ -20,33 +20,33 @@ source .venv/bin/activate
 ```
 
 现在我们将安装 chDB。
-确保你拥有 2.0.2 版本或更高版本：
+确保您拥有版本 2.0.2 或更高版本：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-然后我们将安装 pandas 和 ipython：
+现在我们将安装 pandas 和 ipython：
 
 ```bash
 pip install pandas ipython
 ```
 
-我们将使用 `ipython` 来运行本指南中其余部分的命令，你可以通过运行以下命令来启动它：
+我们将使用 `ipython` 来运行本指南其余部分中的命令，您可以通过运行以下命令启动它：
 
 ```bash
 ipython
 ```
 
-你也可以在 Python 脚本或你喜欢的笔记本中使用这些代码。
+您也可以在 Python 脚本中或在您喜欢的笔记本中使用这些代码。
 
 ## ClickPy 简介 {#an-intro-to-clickpy}
 
 我们将要查询的远程 ClickHouse 服务器是 [ClickPy](https://clickpy.clickhouse.com)。
-ClickPy 跟踪所有 PyPI 包的下载情况，并让你通过用户界面探索包的统计信息。
-底层数据库可使用 `play` 用户进行查询。
+ClickPy 记录了所有 PyPI 包的下载情况，并让您通过 UI 探索包的统计信息。
+底层数据库可以使用 `play` 用户进行查询。
 
-你可以在 [它的 GitHub 存储库](https://github.com/ClickHouse/clickpy) 中了解更多有关 ClickPy 的信息。
+您可以通过 [它的 GitHub 仓库](https://github.com/ClickHouse/clickpy) 了解更多关于 ClickPy 的信息。
 
 ## 查询 ClickPy ClickHouse 服务 {#querying-the-clickpy-clickhouse-service}
 
@@ -56,10 +56,10 @@ ClickPy 跟踪所有 PyPI 包的下载情况，并让你通过用户界面探索
 import chdb
 ```
 
-我们将使用 `remoteSecure` 函数来查询 ClickPy。
-此函数至少接受主机名、表名和用户名作为参数。
+我们将使用 `remoteSecure` 函数查询 ClickPy。
+此函数至少需要主机名、表名和用户名。
 
-我们可以编写以下查询，以返回 [`openai` 包](https://clickpy.clickhouse.com/dashboard/openai) 每日的下载次数作为 Pandas 数据框：
+我们可以编写以下查询，以返回 [`openai` 包](https://clickpy.clickhouse.com/dashboard/openai) 每日的下载数量，并将其作为 Pandas DataFrame 返回：
 
 ```python
 query = """
@@ -94,7 +94,7 @@ openai_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-现在我们来做同样的事情，返回 [`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn) 的下载量：
+现在让我们做同样的事情来返回 [`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn) 的下载量：
 
 ```python
 query = """
@@ -129,9 +129,9 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-## 合并 Pandas 数据框 {#merging-pandas-dataframes}
+## 合并 Pandas DataFrames {#merging-pandas-dataframes}
 
-现在我们有两个数据框，我们可以基于日期（即 `x` 列）将它们合并在一起，如下所示：
+我们现在有两个 DataFrame，可以根据日期（这是 `x` 列）像这样将它们合并在一起：
 
 ```python
 df = openai_df.merge(
@@ -151,7 +151,7 @@ df.head(n=5)
 4  2018-03-02         5      23842
 ```
 
-然后我们可以计算 Open AI 下载与 `scikit-learn` 下载的比例，如下所示：
+然后我们可以像这样计算 Open AI 下载与 `scikit-learn` 下载的比例：
 
 ```python
 df['ratio'] = df['y_openai'] / df['y_sklearn']
@@ -167,9 +167,9 @@ df.head(n=5)
 4  2018-03-02         5      23842  0.000210
 ```
 
-## 查询 Pandas 数据框 {#querying-pandas-dataframes}
+## 查询 Pandas DataFrames {#querying-pandas-dataframes}
 
-接下来，假设我们想要找到下载比例最佳和最差的日期。
+接下来，假设我们想找出比率最好和最差的日期。
 我们可以回到 chDB 并计算这些值：
 
 ```python
@@ -187,4 +187,4 @@ FROM Python(df)
 0   0.693855  2024-09-19    0.000003  2020-02-09
 ```
 
-如果你想了解更多关于查询 Pandas 数据框的信息，请查看 [Pandas 数据框开发者指南](querying-pandas.md)。
+如果您想了解更多关于查询 Pandas DataFrames 的信息，请参阅 [Pandas DataFrames 开发者指南](querying-pandas.md)。

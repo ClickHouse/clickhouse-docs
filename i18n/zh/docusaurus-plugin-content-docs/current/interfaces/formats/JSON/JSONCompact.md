@@ -1,10 +1,21 @@
-| 输入 | 输出 | 别名 |
-|------|------|------|
-| ✔    | ✔    |      |
+---
+'alias': []
+'description': 'JSONCompact 格式的文档'
+'input_format': true
+'keywords':
+- 'JSONCompact'
+'output_format': true
+'slug': '/interfaces/formats/JSONCompact'
+'title': 'JSONCompact'
+---
+
+| 输入  | 输出    | 别名  |
+|-------|--------|-------|
+| ✔     | ✔      |       |
 
 ## 描述 {#description}
 
-与 [JSON](./JSON.md) 的唯一区别在于数据行以数组的形式输出，而不是以对象的形式。
+与 [JSON](./JSON.md) 的区别在于数据行以数组的形式输出，而不是以对象的形式输出。
 
 ## 示例用法 {#example-usage}
 

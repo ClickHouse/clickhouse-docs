@@ -1,10 +1,20 @@
+---
+'description': '系统表包含关于当前正在运行的后台提取的信息。'
+'keywords':
+- 'system table'
+- 'replicated_fetches'
+'slug': '/operations/system-tables/replicated_fetches'
+'title': 'system.replicated_fetches'
+---
+
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
 
 # system.replicated_fetches
 
 <SystemTableCloud/>
 
-包含当前正在运行的后台提取的信息。
+包含当前正在运行的后台获取的相关信息。
 
 列：
 
@@ -12,19 +22,19 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 - `table` ([String](../../sql-reference/data-types/string.md)) — 表的名称。
 
-- `elapsed` ([Float64](../../sql-reference/data-types/float.md)) — 自当前正在运行的后台提取开始以来经过的时间（以秒为单位）。
+- `elapsed` ([Float64](../../sql-reference/data-types/float.md)) — 自显示当前运行的后台获取开始以来经过的时间（以秒为单位）。
 
 - `progress` ([Float64](../../sql-reference/data-types/float.md)) — 完成工作的百分比，从 0 到 1。
 
-- `result_part_name` ([String](../../sql-reference/data-types/string.md)) — 作为当前正在运行的后台提取结果形成的分片名称。
+- `result_part_name` ([String](../../sql-reference/data-types/string.md)) — 作为显示当前运行的后台获取结果形成的部分的名称。
 
-- `result_part_path` ([String](../../sql-reference/data-types/string.md)) — 作为当前正在运行的后台提取结果形成的分片的绝对路径。
+- `result_part_path` ([String](../../sql-reference/data-types/string.md)) — 作为显示当前运行的后台获取结果形成的部分的绝对路径。
 
 - `partition_id` ([String](../../sql-reference/data-types/string.md)) — 分区的 ID。
 
-- `total_size_bytes_compressed` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 结果分片中压缩数据的总大小（以字节为单位）。
+- `total_size_bytes_compressed` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 结果部分中压缩数据的总大小（以字节为单位）。
 
-- `bytes_read_compressed` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 从结果分片读取的压缩字节数。
+- `bytes_read_compressed` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 从结果部分读取的压缩字节数。
 
 - `source_replica_path` ([String](../../sql-reference/data-types/string.md)) — 源副本的绝对路径。
 
@@ -36,7 +46,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 - `URI` ([String](../../sql-reference/data-types/string.md)) — 统一资源标识符。
 
-- `to_detached` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 此标志指示当前正在运行的后台提取是否使用 `TO DETACHED` 表达式进行。
+- `to_detached` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 标志指示当前运行的后台获取是否使用 `TO DETACHED` 表达式执行。
 
 - `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 线程标识符。
 
@@ -67,6 +77,6 @@ to_detached:                 0
 thread_id:                   54
 ```
 
-**另请参阅**
+**另见**
 
 - [管理 ReplicatedMergeTree 表](../../sql-reference/statements/system.md/#managing-replicatedmergetree-tables)

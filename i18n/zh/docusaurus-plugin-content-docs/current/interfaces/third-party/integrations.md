@@ -1,5 +1,5 @@
 ---
-'description': '有关将ClickHouse与各种第三方系统和工具集成的文档'
+'description': '有关将 ClickHouse 与各种第三方系统和工具集成的文档'
 'sidebar_label': '集成'
 'sidebar_position': 27
 'slug': '/interfaces/third-party/integrations'
@@ -9,8 +9,8 @@
 
 # 第三方开发者的集成库
 
-:::note 注意事项
-ClickHouse, Inc. **不** 维护以下列出的工具和库，并且没有进行广泛的测试来确保其质量。
+:::note 注意
+ClickHouse, Inc. **不**维护下面列出的工具和库，也没有进行广泛测试以确保其质量。
 :::
 
 ## 基础设施产品 {#infrastructure-products}
@@ -53,7 +53,7 @@ ClickHouse, Inc. **不** 维护以下列出的工具和库，并且没有进行�
         - [graphouse](https://github.com/ClickHouse/graphouse)
         - [carbon-clickhouse](https://github.com/lomik/carbon-clickhouse)
         - [graphite-clickhouse](https://github.com/lomik/graphite-clickhouse)
-        - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) - 优化 [\*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree) 中的过期分区，如果可以应用 [rollup 配置](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration) 的规则
+        - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) - 优化在 [*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree) 中好运用配置的过期分区，如果可以应用 [rollup configuration](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration) 里的规则
     - [Grafana](https://grafana.com/)
         - [clickhouse-grafana](https://github.com/Vertamedia/clickhouse-grafana)
     - [Prometheus](https://prometheus.io/)
@@ -66,12 +66,12 @@ ClickHouse, Inc. **不** 维护以下列出的工具和库，并且没有进行�
     - [Zabbix](https://www.zabbix.com)
         - [clickhouse-zabbix-template](https://github.com/Altinity/clickhouse-zabbix-template)
     - [Sematext](https://sematext.com/)
-        - [clickhouse 集成](https://github.com/sematext/sematext-agent-integrations/tree/master/clickhouse)
+        - [clickhouse integration](https://github.com/sematext/sematext-agent-integrations/tree/master/clickhouse)
 - 日志
     - [rsyslog](https://www.rsyslog.com/)
         - [omclickhouse](https://www.rsyslog.com/doc/master/configuration/modules/omclickhouse.html)
     - [fluentd](https://www.fluentd.org)
-        - [loghouse](https://github.com/flant/loghouse) (适用于 [Kubernetes](https://kubernetes.io))
+        - [loghouse](https://github.com/flant/loghouse) (用于 [Kubernetes](https://kubernetes.io))
     - [logagent](https://www.sematext.com/logagent)
         - [logagent output-plugin-clickhouse](https://sematext.com/docs/logagent/output-plugin-clickhouse/)
 - 地理
@@ -79,7 +79,7 @@ ClickHouse, Inc. **不** 维护以下列出的工具和库，并且没有进行�
         - [clickhouse-maxmind-geoip](https://github.com/AlexeyKupershtokh/clickhouse-maxmind-geoip)
 - AutoML
     - [MindsDB](https://mindsdb.com/)
-        - [MindsDB](https://github.com/mindsdb/mindsdb) - 与 ClickHouse 集成，使来自 ClickHouse 的数据可供多种 AI/ML 模型访问。
+        - [MindsDB](https://github.com/mindsdb/mindsdb) - 与 ClickHouse 集成，使 ClickHouse 的数据可用于多种 AI/ML 模型。
 
 ## 编程语言生态系统 {#programming-language-ecosystems}
 

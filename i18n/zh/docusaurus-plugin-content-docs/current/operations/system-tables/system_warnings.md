@@ -1,15 +1,22 @@
+---
+'description': '该表包含关于 clickhouse 服务器的警告消息。'
+'keywords':
+- 'system table'
+- 'warnings'
+'slug': '/operations/system-tables/system_warnings'
+'title': 'system.warnings'
+---
+
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
 
 # system.warnings
 
 <SystemTableCloud/>
 
-此表显示有关 ClickHouse 服务器的警告。
-同类型的警告会合并为一个警告。
-例如，如果附加的数据库数量 N 超过可配置阈值 T，则显示单个条目，其中包含当前值 N，而不是 N 个单独的条目。
-如果当前值降到阈值以下，则该条目将从表中删除。
+此表显示有关 ClickHouse 服务器的警告。相同类型的警告会合并成一个单一的警告。例如，如果附加数据库的数量 N 超过了可配置阈值 T，则会显示包含当前值 N 的单个条目，而不是 N 个单独的条目。如果当前值降至阈值以下，则该条目将从表中删除。
 
-该表可以通过以下设置进行配置：
+该表可通过以下设置进行配置：
 
 - [max_table_num_to_warn](../server-configuration-parameters/settings.md#max_table_num_to_warn)
 - [max_database_num_to_warn](../server-configuration-parameters/settings.md#max_database_num_to_warn)
@@ -21,7 +28,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 列：
 
-- `message` ([String](../../sql-reference/data-types/string.md)) — 警告消息。
+- `message` ([String](../../sql-reference/data-types/string.md)) — 警告信息。
 - `message_format_string` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 用于格式化消息的格式字符串。
 
 **示例**

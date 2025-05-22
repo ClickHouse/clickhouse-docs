@@ -1,9 +1,19 @@
+---
+'slug': '/guides/developer/debugging-memory-issues'
+'sidebar_label': '调试内存问题'
+'sidebar_position': 1
+'description': '查询以帮助您调试内存问题。'
+'keywords':
+- 'memory issues'
+'title': '调试内存问题'
+---
+
 
 # 调试内存问题 {#debugging-memory-issues}
 
-当遇到内存问题或内存泄漏时，了解哪些查询和资源消耗了大量内存是很有帮助的。以下是一些查询，可以帮助您通过查找可以优化的查询、数据库和表来调试内存问题：
+当遇到内存问题或内存泄漏时，了解哪些查询和资源正在消耗大量内存是非常有帮助的。下面您可以找到一些查询，它们可以帮助您通过查找哪些查询、数据库和表可以优化来调试内存问题：
 
-## 按峰值内存使用列出当前正在运行的进程 {#list-currently-running-processes-by-peak-memory}
+## 按峰值内存使用列出当前运行的进程 {#list-currently-running-processes-by-peak-memory}
 
 ```sql
 SELECT
@@ -48,7 +58,7 @@ WHERE engine IN ('Memory','Set','Join');
 SELECT formatReadableSize(sum(memory_usage)) FROM system.merges;
 ```
 
-## 输出当前正在运行的进程所使用的总内存 {#output-total-memory-used-by-currently-running-processes}
+## 输出当前运行进程所使用的总内存 {#output-total-memory-used-by-currently-running-processes}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.processes;

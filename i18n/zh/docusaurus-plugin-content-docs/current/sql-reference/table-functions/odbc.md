@@ -1,3 +1,11 @@
+---
+'description': '返回通过 ODBC 连接的表。'
+'sidebar_label': 'odbc'
+'sidebar_position': 150
+'slug': '/sql-reference/table-functions/odbc'
+'title': 'odbc'
+---
+
 
 # odbc 表函数
 
@@ -11,25 +19,25 @@ odbc(connection_settings, external_database, external_table)
 
 ## 参数 {#arguments}
 
-| 参数                 | 描述                                                              |
-|----------------------|-------------------------------------------------------------------|
-| `connection_settings` | `odbc.ini` 文件中连接设置的节名称。                              |
-| `external_database`  | 外部数据库管理系统中数据库的名称。                                |
-| `external_table`     | `external_database` 中表的名称。                                 |
+| 参数                  | 描述                                                                     |
+|-----------------------|--------------------------------------------------------------------------|
+| `connection_settings` | `odbc.ini` 文件中连接设置的节名称。                                     |
+| `external_database`   | 外部 DBMS 中数据库的名称。                                               |
+| `external_table`      | `external_database` 中表的名称。                                        |
 
-为了安全地实现 ODBC 连接，ClickHouse 使用一个独立程序 `clickhouse-odbc-bridge`。如果 ODBC 驱动程序直接从 `clickhouse-server` 加载，驱动程序问题可能会使 ClickHouse 服务器崩溃。当需要时，ClickHouse 会自动启动 `clickhouse-odbc-bridge`。ODBC 桥接程序与 `clickhouse-server` 在同一软件包中安装。
+为了安全地实现 ODBC 连接，ClickHouse 使用单独的程序 `clickhouse-odbc-bridge`。如果 ODBC 驱动程序直接从 `clickhouse-server` 加载，驱动程序的问题可能会导致 ClickHouse 服务器崩溃。ClickHouse 在需要时会自动启动 `clickhouse-odbc-bridge`。ODBC 网桥程序与 `clickhouse-server` 从同一软件包中安装。
 
-来自外部表的 `NULL` 值字段会被转换为基础数据类型的默认值。例如，如果远程 MySQL 表字段具有 `INT NULL` 类型，则会转换为 0（ClickHouse `Int32` 数据类型的默认值）。
+外部表中带有 `NULL` 值的字段会转换为基础数据类型的默认值。例如，如果远程 MySQL 表字段具有 `INT NULL` 类型，则会转换为 0（ClickHouse `Int32` 数据类型的默认值）。
 
 ## 使用示例 {#usage-example}
 
-**通过 ODBC 从本地 MySQL 安装中获取数据**
+**通过 ODBC 从本地 MySQL 安装获取数据**
 
-此示例在 Ubuntu Linux 18.04 和 MySQL 服务器 5.7 上进行了检查。
+此示例针对 Ubuntu Linux 18.04 和 MySQL 服务器 5.7 进行检查。
 
 确保已安装 unixODBC 和 MySQL Connector。
 
-默认情况下（如果从软件包安装），ClickHouse 作为用户 `clickhouse` 启动。因此，您需要在 MySQL 服务器中创建和配置此用户。
+默认情况下（如果是从软件包安装的），ClickHouse 以用户 `clickhouse` 启动。因此，您需要在 MySQL 服务器中创建并配置此用户。
 
 ```bash
 $ sudo mysql
@@ -53,7 +61,7 @@ USERNAME = clickhouse
 PASSWORD = clickhouse
 ```
 
-您可以使用 unixODBC 安装中的 `isql` 实用程序检查连接。
+您可以使用 unixODBC 安装中的 `isql` 工具检查连接。
 
 ```bash
 $ isql -v mysqlconn

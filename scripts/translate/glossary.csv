@@ -96,19 +96,19 @@ partitioning key,ключ партиционирования,partitioning key,pa
 primary indices,первичные индексы,主キー,主键
 projections,проекции,projections,projections
 queries,запросы,クエリ,查询
-query cache,кэш запросов,query cache,query cache
+query cache,кэш запросов,query cache,查询缓存
 query execution time,время выполнения запроса,query execution time,query execution time
-query log,журнал запросов,query log,query log
-query optimization,оптимизация запросов,query optimization,query optimization
-query planning,планирование запросов,query planning,query planning
-query profiler,профилировщик запросов,query profiler,query profiler
-query routing,маршрутизация запросов,query routing,query routing
-query settings,настройки запросов,query settings,query settings
-query string,строка запроса,query string,query string
+query log,журнал запросов,query log,查询日志
+query optimization,оптимизация запросов,query optimization,查询优化
+query planning,планирование запросов,query planning,查询规划
+query profiler,профилировщик запросов,query profiler,查询剖析器
+query routing,маршрутизация запросов,query routing,查询路由
+query settings,настройки запросов,query settings,查询设置
+query string,строка запроса,query string,查询字符串
 RBAC,RBAC,RBAC,RBAC
 reads,чтения,reads,reads
-real-time analytics,аналитика в реальном времени,real-time analytics,real-time analytics
-refreshable materialized view,обновляемое материализованное представление,refreshable materialized view,refreshable materialized view
+real-time analytics,аналитика в реальном времени,real-time analytics,实时分析
+refreshable materialized view,обновляемое материализованное представление,refreshable materialized view,可刷新的物化视图
 replica,реплика,レプリカ,副本
 replication,репликация,レプリケーション,复制
 ReplacingMergeTree,ReplacingMergeTree,ReplacingMergeTree,ReplacingMergeTree

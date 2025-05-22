@@ -1,6 +1,6 @@
 ---
 'alias': []
-'description': 'ProtobufSingle格式的文档'
+'description': 'ProtobufSingle 格式的文档'
 'input_format': true
 'keywords':
 - 'ProtobufSingle'
@@ -13,13 +13,13 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
-| 输入   | 输出   | 别名   |
-|--------|--------|--------|
-| ✔      | ✔      |        |
+| 输入 | 输出 | 别名 |
+|-------|--------|-------|
+| ✔     | ✔      |       |
 
 ## 描述 {#description}
 
-`ProtobufSingle` 格式与 [`Protobuf`](./Protobuf.md) 格式相同，但它旨在存储/解析单个 Protobuf 消息，而不使用长度定界符。
+`ProtobufSingle` 格式与 [`Protobuf`](./Protobuf.md) 格式相同，但它用于存储/解析单个 Protobuf 消息，而不带长度分隔符。
 
 ## 示例用法 {#example-usage}
 

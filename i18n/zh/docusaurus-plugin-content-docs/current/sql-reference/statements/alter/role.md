@@ -1,4 +1,10 @@
-翻译：
+---
+'description': '角色的文档'
+'sidebar_label': 'ROLE'
+'sidebar_position': 46
+'slug': '/sql-reference/statements/alter/role'
+'title': 'ALTER ROLE'
+---
 
 更改角色。
 

@@ -1,5 +1,13 @@
+---
+'description': '与 ULID 一起使用的函数的文档'
+'sidebar_label': 'ULID'
+'sidebar_position': 190
+'slug': '/sql-reference/functions/ulid-functions'
+'title': '与 ULID 一起使用的函数'
+---
 
-# 用于处理 ULID 的函数
+
+# 与 ULID 相关的函数
 
 ## generateULID {#generateulid}
 
@@ -13,7 +21,7 @@ generateULID([x])
 
 **参数**
 
-- `x` — [表达式](/sql-reference/syntax#expressions)，其结果为任何 [支持的数据类型](/sql-reference/data-types)。结果值将被丢弃，但表达式本身可用于绕过 [常见子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)，当在一个查询中多次调用该函数时。可选参数。
+- `x` — [表达式](/sql-reference/syntax#expressions)，结果为任意 [支持的数据类型](/sql-reference/data-types)。结果值会被丢弃，但表达式本身用于绕过 [常见子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)，如果函数在一个查询中被多次调用。可选参数。
 
 **返回值**
 
@@ -31,7 +39,7 @@ SELECT generateULID()
 └────────────────────────────┘
 ```
 
-**如果在一行中需要生成多个值的使用示例**
+**如果需要在一行中生成多个值的使用示例**
 
 ```sql
 SELECT generateULID(1), generateULID(2)
@@ -45,7 +53,7 @@ SELECT generateULID(1), generateULID(2)
 
 ## ULIDStringToDateTime {#ulidstringtodatetime}
 
-此函数从 ULID 中提取时间戳。
+该函数从 ULID 中提取时间戳。
 
 **语法**
 
@@ -60,7 +68,7 @@ ULIDStringToDateTime(ulid[, timezone])
 
 **返回值**
 
-- 带有毫秒精度的时间戳。 [DateTime64(3)](../data-types/datetime64.md)。
+- 精确到毫秒的时间戳。 [DateTime64(3)](../data-types/datetime64.md)。
 
 **使用示例**
 
@@ -74,6 +82,6 @@ SELECT ULIDStringToDateTime('01GNB2S2FGN2P93QPXDNB4EN2R')
 └────────────────────────────────────────────────────┘
 ```
 
-## 另请参阅 {#see-also}
+## 另请参见 {#see-also}
 
 - [UUID](../../sql-reference/functions/uuid-functions.md)

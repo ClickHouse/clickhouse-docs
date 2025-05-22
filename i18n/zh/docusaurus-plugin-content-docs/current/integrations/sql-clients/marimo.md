@@ -1,3 +1,10 @@
+---
+'slug': '/integrations/marimo'
+'sidebar_label': 'marimo'
+'description': 'marimo 是一个用于与数据交互的下一代 Python 笔记本'
+'title': '使用 marimo 与 ClickHouse'
+---
+
 import Image from '@theme/IdealImage';
 import marimo_connect from '@site/static/images/integrations/sql-clients/marimo/clickhouse-connect.gif';
 import add_db_panel from '@site/static/images/integrations/sql-clients/marimo/panel-arrow.png';
@@ -9,39 +16,40 @@ import dropdown_cell_chart from '@site/static/images/integrations/sql-clients/ma
 import run_app_view from '@site/static/images/integrations/sql-clients/marimo/run-app-view.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# 使用 marimo 和 ClickHouse
+
+# 在 ClickHouse 中使用 marimo
 
 <CommunityMaintainedBadge/>
 
-[marimo](https://marimo.io/) 是一个开源的 Python 反应式笔记本，内置 SQL。 当您运行一个单元格或与 UI 元素交互时，marimo 会自动运行受影响的单元格（或将它们标记为过期），保持代码和输出的一致性，并在问题发生之前防止错误。每个 marimo 笔记本都是作为纯 Python 存储的，可以作为脚本执行，并可部署为应用。
+[marimo](https://marimo.io/) 是一个开源的反应式 Python 笔记本，其中内置了 SQL。当您运行一个单元或与 UI 元素交互时，marimo 会自动运行受影响的单元（或将其标记为过期），保持代码和输出的一致性，并在问题发生之前防止错误。每个 marimo 笔记本都以纯 Python 存储，可以作为脚本执行，并可作为应用程序部署。
 
 <Image img={marimo_connect} size="md" border alt="连接到 ClickHouse" />
 
-## 1. 安装带 SQL 支持的 marimo {#install-marimo-sql}
+## 1. 安装支持 SQL 的 marimo {#install-marimo-sql}
 
 ```shell
 pip install "marimo[sql]" clickhouse_connect
 marimo edit clickhouse_demo.py
 ```
-这会在本地主机上打开一个运行的网页浏览器。
+这应该会打开一个运行在 localhost 上的网页浏览器。
 
-## 2. 连接到 ClickHouse. {#connect-to-clickhouse}
+## 2. 连接到 ClickHouse {#connect-to-clickhouse}
 
-导航到 marimo 编辑器左侧的数据源面板，点击“添加数据库”。
+导航到 marimo 编辑器左侧的数据源面板，然后点击“添加数据库”。
 
-<Image img={add_db_panel} size="sm" border alt="添加新数据库" />
+<Image img={add_db_panel} size="sm" border alt="添加新的数据库" />
 
-系统会提示您填写数据库详细信息。
+系统将提示您填写数据库详细信息。
 
 <Image img={add_db_details} size="md" border alt="填写数据库详细信息" />
 
-然后您将有一个可以运行的单元格，用于建立连接。
+然后您将拥有一个可以运行以建立连接的单元。
 
-<Image img={run_cell} size="md" border alt="运行单元格以连接到 ClickHouse" />
+<Image img={run_cell} size="md" border alt="运行单元以连接到 ClickHouse" />
 
 ## 3. 运行 SQL {#run-sql}
 
-一旦您设置了连接，您可以创建一个新的 SQL 单元格并选择 ClickHouse 引擎。
+一旦您建立了连接，就可以创建一个新的 SQL 单元并选择 ClickHouse 引擎。
 
 <Image img={choose_sql_engine} size="md" border alt="选择 SQL 引擎" />
 
@@ -103,11 +111,11 @@ SELECT * FROM trips LIMIT 1000;
 
 <Image img={results} size="lg" border alt="数据框中的结果" />
 
-现在，您可以在数据框中查看结果。我想可视化来自给定接送地点的最贵掉客。marimo 提供了几个 UI 组件来帮助您。我将使用下拉菜单选择地点，使用 altair 进行制图。
+现在，您可以在数据框中查看结果。我想要可视化从给定接客地点出发的最昂贵的下车地点。marimo 提供了几种 UI 组件来帮助您。我将使用下拉框选择地点，并使用 altair 进行图表绘制。
 
-<Image img={dropdown_cell_chart} size="lg" border alt="下拉菜单、表格和图表的组合" />
+<Image img={dropdown_cell_chart} size="lg" border alt="下拉框、表和图表的组合" />
 
-marimo 的反应式执行模型延伸到 SQL 查询，因此对您的 SQL 的更改将自动触发依赖单元格的下游计算（或可选地将单元格标记为过期以进行昂贵的计算）。因此，当查询更新时，图表和表格会发生变化。
+marimo 的反应式执行模型扩展到 SQL 查询，因此对您的 SQL 的更改会自动触发下游计算以更新依赖的单元（或者可选择将单元标记为过期，以便节省计算资源）。因此，当查询更新时，图表和表格会发生变化。
 
 您还可以切换到应用视图，以便拥有一个干净的界面来探索您的数据。
 

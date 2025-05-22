@@ -1,11 +1,21 @@
+---
+'description': '允许 ClickHouse 通过 JDBC 连接到外部数据库。'
+'sidebar_label': 'JDBC'
+'sidebar_position': 100
+'slug': '/engines/table-engines/integrations/jdbc'
+'title': 'JDBC'
+---
+
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+
 
 # JDBC
 
 <CloudNotSupportedBadge/>
 
 :::note
-clickhouse-jdbc-bridge 包含实验代码，并且不再支持。它可能存在可靠性问题和安全漏洞。使用风险自负。 ClickHouse 建议使用 ClickHouse 内置的表函数，它们在即席查询场景（Postgres，MySQL，MongoDB 等）中提供了更好的替代方案。
+clickhouse-jdbc-bridge 包含实验性代码，并且不再支持。它可能含有可靠性问题和安全漏洞。使用它需自担风险。 
+ClickHouse 推荐使用内置的表函数，这些函数为临时查询场景（如 Postgres、MySQL、MongoDB 等）提供了更好的替代方案。
 :::
 
 允许 ClickHouse 通过 [JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity) 连接到外部数据库。
@@ -29,15 +39,15 @@ ENGINE = JDBC(datasource_uri, external_database, external_table)
 - `datasource_uri` — 外部 DBMS 的 URI 或名称。
 
     URI 格式：`jdbc:<driver_name>://<host_name>:<port>/?user=<username>&password=<password>`。
-    MySQL 的示例：`jdbc:mysql://localhost:3306/?user=root&password=root`。
+    MySQL 示例：`jdbc:mysql://localhost:3306/?user=root&password=root`。
 
 - `external_database` — 外部 DBMS 中的数据库。
 
-- `external_table` — `external_database` 中的表名或类似 `select * from table1 where column1=1` 的选择查询。
+- `external_table` — `external_database` 中表的名称，或如 `select * from table1 where column1=1` 的选择查询。
 
 ## 使用示例 {#usage-example}
 
-通过直接连接其控制台客户端在 MySQL 服务器上创建表：
+通过直接连接 MySQL 服务器和其控制台客户端来创建表：
 
 ```text
 mysql> CREATE TABLE `test`.`test` (
@@ -60,7 +70,7 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-在 ClickHouse 服务器上创建表并从中选择数据：
+在 ClickHouse 服务器中创建表并从中选择数据：
 
 ```sql
 CREATE TABLE jdbc_table
@@ -90,6 +100,6 @@ SELECT toInt32(number), toFloat32(number * 1.0)
 FROM system.numbers
 ```
 
-## 另见 {#see-also}
+## 另请参阅 {#see-also}
 
 - [JDBC 表函数](../../../sql-reference/table-functions/jdbc.md)。

@@ -1,14 +1,21 @@
-ClickHouse 可以自动确定几乎所有支持的 [输入格式](formats.md) 中输入数据的结构。本文档将描述何时使用模式推断，它如何与不同的输入格式配合工作以及哪些设置可以控制它。
+---
+'description': '页面描述在 ClickHouse 中从输入数据自动推断模式'
+'sidebar_label': '模式推断'
+'slug': '/interfaces/schema-inference'
+'title': '从输入数据自动推断模式'
+---
+
+ClickHouse可以在几乎所有支持的 [输入格式](formats.md) 中自动确定输入数据的结构。本文档将描述何时使用模式推断，它如何与不同的输入格式配合使用，以及可以控制它的哪些设置。
 ## 使用方法 {#usage}
 
-当 ClickHouse 需要以特定的数据格式读取数据并且结构未知时，会使用模式推断。
+当ClickHouse需要以特定的数据格式读取数据而结构未知时，会使用模式推断。
 ## 表函数 [file](../sql-reference/table-functions/file.md), [s3](../sql-reference/table-functions/s3.md), [url](../sql-reference/table-functions/url.md), [hdfs](../sql-reference/table-functions/hdfs.md), [azureBlobStorage](../sql-reference/table-functions/azureBlobStorage.md)。 {#table-functions-file-s3-url-hdfs-azureblobstorage}
 
-这些表函数具有可选参数 `structure`，用于指定输入数据的结构。如果未指定此参数或将其设为 `auto`，则会根据数据推断出结构。
+这些表函数有一个可选参数 `structure`，用于输入数据的结构。如果未指定此参数或设置为 `auto`，则将根据数据推断结构。
 
 **示例：**
 
-假设我们在 `user_files` 目录中有一个名为 `hobbies.jsonl` 的文件，格式为 JSONEachRow，内容如下：
+假设我们在 `user_files` 目录中有一个 `hobbies.jsonl` 文件，格式为 JSONEachRow，内容如下：
 ```json
 {"id" :  1, "age" :  25, "name" :  "Josh", "hobbies" :  ["football", "cooking", "music"]}
 {"id" :  2, "age" :  19, "name" :  "Alan", "hobbies" :  ["tennis", "art"]}
@@ -16,7 +23,7 @@ ClickHouse 可以自动确定几乎所有支持的 [输入格式](formats.md) �
 {"id" :  4, "age" :  47, "name" :  "Brayan", "hobbies" :  ["movies", "skydiving"]}
 ```
 
-ClickHouse 可以在不指定其结构的情况下读取这些数据：
+ClickHouse可以在您未指定其结构的情况下读取此数据：
 ```sql
 SELECT * FROM file('hobbies.jsonl')
 ```
@@ -31,7 +38,7 @@ SELECT * FROM file('hobbies.jsonl')
 
 注意：格式 `JSONEachRow` 是通过文件扩展名 `.jsonl` 自动确定的。
 
-您可以通过 `DESCRIBE` 查询查看自动确定的结构：
+您可以使用 `DESCRIBE` 查询查看自动确定的结构：
 ```sql
 DESCRIBE file('hobbies.jsonl')
 ```
@@ -45,11 +52,11 @@ DESCRIBE file('hobbies.jsonl')
 ```
 ## 表引擎 [File](../engines/table-engines/special/file.md), [S3](../engines/table-engines/integrations/s3.md), [URL](../engines/table-engines/special/url.md), [HDFS](../engines/table-engines/integrations/hdfs.md), [azureBlobStorage](../engines/table-engines/integrations/azureBlobStorage.md) {#table-engines-file-s3-url-hdfs-azureblobstorage}
 
-如果在 `CREATE TABLE` 查询中未指定列的列表，则表的结构将自动从数据中推断。
+如果在 `CREATE TABLE` 查询中未指定列的列表，则表的结构将从数据中自动推断。
 
 **示例：**
 
-我们使用文件 `hobbies.jsonl`。我们可以创建一个引擎为 `File` 的表，并使用该文件中的数据：
+让我们使用文件 `hobbies.jsonl`。我们可以使用文件中的数据创建一个引擎为 `File` 的表：
 ```sql
 CREATE TABLE hobbies ENGINE=File(JSONEachRow, 'hobbies.jsonl')
 ```
@@ -80,11 +87,11 @@ DESCRIBE TABLE hobbies
 ```
 ## clickhouse-local {#clickhouse-local}
 
-`clickhouse-local` 有一个可选参数 `-S/--structure`，用于指定输入数据的结构。如果未指定此参数或将其设为 `auto`，则会从数据中推断出结构。
+`clickhouse-local` 有一个可选参数 `-S/--structure`，用于输入数据的结构。如果未指定此参数或设置为 `auto`，则将根据数据推断结构。
 
 **示例：**
 
-我们使用文件 `hobbies.jsonl`。我们可以使用 `clickhouse-local` 查询该文件中的数据：
+让我们使用文件 `hobbies.jsonl`。我们可以使用 `clickhouse-local` 查询该文件中的数据：
 ```shell
 clickhouse-local --file='hobbies.jsonl' --table='hobbies' --query='DESCRIBE TABLE hobbies'
 ```
@@ -103,18 +110,18 @@ clickhouse-local --file='hobbies.jsonl' --table='hobbies' --query='SELECT * FROM
 3    32    Lana    ['fitness','reading','shopping']
 4    47    Brayan    ['movies','skydiving']
 ```
-## 从插入表中使用结构 {#using-structure-from-insertion-table}
+## 使用插入表的结构 {#using-structure-from-insertion-table}
 
-当使用表函数 `file/s3/url/hdfs` 向表中插入数据时，可以选择使用插入表的结构，而不是从数据中提取结构。这可以提高插入性能，因为模式推断可能需要一些时间。此外，当表具有优化的结构时，这样做也会很有帮助，因此不会在类型之间进行转换。
+当表函数 `file/s3/url/hdfs` 用于将数据插入表中时，可以选择使用插入表的结构，而不是从数据中提取。这可以提高插入性能，因为模式推断可能需要一些时间。此外，当表具有优化的结构时，它会很有用，因此不会在类型之间执行转换。
 
-有一个特殊设置 [use_structure_from_insertion_table_in_table_functions](/operations/settings/settings.md/#use_structure_from_insertion_table_in_table_functions) 控制这种行为。它有 3 个可能的值：
+有一个特殊的设置 [use_structure_from_insertion_table_in_table_functions](/operations/settings/settings.md/#use_structure_from_insertion_table_in_table_functions) 控制此行为。它有3种可能的值：
 - 0 - 表函数将从数据中提取结构。
 - 1 - 表函数将使用插入表的结构。
 - 2 - ClickHouse 将自动确定是否可以使用插入表的结构或使用模式推断。默认值。
 
 **示例 1：**
 
-让我们创建一个结构为 `hobbies1` 的表：
+让我们以以下结构创建表 `hobbies1`：
 ```sql
 CREATE TABLE hobbies1
 (
@@ -127,17 +134,17 @@ ENGINE = MergeTree
 ORDER BY id;
 ```
 
-并从文件 `hobbies.jsonl` 插入数据：
+并从文件 `hobbies.jsonl` 中插入数据：
 
 ```sql
 INSERT INTO hobbies1 SELECT * FROM file(hobbies.jsonl)
 ```
 
-在这种情况下，文件中的所有列都以不变的形式插入到表中，因此 ClickHouse 将使用插入表的结构而不是模式推断。
+在这种情况下，文件中的所有列都将插入到表中而不作更改，因此ClickHouse将使用插入表的结构，而不是模式推断。
 
 **示例 2：**
 
-让我们创建一个结构为 `hobbies2` 的表：
+让我们以以下结构创建表 `hobbies2`：
 ```sql
 CREATE TABLE hobbies2
 (
@@ -149,18 +156,17 @@ CREATE TABLE hobbies2
 ORDER BY id;
 ```
 
-并从文件 `hobbies.jsonl` 插入数据：
+并从文件 `hobbies.jsonl` 中插入数据：
 
 ```sql
 INSERT INTO hobbies2 SELECT id, age, hobbies FROM file(hobbies.jsonl)
 ```
 
-在这种情况下，`SELECT` 查询中的所有列都存在于表中，因此 ClickHouse 将使用插入表的结构。
-注意，这仅适用于支持读取列子集的输入格式，如 JSONEachRow、TSKV、Parquet 等（例如，TSV 格式将不适用）。
+在这种情况下，`SELECT` 查询中的所有列都存在于表中，因此ClickHouse将使用插入表的结构。注意，它只适用于支持读取子集列的输入格式，如 JSONEachRow、TSKV、Parquet 等（因此它不适用于 TSV 格式）。
 
 **示例 3：**
 
-让我们创建一个结构为 `hobbies3` 的表：
+让我们以以下结构创建表 `hobbies3`：
 
 ```sql
 CREATE TABLE hobbies3
@@ -173,17 +179,17 @@ CREATE TABLE hobbies3
 ORDER BY identifier;
 ```
 
-并从文件 `hobbies.jsonl` 插入数据：
+并从文件 `hobbies.jsonl` 中插入数据：
 
 ```sql
 INSERT INTO hobbies3 SELECT id, age, hobbies FROM file(hobbies.jsonl)
 ```
 
-在这种情况下，列 `id` 在 `SELECT` 查询中使用，但表中没有此列（它有一个名为 `identifier` 的列），因此 ClickHouse 不能使用插入表的结构，而将使用模式推断。
+在这种情况下，列 `id` 在 `SELECT` 查询中使用，但表中没有此列（它有一个名为 `identifier` 的列），因此ClickHouse无法使用插入表的结构，将使用模式推断。
 
 **示例 4：**
 
-让我们创建一个结构为 `hobbies4` 的表：
+让我们以以下结构创建表 `hobbies4`：
 
 ```sql
 CREATE TABLE hobbies4
@@ -195,30 +201,30 @@ CREATE TABLE hobbies4
 ORDER BY id;
 ```
 
-并从文件 `hobbies.jsonl` 插入数据：
+并从文件 `hobbies.jsonl` 中插入数据：
 
 ```sql
 INSERT INTO hobbies4 SELECT id, empty(hobbies) ? NULL : hobbies[1] FROM file(hobbies.jsonl)
 ```
 
-在这种情况下，在 `SELECT` 查询中对列 `hobbies` 执行了一些操作以将其插入到表中，因此 ClickHouse 不能使用插入表的结构，而将使用模式推断。
+在这种情况下，在 `SELECT` 查询中对列 `hobbies` 执行了一些操作以将其插入到表中，因此ClickHouse无法使用插入表的结构，将使用模式推断。
 ## 模式推断缓存 {#schema-inference-cache}
 
-对于大多数输入格式，模式推断会读取一些数据以确定其结构，并且该过程可能需要一些时间。为了防止 ClickHouse 每次读取相同文件时都推断相同的结构，推断出的结构会被缓存，当再次访问相同文件时，ClickHouse 将使用缓存中的结构。
+对于大多数输入格式，模式推断读取一些数据以确定其结构，而此过程可能需要一些时间。为了防止ClickHouse在每次从同一文件读取数据时推断相同的模式，推断出的模式会被缓存，当再次访问同一文件时，ClickHouse将使用缓存中的模式。
 
 有一些特殊设置控制此缓存：
-- `schema_inference_cache_max_elements_for_{file/s3/hdfs/url/azure}` - 对应表函数的最大缓存模式数量。默认值为 `4096`。这些设置应在服务器配置中设置。
-- `schema_inference_use_cache_for_{file,s3,hdfs,url,azure}` - 允许开启/关闭使用缓存进行模式推断。这些设置可以在查询中使用。
+- `schema_inference_cache_max_elements_for_{file/s3/hdfs/url/azure}` - 对应表函数的最大缓存模式数。默认值为 `4096`。这些设置应在服务器配置中进行设置。
+- `schema_inference_use_cache_for_{file,s3,hdfs,url,azure}` - 允许开启/关闭用于模式推断的缓存。这些设置可以在查询中使用。
 
-文件的模式可以通过修改数据或改变格式设置来更改。因此，模式推断缓存通过文件源、格式名称、使用的格式设置和文件的最后修改时间来识别模式。
+文件的模式可以通过修改数据或更改格式设置来更改。因此，模式推断缓存是通过文件来源、格式名称、所用格式设置和文件的最后修改时间来识别模式的。
 
-注意：通过 `url` 表函数访问的某些文件可能不包含有关最后修改时间的信息；在这种情况下，有一个特殊设置 `schema_inference_cache_require_modification_time_for_url`。禁用此设置允许在不具备最后修改时间的情况下使用缓存中的模式。
+注意：某些通过URL在 `url` 表函数中访问的文件可能不包含有关最后修改时间的信息；在这种情况下，有一个特殊设置 `schema_inference_cache_require_modification_time_for_url`。禁用此设置允许在没有最后修改时间的情况下使用缓存中的模式。
 
-还有一个系统表 [schema_inference_cache](../operations/system-tables/schema_inference_cache.md)，其中包含所有当前缓存中的模式，以及系统查询 `SYSTEM DROP SCHEMA CACHE [FOR File/S3/URL/HDFS]`，允许清理所有源或特定源的模式缓存。
+还有一个系统表 [schema_inference_cache](../operations/system-tables/schema_inference_cache.md)，其中包含所有当前缓存的模式，并且系统查询 `SYSTEM DROP SCHEMA CACHE [FOR File/S3/URL/HDFS]` 允许清除所有源或特定源的模式缓存。
 
 **示例：**
 
-让我们尝试从 s3 `github-2022.ndjson.gz` 推断样本数据的结构，看看模式推断缓存是如何工作的：
+让我们尝试从s3中的示例数据集 `github-2022.ndjson.gz` 推断结构，并查看模式推断缓存是如何工作的：
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/github/github-2022.ndjson.gz')
@@ -251,7 +257,7 @@ SETTINGS allow_experimental_object_type = 1
 5 rows in set. Elapsed: 0.059 sec.
 ```
 
-正如您所见，第二个查询几乎瞬间成功。
+如您所见，第二个查询几乎瞬间成功。
 
 让我们尝试更改一些可能影响推断模式的设置：
 
@@ -270,9 +276,9 @@ SETTINGS input_format_json_read_objects_as_strings = 1
 5 rows in set. Elapsed: 0.611 sec
 ```
 
-如您所见，由于更改了可能影响推断模式的设置，因此未使用缓存中的模式。
+如您所见，对于同一文件，未使用缓存中的模式，因为改变了可能影响推断模式的设置。
 
-让我们检查 `system.schema_inference_cache` 表的内容：
+让我们检查一下 `system.schema_inference_cache` 表的内容：
 
 ```sql
 SELECT schema, format, source FROM system.schema_inference_cache WHERE storage='S3'
@@ -284,7 +290,7 @@ SELECT schema, format, source FROM system.schema_inference_cache WHERE storage='
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-正如您所见，对于同一个文件有两个不同的模式。
+如您所见，对于同一文件有两种不同的模式。
 
 我们可以使用系统查询清除模式缓存：
 ```sql
@@ -303,18 +309,18 @@ SELECT count() FROM system.schema_inference_cache WHERE storage='S3'
 ```
 ## 文本格式 {#text-formats}
 
-对于文本格式，ClickHouse 按行读取数据，根据格式提取列值，然后使用一些递归解析器和启发式方法为每个值确定类型。在模式推断中从数据读取的最大行数和字节数受设置 `input_format_max_rows_to_read_for_schema_inference` (默认 25000) 和 `input_format_max_bytes_to_read_for_schema_inference` (默认 32Mb) 的控制。默认情况下，所有推断出的类型都是 [Nullable](../sql-reference/data-types/nullable.md)，但您可以通过设置 `schema_inference_make_columns_nullable` 来更改此行为（请参见 [设置](#settings-for-text-formats) 部分中的示例）。
+对于文本格式，ClickHouse逐行读取数据，根据格式提取列值，然后使用一些递归解析器和启发式方法来确定每个值的类型。在模式推断时，从数据中读取的最大行数和字节数由设置 `input_format_max_rows_to_read_for_schema_inference`（默认25000）和 `input_format_max_bytes_to_read_for_schema_inference`（默认32Mb）控制。默认情况下，所有推断的类型都是 [Nullable](../sql-reference/data-types/nullable.md)，但您可以通过设置 `schema_inference_make_columns_nullable` 来更改此设置（请参见 [设置](#settings-for-text-formats) 部分的示例）。
 ### JSON 格式 {#json-formats}
 
-在 JSON 格式中，ClickHouse 根据 JSON 规范解析值，然后尝试找到最合适的数据类型。
+在JSON格式中，ClickHouse 根据JSON规范解析值，然后尝试为其找到最合适的数据类型。
 
-让我们看看它是如何工作的，可以推断哪些类型，以及在 JSON 格式中可以使用哪些特定设置。
+让我们看看它是如何工作的，可以推断出哪些类型以及可以在JSON格式中使用哪些特定设置。
 
 **示例**
 
-在后面的示例中，将使用表函数 [format](../sql-reference/table-functions/format.md)。
+在这里及后面的示例中，将使用 [format](../sql-reference/table-functions/format.md) 表函数。
 
-整数、浮点数、布尔值、字符串：
+整数、浮点、布尔值、字符串：
 ```sql
 DESC format(JSONEachRow, '{"int" : 42, "float" : 42.42, "string" : "Hello, World!"}');
 ```
@@ -351,7 +357,7 @@ DESC format(JSONEachRow, '{"arr" : [1, 2, 3], "nested_arrays" : [[1, 2, 3], [4, 
 └───────────────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-如果数组包含 `null`，ClickHouse 将使用其他数组元素的类型：
+如果数组包含 `null`，ClickHouse 会使用其他数组元素的类型：
 ```sql
 DESC format(JSONEachRow, '{"arr" : [null, 42, null]}')
 ```
@@ -361,9 +367,9 @@ DESC format(JSONEachRow, '{"arr" : [null, 42, null]}')
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-命名元组：
+具名元组：
 
-启用 `input_format_json_try_infer_named_tuples_from_objects` 设置后，在模式推断期间 ClickHouse 将尝试从 JSON 对象中推断命名元组。结果命名元组将包含来自样本数据的所有对应 JSON 对象的所有元素。
+启用设置 `input_format_json_try_infer_named_tuples_from_objects` 后，在模式推断过程中，ClickHouse 将尝试从JSON对象中推断具名元组。结果的具名元组将包含来自示例数据的所有相应JSON对象的所有元素。
 
 ```sql
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
@@ -376,9 +382,9 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 └──────┴────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-未命名元组：
+无名元组：
 
-在 JSON 格式中，我们将包含不同类型元素的数组视为未命名元组。
+在JSON格式中，我们将具有不同类型元素的数组视为无名元组。
 ```sql
 DESC format(JSONEachRow, '{"tuple" : [1, "Hello, World!", [1, 2, 3]]}')
 ```
@@ -388,7 +394,7 @@ DESC format(JSONEachRow, '{"tuple" : [1, "Hello, World!", [1, 2, 3]]}')
 └───────┴──────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-如果某些值为 `null` 或为空，我们将使用其他行中的相应值的类型：
+如果某些值为 `null` 或为空，我们会使用其他行对应值的类型：
 ```sql
 DESC format(JSONEachRow, $$
                               {"tuple" : [1, null, null]}
@@ -404,8 +410,8 @@ DESC format(JSONEachRow, $$
 
 映射：
 
-在 JSON 中，我们可以将对象与相同类型的值读取为映射类型。
-注意：这仅在设置 `input_format_json_read_objects_as_strings` 和 `input_format_json_try_infer_named_tuples_from_objects` 被禁用时有效。
+在JSON中，我们可以读取具有相同类型值的对象作为Map类型。
+注意：只有在禁用设置 `input_format_json_read_objects_as_strings` 和 `input_format_json_try_infer_named_tuples_from_objects` 时此设置才会生效。
 
 ```sql
 SET input_format_json_read_objects_as_strings = 0, input_format_json_try_infer_named_tuples_from_objects = 0;
@@ -417,7 +423,7 @@ DESC format(JSONEachRow, '{"map" : {"key1" : 42, "key2" : 24, "key3" : 4}}')
 └──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-JSON 对象类型（如果启用设置 `allow_experimental_object_type`）：
+JSON对象类型（如果启用设置 `allow_experimental_object_type`）：
 
 ```sql
 SET allow_experimental_object_type = 1
@@ -443,7 +449,7 @@ DESC format(JSONEachRow, '{"value" : [[[42, 24], []], {"key1" : 42, "key2" : 24}
 └───────┴──────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-如果 ClickHouse 无法确定某个键的类型，因为数据仅包含 nulls/空对象/空数组，如果启用设置 `input_format_json_infer_incomplete_types_as_strings`，将使用类型 `String`，否则将引发异常：
+如果ClickHouse无法确定某些键的类型，因为数据仅包含null/空对象/空数组，如果启用设置 `input_format_json_infer_incomplete_types_as_strings`，将使用类型 `String`，否则将抛出异常：
 ```sql
 DESC format(JSONEachRow, '{"arr" : [null, null]}') SETTINGS input_format_json_infer_incomplete_types_as_strings = 1;
 ```
@@ -461,10 +467,10 @@ Cannot determine type for column 'arr' by first 1 rows of data,
 most likely this column contains only Nulls or empty Arrays/Maps.
 ...
 ```
-#### JSON 设置 {#json-settings}
+#### JSON设置 {#json-settings}
 ##### input_format_json_try_infer_numbers_from_strings {#input_format_json_try_infer_numbers_from_strings}
 
-启用此设置允许从字符串值中推断数字。
+启用此设置可允许从字符串值中推断数字。
 
 此设置默认禁用。
 
@@ -484,8 +490,8 @@ DESC format(JSONEachRow, $$
 ```
 ##### input_format_json_try_infer_named_tuples_from_objects {#input_format_json_try_infer_named_tuples_from_objects}
 
-启用此设置允许从 JSON 对象中推断命名元组。结果命名元组将包含来自样本数据的所有对应 JSON 对象的所有元素。
-当 JSON 数据不是稀疏时，这个设置会很有用，因此样本数据将包含所有可能的对象键。
+启用此设置可允许从JSON对象中推断具名元组。结果的具名元组将包含来自示例数据的所有相应JSON对象的所有元素。
+当JSON数据不稀疏时，这可能会很有用，因为数据样本将包含所有可能的对象键。
 
 此设置默认启用。
 
@@ -518,14 +524,14 @@ DESC format(JSONEachRow, '{"array" : [{"a" : 42, "b" : "Hello"}, {}, {"c" : [1,2
 ```
 ##### input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects {#input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects}
 
-启用此设置允许在从 JSON 对象推断命名元组时使用字符串类型来处理不明确路径（当 `input_format_json_try_infer_named_tuples_from_objects` 启用时），而不是引发异常。
-这使得即使路径不明确也可以将 JSON 对象读取为命名元组。
+启用此设置可允许在从JSON对象推断具名元组（当启用 `input_format_json_try_infer_named_tuples_from_objects` 时）时，对模糊路径使用字符串类型，而不是抛出异常。
+它允许将JSON对象读取为具名元组，即使存在模糊路径。
 
-默认情况下禁用。
+默认禁用。
 
 **示例**
 
-设置禁用时：
+禁用设置：
 ```sql
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 SET input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects = 0;
@@ -539,7 +545,7 @@ Code: 117. DB::Exception: JSON objects have ambiguous data: in some objects path
 You can specify the structure manually. (CANNOT_EXTRACT_TABLE_STRUCTURE)
 ```
 
-设置启用时：
+启用设置：
 ```sql
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 SET input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects = 1;
@@ -559,11 +565,12 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : 
 ```
 ##### input_format_json_read_objects_as_strings {#input_format_json_read_objects_as_strings}
 
-启用此设置允许将嵌套 JSON 对象作为字符串读取。此设置可用于在不使用 JSON 对象类型的情况下读取嵌套 JSON 对象。
+启用此设置可允许将嵌套JSON对象作为字符串读取。
+此设置可用于在不使用JSON对象类型的情况下读取嵌套JSON对象。
 
 此设置默认启用。
 
-注意：启用此设置仅在设置 `input_format_json_try_infer_named_tuples_from_objects` 被禁用的情况下生效。
+注意：启用此设置仅在禁用设置 `input_format_json_try_infer_named_tuples_from_objects` 时生效。
 
 ```sql
 SET input_format_json_read_objects_as_strings = 1, input_format_json_try_infer_named_tuples_from_objects = 0;
@@ -579,7 +586,7 @@ DESC format(JSONEachRow, $$
 ```
 ##### input_format_json_read_numbers_as_strings {#input_format_json_read_numbers_as_strings}
 
-启用此设置允许将数值读取为字符串。
+启用此设置可允许将数值作为字符串读取。
 
 此设置默认启用。
 
@@ -599,7 +606,7 @@ DESC format(JSONEachRow, $$
 ```
 ##### input_format_json_read_bools_as_numbers {#input_format_json_read_bools_as_numbers}
 
-启用此设置允许将布尔值作为数字读取。
+启用此设置可允许将布尔值作为数字读取。
 
 此设置默认启用。
 
@@ -619,7 +626,7 @@ DESC format(JSONEachRow, $$
 ```
 ##### input_format_json_read_bools_as_strings {#input_format_json_read_bools_as_strings}
 
-启用此设置允许将布尔值作为字符串读取。
+启用此设置可允许将布尔值作为字符串读取。
 
 此设置默认启用。
 
@@ -639,7 +646,7 @@ DESC format(JSONEachRow, $$
 ```
 ##### input_format_json_read_arrays_as_strings {#input_format_json_read_arrays_as_strings}
 
-启用此设置允许将 JSON 数组值作为字符串读取。
+启用此设置可允许将JSON数组值作为字符串读取。
 
 此设置默认启用。
 
@@ -656,8 +663,8 @@ SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow
 ```
 ##### input_format_json_infer_incomplete_types_as_strings {#input_format_json_infer_incomplete_types_as_strings}
 
-启用此设置允许在模式推断过程中将仅包含 `Null`/`{}`/`[]` 的 JSON 键视为字符串类型。
-在 JSON 格式中，只要启用所有相应的设置（它们默认全启用），任何值都可以作为字符串读取，我们可以避免类似于 `无法通过前 25000 行数据确定列 'column_name' 的类型，最有可能该列仅包含 nulls 或空数组/地图` 的错误，使用字符串类型来处理未知类型的键。
+启用此设置可允许在模式推断期间使用字符串类型，用于数据样本中仅包含 `Null`/`{}`/`[]` 的JSON键。
+在JSON格式中，如果启用（默认启用），任何值都可以读取为字符串，并且我们可以通过使用未知类型的键的字符串类型避免错误，例如“无法确定列 'column_name' 的类型，因为前25000行数据大多包含空值或空数组/映射”的错误。
 
 示例：
 
@@ -679,15 +686,15 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" :
 ```
 ### CSV {#csv}
 
-在 CSV 格式中，ClickHouse 根据分隔符从行中提取列值。ClickHouse 期望除数字和字符串之外的所有类型都用双引号括起来。如果值包含在双引号中，ClickHouse 会尝试使用递归解析器解析引号内的数据，然后尝试找到最合适的数据类型。如果值不在双引号中，ClickHouse 会尝试将其解析为数字，如果该值不是数字，则 ClickHouse 将其视为字符串。
+在CSV格式中，ClickHouse根据分隔符从行中提取列值。ClickHouse期望除数字和字符串之外的所有类型都用双引号括起来。如果值在双引号中，ClickHouse尝试使用递归解析器解析引号内的数据，然后尝试为其找到最合适的数据类型。如果值不在双引号中，ClickHouse尝试将其解析为数字，如果值不是数字，ClickHouse将其视为字符串。
 
-如果您不希望 ClickHouse 尝试使用某些解析器和启发式方法来确定复杂类型，可以禁用设置 `input_format_csv_use_best_effort_in_schema_inference`，ClickHouse 将视所有列为字符串。
+如果您不希望ClickHouse尝试使用一些解析器和启发式方法来确定复杂类型，可以禁用设置 `input_format_csv_use_best_effort_in_schema_inference`，ClickHouse将把所有列视为字符串。
 
-如果启用设置 `input_format_csv_detect_header`，ClickHouse 将试图在推断模式时检测带有列名（和可能的类型）的标题。此设置默认启用。
+如果启用设置 `input_format_csv_detect_header`，ClickHouse将在推断模式时尝试检测带有列名（可能还有类型）的头部。此设置默认启用。
 
 **示例：**
 
-整数、浮点数、布尔值、字符串：
+整数、浮点、布尔值、字符串：
 ```sql
 DESC format(CSV, '42,42.42,true,"Hello,World!"')
 ```
@@ -744,7 +751,7 @@ DESC format(CSV, $$"['Hello', 'world']","[['Abc', 'Def'], []]"$$)
 └──────┴────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-如果数组包含 null，ClickHouse 将使用其他数组元素的类型：
+如果数组包含null，ClickHouse将使用其他数组元素的类型：
 ```sql
 DESC format(CSV, '"[NULL, 42, NULL]"')
 ```
@@ -774,7 +781,7 @@ DESC format(CSV, $$"[{'key1' : [[42, 42], []], 'key2' : [[null], [42]]}]"$$)
 └──────┴───────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-如果 ClickHouse 无法确定引号内的类型，因为数据仅包含 null，ClickHouse 将将其视为字符串：
+如果ClickHouse无法确定引号内的类型，因为数据仅包含空值，ClickHouse将其视为字符串：
 ```sql
 DESC format(CSV, '"[NULL, NULL]"')
 ```
@@ -797,7 +804,7 @@ DESC format(CSV, '"[1,2,3]",42.42,Hello World!')
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-标题自动检测的示例（当 `input_format_csv_detect_header` 启用时）：
+标题自动检测示例（当启用 `input_format_csv_detect_header` 时）：
 
 仅名称：
 ```sql
@@ -834,7 +841,7 @@ $$)
 └────────┴───────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-注意：只有在至少有一列非字符串类型的情况下才能检测到标题。如果所有列都为字符串类型，则不会检测到标题：
+请注意，标题仅在至少有一列具有非字符串类型的情况下才能检测到。如果所有列都是字符串类型，则不会检测到标题：
 
 ```sql
 SELECT * FROM format(CSV,
@@ -851,10 +858,10 @@ $$)
 │ World        │ Hello         │
 └──────────────┴───────────────┘
 ```
-#### CSV 设置 {#csv-settings}
+#### CSV设置 {#csv-settings}
 ##### input_format_csv_try_infer_numbers_from_strings {#input_format_csv_try_infer_numbers_from_strings}
 
-启用此设置允许从字符串值中推断数字。
+启用此设置可允许从字符串值中推断数字。
 
 此设置默认禁用。
 
@@ -872,15 +879,15 @@ DESC format(CSV, '42,42.42');
 ```
 ### TSV/TSKV {#tsv-tskv}
 
-在 TSV/TSKV 格式中，ClickHouse 根据制表符分隔符从行中提取列值，然后使用递归解析器解析提取的值以确定最合适的类型。如果无法确定类型，ClickHouse 将把该值视为字符串。
+在TSV/TSKV格式中，ClickHouse根据表格分隔符从行中提取列值，然后使用递归解析器解析提取的值，以确定最合适的类型。如果无法确定类型，ClickHouse将此值视为字符串。
 
-如果您不希望 ClickHouse 尝试使用某些解析器和启发式方法来确定复杂类型，可以禁用设置 `input_format_tsv_use_best_effort_in_schema_inference`，ClickHouse 将把所有列视为字符串。
+如果您不希望ClickHouse尝试使用一些解析器和启发式方法来确定复杂类型，可以禁用设置 `input_format_tsv_use_best_effort_in_schema_inference`，ClickHouse将把所有列视为字符串。
 
-如果启用设置 `input_format_tsv_detect_header`，ClickHouse 将尝试在推断模式时检测带有列名（和可能的类型）的标题。此设置默认启用。
+如果启用设置 `input_format_tsv_detect_header`，ClickHouse将在推断模式时尝试检测带有列名（可能还有类型）的头部。此设置默认启用。
 
 **示例：**
 
-整数、浮点数、布尔值、字符串：
+整数、浮点、布尔值、字符串：
 ```sql
 DESC format(TSV, '42    42.42    true    Hello,World!')
 ```
@@ -937,7 +944,7 @@ DESC format(TSV, '[''Hello'', ''world'']    [[''Abc'', ''Def''], []]')
 └──────┴────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-如果数组包含 null，ClickHouse 将使用其他数组元素的类型：
+如果数组包含null，ClickHouse将使用其他数组元素的类型：
 ```sql
 DESC format(TSV, '[NULL, 42, NULL]')
 ```
@@ -977,7 +984,7 @@ DESC format(TSV, $$[{'key1' : [(42, 'Hello'), (24, NULL)], 'key2' : [(NULL, ',')
 └──────┴─────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-如果 ClickHouse 无法确定类型，因为数据仅包含 null，ClickHouse 将将其视为字符串：
+如果ClickHouse无法确定类型，因为数据仅包含空值，ClickHouse将其视为字符串：
 ```sql
 DESC format(TSV, '[NULL, NULL]')
 ```
@@ -1000,7 +1007,7 @@ DESC format(TSV, '[1,2,3]    42.42    Hello World!')
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-标题自动检测的示例（当 `input_format_tsv_detect_header` 启用时）：
+标题自动检测示例（当启用 `input_format_tsv_detect_header` 时）：
 
 仅名称：
 ```sql
@@ -1037,7 +1044,7 @@ $$)
 └────────┴───────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-注意：只有在至少有一列非字符串类型的情况下才能检测到标题。如果所有列都为字符串类型，则不会检测到标题：
+请注意，标题仅在至少有一列具有非字符串类型的情况下才能检测到。如果所有列都是字符串类型，则不会检测到标题：
 
 ```sql
 SELECT * FROM format(TSV,
@@ -1056,11 +1063,11 @@ $$)
 ```
 ### 值 {#values}
 
-在 Values 格式中，ClickHouse 从行中提取列值，然后使用类似于解析字面量的递归解析器解析它。
+在Values格式中，ClickHouse从行中提取列值，然后使用递归解析器进行解析，类似于字面值的解析。
 
 **示例：**
 
-整数、浮点数、布尔值、字符串：
+整数、浮点、布尔值、字符串：
 ```sql
 DESC format(Values, $$(42, 42.42, true, 'Hello,World!')$$)
 ```
@@ -1097,7 +1104,7 @@ DESC format(Values, '([1,2,3], [[1, 2], [], [3, 4]])')
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-如果数组包含 null，ClickHouse 将使用其他数组元素的类型：
+如果数组包含null，ClickHouse将使用其他数组元素的类型：
 ```sql
 DESC format(Values, '([NULL, 42, NULL])')
 ```
@@ -1137,7 +1144,7 @@ DESC format(Values, $$([{'key1' : [(42, 'Hello'), (24, NULL)], 'key2' : [(NULL, 
 └──────┴─────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-如果 ClickHouse 无法确定类型，因为数据仅包含 null，将引发异常：
+如果ClickHouse无法确定类型，因为数据仅包含空值，将抛出异常：
 ```sql
 DESC format(Values, '([NULL, NULL])')
 ```
@@ -1160,430 +1167,12 @@ DESC format(TSV, '[1,2,3]    42.42    Hello World!')
 │ c3   │ Nullable(String) │              │                    │         │                  │                │
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-### 自定义分隔符 {#custom-separated}
+### 自描述格式 {#self-describing-formats}
 
-在自定义分隔符格式中，ClickHouse 首先根据指定的分隔符从行中提取所有列值，然后尝试根据转义规则推断每个值的数据类型。
-
-如果启用设置 `input_format_custom_detect_header`，ClickHouse 将尝试在推断模式时检测带有列名（和可能的类型）的标题。此设置默认启用。
-
-**示例**
-
-```sql
-SET format_custom_row_before_delimiter = '<row_before_delimiter>',
-       format_custom_row_after_delimiter = '<row_after_delimiter>\n',
-       format_custom_row_between_delimiter = '<row_between_delimiter>\n',
-       format_custom_result_before_delimiter = '<result_before_delimiter>\n',
-       format_custom_result_after_delimiter = '<result_after_delimiter>\n',
-       format_custom_field_delimiter = '<field_delimiter>',
-       format_custom_escaping_rule = 'Quoted'
-
-DESC format(CustomSeparated, $$<result_before_delimiter>
-<row_before_delimiter>42.42<field_delimiter>'Some string 1'<field_delimiter>[1, NULL, 3]<row_after_delimiter>
-<row_between_delimiter>
-<row_before_delimiter>NULL<field_delimiter>'Some string 3'<field_delimiter>[1, 2, NULL]<row_after_delimiter>
-<result_after_delimiter>
-$$)
-```
-```response
-┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Float64)      │              │                    │         │                  │                │
-│ c2   │ Nullable(String)       │              │                    │         │                  │                │
-│ c3   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-
-标题自动检测的示例（当 `input_format_custom_detect_header` 启用时）：
-
-```sql
-SET format_custom_row_before_delimiter = '<row_before_delimiter>',
-       format_custom_row_after_delimiter = '<row_after_delimiter>\n',
-       format_custom_row_between_delimiter = '<row_between_delimiter>\n',
-       format_custom_result_before_delimiter = '<result_before_delimiter>\n',
-       format_custom_result_after_delimiter = '<result_after_delimiter>\n',
-       format_custom_field_delimiter = '<field_delimiter>',
-       format_custom_escaping_rule = 'Quoted'
-
-DESC format(CustomSeparated, $$<result_before_delimiter>
-<row_before_delimiter>'number'<field_delimiter>'string'<field_delimiter>'array'<row_after_delimiter>
-<row_between_delimiter>
-<row_before_delimiter>42.42<field_delimiter>'Some string 1'<field_delimiter>[1, NULL, 3]<row_after_delimiter>
-<row_between_delimiter>
-<row_before_delimiter>NULL<field_delimiter>'Some string 3'<field_delimiter>[1, 2, NULL]<row_after_delimiter>
-<result_after_delimiter>
-$$)
-```
-
-```response
-┌─number─┬─string────────┬─array──────┐
-│  42.42 │ Some string 1 │ [1,NULL,3] │
-│   ᴺᵁᴸᴸ │ Some string 3 │ [1,2,NULL] │
-└────────┴───────────────┴────────────┘
-```
-### 模板 {#template}
-
-在模板格式中，ClickHouse 首先根据指定的模板从行中提取所有列值，然后尝试根据其转义规则推断每个值的数据类型。
-
-**示例**
-
-假设我们有一个文件 `resultset`，内容如下：
-```bash
-<result_before_delimiter>
-${data}<result_after_delimiter>
-```
-
-还有一个文件 `row_format`，内容如下：
-
-```text
-<row_before_delimiter>${column_1:CSV}<field_delimiter_1>${column_2:Quoted}<field_delimiter_2>${column_3:JSON}<row_after_delimiter>
-```
-
-然后我们可以进行以下查询：
-
-```sql
-SET format_template_rows_between_delimiter = '<row_between_delimiter>\n',
-       format_template_row = 'row_format',
-       format_template_resultset = 'resultset_format'
-
-DESC format(Template, $$<result_before_delimiter>
-<row_before_delimiter>42.42<field_delimiter_1>'Some string 1'<field_delimiter_2>[1, null, 2]<row_after_delimiter>
-<row_between_delimiter>
-<row_before_delimiter>\N<field_delimiter_1>'Some string 3'<field_delimiter_2>[1, 2, null]<row_after_delimiter>
-<result_after_delimiter>
-$$)
-```
-```response
-┌─name─────┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ column_1 │ Nullable(Float64)      │              │                    │         │                  │                │
-│ column_2 │ Nullable(String)       │              │                    │         │                  │                │
-│ column_3 │ Array(Nullable(Int64)) │              │                    │         │                  │                │
-└──────────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-### 正则表达式 {#regexp}
-
-与模板类似，在正则表达式格式中，ClickHouse 首先根据指定的正则表达式从行中提取所有列值，然后尝试根据指定的转义规则推断每个值的数据类型。
-
-**示例**
-
-```sql
-SET format_regexp = '^Line: value_1=(.+?), value_2=(.+?), value_3=(.+?)',
-       format_regexp_escaping_rule = 'CSV'
-
-DESC format(Regexp, $$Line: value_1=42, value_2="Some string 1", value_3="[1, NULL, 3]"
-Line: value_1=2, value_2="Some string 2", value_3="[4, 5, NULL]"$$)
-```
-```response
-┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Int64)        │              │                    │         │                  │                │
-│ c2   │ Nullable(String)       │              │                    │         │                  │                │
-│ c3   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-### 文本格式的设置 {#settings-for-text-formats}
-#### input_format_max_rows_to_read_for_schema_inference/input_format_max_bytes_to_read_for_schema_inference {#input-format-max-rows-to-read-for-schema-inference}
-
-这些设置控制在进行模式推断时要读取的数据量。读取的行数/字节数越多，进行模式推断所花费的时间就越多，但正确确定类型的机会也越大（尤其是当数据包含大量 null 时）。
-
-默认值：
-- `input_format_max_rows_to_read_for_schema_inference` 的值为 `25000`。
-- `input_format_max_bytes_to_read_for_schema_inference` 的值为 `33554432`（32 Mb）。
-#### column_names_for_schema_inference {#column-names-for-schema-inference}
-
-在没有显式列名的格式中用于模式推断的列名列表。指定的名称将替代默认的 `c1,c2,c3,...`。格式：`column1,column2,column3,...`。
-
-**示例**
-
-```sql
-DESC format(TSV, 'Hello, World!    42    [1, 2, 3]') settings column_names_for_schema_inference = 'str,int,arr'
-```
-```response
-┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ str  │ Nullable(String)       │              │                    │         │                  │                │
-│ int  │ Nullable(Int64)        │              │                    │         │                  │                │
-│ arr  │ Array(Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-#### schema_inference_hints {#schema-inference-hints}
-
-用于模式推断的列名和类型列表，而不是自动确定的类型。格式：`'column_name1 column_type1, column_name2 column_type2, ...'`。
-此设置可以用于指定无法自动确定的列类型或用于优化模式。
-
-**示例**
-
-```sql
-DESC format(JSONEachRow, '{"id" : 1, "age" : 25, "name" : "Josh", "status" : null, "hobbies" : ["football", "cooking"]}') SETTINGS schema_inference_hints = 'age LowCardinality(UInt8), status Nullable(String)', allow_suspicious_low_cardinality_types=1
-```
-```response
-┌─name────┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ id      │ Nullable(Int64)         │              │                    │         │                  │                │
-│ age     │ LowCardinality(UInt8)   │              │                    │         │                  │                │
-│ name    │ Nullable(String)        │              │                    │         │                  │                │
-│ status  │ Nullable(String)        │              │                    │         │                  │                │
-│ hobbies │ Array(Nullable(String)) │              │                    │         │                  │                │
-└─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-#### schema_inference_make_columns_nullable {#schema-inference-make-columns-nullable}
-
-控制在没有关于可空性信息的格式中使推断类型为 `Nullable`。
-如果启用该设置，所有推断类型将为 `Nullable`；如果禁用，该推断类型将永远不是 `Nullable`；如果设置为 `auto`，则仅当列中在模式推断期间解析的样本中包含 `NULL` 或文件元数据包含关于列可空性的信息时，推断类型才为 `Nullable`。
-
-默认启用。
-
-**示例**
-
-```sql
-SET schema_inference_make_columns_nullable = 1
-DESC format(JSONEachRow, $$
-                                {"id" :  1, "age" :  25, "name" : "Josh", "status" : null, "hobbies" : ["football", "cooking"]}
-                                {"id" :  2, "age" :  19, "name" :  "Alan", "status" : "married", "hobbies" :  ["tennis", "art"]}
-                         $$)
-```
-```response
-┌─name────┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ id      │ Nullable(Int64)         │              │                    │         │                  │                │
-│ age     │ Nullable(Int64)         │              │                    │         │                  │                │
-│ name    │ Nullable(String)        │              │                    │         │                  │                │
-│ status  │ Nullable(String)        │              │                    │         │                  │                │
-│ hobbies │ Array(Nullable(String)) │              │                    │         │                  │                │
-└─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-```sql
-SET schema_inference_make_columns_nullable = 'auto';
-DESC format(JSONEachRow, $$
-                                {"id" :  1, "age" :  25, "name" : "Josh", "status" : null, "hobbies" : ["football", "cooking"]}
-                                {"id" :  2, "age" :  19, "name" :  "Alan", "status" : "married", "hobbies" :  ["tennis", "art"]}
-                         $$)
-```
-```response
-┌─name────┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ id      │ Int64            │              │                    │         │                  │                │
-│ age     │ Int64            │              │                    │         │                  │                │
-│ name    │ String           │              │                    │         │                  │                │
-│ status  │ Nullable(String) │              │                    │         │                  │                │
-│ hobbies │ Array(String)    │              │                    │         │                  │                │
-└─────────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-
-```sql
-SET schema_inference_make_columns_nullable = 0;
-DESC format(JSONEachRow, $$
-                                {"id" :  1, "age" :  25, "name" : "Josh", "status" : null, "hobbies" : ["football", "cooking"]}
-                                {"id" :  2, "age" :  19, "name" :  "Alan", "status" : "married", "hobbies" :  ["tennis", "art"]}
-                         $$)
-```
-```response
-
-┌─name────┬─type──────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ id      │ Int64         │              │                    │         │                  │                │
-│ age     │ Int64         │              │                    │         │                  │                │
-│ name    │ String        │              │                    │         │                  │                │
-│ status  │ String        │              │                    │         │                  │                │
-│ hobbies │ Array(String) │              │                    │         │                  │                │
-└─────────┴───────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-#### input_format_try_infer_integers {#input-format-try-infer-integers}
-
-:::note
-此设置不适用于 `JSON` 数据类型。
-:::
-
-如果启用，ClickHouse 将尝试在文本格式的模式推断中推断出整数而非浮点数。
-如果样本数据中的列中的所有数字都是整数，则结果类型将为 `Int64`；如果至少有一个数字是浮点数，则结果类型将为 `Float64`。
-如果样本数据仅包含整数，并且至少有一个整数为正且溢出 `Int64`，ClickHouse 将推断为 `UInt64`。
-
-默认启用。
-
-**示例**
-
-```sql
-SET input_format_try_infer_integers = 0
-DESC format(JSONEachRow, $$
-                                {"number" : 1}
-                                {"number" : 2}
-                         $$)
-```
-```response
-┌─name───┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ number │ Nullable(Float64) │              │                    │         │                  │                │
-└────────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-```sql
-SET input_format_try_infer_integers = 1
-DESC format(JSONEachRow, $$
-                                {"number" : 1}
-                                {"number" : 2}
-                         $$)
-```
-```response
-┌─name───┬─type────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ number │ Nullable(Int64) │              │                    │         │                  │                │
-└────────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-```sql
-DESC format(JSONEachRow, $$
-                                {"number" : 1}
-                                {"number" : 18446744073709551615}
-                         $$)
-```
-```response
-┌─name───┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ number │ Nullable(UInt64) │              │                    │         │                  │                │
-└────────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-```sql
-DESC format(JSONEachRow, $$
-                                {"number" : 1}
-                                {"number" : 2.2}
-                         $$)
-```
-```response
-┌─name───┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ number │ Nullable(Float64) │              │                    │         │                  │                │
-└────────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-#### input_format_try_infer_datetimes {#input-format-try-infer-datetimes}
-
-如果启用，ClickHouse 将尝试在文本格式的模式推断中从字符串字段推断类型 `DateTime` 或 `DateTime64`。
-如果样本数据中列的所有字段均成功解析为日期时间，则结果类型将为 `DateTime` 或 `DateTime64(9)`（如果任何日期时间具有分数部分），如果至少有一个字段未解析为日期时间，则结果类型将为 `String`。
-
-默认启用。
-
-**示例**
-
-```sql
-SET input_format_try_infer_datetimes = 0;
-DESC format(JSONEachRow, $$
-                                {"datetime" : "2021-01-01 00:00:00", "datetime64" : "2021-01-01 00:00:00.000"}
-                                {"datetime" : "2022-01-01 00:00:00", "datetime64" : "2022-01-01 00:00:00.000"}
-                         $$)
-```
-```response
-┌─name───────┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ datetime   │ Nullable(String) │              │                    │         │                  │                │
-│ datetime64 │ Nullable(String) │              │                    │         │                  │                │
-└────────────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-```sql
-SET input_format_try_infer_datetimes = 1;
-DESC format(JSONEachRow, $$
-                                {"datetime" : "2021-01-01 00:00:00", "datetime64" : "2021-01-01 00:00:00.000"}
-                                {"datetime" : "2022-01-01 00:00:00", "datetime64" : "2022-01-01 00:00:00.000"}
-                         $$)
-```
-```response
-┌─name───────┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ datetime   │ Nullable(DateTime)      │              │                    │         │                  │                │
-│ datetime64 │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
-└────────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-```sql
-DESC format(JSONEachRow, $$
-                                {"datetime" : "2021-01-01 00:00:00", "datetime64" : "2021-01-01 00:00:00.000"}
-                                {"datetime" : "unknown", "datetime64" : "unknown"}
-                         $$)
-```
-```response
-┌─name───────┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ datetime   │ Nullable(String) │              │                    │         │                  │                │
-│ datetime64 │ Nullable(String) │              │                    │         │                  │                │
-└────────────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-#### input_format_try_infer_datetimes_only_datetime64 {#input-format-try-infer-datetimes-only-datetime64}
-
-如果启用，即使日期时间值不包含分数部分，ClickHouse 也总是会在启用 `input_format_try_infer_datetimes` 的情况下推断 `DateTime64(9)`。
-
-默认禁用。
-
-**示例**
-
-```sql
-SET input_format_try_infer_datetimes = 1;
-SET input_format_try_infer_datetimes_only_datetime64 = 1;
-DESC format(JSONEachRow, $$
-                                {"datetime" : "2021-01-01 00:00:00", "datetime64" : "2021-01-01 00:00:00.000"}
-                                {"datetime" : "2022-01-01 00:00:00", "datetime64" : "2022-01-01 00:00:00.000"}
-                         $$)
-```
-
-```response
-┌─name───────┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ datetime   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
-│ datetime64 │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
-└────────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-
-注意：在进行模式推断时，解析日期时间时需遵循设置 [date_time_input_format](/operations/settings/settings-formats.md#date_time_input_format)。
-#### input_format_try_infer_dates {#input-format-try-infer-dates}
-
-如果启用，ClickHouse 将尝试在文本格式的模式推断中从字符串字段推断类型 `Date`。
-如果样本数据中列的所有字段均成功解析为日期，则结果类型将为 `Date`；如果至少有一个字段未解析为日期，则结果类型将为 `String`。
-
-默认启用。
-
-**示例**
-
-```sql
-SET input_format_try_infer_datetimes = 0, input_format_try_infer_dates = 0
-DESC format(JSONEachRow, $$
-                                {"date" : "2021-01-01"}
-                                {"date" : "2022-01-01"}
-                         $$)
-```
-```response
-┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ date │ Nullable(String) │              │                    │         │                  │                │
-└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-```sql
-SET input_format_try_infer_dates = 1
-DESC format(JSONEachRow, $$
-                                {"date" : "2021-01-01"}
-                                {"date" : "2022-01-01"}
-                         $$)
-```
-```response
-┌─name─┬─type───────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ date │ Nullable(Date) │              │                    │         │                  │                │
-└──────┴────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-```sql
-DESC format(JSONEachRow, $$
-                                {"date" : "2021-01-01"}
-                                {"date" : "unknown"}
-                         $$)
-```
-```response
-┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ date │ Nullable(String) │              │                    │         │                  │                │
-└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-#### input_format_try_infer_exponent_floats {#input-format-try-infer-exponent-floats}
-
-如果启用，ClickHouse 将尝试在文本格式中推断指数形式的浮点数（JSON 中指数形式的数字始终被推断）。
-
-默认禁用。
-
-**示例**
-
-```sql
-SET input_format_try_infer_exponent_floats = 1;
-DESC format(CSV,
-$$1.1E10
-2.3e-12
-42E00
-$$)
-```
-```response
-┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Float64) │              │                    │         │                  │                │
-└──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
-## 自描述格式 {#self-describing-formats}
-
-自描述格式在数据自身中包含关于结构的信息，可能是具有描述的某种头部、二进制类型树或某种表格。要从这种格式的文件中自动推断模式，ClickHouse 将读取一部分数据，其中包含关于类型的信息，并将其转换为 ClickHouse 表的模式。
+自描述格式在数据本身中包含有关数据结构的信息，可以是带有描述的某个头部、二进制类型树或某种表。为了自动从这种格式的文件中推断模式，ClickHouse读取包含类型信息的数据部分并将其转换为ClickHouse表的模式。
 ### 带有 -WithNamesAndTypes 后缀的格式 {#formats-with-names-and-types}
 
-ClickHouse 支持一些带有 -WithNamesAndTypes 后缀的文本格式。此后缀意味着数据在实际数据之前包含两行额外的列名和类型。
-在此类格式的模式推断中，ClickHouse 读取前两行并提取列名和类型。
+ClickHouse支持一些带有后缀 -WithNamesAndTypes 的文本格式。此后缀表示数据在实际数据之前包含两行列名和类型。在此类格式的模式推断中，ClickHouse读取前两行，并提取列名和类型。
 
 **示例**
 
@@ -1601,10 +1190,10 @@ $$)
 │ arr  │ Array(UInt8) │              │                    │         │                  │                │
 └──────┴──────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-### 带有元数据的 JSON 格式 {#json-with-metadata}
+### 带有元数据的JSON格式 {#json-with-metadata}
 
-某些 JSON 输入格式 ([JSON](formats.md#json), [JSONCompact](/interfaces/formats/JSONCompact), [JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)) 包含列名和类型的元数据。
-在此类格式的模式推断中，ClickHouse 读取此元数据。
+某些JSON输入格式（[JSON](formats.md#json), [JSONCompact](/interfaces/formats/JSONCompact), [JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)）包含带有列名和类型的元数据。
+在此类格式的模式推断中，ClickHouse会读取这些元数据。
 
 **示例**
 ```sql
@@ -1655,33 +1244,33 @@ $$)
 ```
 ### Avro {#avro}
 
-在 Avro 格式中，ClickHouse 从数据中读取其模式，并使用以下类型匹配将其转换为 ClickHouse 模式：
+在Avro格式中，ClickHouse从数据中读取其模式，并使用以下类型匹配将其转换为ClickHouse模式：
 
-| Avro 数据类型                      | ClickHouse 数据类型                                                         |
-|------------------------------------|----------------------------------------------------------------------------|
-| `boolean`                          | [Bool](../sql-reference/data-types/boolean.md)                              |
-| `int`                              | [Int32](../sql-reference/data-types/int-uint.md)                            |
-| `int (date)` \*                    | [Date32](../sql-reference/data-types/date32.md)                             |
-| `long`                             | [Int64](../sql-reference/data-types/int-uint.md)                            |
-| `float`                            | [Float32](../sql-reference/data-types/float.md)                             |
-| `double`                           | [Float64](../sql-reference/data-types/float.md)                             |
-| `bytes`, `string`                  | [String](../sql-reference/data-types/string.md)                             |
-| `fixed`                            | [FixedString(N)](../sql-reference/data-types/fixedstring.md)                |
-| `enum`                             | [Enum](../sql-reference/data-types/enum.md)                                 |
-| `array(T)`                         | [Array(T)](../sql-reference/data-types/array.md)                            |
-| `union(null, T)`, `union(T, null)` | [Nullable(T)](../sql-reference/data-types/date.md)                          |
+| Avro数据类型                     | ClickHouse数据类型                                                           |
+|------------------------------------|--------------------------------------------------------------------------------|
+| `boolean`                          | [Bool](../sql-reference/data-types/boolean.md)                                 |
+| `int`                              | [Int32](../sql-reference/data-types/int-uint.md)                               |
+| `int (date)` \*                    | [Date32](../sql-reference/data-types/date32.md)                                |
+| `long`                             | [Int64](../sql-reference/data-types/int-uint.md)                               |
+| `float`                            | [Float32](../sql-reference/data-types/float.md)                                |
+| `double`                           | [Float64](../sql-reference/data-types/float.md)                                |
+| `bytes`, `string`                  | [String](../sql-reference/data-types/string.md)                                |
+| `fixed`                            | [FixedString(N)](../sql-reference/data-types/fixedstring.md)                   |
+| `enum`                             | [Enum](../sql-reference/data-types/enum.md)                                    |
+| `array(T)`                         | [Array(T)](../sql-reference/data-types/array.md)                               |
+| `union(null, T)`, `union(T, null)` | [Nullable(T)](../sql-reference/data-types/date.md)                             |
 | `null`                             | [Nullable(Nothing)](../sql-reference/data-types/special-data-types/nothing.md) |
-| `string (uuid)` \*                 | [UUID](../sql-reference/data-types/uuid.md)                                 |
-| `binary (decimal)` \*              | [Decimal(P, S)](../sql-reference/data-types/decimal.md)                      |
+| `string (uuid)` \*                 | [UUID](../sql-reference/data-types/uuid.md)                                    |
+| `binary (decimal)` \*              | [Decimal(P, S)](../sql-reference/data-types/decimal.md)                         |
 
-\* [Avro 逻辑类型](https://avro.apache.org/docs/current/spec.html#Logical+Types)
+\* [Avro逻辑类型](https://avro.apache.org/docs/current/spec.html#Logical+Types)
 
-其他 Avro 类型不被支持。
+其他Avro类型不支持。
 ### Parquet {#parquet}
 
-在 Parquet 格式中，ClickHouse 从数据读取其模式，并使用以下类型匹配将其转换为 ClickHouse 模式：
+在 Parquet 格式中，ClickHouse 从数据中读取其模式并使用以下类型匹配将其转换为 ClickHouse 模式：
 
-| Parquet 数据类型               | ClickHouse 数据类型                                      |
+| Parquet 数据类型            | ClickHouse 数据类型                                    |
 |------------------------------|---------------------------------------------------------|
 | `BOOL`                       | [Bool](../sql-reference/data-types/boolean.md)          |
 | `UINT8`                      | [UInt8](../sql-reference/data-types/int-uint.md)        |
@@ -1703,13 +1292,13 @@ $$)
 | `STRUCT`                     | [Tuple](../sql-reference/data-types/tuple.md)           |
 | `MAP`                        | [Map](../sql-reference/data-types/map.md)               |
 
-其他 Parquet 类型不受支持。默认情况下，所有推断类型都在 `Nullable` 中，但可以通过设置 `schema_inference_make_columns_nullable` 进行更改。
+其他 Parquet 类型不被支持。默认情况下，所有推断的类型都是 `Nullable`，但可以通过设置 `schema_inference_make_columns_nullable` 进行更改。
 
 ### Arrow {#arrow}
 
-在 Arrow 格式中，ClickHouse 从数据读取其模式，并使用以下类型匹配将其转换为 ClickHouse 模式：
+在 Arrow 格式中，ClickHouse 从数据中读取其模式并使用以下类型匹配将其转换为 ClickHouse 模式：
 
-| Arrow 数据类型                 | ClickHouse 数据类型                                     |
+| Arrow 数据类型                 | ClickHouse 数据类型                                    |
 |---------------------------------|---------------------------------------------------------|
 | `BOOL`                          | [Bool](../sql-reference/data-types/boolean.md)          |
 | `UINT8`                         | [UInt8](../sql-reference/data-types/int-uint.md)        |
@@ -1731,11 +1320,11 @@ $$)
 | `STRUCT`                        | [Tuple](../sql-reference/data-types/tuple.md)           |
 | `MAP`                           | [Map](../sql-reference/data-types/map.md)               |
 
-其他 Arrow 类型不受支持。默认情况下，所有推断类型都在 `Nullable` 中，但可以通过设置 `schema_inference_make_columns_nullable` 进行更改。
+其他 Arrow 类型不被支持。默认情况下，所有推断的类型都是 `Nullable`，但可以通过设置 `schema_inference_make_columns_nullable` 进行更改。
 
 ### ORC {#orc}
 
-在 ORC 格式中，ClickHouse 从数据读取其模式，并使用以下类型匹配将其转换为 ClickHouse 模式：
+在 ORC 格式中，ClickHouse 从数据中读取其模式并使用以下类型匹配将其转换为 ClickHouse 模式：
 
 | ORC 数据类型                        | ClickHouse 数据类型                                    |
 |--------------------------------------|---------------------------------------------------------|
@@ -1754,15 +1343,17 @@ $$)
 | `Struct`                             | [Tuple](../sql-reference/data-types/tuple.md)           |
 | `Map`                                | [Map](../sql-reference/data-types/map.md)               |
 
-其他 ORC 类型不受支持。默认情况下，所有推断类型都在 `Nullable` 中，但可以通过设置 `schema_inference_make_columns_nullable` 进行更改。
+其他 ORC 类型不被支持。默认情况下，所有推断的类型都是 `Nullable`，但可以通过设置 `schema_inference_make_columns_nullable` 进行更改。
 
 ### Native {#native}
 
-Native 格式在 ClickHouse 内部使用，并在数据中包含模式。在模式推断中，ClickHouse 从数据读取模式，而无需任何转换。
+Native 格式在 ClickHouse 内部使用，并在数据中包含模式。
+在模式推断中，ClickHouse 从数据中读取模式而不进行任何转换。
 
-## 外部模式格式 {#formats-with-external-schema}
+## Formats with external schema {#formats-with-external-schema}
 
-这些格式需要在特定模式语言中通过单独的文件描述数据的模式。为了自动推断此类格式文件的模式，ClickHouse 从单独的文件读取外部模式并将其转换为 ClickHouse 表模式。
+这样的格式需要在特定模式语言的单独文件中描述数据的模式。
+为了自动推断这些格式文件的模式，ClickHouse 从单独的文件中读取外部模式并将其转换为 ClickHouse 表模式。
 
 ### Protobuf {#protobuf}
 
@@ -1805,13 +1396,14 @@ Native 格式在 ClickHouse 内部使用，并在数据中包含模式。在模�
 | `struct`                           | [Tuple](../sql-reference/data-types/tuple.md)          |
 | `union(T, Void)`, `union(Void, T)` | [Nullable(T)](../sql-reference/data-types/nullable.md) |
 
-## 强类型二进制格式 {#strong-typed-binary-formats}
+## Strong-typed binary formats {#strong-typed-binary-formats}
 
-在这些格式中，每个序列化值包含有关其类型（以及可能有关其名称）的信息，但没有关于整个表的信息。在此类格式的模式推断中，ClickHouse 一行一行读取数据（最多 `input_format_max_rows_to_read_for_schema_inference` 行或 `input_format_max_bytes_to_read_for_schema_inference` 字节），并从数据中提取每个值的类型（及可能的名称），然后将这些类型转换为 ClickHouse 类型。
+在这样的格式中，每个序列化值包含有关其类型（可能还有名称）的信息，但没有关于整个表的信息。
+在这些格式的模式推断中，ClickHouse 按行读取数据（最多读取 `input_format_max_rows_to_read_for_schema_inference` 行或 `input_format_max_bytes_to_read_for_schema_inference` 字节），并从数据中提取每个值的类型（可能还有名称），然后将这些类型转换为 ClickHouse 类型。
 
 ### MsgPack {#msgpack}
 
-在 MsgPack 格式中，行之间没有分隔符，要对此格式使用模式推断，您应该使用设置 `input_format_msgpack_number_of_columns` 指定表中的列数。ClickHouse 使用以下类型匹配：
+在 MsgPack 格式中，各行之间没有分隔符，要对该格式使用模式推断，您应使用设置 `input_format_msgpack_number_of_columns` 指定表中的列数。ClickHouse 使用以下类型匹配：
 
 | MessagePack 数据类型 (`INSERT`)                                   | ClickHouse 数据类型                                      |
 |--------------------------------------------------------------------|-----------------------------------------------------------|
@@ -1826,11 +1418,11 @@ Native 格式在 ClickHouse 内部使用，并在数据中包含模式。在模�
 | `fixarray`, `array 16`, `array 32`                                 | [Array](../sql-reference/data-types/array.md)             |
 | `fixmap`, `map 16`, `map 32`                                       | [Map](../sql-reference/data-types/map.md)                 |
 
-默认情况下，所有推断类型都在 `Nullable` 中，但可以通过设置 `schema_inference_make_columns_nullable` 进行更改。
+默认情况下，所有推断的类型都是 `Nullable`，但可以通过设置 `schema_inference_make_columns_nullable` 进行更改。
 
 ### BSONEachRow {#bsoneachrow}
 
-在 BSONEachRow 中，每行数据以 BSON 文档呈现。在模式推断中，ClickHouse 一次读取一个 BSON 文档并提取值、名称和类型，然后使用以下类型匹配将这些类型转换为 ClickHouse 类型：
+在 BSONEachRow 中，每行数据以 BSON 文档的形式呈现。在模式推断中，ClickHouse 逐一读取 BSON 文档并提取值、名称和数据类型，然后使用以下类型匹配将这些类型转换为 ClickHouse 类型：
 
 | BSON 类型                                                                                     | ClickHouse 类型                                                                                                             |
 |-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
@@ -1843,17 +1435,17 @@ Native 格式在 ClickHouse 内部使用，并在数据中包含模式。在模�
 | `\x07` ObjectId,                                                                              | [FixedString(12)](../sql-reference/data-types/fixedstring.md)                                                               |
 | `\x05` binary with `\x04` uuid subtype, size = 16                                             | [UUID](../sql-reference/data-types/uuid.md)                                                                                 |
 | `\x04` array                                                                                  | [Array](../sql-reference/data-types/array.md)/[Tuple](../sql-reference/data-types/tuple.md) (如果嵌套类型不同) |
-| `\x03` document                                                                               | [Named Tuple](../sql-reference/data-types/tuple.md)/[Map](../sql-reference/data-types/map.md) (带有字符串键)            |
+| `\x03` document                                                                               | [Named Tuple](../sql-reference/data-types/tuple.md)/[Map](../sql-reference/data-types/map.md) (带字符串键)            |
 
-默认情况下，所有推断类型都在 `Nullable` 中，但可以通过设置 `schema_inference_make_columns_nullable` 进行更改。
+默认情况下，所有推断的类型都是 `Nullable`，但可以通过设置 `schema_inference_make_columns_nullable` 进行更改。
 
-## 具有常量模式的格式 {#formats-with-constant-schema}
+## Formats with constant schema {#formats-with-constant-schema}
 
-此类格式中的数据始终具有相同的模式。
+这些格式中的数据始终具有相同的模式。
 
 ### LineAsString {#line-as-string}
 
-在此格式中，ClickHouse 从数据读取整行到单个列中，其数据类型为 `String`。此格式的推断类型始终为 `String`，列名为 `line`。
+在这种格式中，ClickHouse 将整个行从数据读取到具有 `String` 数据类型的单个列中。该格式的推断类型始终为 `String`，列名为 `line`。
 
 **示例**
 
@@ -1868,7 +1460,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 
 ### JSONAsString {#json-as-string}
 
-在此格式中，ClickHouse 从数据读取整个 JSON 对象到单个列中，其数据类型为 `String`。此格式的推断类型始终为 `String`，列名为 `json`。
+在这种格式中，ClickHouse 将整个 JSON 对象从数据读取到具有 `String` 数据类型的单个列中。该格式的推断类型始终为 `String`，列名为 `json`。
 
 **示例**
 
@@ -1883,7 +1475,7 @@ DESC format(JSONAsString, '{"x" : 42, "y" : "Hello, World!"}')
 
 ### JSONAsObject {#json-as-object}
 
-在此格式中，ClickHouse 从数据读取整个 JSON 对象到单个列中，其数据类型为 `Object('json')`。此格式的推断类型始终为 `String`，列名为 `json`。
+在这种格式中，ClickHouse 将整个 JSON 对象从数据读取到具有 `Object('json')` 数据类型的单个列中。该格式的推断类型始终为 `String`，列名为 `json`。
 
 注意：此格式仅在启用 `allow_experimental_object_type` 时有效。
 
@@ -1898,40 +1490,41 @@ DESC format(JSONAsString, '{"x" : 42, "y" : "Hello, World!"}') SETTINGS allow_ex
 └──────┴────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-## 模式推断模式 {#schema-inference-modes}
+## Schema inference modes {#schema-inference-modes}
 
-从一组数据文件推断模式可以在两种不同模式下工作：`default` 和 `union`。模式由设置 `schema_inference_mode` 控制。
+从数据文件集推断模式可以在两种不同模式下工作：`default` 和 `union`。
+模式由设置 `schema_inference_mode` 控制。
 
-### 默认模式 {#default-schema-inference-mode}
+### Default mode {#default-schema-inference-mode}
 
 在默认模式下，ClickHouse 假设所有文件具有相同的模式，并尝试通过逐个读取文件推断模式，直到成功为止。
 
 示例：
 
-假设我们有 3 个文件 `data1.jsonl`、`data2.jsonl` 和 `data3.jsonl`，其内容如下：
+假设我们有 3 个文件 `data1.jsonl`、`data2.jsonl` 和 `data3.jsonl`，内容如下：
 
-`data1.jsonl`：
+`data1.jsonl`:
 ```json
 {"field1" :  1, "field2" :  null}
 {"field1" :  2, "field2" :  null}
 {"field1" :  3, "field2" :  null}
 ```
 
-`data2.jsonl`：
+`data2.jsonl`:
 ```json
 {"field1" :  4, "field2" :  "Data4"}
 {"field1" :  5, "field2" :  "Data5"}
 {"field1" :  6, "field2" :  "Data5"}
 ```
 
-`data3.jsonl`：
+`data3.jsonl`:
 ```json
 {"field1" :  7, "field2" :  "Data7", "field3" :  [1, 2, 3]}
 {"field1" :  8, "field2" :  "Data8", "field3" :  [4, 5, 6]}
 {"field1" :  9, "field2" :  "Data9", "field3" :  [7, 8, 9]}
 ```
 
-让我们尝试对这 3 个文件使用模式推断：
+让我们尝试在这 3 个文件上使用模式推断：
 ```sql
 :) DESCRIBE file('data{1,2,3}.jsonl') SETTINGS schema_inference_mode='default'
 ```
@@ -1945,37 +1538,38 @@ DESC format(JSONAsString, '{"x" : 42, "y" : "Hello, World!"}') SETTINGS allow_ex
 └────────┴──────────────────┘
 ```
 
-如我们所见，我们没有在文件 `data3.jsonl` 中的 `field3`。 
-这发生的原因是，ClickHouse 首先尝试从文件 `data1.jsonl` 推断模式，因 `field2` 只有空值而失败，然后尝试从 `data2.jsonl` 中推断模式并成功，因此未读取文件 `data3.jsonl` 中的数据。
+如我们所见，文件 `data3.jsonl` 中没有 `field3`。 
+这是因为 ClickHouse 首先尝试从文件 `data1.jsonl` 推断模式，但由于 `field2` 仅为 null 而失败，
+然后尝试从 `data2.jsonl` 推断模式并成功，所以没有读取文件 `data3.jsonl` 的数据。
 
-### 联合模式 {#default-schema-inference-mode-1}
+### Union mode {#default-schema-inference-mode-1}
 
-在联合模式下，ClickHouse 假设文件可能具有不同的模式，因此推断所有文件的模式，然后将它们联合到公共模式中。
+在联接模式下，ClickHouse 假设文件可以具有不同的模式，因此它推断所有文件的模式，然后将它们联接到公共模式。
 
-假设我们有 3 个文件 `data1.jsonl`、`data2.jsonl` 和 `data3.jsonl`，其内容如下：
+假设我们有 3 个文件 `data1.jsonl`、`data2.jsonl` 和 `data3.jsonl`，内容如下：
 
-`data1.jsonl`：
+`data1.jsonl`:
 ```json
 {"field1" :  1}
 {"field1" :  2}
 {"field1" :  3}
 ```
 
-`data2.jsonl`：
+`data2.jsonl`:
 ```json
 {"field2" :  "Data4"}
 {"field2" :  "Data5"}
 {"field2" :  "Data5"}
 ```
 
-`data3.jsonl`：
+`data3.jsonl`:
 ```json
 {"field3" :  [1, 2, 3]}
 {"field3" :  [4, 5, 6]}
 {"field3" :  [7, 8, 9]}
 ```
 
-让我们尝试对这 3 个文件使用模式推断：
+让我们尝试在这 3 个文件上使用模式推断：
 ```sql
 :) DESCRIBE file('data{1,2,3}.jsonl') SETTINGS schema_inference_mode='union'
 ```
@@ -1990,16 +1584,16 @@ DESC format(JSONAsString, '{"x" : 42, "y" : "Hello, World!"}') SETTINGS allow_ex
 └────────┴────────────────────────┘
 ```
 
-如我们所见，我们从所有文件中都有所有字段。
+如我们所见，我们有来自所有文件的所有字段。
 
 注意：
-- 由于某些文件可能不包含结果模式中的某些列，联合模式仅支持支持读取列子集的格式（如 JSONEachRow、Parquet、TSVWithNames 等），并且不会对其他格式（如 CSV、TSV、JSONCompactEachRow 等）有效。
-- 如果 ClickHouse 无法从某个文件推断模式，则会引发异常。
-- 如果您有大量文件，从所有文件读取模式可能需要很长时间。
+- 由于某些文件可能不包含结果模式中的某些列，因此联接模式仅支持读取列子集的格式（如 JSONEachRow、Parquet、TSVWithNames 等），而不适用于其他格式（如 CSV、TSV、JSONCompactEachRow 等）。
+- 如果 ClickHouse 无法从某个文件推断模式，则将抛出异常。
+- 如果您有很多文件，从所有文件读取模式可能需要很长时间。
 
-## 自动格式检测 {#automatic-format-detection}
+## Automatic format detection {#automatic-format-detection}
 
-如果未指定数据格式且无法通过文件扩展名确定，ClickHouse 将尝试通过其内容检测文件格式。
+如果数据格式未指定且无法通过文件扩展名确定，ClickHouse 将尝试通过其内容检测文件格式。
 
 **示例：**
 
@@ -2011,7 +1605,7 @@ DESC format(JSONAsString, '{"x" : 42, "y" : "Hello, World!"}') SETTINGS allow_ex
 3,"Data3"
 ```
 
-我们可以在没有指定格式或结构的情况下检查和查询该文件：
+我们可以在不指定格式或结构的情况下检查和查询此文件：
 ```sql
 :) desc file(data);
 ```
@@ -2036,5 +1630,5 @@ DESC format(JSONAsString, '{"x" : 42, "y" : "Hello, World!"}') SETTINGS allow_ex
 ```
 
 :::note
-ClickHouse 仅能检测某些格式的子集，此检测需要一些时间，最好明确指定格式。
+ClickHouse 只能检测某些格式的子集，这种检测需要一些时间，最好明确指定格式。
 :::

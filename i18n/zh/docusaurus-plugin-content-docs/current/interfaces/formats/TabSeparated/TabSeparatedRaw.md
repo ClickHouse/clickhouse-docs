@@ -11,19 +11,19 @@
 'title': 'TabSeparatedRaw'
 ---
 
-| Input | Output | 别名           |
-|-------|--------|-----------------|
-| ✔     | ✔      | `TSVRaw`, `Raw` |
+| 输入  | 输出   | 别名              |
+|-------|--------|-------------------|
+| ✔     | ✔      | `TSVRaw`, `Raw`   |
 
 ## 描述 {#description}
 
-与 [`TabSeparated`](/interfaces/formats/TabSeparated) 格式不同的是，行是以不转义的方式书写的。
+与 [`TabSeparated`](/interfaces/formats/TabSeparated) 格式不同的是，行是以不转义的形式写入的。
 
 :::note
-在使用此格式解析时，每个字段中不允许包含制表符或换行符。
+在使用此格式解析时，各个字段中不允许包含制表符或换行符。
 :::
 
-有关 `TabSeparatedRaw` 格式和 `RawBlob` 格式的比较，请参见: [原始格式比较](../RawBLOB.md/#raw-formats-comparison)
+有关 `TabSeparatedRaw` 格式和 `RawBlob` 格式的比较，请参见： [原始格式比较](../RawBLOB.md/#raw-formats-comparison)
 
 ## 示例用法 {#example-usage}
 

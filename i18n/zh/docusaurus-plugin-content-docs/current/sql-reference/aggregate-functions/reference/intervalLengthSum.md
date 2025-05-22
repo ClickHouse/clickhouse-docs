@@ -1,4 +1,12 @@
-计算所有范围（数轴上的段）并集的总长度。
+---
+'description': '计算所有范围（数字轴上的段）的联合总长度。'
+'sidebar_label': 'intervalLengthSum'
+'sidebar_position': 155
+'slug': '/sql-reference/aggregate-functions/reference/intervalLengthSum'
+'title': 'intervalLengthSum'
+---
+
+计算所有范围（数值轴上的区间）的并集总长度。
 
 **语法**
 
@@ -8,16 +16,16 @@ intervalLengthSum(start, end)
 
 **参数**
 
-- `start` — 区间的起始值。可以是 [Int32](/sql-reference/data-types/int-uint#integer-ranges), [Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt32](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges), [Float32](/sql-reference/data-types/float), [Float64](/sql-reference/data-types/float), [DateTime](/sql-reference/data-types/datetime) 或 [Date](/sql-reference/data-types/date)。
-- `end` — 区间的结束值。可以是 [Int32](/sql-reference/data-types/int-uint#integer-ranges), [Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt32](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges), [Float32](/sql-reference/data-types/float), [Float64](/sql-reference/data-types/float), [DateTime](/sql-reference/data-types/datetime) 或 [Date](/sql-reference/data-types/date)。
+- `start` — 区间的起始值。 [Int32](/sql-reference/data-types/int-uint#integer-ranges), [Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt32](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges), [Float32](/sql-reference/data-types/float), [Float64](/sql-reference/data-types/float), [DateTime](/sql-reference/data-types/datetime) 或 [Date](/sql-reference/data-types/date)。
+- `end` — 区间的结束值。 [Int32](/sql-reference/data-types/int-uint#integer-ranges), [Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt32](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges), [Float32](/sql-reference/data-types/float), [Float64](/sql-reference/data-types/float), [DateTime](/sql-reference/data-types/datetime) 或 [Date](/sql-reference/data-types/date)。
 
 :::note
-参数必须是相同的数据类型。否则，将抛出异常。
+参数必须是相同的数据类型。否则将抛出异常。
 :::
 
 **返回值**
 
-- 所有范围（数轴上的段）并集的总长度。根据参数的类型，返回值可能是 [UInt64](/sql-reference/data-types/int-uint#integer-ranges) 或 [Float64](/sql-reference/data-types/float) 类型。
+- 所有范围（数值轴上的区间）并集的总长度。根据参数的类型，返回值可以是 [UInt64](/sql-reference/data-types/int-uint#integer-ranges) 或 [Float64](/sql-reference/data-types/float) 类型。
 
 **示例**
 
@@ -33,7 +41,7 @@ intervalLengthSum(start, end)
 
 在这个例子中，使用了 Float32 类型的参数。该函数返回 Float64 类型的值。
 
-结果是区间 `[1.1, 3.2]` 的长度之和（`[1.1, 2.9]` 和 `[2.5, 3.2]` 的并集）和 `[4, 5]`。
+结果是区间 `[1.1, 3.2]` 的长度之和（`[1.1, 2.9]` 和 `[2.5, 3.2]` 的并集）以及 `[4, 5]`
 
 查询：
 
@@ -59,7 +67,7 @@ SELECT id, intervalLengthSum(start, end), toTypeName(intervalLengthSum(start, en
 └────┴─────────────────────┴─────────────────────┘
 ```
 
-在这个例子中，使用了 DateTime 类型的参数。该函数返回以秒为单位的值。
+在这个例子中，使用了 DateTime 类型的参数。该函数以秒为单位返回值。
 
 查询：
 
@@ -84,7 +92,7 @@ SELECT id, intervalLengthSum(start, end), toTypeName(intervalLengthSum(start, en
 └────┴────────────┴────────────┘
 ```
 
-在这个例子中，使用了 Date 类型的参数。该函数返回以天为单位的值。
+在这个例子中，使用了 Date 类型的参数。该函数以天为单位返回值。
 
 查询：
 

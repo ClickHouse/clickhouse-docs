@@ -1,12 +1,12 @@
 ---
 'slug': '/cloud/reference/changelogs/release-notes'
 'title': '云发布说明'
-'description': '云发布说明的登录页面'
+'description': 'Cloud 发布说明的登陆页面'
 ---
 
-<!-- 以下目录是通过 YAML 前置信息自动生成的
+<!-- 下面的目录是通过 YAML 前言自动生成的
      使用 https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh
-     如果您发现错误，请编辑页面本身的前置信息。
+     如果您发现错误，请编辑页面本身的前言。
 -->
 
 | 页面 | 描述 |

@@ -1,10 +1,19 @@
+---
+'description': '该引擎允许将数据导入和导出到 SQLite，并支持直接从 ClickHouse 查询 SQLite 表。'
+'sidebar_label': 'SQLite'
+'sidebar_position': 185
+'slug': '/engines/table-engines/integrations/sqlite'
+'title': 'SQLite'
+---
+
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+
 
 # SQLite
 
 <CloudNotSupportedBadge/>
 
-该引擎允许从 ClickHouse 导入和导出数据到 SQLite，并支持直接对 SQLite 表进行查询。
+该引擎允许将数据导入和导出到 SQLite，并支持直接从 ClickHouse 查询 SQLite 表。
 
 ## 创建表 {#creating-a-table}
 
@@ -18,12 +27,12 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name
 
 **引擎参数**
 
-- `db_path` — SQLite 文件的数据库路径。
-- `table` — SQLite 数据库中表的名称。
+- `db_path` — SQLite 数据库文件的路径。
+- `table` — SQLite 数据库中的表名。
 
 ## 使用示例 {#usage-example}
 
-展示一个创建 SQLite 表的查询：
+展示创建 SQLite 表的查询：
 
 ```sql
 SHOW CREATE TABLE sqlite_db.table2;
@@ -38,7 +47,7 @@ CREATE TABLE SQLite.table2
 ENGINE = SQLite('sqlite.db','table2');
 ```
 
-返回表中的数据：
+从表中返回数据：
 
 ```sql
 SELECT * FROM sqlite_db.table2 ORDER BY col1;

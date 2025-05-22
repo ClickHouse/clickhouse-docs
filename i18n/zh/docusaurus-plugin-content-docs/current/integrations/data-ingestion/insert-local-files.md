@@ -1,9 +1,17 @@
+---
+'sidebar_label': '插入本地文件'
+'sidebar_position': 2
+'title': '插入本地文件'
+'slug': '/integrations/data-ingestion/insert-local-files'
+'description': '了解关于 Insert Local Files'
+---
+
 
 # 插入本地文件
 
-您可以使用 `clickhouse-client` 将本地文件流式传输到您的 ClickHouse 服务。这使您能够利用众多强大而方便的 ClickHouse 函数对数据进行预处理。让我们看一个例子...
+您可以使用 `clickhouse-client` 将本地文件流式传输到您的 ClickHouse 服务中。这使您能够使用许多强大且方便的 ClickHouse 函数对数据进行预处理。让我们来看一个例子...
 
-1. 假设我们有一个名为 `comments.tsv` 的 TSV 文件，其中包含一些 Hacker News 评论，标题行包含列名。在插入数据时，您需要指定一个 [输入格式](/interfaces/formats)，在我们的例子中是 `TabSeparatedWithNames`：
+1. 假设我们有一个名为 `comments.tsv` 的 TSV 文件，其中包含一些 Hacker News 评论，标题行包含列名。在插入数据时，您需要指定一种 [输入格式](/interfaces/formats)，在我们的例子中是 `TabSeparatedWithNames`：
 
 ```text
 id      type    author  timestamp       comment children
@@ -32,7 +40,7 @@ ENGINE = MergeTree
 ORDER BY toYYYYMMDD(timestamp)
 ```
 
-3. 我们希望将 `author` 列的小写化，这可以通过 [`lower` function](/sql-reference/functions/string-functions#lower) 轻松完成。我们还希望将 `comment` 字符串拆分为标记，并将结果存储在 `tokens` 列中，这可以使用 [`extractAll` function](/sql-reference/functions/string-search-functions#extractall) 完成。您可以在一个 `clickhouse-client` 命令中完成所有这些操作 - 请注意，`comments.tsv` 文件通过 `<` 运算符传递到 `clickhouse-client`：
+3. 我们希望将 `author` 列转换为小写，这可以通过 [`lower` 函数](/sql-reference/functions/string-functions#lower) 轻松完成。我们还希望将 `comment` 字符串拆分为标记，并将结果存储在 `tokens` 列中，这可以使用 [`extractAll` 函数](/sql-reference/functions/string-search-functions#extractall) 来完成。您可以在一个 `clickhouse-client` 命令中完成所有这些操作 - 请注意 `comments.tsv` 文件是通过 `<` 操作符传入 `clickhouse-client` 的：
 
 ```bash
 clickhouse-client \
@@ -56,10 +64,10 @@ clickhouse-client \
 ```
 
 :::note
-`input` 函数在这里非常有用，因为它允许我们在插入到 `hackernews` 表时转换数据。`input` 的参数是传入原始数据的格式，您将在其他许多表函数中看到这一点（在您为传入数据指定架构时）。
+`input` 函数在这里很有用，因为它允许我们在将数据插入 `hackernews` 表时转换数据。`input` 的参数是传入原始数据的格式，您将在许多其他表函数中看到这一点（在这些函数中您指定传入数据的模式）。
 :::
 
-4. 就这样！数据已经上传到 ClickHouse：
+4. 就这样！数据已经上传到 ClickHouse 中：
 
 ```sql
 SELECT *
@@ -81,7 +89,8 @@ LIMIT 7
 
 ```
 
-5. 另一种选择是使用类似 `cat` 的工具将文件流式传输到 `clickhouse-client`。例如，以下命令与使用 `<` 运算符的结果相同：
+
+5. 另一个选项是使用 `cat` 等工具将文件流式传输到 `clickhouse-client`。例如，以下命令的效果与使用 `<` 操作符相同：
 
 ```bash
 cat comments.tsv | clickhouse-client \
@@ -104,9 +113,9 @@ cat comments.tsv | clickhouse-client \
 "
 ```
 
-访问 [关于 `clickhouse-client` 的文档页面](/interfaces/cli)，了解有关如何在本地操作系统上安装 `clickhouse-client` 的详细信息。
+有关如何在您的本地操作系统上安装 `clickhouse-client` 的详细信息，请访问 [clickhouse-client 文档页面](/interfaces/cli)。
 
 ## 相关内容 {#related-content}
 
 - 博客: [将数据导入 ClickHouse - 第 1 部分](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1)
-- 博客: [探索大规模的现实世界数据集：在 ClickHouse 中的 100 多年的天气记录](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
+- 博客: [探索大规模真实世界数据集：在 ClickHouse 中的 100 多年的天气记录](https://clickhouse.com/blog/real-world-data-noaa-climate-data)

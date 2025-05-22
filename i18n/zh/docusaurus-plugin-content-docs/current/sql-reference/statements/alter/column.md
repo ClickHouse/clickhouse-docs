@@ -1,4 +1,12 @@
-一组允许改变表结构的查询。
+---
+'description': '关于 COLUMN 的文档'
+'sidebar_label': 'COLUMN'
+'sidebar_position': 37
+'slug': '/sql-reference/statements/alter/column'
+'title': '列操作'
+---
+
+一组允许更改表结构的查询。
 
 语法：
 
@@ -7,7 +15,7 @@ ALTER [TEMPORARY] TABLE [db].name [ON CLUSTER cluster] ADD|DROP|RENAME|CLEAR|COM
 ```
 
 在查询中，指定一个或多个以逗号分隔的操作列表。
-每个操作都是对列的操作。
+每个操作是对列的操作。
 
 支持以下操作：
 
@@ -16,12 +24,12 @@ ALTER [TEMPORARY] TABLE [db].name [ON CLUSTER cluster] ADD|DROP|RENAME|CLEAR|COM
 - [RENAME COLUMN](#rename-column) — 重命名现有列。
 - [CLEAR COLUMN](#clear-column) — 重置列值。
 - [COMMENT COLUMN](#comment-column) — 向列添加文本注释。
-- [MODIFY COLUMN](#modify-column) — 更改列的类型、默认表达式、TTL 和列设置。
+- [MODIFY COLUMN](#modify-column) — 更改列的类型、默认表达式、TTL和列设置。
 - [MODIFY COLUMN REMOVE](#modify-column-remove) — 移除列的某个属性。
 - [MODIFY COLUMN MODIFY SETTING](#modify-column-modify-setting) - 更改列设置。
 - [MODIFY COLUMN RESET SETTING](#modify-column-reset-setting) - 重置列设置。
 - [MATERIALIZE COLUMN](#materialize-column) — 在缺少列的分区中物化该列。
-这些操作在下文中将详细描述。
+这些操作的详细内容在下面描述。
 
 ## ADD COLUMN {#add-column}
 
@@ -29,13 +37,13 @@ ALTER [TEMPORARY] TABLE [db].name [ON CLUSTER cluster] ADD|DROP|RENAME|CLEAR|COM
 ADD COLUMN [IF NOT EXISTS] name [type] [default_expr] [codec] [AFTER name_after | FIRST]
 ```
 
-向表中添加具有指定 `name`、`type`、[`codec`](../create/table.md/#column_compression_codec) 和 `default_expr` （见 [默认表达式](/sql-reference/statements/create/table#default_values)）的新列。
+向表中添加具有指定 `name`、`type`、[`codec`](../create/table.md/#column_compression_codec) 和 `default_expr` 的新列（请参阅 [默认表达式](/sql-reference/statements/create/table#default_values) 部分）。
 
-如果包含 `IF NOT EXISTS` 子句，如果列已经存在，查询将不会返回错误。如果您指定 `AFTER name_after` （另一个列的名称），则该列将被添加在指定列之后。如果您想将列添加到表的开头，使用 `FIRST` 子句。否则，该列将被添加到表的末尾。在一系列操作中，`name_after` 可以是之前某个操作中添加的列的名称。
+如果包含 `IF NOT EXISTS` 子句，则当列已经存在时，查询不会返回错误。如果您指定 `AFTER name_after`（另一个列的名称），则该列会在指定列后添加到表列列表中。如果想在表的开头添加列，可以使用 `FIRST` 子句。否则，列将添加到表的末尾。对于操作链，`name_after` 可以是之前操作中添加的列的名称。
 
-添加列仅仅改变表结构，而不对数据执行任何操作。执行 `ALTER` 后，数据不会立即写入磁盘。如果从表读取时列缺少数据，系统将用默认值填充（如果有默认表达式则执行该表达式，或使用零或空字符串）。在合并数据分区后，列才会出现在磁盘上（见 [MergeTree](/engines/table-engines/mergetree-family/mergetree.md)）。
+添加列仅更改表结构，而不对数据执行任何操作。执行 `ALTER` 后，数据不会出现在磁盘上。如果在从表读取时某列的数据缺失，则会用默认值填充（执行默认表达式，如果存在，或者使用零或空字符串）。在合并数据片段后，该列才会出现在磁盘上（见 [MergeTree](/engines/table-engines/mergetree-family/mergetree.md)）。
 
-这种方法允许我们立即完成 `ALTER` 查询，而不会增加旧数据的体积。
+这种方法允许我们立即完成 `ALTER` 查询，而不会增加旧数据的量。
 
 示例：
 
@@ -65,12 +73,12 @@ Added3  UInt32
 DROP COLUMN [IF EXISTS] name
 ```
 
-删除名称为 `name` 的列。 如果指定了 `IF EXISTS` 子句，当列不存在时查询不会返回错误。
+删除名称为 `name` 的列。如果指定了 `IF EXISTS` 子句，则当列不存在时，查询不会返回错误。
 
 从文件系统中删除数据。由于这会删除整个文件，因此查询几乎瞬间完成。
 
 :::tip
-如果列被 [物化视图](/sql-reference/statements/create/view) 引用，则无法删除该列。否则，将返回错误。
+如果某列被 [物化视图](/sql-reference/statements/create/view) 引用，则无法删除该列。否则，将返回错误。
 :::
 
 示例：
@@ -87,7 +95,7 @@ RENAME COLUMN [IF EXISTS] name to new_name
 
 将列 `name` 重命名为 `new_name`。如果指定了 `IF EXISTS` 子句，则当列不存在时，查询不会返回错误。由于重命名不涉及底层数据，因此查询几乎瞬间完成。
 
-**注意**：在表的键表达式（无论是通过 `ORDER BY` 还是 `PRIMARY KEY` 指定的）中指定的列无法被重命名。尝试更改这些列将产生 `SQL Error [524]`。
+**注意**：在表的键表达式中指定的列（通过 `ORDER BY` 或 `PRIMARY KEY`）无法重命名。尝试更改这些列将产生 `SQL Error [524]`。
 
 示例：
 
@@ -101,9 +109,9 @@ ALTER TABLE visits RENAME COLUMN webBrowser TO browser
 CLEAR COLUMN [IF EXISTS] name IN PARTITION partition_name
 ```
 
-重置指定分区中列的所有数据。有关设置分区名称的详细信息，请参阅 [如何设置分区表达式](../alter/partition.md/#how-to-set-partition-expression)。
+重置指定分区中列的所有数据。有关设置分区名称的更多信息，请参阅 [如何设置分区表达式](../alter/partition.md/#how-to-set-partition-expression)。
 
-如果指定了 `IF EXISTS` 子句，当列不存在时查询不会返回错误。
+如果指定了 `IF EXISTS` 子句，则当列不存在时，查询不会返回错误。
 
 示例：
 
@@ -117,11 +125,11 @@ ALTER TABLE visits CLEAR COLUMN browser IN PARTITION tuple()
 COMMENT COLUMN [IF EXISTS] name 'Text comment'
 ```
 
-向列添加注释。如果指定了 `IF EXISTS` 子句，当列不存在时，查询不会返回错误。
+向列添加注释。如果指定了 `IF EXISTS` 子句，则当列不存在时，查询不会返回错误。
 
-每列可以有一个注释。如果列已经存在注释，则新注释会覆盖先前的注释。
+每列可以有一个注释。如果列已经存在注释，则新注释将覆盖之前的注释。
 
-注释存储在通过 [DESCRIBE TABLE](/sql-reference/statements/describe-table.md) 查询返回的 `comment_expression` 列中。
+注释存储在 [DESCRIBE TABLE](/sql-reference/statements/describe-table.md) 查询返回的 `comment_expression` 列中。
 
 示例：
 
@@ -142,21 +150,21 @@ ALTER COLUMN [IF EXISTS] name TYPE [type] [default_expr] [codec] [TTL] [settings
 
 - 默认表达式
 
-- 压缩编解码器
+- 压缩编码
 
 - TTL
 
 - 列级设置
 
-有关修改列压缩 CODECS 的示例，请参阅 [列压缩编解码器](../create/table.md/#column_compression_codec)。
+有关修改列压缩 CODECS 的示例，请参见 [列压缩编解码器](../create/table.md/#column_compression_codec)。
 
-有关修改列 TTL 的示例，请参阅 [列 TTL](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-column-ttl)。
+有关列 TTL 修改的示例，请参见 [列 TTL](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-column-ttl)。
 
-有关修改列级设置的示例，请参阅 [列级设置](/engines/table-engines/mergetree-family/mergetree.md/#column-level-settings)。
+有关修改列级设置的示例，请参见 [列级设置](/engines/table-engines/mergetree-family/mergetree.md/#column-level-settings)。
 
-如果指定了 `IF EXISTS` 子句，当列不存在时查询不会返回错误。
+如果指定了 `IF EXISTS` 子句，则当列不存在时，查询不会返回错误。
 
-更改类型时，值会被转换，就像应用了 [toType](/sql-reference/functions/type-conversion-functions.md) 函数一样。如果只是更改默认表达式，则查询不会执行任何复杂的操作，并且几乎瞬间完成。
+更改类型时，值会像应用 [toType](/sql-reference/functions/type-conversion-functions.md) 函数一样进行转换。如果只是更改了默认表达式，则查询不会执行任何复杂操作，并且几乎瞬间完成。
 
 示例：
 
@@ -164,9 +172,9 @@ ALTER COLUMN [IF EXISTS] name TYPE [type] [default_expr] [codec] [TTL] [settings
 ALTER TABLE visits MODIFY COLUMN browser Array(String)
 ```
 
-更改列类型是唯一复杂的操作 – 它会更改数据文件的内容。对于大型表，这可能需要很长时间。
+更改列类型是唯一复杂的操作——它会更改包含数据的文件的内容。对于大型表，这可能需要很长时间。
 
-查询还可以通过使用 `FIRST | AFTER` 子句来更改列的顺序，请参见 [ADD COLUMN](#add-column) 的描述，但在这种情况下列类型是必需的。
+查询还可以使用 `FIRST | AFTER` 子句更改列的顺序，请参见 [ADD COLUMN](#add-column) 描述，但在这种情况下列类型是必需的。
 
 示例：
 
@@ -200,13 +208,13 @@ DESCRIBE users;
 └──────┴────────┴
 ```
 
-`ALTER` 查询是原子的。对于 MergeTree 表，它也是无锁的。
+`ALTER` 查询是原子的。对于 MergeTree 表，它还不需要锁定。
 
-用于更改列的 `ALTER` 查询是复制的。指令保存在 ZooKeeper 中，然后每个副本应用它们。所有 `ALTER` 查询都按相同的顺序运行。查询会等待在其他副本上完成适当的操作。但是，在复制表中更改列的查询可以被中断，所有操作将异步执行。
+对列进行更改的 `ALTER` 查询是可复制的。指令保存在 ZooKeeper 中，然后每个副本应用它们。所有 `ALTER` 查询按相同顺序运行。查询等待其他副本完成相应操作。但是，在一个副本表中更改列的查询可能会被中断，所有操作将异步执行。
 
 ## MODIFY COLUMN REMOVE {#modify-column-remove}
 
-移除列的某个属性：`DEFAULT`、`ALIAS`、`MATERIALIZED`、`CODEC`、`COMMENT`、`TTL`、`SETTINGS`。
+移除列的一个属性： `DEFAULT`、`ALIAS`、`MATERIALIZED`、`CODEC`、`COMMENT`、`TTL`、`SETTINGS`。
 
 语法：
 
@@ -246,7 +254,7 @@ ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING max_compress_blo
 
 ## MODIFY COLUMN RESET SETTING {#modify-column-reset-setting}
 
-重置列设置，还会移除在表的 CREATE 查询的列表达式中的设置声明。
+重置列设置，并从表的 CREATE 查询中删除设置声明。
 
 语法：
 
@@ -264,21 +272,21 @@ ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING max_compress_bloc
 
 ## MATERIALIZE COLUMN {#materialize-column}
 
-物化具有 `DEFAULT` 或 `MATERIALIZED` 值表达式的列。使用 `ALTER TABLE table_name ADD COLUMN column_name MATERIALIZED` 添加物化列时，现有行的物化值不会被自动填充。在添加或更新了 `DEFAULT` 或 `MATERIALIZED` 表达式后（只更新元数据而不更改现有数据），可以使用 `MATERIALIZE COLUMN` 语句重新写入现有列数据。注意，在排序键中物化列是无效的操作，因为这可能会破坏排序顺序。
-实现为 [变更](/sql-reference/statements/alter/index.md#mutations)。
+物化带有 `DEFAULT` 或 `MATERIALIZED` 值表达式的列。当使用 `ALTER TABLE table_name ADD COLUMN column_name MATERIALIZED` 添加物化列时，现有行中没有物化值不会自动填充。可以使用 `MATERIALIZE COLUMN` 语句在添加或更新了 (仅更新了元数据，但不更改现有数据) `DEFAULT` 或 `MATERIALIZED` 表达式后重写现有列数据。请注意，在排序键中物化列是无效操作，因为它可能会破坏排序顺序。
+实现为 [突变](/sql-reference/statements/alter/index.md#mutations)。
 
-对于具有新或更新 `MATERIALIZED` 值表达式的列，所有现有行都会被重写。
+对于具有新或更新的 `MATERIALIZED` 值表达式的列，所有现有行将被重写。
 
-对于具有新或更新 `DEFAULT` 值表达式的列，行为取决于 ClickHouse 版本：
+对于具有新或更新的 `DEFAULT` 值表达式的列，则行为取决于 ClickHouse 版本：
 - 在 ClickHouse < v24.2 中，所有现有行都将被重写。
-- ClickHouse >= v24.2 会区分列中 `DEFAULT` 值表达式的行值在插入时是否是显式指定的，或者是计算得出的。如果值是显式指定的，ClickHouse 将保持不变。如果值是计算的，ClickHouse 会将其更改为新的或更新的 `MATERIALIZED` 值表达式。
+- 在 ClickHouse >= v24.2 中，区分在插入时是否明确指定了 `DEFAULT` 值表达式的某行值，或者不是，即通过 `DEFAULT` 值表达式计算的。如果值是明确指定的，ClickHouse 将保持不变。如果值是计算得出的，ClickHouse 将其更改为新的或更新的 `MATERIALIZED` 值表达式。
 
 语法：
 
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] MATERIALIZE COLUMN col [IN PARTITION partition | IN PARTITION ID 'partition_id'];
 ```
-- 如果指定了 PARTITION，只有指定的分区中列会被物化。
+- 如果指定了 PARTITION，则仅对指定分区物化列。
 
 **示例**
 
@@ -322,12 +330,12 @@ SELECT groupArray(x), groupArray(s) FROM tmp;
 
 ## 限制 {#limitations}
 
-`ALTER` 查询允许您在嵌套数据结构中创建和删除单独的元素（列），但无法添加整个嵌套数据结构。要添加嵌套数据结构，您可以添加名称为 `name.nested_name` 类型为 `Array(T)` 的列。嵌套数据结构等同于多个数组列，名称在点之前有相同的前缀。
+`ALTER` 查询允许您创建和删除嵌套数据结构中的单独元素（列），但不支持整个嵌套数据结构。要添加嵌套数据结构，可以添加名称似乎 `name.nested_name` 且类型为 `Array(T)` 的列。嵌套数据结构相当于多个数组列，它们的名称在点之前具有相同的前缀。
 
-不支持删除主键或采样键中的列（用于 `ENGINE` 表达式的列）。仅当此更改不会导致数据被修改（例如，允许向枚举中添加值或将类型从 `DateTime` 更改为 `UInt32`）时，才可以更改包含在主键中的列的类型。
+不支持删除主键或采样键中的列（在 `ENGINE` 表达式中使用的列）。仅当这项更改不会导致数据被修改时，才能更改包含在主键中的列的类型（例如，允许向 Enum 添加值或将类型从 `DateTime` 更改为 `UInt32`）。
 
-如果 `ALTER` 查询无法满足您对表更改的需求，您可以创建一个新表，通过使用 [INSERT SELECT](/sql-reference/statements/insert-into.md/#inserting-the-results-of-select) 查询将数据复制到其中，然后使用 [RENAME](/sql-reference/statements/rename.md/#rename-table) 查询切换表并删除旧表。
+如果 `ALTER` 查询不足以完成您所需的表更改，可以创建一个新表，将数据通过 [INSERT SELECT](/sql-reference/statements/insert-into.md/#inserting-the-results-of-select) 查询复制到其中，然后使用 [RENAME](/sql-reference/statements/rename.md/#rename-table) 查询切换表并删除旧表。
 
-`ALTER` 查询会阻塞对表的所有读取和写入。换句话说，如果在 `ALTER` 查询时正在运行一个长期的 `SELECT`，则 `ALTER` 查询将等待其完成。同时，所有对同一表的新查询将在此 `ALTER` 运行时等待。 
+`ALTER` 查询会阻塞对该表的所有读取和写入。换句话说，如果在 `ALTER` 查询时运行了长时间的 `SELECT`，则 `ALTER` 查询将等待它完成。与此同时，所有对同一表的新查询将在执行此 `ALTER` 时等待。
 
-对于不直接存储数据的表（如 [Merge](/sql-reference/statements/alter/index.md) 和 [Distributed](/sql-reference/statements/alter/index.md)），`ALTER` 仅更改表结构，而不更改从属表的结构。例如，在 `Distributed` 表上运行 `ALTER` 时，您还需要在所有远程服务器上的表上运行 `ALTER`。
+对于不自己存储数据的表（例如 [Merge](/sql-reference/statements/alter/index.md) 和 [Distributed](/sql-reference/statements/alter/index.md)），`ALTER` 仅更改表结构，而不更改从属表的结构。例如，在 `Distributed` 表上运行 ALTER 时，您还需要对所有远程服务器上的表运行 `ALTER`。

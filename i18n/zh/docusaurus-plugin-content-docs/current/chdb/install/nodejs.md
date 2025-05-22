@@ -12,9 +12,9 @@
 ---
 
 
-# Installing chDB for NodeJS
+# 安装 chDB 用于 NodeJS
 
-## Requirements {#requirements}
+## 需求 {#requirements}
 
 安装 [libchdb](https://github.com/chdb-io/chdb):
 
@@ -22,20 +22,19 @@
 curl -sL https://lib.chdb.io | bash
 ```
 
-## Install {#install}
+## 安装 {#install}
 
 ```bash
 npm i chdb
 ```
 
-## GitHub repository {#github-repository}
+## GitHub 仓库 {#github-repository}
 
 您可以在 [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node) 找到该项目的 GitHub 仓库。
 
+## 使用 {#usage}
 
-## Usage {#usage}
-
-您可以通过导入并使用 chdb-node 模块，在您的 NodeJS 应用程序中利用 chdb 的强大功能：
+您可以通过导入和使用 chdb-node 模块，在 NodeJS 应用程序中利用 chdb 的强大功能：
 
 ```javascript
 const { query, Session } = require("chdb");
@@ -63,7 +62,7 @@ console.log("Session Query Result:", ret);
 session.cleanup();
 ```
 
-## Build from source {#build-from-source}
+## 从源代码构建 {#build-from-source}
 
 ```bash
 npm run libchdb

@@ -1,4 +1,14 @@
-Changes settings profiles.
+---
+'description': 'Settings Profile 的文档'
+'sidebar_label': 'SETTINGS PROFILE'
+'sidebar_position': 48
+'slug': '/sql-reference/statements/alter/settings-profile'
+'title': 'ALTER SETTINGS PROFILE'
+---
+
+翻译如下：
+
+更改设置配置文件。
 
 语法：
 

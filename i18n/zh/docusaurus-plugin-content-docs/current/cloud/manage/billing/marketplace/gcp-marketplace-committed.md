@@ -1,7 +1,7 @@
 ---
 'slug': '/cloud/billing/marketplace/gcp-marketplace-committed-contract'
-'title': 'GCP市场承诺合同'
-'description': '通过GCP市场订阅ClickHouse Cloud（承诺合同）'
+'title': 'GCP Marketplace 承诺合同'
+'description': '通过 GCP Marketplace 订阅 ClickHouse Cloud (承诺合同)'
 'keywords':
 - 'gcp'
 - 'google'
@@ -27,15 +27,15 @@ import gcp_marketplace_payg_5 from '@site/static/images/cloud/manage/billing/mar
 import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-11.png';
 import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-6.png';
 
-开始使用 [GCP Marketplace](https://console.cloud.google.com/marketplace) 上的 ClickHouse Cloud，通过签订承诺合同。承诺合同，也称为私有报价，允许客户承诺在一段时间内在 ClickHouse Cloud 上花费一定金额。
+开始使用 [GCP Marketplace](https://console.cloud.google.com/marketplace) 上的 ClickHouse Cloud 通过承诺合同。承诺合同，也称为私有报价，允许客户承诺在一段时间内在 ClickHouse Cloud 上花费一定金额。
 
-## 前提条件 {#prerequisites}
+## 先决条件 {#prerequisites}
 
-- 根据具体合同条款从 ClickHouse 获得的私有报价。
+- 根据特定合同条款来自 ClickHouse 的私有报价。
 
 ## 注册步骤 {#steps-to-sign-up}
 
-1. 您应该已经收到一封电子邮件，里面有一个链接以查看和接受您的私有报价。
+1. 您应该已收到一封电子邮件，里面有一个链接以查看和接受您的私有报价。
 
 <br />
 
@@ -43,7 +43,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-2. 单击电子邮件中的 **Review Offer** 链接。这将带您进入包含私有报价详细信息的 GCP Marketplace 页面。
+2. 点击电子邮件中的 **Review Offer** 链接。这应该会带您到带有私有报价详情的 GCP Marketplace 页面。
 
 <br />
 
@@ -55,7 +55,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-3. 审核私有报价详细信息，如果一切正确，点击 **Accept**。
+3. 审核私有报价的详细信息，如果一切正确，请点击 **Accept**。
 
 <br />
 
@@ -79,7 +79,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-此时，关键是重定向到 ClickHouse Cloud 并注册或登录。如果不完成此步骤，我们将无法将您的 GCP Marketplace 订阅链接到 ClickHouse Cloud。
+此时，重要的是跳转到 ClickHouse Cloud 并注册或登录。如果不完成此步骤，我们将无法将您的 GCP Marketplace 订阅与 ClickHouse Cloud 关联。
 
 <br />
 
@@ -87,7 +87,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-6. 一旦您重定向到 ClickHouse Cloud，您可以使用现有帐户登录，也可以注册新帐户。
+6. 一旦您跳转到 ClickHouse Cloud，您可以使用现有账户登录，或使用新账户注册。
 
 <br />
 
@@ -95,7 +95,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-如果您是新用户，请在页面底部点击 **Register**。系统将提示您创建新用户并验证电子邮件。在验证您的电子邮件后，您可以离开 ClickHouse Cloud 登录页面，并在 [https://console.clickhouse.cloud](https://console.clickhouse.cloud) 使用新用户名登录。
+如果您是新用户，请点击页面底部的 **Register**。您将被提示创建新用户并验证电子邮件。验证电子邮件后，您可以离开 ClickHouse Cloud 登录页面，并使用新用户名登录 [https://console.clickhouse.cloud](https://console.clickhouse.cloud)。
 
 <br />
 
@@ -103,7 +103,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-请注意，如果您是新用户，您还需要提供一些关于您业务的基本信息。请查看下面的截图。
+注意，如果您是新用户，您还需要提供一些关于您企业的基本信息。请参见以下截图。
 
 <br />
 
@@ -117,9 +117,9 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 如果您是现有的 ClickHouse Cloud 用户，只需使用您的凭据登录即可。
 
-7. 登录成功后，将创建一个新的 ClickHouse Cloud 组织。该组织将与您的 GCP 账单账户连接，所有使用成本将通过您的 GCP 账户计费。
+7. 登录成功后，将会创建一个新的 ClickHouse Cloud 组织。此组织将与您的 GCP 账单账户连接，所有使用将通过您的 GCP 账户收费。
 
-8. 登录后，您可以确认您的账单实际上与 GCP Marketplace 关联，并开始设置您的 ClickHouse Cloud 资源。
+8. 登录后，您可以确认您的账单确实与 GCP Marketplace 关联，并开始设置您的 ClickHouse Cloud 资源。
 
 <br />
 

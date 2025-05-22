@@ -1,19 +1,24 @@
-一个简单的 HTTP 服务器，作为 ODBC 驱动程序的代理。其主要动机是解决 ODBC 实现中可能出现的段错误或其他故障，这些故障可能导致整个 clickhouse-server 进程崩溃。
+---
+'description': 'Odbc Bridge 的文档'
+'slug': '/operations/utilities/odbc-bridge'
+'title': 'clickhouse-odbc-bridge'
+---
+
+一个简单的 HTTP 服务器，像 ODBC 驱动一样工作。其主要动机是避免 ODBC 实现中的可能的段错误或其他故障，这些问题可能会导致整个 clickhouse-server 进程崩溃。
 
 该工具通过 HTTP 工作，而不是通过管道、共享内存或 TCP，因为：
-- 实现更简单
-- 调试更简单
-- jdbc-bridge 可以以相同方式实现
+- 实现起来更简单
+- 调试起来更简单
+- jdbc-bridge 可以以相同的方式实现
 
-## 用法 {#usage}
+## 使用方法 {#usage}
 
-`clickhouse-server` 在 odbc 表函数和 StorageODBC 内部使用此工具。
-然而，它也可以作为独立工具从命令行使用，带有以下 POST 请求 URL 参数：
+`clickhouse-server` 在 odbc 表函数和 StorageODBC 中使用此工具。 
+然而，它也可以作为独立工具从命令行使用，使用以下参数在 POST 请求 URL 中：
 - `connection_string` -- ODBC 连接字符串。
-- `sample_block` -- 列描述，采用 ClickHouse NamesAndTypesList 格式，名称使用反引号，类型作为字符串。
-  名称和类型之间用空格分隔，行之间用换行符分隔。
+- `sample_block` -- 以 ClickHouse NamesAndTypesList 格式描述的列，名称用反引号括起来，类型用字符串表示。名称和类型用空格分隔，行用换行符分隔。
 - `max_block_size` -- 可选参数，设置单个块的最大大小。
-查询在 POST 主体中发送。响应以 RowBinary 格式返回。
+查询被发送到 POST 主体中。响应以 RowBinary 格式返回。
 
 ## 示例: {#example}
 

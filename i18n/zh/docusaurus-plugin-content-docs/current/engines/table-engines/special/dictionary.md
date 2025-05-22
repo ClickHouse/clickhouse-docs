@@ -1,11 +1,19 @@
+---
+'description': '`Dictionary` 引擎将字典数据作为 ClickHouse 表显示。'
+'sidebar_label': 'Dictionary'
+'sidebar_position': 20
+'slug': '/engines/table-engines/special/dictionary'
+'title': '字典表引擎'
+---
+
 
 # 字典表引擎
 
-`Dictionary` 引擎将 [字典](../../../sql-reference/dictionaries/index.md) 数据显示为一个 ClickHouse 表。
+`Dictionary` 引擎将 [字典](../../../sql-reference/dictionaries/index.md) 数据作为一个 ClickHouse 表显示。
 
 ## 示例 {#example}
 
-作为示例，考虑一个 `products` 的字典，其配置如下：
+作为一个例子，考虑一个 `products` 的字典，其配置如下：
 
 ```xml
 <dictionaries>
@@ -62,7 +70,7 @@ WHERE name = 'products'
 
 您可以使用 [dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull) 函数以这种格式获取字典数据。
 
-当您需要获取原始数据或执行 `JOIN` 操作时，这种视图并不有用。在这些情况下，您可以使用 `Dictionary` 引擎，它将字典数据显示为一个表。
+当您需要获取原始数据或在执行 `JOIN` 操作时，这种视图并不有用。在这些情况下，您可以使用 `Dictionary` 引擎，它以表的形式显示字典数据。
 
 语法：
 
@@ -90,6 +98,6 @@ select * from products limit 1;
 └───────────────┴─────────────────┘
 ```
 
-**另见**
+**另请参见**
 
 - [字典函数](/sql-reference/table-functions/dictionary)

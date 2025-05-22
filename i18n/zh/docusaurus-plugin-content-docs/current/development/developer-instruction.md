@@ -3,59 +3,59 @@
 'sidebar_label': '先决条件'
 'sidebar_position': 5
 'slug': '/development/developer-instruction'
-'title': '开发者先决条件'
+'title': '开发人员先决条件'
 ---
 
 
-# 前提条件
+# 先决条件
 
 ClickHouse 可以在 Linux、FreeBSD 和 macOS 上构建。
-如果您使用 Windows，您仍然可以在运行 Linux 的虚拟机中构建 ClickHouse，例如使用 [VirtualBox](https://www.virtualbox.org/) 和 Ubuntu。
+如果你使用 Windows，你仍然可以在运行 Linux 的虚拟机中构建 ClickHouse，例如 使用 [VirtualBox](https://www.virtualbox.org/) 的 Ubuntu。
 
 ## 在 GitHub 上创建一个仓库 {#create-a-repository-on-github}
 
-要开始为 ClickHouse 开发，您需要一个 [GitHub](https://www.github.com/) 账户。
-请在本地生成一个 SSH 密钥（如果您还没有的话），并将公钥上传到 GitHub，因为这是贡献补丁的前提。
+要开始为 ClickHouse 开发，你需要一个 [GitHub](https://www.github.com/) 账户。
+请在本地生成一个 SSH 密钥（如果你还没有的话），并将公钥上传到 GitHub，因为这对于贡献补丁是一个前提。
 
-接下来，通过点击右上角的 "fork" 按钮，在您的个人账户中 fork [ClickHouse 仓库](https://github.com/ClickHouse/ClickHouse/)。
+接下来，在你的个人账户中通过点击右上角的“fork”按钮来分叉 [ClickHouse 仓库](https://github.com/ClickHouse/ClickHouse/)。
 
-要贡献更改，例如修复问题或添加功能，首先将更改提交到您 fork 的一个分支，然后创建一个对主仓库的 "Pull Request"。
+要提交更改，例如修复问题或添加功能，首先将更改提交到你分叉的一个分支中，然后创建一个与主仓库的“Pull Request”。
 
-要使用 Git 仓库，请安装 Git。在 Ubuntu 中，您可以运行：
+要使用 Git 仓库，请安装 Git。例如，在 Ubuntu 中运行：
 
 ```sh
 sudo apt update
 sudo apt install git
 ```
 
-Git 速查表可以在 [此处](https://education.github.com/git-cheat-sheet-education.pdf) 找到。
-详尽的 Git 手册可以在 [此处](https://git-scm.com/book/en/v2) 找到。
+你可以在 [这里](https://education.github.com/git-cheat-sheet-education.pdf) 找到 Git 速查表。
+详细的 Git 手册在 [这里](https://git-scm.com/book/en/v2)。
 
-## 将仓库克隆到开发机器 {#clone-the-repository-to-your-development-machine}
+## 将仓库克隆到你的开发机器 {#clone-the-repository-to-your-development-machine}
 
-首先，将源文件下载到您的工作机器，即克隆仓库：
+首先，将源文件下载到你的工作机器，也就是克隆仓库：
 
 ```sh
 git clone git@github.com:your_github_username/ClickHouse.git  # replace the placeholder with your GitHub user name
 cd ClickHouse
 ```
 
-此命令会创建一个名为 `ClickHouse/` 的目录，包含源代码、测试和其他文件。
-您可以在 URL 后指定一个自定义目录进行检出，但重要的是该路径不能包含空格，因为这可能会破坏后续的构建。
+此命令创建一个名为 `ClickHouse/` 的目录，其中包含源代码、测试和其他文件。
+你可以在 URL 后指定一个自定义目录用于检出，但重要的是此路径不能包含空格，因为这可能会在后续构建中出错。
 
 ClickHouse 的 Git 仓库使用子模块来引入第三方库。
-子模块默认情况下不会被检出。
-您可以选择
+默认情况下，子模块不会被检出。
+你可以选择
 
-- 运行 `git clone` 并加上 `--recurse-submodules` 选项，
+- 运行 `git clone`，并带上 `--recurse-submodules` 选项，
 
-- 如果 `git clone` 是在没有 `--recurse-submodules` 的情况下运行，则运行 `git submodule update --init --jobs <N>` 来显式检出所有子模块。（`<N>` 可以设置为 `12` 等值以并行下载。）
+- 如果 `git clone` 在没有 `--recurse-submodules` 的情况下运行，运行 `git submodule update --init --jobs <N>` 来显式检出所有子模块。 (`<N>` 可以设置为，例如 `12`，以并行下载。)
 
-- 如果 `git clone` 是在没有 `--recurse-submodules` 的情况下运行，并且您希望使用 [sparse](https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/) 和 [shallow](https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/) 子模块检出以省略不需要的文件和子模块中的历史记录以节省空间（约 5 GB 而不是约 15 GB），请运行 `./contrib/update-submodules.sh`。这种替代方案由 CI 使用，但不推荐用于本地开发，因为它使得处理子模块变得不便利且较慢。
+- 如果 `git clone` 在没有 `--recurse-submodules` 的情况下运行，并且你希望使用 [稀疏](https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/) 和 [浅层](https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/) 子模块检出，以省略不需要的文件和历史记录以节省空间（大约 5 GB 而不是大约 15 GB），运行 `./contrib/update-submodules.sh`。此替代方案由 CI 使用，但不建议用于本地开发，因为它使得使用子模块变得更不方便且更慢。
 
-要检查 Git 子模块的状态，请运行 `git submodule status`。
+要检查 Git 子模块的状态，运行 `git submodule status`。
 
-如果您收到以下错误消息
+如果你收到以下错误信息
 
 ```bash
 Permission denied (publickey).
@@ -65,35 +65,35 @@ Please make sure you have the correct access rights
 and the repository exists.
 ```
 
-则表示连接到 GitHub 的 SSH 密钥缺失。
-这些密钥通常位于 `~/.ssh` 中。
-要接受 SSH 密钥，您需要在 GitHub 的设置中上传它们。
+则表示缺少用于连接到 GitHub 的 SSH 密钥。
+这些密钥通常位于 `~/.ssh`。
+为了让 SSH 密钥被接受，你需要在 GitHub 的设置中上传它们。
 
-您还可以通过 HTTPS 克隆仓库：
+你也可以通过 HTTPS 克隆仓库：
 
 ```sh
 git clone https://github.com/ClickHouse/ClickHouse.git
 ```
 
-但是，这不会使您能够将更改发送到服务器。
-您仍然可以暂时使用它，稍后添加 SSH 密钥并使用 `git remote` 命令替换仓库的远程地址。
+然而，这样你将无法向服务器发送你的更改。
+你仍然可以暂时使用它，稍后添加 SSH 密钥，并使用 `git remote` 命令替换仓库的远程地址。
 
-您还可以将原始 ClickHouse 仓库地址添加到您的本地仓库，以便从那里拉取更新：
+你也可以将原始 ClickHouse 仓库地址添加到你的本地仓库，以从那里拉取更新：
 
 ```sh
 git remote add upstream git@github.com:ClickHouse/ClickHouse.git
 ```
 
-成功运行此命令后，您将能够通过运行 `git pull upstream master` 从主 ClickHouse 仓库拉取更新。
+成功运行此命令后，你将能够通过运行 `git pull upstream master` 从主 ClickHouse 仓库拉取更新。
 
 :::tip
-请不要直接使用 `git push`，您可能会推送到错误的远程和/或错误的分支。
+请勿直接使用 `git push`，你可能会推送到错误的远程和/或错误的分支。
 最好明确指定远程和分支名称，例如 `git push origin my_branch_name`。
 :::
 
 ## 编写代码 {#writing-code}
 
-在下方您可以找到一些在为 ClickHouse 编写代码时可能有用的快速链接：
+以下是一些在为 ClickHouse 编写代码时可能有用的快速链接：
 
 - [ClickHouse 架构](/development/architecture/)。
 - [代码风格指南](/development/style/)。
@@ -103,42 +103,42 @@ git remote add upstream git@github.com:ClickHouse/ClickHouse.git
 
 ### IDE {#ide}
 
-[Visual Studio Code](https://code.visualstudio.com/) 和 [Neovim](https://neovim.io/) 是过去在开发 ClickHouse 时表现良好的两个选项。如果您正在使用 VS Code，我们建议使用 [clangd 扩展](https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.vscode-clangd) 来替代 IntelliSense，因为它性能更佳。
+[Visual Studio Code](https://code.visualstudio.com/) 和 [Neovim](https://neovim.io/) 是过去开发 ClickHouse 时非常适用的两个选项。如果你在使用 VS Code，我们建议使用 [clangd 扩展](https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.vscode-clangd) 来替代 IntelliSense，因为它性能更佳。
 
-[CLion](https://www.jetbrains.com/clion/) 是另一个很好的选择。然而，在像 ClickHouse 这样的较大项目中，它的速度可能会较慢。使用 CLion 时需要记住几点：
+[CLion](https://www.jetbrains.com/clion/) 是另一个很好的替代品。然而，在像 ClickHouse 这样的大型项目上可能会比较慢。使用 CLion 时需要注意几件事：
 
-- CLion 会自动创建一个 `build` 路径，并为构建类型自动选择 `debug`
-- 它使用的是在 CLion 中定义的 CMake 版本，而不是您安装的版本
-- CLion 将使用 `make` 来运行构建任务，而不是 `ninja`（这属于正常行为）
+- CLion 会自行创建一个 `build` 路径，并自动选择 `debug` 作为构建类型
+- 它使用的 CMake 版本是在 CLion 中定义的，而不是你安装的版本
+- CLion 将使用 `make` 来运行构建任务，而不是 `ninja`（这是正常行为）
 
-您还可以使用其他 IDE，如 [Sublime Text](https://www.sublimetext.com/)、[Qt Creator](https://www.qt.io/product/development-tools) 或 [Kate](https://kate-editor.org/)。
+你还可以使用其他 IDE，例如 [Sublime Text](https://www.sublimetext.com/)、[Qt Creator](https://www.qt.io/product/development-tools) 或 [Kate](https://kate-editor.org/)。
 
 ## 创建 Pull Request {#create-a-pull-request}
 
-在 GitHub 的 UI 中导航到您的 fork 仓库。
-如果您一直在一个分支中开发，您需要选择该分支。
-屏幕上将会有一个 "Pull request" 按钮。
-本质上，这意味着 "创建一个请求以接受我的更改到主仓库中"。
+在 GitHub 的 UI 中导航到你的分叉仓库。
+如果你在一个分支中进行开发，你需要选择该分支。
+界面上将会有一个“Pull request”按钮。
+本质上，这意味着“创建一个请求以接受我的更改到主仓库”。
 
 即使工作尚未完成，也可以创建一个 Pull Request。
-在这种情况下，请在标题的开头添加 "WIP"（进行中的工作），之后可以进行更改。
-这对于协作审查和更改讨论以及运行所有可用测试非常有用。
-重要的是您提供一份简要的更改描述，这将在稍后用于生成发布变更日志。
+在这种情况下，请在标题的开头加上“WIP”（进行中的工作），待后续修改。
+这对于协作审核和讨论更改以及运行所有可用测试来说非常有用。
+重要的是你要提供一个对你所做更改的简要描述，以后用于生成发布变更日志。
 
-测试将在 ClickHouse 员工给您的 PR 打标签“可以测试”后开始。
-某些初步检查（例如代码风格）的结果将在几分钟内到达。
-构建检查结果将在半小时内到达。
-主要测试集将在一小时内报告。
+一旦 ClickHouse 员工为你的 PR 添加了“可以测试”的标签，测试将立即开始。
+一些初步检查（例如代码风格）的结果将在几分钟内返回。
+构建检查结果将在半小时内返回。
+主要的测试结果将在一小时内报告。
 
-系统会单独为您的 Pull Request 准备 ClickHouse 二进制构建。
-要获取这些构建，请单击检查列表中 "Builds" 项目的 "Details" 链接。
-在那里，您将找到构建的 .deb 包的直接链接，您甚至可以在生产服务器上部署它们（如果您不怕的话）。
+系统将会为你的 Pull Request 单独准备 ClickHouse 二进制构建。
+要检索这些构建，单击在检查列表中“构建”条目旁的“详细信息”链接。
+在那里你将找到构建的 ClickHouse .deb 包的直接链接，你可以在生产服务器上进行部署（如果你不怕的话）。
 
 ## 编写文档 {#write-documentation}
 
 每个添加新功能的 Pull Request 必须附带适当的文档。
-如果您想预览文档更改，构建文档页面的本地说明可在 README.md 文件 [这里](https://github.com/ClickHouse/clickhouse-docs) 中找到。
-在向 ClickHouse 添加新功能时，您可以使用下面的模板作为指南：
+如果你想预览文档的更改，README.md 文件中提供了如何在本地构建文档页面的说明 [这里](https://github.com/ClickHouse/clickhouse-docs)。
+在 ClickHouse 中添加新功能时，可以使用以下模板作为指南：
 
 ```markdown
 
@@ -185,10 +185,10 @@ Response:
 
 ## 使用测试数据 {#using-test-data}
 
-开发 ClickHouse 通常需要加载真实的数据集。
-这对于性能测试特别重要。
-我们有一组特别准备的匿名网页分析数据。
-它额外需要约 3GB 的可用磁盘空间。
+开发 ClickHouse 通常需要加载真实的 数据集。
+这对性能测试尤其重要。
+我们准备了一套经过匿名化处理的网页分析数据。
+它额外需要大约 3GB 的可用磁盘空间。
 
 ```sh
 sudo apt install wget xz-utils

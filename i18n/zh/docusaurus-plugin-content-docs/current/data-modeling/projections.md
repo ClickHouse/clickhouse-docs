@@ -1,57 +1,68 @@
+---
+'slug': '/data-modeling/projections'
+'title': '投影'
+'description': '页面描述了什么是投影，它们如何用于提高查询性能，以及它们与物化视图的区别。'
+'keywords':
+- 'projection'
+- 'projections'
+- 'query optimization'
+---
+
 import projections_1 from '@site/static/images/data-modeling/projections_1.png';
 import projections_2 from '@site/static/images/data-modeling/projections_2.png';
 import Image from '@theme/IdealImage';
 
+
 # Projections
 
-## 介绍 {#introduction}
+## Introduction {#introduction}
 
-ClickHouse 提供了多种机制来加速对大量数据的分析查询，以满足实时场景的需求。其中一种加速查询的机制是使用 _Projections_。Projections 可以通过按感兴趣的属性重新排序数据来优化查询。这可以是：
+ClickHouse 提供了多种机制来加速对大量数据的分析查询，以满足实时场景的需求。其中一种加速查询的机制是通过使用 _Projections_。Projections 通过按感兴趣的属性重新排序数据来帮助优化查询。这可以是：
 
 1. 完整的重新排序
-2. 具有不同顺序的原始表的子集
-3. 预计算的聚合（类似于物化视图），但其排序与聚合对齐。
+2. 原始表的不同顺序子集
+3. 预计算的聚合（类似于物化视图），但订单与聚合对齐。
 
-## Projections 是如何工作的？ {#how-do-projections-work}
+## How do Projections work? {#how-do-projections-work}
 
-实际上，Projection 可以被视为原始表的一个附加隐式表。该投影可以有不同的行顺序，因此可以具有与原始表不同的主键索引，并且可以自动和增量地预计算聚合值。因此，使用 Projections 可以提供两个“调节旋钮”来加速查询执行：
+实际上，Projection 可以被视为原始表的额外隐藏表。投影可以具有与原始表不同的行顺序，因此具有不同的主键索引，并且可以自动增量地预计算聚合值。因此，使用 Projections 为加速查询执行提供了两个“调节旋钮”：
 
 - **正确使用主键索引**
 - **预计算聚合**
 
-Projections 在某种程度上类似于 [Materialized Views](/materialized-views)，后者也允许您在插入时具有多个行顺序并预计算聚合。Projections 会自动更新并与原始表保持同步，而 Materialized Views 则需要显式更新。当查询目标是原始表时，ClickHouse 会自动采样主键，并选择一个可以生成相同正确结果的表，但需要读取的数据量最少，如下图所示：
+不同程度上，Projections 类似于 [Materialized Views](/materialized-views)，后者也允许您在插入时拥有多种行顺序和预计算聚合。Projections 会自动更新并与原始表保持同步，不同于需要显式更新的物化视图。当查询目标是原始表时，ClickHouse 会自动抽样主键并选择一个可以生成相同正确结果但要求读取的数据量最少的表，如下图所示：
 
-<Image img={projections_1} size="lg" alt="ClickHouse 中的 Projections"/>
+<Image img={projections_1} size="lg" alt="Projections in ClickHouse"/>
 
-## 何时使用 Projections？ {#when-to-use-projections}
+## When to use Projections? {#when-to-use-projections}
 
-Projections 是新用户非常值得关注的特点，因为它们在数据插入时会自动维护。此外，查询可以只发送到一个表，在可能的情况下通过利用 Projections 来加速响应时间。
+Projections 是新用户一个非常吸引人的特性，因为它们在数据插入时会自动维护。此外，查询仅需发送到单个表，在可能的情况下利用 projections 来加速响应时间。
 
-这与 Materialized Views 相对立，在 Materialized Views 中，用户必须根据过滤条件选择适当的优化目标表或重写查询。这对用户应用程序的要求更高，并增加了客户端的复杂性。
+这与物化视图形成对比，后者用户需要根据过滤条件选择适当的优化目标表或重写他们的查询。这对用户应用程序的依赖性更大，并增加了客户端的复杂性。
 
-尽管有这些优势，Projections 也存在一些固有的限制，用户应当注意，并应谨慎使用。
+尽管这些优点，projections 也有一些固有的限制，用户应该注意，因此应该谨慎使用。
 
-- Projections 不允许对源表和（隐式）目标表使用不同的 TTL，而物化视图允许不同的 TTL。
-- Projections 当前不支持 `optimize_read_in_order` 用于（隐式）目标表。
-- 对于具有 Projections 的表，不支持轻量级更新和删除。
-- 物化视图可以链接：一个物化视图的目标表可以是另一个物化视图的源表，依此类推。而这在 Projections 中则无法实现。
-- Projections 不支持联接，但物化视图支持。
-- Projections 不支持过滤器（`WHERE` 子句），但物化视图支持。
+- Projections 不允许为源表和（隐藏）目标表使用不同的 TTL，物化视图允许不同的 TTL。
+- Projections 目前不支持 `optimize_read_in_order` 用于（隐藏）目标表。
+- 对于带有 projections 的表，不支持轻量级更新和删除。
+- 物化视图可以链接：一个物化视图的目标表可以是另一个物化视图的源表，等等。这在 projections 中不可行。
+- Projections 不支持连接，但物化视图支持。
+- Projections 不支持过滤器（`WHERE` 子句），而物化视图支持。
 
-我们建议在以下情况下使用 Projections：
+我们建议在以下情况下使用 projections：
 
-- 需要对数据进行完整重新排序时。虽然投影中的表达式理论上可以使用 `GROUP BY`，但物化视图在维护聚合时更为有效。查询优化器也更可能利用使用简单重新排序的 Projections，即 `SELECT * ORDER BY x`。用户可以在该表达式中选择列的子集以减少存储占用。
-- 用户对相关存储占用的增加和双重写入数据的开销感到满意。测试插入速度的影响并 [评估存储开销](/data-compression/compression-in-clickhouse)。
+- 需要对数据进行完整的重新排序。尽管投影中的表达式在理论上可以使用 `GROUP BY`，物化视图在维护聚合方面更为有效。查询优化器也更有可能利用使用简单重新排序的 projections，即 `SELECT * ORDER BY x`。用户可以在此表达式中选择一部分列以减少存储占用。
+- 用户能接受与之相关的存储占用增加和两次写入数据的开销。测试插入速度的影响并 [评估存储开销](/data-compression/compression-in-clickhouse)。
 
-## 示例 {#examples}
+## Examples {#examples}
 
-### 在未使用主键的情况下对列进行过滤 {#filtering-without-using-primary-keys}
+### Filtering on columns which aren't in the primary key {#filtering-without-using-primary-keys}
 
-在这个例子中，我们将展示如何向表中添加一个投影。我们还将看看如何使用该投影加速对未在表的主键中的列的过滤查询。
+在此示例中，我们将向您展示如何向表中添加一个投影。我们还将查看如何使用投影加速过滤在表的主键中不存在的列的查询。
 
-对于这个例子，我们将使用 New York Taxi Data 数据集，该数据集可以在 [sql.clickhouse.com](https://sql.clickhouse.com/) 获取，并按 `pickup_datetime` 排序。
+在此示例中，我们将使用位于 [sql.clickhouse.com](https://sql.clickhouse.com/) 的纽约出租车数据集，该数据集按 `pickup_datetime` 排序。
 
-让我们写一个简单查询，以查找所有乘客小费超过 $200 的行程 ID：
+让我们写一个简单的查询以查找乘客给司机小费超过 200 美元的所有行程 ID：
 
 ```sql runnable
 SELECT
@@ -62,7 +73,7 @@ FROM nyc_taxi.trips WHERE tip_amount > 200 AND trip_duration_min > 0
 ORDER BY tip_amount, trip_id ASC
 ```
 
-请注意，由于我们在 `tip_amount` 上进行过滤，而该列不在 `ORDER BY` 中，因此 ClickHouse 必须执行全表扫描。让我们加速这个查询。
+请注意，由于我们在 `ORDER BY` 中没有包含 `tip_amount` 进行过滤，ClickHouse 不得不进行全表扫描。让我们加速这个查询。
 
 为了保留原始表和结果，我们将创建一个新表并使用 `INSERT INTO SELECT` 复制数据：
 
@@ -71,7 +82,7 @@ CREATE TABLE nyc_taxi.trips_with_projection AS nyc_taxi.trips;
 INSERT INTO nyc_taxi.trips_with_projection SELECT * FROM nyc_taxi.trips;
 ```
 
-要添加投影，我们使用 `ALTER TABLE` 语句和 `ADD PROJECTION` 语句：
+要添加投影，我们使用 `ALTER TABLE` 语句与 `ADD PROJECTION` 语句：
 
 ```sql
 ALTER TABLE nyc_taxi.trips_with_projection
@@ -82,13 +93,13 @@ ADD PROJECTION prj_tip_amount
 )
 ```
 
-在添加投影后，必须使用 `MATERIALIZE PROJECTION` 语句，这样其中的数据就会根据上面指定的查询物理排序并重写：
+添加投影后，有必要使用 `MATERIALIZE PROJECTION` 语句，以便数据按照上述指定查询的物理顺序重新写入：
 
 ```sql
 ALTER TABLE nyc.trips_with_projection MATERIALIZE PROJECTION prj_tip_amount
 ```
 
-现在让我们再次运行查询，看看我们添加了投影后会有什么变化：
+现在我们已经添加了投影，让我们再次运行查询：
 
 ```sql runnable
 SELECT
@@ -99,9 +110,9 @@ FROM nyc_taxi.trips_with_projection WHERE tip_amount > 200 AND trip_duration_min
 ORDER BY tip_amount, trip_id ASC
 ```
 
-请注意，我们能够显著减少查询时间，并且需要扫描的行数更少。
+请注意，我们能够大幅减少查询时间，并且需要扫描的行数更少。
 
-我们可以通过查询 `system.query_log` 表确认我们的查询确实使用了我们创建的投影：
+我们可以通过查询 `system.query_log` 表来确认我们的查询确实使用了我们制作的投影：
 
 ```sql
 SELECT query, projections 
@@ -119,13 +130,13 @@ WHERE query_id='<query_id>'
 └───────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────┘
 ```
 
-### 使用 Projections 加速英国价格查询 {#using-projections-to-speed-up-UK-price-paid}
+### Using projections to speed up UK price paid queries {#using-projections-to-speed-up-UK-price-paid}
 
-为了演示如何使用 Projections 来加速查询性能，让我们看看一个使用实际数据集的示例。在这个例子中，我们将使用来自我们 [UK Property Price Paid](https://clickhouse.com/docs/getting-started/example-datasets/uk-price-paid) 教程的表，该表包含 3003 万行。该数据集也可在我们的 [sql.clickhouse.com](https://sql.clickhouse.com/?query_id=6IDMHK3OMR1C97J6M9EUQS) 环境中获得。
+为了演示如何使用 projections 来加速查询性能，让我们看一个使用真实数据集的示例。在此示例中，我们将使用我们的 [UK Property Price Paid](https://clickhouse.com/docs/getting-started/example-datasets/uk-price-paid) 教程中的表，包含 3003 万行。这个数据集也可在我们的 [sql.clickhouse.com](https://sql.clickhouse.com/?query_id=6IDMHK3OMR1C97J6M9EUQS) 环境中获得。
 
-如果您想查看表是如何创建和插入数据的，可以参考 ["英国房地产价格数据集"](/getting-started/example-datasets/uk-price-paid) 页面。
+如果您想查看该表是如何创建和插入数据的，您可以参考 ["The UK property prices dataset"](/getting-started/example-datasets/uk-price-paid) 页面。
 
-我们可以对该数据集运行两个简单的查询。第一个查询列出伦敦的县，按照支付的最高价格排序，第二个查询计算各县的平均价格：
+我们可以在此数据集上运行两个简单的查询。第一个列出伦敦县中支付价格最高的县，而第二个计算这些县的平均价格：
 
 ```sql runnable
 SELECT
@@ -147,7 +158,7 @@ ORDER BY avg(price) DESC
 LIMIT 3
 ```
 
-请注意，尽管查询非常快速，但由于 `town` 和 `price` 都不在我们创建表时的 `ORDER BY` 语句中，因此两个查询都发生了全表扫描，涉及所有 3003 万行：
+请注意，尽管非常快，但由于在创建表时 `town` 和 `price` 都未包含在我们的 `ORDER BY` 语句中，这两个查询都发生了对 3003 万行的全表扫描：
 
 ```sql
 CREATE TABLE uk.uk_price_paid
@@ -159,7 +170,7 @@ ENGINE = MergeTree
 ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
-让我们看看是否可以通过 Projections 来加速这个查询。
+让我们看看是否可以使用 projections 加速此查询。
 
 为了保留原始表和结果，我们将创建一个新表并使用 `INSERT INTO SELECT` 复制数据：
 
@@ -168,7 +179,7 @@ CREATE TABLE uk.uk_price_paid_with_projections AS uk_price_paid;
 INSERT INTO uk.uk_price_paid_with_projections SELECT * FROM uk.uk_price_paid;
 ```
 
-我们创建并填充投影 `prj_oby_town_price`，它生成一个额外（隐式）表，主键按城镇和价格排序，以优化列出特定城镇中支付价格最高的县的查询：
+我们创建并填充投影 `prj_oby_town_price`，它生成一个按城镇和价格排序的额外（隐藏）表，以优化列出特定城镇中支付最高价格的县的查询：
 
 ```sql
 ALTER TABLE uk.uk_price_paid_with_projections
@@ -189,7 +200,7 @@ SETTINGS mutations_sync = 1
 
 [`mutations_sync`](/operations/settings/settings#mutations_sync) 设置用于强制同步执行。
 
-我们创建并填充投影 `prj_gby_county` – 另一个（隐式）表，增量地预计算所有现有 130 个英国县的 avg(price) 聚合值：
+我们创建并填充投影 `prj_gby_county`——一个额外的（隐藏）表，它以增量方式预计算所有现有 130 个英国县的 avg(price) 聚合值：
 
 ```sql
 ALTER TABLE uk.uk_price_paid_with_projections
@@ -208,14 +219,14 @@ SETTINGS mutations_sync = 1
 ```
 
 :::note
-如果在像上面的 `prj_gby_county` 投影中使用了 `GROUP BY` 子句，则（隐式）表的底层存储引擎将变为 `AggregatingMergeTree`，所有聚合函数将被转换为 `AggregateFunction`。这确保了适当的增量数据聚合。
+如果在像上面的 `prj_gby_county` 投影中使用了 `GROUP BY` 子句，则（隐藏）表的底层存储引擎会变为 `AggregatingMergeTree`，所有聚合函数会转换为 `AggregateFunction`。这确保了正确的增量数据聚合。
 :::
 
-下图是主要表 `uk_price_paid_with_projections` 及其两个投影的可视化：
+下图是主表 `uk_price_paid_with_projections` 及其两个投影的可视化：
 
-<Image img={projections_2} size="lg" alt="主要表 uk_price_paid_with_projections 及其两个投影的可视化"/>
+<Image img={projections_2} size="lg" alt="Visualization of the main table uk_price_paid_with_projections and its two projections"/>
 
-如果我们现在再次运行列出伦敦县的三个支付价格最高的查询，我们会看到查询性能有所提高：
+如果我们现在再次运行列出伦敦县中支付最高价格的三个查询，我们会看到查询性能的提高：
 
 ```sql runnable
 SELECT
@@ -227,7 +238,7 @@ ORDER BY price DESC
 LIMIT 3
 ```
 
-同样，对于列出英国县中三个支付价格最高的查询：
+同样，对于列出三个位于英国的价格支付最高的县的查询：
 
 ```sql runnable
 SELECT
@@ -239,13 +250,13 @@ ORDER BY avg(price) DESC
 LIMIT 3
 ```
 
-请注意，这两个查询均以原始表为目标，并且在创建两个投影之前，这两个查询都进行了全表扫描（所有 3003 万行都从磁盘提取）。
+请注意，这两个查询都指向原始表，并且在创建这两个投影之前，两个查询都导致进行了全表扫描（3003 万行完全从磁盘流式传输）。
 
-此外，请注意，列出伦敦县三个支付价格最高的查询流传输了 217 万行。当我们直接使用一个为该查询优化的第二个表时，仅流传输了 81.92 千行。
+同时，请注意，列出伦敦县中支付最高价格的查询正在流式传输 217 万行。当我们直接使用优化此查询的第二个表时，仅有 81920 行从磁盘流式传输。
 
-导致差异的原因是目前没有为 Projections 支持上面提到的 `optimize_read_in_order` 优化。
+这种差异的原因是，目前不支持上述提到的 `optimize_read_in_order` 优化用于 projections。
 
-我们检查 `system.query_log` 表，发现 ClickHouse 自动为上述两个查询使用了两个投影（见下方的 projections 列）：
+我们检查 `system.query_log` 表，看到 ClickHouse 自动使用了上述两个查询的两个投影（见下方的 projections 列）：
 
 ```sql
 SELECT
@@ -294,20 +305,20 @@ projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
 2 rows in set. Elapsed: 0.006 sec.
 ```
 
-### 更多示例 {#further-examples}
+### Further examples {#further-examples}
 
-以下示例使用相同的英国价格数据集，用于对比有和没有 Projections 的查询。
+以下示例使用相同的英国价格数据集，比较使用和不使用投影的查询。
 
-为了保留我们的原始表（及其性能），我们再创建一个表的副本，使用 `CREATE AS` 和 `INSERT INTO SELECT`。
+为了保留原始表（及其性能），我们再次使用 `CREATE AS` 和 `INSERT INTO SELECT` 创建表的副本。
 
 ```sql
 CREATE TABLE uk.uk_price_paid_with_projections_v2 AS uk.uk_price_paid;
 INSERT INTO uk.uk_price_paid_with_projections_v2 SELECT * FROM uk.uk_price_paid;
 ```
 
-#### 构建投影 {#build-projection}
+#### Build a Projection {#build-projection}
 
-让我们按维度 `toYear(date)`、`district` 和 `town` 创建一个聚合投影：
+让我们创建一个按 `toYear(date)`、`district` 和 `town` 维度进行聚合的投影：
 
 ```sql
 ALTER TABLE uk.uk_price_paid_with_projections_v2
@@ -327,7 +338,7 @@ ALTER TABLE uk.uk_price_paid_with_projections_v2
     )
 ```
 
-为现有数据填充投影。（如果不物化，它将仅为新插入的数据创建投影）：
+为现有数据填充投影。（在未物化的情况下，投影将仅为新插入的数据创建）：
 
 ```sql
 ALTER TABLE uk.uk_price_paid_with_projections_v2
@@ -335,9 +346,9 @@ ALTER TABLE uk.uk_price_paid_with_projections_v2
 SETTINGS mutations_sync = 1
 ```
 
-以下查询对比使用和不使用 Projections 的性能。要禁用投影使用，我们使用设置 [`optimize_use_projections`](/operations/settings/settings#optimize_use_projections)，该设置默认启用。
+以下查询比较使用和不使用投影的性能。要禁用投影使用，我们使用设置 [`optimize_use_projections`](/operations/settings/settings#optimize_use_projections)，该设置默认启用。
 
-#### 查询 1. 每年的平均价格 {#average-price-projections}
+#### Query 1. Average price per year {#average-price-projections}
 
 ```sql runnable
 SELECT
@@ -360,10 +371,10 @@ GROUP BY year
 ORDER BY year ASC
 
 ```
-结果应该是相同的，但后一个示例的性能更好！
+结果应该是相同的，但后者示例的性能更佳！
 
 
-#### 查询 2. 伦敦每年的平均价格 {#average-price-london-projections}
+#### Query 2. Average price per year in London {#average-price-london-projections}
 
 ```sql runnable
 SELECT
@@ -389,9 +400,9 @@ GROUP BY year
 ORDER BY year ASC
 ```
 
-#### 查询 3. 最昂贵的社区 {#most-expensive-neighborhoods-projections}
+#### Query 3. The most expensive neighborhoods {#most-expensive-neighborhoods-projections}
 
-条件 (date >= '2020-01-01') 需要修改，以使其匹配投影维度 (`toYear(date) >= 2020`)：
+条件 (date >= '2020-01-01') 需要修改，以便与投影维度匹配 (`toYear(date) >= 2020`)：
 
 ```sql runnable
 SELECT
@@ -428,10 +439,10 @@ ORDER BY price DESC
 LIMIT 100
 ```
 
-再次，结果是相同的，但请注意第二个查询的查询性能有所改善。
+同样，结果是相同的，但注意第二个查询的查询性能有所改善。
 
 
-## 相关内容 {#related-content}
-- [ClickHouse 中主键的实用介绍](/guides/best-practices/sparse-primary-indexes#option-3-projections)
-- [物化视图](/docs/materialized-views)
+## Related content {#related-content}
+- [A Practical Introduction to Primary Indexes in ClickHouse](/guides/best-practices/sparse-primary-indexes#option-3-projections)
+- [Materialized Views](/docs/materialized-views)
 - [ALTER PROJECTION](/sql-reference/statements/alter/projection)

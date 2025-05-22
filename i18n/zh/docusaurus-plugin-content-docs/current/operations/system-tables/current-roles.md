@@ -1,5 +1,5 @@
 ---
-'description': '系统表，包含当前用户的活跃角色。'
+'description': '系统表包含当前用户的活动角色。'
 'keywords':
 - 'system table'
 - 'current_roles'
@@ -12,5 +12,5 @@
 列：
 
  - `role_name` ([String](../../sql-reference/data-types/string.md))) — 角色名称。
- - `with_admin_option` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 显示 `current_role` 是否为具有 `ADMIN OPTION` 权限的角色的标志。
- - `is_default` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 显示 `current_role` 是否为默认角色的标志。
+ - `with_admin_option` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 表示 `current_role` 是否为具有 `ADMIN OPTION` 特权的角色的标志。
+ - `is_default` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 表示 `current_role` 是否为默认角色的标志。

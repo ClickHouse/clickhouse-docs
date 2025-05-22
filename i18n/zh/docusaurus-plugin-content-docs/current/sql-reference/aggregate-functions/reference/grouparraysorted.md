@@ -1,7 +1,14 @@
+---
+'description': '返回一个数组，包含前 N 项，按升序排列。'
+'sidebar_position': 146
+'slug': '/sql-reference/aggregate-functions/reference/grouparraysorted'
+'title': 'groupArraySorted'
+---
+
 
 # groupArraySorted
 
-返回一个按升序排列的前 N 个项目的数组。
+返回一个按升序排列的前 N 项的数组。
 
 ```sql
 groupArraySorted(N)(column)
@@ -11,7 +18,7 @@ groupArraySorted(N)(column)
 
 - `N` – 要返回的元素数量。
 
-- `column` – 值（整型、字符串、浮点型和其他通用类型）。
+- `column` – 值（整数、字符串、浮点数和其他通用类型）。
 
 **示例**
 

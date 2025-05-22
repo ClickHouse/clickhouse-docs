@@ -1,7 +1,15 @@
+---
+'description': '允许对存储在 SQLite DATABASE 中的数据执行查询。'
+'sidebar_label': 'sqlite'
+'sidebar_position': 185
+'slug': '/sql-reference/table-functions/sqlite'
+'title': 'sqlite'
+---
+
 
 # sqlite 表函数
 
-允许对存储在 [SQLite](../../engines/database-engines/sqlite.md) 数据库中的数据进行查询。
+允许对存储在 [SQLite](../../engines/database-engines/sqlite.md) 数据库中的数据执行查询。
 
 ## 语法 {#syntax}
 
@@ -11,8 +19,8 @@ sqlite('db_path', 'table_name')
 
 ## 参数 {#arguments}
 
-- `db_path` — SQLite 数据库文件的路径。 [String](../../sql-reference/data-types/string.md)。
-- `table_name` — SQLite 数据库中的表名。 [String](../../sql-reference/data-types/string.md)。
+- `db_path` — SQLite 数据库文件的路径。 [字符串](../../sql-reference/data-types/string.md)。
+- `table_name` — SQLite 数据库中表的名称。 [字符串](../../sql-reference/data-types/string.md)。
 
 ## 返回值 {#returned_value}
 

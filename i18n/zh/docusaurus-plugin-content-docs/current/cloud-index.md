@@ -6,7 +6,7 @@
 - 'serverless'
 'title': '概述'
 'hide_title': true
-'description': '云的概述页面'
+'description': 'Cloud 的概述页面'
 ---
 
 import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/about-us/cloud.md';

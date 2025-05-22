@@ -1,14 +1,14 @@
 ---
-'description': 'ClickHouse 中带符号和无符号整数数据类型的文档，范围从 8 位到 256 位'
+'description': 'ClickHouse 中有符号和无符号整数数据类型的文档，范围从 8 位到 256 位'
 'sidebar_label': 'Int | UInt'
 'sidebar_position': 2
 'slug': '/sql-reference/data-types/int-uint'
 'title': 'Int | UInt 类型'
 ---
 
-ClickHouse 提供了多种固定长度的整数，带符号（`Int`）或无符号（`UInt`），范围从一个字节到 32 个字节。
+ClickHouse 提供了一系列固定长度的整数，带符号（`Int`）或无符号（unsigned `UInt`），范围从一个字节到 32 字节。
 
-在创建表时，可以设置整数值的数值参数（例如 `TINYINT(8)`、`SMALLINT(16)`、`INT(32)`、`BIGINT(64)`），但 ClickHouse 会忽略这些参数。
+在创建表时，可以设置整数数字的数值参数（例如 `TINYINT(8)`、`SMALLINT(16)`、`INT(32)`、`BIGINT(64)`），但 ClickHouse 会忽略它们。
 
 ## 整数范围 {#integer-ranges}
 

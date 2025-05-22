@@ -1,9 +1,19 @@
+---
+'description': '系统表，包含服务器支持的表引擎及其支持的特性描述。'
+'keywords':
+- 'system table'
+- 'table_engines'
+'slug': '/operations/system-tables/table_engines'
+'title': 'system.table_engine'
+---
+
+
 
 # system.table_engine
 
-包含服务器支持的表引擎及其功能支持信息的描述。
+包含服务器支持的表引擎的描述及其功能支持信息。
 
-此表包含以下列（列的类型在括号中显示）：
+该表包含以下列（列类型用括号表示）：
 
 - `name` (String) — 表引擎的名称。
 - `supports_settings` (UInt8) — 指示表引擎是否支持 `SETTINGS` 子句的标志。
@@ -30,7 +40,7 @@ WHERE name in ('Kafka', 'MergeTree', 'ReplicatedCollapsingMergeTree')
 └───────────────────────────────┴───────────────────┴───────────────────────────┴─────────────────────┴──────────────┴──────────────────────┴────────────────────────┴──────────────────────────┘
 ```
 
-**另见**
+**另请参阅**
 
 - MergeTree 家族 [查询子句](../../engines/table-engines/mergetree-family/mergetree.md#mergetree-query-clauses)
 - Kafka [设置](/engines/table-engines/integrations/kafka#creating-a-table)

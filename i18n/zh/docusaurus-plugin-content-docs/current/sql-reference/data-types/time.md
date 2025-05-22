@@ -1,7 +1,15 @@
+---
+'description': 'ClickHouse 中 Time 数据类型的文档，它以秒级精度存储时间范围'
+'slug': '/sql-reference/data-types/time'
+'sidebar_position': 15
+'sidebar_label': '时间'
+'title': '时间'
+---
+
 
 # 时间
 
-`Time` 数据类型用于存储独立于任何日历日期的时间值。它非常适合表示日常时间表、事件时间或任何只关注时间组件（小时、分钟、秒）的情况。
+`Time` 数据类型用于存储独立于任何日历日期的时间值。它非常适合表示日常日程、事件时间或任何只需时间组件（小时、分钟、秒）的情况。
 
 语法：
 
@@ -15,19 +23,19 @@ Time()
 
 ## 速度 {#speed}
 
-在 _大多数_ 条件下，`Date` 数据类型比 `Time` 更快。但是，`Time` 数据类型的速度与 `DateTime` 数据类型大致相同。
+在 _大多数_ 情况下，`Date` 数据类型比 `Time` 更快。但 `Time` 数据类型与 `DateTime` 数据类型的速度大致相同。
 
-由于实现细节，`Time` 和 `DateTime` 类型需要 4 字节的存储，而 `Date` 需要 2 字节。然而，当数据库对数据进行压缩时，这一差异会被放大。
+由于实现细节，`Time` 和 `DateTime` 类型需要4个字节的存储，而 `Date` 需要2个字节。然而，当数据库对数据进行压缩时，这种差异会被放大。
 
 ## 使用备注 {#usage-remarks}
 
-时间点以 [Unix 时间戳](https://en.wikipedia.org/wiki/Unix_time) 存储，无论时区或夏令时如何。
+时间点以 [Unix 时间戳](https://en.wikipedia.org/wiki/Unix_time) 的形式保存，与时区或夏令时无关。
 
-**注意：** `Time` 数据类型不考虑时区。它代表独立的时间值，不包含任何日期或区域偏移上下文。尝试在 `Time` 列上应用或更改时区不会产生效果，并且不被支持。
+**注意：** `Time` 数据类型不考虑时区。它表示一个独立的时间值，不带有任何日期或区域偏移上下文。尝试对 `Time` 列应用或更改时区是无效的，并且不支持。
 
 ## 示例 {#examples}
 
-**1.** 创建一个包含 `Time` 类型列的表并插入数据：
+**1.** 创建一个带有 `Time` 类型列的表并插入数据：
 
 ```sql
 CREATE TABLE dt
@@ -54,7 +62,7 @@ SELECT * FROM dt;
    └───────────┴──────────┘
 ```
 
-**2.** 按 `Time` 值过滤
+**2.** 基于 `Time` 值进行过滤
 
 ```sql
 SELECT * FROM dt WHERE time = toTime('100:00:00')
@@ -66,7 +74,7 @@ SELECT * FROM dt WHERE time = toTime('100:00:00')
    └───────────┴──────────┘
 ```
 
-`Time` 列值可以在 `WHERE` 条件中使用字符串值进行过滤。它将自动转换为 `Time`：
+`Time` 列值可以使用 `WHERE` 子句中的字符串值进行过滤。它将自动转换为 `Time`：
 
 ```sql
 SELECT * FROM dt WHERE time = '100:00:00'
@@ -91,14 +99,14 @@ SELECT toTime(now()) AS column, toTypeName(column) AS x
 ```
 
 
-## 另请参见 {#see-also}
+## 另请参阅 {#see-also}
 
 - [类型转换函数](../functions/type-conversion-functions.md)
 - [处理日期和时间的函数](../functions/date-time-functions.md)
 - [处理数组的函数](../functions/array-functions.md)
-- [`date_time_input_format` 设置](../../operations/settings/settings-formats.md#date_time_input_format)
-- [`date_time_output_format` 设置](../../operations/settings/settings-formats.md#date_time_output_format)
-- [`timezone` 服务器配置参数](../../operations/server-configuration-parameters/settings.md#timezone)
-- [`session_timezone` 设置](../../operations/settings/settings.md#session_timezone)
+- [设置 `date_time_input_format`](../../operations/settings/settings-formats.md#date_time_input_format)
+- [设置 `date_time_output_format`](../../operations/settings/settings-formats.md#date_time_output_format)
+- [服务器配置参数 `timezone`](../../operations/server-configuration-parameters/settings.md#timezone)
+- [设置 `session_timezone`](../../operations/settings/settings.md#session_timezone)
 - [`DateTime` 数据类型](datetime.md)
 - [`Date` 数据类型](date.md)

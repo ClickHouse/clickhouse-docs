@@ -1,7 +1,14 @@
+---
+'description': '返回给定数组的交集（返回所有存在于所有给定数组中的数组项）。'
+'sidebar_position': 141
+'slug': '/sql-reference/aggregate-functions/reference/grouparrayintersect'
+'title': 'groupArrayIntersect'
+---
+
 
 # groupArrayIntersect
 
-返回给定数组的交集（返回所有出现在所有给定数组中的项）。
+返回给定数组的交集（返回所有在所有给定数组中的项目）。
 
 **语法**
 

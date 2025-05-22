@@ -3,7 +3,7 @@
 'sidebar_label': 'Hudi'
 'title': 'Hudi'
 'hide_title': true
-'description': '描述 Hudi 表引擎的页面'
+'description': '页面描述 Hudi 表引擎'
 ---
 
 import HudiTableEngine from '@site/i18n/jp/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/hudi.md';

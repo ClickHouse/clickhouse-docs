@@ -1,5 +1,5 @@
 ---
-'description': 'ODBCDriver2格式的文档'
+'description': 'ODBCDriver2 格式的文档'
 'keywords':
 - 'ODBCDriver2'
 'slug': '/interfaces/formats/ODBCDriver2'

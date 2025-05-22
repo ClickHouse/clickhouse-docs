@@ -12,11 +12,11 @@
 ---
 
 
-# 为 Python 安装 chDB
+# 安装 chDB for Python
 
 ## 要求 {#requirements}
 
-在 macOS 和 Linux (x86_64 和 ARM64) 上使用 Python 3.8+
+在 macOS 和 Linux (x86_64 和 ARM64) 上，Python 3.8+
 
 ## 安装 {#install}
 
@@ -26,7 +26,7 @@ pip install chdb
 
 ## 使用 {#usage}
 
-CLI 示例:
+CLI 示例：
 
 ```python
 python3 -m chdb [SQL] [OutputFormat]
@@ -36,7 +36,7 @@ python3 -m chdb [SQL] [OutputFormat]
 python3 -m chdb "SELECT 1, 'abc'" Pretty
 ```
 
-Python 文件示例:
+Python 文件示例：
 
 ```python
 import chdb
@@ -49,13 +49,13 @@ print(res, end="")
 
 ## GitHub 仓库 {#github-repository}
 
-您可以在 [chdb-io/chdb](https://github.com/chdb-io/chdb) 找到该项目的 GitHub 仓库。
+您可以在 [chdb-io/chdb](https://github.com/chdb-io/chdb) 查找该项目的 GitHub 仓库。
 
 ## 数据输入 {#data-input}
 
-以下方法可用于访问磁盘和内存数据格式：
+以下方法可用于访问磁盘和内存中的数据格式：
 
-### 文件查询 (Parquet, CSV, JSON, Arrow, ORC 和 60+) {#query-on-file-parquet-csv-json-arrow-orc-and-60}
+### 对文件的查询 (Parquet, CSV, JSON, Arrow, ORC 及 60+ 格式) {#query-on-file-parquet-csv-json-arrow-orc-and-60}
 
 您可以执行 SQL 并返回所需格式的数据。
 
@@ -81,9 +81,9 @@ print(f"SQL read {res.rows_read()} rows, {res.bytes_read()} bytes, elapsed {res.
 chdb.query('select * from file("data.parquet", Parquet)', 'Dataframe')
 ```
 
-### 表查询 (Pandas DataFrame, Parquet 文件/字节, Arrow 字节) {#query-on-table-pandas-dataframe-parquet-filebytes-arrow-bytes}
+### 对表的查询 (Pandas DataFrame, Parquet 文件/字节, Arrow 字节) {#query-on-table-pandas-dataframe-parquet-filebytes-arrow-bytes}
 
-**在 Pandas DataFrame 上查询**
+**对 Pandas DataFrame 的查询**
 
 ```python
 import chdb.dataframe as cdf
@@ -100,13 +100,13 @@ print(ret_tbl)
 print(ret_tbl.query('select b, sum(a) from __table__ group by b'))
 ```
 
-### 使用有状态会话查询 {#query-with-stateful-session}
+### 使用有状态会话的查询 {#query-with-stateful-session}
 
-会话将保留查询的状态。所有的 DDL 和 DML 状态将保存在一个目录中。目录路径可以作为参数传递。如果没有传递，将创建一个临时目录。
+会话将保持查询的状态。所有 DDL 和 DML 状态将保存在一个目录中。目录路径可以作为参数传入。如果没有传入，将创建一个临时目录。
 
-如果未指定路径，临时目录将在 Session 对象删除时被删除。否则，路径将保持。
+如果未指定路径，临时目录将在会话对象被删除时删除。否则，路径将被保留。
 
-请注意，默认数据库是 `_local`，默认引擎是 `Memory`，这意味着所有数据将存储在内存中。如果您想将数据存储在磁盘上，您应该创建另一个数据库。
+请注意，默认数据库是 `_local`，默认引擎是 `Memory`，这意味着所有数据都将存储在内存中。如果您想将数据存储在磁盘上，则应创建另一个数据库。
 
 ```python
 from chdb import session as chs
@@ -125,7 +125,7 @@ print(sess.query("SELECT * FROM db_xxx.view_xxx", "Pretty"))
 
 另请参见: [test_stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py)。
 
-### 使用 Python DB-API 2.0 查询 {#query-with-python-db-api-20}
+### 使用 Python DB-API 2.0 的查询 {#query-with-python-db-api-20}
 
 ```python
 import chdb.dbapi as dbapi
@@ -140,7 +140,7 @@ cur1.close()
 conn1.close()
 ```
 
-### 使用 UDF (用户自定义函数) 查询 {#query-with-udf-user-defined-functions}
+### 使用 UDF (用户定义函数) 的查询 {#query-with-udf-user-defined-functions}
 
 ```python
 from chdb.udf import chdb_udf
@@ -153,11 +153,11 @@ def sum_udf(lhs, rhs):
 print(query("select sum_udf(12,22)"))
 ```
 
-关于 chDB Python UDF (用户自定义函数) 装饰器的一些说明。
-1. 函数应无状态。仅支持 UDF，不支持 UDAF (用户自定义聚合函数)。
-2. 默认返回类型为字符串。如果您希望更改返回类型，可以将返回类型作为参数传递。返回类型应为 [以下之一](/sql-reference/data-types)。
-3. 函数应接受字符串类型的参数。由于输入为 TabSeparated，所有参数均为字符串。
-4. 函数将对每行输入进行调用。示例:
+关于 chDB Python UDF (用户定义函数) 装饰器的一些说明。
+1. 该函数应为无状态的。仅支持 UDF，不支持 UDAF（用户定义聚合函数）。
+2. 默认返回类型为字符串。如果您想更改返回类型，可以将返回类型作为参数传入。返回类型应为 [以下类型之一](/sql-reference/data-types)。
+3. 该函数应接受类型为字符串的参数。由于输入为制表符分隔的所有参数都是字符串。
+4. 该函数将在每一行输入时被调用。例如：
 ```python
 def sum_udf(lhs, rhs):
     return int(lhs) + int(rhs)
@@ -169,19 +169,19 @@ for line in sys.stdin:
     print(sum_udf(lhs, rhs))
     sys.stdout.flush()
 ```
-5. 函数应为纯 Python 函数。您应导入 **在函数内部** 使用的所有 Python 模块。
+5. 该函数应是一个纯 Python 函数。您应该导入所有在 **函数内部** 使用的 Python 模块。
 ```python
 def func_use_json(arg):
     import json
     ...
 ```
-6. 使用的 Python 解释器与运行脚本时使用的是相同的。您可以从 `sys.executable` 获取它。
+6. 使用的 Python 解释器与运行脚本所使用的相同。您可以通过 `sys.executable` 获取它。
 
 另请参见: [test_udf.py](https://github.com/chdb-io/chdb/blob/main/tests/test_udf.py)。
 
 ### Python 表引擎 {#python-table-engine}
 
-### 在 Pandas DataFrame 上查询 {#query-on-pandas-dataframe}
+### 对 Pandas DataFrame 的查询 {#query-on-pandas-dataframe}
 
 ```python
 import chdb
@@ -196,7 +196,7 @@ df = pd.DataFrame(
 chdb.query("SELECT b, sum(a) FROM Python(df) GROUP BY b ORDER BY b").show()
 ```
 
-### 在 Arrow 表上查询 {#query-on-arrow-table}
+### 对 Arrow 表的查询 {#query-on-arrow-table}
 
 ```python
 import chdb
@@ -213,14 +213,14 @@ chdb.query(
 ).show()
 ```
 
-### 在 chdb.PyReader 类实例上查询 {#query-on-chdbpyreader-class-instance}
+### 对 chdb.PyReader 类实例的查询 {#query-on-chdbpyreader-class-instance}
 
-1. 您必须从 chdb.PyReader 类继承并实现 `read` 方法。
+1. 您必须继承 chdb.PyReader 类并实现 `read` 方法。
 2. `read` 方法应：
-    1. 返回一个列表的列表，第一个维度是列，第二个维度是行，列的顺序应与 `read` 的第一个参数 `col_names` 相同。
-    1. 在没有更多数据可读时返回一个空列表。
-    1. 为有状态，游标应在 `read` 方法中更新。
-3. 可选的 `get_schema` 方法可用于返回表的模式。其原型为 `def get_schema(self) -> List[Tuple[str, str]]:`，返回值为一个元组列表，每个元组包含列名和列类型。列类型应为 [以下之一](/sql-reference/data-types)。
+    1. 返回一个列表的列表，第一维是列，第二维是行，列的顺序应与 `read` 的第一个参数 `col_names` 相同。
+    1. 在没有更多数据可读时返回空列表。
+    1. 是有状态的，游标应在 `read` 方法中更新。
+3. 可选的 `get_schema` 方法可以实现以返回表的模式。原型为 `def get_schema(self) -> List[Tuple[str, str]]:`，返回值是一个元组列表，每个元组包含列名和列类型。列类型应为 [以下类型之一](/sql-reference/data-types)。
 
 <br />
 
@@ -257,11 +257,11 @@ chdb.query(
 
 ## 限制 {#limitations}
 
-1. 支持的列类型: `pandas.Series`, `pyarrow.array`, `chdb.PyReader`
-1. 支持的数据类型: Int, UInt, Float, String, Date, DateTime, Decimal
-1. Python 对象类型将被转换为字符串
-1. Pandas DataFrame 性能最好，Arrow 表优于 PyReader
+1. 支持的列类型：`pandas.Series`, `pyarrow.array`,`chdb.PyReader`
+1. 支持的数据类型：Int, UInt, Float, String, Date, DateTime, Decimal
+1. Python 对象类型将转化为字符串
+1. Pandas DataFrame 的性能最佳，Arrow 表优于 PyReader
 
 <br />
 
-有关更多示例，请参见 [examples](https://github.com/chdb-io/chdb/tree/main/examples) 和 [tests](https://github.com/chdb-io/chdb/tree/main/tests)。
+更多示例，请参见 [examples](https://github.com/chdb-io/chdb/tree/main/examples) 和 [tests](https://github.com/chdb-io/chdb/tree/main/tests)。

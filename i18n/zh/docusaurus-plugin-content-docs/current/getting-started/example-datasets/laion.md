@@ -1,10 +1,17 @@
-[Laion-400M 数据集](https://laion.ai/blog/laion-400-open-dataset/) 包含 4 亿张带有英文图像标题的图片。Laion 现在提供 [一个更大的数据集](https://laion.ai/blog/laion-5b/)，但是使用它的方式将是相似的。
+---
+'description': '数据集包含 400 百万图像，带有英文图像说明'
+'sidebar_label': 'Laion-400M 数据集'
+'slug': '/getting-started/example-datasets/laion-400m-dataset'
+'title': 'Laion-400M 数据集'
+---
 
-该数据集包含图像 URL、图像和图像标题的嵌入、图像和图像标题之间的相似度评分，以及元数据，例如图像的宽度/高度、许可证和一个 NSFW 标志。我们可以使用该数据集来演示 [近似最近邻搜索](../../engines/table-engines/mergetree-family/annindexes.md) 在 ClickHouse 中的应用。
+The [Laion-400M dataset](https://laion.ai/blog/laion-400-open-dataset/) 包含 4 亿张带有英文图像描述的图像。如今，Laion 提供了 [一个更大的数据集](https://laion.ai/blog/laion-5b/)，但与之合作的方式将是类似的。
+
+该数据集包含图像 URL、图像和图像描述的嵌入、图像与图像描述之间的相似性评分，以及元数据，如图像宽度/高度、许可证和 NSFW 标志。我们可以使用该数据集来演示 [近似最近邻搜索](../../engines/table-engines/mergetree-family/annindexes.md) 在 ClickHouse 中的用法。
 
 ## 数据准备 {#data-preparation}
 
-嵌入和元数据分别存储在原始数据的不同文件中。数据准备步骤下载数据，合并文件，转换为 CSV 并导入到 ClickHouse。您可以使用以下 `download.sh` 脚本来实现：
+嵌入和元数据存储在原始数据的不同文件中。数据准备步骤下载数据、合并文件，将其转换为 CSV 并导入到 ClickHouse 中。您可以使用以下 `download.sh` 脚本来实现：
 
 ```bash
 number=${1}
@@ -69,7 +76,7 @@ seq 0 409 | xargs -P1 -I{} bash -c './download.sh {}'
 
 数据集被分成 410 个文件，每个文件包含约 100 万行。如果您想使用较小的数据子集，只需调整限制，例如 `seq 0 9 | ...`。
 
-（上面的 Python 脚本非常慢（每个文件大约需要 2-10 分钟），占用大量内存（每个文件 41 GB），并且生成的 CSV 文件很大（每个 10 GB），因此请小心。如果您有足够的 RAM，请增加 `-P1` 数字以获得更多并行处理。如果这仍然太慢，请考虑提出一种更好的摄取程序—也许将 .npy 文件转换为 parquet，然后使用 ClickHouse 进行其他处理。）
+（上述 Python 脚本速度非常慢（每个文件约 2-10 分钟），占用大量内存（每个文件 41 GB），并且生成的 CSV 文件较大（每个 10 GB），所以请小心。如果您的 RAM 足够，可以增加 `-P1` 数字以提高并行性。如果仍然太慢，请考虑制定更好的导入程序——也许将 .npy 文件转换为 parquet，然后用 ClickHouse 处理所有其他操作。）
 
 ## 创建表 {#create-table}
 
@@ -97,15 +104,15 @@ SETTINGS index_granularity = 8192
 INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
 ```
 
-## 运行暴力近邻搜索（没有 ANN 索引） {#run-a-brute-force-ann-search-without-ann-index}
+## 运行无 ANN 索引的暴力近似最近邻搜索 {#run-a-brute-force-ann-search-without-ann-index}
 
-要运行暴力近似最近邻搜索，请运行：
+要运行暴力的近似最近邻搜索，请运行：
 
 ```sql
 SELECT url, caption FROM laion ORDER BY L2Distance(image_embedding, {target:Array(Float32)}) LIMIT 30
 ```
 
-`target` 是一个包含 512 个元素的数组和一个客户端参数。获取这样的数组的方便方法将在文章末尾呈现。目前，我们可以运行一张随机猫咪照片的嵌入作为 `target`。
+`target` 是一个包含 512 个元素的数组和一个客户端参数。获取这样的数组的方便方法将在文章结束时呈现。现在，我们可以将随机猫图像的嵌入作为 `target` 进行运行。
 
 **结果**
 
@@ -124,9 +131,9 @@ SELECT url, caption FROM laion ORDER BY L2Distance(image_embedding, {target:Arra
 8 rows in set. Elapsed: 6.432 sec. Processed 19.65 million rows, 43.96 GB (3.06 million rows/s., 6.84 GB/s.)
 ```
 
-## 运行带有 ANN 索引的 ANN {#run-a-ann-with-an-ann-index}
+## 运行带 ANN 索引的 ANN {#run-a-ann-with-an-ann-index}
 
-创建一个带有 ANN 索引的新表，并从现有表中插入数据：
+创建一个带 ANN 索引的新表，并从现有表中插入数据：
 
 ```sql
 CREATE TABLE laion_annoy
@@ -148,7 +155,7 @@ SETTINGS index_granularity = 8192;
 INSERT INTO laion_annoy SELECT * FROM laion;
 ```
 
-默认情况下，Annoy 索引使用 L2 距离作为度量。有关索引创建和搜索的进一步调优选项，请参阅 Annoy 索引 [文档](../../engines/table-engines/mergetree-family/annindexes.md)。现在让我们再次用相同的查询检查：
+默认情况下，Annoy 索引用 L2 距离作为度量。索引创建和搜索的进一步调优参数在 Annoy 索引 [文档](../../engines/table-engines/mergetree-family/annindexes.md) 中进行了描述。现在，我们再次用相同的查询进行检查：
 
 ```sql
 SELECT url, caption FROM laion_annoy ORDER BY l2Distance(image_embedding, {target:Array(Float32)}) LIMIT 8
@@ -171,15 +178,15 @@ SELECT url, caption FROM laion_annoy ORDER BY l2Distance(image_embedding, {targe
 8 rows in set. Elapsed: 0.641 sec. Processed 22.06 thousand rows, 49.36 MB (91.53 thousand rows/s., 204.81 MB/s.)
 ```
 
-速度显著增加，但结果的准确性降低。这是因为 ANN 索引仅提供近似搜索结果。请注意，示例搜索的是相似的图像嵌入，但也可以搜索正面的图像标题嵌入。
+速度显著提高，但结果的准确性降低。这是因为 ANN 索引只能提供近似搜索结果。请注意该示例搜索了相似图像嵌入，但也可以搜索正向图像描述嵌入。
 
 ## 使用 UDF 创建嵌入 {#creating-embeddings-with-udfs}
 
-通常，人们希望为新图像或新图像标题创建嵌入，并在数据中搜索相似的图像/图像标题对。我们可以使用 [UDF](/sql-reference/functions/udf) 在客户端内创建 `target` 向量。重要的是使用相同的模型来创建数据和进行搜索的新嵌入。以下脚本利用了基础数据集的 `ViT-B/32` 模型。
+通常希望为新图像或新图像描述创建嵌入，并在数据中搜索相似的图像/图像描述对。我们可以使用 [UDF](/sql-reference/functions/udf) 来创建 `target` 向量，而无需离开客户端。重要的是使用相同的模型创建数据和新嵌入以进行搜索。以下脚本利用了同样支撑数据集的 `ViT-B/32` 模型。
 
 ### 文本嵌入 {#text-embeddings}
 
-首先，将以下 Python 脚本存储在 ClickHouse 数据路径的 `user_scripts/` 目录中，并使其可执行 (`chmod +x encode_text.py`)。
+首先，将以下 Python 脚本存储在 ClickHouse 数据路径的 `user_scripts/` 目录中并使其可执行（`chmod +x encode_text.py`）。
 
 `encode_text.py`：
 
@@ -201,7 +208,7 @@ if __name__ == '__main__':
         sys.stdout.flush()
 ```
 
-然后在您的 ClickHouse 服务器配置文件中创建 `encode_text_function.xml`，该文件的路径由 `<user_defined_executable_functions_config>/path/to/*_function.xml</user_defined_executable_functions_config>` 引用。
+然后在 ClickHouse 服务器配置文件中创建 `encode_text_function.xml`，此路径在 `<user_defined_executable_functions_config>/path/to/*_function.xml</user_defined_executable_functions_config>` 中引用。
 
 ```xml
 <functions>
@@ -225,11 +232,11 @@ if __name__ == '__main__':
 ```sql
 SELECT encode_text('cat');
 ```
-第一次运行将会很慢，因为它会加载模型，但重复运行将会很快。然后我们可以将输出复制到 `SET param_target=...`，并可以轻松撰写查询。
+第一次运行会很慢，因为它加载模型，但重复运行将会很快。然后我们可以将输出复制到 `SET param_target=...`，并可以轻松写查询。
 
 ### 图像嵌入 {#image-embeddings}
 
-图像嵌入可以类似创建，但我们将提供图像的本地路径而不是图像标题文本。
+图像嵌入可以类似创建，但我们将向 Python 脚本提供本地图像的路径，而不是图像描述文本。
 
 `encode_image.py`
 
@@ -271,7 +278,7 @@ if __name__ == '__main__':
 </functions>
 ```
 
-然后运行此查询：
+然后运行以下查询：
 
 ```sql
 SELECT encode_image('/path/to/your/image');

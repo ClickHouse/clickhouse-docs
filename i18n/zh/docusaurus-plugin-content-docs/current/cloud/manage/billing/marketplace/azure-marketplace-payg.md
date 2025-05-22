@@ -1,6 +1,6 @@
 ---
 'slug': '/cloud/billing/marketplace/azure-marketplace-payg'
-'title': 'Azure Marketplace 按使用付费 (PAYG)'
+'title': 'Azure Marketplace PAYG'
 'description': '通过 Azure Marketplace (PAYG) 订阅 ClickHouse Cloud。'
 'keywords':
 - 'azure'
@@ -25,14 +25,14 @@ import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/mar
 import azure_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-11.png';
 import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-12.png';
 
-在 [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) 上通过 PAYG（按需付费）公共报价开始使用 ClickHouse Cloud。
+开始在 [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) 上通过 PAYG（按需付费）公共报价使用 ClickHouse Cloud。
 
-## 前提条件 {#prerequisites}
+## 先决条件 {#prerequisites}
 
-- 您的账单管理员已启用购买权限的 Azure 项目。
+- 由您的账单管理员启用购买权限的 Azure 项目。
 - 要在 Azure Marketplace 上订阅 ClickHouse Cloud，您必须使用具有购买权限的帐户登录并选择适当的项目。
 
-1. 访问 [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) 并搜索 ClickHouse Cloud。确保您已登录，以便可以购买市场上的产品。
+1. 访问 [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) 并搜索 ClickHouse Cloud。确保您已登录，以便可以在市场上购买产品。
 
 <br />
 
@@ -48,7 +48,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-3. 在下一个屏幕上，您需要提供名称、电子邮件和位置信息。
+3. 在下一个屏幕上，您需要提供姓名、电子邮件和位置信息。
 
 <br />
 
@@ -72,7 +72,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-6. 您还需要为订阅提供一个名称，并从可供选择的选项中选择账单条款。您可以选择将 **定期账单** 设置为开启或关闭。如果您设置为 "关闭"，您的合同将在账单条款结束后结束，您的资源将被撤销。
+6. 您还需要为订阅提供一个名称，并从可用选项中选择计费条款。您可以选择将 **循环计费** 设置为开启或关闭。如果您将其设置为“关闭”，您的合同将在计费期结束后终止，您的资源将被退役。
 
 <br />
 
@@ -80,9 +80,9 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-7. 点击 **“审查 + 订阅”**。
+7. 点击 **“查看 + 订阅”**。
 
-8. 在下一个屏幕上，验证一切是否正确，然后点击 **订阅**。
+8. 在下一个屏幕上，确认一切看起来正确，然后点击 **订阅**。
 
 <br />
 
@@ -90,7 +90,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-9. 请注意，此时您已订阅 ClickHouse Cloud 的 Azure 订阅，但您尚未在 ClickHouse Cloud 上设置账户。接下来的步骤是必要和关键的，以便 ClickHouse Cloud 能够绑定到您的 Azure 订阅，以便通过 Azure Marketplace 正确计费。
+9. 请注意，此时您已经订阅了 ClickHouse Cloud 的 Azure 订阅，但尚未在 ClickHouse Cloud 上设置您的帐户。接下来的步骤是必要且关键的，以便 ClickHouse Cloud 能够绑定到您的 Azure 订阅，以便通过 Azure 市场正确进行计费。
 
 <br />
 
@@ -98,7 +98,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-10. 一旦 Azure 设置完成，**立即配置账户** 按钮应变为可用状态。
+10. 一旦 Azure 设置完成，**现在配置帐户** 按钮将变为活跃状态。
 
 <br />
 
@@ -106,11 +106,11 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-11. 点击 **立即配置账户**。
+11. 点击 **现在配置帐户**。
 
 <br />
 
-您将收到一封电子邮件，内容如下，其中包含有关配置您账户的详细信息：
+您将收到一封电子邮件，内容如下，内含有关配置您的帐户的详细信息：
 
 <br />
 
@@ -118,9 +118,9 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-12. 您将被重定向到 ClickHouse Cloud 的注册或登录页面。您可以选择使用新帐户注册或使用现有帐户登录。登录后，将创建一个新的组织，准备通过 Azure Marketplace 使用和计费。
+12. 您将被重定向到 ClickHouse Cloud 注册或登录页面。您可以使用新帐户注册或使用现有帐户登录。一旦登录，将创建一个新组织，可以通过 Azure Marketplace 进行使用和计费。
 
-13. 在继续之前，您需要回答一些问题 - 地址和公司详细信息。
+13. 在继续之前，您需要回答几个问题 - 地址和公司信息。
 
 <br />
 
@@ -132,7 +132,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-14. 一旦您点击 **完成注册**，您将进入 ClickHouse Cloud 中的组织，在那里您可以查看账单屏幕，以确保您通过 Azure Marketplace 被计费，并可以创建服务。
+14. 一旦您点击 **完成注册**，您将被带到 ClickHouse Cloud 内的组织，您可以查看计费屏幕，以确保通过 Azure Marketplace 进行计费并创建服务。
 
 <br />
 

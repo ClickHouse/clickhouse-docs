@@ -1,4 +1,13 @@
+---
+'description': '这个引擎允许将 ClickHouse 与 RocksDB 集成'
+'sidebar_label': 'EmbeddedRocksDB'
+'sidebar_position': 50
+'slug': '/engines/table-engines/integrations/embedded-rocksdb'
+'title': 'EmbeddedRocksDB 引擎'
+---
+
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+
 
 # EmbeddedRocksDB 引擎
 
@@ -21,17 +30,17 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 引擎参数：
 
 - `ttl` - 值的生存时间。TTL 以秒为单位。如果 TTL 为 0，则使用常规的 RocksDB 实例（没有 TTL）。
-- `rocksdb_dir` - 已存在 RocksDB 的目录路径或创建的 RocksDB 的目标路径。使用指定的 `rocksdb_dir` 打开表。
-- `read_only` - 当 `read_only` 设置为 true 时，启用只读模式。对于具有 TTL 的存储，合并操作不会被触发（既不手动也不自动），因此不会移除过期条目。
-- `primary_key_name` – 列表中的任意列名。
-- 必须指定 `primary key`，它仅支持主键中的一列。主键将以二进制形式序列化为 `rocksdb key`。
-- 除主键外的列将以对应顺序序列化为 `rocksdb` 中的二进制值。
-- 具有主键 `equals` 或 `in` 过滤的查询将优化为从 `rocksdb` 中查询多个键。
+- `rocksdb_dir` - 已存在的 RocksDB 的目录路径或创建的 RocksDB 的目标路径。使用指定的 `rocksdb_dir` 打开表。
+- `read_only` - 当 `read_only` 设置为 true 时，使用只读模式。对于具有 TTL 的存储，不会触发压缩（既没有手动也没有自动），因此不会移除过期条目。
+- `primary_key_name` – 列表中任意列的名称。
+- `primary key` 必须指定，只支持在主键中使用一列。主键将以二进制形式序列化为 `rocksdb key`。
+- 除主键外的列将按照相应顺序以二进制形式序列化为 `rocksdb` 值。
+- 使用键 `equals` 或 `in` 过滤的查询将优化为从 `rocksdb` 进行多重键查找。
 
 引擎设置：
 
-- `optimize_for_bulk_insert` – 表针对批量插入进行了优化（插入管道将创建 SST 文件并导入到 rocksdb 数据库，而不是写入内存表）；默认值：`1`。
-- `bulk_insert_block_size` - 批量插入创建的 SST 文件的最小大小（以行数为单位）；默认值：`1048449`。
+- `optimize_for_bulk_insert` – 表为批量插入优化（插入管道将创建 SST 文件并导入到 rocksdb 数据库，而不是写入内存表）；默认值：`1`。
+- `bulk_insert_block_size` - 批量插入创建的 SST 文件的最小大小（以行数计算）；默认值：`1048449`。
 
 示例：
 
@@ -49,7 +58,7 @@ PRIMARY KEY key
 
 ## 指标 {#metrics}
 
-还有 `system.rocksdb` 表，它暴露了 RocksDB 的统计信息：
+还有一个 `system.rocksdb` 表，公开 RocksDB 统计信息：
 
 ```sql
 SELECT
@@ -65,7 +74,7 @@ FROM system.rocksdb
 
 ## 配置 {#configuration}
 
-您还可以通过配置更改任何 [rocksdb 选项](https://github.com/facebook/rocksdb/wiki/Option-String-and-Option-Map)：
+您还可以使用配置更改任何 [rocksdb 选项](https://github.com/facebook/rocksdb/wiki/Option-String-and-Option-Map)：
 
 ```xml
 <rocksdb>
@@ -89,13 +98,13 @@ FROM system.rocksdb
 </rocksdb>
 ```
 
-默认情况下，微不足道的近似计数优化已关闭，这可能会影响 `count()` 查询的性能。要启用此优化，请设置 `optimize_trivial_approximate_count_query = 1`。此外，此设置影响 EmbeddedRocksDB 引擎的 `system.tables`，开启该设置以查看 `total_rows` 和 `total_bytes` 的近似值。
+默认情况下，简单近似计数优化已关闭，这可能会影响 `count()` 查询的性能。要启用此优化，请设置 `optimize_trivial_approximate_count_query = 1`。此外，该设置会影响 EmbeddedRocksDB 引擎的 `system.tables`，启用该设置以查看 `total_rows` 和 `total_bytes` 的近似值。
 
 ## 支持的操作 {#supported-operations}
 
 ### 插入 {#inserts}
 
-当新行插入到 `EmbeddedRocksDB` 中时，如果键已存在，则将更新值，否则将创建新键。
+当新行插入到 `EmbeddedRocksDB` 时，如果键已存在，则值将被更新；否则，将创建一个新键。
 
 示例：
 
@@ -129,11 +138,9 @@ ALTER TABLE test UPDATE v1 = v1 * 10 + 2 WHERE key LIKE 'some%' AND v3 > 3.1;
 
 ### 连接 {#joins}
 
-支持与 EmbeddedRocksDB 表的特殊 `direct` 连接。
-这种直接连接避免在内存中形成哈希表，并直接访问
-EmbeddedRocksDB 中的数据。
+支持与 EmbeddedRocksDB 表的特殊 `direct` 连接。此直接连接避免在内存中形成哈希表，而是直接从 EmbeddedRocksDB 中访问数据。
 
-对于大型连接，您可能会发现直接连接显著降低内存使用，因为不创建哈希表。
+对于大型连接，您可能会看到直接连接的内存使用量大大降低，因为不会创建哈希表。
 
 要启用直接连接：
 ```sql
@@ -146,7 +153,7 @@ SET join_algorithm = 'direct, hash'
 
 #### 示例 {#example}
 
-##### 创建并填充 EmbeddedRocksDB 表 {#create-and-populate-an-embeddedrocksdb-table}
+##### 创建并填充一个 EmbeddedRocksDB 表 {#create-and-populate-an-embeddedrocksdb-table}
 ```sql
 CREATE TABLE rdb
 (
@@ -167,7 +174,7 @@ INSERT INTO rdb
     FROM numbers_mt(10);
 ```
 
-##### 创建并填充要与表 `rdb` 连接的表 {#create-and-populate-a-table-to-join-with-table-rdb}
+##### 创建并填充一个表以与表 `rdb` 连接 {#create-and-populate-a-table-to-join-with-table-rdb}
 
 ```sql
 CREATE TABLE t2

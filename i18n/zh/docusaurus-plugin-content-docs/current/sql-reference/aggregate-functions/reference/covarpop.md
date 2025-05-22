@@ -1,3 +1,10 @@
+---
+'description': '计算人口协方差'
+'sidebar_position': 121
+'slug': '/sql-reference/aggregate-functions/reference/covarpop'
+'title': 'covarPop'
+---
+
 
 # covarPop
 
@@ -8,7 +15,7 @@ $$
 $$
 
 :::note
-此函数使用了数值上不稳定的算法。如果您需要计算中的 [数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`covarPopStable`](../reference/covarpopstable.md) 函数。它的速度较慢，但提供了更低的计算误差。
+此函数使用数值不稳定的算法。如果您需要在计算中确保 [数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`covarPopStable`](../reference/covarpopstable.md) 函数。它的计算速度较慢，但提供了更低的计算误差。
 :::
 
 **语法**

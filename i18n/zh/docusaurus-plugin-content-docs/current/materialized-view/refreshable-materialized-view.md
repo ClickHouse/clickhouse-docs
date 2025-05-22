@@ -1,7 +1,7 @@
 ---
 'slug': '/materialized-view/refreshable-materialized-view'
-'title': '可刷新的物化视图'
-'description': '如何使用物化视图来加速查询'
+'title': '可刷新物化视图'
+'description': '如何使用物化视图来加快 查询'
 'keywords':
 - 'refreshable materialized view'
 - 'refresh'
@@ -13,27 +13,27 @@
 import refreshableMaterializedViewDiagram from '@site/static/images/materialized-view/refreshable-materialized-view-diagram.png';
 import Image from '@theme/IdealImage';
 
-[可刷新的物化视图](/sql-reference/statements/create/view#refreshable-materialized-view) 在概念上与传统 OLTP 数据库中的物化视图相似，存储指定查询的结果以便快速检索，并减少重复执行资源密集型查询的需求。与 ClickHouse 的 [增量物化视图](/materialized-view/incremental-materialized-view) 不同，这需要定期对整个数据集执行查询 - 其结果存储在目标表中以便进行查询。理论上，这个结果集应该比原始数据集小，从而使后续查询执行得更快。
+[可刷新的物化视图](/sql-reference/statements/create/view#refreshable-materialized-view) 在概念上与传统 OLTP 数据库中的物化视图类似，存储指定查询的结果以便于快速检索，从而减少重复执行资源密集型查询的需要。与 ClickHouse 的 [增量物化视图](/materialized-view/incremental-materialized-view) 不同，这需要定期在完整数据集上执行查询 - 其结果存储在目标表中以供查询。理论上，这个结果集应该小于原始数据集，从而使后续查询能够更快地执行。
 
-该图解释了可刷新的物化视图的工作原理：
+下图说明了可刷新的物化视图是如何工作的：
 
-<Image img={refreshableMaterializedViewDiagram} size="lg" alt="可刷新的物化视图图"/>
+<Image img={refreshableMaterializedViewDiagram} size="lg" alt="可刷新的物化视图示意图"/>
 
-您还可以观看以下视频：
+您还可以查看以下视频：
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-KhFJSY8yrs?si=VPRSZb20vaYkuR_C" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-## 何时应该使用可刷新的物化视图？ {#when-should-refreshable-materialized-views-be-used}
+## 何时使用可刷新的物化视图？ {#when-should-refreshable-materialized-views-be-used}
 
-ClickHouse 的增量物化视图功能强大，通常比可刷新的物化视图方法更具可扩展性，特别是在需要对单个表进行聚合的情况下。通过仅在每个数据块插入时计算聚合，并在最终表中合并增量状态，查询只在数据的子集上执行。这种方法可以扩展到潜在的 PB 级数据，通常是更优选的方法。
+ClickHouse 的增量物化视图功能强大，并且通常比可刷新的物化视图所使用的方法更具扩展性，特别是在需要对单个表执行聚合操作的情况下。通过仅在每个数据块插入时计算聚合，并在最终表中合并增量状态，查询仅在数据的一个子集上执行。这种方法可扩展到潜在的 PB 级数据，通常是首选方法。
 
-然而，也有一些用例不需要或不适用此增量过程。有些问题与增量方法不兼容，或不需要实时更新，而定期重建更为合适。例如，您可能希望定期对整个数据集进行完整的视图重新计算，因为它使用了复杂的连接，而这与增量方法不兼容。
+然而，有些用例并不需要或不适合这种增量处理。一些问题与增量方法不兼容或不需要实时更新，周期性重建更为合适。例如，您可能希望定期在完整数据集上执行视图的完全重新计算，因为它使用了复杂的连接，而这与增量方法不兼容。
 
-> 可刷新的物化视图可以运行批处理过程，执行诸如反规范化等任务。可以在可刷新的物化视图之间创建依赖关系，使一个视图依赖于另一个视图的结果，并且只有在完成后才执行。这可以替代计划工作流程或简单的 DAG，例如 [dbt](https://www.getdbt.com/) 作业。要了解有关如何在可刷新的物化视图之间设置依赖关系的更多信息，请访问 [创建视图](/sql-reference/statements/create/view#refresh-dependencies) 中的 `Dependencies` 部分。
+> 可刷新的物化视图可以运行批处理过程，执行诸如反规范化之类的任务。可以在可刷新的物化视图之间创建依赖关系，使一个视图依赖于另一个视图的结果，并且仅在其完成后执行。这可以替代计划工作流或简单的 DAG，例如 [dbt](https://www.getdbt.com/) 作业。要了解有关如何在可刷新的物化视图之间设置依赖关系的更多信息，请参见 [创建视图](/sql-reference/statements/create/view#refresh-dependencies) 的 `Dependencies` 部分。
 
 ## 如何刷新可刷新的物化视图？ {#how-do-you-refresh-a-refreshable-materialized-view}
 
-可刷新的物化视图在创建时定义的间隔内自动刷新。
+可刷新的物化视图会在创建时定义的间隔上自动刷新。
 例如，以下物化视图每分钟刷新一次：
 
 ```sql
@@ -49,11 +49,11 @@ SYSTEM REFRESH VIEW table_name_mv;
 ```
 
 您还可以取消、停止或启动视图。
-有关更多详细信息，请参阅 [管理可刷新的物化视图](/sql-reference/statements/system#refreshable-materialized-views) 文档。
+有关更多详细信息，请参见 [管理可刷新的物化视图](/sql-reference/statements/system#refreshable-materialized-views) 文档。
 
-## 什么时候最后一次刷新了可刷新的物化视图？ {#when-was-a-refreshable-materialized-view-last-refreshed}
+## 最近一次刷新可刷新的物化视图是什么时候？ {#when-was-a-refreshable-materialized-view-last-refreshed}
 
-要查找可刷新的物化视图最后一次刷新时，可以查询 [`system.view_refreshes`](/operations/system-tables/view_refreshes) 系统表，如下所示：
+要查找可刷新的物化视图上次刷新的时间，您可以查询 [`system.view_refreshes`](/operations/system-tables/view_refreshes) 系统表，如下所示：
 
 ```sql
 SELECT database, view, status,
@@ -77,7 +77,7 @@ ALTER TABLE table_name_mv
 MODIFY REFRESH EVERY 30 SECONDS;
 ```
 
-完成后，您可以使用 [最后一次刷新可刷新的物化视图是什么时候？](/materialized-view/refreshable-materialized-view#when-was-a-refreshable-materialized-view-last-refreshed) 查询检查频率是否已更新：
+完成后，您可以使用 [最近一次刷新可刷新的物化视图是什么时候？](/materialized-view/refreshable-materialized-view#when-was-a-refreshable-materialized-view-last-refreshed) 查询以检查频率是否已更新：
 
 ```text
 ┌─database─┬─view─────────────┬─status────┬───last_success_time─┬───last_refresh_time─┬───next_refresh_time─┬─read_rows─┬─written_rows─┐
@@ -89,7 +89,7 @@ MODIFY REFRESH EVERY 30 SECONDS;
 
 `APPEND` 功能允许您将新行添加到表的末尾，而不是替换整个视图。
 
-这个功能的一个用途是捕获某一时间点的值快照。例如，假设我们有一个 `events` 表，由来自 [Kafka](https://kafka.apache.org/)、[Redpanda](https://www.redpanda.com/) 或其他流数据平台的数据流填充。
+此功能的一个用途是在某个时间点捕获值的快照。例如，假设我们有一个 `events` 表，由来自 [Kafka](https://kafka.apache.org/)、 [Redpanda](https://www.redpanda.com/) 或其他流数据平台的消息流填充。
 
 ```sql
 SELECT *
@@ -112,7 +112,7 @@ Query id: 7662bc39-aaf9-42bd-b6c7-bc94f2881036
 └─────────────────────┴──────┴───────┘
 ```
 
-此数据集中在 `uuid` 列中有 `4096` 个值。我们可以编写以下查询以查找总计数最高的值：
+该数据集在 `uuid` 列中有 `4096` 个值。我们可以编写以下查询来查找出现总数最高的那些：
 
 ```sql
 SELECT
@@ -137,7 +137,7 @@ LIMIT 10
 └──────┴─────────┘
 ```
 
-假设我们想要每 10 秒捕获一次每个 `uuid` 的计数，并将其存储在名为 `events_snapshot` 的新表中。`events_snapshot` 的架构如下所示：
+假设我们想要每 10 秒捕获一次每个 `uuid` 的计数，并将其存储在一个名为 `events_snapshot` 的新表中。 `events_snapshot` 的模式如下所示：
 
 ```sql
 CREATE TABLE events_snapshot (
@@ -149,7 +149,7 @@ ENGINE = MergeTree
 ORDER BY uuid;
 ```
 
-然后我们可以创建一个可刷新的物化视图来填充此表：
+然后，我们可以创建一个可刷新的物化视图来填充此表：
 
 ```sql
 CREATE MATERIALIZED VIEW events_snapshot_mv
@@ -162,7 +162,7 @@ FROM events
 GROUP BY ALL;
 ```
 
-接着，我们可以查询 `events_snapshot` 以获得特定 `uuid` 的计数变化：
+接下来，我们可以查询 `events_snapshot` 来获取特定 `uuid` 随时间变化的计数：
 
 ```sql
 SELECT *
@@ -185,13 +185,13 @@ FORMAT PrettyCompactMonoBlock
 
 ## 示例 {#examples}
 
-现在让我们看看如何结合示例数据集使用可刷新的物化视图。
+现在让我们看一下如何使用可刷新的物化视图和一些示例数据集。
 
 ### Stack Overflow {#stack-overflow}
 
-[反规范化数据指南](/data-modeling/denormalization) 显示了使用 Stack Overflow 数据集反规范化数据的各种技术。我们将数据填充到以下表中：`votes`、`users`、`badges`、`posts` 和 `postlinks`。
+[反规范化数据指南](/data-modeling/denormalization) 显示了使用 Stack Overflow 数据集反规范化数据的各种技术。我们将数据填充到以下表中： `votes`、`users`、`badges`、`posts` 和 `postlinks`。
 
-在该指南中，我们展示了如何使用以下查询将 `postlinks` 数据集反规范化到 `posts` 表：
+在该指南中，我们展示了如何使用以下查询将 `postlinks` 数据集反规范化到 `posts` 表中：
 
 ```sql
 SELECT
@@ -208,11 +208,11 @@ LEFT JOIN (
 ) AS postlinks ON posts_types_codecs_ordered.Id = postlinks.PostId;
 ```
 
-然后我们展示了如何将这些数据一次性插入到 `posts_with_links` 表，但在生产系统中，我们希望定期运行此操作。
+我们随后展示了如何一次性将这些数据插入 `posts_with_links` 表，但在生产系统中，我们希望定期运行此操作。
 
-`posts` 和 `postlinks` 表都可能会更新。因此，与其尝试使用增量物化视图来实现此连接，不如简单地安排此查询在设定的间隔内运行，例如每小时一次，将结果存储在 `post_with_links` 表中。
+`posts` 和 `postlinks` 表都可能会更新。因此，与其尝试使用增量物化视图实现连接，不如简单地安排此查询在设定的间隔内运行，例如每小时一次，将结果存储在 `post_with_links` 表中。
 
-这就是可刷新的物化视图的帮助所在，我们可以使用以下查询创建它：
+这就是可刷新的物化视图可以派上用场的地方，我们可以通过以下查询创建一个：
 
 ```sql
 CREATE MATERIALIZED VIEW posts_with_links_mv
@@ -231,17 +231,17 @@ LEFT JOIN (
 ) AS postlinks ON posts_types_codecs_ordered.Id = postlinks.PostId;
 ```
 
-该视图将立即执行，并在此后每小时执行，以确保源表的更新反映出来。重要的是，当查询重新运行时，结果集会原子且透明地进行更新。
+该视图将立即执行，并在之后的每小时按配置执行，以确保源表的更新得以反映。重要的是，当查询重新运行时，结果集会原子性和透明地更新。
 
 :::note
-这里的语法与增量物化视图相同，只是我们添加了 [`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view) 子句：
+此处的语法与增量物化视图相同，只是我们添加了 [`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view) 子句：
 :::
 
 ### IMDb {#imdb}
 
-在 [dbt 和 ClickHouse 集成指南](/integrations/dbt#dbt) 中，我们填充了一个 IMDb 数据集，包括以下表：`actors`、`directors`、`genres`、`movie_directors`、`movies` 和 `roles`。
+在 [dbt 和 ClickHouse 集成指南](/integrations/dbt#dbt) 中，我们使用以下表填充了 IMDb 数据集： `actors`、`directors`、`genres`、`movie_directors`、`movies` 和 `roles`。
 
-我们可以编写以下查询来计算每个演员的摘要，按电影出场次数排序。
+然后，我们可以编写以下查询来计算每个演员的摘要，按电影出场次数排序。
 
 ```sql
 SELECT
@@ -280,10 +280,10 @@ LIMIT 5;
 Peak memory usage: 1.38 GiB.
 ```
 
-返回结果所需时间不长，但假设我们希望它更快且计算开销更小。
-假设该数据集也在不断更新 - 新电影不断发布，新的演员和导演也在不断涌现。
+返回结果的时间不长，但假设我们希望它更快，并且计算成本更低。
+假设该数据集也受到持续更新的影响 - 不断有电影上映，新演员和导演也不断涌现。
 
-这时就需要用到可刷新的物化视图，因此让我们先为结果创建一个目标表：
+现在是可刷新的物化视图的时机，所以我们首先为结果创建一个目标表：
 
 ```sql
 CREATE TABLE imdb.actor_summary
@@ -334,7 +334,7 @@ GROUP BY id
 ORDER BY num_movies DESC;
 ```
 
-该视图将立即执行，并在此后每分钟执行，以确保源表的更新反映出来。我们之前获取演员摘要的查询变得语法上简单且显著更快！
+该视图将立即执行，并在之后的每分钟按配置执行，以确保源表的更新被反映。我们先前用于获取演员摘要的查询在语法上变得更简单，速度也显着提高！
 
 ```sql
 SELECT *
@@ -355,7 +355,7 @@ LIMIT 5
 5 rows in set. Elapsed: 0.007 sec.
 ```
 
-假设我们向源数据中添加了一位新演员 "Clicky McClickHouse"，他在很多电影中都有出场！
+假设我们添加了一位新演员 “Clicky McClickHouse” 到我们的源数据，恰好出现在许多电影中！
 
 ```sql
 INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
@@ -368,7 +368,7 @@ FROM imdb.movies
 LIMIT 10000, 910;
 ```
 
-不到 60 秒后，我们的目标表更新，反映出 Clicky 的高产演出：
+不到 60 秒后，我们的目标表已更新，以反映 Clicky 出色的演技：
 
 ```sql
 SELECT *

@@ -1,11 +1,20 @@
+---
+'description': 'uniqTheta 函数的文档'
+'sidebar_label': 'uniqTheta'
+'sidebar_position': 210
+'slug': '/sql-reference/functions/uniqtheta-functions'
+'title': 'uniqTheta 函数'
+---
+
 
 # uniqTheta 函数
 
-uniqTheta 函数用于两个 uniqThetaSketch 对象进行集合操作计算，如 ∪ / ∩ / ×（并集/交集/差集），返回一个新的 uniqThetaSketch 对象，包含计算结果。
+uniqTheta 函数用于对两个 uniqThetaSketch 对象进行集合操作计算，例如 ∪ / ∩ / × (并集/交集/差集)，返回一个新的 uniqThetaSketch 对象包含结果。
 
-一个 uniqThetaSketch 对象是通过聚合函数 uniqTheta 与 -State 构造的。
+uniqThetaSketch 对象是通过聚合函数 uniqTheta 与 -State 构造的。
 
-UniqThetaSketch 是一种近似值集合的数据结构存储。有关 RoaringBitmap 的更多信息，请参见：[Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html)。
+UniqThetaSketch 是一种存储近似值集合的数据结构。
+有关 RoaringBitmap 的更多信息，请参见：[Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html)。
 
 ## uniqThetaUnion {#uniqthetaunion}
 

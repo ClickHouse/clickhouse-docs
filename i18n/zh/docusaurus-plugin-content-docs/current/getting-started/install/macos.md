@@ -6,7 +6,7 @@
 - 'MacOS'
 'sidebar_label': 'MacOS'
 'slug': '/install/macOS'
-'title': '使用 Homebrew 安装 ClickHouse'
+'title': '通过 Homebrew 安装 ClickHouse'
 'hide_title': true
 ---
 

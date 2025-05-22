@@ -1,7 +1,14 @@
+---
+'description': '`median*` 函数是相应的 `quantile*` 函数的别名。它们计算数值数据样本的 median。'
+'sidebar_position': 167
+'slug': '/sql-reference/aggregate-functions/reference/median'
+'title': 'median'
+---
+
 
 # median
 
-`median*` 函数是相应的 `quantile*` 函数的别名。它们计算数值数据样本的中位数。
+`median*` 函数是对应的 `quantile*` 函数的别名。它们计算数值数据样本的中位数。
 
 函数：
 

@@ -1,11 +1,19 @@
+---
+'description': '文档关于 Time Series Functions'
+'sidebar_label': '时间序列'
+'sidebar_position': 172
+'slug': '/sql-reference/functions/time-series-functions'
+'title': '时间序列函数'
+---
+
 
 # 时间序列函数
 
-以下函数用于系列数据分析。
+以下函数用于序列数据分析。
 
 ## seriesOutliersDetectTukey {#seriesoutliersdetecttukey}
 
-使用 [Tukey Fences](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences) 检测系列数据中的异常值。
+使用[Tukey Fences](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences)检测序列数据中的异常值。
 
 **语法**
 
@@ -17,15 +25,15 @@ seriesOutliersDetectTukey(series, min_percentile, max_percentile, K);
 **参数**
 
 - `series` - 数值数组。
-- `min_percentile` - 用于计算四分位差 [(IQR)](https://en.wikipedia.org/wiki/Interquartile_range) 的最小百分位数。值必须在 [0.02,0.98] 范围内。默认值为 0.25。
-- `max_percentile` - 用于计算四分位差 (IQR) 的最大百分位数。值必须在 [0.02,0.98] 范围内。默认值为 0.75。
-- `K` - 非负常数值，用于检测轻微或强异常值。默认值为 1.5。
+- `min_percentile` - 用于计算四分位间距[(IQR)](https://en.wikipedia.org/wiki/Interquartile_range)的最小分位数。该值必须在[0.02,0.98]范围内，默认值为0.25。
+- `max_percentile` - 用于计算四分位间距(IQR)的最大分位数。该值必须在[0.02,0.98]范围内，默认值为0.75。
+- `K` - 用于检测轻微或更强异常值的非负常数值。默认值为1.5。
 
-在 `series` 中至少需要四个数据点才能检测异常值。
+在`series`中至少需要四个数据点才能检测异常值。
 
 **返回值**
 
-- 返回一个与输入数组长度相同的数组，其中每个值表示对应元素在系列中的可能异常分数。非零分数表示可能的异常。 [数组](../data-types/array.md)。
+- 返回一个与输入数组相同长度的数组，每个值表示序列中相应元素的可能异常评分。非零评分表示可能存在异常。[Array](../data-types/array.md)。
 
 **示例**
 
@@ -59,7 +67,7 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40,
 
 ## seriesPeriodDetectFFT {#seriesperioddetectfft}
 
-利用快速傅里叶变换 [FFT](https://en.wikipedia.org/wiki/Fast_Fourier_transform) 查找给定系列数据的周期。
+使用FFT - [快速傅里叶变换](https://en.wikipedia.org/wiki/Fast_Fourier_transform)查找给定序列数据的周期。
 
 **语法**
 
@@ -73,7 +81,7 @@ seriesPeriodDetectFFT(series);
 
 **返回值**
 
-- 一个实值，等于系列数据的周期。当数据点数量少于四个时返回 NaN。 [Float64](../data-types/float.md)。
+- 返回一个真实值，等于序列数据的周期。当数据点少于四个时返回NaN。[Float64](../data-types/float.md)。
 
 **示例**
 
@@ -105,7 +113,7 @@ SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS pr
 
 ## seriesDecomposeSTL {#seriesdecomposestl}
 
-使用 STL [(基于 Loess 的季节趋势分解程序)](https://www.wessa.net/download/stl.pdf) 将系列数据分解为季节、趋势和剩余成分。
+使用STL [(基于Loess的季节-趋势分解过程)](https://www.wessa.net/download/stl.pdf)对序列数据进行分解，得到季节成分、趋势成分和剩余成分。
 
 **语法**
 
@@ -116,13 +124,13 @@ seriesDecomposeSTL(series, period);
 **参数**
 
 - `series` - 数值数组
-- `period` - 正整数
+- `period` - 一个正整数
 
-`series` 中的数据点数量应至少为 `period` 值的两倍。
+`series`中的数据点数量应至少是`period`值的两倍。
 
 **返回值**
 
-- 返回一个包含四个数组的数组，第一个数组包含季节成分，第二个数组包含趋势，第三个数组包含残差成分，第四个数组包含基线（季节 + 趋势）成分。 [数组](../data-types/array.md)。
+- 返回一个包含四个数组的数组，其中第一个数组包含季节成分，第二个数组是趋势，第三个数组是残差成分，第四个数组是基线（季节+趋势）成分。[Array](../data-types/array.md)。
 
 **示例**
 

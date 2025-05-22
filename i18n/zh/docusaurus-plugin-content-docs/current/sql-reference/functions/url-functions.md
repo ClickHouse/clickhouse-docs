@@ -1,13 +1,21 @@
+---
+'description': '处理URL的函数的文档'
+'sidebar_label': 'URLs'
+'sidebar_position': 200
+'slug': '/sql-reference/functions/url-functions'
+'title': '处理URL的函数'
+---
 
-# 处理 URLs 的函数
+
+# 处理 URL 的函数
 
 :::note
-本节中提到的函数针对最大性能进行了优化，并且在大多数情况下不遵循 RFC-3986 标准。实现 RFC-3986 的函数名称后缀为 `RFC`，通常速度较慢。
+这一部分提到的函数经过优化以实现最佳性能，并且在大多数情况下不遵循 RFC-3986 标准。实现 RFC-3986 的函数在其函数名称后附加 `RFC`，通常速度较慢。
 :::
 
-在处理不包含用户字符串或 `@` 符号的公开注册域时，通常可以使用非 `RFC` 函数变体。下表详细说明了 URL 中哪些符号可以 (`✔`) 或不可以 (`✗`) 被各自的 `RFC` 和非 `RFC` 变体解析：
+在处理不包含用户字符串或 `@` 符号的公共注册域时，您可以一般使用非 `RFC` 函数变体。下面的表格详细说明了 URL 中哪些符号可以（`✔`）或不能（`✗`）被相应的 `RFC` 和非 `RFC` 变体解析：
 
-|符号   | non-`RFC`| `RFC` |
+|符号   | 非-`RFC` | `RFC` |
 |-------|----------|-------|
 | ' '   | ✗        |✗      |
 |  \t   | ✗        |✗      |
@@ -26,17 +34,17 @@
 |  =    | ✗        |✔*     |
 |  &    | ✗        |✔*     |
 
-标记为 `*` 的符号是 RFC 3986 中的子分隔符，允许在 `@` 符号后用于用户信息。
+标记为 `*` 的符号是 RFC 3986 中的子分隔符，并允许在 `@` 符号后用于用户信息。
 
 ## 提取 URL 部分的函数 {#functions-that-extract-parts-of-a-url}
 
-如果 URL 中不存在相关部分，则返回空字符串。
+如果 URL 中缺少相关部分，则返回空字符串。
 
 ### protocol {#protocol}
 
 从 URL 中提取协议。
 
-典型返回值示例： http, https, ftp, mailto, tel, magnet。
+典型返回值的示例： http, https, ftp, mailto, tel, magnet。
 
 ### domain {#domain}
 
@@ -50,9 +58,9 @@ domain(url)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
 
-URL 可以带协议或不带协议指定。示例：
+URL 可以带或不带协议。示例：
 
 ```text
 svn+ssh://some.svn-hosting.com:80/repo/trunk
@@ -60,7 +68,7 @@ some.svn-hosting.com:80/repo/trunk
 https://clickhouse.com/time/
 ```
 
-对于这些示例，`domain` 函数返回以下结果：
+在这些示例中，`domain` 函数返回以下结果：
 
 ```text
 some.svn-hosting.com
@@ -70,7 +78,7 @@ clickhouse.com
 
 **返回值**
 
-- 如果输入字符串可以被解析为 URL，则返回主机名，否则返回空字符串。 [String](../data-types/string.md)。
+- 如果输入字符串可以解析为 URL，则返回主机名，否则返回空字符串。 [字符串](../data-types/string.md)。
 
 **示例**
 
@@ -96,11 +104,11 @@ domainRFC(url)
 
 **参数**
 
-- `url` — URL。 [String](../data-types/string.md)。
+- `url` — URL. [字符串](../data-types/string.md)。
 
 **返回值**
 
-- 如果输入字符串可以被解析为 URL，则返回主机名，否则返回空字符串。 [String](../data-types/string.md)。
+- 如果输入字符串可以解析为 URL，则返回主机名，否则返回空字符串。 [字符串](../data-types/string.md)。
 
 **示例**
 
@@ -118,7 +126,7 @@ SELECT
 
 ### domainWithoutWWW {#domainwithoutwww}
 
-返回没有前导 `www.` 的域名（如果存在）。
+如果存在，则返回不带前缀 `www.` 的域名。
 
 **语法**
 
@@ -128,11 +136,11 @@ domainWithoutWWW(url)
 
 **参数**
 
-- `url` — URL。 [String](../data-types/string.md)。
+- `url` — URL. [字符串](../data-types/string.md)。
 
 **返回值**
 
-- 如果输入字符串可以被解析为 URL（没有前导 `www.`），否则返回空字符串。 [String](../data-types/string.md)。
+- 如果输入字符串可以解析为 URL（不带前缀 `www.`），则返回域名，否则返回空字符串。 [字符串](../data-types/string.md)。
 
 **示例**
 
@@ -148,7 +156,7 @@ SELECT domainWithoutWWW('http://paul@www.example.com:80/');
 
 ### domainWithoutWWWRFC {#domainwithoutwwwrfc}
 
-返回没有前导 `www.` 的域名（如果存在）。类似于 [domainWithoutWWW](#domainwithoutwww)，但符合 RFC 3986。
+如果存在，则返回不带前缀 `www.` 的域名。类似于 [domainWithoutWWW](#domainwithoutwww)，但符合 RFC 3986。
 
 **语法**
 
@@ -158,11 +166,11 @@ domainWithoutWWWRFC(url)
 
 **参数**
 
-- `url` — URL。 [String](../data-types/string.md)。
+- `url` — URL. [字符串](../data-types/string.md)。
 
 **返回值**
 
-- 如果输入字符串可以被解析为 URL（没有前导 `www.`），否则返回空字符串。 [String](../data-types/string.md)。
+- 如果输入字符串可以解析为 URL（不带前缀 `www.`），则返回域名，否则返回空字符串。 [字符串](../data-types/string.md)。
 
 **示例**
 
@@ -184,7 +192,7 @@ SELECT
 
 ### topLevelDomain {#topleveldomain}
 
-从 URL 中提取顶级域。
+从 URL 中提取顶级域名。
 
 ```sql
 topLevelDomain(url)
@@ -192,10 +200,10 @@ topLevelDomain(url)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
 
 :::note
-URL 可以带协议或不带协议指定。示例：
+URL 可以带或不带协议。示例：
 
 ```text
 svn+ssh://some.svn-hosting.com:80/repo/trunk
@@ -206,7 +214,7 @@ https://clickhouse.com/time/
 
 **返回值**
 
-- 如果输入字符串可以被解析为 URL，则返回域名。否则返回空字符串。 [String](../../sql-reference/data-types/string.md)。
+- 如果输入字符串可以解析为 URL，则返回域名。否则，返回空字符串。 [字符串](../../sql-reference/data-types/string.md)。
 
 **示例**
 
@@ -226,7 +234,7 @@ SELECT topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk');
 
 ### topLevelDomainRFC {#topleveldomainrfc}
 
-从 URL 中提取顶级域。
+从 URL 中提取顶级域名。
 类似于 [topLevelDomain](#topleveldomain)，但符合 RFC 3986。
 
 ```sql
@@ -235,10 +243,10 @@ topLevelDomainRFC(url)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
 
 :::note
-URL 可以带协议或不带协议指定。示例：
+URL 可以带或不带协议。示例：
 
 ```text
 svn+ssh://some.svn-hosting.com:80/repo/trunk
@@ -249,7 +257,7 @@ https://clickhouse.com/time/
 
 **返回值**
 
-- 如果输入字符串可以被解析为 URL，则返回域名。否则返回空字符串。 [String](../../sql-reference/data-types/string.md)。
+- 如果输入字符串可以解析为 URL，则返回域名。否则，返回空字符串。 [字符串](../../sql-reference/data-types/string.md)。
 
 **示例**
 
@@ -269,10 +277,10 @@ SELECT topLevelDomain('http://foo:foo%41bar@foo.com'), topLevelDomainRFC('http:/
 
 ### firstSignificantSubdomain {#firstsignificantsubdomain}
 
-返回“第一个重要子域”。
-第一个重要子域是 `com`、`net`、`org` 或 `co` 的二级域，否则是三级域。
-例如，`firstSignificantSubdomain ('https://news.clickhouse.com/') = 'clickhouse', firstSignificantSubdomain ('https://news.clickhouse.com.tr/') = 'clickhouse'`。
-对“无关紧要”的二级域的列表和其他实现细节将来可能会更改。
+返回 "第一个显著子域"。
+第一个显著子域是对于 `com`、`net`、`org` 或 `co` 的二级域名，否则是三级域名。
+例如，`firstSignificantSubdomain ('https://news.clickhouse.com/') = 'clickhouse'`，`firstSignificantSubdomain ('https://news.clickhouse.com.tr/') = 'clickhouse'`。
+"无显著性" 二级域名的列表和其他实现细节可能会在未来发生变化。
 
 **语法**
 
@@ -282,11 +290,11 @@ firstSignificantSubdomain(url)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
 
 **返回值**
 
-- 第一个重要子域。 [String](../data-types/string.md)。
+- 第一个显著子域。 [字符串](../data-types/string.md)。
 
 **示例**
 
@@ -306,10 +314,10 @@ SELECT firstSignificantSubdomain('http://www.example.com/a/b/c?a=b')
 
 ### firstSignificantSubdomainRFC {#firstsignificantsubdomainrfc}
 
-返回“第一个重要子域”。
-第一个重要子域是 `com`、`net`、`org` 或 `co` 的二级域，否则是三级域。
-例如，`firstSignificantSubdomain ('https://news.clickhouse.com/') = 'clickhouse', firstSignificantSubdomain ('https://news.clickhouse.com.tr/') = 'clickhouse'`。
-对“无关紧要”的二级域的列表和其他实现细节将来可能会更改。
+返回 "第一个显著子域"。
+第一个显著子域是对于 `com`、`net`、`org` 或 `co` 的二级域名，否则是三级域名。
+例如，`firstSignificantSubdomain ('https://news.clickhouse.com/') = 'clickhouse'`，`firstSignificantSubdomain ('https://news.clickhouse.com.tr/') = 'clickhouse'`。
+"无显著性" 二级域名的列表和其他实现细节可能会在未来发生变化。
 类似于 [firstSignficantSubdomain](#firstsignificantsubdomain)，但符合 RFC 1034。
 
 **语法**
@@ -320,11 +328,11 @@ firstSignificantSubdomainRFC(url)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
 
 **返回值**
 
-- 第一个重要子域。 [String](../data-types/string.md)。
+- 第一个显著子域。 [字符串](../data-types/string.md)。
 
 **示例**
 
@@ -346,7 +354,7 @@ SELECT
 
 ### cutToFirstSignificantSubdomain {#cuttofirstsignificantsubdomain}
 
-返回包含顶级子域的域部分，直到 ["第一个重要子域"](#firstsignificantsubdomain)。
+返回包括顶级子域到 "第一个显著子域" 的域名部分。
 
 **语法**
 
@@ -356,11 +364,11 @@ cutToFirstSignificantSubdomain(url)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
 
 **返回值**
 
-- 返回包含顶级子域的域部分，直到第一个重要子域（如果可能），否则返回空字符串。 [String](../data-types/string.md)。
+- 包括顶级子域到第一个显著子域的域名部分（如果可能），否则返回空字符串。 [字符串](../data-types/string.md)。
 
 **示例**
 
@@ -383,7 +391,7 @@ SELECT
 
 ### cutToFirstSignificantSubdomainRFC {#cuttofirstsignificantsubdomainrfc}
 
-返回包含顶级子域的域部分，直到 ["第一个重要子域"](#firstsignificantsubdomain)。
+返回包括顶级子域到 "第一个显著子域" 的域名部分。
 类似于 [cutToFirstSignificantSubdomain](#cuttofirstsignificantsubdomain)，但符合 RFC 3986。
 
 **语法**
@@ -394,11 +402,11 @@ cutToFirstSignificantSubdomainRFC(url)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
 
 **返回值**
 
-- 返回包含顶级子域的域部分，直到第一个重要子域（如果可能），否则返回空字符串。 [String](../data-types/string.md)。
+- 包括顶级子域到第一个显著子域的域名部分（如果可能），否则返回空字符串。 [字符串](../data-types/string.md)。
 
 **示例**
 
@@ -420,7 +428,7 @@ SELECT
 
 ### cutToFirstSignificantSubdomainWithWWW {#cuttofirstsignificantsubdomainwithwww}
 
-返回包含顶级子域的域部分，直到 "第一个重要子域"，没有去掉 `www`。
+返回包括顶级子域到 "第一个显著子域" 的域名部分，不去掉 `www`。
 
 **语法**
 
@@ -430,11 +438,11 @@ cutToFirstSignificantSubdomainWithWWW(url)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
 
 **返回值**
 
-- 返回包含顶级子域的域部分，直到第一个重要子域（带 `www`，如果可能），否则返回空字符串。 [String](../data-types/string.md)。
+- 包括顶级子域到第一个显著子域的域名部分（带 `www`），如果可能，否则返回空字符串。 [字符串](../data-types/string.md)。
 
 **示例**
 
@@ -457,7 +465,7 @@ SELECT
 
 ### cutToFirstSignificantSubdomainWithWWWRFC {#cuttofirstsignificantsubdomainwithwwwrfc}
 
-返回包含顶级子域的域部分，直到 "第一个重要子域"，没有去掉 `www`。
+返回包括顶级子域到 "第一个显著子域" 的域名部分，不去掉 `www`。
 类似于 [cutToFirstSignificantSubdomainWithWWW](#cuttofirstsignificantsubdomaincustomwithwww)，但符合 RFC 3986。
 
 **语法**
@@ -468,11 +476,11 @@ cutToFirstSignificantSubdomainWithWWW(url)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
 
 **返回值**
 
-- 返回包含顶级子域的域部分，直到第一个重要子域（带 "www"），如果可能，则返回空字符串。 [String](../data-types/string.md)。
+- 包括顶级子域到第一个显著子域的域名部分（带 "www"），如果可能，否则返回空字符串。 [字符串](../../sql-reference/data-types/string.md)。
 
 **示例**
 
@@ -494,9 +502,9 @@ SELECT
 
 ### cutToFirstSignificantSubdomainCustom {#cuttofirstsignificantsubdomaincustom}
 
-返回包含顶级子域的域部分，直到第一个重要子域。
+返回包括顶级子域到第一个显著子域的域名部分。
 接受自定义 [TLD 列表](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains) 名称。
-此函数在需要新的 TLD 列表或有自定义列表时非常有用。
+如果您需要新的 TLD 列表或有自定义列表时，此函数可能会很有用。
 
 **配置示例**
 
@@ -517,12 +525,12 @@ cutToFirstSignificantSubdomain(url, tld)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
-- `tld` — 自定义 TLD 列表名称。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
+- `tld` — 自定义 TLD 列表名称。 [字符串](../../sql-reference/data-types/string.md)。
 
 **返回值**
 
-- 返回包含顶级子域的域部分，直到第一个重要子域。 [String](../../sql-reference/data-types/string.md)。
+- 包括顶级子域到第一个显著子域的域名部分。 [字符串](../../sql-reference/data-types/string.md)。
 
 **示例**
 
@@ -542,13 +550,13 @@ SELECT cutToFirstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', '
 
 **另见**
 
-- [firstSignificantSubdomain](#firstsignificantsubdomain).
+- [firstSignificantSubdomain](#firstsignificantsubdomain)。
 
 ### cutToFirstSignificantSubdomainCustomRFC {#cuttofirstsignificantsubdomaincustomrfc}
 
-返回包含顶级子域的域部分，直到第一个重要子域。
+返回包括顶级子域到第一个显著子域的域名部分。
 接受自定义 [TLD 列表](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains) 名称。
-此函数在需要新的 TLD 列表或有自定义列表时非常有用。
+如果您需要新的 TLD 列表或有自定义列表时，此函数可能会很有用。
 类似于 [cutToFirstSignificantSubdomainCustom](#cuttofirstsignificantsubdomaincustom)，但符合 RFC 3986。
 
 **语法**
@@ -559,22 +567,22 @@ cutToFirstSignificantSubdomainRFC(url, tld)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
-- `tld` — 自定义 TLD 列表名称。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
+- `tld` — 自定义 TLD 列表名称。 [字符串](../../sql-reference/data-types/string.md)。
 
 **返回值**
 
-- 返回包含顶级子域的域部分，直到第一个重要子域。 [String](../../sql-reference/data-types/string.md)。
+- 包括顶级子域到第一个显著子域的域名部分。 [字符串](../../sql-reference/data-types/string.md)。
 
 **另见**
 
-- [firstSignificantSubdomain](#firstsignificantsubdomain).
+- [firstSignificantSubdomain](#firstsignificantsubdomain)。
 
 ### cutToFirstSignificantSubdomainCustomWithWWW {#cuttofirstsignificantsubdomaincustomwithwww}
 
-返回包含顶级子域的域部分，直到第一个重要子域，没有去掉 `www`。
-接受自定义 TLD 列表名称。
-在需要新的 TLD 列表或有自定义列表时非常有用。
+返回包括顶级子域到第一个显著子域的域名部分，不去掉 `www`。
+接受自定义 TLD 列表名。
+如果您需要新的 TLD 列表或有自定义列表时，此函数可能会很有用。
 
 **配置示例**
 
@@ -595,12 +603,12 @@ cutToFirstSignificantSubdomainCustomWithWWW(url, tld)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
-- `tld` — 自定义 TLD 列表名称。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
+- `tld` — 自定义 TLD 列表名称。 [字符串](../../sql-reference/data-types/string.md)。
 
 **返回值**
 
-- 返回包含顶级子域的域部分，直到第一个重要子域，没有去掉 `www`。 [String](../data-types/string.md)。
+- 包括顶级子域到第一个显著子域的域名部分，不去掉 `www`。 [字符串](../data-types/string.md)。
 
 **示例**
 
@@ -620,14 +628,14 @@ SELECT cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_lis
 
 **另见**
 
-- [firstSignificantSubdomain](#firstsignificantsubdomain).
+- [firstSignificantSubdomain](#firstsignificantsubdomain)。
 - [top_level_domains_list](../../operations/server-configuration-parameters/settings.md/#top_level_domains_list)
 
 ### cutToFirstSignificantSubdomainCustomWithWWWRFC {#cuttofirstsignificantsubdomaincustomwithwwwrfc}
 
-返回包含顶级子域的域部分，直到第一个重要子域，没有去掉 `www`。
-接受自定义 TLD 列表名称。
-在需要新的 TLD 列表或有自定义列表时非常有用。
+返回包括顶级子域到第一个显著子域的域名部分，不去掉 `www`。
+接受自定义 TLD 列表名。
+如果您需要新的 TLD 列表或有自定义列表时，此函数可能会很有用。
 类似于 [cutToFirstSignificantSubdomainCustomWithWWW](#cuttofirstsignificantsubdomaincustomwithwww)，但符合 RFC 3986。
 
 **语法**
@@ -638,23 +646,23 @@ cutToFirstSignificantSubdomainCustomWithWWWRFC(url, tld)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
-- `tld` — 自定义 TLD 列表名称。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
+- `tld` — 自定义 TLD 列表名称。 [字符串](../../sql-reference/data-types/string.md)。
 
 **返回值**
 
-- 返回包含顶级子域的域部分，直到第一个重要子域，没有去掉 `www`。 [String](../../sql-reference/data-types/string.md)。
+- 包括顶级子域到第一个显著子域的域名部分，不去掉 `www`。 [字符串](../../sql-reference/data-types/string.md)。
 
 **另见**
 
-- [firstSignificantSubdomain](#firstsignificantsubdomain).
+- [firstSignificantSubdomain](#firstsignificantsubdomain)。
 - [top_level_domains_list](../../operations/server-configuration-parameters/settings.md/#top_level_domains_list)
 
 ### firstSignificantSubdomainCustom {#firstsignificantsubdomaincustom}
 
-返回第一个重要子域。
+返回第一个显著子域。
 接受自定义 TLD 列表名称。
-在需要新的 TLD 列表或有自定义列表时非常有用。
+如果您需要新的 TLD 列表或有自定义列表时，此函数可能会很有用。
 
 配置示例：
 
@@ -675,12 +683,12 @@ firstSignificantSubdomainCustom(url, tld)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
-- `tld` — 自定义 TLD 列表名称。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
+- `tld` — 自定义 TLD 列表名称。 [字符串](../../sql-reference/data-types/string.md)。
 
 **返回值**
 
-- 第一个重要子域。 [String](../../sql-reference/data-types/string.md)。
+- 第一个显著子域。 [字符串](../../sql-reference/data-types/string.md)。
 
 **示例**
 
@@ -700,14 +708,14 @@ SELECT firstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'publi
 
 **另见**
 
-- [firstSignificantSubdomain](#firstsignificantsubdomain).
+- [firstSignificantSubdomain](#firstsignificantsubdomain)。
 - [top_level_domains_list](../../operations/server-configuration-parameters/settings.md/#top_level_domains_list)
 
 ### firstSignificantSubdomainCustomRFC {#firstsignificantsubdomaincustomrfc}
 
-返回第一个重要子域。
+返回第一个显著子域。
 接受自定义 TLD 列表名称。
-在需要新的 TLD 列表或有自定义列表时非常有用。
+如果您需要新的 TLD 列表或有自定义列表时，此函数可能会很有用。
 类似于 [firstSignificantSubdomainCustom](#firstsignificantsubdomaincustom)，但符合 RFC 3986。
 
 **语法**
@@ -718,21 +726,21 @@ firstSignificantSubdomainCustomRFC(url, tld)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
-- `tld` — 自定义 TLD 列表名称。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
+- `tld` — 自定义 TLD 列表名称。 [字符串](../../sql-reference/data-types/string.md)。
 
 **返回值**
 
-- 第一个重要子域。 [String](../../sql-reference/data-types/string.md)。
+- 第一个显著子域。 [字符串](../../sql-reference/data-types/string.md)。
 
 **另见**
 
-- [firstSignificantSubdomain](#firstsignificantsubdomain).
+- [firstSignificantSubdomain](#firstsignificantsubdomain)。
 - [top_level_domains_list](../../operations/server-configuration-parameters/settings.md/#top_level_domains_list)
 
 ### port {#port}
 
-返回端口或 `default_port`，如果 URL 不包含端口或无法解析。
+返回端口或 `default_port`，如果 URL 中不包含端口或无法解析。
 
 **语法**
 
@@ -742,12 +750,12 @@ port(url [, default_port = 0])
 
 **参数**
 
-- `url` — URL。 [String](../data-types/string.md)。
+- `url` — URL. [字符串](../data-types/string.md)。
 - `default_port` — 要返回的默认端口号。 [UInt16](../data-types/int-uint.md)。
 
 **返回值**
 
-- 端口或默认端口，如果 URL 中没有端口或发生验证错误。 [UInt16](../data-types/int-uint.md)。
+- 如果 URL 中没有端口或在验证错误情况下，返回端口或默认端口。 [UInt16](../data-types/int-uint.md)。
 
 **示例**
 
@@ -767,7 +775,7 @@ SELECT port('http://paul@www.example.com:80/');
 
 ### portRFC {#portrfc}
 
-返回端口或 `default_port`，如果 URL 不包含端口或无法解析。
+返回端口或 `default_port`，如果 URL 中不包含端口或无法解析。
 类似于 [port](#port)，但符合 RFC 3986。
 
 **语法**
@@ -778,12 +786,12 @@ portRFC(url [, default_port = 0])
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
 - `default_port` — 要返回的默认端口号。 [UInt16](../data-types/int-uint.md)。
 
 **返回值**
 
-- 端口或默认端口，如果 URL 中没有端口或发生验证错误。 [UInt16](../data-types/int-uint.md)。
+- 如果 URL 中没有端口或在验证错误情况下，返回端口或默认端口。 [UInt16](../data-types/int-uint.md)。
 
 **示例**
 
@@ -805,19 +813,19 @@ SELECT
 
 ### path {#path}
 
-返回不带查询字符串的路径。
+返回没有查询字符串的路径。
 
 示例： `/top/news.html`。
 
 ### pathFull {#pathfull}
 
-与上面相同，但包括查询字符串和片段。
+与上面相同，但包含查询字符串和片段。
 
 示例： `/top/news.html?page=2#comments`。
 
 ### protocol {#protocol-1}
 
-从 URL 中提取协议。
+从 URL 中提取协议。 
 
 **语法**
 
@@ -827,11 +835,11 @@ protocol(url)
 
 **参数**
 
-- `url` — 提取协议的 URL。 [String](../data-types/string.md)。
+- `url` — 要提取协议的 URL。 [字符串](../data-types/string.md)。
 
 **返回值**
 
-- 协议，如果无法确定则返回空字符串。 [String](../data-types/string.md)。
+- 协议，如果无法确定则返回空字符串。 [字符串](../data-types/string.md)。
 
 **示例**
 
@@ -851,7 +859,7 @@ SELECT protocol('https://clickhouse.com/');
 
 ### queryString {#querystring}
 
-返回查询字符串，不包括初始问号、`#` 及 `#` 之后的内容。
+返回查询字符串，不包括初始问号、`#` 及其后的所有内容。
 
 示例： `page=1&lr=213`。
 
@@ -868,28 +876,28 @@ SELECT protocol('https://clickhouse.com/');
 ### extractURLParameter(url, name) {#extracturlparameterurl-name}
 
 返回 URL 中 `name` 参数的值（如果存在），否则返回空字符串。
-如果有多个参数与此名称相同，则返回第一个出现的值。
-该函数假设 `url` 参数中的参数与 `name` 参数中的编码方式相同。
+如果存在多个该名称的参数，返回第一个出现的。
+该函数假定 `url` 参数中的参数以与 `name` 参数相同的方式编码。
 
 ### extractURLParameters(url) {#extracturlparametersurl}
 
-返回与 URL 参数相对应的 `name=value` 字符串数组。
-值未解码。
+返回对应于 URL 参数的 `name=value` 字符串数组。
+值不会解码。
 
 ### extractURLParameterNames(url) {#extracturlparameternamesurl}
 
-返回与 URL 参数名称对应的名称字符串数组。
-值未解码。
+返回对应于 URL 参数名称的名称字符串数组。
+值不会解码。
 
 ### URLHierarchy(url) {#urlhierarchyurl}
 
-返回包含 URL 的数组，在路径和查询字符串中用符号 /,? 截断。
-连续的分隔符字符视为一个字符。
-切割是在所有连续分隔符字符之后的位置进行的。
+返回一个数组，其中包含 URL，在路径和查询字符串的末尾由符号 / 和 ? 截断。
+连续的分隔符字符被视为一个。
+切割发生在所有连续分隔符字符后的位置。
 
 ### URLPathHierarchy(url) {#urlpathhierarchyurl}
 
-与上面相同，但结果中不包含协议和主机。/ 元素（根）不包含在内。
+与上面相同，但结果中不包括协议和主机。根 / 元素不包括在内。
 
 ```text
 URLPathHierarchy('https://example.com/browse/CONV-6788') =
@@ -965,7 +973,7 @@ SELECT decodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT%201+2%2B3') A
 
 ### netloc {#netloc}
 
-从 URL 中提取网络位置 (`username:password@host:port`)。
+从 URL 中提取网络定位 (`username:password@host:port`)。
 
 **语法**
 
@@ -975,11 +983,11 @@ netloc(url)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
 
 **返回值**
 
-- `username:password@host:port`。 [String](../data-types/string.md)。
+- `username:password@host:port`。 [字符串](../data-types/string.md)。
 
 **示例**
 
@@ -999,28 +1007,28 @@ SELECT netloc('http://paul@www.example.com:80/');
 
 ## 删除 URL 部分的函数 {#functions-that-remove-part-of-a-url}
 
-如果 URL 没有类似内容，则 URL 保持不变。
+如果 URL 中没有类似内容，URL 将保持不变。
 
 ### cutWWW {#cutwww}
 
-从 URL 的域中移除前导 `www.`（如果存在）。
+从 URL 的域中删除前导 `www.`（如果存在）。
 
 ### cutQueryString {#cutquerystring}
 
-移除查询字符串，包括问号。
+删除查询字符串，包括问号。
 
 ### cutFragment {#cutfragment}
 
-移除片段标识符，包括数字标志。
+删除片段标识符，包括数字符号。
 
 ### cutQueryStringAndFragment {#cutquerystringandfragment}
 
-移除查询字符串和片段标识符，包括问号和数字标志。
+删除查询字符串和片段标识符，包括问号和数字符号。
 
 ### cutURLParameter(url, name) {#cuturlparameterurl-name}
 
-从 URL 中移除 `name` 参数（如果存在）。
-该函数不会对参数名称中的字符进行编码或解码，例如 `Client ID` 和 `Client%20ID` 被视为不同的参数名。
+从 URL 中删除 `name` 参数（如果存在）。
+此函数不对参数名称中的字符进行编码或解码，例如 `Client ID` 和 `Client%20ID` 被视为不同的参数名称。
 
 **语法**
 
@@ -1030,12 +1038,12 @@ cutURLParameter(url, name)
 
 **参数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
-- `name` — URL 参数的名称。 [String](../../sql-reference/data-types/string.md) 或 [Array](../../sql-reference/data-types/array.md) 的字符串。
+- `url` — URL. [字符串](../../sql-reference/data-types/string.md)。
+- `name` — URL 参数的名称。 [字符串](../../sql-reference/data-types/string.md) 或 [字符串](../../sql-reference/data-types/array.md) 的数组。
 
 **返回值**
 
-- 移除 `name` URL 参数的 URL。 [String](../data-types/string.md)。
+- 删除了 `name` URL 参数的 URL。 [字符串](../data-types/string.md)。
 
 **示例**
 
