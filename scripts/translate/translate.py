@@ -17,9 +17,11 @@ import shutil
 from openai import OpenAI
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import frontmatter
+import textwrap
 
-TRANSLATE_EXCLUDED_FILES = {"about-us/adopters.md", "index.md", "integrations/language-clients/java/jdbc-v1.md"}
-TRANSLATE_EXCLUDED_FOLDERS = {"whats-new", "changelogs"}
+TRANSLATE_EXCLUDED_FILES = {"about-us/adopters.md", "index.md", "integrations/language-clients/java/jdbc-v1.md", "cloud/reference/changelog.md"}
+TRANSLATE_EXCLUDED_FOLDERS = {"whats-new", "changelogs", "cloud/changelogs"}
+
 IGNORE_FOLDERS = {"ru", "zh"}
 
 client = OpenAI(
@@ -97,7 +99,10 @@ def translate_text(config, text, model="gpt-4o-mini", translation_override_promp
             - Never translate terms in all caps which are SQL statements. For example DESCRIBE TABLE, RENAME, SET ROLE etc.
             - This translation is intended for users familiar with ClickHouse, databases, and IT terminology, so use technically accurate and context-appropriate language. Keep the translation precise and professional, reflecting the technical nature of the content.
             - Strive to convey the original meaning clearly, adapting phrases where necessary to maintain natural and fluent {language}.
-        
+            - If the only thing you're given is something that doesn't need to be translated, just return it as is (even if it's blank space). Eg. Given "<Content/>" return "<Content/>".
+              You should absolutely NEVER provide a response like "I'm sorry, but it seems that you have not provided any specific content to translate." in this case.
+            
+            
         I suggest a two step approach in which you first translate, and afterwards compare the original text to the translation
         and critically evaluate it and make modifications as appropriate.
         
@@ -172,41 +177,71 @@ class yamlFrontMatterHandler(YAMLHandler):
 # Configure YAML dumper to use single quotes for strings
 QuotedStringDumper.add_representer(str, QuotedStringDumper.represent_str)
 def translate_frontmatter(frontmatter, glossary):
-    # Translate just the fields we need
+    # Extract only the fields we want to translate
+    fields_to_translate = {}
+    for key in ["title", "sidebar_label", "description"]:
+        if key in frontmatter:
+            fields_to_translate[key] = frontmatter[key]
 
-    frontmatter_json = json.dumps(frontmatter)
+    # If no translatable fields found, return early
+    if not fields_to_translate:
+        return
 
     system_prompt = f"""
     You are an expert translator of technical documentation. 
-    Translate the values for the following keys which are part of YAML frontmatter
-    of a markdown document:
-    - title
-    - sidebar_label
-    - description
     
-    Respond with a JSON object containing only the translated fields.
+    You will receive a JSON object containing frontmatter fields from a markdown document.
+    Translate the values while preserving the JSON structure.
     
-    IMPORTANT: do not translate any SQL terms, or terms which are likely to be
-    specific features or functions of ClickHouse.
+    IMPORTANT: do not translate any SQL terms which are in all caps such as PARALLEL WITH, ALTER, SELECT etc
     
-    You can use the following glossary for technical terms:
+    You can use the following glossary for technical terms. If you don't find the term there
+    you should try to translate it as best you can while still maintaining the meaning:
     
     {glossary}
     """
+
+    # Define the JSON schema for the response
+    response_schema = {
+        "type": "json_schema",
+        "json_schema": {
+            "name": "translated_frontmatter",
+            "strict": True,
+            "schema": {
+                "type": "object",
+                "properties": {
+                    key: {"type": "string"}
+                    for key in fields_to_translate.keys()
+                },
+                "required": list(fields_to_translate.keys()),
+                "additionalProperties": False
+            }
+        }
+    }
+
     completion = client.chat.completions.create(
-        model="gpt-3.5-turbo-0125",
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": system_prompt},
-            {"role": "user", "content": frontmatter_json}
+            {"role": "user", "content": json.dumps(fields_to_translate)}
         ],
-        response_format={ "type": "json_object" }
+        response_format=response_schema
     )
 
     translated_content = json.loads(completion.choices[0].message.content)
 
-    for key in ["title", "sidebar_label", "description"]:
-        if key in translated_content and key in frontmatter:
-            frontmatter[key] = translated_content[key]
+    # Update the original frontmatter with translated values
+    for key, translated_value in translated_content.items():
+        if key in frontmatter:
+            frontmatter[key] = translated_value
+
+# We need to apply a transformation from @site/docs to @site/i18n/{lang_code}/docusaurus-plugin-content-docs/current/
+def replaceSnippetImports(import_statements, lang_code):
+    for i in range(len(import_statements)):
+        import_statements[i] = import_statements[i].replace(
+            "@site/docs/",
+            "@site/i18n/jp/docusaurus-plugin-content-docs/current/"
+        )
 
 def extract_import_statements(text):
     # Regular expression to match import statements
@@ -266,28 +301,40 @@ def replace_code_blocks_with_custom_placeholders(markdown_text):
     }
 
     for line in lines:
-        if line.strip().startswith('```') and not in_code_block:
+        stripped_line = line.strip()
+
+        if stripped_line.startswith('```') and not in_code_block:
             # Start of a code block
             in_code_block = True
-            language_part = line.strip()[3:].strip()  # Remove ``` and whitespace
+            language_part = stripped_line[3:].strip()  # Remove ``` and whitespace
             current_block = {
                 'language': language_part,
                 'content': []
             }
-        elif line.strip() == '```' and in_code_block:
+        elif stripped_line == '```' and in_code_block:
             # End of a code block
             in_code_block = False
+
+            # Remove common leading whitespace from code content
+            content_lines = current_block['content']
+            if content_lines:
+                # Use textwrap.dedent to remove common leading whitespace
+                dedented_content = textwrap.dedent('\n'.join(content_lines))
+            else:
+                dedented_content = ''
+
             code_blocks.append({
                 'language': current_block['language'],
-                'content': '\n'.join(current_block['content'])
+                'content': dedented_content
             })
             result_lines.append(f"<CODEBLOCK_{len(code_blocks)}>")
         elif in_code_block:
-            # Inside a code block
+            # Inside a code block - preserve original line (with indentation)
             current_block['content'].append(line)
         else:
-            # Outside a code block
+            # Outside a code block - preserve original line
             result_lines.append(line)
+
     return '\n'.join(result_lines), code_blocks
 
 def restore_code_blocks(modified_text, code_blocks):
@@ -311,6 +358,37 @@ def restore_code_blocks(modified_text, code_blocks):
 
     return restored_text
 
+def replace_components_with_placeholders(markdown_text):
+    components = []
+
+    # Pattern for SettingsInfoBlock components
+    settings_pattern = r'<SettingsInfoBlock\s+[^>]*?/>'
+
+    # Pattern for VersionHistory components
+    version_pattern = r'<VersionHistory\s+[^>]*?/>'
+
+    def replace_component(match):
+        component_tag = match.group(0)
+        components.append(component_tag)
+        return f"<COMPONENT_{len(components)}>"
+
+    # Replace SettingsInfoBlock components
+    processed_text = re.sub(settings_pattern, replace_component, markdown_text)
+
+    # Replace VersionHistory components
+    processed_text = re.sub(version_pattern, replace_component, processed_text)
+
+    return processed_text, components
+
+def restore_components_from_placeholders(processed_text, components):
+    result = processed_text
+
+    for i, component in enumerate(components, 1):
+        placeholder = f"<COMPONENT_{i}>"
+        result = result.replace(placeholder, component)
+
+    return result
+
 def translate_file(config, input_file_path, output_file_path, model):
     print(f"Starting translation: input[{input_file_path}], output[{output_file_path}]")
     start_time = time.time()
@@ -333,9 +411,14 @@ def translate_file(config, input_file_path, output_file_path, model):
         # We do this first so that the next step doesn't remove import statements inside codeblocks
         cleaned_text, code_blocks = replace_code_blocks_with_custom_placeholders(original_text)
 
+        # On certain pages replace some custom components which give issues
+        cleaned_text, custom_components = replace_components_with_placeholders(cleaned_text)
+
         # Next extract all import statements from the text
         imports = extract_import_statements(cleaned_text)
-        cleaned_text = remove_import_statements(original_text)
+        # transformation from @site/static to @site/i18n/{lang}/current...
+        replaceSnippetImports(imports, config["lang_code"])
+        cleaned_text = remove_import_statements(cleaned_text)
 
         # Split text into chunks and translate
         num_chunk = math.ceil(len(cleaned_text) / MAX_CHUNK_SIZE)
@@ -368,6 +451,11 @@ def translate_file(config, input_file_path, output_file_path, model):
             if translated_chunk:
                 if translated_chunk.startswith("```markdown"):
                     translated_chunk = translated_chunk.removeprefix("```markdown")
+                elif translated_chunk.startswith("```html"):
+                    translated_chunk = translated_chunk.removeprefix("```html")
+                elif translated_chunk.startswith("```javascript"):
+                    # One such case in academic overview (VLDB paper page)
+                    translated_chunk = translated_chunk.removeprefix("```javascript")
                 translated_text += translated_chunk + "\n"
                 count += 1
             else:
@@ -377,11 +465,21 @@ def translate_file(config, input_file_path, output_file_path, model):
         c=0
         bt = False
 
+        # GPT loves to hallucinate ``` at the end so we check for these
+        # Must be done before adding codeblocks back as codeblock is often last
+        translated_text = re.sub(r'^\s*```\s*$', '', translated_text, flags=re.MULTILINE)
+
         # Now we work backwards
         translated_text = restore_code_blocks(translated_text, code_blocks)
 
-        imports_text = "\n".join(imports)
-        translated_text = imports_text + "\n\n" + translated_text
+        # For some pages we need to restore custom components
+        translated_text = restore_components_from_placeholders(translated_text, custom_components)
+
+        if imports:
+            imports_text = "\n".join(imports)
+            translated_text = imports_text + "\n\n" + translated_text
+        else:
+            imports_text = ""
 
         yaml_str = yaml.dump(
             metadata,
@@ -390,8 +488,10 @@ def translate_file(config, input_file_path, output_file_path, model):
             sort_keys=False,
             allow_unicode=True
         )
-        formatted_frontmatter = f"---\n{yaml_str}---"
-        translated_text = formatted_frontmatter + "\n\n" + translated_text
+
+        if not yaml_str:
+            formatted_frontmatter = f"---\n{yaml_str}---\n\n"
+            translated_text = formatted_frontmatter + translated_text
 
         with open(output_file_path, "w", encoding="utf-8") as output_file:
             lines = translated_text.splitlines()
