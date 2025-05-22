@@ -6,6 +6,11 @@ pagination_next: null
 description: 'Deploying HyperDX only'
 ---
 
+import Image from '@theme/IdealImage';
+import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
+import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
+
+
 This option is designed for users who already have a running ClickHouse instance populated with observability or event data.
 
 HyperDX can be used independently of the rest of the stack and is compatible with any data schema - not just OpenTelemetry. This makes it suitable for custom observability pipelines already built on ClickHouse.
@@ -33,16 +38,31 @@ Run the following command, modifying the `YOUR_MONGODB_URI` as required.
 docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx:2-beta
 ```
 
-### Navigate to the UI {#navigate-to-the-ui}
+### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
 
-Navigate to [http://localhost:8080](http://localhost:8080), create a user and connect to your ClickHouse instance.
+Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
+
+Create a user, providing a username and password which means the requirements. 
+
+On clicking `Register` you'll be prompted for connection details.
+
+<Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
+
+### Complete connection details {#complete-connection-details}
+
+Connect to your own external ClickHouse cluster e.g. ClickHouse Cloud.
+
+If prompted to create a source, retain all default values and complete the `Table` field with the value `otel_logs`. All other settings should be auto-detected, allowing you to click `Save New Source`.
+
+:::note Creating a source
+Creating a source requires tables to exist in ClickHouse. If you don't have data, we recommend deploying the ClickStack OpenTelemetry collector to create tables.
+:::
 
 </VerticalStepper>
 
 ## Using Docker Compose {#using-docker-compose}
 
 Users can modify the [Docker Compose configuration](/use-cases/observability/clickstack/deployment/docker-compose) to achieve the same effect as this guide, removing the OTel Collector and ClickHouse instance from the manifest.
-
 
 ## ClickStack OpenTelemetry collector {#otel-collector}
 
