@@ -117,21 +117,19 @@ This distribution can be used with ClickHouse Cloud. Users should:
     otel-collector:
         image: ${OTEL_COLLECTOR_IMAGE_NAME}:${IMAGE_VERSION}
         environment:
-        CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_SERVER_ENDPOINT>' # https endpoint here
-        CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
-        CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
-        HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+          CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_SERVER_ENDPOINT>' # https endpoint here
+          CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
+          CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
+          HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
         ports:
-        - '13133:13133' # health_check extension
-        - '24225:24225' # fluentd receiver
-        - '4317:4317' # OTLP gRPC receiver
-        - '4318:4318' # OTLP http receiver
-        - '8888:8888' # metrics extension
+          - '13133:13133' # health_check extension
+          - '24225:24225' # fluentd receiver
+          - '4317:4317' # OTLP gRPC receiver
+          - '4318:4318' # OTLP http receiver
+          - '8888:8888' # metrics extension
         restart: always
         networks:
-        - internal
-        depends_on:
-        - ch-server
+          - internal
     ```
 
     The `CLICKHOUSE_SERVER_ENDPOINT` should be the ClickHouse Cloud HTTPS endpoint, including the port `8443` e.g. `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`

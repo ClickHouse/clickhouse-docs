@@ -1,10 +1,10 @@
 ---
-slug: /use-cases/observability/clickstack/sending-data
-title: 'Sending data'
-sidebar_label: 'Sending data'
+slug: /use-cases/observability/clickstack/ingesting-data
+title: 'Ingesting data'
+sidebar_label: 'Ingesting data'
 pagination_prev: null
 pagination_next: null
-description: 'Sending data to ClickStack'
+description: 'Ingesting data to ClickStack'
 ---
 
 All data is ingested into ClickStack via the **OpenTelemetry Collector**, which acts as the primary entry point for logs, metrics, traces, and session data.

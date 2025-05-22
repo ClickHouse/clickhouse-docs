@@ -147,7 +147,7 @@ const sidebars = {
                     }
                   ]
                 },
-                "use-cases/observability/clickstack/sending-data",
+                "use-cases/observability/clickstack/ingesting-data",
                 "use-cases/observability/clickstack/config",
                 "use-cases/observability/clickstack/search",
                 "use-cases/observability/clickstack/production"

@@ -369,7 +369,7 @@ For details on configuring the wider OTel collector, including [`receivers`](htt
 
 ### Modifying configuration {#modifying-otel-collector-configuration}
 
-If you are managing your own OpenTelemetry Collector - such as when using the HyperDX only distribution - you are responsible for defining its configuration. We [recommend still using the official ClickStack distribution of the collector](/observability/clickstack/deployment/hyperdx-only#otel-collector) where possible, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
+If you are managing your own OpenTelemetry Collector - such as when using the HyperDX only distribution - you are responsible for defining its configuration. We [recommend still using the official ClickStack distribution of the collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) where possible, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 
 If you’re using a ClickStack distribution that includes the OpenTelemetry Collector - such as the [All-in-One](/use-cases/observability/clickstack/deployment/all-in-one), [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose), or [Helm](/use-cases/observability/clickstack/deployment/helm) chart - you can override the default configuration in the following ways:
 

@@ -14,13 +14,19 @@ The ClickHouse Observability Stack is our **recommended approach** for most user
 
 It provides an opinionated, scalable solution that works out of the box — from single-node deployments to **multi-petabyte** scale.
 
-| Page                                              | Description                                                                                         |
-|---------------------------------------------------|-----------------------------------------------------------------------------------------------------|
-| [Getting started](./clickhouse-stack/getting-started.md)   | Quickly get started with the ClickHouse Observability Stack.                                         |
-| [Architecture](./clickhouse-stack/architecture.md)        | Learn about the ClickHouse Observability Stack architecture.                                         |
-| [Deployment](./clickhouse-stack/deployment.md)            | For users moving beyond the getting started experience and needing alternative deployment options.  |
-| [Scaling](./clickhouse-stack/scaling.md)                  | Learn how to scale components of the ClickHouse Observability Stack.                                 |
-| [Production](./clickhouse-stack/production.md)            | Considerations for taking the stack to production.                                                   |
+| Section | Description |
+|---------|-------------|
+| [Overview](/use-cases/observability/clickstack/overview) | Introduction to ClickStack and its key features |
+| [Getting Started](/use-cases/observability/clickstack/getting-started) | Quick start guide and basic setup instructions |
+| [Example Datasets](/use-cases/observability/clickstack/sample-datasets) | Sample datasets and use cases |
+| [Architecture](/use-cases/observability/clickstack/architecture) | System architecture and components overview |
+| [Deployment](/use-cases/observability/clickstack/deployment) | Deployment guides and options |
+| [Configuration](/use-cases/observability/clickstack/config) | Detailed configuration options and settings |
+| [Ingesting Data](/use-cases/observability/clickstack/ingesting-data) | Guidelines for ingesting data to ClickStack |
+| [Search](/use-cases/observability/clickstack/search) | How to search and query your observability data |
+| [Production](/use-cases/observability/clickstack/production) | Best practices for production deployment |
+| [SDKs](/use-cases/observability/clickstack/sdks) | Software Development Kits for various languages |
+
 
 ## Build-Your-Own Stack {#build-your-own-stack}
 
@@ -28,9 +34,9 @@ For users with **custom requirements** — such as highly specialized ingestion 
 
 | Page                                                        | Description                                                                                                                                                                   |
 |-------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Introduction](./build-your-own/introduction.md)            | This guide is designed for users looking to build their own observability solution using ClickHouse, focusing on logs and traces.                                             |
-| [Schema design](./build-your-own/schema-design.md)          | Learn why users are recommended to create their own schema for logs and traces, along with some best practices for doing so.                                                  |
-| [Managing data](./build-your-own/managing-data.md)          | Deployments of ClickHouse for observability invariably involve large datasets, which need to be managed. ClickHouse offers features to assist with data management.           |
-| [Integrating OpenTelemetry](./build-your-own/integrating-opentelemetry.md) | Collecting and exporting logs and traces using OpenTelemetry with ClickHouse.                                                           |
-| [Using Visualization Tools](./build-your-own/grafana.md)    | Learn how to use observability visualization tools for ClickHouse, including HyperDX and Grafana.                                       |
-| [Demo Application](./build-your-own/demo-application.md)    | Explore the OpenTelemetry demo application forked to work with ClickHouse for logs and traces.                                           |
+| [Introduction](/use-cases/observability/introduction)            | This guide is designed for users looking to build their own observability solution using ClickHouse, focusing on logs and traces.                                             |
+| [Schema design](/use-cases/observability/schema-design)          | Learn why users are recommended to create their own schema for logs and traces, along with some best practices for doing so.                                                  |
+| [Managing data](/observability/managing-data)          | Deployments of ClickHouse for observability invariably involve large datasets, which need to be managed. ClickHouse offers features to assist with data management.           |
+| [Integrating OpenTelemetry](/observability/integrating-opentelemetry) | Collecting and exporting logs and traces using OpenTelemetry with ClickHouse.                                                           |
+| [Using Visualization Tools](/observability/grafana)    | Learn how to use observability visualization tools for ClickHouse, including HyperDX and Grafana.                                       |
+| [Demo Application](/observability/demo-application)    | Explore the OpenTelemetry demo application forked to work with ClickHouse for logs and traces.                                           |

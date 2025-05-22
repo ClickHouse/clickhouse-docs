@@ -2,7 +2,7 @@
 slug: /use-cases/observability/clickstack/architecture
 pagination_prev: null
 pagination_next: null
-description: 'Architecture of ClickStack ClickHouse Observability Stack'
+description: 'Architecture of ClickStack - The ClickHouse Observability Stack'
 title: 'Architecture'
 ---
 

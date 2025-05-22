@@ -9,7 +9,7 @@ description: 'Deploying ClickStack with Helm - The ClickHouse Observability Stac
 import Image from '@theme/IdealImage';
 import hyperdx_24 from '@site/static/images/use-cases/observability/hyperdx-24.png';
 
-The helm chart for HyperDX can be found [here](git@github.com:hyperdxio/helm-charts.git) and is the **recommended** method for production deployments.
+The helm chart for HyperDX can be found [here](https://github.com/hyperdxio/helm-charts) and is the **recommended** method for production deployments.
 
 By default, the Helm chart provisions all core components, including:
 
@@ -68,11 +68,7 @@ Verify the installation:
 kubectl get pods -l "app.kubernetes.io/name=hdx-oss-v2"
 ```
 
-When all pods are ready proceed. To debug failed installs:
-
-```bash
-helm install my-hyperdx hyperdx/hdx-oss-v2 --debug --dry-run
-```
+When all pods are ready proceed.
 
 ### Forward ports {#forward-ports}
 
@@ -190,6 +186,12 @@ hyperdx:
 </VerticalStepper>
 
 ## Using ClickHouse Cloud {#using-clickhouse-cloud}
+
+If using ClickHouse Cloud users disable the ClickHouse instance deployed by the Helm chart:
+
+```bash
+helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false 
+```
 
 
 ## Production notes {#production-notes}

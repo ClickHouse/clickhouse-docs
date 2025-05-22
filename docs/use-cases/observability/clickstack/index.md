@@ -10,15 +10,14 @@ description: 'Landing page for the ClickHouse Observability Stack'
 
 | Section | Description |
 |---------|-------------|
-| [Overview](overview.md) | Introduction to ClickStack and its key features |
-| [Getting Started](getting-started.md) | Quick start guide and basic setup instructions |
-| [Architecture](architecture.md) | System architecture and components overview |
-| [Configuration](config.md) | Detailed configuration options and settings |
-| [Sending Data](sending-data.md) | Guidelines for sending data to ClickStack |
-| [Search](search.md) | How to search and query your observability data |
-| [Production](production.md) | Best practices for production deployment |
-| [SDKs](sdks/) | Software Development Kits for various languages |
-| [Example Datasets](example-datasets/) | Sample datasets and use cases |
-| [Deployment](deployment/) | Deployment guides and options |
-
+| [Overview](/use-cases/observability/clickstack/overview) | Introduction to ClickStack and its key features |
+| [Getting Started](/use-cases/observability/clickstack/getting-started) | Quick start guide and basic setup instructions |
+| [Example Datasets](/use-cases/observability/clickstack/sample-datasets) | Sample datasets and use cases |
+| [Architecture](/use-cases/observability/clickstack/architecture) | System architecture and components overview |
+| [Deployment](/use-cases/observability/clickstack/deployment) | Deployment guides and options |
+| [Configuration](/use-cases/observability/clickstack/config) | Detailed configuration options and settings |
+| [Ingesting Data](/use-cases/observability/clickstack/ingesting-data) | Guidelines for ingesting data to ClickStack |
+| [Search](/use-cases/observability/clickstack/search) | How to search and query your observability data |
+| [Production](/use-cases/observability/clickstack/production) | Best practices for production deployment |
+| [SDKs](/use-cases/observability/clickstack/sdks) | Software Development Kits for various languages |
 
