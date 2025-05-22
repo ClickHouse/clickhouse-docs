@@ -163,7 +163,7 @@ In the peering AWS account,
 <br />
 
 #### Step 6 Edit Security Group to allow Peered VPC access {#step-6-edit-security-group-to-allow-peered-vpc-access}
-In the ClickHouse BYOC account, you'll need to update the Security Group settings to allow traffic from your peered VPC. Please contact ClickHouse Support to request the addition of inbound rules that include the CIDR ranges of your peered VPC.
+In the ClickHouse BYOC account, you need to update the Security Group settings to allow traffic from your peered VPC. Please contact ClickHouse Support to request the addition of inbound rules that include the CIDR ranges of your peered VPC.
 
 ---
 The ClickHouse service should now be accessible from the peered VPC.
