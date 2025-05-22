@@ -6,16 +6,15 @@ description: 'Architecture of ClickStack ClickHouse Observability Stack'
 title: 'Architecture'
 ---
 
+import Image from '@theme/IdealImage';
+import architecture from '@site/static/images/use-cases/observability/clickstack-architecture.png';
+
+
 The ClickStack architecture is built around three core components: **ClickHouse**, **HyperDX**, and a **OpenTelemetry (OTel) Collector**. A **MongoDB** instance provides storage for application state. Together, they provide a high-performance, open-source observability stack optimized for logs, metrics, and traces.
 
 ## Architecture Overview {#architecture-overview}
 
-
-
-`ARCHITECURE DIAGRAM`
-
-
-
+<Image img={architecture} alt="Architecture" size="lg"/>
 
 ## ClickHouse: The Database Engine {#clickhouse}
 

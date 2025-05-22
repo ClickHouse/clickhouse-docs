@@ -6,6 +6,10 @@ pagination_next: use-cases/observability/clickstack/getting-started
 description: 'Overview for ClickStack - The ClickHouse Observability Stack'
 ---
 
+import Image from '@theme/IdealImage';
+import architecture from '@site/static/images/use-cases/observability/clickstack-simple-architecture.png';
+
+
 ## ClickStack - The ClickHouse Observability Stack {#clickstack-clickhouse-observability}
 
 **ClickStack** is a production-grade observability platform built on ClickHouse, unifying logs, traces, metrics and session in a single high-performance solution. Designed for monitoring and debugging complex systems, ClickStack enables developers and SREs to trace issues end-to-end without switching between tools or manually stitching together data using timestamps or correlation IDs.
@@ -73,6 +77,8 @@ ClickStack is natively integrated with OpenTelemetry, ingesting all data through
 ClickStack is fully open source and can be deployed anywhere. The schema is flexible and user-modifiable, and the UI is designed to be configurable to custom schemas without requiring changes. All components—including collectors, ClickHouse, and the UI - can be scaled independently to meet ingestion, query, or storage demands.
 
 ### Architectural overview {#architectural-overview}
+
+<Image img={architecture} alt="Simple architecture" size="lg"/>
 
 ClickStack consists of three core components:
 

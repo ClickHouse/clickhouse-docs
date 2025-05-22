@@ -16,7 +16,7 @@ It does not include a MongoDB instance, meaning dashboards, saved searches, and 
 * Debugging
 * Development where HyperDX is used
 
-## Deployment steps
+## Deployment steps {#deployment-steps}
 <br/>
 
 <VerticalStepper headerLevel="h3">

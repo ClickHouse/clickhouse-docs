@@ -8,8 +8,6 @@ description: 'Landing page for the ClickHouse Observability Stack'
 
 **ClickStack** is a production-grade observability platform built on ClickHouse, unifying logs, traces, metrics and session in a single high-performance solution. Designed for monitoring and debugging complex systems, ClickStack enables developers and SREs to trace issues end-to-end without switching between tools or manually stitching together data using timestamps or correlation IDs.
 
-## Contents
-
 | Section | Description |
 |---------|-------------|
 | [Overview](overview.md) | Introduction to ClickStack and its key features |

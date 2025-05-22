@@ -165,7 +165,8 @@ The following settings are available for each source:
 | `Resource Attributes Expression`| Expression or column for resource-level attributes.                                                                    | Yes      | Yes                         | `ResourceAttributes`     |
 | `Event Attributes Expression`   | Expression or column for event attributes.                                                                             | Yes      | Yes                         | `SpanAttributes`         |
 | `Span Events Expression`        | Expression to extract span events. Typically a `Nested` type column.                                                   | Yes      | Yes                         | `Events`                 |
-| `Implicit Column Expression`    | Column used for full-text search if no field is specified (Lucene-style). Typically the log body.	                                                             | Yes      | Yes                         | `SpanName`               |
+| `Implicit Column Expression`   | Column used for full-text search if no field is specified (Lucene-style). Typically the log body.  | Yes  | Yes  | `SpanName`|
+
 
 
 #### Metrics {#metrics}

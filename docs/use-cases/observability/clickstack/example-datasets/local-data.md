@@ -20,7 +20,7 @@ This getting started guide allows you collect local logs and metrics from your s
 
 **This example works on OSX and Linux systems only**
 
-The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) and created the `Logs` source.
+The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) or a [ClickHouse Cloud instance](/use-cases/observability/clickstack/getting-started#complete-cloud-connection-details) and created the `Logs` source.
 
 <VerticalStepper>
 

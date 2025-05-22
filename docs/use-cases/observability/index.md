@@ -8,7 +8,7 @@ description: 'Landing page for the Observability use case guide'
 
 ClickHouse offers unmatched speed, scale, and cost-efficiency for observability. This guide provides two paths depending on your needs:
 
-## ClickHouse Observability Stack
+## ClickStack - The ClickHouse Observability Stack {#clickstack}
 
 The ClickHouse Observability Stack is our **recommended approach** for most users.
 
@@ -22,7 +22,7 @@ It provides an opinionated, scalable solution that works out of the box — from
 | [Scaling](./clickhouse-stack/scaling.md)                  | Learn how to scale components of the ClickHouse Observability Stack.                                 |
 | [Production](./clickhouse-stack/production.md)            | Considerations for taking the stack to production.                                                   |
 
-## Build-Your-Own Stack
+## Build-Your-Own Stack {#build-your-own-stack}
 
 For users with **custom requirements** — such as highly specialized ingestion pipelines, schema designs, or extreme scaling needs — we provide guidance to build a custom observability stack with ClickHouse as the core database.
 

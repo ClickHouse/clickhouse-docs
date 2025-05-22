@@ -6,6 +6,11 @@ pagination_next: null
 description: 'Deploying ClickStack with Docker Compose - The ClickHouse Observability Stack'
 ---
 
+import Image from '@theme/IdealImage';
+import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
+import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
+
+
 All ClickStack components are distributed separately as individual Docker images:
 
 * **ClickHouse**
@@ -49,11 +54,31 @@ git checkout v2
 docker compose up
 ```
 
-### Navigate to the UI {#navigate-to-the-ui}
+### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
 
-Navigate to [http://localhost:8080](http://localhost:8080) and create a user.
+Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
-#### Settings and production {#settings-and-production}
+Create a user, providing a username and password which means the requirements. 
+
+On clicking `Register` you'll be prompted for connection details.
+
+<Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
+
+### Complete connection details {#complete-connection-details}
+
+To use the in-built ClickHouse instance, simply click **Create** and accept the default settings.  
+
+If you prefer to connect to your own **external ClickHouse cluster** e.g. ClickHouse Cloud, you can manually enter your connection credentials.
+
+If prompted to create a source, retain all default values and complete the `Table` field with the value `otel_logs`. All other settings should be auto-detected, allowing you to click `Save New Source`.
+
+<Image img={hyperdx_logs} alt="Create logs source" size="md"/>
+
+
+</VerticalStepper>
+
+
+## Settings and production {#settings-and-production}
 
 Users can modify settings for the stack, such as the version used, through the environment variable file:
 
@@ -80,5 +105,3 @@ HYPERDX_APP_PORT=8080
 HYPERDX_APP_URL=http://localhost
 HYPERDX_LOG_LEVEL=debug
 ```
-
-</VerticalStepper>

@@ -8,8 +8,6 @@ description: 'Getting started with ClickStack and sample datasets'
 
 This section provides various sample datasets and examples to help you get started with ClickStack. These examples demonstrate different ways to work with observability data in ClickStack, from local development to production scenarios.
 
-## Contents
-
 | Dataset | Description |
 |---------|-------------|
 | [Sample Data](sample-data.md) | Load a sample dataset containing logs, traces and metrics from our demo environment |
