@@ -1,10 +1,13 @@
 ---
-description: 'ClickHouse C++ クライアントライブラリおよび u-server フレームワークとの統合に関するドキュメント'
-sidebar_label: 'C++ クライアントライブラリ'
-sidebar_position: 24
-slug: /interfaces/cpp
-title: 'C++ クライアントライブラリ'
+'description': 'Documentation for the ClickHouse C++ client library and integration
+  with u-server framework'
+'sidebar_label': 'C++ Client Library'
+'sidebar_position': 24
+'slug': '/interfaces/cpp'
+'title': 'C++ Client Library'
 ---
+
+
 
 
 # C++ クライアントライブラリ
@@ -14,4 +17,4 @@ title: 'C++ クライアントライブラリ'
 
 # userver 非同期フレームワーク
 
-[userver (beta)](https://github.com/userver-framework/userver) は ClickHouse のビルトインサポートを提供しています。
+[userver (beta)](https://github.com/userver-framework/userver) は ClickHouse のための組み込みサポートを提供しています。

@@ -1,18 +1,20 @@
 ---
-description: '成功したおよび失敗したログインおよびログアウトイベントに関する情報を含むシステムテーブル。'
-keywords: ['system table', 'session_log']
-slug: /operations/system-tables/session_log
-title: 'system.session_log'
+'description': '成功と失敗したすべてのログインとログアウトイベントに関する情報を含むシステムテーブルです。'
+'keywords':
+- 'system table'
+- 'session_log'
+'slug': '/operations/system-tables/session_log'
+'title': 'system.session_log'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
 # system.session_log
 
 <SystemTableCloud/>
 
-成功したおよび失敗したログインおよびログアウトイベントに関する情報を含みます。
+すべての成功したログインおよびログアウトイベントと失敗したイベントに関する情報を含みます。
 
 カラム:
 
@@ -21,11 +23,11 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
     - `LoginFailure` — ログインエラー。
     - `LoginSuccess` — 成功したログイン。
     - `Logout` — システムからのログアウト。
-- `auth_id` ([UUID](../../sql-reference/data-types/uuid.md)) — 認証ID。ユーザーがログインするたびに自動生成されるUUID。
-- `session_id` ([String](../../sql-reference/data-types/string.md)) — クライアントが[HTTP](../../interfaces/http.md)インターフェースを介して渡すセッションID。
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — ログイン/ログアウト日。
-- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — ログイン/ログアウト時刻。
-- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — マイクロ秒精度のログイン/ログアウト開始時刻。
+- `auth_id` ([UUID](../../sql-reference/data-types/uuid.md)) — 認証ID。ユーザーがログインするたびに自動的に生成されるUUID。
+- `session_id` ([String](../../sql-reference/data-types/string.md)) — クライアントによって[HTTP](../../interfaces/http.md)インターフェースを介して渡されるセッションID。
+- `event_date` ([Date](../../sql-reference/data-types/date.md)) — ログイン/ログアウトの日付。
+- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — ログイン/ログアウトの時間。
+- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — マイクロ秒精度のログイン/ログアウト開始時間。
 - `user` ([String](../../sql-reference/data-types/string.md)) — ユーザー名。
 - `auth_type` ([Enum8](../../sql-reference/data-types/enum.md)) — 認証タイプ。可能な値:
     - `NO_PASSWORD`
@@ -37,7 +39,7 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
     - `SSL_CERTIFICATE`
 - `profiles` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — すべてのロールおよび/またはユーザーに設定されたプロファイルのリスト。
 - `roles` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — プロファイルが適用されるロールのリスト。
-- `settings` ([Array](../../sql-reference/data-types/array.md)([Tuple](../../sql-reference/data-types/tuple.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md), [String](../../sql-reference/data-types/string.md)))) — クライアントがログイン/ログアウトした際に変更された設定。
+- `settings` ([Array](../../sql-reference/data-types/array.md)([Tuple](../../sql-reference/data-types/tuple.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md), [String](../../sql-reference/data-types/string.md)))) — クライアントがログイン/ログアウトしたときに変更された設定。
 - `client_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — ログイン/ログアウトに使用されたIPアドレス。
 - `client_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — ログイン/ログアウトに使用されたクライアントポート。
 - `interface` ([Enum8](../../sql-reference/data-types/enum.md)) — ログインが開始されたインターフェース。可能な値:
@@ -47,11 +49,11 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
     - `MySQL`
     - `PostgreSQL`
 - `client_hostname` ([String](../../sql-reference/data-types/string.md)) — [clickhouse-client](../../interfaces/cli.md)または他のTCPクライアントが実行されているクライアントマシンのホスト名。
-- `client_name` ([String](../../sql-reference/data-types/string.md)) — `clickhouse-client`または他のTCPクライアントの名前。
+- `client_name` ([String](../../sql-reference/data-types/string.md)) — `clickhouse-client`または他のTCPクライアント名。
 - `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client`または他のTCPクライアントのリビジョン。
 - `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client`または他のTCPクライアントのメジャーバージョン。
 - `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client`または他のTCPクライアントのマイナーバージョン。
-- `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client`または他のTCPクライアントのバージョンのパッチコンポーネント。
+- `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client`または他のTCPクライアントバージョンのパッチコンポーネント。
 - `failure_reason` ([String](../../sql-reference/data-types/string.md)) — ログイン/ログアウト失敗の理由を含む例外メッセージ。
 
 **例**

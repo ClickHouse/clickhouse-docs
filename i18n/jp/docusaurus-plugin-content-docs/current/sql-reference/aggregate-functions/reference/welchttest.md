@@ -1,15 +1,17 @@
 ---
-description: '二つの母集団からのサンプルにWelchのt検定を適用します。'
-sidebar_label: 'welchTTest'
-sidebar_position: 214
-slug: /sql-reference/aggregate-functions/reference/welchttest
-title: 'welchTTest'
+'description': 'Applies Welch''s t-test to samples from two populations.'
+'sidebar_label': 'welchTTest'
+'sidebar_position': 214
+'slug': '/sql-reference/aggregate-functions/reference/welchttest'
+'title': 'welchTTest'
 ---
+
+
 
 
 # welchTTest
 
-二つの母集団からのサンプルにWelchのt検定を適用します。
+Welchのt検定を2つの母集団からのサンプルに適用します。
 
 **構文**
 
@@ -17,8 +19,8 @@ title: 'welchTTest'
 welchTTest([confidence_level])(sample_data, sample_index)
 ```
 
-両方のサンプルの値は `sample_data` カラムに含まれています。もし `sample_index` が0の場合、その行の値は最初の母集団からのサンプルに属します。それ以外の場合は二番目の母集団からのサンプルに属します。
-帰無仮説は、母集団の平均が等しいというものです。正規分布が想定されます。母集団は不均一な分散を持つ場合があります。
+両方のサンプルの値は `sample_data` カラムにあります。 `sample_index` が 0 の場合、行の値は最初の母集団からのサンプルに属します。それ以外の場合は、2番目の母集団からのサンプルに属します。
+帰無仮説は、母集団の平均が等しいというものです。正規分布が仮定されます。母集団は異なる分散を持つ場合があります。
 
 **引数**
 
@@ -31,12 +33,12 @@ welchTTest([confidence_level])(sample_data, sample_index)
 
 **返される値**
 
-[タプル](../../../sql-reference/data-types/tuple.md)は二つまたは四つの要素を持つ（オプションの `confidence_level` が指定されている場合）
+[タプル](../../../sql-reference/data-types/tuple.md)で2つまたは4つの要素（オプションの `confidence_level` が指定されている場合）
 
 - 計算されたt統計量。 [Float64](../../../sql-reference/data-types/float.md)。
 - 計算されたp値。 [Float64](../../../sql-reference/data-types/float.md)。
-- 計算された信頼区間下限。 [Float64](../../../sql-reference/data-types/float.md)。
-- 計算された信頼区間上限。 [Float64](../../../sql-reference/data-types/float.md)。
+- 計算された信頼区間の下限。 [Float64](../../../sql-reference/data-types/float.md)。
+- 計算された信頼区間の上限。 [Float64](../../../sql-reference/data-types/float.md)。
 
 
 **例**
@@ -68,7 +70,7 @@ SELECT welchTTest(sample_data, sample_index) FROM welch_ttest;
 └───────────────────────────────────────────┘
 ```
 
-**関連項目**
+**関連情報**
 
 - [Welchのt検定](https://en.wikipedia.org/wiki/Welch%27s_t-test)
 - [studentTTest関数](/sql-reference/aggregate-functions/reference/studentttest)

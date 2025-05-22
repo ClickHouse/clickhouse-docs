@@ -1,16 +1,18 @@
 ---
-description: 'さまざまなプログラミング言語向けのサードパーティ製クライアントライブラリの概要'
-sidebar_label: 'クライアントライブラリ'
-sidebar_position: 26
-slug: /interfaces/third-party/client-libraries
-title: 'サードパーティ開発者によるクライアントライブラリ'
+'description': '異なるプログラミング言語用の利用可能なサードパーティークライアントライブラリの概要'
+'sidebar_label': 'クライアントライブラリ'
+'sidebar_position': 26
+'slug': '/interfaces/third-party/client-libraries'
+'title': 'サードパーティー開発者によるクライアントライブラリ'
 ---
 
 
-# サードパーティ開発者によるクライアントライブラリ
+
+
+# サードパーティ開発者のクライアントライブラリ
 
 :::note
-ClickHouse Inc は、以下にリストされているライブラリを**維持**しておらず、その品質を保証するための広範なテストも行っていません。
+ClickHouse Inc は以下にリストされているライブラリのメンテナンスを行っておらず、品質を保証するための徹底的なテストも実施していません。
 :::
 
 ### Python {#python}
@@ -25,11 +27,11 @@ ClickHouse Inc は、以下にリストされているライブラリを**維持
  - [bozerkins/clickhouse-client](https://packagist.org/packages/bozerkins/clickhouse-client)
  - [simpod/clickhouse-client](https://packagist.org/packages/simpod/clickhouse-client)
  - [seva-code/php-click-house-client](https://packagist.org/packages/seva-code/php-click-house-client)
- - [SeasClick C++ client](https://github.com/SeasX/SeasClick)
+ - [SeasClick C++ クライアント](https://github.com/SeasX/SeasClick)
  - [one-ck](https://github.com/lizhichao/one-ck)
  - [glushkovds/phpclickhouse-laravel](https://packagist.org/packages/glushkovds/phpclickhouse-laravel)
  - [glushkovds/php-clickhouse-schema-builder](https://packagist.org/packages/glushkovds/php-clickhouse-schema-builder)
- - [kolya7k ClickHouse PHP extension](https://github.com//kolya7k/clickhouse-php)
+ - [kolya7k ClickHouse PHP 拡張](https://github.com//kolya7k/clickhouse-php)
  - [hyvor/clickhouse-php](https://github.com/hyvor/clickhouse-php)
 ### Go {#go}
  - [clickhouse](https://github.com/kshvakov/clickhouse/)

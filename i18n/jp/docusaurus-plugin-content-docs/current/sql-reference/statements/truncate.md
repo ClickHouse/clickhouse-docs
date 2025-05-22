@@ -1,29 +1,31 @@
 ---
-description: 'TRUNCATE文のドキュメント'
-sidebar_label: 'TRUNCATE'
-sidebar_position: 52
-slug: /sql-reference/statements/truncate
-title: 'TRUNCATE文'
+'description': 'TRUNCATE ステートメントのドキュメント'
+'sidebar_label': 'TRUNCATE'
+'sidebar_position': 52
+'slug': '/sql-reference/statements/truncate'
+'title': 'TRUNCATE ステートメント'
 ---
 
 
-# TRUNCATE文
+
+
+# TRUNCATEステートメント
 
 ## TRUNCATE TABLE {#truncate-table}
 ```sql
 TRUNCATE TABLE [IF EXISTS] [db.]name [ON CLUSTER cluster]
 ```
 
-テーブルからすべてのデータを削除します。句 `IF EXISTS` が省略されると、テーブルが存在しない場合にエラーが返されます。
+テーブルからすべてのデータを削除します。クローズ `IF EXISTS` が省略されると、テーブルが存在しない場合にエラーが返されます。
 
 `TRUNCATE` クエリは、[View](../../engines/table-engines/special/view.md)、[File](../../engines/table-engines/special/file.md)、[URL](../../engines/table-engines/special/url.md)、[Buffer](../../engines/table-engines/special/buffer.md)、および [Null](../../engines/table-engines/special/null.md) テーブルエンジンではサポートされていません。
 
 [alter_sync](/operations/settings/settings#alter_sync) 設定を使用して、レプリカでアクションが実行されるのを待つように設定できます。
 
-非アクティブなレプリカが `TRUNCATE` クエリを実行するのを待つ時間（秒単位）を指定するには、[replication_wait_for_inactive_replica_timeout](/operations/settings/settings#replication_wait_for_inactive_replica_timeout) 設定を使用します。
+[replication_wait_for_inactive_replica_timeout](/operations/settings/settings#replication_wait_for_inactive_replica_timeout) 設定を使用して、非アクティブなレプリカが `TRUNCATE` クエリを実行するのを待つ時間（秒単位）を指定できます。
 
 :::note    
-`alter_sync` が `2` に設定されていて、いくつかのレプリカが `replication_wait_for_inactive_replica_timeout` 設定で指定された時間を超えてアクティブでない場合、`UNFINISHED` という例外がスローされます。
+`alter_sync` が `2` に設定されている場合、いくつかのレプリカが、`replication_wait_for_inactive_replica_timeout` 設定によって指定された時間以上非アクティブであると、例外 `UNFINISHED` がスローされます。
 :::
 
 ## TRUNCATE ALL TABLES {#truncate-all-tables}
@@ -38,8 +40,8 @@ TRUNCATE [ALL] TABLES FROM [IF EXISTS] db [LIKE | ILIKE | NOT LIKE '<pattern>'] 
 TRUNCATE DATABASE [IF EXISTS] db [ON CLUSTER cluster]
 ```
 
-データベースからすべてのテーブルを削除しますが、データベース自体は保持します。句 `IF EXISTS` が省略されると、データベースが存在しない場合にエラーが返されます。
+データベースからすべてのテーブルを削除しますが、データベース自体は保持します。クローズ `IF EXISTS` が省略されると、データベースが存在しない場合にエラーが返されます。
 
 :::note
-`TRUNCATE DATABASE` は `Replicated` データベースではサポートされていません。その代わりに、データベースを `DROP` してから `CREATE` してください。
+`TRUNCATE DATABASE` は `Replicated` データベースではサポートされていません。その代わりに、データベースを単に `DROP` して `CREATE` してください。
 :::

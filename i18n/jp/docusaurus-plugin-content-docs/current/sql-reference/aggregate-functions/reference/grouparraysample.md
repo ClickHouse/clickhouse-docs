@@ -1,14 +1,18 @@
 ---
-description: 'サンプル引数値の配列を作成します。結果の配列のサイズは `max_size` 要素に制限されます。引数値はランダムに選択され、配列に追加されます。'
-sidebar_position: 145
-slug: /sql-reference/aggregate-functions/reference/grouparraysample
-title: 'groupArraySample'
+'description': 'Creates an array of sample argument values. The size of the resulting
+  array is limited to `max_size` elements. Argument values are selected and added
+  to the array randomly.'
+'sidebar_position': 145
+'slug': '/sql-reference/aggregate-functions/reference/grouparraysample'
+'title': 'groupArraySample'
 ---
+
+
 
 
 # groupArraySample
 
-サンプル引数値の配列を作成します。結果の配列のサイズは `max_size` 要素に制限されます。引数値はランダムに選択され、配列に追加されます。
+引数値のサンプル配列を作成します。結果の配列のサイズは `max_size` 要素に制限されます。引数値はランダムに選択され、配列に追加されます。
 
 **構文**
 
@@ -18,19 +22,19 @@ groupArraySample(max_size[, seed])(x)
 
 **引数**
 
-- `max_size` — 結果の配列の最大サイズ。[UInt64](../../data-types/int-uint.md)。
-- `seed` — ランダム数生成器のシード。オプション。[UInt64](../../data-types/int-uint.md)。デフォルト値: `123456`。
+- `max_size` — 結果の配列の最大サイズ。 [UInt64](../../data-types/int-uint.md).
+- `seed` — ランダム番号生成器のシード。オプション。 [UInt64](../../data-types/int-uint.md). デフォルト値: `123456`。
 - `x` — 引数（カラム名または式）。
 
-**戻り値**
+**返される値**
 
 - ランダムに選択された `x` 引数の配列。
 
-タイプ: [Array](../../data-types/array.md)。
+タイプ: [Array](../../data-types/array.md).
 
 **例**
 
-テーブル `colors` を考えてみましょう：
+テーブル `colors` を考慮してください：
 
 ```text
 ┌─id─┬─color──┐
@@ -42,7 +46,7 @@ groupArraySample(max_size[, seed])(x)
 └────┴────────┘
 ```
 
-カラム名を引数としたクエリ：
+カラム名を引数として使用したクエリ：
 
 ```sql
 SELECT groupArraySample(3)(color) as newcolors FROM colors;
@@ -56,7 +60,7 @@ SELECT groupArraySample(3)(color) as newcolors FROM colors;
 └────────────────────────────┘
 ```
 
-カラム名と異なるシードを使ったクエリ：
+カラム名と異なるシードを使用したクエリ：
 
 ```sql
 SELECT groupArraySample(3, 987654321)(color) as newcolors FROM colors;
@@ -70,7 +74,7 @@ SELECT groupArraySample(3, 987654321)(color) as newcolors FROM colors;
 └────────────────────────────┘
 ```
 
-式を引数としたクエリ：
+式を引数として使用したクエリ：
 
 ```sql
 SELECT groupArraySample(3)(concat('light-', color)) as newcolors FROM colors;

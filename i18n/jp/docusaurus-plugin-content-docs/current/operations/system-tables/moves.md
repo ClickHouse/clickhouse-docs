@@ -1,32 +1,36 @@
 ---
-description: 'MergeTreeテーブルの進行中のデータパーツ移動に関する情報を含むシステムテーブル。各データパーツの移動は、1つの行で表現される。'
-keywords: ['system table', 'moves']
-slug: /operations/system-tables/moves
-title: 'system.moves'
+'description': 'MergeTree テーブルの進行中のデータパーツ移動に関する情報を含むシステムテーブルです。各データパーツの移動が単一の行で表されます。'
+'keywords':
+- 'system table'
+- 'moves'
+'slug': '/operations/system-tables/moves'
+'title': 'system.moves'
 ---
+
+
 
 
 # system.moves
 
-このテーブルには、[MergeTree](/engines/table-engines/mergetree-family/mergetree.md) テーブルの進行中の [データパーツ移動](/sql-reference/statements/alter/partition#move-partitionpart) に関する情報が含まれている。各データパーツの移動は、1つの行で表現される。
+このテーブルには、進行中の [data part moves](/sql-reference/statements/alter/partition#move-partitionpart) に関する情報が含まれています。これは [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) テーブルのデータパーツの移動を表しており、各データパートの移動は1行で表現されます。
 
-カラム:
+列:
 
 - `database` ([String](/sql-reference/data-types/string.md)) — データベースの名前。
 
-- `table` ([String](/sql-reference/data-types/string.md)) — 移動中のデータパーツを含むテーブルの名前。
+- `table` ([String](/sql-reference/data-types/string.md)) — 移動中のデータパートを含むテーブルの名前。
 
-- `elapsed` ([Float64](../../sql-reference/data-types/float.md)) — データパーツ移動が開始されてからの経過時間（秒単位）。
+- `elapsed` ([Float64](../../sql-reference/data-types/float.md)) — データパートの移動が開始してからの経過時間（秒）。
 
-- `target_disk_name` ([String](disks.md)) — データパーツが移動している [ディスク](/operations/system-tables/disks/) の名前。
+- `target_disk_name` ([String](disks.md)) — データパートが移動する [disk](/operations/system-tables/disks/) の名前。
 
-- `target_disk_path` ([String](disks.md)) — ファイルシステム内の [ディスク](/operations/system-tables/disks/) のマウントポイントへのパス。
+- `target_disk_path` ([String](disks.md)) — ファイルシステム内の [disk](/operations/system-tables/disks/) のマウントポイントへのパス。
 
-- `part_name` ([String](/sql-reference/data-types/string.md)) — 移動されるデータパーツの名前。
+- `part_name` ([String](/sql-reference/data-types/string.md)) — 移動中のデータパートの名前。
 
-- `part_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) — データパーツのサイズ。
+- `part_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) — データパートのサイズ。
 
-- `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 移動を実行しているスレッドの識別子。
+- `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 移動を行っているスレッドの識別子。
 
 **例**
 
@@ -40,7 +44,7 @@ SELECT * FROM system.moves
 └──────────┴───────┴─────────────┴──────────────────┴──────────────────┴───────────┴───────────┴───────────┘
 ```
 
-**参照**
+**関連情報**
 
 - [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) テーブルエンジン
 - [データストレージのための複数のブロックデバイスの使用](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes)

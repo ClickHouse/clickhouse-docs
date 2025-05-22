@@ -1,21 +1,24 @@
-description: '時間と日付の間隔を表す特別なデータ型に関するドキュメント'
-sidebar_label: '間隔'
-sidebar_position: 61
-slug: /sql-reference/data-types/special-data-types/interval
-title: '間隔'
-```
+---
+'description': 'Documentation for the Interval special data type'
+'sidebar_label': 'Interval'
+'sidebar_position': 61
+'slug': '/sql-reference/data-types/special-data-types/interval'
+'title': 'Interval'
+---
 
 
-# 間隔
 
-時間と日付の間隔を表すデータ型のファミリー。 [INTERVAL](/sql-reference/operators#interval) 演算子の結果として得られる型。
 
-構造：
+# インターバル
 
-- 符号なし整数値としての時間間隔。
-- 間隔のタイプ。
+時間と日付のインターバルを表すデータ型のファミリーです。 [INTERVAL](/sql-reference/operators#interval) 演算子の結果の型。
 
-サポートされている間隔タイプ：
+構造:
+
+- 符号なし整数値としての時間インターバル。
+- インターバルのタイプ。
+
+サポートされているインターバルタイプ:
 
 - `NANOSECOND`
 - `MICROSECOND`
@@ -29,7 +32,7 @@ title: '間隔'
 - `QUARTER`
 - `YEAR`
 
-各間隔タイプには別々のデータ型があります。例えば、`DAY` 間隔は `IntervalDay` データ型に対応します：
+各インターバルタイプには別々のデータ型があります。例えば、`DAY` インターバルは `IntervalDay` データ型に対応します:
 
 ```sql
 SELECT toTypeName(INTERVAL 4 DAY)
@@ -43,7 +46,7 @@ SELECT toTypeName(INTERVAL 4 DAY)
 
 ## 使用上の注意 {#usage-remarks}
 
-`Interval` 型の値を [Date](../../../sql-reference/data-types/date.md) および [DateTime](../../../sql-reference/data-types/datetime.md) 型の値との算術演算で使用できます。例えば、現在の時間に4日を加えることができます：
+`Interval` 型の値を [Date](../../../sql-reference/data-types/date.md) や [DateTime](../../../sql-reference/data-types/datetime.md) 型の値との算術演算に使用できます。例えば、現在の時間に4日を加えることができます:
 
 ```sql
 SELECT now() as current_date_time, current_date_time + INTERVAL 4 DAY
@@ -55,7 +58,7 @@ SELECT now() as current_date_time, current_date_time + INTERVAL 4 DAY
 └─────────────────────┴───────────────────────────────┘
 ```
 
-また、複数の間隔を同時に使用することも可能です：
+また、複数のインターバルを同時に使用することも可能です:
 
 ```sql
 SELECT now() AS current_date_time, current_date_time + (INTERVAL 4 DAY + INTERVAL 3 HOUR)
@@ -67,7 +70,7 @@ SELECT now() AS current_date_time, current_date_time + (INTERVAL 4 DAY + INTERVA
 └─────────────────────┴────────────────────────────────────────────────────────────────────┘
 ```
 
-異なる間隔を持つ値を比較することもできます：
+異なるインターバルで値を比較することもできます:
 
 ```sql
 SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
@@ -79,7 +82,7 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## 関連項目 {#see-also}
+## その他 {#see-also}
 
 - [INTERVAL](/sql-reference/operators#interval) 演算子
 - [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) 型変換関数

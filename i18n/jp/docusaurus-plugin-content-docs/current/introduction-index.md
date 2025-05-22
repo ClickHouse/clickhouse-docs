@@ -1,17 +1,18 @@
 ---
-slug: /introduction-clickhouse
-title: '紹介'
-description: '紹介のランディングページ'
-pagination_next: null
+'slug': '/introduction-clickhouse'
+'title': 'はじめに'
+'description': 'はじめにのランディングページ'
+'pagination_next': null
 ---
 
-ClickHouseへようこそ！以下のページをチェックして、最も高速でリソース効率の高いリアルタイムデータウェアハウスおよびオープンソースデータベースであるClickHouseのセットアップと運用について学びましょう。
 
-| ページ                                           | 説明                                                             |
-|------------------------------------------------|------------------------------------------------------------------|
-| [What is ClickHouse?](about-us/intro.mdx)      | ClickHouseについての詳細を学びます。                                |
-| [Quick Start](quick-start.mdx)                 | 短時間でセットアップできるクイックスタートガイド。                     |           
-| [Advanced Tutorial](tutorial.md)               | 基本に慣れましたか？もっと興味深いことをしましょう。                   |
-| [Install](getting-started/install/install.mdx) | ClickHouseをインストールする様々な方法について学びます。               |
-| [Deployment modes](deployment-modes.md)        | このガイドでは、ClickHouseをデプロイおよび使用するための4つの主な方法を探ります。 | 
 
+Welcome to ClickHouse! Check out the pages below to learn how to get up and running with ClickHouse - the fastest and most resource efficient real-time data warehouse and open-source database.
+
+| ページ                                            | 説明                                                              |
+|-------------------------------------------------|-------------------------------------------------------------------|
+| [What is ClickHouse?](about-us/intro.mdx)       | Learn more about what ClickHouse is.                              |
+| [Quick Start](quick-start.mdx)                  | Quick start guide to get you up and running in no time.           |           
+| [Advanced Tutorial](tutorial.md)                | Comfortable with the basics? Let's do something more interesting. |
+| [Install](getting-started/install/install.mdx)  | Learn about the various ways you can install ClickHouse.          |
+| [Deployment modes](deployment-modes.md)         | This guide explores the four main ways to deploy and use ClickHouse.|

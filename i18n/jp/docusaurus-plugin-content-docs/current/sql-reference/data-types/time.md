@@ -1,14 +1,18 @@
-description: 'ClickHouseにおけるTimeデータ型のドキュメントで、秒単位の精度で時間範囲を保存します'
-slug: /sql-reference/data-types/time
-sidebar_position: 15
-sidebar_label: 'Time'
-title: 'Time'
-```
+---
+'description': 'Documentation for the Time data type in ClickHouse, which stores the
+  time range with second precision'
+'slug': '/sql-reference/data-types/time'
+'sidebar_position': 15
+'sidebar_label': 'Time'
+'title': 'Time'
+---
 
 
-# Time
 
-`Time` データ型は、カレンダーの日付に依存しない時間値を保存するために使用されます。これは、日々のスケジュール、イベントの時間、または時間のコンポーネント（時、分、秒）のみが重要な状況に最適です。
+
+# 時間
+
+`Time` データ型は、カレンダーの日付に依存せずに時間値を保存するために使用されます。これは、日々のスケジュール、イベントの時間、または時間コンポーネント（時間、分、秒）のみが重要な状況を表現するのに最適です。
 
 構文:
 
@@ -16,25 +20,25 @@ title: 'Time'
 Time()
 ```
 
-サポートされている値の範囲: \[-999:59:59, 999:59:59\]。
+サポートされる値の範囲: \[-999:59:59, 999:59:59\]。
 
 解像度: 1秒。
 
-## Speed {#speed}
+## スピード {#speed}
 
-`Date` データ型は、_ほとんどの場合_ `Time` よりも速いです。しかし、`Time` データ型は `DateTime` データ型とほぼ同じ速度です。
+`Date` データ型は、_ほとんど_ の条件下で `Time` よりも速いです。しかし、`Time` データ型は `DateTime` データ型とほぼ同じ速度です。
 
-実装の詳細により、`Time` と `DateTime` 型は4バイトのストレージを必要とし、`Date` は2バイトを必要とします。ただし、データベースが圧縮されたとき、この違いは拡大します。
+実装の詳細により、`Time` および `DateTime` 型は4バイトのストレージを必要とし、`Date` は2バイトを必要とします。ただし、データベースが圧縮されると、この違いは増幅されます。
 
-## Usage Remarks {#usage-remarks}
+## 使用上の注意 {#usage-remarks}
 
-時点は、タイムゾーンや夏時間に関係なく、[Unixタイムスタンプ](https://en.wikipedia.org/wiki/Unix_time)として保存されます。
+時点は、タイムゾーンや夏時間に関係なく、[Unix タイムスタンプ](https://en.wikipedia.org/wiki/Unix_time)として保存されます。
 
-**注意:** Timeデータ型はタイムゾーンを考慮しません。それは、日付や地域のオフセット文脈なしに独自の時間を表します。Timeカラムにタイムゾーンを適用または変更しようとすると、効果がなく、サポートされません。
+**注意:** `Time` データ型はタイムゾーンを考慮しません。それは、日付や地域のオフセットのコンテキストなしに、単独で時刻値を表します。`Time` カラムにタイムゾーンを適用または変更しようとする試みは、影響を及ぼさず、サポートされていません。
 
-## Examples {#examples}
+## 例 {#examples}
 
-**1.** `Time`型カラムを持つテーブルを作成し、データを挿入する:
+**1.** `Time` 型のカラムを持つテーブルを作成し、データを挿入します:
 
 ``` sql
 CREATE TABLE dt
@@ -46,9 +50,9 @@ ENGINE = TinyLog;
 ```
 
 ``` sql
--- Timeを解析
+-- 時間の解析
 -- - 文字列から、
--- - 1970-01-01以降の経過秒数として解釈される整数から。
+-- - 1970-01-01 からの秒数として解釈された整数から。
 INSERT INTO dt VALUES ('100:00:00', 1), (12453, 3);
 
 SELECT * FROM dt;
@@ -61,7 +65,7 @@ SELECT * FROM dt;
    └───────────┴──────────┘
 ```
 
-**2.** `Time`値でのフィルタリング
+**2.** `Time` 値でフィルタリング
 
 ``` sql
 SELECT * FROM dt WHERE time = toTime('100:00:00')
@@ -73,7 +77,7 @@ SELECT * FROM dt WHERE time = toTime('100:00:00')
    └───────────┴──────────┘
 ```
 
-`Time`カラムの値は、`WHERE`述語内で文字列値を使用してフィルタリングできます。それは自動的に`Time`に変換されます:
+`Time` カラムの値は、`WHERE` 節で文字列値を使用してフィルタリングできます。自動的に `Time` に変換されます:
 
 ``` sql
 SELECT * FROM dt WHERE time = '100:00:00'
@@ -85,7 +89,7 @@ SELECT * FROM dt WHERE time = '100:00:00'
    └───────────┴──────────┘
 ```
 
-**3.** `Time`型カラムのタイムゾーンを取得する:
+**3.** `Time` 型のカラムのタイムゾーンを取得する:
 
 ``` sql
 SELECT toTime(now()) AS column, toTypeName(column) AS x
@@ -97,14 +101,15 @@ SELECT toTime(now()) AS column, toTypeName(column) AS x
    └───────────┴──────┘
 ```
 
-## See Also {#see-also}
+
+## 関連項目 {#see-also}
 
 - [型変換関数](../functions/type-conversion-functions.md)
-- [日付と時間を扱うための関数](../functions/date-time-functions.md)
-- [配列を扱うための関数](../functions/array-functions.md)
-- [`date_time_input_format`設定](../../operations/settings/settings-formats.md#date_time_input_format)
-- [`date_time_output_format`設定](../../operations/settings/settings-formats.md#date_time_output_format)
-- [`timezone`サーバー設定パラメータ](../../operations/server-configuration-parameters/settings.md#timezone)
-- [`session_timezone`設定](../../operations/settings/settings.md#session_timezone)
-- [`DateTime`データ型](datetime.md)
-- [`Date`データ型](date.md)
+- [日付および時刻で操作するための関数](../functions/date-time-functions.md)
+- [配列を操作するための関数](../functions/array-functions.md)
+- [日付時刻入力フォーマット設定](../../operations/settings/settings-formats.md#date_time_input_format)
+- [日付時刻出力フォーマット設定](../../operations/settings/settings-formats.md#date_time_output_format)
+- [タイムゾーンサーバー構成パラメータ](../../operations/server-configuration-parameters/settings.md#timezone)
+- [セッションタイムゾーン設定](../../operations/settings/settings.md#session_timezone)
+- [DateTime データ型](datetime.md)
+- [Date データ型](date.md)

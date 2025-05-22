@@ -1,41 +1,41 @@
 ---
-slug: /guides/developer/alternative-query-languages
-sidebar_label: '代替クエリ言語'
-title: '代替クエリ言語'
-description: 'ClickHouseで代替クエリ言語を使用する'
+'slug': '/guides/developer/alternative-query-languages'
+'sidebar_label': '代替クエリ言語'
+'title': '代替クエリ言語'
+'description': 'ClickHouseで代替クエリ言語を使用する'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-標準SQLに加えて、ClickHouseはデータをクエリするためのさまざまな代替クエリ言語をサポートしています。
+ClickHouseは、標準SQL以外にもさまざまな代替クエリ言語をデータのクエリにサポートしています。
 
-現在サポートされている方言は以下の通りです：
-- `clickhouse`: ClickHouseのデフォルトの [SQL方言](../../chdb/reference/sql-reference.md)
-- `prql`: [パイプライン式関係クエリ言語 (PRQL)](https://prql-lang.org/)
-- `kusto`: [Kustoクエリ言語 (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
+現在サポートされているダイアレクトは以下の通りです：
+- `clickhouse`: ClickHouseのデフォルトの[SQLダイアレクト](../../chdb/reference/sql-reference.md)
+- `prql`: [Pipelined Relational Query Language (PRQL)](https://prql-lang.org/)
+- `kusto`: [Kusto Query Language (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
 
-使用されるクエリ言語は、`dialect` を設定することで制御されます。
+使用するクエリ言語は、`dialect`を設定することで制御されます。
 
-## 標準SQL {#standard-sql}
+## Standard SQL {#standard-sql}
 
-標準SQLはClickHouseのデフォルトのクエリ言語です。
+Standard SQLはClickHouseのデフォルトのクエリ言語です。
 
 ```sql
 SET dialect = 'clickhouse'
 ```
 
-## パイプライン式関係クエリ言語 (PRQL) {#pipelined-relational-query-language-prql}
+## Pipelined Relational Query Language (PRQL) {#pipelined-relational-query-language-prql}
 
 <ExperimentalBadge/>
 
 PRQLを有効にするには：
 
 ```sql
-SET allow_experimental_prql_dialect = 1; -- このSET文はClickHouseバージョン >= v25.1 にのみ必要です
+SET allow_experimental_prql_dialect = 1; -- このSET文はClickHouseのバージョンが>= v25.1の場合のみ必要です
 SET dialect = 'prql'
 ```
 
-PRQLクエリの例：
+PRQLのクエリの例：
 
 ```prql
 from trips
@@ -45,24 +45,24 @@ aggregate {
 }
 ```
 
-内部では、ClickHouseはPRQLをSQLに変換してPRQLクエリを実行します。
+内部的に、ClickHouseはPRQLをSQLにトランスパイルしてPRQLクエリを実行します。
 
-## Kustoクエリ言語 (KQL) {#kusto-query-language-kql}
+## Kusto Query Language (KQL) {#kusto-query-language-kql}
 
 <ExperimentalBadge/>
 
 KQLを有効にするには：
 
 ```sql
-SET allow_experimental_kusto_dialect = 1; -- このSET文はClickHouseバージョン >= 25.1 にのみ必要です
+SET allow_experimental_kusto_dialect = 1; -- このSET文はClickHouseのバージョンが>= 25.1の場合のみ必要です
 SET dialect = 'kusto'
 ```
 
-```kql title="クエリ"
+```kql title="Query"
 numbers(10) | project number
 ```
 
-```response title="レスポンス"
+```response title="Response"
 ┌─number─┐
 │      0 │
 │      1 │
@@ -77,4 +77,4 @@ numbers(10) | project number
 └────────┘
 ```
 
-KQLクエリはClickHouseで定義されたすべての関数にアクセスできない場合があることに注意してください。
+KQLクエリは、ClickHouseで定義されたすべての関数にアクセスできない場合があることに注意してください。

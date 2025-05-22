@@ -1,19 +1,22 @@
 ---
-description: 'ClickHouseで地理的オブジェクトや位置を表現するための幾何データ型のドキュメント'
-sidebar_label: 'Geo'
-sidebar_position: 54
-slug: /sql-reference/data-types/geo
-title: '幾何学的'
+'description': 'Documentation for geometric data types in ClickHouse used for representing
+  geographical objects and locations'
+'sidebar_label': 'Geo'
+'sidebar_position': 54
+'slug': '/sql-reference/data-types/geo'
+'title': 'Geometric'
 ---
 
-ClickHouseは、地理的オブジェクト—位置、土地など—を表現するためのデータ型をサポートしています。
 
-**関連情報**
+
+ClickHouseは地理的なオブジェクトを表すためのデータ型をサポートしています — 場所、土地など。
+
+**参照**
 - [単純な地理的特徴の表現](https://en.wikipedia.org/wiki/GeoJSON)。
 
 ## Point {#point}
 
-`Point`は、[Tuple](tuple.md)([Float64](float.md), [Float64](float.md))として保存されるX座標とY座標によって表されます。
+`Point` は、そのXおよびY座標で表され、[Tuple](tuple.md)([Float64](float.md), [Float64](float.md))として保存されます。
 
 **例**
 
@@ -34,7 +37,7 @@ SELECT p, toTypeName(p) FROM geo_point;
 
 ## Ring {#ring}
 
-`Ring`は、点の配列として保存される穴のない単純な多角形です: [Array](array.md)([Point](#point))。
+`Ring` は、穴のない単純な多角形で、点の配列として保存されます: [Array](array.md)([Point](#point))。
 
 **例**
 
@@ -55,7 +58,7 @@ SELECT r, toTypeName(r) FROM geo_ring;
 
 ## LineString {#linestring}
 
-`LineString`は、点の配列として保存される線です: [Array](array.md)([Point](#point))。
+`LineString` は、点の配列として保存される線です: [Array](array.md)([Point](#point))。
 
 **例**
 
@@ -76,7 +79,7 @@ SELECT l, toTypeName(l) FROM geo_linestring;
 
 ## MultiLineString {#multilinestring}
 
-`MultiLineString`は、`LineString`の配列として保存される複数の線です: [Array](array.md)([LineString](#linestring))。
+`MultiLineString` は、`LineString`の配列として保存される複数の線です: [Array](array.md)([LineString](#linestring))。
 
 **例**
 
@@ -97,7 +100,7 @@ SELECT l, toTypeName(l) FROM geo_multilinestring;
 
 ## Polygon {#polygon}
 
-`Polygon`は穴のある多角形で、[Array](array.md)([Ring](#ring))として保存されます。外側の配列の最初の要素が多角形の外形で、残りの要素が穴です。
+`Polygon` は、リングの配列として保存される穴のある多角形です: [Array](array.md)([Ring](#ring))。外側の配列の最初の要素は多角形の外形で、続くすべての要素は穴です。
 
 **例**
 
@@ -119,11 +122,11 @@ SELECT pg, toTypeName(pg) FROM geo_polygon;
 
 ## MultiPolygon {#multipolygon}
 
-`MultiPolygon`は複数の多角形から構成され、[Array](array.md)([Polygon](#polygon))として保存されます。
+`MultiPolygon` は複数の多角形で構成され、配列として保存されます: [Array](array.md)([Polygon](#polygon))。
 
 **例**
 
-このマルチポリゴンは、穴のない最初の多角形と1つの穴を持つ2番目の多角形—合計2つの別々の多角形から構成されています:
+このマルチポリゴンは、最初の1つは穴なし、次の1つには1つの穴がある2つの別々の多角形で構成されています:
 
 ```sql
 CREATE TABLE geo_multipolygon (mpg MultiPolygon) ENGINE = Memory();
@@ -140,4 +143,4 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 
 ## 関連コンテンツ {#related-content}
 
-- [大規模な実世界のデータセットを探る: ClickHouseによる100年以上の気象記録](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
+- [大規模な実世界のデータセットの探索: ClickHouseにおける100年以上の気象記録](https://clickhouse.com/blog/real-world-data-noaa-climate-data)

@@ -1,27 +1,37 @@
 ---
-slug: /tutorial
-sidebar_label: '高度なチュートリアル'
-title: '高度なチュートリアル'
-description: 'New York Cityのタクシーの例データセットを使用して、ClickHouseでデータを取り込み、クエリする方法を学びます。'
-sidebar_position: 0.5
-keywords: ['clickhouse', 'install', 'tutorial', 'dictionary', 'dictionaries', 'example', 'advanced', 'taxi', 'new york', 'nyc']
+'slug': '/tutorial'
+'sidebar_label': '高度なチュートリアル'
+'title': '高度なチュートリアル'
+'description': 'ニューヨーク市のタクシーデータセットを使用して、ClickHouseでデータを取り込み、クエリを実行する方法を学びます。'
+'sidebar_position': 0.5
+'keywords':
+- 'clickhouse'
+- 'install'
+- 'tutorial'
+- 'dictionary'
+- 'dictionaries'
+- 'example'
+- 'advanced'
+- 'taxi'
+- 'new york'
+- 'nyc'
 ---
 
 # 高度なチュートリアル
 
 ## 概要 {#overview}
 
-New York Cityのタクシーの例データセットを使用して、ClickHouseでデータを取り込み、クエリする方法を学びます。
+ニューヨーク市のタクシーの例データセットを使用して、ClickHouseでデータを取り込んでクエリを実行する方法を学びます。
 
 ### 前提条件 {#prerequisites}
 
-このチュートリアルを完了するには、稼働中のClickHouseサービスにアクセスする必要があります。手順については、[クイックスタート](./quick-start.mdx)ガイドを参照してください。
+このチュートリアルを完了するには、稼働中のClickHouseサービスにアクセスできる必要があります。手順については、[クイックスタート](./quick-start.mdx)ガイドを参照してください。
 
 <VerticalStepper>
 
 ## 新しいテーブルを作成する {#create-a-new-table}
 
-New York Cityのタクシーデータセットには、チップの金額、料金、支払い方法などを含む数百万件のタクシー乗車の詳細が含まれています。このデータを保存するためのテーブルを作成します。
+ニューヨーク市のタクシーデータセットには、チップ額、料金、支払いタイプなどのカラムを含む何百万ものタクシーライドに関する詳細情報が含まれています。このデータを格納するためのテーブルを作成します。
 
 1. SQLコンソールに接続します：
 - ClickHouse Cloudの場合、ドロップダウンメニューからサービスを選択し、左のナビゲーションメニューから**SQLコンソール**を選択します。
@@ -80,14 +90,12 @@ New York Cityのタクシーデータセットには、チップの金額、料�
     ENGINE = MergeTree
     PARTITION BY toYYYYMM(pickup_date)
     ORDER BY pickup_datetime;
-    ```
 
 ## データセットを追加する {#add-the-dataset}
 
-テーブルを作成したので、S3のCSVファイルからNew York Cityのタクシーデータを追加します。
+テーブルを作成したので、S3のCSVファイルからニューヨーク市のタクシーデータを追加します。
 
-1. 次のコマンドは、S3内の2つの異なるファイル`trips_1.tsv.gz`と`trips_2.tsv.gz`から、`trips`テーブルに約2,000,000行を挿入します：
-
+1. 次のコマンドは、S3の2つの異なるファイル`trips_1.tsv.gz`と`trips_2.tsv.gz`から`trips`テーブルに約2,000,000行を挿入します：
     ```sql
     INSERT INTO trips
     SELECT * FROM s3(
@@ -139,25 +147,23 @@ New York Cityのタクシーデータセットには、チップの金額、料�
         `dropoff_ntaname` String,
         `dropoff_puma` UInt16
     ") SETTINGS input_format_try_infer_datetimes = 0
-    ```
 
-2. `INSERT`が完了するまで待ちます。150MBのデータがダウンロードされるまでには時間がかかる場合があります。
+2. `INSERT`が完了するのを待ちます。150MBのデータをダウンロードするには少し時間がかかる場合があります。
 
-3. 挿入が完了したら、正しく動作したか確認します：
+3. 挿入が完了したら、正常に処理されたかを確認します：
     ```sql
     SELECT count() FROM trips
-    ```
 
     このクエリは1,999,657行を返すはずです。
 
 ## データを分析する {#analyze-the-data}
 
-データを分析するためにいくつかのクエリを実行します。以下の例を探求するか、自分のSQLクエリを試してください。
+データを分析するためにいくつかのクエリを実行します。以下の例を探求するか、独自のSQLクエリを試してみてください。
 
-- 平均チップの金額を計算します：
+- 平均チップ額を計算します：
     ```sql
     SELECT round(avg(tip_amount), 2) FROM trips
-    ```
+
     <details>
     <summary>期待される出力</summary>
     <p>
@@ -166,7 +172,6 @@ New York Cityのタクシーデータセットには、チップの金額、料�
     ┌─round(avg(tip_amount), 2)─┐
     │                      1.68 │
     └───────────────────────────┘
-    ```
 
     </p>
     </details>
@@ -178,13 +183,12 @@ New York Cityのタクシーデータセットには、チップの金額、料�
         ceil(avg(total_amount),2) AS average_total_amount
     FROM trips
     GROUP BY passenger_count
-    ```
-    
+
     <details>
     <summary>期待される出力</summary>
     <p>
 
-    `passenger_count`の範囲は0から9までです：
+    `passenger_count`は0から9までの範囲です：
 
     ```response
     ┌─passenger_count─┬─average_total_amount─┐
@@ -199,12 +203,11 @@ New York Cityのタクシーデータセットには、チップの金額、料�
     │               8 │                36.41 │
     │               9 │                 9.81 │
     └─────────────────┴──────────────────────┘
-    ```
 
     </p>
     </details>
 
-- 地域ごとの毎日のピックアップ数を計算します：
+- 地域ごとの日別ピックアップ数を計算します：
     ```sql
     SELECT
         pickup_date,
@@ -213,7 +216,6 @@ New York Cityのタクシーデータセットには、チップの金額、料�
     FROM trips
     GROUP BY pickup_date, pickup_ntaname
     ORDER BY pickup_date ASC
-    ```
 
     <details>
     <summary>期待される出力</summary>
@@ -230,12 +232,11 @@ New York Cityのタクシーデータセットには、チップの金額、料�
     │  2015-07-01 │ SoHo-TriBeCa-Civic Center-Little Italy                   │             621 │
     │  2015-07-01 │ Park Slope-Gowanus                                       │              29 │
     │  2015-07-01 │ Bushwick South                                           │               5 │
-    ```
 
     </p>
     </details>
 
-- 各旅行の長さを分単位で計算し、その結果を旅行時間でグループ化します：
+- 各旅行の長さを分単位で計算し、旅行の長さで結果をグループ化します：
     ```sql
     SELECT
         avg(tip_amount) AS avg_tip,
@@ -247,7 +248,7 @@ New York Cityのタクシーデータセットには、チップの金額、料�
     WHERE trip_minutes > 0
     GROUP BY trip_minutes
     ORDER BY trip_minutes DESC
-    ```
+
     <details>
     <summary>期待される出力</summary>
     <p>
@@ -261,11 +262,11 @@ New York Cityのタクシーデータセットには、チップの金額、料�
     │   0.9715789457909146 │ 13.646616541353383 │ 2.0526315789473686 │    133 │         1437 │
     │   0.9682692398245518 │ 14.134615384615385 │  2.076923076923077 │    104 │         1436 │
     │   1.1022105210705808 │ 13.778947368421052 │  2.042105263157895 │     95 │         1435 │
-    ```
+
     </p>
     </details>
 
-- 各地域のピックアップ数を、1日の時間ごとに表示します：
+- 各地域の時間帯ごとのピックアップ数を表示します：
     ```sql
     SELECT
         pickup_ntaname,
@@ -275,7 +276,7 @@ New York Cityのタクシーデータセットには、チップの金額、料�
     WHERE pickup_ntaname != ''
     GROUP BY pickup_ntaname, pickup_hour
     ORDER BY pickup_ntaname, pickup_hour
-    ```
+
     <details>
     <summary>期待される出力</summary>
     <p>
@@ -316,13 +317,11 @@ New York Cityのタクシーデータセットには、チップの金額、料�
     │ Allerton-Pelham Gardens                                  │          23 │       1 │
     │ Annadale-Huguenot-Prince's Bay-Eltingville               │          23 │       1 │
     │ Arden Heights                                            │          11 │       1 │
-    ```
 
     </p>
     </details>
 
-    
-7. LaGuardiaまたはJFK空港への乗車を取得します：
+7. ラガーディアまたはJFK空港への乗車を取得します：
     ```sql
     SELECT
         pickup_datetime,
@@ -340,7 +339,6 @@ New York Cityのタクシーデータセットには、チップの金額、料�
     FROM trips
     WHERE dropoff_nyct2010_gid IN (132, 138)
     ORDER BY pickup_datetime
-    ```
 
     <details>
     <summary>期待される出力</summary>
@@ -357,31 +355,33 @@ New York Cityのタクシーデータセットには、チップの金額、料�
     │ 2015-07-01 00:38:26 │ 2015-07-01 00:49:00 │         13.3 │                 -11 │                  138 │ LGA          │ 2015 │   1 │    0 │
     │ 2015-07-01 00:41:48 │ 2015-07-01 00:44:45 │          6.3 │                 -94 │                  132 │ JFK          │ 2015 │   1 │    0 │
     │ 2015-07-01 01:06:18 │ 2015-07-01 01:14:43 │        11.76 │                  37 │                  132 │ JFK          │ 2015 │   1 │    1 │
-    ```
 
     </p>
     </details>
 
 ## 辞書を作成する {#create-a-dictionary}
 
-辞書は、メモリに格納されたキーと値のペアのマッピングです。詳細については、[辞書](./sql-reference/dictionaries/index.md)を参照してください。
+辞書は、メモリ内に保存されるキーと値のペアのマッピングです。詳細については、[辞書](https://clickhouse.com/docs/en/sql-reference/dictionaries/index.md)を参照してください。
 
-ClickHouseサービス内のテーブルに関連する辞書を作成します。テーブルと辞書は、New York Cityの各地域に対して1行を含むCSVファイルに基づいています。
+ClickHouseサービス内のテーブルに関連付けられた辞書を作成します。
+このテーブルと辞書は、ニューヨーク市の各地区に対する行を含むCSVファイルに基づいています。
 
-地域は、五つのニューヨーク市の行政区（ブロンクス、ブルックリン、マンハッタン、クイーンズ、スタテンアイランド）およびニューアーク空港（EWR）の名前にマッピングされます。
+地域は、ニューヨーク市の五つの区（ブロンクス、ブルックリン、マンハッタン、クイーンズ、スタテンアイランド）、およびニューワーク空港（EWR）にマッピングされています。
 
-使用しているCSVファイルの抜粋をテーブル形式で示します。ファイル内の`LocationID`カラムは、`trips`テーブルの`pickup_nyct2010_gid`および`dropoff_nyct2010_gid`カラムにマッピングされています：
+使用するCSVファイルの抜粋をテーブル形式で示します。ファイル内の`LocationID`カラムは、`trips`テーブルの`pickup_nyct2010_gid`および`dropoff_nyct2010_gid`カラムにマッピングされます：
 
   | LocationID      | Borough |  Zone      | service_zone |
   | ----------- | ----------- |   ----------- | ----------- |
-  | 1      | EWR       |  ニューアーク空港   | EWR        |
+  | 1      | EWR       |  ニューワーク空港   | EWR        |
   | 2    |   クイーンズ     |   ジャマイカ湾   |      Boro Zone   |
-  | 3   |   ブロンクス     |  アレートン/ペルハムガーデン    |    Boro Zone     |
+  | 3   |   ブロンクス     |  アラートン／ペルハムガーデンズ    |    Boro Zone     |
   | 4     |    マンハッタン    |    アルファベットシティ  |     Yellow Zone    |
   | 5     |  スタテンアイランド      |   アーデンハイツ   |    Boro Zone     |
 
-1. 次のSQLコマンドを実行して、`taxi_zone_dictionary`という名前の辞書を作成し、S3のCSVファイルから辞書をポピュレートします。ファイルのURLは`https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`です。
-  ```sql
+
+1. 次のSQLコマンドを実行し、`taxi_zone_dictionary`という名前の辞書を作成し、S3のCSVファイルから辞書をポピュレートします。ファイルのURLは`https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`です。
+  
+```sql
   CREATE DICTIONARY taxi_zone_dictionary
   (
     `LocationID` UInt16 DEFAULT 0,
@@ -393,44 +393,38 @@ ClickHouseサービス内のテーブルに関連する辞書を作成します�
   SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
   LIFETIME(MIN 0 MAX 0)
   LAYOUT(HASHED_ARRAY())
-  ```
-
+```
   :::note
-  `LIFETIME`を0に設定すると、不要なトラフィックを避けるために自動更新が無効になります。他のケースでは、異なる設定を行うことができます。詳細については、[LIFETIMEを使用した辞書データの更新](./sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)を参照してください。
+  `LIFETIME`を0に設定すると、不要なトラフィックを避けるために自動更新が無効になります。その他のケースでは、異なる設定を行うことができます。詳細については、[LIFETIMEを使用した辞書データの更新](https://clickhouse.com/docs/en/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)を参照してください。
   :::
 
-3. 正しく動作したことを確認します。次のクエリは265行を返すはずです。これは各地域に対して1行です：
+3. 正常に動作したか確認します。次のクエリは265行、つまり各地域に対して1行を返すはずです：
     ```sql
     SELECT * FROM taxi_zone_dictionary
-    ```
 
-4. `dictGet`関数を使用して辞書から値を取得します（[またはそのバリエーション](./sql-reference/functions/ext-dict-functions.md)）。辞書の名前、取得したい値、およびキー（ここでは`taxi_zone_dictionary`の`LocationID`カラム）を引数として渡します。
+4. `dictGet`関数（[またはそのバリエーション](./sql-reference/functions/ext-dict-functions.md)）を使用して、辞書から値を取得します。辞書の名前、取得したい値、およびキー（この例では`taxi_zone_dictionary`の`LocationID`カラム）を渡します。
 
     例えば、次のクエリは`LocationID`が132の`Borough`を返します。これはJFK空港に対応します：
     ```sql
     SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
-    ```
 
-    JFKはクイーンズにあります。値を取得するための時間はほぼ0です：
+    JFKはクイーンズにあります。値を取得するための時間が実質的に0であることに注意してください：
     ```response
     ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
     │ クイーンズ                                          │
     └─────────────────────────────────────────────────┘
 
-    1行が返されました。経過時間：0.004秒。
-    ```
+    1 行がセットされました。経過時間: 0.004 秒。
 
-5. `dictHas`関数を使用して、辞書にキーが存在するかどうかを確認します。例えば、次のクエリは`1`（ClickHouseにおける"true"）を返します：
+5. `dictHas`関数を使用して、キーが辞書に存在するかどうかを確認します。例えば、次のクエリは`1`（ClickHouseでは「真」を意味します）を返します：
     ```sql
     SELECT dictHas('taxi_zone_dictionary', 132)
-    ```
 
-6. 次のクエリは0を返します。これは4567が辞書における`LocationID`の値ではないためです：
+6. 次のクエリは0を返します。なぜなら4567は辞書の`LocationID`の値ではないからです：
     ```sql
     SELECT dictHas('taxi_zone_dictionary', 4567)
-    ```
 
-7. クエリ内で辞書の名前を取得するために`dictGet`関数を使用します。例えば：
+7. クエリ内で辞書の名前を取得するために`dictGet`関数を使用します。例：
     ```sql
     SELECT
         count(1) AS total,
@@ -439,9 +433,8 @@ ClickHouseサービス内のテーブルに関連する辞書を作成します�
     WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
     GROUP BY borough_name
     ORDER BY total DESC
-    ```
 
-    このクエリは、LaGuardiaまたはJFK空港で終了するタクシー乗車数を地域ごとに合計します。結果は以下のようになります。ピックアップ地域が不明の旅行も多く存在することに注意してください：
+    このクエリは、ラガーディアまたはJFK空港で終了するタクシーの数を地域ごとに集計します。結果は次のようになり、ピックアップ地域が不明な旅行がかなりあることに注意してください：
     ```response
     ┌─total─┬─borough_name──┐
     │ 23683 │ 不明       │
@@ -453,14 +446,13 @@ ClickHouseサービス内のテーブルに関連する辞書を作成します�
     │    53 │ EWR           │
     └───────┴───────────────┘
 
-    7行が返されました。経過時間：0.019秒。2.00百万行を処理し、4.00 MB（105.70百万行/秒、211.40 MB/秒）です。
-    ```
+    7 行がセットされました。経過時間: 0.019 秒。処理された行数2.00百万、4.00 MB (105.70百万行/s., 211.40 MB/s.)
 
 ## ジョインを実行する {#perform-a-join}
 
-`taxi_zone_dictionary`と`trips`テーブルを結合するいくつかのクエリを書くことができます。
+`taxi_zone_dictionary`を`trips`テーブルと結合するクエリをいくつか書きます。
 
-1. まず、上記の空港クエリと同様に機能するシンプルな`JOIN`を行います：
+1. 前の空港クエリと同様に機能するシンプルな`JOIN`から始めます：
     ```sql
     SELECT
         count(1) AS total,
@@ -470,9 +462,8 @@ ClickHouseサービス内のテーブルに関連する辞書を作成します�
     WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
     GROUP BY Borough
     ORDER BY total DESC
-    ```
 
-    レスポンスは、前述の`dictGet`クエリと同一です：
+    レスポンスは`dictGet`クエリと同じです：
     ```response
     ┌─total─┬─Borough───────┐
     │  7053 │ マンハッタン     │
@@ -482,15 +473,14 @@ ClickHouseサービス内のテーブルに関連する辞書を作成します�
     │   554 │ スタテンアイランド │
     │    53 │ EWR           │
     └───────┴───────────────┘
-
-    6行が返されました。経過時間：0.034秒。2.00百万行を処理し、4.00 MB（59.14百万行/秒、118.29 MB/秒）。
-    ```
+  
+    6 行がセットされました。経過時間: 0.034 秒。処理された行数2.00百万、4.00 MB (59.14百万行/s., 118.29 MB/s.)
 
     :::note
-    上記の`JOIN`クエリの出力は、`dictGetOrDefault`を使用した前のクエリと同じであることに注意してください（`Unknown`の値は含まれていない）。内部的には、ClickHouseは実際に`taxi_zone_dictionary`辞書のために`dictGet`関数を呼び出していますが、`JOIN`構文はSQL開発者にとってより馴染みのあるものです。
+    上記の`JOIN`クエリの出力は、`dictGetOrDefault`を使用した前のクエリと同じであることに注意してください（`不明`の値は含まれていません）。実際には、ClickHouseは`taxi_zone_dictionary`辞書のために`dictGet`関数を呼び出しているのですが、`JOIN`構文はSQL開発者にとってより親しみやすいです。
     :::
 
-2. このクエリは、最高のチップ金額を持つ1000件の旅行に対して行を返し、辞書の各行と内部結合を行います：
+2. このクエリは、チップ額が最も高い1000件の旅行に対して、各行を辞書と内部結合します：
     ```sql
     SELECT *
     FROM trips
@@ -499,18 +489,18 @@ ClickHouseサービス内のテーブルに関連する辞書を作成します�
     WHERE tip_amount > 0
     ORDER BY tip_amount DESC
     LIMIT 1000
-    ```
+
         :::note
-        一般的に、ClickHouseでは`SELECT *`の使用は避けるべきです。実際に必要なカラムのみを取得するべきです。しかし、例の目的のためにはこのクエリは遅くなります。
+        一般に、ClickHouseでは`SELECT *`の使用を避けるべきです。実際に必要なカラムのみを取得すべきですが、例の目的のためにこのクエリは遅くなります。
         :::
 
 </VerticalStepper>
 
 ## 次のステップ {#next-steps}
 
-以下のドキュメントでClickHouseについてもっと学びましょう：
+以下のドキュメントを使ってClickHouseについてさらに学びます：
 
-- [ClickHouseにおける主インデックスの紹介](./guides/best-practices/sparse-primary-indexes.md)：ClickHouseが空の主インデックスを使用して、クエリ中に関連データを効率的に見つける方法を学びます。
-- [外部データソースと統合する](/integrations/index.mdx)：ファイル、Kafka、PostgreSQL、データパイプラインなど、データソース統合オプションを確認します。
-- [ClickHouseでのデータの可視化](./integrations/data-visualization/index.md)：お気に入りのUI/BIツールをClickHouseに接続します。
-- [SQLリファレンス](./sql-reference/index.md)：データを変換、処理、分析するためにClickHouseで使用できるSQL関数を参照します。
+- [ClickHouseにおける主インデックスの導入](./guides/best-practices/sparse-primary-indexes.md): ClickHouseがクエリ中に関連するデータを効率的に見つけるためにスパース主インデックスをどのように使用するかを学びます。
+- [外部データソースの統合](/integrations/index.mdx): ファイル、Kafka、PostgreSQL、データパイプラインなど、データソースの統合オプションを確認します。
+- [ClickHouseでのデータの可視化](./integrations/data-visualization/index.md): お気に入りのUI/BIツールをClickHouseに接続します。
+- [SQLリファレンス](./sql-reference/index.md): データを変換、処理、分析するためにClickHouseで使用できるSQL関数をブラウズします。

@@ -1,28 +1,29 @@
 ---
-slug: /architecture/replication
-sidebar_label: 'フォールトトレランスのためのレプリケーション'
-sidebar_position: 10
-title: 'フォールトトレランスのためのレプリケーション'
-description: '五台のサーバーが構成されているアーキテクチャの例を説明するページです。二つのサーバーはデータのコピーをホストするために使用され、残りのサーバーはデータのレプリケーションを調整するために使用されます。'
+'slug': '/architecture/replication'
+'sidebar_label': '障害耐性のためのレプリケーション'
+'sidebar_position': 10
+'title': '障害耐性のためのレプリケーション'
+'description': '5台のサーバーが構成された例のアーキテクチャについてのページ。2台はデータのコピーをホストするために使用され、残りのサーバーはデータのレプリケーションを調整するために使用されます。'
 ---
 
 import Image from '@theme/IdealImage';
-import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
-import ConfigFileNote from '@site/docs/_snippets/_config-files.md';
-import KeeperConfigFileNote from '@site/docs/_snippets/_keeper-config-files.md';
+import ReplicationShardingTerminology from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_replication-sharding-terminology.md';
+import ConfigFileNote from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_config-files.md';
+import KeeperConfigFileNote from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_keeper-config-files.md';
 import ReplicationArchitecture from '@site/static/images/deployment-guides/architecture_1s_2r_3_nodes.png';
 
+
 ## 説明 {#description}
-このアーキテクチャには五台のサーバーが構成されています。二台はデータのコピーをホストするために使用され、残りの三台のサーバーはデータのレプリケーションを調整するために使用されます。この例を使って、ReplicatedMergeTreeテーブルエンジンを使用して両方のデータノードにレプリケートされるデータベースとテーブルを作成します。
+このアーキテクチャには、5台のサーバーが構成されています。2台はデータのコピーをホストするために使用され、他の3台はデータのレプリケーションをコーディネートするために使用されます。この例では、ReplicatedMergeTree テーブルエンジンを使用して、データノード間でレプリケートされるデータベースとテーブルを作成します。
 
 ## レベル: 基本 {#level-basic}
 
 <ReplicationShardingTerminology />
 
 ## 環境 {#environment}
-### アーキテクチャダイアグラム {#architecture-diagram}
+### アーキテクチャ図 {#architecture-diagram}
 
-<Image img={ReplicationArchitecture} size="md" alt="ReplicatedMergeTreeを使用した1シャード2レプリカのアーキテクチャダイアグラム" />
+<Image img={ReplicationArchitecture} size="md" alt="ReplicatedMergeTreeを使用した1シャードと2レプリカのアーキテクチャ図" />
 
 |ノード|説明|
 |----|-----------|
@@ -33,14 +34,14 @@ import ReplicationArchitecture from '@site/static/images/deployment-guides/archi
 |clickhouse-keeper-03|分散コーディネーション|
 
 :::note
-本番環境では、ClickHouse Keeperのために*専用*ホストを使用することを強く推奨します。テスト環境では、ClickHouse ServerとClickHouse Keeperを同じサーバー上で実行することは許容されます。もう一つの基本的な例である、[スケールアウト](/deployment-guides/horizontal-scaling.md)はこの方法を使用しています。この例では、KeeperをClickHouse Serverから分離することが推奨される方法を提示します。Keeperサーバーは小型で済み、ClickHouse Serverが非常に大きくなるまでは各Keeperサーバーに4GBのRAMが一般的に十分です。
+本番環境では、ClickHouse Keeper用の*専用*ホストの使用を強く推奨します。テスト環境では、ClickHouse ServerとClickHouse Keeperを同一のサーバー上で実行することが許容されます。他の基本的な例、[スケーリングアウト](/deployment-guides/horizontal-scaling.md)でもこの方法が使用されています。この例では、KeeperをClickHouse Serverから分離する推奨メソッドを示しています。Keeperサーバーはより小型で、ClickHouse Serversが非常に大きくなるまで、各Keeperサーバーに4GBのRAMが一般的に十分です。
 :::
 
 ## インストール {#install}
 
-二台のサーバー`clickhouse-01`と`clickhouse-02`にClickHouseサーバーとクライアントをインストールします。インストール方法については、[お使いのアーカイバタイプの手順](/getting-started/install/install.mdx)（.deb、.rpm、.tar.gzなど）を参照してください。
+`clickhouse-01`および`clickhouse-02`の2台のサーバーにClickHouse Serverとクライアントをインストールします。手順については、[アーカイブタイプに関する手順](/getting-started/install/install.mdx)を参照してください（.deb、.rpm、.tar.gzなど）。
 
-三台のサーバー`clickhouse-keeper-01`、`clickhouse-keeper-02`、`clickhouse-keeper-03`にClickHouse Keeperをインストールします。インストール方法については、[お使いのアーカイバタイプの手順](/getting-started/install/install.mdx)（.deb、.rpm、.tar.gzなど）を参照してください。
+`clickhouse-keeper-01`、`clickhouse-keeper-02`、`clickhouse-keeper-03`の3台のサーバーにClickHouse Keeperをインストールします。手順については、[アーカイブタイプに関する手順](/getting-started/install/install.mdx)を参照してください（.deb、.rpm、.tar.gzなど）。
 
 ## 設定ファイルの編集 {#editing-configuration-files}
 
@@ -48,14 +49,14 @@ import ReplicationArchitecture from '@site/static/images/deployment-guides/archi
 
 ## clickhouse-01の設定 {#clickhouse-01-configuration}
 
-clickhouse-01には五つの設定ファイルがあります。これらのファイルを一つのファイルに統合することもできますが、ドキュメントの明瞭さのためには、別々に見る方が簡単かもしれません。設定ファイルを読み進めると、clickhouse-01とclickhouse-02の間でほとんどの設定が同じであることがわかります。違いは強調表示されます。
+clickhouse-01には5つの設定ファイルがあります。これらのファイルを1つのファイルにまとめることもできますが、ドキュメントの明確さを保つために、別々に見る方が簡単かもしれません。設定ファイルを読み進めると、clickhouse-01とclickhouse-02の間でほとんどの設定が同じであることがわかります。違いは強調表示されます。
 
-### ネットワークおよびロギング設定 {#network-and-logging-configuration}
+### ネットワークとロギングの設定 {#network-and-logging-configuration}
 
-これらの値はお好みに応じてカスタマイズできます。この例の設定では次のことが行われます：
-- 1000Mで三回ロールオーバーするデバッグログ
-- `clickhouse-client`で接続した際に表示される名前は`cluster_1S_2R node 1`です
-- ClickHouseはポート8123と9000でIPV4ネットワーク上で待機します。
+これらの値は、お好みに応じてカスタマイズ可能です。この例の設定では、次のようになります：
+- サイズ1000Mで3回ロールオーバーするデバッグログ
+- `clickhouse-client`で接続したときに表示される名前は`cluster_1S_2R node 1`です。
+- ClickHouseは、ポート8123および9000でIPV4ネットワーク上でリッスンします。
 
 ```xml title="/etc/clickhouse-server/config.d/network-and-logging.xml on clickhouse-01"
 <clickhouse>
@@ -71,11 +72,11 @@ clickhouse-01には五つの設定ファイルがあります。これらのフ�
     <http_port>8123</http_port>
     <tcp_port>9000</tcp_port>
 </clickhouse>
-```
 
 ### マクロ設定 {#macros-configuration}
 
-マクロ`shard`と`replica`は分散DDLの複雑さを軽減します。設定した値はDDLクエリに自動的に置き換えられ、DDLを簡素化します。この設定のマクロは各ノードのシャードとレプリカ番号を指定します。この1シャード2レプリカの例では、レプリカマクロはclickhouse-01で`replica_1`、clickhouse-02で`replica_2`です。シャードマクロはclickhouse-01とclickhouse-02の両方で`1`です。
+マクロ`shard`および`replica`は、分散DDLの複雑さを軽減します。設定された値はDDLクエリに自動的に置き換えられ、DDLを簡素化します。この設定のマクロは、各ノードのシャードとレプリカ番号を指定します。
+この1シャード2レプリカの例では、レプリカマクロはclickhouse-01で`replica_1`、clickhouse-02で`replica_2`になります。シャードマクロは両方のclickhouse-01およびclickhouse-02で`1`です（シャードは1つしかありません）。
 
 ```xml title="/etc/clickhouse-server/config.d/macros.xml on clickhouse-01"
 <clickhouse>
@@ -86,16 +87,15 @@ clickhouse-01には五つの設定ファイルがあります。これらのフ�
         <cluster>cluster_1S_2R</cluster>
     </macros>
 </clickhouse>
-```
 
-### レプリケーションとシャーディング設定 {#replication-and-sharding-configuration}
+### レプリケーションとシャーディングの設定 {#replication-and-sharding-configuration}
 
-上から始めましょう：
-- XMLのremote_serversセクションは環境中の各クラスタを指定します。属性`replace=true`は、このファイルで指定されたremote_server設定でデフォルトのClickHouse設定にあるサンプルremote_serversを置き換えます。この属性がない場合、このファイルのremote serversはデフォルトのサンプルリストに追加されます。
-- この例では、`cluster_1S_2R`という名前のクラスタが一つあります。
-- クラスタ`cluster_1S_2R`には`mysecretphrase`という値の秘密が作成されます。この秘密は、環境内のすべてのremote servers間で共有され、正しいサーバーが結合されることを保証します。
-- クラスタ`cluster_1S_2R`には1つのシャードと2つのレプリカがあります。このドキュメントの最初の方にあるアーキテクチャダイアグラムを見て、以下のXML内の`shard`定義と比較してください。シャード定義には2つのレプリカがあります。各レプリカのホストとポートが指定されています。1つのレプリカは`clickhouse-01`に、他のレプリカは`clickhouse-02`に保存されています。
-- シャードの内部レプリケーションはtrueに設定されています。各シャードには、設定ファイル内にinternal_replicationパラメータを定義できます。このパラメータがtrueに設定されている場合、書き込み操作は最初の正常なレプリカを選び、データを書き込みます。
+最初から：
+- XML内の`remote_servers`セクションは、環境内の各クラスターを指定します。属性`replace=true`は、デフォルトのClickHouse設定内のサンプル`remote_servers`を、このファイルで指定された`remote_server`構成に置き換えます。この属性なしでは、このファイルのリモートサーバーはデフォルトのサンプルリストに追加されます。
+- この例には、`cluster_1S_2R`という名前のクラスターがあります。
+- クラスター`cluster_1S_2R`には、値`mysecretphrase`のための秘密が作成されます。この秘密は、環境内のすべてのリモートサーバー間で共有され、正しいサーバーが一緒に参加していることを確認します。
+- クラスター`cluster_1S_2R`には1つのシャードと2つのレプリカがあります。このドキュメントの最初にあるアーキテクチャ図を見て、以下のXMLでの`shard`定義と比較してみてください。シャード定義には2つのレプリカが含まれています。各レプリカのホストとポートが指定されています。1つのレプリカは`clickhouse-01`に保存され、もう1つのレプリカは`clickhouse-02`に保存されます。
+- シャードの内部レプリケーションはtrueに設定されています。各シャードは、設定ファイルに`internal_replication`パラメータを定義できます。このパラメータがtrueに設定されている場合、書き込み操作は最初の正常なレプリカを選択し、データを書き込みます。
 
 ```xml title="/etc/clickhouse-server/config.d/remote-servers.xml on clickhouse-01"
 <clickhouse>
@@ -116,16 +116,15 @@ clickhouse-01には五つの設定ファイルがあります。これらのフ�
         </cluster_1S_2R>
     </remote_servers>
 </clickhouse>
-```
 
 ### Keeperの使用設定 {#configuring-the-use-of-keeper}
 
-この設定ファイル`use-keeper.xml`は、レプリケーションと分散DDLのコーディネーションのためにClickHouse ServerがClickHouse Keeperを使用するように設定されています。このファイルは、ClickHouse Serverがノードclickhouse-keeper-01 - 03でポート9181を使用することを指定しています。このファイルは`clickhouse-01`と`clickhouse-02`で同じです。
+この設定ファイル`use-keeper.xml`は、ClickHouse Serverがレプリケーションと分散DDLのコーディネーションのためにClickHouse Keeperを使用するように設定されています。このファイルは、ClickHouse Serverがノードclickhouse-keeper-01 - 03のポート9181でKeeperを使用するべきであることを指定しており、ファイルは`clickhouse-01`および`clickhouse-02`で同じです。
 
 ```xml title="/etc/clickhouse-server/config.d/use-keeper.xml on clickhouse-01"
 <clickhouse>
     <zookeeper>
-        <!-- ZKノードはどこにあるか -->
+        <!-- ZKノードの場所 -->
         <node>
             <host>clickhouse-keeper-01</host>
             <port>9181</port>
@@ -140,15 +139,14 @@ clickhouse-01には五つの設定ファイルがあります。これらのフ�
         </node>
     </zookeeper>
 </clickhouse>
-```
 
 ## clickhouse-02の設定 {#clickhouse-02-configuration}
 
-設定はclickhouse-01とclickhouse-02で非常に似ているため、ここでは違いだけを指摘します。
+設定はclickhouse-01とclickhouse-02で非常に似ているため、ここでは違いのみ指摘します。
 
-### ネットワークおよびロギング設定 {#network-and-logging-configuration-1}
+### ネットワークとロギングの設定 {#network-and-logging-configuration-1}
 
-このファイルはclickhouse-01とclickhouse-02の両方で同じですが、`display_name`を除いてのことです。
+このファイルは、`display_name`の例外を除いて、clickhouse-01とclickhouse-02の両方で同じです。
 
 ```xml title="/etc/clickhouse-server/config.d/network-and-logging.xml on clickhouse-02"
 <clickhouse>
@@ -165,11 +163,10 @@ clickhouse-01には五つの設定ファイルがあります。これらのフ�
     <http_port>8123</http_port>
     <tcp_port>9000</tcp_port>
 </clickhouse>
-```
 
 ### マクロ設定 {#macros-configuration-1}
 
-マクロ設定はclickhouse-01とclickhouse-02の間で異なります。ここでは`replica`が`02`に設定されています。
+マクロ設定は、clickhouse-01とclickhouse-02で異なります。このノードでは`replica`が`02`に設定されています。
 
 ```xml title="/etc/clickhouse-server/config.d/macros.xml on clickhouse-02"
 <clickhouse>
@@ -180,11 +177,10 @@ clickhouse-01には五つの設定ファイルがあります。これらのフ�
         <cluster>cluster_1S_2R</cluster>
     </macros>
 </clickhouse>
-```
 
-### レプリケーションとシャーディング設定 {#replication-and-sharding-configuration-1}
+### レプリケーションとシャーディングの設定 {#replication-and-sharding-configuration-1}
 
-このファイルはclickhouse-01とclickhouse-02の両方で同じです。
+このファイルは、clickhouse-01とclickhouse-02の両方で同じです。
 
 ```xml title="/etc/clickhouse-server/config.d/remote-servers.xml on clickhouse-02"
 <clickhouse>
@@ -205,16 +201,15 @@ clickhouse-01には五つの設定ファイルがあります。これらのフ�
         </cluster_1S_2R>
     </remote_servers>
 </clickhouse>
-```
 
 ### Keeperの使用設定 {#configuring-the-use-of-keeper-1}
 
-このファイルはclickhouse-01とclickhouse-02の両方で同じです。
+このファイルは、clickhouse-01とclickhouse-02で同じです。
 
 ```xml title="/etc/clickhouse-server/config.d/use-keeper.xml on clickhouse-02"
 <clickhouse>
     <zookeeper>
-        <!-- ZKノードはどこにあるか -->
+        <!-- ZKノードの場所 -->
         <node>
             <host>clickhouse-keeper-01</host>
             <port>9181</port>
@@ -229,16 +224,15 @@ clickhouse-01には五つの設定ファイルがあります。これらのフ�
         </node>
     </zookeeper>
 </clickhouse>
-```
 
 ## clickhouse-keeper-01の設定 {#clickhouse-keeper-01-configuration}
 
 <KeeperConfigFileNote />
 
-ClickHouse Keeperはデータレプリケーションと分散DDLクエリ実行のためのコーディネーションシステムを提供します。ClickHouse KeeperはApache ZooKeeperと互換性があります。この設定はClickHouse Keeperをポート9181で有効にします。強調表示された行は、このKeeperのインスタンスの`server_id`が1であることを示しています。この`enable-keeper.xml`ファイルにおける三つのサーバーでの唯一の違いです。`clickhouse-keeper-02`は`server_id`が`2`に設定され、`clickhouse-keeper-03`は`server_id`が`3`に設定されます。raft設定セクションはすべてのサーバーで同じであり、以下に示すように`server_id`とraft設定内の`server`インスタンスとの関係を示します。
+ClickHouse Keeperは、データのレプリケーションと分散DDLクエリの実行のためのコーディネーションシステムを提供します。ClickHouse KeeperはApache ZooKeeperと互換性があります。この設定は、ClickHouse Keeperをポート9181で有効にします。強調表示された行は、このKeeperインスタンスの`server_id`が1であることを指定しています。この`enable-keeper.xml`ファイルの唯一の違いは、3台のサーバー間で`server_id`の設定です。`clickhouse-keeper-02`は`server_id`が`2`に設定され、`clickhouse-keeper-03`は`server_id`が`3`に設定されます。raft構成セクションは3台のサーバーで同じであり、以下に強調表示されています。
 
 :::note
-Keeperノードが何らかの理由で置き換えられるか再構築された場合、既存の`server_id`を再利用しないでください。たとえば、`server_id`が`2`のKeeperノードが再構築される場合、`4`以上の`server_id`を与えてください。
+何らかの理由でKeeperノードが置き換えられるか再構築される場合は、既存の`server_id`を再利用しないでください。たとえば、`server_id`が`2`のKeeperノードを再構築する場合は、`4`またはそれ以上のserver_idを付与してください。
 :::
 
 ```xml title="/etc/clickhouse-keeper/keeper_config.xml on clickhouse-keeper-01"
@@ -283,11 +277,10 @@ Keeperノードが何らかの理由で置き換えられるか再構築され�
         </raft_configuration>
     </keeper_server>
 </clickhouse>
-```
 
 ## clickhouse-keeper-02の設定 {#clickhouse-keeper-02-configuration}
 
-`clickhouse-keeper-01`と`clickhouse-keeper-02`の間の違いは一つの行だけです。このノードの`server_id`は`2`に設定されています。
+`clickhouse-keeper-01`と`clickhouse-keeper-02`の間には一行の違いしかありません。このノードでは`server_id`が`2`に設定されています。
 
 ```xml title="/etc/clickhouse-keeper/keeper_config.xml on clickhouse-keeper-02"
 <clickhouse>
@@ -331,11 +324,10 @@ Keeperノードが何らかの理由で置き換えられるか再構築され�
         </raft_configuration>
     </keeper_server>
 </clickhouse>
-```
 
 ## clickhouse-keeper-03の設定 {#clickhouse-keeper-03-configuration}
 
-`clickhouse-keeper-01`と`clickhouse-keeper-03`の間には一つの行の違いがあります。このノードの`server_id`は`3`に設定されています。
+`clickhouse-keeper-01`と`clickhouse-keeper-03`の間には一行の違いしかありません。このノードでは`server_id`が`3`に設定されています。
 
 ```xml title="/etc/clickhouse-keeper/keeper_config.xml on clickhouse-keeper-03"
 <clickhouse>
@@ -379,30 +371,29 @@ Keeperノードが何らかの理由で置き換えられるか再構築され�
         </raft_configuration>
     </keeper_server>
 </clickhouse>
-```
 
 ## テスト {#testing}
 
-ReplicatedMergeTreeとClickHouse Keeperを体験するために、次のコマンドを実行できます。これにより、以下のことが実行されます：
-- 上記に構成されたクラスタ上にデータベースを作成します
-- ReplicatedMergeTreeテーブルエンジンを使用してデータベース上にテーブルを作成します
-- 一つのノードでデータを挿入し、他のノードでクエリを実行します
-- 一つのClickHouseサーバーノードを停止します
-- 実行中のノードでさらにデータを挿入します
+ReplicatedMergeTreeとClickHouse Keeperを体験するために、以下のコマンドを実行して次のようにします：
+- 上記で構成されたクラスターにデータベースを作成します
+- ReplicatedMergeTreeテーブルエンジンを使用してデータベースにテーブルを作成します
+- 1つのノードにデータを挿入し、別のノードで照会します
+- 1つのClickHouseサーバーノードを停止します
+- 動作中のノードにさらにデータを挿入します
 - 停止したノードを再起動します
-- 再起動したノードでクエリを実行したときにデータが利用可能であることを確認します
+- 再起動したノードでデータが利用可能であることを確認します
 
 ### ClickHouse Keeperが実行中であることを確認する {#verify-that-clickhouse-keeper-is-running}
 
-`mntr`コマンドはClickHouse Keeperが実行中であり、三つのKeeperノード間の関係に関する状態情報を得るために使用されます。この例で使用される設定では、三つのノードが連携して動作します。ノードはリーダーを選出し、残りのノードはフォロワーとなります。`mntr`コマンドは性能に関連する情報や、特定のノードがフォロワーなのかリーダーなのかを提供します。
+`mntr`コマンドは、ClickHouse Keeperが実行中であることを確認し、3つのKeeperノードの関係に関する状態情報を取得するために使用されます。この例で使用される設定では、3つのノードが協力して作業しています。ノードはリーダーを選出し、残りのノードはフォロワーになります。`mntr`コマンドは、パフォーマンスに関連する情報や、特定のノードがフォロワーかリーダーであるかどうかを提供します。
 
 :::tip
-`mntr`コマンドをKeeperに送信するために`netcat`をインストールする必要があるかもしれません。ダウンロード情報については、[nmap.org](https://nmap.org/ncat/)のページを見てください。
+`mntr`コマンドをKeeperに送信するためには、`netcat`をインストールする必要があるかもしれません。ダウンロード情報は[nmap.org](https://nmap.org/ncat/)のページを参照してください。
 :::
 
-```bash title="clickhouse-keeper-01、clickhouse-keeper-02、およびclickhouse-keeper-03上のシェルから実行"
+```bash title="clickhouse-keeper-01、clickhouse-keeper-02、およびclickhouse-keeper-03のシェルから実行"
 echo mntr | nc localhost 9181
-```
+
 ```response title="フォロワーからの応答"
 zk_version      v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
 zk_avg_latency  0
@@ -423,7 +414,6 @@ zk_key_arena_size       4096
 zk_latest_snapshot_size 0
 zk_open_file_descriptor_count   46
 zk_max_file_descriptor_count    18446744073709551615
-```
 
 ```response title="リーダーからの応答"
 zk_version      v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
@@ -451,26 +441,24 @@ zk_followers    2
 zk_synced_followers     2
 
 # highlight-end
-```
 
-### ClickHouseクラスタの機能を確認する {#verify-clickhouse-cluster-functionality}
+### ClickHouseクラスターの機能を確認する {#verify-clickhouse-cluster-functionality}
 
-一つのシェルでノード`clickhouse-01`に`clickhouse client`で接続し、別のシェルでノード`clickhouse-02`に`clickhouse client`で接続します。
+1つのシェルで`clickhouse client`を使用してノード`clickhouse-01`に接続し、別のシェルでノード`clickhouse-02`に接続します。
 
-1. 上記に構成されたクラスタ上にデータベースを作成します
+1. 上記で構成したクラスターにデータベースを作成します
 
-```sql title="ノードclickhouse-01またはclickhouse-02のいずれかで実行"
+```sql title="ノードclickhouse-01またはclickhouse-02で実行"
 CREATE DATABASE db1 ON CLUSTER cluster_1S_2R
-```
+
 ```response
-┌─host──────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+┌─host──────────┬─port─┬─状態─┬─エラー─┬─残りのホスト数─┬─アクティブなホスト数─┐
 │ clickhouse-02 │ 9000 │      0 │       │                   1 │                0 │
 │ clickhouse-01 │ 9000 │      0 │       │                   0 │                0 │
 └───────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-```
 
-2. ReplicatedMergeTreeテーブルエンジンを使用してデータベース上にテーブルを作成します
-```sql title="ノードclickhouse-01またはclickhouse-02のいずれかで実行"
+2. ReplicatedMergeTreeテーブルエンジンを使用してデータベースにテーブルを作成します
+```sql title="ノードclickhouse-01またはclickhouse-02で実行"
 CREATE TABLE db1.table1 ON CLUSTER cluster_1S_2R
 (
     `id` UInt64,
@@ -478,38 +466,35 @@ CREATE TABLE db1.table1 ON CLUSTER cluster_1S_2R
 )
 ENGINE = ReplicatedMergeTree
 ORDER BY id
-```
+
 ```response
-┌─host──────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+┌─host──────────┬─port─┬─状態─┬─エラー─┬─残りのホスト数─┬─アクティブなホスト数─┐
 │ clickhouse-02 │ 9000 │      0 │       │                   1 │                0 │
 │ clickhouse-01 │ 9000 │      0 │       │                   0 │                0 │
 └───────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-```
-3. 一つのノードでデータを挿入し、他のノードでクエリを実行します
+
+3. 1つのノードにデータを挿入し、別のノードで照会します
 ```sql title="ノードclickhouse-01で実行"
 INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
-```
 
-4. ノード`clickhouse-02`でテーブルをクエリします
+4. ノード`clickhouse-02`でテーブルを照会します
 ```sql title="ノードclickhouse-02で実行"
 SELECT *
 FROM db1.table1
-```
+
 ```response
 ┌─id─┬─column1─┐
 │  1 │ abc     │
 └────┴─────────┘
-```
 
-5. 他のノードでデータを挿入し、ノード`clickhouse-01`でクエリを実行します
+5. 別のノードにデータを挿入し、ノード`clickhouse-01`で照会します
 ```sql title="ノードclickhouse-02で実行"
 INSERT INTO db1.table1 (id, column1) VALUES (2, 'def');
-```
 
 ```sql title="ノードclickhouse-01で実行"
 SELECT *
 FROM db1.table1
-```
+
 ```response
 ┌─id─┬─column1─┐
 │  1 │ abc     │
@@ -517,21 +502,19 @@ FROM db1.table1
 ┌─id─┬─column1─┐
 │  2 │ def     │
 └────┴─────────┘
-```
 
-6. 一つのClickHouseサーバーノードを停止します
-ノードを開始するために使用したのと同様のオペレーティングシステムコマンドを実行して、いずれかのClickHouseサーバーノードを停止します。ノードを開始する際に`systemctl start`を使った場合は、`systemctl stop`を使って停止します。
+6. 1つのClickHouseサーバーノードを停止します
+ノードを起動するのに使用したのと同様のオペレーティングシステムコマンドを実行して、1つのClickHouseサーバーノードを停止します。`systemctl start`を使用してノードを起動した場合は、`systemctl stop`を使用して停止します。
 
-7. 実行中のノードでさらにデータを挿入します
-```sql title="実行中のノードで実行"
+7. 動作中のノードにさらにデータを挿入します
+```sql title="動作中のノードで実行"
 INSERT INTO db1.table1 (id, column1) VALUES (3, 'ghi');
-```
 
 データを選択します：
-```sql title="実行中のノードで実行"
+```sql title="動作中のノードで実行"
 SELECT *
 FROM db1.table1
-```
+
 ```response
 ┌─id─┬─column1─┐
 │  1 │ abc     │
@@ -542,14 +525,13 @@ FROM db1.table1
 ┌─id─┬─column1─┐
 │  3 │ ghi     │
 └────┴─────────┘
-```
 
 8. 停止したノードを再起動し、そこからも選択します
 
 ```sql title="再起動したノードで実行"
 SELECT *
 FROM db1.table1
-```
+
 ```response
 ┌─id─┬─column1─┐
 │  1 │ abc     │
@@ -560,4 +542,3 @@ FROM db1.table1
 ┌─id─┬─column1─┐
 │  3 │ ghi     │
 └────┴─────────┘
-```

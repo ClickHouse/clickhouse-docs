@@ -1,9 +1,11 @@
 ---
-description: '単純（一次元）線形回帰を実行します。'
-sidebar_position: 183
-slug: /sql-reference/aggregate-functions/reference/simplelinearregression
-title: 'simpleLinearRegression'
+'description': 'シンプル（一次元）線形回帰を実行します。'
+'sidebar_position': 183
+'slug': '/sql-reference/aggregate-functions/reference/simplelinearregression'
+'title': 'simpleLinearRegression'
 ---
+
+
 
 
 # simpleLinearRegression
@@ -14,14 +16,14 @@ title: 'simpleLinearRegression'
 simpleLinearRegression(x, y)
 ```
 
-パラメータ：
+パラメータ:
 
 - `x` — 説明変数の値を持つカラム。
 - `y` — 従属変数の値を持つカラム。
 
-返される値：
+返される値:
 
-結果の線 `y = k*x + b` の定数 `(k, b)`。
+結果の直線の定数 `(k, b)` は `y = k*x + b` です。
 
 **例**
 

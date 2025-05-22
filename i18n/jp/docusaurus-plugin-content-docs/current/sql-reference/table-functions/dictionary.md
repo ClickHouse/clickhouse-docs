@@ -1,31 +1,34 @@
 ---
-description: 'ディクショナリデータをClickHouseテーブルとして表示します。Dictionaryエンジンと同様に動作します。'
-sidebar_label: 'dictionary'
-sidebar_position: 47
-slug: /sql-reference/table-functions/dictionary
-title: 'dictionary'
+'description': 'Displays the dictionary data as a ClickHouse table. Works the same
+  way as the Dictionary engine.'
+'sidebar_label': '辞書'
+'sidebar_position': 47
+'slug': '/sql-reference/table-functions/dictionary'
+'title': 'dictionary'
 ---
+
+
 
 
 # dictionary テーブル関数
 
-[ディクショナリ](../../sql-reference/dictionaries/index.md)データをClickHouseテーブルとして表示します。 [Dictionary](../../engines/table-engines/special/dictionary.md)エンジンと同様に動作します。
+[dictionary](../../sql-reference/dictionaries/index.md) データを ClickHouse テーブルとして表示します。 [Dictionary](../../engines/table-engines/special/dictionary.md) エンジンと同じように機能します。
 
-**構文**
+## 構文 {#syntax}
 
 ```sql
 dictionary('dict')
 ```
 
-**引数**
+## 引数 {#arguments}
 
 - `dict` — ディクショナリ名。 [String](../../sql-reference/data-types/string.md)。
 
-**戻り値**
+## 返される値 {#returned_value}
 
-ClickHouseテーブル。
+ClickHouse テーブル。
 
-**例**
+## 例 {#examples}
 
 入力テーブル `dictionary_source_table`:
 
@@ -36,7 +39,7 @@ ClickHouseテーブル。
 └────┴───────┘
 ```
 
-ディクショナリを作成する:
+ディクショナリを作成:
 
 ```sql
 CREATE DICTIONARY new_dictionary(id UInt64, value UInt64 DEFAULT 0) PRIMARY KEY id
@@ -58,6 +61,6 @@ SELECT * FROM dictionary('new_dictionary');
 └────┴───────┘
 ```
 
-**関連情報**
+## 関連 {#related}
 
-- [Dictionaryエンジン](/engines/table-engines/special/dictionary)
+- [Dictionary エンジン](/engines/table-engines/special/dictionary)

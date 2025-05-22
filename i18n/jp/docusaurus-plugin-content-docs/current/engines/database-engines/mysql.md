@@ -1,9 +1,11 @@
-description: 'リモートMySQLサーバー上のデータベースに接続し、ClickHouseとMySQL間でデータを交換するために `INSERT` および `SELECT` クエリを実行できるようにします。'
-sidebar_label: 'MySQL'
-sidebar_position: 50
-slug: /engines/database-engines/mysql
-title: 'MySQL'
-```
+---
+'description': 'Allows connecting to databases on a remote MySQL server and perform
+  `INSERT` and `SELECT` queries to exchange data between ClickHouse and MySQL.'
+'sidebar_label': 'MySQL'
+'sidebar_position': 50
+'slug': '/engines/database-engines/mysql'
+'title': 'MySQL'
+---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
@@ -12,9 +14,9 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
-リモートMySQLサーバー上のデータベースに接続し、ClickHouseとMySQL間でデータを交換するために `INSERT` および `SELECT` クエリを実行できるようにします。
+リモート MySQL サーバー上のデータベースに接続し、ClickHouse と MySQL の間でデータを交換するために `INSERT` および `SELECT` クエリを実行することができます。
 
-`MySQL` データベースエンジンは、クエリをMySQLサーバーに変換するため、`SHOW TABLES` や `SHOW CREATE TABLE` などの操作を実行できます。
+`MySQL` データベースエンジンはクエリを MySQL サーバーに変換するため、`SHOW TABLES` や `SHOW CREATE TABLE` などの操作を実行できます。
 
 以下のクエリは実行できません：
 
@@ -29,12 +31,12 @@ CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
 ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 ```
 
-**エンジンパラメーター**
+**エンジンパラメータ**
 
-- `host:port` — MySQLサーバーのアドレス。
+- `host:port` — MySQL サーバーのアドレス。
 - `database` — リモートデータベース名。
-- `user` — MySQLユーザー。
-- `password` — ユーザーパスワード。
+- `user` — MySQL ユーザー。
+- `password` — ユーザーのパスワード。
 
 ## データ型サポート {#data_types-support}
 
@@ -54,20 +56,20 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 | DATETIME, TIMESTAMP              | [DateTime](../../sql-reference/data-types/datetime.md)       |
 | BINARY                           | [FixedString](../../sql-reference/data-types/fixedstring.md) |
 
-他のすべてのMySQLデータ型は、[String](../../sql-reference/data-types/string.md) に変換されます。
+その他の MySQL データ型はすべて [String](../../sql-reference/data-types/string.md) に変換されます。
 
 [Nullable](../../sql-reference/data-types/nullable.md) がサポートされています。
 
 ## グローバル変数サポート {#global-variables-support}
 
-互換性を高めるために、MySQLスタイルでグローバル変数を `@@identifier` のように参照できます。
+互換性向上のため、MySQL スタイルでグローバル変数に `@@identifier` としてアクセスできます。
 
-これらの変数がサポートされています：
+サポートされる変数：
 - `version`
 - `max_allowed_packet`
 
 :::note
-現在、これらの変数はスタブであり、実際のものと一致していません。
+現在、これらの変数はスタブであり、何にも対応していません。
 :::
 
 例：
@@ -78,7 +80,7 @@ SELECT @@version;
 
 ## 使用例 {#examples-of-use}
 
-MySQLのテーブル：
+MySQL でのテーブル：
 
 ```text
 mysql> USE test;
@@ -102,7 +104,7 @@ mysql> select * from mysql_table;
 1 row in set (0,00 sec)
 ```
 
-ClickHouseでのデータベース、MySQLサーバーとのデータ交換：
+ClickHouse のデータベースで、MySQL サーバーとデータを交換：
 
 ```sql
 CREATE DATABASE mysql_db ENGINE = MySQL('localhost:3306', 'test', 'my_user', 'user_password') SETTINGS read_write_timeout=10000, connect_timeout=100;
@@ -153,3 +155,4 @@ SELECT * FROM mysql_db.mysql_table
 │      1 │     2 │
 │      3 │     4 │
 └────────┴───────┘
+```

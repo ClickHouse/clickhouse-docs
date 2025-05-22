@@ -1,11 +1,17 @@
 ---
-description: '数値の合計を計算し、同時に行数をカウントします。この関数は ClickHouse のクエリ最適化器によって使用されます。クエリ内に複数の `sum`、`count` または `avg` 関数がある場合、それらは単一の `sumCount` 関数に置き換えられて計算を再利用できます。この関数は明示的に使用する必要がほとんどありません。'
-sidebar_position: 196
-slug: /sql-reference/aggregate-functions/reference/sumcount
-title: 'sumCount'
+'description': 'Calculates the sum of the numbers and counts the number of rows at
+  the same time. The function is used by ClickHouse query optimizer: if there are
+  multiple `sum`, `count` or `avg` functions in a query, they can be replaced to single
+  `sumCount` function to reuse the calculations. The function is rarely needed to
+  use explicitly.'
+'sidebar_position': 196
+'slug': '/sql-reference/aggregate-functions/reference/sumcount'
+'title': 'sumCount'
 ---
 
-数値の合計を計算し、同時に行数をカウントします。この関数は ClickHouse のクエリ最適化器によって使用されます。クエリ内に複数の `sum`、`count` または `avg` 関数がある場合、それらは単一の `sumCount` 関数に置き換えられて計算を再利用できます。この関数は明示的に使用する必要がほとんどありません。
+
+
+数字の合計を計算し、同時に行数をカウントします。この関数は ClickHouse のクエリオプティマイザによって使用されます。クエリに複数の `sum`、`count` または `avg` 関数がある場合、それらは計算を再利用するために単一の `sumCount` 関数に置き換えられることがあります。この関数は明示的に使用する必要があることは稀です。
 
 **構文**
 
@@ -15,13 +21,13 @@ sumCount(x)
 
 **引数**
 
-- `x` — 入力値、[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または [Decimal](../../../sql-reference/data-types/decimal.md) でなければなりません。
+- `x` — 入力値。必ず [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md)、または [小数](../../../sql-reference/data-types/decimal.md) でなければなりません。
 
 **戻り値**
 
-- タプル `(sum, count)`。ここで、`sum` は数値の合計であり、`count` は NULL でない値を持つ行の数です。
+- タプル `(sum, count)` で、`sum` は数値の合計、`count` はNULLでない値を持つ行の数です。
 
-タイプ: [Tuple](../../../sql-reference/data-types/tuple.md)。
+タイプ: [タプル](../../../sql-reference/data-types/tuple.md)。
 
 **例**
 
@@ -42,6 +48,6 @@ SELECT sumCount(x) from s_table;
 └─────────────┘
 ```
 
-**その他の情報**
+**関連項目**
 
 - [optimize_syntax_fuse_functions](../../../operations/settings/settings.md#optimize_syntax_fuse_functions) 設定。

@@ -1,29 +1,31 @@
 ---
-description: '指定されたカラムにおける、概ね最も頻繁な値とそのカウントの配列を返します。'
-sidebar_position: 107
-slug: /sql-reference/aggregate-functions/reference/approxtopk
-title: 'approx_top_k'
+'description': 'Returns an array of the approximately most frequent values and their
+  counts in the specified column.'
+'sidebar_position': 107
+'slug': '/sql-reference/aggregate-functions/reference/approxtopk'
+'title': 'approx_top_k'
 ---
+
+
 
 
 # approx_top_k
 
-指定されたカラムにおける、概ね最も頻繁な値とそのカウントの配列を返します。結果の配列は、値自体ではなく、値の概算の頻度の降順でソートされます。
-
+指定されたカラムでの、概ね最も頻繁な値とそのカウントの配列を返します。結果の配列は、値自体ではなく、値の概算頻度の降順にソートされています。
 
 ```sql
 approx_top_k(N)(column)
 approx_top_k(N, reserved)(column)
 ```
 
-この関数は保証された結果を提供しません。特定の状況では、エラーが発生し、最も頻繁な値でない頻繁な値を返す可能性があります。
+この関数は保証された結果を提供しません。特定の状況ではエラーが発生する可能性があり、最も頻繁な値ではない頻繁な値を返す場合があります。
 
-`N < 10` の値を使用することをお勧めします。大きな `N` 値では性能が低下します。最大値は `N = 65536` です。
+`N < 10` の値を使用することを推奨します。大きな `N` 値ではパフォーマンスが低下します。最大値は `N = 65536` です。
 
-**パラメーター**
+**パラメータ**
 
-- `N` — 返却する要素の数。オプション。デフォルト値: 10。
-- `reserved` — 値のために予約されるセルの数を定義します。もし uniq(column) > reserved であれば、topK 関数の結果は概算になります。オプション。デフォルト値: N * 3。
+- `N` — 返す要素の数。オプション。デフォルト値: 10。
+- `reserved` — 値のために予約されたセルの数を定義します。もし uniq(column) > reserved の場合、topK 関数の結果は概算になります。オプション。デフォルト値: N * 3。
 
 **引数**
 

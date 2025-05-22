@@ -1,14 +1,18 @@
 ---
-description: 'システムテーブルで、`latency_log`で使用されるバケット境界に関する情報を含みます。'
-keywords: ['システムテーブル', 'latency_buckets']
-slug: /operations/system-tables/latency_buckets
-title: 'system.latency_buckets'
+'description': 'System table containing information about bucket bounds used by `latency_log`.'
+'keywords':
+- 'system table'
+- 'latency_buckets'
+'slug': '/operations/system-tables/latency_buckets'
+'title': 'system.latency_buckets'
 ---
+
+
 
 
 # system.latency_buckets
 
-[latency_log](../../operations/system-tables/latency_log.md)で使用されるバケット境界を含みます。
+[latency_log](../../operations/system-tables/latency_log.md)によって使用されるバケットの境界を含みます。
 
 **例**
 

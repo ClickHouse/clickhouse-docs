@@ -1,26 +1,29 @@
-description: 'ログエントリを含むシステムテーブル。'
-keywords: ['system table', 'text_log']
-slug: /operations/system-tables/text_log
-title: 'system.text_log'
-```
+---
+'description': 'System table containing logging entries.'
+'keywords':
+- 'system table'
+- 'text_log'
+'slug': '/operations/system-tables/text_log'
+'title': 'system.text_log'
+---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
 # system.text_log
 
 <SystemTableCloud/>
 
-ログエントリを含みます。このテーブルに書き込まれるログレベルは、`text_log.level` サーバー設定によって制限することができます。
+ログエントリを含みます。このテーブルに送信されるログレベルは、`text_log.level`サーバー設定に制限できます。
 
 カラム:
 
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
 - `event_date` (Date) — エントリの日付。
-- `event_time` (DateTime) — エントリの時刻。
-- `event_time_microseconds` (DateTime64) — マイクロ秒精度でのエントリの時刻。
+- `event_time` (DateTime) — エントリの時間。
+- `event_time_microseconds` (DateTime64) — マイクロ秒精度のエントリの時間。
 - `microseconds` (UInt32) — エントリのマイクロ秒。
-- `thread_name` (String) — ログが記録されたスレッドの名前。
+- `thread_name` (String) — ロギングが行われたスレッドの名前。
 - `thread_id` (UInt64) — OSスレッドID。
 - `level` (`Enum8`) — エントリのレベル。可能な値:
     - `1` または `'Fatal'`。
@@ -32,11 +35,11 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
     - `7` または `'Debug'`。
     - `8` または `'Trace'`。
 - `query_id` (String) — クエリのID。
-- `logger_name` (LowCardinality(String)) — ロガーの名前（例: `DDLWorker`）。
-- `message` (String) — メッセージそのもの。
+- `logger_name` (LowCardinality(String)) — ロガーの名前 (例: `DDLWorker`)。
+- `message` (String) — メッセージ自体。
 - `revision` (UInt32) — ClickHouseのリビジョン。
-- `source_file` (LowCardinality(String)) — ログが記録されたソースファイル。
-- `source_line` (UInt64) — ログが記録されたソース行。
+- `source_file` (LowCardinality(String)) — ロギングが行われたソースファイル。
+- `source_line` (UInt64) — ロギングが行われたソース行。
 - `message_format_string` (LowCardinality(String)) — メッセージをフォーマットするために使用されたフォーマット文字列。
 - `value1` (String) - メッセージをフォーマットするために使用された引数1。
 - `value2` (String) - メッセージをフォーマットするために使用された引数2。
@@ -56,7 +59,7 @@ SELECT * FROM system.text_log LIMIT 1 \G
 ```
 
 ```text
-行 1:
+Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2020-09-10
@@ -83,3 +86,4 @@ value7:
 value8:                  
 value9:                  
 value10:                  
+```

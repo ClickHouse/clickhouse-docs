@@ -1,14 +1,16 @@
 ---
-description: 'ビットマップカラムのXORを計算し、UInt64型の基数を返します。サフィックス-Stateを使用すると、ビットマップオブジェクトを返します。'
-sidebar_position: 151
-slug: /sql-reference/aggregate-functions/reference/groupbitmapxor
-title: 'groupBitmapXor'
+'description': 'ビットマップ列のXORを計算し、型UInt64の基数を返します。suffix -Stateで使用すると、ビットマップオブジェクトを返します。'
+'sidebar_position': 151
+'slug': '/sql-reference/aggregate-functions/reference/groupbitmapxor'
+'title': 'groupBitmapXor'
 ---
+
+
 
 
 # groupBitmapXor
 
-`groupBitmapXor`は、ビットマップカラムのXORを計算し、UInt64型の基数を返します。サフィックス-Stateを使用すると、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md)を返します。
+`groupBitmapXor` はビットマップカラムのXORを計算し、UInt64型の基数を返します。サフィックス -State を使用すると、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md)を返します。
 
 ```sql
 groupBitmapOr(expr)
@@ -16,11 +18,11 @@ groupBitmapOr(expr)
 
 **引数**
 
-`expr` – `AggregateFunction(groupBitmap, UInt*)`型の結果となる式。
+`expr` – `AggregateFunction(groupBitmap, UInt*)` 型の結果となる式。
 
 **返される値**
 
-`UInt64`型の値。
+`UInt64` 型の値。
 
 **例**
 

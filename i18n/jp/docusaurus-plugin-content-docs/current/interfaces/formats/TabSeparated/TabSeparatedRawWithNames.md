@@ -1,23 +1,30 @@
 ---
-alias: ['TSVRawWithNames', 'RawWithNames']
-description: 'TabSeparatedRawWithNamesフォーマットのドキュメンテーション'
-input_format: true
-keywords: ['TabSeparatedRawWithNames', 'TSVRawWithNames', 'RawWithNames']
-output_format: true
-slug: /interfaces/formats/TabSeparatedRawWithNames
-title: 'TabSeparatedRawWithNames'
+'alias':
+- 'TSVRawWithNames'
+- 'RawWithNames'
+'description': 'TabSeparatedRawWithNamesフォーマットのドキュメント'
+'input_format': true
+'keywords':
+- 'TabSeparatedRawWithNames'
+- 'TSVRawWithNames'
+- 'RawWithNames'
+'output_format': true
+'slug': '/interfaces/formats/TabSeparatedRawWithNames'
+'title': 'TabSeparatedRawWithNames'
 ---
 
-| 入力 | 出力 | エイリアス                       |
-|------|------|---------------------------------|
-| ✔    | ✔    | `TSVRawWithNames`, `RawWithNames` |
+
+
+| Input | Output | Alias                             |
+|-------|--------|-----------------------------------|
+| ✔     | ✔      | `TSVRawWithNames`, `RawWithNames` |
 
 ## 説明 {#description}
 
-[`TabSeparatedWithNames`](./TabSeparatedWithNames.md)フォーマットとは異なり、行はエスケープなしで書き込まれます。
+[`TabSeparatedWithNames`](./TabSeparatedWithNames.md) 形式とは異なり、行がエスケープなしで書き込まれます。
 
 :::note
-このフォーマットで解析する際は、各フィールドにタブや改行を含めることはできません。
+この形式で解析する際、各フィールド内ではタブや改行が許可されていません。
 :::
 
 ## 使用例 {#example-usage}

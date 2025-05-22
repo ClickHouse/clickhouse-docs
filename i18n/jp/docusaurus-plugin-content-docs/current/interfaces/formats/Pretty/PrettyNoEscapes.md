@@ -1,23 +1,24 @@
 ---
-alias: []
-description: 'PrettyNoEscapes 形式のドキュメンテーション'
-input_format: false
-keywords: ['PrettyNoEscapes']
-output_format: true
-slug: /interfaces/formats/PrettyNoEscapes
-title: 'PrettyNoEscapes'
+'alias': []
+'description': 'PrettyNoEscapes フォーマットのドキュメント'
+'input_format': false
+'keywords':
+- 'PrettyNoEscapes'
+'output_format': true
+'slug': '/interfaces/formats/PrettyNoEscapes'
+'title': 'PrettyNoEscapes'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| 入力 | 出力  | エイリアス |
+| Input | Output  | Alias |
 |-------|---------|-------|
 | ✗     | ✔       |       |
 
 ## 説明 {#description}
 
-[Pretty](/interfaces/formats/Pretty) とは異なり、[ANSIエスケープシーケンス](http://en.wikipedia.org/wiki/ANSI_escape_code)は使用されません。
-これはブラウザで形式を表示するため、および 'watch' コマンドラインユーティリティを使用するために必要です。
+[Pretty](/interfaces/formats/Pretty) と異なり、[ANSI-escape sequences](http://en.wikipedia.org/wiki/ANSI_escape_code) が使用されていません。
+これは、ブラウザでフォーマットを表示するため、また 'watch' コマンドラインユーティリティを使用するために必要です。
 
 ## 使用例 {#example-usage}
 
@@ -28,9 +29,9 @@ $ watch -n1 "clickhouse-client --query='SELECT event, value FROM system.events F
 ```
 
 :::note
-[HTTPインターフェース](../../../interfaces/http.md)は、この形式をブラウザで表示するために使用できます。
+[HTTP interface](../../../interfaces/http.md) を使用して、このフォーマットをブラウザに表示できます。
 :::
 
-## 形式設定 {#format-settings}
+## フォーマット設定 {#format-settings}
 
 <PrettyFormatSettings/>

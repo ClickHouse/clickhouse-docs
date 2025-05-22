@@ -1,31 +1,37 @@
 ---
-slug: /cloud/manage
-keywords: ['AWS', 'Cloud', 'serverless', 'management']
-title: '概観'
-hide_title: true
-description: 'クラウド管理の概観ページ'
+'slug': '/cloud/manage'
+'keywords':
+- 'AWS'
+- 'Cloud'
+- 'serverless'
+- 'management'
+'title': '概要'
+'hide_title': true
+'description': 'クラウドの管理ページの概要'
 ---
 
 
-# クラウド管理
 
-このドキュメントのセクションでは、ClickHouseクラウドの管理に必要なすべての情報を見つけることができます。このセクションには以下のページが含まれています：
 
-| ページ                                                                  | 説明                                                                                                                                                |
-|-----------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| [ClickHouse Cloud Tiers](/cloud/manage/cloud-tiers)           | 異なるクラウドティア、その特徴、および適切なものを選択するための考慮事項について説明します。                                                          |
-| [Integrations](/manage/integrations)                          | ClickHouse Cloudの組み込み統合、カスタム統合、およびサポートされていない統合を紹介します。                                                           |
-| [Backups](/cloud/manage/backups)                              | ClickHouse Cloudにおけるバックアップの仕組み、サービス用にバックアップを構成するためのオプション、バックアップからの復元方法について説明します。          |
-| [Monitoring](/integrations/prometheus)                        | Prometheusを統合してClickHouseクラウドを監視する方法について説明します。                                                                        |
-| [Billing](/cloud/manage/billing/overview)                     | ClickHouse Cloudの価格モデルについて説明し、サービスのコストに影響を与える要因について説明します。                                                 |
-| [Configuring Settings](/manage/settings)                      | ClickHouse Cloudの設定を構成する方法について説明します。                                                                                          |
-| [Replica-aware Routing](/manage/replica-aware-routing)        | ClickHouse Cloudにおけるレプリカ対応ルーティングとは何か、その制限、およびどのように構成するかを説明します。                                         |
-| [Automatic Scaling](/manage/scaling)                          | リソースのニーズに基づいてClickHouse Cloudサービスを手動または自動でスケールする方法について説明します。                                             |
-| [Service Uptime and SLA](/cloud/manage/service-uptime)        | サービス稼働時間および本番インスタンスに提供されるサービスレベル合意についての情報です。                                                            |
-| [Notifications](/cloud/notifications)                         | ClickHouse Cloudの通知を受信する方法と、それをカスタマイズする方法を示します。                                                                   |
-| [Upgrades](/manage/updates)                                   | ClickHouse Cloudにおけるアップグレードの展開方法についての情報です。                                                                                |
-| [Delete Account](/cloud/manage/close_account)                 | 必要に応じてアカウントを閉じたり削除したりする方法についての情報です。                                                                            |
-| [Programmatic API Access with Postman](/cloud/manage/postman) | Postmanを使用してClickHouse APIをテストするのに役立つガイドです。                                                                                |
-| [Troubleshooting](/faq/troubleshooting)                       | よく発生する問題のコレクションと、それらをトラブルシューティングする方法です。                                                                    |
-| [Data Transfer](./network-data-transfer.mdx)                          | ClickHouse Cloudが受信および送信されたデータをどのようにメーターするかについて詳しく学びます。                                                        |
-| [Jan 2025 Changes FAQ](./jan2025_faq/index.md)                        | 2025年1月に導入されたクラウドの変更について詳しく学びます。                                                                                      |
+# Managing Cloud
+
+このセクションでは、ClickHouseクラウドの管理に必要なすべての情報が提供されています。このセクションには以下のページが含まれています：
+
+| ページ                                                                  | 説明                                                                                                                                         |
+|-----------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| [ClickHouse Cloud Tiers](/cloud/manage/cloud-tiers)           | 様々なクラウドティア、その特徴、および適切なものを選択するための考慮事項を説明します。                                                       |
+| [Integrations](/manage/integrations)                          | ClickHouse Cloudの組み込みインテグレーション、カスタムインテグレーション、およびサポートされていないインテグレーションに関する情報。         |
+| [Backups](/cloud/manage/backups)                              | ClickHouse Cloudにおけるバックアップの動作、サービスのためにバックアップを構成するオプション、およびバックアップからの復元方法を説明します。|
+| [Monitoring](/integrations/prometheus)                        | ClickHouseクラウドを監視する方法としてPrometheusを統合する方法。                                                                                 |
+| [Billing](/cloud/manage/billing/overview)                     | ClickHouse Cloudの価格モデル、コストに影響を与える要因を説明します。                                                                           |
+| [Configuring Settings](/manage/settings)                      | ClickHouse Cloudの設定を構成する方法を説明します。                                                                                            |
+| [Replica-aware Routing](/manage/replica-aware-routing)        | ClickHouse Cloudにおけるレプリカ認識ルーティングとは何か、その制限、及び構成方法を説明します。                                                |
+| [Automatic Scaling](/manage/scaling)                          | ClickHouse Cloudサービスがリソースのニーズに応じて手動または自動でスケールアップ/ダウンする方法を説明します。                                   |
+| [Service Uptime and SLA](/cloud/manage/service-uptime)        | 本番インスタンスに提供されるサービスの稼働時間とサービスレベル契約に関する情報。                                                             |
+| [Notifications](/cloud/notifications)                         | ClickHouse Cloudの通知を受け取る方法、およびそれをカスタマイズする方法を示しています。                                                       |
+| [Upgrades](/manage/updates)                                   | ClickHouse Cloudでのアップグレードの展開方法に関する情報。                                                                                   |
+| [Delete Account](/cloud/manage/close_account)                 | 必要に応じてアカウントを閉じるまたは削除する方法に関する情報。                                                                                |
+| [Programmatic API Access with Postman](/cloud/manage/postman) | Postmanを使用してClickHouse APIをテストするためのガイド。                                                                                    |
+| [Troubleshooting](/faq/troubleshooting)                       | よくある問題のコレクションとそれらをトラブルシューティングする方法。                                                                          |
+| [Data Transfer](./network-data-transfer.mdx)                          | ClickHouse Cloudがデータ転送の入出力をどのように計測するかについての詳細。                                                               |
+| [Jan 2025 Changes FAQ](./jan2025_faq/index.md)                        | 2025年1月に導入されたクラウドに関する変更点についての詳細。                                                                                 |

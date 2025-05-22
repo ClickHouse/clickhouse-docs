@@ -1,93 +1,99 @@
 ---
-title: '概要'
-slug: /cloud/manage/jan-2025-faq/summary
-keywords: ['新しいティア', 'パッケージング', '価格 FAQ', '概要']
-description: '新しい ClickHouse Cloud ティアの概要'
+'title': '概要'
+'slug': '/cloud/manage/jan-2025-faq/summary'
+'keywords':
+- 'new tiers'
+- 'packaging'
+- 'pricing faq'
+- 'summary'
+'description': '新しいClickHouse Cloud Tierの概要'
 ---
 
-以下の FAQ は、2025 年 1 月から ClickHouse Cloud に導入される新しいティアに関する一般的な質問をまとめたものです。
 
-## ClickHouse Cloud ティアに何が変わったのか？ {#what-has-changed-with-clickhouse-cloud-tiers}
 
-ClickHouse では、顧客の変化するニーズに応じて製品を適応させることに専念しています。GAからの導入以来、過去2年間で ClickHouse Cloud は大きく進化し、顧客がクラウドサービスをどのように活用しているかについて貴重な洞察を得ました。
+The following FAQ summarizes common questions with respect to new tiers introduced in ClickHouse Cloud starting in January 2025.
 
-私たちは、ワークロードのために ClickHouse Cloud サービスのサイズとコスト効率を最適化する新機能を導入しています。これには、コンピュート-コンピュート分離、高性能なマシンタイプ、およびシングルレプリカサービスが含まれます。また、自動スケーリングと管理されたアップグレードも、よりシームレスで反応的に実行されるよう進化しています。
+## What has changed with ClickHouse Cloud tiers? {#what-has-changed-with-clickhouse-cloud-tiers}
 
-私たちは、最も要求の厳しい顧客とワークロードのニーズを満たすための新しいエンタープライズティアを追加します。これにより、業界特有のセキュリティおよびコンプライアンス機能、基盤となるハードウェアやアップグレードに対する制御の強化、先進的なディザスターリカバリ機能に重点を置きます。
+At ClickHouse, we are dedicated to adapting our products to meet the ever-changing requirements of our customers. Since its introduction in GA over the past two years, ClickHouse Cloud has evolved substantially, and we've gained invaluable insights into how our customers leverage our cloud offerings.
 
-これらの機能的な変更については、この [ブログ](https://clickhouse.com/blog/evolution-of-clickhouse-cloud-new-features-superior-performance-tailored-offerings) で詳しく読むことができます。
+We are introducing new features to optimize the sizing and cost-efficiency of ClickHouse Cloud services for your workloads. These include compute-compute separation, high-performance machine types, and single-replica services. We are also evolving automatic scaling and managed upgrades to execute in a more seamless and reactive fashion.
 
-## 何を行う必要がありますか？ {#what-action-is-required}
+We are adding a new Enterprise tier to serve the needs of the most demanding customers and workloads, with focus on industry-specific security and compliance features, even more controls over underlying hardware and upgrades, and advanced disaster recovery features.
 
-これらの変更をサポートするために、私たちは現在のティアを再構築して、進化する顧客基盤がどのように私たちの提供するサービスを使用しているかにより密接に一致させる必要があります。新しいプランを選択するために行動を起こす必要があります。
+You can read about these and other functional changes in this [blog](https://clickhouse.com/blog/evolution-of-clickhouse-cloud-new-features-superior-performance-tailored-offerings).
 
-詳細とタイムラインについては、以下に説明します。
+## What action is required? {#what-action-is-required}
 
-## ティアはどのように変わりますか？ {#how-are-tiers-changing}
+To support these changes, we are restructuring our current tiers to more closely match how our evolving customer base is using our offerings, and you need to take action to select a new plan.
 
-私たちは、有料ティアを「サービスの種類」によって単純に組織するモデルから、機能の可用性によって有料ティアを組織するモデルへ移行しています。これらの新しいティアは、Basic、Scale、Enterprise と呼ばれ、以下で詳しく説明します。
+Details and timelines for making these selections are described below.
 
-この変更は、いくつかの重要な利点をもたらします：
+## How are tiers changing? {#how-are-tiers-changing}
 
-* **一貫した機能アクセス**: ティアに存在する機能は、そのティア内のすべてのサイズのサービスで利用でき、上位のすべてのティアでも利用可能です。例えば、以前は Production サービスタイプ専用だったプライベートネットワーキングが、Scale ティアから開始されるすべてのサービスで利用可能になり、開発と本番のワークロードに合わせて展開できます。
+We are transitioning from a model that organizes paid tiers purely by "service types" which are delineated by both capacity and features (namely, these are Development, Production, and Dedicated tiers) to one that organizes paid tiers by feature availability. These new tiers are called Basic, Scale, and Enterprise and are described in more detail below.
 
-* **組織レベルの機能**: 適切なプランにより、組織レベルで構築された機能を提供できるようになり、顧客は必要なツールを適切なサービスレベルで受け取ることができます。たとえば、SSO（シングルサインオン）やCMEK（顧客管理の暗号化キー）へのアクセスは、Enterprise ティアで提供されます。
+This change brings several key benefits:
 
-* **最適化されたサポートプラン**: 新しいパッケージ構造により、サポート応答時間を有料ティアに合わせて調整し、多様な顧客基盤のニーズに効果的に応えることができます。たとえば、Enterprise ティアの顧客には、指定サポートエンジニアを提供することになります。
+* **Consistent Feature Access**: 機能は、すべてのサイズのサービスで利用可能であり、またその上のすべてのティアでも利用できます。たとえば、以前はProductionサービスタイプでのみ利用可能だったプライベートネットワーキングは、Scaleティアからすべてのサービスにアクセスできるようになるため、開発と本番のワークロードに応じてデプロイできます。
+  
+* **Organizational-Level Features**: 適切なプランとともに組織レベルで構築された機能を提供できるようになり、顧客が必要とするツールを適切なレベルのサービスで受け取れるようになります。たとえば、SSO（シングルサインオン）およびCMEK（顧客管理暗号化キー）へのアクセスはEnterpriseティアで利用可能です。
 
-以下に新しいティアの概要を示し、それらがユースケースにどのように関連するかを説明し、主要機能を概説します。
+* **Optimized Support Plans**: 新しいパッケージ構造は、サポート応答時間を有料ティアと一致させることができ、さまざまな顧客のニーズを効果的に満たします。たとえば、Enterpriseティアの顧客には専任のサポートエンジニアが提供されます。
 
-**Basic: ClickHouse の味わい**
+以下では、新しいティアの概要を提供し、ユースケースとの関連性を説明し、主要機能を概説します。
 
-* Basic ティアは、データボリュームが小さく要求が少ないワークロードを持つ組織に適した予算に優しいオプションを提供するよう設計されています。最大12GBのメモリと1TB未満のストレージを使用したシングルレプリカデプロイを実行でき、信頼性の保証が必要ない小規模なユースケースに最適です。
+**Basic: A taste of ClickHouse**
 
-**Scale: 拡張された SLA とスケーラビリティ**
+* Basicティアは、データ量が少なく、要求の厳しくないワークロードを持つ組織向けの手頃なオプションを提供するように設計されています。このティアでは、最大12GBのメモリと\< 1TBのストレージを持つ単一レプリカデプロイメントを実行可能であり、信頼性保証を必要としない小規模なユースケースに最適です。
 
-* Scale ティアは、拡張された SLA、高度なスケーラビリティ、およびセキュリティ対策を必要とするワークロードに適しています。
-* 任意のレプリケーションファクターでの無制限のコンピュートとストレージを提供し、コンピュート-コンピュート分離や自動的な垂直および水平スケーリングにアクセスできます。
-* 主な機能には以下が含まれます：
-  * プライベートネットワーキング、カスタマイズバックアップ制御、多要素認証などのサポート
-  * リソース使用を最適化するためのコンピュート-コンピュート分離
+**Scale: Enhanced SLAs and scalability**
+
+* Scaleティアは、強化されたSLA、高いスケーラビリティおよび高度なセキュリティ対策を必要とするワークロードに適しています。
+* 任意のレプリケーションファクターで無制限のコンピュートとストレージを提供し、コンピュート-コンピュート分離へのアクセス、そして自動的な垂直および水平方向のスケーリングを提供します。
+* 主な機能には次のものが含まれます：
+  * プライベートネットワーキング、カスタマイズバックアップコントロール、多要素認証などのサポート
+  * 最適化されたリソース使用のためのコンピュート-コンピュート分離
   * 変化する需要に応じた柔軟なスケーリングオプション（垂直および水平の両方）
 
-**Enterprise: ミッションクリティカルなデプロイ**
+**Enterprise: Mission-critical deployments**
 
-* Enterprise ティアは、大規模でミッションクリティカルな ClickHouse デプロイを実行する最適な場所です。
-* 最も厳格なセキュリティおよびコンプライアンス要件を持つ組織に最適で、最高レベルのパフォーマンスと信頼性を要求します。
-* 主な機能には以下が含まれます：
-  * HIPAA などの業界特有のコンプライアンス認証
-  * SSO（シングルサインオン）および CMEK（顧客管理の暗号化キー）へのセルフサービスアクセス
-  * 最小限の中断を確保するためのスケジュールされたアップグレード
+* Enterpriseティアは、大規模でミッションクリティカルなClickHouseデプロイメントを実行するための最適な場所です。
+* 最も厳格なセキュリティおよびコンプライアンスのニーズを持つ組織に最適で、最高レベルのパフォーマンスと信頼性を必要とします。
+* 主な機能には次のものが含まれます：
+  * HIPAAなどの業界特有のコンプライアンス認証
+  * SSO（シングルサインオン）およびCMEK（顧客管理暗号化キー）へのセルフサービスアクセス
+  * 最小限の中断を保証するスケジュールされたアップグレード
   * 高メモリ、高CPUオプションおよびプライベートリージョンを含むカスタム構成のサポート
 
-新しいティアについては、さらに詳しい情報を当社の [ウェブサイト](https://clickhouse.com/pricing) で確認できます。
+新しいティアの詳細は、私たちの[ウェブサイト](https://clickhouse.com/pricing)で説明されています。
 
-## 価格はどのように変わりますか？ {#how-is-pricing-changing}
+## How is pricing changing? {#how-is-pricing-changing}
 
-有料ティアを進化させることに加えて、全体的な価格構造と価格設定にも次の調整を行います：
+In addition to evolving our paid tiers, we are making the following adjustments to our overall pricing structure and price points:
 
-* **ストレージ**: ストレージの価格がTBあたりに削減され、バックアップはストレージコストに含まれなくなります。
-* **バックアップ**: バックアップは別途料金が発生し、1つのバックアップのみが必要です。
-* **コンピュート**: コンピュートコストは増加し、ティアや地域によって異なります。この増加は、異なるワークロードタイプに特化したサービスをデプロイし、最適なサイズに調整することを可能にするコンピュート-コンピュート分離やシングルレプリカサービスの導入によってバランスが取れる場合があります。
-* **データ転送**: インターネット経由や地域を越えたデータ転送に対して料金を導入します。私たちの分析に基づくと、ほとんどの顧客はこの新しい側面に基づいて毎月の請求額が大幅に増加することはないでしょう。
-* **ClickPipes**: 当社の管理対象インジェストサービスは、導入期間中は無料で提供されていましたが、これからはコンピュートと取り込まれたデータに基づいて料金がかかるようになります。私たちの分析に基づくと、ほとんどの顧客はこの新しい側面に基づいて毎月の請求額が大幅に増加することはないでしょう。
+* **Storage**: ストレージのTBあたりの価格が引き下げられ、ストレージコストにバックアップは含まれなくなります。
+* **Backups**: バックアップは別途料金が発生し、1つのバックアップのみが必須となります。
+* **Compute**: コンピュートコストは増加し、ティアとリージョンによって異なります。この増加は、コンピュート-コンピュート分離および単一レプリカサービスの導入によりバランスが取られる場合があります。
+* **Data Transfer**: インターネット経由のデータ転送および地域を越えたデータ転送に対して料金を導入します。私たちの分析に基づくと、ほとんどの顧客はこの新しい次元に基づいて月額料金が大幅に増加しないと考えています。
+* **ClickPipes**: 管理されたインジェストサービスは、導入期間中は無料で提供されていましたが、現在はコンピュートと取り込まれたデータに基づいて料金が発生します。私たちの分析に基づくと、ほとんどの顧客はこの新しい次元に基づいて月額料金が大幅に増加しないと考えています。
 
-## これらの変更はいつ発効しますか？ {#when-will-these-changes-take-effect}
+## When will these changes take effect? {#when-will-these-changes-take-effect}
 
-新規顧客に対しては変更が直ちに有効ですが、既存顧客は新しいプランに移行するために6ヶ月から1年の猶予があります。
+While changes are effective immediately for new customers, existing customers will have from 6 months to a year to transition to new plans.
 
-発効日についての詳細な内訳は以下の通りです：
+Detailed breakdown of effective dates is below:
 
-* **新規顧客**: 新しいプランは **2025年1月27日** に ClickHouse Cloud の新規顧客に対して発効します。
-* **既存の PAYG 顧客**: 従量課金制 (PAYG) の顧客は、 **2025年7月23日** までに新しいプランに移行するための6ヶ月間の猶予があります。
-* **既存のコミットメント支出顧客**: コミットメント支出契約を持つ顧客は、現在の契約の終了時に条件を再交渉できます。
-* **データ転送と ClickPipes の新しい使用次元** は、PAYG およびコミットメント支出顧客の両方に対して、この発表から8週間後の **2025年3月24日** から有効になります。
+* **New Customers**: 新しいプランは、ClickHouse Cloudの新規顧客に対して**2025年1月27日**に発効します。
+* **Existing PAYG Customers**: 従量課金制（PAYG）の顧客は、**2025年7月23日**までの6ヶ月間に新しいプランに移行する必要があります。
+* **Existing Committed Spend Customers**: コミットメント契約のある顧客は、現在の契約の終了時に条件を再交渉できます。
+* **New usage dimensions** for Data Transfer and ClickPipes are effective for both PAYG and Committed Spend customers 8 weeks following this announcement on **2025年3月24日**.
 
-## どのような行動を取るべきですか？ {#what-actions-should-you-take}
+## What actions should you take? {#what-actions-should-you-take}
 
-**従量課金制 (PAYG) 顧客** の場合は、ClickHouse Cloud コンソールで利用可能なセルフサービスオプションを通じて新しいプランに移行できます。
+If you are a **pay-as-you-go (PAYG) customer**, you can migrate to a new plan through the self-service options available in your ClickHouse Cloud console.
 
-**コミットメント支出顧客** の場合は、アカウント担当者に連絡して、カスタム移行プランとタイムラインについて話し合ってください。
+If you are a **committed spend customer**, please reach out to your account representative to discuss your custom migration plan and timeline.
 
-**サポートが必要ですか？**
-この移行に際してサポートいたします。質問がある場合や個別の支援が必要な場合は、アカウント担当者に連絡するか、サポートチームにお問い合わせください。
+**Need assistance?**
+We're here to support you through this transition. If you have any questions or need personalized help, please reach out to your account representative or contact our support team.

@@ -1,16 +1,20 @@
 ---
-description: '頻繁に実行するクエリのパフォーマンスを向上させるために、UKの不動産データセットを使用してプロジェクションの使い方を学びます。このデータセットには、イングランドとウェールズにおける不動産の価格に関するデータが含まれています。'
-sidebar_label: 'UKの不動産価格'
-sidebar_position: 1
-slug: /getting-started/example-datasets/uk-price-paid
-title: 'UKの不動産価格データセット'
+'description': 'Learn how to use projections to improve the performance of queries
+  that you run frequently using the UK property dataset, which contains data about
+  prices paid for real-estate property in England and Wales'
+'sidebar_label': 'UK Property Prices'
+'sidebar_position': 1
+'slug': '/getting-started/example-datasets/uk-price-paid'
+'title': 'The UK property prices dataset'
 ---
 
-このデータには、イングランドとウェールズの不動産に対して支払われた価格が含まれています。データは1995年以降利用可能で、未圧縮のデータセットサイズは約4 GiB（ClickHouseでは約278 MiBしか必要ありません）。
+
+
+このデータには、イングランドおよびウェールズにおける不動産物件の購入価格が含まれています。このデータは1995年から利用可能で、圧縮されていない形のデータセットサイズは約4 GiB（ClickHouseでは約278 MiBしかかかりません）。
 
 - ソース: https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads
 - フィールドの説明: https://www.gov.uk/guidance/about-the-price-paid-data
-- HM土地登記のデータを含む © Crown copyright and database right 2021。このデータは、Open Government Licence v3.0の下でライセンスされています。
+- HM土地台帳データ © Crown copyright and database right 2021. このデータはOpen Government Licence v3.0のもとでライセンスされています。
 
 ## テーブルの作成 {#create-table}
 
@@ -40,15 +44,15 @@ ORDER BY (postcode1, postcode2, addr1, addr2);
 
 ## データの前処理と挿入 {#preprocess-import-data}
 
-`url` 関数を使用してデータをClickHouseにストリーミングします。まず、一部の incoming データを前処理する必要があります。これには以下が含まれます：
-- `postcode` を2つの異なるカラム、つまり `postcode1` と `postcode2` に分割します。これはストレージとクエリに適しています。
-- `time` フィールドを日付に変換します。ここには00:00のみが含まれています。
-- 分析には必要ないため、[UUid](../../sql-reference/data-types/uuid.md) フィールドを無視します。
-- [transform](../../sql-reference/functions/other-functions.md#transform) 関数を使用して `type` と `duration` をより読みやすい `Enum` フィールドに変換します。
-- `is_new` フィールドを一文字の文字列（`Y`/`N`）から `[UInt8](/sql-reference/data-types/int-uint)` フィールドに変換します。値は0または1です。
-- 最後の2つのカラムを削除します。すべての値が同じ（つまり0）だからです。
+`url` 関数を使用して、データをClickHouseにストリーミングします。まず、一部の受信データを前処理する必要があります。これには以下が含まれます。
+- `postcode` を2つの異なるカラム - `postcode1` と `postcode2` に分割し、ストレージとクエリのために最適化します。
+- `time` フィールドを日付に変換します。これは0:00の時間だけを含むためです。
+- 分析に必要ないため、[UUid](../../sql-reference/data-types/uuid.md) フィールドを無視します。
+- `type` と `duration` をより読みやすい `Enum` フィールドに変換します。これは [transform](../../sql-reference/functions/other-functions.md#transform) 関数を使用します。
+- `is_new` フィールドを単一文字列（`Y`/`N`）から [UInt8](../../sql-reference/data-types/int-uint) フィールドに変換し、0または1にします。
+- 最後の2つのカラムは全て同じ値（0）を持つため、削除します。
 
-`url` 関数は、ウェブサーバーからClickHouseテーブルにデータをストリーミングします。以下のコマンドは `uk_price_paid` テーブルに500万行を挿入します：
+`url` 関数は、ウェブサーバーからのデータをClickHouseのテーブルにストリーミングします。次のコマンドは、`uk_price_paid` テーブルに500万行を挿入します。
 
 ```sql
 INSERT INTO uk.uk_price_paid
@@ -89,18 +93,18 @@ FROM url(
 ) SETTINGS max_http_get_redirects=10;
 ```
 
-データが挿入されるのを待ちます - ネットワーク速度によっては1、2分かかるでしょう。
+データが挿入されるのを待ちます - ネットワーク速度によっては1分か2分かかるでしょう。
 
 ## データの検証 {#validate-data}
 
-動作確認のために挿入された行数を確認しましょう：
+挿入された行数を確認して、動作が正しかったか確かめます。
 
 ```sql runnable
 SELECT count()
 FROM uk.uk_price_paid
 ```
 
-このクエリを実行した時点で、データセットには27,450,499行がありました。ClickHouseでのテーブルのストレージサイズを確認してみましょう：
+このクエリが実行された時点で、データセットには27,450,499行がありました。ClickHouseでのテーブルのストレージサイズを確認してみましょう。
 
 ```sql runnable
 SELECT formatReadableSize(total_bytes)
@@ -112,7 +116,7 @@ WHERE name = 'uk_price_paid'
 
 ## クエリの実行 {#run-queries}
 
-データを分析するためにいくつかのクエリを実行しましょう：
+データを分析するためにいくつかのクエリを実行します。
 
 ### クエリ1. 年ごとの平均価格 {#average-price}
 
@@ -141,11 +145,11 @@ GROUP BY year
 ORDER BY year
 ```
 
-2020年に住宅価格に何かが起こりました！しかし、それは驚くことではないでしょう…
+2020年に住宅価格に何かが起こりました！しかし、それはおそらく驚くべきことではないでしょう...
 
-### クエリ3. 最も高額な地域 {#most-expensive-neighborhoods}
+### クエリ3. 最も高価な地域 {#most-expensive-neighborhoods}
 
-```sql runnable
+```sql
 SELECT
     town,
     district,
@@ -162,10 +166,10 @@ ORDER BY price DESC
 LIMIT 100
 ```
 
-## プロジェクションによるクエリの高速化 {#speeding-up-queries-with-projections}
+## プロジェクションを使用したクエリの高速化 {#speeding-up-queries-with-projections}
 
-プロジェクションを使用してこれらのクエリを高速化できます。このデータセットの例については["Projections"](/data-modeling/projections)を参照してください。
+プロジェクションを使用することで、これらのクエリの速度を向上させることができます。このデータセットの例については、["Projections"](/data-modeling/projections) を参照してください。
 
 ### Playgroundでテスト {#playground}
 
-データセットは[オンラインプレイグラウンド](https://sql.clickhouse.com?query_id=TRCWH5ZETY4SEEK8ISCCAX)でも利用可能です。
+データセットは、[オンラインプレイグラウンド](https://sql.clickhouse.com?query_id=TRCWH5ZETY4SEEK8ISCCAX)でも利用可能です。

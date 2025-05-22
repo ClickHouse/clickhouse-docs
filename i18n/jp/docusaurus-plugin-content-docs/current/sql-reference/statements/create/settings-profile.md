@@ -1,14 +1,16 @@
 ---
-description: '設定プロファイルのドキュメンテーション'
-sidebar_label: '設定プロファイル'
-sidebar_position: 43
-slug: /sql-reference/statements/create/settings-profile
-title: '設定プロファイルの作成'
+'description': 'Documentation for Settings Profile'
+'sidebar_label': 'SETTINGS PROFILE'
+'sidebar_position': 43
+'slug': '/sql-reference/statements/create/settings-profile'
+'title': 'CREATE SETTINGS PROFILE'
 ---
 
-ユーザーまたはロールに割り当てることができる[設定プロファイル](../../../guides/sre/user-management/index.md#settings-profiles-management)を作成します。
 
-構文:
+
+Creates [設定プロファイル](../../../guides/sre/user-management/index.md#settings-profiles-management)を作成します。これらはユーザーまたはロールに割り当てることができます。
+
+構文：
 
 ```sql
 CREATE SETTINGS PROFILE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] 
@@ -18,16 +20,16 @@ CREATE SETTINGS PROFILE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]]
     [TO {{role1 | user1 [, role2 | user2 ...]} | NONE | ALL | ALL EXCEPT {role1 | user1 [, role2 | user2 ...]}}]
 ```
 
-`ON CLUSTER`句を使用することで、クラスター上で設定プロファイルを作成できます。詳細は[分散DDL](../../../sql-reference/distributed-ddl.md)を参照してください。
+`ON CLUSTER`句は、クラスター上で設定プロファイルを作成することを可能にします。詳細は [分散DDL](../../../sql-reference/distributed-ddl.md) を参照してください。
 
 ## 例 {#example}
 
-ユーザーを作成する:
+ユーザーを作成します：
 ```sql
 CREATE USER robin IDENTIFIED BY 'password';
 ```
 
-`max_memory_usage_profile`設定プロファイルを`max_memory_usage`設定の値と制約付きで作成し、それをユーザー`robin`に割り当てます:
+`max_memory_usage_profile`設定プロファイルを作成し、`max_memory_usage`設定の値と制約を設定し、ユーザー`robin`に割り当てます：
 
 ```sql
 CREATE

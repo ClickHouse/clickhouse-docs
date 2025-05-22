@@ -1,40 +1,46 @@
 ---
-description: 'JSON文字列をランダムな変化で摂動させます。'
-sidebar_label: 'fuzzJSON'
-sidebar_position: 75
-slug: /sql-reference/table-functions/fuzzJSON
-title: 'fuzzJSON'
+'description': 'Perturbs a JSON string with random variations.'
+'sidebar_label': 'fuzzJSON'
+'sidebar_position': 75
+'slug': '/sql-reference/table-functions/fuzzJSON'
+'title': 'fuzzJSON'
 ---
+
+
 
 
 # fuzzJSON テーブル関数
 
-JSON文字列をランダムな変化で摂動させます。
+ランダムな変化を伴う JSON 文字列を変化させます。
+
+## 構文 {#syntax}
 
 ```sql
 fuzzJSON({ named_collection [, option=value [,..]] | json_str[, random_seed] })
 ```
 
-**引数**
+## 引数 {#arguments}
 
-- `named_collection` - [NAMED COLLECTION](sql-reference/statements/create/named-collection.md)。
-- `option=value` - 名称付きコレクションのオプションパラメータとその値。
- - `json_str` (String) - JSON形式の構造化データを表すソース文字列。
- - `random_seed` (UInt64) - 安定した結果を得るための手動のランダムシード。
- - `reuse_output` (boolean) - フォズプロセスからの出力を次のフォザーの入力として再利用します。
- - `malform_output` (boolean) - JSONオブジェクトとして解析できない文字列を生成します。
- - `max_output_length` (UInt64) - 生成または摂動されたJSON文字列の最大許可長。
- - `probability` (Float64) - JSONフィールド（キーとバリューのペア）をフォズする確率。 [0, 1]の範囲内である必要があります。
- - `max_nesting_level` (UInt64) - JSONデータ内のネスト構造の最大許可深さ。
- - `max_array_size` (UInt64) - JSON配列の最大許可サイズ。
- - `max_object_size` (UInt64) - JSONオブジェクトの単一レベルでのフィールドの最大許可数。
- - `max_string_value_length` (UInt64) - 文字列値の最大長。
- - `min_key_length` (UInt64) - 最小キー長。少なくとも1である必要があります。
- - `max_key_length` (UInt64) - 最大キー長。指定された場合、`min_key_length`以上である必要があります。
+| 引数                               | 説明                                                                                       |
+|------------------------------------|---------------------------------------------------------------------------------------------|
+| `named_collection`                 | [NAMED COLLECTION](sql-reference/statements/create/named-collection.md)。                     |
+| `option=value`                     | Named collection のオプションパラメータとその値。                                         |
+| `json_str` (String)                | JSON 形式の構造化データを表すソース文字列。                                               |
+| `random_seed` (UInt64)             | 安定した結果を得るための手動ランダムシード。                                               |
+| `reuse_output` (boolean)           | フェザリングプロセスからの出力を次のフェザーの入力として再利用します。                         |
+| `malform_output` (boolean)         | JSON オブジェクトとして解析できない文字列を生成します。                                    |
+| `max_output_length` (UInt64)       | 生成されたまたは変化させた JSON 文字列の最大許可長。                                       |
+| `probability` (Float64)            | JSON フィールド（キー・バリューペア）をフェザリングする確率。範囲は [0, 1] にします。      |
+| `max_nesting_level` (UInt64)       | JSON データ内のネストされた構造の最大許可深度。                                        |
+| `max_array_size` (UInt64)          | JSON 配列の最大許可サイズ。                                                           |
+| `max_object_size` (UInt64)         | 単一レベルの JSON オブジェクト内のフィールド数の最大許可数。                             |
+| `max_string_value_length` (UInt64) | 文字列値の最大長。                                                                      |
+| `min_key_length` (UInt64)          | 最小キー長。少なくとも 1 である必要があります。                                          |
+| `max_key_length` (UInt64)          | 最大キー長。指定されている場合、`min_key_length` 以上でなければなりません。               |
 
-**返される値**
+## 戻り値 {#returned_value}
 
-摂動されたJSON文字列を含む単一のカラムを持つテーブルオブジェクト。
+変化させた JSON 文字列を含む単一列のテーブルオブジェクト。
 
 ## 使用例 {#usage-example}
 
@@ -97,4 +103,4 @@ SELECT * FROM fuzzJSON(json_nc, json_str='{"name" : "FuzzJSON"}', random_seed=13
 U"name":"FuzzJSON*"SpByjZKtr2VAyHCO"falseh
 {"name"keFuzzJSON, "g6vVO7TCIk":jTt^
 {"DBhz":YFuzzJSON5}
-```
+

@@ -1,42 +1,45 @@
-description: '作業スケジューリングのためのドキュメント'
-sidebar_label: '作業スケジューリング'
-sidebar_position: 69
-slug: /operations/workload-scheduling
-title: '作業スケジューリング'
-```
+---
+'description': 'ワークロードスケジューリングのドキュメント'
+'sidebar_label': 'ワークロードスケジューリング'
+'sidebar_position': 69
+'slug': '/operations/workload-scheduling'
+'title': 'ワークロードスケジューリング'
+---
+
+
 
 When ClickHouse execute multiple queries simultaneously, they may be using shared resources (e.g. disks). Scheduling constraints and policies can be applied to regulate how resources are utilized and shared between different workloads. For every resource a scheduling hierarchy can be configured. Hierarchy root represents a resource, while leafs are queues, holding requests that exceed resource capacity.
 
 :::note
-Currently [remote disk IO](#disk_config) and [CPU](#cpu_scheduling) can be scheduled using described method. For flexible memory limits see [Memory overcommit](settings/memory-overcommit.md)
+現在 [remote disk IO](#disk_config) と [CPU](#cpu_scheduling) は、記述された方法を使用してスケジュールすることができます。柔軟なメモリ制限については、[Memory overcommit](settings/memory-overcommit.md) を参照してください。
 :::
 
 ## ディスク構成 {#disk_config}
 
-To enable IO workload scheduling for a specific disk, you have to create read and write resources for WRITE and READ access:
+特定のディスクのIOワークロードスケジューリングを有効にするには、WRITEおよびREADアクセス用の読み取りおよび書き込みリソースを作成する必要があります。
 
 ```sql
 CREATE RESOURCE resource_name (WRITE DISK disk_name, READ DISK disk_name)
--- or
+-- または
 CREATE RESOURCE read_resource_name (WRITE DISK write_disk_name)
 CREATE RESOURCE write_resource_name (READ DISK read_disk_name)
 ```
 
-Resource could be used for any number of disks for READ or WRITE or both for READ and WRITE. There is a syntax allowing to use a resource for all the disks:
+リソースは、READまたはWRITEまたは両方のREADとWRITEに対して任意の数のディスクに使用できます。すべてのディスクにリソースを使用するための構文があります：
 
 ```sql
 CREATE RESOURCE all_io (READ ANY DISK, WRITE ANY DISK);
 ```
 
-An alternative way to express which disks are used by a resource is server's `storage_configuration`:
+リソースが使用するディスクを表現する別の方法は、サーバーの `storage_configuration` です。
 
 :::warning
-Workload scheduling using clickhouse configuration is deprecated. SQL syntax should be used instead.
+ClickHouseの構成を使用したワークロードスケジューリングは非推奨です。SQL構文を使用する必要があります。
 :::
 
-To enable IO scheduling for a specific disk, you have to specify `read_resource` and/or `write_resource` in storage configuration. It says ClickHouse what resource should be used for every read and write requests with given disk. Read and write resource can refer to the same resource name, which is useful for local SSDs or HDDs. Multiple different disks also can refer to the same resource, which is useful for remote disks: if you want to be able to allow fair division of network bandwidth between e.g. "production" and "development" workloads.
+特定のディスクのIOスケジューリングを有効にするには、ストレージ構成で `read_resource` および/または `write_resource` を指定する必要があります。これにより、指定されたディスクに対する各読み取りおよび書き込みリクエストに対して使用されるリソースがClickHouseに指示されます。読み取りおよび書き込みリソースは、ローカルSSDやHDDに便利な同じリソース名を参照できます。異なる複数のディスクも同じリソースを参照できるため、たとえば「production」と「development」ワークロード間でネットワーク帯域幅の公平な分配を可能にします。
 
-Example:
+例：
 ```xml
 <clickhouse>
     <storage_configuration>
@@ -64,15 +67,15 @@ Example:
 </clickhouse>
 ```
 
-Note that server configuration options have priority over SQL way to define resources.
+サーバー構成オプションは、リソースを定義するためのSQL方式よりも優先されます。
 
-## 作業マークアップ {#workload_markup}
+## ワークロードマークアップ {#workload_markup}
 
-Queries can be marked with setting `workload` to distinguish different workloads. If `workload` is not set, than value "default" is used. Note that you are able to specify the other value using settings profiles. Setting constraints can be used to make `workload` constant if you want all queries from the user to be marked with fixed value of `workload` setting.
+クエリは、異なるワークロードを区別するために設定 `workload` でマークできます。`workload` が設定されていない場合、値 "default" が使用されます。設定プロファイルを使用して他の値を指定することができます。設定制約を使用して、`workload` を定数にすることができ、すべてのユーザーからのクエリが固定値の `workload` 設定でマークされるようにできます。
 
-It is possible to assign a `workload` setting for background activities. Merges and mutations are using `merge_workload` and `mutation_workload` server settings correspondingly. These values can also be overridden for specific tables using `merge_workload` and `mutation_workload` merge tree settings
+バックグラウンドアクティビティのための `workload` 設定を割り当てることが可能です。マージおよび変異はそれぞれ `merge_workload` および `mutation_workload` サーバー設定を使用します。これらの値は、特定のテーブルに対して `merge_workload` および `mutation_workload` マージツリー設定で上書きすることもできます。
 
-Let's consider an example of a system with two different workloads: "production" and "development".
+「production」と「development」の2つの異なるワークロードを持つシステムの例を考えてみましょう。
 
 ```sql
 SELECT count() FROM my_table WHERE value = 42 SETTINGS workload = 'production'
@@ -81,41 +84,41 @@ SELECT count() FROM my_table WHERE value = 13 SETTINGS workload = 'development'
 
 ## リソーススケジューリング階層 {#hierarchy}
 
-From the standpoint of scheduling subsystem a resource represents a hierarchy of scheduling nodes.
+スケジューリングサブシステムの観点から、リソースはスケジューリングノードの階層を表します。
 
 ```mermaid
 graph TD
     subgraph network_read
     nr_root(("/"))
-    -->|100 concurrent requests| nr_fair("fair")
-    -->|75% bandwidth| nr_prod["prod"]
+    -->|100同時リクエスト| nr_fair("fair")
+    -->|75%帯域幅| nr_prod["prod"]
     nr_fair
-    -->|25% bandwidth| nr_dev["dev"]
+    -->|25%帯域幅| nr_dev["dev"]
     end
 
     subgraph network_write
     nw_root(("/"))
-    -->|100 concurrent requests| nw_fair("fair")
-    -->|75% bandwidth| nw_prod["prod"]
+    -->|100同時リクエスト| nw_fair("fair")
+    -->|75%帯域幅| nw_prod["prod"]
     nw_fair
-    -->|25% bandwidth| nw_dev["dev"]
+    -->|25%帯域幅| nw_dev["dev"]
     end
 ```
 
 :::warning
-Workload scheduling using clickhouse configuration is deprecated. SQL syntax should be used instead. SQL syntax creates all necessary scheduling nodes automatically and the following scheduling node description should be considered as lower level implementation details, accessible through [system.scheduler](/operations/system-tables/scheduler.md) table.
+ClickHouseの構成を使用したワークロードスケジューリングは非推奨です。SQL構文を使用する必要があります。SQL構文は必要なすべてのスケジューリングノードを自動的に作成し、次のスケジューリングノードの説明は[system.scheduler](/operations/system-tables/scheduler.md) テーブルを通じてアクセス可能な低レベルの実装詳細と見なされるべきです。
 :::
 
-**Possible node types:**
-* `inflight_limit` (constraint) - blocks if either number of concurrent in-flight requests exceeds `max_requests`, or their total cost exceeds `max_cost`; must have a single child.
-* `bandwidth_limit` (constraint) - blocks if current bandwidth exceeds `max_speed` (0 means unlimited) or burst exceeds `max_burst` (by default equals `max_speed`); must have a single child.
-* `fair` (policy) - selects the next request to serve from one of its children nodes according to max-min fairness; children nodes can specify `weight` (default is 1).
-* `priority` (policy) - selects the next request to serve from one of its children nodes according to static priorities (lower value means higher priority); children nodes can specify `priority` (default is 0).
-* `fifo` (queue) - leaf of the hierarchy capable of holding requests that exceed resource capacity.
+**可能なノードタイプ:**
+* `inflight_limit` (制約) - 同時実行中のリクエスト数が `max_requests` を超えるか、総コストが `max_cost` を超える場合にブロックされます; 単一の子ノードを持たなければなりません。
+* `bandwidth_limit` (制約) - 現在の帯域幅が `max_speed` (0は無制限を意味する) を超えるか、バーストが `max_burst` を超える場合にブロックされます (デフォルトは `max_speed` に等しい); 単一の子ノードを持たなければなりません。
+* `fair` (ポリシー) - max-minの公平性に基づいて、子ノードの1つから次のリクエストを選択します; 子ノードは `weight` を指定できます (デフォルトは1)。
+* `priority` (ポリシー) - 静的優先順位に基づいて、子ノードの1つから次のリクエストを選択します (値が低いほど優先順位が高い); 子ノードは `priority` を指定できます (デフォルトは0)。
+* `fifo` (キュー) - リソース容量を超えるリクエストを保持できる階層の葉です。
 
-To be able to use the full capacity of the underlying resource, you should use `inflight_limit`. Note that a low number of `max_requests` or `max_cost` could lead to not full resource utilization, while too high numbers could lead to empty queues inside the scheduler, which in turn will result in policies being ignored (unfairness or ignoring of priorities) in the subtree. On the other hand, if you want to protect resources from too high utilization, you should use `bandwidth_limit`. It throttles when the amount of resource consumed in `duration` seconds exceeds `max_burst + max_speed * duration` bytes. Two `bandwidth_limit` nodes on the same resource could be used to limit peak bandwidth during short intervals and average bandwidth for longer ones.
+基盤となるリソースのフルキャパシティを使用するには `inflight_limit` を使用する必要があります。`max_requests` または `max_cost` の数が少ないとリソースの利用が不完全になる可能性があり、過度に高い数はスケジューラ内で空のキューを引き起こし、それによりポリシーが無視される (不公平性や優先順位の無視) 結果となります。一方、リソースが過度に利用されるのを防ぎたい場合は `bandwidth_limit` を使用するべきです。これは、`duration` 秒間に消費されるリソースの量が `max_burst + max_speed * duration` バイトを超えたときにスロットルします。2つの `bandwidth_limit` ノードを同じリソースで使用して、短い間隔でのピーク帯域幅と長い間隔での平均帯域幅を制限することができます。
 
-The following example shows how to define IO scheduling hierarchies shown in the picture:
+以下の例は、図に示されたIOスケジューリング階層を定義する方法を示しています。
 
 ```xml
 <clickhouse>
@@ -156,15 +159,15 @@ The following example shows how to define IO scheduling hierarchies shown in the
 </clickhouse>
 ```
 
-## 作業分類子 {#workload_classifiers}
+## ワークロード分類子 {#workload_classifiers}
 
 :::warning
-Workload scheduling using clickhouse configuration is deprecated. SQL syntax should be used instead. Classifiers are created automatically when using SQL syntax.
+ClickHouseの構成を使用したワークロードスケジューリングは非推奨です。SQL構文を使用する必要があります。分類子はSQL構文を使用する際に自動的に作成されます。
 :::
 
-Workload classifiers are used to define mapping from `workload` specified by a query into leaf-queues that should be used for specific resources. At the moment, workload classification is simple: only static mapping is available.
+ワークロード分類子は、クエリで指定された `workload` から特定のリソースに使用されるべき葉キューへのマッピングを定義するために使用されます。現在、ワークロード分類はシンプルです: 静的マッピングのみが利用可能です。
 
-Example:
+例：
 ```xml
 <clickhouse>
     <workload_classifiers>
@@ -184,9 +187,9 @@ Example:
 </clickhouse>
 ```
 
-## 作業階層 {#workloads}
+## ワークロード階層 {#workloads}
 
-ClickHouse provides convenient SQL syntax to define scheduling hierarchy. All resources that were created with `CREATE RESOURCE` share the same structure of the hierarchy, but could differ in some aspects. Every workload created with `CREATE WORKLOAD` maintains a few automatically created scheduling nodes for every resource. A child workload can be created inside another parent workload. Here is the example that defines exactly the same hierarchy as XML configuration above:
+ClickHouseはスケジューリング階層を定義するための便利なSQL構文を提供します。`CREATE RESOURCE` で作成されたすべてのリソースは同じ階層の構造を共有しますが、一部の側面で異なる場合があります。 `CREATE WORKLOAD` で作成された各ワークロードは、各リソースに対して自動的に作成されたスケジューリングノードをいくつか保持します。子ワークロードは別の親ワークロード内に作成できます。以下は、上記のXML構成と全く同じ階層を定義する例です：
 
 ```sql
 CREATE RESOURCE network_write (WRITE DISK s3)
@@ -196,47 +199,47 @@ CREATE WORKLOAD development IN all
 CREATE WORKLOAD production IN all SETTINGS weight = 3
 ```
 
-The name of a leaf workload without children could be used in query settings `SETTINGS workload = 'name'`.
+子ワークロードを持たない葉のワークロードの名前をクエリ設定 `SETTINGS workload = 'name'` に使用できます。
 
-To customize workload the following settings could be used:
-* `priority` - sibling workloads are served according to static priority values (lower value means higher priority).
-* `weight` - sibling workloads having the same static priority share resources according to weights.
-* `max_io_requests` - the limit on the number of concurrent IO requests in this workload.
-* `max_bytes_inflight` - the limit on the total inflight bytes for concurrent requests in this workload.
-* `max_bytes_per_second` - the limit on byte read or write rate of this workload.
-* `max_burst_bytes` - maximum number of bytes that could be processed by the workload without being throttled (for every resource independently).
-* `max_concurrent_threads` - the limit on the number of threads for queries in this workload.
+ワークロードをカスタマイズするために使用できる設定は次のとおりです：
+* `priority` - 同じ階層のワークロードは静的優先順位値に従ってサービスされます (値が低いほど優先順位が高い)。
+* `weight` - 同じ静的優先順位を持つ兄弟ワークロードは、重み付けに従ってリソースを共有します。
+* `max_io_requests` - このワークロードの同時IOリクエストの数の制限。
+* `max_bytes_inflight` - このワークロードの同時リクエストに対する合計流入バイトの制限。
+* `max_bytes_per_second` - このワークロードのバイトの読み取りまたは書き込みレートの制限。
+* `max_burst_bytes` - ワークロードがスロットリングされずに処理できる最大バイト数 (リソースごとに独立しています)。
+* `max_concurrent_threads` - このワークロードのクエリのスレッド数に制限。
 
-All limits specified through workload settings are independent for every resource. For example workload with `max_bytes_per_second = 10485760` will have 10 MB/s bandwidth limit for every read and write resource independently. If common limit for reading and writing is required, consider using the same resource for READ and WRITE access.
+ワークロード設定を介して指定されたすべての制限は、各リソースに対して独立しています。たとえば、`max_bytes_per_second = 10485760` のワークロードは、各読み取りおよび書き込みリソースに対して10 MB/sの帯域幅制限を持ちます。読み取りと書き込みに共通の制限が必要な場合は、READとWRITEアクセスに同じリソースを使用することを検討してください。
 
-There is no way to specify different hierarchies of workloads for different resources. But there is a way to specify different workload setting value for a specific resource:
+異なるリソースに対して異なるワークロードの階層を指定する方法はありません。しかし、特定のリソースに対する異なるワークロード設定値を指定する方法はあります：
 
 ```sql
 CREATE OR REPLACE WORKLOAD all SETTINGS max_io_requests = 100, max_bytes_per_second = 1000000 FOR network_read, max_bytes_per_second = 2000000 FOR network_write
 ```
 
-Also note that workload or resource could not be dropped if it is referenced from another workload. To update a definition of a workload use `CREATE OR REPLACE WORKLOAD` query.
+また、ワークロードまたはリソースは、他のワークロードから参照されている場合は削除できません。ワークロードの定義を更新するには `CREATE OR REPLACE WORKLOAD` クエリを使用します。
 
 :::note
-Workload settings are translated into a proper set of scheduling nodes. For lower-level details, see the description of the scheduling node [types and options](#hierarchy).
+ワークロード設定は適切なスケジューリングノードのセットに変換されます。詳細については、スケジューリングノードの[タイプとオプション](#hierarchy)の説明を参照してください。
 :::
 
 ## CPUスケジューリング {#cpu_scheduling}
 
-To enable CPU scheduling for workloads create CPU resource and set a limit for the number of concurrent threads:
+ワークロードのCPUスケジューリングを有効にするには、CPUリソースを作成し、同時スレッド数の制限を設定します。
 
 ```sql
 CREATE RESOURCE cpu (MASTER THREAD, WORKER THREAD)
 CREATE WORKLOAD all SETTINGS max_concurrent_threads = 100
 ```
 
-When ClickHouse server executes many concurrent queries with [multiple threads](/operations/settings/settings.md#max_threads) and all CPU slots are in use the overload state is reached. In the overload state every released CPU slot is rescheduled to proper workload according to scheduling policies. For queries sharing the same workload, slots are allocated using round robin. For queries in separate workloads, slots are allocated according to weights, priorities, and limits specified for workloads.
+ClickHouseサーバーが多くの同時クエリを実行し、すべてのCPUスロットが使用されていると、オーバーロード状態になります。オーバーロード状態では、解放されたCPUスロットは適切なワークロードに再スケジュールされます。共通のワークロードを共有するクエリの場合、スロットはラウンドロビンを使用して割り当てられます。異なるワークロードのクエリに対しては、ワークロードに指定された重み、優先順位、および制限に従ってスロットが割り当てられます。
 
-CPU time is consumed by threads when they are not blocked and work on CPU-intensive tasks. For scheduling purpose, two kinds of threads are distinguished:
-* Master thread — the first thread that starts working on a query or background activity like a merge or a mutation.
-* Worker thread — the additional threads that master can spawn to work on CPU-intensive tasks.
+CPU時間は、スレッドがブロックされておらず、CPU集約的なタスクで作業しているときに消費されます。スケジューリングの目的で、2種類のスレッドが区別されます：
+* マスタースレッド — クエリまたはマージや変異などのバックグラウンドアクティビティで作業を開始する最初のスレッド。
+* ワーカースレッド — マスターがCPU集約的なタスクで作業するために生成できる追加のスレッド。
 
-It may be desirable to use separate resources for master and worker threads to achieve better responsiveness. A high number of worker threads can easily monopolize CPU resource when high `max_threads` query setting values are used. Then incoming queries should block and wait a CPU slot for its master thread to start execution. To avoid this the following configuration could be used:
+レスポンスを向上させるために、マスタースレッドとワーカースレッド用に別々のリソースを使用することが望ましい場合があります。高い `max_threads` クエリ設定値が使用される場合、高数のワーカースレッドはCPUリソースを独占してしまいます。この場合、入ってくるクエリはブロックされ、マスタースレッドの実行を開始するためのCPUスロットを待つ必要があります。これを回避するためには、次の構成を使用できます：
 
 ```sql
 CREATE RESOURCE worker_cpu (WORKER THREAD)
@@ -244,11 +247,11 @@ CREATE RESOURCE master_cpu (MASTER THREAD)
 CREATE WORKLOAD all SETTINGS max_concurrent_threads = 100 FOR worker_cpu, max_concurrent_threads = 1000 FOR master_cpu
 ```
 
-It will create separate limits on master and worker threads. Even if all 100 worker CPU slots are busy, new queries will not be blocked until there are available master CPU slots. They will start execution with one thread. Later if worker CPU slots became available, such queries could upscale and spawn their worker threads. On the other hand, such an approach does not bind the total number of slots to the number of CPU processors, and running too many concurrent threads will affect performance.
+これにより、マスターとワーカーのスレッドの限界が別々に設定されます。すべての100のワーカーCPUスロットがビジー状態でも、新しいクエリは利用可能なマスターCPUスロットがある限りブロックされません。それらは1つのスレッドで実行を開始します。後でワーカーCPUスロットが利用可能になれば、そのようなクエリはスケールアップしてワーカースレッドを生成できます。一方で、このアプローチは総スロット数をCPUプロセッサ数に結びつけず、あまりにも多くの同時スレッドの実行がパフォーマンスに影響します。
 
-Limiting the concurrency of master threads will not limit the number of concurrent queries. CPU slots could be released in the middle of the query execution and reacquired by other threads. For example, 4 concurrent queries with 2 concurrent master thread limit could all be executed in parallel. In this case, every query will receive 50% of a CPU processor. A separate logic should be used to limit the number of concurrent queries and it is not currently supported for workloads.
+マスタースレッドの同時実行数を制限することは、同時クエリ数を制限するわけではありません。クエリ実行の途中でCPUスロットが解放され、他のスレッドによって再取得されることがあります。たとえば、同時に2つのマスタースレッドの制限で4つの同時クエリがすべて並行して実行されることがあります。この場合、各クエリはCPUプロセッサの50%を受け取ります。同時クエリ数を制限するために、別のロジックを使用する必要があり、これは現在ワークロードに対してはサポートされていません。
 
-Separate thread concurrency limits could be used for workloads:
+ワークロードには、別々のスレッドの同時実行制限を設定できます：
 
 ```sql
 CREATE RESOURCE cpu (MASTER THREAD, WORKER THREAD)
@@ -259,37 +262,37 @@ CREATE WORKLOAD analytics IN production SETTINGS max_concurrent_threads = 60, we
 CREATE WORKLOAD ingestion IN production
 ```
 
-This configuration example provides independent CPU slot pools for admin and production. The production pool is shared between analytics and ingestion. Furthermore, if the production pool is overloaded, 9 of 10 released slots will be rescheduled to analytical queries if necessary. The ingestion queries would only receive 1 of 10 slots during overload periods. This might improve the latency of user-facing queries. Analytics has its own limit of 60 concurrent thread, always leaving at least 40 threads to support ingestion. When there is no overload, ingestion could use all 100 threads.
+この構成例は、adminとproductionに独立したCPUスロットプールを提供します。productionプールはanalyticsとingestionの間で共有されます。さらに、productionプールがオーバーロードされている場合、必要に応じて解放された10のスロットのうち9は分析クエリに再スケジュールされます。ingestionクエリは、オーバーロード期間中に1のスロットしか受け取れません。これにより、ユーザー向けクエリのレイテンシを改善できるかもしれません。Analyticsには常にingestionをサポートするために少なくとも40スレッドを残し、60の同時スレッドの制限があります。オーバーロードがないときは、ingestionはすべての100スレッドを使用できます。
 
-To exclude a query from CPU scheduling set a query setting [use_concurrency_control](/operations/settings/settings.md/#use_concurrency_control) to 0.
+クエリをCPUスケジューリングから除外するには、クエリ設定 [use_concurrency_control](/operations/settings/settings.md/#use_concurrency_control) を0に設定します。
 
-CPU scheduling is not supported for merges and mutations yet.
+マージや変異に対するCPUスケジューリングはまだサポートされていません。
 
 :::warning
-Slot scheduling provides a way to control [query concurrency](/operations/settings/settings.md#max_threads) but does not guarantee fair CPU time allocation yet. This requires further development of CPU slot preemption and will be supported later.
+スロットスケジューリングは、[クエリの同時実行](operations/settings/settings.md#max_threads)を制御する方法を提供しますが、公平なCPU時間の割り当てを保証するものではありません。これは、CPUスロットのプリエンプションのさらなる開発が必要で、後でサポートされる予定です。
 :::
 
 :::note
-Declaring CPU resource disables effect of [`concurrent_threads_soft_limit_num`](server-configuration-parameters/settings.md#concurrent_threads_soft_limit_num) and [`concurrent_threads_soft_limit_ratio_to_cores`](server-configuration-parameters/settings.md#concurrent_threads_soft_limit_ratio_to_cores) settings. Instead, workload setting `max_concurrent_threads` is used to limit the number of CPUs allocated for a specific workload. To achieve the previous behavior create only WORKER THREAD resource, set `max_concurrent_threads` for the workload `all` to the same value as `concurrent_threads_soft_limit_num` and use `workload = "all"` query setting. This configuration corresponds to [`concurrent_threads_scheduler`](server-configuration-parameters/settings.md#concurrent_threads_scheduler) setting set "fair_round_robin" value.
+CPUリソースを宣言すると、[`concurrent_threads_soft_limit_num`](server-configuration-parameters/settings.md#concurrent_threads_soft_limit_num) および [`concurrent_threads_soft_limit_ratio_to_cores`](server-configuration-parameters/settings.md#concurrent_threads_soft_limit_ratio_to_cores) 設定の効果が無効になります。その代わりに、ワークロード設定の `max_concurrent_threads` が特定のワークロードに対して割り当てられるCPUの数を制限するために使用されます。以前の動作を達成するには、WORKER THREADリソースのみを作成し、ワークロード `all` の `max_concurrent_threads` を `concurrent_threads_soft_limit_num` と同じ値に設定し、クエリ設定として `workload = "all"` を使用します。この構成は、[`concurrent_threads_scheduler`](server-configuration-parameters/settings.md#concurrent_threads_scheduler) 設定の "fair_round_robin" 値に相当します。
 :::
 
-## 作業とリソースのストレージ {#workload_entity_storage}
-Definitions of all workloads and resources in the form of `CREATE WORKLOAD` and `CREATE RESOURCE` queries are stored persistently either on disk at `workload_path` or in ZooKeeper at `workload_zookeeper_path`. ZooKeeper storage is recommended to achieve consistency between nodes. Alternatively `ON CLUSTER` clause could be used along with disk storage.
+## ワークロードとリソースストレージ {#workload_entity_storage}
+すべてのワークロードとリソースの定義は、`CREATE WORKLOAD` および `CREATE RESOURCE` クエリの形式で `workload_path` のディスク上または `workload_zookeeper_path` のZooKeeperに永続的に保存されます。ノード間の整合性を達成するためには、ZooKeeperストレージが推奨されます。代わりに、ディスクストレージと一緒に `ON CLUSTER` 句を使用することもできます。
 
-## 厳格なリソースアクセス {#strict_resource_access}
-To enforce all queries to follow resource scheduling policies there is a server setting `throw_on_unknown_workload`. If it is set to `true` then every query is required to use valid `workload` query setting, otherwise `RESOURCE_ACCESS_DENIED` exception is thrown. If it is set to `false` then such a query does not use resource scheduler, i.e. it will get unlimited access to any `RESOURCE`.
+## 厳密なリソースアクセス {#strict_resource_access}
+すべてのクエリがリソーススケジューリングポリシーに従うように強制するために、サーバー設定 `throw_on_unknown_workload` があります。これが `true` に設定されている場合、すべてのクエリは有効な `workload` クエリ設定を使用する必要があり、そうでない場合は `RESOURCE_ACCESS_DENIED` 例外がスローされます。これが `false` に設定されている場合、そのようなクエリはリソーススケジューラを使用せず、任意の `RESOURCE` に無制限にアクセスすることができます。
 
 :::note
-Do not set `throw_on_unknown_workload` to `true` unless `CREATE WORKLOAD default` is executed. It could lead to server startup issues if a query without explicit setting `workload` is executed during startup.
+`CREATE WORKLOAD default` が実行されるまで `throw_on_unknown_workload` を `true` に設定しないでください。これは、明示的に `workload` を設定しないクエリが起動時に実行されるとサーバーの起動問題を引き起こす可能性があります。
 :::
 
 ## 参照 {#see-also}
  - [system.scheduler](/operations/system-tables/scheduler.md)
  - [system.workloads](/operations/system-tables/workloads.md)
  - [system.resources](/operations/system-tables/resources.md)
- - [merge_workload](/operations/settings/merge-tree-settings.md#merge_workload) merge tree setting
- - [merge_workload](/operations/server-configuration-parameters/settings.md#merge_workload) global server setting
- - [mutation_workload](/operations/settings/merge-tree-settings.md#mutation_workload) merge tree setting
- - [mutation_workload](/operations/server-configuration-parameters/settings.md#mutation_workload) global server setting
- - [workload_path](/operations/server-configuration-parameters/settings.md#workload_path) global server setting
- - [workload_zookeeper_path](/operations/server-configuration-parameters/settings.md#workload_zookeeper_path) global server setting
+ - [merge_workload](/operations/settings/merge-tree-settings.md#merge_workload) マージツリー設定
+ - [merge_workload](/operations/server-configuration-parameters/settings.md#merge_workload) グローバルサーバー設定
+ - [mutation_workload](/operations/settings/merge-tree-settings.md#mutation_workload) マージツリー設定
+ - [mutation_workload](/operations/server-configuration-parameters/settings.md#mutation_workload) グローバルサーバー設定
+ - [workload_path](/operations/server-configuration-parameters/settings.md#workload_path) グローバルサーバー設定
+ - [workload_zookeeper_path](/operations/server-configuration-parameters/settings.md#workload_zookeeper_path) グローバルサーバー設定

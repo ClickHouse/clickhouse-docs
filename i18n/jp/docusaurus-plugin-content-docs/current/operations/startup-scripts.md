@@ -1,14 +1,17 @@
 ---
-description: 'ClickHouseにおける自動スキーマ作成およびマイグレーションのためのSQLスタートアップスクリプトの設定と使用に関するガイド'
-sidebar_label: 'スタートアップスクリプト'
-slug: /operations/startup-scripts
-title: 'スタートアップスクリプト'
+'description': 'Guide to configuring and using SQL startup scripts in ClickHouse for
+  automatic schema creation and migrations'
+'sidebar_label': 'Startup Scripts'
+'slug': '/operations/startup-scripts'
+'title': 'Startup Scripts'
 ---
+
+
 
 
 # スタートアップスクリプト
 
-ClickHouseは、サーバー設定から任意のSQLクエリを起動時に実行できます。これは、マイグレーションや自動スキーマ作成に便利です。
+ClickHouseは、スタートアップ時にサーバー構成から任意のSQLクエリを実行できます。これは、マイグレーションや自動スキーマ作成に役立ちます。
 
 ```xml
 <clickhouse>
@@ -28,10 +31,10 @@ ClickHouseは、サーバー設定から任意のSQLクエリを起動時に実�
 </clickhouse>
 ```
 
-ClickHouseは、指定された順序で`startup_scripts`内のすべてのクエリを順次実行します。もしクエリのいずれかが失敗した場合でも、次のクエリの実行は中断されません。
+ClickHouseは、指定された順序で`startup_scripts`からすべてのクエリを順次実行します。クエリのいずれかが失敗した場合でも、その後のクエリの実行は中断されません。
 
-設定内で条件付きクエリを指定できます。その場合、条件クエリが`1`または`true`の値を返すときのみ、対応するクエリが実行されます。
+設定ファイルに条件付きクエリを指定できます。この場合、条件クエリが値 `1` または `true` を返すときのみ、対応するクエリが実行されます。
 
 :::note
-条件クエリが`1`または`true`以外の任意の値を返す場合、その結果は`false`として解釈され、対応するクエリは実行されません。
+条件クエリが `1` または `true` 以外の値を返すと、その結果は `false` として解釈され、対応するクエリは実行されません。
 :::

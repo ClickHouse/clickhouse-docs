@@ -1,23 +1,32 @@
-# Install ClickHouse using tgz archives
+---
+{}
+---
 
-> すべてのLinuxディストリビューションで、`deb`または`rpm`パッケージのインストールが不可能な場合は、公式の事前コンパイルされた `tgz` アーカイブを使用することをお勧めします。
+
+
+
+# ClickHouseのtgzアーカイブを使用したインストール
+
+> `deb` または `rpm` パッケージのインストールが不可能なすべてのLinuxディストリビューションに対して、公式の事前コンパイルされた `tgz` アーカイブを使用することをお勧めします。
 
 <VerticalStepper>
 
-## Download and install latest stable version {#install-latest-stable}
+## 最新の安定版をダウンロードしてインストールする {#install-latest-stable}
 
-必要なバージョンは `curl` または `wget` を使用してリポジトリ https://packages.clickhouse.com/tgz/ からダウンロードできます。その後、ダウンロードしたアーカイブは解凍され、インストールスクリプトでインストールされるべきです。
+必要なバージョンは、https://packages.clickhouse.com/tgz/ から `curl` または `wget` を使用してダウンロードできます。
+その後、ダウンロードしたアーカイブを解凍し、インストールスクリプトを使用してインストールする必要があります。
 
-以下は最新の安定版をインストールする方法の例です。
+以下は、最新の安定版をインストールする方法の例です。
 
 :::note
 本番環境では、最新の `stable` バージョンを使用することをお勧めします。
-リリース番号はこの [GitHubページ](https://github.com/ClickHouse/ClickHouse/tags) で確認でき、ポストフィックスは `-stable` です。
+リリース番号は、この [GitHubページ](https://github.com/ClickHouse/ClickHouse/tags) で
+`-stable` の接尾辞を持つものを見つけることができます。
 :::
 
-## Get the latest ClickHouse version {#get-latest-version}
+## 最新のClickHouseバージョンを取得する {#get-latest-version}
 
-最新のClickHouseバージョンをGitHubから取得し、`LATEST_VERSION` 変数に保存します。
+GitHubから最新のClickHouseバージョンを取得し、`LATEST_VERSION` 変数に格納します。
 
 ```bash
 LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/utils/list-versions/version_date.tsv | \
@@ -25,21 +34,22 @@ LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse
 export LATEST_VERSION
 ```
 
-## Detect your system architecture {#detect-system-architecture}
+## システムアーキテクチャの検出 {#detect-system-architecture}
 
-システムアーキテクチャを検出し、それに応じてARCH変数を設定します：
+システムアーキテクチャを検出し、ARCH変数をそれに応じて設定します。
 
 ```bash
 case $(uname -m) in
   x86_64) ARCH=amd64 ;;         # Intel/AMD 64ビットプロセッサ用
   aarch64) ARCH=arm64 ;;        # ARM 64ビットプロセッサ用
-  *) echo "未知のアーキテクチャ $(uname -m)"; exit 1 ;; # アーキテクチャがサポートされていない場合は終了
+  *) echo "Unknown architecture $(uname -m)"; exit 1 ;; # サポートされていないアーキテクチャの場合は終了
 esac
 ```
 
-## Download tarballs for each ClickHouse component {#download-tarballs}
+## 各ClickHouseコンポーネントのtarボールをダウンロード {#download-tarballs}
 
-各ClickHouseコンポーネントのためにtarballをダウンロードします。ループはアーキテクチャ特有のパッケージを最初に試し、次に一般的なものにフォールバックします。
+各ClickHouseコンポーネントのtarボールをダウンロードします。ループは先にアーキテクチャ固有の 
+パッケージを試し、それが失敗した場合は一般的なものにフォールバックします。
 
 ```bash
 for PKG in clickhouse-common-static clickhouse-common-static-dbg clickhouse-server clickhouse-client clickhouse-keeper
@@ -49,7 +59,7 @@ do
 done
 ```
 
-## Extract and install packages {#extract-and-install}
+## パッケージの抽出とインストール {#extract-and-install}
 
 以下のコマンドを実行して、次のパッケージを抽出してインストールします：
 - `clickhouse-common-static`
@@ -77,7 +87,7 @@ sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
 
 ```bash
 
-# 設定付きサーバーパッケージを抽出してインストール
+# 設定付きのサーバーパッケージを抽出してインストール
 tar -xzvf "clickhouse-server-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-server-$LATEST_VERSION.tgz"
 sudo "clickhouse-server-$LATEST_VERSION/install/doinst.sh" configure

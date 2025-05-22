@@ -1,28 +1,29 @@
 ---
-description: 'プロジェクションの操作に関するドキュメンテーション'
-sidebar_label: 'プロジェクション'
-sidebar_position: 49
-slug: /sql-reference/statements/alter/projection
-title: 'プロジェクション'
+'description': 'Documentation for Manipulating Projections'
+'sidebar_label': 'PROJECTION'
+'sidebar_position': 49
+'slug': '/sql-reference/statements/alter/projection'
+'title': 'Projections'
 ---
 
-プロジェクションは、クエリの実行を最適化する形式でデータを保存します。この機能は以下の目的に役立ちます：
-- 主キーの一部でないカラムに対してクエリを実行する
-- カラムを事前に集約することで、計算と入出力 (IO) を削減する
 
-テーブルのために1つ以上のプロジェクションを定義でき、クエリ分析中にClickHouseはスキャンするデータが最も少ないプロジェクションを選択します。ユーザーが提供したクエリは変更されません。
+
+Projectionsはクエリ実行を最適化する形式でデータを格納します。この機能は次のような場合に便利です：
+- 主キーの一部ではないカラムに対してクエリを実行する場合
+- カラムを前集約することで、計算とIOの両方を削減します
+
+テーブルに1つ以上のプロジェクションを定義でき、クエリ分析の際には、ユーザーが提供したクエリを変更することなく、スキャンするデータが最も少ないプロジェクションをClickHouseが選択します。
 
 :::note ディスク使用量
 
-プロジェクションは内部的に新しい隠しテーブルを作成するため、より多くの入出力およびディスク上のスペースが必要になります。
-例：プロジェクションが異なる主キーを定義した場合、元のテーブルのすべてのデータが重複します。
+プロジェクションは内部で新しい隠しテーブルを作成します。これは、より多くのIOとディスクスペースが必要になることを意味します。例えば、プロジェクションが異なる主キーを定義している場合、元のテーブルのすべてのデータが重複します。
 :::
 
-プロジェクションが内部でどのように機能するかについてのさらなる技術的詳細は、この [ページ](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections) で確認できます。
+プロジェクションが内部でどのように機能するかについての詳細な技術情報は、この [ページ](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections) で確認できます。
 
 ## 主キーを使用しないフィルタリングの例 {#example-filtering-without-using-primary-keys}
 
-テーブルの作成:
+テーブルの作成：
 ```sql
 CREATE TABLE visits_order
 (
@@ -34,7 +35,7 @@ CREATE TABLE visits_order
 ENGINE = MergeTree()
 PRIMARY KEY user_agent
 ```
-`ALTER TABLE`を使用して、既存のテーブルにプロジェクションを追加できます：
+`ALTER TABLE` を使用して、既存のテーブルにプロジェクションを追加することができます：
 ```sql
 ALTER TABLE visits_order ADD PROJECTION user_name_projection (
 SELECT
@@ -44,7 +45,7 @@ ORDER BY user_name
 
 ALTER TABLE visits_order MATERIALIZE PROJECTION user_name_projection
 ```
-データを挿入:
+データを挿入する：
 ```sql
 INSERT INTO visits_order SELECT
     number,
@@ -54,8 +55,8 @@ INSERT INTO visits_order SELECT
 FROM numbers(1, 100);
 ```
 
-このプロジェクションによって、元のテーブルで`user_name`が`PRIMARY_KEY`として定義されていなくても、`user_name`による高速なフィルタリングが可能になります。
-クエリ実行時にClickHouseは、プロジェクションが使用される場合、処理されるデータが少なくなることを判断します。データは`user_name`で順序付けられています。
+プロジェクションを使用することで、元のテーブルで `user_name` が `PRIMARY_KEY` として定義されていなくても、`user_name` によるフィルターを高速に行うことができます。
+クエリ時にClickHouseは、データが `user_name` の順に並んでいるため、プロジェクションを使用する方が処理するデータが少なくなると判断しました。
 ```sql
 SELECT
     *
@@ -64,14 +65,14 @@ WHERE user_name='test'
 LIMIT 2
 ```
 
-プロジェクションが使用されているかどうかを確認するには、`system.query_log`テーブルをレビューできます。`projections`フィールドには使用されたプロジェクションの名前が表示され、使用されていなければ空になります：
+クエリがプロジェクションを使用しているかどうかを確認するには、`system.query_log` テーブルを確認することができます。`projections` フィールドには、使用されたプロジェクションの名前が表示されます。使用されていない場合は空になります：
 ```sql
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
-## 事前集約クエリの例 {#example-pre-aggregation-query}
+## 前集約クエリの例 {#example-pre-aggregation-query}
 
-プロジェクションを持つテーブルを作成:
+プロジェクションを使ったテーブルの作成：
 ```sql
 CREATE TABLE visits
 (
@@ -90,7 +91,7 @@ CREATE TABLE visits
 ENGINE = MergeTree()
 ORDER BY user_agent
 ```
-データを挿入:
+データを挿入する：
 ```sql
 INSERT INTO visits SELECT
     number,
@@ -107,7 +108,7 @@ INSERT INTO visits SELECT
    'IOS'
 FROM numbers(100, 500);
 ```
-最初のクエリで`GROUP BY`を使用して`user_agent`のフィールドを選択します。このクエリは、事前集約が一致しないため、定義されたプロジェクションを使用しません。
+最初のクエリでは `GROUP BY` を使用して `user_agent` フィールドを利用します。このクエリは、前集約が一致しないため、定義されたプロジェクションを使用しません。
 ```sql
 SELECT
     user_agent,
@@ -116,7 +117,7 @@ FROM visits
 GROUP BY user_agent
 ```
 
-プロジェクションを使用するには、事前集約および`GROUP BY`フィールドの一部またはすべてを選択するクエリを実行できます。
+プロジェクションを使用するには、前集約および `GROUP BY` フィールドの一部またはすべてを選択するクエリを実行します。
 ```sql
 SELECT
     user_agent
@@ -132,14 +133,14 @@ FROM visits
 GROUP BY user_agent
 ```
 
-前述のように、`system.query_log`テーブルを確認できます。`projections`フィールドには使用されたプロジェクションの名前が表示され、使用されていなければ空になります：
+前述の通り、`system.query_log` テーブルを確認することも可能です。`projections` フィールドには、使用されたプロジェクションの名前が表示されます。使用されていない場合は空になります：
 ```sql
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
-## `_part_offset`フィールドを持つ通常のプロジェクション {#normal-projection-with-part-offset-field}
+## `_part_offset` フィールドを持つ通常のプロジェクション {#normal-projection-with-part-offset-field}
 
-`_part_offset`フィールドを利用する通常のプロジェクションを持つテーブルを作成:
+`_part_offset` フィールドを利用する通常のプロジェクションを持つテーブルを作成：
 
 ```sql
 CREATE TABLE events
@@ -159,15 +160,15 @@ ENGINE = MergeTree()
 ORDER BY (event_id);
 ```
 
-サンプルデータを挿入:
+サンプルデータを挿入する：
 
 ```sql
 INSERT INTO events SELECT * FROM generateRandom() LIMIT 100000;
 ```
 
-### `_part_offset`をセカンダリインデックスとして使用 {#normal-projection-secondary-index}
+### `_part_offset` をセカンダリインデックスとして使用 {#normal-projection-secondary-index}
 
-`_part_offset`フィールドはマージや変異を通じてその値を保持し、セカンダリインデックスにとって価値があります。これをクエリで活用できます：
+`_part_offset` フィールドはマージや変異を通じてその値を保持し、セカンダリインデックスとして有用です。これをクエリで活用できます：
 
 ```sql
 SELECT
@@ -183,7 +184,7 @@ WHERE (_part, _part_offset) IN (
 
 # プロジェクションの操作
 
-以下の[プロジェクション](/engines/table-engines/mergetree-family/mergetree.md/#projections)に関する操作が可能です：
+次の操作が可能です [プロジェクション](/engines/table-engines/mergetree-family/mergetree.md/#projections):
 
 ## ADD PROJECTION {#add-projection}
 
@@ -191,20 +192,20 @@ WHERE (_part, _part_offset) IN (
 
 ## DROP PROJECTION {#drop-projection}
 
-`ALTER TABLE [db.]name [ON CLUSTER cluster] DROP PROJECTION [IF EXISTS] name` - テーブルメタデータからプロジェクションの説明を削除し、ディスクからプロジェクションファイルを削除します。これは[変異](/sql-reference/statements/alter/index.md#mutations)として実装されています。
+`ALTER TABLE [db.]name [ON CLUSTER cluster] DROP PROJECTION [IF EXISTS] name` - テーブルメタデータからプロジェクションの説明を削除し、ディスクからプロジェクションファイルを削除します。[変異](/sql-reference/statements/alter/index.md#mutations)として実装されています。
 
 ## MATERIALIZE PROJECTION {#materialize-projection}
 
-`ALTER TABLE [db.]table [ON CLUSTER cluster] MATERIALIZE PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` - クエリは`partition_name`のパーティションでプロジェクション`name`を再構築します。これは[変異](/sql-reference/statements/alter/index.md#mutations)として実装されています。
+`ALTER TABLE [db.]table [ON CLUSTER cluster] MATERIALIZE PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` - クエリは `partition_name` 内のプロジェクション `name` を再構築します。[変異](/sql-reference/statements/alter/index.md#mutations)として実装されています。
 
 ## CLEAR PROJECTION {#clear-projection}
 
-`ALTER TABLE [db.]table [ON CLUSTER cluster] CLEAR PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` - 説明を削除せずにディスクからプロジェクションファイルを削除します。これは[変異](/sql-reference/statements/alter/index.md#mutations)として実装されています。
+`ALTER TABLE [db.]table [ON CLUSTER cluster] CLEAR PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` - 説明を削除することなくディスクからプロジェクションファイルを削除します。[変異](/sql-reference/statements/alter/index.md#mutations)として実装されています。
 
-コマンド`ADD`、`DROP`、および`CLEAR`は、メタデータを変更するか、ファイルを削除するだけで軽量です。
+コマンド `ADD`、`DROP` および `CLEAR` は、メタデータを変更するか、ファイルを削除するだけの軽量です。
 
-これらはレプリケート可能で、ClickHouse KeeperやZooKeeperを介してプロジェクションメタデータを同期します。
+また、これらはレプリケートされ、ClickHouse Keeper または ZooKeeper を介してプロジェクションメタデータが同期されます。
 
 :::note
-プロジェクションの操作は[`*MergeTree`](/engines/table-engines/mergetree-family/mergetree.md)エンジン（[レプリケート](/engines/table-engines/mergetree-family/replication.md)バリアントを含む）を持つテーブルに対してのみサポートされています。
+プロジェクションの操作は、[`*MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) エンジン（[レプリケーション](/engines/table-engines/mergetree-family/replication.md) バリアントを含む）を持つテーブルに対してのみサポートされています。
 :::

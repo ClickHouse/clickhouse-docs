@@ -1,9 +1,17 @@
 ---
-title: 'JSONスキーマの設計'
-slug: /integrations/data-formats/json/schema
-description: 'JSONスキーマを最適に設計する方法'
-keywords: ['json', 'clickhouse', 'inserting', 'loading', 'formats', 'schema', 'structured', 'semi-structured']
-score: 20
+'title': 'JSONスキーマの設計'
+'slug': '/integrations/data-formats/json/schema'
+'description': 'JSONスキーマを最適に設計する方法'
+'keywords':
+- 'json'
+- 'clickhouse'
+- 'inserting'
+- 'loading'
+- 'formats'
+- 'schema'
+- 'structured'
+- 'semi-structured'
+'score': 20
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
@@ -12,23 +20,25 @@ import json_column_per_type from '@site/static/images/integrations/data-ingestio
 import json_offsets from '@site/static/images/integrations/data-ingestion/data-formats/json_offsets.png';
 import shared_json_column from '@site/static/images/integrations/data-ingestion/data-formats/json_shared_column.png';
 
+
+
 # スキーマの設計
 
-While [schema inference](/integrations/data-formats/json/inference) can be used to establish an initial schema for JSON data and query JSON data files in place, e.g., in S3, users should aim to establish an optimized versioned schema for their data. We discuss the recommended approach for modeling JSON structures below.
-## 静的 vs 動的 JSON {#static-vs-dynamic-json}
+[スキーマ推論](/integrations/data-formats/json/inference)を使用して、JSONデータの初期スキーマを確立し、S3などでJSONデータファイルをクエリすることができますが、ユーザーはデータに対して最適化されたバージョン管理されたスキーマを確立することを目指すべきです。以下に、JSON構造のモデリングに推奨されるアプローチを示します。
+## 静的JSONと動的JSON {#static-vs-dynamic-json}
 
-The principal task on defining a schema for JSON is to determine the appropriate type for each key's value. We recommended users apply the following rules recursively on each key in the JSON hierarchy to determine the appropriate type for each key.
+JSONのスキーマを定義する際の主なタスクは、各キーの値に適切な型を決定することです。ユーザーには、JSON階層内の各キーに対して以下のルールを再帰的に適用して、各キーの適切な型を決定することを推奨します。
 
-1. **プリミティブ型** - If the key's value is a primitive type, irrespective of whether it is part of a sub-object or on the root, ensure you select its type according to general schema [design best practices](/data-modeling/schema-design) and [type optimization rules](/data-modeling/schema-design#optimizing-types). Arrays of primitives, such as `phone_numbers` below, can be modeled as `Array(<type>)` e.g., `Array(String)`.
-2. **静的 vs 動的** - If the key's value is a complex object i.e. either an object or an array of objects, establish whether it is subject to change. Objects that rarely have new keys, where the addition of a new key can be predicted and handled with a schema change via [`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column), can be considered **静的**. This includes objects where only a subset of the keys may be provided on some JSON documents. Objects where new keys are added frequently and/or are not predictable should be considered **動的**. **The exception here is structures with hundreds or thousands of sub keys which can be considered dynamic for convenience purposes**. 
+1. **プリミティブ型** - キーの値がプリミティブ型である場合、サブオブジェクトの一部であるかルート上にあるかに関係なく、一般的なスキーマの[設計ベストプラクティス](/data-modeling/schema-design)および[type optimization rules](/data-modeling/schema-design#optimizing-types)に従ってその型を選択してください。以下の`phone_numbers`のようなプリミティブの配列は、`Array(<type>)`としてモデル化できます。例えば、`Array(String)`。
+2. **静的 vs 動的** - キーの値が複雑なオブジェクト（すなわち、オブジェクトまたはオブジェクトの配列）である場合、そのオブジェクトが変化する可能性があるかどうかを決定してください。新しいキーが稀に追加されるオブジェクトでは、新しいキーの追加が予測可能であり、[`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column)を介したスキーマ変更で対処できる場合、これらは**静的**と見なされます。これは、いくつかのJSONドキュメントに提供されるのはキーのサブセットのみであるオブジェクトを含みます。新しいキーが頻繁に追加されるオブジェクトや予測不可能な場合は、**動的**と見なすべきです。**ここでの例外は、数百または数千のサブキーを持つ構造であり、便利さのために動的と見なすことができます**。
 
-To establish whether a value is **静的** or **動的**, see the relevant sections [**Handling static objects**](/integrations/data-formats/json/schema#handling-static-structures) and [**Handling dynamic objects**](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures) below.
+値が**静的**か**動的**かを確認するには、以下の関連セクション[**静的オブジェクトの取り扱い**](/integrations/data-formats/json/schema#handling-static-structures)および[**動的オブジェクトの取り扱い**](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures)を参照してください。
 
 <p></p>
 
-**重要:** The above rules should be applied recursively. If a key's value is determined to be dynamic, no further evaluation is required and the guidelines in [**Handling dynamic objects**](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures) can be followed. If the object is static, continue to assess the subkeys until either key values are primitive or dynamic keys are encountered.
+**重要:** 上記のルールは再帰的に適用する必要があります。キーの値が動的であると判断された場合、さらなる評価は必要なく、[**動的オブジェクトの取り扱い**](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures)のガイドラインに従うことができます。オブジェクトが静的な場合は、サブキーを評価し続け、キーの値がプリミティブであるか動的キーが見つかるまで続けます。
 
-To illustrate these rules, we use the following JSON example representing a person:
+これらのルールを示すために、以下のJSON例を使用して人格を表現します:
 
 ```json
 {
@@ -57,42 +67,43 @@ To illustrate these rules, we use the following JSON example representing a pers
     "name": "ClickHouse",
     "catchPhrase": "The real-time data warehouse for analytics",
     "labels": {
-      "type": "データベースシステム",
+      "type": "database systems",
       "founded": "2021"
     }
   },
   "dob": "2007-03-31",
   "tags": {
-    "hobby": "データベース",
+    "hobby": "Databases",
     "holidays": [
       {
         "year": 2024,
-        "location": "アゾレス、ポルトガル"
+        "location": "Azores, Portugal"
       }
     ],
     "car": {
-      "model": "テスラ",
+      "model": "Tesla",
       "year": 2023
     }
   }
 }
 ```
 
-Applying these rules:
+これらのルールを適用すると:
 
-- The root keys `name`, `username`, `email`, `website` can be represented as type `String`. The column `phone_numbers` is an Array primitive of type `Array(String)`, with `dob` and `id` type `Date` and `UInt32` respectively.
-- New keys will not be added to the `address` object (only new address objects), and it can thus be considered **静的**. If we recurse, all of the sub-columns can be considered primitives (and type `String`) except `geo`. This is also a static structure with two `Float32` columns, `lat` and `lon`.
-- The `tags` column is **動的**. We assume new arbitrary tags can be added to this object of any type and structure.
-- The `company` object is **静的** and will always contain at most the 3 keys specified. The subkeys `name` and `catchPhrase` are of type `String`. The key `labels` is **動的**. We assume new arbitrary tags can be added to this object. Values will always be key-value pairs of type string.
+- ルートキー`name`、`username`、`email`、`website`はタイプ`String`として表現できます。カラム`phone_numbers`は型`Array(String)`のプリミティブの配列で、`dob`と`id`はそれぞれタイプ`Date`と`UInt32`です。
+- `address`オブジェクトに新しいキーが追加されることはなく（新しい住所オブジェクトのみ）、したがってそれは**静的**と見なされます。再帰処理を続けると、すべてのサブカラムはプリミティブ（タイプ`String`）と見なすことができますが、`geo`を除く。これもまた、２つの`Float32`カラム（`lat`と`lon`）を持つ静的構造です。
+- `tags`カラムは**動的**です。このオブジェクトに新しい任意のタグが追加されることを想定します。
+- `company`オブジェクトは**静的**で、常に指定された3つのキーしか含まれません。サブキー`name`と`catchPhrase`は`String`タイプです。キー`labels`は**動的**です。このオブジェクトに新しい任意のタグが追加されることを想定しています。値は常に文字列タイプのキーと値のペアになります。
 
 :::note
-Structures with hundreds or thousands of static keys can be considered dynamic, as it is rarely realistic to statically declare the columns for these. However, where possible [skip paths](#using-type-hints-and-skipping-paths) which are not needed to save both storage and inference overhead.
+数百または数千の静的キーを持つ構造は動的と見なすことができます。これは、これらに対して静的にカラムを宣言することは現実的ではありません。ただし、可能であれば、ストレージと推論のオーバーヘッドを節約するために[スキップパス](#using-type-hints-and-skipping-paths)を使用してください。
 :::
-## 静的構造体の取り扱い {#handling-static-structures}
 
-We recommend static structures are handled using named tuples i.e. `Tuple`. Arrays of objects can be held using arrays of tuples i.e. `Array(Tuple)`. Within tuples themselves, columns and their respective types should be defined using the same rules. This can result in nested Tuples to represent nested objects as shown below.
+## 静的な構造の取り扱い {#handling-static-structures}
 
-To illustrate this, we use the earlier JSON person example, omitting the dynamic objects:
+静的な構造は、名前付きタプル、すなわち`Tuple`を使用して処理することを推奨します。オブジェクトの配列は、タプルの配列、すなわち`Array(Tuple)`を使用して保持できます。タプル内でも、カラムとそのそれぞれの型は同じルールを使用して定義する必要があります。これにより、以下に示すようにネストされたオブジェクトを表すためのネストされたタプルが作成される可能性があります。
+
+これを説明するために、動的オブジェクトを省略した先のJSON人物例を使用します:
 
 ```json
 {
@@ -103,6 +114,7 @@ To illustrate this, we use the earlier JSON person example, omitting the dynamic
   "address": [
     {
       "street": "Victor Plains",
+      "suite": "Suite 879",
       "city": "Wisokyburgh",
       "zipcode": "90566-7771",
       "geo": {
@@ -124,7 +136,7 @@ To illustrate this, we use the earlier JSON person example, omitting the dynamic
 }
 ```
 
-The schema for this table is shown below:
+このテーブルのスキーマは以下のようになります:
 
 ```sql
 CREATE TABLE people
@@ -143,16 +155,16 @@ ENGINE = MergeTree
 ORDER BY username
 ```
 
-Note how the `company` column is defined as a `Tuple(catchPhrase String, name String)`. The `address` key uses an `Array(Tuple)`, with a nested `Tuple` to represent the `geo` column.
+`company`カラムが`Tuple(catchPhrase String, name String)`として定義されていることに注目してください。`address`キーは`Array(Tuple)`を使用し、`geo`カラムを表現するためにネストされた`Tuple`を使用します。
 
-JSON can be inserted into this table in its current structure:
+現在の構造のJSONをこのテーブルに挿入できます:
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
 ```
 
-In our example above, we have minimal data, but as shown below, we can query the tuple columns by their period-delimited names.
+上記の例では、データが最小限ですが、以下に示すように、タプルカラムをその期間区切り名でクエリできます。
 
 ```sql
 SELECT
@@ -165,7 +177,7 @@ FROM people
 └───────────────────┴──────────────┘
 ```
 
-Note how the `address.street` column is returned as an `Array`. To query a specific object inside an array by position, the array offset should be specified after the column name. For example, to access the street from the first address:
+`address.street`カラムが`Array`として返される点に注意してください。配列内の特定のオブジェクトに位置でアクセスするには、カラム名の後に配列オフセットを指定する必要があります。たとえば、最初の住所から通りにアクセスするには:
 
 ```sql
 SELECT address.street[1] AS street
@@ -178,7 +190,7 @@ FROM people
 1 row in set. Elapsed: 0.001 sec.
 ```
 
-Sub columns can also be used in ordering keys from [`24.12`](https://clickhouse.com/blog/clickhouse-release-24-12#json-subcolumns-as-table-primary-key):
+サブカラムは、[`24.12`](https://clickhouse.com/blog/clickhouse-release-24-12#json-subcolumns-as-table-primary-key)からのキーの順序付けにも使用できます:
 
 ```sql
 CREATE TABLE people
@@ -196,11 +208,11 @@ CREATE TABLE people
 ENGINE = MergeTree
 ORDER BY company.name
 ```
-### デフォルト値の取り扱い {#handling-default-values}
+### デフォルト値の処理 {#handling-default-values}
 
-Even if JSON objects are structured, they are often sparse with only a subset of the known keys provided. Fortunately, the `Tuple` type does not require all columns in the JSON payload. If not provided, default values will be used.
+JSONオブジェクトが構造化されている場合でも、提供されるキーのサブセットのみでスパースなことがよくあります。幸いにも、`Tuple`型はJSONペイロード内のすべてのカラムを必要としません。提供されていない場合は、デフォルト値が使用されます。
 
-Consider our earlier `people` table and the following sparse JSON, missing the keys `suite`, `geo`, `phone_numbers`, and `catchPhrase`.
+先の`people`テーブルと、キー`suite`、`geo`、`phone_numbers`、および`catchPhrase`が欠けている次のスパースJSONを考えます。
 
 ```json
 {
@@ -223,7 +235,7 @@ Consider our earlier `people` table and the following sparse JSON, missing the k
 }
 ```
 
-We can see below this row can be successfully inserted:
+以下のように、この行を正常に挿入できることがわかります:
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow
@@ -234,7 +246,7 @@ Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-Querying this single row, we can see that default values are used for the columns (including sub-objects) that were omitted:
+この単一行をクエリすると、欠落したカラム（サブオブジェクトを含む）にデフォルト値が使用されることがわかります:
 
 ```sql
 SELECT *
@@ -270,14 +282,14 @@ FORMAT PrettyJSONEachRow
 1 row in set. Elapsed: 0.001 sec.
 ```
 
-:::note 空と null の区別
-If users need to differentiate between a value being empty and not provided, the [Nullable](/sql-reference/data-types/nullable) type can be used. This [should be avoided](/best-practices/select-data-types#avoid-nullable-columns) unless absolutely required, as it will negatively impact storage and query performance on these columns.
+:::note 空とnullの区別
+ユーザーが値が空であることと提供されていないことを区別する必要がある場合、[Nullable](/sql-reference/data-types/nullable)型を使用できます。これは、ストレージとクエリのパフォーマンスに悪影響を与えるため、絶対に必要ない限り[避けるべきです](/best-practices/select-data-types#avoid-nullable-columns)。
 :::
-### 新しいカラムの取り扱い {#handling-new-columns}
+### 新しいカラムの扱い {#handling-new-columns}
 
-While a structured approach is simplest when the JSON keys are static, this approach can still be used if the changes to the schema can be planned, i.e., new keys are known in advance, and the schema can be modified accordingly.
+静的なJSONキーの場合、構造化されたアプローチが最も簡単ですが、スキーマに対する変更を計画できる場合（すなわち、新しいキーが事前に知られていて、それに応じてスキーマを変更できる場合）でもこのアプローチを使用できます。
 
-Note that ClickHouse will, by default, ignore JSON keys that are provided in the payload and are not present in the schema. Consider the following modified JSON payload with the addition of a `nickname` key:
+ClickHouseは、デフォルトでペイロード内に提供され、スキーマに存在しないJSONキーを無視することに注意してください。次の修正されたJSONペイロードの`nickname`キーが追加された場合を考えます:
 
 ```json
 {
@@ -311,7 +323,7 @@ Note that ClickHouse will, by default, ignore JSON keys that are provided in the
 }
 ```
 
-This JSON can be successfully inserted with the `nickname` key ignored:
+このJSONは、`nickname`キーが無視されて正常に挿入されます:
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow
@@ -322,24 +334,24 @@ Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-Columns can be added to a schema using the [`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column) command. A default can be specified via the `DEFAULT` clause, which will be used if it is not specified during the subsequent inserts. Rows for which this value is not present (as they were inserted prior to its creation) will also return this default value. If no `DEFAULT` value is specified, the default value for the type will be used.
+[`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column)コマンドを使用してスキーマにカラムを追加できます。`DEFAULT`句を使用してデフォルトを指定できます。これは、後続の挿入中に指定されていない場合に使用されます。この値が存在しない行（それは作成前に挿入されたため）もこのデフォルト値を返します。デフォルト値が指定されていない場合、型のデフォルト値が使用されます。
 
-For example:
+例えば:
 
 ```sql
--- insert initial row (nickname will be ignored)
+-- 初期行を挿入します（nicknameは無視されます）
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","nickname":"Clicky","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
 
--- add column
+-- カラムを追加します
 ALTER TABLE people
  (ADD COLUMN `nickname` String DEFAULT 'no_nickname')
 
--- insert new row (same data different id)
+-- 新しい行を挿入します（同じデータで異なるid）
 INSERT INTO people FORMAT JSONEachRow
 {"id":2,"name":"Clicky McCliickHouse","nickname":"Clicky","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
 
--- select 2 rows
+-- ２行を選択します
 SELECT id, nickname FROM people
 
 ┌─id─┬─nickname────┐
@@ -349,23 +361,22 @@ SELECT id, nickname FROM people
 
 2 rows in set. Elapsed: 0.001 sec.
 ```
-## 半構造化/動的構造体の取り扱い {#handling-semi-structured-dynamic-structures}
+## 半構造化/動的構造の取り扱い {#handling-semi-structured-dynamic-structures}
 
 <PrivatePreviewBadge/>
 
-If JSON data is semi-structured where keys can be dynamically added and/or have multiple types, the [`JSON`](/sql-reference/data-types/newjson) type is recommended.
+JSONデータが半構造化されており、キーが動的に追加できたり、複数の型を持つ場合は、[`JSON`](/sql-reference/data-types/newjson)型を推奨します。
 
-More specifically, use the JSON type when your data:
+特に、データに以下の条件がある場合はJSON型を使用します：
 
-- Has **予測不可能なキー** that can change over time.
-- Contains **異なる型の値** (e.g., a path might sometimes contain a string, sometimes a number).
-- Requires schema flexibility where strict typing isn't viable.
-- You have **何百あるいは何千もの** paths which are static but simply not realistic to declare explicitly. This tends to be a rare.
+- **予測不可能なキー**を持ち、時間と共に変わる可能性がある。
+- **異なる型の値**（例えば、パスが時々文字列を含み、時々数値を含む）を含む。
+- 厳密な型指定が実現できないスキーマ柔軟性が必要。
+- 幾つかの**静的なパス**があるが明示的に宣言することは現実的ではない場合。これは稀である傾向があります。
 
-Consider our [earlier person JSON](/integrations/data-formats/json/schema#static-vs-dynamic-json) where the `company.labels` object was determined to be dynamic.
+先の[人物JSON](/integrations/data-formats/json/schema#static-vs-dynamic-json)では、`company.labels`オブジェクトが動的であると判断されました。
 
-Let's suppose that `company.labels` contains arbitrary keys. Additionally, the type for any key in this structure may not be consistent between rows. For example:
-
+`company.labels`が任意のキーを含むと仮定しましょう。さらに、この構造内の任意のキーの型は行ごとに一貫していない可能性があります。例えば:
 
 ```json
 {
@@ -394,22 +405,22 @@ Let's suppose that `company.labels` contains arbitrary keys. Additionally, the t
     "name": "ClickHouse",
     "catchPhrase": "The real-time data warehouse for analytics",
     "labels": {
-      "type": "データベースシステム",
+      "type": "database systems",
       "founded": "2021",
       "employees": 250
     }
   },
   "dob": "2007-03-31",
   "tags": {
-    "hobby": "データベース",
+    "hobby": "Databases",
     "holidays": [
       {
         "year": 2024,
-        "location": "アゾレス、ポルトガル"
+        "location": "Azores, Portugal"
       }
     ],
     "car": {
-      "model": "テスラ",
+      "model": "Tesla",
       "year": 2023
     }
   }
@@ -467,29 +478,30 @@ Let's suppose that `company.labels` contains arbitrary keys. Additionally, the t
 }
 ```
 
-Given the dynamic nature of the `company.labels` column between objects, with respect to keys and types, we have several options to model this data:
+`company.labels`カラムの動的な性質を考慮するにあたり、以下のようなオプションでこのデータをモデル化できます：
 
-- **Single JSON column** - represents the entire schema as a single `JSON` column, allowing all structures to be dynamic beneath this.
-- **Targeted JSON column** - only use the `JSON` type for the `company.labels` column, retaining the structured schema used above for all other columns.
+- **単一JSONカラム** - スキーマ全体を単一の`JSON`カラムとして表すことで、すべての構造がその下で動的になります。
+- **ターゲットJSONカラム** - `company.labels`カラムにのみ`JSON`型を使用し、他のすべてのカラムに対して上記の構造化されたスキーマを維持します。
 
-While the first approach [does not align with previous methodology](#static-vs-dynamic-json), a single JSON column approach is useful for prototyping and data engineering tasks. 
+最初のアプローチ[は先の方法論と一致しません](#static-vs-dynamic-json)が、単一のJSONカラムアプローチはプロトタイピングやデータエンジニアリングタスクに役立ちます。
 
-For production deployments of ClickHouse at scale, we recommend being specific with structure and using the JSON type for targeted dynamic sub-structures where possible. 
+ClickHouseのスケールでの本番展開では、構造を明示的にし、可能であれば動的なサブ構造に対してJSON型を使用することを推奨します。
 
-A strict schema has a number of benefits:
+厳密なスキーマには多くの利点があります：
 
-- **データ検証** – enforcing a strict schema avoids the risk of column explosion, outside of specific structures. 
-- **カラム爆発のリスクを回避** - Although the JSON type scales to potentially thousands of columns, where subcolumns are stored as dedicated columns, this can lead to a column file explosion where an excessive number of column files are created that impacts performance. To mitigate this, the underlying [Dynamic type](/sql-reference/data-types/dynamic) used by JSON offers a [`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) parameter, which limits the number of unique paths stored as separate column files. Once the threshold is reached, additional paths are stored in a shared column file using a compact encoded format, maintaining performance and storage efficiency while supporting flexible data ingestion. Accessing this shared column file is, however, not as performant. Note, however, that the JSON column can be used with [type hints](#using-type-hints-and-skipping-paths). "Hinted" columns will deliver the same performance as dedicated columns.
-- **パスと型のより簡単な洞察** - Although the JSON type supports [introspection functions](/sql-reference/data-types/newjson#introspection-functions) to determine the types and paths that have been inferred, static structures can be simpler to explore e.g. with `DESCRIBE`.
-### シングル JSON カラム {#single-json-column}
+- **データ検証** - 厳密なスキーマを強制することで、特定の構造を除いてカラムの爆発のリスクを回避します。
+- **カラムの爆発のリスクを回避** - JSON型は潜在的に千のカラムにスケールしますが、サブカラムが専用カラムとして保存される場合、数えきれないカラムファイルが作成され、パフォーマンスに影響を与える可能性があります。これを軽減するために、JSONで使用される基本の[Dynamic type](/sql-reference/data-types/dynamic)には、個別のカラムファイルとして保存されるユニークなパスの数を制限する[`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns)パラメータがあります。閾値に達すると、追加のパスはコンパクトなエンコーディング形式を使用して共有カラムファイルに保存され、パフォーマンスとストレージの効率を維持しながら、柔軟なデータ取り込みをサポートします。ただし、この共有カラムファイルへのアクセスは、パフォーマンスが劣ることがあります。ただし、JSONカラムは[タイプヒント](#using-type-hints-and-skipping-paths)と共に使用できます。「ヒント付け」されたカラムは、専用のカラムと同じパフォーマンスを提供します。
+- **パスと型の簡単な内省** - JSON型は、推論された型とパスを特定するための[内省関数](/sql-reference/data-types/newjson#introspection-functions)をサポートしていますが、静的構造は探るのに簡単です。例えば`DESCRIBE`を使って。
 
-This approach is useful for prototyping and data engineering tasks. For production, try use `JSON` only for dynamic sub structures where necessary.
+### 単一JSONカラム {#single-json-column}
+
+このアプローチはプロトタイピングやデータエンジニアリングタスクに役立ちます。本番では、必要に応じて動的なサブ構造にのみ`JSON`を使用するようにしてください。
 
 :::note パフォーマンスの考慮
-A single JSON column can be optimized by skipping (not storing) JSON paths that are not required and by using [type hints](#using-type-hints-and-skipping-paths). Type hints allow the user to explicitly define the type for a sub-column, thereby skipping inference and indirection processing at query time. This can be used to deliver the same performance as if an explicit schema was used. See ["Using type hints and skipping paths"](#using-type-hints-and-skipping-paths) for further details.
+単一のJSONカラムは、必要でないJSONパスをスキップ（保存しない）することで最適化できます。また、[タイプヒント](#using-type-hints-and-skipping-paths)を使用することもできます。タイプヒントを使用することで、ユーザーはサブカラムの型を明示的に定義でき、推論と間接処理をクエリ時にスキップできます。これにより、明示的なスキーマを使用している場合と同じパフォーマンスを提供できます。[“タイプヒントを使用してパスをスキップする”](#using-type-hints-and-skipping-paths)の詳細を参照してください。
 :::
 
-The schema for a single JSON column here is simple:
+単一JSONカラムのスキーマは次のようにシンプルです：
 
 ```sql
 SET enable_json_type = 1;
@@ -503,14 +515,14 @@ ORDER BY json.username;
 ```
 
 :::note
-We provide a [type hint](#using-type-hints-and-skipping-paths) for the `username` column in the JSON definition as we use it in the ordering/primary key. This helps ClickHouse know this column won't be null and ensures it knows which `username` sub-column to use (there may be multiple for each type, so this is ambiguous otherwise).
+`username`カラムのJSON定義には[タイプヒント](#using-type-hints-and-skipping-paths)を提供しています。これは、順序付け/主キーで使用するためです。これにより、ClickHouseはこのカラムがnullにならないことを知り、使用すべき`username`サブカラムを把握します（各タイプごとに複数存在する可能性があるため、さもなければあいまいです）。
 :::
 
-Inserting rows into the above table can be achieved using the `JSONAsObject` format:
+上記のテーブルに行を挿入するには、`JSONAsObject`形式を使用できます：
 
 ```sql
 INSERT INTO people FORMAT JSONAsObject 
-{"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"データベースシステム","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"データベース","holidays":[{"year":2024,"location":"アゾレス、ポルトガル"}],"car":{"model":"テスラ","year":2023}}}
+{"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.028 sec.
 
@@ -532,12 +544,12 @@ json: {"address":[{"city":"Dataford","geo":{"lat":40.7128,"lng":-74.006},"street
 
 Row 2:
 ──────
-json: {"address":[{"city":"Wisokyburgh","geo":{"lat":-43.9509,"lng":-34.4618},"street":"Victor Plains","suite":"Suite 879","zipcode":"90566-7771"}],"company":{"catchPhrase":"The real-time data warehouse for analytics","labels":{"employees":"250","founded":"2021","type":"データベースシステム"},"name":"ClickHouse"},"dob":"2007-03-31","email":"clicky@clickhouse.com","id":"1","name":"Clicky McCliickHouse","phone_numbers":["010-692-6593","020-192-3333"],"tags":{"car":{"model":"テスラ","year":"2023"},"hobby":"データベース","holidays":[{"location":"アゾレス、ポルトガル","year":"2024"}]},"username":"Clicky","website":"clickhouse.com"}
+json: {"address":[{"city":"Wisokyburgh","geo":{"lat":-43.9509,"lng":-34.4618},"street":"Victor Plains","suite":"Suite 879","zipcode":"90566-7771"}],"company":{"catchPhrase":"The real-time data warehouse for analytics","labels":{"employees":"250","founded":"2021","type":"database systems"},"name":"ClickHouse"},"dob":"2007-03-31","email":"clicky@clickhouse.com","id":"1","name":"Clicky McCliickHouse","phone_numbers":["010-692-6593","020-192-3333"],"tags":{"car":{"model":"Tesla","year":"2023"},"hobby":"Databases","holidays":[{"location":"Azores, Portugal","year":"2024"}]},"username":"Clicky","website":"clickhouse.com"}
 
 2 rows in set. Elapsed: 0.005 sec.
 ```
 
-We can determine the inferred sub columns and their types using [introspection functions](/sql-reference/data-types/newjson#introspection-functions). For example:
+推論されたサブカラムとその型をは、[内省関数](/sql-reference/data-types/newjson#introspection-functions)を使用して決定できます。例えば:
 
 ```sql
 SELECT JSONDynamicPathsWithTypes(json) as paths
@@ -588,31 +600,31 @@ FORMAT PrettyJsonEachRow
 2 rows in set. Elapsed: 0.009 sec.
 ```
 
-For a complete list of introspection functions, see the ["Introspection functions"](/sql-reference/data-types/newjson#introspection-functions)
+内省関数による完全なリストについては、["内省関数"](/sql-reference/data-types/newjson#introspection-functions)を参照してください。
 
-[Sub paths can be accessed](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) using `.` notation e.g.
+[サブパスにアクセスできます](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) `.`記法を使用して、例えば：
 
 ```sql
 SELECT json.name, json.email FROM people
 
 ┌─json.name────────────┬─json.email────────────┐
-│ Analytica Rowe       │ ᴺᵁᴸᴸ                  │
+│ Analytica Rowe       │ ᴺᵁᴺᴺ                  │
 │ Clicky McCliickHouse │ clicky@clickhouse.com │
 └──────────────────────┴───────────────────────┘
 
 2 rows in set. Elapsed: 0.006 sec.
 ```
 
-Note how columns missing in rows are returned as `NULL`.
+行に欠けているカラムは`NULL`として返される点に注意してください。
 
-Additionally, a separate sub column is created for paths with the same type. For example, a subcolumn exists for `company.labels.type` of both `String` and `Array(Nullable(String))`. While both will be returned where possible, we can target specific sub-columns using `.:` syntax:
+さらに、同じ型のパスに対しては別々のサブカラムが作成されます。例えば、`company.labels.type`に対して、`String`型と`Array(Nullable(String))`型の両方にサブカラムが存在します。両方が可能な限り返されますが、特定のサブカラムを`.:`記法を使用してターゲットすることができます。
 
 ```sql
 SELECT json.company.labels.type
 FROM people
 
 ┌─json.company.labels.type─┐
-│ データベースシステム         │
+│ database systems         │
 │ ['real-time processing'] │
 └──────────────────────────┘
 
@@ -622,45 +634,43 @@ SELECT json.company.labels.type.:String
 FROM people
 
 ┌─json.company⋯e.:`String`─┐
-│ ᴺᵁᴸᴸ                     │
-│ データベースシステム         │
+│ ᴺᵁᴺᴺ                     │
+│ database systems         │
 └──────────────────────────┘
 
 2 rows in set. Elapsed: 0.009 sec.
 ```
 
-In order to return nested sub-objects, the `^` is required. This is a design choice to avoid reading a high number of columns - unless explicitly requested. Objects accessed without `^` will return `NULL` as shown below:
-
+ネストされたサブオブジェクトを返すには、`^`が必要です。これは、読み取るカラムの数が多すぎないようにするための設計上の選択です。明示的に要求されない限り、オブジェクトにアクセスすると`NULL`が返されるでしょう。
 
 ```sql
--- sub objects will not be returned by default
+-- サブオブジェクトはデフォルトで返されません
 SELECT json.company.labels
 FROM people
 
 ┌─json.company.labels─┐
-│ ᴺᵁᴸᴸ                │
-│ ᴺᵁᴸᴸ                │
+│ ᴺᵁᴺᴺ                │
+│ ᴺᵁᴺᴺ                │
 └─────────────────────┘
 
 2 rows in set. Elapsed: 0.002 sec.
 
--- return sub objects using ^ notation
+-- `^`記法を使ってサブオブジェクトを返します
 SELECT json.^company.labels
 FROM people
 
 ┌─json.^`company`.labels─────────────────────────────────────────────────────────────────┐
-│ {"employees":"250","founded":"2021","type":"データベースシステム"}                         │
+│ {"employees":"250","founded":"2021","type":"database systems"}                         │
 │ {"dissolved":"2023","employees":"10","founded":"2019","type":["real-time processing"]} │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
+### ターゲットとした JSON カラム {#targeted-json-column}
 
-### ターゲットJSONカラム {#targeted-json-column}
+プロトタイピングやデータエンジニアリングの課題では便利ですが、可能な限りプロダクションでは明示的なスキーマを使用することをお勧めします。
 
-プロトタイピングやデータエンジニアリングの課題に役立ちますが、可能な限り本番環境では明示的なスキーマを使用することをお勧めします。
-
-前の例は、`company.labels` カラムのために単一の `JSON` カラムでモデル化できます。
+以前の例は、`company.labels` カラムのための単一の `JSON` カラムでモデル化できます。
 
 ```sql
 CREATE TABLE people
@@ -680,7 +690,7 @@ ENGINE = MergeTree
 ORDER BY username
 ```
 
-このテーブルにデータを挿入するために、`JSONEachRow` 形式を使用できます。
+このテーブルには、`JSONEachRow` フォーマットを使用して挿入できます:
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow
@@ -728,7 +738,7 @@ tags:          {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores,
 2 rows in set. Elapsed: 0.005 sec.
 ```
 
-[Introspection functions](/sql-reference/data-types/newjson#introspection-functions) を使用して、`company.labels` カラムの推測されたパスと型を判断できます。
+[Introspection functions](/sql-reference/data-types/newjson#introspection-functions)を使用して、`company.labels` カラムの推測されたパスとタイプを確認できます。
 
 ```sql
 SELECT JSONDynamicPathsWithTypes(company.labels) AS paths
@@ -755,7 +765,7 @@ FORMAT PrettyJsonEachRow
 ```
 ### 型ヒントとパスのスキップを使用する {#using-type-hints-and-skipping-paths}
 
-型ヒントを使用することで、パスとそのサブカラムの型を指定し、不必要な型推定を防ぐことができます。以下の例では、JSONカラム `company.labels` 内のJSONキー `dissolved`、`employees`、`founded` の型を指定しています。
+型ヒントを使用することで、パスおよびそのサブカラムのタイプを指定し、不必要な型推論を防ぐことができます。以下の例を考えると、JSON カラム `company.labels` 内の JSON キー `dissolved`、`employees`、`founded` のタイプを指定します。
 
 ```sql
 CREATE TABLE people
@@ -797,7 +807,7 @@ INSERT INTO people FORMAT JSONEachRow
 1 row in set. Elapsed: 0.440 sec.
 ```
 
-これらのカラムが現在私たちの明示的な型を持っている様子を確認してください：
+これらのカラムには、今や明示的な型があります:
 
 ```sql
 SELECT JSONAllPathsWithTypes(company.labels) AS paths
@@ -824,7 +834,7 @@ FORMAT PrettyJsonEachRow
 2 rows in set. Elapsed: 0.003 sec.
 ```
 
-さらに、ストレージを最小限に抑え、不要なパスで無用の推測を避けるために、[`SKIP` と `SKIP REGEXP`](/sql-reference/data-types/newjson) パラメータを使用してJSON内のパスをスキップできます。たとえば、上記のデータのために単一のJSONカラムを使用するとします。`address` および `company` パスをスキップできます：
+さらに、私たちは、ストレージを最小化し、不要なパスの推論を避けるために、[`SKIP` および `SKIP REGEXP`](/sql-reference/data-types/newjson) パラメータを使用して、保存したくない JSON 内のパスをスキップすることができます。たとえば、上記のデータに対して単一の JSON カラムを使用する場合を考えてみましょう。`address` と `company` パスをスキップできます:
 
 ```sql
 CREATE TABLE people
@@ -845,7 +855,7 @@ INSERT INTO people FORMAT JSONAsObject
 1 row in set. Elapsed: 0.440 sec.
 ```
 
-データから私たちのカラムが除外されている様子を確認してください：
+私たちのカラムにデータが除外されていることに注目してください:
 
 ```sql
 
@@ -909,32 +919,32 @@ FORMAT PrettyJSONEachRow
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
-#### 型ヒントを使用したパフォーマンスの最適化 {#optimizing-performance-with-type-hints}  
+#### 型ヒントでパフォーマンスを最適化する {#optimizing-performance-with-type-hints}  
 
-型ヒントは、不必要な型推論を回避するだけでなく、ストレージと処理の間接性を完全に排除し、最適なプライミティブ型を指定できるようにします。型ヒントを持つJSONパスは、常に従来のカラムと同じように保存され、[**識別子カラム**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data)やクエリ実行時の動的解決を回避します。
+型ヒントは、不必要な型推論を回避する方法以上のものを提供します - ストレージと処理の間接を完全に排除し、[最適なプリミティブ型](/data-modeling/schema-design#optimizing-types)を指定できるようにします。型ヒントを持つ JSON パスは、常に従来のカラムのように保存され、[**識別子カラム**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data)やクエリ時の動的解決の必要性を回避します。
 
-つまり、明確に定義された型ヒントを使用することで、ネストされたJSONキーは、最初からトップレベルのカラムとしてモデル化されていた場合と同じパフォーマンスと効率を達成できます。
+これにより、定義された型ヒントを使用すれば、ネストされた JSON キーは、最初から最上位カラムとしてモデル化されている場合と同じパフォーマンスと効率を実現します。
 
-したがって、データセットがほとんど一貫しているが、JSONの柔軟性を享受する場合、型ヒントはスキーマや取り込みパイプラインを再構築することなくパフォーマンスを維持する便利な方法を提供します。
-### 動的パスの設定 {#configuring-dynamic-paths}
+その結果、ほとんど一貫しているが、JSON の柔軟性から利益を得るデータセットに対して、型ヒントはスキーマやインジェストパイプラインを再構築する必要なくパフォーマンスを維持する便利な方法を提供します。
+### ダイナミックパスの設定 {#configuring-dynamic-paths}
 
-ClickHouseは、各JSONパスを真の列指向レイアウトのサブカラムとして保存し、従来のカラムで見られるようなパフォーマンスの利点（圧縮、SIMD加速処理、最小限のディスクI/Oなど）を実現します。JSONデータ内の各ユニークなパスと型の組み合わせは、ディスク上の新しいカラムファイルになることができます。
+ClickHouse は、各 JSON パスを真の列指向レイアウトでサブカラムとして保存し、従来のカラムと同様のパフォーマンス上の利点（圧縮、SIMD 加速処理、最小限のディスク I/O など）を可能にします。JSON データ内の各ユニークなパスと型の組み合わせは、ディスク上でそれ自身のカラムファイルになります。
 
 <Image img={json_column_per_type} size="md" alt="Column per JSON path" />
 
-たとえば、異なる型で2つのJSONパスが挿入された場合、ClickHouseは各[具体的型の値を独立したサブカラムに保存](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data)します。これにより、無駄なI/Oを最小限に抑えることができます。ただし、複数の型を持つカラムをクエリする際、その値は引き続き単一の列指向応答として返されます。
+たとえば、異なる型で 2 つの JSON パスが挿入されると、ClickHouse はそれぞれの[具体的な型の値を異なるサブカラムに保存します](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data)。これらのサブカラムには独立してアクセスでき、不必要な I/O を最小限に抑えます。複数の型を持つカラムをクエリする際、値は依然として単一の列指向応答として返されます。
 
-さらに、オフセットを活用することで、ClickHouseはこれらのサブカラムが密であり、存在しないJSONパスのデフォルト値が保存されないことを確保します。このアプローチは圧縮を最大化し、さらなるI/Oの削減につながります。
+さらに、オフセットを活用することで、ClickHouse はこれらのサブカラムが密度を保つようにし、存在しない JSON パスのためにデフォルト値を保存しません。このアプローチは圧縮を最大化し、さらに I/O を削減します。
 
 <Image img={json_offsets} size="md" alt="JSON offsets" />
 
-しかし、高カーディナリティや高可変なJSON構造（テレメトリパイプライン、ログ、または機械学習のフィーチャーストアなど）を持つシナリオでは、この動作がカラムファイルの爆発を引き起こす可能性があります。新しいユニークなJSONパスごとに新しいカラムファイルが作成され、そのパスの各型のバリエーションごとに追加のカラムファイルが生成されます。これは読み込みパフォーマンスには最適ですが、オペレーショナルな課題（ファイルディスクリプタの枯渇、メモリ使用量の増加、ファイル数の多さによるマージの遅延）を引き起こします。
+しかし、高いカーディナリティまたは高い変動のある JSON 構造（テレメトリパイプライン、ログ、または機械学習の特徴ストアなど）におけるシナリオでは、この動作はカラムファイルの爆発を引き起こす可能性があります。各新しいユニークな JSON パスは新しいカラムファイルをもたらし、各型バリアントはそのパスの下で追加のカラムファイルをもたらします。これはリードパフォーマンスには最適ですが、運用上の課題（ファイルディスクリプタの枯渇、メモリ使用量の増加、小さなファイルの数が多いためマージが遅くなる）を導入します。
 
-これを軽減するために、ClickHouseはオーバーフローローカラムの概念を導入しています：ユニークなJSONパスの数がしきい値を超えると、追加のパスはコンパクトなエンコード形式を使用して単一の共有ファイルに保存されます。このファイルはクエリ可能ですが、専用のサブカラムと同じパフォーマンス特性の恩恵を受けることはありません。
+これを軽減するために、ClickHouse はオーバーフローサブカラムの概念を導入します。異なる JSON パスの数が閾値を超えた場合、追加のパスはコンパクトにエンコードされた形式で単一の共有ファイルに保存されます。このファイルは依然としてクエリ可能ですが、専用のサブカラムと同じ性能特性の利益を享受することはありません。
 
 <Image img={shared_json_column} size="md" alt="Shared JSON column" />
 
-このしきい値は、JSON型宣言内の[`max_dynamic_paths`](/sql-reference/data-types/newjson#reaching-the-limit-of-dynamic-paths-inside-json)パラメータによって制御されます。
+この閾値は、JSON 型宣言における[`max_dynamic_paths`](/sql-reference/data-types/newjson#reaching-the-limit-of-dynamic-paths-inside-json) パラメータで制御されます。
 
 ```sql
 CREATE TABLE logs
@@ -945,6 +955,6 @@ ENGINE = MergeTree
 ORDER BY tuple();
 ```
 
-**このパラメータを高く設定しすぎないように注意してください** - 大きな値はリソース消費を増加させ、効率を低下させます。一般的な目安として、10,000未満に保つことをお勧めします。高い動的構造を持つワークロードについては、型ヒントや `SKIP` パラメータを使用して保存されるものを制限してください。
+**このパラメータを高すぎる設定は避けてください** - 大きな値はリソース消費を増加させ、効率を低下させます。一般的な指針として、10,000 を下回るように保ってください。高い動的構造を持つワークロードには、型ヒントと `SKIP` パラメータを使用して、保存されるものを制限してください。
 
-この新しいカラム型の実装に興味のあるユーザーには、["ClickHouseのための新しい強力なJSONデータ型"](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)という詳細なブログ記事の読解をお勧めします。
+この新しいカラム型の実装に興味があるユーザーには、私たちの詳細なブログ記事 ["ClickHouse のための新しい強力な JSON データ型"](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse) の読解をお勧めします。

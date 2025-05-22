@@ -1,21 +1,24 @@
 ---
-title: 'クエリ性能 - 時系列'
-sidebar_label: 'クエリ性能'
-description: '時系列クエリ性能の向上'
-slug: /use-cases/time-series/query-performance
-keywords: ['time-series']
+'title': 'クエリ性能 - タイムシリーズ'
+'sidebar_label': 'クエリ性能'
+'description': 'タイムシリーズクエリ性能の向上'
+'slug': '/use-cases/time-series/query-performance'
+'keywords':
+- 'time-series'
 ---
 
 
-# 時系列クエリ性能
 
-ストレージを最適化した後の次のステップは、クエリ性能を向上させることです。このセクションでは、2つの重要なテクニック、すなわち `ORDER BY` キーの最適化とマテリアライズドビューの使用について探ります。これらのアプローチによって、クエリ時間を秒単位からミリ秒単位に短縮できることを示します。
 
-## ORDER BYキーの最適化 {#time-series-optimize-order-by}
+# 時系列クエリのパフォーマンス
 
-他の最適化を試みる前に、ClickHouse が可能な限り最速の結果を生成できるように、オーダリングキーを最適化する必要があります。オーダリングキーを選択する際は、実行する予定のクエリに大きく依存します。たとえば、私たちのクエリのほとんどが `project` と `subproject` カラムでフィルタリングされるとしましょう。この場合、これらをオーダリングキーに追加するのは良いアイデアです。また、時間に基づいてクエリを実行するため、時間もオーダリングキーに含めます。
+ストレージを最適化した後の次のステップは、クエリパフォーマンスの向上です。このセクションでは、`ORDER BY` キーの最適化とマテリアライズドビューの使用という 2 つの重要な技術を探ります。これらのアプローチによって、クエリの実行時間を秒からミリ秒に短縮する方法を見ていきます。
 
-`wikistat` と同じカラム型を持ち、 `(project, subproject, time)` でオーダリングされたテーブルの別バージョンを作成しましょう。
+## ORDER BY キーの最適化 {#time-series-optimize-order-by}
+
+他の最適化を試みる前に、ClickHouse ができるだけ迅速な結果を生成できるように、オーダリングキーを最適化する必要があります。キーの選択は、実行するクエリに大きく依存します。たとえば、ほとんどのクエリが `project` および `subproject` カラムでフィルタリングされる場合、この場合には、時間カラムに加えてオーダリングキーにこれらを追加することが良いアイデアです。
+
+同じカラムタイプを持ち、`(project, subproject, time)` でソートされたテーブルの別バージョンを作成しましょう。
 
 ```sql
 CREATE TABLE wikistat_project_subproject
@@ -30,7 +33,7 @@ ENGINE = MergeTree
 ORDER BY (project, subproject, time);
 ```
 
-次に、性能に対するオーダリングキーの重要性を理解するために、複数のクエリを比較してみましょう。前回のデータ型とコーデックの最適化は適用していませんので、クエリ性能の違いはソート順のみに基づいています。
+次に、パフォーマンスに対するオーダリングキーの重要性を理解するために、複数のクエリを比較してみましょう。前回のデータタイプおよびコーデックの最適化を適用していないため、クエリパフォーマンスの違いはソート順にのみ基づいています。
 
 <table>
     <thead>
@@ -51,8 +54,8 @@ ORDER BY h DESC
 LIMIT 10;
 ```       
             </td>
-            <td style={{ textAlign: 'right' }}>2.381秒</td>
-            <td style={{ textAlign: 'right' }}>1.660秒</td>
+            <td style={{ textAlign: 'right' }}>2.381 sec</td>
+            <td style={{ textAlign: 'right' }}>1.660 sec</td>
         </tr>
 
         <tr>
@@ -66,8 +69,8 @@ ORDER BY h DESC
 LIMIT 10;
 ```          
             </td>
-            <td style={{ textAlign: 'right' }}>2.148秒</td>
-            <td style={{ textAlign: 'right' }}>0.058秒</td>
+            <td style={{ textAlign: 'right' }}>2.148 sec</td>
+            <td style={{ textAlign: 'right' }}>0.058 sec</td>
         </tr>
       
         <tr>
@@ -81,8 +84,8 @@ ORDER BY m DESC
 LIMIT 10;
 ```          
             </td>
-            <td style={{ textAlign: 'right' }}>2.192秒</td>
-            <td style={{ textAlign: 'right' }}>0.012秒</td>
+            <td style={{ textAlign: 'right' }}>2.192 sec</td>
+            <td style={{ textAlign: 'right' }}>0.012 sec</td>
         </tr>
 
         <tr>
@@ -96,15 +99,15 @@ ORDER BY h DESC
 LIMIT 10;
 ```          
             </td>
-            <td style={{ textAlign: 'right' }}>2.968秒</td>
-            <td style={{ textAlign: 'right' }}>0.010秒</td>
+            <td style={{ textAlign: 'right' }}>2.968 sec</td>
+            <td style={{ textAlign: 'right' }}>0.010 sec</td>
         </tr>
     </tbody>
 </table>
 
 ## マテリアライズドビュー {#time-series-materialized-views}
 
-別のオプションは、人気のクエリの結果を集約し保存するためにマテリアライズドビューを使用することです。これらの結果は、元のテーブルの代わりにクエリできます。私たちのケースで頻繁に実行されるクエリが次のようなものだとしましょう：
+もう 1 つのオプションは、マテリアライズドビューを使用して人気のあるクエリの結果を集約して保存することです。これらの結果は、元のテーブルの代わりにクエリすることができます。たとえば、次のクエリがよく実行される場合を考えてみましょう。
 
 ```sql
 SELECT path, SUM(hits) AS v
@@ -129,13 +132,13 @@ LIMIT 10
 │ 2015_Nepal_earthquake │  1406422 │
 └───────────────────────┴──────────┘
 
-10行がセットされています。経過時間：2.285秒。231.41兆行が処理されました、9.22 GB (101.26百万行/s.、4.03 GB/s.)。
-ピークメモリ使用量：1.50 GiB。
+10 行がセットされました。経過時間: 2.285 sec。231.41百万行、9.22 GB を処理しました (101.26百万行/秒、4.03 GB/秒)
+ピークメモリ使用量: 1.50 GiB。
 ```
 
 ### マテリアライズドビューの作成 {#time-series-create-materialized-view}
 
-次のマテリアライズドビューを作成できます：
+次のマテリアライズドビューを作成できます。
 
 ```sql
 CREATE TABLE wikistat_top
@@ -160,11 +163,11 @@ FROM wikistat
 GROUP BY path, month;
 ```
 
-### 受け入れ先テーブルのバックフィル {#time-series-backfill-destination-table}
+### 宛先テーブルのバックフィル {#time-series-backfill-destination-table}
 
-この受け入れ先テーブルは、`wikistat` テーブルに新しいレコードが挿入されるときのみポピュレートされるため、[バックフィル](/docs/data-modeling/backfilling) を実施する必要があります。
+この宛先テーブルは、`wikistat` テーブルに新しいレコードが挿入されるときにのみ populated されるため、[バックフィル](/docs/data-modeling/backfilling)を行う必要があります。
 
-これを行う最も簡単な方法は、[`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) ステートメントを使用して、マテリアライズドビューのターゲットテーブルに直接挿入することです。ビューのSELECTクエリ（変換）を使用します：
+これを行う最も簡単な方法は、[`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) ステートメントを使用して、マテリアライズドビューのターゲットテーブルに直接挿入することであり、ビューの SELECT クエリ (変換) を使用することです。
 
 ```sql
 INSERT INTO wikistat_top
@@ -176,14 +179,14 @@ FROM wikistat
 GROUP BY path, month;
 ```
 
-生データセットのカーディナリティに応じて（私たちには10億行があります！）、これはメモリ集約的なアプローチになる可能性があります。代わりに、最小メモリを要求する変種を使用することができます：
+生データセットのカーディナリティによっては (1億行を持つ！)、この方法はメモリ集約的になる場合があります。あるいは、最小限のメモリを必要とするバリアントを使用できます。
 
-* Nullテーブルエンジンを使用して一時テーブルを作成
+* Null テーブルエンジンを持つ一時テーブルを作成
 * 通常使用されるマテリアライズドビューのコピーをその一時テーブルに接続
-* INSERT INTO SELECTクエリを使用して、生データセットのすべてのデータをその一時テーブルにコピー
-* 一時テーブルと一時マテリアライズドビューを削除。
+* INSERT INTO SELECT クエリを使用して、生データセットからその一時テーブルにすべてのデータをコピー
+* 一時テーブルと一時マテリアライズドビューを削除
 
-このアプローチでは、生データセットから行がブロック単位で一時テーブルにコピーされ（これらの行は保存されません）、各ブロックの行に対して部分状態が計算され、ターゲットテーブルに書き込まれます。この状態はバックグラウンドで徐々にマージされます。
+そのアプローチでは、生データセットの行が一時テーブルにブロック単位でコピーされ（これらの行は保存されません）、各ブロックの行に対して部分的な状態が計算され、ターゲットテーブルに書き込まれ、これらの状態がバックグラウンドで増分的にマージされます。
 
 ```sql
 CREATE TABLE wikistat_backfill
@@ -197,7 +200,7 @@ CREATE TABLE wikistat_backfill
 ENGINE = Null;
 ```
 
-次に、`wikistat_backfill` から読み込んで `wikistat_top` に書き込むマテリアライズドビューを作成します：
+次に、`wikistat_backfill` から読み取り、`wikistat_top` に書き込むマテリアライズドビューを作成します。
 
 ```sql
 CREATE MATERIALIZED VIEW wikistat_backfill_top_mv 
@@ -211,7 +214,7 @@ FROM wikistat_backfill
 GROUP BY path, month;
 ```
 
-最後に、初期の `wikistat` テーブルから `wikistat_backfill` をポピュレートしましょう：
+そして最後に、初期の `wikistat` テーブルから `wikistat_backfill` を populate します。
 
 ```sql
 INSERT INTO wikistat_backfill
@@ -219,14 +222,14 @@ SELECT *
 FROM wikistat;
 ```
 
-このクエリが終了したら、バックフィルテーブルとマテリアライズドビューを削除できます：
+そのクエリが完了すると、バックフィルテーブルとマテリアライズドビューを削除できます。
 
 ```sql
 DROP VIEW wikistat_backfill_top_mv;
 DROP TABLE wikistat_backfill;
 ```
 
-これで、オリジナルテーブルの代わりにマテリアライズドビューをクエリできます：
+これで、元のテーブルの代わりにマテリアライズドビューをクエリできます。
 
 ```sql
 SELECT path, sum(hits) AS hits
@@ -251,7 +254,7 @@ LIMIT 10;
 │ 2015_Nepal_earthquake │   726327 │
 └───────────────────────┴──────────┘
 
-10行がセットされています。経過時間：0.004秒。
+10 行がセットされました。経過時間: 0.004 sec。
 ```
 
-ここでのパフォーマンスの改善は劇的です。以前はこのクエリの答えを計算するのに2秒以上かかっていましたが、今ではわずか4ミリ秒で済むようになりました。
+ここでのパフォーマンス改善は劇的です。以前はこのクエリの結果を計算するのに 2 秒以上かかっていましたが、現在はわずか 4 ミリ秒です。

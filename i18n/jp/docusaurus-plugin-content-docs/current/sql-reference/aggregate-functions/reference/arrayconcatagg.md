@@ -1,13 +1,15 @@
 ---
-description: 'array_concat_agg 関数のドキュメント'
-sidebar_position: 111
-slug: /sql-reference/aggregate-functions/reference/array_concat_agg
-title: 'array_concat_agg'
+'description': 'array_concat_agg 関数のドキュメント'
+'sidebar_position': 111
+'slug': '/sql-reference/aggregate-functions/reference/array_concat_agg'
+'title': 'array_concat_agg'
 ---
 
 
+
+
 # array_concat_agg 
-- `groupArrayArray` のエイリアス。関数は大文字小文字を区別しません。
+- `groupArrayArray`のエイリアスです。この関数は大文字と小文字を区別しません。
 
 **例**
 

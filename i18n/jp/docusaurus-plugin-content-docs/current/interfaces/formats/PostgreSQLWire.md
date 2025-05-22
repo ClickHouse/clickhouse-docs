@@ -1,9 +1,12 @@
 ---
-description: 'PostgreSQLWire形式のドキュメント'
-keywords: ['PostgreSQLWire']
-slug: /interfaces/formats/PostgreSQLWire
-title: 'PostgreSQLWire'
+'description': 'PostgreSQLWire formatのドキュメント'
+'keywords':
+- 'PostgreSQLWire'
+'slug': '/interfaces/formats/PostgreSQLWire'
+'title': 'PostgreSQLWire'
 ---
+
+
 
 ## 説明 {#description}
 

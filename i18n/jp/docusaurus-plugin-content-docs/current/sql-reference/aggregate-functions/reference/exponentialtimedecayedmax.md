@@ -1,13 +1,16 @@
 ---
-description: 'インデックス `t` における計算された指数平滑移動平均の最大値を、`t-1` の最大値と比較して返します。'
-sidebar_position: 135
-slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedMax
-title: 'exponentialTimeDecayedMax'
+'description': 'Returns the maximum of the computed exponentially smoothed moving
+  average at index `t` in time with that at `t-1`. '
+'sidebar_position': 135
+'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedMax'
+'title': '指数時間経過最大値'
 ---
+
+
 
 ## exponentialTimeDecayedMax {#exponentialtimedecayedmax}
 
-インデックス `t` における計算された指数平滑移動平均の最大値を、`t-1` の最大値と比較して返します。
+インデックス `t` で計算される指数平滑移動平均の最大値を、`t-1` と比較して返します。
 
 **構文**
 
@@ -17,14 +20,14 @@ exponentialTimeDecayedMax(x)(value, timeunit)
 
 **引数**
 
-- `value` — 値。 [Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) または [Decimal](../../../sql-reference/data-types/decimal.md)。
-- `timeunit` — 時間単位。 [Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) または [Decimal](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md)。
+- `value` — 値。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)。
+- `timeunit` — 時間単位。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)、[日時](../../data-types/datetime.md)、[日時64](../../data-types/datetime64.md)。
 
-**パラメーター**
+**パラメータ**
 
-- `x` — 半減期。 [Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) または [Decimal](../../../sql-reference/data-types/decimal.md)。
+- `x` — 半減期。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)。
 
-**戻り値**
+**返される値**
 
 - `t` および `t-1` における指数平滑加重移動平均の最大値を返します。 [Float64](../../data-types/float.md)。
 

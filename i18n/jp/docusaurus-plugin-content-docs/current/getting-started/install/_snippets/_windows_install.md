@@ -1,4 +1,11 @@
-# WindowsにWSLを使ってClickHouseをインストールする
+---
+{}
+---
+
+
+
+
+# WindowsにWSLでClickHouseをインストールする
 
 ## 要件 {#requirements}
 
@@ -16,15 +23,15 @@ WindowsにClickHouseをインストールするには、WSL (Windows Subsystem f
 wsl --install
 ```
 
-新しいUNIXのユーザー名とパスワードを入力するように求められます。希望するユーザー名とパスワードを入力した後、次のようなメッセージが表示されます:
+新しいUNIXユーザー名とパスワードの入力を求められます。希望のユーザー名とパスワードを入力すると、次のようなメッセージが表示されます:
 
 ```bash
 Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
 ```
 
-## curlを使用してスクリプト経由でClickHouseをインストールする {#install-clickhouse-via-script-using-curl}
+## curlを使用したスクリプトでClickHouseをインストールする {#install-clickhouse-via-script-using-curl}
 
-次のコマンドを実行して、curlを使用してスクリプト経由でClickHouseをインストールします:
+次のコマンドを実行して、curlを使用してスクリプトでClickHouseをインストールします:
 
 ```bash
 curl https://clickhouse.com/ | sh
@@ -39,9 +46,9 @@ Successfully downloaded the ClickHouse binary, you can run it as:
 
 ## clickhouse-localを起動する {#start-clickhouse-local}
 
-`clickhouse-local`は、ClickHouseの強力なSQL構文を使用して、ローカルおよびリモートファイルを処理することを可能にし、設定の必要がありません。テーブルデータは一時的な場所に保存されるため、`clickhouse-local`を再起動すると、以前に作成したテーブルは利用できなくなります。
+`clickhouse-local`を使用すると、ClickHouseの強力なSQL構文を使用してローカルおよびリモートファイルを処理でき、設定の必要がありません。テーブルデータは一時的な場所に保存されるため、`clickhouse-local`を再起動すると、以前に作成したテーブルは利用できなくなります。
 
-次のコマンドを実行して [clickhouse-local](/operations/utilities/clickhouse-local) を起動します:
+次のコマンドを実行して[clickhouse-local](/operations/utilities/clickhouse-local)を起動します:
 
 ```bash
 ./clickhouse
@@ -49,7 +56,7 @@ Successfully downloaded the ClickHouse binary, you can run it as:
 
 ## clickhouse-serverを起動する {#start-clickhouse-server}
 
-データを永続的に保存したい場合は、`clickhouse-server`を実行する必要があります。次のコマンドを使用してClickHouseサーバーを起動できます:
+データを永続化したい場合は、`clickhouse-server`を実行する必要があります。次のコマンドを使用してClickHouseサーバーを起動できます:
 
 ```bash
 ./clickhouse server
@@ -57,13 +64,13 @@ Successfully downloaded the ClickHouse binary, you can run it as:
 
 ## clickhouse-clientを起動する {#start-clickhouse-client}
 
-サーバーが起動したら、新しいターミナルウィンドウを開き、次のコマンドを実行して`clickhouse-client`を起動します:
+サーバーが動作している状態で、新しいターミナルウィンドウを開き、次のコマンドを実行して`clickhouse-client`を起動します:
 
 ```bash
 ./clickhouse client
 ```
 
-次のような内容が表示されます:
+次のような出力が表示されます:
 
 ```response
 ./clickhouse client
@@ -74,9 +81,8 @@ Connected to ClickHouse server version 24.5.1.
 local-host :)
 ```
 
-テーブルデータは現在のディレクトリに保存され、ClickHouseサーバーを再起動した後でも利用可能です。必要に応じて、`-C config.xml`を追加のコマンドライン引数として`./clickhouse server`に渡し、設定ファイルで詳細な設定を提供できます。利用可能な設定はすべて [here](/operations/server-configuration-parameters/settings) と
-[example configuration file template](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml) にドキュメント化されています。
+テーブルデータは現在のディレクトリに保存され、ClickHouseサーバーの再起動後も利用可能です。必要に応じて、`./clickhouse server`に追加のコマンドライン引数`-C config.xml`を渡し、設定ファイルでさらに構成を提供できます。利用可能なすべての設定項目は、[こちら](/operations/server-configuration-parameters/settings)および[例の設定ファイルテンプレート](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)で文書化されています。
 
-これでClickHouseにSQLコマンドを送信する準備が整いました！
+SQLコマンドをClickHouseに送信する準備が整いました！
 
 </VerticalStepper>

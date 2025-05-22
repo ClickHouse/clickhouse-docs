@@ -1,20 +1,23 @@
 ---
-alias: []
-description: 'JSONCompactStrings フォーマットに関するドキュメント'
-input_format: false
-keywords: ['JSONCompactStrings']
-output_format: true
-slug: /interfaces/formats/JSONCompactStrings
-title: 'JSONCompactStrings'
+'alias': []
+'description': 'JSONCompactStrings フォーマットのドキュメント'
+'input_format': false
+'keywords':
+- 'JSONCompactStrings'
+'output_format': true
+'slug': '/interfaces/formats/JSONCompactStrings'
+'title': 'JSONCompactStrings'
 ---
 
-| 入力 | 出力 | エイリアス |
+
+
+| Input | Output | Alias |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
 ## 説明 {#description}
 
-`JSONCompactStrings` フォーマットは [JSONStrings](./JSONStrings.md) とは異なり、データ行がオブジェクトではなく配列として出力される点のみが違います。
+`JSONCompactStrings` フォーマットは、データ行がオブジェクトではなく配列として出力される点のみが [JSONStrings](./JSONStrings.md) と異なります。
 
 ## 使用例 {#example-usage}
 

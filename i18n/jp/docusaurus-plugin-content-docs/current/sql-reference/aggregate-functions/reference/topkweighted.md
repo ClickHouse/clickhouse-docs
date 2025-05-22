@@ -1,13 +1,16 @@
-description: '指定されたカラム内の概ね最も頻繁な値の配列を返します。結果の配列は、値自体ではなく、値の概ねの頻度の降順でソートされます。さらに、値の重みも考慮されます。'
-sidebar_position: 203
-slug: /sql-reference/aggregate-functions/reference/topkweighted
-title: 'topKWeighted'
-```
+---
+'description': '指定されたカラム内のおおよそ最も頻繁に出現する値の配列を返します。結果の配列は値自体ではなく、おおよその出現頻度の降順でソートされます。さらに、値の重みも考慮されます。'
+'sidebar_position': 203
+'slug': '/sql-reference/aggregate-functions/reference/topkweighted'
+'title': 'topKWeighted'
+---
+
+
 
 
 # topKWeighted
 
-指定されたカラム内の概ね最も頻繁な値の配列を返します。結果の配列は、値自体ではなく、値の概ねの頻度の降順でソートされます。さらに、値の重みも考慮されます。
+指定されたカラム内の約最も頻繁な値の配列を返します。結果の配列は、値自体ではなく、値の近似頻度の降順でソートされます。さらに、値の重みも考慮されます。
 
 **構文**
 
@@ -20,17 +23,17 @@ topKWeighted(N, load_factor, 'counts')(column, weight)
 **パラメータ**
 
 - `N` — 返す要素の数。オプション。デフォルト値: 10。
-- `load_factor` — 値のために予約されたセルの数を定義します。もし uniq(column) > N * load_factor であれば、topK 関数の結果は概算になります。オプション。デフォルト値: 3。
-- `counts` — 結果に概算のカウントとエラ―値が含まれるべきかを定義します。
+- `load_factor` — 値のために予約されるセルの数を定義します。もし uniq(column) > N * load_factor の場合、topK 関数の結果は近似値になります。オプション。デフォルト値: 3。
+- `counts` — 結果に近似カウントと誤差値を含むべきかどうかを定義します。
 
 **引数**
 
 - `column` — 値。
-- `weight` — 重み。すべての値は、頻度計算のために `weight` 回カウントされます。 [UInt64](../../../sql-reference/data-types/int-uint.md)。
+- `weight` — 重み。各値は頻度計算のために `weight` 回考慮されます。 [UInt64](../../../sql-reference/data-types/int-uint.md)。
 
-**返り値**
+**返される値**
 
-最大の重みの概算の合計を持つ値の配列を返します。
+最大の近似重みの合計を持つ値の配列を返します。
 
 **例**
 

@@ -1,32 +1,34 @@
 ---
-description: 'SQLiteデータベースに格納されたデータに対してクエリを実行することを可能にします。'
-sidebar_label: 'sqlite'
-sidebar_position: 185
-slug: /sql-reference/table-functions/sqlite
-title: 'sqlite'
+'description': 'SQLiteデータベースに格納されたデータにクエリを実行できます。'
+'sidebar_label': 'sqlite'
+'sidebar_position': 185
+'slug': '/sql-reference/table-functions/sqlite'
+'title': 'sqlite'
 ---
+
+
 
 
 # sqlite テーブル関数
 
-[SQLite](../../engines/database-engines/sqlite.md)データベースに格納されたデータに対してクエリを実行することを可能にします。
+SQLite データベースに格納されたデータに対してクエリを実行することを可能にします。
 
-**構文**
+## 構文 {#syntax}
 
 ```sql
 sqlite('db_path', 'table_name')
 ```
 
-**引数**
+## 引数 {#arguments}
 
-- `db_path` — SQLiteデータベースのファイルパス。[文字列](../../sql-reference/data-types/string.md)。
-- `table_name` — SQLiteデータベース内のテーブル名。[文字列](../../sql-reference/data-types/string.md)。
+- `db_path` — SQLite データベースを含むファイルへのパス。 [String](../../sql-reference/data-types/string.md)。
+- `table_name` — SQLite データベース内のテーブルの名前。 [String](../../sql-reference/data-types/string.md)。
 
-**返される値**
+## 返される値 {#returned_value}
 
-- 元の`SQLite`テーブルと同じカラムを持つテーブルオブジェクト。
+- 元の `SQLite` テーブルと同じカラムを持つテーブルオブジェクト。
 
-**例**
+## 例 {#example}
 
 クエリ:
 
@@ -44,6 +46,6 @@ SELECT * FROM sqlite('sqlite.db', 'table1') ORDER BY col2;
 └───────┴──────┘
 ```
 
-**その他の参照**
+## 関連 {#related}
 
 - [SQLite](../../engines/table-engines/integrations/sqlite.md) テーブルエンジン

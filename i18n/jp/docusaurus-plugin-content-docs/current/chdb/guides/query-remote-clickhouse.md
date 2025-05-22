@@ -1,63 +1,67 @@
 ---
-title: 'リモートの ClickHouse サーバーにクエリをかける方法'
-sidebar_label: 'リモートの ClickHouse をクエリする'
-slug: /chdb/guides/query-remote-clickhouse
-description: 'このガイドでは、chDB からリモートの ClickHouse サーバーにクエリをかける方法を学びます。'
-keywords: ['chdb', 'clickhouse']
+'title': 'リモートClickHouseサーバーのクエリ方法'
+'sidebar_label': 'リモートClickHouseのクエリ'
+'slug': '/chdb/guides/query-remote-clickhouse'
+'description': 'このガイドでは、chDBからリモートClickHouseサーバーにクエリする方法について学びます。'
+'keywords':
+- 'chdb'
+- 'clickhouse'
 ---
 
-このガイドでは、chDB からリモートの ClickHouse サーバーにクエリをかける方法を学びます。
 
-## セットアップ {#setup}
 
-まずは仮想環境を作成しましょう：
+In this guide, we're going to learn how to query a remote ClickHouse server from chDB.
+
+## Setup {#setup}
+
+まず、仮想環境を作成します。
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-次に chDB をインストールします。
-バージョン 2.0.2 以上であることを確認してください：
+次に、chDBをインストールします。
+バージョン2.0.2以上であることを確認してください：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-次に pandas と ipython をインストールします：
+次に、pandasとipythonをインストールします：
 
 ```bash
 pip install pandas ipython
 ```
 
-引き続き、`ipython` を使用してガイドの残りの部分でコマンドを実行します。以下のコマンドで起動できます：
+このガイドの残りの部分でコマンドを実行するために、`ipython`を使用します。これを起動するには、次のコマンドを実行します：
 
 ```bash
 ipython
 ```
 
-Python スクリプトまたはお気に入りのノートブックでこのコードを使用することもできます。
+コードをPythonスクリプトやお気に入りのノートブックで使用することもできます。
 
-## ClickPy の紹介 {#an-intro-to-clickpy}
+## An intro to ClickPy {#an-intro-to-clickpy}
 
-私たちがクエリをかけるリモートの ClickHouse サーバーは [ClickPy](https://clickpy.clickhouse.com) です。
-ClickPy は PyPI パッケージのすべてのダウンロードを追跡し、UI を通じてパッケージの統計を探索できるようにしています。
-基盤となるデータベースは `play` ユーザーを使用してクエリが可能です。
+私たちがクエリを実行するリモートClickHouseサーバーは[ClickPy](https://clickpy.clickhouse.com)です。
+ClickPyはPyPIパッケージのすべてのダウンロードを追跡し、UIを介してパッケージの統計を探索できます。
+基礎データベースは`play`ユーザーを使用してクエリが可能です。
 
-ClickPy についての詳細は [GitHub リポジトリ](https://github.com/ClickHouse/clickpy) を参照してください。
+ClickPyの詳細については、[GitHubリポジトリ](https://github.com/ClickHouse/clickpy)を参照してください。
 
-## ClickPy ClickHouse サービスにクエリをかける {#querying-the-clickpy-clickhouse-service}
+## Querying the ClickPy ClickHouse service {#querying-the-clickpy-clickhouse-service}
 
-まず chDB をインポートします：
+まずchDBをインポートします：
 
 ```python
 import chdb
 ```
 
-`remoteSecure` 関数を使って ClickPy にクエリをかけます。
-この関数には、ホスト名、テーブル名、およびユーザー名を最低限指定します。
+`remoteSecure`関数を使ってClickPyにクエリを実行します。
+この関数は、ホスト名、テーブル名、ユーザー名を最低限必要とします。
 
-以下のクエリを記述して、[`openai` パッケージ](https://clickpy.clickhouse.com/dashboard/openai) の日ごとのダウンロード数を Pandas DataFrame として返すことができます：
+次のクエリを記述して、[`openai`パッケージ](https://clickpy.clickhouse.com/dashboard/openai)の1日あたりのダウンロード数をPandas DataFrameとして返します：
 
 ```python
 query = """
@@ -92,7 +96,7 @@ openai_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-次に、同様の手順で [`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn) のダウンロードを取得します：
+次に、[`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn)のダウンロード数を返すために同じことを行います：
 
 ```python
 query = """
@@ -127,9 +131,9 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-## Pandas DataFrame のマージ {#merging-pandas-dataframes}
+## Merging Pandas DataFrames {#merging-pandas-dataframes}
 
-これで 2 つの DataFrame ができましたので、日付（`x` カラム）に基づいてマージできます：
+現在、2つのDataFrameができたので、日付（`x`列）に基づいてマージできます：
 
 ```python
 df = openai_df.merge(
@@ -149,7 +153,7 @@ df.head(n=5)
 4  2018-03-02         5      23842
 ```
 
-次に、Open AI のダウンロード数と `scikit-learn` のダウンロード数の比率を計算します：
+次に、Open AIのダウンロード数と`scikit-learn`のダウンロード数の比率を計算します：
 
 ```python
 df['ratio'] = df['y_openai'] / df['y_sklearn']
@@ -165,10 +169,10 @@ df.head(n=5)
 4  2018-03-02         5      23842  0.000210
 ```
 
-## Pandas DataFrame のクエリ {#querying-pandas-dataframes}
+## Querying Pandas DataFrames {#querying-pandas-dataframes}
 
-次に、最高および最低の比率を持つ日付を探したいとしましょう。
-chDB に戻り、それらの値を計算できます：
+次に、最高と最低の比率の日付を見つけたいとしましょう。
+chDBに戻ってそれらの値を計算できます：
 
 ```python
 chdb.query("""
@@ -185,4 +189,4 @@ FROM Python(df)
 0   0.693855  2024-09-19    0.000003  2020-02-09
 ```
 
-Pandas DataFrame をクエリする方法について詳しく知りたい場合は、[Pandas DataFrames 開発者ガイド](querying-pandas.md)を参照してください。
+Pandas DataFramesのクエリについてさらに学ぶには、[Pandas DataFrames開発者ガイド](querying-pandas.md)を参照してください。

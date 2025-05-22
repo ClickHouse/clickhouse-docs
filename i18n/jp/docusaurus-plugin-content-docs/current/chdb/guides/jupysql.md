@@ -1,16 +1,17 @@
 ---
-title: 'JupySQL と chDB'
-sidebar_label: 'JupySQL'
-slug: /chdb/guides/jupysql
-description: 'Bun 用に chDB をインストールする方法'
-keywords: ['chdb', 'JupySQL']
+'title': 'JupySQL and chDB'
+'sidebar_label': 'JupySQL'
+'slug': '/chdb/guides/jupysql'
+'description': 'How to install chDB for Bun'
+'keywords':
+- 'chdb'
+- 'JupySQL'
 ---
 
 import Image from '@theme/IdealImage';
 import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png';
 
-[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) は、Jupyter ノートブックや IPython シェルで SQL を実行できる Python ライブラリです。
-このガイドでは、chDB と JupySQL を使用してデータをクエリする方法を学びます。
+[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) は、Jupyter ノートブックや IPython シェルで SQL を実行するための Python ライブラリです。このガイドでは、chDB と JupySQL を使用してデータをクエリする方法を学びます。
 
 <div class='vimeo-container'>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/2wjl3OijCto?si=EVf2JhjS5fe4j6Cy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -18,39 +19,38 @@ import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png
 
 ## セットアップ {#setup}
 
-まず、仮想環境を作成しましょう：
+まず、仮想環境を作成しましょう:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-次に、JupySQL、IPython、および Jupyter Lab をインストールします：
+その後、JupySQL、IPython、Jupyter Lab をインストールします:
 
 ```bash
 pip install jupysql ipython jupyterlab
 ```
 
-IPython で JupySQL を使用できます。これは次のコマンドで起動できます：
+IPython では JupySQL を使用でき、次のコマンドを実行して起動できます:
 
 ```bash
 ipython
 ```
 
-または、Jupyter Lab では次のコマンドを実行します：
+または、Jupyter Lab を次のコマンドで起動できます:
 
 ```bash
 jupyter lab
 ```
 
 :::note
-Jupyter Lab を使用している場合、ガイドの残りの部分に従う前にノートブックを作成する必要があります。
+Jupyter Lab を使用している場合は、ガイドの残りの部分をフォローする前にノートブックを作成する必要があります。
 :::
 
 ## データセットのダウンロード {#downloading-a-dataset}
 
-[Jeff Sackmann の tennis_atp](https://github.com/JeffSackmann/tennis_atp) データセットの一つを使用します。このデータセットには、選手とそのランキングに関するメタデータが含まれています。
-まず、ランキングファイルをダウンロードします：
+[Jeff Sackmann の tennis_atp](https://github.com/JeffSackmann/tennis_atp) データセットの1つを使用します。このデータセットは、選手とそのランキングに関するメタデータが含まれています。まず、ランキングファイルをダウンロードします:
 
 ```python
 from urllib.request import urlretrieve
@@ -68,36 +68,34 @@ for file in files:
 
 ## chDB と JupySQL の設定 {#configuring-chdb-and-jupysql}
 
-次に、chDB の `dbapi` モジュールをインポートします：
+次に、chDB の `dbapi` モジュールをインポートします:
 
 ```python
 from chdb import dbapi
 ```
 
-そして、chDB 接続を作成します。
-永続化するデータは `atp.chdb` ディレクトリに保存されます：
+そして、chDB 接続を作成します。永続化するデータは `atp.chdb` ディレクトリに保存されます:
 
 ```python
 conn = dbapi.connect(path="atp.chdb")
 ```
 
-次に、`sql` マジックを読み込み、chDB への接続を作成します：
+次に、`sql` マジックを読み込み、chDB への接続を作成します:
 
 ```python
 %load_ext sql
 %sql conn --alias chdb
 ```
 
-次に、クエリの結果が切り捨てられないように表示制限を設定します：
+クエリの結果が切り捨てられないように、表示制限を設定します:
 
 ```python
 %config SqlMagic.displaylimit = None
 ```
 
-## CSV ファイルのデータをクエリする {#querying-data-in-csv-files}
+## CSV ファイル内のデータをクエリする {#querying-data-in-csv-files}
 
-`atp_rankings` プレフィックスの付いたたくさんのファイルをダウンロードしました。
-`DESCRIBE` 句を使ってスキーマを理解しましょう：
+`atp_rankings` プレフィックスのついた複数のファイルをダウンロードしました。`DESCRIBE` 句を使用してスキーマを理解しましょう:
 
 ```python
 %%sql
@@ -117,7 +115,7 @@ SETTINGS describe_compact_output=1,
 +--------------+-------+
 ```
 
-これらのファイルに対して直接 `SELECT` クエリを書くことで、データがどうなっているのかを確認できます：
+これらのファイルに対して直接 `SELECT` クエリを書いて、データがどのようなものか見てみましょう:
 
 ```python
 %sql SELECT * FROM file('atp_rankings*.csv') LIMIT 1
@@ -131,8 +129,7 @@ SETTINGS describe_compact_output=1,
 +--------------+------+--------+--------+
 ```
 
-データの形式が少し奇妙です。
-日付をきれいにして、`REPLACE` 句を使用して整形された `ranking_date` を返します：
+データの形式は少し変わっています。日付をきれいにして、`REPLACE` 句を使用してクリーンアップした `ranking_date` を返します:
 
 ```python
 %%sql
@@ -163,14 +160,13 @@ SETTINGS schema_inference_make_columns_nullable=0
 
 ## chDB に CSV ファイルをインポートする {#importing-csv-files-into-chdb}
 
-今度は、これらの CSV ファイルからデータをテーブルに保存します。
-デフォルトのデータベースはディスク上にデータを永続化しないため、まず別のデータベースを作成する必要があります：
+次に、これらの CSV ファイルからデータをテーブルに格納します。デフォルトのデータベースはディスク上にデータを永続化しないため、まず別のデータベースを作成する必要があります:
 
 ```python
 %sql CREATE DATABASE atp
 ```
 
-次に、CSV ファイルのデータ構造から導き出されたスキーマを持つ `rankings` という名前のテーブルを作成します：
+そして、CSV ファイルのデータの構造に基づいて `rankings` という名前のテーブルを作成します:
 
 ```python
 %%sql
@@ -184,7 +180,7 @@ FROM file('atp_rankings*.csv')
 SETTINGS schema_inference_make_columns_nullable=0
 ```
 
-テーブル内のデータを簡単に確認してみましょう：
+テーブル内のデータを簡単にチェックします:
 
 ```python
 %sql SELECT * FROM atp.rankings LIMIT 10
@@ -207,10 +203,10 @@ SETTINGS schema_inference_make_columns_nullable=0
 +--------------+------+--------+--------+
 ```
 
-良好です - 出力は、CSV ファイルを直接クエリしたときの出力と同じであることが確認できました。
+良さそうです - 出力は予想通り、CSV ファイルを直接クエリしたときと同じです。
 
-選手メタデータについても同じプロセスを行います。
-今回はデータが単一の CSV ファイルに収められているため、そのファイルをダウンロードします：
+選手のメタデータについても同じプロセスを実行します。今回はデータが1つの CSV ファイルにすべて入っているので、そのファイルをダウンロードしましょう:
+
 
 ```python
 _ = urlretrieve(
@@ -219,10 +215,9 @@ _ = urlretrieve(
 )
 ```
 
-次に、CSV ファイルの内容に基づいて `players` という名前のテーブルを作成します。
-`dob` フィールドを `Date32` 型にクリーンアップします。
+その後、CSV ファイルの内容に基づいて `players` という名前のテーブルを作成します。`dob` フィールドもクリーンアップして、`Date32` 型にします。
 
-> ClickHouse では、`Date` 型は 1970 年以降の日付のみをサポートしています。`dob` 列には 1970 年以前の日付が含まれているため、代わりに `Date32` 型を使用します。
+> ClickHouse では、`Date` 型は 1970 年以降の日付のみをサポートしています。`dob` 列には 1970 年以前の日付が含まれているため、`Date32` 型を代わりに使用します。
 
 ```python
 %%sql
@@ -240,7 +235,8 @@ FROM file('atp_players.csv')
 SETTINGS schema_inference_make_columns_nullable=0
 ```
 
-実行が完了したら、取り込んだデータを確認できます：
+これが実行されると、取り込んだデータを確認できます:
+
 
 ```python
 %sql SELECT * FROM atp.players LIMIT 10
@@ -263,13 +259,11 @@ SETTINGS schema_inference_make_columns_nullable=0
 +-----------+------------+-----------+------+------------+-----+--------+-------------+
 ```
 
-## chDB のクエリ実行 {#querying-chdb}
+## chDB をクエリする {#querying-chdb}
 
-データの取り込みが完了しました。次は楽しい部分 - データのクエリです！
+データの取り込みが完了し、次は楽しい部分 - データをクエリします！
 
-テニス選手は、参加するトーナメントでのパフォーマンスに基づいてポイントを獲得します。
-各選手のポイントは 52 週間のローリング期間に基づいています。
-各選手が累積する最大ポイントと、当時のランキングを見つけるクエリを書きます：
+テニス選手は、参加するトーナメントでのパフォーマンスに基づいてポイントを受け取ります。各選手のポイントは、52 週間のローリング期間にわたって集計されます。各選手が獲得した最大ポイントと、その時のランキングを見つけるクエリを書きます:
 
 ```python
 %%sql
@@ -301,12 +295,11 @@ LIMIT 10
 +------------+-----------+-----------+------+------------+
 ```
 
-このリストの中には、ポイント数が多くても 1 位になれなかった選手がいることが興味深いです。
+このリストにある選手のうち、ポイントが1位でなくても多くのポイントを累積している選手がいるのは非常に興味深いです。
 
-## クエリの保存 {#saving-queries}
+## クエリを保存する {#saving-queries}
 
-クエリは、`%%sql` マジックと同じ行で `--save` パラメータを使って保存できます。
-`--no-execute` パラメータはクエリの実行をスキップします。
+`--save` パラメータを使用して同じ行にクエリを保存できます。`--no-execute` パラメータは、クエリの実行をスキップすることを意味します。
 
 ```python
 %%sql --save best_points --no-execute
@@ -320,8 +313,7 @@ GROUP BY ALL
 ORDER BY maxPoints DESC
 ```
 
-保存されたクエリを実行すると、実行時に共通テーブル式 (CTE) に変換されます。
-次のクエリでは、選手が 1 位のときに達成した最大ポイントを計算します：
+保存されたクエリを実行すると、実行前に共通テーブル式（CTE）に変換されます。次のクエリでは、選手がランキング1位の時に達成した最大ポイントを計算します:
 
 ```python
 %sql select * FROM best_points WHERE rank=1
@@ -348,17 +340,15 @@ ORDER BY maxPoints DESC
 +-------------+-----------+-----------+------+------------+
 ```
 
-## パラメータを使用したクエリ {#querying-with-parameters}
+## パラメータを使ったクエリ {#querying-with-parameters}
 
-クエリでパラメータを使用することもできます。
-パラメータは通常の変数です：
+クエリ内でパラメータを使用することもできます。パラメータは通常の変数です:
 
 ```python
 rank = 10
 ```
 
-その後、クエリ内で `{{variable}}` 構文を使用できます。
-次のクエリでは、選手がトップ 10 にランキングされた最初の日付と最後の日付の間での日数が最も少なかった選手を見つけます：
+そして、`{{variable}}` 構文をクエリ内で使用できます。次のクエリは、選手が最初にトップ 10 にランキングされてから最後にランキングがあるまでの日数が最も少ない選手を見つけます:
 
 ```python
 %%sql
@@ -394,10 +384,9 @@ LIMIT 10
 
 ## ヒストグラムのプロット {#plotting-histograms}
 
-JupySQL には限られたチャート機能もあります。
-ボックスプロットやヒストグラムを作成できます。
+JupySQL には限られたチャート機能もあります。ボックスプロットやヒストグラムを作成できます。
 
-ヒストグラムを作成する前に、各選手が達成したランキングの上位 100 の計算クエリを書いて（保存します）、この結果を使ってヒストグラムを作成します：
+ヒストグラムを作成しますが、まずは各プレイヤーが達成したトップ100のランキングを計算するクエリを書いて（保存します）、これを使ってヒストグラムを作成します:
 
 ```python
 %%sql --save players_per_rank --no-execute
@@ -406,7 +395,7 @@ FROM atp.rankings
 WHERE rank <= 100
 ```
 
-次に、次のコマンドを実行してヒストグラムを作成します：
+次に、以下のコードを実行してヒストグラムを作成できます:
 
 ```python
 from sql.ggplot import ggplot, geom_histogram, aes
@@ -420,4 +409,4 @@ plot = (
 )
 ```
 
-<Image img={PlayersPerRank} size="md" alt="ATPデータセットにおけるプレイヤーランキングのヒストグラム" />
+<Image img={PlayersPerRank} size="md" alt="ATP データセットにおけるプレイヤーランクのヒストグラム" />

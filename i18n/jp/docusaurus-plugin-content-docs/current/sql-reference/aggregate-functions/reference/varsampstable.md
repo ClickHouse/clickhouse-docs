@@ -1,13 +1,17 @@
 ---
-description: 'データセットのサンプル分散を計算します。`varSamp`とは異なり、この関数は数値的に安定したアルゴリズムを使用します。処理速度は遅くなりますが、計算誤差が小さくなります。'
-sidebar_position: 213
-slug: /sql-reference/aggregate-functions/reference/varsampstable
-title: 'varSampStable'
+'description': 'Calculate the sample variance of a data set. Unlike `varSamp` , this
+  function uses a numerically stable algorithm. It works slower but provides a lower
+  computational error.'
+'sidebar_position': 213
+'slug': '/sql-reference/aggregate-functions/reference/varsampstable'
+'title': 'varSampStable'
 ---
+
+
 
 ## varSampStable {#varsampstable}
 
-データセットのサンプル分散を計算します。[`varSamp`](../reference/varsamp.md)とは異なり、この関数は数値的に安定したアルゴリズムを使用します。処理速度は遅くなりますが、計算誤差が小さくなります。
+データセットのサンプル分散を計算します。[`varSamp`](../reference/varsamp.md)とは異なり、この関数は数値的に安定したアルゴリズムを使用しています。動作は遅くなりますが、計算誤差が低くなります。
 
 **構文**
 
@@ -19,7 +23,7 @@ varSampStable(x)
 
 **パラメータ**
 
-- `x`: サンプル分散を計算したい母集団。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
+- `x`: サンプル分散を計算したい母集団。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md)。
 
 **返される値**
 

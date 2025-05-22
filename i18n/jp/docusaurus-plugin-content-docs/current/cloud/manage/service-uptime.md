@@ -1,14 +1,16 @@
 ---
-sidebar_label: 'サービスの稼働時間とSLA'
-slug: /cloud/manage/service-uptime
-title: 'サービスの稼働時間'
-description: 'ユーザーは現在、ステータスページで地域の稼働時間を確認でき、サービスの中断に関するアラートを購読できます。'
+'sidebar_label': 'サービスの稼働時間とSLA'
+'slug': '/cloud/manage/service-uptime'
+'title': 'サービスの稼働時間'
+'description': 'ユーザーは今、ステータスページで地域ごとの稼働時間を確認し、サービスの障害に関するアラートを購読できます。'
 ---
 
-## 稼働時間アラート {#uptime-alerts}
 
-ユーザーは現在、[ステータスページ](https://status.clickhouse.com/)で地域の稼働時間を確認でき、サービスの中断に関するアラートを購読できます。
+
+## Uptime Alerts {#uptime-alerts}
+
+ユーザーは現在、[ステータスページ](https://status.clickhouse.com/)で地域の稼働時間を確認し、サービスの中断に関するアラートの購読が可能です。
 
 ## SLA {#sla}
 
-特定のコミットされた支出契約に対してサービスレベル契約も提供しています。SLAポリシーについて詳しく知りたい場合は、[sales@clickhouse.com](mailto:sales@clickhouse.com)までお問い合わせください。
+選択されたコミットメント支出契約に対してサービスレベルアグリーメントも提供しています。SLAポリシーの詳細については、[sales@clickhouse.com](mailto:sales@clickhouse.com)までお問い合わせください。

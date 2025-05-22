@@ -1,22 +1,25 @@
 ---
-alias: []
-description: 'JSONCompactEachRowフォーマットに関するドキュメント'
-input_format: true
-keywords: ['JSONCompactEachRow']
-output_format: true
-slug: /interfaces/formats/JSONCompactEachRow
-title: 'JSONCompactEachRow'
+'alias': []
+'description': 'JSONCompactEachRow フォーマットのドキュメント'
+'input_format': true
+'keywords':
+- 'JSONCompactEachRow'
+'output_format': true
+'slug': '/interfaces/formats/JSONCompactEachRow'
+'title': 'JSONCompactEachRow'
 ---
 
-| 入力 | 出力 | エイリアス |
-|------|------|-------|
-| ✔    | ✔    |       |
+
+
+| Input | Output | Alias |
+|-------|--------|-------|
+| ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-データ行がオブジェクトではなく配列として出力される点が、 [`JSONEachRow`](./JSONEachRow.md) と異なります。
+[`JSONEachRow`](./JSONEachRow.md) とは異なり、データ行はオブジェクトではなく配列として出力されます。
 
-## 使用例 {#example-usage}
+## 例の使い方 {#example-usage}
 
 例:
 

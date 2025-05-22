@@ -1,9 +1,9 @@
 ---
-description: 'このエンジンはClickHouseとRedisを統合することを可能にします。'
-sidebar_label: 'Redis'
-sidebar_position: 175
-slug: /engines/table-engines/integrations/redis
-title: 'Redis'
+'description': 'This engine allows integrating ClickHouse with Redis.'
+'sidebar_label': 'Redis'
+'sidebar_position': 175
+'slug': '/engines/table-engines/integrations/redis'
+'title': 'Redis'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -13,7 +13,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
-このエンジンはClickHouseと[Redis](https://redis.io/)を統合することを可能にします。Redisはkvモデルを使用しているため、`where k=xx`や`where k in (xx, xx)`のようにポイント的にクエリを実行することを強く推奨します。
+このエンジンは、ClickHouseを[Redis](https://redis.io/)と統合することを可能にします。Redisはkvモデルを使用するため、`where k=xx`や`where k in (xx, xx)`のようにポイントでのみクエリを実行することを強く推奨します。
 
 ## テーブルの作成 {#creating-a-table}
 
@@ -27,27 +27,28 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name
 PRIMARY KEY(primary_key_name);
 ```
 
-**エンジンパラメーター**
+**エンジンパラメータ**
 
-- `host:port` — Redisサーバーアドレス。ポートを無視することができ、デフォルトのRedisポート6379が使用されます。
-- `db_index` — Redisのdbインデックスは0から15の範囲で、デフォルトは0です。
+- `host:port` — Redisサーバーのアドレス。ポートを無視することができ、デフォルトのRedisポート6379が使用されます。
+- `db_index` — Redisのdbインデックスは0から15の範囲、デフォルトは0です。
 - `password` — ユーザーパスワード、デフォルトは空文字列です。
 - `pool_size` — Redisの最大接続プールサイズ、デフォルトは16です。
-- `primary_key_name` - カラムリスト内の任意のカラム名です。
+- `primary_key_name` - カラムリストの任意のカラム名。
 
 :::note シリアル化
-`PRIMARY KEY`は1つのカラムのみをサポートします。主キーはRedisキーとしてバイナリでシリアル化されます。主キー以外のカラムは、対応する順序でRedis値としてバイナリでシリアル化されます。
+`PRIMARY KEY`は1つのカラムのみをサポートします。プライマリキーはRedisキーとしてバイナリにシリアル化されます。
+プライマリキー以外のカラムは対応する順序でRedis値としてバイナリにシリアル化されます。
 :::
 
-引数は[named collections](/operations/named-collections.md)を使用して渡すこともできます。この場合、`host`と`port`は別々に指定する必要があります。このアプローチは本番環境で推奨されます。現在のところ、redisへのnamed collectionsを使用して渡されるすべてのパラメーターが必要です。
+引数は[named collections](/operations/named-collections.md)を使用して渡すこともできます。この場合、`host`と`port`は別々に指定する必要があります。このアプローチは、本番環境で推奨されます。この時点で、named collectionsを使用してRedisに渡されるすべてのパラメータは必須です。
 
 :::note フィルタリング
-`key equals`または`in filtering`のクエリは、Redisからのマルチキーのルックアップに最適化されます。フィルタリングキーなしでクエリを実行した場合、全テーブルスキャンが発生し、これは重い操作です。
+`key equals`または`in filtering`を伴うクエリは、Redisからの複数キーのルックアップに最適化されます。フィルタリングキーなしのクエリでは、全テーブルスキャンが発生し、これは重い操作です。
 :::
 
 ## 使用例 {#usage-example}
 
-平易な引数で`Redis`エンジンを使用してClickHouseにテーブルを作成します：
+プレーン引数を使用して`Redis`エンジンでClickHouseにテーブルを作成します：
 
 ```sql
 CREATE TABLE redis_table
@@ -60,7 +61,7 @@ CREATE TABLE redis_table
 ENGINE = Redis('redis1:6379') PRIMARY KEY(key);
 ```
 
-または[named collections](/operations/named-collections.md)を使用して：
+もしくは[named collections](/operations/named-collections.md)を使用して：
 
 ```xml
 <named_collections>
@@ -125,7 +126,7 @@ SELECT * FROM redis_table WHERE v1=2;
 
 更新：
 
-主キーは更新できないことに注意してください。
+プライマリキーは更新できないことに注意してください。
 
 ```sql
 ALTER TABLE redis_table UPDATE v1=2 WHERE key='1';
@@ -147,14 +148,14 @@ TRUNCATE TABLE redis_table SYNC;
 
 結合：
 
-他のテーブルとの結合。
+他のテーブルと結合します。
 
 ```sql
 SELECT * FROM redis_table JOIN merge_tree_table ON merge_tree_table.key=redis_table.key;
 ```
 
-## 限界 {#limitations}
+## 制限事項 {#limitations}
 
 Redisエンジンは、`where k > xx`のようなスキャンクエリもサポートしていますが、いくつかの制限があります：
-1. スキャンクエリは、再ハッシュ中に非常にまれにいくつかの重複キーを生成する場合があります。[Redis Scan](https://github.com/redis/redis/blob/e4d183afd33e0b2e6e8d1c79a832f678a04a7886/src/dict.c#L1186-L1269)の詳細を参照してください。
-2. スキャン中にキーが作成されたり削除されたりすると、結果のデータセットは有効な時点を表すことができません。
+1. スキャンクエリは、リハッシュ中に非常にまれに重複したキーを生成する可能性があります。詳細は[Redis Scan](https://github.com/redis/redis/blob/e4d183afd33e0b2e6e8d1c79a832f678a04a7886/src/dict.c#L1186-L1269)を参照してください。
+2. スキャン中にキーが作成され、削除される可能性があるため、結果のデータセットは有効な時点を表さないことがあります。

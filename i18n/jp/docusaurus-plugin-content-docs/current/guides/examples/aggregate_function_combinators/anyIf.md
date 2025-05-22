@@ -1,21 +1,28 @@
 ---
-slug: '/examples/aggregate-function-combinators/anyIf'
-title: 'anyIf'
-description: 'anyIf コマンビネーターの使用例'
-keywords: ['any', 'if', 'combinator', 'examples', 'anyIf']
-sidebar_label: 'anyIf'
+'slug': '/examples/aggregate-function-combinators/anyIf'
+'title': 'anyIf'
+'description': '使用例：anyIf コンビネーター'
+'keywords':
+- 'any'
+- 'if'
+- 'combinator'
+- 'examples'
+- 'anyIf'
+'sidebar_label': 'anyIf'
 ---
+
+
 
 
 # anyIf {#avgif}
 
 ## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) コマンビネーターは、与えられたカラムから条件に一致する最初の要素を選択するために、[`any`](/sql-reference/aggregate-functions/reference/any) 集約関数に適用することができます。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターは、指定された条件に一致する特定のカラムから最初に遭遇した要素を選択するために、[`any`](/sql-reference/aggregate-functions/reference/any) 集約関数に適用できます。
 
 ## 使用例 {#example-usage}
 
-この例では、成功フラグを含む売上データを格納するテーブルを作成し、`anyIf` を使用して、金額が 200 を超えるおよび 200 未満の最初の `transaction_id` を選択します。
+この例では、成功フラグを持つ売上データを保存するテーブルを作成し、`anyIf` を使用して、金額 200 より上、および下の最初の `transaction_id` を選択します。
 
 まず、テーブルを作成し、データを挿入します：
 
@@ -44,12 +51,12 @@ SELECT
 FROM sales;
 ```
 
-```response title="レスポンス"
+```response title="応答"
 ┌─tid_lt_200─┬─tid_gt_200─┐
 │          1 │          4 │
 └────────────┴────────────┘
 ```
 
-## その他の情報 {#see-also}
+## 関連情報 {#see-also}
 - [`any`](/sql-reference/aggregate-functions/reference/any)
-- [`If コマンビネーター`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

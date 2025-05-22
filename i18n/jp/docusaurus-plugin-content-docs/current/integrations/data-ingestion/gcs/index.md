@@ -1,38 +1,39 @@
 ---
-sidebar_label: 'Google Cloud Storage (GCS)'
-sidebar_position: 4
-slug: /integrations/gcs
-description: 'Google Cloud Storage (GCS) に基づく MergeTree'
-title: 'ClickHouse と Google Cloud Storage を統合する'
+'sidebar_label': 'Google Cloud Storage (GCS)'
+'sidebar_position': 4
+'slug': '/integrations/gcs'
+'description': 'Google Cloud Storage (GCS) Backed MergeTree'
+'title': 'Integrate Google Cloud Storage with ClickHouse'
 ---
 
-import BucketDetails from '@site/docs/_snippets/_GCS_authentication_and_bucket.md';
+import BucketDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_GCS_authentication_and_bucket.md';
 import Image from '@theme/IdealImage';
 import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';
 import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-2.png';
 
 
-# ClickHouse と Google Cloud Storage を統合する
+
+# Google Cloud StorageをClickHouseと統合する
 
 :::note
-ClickHouse Cloud を [Google Cloud](https://cloud.google.com) で使用している場合、このページは適用されません。あなたのサービスはすでに [Google Cloud Storage](https://cloud.google.com/storage) を使用しています。GCS からデータを `SELECT` または `INSERT` しようとしている場合は、[`gcs` テーブル関数](/sql-reference/table-functions/gcs) を参照してください。
+ClickHouse Cloudを[Google Cloud](https://cloud.google.com)で使用している場合、このページは適用されません。サービスはすでに[Google Cloud Storage](https://cloud.google.com/storage)を使用しているためです。GCSからデータを`SELECT`または`INSERT`しようとしている場合は、[`gcs`テーブル関数](/sql-reference/table-functions/gcs)を参照してください。
 :::
 
-ClickHouse は、GCS がストレージと計算を分離したいユーザーにとって魅力的なストレージソリューションであることを認識しています。これを実現するために、GCS を MergeTree エンジンのストレージとして使用するためのサポートを提供しています。これにより、ユーザーは GCS のスケーラビリティとコストメリット、および MergeTree エンジンの挿入とクエリのパフォーマンスを活用できるようになります。
+ClickHouseは、GCSがストレージと計算を分離したいユーザーにとって魅力的なストレージソリューションであることを認識しています。この実現を助けるため、MergeTreeエンジンのストレージとしてGCSを使用するためのサポートが提供されています。これにより、ユーザーはGCSのスケーラビリティとコスト利点、さらにMergeTreeエンジンの挿入とクエリパフォーマンスを活用できます。
 
-## GCS に基づく MergeTree {#gcs-backed-mergetree}
+## GCSバックのMergeTree {#gcs-backed-mergetree}
 
 ### ディスクの作成 {#creating-a-disk}
 
-GCS バケットをディスクとして利用するには、まず ClickHouse 設定ファイルの `conf.d` 内に宣言する必要があります。以下に GCS ディスクの宣言の例を示します。この設定には、GCS「ディスク」の設定、キャッシュ、テーブルを GCS ディスクに作成する際に DDL クエリで指定されるポリシーを設定する複数のセクションが含まれています。これらの詳細は以下に記載されています。
+GCSバケットをディスクとして利用するには、まずClickHouseの設定ファイル内で`conf.d`の下にそれを宣言する必要があります。以下に、GCSディスク宣言の例を示します。この設定には、GCS「ディスク」、キャッシュ、およびテーブルがGCSディスク上に作成される際にDDLクエリで指定されるポリシーを設定するための複数のセクションが含まれています。これらは以下に説明されています。
 
 #### storage_configuration > disks > gcs {#storage_configuration--disks--gcs}
 
-この設定の部分はハイライトされたセクションに示されており、以下を指定しています：
-- バッチ削除は実行しない。GCS は現在バッチ削除をサポートしていないため、エラーメッセージを抑制するために自動検出を無効にしています。
-- ディスクのタイプは `s3` で、S3 API が使用されているためです。
-- GCS により提供されたエンドポイント
-- サービス アカウント HMAC キーとシークレット
+設定のこの部分は強調表示されており、以下を指定します：
+- バッチ削除を実行しない。GCSは現在バッチ削除をサポートしていないため、自動検出はエラーメッセージを抑制するために無効にされています。
+- ディスクのタイプは`s3`です。これはS3 APIが使用されているためです。
+- GCSから提供されるエンドポイント
+- サービスアカウントHMACキーとシークレット
 - ローカルディスク上のメタデータパス
 
 ```xml
@@ -64,7 +65,7 @@ GCS バケットをディスクとして利用するには、まず ClickHouse �
 ```
 #### storage_configuration > disks > cache {#storage_configuration--disks--cache}
 
-以下にハイライトされたサンプル設定は、ディスク `gcs` に 10Gi のメモリキャッシュを有効にするものです。
+以下に強調表示された例設定では、ディスク`gcs`のために10Giのメモリキャッシュを有効にします。
 
 ```xml
 <clickhouse>
@@ -101,7 +102,7 @@ GCS バケットをディスクとして利用するには、まず ClickHouse �
 ```
 #### storage_configuration > policies > gcs_main {#storage_configuration--policies--gcs_main}
 
-ストレージ構成ポリシーにより、データが保存される場所を選択できます。以下にハイライトされたポリシーは、ポリシー `gcs_main` を指定することにより、データがディスク `gcs` に保存されることを可能にします。例えば、`CREATE TABLE ... SETTINGS storage_policy='gcs_main'` のように使用します。
+ストレージ設定ポリシーでは、データがどこに保存されるかを選択できます。以下に強調表示されたポリシーは、ポリシー`gcs_main`を指定することによりデータをディスク`gcs`に保存できるようにします。たとえば、`CREATE TABLE ... SETTINGS storage_policy='gcs_main'`です。
 
 ```xml
 <clickhouse>
@@ -131,11 +132,11 @@ GCS バケットをディスクとして利用するには、まず ClickHouse �
 </clickhouse>
 ```
 
-このディスク宣言に関連する設定の完全なリストは、[こちら](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)で確認できます。
+このディスク宣言に関連する設定の完全なリストは[こちら](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)で確認できます。
 
 ### テーブルの作成 {#creating-a-table}
 
-ディスクが書き込みアクセスを持つバケットを使用するように構成されていると仮定すると、以下の例のようなテーブルを作成できるはずです。簡潔さを考慮して、NYC タクシーのカラムのサブセットを使用し、データを GCS に基づくテーブルに対して直接ストリームします：
+書き込みアクセスを持つバケットを使用するようにディスクを設定していることを前提に、以下の例のようにテーブルを作成できるはずです。簡潔さのために、NYCのタクシーのカラムのサブセットを使用し、データを直接GCSバックのテーブルにストリームします。
 
 ```sql
 CREATE TABLE trips_gcs
@@ -165,88 +166,88 @@ SETTINGS storage_policy='gcs_main'
 INSERT INTO trips_gcs SELECT trip_id, pickup_date, pickup_datetime, dropoff_datetime, pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitude, passenger_count, trip_distance, tip_amount, total_amount, payment_type FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames') LIMIT 1000000;
 ```
 
-ハードウェアによっては、この 1 ミリオン行の挿入は数分かかる場合があります。進捗状況は system.processes テーブルを介して確認できます。行数を最大 10 万まで調整し、サンプルクエリを実行してみてください。
+ハードウェアによっては、この1百万行の挿入には数分かかる場合があります。進捗はsystem.processesテーブルで確認できます。行数を10mの上限まで調整し、サンプルクエリを試してみてください。
 
 ```sql
 SELECT passenger_count, avg(tip_amount) as avg_tip, avg(total_amount) as avg_amount FROM trips_gcs GROUP BY passenger_count;
 ```
 
-### レプリケーションの取り扱い {#handling-replication}
+### レプリケーションの処理 {#handling-replication}
 
-GCS ディスクによるレプリケーションは、`ReplicatedMergeTree` テーブルエンジンを使用することで実現できます。詳細については、[GCS を使用して 2 つの GCP リージョンにわたって単一シャードをレプリケートする](#gcs-multi-region) ガイドを参照してください。
+GCSディスクとのレプリケーションは、`ReplicatedMergeTree`テーブルエンジンを使用して実現できます。[GCSを使用して2つのGCPリージョンで単一のシャードをレプリケートする](#gcs-multi-region)ガイドで詳細を参照してください。
 
-### 詳細を学ぶ {#learn-more}
+### さらに学ぶ {#learn-more}
 
-[Cloud Storage XML API](https://cloud.google.com/storage/docs/xml-api/overview) は、Amazon Simple Storage Service (Amazon S3) などのサービスと連携して機能するツールやライブラリと相互運用性があります。
+[Cloud Storage XML API](https://cloud.google.com/storage/docs/xml-api/overview)は、Amazon Simple Storage Service (Amazon S3)などのサービスと連携するいくつかのツールやライブラリと相互運用可能です。
 
-スレッドのチューニングに関する詳細については、[パフォーマンスの最適化](../s3/index.md#s3-optimizing-performance)を参照してください。
+スレッドの調整に関する詳細情報は、[パフォーマンスの最適化](../s3/index.md#s3-optimizing-performance)を参照してください。
 
-## Google Cloud Storage (GCS) の使用 {#gcs-multi-region}
+## Google Cloud Storage (GCS)の使用 {#gcs-multi-region}
 
 :::tip
-デフォルトで ClickHouse Cloud ではオブジェクトストレージが使用されます。ClickHouse Cloud で実行している場合は、この手順に従う必要はありません。
+ClickHouse Cloudではデフォルトでオブジェクトストレージが使用されるため、ClickHouse Cloudを実行している場合はこの手順に従う必要はありません。
 :::
 
-### 配備の計画 {#plan-the-deployment}
+### デプロイメントの計画 {#plan-the-deployment}
 
-このチュートリアルは、Google Cloud で実行されるレプリケートされた ClickHouse デプロイメントを記述し、ClickHouse ストレージディスク「タイプ」として Google Cloud Storage (GCS) を使用するものです。
+このチュートリアルは、Google Cloudで実行されるレプリケートされたClickHouseデプロイメントを説明し、ClickHouseストレージディスク「タイプ」としてGoogle Cloud Storage (GCS)を使用することを目的とします。
 
-チュートリアルでは、Google Cloud Engine VM に ClickHouse サーバーノードをデプロイし、各ノードにストレージ用の GCS バケットを関連付けます。レプリケーションは、同じく VM としてデプロイされた一連の ClickHouse Keeper ノードによって調整されます。
+チュートリアルでは、ストレージ用のGCSバケットが各Google Cloud Engine VMに関連付けられたClickHouseサーバーノードをデプロイします。レプリケーションは、VMとしてデプロイされた一連のClickHouse Keeperノードによって調整されます。
 
-高可用性に対するサンプル要件：
-- 2 つの GCP リージョンに 2 つの ClickHouse サーバーノード
-- 2 つの GCS バケット、2 つの ClickHouse サーバーノードと同じリージョンに展開
-- 3 つの ClickHouse Keeper ノード、そのうち 2 つは ClickHouse サーバーノードと同じリージョンに展開。3 つ目は最初の 2 つの Keeper ノードのうちの 1 つと同じリージョンでも構いませんが、異なる可用性ゾーンに配置される必要があります。
+高可用性のためのサンプル要件：
+- 2つのGCPリージョンに2つのClickHouseサーバーノード
+- 2つのClickHouseサーバーノードと同じリージョンにデプロイされた2つのGCSバケット
+- 3つのClickHouse Keeperノード、そのうち2つはClickHouseサーバーノードと同じリージョンにデプロイされています。3つ目は、最初の2つのKeeperノードのいずれかと同じリージョンにありますが、異なる可用性ゾーンにあります。
 
-ClickHouse Keeper を機能させるには 2 つのノードが必要なため、高可用性には 3 つのノードが必要です。
+ClickHouse Keeperは機能するために2つのノードが必要であるため、高可用性のために3つのノードが必要です。
 
-### VM の準備 {#prepare-vms}
+### VMの準備 {#prepare-vms}
 
-3 つのリージョンに 5 つの VM を展開します：
+3つのリージョンに5つのVMをデプロイします：
 
-| リージョン | ClickHouse サーバー | バケット             | ClickHouse Keeper |
-|------|-------------------|-------------------|-------------------|
-| 1    | `chnode1`           | `bucket_regionname` | `keepernode1`       |
-| 2    | `chnode2`           | `bucket_regionname` | `keepernode2`       |
-| 3 `*`  |                   |                   | `keepernode3`       |
+| リージョン | ClickHouseサーバー | バケット            | ClickHouse Keeper |
+|------------|-------------------|---------------------|-------------------|
+| 1          | `chnode1`           | `bucket_regionname` | `keepernode1`       |
+| 2          | `chnode2`           | `bucket_regionname` | `keepernode2`       |
+| 3 `*`      |                   |                     | `keepernode3`       |
 
-`*` これは 1 または 2 と同じリージョンの異なる可用性ゾーンになります。
+`*` これは1または2と同じリージョン内の異なる可用性ゾーンであることができます。
 
-#### ClickHouse のデプロイ {#deploy-clickhouse}
+#### ClickHouseのデプロイ {#deploy-clickhouse}
 
-サンプル構成の中で、ClickHouse を 2 つのホストに展開し、`chnode1` と `chnode2` と名付けます。
+2つのホストにClickHouseをデプロイします。このサンプル設定では、これらは`chnode1`、`chnode2`と名付けられています。
 
-`chnode1` を 1 つの GCP リージョンに配置し、`chnode2` を 2 番目に配置します。このガイドでは、コンピューティングエンジン VM および GCS バケットに `us-east1` と `us-east4` が使用されます。
+`chnode1`を1つのGCPリージョンに配置し、`chnode2`を別のリージョンに配置します。このガイドでは、計算エンジンVM用に`us-east1`と`us-east4`を使用し、同じくGCSバケット用にも使用します。
 
 :::note
-構成されるまで `clickhouse server` を起動しないでください。インストールするだけです。
+`clickhouse server`を設定が完了するまで起動しないでください。インストールするだけです。
 :::
 
-ClickHouse サーバーノード上での展開手順を実行する際は、[インストール手順](/getting-started/install/install.mdx)を参照してください。
+ClickHouseサーバーノードでのデプロイ手順については、[インストール手順](/getting-started/install/install.mdx)を参照してください。
 
-#### ClickHouse Keeper のデプロイ {#deploy-clickhouse-keeper}
+#### ClickHouse Keeperのデプロイ {#deploy-clickhouse-keeper}
 
-ClickHouse Keeper を 3 つのホストに展開し、サンプル構成ではそれぞれ `keepernode1`、`keepernode2`、`keepernode3` と名付けます。 `keepernode1` は `chnode1` と同じリージョンにデプロイでき、`keepernode2` は `chnode2` と同じリージョンにデプロイできます。`keepernode3` は異なる可用性ゾーンに配置される必要がありますが、どちらか一方のリージョンに配置されても構いません。
+3つのホストにClickHouse Keeperをデプロイします。このサンプル設定では、これらは`keepernode1`、`keepernode2`、`keepernode3`と名付けられています。`keepernode1`は`chnode1`と同じリージョンにデプロイでき、`keepernode2`は`chnode2`と一緒にデプロイし、`keepernode3`はどちらのリージョンにもデプロイできますが、そのリージョンのClickHouseノードとは異なる可用性ゾーンに配置してください。
 
-ClickHouse Keeper のノードに対する展開手順を実行する際は、[インストール手順](/getting-started/install/install.mdx)を参照してください。
+ClickHouse Keeperノードでのデプロイ手順については、[インストール手順](/getting-started/install/install.mdx)を参照してください。
 
-### 2 つのバケットの作成 {#create-two-buckets}
+### 2つのバケットを作成 {#create-two-buckets}
 
-2 つの ClickHouse サーバーは、高可用性のために異なるリージョンに配置されます。それぞれのサーバーには、同じリージョンに GCS バケットがあります。
+2つのClickHouseサーバーは高可用性のために異なるリージョンに配置されます。各サーバーには同じリージョン内にGCSバケットがあります。
 
-**Cloud Storage > Buckets** で **CREATE BUCKET** を選択します。このチュートリアルでは、`us-east1` と `us-east4` 各リージョンに 2 つのバケットを作成します。バケットは単一リージョン、標準ストレージクラスで、パブリックではありません。案内があれば、パブリックアクセス防止を有効にします。フォルダは作成しないでください。書き込み時に ClickHouse が作成します。
+**Cloud Storage > Buckets**で**CREATE BUCKET**を選択します。このチュートリアルでは、`us-east1`と`us-east4`のそれぞれに1つのバケットを作成します。バケットは単一リージョンの標準ストレージクラスであり、公開されません。プロンプトが表示されたら、公開アクセス防止を有効にします。フォルダーを作成しないでください。ClickHouseがストレージに書き込むときに作成されます。
 
-バケットと HMAC キーの作成手順が必要な場合は、**Create GCS buckets and an HMAC key** を展開し、手順に従ってください：
+バケットとHMACキーを作成するためのステップバイステップの手順が必要な場合は、**Create GCS buckets and an HMAC key**を展開し、手順に従ってください：
 
 <BucketDetails />
 
-### ClickHouse Keeper の構成 {#configure-clickhouse-keeper}
+### ClickHouse Keeperの設定 {#configure-clickhouse-keeper}
 
-すべての ClickHouse Keeper ノードは、`server_id` 行（ハイライトされた行）のみが異なる同じ構成ファイルを持っています。ファイルを編集して ClickHouse Keeper サーバーのホスト名を設定し、各サーバーで `server_id` を適切な `server` エントリと一致させます。この例では `server_id` が `3` に設定されているため、`raft_configuration` で一致する行をハイライトしています。
+すべてのClickHouse Keeperノードは、`server_id`行（以下の最初の強調表示された行）を除いて同じ設定ファイルを持っています。ClickHouse Keeperサーバーのホスト名でファイルを修正し、各サーバーで`server_id`を`raft_configuration`の適切な`server`エントリに一致させるように設定します。この例では`server_id`が`3`に設定されているため、`raft_configuration`で一致する行を強調表示しています。
 
-- ファイルをホスト名で編集し、ClickHouse サーバーノードと Keeper ノードから解決できることを確認します。
-- ファイルを配置します（各 Keeper サーバーの `/etc/clickhouse-keeper/keeper_config.xml`）。
-- 各マシンで `raft_configuration` 内のインデックスに基づいて `server_id` を編集します。
+- ホスト名でファイルを編集し、ClickHouseサーバーノードとKeeperノードから解決できることを確認してください。
+- ファイルを適切な場所にコピーします（各Keeperサーバーで`/etc/clickhouse-keeper/keeper_config.xml`）。
+- 各マシンの`server_id`を変更します。これは`raft_configuration`内のエントリ番号に基づいています。
 
 ```xml title=/etc/clickhouse-keeper/keeper_config.xml
 <clickhouse>
@@ -294,14 +295,14 @@ ClickHouse Keeper のノードに対する展開手順を実行する際は、[�
 </clickhouse>
 ```
 
-### ClickHouse サーバーの構成 {#configure-clickhouse-server}
+### ClickHouseサーバーの設定 {#configure-clickhouse-server}
 
 :::note best practice
-このガイドの一部の手順では、構成ファイルを `/etc/clickhouse-server/config.d/` に配置するように求められます。これは、Linux システムの設定オーバーライドファイルのデフォルトの場所です。これらのファイルをそのディレクトリに配置すると、ClickHouse はデフォルト構成と内容をマージします。このため、`config.d` ディレクトリにこれらのファイルを配置することにより、アップグレード中に構成が失われるのを防ぐことができます。
+このガイドのいくつかの手順では、`/etc/clickhouse-server/config.d/`に設定ファイルを配置するように指示することがあります。これはLinuxシステムでの設定オーバーライドファイルのデフォルト位置です。これらのファイルをそのディレクトリに置くことで、ClickHouseは内容をデフォルトの設定と統合します。これにより、`config.d`ディレクトリにこれらのファイルを置くことで、アップグレード中に設定が失われるのを防げます。
 :::
 
 #### ネットワーキング {#networking}
-デフォルトでは、ClickHouse はループバックインターフェースでリッスンしています。レプリケートされたセットアップでは、マシン間のネットワークが必要です。すべてのインターフェースでリッスンします：
+デフォルトでは、ClickHouseはループバックインターフェースでリッスンしますが、レプリケーション環境では、マシン間のネットワーキングが必要です。すべてのインターフェースでリッスンします：
 
 ```xml title=/etc/clickhouse-server/config.d/network.xml
 <clickhouse>
@@ -309,11 +310,12 @@ ClickHouse Keeper のノードに対する展開手順を実行する際は、[�
 </clickhouse>
 ```
 
-#### リモート ClickHouse Keeper サーバー {#remote-clickhouse-keeper-servers}
+#### リモートClickHouse Keeperサーバー {#remote-clickhouse-keeper-servers}
 
-レプリケーションは ClickHouse Keeper によって調整されます。この構成ファイルは、ホスト名とポート番号で ClickHouse Keeper ノードを識別します。
+レプリケーションはClickHouse Keeperによって調整されます。この設定ファイルでは、ホスト名とポート番号によってClickHouse Keeperノードを特定します。
 
-- ホスト名を Keeper ホストに合わせて編集します。
+- ホスト名をKeeperホストに合わせて編集します。
+
 
 ```xml title=/etc/clickhouse-server/config.d/use-keeper.xml
 <clickhouse>
@@ -334,11 +336,11 @@ ClickHouse Keeper のノードに対する展開手順を実行する際は、[�
 </clickhouse>
 ```
 
-#### リモート ClickHouse サーバー {#remote-clickhouse-servers}
+#### リモートClickHouseサーバー {#remote-clickhouse-servers}
 
-このファイルは、クラスター内の各 ClickHouse サーバーのホスト名とポートを構成します。デフォルトの構成ファイルにはサンプルクラスターの定義が含まれており、完全に構成されたクラスターのみに表示されるように、`remote_servers` エントリに `replace="true"` タグが追加されています。これにより、デフォルトとマージされたときに `remote_servers` セクションが追加されるのではなく、置き換えられます。
+このファイルは、クラスタ内の各ClickHouseサーバーのホスト名とポートを設定します。デフォルトの設定ファイルにはサンプルクラスタ定義が含まれています。完全に設定されたクラスタのみを示すために、`remote_servers`エントリに`replace="true"`タグを追加して、この設定がデフォルトの内容と統合される際に`remote_servers`セクションを追加するのではなく置き換えます。
 
-- ファイルをホスト名で編集し、ClickHouse サーバーノードから解決できることを確認します。
+- 自分のホスト名でファイルを編集し、ClickHouseサーバーノードから解決できることを確認してください。
 
 ```xml title=/etc/clickhouse-server/config.d/remote-servers.xml
 <clickhouse>
@@ -361,7 +363,7 @@ ClickHouse Keeper のノードに対する展開手順を実行する際は、[�
 
 #### レプリカの識別 {#replica-identification}
 
-このファイルは、ClickHouse Keeper パスに関連する設定を構成します。具体的には、データがどのレプリカに属しているかを識別するために使用されるマクロを含みます。1 つのサーバーではレプリカを `replica_1` として指定し、別のサーバーでは `replica_2` とします。名前は変更可能ですが、例としてレプリカがサウスカロライナにストアされ、もう一方がノースバージニアにある場合、値は `carolina` と `virginia` に設定できます。各マシンで異なるようにしてください。
+このファイルは、ClickHouse Keeperパスに関連する設定を構成します。データがどのレプリカの一部であるかを特定するために使用されるマクロを具体的に示します。1台のサーバーではレプリカを`replica_1`として指定し、他方のサーバーでは`replica_2`として指定すべきです。名前は、例として、1つのレプリカがサウスカロライナにあり、もう1つがノースバージニアに保存される場合、値は`carolina`と`virginia`にすることができます。ただし、各マシンで異なることを確認してください。
 
 ```xml title=/etc/clickhouse-server/config.d/macros.xml
 <clickhouse>
@@ -377,19 +379,19 @@ ClickHouse Keeper のノードに対する展開手順を実行する際は、[�
 </clickhouse>
 ```
 
-#### GCS におけるストレージ {#storage-in-gcs}
+#### GCSでのストレージ {#storage-in-gcs}
 
-ClickHouse のストレージ構成には `disks` と `policies` が含まれます。以下に構成されているディスクは `gcs` と名付けられ、`type` は `s3` です。タイプは s3 である理由は、ClickHouse が GCS バケットに AWS S3 バケットとしてアクセスするためです。この構成は、ClickHouse サーバーノードごとに 2 つのコピーが必要です。
+ClickHouseのストレージ設定には`disks`と`policies`が含まれます。以下で設定されているディスクは`gcs`と名付けられ、`type`は`s3`です。このタイプは、ClickHouseがGCSバケットにAWS S3バケットのようにアクセスするためです。この設定の2つのコピーが必要で、各ClickHouseサーバーノード用に1つずつ用意します。
 
-以下の構成内で替える必要がある点は次のとおりです：
+設定内の以下の置換を行う必要があります。
 
-2 つの ClickHouse サーバーノード間で異なる部分：
-- `REPLICA 1 BUCKET` はサーバーと同じリージョンにあるバケットの名前に設定される必要があります。
-- `REPLICA 1 FOLDER` は、1 つのサーバーで `replica_1` に変更し、もう一つで `replica_2` に変更する必要があります。
+この置換は2つのClickHouseサーバーノードで異なります：
+- `REPLICA 1 BUCKET`は、サーバーと同じリージョンのバケットの名前に設定されるべきです。
+- `REPLICA 1 FOLDER`は、1台のサーバーで`replica_1`に、もう1台のサーバーで`replica_2`に変更されるべきです。
 
-次の部分は双方のノード間で共通です：
-- `access_key_id` は前に生成された HMAC キーに設定します。
-- `secret_access_key` は前に生成された HMAC シークレットに設定します。
+これらの置換は、2つのノード間で共通です：
+- `access_key_id`は、前に生成されたHMACキーに設定されるべきです。
+- `secret_access_key`は、前に生成されたHMACシークレットに設定されるべきです。
 
 ```xml title=/etc/clickhouse-server/config.d/storage.xml
 <clickhouse>
@@ -423,9 +425,9 @@ ClickHouse のストレージ構成には `disks` と `policies` が含まれま
 </clickhouse>
 ```
 
-### ClickHouse Keeper の起動 {#start-clickhouse-keeper}
+### ClickHouse Keeperの起動 {#start-clickhouse-keeper}
 
-オペレーティングシステムのコマンドを使用してください。例えば：
+オペレーティングシステムに応じたコマンドを使用してください。例えば：
 
 ```bash
 sudo systemctl enable clickhouse-keeper
@@ -433,9 +435,9 @@ sudo systemctl start clickhouse-keeper
 sudo systemctl status clickhouse-keeper
 ```
 
-#### ClickHouse Keeper の状態確認 {#check-clickhouse-keeper-status}
+#### ClickHouse Keeperのステータスを確認 {#check-clickhouse-keeper-status}
 
-`netcat` を使用して ClickHouse Keeper にコマンドを送信します。例えば、`mntr` は ClickHouse Keeper クラスターの状態を返します。各 Keeper ノードでコマンドを実行すると、1 つはリーダーになり、他の 2 つはフォロワーになるのがわかります。
+ClickHouse Keeperにコマンドを`netcat`で送信します。例えば、`mntr`はClickHouse Keeperクラスタの状態を返します。各Keeperノードでこのコマンドを実行すると、一つはリーダーであり、他の二つはフォロワーであることがわかります。
 
 ```bash
 echo mntr | nc localhost 9181
@@ -470,9 +472,9 @@ zk_synced_followers     2
 # highlight-end
 ```
 
-### ClickHouse サーバーの起動 {#start-clickhouse-server}
+### ClickHouseサーバーの起動 {#start-clickhouse-server}
 
-`chnode1` と `chnode2` で次のコマンドを実行します：
+`chnode1`と`chnode2`で実行します：
 
 ```bash
 sudo service clickhouse-server start
@@ -483,9 +485,9 @@ sudo service clickhouse-server status
 
 ### 検証 {#verification}
 
-#### ディスク構成の検証 {#verify-disk-configuration}
+#### ディスク設定を確認 {#verify-disk-configuration}
 
-`system.disks` には各ディスクのレコードが含まれます：
+`system.disks`には、各ディスクのレコードが含まれているはずです：
 - default
 - gcs
 - cache
@@ -546,7 +548,7 @@ cache_path:
 
 3 rows in set. Elapsed: 0.002 sec.
 ```
-#### クラスターに作成されたテーブルが両方のノードに作成されたことの確認 {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
+#### クラスタ上に作成されたテーブルが両方のノードに作成されていることを確認 {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
 ```sql
 -- highlight-next-line
 create table trips on cluster 'cluster_1S_2R' (
@@ -580,7 +582,7 @@ SETTINGS storage_policy='gcs_main'
 2 rows in set. Elapsed: 0.641 sec.
 ```
 
-#### データが挿入できることの確認 {#verify-that-data-can-be-inserted}
+#### データが挿入できることを確認 {#verify-that-data-can-be-inserted}
 
 ```sql
 INSERT INTO trips SELECT
@@ -601,7 +603,7 @@ FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz'
 LIMIT 1000000
 ```
 
-#### ストレージポリシー `gcs_main` がテーブルに使用されていることの確認 {#verify-that-the-storage-policy-gcs_main-is-used-for-the-table}
+#### ストレージポリシー`gcs_main`がテーブルに使用されていることを確認 {#verify-that-the-storage-policy-gcs_main-is-used-for-the-table}
 ```sql
 SELECT
     engine,
@@ -625,13 +627,13 @@ formatReadableSize(total_bytes): 36.42 MiB
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-#### Google Cloud Console での確認 {#verify-in-google-cloud-console}
+#### Google Cloud Consoleでの確認 {#verify-in-google-cloud-console}
 
-バケットを確認すると、`storage.xml` 構成ファイルで使用された名前のフォルダが各バケット内に作成されることがわかります。フォルダを展開すると、データパーティションを表す多くのファイルが見つかります。
-#### レプリカ1のためのバケット {#bucket-for-replica-one}
+バケットを確認すると、`storage.xml`設定ファイルで使用された名前のフォルダーが各バケットに作成されているのがわかります。フォルダーを展開すると、データパーティションを表す多くのファイルが表示されます。
+#### レプリカ1のバケット {#bucket-for-replica-one}
 
-<Image img={GCS_examine_bucket_1} size="lg" border alt="レプリカ1バケットの Google Cloud Storage におけるデータパーティションのフォルダ構造" />
+<Image img={GCS_examine_bucket_1} size="lg" border alt="Google Cloud Storageにおけるデータパーティションのフォルダー構造を示すレプリカ1のバケット" />
 
-#### レプリカ2のためのバケット {#bucket-for-replica-two}
+#### レプリカ2のバケット {#bucket-for-replica-two}
 
-<Image img={GCS_examine_bucket_2} size="lg" border alt="レプリカ2バケットの Google Cloud Storage におけるデータパーティションのフォルダ構造" />
+<Image img={GCS_examine_bucket_2} size="lg" border alt="Google Cloud Storageにおけるデータパーティションのフォルダー構造を示すレプリカ2のバケット" />

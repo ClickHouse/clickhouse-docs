@@ -1,25 +1,30 @@
 ---
-description: 'DROP TABLEが実行されたテーブルに関する情報を含むシステムテーブルですが、データクリーンアップはまだ行われていません。'
-keywords: ['system table', 'dropped_tables']
-slug: /operations/system-tables/dropped_tables
-title: 'system.dropped_tables'
+'description': 'System table containing information about tables that drop table has
+  been executed on but for which data cleanup has not yet been performed'
+'keywords':
+- 'system table'
+- 'dropped_tables'
+'slug': '/operations/system-tables/dropped_tables'
+'title': 'system.dropped_tables'
 ---
 
-DROP TABLEが実行されたテーブルに関する情報を含むシステムテーブルですが、データクリーンアップはまだ行われていません。
 
-カラム:
 
-- `index` ([UInt32](../../sql-reference/data-types/int-uint.md)) — marked_dropped_tables キューのインデックス。
+Contains information about tables that drop table has been executed on but for which data cleanup has not yet been performed.
+
+Columns:
+
+- `index` ([UInt32](../../sql-reference/data-types/int-uint.md)) — マークされた削除テーブルキュー内のインデックス。
 - `database` ([String](../../sql-reference/data-types/string.md)) — データベース。
 - `table` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
 - `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — テーブルのUUID。
 - `engine` ([String](../../sql-reference/data-types/string.md)) — テーブルエンジン名。
-- `metadata_dropped_path` ([String](../../sql-reference/data-types/string.md)) — metadata_dropped ディレクトリ内のテーブルのメタデータファイルのパス。
-- `table_dropped_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 次回テーブルのデータを削除する試行が予定されている時刻。通常、DROP TABLEが行われた時刻に `database_atomic_delay_before_drop_table_sec` を加えたものです。
+- `metadata_dropped_path` ([String](../../sql-reference/data-types/string.md)) — metadata_droppedディレクトリ内のテーブルのメタデータファイルのパス。
+- `table_dropped_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — テーブルのデータが削除される次の試行が予定されている時間。通常、テーブルが削除されたときに追加される `database_atomic_delay_before_drop_table_sec` によってテーブルの削除時間が決定されます。
 
-**例**
+**Example**
 
-以下の例は、`dropped_tables` に関する情報を取得する方法を示しています。
+The following example shows how to get information about `dropped_tables`.
 
 ```sql
 SELECT *
@@ -27,7 +32,7 @@ FROM system.dropped_tables\G
 ```
 
 ```text
-行 1:
+Row 1:
 ──────
 index:                 0
 database:              default

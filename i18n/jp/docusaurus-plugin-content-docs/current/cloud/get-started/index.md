@@ -1,18 +1,26 @@
 ---
-slug: /cloud/get-started
-title: 'はじめに'
-description: 'はじめに 目次'
-keywords: ['クラウドクイックスタート', 'SQLコンソール', 'クエリインサイト', 'クエリアピエンドポイント', 'ダッシュボード', 'クラウドサポート']
+'slug': '/cloud/get-started'
+'title': 'はじめに'
+'description': 'はじめにの目次'
+'keywords':
+- 'Cloud Quick Start'
+- 'SQL Console'
+- 'Query Insights'
+- 'Query API Endpoints'
+- 'Dashboards'
+- 'Cloud Support'
 ---
 
-ClickHouse Cloudへようこそ！ 以下のページを探索して、ClickHouse Cloudが提供する内容について詳しく学びましょう。
 
-| ページ                                | 説明                                                                                                                                                          |
-|---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [概要](/cloud/overview)               | ClickHouse Cloudを使用する利点と、使用されているClickHouseのバージョンの概要。                                                                                   | 
-| [クラウドクイックスタート](/cloud/get-started/cloud-quick-start) | クラウドを立ち上げるためのクイックスタートガイド。                                                                                                             |
-| [SQLコンソール](/cloud/get-started/sql-console)        | クラウドで利用可能なインタラクティブなSQLコンソールについて学びます。                                                                                         |
-| [クエリインサイト](/cloud/get-started/query-insights)    | クラウドのクエリインサイト機能が、ClickHouseの組み込みクエリログをさまざまなビジュアライゼーションやテーブルを通じて使いやすくする方法について学びます。                     |
-| [クエリアピエンドポイント](/cloud/get-started/query-endpoints)   | ClickHouse Cloudコンソール内の任意の保存されたSQLクエリからAPIエンドポイントを直接作成することができるクエリAPIエンドポイント機能について学びます。                     |
-| [ダッシュボード](/cloud/manage/dashboards)        | SQLコンソールのダッシュボード機能が、保存されたクエリからビジュアライゼーションを収集し、共有する方法について学びます。                                            |
-| [クラウドサポート](/cloud/support)     | ClickHouse Cloudのユーザーおよび顧客向けのサポートサービスについてさらに学びます。                                                                               |
+
+Welcome to ClickHouse Cloud! Explore the pages below to learn more about what ClickHouse Cloud has to offer.
+
+| ページ                       | 説明                                                                                                                                                  |
+|------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| [概要](/cloud/overview)            | ClickHouse Cloudを使用する利点と、使用されているClickHouseのバージョンの概要です。                                                                               | 
+| [クラウドクイックスタート](/cloud/get-started/cloud-quick-start) | クラウドのセットアップを迅速に行うためのガイドです。                                                                                                        |
+| [SQLコンソール](/cloud/get-started/sql-console)       | クラウドに利用可能なインタラクティブなSQLコンソールについて学びます。                                                                                  |
+| [クエリアイデンティティ](/cloud/get-started/query-insights)    | クラウドのクエリアイデンティティ機能がどのようにClickHouseの組み込みクエリログの利用を視覚化とテーブルを通じて容易にするかを学びます。             |
+| [クエリエンドポイント](/cloud/get-started/query-endpoints)   | ClickHouse Cloudコンソールで保存された任意のSQLクエリからAPIエンドポイントを直接作成できるQuery APIエンドポイント機能について学びます。       |
+| [ダッシュボード](/cloud/manage/dashboards)        | SQLコンソールのダッシュボード機能がどのように保存されたクエリから視覚化を収集し共有できるかを学びます。                                        |
+| [クラウドサポート](/cloud/support)     | ClickHouse Cloudユーザーおよび顧客向けのサポートサービスについて詳しく学びます。                                                                      |

@@ -1,22 +1,24 @@
 ---
-slug: /about-us/support
-sidebar_label: 'サポート'
-title: 'ClickHouse Cloud サポートサービス'
-sidebar_position: 30
-description: 'ClickHouse Cloud サポートサービスに関する情報'
+'slug': '/about-us/support'
+'sidebar_label': 'サポート'
+'title': 'ClickHouseクラウドサポートサービス'
+'sidebar_position': 30
+'description': 'ClickHouseクラウドサポートサービスに関する情報'
 ---
+
+
 
 
 # ClickHouse Cloud サポートサービス
 
-ClickHouseは、ClickHouse Cloudのユーザーおよび顧客向けにサポートサービスを提供しています。当社の目的は、卓越したパフォーマンス、使いやすさ、そして非常に速く高品質な結果を代表するサポートサービスチームを持つことです。詳細については、[ClickHouseサポートプログラム](https://clickhouse.com/support/program/)ページをご覧ください。
+ClickHouseは、当社のClickHouse Cloudユーザーおよび顧客向けにサポートサービスを提供しています。私たちの目標は、ClickHouse製品を代表するサポートサービスチームを構築することであり、比類のないパフォーマンス、使いやすさ、そして非常に迅速で高品質な結果を提供することです。詳細については、[ClickHouseサポートプログラム](https://clickhouse.com/support/program/)ページをご覧ください。
 
-[Cloudコンソールにログイン](https://console.clickhouse.cloud/support)し、メニューオプションから**ヘルプ -> サポート**を選択して、新しいサポートケースを開いたり、送信したケースのステータスを確認したりできます。
+[Cloudコンソールにログイン](https://console.clickhouse.cloud/support)し、メニューオプションから**ヘルプ -> サポート**を選択して新しいサポートケースを開き、提出したケースのステータスを確認できます。
 
-また、当社の[ステータスページ](https://status.clickhouse.com)を購読することで、当社のプラットフォームに影響を与えるインシデントについて迅速に通知を受け取ることができます。
+また、当社の[ステータスページ](https://status.clickhouse.com)に登録することで、プラットフォームに影響を与えるインシデントについて迅速に通知を受けることができます。
 
 :::note
-サブスクリプション顧客のみがサポートインシデントに関するサービスレベル契約を有していることにご注意ください。現在ClickHouse Cloudのユーザーでない場合は、質問にお答えしようとしますが、代わりに当社のコミュニティリソースのいずれかにアクセスすることをお勧めします：
+サポートインシデントに関するサービスレベル契約（SLA）は、サブスクリプション顧客のみが対象であることに注意してください。現在ClickHouse Cloudユーザーでない場合は、質問に答えるよう努めますが、代わりに以下のコミュニティリソースにアクセスすることをお勧めします：
 
 - [ClickHouseコミュニティSlackチャンネル](https://clickhouse.com/slack)
 - [その他のコミュニティオプション](https://github.com/ClickHouse/ClickHouse/blob/master/README.md#useful-links)

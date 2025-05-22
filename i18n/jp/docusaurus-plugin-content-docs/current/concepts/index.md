@@ -1,18 +1,19 @@
 ---
-title: '概念'
-slug: /concepts
-description: '概念のランディングページ'
-pagination_next: null
-pagination_prev: null
+'title': '概念'
+'slug': '/concepts'
+'description': '概念のランディングページ'
+'pagination_next': null
+'pagination_prev': null
 ---
 
-このドキュメントのセクションでは、ClickHouseがなぜこれほど高速で効率的であるかに関する概念を掘り下げます。
 
-| ページ                                                             | 説明                                                                           |
-|------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| [Why is ClickHouse so Fast?](./why-clickhouse-is-so-fast.md)     | ClickHouseがなぜこれほど速いのかを学びます。                                                 |
-| [What is OLAP?](./olap.md)                                       | オンライン分析処理（OLAP）とは何かを学びます。                                            |
-| [Why is ClickHouse unique?](../about-us/distinctive-features.md) | ClickHouseが何をもって独自であるのかを学びます。                                                    |
-| [Glossary](./glossary.md)                                        | このページには、ドキュメント全体で一般的に遭遇する用語のグロッサリーが含まれています。 |
-| [FAQ](../faq/index.md)                                           | ClickHouseに関する最もよくある質問の集まりです。         
 
+このドキュメントのセクションでは、ClickHouseを非常に高速かつ効率的にしている概念について掘り下げていきます。
+
+| ページ                                                              | 説明                                                                                        |
+|-------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| [ClickHouseがこれほど速い理由は？](./why-clickhouse-is-so-fast.md)     | ClickHouseがこれほど速い理由を学びましょう。                                                 |
+| [OLAPとは？](./olap.md)                                            | オンライン分析処理（OLAP）について学びましょう。                                             |
+| [ClickHouseのユニークな点は？](../about-us/distinctive-features.md)  | ClickHouseのユニークさについて学びましょう。                                                |
+| [用語集](./glossary.md)                                           | このページには、ドキュメント全体で一般的に出会う用語の用語集が含まれています。                 |
+| [FAQ](../faq/index.md)                                            | ClickHouseに関してよく寄せられる質問の集約です。                                            |

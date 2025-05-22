@@ -1,22 +1,25 @@
 ---
-alias: []
-description: 'JSONEachRowWithProgressフォーマットのドキュメント'
-input_format: false
-keywords: ['JSONEachRowWithProgress']
-output_format: true
-slug: /interfaces/formats/JSONEachRowWithProgress
-title: 'JSONEachRowWithProgress'
+'alias': []
+'description': 'JSONEachRowWithProgress フォーマットのドキュメント'
+'input_format': false
+'keywords':
+- 'JSONEachRowWithProgress'
+'output_format': true
+'slug': '/interfaces/formats/JSONEachRowWithProgress'
+'title': 'JSONEachRowWithProgress'
 ---
 
-| 入力 | 出力 | エイリアス |
-|------|------|-----------|
-| ✗    | ✔    |           |
+
+
+| Input | Output | Alias |
+|-------|--------|-------|
+| ✗     | ✔      |       |
 
 ## 説明 {#description}
 
-ClickHouseは進捗情報もJSON値として出力するため、[`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md)とは異なります。
+[`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) と異なり、ClickHouse は JSON 値として進捗情報も提供します。
 
-## 使用例 {#example-usage}
+## 例の使い方 {#example-usage}
 
 ```json
 {"row":{"num":42,"str":"hello","arr":[0,1]}}

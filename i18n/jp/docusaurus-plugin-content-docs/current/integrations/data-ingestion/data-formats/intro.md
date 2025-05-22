@@ -1,11 +1,19 @@
 ---
-slug: /integrations/data-formats
-sidebar_label: '概要'
-sidebar_position: 1
-keywords: ['clickhouse', 'CSV', 'TSV', 'Parquet', 'clickhouse-client', 'clickhouse-local']
-title: 'ClickHouseへのさまざまなデータ形式からのインポート'
-description: 'ClickHouseにさまざまなデータ形式をインポートする方法を説明するページ'
+'slug': '/integrations/data-formats'
+'sidebar_label': '概要'
+'sidebar_position': 1
+'keywords':
+- 'clickhouse'
+- 'CSV'
+- 'TSV'
+- 'Parquet'
+- 'clickhouse-client'
+- 'clickhouse-local'
+'title': 'ClickHouseへのさまざまなデータ形式からのインポート'
+'description': 'さまざまなデータ形式をClickHouseにインポートする方法について説明するページ'
 ---
+
+
 
 
 # ClickHouseへのさまざまなデータ形式からのインポート
@@ -14,26 +22,25 @@ description: 'ClickHouseにさまざまなデータ形式をインポートす�
 
 ### [**バイナリ**](/integrations/data-ingestion/data-formats/binary.md) {#binary}
 
-ClickHouseネイティブ、MessagePack、Protocol Buffers、Cap'n Protoなどのバイナリ形式をエクスポートおよびロードします。
+ClickHouse Native、MessagePack、Protocol Buffers、Cap'n Protoなどのバイナリ形式をエクスポートおよびロードします。
 
 ### [**CSVおよびTSV**](/integrations/data-ingestion/data-formats/csv-tsv.md) {#csv-and-tsv}
 
-カスタムヘッダーおよび区切り文字を使用して、CSVファミリー（TSVを含む）をインポートおよびエクスポートします。
+カスタムヘッダーと区切り文字を使用して、TSVを含むCSVファミリーをインポートおよびエクスポートします。
 
 ### [**JSON**](/integrations/data-ingestion/data-formats/json/intro.md) {#json}
 
-オブジェクトや行区切りのNDJSONなど、さまざまな形式でJSONをロードおよびエクスポートします。
+オブジェクトとしておよび行区切りのNDJSONとしてさまざまな形式のJSONをロードおよびエクスポートします。
 
 ### [**Parquetデータ**](/integrations/data-ingestion/data-formats/parquet.md) {#parquet-data}
 
-ParquetやArrowなどの一般的なApache形式を処理します。
+ParquetやArrowなどの一般的なApache形式を扱います。
 
 ### [**SQLデータ**](/integrations/data-ingestion/data-formats/sql.md) {#sql-data}
 
-MySQLやPostgresqlにインポートするためのSQLダンプが必要ですか？ここにあります。
+MySQLやPostgresqlにインポートするためのSQLダンプが必要ですか？他を探す必要はありません。
 
-GrafanaやTableauなどのBIツールを接続しようとしている場合は、ドキュメントの[視覚化カテゴリ](../../data-visualization/index.md)をチェックしてください。
-
+Grafana、TableauなどのBIツールを接続したい場合は、ドキュメントの[可視化カテゴリ](../../data-visualization/index.md)をチェックしてください。
 
 ## 関連コンテンツ {#related-content}
 

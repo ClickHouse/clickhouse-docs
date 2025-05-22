@@ -1,13 +1,15 @@
 ---
-description: 'ドキュメントは `EXISTS` 演算子について'
-slug: /sql-reference/operators/exists
-title: 'EXISTS'
+'description': 'Documentation for the `EXISTS` operator'
+'slug': '/sql-reference/operators/exists'
+'title': 'EXISTS'
 ---
+
+
 
 
 # EXISTS
 
-`EXISTS` 演算子は、サブクエリの結果にいくつのレコードがあるかをチェックします。もし結果が空であれば、この演算子は `0` を返します。それ以外の場合は `1` を返します。
+`EXISTS` 演算子は、サブクエリの結果にレコードがいくつあるかを確認します。もし結果が空であれば、演算子は `0` を返します。そうでない場合は `1` を返します。
 
 `EXISTS` は [WHERE](../../sql-reference/statements/select/where.md) 句でも使用できます。
 
@@ -37,7 +39,7 @@ SELECT EXISTS(SELECT * FROM numbers(10) WHERE number > 8), EXISTS(SELECT * FROM 
 └───────────────────┴───────────────────┘
 ```
 
-複数の行を返すサブクエリを含むクエリ:
+複数行を返すサブクエリを含むクエリ:
 
 ```sql
 SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHERE number > 8);

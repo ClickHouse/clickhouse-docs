@@ -1,11 +1,14 @@
 ---
-description: '2005年12月から2023年3月までのRedditに関する公開コメントを含むデータセットで、14B以上の行をJSON形式で含んでいます。'
-sidebar_label: 'Redditコメント'
-slug: /getting-started/example-datasets/reddit-comments
-title: 'Redditコメントデータセット'
+'description': 'Dataset containing publicly available comments on Reddit from December
+  2005 to March 2023 with over 14B rows of data in JSON format'
+'sidebar_label': 'Reddit comments'
+'slug': '/getting-started/example-datasets/reddit-comments'
+'title': 'Reddit comments dataset'
 ---
 
-このデータセットには、2005年12月から2023年3月までの間に投稿されたRedditの公開コメントが含まれており、14Bを超える行のデータがあります。生データは圧縮ファイルのJSON形式であり、行は以下のようになります。
+
+
+このデータセットには、2005年12月から2023年3月までのReddit上の公開コメントが含まれており、14B行以上のデータがあります。生データは圧縮ファイルのJSON形式で、行は以下のようになります。
 
 ```json
 {"controversiality":0,"body":"A look at Vietnam and Mexico exposes the myth of market liberalisation.","subreddit_id":"t5_6","link_id":"t3_17863","stickied":false,"subreddit":"reddit.com","score":2,"ups":2,"author_flair_css_class":null,"created_utc":1134365188,"author_flair_text":null,"author":"frjo","id":"c13","edited":false,"parent_id":"t3_17863","gilded":0,"distinguished":null,"retrieved_on":1473738411}
@@ -15,12 +18,11 @@ title: 'Redditコメントデータセット'
 {"gilded":0,"retrieved_on":1473738411,"distinguished":null,"author_flair_text":null,"author":"rjoseph","edited":false,"id":"c17","parent_id":"t3_17817","subreddit":"reddit.com","author_flair_css_class":null,"created_utc":1134367754,"score":1,"ups":1,"body":"Saft is by far the best extension you could tak onto your Safari","controversiality":0,"link_id":"t3_17817","stickied":false,"subreddit_id":"t5_6"}
 ```
 
-Perconaに感謝の意を表します。このデータセットの取り込みに関する[動機](https://www.percona.com/blog/big-data-set-reddit-comments-analyzing-clickhouse/)は、私たちがダウンロードしてS3バケットに保存したものです。
-
+Perconaへの感謝を込めて、このデータセットを取り込む動機に関しては、こちらを参照してください [motivation behind ingesting this dataset](https://www.percona.com/blog/big-data-set-reddit-comments-analyzing-clickhouse/)。このデータはダウンロードされ、S3バケットに保存されています。
 ## テーブルの作成 {#creating-a-table}
 
 :::note
-以下のコマンドは、メモリを720GBに設定されたClickHouse Cloudのプロダクションインスタンスで実行されました。ご自身のクラスターで実行する場合は、`s3Cluster`関数呼び出しの`default`をあなたのクラスターの名前に置き換えてください。クラスターがない場合は、`s3`関数を使用してください。
+以下のコマンドは、最小メモリが720GBに設定されたClickHouse CloudのProductionインスタンスで実行されました。自分のクラスタでこれを実行するには、`s3Cluster`関数の呼び出し内の`default`を自分のクラスタの名前に置き換えてください。クラスタを持っていない場合は、`s3Cluster`関数を`s3`関数に置き換えてください。
 :::
 
 1. Redditデータ用のテーブルを作成しましょう：
@@ -68,16 +70,15 @@ ORDER BY (subreddit, created_date, author);
 ```
 
 :::note
-S3内のファイル名は`RC_YYYY-MM`で始まり、`YYYY-MM`は`2005-12`から`2023-02`までです。ただし、圧縮は数回変更されるため、ファイル拡張子は一貫していません。例えば：
+S3内のファイルの名前は`RC_YYYY-MM`で始まり、`YYYY-MM`は`2005-12`から`2023-02`まで変わります。ただし、圧縮形式は何度か変更されるため、ファイルの拡張子は一貫していません。例えば：
 
-- 最初のファイル名は`RC_2005-12.bz2`から`RC_2017-11.bz2`までです。
-- 次に、`RC_2017-12.xz`から`RC_2018-09.xz`までになります。
-- 最後に、`RC_2018-10.zst`から`RC_2023-02.zst`までです。
+- ファイル名は最初は`RC_2005-12.bz2`から`RC_2017-11.bz2`です。
+- 次に、`RC_2017-12.xz`から`RC_2018-09.xz`のようになります。
+- 最後に、`RC_2018-10.zst`から`RC_2023-02.zst`となります。
 :::
-
 ## データの読み込み {#load-data}
 
-2. ひと月分のデータから始めますが、すべての行を挿入したい場合は、下のステップ8にスキップしてください。以下のファイルには、2017年12月の86Mレコードが含まれています：
+2. 一か月分のデータから始めますが、すべての行を単に挿入したい場合は、以下のステップ8に進んでください。次のファイルには、2017年12月からの860万件のレコードがあります：
 
 ```sql
 INSERT INTO reddit
@@ -89,7 +90,7 @@ INSERT INTO reddit
 
 ```
 
-3. リソースに応じて時間がかかりますが、完了したら正常に動作したことを確認します：
+3. リソースに応じて時間がかかりますが、完了したら正常に動作したことを確認してください：
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -102,7 +103,7 @@ FROM reddit;
 └─────────────────────────────────┘
 ```
 
-4. 2017年12月に存在したユニークなサブレディットの数を見てみましょう：
+4. 2017年12月にいくつのユニークなsubredditがあったか見てみましょう：
 
 ```sql
 SELECT uniqExact(subreddit)
@@ -114,12 +115,11 @@ FROM reddit;
 │                91613 │
 └──────────────────────┘
 
-1 row in set. Elapsed: 1.572 sec. Processed 85.97 million rows, 367.43 MB (54.71 million rows/s., 233.80 MB/s.)
+1行セット。経過時間: 1.572秒。85.97百万行、367.43 MBを処理しました。(54.71百万行/s、 233.80 MB/s)
 ```
+## 例クエリ {#example-queries}
 
-## 例に基づくクエリ {#example-queries}
-
-5. このクエリは、コメント数に基づく上位10のサブレディットを返します：
+5. このクエリは、コメント数の観点からトップ10のsubredditを返します：
 
 ```sql
 SELECT
@@ -155,10 +155,10 @@ LIMIT 20;
 │ videos          │  450581 │
 └─────────────────┴─────────┘
 
-20 rows in set. Elapsed: 0.368 sec. Processed 85.97 million rows, 367.43 MB (233.34 million rows/s., 997.25 MB/s.)
+20行セット。経過時間: 0.368秒。85.97百万行、367.43 MBを処理しました。(233.34百万行/s、 997.25 MB/s)
 ```
 
-6. ここでは、2017年12月に投稿されたコメントの数に基づく上位10の著者を示します：
+6. 2017年12月のコメント数の観点からのトップ10の著者は以下の通りです：
 
 ```sql
 SELECT
@@ -184,18 +184,17 @@ LIMIT 10;
 │ TotesMessenger  │   19057 │
 └─────────────────┴─────────┘
 
-10 rows in set. Elapsed: 8.143 sec. Processed 85.97 million rows, 711.05 MB (10.56 million rows/s., 87.32 MB/s.)
+10行セット。経過時間: 8.143秒。85.97百万行、711.05 MBを処理しました。(10.56百万行/s、 87.32 MB/s)
 ```
-
 ## データセット全体の読み込み {#loading-the-entire-dataset}
 
-7. すでにデータを挿入しましたが、最初からやり直します：
+7. 既にいくつかのデータを挿入しましたが、最初からやり直します：
 
 ```sql
 TRUNCATE TABLE reddit;
 ```
 
-8. このデータセットは楽しいもので、素晴らしい情報を見つけることができそうですので、2005年から2023年までの全データセットを挿入しましょう。実用的な理由から、年ごとにデータを挿入するのがうまくいくので、開始しましょう...
+8. このデータセットは楽しそうで、素晴らしい情報が見つかるようです。ですので、2005年から2023年までの全データセットを挿入しましょう。実用的な理由から、データを年ごとに挿入するのがうまくいきます。最初は...
 
 ```sql
 INSERT INTO reddit
@@ -208,7 +207,7 @@ INSERT INTO reddit
     SETTINGS zstd_window_log_max = 31;
 ```
 
-...そして、次に挿入するのは：
+...そして最後は：
 
 ```sql
 INSERT INTO reddit
@@ -221,7 +220,7 @@ FROM s3Cluster(
 SETTINGS zstd_window_log_max = 31;
 ```
 
-クラスターがない場合は、`s3Cluster`の代わりに`s3`を使用してください：
+クラスタを持っていない場合は、`s3Cluster`の代わりに`s3`を使用してください：
 
 ```sql
 INSERT INTO reddit
@@ -233,7 +232,7 @@ FROM s3(
 SETTINGS zstd_window_log_max = 31;
 ```
 
-8. 正常に動作したかを確認するため、以下は年ごとの行数です（2023年2月時点）：
+8. 正常に動作したか確認するために、年ごとの行数を確認します（2023年2月時点）：
 
 ```sql
 SELECT
@@ -244,6 +243,7 @@ GROUP BY year;
 ```
 
 ```response
+
 ┌─year─┬─formatReadableQuantity(count())─┐
 │ 2005 │ 1.07 thousand                   │
 │ 2006 │ 417.18 thousand                 │
@@ -267,7 +267,7 @@ GROUP BY year;
 └──────┴─────────────────────────────────┘
 ```
 
-9. 挿入された行数とテーブルが使用しているディスク容量を確認しましょう：
+9. 挿入された行数と、テーブルが使用しているディスクスペースを確認しましょう：
 
 ```sql
 SELECT
@@ -279,16 +279,16 @@ FROM system.parts
 WHERE (table = 'reddit') AND active;
 ```
 
-ディスクストレージの圧縮は、非圧縮サイズの約1/3です：
+ディスクストレージの圧縮は、非圧縮サイズの約1/3であることに注意してください：
 
 ```response
 ┌───────count─┬─formatReadableQuantity(sum(rows))─┬─disk_size─┬─uncompressed_size─┐
 │ 14688534662 │ 14.69 billion                     │ 1.03 TiB  │ 3.26 TiB          │
 └─────────────┴───────────────────────────────────┴───────────┴───────────────────┘
 
-1 row in set. Elapsed: 0.005 sec.
+1行セット。経過時間: 0.005秒。
 ```
-## 例のクエリ - 月ごとのコメント、著者、サブレディット {#example-query-comments}
+## 例のクエリ - コメント、著者、サブレディット毎月の数 {#example-query-comments}
 
 10. 次のクエリは、各月のコメント、著者、サブレディットの数を示しています：
 
@@ -306,7 +306,7 @@ GROUP BY firstOfMonth
 ORDER BY firstOfMonth ASC;
 ```
 
-これは、146.9億行を処理する必要のある大規模なクエリですが、印象的な応答時間（約48秒）が得られます：
+これは14.69億行すべてを処理しなければならない大規模なクエリですが、印象的な応答時間（約48秒）を得ることができます：
 
 ```response
 ┌─firstOfMonth─┬─────────c─┬─bar_count─────────────────┬──authors─┬─bar_authors───────────────┬─subreddits─┬─bar_subreddits────────────┐
@@ -515,11 +515,11 @@ ORDER BY firstOfMonth ASC;
 │   2023-02-01 │ 221285501 │ █████████████████████████ │ 11537091 │ █████████████████████████ │     317879 │ █████████████████████████ │
 └──────────────┴───────────┴───────────────────────────┴──────────┴───────────────────────────┴────────────┴───────────────────────────┘
 
-203行のセット。経過時間: 48.492秒。146.9億行を処理し、213.35 GB（302.91百万行/秒、4.40 GB/秒）。
+203 行がセットされました。経過時間：48.492 秒。14.69億行、213.35 GBを処理しました（302.91万行/秒、4.40 GB/秒）。
 ```
-## より多くのクエリ {#more-queries}
+## More queries {#more-queries}
 
-11. こちらが2022年のトップ10サブレディットです：
+11. こちらは2022年のトップ10サブレディットです:
 
 ```sql
 SELECT
@@ -546,10 +546,10 @@ LIMIT 10;
 │ nba            │ 11586571 │
 └────────────────┴──────────┘
 
-10 行の結果をセットしました。経過時間: 5.956 秒。処理した行数: 146.9 億行、126.19 GB (2.47 億行/秒、21.19 GB/秒)。
+10 rows in set. Elapsed: 5.956 sec. Processed 14.69 billion rows, 126.19 GB (2.47 billion rows/s., 21.19 GB/s.)
 ```
 
-12. 次は、2018年から2019年にかけてコメント数の増加が最も大きかったサブレディットを見てみましょう：
+12. 2018年から2019年までのコメント数の増加が最も大きかったサブレディットを見てみましょう:
 
 ```sql
 SELECT
@@ -578,7 +578,7 @@ LIMIT 50
 SETTINGS joined_subquery_requires_alias = 0;
 ```
 
-2019年、memesとteenagersはRedditで忙しかったようです：
+2019年には「memes」と「teenagers」がRedditで活発でした:
 
 ```response
 ┌─subreddit────────────┬─────diff─┐
@@ -634,12 +634,11 @@ SETTINGS joined_subquery_requires_alias = 0;
 │ BattlefieldV         │  1053878 │
 └──────────────────────┴──────────┘
 
-50 行の結果をセットしました。経過時間: 10.680 秒。処理した行数: 293.8 億行、198.67 GB (2.75 億行/秒、18.60 GB/秒)。
+50 rows in set. Elapsed: 10.680 sec. Processed 29.38 billion rows, 198.67 GB (2.75 billion rows/s., 18.60 GB/s.)
 ```
+## Other queries {#other-queries}
 
-## その他のクエリ {#other-queries}
-
-13. もう一つのクエリ：ClickHouseの言及をSnowflakeやPostgresなど他の技術と比較してみましょう。このクエリは、14.69億件のコメント全てを3回検索しなければならないため、大きなものになりますが、実際のパフォーマンスは非常に優れています。（残念ながらClickHouseユーザーはまだRedditであまり活発ではありません）：
+13. もう一つのクエリ: ClickHouseの言及をSnowflakeやPostgresなどの他の技術と比較しましょう。このクエリは、サブストリングのサーチのために147億のコメントを3回検索する必要があるため大きなものですが、実際のパフォーマンスはかなり印象的です。（残念ながらClickHouseのユーザーはまだRedditではあまり活発ではありません）:
 
 ```sql
 SELECT
@@ -692,7 +691,7 @@ ORDER BY quarter ASC;
 │ 2014-07-01 │          0 │     15640 │     1710 │
 │ 2014-10-01 │          0 │     19479 │     1959 │
 │ 2015-01-01 │          0 │     20411 │     2104 │
-│ 2015-04-01 │          0 │     20309 │     9112 │
+│ 2015-04-01 │          1 │     20309 │     9112 │
 │ 2015-07-01 │          0 │     20325 │     4771 │
 │ 2015-10-01 │          0 │     25087 │     3030 │
 │ 2016-01-01 │          0 │     23462 │     3126 │
@@ -726,4 +725,4 @@ ORDER BY quarter ASC;
 │ 2023-01-01 │        126 │     58733 │     4891 │
 └────────────┴────────────┴───────────┴──────────┘
 
-70 行の結果をセットしました。経過時間: 325.835 秒。処理した行数: 146.9 億行、2.57 TB (450.8 万行/秒、7.87 GB/秒)。
+70 rows in set. Elapsed: 325.835 sec. Processed 14.69 billion rows, 2.57 TB (45.08 million rows/s., 7.87 GB/s.)

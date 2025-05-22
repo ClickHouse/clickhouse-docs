@@ -1,21 +1,23 @@
 ---
-description: '文字列を操作するための関数に関するドキュメント'
-sidebar_label: '文字列'
-sidebar_position: 170
-slug: /sql-reference/functions/string-functions
-title: '文字列を操作するための関数'
+'description': '文字列操作用の関数のドキュメント'
+'sidebar_label': '文字列'
+'sidebar_position': 170
+'slug': '/sql-reference/functions/string-functions'
+'title': 'Functions for Working with Strings'
 ---
 
 import VersionBadge from '@theme/badges/VersionBadge';
 
-# 文字列を操作するための関数
 
-[文字列の検索](string-search-functions.md)や[文字列の置換](string-replace-functions.md)に関する関数は別途説明されています。
+
+# 文字列操作のための関数
+
+[文字列の検索](string-search-functions.md)と[文字列の置換](string-replace-functions.md)に関する関数は、それぞれ別に説明されています。
 ## empty {#empty}
 
-入力文字列が空であるかどうかを確認します。文字列は、スペースまたはヌルバイトであっても、少なくとも1バイトを含む場合、非空と見なされます。
+入力文字列が空かどうかをチェックします。文字列は、空白やヌルバイトを含んでいても、少なくとも1バイトを含んでいる場合、非空と見なされます。
 
-この関数は[配列](/sql-reference/functions/array-functions#empty)および[UUID](uuid-functions.md#empty)にも利用できます。
+この関数は[配列](/sql-reference/functions/array-functions#empty)と[UUID](uuid-functions.md#empty)にも使用できます。
 
 **構文**
 
@@ -25,11 +27,11 @@ empty(x)
 
 **引数**
 
-- `x` — 入力値。[文字列](../data-types/string.md)。
+- `x` — 入力値。[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- 空の文字列の場合は `1`、非空の文字列の場合は `0` を返します。[UInt8](../data-types/int-uint.md)。
+- 空の文字列の場合は `1` を、非空の文字列の場合は `0` を返します。[UInt8](../data-types/int-uint.md)。
 
 **例**
 
@@ -46,9 +48,9 @@ SELECT empty('');
 ```
 ## notEmpty {#notempty}
 
-入力文字列が非空であるかどうかを確認します。文字列は、スペースまたはヌルバイトであっても、少なくとも1バイトを含む場合、非空と見なされます。
+入力文字列が非空かどうかをチェックします。文字列は、空白やヌルバイトを含んでいても、少なくとも1バイトを含んでいる場合、非空と見なされます。
 
-この関数は[配列](/sql-reference/functions/array-functions#notempty)および[UUID](uuid-functions.md#notempty)にも利用できます。
+この関数は[配列](/sql-reference/functions/array-functions#notempty)と[UUID](uuid-functions.md#notempty)にも使用できます。
 
 **構文**
 
@@ -58,11 +60,11 @@ notEmpty(x)
 
 **引数**
 
-- `x` — 入力値。[文字列](../data-types/string.md)。
+- `x` — 入力値。[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- 非空の文字列の場合は `1`、空の文字列の場合は `0` を返します。[UInt8](../data-types/int-uint.md)。
+- 非空の文字列の場合は `1` を、空の文字列の場合は `0` を返します。[UInt8](../data-types/int-uint.md)。
 
 **例**
 
@@ -79,7 +81,7 @@ SELECT notEmpty('text');
 ```
 ## length {#length}
 
-文字列の長さをバイト単位で返します。文字またはUnicodeコードポイントではありません。この関数は配列にも対応しています。
+文字列の長さをバイト単位で返します。文字やUnicodeコードポイントではなくバイトで計算します。この関数は配列にも使用できます。
 
 エイリアス: `OCTET_LENGTH`
 
@@ -89,11 +91,11 @@ SELECT notEmpty('text');
 length(s)
 ```
 
-**パラメーター**
+**パラメータ**
 
-- `s` — 入力文字列または配列。[文字列](../data-types/string)/[配列](../data-types/array)。
+- `s` — 入力文字列または配列。[String](../data-types/string)/[Array](../data-types/array)。
 
-**返される値**
+**戻り値**
 
 - 文字列または配列 `s` の長さ（バイト単位）。[UInt64](../data-types/int-uint)。
 
@@ -128,7 +130,7 @@ SELECT length([1, 2, 3, 4]);
 ```
 ## lengthUTF8 {#lengthutf8}
 
-文字列の長さをUnicodeコードポイント単位で返します。文字列が有効なUTF-8でエンコードされたテキストであると仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義となります。
+文字列の長さをUnicodeコードポイント単位で返します。文字列が有効なUTF-8エンコードされたテキストを含んでいると仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義となります。
 
 エイリアス:
 - `CHAR_LENGTH`
@@ -140,11 +142,11 @@ SELECT length([1, 2, 3, 4]);
 lengthUTF8(s)
 ```
 
-**パラメーター**
+**パラメータ**
 
-- `s` — 有効なUTF-8でエンコードされたテキストを含む文字列。[文字列](../data-types/string)。
+- `s` — 有効なUTF-8エンコードされたテキストを含む文字列。[String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
 - 文字列 `s` の長さ（Unicodeコードポイント単位）。[UInt64](../data-types/int-uint.md)。
 
@@ -165,7 +167,7 @@ SELECT lengthUTF8('Здравствуй, мир!');
 ```
 ## left {#left}
 
-指定された `offset` から左側の文字列 `s` の部分文字列を返します。
+文字列 `s` の指定された`offset`から左側の部分文字列を返します。
 
 **構文**
 
@@ -173,16 +175,16 @@ SELECT lengthUTF8('Здравствуй, мир!');
 left(s, offset)
 ```
 
-**パラメーター**
+**パラメータ**
 
-- `s` — 部分文字列を取得するための文字列。[文字列](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `s` — 部分文字列を計算するための文字列。[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 - `offset` — オフセットのバイト数。[(U)Int*](../data-types/int-uint)。
 
-**返される値**
+**戻り値**
 
-- 正の `offset` の場合: 文字列の左側から `offset` バイトの部分文字列。
-- 負の `offset` の場合: 文字列の左側から `length(s) - |offset|` バイトの部分文字列。
-- `length` が 0 の場合は空の文字列。
+- 正の`offset`の場合: 文字列の左側から`offset`バイトの部分文字列。
+- 負の`offset`の場合: 文字列の左側から `length(s) - |offset|` バイトの部分文字列。
+- `length` が 0 の場合、空の文字列。
 
 **例**
 
@@ -211,7 +213,7 @@ He
 ```
 ## leftUTF8 {#leftutf8}
 
-UTF-8でエンコードされた文字列 `s` の部分文字列を指定された `offset` から左側に返します。
+UTF-8エンコードされた文字列 `s` の指定された `offset` から左側の部分文字列を返します。
 
 **構文**
 
@@ -219,16 +221,16 @@ UTF-8でエンコードされた文字列 `s` の部分文字列を指定され�
 leftUTF8(s, offset)
 ```
 
-**パラメーター**
+**パラメータ**
 
-- `s` — 部分文字列を取得するためのUTF-8でエンコードされた文字列。[文字列](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `s` — 部分文字列を計算するためのUTF-8エンコードされた文字列。[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 - `offset` — オフセットのバイト数。[(U)Int*](../data-types/int-uint)。
 
-**返される値**
+**戻り値**
 
-- 正の `offset` の場合: 文字列の左側から `offset` バイトの部分文字列。
-- 負の `offset` の場合: 文字列の左側から `length(s) - |offset|` バイトの部分文字列。
-- `length` が 0 の場合は空の文字列。
+- 正の`offset`の場合: 文字列の左側から`offset`バイトの部分文字列。
+- 負の`offset`の場合: 文字列の左側から `length(s) - |offset|` バイトの部分文字列。
+- `length` が 0 の場合、空の文字列。
 
 **例**
 
@@ -257,7 +259,7 @@ SELECT leftUTF8('Привет', -4);
 ```
 ## leftPad {#leftpad}
 
-文字列を左側からスペースまたは指定された文字列で（必要に応じて複数回）パディングし、結果の文字列が指定された `length` に達するまでパディングします。
+文字列を左側からスペースまたは指定された文字列でパディングし、結果の文字列が指定された`length`に達するまで繰り返します。
 
 **構文**
 
@@ -269,13 +271,13 @@ leftPad(string, length[, pad_string])
 
 **引数**
 
-- `string` — パディングすべき入力文字列。[文字列](../data-types/string.md)。
-- `length` — 結果の文字列の長さ。[UInt または Int](../data-types/int-uint.md)。入力文字列の長さより小さい場合、入力文字列は `length` 文字に短縮されます。
-- `pad_string` — 入力文字列をパディングするための文字列。[文字列](../data-types/string.md)。省略可能。指定しない場合、入力文字列はスペースでパディングされます。
+- `string` — パディングするべき入力文字列。[String](../data-types/string.md)。
+- `length` — 結果の文字列の長さ。[UIntまたはInt](../data-types/int-uint.md)。値が入力文字列の長さより小さい場合、入力文字列は`length`文字に短縮されます。
+- `pad_string` — 入力文字列をパディングする文字列。[String](../data-types/string.md)。オプション。指定されていない場合、入力文字列はスペースでパディングされます。
 
-**返される値**
+**戻り値**
 
-- 指定された長さの左パディングされた文字列。[文字列](../data-types/string.md)。
+- 指定された長さの左パディングされた文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -292,7 +294,7 @@ SELECT leftPad('abc', 7, '*'), leftPad('def', 7);
 ```
 ## leftPadUTF8 {#leftpadutf8}
 
-文字列を左側からスペースまたは指定された文字列で（必要に応じて複数回）パディングし、結果の文字列が指定された長さに達するまでパディングします。[leftPad](#leftpad) はバイト単位で文字列の長さを測定するのに対して、文字列の長さはコードポイント単位で測定されます。
+文字列を左側からスペースまたは指定された文字列でパディングし、結果の文字列が指定された長さに達するまで繰り返します。 [leftPad](#leftpad) はバイト単位で文字列の長さを測定しますが、この関数ではコードポイント単位で測定します。
 
 **構文**
 
@@ -302,13 +304,13 @@ leftPadUTF8(string, length[, pad_string])
 
 **引数**
 
-- `string` — パディングすべき入力文字列。[文字列](../data-types/string.md)。
-- `length` — 結果の文字列の長さ。[UInt または Int](../data-types/int-uint.md)。入力文字列の長さより小さい場合、入力文字列は `length` 文字に短縮されます。
-- `pad_string` — 入力文字列をパディングするための文字列。[文字列](../data-types/string.md)。省略可能。指定しない場合、入力文字列はスペースでパディングされます。
+- `string` — パディングするべき入力文字列。[String](../data-types/string.md)。
+- `length` — 結果の文字列の長さ。[UIntまたはInt](../data-types/int-uint.md)。値が入力文字列の長さより小さい場合、入力文字列は`length`文字に短縮されます。
+- `pad_string` — 入力文字列をパディングする文字列。[String](../data-types/string.md)。オプション。指定されていない場合、入力文字列はスペースでパディングされます。
 
-**返される値**
+**戻り値**
 
-- 指定された長さの左パディングされた文字列。[文字列](../data-types/string.md)。
+- 指定された長さの左パディングされた文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -325,7 +327,7 @@ SELECT leftPadUTF8('абвг', 7, '*'), leftPadUTF8('дежз', 7);
 ```
 ## right {#right}
 
-文字列 `s` の指定された `offset` を右側から開始して部分文字列を返します。
+文字列 `s` の指定された `offset` から右側の部分文字列を返します。
 
 **構文**
 
@@ -333,16 +335,16 @@ SELECT leftPadUTF8('абвг', 7, '*'), leftPadUTF8('дежз', 7);
 right(s, offset)
 ```
 
-**パラメーター**
+**パラメータ**
 
-- `s` — 部分文字列を取得するための文字列。[文字列](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `s` — 部分文字列を計算するための文字列。[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 - `offset` — オフセットのバイト数。[(U)Int*](../data-types/int-uint)。
 
-**返される値**
+**戻り値**
 
 - 正の `offset` の場合: 文字列の右側から `offset` バイトの部分文字列。
 - 負の `offset` の場合: 文字列の右側から `length(s) - |offset|` バイトの部分文字列。
-- `length` が 0 の場合は空の文字列。
+- `length` が 0 の場合、空の文字列。
 
 **例**
 
@@ -371,7 +373,7 @@ lo
 ```
 ## rightUTF8 {#rightutf8}
 
-UTF-8でエンコードされた文字列 `s` の部分文字列を右側から開始して指定された `offset` で返します。
+UTF-8エンコードされた文字列 `s` の指定された `offset` から右側の部分文字列を返します。
 
 **構文**
 
@@ -379,16 +381,16 @@ UTF-8でエンコードされた文字列 `s` の部分文字列を右側から�
 rightUTF8(s, offset)
 ```
 
-**パラメーター**
+**パラメータ**
 
-- `s` — 部分文字列を取得するためのUTF-8でエンコードされた文字列。[文字列](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `s` — 部分文字列を計算するためのUTF-8エンコードされた文字列。[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
 - `offset` — オフセットのバイト数。[(U)Int*](../data-types/int-uint)。
 
-**返される値**
+**戻り値**
 
 - 正の `offset` の場合: 文字列の右側から `offset` バイトの部分文字列。
 - 負の `offset` の場合: 文字列の右側から `length(s) - |offset|` バイトの部分文字列。
-- `length` が 0 の場合は空の文字列。
+- `length` が 0 の場合、空の文字列。
 
 **例**
 
@@ -417,7 +419,7 @@ SELECT rightUTF8('Привет', -4);
 ```
 ## rightPad {#rightpad}
 
-文字列を右側からスペースまたは指定された文字列で（必要に応じて複数回）パディングし、結果の文字列が指定された `length` に達するまでパディングします。
+文字列を右側からスペースまたは指定された文字列でパディングし、結果の文字列が指定された`length`に達するまで繰り返します。
 
 **構文**
 
@@ -429,13 +431,13 @@ rightPad(string, length[, pad_string])
 
 **引数**
 
-- `string` — パディングすべき入力文字列。[文字列](../data-types/string.md)。
-- `length` — 結果の文字列の長さ。[UInt または Int](../data-types/int-uint.md)。入力文字列の長さより小さい場合、入力文字列は `length` 文字に短縮されます。
-- `pad_string` — 入力文字列をパディングするための文字列。[文字列](../data-types/string.md)。省略可能。指定しない場合、入力文字列はスペースでパディングされます。
+- `string` — パディングするべき入力文字列。[String](../data-types/string.md)。
+- `length` — 結果の文字列の長さ。[UIntまたはInt](../data-types/int-uint.md)。値が入力文字列の長さより小さい場合、入力文字列は`length`文字に短縮されます。
+- `pad_string` — 入力文字列をパディングする文字列。[String](../data-types/string.md)。オプション。指定されていない場合、入力文字列はスペースでパディングされます。
 
-**返される値**
+**戻り値**
 
-- 指定された長さの右パディングされた文字列。[文字列](../data-types/string.md)。
+- 指定された長さの右パディングされた文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -452,7 +454,7 @@ SELECT rightPad('abc', 7, '*'), rightPad('abc', 7);
 ```
 ## rightPadUTF8 {#rightpadutf8}
 
-文字列を右側からスペースまたは指定された文字列で（必要に応じて複数回）パディングし、結果の文字列が指定された長さに達するまでパディングします。[rightPad](#rightpad) はバイト単位で文字列の長さを測定するのに対して、文字列の長さはコードポイント単位で測定されます。
+文字列を右側からスペースまたは指定された文字列でパディングし、結果の文字列が指定された長さに達するまで繰り返します。[rightPad](#rightpad)はバイト単位で文字列の長さを測定しますが、この関数はコードポイント単位で測定します。
 
 **構文**
 
@@ -462,13 +464,13 @@ rightPadUTF8(string, length[, pad_string])
 
 **引数**
 
-- `string` — パディングすべき入力文字列。[文字列](../data-types/string.md)。
-- `length` — 結果の文字列の長さ。[UInt または Int](../data-types/int-uint.md)。入力文字列の長さより小さい場合、入力文字列は `length` 文字に短縮されます。
-- `pad_string` — 入力文字列をパディングするための文字列。[文字列](../data-types/string.md)。省略可能。指定しない場合、入力文字列はスペースでパディングされます。
+- `string` — パディングするべき入力文字列。[String](../data-types/string.md)。
+- `length` — 結果の文字列の長さ。[UIntまたはInt](../data-types/int-uint.md)。値が入力文字列の長さより小さい場合、入力文字列は`length`文字に短縮されます。
+- `pad_string` — 入力文字列をパディングする文字列。[String](../data-types/string.md)。オプション。指定されていない場合、入力文字列はスペースでパディングされます。
 
-**返される値**
+**戻り値**
 
-- 指定された長さの右パディングされた文字列。[文字列](../data-types/string.md)。
+- 指定された長さの右パディングされた文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -495,17 +497,17 @@ compareSubstrings(string1, string2, string1_offset, string2_offset, num_bytes);
 
 **引数**
 
-- `string1` — 比較する最初の文字列。[文字列](../data-types/string.md)
-- `string2` - 比較する2番目の文字列。[文字列](../data-types/string.md)
-- `string1_offset` — `string1` における比較開始位置（ゼロベース）。[UInt*](../data-types/int-uint.md)。
-- `string2_offset` — `string2` における比較開始位置（ゼロベース）。[UInt*](../data-types/int-uint.md)。
-- `num_bytes` — 両方の文字列で比較する最大バイト数。 `string_offset` + `num_bytes` が入力文字列の末尾を超える場合、 `num_bytes` はそれに応じて減少します。[UInt*](../data-types/int-uint.md)。
+- `string1` — 比較する最初の文字列。[String](../data-types/string.md)
+- `string2` - 比較する2番目の文字列。[String](../data-types/string.md)
+- `string1_offset` — 比較開始位置（ゼロベース）を指定する `string1` の位置。[UInt*](../data-types/int-uint.md)。
+- `string2_offset` — 比較開始位置（ゼロベース）を指定する `string2` の位置。[UInt*](../data-types/int-uint.md)。
+- `num_bytes` — 両方の文字列で比較する最大バイト数。 `string_offset` + `num_bytes` が入力文字列の終端を超える場合、`num_bytes` はそれに応じて減少します。[UInt*](../data-types/int-uint.md)。
 
-**返される値**
+**戻り値**
 
-- -1 — `string1`[`string1_offset` : `string1_offset` + `num_bytes`] < `string2`[`string2_offset` : `string2_offset` + `num_bytes`].
-- 0 — `string1`[`string1_offset` : `string1_offset` + `num_bytes`] = `string2`[`string2_offset` : `string2_offset` + `num_bytes`].
-- 1 — `string1`[`string1_offset` : `string1_offset` + `num_bytes`] > `string2`[`string2_offset` : `string2_offset` + `num_bytes`].
+- -1 — `string1`[`string1_offset` : `string1_offset` + `num_bytes`] < `string2`[`string2_offset` : `string2_offset` + `num_bytes`] の場合。
+- 0 — `string1`[`string1_offset` : `string1_offset` + `num_bytes`] = `string2`[`string2_offset` : `string2_offset` + `num_bytes`] の場合。
+- 1 — `string1`[`string1_offset` : `string1_offset` + `num_bytes`] > `string2`[`string2_offset` : `string2_offset` + `num_bytes`] の場合。
 
 **例**
 
@@ -526,7 +528,7 @@ SELECT compareSubstrings('Saxony', 'Anglo-Saxon', 0, 6, 5) AS result,
 
 文字列内のASCIIラテン記号を小文字に変換します。
 
-**構文**
+*構文**
 
 ```sql
 lower(input)
@@ -534,13 +536,13 @@ lower(input)
 
 エイリアス: `lcase`
 
-**パラメーター**
+**パラメータ**
 
-- `input`: [文字列](../data-types/string.md)型。
+- `input`: 文字列型 [String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- [文字列](../data-types/string.md)型の値。
+- [String](../data-types/string.md) データ型の値。
 
 **例**
 
@@ -567,13 +569,13 @@ upper(input)
 
 エイリアス: `ucase`
 
-**パラメーター**
+**パラメータ**
 
-- `input` — [文字列](../data-types/string.md)型。
+- `input` — 文字列型 [String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- [文字列](../data-types/string.md)型の値。
+- [String](../data-types/string.md) データ型の値。
 
 **例**
 
@@ -590,10 +592,10 @@ SELECT upper('clickhouse');
 ```
 ## lowerUTF8 {#lowerutf8}
 
-文字列を小文字に変換しますが、文字列が有効なUTF-8でエンコードされたテキストを含むと仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義となります。
+文字列を小文字に変換します。文字列が有効なUTF-8エンコードされたテキストを含んでいると仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義となります。
 
 :::note
-言語を検出しません。たとえば、トルコ語の場合、結果は正確ではない可能性があります (i/İ と i/I)。UTF-8のバイト列の上昇すると大文字と小文字のコードポイントが異なる場合（例えば `ẞ` と `ß`）、このコードポイントに対する結果は誤る可能性があります。
+言語を検出することはできません。例えばトルコ語の場合、結果は正確でない可能性があります（i/İ と i/I）。もしUTF-8バイトシーケンスの長さが、コードポイントの大文字と小文字で異なる場合（`ẞ` と `ß` のように）、このコードポイントに対して結果が不正確になる可能性があります。
 :::
 
 **構文**
@@ -602,13 +604,13 @@ SELECT upper('clickhouse');
 lowerUTF8(input)
 ```
 
-**パラメーター**
+**パラメータ**
 
-- `input` — [文字列](../data-types/string.md)型。
+- `input` — 文字列型 [String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- [文字列](../data-types/string.md)型の値。
+- [String](../data-types/string.md) データ型の値。
 
 **例**
 
@@ -627,10 +629,10 @@ SELECT lowerUTF8('MÜNCHEN') as Lowerutf8;
 ```
 ## upperUTF8 {#upperutf8}
 
-文字列を大文字に変換しますが、文字列が有効なUTF-8でエンコードされたテキストを含むと仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義となります。
+文字列を大文字に変換します。文字列が有効なUTF-8エンコードされたテキストを含んでいると仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義となります。
 
 :::note
-言語を検出しません。たとえば、トルコ語の場合、結果は正確ではない可能性があります (i/İ と i/I)。UTF-8のバイト列の上昇すると大文字と小文字のコードポイントが異なる場合（例えば `ẞ` と `ß`）、このコードポイントに対する結果は誤る可能性があります。
+言語を検出することはできません。例えばトルコ語の場合、結果は正確でない可能性があります（i/İ と i/I）。もしUTF-8バイトシーケンスの長さが、コードポイントの大文字と小文字で異なる場合（`ẞ` と `ß` のように）、このコードポイントに対して結果が不正確になる可能性があります。
 :::
 
 **構文**
@@ -639,13 +641,13 @@ SELECT lowerUTF8('MÜNCHEN') as Lowerutf8;
 upperUTF8(input)
 ```
 
-**パラメーター**
+**パラメータ**
 
-- `input` — [文字列](../data-types/string.md)型。
+- `input` — 文字列型 [String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- [文字列](../data-types/string.md)型の値。
+- [String](../data-types/string.md) データ型の値。
 
 **例**
 
@@ -664,7 +666,7 @@ SELECT upperUTF8('München') as Upperutf8;
 ```
 ## isValidUTF8 {#isvalidutf8}
 
-バイトのセットが有効なUTF-8でエンコードされたテキストを構成する場合は1を返し、そうでない場合は0を返します。
+バイトのセットが有効なUTF-8エンコードされたテキストを構成している場合、1を返します。そうでない場合は0を返します。
 
 **構文**
 
@@ -672,13 +674,13 @@ SELECT upperUTF8('München') as Upperutf8;
 isValidUTF8(input)
 ```
 
-**パラメーター**
+**パラメータ**
 
-- `input` — [文字列](../data-types/string.md)型。
+- `input` — 文字列型 [String](../data-types/string.md)。
 
-**返される値**
+**戻り値**
 
-- 有効なUTF-8でエンコードされたテキストを構成するバイトのセットがある場合は `1` を返し、そうでない場合は `0` を返します。
+- バイトのセットが有効なUTF-8エンコードされたテキストを構成している場合は`1`を、そうでない場合は`0`を返します。
 
 クエリ:
 
@@ -695,7 +697,7 @@ SELECT isValidUTF8('\xc3\xb1') AS valid, isValidUTF8('\xc3\x28') AS invalid;
 ```
 ## toValidUTF8 {#tovalidutf8}
 
-無効なUTF-8文字を `�` (U+FFFD) 文字に置き換えます。連続して無効な文字は1つの置き換え文字にまとめられます。
+無効なUTF-8文字を `�` (U+FFFD) 文字で置き換えます。連続して無効な文字は1つの置換文字にまとめられます。
 
 **構文**
 
@@ -705,9 +707,9 @@ toValidUTF8(input_string)
 
 **引数**
 
-- `input_string` — [文字列](../data-types/string.md)型オブジェクトとして表現される任意のバイトのセット。
+- `input_string` — [String](../data-types/string.md) データ型のオブジェクトで表された任意のバイトセット。
 
-**返される値**
+**戻り値**
 
 - 有効なUTF-8文字列。
 
@@ -724,7 +726,7 @@ SELECT toValidUTF8('\x61\xF0\x80\x80\x80b');
 ```
 ## repeat {#repeat}
 
-指定された回数だけ文字列を自分自身と連結します。
+指定された回数だけ文字列を連結します。
 
 **構文**
 
@@ -736,12 +738,12 @@ repeat(s, n)
 
 **引数**
 
-- `s` — 繰り返す文字列。[文字列](../data-types/string.md)。
+- `s` — 繰り返す文字列。[String](../data-types/string.md)。
 - `n` — 文字列を繰り返す回数。[UInt* または Int*](../data-types/int-uint.md)。
 
-**返される値**
+**戻り値**
 
-`n` 回繰り返された文字列 `s` を含む文字列。`n` &lt;= 0 の場合、関数は空の文字列を返します。[文字列](../data-types/string.md)。
+文字列` s` が `n` 回繰り返された文字列。もし `n` &lt;= 0 の場合、関数は空の文字列を返します。[String](../data-types/string.md)。
 
 **例**
 
@@ -758,7 +760,7 @@ SELECT repeat('abc', 10);
 ```
 ## space {#space}
 
-スペース（` `）を指定された回数だけ連結します。
+指定された回数だけスペース（` `）を連結します。
 
 **構文**
 
@@ -772,9 +774,9 @@ space(n)
 
 - `n` — スペースを繰り返す回数。[UInt* または Int*](../data-types/int-uint.md)。
 
-**返される値**
+**戻り値**
 
-文字列 ` ` が `n` 回繰り返された文字列。`n` &lt;= 0 の場合、関数は空の文字列を返します。[文字列](../data-types/string.md)。
+文字列` ` が `n` 回繰り返された文字列。もし `n` &lt;= 0 の場合、関数は空の文字列を返します。[String](../data-types/string.md)。
 
 **例**
 
@@ -793,10 +795,10 @@ SELECT space(3);
 ```
 ## reverse {#reverse}
 
-文字列内のバイトの順序を逆にします。
+文字列のバイトシーケンスを反転します。
 ## reverseUTF8 {#reverseutf8}
 
-文字列内のUnicodeコードポイントの順序を逆にします。文字列が有効なUTF-8でエンコードされたテキストを含むと仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義となります。
+文字列のUnicodeコードポイントのシーケンスを反転します。有効なUTF-8エンコードされたテキストを含んでいると仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義となります。
 ## concat {#concat}
 
 与えられた引数を連結します。
@@ -811,13 +813,13 @@ concat(s1, s2, ...)
 
 任意の型の値。
 
-[文字列](../data-types/string.md) または [FixedString](../data-types/fixedstring.md) 以外の型の引数は、デフォルトのシリアライズを使用して文字列に変換されます。これはパフォーマンスが低下するため、非String/FixedString引数の使用は推奨されません。
+[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md) でない型の引数は、デフォルトのシリアル化を使用して文字列に変換されます。これによりパフォーマンスが低下するため、非 String/FixedString 引数の使用は推奨されません。
 
-**返される値**
+**戻り値**
 
-引数を連結することで生成された文字列。
+引数を連結して作成された文字列。
 
-引数のいずれかが `NULL` の場合、関数は `NULL` を返します。
+いずれかの引数が `NULL` の場合、関数は `NULL` を返します。
 
 **例**
 
@@ -850,13 +852,13 @@ SELECT concat(42, 144);
 ```
 
 :::note `||` 演算子
-文字列の連結には、`concat()` の簡潔な代替として、 `||` 演算子を使用できます。たとえば、 `'Hello, ' || 'World!'` は `concat('Hello, ', 'World!')` と同じです。
+文字列連結には `concat()` の簡潔な代替として `||` 演算子を使用してください。例えば、`'Hello, ' || 'World!'` は `concat('Hello, ', 'World!')` と同等です。
 :::
 ## concatAssumeInjective {#concatassumeinjective}
 
-[concat](#concat) に似ていますが、 `concat(s1, s2, ...) → sn` が単射であると仮定します。GROUP BYの最適化に使用できます。
+[concat](#concat) と同様ですが、`concat(s1, s2, ...) → sn` が単射であると仮定します。GROUP BY の最適化に使用できます。
 
-関数が単射であるとは、異なる引数に対して異なる結果を返す場合を指します。言い換えれば、異なる引数は決して同じ結果を生成しません。
+関数が単射と呼ばれるのは、異なる引数に対して異なる結果を返すときです。言い換えれば: 異なる引数は決して同じ結果を生成しません。
 
 **構文**
 
@@ -868,11 +870,11 @@ concatAssumeInjective(s1, s2, ...)
 
 String または FixedString 型の値。
 
-**返される値**
+**戻り値**
 
-引数を連結することで生成された文字列。
+引数を連結して作成された文字列。
 
-引数のいずれかの値が `NULL` の場合、関数は `NULL` を返します。
+いずれかの引数が `NULL` の場合、関数は `NULL` を返します。
 
 **例**
 
@@ -908,7 +910,7 @@ SELECT concat(key1, key2), sum(value) FROM key_val GROUP BY concatAssumeInjectiv
 ```
 ## concatWithSeparator {#concatwithseparator}
 
-指定された区切り文字を使用して、与えられた文字列を連結します。
+指定された区切り文字で与えられた文字列を連結します。
 
 **構文**
 
@@ -920,14 +922,14 @@ concatWithSeparator(sep, expr1, expr2, expr3...)
 
 **引数**
 
-- sep — 区切り文字。定数の[文字列](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
-- exprN — 連結する式。 [文字列](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)型でない引数は、デフォルトのシリアライズを使用して文字列に変換されます。これはパフォーマンスが低下するため、非String/FixedString引数の使用は推奨されません。
+- sep — 区切り文字。定数の[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。
+- exprN — 連結される表現。非[String](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)型の引数は、デフォルトのシリアル化を使用して文字列に変換されます。これによりパフォーマンスが低下するため、非 String/FixedString 引数の使用は推奨されません。
 
-**返される値**
+**戻り値**
 
-引数を連結することで生成された文字列。
+引数を連結して作成された文字列。
 
-引数のいずれかの値が `NULL` の場合、関数は `NULL` を返します。
+いずれかの引数が `NULL` の場合、関数は `NULL` を返します。
 
 **例**
 
@@ -944,12 +946,12 @@ SELECT concatWithSeparator('a', '1', '2', '3', '4')
 ```
 ## concatWithSeparatorAssumeInjective {#concatwithseparatorassumeinjective}
 
-`concatWithSeparator` に似ていますが、 `concatWithSeparator(sep, expr1, expr2, expr3...) → result` が単射であると仮定します。GROUP BYの最適化に使用できます。
+`concatWithSeparator` のようですが、`concatWithSeparator(sep, expr1, expr2, expr3...) → result` が単射であると仮定します。GROUP BYの最適化に使用できます。
 
-関数が単射であるとは、異なる引数に対して異なる結果を返す場合を指します。言い換えれば、異なる引数は決して同じ結果を生成しません。
+関数が単射と呼ばれるのは、異なる引数に対して異なる結果を返すときです。言い換えれば: 異なる引数は決して同じ結果を生成しません。
 ## substring {#substring}
 
-バイトインデックス `offset` で始まる文字列 `s` の部分文字列を返します。バイトのカウントは 1 から始まります。 `offset` が 0 の場合、空の文字列が返されます。 `offset` が負の場合、返される部分文字列は文字列の始まりではなく、文字列の末尾から `pos` 文字の位置から始まります。オプションの引数 `length` は、返される部分文字列の最大バイト数を指定します。
+文字列 `s` の部分文字列を返します。部分文字列は指定されたバイトインデックス `offset` から始まります。バイトの数え方は1から始まります。もし `offset` が 0 の場合は、空の文字列が返されます。もし `offset` が負の数である場合、部分文字列は文字列の始まりではなく、文字列の終わりから`pos`文字の位置から始まります。オプションの引数 `length` では、返される部分文字列の最大バイト数を指定できます。
 
 **構文**
 
@@ -964,13 +966,13 @@ substring(s, offset[, length])
 
 **引数**
 
-- `s` — 部分文字列を計算するための文字列。[文字列](../data-types/string.md)、[FixedString](../data-types/fixedstring.md)または[Enum](../data-types/enum.md)
-- `offset` — `s` における部分文字列の開始位置。[(U)Int*](../data-types/int-uint.md)。
-- `length` — 部分文字列の最大長。[(U)Int*](../data-types/int-uint.md)。省略可能。
+- `s` — 部分文字列を計算するための文字列。[String](../data-types/string.md)、[FixedString](../data-types/fixedstring.md) または [Enum](../data-types/enum.md)
+- `offset` — `s` の部分文字列の開始位置。[(U)Int*](../data-types/int-uint.md)。
+- `length` — 部分文字列の最大長。[(U)Int*](../data-types/int-uint.md)。オプション。
 
-**返される値**
+**戻り値**
 
-インデックス `offset` から始まる `s` の部分文字列、バイト数 `length`。[文字列](../data-types/string.md)。
+インデックス `offset` から始まる `s` の部分文字列で、`length` バイト分です。[String](../data-types/string.md)。
 
 **例**
 
@@ -987,9 +989,9 @@ SELECT 'database' AS db, substr(db, 5), substr(db, 5, 1)
 ```
 ## substringUTF8 {#substringutf8}
 
-バイトインデックス `offset` で始まる文字列 `s` の部分文字列を返します。バイトのカウントは 1 から始まります。 `offset` が 0 の場合、空の文字列が返されます。 `offset` が負の場合、返される部分文字列は文字列の始まりではなく、文字列の末尾から `pos` 文字の位置から始まります。オプションの引数 `length` は、返される部分文字列の最大バイト数を指定します。
+文字列 `s` の部分文字列を返します。部分文字列は指定されたバイトインデックス `offset` で始まります。バイトの数え方は1から始まります。もし `offset` が 0 の場合は、空の文字列が返されます。もし `offset` が負の数である場合、部分文字列は文字列の終わりから`pos`文字の位置から始まります。オプションの引数 `length` では、返される部分文字列の最大バイト数を指定できます。
 
-文字列が有効なUTF-8でエンコードされたテキストを含むと仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義となります。
+文字列が有効なUTF-8エンコードされたテキストを含んでいると仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義となります。
 
 **構文**
 
@@ -999,17 +1001,17 @@ substringUTF8(s, offset[, length])
 
 **引数**
 
-- `s` — 部分文字列を計算するための文字列。[文字列](../data-types/string.md)、[FixedString](../data-types/fixedstring.md)または[Enum](../data-types/enum.md)
-- `offset` — `s` における部分文字列の開始位置。[(U)Int*](../data-types/int-uint.md)。
-- `length` — 部分文字列の最大長。[(U)Int*](../data-types/int-uint.md)。省略可能。
+- `s` — 部分文字列を計算するための文字列。[String](../data-types/string.md)、[FixedString](../data-types/fixedstring.md) または [Enum](../data-types/enum.md)
+- `offset` — `s` の部分文字列の開始位置。[(U)Int*](../data-types/int-uint.md)。
+- `length` — 部分文字列の最大長。[(U)Int*](../data-types/int-uint.md)。オプション。
 
-**返される値**
+**戻り値**
 
-インデックス `offset` から始まる `s` の部分文字列、バイト数 `length`。
+インデックス `offset` から始まる `s` の部分文字列で、`length` バイト分です。
 
 **実装の詳細**
 
-文字列が有効なUTF-8でエンコードされたテキストを含むと仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義となります。
+文字列が有効なUTF-8エンコードされたテキストを含んでいると仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義となります。
 
 **例**
 
@@ -1024,7 +1026,7 @@ Täglich grüßt das Murmeltier.    grüßt das Murmeltier.    grüßt
 ```
 ## substringIndex {#substringindex}
 
-区切り文字 `delim` の `count` 回の出現の前の `s` の部分文字列を返します。SparkやMySQLのように。
+`count` 回のデリミタ `delim` の出現前の `s` の部分文字列を返します。これは、Spark または MySQL のように動作します。
 
 **構文**
 
@@ -1033,12 +1035,11 @@ substringIndex(s, delim, count)
 ```
 エイリアス: `SUBSTRING_INDEX`
 
-
 **引数**
 
-- s — 部分文字列を取得するための文字列。[文字列](../data-types/string.md)。
-- delim — 分割する文字。[文字列](../data-types/string.md)。
-- count — 部分文字列を抽出する前にカウントする区切り文字の出現回数。カウントが正の場合、最終区切り文字の左側のすべてが返されます（左から数えます）。カウントが負の場合、最終区切り文字の右側のすべてが返されます（右から数えます）。[UInt または Int](../data-types/int-uint.md)。
+- s — 部分文字列を抽出するための文字列。[String](../data-types/string.md)。
+- delim — スプリットする文字。[String](../data-types/string.md)。
+- count — 部分文字列を抽出する前に数えるデリミタの出現回数。countが正の場合は、最終のデリミタの左側のすべてを返します（左から数えて）。countが負の場合は、最終のデリミタの右側のすべてを返します（右から数えて）。[UInt または Int](../data-types/int-uint.md)
 
 **例**
 
@@ -1054,9 +1055,9 @@ SELECT substringIndex('www.clickhouse.com', '.', 2)
 ```
 ## substringIndexUTF8 {#substringindexutf8}
 
-区切り文字 `delim` の `count` 回の出現の前の `s` の部分文字列を返します。特にUnicodeのコードポイント用です。
+`count` 回のデリミタ `delim` の出現前の `s` の部分文字列を返します。Unicodeコードポイント専用です。
 
-文字列が有効なUTF-8でエンコードされたテキストを含むと仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義となります。
+文字列が有効なUTF-8エンコードされたテキストを含んでいると仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義となります。
 
 **構文**
 
@@ -1066,17 +1067,17 @@ substringIndexUTF8(s, delim, count)
 
 **引数**
 
-- `s` — 部分文字列を取得するための文字列。[文字列](../data-types/string.md)。
-- `delim` — 分割する文字。[文字列](../data-types/string.md)。
-- `count` — 部分文字列を抽出する前にカウントする区切り文字の出現回数。カウントが正の場合、最終区切り文字の左側のすべてが返されます（左から数えます）。カウントが負の場合、最終区切り文字の右側のすべてが返されます（右から数えます）。[UInt または Int](../data-types/int-uint.md)。
+- `s` — 部分文字列を抽出するための文字列。[String](../data-types/string.md)。
+- `delim` — スプリットする文字。[String](../data-types/string.md)。
+- `count` — 部分文字列を抽出する前に数えるデリミタの出現回数。countが正の場合は、最終のデリミタの左側のすべてを返します（左から数えて）。countが負の場合は、最終のデリミタの右側のすべてを返します（右から数えて）。[UInt または Int](../data-types/int-uint.md)
 
-**返される値**
+**戻り値**
 
-区切り文字 `delim` の `count` 回の出現の前の部分文字列 `[文字列](../data-types/string.md)` 。
+`delim` の `count` 回の出現前の `s` の部分文字列。[String](../data-types/string.md)。
 
 **実装の詳細**
 
-文字列が有効なUTF-8でエンコードされたテキストを含むと仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義となります。
+文字列が有効なUTF-8エンコードされたテキストを含んでいると仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義となります。
 
 **例**
 
@@ -1089,7 +1090,7 @@ www.straßen-in-europa
 ```
 ## appendTrailingCharIfAbsent {#appendtrailingcharifabsent}
 
-文字列 `s` が非空で、文字 `c` で終わっていない場合、`c` を文字列 `s` に追加します。
+文字列 `s` が非空であり、`s` が文字 `c` で終わっていない場合、`c` を文字列 `s` に追加します。
 
 **構文**
 
@@ -1107,7 +1108,7 @@ convertCharset(s, from, to)
 ```
 ## base32Encode {#base32encode}
 
-[Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) を使用して文字列をエンコードします。
+[string](https://datatracker.ietf.org/doc/html/rfc4648#section-6)を使用して文字列をエンコードします。
 
 **構文**
 
@@ -1117,11 +1118,11 @@ base32Encode(plaintext)
 
 **引数**
 
-- `plaintext` — [文字列](../data-types/string.md)の列または定数。
+- `plaintext` — [String](../data-types/string.md) 列または定数。
 
-**返される値**
+**戻り値**
 
-- 引数のエンコード値を含む文字列。[文字列](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- 引数のエンコードされた値を含む文字列。[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
 
 **例**
 
@@ -1138,7 +1139,7 @@ SELECT base32Encode('Encoded');
 ```
 ## base32Decode {#base32decode}
 
-文字列を受け入れ、[Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6)エンコーディングスキームを使用してデコードします。
+文字列を受け取り、[Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) エンコーディングを使用してそれをデコードします。
 
 **構文**
 
@@ -1148,11 +1149,11 @@ base32Decode(encoded)
 
 **引数**
 
-- `encoded` — [文字列](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。文字列が有効なBase32エンコード値でない場合、例外がスローされます。
+- `encoded` — [String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。文字列が有効なBase32エンコードされた値でない場合、例外がスローされます。
 
-**返される値**
+**戻り値**
 
-- 引数のデコード値を含む文字列。[文字列](../data-types/string.md)。
+- 引数のデコードされた値を含む文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -1169,7 +1170,7 @@ SELECT base32Decode('IVXGG33EMVSA====');
 ```
 ## tryBase32Decode {#trybase32decode}
 
-`base32Decode` に似ていますが、エラーが発生した場合は空の文字列を返します。
+`base32Decode` と同様ですが、エラーが発生した場合は空の文字列を返します。
 
 **構文**
 
@@ -1177,13 +1178,13 @@ SELECT base32Decode('IVXGG33EMVSA====');
 tryBase32Decode(encoded)
 ```
 
-**引数**
+**パラメータ**
 
-- `encoded`: [文字列](../data-types/string.md)または[FixedString](../data-types/fixedstring.md)。文字列が有効なBase32エンコード値でない場合、エラーが発生した場合は空の文字列を返します。
+- `encoded`: [String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。文字列が有効なBase32エンコードされた値でない場合、エラーが発生したときに空の文字列を返します。
 
-**返される値**
+**戻り値**
 
-- 引数のデコード値を含む文字列。
+- 引数のデコードされた値を含む文字列。
 
 **例**
 
@@ -1200,7 +1201,7 @@ SELECT tryBase32Decode('IVXGG33EMVSA====') as res, tryBase32Decode('invalid') as
 ```
 ## base58Encode {#base58encode}
 
-[Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58) を使用して文字列をエンコードします。「Bitcoin」アルファベットです。
+[Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58) を使用して文字列をエンコードします。"Bitcoin" アルファベットを使用します。
 
 **構文**
 
@@ -1210,11 +1211,11 @@ base58Encode(plaintext)
 
 **引数**
 
-- `plaintext` — [文字列](../data-types/string.md)の列または定数。
+- `plaintext` — [String](../data-types/string.md) 列または定数。
 
-**返される値**
+**戻り値**
 
-- 引数のエンコード値を含む文字列。[文字列](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- 引数のエンコードされた値を含む文字列。[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
 
 **例**
 
@@ -1232,7 +1233,7 @@ SELECT base58Encode('Encoded');
 
 ## base58Decode {#base58decode}
 
-文字列を受け取り、[Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58) エンコーディングスキームを使用して "Bitcoin" アルファベットでデコードします。
+文字列を受け取り、[Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58) エンコーディング方式を使用してデコードします。"Bitcoin" アルファベットを使用します。
 
 **構文**
 
@@ -1246,7 +1247,7 @@ base58Decode(encoded)
 
 **返される値**
 
-- 引数のデコード値を含む文字列。 [String](../data-types/string.md)。
+- 引数のデコード値を含む文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -1254,7 +1255,7 @@ base58Decode(encoded)
 SELECT base58Decode('3dc8KtHrwM');
 ```
 
-結果:
+結果：
 
 ```result
 ┌─base58Decode('3dc8KtHrwM')─┐
@@ -1263,7 +1264,7 @@ SELECT base58Decode('3dc8KtHrwM');
 ```
 ## tryBase58Decode {#trybase58decode}
 
-`base58Decode` のようですが、エラーが発生した場合は空文字列を返します。
+`base58Decode` のように動作しますが、エラーが発生した場合は空の文字列を返します。
 
 **構文**
 
@@ -1273,7 +1274,7 @@ tryBase58Decode(encoded)
 
 **引数**
 
-- `encoded`: [String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。文字列が有効な Base58 エンコード値でない場合、エラー時に空文字列を返します。
+- `encoded`: [String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。文字列が有効な Base58 エンコード値でない場合、エラー時に空の文字列を返します。
 
 **返される値**
 
@@ -1281,7 +1282,7 @@ tryBase58Decode(encoded)
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT tryBase58Decode('3dc8KtHrwM') as res, tryBase58Decode('invalid') as res_invalid;
@@ -1294,7 +1295,7 @@ SELECT tryBase58Decode('3dc8KtHrwM') as res, tryBase58Decode('invalid') as res_i
 ```
 ## base64Encode {#base64encode}
 
-文字列または FixedString を base64 としてエンコードします。 [RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-4) に従います。
+文字列または FixedString を base64 でエンコードします。[RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-4) に従います。
 
 エイリアス: `TO_BASE64`。
 
@@ -1318,7 +1319,7 @@ base64Encode(plaintext)
 SELECT base64Encode('clickhouse');
 ```
 
-結果:
+結果：
 
 ```result
 ┌─base64Encode('clickhouse')─┐
@@ -1327,7 +1328,7 @@ SELECT base64Encode('clickhouse');
 ```
 ## base64URLEncode {#base64urlencode}
 
-URL（String または FixedString）を、[RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-5) に従って、URL 特有の修正を施した base64 としてエンコードします。
+URL（String または FixedString）を、URL 特有の修正を行った base64 でエンコードします。[RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-5) に従います。
 
 **構文**
 
@@ -1349,7 +1350,7 @@ base64URLEncode(url)
 SELECT base64URLEncode('https://clickhouse.com');
 ```
 
-結果:
+結果：
 
 ```result
 ┌─base64URLEncode('https://clickhouse.com')─┐
@@ -1358,7 +1359,7 @@ SELECT base64URLEncode('https://clickhouse.com');
 ```
 ## base64Decode {#base64decode}
 
-文字列を受け取り、base64 からデコードします。 [RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-4) に従います。エラーが発生した場合は例外をスローします。
+文字列を受け取り、base64 からデコードします。[RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-4) に従い、エラーの場合は例外をスローします。
 
 エイリアス: `FROM_BASE64`。
 
@@ -1382,7 +1383,7 @@ base64Decode(encoded)
 SELECT base64Decode('Y2xpY2tob3VzZQ==');
 ```
 
-結果:
+結果：
 
 ```result
 ┌─base64Decode('Y2xpY2tob3VzZQ==')─┐
@@ -1391,7 +1392,7 @@ SELECT base64Decode('Y2xpY2tob3VzZQ==');
 ```
 ## base64URLDecode {#base64urldecode}
 
-base64 エンコードされた URL を受け取り、URL 特有の修正を施した base64 からデコードします。 [RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-5) に従います。エラーが発生した場合は例外をスローします。
+base64 でエンコードされた URL を受け取り、URL 特有の修正を行った state からデコードします。[RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-5) に従い、エラーの場合は例外をスローします。
 
 **構文**
 
@@ -1413,7 +1414,7 @@ base64URLDecode(encodedUrl)
 SELECT base64URLDecode('aHR0cDovL2NsaWNraG91c2UuY29t');
 ```
 
-結果:
+結果：
 
 ```result
 ┌─base64URLDecode('aHR0cDovL2NsaWNraG91c2UuY29t')─┐
@@ -1422,7 +1423,7 @@ SELECT base64URLDecode('aHR0cDovL2NsaWNraG91c2UuY29t');
 ```
 ## tryBase64Decode {#trybase64decode}
 
-`base64Decode` のようですが、エラーが発生した場合は空文字列を返します。
+`base64Decode` のように動作しますが、エラーが発生した場合は空の文字列を返します。
 
 **構文**
 
@@ -1432,7 +1433,7 @@ tryBase64Decode(encoded)
 
 **引数**
 
-- `encoded` — [String](../data-types/string.md) カラムまたは定数。文字列が有効な Base64 エンコード値でない場合、空文字列を返します。
+- `encoded` — [String](../data-types/string.md) カラムまたは定数。文字列が有効な Base64 エンコード値でない場合、空の文字列を返します。
 
 **返される値**
 
@@ -1440,7 +1441,7 @@ tryBase64Decode(encoded)
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT tryBase64Decode('RW5jb2RlZA==') as res, tryBase64Decode('invalid') as res_invalid;
@@ -1453,7 +1454,7 @@ SELECT tryBase64Decode('RW5jb2RlZA==') as res, tryBase64Decode('invalid') as res
 ```
 ## tryBase64URLDecode {#trybase64urldecode}
 
-`base64URLDecode` のようですが、エラーが発生した場合は空文字列を返します。
+`base64URLDecode` のように動作しますが、エラーが発生した場合は空の文字列を返します。
 
 **構文**
 
@@ -1463,7 +1464,7 @@ tryBase64URLDecode(encodedUrl)
 
 **引数**
 
-- `encodedURL` — [String](../data-types/string.md) カラムまたは定数。文字列が有効な Base64 エンコード値でない場合、空文字列を返します。
+- `encodedURL` — [String](../data-types/string.md) カラムまたは定数。文字列が有効な Base64 エンコード値でない場合、空の文字列を返します。
 
 **返される値**
 
@@ -1471,7 +1472,7 @@ tryBase64URLDecode(encodedUrl)
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT tryBase64URLDecode('aHR0cDovL2NsaWNraG91c2UuY29t') as res, tryBase64Decode('aHR0cHM6Ly9jbGlja') as res_invalid;
@@ -1493,7 +1494,7 @@ endsWith(str, suffix)
 ```
 ## endsWithUTF8 {#endswithutf8}
 
-文字列 `str` が `suffix` で終わるかどうかを返します。 `endsWithUTF8` と `endsWith` の違いは、`endsWithUTF8` が `str` と `suffix` を UTF-8 文字で照合することです。
+文字列 `str` が `suffix` で終わるかどうかを返します。`endsWithUTF8` と `endsWith` の違いは、`endsWithUTF8` が UTF-8 文字によって `str` と `suffix` をマッチングさせることです。
 
 **構文**
 
@@ -1507,7 +1508,7 @@ endsWithUTF8(str, suffix)
 SELECT endsWithUTF8('中国', '\xbd'), endsWith('中国', '\xbd')
 ```
 
-結果:
+結果：
 
 ```result
 ┌─endsWithUTF8('中国', '½')─┬─endsWith('中国', '½')─┐
@@ -1533,13 +1534,7 @@ SELECT startsWith('Spider-Man', 'Spi');
 
 <VersionBadge minVersion='23.8' />
 
-文字列 `str` が `prefix` で始まるかどうかを返します。 `startsWithUTF8` と `startsWith` の違いは、`startsWithUTF8` が `str` と `prefix` を UTF-8 文字で照合することです。
-
-**構文**
-
-```sql
-startsWithUTF8(str, prefix)
-```
+文字列 `str` が `prefix` で始まるかどうかを返します。`startsWithUTF8` と `startsWith` の違いは、`startsWithUTF8` が UTF-8 文字によって `str` と `suffix` をマッチングさせることです。
 
 **例**
 
@@ -1547,7 +1542,7 @@ startsWithUTF8(str, prefix)
 SELECT startsWithUTF8('中国', '\xe4'), startsWith('中国', '\xe4')
 ```
 
-結果:
+結果：
 
 ```result
 ┌─startsWithUTF8('中国', '⥩─┬─startsWith('中国', '⥩─┐
@@ -1556,7 +1551,7 @@ SELECT startsWithUTF8('中国', '\xe4'), startsWith('中国', '\xe4')
 ```
 ## trim {#trim}
 
-指定された文字を文字列の開始または終了から削除します。指定されない場合、関数は空白（ASCII キャラクター 32）を削除します。
+指定された文字を文字列の先頭または末尾から削除します。特に指定されていない場合、関数は空白（ASCII 文字 32）を削除します。
 
 **構文**
 
@@ -1566,12 +1561,12 @@ trim([[LEADING|TRAILING|BOTH] trim_character FROM] input_string)
 
 **引数**
 
-- `trim_character` — 削除する文字。 [String](../data-types/string.md)。
-- `input_string` — トリム対象の文字列。 [String](../data-types/string.md)。
+- `trim_character` — 削除する文字。[String](../data-types/string.md)。
+- `input_string` — トリムする文字列。[String](../data-types/string.md)。
 
 **返される値**
 
-先頭および/または末尾から指定された文字を削除した文字列。 [String](../data-types/string.md)。
+先頭および/または末尾の指定された文字がない文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -1579,7 +1574,7 @@ trim([[LEADING|TRAILING|BOTH] trim_character FROM] input_string)
 SELECT trim(BOTH ' ()' FROM '(   Hello, world!   )');
 ```
 
-結果:
+結果：
 
 ```result
 ┌─trim(BOTH ' ()' FROM '(   Hello, world!   )')─┐
@@ -1588,7 +1583,7 @@ SELECT trim(BOTH ' ()' FROM '(   Hello, world!   )');
 ```
 ## trimLeft {#trimleft}
 
-文字列の開始から連続して発生する空白（ASCII キャラクター 32）を削除します。
+文字列の先頭から空白（ASCII 文字 32）の連続する発生を削除します。
 
 **構文**
 
@@ -1600,12 +1595,12 @@ trimLeft(input_string[, trim_characters])
 
 **引数**
 
-- `input_string` — トリム対象の文字列。 [String](../data-types/string.md)。
-- `trim_characters` — 削除する文字。オプション。 [String](../data-types/string.md)。指定しない場合は、`' '` （単一の空白）がトリム文字として使用されます。
+- `input_string` — トリムする文字列。[String](../data-types/string.md)。
+- `trim_characters` — 削除する文字。省略可能。[String](../data-types/string.md)。指定されていない場合、`' '`（単一の空白）がトリム文字として使用されます。
 
 **返される値**
 
-先頭から一般的な空白を削除した文字列。 [String](../data-types/string.md)。
+先頭に共通の空白がない文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -1613,7 +1608,7 @@ trimLeft(input_string[, trim_characters])
 SELECT trimLeft('     Hello, world!     ');
 ```
 
-結果:
+結果：
 
 ```result
 ┌─trimLeft('     Hello, world!     ')─┐
@@ -1622,7 +1617,7 @@ SELECT trimLeft('     Hello, world!     ');
 ```
 ## trimRight {#trimright}
 
-文字列の終了から連続して発生する空白（ASCII キャラクター 32）を削除します。
+文字列の末尾から空白（ASCII 文字 32）の連続する発生を削除します。
 
 **構文**
 
@@ -1634,12 +1629,12 @@ trimRight(input_string[, trim_characters])
 
 **引数**
 
-- `input_string` — トリム対象の文字列。 [String](../data-types/string.md)。
-- `trim_characters` — 削除する文字。オプション。 [String](../data-types/string.md)。指定しない場合は、`' '` （単一の空白）がトリム文字として使用されます。
+- `input_string` — トリムする文字列。[String](../data-types/string.md)。
+- `trim_characters` — 削除する文字。省略可能。[String](../data-types/string.md)。指定されていない場合、`' '`（単一の空白）がトリム文字として使用されます。
 
 **返される値**
 
-末尾から一般的な空白を削除した文字列。 [String](../data-types/string.md)。
+末尾に共通の空白がない文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -1647,7 +1642,7 @@ trimRight(input_string[, trim_characters])
 SELECT trimRight('     Hello, world!     ');
 ```
 
-結果:
+結果：
 
 ```result
 ┌─trimRight('     Hello, world!     ')─┐
@@ -1656,7 +1651,7 @@ SELECT trimRight('     Hello, world!     ');
 ```
 ## trimBoth {#trimboth}
 
-文字列の両端から連続して発生する空白（ASCII キャラクター 32）を削除します。
+文字列の両端から空白（ASCII 文字 32）の連続する発生を削除します。
 
 **構文**
 
@@ -1668,12 +1663,12 @@ trimBoth(input_string[, trim_characters])
 
 **引数**
 
-- `input_string` — トリム対象の文字列。 [String](../data-types/string.md)。
-- `trim_characters` — 削除する文字。オプション。 [String](../data-types/string.md)。指定しない場合は、`' '` （単一の空白）がトリム文字として使用されます。
+- `input_string` — トリムする文字列。[String](../data-types/string.md)。
+- `trim_characters` — 削除する文字。省略可能。[String](../data-types/string.md)。指定されていない場合、`' '`（単一の空白）がトリム文字として使用されます。
 
 **返される値**
 
-先頭および末尾から一般的な空白を削除した文字列。 [String](../data-types/string.md)。
+先頭と末尾に共通の空白がない文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -1681,7 +1676,7 @@ trimBoth(input_string[, trim_characters])
 SELECT trimBoth('     Hello, world!     ');
 ```
 
-結果:
+結果：
 
 ```result
 ┌─trimBoth('     Hello, world!     ')─┐
@@ -1690,22 +1685,22 @@ SELECT trimBoth('     Hello, world!     ');
 ```
 ## CRC32 {#crc32}
 
-文字列の CRC32 チェックサムを CRC-32-IEEE 802.3 ポリノミアルと初期値 `0xffffffff`（zlib 実装）を使用して返します。
+文字列の CRC32 チェックサムを返します。CRC-32-IEEE 802.3 多項式と初期値 `0xffffffff` （zlib 実装）を使用します。
 
 結果の型は UInt32 です。
 ## CRC32IEEE {#crc32ieee}
 
-文字列の CRC32 チェックサムを、CRC-32-IEEE 802.3 ポリノミアルを使用して返します。
+文字列の CRC32 チェックサムを返します。CRC-32-IEEE 802.3 多項式を使用します。
 
 結果の型は UInt32 です。
 ## CRC64 {#crc64}
 
-文字列の CRC64 チェックサムを、CRC-64-ECMA ポリノミアルを使用して返します。
+文字列の CRC64 チェックサムを返します。CRC-64-ECMA 多項式を使用します。
 
 結果の型は UInt64 です。
 ## normalizeUTF8NFC {#normalizeutf8nfc}
 
-文字列を有効な UTF8 エンコードテキストであると仮定し、[NFC 正規化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms) に変換します。
+文字列を [NFC 正規化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms) に変換し、文字列が有効な UTF8 エンコードのテキストであると仮定します。
 
 **構文**
 
@@ -1715,11 +1710,11 @@ normalizeUTF8NFC(words)
 
 **引数**
 
-- `words` — UTF8 エンコードされた入力文字列。 [String](../data-types/string.md)。
+- `words` — UTF8 エンコードの入力文字列。[String](../data-types/string.md)。
 
 **返される値**
 
-- NFC 正規化形式に変換された文字列。 [String](../data-types/string.md)。
+- NFC 正規化形式に変換された文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -1727,7 +1722,7 @@ normalizeUTF8NFC(words)
 SELECT length('â'), normalizeUTF8NFC('â') AS nfc, length(nfc) AS nfc_len;
 ```
 
-結果:
+結果：
 
 ```result
 ┌─length('â')─┬─nfc─┬─nfc_len─┐
@@ -1736,7 +1731,7 @@ SELECT length('â'), normalizeUTF8NFC('â') AS nfc, length(nfc) AS nfc_len;
 ```
 ## normalizeUTF8NFD {#normalizeutf8nfd}
 
-文字列を有効な UTF8 エンコードテキストであると仮定し、[NFD 正規化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms) に変換します。
+文字列を [NFD 正規化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms) に変換し、文字列が有効な UTF8 エンコードのテキストであると仮定します。
 
 **構文**
 
@@ -1746,11 +1741,11 @@ normalizeUTF8NFD(words)
 
 **引数**
 
-- `words` — UTF8 エンコードされた入力文字列。 [String](../data-types/string.md)。
+- `words` — UTF8 エンコードの入力文字列。[String](../data-types/string.md)。
 
 **返される値**
 
-- NFD 正規化形式に変換された文字列。 [String](../data-types/string.md)。
+- NFD 正規化形式に変換された文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -1758,7 +1753,7 @@ normalizeUTF8NFD(words)
 SELECT length('â'), normalizeUTF8NFD('â') AS nfd, length(nfd) AS nfd_len;
 ```
 
-結果:
+結果：
 
 ```result
 ┌─length('â')─┬─nfd─┬─nfd_len─┐
@@ -1767,7 +1762,7 @@ SELECT length('â'), normalizeUTF8NFD('â') AS nfd, length(nfd) AS nfd_len;
 ```
 ## normalizeUTF8NFKC {#normalizeutf8nfkc}
 
-文字列を有効な UTF8 エンコードテキストであると仮定し、[NFKC 正規化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms) に変換します。
+文字列を [NFKC 正規化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms) に変換し、文字列が有効な UTF8 エンコードのテキストであると仮定します。
 
 **構文**
 
@@ -1777,11 +1772,11 @@ normalizeUTF8NFKC(words)
 
 **引数**
 
-- `words` — UTF8 エンコードされた入力文字列。 [String](../data-types/string.md)。
+- `words` — UTF8 エンコードの入力文字列。[String](../data-types/string.md)。
 
 **返される値**
 
-- NFKC 正規化形式に変換された文字列。 [String](../data-types/string.md)。
+- NFKC 正規化形式に変換された文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -1789,7 +1784,7 @@ normalizeUTF8NFKC(words)
 SELECT length('â'), normalizeUTF8NFKC('â') AS nfkc, length(nfkc) AS nfkc_len;
 ```
 
-結果:
+結果：
 
 ```result
 ┌─length('â')─┬─nfkc─┬─nfkc_len─┐
@@ -1798,7 +1793,7 @@ SELECT length('â'), normalizeUTF8NFKC('â') AS nfkc, length(nfkc) AS nfkc_len;
 ```
 ## normalizeUTF8NFKD {#normalizeutf8nfkd}
 
-文字列を有効な UTF8 エンコードテキストであると仮定し、[NFKD 正規化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms) に変換します。
+文字列を [NFKD 正規化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms) に変換し、文字列が有効な UTF8 エンコードのテキストであると仮定します。
 
 **構文**
 
@@ -1808,11 +1803,11 @@ normalizeUTF8NFKD(words)
 
 **引数**
 
-- `words` — UTF8 エンコードされた入力文字列。 [String](../data-types/string.md)。
+- `words` — UTF8 エンコードの入力文字列。[String](../data-types/string.md)。
 
 **返される値**
 
-- NFKD 正規化形式に変換された文字列。 [String](../data-types/string.md)。
+- NFKD 正規化形式に変換された文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -1820,7 +1815,7 @@ normalizeUTF8NFKD(words)
 SELECT length('â'), normalizeUTF8NFKD('â') AS nfkd, length(nfkd) AS nfkd_len;
 ```
 
-結果:
+結果：
 
 ```result
 ┌─length('â')─┬─nfkd─┬─nfkd_len─┐
@@ -1829,10 +1824,10 @@ SELECT length('â'), normalizeUTF8NFKD('â') AS nfkd, length(nfkd) AS nfkd_len;
 ```
 ## encodeXMLComponent {#encodexmlcomponent}
 
-XML 内で特別な意味を持つ文字をエスケープし、XML テキストノードまたは属性に挿入できるようにします。
+XML 内で特別な意味を持つ文字をエスケープし、その後 XML テキストノードまたは属性に配置できるようにします。
 
-以下の文字が置き換えられます：`<`, `&`, `>`, `"`, `'`。
-また、[XML および HTML 文字エンティティの参照一覧](https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references)も参照してください。
+置き換えられる文字は以下の通りです: `<`, `&`, `>`, `"`, `'`。
+[XML と HTML の文字エンティティ参照のリスト](https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references) も参照してください。
 
 **構文**
 
@@ -1842,11 +1837,11 @@ encodeXMLComponent(x)
 
 **引数**
 
-- `x` — 入力文字列。 [String](../data-types/string.md)。
+- `x` — 入力文字列。[String](../data-types/string.md)。
 
 **返される値**
 
-- エスケープされた文字列。 [String](../data-types/string.md)。
+- エスケープされた文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -1857,7 +1852,7 @@ SELECT encodeXMLComponent('&clickhouse');
 SELECT encodeXMLComponent('\'foo\'');
 ```
 
-結果:
+結果：
 
 ```result
 Hello, &quot;world&quot;!
@@ -1867,9 +1862,9 @@ Hello, &quot;world&quot;!
 ```
 ## decodeXMLComponent {#decodexmlcomponent}
 
-XML で特別な意味を持つ部分文字列のエスケープを解除します。これらの部分文字列は：`&quot;` `&amp;` `&apos;` `&gt;` `&lt;` です。
+XML 内で特別な意味を持つ部分文字列のエスケープを解除します。これらの部分文字列は: `&quot;` `&amp;` `&apos;` `&gt;` `&lt;`
 
-この関数は、数値文字参照を Unicode 文字に置き換えます。10進数（`&#10003;` のように）および16進数（`&#x2713;` のように）の形式がサポートされています。
+この関数は、数値文字参照を Unicode 文字に置き換えます。両方の十進法（例えば `&#10003;`）および16進数（例えば `&#x2713;`）形式がサポートされています。
 
 **構文**
 
@@ -1879,11 +1874,11 @@ decodeXMLComponent(x)
 
 **引数**
 
-- `x` — 入力文字列。 [String](../data-types/string.md)。
+- `x` — 入力文字列。[String](../data-types/string.md)。
 
 **返される値**
 
-- エスケープ解除された文字列。 [String](../data-types/string.md)。
+- エスケープ解除された文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -1892,7 +1887,7 @@ SELECT decodeXMLComponent('&apos;foo&apos;');
 SELECT decodeXMLComponent('&lt; &#x3A3; &gt;');
 ```
 
-結果:
+結果：
 
 ```result
 'foo'
@@ -1900,9 +1895,9 @@ SELECT decodeXMLComponent('&lt; &#x3A3; &gt;');
 ```
 ## decodeHTMLComponent {#decodehtmlcomponent}
 
-HTML で特別な意味を持つ部分文字列のエスケープを解除します。たとえば、`&hbar;` `&gt;` `&diamondsuit;` `&heartsuit;` `&lt;` などです。
+HTML 内で特別な意味を持つ部分文字列のエスケープを解除します。例えば: `&hbar;` `&gt;` `&diamondsuit;` `&heartsuit;` `&lt;` など。
 
-この関数は、数値文字参照を Unicode 文字に置き換えます。10進数（`&#10003;` のように）および16進数（`&#x2713;` のように）の形式がサポートされています。
+この関数は、数値文字参照を Unicode 文字に置き換えます。両方の十進法（例えば `&#10003;`）および16進数（例えば `&#x2713;`）形式がサポートされています。
 
 **構文**
 
@@ -1912,11 +1907,11 @@ decodeHTMLComponent(x)
 
 **引数**
 
-- `x` — 入力文字列。 [String](../data-types/string.md)。
+- `x` — 入力文字列。[String](../data-types/string.md)。
 
 **返される値**
 
-- エスケープ解除された文字列。 [String](../data-types/string.md)。
+- エスケープ解除された文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -1925,7 +1920,7 @@ SELECT decodeHTMLComponent(''CH');
 SELECT decodeHTMLComponent('I&heartsuit;ClickHouse');
 ```
 
-結果:
+結果：
 
 ```result
 'CH'
@@ -1935,25 +1930,26 @@ I♥ClickHouse'
 
 この関数は、HTML または XHTML からプレーンテキストを抽出します。
 
-HTML、XML、または XHTML の仕様に完全に従うわけではありませんが、実装は十分に正確で迅速です。ルールは次のとおりです：
+完全には HTML、XML、または XHTML の仕様に準拠していませんが、実装は合理的に正確かつ高速です。ルールは以下の通りです：
 
-1. コメントはスキップされます。例：`<!-- test -->`。コメントは `-->` で終わらなければなりません。ネストされたコメントは許可されません。
-注意: `<!-->` および `<!--->` のような構造は、HTML では有効なコメントではありませんが、他のルールによりスキップされます。
-2. CDATA はそのまま貼り付けられます。注意: CDATA は XML/XHTML 特有であり、"努力の限り" で処理されます。
-3. `script` および `style` 要素は、それらの内容とともに削除されます。注意：閉じタグが内容内に現れることはできないと仮定されています。たとえば、JS 文字列リテラルでは `"<\/script>"` のようにエスケープする必要があります。
-注意: コメントや CDATA は `script` または `style` 内部で発生する可能性があります - したがって、閉じタグは CDATA 内で検索されません。ただし、コメント内ではまだ検索されます。このため、複雑になる場合があります：`<script>var x = "<!--"; </script> var y = "-->"; alert(x + y);</script>`。
-注意: `script` および `style` は XML 名前空間の名前である可能性があります - この場合、通常の `script` または `style` 要素として扱われません。例：`<script:a>Hello</script:a>`。
-注意: 閉じタグの名前の後に空白がある場合は許可されます： `</script >` ですが、前に空白は許可されません： `< / script>`。
-4. 他のタグまたはタグのような要素は、内部コンテンツなしでスキップされます。例：`<a>.</a>`。
-注意: この HTML は無効であると予想されています： `<a test=">"></a>`。
-注意: タグの終わりのないものも、入力の終わりまでスキップされます：`<hello   `。
-5. HTML および XML エンティティはデコードされません。これらは別の関数で処理する必要があります。
-6. テキスト内の空白は特定のルールによって圧縮されるか挿入されます。
-    - 開始時および終了時の空白は削除されます。
+1. コメントはスキップされます。例: `<!-- test -->`。コメントは `-->` で終わる必要があります。ネストされたコメントは許可されません。
+ノート: `<!-->` および `<!--->` のような構文は HTML では有効なコメントではありませんが、他のルールによってスキップされます。
+2. CDATA はそのまま貼り付けられます。ノート: CDATA は XML/XHTML 特有であり、「ベストエフォート」ベースで処理されます。
+3. `script` および `style` 要素は、その全コンテンツを削除します。ノート: 閉じタグはコンテンツ内に表示されないと仮定されます。例えば、JS 文字列リテラルでは `"<\/script>"` のようにエスケープする必要があります。
+ノート: コメントや CDATA は `script` または `style` 内で可能ですが、その中では閉じタグは見つかりません。例: `<script><![CDATA[</script>]]></script>`。しかし、コメント内ではまだ検索されます。時には複雑になる場合があります: `<script>var x = "<!--"; </script> var y = "-->"; alert(x + y);</script>`
+ノート: `script` および `style` が XML 名前空間の名前である場合、それらは通常の `script` または `style` 要素のように扱われません。例: `<script:a>Hello</script:a>`。
+ノート: 閉じタグ名の後には空白があることが可能ですが、前にはありません: `</script >` ですが `< / script>` は無効です。
+4. 他のタグまたはタグのような要素は、内部コンテンツがない限りスキップされます。例: `<a>.</a>`
+ノート: この HTML は不正なものと予想されています: `<a test=">"></a>`
+ノート: `<>`, `<!>` など、タグのようなものもスキップされます。
+ノート: 終わりがないタグは入力の終わりまでスキップされます: `<hello   `
+5. HTML および XML エンティティはデコードされません。エンティティは別の関数で処理する必要があります。
+6. テキスト内の空白は、特定のルールによって圧縮または挿入されます。
+    - 先頭および末尾の空白が削除されます。
     - 連続する空白は圧縮されます。
-    - ただし、テキストが他の要素によって分離されており、空白がない場合、空白が挿入されます。
-    - これにより、不自然な例が発生することがあります：`Hello<b>world</b>`、`Hello<!-- -->world` - HTML には空白が含まれていませんが、関数がそれを挿入します。また、`Hello<p>world</p>`、`Hello<br>world` も考慮してください。この動作は、データ分析のための理由があり、HTML を単語の袋に変換することを可能にします。
-7. 空白の正しい処理には `<pre></pre>` と CSS `display` および `white-space` プロパティのサポートが必要です。
+    - ただし、テキストが他の要素によって区切られており、空白がない場合は、空白が挿入されます。
+    - 不自然な場合が生じる可能性があります: `Hello<b>world</b>`, `Hello<!-- -->world` - HTML には空白がありませんが、関数はそれを挿入します。また、`Hello<p>world</p>`, `Hello<br>world` も考慮してください。この行動は、データ分析において合理的です。例えば、HTML を単語のバガーに変換するため。
+7. 空白を適切に処理するには、`<pre></pre>` および CSS の `display` および `white-space` プロパティのサポートが必要です。
 
 **構文**
 
@@ -1963,17 +1959,17 @@ extractTextFromHTML(x)
 
 **引数**
 
-- `x` — 入力テキスト。 [String](../data-types/string.md)。
+- `x` — 入力テキスト。[String](../data-types/string.md)。
 
 **返される値**
 
-- 抽出されたテキスト。 [String](../data-types/string.md)。
+- 抽出されたテキスト。[String](../data-types/string.md)。
 
 **例**
 
-最初の例は、いくつかのタグとコメントを含んでおり、空白処理も示しています。
-2 番目の例は、CDATA およびスクリプトタグ処理を示しています。
-3 番目の例では、[url](../../sql-reference/table-functions/url.md) 関数によって受信された完全な HTML 応答からテキストが抽出されます。
+最初の例は、いくつかのタグとコメントを含んでおり、空白の処理も示しています。
+2 番目の例は、CDATA およびスクリプトタグの処理を示しています。
+3 番目の例では、[url](../../sql-reference/table-functions/url.md) 関数によって受信したフル HTML レスポンスからテキストが抽出されています。
 
 ```sql
 SELECT extractTextFromHTML(' <p> A text <i>with</i><b>tags</b>. <!-- comments --> </p> ');
@@ -1981,7 +1977,7 @@ SELECT extractTextFromHTML('<![CDATA[The content within <b>CDATA</b>]]> <script>
 SELECT extractTextFromHTML(html) FROM url('http://www.donothingfor2minutes.com/', RawBLOB, 'html String');
 ```
 
-結果:
+結果：
 
 ```result
 A text with tags .
@@ -1992,7 +1988,7 @@ Do Nothing for 2 Minutes 2:00 &nbsp;
 
 文字列 `s` の最初の文字の ASCII コードポイント（Int32 として）を返します。
 
-`s` が空である場合、結果は 0 です。最初の文字が ASCII 文字でない場合、または UTF-16 の Latin-1 補足範囲に属さない場合、結果は未定義になります。
+`s` が空である場合、結果は 0 です。最初の文字が ASCII 文字でない場合、または UTF-16 の Latin-1 サプリメント範囲に含まれていない場合、結果は未定義です。
 
 **構文**
 
@@ -2001,7 +1997,7 @@ ascii(s)
 ```
 ## soundex {#soundex}
 
-文字列の[Soundex コード](https://en.wikipedia.org/wiki/Soundex)を返します。
+文字列の [Soundex コード](https://en.wikipedia.org/wiki/Soundex) を返します。
 
 **構文**
 
@@ -2011,11 +2007,11 @@ soundex(val)
 
 **引数**
 
-- `val` — 入力値。 [String](../data-types/string.md)
+- `val` — 入力値。[String](../data-types/string.md)
 
 **返される値**
 
-- 入力値の Soundex コード。 [String](../data-types/string.md)
+- 入力値の Soundex コード。[String](../data-types/string.md)
 
 **例**
 
@@ -2023,7 +2019,7 @@ soundex(val)
 select soundex('aksel');
 ```
 
-結果:
+結果：
 
 ```result
 ┌─soundex('aksel')─┐
@@ -2032,8 +2028,8 @@ select soundex('aksel');
 ```
 ## punycodeEncode {#punycodeencode}
 
-文字列の[Punycode](https://en.wikipedia.org/wiki/Punycode) 表現を返します。
-文字列は UTF8 エンコードされている必要があり、そうでない場合、動作は未定義になります。
+文字列の [Punycode](https://en.wikipedia.org/wiki/Punycode) 表現を返します。
+文字列は UTF8 エンコードされている必要があります。そうでない場合、動作は未定義です。
 
 **構文**
 
@@ -2043,11 +2039,11 @@ punycodeEncode(val)
 
 **引数**
 
-- `val` — 入力値。 [String](../data-types/string.md)
+- `val` — 入力値。[String](../data-types/string.md)
 
 **返される値**
 
-- 入力値の Punycode 表現。 [String](../data-types/string.md)
+- 入力値の Punycode 表現。[String](../data-types/string.md)
 
 **例**
 
@@ -2055,7 +2051,7 @@ punycodeEncode(val)
 select punycodeEncode('München');
 ```
 
-結果:
+結果：
 
 ```result
 ┌─punycodeEncode('München')─┐
@@ -2064,8 +2060,8 @@ select punycodeEncode('München');
 ```
 ## punycodeDecode {#punycodedecode}
 
-[Punycode](https://en.wikipedia.org/wiki/Punycode) エンコードされた文字列の UTF8 エンコードされたプレーンテキストを返します。
-有効な Punycode エンコードされた文字列が与えられない場合、例外がスローされます。
+Punycode エンコードされた文字列の UTF8 エンコードされたプレーンテキストを返します。
+有効な Punycode エンコード文字列が与えられない場合、例外がスローされます。
 
 **構文**
 
@@ -2075,11 +2071,11 @@ punycodeEncode(val)
 
 **引数**
 
-- `val` — Punycode エンコードされた文字列。 [String](../data-types/string.md)
+- `val` — Punycode エンコード文字列。[String](../data-types/string.md)
 
 **返される値**
 
-- 入力値のプレーンテキスト。 [String](../data-types/string.md)
+- 入力値のプレーンテキスト。[String](../data-types/string.md)
 
 **例**
 
@@ -2087,7 +2083,7 @@ punycodeEncode(val)
 select punycodeDecode('Mnchen-3ya');
 ```
 
-結果:
+結果：
 
 ```result
 ┌─punycodeDecode('Mnchen-3ya')─┐
@@ -2096,12 +2092,12 @@ select punycodeDecode('Mnchen-3ya');
 ```
 ## tryPunycodeDecode {#trypunycodedecode}
 
-`punycodeDecode` のようですが、無効な Punycode エンコードされた文字列が与えられた場合は空文字列を返します。
+`punycodeDecode` のように動作しますが、有効な Punycode エンコード文字列が与えられない場合は空の文字列を返します。
 ## idnaEncode {#idnaencode}
 
-[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）メカニズムに従い、ドメイン名の ASCII 表現（ToASCII アルゴリズム）を返します。
-入力文字列は UTF エンコードされている必要があり、ASCII 文字列に変換可能である必要があります。そうでない場合は例外がスローされます。
-注意：パーセントデコーディングやタブ、空白、制御文字のトリミングは行われません。
+[国際化ドメイン名のアプリケーションにおける国際化](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) メカニズムに従って、ドメイン名の ASCII 表現（ToASCII アルゴリズム）を返します。
+入力文字列は UTF エンコードされ、ASCII 文字列に変換可能である必要があります。そうでない場合、例外がスローされます。
+ノート: パーセントデコーディングやタブ、スペース、制御文字のトリミングは実行されません。
 
 **構文**
 
@@ -2111,11 +2107,11 @@ idnaEncode(val)
 
 **引数**
 
-- `val` — 入力値。 [String](../data-types/string.md)
+- `val` — 入力値。[String](../data-types/string.md)
 
 **返される値**
 
-- IDNA メカニズムに従った入力値の ASCII 表現。 [String](../data-types/string.md)
+- IDNA メカニズムに従った入力値の ASCII 表現。[String](../data-types/string.md)
 
 **例**
 
@@ -2123,7 +2119,7 @@ idnaEncode(val)
 select idnaEncode('straße.münchen.de');
 ```
 
-結果:
+結果：
 
 ```result
 ┌─idnaEncode('straße.münchen.de')─────┐
@@ -2132,12 +2128,12 @@ select idnaEncode('straße.münchen.de');
 ```
 ## tryIdnaEncode {#tryidnaencode}
 
-`idnaEncode` のようですが、エラーが発生した場合は例外をスローする代わりに空文字列を返します。
+`idnaEncode` のように動作しますが、エラーが発生した場合は例外をスローするのではなく、空の文字列を返します。
 ## idnaDecode {#idnadecode}
 
-[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）メカニズムに従い、ドメイン名の Unicode（UTF-8）表現（ToUnicode アルゴリズム）を返します。
-エラーが発生した場合（例：入力が無効な場合）、入力文字列が返されます。
-`idnaEncode()` と `idnaDecode()` を繰り返し適用することが、必ずしも元の文字列を返すわけではないことに注意してください。
+[国際化ドメイン名のアプリケーションにおける国際化](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) メカニズムに従い、ドメイン名の Unicode（UTF-8）表現（ToUnicode アルゴリズム）を返します。
+エラーが発生した場合（例えば、入力が無効な場合）、入力文字列が返されます。
+`idnaEncode()` と `idnaDecode()` の反復適用は、ケース正規化のため、元の文字列を必ずしも返すわけではありません。
 
 **構文**
 
@@ -2147,11 +2143,11 @@ idnaDecode(val)
 
 **引数**
 
-- `val` — 入力値。 [String](../data-types/string.md)
+- `val` — 入力値。[String](../data-types/string.md)
 
 **返される値**
 
-- IDNA メカニズムに従った入力値の Unicode（UTF-8）表現。 [String](../data-types/string.md)
+- IDNA メカニズムに従った入力値の Unicode（UTF-8）表現。[String](../data-types/string.md)
 
 **例**
 
@@ -2159,7 +2155,7 @@ idnaDecode(val)
 select idnaDecode('xn--strae-oqa.xn--mnchen-3ya.de');
 ```
 
-結果:
+結果：
 
 ```result
 ┌─idnaDecode('xn--strae-oqa.xn--mnchen-3ya.de')─┐
@@ -2168,7 +2164,7 @@ select idnaDecode('xn--strae-oqa.xn--mnchen-3ya.de');
 ```
 ## byteHammingDistance {#bytehammingdistance}
 
-2 つのバイト文字列の[ハミング距離](https://en.wikipedia.org/wiki/Hamming_distance)を計算します。
+二つのバイト文字列間の [ハミング距離](https://en.wikipedia.org/wiki/Hamming_distance) を計算します。
 
 **構文**
 
@@ -2182,7 +2178,7 @@ byteHammingDistance(string1, string2)
 SELECT byteHammingDistance('karolin', 'kathrin');
 ```
 
-結果:
+結果：
 
 ```text
 ┌─byteHammingDistance('karolin', 'kathrin')─┐
@@ -2193,7 +2189,7 @@ SELECT byteHammingDistance('karolin', 'kathrin');
 エイリアス: `mismatches`
 ## stringJaccardIndex {#stringjaccardindex}
 
-2 つのバイト文字列の[Jaccard 類似度指数](https://en.wikipedia.org/wiki/Jaccard_index)を計算します。
+二つのバイト文字列間の [ジャカード類似度指数](https://en.wikipedia.org/wiki/Jaccard_index) を計算します。
 
 **構文**
 
@@ -2207,7 +2203,7 @@ stringJaccardIndex(string1, string2)
 SELECT stringJaccardIndex('clickhouse', 'mouse');
 ```
 
-結果:
+結果：
 
 ```text
 ┌─stringJaccardIndex('clickhouse', 'mouse')─┐
@@ -2216,10 +2212,10 @@ SELECT stringJaccardIndex('clickhouse', 'mouse');
 ```
 ## stringJaccardIndexUTF8 {#stringjaccardindexutf8}
 
-[stringJaccardIndex](#stringjaccardindex) と同様ですが、UTF8 エンコードされた文字列に対して使用します。
+[stringJaccardIndex](#stringjaccardindex) と同様ですが、UTF8 エンコードの文字列に対して使用します。
 ## editDistance {#editdistance}
 
-2 つのバイト文字列の[編集距離](https://en.wikipedia.org/wiki/Edit_distance)を計算します。
+二つのバイト文字列間の [編集距離](https://en.wikipedia.org/wiki/Edit_distance) を計算します。
 
 **構文**
 
@@ -2233,7 +2229,7 @@ editDistance(string1, string2)
 SELECT editDistance('clickhouse', 'mouse');
 ```
 
-結果:
+結果：
 
 ```text
 ┌─editDistance('clickhouse', 'mouse')─┐
@@ -2244,7 +2240,7 @@ SELECT editDistance('clickhouse', 'mouse');
 エイリアス: `levenshteinDistance`
 ## editDistanceUTF8 {#editdistanceutf8}
 
-2 つの UTF8 文字列の[編集距離](https://en.wikipedia.org/wiki/Edit_distance)を計算します。
+二つの UTF8 文字列間の [編集距離](https://en.wikipedia.org/wiki/Edit_distance) を計算します。
 
 **構文**
 
@@ -2258,7 +2254,7 @@ editDistanceUTF8(string1, string2)
 SELECT editDistanceUTF8('我是谁', '我是我');
 ```
 
-結果:
+結果：
 
 ```text
 ┌─editDistanceUTF8('我是谁', '我是我')──┐
@@ -2269,7 +2265,7 @@ SELECT editDistanceUTF8('我是谁', '我是我');
 エイリアス: `levenshteinDistanceUTF8`
 ## damerauLevenshteinDistance {#dameraulevenshteindistance}
 
-2 つのバイト文字列の[Damerau-Levenshtein 距離](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance)を計算します。
+二つのバイト文字列間の [ダメラウ・レヴィンシュタイン距離](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance) を計算します。
 
 **構文**
 
@@ -2283,7 +2279,7 @@ damerauLevenshteinDistance(string1, string2)
 SELECT damerauLevenshteinDistance('clickhouse', 'mouse');
 ```
 
-結果:
+結果：
 
 ```text
 ┌─damerauLevenshteinDistance('clickhouse', 'mouse')─┐
@@ -2292,7 +2288,7 @@ SELECT damerauLevenshteinDistance('clickhouse', 'mouse');
 ```
 ## jaroSimilarity {#jarosimilarity}
 
-2 つのバイト文字列の[Jaro 類似度](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance#Jaro_similarity)を計算します。
+二つのバイト文字列間の [ジャロ類似度](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance#Jaro_similarity) を計算します。
 
 **構文**
 
@@ -2306,7 +2302,7 @@ jaroSimilarity(string1, string2)
 SELECT jaroSimilarity('clickhouse', 'click');
 ```
 
-結果:
+結果：
 
 ```text
 ┌─jaroSimilarity('clickhouse', 'click')─┐
@@ -2315,7 +2311,7 @@ SELECT jaroSimilarity('clickhouse', 'click');
 ```
 ## jaroWinklerSimilarity {#jarowinklersimilarity}
 
-2 つのバイト文字列の[Jaro-Winkler 類似度](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance#Jaro%E2%80%93Winkler_similarity)を計算します。
+二つのバイト文字列間の [ジャロ・ウィンクラー類似度](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance#Jaro%E2%80%93Winkler_similarity) を計算します。
 
 **構文**
 
@@ -2329,7 +2325,7 @@ jaroWinklerSimilarity(string1, string2)
 SELECT jaroWinklerSimilarity('clickhouse', 'click');
 ```
 
-結果:
+結果：
 
 ```text
 ┌─jaroWinklerSimilarity('clickhouse', 'click')─┐
@@ -2338,16 +2334,16 @@ SELECT jaroWinklerSimilarity('clickhouse', 'click');
 ```
 ## initcap {#initcap}
 
-各単語の最初の文字を大文字にし、残りを小文字に変換します。単語はアルファベットと数字のシーケンスであり、非アルファベット文字で区切られています。
+各単語の最初の文字を大文字にし、残りを小文字に変換します。単語は、非英数字の文字で区切られた英数字の文字の連続です。
 
 :::note
-`initCap` は各単語の最初の文字のみを大文字に変換するため、アポストロフィや大文字を含む単語では予期しない動作を観察することがあります。例えば：
+`initCap` は各単語の最初の文字のみを大文字に変換するため、アポストロフィや大文字を含む単語に対して予期しない動作が見られることがあります。例えば：
 
 ```sql
 SELECT initCap('mother''s daughter'), initCap('joe McAdam');
 ```
 
-は以下のように返されます。
+は次を返します：
 
 ```response
 ┌─initCap('mother\'s daughter')─┬─initCap('joe McAdam')─┐
@@ -2366,21 +2362,21 @@ initcap(val)
 
 **引数**
 
-- `val` — 入力値。 [String](../data-types/string.md)。
+- `val` — 入力値。[String](../data-types/string.md)。
 
 **返される値**
 
-- 各単語の最初の文字が大文字に変換された `val`。 [String](../data-types/string.md)。
+- 各単語の最初の文字が大文字に変換された `val`。[String](../data-types/string.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT initcap('building for fast');
 ```
 
-結果:
+結果：
 
 ```text
 ┌─initcap('building for fast')─┐
@@ -2389,12 +2385,12 @@ SELECT initcap('building for fast');
 ```
 ## initcapUTF8 {#initcaputf8}
 
-[initcap](#initcap) と同様に、`initcapUTF8` は各単語の最初の文字を大文字にし、残りを小文字に変換します。文字列が有効な UTF-8 エンコードテキストであると仮定します。
-この仮定が破られた場合、例外はスローされず、結果は未定義です。
+[stringJaccardIndex](#initcap) と同様に、`initcapUTF8` は各単語の最初の文字を大文字にし、残りを小文字に変換します。文字列が有効な UTF-8 エンコードのテキストであると仮定します。
+この仮定が破られた場合、例外はスローされず、結果は未定義になります。
 
 :::note
-この関数は言語を検出しません。たとえば、トルコ語では結果が正確でない場合があります（i/İ vs. i/I）。
-UTF-8 バイトシーケンスの大文字と小文字のコードポイントに対する長さが異なる場合、そのコードポイントは誤って結果に含まれることがあります。
+この関数は言語を検出しません。例えば、トルコ語の場合、結果が完全に正確でない可能性があります（i/İ と i/I）。
+UTF-8 バイトシーケンスの大文字と小文字の長さが異なる場合、結果はこのコードポイントに対して不正確なものになります。
 :::
 
 **構文**
@@ -2405,21 +2401,21 @@ initcapUTF8(val)
 
 **引数**
 
-- `val` — 入力値。 [String](../data-types/string.md)。
+- `val` — 入力値。[String](../data-types/string.md)。
 
 **返される値**
 
-- 各単語の最初の文字が大文字に変換された `val`。 [String](../data-types/string.md)。
+- 各単語の最初の文字が大文字に変換された `val`。[String](../data-types/string.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT initcapUTF8('не тормозит');
 ```
 
-結果:
+結果：
 
 ```text
 ┌─initcapUTF8('не тормозит')─┐
@@ -2428,7 +2424,7 @@ SELECT initcapUTF8('не тормозит');
 ```
 ## firstLine {#firstline}
 
-マルチライン文字列から最初の行を返します。
+複数行の文字列から最初の行を返します。
 
 **構文**
 
@@ -2438,11 +2434,11 @@ firstLine(val)
 
 **引数**
 
-- `val` — 入力値。 [String](../data-types/string.md)
+- `val` — 入力値。[String](../data-types/string.md)
 
 **返される値**
 
-- 入力値の最初の行または行区切りがない場合は全体の値。 [String](../data-types/string.md)
+- 行区切りがない場合、入力値全体を返すか、入力値の最初の行。[String](../data-types/string.md)
 
 **例**
 
@@ -2450,16 +2446,17 @@ firstLine(val)
 select firstLine('foo\nbar\nbaz');
 ```
 
-結果:
+結果：
 
 ```result
 ┌─firstLine('foo\nbar\nbaz')─┐
 │ foo                        │
 └────────────────────────────┘
 ```
+
 ## stringCompare {#stringcompare}
 
-2つの文字列を辞書順で比較します。
+2つの文字列を辞書式順序で比較します。
 
 **構文**
 
@@ -2471,17 +2468,17 @@ stringCompare(string1, string2[, str1_off, string2_offset, num_bytes]);
 
 - `string1` — 比較する最初の文字列。[String](../data-types/string.md)
 - `string2` - 比較する2番目の文字列。[String](../data-types/string.md)
-- `string1_offset` — 比較を開始する `string1` の位置（ゼロベース）。任意の正の数。
-- `string2_offset` — 比較を開始する `string2` の位置（ゼロベースインデックス）。任意の正の数。
-- `num_bytes` — 2つの文字列で比較する最大バイト数。`string_offset` + `num_bytes` が入力文字列の終わりを超える場合、`num_bytes` が適宜減少します。
+- `string1_offset` — 文字列 `string1` の比較を開始する位置（ゼロベース）。オプション、正の数。
+- `string2_offset` — 文字列 `string2` の比較を開始する位置（ゼロベース）。オプション、正の数。
+- `num_bytes` — 両方の文字列で比較する最大バイト数。 `string_offset` + `num_bytes` が入力文字列の終わりを超える場合、`num_bytes` はそれに応じて減少します。
 
 **返される値**
 
-- -1 — もし `string1`[`string1_offset`: `string1_offset` + `num_bytes`] < `string2`[`string2_offset`:`string2_offset` + `num_bytes`] かつ `string1_offset` < len(`string1`) かつ `string2_offset` < len(`string2`) の場合。
+- -1 — `string1`[`string1_offset`: `string1_offset` + `num_bytes`] < `string2`[`string2_offset`:`string2_offset` + `num_bytes`] であり、かつ `string1_offset` < len(`string1`) および `string2_offset` < len(`string2`) の場合。
 もし `string1_offset` >= len(`string1`) かつ `string2_offset` < len(`string2`) の場合。
-- 0 — もし `string1`[`string1_offset`: `string1_offset` + `num_bytes`] = `string2`[`string2_offset`:`string2_offset` + `num_bytes`] かつ `string1_offset` < len(`string1`) かつ `string2_offset` < len(`string2`) の場合。
+- 0 — `string1`[`string1_offset`: `string1_offset` + `num_bytes`] = `string2`[`string2_offset`:`string2_offset` + `num_bytes`] であり、かつ `string1_offset` < len(`string1`) および `string2_offset` < len(`string2`) の場合。
 もし `string1_offset` >= len(`string1`) かつ `string2_offset` >= len(`string2`) の場合。
-- 1 — もし `string1`[`string1_offset`: `string1_offset` + `num_bytes`] > `string2`[`string2_offset`:`string2_offset` + `num_bytes`] かつ `string1_offset` < len(`string1`) かつ `string2_offset` < len(`string2`) の場合。
+- 1 — `string1`[`string1_offset`: `string1_offset` + `num_bytes`] > `string2`[`string2_offset`:`string2_offset` + `num_bytes`] であり、かつ `string1_offset` < len(`string1`) および `string2_offset` < len(`string2`) の場合。
 もし `string1_offset` < len(`string1`) かつ `string2_offset` >= len(`string2`) の場合。
 
 **例**
@@ -2513,9 +2510,8 @@ SELECT
 ```
 ## sparseGrams {#sparsegrams}
 
-与えられた文字列の長さが少なくとも `n` のすべての部分文字列を見つけます。
-部分文字列の境界にある(n-1)-gramのハッシュが、部分文字列内の任意の(n-1)-gram のハッシュよりも厳密に大きい場合に該当します。
-ハッシュ関数として [crc32](./string-functions.md#crc32) を使用します。
+与えられた文字列のすべての部分文字列を見つけます。部分文字列の長さは少なくとも `n` であり、部分文字列の境界にある (n-1)-グラムのハッシュが、部分文字列の内部にあるいかなる (n-1)-グラムよりも厳密に大きい場合です。
+[crc32](./string-functions.md#crc32) をハッシュ関数として使用します。
 
 **構文**
 
@@ -2526,12 +2522,12 @@ sparseGrams(s[, min_ngram_length]);
 **引数**
 
 - `s` — 入力文字列。[String](../data-types/string.md)
-- `min_ngram_length` — 抽出されるn-gramの最小長さ。デフォルトおよび最小値は3です。
-- `max_ngram_length` — 抽出されるn-gramの最大長さ。デフォルト値は100です。'min_ngram_length' より小さくするべきではありません。
+- `min_ngram_length` — 抽出される ngram の最小長さ。デフォルトおよび最小値は 3 です。
+- `max_ngram_length` — 抽出される ngram の最大長さ。デフォルト値は 100 です。「min_ngram_length」未満であってはいけません。
 
 **返される値**
 
-- 選択された部分文字列の配列です。[Array](../data-types/array.md)([String](../data-types/string.md))。
+- 選択された部分文字列の配列。[Array](../data-types/array.md)([String](../data-types/string.md))。
 
 **例**
 
@@ -2546,10 +2542,9 @@ SELECT sparseGrams('alice', 3) AS result
 ```
 ## sparseGramsUTF8 {#sparsegramsutf8}
 
-与えられた文字列の長さが少なくとも `n` のすべての部分文字列を見つけます。
-部分文字列の境界にある(n-1)-gramのハッシュが、部分文字列内の任意の(n-1)-gramのハッシュよりも厳密に大きい場合に該当します。
-ハッシュ関数として [crc32](./string-functions.md#crc32) を使用します。
-UTF-8 文字列を期待し、無効な UTF-8 シーケンスの場合は例外をスローします。
+与えられた文字列のすべての部分文字列を見つけます。部分文字列の長さは少なくとも `n` であり、部分文字列の境界にある (n-1)-グラムのハッシュが、部分文字列の内部にあるいかなる (n-1)-グラムよりも厳密に大きい場合です。
+[crc32](./string-functions.md#crc32) をハッシュ関数として使用します。
+UTF-8文字列を期待し、無効なUTF-8シーケンスの場合は例外をスローします。
 
 **構文**
 
@@ -2560,12 +2555,12 @@ sparseGramsUTF8(s[, min_ngram_length]);
 **引数**
 
 - `s` — 入力文字列。[String](../data-types/string.md)
-- `min_ngram_length` — 抽出されるn-gramの最小長さ。デフォルトおよび最小値は3です。
-- `max_ngram_length` — 抽出されるn-gramの最大長さ。デフォルト値は100です。'min_ngram_length' より小さくするべきではありません。
+- `min_ngram_length` — 抽出される ngram の最小長さ。デフォルトおよび最小値は 3 です。
+- `max_ngram_length` — 抽出される ngram の最大長さ。デフォルト値は 100 です。「min_ngram_length」未満であってはいけません。
 
 **返される値**
 
-- 選択された部分文字列の配列です。[Array](../data-types/array.md)([String](../data-types/string.md))。
+- 選択された部分文字列の配列。[Array](../data-types/array.md)([String](../data-types/string.md))。
 
 **例**
 
@@ -2580,9 +2575,8 @@ SELECT sparseGramsUTF8('алиса', 3) AS result
 ```
 ## sparseGramsHashes {#sparsegramshashes}
 
-与えられた文字列の長さが少なくとも `n` のすべての部分文字列のハッシュを見つけます。
-部分文字列の境界にある(n-1)-gramのハッシュが、部分文字列内の任意の(n-1)-gramのハッシュよりも厳密に大きい場合に該当します。
-ハッシュ関数として [crc32](./string-functions.md#crc32) を使用します。
+与えられた文字列のすべての部分文字列のハッシュを見つけます。部分文字列の長さは少なくとも `n` であり、部分文字列の境界にある (n-1)-グラムのハッシュが、部分文字列の内部にあるいかなる (n-1)-グラムよりも厳密に大きい場合です。
+[crc32](./string-functions.md#crc32) をハッシュ関数として使用します。
 
 **構文**
 
@@ -2593,12 +2587,12 @@ sparseGramsHashes(s[, min_ngram_length]);
 **引数**
 
 - `s` — 入力文字列。[String](../data-types/string.md)
-- `min_ngram_length` — 抽出されるn-gramの最小長さ。デフォルトおよび最小値は3です。
-- `max_ngram_length` — 抽出されるn-gramの最大長さ。デフォルト値は100です。'min_ngram_length' より小さくするべきではありません。
+- `min_ngram_length` — 抽出される ngram の最小長さ。デフォルトおよび最小値は 3 です。
+- `max_ngram_length` — 抽出される ngram の最大長さ。デフォルト値は 100 です。「min_ngram_length」未満であってはいけません。
 
 **返される値**
 
-- 選択された部分文字列のcrc32-c ハッシュの配列です。[Array](../data-types/array.md)([UInt32](../data-types/int-uint.md))。
+- 選択された部分文字列 crc32-c ハッシュの配列。[Array](../data-types/array.md)([UInt32](../data-types/int-uint.md))。
 
 **例**
 
@@ -2613,26 +2607,25 @@ SELECT sparseGramsHashes('alice', 3) AS result
 ```
 ## sparseGramsHashesUTF8 {#sparsegramshashesutf8}
 
-与えられた文字列の長さが少なくとも `n` のすべての部分文字列のハッシュを見つけます。
-部分文字列の境界にある(n-1)-gramのハッシュが、部分文字列内の任意の(n-1)-gramのハッシュよりも厳密に大きい場合に該当します。
-ハッシュ関数として [crc32](./string-functions.md#crc32) を使用します。
-UTF-8 文字列を期待し、無効な UTF-8 シーケンスの場合は例外をスローします。
+与えられた文字列のすべての部分文字列のハッシュを見つけます。部分文字列の長さは少なくとも `n` であり、部分文字列の境界にある (n-1)-グラムのハッシュが、部分文字列の内部にあるいかなる (n-1)-グラムよりも厳密に大きい場合です。
+[crc32](./string-functions.md#crc32) をハッシュ関数として使用します。
+UTF-8文字列を期待し、無効なUTF-8シーケンスの場合は例外をスローします。
 
 **構文**
 
 ```sql
-sparseGramsUTF8(s[, min_ngram_length]);
+sparseGramsHashesUTF8(s[, min_ngram_length]);
 ```
 
 **引数**
 
 - `s` — 入力文字列。[String](../data-types/string.md)
-- `min_ngram_length` — 抽出されるn-gramの最小長さ。デフォルトおよび最小値は3です。
-- `max_ngram_length` — 抽出されるn-gramの最大長さ。デフォルト値は100です。'min_ngram_length' より小さくするべきではありません。
+- `min_ngram_length` — 抽出される ngram の最小長さ。デフォルトおよび最小値は 3 です。
+- `max_ngram_length` — 抽出される ngram の最大長さ。デフォルト値は 100 です。「min_ngram_length」未満であってはいけません。
 
 **返される値**
 
-- 選択された部分文字列のcrc32-c ハッシュの配列です。[Array](../data-types/array.md)([UInt32](../data-types/int-uint.md))。
+- 選択された部分文字列 crc32-c ハッシュの配列。[Array](../data-types/array.md)([UInt32](../data-types/int-uint.md))。
 
 **例**
 
@@ -2706,3 +2699,4 @@ SELECT stringBytesEntropy('Hello, world!');
 ┌─stringBytesEntropy('Hello, world!')─┐
 │                         3.07049960  │
 └─────────────────────────────────────┘
+```

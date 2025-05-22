@@ -1,18 +1,21 @@
 ---
-slug: /guides/developer/debugging-memory-issues
-sidebar_label: 'メモリ問題のデバッグ'
-sidebar_position: 1
-description: 'メモリ問題をデバッグするためのクエリ。'
-keywords: ['メモリ問題']
-title: 'メモリ問題のデバッグ'
+'slug': '/guides/developer/debugging-memory-issues'
+'sidebar_label': 'メモリのデバッグ'
+'sidebar_position': 1
+'description': 'メモリの問題をデバッグするためのクエリ。'
+'keywords':
+- 'memory issues'
+'title': 'メモリのデバッグ'
 ---
+
+
 
 
 # メモリ問題のデバッグ {#debugging-memory-issues}
 
-メモリ問題やメモリリークが発生した場合、どのクエリやリソースが大量のメモリを消費しているのかを知ることが役立ちます。以下には、どのクエリ、データベース、テーブルが最適化可能かを見つけることでメモリ問題をデバッグするのに役立つクエリがあります：
+メモリの問題やメモリリークに遭遇した際に、どのクエリやリソースが大量のメモリを消費しているかを知ることは役立ちます。以下には、最適化できるクエリ、データベース、テーブルを見つけるためにメモリ問題をデバッグするのに役立つクエリがあります。
 
-## ピークメモリ使用量で現在実行中のプロセスをリストする {#list-currently-running-processes-by-peak-memory}
+## ピークメモリ使用量による現在実行中のプロセスのリスト {#list-currently-running-processes-by-peak-memory}
 
 ```sql
 SELECT
@@ -26,7 +29,7 @@ ORDER BY peak_memory_usage DESC
 LIMIT 100;
 ```
 
-## メモリ使用量のメトリクスをリストする {#list-metrics-for-memory-usage}
+## メモリ使用量のメトリクスのリスト {#list-metrics-for-memory-usage}
 
 ```sql
 SELECT
@@ -40,7 +43,7 @@ order by
     value desc;
 ```
 
-## 現在のメモリ使用量でテーブルをリストする {#list-tables-by-current-memory-usage}
+## 現在のメモリ使用量によるテーブルのリスト {#list-tables-by-current-memory-usage}
 
 ```sql
 SELECT
@@ -51,25 +54,25 @@ FROM system.tables
 WHERE engine IN ('Memory','Set','Join');
 ```
 
-## マージによって使用される合計メモリを出力する {#output-total-memory-used-by-merges}
+## マージによって使用される総メモリの出力 {#output-total-memory-used-by-merges}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.merges;
 ```
 
-## 現在実行中のプロセスによって使用される合計メモリを出力する {#output-total-memory-used-by-currently-running-processes}
+## 現在実行中のプロセスによって使用される総メモリの出力 {#output-total-memory-used-by-currently-running-processes}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.processes;
 ```
 
-## 辞書によって使用される合計メモリを出力する {#output-total-memory-used-by-dictionaries}
+## 辞書によって使用される総メモリの出力 {#output-total-memory-used-by-dictionaries}
 
 ```sql
 SELECT formatReadableSize(sum(bytes_allocated)) FROM system.dictionaries;
 ```
 
-## 主キーによって使用される合計メモリを出力する {#output-total-memory-used-by-primary-keys}
+## 主キーによって使用される総メモリの出力 {#output-total-memory-used-by-primary-keys}
 
 ```sql
 SELECT

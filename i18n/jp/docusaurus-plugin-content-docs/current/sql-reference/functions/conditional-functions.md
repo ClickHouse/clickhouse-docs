@@ -1,10 +1,13 @@
 ---
-description: '条件付き関数に関するドキュメント'
-sidebar_label: '条件付き'
-sidebar_position: 40
-slug: /sql-reference/functions/conditional-functions
-title: '条件付き関数'
+'description': '条件付き関数のドキュメント'
+'sidebar_label': '条件付き関数'
+'sidebar_position': 40
+'slug': '/sql-reference/functions/conditional-functions'
+'title': 'Conditional Functions'
 ---
+
+
+
 
 
 # 条件付き関数
@@ -13,11 +16,11 @@ title: '条件付き関数'
 
 条件分岐を実行します。
 
-条件 `cond` が非ゼロの値に評価されると、関数は `then` の式の結果を返します。 `cond` がゼロまたは `NULL` に評価される場合は、`else` の式の結果が返されます。
+条件 `cond`がゼロ以外の値に評価される場合、関数は式 `then`の結果を返します。 `cond`がゼロまたは `NULL`に評価される場合は、`else`式の結果が返されます。
 
-設定 [short_circuit_function_evaluation](/operations/settings/settings#short_circuit_function_evaluation) により、ショートサーキット評価が使用されるかどうかを制御します。 有効にされている場合、`then` の式は `cond` が `true` の行に対してのみ評価され、`else` の式は `cond` が `false` の行に対して評価されます。 たとえば、ショートサーキット評価を使用すると、`SELECT if(number = 0, 0, intDiv(42, number)) FROM numbers(10)` のクエリを実行するときにゼロ除算例外がスローされません。
+設定 [short_circuit_function_evaluation](/operations/settings/settings#short_circuit_function_evaluation) は、ショートサーキット評価が使用されるかどうかを制御します。 有効にすると、`then`式は `cond`が `true`である行に対してのみ評価され、 `else`式は `cond`が `false`である場合に評価されます。 たとえば、ショートサーキット評価を使用すると、クエリ `SELECT if(number = 0, 0, intDiv(42, number)) FROM numbers(10)`を実行するときに、ゼロ除算の例外がスローされません。
 
-`then` と `else` は同じタイプである必要があります。
+`then`と`else`は同様の型でなければなりません。
 
 **構文**
 
@@ -28,13 +31,13 @@ if(cond, then, else)
 
 **引数**
 
-- `cond` – 評価される条件。 UInt8、Nullable(UInt8)、または NULL。
-- `then` – `condition` が true の場合に返される式。
-- `else` – `condition` が false または NULL の場合に返される式。
+- `cond` – 評価される条件。 UInt8, Nullable(UInt8) または NULL。
+- `then` – `condition`が真である場合に返される式。
+- `else` – `condition`が偽であるかNULLである場合に返される式。
 
 **返される値**
 
-条件 `cond` に応じて、`then` または `else` のいずれかの式の結果。
+条件 `cond`に応じて、`then`または`else`式のいずれかの結果。
 
 **例**
 
@@ -52,7 +55,7 @@ SELECT if(1, plus(2, 2), plus(2, 6));
 
 ## multiIf {#multiif}
 
-クエリ内で [CASE](../../sql-reference/operators/index.md#conditional-expression) 演算子をより簡潔に記述できます。
+クエリ内で[CASE](../../sql-reference/operators/index.md#conditional-expression)演算子をよりコンパクトに記述できるようにします。
 
 **構文**
 
@@ -60,22 +63,22 @@ SELECT if(1, plus(2, 2), plus(2, 6));
 multiIf(cond_1, then_1, cond_2, then_2, ..., else)
 ```
 
-設定 [short_circuit_function_evaluation](/operations/settings/settings#short_circuit_function_evaluation) により、ショートサーキット評価が使用されるかどうかを制御します。 有効にされている場合、`then_i` の式は `((NOT cond_1) AND (NOT cond_2) AND ... AND (NOT cond_{i-1}) AND cond_i)` が `true` の行でのみ評価され、`cond_i` は `((NOT cond_1) AND (NOT cond_2) AND ... AND (NOT cond_{i-1}))` が `true` の行でのみ評価されます。 たとえば、ショートサーキット評価を使用すると、`SELECT multiIf(number = 2, intDiv(1, number), number = 5) FROM numbers(10)` のクエリを実行する際にゼロ除算例外がスローされません。
+設定 [short_circuit_function_evaluation](/operations/settings/settings#short_circuit_function_evaluation) は、ショートサーキット評価が使用されるかどうかを制御します。 有効にすると、`then_i`式は、`((NOT cond_1) AND (NOT cond_2) AND ... AND (NOT cond_{i-1}) AND cond_i)`が`true`である行に対してのみ評価され、`cond_i`は、`((NOT cond_1) AND (NOT cond_2) AND ... AND (NOT cond_{i-1}))`が`true`である行に対してのみ評価されます。たとえば、ショートサーキット評価を使用すると、クエリ `SELECT multiIf(number = 2, intDiv(1, number), number = 5) FROM numbers(10)`を実行するときに、ゼロ除算の例外が発生しません。
 
 **引数**
 
-関数は `2N+1` のパラメータを受け入れます:
-- `cond_N` — `then_N` が返されるかどうかを制御する N 番目の評価条件。
-- `then_N` — `cond_N` が true の場合の関数の結果。
-- `else` — いずれの条件も true でない場合の関数の結果。
+関数は `2N+1` のパラメータを受け付けます:
+- `cond_N` — `then_N`が返されるべきかを制御するN番目の評価された条件。
+- `then_N` — `cond_N`が真である場合の関数の結果。
+- `else` — どの条件も真でない場合の関数の結果。
 
 **返される値**
 
-条件 `cond_N` に応じて、`then_N` または `else` のいずれかの式の結果。
+条件 `cond_N`に応じて、`then_N`または`else`の式のいずれかの結果。
 
 **例**
 
-次のテーブルを仮定します:
+次のテーブルを考えます。
 
 ```text
 ┌─left─┬─right─┐
@@ -103,9 +106,9 @@ FROM LEFT_RIGHT
 └──────┴───────┴─────────────────┘
 ```
 
-## 条件結果を直接使用する {#using-conditional-results-directly}
+## 条件結果を直接使用 {#using-conditional-results-directly}
 
-条件は常に `0`、`1`、または `NULL` になります。 したがって、以下のように条件の結果を直接使用できます：
+条件は常に `0`、`1` または `NULL` になります。したがって、次のように条件結果を直接使用できます。
 
 ```sql
 SELECT left < right AS is_small
@@ -120,9 +123,9 @@ FROM LEFT_RIGHT
 └──────────┘
 ```
 
-## NULL 値と条件 {#null-values-in-conditionals}
+## NULL値に関する条件 {#null-values-in-conditionals}
 
-条件に `NULL` 値が含まれると、結果も `NULL` になります。
+条件に `NULL` 値が関与すると、結果も `NULL` になります。
 
 ```sql
 SELECT
@@ -136,9 +139,9 @@ SELECT
 └───────────────┴───────────────┴──────────────────┴────────────────────┘
 ```
 
-したがって、型が `Nullable` の場合は、クエリを注意深く構築する必要があります。
+したがって、タイプが `Nullable` の場合は、クエリを慎重に構築する必要があります。
 
-次の例は、`multiIf` に等しい条件を追加することに失敗することを示しています。
+次の例は、`multiIf`に等しい条件を追加できずに失敗することでこれを示しています。
 
 ```sql
 SELECT
@@ -158,7 +161,7 @@ FROM LEFT_RIGHT
 
 ## greatest {#greatest}
 
-値のリストの中で最大値を返します。リストのすべてのメンバーは比較可能なタイプである必要があります。
+値のリストの中で最大のものを返します。 リストのすべてのメンバーは互換性のある型でなければなりません。
 
 例:
 
@@ -172,7 +175,7 @@ SELECT greatest(1, 2, toUInt8(3), 3.) result,  toTypeName(result) type;
 ```
 
 :::note
-返される型は Float64 であり、UInt8 は比較のために 64 ビットに昇格される必要があります。
+返される型はFloat64であり、UInt8は比較のために64ビットに昇格する必要があります。
 :::
 
 ```sql
@@ -190,16 +193,16 @@ SELECT greatest(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3))
 ```response
 ┌─greatest(toDateTime32(plus(now(), toIntervalDay(1))), toDateTime64(now(), 3))─┐
 │                                                       2023-05-12 01:16:59.000 │
-└──────────────────────────────────────────────────────────────────────────┘
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 :::note
-返される型は DateTime64 であり、DateTime32 は比較のために 64 ビットに昇格される必要があります。
+返される型はDateTime64であり、DateTime32は比較のために64ビットに昇格する必要があります。
 :::
 
 ## least {#least}
 
-値のリストの中で最小値を返します。リストのすべてのメンバーは比較可能なタイプである必要があります。
+値のリストの中で最小のものを返します。 リストのすべてのメンバーは互換性のある型でなければなりません。
 
 例:
 
@@ -213,7 +216,7 @@ SELECT least(1, 2, toUInt8(3), 3.) result,  toTypeName(result) type;
 ```
 
 :::note
-返される型は Float64 であり、UInt8 は比較のために 64 ビットに昇格される必要があります。
+返される型はFloat64であり、UInt8は比較のために64ビットに昇格する必要があります。
 :::
 
 ```sql
@@ -235,12 +238,12 @@ SELECT least(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3))
 ```
 
 :::note
-返される型は DateTime64 であり、DateTime32 は比較のために 64 ビットに昇格される必要があります。
+返される型はDateTime64であり、DateTime32は比較のために64ビットに昇格する必要があります。
 :::
 
 ## clamp {#clamp}
 
-返される値を A と B の間に制限します。
+戻り値をAとBの間に制約します。
 
 **構文**
 
@@ -256,7 +259,7 @@ clamp(value, min, max)
 
 **返される値**
 
-値が最小値未満の場合は最小値を返し、最大値を超える場合は最大値を返します。それ以外の場合は現在の値を返します。
+値が最小値より小さい場合、最小値を返します。最大値より大きい場合は、最大値を返します。それ以外の場合は、現在の値を返します。
 
 例:
 
@@ -269,15 +272,15 @@ SELECT clamp(1, 2, 3) result,  toTypeName(result) type;
 └────────┴─────────┘
 ```
 
-## CASE ステートメント {#case-statement}
+## CASE文 {#case-statement}
 
-ClickHouse の CASE 式は、SQL CASE 演算子に似た条件論理を提供します。 条件を評価し、最初に一致した条件に基づいて値を返します。
+ClickHouseのCASE式は、SQLのCASE演算子に類似した条件ロジックを提供します。条件を評価し、最初に一致した条件に基づいて値を返します。
 
-ClickHouse は、2 つの形式の CASE をサポートしています：
+ClickHouseは2つの形式のCASEをサポートしています。
 
 1. `CASE WHEN ... THEN ... ELSE ... END`
 <br/>
-この形式は完全な柔軟性を提供し、内部的には [multiIf](/sql-reference/functions/conditional-functions#multiif) 関数を使用して実装されています。 各条件は独立して評価され、式には定数以外の値を含めることができます。
+この形式は完全な柔軟性を提供し、内部的には[multiIf](/sql-reference/functions/conditional-functions#multiif)関数を使用して実装されています。各条件は独立して評価され、式は非定数の値を含むことができます。
 
 ```sql
 SELECT
@@ -290,7 +293,7 @@ SELECT
 FROM system.numbers
 WHERE number < 5;
 
--- 次のように翻訳されます
+-- 翻訳されます
 SELECT
     number,
     multiIf((number % 2) = 0, number + 1, (number % 2) = 1, number * 10, number) AS result
@@ -305,14 +308,14 @@ WHERE number < 5
 │      4 │      5 │
 └────────┴────────┘
 
-5 行のセット。 経過時間: 0.002 秒。
+5件の行がセットされました。経過時間: 0.002秒。
 ```
 
 2. `CASE <expr> WHEN <val1> THEN ... WHEN <val2> THEN ... ELSE ... END`
 <br/>
-このよりコンパクトな形式は定数値の一致に最適化されており、内部で `caseWithExpression()` を使用します。
+このよりコンパクトな形式は、定数値の一致の最適化を行い、内部的に `caseWithExpression()`を使用します。
 
-例えば、次のように記述できます：
+たとえば、次のように記述できます。
 
 ```sql
 SELECT
@@ -325,7 +328,7 @@ SELECT
 FROM system.numbers
 WHERE number < 3;
 
--- 次のように翻訳されます
+-- 翻訳されます
 
 SELECT
     number,
@@ -339,10 +342,10 @@ WHERE number < 3
 │      2 │      0 │
 └────────┴────────┘
 
-3 行のセット。 経過時間: 0.002 秒。
+3件の行がセットされました。経過時間: 0.002秒。
 ```
 
-この形式では、戻り値の式が定数である必要はありません。
+この形式では、返す式が定数である必要はありません。
 
 ```sql
 SELECT
@@ -355,7 +358,7 @@ SELECT
 FROM system.numbers
 WHERE number < 3;
 
--- 次のように翻訳されます
+-- 翻訳されます
 
 SELECT
     number,
@@ -369,18 +372,18 @@ WHERE number < 3
 │      2 │                        2 │
 └────────┴──────────────────────────┘
 
-3 行のセット。 経過時間: 0.001 秒。
+3件の行がセットされました。経過時間: 0.001秒。
 ```
 
 ### 注意点 {#caveats}
 
-ClickHouse は CASE 式の結果タイプ（またはその内部の同等のもの、たとえば `multiIf`）を、条件を評価する前に決定します。 これは、返される式の型が異なる場合、たとえば異なるタイムゾーンや数値型の時に重要です。
+ClickHouseは、CASE式（またはその内部相当物、たとえば `multiIf`）の結果型を、条件を評価する前に決定します。これは、返す式が異なる型、たとえば異なるタイムゾーンや数値型である場合に重要です。
 
-- 結果型は、すべてのブランチの中で最も大きい互換性のある型に基づいて選択されます。
-- 一度この型が選択されると、他のブランチは暗黙的にこの型にキャストされます - 実行時にそのロジックが決して実行されない場合でも。
-- DateTime64 のような型では、タイムゾーンが型のシグネチャの一部なので、驚くべき動作が発生する可能性があります。最初に出会ったタイムゾーンがすべてのブランチで使用される場合があり、他のブランチが異なるタイムゾーンを指定している場合でも同様です。
+- 結果型は、すべてのブランチの中で最大の互換性のある型に基づいて選択されます。
+- この型が選択されると、他のすべてのブランチは暗黙的にこの型にキャストされます - 実行時にそのロジックが実行されない場合でも。
+- DateTime64のような型では、タイムゾーンが型シグネチャの一部であるため、驚くべき動作を引き起こす可能性があります：最初に遭遇したタイムゾーンがすべてのブランチに使用される場合があります、他のブランチが異なるタイムゾーンを指定している場合であっても。
 
-例えば、以下のようにすべての行が最初に一致したブランチのタイムゾーンでタイムスタンプを返します。すなわち `Asia/Kolkata` です。
+たとえば、以下ではすべての行が最初に一致したブランチのタイムスタンプを返します。つまり、`Asia/Kolkata`です。
 
 ```sql
 SELECT
@@ -393,7 +396,7 @@ SELECT
 FROM system.numbers
 WHERE number < 3;
 
--- 次のように翻訳されます
+-- 翻訳されます
 
 SELECT
     number,
@@ -407,12 +410,12 @@ WHERE number < 3
 │      2 │ 1970-01-01 05:30:00.000 │
 └────────┴─────────────────────────┘
 
-3 行のセット。 経過時間: 0.011 秒。
+3件の行がセットされました。経過時間: 0.011秒。
 ```
 
-ここで、ClickHouse は複数の `DateTime64(3, <timezone>)` 戻り値の型を確認します。最初に確認した型を `DateTime64(3, 'Asia/Kolkata'` として共通タイプと推測し、他のブランチをこの型に暗黙的にキャストします。
+ここで、ClickHouseは複数の `DateTime64(3, <timezone>)`の返り値の型を見ます。最初に見るものを基に共通の型を推論し、他のブランチを暗黙的にこの型にキャストします。
 
-これは、意図したタイムゾーンの形式を保持するために文字列に変換することによって対処できます：
+これは、意図したタイムゾーンのフォーマットを保持するために文字列に変換することで対処できます。
 
 ```sql
 SELECT
@@ -425,7 +428,7 @@ SELECT
 FROM system.numbers
 WHERE number < 3;
 
--- 次のように翻訳されます
+-- 翻訳されます
 
 SELECT
     number,
@@ -439,5 +442,4 @@ WHERE number < 3
 │      2 │ 1970-01-01 00:00:00 │
 └────────┴─────────────────────┘
 
-3 行のセット。 経過時間: 0.002 秒。
-```
+3件の行がセットされました。経過時間: 0.002秒。

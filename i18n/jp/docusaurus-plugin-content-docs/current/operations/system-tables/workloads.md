@@ -1,14 +1,19 @@
 ---
-description: 'ローカルサーバー上に存在するワークロードに関する情報を含むシステムテーブル。'
-keywords: ['system table', 'workloads']
-slug: /operations/system-tables/workloads
-title: 'system.workloads'
+'description': 'System table containing information for workloads residing on the
+  local server.'
+'keywords':
+- 'system table'
+- 'workloads'
+'slug': '/operations/system-tables/workloads'
+'title': 'system.workloads'
 ---
+
+
 
 
 # system.workloads
 
-ローカルサーバー上に存在する [ワークロード](/operations/workload-scheduling.md#workload_entity_storage) に関する情報を含みます。このテーブルは、各ワークロードの行を含んでいます。
+ローカルサーバーに存在する [workloads](/operations/workload-scheduling.md#workload_entity_storage) に関する情報を含みます。このテーブルは、すべてのワークロードに対して1行を含んでいます。
 
 例:
 
@@ -19,19 +24,19 @@ FORMAT Vertical
 ```
 
 ```text
-行 1:
+Row 1:
 ──────
 name:         production
 parent:       all
 create_query: CREATE WORKLOAD production IN `all` SETTINGS weight = 9
 
-行 2:
+Row 2:
 ──────
 name:         development
 parent:       all
 create_query: CREATE WORKLOAD development IN `all`
 
-行 3:
+Row 3:
 ──────
 name:         all
 parent:

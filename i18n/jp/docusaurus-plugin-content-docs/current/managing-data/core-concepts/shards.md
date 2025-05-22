@@ -1,8 +1,13 @@
 ---
-slug: /shards
-title: 'テーブルのシャードとレプリカ'
-description: 'ClickHouseにおけるテーブルのシャードとレプリカとは'
-keywords: ['シャード', 'シャード', 'シャーディング', 'レプリカ', 'レプリカ']
+'slug': '/shards'
+'title': 'テーブルシャードとレプリカ'
+'description': 'ClickHouseにおけるテーブルシャードとレプリカとは何ですか'
+'keywords':
+- 'shard'
+- 'shards'
+- 'sharding'
+- 'replica'
+- 'replicas'
 ---
 
 import image_01 from '@site/static/images/managing-data/core-concepts/shards_01.png'
@@ -14,28 +19,29 @@ import Image from '@theme/IdealImage';
 
 <br/>
 :::note
-このトピックはClickHouse Cloudには適用されません。[Parallel Replicas](/docs/deployment-guides/parallel-replicas)は従来の共有なしのClickHouseクラスターにおける複数のシャードのように機能し、オブジェクトストレージは[レプリカを置き換え](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates#shared-object-storage-for-data-availability)高可用性とフォールトトレランスを確保します。
+このトピックは ClickHouse Cloud には適用されず、[Parallel Replicas](/docs/deployment-guides/parallel-replicas) は従来の共有何も持たない ClickHouse クラスターにおける複数のシャードのように機能し、オブジェクトストレージは[置き換えます](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates#shared-object-storage-for-data-availability) レプリカを確保し、高い可用性と障害耐性を実現します。
 :::
 
-## ClickHouseにおけるテーブルのシャードとは？ {#what-are-table-shards-in-clickhouse}
+## ClickHouseにおけるテーブルシャードとは何ですか？ {#what-are-table-shards-in-clickhouse}
 
-従来の[共有なし](https://en.wikipedia.org/wiki/Shared-nothing_architecture)のClickHouseクラスターでは、シャーディングは ① データが単一のサーバーに対して大きすぎる場合、または ② 単一のサーバーがデータの処理に対して遅すぎる場合に使用されます。次の図は、[uk_price_paid_simple](/parts)テーブルが単一のマシンの容量を超えているケース①を示しています:
+従来の[共有何も持たない](https://en.wikipedia.org/wiki/Shared-nothing_architecture) ClickHouse クラスターでは、シャーディングは ① データが単一サーバーには大きすぎる、または ② 単一サーバーがデータの処理には遅すぎる場合に使用されます。次の図はケース ①を示しており、[uk_price_paid_simple](/parts) テーブルが単一マシンの容量を超えています:
 
 <Image img={image_01} size="lg" alt='SHARDS'/>
 
 <br/>
 
-このような場合、データはテーブルのシャードとして複数のClickHouseサーバーに分割されます:
+このような場合、データはテーブルシャードの形式で複数の ClickHouse サーバーに分割できます:
 
 <Image img={image_02} size="lg" alt='SHARDS'/>
 
 <br/>
 
-各シャードはデータのサブセットを保持し、独立してクエリできる通常のClickHouseテーブルとして機能します。ただし、クエリはそのサブセットのみを処理するため、データの分散に応じて有効なユースケースとなる可能性があります。通常、[分散テーブル](/docs/engines/table-engines/special/distributed)（サーバーごとに多くの場合）が完全なデータセットの統一ビューを提供します。それ自体はデータを保存せず、**SELECT**クエリをすべてのシャードに転送し、結果を組み立て、均等にデータを分配するために**INSERT**をルーティングします。
+各シャードはデータのサブセットを保持し、独立してクエリできる通常の ClickHouse テーブルとして機能します。ただし、クエリはそのサブセットのみを処理し、データの分布によっては有効なユースケースとなることがあります。通常、[分散テーブル](/docs/engines/table-engines/special/distributed)（しばしばサーバーごとに）は、全データセットの統一されたビューを提供します。データ自体は保存しませんが、**SELECT** クエリをすべてのシャードに転送し、結果を組み合わせ、**INSERT** をルーティングしてデータを均等に分配します。
 
 ## 分散テーブルの作成 {#distributed-table-creation}
 
-**SELECT**クエリの転送と**INSERT**ルーティングを示すために、二つのClickHouseサーバーに跨る二つのシャードに分割された[What are table parts](/parts)の例テーブルを考えます。まず、このセットアップに関連する**分散テーブル**を作成するためのDDLステートメントを示します:
+**SELECT** クエリの転送と **INSERT** ルーティングを示すために、2つの ClickHouse サーバーに分割された [What are table parts](/parts) の例テーブルを考えます。まず、この設定に対応する **Distributed table** を作成するための DDL ステートメントを示します:
+
 
 ```sql
 CREATE TABLE uk.uk_price_paid_simple_dist ON CLUSTER test_cluster
@@ -46,68 +52,68 @@ CREATE TABLE uk.uk_price_paid_simple_dist ON CLUSTER test_cluster
     price UInt32
 )
 ENGINE = Distributed('test_cluster', 'uk', 'uk_price_paid_simple', rand())
-```
 
-`ON CLUSTER`句はDDLステートメントを[分散DDLステートメント](/docs/sql-reference/distributed-ddl)にし、ClickHouseに`test_cluster`の[クラスター定義](/docs/architecture/horizontal-scaling#replication-and-sharding-configuration)にリストされているすべてのサーバーにテーブルを作成するよう指示します。分散DDLには、[クラスターアーキテクチャ](/docs/architecture/horizontal-scaling#architecture-diagram)において追加の[Keeper](https://clickhouse.com/clickhouse/keeper)コンポーネントが必要です。
+`ON CLUSTER` 句により、DDL ステートメントは [分散 DDL ステートメント](/docs/sql-reference/distributed-ddl) となり、ClickHouse に `test_cluster` [クラスター定義](/docs/architecture/horizontal-scaling#replication-and-sharding-configuration) にリストされているすべてのサーバーでテーブルを作成するよう指示します。分散 DDL には、[クラスターアーキテクチャ](/docs/architecture/horizontal-scaling#architecture-diagram) において追加の [Keeper](https://clickhouse.com/clickhouse/keeper) コンポーネントが必要です。
 
-[分散エンジンパラメータ](/docs/engines/table-engines/special/distributed#distributed-parameters)では、シャーディングされたターゲットテーブルのデータベース名（`uk`）、シャーディングされたターゲットテーブルの名前（`uk_price_paid_simple`）、およびINSERTルーティングのための**シャーディングキー**を指定します。この例では、[rand](/sql-reference/functions/random-functions#rand)関数を使用して行をランダムにシャードに割り当てています。ただし、ユースケースに応じて、複雑な式でもシャーディングキーとして使用できます。次のセクションではINSERTルーティングがどのように機能するかを説明します。
+[分散エンジンパラメーター](/docs/engines/table-engines/special/distributed#distributed-parameters) では、クラスタ名 (`test_cluster`)、シャーディングされたターゲットテーブルのデータベース名 (`uk`)、シャーディングされたターゲットテーブルの名前 (`uk_price_paid_simple`)、そして **INSERT ルーティング** のための **シャーディングキー** を指定します。この例では、[rand](/sql-reference/functions/random-functions#rand) 関数を使用して行をランダムにシャードに割り当てています。ただし、ユースケースに応じて、複雑な式でもシャーディングキーとして使用できます。次のセクションでは、INSERT ルーティングがどのように機能するかを示します。
 
-## INSERTルーティング {#insert-routing}
+## INSERT ルーティング {#insert-routing}
 
-次の図は、分散テーブルへのINSERTがClickHouseでどのように処理されるかを示しています:
+以下の図は、分散テーブルへの INSERT が ClickHouse でどのように処理されるかを示しています:
 
 <Image img={image_03} size="lg" alt='SHARDS'/>
 
 <br/>
 
-① ターゲットとなる分散テーブルに対して単一の行を持つINSERTが、直接あるいはロードバランサを介してClickHouseサーバーに送信されます。
+① 分散テーブルをターゲットとする INSERT（単一行）が、直接またはロードバランサーを介して、テーブルをホストする ClickHouse サーバーに送信されます。
 
-② INSERTからの各行（この例では1つのみ）について、ClickHouseはシャーディングキー（ここではrand()）を評価し、その結果をシャードサーバーの数で割った余りを取り、これをターゲットサーバーIDとして使用します（IDは0から始まり1ずつ増加します）。行は次に転送され、③ 対応するサーバーのテーブルシャードに挿入されます。
+② INSERT の各行（この例では1つ）について、ClickHouse はシャーディングキー（ここでは rand()）を評価し、結果をシャードサーバーの数で割った余りを取得し、それをターゲットサーバー ID（ID は 0 から始まり、1 ずつ増加します）として使用します。そして、行は転送され、③ 該当するサーバーのテーブルシャードに挿入されます。
 
-次のセクションでは、SELECT転送がどのように機能するかを説明します。
+次のセクションでは、SELECT 転送がどのように機能するかを説明します。
 
-## SELECT転送 {#select-forwarding}
+## SELECT 転送 {#select-forwarding}
 
-この図は、ClickHouseにおける分散テーブルでSELECTクエリがどのように処理されるかを示しています:
+この図は、ClickHouse の分散テーブルを使用して SELECT クエリがどのように処理されるかを示しています:
 
 <Image img={image_04} size="lg" alt='SHARDS'/>
 
 <br/>
 
-① ターゲットとなる分散テーブルに対してSELECT集計クエリが、直接あるいはロードバランサを介して対応するClickHouseサーバーに送信されます。
+① 分散テーブルをターゲットとする SELECT 集約クエリが対応する ClickHouse サーバーに、直接またはロードバランサーを介して送信されます。
 
-② 分散テーブルは、ターゲットテーブルのシャードをホストしているすべてのサーバーにクエリを転送し、各ClickHouseサーバーが**並列**にローカル集計結果を計算します。
+② 分散テーブルは、ターゲットテーブルのシャードをホストするすべてのサーバーにクエリを転送し、各 ClickHouse サーバーがローカル集約結果を**並行して**計算します。
 
-その後、最初にターゲットとなった分散テーブルをホストするClickHouseサーバーは、③ すべてのローカル結果を収集し、④ 最終的なグローバル結果にマージし、⑤ クエリの送信者に返します。
 
-## ClickHouseにおけるテーブルのレプリカとは？ {#what-are-table-replicas-in-clickhouse}
+その後、初めにターゲットとされた分散テーブルをホストする ClickHouse サーバーは、③ すべてのローカル結果を収集し、④ 最終的なグローバル結果に統合し、⑤ それをクエリ送信者に返します。
 
-ClickHouseにおけるレプリケーションは、複数のサーバーにわたって**シャードデータのコピー**を保持することにより、**データの整合性**と**フェイルオーバー**を確保します。ハードウェアの故障は避けられないため、レプリケーションは各シャードが複数のレプリカを持つことによりデータ損失を防ぎます。書き込みは、直接または[分散テーブル](#distributed-table-creation)を介して行うことができ、そこで操作のためのレプリカを選択します。変更は他のレプリカに自動的に伝播されます。失敗やメンテナンスが発生した場合、データは他のレプリカ上で利用可能であり、一度失敗したホストが回復すると、それに同期して最新の状態を保ちます。
+## ClickHouseにおけるテーブルレプリカとは何ですか？ {#what-are-table-replicas-in-clickhouse}
 
-レプリケーションには、[クラスターアーキテクチャ](/docs/architecture/horizontal-scaling#architecture-diagram)において[Keeper](https://clickhouse.com/clickhouse/keeper)コンポーネントが必要ですので注意してください。
+ClickHouseにおけるレプリケーションは、複数のサーバー間で**シャードデータのコピーを維持**することにより、**データの整合性**と**フェールオーバー**を保証します。ハードウェアの故障は避けられないため、レプリケーションは各シャードに複数のレプリカを持つことでデータ損失を防ぎます。書き込みは、直接または [分散テーブル](#distributed-table-creation) を介して任意のレプリカに送信でき、どの操作のためにレプリカが選択されます。変更は他のレプリカに自動的に伝播されます。故障やメンテナンスが発生した場合でも、データは他のレプリカで利用可能であり、失敗したホストが復旧すると自動的に同期されて最新の状態を維持します。
 
-次の図は、6つのサーバーを持つClickHouseクラスターを示しており、前述の二つのテーブルシャード`Shard-1`と`Shard-2`はそれぞれ三つのレプリカを持っています。このクラスターにクエリが送信されます:
+レプリケーションには、[クラスターアーキテクチャ](/docs/architecture/horizontal-scaling#architecture-diagram) に [Keeper](https://clickhouse.com/clickhouse/keeper) コンポーネントが必要であることに注意してください。
+
+以下の図は、シャード `Shard-1` と `Shard-2` がそれぞれ 3 つのレプリカを持つ、6 にサーバーから成る ClickHouse クラスターを示しています。このクラスターにクエリが送信されます:
 
 <Image img={image_05} size="lg" alt='SHARDS'/>
 
 <br/>
 
-クエリ処理は、レプリカのないセットアップと同様に機能し、各シャードからの単一のレプリカのみがクエリを実行します。
+クエリ処理は、レプリカがないセットアップと同様に機能し、各シャードの単一のレプリカがクエリを実行します。
 
-> レプリカは、データの整合性とフェイルオーバーを確保するだけでなく、異なるレプリカ間で複数のクエリを並行して実行できるため、クエリ処理のスループットを向上させます。
+> レプリカはデータの整合性とフェールオーバーを確保するだけでなく、複数のクエリを異なるレプリカで並行して実行できるため、クエリ処理のスループットを向上させます。
 
-① ターゲットとなる分散テーブルにクエリが送信され、直接またはロードバランサ経由で対応するClickHouseサーバーに送られます。
+① 分散テーブルをターゲットとするクエリが、直接またはロードバランサーを介して対応する ClickHouse サーバーに送信されます。
 
-② 分散テーブルは、各シャードから選択されたレプリカの1つにクエリを転送し、そこでレプリカをホストする各ClickHouseサーバーがローカルのクエリ結果を並行して計算します。
+② 分散テーブルは、各シャードから1つのレプリカにクエリを転送し、選択されたレプリカをホストする各 ClickHouse サーバーがそのローカルクエリ結果を並行して計算します。
 
-残りは、レプリカのないセットアップの[同様](#select-forwarding)に機能し、図には示されていません。最初にターゲットとされた分散テーブルをホストするClickHouseサーバーがすべてのローカル結果を収集し、最終的なグローバル結果にマージし、クエリの送信者に返します。
+残りの処理は、レプリカがないセットアップでの[同様](#select-forwarding)であり、上の図には示されていません。初めにターゲットとされた分散テーブルをホストする ClickHouse サーバーがすべてのローカル結果を収集し、最終的なグローバル結果に統合し、それをクエリ送信者に返します。
 
-ClickHouseでは、②のクエリ転送戦略を構成することができますので注意してください。デフォルトでは、上の図とは異なり、分散テーブルは利用可能な場合、ローカルレプリカを[優先し](https://docs.clickhouse.com/operations/settings/settings#prefer_localhost_replica)、他のロードバランシング[戦略](https://docs.clickhouse.com/operations/settings/settings#load_balancing)を使用することもできます。
+ClickHouse では、② のクエリ転送戦略を設定することができます。デフォルトでは、上の図とは異なり—分散テーブルは、使用可能な場合はローカルレプリカを[優先](/docs/operations/settings/settings#prefer_localhost_replica)しますが、他のロードバランシング[戦略](/docs/operations/settings/settings#load_balancing)も使用できます。
 
-## さらに情報を見つけるには {#where-to-find-more-information}
+## 追加情報の取得先 {#where-to-find-more-information}
 
-テーブルのシャードとレプリカに関するこの概要の他の詳細については、[デプロイメントとスケーリングガイド](/docs/architecture/horizontal-scaling)をご覧ください。
+テーブルシャードとレプリカに関するこの高レベルの紹介を超える詳細については、[デプロイメントおよびスケーリングガイド](/docs/architecture/horizontal-scaling)を参照してください。
 
-ClickHouseのシャードとレプリカに関する深い理解のために、このチュートリアル動画を強くお勧めします:
+ClickHouseのシャードとレプリカについてのより深い理解のために、このチュートリアルビデオも強くお勧めします:
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/vBjCJtw_Ei0?si=WqopTrnti6usCMRs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

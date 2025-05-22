@@ -1,9 +1,11 @@
 ---
-description: '入力値の移動合計を計算します。'
-sidebar_position: 144
-slug: /sql-reference/aggregate-functions/reference/grouparraymovingsum
-title: 'groupArrayMovingSum'
+'description': '入力値の移動合計を計算します。'
+'sidebar_position': 144
+'slug': '/sql-reference/aggregate-functions/reference/grouparraymovingsum'
+'title': 'groupArrayMovingSum'
 ---
+
+
 
 
 # groupArrayMovingSum
@@ -15,7 +17,7 @@ groupArrayMovingSum(numbers_for_summing)
 groupArrayMovingSum(window_size)(numbers_for_summing)
 ```
 
-この関数は、ウィンドウサイズをパラメーターとして取ることができます。指定しない場合、関数はカラム内の行数と等しいウィンドウサイズを取ります。
+この関数はウィンドウサイズをパラメータとして受け取ることができます。指定しない場合、関数はカラムの行数と等しいウィンドウサイズを取ります。
 
 **引数**
 
@@ -24,7 +26,7 @@ groupArrayMovingSum(window_size)(numbers_for_summing)
 
 **返される値**
 
-- 入力データと同じサイズおよび型の配列。
+- 入力データと同じサイズおよびタイプの配列。
 
 **例**
 

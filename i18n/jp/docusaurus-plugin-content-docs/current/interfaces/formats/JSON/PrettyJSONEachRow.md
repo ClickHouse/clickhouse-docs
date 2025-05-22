@@ -1,20 +1,27 @@
 ---
-alias: ['PrettyJSONLines', 'PrettyNDJSON']
-description: 'PrettyJSONLinesフォーマットのドキュメント'
-input_format: false
-keywords: ['PrettyJSONEachRow', 'PrettyJSONLines', 'PrettyNDJSON']
-output_format: true
-slug: /interfaces/formats/PrettyJSONEachRow
-title: 'PrettyJSONEachRow'
+'alias':
+- 'PrettyJSONLines'
+- 'PrettyNDJSON'
+'description': 'PrettyJSONEachRow フォーマットのドキュメント'
+'input_format': false
+'keywords':
+- 'PrettyJSONEachRow'
+- 'PrettyJSONLines'
+- 'PrettyNDJSON'
+'output_format': true
+'slug': '/interfaces/formats/PrettyJSONEachRow'
+'title': 'PrettyJSONEachRow'
 ---
 
-| 入力 | 出力 | 別名                             |
-|------|------|-----------------------------------|
-| ✗    | ✔   | `PrettyJSONLines`, `PrettyNDJSON` |
+
+
+| Input | Output | Alias                             |
+|-------|--------|-----------------------------------|
+| ✗     | ✔      | `PrettyJSONLines`, `PrettyNDJSON` |
 
 ## 説明 {#description}
 
-[JSONEachRow](./JSONEachRow.md)と異なるのは、JSONが新しい行の区切りと4つのスペースのインデントで整形されている点のみです。
+[JSONEachRow](./JSONEachRow.md) とは異なり、JSONが新しい行区切りと4つのスペースのインデントできれいにフォーマットされています。
 
 ## 使用例 {#example-usage}
 

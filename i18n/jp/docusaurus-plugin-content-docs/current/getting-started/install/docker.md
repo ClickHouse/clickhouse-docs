@@ -1,10 +1,13 @@
 ---
-description: 'Debian/Ubuntu LinuxでClickHouseをインストールする'
-keywords: ['ClickHouse', 'インストール', 'Docker']
-sidebar_label: 'Docker'
-slug: /install/docker
-title: 'Dockerを使用してClickHouseをインストールする'
-hide_title: true
+'description': 'Debian/Ubuntu LinuxにClickHouseをインストールする'
+'keywords':
+- 'ClickHouse'
+- 'install'
+- 'Docker'
+'sidebar_label': 'Docker'
+'slug': '/install/docker'
+'title': 'ClickHouseをDockerを使用してインストールする'
+'hide_title': true
 ---
 
 import Docker from './_snippets/_docker.md'

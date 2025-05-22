@@ -1,15 +1,17 @@
 ---
-description: '2つの母集団からのサンプルに対して平均 z 検定を適用します。'
-sidebar_label: 'meanZTest'
-sidebar_position: 166
-slug: /sql-reference/aggregate-functions/reference/meanztest
-title: 'meanZTest'
+'description': 'Applies mean z-test to samples from two populations.'
+'sidebar_label': 'meanZTest'
+'sidebar_position': 166
+'slug': '/sql-reference/aggregate-functions/reference/meanztest'
+'title': 'meanZTest'
 ---
+
+
 
 
 # meanZTest
 
-2つの母集団からのサンプルに対して平均 z 検定を適用します。
+2つの母集団からのサンプルに平均zテストを適用します。
 
 **構文**
 
@@ -17,12 +19,12 @@ title: 'meanZTest'
 meanZTest(population_variance_x, population_variance_y, confidence_level)(sample_data, sample_index)
 ```
 
-両方のサンプルの値は `sample_data` カラムにあります。 `sample_index` が 0 の場合、その行の値は最初の母集団からのサンプルに属します。それ以外の場合、それは2番目の母集団からのサンプルに属します。
-帰無仮説は、母集団の平均が等しいというものです。正規分布が仮定されます。母集団は異なる分散を持つ可能性があり、分散は既知とされています。
+両方のサンプルの値は `sample_data` カラムにあります。`sample_index` が 0 の場合、その行の値は最初の母集団のサンプルに属します。それ以外の場合、その値は 2 番目の母集団のサンプルに属します。
+帰無仮説は、母集団の平均が等しいというものです。正規分布が仮定されます。母集団は異なる分散を持つ可能性があり、分散は既知です。
 
 **引数**
 
-- `sample_data` — サンプルデータ。[整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md)または[小数](../../../sql-reference/data-types/decimal.md)。
+- `sample_data` — サンプルデータ。[整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md)、または [小数](../../../sql-reference/data-types/decimal.md)。
 - `sample_index` — サンプルインデックス。[整数](../../../sql-reference/data-types/int-uint.md)。
 
 **パラメータ**
@@ -33,12 +35,12 @@ meanZTest(population_variance_x, population_variance_y, confidence_level)(sample
 
 **返される値**
 
-4つの要素を持つ[タプル](../../../sql-reference/data-types/tuple.md)：
+[タプル](../../../sql-reference/data-types/tuple.md)で4つの要素を持つ:
 
-- 計算された t 統計。 [Float64](../../../sql-reference/data-types/float.md)。
-- 計算された p 値。 [Float64](../../../sql-reference/data-types/float.md)。
-- 計算された信頼区間下限。 [Float64](../../../sql-reference/data-types/float.md)。
-- 計算された信頼区間上限。 [Float64](../../../sql-reference/data-types/float.md)。
+- 計算された t 統計量。[Float64](../../../sql-reference/data-types/float.md)。
+- 計算された p 値。[Float64](../../../sql-reference/data-types/float.md)。
+- 計算された信頼区間下限。[Float64](../../../sql-reference/data-types/float.md)。
+- 計算された信頼区間上限。[Float64](../../../sql-reference/data-types/float.md)。
 
 **例**
 

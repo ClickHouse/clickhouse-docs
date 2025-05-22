@@ -1,11 +1,13 @@
 ---
-slug: /integrations/cassandra
-sidebar_label: 'Cassandra'
-title: 'Cassandra'
-description: 'ユーザーがディクショナリを介してCassandraと統合する方法を説明するページ。'
+'slug': '/integrations/cassandra'
+'sidebar_label': 'Cassandra'
+'title': 'Cassandra'
+'description': 'Page describing how users can integrate with Cassandra via a dictionary.'
 ---
 
 
-# Cassandra 統合
 
-ユーザーはディクショナリを介してCassandraと統合できます。詳細については、[こちら](/sql-reference/dictionaries#cassandra)をご覧ください。
+
+# Cassandra統合
+
+ユーザーはディクショナリを介してCassandraと統合できます。詳細は[こちら](/sql-reference/dictionaries#cassandra)をご覧ください。

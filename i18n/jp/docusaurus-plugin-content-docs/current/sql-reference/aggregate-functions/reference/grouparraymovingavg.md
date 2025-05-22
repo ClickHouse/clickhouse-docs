@@ -1,9 +1,11 @@
 ---
-description: '入力値の移動平均を計算します。'
-sidebar_position: 144
-slug: /sql-reference/aggregate-functions/reference/grouparraymovingavg
-title: 'groupArrayMovingAvg'
+'description': 'Calculates the moving average of input values.'
+'sidebar_position': 144
+'slug': '/sql-reference/aggregate-functions/reference/grouparraymovingavg'
+'title': 'groupArrayMovingAvg'
 ---
+
+
 
 
 # groupArrayMovingAvg
@@ -15,22 +17,22 @@ groupArrayMovingAvg(numbers_for_summing)
 groupArrayMovingAvg(window_size)(numbers_for_summing)
 ```
 
-関数はウィンドウサイズをパラメーターとして受け取ることができます。指定しない場合、関数はカラム内の行数と等しいウィンドウサイズを使用します。
+この関数はウィンドウサイズをパラメータとして受け取ることができます。指定しない場合、関数はカラム内の行数と等しいウィンドウサイズを取ります。
 
 **引数**
 
-- `numbers_for_summing` — 数値データ型の値を生成する [式](/sql-reference/syntax#expressions)。
+- `numbers_for_summing` — 数値データ型の値を返す [式](/sql-reference/syntax#expressions)。
 - `window_size` — 計算ウィンドウのサイズ。
 
 **返される値**
 
 - 入力データと同じサイズおよび型の配列。
 
-この関数は、[ゼロに向かって丸める](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero) を使用します。結果のデータ型に対して重要でない小数点以下の桁を切り捨てます。
+この関数は[ゼロに向けた丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。結果のデータ型にとって重要でない小数点以下の桁を切り捨てます。
 
 **例**
 
-サンプルテーブル `b`:
+サンプルテーブル `b`：
 
 ```sql
 CREATE TABLE t
@@ -51,7 +53,7 @@ ENGINE = TinyLog
 └─────┴───────┴──────┘
 ```
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT

@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'MySQL向けClickPipes'
-description: 'MySQLをClickHouse Cloudにシームレスに接続する方法を説明します。'
-slug: /integrations/clickpipes/mysql
-title: 'MySQLからClickHouseへのデータ取り込み（CDCを使用）'
+'sidebar_label': 'ClickPipes for MySQL'
+'description': 'Describes how to seamlessly connect your MySQL to ClickHouse Cloud.'
+'slug': '/integrations/clickpipes/mysql'
+'title': 'Ingesting Data from MySQL to ClickHouse (using CDC)'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
@@ -16,20 +16,19 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 
 
-# MySQLからClickHouseへのデータ取り込み（CDCを使用）
+# MySQLからClickHouseへのCDCを使用したデータの取り込み
 
 <BetaBadge/>
 
 :::info
-現在、ClickPipesを介してMySQLからClickHouse Cloudへのデータ取り込みはプライベートプレビュー中です。
+現在、ClickPipesを介してClickHouse CloudにMySQLからデータを取り込むことはプライベートプレビュー中です。
 :::
 
-
-ClickPipesを使用して、ソースのMySQLデータベースからClickHouse Cloudにデータを取り込むことができます。ソースのMySQLデータベースは、オンプレミスまたはクラウド上にホストできます。
+ClickPipesを使用して、ソースのMySQLデータベースからClickHouse Cloudにデータを取り込むことができます。ソースのMySQLデータベースは、オンプレミスまたはクラウドにホストされている可能性があります。
 
 ## 前提条件 {#prerequisites}
 
-始めるには、最初にMySQLデータベースが正しく設定されていることを確認する必要があります。ソースのMySQLインスタンスに応じて、以下のガイドのいずれかに従うことができます。
+まず、MySQLデータベースが正しく設定されていることを確認してください。ソースのMySQLインスタンスに応じて、次のガイドのいずれかに従ってください。
 
 1. [Amazon RDS MySQL](./mysql/source/rds)
 
@@ -39,80 +38,80 @@ ClickPipesを使用して、ソースのMySQLデータベースからClickHouse 
 
 4. [Amazon RDS MariaDB](./mysql/source/rds_maria)
 
-ソースのMySQLデータベースが設定されたら、ClickPipeの作成を続行できます。
+ソースのMySQLデータベースが設定されたら、ClickPipeの作成を続けることができます。
 
 ## ClickPipeを作成する {#creating-your-clickpipe}
 
-ClickHouse Cloudアカウントにログインしていることを確認してください。もしアカウントをまだお持ちでない場合は、[こちら](https://cloud.clickhouse.com/)からサインアップできます。
+ClickHouse Cloudアカウントにログインしていることを確認してください。まだアカウントをお持ちでない場合は、[こちらからサインアップ](https://cloud.clickhouse.com/)できます。
 
 [//]: # (   TODO update image here)
 1. ClickHouse Cloudコンソールで、ClickHouse Cloudサービスに移動します。
 
 <Image img={cp_service} alt="ClickPipesサービス" size="lg" border/>
 
-2. 左側のメニューから`Data Sources`ボタンを選択し、「ClickPipeを設定」をクリックします。
+2. 左側のメニューから`データソース`ボタンを選択し、「ClickPipeを設定」をクリックします。
 
-<Image img={cp_step0} alt="インポートの選択" size="lg" border/>
+<Image img={cp_step0} alt="インポートを選択" size="lg" border/>
 
 3. `MySQL CDC`タイルを選択します。
 
-<Image img={mysql_tile} alt="MySQLの選択" size="lg" border/>
+<Image img={mysql_tile} alt="MySQLを選択" size="lg" border/>
 
-### ソースMySQLデータベースの接続を追加する {#adding-your-source-mysql-database-connection}
+### ソースのMySQLデータベース接続を追加する {#adding-your-source-mysql-database-connection}
 
-4. 前提条件のステップで設定したソースMySQLデータベースの接続詳細を入力します。
+4. 前提条件のステップで構成したソースのMySQLデータベースの接続詳細を入力します。
 
    :::info
 
-   接続詳細を追加する前に、ファイアウォールルールでClickPipesのIPアドレスをホワイトリストに設定していることを確認してください。次のページに[ClickPipesのIPアドレスのリスト](../index.md#list-of-static-ips)があります。
-   詳細については、このページの[最上部にリンクされたソースのMySQL設定ガイド](#prerequisites)を参照してください。
+   接続詳細を追加する前に、ファイアウォールルールでClickPipesのIPアドレスをホワイトリストに登録していることを確認してください。次のページには、[ClickPipesのIPアドレスのリスト](../index.md#list-of-static-ips)があります。
+   詳細については、[このページの上部](#prerequisites)にリンクされているソースのMySQL設定ガイドを参照してください。
 
    :::
 
-   <Image img={mysql_connection_details} alt="接続詳細の入力" size="lg" border/>
+   <Image img={mysql_connection_details} alt="接続詳細を入力" size="lg" border/>
 
-#### （オプション）SSHトンネリングの設定 {#optional-setting-up-ssh-tunneling}
+#### (オプション) SSHトンネリングの設定 {#optional-setting-up-ssh-tunneling}
 
-ソースのMySQLデータベースが公開されていない場合は、SSHトンネリングの詳細を指定できます。
+ソースのMySQLデータベースが公開アクセスできない場合は、SSHトンネリングの詳細を指定できます。
 
-1. 「SSHトンネリングを使用」のトグルを有効にします。
-2. SSH接続の詳細を入力します。
+1. 「SSHトンネリングを使用する」トグルを有効にします。
+2. SSH接続詳細を入力します。
 
    <Image img={ssh_tunnel} alt="SSHトンネリング" size="lg" border/>
 
-3. キーベースの認証を使用する場合は、「キーの取り消しとペアの生成」をクリックして新しいキーのペアを生成し、生成された公開鍵をSSHサーバーの`~/.ssh/authorized_keys`にコピーします。
-4. 「接続の確認」をクリックして接続を確認します。
+3. キーベースの認証を使用する場合は、「キーペアを取り消して生成」をクリックして新しいキーを生成し、生成された公開キーをSSHサーバーの`~/.ssh/authorized_keys`にコピーします。
+4. 「接続を確認」をクリックして接続を確認します。
 
 :::note
 
-ClickPipesがSSHトンネルを確立できるようにするために、SSHバスティオンホストのファイアウォールルールで[ClickPipesのIPアドレス](../clickpipes#list-of-static-ips)をホワイトリストに設定してください。
+ClickPipesがSSHトンネルを確立できるように、SSHバスチオンホストのファイアウォールルールで[ClickPipesのIPアドレス](../clickpipes#list-of-static-ips)をホワイトリストに登録してください。
 
 :::
 
-接続詳細を入力したら、「次へ」をクリックします。
+接続詳細が入力されたら、「次へ」をクリックします。
 
-#### 高度な設定の構成 {#advanced-settings}
+#### 詳細設定の構成 {#advanced-settings}
 
-必要に応じて高度な設定を構成できます。各設定の簡単な説明は以下の通りです。
+必要に応じて詳細設定を構成できます。各設定の簡単な説明は以下の通りです。
 
-- **同期間隔**: ClickPipesがソースデータベースを変更のためにポールする間隔です。これは、コストに敏感なユーザーには`3600`を超える高い値を保持することを推奨します。
-- **初回ロード用の並列スレッド数**: 初回スナップショットを取得するために使用される並列ワーカーの数です。多くのテーブルがある場合や、初回スナップショットを取得するために使用される並列ワーカーの数を制御したい場合に便利です。この設定はテーブルごとです。
-- **プルバッチサイズ**: 単一のバッチで取得する行数です。これは最善の努力に基づく設定であり、すべてのケースで尊重されるわけではありません。
-- **パーティションごとのスナップショット行数**: 初回スナップショット中に各パーティションで取得される行数です。テーブルに多くの行がある場合や、各パーティションで取得される行数を制御したい場合に便利です。
-- **並列で取得するスナップショットテーブル数**: 初回スナップショット中に並列で取得されるテーブルの数です。多くのテーブルがある場合や、並列で取得されるテーブル数を制御したい場合に便利です。
+- **同期間隔**: これはClickPipesがソースデータベースをポーリングして変更を確認する間隔です。コストに敏感なユーザーには、これを高い値（`3600`を超える）に設定することを推奨します。
+- **初回ロードのための並列スレッド**: これは初回スナップショットを取得するために使用される並列作業者の数です。テーブルの数が多い場合に、初回スナップショットを取得するために使用される並列作業者の数を制御するのに役立ちます。この設定はテーブルごとです。
+- **プルバッチサイズ**: 単一バッチで取得する行の数です。これは最善の努力としての設定であり、すべてのケースで適用されるとは限りません。
+- **スナップショットごとのパーティションの行数**: 初回スナップショット中に各パーティションで取得される行の数です。テーブルに多くの行がある場合に、各パーティションで取得される行の数を制御するのに役立ちます。
+- **スナップショットのテーブル数**: 初回スナップショット中に並列で取得されるテーブルの数です。テーブルの数が多い場合に、並列で取得されるテーブルの数を制御するのに役立ちます。
 
 ### テーブルの構成 {#configuring-the-tables}
 
-5. ここで、ClickPipeの宛先データベースを選択できます。既存のデータベースを選択するか、新しいデータベースを作成できます。
+5. ここで、ClickPipeの宛先データベースを選択できます。既存のデータベースを選択するか、新しいデータベースを作成することができます。
 
-   <Image img={select_destination_db} alt="宛先データベースの選択" size="lg" border/>
+   <Image img={select_destination_db} alt="宛先データベースを選択" size="lg" border/>
 
-6. ソースのMySQLデータベースからレプリケートしたいテーブルを選択します。テーブルを選択する際には、宛先のClickHouseデータベースでテーブルの名前を変更したり、特定のカラムを除外することもできます。
+6. ソースのMySQLデータベースからレプリケートしたいテーブルを選択できます。テーブルを選択する際に、宛先のClickHouseデータベースでテーブルの名称を変更したり、特定のカラムを除外することも可能です。
 
-### 権限を確認し、ClickPipeを開始する {#review-permissions-and-start-the-clickpipe}
+### 権限を確認してClickPipeを開始する {#review-permissions-and-start-the-clickpipe}
 
 7. 権限のドロップダウンから「フルアクセス」ロールを選択し、「セットアップを完了」をクリックします。
 
-   <Image img={ch_permissions} alt="権限の確認" size="lg" border/>
+   <Image img={ch_permissions} alt="権限を確認" size="lg" border/>
 
-最後に、一般的な問題や解決方法についての詳細は、["MySQL向けClickPipes FAQ"](/integrations/clickpipes/mysql/faq)ページを参照してください。
+最後に、一般的な問題とその解決方法についての詳細は、["ClickPipes for MySQLFAQ"](/integrations/clickpipes/mysql/faq)ページを参照してください。

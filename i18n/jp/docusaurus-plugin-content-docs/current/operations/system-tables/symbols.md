@@ -1,20 +1,26 @@
 ---
-description: 'C++エキスパートやClickHouseエンジニアにとって有用なシステムテーブルで、`clickhouse` バイナリのイントロスペクション情報を含みます。'
-keywords: ['system table', 'symbols']
-slug: /operations/system-tables/symbols
-title: 'system.symbols'
+'description': 'System table useful for C++ experts and ClickHouse engineers containing
+  information for introspection of the `clickhouse` binary.'
+'keywords':
+- 'system table'
+- 'symbols'
+'slug': '/operations/system-tables/symbols'
+'title': 'system.symbols'
 ---
 
-`clickhouse` バイナリのイントロスペクション情報を含みます。アクセスするにはイントロスペクション権限が必要です。このテーブルはC++エキスパートとClickHouseエンジニアにのみ役立ちます。
 
-カラム:
 
-- `symbol` ([String](../../sql-reference/data-types/string.md)) — バイナリ内のシンボル名。マングルされています。`demangle(symbol)`を適用して可読名を取得できます。
+Contains information for introspection of `clickhouse` binary. It requires the introspection privilege to access.  
+このテーブルはC++の専門家とClickHouseエンジニアにとってのみ有用です。
+
+Columns:
+
+- `symbol` ([String](../../sql-reference/data-types/string.md)) — バイナリ内のシンボル名。これはマングルされています。可読名を取得するには`demangle(symbol)`を適用できます。
 - `address_begin` ([UInt64](../../sql-reference/data-types/int-uint.md)) — バイナリ内のシンボルの開始アドレス。
 - `address_end` ([UInt64](../../sql-reference/data-types/int-uint.md)) — バイナリ内のシンボルの終了アドレス。
-- `name` ([String](../../sql-reference/data-types/string.md)) — `event`の別名。
+- `name` ([String](../../sql-reference/data-types/string.md)) — `event`のエイリアス。
 
-**例**
+**Example**
 
 ```sql
 SELECT address_begin, address_end - address_begin AS size, demangle(symbol) FROM system.symbols ORDER BY size DESC LIMIT 10

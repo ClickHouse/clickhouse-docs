@@ -1,26 +1,30 @@
 ---
-title: 'JSONのその他のアプローチ'
-slug: /integrations/data-formats/json/other-approaches
-description: 'JSONモデル化のその他のアプローチ'
-keywords: ['json', 'formats']
+'title': 'Other JSON approaches'
+'slug': '/integrations/data-formats/json/other-approaches'
+'description': 'Other approaches to modeling JSON'
+'keywords':
+- 'json'
+- 'formats'
 ---
 
 
-# JSONのその他のアプローチ
 
-**以下は、ClickHouseにおけるJSONモデル化の代替手段です。これらは完全性のために文書化されており、JSONタイプの開発以前のものであるため、一般的には推奨されず、ほとんどの使用例には適用されません。**
 
-:::note オブジェクトレベルのアプローチを適用
-異なるテクニックを同じスキーマ内の異なるオブジェクトに適用することができます。たとえば、あるオブジェクトは `String` タイプで最もよく解決できる一方、他のオブジェクトは `Map` タイプで解決できる場合があります。 `String` タイプを使用すると、これ以上のスキーマの決定は必要ありません。逆に、 `Map` キー内に `String` を含めたサブオブジェクトをネストすることも可能です。以下に示すようにJSONを表現します。
+# JSONモデリングの他のアプローチ
+
+**以下はClickHouseにおけるJSONのモデリングの代替手法です。これらは、JSON型の開発前に適用できたものであり、完全性のために文書化されています。そのため、多くのユースケースにおいては一般的には推奨されず、適用されません。**
+
+:::note オブジェクトレベルアプローチを適用する
+異なるテクニックは、同じスキーマ内の異なるオブジェクトに対して適用される場合があります。例えば、一部のオブジェクトは`String`型を使用するのが最適であり、他のものは`Map`型を使用するのが最適です。`String`型が一度使用されると、それ以上のスキーマの決定を行う必要はありません。一方で、`Map`のキー内にサブオブジェクトをネストすることも可能です - JSONを表す`String`を含む形で、以下に示す通りです。
 :::
 
 ## Stringを使用する {#using-string}
 
-オブジェクトが非常に動的で、予測可能な構造がなく、任意のネストされたオブジェクトを含む場合、ユーザーは `String` タイプを使用するべきです。値は、以下に示すようにJSON関数を使用してクエリ時に抽出できます。
+オブジェクトが非常に動的で、予測できない構造を持ち、任意のネストされたオブジェクトが含まれている場合、ユーザーは`String`型を使用するべきです。値は、以下に示すようにJSON関数を使用してクエリ時に抽出できます。
 
-上記の構造化アプローチでデータを扱うことは、動的JSON（変更の対象であるか、スキーマがよく理解されていないもの）のユーザーにはしばしば実現不可能です。絶対的な柔軟性のために、ユーザーは単にJSONを `String` として保存し、必要に応じてフィールドを抽出するための関数を使用することができます。これは、JSONを構造化されたオブジェクトとして扱うことの極端な反対を示します。この柔軟性は、主にクエリ構文の複雑さの増加とパフォーマンスの低下という大きな欠点をもたらします。
+上記のように構造化アプローチでデータを扱うことは、動的JSONを持つユーザーにとっては実行可能でないことがしばしばあります。これは、変更が加えられる可能性があるか、スキーマが十分に理解されていない場合です。絶対的な柔軟性のために、ユーザーは単にJSONを`String`として保存し、必要に応じてフィールドを抽出するための関数を使用できます。これは、JSONを構造化されたオブジェクトとして扱うことの真逆を表しています。この柔軟性には、重要な欠点が伴い、主にクエリの構文の複雑さの増加やパフォーマンスの劣化をもたらします。
 
-前述の通り、[元の人物オブジェクト](/integrations/data-formats/json/schema#static-vs-dynamic-json)のために、 `tags` カラムの構造を保証することはできません。元の行（ `company.labels` を含むが、今は無視します）を挿入し、 `Tags` カラムを `String` として宣言します。
+前述の通り、[元の人オブジェクト](/integrations/data-formats/json/schema#static-vs-dynamic-json)については、`tags`カラムの構造を保証することはできません。元の行（`company.labels`を含むが、ここでは無視します）を挿入し、`Tags`カラムを`String`として宣言します：
 
 ```sql
 CREATE TABLE people
@@ -46,7 +50,7 @@ Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-`tags` カラムを選択すると、JSONが文字列として挿入されていることを確認できます。
+`tags`カラムを選択すると、JSONが文字列として挿入されたことがわかります：
 
 ```sql
 SELECT tags
@@ -59,7 +63,7 @@ FROM people
 1 row in set. Elapsed: 0.001 sec.
 ```
 
-[`JSONExtract`](/sql-reference/functions/json-functions#jsonextract-functions) 関数を使用して、このJSONから値を取得できます。以下のシンプルな例を考えてみましょう。
+[`JSONExtract`](/sql-reference/functions/json-functions#jsonextract-functions)関数を使用して、このJSONから値を取得できます。以下の簡単な例を考えてみましょう：
 
 ```sql
 SELECT JSONExtractString(tags, 'holidays') as holidays FROM people
@@ -71,9 +75,9 @@ SELECT JSONExtractString(tags, 'holidays') as holidays FROM people
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-関数は、 `String` カラム `tags` への参照と、抽出するためのJSON内のパスの両方が必要であることに注意してください。ネストされたパスは、 `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')` のように関数をネストする必要があります。これはカラム `tags.car.year` を抽出します。ネストされたパスの抽出は、関数[`JSON_QUERY`](/sql-reference/functions/json-functions#json_query)および[`JSON_VALUE`](/sql-reference/functions/json-functions#json_value)を通じて簡略化できます。
+関数は、`String`カラム`tags`への参照と、抽出するためのJSON内のパスの両方を必要とすることに注意してください。ネストされたパスは、関数をネストさせる必要があります。例えば、`JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')`は、カラム`tags.car.year`を抽出します。ネストされたパスの抽出は、関数[`JSON_QUERY`](/sql-reference/functions/json-functions#json_query)および[`JSON_VALUE`](/sql-reference/functions/json-functions#json_value)を通じて簡素化できます。
 
-`arxiv` データセットの極端なケースを考えてみましょう。ここで、全体を `String` と見なします。
+`arxiv`データセットの極端なケースを考えてみましょう。このデータセットでは、本文全体を`String`として扱います。
 
 ```sql
 CREATE TABLE arxiv (
@@ -82,7 +86,7 @@ CREATE TABLE arxiv (
 ENGINE = MergeTree ORDER BY ()
 ```
 
-このスキーマに挿入するには、 `JSONAsString` フォーマットを使用する必要があります。
+このスキーマに挿入するには、`JSONAsString`形式を使用する必要があります：
 
 ```sql
 INSERT INTO arxiv SELECT *
@@ -91,7 +95,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.j
 0 rows in set. Elapsed: 25.186 sec. Processed 2.52 million rows, 1.38 GB (99.89 thousand rows/s., 54.79 MB/s.)
 ```
 
-年ごとの論文の数を数えたいとします。次のクエリは、文字列のみを使用する場合いたでの構造化バージョンと対照的です。
+年ごとにリリースされた論文の数をカウントしたい場合、以下のクエリを考えてみましょう。単なる文字列を使用した場合と[構造化バージョン](/integrations/data-formats/json/inference#creating-tables)のスキーマを対比させます：
 
 ```sql
 -- 構造化スキーマを使用
@@ -145,35 +149,35 @@ LIMIT 10
 Peak memory usage: 205.98 MiB.
 ```
 
-ここで、メソッドによってJSONをフィルタリングするためのXPath式（ `JSON_VALUE(body, '$.versions[0].created')` ）の使用に注意してください。
+ここでのXPath式の使用に注目してください。これはメソッドによってJSONをフィルタリングします。すなわち、`JSON_VALUE(body, '$.versions[0].created')`です。
 
-String関数は、明示的な型変換とインデックスを使用するよりも大幅に遅くなります (> 10倍)。上記のクエリでは常にフルテーブルスキャンが必要で、すべての行の処理を行います。このようなクエリは、この小さなデータセットではまだ速いですが、大きなデータセットではパフォーマンスが低下します。
+String関数は明らかに遅く（> 10倍）、インデックスを用いた明示的な型変換に比べてパフォーマンスが劣ります。上記のクエリは常に全表スキャンと各行の処理を要求します。このようなクエリは、このような小規模なデータセットでは依然として速いですが、大規模なデータセットではパフォーマンスが劣化します。
 
-このアプローチの柔軟性には明確なパフォーマンスと構文のコストが伴い、スキーマ内の高度に動的なオブジェクトに対してのみ使用されるべきです。
+このアプローチの柔軟性は、明確なパフォーマンスと構文コストを伴い、スキーマ内の非常に動的なオブジェクトにのみ使用すべきです。
 
 ### シンプルなJSON関数 {#simple-json-functions}
 
-上記の例では、JSON*関数のファミリーを使用しています。これらは、[simdjson](https://github.com/simdjson/simdjson)に基づいた完全なJSONパーサーを利用しており、厳密な解析を行い、異なるレベルでネストされた同じフィールドを区別します。これらの関数は、文法的には正しいが、フォーマットが整っていないJSONを処理することができます。たとえば、キー間の二重スペースなどです。
+上記の例では、JSON*ファミリーの関数が使用されています。これらは、[simdjson](https://github.com/simdjson/simdjson)に基づくフルJSONパーサーを利用しており、厳密に解析され、異なるレベルでネストされた同じフィールドを区別します。これらの関数は、文法的には正しいが適切にフォーマットされていないJSON（例えば、キー間に二重スペースがある場合）も処理できます。
 
-より速く、より厳密な関数のセットが利用可能です。これらの `simpleJSON*` 関数は、JSONの構造と形式について厳密な仮定を行うことにより、潜在的に優れたパフォーマンスを提供します。具体的には：
+より高速で厳密な関数セットも利用可能です。これらの`simpleJSON*`関数は、主にJSONの構造とフォーマットについて厳密な仮定を行うことにより、潜在的に優れたパフォーマンスを提供します。具体的には：
 
-- フィールド名は定数である必要があります。
-- フィールド名の一貫したエンコード 例えば `simpleJSONHas('{"abc":"def"}', 'abc') = 1` ただし `visitParamHas('{"\\u0061\\u0062\\u0063":"def"}', 'abc') = 0`
-- フィールド名は、すべてのネストされた構造内で一意でなければなりません。ネストレベル間での区別はなく、一致は無差別です。複数の一致するフィールドがある場合、最初の出現が使用されます。
-- 文字列リテラル以外の特別な文字はありません。これにはスペースも含まれます。以下は無効であり、パースされません。
+- フィールド名は定数でなければなりません
+- フィールド名の一貫したエンコーディング（例：`simpleJSONHas('{"abc":"def"}', 'abc') = 1`）が必要ですが、`visitParamHas('{"\\u0061\\u0062\\u0063":"def"}', 'abc') = 0`は無効です
+- フィールド名は、すべてのネストされた構造の間で一意である必要があります。ネストのレベル間での区別は行われず、マッチは無差別に行われます。複数のフィールドが一致する場合、最初に現れたものが使用されます。
+- 文字列リテラル以外の特殊文字はありません。これにはスペースも含まれます。以下は無効であり、解析されません。
 
     ```json
     {"@timestamp": 893964617, "clientip": "40.135.0.0", "request": {"method": "GET",
     "path": "/images/hm_bg.jpg", "version": "HTTP/1.0"}, "status": 200, "size": 24736}
     ```
 
-逆に、以下は正しくパースされます。
+次の例は正しく解析されます：
 
 ```json
 {"@timestamp":893964617,"clientip":"40.135.0.0","request":{"method":"GET",
     "path":"/images/hm_bg.jpg","version":"HTTP/1.0"},"status":200,"size":24736}
 
-特定の条件においてパフォーマンスが重要であり、あなたのJSONが上記の要件を満たすなら、これらは適切である場合があります。以前のクエリの例を `simpleJSON*` 関数を使用するように書き直したものを以下に示します。
+パフォーマンスが重要で、JSONが上記の要件を満たす場合、これらの関数が適切であることがあります。前述のクエリの例を`simpleJSON*`関数を使用するように再記述すると、以下のようになります：
 
 ```sql
 SELECT
@@ -198,30 +202,29 @@ LIMIT 10
 └────────────────┴───────┘
 
 10 rows in set. Elapsed: 0.964 sec. Processed 2.48 million rows, 4.21 GB (2.58 million rows/s., 4.36 GB/s.)
-Peak memory usage: 211.49 MiB.
 ```
 
-上記のクエリは、 `simpleJSONExtractString` を使用して `created` キーを抽出し、公開日として最初の値を取得することを活用しています。この場合、性能の向上のためには `simpleJSON*` 関数の制限は許容可能です。
+上記のクエリは、`simpleJSONExtractString`を使用して`created`キーを抽出し、公開日の日付のみを必要とするという事実を利用しています。この場合、`simpleJSON*`関数の制限は、パフォーマンスの向上を伴って許容されるものとなります。
 
 ## Mapを使用する {#using-map}
 
-オブジェクトが主に1つのタイプの任意のキーを保存するために使用される場合、 `Map` タイプの使用を検討してください。理想的には、独自のキーの数が数百を超えるべきではありません。 `Map` タイプは、サブオブジェクトを持つオブジェクトにも考慮されますが、後者はその型において一貫性を持つ必要があります。一般的に、 `Map` タイプはラベルやタグに使用することをお勧めします。たとえば、ログデータ内のKubernetesポッドラベルなどです。
+任意のキーを格納するためにオブジェクトが使用される場合、主に1つのタイプの値を持つ場合は、`Map`型を使用することを検討してください。理想的には、ユニークなキーの数は数百を超えないべきです。`Map`型は、サブオブジェクトを持つオブジェクトにも使用できますが、その場合は一貫性が必要です。一般的に、`Map`型はラベルやタグに使用することが推奨されます。例えば、ログデータのKubernetesポッドラベルなどです。
 
-`Map` はネストされた構造を表現するシンプルな方法を提供しますが、いくつかの注目すべき制限があります：
+`Map`はネストされた構造を表現する簡単な方法を提供しますが、いくつかの顕著な制限があります：
 
 - フィールドはすべて同じ型でなければなりません。
-- サブカラムにアクセスするには特別なマップ構文が必要です。フィールドはカラムとして存在しないため、全体のオブジェクトはカラムの一部です。
-- サブカラムにアクセスすると、全体の `Map` 値が読み込まれます。つまり、すべての兄弟およびそれぞれの値も含まれます。大きなマップでは、これがパフォーマンスの大きなペナルティをもたらす可能性があります。
+- サブカラムにアクセスするには特別なマップ構文が必要です。なぜなら、フィールドはカラムとして存在しないからです。オブジェクト全体が**カラム**です。
+- サブカラムにアクセスする際には、全ての兄弟とそれぞれの値を含む`Map`値をロードします。大きなマップの場合、これには重大なパフォーマンスペナルティが伴う可能性があります。
 
 :::note 文字列キー
-オブジェクトを `Map` としてモデル化する際には、JSONキー名を格納するために `String` キーが使用されます。したがって、マップは常に `Map(String, T)` となり、 `T` はデータによって異なります。
+オブジェクトを`Map`としてモデリングする際には、`String`キーを使用してJSONキー名を格納します。したがって、マップは常に`Map(String, T)`となり、ここで`T`はデータに依存します。
 :::
 
 #### プリミティブ値 {#primitive-values}
 
-`Map` の最もシンプルな適用は、オブジェクトが値として同じプリミティブ型を含む場合です。ほとんどの場合、これは `String` タイプを値 `T` として使用することを意味します。
+`Map`の最もシンプルな適用は、オブジェクトが同じプリミティブ型の値を含む場合です。ほとんどの場合、これは`String`型の値`T`を使用することを含みます。
 
-前述の[人物JSON](/integrations/data-formats/json/schema#static-vs-dynamic-json)の例を考えると、 `company.labels` オブジェクトが動的であると判断されました。重要なのは、このオブジェクトにタイプStringのキーと値のペアのみが追加されることを期待しています。したがって、これを `Map(String, String)` として宣言できます。
+先ほどの[人物JSON](/integrations/data-formats/json/schema#static-vs-dynamic-json)を考えてみましょう。ここでは、`company.labels`オブジェクトが動的であることが決定されていました。重要なことに、このオブジェクトには文字列型のキーと値のペアのみが追加されることが期待されています。したがって、これを`Map(String, String)`として宣言できます：
 
 ```sql
 CREATE TABLE people
@@ -241,7 +244,7 @@ ENGINE = MergeTree
 ORDER BY username
 ```
 
-元の完全なJSONオブジェクトを挿入することができます：
+元の完全なJSONオブジェクトを挿入します：
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow
@@ -252,7 +255,7 @@ Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-リクエストオブジェクト内のこれらのフィールドをクエリするには、マップ構文を必要とします。
+リクエストオブジェクト内のこれらのフィールドをクエリするには、マップ構文が必要です。例えば：
 
 ```sql
 SELECT company.labels FROM people
@@ -272,13 +275,13 @@ SELECT company.labels['type'] AS type FROM people
 1 row in set. Elapsed: 0.001 sec.
 ```
 
-利用可能な `Map` 関数の完全なセットが、[こちら](/sql-reference/functions/tuple-map-functions.md)に記載されています。データの型が一貫していない場合、[必要な型の変換を行う](/sql-reference/functions/type-conversion-functions)ための関数もあります。
+マップ関数の完全なセットが、クエリするために利用可能であり、[こちら](/sql-reference/functions/tuple-map-functions.md)に説明されています。データが一貫した型でない場合、[必要な型変換](/sql-reference/functions/type-conversion-functions)を実行するための関数が存在します。
 
 #### オブジェクト値 {#object-values}
 
-`Map` タイプは、サブオブジェクトの一貫性を持つ場合にも考慮されます。
+`Map`型は、サブオブジェクトがあるオブジェクトにも考慮できる場合がありますが、その場合は一貫性が必要です。
 
-たとえば、 `persons` オブジェクトの `tags` キーが一貫した構造を必要とし、各 `tag` のサブオブジェクトに `name` と `time` のカラムを持つ必要があるとします。このようなJSONドキュメントの簡略化された例は、以下のようになります。
+例えば、`persons`オブジェクトの`tags`キーが一貫した構造を要求する場合、各`tag`のサブオブジェクトは`name`と`time`カラムを持つ必要があります。このようなJSONドキュメントの簡易例は以下のようになります：
 
 ```json
 {
@@ -299,7 +302,7 @@ SELECT company.labels['type'] AS type FROM people
 }
 ```
 
-これは、 `Map(String, Tuple(name String, time DateTime))` としてモデリングできます。以下のようになります。
+これは、`Map(String, Tuple(name String, time DateTime))`を使用してモデル化できます。以下を参照してください：
 
 ```sql
 CREATE TABLE people
@@ -329,7 +332,7 @@ FORMAT JSONEachRow
 1 row in set. Elapsed: 0.001 sec.
 ```
 
-この場合のマップの適用は通常まれであり、データをリモデリングして動的キー名がサブオブジェクトを持たないようにすることを示唆しています。たとえば、上記は、 `Array(Tuple(key String, name String, time DateTime))` を使用できるように次のようにリモデリングできます。
+この場合のマップの適用は通常稀であり、動的キー名を持つデータをサブオブジェクトなしで再設計する必要があることを示唆しています。たとえば、上記は次のように再設計され、`Array(Tuple(key String, name String, time DateTime))`の使用を許可します。
 
 ```json
 {
@@ -352,11 +355,11 @@ FORMAT JSONEachRow
 }
 ```
 
-## ネストされた構造を使用する {#using-nested}
+## Nestedを使用する {#using-nested}
 
-[Nestedタイプ](/sql-reference/data-types/nested-data-structures/nested)は、滅多に変更されない静的オブジェクトのモデル化に使用できます。これは、 `Tuple` および `Array(Tuple)` の代替手段を提供します。一般的には、このタイプをJSONに使用することは避けることをお勧めします。理由は、その動作がしばしば混乱を招くためです。`Nested` の主な利点は、サブカラムをオーダリングキーで使用できることです。
+[Nested型](/sql-reference/data-types/nested-data-structures/nested)は、静的オブジェクトをモデル化するために使用できます。これらは変更されることが滅多にないため、`Tuple`や`Array(Tuple)`の代替手段を提供します。一般的に、このタイプをJSONに使用することは避けるべきです。なぜなら、その挙動はしばしば混乱を招くからです。`Nested`の主な利点は、サブカラムをオーダリングキーで使用できることです。
 
-以下に、静的オブジェクトをモデル化するために `Nested` タイプを使用した例を示します。以下は、JSON形式のシンプルなログエントリです。
+以下に、静的オブジェクトをモデル化するためにNested型を使用する例を示します。以下は、JSONのシンプルなログエントリです：
 
 ```json
 {
@@ -372,7 +375,7 @@ FORMAT JSONEachRow
 }
 ```
 
-`request` キーを `Nested` として宣言できます。 `Tuple` と同様に、サブカラムを指定する必要があります。
+`request`キーを`Nested`として宣言できます。`Tuple`と同様に、サブカラムを指定する必要があります。
 
 ```sql
 -- デフォルト
@@ -389,11 +392,11 @@ CREATE table http
 
 ### flatten_nested {#flatten_nested}
 
-設定 `flatten_nested` はネストされた動作を制御します。
+設定`flatten_nested`は、ネストされた動作を制御します。
 
 #### flatten_nested=1 {#flatten_nested1}
 
-値が `1` （デフォルト）は、任意のレベルのネスティングをサポートしていません。この値を使用すると、ネストされたデータ構造は、同じ長さの複数の[Array](/sql-reference/data-types/array)カラムとして考えることが最も簡単です。`method`、`path`、`version`フィールドは、実際には別々の `Array(Type)` カラムであり、1つの重要な制約があります。**`method`、`path`、および `version` フィールドの長さは同じでなければなりません。** `SHOW CREATE TABLE` を使用すると、次のように示されます。
+値が`1`（デフォルト）は、任意のレベルのネスティングをサポートしません。この値では、ネストされたデータ構造を長さが同じ複数の[Array](/sql-reference/data-types/array)カラムとして考えることが最も簡単です。フィールド`method`、`path`、および`version`はすべて実質的に別々の`Array(Type)`カラムであり、1つの重要な制約があります：**`method`、`path`、および`version`フィールドの長さは同じでなければなりません。** `SHOW CREATE TABLE`を使用すると、以下のように示されます：
 
 ```sql
 SHOW CREATE TABLE http
@@ -412,7 +415,7 @@ ENGINE = MergeTree
 ORDER BY (status, timestamp)
 ```
 
-以下では、このテーブルに挿入します。
+以下に、このテーブルに挿入します：
 
 ```sql
 SET input_format_import_nested_json = 1;
@@ -421,16 +424,17 @@ FORMAT JSONEachRow
 {"timestamp":897819077,"clientip":"45.212.12.0","request":[{"method":"GET","path":"/french/images/hm_nav_bar.gif","version":"HTTP/1.0"}],"status":200,"size":3305}
 ```
 
-ここで、重要ないくつかの点に注意してください：
+ここで注目すべき重要なポイントがいくつかあります：
 
-* ジェスチャー操作として、ネスト構造のJSONを挿入するには、設定 `input_format_import_nested_json` を使用する必要があります。これがない場合、JSONをフラット化する必要があります。すなわち：
-  
+* JSONをネストされた構造として挿入するために、設定`input_format_import_nested_json`を使用する必要があります。これがないと、JSONをフラットにする必要があります。すなわち、
+
     ```sql
     INSERT INTO http FORMAT JSONEachRow
     {"timestamp":897819077,"clientip":"45.212.12.0","request":{"method":["GET"],"path":["/french/images/hm_nav_bar.gif"],"version":["HTTP/1.0"]},"status":200,"size":3305}
     ```
-* ネストされたフィールド `method`、`path`、および `version` は、JSON配列として渡す必要があります。すなわち：
-  
+
+* ネストされたフィールド`method`、`path`、`version`は、JSON配列として渡す必要があります。すなわち、
+
   ```json
   {
     "@timestamp": 897819077,
@@ -451,7 +455,7 @@ FORMAT JSONEachRow
   }
   ```
 
-カラムにドット表記を使ってクエリできます。
+カラムはドット表記を使用してクエリできます：
 
 ```sql
 SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
@@ -462,15 +466,15 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-サブカラムの `Array` を使用すると、全ての[Array関数](/sql-reference/functions/array-functions)を利用できます。たとえば、[`ARRAY JOIN`](/sql-reference/statements/select/array-join)句は、カラムに複数の値がある場合に便利です。
+サブカラム'の`Array`を使用することにより、[Array関数](/sql-reference/functions/array-functions)が活用できることに注意してください。特に、[ARRAY JOIN](/sql-reference/statements/select/array-join)句が役立つ場合があります - もしあなたのカラムに複数の値がある場合です。
 
 #### flatten_nested=0 {#flatten_nested0}
 
-これは任意のレベルのネスティングを許可し、ネストされたカラムは単一の `Tuple` の配列として保持されることを意味します。実際、これらは同じく `Array(Tuple)` として機能します。
+これは任意のレベルのネスティングを許可し、ネストされたカラムを単一の`Tuple`の配列として保持します - 事実的に、これらは`Array(Tuple)`と同じになります。
 
-**これは、JSONと`Nested`を使用する際の優先される方法であり、しばしば最も簡単な方法です。以下のように、すべてのオブジェクトがリストである必要があるだけです。**
+**これは好ましい方法であり、しばしばJSONを`Nested`に使用する最もシンプルな方法です。以下に示すように、すべてのオブジェクトをリストにするだけで済みます。**
 
-以下に、テーブルを再作成し、行を再挿入します。
+以下に、テーブルを再作成し、行を再挿入します：
 
 ```sql
 CREATE TABLE http
@@ -486,7 +490,7 @@ ORDER BY (status, timestamp)
 
 SHOW CREATE TABLE http
 
--- ネストされたタイプは保持されます。
+-- note Nested type is preserved.
 CREATE TABLE default.http
 (
     `timestamp` Int32,
@@ -503,11 +507,11 @@ FORMAT JSONEachRow
 {"timestamp":897819077,"clientip":"45.212.12.0","request":[{"method":"GET","path":"/french/images/hm_nav_bar.gif","version":"HTTP/1.0"}],"status":200,"size":3305}
 ```
 
-重要な点に再度注意してください：
+ここで注意すべき重要なポイントがいくつかあります：
 
-* `input_format_import_nested_json` は挿入には必要ありません。
-* `Nested` タイプは `SHOW CREATE TABLE` に保存されます。内部的にはこのカラムは実際には `Array(Tuple(Nested(method LowCardinality(String), path String, version LowCardinality(String))))` です。
-* 結果として、`request` を配列形式で挿入する必要があります。すなわち：
+* 挿入には`input_format_import_nested_json`は必要ありません。
+* `Nested`型は`SHOW CREATE TABLE`で保持されます。この列は実質的に`Array(Tuple(Nested(method LowCardinality(String), path String, version LowCardinality(String))))`です。
+* 結果として、`request`を配列として挿入する必要があります。すなわち、 
 
   ```json
   {
@@ -525,7 +529,7 @@ FORMAT JSONEachRow
   }
   ```
 
-カラムには、再びドット表記でクエリできます。
+カラムは再びドット表記を用いてクエリできます：
 
 ```sql
 SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
@@ -538,7 +542,7 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 
 ### 例 {#example}
 
-上記のデータの大規模な例は、s3のパブリックバケットにあります: `s3://datasets-documentation/http/` 。
+上記のデータのより大きな例が、S3のパブリックバケットにあります： `s3://datasets-documentation/http/`。
 
 ```sql
 SELECT *
@@ -561,9 +565,9 @@ FORMAT PrettyJSONEachRow
 1 row in set. Elapsed: 0.312 sec.
 ```
 
-JSONの制約と入力フォーマットに基づき、このサンプルデータセットを次のクエリを使用して挿入します。ここでは、 `flatten_nested=0` を設定します。
+制約とJSONの入力形式に基づいて、このサンプルデータセットを挿入するには、以下のクエリを実行します。ここでは、`flatten_nested=0`を設定します。
 
-次のステートメントは、1000万行を挿入しますので、実行には数分かかることがあります。必要に応じて `LIMIT` を適用してください。
+次の文は1000万行を挿入するため、実行には数分かかる場合があります。必要に応じて`LIMIT`を適用してください：
 
 ```sql
 INSERT INTO http
@@ -572,7 +576,7 @@ size FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/doc
 'JSONEachRow');
 ```
 
-このデータをクエリするには、リクエストフィールドに配列としてアクセスする必要があります。以下では、固定された期間内のエラーとHTTPメソッドを要約しています。
+このデータをクエリするには、要求フィールドにアクセスするために配列としてアクセスする必要があります。以下に、固定された時間範囲内でのエラーおよびHTTPメソッドを要約します。
 
 ```sql
 SELECT status, request.method[1] as method, count() as c
@@ -595,9 +599,9 @@ ORDER BY c DESC LIMIT 5;
 
 ### ペアワイズ配列を使用する {#using-pairwise-arrays}
 
-ペアワイズ配列は、文字列としてJSONを表現する柔軟性と、より構造化されたアプローチのパフォーマンスとのバランスを提供します。このスキーマは、ルートに新しいフィールドを追加する柔軟性を持っています。しかしながら、より複雑なクエリ構文が必要であり、ネストされた構造とは互換性がありません。
+ペアワイズ配列は、JSONを文字列として表現する柔軟性と、より構造化されたアプローチのパフォーマンスのバランスを提供します。このスキーマは柔軟性があり、新しいフィールドをルートに追加することができます。ただし、これはかなり複雑なクエリ構文を必要とし、ネストされた構造とは互換性がありません。
 
-以下のテーブルを考えてみましょう。
+たとえば、次のようなテーブルを考えてみましょう：
 
 ```sql
 CREATE TABLE http_with_arrays (
@@ -607,7 +611,7 @@ CREATE TABLE http_with_arrays (
 ENGINE = MergeTree  ORDER BY tuple();
 ```
 
-このテーブルに挿入するには、JSONをキーと値のリストとして構造化する必要があります。次のクエリは、 `JSONExtractKeysAndValues` を使用してこれを実現する方法を示しています。
+このテーブルに挿入するには、JSONをキーと値のリストとして構造化する必要があります。以下のクエリは、`JSONExtractKeysAndValues`を使用してこれを達成する例を示しています：
 
 ```sql
 SELECT
@@ -625,7 +629,7 @@ values: ['893964617','40.135.0.0','{"method":"GET","path":"/images/hm_bg.jpg","v
 1 row in set. Elapsed: 0.416 sec.
 ```
 
-リクエストカラムは文字列として表現されたネストされた構造のままであることに注意してください。ルートに新しいキーを追加することができます。また、JSON自体においても任意の違いがある場合があります。このローカルテーブルに挿入するには、次のクエリを実行します。
+要求カラムは、文字列として表されたネストされた構造のままであることに注意してください。ルートに新しいキーを追加することができ、JSON自体にも任意の違いを持つことができます。ローカルテーブルに挿入するには、次のクエリを実行します：
 
 ```sql
 INSERT INTO http_with_arrays
@@ -637,7 +641,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/document
 0 rows in set. Elapsed: 12.121 sec. Processed 10.00 million rows, 107.30 MB (825.01 thousand rows/s., 8.85 MB/s.)
 ```
 
-この構造をクエリするには、`indexOf` (/sql-reference/functions/array-functions#indexofarr-x) 関数を使用して必要なキーのインデックスを特定し、それを使用して値配列カラムにアクセスする必要があります。すなわち、`values[indexOf(keys, 'status')]`です。この場合、リクエストカラムに対してはJSON解析メソッドがまだ必要です。この場合は、`simpleJSONExtractString` です。
+この構造をクエリするには、`indexOf`関数を使用して必要なキーのインデックスを特定する必要があります（これは値の順序と一致する必要があります）。これを使用して値配列カラムにアクセスできます。すなわち、`values[indexOf(keys, 'status')]`。要求カラムに対しては、JSON解析メソッドが引き続き必要です。この場合、`simpleJSONExtractString`ですが、
 
 ```sql
 SELECT toUInt16(values[indexOf(keys, 'status')])                           as status,
@@ -657,4 +661,4 @@ GROUP by method, status ORDER BY c DESC LIMIT 5;
 └────────┴────────┴───────┘
 
 5 rows in set. Elapsed: 0.383 sec. Processed 8.22 million rows, 1.97 GB (21.45 million rows/s., 5.15 GB/s.)
-Peak memory usage: 51.35 MiB.
+```

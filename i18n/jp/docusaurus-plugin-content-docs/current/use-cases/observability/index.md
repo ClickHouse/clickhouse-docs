@@ -1,20 +1,22 @@
 ---
-slug: /use-cases/observability
-title: '可観測性'
-pagination_prev: null
-pagination_next: null
-description: '可観測性ユースケースガイドのランディングページ'
+'slug': '/use-cases/observability'
+'title': '観測可能性'
+'pagination_prev': null
+'pagination_next': null
+'description': '観測可能性ユースケースガイドのランディングページ'
 ---
 
-ようこそ、私たちの可観測性ユースケースガイドへ。このガイドでは、可観測性のためにClickHouseをセットアップし使用する方法を学びます。
 
-以下のページにナビゲートして、このガイドのさまざまなセクションを探索してください。
 
-| ページ                                                       | 説明                                                                                                                                                                                                                     |
+Welcome to our Observability use case guide. In this guide you'll learn how you can get setup and use ClickHouse for Observability.
+
+Navigate to the pages below to explore the different sections of this guide.
+
+| Page                                                        | Description                                                                                                                                                                                                              |
 |-------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [はじめに](./introduction.md)                                | このガイドは、ClickHouseを使用してログとトレースに焦点を当てた独自のSQLベースの可観測性ソリューションを構築しようとしているユーザー向けに設計されています。                                                                                  |
-| [スキーマ設計](./schema-design.md)                          | ログとトレースのために独自のスキーマを作成することを推奨される理由と、そのためのベストプラクティスを学びます。                                                                                                              |
-| [データの管理](./managing-data.md)                          | 可観測性のためのClickHouseのデプロイメントには必然的に大規模なデータセットが関与し、これを管理する必要があります。ClickHouseはデータ管理を支援するための多数の機能を提供しています。                                                                 |
-| [OpenTelemetryの統合](./integrating-opentelemetry.md)      | すべての可観測性ソリューションには、ログとトレースを収集しエクスポートする手段が必要です。この目的のために、ClickHouseはOpenTelemetry (OTel) プロジェクトを推奨します。ClickHouseとの統合方法について詳しく学びましょう。 |
-| [Grafanaの使用](./grafana.md)                                | ClickHouseにおける可観測性データのための優先可視化ツールであるGrafanaの使い方を学びます。                                                                                                                    |
-| [デモアプリケーション](./demo-application.md)              | OpenTelemetryプロジェクトにはデモアプリケーションが含まれています。このアプリケーションのClickHouseをデータソースとした維持されたフォークが、このページにリンクされています。                                                   |
+| [Introduction](./introduction.md)                           | このガイドは、ClickHouseを使用して独自のSQLベースのObservabilityソリューションを構築したいユーザーのために設計されており、ログとトレースに焦点を当てています。                                                                            |
+| [Schema design](./schema-design.md)                         | ユーザーがログとトレースのために独自のスキーマを作成することを推奨する理由と、それを行うためのベストプラクティスを学びます。                                                                                             |
+| [Managing data](./managing-data.md)                         | ObservabilityのためのClickHouseのデプロイメントは、管理が必要な大規模データセットを含むことが不可避です。ClickHouseはデータ管理を支援するための多くの機能を提供しています。                                          |
+| [Integrating OpenTelemetry](./integrating-opentelemetry.md) | すべてのObservabilityソリューションには、ログとトレースを収集してエクスポートする手段が必要です。この目的のために、ClickHouseはOpenTelemetry (OTel) プロジェクトを推奨しています。ClickHouseとの統合方法について詳しく学びましょう。      |
+| [Using Grafana](./grafana.md)                               | ClickHouseでのObservabilityデータのための推奨ビジュアライゼーションツールであるGrafanaの使用方法を学びます。      |
+| [Demo Application](./demo-application.md)                   | OpenTelemetryプロジェクトにはデモアプリケーションが含まれています。ログとトレースのデータソースとしてClickHouseを使用するこのアプリケーションの維持されたフォークが、このページにリンクされています。|

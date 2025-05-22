@@ -1,13 +1,13 @@
 ---
-slug: /managing-data/truncate
-sidebar_label: 'テーブルを切り詰める'
-title: 'テーブルを切り詰める'
-hide_title: false
-description: '切り詰める操作により、テーブルまたはデータベース内のデータを削除し、その存在を保持することができます。'
+'slug': '/managing-data/truncate'
+'sidebar_label': 'テーブルのトランケート'
+'title': 'テーブルのトランケート'
+'hide_title': false
+'description': 'トランケートは、テーブルまたはデータベース内のデータを削除することを可能にしますが、その存在は保持します。'
 ---
 
-切り詰める操作により、テーブルまたはデータベース内のデータを削除し、その存在を保持することができます。これは、元に戻せない軽量な操作です。
+import Truncate from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/statements/truncate.md';
 
-import Truncate from '@site/docs/sql-reference/statements/truncate.md';
+Truncate は、テーブルやデータベースのデータを削除しながら、その存在を保持します。これは軽量な操作であり、元に戻すことはできません。
 
 <Truncate/>

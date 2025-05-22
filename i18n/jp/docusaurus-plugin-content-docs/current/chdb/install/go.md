@@ -1,17 +1,24 @@
 ---
-title: 'Go用のchDBのインストール'
-sidebar_label: 'Go'
-slug: /chdb/install/go
-description: 'Go用のchDBをインストールする方法'
-keywords: ['chdb', '埋め込み', 'clickhouse-lite', 'go', 'インストール']
+'title': 'Installing chDB for Go'
+'sidebar_label': 'Go'
+'slug': '/chdb/install/go'
+'description': 'How to install chDB for Go'
+'keywords':
+- 'chdb'
+- 'embedded'
+- 'clickhouse-lite'
+- 'go'
+- 'install'
 ---
 
 
-# Go用のchDBのインストール
+
+
+# Go のための chDB のインストール
 
 ## 要件 {#requirements}
 
-[libchdb](https://github.com/chdb-io/chdb)をインストールします:
+[libchdb](https://github.com/chdb-io/chdb) をインストールします:
 
 ```bash
 curl -sL https://lib.chdb.io | bash
@@ -19,13 +26,13 @@ curl -sL https://lib.chdb.io | bash
 
 ## インストール {#install}
 
-参照: [chdb-go](https://github.com/chdb-io/chdb-go)
+詳しくは: [chdb-go](https://github.com/chdb-io/chdb-go)
 
-## GitHubリポジトリ {#github-repository}
+## GitHub リポジトリ {#github-repository}
 
-プロジェクトのGitHubリポジトリは[chdb-io/chdb-go](https://github.com/chdb-io/chdb-go)で見つけることができます。
+プロジェクトの GitHub リポジトリは [chdb-io/chdb-go](https://github.com/chdb-io/chdb-go) で見つけることができます。
 
 ## 使用法 {#usage}
 
-- APIドキュメント: [高レベルAPI](https://github.com/chdb-io/chdb-go/blob/main/chdb.md)
-- 低レベルAPIドキュメント: [低レベルAPI](https://github.com/chdb-io/chdb-go/blob/main/lowApi.md)
+- API ドキュメント: [高レベル API](https://github.com/chdb-io/chdb-go/blob/main/chdb.md)
+- 低レベル API ドキュメント: [低レベル API](https://github.com/chdb-io/chdb-go/blob/main/lowApi.md)

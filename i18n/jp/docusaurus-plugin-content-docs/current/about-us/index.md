@@ -1,19 +1,21 @@
 ---
-slug: /about
-title: 'ClickHouseについて'
-description: 'ClickHouseについてのランディングページ'
+'slug': '/about'
+'title': 'ClickHouseについて'
+'description': 'ClickHouseに関するランディングページ'
 ---
 
 
-# ClickHouseについて
 
-このドキュメントのセクションでは、ClickHouseに関する情報を見つけることができます。以下の目次を参照して、このセクションにあるページの一覧を確認してください。
+
+# About ClickHouse
+
+このセクションのドキュメントでは、ClickHouseに関する情報を見つけることができます。以下の目次を参照して、このセクションのページのリストをご覧ください。
 
 | ページ                                           | 説明                                                                                                                                                                                                       |
 |------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [ClickHouseとは](/about-clickhouse)        | ClickHouseのコア機能、アーキテクチャ、および使用方法を紹介し、新しいユーザーに向けた簡潔な概要を提供します。                                                                                                        |
-| [採用企業](/about-us/adopters)                          | ClickHouseを使用している企業とその成功事例のリストを、公共の情報源から集めたものです。                                                                                                                     |
-| [サポート](/about-us/support)                   | ClickHouse Cloud Support Servicesの紹介とそのミッションについて説明します。                                                                                                                                           |
-| [ベータ機能と実験的機能](/beta-and-experimental-features) | ClickHouseが「ベータ」および「実験的」ラベルを使用して、公式にサポートされている機能と、開発速度が異なるためにアーリーステージでサポートされていない機能を区別する方法について学びます。 |
-| [クラウドサービス](/about-us/cloud)               | ユーザーがオープンソースのClickHouseデータベースを立ち上げることを可能にし、迅速な価値提供、シームレスなスケーリング、およびサーバーレス操作といった利点を提供する完全管理型サービスであるClickHouse Cloudを発見してください。       |
-| [ClickHouseの歴史](/about-us/history)        | ClickHouseの歴史についてさらに詳しく学びます。                                                                                                                                                                       |
+| [What is ClickHouse](/about-clickhouse)        | ClickHouseのコア機能、アーキテクチャ、使用例を紹介し、新しいユーザーのための簡潔な概要を提供します。                                                                                                        |
+| [Adopters](/about-us/adopters)                          | ClickHouseを使用している企業とその成功事例を、公開ソースから集めたリストです。                                                                                                                     |
+| [Support](/about-us/support)                   | ClickHouse Cloud Support Servicesの紹介とその使命について。                                                                                                                                           |
+| [Beta Features and Experimental](/beta-and-experimental-features) | ClickHouseが「ベータ」と「実験的」ラベルを使用して、公式にサポートされた機能と、開発スピードの違いからコミュニティの貢献による初期段階のサポートされていない機能を区別する方法について学びます。 |
+| [Cloud Service](/about-us/cloud)               | 完全に管理されたサービスであるClickHouse Cloudを発見しましょう。これにより、ユーザーはオープンソースのClickHouseデータベースを立ち上げることができ、迅速な価値提供、シームレスなスケーリング、およびサーバーレス操作のような利点が得られます。       |
+| [ClickHouse History](/about-us/history)        | ClickHouseの歴史についてさらに学びます。                                                                                                                                                                       |

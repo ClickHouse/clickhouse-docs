@@ -1,15 +1,18 @@
 ---
-description: 'SQLiteデータベースに接続し、`INSERT`および`SELECT`クエリを実行してClickHouseとSQLite間でデータを交換します。'
-sidebar_label: 'SQLite'
-sidebar_position: 55
-slug: /engines/database-engines/sqlite
-title: 'SQLite'
+'description': 'Allows to connect to SQLite databases and perform `INSERT` and `SELECT`
+  queries to exchange data between ClickHouse and SQLite.'
+'sidebar_label': 'SQLite'
+'sidebar_position': 55
+'slug': '/engines/database-engines/sqlite'
+'title': 'SQLite'
 ---
+
+
 
 
 # SQLite
 
-[SQLite](https://www.sqlite.org/index.html)データベースに接続し、`INSERT`および`SELECT`クエリを実行してClickHouseとSQLite間でデータを交換します。
+SQLite データベースに接続し、データを ClickHouse と SQLite の間で交換するために `INSERT` および `SELECT` クエリを実行できます。
 
 ## データベースの作成 {#creating-a-database}
 
@@ -20,9 +23,9 @@ title: 'SQLite'
 
 **エンジンパラメータ**
 
-- `db_path` — SQLiteデータベースファイルのパス。
+- `db_path` — SQLite データベースのファイルへのパス。
 
-## データ型のサポート {#data_types-support}
+## データ型サポート {#data_types-support}
 
 |  SQLite   | ClickHouse                                              |
 |---------------|---------------------------------------------------------|
@@ -33,12 +36,12 @@ title: 'SQLite'
 
 ## 特徴と推奨事項 {#specifics-and-recommendations}
 
-SQLiteは、データベース全体（定義、テーブル、インデックス、およびデータ自体）をホストマシン上の単一のクロスプラットフォームファイルとして保存します。書き込み中、SQLiteは全データベースファイルをロックするため、書き込み操作は順次実行されます。読み取り操作はマルチタスクで実行可能です。
-SQLiteはサービス管理（起動スクリプトなど）や`GRANT`およびパスワードに基づくアクセス制御を必要としません。アクセス制御は、データベースファイル自体に付与されたファイルシステムの権限によって処理されます。
+SQLite は、データベース全体（定義、テーブル、インデックス、およびデータ自体）をホストマシン上の単一のクロスプラットフォームファイルとして保存します。書き込み中、SQLite はデータベース全体のファイルをロックします。したがって、書き込み操作は順次実行されます。一方、読み取り操作はマルチタスクで実行できます。  
+SQLite はサービス管理（起動スクリプトなど）や `GRANT` およびパスワードに基づくアクセス制御を必要としません。アクセス制御は、データベースファイル自体に与えられたファイルシステムの権限によって処理されます。
 
 ## 使用例 {#usage-example}
 
-ClickHouse内のSQLiteに接続されたデータベース:
+ClickHouse に接続された SQLite のデータベース：
 
 ```sql
 CREATE DATABASE sqlite_db ENGINE = SQLite('sqlite.db');
@@ -52,7 +55,7 @@ SHOW TABLES FROM sqlite_db;
 └─────────┘
 ```
 
-テーブルの表示:
+テーブルを表示：
 
 ```sql
 SELECT * FROM sqlite_db.table1;
@@ -65,7 +68,8 @@ SELECT * FROM sqlite_db.table1;
 │ line3 │    3 │
 └───────┴──────┘
 ```
-ClickHouseテーブルからSQLiteテーブルへのデータの挿入:
+
+ClickHouse テーブルから SQLite テーブルにデータを挿入：
 
 ```sql
 CREATE TABLE clickhouse_table(`col1` String,`col2` Int16) ENGINE = MergeTree() ORDER BY col2;

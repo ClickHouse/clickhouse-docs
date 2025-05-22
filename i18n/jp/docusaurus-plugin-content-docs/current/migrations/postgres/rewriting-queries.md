@@ -1,31 +1,37 @@
 ---
-slug: /migrations/postgresql/rewriting-queries
-title: 'PostgreSQL クエリの書き換え'
-keywords: ['postgres', 'postgresql', 'クエリの書き換え', 'クエリを書き換え']
-description: 'PostgreSQL から ClickHouse への移行に関するガイドのパート 2'
+'slug': '/migrations/postgresql/rewriting-queries'
+'title': 'PostgreSQLクエリの書き直し'
+'keywords':
+- 'postgres'
+- 'postgresql'
+- 'rewriting queries'
+- 'rewrite query'
+'description': 'PostgreSQLからClickHouseへの移行ガイドの第2部'
 ---
 
-> これは **Part 2** の PostgreSQL から ClickHouse への移行に関するガイドです。実用的な例を用いて、リアルタイムレプリケーション（CDC）アプローチでの移行を効率的に実施する方法を示します。カバーされる多くの概念は、PostgreSQL から ClickHouse への手動のバルクデータ転送にも適用可能です。
 
-PostgreSQL セットアップからのほとんどの SQL クエリは、変更なしで ClickHouse で実行でき、より高速に実行される可能性が高いです。
 
-## CDCを使用したデデュピケーション {#deduplication-cdc}
+> これは **パート2** であり、PostgreSQL から ClickHouse への移行に関するガイドの一部です。実用的な例を用いて、リアルタイムレプリケーション (CDC) アプローチを使用して効率的に移行を行う方法を示しています。ここで取り上げる多くの概念は、PostgreSQL から ClickHouse への手動バルクデータ転送にも適用可能です。
 
-CDCを使用したリアルタイムレプリケーションを行う際は、更新や削除が重複行を引き起こす可能性があることに注意してください。これを管理するために、ビューや更新可能なマテリアライズドビューを利用する技術を使用できます。
+PostgreSQL セットアップからのほとんどの SQL クエリは、変更なしで ClickHouse で実行でき、実行速度もかなり速くなるでしょう。
 
-この [ガイド](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres) を参照して、リアルタイムレプリケーションを使用して PostgreSQL から ClickHouse へアプリケーションを移行する際の摩擦を最小限に抑える方法を学んでください。
+## CDC を使用したデデュープlication {#deduplication-cdc}
 
-## ClickHouseでのクエリ最適化 {#optimize-queries-in-clickhouse}
+リアルタイムレプリケーションを CDC を使用して行う場合、更新および削除により重複行が発生する可能性があることに注意してください。これを管理するために、Views および Refreshable Materialized Views に関する技術を使用することができます。
 
-最小限のクエリの書き換えで移行することは可能ですが、ClickHouse の機能を活用してクエリを大幅に簡素化し、クエリのパフォーマンスをさらに向上させることをお勧めします。
+最小限の摩擦で PostgreSQL から ClickHouse へのアプリケーション移行を行う方法については、この [ガイド](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres) を参照してください。
 
-ここにある例では、一般的なクエリパターンをカバーし、ClickHouse を使ってそれらを最適化する方法を示しています。これらは、PostgreSQL と ClickHouse (8 コア、32GiB RAM) の同等のリソースでのフル [Stack Overflow データセット](/getting-started/example-datasets/stackoverflow)（2024年4月まで）を使用しています。
+## ClickHouse でのクエリ最適化 {#optimize-queries-in-clickhouse}
 
-> 簡便のため、以下のクエリではデータの重複排除の技術を省略しています。
+最小限のクエリ書き換えで移行することは可能ですが、ClickHouse の機能を活用してクエリを大幅にシンプルにし、クエリパフォーマンスをさらに向上させることをお勧めします。
 
-> ここでのカウントは、Postgres のデータが外部キーの参照整合性を満たす行のみを含むため、わずかに異なる場合があります。ClickHouse にはそのような制約がないため、フルデータセット（匿名ユーザーを含む）を持っています。
+ここでの例は一般的なクエリパターンをカバーし、それらを ClickHouse で最適化する方法を示しています。これらは、PostgreSQL および ClickHouse（8コア、32 GiB RAM）の同等リソースにおけるフル [Stack Overflow データセット](/getting-started/example-datasets/stackoverflow) (2024年4月まで) を使用しています。
 
-ユーザー（質問が10件を超える）が受けた最大のビュー数:
+> 簡素化のため、以下のクエリではデータの重複を排除するテクニックの使用を省略しています。
+
+> ここでのカウントは、Postgres データが外部キーの参照整合性を満たす行のみを含むため、やや異なります。ClickHouse はそのような制約を課さないため、完全なデータセット（例：匿名ユーザーを含む）を持っています。
+
+最も多くのビューを受け取るユーザー（質問数が10以上のユーザー）：
 
 ```sql
 -- ClickHouse
@@ -70,7 +76,7 @@ LIMIT 5;
 Time: 107620.508 ms (01:47.621)
 ```
 
-どの `tags` が最も多くの `views` を受け取るか:
+最もビューを受け取る `tags` は：
 
 ```sql
 --ClickHouse
@@ -128,7 +134,7 @@ Time: 112508.083 ms (01:52.508)
 
 **集約関数**
 
-可能であれば、ユーザーは ClickHouse の集約関数を利用すべきです。以下に、[argMax](/sql-reference/aggregate-functions/reference/argmax) 関数を使用して各年の最も視聴された質問を計算する方法を示します。
+可能な限り、ユーザーは ClickHouse の集約関数を利用すべきです。以下に、各年で最もビューされた質問を計算するために [argMax](/sql-reference/aggregate-functions/reference/argmax) 関数を使用する例を示します。
 
 ```sql
 --ClickHouse
@@ -170,7 +176,7 @@ MaxViewCount:           66975
 Peak memory usage: 554.31 MiB.
 ```
 
-これは、同等の Postgres クエリよりもかなりシンプル（かつ高速）です：
+これは、同等の Postgres クエリよりも著しく簡単（および迅速）です：
 
 ```sql
 --Postgres
@@ -204,9 +210,9 @@ ORDER BY Year;
 Time: 125822.015 ms (02:05.822)
 ```
 
-**条件文と配列**
+**条件と配列**
 
-条件文と配列関数を使用すると、クエリが大幅に簡素化されます。以下のクエリは、2022年から2023年にかけての出現回数が10000件以上のタグの割合変化を計算します。以下の ClickHouse クエリが条件文、配列関数、および HAVING と SELECT 句でのエイリアスの再利用によって簡潔であることに注目してください。
+条件付きおよび配列機能は、クエリを大幅にシンプルにします。以下のクエリは、2022年から2023年にかけて最も多くの出現回数を持つタグ（10000回以上）を計算します。以下の ClickHouse クエリは条件、配列関数、および HAVING および SELECT 句でのエイリアス再利用の能力のおかげで、簡潔です。
 
 ```sql
 --ClickHouse
@@ -269,4 +275,4 @@ LIMIT 5;
 Time: 116750.131 ms (01:56.750)
 ```
 
-[こちらをクリックして Part 3 に進む](./data-modeling-techniques.md)
+[パート3へ進む](./data-modeling-techniques.md)

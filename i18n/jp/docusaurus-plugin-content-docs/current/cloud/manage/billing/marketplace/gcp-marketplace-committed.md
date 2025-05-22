@@ -1,10 +1,16 @@
 ---
-slug: /cloud/billing/marketplace/gcp-marketplace-committed-contract
-title: 'GCPマーケットプレイスのコミット契約'
-description: 'GCPマーケットプレイスを通じてClickHouse Cloudにサブスクライブする（コミット契約）'
-keywords: ['gcp', 'google', 'marketplace', 'billing', 'committed', 'committed contract']
+'slug': '/cloud/billing/marketplace/gcp-marketplace-committed-contract'
+'title': 'GCP Marketplace Committed Contract'
+'description': 'Subscribe to ClickHouse Cloud through the GCP Marketplace (Committed
+  Contract)'
+'keywords':
+- 'gcp'
+- 'google'
+- 'marketplace'
+- 'billing'
+- 'committed'
+- 'committed contract'
 ---
-```
 
 import Image from '@theme/IdealImage';
 import gcp_marketplace_committed_1 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-committed-1.png';
@@ -22,15 +28,15 @@ import gcp_marketplace_payg_5 from '@site/static/images/cloud/manage/billing/mar
 import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-11.png';
 import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-6.png';
 
-GCPマーケットプレイスを通じてコントラクトをコミットしてClickHouse Cloudを始めましょう。コミット契約（プライベートオファーとも呼ばれます）は、顧客が一定期間にわたってClickHouse Cloudに対して特定の金額を支出することを約束するものです。
+ClickHouse Cloud を [GCP Marketplace](https://console.cloud.google.com/marketplace) で利用開始するには、コミット契約を通じて行います。コミット契約は、プライベートオファーとも呼ばれ、顧客が一定の金額を ClickHouse Cloud に対して一定期間内に支払うことを約束するものです。
 
 ## 前提条件 {#prerequisites}
 
-- 特定の契約条件に基づくClickHouseからのプライベートオファー。
+- 特定の契約条件に基づく ClickHouse からのプライベートオファー。
 
 ## サインアップ手順 {#steps-to-sign-up}
 
-1. あなたはプライベートオファーをレビューし、受け入れるためのリンクが記載されたメールを受け取っているはずです。
+1. プライベートオファーを確認し、受け入れるためのリンクを含むメールを受け取っているはずです。
 
 <br />
 
@@ -38,51 +44,51 @@ GCPマーケットプレイスを通じてコントラクトをコミットし�
 
 <br />
 
-2. メール内の**オファーをレビュー**リンクをクリックしてください。これにより、プライベートオファーの詳細が記載されたGCPマーケットプレイスのページに移動します。
+2. メール内の **Review Offer** リンクをクリックします。これにより、プライベートオファーの詳細が表示された GCP Marketplace ページに移動します。
 
 <br />
 
-<Image img={gcp_marketplace_committed_2} size="md" alt="GCP Marketplace オファーの要約" border/>
+<Image img={gcp_marketplace_committed_2} size="md" alt="GCP Marketplace オファーの概要" border/>
 
 <br />
 
-<Image img={gcp_marketplace_committed_3} size="md" alt="GCP Marketplace 価格要約" border/>
+<Image img={gcp_marketplace_committed_3} size="md" alt="GCP Marketplace 価格の概要" border/>
 
 <br />
 
-3. プライベートオファーの詳細を確認し、すべてが正しければ**受け入れる**をクリックします。
+3. プライベートオファーの詳細を確認し、すべてが正しい場合は **Accept** をクリックします。
 
 <br />
 
-<Image img={gcp_marketplace_committed_4} size="md" alt="GCP Marketplace 受け入れページ" border/>
+<Image img={gcp_marketplace_committed_4} size="md" alt="GCP Marketplace 受諾ページ" border/>
 
 <br />
 
-4. **製品ページに移動**をクリックします。
+4. **Go to product page** をクリックします。
 
 <br />
 
-<Image img={gcp_marketplace_committed_5} size="md" alt="GCP Marketplace 受け入れ確認" border/>
+<Image img={gcp_marketplace_committed_5} size="md" alt="GCP Marketplace 受諾確認" border/>
 
 <br />
 
-5. **プロバイダーで管理**をクリックします。
+5. **Manage on provider** をクリックします。
 
 <br />
 
-<Image img={gcp_marketplace_committed_6} size="md" alt="GCP Marketplace ClickHouse Cloudページ" border/>
+<Image img={gcp_marketplace_committed_6} size="md" alt="GCP Marketplace ClickHouse Cloud ページ" border/>
 
 <br />
 
-この時点でClickHouse Cloudにリダイレクトされ、サインアップまたはサインインすることが重要です。このステップを完了しないと、GCPマーケットプレイスのサブスクリプションをClickHouse Cloudにリンクすることができません。
+この時点で ClickHouse Cloud にリダイレクトし、サインアップまたはサインインを行うことが重要です。このステップを完了しないと、GCP Marketplace のサブスクリプションを ClickHouse Cloud にリンクすることができません。
 
 <br />
 
-<Image img={gcp_marketplace_committed_7} size="md" alt="GCP Marketplace サイトを離れる確認モーダル" border/>
+<Image img={gcp_marketplace_committed_7} size="md" alt="GCP Marketplace ウェブサイト離脱確認モーダル" border/>
 
 <br />
 
-6. ClickHouse Cloudにリダイレクトされたら、既存のアカウントでログインするか、新しいアカウントを登録します。
+6. ClickHouse Cloud にリダイレクトされたら、既存のアカウントでログインするか、新しいアカウントを登録できます。
 
 <br />
 
@@ -90,7 +96,7 @@ GCPマーケットプレイスを通じてコントラクトをコミットし�
 
 <br />
 
-新しいClickHouse Cloudユーザーの場合、ページの下部にある**登録**をクリックします。新しいユーザーを作成し、メールを確認するように促されます。メールを確認した後、ClickHouse Cloudのログインページを離れ、[https://console.clickhouse.cloud](https://console.clickhouse.cloud)で新しいユーザー名を使用してログインできます。
+新しい ClickHouse Cloud ユーザーの場合は、ページの下部にある **Register** をクリックします。新しいユーザーを作成し、メールを確認するよう促されます。メールの確認後、ClickHouse Cloud のログインページを離れ、新しいユーザー名を使用して [https://console.clickhouse.cloud](https://console.clickhouse.cloud) にログインできます。
 
 <br />
 
@@ -110,11 +116,11 @@ GCPマーケットプレイスを通じてコントラクトをコミットし�
 
 <br />
 
-既存のClickHouse Cloudユーザーの場合は、資格情報を使用してログインするだけです。
+既存の ClickHouse Cloud ユーザーの場合は、資格情報を使用してログインしてください。
 
-7. 成功裏にログインすると、新しいClickHouse Cloud組織が作成されます。この組織はあなたのGCP請求アカウントに接続され、すべての使用量はあなたのGCPアカウントを通じて請求されます。
+7. ログインに成功すると、新しい ClickHouse Cloud 組織が作成されます。この組織は、あなたの GCP 請求アカウントに接続され、すべての使用量があなたの GCP アカウントを通じて請求されます。
 
-8. ログイン後、請求が実際にGCPマーケットプレイスに関連付けられていることを確認し、ClickHouse Cloudのリソースを設定し始めることができます。
+8. ログイン後、あなたの請求が実際に GCP Marketplace に紐付いていることを確認し、ClickHouse Cloud リソースの設定を開始できます。
 
 <br />
 
@@ -122,7 +128,7 @@ GCPマーケットプレイスを通じてコントラクトをコミットし�
 
 <br />
 
-<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud 新しいサービスページ" border/>
+<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud 新サービスページ" border/>
 
 <br />
 
@@ -137,4 +143,4 @@ GCPマーケットプレイスを通じてコントラクトをコミットし�
 
 <br />
 
-問題が発生した場合は、[サポートチームに連絡](https://clickhouse.com/support/program)することをためらわないでください。
+問題が発生した場合は、[サポートチーム](https://clickhouse.com/support/program) にご連絡ください。

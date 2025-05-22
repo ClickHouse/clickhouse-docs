@@ -1,15 +1,18 @@
 ---
-description: 'データウェアハウジングソリューションのパフォーマンスを比較するために使用されるベンチマークデータセットです。'
-sidebar_label: 'AMPLab ビッグデータベンチマーク'
-slug: /getting-started/example-datasets/amplab-benchmark
-title: 'AMPLab ビッグデータベンチマーク'
+'description': 'A benchmark dataset used for comparing the performance of data warehousing
+  solutions.'
+'sidebar_label': 'AMPLab Big Data Benchmark'
+'slug': '/getting-started/example-datasets/amplab-benchmark'
+'title': 'AMPLab Big Data Benchmark'
 ---
+
+
 
 See https://amplab.cs.berkeley.edu/benchmark/
 
-Sign up for a free account at https://aws.amazon.com. It requires a credit card, email, and phone number. Get a new access key at https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential
+無料アカウントにサインアップするには、https://aws.amazon.com にアクセスしてください。クレジットカード、メールアドレス、電話番号が必要です。新しいアクセスキーは、https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential で取得できます。
 
-Run the following in the console:
+コンソールで次のコマンドを実行します:
 
 ```bash
 $ sudo apt-get install s3cmd
@@ -24,7 +27,7 @@ $ s3cmd sync s3://big-data-benchmark/pavlo/text-deflate/5nodes/ .
 $ cd ..
 ```
 
-Run the following ClickHouse queries:
+次の ClickHouse クエリを実行します:
 
 ```sql
 CREATE TABLE rankings_tiny
@@ -88,7 +91,7 @@ CREATE TABLE uservisits_5nodes_on_single
 ) ENGINE = MergeTree(visitDate, visitDate, 8192);
 ```
 
-Go back to the console:
+コンソールに戻ります:
 
 ```bash
 $ for i in tiny/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO rankings_tiny FORMAT CSV"; done
@@ -99,7 +102,7 @@ $ for i in 5nodes/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | 
 $ for i in 5nodes/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO uservisits_5nodes_on_single FORMAT CSV"; done
 ```
 
-Queries for obtaining data samples:
+データサンプルを取得するためのクエリ:
 
 ```sql
 SELECT pageURL, pageRank FROM rankings_1node WHERE pageRank > 1000

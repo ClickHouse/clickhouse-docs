@@ -1,15 +1,17 @@
 ---
-description: 'ビットマップ関数のドキュメント'
-sidebar_label: 'ビットマップ'
-sidebar_position: 25
-slug: /sql-reference/functions/bitmap-functions
-title: 'ビットマップ関数'
+'description': 'ビットマップ関数のドキュメント'
+'sidebar_label': 'ビットマップ'
+'sidebar_position': 25
+'slug': '/sql-reference/functions/bitmap-functions'
+'title': 'Bitmap Functions'
 ---
+
+
 
 
 # ビットマップ関数
 
-ビットマップは2つの方法で構築できます。最初の方法は、集約関数 groupBitmap と `-State` を用いて構築する方法であり、もう1つの方法は、Array オブジェクトからビットマップを構築することです。
+ビットマップは二通りの方法で構築できます。最初の方法は、集約関数 groupBitmap を用いて `-State` で構築する方法、もう一つの方法は、Array オブジェクトからビットマップを構築することです。
 
 ## bitmapBuild {#bitmapbuild}
 
@@ -39,7 +41,7 @@ SELECT bitmapBuild([1, 2, 3, 4, 5]) AS res, toTypeName(res);
 
 ## bitmapToArray {#bitmaptoarray}
 
-ビットマップを整数の配列に変換します。
+ビットマップを整数配列に変換します。
 
 **構文**
 
@@ -67,7 +69,7 @@ SELECT bitmapToArray(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 
 ## bitmapSubsetInRange {#bitmapsubsetinrange}
 
-値の範囲内のビットを持つビットマップのサブセットを返します。
+値の区間内にビットを持つビットマップのサブセットを返します。
 
 **構文**
 
@@ -78,8 +80,8 @@ bitmapSubsetInRange(bitmap, range_start, range_end)
 **引数**
 
 - `bitmap` – [ビットマップオブジェクト](#bitmapbuild)。
-- `range_start` – 範囲の開始点（含む）。 [UInt32](../data-types/int-uint.md)。
-- `range_end` – 範囲の終了点（含まない）。 [UInt32](../data-types/int-uint.md)。
+- `range_start` – 範囲の開始（含む）。 [UInt32](../data-types/int-uint.md)。
+- `range_end` – 範囲の終了（含まない）。 [UInt32](../data-types/int-uint.md)。
 
 **例**
 
@@ -97,7 +99,7 @@ SELECT bitmapToArray(bitmapSubsetInRange(bitmapBuild([0,1,2,3,4,5,6,7,8,9,10,11,
 
 ## bitmapSubsetLimit {#bitmapsubsetlimit}
 
-最小ビット値 `range_start` からのビットマップのサブセットを返し、最大で `cardinality_limit` 個の要素を持ちます。
+最小ビット値 `range_start` を持ち、かつ最大で `cardinality_limit` 要素のビットマップのサブセットを返します。
 
 **構文**
 
@@ -108,7 +110,7 @@ bitmapSubsetLimit(bitmap, range_start, cardinality_limit)
 **引数**
 
 - `bitmap` – [ビットマップオブジェクト](#bitmapbuild)。
-- `range_start` – 範囲の開始点（含む）。 [UInt32](../data-types/int-uint.md)。
+- `range_start` – 範囲の開始（含む）。 [UInt32](../data-types/int-uint.md)。
 - `cardinality_limit` – サブセットの最大カーディナリティ。 [UInt32](../data-types/int-uint.md)。
 
 **例**
@@ -127,7 +129,7 @@ SELECT bitmapToArray(bitmapSubsetLimit(bitmapBuild([0,1,2,3,4,5,6,7,8,9,10,11,12
 
 ## subBitmap {#subbitmap}
 
-ビットマップのサブセットを返します。最初の要素の位置は `offset` で指定されます。返されるビットマップの最大カーディナリティは `cardinality_limit` です。
+ビットマップのサブセットを返し、位置 `offset` から始まります。返されるビットマップの最大カーディナリティは `cardinality_limit` です。
 
 **構文**
 
@@ -157,7 +159,7 @@ SELECT bitmapToArray(subBitmap(bitmapBuild([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,1
 
 ## bitmapContains {#bitmapcontains}
 
-ビットマップが要素を含むかどうかをチェックします。
+ビットマップが要素を含むかどうかを確認します。
 
 ```sql
 bitmapContains(bitmap, needle)
@@ -189,9 +191,9 @@ SELECT bitmapContains(bitmapBuild([1,5,7,9]), toUInt32(9)) AS res;
 
 ## bitmapHasAny {#bitmaphasany}
 
-2つのビットマップが交差するかどうかをチェックします。
+二つのビットマップが交差するかどうかを確認します。
 
-`bitmap2` に正確に1つの要素が含まれている場合は、より効率的に機能する [bitmapContains](#bitmapcontains) を使用することを検討してください。
+`bitmap2` に正確に一つの要素が含まれる場合、[bitmapContains](#bitmapcontains) を使用することを検討してください。こちらの方が効率的に動作します。
 
 **構文**
 
@@ -201,12 +203,12 @@ bitmapHasAny(bitmap1, bitmap2)
 
 **引数**
 
-- `bitmap1` – ビットマップオブジェクト 1。
-- `bitmap2` – ビットマップオブジェクト 2。
+- `bitmap1` – ビットマップオブジェクト1。
+- `bitmap2` – ビットマップオブジェクト2。
 
 **返される値**
 
-- `1`、もし `bitmap1` と `bitmap2` に少なくとも1つの共有要素がある場合。
+- `1`、もし `bitmap1` と `bitmap2` に少なくとも一つの共有要素がある場合。
 - `0`、それ以外の場合。
 
 **例**
@@ -225,8 +227,8 @@ SELECT bitmapHasAny(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 
 ## bitmapHasAll {#bitmaphasall}
 
-最初のビットマップが2番目のビットマップのすべての要素を含む場合は1を返し、そうでない場合は0を返します。
-2番目のビットマップが空である場合は、1を返します。
+最初のビットマップが2番目のビットマップのすべての要素を含む場合は1を返し、それ以外は0を返します。
+2番目のビットマップが空である場合は1を返します。
 
 `hasAll(array, array)` も参照してください。
 
@@ -238,8 +240,8 @@ bitmapHasAll(bitmap1, bitmap2)
 
 **引数**
 
-- `bitmap1` – ビットマップオブジェクト 1。
-- `bitmap2` – ビットマップオブジェクト 2。
+- `bitmap1` – ビットマップオブジェクト1。
+- `bitmap2` – ビットマップオブジェクト2。
 
 **例**
 
@@ -285,7 +287,7 @@ SELECT bitmapCardinality(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 
 ## bitmapMin {#bitmapmin}
 
-ビットマップ内に設定された最小ビットを計算します。ビットマップが空の場合は UINT32_MAX を返します（タイプが8ビット以上の場合は UINT64_MAX）。
+ビットマップ内でセットされている最小ビットを計算し、ビットマップが空であれば UINT32_MAX を返します（タイプが8ビット以上の場合は UINT64_MAX）。
 
 **構文**
 
@@ -313,7 +315,7 @@ SELECT bitmapMin(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 
 ## bitmapMax {#bitmapmax}
 
-ビットマップ内に設定された最大ビットを計算します。ビットマップが空の場合は 0 を返します。
+ビットマップ内でセットされている最大ビットを計算し、ビットマップが空であれば0を返します。
 
 **構文**
 
@@ -341,9 +343,9 @@ SELECT bitmapMax(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 
 ## bitmapTransform {#bitmaptransform}
 
-ビットマップ内のビットを最大N個置き換えます。i番目の置き換えられたビットの古い値と新しい値は、`from_array[i]` と `to_array[i]` で与えられます。
+ビットマップ内の最大 N ビットを置き換えます。i 番目の置き換えられるビットの古い値と新しい値は、それぞれ `from_array[i]` と `to_array[i]` です。
 
-結果は `from_array` と `to_array` の配列の順序に依存します。
+`from_array` および `to_array` の配列順序によって結果が変わることがあります。
 
 **構文**
 
@@ -354,7 +356,7 @@ bitmapTransform(bitmap, from_array, to_array)
 **引数**
 
 - `bitmap` – ビットマップオブジェクト。
-- `from_array` – UInt32 配列。範囲 \[0, from_array.size()) にある idx の場合、ビットマップが from_array\[idx\] を含む場合は、to_array\[idx\] に置き換えます。
+- `from_array` – UInt32 配列。インデックスが範囲 \[0, from_array.size()) の場合、ビットマップが from_array\[idx\] を含む場合、それを to_array\[idx\] で置き換えます。
 - `to_array` – `from_array` と同じサイズの UInt32 配列。
 
 **例**
@@ -373,7 +375,7 @@ SELECT bitmapToArray(bitmapTransform(bitmapBuild([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 ## bitmapAnd {#bitmapand}
 
-2つのビットマップの論理積を計算します。
+二つのビットマップの論理積を計算します。
 
 **構文**
 
@@ -401,7 +403,7 @@ SELECT bitmapToArray(bitmapAnd(bitmapBuild([1,2,3]),bitmapBuild([3,4,5]))) AS re
 
 ## bitmapOr {#bitmapor}
 
-2つのビットマップの論理和を計算します。
+二つのビットマップの論理和を計算します。
 
 **構文**
 
@@ -429,7 +431,7 @@ SELECT bitmapToArray(bitmapOr(bitmapBuild([1,2,3]),bitmapBuild([3,4,5]))) AS res
 
 ## bitmapXor {#bitmapxor}
 
-2つのビットマップの排他的論理和を計算します。
+二つのビットマップの排他的論理和を計算します。
 
 **構文**
 
@@ -457,7 +459,7 @@ SELECT bitmapToArray(bitmapXor(bitmapBuild([1,2,3]),bitmapBuild([3,4,5]))) AS re
 
 ## bitmapAndnot {#bitmapandnot}
 
-2つのビットマップの論理積を計算し、結果を否定します。
+二つのビットマップの論理積を計算し、結果を否定します。
 
 **構文**
 
@@ -485,7 +487,7 @@ SELECT bitmapToArray(bitmapAndnot(bitmapBuild([1,2,3]),bitmapBuild([3,4,5]))) AS
 
 ## bitmapAndCardinality {#bitmapandcardinality}
 
-2つのビットマップの論理積のカーディナリティを返します。
+二つのビットマップの論理積のカーディナリティを返します。
 
 **構文**
 
@@ -513,7 +515,7 @@ SELECT bitmapAndCardinality(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 
 ## bitmapOrCardinality {#bitmaporcardinality}
 
-2つのビットマップの論理和のカーディナリティを返します。
+二つのビットマップの論理和のカーディナリティを返します。
 
 ```sql
 bitmapOrCardinality(bitmap,bitmap)
@@ -539,7 +541,7 @@ SELECT bitmapOrCardinality(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 
 ## bitmapXorCardinality {#bitmapxorcardinality}
 
-2つのビットマップの排他的論理和のカーディナリティを返します。
+二つのビットマップの排他的論理和のカーディナリティを返します。
 
 ```sql
 bitmapXorCardinality(bitmap,bitmap)
@@ -565,7 +567,7 @@ SELECT bitmapXorCardinality(bitmapBuild([1,2,3]),bitmapBuild([3,4,5])) AS res;
 
 ## bitmapAndnotCardinality {#bitmapandnotcardinality}
 
-2つのビットマップのAND-NOT演算のカーディナリティを返します。
+二つのビットマップの AND-NOT 操作のカーディナリティを返します。
 
 ```sql
 bitmapAndnotCardinality(bitmap,bitmap)

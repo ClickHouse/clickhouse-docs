@@ -1,15 +1,15 @@
-description: 'TPC-H ベンチマークデータセットとクエリ。'
-sidebar_label: 'TPC-H'
-slug: /getting-started/example-datasets/tpch
-title: 'TPC-H (1999)'
-```
+---
+'description': 'The TPC-H benchmark data set and queries.'
+'sidebar_label': 'TPC-H'
+'slug': '/getting-started/example-datasets/tpch'
+'title': 'TPC-H (1999)'
+---
+
+
 
 A popular benchmark which models the internal data warehouse of a wholesale supplier.  
-大規模な卸業者の内部データウェアハウスをモデル化した人気のあるベンチマークです。  
-The data is stored into a 3rd normal form representation, requiring lots of joins at query runtime.  
-データは第3正規形表現で保存されており、クエリ実行時には多くのジョインが必要です。  
-Despite its age and its unrealistic assumption that the data is uniformly and independently distributed, TPC-H remains the most popular OLAP benchmark to date.  
-その古さと、データが均一かつ独立して分布しているという非現実的な仮定にもかかわらず、TPC-Hは未だに最も人気のあるOLAPベンチマークです。
+データは3rd正規形の表現で保存され、多くのジョインがクエリ実行時に必要です。  
+その古さとデータが均一かつ独立して分布しているという非現実的な前提にもかかわらず、TPC-Hは現在まで最も人気のあるOLAPベンチマークです。
 
 **References**
 
@@ -20,7 +20,6 @@ Despite its age and its unrealistic assumption that the data is uniformly and in
 
 ## Data Generation and Import {#data-generation-and-import}
 
-First, checkout the TPC-H repository and compile the data generator:  
 まず、TPC-Hリポジトリをチェックアウトし、データジェネレーターをコンパイルします。
 
 ```bash
@@ -29,15 +28,13 @@ cd tpch-kit/dbgen
 make
 ```
 
-Then, generate the data. Parameter `-s` specifies the scale factor. For example, with `-s 100`, 600 million rows are generated for table 'lineitem'.  
-次に、データを生成します。パラメータ `-s` はスケールファクターを指定します。例えば、`-s 100` を使うと、テーブル 'lineitem' に対して6億行が生成されます。
+次に、データを生成します。パラメータ `-s` はスケールファクターを指定します。例えば、`-s 100` を指定すると、'lineitem' テーブルに対して6億行が生成されます。
 
 ```bash
 ./dbgen -s 100
 ```
 
-Detailed table sizes with scale factor 100:  
-スケールファクター100の詳細なテーブルサイズ：
+スケールファクター100の詳細なテーブルサイズ:
 
 | Table    | size (in rows) | size (compressed in ClickHouse) |
 |----------|----------------|---------------------------------|
@@ -50,27 +47,16 @@ Detailed table sizes with scale factor 100:
 | orders   | 150.000.000    | 6.15 GB                         |
 | lineitem | 600.00.00      | 26.69 GB                        |
 
-(Compressed sizes in ClickHouse are taken from `system.tables.total_bytes` and based on below table definitions.)  
-（ClickHouseでの圧縮サイズは `system.tables.total_bytes` から取得され、以下のテーブル定義に基づいています。）
+(ClickHouseの圧縮サイズは `system.tables.total_bytes` から取得され、以下のテーブル定義に基づいています。)
 
-Now create tables in ClickHouse.  
-ClickHouseにテーブルを作成します。
+次に、ClickHouseにテーブルを作成します。
 
-We stick as closely as possible to the rules of the TPC-H specification:  
-TPC-H仕様のルールにできるだけ忠実に従います：
-
-- Primary keys are created only for the columns mentioned in section 1.4.2.2 of the specification.  
-主キーは仕様の第1.4.2.2節で言及されているカラムにのみ作成されます。
-- Substitution parameters were replaced by the values for query validation in sections 2.1.x.4 of the specification.  
-置換パラメータは、仕様の第2.1.x.4節におけるクエリ検証のための値に置き換えられました。
-- As per section 1.4.2.1, the table definitions do not use the optional `NOT NULL` constraints, even if `dbgen` generates them by default.  
-第1.4.2.1節に従って、テーブル定義では、デフォルトで `dbgen` によって生成される場合でも、オプショナルな `NOT NULL` 制約を使用しません。
-  The performance of `SELECT` queries in ClickHouse is not affected by the presence or absence of `NOT NULL` constraints.  
-ClickHouseでの `SELECT` クエリのパフォーマンスは、`NOT NULL` 制約の有無に影響されません。
-- As per section 1.3.1, we use ClickHouse's native datatypes (e.g. `Int32`, `String`) to implement the abstract datatypes mentioned in the  
-第1.3.1節に従って、仕様に記載されている抽象データ型を実装するために、ClickHouseのネイティブデータ型（例： `Int32`, `String`）を使用します。
-  specification (e.g. `Identifier`, `Variable text, size N`). The only effect of this is better readability, the SQL-92 datatypes generated  
-仕様（例： `Identifier`, `Variable text, size N`）で生成されたSQL-92データ型（例： `INTEGER`, `VARCHAR(40)`）もClickHouseで機能します。
+私たちはTPC-H仕様のルールにできるだけ近く従います:
+- 主キーは、仕様のセクション1.4.2.2に記載されたカラムに対してのみ作成します。
+- 置換パラメータは、仕様のセクション2.1.x.4のクエリ検証の値に置き換えました。
+- 仕様のセクション1.4.2.1に従い、テーブル定義ではオプションの `NOT NULL` 制約を使用しておらず、たとえ `dbgen` がデフォルトで生成してもそうです。 
+  ClickHouseでの `SELECT` クエリのパフォーマンスは、 `NOT NULL` 制約の存在または欠如に影響されません。
+- 仕様のセクション1.3.1に従い、クリックハウスのネイティブデータ型（例: `Int32`, `String`）を使用して、仕様に記載されている抽象データ型（例: `Identifier`, `Variable text, size N`）を実装しています。これにより可読性が向上します。`dbgen` によって生成されるSQL-92データ型（例: `INTEGER`, `VARCHAR(40)`）もClickHouseで使用することができます。
 
 ```sql
 CREATE TABLE nation (
@@ -138,8 +124,8 @@ CREATE TABLE orders  (
     o_shippriority   Int32,
     o_comment        String)
 ORDER BY (o_orderkey);
--- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
--- "Quantifying TPC-H Choke Points and Their Optimizations":
+-- 以下は公式のTPC-Hルールに準拠していない代替のオーダーキーですが、
+-- 「Quantifying TPC-H Choke Points and Their Optimizations」のセクション4.5で推奨されています:
 -- ORDER BY (o_orderdate, o_orderkey);
 
 CREATE TABLE lineitem (
@@ -160,13 +146,12 @@ CREATE TABLE lineitem (
     l_shipmode       String,
     l_comment        String)
 ORDER BY (l_orderkey, l_linenumber);
--- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
--- "Quantifying TPC-H Choke Points and Their Optimizations":
+-- 以下は公式のTPC-Hルールに準拠していない代替のオーダーキーですが、
+-- 「Quantifying TPC-H Choke Points and Their Optimizations」のセクション4.5で推奨されています:
 -- ORDER BY (l_shipdate, l_orderkey, l_linenumber);
 ```
 
-The data can be imported as follows:  
-データは次のようにインポートできます：
+データは以下のようにインポートできます:
 
 ```bash
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO nation FORMAT CSV" < nation.tbl
@@ -179,12 +164,12 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO orders FORMAT 
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMAT CSV" < lineitem.tbl
 ```
 
-:::note  
-Instead of using tpch-kit and generating the tables by yourself, you can alternatively import the data from a public S3 bucket. Make sure  
-tpch-kitを使用して自分でテーブルを生成する代わりに、公共のS3バケットからデータをインポートすることもできます。最初に上記の `CREATE` ステートメントを使用して空のテーブルを作成してください。
+:::note
+tpch-kitを使用してテーブルを自分で生成する代わりに、公開されたS3バケットからデータをインポートすることもできます。  
+最初に上記の `CREATE` ステートメントを使用して空のテーブルを作成することを確認してください。
 
 ```sql
--- Scaling factor 1
+-- スケールファクター1
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/nation.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/region.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/part.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -194,7 +179,7 @@ INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/orders.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/lineitem.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 
--- Scaling factor 100
+-- スケールファクター100
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/nation.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/region.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/part.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -204,23 +189,19 @@ INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/orders.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/lineitem.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 ```  
-:::  
+:::
 
 ## Queries {#queries}
 
-:::note  
-Setting [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) should be enabled to produce correct results according to SQL standard.  
-設定 [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) は、SQL標準に従って正しい結果を得るために有効にする必要があります。
-:::  
+:::note
+正しい結果を生成するために [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) を有効にする必要があります。
+:::
 
-The queries are generated by `./qgen -s <scaling_factor>`. Example queries for `s = 100`:  
-クエリは `./qgen -s <scaling_factor>` で生成されます。例として `s = 100` のクエリ：
+クエリは `./qgen -s <scaling_factor>` によって生成されます。スケールファクター `s = 100` の例のクエリ:
 
-**Correctness**  
-**正確性**
+**Correctness**
 
-The result of the queries agrees with the official results unless mentioned otherwise. To verify, generate a TPC-H database with scale  
-クエリの結果は、特に記載がない限り公式の結果と一致します。検証するには、スケールファクター= 1のTPC-Hデータベースを生成し（上記の `dbgen` を参照）、[tpch-kit の期待結果](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers)と比較します。
+クエリの結果は、特に記載がない限り、公式の結果と一致します。確認するためには、スケールファクター = 1 (`dbgen`、上記参照) でTPC-Hデータベースを生成し、[tpch-kitの期待される結果](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers)と比較してください。
 
 **Q1**
 
@@ -298,11 +279,10 @@ ORDER BY
     p_partkey;
 ```
 
-::::note  
-Until v25.5, the query did not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697  
-v25.5以前は、関連サブクエリのため、クエリはそのままでは機能しませんでした。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697  
-This alternative formulation works and was verified to return the reference results.  
-この代替構文は機能し、参照結果を返すことが確認されました。
+::::note
+v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
+
+この代替のフォームは動作し、参照結果を返すことが確認されています。
 
 ```sql
 WITH MinSupplyCost AS (
@@ -410,11 +390,10 @@ ORDER BY
     o_orderpriority;
 ```
 
-::::note  
-Until v25.5, the query did not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697  
-v25.5以前は、関連サブクエリのため、クエリはそのままでは機能しませんでした。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697  
-This alternative formulation works and was verified to return the reference results.  
-この代替構文は機能し、参照結果を返すことが確認されました。
+::::note
+v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
+
+この代替のフォームは動作し、参照結果を返すことが確認されています。
 
 ```sql
 WITH ValidLineItems AS (
@@ -463,7 +442,7 @@ WHERE
     AND l_suppkey = s_suppkey
     AND c_nationkey = s_nationkey
     AND s_nationkey = n_nationkey
-    AND n_regionkey = r_regionkey
+    AND n_regionkey = r.regionkey
     AND r_name = 'ASIA'
     AND o_orderdate >= DATE '1994-01-01'
     AND o_orderdate < DATE '1994-01-01' + INTERVAL '1' year
@@ -487,11 +466,10 @@ WHERE
     AND l_quantity < 24;
 ```
 
-::::note  
-As of February 2025, the query does not work out-of-the box due to a bug with Decimal addition. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/70136  
-2025年2月現在、クエリはDecimal加算のバグによりそのままでは機能しません。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/70136  
-This alternative formulation works and was verified to return the reference results.  
-この代替構文は機能し、参照結果を返すことが確認されました。
+::::note
+2025年2月現在、このクエリはDecimalの加算のバグのため、すぐに動作しません。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/70136
+
+この代替のフォームは動作し、参照結果を返すことが確認されています。
 
 ```sql
 SELECT
@@ -579,7 +557,7 @@ FROM (
         AND l_orderkey = o_orderkey
         AND o_custkey = c_custkey
         AND c_nationkey = n1.n_nationkey
-        AND n1.n_regionkey = r_regionkey
+        AND n1.n_regionkey = r.r_regionkey
         AND r_name = 'AMERICA'
         AND s_nationkey = n2.n_nationkey
         AND o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31'
@@ -868,11 +846,10 @@ WHERE
     );
 ```
 
-::::note  
-Until v25.5, the query did not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697  
-v25.5以前は、関連サブクエリのため、クエリはそのままでは機能しませんでした。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697  
-This alternative formulation works and was verified to return the reference results.  
-この代替構文は機能し、参照結果を返すことが確認されました。
+::::note
+v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
+
+この代替のフォームは動作し、参照結果を返すことが確認されています。
 
 ```sql
 WITH AvgQuantity AS (
@@ -1022,9 +999,8 @@ ORDER BY
     s_name;
 ```
 
-::::note  
-Until v25.5, the query did not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697  
-v25.5以前は、関連サブクエリのため、クエリはそのままでは機能しませんでした。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697  
+::::note
+v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
 ::::
 
 **Q21**
@@ -1072,9 +1048,8 @@ ORDER BY
     numwait DESC,
     s_name;
 ```
-::::note  
-Until v25.5, the query did not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697  
-v25.5以前は、関連サブクエリのため、クエリはそのままでは機能しませんでした。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697  
+::::note
+v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
 ::::
 
 **Q22**
@@ -1120,8 +1095,6 @@ ORDER BY
     cntrycode;
 ```
 
-::::note  
-Until v25.5, the query did not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697  
-v25.5以前は、関連サブクエリのため、クエリはそのままでは機能しませんでした。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697  
+::::note
+v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
 ::::
-

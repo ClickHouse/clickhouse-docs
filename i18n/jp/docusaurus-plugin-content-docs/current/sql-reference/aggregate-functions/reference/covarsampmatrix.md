@@ -1,14 +1,16 @@
 ---
-description: 'N変数に対するサンプル共分散行列を返します。'
-sidebar_position: 125
-slug: /sql-reference/aggregate-functions/reference/covarsampmatrix
-title: 'covarSampMatrix'
+'description': 'Returns the sample covariance matrix over N variables.'
+'sidebar_position': 125
+'slug': '/sql-reference/aggregate-functions/reference/covarsampmatrix'
+'title': 'covarSampMatrix'
 ---
+
+
 
 
 # covarSampMatrix
 
-N変数に対するサンプル共分散行列を返します。
+N個の変数に対するサンプル共分散行列を返します。
 
 **構文**
 
@@ -18,7 +20,7 @@ covarSampMatrix(x[, ...])
 
 **引数**
 
-- `x` — 任意の数のパラメータ。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
+- `x` — 可変数のパラメータ。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md) を指定します。
 
 **返される値**
 

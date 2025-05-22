@@ -1,18 +1,20 @@
 ---
-description: 'キャッシュされたファイルスキーマに関する情報を含むシステムテーブル。'
-keywords: ['system table', 'schema_inference_cache']
-slug: /operations/system-tables/schema_inference_cache
-title: 'system.schema_inference_cache'
+'description': 'System table containing information about all cached file schemas.'
+'keywords':
+- 'system table'
+- 'schema_inference_cache'
+'slug': '/operations/system-tables/schema_inference_cache'
+'title': 'system.schema_inference_cache'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
 # system.schema_inference_cache
 
 <SystemTableCloud/>
 
-キャッシュされたすべてのファイルスキーマに関する情報を含みます。
+キャッシュされたファイルスキーマについての情報を含みます。
 
 カラム:
 - `storage` ([String](/sql-reference/data-types/string.md)) — ストレージ名: File, URL, S3 または HDFS。
@@ -24,7 +26,7 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 **例**
 
-ファイル `data.jsonl` に次の内容があるとしましょう:
+`data.jsonl` というファイルがあり、以下の内容が含まれているとします:
 ```json
 {"id" :  1, "age" :  25, "name" :  "Josh", "hobbies" :  ["football", "cooking", "music"]}
 {"id" :  2, "age" :  19, "name" :  "Alan", "hobbies" :  ["tennis", "art"]}
@@ -33,13 +35,13 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 ```
 
 :::tip
-`data.jsonl` を `user_files_path` ディレクトリに配置してください。この場所は、ClickHouseの設定ファイルを確認することで見つけられます。デフォルトは次の通りです:
+`data.jsonl`を`user_files_path`ディレクトリに置いてください。これを見つけるには、ClickHouseの設定ファイルを調べてください。デフォルトは:
 ```sql
 <user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
 ```
 :::
 
-`clickhouse-client` を開き、`DESCRIBE` クエリを実行します:
+`clickhouse-client`を開き、`DESCRIBE`クエリを実行します:
 
 ```sql
 DESCRIBE file('data.jsonl') SETTINGS input_format_try_infer_integers=0;
@@ -54,7 +56,7 @@ DESCRIBE file('data.jsonl') SETTINGS input_format_try_infer_integers=0;
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-`system.schema_inference_cache` テーブルの内容も見てみましょう:
+`system.schema_inference_cache`テーブルの内容を見てみましょう:
 
 ```sql
 SELECT *

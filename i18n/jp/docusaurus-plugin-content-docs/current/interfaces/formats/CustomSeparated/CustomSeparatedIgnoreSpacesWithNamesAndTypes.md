@@ -1,11 +1,16 @@
-description: 'カスタム区切り名と型を使用した空白無視フォーマットのドキュメント'
-keywords: ['CustomSeparatedIgnoreSpacesWithNamesAndTypes']
-slug: /interfaces/formats/CustomSeparatedIgnoreSpacesWithNamesAndTypes
-title: 'カスタム区切り名と型を使用した空白無視フォーマット'
-```
+---
+'description': 'Documentation for the CustomSeparatedIgnoreSpacesWithNamesAndTypes
+  format'
+'keywords':
+- 'CustomSeparatedIgnoreSpacesWithNamesAndTypes'
+'slug': '/interfaces/formats/CustomSeparatedIgnoreSpacesWithNamesAndTypes'
+'title': 'CustomSeparatedIgnoreSpacesWithNamesAndTypes'
+---
+
+
 
 ## 説明 {#description}
 
-## 使用例 {#example-usage}
+## 例の使用法 {#example-usage}
 
 ## フォーマット設定 {#format-settings}

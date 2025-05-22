@@ -1,23 +1,25 @@
 ---
-description: '機械生成のログデータに対する新しい分析ベンチマーク'
-sidebar_label: 'ブラウン大学ベンチマーク'
-slug: /getting-started/example-datasets/brown-benchmark
-title: 'ブラウン大学ベンチマーク'
+'description': 'A new analytical benchmark for machine-generated log data'
+'sidebar_label': 'Brown University Benchmark'
+'slug': '/getting-started/example-datasets/brown-benchmark'
+'title': 'Brown University Benchmark'
 ---
 
-`MgBench` は、機械生成のログデータに対する新しい分析ベンチマークです。[Andrew Crotty](http://cs.brown.edu/people/acrotty/)。
 
-データをダウンロードする：
+
+`MgBench`は、機械生成のログデータに対する新しい分析ベンチマークです。 [Andrew Crotty](http://cs.brown.edu/people/acrotty/)。
+
+データをダウンロード：
 ```bash
 wget https://datasets.clickhouse.com/mgbench{1..3}.csv.xz
 ```
 
-データを展開する：
+データを解凍：
 ```bash
 xz -v -d mgbench{1..3}.csv.xz
 ```
 
-データベースとテーブルを作成する：
+データベースとテーブルを作成：
 ```sql
 CREATE DATABASE mgbench;
 ```
@@ -54,7 +56,6 @@ ENGINE = MergeTree()
 ORDER BY (machine_group, machine_name, log_time);
 ```
 
-
 ```sql
 CREATE TABLE mgbench.logs2 (
   log_time    DateTime,
@@ -66,7 +67,6 @@ CREATE TABLE mgbench.logs2 (
 ENGINE = MergeTree()
 ORDER BY log_time;
 ```
-
 
 ```sql
 CREATE TABLE mgbench.logs3 (
@@ -83,7 +83,7 @@ ENGINE = MergeTree()
 ORDER BY (event_type, log_time);
 ```
 
-データを挿入する：
+データを挿入：
 
 ```bash
 clickhouse-client --query "INSERT INTO mgbench.logs1 FORMAT CSVWithNames" < mgbench1.csv
@@ -98,7 +98,7 @@ USE mgbench;
 ```
 
 ```sql
--- Q1.1: 深夜以降の各ウェブサーバーのCPU/ネットワーク使用率は？
+-- Q1.1: 真夜中から各ウェブサーバーのCPU/ネットワーク利用率は？
 
 SELECT machine_name,
        MIN(cpu) AS cpu_min,
@@ -122,9 +122,8 @@ FROM (
 GROUP BY machine_name;
 ```
 
-
 ```sql
--- Q1.2: 過去1日間にオフラインだったコンピュータラボのマシンはどれか？
+-- Q1.2: 過去1日間にオフラインになったコンピュータラボのマシンは？
 
 SELECT machine_name,
        log_time
@@ -171,7 +170,7 @@ ORDER BY dt,
 ```
 
 ```sql
--- Q1.4: 1か月間に、各サーバーがディスクI/Oでブロックされることは何回あったか？
+-- Q1.4: 1か月間、各サーバーがディスクI/Oでブロックされた頻度は？
 
 SELECT machine_name,
        COUNT(*) AS spikes
@@ -186,7 +185,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q1.5: メモリが不足した外部からアクセス可能なVMはどれか？
+-- Q1.5: 外部からアクセス可能なVMの中でメモリが不足したものは？
 
 SELECT machine_name,
        dt,
@@ -207,7 +206,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.6: 全てのファイルサーバーの合計時間ごとのネットワークトラフィックは？
+-- Q1.6: 全ファイルサーバーにおける総時間ごとのネットワークトラフィックは？
 
 SELECT dt,
        hr,
@@ -243,7 +242,7 @@ ORDER BY log_time;
 ```
 
 ```sql
--- Q2.2: 特定の2週間の期間中、ユーザーパスワードファイルが漏洩したか？
+-- Q2.2: 特定の2週間の間にユーザーパスワードファイルが漏洩したか？
 
 SELECT *
 FROM logs2
@@ -254,9 +253,8 @@ WHERE status_code >= 200
   AND log_time < TIMESTAMP '2012-05-20 00:00:00';
 ```
 
-
 ```sql
--- Q2.3: 過去1か月のトップレベルリクエストの平均パス深度は？
+-- Q2.3: 過去1か月間のトップレベルリクエストの平均パスの深さは？
 
 SELECT top_level,
        AVG(LENGTH(request) - LENGTH(REPLACE(request, '/', ''))) AS depth_avg
@@ -280,9 +278,8 @@ GROUP BY top_level
 ORDER BY top_level;
 ```
 
-
 ```sql
--- Q2.4: 過去3か月で、過剰なリクエストを行ったクライアントは？
+-- Q2.4: 過去3か月間に過剰なリクエストを送ったクライアントは？
 
 SELECT client_ip,
        COUNT(*) AS num_requests
@@ -293,9 +290,8 @@ HAVING COUNT(*) >= 100000
 ORDER BY num_requests DESC;
 ```
 
-
 ```sql
--- Q2.5: 日ごとのユニーク訪問者は何人か？
+-- Q2.5: 日々のユニークビジター数は？
 
 SELECT dt,
        COUNT(DISTINCT client_ip)
@@ -308,9 +304,8 @@ GROUP BY dt
 ORDER BY dt;
 ```
 
-
 ```sql
--- Q2.6: 平均および最大データ転送速度は何 Gbps か？
+-- Q2.6: 平均および最大データ転送速度 (Gbps) は？
 
 SELECT AVG(transfer) / 125000000.0 AS transfer_avg,
        MAX(transfer) / 125000000.0 AS transfer_max
@@ -322,9 +317,8 @@ FROM (
 ) AS r;
 ```
 
-
 ```sql
--- Q3.1: 週末に屋内の温度は凍結に達したか？
+-- Q3.1: 週末に屋内温度が凍結に達したか？
 
 SELECT *
 FROM logs3
@@ -333,9 +327,8 @@ WHERE event_type = 'temperature'
   AND log_time >= '2019-11-29 17:00:00.000';
 ```
 
-
 ```sql
--- Q3.4: 過去6か月間、各ドアは開かれることがどのくらい頻繁だったか？
+-- Q3.4: 過去6か月間に各ドアが開かれた頻度は？
 
 SELECT device_name,
        device_floor,
@@ -348,13 +341,13 @@ GROUP BY device_name,
 ORDER BY ct DESC;
 ```
 
-クエリ3.5はUNIONを使用します。SELECTクエリ結果を組み合わせるためのモードを設定します。この設定は、UNION ALLやUNION DISTINCTを明示的に指定せずに共有されている場合にのみ使用されます。
+クエリ3.5はUNIONを使用します。 SELECTクエリの結果を結合するためのモードを設定します。この設定は、UNION ALLまたはUNION DISTINCTを明示的に指定せずにUNIONで共有される場合のみ使用されます。
 ```sql
 SET union_default_mode = 'DISTINCT'
 ```
 
 ```sql
--- Q3.5: 冬と夏の間に建物のどこで大きな温度変化が発生するか？
+-- Q3.5: 冬と夏の間に建物内で大きな温度変動が発生する場所は？
 
 WITH temperature AS (
   SELECT dt,
@@ -407,9 +400,8 @@ WHERE dt >= DATE '2019-06-01'
   AND dt < DATE '2019-09-01';
 ```
 
-
 ```sql
--- Q3.6: 各デバイスタイプの月ごとの電力消費メトリックは？
+-- Q3.6: 各デバイスカテゴリの月次電力消費メトリックは？
 
 SELECT yr,
        mo,
@@ -453,4 +445,4 @@ ORDER BY yr,
          mo;
 ```
 
-データは、[Playground](https://sql.clickhouse.com) でインタラクティブなクエリを実行するために利用可能です。 [例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。
+データは、[Playground](https://sql.clickhouse.com)でインタラクティブクエリのために利用可能でもあります。 [例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。

@@ -1,23 +1,30 @@
 ---
-slug: '/examples/aggregate-function-combinators/argMinIf'
-title: 'argMinIf'
-description: 'argMinIf コンビネーターの使用例'
-keywords: ['argMin', 'if', 'combinator', 'examples', 'argMinIf']
-sidebar_label: 'argMinIf'
+'slug': '/examples/aggregate-function-combinators/argMinIf'
+'title': 'argMinIf'
+'description': 'Example of using the argMinIf combinator'
+'keywords':
+- 'argMin'
+- 'if'
+- 'combinator'
+- 'examples'
+- 'argMinIf'
+'sidebar_label': 'argMinIf'
 ---
+
+
 
 
 # argMinIf {#argminif}
 
 ## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターを [`argMin`](/sql-reference/aggregate-functions/reference/argmin) 関数に適用することで、条件が真である行について `val` の最小値に対応する `arg` の値を見つけることができます。このために `argMinIf` 集約コンビネーター関数を使用します。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、[`argMin`](/sql-reference/aggregate-functions/reference/argmin) 関数に適用して、条件が真である行について `val` の最小値に対応する `arg` の値を見つけるために使用されます。これは `argMinIf` 集約コンビネータ関数を使用して行います。
 
-`argMinIf` 関数は、特定の条件を満たす行に対してのみデータセット内の最小値に関連する値を見つける必要がある場合に便利です。
+`argMinIf` 関数は、データセット内の最小値に関連付けられた値を見つける必要があるが、特定の条件を満たす行のみを考慮する場合に便利です。
 
 ## 使用例 {#example-usage}
 
-この例では、製品価格とそのタイムスタンプを保存するテーブルを作成し、`argMinIf` を使用して在庫がある各製品の最低価格を見つけます。
+この例では、製品の価格とそのタイムスタンプを保存するテーブルを作成し、`argMinIf` を使用して、在庫があるときの各製品の最低価格を見つけます。
 
 ```sql title="クエリ"
 CREATE TABLE product_prices(
@@ -42,18 +49,18 @@ FROM product_prices
 GROUP BY product_id;
 ```
 
-`argMinIf` 関数は、各製品に対して最も早いタイムスタンプに対応する価格を見つけますが、`in_stock = 1` の行のみを考慮します。例えば：
-- 製品 1: 在庫のある行の中で、10.99 が最も早いタイムスタンプ (10:00:00) を持っています。
-- 製品 2: 在庫のある行の中で、20.99 が最も早いタイムスタンプ (11:00:00) を持っています。
+`argMinIf` 関数は、各製品の最も早いタイムスタンプに対応する価格を見つけますが、`in_stock = 1` の行のみを考慮します。例えば:
+- 製品 1: 在庫がある行の中で、10.99 が最も早いタイムスタンプ（10:00:00）を持っています。
+- 製品 2: 在庫がある行の中で、20.99 が最も早いタイムスタンプ（11:00:00）を持っています。
 
-```response title="応答"
+```response title="レスポンス"
    ┌─product_id─┬─lowest_price_when_in_stock─┐
 1. │          1 │                      10.99 │
 2. │          2 │                      20.99 │
    └────────────┴────────────────────────────┘
 ```
 
-## こちらもご覧ください {#see-also}
+## 関連項目 {#see-also}
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
 - [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)

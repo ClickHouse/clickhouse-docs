@@ -1,15 +1,17 @@
 ---
-description: 'MOVE アクセスエンティティ ステートメントのドキュメント'
-sidebar_label: 'MOVE'
-sidebar_position: 54
-slug: /sql-reference/statements/move
-title: 'MOVE アクセスエンティティ ステートメント'
+'description': 'MOVEアクセスエンティティステートメントのドキュメント'
+'sidebar_label': 'MOVE'
+'sidebar_position': 54
+'slug': '/sql-reference/statements/move'
+'title': 'MOVEアクセスエンティティステートメント'
 ---
 
 
-# MOVE アクセスエンティティ ステートメント
 
-このステートメントは、アクセスエンティティを1つのアクセスストレージから別のものに移動することを許可します。
+
+# MOVE アクセスエンティティ文
+
+この文は、アクセスエンティティを1つのアクセスストレージから別のアクセスストレージに移動することを許可します。
 
 構文:
 

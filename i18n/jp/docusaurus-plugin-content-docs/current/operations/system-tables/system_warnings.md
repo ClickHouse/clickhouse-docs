@@ -1,22 +1,22 @@
-description: 'このテーブルには ClickHouse サーバーに関する警告メッセージが含まれています。'
-keywords: [ 'システムテーブル', '警告' ]
-slug: /operations/system-tables/system_warnings
-title: 'system.warnings'
-```
+---
+'description': 'This table contains warning messages about clickhouse server.'
+'keywords':
+- 'system table'
+- 'warnings'
+'slug': '/operations/system-tables/system_warnings'
+'title': 'system.warnings'
+---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
 # system.warnings
 
 <SystemTableCloud/>
 
-このテーブルは ClickHouse サーバーに関する警告を表示します。  
-同じタイプの警告は1つの警告にまとめられます。  
-たとえば、接続されているデータベースの数 N が設定可能なしきい値 T を超えると、現在の値 N を含む単一エントリが表示され、N 個の別々のエントリは表示されません。  
-現在の値がしきい値を下回ると、そのエントリはテーブルから削除されます。
+このテーブルは、ClickHouse サーバーに関する警告を表示します。 同じ種類の警告は、1 つの警告にまとめられます。 たとえば、接続されているデータベースの数 N が構成可能な閾値 T を超えると、N 個の個別のエントリの代わりに、現在の値 N を含む単一のエントリが表示されます。 現在の値が閾値を下回ると、エントリはテーブルから削除されます。
 
-テーブルは次の設定で構成できます：
+テーブルは、次の設定で構成できます：
 
 - [max_table_num_to_warn](../server-configuration-parameters/settings.md#max_table_num_to_warn)
 - [max_database_num_to_warn](../server-configuration-parameters/settings.md#max_database_num_to_warn)
@@ -42,12 +42,13 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 結果：
 
 ```text
-行 1:
+Row 1:
 ──────
-message:               アクティブなパーツの数が10を超えています。
-message_format_string: アクティブなパーツの数は {} を超えています。
+message:               アクティブなパーツの数が 10 を超えています。
+message_format_string: アクティブなパーツの数が {} を超えています。
 
-行 2:
+Row 2:
 ──────
-message:               接続されているデータベースの数が2を超えています。
-message_format_string: 接続されているデータベースの数は {} を超えています。
+message:               接続されているデータベースの数が 2 を超えています。
+message_format_string: 接続されているデータベースの数が {} を超えています。
+```

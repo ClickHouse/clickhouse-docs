@@ -1,6 +1,12 @@
-以下を参照してください [the official documentation](/interfaces/mysql) で、MySQLインターフェースを有効にしたClickHouseサーバーのセットアップ方法を確認できます。
+---
+{}
+---
 
-サーバーの `config.xml` にエントリを追加することに加えて
+
+
+Please refer to [the official documentation](/interfaces/mysql) on how to set up a ClickHouse server with enabled MySQL interface.
+
+サーバーの `config.xml` にエントリを追加することに加えて、次のようにすることが _必須_ です。
 
 ```xml
 <clickhouse>
@@ -8,25 +14,24 @@
 </clickhouse>
 ```
 
-MySQLインターフェースを使用するユーザーについては _必須_ で
-[Double SHA1 password encryption](/operations/settings/settings-users#user-namepassword) を使用する必要があります。
+MySQL インターフェースを使用するユーザーには、[Double SHA1 パスワード暗号化](/operations/settings/settings-users#user-namepassword) を使用する必要があります。
 
-シェルからDouble SHA1で暗号化されたランダムパスワードを生成する方法：
+シェルから Double SHA1 で暗号化されたランダムなパスワードを生成するには、次のコマンドを使用します。
 
 ```shell
 PASSWORD=$(base64 < /dev/urandom | head -c16); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
 ```
 
-出力は以下のようになります：
+出力は次のようになります。
 
 ```
 LZOQYnqQN4L/T6L0
 fbc958cc745a82188a51f30de69eebfc67c40ee4
 ```
 
-最初の行は生成されたパスワードで、2行目はClickHouseの設定に使用できるハッシュです。
+最初の行は生成されたパスワードで、2行目は ClickHouse の設定に使用できるハッシュです。
 
-以下は、生成されたハッシュを使用する `mysql_user` の設定例です：
+生成されたハッシュを使用する `mysql_user` の構成の一例は次の通りです。
 
 `/etc/clickhouse-server/users.d/mysql_user.xml`
 
@@ -43,9 +48,9 @@ fbc958cc745a82188a51f30de69eebfc67c40ee4
 </users>
 ```
 
-`password_double_sha1_hex` エントリを独自に生成したDouble SHA1ハッシュに置き換えてください。
+`password_double_sha1_hex` エントリは、生成された Double SHA1 ハッシュに置き換えてください。
 
-さらに、`use_mysql_types_in_show_columns` を使用することをお勧めします。これにより、`SHOW [FULL] COLUMNS` クエリ結果でClickHouseの型ではなく、ネイティブのMySQL型が表示されるため、BIツールがMySQLコネクタを使用してデータベーススキーマを適切に調査できます。
+さらに、`use_mysql_types_in_show_columns` を使用して、`SHOW [FULL] COLUMNS` クエリの結果で ClickHouse の型の代わりにネイティブ MySQL 型を表示することが推奨されます。これにより、BI ツールが MySQL コネクタを使用してデータベーススキーマを正しく調査できるようになります。
 
 例えば：
 
@@ -59,10 +64,10 @@ fbc958cc745a82188a51f30de69eebfc67c40ee4
 </profiles>
 ```
 
-または、デフォルトのプロファイルの代わりに別のプロファイルに割り当てることができます。
+またはデフォルトのプロファイルの代わりに別のプロファイルに割り当てます。
 
 `mysql` バイナリが利用可能であれば、コマンドラインから接続をテストできます。
-上記のサンプルユーザー名（`mysql_user`）とパスワード（`LZOQYnqQN4L/T6L0`）を使用する場合、コマンドラインは次のようになります：
+上記のサンプルユーザー名（`mysql_user`）とパスワード（`LZOQYnqQN4L/T6L0`）を使用した場合、コマンドラインは次のようになります。
 
 ```bash
 mysql --protocol tcp -h localhost -u mysql_user -P 9004 --password=LZOQYnqQN4L/T6L0
@@ -82,8 +87,8 @@ mysql> show databases;
 Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 ```
 
-最後に、Clickhouseサーバーが希望のIPアドレスで待機するように設定します。例えば、`config.xml` で、すべてのアドレスでリッスンするように以下のコメントを外します：
+最後に、Clickhouse Server を希望の IP アドレスでリッスンするように設定します。例えば、`config.xml` で、すべてのアドレスでリッスンするように次の行のコメントを外します。
 
 ```bash
-<listen_host>::</listen_host>
+<listen_host>::</listen_host> 
 ```

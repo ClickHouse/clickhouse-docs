@@ -1,70 +1,76 @@
 ---
-description: 'リクエストのパラメータに関する情報と、ZooKeeperサーバーからの応答を含むシステムテーブル。'
-keywords: ['system table', 'zookeeper_log']
-slug: /operations/system-tables/zookeeper_log
-title: 'system.zookeeper_log'
+'description': 'System table containing information about the parameters of the request
+  to the ZooKeeper server and the response from it.'
+'keywords':
+- 'system table'
+- 'zookeeper_log'
+'slug': '/operations/system-tables/zookeeper_log'
+'title': 'system.zookeeper_log'
 ---
+
+
+
 
 
 # system.zookeeper_log
 
-このテーブルは、ZooKeeperサーバーへのリクエストのパラメータに関する情報と、その応答を含んでいます。
+このテーブルには、ZooKeeperサーバーへのリクエストのパラメータと、その応答に関する情報が含まれています。
 
-リクエストについては、リクエストパラメータがあるカラムのみが埋められ、残りのカラムはデフォルト値 (`0` または `NULL`) で埋められます。応答が到着すると、応答からのデータが他のカラムに追加されます。
+リクエストのために、リクエストパラメータを持つ列のみが埋められ、残りの列はデフォルト値（`0`または`NULL`）で埋められます。応答が到着すると、応答からデータが他の列に追加されます。
 
-リクエストパラメータのカラム：
+リクエストパラメータを持つ列：
 
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
-- `type` ([Enum](../../sql-reference/data-types/enum.md)) — ZooKeeperクライアントのイベントタイプ。以下の値のいずれかを持つことができます：
+- `type` ([Enum](../../sql-reference/data-types/enum.md)) — ZooKeeperクライアント内のイベントタイプ。以下のいずれかの値を持つことができます：
     - `Request` — リクエストが送信されました。
     - `Response` — 応答が受信されました。
     - `Finalize` — 接続が失われ、応答が受信されませんでした。
 - `event_date` ([Date](../../sql-reference/data-types/date.md)) — イベントが発生した日付。
-- `event_time` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — イベントが発生した日付と時間。
+- `event_time` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — イベントが発生した日時。
 - `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — リクエストを行うために使用されたZooKeeperサーバーのIPアドレス。
-- `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — リクエストに使用されたZooKeeperサーバーのポート。
-- `session_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — ZooKeeperサーバーが各接続に対して設定するセッションID。
-- `xid` ([Int32](../../sql-reference/data-types/int-uint.md)) — セッション内のリクエストのID。これは通常、順次のリクエスト番号です。リクエスト行と対応する `response`/`finalize` 行で同じです。
-- `has_watch` ([UInt8](../../sql-reference/data-types/int-uint.md)) — [watch](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#ch_zkWatches) が設定されているかどうかのリクエスト。
+- `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — リクエストを行うために使用されたZooKeeperサーバーのポート。
+- `session_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — ZooKeeperサーバーが各接続のために設定するセッションID。
+- `xid` ([Int32](../../sql-reference/data-types/int-uint.md)) — セッション内のリクエストのID。通常は連続するリクエスト番号です。リクエスト行と対応する`response`/`finalize`行で同じです。
+- `has_watch` ([UInt8](../../sql-reference/data-types/int-uint.md)) — [watch](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#ch_zkWatches)が設定されているかどうかのリクエスト。
 - `op_num` ([Enum](../../sql-reference/data-types/enum.md)) — リクエストまたは応答のタイプ。
-- `path` ([String](../../sql-reference/data-types/string.md)) — リクエストで指定されたZooKeeperノードへのパス、またはパスの指定が不要な場合は空文字列。
-- `data` ([String](../../sql-reference/data-types/string.md)) — ZooKeeperノードに書き込まれたデータ（`SET` および `CREATE` リクエストの場合 — リクエストが書き込もうとした内容、`GET` リクエストの応答の場合 — 読み取られた内容）または空文字列。
+- `path` ([String](../../sql-reference/data-types/string.md)) — リクエスト内で指定されたZooKeeperノードへのパス。リクエストがパスを指定する必要がない場合は空の文字列になります。
+- `data` ([String](../../sql-reference/data-types/string.md)) — ZooKeeperノードに書き込まれたデータ（`SET`および`CREATE`リクエストの場合は、リクエストが書き込もうとしていた内容、`GET`リクエストへの応答の場合は、読み取られた内容）または空の文字列。
 - `is_ephemeral` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ZooKeeperノードが[エフェメラル](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#Ephemeral+Nodes)として作成されるかどうか。
 - `is_sequential` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ZooKeeperノードが[シーケンシャル](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#Sequence+Nodes+--+Unique+Naming)として作成されるかどうか。
-- `version` ([Nullable(Int32)](../../sql-reference/data-types/nullable.md)) — リクエストが実行時に期待するZooKeeperノードのバージョン。これは `CHECK`, `SET`, `REMOVE` リクエストでサポートされています（バージョンをチェックしない場合は `-1` またはバージョンチェックをサポートしないその他のリクエストの場合は `NULL`）。
-- `requests_size` ([UInt32](../../sql-reference/data-types/int-uint.md)) — マルチリクエストに含まれるリクエストの数（これは、いくつかの連続した通常のリクエストからなる特別なリクエストであり、それらを原子的に実行します）。マルチリクエストに含まれるすべてのリクエストは同じ `xid` を持ちます。
-- `request_idx` ([UInt32](../../sql-reference/data-types/int-uint.md)) — マルチリクエストに含まれるリクエストの番号（マルチリクエストの場合は `0`、その後 `1`から順に）。
+- `version` ([Nullable(Int32)](../../sql-reference/data-types/nullable.md)) — リクエストが実行する際に期待されるZooKeeperノードのバージョン。これは`CHECK`、`SET`、`REMOVE`リクエストに対応しており、バージョンをチェックしないリクエストの場合は`-1`が関連し、バージョンチェックをサポートしない他のリクエストの場合は`NULL`となります。
+- `requests_size` ([UInt32](../../sql-reference/data-types/int-uint.md)) — マルチリクエストに含まれるリクエストの数（これはいくつかの連続する通常のリクエストで構成された特別なリクエストであり、それをアトミックに実行します）。マルチリクエストに含まれるすべてのリクエストは同じ`xid`を持ちます。
+- `request_idx` ([UInt32](../../sql-reference/data-types/int-uint.md)) — マルチリクエストに含まれるリクエストの番号（マルチリクエストの場合は`0`、その後は`1`から順に）。
 
-リクエスト応答パラメータのカラム：
+リクエスト応答パラメータを持つ列：
 
-- `zxid` ([Int64](../../sql-reference/data-types/int-uint.md)) — ZooKeeperトランザクションID。成功裏に実行されたリクエストに応じてZooKeeperサーバーによって発行される系列番号（リクエストが実行されなかった/エラーを返した/クライアントがリクエストが実行されたかどうかわからない場合は `0`）。
-- `error` ([Nullable(Enum)](../../sql-reference/data-types/nullable.md)) — エラーコード。いくつかの値を持つことができ、以下のいくつかを示します：
+- `zxid` ([Int64](../../sql-reference/data-types/int-uint.md)) — ZooKeeperトランザクションID。成功裏に実行されたリクエストに応じてZooKeeperサーバーによって発行されたシリーズ番号（リクエストが実行されなかった/エラーを返した/クライアントがリクエストが実行されたかどうかわからない場合は`0`）。
+- `error` ([Nullable(Enum)](../../sql-reference/data-types/nullable.md)) — エラーコード。多くの値を持つ可能性がありますが、ここではその一部を示します：
     - `ZOK` — リクエストが正常に実行されました。
     - `ZCONNECTIONLOSS` — 接続が失われました。
-    - `ZOPERATIONTIMEOUT` — リクエスト実行のタイムアウトが期限切れになりました。
+    - `ZOPERATIONTIMEOUT` — リクエストの実行タイムアウトが経過しました。
     - `ZSESSIONEXPIRED` — セッションが期限切れになりました。
     - `NULL` — リクエストが完了しました。
-- `watch_type` ([Nullable(Enum)](../../sql-reference/data-types/nullable.md)) — `watch`イベントのタイプ（`op_num` = `Watch` の応答の場合）、他の応答の場合：`NULL`。
-- `watch_state` ([Nullable(Enum)](../../sql-reference/data-types/nullable.md)) — `watch`イベントの状態（`op_num` = `Watch` の応答の場合）、他の応答の場合：`NULL`。
-- `path_created` ([String](../../sql-reference/data-types/string.md)) — 作成されたZooKeeperノードへのパス（`CREATE` リクエストの応答の場合）、ノードが `sequential` として作成された場合、`path` と異なることがあります。
-- `stat_czxid` ([Int64](../../sql-reference/data-types/int-uint.md)) — このZooKeeperノードの作成の原因となった変更の `zxid`。
-- `stat_mzxid` ([Int64](../../sql-reference/data-types/int-uint.md)) — このZooKeeperノードを最後に変更した変更の `zxid`。
+- `watch_type` ([Nullable(Enum)](../../sql-reference/data-types/nullable.md)) — `watch`イベントのタイプ（`op_num` = `Watch`の応答の場合）、残りの応答の場合は`NULL`。
+- `watch_state` ([Nullable(Enum)](../../sql-reference/data-types/nullable.md)) — `watch`イベントの状態（`op_num` = `Watch`の応答の場合）、残りの応答の場合は`NULL`。
+- `path_created` ([String](../../sql-reference/data-types/string.md)) — 作成されたZooKeeperノードへのパス（`CREATE`リクエストへの応答の場合）、ノードが`sequential`として作成された場合は`path`とは異なる可能性があります。
+- `stat_czxid` ([Int64](../../sql-reference/data-types/int-uint.md)) — このZooKeeperノードが作成される原因となった変更の`zxid`。
+- `stat_mzxid` ([Int64](../../sql-reference/data-types/int-uint.md)) — このZooKeeperノードを最後に変更した変更の`zxid`。
 - `stat_pzxid` ([Int64](../../sql-reference/data-types/int-uint.md)) — このZooKeeperノードの子を最後に変更した変更のトランザクションID。
-- `stat_version` ([Int32](../../sql-reference/data-types/int-uint.md)) — このZooKeeperノードのデータへの変更の回数。
-- `stat_cversion` ([Int32](../../sql-reference/data-types/int-uint.md)) — このZooKeeperノードの子への変更の回数。
+- `stat_version` ([Int32](../../sql-reference/data-types/int-uint.md)) — このZooKeeperノードのデータに対する変更の数。
+- `stat_cversion` ([Int32](../../sql-reference/data-types/int-uint.md)) — このZooKeeperノードの子に対する変更の数。
 - `stat_dataLength` ([Int32](../../sql-reference/data-types/int-uint.md)) — このZooKeeperノードのデータフィールドの長さ。
 - `stat_numChildren` ([Int32](../../sql-reference/data-types/int-uint.md)) — このZooKeeperノードの子の数。
-- `children` ([Array(String)](../../sql-reference/data-types/array.md)) — 子ZooKeeperノードのリスト（`LIST` リクエストの応答の場合）。
+- `children` ([Array(String)](../../sql-reference/data-types/array.md)) — 子ZooKeeperノードのリスト（`LIST`リクエストへの応答の場合）。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT * FROM system.zookeeper_log WHERE (session_id = '106662742089334927') AND (xid = '10858') FORMAT Vertical;
 ```
 
-結果:
+結果：
 
 ```text
 Row 1:

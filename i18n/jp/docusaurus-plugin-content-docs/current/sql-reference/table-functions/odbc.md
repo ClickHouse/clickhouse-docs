@@ -1,39 +1,45 @@
 ---
-description: 'ODBC経由で接続されているテーブルを返します。'
-sidebar_label: 'odbc'
-sidebar_position: 150
-slug: /sql-reference/table-functions/odbc
-title: 'odbc'
+'description': 'ODBC で接続されたテーブルを返します。'
+'sidebar_label': 'ODBC'
+'sidebar_position': 150
+'slug': '/sql-reference/table-functions/odbc'
+'title': 'odbc'
 ---
+
+
 
 
 # odbc テーブル関数
 
-[ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) 経由で接続されているテーブルを返します。
+[ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity)を介して接続されたテーブルを返します。
+
+## 構文 {#syntax}
 
 ```sql
 odbc(connection_settings, external_database, external_table)
 ```
 
-パラメータ:
+## 引数 {#arguments}
 
-- `connection_settings` — `odbc.ini` ファイル内の接続設定を含むセクションの名前。
-- `external_database` — 外部DBMS内のデータベースの名前。
-- `external_table` — `external_database`内のテーブルの名前。
+| 引数                  | 説明                                                              |
+|-----------------------|-------------------------------------------------------------------|
+| `connection_settings` | `odbc.ini`ファイル内の接続設定のセクション名。                        |
+| `external_database`   | 外部DBMS内のデータベース名。                                        |
+| `external_table`      | `external_database`内のテーブル名。                                |
 
-ODBC接続を安全に実装するために、ClickHouseは`clickhouse-odbc-bridge`という別のプログラムを使用します。 ODBCドライバが`clickhouse-server`から直接読み込まれると、ドライバの問題がClickHouseサーバーをクラッシュさせる可能性があります。 ClickHouseは必要に応じて自動的に`clickhouse-odbc-bridge`を起動します。 ODBCブリッジプログラムは`clickhouse-server`と同じパッケージからインストールされます。
+ODBC接続を安全に実装するために、ClickHouseは別のプログラム `clickhouse-odbc-bridge`を使用します。ODBCドライバが `clickhouse-server`から直接ロードされた場合、ドライバの問題がClickHouseサーバーをクラッシュさせる可能性があります。ClickHouseは必要なときに自動的に `clickhouse-odbc-bridge`を起動します。ODBCブリッジプログラムは、`clickhouse-server`と同じパッケージからインストールされます。
 
-外部テーブルからの`NULL`値を持つフィールドは、基本データ型のデフォルト値に変換されます。 たとえば、リモートMySQLテーブルフィールドが`INT NULL`タイプの場合、これはClickHouseの`Int32`データ型のデフォルト値である0に変換されます。
+外部テーブルからの `NULL`値を持つフィールドは、基本データ型のデフォルト値に変換されます。たとえば、リモートMySQLテーブルのフィールドが `INT NULL`型の場合、ClickHouseの `Int32`データ型のデフォルト値である0に変換されます。
 
 ## 使用例 {#usage-example}
 
-**ODBC経由でローカルMySQLインストールからデータを取得する**
+**ODBCを介してローカルMySQLインストールからデータを取得する**
 
-この例は、Ubuntu Linux 18.04およびMySQLサーバー5.7で確認されています。
+この例はUbuntu Linux 18.04およびMySQLサーバー5.7で確認されています。
 
-unixODBCとMySQLコネクタがインストールされていることを確認してください。
+unixODBCおよびMySQL Connectorがインストールされていることを確認してください。
 
-デフォルトでは（パッケージからインストールした場合）、ClickHouseはユーザー`clickhouse`として起動します。 したがって、このユーザーをMySQLサーバーで作成および構成する必要があります。
+デフォルトでは（パッケージからインストールされた場合）、ClickHouseはユーザー `clickhouse`として起動します。したがって、MySQLサーバーでこのユーザーを作成して設定する必要があります。
 
 ```bash
 $ sudo mysql
@@ -44,7 +50,7 @@ mysql> CREATE USER 'clickhouse'@'localhost' IDENTIFIED BY 'clickhouse';
 mysql> GRANT ALL PRIVILEGES ON *.* TO 'clickhouse'@'clickhouse' WITH GRANT OPTION;
 ```
 
-次に、`/etc/odbc.ini`で接続を構成します。
+次に、`/etc/odbc.ini` に接続を設定します。
 
 ```bash
 $ cat /etc/odbc.ini
@@ -57,7 +63,7 @@ USERNAME = clickhouse
 PASSWORD = clickhouse
 ```
 
-unixODBCインストールの`isql`ユーティリティを使用して接続を確認できます。
+unixODBCインストールの `isql`ユーティリティを使用して接続を確認できます。
 
 ```bash
 $ isql -v mysqlconn
@@ -90,7 +96,7 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-ClickHouseでMySQLテーブルからデータを取得する:
+ClickHouseでのMySQLテーブルからのデータ取得:
 
 ```sql
 SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
@@ -102,7 +108,7 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 └────────┴──────────────┴───────┴────────────────┘
 ```
 
-## 参照 {#see-also}
+## 関連 {#see-also}
 
-- [ODBC辞書](/sql-reference/dictionaries#dbms)
-- [ODBCテーブルエンジン](/engines/table-engines/integrations/odbc)。
+- [ODBC 辞書](/sql-reference/dictionaries#dbms)
+- [ODBC テーブルエンジン](/engines/table-engines/integrations/odbc).

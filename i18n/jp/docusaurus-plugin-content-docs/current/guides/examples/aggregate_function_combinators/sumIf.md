@@ -1,22 +1,28 @@
 ---
-slug: '/examples/aggregate-function-combinators/sumIf'
-title: 'sumIf'
-description: 'sumIfコンビネータの使用例'
-keywords: ['sum', 'if', 'combinator', 'examples', 'sumIf']
-sidebar_label: 'sumIf'
+'slug': '/examples/aggregate-function-combinators/sumIf'
+'title': 'sumIf'
+'description': 'sumIfコンビネータの使用例'
+'keywords':
+- 'sum'
+- 'if'
+- 'combinator'
+- 'examples'
+- 'sumIf'
+'sidebar_label': 'sumIf'
 ---
+
+
 
 
 # sumIf {#sumif}
 
 ## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、[`sum`](/sql-reference/aggregate-functions/reference/sum)  
-関数に適用して、条件が真である行の値の合計を計算するために、`sumIf` 集約コンビネータ関数を使用します。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、条件が真である行の値の合計を計算するために、[`sum`](/sql-reference/aggregate-functions/reference/sum) 関数に適用できます。このために `sumIf` 集約コンビネータ関数を使用します。
 
 ## 使用例 {#example-usage}
 
-この例では、成功フラグを持つ販売データを保存するテーブルを作成し、成功したトランザクションの合計販売額を計算するために `sumIf` を使用します。
+この例では、成功フラグを持つ売上データを保存するテーブルを作成し、`sumIf` を使用して成功したトランザクションの総売上額を計算します。
 
 ```sql title="クエリ"
 CREATE TABLE sales(
@@ -38,8 +44,7 @@ SELECT
 FROM sales;
 ```
 
-`sumIf` 関数は、`is_successful = 1` の場合のみ金額を合計します。  
-この場合、合計は：100.50 + 200.75 + 300.00 + 175.25 となります。
+`sumIf` 関数は `is_successful = 1` の場合の金額のみを合計します。この場合、合計するのは: 100.50 + 200.75 + 300.00 + 175.25 になります。
 
 ```response title="レスポンス"
    ┌─total_successful_sales─┐
@@ -47,10 +52,9 @@ FROM sales;
    └───────────────────────┘
 ```
 
-### 価格の方向による取引量の計算 {#calculate-trading-vol-price-direction}
+### 価格方向による取引量の計算 {#calculate-trading-vol-price-direction}
 
-この例では、[ClickHouse playground](https://sql.clickhouse.com/) で利用できる `stock` テーブルを使用して、  
-2002年の前半における価格の方向による取引量を計算します。
+この例では、[ClickHouse playground](https://sql.clickhouse.com/) で入手可能な `stock` テーブルを使用して、2002年の上半期の価格方向による取引量を計算します。
 
 ```sql title="クエリ"
 SELECT 
@@ -82,10 +86,9 @@ ORDER BY month;
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### 銘柄ごとの取引量の計算 {#calculate-trading-volume}
+### 銘柄別の取引量の計算 {#calculate-trading-volume}
 
-この例では、[ClickHouse playground](https://sql.clickhouse.com/) で利用できる `stock` テーブルを使用して、  
-2006年の当時の最大手テクノロジー企業3社の銘柄ごとの取引量を計算します。
+この例では、[ClickHouse playground](https://sql.clickhouse.com/) で入手可能な `stock` テーブルを使用して、2006年の当時の3つの大手テクノロジー企業の銘柄別の取引量を計算します。
 
 ```sql title="クエリ"
 SELECT 
@@ -120,4 +123,4 @@ ORDER BY month;
 
 ## 参照 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`If コンビネータ`](/sql-reference/aggregate-functions/combinators#-if)
+- [`Ifコンビネータ`](/sql-reference/aggregate-functions/combinators#-if)

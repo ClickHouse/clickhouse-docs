@@ -1,11 +1,14 @@
 ---
-title: 'データフォーマット'
-sidebar_label: 'データフォーマット'
-slug: /chdb/reference/data-formats
-description: 'chDBのデータフォーマット'
-keywords: ['chdb', 'データフォーマット']
+'title': 'データ形式'
+'sidebar_label': 'データ形式'
+'slug': '/chdb/reference/data-formats'
+'description': 'chDBのデータ形式'
+'keywords':
+- 'chdb'
+- 'data formats'
 ---
-```
+
+
 
 When it comes to data formats, chDB is 100% feature compatible with ClickHouse.
 
@@ -99,4 +102,3 @@ The supported data formats from ClickHouse are:
 | Markdown                        | ✗     | ✔      |
 
 For further information and examples, see [ClickHouse formats for input and output data](/interfaces/formats).
-

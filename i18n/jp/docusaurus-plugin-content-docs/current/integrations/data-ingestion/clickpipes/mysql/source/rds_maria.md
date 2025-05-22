@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Amazon RDS MariaDB'
-description: 'ClickPipesのソースとしてAmazon RDS MariaDBを設定するためのステップバイステップガイド'
-slug: /integrations/clickpipes/mysql/source/rds_maria
-title: 'RDS MariaDB ソース設定ガイド'
+'sidebar_label': 'Amazon RDS MariaDB'
+'description': 'ClickPipes のソースとして Amazon RDS MariaDB を設定する手順ガイド'
+'slug': '/integrations/clickpipes/mysql/source/rds_maria'
+'title': 'RDS MariaDB ソースセットアップガイド'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
@@ -16,85 +16,85 @@ import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/
 import Image from '@theme/IdealImage';
 
 
-# RDS MariaDB ソース設定ガイド
+# RDS MariaDB ソースセットアップガイド
 
-これは、RDS MariaDB インスタンスを MySQL ClickPipe 経由でデータをレプリケーションするために構成する手順のガイドです。
+これは、MySQL ClickPipe を介してデータを複製するために RDS MariaDB インスタンスを構成する方法のステップバイステップガイドです。
 <br/>
 :::info
-MySQL の FAQ を [こちら](/integrations/data-ingestion/clickpipes/mysql/faq.md)で確認することをお勧めします。FAQ ページは現在も更新されています。
+MySQL FAQ の確認もお勧めします [こちら](/integrations/data-ingestion/clickpipes/mysql/faq.md)。FAQ ページは定期的に更新されています。
 :::
 
-## バイナリログ保持の有効化 {#enable-binlog-retention-rds}
-バイナリログは、MySQL サーバインスタンスに対するデータ変更に関する情報を含むログファイルのセットです。レプリケーションにはバイナリログファイルが必要です。以下の両方の手順を実行する必要があります。
+## バイナリログの保持を有効にする {#enable-binlog-retention-rds}
+バイナリログは、MySQL サーバーインスタンスに対して行われたデータの変更に関する情報を含むログファイルのセットです。複製にはバイナリログファイルが必要です。以下の両方のステップを実行する必要があります:
 
-### 1. 自動バックアップを介してバイナリログを有効にする {#enable-binlog-logging-rds}
+### 1. 自動バックアップ経由でバイナリログを有効にする {#enable-binlog-logging-rds}
 
-自動バックアップ機能は、MySQL に対するバイナリログがオンまたはオフになっているかを決定します。AWS コンソールで設定できます：
+自動バックアップ機能は、MySQL のバイナリログがオンまたはオフになっているかどうかを決定します。AWS コンソールで設定できます:
 
-<Image img={rds_backups} alt="RDSにおける自動バックアップの有効化" size="lg" border/>
+<Image img={rds_backups} alt="RDS での自動バックアップの有効化" size="lg" border/>
 
-レプリケーションのユースケースに応じて、バックアップの保持期間を合理的に長く設定することをお勧めします。
+複製の使用ケースに応じて、バックアップの保持期間を適切な長さに設定することが推奨されます。
 
 ### 2. バイナリログ保持時間 {#binlog-retention-hours-rds}
-Amazon RDS for MariaDB では、バイナリログの保持時間を設定する方法が異なります。これは、変更を含むバイナリログファイルが保持される時間のことです。バイナリログファイルが削除される前に、変更が読み取られない場合、レプリケーションは継続できません。バイナリログの保持時間のデフォルト値は NULL で、これはバイナリログが保持されないことを意味します。
+Amazon RDS for MariaDB では、バイナリログの保持期間を設定するための異なる方法があり、これは変更を含むバイナリログファイルが保持される時間のことを指します。バイナリログファイルが削除される前に変更が読み取られない場合、複製は続行できなくなります。バイナリログ保持時間のデフォルト値は NULL で、これはバイナリログが保持されていないことを意味します。
 
-DB インスタンス上でバイナリログを保持する時間を指定するには、mysql.rds_set_configuration 関数を使用して、レプリケーションが発生するのに十分なバイナリログの保持期間を指定します。 `24時間` が推奨される最小値です。
+DB インスタンスでバイナリログの保持時間を指定するには、mysql.rds_set_configuration 関数を使用し、複製が行われるのに十分なバイナリログ保持期間を指定します。推奨される最小値は「24 時間」です。
 
 ```text
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 ```
 
-## パラメータグループ内のバイナリログ設定を構成する {#binlog-parameter-group-rds}
+## パラメータグループでのバイナリログ設定の構成 {#binlog-parameter-group-rds}
 
-パラメータグループは、RDS コンソールで MariaDB インスタンスをクリックし、`Configurations` タブに移動すると見つかります。
+パラメータグループは、RDS コンソールで MariaDB インスタンスをクリックし、`Configurations` タブに移動することで見つけることができます。
 
-<Image img={rds_config} alt="RDS内のパラメータグループの見つけ方" size="lg" border/>
+<Image img={rds_config} alt="RDS でのパラメータグループの見つけ方" size="lg" border/>
 
-パラメータグループのリンクをクリックすると、パラメータグループのリンクページに移動します。右上に Edit ボタンが表示されます：
+パラメータグループリンクをクリックすると、パラメータグループリンクページに移動します。右上に「Edit」ボタンが表示されます:
 
-<Image img={edit_button} alt="パラメータグループの編集" size="lg" border/>
+<Image img={edit_button} alt="パラメータグループを編集" size="lg" border/>
 
-`binlog_format`, `binlog_row_metadata`、および `binlog_row_image` を以下のように設定する必要があります：
+設定は以下の通りにする必要があります:
 
 1. `binlog_format` を `ROW` に設定します。
 
-<Image img={binlog_format} alt="Binlog形式をROWに設定" size="lg" border/>
+<Image img={binlog_format} alt="バイナリログフォーマットを ROW に設定" size="lg" border/>
 
 2. `binlog_row_metadata` を `FULL` に設定します。
 
-<Image img={binlog_row_metadata} alt="Binlog行メタデータをFULLに設定" size="lg" border/>
+<Image img={binlog_row_metadata} alt="バイナリログ行メタデータを FULL に設定" size="lg" border/>
 
 3. `binlog_row_image` を `FULL` に設定します。
 
-<Image img={binlog_row_image} alt="Binlog行イメージをFULLに設定" size="lg" border/>
+<Image img={binlog_row_image} alt="バイナリログ行画像を FULL に設定" size="lg" border/>
 
-次に、右上の `Save Changes` をクリックします。変更を有効にするためにインスタンスを再起動する必要があるかもしれません。RDS インスタンスの Configurations タブで、パラメータグループのリンクの横に `Pending reboot` が表示されている場合は、インスタンスを再起動する必要があることを良い兆候とみなしてください。
+次に、右上の「Save Changes」をクリックします。変更を有効にするにはインスタンスを再起動する必要がある場合があります。RDS インスタンスの Configurations タブのパラメータグループリンクの横に「Pending reboot」と表示されている場合は、インスタンスの再起動が必要であることを示す良いサインです。
 
 <br/>
 :::tip
-MariaDB クラスターがある場合、上記のパラメータは [DB クラスター](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) のパラメータグループで見つかり、DB インスタンスグループにはありません。
+MariaDB クラスターがある場合、上記のパラメータは [DB クラスター](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) パラメータグループに見つかり、DB インスタンスグループには見つかりません。
 :::
 
-## GTIDモードの有効化 {#gtid-mode-rds}
-グローバルトランザクションID (GTID) は、MySQL/MariaDB の各コミット済みトランザクションに割り当てられる一意のIDです。これにより、バイナリログのレプリケーションを簡素化し、トラブルシューティングがより簡単になります。MariaDB はデフォルトで GTID モードを有効にしているため、使用するためにユーザーアクションは必要ありません。
+## GTID モードを有効にする {#gtid-mode-rds}
+グローバルトランザクション識別子 (GTID) は、MySQL/MariaDB でコミットされた各トランザクションに割り当てられる一意の ID です。これにより、バイナリログの複製が簡素化され、トラブルシューティングが容易になります。MariaDB では、GTID モードがデフォルトで有効になっているため、使用するためのユーザーアクションは必要ありません。
 
 ## データベースユーザーの構成 {#configure-database-user-rds}
 
-管理ユーザーとして RDS MariaDB インスタンスに接続し、以下のコマンドを実行します：
+管理者ユーザーとして RDS MariaDB インスタンスに接続し、次のコマンドを実行します:
 
-1. ClickPipes 用の専用ユーザーを作成します：
+1. ClickPipes 用の専用ユーザーを作成します:
 
     ```sql
     CREATE USER 'clickpipes_user'@'host' IDENTIFIED BY 'some-password';
     ```
 
-2. スキーマの権限を付与します。以下の例は `mysql` データベースに対する権限を示しています。レプリケートしたい各データベースとホストについて、このコマンドを繰り返します：
+2. スキーマ権限を付与します。以下の例は `mysql` データベースの権限を示しています。複製したい各データベースとホストに対してこれらのコマンドを繰り返します:
 
     ```sql
     GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
     ```
 
-3. ユーザーにレプリケーション権限を付与します：
+3. ユーザーに複製権限を付与します:
 
     ```sql
     GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
@@ -107,10 +107,10 @@ MariaDB クラスターがある場合、上記のパラメータは [DB クラ�
 
 RDS インスタンスへのトラフィックを制限したい場合は、RDS セキュリティグループの `Inbound rules` に [文書化された静的 NAT IP](../../index.md#list-of-static-ips) を追加してください。
 
-<Image img={security_group_in_rds_mysql} alt="RDS内のセキュリティグループの見つけ方" size="lg" border/>
+<Image img={security_group_in_rds_mysql} alt="RDS でのセキュリティグループの見つけ方" size="lg" border/>
 
-<Image img={edit_inbound_rules} alt="上記セキュリティグループに対する受信ルールの編集" size="lg" border/>
+<Image img={edit_inbound_rules} alt="上記セキュリティグループのインバウンドルールを編集" size="lg" border/>
 
-### AWS PrivateLinkを通じたプライベートアクセス {#private-access-via-aws-privatelink}
+### AWS PrivateLink 経由のプライベートアクセス {#private-access-via-aws-privatelink}
 
-プライベートネットワークを介して RDS インスタンスに接続するには、AWS PrivateLink を使用します。接続の設定については、[ClickPipesのためのAWS PrivateLink設定ガイド](/knowledgebase/aws-privatelink-setup-for-clickpipes)を参照してください。
+プライベートネットワークを介して RDS インスタンスに接続するには、AWS PrivateLink を使用できます。接続の設定については、[ClickPipes 用の AWS PrivateLink セットアップガイド](/knowledgebase/aws-privatelink-setup-for-clickpipes) を参照してください。

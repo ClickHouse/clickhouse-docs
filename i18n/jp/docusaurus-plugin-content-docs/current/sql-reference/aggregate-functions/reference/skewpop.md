@@ -1,9 +1,11 @@
 ---
-description: 'シーケンスの歪度を計算します。'
-sidebar_position: 185
-slug: /sql-reference/aggregate-functions/reference/skewpop
-title: 'skewPop'
+'description': 'Computes the skewness of a sequence.'
+'sidebar_position': 185
+'slug': '/sql-reference/aggregate-functions/reference/skewpop'
+'title': 'skewPop'
 ---
+
+
 
 
 # skewPop
@@ -20,7 +22,7 @@ skewPop(expr)
 
 **返される値**
 
-指定された分布の歪度。型 — [Float64](../../../sql-reference/data-types/float.md)
+指定された分布の歪度。タイプ — [Float64](../../../sql-reference/data-types/float.md)
 
 **例**
 

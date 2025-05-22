@@ -1,19 +1,21 @@
 ---
-description: 'EXCEPT句のドキュメント'
-sidebar_label: 'EXCEPT'
-slug: /sql-reference/statements/select/except
-title: 'EXCEPT句'
+'description': 'EXCEPT 句のドキュメント'
+'sidebar_label': 'EXCEPT'
+'slug': '/sql-reference/statements/select/except'
+'title': 'EXCEPT Clause'
 ---
+
+
 
 
 # EXCEPT句
 
 `EXCEPT`句は、最初のクエリの結果から2番目のクエリを除いた行のみを返します。
 
-- 両方のクエリは、同じ順序とデータ型で同じ数のカラムを持つ必要があります。
-- `EXCEPT`の結果には重複行が含まれる可能性があります。重複行が望ましくない場合は、`EXCEPT DISTINCT`を使用してください。
-- 複数の`EXCEPT`ステートメントは、括弧が指定されていない場合は左から右に実行されます。
-- `EXCEPT`演算子は`UNION`句と同じ優先順位を持ち、`INTERSECT`句よりも低い優先順位を持ちます。
+- 両方のクエリは同じ数のカラムを同じ順序とデータ型で持つ必要があります。
+- `EXCEPT`の結果には重複行が含まれる可能性があります。重複が望ましくない場合は`EXCEPT DISTINCT`を使用してください。
+- 括弧が指定されていない場合、複数の`EXCEPT`文は左から右に実行されます。
+- `EXCEPT`演算子は、`UNION`句と同じ優先度を持ち、`INTERSECT`句よりも低い優先度です。
 
 ## 構文 {#syntax}
 
@@ -28,9 +30,9 @@ SELECT column1 [, column2 ]
 FROM table2
 [WHERE condition]
 ```
-条件は、あなたの要件に基づく任意の式である可能性があります。
+条件は、要件に基づく任意の式で設定できます。
 
-さらに、`EXCEPT()`を使用して、同じテーブルの結果からカラムを除外することができます。これは、BigQuery（Google Cloud）で可能な構文を用いて、以下のように記述します。
+さらに、`EXCEPT()`を使用して同じテーブルの結果からカラムを除外することができます。これはBigQuery（Google Cloud）で可能な構文です：
 
 ```sql
 SELECT column1 [, column2 ] EXCEPT (column3 [, column4]) 
@@ -38,13 +40,13 @@ FROM table1
 [WHERE condition]
 ```
 
-## サンプル {#examples}
+## 例 {#examples}
 
-このセクションのサンプルは、`EXCEPT`句の使用法を示しています。
+このセクションの例は、`EXCEPT`句の使用法を示しています。
 
-### `EXCEPT`句を使った数字のフィルタリング {#filtering-numbers-using-the-except-clause}
+### `EXCEPT`句を使用した数字のフィルタリング {#filtering-numbers-using-the-except-clause}
 
-次の例では、1から10の数字で、3から8の数字に含まれないものを返します。
+こちらは、数字3から8の数字が含まれない1から10の数字を返すシンプルな例です：
 
 クエリ：
 
@@ -67,9 +69,9 @@ FROM numbers(3, 8)
 └────────┘
 ```
 
-### `EXCEPT()`を使用して特定のカラムを除外する {#excluding-specific-columns-using-except}
+### `EXCEPT()`を使用した特定のカラムの除外 {#excluding-specific-columns-using-except}
 
-`EXCEPT()`を使用して、結果からカラムを迅速に除外することができます。たとえば、特定のカラムを除外した上でテーブルからすべてのカラムを選択したい場合、以下のように記述します。
+`EXCEPT()`を使用して結果からカラムを迅速に除外することができます。たとえば、以下の例のように、いくつかのカラムを除外してテーブルからすべてのカラムを選択したいとします：
 
 クエリ：
 
@@ -108,10 +110,10 @@ LIMIT 5
    └─────────────────────────┴────────────┴─────────┴──────┴──────┴─────────┴─────────────┴────────────┘
 ```
 
-### 暗号通貨データを使った`EXCEPT`と`INTERSECT`の使用 {#using-except-and-intersect-with-cryptocurrency-data}
+### 暗号通貨データとともに`EXCEPT`および`INTERSECT`を使用する {#using-except-and-intersect-with-cryptocurrency-data}
 
-`EXCEPT`と`INTERSECT`は、異なるブールロジックで互換性がある場合が多く、共通のカラム（またはカラム）を共有する2つのテーブルがある場合に役立ちます。
-たとえば、取引価格とボリュームを含む数百万行の歴史的な暗号通貨データがあるとします。
+`EXCEPT`と`INTERSECT`は、異なるブール論理で相互に使用されることが多く、共通のカラム（またはカラム）のある2つのテーブルがある場合にどちらも役立ちます。
+たとえば、取引価格と取引量を含む歴史的な暗号通貨データが数百万行あるとしましょう：
 
 クエリ：
 
@@ -158,7 +160,7 @@ LIMIT 10;
 └────────────┴─────────────┴─────────────┴──────────┴──────────────┴───────────────┘
 ```
 
-次に、我々が所有している暗号通貨のリストと、そのコインの数量を含む`holdings`という名前のテーブルがあるとします。
+次に、私たちが保有している暗号通貨のリストとそれぞれのコイン枚数を含む`holdings`という名前のテーブルがあるとしましょう：
 
 ```sql
 CREATE TABLE holdings
@@ -178,7 +180,7 @@ INSERT INTO holdings VALUES
    ('Bitcoin Diamond', 5000);
 ```
 
-`EXCEPT`を使用して、**「私たちが所有するコインのうち、$10未満で取引されたことのないものはどれか？」**という質問に答えることができます。
+`EXCEPT`を使用して「**私たちの所有するコインで$10未満で取引されたことがないのはどれか？**」という質問に答えることができます：
 
 ```sql
 SELECT crypto_name FROM holdings
@@ -196,11 +198,11 @@ WHERE price < 10;
 └─────────────┘
 ```
 
-これは、4つの暗号通貨のうち、Bitcoinだけが$10未満に下がったことがないことを意味します（この例で使用されている限られたデータに基づいています）。
+これは、私たちが所有する4つの暗号通貨のうち、Bitcoinだけが$10を下回ったことがないことを示しています（この例で示される限られたデータに基づいています）。
 
-### `EXCEPT DISTINCT`の使用 {#using-except-distinct}
+### `EXCEPT DISTINCT`を使用する {#using-except-distinct}
 
-前のクエリでは、複数のBitcoin保有が結果に含まれていることに注意してください。`EXCEPT`に`DISTINCT`を追加することで、結果から重複行を排除できます。
+以前のクエリでは、結果に複数のBitcoinの保有がありました。`EXCEPT`に`DISTINCT`を追加して、結果から重複行を排除することができます：
 
 ```sql
 SELECT crypto_name FROM holdings

@@ -1,3 +1,7 @@
+---
+{}
+---
+
 import Image from '@theme/IdealImage';
 import s3_1 from '@site/static/images/_snippets/s3/s3-1.png';
 import s3_2 from '@site/static/images/_snippets/s3/s3-2.png';
@@ -18,29 +22,29 @@ import s3_g from '@site/static/images/_snippets/s3/s3-g.png';
 import s3_h from '@site/static/images/_snippets/s3/s3-h.png';
 
 <details>
-  <summary>S3バケットとIAMユーザーの作成</summary>
+  <summary> S3バケットとIAMユーザーの作成</summary>
 
-この資料では、AWS IAMユーザーの設定方法、S3バケットの作成、それをClickHouseでS3ディスクとして使用する設定の基本を説明します。使用する権限を決定するためにセキュリティチームと協力し、これらを出発点として考慮してください。
+この記事では、AWS IAMユーザーの基本設定、S3バケットの作成、およびClickHouseをそのバケットをS3ディスクとして使用するように設定する方法を示します。使用する権限についてはセキュリティチームと相談し、これらを出発点として考慮してください。
 
 ### AWS IAMユーザーの作成 {#create-an-aws-iam-user}
 この手順では、ログインユーザーではなく、サービスアカウントユーザーを作成します。
-1.  AWS IAM管理コンソールにログインします。
+1. AWS IAM管理コンソールにログインします。
 
-2. 「ユーザー」から、**ユーザーの追加**を選択します。
+2. 「ユーザー」で**ユーザーの追加**を選択します。
 
-<Image size="md" img={s3_1} alt="AWS IAM管理コンソール - 新しいユーザーの追加" border force/>
+<Image size="md" img={s3_1} alt="AWS IAM Management Console - 新しいユーザーの追加" border force/>
 
-3. ユーザー名を入力し、認証情報タイプを**アクセスキー - プログラムによるアクセス**に設定し、**次へ: 権限**を選択します。
+3. ユーザー名を入力し、認証情報の種類を**アクセスキー - プログラムによるアクセス**に設定し、**次へ: 権限**を選択します。
 
 <Image size="md" img={s3_2} alt="IAMユーザーのユーザー名とアクセスタイプの設定" border force/>
 
-4. ユーザーをグループに追加しないでください；**次へ: タグ**を選択します。
+4. ユーザーをいかなるグループにも追加せず、**次へ: タグ**を選択します。
 
-<Image size="md" img={s3_3} alt="IAMユーザーのグループ割り当てをスキップ" border force/>
+<Image size="md" img={s3_3} alt="IAMユーザーのグループ割り当てのスキップ" border force/>
 
 5. タグを追加する必要がない限り、**次へ: 確認**を選択します。
 
-<Image size="md" img={s3_4} alt="IAMユーザーのタグ割り当てをスキップ" border force/>
+<Image size="md" img={s3_4} alt="IAMユーザーのタグ割り当てのスキップ" border force/>
 
 6. **ユーザーの作成**を選択します。
 
@@ -50,20 +54,20 @@ import s3_h from '@site/static/images/_snippets/s3/s3-h.png';
 
 <Image size="md" img={s3_5} alt="権限なしの警告でIAMユーザーを作成" border force/>
 
-7. ユーザーが作成されました；**表示**をクリックし、アクセスキーとシークレットキーをコピーします。
+7. ユーザーが作成されました。**表示**をクリックし、アクセスキーとシークレットキーをコピーします。
 :::note
-キーは他の場所に保存してください。シークレットアクセスキーが利用可能なのはこの一度きりです。
+キーは他の場所に保存してください。これはシークレットアクセスキーが利用可能な唯一の時点です。
 :::
 
-<Image size="md" img={s3_6} alt="IAMユーザーのアクセスキーを表示してコピーする" border force/>
+<Image size="md" img={s3_6} alt="IAMユーザーのアクセスキーの表示とコピー" border force/>
 
-8. 閉じるをクリックし、ユーザー画面でユーザーを見つけます。
+8. 閉じるをクリックし、ユーザーの画面でユーザーを見つけます。
 
-<Image size="md" img={s3_7} alt="ユーザーリストで新しく作成したIAMユーザーを見つける" border force/>
+<Image size="md" img={s3_7} alt="ユーザーリストで新しく作成されたIAMユーザーを見つける" border force/>
 
-9. ARN (Amazon Resource Name) をコピーして、バケットのアクセスポリシーを設定する際に使用します。
+9. ARN（Amazonリソースネーム）をコピーし、バケットのアクセスポリシーを設定する際に使用するために保存します。
 
-<Image size="md" img={s3_8} alt="IAMユーザーのARNをコピーする" border force/>
+<Image size="md" img={s3_8} alt="IAMユーザーのARNをコピー" border force/>
 
 ### S3バケットの作成 {#create-an-s3-bucket}
 1. S3バケットセクションで、**バケットの作成**を選択します。
@@ -72,43 +76,43 @@ import s3_h from '@site/static/images/_snippets/s3/s3-h.png';
 
 2. バケット名を入力し、他のオプションはデフォルトのままにします。
 :::note
-バケット名はAWS全体で一意でなければなりません。組織内だけでなく、誤ってエラーを発生させないようにしてください。
+バケット名はAWS全体で一意である必要があります。同一の組織内だけではエラーが発生します。
 :::
-3. `Block all Public Access`を有効のままにします。公共アクセスは必要ありません。
+3. `すべてのパブリックアクセスをブロック`を有効なままにします。公共のアクセスは必要ありません。
 
-<Image size="md" img={s3_a} alt="公共アクセスをブロックしたS3バケット設定の構成" border force/>
+<Image size="md" img={s3_a} alt="パブリックアクセスをブロックしたS3バケット設定の構成" border force/>
 
 4. ページの下部で**バケットの作成**を選択します。
 
 <Image size="md" img={s3_b} alt="S3バケット作成の最終確認" border force/>
 
-5. リンクを選択し、ARNをコピーして、バケットのアクセスポリシーを設定する際に使用します。
+5. リンクを選択し、ARNをコピーし、バケットのアクセスポリシーを設定する際に使用するために保存します。
 
-6. バケットが作成されたら、S3バケットリストで新しいS3バケットを探し、リンクを選択します。
+6. バケットが作成されたら、S3バケットリストで新しいS3バケットを見つけ、リンクを選択します。
 
-<Image size="md" img={s3_c} alt="バケットリストで新しく作成したS3バケットを見つける" border force/>
+<Image size="md" img={s3_c} alt="バケットリストで新しく作成されたS3バケットを見つける" border force/>
 
 7. **フォルダーの作成**を選択します。
 
-<Image size="md" img={s3_d} alt="S3バケットに新しいフォルダーを作成する" border force/>
+<Image size="md" img={s3_d} alt="S3バケットに新しいフォルダーを作成" border force/>
 
 8. ClickHouse S3ディスクのターゲットとなるフォルダー名を入力し、**フォルダーの作成**を選択します。
 
-<Image size="md" img={s3_e} alt="ClickHouse S3ディスク使用のためのフォルダー名を設定" border force/>
+<Image size="md" img={s3_e} alt="ClickHouse S3ディスク使用のためのフォルダー名の設定" border force/>
 
-9. フォルダーがバケットリストに表示されるようになります。
+9. フォルダーは現在バケットリストに表示されるはずです。
 
-<Image size="md" img={s3_f} alt="S3バケットに新しく作成されたフォルダーを表示" border force/>
+<Image size="md" img={s3_f} alt="S3バケットで新しく作成されたフォルダーの表示" border force/>
 
-10. 新しいフォルダーのチェックボックスを選択し、**URLをコピー**をクリックします。コピーしたURLは、次のセクションのClickHouseストレージ設定で使用します。
+10. 新しいフォルダーのチェックボックスを選択し、**URLをコピー**をクリックします。コピーされたURLを、次のセクションでClickHouseストレージ構成に使用するために保存します。
 
-<Image size="md" img={s3_g} alt="ClickHouse設定用のS3フォルダーURLをコピー" border force/>
+<Image size="md" img={s3_g} alt="ClickHouse構成のためのS3フォルダーURLをコピー" border force/>
 
-11. **権限**タブを選択し、**バケットポリシー**セクションで**編集**ボタンをクリックします。
+11. **Permissions**タブを選択し、**バケットポリシー**セクションの**編集**ボタンをクリックします。
 
-<Image size="md" img={s3_h} alt="S3バケットポリシー設定にアクセス" border force/>
+<Image size="md" img={s3_h} alt="S3バケットポリシー設定のアクセス" border force/>
 
-12. バケットポリシーを追加し、以下の例を参考にします：
+12. 以下のようにバケットポリシーを追加します：
 ```json
 {
   "Version" : "2012-10-17",
@@ -131,19 +135,19 @@ import s3_h from '@site/static/images/_snippets/s3/s3-h.png';
 ```
 
 ```response
-|Parameter | 説明 | 例の値 |
+|パラメーター | 説明 | 例の値 |
 |----------|-------------|----------------|
-|Version | ポリシーインタープリターのバージョン、そのままにします | 2012-10-17 |
+|Version | ポリシーインタープリターのバージョン、そのままにしておく | 2012-10-17 |
 |Sid | ユーザー定義のポリシーID | abc123 |
-|Effect | ユーザーのリクエストが許可されるか否か | Allow |
+|Effect | ユーザーのリクエストを許可または拒否するか | Allow |
 |Principal | 許可されるアカウントまたはユーザー | arn:aws:iam::921234567898:user/mars-s3-user |
-|Action | バケットに対して許可される操作 | s3:* |
+|Action | バケットで許可される操作 | s3:*|
 |Resource | バケット内で操作が許可されるリソース | "arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*" |
 ```
 
 :::note
-権限については、セキュリティチームと協力して決定してください。これらを出発点としてください。
-ポリシーや設定に関する詳細は、AWSの文書を参照してください：
+使用する权限の決定はセキュリティチームと相談してください。これを出発点と考えて実施してください。
+ポリシーおよび設定についての詳細はAWSのドキュメントを参照してください：
 https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html
 :::
 

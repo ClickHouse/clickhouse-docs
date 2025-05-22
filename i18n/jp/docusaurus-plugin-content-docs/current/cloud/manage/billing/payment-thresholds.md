@@ -1,20 +1,26 @@
 ---
-sidebar_label: '支払い閾値'
-slug: /cloud/billing/payment-thresholds
-title: '支払い閾値'
-description: 'ClickHouse Cloud の支払い閾値と自動請求書発行について。'
-keywords: ['請求', '支払い閾値', '自動請求書発行', '請求書']
+'sidebar_label': 'Payment Thresholds'
+'slug': '/cloud/billing/payment-thresholds'
+'title': 'Payment Thresholds'
+'description': 'Payment thresholds and automatic invoicing for ClickHouse Cloud.'
+'keywords':
+- 'billing'
+- 'payment thresholds'
+- 'automatic invoicing'
+- 'invoice'
 ---
 
 
-# 支払い閾値
 
-ClickHouse Cloud の請求期間中の未払い金額が $10,000 USD または同等の金額に達すると、あなたの支払い方法は自動的に請求されます。 請求が失敗した場合、猶予期間の後にサービスが一時停止または終了します。
+
+# 支払いの閾値
+
+ClickHouse Cloud の請求期間において、未払い額が $10,000 USD、またはその相当額に達すると、お客様の支払い方法が自動的に請求されます。請求が失敗した場合、猶予期間の後にサービスが一時停止または終了されることになります。
 
 :::note
-この支払い閾値は、ClickHouse と契約された支出契約やその他の交渉された契約がある顧客には適用されません。
+この支払いの閾値は、ClickHouse と契約した支出契約や他の交渉された契約を持つ顧客には適用されません。
 :::
 
-もしあなたの組織が支払い閾値の 90% に達し、中期的に支払い閾値を超えそうな場合、組織に関連付けられている請求用のメールアドレスに通知が送信されます。支払い閾値を超えた際には、あなたにもメール通知と請求書が送信されます。
+お客様の組織が支払いの閾値の90%に達し、期間の途中で支払いの閾値を超える見込みがある場合、組織に関連付けられた請求メールに通知が送信されます。支払いの閾値を超えた際には、通知のメールと請求書も送信されます。
 
-これらの支払い閾値は、顧客からのリクエストまたは ClickHouse 財務チームによって $10,000 未満に調整することができます。 ご不明な点がある場合は、support@clickhouse.com までお問い合わせください。
+これらの支払いの閾値は、顧客からのリクエストや ClickHouse の財務チームによって $10,000 未満に調整可能です。ご質問がある場合は、support@clickhouse.com にお問い合わせください。

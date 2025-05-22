@@ -1,17 +1,24 @@
 ---
-slug: '/examples/aggregate-function-combinators/countIf'
-title: 'countIf'
-description: 'countIf コムビネーターの使用例'
-keywords: ['count', 'if', 'combinator', 'examples', 'countIf']
-sidebar_label: 'countIf'
+'slug': '/examples/aggregate-function-combinators/countIf'
+'title': 'countIf'
+'description': 'countIfコンビネータの使用例'
+'keywords':
+- 'count'
+- 'if'
+- 'combinator'
+- 'examples'
+- 'countIf'
+'sidebar_label': 'countIf'
 ---
+
+
 
 
 # countIf {#countif}
 
 ## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) コムビネーターは、`[`count`](/sql-reference/aggregate-functions/reference/count)` 関数に適用され、条件が真である行の数をカウントするために `countIf` 集約コムビネーター関数を使用します。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、`count`（行数を数える）関数に適用でき、条件が真である行の数をカウントするために `countIf` 集計コンビネータ関数を使用します。
 
 ## 使用例 {#example-usage}
 
@@ -48,6 +55,6 @@ GROUP BY user_id;
    └─────────┴───────────────────┘
 ```
 
-## 参照 {#see-also}
+## 関連項目 {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

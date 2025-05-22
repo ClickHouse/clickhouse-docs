@@ -1,32 +1,31 @@
 ---
-slug: /guides/replacing-merge-tree
-title: 'ReplacingMergeTree'
-description: 'ClickHouseでReplacingMergeTreeエンジンを使用する'
-keywords: ['replacingmergetree', 'inserts', 'deduplication']
+'slug': '/guides/replacing-merge-tree'
+'title': 'ReplacingMergeTree'
+'description': 'ClickHouse で ReplacingMergeTree エンジンを使用する'
+'keywords':
+- 'replacingmergetree'
+- 'inserts'
+- 'deduplication'
 ---
-```
 
 import postgres_replacingmergetree from '@site/static/images/migrations/postgres-replacingmergetree.png';
 import Image from '@theme/IdealImage';
 
-トランザクションデータベースはトランザクションの更新および削除のワークロードに最適化されていますが、OLAPデータベースはそのような操作に対しては低い保証を提供します。代わりに、これらは大規模にバッチで挿入される不変のデータに最適化され、高速な分析クエリの恩恵を受けます。ClickHouseは、ミューテーションを介した更新操作や、行を削除するための軽量な手段を提供していますが、その列指向構造により、これらの操作は上記のように注意深くスケジュールする必要があります。これらの操作は非同期で処理され、単一のスレッドで実行され、（更新の場合は）ディスク上にデータを書き込む必要があります。したがって、小さな変更を多数行うためには使用すべきではありません。
-上記の使用パターンを避けながら、更新および削除行のストリームを処理するために、ClickHouseのテーブルエンジンであるReplacingMergeTreeを使用することができます。
+While transactional databases are optimized for transactional update and delete workloads, OLAP databases offer reduced guarantees for such operations. Instead, they optimize for immutable data inserted in batches for the benefit of significantly faster analytical queries. While ClickHouse offers update operations through mutations, as well as a lightweight means of deleting rows, its column-orientated structure means these operations should be scheduled with care, as described above. These operations are handled asynchronously, processed with a single thread, and require (in the case of updates) data to be rewritten on disk. They should thus not be used for high numbers of small changes. In order to process a stream of update and delete rows while avoiding the above usage patterns, we can use the ClickHouse table engine ReplacingMergeTree.
 
-## 挿入された行の自動アップサート {#automatic-upserts-of-inserted-rows}
+## Automatic upserts of inserted rows {#automatic-upserts-of-inserted-rows}
 
-[ReplacingMergeTreeテーブルエンジン](/engines/table-engines/mergetree-family/replacingmergetree)は、非効率的な`ALTER`や`DELETE`ステートメントを使用せずに、行に更新操作を適用できるようにすることで、ユーザーが同じ行の複数のコピーを挿入し、そのうちの1つを最新バージョンとして指定する能力を提供します。バックグラウンドプロセスが同じ行の古いバージョンを非同期で削除し、不変の挿入を使用して更新操作を効率的に模倣します。
-これは、テーブルエンジンが重複行を特定する能力に依存しています。これは、`ORDER BY`句を使用して一意性を決定することで達成されます。つまり、`ORDER BY`で指定されたカラムの値が同じ2つの行は重複として扱われます。テーブル定義時に指定された`version`カラムにより、2つの行が重複していると見なされた場合、最新のバージョンの行が保持されます。すなわち、最高のバージョン値を持つ行が保持されます。
-以下の例でこのプロセスを示します。ここでは、行はAカラム（テーブルの`ORDER BY`）によって一意に識別されます。これらの行は2つのバッチとして挿入されたと仮定し、ディスク上に2つのデータパーツが形成されます。後に、非同期のバックグラウンドプロセス中に、これらのパーツが一緒にマージされます。
+The [ReplacingMergeTree table engine](/engines/table-engines/mergetree-family/replacingmergetree) allows update operations to be applied to rows, without needing to use inefficient `ALTER` or `DELETE` statements, by offering the ability for users to insert multiple copies of the same row and denote one as the latest version. A background process, in turn, asynchronously removes older versions of the same row, efficiently imitating an update operation through the use of immutable inserts. This relies on the ability of the table engine to identify duplicate rows. This is achieved using the `ORDER BY` clause to determine uniqueness, i.e., if two rows have the same values for the columns specified in the `ORDER BY`, they are considered duplicates. A `version` column, specified when defining the table, allows the latest version of a row to be retained when two rows are identified as duplicates i.e. the row with the highest version value is kept. We illustrate this process in the example below. Here, the rows are uniquely identified by the A column (the `ORDER BY` for the table). We assume these rows have been inserted as two batches, resulting in the formation of two data parts on disk. Later, during an asynchronous background process, these parts are merged together.
 
-ReplacingMergeTreeは、削除されたカラムを指定することも可能です。このカラムには0または1を含めることができ、1の値は行（およびその重複）が削除されたことを示し、それ以外はゼロが使用されます。**注意: 削除された行はマージ時に削除されません。**
+ReplacingMergeTree additionally allows a deleted column to be specified. This can contain either 0 or 1, where a value of 1 indicates that the row (and its duplicates) has been deleted and zero is used otherwise. **Note: Deleted rows will not be removed at merge time.**
 
-このプロセス中、パーツのマージ時に以下が発生します：
+During this process, the following occurs during part merging:
 
-- Aカラムの値1で識別される行には、バージョン2の更新行と、バージョン3（削除カラムの値が1）の削除行があります。したがって、削除としてマークされた最新の行が保持されます。
-- Aカラムの値2で識別される行には、2つの更新行があります。後の行が価格カラムの値6を持って保持されます。
-- Aカラムの値3で識別される行には、バージョン1の行と、バージョン2の削除行があります。この削除行が保持されます。
+- The row identified by the value 1 for column A has both an update row with version 2 and a delete row with version 3 (and a deleted column value of 1). The latest row, marked as deleted, is therefore retained.
+- The row identified by the value 2 for column A has two update rows. The latter row is retained with a value of 6 for the price column.
+- The row identified by the value 3 for column A has a row with version 1 and a delete row with version 2. This delete row is retained.
 
-このマージプロセスの結果として、最終状態を表す4つの行があります：
+As a result of this merge process, we have four rows representing the final state:
 
 <br />
 
@@ -34,10 +33,10 @@ ReplacingMergeTreeは、削除されたカラムを指定することも可能�
 
 <br />
 
-削除された行は決して削除されないことに注意してください。これらは`OPTIMIZE table FINAL CLEANUP`で強制的に削除することができます。これは、実験的設定`allow_experimental_replacing_merge_with_cleanup=1`を必要とします。この操作は以下の条件下でのみ実行すべきです：
+Note that deleted rows are never removed. They can be forcibly deleted with an `OPTIMIZE table FINAL CLEANUP`. This requires the experimental setting `allow_experimental_replacing_merge_with_cleanup=1`. This should only be issued under the following conditions:
 
-1. 古いバージョンの行（クリーンアップで削除されるもの）が操作が発行された後に挿入されないことを確認できます。これらが挿入されると、削除された行はもはや存在しないため、誤って保持されます。
-2. クリーンアップを発行する前にすべてのレプリカが同期していることを確認してください。これは以下のコマンドで達成できます：
+1. You can be sure that no rows with old versions (for those that are being deleted with the cleanup) will be inserted after the operation is issued. If these are inserted, they will be incorrectly retained, as the deleted rows will no longer be present.
+2. Ensure all replicas are in sync prior to issuing the cleanup. This can be achieved with the command:
 
 <br />
 
@@ -45,20 +44,19 @@ ReplacingMergeTreeは、削除されたカラムを指定することも可能�
 SYSTEM SYNC REPLICA table
 ```
 
-このコマンドとその後のクリーンアップが完了するまで、挿入を一時停止することをお勧めします。
+We recommend pausing inserts once (1) is guaranteed and until this command and the subsequent cleanup are complete.
 
-> ReplacingMergeTreeを使用した削除の処理は、削除が少ない（10％未満）のテーブルにのみ推奨され、上記の条件でクリーンアップの期間をスケジュールできる場合を除きます。
+> Handling deletes with the ReplacingMergeTree is only recommended for tables with a low to moderate number of deletes (less than 10%) unless periods can be scheduled for cleanup with the above conditions.
 
-> ヒント: ユーザーは、もはや変更対象とされない選択的パーティションに対して`OPTIMIZE FINAL CLEANUP`を発行できる場合もあります。
+> Tip: Users may also be able to issue `OPTIMIZE FINAL CLEANUP` against selective partitions no longer subject to changes.
 
-## 主キー/重複排除キーの選択 {#choosing-a-primarydeduplication-key}
+## Choosing a primary/deduplication key {#choosing-a-primarydeduplication-key}
 
-上記では、ReplacingMergeTreeのケースで満たされなければならない重要な追加制約を強調しました：`ORDER BY`のカラムの値が変更を通じて行を一意に識別します。Postgresのようなトランザクションデータベースから移行する場合、元のPostgresの主キーは、ClickHouseの`ORDER BY`句に含めるべきです。
+Above, we highlighted an important additional constraint that must also be satisfied in the case of the ReplacingMergeTree: the values of columns of the `ORDER BY` uniquely identify a row across changes. If migrating from a transactional database like Postgres, the original Postgres primary key should thus be included in the Clickhouse `ORDER BY` clause.
 
-ClickHouseのユーザーは、テーブルの`ORDER BY`句でのカラムの選択を[クエリパフォーマンスを最適化するために](/data-modeling/schema-design#choosing-an-ordering-key)熟知しているでしょう。一般的に、これらのカラムは[頻繁なクエリに基づいて選択し、増加する基数の順にリストされるべきです](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales)。重要なことに、ReplacingMergeTreeは追加の制約を課します - これらのカラムは不変でなければなりません。すなわち、Postgresからレプリケーションする場合、基盤となるPostgresデータで変更されないカラムのみをこの句に追加する必要があります。他のカラムは変更可能ですが、これらは一意の行識別のために一貫性を持つ必要があります。
-分析ワークロードにおいて、Postgresの主キーはほとんど役に立たないことが一般的です。ユーザーは点行ルックアップを実行することは稀です。基数が増加する順にカラムを並べ替えることをお勧めし、また[ORDER BYで早くリストされるカラムで一致させると一般的に速い](/guides/best-practices/sparse-primary-indexes#ordering-key-columns-efficiently)という事実を考慮に入れると、Postgresの主キーは`ORDER BY`の最後に追加すべきです（分析的価値がない場合を除いて）。Postgresで複数のカラムが主キーを形成する場合、これらを基数とクエリ値の可能性を考慮して`ORDER BY`に追加するべきです。ユーザーは、`MATERIALIZED`カラムを介して値の連結を使用して一意の主キーを生成することを望むかもしれません。
+Users of ClickHouse will be familiar with choosing the columns in their tables `ORDER BY` clause to [optimize for query performance](/data-modeling/schema-design#choosing-an-ordering-key). Generally, these columns should be selected based on your [frequent queries and listed in order of increasing cardinality](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales). Importantly, the ReplacingMergeTree imposes an additional constraint - these columns must be immutable, i.e., if replicating from Postgres, only add columns to this clause if they do not change in the underlying Postgres data. While other columns can change, these are required to be consistent for unique row identification. For analytical workloads, the Postgres primary key is generally of little use as users will rarely perform point row lookups. Given we recommend that columns be ordered in order of increasing cardinality, as well as the fact that matches on [columns listed earlier in the ORDER BY will usually be faster](/guides/best-practices/sparse-primary-indexes#ordering-key-columns-efficiently), the Postgres primary key should be appended to the end of the `ORDER BY` (unless it has analytical value). In the case that multiple columns form a primary key in Postgres, they should be appended to the `ORDER BY`, respecting cardinality and the likelihood of query value. Users may also wish to generate a unique primary key using a concatenation of values via a `MATERIALIZED` column.
 
-Stack Overflowデータセットからのpostsテーブルを考えてみましょう。
+Consider the posts table from the Stack Overflow dataset.
 
 ```sql
 CREATE TABLE stackoverflow.posts_updateable
@@ -93,15 +91,15 @@ PARTITION BY toYear(CreationDate)
 ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 ```
 
-私たちは`(PostTypeId, toDate(CreationDate), CreationDate, Id)`の`ORDER BY`キーを使用します。`Id`カラムは各投稿に対して一意であり、行を重複排除できます。`Version`と`Deleted`カラムは必要に応じてスキーマに追加されます。
+We use an `ORDER BY` key of `(PostTypeId, toDate(CreationDate), CreationDate, Id)`. The `Id` column, unique for each post, ensures rows can be deduplicated. A `Version` and `Deleted` column are added to the schema as required.
 
-## ReplacingMergeTreeのクエリ {#querying-replacingmergetree}
+## Querying ReplacingMergeTree {#querying-replacingmergetree}
 
-マージ時に、ReplacingMergeTreeは`ORDER BY`カラムの値をユニークな識別子として使用して重複行を特定し、最新のバージョンのみを保持するか、最新のバージョンが削除を示す場合にはすべての重複を削除します。しかし、これは最終的な正しさしか提供せず、行が重複排除されることを保証するものではなく、これに依存すべきではありません。したがって、クエリが重複行および削除行を考慮することで誤った答えを生成する可能性があります。
+At merge time, the ReplacingMergeTree identifies duplicate rows, using the values of the `ORDER BY` columns as a unique identifier, and either retains only the highest version or removes all duplicates if the latest version indicates a delete. This, however, offers eventual correctness only - it does not guarantee rows will be deduplicated, and you should not rely on it. Queries can, therefore, produce incorrect answers due to update and delete rows being considered in queries.
 
-正しい答えを得るためには、ユーザーはバックグラウンドマージとクエリ時の重複排除および削除削除を補完する必要があります。これは`FINAL`演算子を使用することで達成できます。
+To obtain correct answers, users will need to complement background merges with query time deduplication and deletion removal. This can be achieved using the `FINAL` operator.
 
-上記のpostsテーブルを考えてみましょう。このデータセットを通常の方法で読み込むことができますが、削除およびバージョンカラムを指定し、値0を使用します。例の目的のため、10000行のみを読み込みます。
+Consider the posts table above. We can use the normal method of loading this dataset but specify a deleted and version column in addition to values 0. For example purposes, we load 10000 rows only.
 
 ```sql
 INSERT INTO stackoverflow.posts_updateable SELECT 0 AS Version, 0 AS Deleted, *
@@ -110,7 +108,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 0 rows in set. Elapsed: 1.980 sec. Processed 8.19 thousand rows, 3.52 MB (4.14 thousand rows/s., 1.78 MB/s.)
 ```
 
-行数を確認しましょう：
+Let's confirm the number of rows:
 
 ```sql
 SELECT count() FROM stackoverflow.posts_updateable
@@ -122,7 +120,7 @@ SELECT count() FROM stackoverflow.posts_updateable
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-次に、私たちは投稿-回答統計を更新します。これらの値を更新するのではなく、5000行の新しいコピーを挿入し、バージョン番号を1増やします（これにより、テーブル内に150行が存在することになります）。これを単純な`INSERT INTO SELECT`でシミュレートできます。
+We now update our post-answer statistics. Rather than updating these values, we insert new copies of 5000 rows and add one to their version number (this means 150 rows will exist in the table). We can simulate this with a simple `INSERT INTO SELECT`:
 
 ```sql
 INSERT INTO posts_updateable SELECT
@@ -157,7 +155,7 @@ LIMIT 5000
 0 rows in set. Elapsed: 4.056 sec. Processed 1.42 million rows, 2.20 GB (349.63 thousand rows/s., 543.39 MB/s.)
 ```
 
-さらに、私たちは1000のランダムな投稿を削除します。行を再挿入しますが、削除カラムの値を1にします。これも単純な`INSERT INTO SELECT`でシミュレートできます。
+In addition, we delete 1000 random posts by reinserting the rows but with a deleted column value of 1. Again, simulating this can be simulated with a simple `INSERT INTO SELECT`.
 
 ```sql
 INSERT INTO posts_updateable SELECT
@@ -192,7 +190,7 @@ LIMIT 1000
 0 rows in set. Elapsed: 0.166 sec. Processed 135.53 thousand rows, 212.65 MB (816.30 thousand rows/s., 1.28 GB/s.)
 ```
 
-上記の操作の結果、16000行が生成されます。すなわち、10000 + 5000 + 1000です。正しい合計は、現実には元の合計から1000行少なくなります。すなわち、10000 - 1000 = 9000であるべきです。
+The result of the above operations will be 16,000 rows i.e. 10,000 + 5000 + 1000. The correct total here is, reality we should have only 1000 rows less than our original total i.e. 10,000 - 1000 = 9000.
 
 ```sql
 SELECT count()
@@ -204,7 +202,7 @@ FROM posts_updateable
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-マージの結果に応じてここで得られる結果は異なります。重複行が存在するため、合計が異なることがわかります。テーブルに`FINAL`を適用することで正しい結果を得ることができます。
+Your results will vary here depending on the merges that have occurred. We can see the total here is different as we have duplicate rows. Applying `FINAL` to the table delivers the correct result.
 
 ```sql
 SELECT count()
@@ -219,19 +217,19 @@ FINAL
 Peak memory usage: 8.14 MiB.
 ```
 
-## FINALのパフォーマンス {#final-performance}
+## FINAL performance {#final-performance}
 
-`FINAL`演算子は、クエリに対してパフォーマンスのオーバーヘッドをもたらしますが、継続的な改善が行われています。これは特に、クエリが主キーのカラムでフィルタリングしない場合に顕著であり、より多くのデータが読み込まれ、重複排除のオーバーヘッドが増加します。もしユーザーが`WHERE`条件を用いてキーのカラムでフィルタリングする場合、読み込まれるデータと重複排除のために渡されるデータは減少します。
+The `FINAL` operator will have a performance overhead on queries despite ongoing improvements. This will be most appreciable when queries are not filtering on primary key columns, causing more data to be read and increasing the deduplication overhead. If users filter on key columns using a `WHERE` condition, the data loaded and passed for deduplication will be reduced.
 
-`WHERE`条件がキーのカラムを使用していない場合、ClickHouseは現在`FINAL`を使用する際に`PREWHERE`最適化を利用しません。この最適化は、非フィルタリングされた列のために読み込む行数を減少させることを目指します。この`PREWHERE`を模倣し、パフォーマンスを向上させる方法の例は[こちら](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1#final-performance)で見つけることができます。
+If the `WHERE` condition does not use a key column, ClickHouse does not currently utilize the `PREWHERE` optimization when using `FINAL`. This optimization aims to reduce the rows read for non-filtered columns. Examples of emulating this `PREWHERE` and thus potentially improving performance can be found [here](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1#final-performance).
 
-## ReplacingMergeTreeのパーティションを活用する {#exploiting-partitions-with-replacingmergetree}
+## Exploiting partitions with ReplacingMergeTree {#exploiting-partitions-with-replacingmergetree}
 
-ClickHouseにおけるデータのマージは、パーティションレベルで行われます。ReplacingMergeTreeを使用する場合、ユーザーはテーブルをベストプラクティスに従ってパーティション分けることをお勧めします。これは**パーティションキーが行に対して変わらないことを保証できる場合**に行うべきです。これにより、同じ行に関連する更新が同じClickHouseパーティションに送信されるようになります。あなたは、ここで概説されたベストプラクティスに従っていれば、Postgresと同じパーティションキーを再利用できます。
+Merging of data in ClickHouse occurs at a partition level. When using ReplacingMergeTree, we recommend users partition their table according to best practices, provided users can ensure this **partitioning key does not change for a row**. This will ensure updates pertaining to the same row will be sent to the same ClickHouse partition. You may reuse the same partition key as Postgres provided you adhere to the best practices outlined here.
 
-これが実現する場合、ユーザーは設定`do_not_merge_across_partitions_select_final=1`を使用して`FINAL`クエリのパフォーマンスを向上させることができます。この設定により、FINALを使用する際のパーティションが独立してマージおよび処理されるようになります。
+Assuming this is the case, users can use the setting `do_not_merge_across_partitions_select_final=1` to improve `FINAL` query performance. This setting causes partitions to be merged and processed independently when using FINAL.
 
-以下に、パーティションを使用しないpostsテーブルを考えます：
+Consider the following posts table, where we use no partitioning:
 
 ```sql
 CREATE TABLE stackoverflow.posts_no_part
@@ -250,7 +248,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 0 rows in set. Elapsed: 182.895 sec. Processed 59.82 million rows, 38.07 GB (327.07 thousand rows/s., 208.17 MB/s.)
 ```
 
-`FINAL`が作業を行う必要があることを確認するために、100万行を更新します - 重複行を挿入してその`AnswerCount`を増加させます。
+To ensure `FINAL` is required to do some work, we update 1m rows - incrementing their `AnswerCount` by inserting duplicate rows.
 
 ```sql
 INSERT INTO posts_no_part SELECT Version + 1 AS Version, Deleted, Id, PostTypeId, AcceptedAnswerId, CreationDate, Score, ViewCount, Body, OwnerUserId, OwnerDisplayName, LastEditorUserId, LastEditorDisplayName, LastEditDate, LastActivityDate, Title, Tags, AnswerCount + 1 AS AnswerCount, CommentCount, FavoriteCount, ContentLicense, ParentId, CommunityOwnedDate, ClosedDate
@@ -258,7 +256,7 @@ FROM posts_no_part
 LIMIT 1000000
 ```
 
-`FINAL`を用いて年ごとの回答の合計を計算します：
+Computing the sum of answers per year with `FINAL`:
 
 ```sql
 SELECT toYear(CreationDate) AS year, sum(AnswerCount) AS total_answers
@@ -277,7 +275,7 @@ ORDER BY year ASC
 Peak memory usage: 2.09 GiB.
 ```
 
-年でパーティション分けられたテーブルに対して、上記と同じ手順を繰り返し、`do_not_merge_across_partitions_select_final=1`で再クエリします。
+Repeating these same steps for a table partitioning by year, and repeating the above query with `do_not_merge_across_partitions_select_final=1`.
 
 ```sql
 CREATE TABLE stackoverflow.posts_with_part
@@ -311,42 +309,42 @@ ORDER BY year ASC
 17 rows in set. Elapsed: 0.994 sec. Processed 64.65 million rows, 983.64 MB (65.02 million rows/s., 989.23 MB/s.)
 ```
 
-このように、パーティショニングによって、重複排除プロセスがパーティションレベルで並行して行われることにより、クエリパフォーマンスが著しく向上しました。
+As shown, partitioning has significantly improved query performance in this case by allowing the deduplication process to occur at a partition level in parallel.
 
-## マージ動作に関する考慮事項 {#merge-behavior-considerations}
+## Merge Behavior Considerations {#merge-behavior-considerations}
 
-ClickHouseのマージ選択メカニズムは、単なるパーツのマージを超えています。以下では、ReplacingMergeTreeの文脈でこの動作を検討し、古いデータのより積極的なマージを有効にするための構成オプションおよび大きなパーツに関する考慮事項を含めます。
+ClickHouse's merge selection mechanism goes beyond simple merging of parts. Below, we examine this behavior in the context of ReplacingMergeTree, including configuration options for enabling more aggressive merging of older data and considerations for larger parts.
 
-### マージ選択ロジック {#merge-selection-logic}
+### Merge Selection Logic {#merge-selection-logic}
 
-マージはパーツの数を最小限に抑えることを目的としていますが、この目標は書き込み増幅のコストとのバランスも取られています。したがって、過剰な書き込み増幅を引き起こす可能性のあるパーツの範囲は、内部計算に基づいてマージから除外されます。この動作は、不要なリソース使用を防ぎ、ストレージコンポーネントの寿命を延ばすのに役立ちます。
+While merging aims to minimize the number of parts, it also balances this goal against the cost of write amplification. Consequently, some ranges of parts are excluded from merging if they would lead to excessive write amplification, based on internal calculations. This behavior helps prevent unnecessary resource usage and extends the lifespan of storage components.
 
-### 大規模パーツのマージ動作 {#merging-behavior-on-large-parts}
+### Merging Behavior on Large Parts {#merging-behavior-on-large-parts}
 
-ClickHouseのReplacingMergeTreeエンジンは、指定されたユニークキーに基づいて最新の行を保持しながら重複行を管理するように最適化されています。しかし、マージされたパーツがmax_bytes_to_merge_at_max_space_in_poolの閾値に達すると、それは更なるマージのために選ばれなくなります。たとえmin_age_to_force_merge_secondsが設定されていてもです。その結果、進行中のデータ挿入で蓄積されるかもしれない重複を削除するための自動マージに依存することはできなくなります。
+The ReplacingMergeTree engine in ClickHouse is optimized for managing duplicate rows by merging data parts, keeping only the latest version of each row based on a specified unique key. However, when a merged part reaches the max_bytes_to_merge_at_max_space_in_pool threshold, it will no longer be selected for further merging, even if min_age_to_force_merge_seconds is set. As a result, automatic merges can no longer be relied upon to remove duplicates that may accumulate with ongoing data insertion.
 
-これに対処するために、ユーザーはOPTIMIZE FINALを呼び出してパーツを手動でマージし、重複を削除できます。自動マージとは異なり、OPTIMIZE FINALはmax_bytes_to_merge_at_max_space_in_poolの閾値をバイパスし、リソース、特にディスクスペースの利用可能性に基づいてパーツをマージし、各パーティションにおいて1つのパーツが残るまで行います。しかし、このアプローチは大規模なテーブルではメモリを多く消費する可能性があり、新しいデータが追加されるたびに繰り返し実行する必要があります。
+To address this, users can invoke OPTIMIZE FINAL to manually merge parts and remove duplicates. Unlike automatic merges, OPTIMIZE FINAL bypasses the max_bytes_to_merge_at_max_space_in_pool threshold, merging parts based solely on available resources, particularly disk space, until a single part remains in each partition. However, this approach can be memory-intensive on large tables and may require repeated execution as new data is added.
 
-パフォーマンスを維持する持続可能な解決策として、テーブルのパーティショニングを推奨します。これにより、データパーツが最大マージサイズに達するのを防ぎ、継続的な手動最適化の必要性を軽減します。
+For a more sustainable solution that maintains performance, partitioning the table is recommended. This can help prevent data parts from reaching the maximum merge size and reduces the need for ongoing manual optimizations.
 
-### パーティショニングとパーティション間のマージ {#partitioning-and-merging-across-partitions}
+### Partitioning and Merging Across Partitions {#partitioning-and-merging-across-partitions}
 
-ReplacingMergeTreeを活用しっぱなしのパーティショニングの推奨をご覧ください。このテーブルをパーティショニングすることで、データを隔離し、より効率的なマージを実現し、特にクエリ実行中にパーティション間のマージを回避します。この動作は23.12以降のバージョンで強化されました：もしパーティションキーがソーティングキーのプレフィックスなら、クエリ時にパーティション間のマージは行われず、クエリパフォーマンスが向上します。
+As discussed in Exploiting Partitions with ReplacingMergeTree, we recommend partitioning tables as a best practice. Partitioning isolates data for more efficient merges and avoids merging across partitions, particularly during query execution. This behavior is enhanced in versions from 23.12 onward: if the partition key is a prefix of the sorting key, merging across partitions is not performed at query time, leading to faster query performance.
 
-### より良いクエリパフォーマンスのためのマージの調整 {#tuning-merges-for-better-query-performance}
+### Tuning Merges for Better Query Performance {#tuning-merges-for-better-query-performance}
 
-デフォルトでは、min_age_to_force_merge_secondsとmin_age_to_force_merge_on_partition_onlyはともに0およびfalseに設定され、これらの機能が無効になっています。この構成では、ClickHouseはパーティションの年齢に基づいてマージを強制することなく標準のマージ動作を適用します。
+By default, min_age_to_force_merge_seconds and min_age_to_force_merge_on_partition_only are set to 0 and false, respectively, disabling these features. In this configuration, ClickHouse will apply standard merging behavior without forcing merges based on partition age.
 
-min_age_to_force_merge_secondsの値が指定されている場合、ClickHouseは指定された期間より古いパーツに対して通常のマージのヒューリスティックを無視します。一般的には、これはパーツの総数を最小化することが目標である場合にのみ効果的ですが、ReplacingMergeTreeではクエリ時にマージが必要なパーツの数を減らすことからクエリパフォーマンスを向上させる可能性があります。
+If a value for min_age_to_force_merge_seconds is specified, ClickHouse will ignore normal merging heuristics for parts older than the specified period. While this is generally only effective if the goal is to minimize the total number of parts, it can improve query performance in ReplacingMergeTree by reducing the number of parts needing merging at query time.
 
-この動作はさらに調整可能で、min_age_to_force_merge_on_partition_only=trueを設定することで、すべてのパーティション内のパーツがmin_age_to_force_merge_secondsより古い必要があります。これにより、古いパーティションが時間をかけて単一のパーツにマージされ、データが統合され、クエリパフォーマンスが維持されます。
+This behavior can be further tuned by setting min_age_to_force_merge_on_partition_only=true, requiring all parts in the partition to be older than min_age_to_force_merge_seconds for aggressive merging. This configuration allows older partitions to merge down to a single part over time, which consolidates data and maintains query performance.
 
-### 推奨設定 {#recommended-settings}
+### Recommended Settings {#recommended-settings}
 
 :::warning
-マージ動作の調整は高度な操作です。生産ワークロードでこれらの設定を有効にする前に、ClickHouseのサポートに相談することをお勧めします。
+Tuning merge behavior is an advanced operation. We recommend consulting with ClickHouse support before enabling these settings in production workloads.
 :::
 
-ほとんどの場合、min_age_to_force_merge_secondsをパーティション期間よりもかなり低い値に設定することが好まれます。これにより、パーツの数が最小化され、FINAL演算子を使用したクエリ時の不要なマージが防止されます。
+In most cases, setting min_age_to_force_merge_seconds to a low value—significantly less than the partition period—is preferred. This minimizes the number of parts and prevents unnecessary merging at query time with the FINAL operator.
 
-たとえば、すでに単一のパーツにマージされた月次パーティションを考えてみましょう。もし小さなはぐれ挿入がこのパーティション内で新しいパーツを作ると、クエリパフォーマンスが悪化する可能性があり、ClickHouseはマージが完了するまで複数のパーツを読み込まなければならなくなるためです。min_age_to_force_merge_secondsを設定することで、これらのパーツが積極的にマージされ、クエリパフォーマンスの劣化を防ぐことができます。
+For example, consider a monthly partition that has already been merged into a single part. If a small, stray insert creates a new part within this partition, query performance can suffer because ClickHouse must read multiple parts until the merge completes. Setting min_age_to_force_merge_seconds can ensure these parts are merged aggressively, preventing a degradation in query performance.

@@ -1,118 +1,120 @@
 ---
-slug: /guides/sizing-and-hardware-recommendations
-sidebar_label: 'サイズおよびハードウェアの推奨事項'
-sidebar_position: 4
-title: 'サイズおよびハードウェアの推奨事項'
-description: 'このガイドでは、オープンソースユーザー向けのハードウェア、計算、メモリ、およびディスク構成に関する一般的な推奨事項について説明します。'
+'slug': '/guides/sizing-and-hardware-recommendations'
+'sidebar_label': 'サイジングおよびハードウェアの推奨事項'
+'sidebar_position': 4
+'title': 'サイジングおよびハードウェアの推奨事項'
+'description': 'このガイドでは、オープンソースユーザー向けのハードウェア、コンピュート、メモリおよびディスク構成に関する一般的な推奨事項について説明しています。'
 ---
 
 
-# サイズおよびハードウェアの推奨事項
 
-このガイドでは、オープンソースユーザー向けのハードウェア、計算、メモリ、およびディスク構成に関する一般的な推奨事項について説明します。セットアップを簡素化したい場合は、[ClickHouse Cloud](https://clickhouse.com/cloud) の利用をお勧めします。これにより、自動的にスケールし、ワークロードに適応し、インフラ管理に関するコストを最小限に抑えることができます。
 
-ClickHouseクラスタの構成は、アプリケーションのユースケースとワークロードパターンに大きく依存します。アーキテクチャを計画する際には、次の要素を考慮する必要があります。
+# ハードウェアのサイズ指定と推奨事項
 
-- 同時処理（リクエスト数/秒）
-- スループット（行処理数/秒）
-- データボリューム
+このガイドでは、オープンソースユーザー向けのハードウェア、計算、メモリ、ディスク構成に関する一般的な推奨事項を説明します。セットアップを簡素化したい場合は、[ClickHouse Cloud](https://clickhouse.com/cloud)を使用することをお勧めします。これにより、ワークロードに応じて自動的にスケールし、インフラ管理に関するコストを最小限に抑えることができます。
+
+ClickHouseクラスターの構成は、アプリケーションの使用ケースやワークロードパターンに大きく依存します。アーキテクチャを計画する際には、以下の要因を考慮する必要があります。
+
+- 同時実行性（リクエスト数/秒）
+- スループット（処理された行数/秒）
+- データ量
 - データ保持ポリシー
 - ハードウェアコスト
 - メンテナンスコスト
 
 ## ディスク {#disk}
 
-ClickHouseと一緒に使用すべきディスクのタイプは、データボリューム、レイテンシ、またはスループットの要件に依存します。
+ClickHouseで使用するディスクの種類は、データ量、レイテンシ、またはスループットの要件に依存します。
 
 ### パフォーマンスの最適化 {#optimizing-for-performance}
 
-パフォーマンスを最大化するために、AWSの[プロビジョンドIOPS SSDボリューム](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/provisioned-iops.html)や、クラウドプロバイダーの同等の提供を直接接続することをお勧めします。これはIOの最適化に特化しています。
+パフォーマンスを最大化するために、[AWSのプロビジョニングIOPS SSDボリューム](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/provisioned-iops.html)またはクラウドプロバイダーの同等の提供物を直接接続することをお勧めします。これにより、IOが最適化されます。
 
 ### ストレージコストの最適化 {#optimizing-for-storage-costs}
 
-コストを抑えるために、[汎用SSD EBSボリューム](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/general-purpose.html)を使用できます。
+コストを抑えるために、[一般目的のSSD EBSボリューム](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/general-purpose.html)を使用できます。
 
-また、SSDとHDDを使用した[ホット/ウォーム/コールドアーキテクチャ](/guides/developer/ttl#implementing-a-hotwarmcold-architecture)による階層型ストレージを実装することもできます。あるいは、データとストレージを分離するために[AWS S3](https://aws.amazon.com/s3/)を使用することもできます。計算とストレージの分離に関するガイドは[こちら](/guides/separation-storage-compute)をご覧ください。計算とストレージの分離は、ClickHouse Cloudでデフォルトで利用可能です。
+SDDとHDDを使用した[ホット/ウォーム/コールドアーキテクチャ](/guides/developer/ttl#implementing-a-hotwarmcold-architecture)を利用した段階的ストレージを実装することもできます。あるいは、[AWS S3](https://aws.amazon.com/s3/)をストレージとして使用し、計算とストレージを分離することも可能です。計算とストレージの分離に関するガイドは[こちら](/guides/separation-storage-compute)をご覧ください。計算とストレージの分離は、ClickHouse Cloudでデフォルトで利用可能です。
 
 ## CPU {#cpu}
 
 ### どのCPUを使用すべきか？ {#which-cpu-should-i-use}
 
-使用すべきCPUのタイプは、使用パターンに依存します。しかし一般的には、多数の頻繁な同時クエリを処理するアプリケーションや、多くのデータを処理するアプリケーション、または計算集約型のUDFを使用するアプリケーションは、より多くのCPUコアを必要とします。
+使用するCPUの種類は、使用パターンに依存します。ただし、一般に、同時実行クエリが多く、より多くのデータを処理するアプリケーションや、計算集約型のユーザー定義関数（UDF）を使用する場合は、より多くのCPUコアが必要になります。
 
 **低レイテンシまたは顧客向けアプリケーション**
 
-顧客向けのワークロード向けに10ミリ秒程度のレイテンシが要求される場合は、AWSのEC2[i3シリーズ](https://aws.amazon.com/ec2/instance-types/i3/)または[i4iシリーズ](https://aws.amazon.com/ec2/instance-types/i4i/)、およびクラウドプロバイダーの同等の提供をお勧めします。これらはIO最適化されています。
+顧客向けワークロードのために、レイテンシ要件が数ミリ秒の場合は、AWSのEC2 [i3ライント](https://aws.amazon.com/ec2/instance-types/i3/)または[i4iライント](https://aws.amazon.com/ec2/instance-types/i4i/)を推奨します。または、クラウドプロバイダーの同等の提供物を選択してください。
 
-**高同時処理アプリケーション**
+**高同時実行アプリケーション**
 
-同時処理の最適化が必要なワークロード（1秒あたり100以上のクエリ）には、AWSの[計算最適化Cシリーズ](https://aws.amazon.com/ec2/instance-types/#Compute_Optimized)またはクラウドプロバイダーの同等の提供をお勧めします。
+同時実行性を最適化する必要があるワークロード（100クエリ/秒以上）の場合は、AWSの[計算最適化Cシリーズ](https://aws.amazon.com/ec2/instance-types/#Compute_Optimized)を推奨します。あるいは、クラウドプロバイダーの同等の提供物もご利用いただけます。
 
-**データウェアハウスのユースケース**
+**データウェアハウジングのユースケース**
 
-データウェアハウスのワークロードやアドホック分析クエリには、AWSの[Rタイプシリーズ](https://aws.amazon.com/ec2/instance-types/#Memory_Optimized)やクラウドプロバイダーの同等の提供を推奨します。これらはメモリ最適化されています。
+データウェアハウジングのワークロードやアドホック分析クエリには、AWSの[Rタイプシリーズ](https://aws.amazon.com/ec2/instance-types/#Memory_Optimized)を推奨します。または、クラウドプロバイダーの同等の提供物を使用してください。これらはメモリ最適化されています。
 
 ---
 
 ### CPU使用率はどのくらいにすべきか？ {#what-should-cpu-utilization-be}
 
-ClickHouseにおけるCPU使用率の標準目標はありません。平均CPU使用率を測定するために[iostat](https://linux.die.net/man/1/iostat)などのツールを利用し、予期しないトラフィックのピークに対処するためにサーバーサイズを調整してください。ただし、アナリティクスまたはデータウェアハウスのユースケースでアドホッククエリがある場合は、CPU使用率を10-20%に設定することを目指してください。
+ClickHouseに対する標準的なCPU使用率の目標はありません。[iostat](https://linux.die.net/man/1/iostat)などのツールを使用して平均CPU使用率を測定し、予期しないトラフィックスパイクを管理するためにサーバーのサイズを調整してください。ただし、アナリティクスやデータウェアハウジングのユースケースでアドホッククエリを行っている場合、CPU使用率は10〜20％を目指すべきです。
 
-### CPUコアはどのくらい使用すべきか？ {#how-many-cpu-cores-should-i-use}
+### どれくらいのCPUコアを使用すべきか？ {#how-many-cpu-cores-should-i-use}
 
-使用すべきCPUの数はワークロードに依存します。しかし、一般的に、以下のCPUタイプに基づいたメモリ対CPUコアの比率を推奨します。
+使用するCPUの数は、ワークロードによって異なります。ただし、以下のCPUタイプに基づくメモリとCPUコアの比率を推奨します。
 
-- **[Mタイプ](https://aws.amazon.com/ec2/instance-types/)（汎用ユースケース）：** メモリ対CPUコアの比率4:1
-- **[Rタイプ](https://aws.amazon.com/ec2/instance-types/#Memory_Optimized)（データウェアハウスユースケース）：** メモリ対CPUコアの比率8:1
-- **[Cタイプ](https://aws.amazon.com/ec2/instance-types/#Compute_Optimized)（計算最適化ユースケース）：** メモリ対CPUコアの比率2:1
+- **[Mタイプ](https://aws.amazon.com/ec2/instance-types/)（一般目的のユースケース）：** メモリとCPUコアの比率は4:1
+- **[Rタイプ](https://aws.amazon.com/ec2/instance-types/#Memory_Optimized)（データウェアハウジングのユースケース）：** メモリとCPUコアの比率は8:1
+- **[Cタイプ](https://aws.amazon.com/ec2/instance-types/#Compute_Optimized)（計算最適化のユースケース）：** メモリとCPUコアの比率は2:1
 
-例えば、MタイプのCPUを使用する場合、コア25個あたり100GBのメモリをプロビジョニングすることをお勧めします。アプリケーションに適切なメモリ量を決定するには、メモリ使用量をプロファイリングする必要があります。[メモリ問題のデバッグに関するガイド](/guides/developer/debugging-memory-issues)を読むか、[組み込みの可観測性ダッシュボード](/operations/monitoring)を利用してClickHouseを監視してください。
+例えば、MタイプのCPUを使用する場合、25CPUコアごとに100GBのメモリをプロビジョニングすることを推奨します。アプリケーションに適したメモリ量を特定するには、メモリの使用状況をプロファイリングする必要があります。メモリに関する問題のデバッグに関する[このガイド](/guides/developer/debugging-memory-issues)を読むか、ClickHouseを監視するために[組み込みの可観測性ダッシュボード](/operations/monitoring)を使用してください。
 
 ## メモリ {#memory}
 
-CPUの選択と同様に、ストレージ比率やCPU比率に対するメモリの選択もユースケースに依存します。
+CPUの選択と同様に、ストレージ比率に対するメモリ、CPUに対するメモリの比率は使用ケースに依存します。
 
-必要なRAMの量は、一般的に以下の要因に依存します：
+必要なRAMの容量は通常、以下の要因に依存します。
 - クエリの複雑さ。
-- クエリで処理されるデータ量。
+- クエリで処理されるデータの量。
 
-一般的には、メモリが多いほど、クエリはより速く実行されます。
-コスト感度のあるユースケースでは、メモリが少ないことでも対応可能であり、[`max_bytes_before_external_group_by`](/operations/settings/settings#max_bytes_before_external_group_by)や[`max_bytes_before_external_sort`](/operations/settings/settings#max_bytes_before_external_sort)のような設定を有効にしてデータをディスクにスピルすることができますが、これはクエリパフォーマンスに大きな影響を与える可能性があることに注意してください。
+一般に、メモリが多いほど、クエリの実行は速くなります。 
+コストに敏感な使用ケースの場合、メモリの少ない構成でも動作します（[`max_bytes_before_external_group_by`](/operations/settings/settings#max_bytes_before_external_group_by)および[`max_bytes_before_external_sort`](/operations/settings/settings#max_bytes_before_external_sort)を有効にする設定が可能で、ディスクにデータをスピルさせることができます）が、これによりクエリのパフォーマンスに大きな影響を与える可能性があることに注意してください。
 
-### メモリ対ストレージの比率はどのくらいにすべきか？ {#what-should-the-memory-to-storage-ratio-be}
+### メモリとストレージの比率はどのくらいにすべきか？ {#what-should-the-memory-to-storage-ratio-be}
 
-データボリュームが少ない場合、1:1のメモリ対ストレージ比率は受け入れ可能ですが、総メモリは最低でも8GBを下回ってはなりません。
+データ量が少ない場合、1:1のメモリストレージ比率は受け入れられますが、合計メモリは8GB以上であるべきです。
 
-データの保持期間が長い場合やデータボリュームが大きいユースケースには、1:100から1:130のメモリ対ストレージ比率をお勧めします。例えば、10TBのデータを保存する場合、各レプリカあたり100GBのRAMが必要です。
+データの保持期間が長いまたはデータ量が多いユースケースの場合、1:100から1:130のメモリストレージ比率を推奨します。たとえば、10TBのデータを保存する場合は、レプリカごとに100GBのRAMを推奨します。
 
-顧客向けワークロードのように頻繁にアクセスされるユースケースには、1:30から1:50のメモリ対ストレージ比率でより多くのメモリを使用することをお勧めします。
+顧客向けのワークロードのように頻繁にアクセスされるユースケースの場合、1:30から1:50のメモリストレージ比率でより多くのメモリを使用することを推奨します。
 
 ## レプリカ {#replicas}
 
-各シャードに対して最低でも三つのレプリカを持つことをお勧めします（または、[Amazon EBS](https://aws.amazon.com/ebs/)の場合は二つ）。さらに、追加のレプリカ（水平スケーリング）を追加する前に、すべてのレプリカを垂直スケーリングすることをお勧めします。
+シャードごとに少なくとも3つのレプリカ（または[Amazon EBS](https://aws.amazon.com/ebs/)を含む2つのレプリカ）を持つことを推奨します。さらに、追加のレプリカを追加する前にすべてのレプリカを縦にスケールアップすることをお勧めします（水平スケーリング）。
 
-ClickHouseは自動的にシャードを作成せず、データセットの再シャーディングにはかなりの計算リソースが必要です。したがって、将来的にデータを再シャーディングする必要がないよう、可能な限り大きなサーバーを使用することを推奨します。
+ClickHouseは自動的にシャーディングを行わず、データセットの再シャーディングにはかなりの計算リソースが必要です。したがって、将来データを再シャーディングする必要がないように、通常は利用可能な最大のサーバーを使用することを推奨します。
 
-[ClickHouse Cloud](https://clickhouse.com/cloud)の利用を検討してください。これにより、自動的にスケールし、ユースケースに応じてレプリカの数を簡単にコントロールできます。
+[ClickHouse Cloud](https://clickhouse.com/cloud)を使用すると自動的にスケールし、使用ケースに応じてレプリカの数を簡単に制御できます。
 
-## 大規模ワークロードのための例示的な構成 {#example-configurations-for-large-workloads}
+## 大規模ワークロードの例示的な構成 {#example-configurations-for-large-workloads}
 
-ClickHouseの構成は、特定のアプリケーションの要件に強く依存します。コストとパフォーマンスの最適化を手伝ってほしい場合は、[営業に連絡](https://clickhouse.com/company/contact?loc=docs-sizing-and-hardware-recommendations)してください。
+ClickHouseの構成は、特定のアプリケーションの要件によって大きく異なります。コストとパフォーマンスの最適化についてのサポートが必要な場合は、[Salesに問い合わせ](https://clickhouse.com/company/contact?loc=docs-sizing-and-hardware-recommendations)てください。
 
-以下は、プロダクション環境で動作するClickHouseユーザーの例示的な構成（推奨ではなくガイダンスとして）です。
+ガイダンスを提供するために（推奨事項ではありません）、以下はプロダクションでのClickHouseユーザーの例示的な構成です。
 
-### フォーチュン500 B2B SaaS {#fortune-500-b2b-saas}
+### Fortune 500 B2B SaaS {#fortune-500-b2b-saas}
 
 <table>
     <tr>
         <td col="2"><strong><em>ストレージ</em></strong></td>
     </tr>
     <tr>
-        <td><strong>月間新規データボリューム</strong></td>
+        <td><strong>月間新データ量</strong></td>
         <td>30TB</td>
     </tr>
     <tr>
-        <td><strong>総ストレージ（圧縮後）</strong></td>
+        <td><strong>合計ストレージ（圧縮後）</strong></td>
         <td>540TB</td>
     </tr>
     <tr>
@@ -120,61 +122,61 @@ ClickHouseの構成は、特定のアプリケーションの要件に強く依�
         <td>18ヶ月</td>
     </tr>
     <tr>
-        <td><strong>ノードあたりのディスク</strong></td>
+        <td><strong>ノードごとのディスク</strong></td>
         <td>25TB</td>
     </tr>
     <tr>
         <td col="2"><strong><em>CPU</em></strong></td>
     </tr>
     <tr>
-        <td><strong>同時処理</strong></td>
-        <td>200+ 同時クエリ</td>
+        <td><strong>同時実行性</strong></td>
+        <td>200+同時クエリ</td>
     </tr>
     <tr>
-        <td><strong>レプリカ数（HAペアを含む）</strong></td>
+        <td><strong>レプリカの数（HAペアを含む）</strong></td>
         <td>44</td>
     </tr>
     <tr>
-        <td><strong>ノードあたりのvCPU</strong></td>
+        <td><strong>ノードごとのvCPU</strong></td>
         <td>62</td>
     </tr>
     <tr>
-        <td><strong>総vCPU</strong></td>
+        <td><strong>合計vCPU</strong></td>
         <td>2700</td>
     </tr>
     <tr>
         <td col="2"><strong><em>メモリ</em></strong></td>
     </tr>
     <tr>
-        <td><strong>総RAM</strong></td>
+        <td><strong>合計RAM</strong></td>
         <td>11TB</td>
     </tr>
     <tr>
-        <td><strong>レプリカあたりのRAM</strong></td>
+        <td><strong>レプリカごとのRAM</strong></td>
         <td>256GB</td>
     </tr>
     <tr>
-        <td><strong>RAM対vCPU比率</strong></td>
+        <td><strong>RAMとvCPUの比率</strong></td>
         <td>4:1</td>
     </tr>
     <tr>
-        <td><strong>RAM対ディスク比率</strong></td>
+        <td><strong>RAMとディスクの比率</strong></td>
         <td>1:50</td>
     </tr>
 </table>
 
-### フォーチュン500 テレコムオペレーター（ログ記録ユースケース用） {#fortune-500-telecom-operator-for-a-logging-use-case}
+### Fortune 500 Telecom Operatorのログユースケース {#fortune-500-telecom-operator-for-a-logging-use-case}
 
 <table>
     <tr>
         <td col="2"><strong><em>ストレージ</em></strong></td>
     </tr>
     <tr>
-        <td><strong>月間ログデータボリューム</strong></td>
+        <td><strong>月間ログデータ量</strong></td>
         <td>4860TB</td>
     </tr>
     <tr>
-        <td><strong>総ストレージ（圧縮後）</strong></td>
+        <td><strong>合計ストレージ（圧縮後）</strong></td>
         <td>608TB</td>
     </tr>
     <tr>
@@ -182,48 +184,48 @@ ClickHouseの構成は、特定のアプリケーションの要件に強く依�
         <td>30日</td>
     </tr>
     <tr>
-        <td><strong>ノードあたりのディスク</strong></td>
+        <td><strong>ノードごとのディスク</strong></td>
         <td>13TB</td>
     </tr>
     <tr>
         <td col="2"><strong><em>CPU</em></strong></td>
     </tr>
     <tr>
-        <td><strong>レプリカ数（HAペアを含む）</strong></td>
+        <td><strong>レプリカの数（HAペアを含む）</strong></td>
         <td>38</td>
     </tr>
     <tr>
-        <td><strong>ノードあたりのvCPU</strong></td>
+        <td><strong>ノードごとのvCPU</strong></td>
         <td>42</td>
     </tr>
     <tr>
-        <td><strong>総vCPU</strong></td>
+        <td><strong>合計vCPU</strong></td>
         <td>1600</td>
     </tr>
     <tr>
         <td col="2"><strong><em>メモリ</em></strong></td>
     </tr>
     <tr>
-        <td><strong>総RAM</strong></td>
+        <td><strong>合計RAM</strong></td>
         <td>10TB</td>
     </tr>
     <tr>
-        <td><strong>レプリカあたりのRAM</strong></td>
+        <td><strong>レプリカごとのRAM</strong></td>
         <td>256GB</td>
     </tr>
     <tr>
-        <td><strong>RAM対vCPU比率</strong></td>
+        <td><strong>RAMとvCPUの比率</strong></td>
         <td>6:1</td>
     </tr>
     <tr>
-        <td><strong>RAM対ディスク比率</strong></td>
+        <td><strong>RAMとディスクの比率</strong></td>
         <td>1:60</td>
     </tr>
 </table>
 
-## さらなる読み物 {#further-reading}
+## さらなる読書 {#further-reading}
 
-以下は、オープンソースのClickHouseを使用している企業によるアーキテクチャに関する公開されたブログ投稿です：
+以下は、オープンソースのClickHouseを使用している企業によるアーキテクチャに関する公開されたブログ投稿です。
 
 - [Cloudflare](https://blog.cloudflare.com/http-analytics-for-6m-requests-per-second-using-clickhouse/?utm_source=linkedin&utm_medium=social&utm_campaign=blog)
 - [eBay](https://innovation.ebayinc.com/tech/engineering/ou-online-analytical-processing/)

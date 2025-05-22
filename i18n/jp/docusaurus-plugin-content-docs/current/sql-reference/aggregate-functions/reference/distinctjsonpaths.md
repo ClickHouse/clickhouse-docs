@@ -1,13 +1,16 @@
-description: 'JSONカラムに保存された異なるパスのリストを計算します。'
-sidebar_position: 216
-slug: /sql-reference/aggregate-functions/reference/distinctjsonpaths
-title: 'distinctJSONPaths'
-```
+---
+'description': 'JSONカラムに保存された一意のパスのリストを計算します。'
+'sidebar_position': 216
+'slug': '/sql-reference/aggregate-functions/reference/distinctjsonpaths'
+'title': 'distinctJSONPaths'
+---
+
+
 
 
 # distinctJSONPaths
 
-JSONカラムに保存された異なるパスのリストを計算します。[JSON](../../data-types/newjson.md) カラム。
+[JSON](../../data-types/newjson.md) カラムに格納されている異なるパスのリストを計算します。
 
 **構文**
 
@@ -17,7 +20,7 @@ distinctJSONPaths(json)
 
 **引数**
 
-- `json` — [JSON](../../data-types/newjson.md)カラム。
+- `json` — [JSON](../../data-types/newjson.md) カラム。
 
 **返される値**
 
@@ -48,7 +51,7 @@ SELECT distinctJSONPaths(json) FROM test_json;
 
 # distinctJSONPathsAndTypes
 
-[JSON](../../data-types/newjson.md)カラムに保存された異なるパスとその型のリストを計算します。
+[JSON](../../data-types/newjson.md) カラムに格納されている異なるパスとそのタイプのリストを計算します。
 
 **構文**
 
@@ -58,11 +61,11 @@ distinctJSONPathsAndTypes(json)
 
 **引数**
 
-- `json` — [JSON](../../data-types/newjson.md)カラム。
+- `json` — [JSON](../../data-types/newjson.md) カラム。
 
 **返される値**
 
-- パスと型のソートされたマップ [Map(String, Array(String))](../../data-types/map.md)。
+- パスとタイプのソートされたマップ [Map(String, Array(String))](../../data-types/map.md)。
 
 **例**
 
@@ -86,9 +89,9 @@ SELECT distinctJSONPathsAndTypes(json) FROM test_json;
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**注意**
+**注記**
 
-JSON宣言に指定された型を持つパスが含まれている場合、これらのパスは入力データに値がなくても `distinctJSONPaths/distinctJSONPathsAndTypes` 関数の結果に常に含まれます。
+JSON宣言に指定されたタイプを持つパスが含まれている場合、これらのパスは、入力データにこれらのパスの値がなかった場合でも、`distinctJSONPaths/distinctJSONPathsAndTypes` 関数の結果に常に含まれます。
 
 ```sql
 DROP TABLE IF EXISTS test_json;
@@ -125,3 +128,4 @@ SELECT distinctJSONPathsAndTypes(json) FROM test_json;
 ┌─distinctJSONPathsAndTypes(json)────────────────────────────────┐
 │ {'a':['UInt32'],'b':['String'],'c':['Array(Nullable(Int64))']} │
 └────────────────────────────────────────────────────────────────┘
+```

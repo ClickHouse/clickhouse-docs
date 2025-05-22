@@ -1,14 +1,18 @@
-description: 'トリガーされた回数と共にエラーコードを含むシステムテーブルです。'
-keywords: ['system table', 'errors']
-slug: /operations/system-tables/errors
-title: 'system.errors'
+---
+'description': 'System table containing error codes with the number of times they
+  have been triggered.'
+'keywords':
+- 'system table'
+- 'errors'
+'slug': '/operations/system-tables/errors'
+'title': 'system.errors'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-トリガーされた回数と共にエラーコードを含みます。
+エラーコードとそれが発生した回数を含みます。
 
 カラム:
 
@@ -16,12 +20,12 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 - `code` ([Int32](../../sql-reference/data-types/int-uint.md)) — エラーのコード番号。
 - `value` ([UInt64](../../sql-reference/data-types/int-uint.md)) — このエラーが発生した回数。
 - `last_error_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 最後のエラーが発生した時刻。
-- `last_error_message` ([String](../../sql-reference/data-types/string.md)) — 最後のエラーに関するメッセージ。
-- `last_error_trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 呼び出されたメソッドが保存されている物理アドレスのリストを表す [スタックトレース](https://en.wikipedia.org/wiki/Stack_trace)。
-- `remote` ([UInt8](../../sql-reference/data-types/int-uint.md)) — リモート例外（すなわち、分散クエリの1つ中に受信されたもの）。
+- `last_error_message` ([String](../../sql-reference/data-types/string.md)) — 最後のエラーメッセージ。
+- `last_error_trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 呼び出されたメソッドが格納されている物理アドレスのリストを表す [スタックトレース](https://en.wikipedia.org/wiki/Stack_trace)。
+- `remote` ([UInt8](../../sql-reference/data-types/int-uint.md)) — リモート例外（すなわち、分散クエリの1つ中に受信したもの）。
 
 :::note
-一部のエラーのカウンターは、成功したクエリの実行中に増加する可能性があります。対応するエラーが偽陽性でないと確信できない限り、サーバー監視の目的でこのテーブルを使用することは推奨されません。
+成功したクエリの実行中に、一部のエラーのカウンターが増加する場合があります。対応するエラーが誤検知でないと確信できない限り、このテーブルをサーバーの監視目的で使用することはお勧めしません。
 :::
 
 **例**

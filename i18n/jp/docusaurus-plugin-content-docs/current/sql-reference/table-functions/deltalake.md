@@ -1,15 +1,18 @@
 ---
-description: 'Amazon S3 の Delta Lake テーブルに対して読み取り専用のテーブルのようなインターフェースを提供します。'
-sidebar_label: 'deltaLake'
-sidebar_position: 45
-slug: /sql-reference/table-functions/deltalake
-title: 'deltaLake'
+'description': 'Provides a read-only table-like interface to the Delta Lake tables
+  in Amazon S3.'
+'sidebar_label': 'deltaLake'
+'sidebar_position': 45
+'slug': '/sql-reference/table-functions/deltalake'
+'title': 'deltaLake'
 ---
+
+
 
 
 # deltaLake テーブル関数
 
-Amazon S3 または Azure Blob Storage の [Delta Lake](https://github.com/delta-io/delta) テーブルに対して読み取り専用のテーブルのようなインターフェースを提供します。
+Amazon S3 または Azure Blob Storage 内の [Delta Lake](https://github.com/delta-io/delta) テーブルへの読み取り専用のテーブルのようなインターフェースを提供します。
 
 ## 構文 {#syntax}
 
@@ -25,16 +28,16 @@ deltaLakeAzure(connection_string|storage_account_url, container_name, blobpath, 
 
 ## 引数 {#arguments}
 
-引数の説明は、テーブル関数 `s3`、`azureBlobStorage`、`HDFS` および `file` の引数の説明と一致します。
-`format` は、Delta Lake テーブルのデータファイルのフォーマットを表します。
+引数の説明は、それぞれのテーブル関数 `s3`、`azureBlobStorage`、`HDFS` および `file` の引数の説明と一致します。
+`format` は Delta Lake テーブル内のデータファイルのフォーマットを表します。
 
-**戻り値**
+## 戻り値 {#returned_value}
 
 指定された Delta Lake テーブルからデータを読み取るための指定された構造のテーブル。
 
-**例**
+## 例 {#examples}
 
-S3 のテーブルから行を選択する `https://clickhouse-public-datasets.s3.amazonaws.com/delta_lake/hits/`:
+S3 にあるテーブル `https://clickhouse-public-datasets.s3.amazonaws.com/delta_lake/hits/` からの行の選択:
 
 ```sql
 SELECT
@@ -52,7 +55,7 @@ LIMIT 2
 └───────────────────────────────────────────────────────────────────────┴───────────┘
 ```
 
-**関連情報**
+## 関連項目 {#related}
 
 - [DeltaLake エンジン](engines/table-engines/integrations/deltalake.md)
-- [DeltaLake クラスター テーブル関数](sql-reference/table-functions/deltalakeCluster.md)
+- [DeltaLake クラスターテーブル関数](sql-reference/table-functions/deltalakeCluster.md)

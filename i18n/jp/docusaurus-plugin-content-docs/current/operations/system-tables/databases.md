@@ -1,11 +1,16 @@
 ---
-description: '現在のユーザーが利用できるデータベースに関する情報を含むシステムテーブル。'
-keywords: ['system table', 'databases']
-slug: /operations/system-tables/databases
-title: 'system.databases'
+'description': 'System table containing information about the databases that are available
+  to the current user.'
+'keywords':
+- 'system table'
+- 'databases'
+'slug': '/operations/system-tables/databases'
+'title': 'system.databases'
 ---
 
-現在のユーザーが利用できるデータベースに関する情報を含みます。
+
+
+現在のユーザーが利用できるデータベースに関する情報を含んでいます。
 
 カラム:
 
@@ -14,11 +19,11 @@ title: 'system.databases'
 - `data_path` ([String](../../sql-reference/data-types/string.md)) — データパス。
 - `metadata_path` ([String](../../sql-reference/data-types/enum.md)) — メタデータパス。
 - `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — データベースUUID。
-- `comment` ([String](../../sql-reference/data-types/enum.md)) — データベースのコメント。
+- `comment` ([String](../../sql-reference/data-types/enum.md)) — データベースコメント。
 - `engine_full` ([String](../../sql-reference/data-types/enum.md)) — データベースエンジンのパラメータ。
-- `database` ([String](../../sql-reference/data-types/string.md)) – `name` の別名。
+- `database` ([String](../../sql-reference/data-types/string.md)) – `name` のエイリアス。
 
-このシステムテーブルの `name` カラムは、`SHOW DATABASES` クエリの実装に使用されます。
+このシステムテーブルの `name` カラムは `SHOW DATABASES` クエリの実装に使用されます。
 
 **例**
 
@@ -28,7 +33,7 @@ title: 'system.databases'
 CREATE DATABASE test;
 ```
 
-ユーザーが利用できるすべてのデータベースを確認します。
+ユーザーに利用可能なすべてのデータベースを確認します。
 
 ```sql
 SELECT * FROM system.databases;
@@ -42,5 +47,4 @@ SELECT * FROM system.databases;
 │ replicated_database │ Replicated │ /data/clickhouse_data/store/ │ /data/clickhouse_data/store/da8/da85bb71-102b-4f69-9aad-f8d6c403905e/ │ da85bb71-102b-4f69-9aad-f8d6c403905e │ Replicated('some/path/database', 'shard1', 'replica1') │         │
 │ system              │ Atomic     │ /data/clickhouse_data/store/ │ /data/clickhouse_data/store/b57/b5770419-ac7a-4b67-8229-524122024076/ │ b5770419-ac7a-4b67-8229-524122024076 │ Atomic                                                 │         │
 └─────────────────────┴────────────┴──────────────────────────────┴───────────────────────────────────────────────────────────────────────┴──────────────────────────────────────┴────────────────────────────────────────────────────────┴─────────┘
-
 ```

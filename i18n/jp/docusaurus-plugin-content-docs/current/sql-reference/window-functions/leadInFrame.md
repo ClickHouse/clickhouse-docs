@@ -1,19 +1,22 @@
-description: 'リードインフレームウィンドウ関数のドキュメント'
-sidebar_label: 'leadInFrame'
-sidebar_position: 10
-slug: /sql-reference/window-functions/leadInFrame
-title: 'leadInFrame'
-```
+---
+'description': 'leadInFrame ウィンドウ関数のドキュメント'
+'sidebar_label': 'leadInFrame'
+'sidebar_position': 10
+'slug': '/sql-reference/window-functions/leadInFrame'
+'title': 'leadInFrame'
+---
+
+
 
 
 # leadInFrame
 
-現在の行の後にオフセットされた行で評価された値を返します。
+現在の行の後にオフセットされた行で評価される値を返します。
 
 :::warning
-`leadInFrame` の動作は標準SQLの `lead` ウィンドウ関数とは異なります。
+`leadInFrame` の動作は、標準SQLの `lead` ウィンドウ関数とは異なります。
 ClickHouseのウィンドウ関数 `leadInFrame` はウィンドウフレームを尊重します。
-`lead` と同じ動作を得るには、`ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` を使用します。
+`lead` と同じ動作を得るには、`ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` を使用してください。
 :::
 
 **構文**
@@ -30,18 +33,18 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 **パラメータ**
 - `x` — カラム名。
-- `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 (オプション - デフォルトは`1`)。
-- `default` — 計算された行がウィンドウフレームの境界を超えた場合に返される値。 (オプション - 省略した場合はカラムタイプのデフォルト値)。
+- `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 (オプション - デフォルトは `1`)。
+- `default` — 計算された行がウィンドウフレームの境界を超えた場合に返す値。 (オプション - 省略時にはカラム型のデフォルト値)。
 
-**返される値**
+**返す値**
 
-- 順序付けられたフレーム内の現在の行の後にオフセットされた行で評価された値。
+- 整列されたフレーム内の現在の行の後にオフセットされた行で評価された値。
 
 **例**
 
-この例は、ノーベル賞受賞者の[歴史的データ](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)を調べ、`leadInFrame` 関数を使用して物理学カテゴリーの続く受賞者のリストを返します。
+この例では、ノーベル賞受賞者の[歴史的データ](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)を見て、`leadInFrame` 関数を使用して物理学部門の受賞者のリストを返します。
 
-クエリ:
+クエリ：
 
 ```sql
 CREATE OR REPLACE VIEW nobel_prize_laureates
@@ -63,7 +66,7 @@ ORDER BY year DESC
 LIMIT 9
 ```
 
-結果:
+結果：
 
 ```response
    ┌─fullName─────────┬─year─┬─category─┬─motivation─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -77,3 +80,4 @@ LIMIT 9
 8. │ Klaus Hasselmann │ 2021 │ physics  │ for the physical modelling of Earths climate quantifying variability and reliably predicting global warming                        │
 9. │ Syukuro Manabe   │ 2021 │ physics  │ for the physical modelling of Earths climate quantifying variability and reliably predicting global warming                        │
    └──────────────────┴──────┴──────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```

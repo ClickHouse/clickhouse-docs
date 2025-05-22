@@ -1,25 +1,35 @@
 ---
-slug: '/examples/aggregate-function-combinators/avgResample'
-title: 'avgResample'
-description: 'avgを使用したResampleコンビネータの例'
-keywords: ['avg', 'Resample', 'combinator', 'examples', 'avgResample']
-sidebar_label: 'avgResample'
+'slug': '/examples/aggregate-function-combinators/avgResample'
+'title': 'avgResample'
+'description': '平均を利用した Resample combinator の例'
+'keywords':
+- 'avg'
+- 'Resample'
+- 'combinator'
+- 'examples'
+- 'avgResample'
+'sidebar_label': 'avgResample'
 ---
+
+
+
 
 
 # countResample {#countResample}
 
-## 説明 {#description}
+## Description {#description}
 
 [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
-コンビネータは、指定されたキーのカラムの値を固定数のインターバル（`N`）でカウントするために、[`count`](/sql-reference/aggregate-functions/reference/count) 
+コンビネータは、指定されたキー列の値を固定数の 
+インターバル (`N`) でカウントするために、[`count`](/sql-reference/aggregate-functions/reference/count)
 集約関数に適用できます。
 
-## 使用例 {#example-usage}
+## Example Usage {#example-usage}
 
-### 基本的な例 {#basic-example}
+### Basic example {#basic-example}
 
-例を見てみましょう。従業員の`name`、`age`、および`wage`を含むテーブルを作成し、いくつかのデータを挿入します：
+例を見てみましょう。従業員の `name`、`age`、および `wage` を含むテーブルを作成し、
+データを挿入します。
 
 ```sql
 CREATE TABLE employee_data 
@@ -40,8 +50,10 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-年齢がインターバル`[30,60)` 
-および`[60,75)`（`[`は排他的、`)`は包括的）にある人々の平均的な賃金を取得しましょう。年齢には整数表現を使用するため、インターバルは`[30, 59]`および`[60,74]`になります。これを行うために、`avg`集約関数に`Resample`コンビネータを適用します。
+年齢が `[30,60)` および `[60,75)` の間にある人々の平均賃金を取得してみましょう 
+(`[` は排他的、`)` は包含的です)。整数表現を使用するため、年齢は
+インターバル `[30, 59]` および `[60,74]` になります。これを行うために、`avg` 
+集約関数に `Resample` コンビネータを適用します。
 
 ```sql
 WITH avg_wage AS
@@ -60,6 +72,6 @@ FROM avg_wage;
 └──────────────────┘
 ```
 
-## 関連項目 {#see-also}
+## See also {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)
 - [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)

@@ -1,16 +1,20 @@
 ---
-title: 'SQLリファレンス'
-sidebar_label: 'SQLリファレンス'
-slug: /chdb/reference/sql-reference
-description: 'chDBのSQLリファレンス'
-keywords: ['chdb', 'sqlリファレンス']
+'title': 'SQLリファレンス'
+'sidebar_label': 'SQLリファレンス'
+'slug': '/chdb/reference/sql-reference'
+'description': 'chDBのSQLリファレンス'
+'keywords':
+- 'chdb'
+- 'sql reference'
 ---
 
-chdbはClickHouseと同じSQL構文、ステートメント、エンジン、および関数をサポートしています：
+
+
+chdbは、ClickHouseと同じSQL構文、ステートメント、エンジン、関数をサポートしています：
 
 | トピック                      |
-|-------------------------------|
-| [SQL構文](/sql-reference/syntax)          |
+|----------------------------|
+| [SQL 構文](/sql-reference/syntax)          |
 | [ステートメント](/sql-reference/statements)          |
 | [テーブルエンジン](/engines/table-engines)       |
 | [データベースエンジン](/engines/database-engines)    |
@@ -19,4 +23,4 @@ chdbはClickHouseと同じSQL構文、ステートメント、エンジン、お
 | [テーブル関数](/sql-reference/table-functions)     | 
 | [ウィンドウ関数](/sql-reference/window-functions)    |
 
-詳細情報や例については、[ClickHouse SQLリファレンス](/sql-reference)を参照してください。
+さらなる情報と例については、[ClickHouse SQL リファレンス](/sql-reference)をご覧ください。

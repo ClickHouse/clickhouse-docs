@@ -1,8 +1,12 @@
 ---
-slug: /cloud/billing/marketplace/gcp-marketplace-payg
-title: 'GCP Marketplace PAYG'
-description: 'GCP Marketplace (PAYG) を通じて ClickHouse Cloud を購読します。'
-keywords: ['gcp', 'marketplace', 'billing', 'PAYG']
+'slug': '/cloud/billing/marketplace/gcp-marketplace-payg'
+'title': 'GCP Marketplace PAYG'
+'description': 'Subscribe to ClickHouse Cloud through the GCP Marketplace (PAYG).'
+'keywords':
+- 'gcp'
+- 'marketplace'
+- 'billing'
+- 'PAYG'
 ---
 
 import gcp_marketplace_payg_1 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-1.png';
@@ -18,99 +22,99 @@ import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/ma
 import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-6.png';
 import Image from '@theme/IdealImage';
 
-Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud.google.com/marketplace) via a PAYG (Pay-as-you-go) Public Offer.
+ClickHouse Cloudを[GCP Marketplace](https://console.cloud.google.com/marketplace)でPAYG（従量課金）公共オファーを通じて始めましょう。
 
-## Prerequisites {#prerequisites}
+## 必要条件 {#prerequisites}
 
-- あなたの請求管理者によって購入権が有効になっている GCP プロジェクト。
-- GCP Marketplace で ClickHouse Cloud に購読するには、購入権があるアカウントでログインし、適切なプロジェクトを選択する必要があります。
+- 請求管理者によって購入権が有効化されているGCPプロジェクト。
+- GCP MarketplaceでClickHouse Cloudをサブスクライブするには、購入権を持つアカウントでログインし、適切なプロジェクトを選択する必要があります。
 
-## Steps to sign up {#steps-to-sign-up}
+## サインアップの手順 {#steps-to-sign-up}
 
-1. [GCP Marketplace](https://cloud.google.com/marketplace) にアクセスし、ClickHouse Cloud を検索します。正しいプロジェクトが選択されていることを確認してください。
+1. [GCP Marketplace](https://cloud.google.com/marketplace)に行き、ClickHouse Cloudを検索します。正しいプロジェクトが選択されていることを確認してください。
 
-<Image img={gcp_marketplace_payg_1} size="md" alt="GCP Marketplace ホームページ" border/>
+<Image img={gcp_marketplace_payg_1} size="md" alt="GCP Marketplaceのホームページ" border/>
 
-2. [リスティング](https://console.cloud.google.com/marketplace/product/clickhouse-public/clickhouse-cloud) をクリックし、次に **Subscribe** をクリックします。
+2. [リスティング](https://console.cloud.google.com/marketplace/product/clickhouse-public/clickhouse-cloud)をクリックし、次に**Subscribe**をクリックします。
 
-<Image img={gcp_marketplace_payg_2} size="md" alt="GCP Marketplace の ClickHouse Cloud" border/>
+<Image img={gcp_marketplace_payg_2} size="md" alt="GCP MarketplaceのClickHouse Cloud" border/>
 
-3. 次の画面で、購読を設定します：
+3. 次の画面で、サブスクリプションを設定します：
 
-- プランは "ClickHouse Cloud" にデフォルト設定されます
-- 購読期間は "Monthly" です
-- 適切な請求アカウントを選択します
-- 利用規約に同意し、**Subscribe** をクリックします
-
-<br />
-
-<Image img={gcp_marketplace_payg_3} size="sm" alt="GCP Marketplace での購読設定" border/>
+- プランはデフォルトで「ClickHouse Cloud」になります。
+- サブスクリプションの期間は「毎月」です。
+- 適切な請求アカウントを選択します。
+- 利用規約に同意し、**Subscribe**をクリックします。
 
 <br />
 
-4. **Subscribe** をクリックすると、**Sign up with ClickHouse** というモーダルが表示されます。
+<Image img={gcp_marketplace_payg_3} size="sm" alt="GCP Marketplaceでのサブスクリプション設定" border/>
 
 <br />
 
-<Image img={gcp_marketplace_payg_4} size="md" alt="GCP Marketplace サインアップモーダル" border/>
+4. **Subscribe**をクリックすると、**Sign up with ClickHouse**のモーダルが表示されます。
 
 <br />
 
-5. この時点でセットアップはまだ完了していないことに注意してください。**Set up your account** をクリックして ClickHouse Cloud にリダイレクトし、ClickHouse Cloud にサインアップする必要があります。
-
-6. ClickHouse Cloud にリダイレクトされたら、既存のアカウントにログインするか、新しいアカウントで登録できます。このステップは、あなたの ClickHouse Cloud 組織を GCP Marketplace 請求に結びつけるために非常に重要です。
+<Image img={gcp_marketplace_payg_4} size="md" alt="GCP Marketplaceのサインアップモーダル" border/>
 
 <br />
 
-<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud サインインページ" border/>
+5. この時点では、セットアップはまだ完了していないことに注意してください。**Set up your account**をクリックしてClickHouse Cloudにリダイレクトし、ClickHouse Cloudにサインアップする必要があります。
+
+6. ClickHouse Cloudにリダイレクトされたら、既存のアカウントでログインするか、新しいアカウントを登録できます。このステップは非常に重要で、ClickHouse Cloudの組織をGCP Marketplaceの請求に結び付けることができます。
 
 <br />
 
-新しい ClickHouse Cloud ユーザーの場合は、ページの下部にある **Register** をクリックしてください。新しいユーザーを作成し、メールを確認するように求められます。メールを確認した後、ClickHouse Cloud のログインページを離れ、[https://console.clickhouse.cloud](https://console.clickhouse.cloud) で新しいユーザー名を使用してログインできます。
+<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloudのサインインページ" border/>
 
 <br />
 
-<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud サインアップページ" border/>
+新しいClickHouse Cloudユーザーの場合は、ページの下部にある**Register**をクリックします。新しいユーザーを作成し、メールを確認するように求められます。メールを確認した後、ClickHouse Cloudのログインページを離れて、[https://console.clickhouse.cloud](https://console.clickhouse.cloud)で新しいユーザー名を使用してログインできます。
 
 <br />
 
-新しいユーザーの場合、ビジネスに関する基本情報を提供する必要もあることに注意してください。以下のスクリーンショットを参照してください。
+<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloudのサインアップページ" border/>
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
+新しいユーザーの場合、ビジネスに関する基本情報を提供する必要があることに注意してください。以下のスクリーンショットを参照してください。
 
 <br />
 
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud サインアップ情報フォーム 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloudサインアップ情報フォーム" border/>
 
 <br />
 
-既存の ClickHouse Cloud ユーザーの場合は、資格情報を使用して単にログインしてください。
-
-7. 正常にログインすると、新しい ClickHouse Cloud 組織が作成されます。この組織は GCP 請求アカウントに接続され、すべての使用料はあなたの GCP アカウントを通じて請求されます。
-
-8. ログイン後、請求が実際に GCP Marketplace に紐づけられていることを確認し、ClickHouse Cloud リソースのセットアップを開始できます。
+<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloudサインアップ情報フォーム2" border/>
 
 <br />
 
-<Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloud サインインページ" border/>
+既存のClickHouse Cloudユーザーの場合は、単に資格情報を使用してログインします。
+
+7. ログインが成功すると、新しいClickHouse Cloud組織が作成されます。この組織はあなたのGCP請求アカウントに接続され、すべての利用がGCPアカウントを通じて請求されます。
+
+8. ログイン後、請求が実際にGCP Marketplaceに結び付けられていることを確認し、ClickHouse Cloudリソースの設定を開始できます。
 
 <br />
 
-<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud 新しいサービスページ" border/>
+<Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloudのサインインページ" border/>
 
 <br />
 
-9. サインアップが確認されるメールが届くはずです：
+<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloudの新しいサービスページ" border/>
+
+<br />
+
+9. サインアップを確認するメールを受け取るべきです：
 
 <br />
 <br />
 
-<Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace 確認メール" border/>
+<Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace確認メール" border/>
 
 <br />
 
 <br />
 
-何か問題が発生した場合は、[サポートチーム](https://clickhouse.com/support/program) に遠慮なくお問い合わせください。
+問題が発生した場合は、[サポートチーム](https://clickhouse.com/support/program)にお問い合わせください。

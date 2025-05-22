@@ -1,19 +1,21 @@
 ---
-description: 'NULL 値を扱うための関数に関するドキュメント'
-sidebar_label: 'Nullable'
-sidebar_position: 135
-slug: /sql-reference/functions/functions-for-nulls
-title: 'NULL 値を扱うための関数'
+'description': 'Nullable値を扱うための機能に関するドキュメント'
+'sidebar_label': 'Nullable'
+'sidebar_position': 135
+'slug': '/sql-reference/functions/functions-for-nulls'
+'title': 'Nullable Values用の機能'
 ---
 
 
-# NULL 値を扱うための関数
+
+
+# Nullable 値を扱う関数
 
 ## isNull {#isnull}
 
-引数が [NULL](../../sql-reference/syntax.md#null) かどうかを返します。
+引数が [NULL](../../sql-reference/syntax.md#null) であるかどうかを返します。
 
-演算子 [`IS NULL`](../operators/index.md#is_null) も参照してください。
+[`IS NULL`](../operators/index.md#is_null) 演算子も参照してください。
 
 **構文**
 
@@ -21,7 +23,7 @@ title: 'NULL 値を扱うための関数'
 isNull(x)
 ```
 
-エイリアス: `ISNULL`。
+エイリアス: `ISNULL`.
 
 **引数**
 
@@ -59,7 +61,7 @@ SELECT x FROM t_null WHERE isNull(y);
 
 ## isNullable {#isnullable}
 
-カラムが [Nullable](../data-types/nullable.md) （すなわち、`NULL` 値を許可する）である場合は `1` を返し、それ以外の場合は `0` を返します。
+カラムが [Nullable](../data-types/nullable.md) である場合は `1` を返し（つまり、`NULL` 値を許可）、そうでない場合は `0` を返します。
 
 **構文**
 
@@ -98,9 +100,9 @@ SELECT isNullable(ordinary_col), isNullable(nullable_col) FROM tab;
 
 ## isNotNull {#isnotnull}
 
-引数が [NULL](/operations/settings/formats#input_format_null_as_default) でないかどうかを返します。
+引数が [NULL](/operations/settings/formats#input_format_null_as_default) でないかを返します。
 
-演算子 [`IS NOT NULL`](../operators/index.md#is_not_null) も参照してください。
+[`IS NOT NULL`](../operators/index.md#is_not_null) 演算子も参照してください。
 
 ```sql
 isNotNull(x)
@@ -142,11 +144,11 @@ SELECT x FROM t_null WHERE isNotNull(y);
 
 ## isNotDistinctFrom {#isnotdistinctfrom}
 
-NULL 安全な比較を行います。JOIN ON セクションに `NULL` 値を含む JOIN キーを比較するために使用されます。
-この関数は、二つの `NULL` 値を同一と見なし、`true` を返します。通常の等しい比較では、二つの `NULL` 値を比較すると `NULL` が返されるのとは異なります。
+NULL 安全比較を実行します。これは、JOIN ON セクションに NULL 値を含む JOIN キーを比較するために使用されます。
+この関数は、2 つの `NULL` 値を同一と見なし、`true` を返します。これは、通常の等値比較の動作とは異なり、2 つの `NULL` 値を比較すると `NULL` が返されるということです。
 
 :::note
-この関数は JOIN ON の実装によって使用される内部関数です。クエリ内で手動で使用しないでください。
+この関数は、JOIN ON の実装で使用される内部関数です。クエリで手動で使用しないでください。
 :::
 
 **構文**
@@ -158,16 +160,16 @@ isNotDistinctFrom(x, y)
 **引数**
 
 - `x` — 最初の JOIN キー。
-- `y` — 二番目の JOIN キー。
+- `y` — 2 番目の JOIN キー。
 
 **返される値**
 
 - `x` と `y` が両方とも `NULL` の場合は `true`。
-- それ以外の場合は `false`。
+- そうでない場合は `false`。
 
 **例**
 
-完全な例については: [JOIN キーの NULL 値](../../sql-reference/statements/select/join#null-values-in-join-keys) を参照してください。
+完全な例については、[JOIN キーの NULL 値](../../sql-reference/statements/select/join#null-values-in-join-keys) を参照してください。
 
 ## isZeroOrNull {#iszeroornull}
 
@@ -184,7 +186,7 @@ isZeroOrNull(x)
 **返される値**
 
 - `x` が 0（ゼロ）または `NULL` の場合は `1`。
-- それ以外の場合は `0`。
+- それ以外は `0`。
 
 **例**
 
@@ -223,7 +225,7 @@ coalesce(x,...)
 
 **引数:**
 
-- 非複合型の任意の数のパラメータ。すべてのパラメータは互換性のあるデータ型である必要があります。
+- 複合型でない任意の数のパラメータ。すべてのパラメータは相互に互換性のあるデータ型でなければなりません。
 
 **返される値**
 
@@ -232,18 +234,18 @@ coalesce(x,...)
 
 **例**
 
-顧客に連絡するための複数の方法を指定した連絡先のリストを考えます。
+顧客への連絡方法を複数指定する可能性のある連絡先のリストを考えます。
 
 ```text
 ┌─name─────┬─mail─┬─phone─────┬──telegram─┐
-│ client 1 │ ᴺᵁᴸᴸ │ 123-45-67 │       123 │
-│ client 2 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ      │      ᴺᵁᴸᴼ │
+│ client 1 │ ᴺᵁᴺᴸ │ 123-45-67 │       123 │
+│ client 2 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ      │      ᴺᵁᴸᴸ │
 └──────────┴──────┴───────────┴───────────┘
 ```
 
-`mail` と `phone` フィールドは String 型ですが、`telegram` フィールドは `UInt32` 型なので、String に変換する必要があります。
+`mail` と `phone` フィールドは文字列型ですが、`telegram` フィールドは `UInt32` なので、文字列に変換する必要があります。
 
-連絡先リストから顧客の最初に利用可能な連絡方法を取得します:
+顧客からの連絡方法のリストから最初に利用可能な連絡方法を取得します。
 
 ```sql
 SELECT name, coalesce(mail, phone, CAST(telegram,'Nullable(String)')) FROM aBook;
@@ -306,7 +308,7 @@ SELECT ifNull(NULL, 'b');
 
 ## nullIf {#nullif}
 
-両方の引数が等しい場合 `NULL` を返します。
+両方の引数が等しい場合に `NULL` を返します。
 
 ```sql
 nullIf(x, y)
@@ -353,7 +355,7 @@ SELECT nullIf(1, 2);
 
 ## assumeNotNull {#assumenotnull}
 
-[Nullable](../data-types/nullable.md) 型の値に対して対応する非 `Nullable` の値を返します。元の値が `NULL` の場合、任意の結果が返される可能性があります。関数 `ifNull` および `coalesce` も参照してください。
+[Nullable](../data-types/nullable.md) 型の値に対し、対応する非 `Nullable` 値を返します。元の値が `NULL` の場合、適当な結果が返されることがあります。`ifNull` および `coalesce` 関数も参照してください。
 
 ```sql
 assumeNotNull(x)
@@ -365,14 +367,15 @@ assumeNotNull(x)
 
 **返される値**
 
-- 入力値が `NULL` でない場合、その値を非 `Nullable` 型として返します。
-- 入力値が `NULL` の場合は任意の値を返します。
+- 入力値が `NULL` でない場合は非 `Nullable` 型の入力値。
+- 入力値が `NULL` の場合は任意の値。
 
 **例**
 
 テーブル:
 
 ```text
+
 ┌─x─┬────y─┐
 │ 1 │ ᴺᵁᴸᴸ │
 │ 2 │    3 │
@@ -423,7 +426,7 @@ toNullable(x)
 
 **返される値**
 
-- 入力値ですが、`Nullable` 型になります。
+- 入力値だが、`Nullable` 型の値。
 
 **例**
 

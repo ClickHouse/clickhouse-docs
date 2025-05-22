@@ -1,42 +1,42 @@
 ---
-sidebar_label: '自分のクラウドアカウントにバックアップをエクスポート'
-slug: /cloud/manage/backups/export-backups-to-own-cloud-account
-title: '自分のクラウドアカウントにバックアップをエクスポート'
-description: '自分のクラウドアカウントにバックアップをエクスポートする方法について説明します'
+'sidebar_label': 'Export Backups to your Own Cloud Account'
+'slug': '/cloud/manage/backups/export-backups-to-own-cloud-account'
+'title': 'Export Backups to your Own Cloud Account'
+'description': 'Describes how to export backups to your own Cloud account'
 ---
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 <EnterprisePlanFeatureBadge/>
 
-ClickHouse Cloudは、あなた自身のクラウドサービスプロバイダー (CSP) アカウント (AWS S3、Google Cloud Storage、またはAzure Blob Storage) にバックアップを取ることをサポートしています。
-ClickHouse Cloudのバックアップの詳細、特に「フル」と「インクリメンタル」バックアップについては、[バックアップ](overview.md) ドキュメントを参照してください。
+ClickHouse Cloudは、独自のクラウドサービスプロバイダー（CSP）アカウント（AWS S3、Google Cloud Storage、またはAzure Blob Storage）へのバックアップをサポートしています。  
+ClickHouse Cloudのバックアップの詳細、特に「フル」バックアップと「インクリメンタル」バックアップの違いについては、[バックアップ](overview.md)ドキュメントを参照してください。
 
-ここでは、AWS、GCP、Azureオブジェクトストレージにフルバックアップとインクリメンタルバックアップを取得する方法、およびバックアップから復元する方法の例を示します。
+ここでは、AWS、GCP、Azureのオブジェクトストレージにフルバックアップおよびインクリメンタルバックアップを取得し、バックアップから復元する方法の例を示します。
 
 :::note
-ユーザーは、バックアップが同じクラウドプロバイダーの異なるリージョンにエクスポートされる場合や、他のクラウドプロバイダー(同じまたは異なるリージョン)にエクスポートされる場合、[データ転送](../network-data-transfer.mdx)料が発生することに留意してください。
+ユーザーは、バックアップが同じクラウドプロバイダー内の別のリージョンにエクスポートされる場合や、別のクラウドプロバイダー（同じまたは異なるリージョン）にエクスポートされる場合、[データ転送](../network-data-transfer.mdx)料金が発生することを認識しておく必要があります。
 :::
 
 ## 要件 {#requirements}
 
-あなた自身のCSPストレージバケットにバックアップをエクスポート/復元するために、以下の詳細が必要です。
+独自のCSPストレージバケットにバックアップをエクスポートおよび復元するには、以下の詳細が必要です。
 
 ### AWS {#aws}
 
-1. AWS S3エンドポイントは、次の形式です：
+1. AWS S3エンドポイント、フォーマットは次の通りです：
 
     ```text
     s3://<bucket_name>.s3.amazonaws.com/<directory>
     ```
 
-    例：
+    例： 
     ```text
     s3://testchbackups.s3.amazonaws.com/backups/
     ```
     ここで：
-   - `testchbackups`はバックアップをエクスポートするS3バケットの名前です。
-   - `backups`はオプションのサブディレクトリです。
+   - `testchbackups` はバックアップをエクスポートするS3バケットの名前です。
+   - `backups` はオプションのサブディレクトリです。
 
 2. AWSアクセスキーとシークレット。
 
@@ -48,7 +48,7 @@ ClickHouse Cloudのバックアップの詳細、特に「フル」と「イン�
 
 ### Google Cloud Storage (GCS) {#google-cloud-storage-gcs}
 
-1. GCSエンドポイントは、次の形式です：
+1. GCSエンドポイント、フォーマットは次の通りです：
 
     ```text
     https://storage.googleapis.com/<bucket_name>/
@@ -61,7 +61,7 @@ ClickHouse Cloudのバックアップの詳細、特に「フル」と「イン�
 
 ## AWS S3バケットへのバックアップ / 復元 {#backup--restore-to-aws-s3-bucket}
 
-### データベースバックアップを取得 {#take-a-db-backup}
+### データベースバックアップの取得 {#take-a-db-backup}
 
 **フルバックアップ**
 
@@ -70,11 +70,11 @@ BACKUP DATABASE test_backups
 TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
 ```
 
-ここで、`uuid`はバックアップのセットを区別するための一意の識別子です。
+ここで、`uuid` はバックアップセットを区別するための一意の識別子です。
 
 :::note
-このサブディレクトリ内で各新しいバックアップには異なるUUIDを使用する必要があります。さもなければ、`BACKUP_ALREADY_EXISTS`エラーが発生します。
-たとえば、毎日バックアップを行う場合は、毎日新しいUUIDを使用する必要があります。  
+このサブディレクトリ内の各新しいバックアップには異なるUUIDを使用する必要があります。そうでない場合は `BACKUP_ALREADY_EXISTS` エラーが発生します。  
+たとえば、毎日バックアップを取得する場合、毎日新しいUUIDを使用する必要があります。  
 :::
 
 **インクリメンタルバックアップ**
@@ -85,7 +85,7 @@ TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key
 SETTINGS base_backup = S3('https://testchbackups.s3.amazonaws.com/backups/<base-backup-uuid>', '<key id>', '<key secret>')
 ```
 
-### バックアップから復元 {#restore-from-a-backup}
+### バックアップからの復元 {#restore-from-a-backup}
 
 ```sql
 RESTORE DATABASE test_backups 
@@ -93,11 +93,11 @@ AS test_backups_restored
 FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
 ```
 
-詳細については、[S3エンドポイントを使用するためのバックアップ/復元の設定](/operations/backup#configuring-backuprestore-to-use-an-s3-endpoint)を参照してください。
+詳細については、[S3エンドポイントを使用するためのBACKUP/RESTOREの設定](/operations/backup#configuring-backuprestore-to-use-an-s3-endpoint)を参照してください。
 
 ## Azure Blob Storageへのバックアップ / 復元 {#backup--restore-to-azure-blob-storage}
 
-### データベースバックアップを取得 {#take-a-db-backup-1}
+### データベースバックアップの取得 {#take-a-db-backup-1}
 
 **フルバックアップ**
 
@@ -106,7 +106,7 @@ BACKUP DATABASE test_backups
 TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>');
 ```
 
-ここで、`uuid`はバックアップのセットを区別するための一意の識別子です。
+ここで、`uuid` はバックアップセットを区別するための一意の識別子です。
 
 **インクリメンタルバックアップ**
 
@@ -116,7 +116,7 @@ TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container
 SETTINGS base_backup = AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>')
 ```
 
-### バックアップから復元 {#restore-from-a-backup-1}
+### バックアップからの復元 {#restore-from-a-backup-1}
 
 ```sql
 RESTORE DATABASE test_backups 
@@ -124,19 +124,19 @@ AS test_backups_restored_azure
 FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>')
 ```
 
-詳細については、[Azure Blob Storageエンドポイントを使用するためのバックアップ/復元の設定](/operations/backup#configuring-backuprestore-to-use-an-azureblobstorage-endpoint)を参照してください。
+詳細については、[S3エンドポイントを使用するためのBACKUP/RESTOREの設定](/operations/backup#configuring-backuprestore-to-use-an-azureblobstorage-endpoint)を参照してください。
 
-## Google Cloud Storage (GCS) へのバックアップ / 復元 {#backup--restore-to-google-cloud-storage-gcs}
+## Google Cloud Storage (GCS)へのバックアップ / 復元 {#backup--restore-to-google-cloud-storage-gcs}
 
-### データベースバックアップを取得 {#take-a-db-backup-2}
+### データベースバックアップの取得 {#take-a-db-backup-2}
 
 **フルバックアップ**
 
 ```sql
 BACKUP DATABASE test_backups 
-TO S3('https://storage.googleapis.com/<bucket>/<uuid>', '<hmac-key>', '<hmac-secret>')
+TO S3('https://storage.googleapis.com/<bucket>/<uuid>', <hmac-key>', <hmac-secret>)
 ```
-ここで、`uuid`はバックアップのセットを区別するための一意の識別子です。
+ここで、`uuid` はバックアップセットを区別するための一意の識別子です。
 
 **インクリメンタルバックアップ**
 
@@ -146,7 +146,7 @@ TO S3('https://storage.googleapis.com/test_gcs_backups/<uuid>/my_incremental', '
 SETTINGS base_backup = S3('https://storage.googleapis.com/test_gcs_backups/<uuid>', 'key', 'secret')
 ```
 
-### バックアップから復元 {#restore-from-a-backup-2}
+### バックアップからの復元 {#restore-from-a-backup-2}
 
 ```sql
 RESTORE DATABASE test_backups 

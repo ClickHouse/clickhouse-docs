@@ -1,14 +1,16 @@
 ---
-description: '指定された `key` 配列のキーに基づいて、`value` 配列から最大値を計算します。'
-sidebar_position: 165
-slug: /sql-reference/aggregate-functions/reference/maxmap
-title: 'maxMap'
+'description': '`key` 配列で指定されたキーに従って `value` 配列から最大値を計算します。'
+'sidebar_position': 165
+'slug': '/sql-reference/aggregate-functions/reference/maxmap'
+'title': 'maxMap'
 ---
+
+
 
 
 # maxMap
 
-指定された `key` 配列のキーに基づいて、`value` 配列から最大値を計算します。
+`key` 配列で指定されたキーに従って、`value` 配列から最大値を計算します。
 
 **構文**
 
@@ -24,17 +26,17 @@ maxMap(Tuple(key, value))
 
 :::note
 - キーと値の配列のタプルを渡すことは、キーと値の2つの配列を渡すことと同じです。
-- `key` と `value` の要素数は、合計される各行で同じでなければなりません。
+- `key` と `value` の要素数は、合計する各行で同じでなければなりません。
 :::
 
-**パラメータ**
+**パラメーター**
 
 - `key` — キーの配列。 [Array](../../data-types/array.md).
 - `value` — 値の配列。 [Array](../../data-types/array.md).
 
 **返される値**
 
-- 整列された順序のキーと、対応するキーに対して計算された値の2つの配列のタプルを返します。 [Tuple](../../data-types/tuple.md)([Array](../../data-types/array.md), [Array](../../data-types/array.md)).
+- ソートされた順序のキーと、対応するキーに対して計算された値の2つの配列からなるタプルを返します。 [Tuple](../../data-types/tuple.md)([Array](../../data-types/array.md), [Array](../../data-types/array.md)).
 
 **例**
 

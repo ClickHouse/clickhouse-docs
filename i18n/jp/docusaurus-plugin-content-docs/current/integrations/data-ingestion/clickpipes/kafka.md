@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'KafkaのためのClickPipes'
-description: 'あなたのKafkaデータソースをClickHouse Cloudにシームレスに接続します。'
-slug: /integrations/clickpipes/kafka
-sidebar_position: 1
-title: 'ClickHouse CloudとのKafkaの統合'
+'sidebar_label': 'ClickPipes for Kafka'
+'description': 'Seamlessly connect your Kafka data sources to ClickHouse Cloud.'
+'slug': '/integrations/clickpipes/kafka'
+'sidebar_position': 1
+'title': 'Integrating Kafka with ClickHouse Cloud'
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
@@ -28,179 +28,181 @@ import cp_overview from '@site/static/images/integrations/data-ingestion/clickpi
 import Image from '@theme/IdealImage';
 
 
-# ClickHouse CloudとのKafkaの統合
+
+# KafkaとClickHouse Cloud の統合
 ## 前提条件 {#prerequisite}
-[ClickPipesの紹介](./index.md)に慣れていること。
+[ClickPipesの紹介](./index.md)に目を通しておいてください。
 
 ## 最初のKafka ClickPipeの作成 {#creating-your-first-kafka-clickpipe}
 
-1. あなたのClickHouse Cloudサービス用のSQLコンソールにアクセスします。
+1. ClickHouse CloudサービスのSQLコンソールにアクセスします。
 
-<Image img={cp_service} alt="ClickPipesサービス" size="md" border/>
+<Image img={cp_service} alt="ClickPipes service" size="md" border/>
 
-2. 左側のメニューで`データソース`ボタンを選択し、「ClickPipeを設定」をクリックします。
+2. 左側のメニューから`データソース`ボタンを選択し、「ClickPipeをセットアップ」をクリックします。
 
-<Image img={cp_step0} alt="インポートの選択" size="lg" border/>
+<Image img={cp_step0} alt="Select imports" size="lg" border/>
 
 3. データソースを選択します。
 
-<Image img={cp_step1} alt="データソースの種類の選択" size="lg" border/>
+<Image img={cp_step1} alt="Select data source type" size="lg" border/>
 
-4. 名前、説明（オプション）、資格情報、その他の接続詳細を提供してフォームを埋めます。
+4. ClickPipeに名前、説明（オプション）、認証情報、その他の接続詳細を提供してフォームを記入します。
 
-<Image img={cp_step2} alt="接続詳細を埋める" size="lg" border/>
+<Image img={cp_step2} alt="Fill out connection details" size="lg" border/>
 
-5. スキーマレジストリを設定します。Avroストリームには有効なスキーマが必要で、JSONにはオプションです。このスキーマは、選択されたトピックでの[AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)メッセージの解析またはJSONメッセージの検証に使用されます。
-   - 解析できないAvroメッセージや検証に失敗したJSONメッセージは、エラーを生成します。
-   - スキーマレジストリの「ルート」パス。例えば、Confluent CloudスキーマレジストリのURLは、`https://test-kk999.us-east-2.aws.confluent.cloud`のように、パスのないHTTPS URLです。ルートパスのみが指定されている場合、ステップ4でカラム名と型を決定するために使用されるスキーマは、サンプルのKafkaメッセージに埋め込まれたIDによって決まります。
-   - 数値スキーマIDによってスキーマ文書に至るパス`/schemas/ids/[ID]`。スキーマIDを使用した完全なURLは、`https://registry.example.com/schemas/ids/1000`になります。
-   - トピック名によってスキーマ文書に至るパス`/subjects/[subject_name]`。オプションとして、特定のバージョンを参照するために、URLに`/versions/[version]`を追加することもできます（そうしない場合、ClickPipesは最新バージョンを取得します）。スキーマサブジェクトを使用した完全なURLは、`https://registry.example.com/subjects/events`または`https://registry/example.com/subjects/events/versions/4`になります。
+5. スキーマレジストリを設定します。有効なスキーマはAvroストリームには必須で、JSONにはオプションです。このスキーマは、選択されたトピック上で[AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)を解析したり、JSONメッセージを検証したりするために使用されます。
+- 解析できないAvroメッセージや検証に失敗したJSONメッセージはエラーを生成します。
+- スキーマレジストリの「ルート」パス。例えば、Confluent CloudのスキーマレジストリURLは`https://test-kk999.us-east-2.aws.confluent.cloud`のようなパスのないHTTPS URLです。ルートパスのみが指定されている場合、ステップ4で列名とタイプを決定するために使用されるスキーマは、サンプリングされたKafkaメッセージに埋め込まれたIDによって決定されます。
+- 数値スキーマIDによるスキーマドキュメントへのパス`/schemas/ids/[ID]`。スキーマIDを使用した完全なURLは`https://registry.example.com/schemas/ids/1000`です。
+- スキーマドキュメントへのサブジェクト名によるパス`/subjects/[subject_name]`。オプションで、特定のバージョンはURLに`/versions/[version]`を付加することで参照できます（そうでない場合、ClickPipesは最新バージョンを取得します）。スキーマサブジェクトを使用した完全なURLは`https://registry.example.com/subjects/events`または`https://registry/example.com/subjects/events/versions/4`です。
 
-   すべての場合において、ClickPipesはメッセージに埋め込まれたスキーマIDに基づいて、レジストリから更新されたスキーマや異なるスキーマを自動的に取得します。メッセージが埋め込まれたスキーマIDなく書き込まれた場合、すべてのメッセージを解析するには、特定のスキーマIDまたはトピックを指定する必要があります。
+すべての場合において、ClickPipesはメッセージに埋め込まれたスキーマIDによって示された場合、レジストリから更新されたり異なるスキーマを自動的に取得します。埋め込まれたスキーマIDなしでメッセージが書き込まれた場合は、すべてのメッセージを解析するために特定のスキーマIDまたはサブジェクトを指定する必要があります。
 
-6. トピックを選択すると、UIがトピックのサンプル文書を表示します。
+6. トピックを選択すると、UIにそのトピックのサンプルドキュメントが表示されます。
 
-<Image img={cp_step3} alt="データ形式とトピックの設定" size="lg" border/>
+<Image img={cp_step3} alt="Set data format and topic" size="lg" border/>
 
-7. 次のステップでは、新しいClickHouseテーブルにデータを取り込むか、既存のテーブルを再利用するかを選択できます。画面内の指示に従ってテーブル名、スキーマ、設定を変更します。サンプルテーブルの上部に自分の変更をリアルタイムでプレビューできます。
+7. 次のステップでは、新しいClickHouseテーブルにデータを取り込むか、既存のテーブルを再利用するかを選択できます。画面の指示に従って、テーブル名、スキーマ、設定を変更してください。上部のサンプルテーブルで自分の変更をリアルタイムでプレビューできます。
 
-<Image img={cp_step4a} alt="テーブル、スキーマ、および設定の設定" size="lg" border/>
+<Image img={cp_step4a} alt="Set table, schema, and settings" size="lg" border/>
 
-   高度な設定をカスタマイズするために、提供されたコントロールを使うこともできます。
+  提供されたコントロールを使用して高度な設定をカスタマイズすることもできます。
 
-<Image img={cp_step4a3} alt="高度なコントロールを設定" size="lg" border/>
+<Image img={cp_step4a3} alt="Set advanced controls" size="lg" border/>
 
-8. あるいは、既存のClickHouseテーブルにデータを取り込むことを決めることもできます。この場合、UIはソースのフィールドを選択した宛先テーブルのClickHouseフィールドにマッピングすることを許可します。
+8. または、既存のClickHouseテーブルにデータを取り込む決定をすることもできます。その場合、UIはソースからのフィールドを選択した宛先テーブル内のClickHouseフィールドにマッピングすることを許可します。
 
-<Image img={cp_step4b} alt="既存のテーブルを使用" size="lg" border/>
+<Image img={cp_step4b} alt="Use an existing table" size="lg" border/>
 
 9. 最後に、内部ClickPipesユーザーの権限を設定できます。
 
-   **権限：** ClickPipesは宛先テーブルにデータを書くための専用ユーザーを作成します。この内部ユーザーの役割をカスタム役割または定義済みの役割の一つから選択できます：
-   - `フルアクセス`：クラスターの完全なアクセス権を持ちます。宛先テーブルと一緒にMaterialized ViewまたはDictionaryを使用する場合に便利です。
-   - `宛先テーブルのみに制限`：宛先テーブルのみの`INSERT`権限を持ちます。
+  **権限:** ClickPipesは、宛先テーブルにデータを書き込むための専用ユーザーを作成します。この内部ユーザーに対して、カスタムロールまたは事前定義されたロールの一つを選択できます：
+    - `フルアクセス`: クラスターへのフルアクセスを持つ。Materialized ViewやDictionaryを宛先テーブルと共に使用する場合に便利です。
+    - `宛先テーブルのみ`: 宛先テーブルにのみ`INSERT`権限を持つ。
 
-<Image img={cp_step5} alt="権限" size="lg" border/>
+<Image img={cp_step5} alt="Permissions" size="lg" border/>
 
-10. 「設定を完了する」をクリックすると、システムがClickPipeを登録し、サマリーテーブルに表示されるようになります。
+10. 「セットアップを完了する」をクリックすると、システムがClickPipeを登録し、サマリーテーブルに表示されるようになります。
 
-<Image img={cp_success} alt="成功通知" size="sm" border/>
+<Image img={cp_success} alt="Success notice" size="sm" border/>
 
-<Image img={cp_remove} alt="削除通知" size="lg" border/>
+<Image img={cp_remove} alt="Remove notice" size="lg" border/>
 
-   サマリーテーブルは、ClickHouse内のソースまたは宛先テーブルからサンプルデータを表示するためのコントロールを提供します。
+  サマリーテーブルは、ClickHouseのソースまたは宛先テーブルからサンプルデータを表示するためのコントロールを提供します。
 
-<Image img={cp_destination} alt="宛先の表示" size="lg" border/>
+<Image img={cp_destination} alt="View destination" size="lg" border/>
 
-   また、ClickPipeを削除するためのコントロールや、取り込みジョブの概要を表示するためのコントロールも提供します。
+  また、ClickPipeを削除し、取り込みジョブの概要を表示するためのコントロールもあります。
 
-<Image img={cp_overview} alt="概要の表示" size="lg" border/>
+<Image img={cp_overview} alt="View overview" size="lg" border/>
 
-11. **おめでとうございます！** 最初のClickPipeを正常に設定しました。これがストリーミングClickPipeであれば、リモートデータソースからリアルタイムでデータを取り込み続けます。
+11. **おめでとうございます!** あなたは最初のClickPipeを成功裏にセットアップしました。これがストリーミングClickPipeである場合は、リモートデータソースからリアルタイムでデータを取り込み続けます。
 
-## サポートされるデータソース {#supported-data-sources}
+## サポートされているデータソース {#supported-data-sources}
 
-| 名前                | ロゴ | タイプ   | ステータス          | 説明                                                                                       |
-|----------------------|------|----------|----------------------|--------------------------------------------------------------------------------------------|
-| Apache Kafka         | <Kafkasvg class="image" alt="Apache Kafkaロゴ" style={{width: '3rem', 'height': '3rem'}}/> | ストリーミング | 安定        | ClickPipesを設定し、Apache KafkaからClickHouse Cloudにストリーミングデータを取り込むことを開始します。 |
-| Confluent Cloud      | <Confluentsvg class="image" alt="Confluent Cloudロゴ" style={{width: '3rem'}}/> | ストリーミング | 安定        | ConfluentとClickHouse Cloudの統合を通じて、その結合パワーを解放します。               |
-| Redpanda             | <Image img={redpanda_logo} size="logo" alt="Redpandaロゴ"/> | ストリーミング | 安定        | ClickPipesを設定し、RedpandaからClickHouse Cloudにストリーミングデータを取り込むことを開始します。 |
-| AWS MSK              | <Msksvg class="image" alt="AWS MSKロゴ" style={{width: '3rem', 'height': '3rem'}}/> | ストリーミング | 安定        | ClickPipesを設定し、AWS MSKからClickHouse Cloudにストリーミングデータを取り込むことを開始します。 |
-| Azure Event Hubs     | <Azureeventhubssvg class="image" alt="Azure Event Hubsロゴ" style={{width: '3rem'}}/> | ストリーミング | 安定        | ClickPipesを設定し、Azure Event HubsからClickHouse Cloudにストリーミングデータを取り込むことを開始します。 |
-| WarpStream           | <Warpstreamsvg class="image" alt="WarpStreamロゴ" style={{width: '3rem'}}/> | ストリーミング | 安定        | ClickPipesを設定し、WarpStreamからClickHouse Cloudにストリーミングデータを取り込むことを開始します。 |
+| 名前                   | ロゴ | タイプ | ステータス        | 説明                                                                                           |
+|------------------------|------|--------|-------------------|------------------------------------------------------------------------------------------------|
+| Apache Kafka           |<Kafkasvg class="image" alt="Apache Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>| ストリーミング | 安定          | ClickPipesを設定し、Apache KafkaからClickHouse Cloudにストリーミングデータを取り込むことができます。     |
+| Confluent Cloud        |<Confluentsvg class="image" alt="Confluent Cloud logo" style={{width: '3rem'}}/>| ストリーミング | 安定          | ConfluentとClickHouse Cloudの組み合わせの力を、直接の統合で活用します。                      |
+| Redpanda               |<Image img={redpanda_logo} size="logo" alt="Redpanda logo"/>| ストリーミング | 安定          | ClickPipesを設定し、RedpandaからClickHouse Cloudにストリーミングデータを取り込むことができます。     |
+| AWS MSK                |<Msksvg class="image" alt="AWS MSK logo" style={{width: '3rem', 'height': '3rem'}}/>| ストリーミング | 安定          | ClickPipesを設定し、AWS MSKからClickHouse Cloudにストリーミングデータを取り込むことができます。      |
+| Azure Event Hubs       |<Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>| ストリーミング | 安定          | ClickPipesを設定し、Azure Event HubsからClickHouse Cloudにストリーミングデータを取り込むことができます。 |
+| WarpStream             |<Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>| ストリーミング | 安定          | ClickPipesを設定し、WarpStreamからClickHouse Cloudにストリーミングデータを取り込むことができます。    |
 
-さらに多くのコネクタがClickPipesに追加される予定です。詳細は[ご連絡ください](https://clickhouse.com/company/contact?loc=clickpipes)。
+More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
-## サポートされるデータ形式 {#supported-data-formats}
+## サポートされているデータ形式 {#supported-data-formats}
 
-サポートされる形式は以下です：
+サポートされている形式は以下の通りです：
 - [JSON](../../../interfaces/formats.md/#json)
 - [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)
 
-### サポートされるデータ型 {#supported-data-types}
+### サポートされているデータタイプ {#supported-data-types}
 
-以下のClickHouseデータ型は、現在ClickPipesでサポートされています：
+現在、ClickPipesでサポートされているClickHouseのデータタイプは以下の通りです：
 
-- 基本数値型 - \[U\]Int8/16/32/64 および Float32/64
-- 大きな整数型 - \[U\]Int128/256
-- Decimalタイプ
-- Boolean
-- String
-- FixedString
-- Date, Date32
-- DateTime, DateTime64（UTCタイムゾーンのみ）
+- 基本的な数値型 - \[U\]Int8/16/32/64およびFloat32/64
+- 大きい整数型 - \[U\]Int128/256
+- 小数型
+- ブール型
+- 文字列
+- 固定文字列
+- 日付、Date32
+- 日時、DateTime64（UTCタイムゾーンのみ）
 - Enum8/Enum16
 - UUID
 - IPv4
 - IPv6
 - すべてのClickHouse LowCardinality型
-- 上記の任意の型（Nullableを含む）を使用するキーと値を持つMap
-- 上記の任意の型（Nullableを含む、1レベルの深さのみ）を使用する要素を持つTupleおよびArray
+- 上記のタイプ（Nullableを含む）を使用したキーと値のあるMap
+- 上記のタイプ（Nullableを含む、1レベル深さのみ）を要素として使用したTupleおよびArray
 
 ### Avro {#avro}
-#### サポートされるAvroデータ型 {#supported-avro-data-types}
+#### サポートされているAvroデータタイプ {#supported-avro-data-types}
 
-ClickPipesは、すべてのAvro原始型と複合型、および`time-millis`, `time-micros`, `local-timestamp-millis`, `local_timestamp-micros`, `duration`を除くすべてのAvro論理型をサポートします。Avroの`record`型はTupleに、`array`型はArrayに、`map`はMap（文字列キーのみ）に変換されます。一般的に、[ここ]( /interfaces/formats/Avro#data-types-matching)に記載されている変換が利用可能です。ClickPipesは、型変換時のオーバーフローや精度の喪失をチェックしないため、Avro数値型の正確な型一致を使用することをお勧めします。
+ClickPipesはすべてのAvroプリミティブおよび複合タイプ、`time-millis`、`time-micros`、`local-timestamp-millis`、`local_timestamp-micros`、および`duration`以外のすべてのAvroロジカルタイプをサポートします。Avroの`record`タイプはTupleに変換され、`array`タイプはArrayに、`map`はMap（文字列キーのみ）に変換されます。一般的に、[ここ](/interfaces/formats/Avro#data-types-matching)で示された変換があります。ClickPipesはAvro数値型の正確なタイプマッチングを推奨します。ClickPipesは型変換時のオーバーフローや精度損失をチェックしません。
 
 #### Nullable型とAvroユニオン {#nullable-types-and-avro-unions}
 
-AvroのNullable型は、`(T, null)`または`(null, T)`のユニオンスキーマを使用して定義され、Tは基本Avro型です。スキーマ推論中、そのようなユニオンはClickHouseの「Nullable」カラムにマッピングされます。ClickHouseは、`Nullable(Array)`, `Nullable(Map)`、および`Nullable(Tuple)`型をサポートしていません。これらの型のAvro nullユニオンは、非Nullableバージョンにマッピングされます（Avro Record型はClickHouseの命名Tupleにマッピングされます）。これらの型のAvroの「null」は次のように挿入されます：
-- null Avro配列の場合、空のArray
-- null Avro Mapの場合、空のMap
-- null Avro Recordの場合、すべてのデフォルト/ゼロ値を持つ命名Tuple
+AvroのNullableタイプは、`(T, null)`または`(null, T)`のユニオンスキーマを使用して定義され、ここでTは基本的なAvroタイプです。スキーマ推論中に、そのようなユニオンはClickHouseの「Nullable」カラムにマッピングされます。ClickHouseは `Nullable(Array)`、`Nullable(Map)`、または`Nullable(Tuple)`型をサポートしていないことに注意してください。これらの型のAvro nullユニオンは、非Nullableバージョンにマッピングされます（Avro Record型はClickHouseの名前付けされたTupleにマッピングされます）。これらの型のAvro「null」は次のように挿入されます：
+- nullのAvro配列に対して空のArray
+- nullのAvro Mapに対して空のMap
+- nullのAvro Recordに対してすべてのデフォルト/ゼロ値を持つ名前付きTuple
 
-ClickPipesは、他のAvroユニオンを含むスキーマを現在サポートしていません（これは、ClickHouseのVariantとJSONデータ型の成熟に伴って変更される可能性があります）。Avroスキーマが「非null」ユニオンを含む場合、ClickPipesはAvroスキーマとClickhouseカラム型とのマッピングを計算しようとするとエラーを生成します。
+ClickPipesは、他のAvroユニオンが含まれるスキーマを現在サポートしていません（これは、ClickHouseの新しいVariantおよびJSONデータタイプが成熟するにつれて変更される可能性があります）。Avroスキーマに「非null」ユニオンが含まれている場合、ClickPipesはAvroスキーマとClickhouseカラムタイプ間のマッピングを計算しようとする際にエラーを生成します。
 
 #### Avroスキーマ管理 {#avro-schema-management}
 
-ClickPipesは、構成されたスキーマレジストリから、各メッセージ/イベントに埋め込まれたスキーマIDを使用してAvroスキーマを動的に取得し、適用します。スキーマの更新は自動的に検出され、処理されます。
+ClickPipesは、各メッセージ/イベントに埋め込まれたスキーマIDを使用して、設定されたスキーマレジストリからAvroスキーマを動的に取得して適用します。スキーマの更新は自動的に検出され、処理されます。
 
-現在、ClickPipesは[Confluent Schema Registry API](https://docs.confluent.io/platform/current/schema-registry/develop/api.html)を使用するスキーマレジストリとのみ互換性があります。Confluent KafkaおよびCloudに加えて、Redpanda、AWS MSK、Upstashスキーマレジストリも含まれます。現在、ClickPipesはAWS Glue SchemaレジストリやAzureスキーマレジストリとは互換性がありません（近日中に対応予定）。
+現在、ClickPipesは[Confluent Schema Registry API](https://docs.confluent.io/platform/current/schema-registry/develop/api.html)を使用するスキーマレジストリとのみ互換性があります。Confluent KafkaおよびCloudの他に、Redpanda、AWS MSK、およびUpstashのスキーマレジストリも含まれます。ClickPipesは現在、AWS GlueスキーマレジストリまたはAzureスキーマレジストリとは互換性がありません（近日中に対応予定）。
 
 取得したAvroスキーマとClickHouse宛先テーブル間のマッピングには以下のルールが適用されます：
 - AvroスキーマがClickHouse宛先マッピングに含まれていないフィールドを含む場合、そのフィールドは無視されます。
-- AvroスキーマにClickHouse宛先マッピングで定義されたフィールドが欠けている場合、ClickHouseカラムは「ゼロ」値（0または空の文字列）で埋められます。[DEFAULT](/sql-reference/statements/create/table#default)式は、現在ClickPipesのINSERTには評価されません（これはClickHouseサーバのデフォルト処理のアップデートを待っている一時的な制限です）。
-- AvroスキーマフィールドとClickHouseカラムが互換性がない場合、その行/messageのINSERTは失敗し、失敗はClickPipesエラー表に記録されます。間接的な変換は複数サポートされています（数値型間の変換など）が、すべてではありません（例、Avroの`record`フィールドは`Int32`のClickHouseカラムには挿入できません）。
+- AvroスキーマがClickHouse宛先マッピングで定義されたフィールドを欠いている場合、ClickHouseカラムは0や空文字列などの「ゼロ」値で埋められます。[DEFAULT](/sql-reference/statements/create/table#default)式は現在ClickPipesの挿入で評価されていないことに注意してください（これはClickHouseサーバーのデフォルト処理の更新を待っている一時的な制限です）。
+- AvroスキーマのフィールドとClickHouseカラムが互換性がない場合、その行/メッセージの挿入は失敗し、失敗はClickPipesエラーテーブルに記録されます。数値型間のようにいくつかの暗黙的な変換がサポートされていますが、すべてではありません（例えば、Avroの`record`フィールドは`Int32`のClickHouseカラムに挿入することはできません）。
 
 ## Kafka仮想カラム {#kafka-virtual-columns}
 
-次の仮想カラムは、Kafka互換ストリーミングデータソースに対してサポートされています。新しい宛先テーブルを作成するとき、`Add Column`ボタンを使用して仮想カラムを追加できます。
+Kafka互換のストリーミングデータソース用に以下の仮想カラムがサポートされています。新しい宛先テーブルを作成する際には、`カラムを追加`ボタンを使用して仮想カラムを追加できます。
 
-| 名前           | 説明                                           | 推奨データ型        |
-|----------------|------------------------------------------------|----------------------|
-| _key           | Kafkaメッセージキー                           | String               |
-| _timestamp     | Kafkaタイムスタンプ（ミリ秒精度）            | DateTime64(3)        |
-| _partition     | Kafkaパーティション                            | Int32                |
-| _offset        | Kafkaオフセット                                | Int64                |
-| _topic         | Kafkaトピック                                  | String               |
-| _header_keys   | レコードヘッダー内のキーの並列配列           | Array(String)        |
-| _header_values | レコードヘッダー内のヘッダーの並列配列       | Array(String)        |
-| _raw_message   | 完全なKafkaメッセージ                          | String               |
+| 名称             | 説明                                          | 推奨データタイプ      |
+|------------------|------------------------------------------------|-----------------------|
+| _key             | Kafkaメッセージキー                            | 文字列                |
+| _timestamp       | Kafkaタイムスタンプ（ミリ秒精度）             | DateTime64(3)         |
+| _partition       | Kafkaパーティション                            | Int32                 |
+| _offset          | Kafkaオフセット                                 | Int64                 |
+| _topic           | Kafkaトピック                                   | 文字列                |
+| _header_keys     | レコードヘッダ内のキーの並列配列                | Array(文字列)         |
+| _header_values   | レコードヘッダ内のヘッダの並列配列              | Array(文字列)         |
+| _raw_message     | 完全なKafkaメッセージ                          | 文字列                |
 
-_note_：_raw_message カラムはJSONデータにのみ推奨されます。ClickHouseの[`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions)関数を使用して、下流のマテリアライズドビューを埋める必要がある場合は、ClickPipesの性能を向上させるために、すべての「非仮想」カラムを削除することが有益です。
+_raw_messageカラムは、JSONデータに対してのみ推奨されます。JSON文字列のみが必要なユースケース（例：ClickHouseの[`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions)関数を使用して下流のマテリアライズドビューを埋めるなど）では、すべての「非仮想」カラムを削除するとClickPipesのパフォーマンスが向上する可能性があります。
 
 ## 制限事項 {#limitations}
 
 - [DEFAULT](/sql-reference/statements/create/table#default)はサポートされていません。
 
-## 配信セマンティクス {#delivery-semantics}
-KafkaのためのClickPipesは`at-least-once`配信セマンティクスを提供します（最も一般的に使用されるアプローチの一つとして）。配信セマンティクスについてのフィードバックをお待ちしています。[連絡フォーム](https://clickhouse.com/company/contact?loc=clickpipes)。厳密に一度のセマンティクスが必要な場合は、公式の[`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse)シンクの使用を推奨します。
+## 配信のセマンティクス {#delivery-semantics}
+Kafka向けのClickPipesは`少なくとも一度`の配信セマンティクスを提供します（最も一般的に使用されるアプローチの一つとして）。配信セマンティクスについてのフィードバックがある場合は[お問い合わせフォーム](https://clickhouse.com/company/contact?loc=clickpipes)までお知らせください。正確に一度のセマンティクスが必要な場合は、公式の[`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse)シンクを使用することをお勧めします。
 
 ## 認証 {#authentication}
-Apache Kafkaプロトコルデータソース用に、ClickPipesは[SSL/TLS暗号化を伴うSASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html)認証、および`SASL/SCRAM-SHA-256`と`SASL/SCRAM-SHA-512`をサポートします。ストリーミングソース（Redpanda、MSKなど）によって、互換性に応じて、これらの認証メカニズムのすべてまたはサブセットが有効になります。あなたの認証ニーズが異なる場合は、ぜひ[フィードバック](https://clickhouse.com/company/contact?loc=clickpipes)をお寄せください。
+Apache Kafkaプロトコルデータソースに対して、ClickPipesはTLS暗号化を伴う[SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html)認証や`SASL/SCRAM-SHA-256`、`SASL/SCRAM-SHA-512`をサポートします。ストリーミングソース（Redpanda、MSKなど）に応じて、互換性に基づきこれらの認証メカニズムの全てまたは一部が有効になります。認証要件が異なる場合は、ぜひ[フィードバックをお寄せください](https://clickhouse.com/company/contact?loc=clickpipes)。
 
 ### IAM {#iam}
 
 :::info
-MSK ClickPipeのIAM認証はベータ機能です。
+MSK ClickPipe用のIAM認証はベータ機能です。
 :::
 
-ClickPipesは、次のAWS MSK認証をサポートしています。
+ClickPipesは、以下のAWS MSK認証をサポートしています。
 
   - [SASL/SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html)認証
-  - [IAMクレデンシャルまたはロールベースのアクセス](https://docs.aws.amazon.com/msk/latest/developerguide/how-to-use-iam-access-control.html)認証
+  - [IAM資格情報またはロールベースのアクセス](https://docs.aws.amazon.com/msk/latest/developerguide/how-to-use-iam-access-control.html)認証
 
-MSKブローカーに接続するためのIAM認証を使用する場合、IAMロールには必要な権限が必要です。以下は、MSK用のApache Kafka APIの必須IAMポリシーの例です：
+MSKブローカーに接続するためにIAM認証を使用する場合、IAMロールは必要な権限を持っている必要があります。
+以下は、MSKのApache Kafka APIに必要なIAMポリシーの例です。
 
 ```json
 {
@@ -241,10 +243,10 @@ MSKブローカーに接続するためのIAM認証を使用する場合、IAM�
 
 #### 信頼関係の設定 {#configuring-a-trusted-relationship}
 
-IAMロールARNでMSKに認証を行う場合、ロールを引き受けることができるように、ClickHouse Cloudインスタンスとの間に信頼関係を追加する必要があります。
+もしIAMロールARNでMSKに認証をする場合、ロールが引き受けられるようにClickHouse Cloudインスタンスとの間に信頼関係を追加する必要があります。
 
 :::note
-ロールベースのアクセスは、AWSにデプロイされたClickHouse Cloudインスタンスでのみ機能します。
+ロールベースのアクセスは、AWSにデプロイされたClickHouse Cloudインスタンスのみ機能します。
 :::
 
 ```json
@@ -264,104 +266,107 @@ IAMロールARNでMSKに認証を行う場合、ロールを引き受けるこ�
 ```
 
 ### カスタム証明書 {#custom-certificates}
-ClickPipes for Kafkaは、SASLおよび公的SSL/TLS証明書を持つKafkaブローカーのカスタム証明書のアップロードをサポートします。ClickPipe設定のSSL証明書セクションで証明書をアップロードできます。
+Kafka向けのClickPipesは、SASLおよびパブリックSSL/TLS証明書を持つKafkaブローカー用のカスタム証明書のアップロードをサポートしています。ClickPipeセットアップのSSL証明書セクションで証明書をアップロードできます。
 :::note
-SASL用の単一のSSL証明書のアップロードはサポートされていますが、相互TLS（mTLS）を使用するSSLは現在サポートされていないことに注意してください。
+Kafka用のSASLと共に単一のSSL証明書のアップロードをサポートしていますが、相互TLS（mTLS）によるSSLは現在サポートされていないことに注意してください。
 :::
 
 ## パフォーマンス {#performance}
 
 ### バッチ処理 {#batching}
-ClickPipesは、ClickHouseにデータをバッチで挿入します。これは、データベース内に多くのパーツを作成するのを避けるためで、クラスターのパフォーマンス問題を引き起こす可能性があります。
+ClickPipesはClickHouseにバッチでデータを挿入します。データベース内に過剰なパーツが作成されるのを避け、クラスターのパフォーマンス問題を引き起こす可能性があるためです。
 
-バッチは、次のいずれかの基準が満たされたときに挿入されます：
-- バッチサイズが最大サイズ（100,000行または20MB）に達した
-- バッチが開かれてから最大時間（5秒）が経過した
+バッチは、以下のいずれかの基準が満たされたときに挿入されます：
+- バッチサイズが最大サイズ（100,000行または20MB）に達した場合
+- バッチが最大の時間（5秒）オープンしていた場合
 
 ### レイテンシ {#latency}
 
-レイテンシ（Kafkaメッセージが生成されてからClickHouseでメッセージが利用可能になるまでの時間）は、ブローカーのレイテンシ、ネットワークのレイテンシ、メッセージのサイズ/形式など、さまざまな要因に依存します。上記の[バッチ処理](#batching)は、レイテンシにも影響します。特定の負荷で期待されるレイテンシを確認するために、いつも一般的な負荷でテストすることをお勧めします。
+レイテンシ（Kafkaメッセージが生成されてからメッセージがClickHouseで使用可能になるまでの時間）は、ブローカーレイテンシ、ネットワークレイテンシ、メッセージサイズ/フォーマットなどの多くの要因に依存します。上記の[バッチ処理](#batching)はレイテンシにも影響を与えます。特定の負荷でのユースケースをテストし、期待されるレイテンシを確認することを常に推奨します。
 
-ClickPipesはレイテンシに関して保証を提供していません。特定の低レイテンシ要件がある場合は、ぜひ[ご連絡ください](https://clickhouse.com/company/contact?loc=clickpipes)。
+ClickPipesはレイテンシに関して何の保証も提供しません。特定の低レイテンシ要件がある場合は、[お問い合わせください](https://clickhouse.com/company/contact?loc=clickpipes)。
 
 ### スケーリング {#scaling}
 
-KafkaのためのClickPipesは、水平スケーリングするように設計されています。デフォルトでは、一つのコンシューマを持つコンシューマグループを作成します。この設定はClickPipeの詳細ビューでスケーリングコントロールを使って変更できます。
+Kafka向けのClickPipesは水平スケーリングを設計されています。デフォルトでは、1つのコンシューマを持つコンシューマグループを作成します。
+これは、ClickPipe詳細ビューのスケーリングコントロールで変更可能です。
 
-ClickPipesは高可用性を提供しており、可用性ゾーンが分散したアーキテクチャを持っています。このためには、少なくとも2つのコンシューマにスケールアップする必要があります。
+ClickPipesは高可用性を提供し、アベイラビリティゾーン分散アーキテクチャを持っています。
+少なくとも二つのコンシューマへスケーリングすることが必要です。
 
-実行中のコンシューマの数に関わらず、障害耐性は設計上提供されます。コンシューマやその基盤となるインフラが失敗した場合、ClickPipeはコンシューマを自動的に再起動し、メッセージの処理を続けます。
+起動しているコンシューマの数に関わらず、故障耐性は設計上提供されています。
+コンシューマまたはその基盤インフラストラクチャが失敗した場合、ClickPipeは自動的にコンシューマを再起動し、メッセージの処理を続行します。
 
 ## F.A.Q {#faq}
 
-### 一般 {#general}
+### 一般的な問い合わせ {#general}
 
-- **ClickPipes for Kafkaはどのように機能しますか？**
+- **Kafka向けのClickPipesはどのように機能しますか？**
 
-  ClickPipesは、Kafka Consumer APIを実行する専用アーキテクチャを使用して、指定されたトピックからデータを読み取り、そのデータを特定のClickHouse CloudサービスのClickHouseテーブルに挿入します。
+  ClickPipesは、指定されたトピックからデータを読み取るためのKafkaコンシューマAPIを実行する専用のアーキテクチャを使用し、データを特定のClickHouse Cloudサービス内のClickHouseテーブルに挿入します。
 
 - **ClickPipesとClickHouse Kafkaテーブルエンジンの違いは何ですか？**
 
-  Kafkaテーブルエンジンは、ClickHouseサーバがKafkaに接続し、イベントをプルしてからローカルに書き込む「プルモデル」を実装するClickHouseのコア機能です。
+  Kafkaテーブルエンジンは、ClickHouseサーバー自体がKafkaに接続し、イベントを引き出して書き込む「プルモデル」を実装するClickHouseのコア機能です。
 
-  ClickPipesは、ClickHouseサービスとは独立して実行される別のクラウドサービスで、Kafka（または他のデータソース）に接続し、関連するClickHouse Cloudサービスにイベントをプッシュします。この分離されたアーキテクチャは、優れた運用の柔軟性、明確な関心の分離、スケーラブルな取り込み、優れた障害管理、拡張性などを可能にします。
+  ClickPipesはClickHouseサービスとは独立して動作する別のクラウドサービスで、Kafka（または他のデータソース）に接続し、関連するClickHouse Cloudサービスにイベントをプッシュします。この分離されたアーキテクチャは、優れた運用柔軟性、明確な関心の分離、スケーラブルな取り込み、優雅な失敗管理、拡張性などを可能にします。
 
-- **KafkaのためのClickPipesを使用するための要件は何ですか？**
+- **Kafka向けのClickPipesを使用するための要件は何ですか？**
 
-  KafkaのためのClickPipesを使用するには、稼働中のKafkaブローカーとClickPipesが有効なClickHouse Cloudサービスが必要です。ClickHouse CloudがKafkaブローカーにアクセスできることを確認してください。これは、Kafka側でリモート接続を許可し、[ClickHouse CloudのEgress IPアドレス](/manage/security/cloud-endpoints-api)をKafka設定でホワイトリストに追加することで達成できます。
+  Kafka向けのClickPipesを使用するには、稼働中のKafkaブローカーとClickPipesが有効化されたClickHouse Cloudサービスが必要です。ClickHouse CloudがKafkaブローカーにアクセスできることも確認する必要があります。このためには、Kafka側でリモート接続を許可し、Kafka設定内で[ClickHouse CloudのエグレスIPアドレス](/manage/security/cloud-endpoints-api)をホワイトリストに追加します。
 
-- **ClickPipes for KafkaはAWS PrivateLinkをサポートしていますか？**
+- **Kafka向けのClickPipesはAWS PrivateLinkをサポートしていますか？**
 
-  はい、AWS PrivateLinkがサポートされています。詳細については[ご連絡ください](https://clickhouse.com/company/contact?loc=clickpipes)。
+  AWS PrivateLinkはサポートされています。詳細については[お問い合わせください](https://clickhouse.com/company/contact?loc=clickpipes)。
 
 - **ClickPipes for Kafkaを使用してKafkaトピックにデータを書き込むことはできますか？**
 
-  いいえ、ClickPipes for KafkaはKafkaトピックからデータを読み取るために設計されており、そこに書き込むことはできません。Kafkaトピックにデータを書き込むには、専用のKafkaプロデューサを使用する必要があります。
+  いいえ、ClickPipes for KafkaはKafkaトピックからデータを読み取るように設計されており、それらに書き込むことはできません。Kafkaトピックにデータを書き込むには、専用のKafkaプロデューサを使用する必要があります。
 
-- **ClickPipesは複数のブローカーをサポートしますか？**
+- **ClickPipesは複数のブローカーをサポートしていますか？**
 
-  はい、ブローカーが同じクォーラムの一部であれば、`、`で区切って一緒に構成できます。
+  はい、ブローカーが同じクォーラムの一部であれば、`，`で区切って一緒に設定できます。
 
 ### Upstash {#upstash}
 
 - **ClickPipesはUpstashをサポートしていますか？**
 
-  はい。Upstash Kafka製品は、2024年9月11日に廃止期間に入り、6か月の間継続します。既存の顧客は、ClickPipesユーザーインターフェースの一般的なKafkaタイルを使用して、既存のUpstash Kafkaブローカーとの共存を続けることができます。既存のUpstash Kafka ClickPipesは、廃止通知の前は影響を受けません。廃止期間が終了すると、ClickPipeは機能を停止します。
+  はい。Upstash Kafka製品は2024年9月11日に廃止期間に入り、6か月間継続します。既存の顧客は、ClickPipesを使用して既存のUpstash Kafkaブローカーを利用することができます。廃止通知前の既存のUpstash Kafka ClickPipesには影響がありません。廃止期間が終了すると、ClickPipeは機能しなくなります。
 
-- **ClickPipesはUpstashスキーマレジストリに対応していますか？**
+- **ClickPipesはUpstashスキーマレジストリをサポートしていますか？**
 
-  いいえ。ClickPipesはUpstash Kafkaスキーマレジストリには互換性がありません。
+  いいえ。ClickPipesはUpstash Kafkaスキーマレジストリとは互換性がありません。
 
-- **ClickPipesはUpstash QStashワークフローに対応していますか？**
+- **ClickPipesはUpstash QStashワークフローをサポートしていますか？**
 
   いいえ。QStashワークフローにKafka互換のインターフェースが導入されない限り、Kafka ClickPipesでは機能しません。
 
 ### Azure EventHubs {#azure-eventhubs}
 
-- **Azure Event Hubs ClickPipeはKafkaサーフェイスなしで動作しますか？**
+- **Azure Event Hubs ClickPipeはKafkaインターフェースなしで機能しますか？**
 
-  いいえ。ClickPipesはAzure Event HubsにKafkaサーフェスを有効にする必要があります。Kafkaプロトコルは、標準、プレミアム、および専用SKUの価格テアのみでサポートされています。
+  いいえ。ClickPipesはAzure Event HubsにKafkaインターフェースが有効である必要があります。Kafkaプロトコルは、Standard、Premium、およびDedicated SKUの価格帯でのみサポートされています。
 
-- **AzureスキーマレジストリはClickPipesで機能しますか？**
+- **AzureスキーマレジストリはClickPipesと互換性がありますか？**
 
-  いいえ。ClickPipesはAzure Event Hubsスキーマレジストリには現在対応していません。
+  いいえ。ClickPipesは現在、Event Hubsスキーマレジストリとは互換性がありません。
 
-- **Azure Event Hubsから消費するために私のポリシーはどのような権限を必要としますか？**
+- **Azure Event Hubsからデータを消費するために私のポリシーにはどのような権限が必要ですか？**
 
-  トピックをリストし、イベントを消費するために、ClickPipesに付与される共有アクセスポリシーは、最低でも「Listen」クレームが必要です。
+  トピックをリストし、イベントを消費するには、ClickPipesに与えられる共有アクセスポリシーには、少なくとも「リッスン」クレームが必要です。
 
-- **私のEvent Hubsがデータを返さないのはなぜですか？**
+- **なぜ私のEvent Hubsがデータを返さないのですか？**
 
-  あなたのClickHouseインスタンスがEvent Hubsのデプロイメントと異なる地域や大陸にある場合、ClickPipesのオンボーディング中にタイムアウトが発生する可能性があり、Event Hubからデータを消費する際のレイテンシが高くなることがあります。ClickHouse CloudのデプロイメントとAzure Event Hubsのデプロイメントを、互いに近いクラウド地域に配置することがベストプラクティスとされている理由です。
+  ClickHouseインスタンスがEvent Hubsデプロイメントと異なるリージョンまたは大陸にある場合、ClickPipesのオンボーディング時にタイムアウトが発生し、Event Hubからデータを消費する際にレイテンシが高くなる可能性があります。ClickHouse CloudデプロイメントとAzure Event Hubsデプロイメントを近いクラウドリージョン内に配置することが、パフォーマンス低下を避けるためのベストプラクティスと見なされます。
 
-- **Azure Event Hubsのポート番号を含めるべきですか？**
+- **Azure Event Hubsにポート番号を含める必要がありますか？**
 
-  はい。ClickPipesは、Kafkaサーフェスのポート番号を`:9093`で含めることを期待しています。
+  はい。ClickPipesは、Kafkaインターフェースのポート番号を含めることを期待しています。ポート番号は`:9093`です。
 
 - **ClickPipes IPはまだAzure Event Hubsに関連していますか？**
 
-  はい。Event Hubsインスタンスへのトラフィックを制限する場合は、[文書化された静的NAT IP](./index.md#list-of-static-ips)を追加してください。
+  はい。Event Hubsインスタンスへのトラフィックを制限する場合は、[ドキュメント化された静的NAT IP](./index.md#list-of-static-ips)を追加してください。
 
-- **接続文字列はEvent Hub用ですか、それともEvent Hubnamespace用ですか？**
+- **接続文字列はEvent Hub用ですか、それともEvent Hubネームスペース用ですか？**
 
-  両方とも機能しますが、複数のEvent Hubsからサンプルを取得するには、namespaceレベルでの共有アクセスポリシーを使用することをお勧めします。
+  どちらでも機能しますが、複数のEvent Hubsからサンプルを取得するためにネームスペースレベルで共有アクセスポリシーを使用することをお勧めします。

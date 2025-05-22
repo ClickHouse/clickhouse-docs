@@ -1,78 +1,43 @@
 ---
 'sidebar_position': 1
-'sidebar_label': 'ベータ機能と実験的な機能'
-'title': 'ベータおよび実験的な機能'
-'description': 'ClickHouseにはベータおよび実験的な機能があります。このドキュメントページでは定義について説明します。'
+'sidebar_label': 'ベータ機能と実験的'
+'title': 'ベータおよび実験的機能'
+'description': 'ClickHouse にはベータおよび実験的機能があります。このドキュメントページでは定義について説明します。'
 'slug': '/beta-and-experimental-features'
 ---
 
-
-
 Because ClickHouse is open-source, it receives many contributions not only from ClickHouse employees but also from the community. These contributions are often developed at different speeds; certain features may require a lengthy prototyping phase or more time for sufficient community feedback and iteration to be considered generally available (GA).
-
-ClickHouseはオープンソースであるため、ClickHouseの従業員だけでなく、コミュニティからも多くの貢献を受けています。これらの貢献は、しばしば異なる速度で開発されます。特定の機能は、充分なコミュニティのフィードバックと反復のために、長期のプロトタイピングフェーズやさらに多くの時間を必要とする場合があり、一般利用可能（GA）と見なされるまでに時間がかかることがあります。
 
 Due to the uncertainty of when features are classified as generally available, we delineate features into two categories: **Beta** and **Experimental**.
 
-機能が一般利用可能として分類される時期の不確実性のため、機能を2つのカテゴリーに分けます：**Beta** と **Experimental**。
-
 **Beta** features are officially supported by the ClickHouse team. **Experimental** features are early prototypes driven by either the ClickHouse team or the community and are not officially supported.
-
-**Beta**機能はClickHouseチームによって公式にサポートされています。**Experimental**機能は、ClickHouseチームまたはコミュニティによって推進される初期のプロトタイプであり、公式にはサポートされていません。
 
 The sections below explicitly describe the properties of **Beta** and **Experimental** features:
 
-以下のセクションでは、**Beta**と**Experimental**機能の特性を明示的に説明します：
-
 ## Beta Features {#beta-features}
 
-- Under active development to make them generally available (GA)
-- Main known issues can be tracked on GitHub
-- Functionality may change in the future
-- Possibly enabled in ClickHouse Cloud
-- The ClickHouse team supports beta features
-
-## Beta機能 {#beta-features}
-
-- 一般利用可能（GA）にするために活発に開発中
-- 主な既知の問題はGitHubで追跡可能
-- 機能は将来的に変更される可能性があります
-- ClickHouse Cloudで有効になっている可能性があります
+- 一般提供（GA）に向けて積極的に開発中です
+- 主な既知の問題はGitHubで追跡できます
+- 将来的に機能が変更される可能性があります
+- ClickHouse Cloudで有効にされる可能性があります
 - ClickHouseチームはベータ機能をサポートしています
 
-The following features are considered Beta in ClickHouse Cloud and are available for use in ClickHouse Cloud Services, even though they may be currently under a ClickHouse SETTING named ```allow_experimental_*```:
+以下の機能はClickHouse Cloudにおいてベータと見なされ、現在「```allow_experimental_*```」というClickHouseの設定の下で使用可能ですが、これはClickHouse Cloud Servicesで利用することができます。
 
-以下の機能はClickHouse CloudでBetaと見なされ、ClickHouse Cloud Servicesで使用可能ですが、現在```allow_experimental_*```というClickHouseの設定に従っている可能性があります：
-
-Note: please be sure to be using a current version of the ClickHouse [compatibility](/operations/settings/settings#compatibility) setting to be using a recently introduced feature.
-
-注：最近導入された機能を使用するには、ClickHouseの[互換性](/operations/settings/settings#compatibility)設定の最新バージョンを使用していることを確認してください。
+注意: 最近導入された機能を使用するには、ClickHouseの[互換性](/operations/settings/settings#compatibility)設定の最新バージョンを使用していることを確認してください。
 
 ## Experimental Features {#experimental-features}
 
-- May never become GA
-- May be removed
-- Can introduce breaking changes
-- Functionality may change in the feature
-- Need to be deliberately enabled
-- The ClickHouse team **does not support** experimental features
-- May lack important functionality and documentation
-- Cannot be enabled in the cloud
-
-## Experimental機能 {#experimental-features}
-
-- GAになることはないかもしれません
+- GAになることは決してない可能性があります
 - 削除される可能性があります
-- 破壊的変更を導入する可能性があります
-- 機能は将来的に変更される可能性があります
-- 意図的に有効にする必要があります
-- ClickHouseチームは**Experimental**機能を**サポートしていません**
-- 重要な機能やドキュメンテーションが欠如している可能性があります
+- 破壊的変更を引き起こす可能性があります
+- 将来的に機能が変更される可能性があります
+- 明示的に有効にする必要があります
+- ClickHouseチームは**実験的な**機能をサポートしません
+- 重要な機能や文書が欠ける可能性があります
 - クラウドでは有効にできません
 
-Please note: no additional experimental features are allowed to be enabled in ClickHouse Cloud other than those listed above as Beta.
-
-注：上記のBetaとしてリストされたもの以外の追加のExperimental機能をClickHouse Cloudで有効にすることはできません。
+注意: 上記にリストされたベータ以外の追加の実験的機能はClickHouse Cloudで有効にすることはできません。
 
 <!-- The inner content of the tags below are replaced at build time with a table generated from source
      Please do not modify or remove the tags
@@ -83,6 +48,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 
 | Name | Default |
 |------|--------|
+| [geotoh3_argument_order](/operations/settings/settings#geotoh3_argument_order) | `lat_lon` |
 | [allow_experimental_parallel_reading_from_replicas](/operations/settings/settings#allow_experimental_parallel_reading_from_replicas) | `0` |
 | [parallel_replicas_mode](/operations/settings/settings#parallel_replicas_mode) | `read_tasks` |
 | [parallel_replicas_count](/operations/settings/settings#parallel_replicas_count) | `0` |
@@ -100,6 +66,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [parallel_replicas_index_analysis_only_on_coordinator](/operations/settings/settings#parallel_replicas_index_analysis_only_on_coordinator) | `1` |
 | [parallel_replicas_only_with_analyzer](/operations/settings/settings#parallel_replicas_only_with_analyzer) | `1` |
 | [parallel_replicas_insert_select_local_pipeline](/operations/settings/settings#parallel_replicas_insert_select_local_pipeline) | `1` |
+| [parallel_replicas_connect_timeout_ms](/operations/settings/settings#parallel_replicas_connect_timeout_ms) | `300` |
 | [session_timezone](/operations/settings/settings#session_timezone) | `` |
 | [low_priority_query_wait_time_ms](/operations/settings/settings#low_priority_query_wait_time_ms) | `1000` |
 | [max_limit_for_vector_search_queries](/operations/settings/settings#max_limit_for_vector_search_queries) | `1000` |
@@ -114,28 +81,6 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 
 | Name | Default |
 |------|--------|
-| [allow_experimental_replacing_merge_with_cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup) | `0` |
-| [allow_experimental_reverse_key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key) | `0` |
-| [enable_replacing_merge_with_cleanup_for_min_age_to_force_merge](/operations/settings/merge-tree-settings#enable_replacing_merge_with_cleanup_for_min_age_to_force_merge) | `0` |
-| [force_read_through_cache_for_merges](/operations/settings/merge-tree-settings#force_read_through_cache_for_merges) | `0` |
-| [merge_selector_algorithm](/operations/settings/merge-tree-settings#merge_selector_algorithm) | `Simple` |
-| [notify_newest_block_number](/operations/settings/merge-tree-settings#notify_newest_block_number) | `0` |
-| [part_moves_between_shards_delay_seconds](/operations/settings/merge-tree-settings#part_moves_between_shards_delay_seconds) | `30` |
-| [part_moves_between_shards_enable](/operations/settings/merge-tree-settings#part_moves_between_shards_enable) | `0` |
-| [remote_fs_zero_copy_path_compatible_mode](/operations/settings/merge-tree-settings#remote_fs_zero_copy_path_compatible_mode) | `0` |
-| [remote_fs_zero_copy_zookeeper_path](/operations/settings/merge-tree-settings#remote_fs_zero_copy_zookeeper_path) | `/clickhouse/zero_copy` |
-| [remove_rolled_back_parts_immediately](/operations/settings/merge-tree-settings#remove_rolled_back_parts_immediately) | `1` |
-| [shared_merge_tree_enable_coordinated_merges](/operations/settings/merge-tree-settings#shared_merge_tree_enable_coordinated_merges) | `0` |
-| [shared_merge_tree_enable_keeper_parts_extra_data](/operations/settings/merge-tree-settings#shared_merge_tree_enable_keeper_parts_extra_data) | `0` |
-| [shared_merge_tree_merge_coordinator_election_check_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_election_check_period_ms) | `30000` |
-| [shared_merge_tree_merge_coordinator_factor](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_factor) | `2` |
-| [shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms) | `10000` |
-| [shared_merge_tree_merge_coordinator_max_merge_request_size](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_merge_request_size) | `20` |
-| [shared_merge_tree_merge_coordinator_max_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_period_ms) | `10000` |
-| [shared_merge_tree_merge_coordinator_merges_prepare_count](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_merges_prepare_count) | `100` |
-| [shared_merge_tree_merge_coordinator_min_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_min_period_ms) | `1` |
-| [shared_merge_tree_merge_worker_fast_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_fast_timeout_ms) | `100` |
-| [shared_merge_tree_merge_worker_regular_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_regular_timeout_ms) | `10000` |
 | [allow_experimental_kafka_offsets_storage_in_keeper](/operations/settings/settings#allow_experimental_kafka_offsets_storage_in_keeper) | `0` |
 | [allow_experimental_correlated_subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries) | `0` |
 | [allow_experimental_materialized_postgresql_table](/operations/settings/settings#allow_experimental_materialized_postgresql_table) | `0` |
@@ -183,4 +128,26 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [distributed_plan_default_reader_bucket_count](/operations/settings/settings#distributed_plan_default_reader_bucket_count) | `8` |
 | [distributed_plan_force_exchange_kind](/operations/settings/settings#distributed_plan_force_exchange_kind) | `` |
 | [allow_experimental_ts_to_grid_aggregate_function](/operations/settings/settings#allow_experimental_ts_to_grid_aggregate_function) | `0` |
+| [allow_experimental_replacing_merge_with_cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup) | `0` |
+| [allow_experimental_reverse_key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key) | `0` |
+| [enable_replacing_merge_with_cleanup_for_min_age_to_force_merge](/operations/settings/merge-tree-settings#enable_replacing_merge_with_cleanup_for_min_age_to_force_merge) | `0` |
+| [force_read_through_cache_for_merges](/operations/settings/merge-tree-settings#force_read_through_cache_for_merges) | `0` |
+| [merge_selector_algorithm](/operations/settings/merge-tree-settings#merge_selector_algorithm) | `Simple` |
+| [notify_newest_block_number](/operations/settings/merge-tree-settings#notify_newest_block_number) | `0` |
+| [part_moves_between_shards_delay_seconds](/operations/settings/merge-tree-settings#part_moves_between_shards_delay_seconds) | `30` |
+| [part_moves_between_shards_enable](/operations/settings/merge-tree-settings#part_moves_between_shards_enable) | `0` |
+| [remote_fs_zero_copy_path_compatible_mode](/operations/settings/merge-tree-settings#remote_fs_zero_copy_path_compatible_mode) | `0` |
+| [remote_fs_zero_copy_zookeeper_path](/operations/settings/merge-tree-settings#remote_fs_zero_copy_zookeeper_path) | `/clickhouse/zero_copy` |
+| [remove_rolled_back_parts_immediately](/operations/settings/merge-tree-settings#remove_rolled_back_parts_immediately) | `1` |
+| [shared_merge_tree_enable_coordinated_merges](/operations/settings/merge-tree-settings#shared_merge_tree_enable_coordinated_merges) | `0` |
+| [shared_merge_tree_enable_keeper_parts_extra_data](/operations/settings/merge-tree-settings#shared_merge_tree_enable_keeper_parts_extra_data) | `0` |
+| [shared_merge_tree_merge_coordinator_election_check_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_election_check_period_ms) | `30000` |
+| [shared_merge_tree_merge_coordinator_factor](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_factor) | `2` |
+| [shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms) | `10000` |
+| [shared_merge_tree_merge_coordinator_max_merge_request_size](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_merge_request_size) | `20` |
+| [shared_merge_tree_merge_coordinator_max_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_period_ms) | `10000` |
+| [shared_merge_tree_merge_coordinator_merges_prepare_count](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_merges_prepare_count) | `100` |
+| [shared_merge_tree_merge_coordinator_min_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_min_period_ms) | `1` |
+| [shared_merge_tree_merge_worker_fast_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_fast_timeout_ms) | `100` |
+| [shared_merge_tree_merge_worker_regular_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_regular_timeout_ms) | `10000` |
 <!--AUTOGENERATED_END-->

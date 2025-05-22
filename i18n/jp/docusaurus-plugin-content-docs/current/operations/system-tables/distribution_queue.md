@@ -1,11 +1,16 @@
 ---
-description: 'シャードに送信するキューにあるローカルファイルに関する情報を含むシステムテーブル。'
-keywords: ['system table', 'distribution_queue']
-slug: /operations/system-tables/distribution_queue
-title: 'system.distribution_queue'
+'description': 'System table containing information about local files that are in
+  the queue to be sent to the shards.'
+'keywords':
+- 'system table'
+- 'distribution_queue'
+'slug': '/operations/system-tables/distribution_queue'
+'title': 'system.distribution_queue'
 ---
 
-シャードに送信するキューにあるローカルファイルに関する情報を含みます。これらのローカルファイルは、分散テーブルに新しいデータを非同期モードで挿入することによって作成された新しいパーツを含んでいます。
+
+
+ローカルファイルに関する情報であり、シャードに送信されるキューに入っています。これらのローカルファイルは、分散テーブルに非同期モードで新しいデータを挿入することによって作成された新しいパーツを含んでいます。
 
 カラム:
 
@@ -13,7 +18,7 @@ title: 'system.distribution_queue'
 
 - `table` ([String](../../sql-reference/data-types/string.md)) — テーブルの名前。
 
-- `data_path` ([String](../../sql-reference/data-types/string.md)) — ローカルファイルのフォルダーへのパス。
+- `data_path` ([String](../../sql-reference/data-types/string.md)) — ローカルファイルがあるフォルダーへのパス。
 
 - `is_blocked` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ローカルファイルをサーバーに送信することがブロックされているかどうかを示すフラグ。
 
@@ -23,11 +28,11 @@ title: 'system.distribution_queue'
 
 - `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — ローカルファイル内の圧縮データのサイズ（バイト単位）。
 
-- `broken_data_files` ([UInt64](../../sql-reference/data-types/int-uint.md)) — エラーのために壊れたとしてマークされたファイルの数。
+- `broken_data_files` ([UInt64](../../sql-reference/data-types/int-uint.md)) — エラーにより壊れたとマークされたファイルの数。
 
 - `broken_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 壊れたファイル内の圧縮データのサイズ（バイト単位）。
 
-- `last_exception` ([String](../../sql-reference/data-types/string.md)) — 最後に発生したエラーに関するテキストメッセージ（あれば）。
+- `last_exception` ([String](../../sql-reference/data-types/string.md)) — 発生した最後のエラーについてのテキストメッセージ（ある場合）。
 
 **例**
 
@@ -48,6 +53,6 @@ data_compressed_bytes: 499
 last_exception:
 ```
 
-**参照**
+**関連情報**
 
-- [分散テーブルエンジン](../../engines/table-engines/special/distributed.md)
+- [Distributed table engine](../../engines/table-engines/special/distributed.md)

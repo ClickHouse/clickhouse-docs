@@ -1,14 +1,16 @@
 ---
-description: '一連の数値に対してビット単位の `XOR` を適用します。'
-sidebar_position: 153
-slug: /sql-reference/aggregate-functions/reference/groupbitxor
-title: 'groupBitXor'
+'description': 'Applies bit-wise `XOR` for series of numbers.'
+'sidebar_position': 153
+'slug': '/sql-reference/aggregate-functions/reference/groupbitxor'
+'title': 'groupBitXor'
 ---
+
+
 
 
 # groupBitXor
 
-一連の数値に対してビット単位の `XOR` を適用します。
+シリーズの数値に対してビット単位の `XOR` を適用します。
 
 ```sql
 groupBitXor(expr)

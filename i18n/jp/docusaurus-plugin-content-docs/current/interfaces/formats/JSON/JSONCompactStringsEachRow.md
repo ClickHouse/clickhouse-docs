@@ -1,20 +1,23 @@
 ---
-alias: []
-description: 'JSONCompactStringsEachRow フォーマットのドキュメント'
-input_format: true
-keywords: ['JSONCompactStringsEachRow']
-output_format: true
-slug: /interfaces/formats/JSONCompactStringsEachRow
-title: 'JSONCompactStringsEachRow'
+'alias': []
+'description': 'JSONCompactStringsEachRowフォーマットのドキュメント'
+'input_format': true
+'keywords':
+- 'JSONCompactStringsEachRow'
+'output_format': true
+'slug': '/interfaces/formats/JSONCompactStringsEachRow'
+'title': 'JSONCompactStringsEachRow'
 ---
 
-| 入力 | 出力 | エイリアス |
+
+
+| Input | Output | Alias |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-[`JSONCompactEachRow`](./JSONCompactEachRow.md) とは異なり、データフィールドが型付きの JSON 値としてではなく、文字列として出力されることが特徴です。
+データフィールドが型付きJSON値ではなく文字列として出力される点を除いて、 [`JSONCompactEachRow`](./JSONCompactEachRow.md) とは異なります。
 
 ## 使用例 {#example-usage}
 

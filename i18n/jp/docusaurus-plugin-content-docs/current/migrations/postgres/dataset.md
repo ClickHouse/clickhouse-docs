@@ -1,28 +1,32 @@
 ---
-slug: /migrations/postgresql/dataset
-title: 'データの移行'
-description: 'PostgreSQLからClickHouseに移行するためのデータセットの例'
-keywords: ['postgres', 'postgresql', 'migrate', 'migration']
+'slug': '/migrations/postgresql/dataset'
+'title': 'データの移行'
+'description': 'PostgreSQLからClickHouseへの移行のためのデータセットの例'
+'keywords':
+- 'postgres'
+- 'postgresql'
+- 'migrate'
+- 'migration'
 ---
 
 import postgres_stackoverflow_schema from '@site/static/images/migrations/postgres-stackoverflow-schema.png';
 import Image from '@theme/IdealImage';
 
-> これはPostgreSQLからClickHouseへの移行ガイドの**パート1**です。実用的な例を使用して、リアルタイムレプリケーション（CDC）方式での移行の効率的な実行方法を示します。取り扱う多くの概念は、PostgreSQLからClickHouseへの手動でのバルクデータ転送にも適用可能です。
+> これは**パート1**であり、PostgreSQLからClickHouseへの移行に関するガイドです。実用的な例を使用して、リアルタイムレプリケーション（CDC）アプローチを使用して効率的に移行を実行する方法を示しています。取り上げられている多くの概念は、PostgreSQLからClickHouseへの手動バルクデータ転送にも適用されます。
 
 ## データセット {#dataset}
 
-PostgresからClickHouseへの典型的な移行を示す例として、Stack Overflowのデータセットを使用します。このデータセットには、2008年から2024年4月までのStack Overflowに発生したすべての`post`、`vote`、`user`、`comment`、および`badge`が含まれています。このデータのPostgreSQLスキーマは以下の通りです。
+PostgresからClickHouseへの典型的な移行を示すための例のデータセットとして、[こちらに文書化されたStack Overflowデータセット](https://stackoverflow.com/)を使用します。これは、2008年から2024年4月までの間にStack Overflowで発生したすべての`post`、`vote`、`user`、`comment`、および`badge`を含みます。このデータのPostgreSQLスキーマは、以下に示されています：
 
-<Image img={postgres_stackoverflow_schema} size="lg" alt="PostgreSQL Stack Overflow スキーマ"/>
+<Image img={postgres_stackoverflow_schema} size="lg" alt="PostgreSQL Stack Overflow schema"/>
 
-*PostgreSQLでテーブルを作成するためのDDLコマンドは[こちら](https://pastila.nl/?001c0102/eef2d1e4c82aab78c4670346acb74d83#TeGvJWX9WTA1V/5dVVZQjg==)で入手できます。*
+*PostgreSQLにテーブルを作成するためのDDLコマンドは[こちら](https://pastila.nl/?001c0102/eef2d1e4c82aab78c4670346acb74d83#TeGvJWX9WTA1V/5dVVZQjg==)にあります。*
 
-このスキーマは、必ずしも最適とは限りませんが、主キー、外部キー、パーティショニング、インデックスなどの多くの人気のあるPostgreSQLの機能を活用しています。
+このスキーマは必ずしも最適ではありませんが、主キー、外部キー、パーティショニング、インデックスなど、多くの一般的なPostgreSQL機能を利用しています。
 
-これらの概念をそれぞれClickHouseの同等なものに移行します。
+これらの概念をそれぞれClickHouseの同等物に移行します。
 
-このデータセットをPostgreSQLインスタンスにポピュレートして移行手順をテストしたいユーザーのために、DDL付きの`pg_dump`形式のデータをダウンロード用に提供し、その後のデータロードコマンドを以下に示します：
+このデータセットをPostgreSQLインスタンスにロードして移行手順をテストしたいユーザーのために、DDLとその後のデータロードコマンドを含む`pg_dump`形式でデータをダウンロードできるように提供しています：
 
 ```bash
 
@@ -68,9 +72,9 @@ gzip -d postlinks.sql.gz
 psql < postlinks.sql
 ```
 
-ClickHouseにとっては小さいですが、このデータセットはPostgresにとっては大規模です。上記は2024年の最初の三か月をカバーするサブセットを表しています。
+ClickHouseにとっては小規模ですが、このデータセットはPostgresには大規模です。上記は2024年の最初の3か月をカバーするサブセットを表しています。
 
-> 当社の例の結果は全データセットを使用してPostgresとClickHouse間のパフォーマンスの違いを示していますが、以下に文書化されたすべての手順は小さなサブセットでも機能的に同一です。完全なデータセットをPostgresにロードしたいユーザーは[こちら](https://pastila.nl/?00d47a08/1c5224c0b61beb480539f15ac375619d#XNj5vX3a7ZjkdiX7In8wqA==)を参照してください。上記のスキーマによって課せられた外部制約のため、PostgreSQLの完全なデータセットには参照整合性を満たす行のみが含まれています。制約のない[Parquetバージョン](/getting-started/example-datasets/stackoverflow)は、必要に応じてClickHouseに直接簡単にロードできます。
+> 私たちの例は、PostgresとClickhouseの間のパフォーマンスの違いを示すためにフルデータセットを使用しますが、以下のすべての手順は小さなサブセットでも機能的に同じです。フルデータセットをPostgresにロードしたいユーザーは[こちら](https://pastila.nl/?00d47a08/1c5224c0b61beb480539f15ac375619d#XNj5vX3a7ZjkdiX7In8wqA==)を参照してください。上記のスキーマによって課された外部制約により、PostgreSQLのフルデータセットには参照整合性を満たす行のみが含まれています。制約のない[Parquetバージョン](/getting-started/example-datasets/stackoverflow)は、必要に応じてClickHouseに直接ロードできます。
 
 ## データの移行 {#migrating-data}
 
@@ -80,9 +84,9 @@ ClickPipesをPostgreSQL用に設定するには、この[ガイド](/integration
 
 ClickPipesまたはPeerDBを使用したCDCアプローチでは、PostgreSQLデータベース内の各テーブルがClickHouseに自動的にレプリケートされます。
 
-更新と削除をほぼリアルタイムで処理するために、ClickPipesはPostgresテーブルをClickHouseにマッピングし、更新と削除を処理するために特別に設計された[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)エンジンを使用します。ClickPipesを使用してデータがClickHouseにレプリケートされる仕組みについては[こちら](/integrations/clickpipes/postgres/deduplication#how-does-data-get-replicated)をご覧ください。CDCを使用したレプリケーションでは、更新または削除操作をレプリケートする際にClickHouseに重複した行が作成されることに注意することが重要です。[FINAL](https://clickhouse.com/docs/sql-reference/statements/select/from#final-modifier)修飾子を使用して、ClickHouseでそれを処理するための[技術](/integrations/clickpipes/postgres/deduplication#deduplicate-using-final-keyword)を参照してください。
+近いリアルタイムでの更新と削除に対応するために、ClickPipesは、ClickHouseの更新と削除を処理するために特別に設計された[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)エンジンを使用してPostgresテーブルをClickHouseにマッピングします。ClickPipesを使用してデータがClickHouseにレプリケートされる方法に関する詳細はこちらを[こちら](/integrations/clickpipes/postgres/deduplication#how-does-data-get-replicated)で確認できます。CDCを使用したレプリケーションでは、更新または削除操作をレプリケートする際にClickHouseに重複行が作成されることに注意することが重要です。[FINAL](https://clickhouse.com/docs/sql-reference/statements/select/from#final-modifier)修飾子を使用してClickHouseでそれらを処理するための[テクニック](/integrations/clickpipes/postgres/deduplication#deduplicate-using-final-keyword)を参照してください。
 
-ClickPipesを使用してClickHouseに`users`テーブルがどのように作成されるか見てみましょう。
+ClickPipesを使用してClickHouseで`users`テーブルがどのように作成されるかを見てみましょう。
 
 ```sql
 CREATE TABLE users
@@ -108,27 +112,27 @@ PRIMARY KEY id
 ORDER BY id;
 ```
 
-設定が完了すると、ClickPipesはPostgreSQLからClickHouseへすべてのデータの移行を開始します。ネットワークとデプロイメントのサイズに応じて、Stack Overflowデータセットの移行には数分しかかからないはずです。
+設定されると、ClickPipesはPostgreSQLからClickHouseへのすべてのデータ移行を開始します。ネットワークとデプロイメントのサイズによっては、Stack Overflowデータセットの場合、これには数分しかかからないはずです。
 
-### 定期更新を伴う手動バルクロード {#initial-bulk-load-with-periodic-updates}
+### 定期的な更新を伴う手動バルクロード {#initial-bulk-load-with-periodic-updates}
 
-手動アプローチを使用して、データセットの初期バルクロードは次の方法で実現できます：
+手動アプローチを使用して、データセットの初期バルクロードを実行できます：
 
-- **テーブル関数** - ClickHouseの[Postgresテーブル関数](/sql-reference/table-functions/postgresql)を使用して、Postgresからデータを`SELECT`してClickHouseテーブルに`INSERT`します。数百GBのデータセットまでのバルクロードに関連します。
-- **エクスポート** - CSVやSQLスクリプトファイルなどの中間形式にエクスポートします。これらのファイルを、クライアント経由で`INSERT FROM INFILE`句を使用してClickHouseにロードするか、オブジェクトストレージとその関連機能（例：s3、gcs）を使用してロードできます。
+- **テーブル関数** - ClickHouseの[Postgresテーブル関数](/sql-reference/table-functions/postgresql)を使用してPostgresからデータを`SELECT`し、それをClickHouseテーブルに`INSERT`します。これは、数百GBのデータセットのバルクロードに関連します。
+- **エクスポート** - CSVやSQLスクリプトファイルなどの中間形式にエクスポートします。これらのファイルは、`INSERT FROM INFILE`句を介してクライアントからClickHouseにロードするか、オブジェクトストレージと関連する機能（例：s3、gcs）を使用してロードします。
 
-PostgreSQLからデータを手動でロードする際は、まずClickHouseにテーブルを作成する必要があります。[データモデリングのドキュメント](/data-modeling/schema-design#establish-initial-schema)を参照して、Stack Overflowデータセットを使用してClickHouseでテーブルスキーマを最適化します。
+PostgreSQLから手動でデータをロードする場合、まずClickHouseにテーブルを作成する必要があります。この[データモデリングドキュメント](/data-modeling/schema-design#establish-initial-schema)を参照して、Stack Overflowデータセットを使用してClickHouseのテーブルスキーマを最適化します。
 
-PostgreSQLとClickHouseのデータ型は異なる場合があります。各テーブルカラムの同等の型を確立するために、[Postgresテーブル関数](/sql-reference/table-functions/postgresql)を使用して`DESCRIBE`コマンドを実行できます。次のコマンドはPostgreSQLの`posts`テーブルを記述しており、環境に応じて変更してください。
+PostgreSQLとClickHouseのデータ型は異なる場合があります。それぞれのテーブルカラムに対する同等の型を確立するために、[Postgresテーブル関数](/sql-reference/table-functions/postgresql)を使用して`DESCRIBE`コマンドを使用します。以下のコマンドは、PostgreSQLで`posts`テーブルを記述し、環境に応じて修正してください：
 
 ```sql title="Query"
 DESCRIBE TABLE postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
 SETTINGS describe_compact_output = 1
 ```
 
-PostgreSQLとClickHouse間のデータ型マッピングの概要については、[付録のドキュメント](/migrations/postgresql/appendix#data-type-mappings)を参照してください。
+PostgreSQLとClickHouseのデータ型マッピングの概要については、[付録ドキュメント](/migrations/postgresql/appendix#data-type-mappings)を参照してください。
 
-このスキーマの型を最適化する手順は、他のソース（例：S3上のParquet）からデータがロードされた場合と同じです。この[代替ガイドを使用したParquet](/data-modeling/schema-design)のプロセスを適用すると、次のスキーマが得られます：
+このスキーマの型を最適化する手順は、Parquet形式の他のソースからデータがロードされた場合と同じです。この[Parquetを使用した別のガイド](/data-modeling/schema-design)で説明されているプロセスを適用することで、以下のスキーマが得られます：
 
 ```sql title="Query"
 CREATE TABLE stackoverflow.posts
@@ -158,29 +162,29 @@ CREATE TABLE stackoverflow.posts
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-COMMENT '最適化された型'
+COMMENT 'Optimized types'
 ```
 
-これを簡単に`INSERT INTO SELECT`で埋めることができ、PostgreSQLからデータを読み取り、ClickHouseに挿入します：
+これを使って、簡単な`INSERT INTO SELECT`を利用して、PostgresSQLからデータを読み取り、ClickHouseに挿入することができます：
 
 ```sql title="Query"
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
 0 rows in set. Elapsed: 146.471 sec. Processed 59.82 million rows, 83.82 GB (408.40 thousand rows/s., 572.25 MB/s.)
 ```
 
-インクリメンタルロードもスケジュールできます。Postgresテーブルが挿入のみを受け取る場合、増加するidまたはタイムスタンプが存在するとき、ユーザーは上記のテーブル関数アプローチを使用してインクリメントをロードできます。つまり、`SELECT`に`WHERE`句を適用できます。このアプローチは、同じカラムを更新することが保証されている場合は更新のサポートにも使用できます。ただし、削除のサポートには完全な再ロードが必要で、テーブルが大きくなると実現が難しくなる場合があります。
+増分ロードはスケジュールすることができます。Postgresテーブルが挿入のみを受け、増分IDまたはタイムスタンプが存在する場合、ユーザーは上記のテーブル関数アプローチを使用して増分をロードすることができます。すなわち、`SELECT`に`WHERE`句を適用できます。このアプローチは、同じカラムが更新されることが保証されている場合に更新をサポートするためにも使用できます。しかし、削除をサポートするには完全な再ロードが必要で、テーブルが大きくなるにつれて難しくなることがあります。
 
-最初のロードとインクリメンタルロードを`CreationDate`を使用して示します（行が更新されると仮定します）。
+私たちは、`CreationDate`を使用した初期ロードと増分ロードを示します（行が更新された場合、これが更新されると仮定します）。
 
 ```sql
 -- 初期ロード
-INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password')
+INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password>')
 
-INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password') WHERE CreationDate > ( SELECT max(CreationDate) FROM stackoverflow.posts)
+INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password>') WHERE CreationDate > ( SELECT max(CreationDate) FROM stackoverflow.posts)
 ```
 
-> ClickHouseは、`=`、`!=`、`>`、`>=`、`<`、`<=`、およびINのような単純な`WHERE`句をPostgreSQLサーバーにプッシュダウンします。インクリメンタルロードは、変更セットを特定するために使用されるカラムにインデックスが存在することを保証することでより効率的に行えます。
+> ClickHouseは、`=`、`!=`、`>`、`>=`、`<`、`<=`、およびINなどの単純な`WHERE`句をPostgreSQLサーバーにプッシュダウンします。これにより、変更セットを特定するために使用されるカラムにインデックスが存在する場合、増分ロードをより効率的に行うことができます。
 
-> クエリレプリケーションを使用する際にUPDATE操作を検出する可能性のある方法は、`XMIN`システムカラム（トランザクションID）をウォーターマークとして使用することです。このカラムの変化は、変更を示し、目的のテーブルに適用できるためです。このアプローチを使用するユーザーは、`XMIN`値がラップする可能性があり、比較が完全なテーブルスキャンを必要とするため、変更の追跡がより複雑であることに留意する必要があります。
+> クエリレプリケーションを使用してUPDATE操作を検出する1つの方法は、`XMIN`システムカラム](https://www.postgresql.org/docs/9.1/ddl-system-columns.html)（トランザクションID）をウォーターマークとして使用することです。このカラムの変更は変更を示し、したがって宛先テーブルに適用できます。このアプローチを使用するユーザーは、`XMIN`の値がラップする可能性があり、比較が完全なテーブルスキャンを必要とし、変更の追跡がより複雑になることを理解しておくべきです。
 
 [パート2はこちらをクリック](./rewriting-queries.md)

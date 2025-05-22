@@ -1,10 +1,18 @@
 ---
-slug: '/examples/aggregate-function-combinators/quantilesTimingArrayIf'
-title: 'quantilesTimingArrayIf'
-description: 'quantilesTimingArrayIfコンビネータの使用例'
-keywords: ['quantilesTiming', 'array', 'if', 'combinator', 'examples', 'quantilesTimingArrayIf']
-sidebar_label: 'quantilesTimingArrayIf'
+'slug': '/examples/aggregate-function-combinators/quantilesTimingArrayIf'
+'title': 'quantilesTimingArrayIf'
+'description': 'Example of using the quantilesTimingArrayIf combinator'
+'keywords':
+- 'quantilesTiming'
+- 'array'
+- 'if'
+- 'combinator'
+- 'examples'
+- 'quantilesTimingArrayIf'
+'sidebar_label': 'quantilesTimingArrayIf'
 ---
+
+
 
 
 # quantilesTimingArrayIf {#quantilestimingarrayif}
@@ -12,12 +20,13 @@ sidebar_label: 'quantilesTimingArrayIf'
 ## 説明 {#description}
 
 [`Array`](/sql-reference/aggregate-functions/combinators#-array) および [`If`](/sql-reference/aggregate-functions/combinators#-if) 
-コンビネータは、[`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming) 関数に適用され、条件が真である行の配列内のタイミング値の四分位数を計算します。
-`quantilesTimingArrayIf` 集約コンビネータ関数を使用します。
+コンビネータは、条件が真である行の配列内のタイミング値の分位数を計算するために、[`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming) 
+関数に適用することができ、`quantilesTimingArrayIf` アグリゲートコンビネータ関数を使用します。
 
 ## 使用例 {#example-usage}
 
-この例では、異なるエンドポイントのAPI応答時間を保存するテーブルを作成し、成功したリクエストの応答時間四分位数を計算するために `quantilesTimingArrayIf` を使用します。
+この例では、異なるエンドポイントのAPIレスポンスタイムを保存するテーブルを作成し、
+成功したリクエストのレスポンスタイムの分位数を計算するために `quantilesTimingArrayIf` を使用します。
 
 ```sql title="クエリ"
 CREATE TABLE api_responses(
@@ -38,17 +47,17 @@ FROM api_responses
 GROUP BY endpoint;
 ```
 
-`quantilesTimingArrayIf` 関数は、成功率が95％を超えるエンドポイントのみの四分位数を計算します。
-返される配列には、以下の四分位数が順に含まれています：
+`quantilesTimingArrayIf` 関数は、成功率が95%を超えるエンドポイントのみの分位数を計算します。
+戻り値の配列には、次の分位数が順番に含まれています：
 - 0 (最小値)
-- 0.25 (第一四分位数)
+- 0.25 (第1四分位数)
 - 0.5 (中央値)
-- 0.75 (第三四分位数)
+- 0.75 (第3四分位数)
 - 0.95 (95パーセンタイル)
 - 0.99 (99パーセンタイル)
 - 1.0 (最大値)
 
-```response title="応答"
+```response title="レスポンス"
    ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
 1. │ orders   │ [82, 87, 92, 98, 103, 104, 105]                                     │
 2. │ products │ [45, 47, 49, 51, 52, 52, 53]                                        │
@@ -56,6 +65,6 @@ GROUP BY endpoint;
    └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
 
-## 関連情報 {#see-also}
+## 関連リンク {#see-also}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-- [`Ifコンビネータ`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

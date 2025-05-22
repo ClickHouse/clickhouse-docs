@@ -1,15 +1,19 @@
 ---
-title: 'Parquetファイルのクエリ方法'
-sidebar_label: 'Parquetファイルのクエリ'
-slug: /chdb/guides/querying-parquet
-description: 'chDBを使用してParquetファイルをクエリする方法を学びます。'
-keywords: ['chdb', 'parquet']
+'title': 'Parquetファイルのクエリ方法'
+'sidebar_label': 'Parquetファイルのクエリ'
+'slug': '/chdb/guides/querying-parquet'
+'description': 'chDBでParquetファイルをクエリする方法について学びます。'
+'keywords':
+- 'chdb'
+- 'parquet'
 ---
 
-世界中のデータの多くは、Amazon S3バケットに存在しています。
+
+
+A lot of the world's data lives in Amazon S3 buckets.  
 このガイドでは、chDBを使用してそのデータをクエリする方法を学びます。
 
-## セットアップ {#setup}
+## Setup {#setup}
 
 まず、仮想環境を作成しましょう：
 
@@ -18,38 +22,39 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-次に、chDBをインストールします。
-バージョンは2.0.2以上であることを確認してください：
+次に、chDBをインストールします。  
+バージョン2.0.2以上であることを確認してください：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-IPythonもインストールします：
+次に、IPythonをインストールします：
 
 ```bash
 pip install ipython
 ```
 
-今後のガイドのコマンドを実行するために`ipython`を使用します。次のコマンドを実行して起動できます：
+今後のガイドのコマンドを実行するために`ipython`を使用します。  
+次のコマンドで起動できます：
 
 ```bash
 ipython
 ```
 
-Pythonスクリプトやお気に入りのノートブックでもコードを使用できます。
+Pythonスクリプトやお気に入りのノートブックでもこのコードを使用できます。
 
-## Parquetメタデータの探索 {#exploring-parquet-metadata}
+## Exploring Parquet metadata {#exploring-parquet-metadata}
 
-[Amazonレビュー](/getting-started/example-datasets/amazon-reviews)データセットからParquetファイルを探索します。
+[Amazon reviews](/getting-started/example-datasets/amazon-reviews)データセットからParquetファイルを探索します。  
 まず、`chDB`をインストールしましょう：
 
 ```python
 import chdb
 ```
 
-Parquetファイルをクエリする際には、[`ParquetMetadata`](/interfaces/formats/ParquetMetadata)入力形式を使用して、ファイルの内容ではなくParquetメタデータを返すことができます。
-このフォーマットを使用した際に返されるフィールドを確認するために`DESCRIBE`句を使用しましょう：
+Parquetファイルをクエリする際には、ファイルの内容ではなくParquetメタデータを返すために、[`ParquetMetadata`](/interfaces/formats/ParquetMetadata)入力形式を使用できます。  
+この形式を使用したときに返されるフィールドを見るために`DESCRIBE`句を使用しましょう：
 
 ```python
 query = """
@@ -75,8 +80,8 @@ columns Array(Tuple(name String, path String, max_definition_level UInt64, max_r
 row_groups      Array(Tuple(num_columns UInt64, num_rows UInt64, total_uncompressed_size UInt64, total_compressed_size UInt64, columns Array(Tuple(name String, path String, total_compressed_size UInt64, total_uncompressed_size UInt64, have_statistics Bool, statistics Tuple(num_values Nullable(UInt64), null_count Nullable(UInt64), distinct_count Nullable(UInt64), min Nullable(String), max Nullable(String))))))
 ```
 
-このファイルのメタデータを見てみましょう。
-`columns`と`row_groups`は両方とも多くのプロパティを含むタプルの配列を含んでいるため、今はそれらを除外します。
+このファイルのメタデータを見てみましょう。  
+`columns`と`row_groups`は、それぞれ多くのプロパティを含むタプルの配列を含んでいるため、今回はこれを除外します。
 
 ```python
 query = """
@@ -102,9 +107,9 @@ total_uncompressed_size: 14615827169
 total_compressed_size:   9272262304
 ```
 
-この出力から、このParquetファイルには4200万を超える行があり、42の行グループに分かれていることがわかります。各行には15のカラムが含まれています。
-行グループはデータを行に論理的に水平方向にパーティション分けしたものです。
-各行グループには関連するメタデータがあり、クエリツールはそのメタデータを活用してファイルを効率的にクエリできます。
+この出力から、このParquetファイルは4200万行以上を持ち、42の行グループに分割され、各行に15カラムのデータがあることがわかります。  
+行グループは、データを行に水平に論理的にパーティショニングしたものです。  
+各行グループには関連するメタデータがあり、クエリツールはそのメタデータを利用してファイルを効率的にクエリできます。
 
 行グループの1つを見てみましょう：
 
@@ -149,10 +154,10 @@ chdb.query(query, 'DataFrame')
 14        review_body              145886383                232457911                                                                                              🚅 +🐧=💥 😀
 ```
 
-## Parquetファイルのクエリ {#querying-parquet-files}
+## Querying Parquet files {#querying-parquet-files}
 
-次に、ファイルの内容をクエリします。
-このクエリを調整して`ParquetMetadata`を削除し、全レビューの中で最も人気のある`star_rating`を計算できるようにします：
+次に、ファイルの内容をクエリします。  
+上記のクエリから`ParquetMetadata`を削除することで、すべてのレビューにわたる最も人気のある`star_rating`を計算できます：
 
 ```python
 query = """
@@ -176,5 +181,5 @@ chdb.query(query, 'DataFrame')
 4            5  27078664                   27.08 million
 ```
 
-興味深いことに、5つ星のレビューは他のすべての評価を合わせた数よりも多いです！
-Amazonの製品が好評であるか、好評でない場合は単に評価を提出しないようです。
+興味深いことに、5つ星のレビューは他のすべての評価を合わせたよりも多いです！  
+アマゾンの製品が好まれているようです、あるいは、もし好まれていないのなら、評価を提出していないだけかもしれません。

@@ -1,52 +1,54 @@
 ---
-description: 'ホテル、レストラン、カフェのメニューに関する歴史的データのレコードが1.3百万件含まれています。
-  料理とその価格が含まれています。'
-sidebar_label: 'ニューヨーク公共図書館 "What''s on the Menu?" データセット'
-slug: /getting-started/example-datasets/menus
-title: 'ニューヨーク公共図書館 "What''s on the Menu?" データセット'
+'description': 'Dataset containing 1.3 million records of historical data on the menus
+  of hotels, restaurants and cafes with the dishes along with their prices.'
+'sidebar_label': 'New York Public Library "What''s on the Menu?" Dataset'
+'slug': '/getting-started/example-datasets/menus'
+'title': 'New York Public Library "What''s on the Menu?" Dataset'
 ---
 
-このデータセットはニューヨーク公共図書館によって作成されました。ホテル、レストラン、カフェのメニューに関する歴史的データが含まれており、料理とその価格が記録されています。
 
-出典: http://menus.nypl.org/data  
-データはパブリックドメインです。
 
-データは図書館のアーカイブから取得されたもので、不完全で統計分析が困難な場合があります。それでも非常においしいデータです。  
-サイズは1.3百万件の料理に関する記録に過ぎません — ClickHouseにとっては非常に小さいデータボリュームですが、それでも良い例です。
+The dataset is created by the New York Public Library. It contains historical data on the menus of hotels, restaurants and cafes with the dishes along with their prices.
 
-## データセットのダウンロード {#download-dataset}
+Source: http://menus.nypl.org/data
+The data is in public domain.
 
-コマンドを実行します。
+The data is from library's archive and it may be incomplete and difficult for statistical analysis. Nevertheless it is also very yummy.
+The size is just 1.3 million records about dishes in the menus — it's a very small data volume for ClickHouse, but it's still a good example.
+
+## ダウンロード データセット {#download-dataset}
+
+Run the command:
 
 ```bash
 wget https://s3.amazonaws.com/menusdata.nypl.org/gzips/2021_08_01_07_01_17_data.tgz
 
-# オプション: チェックサムを検証
+# Option: Validate the checksum
 md5sum 2021_08_01_07_01_17_data.tgz
 
-# チェックサムは次の値と一致する必要があります: db6126724de939a5481e3160a2d67d15
+# Checksum should be equal to: db6126724de939a5481e3160a2d67d15
 ```
 
-必要に応じて、http://menus.nypl.org/data の最新リンクに置き換えてください。  
-ダウンロードサイズは約35 MBです。
+Replace the link to the up to date link from http://menus.nypl.org/data if needed.
+Download size is about 35 MB.
 
-## データセットの解凍 {#unpack-dataset}
+## データセットを展開 {#unpack-dataset}
 
 ```bash
 tar xvf 2021_08_01_07_01_17_data.tgz
 ```
 
-解凍後のサイズは約150 MBです。
+Uncompressed size is about 150 MB.
 
-データは正規化され、4つのテーブルで構成されています:
-- `Menu` — メニューに関する情報: レストランの名前、メニューが表示された日付など。
-- `Dish` — 料理に関する情報: 料理名といくつかの特徴。
-- `MenuPage` — メニュー内のページに関する情報、なぜなら各ページはメニューに属しているからです。
-- `MenuItem` — メニューの項目。あるメニューページにおける料理とその価格: 料理とメニューページへのリンク。
+The data is normalized consisted of four tables:
+- `Menu` — Information about menus: the name of the restaurant, the date when menu was seen, etc.
+- `Dish` — Information about dishes: the name of the dish along with some characteristic.
+- `MenuPage` — Information about the pages in the menus, because every page belongs to some menu.
+- `MenuItem` — An item of the menu. A dish along with its price on some menu page: links to dish and menu page.
 
-## テーブルの作成 {#create-tables}
+## テーブルを作成 {#create-tables}
 
-価格を保存するために [Decimal](../../sql-reference/data-types/decimal.md) データタイプを使用します。
+We use [Decimal](../../sql-reference/data-types/decimal.md) data type to store prices.
 
 ```sql
 CREATE TABLE dish
@@ -111,9 +113,9 @@ CREATE TABLE menu_item
 ) ENGINE = MergeTree ORDER BY id;
 ```
 
-## データのインポート {#import-data}
+## データをインポート {#import-data}
 
-ClickHouseにデータをアップロードするには、次のコマンドを実行します。
+Upload data into ClickHouse, run:
 
 ```bash
 clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_default 0 --query "INSERT INTO dish FORMAT CSVWithNames" < Dish.csv
@@ -122,20 +124,20 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_default 0 --date_time_input_format best_effort --query "INSERT INTO menu_item FORMAT CSVWithNames" < MenuItem.csv
 ```
 
-データはCSVヘッダー付きで表現されているため、[CSVWithNames](../../interfaces/formats.md#csvwithnames)形式を使用します。
+We use [CSVWithNames](../../interfaces/formats.md#csvwithnames) format as the data is represented by CSV with header.
 
-`format_csv_allow_single_quotes`を無効にするのは、データフィールドには二重引用符のみが使用され、単一引用符が値の中に存在する場合があり、CSVパーサーに混乱を与えるべきでないからです。
+We disable `format_csv_allow_single_quotes` as only double quotes are used for data fields and single quotes can be inside the values and should not confuse the CSV parser.
 
-[輸入形式のNULLをデフォルトとして使用する](/operations/settings/formats#input_format_null_as_default)を無効にするのは、私たちのデータには[NULL](/operations/settings/formats#input_format_null_as_default)がないからです。そうでないと、ClickHouseは`\N`シーケンスを解析しようとし、データ内の`\`と混同する可能性があります。
+We disable [input_format_null_as_default](/operations/settings/formats#input_format_null_as_default) as our data does not have [NULL](/operations/settings/formats#input_format_null_as_default). Otherwise ClickHouse will try to parse `\N` sequences and can be confused with `\` in data.
 
-設定 [date_time_input_format best_effort](/operations/settings/formats#date_time_input_format) は、さまざまな形式で[DateTime](../../sql-reference/data-types/datetime.md)フィールドを解析できるようにします。たとえば、秒のないISO-8601形式 '2000-01-01 01:02' が認識されます。この設定がないと、固定のDateTime形式のみが許可されます。
+The setting [date_time_input_format best_effort](/operations/settings/formats#date_time_input_format) allows to parse [DateTime](../../sql-reference/data-types/datetime.md)  fields in wide variety of formats. For example, ISO-8601 without seconds like '2000-01-01 01:02' will be recognized. Without this setting only fixed DateTime format is allowed.
 
-## データの非正規化 {#denormalize-data}
+## データを非正規化 {#denormalize-data}
 
-データは[正規化された形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms)で複数のテーブルに提示されており、例えばメニュー項目から料理名をクエリしたい場合は[JOIN](/sql-reference/statements/select/join)を実行する必要があります。  
-典型的な分析タスクでは、毎回`JOIN`を実行することを避けるために、事前に`JOIN`されたデータを扱う方がはるかに効率的です。これを「非正規化」データと呼びます。
+Data is presented in multiple tables in [normalized form](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms). It means you have to perform [JOIN](/sql-reference/statements/select/join) if you want to query, e.g. dish names from menu items.
+For typical analytical tasks it is way more efficient to deal with pre-JOINed data to avoid doing `JOIN` every time. It is called "denormalized" data.
 
-すべてのデータを`JOIN`したテーブル`menu_item_denorm`を作成します。
+We will create a table `menu_item_denorm` where will contain all the data JOINed together:
 
 ```sql
 CREATE TABLE menu_item_denorm
@@ -182,15 +184,15 @@ FROM menu_item
     JOIN menu ON menu_page.menu_id = menu.id;
 ```
 
-## データの検証 {#validate-data}
+## データを検証 {#validate-data}
 
-クエリ:
+Query:
 
 ```sql
 SELECT count() FROM menu_item_denorm;
 ```
 
-結果:
+Result:
 
 ```text
 ┌─count()─┐
@@ -198,11 +200,11 @@ SELECT count() FROM menu_item_denorm;
 └─────────┘
 ```
 
-## クエリを実行する {#run-queries}
+## クエリを実行 {#run-queries}
 
-### 料理の歴史的価格の平均 {#query-averaged-historical-prices}
+### 平均的な歴史的価格 {#query-averaged-historical-prices}
 
-クエリ:
+Query:
 
 ```sql
 SELECT
@@ -216,7 +218,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-結果:
+Result:
 
 ```text
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 100, 100)─┐
@@ -240,11 +242,11 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴──────────────────────────────┘
 ```
 
-これは注意して見るべきです。
+Take it with a grain of salt.
 
 ### ハンバーガーの価格 {#query-burger-prices}
 
-クエリ:
+Query:
 
 ```sql
 SELECT
@@ -258,7 +260,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-結果:
+Result:
 
 ```text
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)───────────┐
@@ -281,7 +283,7 @@ ORDER BY d ASC;
 
 ### ウォッカ {#query-vodka}
 
-クエリ:
+Query:
 
 ```sql
 SELECT
@@ -295,7 +297,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-結果:
+Result:
 
 ```text
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)─┐
@@ -311,13 +313,13 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴─────────────────────────────┘
 ```
 
-ウォッカを手に入れるには`ILIKE '%vodka%'`を書かなければなりません、そしてこれは確かに声明を作ります。
+To get vodka we have to write `ILIKE '%vodka%'` and this definitely makes a statement.
 
 ### キャビア {#query-caviar}
 
-キャビアの価格を表示しましょう。また、キャビアの料理名も表示しましょう。
+Let's print caviar prices. Also let's print a name of any dish with caviar.
 
-クエリ:
+Query:
 
 ```sql
 SELECT
@@ -332,7 +334,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-結果:
+Result:
 
 ```text
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)──────┬─any(dish_name)──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -354,8 +356,8 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴──────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-少なくとも彼らはウォッカとキャビアを持っています。とても素晴らしいです。
+At least they have caviar with vodka. Very nice.
 
 ## オンラインプレイグラウンド {#playground}
 
-データはClickHouse Playgroundにアップロードされています、[例](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B)。
+The data is uploaded to ClickHouse Playground, [example](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B).

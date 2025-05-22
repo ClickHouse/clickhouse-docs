@@ -1,26 +1,26 @@
 ---
-title: 'ClickPipeから特定のテーブルを削除する'
-description: 'ClickPipeから特定のテーブルを削除する'
-sidebar_label: 'テーブルを削除する'
-slug: /integrations/clickpipes/postgres/removing_tables
+'title': 'ClickPipe から特定のテーブルを削除する'
+'description': 'ClickPipe から特定のテーブルを削除する'
+'sidebar_label': 'テーブルの削除'
+'slug': '/integrations/clickpipes/postgres/removing_tables'
 ---
 
 import Image from '@theme/IdealImage';
 import remove_table from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/remove_table.png'
 
-場合によっては、Postgres ClickPipeから特定のテーブルを除外することが理にかなっています。たとえば、分析ワークロードに必要ないテーブルは、スキップすることでClickHouseにおけるストレージおよびレプリケーションコストを削減できます。
+In some cases, it makes sense to exclude specific tables from a Postgres ClickPipe - for example, if a table isn't needed for your analytics workload, skipping it can reduce storage and replication costs in ClickHouse.
 
-## 特定のテーブルを削除する手順 {#remove-tables-steps}
+## Steps to remove specific tables {#remove-tables-steps}
 
-最初のステップは、パイプからテーブルを削除することです。これは以下の手順で行うことができます。
+The first step is to remove the table from the pipe. This can be done by the following steps:
 
-1. [一時停止](./pause_and_resume.md)をクリックして、パイプを一時停止します。
-2. テーブル設定の編集をクリックします。
-3. テーブルを見つけます - 検索バーで検索することで行えます。
-4. 選択されたチェックボックスをクリックして、そのテーブルの選択を解除します。
+1. [Pause](./pause_and_resume.md) the pipe.
+2. Click on Edit Table Settings.
+3. Locate your table - this can be done by searching it in the search bar.
+4. Deselect the table by clicking on the selected checkbox.
 <br/>
 
 <Image img={remove_table} border size="md"/>
 
-5. 更新をクリックします。
-6. 更新が成功すると、**メトリクス**タブにステータスが**実行中**と表示されます。このテーブルはもはやこのClickPipeによってレプリケートされることはありません。
+5. Click update.
+6. Upon successful update, in the **Metrics** tab the status will be **Running**. This table will no longer be replicated by this ClickPipe.

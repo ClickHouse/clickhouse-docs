@@ -1,26 +1,31 @@
 ---
-title: 'CおよびC++用のchDBのインストール'
-sidebar_label: 'CおよびC++'
-slug: /chdb/install/c
-description: 'CおよびC++用のchDBのインストール方法'
-keywords: ['chdb', '埋め込み', 'clickhouse-lite', 'インストール']
+'title': 'C および C++ 用の chDB のインストール'
+'sidebar_label': 'C および C++'
+'slug': '/chdb/install/c'
+'description': 'C および C++ 用の chDB のインストール方法'
+'keywords':
+- 'chdb'
+- 'embedded'
+- 'clickhouse-lite'
+- 'install'
 ---
 
 
-# CおよびC++用のchDBのインストール
+
+
+# chDBのCおよびC++へのインストール
 
 ## 要件 {#requirements}
 
-[libchdb](https://github.com/chdb-io/chdb)をインストールします：
+[libchdb](https://github.com/chdb-io/chdb) をインストールします:
 
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
 
-
 ## 使用法 {#usage}
 
-始めるための手順は、[libchdb](https://github.com/chdb-io/chdb/blob/main/bindings.md)の指示に従ってください。
+[libchdb](https://github.com/chdb-io/chdb/blob/main/bindings.md) の手順に従って始めてください。
 
 `chdb.h`
 

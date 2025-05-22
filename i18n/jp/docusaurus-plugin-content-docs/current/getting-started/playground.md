@@ -1,45 +1,53 @@
 ---
-description: 'ClickHouse Playgroundは、サーバーやクラスターを設定せずに、クエリを即座に実行することでClickHouseを試すことができる環境です。'
-keywords: ['clickhouse', 'playground', 'getting', 'started', 'docs']
-sidebar_label: 'ClickHouse Playground'
-slug: /getting-started/playground
-title: 'ClickHouse Playground'
+'description': 'The ClickHouse Playground allows people to experiment with ClickHouse
+  by running queries instantly, without setting up their server or cluster.'
+'keywords':
+- 'clickhouse'
+- 'playground'
+- 'getting'
+- 'started'
+- 'docs'
+'sidebar_label': 'ClickHouse Playground'
+'slug': '/getting-started/playground'
+'title': 'ClickHouse Playground'
 ---
+
+
 
 
 # ClickHouse Playground
 
-[ClickHouse Playground](https://sql.clickhouse.com)は、サーバーやクラスターを設定せずにクエリを即座に実行することでClickHouseを試すことができる環境です。Playgroundには複数のサンプルデータセットが用意されています。
+[ClickHouse Playground](https://sql.clickhouse.com) は、サーバーやクラスタをセットアップすることなく、クエリを即座に実行することで ClickHouse を試すことができる環境です。Playground にはいくつかのサンプルデータセットが用意されています。
 
-Playgroundに対しては、任意のHTTPクライアント、例えば[ curl](https://curl.haxx.se)や[ wget](https://www.gnu.org/software/wget/)を使用するか、[ JDBC](../interfaces/jdbc.md)または[ ODBC](../interfaces/odbc.md)ドライバーを使用して接続を設定できます。ClickHouseをサポートするソフトウェア製品に関するより詳しい情報は[こちら](../integrations/index.mdx)でご覧いただけます。
+任意の HTTP クライアントを使用して Playground にクエリを送信できます。例えば、[curl](https://curl.haxx.se) や [wget](https://www.gnu.org/software/wget/) を使用するか、[JDBC](../interfaces/jdbc.md) または [ODBC](../interfaces/odbc.md) ドライバーを使用して接続を設定できます。ClickHouse をサポートするソフトウェア製品に関する詳細情報は、[こちら](../integrations/index.mdx)で入手できます。
 
 ## Credentials {#credentials}
 
-| パラメータ           | 値                                |
-|:--------------------|:----------------------------------|
-| HTTPSエンドポイント  | `https://play.clickhouse.com:443/` |
-| ネイティブTCPエンドポイント | `play.clickhouse.com:9440`         |
-| ユーザー            | `explorer`または`play`             |
-| パスワード          | (空)                               |
+| パラメータ          | 値                                  |
+|:--------------------|:-----------------------------------|
+| HTTPS エンドポイント | `https://play.clickhouse.com:443/` |
+| Native TCP エンドポイント | `play.clickhouse.com:9440`         |
+| ユーザー             | `explorer` または `play`            |
+| パスワード           | (空)                               |
 
 ## Limitations {#limitations}
 
-クエリは読み取り専用ユーザーとして実行されます。これにはいくつかの制限があります：
+クエリは読み取り専用ユーザーとして実行されます。これにはいくつかの制限が含まれます：
 
-- DDLクエリは許可されていません
-- INSERTクエリは許可されていません
+- DDL クエリは許可されていません
+- INSERT クエリは許可されていません
 
-サービスには使用量に関する制限もあります。
+このサービスには使用量に制限もあります。
 
 ## Examples {#examples}
 
-`curl`を使用したHTTPSエンドポイントの例：
+HTTPS エンドポイントの例（`curl` 使用）：
 
 ```bash
 curl "https://play.clickhouse.com/?user=explorer" --data-binary "SELECT 'Play ClickHouse'"
 ```
 
-[CLI](../interfaces/cli.md)を使用したTCPエンドポイントの例：
+TCP エンドポイントの例（[CLI](../interfaces/cli.md) 使用）：
 
 ```bash
 clickhouse client --secure --host play.clickhouse.com --user explorer
@@ -47,8 +55,8 @@ clickhouse client --secure --host play.clickhouse.com --user explorer
 
 ## Playground specifications {#specifications}
 
-私たちのClickHouse Playgroundは、次の仕様で運用されています：
+ClickHouse Playground は以下の仕様で運営されています：
 
-- 米国中部地域（US-Central-1）のGoogle Cloud (GCE)上にホスト
-- 3レプリカのセットアップ
-- 各256 GiBのストレージと59の仮想CPU
+- 米国中央地域（US-Central-1）の Google Cloud (GCE) 上でホストされています
+- 3 レプリカのセットアップ
+- 各 256 GiB のストレージと 59 の仮想 CPU あり。

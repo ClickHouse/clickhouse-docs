@@ -1,37 +1,43 @@
-description: 'システムテーブルとは何か、その有用性に関する概要。'
-keywords: ['システムテーブル', '概要']
-sidebar_label: '概要'
-sidebar_position: 52
-slug: /operations/system-tables/overview
-title: 'システムテーブルの概要'
-```
+---
+'description': 'システムテーブルとその有用性の概要。'
+'keywords':
+- 'system tables'
+- 'overview'
+'sidebar_label': '概要'
+'sidebar_position': 52
+'slug': '/operations/system-tables/overview'
+'title': 'System Tables Overview'
+---
+
+
+
 
 ## システムテーブルの概要 {#system-tables-introduction}
 
-システムテーブルは、以下に関する情報を提供します：
+システムテーブルは以下に関する情報を提供します：
 
 - サーバーの状態、プロセス、および環境。
-- サーバー内部のプロセス。
-- ClickHouse バイナリがビルドされたときのオプション。
+- サーバーの内部プロセス。
+- ClickHouseバイナリがビルドされた際に使用されたオプション。
 
 システムテーブル：
 
-- `system` データベースに存在します。
-- データの読み取り専用で利用可能です。
-- 削除または変更することはできませんが、デタッチすることは可能です。
+- `system` データベースに存在。
+- データの読み取りのみが可能。
+- 削除や変更はできませんが、切り離すことは可能です。
 
-ほとんどのシステムテーブルはデータをRAMに格納します。ClickHouseサーバーはこのようなシステムテーブルを起動時に作成します。
+ほとんどのシステムテーブルは、そのデータをRAMに格納します。ClickHouseサーバーは、起動時にこのようなシステムテーブルを作成します。
 
-他のシステムテーブルとは異なり、システムログテーブル [metric_log](../../operations/system-tables/metric_log.md)、[query_log](../../operations/system-tables/query_log.md)、[query_thread_log](../../operations/system-tables/query_thread_log.md)、[trace_log](../../operations/system-tables/trace_log.md)、[part_log](../../operations/system-tables/part_log.md)、[crash_log](../../operations/system-tables/crash-log.md)、[text_log](../../operations/system-tables/text_log.md) および [backup_log](../../operations/system-tables/backup_log.md) は [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルエンジンによって提供され、デフォルトでファイルシステムにデータを格納します。ファイルシステムからテーブルを削除すると、ClickHouse サーバーは次のデータ書き込み時に空のものを再作成します。システムテーブルのスキーマが新しいリリースで変更された場合、ClickHouseは現在のテーブルの名前を変更し、新しいテーブルを作成します。
+他のシステムテーブルとは異なり、システムログテーブル [metric_log](../../operations/system-tables/metric_log.md)、 [query_log](../../operations/system-tables/query_log.md)、 [query_thread_log](../../operations/system-tables/query_thread_log.md)、 [trace_log](../../operations/system-tables/trace_log.md)、 [part_log](../../operations/system-tables/part_log.md)、 [crash_log](../../operations/system-tables/crash-log.md)、 [text_log](../../operations/system-tables/text_log.md)、および [backup_log](../../operations/system-tables/backup_log.md) は、 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルエンジンによって提供され、デフォルトではファイルシステムにデータを保存します。ファイルシステムからテーブルを削除すると、ClickHouseサーバーは次回データを書き込む際に再び空のテーブルを作成します。新しいリリースでシステムテーブルのスキーマが変更された場合、ClickHouseは現在のテーブルの名前を変更し、新しいテーブルを作成します。
 
-システムログテーブルは、/etc/clickhouse-server/config.d/ に同名の設定ファイルを作成することによってカスタマイズするか、/etc/clickhouse-server/config.xml で対応する要素を設定することでカスタマイズできます。カスタマイズ可能な要素は：
+システムログテーブルは、 `/etc/clickhouse-server/config.d/` 内にテーブルと同じ名前の設定ファイルを作成するか、 `/etc/clickhouse-server/config.xml` に対応する要素を設定することでカスタマイズできます。カスタマイズ可能な要素は以下の通りです：
 
-- `database`: システムログテーブルが属するデータベース。このオプションは非推奨です。すべてのシステムログテーブルはデータベース `system` にあります。
+- `database`: システムログテーブルが属するデータベース。このオプションは現在非推奨です。すべてのシステムログテーブルはデータベース `system` にあります。
 - `table`: データを挿入するテーブル。
-- `partition_by`: [PARTITION BY](../../engines/table-engines/mergetree-family/custom-partitioning-key.md) 表現を指定します。
-- `ttl`: テーブルの [TTL](../../sql-reference/statements/alter/ttl.md) 表現を指定します。
-- `flush_interval_milliseconds`: ディスクへのデータフラッシュの間隔。
-- `engine`: パラメータ付きの完全なエンジン表現（`ENGINE =` で始まる）を提供します。このオプションは `partition_by` および `ttl` と衝突します。一緒に設定された場合、サーバーは例外を発生させて終了します。
+- `partition_by`: [PARTITION BY](../../engines/table-engines/mergetree-family/custom-partitioning-key.md) 式を指定します。
+- `ttl`: テーブルの [TTL](../../sql-reference/statements/alter/ttl.md) 式を指定します。
+- `flush_interval_milliseconds`: ディスクにデータをフラッシュする間隔。
+- `engine`: パラメータを持つ完全なエンジン式（`ENGINE =` で始まる）を提供します。このオプションは `partition_by` および `ttl` と競合します。これらを同時に設定すると、サーバーは例外を発生させて終了します。
 
 例：
 
@@ -54,20 +60,20 @@ title: 'システムテーブルの概要'
 </clickhouse>
 ```
 
-デフォルトでは、テーブルの成長は無制限です。テーブルのサイズを制御するために、古いログレコードを削除するための [TTL](/sql-reference/statements/alter/ttl) 設定を使用できます。また、 `MergeTree` エンジンテーブルのパーティショニング機能を使用することもできます。
+デフォルトでは、テーブルの成長は無制限です。テーブルのサイズを制御するために、古いログレコードを削除するための [TTL](/sql-reference/statements/alter/ttl) 設定を使用できます。また、`MergeTree`エンジンテーブルのパーティショニング機能も利用できます。
 
 ## システムメトリクスのソース {#system-tables-sources-of-system-metrics}
 
-システムメトリクスを収集するために、ClickHouse サーバーは次のものを使用します：
+システムメトリクスを収集するために、ClickHouseサーバーは以下を使用します：
 
-- `CAP_NET_ADMIN` 権限。
-- [procfs](https://en.wikipedia.org/wiki/Procfs)（Linux のみ）。
+- `CAP_NET_ADMIN` の権限。
+- [procfs](https://en.wikipedia.org/wiki/Procfs)（Linuxのみ）。
 
 **procfs**
 
-ClickHouse サーバーが `CAP_NET_ADMIN` 権限を持っていない場合、`ProcfsMetricsProvider` にフォールバックしようとします。`ProcfsMetricsProvider` は、クエリごとのシステムメトリクス（CPU および I/O 用）を収集することを可能にします。
+ClickHouseサーバーが `CAP_NET_ADMIN` の権限を持っていない場合、代わりに `ProcfsMetricsProvider` を使用しようとします。`ProcfsMetricsProvider` は、クエリごとのシステムメトリクス（CPUおよびI/Oのため）を収集することを可能にします。
 
-procfs がサポートされ、システムで有効になっている場合、ClickHouse サーバーは以下のメトリクスを収集します：
+procfsがサポートされ、有効化されているシステムでは、ClickHouseサーバーは以下のメトリクスを収集します：
 
 - `OSCPUVirtualTimeMicroseconds`
 - `OSCPUWaitMicroseconds`
@@ -78,13 +84,12 @@ procfs がサポートされ、システムで有効になっている場合、C
 - `OSWriteBytes`
 
 :::note
-`OSIOWaitMicroseconds` は、5.14.x 以降の Linux カーネルではデフォルトで無効です。
-`sudo sysctl kernel.task_delayacct=1` を使用するか、/etc/sysctl.d/ に `kernel.task_delayacct = 1` を設定した `.conf` ファイルを作成することで有効化できます。
+`OSIOWaitMicroseconds`は、Linuxカーネル5.14.x以降でデフォルトで無効です。`sudo sysctl kernel.task_delayacct=1`を使用するか、`/etc/sysctl.d/`に `kernel.task_delayacct = 1` を設定した.confファイルを作成することで有効化できます。
 :::
 
-## ClickHouse Cloud におけるシステムテーブル {#system-tables-in-clickhouse-cloud}
+## ClickHouse Cloudにおけるシステムテーブル {#system-tables-in-clickhouse-cloud}
 
-ClickHouse Cloud では、システムテーブルはセルフマネージドデプロイメントと同様に、サービスの状態とパフォーマンスに関する重要な洞察を提供します。一部のシステムテーブルはクラスタ全体のレベルで機能し、特に分散メタデータを管理する Keeper ノードからデータを取得するものです。これらのテーブルは、クラスターの全体的な状態を反映し、個々のノードでクエリされたときに一貫性がある必要があります。例えば、[`parts`](/operations/system-tables/parts) は、クエリが実行されるノードに関係なく一貫性がある必要があります：
+ClickHouse Cloudでは、システムテーブルは、セルフマネージドのデプロイメントと同様に、サービスの状態とパフォーマンスに関する重要な洞察を提供します。一部のシステムテーブルはクラスタ全体のレベルで操作され、特に分散メタデータを管理するKeeperノードからデータを派生させるテーブルはそうです。これらのテーブルは、クラスタの集合的な状態を反映し、個々のノードでクエリした際に一貫性が保たれるべきです。たとえば、[`parts`](/operations/system-tables/parts)は、クエリ元のノードに関係なく一貫性があるべきです：
 
 ```sql
 SELECT hostname(), count()
@@ -110,17 +115,17 @@ WHERE `table` = 'pypi'
 1 row in set. Elapsed: 0.004 sec.
 ```
 
-逆に、他のシステムテーブルはノード固有のもので、例えば、内部メモリに格納されたり、MergeTree テーブルエンジンを使用してデータを永続化したりします。これは、ログやメトリクスなどのデータによく見られます。この永続性により、過去のデータは分析のために利用可能なままになります。しかし、これらのノード固有のテーブルは本質的に各ノードに固有です。
+逆に、他のシステムテーブルはノード固有であり、例えば、メモリ内で動作するか、MergeTreeテーブルエンジンを使用してデータを持続させます。これは通常、ログやメトリクスといったデータに典型的です。この持続性により、歴史的データが分析のために利用可能であり続けます。しかし、これらのノード固有のテーブルは各ノードに固有のものであります。
 
-一般的に、システムテーブルがノード固有であるかどうかを判断する際に適用できるルールは次の通りです：
+一般的に、システムテーブルがノード固有かどうかを判断する際に適用できる以下のルールがあります：
 
-- `_log` サフィックスのあるシステムテーブル。
-- メトリクスを公開するシステムテーブル（例：`metrics`、`asynchronous_metrics`、`events`）。
-- 現在のプロセスを公開するシステムテーブル（例：`processes`、`merges`）。
+- `_log` サフィックスを持つシステムテーブル。
+- メトリクスを公開するシステムテーブル（例: `metrics`, `asynchronous_metrics`, `events`）。
+- 進行中のプロセスを公開するシステムテーブル（例: `processes`, `merges`）。
 
-さらに、システムテーブルの新しいバージョンは、アップグレードやスキーマの変更の結果として作成される場合があります。これらのバージョンは数値のサフィックスを使用して名前付けされます。
+さらに、システムテーブルの新バージョンは、アップグレードやスキーマの変更によって作成されることがあります。これらのバージョンは数値サフィックスを用いて命名されます。
 
-例えば、ノードによって実行された各クエリの行を含む `system.query_log` テーブルを考えてみましょう：
+例えば、ノードによって実行された各クエリの行を含む `system.query_log` テーブルを考えてみます：
 
 ```sql
 SHOW TABLES FROM system LIKE 'query_log%'
@@ -144,7 +149,7 @@ SHOW TABLES FROM system LIKE 'query_log%'
 
 ### 複数バージョンのクエリ {#querying-multiple-versions}
 
-[`merge`](/sql-reference/table-functions/merge) 関数を使用して、これらのテーブルを横断的にクエリすることができます。例えば、以下のクエリは、各 `query_log` テーブルに対してターゲットノードに発行された最新のクエリを識別します：
+[`merge`](/sql-reference/table-functions/merge) 関数を使用して、これらのテーブルを横断してクエリを実行することができます。例えば、以下のクエリは各 `query_log` テーブルに対してターゲットノードに発行された最新のクエリを特定します：
 
 ```sql
 SELECT
@@ -169,25 +174,26 @@ ORDER BY most_recent DESC
 └──────────────┴─────────────────────┘
 
 11 rows in set. Elapsed: 0.373 sec. Processed 6.44 million rows, 25.77 MB (17.29 million rows/s., 69.17 MB/s.)
+Peak memory usage: 28.45 MiB.
 ```
 
-:::note 数字のサフィックスによる順序には頼らないでください
-テーブルの数字のサフィックスはデータの順序を示唆することができますが、それに頼ってはいけません。このため、特定の日付範囲をターゲットにする際は、常に日付フィルターと組み合わせたマージテーブル関数を使用してください。
+:::note 数字サフィックスに頼らないでください
+テーブルの数字サフィックスはデータの順序を示唆することができますが、それに頼るべきではありません。このため、特定の日付範囲を対象とする際には、常にマージテーブル機能と日付フィルタを組み合わせて使用してください。
 :::
 
 重要なことに、これらのテーブルは依然として **各ノードにローカル** です。
 
 ### ノード間のクエリ {#querying-across-nodes}
 
-クラスター全体を包括的に表示するために、ユーザーは [`clusterAllReplicas`](/sql-reference/table-functions/cluster) 関数を `merge` 関数と組み合わせて利用することができます。`clusterAllReplicas` 関数は、「default」クラスタ内のすべてのレプリカにわたってシステムテーブルをクエリし、ノード固有のデータを統合された結果にまとめることを可能にします。これを `merge` 関数と組み合わせることで、クラスター内の特定のテーブルのすべてのシステムデータをターゲットにできます。
+クラスタ全体を包括的に表示するために、ユーザーは [`clusterAllReplicas`](/sql-reference/table-functions/cluster) 関数を `merge` 関数と組み合わせて活用することができます。`clusterAllReplicas` 関数は、"default" クラスター内のすべてのレプリカ間でシステムテーブルをクエリすることを可能にし、ノード固有のデータを統合された結果に集約します。`merge` 関数と組み合わせることで、クラスター内の特定のテーブルのすべてのシステムデータを対象とすることができます。
 
-このアプローチは、クラスタ全体の操作を監視およびデバッグする際に特に価値があり、ユーザーが自分の ClickHouse Cloud デプロイメントの健全性とパフォーマンスを効果的に分析できるようにします。
+このアプローチは、クラスタ全体の操作を監視し、デバッグする際に特に価値があります。ユーザーはClickHouse Cloudデプロイメントの健全性とパフォーマンスを効果的に分析することができます。
 
 :::note
-ClickHouse Cloud は冗長性とフェイルオーバーのために複数のレプリカのクラスタを提供します。これにより、動的オートスケーリングやゼロダウンタイムのアップグレードなどの機能が有効になります。ある時点で、新しいノードがクラスターに追加されたり、クラスターから削除されたりするプロセスが進行中かもしれません。これらのノードをスキップするには、`clusterAllReplicas` を使用するクエリに `SETTINGS skip_unavailable_shards = 1` を追加してください。以下に示すように。
+ClickHouse Cloudは冗長性とフェイルオーバーのために複数のレプリカのクラスターを提供します。これにより、動的なオートスケーリングやゼロダウンタイムのアップグレードなどの機能が可能になります。特定の時点において、新しいノードがクラスターに追加されるプロセス中またはクラスターから削除されていることがあります。これらのノードをスキップするには、`clusterAllReplicas`を使用したクエリに `SETTINGS skip_unavailable_shards = 1` を追加してください。以下のようになります。
 :::
 
-例えば、分析に不可欠なことが多い `query_log` テーブルをクエリする際の違いを考えてみましょう。
+例えば、分析にしばしば不可欠な `query_log` テーブルをクエリする際の違いを考えてみましょう。
 
 ```sql
 SELECT
@@ -221,7 +227,7 @@ GROUP BY host SETTINGS skip_unavailable_shards = 1
 
 ### ノード間およびバージョン間のクエリ {#querying-across-nodes-and-versions}
 
-システムテーブルのバージョン管理のため、これでもクラスター内の全データを表すことはできません。上記の内容を `merge` 関数と組み合わせることで、特定の日付範囲に対して正確な結果を得ることができます：
+システムテーブルのバージョニングのため、これでもクラスタ内の全データを表すものではありません。上記を`merge` 関数と組み合わせることで、特定の日付範囲について正確な結果が得られます：
 
 ```sql
 SELECT
@@ -242,6 +248,6 @@ GROUP BY host SETTINGS skip_unavailable_shards = 1
 
 ## 関連コンテンツ {#related-content}
 
-- ブログ: [システムテーブルと ClickHouse の内部への窓](https://clickhouse.com/blog/clickhouse-debugging-issues-with-system-tables)
-- ブログ: [重要な監視クエリ - 第1部 - INSERT クエリ](https://clickhouse.com/blog/monitoring-troubleshooting-insert-queries-clickhouse)
-- ブログ: [重要な監視クエリ - 第2部 - SELECT クエリ](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse)
+- ブログ: [システムテーブルとClickHouseの内部を覗く](https://clickhouse.com/blog/clickhouse-debugging-issues-with-system-tables)
+- ブログ: [必須の監視クエリ - パート1 - INSERTクエリ](https://clickhouse.com/blog/monitoring-troubleshooting-insert-queries-clickhouse)
+- ブログ: [必須の監視クエリ - パート2 - SELECTクエリ](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse)

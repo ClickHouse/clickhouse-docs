@@ -1,71 +1,66 @@
 ---
-description: 'リモートMongoDBサーバーに保存されているデータに対して、`SELECT`クエリを実行できるようにします。'
-sidebar_label: 'mongodb'
-sidebar_position: 135
-slug: /sql-reference/table-functions/mongodb
-title: 'mongodb'
+'description': 'Allows `SELECT` queries to be performed on data that is stored on
+  a remote MongoDB server.'
+'sidebar_label': 'mongodb'
+'sidebar_position': 135
+'slug': '/sql-reference/table-functions/mongodb'
+'title': 'mongodb'
 ---
+
+
 
 
 # mongodb テーブル関数
 
-リモートMongoDBサーバーに保存されているデータに対して、`SELECT`クエリを実行できるようにします。
+リモートの MongoDB サーバーに保存されているデータに対して `SELECT` クエリを実行できるようにします。
 
-**構文**
+## 構文 {#syntax}
 
 ```sql
 mongodb(host:port, database, collection, user, password, structure[, options[, oid_columns]])
 ```
 
-**引数**
+## 引数 {#arguments}
 
-- `host:port` — MongoDBサーバーのアドレス。
-
-- `database` — リモートデータベース名。
-
-- `collection` — リモートコレクション名。
-
-- `user` — MongoDBユーザー。
-
-- `password` — ユーザーパスワード。
-
-- `structure` - この関数から返されるClickHouseテーブルのスキーマ。
-
-- `options` - MongoDB接続文字列オプション（オプションのパラメータ）。
-
-- `oid_columns` - WHERE句で`oid`として扱うべきカラムのカンマ区切りリスト。デフォルトは`_id`。
+| 引数          | 説明                                                                                                   |
+|---------------|--------------------------------------------------------------------------------------------------------|
+| `host:port`   | MongoDB サーバーのアドレス。                                                                           |
+| `database`    | リモートデータベースの名前。                                                                           |
+| `collection`  | リモートコレクションの名前。                                                                           |
+| `user`        | MongoDB ユーザー。                                                                                     |
+| `password`    | ユーザーパスワード。                                                                                   |
+| `structure`   | この関数から返される ClickHouse テーブルのスキーマ。                                                  |
+| `options`     | MongoDB 接続文字列オプション（任意のパラメータ）。                                                    |
+| `oid_columns` | WHERE 句で `oid` として扱うべきカラムのカンマ区切りリスト。デフォルトでは `_id`。                     |
 
 :::tip
-MongoDB Atlasのクラウドサービスを利用している場合、以下のオプションを追加してください：
+MongoDB Atlas クラウドオファリングを使用している場合は、次のオプションを追加してください：
 
 ```ini
 'connectTimeoutMS=10000&ssl=true&authSource=admin'
 ```
 :::
 
-URIによって接続することも可能です：
+URI による接続も可能です：
 
 ```sql
 mongodb(uri, collection, structure[, oid_columns])
 ```
 
-**引数**
+| 引数          | 説明                                                                                                   |
+|---------------|--------------------------------------------------------------------------------------------------------|
+| `uri`         | 接続文字列。                                                                                          |
+| `collection`  | リモートコレクションの名前。                                                                           |
+| `structure`   | この関数から返される ClickHouse テーブルのスキーマ。                                                  |
+| `oid_columns` | WHERE 句で `oid` として扱うべきカラムのカンマ区切りリスト。デフォルトでは `_id`。                     |
 
-- `uri` — 接続文字列。
+## 戻り値 {#returned_value}
 
-- `collection` — リモートコレクション名。
+元の MongoDB テーブルと同じカラムを持つテーブルオブジェクト。
 
-- `structure` — この関数から返されるClickHouseテーブルのスキーマ。
+## 例 {#examples}
 
-- `oid_columns` - WHERE句で`oid`として扱うべきカラムのカンマ区切りリスト。デフォルトは`_id`。
-
-**返される値**
-
-元のMongoDBテーブルと同じカラムを持つテーブルオブジェクト。
-
-**例**
-
-`test`というMongoDBデータベースに`my_collection`というコレクションがあり、いくつかのドキュメントを挿入したと仮定します：
+`test` という MongoDB データベースに `my_collection` というコレクションが定義されているとしましょう。いくつかのドキュメントを挿入します：
 
 ```sql
 db.createUser({user:"test_user",pwd:"password",roles:[{role:"readWrite",db:"test"}]})
@@ -81,7 +76,7 @@ db.my_collection.insertOne(
 )
 ```
 
-`mongodb`テーブル関数を使用してコレクションをクエリしましょう：
+`mongodb` テーブル関数を使用してコレクションをクエリします：
 
 ```sql
 SELECT * FROM mongodb(
@@ -105,7 +100,7 @@ SELECT * FROM mongodb(
 )
 ```
 
-**関連情報**
+## 関連 {#related}
 
-- [MongoDBテーブルエンジン](engines/table-engines/integrations/mongodb.md)
-- [MongoDBを辞書ソースとして使用する](sql-reference/dictionaries/index.md#mongodb)
+- [MongoDB テーブルエンジン](engines/table-engines/integrations/mongodb.md)
+- [MongoDB を辞書ソースとして使用する](sql-reference/dictionaries/index.md#mongodb)

@@ -1,26 +1,30 @@
 ---
-description: '重み付きヒッターアルゴリズムを使用して、頻繁に発生する値を選択します。 各クエリの実行スレッドで、半数以上のケースで発生する値がある場合、この値が返されます。 通常、結果は非決定的です。'
-sidebar_position: 104
-slug: /sql-reference/aggregate-functions/reference/anyheavy
-title: 'anyHeavy'
+'description': 'Selects a frequently occurring value using the heavy hitters algorithm.
+  If there is a value that occurs more than in half the cases in each of the query
+  execution threads, this value is returned. Normally, the result is nondeterministic.'
+'sidebar_position': 104
+'slug': '/sql-reference/aggregate-functions/reference/anyheavy'
+'title': 'anyHeavy'
 ---
+
+
 
 
 # anyHeavy
 
-[重み付きヒッター](https://doi.org/10.1145/762471.762473)アルゴリズムを使用して、頻繁に発生する値を選択します。各クエリの実行スレッドで半数以上のケースで発生する値がある場合、この値が返されます。通常、結果は非決定的です。
+Selects a frequently occurring value using the [heavy hitters](https://doi.org/10.1145/762471.762473) algorithm. If there is a value that occurs more than in half the cases in each of the query's execution threads, this value is returned. Normally, the result is nondeterministic.
 
 ```sql
 anyHeavy(column)
 ```
 
-**引数**
+**Arguments**
 
 - `column` – カラム名。
 
-**例**
+**Example**
 
-[OnTime](../../../getting-started/example-datasets/ontime.md)データセットを取得し、`AirlineID`カラムにある頻繁に発生する値を選択します。
+Take the [OnTime](../../../getting-started/example-datasets/ontime.md) data set and select any frequently occurring value in the `AirlineID` カラム。
 
 ```sql
 SELECT anyHeavy(AirlineID) AS res

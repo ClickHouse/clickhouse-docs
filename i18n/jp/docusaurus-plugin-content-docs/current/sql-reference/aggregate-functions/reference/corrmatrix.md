@@ -1,14 +1,16 @@
 ---
-description: 'N 変数に対する相関行列を計算します。'
-sidebar_position: 118
-slug: /sql-reference/aggregate-functions/reference/corrmatrix
-title: 'corrMatrix'
+'description': 'N個の変数にわたる相関行列を計算します。'
+'sidebar_position': 118
+'slug': '/sql-reference/aggregate-functions/reference/corrmatrix'
+'title': 'corrMatrix'
 ---
+
+
 
 
 # corrMatrix
 
-N 変数に対する相関行列を計算します。
+N個の変数に対する相関行列を計算します。
 
 **構文**
 
@@ -22,7 +24,7 @@ corrMatrix(x[, ...])
 
 **返される値**
 
-- 相関行列。[Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md)))。
+- 相関行列。 [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md)))。
 
 **例**
 

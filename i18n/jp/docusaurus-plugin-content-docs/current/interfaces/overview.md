@@ -1,35 +1,47 @@
 ---
-description: 'ClickHouse に接続するためのネットワークインターフェース、ドライバー、およびツールの概要'
-keywords: ['clickhouse', 'network', 'interfaces', 'http', 'tcp', 'grpc', 'command-line',
-  'client', 'jdbc', 'odbc', 'driver']
-sidebar_label: '概要'
-slug: /interfaces/overview
-title: 'ドライバーとインターフェース'
+'description': 'ClickHouseへの接続のためのネットワークインターフェース、ドライバー、およびツールの概要'
+'keywords':
+- 'clickhouse'
+- 'network'
+- 'interfaces'
+- 'http'
+- 'tcp'
+- 'grpc'
+- 'command-line'
+- 'client'
+- 'jdbc'
+- 'odbc'
+- 'driver'
+'sidebar_label': '概要'
+'slug': '/interfaces/overview'
+'title': 'Drivers and Interfaces'
 ---
+
+
 
 
 # ドライバーとインターフェース
 
-ClickHouse は3つのネットワークインターフェースを提供します（オプションでTLSでラップして追加のセキュリティを確保できます）：
+ClickHouseは、3つのネットワークインターフェースを提供します（追加のセキュリティのためにTLSでラップすることがオプションで可能です）：
 
-- [HTTP](http.md) は、ドキュメントがあり、直接使用するのが簡単です。
-- [Native TCP](../interfaces/tcp.md) は、オーバーヘッドが少ないです。
+- [HTTP](http.md)：文書化されており、直接使用するのが簡単です。
+- [ネイティブTCP](../interfaces/tcp.md)：オーバーヘッドが少ないです。
 - [gRPC](grpc.md)。
 
-ほとんどの場合、これらと直接やり取りするのではなく、適切なツールやライブラリを使用することをお勧めします。以下は、ClickHouse によって正式にサポートされているものです：
+ほとんどの場合、これらと直接対話するのではなく、適切なツールやライブラリを使用することを推奨します。以下はClickHouseによって公式にサポートされています：
 
 - [コマンドラインクライアント](../interfaces/cli.md)
-- [JDBC ドライバー](../interfaces/jdbc.md)
-- [ODBC ドライバー](../interfaces/odbc.md)
-- [C++ クライアントライブラリ](../interfaces/cpp.md)
+- [JDBCドライバー](../interfaces/jdbc.md)
+- [ODBCドライバー](../interfaces/odbc.md)
+- [C++クライアントライブラリ](../interfaces/cpp.md)
 
-ClickHouse サーバーは、パワーユーザー向けに埋め込みのビジュアルインターフェースを提供します：
+ClickHouseサーバーは、パワーユーザー向けの組み込みビジュアルインターフェースを提供しています：
 
-- Play UI: ブラウザーで `/play` を開く；
-- 高度なダッシュボード: ブラウザーで `/dashboard` を開く；
-- ClickHouse エンジニア向けのバイナリシンボルビューア: ブラウザーで `/binary` を開く；
+- プレイUI：ブラウザで`/play`を開く；
+- 高度なダッシュボード：ブラウザで`/dashboard`を開く；
+- ClickHouseエンジニアのためのバイナリシンボルビューア：ブラウザで`/binary`を開く；
 
-また、ClickHouse と連携するためのさまざまなサードパーティライブラリもあります：
+また、ClickHouseと連携するための多くのサードパーティライブラリも存在します：
 
 - [クライアントライブラリ](../interfaces/third-party/client-libraries.md)
 - [統合](../interfaces/third-party/integrations.md)

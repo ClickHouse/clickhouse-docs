@@ -1,30 +1,34 @@
 ---
-alias: []
-description: 'XMLフォーマットのドキュメント'
-input_format: false
-keywords: ['XML']
-output_format: true
-slug: /interfaces/formats/XML
-title: 'XML'
+'alias': []
+'description': 'XML形式のドキュメント'
+'input_format': false
+'keywords':
+- 'XML'
+'output_format': true
+'slug': '/interfaces/formats/XML'
+'title': 'XML'
 ---
 
-| 入力 | 出力 | エイリアス |
+
+
+| Input | Output | Alias |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
 ## 説明 {#description}
 
-`XML`フォーマットは出力専用であり、解析には適していません。
+`XML` フォーマットは出力専用であり、解析には適していません。
 
-カラム名が許容されるフォーマットでない場合は、'field'が要素名として使用されます。一般的に、XML構造はJSON構造に従います。JSONの場合と同様に、無効なUTF-8シーケンスは置換文字`�`に変換され、出力テキストは有効なUTF-8シーケンスで構成されます。
+カラム名が許可されているフォーマットでない場合、要素名として 'field' が使用されます。一般的に、XML 構造は JSON 構造に従います。
+JSON と同様に、無効な UTF-8 シーケンスは置換文字 `�` に変更されるため、出力テキストは有効な UTF-8 シーケンスで構成されます。
 
-文字列値では、文字`<`と`&`はそれぞれ`&lt;`および`&amp;`にエスケープされます。
+文字列値では、文字 `<` と `&` はそれぞれ `<` と `&` にエスケープされます。
 
-配列は`<array><elem>Hello</elem><elem>World</elem>...</array>`として出力され、タプルは`<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`として出力されます。
+配列は `<array><elem>Hello</elem><elem>World</elem>...</array>` として出力され、タプルは `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>` として出力されます。
 
 ## 使用例 {#example-usage}
 
-例:
+例：
 
 ```xml
 <?xml version='1.0' encoding='UTF-8' ?>
@@ -47,7 +51,7 @@ title: 'XML'
                         <field>8267016</field>
                 </row>
                 <row>
-                        <SearchPhrase>バスルームインテリアデザイン</SearchPhrase>
+                        <SearchPhrase>浴室のインテリアデザイン</SearchPhrase>
                         <field>2166</field>
                 </row>
                 <row>
@@ -59,7 +63,7 @@ title: 'XML'
                         <field>1549</field>
                 </row>
                 <row>
-                        <SearchPhrase>フリーフォームの写真</SearchPhrase>
+                        <SearchPhrase>自由形式の写真</SearchPhrase>
                         <field>1480</field>
                 </row>
                 <row>

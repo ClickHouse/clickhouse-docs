@@ -1,15 +1,21 @@
 ---
-title: 'その他のJSONフォーマットの取り扱い'
-slug: /integrations/data-formats/json/other-formats
-description: 'その他のJSONフォーマットの取り扱い'
-sidebar_label: 'その他のフォーマットの取り扱い'
-keywords: ['json', 'formats', 'json formats']
+'title': '他のJSON形式の取り扱い'
+'slug': '/integrations/data-formats/json/other-formats'
+'description': '他のJSON形式の取り扱い'
+'sidebar_label': '他の形式の取り扱い'
+'keywords':
+- 'json'
+- 'formats'
+- 'json formats'
 ---
+
+
+
 
 
 # その他のJSONフォーマットの取り扱い
 
-以前のJSONデータのロード例は、[`JSONEachRow`](/interfaces/formats/JSONEachRow)（`NDJSON`）の使用を想定しています。このフォーマットは、各JSON行のキーをカラムとして読み取ります。例えば：
+以前のJSONデータの読み込みの例では、[`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`) の使用を前提としています。このフォーマットは、各JSON行のキーをカラムとして読み込みます。例えば：
 
 ```sql
 SELECT *
@@ -27,19 +33,19 @@ LIMIT 5
 5 rows in set. Elapsed: 0.449 sec.
 ```
 
-これは一般的には最もよく使用されるJSONフォーマットですが、ユーザーは他のフォーマットに出くわすか、JSONを単一のオブジェクトとして読み取る必要があります。
+このフォーマットは一般的にJSONで最もよく使用される形式ですが、ユーザーは他の形式に出会ったり、JSONを単一オブジェクトとして読み取る必要があります。
 
-以下では、一般的な他のフォーマットでのJSONの読み取りとロードの例を示します。
+以下に、他の一般的な形式でのJSONの読み込みとロードの例を示します。
 
-## JSONをオブジェクトとして読み取る {#reading-json-as-an-object}
+## JSONをオブジェクトとして読み込む {#reading-json-as-an-object}
 
-前述の例では、`JSONEachRow`が改行で区切られたJSONを読み取り、各行がテーブルの行にマップされ、各キーがカラムにマップされる方法を示しています。これは、JSONが各カラムに対して単一のタイプで予測可能な場合に理想的です。
+これまでの例は、`JSONEachRow` が改行区切りのJSONを読み込み、各行がテーブルの行にマッピングされ、各キーがカラムに対応する方法を示しています。これは、JSONが予測可能で各カラムのタイプが単一である場合に理想的です。
 
-対照的に、`JSONAsObject`は各行を単一の`JSON`オブジェクトとして扱い、[`JSON`](/sql-reference/data-types/newjson)タイプの単一カラムに格納します。これにより、ネストされたJSONペイロードや、キーが動的で複数のタイプを持つ可能性がある場合に適しています。
+対照的に、`JSONAsObject` は各行を単一の `JSON` オブジェクトとして扱い、それを [`JSON`](/sql-reference/data-types/newjson) 型の単一カラムに保存します。これにより、ネストされたJSONペイロードや、キーが動的で潜在的に複数のタイプを持つ場合により適しています。
 
-行ごとの挿入には`JSONEachRow`を使用し、柔軟または動的なJSONデータを格納する場合は[`JSONAsObject`](/interfaces/formats/JSONAsObject)を使用します。
+`JSONEachRow` を行単位の挿入用として使用し、柔軟または動的なJSONデータを格納する際には [`JSONAsObject`](/interfaces/formats/JSONAsObject) を使用してください。
 
-上記の例と対照的に、以下のクエリは各行をJSONオブジェクトとして同じデータを読み取ります：
+前述の例と対照的に、以下のクエリでは同じデータを1行のJSONオブジェクトとして読み取ります：
 
 ```sql
 SELECT *
@@ -57,7 +63,7 @@ LIMIT 5
 5 rows in set. Elapsed: 0.338 sec.
 ```
 
-`JSONAsObject`は、単一のJSONオブジェクトカラムを使用してテーブルに行を挿入する際にも便利です。例えば：
+`JSONAsObject` フォーマットは、単一のJSONオブジェクトカラムを使用してテーブルに行を挿入するのに便利です。例：
 
 ```sql
 CREATE TABLE pypi
@@ -83,7 +89,7 @@ LIMIT 2;
 2 rows in set. Elapsed: 0.003 sec.
 ```
 
-`JSONAsObject`フォーマットは、オブジェクトの構造が不一致である場合にも改行で区切られたJSONを読み取るのに役立ちます。例えば、行ごとにキーのタイプが異なる場合（ある時は文字列で、別の時はオブジェクトであることがあります）。そのような場合、ClickHouseは`JSONEachRow`を使用して安定したスキーマを推測できず、`JSONAsObject`はデータを厳密なタイプの強制なしに取り込むことを可能にし、各JSON行を単一カラムに全体として格納します。以下の例では、`JSONEachRow`が失敗することに注目してください：
+`JSONAsObject` フォーマットは、オブジェクトの構造が不一致な場合の改行区切りJSONを読み取るのにも役立ちます。例えば、キーが行ごとに型が変わる（時には文字列、時にはオブジェクトになる）場合です。そのような場合、ClickHouseは `JSONEachRow` を使用して安定したスキーマを推測できず、`JSONAsObject` により厳密な型制約なしでデータを取り込むことができ、各JSON行を単一のカラムに全体として保存します。以下の例では `JSONEachRow` が失敗することに注意してください：
 
 ```sql
 SELECT count()
@@ -97,8 +103,8 @@ Code: 117. DB::Exception: JSON objects have ambiguous data: in some objects path
 To increase the maximum number of rows/bytes to read for structure determination, use setting input_format_max_rows_to_read_for_schema_inference/input_format_max_bytes_to_read_for_schema_inference.
 You can specify the structure manually: (in file/uri bluesky/file_0001.json.gz). (CANNOT_EXTRACT_TABLE_STRUCTURE)
 ```
-
-逆に、`JSONAsObject`はこの場合に使用でき、`JSON`タイプは同じサブカラムに対して複数のタイプをサポートします。
+ 
+逆に、`JSONAsObject` はこの場合に使用でき、`JSON` 型は同じサブカラムに対して複数の型をサポートします。
 
 ```sql
 SELECT count()
@@ -113,7 +119,7 @@ FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.j
 
 ## JSONオブジェクトの配列 {#array-of-json-objects}
 
-JSONデータの最も一般的な形式の1つは、JSON配列内にJSONオブジェクトのリストを持つことです。例えば[この例](../assets/list.json)のように：
+JSONデータの最も一般的な形式の一つは、JSON配列内にJSONオブジェクトのリストを持つことです。この例を見てみましょう。[この例](../assets/list.json):
 
 ```bash
 > cat list.json
@@ -132,7 +138,7 @@ JSONデータの最も一般的な形式の1つは、JSON配列内にJSONオブ�
 ]
 ```
 
-この種のデータのためのテーブルを作成しましょう：
+このようなデータのためのテーブルを作成しましょう：
 
 ```sql
 CREATE TABLE sometable
@@ -145,7 +151,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-JSONオブジェクトのリストをインポートするには、[`JSONEachRow`](/interfaces/formats.md/#jsoneachrow)フォーマットを使用します（[list.json](../assets/list.json)ファイルからデータを挿入）：
+JSONオブジェクトのリストをインポートするには、[`JSONEachRow`](/interfaces/formats.md/#jsoneachrow) フォーマットを使用します（[list.json](../assets/list.json) ファイルからデータを挿入します）：
 
 ```sql
 INSERT INTO sometable
@@ -153,7 +159,7 @@ FROM INFILE 'list.json'
 FORMAT JSONEachRow
 ```
 
-ローカルファイルからデータをロードするために[FROM INFILE](/sql-reference/statements/insert-into.md/#inserting-data-from-a-file)句を使用し、インポートが成功したことを確認できます：
+ローカルファイルからデータをロードするために [FROM INFILE](/sql-reference/statements/insert-into.md/#inserting-data-from-a-file) 節を使用しました。インポートが成功したことが確認できます：
 
 ```sql
 SELECT *
@@ -169,7 +175,7 @@ FROM sometable
 
 ## JSONオブジェクトのキー {#json-object-keys}
 
-場合によっては、JSONオブジェクトのリストが配列要素の代わりにオブジェクトプロパティとしてエンコードされることがあります（例として[objects.json](../assets/objects.json)を参照）：
+場合によっては、JSONオブジェクトのリストが配列要素ではなくオブジェクトプロパティとしてエンコードされることがあります（例えば、[objects.json](../assets/objects.json) を見てください）：
 
 ```bash
 cat objects.json
@@ -191,7 +197,7 @@ cat objects.json
 }
 ```
 
-ClickHouseは、[`JSONObjectEachRow`](/interfaces/formats.md/#jsonobjecteachrow)フォーマットを使用してこの種のデータからデータをロードできます：
+ClickHouseは、この種のデータから読み込むために[`JSONObjectEachRow`](/interfaces/formats.md/#jsonobjecteachrow) フォーマットを使用できます：
 
 ```sql
 INSERT INTO sometable FROM INFILE 'objects.json' FORMAT JSONObjectEachRow;
@@ -205,15 +211,15 @@ SELECT * FROM sometable;
 └─────────────────┴────────────┴──────┘
 ```
 
-### 親オブジェクトのキー値を指定する {#specifying-parent-object-key-values}
+### 親オブジェクトキーの値を指定する {#specifying-parent-object-key-values}
 
-親オブジェクトのキー値をテーブルに保存したい場合、次のオプションを使用して、キー値を保存したいカラムの名前を定義できます：
+親オブジェクトキーの値もテーブルに保存したいとします。その場合、以下のオプションを使用してキーの値を保存するカラムの名前を定義できます：[以下のオプション](/operations/settings/settings-formats.md/#format_json_object_each_row_column_for_object_name)：
 
 ```sql
 SET format_json_object_each_row_column_for_object_name = 'id'
 ```
 
-次に、[`file()`](/sql-reference/functions/files.md/#file)関数を使用して、元のJSONファイルから読み込まれるデータを確認できます：
+現在、[`file()`](/sql-reference/functions/files.md/#file) 関数を使用して元のJSONファイルから読み込まれるデータを確認できます：
 
 ```sql
 SELECT * FROM file('objects.json', JSONObjectEachRow)
@@ -226,11 +232,11 @@ SELECT * FROM file('objects.json', JSONObjectEachRow)
 └────┴─────────────────┴────────────┴──────┘
 ```
 
-`id`カラムがキー値で正しく埋められていることに注意してください。
+`id` カラムがキー値で正しく埋め込まれていることに注意してください。
 
 ## JSON配列 {#json-arrays}
 
-時々、スペースを節約するために、JSONファイルはオブジェクトの代わりに配列でエンコードされます。この場合、[JSON配列のリスト](../assets/arrays.json)を扱います：
+時には、スペースを節約するために、JSONファイルがオブジェクトの代わりに配列でエンコードされます。この場合、[JSON配列のリスト](../assets/arrays.json)を扱います：
 
 ```bash
 cat arrays.json
@@ -241,7 +247,7 @@ cat arrays.json
 ["1971-72_Utah_Stars_season", "2016-10-01", 1]
 ```
 
-この場合、ClickHouseはこのデータをロードし、配列内の順序に基づいて各値を対応するカラムに割り当てます。このために、[`JSONCompactEachRow`](/interfaces/formats.md/#jsoncompacteachrow)フォーマットを使用します。
+この場合、ClickHouseはこのデータをロードし、配列内の順序に基づいて各値を対応するカラムに割り当てます。これには[`JSONCompactEachRow`](/interfaces/formats.md/#jsoncompacteachrow)フォーマットを使用します：
 
 ```sql
 SELECT * FROM sometable
@@ -254,9 +260,9 @@ SELECT * FROM sometable
 └───────────────────────────┴────────────┴─────┘
 ```
 
-### JSON配列からの個別カラムのインポート {#importing-individual-columns-from-json-arrays}
+### JSON配列から個別カラムをインポートする {#importing-individual-columns-from-json-arrays}
 
-場合によっては、データが行指向ではなくカラム指向にエンコードされることがあります。この場合、親JSONオブジェクトは値のあるカラムを含みます。以下のファイルを見てみましょう[../assets/columns.json]：
+場合によっては、データが行単位ではなくカラム単位でエンコードされることがあります。この場合、親JSONオブジェクトには値を持つカラムが含まれています。[以下のファイル](../assets/columns.json)を見てみましょう：
 
 ```bash
 cat columns.json
@@ -269,7 +275,7 @@ cat columns.json
 }
 ```
 
-ClickHouseは、[`JSONColumns`](/interfaces/formats.md/#jsoncolumns)フォーマットを使用して、そのようにフォーマットされたデータを解析します：
+ClickHouseは[`JSONColumns`](/interfaces/formats.md/#jsoncolumns)フォーマットを使用してそのようなデータを解析します：
 
 ```sql
 SELECT * FROM file('columns.json', JSONColumns)
@@ -282,7 +288,7 @@ SELECT * FROM file('columns.json', JSONColumns)
 └────────────────────────────┴────────────┴──────┘
 ```
 
-よりコンパクトなフォーマットも、オブジェクトを使用するのではなく[カラムの配列](../assets/columns-array.json)を扱う場合にサポートされています。以下のように[`JSONCompactColumns`](/interfaces/formats.md/#jsoncompactcolumns)フォーマットを使用します：
+カラムの配列を扱う際には、[`JSONCompactColumns`](/interfaces/formats.md/#jsoncompactcolumns)フォーマットを使用することもできます：
 
 ```sql
 SELECT * FROM file('columns-array.json', JSONCompactColumns)
@@ -297,7 +303,7 @@ SELECT * FROM file('columns-array.json', JSONCompactColumns)
 
 ## JSONオブジェクトを解析するのではなく保存する {#saving-json-objects-instead-of-parsing}
 
-場合によっては、JSONオブジェクトを解析するのではなく単一の`String`（または`JSON`）カラムに保存したいことがあります。これは、異なる構造のJSONオブジェクトのリストを扱う場合に便利です。例えば、親リスト内に複数の異なるJSONオブジェクトを含む[このファイル](../assets/custom.json)を見てみましょう：
+JSONオブジェクトを解析するのではなく、単一の `String` (または `JSON`) カラムに保存したい場合があります。これは、異なる構造のJSONオブジェクトのリストを扱う際に便利です。[このファイル](../assets/custom.json)を例に取りますが、親リスト内に複数の異なるJSONオブジェクトがあります：
 
 ```bash
 cat custom.json
@@ -310,7 +316,7 @@ cat custom.json
 ]
 ```
 
-元のJSONオブジェクトを以下のテーブルに保存したいとします：
+次のテーブルに元のJSONオブジェクトを保存したいとします：
 
 ```sql
 CREATE TABLE events
@@ -321,7 +327,7 @@ ENGINE = MergeTree
 ORDER BY ()
 ```
 
-次に、[`JSONAsString`](/interfaces/formats.md/#jsonasstring)フォーマットを使用して、このテーブルにファイルからデータをロードし、JSONオブジェクトを解析するのではなく保持します：
+このテーブルにファイルからデータをロードするために、[`JSONAsString`](/interfaces/formats.md/#jsonasstring)フォーマットを使用してJSONオブジェクトを解析せずに保持します：
 
 ```sql
 INSERT INTO events (data)
@@ -329,7 +335,7 @@ FROM INFILE 'custom.json'
 FORMAT JSONAsString
 ```
 
-そして、保存されたオブジェクトを問合せるために[JSON関数](/sql-reference/functions/json-functions.md)を使用します：
+そして、保存されたオブジェクトをクエリするために[JSON関数](/sql-reference/functions/json-functions.md)を使用できます：
 
 ```sql
 SELECT
@@ -345,11 +351,11 @@ FROM events
 └────────┴──────────────────────────────────────────────────────┘
 ```
 
-`JSONAsString`は、通常`JSONEachRow`フォーマットで使用されるJSONオブジェクトごとに1行のフォーマットファイルの場合でも問題なく機能します。
+`JSONAsString` は、通常 `JSONEachRow` フォーマットで使用されるJSONオブジェクト・パー・ライン形式のファイルにおいても問題なく機能することに注意してください。
 
 ## ネストされたオブジェクトのスキーマ {#schema-for-nested-objects}
 
-[ネストされたJSONオブジェクト](../assets/list-nested.json)を扱う場合、さらに明示的なスキーマを定義し、複雑なタイプ（[`Array`](/sql-reference/data-types/array.md)、[`Object Data Type`](/sql-reference/data-types/object-data-type)または[`Tuple`](/sql-reference/data-types/tuple.md)）を使用してデータをロードすることができます：
+ネストされたJSONオブジェクト（例：[list-nested.json](../assets/list-nested.json)）を扱う場合、明示的なスキーマを定義し、複雑な型 （[`Array`](/sql-reference/data-types/array.md)、[`Object Data Type`](/sql-reference/data-types/object-data-type)または [`Tuple`](/sql-reference/data-types/tuple.md)）を使用してデータをロードできます：
 
 ```sql
 SELECT *
@@ -364,13 +370,13 @@ LIMIT 1
 
 ## ネストされたJSONオブジェクトへのアクセス {#accessing-nested-json-objects}
 
-[ネストされたJSONキー](../assets/list-nested.json)にアクセスするためには、[次の設定オプション](/operations/settings/settings-formats.md/#input_format_import_nested_json)を有効にします：
+[ネストされたJSONキー](../assets/list-nested.json)に参照するには、[以下の設定オプション](/operations/settings/settings-formats.md/#input_format_import_nested_json)を有効にします：
 
 ```sql
 SET input_format_import_nested_json = 1
 ```
 
-これにより、ドット表記を使用してネストされたJSONオブジェクトキーを参照できるようになります（機能させるにはバックスラッシュで囲むことを忘れないでください）：
+これにより、ドット記法を使用してネストされたJSONオブジェクトキーにアクセスできるようになります（機能させるためにはバックティック記号で囲むことを忘れないでください）：
 
 ```sql
 SELECT *
@@ -383,11 +389,11 @@ LIMIT 1
 └───────────────┴──────────────────────┴────────────┴──────┘
 ```
 
-このようにして、ネストされたJSONオブジェクトをフラット化したり、いくつかのネストされた値を参照して別のカラムとして保存することができます。
+これにより、ネストされたJSONオブジェクトをフラット化したり、いくつかのネストされた値を別のカラムとして保存したりできます。
 
 ## 不明なカラムのスキップ {#skipping-unknown-columns}
 
-デフォルトでは、ClickHouseはJSONデータをインポートする際に不明なカラムを無視します。元のファイルを`month`カラムなしでテーブルにインポートしてみましょう：
+デフォルトでは、ClickHouseはJSONデータをインポートする際に不明なカラムを無視します。`month` カラムなしで元のファイルをテーブルにインポートしてみましょう：
 
 ```sql
 CREATE TABLE shorttable
@@ -399,7 +405,7 @@ ENGINE = MergeTree
 ORDER BY path
 ```
 
-3カラムを持つ[元のJSONデータ](../assets/list.json)をこのテーブルに挿入できます：
+3カラムの[元のJSONデータ](../assets/list.json)をこのテーブルに挿入できます：
 
 ```sql
 INSERT INTO shorttable FROM INFILE 'list.json' FORMAT JSONEachRow;
@@ -413,7 +419,7 @@ SELECT * FROM shorttable
 └───────────────────────────┴──────┘
 ```
 
-ClickHouseはインポートの際に不明なカラムを無視します。これは、[input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields)設定オプションを使用して無効にできます：
+ClickHouseはインポート時に不明なカラムを無視します。この挙動は、[input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定オプションで無効にできます：
 
 ```sql
 SET input_format_skip_unknown_fields = 0;
@@ -425,13 +431,13 @@ Exception on client:
 Code: 117. DB::Exception: Unknown field found while parsing JSONEachRow format: month: (in file/uri /data/clickhouse/user_files/list.json): (at row 1)
 ```
 
-ClickHouseは、JSONとテーブルカラムの構造が一致しない場合に例外をスローします。
+ClickHouseは不一致なJSONとテーブルカラム構造のケースで例外をスローします。
 
 ## BSON {#bson}
 
-ClickHouseは、[BSON](https://bsonspec.org/)エンコードされたファイルへのエクスポートとインポートをサポートしています。このフォーマットは、一部のDBMS、例えば[MongoDB](https://github.com/mongodb/mongo)データベースによって使用されています。
+ClickHouseは、[BSON](https://bsonspec.org/) エンコードファイルからのエクスポートとインポートをサポートしています。このフォーマットは、[MongoDB](https://github.com/mongodb/mongo) データベースなど、一部のDBMSで使用されます。
 
-BSONデータをインポートするには、[BSONEachRow](/interfaces/formats.md/#bsoneachrow)フォーマットを使用します。[このBSONファイル](../assets/data.bson)からデータをインポートしてみましょう：
+BSONデータをインポートするには、[BSONEachRow](/interfaces/formats.md/#bsoneachrow)フォーマットを使用します。以下の[BSONファイル](../assets/data.bson)からデータをインポートします：
 
 ```sql
 SELECT * FROM file('data.bson', BSONEachRow)
@@ -444,7 +450,7 @@ SELECT * FROM file('data.bson', BSONEachRow)
 └───────────────────────────┴───────┴──────┘
 ```
 
-同じフォーマットを使用してBSONファイルへのエクスポートも可能です：
+同じフォーマットを使用してBSONファイルへのエクスポートも行えます：
 
 ```sql
 SELECT *
@@ -453,4 +459,4 @@ INTO OUTFILE 'out.bson'
 FORMAT BSONEachRow
 ```
 
-その後、`out.bson`ファイルにデータがエクスポートされます。
+その後、データは `out.bson` ファイルにエクスポートされます。

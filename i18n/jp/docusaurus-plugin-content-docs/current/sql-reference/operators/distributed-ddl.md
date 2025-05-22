@@ -1,10 +1,10 @@
 ---
-description: '分散DDLのドキュメント'
-sidebar_label: '分散DDL'
-slug: /sql-reference/other/distributed-ddl
-title: '分散DDLのページ'
+'description': 'Documentation for Distributed Ddl'
+'sidebar_label': 'Distributed DDL'
+'slug': '/sql-reference/other/distributed-ddl'
+'title': 'Page for Distributed DDL'
 ---
 
-import Content from '@site/docs/sql-reference/distributed-ddl.md';
+import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/distributed-ddl.md';
 
 <Content/>

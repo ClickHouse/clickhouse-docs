@@ -1,14 +1,19 @@
 ---
-description: 'ローカルサーバーに存在するリソースに関する情報を含むシステムテーブルで、リソースごとに1行があります。'
-keywords: ['system table', 'resources']
-slug: /operations/system-tables/resources
-title: 'system.resources'
+'description': 'System table containing information about resources residing on the
+  local server with one row for every resource.'
+'keywords':
+- 'system table'
+- 'resources'
+'slug': '/operations/system-tables/resources'
+'title': 'system.resources'
 ---
+
+
 
 
 # system.resources
 
-ローカルサーバーに存在する[リソース](/operations/workload-scheduling.md#workload_entity_storage)に関する情報を含みます。このテーブルは、リソースごとに1行を含みます。
+ローカルサーバー上に存在する[リソース](/operations/workload-scheduling.md#workload_entity_storage)に関する情報を含みます。このテーブルは、各リソースの行を含んでいます。
 
 例:
 

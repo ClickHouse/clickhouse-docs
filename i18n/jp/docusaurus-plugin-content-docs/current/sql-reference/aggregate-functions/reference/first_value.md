@@ -1,18 +1,22 @@
 ---
-description: 'ウィンドウ関数との互換性のために導入されたエイリアスで、時には `NULL` 値を処理する必要があります（デフォルトではすべてのClickHouse集約関数はNULL値を無視します）。'
-sidebar_position: 137
-slug: /sql-reference/aggregate-functions/reference/first_value
-title: 'first_value'
+'description': 'It is an alias for any but it was introduced for compatibility with
+  Window Functions, where sometimes it is necessary to process `NULL` values (by default
+  all ClickHouse aggregate functions ignore NULL values).'
+'sidebar_position': 137
+'slug': '/sql-reference/aggregate-functions/reference/first_value'
+'title': 'first_value'
 ---
+
+
 
 
 # first_value
 
-これは [`any`](../../../sql-reference/aggregate-functions/reference/any.md) のエイリアスですが、時には `NULL` 値を処理する必要がある[ウィンドウ関数](../../window-functions/index.md)との互換性のために導入されました（デフォルトではすべてのClickHouse集約関数はNULL値を無視します）。
+これは[`any`](../../../sql-reference/aggregate-functions/reference/any.md)の別名ですが、[ウィンドウ関数](../../window-functions/index.md)との互換性のために導入されました。ここでは、時には`NULL`値を処理する必要があります（デフォルトでは、すべてのClickHouseの集約関数はNULL値を無視します）。
 
-これは、[ウィンドウ関数](../../window-functions/index.md)と通常の集約の両方で、NULLを尊重する修飾子（`RESPECT NULLS`）を宣言することをサポートしています。
+`RESPECT NULLS`修飾子を宣言してNULLを尊重することができ、これは[ウィンドウ関数](../../window-functions/index.md)および通常の集約の両方で動作します。
 
-`any`と同様に、ウィンドウ関数なしでは、ソースストリームが順序付けられていない場合、結果はランダムになります。また、返される型が入力型と一致する場合（入力がNullableである場合のみNULLが返されます。または -OrNull 組み合わせが追加された場合のみです）。
+`any`と同様に、ウィンドウ関数がない場合、ソースストリームが順序付けられていない場合、結果はランダムになります。また、返り値の型が入力の型と一致する場合（入力がNullableの場合のみNullが返され、-OrNullコンビネータが追加されます）。
 
 ## examples {#examples}
 
@@ -52,7 +56,7 @@ select first_value(b) ignore nulls from test_data
 ```
 
 ### example3 {#example3}
-NULL値は受け入れられます。
+NULL値が受け入れられます。
 ```sql
 select first_value(b) respect nulls from test_data
 ```
@@ -64,7 +68,7 @@ select first_value(b) respect nulls from test_data
 ```
 
 ### example4 {#example4}
-`ORDER BY`を使ったサブクエリで安定した結果を得ます。
+`ORDER BY`を使用したサブクエリを利用して安定した結果を得ることができます。
 ```sql
 SELECT
     first_value_respect_nulls(b),

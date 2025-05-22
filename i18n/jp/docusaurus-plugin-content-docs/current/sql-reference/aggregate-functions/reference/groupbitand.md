@@ -1,14 +1,16 @@
 ---
-description: '数値の系列にビット単位の `AND` を適用します。'
-sidebar_position: 147
-slug: /sql-reference/aggregate-functions/reference/groupbitand
-title: 'groupBitAnd'
+'description': 'Applies bit-wise `AND` for series of numbers.'
+'sidebar_position': 147
+'slug': '/sql-reference/aggregate-functions/reference/groupbitand'
+'title': 'groupBitAnd'
 ---
+
+
 
 
 # groupBitAnd
 
-数値の系列にビット単位の `AND` を適用します。
+数値の系列に対してビット単位の `AND` を適用します。
 
 ```sql
 groupBitAnd(expr)
@@ -16,7 +18,7 @@ groupBitAnd(expr)
 
 **引数**
 
-`expr` – `UInt*` または `Int*` 型の結果を生成する式。
+`expr` – `UInt*` または `Int*` 型の結果を返す式。
 
 **戻り値**
 
@@ -24,7 +26,7 @@ groupBitAnd(expr)
 
 **例**
 
-テストデータ：
+テストデータ:
 
 ```text
 binary     decimal
@@ -34,7 +36,7 @@ binary     decimal
 01010101 = 85
 ```
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT groupBitAnd(num) FROM t
@@ -42,7 +44,7 @@ SELECT groupBitAnd(num) FROM t
 
 ここで `num` はテストデータを含むカラムです。
 
-結果：
+結果:
 
 ```text
 binary     decimal

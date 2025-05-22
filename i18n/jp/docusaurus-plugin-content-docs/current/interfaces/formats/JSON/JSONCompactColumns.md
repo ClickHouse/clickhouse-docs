@@ -1,23 +1,26 @@
 ---
-alias: []
-description: 'JSONCompactColumns形式のドキュメント'
-input_format: true
-keywords: ['JSONCompactColumns']
-output_format: true
-slug: /interfaces/formats/JSONCompactColumns
-title: 'JSONCompactColumns'
+'alias': []
+'description': 'JSONCompactColumns フォーマットのドキュメント'
+'input_format': true
+'keywords':
+- 'JSONCompactColumns'
+'output_format': true
+'slug': '/interfaces/formats/JSONCompactColumns'
+'title': 'JSONCompactColumns'
 ---
 
-| 入力 | 出力 | エイリアス |
+
+
+| Input | Output | Alias |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-この形式では、すべてのデータが単一のJSON配列として表現されます。
+このフォーマットでは、すべてのデータが単一のJSON配列として表現されます。
 
 :::note
-`JSONCompactColumns` 出力形式は、すべてのデータをメモリにバッファーリングして単一のブロックとして出力するため、高いメモリ消費を引き起こす可能性があります。
+`JSONCompactColumns` 出力フォーマットは、すべてのデータをメモリにバッファリングして、単一のブロックとして出力します。これにより、高いメモリ消費が発生する可能性があります。
 :::
 
 ## 使用例 {#example-usage}
@@ -30,6 +33,6 @@ title: 'JSONCompactColumns'
 ]
 ```
 
-ブロックに存在しないカラムはデフォルト値で埋められます（ここでは [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) 設定を使用できます）。
+ブロックに存在しないカラムは、デフォルト値で埋められます（ここでは [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) 設定を使用できます）
 
-## 形式設定 {#format-settings}
+## フォーマット設定 {#format-settings}

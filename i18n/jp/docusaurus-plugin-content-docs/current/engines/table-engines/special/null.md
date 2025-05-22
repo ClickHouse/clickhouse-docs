@@ -1,16 +1,18 @@
 ---
-description: '`Null` テーブルに書き込むと、データは無視されます。`Null` テーブルから読み込むと、レスポンスは空になります。'
-sidebar_label: 'Null'
-sidebar_position: 50
-slug: /engines/table-engines/special/null
-title: 'Null テーブルエンジン'
+'description': 'Null テーブルに書き込むと、データは無視されます。Null テーブルから読み取ると、応答は空になります。'
+'sidebar_label': 'Null'
+'sidebar_position': 50
+'slug': '/engines/table-engines/special/null'
+'title': 'Nullテーブルエンジン'
 ---
 
 
-# Null テーブルエンジン
 
-`Null` テーブルに書き込むと、データは無視されます。`Null` テーブルから読み込むと、レスポンスは空になります。
+
+# Null Table Engine
+
+`Null` テーブルに書き込むと、データは無視されます。`Null` テーブルから読み込むと、応答は空になります。
 
 :::note
-これがなぜ有用か疑問に思うかもしれませんが、`Null` テーブルにマテリアライズドビューを作成できることに注意してください。したがって、テーブルに書き込まれたデータはビューに影響を与えることになりますが、元の生データは依然として破棄されます。
+これが役立つ理由に興味がある場合は、`Null` テーブルにマテリアライズドビューを作成できることに注意してください。したがって、テーブルに書き込まれたデータはビューに影響を与えますが、元の生データは依然として破棄されます。
 :::

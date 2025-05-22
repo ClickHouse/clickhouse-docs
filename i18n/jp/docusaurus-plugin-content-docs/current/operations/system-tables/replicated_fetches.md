@@ -1,17 +1,21 @@
-description: '現在実行中のバックグラウンドフェッチに関する情報を含むシステムテーブル。'
-keywords: ['system table', 'replicated_fetches']
-slug: /operations/system-tables/replicated_fetches
-title: 'system.replicated_fetches'
-```
+---
+'description': 'System table containing information about currently running background
+  fetches.'
+'keywords':
+- 'system table'
+- 'replicated_fetches'
+'slug': '/operations/system-tables/replicated_fetches'
+'title': 'system.replicated_fetches'
+---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
 # system.replicated_fetches
 
 <SystemTableCloud/>
 
-現在実行中のバックグラウンドフェッチに関する情報を含みます。
+現在実行中のバックグラウンドフェッチに関する情報が含まれています。
 
 カラム:
 
@@ -19,17 +23,17 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 - `table` ([String](../../sql-reference/data-types/string.md)) — テーブルの名前。
 
-- `elapsed` ([Float64](../../sql-reference/data-types/float.md)) — 現在実行中のバックグラウンドフェッチが開始されてから経過した時間（秒）。
+- `elapsed` ([Float64](../../sql-reference/data-types/float.md)) — 現在の実行中のバックグラウンドフェッチの表示が開始されてから経過した時間（秒単位）。
 
-- `progress` ([Float64](../../sql-reference/data-types/float.md)) — 完了した作業の割合（0から1の間）。
+- `progress` ([Float64](../../sql-reference/data-types/float.md)) — 完了した作業の進捗割合（0から1まで）。
 
-- `result_part_name` ([String](../../sql-reference/data-types/string.md)) — 現在実行中のバックグラウンドフェッチの結果として形成されるパーツの名前。
+- `result_part_name` ([String](../../sql-reference/data-types/string.md)) — 現在の実行中のバックグラウンドフェッチの結果として形成されるパーツの名前。
 
-- `result_part_path` ([String](../../sql-reference/data-types/string.md)) — 現在実行中のバックグラウンドフェッチの結果として形成されるパーツへの絶対パス。
+- `result_part_path` ([String](../../sql-reference/data-types/string.md)) — 現在の実行中のバックグラウンドフェッチの結果として形成されるパーツへの絶対パス。
 
 - `partition_id` ([String](../../sql-reference/data-types/string.md)) — パーティションのID。
 
-- `total_size_bytes_compressed` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 結果パーツ内の圧縮データの総サイズ（バイト）。
+- `total_size_bytes_compressed` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 結果パーツ内の圧縮データの総サイズ（バイト単位）。
 
 - `bytes_read_compressed` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 結果パーツから読み取った圧縮バイト数。
 
@@ -39,11 +43,11 @@ import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
 
 - `source_replica_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — ソースレプリカのポート番号。
 
-- `interserver_scheme` ([String](../../sql-reference/data-types/string.md)) — インタサーバーのスキーム名。
+- `interserver_scheme` ([String](../../sql-reference/data-types/string.md)) — インターサーバースキームの名前。
 
-- `URI` ([String](../../sql-reference/data-types/string.md)) — 統一リソース識別子。
+- `URI` ([String](../../sql-reference/data-types/string.md)) — 一意のリソース識別子。
 
-- `to_detached` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 現在実行中のバックグラウンドフェッチが `TO DETACHED` 式を使用して行われているかどうかを示すフラグ。
+- `to_detached` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 現在の実行中のバックグラウンドフェッチが`TO DETACHED`式を使用して行われているかどうかを示すフラグ。
 
 - `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — スレッド識別子。
 
@@ -54,7 +58,7 @@ SELECT * FROM system.replicated_fetches LIMIT 1 FORMAT Vertical;
 ```
 
 ```text
-行 1:
+Row 1:
 ──────
 database:                    default
 table:                       t

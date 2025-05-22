@@ -1,23 +1,26 @@
 ---
-description: 'uniqTheta関数のドキュメント'
-sidebar_label: 'uniqTheta'
-sidebar_position: 210
-slug: /sql-reference/functions/uniqtheta-functions
-title: 'uniqTheta関数'
+'description': 'Documentation for uniqTheta Functions'
+'sidebar_label': 'uniqTheta'
+'sidebar_position': 210
+'slug': '/sql-reference/functions/uniqtheta-functions'
+'title': 'uniqTheta Functions'
 ---
+
+
 
 
 # uniqTheta関数
 
-uniqTheta関数は、2つのuniqThetaSketchオブジェクトに対して、∪ / ∩ / ×（和集合/積集合/差集合）などの集合演算計算を行い、結果を含む新しいuniqThetaSketchオブジェクトを返します。
+uniqTheta関数は、2つのuniqThetaSketchオブジェクトに対して集合演算を行うために使用され、∪ / ∩ / × (和集合/共通部分/差集合)を計算します。結果を含む新しいuniqThetaSketchオブジェクトを返します。
 
-uniqThetaSketchオブジェクトは、集約関数uniqThetaと-Stateによって構築されます。
+uniqThetaSketchオブジェクトは、-Stateを使用して集約関数uniqThetaによって構築されます。
 
-UniqThetaSketchは、近似値の集合を保存するデータ構造です。RoaringBitmapに関する詳細は、[Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html)を参照してください。
+UniqThetaSketchは近似値の集合を格納するためのデータ構造です。
+RoaringBitmapについての詳細は、[Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html)を参照してください。
 
 ## uniqThetaUnion {#uniqthetaunion}
 
-2つのuniqThetaSketchオブジェクトで和集合計算（集合演算 ∪）を行い、結果として新しいuniqThetaSketchを取得します。
+2つのuniqThetaSketchオブジェクトで和集合計算（集合演算 ∪）を行い、その結果を新しいuniqThetaSketchとして返します。
 
 ```sql
 uniqThetaUnion(uniqThetaSketch,uniqThetaSketch)
@@ -43,7 +46,7 @@ from
 
 ## uniqThetaIntersect {#uniqthetaintersect}
 
-2つのuniqThetaSketchオブジェクトで積集合計算（集合演算 ∩）を行い、結果として新しいuniqThetaSketchを取得します。
+2つのuniqThetaSketchオブジェクトで共通部分計算（集合演算 ∩）を行い、その結果を新しいuniqThetaSketchとして返します。
 
 ```sql
 uniqThetaIntersect(uniqThetaSketch,uniqThetaSketch)
@@ -69,7 +72,7 @@ from
 
 ## uniqThetaNot {#uniqthetanot}
 
-2つのuniqThetaSketchオブジェクトでa_not_b計算（集合演算 ×）を行い、結果として新しいuniqThetaSketchを取得します。
+2つのuniqThetaSketchオブジェクトでa_not_b計算（集合演算 ×）を行い、その結果を新しいuniqThetaSketchとして返します。
 
 ```sql
 uniqThetaNot(uniqThetaSketch,uniqThetaSketch)

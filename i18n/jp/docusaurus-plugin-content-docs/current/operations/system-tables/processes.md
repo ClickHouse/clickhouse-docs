@@ -1,32 +1,34 @@
 ---
-description: '`SHOW PROCESSLIST` クエリを実装するために使用されるシステムテーブル。'
-keywords: ['system table', 'processes']
-slug: /operations/system-tables/processes
-title: 'system.processes'
+'description': 'System table used for implementing the `SHOW PROCESSLIST` query.'
+'keywords':
+- 'system table'
+- 'processes'
+'slug': '/operations/system-tables/processes'
+'title': 'system.processes'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
 # system.processes
 
 <SystemTableCloud/>
 
-このシステムテーブルは、`SHOW PROCESSLIST` クエリを実装するために使用されます。
+このシステムテーブルは、`SHOW PROCESSLIST` クエリの実装に使用されます。
 
 カラム:
 
-- `user` (String) – クエリを実行したユーザー。分散処理の場合、クエリは `default` ユーザーの下でリモートサーバーに送信されることを考慮してください。このフィールドには特定のクエリのユーザー名が含まれ、これによって開始されたクエリのユーザー名ではありません。
-- `address` (String) – リクエストが行われたIPアドレス。分散処理の場合も同様です。分散クエリが元々どこから発信されたかを追跡するには、クエリリクエスターサーバーの `system.processes` を確認してください。
-- `elapsed` (Float64) – リクエスト実行開始からの秒数。
-- `read_rows` (UInt64) – テーブルから読み取られた行数。分散処理の場合、リクエスターサーバーでは全てのリモートサーバーの合計です。
-- `read_bytes` (UInt64) – テーブルから読み取られた非圧縮バイト数。分散処理の場合、リクエスターサーバーでは全てのリモートサーバーの合計です。
-- `total_rows_approx` (UInt64) – 読み取るべき行の総数の近似値。分散処理の場合、リクエスターサーバーでは全てのリモートサーバーの合計です。リクエスト処理中に、新たに処理するソースが知られると更新されることがあります。
-- `memory_usage` (Int64) – リクエストが使用するRAMの量。一部の専用メモリのタイプは含まれない可能性があります。[max_memory_usage](/operations/settings/settings#max_memory_usage) 設定を参照してください。
-- `query` (String) – クエリのテキスト。`INSERT` の場合、挿入するデータは含まれません。
-- `query_id` (String) – 定義されている場合、クエリID。
-- `is_cancelled` (UInt8) – クエリがキャンセルされたか。
-- `is_all_data_sent` (UInt8) – 全てのデータがクライアントに送信されたか（つまり、サーバーでクエリが終了したか）。
+- `user` (String) – クエリを作成したユーザー。分散処理の場合、クエリは `default` ユーザーのもとでリモートサーバーに送信されます。このフィールドには特定のクエリのためのユーザー名が含まれ、クエリが開始されたクエリのためではありません。
+- `address` (String) – リクエストが行われたIPアドレス。分散処理の場合も同様です。分散クエリが最初にどこから作成されたかを追跡するには、クエリリクエスターサーバーの `system.processes` を見てください。
+- `elapsed` (Float64) – リクエストの実行が開始されてからの秒数です。
+- `read_rows` (UInt64) – テーブルから読み取られた行の数です。分散処理の場合、リクエスターサーバーではすべてのリモートサーバーの合計です。
+- `read_bytes` (UInt64) – テーブルから読み取られた未圧縮バイト数です。分散処理の場合、リクエスターサーバーではすべてのリモートサーバーの合計です。
+- `total_rows_approx` (UInt64) – 読み取るべき行の総数の近似値です。分散処理の場合、リクエスターサーバーではすべてのリモートサーバーの合計です。リクエスト処理中に、新しい処理ソースが知られるようになると更新されることがあります。
+- `memory_usage` (Int64) – リクエストが使用するRAMの量です。一部の専用メモリが含まれていない場合があります。[max_memory_usage](/operations/settings/settings#max_memory_usage) 設定を参照してください。
+- `query` (String) – クエリテキスト。`INSERT` の場合、挿入するデータは含まれていません。
+- `query_id` (String) – クエリID、定義されている場合。
+- `is_cancelled` (UInt8) – クエリがキャンセルされたかどうか。
+- `is_all_data_sent` (UInt8) – すべてのデータがクライアントに送信されたかどうか（言い換えれば、クエリはサーバーで完了していました）。
 
 ```sql
 SELECT * FROM system.processes LIMIT 10 FORMAT Vertical;

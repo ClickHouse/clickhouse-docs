@@ -1,13 +1,18 @@
 ---
-sidebar_label: 'Zing Data'
-sidebar_position: 206
-slug: /integrations/zingdata
-keywords: ['clickhouse', 'Zing Data', '接続', '統合', 'ui']
-description: 'Zing Dataは、iOS、AndroidおよびWeb用に設計されたClickHouseのためのシンプルなソーシャルビジネスインテリジェンスです。'
-title: 'Zing DataをClickHouseに接続する'
+'sidebar_label': 'Zing Data'
+'sidebar_position': 206
+'slug': '/integrations/zingdata'
+'keywords':
+- 'clickhouse'
+- 'Zing Data'
+- 'connect'
+- 'integrate'
+- 'ui'
+'description': 'Zing Dataは、iOS、Android、およびWeb用に作成された、ClickHouse向けのシンプルなソーシャルビジネスインテリジェンスです。'
+'title': 'Zing DataをClickHouseに接続する'
 ---
 
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import zing_01 from '@site/static/images/integrations/data-visualization/zing_01.png';
 import zing_02 from '@site/static/images/integrations/data-visualization/zing_02.png';
@@ -21,75 +26,75 @@ import zing_09 from '@site/static/images/integrations/data-visualization/zing_09
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Zing DataをClickHouseに接続する
+# Connect Zing Data to ClickHouse
 
 <CommunityMaintainedBadge/>
 
-<a href="https://www.zingdata.com/" target="_blank">Zing Data</a>はデータ探索および視覚化プラットフォームです。Zing Dataは、ClickHouseが提供するJSドライバーを使ってClickHouseに接続します。
+<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> は、データ探索と視覚化のプラットフォームです。Zing Data は、ClickHouse が提供する JS ドライバーを使用して ClickHouse に接続します。
 
-## 接続方法 {#how-to-connect}
+## How to connect {#how-to-connect}
 1. 接続詳細を収集します。
 <ConnectionDetails />
 
-2. Zing Dataをダウンロードまたは訪問します。
+2. Zing Data をダウンロードまたは訪問します。
 
-    * モバイルでZing Dataを使うには、[Google Play ストア](https://play.google.com/store/apps/details?id=com.getzingdata.android)または[Apple App Store](https://apps.apple.com/us/app/zing-data-collaborative-bi/id1563294091)からZing Dataアプリをダウンロードします。
+    * モバイルで Zing Data を使用して Clickhouse を利用するには、[Google Play ストア](https://play.google.com/store/apps/details?id=com.getzingdata.android) または [Apple App Store](https://apps.apple.com/us/app/zing-data-collaborative-bi/id1563294091) から Zing Data アプリをダウンロードしてください。
 
-    * WebでZing Dataを使うには、[Zing Webコンソール](https://console.getzingdata.com/)にアクセスしてアカウントを作成します。
+    * ウェブで Zing Data を使用して Clickhouse を利用するには、[Zing ウェブコンソール](https://console.getzingdata.com/) にアクセスしてアカウントを作成します。
 
 3. データソースを追加します。
 
-    * Zing DataでClickHouseデータとやり取りするには、**_データソース_**を定義する必要があります。Zing Dataのモバイルアプリメニューで、**ソース**を選択し、次に**データソースを追加**をクリックします。
+    * Zing Data で ClickHouse データに対話するには、**_データソース_** を定義する必要があります。Zing Data のモバイルアプリメニューで **Sources** を選択し、次に **Add a Datasource** をクリックします。
 
-    * Webでデータソースを追加するには、上部メニューの**データソース**をクリックし、**新しいデータソース**をクリックしてドロップダウンメニューから**Clickhouse**を選択します。
+    * ウェブでデータソースを追加するには、上部メニューの **Data Sources** をクリックし、**New Datasource** をクリックしてドロップダウンメニューから **Clickhouse** を選択します。
 
-    <Image size="md" img={zing_01} alt="Zing Dataインターフェイスで新しいデータソースボタンとドロップダウンメニューにクリックハウスオプションが表示されている" border />
+    <Image size="md" img={zing_01} alt="Zing Data interface showing New Datasource button and ClickHouse option in the dropdown menu" border />
     <br/>
 
-4. 接続詳細を入力し、**接続チェック**をクリックします。
+4. 接続詳細を記入し、**Check Connection** をクリックします。
 
-    <Image size="md" img={zing_02} alt="ClickHouse接続設定フォームでサーバー、ポート、データベース、ユーザー名、パスワードのフィールドが表示されている" border />
+    <Image size="md" img={zing_02} alt="ClickHouse connection configuration form in Zing Data with fields for server, port, database, username and password" border />
     <br/>
 
-5. 接続が成功した場合、Zingはテーブル選択に進みます。必要なテーブルを選択し、**保存**をクリックします。Zingがデータソースに接続できない場合、資格情報を確認して再試行するように求めるメッセージが表示されます。資格情報を確認して再試行しても問題が解決しない場合は、<a id="contact_link" href="mailto:hello@getzingdata.com">ここでZingサポートに連絡してください。</a>
+5. 接続が成功すると、Zing はテーブル選択に進みます。必要なテーブルを選択し、**Save** をクリックします。Zing がデータソースに接続できない場合、認証情報を確認し再試行するように求めるメッセージが表示されます。認証情報を確認し再試行しても問題が解決しない場合は、<a id="contact_link" href="mailto:hello@getzingdata.com">こちらで Zing サポートにご連絡ください。</a>
 
-    <Image size="md" img={zing_03} alt="Zing Dataテーブル選択インターフェイスで利用可能なClickHouseテーブルがチェックボックスと共に表示されている" border />
+    <Image size="md" img={zing_03} alt="Zing Data table selection interface showing available ClickHouse tables with checkboxes" border />
     <br/>
 
-6. Clickhouseデータソースが追加されたら、Zingの**データソース** / **ソース**タブの下で全員が利用可能になります。
+6. Clickhouse データソースが追加されると、全ての Zing 組織のメンバーが **Data Sources** / **Sources** タブの下で利用できるようになります。
 
-## Zing Dataでのチャートとダッシュボードの作成 {#creating-charts-and-dashboards-in-zing-data}
+## Creating Charts and Dashboards in Zing Data {#creating-charts-and-dashboards-in-zing-data}
 
-1. Clickhouseデータソースが追加されたら、Webで**Zingアプリ**をクリックするか、モバイルでデータソースをクリックしてチャートの作成を開始します。
+1. Clickhouse データソースが追加された後、ウェブで **Zing App** をクリックするか、モバイルでデータソースをクリックしてチャートを作成し始めます。
 
-2. チャートを作成するには、テーブルリストの下にあるテーブルをクリックします。
+2. テーブルのリストからテーブルをクリックしてチャートを作成します。
 
-    <Image size="sm" img={zing_04} alt="Zing Dataインターフェイスで利用可能なClickHouseテーブルのリストが表示されている" border />
+    <Image size="sm" img={zing_04} alt="Zing Data interface showing the table list with available ClickHouse tables" border />
     <br/>
 
-3. ビジュアルクエリビルダーを使用して、希望のフィールド、集約などを選択し、**質問を実行**をクリックします。
+3. ビジュアルクエリビルダーを使用して、必要なフィールド、集計などを選択し、**Run Question** をクリックします。
 
-    <Image size="md" img={zing_05} alt="Zing Dataビジュアルクエリビルダーインターフェイスでフィールド選択および集約オプションが表示されている" border />
+    <Image size="md" img={zing_05} alt="Zing Data visual query builder interface with field selection and aggregation options" border />
     <br/>
 
-4. SQLに慣れている場合は、カスタムSQLを書いてクエリを実行し、チャートを作成することもできます。
+4. SQL に慣れている場合は、カスタム SQL を書いてクエリを実行し、チャートを作成することもできます。
 
-    <Image size="md" img={zing_06} alt="Zing DataのSQLエディタモードでSQLクエリ作成インターフェイスが表示されている" border />
-    <Image size="md" img={zing_07} alt="Zing DataでのSQLクエリ結果が表形式で表示されている" border />
+    <Image size="md" img={zing_06} alt="SQL editor mode in Zing Data showing SQL query writing interface" border />
+    <Image size="md" img={zing_07} alt="SQL query results in Zing Data with data displayed in tabular format" border />
 
-5. チャートの例は次のようになります。質問は三点リーダーメニューを使って保存できます。チャートにコメントを追加したり、チームメンバーにタグを付けたり、リアルタイムアラートを作成したり、チャートタイプを変更したりできます。
+5. サンプルチャートは次のようになります。質問は三点リーダーメニューを使用して保存できます。チャートにコメントを追加したり、チームメンバーをタグ付けしたり、リアルタイムアラートを作成したり、チャートの種類を変更したりできます。
 
-    <Image size="md" img={zing_08} alt="Zing DataにおけるClickHouseデータのチャート視覚化の例で、オプションメニューが表示されている" border />
+    <Image size="md" img={zing_08} alt="Example chart visualization in Zing Data showing data from ClickHouse with options menu" border />
     <br/>
 
-6. ダッシュボードは、ホーム画面の**ダッシュボード**の下にある"+"アイコンを使って作成できます。既存の質問をダッシュボードに表示するためにドラッグインできます。
+6. ダッシュボードは、ホーム画面の **Dashboards** の下にある "+" アイコンを使用して作成できます。既存の質問はドラッグしてダッシュボードに表示できます。
 
-    <Image size="md" img={zing_09} alt="Zing Dataダッシュボードビューで複数の視覚化がダッシュボードレイアウトで表示されている" border />
+    <Image size="md" img={zing_09} alt="Zing Data dashboard view showing multiple visualizations arranged in a dashboard layout" border />
     <br/>
 
-## 関連コンテンツ {#related-content}
+## Related Content {#related-content}
 
-- ブログ: [ClickHouseでのデータ視覚化 - Zing Data](https://getzingdata.com/blog/zing-adds-support-for-clickhouse-as-a-data-source/)
-- [ドキュメンテーション](https://docs.getzingdata.com/docs/)
-- [クイックスタート](https://getzingdata.com/quickstart/)
-- ダッシュボードの作成ガイド: [ダッシュボードの作成](https://getzingdata.com/blog/new-feature-create-multi-question-dashboards/)
+- Blog: [ClickHouse を用いたデータの視覚化 - Zing Data](https://getzingdata.com/blog/zing-adds-support-for-clickhouse-as-a-data-source/)
+- [Documentation](https://docs.getzingdata.com/docs/)
+- [Quick Start](https://getzingdata.com/quickstart/)
+- Guide to [Create Dashboards](https://getzingdata.com/blog/new-feature-create-multi-question-dashboards/)

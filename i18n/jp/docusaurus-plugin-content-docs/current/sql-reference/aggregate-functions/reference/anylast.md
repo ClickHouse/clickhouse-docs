@@ -1,9 +1,11 @@
 ---
-description: 'カラムの最後に遭遇した値を選択します。'
-sidebar_position: 105
-slug: /sql-reference/aggregate-functions/reference/anylast
-title: 'anyLast'
+'description': 'Selects the last encountered value of a column.'
+'sidebar_position': 105
+'slug': '/sql-reference/aggregate-functions/reference/anylast'
+'title': 'anyLast'
 ---
+
+
 
 
 # anyLast
@@ -12,11 +14,11 @@ title: 'anyLast'
 
 :::warning
 クエリは任意の順序で実行できるため、この関数の結果は非決定的です。
-任意だが決定的な結果が必要な場合は、[`min`](../reference/min.md) または [`max`](../reference/max.md) 関数を使用してください。
+任意ですが決定的な結果が必要な場合は、関数 [`min`](../reference/min.md) または [`max`](../reference/max.md) を使用してください。
 :::
 
-デフォルトでは、関数は決して NULL を返さず、つまり入力カラムの NULL 値を無視します。
-ただし、`RESPECT NULLS` 修飾子を使用すると、NULL かどうかにかかわらず最初に読み取った値を返します。
+デフォルトでは、この関数はNULLを返すことはなく、つまり入力カラム内のNULL値を無視します。
+ただし、`RESPECT NULLS` 修飾子を使用して関数を呼び出すと、NULLであろうと構わずに最初に読み取った値を返します。
 
 **構文**
 
@@ -24,14 +26,14 @@ title: 'anyLast'
 anyLast(column) [RESPECT NULLS]
 ```
 
-エイリアス `anyLast(column)`（`RESPECT NULLS` なし）
+エイリアス `anyLast(column)` ( `RESPECT NULLS` なし)
 - [`last_value`](../reference/last_value.md).
 
 `anyLast(column) RESPECT NULLS` のエイリアス
 - `anyLastRespectNulls`, `anyLast_respect_nulls`
 - `lastValueRespectNulls`, `last_value_respect_nulls`
 
-**パラメータ**
+**パラメーター**
 - `column`: カラム名。
 
 **返される値**

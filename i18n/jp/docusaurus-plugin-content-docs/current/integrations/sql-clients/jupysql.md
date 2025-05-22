@@ -1,8 +1,8 @@
 ---
-slug: /integrations/jupysql
-sidebar_label: 'Jupyter ノートブック'
-description: 'JupySQL は Jupyter 用のマルチプラットフォームデータベースツールです。'
-title: 'ClickHouse と JupySQL の使用'
+'slug': '/integrations/jupysql'
+'sidebar_label': 'Jupyterノートブック'
+'description': 'JupySQLはJupyter向けのマルチプラットフォームデータベースツールです。'
+'title': 'ClickHouseとJupySQLの使用方法'
 ---
 
 import Image from '@theme/IdealImage';
@@ -11,16 +11,16 @@ import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# ClickHouse と JupySQL の使用
+# ClickHouseとのJupySQLの使用
 
 <CommunityMaintainedBadge/>
 
-このガイドでは、ClickHouse との統合方法を示します。
+このガイドでは、ClickHouseとの統合を示します。
 
-JupySQL を使用して ClickHouse 上でクエリを実行します。
-データがロードされたら、SQL プロットを介して視覚化します。
+JupySQLを使用して、ClickHouse上でクエリを実行します。
+データが読み込まれた後、SQLプロットを介して可視化します。
 
-JupySQL と ClickHouse の統合は、clickhouse_sqlalchemy ライブラリを使用することで実現されます。このライブラリは、2 つのシステム間の簡単な通信を可能にし、ユーザーが ClickHouse に接続し、SQL ダイアレクトを渡すことを可能にします。接続されたら、ユーザーは Clickhouse のネイティブ UI から直接、または Jupyter ノートブックから直接 SQL クエリを実行できます。
+JupySQLとClickHouseの統合は、clickhouse_sqlalchemyライブラリの使用によって可能となります。このライブラリは、両システム間の簡単な通信を可能にし、ユーザーがClickHouseに接続し、SQL方言を指定できるようにします。接続後、ユーザーはClickHouseのネイティブUIまたはJupyterノートブックから直接SQLクエリを実行できます。
 
 ```python
 
@@ -28,21 +28,21 @@ JupySQL と ClickHouse の統合は、clickhouse_sqlalchemy ライブラリを�
 %pip install --quiet jupysql clickhouse_sqlalchemy
 ```
 
-    注意: 更新されたパッケージを使用するには、カーネルを再起動する必要がある場合があります。
+    注意: 更新されたパッケージを使用するには、カーネルを再起動する必要があります。
 
 ```python
 import pandas as pd
 from sklearn_evaluation import plot
 
 
-# SQL セルを作成するために jupysql Jupyter 拡張をインポート
+# SQLセルを作成するためにjupysql Jupyter拡張をインポート
 %load_ext sql
 %config SqlMagic.autocommit=False
 ```
 
-**次のステージのために、あなたの Clickhouse が稼働していることを確認する必要があります。ローカル版でもクラウド版でも使用できます。**
+**次のステージに進むために、Clickhouseが起動し、接続可能であることを確認する必要があります。ローカル版またはクラウド版のいずれかを使用できます。**
 
-**注意:** 接続先のインスタンスのタイプに応じて接続文字列を調整する必要があります（url, user, password）。以下の例ではローカルインスタンスを使用しています。詳しくは [このガイド](/getting-started/quick-start)を参照してください。
+**注意:** 接続するインスタンスの種類に応じて接続文字列を調整する必要があります (url、user、password)。以下の例ではローカルインスタンスを使用しています。詳細については、[このガイド](/getting-started/quick-start)を参照してください。
 
 ```python
 %sql clickhouse://default:@localhost:8123/default
@@ -395,7 +395,7 @@ WHERE trip_distance < 6.3
 ```
 
     *  clickhouse://default:***@localhost:8123/default
-    実行をスキップしました...
+    実行をスキップ...
 
 ```python
 %sqlplot histogram --table short-trips --column trip_distance --bins 10 --with short-trips
@@ -404,14 +404,14 @@ WHERE trip_distance < 6.3
 ```response
 <AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
 ```
-<Image img={jupysql_plot_1} size="md" alt="短距離データセットからの 10 ビンでの移動距離の分布を示すヒストグラム" border />
+<Image img={jupysql_plot_1} size="md" alt="短距離のデータセットからの10個のビンを持つ旅行距離の分布を示すヒストグラム" border />
 
 
 ```python
 ax = %sqlplot histogram --table short-trips --column trip_distance --bins 50 --with short-trips
 ax.grid()
-ax.set_title("Trip distance from trips < 6.3")
-_ = ax.set_xlabel("Trip distance")
+ax.set_title("6.3未満の旅行距離")
+_ = ax.set_xlabel("旅行距離")
 ```
 
-<Image img={jupysql_plot_2} size="md" alt="短距離トリップからの50ビンとグリッドを用いた移動距離の分布を示すヒストグラム、タイトルは'Short Trips < 6.3'です。" border />
+<Image img={jupysql_plot_2} size="md" alt="6.3未満の旅行距離に関連する50個のビンとグリッドを持つヒストグラム" border />

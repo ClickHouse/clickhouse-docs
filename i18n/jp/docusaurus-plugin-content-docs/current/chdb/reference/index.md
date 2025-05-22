@@ -1,11 +1,15 @@
 ---
-title: 'chDB 技術リファレンス'
-slug: /chdb/reference
-description: 'chDB のデータフォーマット'
-keywords: ['chdb', 'データフォーマット']
+'title': 'chDB Technical Reference'
+'slug': '/chdb/reference'
+'description': 'Data Formats for chDB'
+'keywords':
+- 'chdb'
+- 'data formats'
 ---
 
-| リファレンスページ      |
+
+
+| リファレンスページ       |
 |----------------------|
 | [データフォーマット](/chdb/reference/data-formats)  |
-| [SQL リファレンス](/chdb/reference/sql-reference) |
+| [SQLリファレンス](/chdb/reference/sql-reference) |

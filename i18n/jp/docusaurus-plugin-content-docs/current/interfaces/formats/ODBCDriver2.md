@@ -1,9 +1,12 @@
 ---
-description: 'ODBCDriver2フォーマットのドキュメント'
-keywords: ['ODBCDriver2']
-slug: /interfaces/formats/ODBCDriver2
-title: 'ODBCDriver2'
+'description': 'ODBCDriver2フォーマットのドキュメント'
+'keywords':
+- 'ODBCDriver2'
+'slug': '/interfaces/formats/ODBCDriver2'
+'title': 'ODBCDriver2'
 ---
+
+
 
 ## 説明 {#description}
 

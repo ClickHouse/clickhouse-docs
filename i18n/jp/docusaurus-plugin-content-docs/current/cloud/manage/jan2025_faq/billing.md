@@ -1,47 +1,51 @@
 ---
-title: '課金'
-slug: /cloud/manage/jan-2025-faq/billing
-keywords: ['新しい価格設定', '課金']
-description: '新しい価格帯に関する課金詳細'
+'title': '課金'
+'slug': '/cloud/manage/jan-2025-faq/billing'
+'keywords':
+- 'new pricing'
+- 'billing'
+'description': '新しい価格層の課金詳細'
 ---
 
-## 課金 {#billing}
 
-### 使用量の測定と請求方法に変更はありますか？ {#are-there-any-changes-to-how-usage-is-metered-and-charged}
 
-コンピュートおよびストレージの次元ごとの単位コストが変更され、データ転送および ClickPipes の使用を考慮するために、2つの追加の次元が追加されました。
+## Billing {#billing}
+
+### 使用量の測定と請求に変更はありますか？ {#are-there-any-changes-to-how-usage-is-metered-and-charged}
+
+計算およびストレージの次元ごとの単価が変更され、データ転送および ClickPipes 使用量を考慮するための二つの追加の次元があります。
 
 いくつかの注目すべき変更点：
 
-- TB あたりのストレージ価格が引き下げられ、ストレージコストにはバックアップが含まれなくなります（今後はバックアップを別途請求し、1つのバックアップのみを必須とします）。ストレージコストはすべてのティアで同じですが、地域およびクラウドサービスプロバイダーによって異なります。
-- コンピュートコストはティア、地域、クラウドサービスプロバイダーによって異なります。
-- データ転送の新しい価格設定次元は、地域間およびパブリックインターネットでのデータエグレスにのみ適用されます。
-- ClickPipes 使用に関する新しい価格設定次元があります。
+- TB あたりのストレージ価格が引き下げられ、ストレージコストにバックアップは含まれなくなります（バックアップは別途請求し、一つのバックアップのみが必要になります）。ストレージコストは全てのティアにおいて同じで、地域やクラウドサービスプロバイダーによって異なります。
+- 計算コストはティア、地域、クラウドサービスプロバイダーによって異なります。
+- データ転送に対する新しい料金次元は、地域間および公共インターネット上でのデータエグレスにのみ適用されます。
+- ClickPipes 使用に対する新しい料金次元があります。
 
-### 既存のコミット済み支出契約を持つユーザーには何が起きますか？ {#what-happens-to-users-with-existing-committed-spend-contracts}
+### 既存のコミットされた支出契約を持つユーザーには何が起こりますか？ {#what-happens-to-users-with-existing-committed-spend-contracts}
 
-アクティブなコミット済み支出契約を持つユーザーは、契約が期限切れになるまで新しい次元ごとの単位コスト価格の影響を受けません。ただし、データ転送および ClickPipes の新しい価格設定次元は、2025年3月24日から適用されます。ほとんどの顧客は、これらの新しい次元からの月次請求に大幅な増加を感じることはないでしょう。
+アクティブなコミットされた支出契約を持つユーザーは、契約が終了するまで、新しい次元ごとの単価に影響を受けません。ただし、データ転送および ClickPipes に対する新しい料金次元は 2025 年 3 月 24 日から適用されます。ほとんどの顧客は、これらの新しい次元から月次請求が大幅に増加することはありません。
 
-### ClickHouseとのコミット済み支出契約を持つユーザーは、古いプランでサービスを開始し続けることができますか？ {#can-users-on-a-committed-spend-agreement-with-clickhouse-continue-to-launch-services-on-the-old-plan}
+### ClickHouse とのコミットされた支出契約のあるユーザーは、古いプランでサービスを起動し続けることができますか？ {#can-users-on-a-committed-spend-agreement-with-clickhouse-continue-to-launch-services-on-the-old-plan}
 
-はい、ユーザーは契約の終了日まで開発および本番サービスを開始し続けることができ、更新時には新しい価格プランが反映されます。
+はい、ユーザーは契約の終了日まで開発および生産サービスを起動し続けることができます。更新時には新しい料金プランが反映されます。
 
-契約を変更する必要がある場合や、これらの変更が将来どのように影響を与えるかについて質問がある場合は、サポートチームまたは営業担当者にご連絡ください。
+契約を変更する必要がある場合や、これらの変更が将来どのように影響するかについて質問がある場合は、サポートチームまたは営業担当者にお問い合わせください。
 
-### ユーザーが契約の終了前にクレジットを使い切り、従量課金制（PAYG）に移行した場合はどうなりますか？ {#what-happens-if-users-exhaust-their-credits-before-the-end-of-the-contract-and-go-to-payg}
+### ユーザーが契約の終了前にクレジットを使い果たし PAYG に移行した場合はどうなりますか？ {#what-happens-if-users-exhaust-their-credits-before-the-end-of-the-contract-and-go-to-payg}
 
-コミット済み支出契約のクレジットが更新日より前に使い切られた場合、私たちは現在の料金で請求します（現在のポリシーに従って）。
+コミット支出契約でクレジットが更新日より前に使い果たされた場合、私たちは現在の料金で更新まで請求します（現在のポリシーに従って）。
 
-### 月ごとの PAYG プランに参加しているユーザーには何が起きますか？ {#what-happens-to-users-on-the-monthly-payg}
+### 月次 PAYG のユーザーには何が起こりますか？ {#what-happens-to-users-on-the-monthly-payg}
 
-月ごとの PAYG プランに参加しているユーザーは、開発および本番サービスに対して古い価格プランを使用して請求され続けます。彼らは2025年7月23日までに新しいプランにセルフサービスで移行する必要があります。そうしないと、この日にすべてがスケール構成に移行され、新しいプランに基づいて請求されます。
+月次 PAYG プランのユーザーは、開発および生産サービスに対して古い料金プランを使用して請求され続けます。彼らは 2025 年 7 月 23 日までに新しいプランへ自己移行することができます。そうでない場合、この日にすべてがスケール構成に移行され、新しいプランに基づいて請求されます。
 
-### レガシープランを参照するにはどうすればよいですか？ {#where-can-i-reference-legacy-plans}
+### 過去のプランを参照するにはどこを見ることができますか？ {#where-can-i-reference-legacy-plans}
 
-レガシープランは、[こちら](https://clickhouse.com/pricing?legacy=true)で参照できます。
+過去のプランは [こちら](https://clickhouse.com/pricing?legacy=true) で参照可能です。
 
-## マーケットプレイス {#marketplaces}
+## Marketplaces {#marketplaces}
 
-### CSP マーケットプレイスを通じてユーザーに対する料金請求方法に変更はありますか？ {#are-there-changes-to-how-users-are-charged-via-the-csp-marketplaces}
+### CSP マーケットプレイスを通じたユーザーへの請求方法に変更はありますか？ {#are-there-changes-to-how-users-are-charged-via-the-csp-marketplaces}
 
-CSP マーケットプレイスを通じて ClickHouse Cloud にサインアップしたユーザーは、CHC（ClickHouse Cloud Credits）という形で使用量が発生します。この動作は変更されていません。ただし、クレジット使用の基盤となる構成は、ここで概説された価格およびパッケージの変更に合わせて整合され、データ転送使用量や ClickPipes に対する請求が含まれるようになります。
+CSP マーケットプレイスを通じて ClickHouse Cloud にサインアップしたユーザーは、CHCs (ClickHouse Cloud Credits) という形で使用量が発生します。この挙動は変更されていません。ただし、クレジット使用の基盤となる構成は、ここで概説された料金およびパッケージの変更に沿うものとなり、データ転送の使用量と ClickPipes に対する請求が含まれますが、これらが稼働した後です。

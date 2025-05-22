@@ -1,21 +1,28 @@
 ---
-slug: '/examples/aggregate-function-combinators/minMap'
-title: 'minMap'
-description: 'minMapコンビネーターの使用例'
-keywords: ['min', 'map', 'combinator', 'examples', 'minMap']
-sidebar_label: 'minMap'
+'slug': '/examples/aggregate-function-combinators/minMap'
+'title': 'minMap'
+'description': 'minMap combinatorの使用例'
+'keywords':
+- 'min'
+- 'map'
+- 'combinator'
+- 'examples'
+- 'minMap'
+'sidebar_label': 'minMap'
 ---
+
+
 
 
 # minMap {#minmap}
 
 ## 説明 {#description}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネーターは、`min` [/sql-reference/aggregate-functions/reference/min] 関数に適用され、各キーに対してMap内の最小値を計算するために `minMap` 集約コンビネーター関数を使用します。
+[`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネータは、`minMap` 集約コンビネータ関数を使用して、各キーに基づいて Map の最小値を計算するために、[`min`](/sql-reference/aggregate-functions/reference/min) 関数に適用できます。
 
-## 使用例 {#example-usage}
+## 例の使用法 {#example-usage}
 
-この例では、異なるタイムスロットのステータスコードとそのカウントを保存するテーブルを作成します。各行には、ステータスコードと対応するカウントのMapが含まれます。`minMap` を使用して、各タイムスロット内の各ステータスコードの最小カウントを見つけます。
+この例では、ステータスコードとそれぞれの時間帯におけるカウントを格納するテーブルを作成します。各行には、ステータスコードとその対応するカウントの Map が含まれます。`minMap` を使用して、各時間帯内の各ステータスコードの最小カウントを見つけます。
 
 ```sql title="クエリ"
 CREATE TABLE metrics(
@@ -37,26 +44,26 @@ FROM metrics
 GROUP BY timeslot;
 ```
 
-`minMap` 関数は、各タイムスロット内の各ステータスコードの最小カウントを見つけます。例えば：
-- タイムスロット '2000-01-01 00:00:00' では：
+`minMap` 関数は、各時間帯内の各ステータスコードの最小カウントを見つけます。例えば：
+- 時間帯 '2000-01-01 00:00:00':
   - ステータス 'a': 15
   - ステータス 'b': 25
   - ステータス 'c': min(35, 45) = 35
   - ステータス 'd': 55
   - ステータス 'e': 65
-- タイムスロット '2000-01-01 00:01:00' では：
+- 時間帯 '2000-01-01 00:01:00':
   - ステータス 'd': 75
   - ステータス 'e': 85
   - ステータス 'f': min(95, 105) = 95
   - ステータス 'g': min(115, 125) = 115
 
-```response title="レスポンス"
+```response title="応答"
    ┌────────────timeslot─┬─minMap(status)───────────────────────┐
 1. │ 2000-01-01 00:01:00 │ {'d':75,'e':85,'f':95,'g':115}       │
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':35,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
-## 参照 {#see-also}
+## 関連項目 {#see-also}
 - [`min`](/sql-reference/aggregate-functions/reference/min)
 - [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)

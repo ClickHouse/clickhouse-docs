@@ -1,24 +1,28 @@
 ---
-description: 'テーブルコメントの追加、修正、または削除を可能にする ALTER TABLE ... MODIFY COMMENT のドキュメント'
-sidebar_label: 'ALTER TABLE ... MODIFY COMMENT'
-sidebar_position: 51
-slug: /sql-reference/statements/alter/comment
-title: 'ALTER TABLE ... MODIFY COMMENT'
-keywords: ['ALTER TABLE', 'MODIFY COMMENT']
+'description': 'ALTER TABLE ... MODIFY COMMENT により、テーブルコメントの追加、変更、削除が可能となるドキュメント'
+'sidebar_label': 'ALTER TABLE ... MODIFY COMMENT'
+'sidebar_position': 51
+'slug': '/sql-reference/statements/alter/comment'
+'title': 'ALTER TABLE ... MODIFY COMMENT'
+'keywords':
+- 'ALTER TABLE'
+- 'MODIFY COMMENT'
 ---
+
+
 
 
 # ALTER TABLE ... MODIFY COMMENT
 
-テーブルコメントの追加、修正、または削除を行います。これは、以前に設定されていたかどうかに関わらず行われます。コメントの変更は、[`system.tables`](../../../operations/system-tables/tables.md) および `SHOW CREATE TABLE` クエリの両方に反映されます。
+テーブルコメントを追加、変更、または削除します。以前に設定されていたかどうかに関係なく、コメントの変更は、[`system.tables`](../../../operations/system-tables/tables.md) および `SHOW CREATE TABLE` クエリの両方に反映されます。
 
-## 構文 {#syntax}
+## Syntax {#syntax}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
 
-## 例 {#examples}
+## Examples {#examples}
 
 コメント付きのテーブルを作成するには:
 
@@ -32,24 +36,24 @@ ENGINE = Memory()
 COMMENT '一時テーブル';
 ```
 
-テーブルコメントを修正するには:
+テーブルコメントを変更するには:
 
 ```sql
 ALTER TABLE table_with_comment 
-MODIFY COMMENT 'テーブルについての新しいコメント';
+MODIFY COMMENT 'テーブルの新しいコメント';
 ```
 
-修正されたコメントを表示するには:
+変更されたコメントを表示するには:
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT comment 
 FROM system.tables 
 WHERE database = currentDatabase() AND name = 'table_with_comment';
 ```
 
-```text title="レスポンス"
+```text title="Response"
 ┌─comment────────────────┐
-│ テーブルについての新しいコメント │
+│ テーブルの新しいコメント │
 └────────────────────────┘
 ```
 
@@ -61,25 +65,25 @@ ALTER TABLE table_with_comment MODIFY COMMENT '';
 
 コメントが削除されたことを確認するには:
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT comment 
 FROM system.tables 
 WHERE database = currentDatabase() AND name = 'table_with_comment';
 ```
 
-```text title="レスポンス"
+```text title="Response"
 ┌─comment─┐
 │         │
 └─────────┘
 ```
 
-## 注意点 {#caveats}
+## Caveats {#caveats}
 
-レプリケートされたテーブルの場合、コメントは異なるレプリカで異なる場合があります。コメントの修正は1つのレプリカにのみ適用されます。
+レプリケーションテーブルの場合、コメントは異なるレプリカごとに異なる可能性があります。コメントの変更は単一のレプリカに適用されます。
 
-この機能はバージョン 23.9 から利用可能です。以前の ClickHouse バージョンでは動作しません。
+この機能はバージョン23.9以降で利用可能であり、以前のClickHouseバージョンでは機能しません。
 
-## 関連コンテンツ {#related-content}
+## Related content {#related-content}
 
 - [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 句
 - [`ALTER DATABASE ... MODIFY COMMENT`](./database-comment.md)

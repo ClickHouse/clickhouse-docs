@@ -1,20 +1,23 @@
 ---
-alias: []
-description: 'JSONStrings形式のドキュメント'
-input_format: true
-keywords: ['JSONStrings']
-output_format: true
-slug: /interfaces/formats/JSONStrings
-title: 'JSONStrings'
+'alias': []
+'description': 'JSONStrings形式のドキュメント'
+'input_format': true
+'keywords':
+- 'JSONStrings'
+'output_format': true
+'slug': '/interfaces/formats/JSONStrings'
+'title': 'JSONStrings'
 ---
 
-| 入力 | 出力 | エイリアス |
-|------|------|-----------|
-| ✔    | ✔    |           |
+
+
+| Input | Output | Alias |
+|-------|--------|-------|
+| ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-[JSON](./JSON.md)形式とは異なり、データフィールドが型付きJSON値ではなく、文字列として出力されます。
+データフィールドが型付きのJSON値ではなく文字列として出力される以外は、[JSON](./JSON.md)フォーマットと異なります。
 
 ## 使用例 {#example-usage}
 

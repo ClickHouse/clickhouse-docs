@@ -1,21 +1,23 @@
 ---
-description: '密なランクウィンドウ関数のドキュメント'
-sidebar_label: 'dense_rank'
-sidebar_position: 7
-slug: /sql-reference/window-functions/dense_rank
-title: 'dense_rank'
+'description': 'Documentation for the dense_rank window function'
+'sidebar_label': 'dense_rank'
+'sidebar_position': 7
+'slug': '/sql-reference/window-functions/dense_rank'
+'title': 'dense_rank'
 ---
+
+
 
 
 # dense_rank
 
-現在の行を、そのパーティション内でギャップなしにランク付けします。言い換えれば、遭遇した新しい行の値が以前の行のいずれかの値と等しい場合、その行はランク付けにギャップがない次の連続したランクを受け取ります。
+現在の行をそのパーティション内でギャップなくランク付けします。言い換えれば、もし新しく出現した行の値が以前の行の値のいずれかと等しい場合、それはギャップなく次の連続したランクを受け取ります。
 
-[rank](./rank.md) 関数は同じ動作を提供しますが、ランク付けにギャップがあります。
+[rank](./rank.md) 関数は同様の動作を提供しますが、ランクにギャップがあります。
 
 **構文**
 
-エイリアス: `denseRank`（大文字と小文字を区別）
+エイリアス: `denseRank` (大文字小文字を区別)
 
 ```sql
 dense_rank ()
@@ -27,13 +29,13 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 ウィンドウ関数の構文の詳細については、[ウィンドウ関数 - 構文](./index.md/#syntax)を参照してください。
 
-**返される値**
+**戻り値**
 
-- そのパーティション内の現在の行の番号で、ランク付けにギャップがありません。 [UInt64](../data-types/int-uint.md)。
+- パーティション内の現在の行の番号で、ランクにギャップがありません。[UInt64](../data-types/int-uint.md)。
 
 **例**
 
-以下の例は、動画教材[ClickHouseにおけるランクウィンドウ関数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)に提供された例に基づいています。
+次の例は、動画教材[ClickHouseにおけるランキングウィンドウ関数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)で提供された例に基づいています。
 
 クエリ:
 

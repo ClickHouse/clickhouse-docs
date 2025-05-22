@@ -1,34 +1,38 @@
 ---
-description: 'ClickHouseにおけるAggregateFunctionデータ型のドキュメントであり、集約関数の中間状態を保存します'
-keywords: ['AggregateFunction', 'Type']
-sidebar_label: 'AggregateFunction'
-sidebar_position: 46
-slug: /sql-reference/data-types/aggregatefunction
-title: 'AggregateFunctionタイプ'
+'description': 'ClickHouse における AggregateFunction データ型のドキュメント。集約関数の中間状態を保存します。'
+'keywords':
+- 'AggregateFunction'
+- 'Type'
+'sidebar_label': 'AggregateFunction'
+'sidebar_position': 46
+'slug': '/sql-reference/data-types/aggregatefunction'
+'title': 'AggregateFunction Type'
 ---
 
 
-# AggregateFunctionタイプ
+
+
+# AggregateFunction タイプ
 
 ## 説明 {#description}
 
-ClickHouseのすべての[集約関数](/sql-reference/aggregate-functions)は、特定の実装に依存した中間状態を持ち、それをシリアライズして`AggregateFunction`データ型としてテーブルに保存することができます。これは通常、[マテリアライズドビュー](../../sql-reference/statements/create/view.md)を介して行われます。
+ClickHouse におけるすべての [Aggregate functions](/sql-reference/aggregate-functions) は、シリアル化されて `AggregateFunction` データ型としてテーブルに保存される実装依存の中間状態を持っています。これは通常、[materialized view](../../sql-reference/statements/create/view.md) を介して行われます。
 
-`AggregateFunction`型で一般的に使用される2つの集約関数[コンビネータ](/sql-reference/aggregate-functions/combinators)があります：
+`AggregateFunction` タイプで一般的に使用される 2 つの集約関数 [combinators](/sql-reference/aggregate-functions/combinators) は次のとおりです。
 
-- [`-State`](/sql-reference/aggregate-functions/combinators#-state)集約関数コンビネータは、集約関数の名前に付加されると、`AggregateFunction`中間状態を生成します。
-- [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge)集約関数コンビネータは、中間状態から集約の最終結果を取得するために使用されます。
+- [`-State`](/sql-reference/aggregate-functions/combinators#-state) 集約関数コンビネーター。これは集約関数名に追加されると、`AggregateFunction` の中間状態を生成します。
+- [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge) 集約関数コンビネーター。これは中間状態から集約の最終結果を取得するために使用されます。
 
 ## 構文 {#syntax}
 
 ```sql
-AggregateFunction(集約関数名, 引数の型...)
+AggregateFunction(aggregate_function_name, types_of_arguments...)
 ```
 
 **パラメータ**
 
-- `集約関数名` - 集約関数の名前。関数がパラメトリックの場合は、そのパラメータも指定する必要があります。
-- `引数の型` - 集約関数引数の型。
+- `aggregate_function_name` - 集約関数の名前。関数がパラメトリックな場合、そのパラメータも指定する必要があります。
+- `types_of_arguments` - 集約関数引数の型。
 
 例えば：
 
@@ -45,28 +49,28 @@ CREATE TABLE t
 
 ### データ挿入 {#data-insertion}
 
-`AggregateFunction`型のカラムを持つテーブルにデータを挿入するには、集約関数と[`-State`](/sql-reference/aggregate-functions/combinators#-state)集約関数コンビネータを使った`INSERT SELECT`を使用できます。
+`AggregateFunction` 型のカラムを持つテーブルにデータを挿入するには、集約関数と [`-State`](/sql-reference/aggregate-functions/combinators#-state) 集約関数コンビネーターを使用して `INSERT SELECT` を実行できます。
 
-例えば、`AggregateFunction(uniq, UInt64)`型および`AggregateFunction(quantiles(0.5, 0.9), UInt64)`型のカラムに挿入するには、次の集約関数をコンビネータと共に使用します。
+例えば、`AggregateFunction(uniq, UInt64)` および `AggregateFunction(quantiles(0.5, 0.9), UInt64)` 型のカラムに挿入するには、次の集約関数とコンビネーターを使用します。
 
 ```sql
 uniqState(UserID)
 quantilesState(0.5, 0.9)(SendTiming)
 ```
 
-`uniq`および`quantiles`関数とは異なり、`uniqState`と`quantilesState`（`-State`コンビネータが付加されたもの）は、最終的な値ではなく状態を返します。言い換えれば、これらは`AggregateFunction`型の値を返します。
+関数 `uniq` と `quantiles` に対して、`uniqState` と `quantilesState` （`-State` コンビネーターが追加されたもの）は、最終値ではなく状態を返します。つまり、`AggregateFunction` 型の値を返します。
 
-`SELECT`クエリの結果では、`AggregateFunction`型の値は、すべてのClickHouse出力形式に対して実装に依存したバイナリ表現を持ちます。
+`SELECT` クエリの結果において、`AggregateFunction` 型の値は、すべての ClickHouse 出力形式に対応する実装特有のバイナリ表現を持っています。
 
-例えば、`SELECT`クエリで`TabSeparated`形式にデータをダンプすると、このダンプは`INSERT`クエリを使用して再ロードすることができます。
+例えば、`SELECT` クエリで `TabSeparated` 形式にデータをダンプした場合、このダンプは `INSERT` クエリを使用して再びロードできます。
 
 ### データ選択 {#data-selection}
 
-`AggregatingMergeTree`テーブルからデータを選択する際には、`GROUP BY`句を使用し、データを挿入した時と同じ集約関数を使用しますが、[`-Merge`](/sql-reference/aggregate-functions/combinators#-merge)コンビネータを使用します。
+`AggregatingMergeTree` テーブルからデータを選択する場合、`GROUP BY` 句を使用し、データ挿入時と同じ集約関数を使用しますが、[`-Merge`](/sql-reference/aggregate-functions/combinators#-merge) コンビネーターを使用します。
 
-`-Merge`コンビネータが付加された集約関数は、一連の状態を取り、それらを組み合わせて完全なデータ集約の結果を返します。
+`-Merge` コンビネーターが追加された集約関数は、状態のセットを受け取り、それらを結合してデータの集約結果を返します。
 
-例えば、次の2つのクエリは同じ結果を返します：
+例えば、次の 2 つのクエリは同じ結果を返します。
 
 ```sql
 SELECT uniq(UserID) FROM table
@@ -76,10 +80,10 @@ SELECT uniqMerge(state) FROM (SELECT uniqState(UserID) AS state FROM table GROUP
 
 ## 使用例 {#usage-example}
 
-[AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md)エンジンの説明を参照してください。
+[AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) エンジンの説明を参照してください。
 
 ## 関連コンテンツ {#related-content}
 
-- ブログ: [ClickHouseにおける集約コンビネータの使用](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
-- [MergeState](/sql-reference/aggregate-functions/combinators#-mergestate)コンビネータ。
-- [State](/sql-reference/aggregate-functions/combinators#-state)コンビネータ。
+- ブログ: [ClickHouse における Aggregate Combinators の使用](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+- [MergeState](/sql-reference/aggregate-functions/combinators#-mergestate) コンビネーター。
+- [State](/sql-reference/aggregate-functions/combinators#-state) コンビネーター。

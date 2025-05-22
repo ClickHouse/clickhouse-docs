@@ -1,29 +1,37 @@
 ---
-slug: '/examples/aggregate-function-combinators/uniqArrayIf'
-title: 'uniqArrayIf'
-description: 'uniqArrayIfコンビネータの使用例'
-keywords: ['uniq', 'array', 'if', 'combinator', 'examples', 'uniqArrayIf']
-sidebar_label: 'uniqArrayIf'
+'slug': '/examples/aggregate-function-combinators/uniqArrayIf'
+'title': 'uniqArrayIf'
+'description': 'uniqArrayIfコンビネータの使用例'
+'keywords':
+- 'uniq'
+- 'array'
+- 'if'
+- 'combinator'
+- 'examples'
+- 'uniqArrayIf'
+'sidebar_label': 'uniqArrayIf'
 ---
+
+
 
 
 # uniqArrayIf {#uniqarrayif}
 
 ## 説明 {#description}
 
-[`Array`](/sql-reference/aggregate-functions/combinators#-array)および[`If`](/sql-reference/aggregate-functions/combinators#-if)コンビネータは、`uniq`関数に対して適用され、条件が真である行の配列内のユニークな値の数を数えるために`uniqArrayIf`集約コンビネータ関数を使用します。
+[`Array`](/sql-reference/aggregate-functions/combinators#-array) および [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、`uniq` 関数に適用して、条件が真である行の配列のユニークな値の数をカウントするために、`uniqArrayIf` 集約コンビネータ関数を使用できます。
 
 :::note
--`If`と`Array`を組み合わせることができます。ただし、`Array`が最初に来る必要があり、その後に`If`が続きます。
+- `If` と `Array` は組み合わせることができます。ただし、`Array` が先に来て、その後に `If` が続かなければなりません。
 :::
 
-これは、`arrayJoin`を使用せずに特定の条件に基づいて配列内のユニークな要素をカウントしたい場合に便利です。
+これは、`arrayJoin` を使用せずに特定の条件に基づいて配列内のユニークな要素をカウントしたい場合に便利です。
 
 ## 使用例 {#example-usage}
 
-### セグメントタイプとエンゲージメントレベルによるユニークな製品のカウント {#count-unique-products}
+### セグメントタイプおよびエンゲージメントレベルによるユニーク商品のカウント {#count-unique-products}
 
-この例では、ユーザーのショッピングセッションデータを含むテーブルを使用して、特定のユーザーセグメントのユーザーが表示したユニークな製品の数を、セッション内で費やした時間というエンゲージメント指標でカウントします。
+この例では、ユーザーのショッピングセッションデータを含むテーブルを使用して、特定のユーセグメントのユーザーによって表示されたユニーク商品の数を、セッション内でのエンゲージメント指標を用いてカウントします。
 
 ```sql title="クエリ"
 CREATE TABLE user_shopping_sessions
@@ -42,14 +50,14 @@ INSERT INTO user_shopping_sessions VALUES
     ('2024-01-02', 'new_customer', ['tablet_a', 'keyboard_c', 'tablet_a'], 15),
     ('2024-01-02', 'premium', ['smartphone_x', 'smartwatch_b', 'headphones_y'], 22);
 
--- セグメントタイプおよびエンゲージメントレベルによるユニークな製品のカウント
+-- セグメントタイプおよびエンゲージメントレベルによるユニーク商品のカウント
 SELECT 
     session_date,
-    -- 新規顧客による長いセッションで表示されたユニークな製品のカウント
+    -- 新規顧客による長いセッションで表示されたユニーク商品のカウント
     uniqArrayIf(viewed_products, user_segment = 'new_customer' AND session_duration_minutes > 10) AS new_customer_engaged_products,
-    -- リピーターによる表示されたユニークな製品のカウント
+    -- リピーターによる表示されたユニーク商品のカウント
     uniqArrayIf(viewed_products, user_segment = 'returning') AS returning_customer_products,
-    -- すべてのセッションで表示されたユニークな製品のカウント
+    -- すべてのセッションで表示されたユニーク商品のカウント
     uniqArray(viewed_products) AS total_unique_products
 FROM user_shopping_sessions
 GROUP BY session_date
@@ -73,7 +81,7 @@ returning_customer_products: 2
 total_unique_products:       7
 ```
 
-## 参照 {#see-also}
+## 参考 {#see-also}
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
 - [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

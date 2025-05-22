@@ -1,9 +1,11 @@
 ---
-description: 'ピアソン相関係数を計算します。'
-sidebar_position: 117
-slug: /sql-reference/aggregate-functions/reference/corr
-title: 'corr'
+'description': 'Pearson相関係数を計算します。'
+'sidebar_position': 117
+'slug': '/sql-reference/aggregate-functions/reference/corr'
+'title': 'corr'
 ---
+
+
 
 
 # corr
@@ -16,7 +18,7 @@ $$
 
 <br/>
 :::note
-この関数は数値的に不安定なアルゴリズムを使用しています。計算において[数値的安定性](https://en.wikipedia.org/wiki/Numerical_stability)が必要な場合は、[`corrStable`](../reference/corrstable.md)関数を使用してください。遅くなりますが、より正確な結果を提供します。
+この関数は数値的に不安定なアルゴリズムを使用しています。計算で[数値安定性](https://en.wikipedia.org/wiki/Numerical_stability)が必要な場合は、[`corrStable`](../reference/corrstable.md)関数を使用してください。遅くなりますが、より正確な結果を提供します。
 :::
 
 **構文**

@@ -1,16 +1,15 @@
 ---
-slug: /integrations/deltalake
-sidebar_label: 'デルタレイク'
-title: 'デルタレイク'
-description: 'ユーザーがテーブル機能を介してデルタレイクテーブルフォーマットと統合する方法を説明するページ。'
+'slug': '/integrations/deltalake'
+'sidebar_label': 'Delta Lake'
+'title': 'Delta Lake'
+'description': 'Deltaレイク形式のテーブル関数を使用してDeltaレイクテーブルとの統合方法について説明したページ。'
 ---
-```
 
-import DeltaLakeFunction from '@site/docs/sql-reference/table-functions/deltalake.md';
+import DeltaLakeFunction from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/table-functions/deltalake.md';
 
 
-# デルタレイク統合
+# Delta Lake統合
 
-ユーザーはテーブル機能を介してデルタレイクテーブルフォーマットと統合できます。 
+ユーザーは、テーブル関数を介してDelta Lakeテーブルフォーマットと統合できます。
 
 <DeltaLakeFunction/>

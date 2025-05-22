@@ -1,15 +1,17 @@
 ---
-description: '0.5兆件のレコードを含むWikiStatデータセットを探索する。'
-sidebar_label: 'WikiStat'
-slug: /getting-started/example-datasets/wikistat
-title: 'WikiStat'
+'description': 'Explore the WikiStat dataset containing 0.5 trillion records.'
+'sidebar_label': 'WikiStat'
+'slug': '/getting-started/example-datasets/wikistat'
+'title': 'WikiStat'
 ---
 
-データセットには0.5兆件のレコードが含まれています。
 
-FOSDEM 2023のビデオはこちら: https://www.youtube.com/watch?v=JlcI2Vfz_uk
 
-プレゼンテーションはこちら: https://presentations.clickhouse.com/fosdem2023/
+データセットには0.5兆レコードが含まれています。
+
+FOSDEM 2023からのビデオをご覧ください: https://www.youtube.com/watch?v=JlcI2Vfz_uk
+
+およびプレゼンテーション: https://presentations.clickhouse.com/fosdem2023/
 
 データソース: https://dumps.wikimedia.org/other/pageviews/
 
@@ -30,7 +32,7 @@ sed -r 's!pageviews-([0-9]{4})([0-9]{2})[0-9]{2}-[0-9]+\.gz!https://dumps.wikime
   links.txt | xargs -P3 wget --continue
 ```
 
-(約3日かかります)
+（約3日かかります）
 
 テーブルを作成する:
 
@@ -47,7 +49,7 @@ ENGINE = MergeTree
 ORDER BY (path, time);
 ```
 
-データを読み込む:
+データをロードする:
 
 ```shell
 clickhouse-local --query "
@@ -64,7 +66,7 @@ clickhouse-local --query "
 " | clickhouse-client --query "INSERT INTO wikistat FORMAT Native"
 ```
 
-または、クリーニングデータを読み込む:
+または、クリーンデータをロードする:
 
 ```sql
 INSERT INTO wikistat WITH

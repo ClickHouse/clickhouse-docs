@@ -1,17 +1,24 @@
-description: 'TPC-DS ベンチマークデータセットとクエリ。'
-sidebar_label: 'TPC-DS'
-slug: /getting-started/example-datasets/tpcds
-title: 'TPC-DS (2012)'
-```
+---
+'description': 'The TPC-DS benchmark data set and queries.'
+'sidebar_label': 'TPC-DS'
+'slug': '/getting-started/example-datasets/tpcds'
+'title': 'TPC-DS (2012)'
+---
 
-TPC-DS は [Star Schema Benchmark (SSB)](star-schema.md) に似ていますが、[TPC-H](tpch.md) に基づいており、逆のアプローチを取っています。すなわち、データを複雑なスノーフレークスキーマに格納することで、必要な結合の数を増やしました（8 の代わりに 24 テーブル）。
 
-データ分布は偏っています（例: 正規分布とポアソン分布）。99 のレポートおよびアドホッククエリが含まれており、ランダムに置き換えられます。
 
-参照
-- [TPC-DS の制作](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar)、2006 年
+以下は、指定されたテキストの日本語訳です。
 
-まず、TPC-DS リポジトリをチェックアウトし、データジェネレーターをコンパイルします：
+---
+
+[Star Schema Benchmark (SSB)](star-schema.md)と同様に、TPC-DSは[TPC-H](tpch.md)に基づいていますが、逆のアプローチを取り、つまり複雑なスノーフレークスキーマにデータを保存することによって、必要な結合の数を8から24に拡張しました。
+データ分布は歪んでいます（たとえば、正規分布とポアソン分布）。
+ランダムな置き換えを含む99のレポーティングおよびアドホッククエリを含みます。
+
+### 参考文献
+- [TPC-DSの制作](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar)、2006
+
+最初に、TPC-DSリポジトリをチェックアウトし、データ生成器をコンパイルします:
 
 ```bash
 git clone https://github.com/gregrahn/tpcds-kit.git
@@ -19,19 +26,20 @@ cd tpcds-kit/tools
 make
 ```
 
-次に、データを生成します。パラメータ `-scale` はスケールファクターを指定します。
+次に、データを生成します。パラメーター`-scale`はスケールファクターを指定します。
 
 ```bash
 ./dsdgen -scale 1
 ```
 
-次に、クエリを生成します（同じスケールファクターを使用します）：
+次に、クエリを生成します（同じスケールファクターを使用）:
 
 ```bash
-./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # out/query_0.sql に 99 のクエリを生成します
+./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # out/query_0.sqlに99クエリを生成
 ```
 
-次に、ClickHouse でテーブルを作成します。tools/tpcds.sql にある元のテーブル定義を使用するか、適切に定義された主キーインデックスと、意味のある場合には LowCardinality 型のカラムタイプを持つ「調整された」テーブル定義を使用できます。
+次に、ClickHouseでテーブルを作成します。
+元のテーブル定義（tools/tpcds.sql）を使用するか、適切に定義された主キーインデックスとLowCardinality型カラム定義を備えた「調節された」テーブル定義を使用することができます。
 
 ```sql
 CREATE TABLE call_center(
@@ -526,37 +534,37 @@ CREATE TABLE web_sales (
 );
 
 CREATE TABLE web_site (
-    web_site_sk               Int64,
-    web_site_id               LowCardinality(String),
-    web_rec_start_date        LowCardinality(String),
-    web_rec_end_date          LowCardinality(Nullable(String)),
-    web_name                  LowCardinality(String),
-    web_open_date_sk          UInt32,
-    web_close_date_sk         Nullable(UInt32),
-    web_class                 LowCardinality(String),
-    web_manager               LowCardinality(String),
-    web_mkt_id                Int32,
-    web_mkt_class             LowCardinality(String),
-    web_mkt_desc              LowCardinality(String),
-    web_market_manager        LowCardinality(String),
-    web_company_id            Int32,
-    web_company_name          LowCardinality(String),
-    web_street_number         LowCardinality(String),
-    web_street_name           LowCardinality(String),
-    web_street_type           LowCardinality(String),
-    web_suite_number          LowCardinality(String),
-    web_city                  LowCardinality(String),
-    web_county                LowCardinality(String),
-    web_state                 LowCardinality(String),
-    web_zip                   LowCardinality(String),
-    web_country               LowCardinality(String),
-    web_gmt_offset            Decimal(7,2),
-    web_tax_percentage        Decimal(7,2),
+    web_site_sk           Int64,
+    web_site_id           LowCardinality(String),
+    web_rec_start_date    LowCardinality(String),
+    web_rec_end_date      LowCardinality(Nullable(String)),
+    web_name              LowCardinality(String),
+    web_open_date_sk      UInt32,
+    web_close_date_sk     Nullable(UInt32),
+    web_class             LowCardinality(String),
+    web_manager           LowCardinality(String),
+    web_mkt_id            Int32,
+    web_mkt_class         LowCardinality(String),
+    web_mkt_desc          LowCardinality(String),
+    web_market_manager    LowCardinality(String),
+    web_company_id        Int32,
+    web_company_name      LowCardinality(String),
+    web_street_number     LowCardinality(String),
+    web_street_name       LowCardinality(String),
+    web_street_type       LowCardinality(String),
+    web_suite_number      LowCardinality(String),
+    web_city              LowCardinality(String),
+    web_county            LowCardinality(String),
+    web_state             LowCardinality(String),
+    web_zip               LowCardinality(String),
+    web_country           LowCardinality(String),
+    web_gmt_offset        Decimal(7,2),
+    web_tax_percentage    Decimal(7,2),
     PRIMARY KEY (web_site_sk)
 );
 ```
 
-データは次のようにインポートできます：
+データは以下のようにインポートできます:
 
 ```bash
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO call_center FORMAT CSV" < call_center.tbl
@@ -585,8 +593,9 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_sales FORM
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_site FORMAT CSV" < web_site.tbl
 ```
 
-生成したクエリを実行します。
+次に、生成されたクエリを実行します。
 
 ::::warning
-TPC-DS は関連サブクエリを多用していますが、執筆時点（2024 年 9 月）で ClickHouse ではサポートされていません ([issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697))。その結果、上記の多くのベンチマーククエリはエラーで失敗します。
+TPC-DSは、執筆時点（2024年9月）のClickHouseではサポートされていない相関サブクエリを多用します（[issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)）。
+その結果、上記のベンチマーククエリの多くがエラーで失敗します。
 ::::

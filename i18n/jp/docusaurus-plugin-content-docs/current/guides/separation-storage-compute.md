@@ -1,13 +1,13 @@
 ---
-sidebar_position: 1
-sidebar_label: 'ストレージとコンピュートの分離'
-slug: /guides/separation-storage-compute
-title: 'ストレージとコンピュートの分離'
-description: 'このガイドでは、ClickHouseとS3を使用してストレージとコンピュートが分離されたアーキテクチャを実装する方法を探ります。'
+'sidebar_position': 1
+'sidebar_label': 'ストレージとコンピューティングの分離'
+'slug': '/guides/separation-storage-compute'
+'title': 'Separation of Storage and Compute'
+'description': 'このガイドでは、ClickHouseとS3を使用して、ストレージとコンピューティングを分離したアーキテクチャを実装する方法について探ります。'
 ---
 
 import Image from '@theme/IdealImage';
-import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
+import BucketDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
 
 
@@ -15,31 +15,31 @@ import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png'
 
 ## 概要 {#overview}
 
-このガイドでは、ClickHouseとS3を使用してストレージとコンピュートが分離されたアーキテクチャを実装する方法を探ります。
+このガイドでは、ClickHouseとS3を使用してストレージとコンピュートを分離したアーキテクチャの実装方法を探ります。
 
-ストレージとコンピュートの分離とは、計算リソースとストレージリソースを独立して管理することを意味します。ClickHouseでは、これによりスケーラビリティ、コスト効率、柔軟性が向上します。必要に応じてストレージとコンピュートリソースを個別にスケールでき、パフォーマンスとコストを最適化できます。
+ストレージとコンピュートの分離は、計算リソースとストレージリソースが独立して管理されることを意味します。ClickHouseでは、これによりスケーラビリティ、コスト効率、および柔軟性が向上します。必要に応じてストレージとコンピュートリソースを別々にスケールさせることができ、パフォーマンスとコストを最適化できます。
 
-ClickHouseをS3にバックアップして使用することは、「コールド」データに対するクエリパフォーマンスがそれほど重要でないユースケースに特に役立ちます。ClickHouseは、`MergeTree`エンジン用にS3をストレージとして使用するためのサポートを提供する`S3BackedMergeTree`を使用しています。このテーブルエンジンは、ユーザーがS3のスケーラビリティとコストの利点を活用しながら、`MergeTree`エンジンの挿入とクエリのパフォーマンスを維持することを可能にします。
+S3をバックエンドとして使用するClickHouseは、「コールド」データに対するクエリパフォーマンスがそれほど重要でないユースケースに特に有用です。ClickHouseは、`MergeTree`エンジンに対してS3をストレージとして使用するためのサポートを提供し、`S3BackedMergeTree`を使用します。このテーブルエンジンを使用することで、ユーザーはS3のスケーラビリティとコストメリットを享受しながら、`MergeTree`エンジンの挿入およびクエリパフォーマンスを維持できます。
 
-ストレージとコンピュートの分離アーキテクチャを実装および管理することは、標準的なClickHouseデプロイメントと比べて複雑であることに注意してください。セルフマネージドのClickHouseでは、このガイドで説明されているようにストレージとコンピュートの分離が可能ですが、設定なしでこのアーキテクチャでClickHouseを使用できる[ClickHouse Cloud](https://clickhouse.com/cloud)の使用をお勧めします。これは、[`SharedMergeTree` テーブルエンジン](/cloud/reference/shared-merge-tree)を使用します。
+ストレージとコンピュートアーキテクチャを実装および管理することは、標準的なClickHouseデプロイメントと比較してより複雑であることに注意してください。セルフマネージドのClickHouseでは、このガイドで説明したようにストレージとコンピュートの分離が可能ですが、設定なしでこのアーキテクチャでClickHouseを使用できる[ClickHouse Cloud](https://clickhouse.com/cloud)の利用をお勧めします。このサービスでは、[`SharedMergeTree`テーブルエンジン](/cloud/reference/shared-merge-tree)を使用します。
 
-*このガイドでは、ClickHouseバージョン22.8以上を使用していることを前提としています。*
+*このガイドは、ClickHouseのバージョン22.8以上を使用していることを前提としています。*
 
 :::warning
-AWS/GCSライフサイクルポリシーを設定しないでください。これはサポートされておらず、テーブルが壊れる可能性があります。
+AWS/GCSのライフサイクルポリシーを構成しないでください。これはサポートされておらず、テーブルが壊れる可能性があります。
 :::
 
-## 1. S3をClickHouseディスクとして使用する {#1-use-s3-as-a-clickhouse-disk}
+## 1. ClickHouseディスクとしてS3を使用する {#1-use-s3-as-a-clickhouse-disk}
 
 ### ディスクの作成 {#creating-a-disk}
 
-ClickHouseの`config.d`ディレクトリに新しいファイルを作成してストレージ構成を保存します。
+ClickHouseの`config.d`ディレクトリに新しいファイルを作成して、ストレージ構成を保存します：
 
 ```bash
 vim /etc/clickhouse-server/config.d/storage_config.xml
 ```
 
-新しく作成したファイルに以下のXMLをコピーし、`BUCKET`、`ACCESS_KEY_ID`、`SECRET_ACCESS_KEY`をデータを保存したいAWSバケットの詳細に置き換えます。
+新しく作成したファイルに以下のXMLをコピーし、`BUCKET`、`ACCESS_KEY_ID`、`SECRET_ACCESS_KEY`をデータを保存したいAWSバケットの詳細に置き換えます：
 
 ```xml
 <clickhouse>
@@ -72,31 +72,31 @@ vim /etc/clickhouse-server/config.d/storage_config.xml
 </clickhouse>
 ```
 
-S3ディスクの設定をさらに指定する必要がある場合（たとえば、`region`を指定するかカスタムHTTP`header`を送信する場合）、関連設定のリストは[こちら](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)で確認できます。
+S3ディスクの設定をさらに指定する必要がある場合、たとえば`region`を指定したりカスタムHTTP`header`を送信したりする場合は、関連する設定のリストを[こちら](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)で見つけることができます。
 
-また、次のようにして`access_key_id`と`secret_access_key`を環境変数およびAmazon EC2メタデータから取得しようとすることもできます。
+次のように`access_key_id`と`secret_access_key`を置き換えることもでき、環境変数やAmazon EC2メタデータから認証情報を取得しようとします：
 
 ```bash
 <use_environment_credentials>true</use_environment_credentials>
 ```
 
-構成ファイルを作成したら、ファイルの所有者をclickhouseユーザーおよびグループに更新する必要があります。
+構成ファイルを作成した後、ファイルの所有者をclickhouseユーザーとグループに更新する必要があります：
 
 ```bash
 chown clickhouse:clickhouse /etc/clickhouse-server/config.d/storage_config.xml
 ```
 
-変更を反映させるために、ClickHouseサーバーを再起動できます。
+これで、ClickHouseサーバーを再起動して変更を適用します：
 
 ```bash
 service clickhouse-server restart
 ```
 
-## 2. S3にバックアップされたテーブルを作成する {#2-create-a-table-backed-by-s3}
+## 2. S3によるバックアップテーブルの作成 {#2-create-a-table-backed-by-s3}
 
-S3ディスクが正しく構成されているか確認するために、テーブルを作成してクエリを試みます。
+S3ディスクが正しく構成されたかをテストするために、テーブルの作成とクエリを試みることができます。
 
-新しいS3ストレージポリシーを指定してテーブルを作成します。
+新しいS3ストレージポリシーを指定してテーブルを作成します：
 
 ```sql
 CREATE TABLE my_s3_table
@@ -109,15 +109,15 @@ ORDER BY id
 SETTINGS storage_policy = 's3_main';
 ```
 
-エンジンとして`S3BackedMergeTree`を指定する必要がなかったことに注意してください。ClickHouseは、テーブルがS3をストレージとして使用していることを検出すると、内部的にエンジンタイプを自動的に変換します。
+`S3BackedMergeTree`としてエンジンを指定する必要がなかったことに注意してください。ClickHouseは、テーブルがS3をストレージとして使用していることを検出すると、エンジンタイプを内部的に自動的に変換します。
 
-正しいポリシーでテーブルが作成されたことを示します。
+テーブルが正しいポリシーで作成されたことを示します：
 
 ```sql
 SHOW CREATE TABLE my_s3_table;
 ```
 
-次の結果が表示されるはずです。
+次の結果が表示されるはずです：
 
 ```response
 ┌─statement────────────────────────────────────────────────────
@@ -132,14 +132,14 @@ SETTINGS storage_policy = 's3_main', index_granularity = 8192
 └──────────────────────────────────────────────────────────────
 ```
 
-新しいテーブルにいくつかの行を挿入してみましょう。
+次に、新しいテーブルにいくつかの行を挿入します：
 
 ```sql
 INSERT INTO my_s3_table (id, column1)
   VALUES (1, 'abc'), (2, 'xyz');
 ```
 
-行が挿入されたことを確認しましょう。
+行が挿入されたことを確認しましょう：
 
 ```sql
 SELECT * FROM my_s3_table;
@@ -154,24 +154,24 @@ SELECT * FROM my_s3_table;
 2 rows in set. Elapsed: 0.284 sec.
 ```
 
-AWSコンソールで、データがS3に正常に挿入されていれば、ClickHouseが指定したバケットに新しいファイルを作成したことが確認できるはずです。
+AWSコンソールで、データがS3に正常に挿入された場合、ClickHouseが指定したバケットに新しいファイルを作成したことが確認できるはずです。
 
-すべてが正常に機能すれば、これでストレージとコンピュートが分離されたClickHouseを使用していることになります！
+すべてが正常に機能した場合、ClickHouseを使用してストレージとコンピュートを分離した状態になっています！
 
-<Image img={s3_bucket_example} size="md" alt="ストレージとコンピュートの分離を使用したS3バケットの例" border/>
+<Image img={s3_bucket_example} size="md" alt="ストレージとコンピュートの分離使用に関するS3バケットの例" border/>
 
-## 3. 障害耐性のためのレプリケーションの実装（オプション） {#3-implementing-replication-for-fault-tolerance-optional}
+## 3. フォールトトレランスのためのレプリケーションの実装 (オプション) {#3-implementing-replication-for-fault-tolerance-optional}
 
 :::warning
-AWS/GCSライフサイクルポリシーを設定しないでください。これはサポートされておらず、テーブルが壊れる可能性があります。
+AWS/GCSのライフサイクルポリシーを構成しないでください。これはサポートされておらず、テーブルが壊れる可能性があります。
 :::
 
-障害耐性のために、複数のAWSリージョンに分散された複数のClickHouseサーバーノードを使用し、各ノード用にS3バケットを用意することができます。
+フォールトトレランスを実現するために、複数のAWSリージョンに分散された複数のClickHouseサーバーノードを使用し、各ノードにS3バケットを持つことができます。
 
-S3ディスクでのレプリケーションは、`ReplicatedMergeTree`テーブルエンジンを使用して実行できます。詳細については以下のガイドを参照してください：
-- [S3オブジェクトストレージを使用して2つのAWSリージョンにわたる単一シャードのレプリケーション](/integrations/s3#s3-multi-region)。
+S3ディスクを使用したレプリケーションは、`ReplicatedMergeTree`テーブルエンジンを使用することで実現できます。詳細については、次のガイドを参照してください：
+- [S3オブジェクトストレージを使用して2つのAWSリージョンにまたがる単一シャードのレプリケーション](/integrations/s3#s3-multi-region).
 
-## さらなる読書 {#further-reading}
+## さらなる情報 {#further-reading}
 
 - [SharedMergeTreeテーブルエンジン](/cloud/reference/shared-merge-tree)
 - [SharedMergeTree発表ブログ](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates)

@@ -1,25 +1,28 @@
 ---
-slug: '/examples/aggregate-function-combinators/maxMap'
-title: 'maxMap'
-description: 'maxMap コンビネーターの使用例'
-keywords: ['max', 'map', 'combinator', 'examples', 'maxMap']
-sidebar_label: 'maxMap'
+'slug': '/examples/aggregate-function-combinators/maxMap'
+'title': 'maxMap'
+'description': 'maxMapコンビネータの使用例'
+'keywords':
+- 'max'
+- 'map'
+- 'combinator'
+- 'examples'
+- 'maxMap'
+'sidebar_label': 'maxMap'
 ---
+
+
 
 
 # maxMap {#maxmap}
 
 ## 説明 {#description}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネーターは、`max`(/sql-reference/aggregate-functions/reference/max)
-関数に適用することで、各キーに基づいて Map 内の最大値を計算するために `maxMap` 
-集約コンビネーター関数を使用することができます。
+[`Map`](/sql-reference/aggregate-functions/combinators#-map) 組み合わせ関数は、[`max`](/sql-reference/aggregate-functions/reference/max) 関数に適用して、各キーに基づいて Map 内の最大値を計算するために `maxMap` 集約組み合わせ関数を使用できます。
 
 ## 使用例 {#example-usage}
 
-この例では、異なる時間スロットのステータスコードとそのカウントを保存するテーブルを作成します。
-各行には、ステータスコードとそれに対応するカウントの Map が含まれます。各時間スロット内で 
-各ステータスコードの最大カウントを見つけるために `maxMap` を使用します。
+この例では、ステータスコードとそれぞれの時間帯におけるカウントを格納するテーブルを作成します。各行には、ステータスコードとその対応するカウントの Map が含まれます。`maxMap` を使用して、各時間帯内の各ステータスコードの最大カウントを見つけます。
 
 ```sql title="クエリ"
 CREATE TABLE metrics(
@@ -41,14 +44,14 @@ FROM metrics
 GROUP BY timeslot;
 ```
 
-`maxMap` 関数は、各時間スロット内で各ステータスコードの最大カウントを見つけます。例えば：
-- 時間スロット '2000-01-01 00:00:00':
+`maxMap` 関数は、各時間帯内の各ステータスコードの最大カウントを見つけます。例えば：
+- 時間帯 '2000-01-01 00:00:00':
   - ステータス 'a': 15
   - ステータス 'b': 25
   - ステータス 'c': max(35, 45) = 45
   - ステータス 'd': 55
   - ステータス 'e': 65
-- 時間スロット '2000-01-01 00:01:00':
+- 時間帯 '2000-01-01 00:01:00':
   - ステータス 'd': 75
   - ステータス 'e': 85
   - ステータス 'f': max(95, 105) = 105
@@ -63,4 +66,4 @@ GROUP BY timeslot;
 
 ## 参照 {#see-also}
 - [`max`](/sql-reference/aggregate-functions/reference/max)
-- [`Map コンビネーター`](/sql-reference/aggregate-functions/combinators#-map)
+- [`Map 組み合わせ関数`](/sql-reference/aggregate-functions/combinators#-map)

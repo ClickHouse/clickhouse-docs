@@ -1,15 +1,17 @@
 ---
-description: '時間系列関数に関するドキュメント'
-sidebar_label: '時間系列'
-sidebar_position: 172
-slug: /sql-reference/functions/time-series-functions
-title: '時間系列関数'
+'description': 'Documentation for Time Series Functions'
+'sidebar_label': 'Time Series'
+'sidebar_position': 172
+'slug': '/sql-reference/functions/time-series-functions'
+'title': 'Time Series Functions'
 ---
 
 
-# 時間系列関数
 
-以下の関数は系列データ分析に使用されます。
+
+# 時系列関数
+
+以下の関数は系列データの分析に使用されます。
 
 ## seriesOutliersDetectTukey {#seriesoutliersdetecttukey}
 
@@ -25,15 +27,15 @@ seriesOutliersDetectTukey(series, min_percentile, max_percentile, K);
 **引数**
 
 - `series` - 数値の配列。
-- `min_percentile` - 四分位範囲を計算するために使用される最小パーセンタイル [(IQR)](https://en.wikipedia.org/wiki/Interquartile_range)。値は[0.02,0.98]の範囲内でなければならず、デフォルトは0.25です。
-- `max_percentile` - 四分位範囲 (IQR)を計算するために使用される最大パーセンタイル。値は[0.02,0.98]の範囲内でなければならず、デフォルトは0.75です。
-- `K` - 軽度または強い外れ値を検出するための非負の定数値。デフォルト値は1.5です。
+- `min_percentile` - 四分位範囲 [(IQR)](https://en.wikipedia.org/wiki/Interquartile_range) を計算するために使用する最小パーセンタイル。値は [0.02,0.98] の範囲内でなければなりません。デフォルトは 0.25 です。
+- `max_percentile` - 四分位範囲 (IQR) を計算するために使用する最大パーセンタイル。値は [0.02,0.98] の範囲内でなければなりません。デフォルトは 0.75 です。
+- `K` - 軽度または強い外れ値を検出するための非負の定数値。デフォルト値は 1.5 です。
 
-外れ値を検出するには、`series`に少なくとも4つのデータポイントが必要です。
+`series` 内で外れ値を検出するには、少なくとも 4 つのデータポイントが必要です。
 
 **返される値**
 
-- 入力配列と同じ長さの配列を返します。各値は系列の対応する要素の潜在的な異常のスコアを表します。ゼロ以外のスコアは潜在的な異常を示します。 [Array](../data-types/array.md)。
+- 入力配列と同じ長さの配列を返します。各値は、系列内の対応する要素の可能性のある異常のスコアを表します。ゼロでないスコアは、可能性のある異常を示します。 [配列](../data-types/array.md)。
 
 **例**
 
@@ -67,7 +69,7 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40,
 
 ## seriesPeriodDetectFFT {#seriesperioddetectfft}
 
-FFT - [Fast Fourier transform](https://en.wikipedia.org/wiki/Fast_Fourier_transform)を使用して、与えられた系列データの周期を見つけます。
+FFT - [高速フーリエ変換](https://en.wikipedia.org/wiki/Fast_Fourier_transform)を使用して、与えられた系列データの周期を見つけます。
 
 **構文**
 
@@ -81,7 +83,7 @@ seriesPeriodDetectFFT(series);
 
 **返される値**
 
-- 系列データの周期に等しい実数値。データポイントの数が4未満のときはNaNを返します。[Float64](../data-types/float.md)。
+- 系列データの周期に等しい実数値。データポイントの数が 4 未満の場合は NaN。 [Float64](../data-types/float.md)。
 
 **例**
 
@@ -113,7 +115,7 @@ SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS pr
 
 ## seriesDecomposeSTL {#seriesdecomposestl}
 
-[STL (Seasonal-Trend Decomposition Procedure Based on Loess)](https://www.wessa.net/download/stl.pdf)を使用して系列データを季節成分、トレンド成分、残差成分に分解します。
+STL [(Loessに基づく季節的トレンド分解手法)](https://www.wessa.net/download/stl.pdf)を使用して、系列データを季節、トレンド、残差成分に分解します。
 
 **構文**
 
@@ -126,11 +128,11 @@ seriesDecomposeSTL(series, period);
 - `series` - 数値の配列
 - `period` - 正の整数
 
-`series`のデータポイントの数は、`period`の値の2倍以上である必要があります。
+`series` 内のデータポイントの数は、`period` の値の 2 倍以上である必要があります。
 
 **返される値**
 
-- 季節成分を含む最初の配列、トレンドを含む第二の配列、残差成分を含む第三の配列、およびベースライン（季節 + トレンド）成分を含む第四の配列からなる四つの配列を返します。[Array](../data-types/array.md)。
+- 季節成分を含む最初の配列、トレンドを含む2番目の配列、残差成分を含む3番目の配列、基準（季節 + トレンド）成分を含む4番目の配列からなる4つの配列の配列を返します。 [配列](../data-types/array.md)。
 
 **例**
 

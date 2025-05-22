@@ -1,59 +1,63 @@
-description: 'ClickHouseの開発のための前提条件とセットアップ手順'
-sidebar_label: '前提条件'
-sidebar_position: 5
-slug: /development/developer-instruction
-title: '開発者の前提条件'
-```
+---
+'description': 'ClickHouse 開発の前提条件とセットアップ手順'
+'sidebar_label': '事前条件'
+'sidebar_position': 5
+'slug': '/development/developer-instruction'
+'title': '開発者の事前条件'
+---
+
+
+
 
 
 # 前提条件
 
-ClickHouseはLinux、FreeBSD、macOS上でビルド可能です。  
-Windowsを使用している場合でも、Linuxを実行している仮想マシン（例：[VirtualBox](https://www.virtualbox.org/) と Ubuntu）でClickHouseをビルドすることができます。
+ClickHouseは、Linux、FreeBSD、macOS上でビルドできます。
+Windowsを使用している場合でも、Linuxを実行している仮想マシン（例：Ubuntuがインストールされた [VirtualBox](https://www.virtualbox.org/)）でClickHouseをビルドできます。
 
 ## GitHubにリポジトリを作成する {#create-a-repository-on-github}
 
-ClickHouseの開発を開始するには、[GitHub](https://www.github.com/) アカウントが必要です。  
-SSHキーをローカルに生成し（すでに持っていない場合）、公開鍵をGitHubにアップロードすることも必須です。これにより、パッチの貢献が可能になります。
+ClickHouseの開発を開始するには、[GitHub](https://www.github.com/)アカウントが必要です。
+SSHキーをローカルで生成し（すでに存在しない場合）、パッチの寄稿において前提条件となるため、その公開キーをGitHubにアップロードしてください。
 
-次に、[ClickHouseリポジトリ](https://github.com/ClickHouse/ClickHouse/)を個人アカウントにフォークします。右上にある「fork」ボタンをクリックしてください。
+次に、画面の右上隅にある「fork」ボタンをクリックして、個人アカウントに[ClickHouseリポジトリ](https://github.com/ClickHouse/ClickHouse/)をフォークします。
 
-変更を貢献するためには、例えばバグの修正や機能追加など、まず自分のフォーク内のブランチに変更をコミットし、その後「Pull Request」を作成してメインリポジトリに変更を提案します。
+変更を寄稿するには、まずフォークしたリポジトリのブランチに変更をコミットし、その後、メインリポジトリに対して変更を含む「Pull Request」を作成します。
 
-Gitリポジトリで作業するためには、Gitをインストールしてください。Ubuntuの場合、次のコマンドを実行します：
+Gitリポジトリで作業するためには、Gitをインストールしてください。例えば、Ubuntuでは、次のコマンドを実行します：
 
 ```sh
 sudo apt update
 sudo apt install git
 ```
 
-Gitのチートシートは[こちら](https://education.github.com/git-cheat-sheet-education.pdf)で見つけることができます。  
-詳しいGitマニュアルは[こちら](https://git-scm.com/book/en/v2)です。
+Gitのチートシートは[ここ](https://education.github.com/git-cheat-sheet-education.pdf)にあります。
+詳細なGitマニュアルは[こちら](https://git-scm.com/book/en/v2)です。
 
-## リポジトリを開発環境にクローンする {#clone-the-repository-to-your-development-machine}
+## リポジトリを開発用マシンにクローンする {#clone-the-repository-to-your-development-machine}
 
 まず、作業マシンにソースファイルをダウンロードします。つまり、リポジトリをクローンします：
 
 ```sh
-git clone git@github.com:your_github_username/ClickHouse.git  # プレースホルダーはあなたのGitHubユーザー名に置き換えてください
+git clone git@github.com:your_github_username/ClickHouse.git  # プレースホルダーをあなたのGitHubユーザー名に置き換えてください
 cd ClickHouse
 ```
 
-このコマンドは、ソースコード、テスト、およびその他のファイルを含む `ClickHouse/` ディレクトリを作成します。  
-URLの後にカスタムディレクトリの指定は可能ですが、このパスにホワイトスペースを含めないことが重要です。そうしないと、後のビルドが壊れる可能性があります。
+このコマンドは、ソースコード、テスト、およびその他のファイルを含む `ClickHouse/` ディレクトリを作成します。
+URLの後にカスタムディレクトリを指定できますが、このパスにはホワイトスペースが含まれないことが重要です。これは、後でビルドが壊れる可能性があるためです。
 
-ClickHouseのGitリポジトリは、サードパーティのライブラリを引き込むためにサブモジュールを使用しています。  
-サブモジュールはデフォルトではチェックアウトされません。次のいずれかの方法を実行できます。
+ClickHouseのGitリポジトリは、サブモジュールを使用してサードパーティライブラリをプルします。
+サブモジュールはデフォルトではチェックアウトされません。次のいずれかを実行できます：
 
-- `git clone` を `--recurse-submodules` オプション付きで実行する。
+- `--recurse-submodules` オプションを付けて `git clone` を実行する。
 
-- `--recurse-submodules` オプションなしで `git clone` を実行した場合は、すべてのサブモジュールを明示的にチェックアウトするために `git submodule update --init --jobs <N>` を実行します。(` <N>` は例えば `12` に設定してダウンロードを並行処理することができます。)
+- `--recurse-submodules`なしで `git clone` を実行した場合、すべてのサブモジュールを明示的にチェックアウトするために `git submodule update --init --jobs <N>` を実行します。 (`<N>`は、たとえば `12` に設定してダウンロードを並列化できます。）
 
-- `--recurse-submodules` を指定せずに `git clone` を実行し、不要なファイルとサブモジュールの履歴を省略してストレージを節約するために、[スパース](https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/) と [シャロー](https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/) サブモジュールチェックアウトを使用したい場合は、`./contrib/update-submodules.sh` を実行します。このオプションはCIに使用されているが、ローカル開発にはおすすめしません。作業が不便で遅くなるためです。
+- `--recurse-submodules`なしで `git clone` が実行された場合、不要なファイルと履歴を省略してスペースを節約するために [スパース](https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/) および [浅い](https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/) サブモジュールのチェックアウトを使用するために `./contrib/update-submodules.sh` を実行します。この選択肢はCIによって使用されますが、サブモジュールとの作業を不便にし、遅くするため、ローカル開発には推奨されません。
 
-Gitサブモジュールのステータスを確認するには、`git submodule status` を実行します。
+Gitサブモジュールの状態を確認するには、`git submodule status`を実行します。
 
-次のエラーメッセージを受け取った場合：
+次のエラーメッセージが表示される場合：
 
 ```bash
 Permission denied (publickey).
@@ -63,83 +67,86 @@ Please make sure you have the correct access rights
 and the repository exists.
 ```
 
-接続に必要なSSHキーがGitHubに存在していないことが原因です。これらのキーは通常 `~/.ssh` にあります。SSHキーを受け入れてもらうためには、GitHubの設定にアップロードする必要があります。
+GitHubに接続するためのSSHキーが不足しています。
+これらのキーは通常、`~/.ssh`にあります。
+SSHキーが受け入れられるためには、それらをGitHubの設定にアップロードする必要があります。
 
-HTTPSを介してリポジトリをクローンすることも可能です：
+HTTPS経由でリポジトリをクローンすることも可能です：
 
 ```sh
 git clone https://github.com/ClickHouse/ClickHouse.git
 ```
 
-しかし、これでは変更をサーバーに送ることはできません。  
-一時的にこれを使用して、後でSSHキーを追加してリモートアドレスを `git remote` コマンドで置き換えることができます。
+ただし、これにより変更をサーバーに送信することはできません。
+一時的に使用することはできますが、後でSSHキーを追加し、`git remote`コマンドでリポジトリのリモートアドレスを置き換える必要があります。
 
-また、元のClickHouseリポジトリアドレスをローカルリポジトリに追加して、そこから更新を取得することも可能です：
+ローカルリポジトリに元のClickHouseリポジトリのアドレスを追加して、そこから更新をプルすることもできます：
 
 ```sh
 git remote add upstream git@github.com:ClickHouse/ClickHouse.git
 ```
 
-このコマンドが正常に実行された後は、`git pull upstream master` を実行してメインClickHouseリポジトリから更新を取得できるようになります。
+このコマンドを正常に実行すると、`git pull upstream master` を実行してメインのClickHouseリポジトリから更新をプルできるようになります。
 
 :::tip
-必ず `git push` をそのまま使用しないでください。異なるリモートや誤ったブランチにプッシュする可能性があります。リモートとブランチ名は明示的に指定するのが良いです。例： `git push origin my_branch_name` 。
+必ず `git push` をそのまま使用しないでください。間違ったリモートや間違ったブランチにプッシュしてしまう可能性があります。
+リモート名とブランチ名を明示的に指定することをお勧めします。例えば、`git push origin my_branch_name`のようにしてください。
 :::
 
 ## コードを書く {#writing-code}
 
-以下は、ClickHouseのコードを書く際に役立つクイックリンクです：
+以下は、ClickHouseのコードを書く際に便利なクイックリンク集です：
 
 - [ClickHouseアーキテクチャ](/development/architecture/).
 - [コードスタイルガイド](/development/style/).
 - [サードパーティライブラリ](/development/contrib#adding-and-maintaining-third-party-libraries)
-- [テストを書く](/development/tests/)
-- [オープンイシュー](https://github.com/ClickHouse/ClickHouse/issues?q=is%3Aopen+is%3Aissue+label%3A%22easy+task%22)
+- [テストの作成](/development/tests/)
+- [オープンな問題](https://github.com/ClickHouse/ClickHouse/issues?q=is%3Aopen+is%3Aissue+label%3A%22easy+task%22)
 
 ### IDE {#ide}
 
-[Visual Studio Code](https://code.visualstudio.com/) と [Neovim](https://neovim.io/) は、過去にClickHouseの開発でうまく機能した2つのオプションです。VS Codeを使用している場合は、IntelliSenseの代わりに[clangd拡張機能](https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.vscode-clangd)を使用することをお勧めします。
+[Visual Studio Code](https://code.visualstudio.com/) と [Neovim](https://neovim.io/) は、ClickHouseの開発において過去にうまく機能してきた2つの選択肢です。VS Codeを使用している場合は、[clangd拡張](https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.vscode-clangd)を使用してIntelliSenseを置き換えることをお勧めします。こちらの方がパフォーマンスが優れています。
 
-[CLion](https://www.jetbrains.com/clion/)も素晴らしい代替手段です。ただし、ClickHouseのような大規模プロジェクトでは遅くなることがあります。CLionを使用する際に注意すべき点は以下の通りです：
+[CLion](https://www.jetbrains.com/clion/) はもう一つの素晴らしい選択肢です。ただし、ClickHouseのような大規模プロジェクトでは遅くなることがあります。CLionを使用する際の注意点は次のとおりです：
 
-- CLionは独自に `build` パスを作成し、自動的にビルドタイプに `debug` を選択します。
-- CLion内で定義されたCMakeのバージョンを使用し、あなたがインストールしたものではありません。
-- CLionはビルドタスクを実行するために `make` を使用し、`ninja` は使用しません（これは通常の動作です）。
+- CLionは独自に`build`パスを作成し、ビルドタイプとして`debug`を自動的に選択します。
+- CLionで定義されたCMakeのバージョンを使用し、あなたがインストールしたものは使用しません。
+- CLionは`ninja`ではなく`make`を使用してビルドタスクを実行します（これは通常の動作です）。
 
-他に使用できるIDEは、[Sublime Text](https://www.sublimetext.com/)、[Qt Creator](https://www.qt.io/product/development-tools)、または[Kate](https://kate-editor.org/)です。
+他にも使用できるIDEには、[Sublime Text](https://www.sublimetext.com/)、[Qt Creator](https://www.qt.io/product/development-tools)、または[Kate](https://kate-editor.org/)があります。
 
 ## プルリクエストを作成する {#create-a-pull-request}
 
-GitHubのUIでフォークしたリポジトリに移動します。  
-ブランチで開発していた場合、そのブランチを選択する必要があります。  
-画面上には「Pull request」ボタンがあります。  
-基本的に、これは「私の変更をメインリポジトリに受け入れるリクエストを作成する」と意味します。
+GitHubのUIでフォークしたリポジトリに移動します。
+ブランチで開発している場合は、そのブランチを選択する必要があります。
+画面に「Pull request」ボタンがあります。
+本質的には、これは「私の変更をメインリポジトリに受け入れるリクエストを作成する」という意味です。
 
-作業がまだ完了していない場合でもプルリクエストを作成できます。この場合、タイトルの先頭に「WIP」（作業中）という単語を入れてください。後で変更することができます。  
-これは、協力して変更をレビューおよび議論するため、また利用可能なテストをすべて実行するために役立ちます。  
-変更の概要を簡潔に説明することが重要です。これは、リリースの変更ログ生成に使用されます。
+作業が完了していない場合でもプルリクエストを作成できます。
+この場合、タイトルの冒頭に「WIP」（作業中）と記載してください。後で変更可能です。
+これは、協力的なレビューおよび変更の議論、およびすべての利用可能なテストを実行するために便利です。
+変更内容の簡潔な説明を提供することが重要です。これは後でリリースの変更履歴を生成する際に使用されます。
 
-ClickHouseの従業員があなたのPRに「can be tested」のタグを付けると、テストが開始されます。  
-いくつかの初期チェック（例：コードスタイル）の結果は数分内に届きます。  
-ビルドチェックの結果は30分以内に届きます。  
-主要なテストセットは1時間以内に結果を報告します。
+ClickHouseの社員があなたのPRに「テスト可能」タグを付けると、テストが開始されます。
+最初のチェック（例えば、コードスタイル）の結果は数分以内に届きます。
+ビルドチェックの結果は30分以内に届きます。
+主要なテストセットの結果は1時間以内に報告されます。
 
-システムは、あなたのプルリクエスト用にClickHouseのバイナリビルドを準備します。  
-これらのビルドを取得するには、チェックリスト内の「Builds」エントリの横にある「Details」リンクをクリックします。  
-そこには、あなたがデプロイできるClickHouseの作成された.debパッケージへの直接リンクがあります（怖くなければ本番サーバーでも可能です）。
+システムは、あなたのプルリクエスト専用のClickHouseバイナリビルドを準備します。
+これらのビルドを取得するには、チェックリストの「Builds」エントリの横にある「Details」リンクをクリックします。
+そこには、デプロイ可能なClickHouseの.build .debパッケージへの直接リンクがあります（恐れがなければ本番サーバーでも展開できます）。
 
 ## ドキュメントを書く {#write-documentation}
 
-新機能を追加するプルリクエストには、適切なドキュメントが付属する必要があります。  
-ドキュメントの変更をプレビューしたい場合、ドキュメントページをローカルにビルドする方法についての手順は、README.mdファイルにあります。[こちら](https://github.com/ClickHouse/clickhouse-docs)です。  
-ClickHouseに新しい関数を追加する際は、以下のテンプレートをガイドとして使用できます：
+新しい機能を追加するプルリクエストには、適切なドキュメントが付随する必要があります。
+ドキュメントの変更をプレビューしたい場合の、ローカルでドキュメントページをビルドする手順は、README.mdファイルの[こちら](https://github.com/ClickHouse/clickhouse-docs)に記載されています。
+ClickHouseに新しい関数を追加する際には、以下のテンプレートをガイドとして使用できます：
 
 ```markdown
 
 # newFunctionName
 
-関数の短い説明がここに入ります。  
-それが何をするのか、典型的な使用ケースを簡潔に説明してください。
+関数の短い説明がここに入ります。これは、関数が何をするかや典型的な使用例を簡潔に説明するべきです。
 
 **構文**
 
@@ -149,54 +156,55 @@ newFunctionName(arg1, arg2[, arg3])
 
 **引数**
 
-- `arg1` — 引数の説明。 [DataType](../data-types/float.md)
-- `arg2` — 引数の説明。 [DataType](../data-types/float.md)
-- `arg3` — オプション引数の説明（任意）。 [DataType](../data-types/float.md)
+- `arg1` — 引数の説明。 [データ型](../data-types/float.md)
+- `arg2` — 引数の説明。 [データ型](../data-types/float.md)
+- `arg3` — オプション引数の説明（オプション）。 [データ型](../data-types/float.md)
 
 **実装の詳細**
 
-関連がある場合、実装の詳細について説明します。
+関連がある場合は、実装の詳細の説明。
 
 **返される値**
 
-- {ここに関数の返り値を挿入} を返します。 [DataType](../data-types/float.md)
+- {関数が返すものをここに挿入します}を返します。 [データ型](../data-types/float.md)
 
 **例**
 
 クエリ：
 
 \```sql
-SELECT 'ここに例のクエリを書く';
+SELECT 'write your example query here';
 \```
 
-レスポンス：
+応答：
 
 \```response
 ┌───────────────────────────────────┐
-│ クエリの結果                     │
+│ クエリの結果                   │
 └───────────────────────────────────┘
 \```
 ```
 
 ## テストデータの使用 {#using-test-data}
 
-ClickHouseの開発には、現実的なデータセットを読み込むことがしばしば要求されます。  
-これは特にパフォーマンステストで重要です。  
-私たちは、Web分析のための特別に用意された匿名データセットを持っています。これには、追加で約3GBの空きディスクスペースが必要です。
+ClickHouseの開発には、実際のデータセットをロードすることがしばしば必要です。
+特に、パフォーマンステストには重要です。
+ウェブ分析用の特別に準備された匿名データセットがあります。
+このデータセットは、さらに約3GBの空きディスクスペースが必要です。
 
 ```sh
-sudo apt install wget xz-utils
+    sudo apt install wget xz-utils
 
-wget https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz
-wget https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz
+    wget https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz
+    wget https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz
 
-xz -v -d hits_v1.tsv.xz
-xz -v -d visits_v1.tsv.xz
+    xz -v -d hits_v1.tsv.xz
+    xz -v -d visits_v1.tsv.xz
 
-clickhouse-client
+    clickhouse-client
 ```
 
-clickhouse-client内で：
+clickhouse-clientで：
 
 ```sql
 CREATE DATABASE IF NOT EXISTS test;
@@ -212,3 +220,4 @@ CREATE TABLE test.visits ( CounterID UInt32,  StartDate Date,  Sign Int8,  IsNew
 ```bash
 clickhouse-client --max_insert_block_size 100000 --query "INSERT INTO test.hits FORMAT TSV" < hits_v1.tsv
 clickhouse-client --max_insert_block_size 100000 --query "INSERT INTO test.visits FORMAT TSV" < visits_v1.tsv
+```

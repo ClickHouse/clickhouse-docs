@@ -1,22 +1,23 @@
 ---
-alias: []
-description: '行バイナリデフォルト形式のドキュメント'
-input_format: true
-keywords: ['RowBinaryWithDefaults']
-output_format: false
-slug: /interfaces/formats/RowBinaryWithDefaults
-title: '行バイナリデフォルト'
+'alias': []
+'description': 'RowBinaryWithDefaults フォーマットのドキュメント'
+'input_format': true
+'keywords':
+- 'RowBinaryWithDefaults'
+'output_format': false
+'slug': '/interfaces/formats/RowBinaryWithDefaults'
+'title': 'RowBinaryWithDefaults'
 ---
 
 import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settings.md'
 
-| 入力 | 出力 | エイリアス |
-|------|------|-----------|
-| ✔    | ✗    |           |
+| Input | Output | Alias |
+|-------|--------|-------|
+| ✔     | ✗      |       |
 
 ## 説明 {#description}
 
-[`RowBinary`](./RowBinary.md) 形式に類似していますが、各カラムの前にデフォルト値が使用されるべきかどうかを示すバイトが追加されています。
+[`RowBinary`](./RowBinary.md) フォーマットに似ていますが、各カラムの前にデフォルト値を使用する必要があるかどうかを示す追加のバイトがあります。
 
 ## 使用例 {#example-usage}
 
@@ -31,8 +32,8 @@ SELECT * FROM FORMAT('RowBinaryWithDefaults', 'x UInt32 default 42, y UInt32', x
 └────┴───┘
 ```
 
-- カラム `x` には、デフォルト値が使用されることを示すバイト `01` だけがあり、このバイトの後に他のデータは提供されていません。
-- カラム `y` のデータは、カラムに実際の値が含まれていることを示すバイト `00` から始まり、次のデータ `01000000` から読み取られます。
+- カラム `x` には、デフォルト値を使用する必要があることを示すバイト `01` が1つだけあります。このバイトの後には他のデータは提供されていません。
+- カラム `y` のデータは、カラムに実際の値があることを示すバイト `00` から始まり、後続のデータ `01000000` から読み取る必要があります。
 
 ## フォーマット設定 {#format-settings}
 

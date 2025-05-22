@@ -1,9 +1,11 @@
 ---
-description: '算術平均を計算します。'
-sidebar_position: 112
-slug: /sql-reference/aggregate-functions/reference/avg
-title: 'avg'
+'description': 'Calculates the arithmetic mean.'
+'sidebar_position': 112
+'slug': '/sql-reference/aggregate-functions/reference/avg'
+'title': 'avg'
 ---
+
+
 
 
 # avg
@@ -18,12 +20,12 @@ avg(x)
 
 **引数**
 
-- `x` — 入力値で、[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または[Decimal](../../../sql-reference/data-types/decimal.md)でなければなりません。
+- `x` — 入力値は、[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または[Decimal](../../../sql-reference/data-types/decimal.md)である必要があります。
 
 **返される値**
 
-- 算術平均で、常に[Float64](../../../sql-reference/data-types/float.md)型です。
-- 入力パラメーター`x`が空の場合は`NaN`。
+- 算術平均、常に[Float64](../../../sql-reference/data-types/float.md)として返されます。
+- 入力パラメータ `x` が空の場合、`NaN`を返します。
 
 **例**
 
@@ -43,7 +45,7 @@ SELECT avg(x) FROM values('x Int8', 0, 1, 2, 3, 4, 5);
 
 **例**
 
-一時テーブルを作成:
+一時テーブルを作成します:
 
 クエリ:
 
@@ -51,7 +53,7 @@ SELECT avg(x) FROM values('x Int8', 0, 1, 2, 3, 4, 5);
 CREATE table test (t UInt8) ENGINE = Memory;
 ```
 
-算術平均を取得:
+算術平均を取得します:
 
 クエリ:
 

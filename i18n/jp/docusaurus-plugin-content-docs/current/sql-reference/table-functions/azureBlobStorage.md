@@ -1,10 +1,13 @@
-description: 'Azure Blob Storageのファイルを選択/挿入するためのテーブルのようなインターフェースを提供します。s3関数に似ています。'
-keywords: ['azure blob storage']
-sidebar_label: 'azureBlobStorage'
-sidebar_position: 10
-slug: /sql-reference/table-functions/azureBlobStorage
-title: 'azureBlobStorage'
-```
+---
+'description': 'Provides a table-like interface to select/insert files in Azure Blob
+  Storage. Similar to the s3 function.'
+'keywords':
+- 'azure blob storage'
+'sidebar_label': 'Azure Blob Storage'
+'sidebar_position': 10
+'slug': '/sql-reference/table-functions/azureBlobStorage'
+'title': 'azureBlobStorage'
+---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -12,34 +15,36 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # azureBlobStorage テーブル関数
 
-[Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs)内のファイルを選択/挿入するためのテーブルのようなインターフェースを提供します。このテーブル関数は、[s3関数](../../sql-reference/table-functions/s3.md)に似ています。
+[Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) でファイルを選択/挿入するためのテーブルのようなインターフェースを提供します。このテーブル関数は [s3 関数](../../sql-reference/table-functions/s3.md) に似ています。
 
-**構文**
+## 構文 {#syntax}
 
 ```sql
 azureBlobStorage(- connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression, structure])
 ```
 
-**引数**
+## 引数 {#arguments}
 
-- `connection_string|storage_account_url` — connection_stringにはアカウント名とキーが含まれます ([接続文字列を作成する](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json#configure-a-connection-string-for-an-azure-storage-account))。また、ここにストレージアカウントのURLを提供し、アカウント名およびアカウントキーを別のパラメータとして指定することもできます（パラメータaccount_nameおよびaccount_keyを参照）。
-- `container_name` - コンテナ名
-- `blobpath` - ファイルパス。読み取り専用モードで以下のワイルドカードをサポートします: `*`, `**`, `?`, `{abc,def}` および `{N..M}`。ここで、`N`、`M`は数字、`'abc'`、`'def'`は文字列です。
-- `account_name` - storage_account_urlが使用されている場合、ここでアカウント名を指定できます。
-- `account_key` - storage_account_urlが使用されている場合、ここでアカウントキーを指定できます。
-- `format` — ファイルの[形式](/sql-reference/formats)。
-- `compression` — サポートされている値: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`。デフォルトでは、ファイル拡張子によって圧縮が自動的に検出されます（`auto`に設定するのと同じです）。
-- `structure` — テーブルの構造。フォーマットは `'column1_name column1_type, column2_name column2_type, ...'`。
+| 引数                                      | 説明                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|-------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `connection_string`\| `storage_account_url` | connection_string はアカウント名とキーを含みます ([接続文字列の作成](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json#configure-a-connection-string-for-an-azure-storage-account)) または、ここでストレージアカウントの URL とアカウント名およびアカウントキーを別々のパラメータとして指定できます（パラメータ account_name と account_key を参照してください）|
+| `container_name`                          | コンテナ名                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `blobpath`                                | ファイルパス。読み取り専用モードで次のワイルドカードをサポートします： `*`, `**`, `?`, `{abc,def}` 及び `{N..M}` （ここで `N`、`M` は数字、`'abc'`、`'def'` は文字列）。                                                                                                                                                                                                                                                                                              |
+| `account_name`                            | storage_account_url が使用されている場合、アカウント名をここに指定できます                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `account_key`                             | storage_account_url が使用されている場合、アカウントキーをここに指定できます                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `format`                                  | ファイルの[フォーマット](/sql-reference/formats)。                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `compression`                             | サポートされる値： `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`。デフォルトでは、ファイル拡張子によって圧縮を自動検出します（`auto` に設定されているのと同じ）。                                                                                                                                                                                                                                                                                                     | 
+| `structure`                               | テーブルの構造。フォーマット `'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                                                                                                                                                                |
 
-**戻り値**
+## 戻り値 {#returned_value}
 
-指定された構造のテーブルが、指定されたファイルでのデータの読み書きに使用されます。
+指定したファイル内のデータを読み書きするための指定された構造のテーブル。
 
-**例**
+## 例 {#examples}
 
-[AuroraBlobStorage](/engines/table-engines/integrations/azureBlobStorage) テーブルエンジンと同様に、ユーザーはローカルAzure Storage開発のためにAzuriteエミュレーターを使用できます。詳細は[こちら](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage)。以下では、Azuriteがホスト名 `azurite1` で使用可能であると仮定します。
+[AureBlobStorage](/engines/table-engines/integrations/azureBlobStorage) テーブルエンジンに似て、おそらくユーザーはローカルAzureストレージ開発用にAzuriteエミュレーターを使用することができます。詳細は [こちら](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage) で確認できます。以下では、Azurite がホスト名 `azurite1` で利用可能であると仮定します。
 
-次のようにして、Azure Blob Storageにデータを書き込むことができます：
+次のようにして Azure Blob Storage にデータを書き込むことができます：
 
 ```sql
 INSERT INTO TABLE FUNCTION azureBlobStorage('http://azurite1:10000/devstoreaccount1',
@@ -47,7 +52,7 @@ INSERT INTO TABLE FUNCTION azureBlobStorage('http://azurite1:10000/devstoreaccou
     'CSV', 'auto', 'column1 UInt32, column2 UInt32, column3 UInt32') PARTITION BY column3 VALUES (1, 2, 3), (3, 2, 1), (78, 43, 3);
 ```
 
-次に、次のように読み取ることができます：
+その後、次のように読み込むことができます：
 
 ```sql
 SELECT * FROM azureBlobStorage('http://azurite1:10000/devstoreaccount1',
@@ -74,24 +79,20 @@ SELECT count(*) FROM azureBlobStorage('DefaultEndpointsProtocol=https;AccountNam
 └─────────┘
 ```
 
-## 仮想カラム {#virtual-columns}
+## バーチャルカラム {#virtual-columns}
 
-- `_path` — ファイルへのパス。タイプ: `LowCardinality(String)`。
-- `_file` — ファイル名。タイプ: `LowCardinality(String)`。
-- `_size` — ファイルのバイト単位のサイズ。タイプ: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` です。
-- `_time` — ファイルの最終変更時間。タイプ: `Nullable(DateTime)`。時間が不明な場合、値は `NULL` です。
-
-**参照**
-
-- [AzureBlobStorage テーブルエンジン](engines/table-engines/integrations/azureBlobStorage.md)
+- `_path` — ファイルへのパス。型： `LowCardinality(String)`。
+- `_file` — ファイル名。型： `LowCardinality(String)`。
+- `_size` — バイト単位のファイルサイズ。型： `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` です。
+- `_time` — ファイルの最終変更時間。型： `Nullable(DateTime)`。時間が不明な場合、値は `NULL` です。
 
 ## Hiveスタイルのパーティショニング {#hive-style-partitioning}
 
-`use_hive_partitioning` が1に設定されている場合、ClickHouseはパス内のHiveスタイルのパーティショニングを検出し（`/name=value/`）、クエリ内でパーティションカラムを仮想カラムとして使用できるようにします。これらの仮想カラムは、パーティション付きパスと同じ名前になりますが、`_` で始まります。
+`use_hive_partitioning` が 1 に設定されていると、ClickHouse はパス内の Hive スタイルのパーティシoning (`/name=value/`) を検出し、クエリ内でパーティションカラムをバーチャルカラムとして使用できるようにします。これらのバーチャルカラムは、パーティションされたパスと同じ名前を持ちますが、`_` で始まります。
 
 **例**
 
-Hiveスタイルのパーティショニングで作成された仮想カラムを使用します。
+Hive スタイルのパーティショニングで作成された仮想カラムを使用する
 
 ```sql
 SELECT * from azureBlobStorage(config, storage_account_url='...', container='...', blob_path='http://data/path/date=*/country=*/code=*/*.parquet') where _date > '2020-01-01' and _country = 'Netherlands' and _code = 42;
@@ -99,11 +100,11 @@ SELECT * from azureBlobStorage(config, storage_account_url='...', container='...
 
 ## 共有アクセス署名 (SAS) の使用 {#using-shared-access-signatures-sas-sas-tokens}
 
-共有アクセス署名 (SAS) は、Azure Storageコンテナまたはファイルへの制限されたアクセスを付与するURIです。ストレージアカウントキーを共有することなく、ストレージアカウントリソースへの時間制限付きアクセスを提供するために使用します。詳細は[こちら](https://learn.microsoft.com/en-us/rest/api/storageservices/delegate-access-with-shared-access-signature)。
+共有アクセス署名 (SAS) は、Azure ストレージコンテナまたはファイルへのアクセスを制限する URI です。これを使用して、ストレージアカウントのリソースへの時間制限付きのアクセスを提供できます。ストレージアカウントキーを共有せずにアクセスを提供することができます。詳細は [こちら](https://learn.microsoft.com/en-us/rest/api/storageservices/delegate-access-with-shared-access-signature) をご覧ください。
 
-`azureBlobStorage` 関数は、共有アクセス署名 (SAS) をサポートしています。
+`azureBlobStorage` 関数は共有アクセス署名 (SAS) をサポートしています。
 
-[Blob SASトークン](https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/how-to-guides/create-sas-tokens?tabs=Containers)には、リクエストを認証するために必要なすべての情報が含まれています。これには、ターゲットBlob、権限、及び有効期限が含まれます。Blob URLを構成するには、SASトークンをBlobサービスエンドポイントに追加します。たとえば、エンドポイントが `https://clickhousedocstest.blob.core.windows.net/` の場合、リクエストは次のようになります：
+[Blob SAS トークン](https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/how-to-guides/create-sas-tokens?tabs=Containers) には、リクエストの認証に必要なすべての情報が含まれており、ターゲットのBlob、権限、有効期限を含みます。Blob URL を構築するには、SAS トークンを Blob サービスエンドポイントに追加します。たとえば、エンドポイントが `https://clickhousedocstest.blob.core.windows.net/` の場合、リクエストは次のようになります：
 
 ```sql
 SELECT count()
@@ -113,10 +114,10 @@ FROM azureBlobStorage('BlobEndpoint=https://clickhousedocstest.blob.core.windows
 │      10 │
 └─────────┘
 
-1行セット。経過時間: 0.425秒。
+1 行がセットされました。経過時間: 0.425 秒。
 ```
 
-または、ユーザーは生成された[Blob SAS URL](https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/how-to-guides/create-sas-tokens?tabs=Containers)を使用することもできます：
+または、ユーザーは生成された [Blob SAS URL](https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/how-to-guides/create-sas-tokens?tabs=Containers) を使用できます：
 
 ```sql
 SELECT count() 
@@ -126,4 +127,8 @@ FROM azureBlobStorage('https://clickhousedocstest.blob.core.windows.net/?sp=r&st
 │      10 │
 └─────────┘
 
-1行セット。経過時間: 0.153秒。
+1 行がセットされました。経過時間: 0.153 秒。
+```
+
+## 関連 {#related}
+- [AzureBlobStorage テーブルエンジン](engines/table-engines/integrations/azureBlobStorage.md)
