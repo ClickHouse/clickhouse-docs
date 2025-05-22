@@ -1390,6 +1390,7 @@ const sidebars = {
         // "operations/settings/mysql-binlog-client",
         "operations/settings/permissions-for-queries",
         "operations/settings/query-complexity",
+        "operations/settings/server-overload",
         "operations/settings/settings-query-level",
         "operations/settings/settings-profiles",
         "operations/settings/settings-users",

@@ -123,7 +123,8 @@ The supported formats are:
 
 ### Supported Data Types {#supported-data-types}
 
-The following ClickHouse data types are currently supported in ClickPipes:
+#### Standard types support {#standard-types-support}
+The following standard ClickHouse data types are currently supported in ClickPipes:
 
 - Base numeric types - \[U\]Int8/16/32/64 and Float32/64
 - Large integer types - \[U\]Int128/256
@@ -140,6 +141,28 @@ The following ClickHouse data types are currently supported in ClickPipes:
 - all ClickHouse LowCardinality types
 - Map with keys and values using any of the above types (including Nullables)
 - Tuple and Array with elements using any of the above types (including Nullables, one level depth only)
+
+#### Variant type support (experimental) {#variant-type-support}
+Variant type support is automatic if your Cloud service is running ClickHouse 25.3 or later.  Otherwise, you will
+have to submit a support ticket to enable it on your service.
+
+ClickPipes supports the Variant type in the following circumstances:
+- Avro Unions.  If your Avro schema contains a union with multiple non-null types, ClickPipes will infer the
+appropriate variant type.  Variant types are not otherwise supported for Avro data.
+- JSON fields.  You can manually specify a Variant type (such as `Variant(String, Int64, DateTime)`) for any JSON field
+in the source data stream.  Because of the way ClickPipes determines the correct variant subtype to use, only one integer or datetime
+type can be used in the Variant definition - for example, `Variant(Int64, UInt32)` is not supported.
+
+#### JSON type support (experimental) {#json-type-support}
+JSON type support is automatic if your Cloud service is running ClickHouse 25.3 or later.  Otherwise, you will
+have to submit a support ticket to enable it on your service.
+
+ClickPipes support the JSON type in the following circumstances:
+- Avro Record types can always be assigned to a JSON column.
+- Avro String and Bytes types can be assigned to a JSON column if the column actually holds JSON String objects.
+- JSON fields that are always a JSON object can be assigned to a JSON destination column.
+
+Note that you will have to manually change the destination column to the desired JSON type, including any fixed or skipped paths.
 
 ### Avro {#avro}
 #### Supported Avro Data Types {#supported-avro-data-types}
