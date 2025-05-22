@@ -1,5 +1,5 @@
 ---
-slug: /use-cases/observability/clickhouse-stack/config
+slug: /use-cases/observability/clickstack/config
 title: 'Configuration Options'
 pagination_prev: null
 pagination_next: null
@@ -16,7 +16,7 @@ The following configuration options are available for each component of ClickSta
 
 ### Docker {#docker}
 
-If using the [All in One](/use-cases/observability/clickhouse-stack/deployment/all-in-one), [HyperDX Only](/use-cases/observability/clickhouse-stack/deployment/hyperdx-only) or [Local Mode](/use-cases/observability/clickhouse-stack/deployment/local-mode-only) simply pass the desired setting via an environment variable e.g.
+If using the [All in One](/use-cases/observability/clickstack/deployment/all-in-one), [HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only) or [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only) simply pass the desired setting via an environment variable e.g.
 
 ```bash
 docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-all-in-one:2-beta.16
@@ -24,7 +24,7 @@ docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 8123:8123 -p 4317:4317 
 
 ### Docker compose {#docker-compose}
 
-If using the [Docker Compose](/use-cases/observability/clickhouse-stack/deployment/docker-compose) deployment guide, the [`.env`](https://github.com/hyperdxio/hyperdx/blob/v2/.env) file can be used to modify settings.
+If using the [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) deployment guide, the [`.env`](https://github.com/hyperdxio/hyperdx/blob/v2/.env) file can be used to modify settings.
 
 Alternatively, explicltly overwrite settings in the [`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/v2/docker-compose.yml) file e.g.
 
@@ -358,23 +358,23 @@ For example, below is the Logs source configured with correlated sources:
     - Disable in production
 
 
-## Open Telemetry collector {#otel-collector}
+## OpenTelemetry collector {#otel-collector}
 
-The default ClickStack configuration for the Open Telemetry (OTel) collector can be found [here](https://github.com/hyperdxio/hyperdx/blob/v2/docker/otel-collector/config.yaml).
+The default ClickStack configuration for the OpenTelemetry (OTel) collector can be found [here](https://github.com/hyperdxio/hyperdx/blob/v2/docker/otel-collector/config.yaml).
 
 This collector exploit the ClickHouse exporter documented [here](/observability/integrating-opentelemetry#exporting-to-clickhouse) and [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
 
-For details on configuring the wider OTel collector, including [`receivers`](https://opentelemetry.io/docs/collector/transforming-telemetry/), [`operators`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md), and [`processors`](https://opentelemetry.io/docs/collector/configuration/#processors), we recommend the [our own guide](/observability/integrating-opentelemetry) and [official Open Telemetry collector documentation](https://opentelemetry.io/docs/collector/).
+For details on configuring the wider OTel collector, including [`receivers`](https://opentelemetry.io/docs/collector/transforming-telemetry/), [`operators`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md), and [`processors`](https://opentelemetry.io/docs/collector/configuration/#processors), we recommend the [our own guide](/observability/integrating-opentelemetry) and [official OpenTelemetry collector documentation](https://opentelemetry.io/docs/collector/).
 
 ### Modifying configuration {#modifying-otel-collector-configuration}
 
-If you are managing your own OpenTelemetry Collector - such as when using the HyperDX only distribution - you are responsible for defining its configuration. We [recommend still using the official ClickStack distribution of the collector](/observability/clickhouse-stack/deployment/hyperdx-only#otel-collector) where possible, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
+If you are managing your own OpenTelemetry Collector - such as when using the HyperDX only distribution - you are responsible for defining its configuration. We [recommend still using the official ClickStack distribution of the collector](/observability/clickstack/deployment/hyperdx-only#otel-collector) where possible, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 
-If you’re using a ClickStack distribution that includes the OpenTelemetry Collector - such as the [All-in-One](/use-cases/observability/clickhouse-stack/deployment/all-in-one), [Docker Compose](/use-cases/observability/clickhouse-stack/deployment/docker-compose), or [Helm](/use-cases/observability/clickhouse-stack/deployment/helm) chart - you can override the default configuration in the following ways:
+If you’re using a ClickStack distribution that includes the OpenTelemetry Collector - such as the [All-in-One](/use-cases/observability/clickstack/deployment/all-in-one), [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose), or [Helm](/use-cases/observability/clickstack/deployment/helm) chart - you can override the default configuration in the following ways:
 
 #### All-in-One {#all-in-one}
 
-In the [All-in-One](/use-cases/observability/clickhouse-stack/deployment/all-in-one) distribution, the OpenTelemetry Collector config is located at `/etc/otelcol-contrib/config.yaml` inside the container. To override it:
+In the [All-in-One](/use-cases/observability/clickstack/deployment/all-in-one) distribution, the OpenTelemetry Collector config is located at `/etc/otelcol-contrib/config.yaml` inside the container. To override it:
 
 1. Copy the default configuration from the official repository.
 2. Modify it as needed.

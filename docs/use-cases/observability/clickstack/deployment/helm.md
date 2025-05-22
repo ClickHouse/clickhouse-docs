@@ -1,5 +1,5 @@
 ---
-slug: /use-cases/observability/clickhouse-stack/deployment/helm
+slug: /use-cases/observability/clickstack/deployment/helm
 title: 'Helm'
 pagination_prev: null
 pagination_next: null

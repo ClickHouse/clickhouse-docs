@@ -1,5 +1,5 @@
 ---
-slug: /use-cases/observability/clickhouse-stack/deployment/local-mode-only
+slug: /use-cases/observability/clickstack/deployment/local-mode-only
 title: 'Local Mode Only'
 pagination_prev: null
 pagination_next: null

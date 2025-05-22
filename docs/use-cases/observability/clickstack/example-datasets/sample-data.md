@@ -1,9 +1,10 @@
 ---
-slug: /use-cases/observability/clickhouse-stack/getting-started/example-data
-title: 'Example dataset'
+slug: /use-cases/observability/clickstack/getting-started/sample-data
+title: 'Sample Logs, Traces and Metrics'
+sidebar_position: 0
 pagination_prev: null
 pagination_next: null
-description: 'Getting started with ClickStack and an example dataset'
+description: 'Getting started with ClickStack and a sample dataset with logs, sessions, traces and metrics'
 ---
 import Image from '@theme/IdealImage';
 import hyperdx from '@site/static/images/use-cases/observability/hyperdx-1.png';
@@ -26,9 +27,9 @@ import hyperdx_17 from '@site/static/images/use-cases/observability/hyperdx-17.p
 import hyperdx_18 from '@site/static/images/use-cases/observability/hyperdx-18.png';
 import hyperdx_19 from '@site/static/images/use-cases/observability/hyperdx-19.png';
 
-# ClickStack - example dataset {#clickstack-example-dataset}
+# ClickStack - Sample logs, traces and metrics {#clickstack-sample-dataset}
 
-The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickhouse-stack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickhouse-stack/getting-started#complete-connection-credentials) and created the `Logs` source.
+The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) and created the `Logs` source.
 
 <VerticalStepper>
 
@@ -51,7 +52,7 @@ curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
 # wget https://storage.googleapis.com/hyperdx/sample.tar.gz
 ```
 
-This file contains example logs, metrics and traces from our public [Open Telemetry demo](http://example.com) - a simple ecommerce store with microservices. Copy this file to a directory of your choosing.
+This file contains example logs, metrics and traces from our public [OpenTelemetry demo](http://example.com) - a simple ecommerce store with microservices. Copy this file to a directory of your choosing.
 
 ## Load sample data {#load-sample-data}
 

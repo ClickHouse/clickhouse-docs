@@ -1,5 +1,5 @@
 ---
-slug: /use-cases/observability/clickhouse-stack/getting-started
+slug: /use-cases/observability/clickstack/getting-started
 title: 'Getting Started'
 pagination_prev: null
 pagination_next: null
@@ -66,12 +66,12 @@ With the stack deployed, try one of our getting started guides.
 
 If you've connected to the local cluster:
 
-- [Example dataset](/use-cases/observability/clickhouse-stack/getting-started/example-data) - Load an example dataset from our public demo. Diagnose a simple issue.
-- [Local files and metrics](/use-cases/observability/clickhouse-stack/getting-started/local-data) - Load local files and monitor system on OSX or Linux using a local OTel collector.
+- [Example dataset](/use-cases/observability/clickstack/getting-started/example-data) - Load an example dataset from our public demo. Diagnose a simple issue.
+- [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - Load local files and monitor system on OSX or Linux using a local OTel collector.
 
 Alternatively, if you've connected to the demo cluster, you can explore the dataset with the following guide: 
 
-- [Remote demo dataset](/use-cases/observability/clickhouse-stack/getting-started/remote-demo-data) - Explore a demo dataset in our demo ClickHouse service.
+- [Remote demo dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data) - Explore a demo dataset in our demo ClickHouse service.
 
 </VerticalStepper>
 
@@ -109,6 +109,6 @@ Alternatively, for a quick exploration of the product, you can also click **Conn
 
 <Image img={hyperdx_2} alt="Credentials" size="md"/>
 
-If connecting to the demo server, users can explore the dataset with the [demo dataset instructions](/use-cases/observability/clickhouse-stack/getting-started/remote-demo-data).
+If connecting to the demo server, users can explore the dataset with the [demo dataset instructions](/use-cases/observability/clickstack/getting-started/remote-demo-data).
 
 </VerticalStepper>

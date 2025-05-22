@@ -1,5 +1,5 @@
 ---
-slug: /use-cases/observability/clickhouse-stack/deployment/hyperdx-only
+slug: /use-cases/observability/clickstack/deployment/hyperdx-only
 title: 'HyperDX Only'
 pagination_prev: null
 pagination_next: null
@@ -41,12 +41,12 @@ Navigate to [http://localhost:8080](http://localhost:8080), create a user and co
 
 ## Using Docker Compose {#using-docker-compose}
 
-Users can modify the [Docker Compose configuration](/use-cases/observability/clickhouse-stack/deployment/docker-compose) to achieve the same effect as this guide, removing the OTel Collector and ClickHouse instance from the manifest.
+Users can modify the [Docker Compose configuration](/use-cases/observability/clickstack/deployment/docker-compose) to achieve the same effect as this guide, removing the OTel Collector and ClickHouse instance from the manifest.
 
 
-## ClickStack Open Telemetry collector {#otel-collector}
+## ClickStack OpenTelemetry collector {#otel-collector}
 
-Even if managing your own Open Telemetry collector, independent of the other components in the stack, we recommend using the ClickStack distribution of the collector. This ensures the default schema is used and best practices for ingestion applied.
+Even if managing your own OpenTelemetry collector, independent of the other components in the stack, we recommend using the ClickStack distribution of the collector. This ensures the default schema is used and best practices for ingestion applied.
 
 This image configuration can be found [here](https://github.com/hyperdxio/hyperdx/tree/v2/docker/otel-collector) and can be deployed with the following command:
 

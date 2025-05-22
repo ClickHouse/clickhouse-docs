@@ -1,5 +1,5 @@
 ---
-slug: /use-cases/observability/clickhouse-stack/deployment/all-in-one
+slug: /use-cases/observability/clickstack/deployment/all-in-one
 title: 'All in one'
 pagination_prev: null
 pagination_next: null

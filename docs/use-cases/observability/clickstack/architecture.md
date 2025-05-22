@@ -1,5 +1,5 @@
 ---
-slug: /use-cases/observability/clickhouse-stack/architecture
+slug: /use-cases/observability/clickstack/architecture
 pagination_prev: null
 pagination_next: null
 description: 'Architecture of ClickStack ClickHouse Observability Stack'

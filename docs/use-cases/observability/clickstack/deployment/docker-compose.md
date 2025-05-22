@@ -1,5 +1,5 @@
 ---
-slug: /use-cases/observability/clickhouse-stack/deployment/docker-compose
+slug: /use-cases/observability/clickstack/deployment/docker-compose
 title: 'Docker Compose'
 pagination_prev: null
 pagination_next: null
