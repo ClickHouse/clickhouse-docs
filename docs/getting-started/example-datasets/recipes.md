@@ -333,7 +333,3 @@ Result:
 
 126 rows in set. Elapsed: 0.011 sec. Processed 8.19 thousand rows, 5.34 MB (737.75 thousand rows/s., 480.59 MB/s.)
 ```
-
-### Online Playground {#online-playground}
-
-The dataset is also available in the [Online Playground](https://sql.clickhouse.com?query_id=HQXNQZE26Z1QWYP9KC76ML).
