@@ -23,9 +23,9 @@ import Image from '@theme/IdealImage';
 Grafana represents the preferred visualization tool for Observability data in ClickHouse. This is achieved using the official ClickHouse plugin for Grafana. Users can follow the installation instructions found [here](/integrations/grafana).
 
 V4 of the plugin makes logs and traces a first-class citizen in a new query builder experience. This minimizes the need for SREs to write SQL queries and simplifies SQL-based Observability, moving the needle forward for this emerging paradigm.
-Part of this has been placing Open Telemetry (OTel) at the core of the plugin, as we believe this will be the foundation of SQL-based Observability over the coming years and how data will be collected.
+Part of this has been placing OpenTelemetry (OTel) at the core of the plugin, as we believe this will be the foundation of SQL-based Observability over the coming years and how data will be collected.
 
-## Open Telemetry Integration {#open-telemetry-integration}
+## OpenTelemetry Integration {#open-telemetry-integration}
 
 On configuring a Clickhouse datasource in Grafana, the plugin allows the users to specify a default database and table for logs and traces and whether these tables conform to the OTel schema. This allows the plugin to return the columns required for correct log and trace rendering in Grafana. If you've made changes to the default OTel schema and prefer to use your own column names, these can be specified. Usage of the default OTel column names for columns such as time (Timestamp), log level (SeverityText), or message body (Body) means no changes need to be made.
 
