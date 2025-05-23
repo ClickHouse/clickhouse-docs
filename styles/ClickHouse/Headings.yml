@@ -39,3 +39,6 @@ exceptions:
   - TiDB
   - PlanetScale
   - Vitess
+  - MySQL
+  - ClickPipe
+  - ClickPipes
