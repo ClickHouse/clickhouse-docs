@@ -55,7 +55,7 @@ module.exports = nextConfig;
 ### Install ClickHouse OpenTelemetry SDK {#install-sdk}
 
 <Tabs groupId="npm">
-<TabItem value="package_import" label="NPM" default>
+<TabItem value="npm" label="NPM" default>
 
 ```bash 
 npm install @hyperdx/node-opentelemetry 

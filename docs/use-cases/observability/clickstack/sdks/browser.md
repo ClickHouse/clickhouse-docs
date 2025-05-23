@@ -29,7 +29,7 @@ This Guide Integrates:
 
 <br/>
 
-<Tabs groupId="read_data">
+<Tabs groupId="install">
 <TabItem value="package_import" label="Package Import" default>
 
 **Install via package import (Recommended)**
@@ -55,7 +55,7 @@ HyperDX.init({
 ```
 
 </TabItem>
-<TabItem value="script_tag" label="Script Tag" default>
+<TabItem value="script_tag" label="Script Tag">
 
 **Install via Script Tag (Alternative)**
 
