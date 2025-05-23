@@ -3517,3 +3517,4 @@ minSimpleState
 maxSimpleState
 TimescaleDB
 columnstore
+TiDB
