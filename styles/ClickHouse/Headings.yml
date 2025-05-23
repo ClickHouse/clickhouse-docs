@@ -36,3 +36,6 @@ exceptions:
   - Azure Blob Storage
   - VPC
   - BYOC
+  - TiDB
+  - PlanetScale
+  - Vitess
