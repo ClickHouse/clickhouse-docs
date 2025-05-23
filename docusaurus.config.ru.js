@@ -260,7 +260,7 @@ const config = {
         copyright: `© 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc.`,
       },
       prism: {
-        theme: themes.darkTheme,
+        theme: require('prism-react-renderer').themes.github,
         darkTheme: themes.darkTheme,
         additionalLanguages: ["java", "cpp", "rust", "python", "javascript"],
         magicComments: [
