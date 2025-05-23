@@ -1,19 +1,25 @@
 ---
-title: PrettyJSONEachRow
-slug: /接口/格式/PrettyJSONEachRow
-keywords: ['PrettyJSONEachRow', 'PrettyJSONLines', 'PrettyNDJSON']
-input_format: false
-output_format: true
-alias: ['PrettyJSONLines', 'PrettyNDJSON']
+'alias':
+- 'PrettyJSONLines'
+- 'PrettyNDJSON'
+'description': 'PrettyJSONLines 格式的文档'
+'input_format': false
+'keywords':
+- 'PrettyJSONEachRow'
+- 'PrettyJSONLines'
+- 'PrettyNDJSON'
+'output_format': true
+'slug': '/interfaces/formats/PrettyJSONEachRow'
+'title': 'PrettyJSONEachRow'
 ---
 
-| 输入 | 输出 | 别名                              |
-|------|------|-----------------------------------|
-| ✗    | ✔    | `PrettyJSONLines`, `PrettyNDJSON` |
+| 输入  | 输出  | 别名                             |
+|-------|--------|-----------------------------------|
+| ✗     | ✔      | `PrettyJSONLines`, `PrettyNDJSON` |
 
 ## 描述 {#description}
 
-仅与 [JSONEachRow](./JSONEachRow.md) 不同的是，JSON 采用漂亮的格式，使用换行符和 4 个空格缩进。
+与 [JSONEachRow](./JSONEachRow.md) 的区别仅在于 JSON 是使用换行符和4个空格缩进进行美化格式化的。
 
 ## 示例用法 {#example-usage}
 
@@ -46,5 +52,3 @@ alias: ['PrettyJSONLines', 'PrettyNDJSON']
 ```
 
 ## 格式设置 {#format-settings}
-
-

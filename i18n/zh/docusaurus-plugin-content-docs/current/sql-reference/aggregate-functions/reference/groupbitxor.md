@@ -1,22 +1,22 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/groupbitxor
-sidebar_position: 153
-title: 'groupBitXor'
-description: '对一系列数字应用按位 `XOR`。'
+'description': '对一系列数字应用位运算 `XOR`。'
+'sidebar_position': 153
+'slug': '/sql-reference/aggregate-functions/reference/groupbitxor'
+'title': 'groupBitXor'
 ---
 
 
 # groupBitXor
 
-对一系列数字应用按位 `XOR`。
+对一系列数字执行按位 `XOR` 操作。
 
-``` sql
+```sql
 groupBitXor(expr)
 ```
 
 **参数**
 
-`expr` – 一个结果为 `UInt*` 或 `Int*` 类型的表达式。
+`expr` – 结果为 `UInt*` 或 `Int*` 类型的表达式。
 
 **返回值**
 
@@ -26,7 +26,7 @@ groupBitXor(expr)
 
 测试数据：
 
-``` text
+```text
 binary     decimal
 00101100 = 44
 00011100 = 28
@@ -36,7 +36,7 @@ binary     decimal
 
 查询：
 
-``` sql
+```sql
 SELECT groupBitXor(num) FROM t
 ```
 
@@ -44,7 +44,7 @@ SELECT groupBitXor(num) FROM t
 
 结果：
 
-``` text
+```text
 binary     decimal
 01101000 = 104
 ```

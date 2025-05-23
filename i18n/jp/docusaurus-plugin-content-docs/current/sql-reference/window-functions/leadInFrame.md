@@ -1,17 +1,21 @@
 ---
-slug: /sql-reference/window-functions/leadInFrame
-sidebar_label: leadInFrame
-sidebar_position: 10
+'description': 'leadInFrame ウィンドウ関数のドキュメント'
+'sidebar_label': 'leadInFrame'
+'sidebar_position': 10
+'slug': '/sql-reference/window-functions/leadInFrame'
+'title': 'leadInFrame'
 ---
+
+
 
 
 # leadInFrame
 
-現在の行の後にオフセットされた行の値を順序付けされたフレーム内で返します。
+現在の行の後にオフセットされた行で評価される値を返します。
 
 :::warning
-`leadInFrame` の動作は、標準 SQL の `lead` ウィンドウ関数とは異なります。  
-Clickhouse のウィンドウ関数 `leadInFrame` はウィンドウフレームを考慮します。  
+`leadInFrame` の動作は、標準SQLの `lead` ウィンドウ関数とは異なります。
+ClickHouseのウィンドウ関数 `leadInFrame` はウィンドウフレームを尊重します。
 `lead` と同じ動作を得るには、`ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` を使用してください。
 :::
 
@@ -25,22 +29,22 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-ウィンドウ関数の構文の詳細については、[Window Functions - Syntax](./index.md/#syntax)を参照してください。
+ウィンドウ関数の構文の詳細については、[ウィンドウ関数 - 構文](./index.md/#syntax)を参照してください。
 
 **パラメータ**
 - `x` — カラム名。
-- `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 (オプショナル - デフォルトは `1`)。
-- `default` — 計算された行がウィンドウフレームの境界を超えた場合に返す値。 (オプショナル - 省略時はカラム型のデフォルト値)。
+- `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 (オプション - デフォルトは `1`)。
+- `default` — 計算された行がウィンドウフレームの境界を超えた場合に返す値。 (オプション - 省略時にはカラム型のデフォルト値)。
 
-**返される値**
+**返す値**
 
-- 順序付けされたフレーム内で現在の行の後にオフセットされた行の値。
+- 整列されたフレーム内の現在の行の後にオフセットされた行で評価された値。
 
 **例**
 
-この例では、ノーベル賞受賞者の[歴史データ](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)を参照し、`leadInFrame` 関数を使用して物理学部門の連続した受賞者のリストを返します。
+この例では、ノーベル賞受賞者の[歴史的データ](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)を見て、`leadInFrame` 関数を使用して物理学部門の受賞者のリストを返します。
 
-クエリ:
+クエリ：
 
 ```sql
 CREATE OR REPLACE VIEW nobel_prize_laureates
@@ -62,7 +66,7 @@ ORDER BY year DESC
 LIMIT 9
 ```
 
-結果:
+結果：
 
 ```response
    ┌─fullName─────────┬─year─┬─category─┬─motivation─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐

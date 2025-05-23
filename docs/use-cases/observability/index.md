@@ -4,6 +4,7 @@ title: 'Observability'
 pagination_prev: null
 pagination_next: null
 description: 'Landing page for the Observability use case guide'
+keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
 ---
 
 ClickHouse offers unmatched speed, scale, and cost-efficiency for observability. This guide provides two paths depending on your needs:

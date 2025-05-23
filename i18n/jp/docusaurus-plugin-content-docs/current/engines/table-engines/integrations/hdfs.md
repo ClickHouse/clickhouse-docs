@@ -1,9 +1,11 @@
 ---
-slug: /engines/table-engines/integrations/hdfs
-sidebar_position: 80
-sidebar_label: HDFS
-title: "HDFS"
-description: "このエンジンは、ClickHouse を介して HDFS 上のデータを管理することにより、Apache Hadoop エコシステムとの統合を提供します。このエンジンは、File および URL エンジンに似ていますが、Hadoop 特有の機能を提供します。"
+'description': 'This engine provides integration with the Apache Hadoop ecosystem
+  by allowing to manage data on HDFS via ClickHouse. This engine is similar to the
+  File and URL engines, but provides Hadoop-specific features.'
+'sidebar_label': 'HDFS'
+'sidebar_position': 80
+'slug': '/engines/table-engines/integrations/hdfs'
+'title': 'HDFS'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -13,81 +15,81 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
-このエンジンは、[Apache Hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop) エコシステムとの統合を提供し、ClickHouse を介して [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) 上のデータを管理することを可能にします。このエンジンは、[File](/engines/table-engines/special/file) エンジンおよび [URL](/engines/table-engines/special/url) エンジンに似ていますが、Hadoop 特有の機能を提供します。
+このエンジンは、ClickHouse経由で[HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html)上のデータを管理することにより、[Apache Hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop)エコシステムとの統合を提供します。このエンジンは、[File](/engines/table-engines/special/file)および[URL](/engines/table-engines/special/url)エンジンに似ていますが、Hadoop特有の機能を提供します。
 
-この機能は ClickHouse エンジニアによってサポートされていないため、品質が不安定であることが知られています。問題が発生した場合は、自分で修正し、プルリクエストを提出してください。
+この機能はClickHouseエンジニアによってサポートされておらず、品質が不安定であることが知られています。問題が発生した場合は、自分で修正し、プルリクエストを提出してください。
 
 ## 使用法 {#usage}
 
-``` sql
+```sql
 ENGINE = HDFS(URI, format)
 ```
 
 **エンジンパラメータ**
 
-- `URI` - HDFS の全ファイル URI。`URI` のパス部分にはグロブを含めることができます。この場合、テーブルは読み取り専用になります。
-- `format` - 利用可能なファイル形式のいずれかを指定します。`SELECT` クエリを実行するには、形式が入力用にサポートされている必要があり、`INSERT` クエリを実行するには出力用にサポートされている必要があります。利用可能な形式は、[Formats](/sql-reference/formats#formats-overview) セクションにリストされています。
+- `URI` - HDFS内のファイルの完全 URI。`URI`のパス部分にはグロブが含まれる場合があります。この場合、テーブルは読み取り専用になります。
+- `format` - 利用可能なファイル形式のいずれかを指定します。`SELECT`クエリを実行するには、形式が入力に対してサポートされている必要があり、`INSERT`クエリを実行するには、出力に対してサポートされている必要があります。利用可能な形式については、[Formats](/sql-reference/formats#formats-overview)セクションに一覧があります。
 - [PARTITION BY expr]
 
 ### PARTITION BY {#partition-by}
 
-`PARTITION BY` — オプションです。ほとんどのケースではパーティションキーは必要ありませんが、必要な場合は一般的に月単位のそれよりも細かいパーティションキーは必要ありません。パーティショニングはクエリの速度を向上させません（ORDER BY 式と対照的です）。あまりにも細かいパーティショニングは使用しないでください。クライアント識別子や名前でデータをパーティショニングしないでください（代わりに、クライアント識別子または名前を ORDER BY 式の最初のカラムにしてください）。
+`PARTITION BY` — オプション。ほとんどのケースではパーティションキーは必要ありませんが、必要な場合でも、一般的には月単位以上の詳細なパーティションキーを必要としません。パーティショニングはクエリの高速化には寄与しません（ORDER BY式とは対照的です）。詳細なパーティショニングは決して使用しないでください。クライアント識別子や名前でデータをパーティショニングしないでください（代わりに、クライアント識別子や名前をORDER BY式の最初のカラムにしてください）。
 
-月単位でのパーティショニングには、`toYYYYMM(date_column)` 式を使用します。ここで、`date_column` は [Date](/sql-reference/data-types/date.md) 型の日付を持つカラムです。ここでのパーティション名は `"YYYYMM"` 形式です。
+月単位でのパーティショニングには、`toYYYYMM(date_column)`式を使用します。ここで`date_column`は[Date](/sql-reference/data-types/date.md)型の日付を含むカラムです。ここでのパーティション名は`"YYYYMM"`形式になります。
 
 **例:**
 
-**1.** `hdfs_engine_table` テーブルを設定します：
+**1.** `hdfs_engine_table`テーブルを設定します:
 
-``` sql
+```sql
 CREATE TABLE hdfs_engine_table (name String, value UInt32) ENGINE=HDFS('hdfs://hdfs1:9000/other_storage', 'TSV')
 ```
 
-**2.** ファイルを埋めます：
+**2.** ファイルを埋めます:
 
-``` sql
+```sql
 INSERT INTO hdfs_engine_table VALUES ('one', 1), ('two', 2), ('three', 3)
 ```
 
-**3.** データをクエリします：
+**3.** データをクエリします:
 
-``` sql
+```sql
 SELECT * FROM hdfs_engine_table LIMIT 2
 ```
 
-``` text
+```text
 ┌─name─┬─value─┐
 │ one  │     1 │
 │ two  │     2 │
 └──────┴───────┘
 ```
 
-## 実装の詳細 {#implementation-details}
+## 実装詳細 {#implementation-details}
 
-- 読み込みと書き込みは並列で行えます。
+- 読み書きは並列で行うことができます。
 - サポートされていないもの：
-    - `ALTER` および `SELECT...SAMPLE` 操作。
+    - `ALTER`および`SELECT...SAMPLE`操作。
     - インデックス。
-    - [ゼロコピー](../../../operations/storing-data.md#zero-copy) 複製は可能ですが、推奨されません。
+    - [ゼロコピー](../../../operations/storing-data.md#zero-copy)レプリケーションは可能ですが、推奨されません。
 
-  :::note ゼロコピー複製は生産準備が整っていません
-  ゼロコピー複製は ClickHouse バージョン 22.8 以降でデフォルトで無効です。この機能は本番環境での使用は推奨されません。
+  :::note ゼロコピーレプリケーションは本番環境には未対応
+  ゼロコピーレプリケーションは、ClickHouse バージョン 22.8 以降でデフォルトで無効です。この機能は本番環境での使用は推奨されていません。
   :::
 
-**パス内のグロブ**
+**パスにおけるグロブ**
 
-複数のパスコンポーネントにグロブを使用できます。処理されるファイルは、存在し、全パターンと一致する必要があります。ファイルのリストは `SELECT` 中に決定されます（`CREATE` 時ではありません）。
+複数のパスコンポーネントにグロブを使用できます。処理されるファイルは存在し、全体のパスパターンに一致する必要があります。ファイルのリストは`SELECT`時に決定されます（`CREATE`時ではありません）。
 
-- `*` — `/` を除く任意の数の任意の文字（空文字列を含む）の代わりに使用できます。
-- `?` — 任意の一文字の代わりに使用できます。
-- `{some_string,another_string,yet_another_one}` — 文字列 `'some_string', 'another_string', 'yet_another_one'` のいずれかの代わりに使用できます。
-- `{N..M}` — N から M までの範囲内の任意の数の代わりに使用できます（両端を含む）。
+- `*` — `/`を含む任意の文字の任意の数を置き換え、空文字列も含みます。
+- `?` — 任意の単一文字を置き換えます。
+- `{some_string,another_string,yet_another_one}` — 文字列 `'some_string', 'another_string', 'yet_another_one'` のいずれかを置き換えます。
+- `{N..M}` — NからMまでの範囲の任意の数を置き換えます（両端を含む）。
 
-`{}` を使用した構文は、[remote](../../../sql-reference/table-functions/remote.md) テーブル関数に似ています。
+`{}`を使用した構造は、[リモート](../../../sql-reference/table-functions/remote.md)テーブル関数に似ています。
 
 **例**
 
-1.  HDFS 上に次の URIs を持つ TSF 形式のファイルがいくつかあるとします：
+1.  HDFS上に以下のURIを持つTSV形式のいくつかのファイルがあるとします:
 
     - 'hdfs://hdfs1:9000/some_dir/some_file_1'
     - 'hdfs://hdfs1:9000/some_dir/some_file_2'
@@ -96,61 +98,61 @@ SELECT * FROM hdfs_engine_table LIMIT 2
     - 'hdfs://hdfs1:9000/another_dir/some_file_2'
     - 'hdfs://hdfs1:9000/another_dir/some_file_3'
 
-1.  これらの6つのファイルで構成されるテーブルを作成する方法はいくつかあります：
+2.  すべての6つのファイルを含むテーブルを作成する方法はいくつかあります:
 
 <!-- -->
 
-``` sql
+```sql
 CREATE TABLE table_with_range (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9000/{some,another}_dir/some_file_{1..3}', 'TSV')
 ```
 
-もう一つの方法：
+別の方法:
 
-``` sql
+```sql
 CREATE TABLE table_with_question_mark (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9000/{some,another}_dir/some_file_?', 'TSV')
 ```
 
-テーブルは両方のディレクトリ内の全ファイルで構成されます（すべてのファイルは、クエリで記述された形式とスキーマに適合している必要があります）：
+テーブルは両方のディレクトリ内のすべてのファイルで構成されます（すべてのファイルは、クエリで説明されている形式およびスキーマに一致する必要があります）:
 
-``` sql
+```sql
 CREATE TABLE table_with_asterisk (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9000/{some,another}_dir/*', 'TSV')
 ```
 
 :::note
-ファイルのリストに先頭ゼロのある数値範囲が含まれる場合は、各桁ごとに中括弧を使用する構文を使用するか、`?` を使用してください。
+ファイルのリストに先頭ゼロを伴う数値範囲が含まれている場合、それぞれの桁に対して波括弧を使うか、`?`を使用してください。
 :::
 
 **例**
 
-`file000`, `file001`, ... , `file999` というファイルを持つテーブルを作成します：
+`file000`, `file001`, ... , `file999` という名前のファイルを持つテーブルを作成します:
 
-``` sql
+```sql
 CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV')
 ```
+
 ## 設定 {#configuration}
 
-GraphiteMergeTree と同様に、HDFS エンジンは ClickHouse 設定ファイルを使用して拡張設定をサポートしています。使用できる2つの設定キーがあります：グローバル（`hdfs`）およびユーザーレベル（`hdfs_*`）。グローバル設定が最初に適用され、次にユーザーレベルの設定が適用されます（存在する場合）。
+GraphiteMergeTreeに似て、HDFSエンジンはClickHouse設定ファイルを使った拡張設定をサポートしています。使用できる設定キーは2つあります：グローバル（`hdfs`）とユーザーレベル（`hdfs_*`）。グローバル設定が最初に適用され、その後ユーザーレベルの設定が存在する場合に適用されます。
 
-``` xml
-  <!-- HDFS エンジンタイプのグローバル設定オプション -->
-  <hdfs>
-	<hadoop_kerberos_keytab>/tmp/keytab/clickhouse.keytab</hadoop_kerberos_keytab>
-	<hadoop_kerberos_principal>clickuser@TEST.CLICKHOUSE.TECH</hadoop_kerberos_principal>
-	<hadoop_security_authentication>kerberos</hadoop_security_authentication>
-  </hdfs>
+```xml
+<!-- HDFSエンジンタイプに対するグローバル設定オプション -->
+<hdfs>
+  <hadoop_kerberos_keytab>/tmp/keytab/clickhouse.keytab</hadoop_kerberos_keytab>
+  <hadoop_kerberos_principal>clickuser@TEST.CLICKHOUSE.TECH</hadoop_kerberos_principal>
+  <hadoop_security_authentication>kerberos</hadoop_security_authentication>
+</hdfs>
 
-  <!-- ユーザー "root" 用の設定 -->
-  <hdfs_root>
-	<hadoop_kerberos_principal>root@TEST.CLICKHOUSE.TECH</hadoop_kerberos_principal>
-  </hdfs_root>
+<!-- ユーザー"root"専用の設定 -->
+<hdfs_root>
+  <hadoop_kerberos_principal>root@TEST.CLICKHOUSE.TECH</hadoop_kerberos_principal>
+</hdfs_root>
 ```
 
 ### 設定オプション {#configuration-options}
 
-#### libhdfs3 でサポートされている {#supported-by-libhdfs3}
+#### libhdfs3によってサポートされている {#supported-by-libhdfs3}
 
-
-| **parameter**                                         | **default value**       |
+| **パラメータ**                                         | **デフォルト値**       |
 | -                                                  | -                    |
 | rpc\_client\_connect\_tcpnodelay                      | true                    |
 | dfs\_client\_read\_shortcircuit                       | true                    |
@@ -194,57 +196,55 @@ GraphiteMergeTree と同様に、HDFS エンジンは ClickHouse 設定ファイ
 | dfs\_client\_log\_severity                            | "INFO"                  |
 | dfs\_domain\_socket\_path                             | ""                      |
 
+[HDFS Configuration Reference](https://hawq.apache.org/docs/userguide/2.3.0.0-incubating/reference/HDFSConfigurationParameterReference.html)は、一部のパラメータについて説明しています。
 
-[HDFS 設定リファレンス](https://hawq.apache.org/docs/userguide/2.3.0.0-incubating/reference/HDFSConfigurationParameterReference.html) では、いくつかのパラメータについて説明されているかもしれません。
+#### ClickHouseの追加機能 {#clickhouse-extras}
 
-
-#### ClickHouse の特別オプション {#clickhouse-extras}
-
-| **parameter**                                         | **default value**       |
+| **パラメータ**                                         | **デフォルト値**       |
 | -                                                  | -                    |
-|hadoop\_kerberos\_keytab                               | ""                      |
-|hadoop\_kerberos\_principal                            | ""                      |
-|libhdfs3\_conf                                         | ""                      |
+| hadoop\_kerberos\_keytab                               | ""                      |
+| hadoop\_kerberos\_principal                            | ""                      |
+| libhdfs3\_conf                                         | ""                      |
 
-### 制限 {#limitations}
-* `hadoop_security_kerberos_ticket_cache_path` と `libhdfs3_conf` は、ユーザー特有ではなくグローバルのみで設定できます。
+### 制限事項 {#limitations}
+* `hadoop_security_kerberos_ticket_cache_path`および`libhdfs3_conf`はグローバル専用で、ユーザー専用ではありません。
 
-## Kerberos サポート {#kerberos-support}
+## Kerberosサポート {#kerberos-support}
 
-`hadoop_security_authentication` パラメータが `kerberos` の値を持つ場合、ClickHouse は Kerberos を介して認証を行います。
-パラメータは [ここ](#clickhouse-extras) にあり、`hadoop_security_kerberos_ticket_cache_path` は役立つ場合があります。
-libhdfs3 の制限により、古典的なアプローチのみがサポートされており、データノード間の通信は SASL で保護されていません（`HADOOP_SECURE_DN_USER` はそのようなセキュリティアプローチの信頼できる指標です）。参照用に `tests/integration/test_storage_kerberized_hdfs/hdfs_configs/bootstrap.sh` を使用してください。
+`hadoop_security_authentication`パラメータが`kerberos`の値を持つ場合、ClickHouseはKerberosを介して認証します。
+パラメータは[こちら](#clickhouse-extras)にあり、`hadoop_security_kerberos_ticket_cache_path`が役立つ場合があります。
+libhdfs3の制限により、古典的なアプローチのみがサポートされているため、データノードの通信はSASLによって保護されていません（`HADOOP_SECURE_DN_USER`はそのようなセキュリティアプローチの信頼できる指標です）。リファレンスとして`tests/integration/test_storage_kerberized_hdfs/hdfs_configs/bootstrap.sh`を使用してください。
 
-`hadoop_kerberos_keytab`、`hadoop_kerberos_principal` または `hadoop_security_kerberos_ticket_cache_path` が指定されている場合、Kerberos 認証が使用されます。この場合、`hadoop_kerberos_keytab` と `hadoop_kerberos_principal` は必須です。
+`hadoop_kerberos_keytab`、`hadoop_kerberos_principal`または`hadoop_security_kerberos_ticket_cache_path`が指定されている場合、Kerberos認証が使用されます。この場合、`hadoop_kerberos_keytab`と`hadoop_kerberos_principal`は必須です。
 
-## HDFS Namenode HA サポート {#namenode-ha}
+## HDFS Namenode HAサポート {#namenode-ha}
 
-libhdfs3 は HDFS namenode HA をサポートしています。
+libhdfs3はHDFS namenode HAをサポートしています。
 
-- HDFS ノードから `hdfs-site.xml` を `/etc/clickhouse-server/` にコピーします。
-- ClickHouse 設定ファイルに次の部分を追加します：
+- HDFSノードから`hdfs-site.xml`を`/etc/clickhouse-server/`へコピーします。
+- ClickHouse設定ファイルに以下の部分を追加します:
 
-``` xml
+```xml
   <hdfs>
     <libhdfs3_conf>/etc/clickhouse-server/hdfs-site.xml</libhdfs3_conf>
   </hdfs>
 ```
 
-- 次に、HDFS URI 内の namenode アドレスとして `hdfs-site.xml` の `dfs.nameservices` タグの値を使用します。例えば、`hdfs://appadmin@192.168.101.11:8020/abc/` を `hdfs://appadmin@my_nameservice/abc/` に置き換えます。
+- その後、`hdfs-site.xml`の`dfs.nameservices`タグの値をHDFS URIのnamenodeアドレスとして使用します。たとえば、`hdfs://appadmin@192.168.101.11:8020/abc/`を`hdfs://appadmin@my_nameservice/abc/`に置き換えます。
 
-## 仮想カラム {#virtual-columns}
+## バーチャルカラム {#virtual-columns}
 
-- `_path` — ファイルへのパス。型: `LowCardinality(String)`。
-- `_file` — ファイル名。型: `LowCardinality(String)`。
-- `_size` — ファイルのサイズ（バイト単位）。型: `Nullable(UInt64)`。サイズが不明な場合、値は `NULL` になります。
-- `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` になります。
+- `_path` — ファイルへのパス。タイプ: `LowCardinality(String)`。
+- `_file` — ファイル名。タイプ: `LowCardinality(String)`。
+- `_size` — ファイルのサイズ（バイト単位）。タイプ: `Nullable(UInt64)`。サイズが不明な場合、値は`NULL`です。
+- `_time` — ファイルの最終変更時間。タイプ: `Nullable(DateTime)`。時間が不明な場合、値は`NULL`です。
 
 ## ストレージ設定 {#storage-settings}
 
-- [hdfs_truncate_on_insert](/operations/settings/settings.md#hdfs_truncate_on_insert) - 挿入前にファイルを切り詰めることを可能にします。デフォルトでは無効です。
-- [hdfs_create_new_file_on_insert](/operations/settings/settings.md#hdfs_create_new_file_on_insert) - 各挿入時に新しいファイルを作成することを可能にします。形式にサフィックスがある場合に適用されます。デフォルトでは無効です。
-- [hdfs_skip_empty_files](/operations/settings/settings.md#hdfs_skip_empty_files) - 読み込み時に空のファイルをスキップすることを可能にします。デフォルトでは無効です。
+- [hdfs_truncate_on_insert](/operations/settings/settings.md#hdfs_truncate_on_insert) - 挿入前にファイルを切り捨てることを許可します。デフォルトでは無効です。
+- [hdfs_create_new_file_on_insert](/operations/settings/settings.md#hdfs_create_new_file_on_insert) - 各挿入時にサフィックスのある新しいファイルを作成することを許可します。デフォルトでは無効です。
+- [hdfs_skip_empty_files](/operations/settings/settings.md#hdfs_skip_empty_files) - 読み取り時に空のファイルをスキップすることを許可します。デフォルトでは無効です。
 
 **関連項目**
 
-- [仮想カラム](../../../engines/table-engines/index.md#table_engines-virtual_columns)
+- [バーチャルカラム](../../../engines/table-engines/index.md#table_engines-virtual_columns)

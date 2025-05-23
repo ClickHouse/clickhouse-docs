@@ -31,6 +31,7 @@
     "check-prose": "./scripts/vale/check-prose.sh"
   },
   "dependencies": {
+    "@algolia/client-search": "^5.24.0",
     "@clickhouse/click-ui": "^0.0.199",
     "@clickhouse/client-web": "^1.11.1",
     "@docusaurus/core": "3.7.0",

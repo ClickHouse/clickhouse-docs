@@ -1,40 +1,42 @@
 ---
-description:  "TPC-Hベンチマークデータセットとクエリ。"
-slug: /getting-started/example-datasets/tpch
-sidebar_label: TPC-H
-title: "TPC-H (1999)"
+'description': 'The TPC-H benchmark data set and queries.'
+'sidebar_label': 'TPC-H'
+'slug': '/getting-started/example-datasets/tpch'
+'title': 'TPC-H (1999)'
 ---
 
-流通業者の内部データウェアハウスをモデル化した人気のあるベンチマークです。
-データは3rd正規形の表現で保存されており、クエリ実行時に多くの結合を必要とします。
-その古さと、データが均一かつ独立して分布しているという現実的ではない仮定にも関わらず、TPC-Hは今日まで最も人気のあるOLAPベンチマークです。
 
-**参考文献**
+
+A popular benchmark which models the internal data warehouse of a wholesale supplier.  
+データは3rd正規形の表現で保存され、多くのジョインがクエリ実行時に必要です。  
+その古さとデータが均一かつ独立して分布しているという非現実的な前提にもかかわらず、TPC-Hは現在まで最も人気のあるOLAPベンチマークです。
+
+**References**
 
 - [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
-- [意思決定支援とWeb商取引のための新しいTPCベンチマーク](https://doi.org/10.1145/369275.369291) (Poess et. al., 2000)
-- [TPC-H 調査: 影響力のあるベンチマークからの隠れたメッセージと教訓](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
-- [TPC-Hのボトルネックとその最適化の定量化](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
+- [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291) (Poess et. al., 2000)
+- [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
+- [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
 
-## データ生成とインポート {#data-generation-and-import}
+## Data Generation and Import {#data-generation-and-import}
 
-まず、TPC-Hリポジトリをチェックアウトして、データジェネレーターをコンパイルします:
+まず、TPC-Hリポジトリをチェックアウトし、データジェネレーターをコンパイルします。
 
-``` bash
+```bash
 git clone https://github.com/gregrahn/tpch-kit.git
 cd tpch-kit/dbgen
 make
 ```
 
-次に、データを生成します。パラメータ`-s`はスケールファクターを指定します。例えば、`-s 100`では、600百万行が'table' 'lineitem'のために生成されます。
+次に、データを生成します。パラメータ `-s` はスケールファクターを指定します。例えば、`-s 100` を指定すると、'lineitem' テーブルに対して6億行が生成されます。
 
-``` bash
+```bash
 ./dbgen -s 100
 ```
 
 スケールファクター100の詳細なテーブルサイズ:
 
-| テーブル    | 行数          | ClickHouse内圧縮サイズ |
+| Table    | size (in rows) | size (compressed in ClickHouse) |
 |----------|----------------|---------------------------------|
 | nation   | 25             | 2 kB                            |
 | region   | 5              | 1 kB                            |
@@ -45,16 +47,16 @@ make
 | orders   | 150.000.000    | 6.15 GB                         |
 | lineitem | 600.00.00      | 26.69 GB                        |
 
-（ClickHouseでの圧縮サイズは`system.tables.total_bytes`から取得され、以下のテーブル定義に基づいています。）
+(ClickHouseの圧縮サイズは `system.tables.total_bytes` から取得され、以下のテーブル定義に基づいています。)
 
 次に、ClickHouseにテーブルを作成します。
 
-TPC-H仕様のルールにできるだけ厳密に従います:
-- 主キーは、仕様のセクション1.4.2.2に記載されたカラムのみに対して作成されます。
-- 代入パラメータは、仕様のセクション2.1.x.4でのクエリ検証用に値で置き換えられます。
-- セクション1.4.2.1によれば、テーブル定義はオプションの`NOT NULL`制約を使用せず、`dbgen`がデフォルトで生成しても使用しません。
-  ClickHouseでの`SELECT`クエリの性能は、`NOT NULL`制約の存在によって影響を受けません。
-- セクション1.3.1に従い、ClickHouseのネイティブデータ型（例: `Int32`, `String`）を使用して、仕様で言及された抽象データ型（例: `Identifier`, `Variable text, size N`）を実装します。この結果は主に読みやすさの向上のみであり、`dbgen`によって生成されるSQL-92データ型（例: `INTEGER`, `VARCHAR(40)`）もClickHouseで機能します。
+私たちはTPC-H仕様のルールにできるだけ近く従います:
+- 主キーは、仕様のセクション1.4.2.2に記載されたカラムに対してのみ作成します。
+- 置換パラメータは、仕様のセクション2.1.x.4のクエリ検証の値に置き換えました。
+- 仕様のセクション1.4.2.1に従い、テーブル定義ではオプションの `NOT NULL` 制約を使用しておらず、たとえ `dbgen` がデフォルトで生成してもそうです。 
+  ClickHouseでの `SELECT` クエリのパフォーマンスは、 `NOT NULL` 制約の存在または欠如に影響されません。
+- 仕様のセクション1.3.1に従い、クリックハウスのネイティブデータ型（例: `Int32`, `String`）を使用して、仕様に記載されている抽象データ型（例: `Identifier`, `Variable text, size N`）を実装しています。これにより可読性が向上します。`dbgen` によって生成されるSQL-92データ型（例: `INTEGER`, `VARCHAR(40)`）もClickHouseで使用することができます。
 
 ```sql
 CREATE TABLE nation (
@@ -122,8 +124,8 @@ CREATE TABLE orders  (
     o_shippriority   Int32,
     o_comment        String)
 ORDER BY (o_orderkey);
--- 以下は、公式のTPC-Hルールに準拠していない代替のorder keyですが、セクション4.5で推奨されています
--- "TPC-Hのボトルネックとその最適化の定量化":
+-- 以下は公式のTPC-Hルールに準拠していない代替のオーダーキーですが、
+-- 「Quantifying TPC-H Choke Points and Their Optimizations」のセクション4.5で推奨されています:
 -- ORDER BY (o_orderdate, o_orderkey);
 
 CREATE TABLE lineitem (
@@ -144,14 +146,14 @@ CREATE TABLE lineitem (
     l_shipmode       String,
     l_comment        String)
 ORDER BY (l_orderkey, l_linenumber);
--- 以下は、公式のTPC-Hルールに準拠していない代替のorder keyですが、セクション4.5で推奨されています
--- "TPC-Hのボトルネックとその最適化の定量化":
+-- 以下は公式のTPC-Hルールに準拠していない代替のオーダーキーですが、
+-- 「Quantifying TPC-H Choke Points and Their Optimizations」のセクション4.5で推奨されています:
 -- ORDER BY (l_shipdate, l_orderkey, l_linenumber);
 ```
 
-データは次のようにインポートできます:
+データは以下のようにインポートできます:
 
-``` bash
+```bash
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO nation FORMAT CSV" < nation.tbl
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO region FORMAT CSV" < region.tbl
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO part FORMAT CSV" < part.tbl
@@ -163,8 +165,8 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMA
 ```
 
 :::note
-tpch-kitを使用して自分でテーブルを生成する代わりに、公開されたS3バケットからデータをインポートすることもできます。
-最初に上記の`CREATE`文を使用して空のテーブルを作成してください。
+tpch-kitを使用してテーブルを自分で生成する代わりに、公開されたS3バケットからデータをインポートすることもできます。  
+最初に上記の `CREATE` ステートメントを使用して空のテーブルを作成することを確認してください。
 
 ```sql
 -- スケールファクター1
@@ -186,20 +188,20 @@ INSERT INTO partsupp SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/customer.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/orders.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/lineitem.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-````
+```  
 :::
 
-## クエリ {#queries}
+## Queries {#queries}
 
 :::note
-[`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls)を設定を有効にして、SQL標準に従った正しい結果を生成する必要があります。
+正しい結果を生成するために [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) を有効にする必要があります。
 :::
 
-クエリは`./qgen -s <スケーリングファクター>`によって生成されます。スケール` = 100`のクエリの例:
+クエリは `./qgen -s <scaling_factor>` によって生成されます。スケールファクター `s = 100` の例のクエリ:
 
-**正確性**
+**Correctness**
 
-クエリの結果は、特に別途言及されていない限り、公式の結果と一致します。確認するには、スケールファクター=1 (`dbgen`、上記参照)でTPC-Hデータベースを生成し、[tpch-kitの期待される結果](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers)と比較してください。
+クエリの結果は、特に記載がない限り、公式の結果と一致します。確認するためには、スケールファクター = 1 (`dbgen`、上記参照) でTPC-Hデータベースを生成し、[tpch-kitの期待される結果](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers)と比較してください。
 
 **Q1**
 
@@ -230,6 +232,8 @@ ORDER BY
 **Q2**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     s_acctbal,
     s_name,
@@ -276,9 +280,9 @@ ORDER BY
 ```
 
 ::::note
-2025年2月現在、相関サブクエリのため、クエリはそのままでは動作しません。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
+v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
 
-この代替の定式化は機能し、参照結果を返すことが確認されています。
+この代替のフォームは動作し、参照結果を返すことが確認されています。
 
 ```sql
 WITH MinSupplyCost AS (
@@ -361,6 +365,8 @@ ORDER BY
 **Q4**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     o_orderpriority,
     count(*) AS order_count
@@ -385,9 +391,9 @@ ORDER BY
 ```
 
 ::::note
-2025年2月現在、相関サブクエリのため、クエリはそのままでは動作しません。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
+v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
 
-この代替の定式化は機能し、参照結果を返すことが確認されています。
+この代替のフォームは動作し、参照結果を返すことが確認されています。
 
 ```sql
 WITH ValidLineItems AS (
@@ -436,7 +442,7 @@ WHERE
     AND l_suppkey = s_suppkey
     AND c_nationkey = s_nationkey
     AND s_nationkey = n_nationkey
-    AND n_regionkey = r_regionkey
+    AND n_regionkey = r.regionkey
     AND r_name = 'ASIA'
     AND o_orderdate >= DATE '1994-01-01'
     AND o_orderdate < DATE '1994-01-01' + INTERVAL '1' year
@@ -461,9 +467,9 @@ WHERE
 ```
 
 ::::note
-2025年2月現在、Decimal加算のバグにより、クエリはそのままでは動作しません。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/70136
+2025年2月現在、このクエリはDecimalの加算のバグのため、すぐに動作しません。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/70136
 
-この代替の定式化は機能し、参照結果を返すことが確認されています。
+この代替のフォームは動作し、参照結果を返すことが確認されています。
 
 ```sql
 SELECT
@@ -551,7 +557,7 @@ FROM (
         AND l_orderkey = o_orderkey
         AND o_custkey = c_custkey
         AND c_nationkey = n1.n_nationkey
-        AND n1.n_regionkey = r_regionkey
+        AND n1.n_regionkey = r.r_regionkey
         AND r_name = 'AMERICA'
         AND s_nationkey = n2.n_nationkey
         AND o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31'
@@ -819,6 +825,8 @@ ORDER BY
 **Q17**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     sum(l_extendedprice) / 7.0 AS avg_yearly
 FROM
@@ -839,9 +847,9 @@ WHERE
 ```
 
 ::::note
-2025年2月現在、相関サブクエリのため、クエリはそのままでは動作しません。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
+v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
 
-この代替の定式化は機能し、参照結果を返すことが確認されています。
+この代替のフォームは動作し、参照結果を返すことが確認されています。
 
 ```sql
 WITH AvgQuantity AS (
@@ -950,6 +958,8 @@ WHERE
 **Q20**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     s_name,
     s_address
@@ -990,12 +1000,14 @@ ORDER BY
 ```
 
 ::::note
-2025年2月現在、相関サブクエリのため、クエリはそのままでは動作しません。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
+v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
 ::::
 
 **Q21**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     s_name,
     count(*) AS numwait
@@ -1037,12 +1049,14 @@ ORDER BY
     s_name;
 ```
 ::::note
-2025年2月現在、相関サブクエリのため、クエリはそのままでは動作しません。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
+v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
 ::::
 
 **Q22**
 
 ```sql
+SET allow_experimental_correlated_subqueries = 1; -- since v25.5
+
 SELECT
     cntrycode,
     count(*) AS numcust,
@@ -1082,5 +1096,5 @@ ORDER BY
 ```
 
 ::::note
-2025年2月現在、相関サブクエリのため、クエリはそのままでは動作しません。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
+v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
 ::::

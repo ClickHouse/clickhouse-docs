@@ -1,9 +1,11 @@
 ---
-slug: /cloud/manage/postman
-sidebar_label: PostmanによるプログラムインターフェースAPIアクセス
-title: PostmanによるプログラムインターフェースAPIアクセス
+'slug': '/cloud/manage/postman'
+'sidebar_label': 'Programmatic API access with Postman'
+'title': 'Programmatic API access with Postman'
+'description': 'This guide will help you test the ClickHouse Cloud API using Postman'
 ---
 
+import Image from '@theme/IdealImage';
 import postman1 from '@site/static/images/cloud/manage/postman/postman1.png';
 import postman2 from '@site/static/images/cloud/manage/postman/postman2.png';
 import postman3 from '@site/static/images/cloud/manage/postman/postman3.png';
@@ -22,95 +24,94 @@ import postman15 from '@site/static/images/cloud/manage/postman/postman15.png';
 import postman16 from '@site/static/images/cloud/manage/postman/postman16.png';
 import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 
-このガイドでは、[Postman](https://www.postman.com/product/what-is-postman/)を使用してClickHouse Cloud APIをテストする方法を説明します。  
-Postmanアプリケーションは、ウェブブラウザ内で使用できるか、デスクトップにダウンロードして使用できます。
+このガイドでは、[Postman](https://www.postman.com/product/what-is-postman/)を使用してClickHouse Cloud APIをテストする方法を説明します。 
+Postmanアプリケーションは、Webブラウザ内で使用できるほか、デスクトップにダウンロードすることもできます。
 
 ### アカウントを作成する {#create-an-account}
-* 無料アカウントは[https://www.postman.com](https://www.postman.com)で利用可能です。
+* 無料アカウントは[https://www.postman.com](https://www.postman.com)で利用できます。
 
-<img src={postman1} alt="Postmanサイト"/>
+<Image img={postman1} size="md" alt="Postman site" border/>
 
 ### ワークスペースを作成する {#create-a-workspace}
-* ワークスペースに名前を付け、可視性レベルを設定します。
+* ワークスペースに名前を付け、可視性レベルを設定します。 
 
-<img src={postman2} alt="ワークスペースを作成"/>
+<Image img={postman2} size="md" alt="Create workspace" border/>
 
 ### コレクションを作成する {#create-a-collection}
-* 左上のメニューの「Explore」の下にある「Import」をクリックします：
+* 左上のメニューの「Explore」の下で「Import」をクリックします: 
 
-<img src={postman3} alt="Explore > Import"/>
+<Image img={postman3} size="md" alt="Explore > Import" border/>
 
-* モーダルが表示されます：
+* モーダルが表示されます:
 
-<img src={postman4} alt="API URL入力"/>
+<Image img={postman4} size="md" alt="API URL entry" border/>
 
-* APIアドレス「https://api.clickhouse.cloud/v1」を入力し、'Enter'を押します：
+* APIアドレス「https://api.clickhouse.cloud/v1」を入力し、「Enter」を押します:
 
-<img src={postman5} alt="インポート"/>
+<Image img={postman5} size="md" alt="Import" border/>
 
-* 「Import」ボタンをクリックして「Postman Collection」を選択します：
+* 「Import」ボタンをクリックして「Postman Collection」を選択します:
 
-<img src={postman6} alt="Collection > Import"/>
+<Image img={postman6} size="md" alt="Collection > Import" border/>
 
-### ClickHouse Cloud API仕様とインターフェースを取る {#interface-with-the-clickhouse-cloud-api-spec}
-* 「Collections」に「ClickHouse Cloud用API仕様」が表示されます（左側ナビゲーション）。
+### ClickHouse Cloud API仕様とのインターフェース {#interface-with-the-clickhouse-cloud-api-spec}
+* 「ClickHouse Cloud用API仕様」が「Collections」（左ナビゲーション）内に表示されます。
 
-<img src={postman7} alt="APIをインポート"/>
+<Image img={postman7} size="md" alt="Import your API" border/>
 
-* 「ClickHouse Cloud用API仕様」をクリックします。中央のペインから「Authorization」タブを選択します：
+* 「ClickHouse Cloud用API仕様」をクリックします。中間ペインから「Authorization」タブを選択します:
 
-<img src={postman8} alt="インポート完了"/>
+<Image img={postman8} size="md" alt="Import complete" border/>
 
 ### 認証を設定する {#set-authorization}
-* ドロップダウンメニューを切り替えて「Basic Auth」を選択します：
+* ドロップダウンメニューを切り替えて「Basic Auth」を選択します:
 
-<img src={postman9} alt="Basic auth"/>
+<Image img={postman9} size="md" alt="Basic auth" border/>
 
-* ClickHouse Cloud APIキーを設定した際に受け取ったユーザー名とパスワードを入力します：
+* ClickHouse Cloud APIキーをセットアップした際に受け取ったユーザー名とパスワードを入力します:
 
-<img src={postman10} alt="認証情報"/>
+<Image img={postman10} size="md" alt="credentials" border/>
 
 ### 変数を有効にする {#enable-variables}
-* [Variables](https://learning.postman.com/docs/sending-requests/variables/)を使用することで、Postmanで値の保存と再利用が可能になり、APIテストが容易になります。
-#### 組織IDとサービスIDを設定する {#set-the-organization-id-and-service-id}
-* 「Collection」の中で、中央のペインにある「Variable」タブをクリックします（Base URLは先にAPIをインポートした際に設定されています）：
-* `baseURL`の下にあるオープンフィールド「Add new value」をクリックし、組織IDとサービスIDを代入します：
+* [変数](https://learning.postman.com/docs/sending-requests/variables/)を使用すると、Postman内で値を保存および再利用でき、APIテストが容易になります。
+#### Organization IDとService IDを設定する {#set-the-organization-id-and-service-id}
+* 「Collection」内で、中央ペインの「Variable」タブをクリックします（Base URLは前のAPIインポートによって設定されているはずです）。
+* `baseURL`の下の「新しい値を追加」をクリックし、あなたの組織IDとサービスIDに置き換えます:
 
-<img src={postman11} alt="組織IDとサービスID"/>
-
+<Image img={postman11} size="md" alt="Organization ID and Service ID" border/>
 
 ## ClickHouse Cloud API機能をテストする {#test-the-clickhouse-cloud-api-functionalities}
-### 「GET利用可能な組織のリスト」をテストする {#test-get-list-of-available-organizations}
+### 「GET 利用可能な組織のリスト」をテストする {#test-get-list-of-available-organizations}
 * 「ClickHouse Cloud用OpenAPI仕様」の下で、フォルダーを展開 > V1 > organizations
-* 「GET利用可能な組織のリスト」をクリックして、右側の青い「Send」ボタンを押します：
+* 「GET 利用可能な組織のリスト」をクリックし、右側の青い「Send」ボタンを押します:
 
-<img src={postman12} alt="組織の取得をテスト"/>
+<Image img={postman12} size="md" alt="Test retrieval of organizations" border/>
 
-* 返された結果には「status": 200とともに、あなたの組織の詳細が表示されるはずです。（「status」400が表示され、組織情報がない場合は、設定が正しくありません）。
+* 返された結果は、「status": 200」と共に組織の詳細を返すはずです（「status」が400で、組織情報が表示されない場合は、設定が正しくありません）。
 
-<img src={postman13} alt="ステータス"/>
+<Image img={postman13} size="md" alt="Status" border/>
 
-### 「GET組織の詳細」をテストする {#test-get-organizational-details}
-* `organizationid`フォルダの下で、「GET組織の詳細」に移動します：
-* 中央のフレームメニューのParamsに`organizationid`が必要です。
+### 「GET 組織の詳細」をテストする {#test-get-organizational-details}
+* `organizationid`フォルダーの下に移動し、「GET 組織の詳細」へ:
+* 中央フレームのメニューのParamsに`organizationid`が必要です。
 
-<img src={postman14} alt="組織の詳細を取得するテスト"/>
+<Image img={postman14} size="md" alt="Test retrieval of organization details" border/>
 
-* この値を中かっこ`{{orgid}}`で編集します（この値を設定した際、メニューに値が表示されます）：
+* この値を波括弧内の`orgid`で編集します `{{orgid}}`（この値を設定したことで、メニューが表示され、値が表示されます）:
 
-<img src={postman15} alt="テストを送信"/>
+<Image img={postman15} size="md" alt="Submit test" border/>
 
 * 「Save」ボタンを押した後、画面右上の青い「Send」ボタンを押します。
 
-<img src={postman16} alt="戻り値"/>
+<Image img={postman16} size="md" alt="Return value" border/>
 
-* 返された結果には「status": 200とともに、あなたの組織の詳細が表示されるはずです。（「status」400が表示され、組織情報がない場合は、設定が正しくありません）。
+* 返された結果は、「status": 200」と共に組織の詳細を返すはずです（「status」が400で、組織情報が表示されない場合は、設定が正しくありません）。
 
-### 「GETサービスの詳細」をテストする {#test-get-service-details}
-* 「GETサービスの詳細」をクリックします
-* `organizationid`と`serviceid`の値をそれぞれ`{{orgid}}`と`{{serviceid}}`で編集します。
-* 「Save」を押してから、右側の青い「Send」ボタンを押します。
+### 「GET サービスの詳細」をテストする {#test-get-service-details}
+* 「GET サービスの詳細」をクリックします。
+* `organizationid`と`serviceid`の値をそれぞれ`{{orgid}}`と`{{serviceid}}`に編集します。
+* 「Save」を押し、次に右の青い「Send」ボタンを押します。
 
-<img src={postman17} alt="サービスのリスト"/>
+<Image img={postman17} size="md" alt="List of services" border/>
 
-* 返された結果には「status": 200とともに、サービスのリストとその詳細が表示されるはずです。（「status」400が表示され、サービス情報がない場合は、設定が正しくありません）。
+* 返された結果は、「status": 200」と共にサービスのリストとその詳細を返すはずです（「status」が400で、サービス情報が表示されない場合は、設定が正しくありません）。

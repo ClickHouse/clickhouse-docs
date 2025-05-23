@@ -1,20 +1,23 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/corrstable
-sidebar_position: 119
-title: "corrStable"
-description: "数値的に安定したアルゴリズムを使用して、ピアソン相関係数を計算します。"
+'description': 'Calculates the Pearson correlation coefficient, but uses a numerically
+  stable algorithm.'
+'sidebar_position': 119
+'slug': '/sql-reference/aggregate-functions/reference/corrstable'
+'title': 'corrStable'
 ---
+
+
 
 
 # corrStable
 
-[ピアソン相関係数](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)を計算します:
+[ピアソンの相関係数](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)を計算します：
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{\sqrt{\Sigma{(x - \bar{x})^2} * \Sigma{(y - \bar{y})^2}}}
 $$
 
-[`corr`](../reference/corr.md)関数と似ていますが、数値的に安定したアルゴリズムを使用します。その結果、`corrStable`は`corr`よりも遅いですが、より正確な結果を生成します。
+[`corr`](../reference/corr.md) 関数と似ていますが、数値的に安定したアルゴリズムを使用しています。その結果、`corrStable` は `corr` よりも遅いですが、より正確な結果を生成します。
 
 **構文**
 
@@ -24,16 +27,16 @@ corrStable(x, y)
 
 **引数**
 
-- `x` — 第一の変数。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
-- `y` — 第二の変数。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
+- `x` — 最初の変数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+- `y` — 2番目の変数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
 
 **返される値**
 
-- ピアソン相関係数。[Float64](../../data-types/float.md)。
+- ピアソンの相関係数。[Float64](../../data-types/float.md)。
 
 ***例***
 
-クエリ:
+クエリ：
 
 ```sql
 DROP TABLE IF EXISTS series;
@@ -52,7 +55,7 @@ SELECT corrStable(x_value, y_value)
 FROM series;
 ```
 
-結果:
+結果：
 
 ```response
 ┌─corrStable(x_value, y_value)─┐

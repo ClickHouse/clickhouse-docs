@@ -1,28 +1,31 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/approxtopsum
-sidebar_position: 108
-title: "approx_top_sum"
-description: "指定されたカラムにおけるおおよその最頻値とそのカウントの配列を返します。"
+'description': 'Returns an array of the approximately most frequent values and their
+  counts in the specified column.'
+'sidebar_position': 108
+'slug': '/sql-reference/aggregate-functions/reference/approxtopsum'
+'title': 'approx_top_sum'
 ---
+
+
 
 
 # approx_top_sum
 
-指定されたカラムにおけるおおよその最頻値とそのカウントの配列を返します。結果の配列は、近似的な頻度の降順でソートされます（値自体によってではありません）。さらに、値の重みも考慮されます。
+指定されたカラムの約最頻出値とそのカウントの配列を返します。結果の配列は、値自体ではなく、値の近似頻度の降順でソートされます。さらに、値の重みも考慮されます。
 
-``` sql
+```sql
 approx_top_sum(N)(column, weight)
 approx_top_sum(N, reserved)(column, weight)
 ```
 
-この関数は保証された結果を提供しません。特定の状況ではエラーが発生する可能性があり、最も頻繁な値でない頻出値を返すことがあります。
+この関数は保証された結果を提供しません。特定の状況では、エラーが発生する可能性があり、最も頻繁な値ではない頻出値を返すことがあります。
 
-`N < 10` の値の使用を推奨します。大きな `N` 値の場合、パフォーマンスが低下します。最大値は `N = 65536` です。
+`N < 10` の値を使用することをお勧めします。大きな `N` の場合、パフォーマンスが低下します。`N` の最大値は 65536 です。
 
 **パラメータ**
 
-- `N` — 返す要素の数。オプション。デフォルト値: 10。
-- `reserved` — 値のために予約されたセルの数を定義します。もし uniq(column) > reserved の場合、topK 関数の結果は近似値になります。オプション。デフォルト値: N * 3。
+- `N` — 返す要素の数。オプションです。デフォルト値は 10 です。
+- `reserved` — 値のために予約されるセルの数を定義します。もし uniq(column) > reserved であれば、topK 関数の結果は近似値になります。オプションです。デフォルト値は N * 3 です。
 
 **引数**
 
@@ -31,22 +34,22 @@ approx_top_sum(N, reserved)(column, weight)
 
 **例**
 
-クエリ:
+クエリ：
 
-``` sql
+```sql
 SELECT approx_top_sum(2)(k, w)
 FROM VALUES('k Char, w UInt64', ('y', 1), ('y', 1), ('x', 5), ('y', 1), ('z', 10))
 ```
 
-結果:
+結果：
 
-``` text
+```text
 ┌─approx_top_sum(2)(k, w)─┐
 │ [('z',10,0),('x',5,0)]  │
 └─────────────────────────┘
 ```
 
-**関連項目**
+**関連情報**
 
 - [topK](../../../sql-reference/aggregate-functions/reference/topk.md)
 - [topKWeighted](../../../sql-reference/aggregate-functions/reference/topkweighted.md)

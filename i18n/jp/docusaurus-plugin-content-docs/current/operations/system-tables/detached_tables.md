@@ -1,11 +1,15 @@
 ---
-description: "分離された各テーブルに関する情報を含むシステムテーブル。"
-slug: /operations/system-tables/detached_tables
-title: "system.detached_tables"
-keywords: ["システムテーブル", "detached_tables"]
+'description': 'システムテーブルには各デタッチテーブルの情報が含まれています。'
+'keywords':
+- 'system table'
+- 'detached_tables'
+'slug': '/operations/system-tables/detached_tables'
+'title': 'system.detached_tables'
 ---
 
-分離された各テーブルに関する情報を含みます。
+
+
+各切り離されたテーブルの情報を含みます。
 
 カラム:
 
@@ -13,11 +17,11 @@ keywords: ["システムテーブル", "detached_tables"]
 
 - `table` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
 
-- `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — テーブルの UUID (Atomic database)。
+- `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — テーブルのuuid (原子データベース)。
 
-- `metadata_path` ([String](../../sql-reference/data-types/string.md)) - ファイルシステム内のテーブルメタデータのパス。
+- `metadata_path` ([String](../../sql-reference/data-types/string.md)) - ファイルシステム内のテーブルメタデータへのパス。
 
-- `is_permanently` ([UInt8](../../sql-reference/data-types/int-uint.md)) - テーブルが恒久的に切り離されたことを示すフラグ。
+- `is_permanently` ([UInt8](../../sql-reference/data-types/int-uint.md)) - テーブルが永続的に切り離されたことを示すフラグ。
 
 
 **例**
@@ -27,7 +31,7 @@ SELECT * FROM system.detached_tables FORMAT Vertical;
 ```
 
 ```text
-行 1:
+Row 1:
 ──────
 database:                   base
 table:                      t1

@@ -1,23 +1,30 @@
 ---
-slug: /operations/utilities/clickhouse-format
-title: clickhouse-format
+'description': 'Guide to using the format utility for working with ClickHouse data
+  formats'
+'slug': '/operations/utilities/clickhouse-format'
+'title': 'clickhouse-format'
 ---
 
-入力クエリのフォーマットを可能にします。
+
+
+
+# clickhouse-format ユーティリティ
+
+入力クエリをフォーマットすることができます。
 
 キー:
 
-- `--help` または `-h` — ヘルプメッセージを生成します。
-- `--query` — 任意の長さと複雑さのクエリをフォーマットします。
-- `--hilite` — ANSIターミナルエスケープシーケンスで構文のハイライトを追加します。
-- `--oneline` — 単一行にフォーマットします。
-- `--max_line_length` — 指定された長さ未満の単一行クエリにフォーマットします。
+- `--help` または `-h` — ヘルプメッセージを表示します。
+- `--query` — 任意の長さおよび複雑さのクエリをフォーマットします。
+- `--hilite` — ANSI ターミナルエスケープシーケンスを使用して構文ハイライトを追加します。
+- `--oneline` — 単一行でフォーマットします。
+- `--max_line_length` — 指定された長さ未満の単一行クエリをフォーマットします。
 - `--comments` — 出力にコメントを保持します。
-- `--quiet` または `-q` — 構文を確認するだけで、成功時に出力はしません。
+- `--quiet` または `-q` — 構文を確認するだけで、成功時には出力しません。
 - `--multiquery` または `-n` — 同じファイル内で複数のクエリを許可します。
 - `--obfuscate` — フォーマットの代わりに難読化します。
-- `--seed <string>` — 難読化の結果を決定する任意の文字列のシード。
-- `--backslash` — フォーマットされたクエリの各行の末尾にバックスラッシュを追加します。複数行のクエリをウェブや他の場所からコピーし、コマンドラインで実行する際に便利です。
+- `--seed <string>` — 難読化結果を決定する任意の文字列のシード。
+- `--backslash` — フォーマットされたクエリの各行の末尾にバックスラッシュを追加します。これは、複数行のクエリをウェブなどからコピーし、コマンドラインで実行したい場合に便利です。
 
 ## 例 {#examples}
 
@@ -36,7 +43,7 @@ WHERE number % 2
 ORDER BY number DESC
 ```
 
-2. ハイライトと単一行:
+2. ハイライトおよび単一行:
 
 ```bash
 $ clickhouse-format --oneline --hilite <<< "SELECT sum(number) FROM numbers(5);"

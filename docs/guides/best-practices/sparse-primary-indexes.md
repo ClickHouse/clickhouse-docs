@@ -4,6 +4,7 @@ sidebar_position: 1
 description: 'In this guide we are going to do a deep dive into ClickHouse indexing.'
 title: 'A Practical Introduction to Primary Indexes in ClickHouse'
 slug: /guides/best-practices/sparse-primary-indexes
+show_related_blogs: true
 ---
 
 import sparsePrimaryIndexes01 from '@site/static/images/guides/best-practices/sparse-primary-indexes-01.png';
@@ -155,10 +156,6 @@ Processed 8.87 million rows,
 ClickHouse client's result output indicates that ClickHouse executed a full table scan! Each single row of the 8.87 million rows of our table was streamed into ClickHouse. That doesn't scale.
 
 To make this (way) more efficient and (much) faster, we need to use a table with a appropriate primary key. This will allow ClickHouse to automatically (based on the primary key's column(s)) create a sparse primary index which can then be used to significantly speed up the execution of our example query.
-
-### Related content {#related-content}
-- Blog: [Super charging your ClickHouse queries](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes)
-
 
 ## ClickHouse Index Design {#clickhouse-index-design}
 
@@ -1472,11 +1469,6 @@ Therefore the `cl` values are most likely in random order and therefore have a b
 ### Summary {#summary-1}
 
 For both the efficient filtering on secondary key columns in queries and the compression ratio of a table's column data files it is beneficial to order the columns in a primary key by their cardinality in ascending order.
-
-
-### Related content {#related-content-1}
-- Blog: [Super charging your ClickHouse queries](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes)
-
 
 ## Identifying single rows efficiently {#identifying-single-rows-efficiently}
 

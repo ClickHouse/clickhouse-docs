@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/distinctdynamictypes
-sidebar_position: 215
-title: 'distinctDynamicTypes'
-description: '计算存储在 Dynamic 列中的不同数据类型的列表。'
+'description': '计算存储在 Dynamic 列中的不同数据类型的列表。'
+'sidebar_position': 215
+'slug': '/sql-reference/aggregate-functions/reference/distinctdynamictypes'
+'title': 'distinctDynamicTypes'
 ---
 
 
@@ -22,7 +22,7 @@ distinctDynamicTypes(dynamic)
 
 **返回值**
 
-- 数据类型名称的排序列表 [Array(String)](../../data-types/array.md)。
+- 排序后的数据类型名称列表 [Array(String)](../../data-types/array.md)。
 
 **示例**
 

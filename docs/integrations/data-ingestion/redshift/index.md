@@ -2,7 +2,9 @@
 sidebar_label: 'Redshift'
 slug: /integrations/redshift
 description: 'Migrating Data from Redshift to ClickHouse'
-title: 'Migrating Data from Redshift to ClickHouse'
+title: 'Migrating data from Redshift to ClickHouse'
+keywords: ['Redshift']
+show_related_blogs: true
 ---
 
 import redshiftToClickhouse from '@site/static/images/integrations/data-ingestion/redshift/redshift-to-clickhouse.png';
@@ -28,8 +30,6 @@ import Image from '@theme/IdealImage';
     allowfullscreen>
   </iframe>
 </div>
-
-- Blog: [Optimizing Analytical Workloads: Comparing Redshift vs ClickHouse](https://clickhouse.com/blog/redshift-vs-clickhouse-comparison)
 
 ## Introduction {#introduction}
 

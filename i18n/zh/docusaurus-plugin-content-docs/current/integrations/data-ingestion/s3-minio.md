@@ -1,20 +1,21 @@
 ---
-sidebar_label: MinIO
-sidebar_position: 6
-slug: /integrations/minio
-description: 使用 MinIO
+'sidebar_label': 'MinIO'
+'sidebar_position': 6
+'slug': '/integrations/minio'
+'description': '页面说明如何将 MinIO 与 ClickHouse 一起使用'
+'title': '使用 MinIO'
 ---
+
+import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 
 # 使用 MinIO
 
-import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
-
 <SelfManaged />
 
-所有 S3 功能和表与 [MinIO](https://min.io/) 兼容。用户在自托管的 MinIO 存储上，尤其在网络本地性最佳的情况下，可能会体验到更高的吞吐量。
+所有 S3 函数和表都与 [MinIO](https://min.io/) 兼容。用户在自托管的 MinIO 存储上可能会体验到更高的吞吐量，尤其是在最佳网络位置的情况下。
 
-同时，备份的合并树配置也是兼容的，只需在配置中进行一些小的修改：
+带备份的 merge tree 配置也兼容，只需对配置进行一些小的更改：
 
 ```xml
 <clickhouse>
@@ -42,5 +43,5 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 ```
 
 :::tip
-注意 endpoint 标签中的双斜杠，这是为了指定存储桶根目录。
+请注意端点标签中的双斜杠，这用于指定存储桶根目录。
 :::

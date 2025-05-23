@@ -1,15 +1,17 @@
 ---
-description: "航空便の定時運航パフォーマンスを含むデータセット"
-slug: /getting-started/example-datasets/ontime
-sidebar_label: 定時航空便データ
-title: "定時"
+'description': 'Dataset containing the on-time performance of airline flights'
+'sidebar_label': 'OnTime Airline Flight Data'
+'slug': '/getting-started/example-datasets/ontime'
+'title': 'OnTime'
 ---
 
-このデータセットは、運輸統計局からのデータを含んでいます。
+
+
+このデータセットは、交通統計局のデータを含んでいます。
 
 ## テーブルの作成 {#creating-a-table}
 
-``` sql
+```sql
 CREATE TABLE `ontime`
 (
     `Year`                            UInt16,
@@ -127,23 +129,23 @@ CREATE TABLE `ontime`
 
 ## 生データからのインポート {#import-from-raw-data}
 
-データのダウンロード:
+データをダウンロードします:
 
-``` bash
+```bash
 wget --no-check-certificate --continue https://transtats.bts.gov/PREZIP/On_Time_Reporting_Carrier_On_Time_Performance_1987_present_{1987..2022}_{1..12}.zip
 ```
 
-複数スレッドでデータをロードする:
+複数のスレッドを用いたデータの読み込み:
 
-``` bash
+```bash
 ls -1 *.zip | xargs -I{} -P $(nproc) bash -c "echo {}; unzip -cq {} '*.csv' | sed 's/\.00//g' | clickhouse-client --input_format_csv_empty_as_default 1 --query='INSERT INTO ontime FORMAT CSVWithNames'"
 ```
 
-(サーバーにメモリ不足やその他の問題が発生する場合は、`-P $(nproc)`の部分を削除してください)
+(サーバーでメモリ不足やその他の問題が発生する場合は、 `-P $(nproc)` 部分を削除してください)
 
-## 保存されたコピーからのインポート {#import-from-a-saved-copy}
+## 保存したコピーからのインポート {#import-from-a-saved-copy}
 
-代わりに、以下のクエリを使用して保存されたコピーからデータをインポートできます:
+別の方法として、次のクエリを用いて保存したコピーからデータをインポートすることができます:
 
 ```sql
 INSERT INTO ontime SELECT * FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/ontime/csv_by_year/*.csv.gz', CSVWithNames) SETTINGS max_insert_threads = 40;
@@ -155,7 +157,7 @@ INSERT INTO ontime SELECT * FROM s3('https://clickhouse-public-datasets.s3.amazo
 
 Q0.
 
-``` sql
+```sql
 SELECT avg(c1)
 FROM
 (
@@ -165,9 +167,9 @@ FROM
 );
 ```
 
-Q1. 2000年から2008年までの1日の便数
+Q1. 2000年から2008年までの1日あたりのフライト数
 
-``` sql
+```sql
 SELECT DayOfWeek, count(*) AS c
 FROM ontime
 WHERE Year>=2000 AND Year<=2008
@@ -175,9 +177,9 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q2. 10分以上遅延した便の数を週ごとにグループ化 (2000-2008)
+Q2. 10分以上遅延したフライト数、曜日別、2000-2008年
 
-``` sql
+```sql
 SELECT DayOfWeek, count(*) AS c
 FROM ontime
 WHERE DepDelay>10 AND Year>=2000 AND Year<=2008
@@ -185,9 +187,9 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q3. 空港別の遅延便数 (2000-2008)
+Q3. 空港別の遅延数、2000-2008年
 
-``` sql
+```sql
 SELECT Origin, count(*) AS c
 FROM ontime
 WHERE DepDelay>10 AND Year>=2000 AND Year<=2008
@@ -196,9 +198,9 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Q4. 2007年のキャリア別遅延便数
+Q4. 2007年のキャリア別遅延数
 
-``` sql
+```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, count(*)
 FROM ontime
 WHERE DepDelay>10 AND Year=2007
@@ -206,9 +208,9 @@ GROUP BY Carrier
 ORDER BY count(*) DESC;
 ```
 
-Q5. 2007年のキャリア別遅延のパーセンテージ
+Q5. 2007年のキャリア別遅延の割合
 
-``` sql
+```sql
 SELECT Carrier, c, c2, c*100/c2 as c3
 FROM
 (
@@ -232,9 +234,9 @@ JOIN
 ORDER BY c3 DESC;
 ```
 
-同じクエリの改善版:
+より良いバージョンの同じクエリ:
 
-``` sql
+```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
 FROM ontime
 WHERE Year=2007
@@ -242,9 +244,9 @@ GROUP BY Carrier
 ORDER BY c3 DESC
 ```
 
-Q6. 2000年から2008年のより広範な年のリクエスト
+Q6. 同じリクエストをより広い年範囲で、2000-2008年
 
-``` sql
+```sql
 SELECT Carrier, c, c2, c*100/c2 as c3
 FROM
 (
@@ -268,9 +270,9 @@ JOIN
 ORDER BY c3 DESC;
 ```
 
-同じクエリの改善版:
+より良いバージョンの同じクエリ:
 
-``` sql
+```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
 FROM ontime
 WHERE Year>=2000 AND Year<=2008
@@ -278,9 +280,9 @@ GROUP BY Carrier
 ORDER BY c3 DESC;
 ```
 
-Q7. 10分以上遅延した便のパーセンテージを年別に
+Q7. 10分以上遅延したフライトの割合、年別
 
-``` sql
+```sql
 SELECT Year, c1/c2
 FROM
 (
@@ -302,18 +304,18 @@ JOIN
 ORDER BY Year;
 ```
 
-同じクエリの改善版:
+より良いバージョンの同じクエリ:
 
-``` sql
+```sql
 SELECT Year, avg(DepDelay>10)*100
 FROM ontime
 GROUP BY Year
 ORDER BY Year;
 ```
 
-Q8. 直接接続されている都市の数による最も人気のある目的地の年別ランキング
+Q8. 様々な年範囲での直接接続されている都市数による人気のある目的地
 
-``` sql
+```sql
 SELECT DestCityName, uniqExact(OriginCityName) AS u
 FROM ontime
 WHERE Year >= 2000 and Year <= 2010
@@ -323,7 +325,7 @@ ORDER BY u DESC LIMIT 10;
 
 Q9.
 
-``` sql
+```sql
 SELECT Year, count(*) AS c1
 FROM ontime
 GROUP BY Year;
@@ -331,7 +333,7 @@ GROUP BY Year;
 
 Q10.
 
-``` sql
+```sql
 SELECT
    min(Year), max(Year), IATA_CODE_Reporting_Airline AS Carrier, count(*) AS cnt,
    sum(ArrDelayMinutes>30) AS flights_delayed,
@@ -349,7 +351,7 @@ LIMIT 1000;
 
 ボーナス:
 
-``` sql
+```sql
 SELECT avg(cnt)
 FROM
 (
@@ -385,9 +387,9 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Playgroundでデータを使って遊ぶこともできます。 [例](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K)。
+データをPlaygroundで操作することもできます。 [例](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K)。
 
-このパフォーマンステストは、Vadim Tkachenkoによって作成されました。以下をご覧ください:
+このパフォーマンステストはVadim Tkachenkoによって作成されました。次を参照してください:
 
 - https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/
 - https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/

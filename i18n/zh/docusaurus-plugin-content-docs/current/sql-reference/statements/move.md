@@ -1,13 +1,15 @@
 ---
-slug: /sql-reference/statements/move
-sidebar_position: 54
-sidebar_label: MOVE
+'description': 'MOVE 访问实体语句的文档'
+'sidebar_label': 'MOVE'
+'sidebar_position': 54
+'slug': '/sql-reference/statements/move'
+'title': 'MOVE 访问实体语句'
 ---
 
 
-# MOVE 访问实体语句
+# MOVE access entity statement
 
-此语句允许将一个访问实体从一个访问存储移动到另一个。
+此语句允许将访问实体从一个访问存储移动到另一个。
 
 语法：
 
@@ -15,7 +17,7 @@ sidebar_label: MOVE
 MOVE {USER, ROLE, QUOTA, SETTINGS PROFILE, ROW POLICY} name1 [, name2, ...] TO access_storage_type
 ```
 
-目前，ClickHouse 中有五种访问存储：
+当前，ClickHouse 中有五个访问存储：
  - `local_directory`
  - `memory`
  - `replicated`

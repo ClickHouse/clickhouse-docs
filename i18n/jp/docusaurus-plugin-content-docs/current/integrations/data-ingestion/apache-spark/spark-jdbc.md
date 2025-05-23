@@ -1,22 +1,29 @@
 ---
-sidebar_label: Spark JDBC
-sidebar_position: 3
-slug: /integrations/apache-spark/spark-jdbc
-description: Apache SparkとClickHouseの紹介
-keywords: [ clickhouse, Apache Spark, jdbc, migrating, data ]
+'sidebar_label': 'Spark JDBC'
+'sidebar_position': 3
+'slug': '/integrations/apache-spark/spark-jdbc'
+'description': 'ClickHouseとの統合に関するApache Sparkの概要'
+'keywords':
+- 'clickhouse'
+- 'Apache Spark'
+- 'jdbc'
+- 'migrating'
+- 'data'
+'title': 'Spark JDBC'
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 
 
 # Spark JDBC
-JDBCはSparkで最も一般的に使用されるデータソースの一つです。
-このセクションでは、Sparkでの [ClickHouse公式JDBCコネクタ](/integrations/language-clients/java/jdbc) の使用方法について説明します。
+JDBCは、Sparkで最も一般的に使用されるデータソースの1つです。
+このセクションでは、Sparkと共に使用するための[ClickHouse公式JDBCコネクタ](/integrations/language-clients/java/jdbc)の詳細を提供します。
 
 <TOCInline toc={toc}></TOCInline>
 
-## Read data {#read-data}
+## データの読み取り {#read-data}
 
 <Tabs groupId="spark_apis">
 <TabItem value="Java" label="Java" default>
@@ -31,7 +38,7 @@ public static void main(String[] args) {
 
 
         //---------------------------------------------------------------------------------------------------
-        // jdbcメソッドを使用してClickHouseからテーブルをロードする
+        // jdbcメソッドを使用してClickHouseからテーブルをロード
         //---------------------------------------------------------------------------------------------------
         Properties jdbcProperties = new Properties();
         jdbcProperties.put("user", "default");
@@ -42,7 +49,7 @@ public static void main(String[] args) {
         df1.show();
 
         //---------------------------------------------------------------------------------------------------
-        // loadメソッドを使用してClickHouseからテーブルをロードする
+        // loadメソッドを使用してClickHouseからテーブルをロード
         //---------------------------------------------------------------------------------------------------
         Dataset<Row> df2 = spark.read()
                 .format("jdbc")
@@ -56,7 +63,7 @@ public static void main(String[] args) {
         df2.show();
 
 
-        // Sparkセッションを停止する
+        // Sparkセッションを停止
         spark.stop();
     }
 ```
@@ -74,7 +81,7 @@ object ReadData extends App {
 
 
   //---------------------------------------------------------------------------------------------------
-  // jdbcメソッドを使用してClickHouseからテーブルをロードする
+  // jdbcメソッドを使用してClickHouseからテーブルをロード
   //---------------------------------------------------------------------------------------------------
   val connectionProperties = new Properties()
   connectionProperties.put("user", "default")
@@ -85,7 +92,7 @@ object ReadData extends App {
 
   df1.show()
   //---------------------------------------------------------------------------------------------------
-  // loadメソッドを使用してClickHouseからテーブルをロードする
+  // loadメソッドを使用してClickHouseからテーブルをロード
   //---------------------------------------------------------------------------------------------------
   val df2: Dataset[Row] = spark.read
     .format("jdbc")
@@ -99,7 +106,7 @@ object ReadData extends App {
 
 
 
-  // Sparkセッションを停止する
+  // Sparkセッションを停止
   spark.stop()
 
 }
@@ -116,7 +123,7 @@ jar_files = [
 ]
 
 
-# JARでSparkセッションを初期化
+# JARファイルを使用してSparkセッションを初期化
 spark = SparkSession.builder \
     .appName("example") \
     .master("local") \
@@ -161,7 +168,7 @@ df.show()
 </TabItem>
 </Tabs>
 
-## Write data {#write-data}
+## データの書き込み {#write-data}
 
 <Tabs groupId="spark_apis">
 <TabItem value="Java" label="Java" default>
@@ -177,7 +184,7 @@ df.show()
         jdbcProperties.put("user", "default");
         jdbcProperties.put("password", "123456");
 
-        // サンプルDataFrameを作成
+        // サンプルDataFrameの作成
         StructType schema = new StructType(new StructField[]{
                 DataTypes.createStructField("id", DataTypes.IntegerType, false),
                 DataTypes.createStructField("name", DataTypes.StringType, false)
@@ -212,7 +219,7 @@ df.show()
                 .save();
 
 
-        // Sparkセッションを停止する
+        // Sparkセッションを停止
         spark.stop();
     }
 ```
@@ -231,7 +238,7 @@ object WriteData extends App {
   jdbcProperties.put("user", "default")
   jdbcProperties.put("password", "123456")
 
-  // サンプルDataFrameを作成
+  // サンプルDataFrameの作成
 
 
   val rows = Seq(Row(1, "John"), Row(2, "Doe"))
@@ -268,7 +275,7 @@ object WriteData extends App {
     .save()
 
 
-  // Sparkセッションを停止する
+  // Sparkセッションを停止// Sparkセッションを停止
   spark.stop()
 
 }
@@ -286,7 +293,7 @@ jar_files = [
 ]
 
 
-# JARでSparkセッションを初期化
+# JARファイルを使用してSparkセッションを初期化
 spark = SparkSession.builder \
     .appName("example") \
     .master("local") \
@@ -294,7 +301,7 @@ spark = SparkSession.builder \
     .getOrCreate()
 
 
-# DataFrameを作成
+# DataFrameの作成
 data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
 df = spark.createDataFrame(data)
 
@@ -331,7 +338,7 @@ df.write \
                    password "password",
                    driver "com.clickhouse.jdbc.ClickHouseDriver" 
            );
-   -- resultTableはdf.createTempViewまたはSpark SQLで作成可能
+   -- resultTableはdf.createTempViewまたはSpark SQLで作成できます
    INSERT INTO TABLE jdbcTable
                 SELECT * FROM resultTable;
                 
@@ -341,11 +348,11 @@ df.write \
 </Tabs>
 
 
-## Parallelism {#parallelism}
+## 並列性 {#parallelism}
 
-Spark JDBCを使用する際、Sparkはデータを単一のパーティションを使用して読み取ります。より高い同時実行性を実現するには、`partitionColumn`、`lowerBound`、`upperBound`、および`numPartitions`を指定する必要があります。これにより、複数のワーカーから並行して読み取る際にテーブルをどのようにパーティション分けするかが説明されます。
-詳細については、Apache Sparkの公式ドキュメントで [JDBC設定](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option) をご覧ください。
+Spark JDBCを使用する場合、Sparkは単一のパーティションを使用してデータを読み取ります。より高い同時実行性を達成するためには、`partitionColumn`、`lowerBound`、`upperBound`、および`numPartitions`を指定する必要があり、これは複数のワーカーから並列して読み取る際のテーブルのパーティショニング方法を説明します。
+詳細については、Apache Sparkの公式ドキュメントにある[ JDBCの構成](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option)をご覧ください。
 
-## JDBC Limitations {#jdbc-limitations}
+## JDBCの制限 {#jdbc-limitations}
 
-* 現在、JDBCを使用してデータを挿入できるのは既存のテーブルのみです（DFの挿入時にテーブルを自動作成する方法は現在ありません。他のコネクタのようにSparkが行うように）。
+* 現在のところ、JDBCを使用して既存のテーブルにのみデータを挿入することができます（DF挿入時にテーブルを自動作成する方法はなく、Sparkが他のコネクタで行うように）。

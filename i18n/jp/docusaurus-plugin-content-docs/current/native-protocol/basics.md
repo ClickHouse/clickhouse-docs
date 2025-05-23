@@ -1,7 +1,12 @@
 ---
-slug: /native-protocol/basics
-sidebar_position: 1
+'slug': '/native-protocol/basics'
+'sidebar_position': 1
+'title': '基本'
+'description': 'ネイティブプロトコルの基本'
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 
 # 基本
@@ -12,15 +17,12 @@ sidebar_position: 1
 ほとんどの例はGoのみです。
 :::
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-この文書では、ClickHouseのTCPクライアント用のバイナリプロトコルを説明します。
+このドキュメントは、ClickHouse TCPクライアントのバイナリプロトコルを説明します。
 
 ## Varint {#varint}
 
-長さ、パケットコード、その他のケースには*unsigned varint* エンコーディングが使用されます。
-[ binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) および [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint) を使用してください。
+長さ、パケットコード、および他のケースでは *unsigned varint* エンコーディングが使用されます。
+使用するには、[binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) および [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint)。
 
 :::note
 *Signed* varintは使用されません。
@@ -28,7 +30,7 @@ import TabItem from '@theme/TabItem';
 
 ## 文字列 {#string}
 
-可変長の文字列は*(length, value)*としてエンコードされます。ここで*length*は[varint](#varint)で、*value*はutf8文字列です。
+可変長の文字列は *(長さ、値)* としてエンコードされます。ここで、*長さ* は [varint](#varint) で、*値* はutf8文字列です。
 
 :::important
 OOMを防ぐために長さを検証してください：
@@ -42,12 +44,12 @@ OOMを防ぐために長さを検証してください：
 ```go
 s := "Hello, world!"
 
-// 文字列の長さをuvarintとして書き込む。
+// 文字列の長さをuvarintとして書き込みます。
 buf := make([]byte, binary.MaxVarintLen64)
 n := binary.PutUvarint(buf, uint64(len(s)))
 buf = buf[:n]
 
-// 文字列の値を書き込む。
+// 文字列の値を書き込みます。
 buf = append(buf, s...)
 ```
 
@@ -60,13 +62,13 @@ r := bytes.NewReader([]byte{
     0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
 })
 
-// 長さを読み取る。
+// 長さを読み取ります。
 n, err := binary.ReadUvarint(r)
 if err != nil {
-	panic(err)
+        panic(err)
 }
 
-// OOMまたはmake()のランタイム例外を防ぐためにnをチェックする。
+// OOMやmake()の実行時例外を防ぐためにnをチェックします。
 const maxSize = 1024 * 1024 * 10 // 10 MB
 if n > maxSize || n < 0 {
     panic("無効なn")
@@ -74,7 +76,7 @@ if n > maxSize || n < 0 {
 
 buf := make([]byte, n)
 if _, err := io.ReadFull(r, buf); err != nil {
-	panic(err)
+        panic(err)
 }
 
 fmt.Println(string(buf))
@@ -114,7 +116,7 @@ data := []byte{
 ## 整数 {#integers}
 
 :::tip
-ClickHouseは固定サイズの整数に対して**リトルエンディアン**を使用します。
+ClickHouseは固定サイズ整数に **リトルエンディアン** を使用します。
 :::
 
 ### Int32 {#int32}
@@ -147,6 +149,6 @@ fmt.Println(d) // 1000
 </TabItem>
 </Tabs>
 
-## ブール値 {#boolean}
+## ブーリアン {#boolean}
 
-ブール値は1バイトで表され、`1`は`true`、`0`は`false`です。
+ブーリアン値は1バイトで表現され、`1` は `true`、`0` は `false` です。

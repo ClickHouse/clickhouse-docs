@@ -1,6 +1,12 @@
-The table below shows all data types supported by the Apache Avro format, and their corresponding ClickHouse [data types](/sql-reference/data-types/index.md) in `INSERT` and `SELECT` queries.
+---
+{}
+---
 
-| Avroデータ型 `INSERT`                     | ClickHouseデータ型                                                                                                          | Avroデータ型 `SELECT`         |
+
+
+以下のテーブルは、Apache Avro フォーマットがサポートするすべてのデータ型と、それに対応する ClickHouse の[data types](/sql-reference/data-types/index.md) を `INSERT` と `SELECT` クエリに示しています。
+
+| Avro データ型 `INSERT`                     | ClickHouse データ型                                                                                                          | Avro データ型 `SELECT`         |
 |---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
 | `boolean`, `int`, `long`, `float`, `double` | [Int(8\16\32)](/sql-reference/data-types/int-uint.md), [UInt(8\16\32)](/sql-reference/data-types/int-uint.md) | `int`                           |
 | `boolean`, `int`, `long`, `float`, `double` | [Int64](/sql-reference/data-types/int-uint.md), [UInt64](/sql-reference/data-types/int-uint.md)               | `long`                          |
@@ -26,13 +32,14 @@ The table below shows all data types supported by the Apache Avro format, and th
 | `fixed(32)`                                 | [Int256/UInt256](/sql-reference/data-types/int-uint.md)                                                               | `fixed(32)`                     |
 | `record`                                    | [Tuple](/sql-reference/data-types/tuple.md)                                                                           | `record`                        |
 
-\* `bytes` はデフォルトで、設定 [`output_format_avro_string_column_pattern`](/operations/settings/settings-formats.md/#output_format_avro_string_column_pattern) によって制御されます。
+\* `bytes` はデフォルトで、[`output_format_avro_string_column_pattern`](/operations/settings/settings-formats.md/#output_format_avro_string_column_pattern) を設定することで制御されます。
 
-\**  [Variantタイプ](/sql-reference/data-types/variant) はフィールド値として `null` を暗黙的に受け入れるため、たとえば Avro の `union(T1, T2, null)` は `Variant(T1, T2)` に変換されます。その結果、ClickHouseからAvroを生成する際には、スキーマ推論中に実際に値が `null` であるかどうかわからないため、常に `null` 型をAvroの `union` 型セットに含める必要があります。
+\**  [Variant type](/sql-reference/data-types/variant) はフィールド値として `null` を暗黙的に受け入れるため、例えば Avro の `union(T1, T2, null)` は `Variant(T1, T2)` に変換されます。
+その結果、ClickHouse から Avro を生成する際には、スキーマ推論中に実際に値が `null` であるかどうかわからないため、常に Avro `union` 型セットに `null` 型を含める必要があります。
 
-\**\* [Avro論理型](https://avro.apache.org/docs/current/spec.html#Logical+Types)
+\**\* [Avro logical types](https://avro.apache.org/docs/current/spec.html#Logical+Types)
 
-サポートされていないAvro論理データ型：
+サポートされていない Avro 論理データ型:
 - `time-millis`
 - `time-micros`
 - `duration`

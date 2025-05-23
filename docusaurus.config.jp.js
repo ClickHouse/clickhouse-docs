@@ -3,6 +3,7 @@ import math from "remark-math";
 import katex from "rehype-katex";
 import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
+const remarkCustomBlocks = require('./plugins/remark-custom-blocks');
 
 // Helper function to skip over index.md files.
 function skipIndex(items) {
@@ -128,7 +129,7 @@ const config = {
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: "/",
-          remarkPlugins: [math],
+          remarkPlugins: [math, remarkCustomBlocks],
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },
@@ -202,6 +203,9 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      metadata: [
+        {name: 'Accept-Language', content: 'ja-JP,ja;q=0.9'},
+      ],
       algolia: {
         appId: "5H9UG7CX5W",
         apiKey: "4a7bf25cf3edbef29d78d5e1eecfdca5",

@@ -1,29 +1,30 @@
 ---
-title: PrettyCompact
-slug: /interfaces/formats/PrettyCompact
-keywords: [PrettyCompact]
-input_format: false
-output_format: true
-alias: []
+'alias': []
+'description': 'Documentation for the PrettyCompact format'
+'input_format': false
+'keywords':
+- 'PrettyCompact'
+'output_format': true
+'slug': '/interfaces/formats/PrettyCompact'
+'title': 'PrettyCompact'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| 入力 | 出力  | エイリアス |
+| Input | Output  | Alias |
 |-------|---------|-------|
 | ✗     | ✔       |       |
 
 ## 説明 {#description}
 
-[`Pretty`](./Pretty.md) フォーマットとは異なり、行の間にグリッドが描画された状態でテーブルが表示されます。  
-このため、結果はよりコンパクトになります。
+[`Pretty`](./Pretty.md) 形式とは異なり、行の間にグリッドが描画されたテーブルが表示されます。このため、結果はよりコンパクトになります。
 
 :::note
-このフォーマットは、インタラクティブモードのコマンドラインクライアントでデフォルトで使用されます。
+この形式は、インタラクティブモードのコマンドラインクライアントでデフォルトで使用されます。
 :::
 
 ## 使用例 {#example-usage}
 
-## フォーマット設定 {#format-settings}
+## 形式設定 {#format-settings}
 
 <PrettyFormatSettings />

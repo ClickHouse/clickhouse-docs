@@ -1,11 +1,13 @@
 ---
-description: '系统表，包含当前用户可用的数据库信息。'
-slug: /operations/system-tables/databases
-title: 'system.databases'
-keywords: ['system table', 'databases']
+'description': '系统表包含关于当前用户可用的数据库的信息。'
+'keywords':
+- 'system table'
+- 'databases'
+'slug': '/operations/system-tables/databases'
+'title': 'system.databases'
 ---
 
-包含当前用户可用的数据库信息。
+包含有关当前用户可用的数据库的信息。
 
 列：
 
@@ -14,7 +16,7 @@ keywords: ['system table', 'databases']
 - `data_path` ([String](../../sql-reference/data-types/string.md)) — 数据路径。
 - `metadata_path` ([String](../../sql-reference/data-types/enum.md)) — 元数据路径。
 - `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — 数据库 UUID。
-- `comment` ([String](../../sql-reference/data-types/enum.md)) — 数据库注释。
+- `comment` ([String](../../sql-reference/data-types/enum.md)) — 数据库备注。
 - `engine_full` ([String](../../sql-reference/data-types/enum.md)) — 数据库引擎的参数。
 - `database` ([String](../../sql-reference/data-types/string.md)) – `name` 的别名。
 
@@ -24,17 +26,17 @@ keywords: ['system table', 'databases']
 
 创建一个数据库。
 
-``` sql
+```sql
 CREATE DATABASE test;
 ```
 
-查看用户所有可用数据库。
+检查用户所有可用的数据库。
 
-``` sql
+```sql
 SELECT * FROM system.databases;
 ```
 
-``` text
+```text
 ┌─name────────────────┬─engine─────┬─data_path────────────────────┬─metadata_path─────────────────────────────────────────────────────────┬─uuid─────────────────────────────────┬─engine_full────────────────────────────────────────────┬─comment─┐
 │ INFORMATION_SCHEMA  │ Memory     │ /data/clickhouse_data/       │                                                                       │ 00000000-0000-0000-0000-000000000000 │ Memory                                                 │         │
 │ default             │ Atomic     │ /data/clickhouse_data/store/ │ /data/clickhouse_data/store/f97/f97a3ceb-2e8a-4912-a043-c536e826a4d4/ │ f97a3ceb-2e8a-4912-a043-c536e826a4d4 │ Atomic                                                 │         │

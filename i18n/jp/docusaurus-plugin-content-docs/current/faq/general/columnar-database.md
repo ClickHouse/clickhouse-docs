@@ -1,32 +1,34 @@
 ---
-slug: /faq/general/columnar-database
-title: 列指向データベースとは？
-toc_hidden: true
-toc_priority: 101
+'slug': '/faq/general/columnar-database'
+'title': 'What is a columnar database?'
+'toc_hidden': true
+'toc_priority': 101
+'description': 'This page describes what a columnar database is'
 ---
 
+import Image from '@theme/IdealImage';
 import RowOriented from '@site/static/images/row-oriented.gif';
 import ColumnOriented from '@site/static/images/column-oriented.gif';
 
 
-# 列指向データベースとは？ {#what-is-a-columnar-database}
+# カラム指向データベースとは？ {#what-is-a-columnar-database}
 
-列指向データベースは、各カラムのデータを独立して保存します。これにより、特定のクエリで使用されるカラムのみをディスクから読み込むことができます。代償として、全行に影響を与える操作のコストが相対的に高くなります。列指向データベースの同義語は、列指向データベース管理システムです。ClickHouseはそのようなシステムの典型的な例です。
+カラム指向データベースは、各カラムのデータを独立して保存します。これにより、特定のクエリで使用されるカラムのみをディスクから読み込むことができます。その代償として、全行に影響を与える操作は比例して高コストになります。カラム指向データベースの同義語は、カラム指向データベース管理システムです。ClickHouseはそのようなシステムの典型的な例です。
 
-列指向データベースの主な利点は次のとおりです：
+カラム指向データベースの主な利点は以下の通りです：
 
-- 多くのカラムの中からわずか数カラムのみを使用するクエリ。
-- 大量のデータに対する集計クエリ。
+- 多くのカラムの中からいくつかのカラムのみを使用するクエリ。
+- 大量のデータに対する集約クエリ。
 - カラム単位のデータ圧縮。
 
-以下は、レポートを構築する際の従来の行指向システムと列指向データベースの違いを示した図です：
+以下は、レポートを作成する際の従来の行指向システムとカラム指向データベースの違いを示す図です：
 
 **従来の行指向**
-<img src={RowOriented} alt="従来の行指向データベース" />
+<Image img={RowOriented} alt="従来の行指向データベース" size="md" border />
 
-**列指向**
-<img src={ColumnOriented} alt="列指向データベース" />
+**カラム指向**
+<Image img={ColumnOriented} alt="カラム指向データベース" size="md" border />
 
-列指向データベースは、分析アプリケーションに最適な選択肢です。なぜなら、テーブルに多くのカラムを持つことができても、未使用のカラムに対してクエリ実行時のコストを支払う必要がないからです（従来のOLTPデータベースは、データが行として保存されているため、クエリの際にすべてのデータを読み込みます）。列指向データベースはビッグデータ処理とデータウェアハウジングのために設計されており、しばしば低コストのハードウェアの分散クラスターを使用してネイティブにスケールし、スループットを向上させます。ClickHouseは、[分散テーブル](../../engines/table-engines/special/distributed.md) と [レプリケートテーブル](../../engines/table-engines/mergetree-family/replication.md) の組み合わせでこれを実現しています。
+カラム指向データベースは、分析アプリケーションに最適な選択肢です。これは、必要な場合に多くのカラムをテーブルに持てる一方で、読み取りクエリの実行時間において未使用のカラムに対するコストを支払わなくて済むためです（従来のOLTPデータベースは、データが行として保存されているため、クエリ中にすべてのデータを読み取ります）。カラム指向データベースはビッグデータ処理やデータウェアハウジングのために設計されており、低コストのハードウェアの分散クラスターを使用してスケールすることが多く、スループットを向上させます。ClickHouseは、[分散](../../engines/table-engines/special/distributed.md)および[レプリケated](../../engines/table-engines/mergetree-family/replication.md)テーブルの組み合わせでこれを実現しています。
 
-列指向データベースの歴史、行指向データベースとの違い、列指向データベースのユースケースについて深く掘り下げたい場合は、[列指向データベースガイド](https://clickhouse.com/engineering-resources/what-is-columnar-database)を参照してください。
+カラムデータベースの歴史や行指向データベースとの違い、カラムデータベースのユースケースについて詳しく知りたい場合は、[カラムデータベースガイド](https://clickhouse.com/engineering-resources/what-is-columnar-database)をご覧ください。

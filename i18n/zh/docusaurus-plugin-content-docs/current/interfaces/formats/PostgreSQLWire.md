@@ -1,7 +1,9 @@
 ---
-title: PostgreSQLWire
-slug: /interfaces/formats/PostgreSQLWire
-keywords: ['PostgreSQLWire']
+'description': 'PostgreSQLWire 格式的文档'
+'keywords':
+- 'PostgreSQLWire'
+'slug': '/interfaces/formats/PostgreSQLWire'
+'title': 'PostgreSQLWire'
 ---
 
 ## 描述 {#description}

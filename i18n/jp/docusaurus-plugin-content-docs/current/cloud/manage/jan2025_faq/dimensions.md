@@ -1,103 +1,107 @@
 ---
-title: 新しい価格次元
-slug: /cloud/manage/jan-2025-faq/pricing-dimensions
-keywords: [新しい価格, 次元]
-description: データ転送と ClickPipes の価格次元
+'title': 'New Pricing Dimensions'
+'slug': '/cloud/manage/jan-2025-faq/pricing-dimensions'
+'keywords':
+- 'new pricing'
+- 'dimensions'
+'description': 'Pricing dimensions for data transfer and ClickPipes'
 ---
 
+import Image from '@theme/IdealImage';
 import clickpipesPricingFaq1 from '@site/static/images/cloud/manage/jan2025_faq/external_clickpipes_pricing_faq_1.png';
 import clickpipesPricingFaq2 from '@site/static/images/cloud/manage/jan2025_faq/external_clickpipes_pricing_faq_2.png';
 import clickpipesPricingFaq3 from '@site/static/images/cloud/manage/jan2025_faq/external_clickpipes_pricing_faq_3.png';
 import NetworkPricing from '@site/i18n/jp/docusaurus-plugin-content-docs/current/cloud/manage/_snippets/_network_transfer_rates.md';
 
-新しい ClickHouse Cloud の価格設定に次の次元が追加されました。
+以下の次元が新しい ClickHouse Cloud の料金に追加されました。
 
 :::note
-データ転送および ClickPipes の価格は、2025年3月24日までは旧プラン（開発、製品、専用）には適用されません。
+データ転送および ClickPipes の料金は、2025年3月24日まではレガシープラン（開発、プロダクション、および専用）には適用されません。
 :::
 
-## データ転送価格 {#data-transfer-pricing}
+## データ転送料金 {#data-transfer-pricing}
 
-### ユーザーはどのようにデータ転送に対して課金され、組織のティアや地域によって異なりますか？ {#how-are-users-charged-for-data-transfer-and-will-this-vary-across-organization-tiers-and-regions}
+### ユーザーはどのようにデータ転送の料金を支払い、これは組織のティアや地域によって異なりますか？ {#how-are-users-charged-for-data-transfer-and-will-this-vary-across-organization-tiers-and-regions}
 
-- ユーザーは、公開インターネットのエグレスと地域間エグレスの2つの次元にわたってデータ転送の料金を支払います。地域内のデータ転送やプライベートリンク/プライベートサービス接続の使用およびデータ転送には課金されません。ただし、ユーザーへの適切な課金に影響を与える使用パターンが見られた場合は、追加のデータ転送料金次元を実施する権利を留保します。
-- データ転送料金は、クラウドサービスプロバイダー (CSP) および地域によって異なります。
-- データ転送料金は**組織のティア間で**異なることはありません。
-- 公開エグレス価格は、発信元の地域のみを基にしています。地域間（またはクロス地域）価格は、発信元と宛先の両方の地域に依存します。
+- ユーザーはデータ転送に対して、パブリックインターネットの出口および地域間の出口の2つの次元に沿って料金を支払います。地域内のデータ転送やプライベートリンク/プライベートサービスコネクトの使用とデータ転送に対しては料金は発生しません。ただし、ユーザーに適切に料金を請求する能力に影響を与える使用パターンを確認した場合、追加のデータ転送料金の次元を実装する権利を留保します。
+- データ転送料金は、クラウドサービスプロバイダー（CSP）および地域によって異なります。
+- データ転送料金は**組織のティアの間では**異ならないでしょう。
+- パブリック出口の料金は、発信地域のみに基づいています。地域間（またはクロスリージョン）の料金は、発信地域および宛先地域の両方に依存します。
 
 <NetworkPricing/>
 
-### データ転送料金は、使用量が増えるにつれて段階的になりますか？ {#will-data-transfer-pricing-be-tiered-as-usage-increases}
+### データ転送料金は使用量の増加に伴って段階的になりますか？ {#will-data-transfer-pricing-be-tiered-as-usage-increases}
 
-データ転送料金は、使用量が増えても**段階的には**なりません。料金は、地域やクラウドサービスプロバイダーによって異なることに注意してください。
+データ転送の料金は使用量の増加に伴って**段階的にはなりません**。料金は地域やクラウドサービスプロバイダーによって異なることに注意してください。
 
-## ClickPipesの価格FAQ {#clickpipes-pricing-faq}
+## ClickPipes 料金 FAQ {#clickpipes-pricing-faq}
 
-### なぜ今ClickPipesの価格モデルを導入するのですか？ {#why-are-we-introducing-a-pricing-model-for-clickpipes-now}
+### なぜ今 ClickPipes の料金モデルを導入するのですか？ {#why-are-we-introducing-a-pricing-model-for-clickpipes-now}
 
-最初はユーザーのフィードバックを集め、機能を洗練させ、ニーズに合っていることを確認するために、ClickPipesを無料で提供することにしました。GAプラットフォームが成長し、数兆行のデータを移動させる中で時間の試練に耐えることができたため、価格モデルを導入することでサービスの改善、インフラの維持、専用サポートおよび新しいコネクタの提供を続けることが可能になります。
+最初は ClickPipes を無料で起動することを決定し、フィードバックを収集し、機能を洗練し、ユーザーのニーズを満たすことを目的としています。GA プラットフォームが成長し、何兆行ものデータを処理する中で効果的にテストをクリアしたため、料金モデルを導入することでサービスの改善を続け、インフラを維持し、専用サポートと新しいコネクタを提供することが可能になります。
 
-### ClickPipesのレプリカとは何ですか？ {#what-are-clickpipes-replicas}
+### ClickPipes のレプリカとは何ですか？ {#what-are-clickpipes-replicas}
 
-ClickPipesは、ClickHouse Cloudサービスとは独立して実行およびスケールする専用インフラを介して、リモートデータソースからデータを取り込みます。そのため、専用のコンピュートレプリカを使用します。以下の図は、簡略化されたアーキテクチャを示しています。
+ClickPipes は、ClickHouse Cloud サービスとは独立して実行され、スケールする専用のインフラを介してリモートデータソースからデータを取り込みます。この理由から、専用のコンピュートレプリカを使用します。以下の図は、簡略化されたアーキテクチャを示しています。
 
-ストリーミング ClickPipesの場合、ClickPipesレプリカはリモートデータソース（例：Kafkaブローカー）にアクセスし、データを引き出して処理し、宛先の ClickHouseサービスに取り込みます。
+ストリーミング ClickPipes の場合、ClickPipes のレプリカはリモートデータソース（例えば、Kafka ブローカー）にアクセスし、データを取り込み、処理して宛先 ClickHouse サービスに取り込みます。
 
-<img src={clickpipesPricingFaq1} alt="ClickPipesレプリカ - ストリーミング ClickPipes" />
+<Image img={clickpipesPricingFaq1} size="lg" alt="ClickPipes Replicas - Streaming ClickPipes" border/>
 
-オブジェクトストレージ ClickPipesの場合、ClickPipesレプリカはデータロードタスクを調整し（コピーするファイルの特定、状態の維持、パーティションの移動）、データは直接 ClickHouseサービスから引き出されます。
+オブジェクトストレージ ClickPipes の場合、ClickPipes のレプリカはデータロードタスクをオーケストレーションします（コピーするファイルを特定し、状態を維持し、パーティションを移動）し、データは ClickHouse サービスから直接取り込まれます。
 
-<img src={clickpipesPricingFaq2} alt="ClickPipesレプリカ - オブジェクトストレージ ClickPipes" />
+<Image img={clickpipesPricingFaq2} size="lg" alt="ClickPipes Replicas - Object Storage ClickPipes" border/>
 
-### デフォルトのレプリカ数とそのサイズは何ですか？ {#what-is-the-default-number-of-replicas-and-their-size}
+### レプリカのデフォルト数とそのサイズは何ですか？ {#what-is-the-default-number-of-replicas-and-their-size}
 
-各 ClickPipe はデフォルトで1つのレプリカが提供され、2 GiBのRAMと0.5 vCPUを持っています。これは **0.25** ClickHouseコンピュートユニットに相当します（1ユニット = 8 GiB RAM、2 vCPUs）。
+各 ClickPipe は、2 GiB の RAM と 0.5 vCPU が提供される 1 レプリカがデフォルトです。これは、**0.25** ClickHouse コンピュートユニット（1 ユニット = 8 GiB RAM、2 vCPU）に相当します。
 
-### ClickPipesレプリカはスケールできますか？ {#can-clickpipes-replicas-be-scaled}
+### ClickPipes のレプリカをスケールできますか？ {#can-clickpipes-replicas-be-scaled}
 
-現在、ストリーミングの ClickPipes のみが水平方向にスケール可能で、各レプリカには基本ユニットの **0.25** ClickHouseコンピュートユニットを追加できます。特定のユースケースに応じて、レプリカごとにCPUとRAMを増やす垂直スケーリングも利用可能です。
+現在、ストリーミング用の ClickPipes のみが、基本ユニットとして **0.25** ClickHouse コンピュートユニットを持つ複数のレプリカを追加することで水平にスケール可能です。特定のユースケースに応じて垂直スケーリングも利用可能です（レプリカごとにもっと多くの CPU と RAM を追加）。
 
-### どれくらいの ClickPipesレプリカが必要ですか？ {#how-many-clickpipes-replicas-do-i-need}
+### どれだけの ClickPipes レプリカが必要ですか？ {#how-many-clickpipes-replicas-do-i-need}
 
-必要なレプリカ数は、ワークロードスループットとレイテンシ要件によって異なります。デフォルト値の1レプリカから始め、レイテンシを測定し、必要に応じてレプリカを追加することをお勧めします。Kafka ClickPipesの場合、Kafkaブローカーのパーティションもそれに応じてスケールする必要があることを忘れないでください。スケーリングコントロールは、各ストリーミング ClickPipe の “設定” の下にあります。
+これは、ワークロードのスループットとレイテンシ要件によって異なります。デフォルトで 1 レプリカから始め、レイテンシを測定し、必要に応じてレプリカを追加することをお勧めします。Kafka ClickPipes の場合、Kafka ブローカーのパーティションもそれに応じてスケールする必要があります。スケーリングコントロールは、各ストリーミング ClickPipe の「設定」の下にあります。
 
-<img src={clickpipesPricingFaq3} alt="ClickPipesレプリカ - どれくらいのClickPipesレプリカが必要ですか？" />
+<Image img={clickpipesPricingFaq3} size="lg" alt="ClickPipes Replicas - How many ClickPipes replicas do I need?" border/>
 
-### ClickPipesの価格構造はどのようになっていますか？ {#what-does-the-clickpipes-pricing-structure-look-like}
+### ClickPipes の料金構造はどのようになっていますか？ {#what-does-the-clickpipes-pricing-structure-look-like}
 
-価格構造は2つの次元で構成されています：
-- **コンピュート**: 単位あたりの時間ごとの価格
-  コンピュートは、ClickPipesレプリカポッドを実行するコストを表し、データを積極的に取り込んでいるかどうかに関係ありません。すべての ClickPipesタイプに適用されます。
-- **取り込まれたデータ**: GBあたりの価格
-  取り込まれたデータレートは、すべてのストリーミング ClickPipes（Kafka、Confluent、Amazon MSK、Amazon Kinesis、Redpanda、WarpStream、Azure Event Hubs）に適用され、レプリカポッドを介して転送されたデータに基づいて課金されます。取り込まれたデータサイズ（GB）は、ソースから受信したバイト（圧縮または非圧縮）に基づいて請求されます。
+料金は2つの次元で構成されています：
+- **コンピュート**：ユニットあたりの時間単価
+  コンピュートは、ClickPipes レプリカポッドがデータを積極的に取り込むかどうかに関わらず、実行コストを表します。すべての ClickPipes タイプに適用されます。
+- **取り込まれたデータ**：GB あたりの料金
+  取り込まれたデータレートは、すべてのストリーミング ClickPipes（Kafka、Confluent、Amazon MSK、Amazon Kinesis、Redpanda、WarpStream、Azure Event Hubs）に適用され、レプリカポッドを介して転送されたデータに対して適用されます。取り込まれたデータサイズ（GB）は、ソースから受信したバイトに基づいて請求されます（非圧縮または圧縮）。
 
-### ClickPipesの公示価格は何ですか？ {#what-are-the-clickpipes-public-prices}
+### ClickPipes の公開料金は何ですか？ {#what-are-the-clickpipes-public-prices}
 
-- コンピュート: \$0.20 / 単位 / 時間（\$0.05 / レプリカ / 時間）
-- 取り込まれたデータ: \$0.04 / GB
+- コンピュート：\$0.20 per unit per hour（\$0.05 per replica per hour）
+- 取り込まれたデータ：\$0.04 per GB
 
-### 具体的な例ではどのように見えますか？ {#how-does-it-look-in-an-illustrative-example}
+### イラスト例での例はどのようになりますか？ {#how-does-it-look-in-an-illustrative-example}
 
-たとえば、単一のレプリカ（0.25コンピュートユニット）を使用してKafkaコネクタで24時間にわたり1TBのデータを取り込む場合、コストは次のようになります：
+例えば、1 TB のデータを 24 時間の間、単一のレプリカ（0.25 コンピュートユニット）を使用して Kafka コネクタ経由で取り込む場合、費用は以下のようになります：
 
 $$
 (0.25 \times 0.20 \times 24) + (0.04 \times 1000) = \$41.2
 $$
+<br/>
 
-オブジェクトストレージコネクタ（S3およびGCS）の場合、ClickPipesポッドはデータを処理せず、転送の調整のみを行うため、ClickPipesコンピュートコストのみが発生します。これは基盤の ClickHouseサービスによって操作されます：
+オブジェクトストレージコネクタ（S3 と GCS）の場合、ClickPipes ポッドはデータを処理することはなく、転送をオーケストレーションしているだけであるため、ClickPipes のコンピュートコストのみが発生します：
 
 $$
 0.25 \times 0.20 \times 24 = \$1.2
 $$
 
-### 新しい価格モデルはいつ発効しますか？ {#when-does-the-new-pricing-model-take-effect}
+### 新しい料金モデルはいつ発効しますか？ {#when-does-the-new-pricing-model-take-effect}
 
-新しい価格モデルは、2025年1月27日以降に作成されたすべての組織に適用されます。
+新しい料金モデルは、2025年1月27日以降に作成されたすべての組織に適用されます。
 
-### 現在のユーザーには何が起こりますか？ {#what-happens-to-current-users}
+### 現在のユーザーにはどうなりますか？ {#what-happens-to-current-users}
 
-既存のユーザーには、ClickPipesサービスが無料で提供される**60日間の猶予期間**があります。2025年3月24日から、既存のユーザーの ClickPipesに自動的に請求が開始されます。
+既存のユーザーには、ClickPipes サービスが引き続き無料で提供される **60日間の猶予期間** が設けられます。既存のユーザーへの ClickPipes の請求は **2025年3月24日** に自動的に開始されます。
 
-### ClickPipesの価格は市場と比べてどうですか？ {#how-does-clickpipes-pricing-compare-to-the-market}
+### ClickPipes の料金は市場とどのように比較されますか？ {#how-does-clickpipes-pricing-compare-to-the-market}
 
-ClickPipesの価格設定の哲学は、プラットフォームの運用コストをカバーしつつ、ClickHouse Cloudにデータを簡単かつ信頼性高く移動する方法を提供することです。その観点から、私たちの市場分析では、我々が競争力のある位置にいることが明らかになりました。
+ClickPipes の料金の背後にある哲学は、プラットフォームの運営コストをカバーし、ClickHouse Cloud へのデータ移動を簡単かつ信頼性の高い方法で提供することです。この観点から、我々の市場分析では競争力のある位置にあることが明らかになりました。

@@ -1,7 +1,9 @@
 ---
-slug: /sql-reference/functions/functions-for-nulls
-sidebar_position: 135
-sidebar_label: Nullable
+'description': '处理 Nullable 值的函数的文档'
+'sidebar_label': 'Nullable'
+'sidebar_position': 135
+'slug': '/sql-reference/functions/functions-for-nulls'
+'title': '处理 Nullable 值的函数'
 ---
 
 
@@ -15,11 +17,11 @@ sidebar_label: Nullable
 
 **语法**
 
-``` sql
+```sql
 isNull(x)
 ```
 
-别名： `ISNULL`。
+别名：`ISNULL`。
 
 **参数**
 
@@ -34,7 +36,7 @@ isNull(x)
 
 表格：
 
-``` text
+```text
 ┌─x─┬────y─┐
 │ 1 │ ᴺᵁᴸᴸ │
 │ 2 │    3 │
@@ -43,13 +45,13 @@ isNull(x)
 
 查询：
 
-``` sql
+```sql
 SELECT x FROM t_null WHERE isNull(y);
 ```
 
 结果：
 
-``` text
+```text
 ┌─x─┐
 │ 1 │
 └───┘
@@ -61,7 +63,7 @@ SELECT x FROM t_null WHERE isNull(y);
 
 **语法**
 
-``` sql
+```sql
 isNullable(x)
 ```
 
@@ -78,7 +80,7 @@ isNullable(x)
 
 查询：
 
-``` sql
+```sql
 CREATE TABLE tab (ordinary_col UInt32, nullable_col Nullable(UInt32)) ENGINE = Log;
 INSERT INTO tab (ordinary_col, nullable_col) VALUES (1,1), (2, 2), (3,3);
 SELECT isNullable(ordinary_col), isNullable(nullable_col) FROM tab;    
@@ -86,7 +88,7 @@ SELECT isNullable(ordinary_col), isNullable(nullable_col) FROM tab;
 
 结果：
 
-``` text
+```text
    ┌───isNullable(ordinary_col)──┬───isNullable(nullable_col)──┐
 1. │                           0 │                           1 │
 2. │                           0 │                           1 │
@@ -100,7 +102,7 @@ SELECT isNullable(ordinary_col), isNullable(nullable_col) FROM tab;
 
 另见运算符 [`IS NOT NULL`](../operators/index.md#is_not_null)。
 
-``` sql
+```sql
 isNotNull(x)
 ```
 
@@ -117,7 +119,7 @@ isNotNull(x)
 
 表格：
 
-``` text
+```text
 ┌─x─┬────y─┐
 │ 1 │ ᴺᵁᴸᴸ │
 │ 2 │    3 │
@@ -126,13 +128,13 @@ isNotNull(x)
 
 查询：
 
-``` sql
+```sql
 SELECT x FROM t_null WHERE isNotNull(y);
 ```
 
 结果：
 
-``` text
+```text
 ┌─x─┐
 │ 2 │
 └───┘
@@ -140,15 +142,16 @@ SELECT x FROM t_null WHERE isNotNull(y);
 
 ## isNotDistinctFrom {#isnotdistinctfrom}
 
-执行空安全比较。用于比较 JOIN ON 部分包含 NULL 值的 JOIN 键。此函数将视两个 `NULL` 值为相同，并返回 `true`，这与通常的相等行为不同，后者在比较两个 `NULL` 值时返回 `NULL`。
+执行 null 安全比较。用于比较 JOIN ON 部分包含 NULL 值的 JOIN 键。
+该函数会将两个 `NULL` 值视为相同，返回 `true`，这与通常的相等行为不同，后者比较两个 `NULL` 值时会返回 `NULL`。
 
 :::note
-此函数是 JOIN ON 实现中使用的内部函数。请勿在查询中手动使用。
+该函数是 JOIN ON 实现使用的内部函数。请勿在查询中手动使用。
 :::
 
 **语法**
 
-``` sql
+```sql
 isNotDistinctFrom(x, y)
 ```
 
@@ -164,13 +167,13 @@ isNotDistinctFrom(x, y)
 
 **示例**
 
-有关完整示例，请参见：[JOIN 键中的 NULL 值](../../sql-reference/statements/select/join#null-values-in-join-keys)。
+完整示例见： [JOIN 键中的 NULL 值](../../sql-reference/statements/select/join#null-values-in-join-keys)。
 
 ## isZeroOrNull {#iszeroornull}
 
 返回参数是否为 0（零）或 [NULL](/operations/settings/formats#input_format_null_as_default)。
 
-``` sql
+```sql
 isZeroOrNull(x)
 ```
 
@@ -187,7 +190,7 @@ isZeroOrNull(x)
 
 表格：
 
-``` text
+```text
 ┌─x─┬────y─┐
 │ 1 │ ᴺᵁᴸᴸ │
 │ 2 │    0 │
@@ -197,13 +200,13 @@ isZeroOrNull(x)
 
 查询：
 
-``` sql
+```sql
 SELECT x FROM t_null WHERE isZeroOrNull(y);
 ```
 
 结果：
 
-``` text
+```text
 ┌─x─┐
 │ 1 │
 │ 2 │
@@ -212,41 +215,41 @@ SELECT x FROM t_null WHERE isZeroOrNull(y);
 
 ## coalesce {#coalesce}
 
-返回最左边的非 `NULL` 参数。
+返回最左侧的非 `NULL` 参数。
 
-``` sql
+```sql
 coalesce(x,...)
 ```
 
 **参数：**
 
-- 任意数量的非复合类型参数。所有参数必须是相互兼容的数据类型。
+- 任意数量的非复合类型参数。所有参数必须为相互兼容的数据类型。
 
 **返回值**
 
 - 第一个非 `NULL` 参数
-- 如果所有参数都是 `NULL`，返回 `NULL`。
+- 如果所有参数均为 `NULL`，则返回 `NULL`。
 
 **示例**
 
-考虑可能指定多种联系方式的客户列表。
+考虑一组联系人，可以指定多种联系客户的方式。
 
-``` text
+```text
 ┌─name─────┬─mail─┬─phone─────┬──telegram─┐
 │ client 1 │ ᴺᵁᴸᴸ │ 123-45-67 │       123 │
 │ client 2 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ      │      ᴺᵁᴸᴸ │
 └──────────┴──────┴───────────┴───────────┘
 ```
 
-`mail` 和 `phone` 字段为字符串类型，但 `telegram` 字段为 `UInt32`，因此需要转换为字符串。
+`mail` 和 `phone` 字段为 String 类型，但 `telegram` 字段为 `UInt32` 类型，因此需要转换为 String。
 
-从联系人列表中获取客户的第一个可用联系方式：
+从联系人列表中获取客户的第一个可用联系方法：
 
-``` sql
+```sql
 SELECT name, coalesce(mail, phone, CAST(telegram,'Nullable(String)')) FROM aBook;
 ```
 
-``` text
+```text
 ┌─name─────┬─coalesce(mail, phone, CAST(telegram, 'Nullable(String)'))─┐
 │ client 1 │ 123-45-67                                                 │
 │ client 2 │ ᴺᵁᴸᴸ                                                      │
@@ -255,33 +258,33 @@ SELECT name, coalesce(mail, phone, CAST(telegram,'Nullable(String)')) FROM aBook
 
 ## ifNull {#ifnull}
 
-如果参数为 `NULL`，返回替代值。
+如果参数为 `NULL`，则返回替代值。
 
-``` sql
+```sql
 ifNull(x, alt)
 ```
 
 **参数：**
 
-- `x` — 要检查的值是否为 `NULL`。
+- `x` — 要检查是否为 `NULL` 的值。
 - `alt` — 如果 `x` 为 `NULL`，函数返回的值。
 
 **返回值**
 
-- 如果 `x` 不为 `NULL`，返回 `x`。
-- 如果 `x` 为 `NULL`，返回 `alt`。
+- 如果 `x` 不为 `NULL`，则返回 `x`。
+- 如果 `x` 为 `NULL`，则返回 `alt`。
 
 **示例**
 
 查询：
 
-``` sql
+```sql
 SELECT ifNull('a', 'b');
 ```
 
 结果：
 
-``` text
+```text
 ┌─ifNull('a', 'b')─┐
 │ a                │
 └──────────────────┘
@@ -289,13 +292,13 @@ SELECT ifNull('a', 'b');
 
 查询：
 
-``` sql
+```sql
 SELECT ifNull(NULL, 'b');
 ```
 
 结果：
 
-``` text
+```text
 ┌─ifNull(NULL, 'b')─┐
 │ b                 │
 └───────────────────┘
@@ -305,13 +308,13 @@ SELECT ifNull(NULL, 'b');
 
 如果两个参数相等，则返回 `NULL`。
 
-``` sql
+```sql
 nullIf(x, y)
 ```
 
 **参数：**
 
-`x`, `y` — 要比较的值。必须是兼容类型。
+`x`，`y` — 要比较的值。必须为兼容类型。
 
 **返回值**
 
@@ -322,13 +325,13 @@ nullIf(x, y)
 
 查询：
 
-``` sql
+```sql
 SELECT nullIf(1, 1);
 ```
 
 结果：
 
-``` text
+```text
 ┌─nullIf(1, 1)─┐
 │         ᴺᵁᴸᴸ │
 └──────────────┘
@@ -336,13 +339,13 @@ SELECT nullIf(1, 1);
 
 查询：
 
-``` sql
+```sql
 SELECT nullIf(1, 2);
 ```
 
 结果：
 
-``` text
+```text
 ┌─nullIf(1, 2)─┐
 │            1 │
 └──────────────┘
@@ -350,9 +353,9 @@ SELECT nullIf(1, 2);
 
 ## assumeNotNull {#assumenotnull}
 
-返回 [Nullable](../data-types/nullable.md) 类型的值对应的非 `Nullable` 值。如果原始值为 `NULL`，可以返回任意结果。另见函数 `ifNull` 和 `coalesce`。
+返回对应的非 `Nullable` 值，适用于 [Nullable](../data-types/nullable.md) 类型的值。如果原始值为 `NULL`，则可以返回任意结果。另见函数 `ifNull` 和 `coalesce`。
 
-``` sql
+```sql
 assumeNotNull(x)
 ```
 
@@ -369,7 +372,7 @@ assumeNotNull(x)
 
 表格：
 
-``` text
+```text
 
 ┌─x─┬────y─┐
 │ 1 │ ᴺᵁᴸᴸ │
@@ -379,13 +382,13 @@ assumeNotNull(x)
 
 查询：
 
-``` sql
+```sql
 SELECT assumeNotNull(y) FROM table;
 ```
 
 结果：
 
-``` text
+```text
 ┌─assumeNotNull(y)─┐
 │                0 │
 │                3 │
@@ -394,13 +397,13 @@ SELECT assumeNotNull(y) FROM table;
 
 查询：
 
-``` sql
+```sql
 SELECT toTypeName(assumeNotNull(y)) FROM t_null;
 ```
 
 结果：
 
-``` text
+```text
 ┌─toTypeName(assumeNotNull(y))─┐
 │ Int8                         │
 │ Int8                         │
@@ -411,7 +414,7 @@ SELECT toTypeName(assumeNotNull(y)) FROM t_null;
 
 将参数类型转换为 `Nullable`。
 
-``` sql
+```sql
 toNullable(x)
 ```
 
@@ -421,19 +424,19 @@ toNullable(x)
 
 **返回值**
 
-- 输入值，但类型为 `Nullable`。
+- 输入值，但为 `Nullable` 类型。
 
 **示例**
 
 查询：
 
-``` sql
+```sql
 SELECT toTypeName(10);
 ```
 
 结果：
 
-``` text
+```text
 ┌─toTypeName(10)─┐
 │ UInt8          │
 └────────────────┘
@@ -441,13 +444,13 @@ SELECT toTypeName(10);
 
 查询：
 
-``` sql
+```sql
 SELECT toTypeName(toNullable(10));
 ```
 
 结果：
 
-``` text
+```text
 ┌─toTypeName(toNullable(10))─┐
 │ Nullable(UInt8)            │
 └────────────────────────────┘

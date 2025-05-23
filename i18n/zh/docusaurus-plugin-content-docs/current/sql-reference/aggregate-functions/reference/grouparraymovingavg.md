@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/grouparraymovingavg
-sidebar_position: 144
-title: 'groupArrayMovingAvg'
-description: '计算输入值的移动平均值。'
+'description': '计算输入值的移动平均。'
+'sidebar_position': 144
+'slug': '/sql-reference/aggregate-functions/reference/grouparraymovingavg'
+'title': 'groupArrayMovingAvg'
 ---
 
 
@@ -10,29 +10,29 @@ description: '计算输入值的移动平均值。'
 
 计算输入值的移动平均值。
 
-``` sql
+```sql
 groupArrayMovingAvg(numbers_for_summing)
 groupArrayMovingAvg(window_size)(numbers_for_summing)
 ```
 
-该函数可以将窗口大小作为参数。如果未指定，则函数将窗口大小设为列中的行数。
+该函数可以将窗口大小作为参数。如果未指定，则函数将窗口大小设置为列中的行数。
 
 **参数**
 
-- `numbers_for_summing` — [表达式](/sql-reference/syntax#expressions)，结果为数值数据类型。
+- `numbers_for_summing` — [表达式](/sql-reference/syntax#expressions)，结果为数值数据类型值。
 - `window_size` — 计算窗口的大小。
 
 **返回值**
 
-- 与输入数据的大小和类型相同的数组。
+- 与输入数据相同大小和类型的数组。
 
-该函数使用 [向零舍入](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)。它截断对结果数据类型不重要的小数位。
+该函数使用 [朝零舍入](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)。它会截断对于结果数据类型无意义的小数位。
 
 **示例**
 
 示例表 `b`：
 
-``` sql
+```sql
 CREATE TABLE t
 (
     `int` UInt8,
@@ -42,7 +42,7 @@ CREATE TABLE t
 ENGINE = TinyLog
 ```
 
-``` text
+```text
 ┌─int─┬─float─┬──dec─┐
 │   1 │   1.1 │ 1.10 │
 │   2 │   2.2 │ 2.20 │
@@ -53,7 +53,7 @@ ENGINE = TinyLog
 
 查询：
 
-``` sql
+```sql
 SELECT
     groupArrayMovingAvg(int) AS I,
     groupArrayMovingAvg(float) AS F,
@@ -61,13 +61,13 @@ SELECT
 FROM t
 ```
 
-``` text
+```text
 ┌─I─────────┬─F───────────────────────────────────┬─D─────────────────────┐
 │ [0,0,1,3] │ [0.275,0.82500005,1.9250001,3.8675] │ [0.27,0.82,1.92,3.86] │
 └───────────┴─────────────────────────────────────┴───────────────────────┘
 ```
 
-``` sql
+```sql
 SELECT
     groupArrayMovingAvg(2)(int) AS I,
     groupArrayMovingAvg(2)(float) AS F,
@@ -75,7 +75,7 @@ SELECT
 FROM t
 ```
 
-``` text
+```text
 ┌─I─────────┬─F────────────────────────────────┬─D─────────────────────┐
 │ [0,1,3,5] │ [0.55,1.6500001,3.3000002,6.085] │ [0.55,1.65,3.30,6.08] │
 └───────────┴──────────────────────────────────┴───────────────────────┘

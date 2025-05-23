@@ -1,7 +1,8 @@
 ---
-sidebar_label: Redshift
-slug: /integrations/redshift
-description: RedshiftからClickHouseへのデータ移行
+'sidebar_label': 'Redshift'
+'slug': '/integrations/redshift'
+'description': 'Redshift から ClickHouse へのデータ移行'
+'title': 'Redshift から ClickHouse へのデータ移行'
 ---
 
 import redshiftToClickhouse from '@site/static/images/integrations/data-ingestion/redshift/redshift-to-clickhouse.png';
@@ -10,9 +11,10 @@ import pull from '@site/static/images/integrations/data-ingestion/redshift/pull.
 import pivot from '@site/static/images/integrations/data-ingestion/redshift/pivot.png';
 import s3_1 from '@site/static/images/integrations/data-ingestion/redshift/s3-1.png';
 import s3_2 from '@site/static/images/integrations/data-ingestion/redshift/s3-2.png';
+import Image from '@theme/IdealImage';
 
 
-# RedshiftからClickHouseへのデータ移行
+# Redshift から ClickHouse へのデータ移行
 
 ## 関連コンテンツ {#related-content}
 
@@ -28,78 +30,76 @@ import s3_2 from '@site/static/images/integrations/data-ingestion/redshift/s3-2.
   </iframe>
 </div>
 
-- ブログ: [分析ワークロードの最適化: RedshiftとClickHouseの比較](https://clickhouse.com/blog/redshift-vs-clickhouse-comparison)
+- ブログ: [分析ワークロードの最適化: Redshift と ClickHouse の比較](https://clickhouse.com/blog/redshift-vs-clickhouse-comparison)
 
-## はじめに {#introduction}
+## 概要 {#introduction}
 
-[Amazon Redshift](https://aws.amazon.com/redshift/) は、Amazon Web Services の一部である人気のクラウドデータウェアハウジングソリューションです。このガイドでは、RedshiftインスタンスからClickHouseへのデータ移行の異なるアプローチを紹介します。以下の3つの選択肢を扱います。
+[Amazon Redshift](https://aws.amazon.com/redshift/) は、Amazon Web Services の一部である人気のクラウドデータウェアハウジングソリューションです。このガイドでは、Redshift インスタンスから ClickHouse へのデータ移行のためのさまざまなアプローチを紹介します。以下の三つのオプションをカバーします：
 
-<img src={redshiftToClickhouse} class="image" alt="RedshiftからClickHouseへの移行オプション"/>
+<Image img={redshiftToClickhouse} size="lg" alt="Redshift to ClickHouse Migration Options" background="white"/>
 
-ClickHouseインスタンスの視点からは、以下のいずれかを行うことができます：
+ClickHouse インスタンスの観点からは、次のいずれかを行うことができます：
 
-1. **[PUSH](#push-data-from-redshift-to-clickhouse)** データをClickHouseにプッシュする、サードパーティのETL/ELTツールまたはサービスを使用して
+1. **[PUSH](#push-data-from-redshift-to-clickhouse)** サードパーティの ETL/ELT ツールまたはサービスを使用して ClickHouse にデータを送信する
 
-2. **[PULL](#pull-data-from-redshift-to-clickhouse)** ClickHouse JDBCブリッジを利用してRedshiftからデータをプルする
+2. **[PULL](#pull-data-from-redshift-to-clickhouse)** ClickHouse JDBC ブリッジを活用して Redshift からデータを取得する
 
-3. **[PIVOT](#pivot-data-from-redshift-to-clickhouse-using-s3)** S3オブジェクトストレージを使用した「アンロードしてからロードする」ロジックを利用する
+3. **[PIVOT](#pivot-data-from-redshift-to-clickhouse-using-s3)** S3 オブジェクトストレージを使用して「アンロード後にロード」ロジックを使用する
 
 :::note
-このチュートリアルではRedshiftをデータソースとして使用しました。ただし、ここで示す移行アプローチはRedshiftに特有のものではなく、互換性のある任意のデータソースに対して同様の手順を適用できます。
+このチュートリアルでは Redshift をデータソースとして使用しました。ただし、ここで説明する移行アプローチは Redshift に限定されるものではなく、互換性のあるデータソースに対して同様の手順を導き出すことができます。
 :::
 
 
-## RedshiftからClickHouseへのデータプッシュ {#push-data-from-redshift-to-clickhouse}
+## Redshift から ClickHouse へのデータプッシュ {#push-data-from-redshift-to-clickhouse}
 
-プッシュシナリオでは、サードパーティのツールまたはサービス（カスタムコードまたは[ETL/ELT](https://en.wikipedia.org/wiki/Extract,_transform,_load#ETL_vs._ELT)）を活用して、データをClickHouseインスタンスに送信するアイデアです。たとえば、[Airbyte](https://www.airbyte.com/)というソフトウェアを使用して、Redshiftインスタンス（ソース）とClickHouse（宛先）間でデータを移動できます（[Airbyteの統合ガイドを参照](/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md)）。
+プッシュシナリオでは、サードパーティのツールまたはサービス（カスタムコードまたは [ETL/ELT](https://en.wikipedia.org/wiki/Extract,_transform,_load#ETL_vs._ELT) ソフトウェア）を活用して、データを ClickHouse インスタンスに送信することを目的としています。例えば、[Airbyte](https://www.airbyte.com/) のようなソフトウェアを使用して、Redshift インスタンス（ソース）と ClickHouse（デスティネーション）間でデータを移動することができます（[Airbyte の統合ガイドを参照してください](/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md)）。
 
+<Image img={push} size="lg" alt="PUSH Redshift to ClickHouse" background="white"/>
 
-<img src={push} class="image" alt="RedshiftからClickHouseへのPUSH"/>
+### 利点 {#pros}
 
-### メリット {#pros}
+* ETL/ELT ソフトウェアのコネクタの既存カタログを活用できる。
+* データを同期するための組み込み機能（追加/上書き/インクリメントロジック）。
+* データ変換シナリオを可能にする（例えば、[dbt の統合ガイドを参照](/integrations/data-ingestion/etl-tools/dbt/index.md)）。
 
-* ETL/ELTソフトウェアの既存のコネクタカタログを利用できる。
-* データの同期を保つための組み込み機能（追加/上書き/増分ロジック）。
-* データ変換のシナリオを有効にする（たとえば、[dbtの統合ガイドを参照](/integrations/data-ingestion/etl-tools/dbt/index.md)）。
+### 欠点 {#cons}
 
-### デメリット {#cons}
-
-* ユーザーはETL/ELTインフラを設定および維持する必要がある。
-* アーキテクチャにサードパーティの要素を導入するため、スケーラビリティのボトルネックになる可能性がある。
-
-
-## RedshiftからClickHouseへのデータプル {#pull-data-from-redshift-to-clickhouse}
-
-プルシナリオでは、ClickHouse JDBCブリッジを利用して、ClickHouseインスタンスから直接Redshiftクラスタに接続し、`INSERT INTO ... SELECT`クエリを実行するアイデアです：
+* ユーザーは ETL/ELT インフラを設定および維持する必要がある。
+* アーキテクチャにサードパーティの要素を導入し、潜在的なスケーラビリティのボトルネックになる可能性がある。
 
 
-<img src={pull} class="image" alt="RedshiftからClickHouseへのPULL"/>
+## Redshift から ClickHouse へのデータプル {#pull-data-from-redshift-to-clickhouse}
 
-### メリット {#pros-1}
+プルシナリオでは、ClickHouse JDBC ブリッジを活用して、ClickHouse インスタンスから直接 Redshift クラスターに接続し、`INSERT INTO ... SELECT` クエリを実行します：
 
-* すべてのJDBC互換ツールに対して一般的である
-* ClickHouse内から複数の外部データソースをクエリするためのエレガントなソリューション
+<Image img={pull} size="lg" alt="PULL from Redshift to ClickHouse" background="white"/>
 
-### デメリット {#cons-1}
+### 利点 {#pros-1}
 
-* スケーラビリティのボトルネックになる可能性があるClickHouse JDBCブリッジインスタンスが必要
+* すべての JDBC 互換ツールに一般的
+* ClickHouse 内から複数の外部データソースをクエリするための洗練されたソリューション
+
+### 欠点 {#cons-1}
+
+* スケーラビリティのボトルネックになる可能性のある ClickHouse JDBC ブリッジインスタンスを必要とする
 
 
 :::note
-RedshiftはPostgreSQLに基づいていますが、ClickHouseのPostgreSQLテーブル関数やテーブルエンジンを使用することはできません。ClickHouseはPostgreSQLのバージョン9以上を必要とし、Redshift APIは以前のバージョン（8.x）に基づいているためです。
+Redshift は PostgreSQL に基づいていますが、ClickHouse PostgreSQL テーブル関数やテーブルエンジンを使用することはできません。なぜなら、ClickHouse は PostgreSQL バージョン 9 以上を要求し、Redshift API は古いバージョン（8.x）に基づいているからです。
 :::
 
 ### チュートリアル {#tutorial}
 
-このオプションを使用するには、ClickHouse JDBCブリッジを設定する必要があります。ClickHouse JDBCブリッジは、JDBC接続を処理し、ClickHouseインスタンスとデータソースの間のプロキシとして機能するスタンドアロンのJavaアプリケーションです。このチュートリアルでは、[サンプルデータベース](https://docs.aws.amazon.com/redshift/latest/dg/c_sampledb.html)を持つ事前にポピュレートされたRedshiftインスタンスを使用しました。
+このオプションを使用するには、ClickHouse JDBC ブリッジを設定する必要があります。ClickHouse JDBC ブリッジは、JDBC 接続を処理し、ClickHouse インスタンスとデータソースの間のプロキシとして機能するスタンドアロンの Java アプリケーションです。このチュートリアルでは、[サンプルデータベース](https://docs.aws.amazon.com/redshift/latest/dg/c_sampledb.html)を持つ事前に設定された Redshift インスタンスを使用しました。
 
-1. ClickHouse JDBCブリッジをデプロイします。詳細は、[外部データソース用JDBCのユーザーガイド](/integrations/data-ingestion/dbms/jdbc-with-clickhouse.md)を参照してください。
+1. ClickHouse JDBC ブリッジを展開します。詳細については、[外部データソース用の JDBC のユーザーガイド](/integrations/data-ingestion/dbms/jdbc-with-clickhouse.md)を参照してください。
 
 :::note
-ClickHouse Cloudを使用している場合、ClickHouse JDBCブリッジを別の環境で実行し、[remoteSecure](/sql-reference/table-functions/remote/)関数を使用してClickHouse Cloudに接続する必要があります。
+ClickHouse Cloud を使用している場合は、別の環境で ClickHouse JDBC ブリッジを実行し、[remoteSecure](/sql-reference/table-functions/remote/) 関数を使用して ClickHouse Cloud に接続する必要があります。
 :::
 
-2. ClickHouse JDBCブリッジ用のRedshiftデータソースを構成します。たとえば、`/etc/clickhouse-jdbc-bridge/config/datasources/redshift.json `
+2. ClickHouse JDBC ブリッジの Redshift データソースを構成します。例えば、`/etc/clickhouse-jdbc-bridge/config/datasources/redshift.json `
 
   ```json
   {
@@ -119,7 +119,7 @@ ClickHouse Cloudを使用している場合、ClickHouse JDBCブリッジを別�
   }
   ```
 
-3. ClickHouse JDBCブリッジがデプロイされ、動作している場合、ClickHouseからRedshiftインスタンスをクエリすることができます。
+3. ClickHouse JDBC ブリッジが展開されて実行されている場合、ClickHouse から Redshift インスタンスをクエリし始めることができます。
 
   ```sql
   SELECT *
@@ -127,7 +127,7 @@ ClickHouse Cloudを使用している場合、ClickHouse JDBCブリッジを別�
   ```
 
   ```response
-  クエリID: 1b7de211-c0f6-4117-86a2-276484f9f4c0
+  Query id: 1b7de211-c0f6-4117-86a2-276484f9f4c0
 
   ┌─username─┬─firstname─┬─lastname─┐
   │ PGL08LJI │ Vladimir  │ Humphrey │
@@ -137,7 +137,7 @@ ClickHouse Cloudを使用している場合、ClickHouse JDBCブリッジを別�
   │ MSD36KVR │ Mufutau   │ Watkins  │
   └──────────┴───────────┴──────────┘
 
-  5 行がセットにあります。経過時間: 0.438 秒。
+  5 rows in set. Elapsed: 0.438 sec.
   ```
 
   ```sql
@@ -146,20 +146,20 @@ ClickHouse Cloudを使用している場合、ClickHouse JDBCブリッジを別�
   ```
 
   ```response
-  クエリID: 2d0f957c-8f4e-43b2-a66a-cc48cc96237b
+  Query id: 2d0f957c-8f4e-43b2-a66a-cc48cc96237b
 
   ┌──count─┐
   │ 172456 │
   └────────┘
 
-  1 行がセットにあります。経過時間: 0.304 秒。
+  1 rows in set. Elapsed: 0.304 sec.
   ```
 
 
-4. 次に、`INSERT INTO ... SELECT`ステートメントを使用してデータをインポートする方法を示します。
+4. 次に、`INSERT INTO ... SELECT` ステートメントを使用してデータをインポートします。
 
   ```sql
-  # 3カラムのテーブル作成
+  # 3 カラムの TABLE CREATION
   CREATE TABLE users_imported
   (
       `username` String,
@@ -171,55 +171,55 @@ ClickHouse Cloudを使用している場合、ClickHouse JDBCブリッジを別�
   ```
 
   ```response
-  クエリID: c7c4c44b-cdb2-49cf-b319-4e569976ab05
+  Query id: c7c4c44b-cdb2-49cf-b319-4e569976ab05
 
   Ok.
 
-  0 行がセットにあります。経過時間: 0.233 秒。
+  0 rows in set. Elapsed: 0.233 sec.
   ```
 
   ```sql
-  # データインポート
+  # データのインポート
   INSERT INTO users_imported (*) SELECT *
   FROM jdbc('redshift', 'select username, firstname, lastname from users')
   ```
 
   ```response
-  クエリID: 9d3a688d-b45a-40f4-a7c7-97d93d7149f1
+  Query id: 9d3a688d-b45a-40f4-a7c7-97d93d7149f1
 
   Ok.
 
-  0 行がセットにあります。経過時間: 4.498 秒。処理された49.99千行、2.49 MB（11.11千行/s., 554.27 KB/s）
+  0 rows in set. Elapsed: 4.498 sec. Processed 49.99 thousand rows, 2.49 MB (11.11 thousand rows/s., 554.27 KB/s.)
   ```
 
-## S3を使用したRedshiftからClickHouseへのデータピボット {#pivot-data-from-redshift-to-clickhouse-using-s3}
+## S3 を使用して Redshift から ClickHouse へのデータピボット {#pivot-data-from-redshift-to-clickhouse-using-s3}
 
-このシナリオでは、S3に中間ピボット形式でデータをエクスポートし、次のステップでS3からClickHouseにデータをロードします。
+このシナリオでは、データを中間ピボット形式で S3 にエクスポートし、次のステップで S3 から ClickHouse にデータをロードします。
 
-<img src={pivot} class="image" alt="S3を使用したRedshiftからのPIVOT"/>
+<Image img={pivot} size="lg" alt="PIVOT from Redshift using S3" background="white"/>
 
-### メリット {#pros-2}
+### 利点 {#pros-2}
 
-* RedshiftとClickHouseの両方が強力なS3統合機能を持っています。
-* Redshiftの`UNLOAD`コマンドとClickHouseのS3テーブル関数/テーブルエンジンなどの既存機能を活用できます。
-* ClickHouseにおけるS3との間での並列読み取りと高スループット機能により、シームレスにスケール可能です。
-* Apache Parquetのような高度で圧縮されたフォーマットを利用できます。
+* Redshift と ClickHouse の両方が強力な S3 統合機能を持っている。
+* Redshift の `UNLOAD` コマンドや ClickHouse S3 テーブル関数 / テーブルエンジンの既存機能を利用。
+* ClickHouse の S3 への並列読み取りと高スループット機能によりシームレスにスケールできます。
+* Apache Parquet のような洗練された圧縮フォーマットを活用できる。
 
-### デメリット {#cons-2}
+### 欠点 {#cons-2}
 
-* プロセスに2つのステップがあります（Redshiftからのアンロード後、ClickHouseへのロード）。
+* プロセスに 2 ステップ（Redshift からアンロードして ClickHouse へロード）が必要です。
 
 ### チュートリアル {#tutorial-1}
 
-1. Redshiftの[UNLOAD](https://docs.aws.amazon.com/redshift/latest/dg/r_UNLOAD.html)機能を使用して、既存のプライベートS3バケットにデータをエクスポートします：
+1. Redshift の [UNLOAD](https://docs.aws.amazon.com/redshift/latest/dg/r_UNLOAD.html) 機能を使用して、既存のプライベート S3 バケットにデータをエクスポートします：
 
-    <img src={s3_1} class="image" alt="RedshiftからS3へのUNLOAD"/>
+    <Image img={s3_1} size="md" alt="UNLOAD from Redshift to S3" background="white"/>
 
-    これにより、生データを含む部分ファイルがS3に生成されます。
+    これにより、S3 に生データを含むパートファイルが生成されます。
 
-    <img src={s3_2} class="image" alt="S3のデータ"/>
+    <Image img={s3_2} size="md" alt="Data in S3" background="white"/>
 
-2. ClickHouseでテーブルを作成します：
+2. ClickHouse にテーブルを作成します：
 
     ```sql
     CREATE TABLE users
@@ -232,7 +232,7 @@ ClickHouse Cloudを使用している場合、ClickHouse JDBCブリッジを別�
     ORDER BY username
     ```
 
-    あるいは、ClickHouseは`CREATE TABLE ... EMPTY AS SELECT`を使用してテーブル構造を自動推論できる場合もあります：
+    または、ClickHouse は `CREATE TABLE ... EMPTY AS SELECT` を使用してテーブル構造を推測することができます：
 
     ```sql
     CREATE TABLE users
@@ -241,22 +241,22 @@ ClickHouse Cloudを使用している場合、ClickHouse JDBCブリッジを別�
     SELECT * FROM s3('https://your-bucket.s3.amazonaws.com/unload/users/*', '<aws_access_key>', '<aws_secret_access_key>', 'CSV')
     ```
 
-    これは、データがデータ型に関する情報を含む形式（パーケットなど）である場合に特に有効です。
+    これは特にデータがデータ型に関する情報を含むフォーマット（例: Parquet）である場合に効果的です。
 
-3. `INSERT INTO ... SELECT`ステートメントを使用してS3ファイルをClickHouseにロードします：
+3. S3 ファイルを ClickHouse にロードします。`INSERT INTO ... SELECT` ステートメントを使用します：
     ```sql
     INSERT INTO users SELECT *
     FROM s3('https://your-bucket.s3.amazonaws.com/unload/users/*', '<aws_access_key>', '<aws_secret_access_key>', 'CSV')
     ```
 
     ```response
-    クエリID: 2e7e219a-6124-461c-8d75-e4f5002c8557
+    Query id: 2e7e219a-6124-461c-8d75-e4f5002c8557
 
     Ok.
 
-    0 行がセットにあります。経過時間: 0.545 秒。処理された49.99千行、2.34 MB（91.72千行/s., 4.30 MB/s）
+    0 rows in set. Elapsed: 0.545 sec. Processed 49.99 thousand rows, 2.34 MB (91.72 thousand rows/s., 4.30 MB/s.)
     ```
 
 :::note
-この例ではCSVをピボット形式として使用しました。ただし、プロダクションワークロードではApache Parquetを大規模な移行に最適なオプションとしてお勧めします。Parquetは圧縮を行い、ストレージコストを削減しつつ転送時間を短縮できます（デフォルトでは、それぞれの行グループはSNAPPYを使用して圧縮されます）。ClickHouseもParquetの列指向を利用してデータ取り込みを加速しています。
+この例では、CSV をピボットフォーマットとして使用しました。ただし、生産ワークロードでは、圧縮とストレージコストを削減しつつトランスファー時間を短縮できるため、大規模な移行には Apache Parquet を最良の選択肢としてお勧めします。（デフォルトでは、各行グループは SNAPPY を使用して圧縮されています。）ClickHouse は Parquet の列指向性を活用してデータの取り込みを加速します。
 :::
