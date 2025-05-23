@@ -7,7 +7,7 @@ description: 'NestJS SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'NestJS'
 ---
 
-ClickStack's NestJS integration allows you to create a logger or use the default
+The ClickStack NestJS integration allows you to create a logger or use the default
 logger to send logs to ClickStack (powered by [nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme)).
 
 **This Guide Integrates:**
@@ -69,7 +69,7 @@ export class CatsController {
 ### Replacing the Nest logger (also for bootstrapping) {#replacing-the-nest-logger}
 
 :::note Important
-By doing this, you give up the dependency injection, meaning that forRoot and `forRootAsync` are not needed and shouldn't be used. Remove them from your main module.
+By doing this, you give up the dependency injection, meaning that `forRoot` and `forRootAsync` are not needed and shouldn't be used. Remove them from your main module.
 :::
 
 Using the dependency injection has one minor drawback. Nest has to bootstrap the
@@ -78,8 +78,8 @@ etc.) and during this process the instance of `HyperDXNestLogger` is not yet
 available, which means that Nest falls back to the internal logger.
 
 One solution is to create the logger outside of the application lifecycle, using
-the createLogger function, and pass it to `NestFactory.create`. Nest will then
-wrap our custom logger (the same instance returned by the createLogger method)
+the `createLogger` function, and pass it to `NestFactory.create`. Nest will then
+wrap our custom logger (the same instance returned by the `createLogger` method)
 into the Logger class, forwarding all calls to it:
 
 Create the logger in the `main.ts` file

@@ -31,7 +31,7 @@ At present, the integration is compatible exclusively with **Java 8+**
 
 ### Download OpenTelemetry Java agent {#download-opentelemtry-java-agent}
 
-Download [opentelemetry-javaagent.jar](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar)
+Download [`opentelemetry-javaagent.jar`](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar)
 and place the JAR in your preferred directory. The JAR file contains the agent
 and instrumentation libraries. You can also use the following command to
 download the agent:
@@ -44,7 +44,7 @@ curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/
 
 Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack:
 
-```sh
+```bash
 export JAVA_TOOL_OPTIONS="-javaagent:PATH/TO/opentelemetry-javaagent.jar" \
 OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_HYPERDX_API_KEY_HERE>' \

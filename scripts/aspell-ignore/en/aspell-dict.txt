@@ -190,6 +190,7 @@ ClickPipe
 ClickPipes
 ClickPipes's
 ClickPy
+ClickStack
 ClickVisual
 ClickableSquare
 CloudAvailableBadge
@@ -414,6 +415,7 @@ Grafana
 GraphQL
 GraphiteMergeTree
 Greenwald
+Gunicorn
 HANA
 HDDs
 HHMM
@@ -442,6 +444,8 @@ Hostname
 HouseOps
 Hudi
 HudiCluster
+HyperDX
+HyperDX's
 HyperLogLog
 Hypertable
 Hypot
@@ -634,6 +638,7 @@ LowCardinality
 LpDistance
 LpNorm
 LpNormalize
+Lucene
 Luebbe
 Luzmo
 Lyft
@@ -750,6 +755,7 @@ Namenode
 NamesAndTypesList
 Nano
 Nesterov
+NestJS
 NetFlow
 NetworkReceive
 NetworkReceiveBytes
@@ -1285,6 +1291,7 @@ Vadim
 Valgrind
 Vectorization
 Vectorized
+Vercel
 VersionBadge
 VersionInteger
 VersionedCollapsingMergeTree
@@ -1295,6 +1302,7 @@ Vose
 WALs
 WSFG
 WarpStream
+Websocket
 Welch's
 Werror
 Wether
@@ -1580,6 +1588,7 @@ bugfix
 buildId
 buildable
 builtins
+bundler
 burstable
 byteHammingDistance
 byteSize
@@ -1691,6 +1700,7 @@ const
 contrib
 convertCharset
 coroutines
+correlatable
 corrMatrix
 corrStable
 corrmatrix
@@ -2004,6 +2014,7 @@ fromModifiedJulianDayOrNull
 fromUTCTimestamp
 fromUnixTimestamp
 fromUnixTimestampInJodaSyntax
+frontend
 fsync
 func
 fuzzBits
@@ -2318,6 +2329,7 @@ libpq
 libpqxx
 librdkafka
 libs
+lifecycle
 libunwind
 libuv
 libvirt
@@ -2423,6 +2435,7 @@ minmap
 minmax
 mins
 misconfiguration
+misconfigurations
 misconfigured
 mispredictions
 mlock
@@ -3389,6 +3402,7 @@ userver
 utils
 uuid
 uuidv
+uvicorn
 vCPU
 vCPUs
 varPop
@@ -3435,6 +3449,7 @@ whitespace
 whitespaces
 wikistat
 windowFunnel
+winston
 wordShingleMinHash
 wordShingleMinHashArg
 wordShingleMinHashArgCaseInsensitive

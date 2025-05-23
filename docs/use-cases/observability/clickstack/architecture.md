@@ -22,7 +22,7 @@ At the heart of ClickStack is ClickHouse, a column-oriented database designed fo
 
 - Sub-second search across terabytes of events
 - Ingestion of billions of high-cardinality records per day
-- High compression rates for atleast 10x on observability data
+- High compression rates for at least 10x on observability data
 - Native support for semi-structured JSON data, allowing dynamic schema evolution
 - A powerful SQL engine with hundreds of built-in analytical functions
 
@@ -30,7 +30,7 @@ ClickHouse handles observability data as wide events, allowing for deep correlat
 
 ## OpenTelemetry Collector: Data Ingestion {#open-telemetry-collector}
 
-ClickStack includes a pre-configured OpenTelemetry (OTel) Collector to ingest telemetry in an open, standardized way. Users can send data using the oltp protocol via:
+ClickStack includes a pre-configured OpenTelemetry (OTel) Collector to ingest telemetry in an open, standardized way. Users can send data using the OTLP protocol via:
 
 - gRPC (port `4317`)
 - HTTP (port `4318`)

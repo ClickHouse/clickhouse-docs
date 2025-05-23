@@ -106,14 +106,14 @@ Open a terminal and export the credentials copied above:
 
 ```bash
 export CLICKHOUSE_USER=default
-export CLICKHOUSE_SERVER_ENDPOINT=<YOUR HTTPS ENDPOINT>
+export CLICKHOUSE_ENDPOINT=<YOUR HTTPS ENDPOINT>
 export CLICKHOUSE_PASSWORD=<YOUR_PASSWORD>
 ```
 
 Run the following docker command:
 
 ```bash
-docker run -e CLICKHOUSE_SERVER_ENDPOINT=${CLICKHOUSE_SERVER_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-all-in-one:2-nightly
+docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-all-in-one:2-nightly
 ```
 
 This will expose an OpenTelemetry collector (on port 4317 and 4318), and the HyperDX UI (on port 8080).
@@ -159,7 +159,7 @@ This mode is is intended to be used for quick testing, development, demos and de
 
 ### Hosted Version {#hosted-version}
 
-You can use HyperDX's hosted local mode available at [play.hyperdx.io](https://play.hyperdx.io).
+You can use a hosted of version HyperDX in local mode available at [play.hyperdx.io](https://play.hyperdx.io).
 
 ### Self-Hosted Version {#self-hosted-version}
 

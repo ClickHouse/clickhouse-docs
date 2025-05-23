@@ -111,7 +111,7 @@ If you're using `winston` as your logger, you'll need to add the following trans
 </TabItem>
 <TabItem value="Pino" label="Pino">
 
-If you're using `pino` as your logger, you'll need to add the following transport to your logger and specify a mixin to correlate logs with traces.
+If you're using `pino` as your logger, you'll need to add the following transport to your logger and specify a `mixin` to correlate logs with traces.
 
 ```typescript
 import pino from 'pino';
@@ -143,7 +143,7 @@ You can disable this by setting the `HDX_NODE_CONSOLE_CAPTURE` environment varia
 
 ### Setup error collection {#setup-error-collection}
 
-The ClickStacj SDK can automatically capture uncaught exceptions and errors in your application with full stack trace and code context. 
+The ClickStack SDK can automatically capture uncaught exceptions and errors in your application with full stack trace and code context. 
 
 To enable this, you'll need to add the following code to the end of your application's error handling middleware, or manually capture exceptions using the `recordException` function.
 
@@ -219,7 +219,7 @@ export OTEL_LOG_LEVEL=debug
 
 ### Capture console logs {#capture-console-logs}
 
-By default, the ClicKStack SDK will capture console logs. You can disable it by
+By default, the ClickStack SDK will capture console logs. You can disable it by
 setting `HDX_NODE_CONSOLE_CAPTURE` environment variable to 0.
 
 ```sh copy

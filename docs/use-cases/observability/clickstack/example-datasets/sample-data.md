@@ -53,7 +53,7 @@ curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
 # wget https://storage.googleapis.com/hyperdx/sample.tar.gz
 ```
 
-This file contains example logs, metrics and traces from our public [OpenTelemetry demo](http://example.com) - a simple ecommerce store with microservices. Copy this file to a directory of your choosing.
+This file contains example logs, metrics and traces from our public [OpenTelemetry demo](http://example.com) - a simple e-commerce store with microservices. Copy this file to a directory of your choosing.
 
 ## Load sample data {#load-sample-data}
 
@@ -166,8 +166,7 @@ The user was unable to place the order, with no obvious error. Scroll to the bot
 
 <Image img={hyperdx_13} alt="Error in session" size="lg"/>
 
-
-Select this `500` error. Niether the `Overview` or `Column Values` indicate the source of the issue, other than the fact the error is unexpected causing an `Internal Error`.
+Select this `500` error. Neither the `Overview` or `Column Values` indicate the source of the issue, other than the fact the error is unexpected causing an `Internal Error`.
 
 ## Explore traces {#explore-traces}
 

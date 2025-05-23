@@ -73,7 +73,7 @@ When all pods are ready proceed.
 
 ### Forward ports {#forward-ports}
 
-Port forwarding allows us to access and set up HyperDX. Users deploying to production should instead expose the service via an Ingress or LoadBalancer to ensure proper network access, TLS termination, and scalability. Port forwarding is best suited for local development or one-off administrative tasks, not long-term or high-availability environments.
+Port forwarding allows us to access and set up HyperDX. Users deploying to production should instead expose the service via an ingress or load balancer to ensure proper network access, TLS termination, and scalability. Port forwarding is best suited for local development or one-off administrative tasks, not long-term or high-availability environments.
 
 ```bash
 kubectl port-forward \
@@ -197,9 +197,9 @@ helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickho
 
 ## Production notes {#production-notes}
 
-By default, this chart also installs clickhouse and the otel-collector. However, for production, it is recommended that you manage the clickhouse and otel-collector separately.
+By default, this chart also installs clickhouse and the OTel collector. However, for production, it is recommended that you manage the clickhouse and OTel collector separately.
 
-To disable clickhouse and otel-collector, set the following values:
+To disable clickhouse and OTel collector, set the following values:
 
 ```bash
 helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.enabled=false
@@ -211,7 +211,7 @@ By default, there is one task in the chart setup as a cronjob, responsible for c
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `tasks.enabled` | Enable/Disable cron tasks in the cluster. By default, the HyperDX image will run cron tasks intra process. Change to true if you'd rather use a separate cron task in the cluster. | `false` |
+| `tasks.enabled` | Enable/Disable cron tasks in the cluster. By default, the HyperDX image will run cron tasks in the process. Change to true if you'd rather use a separate cron task in the cluster. | `false` |
 | `tasks.checkAlerts.schedule` | Cron schedule for the check-alerts task | `*/1 * * * *` |
 | `tasks.checkAlerts.resources` | Resource requests and limits for the check-alerts task | See `values.yaml` |
 

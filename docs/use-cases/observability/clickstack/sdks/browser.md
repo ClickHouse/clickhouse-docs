@@ -167,7 +167,7 @@ HyperDX.enableAdvancedNetworkCapture();
 If your frontend application makes API requests to a different domain, you can
 optionally enable the `Timing-Allow-Origin`[header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin) to be sent with the request. This will allow ClickStack to capture fine-grained
 resource timing information for the request such as DNS lookup, response
-download, etc. via [PerformanceResourceTiming](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming).
+download, etc. via [`PerformanceResourceTiming`](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming).
 
 If you're using `express` with `cors` packages, you can use the following
 snippet to enable the header:

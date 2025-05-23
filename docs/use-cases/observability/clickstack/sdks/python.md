@@ -31,7 +31,7 @@ Use the following command to install the [ClickStack OpenTelemetry package](http
 pip install hyperdx-opentelemetry
 ```
 
-Install OpenTelemetry’s automatic instrumentation libraries for the packages used by your Python application. We recommend that you use the
+Install the OpenTelemetry automatic instrumentation libraries for the packages used by your Python application. We recommend that you use the
 `opentelemetry-bootstrap` tool that comes with the OpenTelemetry Python SDK to scan your application packages and generate the list of available libraries.
 
 ```bash

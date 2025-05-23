@@ -94,7 +94,7 @@ service:
       exporters: [otlp]
 ```
 
-This configuration collects system logs and metric for OSX and Linux systems, sending the results to ClickStack via the otlp endpoint on port 4317.
+This configuration collects system logs and metric for OSX and Linux systems, sending the results to ClickStack via the OTLP endpoint on port 4317.
 
 For more details on the OTel configuration structure, we recommend [the official guide](https://opentelemetry.io/docs/collector/configuration/).
 

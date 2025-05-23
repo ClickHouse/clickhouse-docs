@@ -73,7 +73,7 @@ Rails.application.configure do
 end
 ```
 
-### Configure environment vriables {#configure-environment-variables}
+### Configure environment variables {#configure-environment-variables}
 
 Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack:
 

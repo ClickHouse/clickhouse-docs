@@ -15,7 +15,7 @@ When deploying ClickStack in production, there are several additional considerat
 
 ## Network and Port Security {#network-security}
 
-By default, Docker Compose exposes ports on the host, making them accessible from outside the container - even if tools like `ufw` (Uncomplicated Firewall) are enabled. This behavior is due to Docker's use of its own networking stack, which can bypass host-level firewall rules unless explicitly configured.
+By default, Docker Compose exposes ports on the host, making them accessible from outside the container - even if tools like `ufw` (Uncomplicated Firewall) are enabled. This behavior is due to the Docker networking stack, which can bypass host-level firewall rules unless explicitly configured.
 
 **Recommendation:**
 
@@ -115,7 +115,7 @@ GRANT sql_console_read_only TO hyperdx;
 
 #### Deploy HyperDX {#deploy-hyperdx}
 
-Ensure HyperDX is deployed - the [Helm](/use-cases/observability/clickstack/deployment/helm), [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) (modified to exclude ClickHouse) or [HyperDX only](/use-cases/observability/clickstack/deployment/hyperdx-only) deployment models are prefered.
+Ensure HyperDX is deployed - the [Helm](/use-cases/observability/clickstack/deployment/helm), [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) (modified to exclude ClickHouse) or [HyperDX only](/use-cases/observability/clickstack/deployment/hyperdx-only) deployment models are preferred.
 
 Create a user on initial login.
 
@@ -140,8 +140,8 @@ ClickHouse OSS provides robust security features out of the box. However, these 
 - **Restrict access** using IP filtering and the `HOST` clause. See [sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host).
 - **Enable Role-Based Access Control (RBAC)** to grant granular privileges. See [operations/access-rights](/operations/access-rights).
 - **Enforce quotas and limits** using [quotas](/operations/quotas), [settings profiles](/operations/settings/settings-profiles), and read-only modes.
-- **Encrypt data at rest** and use secure external storage. See [operations/storing-data](/operations/storing-data) and [cloud/security/cmek](/cloud/security/cmek).
-- **Avoid hardcoding credentials.** Use [named collections](/operations/named-collections) or IAM roles in ClickHouse Cloud.
+- **Encrypt data at rest** and use secure external storage. See [operations/storing-data](/operations/storing-data) and [cloud/security/CMEK](/cloud/security/cmek).
+- **Avoid hard coding credentials.** Use [named collections](/operations/named-collections) or IAM roles in ClickHouse Cloud.
 - **Audit access and queries** using [system logs](/operations/system-tables/query_log) and [session logs](/operations/system-tables/session_log).
 
 See also [external authenticators](/operations/external-authenticators) and [query complexity settings](/operations/settings/query-complexity) for managing users and ensuring query/resource limits.

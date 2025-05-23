@@ -26,7 +26,7 @@ docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 8123:8123 -p 4317:4317 
 
 If using the [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) deployment guide, the [`.env`](https://github.com/hyperdxio/hyperdx/blob/v2/.env) file can be used to modify settings.
 
-Alternatively, explicltly overwrite settings in the [`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/v2/docker-compose.yml) file e.g.
+Alternatively, explicitly overwrite settings in the [`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/v2/docker-compose.yml) file e.g.
 
 Example:
 ```yaml
@@ -106,9 +106,9 @@ This configuration can be performed inside the application, as shown below for l
 
 <Image img={hyperdx_25} alt="HyperDX Source configuration" size="md"/>
 
-Each of these sources require atleast one table specified on creation as well as a set of columns which allow HyperDX to query the data.
+Each of these sources require at least one table specified on creation as well as a set of columns which allow HyperDX to query the data.
 
-If using the [default OTel schema](/observability/integrating-opentelemetry#out-of-the-box-schema) distributed with ClickStack, these columns can be automatically infered for each of the sources. If [modifying the schema](#clickhouse) or using a custom schema, users are required to specify and update these mappings.
+If using the [default OTel schema](/observability/integrating-opentelemetry#out-of-the-box-schema) distributed with ClickStack, these columns can be automatically inferred for each of the sources. If [modifying the schema](#clickhouse) or using a custom schema, users are required to specify and update these mappings.
 
 :::note
 The default schema for ClickHouse distributed with ClickStack is the schema created by the [ClickHouse exporter for the OTel collector](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter). These column names correlate with the OTel official specification documented [here](https://opentelemetry.io/docs/specs/otel/logs/data-model/).
@@ -124,19 +124,19 @@ The following settings are available for each source:
 | `Server Connection`           | Server connection name.                                                                                                | Yes      | No                          | `Default`                                             |
 | `Database`                    | ClickHouse database name.                                                                                              | Yes      | Yes                         | `default`                                             |
 | `Table`                       | Target table name. Set to `otel_logs` if default schema is used.                                                                                                     | Yes      | No                         |                                            |
-| `Timestamp Column`            | Datetime column or expression that is part of your primary key.                                                        | Yes       | Yes                         | TimestampTime                                       |
-| `Default Select`              | Columns shown in default search results.                                                                               | Yes       | Yes                         | Timestamp, ServiceName, SeverityText, Body         |
-| `Service Name Expression`     | Expression or column for the service name.                                                                             | Yes       | Yes                         | ServiceName                                         |
-| `Log Level Expression`        | Expression or column for the log level.                                                                                | Yes       | Yes                         | SeverityText                                        |
-| `Body Expression`             | Expression or column for the log message.                                                                              | Yes       | Yes                         | Body                                                |
-| `Log Attributes Expression`   | Expression or column for custom log attributes.                                                                        | Yes       | Yes                         | LogAttributes                                       |
-| `Resource Attributes Expression` | Expression or column for resource-level attributes.                                                                  | Yes       | Yes                         | ResourceAttributes                                  |
-| `Displayed Timestamp Column`  | Timestamp column used in UI display.                                                                                   | Yes       | Yes                         | ResourceAttributes                                  |
+| `Timestamp Column`            | Datetime column or expression that is part of your primary key.                                                        | Yes       | Yes                         | `TimestampTime`                                       |
+| `Default Select`              | Columns shown in default search results.                                                                               | Yes       | Yes                         | `Timestamp`, `ServiceName`, `SeverityText`, `Body`         |
+| `Service Name Expression`     | Expression or column for the service name.                                                                             | Yes       | Yes                         | `ServiceName`                                         |
+| `Log Level Expression`        | Expression or column for the log level.                                                                                | Yes       | Yes                         | `SeverityText`                                        |
+| `Body Expression`             | Expression or column for the log message.                                                                              | Yes       | Yes                         | `Body`                                                |
+| `Log Attributes Expression`   | Expression or column for custom log attributes.                                                                        | Yes       | Yes                         | `LogAttributes`                                       |
+| `Resource Attributes Expression` | Expression or column for resource-level attributes.                                                                  | Yes       | Yes                         | `ResourceAttributes`                                  |
+| `Displayed Timestamp Column`  | Timestamp column used in UI display.                                                                                   | Yes       | Yes                         | `ResourceAttributes`                                  |
 | `Correlated Metric Source`    | Linked metric source (e.g. HyperDX metrics).                                                                           | No       | No                          | –                                                   |
 | `Correlated Trace Source`     | Linked trace source (e.g. HyperDX traces).                                                                             | No       | No                          | –                                                   |
-| `Trace Id Expression`         | Expression or column used to extract trace ID.                                                                         | Yes       | Yes                         | TraceId                                             |
-| `Span Id Expression`          | Expression or column used to extract span ID.                                                                          | Yes       | Yes                         | SpanId                                              |
-| `Implicit Column Expression`  | Column used for full-text search if no field is specified (Lucene-style). Typically the log body.                      | Yes       | Yes                         | Body                                                |
+| `Trace Id Expression`         | Expression or column used to extract trace ID.                                                                         | Yes       | Yes                         | `TraceId`                                             |
+| `Span Id Expression`          | Expression or column used to extract span ID.                                                                          | Yes       | Yes                         | `SpanId`                                              |
+| `Implicit Column Expression`  | Column used for full-text search if no field is specified (Lucene-style). Typically the log body.                      | Yes       | Yes                         | `Body`                                                |
 
 #### Traces {#traces}
 
@@ -146,8 +146,8 @@ The following settings are available for each source:
 | `Server Connection`              | Server connection name.                                                                                                | Yes      | No                          | `Default`              |
 | `Database`                       | ClickHouse database name.                                                                                              | Yes      | Yes                         | `default`                |
 | `Table`                          | Target table name. Set to `otel_traces` if using the default schema.                                                                                                    | Yes      | Yes                         |      -       |
-| `Timestamp Column`              | Datetime column or expression that is part of your primary key.                                                        | Yes      | Yes                         | Timestamp              |
-| `Timestamp`                      | Alias for `Timestamp Column`.                                                                                          | Yes      | Yes                         | Timestamp              |
+| `Timestamp Column`              | Datetime column or expression that is part of your primary key.                                                        | Yes      | Yes                         | `Timestamp`              |
+| `Timestamp`                      | Alias for `Timestamp Column`.                                                                                          | Yes      | Yes                         | `Timestamp`              |
 | `Default Select`                | Columns shown in default search results.                                                                               | Yes      | Yes                         | `Timestamp, ServiceName as service, StatusCode as level, round(Duration / 1e6) as duration, SpanName` |
 | `Duration Expression`           | Expression for calculating span duration.                                                                              | Yes      | Yes                         | `Duration`               |
 | `Duration Precision`            | Precision for the duration expression (e.g. nanoseconds, microseconds).                                                | Yes      | Yes                         | ns                     |
@@ -515,13 +515,13 @@ exporters:
       localtime: true
 ```
 
-This example adds file exporters alongside ClickHouse, writing out samples of logs, metrics, traces, and sessions. It’s a useful pattern for debugging and local development.
+This example adds file exporters alongside ClickHouse, writing out samples of logs, metrics, traces, and sessions. It's a useful pattern for debugging and local development.
 
 ## ClickHouse {#clickhouse}
 
 ClickStack ships with a default ClickHouse configuration designed for multi-terabyte scale, but users are free to modify and optimize it to suit their workload.
 
-To tune ClickHouse effectively, users should understand key storage concepts such as [parts](/parts), [partitions](/partitions), [shards and replicas](/shards), as well as how [merges](/merges) occur at insert time. We recommend reviewing the fundamentals of [primary indices](/primary-indexes), [sparse secondary indices](/optimize/skipping-indexes), and data skipping indices, along with techniques for [managing data lifecycle](/observability/managing-data) e.g. using TTL lifecycles.
+To tune ClickHouse effectively, users should understand key storage concepts such as [parts](/parts), [partitions](/partitions), [shards and replicas](/shards), as well as how [merges](/merges) occur at insert time. We recommend reviewing the fundamentals of [primary indices](/primary-indexes), [sparse secondary indices](/optimize/skipping-indexes), and data skipping indices, along with techniques for [managing data lifecycle](/observability/managing-data) e.g. using a TTL lifecycle.
 
 ClickStack supports [schema customization](/use-cases/observability/schema-design) - users may modify column types, extract new fields (e.g. from logs), apply codecs and dictionaries, and accelerate queries using projections.
 
