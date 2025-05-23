@@ -67,7 +67,7 @@ This option should not be deployed to production for the following reasons:
 - **Non-persistent storage:** All data is stored using Docker's native overlay filesystem. This setup does not support performance at scale and data will be lost if the container is removed or restarted.
 - **Lack of component isolation:** All components run within a single Docker container. This prevents independent scaling and monitoring, and applies any cgroup limits globally to all processes. As a result, components may compete for CPU and memory,
 
-## Customizing Ports {#customizing-ports-deploy}
+## Customizing ports {#customizing-ports-deploy}
 
 If you need to customize the app (8080) or api (8000) ports that HyperDX Local runs on, you'll need to modify the `docker run` command to forward the appropriate ports and set a few environment variables.
 
