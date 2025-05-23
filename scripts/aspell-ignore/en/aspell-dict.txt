@@ -3518,3 +3518,4 @@ maxSimpleState
 TimescaleDB
 columnstore
 TiDB
+resync
