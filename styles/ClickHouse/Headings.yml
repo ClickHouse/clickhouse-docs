@@ -36,6 +36,16 @@ exceptions:
   - Azure Blob Storage
   - VPC
   - BYOC
+  - TiDB
+  - PlanetScale
+  - Vitess
+  - MySQL
+  - ClickPipe
   - ClickPipes
   - Postgres
   - CDC
+  - FAQ
+  - Amazon Web Services
+  - AWS
+  - Frequently Asked Questions
+  - PostgreSQL

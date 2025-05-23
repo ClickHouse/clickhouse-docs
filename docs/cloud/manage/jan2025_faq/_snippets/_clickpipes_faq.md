@@ -7,11 +7,12 @@ import clickpipesPricingFaq3 from '@site/static/images/cloud/manage/jan2025_faq/
 
 <summary>Why are we introducing a pricing model for ClickPipes now?</summary>
 
-We decided to initially launch ClickPipes for free with the idea to gather feedback, refine features,
-and ensure it meets user needs.
-As the GA platform has grown and effectively stood the test of time by moving trillions of rows,
-introducing a pricing model allows us to continue improving the service,
-maintaining the infrastructure, and providing dedicated support and new connectors.
+We decided to initially launch ClickPipes for free with the idea to gather 
+feedback, refine features, and ensure it meets user needs.
+As the GA platform has grown, it has effectively stood the test of time by 
+moving trillions of rows. Introducing a pricing model allows us to continue 
+improving the service, maintaining the infrastructure, and providing dedicated
+support and new connectors.
 
 </details>
 
@@ -40,9 +41,9 @@ while the data is pulled directly from the ClickHouse service.
 
 <details>
 
-<summary>What is the default number of replicas and their size?</summary>
+<summary>What's the default number of replicas and their size?</summary>
 
-Each ClickPipe defaults to 1 replica that is provided with 2 GiB of RAM and 0.5 vCPU.
+Each ClickPipe defaults to 1 replica that's provided with 2 GiB of RAM and 0.5 vCPU.
 This corresponds to **0.25** ClickHouse compute units (1 unit = 8 GiB RAM, 2 vCPUs).
 
 </details>
@@ -51,7 +52,7 @@ This corresponds to **0.25** ClickHouse compute units (1 unit = 8 GiB RAM, 2 vCP
 
 <summary>Can ClickPipes replicas be scaled?</summary>
 
-Currently, only ClickPipes for streaming can be scaled horizontally
+ClickPipes for streaming can be scaled horizontally
 by adding more replicas each with a base unit of **0.25** ClickHouse compute units.
 Vertical scaling is also available on demand for specific use cases (adding more CPU and RAM per replica).
 
@@ -99,7 +100,7 @@ It consists of two dimensions:
 
 <summary>How does it look in an illustrative example?</summary>
 
-For example, ingesting 1 TB of data over 24 hours using the Kafka connector using a single replica (0.25 compute unit) will cost:
+For example, ingesting 1 TB of data over 24 hours using the Kafka connector using a single replica (0.25 compute unit) costs:
 
 $$
 (0.25 \times 0.20 \times 24) + (0.04 \times 1000) = \$41.2
@@ -120,7 +121,7 @@ $$
 
 <summary>When does the new pricing model take effect?</summary>
 
-The new pricing model will take effect for all organizations created after January 27th, 2025.
+The new pricing model takes effect for all organizations created after January 27th, 2025.
 
 </details>
 

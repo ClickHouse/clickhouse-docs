@@ -11,7 +11,7 @@ For pricing information, see the [ClickHouse Cloud Pricing](https://clickhouse.c
 ClickHouse Cloud bills based on the usage of compute, storage, [data transfer](/cloud/manage/network-data-transfer) (egress over the internet and cross-region), and [ClickPipes](/integrations/clickpipes). 
 To understand what can affect your bill, and ways that you can manage your spend, keep reading.
 
-## Amazon Web Services (AWS) Example {#amazon-web-services-aws-example}
+## Amazon Web Services (AWS) example {#amazon-web-services-aws-example}
 
 :::note
 - Prices reflect AWS us-east-1 pricing.
@@ -72,7 +72,7 @@ Pricing breakdown for this example:
 </tbody>
 </table>
 
-### Scale (Always-on, Auto-scaling): From $499.38 per month {#scale-always-on-auto-scaling-from-49938-per-month}
+### Scale (always-on, auto-scaling): from $499.38 per month {#scale-always-on-auto-scaling-from-49938-per-month}
 
 Best for: workloads requiring enhanced SLAs (2+ replica services), scalability, and advanced security.
 
@@ -100,9 +100,9 @@ Pricing breakdown for this example:
   </tr>
   <tr>
     <td>Storage</td>
-    <td>1TB of data + 1 backup<br></br>\$50.60</td>
-    <td>2TB of data + 1 backup<br></br>\$101.20</td>
-    <td>3TB of data + 1 backup<br></br>\$151.80</td>
+    <td>1 TB of data + 1 backup<br></br>\$50.60</td>
+    <td>2 TB of data + 1 backup<br></br>\$101.20</td>
+    <td>3 TB of data + 1 backup<br></br>\$151.80</td>
   </tr>
   <tr>
     <td>Public internet egress data transfer</td>
@@ -150,9 +150,9 @@ Best for: large scale, mission critical deployments that have stringent security
   </tr>
   <tr>
     <td>Storage</td>
-    <td>5TB + 1 backup<br></br>\$253.00</td>
-    <td>10TB + 1 backup<br></br>\$506.00</td>
-    <td>20TB + 1 backup<br></br>\$1,012.00</td>
+    <td>5 TB + 1 backup<br></br>\$253.00</td>
+    <td>10 TB + 1 backup<br></br>\$506.00</td>
+    <td>20 TB + 1 backup<br></br>\$1,012.00</td>
   </tr>
   <tr>
     <td>Public internet egress data transfer</td>
@@ -175,7 +175,7 @@ Best for: large scale, mission critical deployments that have stringent security
 </tbody>
 </table>
 
-## FAQs {#faqs}
+## Frequently Asked Questions {#faqs}
 
 ### How is compute metered? {#how-is-compute-metered}
 
@@ -195,8 +195,8 @@ Users who need additional backups can do so by configuring additional [backups](
 
 ### How do I estimate compression? {#how-do-i-estimate-compression}
 
-Compression can vary quite a bit by dataset. 
-It is dependent on how compressible the data is in the first place (number of high vs. low cardinality fields), 
+Compression can vary from dataset to dataset. 
+How much it varies is dependent on how compressible the data is in the first place (number of high vs. low cardinality fields), 
 and how the user sets up the schema (using optional codecs or not, for instance). 
 It can be on the order of 10x for common types of analytical data, but it can be significantly lower or higher as well. 
 See the [optimizing documentation](/optimize/asynchronous-inserts) for guidance and this [Uber blog](https://www.uber.com/blog/logging/) for a detailed logging use case example. 
@@ -229,7 +229,7 @@ Billing follows a monthly billing cycle and the start date is tracked as the dat
 
 ### What controls does ClickHouse Cloud offer to manage costs for Scale and Enterprise services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-scale-and-enterprise-services}
 
-- Trial and Annual Commit customers will be notified automatically by email when their consumption hits certain thresholds: `50%`, `75%`, and `90%`. This allows users to proactively manage their usage.
+- Trial and Annual Commit customers are notified automatically by email when their consumption hits certain thresholds: `50%`, `75%`, and `90%`. This allows users to proactively manage their usage.
 - ClickHouse Cloud allows users to set a maximum auto-scaling limit on their compute via [Advanced scaling control](/manage/scaling), a significant cost factor for analytical workloads.
 - The [Advanced scaling control](/manage/scaling) lets you set memory limits with an option to control the behavior of pausing/idling during inactivity.
 
@@ -253,13 +253,13 @@ The ClickHouse Cloud console provides a Usage display that details usage per ser
 
 ### How do I access my invoice for my marketplace subscription to the ClickHouse Cloud service? {#how-do-i-access-my-invoice-for-my-marketplace-subscription-to-the-clickhouse-cloud-service}
 
-All marketplace subscriptions will be billed and invoiced by the marketplace. You can view your invoice through the respective cloud provider marketplace directly.
+All marketplace subscriptions are billed and invoiced by the marketplace. You can view your invoice through the respective cloud provider marketplace directly.
 
 ### Why do the dates on the Usage statements not match my Marketplace Invoice? {#why-do-the-dates-on-the-usage-statements-not-match-my-marketplace-invoice}
 
 AWS Marketplace billing follows the calendar month cycle.
 For example, for usage between dates 01-Dec-2024 and 01-Jan-2025, 
-an invoice will be generated between 3-Jan and 5-Jan-2025
+an invoice is generated between 3-Jan and 5-Jan-2025
 
 ClickHouse Cloud usage statements follow a different billing cycle where usage is metered 
 and reported over 30 days starting from the day of sign up.
@@ -354,7 +354,7 @@ Cost estimation (per month) for this example on the **Scale Tier**:
 Without warehouses, you would have to pay for the amount of memory that the data engineer needs for his queries. 
 However, combining two services in a warehouse and idling one of them helps you save money.
 
-## ClickPipes Pricing {#clickpipes-pricing}
+## ClickPipes pricing {#clickpipes-pricing}
 
 ### ClickPipes for Postgres CDC {#clickpipes-for-postgres-cdc}
 
@@ -397,18 +397,18 @@ There are two main dimensions to pricing:
 
 The Postgres CDC connector operates in two main phases:
 
-- **Initial Load / Resync**: This captures a full snapshot of Postgres tables
+- **Initial load / resync**: This captures a full snapshot of Postgres tables
   and occurs when a pipe is first created or re-synced.
 - **Continuous Replication (CDC)**: Ongoing replication of changes—such as inserts,
   updates, deletes, and schema changes—from Postgres to ClickHouse.
 
-In most use cases, continuous replication accounts for over 90% of a ClickPipe's
-lifecycle. Because initial loads involve transferring a large volume of data all
+In most use cases, continuous replication accounts for over 90% of a ClickPipe
+life cycle. Because initial loads involve transferring a large volume of data all
 at once, we offer a lower rate for that phase.
 
 | Phase                            | Cost         |
 |----------------------------------|--------------|
-| **Initial Load / Resync**        | $0.10 per GB |
+| **Initial load / resync**        | $0.10 per GB |
 | **Continuous Replication (CDC)** | $0.20 per GB |
 
 #### Compute {#compute}
@@ -425,7 +425,7 @@ organization’s tier:
 | **Scale or Enterprise Tier** | 1 compute unit per service — $0.20 per hour   |
 
 
-### ClickPipes for Streaming and Object Storage {#clickpipes-for-streaming-object-storage}
+### ClickPipes for streaming and object storage {#clickpipes-for-streaming-object-storage}
 
 This section outlines the pricing model of ClickPipes for streaming and object storage.
 
@@ -509,7 +509,7 @@ uncompressed bytes.
 
 <summary>When will Postgres CDC pricing start appearing on my bills?</summary>
 
-Postgres CDC ClickPipes pricing will begin appearing on monthly bills starting
+Postgres CDC ClickPipes pricing begins appearing on monthly bills starting
 **September 1st, 2025**, for all customers—both existing and new. Until then, 
 usage is free. Customers have a **3-month window** starting from **May 29**
 (the GA announcement date) to review and optimize their usage if needed, although
