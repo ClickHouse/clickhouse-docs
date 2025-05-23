@@ -217,7 +217,7 @@ export OTEL_LOG_LEVEL=debug
 
 ## Advanced instrumentation configuration {#advanced-instrumentation-configuration}
 
-#### Capture console logs {#capture-console-logs}
+### Capture console logs {#capture-console-logs}
 
 By default, the ClicKStack SDK will capture console logs. You can disable it by
 setting `HDX_NODE_CONSOLE_CAPTURE` environment variable to 0.
@@ -226,7 +226,7 @@ setting `HDX_NODE_CONSOLE_CAPTURE` environment variable to 0.
 export HDX_NODE_CONSOLE_CAPTURE=0
 ```
 
-#### Attach user information or metadata {#attach-user-information-or-metadata}
+### Attach user information or metadata {#attach-user-information-or-metadata}
 
 To easily tag all events related to a given attribute or identifier (ex. user id
 or email), you can call the `setTraceAttributes` function which will tag every
@@ -307,7 +307,7 @@ The following libraries will be automatically instrumented (traced) by the SDK:
 
 ## Alternative installation {#alternative-installation}
 
-### Run the Application with HyperDX OpenTelemetry CLI
+### Run the Application with ClickStack OpenTelemetry CLI {#run-the-application-with-cli}
 
 Alternatively, you can auto-instrument your application without any code changes by using the `opentelemetry-instrument` CLI or using the
 Node.js `--require` flag. The CLI installation exposes a wider range of auto-instrumented libraries and frameworks.
@@ -358,7 +358,7 @@ HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE=1
 
 Afterwards, to automatically capture exceptions from Express, Koa, or manually caught exceptions, follow the instructions in the  [Setup Error Collection](#setup-error-collection) section above.
 
-#### Auto-instrumented libraries {#auto-instrumented-libraries}
+### Auto-instrumented libraries {#auto-instrumented-libraries-2}
 
 The following libraries will be automatically instrumented (traced) via the above installation methods:
 
