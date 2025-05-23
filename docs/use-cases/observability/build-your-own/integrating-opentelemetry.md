@@ -25,7 +25,7 @@ Unlike ClickHouse or Prometheus, OpenTelemetry is not an observability backend a
 
 ## ClickHouse relevant components {#clickhouse-relevant-components}
 
-Open Telemetry consists of a number of components. As well as providing a data and API specification, standardized protocol, and naming conventions for fields/columns, OTel provides two capabilities which are fundamental to building an Observability solution with ClickHouse:
+OpenTelemetry consists of a number of components. As well as providing a data and API specification, standardized protocol, and naming conventions for fields/columns, OTel provides two capabilities which are fundamental to building an Observability solution with ClickHouse:
 
 - The [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) is a proxy that receives, processes, and exports telemetry data. A ClickHouse-powered solution uses this component for both log collection and event processing prior to batching and inserting.
 - [Language SDKs](https://opentelemetry.io/docs/languages/) that implement the specification, APIs, and export of telemetry data. These SDKs effectively ensure traces are correctly recorded within an application's code, generating constituent spans and ensuring context is propagated across services through metadata - thus formulating distributed traces and ensuring spans can be correlated. These SDKs are complemented by an ecosystem that automatically implements common libraries and frameworks, thus meaning the user is not required to change their code and obtains out-of-the-box instrumentation.
@@ -204,7 +204,7 @@ For users needing to collect local or Kubernetes log files, we recommend users b
 
 ## Collecting Kubernetes Logs {#collecting-kubernetes-logs}
 
-For the collection of Kubernetes logs, we recommend the [Open Telemetry documentation guide](https://opentelemetry.io/docs/kubernetes/). The [Kubernetes Attributes Processor](https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor) is recommended for enriching logs and metrics with pod metadata. This can potentially produce dynamic metadata e.g. labels, stored in the column `ResourceAttributes`. ClickHouse currently uses the type `Map(String, String)` for this column. See [Using Maps](/use-cases/observability/schema-design#using-maps) and [Extracting from maps](/use-cases/observability/schema-design#extracting-from-maps) for further details on handling and optimizing this type.
+For the collection of Kubernetes logs, we recommend the [OpenTelemetry documentation guide](https://opentelemetry.io/docs/kubernetes/). The [Kubernetes Attributes Processor](https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor) is recommended for enriching logs and metrics with pod metadata. This can potentially produce dynamic metadata e.g. labels, stored in the column `ResourceAttributes`. ClickHouse currently uses the type `Map(String, String)` for this column. See [Using Maps](/use-cases/observability/schema-design#using-maps) and [Extracting from maps](/use-cases/observability/schema-design#extracting-from-maps) for further details on handling and optimizing this type.
 
 ## Collecting traces {#collecting-traces}
 
@@ -276,7 +276,7 @@ The full schema of trace messages is maintained [here](https://opentelemetry.io/
 
 ## Processing - filtering, transforming and enriching {#processing---filtering-transforming-and-enriching}
 
-As demonstrated in the earlier example of setting the timestamp for a log event, users will invariably want to filter, transform, and enrich event messages. This can be achieved using a number of capabilities in Open Telemetry:
+As demonstrated in the earlier example of setting the timestamp for a log event, users will invariably want to filter, transform, and enrich event messages. This can be achieved using a number of capabilities in OpenTelemetry:
 
 - **Processors** - Processors take the data collected by [receivers and modify or transform](https://opentelemetry.io/docs/collector/transforming-telemetry/) it before sending it to the exporters. Processors are applied in the order as configured in the `processors` section of the collector configuration. These are optional, but the minimal set is [typically recommended](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors). When using an OTel collector with ClickHouse, we recommend limiting processors to:
 

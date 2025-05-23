@@ -42,7 +42,7 @@ More specifically, the following means ClickHouse is ideally suited for the stor
 - **Familiarity of SQL** - SQL is the ubiquitous language with which all engineers are familiar. With over 50 years of development, it has proven itself as the de facto language for data analytics and remains the [3rd most popular programming language](https://clickhouse.com/blog/the-state-of-sql-based-observability#lingua-franca). Observability is just another data problem for which SQL is ideal.
 - **Analytical functions** - ClickHouse extends ANSI SQL with analytical functions designed to make SQL queries simple and easier to write. These are essential for users performing root cause analysis where data needs to be sliced and diced.
 - **Secondary indices** -  ClickHouse supports secondary indexes, such as bloom filters, to accelerate specific query profiles. These can be optionally enabled at a column level, giving the user granular control and allowing them to assess the cost-performance benefit.
-- **Open-source & Open standards** - As an open-source database, ClickHouse embraces open standards such as Open Telemetry. The ability to contribute and actively participate in projects is appealing while avoiding the challenges of vendor lock-in.
+- **Open-source & Open standards** - As an open-source database, ClickHouse embraces open standards such as OpenTelemetry. The ability to contribute and actively participate in projects is appealing while avoiding the challenges of vendor lock-in.
 
 ## When should you use ClickHouse for Observability {#when-should-you-use-clickhouse-for-observability}
 

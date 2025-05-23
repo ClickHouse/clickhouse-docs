@@ -34,7 +34,7 @@ In browser-based environments, SDKs may also be responsible for collecting **ses
 | Deno | Deno applications | [Documentation](/use-cases/observability/clickstack/sdks/deno) |
 | Python | Python applications and web services | [Documentation](/use-cases/observability/clickstack/sdks/python) |
 | React Native | React Native mobile applications | [Documentation](/use-cases/observability/clickstack/sdks/react-native) |
-| Ruby | Ruby on Rails applications and web services | [Documentation](/use-cases/observability/clickstack/sdks/ruby) |
+| Ruby | Ruby on Rails applications and web services | [Documentation](/use-cases/observability/clickstack/sdks/ruby-on-rails) |
 
 
 
