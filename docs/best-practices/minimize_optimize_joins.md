@@ -2,14 +2,14 @@
 slug: /best-practices/minimize-optimize-joins
 sidebar_position: 10
 sidebar_label: 'Minimize and Optimize JOINs'
-title: 'Minimize and Optimize JOINs'
+title: 'Minimize and optimize JOINs'
 description: 'Page describing best practices for JOINs'
+keywords: ['JOIN', 'Parallel Hash JOIN']
+show_related_blogs: true
 ---
 
 import Image from '@theme/IdealImage';
 import joins from '@site/static/images/bestpractices/joins-speed-memory.png';
-
-
 
 ClickHouse supports a wide variety of JOIN types and algorithms, and JOIN performance has improved significantly in recent releases. However, JOINs are inherently more expensive than querying from a single, denormalized table. Denormalization shifts computational work from query time to insert or pre-processing time, which often results in significantly lower latency at runtime. For real-time or latency-sensitive analytical queries, **denormalization is strongly recommended**.
 

@@ -2,8 +2,10 @@
 slug: /best-practices/use-data-skipping-indices-where-appropriate
 sidebar_position: 10
 sidebar_label: 'Data Skipping Indices'
-title: 'Use Data Skipping Indices where Appropriate'
+title: 'Use data skipping indices where appropriate'
 description: 'Page describing how and when to use data skipping indices'
+keywords: ['data skipping index', 'skip index']
+show_related_blogs: true
 ---
 
 import Image from '@theme/IdealImage';

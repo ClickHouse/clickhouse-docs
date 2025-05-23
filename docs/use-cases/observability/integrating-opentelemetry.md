@@ -2,7 +2,8 @@
 title: 'Integrating OpenTelemetry'
 description: 'Integrating OpenTelemetry and ClickHouse for observability'
 slug: /observability/integrating-opentelemetry
-keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
+keywords: ['Observability', 'OpenTelemetry']
+show_related_blogs: true
 ---
 
 import observability_3 from '@site/static/images/use-cases/observability/observability-3.png';
