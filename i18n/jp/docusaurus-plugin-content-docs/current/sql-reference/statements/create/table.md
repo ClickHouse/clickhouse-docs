@@ -1,99 +1,98 @@
 ---
-slug: '/sql-reference/statements/create/table'
-sidebar_position: 36
-sidebar_label: 'TABLE'
-title: 'CREATE TABLE'
-keywords: ['compression', 'codec', 'schema', 'DDL']
+'description': 'Documentation for Table'
+'keywords':
+- 'compression'
+- 'codec'
+- 'schema'
+- 'DDL'
+'sidebar_label': 'TABLE'
+'sidebar_position': 36
+'slug': '/sql-reference/statements/create/table'
+'title': 'CREATE TABLE'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-新しいテーブルを作成します。このクエリは使用ケースに応じてさまざまな構文形式を持つことができます。
+Creates a new table. This query can have various syntax forms depending on a use case.
 
-デフォルトでは、テーブルは現在のサーバーにのみ作成されます。分散DDLクエリは `ON CLUSTER` 句として実装されており、これは [別途説明されています](../../../sql-reference/distributed-ddl.md)。
+By default, tables are created only on the current server. Distributed DDL queries are implemented as `ON CLUSTER` clause, which is [described separately](../../../sql-reference/distributed-ddl.md).
+## Syntax Forms {#syntax-forms}
+### With Explicit Schema {#with-explicit-schema}
 
-## 構文形式 {#syntax-forms}
-
-### 明示的なスキーマを使用する {#with-explicit-schema}
-
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
-    name1 [type1] [NULL|NOT NULL] [DEFAULT|MATERIALIZED|EPHEMERAL|ALIAS expr1] [COMMENT 'コメントカラム'] [compression_codec] [TTL expr1],
-    name2 [type2] [NULL|NOT NULL] [DEFAULT|MATERIALIZED|EPHEMERAL|ALIAS expr2] [COMMENT 'コメントカラム'] [compression_codec] [TTL expr2],
+    name1 [type1] [NULL|NOT NULL] [DEFAULT|MATERIALIZED|EPHEMERAL|ALIAS expr1] [COMMENT 'comment for column'] [compression_codec] [TTL expr1],
+    name2 [type2] [NULL|NOT NULL] [DEFAULT|MATERIALIZED|EPHEMERAL|ALIAS expr2] [COMMENT 'comment for column'] [compression_codec] [TTL expr2],
     ...
 ) ENGINE = engine
-  [COMMENT 'コメントテーブル']
+  [COMMENT 'comment for table']
 ```
 
-`db` データベースまたは `db` が設定されていない場合は現在のデータベースに `table_name` という名前のテーブルを作成し、ブラケット内で指定された構造と `engine` エンジンを持ちます。
-テーブルの構造は、カラムの説明、セカンダリインデックス、および制約のリストです。[主キー](#primary-key) がエンジンによってサポートされている場合、それはテーブルエンジンのパラメータとして示されています。
+Creates a table named `table_name` in the `db` database or the current database if `db` is not set, with the structure specified in brackets and the `engine` engine.  
+The structure of the table is a list of column descriptions, secondary indexes and constraints. If [primary key](#primary-key) is supported by the engine, it will be indicated as parameter for the table engine.
 
-カラムの説明は単純な場合は `name type` です。例: `RegionID UInt32`。
+A column description is `name type` in the simplest case. Example: `RegionID UInt32`.
 
-結果の値のデフォルト値についても定義できます（下記参照）。
+Expressions can also be defined for default values (see below).
 
-必要に応じて、1つまたは複数のキー式を持つ主キーを指定できます。
+If necessary, primary key can be specified, with one or more key expressions.
 
-カラムやテーブルにコメントを追加できます。
+Comments can be added for columns and for the table.
+### With a Schema Similar to Other Table {#with-a-schema-similar-to-other-table}
 
-### 他のテーブルに似たスキーマを持つ {#with-a-schema-similar-to-other-table}
-
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine]
 ```
 
-別のテーブルと同じ構造を持つテーブルを作成します。テーブルの異なるエンジンを指定できます。エンジンが指定されていない場合は、`db2.name2` テーブルと同じエンジンが使用されます。
+Creates a table with the same structure as another table. You can specify a different engine for the table. If the engine is not specified, the same engine will be used as for the `db2.name2` table.
+### With a Schema and Data Cloned from Another Table {#with-a-schema-and-data-cloned-from-another-table}
 
-### 他のテーブルからスキーマとデータをクローンする {#with-a-schema-and-data-cloned-from-another-table}
-
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name CLONE AS [db2.]name2 [ENGINE = engine]
 ```
 
-別のテーブルと同じ構造を持つテーブルを作成します。テーブルの異なるエンジンを指定できます。エンジンが指定されていない場合は、`db2.name2` テーブルと同じエンジンが使用されます。新しいテーブルが作成されると、`db2.name2` からすべてのパーティションがそれにアタッチされます。言い換えれば、`db2.name2` のデータは作成時に `db.table_name` にクローンされます。このクエリは以下と同等です。
+Creates a table with the same structure as another table. You can specify a different engine for the table. If the engine is not specified, the same engine will be used as for the `db2.name2` table. After the new table is created, all partitions from `db2.name2` are attached to it. In other words, the data of `db2.name2` is cloned into `db.table_name` upon creation. This query is equivalent to the following:
 
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine];
 ALTER TABLE [db.]table_name ATTACH PARTITION ALL FROM [db2].name2;
 ```
+### From a Table Function {#from-a-table-function}
 
-### テーブル関数から {#from-a-table-function}
-
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name AS table_function()
 ```
 
-指定された [テーブル関数](/sql-reference/table-functions) と同じ結果を持つテーブルを作成します。作成されたテーブルは、指定された対応するテーブル関数と同じように動作します。
+Creates a table with the same result as that of the [table function](/sql-reference/table-functions) specified. The created table will also work in the same way as the corresponding table function that was specified.
+### From SELECT query {#from-select-query}
 
-### SELECTクエリから {#from-select-query}
-
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name[(name1 [type1], name2 [type2], ...)] ENGINE = engine AS SELECT ...
 ```
 
-`SELECT` クエリの結果に似た構造を持つテーブルを作成し、`engine` エンジンを持ち、`SELECT` からデータを埋めます。また、カラムの説明を明示的に指定することもできます。
+Creates a table with a structure like the result of the `SELECT` query, with the `engine` engine, and fills it with data from `SELECT`. Also you can explicitly specify columns description.
 
-テーブルがすでに存在し、`IF NOT EXISTS` が指定されている場合、クエリは何も行いません。
+If the table already exists and `IF NOT EXISTS` is specified, the query won't do anything.
 
-クエリ内の `ENGINE` 句の後に他の句を付けることができます。[テーブルエンジン](/engines/table-engines)の説明でテーブルを作成する方法についての詳細なドキュメントを参照してください。
+There can be other clauses after the `ENGINE` clause in the query. See detailed documentation on how to create tables in the descriptions of [table engines](/engines/table-engines).
 
 :::tip
-ClickHouse Cloud では、これを2つのステップに分けてください：
-1. テーブル構造を作成する
+In ClickHouse Cloud please split this into two steps:
+1. Create the table structure
 
   ```sql
   CREATE TABLE t1
   ENGINE = MergeTree
   ORDER BY ...
-  # highlight-next-line
+  -- highlight-next-line
   EMPTY AS
   SELECT ...
   ```
 
-2. テーブルにデータを追加する
+2. Populate the table
 
   ```sql
   INSERT INTO t1
@@ -102,50 +101,47 @@ ClickHouse Cloud では、これを2つのステップに分けてください�
 
 :::
 
-**例**
+**Example**
 
-クエリ：
+Query:
 
-``` sql
+```sql
 CREATE TABLE t1 (x String) ENGINE = Memory AS SELECT 1;
 SELECT x, toTypeName(x) FROM t1;
 ```
 
-結果：
+Result:
 
 ```text
 ┌─x─┬─toTypeName(x)─┐
 │ 1 │ String        │
 └───┴───────────────┘
 ```
+## NULL Or NOT NULL Modifiers {#null-or-not-null-modifiers}
 
-## NULLまたはNOT NULL修飾子 {#null-or-not-null-modifiers}
+`NULL` and `NOT NULL` modifiers after data type in column definition allow or do not allow it to be [Nullable](/sql-reference/data-types/nullable).
 
-カラム定義内のデータ型の後にある `NULL` および `NOT NULL` 修飾子により、それが [Nullable](/sql-reference/data-types/nullable) であるかどうかが許可または禁止されます。
+If the type is not `Nullable` and if `NULL` is specified, it will be treated as `Nullable`; if `NOT NULL` is specified, then no. For example, `INT NULL` is the same as `Nullable(INT)`. If the type is `Nullable` and `NULL` or `NOT NULL` modifiers are specified, the exception will be thrown.
 
-タイプが `Nullable` でない場合、`NULL` が指定されているとそれは `Nullable` とみなされます；`NOT NULL` が指定されているのであればそうではありません。例えば、`INT NULL` は `Nullable(INT)` と同じです。タイプが `Nullable` で `NULL` または `NOT NULL` 修飾子が指定されている場合、例外がスローされます。
+See also [data_type_default_nullable](../../../operations/settings/settings.md#data_type_default_nullable) setting.
+## Default Values {#default_values}
 
-[デフォルトの Nullable データ型](../../../operations/settings/settings.md#data_type_default_nullable) 設定も参照してください。
+The column description can specify a default value expression in the form of `DEFAULT expr`, `MATERIALIZED expr`, or `ALIAS expr`. Example: `URLDomain String DEFAULT domain(URL)`.
 
-## デフォルト値 {#default_values}
+The expression `expr` is optional. If it is omitted, the column type must be specified explicitly and the default value will be `0` for numeric columns, `''` (the empty string) for string columns, `[]` (the empty array) for array columns, `1970-01-01` for date columns, or `NULL` for nullable columns.
 
-カラムの説明には `DEFAULT expr`、`MATERIALIZED expr`、または `ALIAS expr` の形のデフォルト値式を指定できます。例: `URLDomain String DEFAULT domain(URL)`。
+The column type of a default value column can be omitted in which case it is inferred from `expr`'s type. For example the type of column `EventDate DEFAULT toDate(EventTime)` will be date.
 
-式 `expr` はオプションです。省略された場合、カラムの型は明示的に指定する必要があり、数値カラムの場合デフォルト値は `0`、文字列カラムの場合は `''`（空文字列）、配列カラムの場合は `[]`（空配列）、日付カラムの場合は `1970-01-01`、または Nullable カラムの場合は `NULL` になります。
+If both a data type and a default value expression are specified, an implicit type casting function inserted which converts the expression to the specified type. Example: `Hits UInt32 DEFAULT 0` is internally represented as `Hits UInt32 DEFAULT toUInt32(0)`.
 
-デフォルト値カラムのカラム型は省略でき、その場合は `expr` の型から推測されます。例えば、`EventDate DEFAULT toDate(EventTime)` のカラムの型は日付になります。
-
-データ型とデフォルト値式の両方が指定された場合、指定された型に式を変換する暗黙の型キャスティング関数が挿入されます。例: `Hits UInt32 DEFAULT 0` は内部的には `Hits UInt32 DEFAULT toUInt32(0)` として表現されます。
-
-デフォルト値式 `expr` は任意のテーブルカラムや定数を参照できます。ClickHouse は、テーブル構造の変更が式の計算にループを導入しないことを確認します。INSERT の場合、式が解決可能であることを確認します - それを計算するために必要なすべてのカラムが渡されている必要があります。
-
+A default value expression `expr` may reference arbitrary table columns and constants. ClickHouse checks that changes of the table structure do not introduce loops in the expression calculation. For INSERT, it checks that expressions are resolvable – that all columns they can be calculated from have been passed.
 ### DEFAULT {#default}
 
 `DEFAULT expr`
 
-通常のデフォルト値です。INSERT クエリでこのカラムの値が指定されていない場合、`expr` から計算されます。
+Normal default value. If the value of such a column is not specified in an INSERT query, it is computed from `expr`.
 
-例：
+Example:
 
 ```sql
 CREATE OR REPLACE TABLE test
@@ -164,16 +160,15 @@ SELECT * FROM test;
 │  1 │ 2023-02-24 17:06:46 │      2023-02-24 │
 └────┴─────────────────────┴─────────────────┘
 ```
-
 ### MATERIALIZED {#materialized}
 
 `MATERIALIZED expr`
 
-マテリアライズされた式です。このタイプのカラムの値は、行が挿入されるときに指定されたマテリアライズされた式に従って自動的に計算されます。`INSERT` で明示的に値を指定することはできません。
+Materialized expression. Values of such columns are automatically calculated according to the specified materialized expression when rows are inserted. Values cannot be explicitly specified during `INSERT`s.
 
-このタイプのデフォルト値カラムは、`SELECT *` の結果に含まれません。これは、`SELECT *` の結果が常に `INSERT` を使用してテーブルに戻されることが可能であるという不変性を保持するためです。この動作は、`asterisk_include_materialized_columns` 設定で無効にできます。
+Also, default value columns of this type are not included in the result of `SELECT *`. This is to preserve the invariant that the result of a `SELECT *` can always be inserted back into the table using `INSERT`. This behavior can be disabled with setting `asterisk_include_materialized_columns`.
 
-例：
+Example:
 
 ```sql
 CREATE OR REPLACE TABLE test
@@ -202,16 +197,15 @@ SELECT * FROM test SETTINGS asterisk_include_materialized_columns=1;
 │  1 │ 2023-02-24 17:08:08 │      2023-02-24 │
 └────┴─────────────────────┴─────────────────┘
 ```
-
 ### EPHEMERAL {#ephemeral}
 
 `EPHEMERAL [expr]`
 
-エフェメラルカラム。このタイプのカラムはテーブルに保存されず、そこからの SELECT は不可能です。エフェメラルカラムの唯一の目的は、他のカラムからのデフォルト値式を構築することです。
+Ephemeral column. Columns of this type are not stored in the table and it is not possible to SELECT from them. The only purpose of ephemeral columns is to build default value expressions of other columns from them.
 
-明示的にカラムが指定されていない INSERT は、このタイプのカラムをスキップします。これは、`SELECT *` の結果が常に `INSERT` を使用してテーブルに戻されることができるという不変性を保持するためです。
+An insert without explicitly specified columns will skip columns of this type. This is to preserve the invariant that the result of a `SELECT *` can always be inserted back into the table using `INSERT`.
 
-例：
+Example:
 
 ```sql
 CREATE OR REPLACE TABLE test
@@ -238,20 +232,19 @@ id:         1
 hexed:      Z��
 hex(hexed): 5A90B714
 ```
-
 ### ALIAS {#alias}
 
 `ALIAS expr`
 
-計算カラム（同義語）。このタイプのカラムはテーブルに保存されず、そこに値を INSERT することはできません。
+Calculated columns (synonym). Column of this type are not stored in the table and it is not possible to INSERT values into them.
 
-SELECT クエリが明示的にこのタイプのカラムを参照する場合、値は `expr` からクエリ時に計算されます。デフォルトでは、`SELECT *` は ALIAS カラムを除外します。この動作は、`asterisk_include_alias_columns` 設定で無効にできます。
+When SELECT queries explicitly reference columns of this type, the value is computed at query time from `expr`. By default, `SELECT *` excludes ALIAS columns. This behavior can be disabled with setting `asterisk_include_alias_columns`.
 
-ALTER クエリを使用して新しいカラムを追加する場合、これらのカラムの古いデータは書き込まれません。代わりに、新しいカラムに値がない古いデータを読み取るとき、式はデフォルトでオンザフライで計算されます。ただし、式の実行に異なるカラムが必要な場合、それらのカラムは追加で読み取られますが、必要なデータブロックにのみ適用されます。
+When using the ALTER query to add new columns, old data for these columns is not written. Instead, when reading old data that does not have values for the new columns, expressions are computed on the fly by default. However, if running the expressions requires different columns that are not indicated in the query, these columns will additionally be read, but only for the blocks of data that need it.
 
-テーブルに新しいカラムを追加しますが、後でそのデフォルト式を変更すると、古いデータに使用される値が変更されます（ディスクに値が保存されていないデータに対して）。バックグラウンドマージを実行する場合、一部がマージされていないカラムのデータは、マージされた部分に書き込まれます。
+If you add a new column to a table but later change its default expression, the values used for old data will change (for data where values were not stored on the disk). Note that when running background merges, data for columns that are missing in one of the merging parts is written to the merged part.
 
-ネストされたデータ構造の要素に対してカラムにデフォルト値を設定することはできません。
+It is not possible to set default values for elements in nested data structures.
 
 ```sql
 CREATE OR REPLACE TABLE test
@@ -275,14 +268,13 @@ SELECT * FROM test SETTINGS asterisk_include_alias_columns=1;
 │  1 │    4678899 │ 4.46 MiB │
 └────┴────────────┴──────────┘
 ```
+## Primary Key {#primary-key}
 
-## 主キー {#primary-key}
+You can define a [primary key](../../../engines/table-engines/mergetree-family/mergetree.md#primary-keys-and-indexes-in-queries) when creating a table. Primary key can be specified in two ways:
 
-テーブルを作成するときに [主キー](../../../engines/table-engines/mergetree-family/mergetree.md#primary-keys-and-indexes-in-queries) を定義できます。主キーは2つの方法で指定できます：
+- Inside the column list
 
-- カラムリストの内側
-
-``` sql
+```sql
 CREATE TABLE db.table_name
 (
     name1 type1, name2 type2, ...,
@@ -291,9 +283,9 @@ CREATE TABLE db.table_name
 ENGINE = engine;
 ```
 
-- カラムリストの外側
+- Outside the column list
 
-``` sql
+```sql
 CREATE TABLE db.table_name
 (
     name1 type1, name2 type2, ...
@@ -303,16 +295,14 @@ PRIMARY KEY(expr1[, expr2,...]);
 ```
 
 :::tip
-どちらの方法も1つのクエリで組み合わせることはできません。
+You can't combine both ways in one query.
 :::
+## Constraints {#constraints}
 
-## 制約 {#constraints}
-
-カラムの説明とともに制約を定義できます：
-
+Along with columns descriptions constraints could be defined:
 ### CONSTRAINT {#constraint}
 
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1] [compression_codec] [TTL expr1],
@@ -322,15 +312,14 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE = engine
 ```
 
-`boolean_expr_1` は任意のブール式です。テーブルに制約が定義されている場合、それぞれが `INSERT` クエリの全行に対してチェックされます。いずれかの制約が満たされない場合、サーバーは制約名とチェック式で例外をスローします。
+`boolean_expr_1` could by any boolean expression. If constraints are defined for the table, each of them will be checked for every row in `INSERT` query. If any constraint is not satisfied — server will raise an exception with constraint name and checking expression.
 
-大量の制約を追加すると、大きな `INSERT` クエリのパフォーマンスに悪影響を与える可能性があります。
-
+Adding large amount of constraints can negatively affect performance of big `INSERT` queries.
 ### ASSUME {#assume}
 
-`ASSUME` 句は、真であると仮定されるテーブル上の `CONSTRAINT` を定義するために使用されます。この制約は最適化器によって SQL クエリのパフォーマンスを向上させるために使用されます。
+The `ASSUME` clause is used to define a `CONSTRAINT` on a table that is assumed to be true. This constraint can then be used by the optimizer to enhance the performance of SQL queries.
 
-以下は `ASSUME CONSTRAINT` を使用して `users_a` テーブルを作成する例です：
+Take this example where `ASSUME CONSTRAINT` is used in the creation of the `users_a` table:
 
 ```sql
 CREATE TABLE users_a (
@@ -344,25 +333,23 @@ ENGINE=MergeTree
 ORDER BY (name_len, name);
 ```
 
-ここで、`ASSUME CONSTRAINT` は `length(name)` 関数が常に `name_len` カラムの値と等しいと主張するために使用されます。これは、クエリで `length(name)` が呼び出されるたびに、ClickHouse が `name_len` に置き換えることができ、`length()` 関数を呼び出すのを避けるため、より高速です。
+Here, `ASSUME CONSTRAINT` is used to assert that the `length(name)` function always equals the value of the `name_len` column. This means that whenever `length(name)` is called in a query, ClickHouse can replace it with `name_len`, which should be faster because it avoids calling the `length()` function.
 
-その後、クエリ `SELECT name FROM users_a WHERE length(name) < 5;` を実行すると、ClickHouse はそれを `SELECT name FROM users_a WHERE name_len < 5;` に最適化できます。これは `ASSUME CONSTRAINT` によるもので、各行の `name` の長さを計算するのを避けるため、クエリの実行速度が向上します。
+Then, when executing the query `SELECT name FROM users_a WHERE length(name) < 5;`, ClickHouse can optimize it to `SELECT name FROM users_a WHERE name_len < 5`; because of the `ASSUME CONSTRAINT`. This can make the query run faster because it avoids calculating the length of `name` for each row.
 
-`ASSUME CONSTRAINT` は **制約を強制** するものではなく、最適化器にその制約が真であることを通知するものです。制約が実際に真でない場合、クエリの結果が不正確になる可能性があります。したがって、その制約が真であると確信している場合にのみ `ASSUME CONSTRAINT` を使用するべきです。
+`ASSUME CONSTRAINT` **does not enforce the constraint**, it merely informs the optimizer that the constraint holds true. If the constraint is not actually true, the results of the queries may be incorrect. Therefore, you should only use `ASSUME CONSTRAINT` if you are sure that the constraint is true.
+## TTL Expression {#ttl-expression}
 
-## TTL式 {#ttl-expression}
+Defines storage time for values. Can be specified only for MergeTree-family tables. For the detailed description, see [TTL for columns and tables](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl).
+## Column Compression Codecs {#column_compression_codec}
 
-値の保管期間を定義します。MergeTree系のテーブルのみに指定できます。詳細な説明は、[カラムとテーブルのTTL](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl)を参照してください。
+By default, ClickHouse applies `lz4` compression in the self-managed version, and `zstd` in ClickHouse Cloud.
 
-## カラム圧縮コーデック {#column_compression_codec}
+For `MergeTree`-engine family you can change the default compression method in the [compression](/operations/server-configuration-parameters/settings#compression) section of a server configuration.
 
-デフォルトでは、ClickHouse はセルフマネージドバージョンで `lz4` 圧縮を適用し、ClickHouse Cloud では `zstd` を適用します。
+You can also define the compression method for each individual column in the `CREATE TABLE` query.
 
-`MergeTree` エンジンファミリーに対しては、サーバー configuration の [圧縮](/operations/server-configuration-parameters/settings#compression) セクションでデフォルトの圧縮方法を変更できます。
-
-また、`CREATE TABLE` クエリ内の各カラムに対する圧縮方法を定義することもできます。
-
-``` sql
+```sql
 CREATE TABLE codec_example
 (
     dt Date CODEC(ZSTD),
@@ -375,102 +362,88 @@ ENGINE = <Engine>
 ...
 ```
 
-`Default` コーデックは初期化に言及されているデフォルト圧縮に参照されることがあります。それはランタイムのさまざまな設定（およびデータのプロパティ）に依存します。
-例: `value UInt64 CODEC(Default)` — コーデック指定がないのと同じです。
+The `Default` codec can be specified to reference default compression which may depend on different settings (and properties of data) in runtime.  
+Example: `value UInt64 CODEC(Default)` — the same as lack of codec specification.
 
-また、カラムから現在の CODEC を削除し、config.xml からデフォルト圧縮を使用することもできます：
+Also you can remove current CODEC from the column and use default compression from config.xml:
 
-``` sql
+```sql
 ALTER TABLE codec_example MODIFY COLUMN float_value CODEC(Default);
 ```
 
-コーデックはパイプラインで組み合わせることができます。例えば、`CODEC(Delta, Default)`。
+Codecs can be combined in a pipeline, for example, `CODEC(Delta, Default)`.
 
 :::tip
-ClickHouse データベースファイルを外部ユーティリティ（例えば `lz4`）でデコンプレッションすることはできません。代わりに、特別な [clickhouse-compressor](https://github.com/ClickHouse/ClickHouse/tree/master/programs/compressor) ユーティリティを使用してください。
+You can't decompress ClickHouse database files with external utilities like `lz4`. Instead, use the special [clickhouse-compressor](https://github.com/ClickHouse/ClickHouse/tree/master/programs/compressor) utility.
 :::
 
-圧縮は以下のテーブルエンジンに対してサポートされています：
+Compression is supported for the following table engines:
 
-- [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) ファミリー。カラム圧縮コーデックと、[圧縮](/operations/server-configuration-parameters/settings#compression) 設定によるデフォルト圧縮方法の選択をサポートしています。
-- [Log](../../../engines/table-engines/log-family/index.md) ファミリー。デフォルトで `lz4` 圧縮方法を使用し、カラム圧縮コーデックをサポートしています。
-- [Set](../../../engines/table-engines/special/set.md)。デフォルト圧縮のみに対応しています。
-- [Join](../../../engines/table-engines/special/join.md)。デフォルト圧縮のみに対応しています。
+- [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) family. Supports column compression codecs and selecting the default compression method by [compression](/operations/server-configuration-parameters/settings#compression) settings.
+- [Log](../../../engines/table-engines/log-family/index.md) family. Uses the `lz4` compression method by default and supports column compression codecs.
+- [Set](../../../engines/table-engines/special/set.md). Only supported the default compression.
+- [Join](../../../engines/table-engines/special/join.md). Only supported the default compression.
 
-ClickHouse は汎用コーデックと特殊コーデックをサポートしています。
-
-### 汎用コーデック {#general-purpose-codecs}
-
+ClickHouse supports general purpose codecs and specialized codecs.
+### General Purpose Codecs {#general-purpose-codecs}
 #### NONE {#none}
 
-`NONE` — 圧縮なし。
-
+`NONE` — No compression.
 #### LZ4 {#lz4}
 
-`LZ4` — デフォルトで使用されるロスレス [データ圧縮アルゴリズム](https://github.com/lz4/lz4)。LZ4 高速圧縮を適用します。
-
+`LZ4` — Lossless [data compression algorithm](https://github.com/lz4/lz4) used by default. Applies LZ4 fast compression.
 #### LZ4HC {#lz4hc}
 
-`LZ4HC[(level)]` — 設定可能なレベルを持つ LZ4 HC（高圧縮）アルゴリズム。デフォルトレベル：9。`level <= 0` を設定するとデフォルトレベルが適用されます。可能なレベル：\[1, 12\]。推奨レベル範囲：\[4, 9\]。
-
+`LZ4HC[(level)]` — LZ4 HC (high compression) algorithm with configurable level. Default level: 9. Setting `level <= 0` applies the default level. Possible levels: \[1, 12\]. Recommended level range: \[4, 9\].
 #### ZSTD {#zstd}
 
-`ZSTD[(level)]` — 設定可能な `level` を持つ [ZSTD 圧縮アルゴリズム](https://en.wikipedia.org/wiki/Zstandard)。可能なレベル：\[1, 22\]。デフォルトレベル：1。
+`ZSTD[(level)]` — [ZSTD compression algorithm](https://en.wikipedia.org/wiki/Zstandard) with configurable `level`. Possible levels: \[1, 22\]. Default level: 1.
 
-高い圧縮レベルは、非対称のシナリオに便利です。一度圧縮し、何度もデコンプレッションすることができます。高いレベルは、より良い圧縮と高い CPU 使用率を意味します。
-
+High compression levels are useful for asymmetric scenarios, like compress once, decompress repeatedly. Higher levels mean better compression and higher CPU usage.
 #### ZSTD_QAT {#zstd_qat}
 
 <CloudNotSupportedBadge/>
 
-`ZSTD_QAT[(level)]` — [ZSTD 圧縮アルゴリズム](https://en.wikipedia.org/wiki/Zstandard) で設定可能なレベルを持ち、[Intel® QATlib](https://github.com/intel/qatlib) および [Intel® QAT ZSTD プラグイン](https://github.com/intel/QAT-ZSTD-Plugin)によって実装されています。可能なレベル：\[1, 12\]。デフォルトレベル：1。推奨レベル範囲：\[6, 12\]。いくつかの制限が適用されます：
+`ZSTD_QAT[(level)]` — [ZSTD compression algorithm](https://en.wikipedia.org/wiki/Zstandard) with configurable level, implemented by [Intel® QATlib](https://github.com/intel/qatlib) and [Intel® QAT ZSTD Plugin](https://github.com/intel/QAT-ZSTD-Plugin). Possible levels: \[1, 12\]. Default level: 1. Recommended level range: \[6, 12\]. Some limitations apply:
 
-- ZSTD_QAT はデフォルトで無効になっており、 [enable_zstd_qat_codec](../../../operations/settings/settings.md#enable_zstd_qat_codec) 設定を有効にするまで使用できません。
-- 圧縮のため、ZSTD_QAT は Intel® QAT オフロードデバイス（[QuickAssist Technology](https://www.intel.com/content/www/us/en/developer/topic-technology/open/quick-assist-technology/overview.html)）を使用しようとします。そのようなデバイスが見つからない場合、ソフトウェアで ZSTD 圧縮にフォールバックします。
-- デコンプレッションは常にソフトウェアで行われます。
-
+- ZSTD_QAT is disabled by default and can only be used after enabling configuration setting [enable_zstd_qat_codec](../../../operations/settings/settings.md#enable_zstd_qat_codec).
+- For compression, ZSTD_QAT tries to use an Intel® QAT offloading device ([QuickAssist Technology](https://www.intel.com/content/www/us/en/developer/topic-technology/open/quick-assist-technology/overview.html)). If no such device was found, it will fallback to ZSTD compression in software.
+- Decompression is always performed in software.
 #### DEFLATE_QPL {#deflate_qpl}
 
 <CloudNotSupportedBadge/>
 
-`DEFLATE_QPL` — [Deflate 圧縮アルゴリズム](https://github.com/intel/qpl) が Intel® Query Processing Library によって実装されています。いくつかの制限が適用されます：
+`DEFLATE_QPL` — [Deflate compression algorithm](https://github.com/intel/qpl) implemented by Intel® Query Processing Library. Some limitations apply:
 
-- DEFLATE_QPL はデフォルトで無効になっており、 [enable_deflate_qpl_codec](../../../operations/settings/settings.md#enable_deflate_qpl_codec) 設定を有効にした後のみ使用できます。
-- DEFLATE_QPL は SSE 4.2 命令でコンパイルされた ClickHouse ビルドを必要とします（デフォルトでは、これはそうです）。詳細は [DEFLATE_QPL で Clickhouse をビルド]( /development/building_and_benchmarking_deflate_qpl) を参照してください。
-- DEFLATE_QPL は Intel® IAA（インメモリアナリティクスアクセラレータ）オフロードデバイスがあるシステムで最も効果的に機能します。詳細は [アクセラレータ設定](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#accelerator-configuration) および [DEFLATE_QPL でのベンチマーク]( /development/building_and_benchmarking_deflate_qpl) を参照してください。
-- DEFLATE_QPL 圧縮データは、SSE 4.2 が有効な ClickHouse ノード間でのみ転送できます。
+- DEFLATE_QPL is disabled by default and can only be used after enabling configuration setting [enable_deflate_qpl_codec](../../../operations/settings/settings.md#enable_deflate_qpl_codec).
+- DEFLATE_QPL requires a ClickHouse build compiled with SSE 4.2 instructions (by default, this is the case). Refer to [Build Clickhouse with DEFLATE_QPL](/development/building_and_benchmarking_deflate_qpl) for more details.
+- DEFLATE_QPL works best if the system has a Intel® IAA (In-Memory Analytics Accelerator) offloading device. Refer to [Accelerator Configuration](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#accelerator-configuration) and [Benchmark with DEFLATE_QPL](/development/building_and_benchmarking_deflate_qpl) for more details.
+- DEFLATE_QPL-compressed data can only be transferred between ClickHouse nodes compiled with SSE 4.2 enabled.
+### Specialized Codecs {#specialized-codecs}
 
-### 特殊コーデック {#specialized-codecs}
-
-これらのコーデックは、データの特定の特徴を利用して圧縮をより効果的にするために設計されています。一部のコーデックはデータ自体を圧縮するのではなく、データが一般目的コーデックによって圧縮される次のステージでより高いデータ圧縮率を達成するために前処理を行います。
-
+These codecs are designed to make compression more effective by exploiting specific features of the data. Some of these codecs do not compress data themselves, they instead preprocess the data such that a second compression stage using a general-purpose codec can achieve a higher data compression rate.
 #### Delta {#delta}
 
-`Delta(delta_bytes)` — 生の値を隣接する2つの値の差に置き換える圧縮アプローチ。最初の値は変更されずにそのまま残ります。最大 `delta_bytes` がデルタ値の格納に使用されるので、`delta_bytes` は生の値の最大サイズとなります。可能な `delta_bytes` の値：1、2、4、8。`delta_bytes`のデフォルト値は、1、2、4、8 のいずれかであれば `sizeof(type)` です。それ以外の場合は1です。Delta はデータ準備コーデックであり、単独では使用できません。
-
+`Delta(delta_bytes)` — Compression approach in which raw values are replaced by the difference of two neighboring values, except for the first value that stays unchanged. Up to `delta_bytes` are used for storing delta values, so `delta_bytes` is the maximum size of raw values. Possible `delta_bytes` values: 1, 2, 4, 8. The default value for `delta_bytes` is `sizeof(type)` if equal to 1, 2, 4, or 8. In all other cases, it's 1. Delta is a data preparation codec, i.e. it cannot be used stand-alone.
 #### DoubleDelta {#doubledelta}
 
-`DoubleDelta(bytes_size)` — デルタのデルタを計算し、コンパクトなバイナリ形式で書き込みます。可能な `bytes_size` の値：1、2、4、8。デフォルト値は、1、2、4、8 のいずれかであれば `sizeof(type)` です。それ以外の場合は1です。連続した等間隔のモノトニックシーケンス（時間系列データなど）において最適な圧縮率が達成されます。任意の固定幅のタイプで使用できます。Gorilla TSDB で使用されるアルゴリズムを実装しており、64ビットタイプのサポートを拡張しています。32ビットのデルタには、4ビットプレフィックスの代わりに5ビットプレフィックスが必要なため、32ビットデルタには1ビット多く使用されます。詳細については [Gorilla: A Fast, Scalable, In-Memory Time Series Database](http://www.vldb.org/pvldb/vol8/p1816-teller.pdf)を参照してください。DoubleDelta はデータ準備コーデックであり、単独では使用できません。
-
+`DoubleDelta(bytes_size)` — Calculates delta of deltas and writes it in compact binary form. Possible `bytes_size` values: 1, 2, 4, 8, the default value is `sizeof(type)` if equal to 1, 2, 4, or 8. In all other cases, it's 1. Optimal compression rates are achieved for monotonic sequences with a constant stride, such as time series data. Can be used with any fixed-width type. Implements the algorithm used in Gorilla TSDB, extending it to support 64-bit types. Uses 1 extra bit for 32-bit deltas: 5-bit prefixes instead of 4-bit prefixes. For additional information, see Compressing Time Stamps in [Gorilla: A Fast, Scalable, In-Memory Time Series Database](http://www.vldb.org/pvldb/vol8/p1816-teller.pdf). DoubleDelta is a data preparation codec, i.e. it cannot be used stand-alone.
 #### GCD {#gcd}
 
-`GCD()` — カラムの値の最大公約数（GCD）を計算し、その後各値を GCD で割ります。整数、十進法および日付/時刻カラムで使用できます。このコーデックは、GCD の倍数で変化するカラム（例えば、24、28、16、24、8、24（GCD = 4）のような）に最適です。GCD はデータ準備コーデックであり、単独では使用できません。
-
+`GCD()` - - Calculates the greatest common denominator (GCD) of the values in the column, then divides each value by the GCD. Can be used with integer, decimal and date/time columns. The codec is well suited for columns with values that change (increase or decrease) in multiples of the GCD, e.g. 24, 28, 16, 24, 8, 24 (GCD = 4). GCD is a data preparation codec, i.e. it cannot be used stand-alone.
 #### Gorilla {#gorilla}
 
-`Gorilla(bytes_size)` — 現在および前の浮動小数点値の間で XOR を計算し、コンパクトなバイナリ形式で書き込みます。連続する値の間の差が小さいほど、すなわち時系列データの値の変化が遅いほど、圧縮率が良くなります。Gorilla TSDB で使用されるアルゴリズムを実装しており、64ビットタイプのサポートを拡張しています。可能な `bytes_size` の値：1、2、4、8。デフォルト値は、1、2、4、8 のいずれかであれば `sizeof(type)` です。それ以外の場合は1です。詳細については、[Gorilla: A Fast, Scalable, In-Memory Time Series Database](https://doi.org/10.14778/2824032.2824078) のセクション 4.1 を参照してください。
-
+`Gorilla(bytes_size)` — Calculates XOR between current and previous floating point value and writes it in compact binary form. The smaller the difference between consecutive values is, i.e. the slower the values of the series changes, the better the compression rate. Implements the algorithm used in Gorilla TSDB, extending it to support 64-bit types. Possible `bytes_size` values: 1, 2, 4, 8, the default value is `sizeof(type)` if equal to 1, 2, 4, or 8. In all other cases, it's 1. For additional information, see section 4.1 in [Gorilla: A Fast, Scalable, In-Memory Time Series Database](https://doi.org/10.14778/2824032.2824078).
 #### FPC {#fpc}
 
-`FPC(level, float_size)` — シーケンス内の次の浮動小数点値を二つの予測器のうちのより良い方を使って繰り返し予測し、その後、実際の値と予測された値との XOR を計算し、その結果を先頭のゼロで圧縮します。Gorilla と同様に、浮動小数点値の連続的なシーケンスを保存する際に効率的です。64ビット値（ダブル）の場合は FPC が Gorilla よりも高速で、32ビット値の場合は状況によります。可能な `level` の値：1-28 デフォルト値は 12。可能な `float_size` の値：4、8。デフォルト値は `sizeof(type)` が Float の場合はそれになります。それ以外の場合は4です。アルゴリズムの詳細については [High Throughput Compression of Double-Precision Floating-Point Data](https://userweb.cs.txstate.edu/~burtscher/papers/dcc07a.pdf) を参照してください。
-
+`FPC(level, float_size)` - Repeatedly predicts the next floating point value in the sequence using the better of two predictors, then XORs the actual with the predicted value, and leading-zero compresses the result. Similar to Gorilla, this is efficient when storing a series of floating point values that change slowly. For 64-bit values (double), FPC is faster than Gorilla, for 32-bit values your mileage may vary. Possible `level` values: 1-28, the default value is 12.  Possible `float_size` values: 4, 8, the default value is `sizeof(type)` if type is Float. In all other cases, it's 4. For a detailed description of the algorithm see [High Throughput Compression of Double-Precision Floating-Point Data](https://userweb.cs.txstate.edu/~burtscher/papers/dcc07a.pdf).
 #### T64 {#t64}
 
-`T64` — 整数データ型（`Enum`、`Date` および `DateTime` を含む）の未使用高ビットを削除する圧縮方法です。アルゴリズムの各ステップで、コーデックは64の値のブロックを取り、64x64ビットマトリックスに配置し、それを転置し、値の未使用ビットを切り詰め、その結果を配列として返します。
+`T64` — Compression approach that crops unused high bits of values in integer data types (including `Enum`, `Date` and `DateTime`). At each step of its algorithm, codec takes a block of 64 values, puts them into 64x64 bit matrix, transposes it, crops the unused bits of values and returns the rest as a sequence. Unused bits are the bits, that do not differ between maximum and minimum values in the whole data part for which the compression is used.
 
-`DoubleDelta` と `Gorilla` コーデックは Gorilla TSDB でその圧縮アルゴリズムのコンポーネントとして使用されます。Gorilla アプローチは、タイムスタンプと共にゆっくりと変化する値のシーケンスにおいて効果的です。タイムスタンプは `DoubleDelta` コーデックによって効果的に圧縮され、値は `Gorilla` コーデックによって効果的に圧縮されます。例えば、効果的に保存されるテーブルを得るために、次の構成で作成することができます：
+`DoubleDelta` and `Gorilla` codecs are used in Gorilla TSDB as the components of its compressing algorithm. Gorilla approach is effective in scenarios when there is a sequence of slowly changing values with their timestamps. Timestamps are effectively compressed by the `DoubleDelta` codec, and values are effectively compressed by the `Gorilla` codec. For example, to get an effectively stored table, you can create it in the following configuration:
 
-``` sql
+```sql
 CREATE TABLE codec_example
 (
     timestamp DateTime CODEC(DoubleDelta),
@@ -478,31 +451,29 @@ CREATE TABLE codec_example
 )
 ENGINE = MergeTree()
 ```
+### Encryption Codecs {#encryption-codecs}
 
-### 暗号化コーデック {#encryption-codecs}
+These codecs don't actually compress data, but instead encrypt data on disk. These are only available when an encryption key is specified by [encryption](/operations/server-configuration-parameters/settings#encryption) settings. Note that encryption only makes sense at the end of codec pipelines, because encrypted data usually can't be compressed in any meaningful way.
 
-これらのコーデックは実際にはデータを圧縮するのではなく、ディスク上でデータを暗号化します。これらは、暗号化キーが [暗号化](/operations/server-configuration-parameters/settings#encryption) 設定で指定されている場合にのみ使用可能です。暗号化は通常コーデックパイプラインの最後に意味を持ちます。なぜなら、暗号化データは一般的に有意義な方法で圧縮できないからです。
-
-暗号化コーデック：
+Encryption codecs:
 #### AES_128_GCM_SIV {#aes_128_gcm_siv}
 
-`CODEC('AES-128-GCM-SIV')` — データを AES-128 で [RFC 8452](https://tools.ietf.org/html/rfc8452) GCM-SIV モードで暗号化します。
-
+`CODEC('AES-128-GCM-SIV')` — Encrypts data with AES-128 in [RFC 8452](https://tools.ietf.org/html/rfc8452) GCM-SIV mode.
 #### AES-256-GCM-SIV {#aes-256-gcm-siv}
 
-`CODEC('AES-256-GCM-SIV')` — データを AES-256 で GCM-SIV モードで暗号化します。
+`CODEC('AES-256-GCM-SIV')` — Encrypts data with AES-256 in GCM-SIV mode.
 
-これらのコーデックは固定の nonce を使用し、したがって暗号化は決定的です。これにより、[ReplicatedMergeTree](../../../engines/table-engines/mergetree-family/replication.md) のような重複排除エンジンとの互換性がありますが、次のような弱点があります。同じデータブロックが二度暗号化されると、結果として得られる暗号文は全く同じになります。このため、ディスクを読み取ることができる攻撃者はこの同値性を見ることができます（ただし、その内容を知ることなく）。
+These codecs use a fixed nonce and encryption is therefore deterministic. This makes it compatible with deduplicating engines such as [ReplicatedMergeTree](../../../engines/table-engines/mergetree-family/replication.md) but has a weakness: when the same data block is encrypted twice, the resulting ciphertext will be exactly the same so an adversary who can read the disk can see this equivalence (although only the equivalence, without getting its content).
 
 :::note
-["*MergeTree"ファミリーを含むほとんどのエンジンは、コーデックを適用せずにディスク上にインデックスファイルを作成します。これにより、暗号化されたカラムがインデックスされている場合にはプレーンテキストがディスク上に現れます。](#) 
+Most engines including the "\*MergeTree" family create index files on disk without applying codecs. This means plaintext will appear on disk if an encrypted column is indexed.
 :::
 
 :::note
-暗号化されたカラム（その WHERE 節など）で特定の値を指定した SELECT クエリを実行すると、その値は [system.query_log](../../../operations/system-tables/query_log.md) に表示される場合があります。ロギングを無効にしたい場合もあります。
+If you perform a SELECT query mentioning a specific value in an encrypted column (such as in its WHERE clause), the value may appear in [system.query_log](../../../operations/system-tables/query_log.md). You may want to disable the logging.
 :::
 
-**例**
+**Example**
 
 ```sql
 CREATE TABLE mytable
@@ -513,10 +484,10 @@ ENGINE = MergeTree ORDER BY x;
 ```
 
 :::note
-圧縮を適用する必要がある場合、明示的に指定しなければなりません。さもなければ、データには暗号化のみが適用されます。
+If compression needs to be applied, it must be explicitly specified. Otherwise, only encryption will be applied to data.
 :::
 
-**例**
+**Example**
 
 ```sql
 CREATE TABLE mytable
@@ -525,25 +496,24 @@ CREATE TABLE mytable
 )
 ENGINE = MergeTree ORDER BY x;
 ```
-
-## 一時テーブル {#temporary-tables}
+## Temporary Tables {#temporary-tables}
 
 :::note
-一時テーブルはレプリケーションされないことに注意してください。したがって、一時テーブルに挿入されたデータが他のレプリカで利用できるという保証はありません。一時テーブルが便利な主なユースケースは、単一のセッション中に外部の小規模なデータセットをクエリまたは結合することです。
+Please note that temporary tables are not replicated. As a result, there is no guarantee that data inserted into a temporary table will be available in other replicas. The primary use case where temporary tables can be useful is for querying or joining small external datasets during a single session.
 :::
 
-ClickHouse は次の特性を持つ一時テーブルをサポートしています。
+ClickHouse supports temporary tables which have the following characteristics:
 
-- 一時テーブルはセッションが終了すると消失します。接続が失われた場合も含まれます。
-- 一時テーブルはエンジンが指定されていない場合に Memory テーブルエンジンを使用し、レプリケートおよび `KeeperMap` エンジン以外の任意のテーブルエンジンを使用できます。
-- 一時テーブルに対してデータベースを指定することはできません。一時テーブルはデータベースの外部に作成されます。
-- すべてのクラスタサーバーに分散DDlクエリを使用して一時テーブルを作成することはできません（`ON CLUSTER` を使用して）：このテーブルは現在のセッションにのみ存在します。
-- 同じ名前の一時テーブルが存在し、クエリがデータベースを指定せずにテーブル名を指定した場合、一時テーブルが使用されます。
-- 分散クエリ処理のために、クエリで使用されるメモリエンジンを持つ一時テーブルはリモートサーバーに渡されます。
+- Temporary tables disappear when the session ends, including if the connection is lost.
+- A temporary table uses the Memory table engine when engine is not specified and it may use any table engine except Replicated and `KeeperMap` engines.
+- The DB can't be specified for a temporary table. It is created outside of databases.
+- Impossible to create a temporary table with distributed DDL query on all cluster servers (by using `ON CLUSTER`): this table exists only in the current session.
+- If a temporary table has the same name as another one and a query specifies the table name without specifying the DB, the temporary table will be used.
+- For distributed query processing, temporary tables with Memory engine used in a query are passed to remote servers.
 
-一時テーブルを作成するには、次の構文を使用します：
+To create a temporary table, use the following syntax:
 
-``` sql
+```sql
 CREATE TEMPORARY TABLE [IF NOT EXISTS] table_name
 (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
@@ -552,19 +522,22 @@ CREATE TEMPORARY TABLE [IF NOT EXISTS] table_name
 ) [ENGINE = engine]
 ```
 
-ほとんどの場合、一時テーブルは手動で作成されることはありませんが、外部データをクエリに使用する場合や、分散 `(GLOBAL) IN` のために使用されます。詳細については、関連するセクションを参照してください。
+In most cases, temporary tables are not created manually, but when using external data for a query, or for distributed `(GLOBAL) IN`. For more information, see the appropriate sections
 
-一時テーブルの代わりに、[ENGINE = Memory](../../../engines/table-engines/special/memory.md) を持つテーブルを使用することもできます。
-
+It's possible to use tables with [ENGINE = Memory](../../../engines/table-engines/special/memory.md) instead of temporary tables.
 ## REPLACE TABLE {#replace-table}
 
-`REPLACE` ステートメントはテーブルを [原子的に](/concepts/glossary#atomicity) 更新することを許可します。
+The `REPLACE` statement allows you to update a table [atomically](/concepts/glossary#atomicity).
 
 :::note
-このステートメントは、[`Atomic`](../../../engines/database-engines/atomic.md) および [`Replicated`](../../../engines/database-engines/replicated.md) データベースエンジンでサポートされています。これらはそれぞれ ClickHouse および ClickHouse Cloud のデフォルトのデータベースエンジンです。
+This statement is supported for the [`Atomic`](../../../engines/database-engines/atomic.md) and [`Replicated`](../../../engines/database-engines/replicated.md) database engines, 
+which are the default database engines for ClickHouse and ClickHouse Cloud respectively.
 :::
 
-通常、テーブルからいくつかのデータを削除する必要がある場合、不要なデータを取得しない `SELECT` ステートメントで新しいテーブルを作成し、古いテーブルを削除して新しいテーブルの名前を変更することができます。このアプローチは、以下の例に示されています。
+Ordinarily, if you need to delete some data from a table, 
+you can create a new table and fill it with a `SELECT` statement that does not retrieve unwanted data, 
+then drop the old table and rename the new one. 
+This approach is demonstrated in the example below:
 
 ```sql
 CREATE TABLE myNewTable AS myOldTable;
@@ -578,7 +551,7 @@ DROP TABLE myOldTable;
 RENAME TABLE myNewTable TO myOldTable;
 ```
 
-上記のアプローチの代わりに、`REPLACE` を使用することも可能です（デフォルトのデータベースエンジンを使用している場合は）、同じ結果を達成できます：
+Instead of the approach above, it is also possible to use `REPLACE` (given you are using the default database engines) to achieve the same result:
 
 ```sql
 REPLACE TABLE myOldTable
@@ -588,22 +561,21 @@ AS
 SELECT * FROM myOldTable
 WHERE CounterID <12345;
 ```
+### Syntax {#syntax}
 
-### 構文 {#syntax}
-
-``` sql
+```sql
 {CREATE [OR REPLACE] | REPLACE} TABLE [db.]table_name
 ```
 
 :::note
-`CREATE` ステートメントのすべての構文形式もこのステートメントで機能します。存在しないテーブルに対して `REPLACE` を呼び出すとエラーが発生します。
+All syntax forms for the `CREATE` statement also work for this statement. Invoking `REPLACE` for a non-existent table will cause an error.
 :::
-### 例: {#examples}
+### Examples: {#examples}
 
 <Tabs>
-<TabItem value="clickhouse_replace_example" label="ローカル" default>
+<TabItem value="clickhouse_replace_example" label="Local" default>
 
-次のテーブルを考えてみましょう:
+Consider the following table:
 
 ```sql
 CREATE DATABASE base 
@@ -626,7 +598,7 @@ SELECT * FROM base.t1;
 └───┴──────┘
 ```
 
-`REPLACE` ステートメントを使用してすべてのデータをクリアできます:
+We can use the `REPLACE` statement to clear all the data:
 
 ```sql
 CREATE OR REPLACE TABLE base.t1 
@@ -646,7 +618,7 @@ SELECT * FROM base.t1;
 └───┴────┘
 ```
 
-または、`REPLACE` ステートメントを使用してテーブルの構造を変更できます:
+Or we can use the `REPLACE` statement to change the table structure:
 
 ```sql
 REPLACE TABLE base.t1 (n UInt64) 
@@ -662,9 +634,9 @@ SELECT * FROM base.t1;
 └───┘
 ```  
 </TabItem>
-<TabItem value="cloud_replace_example" label="クラウド">
+<TabItem value="cloud_replace_example" label="Cloud">
 
-ClickHouse Cloudの次のテーブルを考えてみましょう: 
+Consider the following table on ClickHouse Cloud: 
 
 ```sql
 CREATE DATABASE base;
@@ -681,10 +653,10 @@ INSERT INTO base.t1 VALUES (1, 'test');
 
 SELECT * FROM base.t1;
 
-1	test
+1    test
 ```
 
-`REPLACE` ステートメントを使用してすべてのデータをクリアできます:
+We can use the `REPLACE` statement to clear all the data:
 
 ```sql
 CREATE OR REPLACE TABLE base.t1 
@@ -699,10 +671,10 @@ INSERT INTO base.t1 VALUES (2, null);
 
 SELECT * FROM base.t1;
 
-2	
+2    
 ```
 
-または、`REPLACE` ステートメントを使用してテーブルの構造を変更できます:
+Or we can use the `REPLACE` statement to change the table structure:
 
 ```sql
 REPLACE TABLE base.t1 (n UInt64) 
@@ -717,26 +689,26 @@ SELECT * FROM base.t1;
 ```    
 </TabItem>
 </Tabs>
-## COMMENT 句 {#comment-clause}
+## COMMENT Clause {#comment-clause}
 
 テーブルを作成する際にコメントを追加できます。
 
 **構文**
 
-``` sql
+```sql
 CREATE TABLE db.table_name
 (
     name1 type1, name2 type2, ...
 )
 ENGINE = engine
-COMMENT 'コメント'
+COMMENT 'Comment'
 ```
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 CREATE TABLE t1 (x String) ENGINE = Memory COMMENT '一時テーブル';
 SELECT name, comment FROM system.tables WHERE name = 't1';
 ```
@@ -748,7 +720,7 @@ SELECT name, comment FROM system.tables WHERE name = 't1';
 │ t1   │ 一時テーブル       │
 └──────┴─────────────────────┘
 ```
-## 関連コンテンツ {#related-content}
+## Related content {#related-content}
 
-- ブログ: [スキーマとコーデックを使ってClickHouseを最適化する](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)
-- ブログ: [ClickHouseでの時系列データの扱い](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+- Blog: [スキーマとコーデックを用いたClickHouseの最適化](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)
+- Blog: [ClickHouseでの時系列データの取り扱い](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

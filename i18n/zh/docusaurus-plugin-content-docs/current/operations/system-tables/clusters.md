@@ -1,31 +1,33 @@
 ---
-description: '包含有关配置文件中可用集群及其定义的服务器的信息的系统表。'
-slug: /operations/system-tables/clusters
-title: 'system.clusters'
-keywords: ['系统表', '集群']
+'description': '系统表包含关于配置文件中可用的集群以及定义在其中的服务器的信息。'
+'keywords':
+- 'system table'
+- 'clusters'
+'slug': '/operations/system-tables/clusters'
+'title': 'system.clusters'
 ---
 
-包含有关配置文件中可用集群及其内部服务器的信息。
+包含有关配置文件中可用集群及其服务器的信息。
 
 列：
 
 - `cluster` ([String](../../sql-reference/data-types/string.md)) — 集群名称。
-- `shard_num` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 集群中的分片编号，从1开始。可能因集群修改而更改。
-- `shard_name` ([String](../../sql-reference/data-types/string.md)) — 集群中的分片名称。
-- `shard_weight` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 写入数据时分片的相对权重。
-- `replica_num` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 分片中的副本编号，从1开始。
-- `host_name` ([String](../../sql-reference/data-types/string.md)) — 配置中指定的主机名称。
-- `host_address` ([String](../../sql-reference/data-types/string.md)) — 从 DNS 获取的主机 IP 地址。
+- `shard_num` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 集群中的分片编号，从 1 开始。由于集群修改可能会改变。
+- `shard_name` ([String](../../sql-reference/data-types/string.md)) — 集群中分片的名称。
+- `shard_weight` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 在写入数据时分片的相对权重。
+- `replica_num` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 分片中的副本编号，从 1 开始。
+- `host_name` ([String](../../sql-reference/data-types/string.md)) — 配置中指定的主机名。
+- `host_address` ([String](../../sql-reference/data-types/string.md)) — 从 DNS 获得的主机 IP 地址。
 - `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 用于连接到服务器的端口。
-- `is_local` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 指示主机是否本地的标志。
-- `user` ([String](../../sql-reference/data-types/string.md)) — 连接到服务器的用户名称。
+- `is_local` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 表示主机是否为本地的标志。
+- `user` ([String](../../sql-reference/data-types/string.md)) — 用于连接到服务器的用户名称。
 - `default_database` ([String](../../sql-reference/data-types/string.md)) — 默认数据库名称。
-- `errors_count` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 此主机未能连接到副本的次数。
-- `slowdowns_count` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 在进行对冲请求时由于延迟导致更改副本的次数。
-- `estimated_recovery_time` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 副本错误计数归零并被视为恢复正常所需的秒数。
-- `database_shard_name` ([String](../../sql-reference/data-types/string.md)) — `Replicated` 数据库分片的名称（适用于属于 `Replicated` 数据库的集群）。
-- `database_replica_name` ([String](../../sql-reference/data-types/string.md)) — `Replicated` 数据库副本的名称（适用于属于 `Replicated` 数据库的集群）。
-- `is_active` ([Nullable(UInt8)](../../sql-reference/data-types/int-uint.md)) — `Replicated` 数据库副本的状态（适用于属于 `Replicated` 数据库的集群）：1 表示“副本在线”，0 表示“副本离线”，`NULL` 表示“未知”。
+- `errors_count` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 此主机未能达到副本的次数。
+- `slowdowns_count` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 在通过对冲请求建立连接时导致更改副本的慢速次数。
+- `estimated_recovery_time` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 副本错误计数归零前剩余的秒数，且被视为恢复正常。
+- `database_shard_name` ([String](../../sql-reference/data-types/string.md)) — `Replicated` 数据库分片的名称（对于属于 `Replicated` 数据库的集群）。
+- `database_replica_name` ([String](../../sql-reference/data-types/string.md)) — `Replicated` 数据库副本的名称（对于属于 `Replicated` 数据库的集群）。
+- `is_active` ([Nullable(UInt8)](../../sql-reference/data-types/int-uint.md)) — `Replicated` 数据库副本的状态（对于属于 `Replicated` 数据库的集群）：1 表示“副本在线”，0 表示“副本离线”，`NULL` 表示“未知”。
 - `name` ([String](../../sql-reference/data-types/string.md)) - 集群的别名。
 
 **示例**
@@ -80,8 +82,8 @@ database_replica_name:
 is_active:               NULL
 ```
 
-**另请参阅**
+**参见**
 
-- [Table engine Distributed](../../engines/table-engines/special/distributed.md)
-- [distributed_replica_error_cap setting](../../operations/settings/settings.md#distributed_replica_error_cap)
-- [distributed_replica_error_half_life setting](../../operations/settings/settings.md#distributed_replica_error_half_life)
+- [表引擎 Distributed](../../engines/table-engines/special/distributed.md)
+- [distributed_replica_error_cap 设置](../../operations/settings/settings.md#distributed_replica_error_cap)
+- [distributed_replica_error_half_life 设置](../../operations/settings/settings.md#distributed_replica_error_half_life)

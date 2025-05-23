@@ -1,27 +1,32 @@
 ---
-title: Pretty
-slug: /interfaces/formats/Pretty
-keywords: [Pretty]
-input_format: false
-output_format: true
-alias: []
+'alias': []
+'description': 'Pretty format'
+'input_format': false
+'keywords':
+- 'Pretty'
+'output_format': true
+'slug': '/interfaces/formats/Pretty'
+'title': 'Pretty'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| 入力 | 出力  | エイリアス |
+| Input | Output  | Alias |
 |-------|---------|-------|
 | ✗     | ✔       |       |
 
 ## 説明 {#description}
 
-`Pretty` フォーマットはデータを Unicode アートテーブルとして出力し、ターミナルでの色の表示のために ANSI エスケープシーケンスを使用します。テーブルの完全なグリッドが描画され、各行はターミナルで2行を占めます。各結果ブロックは別々のテーブルとして出力されます。これは、すべての値の表示幅を事前に計算するためにはバッファリングが必要であるため、ブロックをバッファリングなしで出力できるようにするために必要です。
+`Pretty` フォーマットは、データを Unicode アートテーブルとして出力し、ターミナルで色を表示するために ANSI エスケープシーケンスを使用します。
+テーブルの全体のグリッドが描画され、各行はターミナルで 2 行を占めます。
+各結果ブロックは別々のテーブルとして出力されます。
+これは、すべての値の可視幅を事前に計算するためにバッファリングなしでブロックを出力できるようにするために必要です（バッファリングが必要になります）。
 
 [NULL](/sql-reference/syntax.md) は `ᴺᵁᴸᴸ` として出力されます。
 
 ## 使用例 {#example-usage}
 
-例（[`PrettyCompact`](./PrettyCompact.md) フォーマット用に表示）:
+例（[`PrettyCompact`](./PrettyCompact.md) フォーマットのために示されています）:
 
 ```sql title="クエリ"
 SELECT * FROM t_null
@@ -33,7 +38,7 @@ SELECT * FROM t_null
 └───┴──────┘
 ```
 
-行は `Pretty` フォーマットのいずれにおいてもエスケープされません。次の例は [`PrettyCompact`](./PrettyCompact.md) フォーマットのために示されています:
+行は `Pretty` フォーマットのいずれにおいてもエスケープされません。以下の例は[`PrettyCompact`](./PrettyCompact.md) フォーマットのために示されています：
 
 ```sql title="クエリ"
 SELECT 'String with \'quotes\' and \t character' AS Escaping_test
@@ -45,13 +50,16 @@ SELECT 'String with \'quotes\' and \t character' AS Escaping_test
 └──────────────────────────────────────┘
 ```
 
-ターミナルに過剰なデータが出力されるのを避けるため、最初の `10,000` 行のみが印刷されます。行数が `10,000` 以上の場合、「最初の 10 000 を表示しました」というメッセージが印刷されます。
+ターミナルにあまりにも多くのデータを出力しないように、最初の `10,000` 行のみが出力されます。
+行数が `10,000` 以上の場合、メッセージ "Showed first 10 000" が出力されます。
 
 :::note
-このフォーマットはクエリ結果を出力するのにのみ適しており、データの解析には適していません。
+このフォーマットは、クエリ結果の出力には適していますが、データの解析には適していません。
 :::
 
-Pretty フォーマットは、合計値を出力すること（`WITH TOTALS` 使用時）や、極値を出力すること（'extremes' が 1 に設定されている場合）をサポートします。この場合、合計値と極値は、メインデータの後に別々のテーブルとして出力されます。これは、以下の例で [`PrettyCompact`](./PrettyCompact.md) フォーマットを使用して示されています:
+Pretty フォーマットは、合計値（`WITH TOTALS` を使用する場合）や極値（`extremes` が 1 に設定されている場合）の出力をサポートしています。
+これらの場合、合計値と極値は、主なデータの後に別々のテーブルで出力されます。
+これは、[`PrettyCompact`](./PrettyCompact.md) フォーマットを使用した以下の例に示されています：
 
 ```sql title="クエリ"
 SELECT EventDate, count() AS c 

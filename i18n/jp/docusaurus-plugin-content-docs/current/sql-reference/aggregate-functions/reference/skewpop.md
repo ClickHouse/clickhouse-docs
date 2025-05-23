@@ -1,16 +1,18 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/skewpop
-sidebar_position: 185
-title: "skewPop"
-description: "シーケンスの歪度を計算します。"
+'description': 'Computes the skewness of a sequence.'
+'sidebar_position': 185
+'slug': '/sql-reference/aggregate-functions/reference/skewpop'
+'title': 'skewPop'
 ---
+
+
 
 
 # skewPop
 
 シーケンスの[歪度](https://en.wikipedia.org/wiki/Skewness)を計算します。
 
-``` sql
+```sql
 skewPop(expr)
 ```
 
@@ -24,6 +26,6 @@ skewPop(expr)
 
 **例**
 
-``` sql
+```sql
 SELECT skewPop(value) FROM series_with_value_column;
 ```

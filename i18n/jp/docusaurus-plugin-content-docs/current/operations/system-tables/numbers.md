@@ -1,15 +1,23 @@
 ---
-description: "システムテーブルで、`number`という名前の単一のUInt64カラムを含み、ゼロから始まるほぼすべての自然数が含まれています。"
-slug: /operations/system-tables/numbers
-title: "system.numbers"
-keywords: ["システムテーブル", "numbers"]
+'description': 'System table containing a single UInt64 column named `number` that
+  contains almost all the natural numbers starting from zero.'
+'keywords':
+- 'system table'
+- 'numbers'
+'slug': '/operations/system-tables/numbers'
+'title': 'システム.数字'
 ---
 
-このテーブルは、`number`という名前の単一のUInt64カラムを含み、ゼロから始まるほぼすべての自然数が含まれています。
 
-このテーブルは、テストやブルートフォース検索を行う必要がある場合に使用できます。
 
-このテーブルからの読み込みは並列化されません。
+
+# system.numbers
+
+このテーブルは、`number` と名付けられた単一の UInt64 カラムを含み、ゼロから始まるほぼ全ての自然数が格納されています。
+
+このテーブルは、テスト用やブルートフォース検索が必要な場合に使用できます。
+
+このテーブルからの読み取りは並列化されていません。
 
 **例**
 
@@ -31,10 +39,10 @@ SELECT * FROM system.numbers LIMIT 10;
 │      9 │
 └────────┘
 
-10 行がセットに含まれています。経過時間: 0.001 秒。
+10 行がセットされました。経過時間: 0.001 秒。
 ```
 
-出力を制限するために条件を使用することもできます。
+出力は条件によって制限することもできます。
 
 ```sql
 SELECT * FROM system.numbers < 10;
@@ -54,5 +62,5 @@ SELECT * FROM system.numbers < 10;
 │      9 │
 └────────┘
 
-10 行がセットに含まれています。経過時間: 0.001 秒。
+10 行がセットされました。経過時間: 0.001 秒。
 ```

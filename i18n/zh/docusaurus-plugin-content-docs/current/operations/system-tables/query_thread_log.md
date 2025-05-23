@@ -1,19 +1,25 @@
 ---
-description: '包含有关执行查询的线程的信息，例如，线程名称、线程开始时间、查询处理持续时间。'
-slug: /operations/system-tables/query_thread_log
-title: 'system.query_thread_log'
-keywords: ['system table', 'query_thread_log']
+'description': '系统表包含有关执行查询的线程的信息，例如，线程名称，线程开始时间，查询处理持续时间。'
+'keywords':
+- 'system table'
+- 'query_thread_log'
+'slug': '/operations/system-tables/query_thread_log'
+'title': 'system.query_thread_log'
 ---
-import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+
+# system.query_thread_log
 
 <SystemTableCloud/>
 
-包含有关执行查询的线程的信息，例如，线程名称、线程开始时间、查询处理持续时间。
+包含执行查询的线程信息，例如，线程名称、线程开始时间、查询处理持续时间。
 
-要开始记录：
+要启动日志记录：
 
-1.  在 [query_thread_log](/operations/server-configuration-parameters/settings#query_thread_log) 部分配置参数。
-2.  将 [log_query_threads](/operations/settings/settings#log_query_threads) 设置为 1。
+1. 在 [query_thread_log](/operations/server-configuration-parameters/settings#query_thread_log) 部分配置参数。
+2. 将 [log_query_threads](/operations/settings/settings#log_query_threads) 设置为 1。
 
 数据的刷新周期在 [query_thread_log](/operations/server-configuration-parameters/settings#query_thread_log) 服务器设置部分的 `flush_interval_milliseconds` 参数中设置。要强制刷新，请使用 [SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs) 查询。
 
@@ -26,30 +32,30 @@ ClickHouse 不会自动删除表中的数据。有关更多详细信息，请参
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器的主机名。
 - `event_date` ([Date](../../sql-reference/data-types/date.md)) — 线程完成查询执行的日期。
 - `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 线程完成查询执行的日期和时间。
-- `event_time_microseconds` ([DateTime](../../sql-reference/data-types/datetime.md)) — 线程完成查询执行的日期和时间（微秒精度）。
+- `event_time_microseconds` ([DateTime](../../sql-reference/data-types/datetime.md)) — 线程完成查询执行的日期和时间，精确到微秒。
 - `query_start_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 查询执行的开始时间。
-- `query_start_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 查询执行的开始时间（微秒精度）。
+- `query_start_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 查询执行的开始时间，精确到微秒。
 - `query_duration_ms` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 查询执行的持续时间。
 - `read_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 读取的行数。
 - `read_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 读取的字节数。
-- `written_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 对于 `INSERT` 查询，写入的行数。对于其他查询，该列值为 0。
-- `written_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 对于 `INSERT` 查询，写入的字节数。对于其他查询，该列值为 0。
-- `memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — 在该线程上下文中，已分配内存和已释放内存之间的差异。
-- `peak_memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — 在该线程上下文中，已分配内存和已释放内存之间的最大差异。
+- `written_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 对于 `INSERT` 查询，写入的行数。对于其他查询，该列的值为 0。
+- `written_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 对于 `INSERT` 查询，写入的字节数。对于其他查询，该列的值为 0。
+- `memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — 上下文中分配的内存与释放的内存之间的差额。
+- `peak_memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — 上下文中分配的内存与释放的内存之间的最大差额。
 - `thread_name` ([String](../../sql-reference/data-types/string.md)) — 线程名称。
-- `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — OS 线程 ID。
-- `master_thread_id` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — OS 初始线程的 ID。
+- `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 操作系统线程 ID。
+- `master_thread_id` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 初始线程的操作系统 ID。
 - `query` ([String](../../sql-reference/data-types/string.md)) — 查询字符串。
 - `is_initial_query` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 查询类型。可能的值：
     - 1 — 查询由客户端发起。
-    - 0 — 查询由另一个查询发起以进行分布式查询执行。
+    - 0 — 查询由另一个查询为分布式查询执行发起。
 - `user` ([String](../../sql-reference/data-types/string.md)) — 发起当前查询的用户名称。
 - `query_id` ([String](../../sql-reference/data-types/string.md)) — 查询的 ID。
 - `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 用于发起查询的 IP 地址。
 - `port` ([UInt16](/sql-reference/data-types/int-uint#integer-ranges)) — 用于发起查询的客户端端口。
 - `initial_user` ([String](../../sql-reference/data-types/string.md)) — 运行初始查询的用户名称（用于分布式查询执行）。
 - `initial_query_id` ([String](../../sql-reference/data-types/string.md)) — 初始查询的 ID（用于分布式查询执行）。
-- `initial_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 父查询发起时的 IP 地址。
+- `initial_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 父查询启动的 IP 地址。
 - `initial_port` ([UInt16](/sql-reference/data-types/int-uint#integer-ranges)) — 用于发起父查询的客户端端口。
 - `interface` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 查询发起的接口。可能的值：
     - 1 — TCP。
@@ -58,25 +64,25 @@ ClickHouse 不会自动删除表中的数据。有关更多详细信息，请参
 - `client_hostname` ([String](../../sql-reference/data-types/string.md)) — 运行 [clickhouse-client](../../interfaces/cli.md) 或其他 TCP 客户端的客户端机器的主机名。
 - `client_name` ([String](../../sql-reference/data-types/string.md)) — [clickhouse-client](../../interfaces/cli.md) 或其他 TCP 客户端名称。
 - `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) 或其他 TCP 客户端的修订版。
-- `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) 或其他 TCP 客户端的主版本号。
-- `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) 或其他 TCP 客户端的次版本号。
-- `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) 或其他 TCP 客户端版本的补丁组件。
+- `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) 或其他 TCP 客户端的主要版本。
+- `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) 或其他 TCP 客户端的次要版本。
+- `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) 或其他 TCP 客户端版本的修补组件。
 - `http_method` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 发起查询的 HTTP 方法。可能的值：
-    - 0 — 查询是通过 TCP 接口发起的。
+    - 0 — 查询是从 TCP 接口启动的。
     - 1 — 使用了 `GET` 方法。
     - 2 — 使用了 `POST` 方法。
-- `http_user_agent` ([String](../../sql-reference/data-types/string.md)) — HTTP 请求中传递的 `UserAgent` 头。
-- `quota_key` ([String](../../sql-reference/data-types/string.md)) — 在 [quotas](../../operations/quotas.md) 设置中指定的“配额密钥”（请参见 `keyed`）。
+- `http_user_agent` ([String](../../sql-reference/data-types/string.md)) — 在 HTTP 请求中传递的 `UserAgent` 头信息。
+- `quota_key` ([String](../../sql-reference/data-types/string.md)) — 在 [quotas](../../operations/quotas.md) 设置中指定的“配额键”（参见 `keyed`）。
 - `revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ClickHouse 修订版。
-- `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/array.md)) — 衡量该线程不同指标的 ProfileEvents。它们的描述可以在 [system.events](/operations/system-tables/events) 表中找到。
+- `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/array.md)) — 衡量此线程不同指标的 ProfileEvents。它们的描述可以在表 [system.events](/operations/system-tables/events) 中找到。
 
 **示例**
 
-``` sql
- SELECT * FROM system.query_thread_log LIMIT 1 \G
+```sql
+SELECT * FROM system.query_thread_log LIMIT 1 \G
 ```
 
-``` text
+```text
 Row 1:
 ──────
 hostname:                      clickhouse.eu-central1.internal
@@ -120,7 +126,7 @@ revision:                      54440
 ProfileEvents:        {'Query':1,'SelectQuery':1,'ReadCompressedBytes':36,'CompressedReadBufferBlocks':1,'CompressedReadBufferBytes':10,'IOBufferAllocs':1,'IOBufferAllocBytes':89,'ContextLock':15,'RWLockAcquiredReadLocks':1}
 ```
 
-**另请参阅**
+**另见**
 
-- [system.query_log](/operations/system-tables/query_log) — 描述包含有关查询执行的常见信息的 `query_log` 系统表。
-- [system.query_views_log](/operations/system-tables/query_views_log) — 此表包含在查询执行过程中每个视图的信息。
+- [system.query_log](/operations/system-tables/query_log) — 描述 `query_log` 系统表的内容，该表包含关于查询执行的常见信息。
+- [system.query_views_log](/operations/system-tables/query_views_log) — 该表包含在查询过程中执行的每个视图的信息。

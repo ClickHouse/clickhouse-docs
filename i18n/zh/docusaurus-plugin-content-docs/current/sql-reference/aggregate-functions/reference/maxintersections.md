@@ -1,16 +1,16 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/maxintersections
-sidebar_position: 163
-title: maxIntersections
-description: '聚合函数，计算一组区间相互交叉的最大次数（如果所有区间至少交叉一次）。'
+'description': '聚合函数，用于计算一组区间互相交叉的最大次数（如果所有区间至少交叉一次）。'
+'sidebar_position': 163
+'slug': '/sql-reference/aggregate-functions/reference/maxintersections'
+'title': 'maxIntersections'
 ---
 
 
 # maxIntersections
 
-聚合函数，计算一组区间相互交叉的最大次数（如果所有区间至少交叉一次）。
+聚合函数用于计算一组区间彼此相交的最大次数（如果所有区间至少相交一次）。
 
-语法如下：
+语法为：
 
 ```sql
 maxIntersections(start_column, end_column)
@@ -24,7 +24,7 @@ maxIntersections(start_column, end_column)
 
 **返回值**
 
-返回交叉区间的最大数量。
+返回相交区间的最大数量。
 
 **示例**
 
@@ -35,11 +35,7 @@ CREATE TABLE my_events (
 )
 Engine = MergeTree
 ORDER BY tuple();
-```
 
-向 `my_events` 中插入以下值：
-
-```sql
 INSERT INTO my_events VALUES
    (1, 3),
    (1, 6),
@@ -56,15 +52,15 @@ INSERT INTO my_events VALUES
     3 - - - 7
 ```
 
-这三条区间有一个共同的值（共同值为 `4`，但共同值并不重要，我们测量的是交叉的数量）。区间 `(1,3)` 和 `(3,7)` 共享一个端点，但在 `maxIntersections` 函数中不被视为相交。
+其中三个区间有一个公共值（这个值是 `4`，但共同的值并不重要，我们测量的是相交的次数）。区间 `(1,3)` 和 `(3,7)` 共享一个端点，但在 `maxIntersections` 函数中并不被视为相交。
 
 ```sql
 SELECT maxIntersections(start, end) FROM my_events;
 ```
 
-响应:
+响应：
 ```response
 3
 ```
 
-如果你有多个最大区间的出现次数，可以使用 [`maxIntersectionsPosition` 函数](./maxintersectionsposition.md) 查找那些出现次数及其位置。
+如果您有多个最大区间的出现，您可以使用 [`maxIntersectionsPosition` 函数](./maxintersectionsposition.md) 来定位这些出现的数量和位置。

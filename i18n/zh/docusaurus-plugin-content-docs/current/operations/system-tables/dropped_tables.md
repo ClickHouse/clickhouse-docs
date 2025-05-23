@@ -1,33 +1,35 @@
 ---
-description: '系统表包含有关已执行删除表操作的信息，但尚未执行数据清理'
-slug: /operations/system-tables/dropped_tables
-title: 'system.dropped_tables'
-keywords: ['system table', 'dropped_tables']
+'description': '系统表，包含有关执行 DROP TABLE 的表的信息，但尚未执行数据清理。'
+'keywords':
+- 'system table'
+- 'dropped_tables'
+'slug': '/operations/system-tables/dropped_tables'
+'title': 'system.dropped_tables'
 ---
 
-包含有关已执行删除表操作的信息，但尚未执行数据清理。
+包含有关已执行 DROP TABLE 的表的信息，但尚未执行数据清理。
 
 列：
 
-- `index` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 标记的 deleted_tables 队列中的索引。
+- `index` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 在 marked_dropped_tables 队列中的索引。
 - `database` ([String](../../sql-reference/data-types/string.md)) — 数据库。
 - `table` ([String](../../sql-reference/data-types/string.md)) — 表名。
 - `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — 表的 uuid。
 - `engine` ([String](../../sql-reference/data-types/string.md)) — 表引擎名称。
-- `metadata_dropped_path` ([String](../../sql-reference/data-types/string.md)) — 元数据删除目录中表的元数据文件路径。
-- `table_dropped_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 下一个计划删除表数据的时间。通常是在表被删除时加上 `database_atomic_delay_before_drop_table_sec` 的时间。
+- `metadata_dropped_path` ([String](../../sql-reference/data-types/string.md)) — 表的元数据文件在 metadata_dropped 目录中的路径。
+- `table_dropped_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 安排在何时尝试删除表数据的时间。通常是指表被删除时加上 `database_atomic_delay_before_drop_table_sec`。
 
 **示例**
 
-以下示例展示如何获取关于 `dropped_tables` 的信息。
+以下示例展示了如何获取有关 `dropped_tables` 的信息。
 
-``` sql
+```sql
 SELECT *
 FROM system.dropped_tables\G
 ```
 
-``` text
-行 1:
+```text
+Row 1:
 ──────
 index:                 0
 database:              default

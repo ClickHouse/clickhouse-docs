@@ -1,16 +1,19 @@
 ---
-slug: /sql-reference/functions/geo/svg
-sidebar_label: SVG
-title: "GeoデータからSVG画像を生成するための関数"
+'description': 'Documentation for Svg'
+'sidebar_label': 'SVG'
+'slug': '/sql-reference/functions/geo/svg'
+'title': 'Functions for Generating SVG images from Geo data'
 ---
+
+
 
 ## Svg {#svg}
 
-Geoデータの選択されたSVG要素タグの文字列を返します。
+Geo データから選択した SVG 要素タグの文字列を返します。
 
 **構文**
 
-``` sql
+```sql
 Svg(geometry,[style])
 ```
 
@@ -18,19 +21,19 @@ Svg(geometry,[style])
 
 **パラメータ**
 
-- `geometry` — Geoデータ。 [Geo](../../data-types/geo).
-- `style` — オプションのスタイル名。 [String](../../data-types/string).
+- `geometry` — Geo データ。 [Geo](../../data-types/geo)。
+- `style` — オプショナルなスタイル名。 [String](../../data-types/string)。
 
 **返される値**
 
-- 幾何学のSVG表現。 [String](../../data-types/string).
-  - SVG円
-  - SVG多角形
-  - SVGパス
+- ジオメトリの SVG 表現。 [String](../../data-types/string)。
+  - SVG サークル
+  - SVG ポリゴン
+  - SVG パス
 
 **例**
 
-**円**
+**サークル**
 
 クエリ:
 
@@ -44,7 +47,7 @@ SELECT SVG((0., 0.))
 <circle cx="0" cy="0" r="5" style=""/>
 ```
 
-**多角形**
+**ポリゴン**
 
 クエリ:
 

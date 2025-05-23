@@ -1,9 +1,12 @@
 ---
-slug: /cloud/reference/changelogs
-title: 変更ログ
+'slug': '/cloud/reference/changelogs'
+'title': 'Changelogs'
+'description': 'クラウド変更履歴のランディングページ'
 ---
 
-| ページ                                                         | 説明                                          |
-|---------------------------------------------------------------|-----------------------------------------------|
-| [クラウド変更ログ](/whats-new/cloud)                   | ClickHouse Cloudの変更ログ                   |
-| [リリースノート](/cloud/reference/changelogs/release-notes) | すべてのClickHouse Cloudリリースのリリースノート |
+
+
+| Page                                                          | Description                                     |
+|---------------------------------------------------------------|-------------------------------------------------|
+| [Cloud Changelog](/whats-new/cloud)                   | ClickHouse Cloud の変更ログ                  |
+| [Release Notes](/cloud/reference/changelogs/release-notes) | すべての ClickHouse Cloud リリースのリリースノート |

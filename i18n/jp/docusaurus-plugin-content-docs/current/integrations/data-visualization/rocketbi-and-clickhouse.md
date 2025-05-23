@@ -1,11 +1,21 @@
 ---
-sidebar_label: Rocket BI
-sidebar_position: 131
-slug: /integrations/rocketbi
-keywords: [clickhouse, RocketBI, connect, integrate, ui]
-description: RocketBIは、データを迅速に分析し、ドラッグ&ドロップで可視化を構築し、同僚とブラウザ上でコラボレーションできるセルフサービスのビジネスインテリジェンスプラットフォームです。
+'sidebar_label': 'Rocket BI'
+'sidebar_position': 131
+'slug': '/integrations/rocketbi'
+'keywords':
+- 'clickhouse'
+- 'RocketBI'
+- 'connect'
+- 'integrate'
+- 'ui'
+'description': 'RocketBI is a self-service business intelligence platform that helps
+  you quickly analyze data, build drag-n-drop visualizations and collaborate with
+  colleagues right on your web browser.'
+'title': 'GOAL: BUILD YOUR 1ST DASHBOARD'
 ---
+
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import Image from '@theme/IdealImage';
 import rocketbi_01 from '@site/static/images/integrations/data-visualization/rocketbi_01.gif';
 import rocketbi_02 from '@site/static/images/integrations/data-visualization/rocketbi_02.gif';
 import rocketbi_03 from '@site/static/images/integrations/data-visualization/rocketbi_03.png';
@@ -24,23 +34,26 @@ import rocketbi_15 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_16 from '@site/static/images/integrations/data-visualization/rocketbi_16.png';
 import rocketbi_17 from '@site/static/images/integrations/data-visualization/rocketbi_17.png';
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# 目標: 最初のダッシュボードを構築する
+# ゴール: 最初のダッシュボードを構築する
 
-このガイドでは、Rocket.BIを使用してシンプルなダッシュボードをインストールし、構築します。
-これがダッシュボードです:
+<CommunityMaintainedBadge/>
 
-<img width="800" alt="Github RocketBI" src={rocketbi_01}/>
+このガイドでは、Rocket.BIを使用してシンプルなダッシュボードをインストールして構築します。
+これがダッシュボードです：
+
+<Image size="md" img={rocketbi_01} alt="Sales metrics with charts and KPIsを示すRocket BIダッシュボード" border />
 <br/>
 
-[こちらのリンクからダッシュボードをチェックできます。](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
+[このリンクからダッシュボードをチェックできます。](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
 
 ## インストール {#install}
 
-事前に用意されたDockerイメージを使用してRocketBIを開始します。
+あらかじめ用意されたDockerイメージを使用してRocket.BIを起動します。
 
-docker-compose.ymlファイルと設定ファイルを取得します:
+docker-compose.ymlと設定ファイルを取得します：
 
 ```bash
 wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/docker-compose.yml
@@ -48,108 +61,108 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 ```
 .clickhouse.envを編集し、ClickHouseサーバー情報を追加します。
 
-以下のコマンドを実行してRocketBIを開始します: ``` docker-compose up -d . ```
+次のコマンドを実行してRocket.BIを起動します: ``` docker-compose up -d . ```
 
-ブラウザを開き、```localhost:5050```に移動し、次のアカウントでログインします: ```hello@gmail.com/123456```
+ブラウザを開き、```localhost:5050```にアクセスし、このアカウントでログインします: ```hello@gmail.com/123456```
 
-ソースからビルドするか、詳細な設定については、[Rocket.BI Readme](https://github.com/datainsider-co/rocket-bi/blob/main/README.md)を確認してください。
+ソースからビルドしたり、詳細な設定を行ったりする場合は、こちらを確認できます: [Rocket.BI Readme](https://github.com/datainsider-co/rocket-bi/blob/main/README.md)
 
-## ダッシュボードを構築しよう {#lets-build-the-dashboard}
+## ダッシュボードの構築を始めましょう {#lets-build-the-dashboard}
 
-ダッシュボードでは、レポートが表示され、**+New**をクリックして可視化を開始します。
+ダッシュボードでは、レポートを見つけ、**+新規**をクリックして視覚化を開始します。
 
-**無制限のダッシュボード**を構築し、ダッシュボード内に**無制限のチャート**を描画できます。
+**無限のダッシュボード**を構築し、ダッシュボードに**無限のチャート**を描くことができます。
 
-<img width="800" alt="RocketBI create chart" src={rocketbi_02}/>
+<Image size="md" img={rocketbi_02} alt="Rocket BIで新しいチャートを作成するプロセスを示すアニメーション" border />
 <br/>
 
-Youtubeで高解像度のチュートリアルをご覧ください: [https://www.youtube.com/watch?v=TMkdMHHfvqY](https://www.youtube.com/watch?v=TMkdMHHfvqY)
+Youtubeでの高解像度チュートリアルを参照してください: [https://www.youtube.com/watch?v=TMkdMHHfvqY](https://www.youtube.com/watch?v=TMkdMHHfvqY)
 
 ### チャートコントロールを構築する {#build-the-chart-controls}
 
 #### メトリックコントロールを作成する {#create-a-metrics-control}
-タブフィルターで使用したいメトリックフィールドを選択します。集計設定を確認してください。
+タブフィルターで使用したいメトリックフィールドを選択します。集計設定を確認することを忘れないでください。
 
-<img width="650" alt="RocketBI chart 6" src={rocketbi_03}/>
+<Image size="md" img={rocketbi_03} alt="選択されたフィールドと集計設定を示すRocket BIメトリックコントロール設定パネル" border />
 <br/>
 
-フィルターの名前を変更し、コントロールをダッシュボードに保存します。
+フィルターの名前を変更し、ダッシュボードにコントロールを保存します。
 
-<img width="400" alt="Metrics Control" src={rocketbi_04}/>
+<Image size="md" img={rocketbi_04} alt="ダッシュボードに保存する準備が整った名前変更済みフィルターを持つメトリックコントロール" border />
 
-#### 日付型コントロールを作成する {#create-a-date-type-control}
-主日付カラムとして日付フィールドを選択します:
+#### 日付タイプのコントロールを作成する {#create-a-date-type-control}
+メイン日付カラムとして日付フィールドを選択します：
 
-<img width="650" alt="RocketBI chart 4" src={rocketbi_05}/>
+<Image size="md" img={rocketbi_05} alt="利用可能な日付カラムを示すRocket BIの日付フィールド選択インターフェイス" border />
 <br/>
 
-異なるルックアップ範囲を持つ重複のバリエーションを追加します。例えば、年、月次、日次の日付、または曜日です。
+異なるルックアップ範囲を持つ重複バリアントを追加します。例えば、年、月次、日次の日付や曜日。
 
-<img width="650" alt="RocketBI chart 5" src={rocketbi_06}/>
+<Image size="md" img={rocketbi_06} alt="年、月、日などの異なる期間オプションを示す日時範囲設定" border />
 <br/>
 
-フィルターの名前を変更し、コントロールをダッシュボードに保存します。
+フィルターの名前を変更し、ダッシュボードにコントロールを保存します。
 
-<img width="200" alt="Date Range Control" src={rocketbi_07}/>
+<Image size="md" img={rocketbi_07} alt="ダッシュボードに保存する準備が整った名前変更済みフィルターを持つ日付範囲コントロール" border />
 
 ### さあ、チャートを構築しましょう {#now-let-build-the-charts}
 
-#### 円グラフ: 地域別売上メトリック {#pie-chart-sales-metrics-by-regions}
-新しいチャートを追加し、円グラフを選択します。
+#### 円グラフ: 地域別売上メトリックス {#pie-chart-sales-metrics-by-regions}
+新しいチャートを追加して、円グラフを選択します。
 
-<img width="650" alt="Add Pie Chart" src={rocketbi_08}/>
+<Image size="md" img={rocketbi_08} alt="円グラフオプションが強調表示されたチャートタイプ選択パネル" border />
 <br/>
 
-最初に、データセットから "Region" カラムをレジェンドフィールドにドラッグ＆ドロップします。
+まず、データセットから"Region"カラムをドラッグ＆ドロップしてレジェンドフィールドに追加します。
 
-<img width="650" alt="Drag-n-drop Column to Chart" src={rocketbi_09}/>
+<Image size="md" img={rocketbi_09} alt="レジェンドフィールドにRegionカラムが追加されるドラッグ＆ドロップインターフェイス" border />
 <br/>
 
-次に、チャートコントロールタブに切り替えます。
+次に、チャートコントロールタブに移動します。
 
-<img width="650" alt="Navigate to Chart Control in Visualization" src={rocketbi_10}/>
+<Image size="md" img={rocketbi_10} alt="視覚化設定オプションを示すチャートコントロールタブインターフェイス" border />
 <br/>
 
 メトリックコントロールを値フィールドにドラッグ＆ドロップします。
 
-<img width="650" alt="Use Metrics Control in Chart" src={rocketbi_11}/>
+<Image size="md" img={rocketbi_11} alt="円グラフの値フィールドに追加されたメトリックコントロール" border />
 <br/>
 
-（メトリックコントロールをソートに使用することもできます）
+(メトリックコントロールをソートとして使用することもできます)
 
-チャート設定に移動してさらにカスタマイズします。
+チャート設定に移動してさらなるカスタマイズを行います。
 
-<img width="650" alt="Custom the Chart with Setting" src={rocketbi_12}/>
+<Image size="md" img={rocketbi_12} alt="円グラフのカスタマイズオプションを示すチャート設定パネル" border />
 <br/>
 
 例えば、データラベルをパーセンテージに変更します。
 
-<img width="650" alt="Chart Customization Example" src={rocketbi_13}/>
+<Image size="md" img={rocketbi_13} alt="円グラフにパーセンテージを表示するために変更されたデータラベル設定" border />
 <br/>
 
-チャートを保存し、ダッシュボードに追加します。
+チャートを保存してダッシュボードに追加します。
 
-<img width="650" alt="Overview Dashboard with Pie Chart" src={rocketbi_14}/>
+<Image size="md" img={rocketbi_14} alt="他のコントロールと共に新しく追加された円グラフを表示するダッシュボードビュー" border />
 
 #### 時系列チャートで日付コントロールを使用する {#use-date-control-in-a-time-series-chart}
-スタックコラムチャートを使用します。
+スタックカラムチャートを使用します。
 
-<img width="650" alt="Create a Time-series chart with Tab Control" src={rocketbi_15}/>
+<Image size="md" img={rocketbi_15} alt="時系列データを用いたスタックカラムチャート作成インターフェイス" border />
 <br/>
 
-チャートコントロールで、Y軸にメトリックコントロール、X軸に日付範囲を使用します。
+チャートコントロールで、Y軸にメトリックコントロールを、X軸に日付範囲を使用します。
 
-<img width="650" alt="Use Date Range as Controller" src={rocketbi_16}/>
+<Image size="md" img={rocketbi_16} alt="Y軸にメトリック、X軸に日付範囲を示すチャートコントロール設定" border />
 <br/>
 
 地域カラムをブレイクダウンに追加します。
 
-<img width="650" alt="Add Region into Breakdown" src={rocketbi_17}/>
+<Image size="md" img={rocketbi_17} alt="スタックカラムチャートのブレイクダウン次元として地域カラムが追加される" border />
 <br/>
 
-KPIsとして数値チャートを追加し、ダッシュボードを見栄え良くします。
+KPIとして数字チャートを追加し、ダッシュボードをグレードアップします。
 
-<img width="800" alt="Screenshot 2022-11-17 at 10 43 29" src={rocketbi_18} />
+<Image size="md" img={rocketbi_18} alt="KPI数字チャート、円グラフ、時系列視覚化を含む完成されたダッシュボード" border />
 <br/>
 
-これで、rocket.BIを使用して最初のダッシュボードを成功裏に構築しました。
+これで、あなたはRocket.BIで最初のダッシュボードを成功裏に構築しました。

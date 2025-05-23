@@ -1,15 +1,20 @@
 ---
-description: '包含一个名为 `number` 的 UInt64 列的系统表，该列几乎包含从零开始的所有自然数。'
-slug: /operations/system-tables/numbers
-title: 'system.numbers'
-keywords: ['系统表', '数字']
+'description': '系统表包含一个名为 `number` 的 UInt64 列，该列包含从零开始几乎所有的自然数。'
+'keywords':
+- 'system table'
+- 'numbers'
+'slug': '/operations/system-tables/numbers'
+'title': 'system.numbers'
 ---
 
-此表包含一个名为 `number` 的 UInt64 列，该列几乎包含从零开始的所有自然数。
 
-您可以使用此表进行测试，或者如果您需要进行暴力搜索时。
+# system.numbers
 
-对此表的读取不会并行化。
+此表包含一个名为 `number` 的 UInt64 列，该列包含从零开始几乎所有的自然数。
+
+您可以将此表用于测试，或者如果您需要进行暴力搜索时使用。
+
+从此表的读取没有并行化。
 
 **示例**
 
@@ -31,7 +36,7 @@ SELECT * FROM system.numbers LIMIT 10;
 │      9 │
 └────────┘
 
-10 行在集合中。耗时：0.001 秒。
+10 rows in set. Elapsed: 0.001 sec.
 ```
 
 您还可以通过谓词限制输出。
@@ -54,5 +59,5 @@ SELECT * FROM system.numbers < 10;
 │      9 │
 └────────┘
 
-10 行在集合中。耗时：0.001 秒。
+10 rows in set. Elapsed: 0.001 sec.
 ```

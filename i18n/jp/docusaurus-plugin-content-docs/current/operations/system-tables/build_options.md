@@ -1,9 +1,13 @@
 ---
-description: "ClickHouseサーバーのビルドオプションに関する情報を含むシステムテーブル。"
-slug: /operations/system-tables/build_options
-title: "system.build_options"
-keywords: ["システムテーブル", "build_options"]
+'description': 'ClickHouseサーバーのビルドオプションに関する情報を含むシステムテーブル'
+'slug': '/operations/system-tables/build_options'
+'title': 'system.build_options'
+'keywords':
+- 'system table'
+- 'build_options'
 ---
+
+
 
 ClickHouseサーバーのビルドオプションに関する情報を含みます。
 
@@ -14,11 +18,11 @@ ClickHouseサーバーのビルドオプションに関する情報を含みま�
 
 **例**
 
-``` sql
+```sql
 SELECT * FROM system.build_options LIMIT 5
 ```
 
-``` text
+```text
 ┌─name─────────────┬─value─┐
 │ USE_BROTLI       │ 1     │
 │ USE_BZIP2        │ 1     │

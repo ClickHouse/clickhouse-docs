@@ -1,19 +1,22 @@
 ---
-slug: /use-cases/observability
-title: 可観測性
-pagination_prev: null
-pagination_next: null
+'slug': '/use-cases/observability'
+'title': '観測可能性'
+'pagination_prev': null
+'pagination_next': null
+'description': '観測可能性ユースケースガイドのランディングページ'
 ---
 
-こちらは可観測性のユースケースガイドへようこそ。このガイドでは、ClickHouseを使った可観測性のセットアップと利用方法を学ぶことができます。
 
-以下のページに移動して、このガイドの異なるセクションを探索してください。
 
-| ページ                                                      | 説明                                                                                                                                                                                                                       |
-|-----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [はじめに](./introduction.md)                         | このガイドは、ClickHouseを使用してSQLベースの可観測性ソリューションを構築しようとするユーザーを対象としており、ログとトレースに焦点を当てています。                                                                                         |
-| [スキーマ設計](./schema-design.md)                       | ユーザーがログとトレースのために独自のスキーマを作成することが推奨される理由と、そのためのベストプラクティスについて学びます。                                                                                                       |
-| [データ管理](./managing-data.md)                       | 可観測性のためのClickHouseのデプロイメントは、管理が必要な大規模データセットを含むことが必然です。ClickHouseはデータ管理を支援するための多くの機能を提供しています。                                                                                      |
-| [OpenTelemetryとの統合](./integrating-opentelemetry.md) | すべての可観測性ソリューションは、ログとトレースを収集し、エクスポートする手段を必要とします。この目的のために、ClickHouseはOpenTelemetry (OTel) プロジェクトを推奨しています。ClickHouseとの統合方法について詳しく学びます。 |
-| [Grafanaの使用](./grafana.md)                             | ClickHouseにおける可観測性データの視覚化ツールとして推奨されるGrafanaの使用方法を学びます。                                                                                                                                      |
-| [デモアプリケーション](./demo-application.md)                 | Open Telemetryプロジェクトにはデモアプリケーションが含まれています。このアプリケーションの、ClickHouseをログとトレースのデータソースとするメンテナンスされたフォークがこのページにリンクされています。                                                               |
+Welcome to our Observability use case guide. In this guide you'll learn how you can get setup and use ClickHouse for Observability.
+
+Navigate to the pages below to explore the different sections of this guide.
+
+| Page                                                        | Description                                                                                                                                                                                                              |
+|-------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Introduction](./introduction.md)                           | このガイドは、ClickHouseを使用して独自のSQLベースのObservabilityソリューションを構築したいユーザーのために設計されており、ログとトレースに焦点を当てています。                                                                            |
+| [Schema design](./schema-design.md)                         | ユーザーがログとトレースのために独自のスキーマを作成することを推奨する理由と、それを行うためのベストプラクティスを学びます。                                                                                             |
+| [Managing data](./managing-data.md)                         | ObservabilityのためのClickHouseのデプロイメントは、管理が必要な大規模データセットを含むことが不可避です。ClickHouseはデータ管理を支援するための多くの機能を提供しています。                                          |
+| [Integrating OpenTelemetry](./integrating-opentelemetry.md) | すべてのObservabilityソリューションには、ログとトレースを収集してエクスポートする手段が必要です。この目的のために、ClickHouseはOpenTelemetry (OTel) プロジェクトを推奨しています。ClickHouseとの統合方法について詳しく学びましょう。      |
+| [Using Grafana](./grafana.md)                               | ClickHouseでのObservabilityデータのための推奨ビジュアライゼーションツールであるGrafanaの使用方法を学びます。      |
+| [Demo Application](./demo-application.md)                   | OpenTelemetryプロジェクトにはデモアプリケーションが含まれています。ログとトレースのデータソースとしてClickHouseを使用するこのアプリケーションの維持されたフォークが、このページにリンクされています。|

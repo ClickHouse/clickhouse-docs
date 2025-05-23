@@ -1,0 +1,328 @@
+---
+'sidebar_position': 1
+'slug': '/cloud/get-started/cloud-quick-start'
+'sidebar_label': 'Cloud 快速入门'
+'keywords':
+- 'clickhouse'
+- 'install'
+- 'getting started'
+- 'quick start'
+'pagination_next': 'cloud/get-started/sql-console'
+'title': 'ClickHouse Cloud 快速入门'
+'description': 'ClickHouse Cloud 的快速入门指南'
+---
+
+import Image from '@theme/IdealImage';
+import signup_page from '@site/static/images/_snippets/signup_page.png';
+import select_plan from '@site/static/images/_snippets/select_plan.png';
+import createservice1 from '@site/static/images/_snippets/createservice1.png';
+import scaling_limits from '@site/static/images/_snippets/scaling_limits.png';
+import createservice8 from '@site/static/images/_snippets/createservice8.png';
+import show_databases from '@site/static/images/_snippets/show_databases.png';
+import service_connect from '@site/static/images/_snippets/service_connect.png';
+import data_sources from '@site/static/images/_snippets/data_sources.png';
+import select_data_source from '@site/static/images/_snippets/select_data_source.png';
+import client_details from '@site/static/images/_snippets/client_details.png';
+import new_rows_from_csv from '@site/static/images/_snippets/new_rows_from_csv.png';
+import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
+
+
+# ClickHouse Cloud 快速入门
+
+使用 ClickHouse 最快和最简单的方法是创建一个新的
+服务在 [ClickHouse Cloud](https://console.clickhouse.cloud)。
+
+<VerticalStepper type="numbered">
+
+## 创建一个 ClickHouse 服务 {#1-create-a-clickhouse-service}
+
+要在 [ClickHouse Cloud](https://console.clickhouse.cloud) 中创建一个免费的 ClickHouse 服务，您只需通过完成以下步骤进行注册：
+
+  - 在 [注册页面](https://console.clickhouse.cloud/signUp) 上创建一个账户
+  - 您可以选择使用电子邮件或通过 Google SSO、Microsoft SSO、AWS Marketplace、Google Cloud 或 Microsoft Azure 进行注册
+  - 如果您选择使用电子邮件和密码注册，请记得在接下来的 24 小时内通过您电子邮件中收到的链接验证您的电子邮件地址
+  - 使用您刚刚创建的用户名和密码登录
+
+<Image img={signup_page} size="md" alt='选择计划' border/>
+<br/>
+
+登录后，ClickHouse Cloud 会启动入职向导，引导您创建新的 ClickHouse 服务。您将最初被要求 [选择一个计划](/cloud/manage/cloud-tiers):
+
+<Image img={select_plan} size="md" alt='选择计划' border/>
+<br/>
+
+:::tip
+我们建议大多数工作负载使用 Scale 级别。
+有关级别的更多详细信息，请参见 [这里](/cloud/manage/cloud-tiers)
+:::
+
+选择一个计划需要您选择希望部署第一个服务的区域。
+可用的确切选项将取决于所选的级别。
+在以下步骤中，我们假设用户选择了推荐的 Scale 级别。
+
+选择您想要部署服务的区域，并给您的新服务命名：
+
+<Image img={createservice1} size="md" alt='新 ClickHouse 服务' border/>
+<br/>
+
+默认情况下，Scale 级别将创建每个具有 4 个 VCPU 和 16 GiB RAM 的 3 个副本。Scale 级别将默认启用 [垂直自动扩展](/manage/scaling#vertical-auto-scaling)。
+
+用户可以根据需要自定义服务资源，指定副本的最小和最大大小以实现扩展。当准备就绪时，选择 `创建服务`。
+
+<Image img={scaling_limits} size="md" alt='扩展限制' border/>
+<br/>
+
+恭喜！您的 ClickHouse Cloud 服务已启动并已完成入职。继续阅读以获取有关如何开始数据摄取和查询的详细信息。
+
+## 连接到 ClickHouse {#2-connect-to-clickhouse}
+有两种方法可以连接到 ClickHouse：
+  - 使用我们的基于web的 SQL 控制台进行连接
+  - 使用您的应用程序进行连接
+<br/>
+### 使用 SQL 控制台进行连接 {#connect-using-sql-console}
+
+为了快速入门，ClickHouse 提供了一个基于web的 SQL 控制台，您将在完成入职后被重定向到该控制台。
+
+<Image img={createservice8} size="md" alt='SQL 控制台' border/>
+
+创建一个查询标签并输入一个简单查询以验证您的连接是否正常：
+
+```sql
+SHOW databases
+```
+
+您应该在列表中看到 4 个数据库，此外还有您可能添加的任何其他数据库。
+
+<Image img={show_databases} size="md" alt='SQL 控制台' border/>
+<br/>
+
+就这样 - 您已经准备好开始使用您的新 ClickHouse 服务！
+
+### 使用您的应用程序进行连接 {#connect-with-your-app}
+
+从导航菜单中按连接按钮。将打开一个模态窗口，提供您服务的凭据，并为您提供如何使用您的接口或语言客户端连接的说明。
+
+<Image img={service_connect} size="md" alt='服务连接' border/>
+<br/>
+
+如果您无法看到您的语言客户端，您可能想查看我们的 [集成列表](/integrations)。
+
+## 添加数据 {#3-add-data}
+
+ClickHouse 在有数据时表现更好！有多种方法可以添加数据，其中大多数可以在数据源页面上找到，该页面可以通过导航菜单访问。
+
+<Image img={data_sources} size="md" alt='数据源' border/>
+<br/>
+
+您可以使用以下方法上传数据：
+  - 设置 ClickPipe以开始从 S3、Postgres、Kafka、GCS 等数据源摄取数据
+  - 使用 SQL 控制台
+  - 使用 ClickHouse 客户端
+  - 上传文件 - 支持格式包括 JSON、CSV 和 TSV
+  - 从文件 URL 上传数据
+
+### ClickPipes {#clickpipes}
+
+[ClickPipes](http://clickhouse.com/docs/integrations/clickpipes) 是一个管理集成平台，使从多种来源摄取数据变得简单，只需单击几个按钮。ClickPipes 的强大和可扩展架构确保了一致的性能和可靠性，非常适合最要求的工作负载。ClickPipes 可用于长期流式传输需求或一次性数据加载作业。
+
+<Image img={select_data_source} size="md" alt='选择数据源' border/>
+<br/>
+
+### 使用 SQL 控制台添加数据 {#add-data-using-the-sql-console}
+
+像大多数数据库管理系统一样，ClickHouse 将表 logically group 成 **数据库**。使用 [`CREATE DATABASE`](../../sql-reference/statements/create/database.md) 命令在 ClickHouse 中创建一个新数据库：
+
+```sql
+CREATE DATABASE IF NOT EXISTS helloworld
+```
+
+运行以下命令在 `helloworld` 数据库中创建一个名为 `my_first_table` 的表：
+
+```sql
+CREATE TABLE helloworld.my_first_table
+(
+    user_id UInt32,
+    message String,
+    timestamp DateTime,
+    metric Float32
+)
+ENGINE = MergeTree()
+PRIMARY KEY (user_id, timestamp)
+```
+
+在上述示例中，`my_first_table` 是一个 [`MergeTree`](../../engines/table-engines/mergetree-family/mergetree.md) 表，具有四个列：
+
+  - `user_id`:  一个 32 位无符号整数 ([UInt32](../../sql-reference/data-types/int-uint.md))
+  - `message`: 一个 [String](../../sql-reference/data-types/string.md) 数据类型，替代了其他数据库系统中的 `VARCHAR`、`BLOB`、`CLOB` 等类型
+  - `timestamp`: 一个 [DateTime](../../sql-reference/data-types/datetime.md) 值，表示某个时刻
+  - `metric`: 一个 32 位浮点数 ([Float32](../../sql-reference/data-types/float.md))
+
+:::note 表引擎
+表引擎确立了：
+  - 数据的存储方式和位置
+  - 支持哪些查询
+  - 数据是否被复制
+<br/>
+有许多表引擎可供选择，但对于单节点 ClickHouse 服务器上的简单表，[`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) 是您可能的选择。
+:::
+
+#### 主键简介 {#a-brief-intro-to-primary-keys}
+
+在您继续之前，重要的是要了解 ClickHouse 中主键的工作方式（主键的实现可能会让您感到意外！）：
+
+  - ClickHouse 中的主键在表中的每一行并 **_不唯一_**
+
+ClickHouse 表的主键决定了数据写入磁盘时的排序方式。每 8,192 行或 10MB 数据（称为 **索引粒度**）会在主键索引文件中创建一个条目。这个粒度概念 创建了一个 **稀疏索引**，可以很容易地放入内存，粒度代表在 `SELECT` 查询期间处理的最少列数据条带。
+
+可以使用 `PRIMARY KEY` 参数定义主键。如果您定义一个没有指定 `PRIMARY KEY` 的表，则键成为 `ORDER BY` 子句中指定的元组。如果您同时指定了 `PRIMARY KEY` 和 `ORDER BY`，则主键必须是排序顺序的一个子集。
+
+主键也是排序键，它是一个 `(user_id, timestamp)` 的元组。因此，存储在每个 列文件中的数据将按 `user_id`，然后按 `timestamp` 排序。
+
+有关核心 ClickHouse 概念的深度探讨，请参阅 ["核心概念"](../../managing-data/core-concepts/index.md)。
+
+#### 向您的表中插入数据 {#insert-data-into-your-table}
+
+您可以使用熟悉的 [`INSERT INTO TABLE`](../../sql-reference/statements/insert-into.md) 命令与 ClickHouse，但重要的是要理解每次插入一个 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) 表时都会在存储中创建一个 **部分**。
+
+:::tip ClickHouse 最佳实践
+每批插入大量行 - 一次数万行或数百万行。不要担心 - ClickHouse 可以轻松处理这种体量 - 而且它将通过向您的服务发送更少的写请求来 [为您节省资金](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous)。
+:::
+
+<br/>
+
+即使是一个简单的示例，让我们一次插入多于一行：
+
+```sql
+INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES
+    (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
+    (102, 'Insert a lot of rows per batch',                     yesterday(), 1.41421 ),
+    (102, 'Sort your data based on your commonly-used queries', today(),     2.718   ),
+    (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
+```
+
+:::note
+注意 `timestamp` 列通过各种 [**Date**](../../sql-reference/data-types/date.md) 和 [**DateTime**](../../sql-reference/data-types/datetime.md) 函数填充。ClickHouse 拥有数百个实用函数，您可以在 [**函数**部分](/sql-reference/functions/) 中查看。
+:::
+
+让我们验证一下是否成功：
+
+```sql
+SELECT * FROM helloworld.my_first_table
+```
+
+### 使用 ClickHouse 客户端添加数据 {#add-data-using-the-clickhouse-client}
+
+您还可以使用名为 [**clickhouse client**](/interfaces/cli) 的命令行工具连接到您的 ClickHouse Cloud 服务。单击左侧菜单中的 `连接` 以访问这些详细信息。从对话框中选择 `Native`。
+
+<Image img={client_details} size="md" alt='clickhouse client 连接详细信息' border/>
+<br/>
+
+1. 安装 [ClickHouse](/interfaces/cli)。
+
+2. 运行命令，替换您的主机名、用户名和密码：
+
+```bash
+./clickhouse client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
+--secure --port 9440 \
+--user default \
+--password <password>
+```
+如果您看到微笑表情符号提示，您就可以运行查询了！
+```response
+:)
+```
+
+3. 尝试运行以下查询：
+
+<br/>
+
+```sql
+SELECT *
+FROM helloworld.my_first_table
+ORDER BY timestamp
+```
+
+注意响应以漂亮的表格格式返回：
+
+```response
+┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
+│     102 │ Insert a lot of rows per batch                     │ 2022-03-21 00:00:00 │ 1.41421 │
+│     102 │ Sort your data based on your commonly-used queries │ 2022-03-22 00:00:00 │   2.718 │
+│     101 │ Hello, ClickHouse!                                 │ 2022-03-22 14:04:09 │      -1 │
+│     101 │ Granules are the smallest chunks of data read      │ 2022-03-22 14:04:14 │ 3.14159 │
+└─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
+
+4 rows in set. Elapsed: 0.008 sec.
+```
+
+4. 添加一个 [`FORMAT`](../../sql-reference/statements/select/format.md) 子句来指定 [ClickHouse 支持的多种输出格式之一](/interfaces/formats/)：
+
+<br/>
+
+```sql
+SELECT *
+FROM helloworld.my_first_table
+ORDER BY timestamp
+FORMAT TabSeparated
+```
+在上述查询中，输出作为制表符分隔返回：
+```response
+Query id: 3604df1c-acfd-4117-9c56-f86c69721121
+
+102 Insert a lot of rows per batch      2022-03-21 00:00:00     1.41421
+102 Sort your data based on your commonly-used queries  2022-03-22 00:00:00     2.718
+101 Hello, ClickHouse!  2022-03-22 14:04:09     -1
+101 Granules are the smallest chunks of data read       2022-03-22 14:04:14     3.14159
+
+4 rows in set. Elapsed: 0.005 sec.
+```
+
+5. 要退出 `clickhouse client`，输入 **exit** 命令：
+
+<br/>
+
+```bash
+exit
+```
+
+### 上传文件 {#upload-a-file}
+
+开始使用数据库时一项常见任务是插入您已经存在于文件中的一些数据。我们有一些在线示例数据，可以插入，表示点击流数据 - 包括用户 ID、访问的 URL 和事件的时间戳。
+
+假设我们在名为 `data.csv` 的 CSV 文件中有以下文本：
+
+```bash title="data.csv"
+102,This is data in a file,2022-02-22 10:43:28,123.45
+101,It is comma-separated,2022-02-23 00:00:00,456.78
+103,Use FORMAT to specify the format,2022-02-21 10:43:30,678.90
+```
+
+1. 以下命令将数据插入到 `my_first_table`：
+
+<br/>
+
+```bash
+./clickhouse client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
+--secure --port 9440 \
+--user default \
+--password <password> \
+--query='INSERT INTO helloworld.my_first_table FORMAT CSV' < data.csv
+```
+
+2. 如果从 SQL 控制台查询，现在注意新行出现在表中：
+
+<br/>
+
+<Image img={new_rows_from_csv} size="md" alt='来自 CSV 文件的新行' />
+<br/>
+
+</VerticalStepper>
+
+## 接下来怎么做？ {#whats-next}
+
+- [教程](/tutorial.md) 指导您向表插入 200 万行并编写一些分析查询
+- 我们有一个 [示例数据集列表](/getting-started/index.md)，里面有如何插入它们的说明
+- 查看我们关于 [ClickHouse 入门的 25 分钟视频](https://clickhouse.com/company/events/getting-started-with-clickhouse/)
+- 如果您的数据来自外部来源，可以查看我们的 [集成指南集合](/integrations/index.mdx)，帮助您连接消息队列、数据库、管道等
+- 如果您使用 UI/BI 可视化工具，请查看 [连接 UI 到 ClickHouse 的用户指南](/integrations/data-visualization)
+- 关于 [主键](/guides/best-practices/sparse-primary-indexes.md) 的用户指南是您需要知道的关于主键及其定义的所有内容

@@ -1,40 +1,51 @@
 ---
-slug: /operations/settings/composable-protocols
-sidebar_position: 64
-sidebar_label: コンプーザブルプロトコル
-title: "コンプーザブルプロトコル"
-description: "コンプーザブルプロトコルは、ClickHouseサーバーへのTCPアクセスのより柔軟な設定を可能にします。"
+'description': 'Composable protocols allows more flexible configuration of TCP access
+  to the ClickHouse server.'
+'sidebar_label': 'Composable Protocols'
+'sidebar_position': 64
+'slug': '/operations/settings/composable-protocols'
+'title': 'Composable Protocols'
 ---
 
 
-# コンプーザブルプロトコル
 
-コンプレッサブルプロトコルは、ClickHouseサーバーへのTCPアクセスのより柔軟な設定を可能にします。この設定は、従来の設定と共存することも、置き換えることもできます。
 
-## コンパイルプロトコルセクションは、設定xmlで`protocols`として示されます {#composable-protocols-section-is-denoted-as-protocols-in-configuration-xml}
-**例:**
-``` xml
+# コンポーザブルプロトコル
+
+## 概要 {#overview}
+
+コンポーザブルプロトコルは、ClickHouseサーバーへのTCPアクセスの柔軟な構成を可能にします。この構成は、従来の構成と共存するか、または置き換えられることができます。
+
+## コンポーザブルプロトコルの構成 {#composable-protocols-section-is-denoted-as-protocols-in-configuration-xml}
+
+コンポーザブルプロトコルは、XML構成ファイルで構成できます。プロトコルセクションは、XML設定ファイル内の `protocols` タグで示されます:
+
+```xml
 <protocols>
 
 </protocols>
 ```
 
-## 基本モジュールはプロトコルレイヤーを定義します {#basic-modules-define-protocol-layers}
-**例:**
-``` xml
+### プロトコルレイヤーの構成 {#basic-modules-define-protocol-layers}
+
+基本モジュールを使用してプロトコルレイヤーを定義できます。たとえば、HTTPレイヤーを定義するには、`protocols` セクションに新しい基本モジュールを追加できます:
+
+```xml
 <protocols>
 
-  <!-- plain_httpモジュール -->
+  <!-- plain_http モジュール -->
   <plain_http>
     <type>http</type>
   </plain_http>
 
 </protocols>
 ```
-ここで:
+モジュールは以下に基づいて構成できます:
+
 - `plain_http` - 他のレイヤーで参照できる名前
-- `type` - データを処理するためにインスタンス化されるプロトコルハンドラーを示します。プロトコルハンドラーのセットは事前に定義されています:
-  * `tcp` - ネイティブのClickHouseプロトコルハンドラー
+- `type` - データを処理するためにインスタンス化されるプロトコルハンドラーを示します。
+   予め定義されたプロトコルハンドラーのセットは次の通りです：
+  * `tcp` - ネイティブClickHouseプロトコルハンドラー
   * `http` - HTTP ClickHouseプロトコルハンドラー
   * `tls` - TLS暗号化レイヤー
   * `proxy1` - PROXYv1レイヤー
@@ -44,12 +55,15 @@ description: "コンプーザブルプロトコルは、ClickHouseサーバー�
   * `interserver` - ClickHouseインターサーバーハンドラー
 
 :::note
-`gRPC`プロトコルハンドラーは`コンプーザブルプロトコル`には実装されていません
+`gRPC`プロトコルハンドラーは`コンポーザブルプロトコル`には実装されていません
 :::
 
-## エンドポイント（すなわちリスニングポート）は`<port>`および（オプションの）`<host>`タグによって示されます {#endpoint-ie-listening-port-is-denoted-by-port-and-optional-host-tags}
-**例:**
-``` xml
+### エンドポイントの構成 {#endpoint-ie-listening-port-is-denoted-by-port-and-optional-host-tags}
+
+エンドポイント（リスニングポート）は、`<port>` およびオプションの `<host>` タグで示されます。
+たとえば、前に追加したHTTPレイヤーにエンドポイントを構成するには、次のように設定を変更できます:
+
+```xml
 <protocols>
 
   <plain_http>
@@ -63,11 +77,14 @@ description: "コンプーザブルプロトコルは、ClickHouseサーバー�
 
 </protocols>
 ```
-`<host>`が省略された場合、ルート設定の`<listen_host>`が使用されます。
 
-## レイヤーの順序は`<impl>`タグによって定義され、別のモジュールを参照します {#layers-sequence-is-defined-by-impl-tag-referencing-another-module}
-**例:** HTTPSプロトコルの定義
-``` xml
+`<host>` タグが省略された場合は、ルート構成の `<listen_host>` が使用されます。
+
+### レイヤーの順序の構成 {#layers-sequence-is-defined-by-impl-tag-referencing-another-module}
+
+レイヤーの順序は、`<impl>` タグを使用して定義され、別のモジュールを参照します。たとえば、plain_http モジュールの上にTLSレイヤーを構成するには、次のように設定をさらに変更できます:
+
+```xml
 <protocols>
 
   <!-- httpモジュール -->
@@ -75,7 +92,7 @@ description: "コンプーザブルプロトコルは、ClickHouseサーバー�
     <type>http</type>
   </plain_http>
 
-  <!-- plaintext_httpモジュールの上にTLSレイヤーとして設定されたhttpsモジュール -->
+  <!-- plain_httpモジュールの上に構成されたtlsレイヤーとしてのhttpsモジュール -->
   <https>
     <type>tls</type>
     <impl>plain_http</impl>
@@ -86,9 +103,11 @@ description: "コンプーザブルプロトコルは、ClickHouseサーバー�
 </protocols>
 ```
 
-## エンドポイントは任意のレイヤーに付加できます {#endpoint-can-be-attached-to-any-layer}
-**例:** HTTP（ポート8123）およびHTTPS（ポート8443）エンドポイントの定義
-``` xml
+### レイヤーにエンドポイントを添付する {#endpoint-can-be-attached-to-any-layer}
+
+エンドポイントは任意のレイヤーに添付できます。たとえば、HTTP（ポート8123）およびHTTPS（ポート8443）のエンドポイントを定義できます:
+
+```xml
 <protocols>
 
   <plain_http>
@@ -107,9 +126,11 @@ description: "コンプーザブルプロトコルは、ClickHouseサーバー�
 </protocols>
 ```
 
-## 追加のエンドポイントは任意のモジュールを参照して`<type>`タグを省略することで定義できます {#additional-endpoints-can-be-defined-by-referencing-any-module-and-omitting-type-tag}
-**例:** `another_http`エンドポイントが`plain_http`モジュールのために定義されています
-``` xml
+### 追加のエンドポイントの定義 {#additional-endpoints-can-be-defined-by-referencing-any-module-and-omitting-type-tag}
+
+追加のエンドポイントは、任意のモジュールを参照し `<type>` タグを省略することで定義できます。たとえば、`plain_http` モジュールの `another_http` エンドポイントを次のように定義できます:
+
+```xml
 <protocols>
 
   <plain_http>
@@ -134,9 +155,11 @@ description: "コンプーザブルプロトコルは、ClickHouseサーバー�
 </protocols>
 ```
 
-## 一部のモジュールはそのレイヤー固有のパラメーターを含むことができます {#some-modules-can-contain-specific-for-its-layer-parameters}
-**例:** TLSレイヤーのために、秘密鍵（`privateKeyFile`）および証明書ファイル（`certificateFile`）を指定できます
-``` xml
+### 追加のレイヤーパラメータの指定 {#some-modules-can-contain-specific-for-its-layer-parameters}
+
+一部のモジュールは、追加のレイヤーパラメータを含むことができます。たとえば、TLSレイヤーは次のようにプライベートキー（`privateKeyFile`）および証明書ファイル（`certificateFile`）を指定できます:
+
+```xml
 <protocols>
 
   <plain_http>

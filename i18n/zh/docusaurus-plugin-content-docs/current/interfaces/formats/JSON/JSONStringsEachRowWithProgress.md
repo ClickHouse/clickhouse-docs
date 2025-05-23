@@ -1,7 +1,9 @@
 ---
-title: 'JSONStringsEachRowWithProgress'
-slug: '/interfaces/formats/JSONStringsEachRowWithProgress'
-keywords: ['JSONStringsEachRowWithProgress']
+'description': 'JSONStringsEachRowWithProgress格式的文档'
+'keywords':
+- 'JSONStringsEachRowWithProgress'
+'slug': '/interfaces/formats/JSONStringsEachRowWithProgress'
+'title': 'JSONStringsEachRowWithProgress'
 ---
 
 ## 描述 {#description}

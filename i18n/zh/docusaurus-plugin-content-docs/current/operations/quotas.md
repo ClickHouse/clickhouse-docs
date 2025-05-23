@@ -1,32 +1,38 @@
 ---
-slug: /operations/quotas
-sidebar_position: 51
-sidebar_label: '配额'
-title: '配额'
+'description': '在 ClickHouse 中配置和管理资源使用配额的指南'
+'sidebar_label': '配额'
+'sidebar_position': 51
+'slug': '/operations/quotas'
+'title': '配额'
 ---
 
-配额允许您在一段时间内限制资源使用或跟踪资源的使用情况。配额在用户配置中设置，通常为 'users.xml'。
+:::note Quotas in ClickHouse Cloud
+在 ClickHouse Cloud 中支持配额，但必须使用 [DDL 语法](/sql-reference/statements/create/quota) 创建。下面文档中的 XML 配置方法 **不支持**。
+:::
 
-系统还具有限制单个查询复杂度的功能。请参见[查询复杂度的限制](../operations/settings/query-complexity.md)部分。
+配额允许你限制一段时间内的资源使用或跟踪资源的使用情况。
+配额在用户配置中设置，通常为 'users.xml'。
 
-与查询复杂度限制相比，配额：
+系统还具有限制单个查询复杂度的功能。请参见 [查询复杂度限制](../operations/settings/query-complexity.md) 部分。
 
-- 对一段时间内可以运行的一组查询施加限制，而不是限制单个查询。
-- 考虑在所有远程服务器上用于分布式查询处理的资源。
+与查询复杂度限制相对，配额：
 
-让我们看看定义配额的 'users.xml' 文件的部分。
+- 对在一段时间内可以运行的查询集施加限制，而不是限制单个查询。
+- 计算分布式查询处理所有远程服务器上消耗的资源。
 
-``` xml
-<!-- 配额 -->
+让我们看看 'users.xml' 文件中定义配额的部分。
+
+```xml
+<!-- Quotas -->
 <quotas>
-    <!-- 配额名称。 -->
+    <!-- Quota name. -->
     <default>
-        <!-- 一段时间内的限制。您可以设置许多具有不同限制的时间间隔。 -->
+        <!-- Restrictions for a time period. You can set many intervals with different restrictions. -->
         <interval>
-            <!-- 时间间隔的长度。 -->
+            <!-- Length of the interval. -->
             <duration>3600</duration>
 
-            <!-- 不限制。仅在指定的时间间隔内收集数据。 -->
+            <!-- Unlimited. Just collect data for the specified time interval. -->
             <queries>0</queries>
             <query_selects>0</query_selects>
             <query_inserts>0</query_inserts>
@@ -38,13 +44,14 @@ title: '配额'
     </default>
 ```
 
-默认情况下，配额每小时跟踪资源消耗，而不限制使用。每个时间间隔计算的资源消耗在每个请求后输出到服务器日志。
+默认情况下，配额跟踪每小时的资源消耗，而不限制使用。
+每个时间段计算的资源消耗将在每次请求后输出到服务器日志中。
 
-``` xml
+```xml
 <statbox>
-    <!-- 一段时间内的限制。您可以设置许多具有不同限制的时间间隔。 -->
+    <!-- Restrictions for a time period. You can set many intervals with different restrictions. -->
     <interval>
-        <!-- 时间间隔的长度。 -->
+        <!-- Length of the interval. -->
         <duration>3600</duration>
 
         <queries>1000</queries>
@@ -70,47 +77,51 @@ title: '配额'
 </statbox>
 ```
 
-对于 'statbox' 配额，每小时和每24小时（86,400秒）设置了限制。时间间隔从一个实现定义的固定时刻开始计算。换句话说，24小时的间隔不一定从午夜开始。
+对于 'statbox' 配额，每小时和每 24 小时（86,400 秒）设置限制。时间间隔的计算从一个实现定义的固定时刻开始。换句话说，24 小时的时间间隔并不一定从午夜开始。
 
-当时间间隔结束时，所有收集的值将被清除。在下一个小时，配额计算将重新开始。
+当时间间隔结束时，所有收集的值会被清除。在下一个小时，配额计算将重新开始。
 
 以下是可以限制的数量：
 
 `queries` – 请求的总数。
 
-`query_selects` – select请求的总数。
+`query_selects` – select 请求的总数。
 
-`query_inserts` – insert请求的总数。
+`query_inserts` – insert 请求的总数。
 
 `errors` – 抛出异常的查询数量。
 
 `result_rows` – 作为结果返回的总行数。
 
-`read_rows` – 从表中读取的用于在所有远程服务器上运行查询的源行的总数。
+`read_rows` – 从表中读取以在所有远程服务器上运行查询的源行总数。
 
-`execution_time` – 查询的总执行时间，以秒为单位（墙时）。
+`execution_time` – 查询执行的总时间，以秒为单位（墙时）。
 
-如果至少有一个时间间隔的限制被超过，则会抛出异常，说明哪个限制被超过、哪个时间间隔以及何时开始新的时间间隔（何时可以再次发送查询）。
+如果在至少一个时间间隔内超过限制，会抛出包含超出限制的文本的异常，说明哪个限制被超出了，在哪个时间间隔，以及何时开始新的时间间隔（可以再次发送查询时）。
 
-配额可以使用“配额键”功能独立报告多个键的资源。以下是示例：
+配额可以使用 “配额键” 功能独立报告多个键的资源。以下是这一点的示例：
 
-``` xml
-<!-- 用于全局报告设计器。 -->
+```xml
+<!-- For the global reports designer. -->
 <web_global>
-    <!-- keyed – 配额键 "key" 在查询参数中传递，
-            每个键值的配额都是单独跟踪的。
-        例如，您可以将用户名作为键传递，
-            这样配额将单独计算每个用户名。
-        使用键的意义在于配额键是由程序传输，而非用户。
+    <!-- keyed – The quota_key "key" is passed in the query parameter,
+            and the quota is tracked separately for each key value.
+        For example, you can pass a username as the key,
+            so the quota will be counted separately for each username.
+        Using keys makes sense only if quota_key is transmitted by the program, not by a user.
 
-        您还可以编写 <keyed_by_ip />，使用IP地址作为配额键。
-        （但请记住，用户可以相当容易地更改IPv6地址。）
+        You can also write <keyed_by_ip />, so the IP address is used as the quota key.
+        (But keep in mind that users can change the IPv6 address fairly easily.)
     -->
     <keyed />
 ```
 
-配额分配给配置的 'users' 部分的用户。请参见“访问权限”部分。
+配额在配置的 'users' 部分分配给用户。请参见“访问权限”部分。
 
-对于分布式查询处理，累积的金额存储在请求者服务器上。因此，如果用户转到另一台服务器，那里配额将“重新开始”。
+对于分布式查询处理，累积的总量存储在请求者服务器上。因此，如果用户转到另一台服务器，则那里的配额将 “重新开始”。
 
 当服务器重新启动时，配额将被重置。
+
+## Related Content {#related-content}
+
+- 博客: [使用 ClickHouse 构建单页应用程序](https://clickhouse.com/blog/building-single-page-applications-with-clickhouse-and-http)

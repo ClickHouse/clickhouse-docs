@@ -1,43 +1,47 @@
 ---
-slug: /sql-reference/table-functions/cluster
-sidebar_position: 30
-sidebar_label: cluster
-title: "clusterAllReplicas"
-description: "クラスターのすべてのシャード（`remote_servers` セクションで構成された）にアクセスするために、分散テーブルを作成せずに使用します。"
+'description': '`remote_servers` セクションで構成されたすべてのシャードにアクセスを可能にし、分散テーブルを作成しなくてもクラスターのすべてのレプリカにアクセスできます。'
+'sidebar_label': 'クラスター'
+'sidebar_position': 30
+'slug': '/sql-reference/table-functions/cluster'
+'title': 'clusterAllReplicas'
 ---
+
+
 
 
 # clusterAllReplicas テーブル関数
 
-分散テーブルを作成せずに、クラスターのすべてのシャード（`remote_servers` セクションで構成された）にアクセスします。各シャードのレプリカのうち、1つだけがクエリされます。
+`remote_servers` セクションで設定されたすべてのシャードにアクセスできるようにし、[Distributed](../../engines/table-engines/special/distributed.md) テーブルを作成する必要がありません。一つのシャードの各レプリカだけがクエリされます。
 
-`clusterAllReplicas` 関数は、`cluster` と同じですが、すべてのレプリカがクエリされます。クラスター内の各レプリカは、別のシャード/接続として使用されます。
+`clusterAllReplicas` 関数は、 `cluster` と同じですが、すべてのレプリカがクエリされます。クラスター内の各レプリカは、別々のシャード/接続として使用されます。
 
 :::note
 利用可能なすべてのクラスターは、[system.clusters](../../operations/system-tables/clusters.md) テーブルにリストされています。
 :::
 
-**構文**
+## 構文 {#syntax}
 
-``` sql
+```sql
 cluster(['cluster_name', db.table, sharding_key])
 cluster(['cluster_name', db, table, sharding_key])
 clusterAllReplicas(['cluster_name', db.table, sharding_key])
 clusterAllReplicas(['cluster_name', db, table, sharding_key])
 ```
-**引数**
+## 引数 {#arguments}
 
-- `cluster_name` – アドレスと接続パラメータのセットを構築するために使用されるクラスターの名前。指定されていない場合は `default` を設定します。
-- `db.table` または `db`、`table` - データベースおよびテーブルの名前。
-- `sharding_key` - シャーディングキー。オプションです。クラスターにシャードが複数ある場合は指定する必要があります。
+| 引数                       | タイプ                                                                                                                                              |
+|----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| `cluster_name`             | リモートサーバーとローカルサーバーへのアドレスと接続パラメーターのセットを構築するために使用されるクラスターの名前。指定されていない場合は `default` を設定します。 |
+| `db.table` または `db`, `table` | データベースとテーブルの名前。                                                                                                                   |
+| `sharding_key`             | シャーディングキー。オプション。クラスターが1つ以上のシャードを持つ場合は指定する必要があります。                                                           |
 
-**返される値**
+## 戻り値 {#returned_value}
 
-クラスターからのデータセット。
+クラスタからのデータセット。
 
-**マクロの使用**
+## マクロの使用 {#using_macros}
 
-`cluster_name` にはマクロ — 中括弧内の置換を含めることができます。置換された値は、サーバー設定ファイルの [macros](../../operations/server-configuration-parameters/settings.md#macros) セクションから取得されます。
+`cluster_name` はマクロを含むことができます — 波括弧内の置換。置換された値は、サーバー設定ファイルの [macros](../../operations/server-configuration-parameters/settings.md#macros) セクションから取得されます。
 
 例:
 
@@ -45,19 +49,19 @@ clusterAllReplicas(['cluster_name', db, table, sharding_key])
 SELECT * FROM cluster('{cluster}', default.example_table);
 ```
 
-**使用法と推奨事項**
+## 使用法と推奨事項 {#usage_recommendations}
 
-`cluster` および `clusterAllReplicas` テーブル関数の使用は、`Distributed` テーブルを作成するよりも効率が劣ります。なぜなら、この場合はリクエストごとにサーバー接続が再確立されるからです。多くのクエリを処理する場合は、常にあらかじめ `Distributed` テーブルを作成し、`cluster` および `clusterAllReplicas` テーブル関数を使用しないでください。
+`cluster` と `clusterAllReplicas` テーブル関数を使用することは、`Distributed` テーブルを作成するよりも効率が悪くなります。この場合、リクエストごとにサーバー接続が再確立されるためです。多数のクエリを処理する場合は、必ず予め `Distributed` テーブルを作成し、`cluster` および `clusterAllReplicas` テーブル関数は使用しないでください。
 
-`cluster` および `clusterAllReplicas` テーブル関数は、次のような場合に役立ちます：
+`cluster` および `clusterAllReplicas` テーブル関数は、以下のような場合に便利です：
 
-- データ比較、デバッグ、およびテストのために特定のクラスターにアクセスする。
-- 研究目的でさまざまな ClickHouse クラスターおよびレプリカにクエリを送信する。
+- データ比較、デバッグ、テストのために特定のクラスターにアクセスする。
+- 研究目的でさまざまな ClickHouse クラスターとレプリカにクエリを実行する。
 - 手動で行われる稀な分散リクエスト。
 
-接続設定は、`host`、`port`、`user`、`password`、`compression`、`secure` が `<remote_servers>` 設定セクションから取得されます。詳細は [Distributed engine](../../engines/table-engines/special/distributed.md) を参照してください。
+接続設定は、 `<remote_servers>` 設定セクションから `host`、`port`、`user`、`password`、`compression`、`secure` などが取得されます。詳細は [Distributed engine](../../engines/table-engines/special/distributed.md) を参照してください。
 
-**関連項目**
+## 関連 {#related}
 
 - [skip_unavailable_shards](../../operations/settings/settings.md#skip_unavailable_shards)
 - [load_balancing](../../operations/settings/settings.md#load_balancing)

@@ -1,8 +1,14 @@
 ---
-slug: /faq/general/
-sidebar_position: 1
-sidebar_label: 关于 ClickHouse 的常见问题
-keywords: [clickhouse, faq, 问题, 什么是]
+'slug': '/faq/general/'
+'sidebar_position': 1
+'sidebar_label': '关于 ClickHouse 的一般问题'
+'keywords':
+- 'clickhouse'
+- 'faq'
+- 'questions'
+- 'what is'
+'title': '关于 ClickHouse 的一般问题'
+'description': '索引页面列出关于 ClickHouse 的一般问题'
 ---
 
 
@@ -19,6 +25,6 @@ keywords: [clickhouse, faq, 问题, 什么是]
 - [为什么不使用类似 MapReduce 的东西?](../../faq/general/mapreduce.md)
 - [我该如何为 ClickHouse 贡献代码?](/knowledgebase/how-do-i-contribute-code-to-clickhouse)
 
-:::info 找不到您要找的内容?
-请查看我们的 [知识库](/knowledgebase/) ，并浏览文档中的许多有用文章。
+:::info 没有找到您要找的内容吗?
+请查看我们的 [知识库](/knowledgebase/)，并浏览文档中许多有用的文章。
 :::

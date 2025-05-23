@@ -1,67 +1,69 @@
 ---
-sidebar_label: 監査ログ
-slug: /cloud/security/audit-logging
-title: 監査ログ
+'sidebar_label': '監査ログ'
+'slug': '/cloud/security/audit-logging'
+'title': 'Audit Logging'
+'description': 'このページはClickHouse Cloudでの監査ログについて説明しています。ClickHouse Cloudの組織に対する変更を記録する監査ログへのアクセス方法と解釈方法について説明しています。'
 ---
 
+import Image from '@theme/IdealImage';
 import activity_log_1 from '@site/static/images/cloud/security/activity_log1.png';
 import activity_log_2 from '@site/static/images/cloud/security/activity_log2.png';
 import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png';
 
-ClickHouse Cloud で、あなたの組織の詳細に移動します。
+In ClickHouse Cloud, あなたの組織の詳細に移動します。
 
-<img src={activity_log_1} alt="ClickHouse Cloud アクティビティタブ" class="image" style={{width: '30%'}}/>
-
-<br/>
-
-左メニューで **監査** タブを選択すると、あなたの ClickHouse Cloud 組織に対して行われた変更、誰が変更を行い、いつ発生したかを確認できます。
-
-**アクティビティ** ページでは、あなたの組織に関するイベントがログされた一覧を含むテーブルが表示されます。デフォルトでは、このリストは逆時系列順（最新のイベントが上部）でソートされています。カラムヘッダーをクリックすることでテーブルの順序を変更できます。テーブルの各項目には以下のフィールドが含まれています：
-
-- **アクティビティ:** イベントを説明するテキストスニペット
-- **ユーザー:** イベントを発起したユーザー
-- **IP アドレス:** 該当する場合、このフィールドにはイベントを発起したユーザーの IP アドレスが表示されます
-- **時間:** イベントのタイムスタンプ
-
-<img src={activity_log_2} alt="ClickHouse Cloud アクティビティテーブル" />
+<Image img={activity_log_1} size="md" alt="ClickHouse Cloud activity tab" border />
 
 <br/>
 
-提供された検索バーを使用して、サービス名や IP アドレスなどの基準に基づいてイベントを特定できます。また、この情報を CSV 形式でエクスポートし、外部ツールでの配布や分析に使用することも可能です。
+左メニューから **Audit** タブを選択すると、あなたの ClickHouse Cloud 組織で行われた変更を確認できます。変更を行ったのは誰で、いつ発生したのかも含まれています。
+
+**Activity** ページには、あなたの組織に関するイベントが記録されたテーブルが表示されます。デフォルトでは、このリストは逆年代順（最新のイベントが上部）にソートされています。カラムヘッダーをクリックしてテーブルの順序を変更できます。テーブルの各アイテムには以下のフィールドが含まれます：
+
+- **Activity:** イベントを説明するテキストスニペット
+- **User:** イベントを開始したユーザー
+- **IP Address:** 該当する場合、このフィールドにはイベントを開始したユーザーのIPアドレスが表示されます
+- **Time:** イベントのタイムスタンプ
+
+<Image img={activity_log_2} size="md" alt="ClickHouse Cloud Activity Table" border />
+
+<br/>
+
+提供された検索バーを使用すると、サービス名やIPアドレスなどのいくつかの基準に基づいてイベントを特定できます。この情報は、配布や外部ツールでの分析のためにCSV形式でエクスポートすることも可能です。
 
 <div class="eighty-percent">
-    <img src={activity_log_3} alt="ClickHouse Cloud アクティビティ CSV エクスポート" />
+    <Image img={activity_log_3} size="lg" alt="ClickHouse Cloud Activity CSV export" border />
 </div>
 
-## ログされたイベントのリスト {#list-of-events-logged}
+## ログに記録されたイベントのリスト {#list-of-events-logged}
 
-組織のためにキャプチャされた異なるタイプのイベントは、**サービス**、**組織**、および **ユーザー** の 3 つのカテゴリにグループ化されています。ログされたイベントのリストには以下が含まれます：
+組織のためにキャプチャされたさまざまなタイプのイベントは、**Service**、**Organization**、**User** の3つのカテゴリにグループ化されています。ログに記録されたイベントのリストには以下が含まれます：
 
-### サービス {#service}
+### Service {#service}
 
 - サービスが作成されました
 - サービスが削除されました
 - サービスが停止しました
 - サービスが開始されました
 - サービス名が変更されました
-- サービスの IP アクセスリストが変更されました
+- サービスのIPアクセスリストが変更されました
 - サービスのパスワードがリセットされました
 
-### 組織 {#organization}
+### Organization {#organization}
 
 - 組織が作成されました
 - 組織が削除されました
 - 組織名が変更されました
 
-### ユーザー {#user}
+### User {#user}
 
 - ユーザーの役割が変更されました
 - ユーザーが組織から削除されました
 - ユーザーが組織に招待されました
 - ユーザーが組織に参加しました
 - ユーザーの招待が削除されました
-- ユーザーが組織を退会しました
+- ユーザーが組織を離れました
 
-## 監査イベントのための API {#api-for-audit-events}
+## 監査イベントのためのAPI {#api-for-audit-events}
 
-ユーザーは ClickHouse Cloud API の `activity` エンドポイントを使用して監査イベントのエクスポートを取得できます。詳細については [こちら](/cloud/manage/api/organizations-api-reference#list-of-organization-activities) をご覧ください。
+ユーザーは ClickHouse Cloud API `activity` エンドポイントを使用して、監査イベントのエクスポートを取得できます。詳細は [API reference](https://clickhouse.com/docs/cloud/manage/api/swagger) を参照してください。

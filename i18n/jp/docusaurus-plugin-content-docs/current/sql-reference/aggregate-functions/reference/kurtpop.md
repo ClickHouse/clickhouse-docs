@@ -1,22 +1,24 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/kurtpop
-sidebar_position: 157
-title: "kurtPop"
-description: "シーケンスの尖度を計算します。"
+'description': 'Computes the kurtosis of a sequence.'
+'sidebar_position': 157
+'slug': '/sql-reference/aggregate-functions/reference/kurtpop'
+'title': 'kurtPop'
 ---
+
+
 
 
 # kurtPop
 
-シーケンスの[尖度](https://en.wikipedia.org/wiki/Kurtosis)を計算します。
+シーケンスの [尖度](https://en.wikipedia.org/wiki/Kurtosis) を計算します。
 
-``` sql
+```sql
 kurtPop(expr)
 ```
 
 **引数**
 
-`expr` — 数値を返す[式](/sql-reference/syntax#expressions)。
+`expr` — 数値を返す [式](/sql-reference/syntax#expressions)。
 
 **返される値**
 
@@ -24,6 +26,6 @@ kurtPop(expr)
 
 **例**
 
-``` sql
+```sql
 SELECT kurtPop(value) FROM series_with_value_column;
 ```

@@ -1,32 +1,37 @@
 ---
-slug: '/operations/caches'
-sidebar_position: 65
-sidebar_label: 'キャッシュ'
-title: 'キャッシュの種類'
-description: 'クエリを実行する際、ClickHouseは異なるキャッシュを使用します。'
+'description': 'When performing queries, ClickHouse uses different caches.'
+'sidebar_label': 'Caches'
+'sidebar_position': 65
+'slug': '/operations/caches'
+'title': 'Cache Types'
 ---
+
+
+
+
+# キャッシュタイプ
 
 クエリを実行する際、ClickHouseは異なるキャッシュを使用します。
 
-主要なキャッシュの種類:
+主なキャッシュタイプ:
 
-- `mark_cache` — [MergeTree](../engines/table-engines/mergetree-family/mergetree.md) 系のテーブルエンジンによって使用されるマークのキャッシュ。
-- `uncompressed_cache` — [MergeTree](../engines/table-engines/mergetree-family/mergetree.md) 系のテーブルエンジンによって使用される非圧縮データのキャッシュ。
-- `skipping_index_cache` — [MergeTree](../engines/table-engines/mergetree-family/mergetree.md) 系のテーブルエンジンによって使用されるメモリ内スキップインデックスグラニュールのキャッシュ。
-- オペレーティングシステムのページキャッシュ（実際のデータを含むファイルに対して間接的に使用される）。
+- `mark_cache` — [MergeTree](../engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブルエンジンによって使用されるマークのキャッシュ。
+- `uncompressed_cache` — [MergeTree](../engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブルエンジンによって使用される非圧縮データのキャッシュ。
+- オペレーティングシステムのページキャッシュ（実際のデータを含むファイルに対して間接的に使用されます）。
 
-追加のキャッシュの種類:
+追加のキャッシュタイプ:
 
-- DNSキャッシュ。
+- DNS キャッシュ。
 - [Regexp](../interfaces/formats.md#data-format-regexp) キャッシュ。
-- コンパイルされた式キャッシュ。
-- [Avro形式](../interfaces/formats.md#data-format-avro) スキーマキャッシュ。
+- コンパイル済み式キャッシュ。
+- [Vector Similarity Index](../engines/table-engines/mergetree-family/annindexes.md) キャッシュ。
+- [Avroフォーマット](../interfaces/formats.md#data-format-avro) スキーマキャッシュ。
 - [Dictionaries](../sql-reference/dictionaries/index.md) データキャッシュ。
 - スキーマ推論キャッシュ。
-- [ファイルシステムキャッシュ](storing-data.md)（S3、Azure、ローカルおよびその他のディスク上）。
-- [クエリキャッシュ](query-cache.md)。
+- [Filesystem cache](storing-data.md) S3、Azure、ローカルおよびその他のディスク上。
+- [Userspace page cache](/operations/userspace-page-cache)
+- [Query cache](query-cache.md)。
+- [Query condition cache](query-condition-cache.md)。
 - フォーマットスキーマキャッシュ。
 
-キャッシュの1つを削除するには、[SYSTEM DROP ... CACHE](../sql-reference/statements/system.md#drop-mark-cache) ステートメントを使用します。
-
-フォーマットスキーマキャッシュを削除するには、[SYSTEM DROP FORMAT SCHEMA CACHE](/sql-reference/statements/system#system-drop-schema-format) ステートメントを使用します。
+キャッシュのいずれかを削除するには、[SYSTEM DROP ... CACHE](../sql-reference/statements/system.md) ステートメントを使用します。

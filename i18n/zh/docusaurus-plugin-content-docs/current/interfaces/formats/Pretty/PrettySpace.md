@@ -1,21 +1,23 @@
 ---
-title: 'PrettySpace'
-slug: '/interfaces/formats/PrettySpace'
-keywords: ['PrettySpace']
-input_format: false
-output_format: true
-alias: []
+'alias': []
+'description': 'PrettySpace 格式的 Documentation'
+'input_format': false
+'keywords':
+- 'PrettySpace'
+'output_format': true
+'slug': '/interfaces/formats/PrettySpace'
+'title': 'PrettySpace'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| 输入  | 输出   | 别名  |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+| 输入 | 输出  | 别名 |
+|-------|---------|-------|
+| ✗     | ✔       |       |
 
 ## 描述 {#description}
 
-与 [`PrettyCompact`](./PrettyCompact.md) 格式不同，使用空格字符作为表格的显示方式，而不是网格。
+与 [`PrettyCompact`](./PrettyCompact.md) 格式不同，使用空白（空格字符）来显示表，而不是网格。
 
 ## 示例用法 {#example-usage}
 

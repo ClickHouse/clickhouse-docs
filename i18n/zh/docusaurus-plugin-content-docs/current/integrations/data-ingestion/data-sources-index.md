@@ -1,21 +1,45 @@
 ---
-slug: /integrations/index
-keywords: ['AWS S3', 'PostgreSQL', 'Kafka', 'Apache Spark', 'MySQL', 'Cassandra', 'Redis', 'RabbitMQ', 'MongoDB', 'Google Cloud Storage', 'Hive', 'Hudi', 'Iceberg', 'MinIO', 'Delta Lake', 'RocksDB', 'Splunk', 'SQLite', 'NATS', 'EMQX', 'local files', 'JDBC', 'ODBC']
-description: '数据源概述页面'
+'slug': '/integrations/index'
+'keywords':
+- 'AWS S3'
+- 'Azure Data Factory'
+- 'PostgreSQL'
+- 'Kafka'
+- 'MySQL'
+- 'Cassandra'
+- 'Data Factory'
+- 'Redis'
+- 'RabbitMQ'
+- 'MongoDB'
+- 'Google Cloud Storage'
+- 'Hive'
+- 'Hudi'
+- 'Iceberg'
+- 'MinIO'
+- 'Delta Lake'
+- 'RocksDB'
+- 'Splunk'
+- 'SQLite'
+- 'NATS'
+- 'EMQX'
+- 'local files'
+- 'JDBC'
+- 'ODBC'
+'description': '数据源概述页面'
+'title': '数据源'
 ---
 
 
 # 数据源
 
-ClickHouse 允许您轻松地从多种来源将数据导入到数据库中。
+ClickHouse 允许您轻松地从各种来源将数据摄取到您的数据库中。
 有关更多信息，请参见下列页面：
 
-| 数据源                                                                   |
-|-------------------------------------------------------------------------------|
+| 数据源                                                                      |
+|-----------------------------------------------------------------------------|
 | [AWS S3](/integrations/s3)                                            |
 | [PostgreSQL](/integrations/postgresql)                                |
 | [Kafka](/integrations/kafka)                                          |
-| [Apache Spark](/integrations/apache-spark)                            |
 | [MySQL](/integrations/mysql)                                          |
 | [Cassandra](/integrations/cassandra)                                  |
 | [Redis](/integrations/redis)                                          |

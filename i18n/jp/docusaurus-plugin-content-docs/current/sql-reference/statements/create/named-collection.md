@@ -1,6 +1,8 @@
 ---
-slug: /sql-reference/statements/create/named-collection
-sidebar_label: NAMED COLLECTION
+'description': 'Documentation for CREATE NAMED COLLECTION'
+'sidebar_label': 'NAMED COLLECTION'
+'slug': '/sql-reference/statements/create/named-collection'
+'title': 'CREATE NAMED COLLECTION'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -8,9 +10,9 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 <CloudNotSupportedBadge />
 
 
-# CREATE NAMED COLLECTION
+# 名付けられたコレクションの作成
 
-新しい名前付きコレクションを作成します。
+新しい名付けられたコレクションを作成します。
 
 **構文**
 
@@ -28,11 +30,11 @@ key_name3 = 'some value' [[NOT] OVERRIDABLE],
 CREATE NAMED COLLECTION foobar AS a = '1', b = '2' OVERRIDABLE;
 ```
 
-**関連ステートメント**
+**関連するステートメント**
 
-- [CREATE NAMED COLLECTION](/sql-reference/statements/alter/named-collection)
-- [DROP NAMED COLLECTION](/sql-reference/statements/drop#drop-function)
+- [名付けられたコレクションの作成](/sql-reference/statements/alter/named-collection)
+- [名付けられたコレクションの削除](/sql-reference/statements/drop#drop-function)
 
-**参照**
+**その他の情報**
 
-- [名前付きコレクションガイド](/operations/named-collections.md)
+- [名付けられたコレクションのガイド](/operations/named-collections.md)

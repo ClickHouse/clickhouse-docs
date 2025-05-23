@@ -1,10 +1,14 @@
 ---
-slug: /sql-reference/statements/create/
-sidebar_position: 34
-sidebar_label: CREATE
+'description': 'CREATEクエリのドキュメント'
+'sidebar_label': 'CREATE'
+'sidebar_position': 34
+'slug': '/sql-reference/statements/create/'
+'title': 'CREATEクエリ'
 ---
+
+
 
 
 # CREATE クエリ
 
-CREATE クエリは、新しい [databases](/sql-reference/statements/create/database.md)、[tables](/sql-reference/statements/create/table.md)、および [views](/sql-reference/statements/create/view.md) を作成します。
+CREATE クエリは、新しい [データベース](/sql-reference/statements/create/database.md)、[テーブル](/sql-reference/statements/create/table.md)、および [ビュー](/sql-reference/statements/create/view.md) を作成します。
