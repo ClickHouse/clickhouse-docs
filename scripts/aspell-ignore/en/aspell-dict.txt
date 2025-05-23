@@ -247,6 +247,7 @@ DDLs
 DECRYPT
 Decrypter
 DELETEs
+Deno
 DESC
 DIEs
 DOGEFI

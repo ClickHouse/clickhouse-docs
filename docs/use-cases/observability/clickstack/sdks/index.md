@@ -24,7 +24,7 @@ In browser-based environments, SDKs may also be responsible for collecting **ses
 
 | Language | Description | Link |
 |----------|-------------|------|
-| Browser | Javascript SDK for Browser-based applications | [Documentation](/use-cases/observability/clickstack/sdks/browser) |
+| Browser | JavaScript SDK for Browser-based applications | [Documentation](/use-cases/observability/clickstack/sdks/browser) |
 | Elixir | Elixir applications | [Documentation](/use-cases/observability/clickstack/sdks/elixir) |
 | Go | Go applications and microservices | [Documentation](/use-cases/observability/clickstack/sdks/golang) |
 | Java | Java applications | [Documentation](/use-cases/observability/clickstack/sdks/java) |
