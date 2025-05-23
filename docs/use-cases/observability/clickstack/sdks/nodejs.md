@@ -154,8 +154,8 @@ To enable this, you'll need to add the following code to the end of your applica
 ```js 
 const HyperDX = require('@hyperdx/node-opentelemetry');
 HyperDX.init({
-apiKey: 'YOUR_INGESTION_API_KEY',
-service: 'my-service'
+    apiKey: 'YOUR_INGESTION_API_KEY',
+    service: 'my-service'
 });
 const app = express();
 

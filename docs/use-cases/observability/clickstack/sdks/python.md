@@ -40,7 +40,7 @@ opentelemetry-bootstrap -a install
 
 ### Configure environment variables {#configure-environment-variables}
 
-Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to HyperDX:
+Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack:
 
 ```bash
 export HYPERDX_API_KEY='<YOUR_HYPERDX_API_KEY_HERE>' \
