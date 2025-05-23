@@ -27,7 +27,7 @@ instrumentation isn't required to get value out of tracing.
 
 ### Install OpenTelemetry instrumentation packages {#install-opentelemetry}
 
-To install the OpenTelemetry and Hyperdx Go packages, use the command below. It is recommended to check out the [current instrumentation packages](https://github.com/open-telemetry/opentelemetry-go-contrib/tree/v1.4.0/instrumentation#instrumentation-packages) and install the necessary packages to ensure that the trace information is attached correctly.
+To install the OpenTelemetry and HyperDx Go packages, use the command below. It is recommended to check out the [current instrumentation packages](https://github.com/open-telemetry/opentelemetry-go-contrib/tree/v1.4.0/instrumentation#instrumentation-packages) and install the necessary packages to ensure that the trace information is attached correctly.
 
 ```bash
 go get -u go.opentelemetry.io/otel
@@ -35,7 +35,6 @@ go get -u github.com/hyperdxio/otel-config-go
 go get -u github.com/hyperdxio/opentelemetry-go
 go get -u github.com/hyperdxio/opentelemetry-logs-go
 ```
-
 
 ### Native HTTP server example (net/http) {#native-http-server-example}
 
@@ -235,11 +234,13 @@ func main() {
 
 ### Configure environment variables {#configure-environment-variables}
 
-Afterwards you'll need to configure the following environment variables in your
-shell to ship telemetry to HyperDX:
+Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack:
 
 ```sh
-export OTEL_EXPORTER_OTLP_ENDPOINT=https://in-otel.hyperdx.io \
+export OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_HYPERDX_API_KEY_HERE>'
 ```
+
+The `OTEL_EXPORTER_OTLP_HEADERS` environment variable contains your API Key set for the HyperDX app.

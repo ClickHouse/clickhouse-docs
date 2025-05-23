@@ -42,19 +42,20 @@ curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/
 
 ### Configure environment variables {#configure-environment-variables}
 
-Afterwards you'll need to configure the following environment variables in your
-shell to ship telemetry to ClickStack:
+Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack:
 
 ```sh
 export JAVA_TOOL_OPTIONS="-javaagent:PATH/TO/opentelemetry-javaagent.jar" \
-OTEL_EXPORTER_OTLP_ENDPOINT=https://in-otel.hyperdx.io \
+OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
+OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_HYPERDX_API_KEY_HERE>' \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_LOGS_EXPORTER=otlp \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
 ```
 
-_The `OTEL_SERVICE_NAME` environment variable is used to identify your service
-in the HyperDX app, it can be any name you want._
+_The `OTEL_SERVICE_NAME` environment variable is used to identify your service in the HyperDX app, it can be any name you want._
+
+The `OTEL_EXPORTER_OTLP_HEADERS` environment variable contains your API Key set for the HyperDX app.
 
 ### Run the application with OpenTelemetry Java agent {#run-the-application-with-otel-java-agent}
 
