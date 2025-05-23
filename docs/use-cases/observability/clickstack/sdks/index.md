@@ -37,5 +37,12 @@ In browser-based environments, SDKs may also be responsible for collecting **ses
 | Ruby | Ruby on Rails applications and web services | [Documentation](/use-cases/observability/clickstack/sdks/ruby-on-rails) |
 
 
+## Kubernetes Integration {#kubernetes-integration}
 
+All SDKs support automatic correlation with Kubernetes metadata (pod name, namespace, etc.) when running in a Kubernetes environment. This allows you to:
 
+- View Kubernetes metrics for pods and nodes associated with your services
+- Correlate application logs and traces with infrastructure metrics
+- Track resource usage and performance across your Kubernetes cluster
+
+To enable this feature, configure the OpenTelemetry Collector to forward resource tags to pods. See the [Kubernetes integration guide](/use-cases/observability/clickstack/ingesting-data/kubernetes#forwarding-resouce-tags-to-pods) for detailed setup instructions.
