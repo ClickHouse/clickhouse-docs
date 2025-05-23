@@ -2,9 +2,10 @@
 sidebar_label: 'Metabase'
 sidebar_position: 131
 slug: /integrations/metabase
-keywords: ['ClickHouse', 'Metabase', 'connect', 'integrate', 'ui']
+keywords: ['Metabase']
 description: 'Metabase is an easy-to-use, open source UI tool for asking questions about your data.'
 title: 'Connecting Metabase to ClickHouse'
+show_related_blogs: true
 ---
 
 import Image from '@theme/IdealImage';
@@ -98,7 +99,3 @@ If you do not have a dataset to work with you can add one of the examples.  This
 ## Learn more {#learn-more}
 
 Find more information about Metabase and how to build dashboards by <a href="https://www.metabase.com/docs/latest/" target="_blank">visiting the Metabase documentation</a>.
-
-## Related Content {#related-content}
-
-- Blog: [Visualizing Data with ClickHouse - Part 3 - Metabase](https://clickhouse.com/blog/visualizing-data-with-metabase)

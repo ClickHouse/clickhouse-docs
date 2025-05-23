@@ -31,8 +31,6 @@ import Image from '@theme/IdealImage';
   </iframe>
 </div>
 
-- Blog: [Optimizing Analytical Workloads: Comparing Redshift vs ClickHouse](https://clickhouse.com/blog/redshift-vs-clickhouse-comparison)
-
 ## Introduction {#introduction}
 
 [Amazon Redshift](https://aws.amazon.com/redshift/) is a popular cloud data warehousing solution that is part of the Amazon Web Services offerings. This guide presents different approaches to migrating data from a Redshift instance to ClickHouse. We will cover three options:

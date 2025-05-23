@@ -5,6 +5,7 @@ sidebar_position: 2
 keywords: ['ttl', 'time to live', 'clickhouse', 'old', 'data']
 description: 'TTL (time-to-live) refers to the capability of having rows or columns moved, deleted, or rolled up after a certain interval of time has passed.'
 title: 'Manage Data with TTL (Time-to-live)'
+show_related_blogs: true
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -258,8 +259,3 @@ The response will look like:
 │ all_2_2_0   │ hot_disk  │
 └─────────────┴───────────┘
 ```
-
-
-## Related Content {#related-content}
-
-- Blog & Webinar: [Using TTL to Manage Data Lifecycles in ClickHouse](https://clickhouse.com/blog/using-ttl-to-manage-data-lifecycles-in-clickhouse)
