@@ -258,7 +258,7 @@ const config = {
       },
       prism: {
         theme: require('prism-react-renderer').themes.github,
-        darkTheme: require('prism-react-renderer').themes.dracula,
+        darkTheme: themes.darkTheme,
         additionalLanguages: ["java", "cpp", "rust", "python", "javascript"],
         magicComments: [
           // Remember to extend the default highlight class name as well!
