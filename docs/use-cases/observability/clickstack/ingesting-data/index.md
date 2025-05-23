@@ -8,7 +8,7 @@ title: 'Ingesting data'
 
 ClickStack provides multiple ways to ingest observability data into your ClickHouse instance. Whether you're collecting logs, metrics, traces, or session data, you can use the OpenTelemetry Collector as a unified ingestion point, or leverage platform-specific integrations for specialized use cases.
 
-## Contents
+## Contents {#contents}
 
 | Name | Description |
 |------|-------------|

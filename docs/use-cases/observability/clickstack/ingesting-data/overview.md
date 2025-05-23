@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/ingesting-data/overview
-title: 'Ingesting data'
+title: 'Ingesting data into ClickStack'
 sidebar_label: 'Overview'
 sidebar_position: 0
 pagination_prev: null
@@ -16,8 +16,8 @@ _INSERT_DIAGRAM_
 
 This collector exposes two OTLP endpoints:
 
-- **HTTP:** - port `4318`
-- **gRPC:** - port `4317`
+- **HTTP** - port `4318`
+- **gRPC** - port `4317`
 
 Users can send data to these endpoints either directly from [language SDKs](/use-cases/observability/clickstack/sdks) or through intermediate OpenTelemetry collector acting as agents e.g. collecting infrastructure metrics and logs.
 
