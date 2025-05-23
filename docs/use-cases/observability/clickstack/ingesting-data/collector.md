@@ -15,7 +15,7 @@ import observability_9 from '@site/static/images/use-cases/observability/observa
 
 All data is ingested into ClickStack via the **OpenTelemetry Collector**, which acts as the primary entry point for logs, metrics, traces, and session data. 
 
-Users can send data to these endpoints either directly from [language SDKs](/use-cases/observability/clickstack/sdks) or through intermediate OpenTelemetry collector acting as agents over OTLP e.g. collecting infrastructure metrics and logs.
+Users can send data to these endpoints either directly from [language SDKs](/use-cases/observability/clickstack/sdks) or through intermediate OpenTelemetry collector acting as [agents](#collector-roles) over OTLP e.g. collecting infrastructure metrics and logs.
 
 ## Installing {#installing}
 
@@ -24,6 +24,12 @@ The OpenTelemetry Collector is included in most ClickStack distributions, includ
 - [All-in-One](/use-cases/observability/clickstack/deployment/all-in-one)
 - [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)
 - [Helm](/use-cases/observability/clickstack/deployment/helm)
+
+**The ClickStack distribution of the OTel collector assumes the [gateway role described below](#collector-roles), receiving data from collectors in the agent role or SDKs.**
+
+### Standalone {#standalone}
+
+The ClickStack OTel collector can be deployed standalone independent of other components of the stack.
 
 If you're using the [HyperDX-only](/use-cases/observability/clickstack/deployment/hyperdx-only) distribution, you are responsible for delivering data into ClickHouse yourself. This can be done by:
 
@@ -34,7 +40,8 @@ If you're using the [HyperDX-only](/use-cases/observability/clickstack/deploymen
 This allows users to benefit from standardized ingestion, enforced schemas, and out-of-the-box compatibility with the HyperDX UI. Using the default schema enables automatic source detection and preconfigured column mappings.
 :::
 
-### Standalone {#standalone}
+
+
 
 
 ## Creating a ClickHouse user {#creating-a-user}
@@ -42,6 +49,11 @@ This allows users to benefit from standardized ingestion, enforced schemas, and 
 
 ## Collector roles {#collector-roles}
 
+The **generic** OpenTelemetry Collector can be deployed in two principal roles:
+
+- **Agent** - Agent instances collect data at the edge e.g. on servers or on Kubernetes nodes, or receive events directly from applications - instrumented with an OpenTelemetry SDK. In the latter case, the agent instance runs with the application or on the same host as the application (such as a sidecar or a DaemonSet). Agents can either send their data directly to ClickHouse or to a gateway instance. In the former case, this is referred to as [Agent deployment pattern](https://opentelemetry.io/docs/collector/deployment/agent/). **The default distribution of the OTel collector can be used if deploying in this role.**
+
+- **Gateway**  - Gateway instances provide a standalone service (for example, a deployment in Kubernetes), typically per cluster, per data center, or per region. These receive events from applications (or other collectors as agents) via a single OTLP endpoint. Typically, a set of gateway instances are deployed, with an out-of-the-box load balancer used to distribute the load amongst them. If all agents and applications send their signals to this single endpoint, it is often referred to as a [Gateway deployment pattern](https://opentelemetry.io/docs/collector/deployment/gateway/). **The ClickStack distribution of the OTel collector assumes the gateway role.**
 
 ## Sending data to OpenTelemetry Endpoints {#opentelemetry-endpoints}
 
