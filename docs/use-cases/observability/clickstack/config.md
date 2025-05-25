@@ -40,7 +40,7 @@ services:
 
 ### Helm {#helm}
 
-### Customizing values (Optional) {#customizing-values}
+#### Customizing values (Optional) {#customizing-values}
 
 You can customize settings by using `--set` flags e.g.
 

@@ -12,10 +12,9 @@ import observability_6 from '@site/static/images/use-cases/observability/observa
 import observability_8 from '@site/static/images/use-cases/observability/observability-8.png';
 import observability_9 from '@site/static/images/use-cases/observability/observability-9.png';
 
+All data is ingested into ClickStack via an **OpenTelemetry Collector** instance, which acts as the primary entry point for logs, metrics, traces, and session data. We recommend using the official [ClickStack distribution](#installing) of the collector for this instance.
 
-All data is ingested into ClickStack via the **OpenTelemetry Collector**, which acts as the primary entry point for logs, metrics, traces, and session data. 
-
-Users can send data to these endpoints either directly from [language SDKs](/use-cases/observability/clickstack/sdks) or through intermediate OpenTelemetry collector acting as [agents](#collector-roles) over OTLP e.g. collecting infrastructure metrics and logs.
+Users send data to this collector from [language SDKs](/use-cases/observability/clickstack/sdks) or through intermediate OpenTelemetry collector acting as [agents](#collector-roles) over OTLP e.g. collecting infrastructure metrics and logs.
 
 ## Installing {#installing}
 
@@ -25,58 +24,257 @@ The OpenTelemetry Collector is included in most ClickStack distributions, includ
 - [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)
 - [Helm](/use-cases/observability/clickstack/deployment/helm)
 
-**The ClickStack distribution of the OTel collector assumes the [gateway role described below](#collector-roles), receiving data from collectors in the agent role or SDKs.**
 
 ### Standalone {#standalone}
 
-The ClickStack OTel collector can be deployed standalone independent of other components of the stack.
+The ClickStack OTel collector can also be deployed standalone independent of other components of the stack.
 
 If you're using the [HyperDX-only](/use-cases/observability/clickstack/deployment/hyperdx-only) distribution, you are responsible for delivering data into ClickHouse yourself. This can be done by:
 
-- Running your own OpenTelemetry Collector and pointing it at ClickHouse - see [Standalone](#standalone).
+- Running your own OpenTelemetry Collector and pointing it at ClickHouse - see below.
 - Sending directly to ClickHouse using alternative tooling (e.g., [Vector](https://vector.dev/), Fluentd, etc.)
 
-:::note We recommend using the OpenTelemetry Collector
+:::note We recommend using the ClickStack OpenTelemetry Collector
 This allows users to benefit from standardized ingestion, enforced schemas, and out-of-the-box compatibility with the HyperDX UI. Using the default schema enables automatic source detection and preconfigured column mappings.
 :::
 
+To deploy the connector run the following docker command:
 
 
+```bash
+docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-otel-collector:2-nightly
 
+```
 
-## Creating a ClickHouse user {#creating-a-user}
+Note that we can overwrite the target ClickHouse instance with environment variables for `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD`. See ["Configuring the collector"](#configuring-the-collector) for details on modifying the configuration further.
 
+Users should use a user with the [appropriate credentials](#creating-a-user) in production.
 
 ## Collector roles {#collector-roles}
 
-The **generic** OpenTelemetry Collector can be deployed in two principal roles:
+OpenTelemetry Collectors can be deployed in two principal roles:
 
-- **Agent** - Agent instances collect data at the edge e.g. on servers or on Kubernetes nodes, or receive events directly from applications - instrumented with an OpenTelemetry SDK. In the latter case, the agent instance runs with the application or on the same host as the application (such as a sidecar or a DaemonSet). Agents can either send their data directly to ClickHouse or to a gateway instance. In the former case, this is referred to as [Agent deployment pattern](https://opentelemetry.io/docs/collector/deployment/agent/). **The default distribution of the OTel collector can be used if deploying in this role.**
+- **Agent** - Agent instances collect data at the edge e.g. on servers or on Kubernetes nodes, or receive events directly from applications - instrumented with an OpenTelemetry SDK. In the latter case, the agent instance runs with the application or on the same host as the application (such as a sidecar or a DaemonSet). Agents can either send their data directly to ClickHouse or to a gateway instance. In the former case, this is referred to as [Agent deployment pattern](https://opentelemetry.io/docs/collector/deployment/agent/). 
 
-- **Gateway**  - Gateway instances provide a standalone service (for example, a deployment in Kubernetes), typically per cluster, per data center, or per region. These receive events from applications (or other collectors as agents) via a single OTLP endpoint. Typically, a set of gateway instances are deployed, with an out-of-the-box load balancer used to distribute the load amongst them. If all agents and applications send their signals to this single endpoint, it is often referred to as a [Gateway deployment pattern](https://opentelemetry.io/docs/collector/deployment/gateway/). **The ClickStack distribution of the OTel collector assumes the gateway role.**
+- **Gateway** - Gateway instances provide a standalone service (for example, a deployment in Kubernetes), typically per cluster, per data center, or per region. These receive events from applications (or other collectors as agents) via a single OTLP endpoint. Typically, a set of gateway instances are deployed, with an out-of-the-box load balancer used to distribute the load amongst them. If all agents and applications send their signals to this single endpoint, it is often referred to as a [Gateway deployment pattern](https://opentelemetry.io/docs/collector/deployment/gateway/). 
 
-## Sending data to OpenTelemetry Endpoints {#opentelemetry-endpoints}
+
+**Important: The collector including in default distributions of ClickStack assume the [gateway role described below](#collector-roles), receiving data from collectors in the agent role or SDKs.**
+
+Users deploying OTel collectors in the agent role will typically use the default distribution of the collector and not the ClickStack version.
+
+## Sending data to the ClickStack OpenTelemetry Endpoint {#opentelemetry-endpoints}
 
 To send data to ClickStack, point your OpenTelemetry instrumentation to the following endpoints made available by the OpenTelemetry collector:
 
 - **HTTP (OTLP):** `http://localhost:4318`
 - **gRPC (OTLP):** `localhost:4317`
 
-### Example {#example}
-
-Set the `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable in your application:
+For most [language SDKs](/use-cases/observability/clickstack/sdks) and telemetry libraries that support OpenTelemetry, users can simply set `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable in your application:
 
 ```bash
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
 
-This configuration applies to most [language SDKs](/use-cases/observability/clickstack/sdks) and telemetry libraries that support OpenTelemetry.
+If deploying collectors in the agent role, they can use the OTLP exporter. An example  agent config consuming this [structured log file](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz), is shown below.
 
 
-## Securing the collector {#securing-the-collector}
+```yaml
+# clickhouse-agent-config.yaml
+receivers:
+  filelog:
+    include:
+      - /opt/data/logs/access-structured.log
+    start_at: beginning
+    operators:
+      - type: json_parser
+        timestamp:
+          parse_from: attributes.time_local
+          layout: '%Y-%m-%d %H:%M:%S'
+exporters:
+  # HTTP setup
+  otlphttp/hdx:
+    endpoint: 'http://localhost:4318'
+    headers:
+      authorization: <YOUR_API_INGESTION_KEY>
+    compression: gzip
+ 
+  # gRPC setup (alternative)
+  otlp/hdx:
+    endpoint: 'localhost:4317'
+    headers:
+      authorization: <YOUR_API_INGESTION_KEY>
+    compression: gzip
+processors:
+  batch:
+    timeout: 5s
+    send_batch_size: 1000
+service:
+  telemetry:
+    metrics:
+      address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
+  pipelines:
+    logs:
+      receivers: [filelog]
+      processors: [batch]
+      exporters: [otlphttp/hdx]
+```
 
-SSL collector, use a key - RUM
+## Configuring the collector {#configuring-the-collector}
 
+The default ClickStack configuration for the OpenTelemetry (OTel) collector can be found [here](https://github.com/hyperdxio/hyperdx/blob/v2/docker/otel-collector/config.yaml).
+
+This collector exploit the ClickHouse exporter documented [here](/observability/integrating-opentelemetry#exporting-to-clickhouse) and [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
+
+For details on configuring the wider OTel collector, including [`receivers`](https://opentelemetry.io/docs/collector/transforming-telemetry/), [`operators`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md), and [`processors`](https://opentelemetry.io/docs/collector/configuration/#processors), we recommend the [official OpenTelemetry collector documentation](https://opentelemetry.io/docs/collector/).
+
+### Modifying configuration {#modifying-otel-collector-configuration}
+
+If you are managing your own OpenTelemetry Collector in a standalone deployment - such as when using the HyperDX only distribution - we [recommend still using the official ClickStack distribution of the collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) for the gateway role, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
+
+#### Docker images {#docker-images}
+
+All docker images which include the OpenTelemetry Collector can be configured to use a clickhouse instance via the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD` as shown for the [standalone](#standalone) deployment.
+
+For example for the all-in-one image:
+
+```bash
+export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
+export CLICKHOUSE_USER=<CLICKHOUSE_USER>
+export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
+
+docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-all-in-one:2-nightly
+```
+
+All images have their configuration located at `/etc/otelcol-contrib/config.yaml`. To modify this:
+
+1. Copy the [default configuration](https://github.com/hyperdxio/hyperdx/blob/v2/docker/otel-collector/config.yaml) from the official repository.
+2. Modify it as needed.
+3. Mount your updated file into the container using the -v flag
+
+```bash
+docker run \
+  -v $(pwd)/config.yaml:/etc/otelcol-contrib/config.yaml \
+  -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4318:4318 \
+  hyperdx/hyperdx-all-in-one:2-beta.16
+```
+
+##### Docker Compose {#docker-compose-otel}
+
+With Docker Compose, there are several to modify the collector configuration:
+
+**Option 1 – Modify the environment variables**
+
+Environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD` allow the target ClickHouse cluster to be modified e.g.
+
+```yaml
+  otel-collector:
+    image: hyperdx/hyperdx-otel-collector:2-nightly
+    environment:
+      CLICKHOUSE_ENDPOINT: 'https://mxl4k3ul6a.us-east-2.aws.clickhouse-staging.com:8443'
+      HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+      CLICKHOUSE_USER: 'default'
+      CLICKHOUSE_PASSWORD: 'password'
+    ports:
+      - '13133:13133' # health_check extension
+      - '24225:24225' # fluentd receiver
+      - '4317:4317' # OTLP gRPC receiver
+      - '4318:4318' # OTLP http receiver
+      - '8888:8888' # metrics extension
+    restart: always
+    networks:
+      - internal
+```
+
+**Option 2 – Replace the default config**
+
+Mount a custom file to replace the default config at `/etc/otelcol-contrib/config.yaml`.
+
+```yaml
+  otel-collector:
+    image: ${OTEL_COLLECTOR_IMAGE_NAME}:${IMAGE_VERSION}
+    environment:
+      CLICKHOUSE_ENDPOINT: 'ch-server:9000'
+      HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+    ports:
+      - '13133:13133'
+      - '24225:24225'
+      - '4317:4317'
+      - '4318:4318'
+      - '8888:8888'
+    volumes:
+      - ./config.yaml:/etc/otelcol-contrib/config.yaml
+```
+
+**Option 3 – Merge in additional settings**
+
+Provide an additional file like `config-extras.yaml` that is merged into the base config. This file is listed second in the command array.
+
+```yaml
+  otel-collector:
+    image: ${OTEL_COLLECTOR_IMAGE_NAME}:${IMAGE_VERSION}
+    command: [
+      "--config=/etc/otelcol-contrib/config.yaml",
+      "--config=/etc/otelcol-contrib/config-extras.yaml"
+    ]
+    environment:
+      CLICKHOUSE_ENDPOINT: 'ch-server:9000'
+      HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+    ports:
+      - '13133:13133'
+      - '24225:24225'
+      - '4317:4317'
+      - '4318:4318'
+      - '8888:8888'
+    volumes:
+      - ./config-extras.yaml:/etc/otelcol-contrib/config-extras.yaml
+```
+
+In this model, the contents of config-extras.yaml will be merged with the default. This is useful for appending exporters, modifying pipelines, or injecting additional behavior.
+
+```yaml
+service:
+  pipelines:
+    metrics:
+      receivers: [hostmetrics, docker_stats, httpcheck/frontend-proxy, otlp, prometheus, redis]
+      processors: [memory_limiter, batch]
+      exporters: [clickhouse, file/metrics]
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [clickhouse, file/traces]
+    logs/out-default:
+      receivers: [routing/logs]
+      processors: [memory_limiter, transform, batch]
+      exporters: [clickhouse, file/logs]
+    logs/out-rrweb:
+      receivers: [routing/logs]
+      processors: [memory_limiter, batch]
+      exporters: [clickhouse/rrweb, file/sessions]
+exporters:
+  file/logs:
+    path: /data/sample_logs.json
+    rotation:
+      max_megabytes: 10000
+      localtime: true
+  file/metrics:
+    path: /data/sample_metrics.json
+    rotation:
+      max_megabytes: 10000
+      localtime: true
+  file/traces:
+    path: /data/sample_traces.json
+    rotation:
+      max_megabytes: 10000
+      localtime: true
+  file/sessions:
+    path: /data/sample_sessions.json
+    rotation:
+      max_megabytes: 10000
+      localtime: true
+```
+
+This example adds file exporters alongside ClickHouse, writing out samples of logs, metrics, traces, and sessions. It's a useful pattern for debugging and local development.
 
 ## Processing - filtering, transforming and enriching {#processing-filtering-transforming-enriching}
 
@@ -102,9 +300,9 @@ The following configuration shows collection of this [unstructured log file](htt
 
 Note the use of operators to extract structure from the log lines (`regex_parser`) and filter events, along with a processor to batch events and limit memory usage.
 
-[config-unstructured-logs-with-processor.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-unstructured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_regex*_parser*N_______regex%3A_*%22%5E*C*QP*Lip*G%5B*Bd.%5D*P*D*Bs*P-*Bs*P-*Bs*P*B%5B*C*QP*Ltimestamp*G%5B%5E*B%5D%5D*P*D*B%5D*Bs*P%22*C*QP*Lmethod*G%5BA-Z%5D*P*D*Bs*P*C*QP*Lurl*G%5B%5E*Bs%5D*P*D*Bs*PHTTP%2F%5B%5E*Bs%5D*P%22*Bs*P*C*QP*Lstatus*G*Bd*P*D*Bs*P*C*QP*Lsize*G*Bd*P*D*Bs*P%22*C*QP*Lreferrer*G%5B%5E%22%5D***D%22*Bs*P%22*C*QP*Luser*_agent*G%5B%5E%22%5D***D%22*%22*N_______timestamp%3A*N_________parse*_from%3A_attributes.timestamp*N_________layout%3A_*%22*.d%2F*.b%2F*.Y%3A*.H%3A*.M%3A*.S_*.z*%22*N_________*H22%2FJan%2F2019%3A03%3A56%3A14_*P0330*N*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_1s*N___send*_batch*_size%3A_100*N_memory*_limiter%3A*N___check*_interval%3A_1s*N___limit*_mib%3A_2048*N___spike*_limit*_mib%3A_256*N*N*Nexporters%3A*N_logging%3A*N___loglevel%3A_debug*N*N*Nservice%3A*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%2C_memory*_limiter%5D*N_____exporters%3A_%5Blogging%5D%7E)
 
 ```yaml
+# config-unstructured-logs-with-processor.yaml
 receivers:
   filelog:
     include:
@@ -126,10 +324,19 @@ processors:
     limit_mib: 2048
     spike_limit_mib: 256
 exporters:
-  otlp:
-    endpoint: localhost:4317 # sends data to an otel gateway
-    tls:
-      insecure: true # Set to false if you are using a secure connection
+  # HTTP setup
+  otlphttp/hdx:
+    endpoint: 'http://localhost:4318'
+    headers:
+      authorization: <YOUR_API_INGESTION_KEY>
+    compression: gzip
+ 
+  # gRPC setup (alternative)
+  otlp/hdx:
+    endpoint: 'localhost:4317'
+    headers:
+      authorization: <YOUR_API_INGESTION_KEY>
+    compression: gzip
 service:
   telemetry:
     metrics:
@@ -138,10 +345,20 @@ service:
     logs:
       receivers: [filelog]
       processors: [batch]
-      exporters: [otlp]
+      exporters: [otlphttp/hdx]
 ```
 
 For more advanced configuration we suggest the [OpenTelemetry Collector documentation](https://opentelemetry.io/docs/collector/).
+
+## Securing the collector {#securing-the-collector}
+
+SSL collector, use a API KEY.
+
+What if we're deploying collector standalone?
+
+```bash
+TODO
+```
 
 ## Optimizing inserts {#optimizing-inserts}
 
