@@ -203,9 +203,11 @@ To further secure your deployment, we recommend:
 
 ### Creating an ingestion user {#creating-an-ingestion-user}
 
-```bash
-TODO
-```
+We recommend creating a dedicated user for the OTel collector for ingestion into ClickHouse. This should have the ability to create and insert into the [tables created and used by ClickStack](/use-cases/observability/clickstack/ingesting-data/schemas). 
+
+
+
+
 
 ## Processing - filtering, transforming and enriching {#processing-filtering-transforming-enriching}
 

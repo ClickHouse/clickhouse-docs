@@ -103,11 +103,7 @@ By default the `default` user in both OSS and ClickHouse Cloud will have these p
 
 #### Ingestion user {#ingestion-user}
 
-We recommend creating a dedicated user for the OTel collector for ingestion into ClickHouse. By default, this should have the ability to create and insert into the [tables created and used by ClickStack](/use-cases/observability/clickstack/ingesting-data/schemas). 
-
-```bash
-TODO
-```
+We recommend creating a dedicated user for the OTel collector for ingestion into ClickHouse. See ["Creating an ingestion user"](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) for further details.
 
 ### Self-managed security {#self-managed-security}
 
