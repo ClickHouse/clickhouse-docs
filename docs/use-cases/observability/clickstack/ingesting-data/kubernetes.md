@@ -20,13 +20,13 @@ This Guide Integrates:
 To send over application-level metrics or APM/traces, you'll need to add the corresponding language integration to your application as well.
 :::
 
-## Creating the Otel Helm Chart configuration files {#creating-the-otel-helm-chart-config-files}
+## Creating the OTel Helm Chart configuration files {#creating-the-otel-helm-chart-config-files}
 
 To collect logs and metrics from both each node and the cluster itself, we'll need to deploy two separate OpenTelemetry collectors. One will be deployed as a DaemonSet to collect logs and metrics from each node, and the other will be deployed as a Deployment to collect logs and metrics from the cluster itself.
 
 ### Creating the DaemonSet configuration {#creating-the-daemonset-configuration}
 
-The daemonset will collect logs and metrics from each node in the cluster, but will not collect Kubernetes events or cluster-wide metrics.
+The DaemonSet will collect logs and metrics from each node in the cluster, but will not collect Kubernetes events or cluster-wide metrics.
 
 Create a file called `daemonset.yaml` with the following contents:
 
@@ -170,12 +170,12 @@ config:
 ## Deploying the OpenTelemetry collector {#deploying-the-otel-collector}
 
 The OpenTelemetry collector can now be deployed in your Kubernetes cluster using
-the [OpenTelemtry Helm Chart](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-collector).
+the [OpenTelemetry Helm Chart](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-collector).
 
 Add the OpenTelemetry Helm repo:
 
 ```bash copy
-helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts # Add Otel Helm repo
+helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts # Add OTel Helm repo
 ```
 
 Install the chart with the above config:

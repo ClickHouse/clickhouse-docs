@@ -28,7 +28,7 @@ More specifically:
 
 - **Data collection agents** are agents deployed at the edge—on servers, Kubernetes nodes, or alongside applications. They collect infrastructure telemetry (e.g. logs, metrics) or receive events directly from applications instrumented with SDKs. In this case, the agent runs on the same host as the application, often as a sidecar or DaemonSet. These agents forward data to the central ClickStack OTel collector, which acts as a [gateway](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles), typically deployed once per cluster, data center, or region. The [gateway](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) receives OTLP events from agents or applications and handles ingestion into ClickHouse. See [OTel collector](/use-cases/observability/clickstack/ingesting-data/otel-collector) for more details. These agents can be other instances of the OTel collector or alternative technologies such as [Fluentd](https://www.fluentd.org/) or [Vector](https://vector.dev/).
 
-:::note OpenTelemetry compatability
+:::note OpenTelemetry compatibility
 While ClickStack offers its own language SDKs and a custom OpenTelemetry , with enhanced telemetry and features, users can also use their existing OpenTelemetry SDKs and agents seamlessly.
 :::
 

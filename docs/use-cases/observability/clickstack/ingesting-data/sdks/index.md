@@ -20,7 +20,7 @@ In browser-based environments, SDKs may also be responsible for collecting **ses
 
 ## Supported Languages {#supported-languages}
 
-:::note OpenTelemetry compatability
+:::note OpenTelemetry compatibility
 While ClickStack offers its own language SDKs with enhanced telemetry and features, users can also use their existing OpenTelemetry SDKs seamlessly.
 :::
 

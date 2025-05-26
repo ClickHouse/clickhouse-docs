@@ -107,7 +107,7 @@ HYPERDX_APP_URL=http://localhost
 HYPERDX_LOG_LEVEL=debug
 ```
 
-### Configuring the OpenTelemtry collector {#configuring-collector}
+### Configuring the OpenTelemetry collector {#configuring-collector}
 
 The OTel collector configuration can be modified if required - see ["Modifying configuration"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
 

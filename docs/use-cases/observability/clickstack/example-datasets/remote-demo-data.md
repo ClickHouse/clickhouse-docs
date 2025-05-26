@@ -29,7 +29,7 @@ This demo reuses the official OpenTelemetry demo. This is composed of microservi
 
 ```INSERT IMAGE```
 
-Further details on the demo can be found in the [official OpenTelemtry documentation](https://opentelemetry.io/docs/demo/). 
+Further details on the demo can be found in the [official OpenTelemetry documentation](https://opentelemetry.io/docs/demo/). 
 
 ## Demo steps {#demo-steps}
 

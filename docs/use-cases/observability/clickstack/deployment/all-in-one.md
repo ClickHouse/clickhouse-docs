@@ -95,6 +95,6 @@ The `CLICKHOUSE_ENDPOINT` should be the ClickHouse Cloud HTTPS endpoint, includi
 
 On connecting to the HyperDX UI and creating a connection to ClickHouse, use your Cloud credentials.
 
-## Configuring the OpenTelemtry collector {#configuring-collector}
+## Configuring the OpenTelemetry collector {#configuring-collector}
 
 The OTel collector configuration can be modified if required - see ["Modifying configuration"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
