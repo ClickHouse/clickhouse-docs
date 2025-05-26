@@ -37,11 +37,13 @@ This allows users to benefit from standardized ingestion, enforced schemas, and 
 To deploy the connector run the following docker command:
 
 ```bash
-docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-otel-collector:2-nightly
+docker run -e OPAMP_SERVER_URL=${HYPERDX_URL}/v1/opamp -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-otel-collector:2-nightly
 
 ```
 
 Note that we can overwrite the target ClickHouse instance with environment variables for `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD`. **These environment variables can be used with any of the docker distributions which include the connector.**
+
+The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment and its OpAMP (Open Agent Management Protocol) endpoint at `/v1/opamp` e.g. `http://localhost:8080/v1/opamp`. This ensures the collectors OTLP interface is secured with the ingestion API key.
 
 See ["Configuring the collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector#configuring-the-collector) for details on modifying the configuration further.
 

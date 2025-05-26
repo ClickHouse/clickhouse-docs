@@ -3,8 +3,8 @@ slug: /use-cases/observability/clickstack/ingesting-data/otel-collector
 pagination_prev: null
 pagination_next: null
 description: 'OpenTelemetry collector for ClickStack - The ClickHouse Observability Stack'
-sidebar_label: 'OpenTelemetry collector'
-title: 'ClickStack OTel collector'
+sidebar_label: 'OpenTelemetry Collector'
+title: 'ClickStack OpenTelemetry Collector'
 ---
 
 import Image from '@theme/IdealImage';
@@ -50,12 +50,16 @@ All docker images which include the OpenTelemetry collector can be configured to
 For example for the all-in-one image:
 
 ```bash
+export HYPERDX_URL=<HYPERDX_URL>
 export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 
-docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-all-in-one:2-nightly
+docker run -e OPAMP_SERVER_URL=${HYPERDX_URL}/v1/opamp -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-all-in-one:2-nightly
 ```
+
+The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment and its OpAMP (Open Agent Management Protocol) endpoint at `/v1/opamp` e.g. `http://localhost:8080/v1/opamp`. This ensures the collectors OTLP interface is secured with the ingestion API key. See [Securing the collector](#securing-the-collector).
+
 
 All images have their configuration located at `/etc/otelcol-contrib/config.yaml`. To modify this:
 
@@ -72,11 +76,11 @@ docker run \
 
 ##### Docker Compose {#docker-compose-otel}
 
-With Docker Compose, there are several to modify the collector configuration:
+With Docker Compose, there are several options for modifying the collector configuration:
 
 **Option 1 – Modify the environment variables**
 
-Environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD` allow the target ClickHouse cluster to be modified e.g.
+Environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD` allow the target ClickHouse cluster to be modified:
 
 ```yaml
   otel-collector:
@@ -86,6 +90,7 @@ Environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_P
       HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
       CLICKHOUSE_USER: 'default'
       CLICKHOUSE_PASSWORD: 'password'
+      OPAMP_SERVER_URL: http://localhost:8080//v1/opamp
     ports:
       - '13133:13133' # health_check extension
       - '24225:24225' # fluentd receiver
@@ -97,6 +102,8 @@ Environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_P
       - internal
 ```
 
+The `OPAMP_SERVER_URL` can also be modified with the URL of your HyperDX deployment.
+
 **Option 2 – Replace the default config**
 
 Mount a custom file to replace the default config at `/etc/otelcol-contrib/config.yaml`.
@@ -107,6 +114,7 @@ Mount a custom file to replace the default config at `/etc/otelcol-contrib/confi
     environment:
       CLICKHOUSE_ENDPOINT: 'ch-server:9000'
       HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+      OPAMP_SERVER_URL: http://localhost:8080//v1/opamp
     ports:
       - '13133:13133'
       - '24225:24225'
@@ -131,6 +139,7 @@ Provide an additional file like `config-extras.yaml` that is merged into the bas
     environment:
       CLICKHOUSE_ENDPOINT: 'ch-server:9000'
       HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+      OPAMP_SERVER_URL: http://localhost:8080//v1/opamp
     ports:
       - '13133:13133'
       - '24225:24225'

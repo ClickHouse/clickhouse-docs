@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/sample-datasets
-title: 'Sample datasets'
+title: 'Sample Datasets'
 pagination_prev: null
 pagination_next: null
 description: 'Getting started with ClickStack and sample datasets'
