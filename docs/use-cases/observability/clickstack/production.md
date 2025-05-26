@@ -80,6 +80,8 @@ All ingestion should occur via the OTLP ports exposed by ClickStack distribution
 
 <Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
 
+Additionally, we recommend enabling TLS for OTLP endpoints and creating a [dedicated user for ClickHouse ingestion](#ingestion-user).
+
 ## ClickHouse {#clickhouse}
 
 ### ClickHouse Cloud {#clickhouse-cloud}
@@ -100,6 +102,12 @@ The Clickhouse user for HyperDX only needs to be a `readonly` user with access t
 By default the `default` user in both OSS and ClickHouse Cloud will have these permissions available but we recommend you create a new user with these permissions.
 
 #### Ingestion user {#ingestion-user}
+
+We recommend creating a dedicated user for the OTel collector for ingestion into ClickHouse. By default, this should have the ability to create and insert into the [tables created and used by ClickStack](/use-cases/observability/clickstack/ingesting-data/schemas). 
+
+```bash
+TODO
+```
 
 ### Self-managed security {#self-managed-security}
 

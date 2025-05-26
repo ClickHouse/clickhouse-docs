@@ -2,9 +2,9 @@
 slug: /use-cases/observability/clickstack/ingesting-data/otel-collector
 pagination_prev: null
 pagination_next: null
-description: 'OpenTelemetry Collector for ClickStack - The ClickHouse Observability Stack'
-sidebar_label: 'OpenTelemetry Collector'
-title: 'ClickStack OTel Collector'
+description: 'OpenTelemetry collector for ClickStack - The ClickHouse Observability Stack'
+sidebar_label: 'OpenTelemetry collector'
+title: 'ClickStack OTel collector'
 ---
 
 import Image from '@theme/IdealImage';
@@ -13,12 +13,11 @@ import clickstack_with_gateways from '@site/static/images/use-cases/observabilit
 import clickstack_with_kafka from '@site/static/images/use-cases/observability/clickstack-with-kafka.png';
 import ingestion_key from '@site/static/images/use-cases/observability/ingestion-keys.png';
 
-
 This page includes details on configuring the official ClickStack OpenTelemetry (OTel) collector.
 
 ## Collector roles {#collector-roles}
 
-OpenTelemetry Collectors can be deployed in two principal roles:
+OpenTelemetry collectors can be deployed in two principal roles:
 
 - **Agent** - Agent instances collect data at the edge e.g. on servers or on Kubernetes nodes, or receive events directly from applications - instrumented with an OpenTelemetry SDK. In the latter case, the agent instance runs with the application or on the same host as the application (such as a sidecar or a DaemonSet). Agents can either send their data directly to ClickHouse or to a gateway instance. In the former case, this is referred to as [Agent deployment pattern](https://opentelemetry.io/docs/collector/deployment/agent/). 
 
@@ -26,8 +25,7 @@ OpenTelemetry Collectors can be deployed in two principal roles:
 
 **Important: The collector including in default distributions of ClickStack assume the [gateway role described below](#collector-roles), receiving data from agents or SDKs.**
 
-Users deploying OTel collectors in the agent role will typically use the default contrib distribution of the collector and not the ClickStack version, but are free to use other OTLP compatible technologies such as [Fluentd](https://www.fluentd.org/) and [Vector](https://vector.dev/).
-
+Users deploying OTel collectors in the agent role will typically use the [default contrib distribution of the collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) and not the ClickStack version, but are free to use other OTLP compatible technologies such as [Fluentd](https://www.fluentd.org/) and [Vector](https://vector.dev/).
 
 ## Configuring the collector {#configuring-the-collector}
 
@@ -43,11 +41,11 @@ For details on configuring OTel collectors, including [`receivers`](https://open
 
 ### Modifying configuration {#modifying-otel-collector-configuration}
 
-If you are managing your own OpenTelemetry Collector in a standalone deployment - such as when using the HyperDX only distribution - we [recommend still using the official ClickStack distribution of the collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) for the gateway role, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
+If you are managing your own OpenTelemetry collector in a standalone deployment - such as when using the HyperDX only distribution - we [recommend still using the official ClickStack distribution of the collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) for the gateway role, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 
 #### Using docker {#using-docker}
 
-All docker images which include the OpenTelemetry Collector can be configured to use a clickhouse instance via the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD` as shown for the [standalone](#standalone) deployment.
+All docker images which include the OpenTelemetry collector can be configured to use a clickhouse instance via the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD` as shown for the [standalone](#standalone) deployment.
 
 For example for the all-in-one image:
 
@@ -191,7 +189,7 @@ This example adds file exporters alongside ClickHouse, writing out samples of lo
 
 ## Securing the collector {#securing-the-collector}
 
-The ClickStack distribution of the OpenTelemetry Collector includes built-in support for OpAMP (Open Agent Management Protocol), which it uses to securely configure and manage the OTLP endpoint. On startup, users must provide an `OPAMP_SERVER_URL` environment variable — this should point to the HyperDX app, which hosts the OpAMP API at `/v1/opamp`.
+The ClickStack distribution of the OpenTelemetry collector includes built-in support for OpAMP (Open Agent Management Protocol), which it uses to securely configure and manage the OTLP endpoint. On startup, users must provide an `OPAMP_SERVER_URL` environment variable — this should point to the HyperDX app, which hosts the OpAMP API at `/v1/opamp`.
 
 This integration ensures that the OTLP endpoint is secured using an auto-generated ingestion API key, created when the HyperDX app is deployed. All telemetry data sent to the collector must include this API key for authentication. You can find the key in the HyperDX app under `Team Settings → API Keys`.
 
@@ -201,6 +199,13 @@ To further secure your deployment, we recommend:
 
 - Enabling TLS for the OTLP endpoint, ensuring encrypted communication between SDKs/agents and the collector.
 - Configuring the collector to communicate with ClickHouse over HTTPS.
+- Create a dedicated user for ingestion with limited permissions - see below.
+
+### Creating an ingestion user {#creating-an-ingestion-user}
+
+```bash
+TODO
+```
 
 ## Processing - filtering, transforming and enriching {#processing-filtering-transforming-enriching}
 
@@ -276,7 +281,7 @@ service:
 
 Note the need to include an [authorization header containing your ingestion API key](#securing-the-collector) in any OTLP communication.
 
-For more advanced configuration we suggest the [OpenTelemetry Collector documentation](https://opentelemetry.io/docs/collector/).
+For more advanced configuration we suggest the [OpenTelemetry collector documentation](https://opentelemetry.io/docs/collector/).
 
 ## Optimizing inserts {#optimizing-inserts}
 

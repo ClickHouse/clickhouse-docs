@@ -16,7 +16,7 @@ All ClickStack components are distributed separately as individual Docker images
 
 * **ClickHouse**
 * **HyperDX**
-* **OpenTelemetry (OTel) Collector**
+* **OpenTelemetry (OTel) collector**
 * **MongoDB**
 
 These images can be combined and deployed locally using Docker Compose.
@@ -29,7 +29,7 @@ The Docker Compose exposes additional ports for observability and ingestion base
 - `4318`: OTLP HTTP receiver (alternative to gRPC)
 - `8888`: Prometheus metrics endpoint for monitoring the collector itself
 
-These ports enable integrations with a variety of telemetry sources and make the OpenTelemetry Collector production-ready for diverse ingestion needs.
+These ports enable integrations with a variety of telemetry sources and make the OpenTelemetry collector production-ready for diverse ingestion needs.
 
 ### Suitable for {#suitable-for}
 

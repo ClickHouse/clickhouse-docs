@@ -23,7 +23,7 @@ Getting started with **ClickStack** is straightforward thanks to the availabilit
 The simplest option is a **single-image distribution** that includes all core components of the stack bundled together:
 
 - **HyperDX UI**
-- **OpenTelemetry (OTel) Collector**
+- **OpenTelemetry (OTel) collector**
 - **ClickHouse**
 
 This all-in-one image allows you to launch the full stack with a single command, making it ideal for testing, experimentation, or quick local deployments.

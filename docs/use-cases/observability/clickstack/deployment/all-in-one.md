@@ -15,7 +15,7 @@ This comprehensive Docker image bundles all ClickStack components:
 
 * **ClickHouse**
 * **HyperDX**
-* **OpenTelemetry (OTel) Collector** (exposing OTLP on ports `4317` and `4318`)
+* **OpenTelemetry (OTel) collector** (exposing OTLP on ports `4317` and `4318`)
 * **MongoDB** (for persistent application state)
 
 This option includes authentication, enabling persistence of dashboards, alerts, and saved searches across sessions and users.
