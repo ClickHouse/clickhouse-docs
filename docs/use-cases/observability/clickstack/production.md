@@ -10,6 +10,7 @@ description: 'Going to production with ClickStack'
 import Image from '@theme/IdealImage';
 import connect_cloud from '@site/static/images/use-cases/observability/connect-cloud.png';
 import hyperdx_cloud from '@site/static/images/use-cases/observability/hyperdx-cloud.png';
+import ingestion_key from '@site/static/images/use-cases/observability/ingestion-keys.png';
 
 When deploying ClickStack in production, there are several additional considerations to ensure security, stability, and correct configuration.
 
@@ -73,11 +74,21 @@ openssl rand -hex 32
 
 Avoid committing secrets to source control. In production, consider using environment variable management tools (e.g. Docker Secrets, HashiCorp Vault, or environment-specific CI/CD configs).
 
+## Secure ingestion {#secure-ingestion}
+
+All ingestion should occur via the OTLP ports exposed by ClickStack distribution of the OTel collector. By default, this requires a secure ingestion API key generated at startup. This key is required when sending data to the OTel ports, and can be found in the HyperDX UI under `Team Settings -> API Keys`.
+
+<Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
+
 ## ClickHouse {#clickhouse}
+
+### ClickHouse Cloud {#clickhouse-cloud}
 
 For production deployments, we recommend using [ClickHouse Cloud](https://clickhouse.com/cloud), which applies industry-standard [security practices](/cloud/security) by default - including [enhanced encryption](/cloud/security/cmek), [authentication and connectivity](/cloud/security/connectivity), and [managed access controls](/cloud/security/cloud-access-management).
 
 ### User Permissions {#user-permissions}
+
+#### HyperDX user {#hyperdx-user}
 
 The Clickhouse user for HyperDX only needs to be a `readonly` user with access to change the following settings:
 
@@ -88,44 +99,7 @@ The Clickhouse user for HyperDX only needs to be a `readonly` user with access t
 
 By default the `default` user in both OSS and ClickHouse Cloud will have these permissions available but we recommend you create a new user with these permissions.
 
-### Using ClickHouse Cloud {#clickhouse-cloud}
-
-<VerticalStepper headerLevel="h4">
-
-#### Create a service {#create-a-service}
-
-Follow the [getting started guide for ClickHouse Cloud](/cloud/get-started/cloud-quick-start#1-create-a-clickhouse-service) to create a service.
-
-#### Copy connection details {#copy-connection-details}
-
-To find the connection details for HyperDX, navigate to the ClickHouse Cloud console and click the <b>Connect</b> button on the sidebar recording the HTTP connection details specifically the url.
-
-**While you may use the default username and password shown in this step to connect HyperDX, we recommend creating a dedicated user - see below**
-
-<Image img={connect_cloud} alt="Connect Cloud" size="md"/>
-
-#### Create a user {#create-a-user}
-
-We recommend you create a dedicated user for HyperDX. Run the following SQL commands in the [Cloud SQL console](/cloud/get-started/sql-console):
-
-```sql
-CREATE USER hyperdx IDENTIFIED WITH sha256_password BY '<YOUR_PASSWORD>' SETTINGS PROFILE 'readonly';
-GRANT sql_console_read_only TO hyperdx;
-```
-
-#### Deploy HyperDX {#deploy-hyperdx}
-
-Ensure HyperDX is deployed - the [Helm](/use-cases/observability/clickstack/deployment/helm), [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) (modified to exclude ClickHouse) or [HyperDX only](/use-cases/observability/clickstack/deployment/hyperdx-only) deployment models are preferred.
-
-Create a user on initial login.
-
-#### Connect to ClickHouse Cloud {#connect-to-clickhouse-cloud}
-
-Using the credentials created earlier, complete the connection details and click `Create`.
-
-<Image img={hyperdx_cloud} alt="HyperDX Cloud" size="md"/>
-
-</VerticalStepper>
+#### Ingestion user {#ingestion-user}
 
 ### Self-managed security {#self-managed-security}
 
