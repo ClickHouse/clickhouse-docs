@@ -272,3 +272,4 @@ exceptions:
   - ZIP
   - GCS
   - BYOC
+  - CDC
