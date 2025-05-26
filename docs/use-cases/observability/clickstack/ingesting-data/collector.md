@@ -2,8 +2,8 @@
 slug: /use-cases/observability/clickstack/ingesting-data/otel-collector
 pagination_prev: null
 pagination_next: null
-description: 'Open Telemetry Collector for ClickStack - The ClickHouse Observability Stack'
-sidebar_label: 'OTel Collector'
+description: 'OpenTelemetry Collector for ClickStack - The ClickHouse Observability Stack'
+sidebar_label: 'OpenTelemetry Collector'
 title: 'ClickStack OTel Collector'
 ---
 
@@ -13,6 +13,19 @@ import clickstack_with_gateways from '@site/static/images/use-cases/observabilit
 import clickstack_with_kafka from '@site/static/images/use-cases/observability/clickstack-with-kafka.png';
 
 This page includes details on configuring the official ClickStack OpenTelemetry (OTel) collector.
+
+## Collector roles {#collector-roles}
+
+OpenTelemetry Collectors can be deployed in two principal roles:
+
+- **Agent** - Agent instances collect data at the edge e.g. on servers or on Kubernetes nodes, or receive events directly from applications - instrumented with an OpenTelemetry SDK. In the latter case, the agent instance runs with the application or on the same host as the application (such as a sidecar or a DaemonSet). Agents can either send their data directly to ClickHouse or to a gateway instance. In the former case, this is referred to as [Agent deployment pattern](https://opentelemetry.io/docs/collector/deployment/agent/). 
+
+- **Gateway** - Gateway instances provide a standalone service (for example, a deployment in Kubernetes), typically per cluster, per data center, or per region. These receive events from applications (or other collectors as agents) via a single OTLP endpoint. Typically, a set of gateway instances are deployed, with an out-of-the-box load balancer used to distribute the load amongst them. If all agents and applications send their signals to this single endpoint, it is often referred to as a [Gateway deployment pattern](https://opentelemetry.io/docs/collector/deployment/gateway/). 
+
+**Important: The collector including in default distributions of ClickStack assume the [gateway role described below](#collector-roles), receiving data from agents or SDKs.**
+
+Users deploying OTel collectors in the agent role will typically use the default contrib distribution of the collector and not the ClickStack version, but are free to use other OTLP compatible technologies such as [Fluend](https://www.fluentd.org/) and [Vector](https://vector.dev/).
+
 
 ## Configuring the collector {#configuring-the-collector}
 
