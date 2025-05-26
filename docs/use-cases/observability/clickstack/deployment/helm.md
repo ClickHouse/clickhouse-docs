@@ -192,6 +192,8 @@ If using ClickHouse Cloud users disable the ClickHouse instance deployed by the 
 
 ```bash
 helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false 
+
+TODO
 ```
 
 

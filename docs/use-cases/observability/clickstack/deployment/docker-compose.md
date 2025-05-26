@@ -79,7 +79,7 @@ If prompted to create a source, retain all default values and complete the `Tabl
 </VerticalStepper>
 
 
-## Settings and production {#settings-and-production}
+## Modifying compose settings {#modifying-settings}
 
 Users can modify settings for the stack, such as the version used, through the environment variable file:
 
@@ -107,11 +107,15 @@ HYPERDX_APP_URL=http://localhost
 HYPERDX_LOG_LEVEL=debug
 ```
 
+### Configuring the OpenTelemtry collector {#configuring-collector}
+
+The OTel collector configuration can be modified if required - see ["Modifying configuration"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
+
 ## Using ClickHouse Cloud {#using-clickhouse-cloud}
 
 This distribution can be used with ClickHouse Cloud. Users should:
 
-- Remove the ClickHouse service  from the [`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/86465a20270b895320eb21dca13560b65be31e68/docker-compose.yml#L89) file. This is optional if testing, as the deployed ClickHouse instance will simply be ignored - although waste local resources. If removing the service, ensure [any references](https://github.com/hyperdxio/hyperdx/blob/86465a20270b895320eb21dca13560b65be31e68/docker-compose.yml#L65) to the service such as `depends_on` are removed.
+- Remove the ClickHouse service from the [`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/86465a20270b895320eb21dca13560b65be31e68/docker-compose.yml#L89) file. This is optional if testing, as the deployed ClickHouse instance will simply be ignored - although waste local resources. If removing the service, ensure [any references](https://github.com/hyperdxio/hyperdx/blob/86465a20270b895320eb21dca13560b65be31e68/docker-compose.yml#L65) to the service such as `depends_on` are removed.
 - Modify the OTel collector to use a ClickHouse Cloud instance by setting the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD` in the compose file. Specifically, add the environment variables to the OTel collector service:
 
     ```bash
