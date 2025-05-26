@@ -12,7 +12,7 @@ description: 'Landing page for the ClickHouse Observability Stack'
 |---------|-------------|
 | [Overview](/use-cases/observability/clickstack/overview) | Introduction to ClickStack and its key features |
 | [Getting Started](/use-cases/observability/clickstack/getting-started) | Quick start guide and basic setup instructions |
-| [Example Datasets](/use-cases/observability/clickstack/sample-datasets) | Sample datasets and use cases |
+| [Sample Datasets](/use-cases/observability/clickstack/sample-datasets) | Sample datasets and use cases |
 | [Architecture](/use-cases/observability/clickstack/architecture) | System architecture and components overview |
 | [Deployment](/use-cases/observability/clickstack/deployment) | Deployment guides and options |
 | [Configuration](/use-cases/observability/clickstack/config) | Detailed configuration options and settings |

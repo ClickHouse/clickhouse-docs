@@ -81,11 +81,11 @@ All ingestion should occur via the OTLP ports exposed by ClickStack distribution
 
 <Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
 
-Additionally, we recommend enabling TLS for OTLP endpoints and creating a [dedicated user for ClickHouse ingestion](#ingestion-user).
+Additionally, we recommend enabling TLS for OTLP endpoints and creating a [dedicated user for ClickHouse ingestion](#database-ingestion-user).
 
 ## ClickHouse {#clickhouse}
 
-For production deployments, we recommend using [ClickHouse Cloud](https://clickhouse.com/cloud), which applies industry-standard [security practices](/cloud/security) by default - including [enhanced encryption](/cloud/security/cmek), [authentication and connectivity](/cloud/security/connectivity), and [managed access controls](/cloud/security/cloud-access-management). See ["ClickHouse Cloud"](#clickhouse-cloud-for-production) for a step-by-step guide of using ClickHouse Cloud with best practices.
+For production deployments, we recommend using [ClickHouse Cloud](https://clickhouse.com/cloud), which applies industry-standard [security practices](/cloud/security) by default - including [enhanced encryption](/cloud/security/cmek), [authentication and connectivity](/cloud/security/connectivity), and [managed access controls](/cloud/security/cloud-access-management). See ["ClickHouse Cloud"](#clickhouse-cloud-production) for a step-by-step guide of using ClickHouse Cloud with best practices.
 
 ### User Permissions {#user-permissions}
 

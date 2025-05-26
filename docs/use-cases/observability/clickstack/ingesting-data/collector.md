@@ -45,7 +45,7 @@ If you are managing your own OpenTelemetry collector in a standalone deployment 
 
 #### Using docker {#using-docker}
 
-All docker images which include the OpenTelemetry collector can be configured to use a clickhouse instance via the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD` as shown for the [standalone](#standalone) deployment.
+All docker images which include the OpenTelemetry collector can be configured to use a clickhouse instance via the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD`:
 
 For example for the all-in-one image:
 
