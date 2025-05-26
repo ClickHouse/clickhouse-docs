@@ -44,7 +44,7 @@ log.getLogger('my-otel-logger').info('Hello from Deno!');
 ### Run the application {#run-the-application}
 
 ```sh
-OTEL_EXPORTER_OTLP_HEADERS="authorization=<YOUR_INGESTION_KEY>" \
+OTEL_EXPORTER_OTLP_HEADERS="authorization=<YOUR_INGESTION_API_KEY>" \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
 OTEL_SERVICE_NAME="<NAME_OF_YOUR_APP_OR_SERVICE>" \
 deno run --allow-net --allow-env --allow-read --allow-sys --allow-run app.ts

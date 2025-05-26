@@ -34,7 +34,7 @@ import { HyperDXRum } from '@hyperdx/otel-react-native';
 
 HyperDXRum.init({
   service: 'my-rn-app',
-  apiKey: '<YOUR_API_KEY_HERE>',
+  apiKey: '<YOUR_INGESTION_API_KEY>',
   tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
 });
 ```

@@ -103,7 +103,7 @@ config:
     otlphttp:
       endpoint: 'https://in-otel.hyperdx.io'
       headers:
-        authorization: '<YOUR_HYPERDX_API_KEY_HERE>'
+        authorization: '<YOUR_INGESTION_API_KEY>'
       compression: gzip
 
   service:
@@ -154,7 +154,7 @@ config:
     otlphttp:
       endpoint: 'https://in-otel.hyperdx.io'
       headers:
-        authorization: '<YOUR_HYPERDX_API_KEY_HERE>'
+        authorization: '<YOUR_INGESTION_API_KEY>'
       compression: gzip
 
   service:

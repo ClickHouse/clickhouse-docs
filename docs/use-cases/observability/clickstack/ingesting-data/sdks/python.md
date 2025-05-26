@@ -43,7 +43,7 @@ opentelemetry-bootstrap -a install
 Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack:
 
 ```bash
-export HYPERDX_API_KEY='<YOUR_HYPERDX_API_KEY_HERE>' \
+export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
 ```
 

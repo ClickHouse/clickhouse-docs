@@ -26,7 +26,7 @@ OpenTelemetry Collectors can be deployed in two principal roles:
 
 **Important: The collector including in default distributions of ClickStack assume the [gateway role described below](#collector-roles), receiving data from agents or SDKs.**
 
-Users deploying OTel collectors in the agent role will typically use the default contrib distribution of the collector and not the ClickStack version, but are free to use other OTLP compatible technologies such as [Fluend](https://www.fluentd.org/) and [Vector](https://vector.dev/).
+Users deploying OTel collectors in the agent role will typically use the default contrib distribution of the collector and not the ClickStack version, but are free to use other OTLP compatible technologies such as [Fluentd](https://www.fluentd.org/) and [Vector](https://vector.dev/).
 
 
 ## Configuring the collector {#configuring-the-collector}
@@ -189,6 +189,19 @@ exporters:
 
 This example adds file exporters alongside ClickHouse, writing out samples of logs, metrics, traces, and sessions. It's a useful pattern for debugging and local development.
 
+## Securing the collector {#securing-the-collector}
+
+The ClickStack distribution of the OpenTelemetry Collector includes built-in support for OpAMP (Open Agent Management Protocol), which it uses to securely configure and manage the OTLP endpoint. On startup, users must provide an `OPAMP_SERVER_URL` environment variable — this should point to the HyperDX app, which hosts the OpAMP API at `/v1/opamp`.
+
+This integration ensures that the OTLP endpoint is secured using an auto-generated ingestion API key, created when the HyperDX app is deployed. All telemetry data sent to the collector must include this API key for authentication. You can find the key in the HyperDX app under `Team Settings → API Keys`.
+
+<Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
+
+To further secure your deployment, we recommend:
+
+- Enabling TLS for the OTLP endpoint, ensuring encrypted communication between SDKs/agents and the collector.
+- Configuring the collector to communicate with ClickHouse over HTTPS.
+
 ## Processing - filtering, transforming and enriching {#processing-filtering-transforming-enriching}
 
 Users will invariably want to filter, transform, and enrich event messages during ingestion. This can be achieved using a number of capabilities in OpenTelemetry:
@@ -241,7 +254,7 @@ exporters:
   otlphttp/hdx:
     endpoint: 'http://localhost:4318'
     headers:
-      authorization: <YOUR_API_INGESTION_KEY>
+      authorization: <YOUR_INGESTION_API_KEY>
     compression: gzip
  
   # gRPC setup (alternative)
@@ -261,20 +274,9 @@ service:
       exporters: [otlphttp/hdx]
 ```
 
+Note the need to include an [authorization header containing your ingestion API key](#securing-the-collector) in any OTLP communication.
+
 For more advanced configuration we suggest the [OpenTelemetry Collector documentation](https://opentelemetry.io/docs/collector/).
-
-## Securing the collector {#securing-the-collector}
-
-The ClickStack distribution of the OpenTelemetry Collector includes built-in support for OpAMP (Open Agent Management Protocol), which it uses to securely configure and manage the OTLP endpoint. On startup, users must provide an `OPAMP_SERVER_URL` environment variable — this should point to the HyperDX app, which hosts the OpAMP API at `/v1/opamp`.
-
-This integration ensures that the OTLP endpoint is secured using an auto-generated ingestion API key, created when the HyperDX app is deployed. All telemetry data sent to the collector must include this API key for authentication. You can find the key in the HyperDX app under `Team Settings → API Keys`.
-
-<Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
-
-To further secure your deployment, we recommend:
-
-- Enabling TLS for the OTLP endpoint, ensuring encrypted communication between SDKs/agents and the collector.
-- Configuring the collector to communicate with ClickHouse over HTTPS.
 
 ## Optimizing inserts {#optimizing-inserts}
 

@@ -80,7 +80,7 @@ export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     const { init } = await import('@hyperdx/node-opentelemetry');
     init({
-      apiKey: '<YOUR_HYPERDX_INGESTION_API_KEY>', // optionally configure via `HYPERDX_API_KEY` env var
+      apiKey: '<YOUR_INGESTION_API_KEY>', // optionally configure via `HYPERDX_API_KEY` env var
       service: '<MY_SERVICE_NAME>', // optionally configure via `OTEL_SERVICE_NAME` env var
       additionalInstrumentations: [], // optional, default: []
     });
@@ -97,7 +97,7 @@ If you're sending traces directly to ClickStack, you'll need to start your Next.
 server with the following environment variables to point spans towards the OTel collector:
 
 ```sh copy
-HYPERDX_API_KEY=<YOUR_HYPERDX_INGESTION_API_KEY> \
+HYPERDX_API_KEY=<YOUR_INGESTION_API_KEY> \
 OTEL_SERVICE_NAME=<MY_SERVICE_NAME> \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 npm run dev

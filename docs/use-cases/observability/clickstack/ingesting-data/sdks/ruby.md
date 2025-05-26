@@ -81,10 +81,10 @@ Afterwards you'll need to configure the following environment variables in your 
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_HYPERDX_API_KEY_HERE>'
+OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
 _The `OTEL_SERVICE_NAME` environment variable is used to identify your service
 in the HyperDX app, it can be any name you want._
 
-The `OTEL_EXPORTER_OTLP_HEADERS` environment variable contains your API Key set for the HyperDX app.
+The `OTEL_EXPORTER_OTLP_HEADERS` environment variable contains the API Key available via HyperDX app in `Team Settings → API Keys`.

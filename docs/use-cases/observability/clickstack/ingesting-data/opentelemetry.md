@@ -8,7 +8,7 @@ title: 'Ingesting with OpenTelemetry'
 
 All data is ingested into ClickStack via an **OpenTelemetry (OTel) collector** instance, which acts as the primary entry point for logs, metrics, traces, and session data. We recommend using the official [ClickStack distribution](#installing) of the collector for this instance.
 
-Users send data to this collector from [language SDKs](/use-cases/observability/clickstack/sdks) or through intermediate OpenTelemetry collector acting as [agents](#collector-roles) over OTLP e.g. collecting infrastructure metrics and logs.
+Users send data to this collector from [language SDKs](/use-cases/observability/clickstack/sdks) or through data collection agents collecting metrics and logs (such OTel collectors in an [agent](#collector-roles) role or other technologies e.g. [Fluentd](https://www.fluentd.org/) or [Vector](https://vector.dev/)).
 
 ## Sending OpenTelemetry data {#sending-otel-data}
 
@@ -22,6 +22,9 @@ For most [language SDKs](/use-cases/observability/clickstack/sdks) and telemetry
 ```bash
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
+
+In addition, an authorization header is required.
+
 
 If deploying collectors in the agent role, they can use the OTLP exporter. An example  agent config consuming this [structured log file](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz), is shown below.
 
@@ -87,7 +90,7 @@ The ClickStack OTel collector can also be deployed standalone independent of oth
 If you're using the [HyperDX-only](/use-cases/observability/clickstack/deployment/hyperdx-only) distribution, you are responsible for delivering data into ClickHouse yourself. This can be done by:
 
 - Running your own OpenTelemetry Collector and pointing it at ClickHouse - see below.
-- Sending directly to ClickHouse using alternative tooling, such as [Vector](https://vector.dev/), [Fluend](https://www.fluentd.org/) etc, or even the default [OTel contrib collector distribution](https://github.com/open-telemetry/opentelemetry-collector-contrib).
+- Sending directly to ClickHouse using alternative tooling, such as [Vector](https://vector.dev/), [Fluentd](https://www.fluentd.org/) etc, or even the default [OTel contrib collector distribution](https://github.com/open-telemetry/opentelemetry-collector-contrib).
 
 :::note We recommend using the ClickStack OpenTelemetry Collector
 This allows users to benefit from standardized ingestion, enforced schemas, and out-of-the-box compatibility with the HyperDX UI. Using the default schema enables automatic source detection and preconfigured column mappings.
