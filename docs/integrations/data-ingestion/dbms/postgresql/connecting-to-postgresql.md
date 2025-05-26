@@ -13,7 +13,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 This page covers following options for integrating PostgreSQL with ClickHouse:
 
-- using [ClickPipes](/integrations/clickpipes/postgres), the managed integration service for ClickHouse Cloud powered by PeerDB - now in public beta!
+- using [ClickPipes](/integrations/clickpipes/postgres), the managed integration service for ClickHouse Cloud powered by PeerDB.
 - using [PeerDB](https://github.com/PeerDB-io/peerdb), an open-source CDC tool specifically designed for PostgreSQL database replication to both self-hosted ClickHouse and ClickHouse Cloud.
 - using the `PostgreSQL` table engine, for reading from a PostgreSQL table
 - using the experimental `MaterializedPostgreSQL` database engine, for syncing a database in PostgreSQL with a database in ClickHouse
