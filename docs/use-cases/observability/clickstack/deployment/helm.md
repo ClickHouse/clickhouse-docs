@@ -16,7 +16,7 @@ By default, the Helm chart provisions all core components, including:
 
 * **ClickHouse**
 * **HyperDX**
-* **OpenTelemetry Collector**
+* **OpenTelemetry (OTel) Collector**
 * **MongoDB** (for persistent application state)
 
 However, it can be easily customized to integrate with an existing ClickHouse deployment - for example, one hosted in **ClickHouse Cloud**.

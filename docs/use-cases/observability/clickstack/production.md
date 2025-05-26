@@ -76,7 +76,7 @@ Avoid committing secrets to source control. In production, consider using enviro
 
 ## Secure ingestion {#secure-ingestion}
 
-All ingestion should occur via the OTLP ports exposed by ClickStack distribution of the OTel collector. By default, this requires a secure ingestion API key generated at startup. This key is required when sending data to the OTel ports, and can be found in the HyperDX UI under `Team Settings -> API Keys`.
+All ingestion should occur via the OTLP ports exposed by ClickStack distribution of the OpenTelemetry (OTel) collector. By default, this requires a secure ingestion API key generated at startup. This key is required when sending data to the OTel ports, and can be found in the HyperDX UI under `Team Settings → API Keys`.
 
 <Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
 

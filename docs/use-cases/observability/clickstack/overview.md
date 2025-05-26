@@ -33,7 +33,7 @@ The stack includes several key features designed for debugging and root cause an
 - Dashboard high cardinality events without a complex query language
 - Native JSON string querying
 - Live tail logs and traces to always get the freshest events
-- OpenTelemetry supported out of the box
+- OpenTelemetry (OTel) supported out of the box
 - Monitor health and performance from HTTP requests to DB queries (APM)
 - Event deltas for identifying anomalies and performance regressions
 - Log pattern recognition

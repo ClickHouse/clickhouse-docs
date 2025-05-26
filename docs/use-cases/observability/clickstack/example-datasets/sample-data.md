@@ -57,7 +57,7 @@ This file contains example logs, metrics and traces from our public [OpenTelemet
 
 ## Load sample data {#load-sample-data}
 
-To load this data, we simply send it to the HTTP endpoint of the deployed OTel collector:
+To load this data, we simply send it to the HTTP endpoint of the deployed OpenTelemetry (OTel) collector:
 
 ```bash
 for filename in $(tar -tf sample.tar.gz); do

@@ -13,7 +13,7 @@ ClickHouse offers unmatched speed, scale, and cost-efficiency for observability.
 
 The ClickHouse Observability Stack is our **recommended approach** for most users.
 
-It provides an opinionated, scalable solution that works out of the box — from single-node deployments to **multi-petabyte** scale.
+**ClickStack** is a production-grade observability platform built on ClickHouse and OpenTelemetry (OTel), unifying logs, traces, metrics and session in a single high-performance scalable solution that works from single-node deployments to **multi-petabyte** scale.
 
 | Section | Description |
 |---------|-------------|
@@ -26,7 +26,6 @@ It provides an opinionated, scalable solution that works out of the box — from
 | [Ingesting Data](/use-cases/observability/clickstack/ingesting-data) | Guidelines for ingesting data to ClickStack |
 | [Search](/use-cases/observability/clickstack/search) | How to search and query your observability data |
 | [Production](/use-cases/observability/clickstack/production) | Best practices for production deployment |
-| [SDKs](/use-cases/observability/clickstack/sdks) | Software Development Kits for various languages |
 
 
 ## Build-Your-Own Stack {#build-your-own-stack}

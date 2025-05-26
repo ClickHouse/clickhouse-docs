@@ -9,7 +9,7 @@ description: 'Getting started with ClickStack and a remote demo dataset'
 
 This getting started guide uses a dataset available on the demo server that users can access when first deploying HyperDX. The dataset is hosted on the public ClickHouse instance at sql.clickhouse.com.
 
-It contains approximately 36 hours of data captured from the ClickHouse version of the official OpenTelemetry demo. The data is replayed nightly with timestamps adjusted to the current time window, allowing users to explore system behavior using HyperDX's integrated logs, traces, and metrics.
+It contains approximately 36 hours of data captured from the ClickHouse version of the official OpenTelemetry (OTel) demo. The data is replayed nightly with timestamps adjusted to the current time window, allowing users to explore system behavior using HyperDX's integrated logs, traces, and metrics.
 
 :::note Data variations
 Because the dataset is replayed from midnight each day, the exact visualizations may vary depending on when you explore the demo.

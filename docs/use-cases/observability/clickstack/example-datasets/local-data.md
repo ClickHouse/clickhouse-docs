@@ -30,7 +30,7 @@ Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI an
 
 <Image img={hyperdx} alt="HyperDX UI" size="lg"/>
 
-## Create a local OTel configuration {#create-otel-configuration}
+## Create a local OpenTelemetry configuration {#create-otel-configuration}
 
 Create a `otel-file-collector.yaml` file with the following content:
 
@@ -96,7 +96,7 @@ service:
 
 This configuration collects system logs and metric for OSX and Linux systems, sending the results to ClickStack via the OTLP endpoint on port 4317.
 
-For more details on the OTel configuration structure, we recommend [the official guide](https://opentelemetry.io/docs/collector/configuration/).
+For more details on the OpenTelemetry (OTel) configuration structure, we recommend [the official guide](https://opentelemetry.io/docs/collector/configuration/).
 
 ## Start the collector {#start-the-collector}
 

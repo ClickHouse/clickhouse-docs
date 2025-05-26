@@ -14,7 +14,7 @@ import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png
 
 This option is designed for users who already have a running ClickHouse instance populated with observability or event data.
 
-HyperDX can be used independently of the rest of the stack and is compatible with any data schema - not just OpenTelemetry. This makes it suitable for custom observability pipelines already built on ClickHouse.
+HyperDX can be used independently of the rest of the stack and is compatible with any data schema - not just OpenTelemetry (OTel). This makes it suitable for custom observability pipelines already built on ClickHouse.
 
 To enable full functionality, you must provide a MongoDB instance for storing application state, including dashboards, saved searches, user settings, and alerts.
 

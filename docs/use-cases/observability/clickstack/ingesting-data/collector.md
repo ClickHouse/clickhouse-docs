@@ -11,6 +11,8 @@ import Image from '@theme/IdealImage';
 import observability_6 from '@site/static/images/use-cases/observability/observability-6.png';
 import clickstack_with_gateways from '@site/static/images/use-cases/observability/clickstack-with-gateways.png';
 import clickstack_with_kafka from '@site/static/images/use-cases/observability/clickstack-with-kafka.png';
+import ingestion_key from '@site/static/images/use-cases/observability/ingestion-keys.png';
+
 
 This page includes details on configuring the official ClickStack OpenTelemetry (OTel) collector.
 
@@ -263,13 +265,16 @@ For more advanced configuration we suggest the [OpenTelemetry Collector document
 
 ## Securing the collector {#securing-the-collector}
 
-SSL collector, use a API KEY.
+The ClickStack distribution of the OpenTelemetry Collector includes built-in support for OpAMP (Open Agent Management Protocol), which it uses to securely configure and manage the OTLP endpoint. On startup, users must provide an `OPAMP_SERVER_URL` environment variable — this should point to the HyperDX app, which hosts the OpAMP API at `/v1/opamp`.
 
-What if we're deploying collector standalone?
+This integration ensures that the OTLP endpoint is secured using an auto-generated ingestion API key, created when the HyperDX app is deployed. All telemetry data sent to the collector must include this API key for authentication. You can find the key in the HyperDX app under `Team Settings → API Keys`.
 
-```bash
-TODO
-```
+<Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
+
+To further secure your deployment, we recommend:
+
+- Enabling TLS for the OTLP endpoint, ensuring encrypted communication between SDKs/agents and the collector.
+- Configuring the collector to communicate with ClickHouse over HTTPS.
 
 ## Optimizing inserts {#optimizing-inserts}
 
