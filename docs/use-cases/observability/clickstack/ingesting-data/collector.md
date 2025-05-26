@@ -203,11 +203,15 @@ To further secure your deployment, we recommend:
 
 ### Creating an ingestion user {#creating-an-ingestion-user}
 
-We recommend creating a dedicated user for the OTel collector for ingestion into ClickHouse. This should have the ability to create and insert into the [tables created and used by ClickStack](/use-cases/observability/clickstack/ingesting-data/schemas). 
+We recommend creating a dedicated database and user for the OTel collector for ingestion into ClickHouse. This should have the ability to create and insert into the [tables created and used by ClickStack](/use-cases/observability/clickstack/ingesting-data/schemas). 
 
+```sql
+CREATE DATABASE otel;
+CREATE USER hyperdx_ingest IDENTIFIED WITH sha256_password BY 'ClickH0u3eRocks123!';
+GRANT SELECT, INSERT, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
+```
 
-
-
+This assumes the collector has been configured to use the database `otel`. This can be controlled through the environment variable `CLICKHOUSE_DATABASE`. Pass this to the image hosting the collector [similar to other environment variables](#modifying-otel-collector-configuration).
 
 ## Processing - filtering, transforming and enriching {#processing-filtering-transforming-enriching}
 

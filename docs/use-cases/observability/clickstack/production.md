@@ -101,9 +101,9 @@ The Clickhouse user for HyperDX only needs to be a `readonly` user with access t
 
 By default the `default` user in both OSS and ClickHouse Cloud will have these permissions available but we recommend you create a new user with these permissions.
 
-#### Ingestion user {#ingestion-user}
+#### Database and ingestion user {#database-ingestion-user}
 
-We recommend creating a dedicated user for the OTel collector for ingestion into ClickHouse. See ["Creating an ingestion user"](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) for further details.
+We recommend creating a dedicated user for the OTel collector for ingestion into ClickHouse and ensuring ingestion is sent to a specific database e.g. `otel`. See ["Creating an ingestion user"](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) for further details.
 
 ### Self-managed security {#self-managed-security}
 
