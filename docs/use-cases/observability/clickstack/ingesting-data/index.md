@@ -13,5 +13,6 @@ ClickStack provides multiple ways to ingest observability data into your ClickHo
 | Name | Description |
 |------|-------------|
 | [Overview](/use-cases/observability/clickstack/ingesting-data/overview) | Introduction to data ingestion methods and architecture |
-| [OpenTelemetry Collector](/use-cases/observability/clickstack/ingesting-data/otel-collector) | Setting up and configuring the OpenTelemetry Collector for ClickStack |
+| [Quickstart with Open Telemtry](/use-cases/observability/clickstack/ingesting-data/open-telemtry) | For users using OpenTelemtry and looking to quickly integrate with ClickStack |
+| [OpenTelemetry Collector](/use-cases/observability/clickstack/ingesting-data/otel-collector) | Advanced detials for the ClickStack OpenTelemetry Collector |
 | [Kubernetes](/use-cases/observability/clickstack/ingesting-data/kubernetes) | Collecting observability data from Kubernetes clusters |
