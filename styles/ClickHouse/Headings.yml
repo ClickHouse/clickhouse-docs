@@ -42,3 +42,4 @@ exceptions:
   - MySQL
   - ClickPipe
   - ClickPipes
+  - CDC

@@ -189,7 +189,7 @@ APIキーの有効期限オプションを制限し、有効期限のないOpenA
 
 AWS向けのBring Your Own Cloudが現在ベータ版で利用可能です。このデプロイメントモデルにより、ClickHouse Cloudを独自のAWSアカウントで展開および実行できます。11以上のAWSリージョンでのデプロイメントをサポートし、今後さらに追加される予定です。アクセスについては、[サポートにお問い合わせください](https://clickhouse.com/support/program)。このデプロイは、大規模なデプロイメントにのみ予約されています。
 
-### Postgres Change-Data-Capture (CDC) Connector in ClickPipes (Public Beta) {#postgres-change-data-capture-cdc-connector-in-clickpipes-public-beta}
+### Postgres Change-Data-Capture (CDC) Connector in ClickPipes {#postgres-change-data-capture-cdc-connector-in-clickpipes}
 
 このターンキー統合により、顧客は数回のクリックでPostgresデータベースをClickHouse Cloudにレプリケートし、ClickHouseを利用して瞬時に分析できます。このコネクタを使用して、Postgresからの継続的なレプリケーションと1回限りのマイグレーションの両方を行うことができます。
 
