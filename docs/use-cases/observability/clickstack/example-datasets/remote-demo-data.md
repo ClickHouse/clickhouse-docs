@@ -9,6 +9,7 @@ description: 'Getting started with ClickStack and a remote demo dataset'
 
 import Image from '@theme/IdealImage';
 import demo_connection from '@site/static/images/use-cases/observability/hyperdx-demo/demo_connection.png';
+import edit_demo_connection from '@site/static/images/use-cases/observability/hyperdx-demo/edit_demo_connection.png';
 import step_2 from '@site/static/images/use-cases/observability/hyperdx-demo/step_2.png';
 import step_3 from '@site/static/images/use-cases/observability/hyperdx-demo/step_3.png';
 import step_4 from '@site/static/images/use-cases/observability/hyperdx-demo/step_4.png';
@@ -34,6 +35,7 @@ import step_23 from '@site/static/images/use-cases/observability/hyperdx-demo/st
 import step_24 from '@site/static/images/use-cases/observability/hyperdx-demo/step_24.png';
 import architecture from '@site/static/images/use-cases/observability/hyperdx-demo/architecture.png';
 import demo_sources from '@site/static/images/use-cases/observability/hyperdx-demo//demo_sources.png';
+import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
 
 
 **The following guide assumes you have deployed ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) or [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) and completed initial user creation.**
@@ -72,99 +74,18 @@ Further details on the demo can be found in the [official OpenTelemetry document
 
 ### Connect to the demo server {#connect-to-the-demo-server}
 
-Navigate to `Team Settings` and select `Add Connection`:
+Navigate to `Team Settings` and click `Edit` for the `Local Connection`:
 
-<Image img={demo_connection} alt="Demo connection" size="lg"/>
+<Image img={edit_connection} alt="Edit Connection" size="lg"/>
 
-Complete the following connection details for the demo server:
+Rename the connection to `Demo` and complete the subsequent form with the following connection details for the demo server:
 
 - `Connection Name`: `Demo`
 - `Host`: `https://sql-clickhouse.clickhouse.com`
 - `Username`: `demo`
-- `Password`: ``
+- `Password`: Leave empty
 
-### Create sources {#create-sources}
-
-In order to view data we need to create a data source for each of our data types: logs, metrics, traces and sessions.
-
-Create a `Logs`, `Traces`, `Metrics` and `Sessions` source using the following details for each. If not specified, settings should be automatically infered from the schema.
-
-#### Logs {#logs}
-
-- `Name`: `Logs`
-- `Source Data Type`: `Log`
-- `Server Connection`: `Demo`
-- `Database`: `otel_v2`
-- `Table`: `otel_logs`
-
-<br/>
-
-#### Traces {#traces}
-
-- `Name`: `Traces`
-- `Source Data Type`: `Trace`
-- `Server Connection`: `Demo`
-- `Database`: `otel_v2`
-- `Table`: `otel_traces`
-- `Correlated Log Source`: `Logs`
-
-<br/>
-
-#### Metrics {#metrics}
-
-- `Name`: `Metrics`
-- `Source Data Type`: `OTEL Metrics`
-- `Server Connection`: `Demo`
-- `Database`: `otel_v2`
-- `Table`: `otel_traces`
-- `Gauge Table`: `otel_metrics_gauge`
-- `Histogram Table`: `otel_metrics_histogram`
-- `Sum Table`: `otel_metrics_sum`
-- `Summary Table`: `otel_metrics_summary`
-- `Exponential Histogram Table`: `otel_metrics_exponential_histogram`
-- `Correlated Log Source`: `Logs`
-
-<br/>
-
-#### Sessions {#sessions}
-
-- `Name`: `Sessions`
-- `Source Data Type`: `Session`
-- `Server Connection`: `Demo`
-- `Database`: `otel_v2`
-- `Table`: `hyperdx_sessions`
-- `Correlated Trace Source`: `Traces`
-
-<br/>
-
-When finished you should have a source for each data type:
-
-<Image img={demo_sources} alt="Created sources" size="lg"/>
-
-### Correlate sources {#correlate-sources}
-
-Correlating sources allows HyperDX to link logs, traces, metrics, and sessions - enabling rich context when navigating incidents and debugging issues.
-
-Edit each source ensuring the following fields are completed for each source:
-
-#### Logs {#logs}
-
-To edit the `Logs` source you will need to select the source and click `Configure Optional Fields`.
-
-- `Name`: `Logs`
-- `Correlated Metric Source`: `Metrics`
-- `Correlated Trace Source`: `Traces`
-
-<br/>
-
-#### Traces {#traces}
-
-- `Name`: `Traces`
-- `Correlated Session Source`: `Sessions`
-- `Correlated Metric Source`: `Metrics`
-
-<br/>
-
+<Image img={edit_demo_connection} alt="Edit Demo Connection" size="lg"/>
 
 ### Adjust the timeframe {#adjust-the-timeframe}
 

@@ -44,7 +44,7 @@ Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
 Create a user, providing a username and password which means the requirements. 
 
-On clicking `Register` you'll be prompted for connection details.
+On clicking `Create` you'll be prompted for connection details.
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 

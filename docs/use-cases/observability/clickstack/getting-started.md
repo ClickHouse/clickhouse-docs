@@ -14,11 +14,11 @@ import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png
 import connect_cloud from '@site/static/images/use-cases/observability/connect-cloud-creds.png';
 import add_connection from '@site/static/images/use-cases/observability/add_connection.png';
 import hyperdx_cloud from '@site/static/images/use-cases/observability/hyperdx-cloud.png';
-import create_cloud_connection from '@site/static/images/use-cases/observability/create_cloud_connection.png';
+import edit_cloud_connection from '@site/static/images/use-cases/observability/edit_cloud_connection.png';
 import delete_source from '@site/static/images/use-cases/observability/delete_source.png';
 import delete_connection from '@site/static/images/use-cases/observability/delete_connection.png';
 import created_sources from '@site/static/images/use-cases/observability/created_sources.png';
-
+import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
 
 # Getting started with ClickStack {#getting-started-with-clickstack}
 
@@ -120,106 +120,13 @@ Create a user, providing a username and password which means the complexity requ
 
 ### Create a ClickHouse Cloud connection {#create-a-cloud-connection}
 
-Navigate to `Team Settings` and click `Add Connection`:
+Navigate to `Team Settings` and click `Edit` for the `Local Connection`:
 
-<Image img={add_connection} alt="Add Connection" size="lg"/>
+<Image img={edit_connection} alt="Edit Connection" size="lg"/>
 
-Complete the subsequent form with your ClickHouse Cloud service credentials before clicking `Create`:
+Rename the connection to `Cloud` and complete the subsequent form with your ClickHouse Cloud service credentials before clicking `Save`:
 
-<Image img={create_cloud_connection} alt="Create Cloud connection" size="lg"/>
-
-### Remove current sources {#remove-current-sources}
-
-We recommend removing current sources for logs, traces, metrics and sessions. Scroll up to `Sources`, select each source and click `Delete`.
-
-<Image img={delete_source} alt="Delete source" size="lg"/>
-
-Also remove the `Local ClickHouse` connection.
-
-<Image img={delete_connection} alt="Delete connection" size="lg"/>
-
-
-### Create sources {#create-sources}
-
-In order to view data we need to create a data source for each of our data types: logs, metrics, traces and sessions.
-
-Create a `Logs`, `Traces`, `Metrics` and `Sessions` source using the following details for each. If not specified, settings should be automatically infered from the schema.
-
-#### Logs {#logs}
-
-- `Name`: `Logs`
-- `Source Data Type`: `Log`
-- `Server Connection`: `Cloud`
-- `Database`: `Default`
-- `Table`: `otel_logs`
-
-<br/>
-
-#### Traces {#traces}
-
-- `Name`: `Traces`
-- `Source Data Type`: `Trace`
-- `Server Connection`: `Cloud`
-- `Database`: `Default`
-- `Table`: `otel_traces`
-- `Correlated Log Source`: `Logs`
-
-<br/>
-
-#### Metrics {#metrics}
-
-- `Name`: `Metrics`
-- `Source Data Type`: `OTEL Metrics`
-- `Server Connection`: `Cloud`
-- `Database`: `Default`
-- `Table`: `otel_traces`
-- `Gauge Table`: `otel_metrics_gauge`
-- `Histogram Table`: `otel_metrics_histogram`
-- `Sum Table`: `otel_metrics_sum`
-- `Summary Table`: `otel_metrics_summary`
-- `Exponential Histogram Table`: `otel_metrics_exponential_histogram`
-- `Correlated Log Source`: `Logs`
-
-<br/>
-
-#### Sessions {#sessions}
-
-- `Name`: `Sessions`
-- `Source Data Type`: `Session`
-- `Server Connection`: `Cloud`
-- `Database`: `Default`
-- `Table`: `hyperdx_sessions`
-- `Correlated Trace Source`: `Traces`
-
-<br/>
-
-When finished you should have a source for each data type:
-
-<Image img={created_sources} alt="Created sources" size="lg"/>
-
-### Correlate sources {#correlate-sources}
-
-Correlating sources allows HyperDX to link logs, traces, metrics, and sessions - enabling rich context when navigating incidents and debugging issues.
-
-Edit each source ensuring the following fields are completed for each source:
-
-#### Logs {#logs}
-
-To edit the `Logs` source you will need to select the source and click `Configure Optional Fields`.
-
-- `Name`: `Logs`
-- `Correlated Metric Source`: `Metrics`
-- `Correlated Trace Source`: `Traces`
-
-<br/>
-
-#### Traces {#traces}
-
-- `Name`: `Traces`
-- `Correlated Session Source`: `Sessions`
-- `Correlated Metric Source`: `Metrics`
-
-<br/>
+<Image img={edit_cloud_connection} alt="Create Cloud connection" size="lg"/>
 
 ### Explore the product {#explore-the-product-cloud}
 

@@ -83,14 +83,19 @@ kubectl port-forward \
 
 ### Navigate to the UI {#navigate-to-the-ui}
 
-Navigate to [http://localhost:8080](http://localhost:8080) and create a user.
+Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
-To connect to the deployed ClickHouse instance, use the Host `http://my-hyperdx-hdx-oss-v2-clickhouse:8123`, retaining the default `Username` and `Password`:
+Create a user, providing a username and password which means the requirements. 
 
-<Image img={hyperdx_24} alt="HyperDX Create connection" size="md"/>
+On clicking `Create` data sources will be created for the ClickHouse instance deployed with the Helm chart.
 
+:::note Overriding default connection
+You can override the default connection to the integrated ClickHouse instance. For details, see ["Using ClickHouse Cloud"](#using-clickhouse-cloud).
+:::
 
-Alternatively use your credentials for an externally hosted cluster e.g. ClickHouse Cloud.
+<Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
+
+For an example of using an alternative ClickHouse instance, see ["Create a ClickHouse Cloud connection"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
 ### Customizing values (Optional) {#customizing-values}
 

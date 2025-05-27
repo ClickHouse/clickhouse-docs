@@ -11,7 +11,6 @@ import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 
-
 All ClickStack components are distributed separately as individual Docker images:
 
 * **ClickHouse**
@@ -61,9 +60,15 @@ Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
 Create a user, providing a username and password which means the requirements. 
 
-On clicking `Register` you'll be prompted for connection details.
+On clicking `Create` data sources will be created for the ClickHouse instance deployed with the Helm chart.
+
+:::note Overriding default connection
+You can override the default connection to the integrated ClickHouse instance. For details, see ["Using ClickHouse Cloud"](#using-clickhouse-cloud).
+:::
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
+
+For an example of using an alternative ClickHouse instance, see ["Create a ClickHouse Cloud connection"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
 ### Complete connection details {#complete-connection-details}
 

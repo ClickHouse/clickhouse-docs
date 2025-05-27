@@ -44,19 +44,15 @@ Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
 Create a user, providing a username and password which means the requirements. 
 
-On clicking `Register` you'll be prompted for connection details.
+On clicking `Create` data sources will be created for the integrated ClickHouse instance.
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-### Complete connection details {#complete-connection-details}
+For an example of using an alternative ClickHouse instance, see ["Create a ClickHouse Cloud connection"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
-To use the in-built ClickHouse instance, simply click **Create** and accept the default settings.  
+### Ingest data {#ingest-data}
 
-If you prefer to connect to your own **external ClickHouse cluster** e.g. ClickHouse Cloud, you can manually enter your connection credentials.
-
-If prompted to create a source, retain all default values and complete the `Table` field with the value `otel_logs`. All other settings should be auto-detected, allowing you to click `Save New Source`.
-
-<Image img={hyperdx_logs} alt="Create logs source" size="md"/>
+To ingest data see ["Ingesting data"](/use-cases/observability/clickstack/ingesting-data).
 
 </VerticalStepper>
 
@@ -93,7 +89,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 The `CLICKHOUSE_ENDPOINT` should be the ClickHouse Cloud HTTPS endpoint, including the port `8443` e.g. `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 
-On connecting to the HyperDX UI and creating a connection to ClickHouse, use your Cloud credentials.
+On connecting to the HyperDX UI, navigate to `Team Settings` and create a connection to your ClickHouse Cloud service - followed by required sources. For an example flow, see [here](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
 ## Configuring the OpenTelemetry collector {#configuring-collector}
 

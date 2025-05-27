@@ -182,7 +182,7 @@ Create a user, providing a username and password which means the requirements.
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-On clicking `Register` you'll be prompted for connection details.
+On clicking `Create` you'll be prompted for connection details.
 
 ### Connect to ClickHouse Cloud {#connect-to-clickhouse-cloud}
 
