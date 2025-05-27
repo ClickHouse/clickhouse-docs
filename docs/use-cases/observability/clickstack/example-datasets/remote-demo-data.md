@@ -7,6 +7,32 @@ pagination_next: null
 description: 'Getting started with ClickStack and a remote demo dataset'
 ---
 
+import Image from '@theme/IdealImage';
+import step_2 from '@site/static/images/use-cases/observability/hyperx-demo/step_2.png';
+import step_3 from '@site/static/images/use-cases/observability/hyperx-demo/step_3.png';
+import step_4 from '@site/static/images/use-cases/observability/hyperx-demo/step_4.png';
+import step_5 from '@site/static/images/use-cases/observability/hyperx-demo/step_5.png';
+import step_6 from '@site/static/images/use-cases/observability/hyperx-demo/step_6.png';
+import step_7 from '@site/static/images/use-cases/observability/hyperx-demo/step_7.png';
+import step_8 from '@site/static/images/use-cases/observability/hyperx-demo/step_8.png';
+import step_9 from '@site/static/images/use-cases/observability/hyperx-demo/step_9.png';
+import step_10 from '@site/static/images/use-cases/observability/hyperx-demo/step_10.png';
+import step_11 from '@site/static/images/use-cases/observability/hyperx-demo/step_11.png';
+import step_12 from '@site/static/images/use-cases/observability/hyperx-demo/step_12.png';
+import step_13 from '@site/static/images/use-cases/observability/hyperx-demo/step_13.png';
+import step_14 from '@site/static/images/use-cases/observability/hyperx-demo/step_14.png';
+import step_15 from '@site/static/images/use-cases/observability/hyperx-demo/step_15.png';
+import step_16 from '@site/static/images/use-cases/observability/hyperx-demo/step_16.png';
+import step_17 from '@site/static/images/use-cases/observability/hyperx-demo/step_17.png';
+import step_18 from '@site/static/images/use-cases/observability/hyperx-demo/step_18.png';
+import step_19 from '@site/static/images/use-cases/observability/hyperx-demo/step_19.png';
+import step_20 from '@site/static/images/use-cases/observability/hyperx-demo/step_20.png';
+import step_21 from '@site/static/images/use-cases/observability/hyperx-demo/step_21.png';
+import step_22 from '@site/static/images/use-cases/observability/hyperx-demo/step_22.png';
+import step_23 from '@site/static/images/use-cases/observability/hyperx-demo/step_23.png';
+import step_24 from '@site/static/images/use-cases/observability/hyperx-demo/step_24.png';
+import architecture from '@site/static/images/use-cases/observability/hyperx-demo/architecture.png';
+
 This getting started guide uses a dataset available on the demo server that users can access when first deploying HyperDX. The dataset is hosted on the public ClickHouse instance at sql.clickhouse.com.
 
 It contains approximately 36 hours of data captured from the ClickHouse version of the official OpenTelemetry (OTel) demo. The data is replayed nightly with timestamps adjusted to the current time window, allowing users to explore system behavior using HyperDX's integrated logs, traces, and metrics.
@@ -27,7 +53,9 @@ Using HyperDX, the SRE team will analyze logs, traces, and metrics to diagnose a
 
 This demo reuses the official OpenTelemetry demo. This is composed of microservices written in different programming languages that talk to each other over gRPC and HTTP and a load generator that uses Locust to fake user traffic.
 
-```INSERT IMAGE```
+<Image img={architecture} alt="Architecture" size="lg"/>
+
+_Credit: https://opentelemetry.io/docs/demo/architecture/_
 
 Further details on the demo can be found in the [official OpenTelemetry documentation](https://opentelemetry.io/docs/demo/). 
 
@@ -49,7 +77,7 @@ Sources for the dataset will be auto-created, and users will be directed to the 
 
 Adjust the time to show all data from the previous `1 day` using the time picker in the top right.
 
-```INSERT IMAGE```
+<Image img={step_2} alt="Step 2" size="lg"/>
 
 You may a small difference in the number of errors in the overview bar chart, with a small increase in red in several consecutive bars.
 
@@ -63,20 +91,15 @@ To highlight occurrences of errors, use the `SeverityText` filter and select `er
 
 The error should be more apparent:
 
-```INSERT IMAGE```
+<Image img={step_3} alt="Step 3" size="lg"/>
 
 ### Identify the error patterns {#identify-error-patterns}
 
 With HyperDX's Clustering feature, you can automatically identify errors and group them into meaningful patterns. This accelerates user analysis when dealing with large volumes of log and traces. To use it, select `Event Patterns` from the `Analysis Mode` menu on the left panel.
 
-
-```INSERT IMAGE```
-
-
 The error clusters reveal issues related to failed payments, including a named pattern `Failed to place order`. Additional clusters also indicate problems charging cards and cache's being full.
 
-
-```INSERT IMAGE```
+<Image img={step_4} alt="Step 4" size="lg"/>
 
 Note that these error clusters likely originate from different services.
 
@@ -86,17 +109,13 @@ Click the most obvious error clusters which correlates with our reported issue o
 
 This will display a list of all occurrences of this error which are associated with the `frontend` service:
 
-
-
-```INSERT IMAGE```
-
+<Image img={step_5} alt="Step 5" size="lg"/>
 
 Select any of the resulting errors. The logs metadata will be shown in detail. Scrolling through both the `Overview` and `Column Values` suggests an issue with the charging cards due to a cache:
 
 `failed to charge card: could not charge the card: rpc error: code = Unknown desc = Visa cache full: cannot add new item.`
 
-
-```INSERT IMAGE```
+<Image img={step_6} alt="Step 6" size="lg"/>
 
 ### Explore the infrastructure {#explore-the-infrastructure}
 
@@ -106,8 +125,7 @@ Given the cache issue, it makes sense to investigate the underlying infrastructu
 
 Select the `Instrastructure` tab to view the metrics associated with the underlying pods for the `frontend` service and widen the timespan to `1d`:
 
-````INSERT IMAGE```
-
+<Image img={step_7} alt="Step 7" size="lg"/>
 
 The issue does not seem to infrasturcture related - no metrics have appreciably changed over the time period: either before or after the error. Close the infrastructure tab.
 
@@ -117,14 +135,11 @@ In ClickStack, traces are also automatically correlated with both logs and metri
 
 Select `Trace` to visualize the associated trace. Scrolling down through the subsequent view we can see how HyperDX is able to visualize the distributed trace across the microservices, connecting the spans in each service. A payment clearly involves multiple microservices, including those that performance checkout and currency conversions.
 
-```INSERT IMAGE```
-
-
+<Image img={step_8} alt="Step 8" size="lg"/>
 
 By scrolling to the bottom of the view we can see that the `payment` service is causing the error, which in turn propogates back up the call chain. 
 
-```INSERT IMAGE```
-
+<Image img={step_9} alt="Step 9" size="lg"/>
 
 ### Searching traces {#searching-traces} 
 
@@ -132,33 +147,27 @@ We have established users are failing to complete purchases due to a cache issue
 
 Switch to the main Search view by selecting `Search`. Switch the data source for `Traces` and select the `Results table` view. **Ensure the timespan is still over the last day.**
 
-
-```INSERT IMAGE```
-
+<Image img={step_10} alt="Step 10" size="lg"/>
 
 This view shows all traces in the last day. We know the issue originates in our payment service, so apply the `payment` filter to the `ServiceName`.
 
-
-```INSERT IMAGE```
-
-
+<Image img={step_11} alt="Step 11" size="lg"/>
 
 If we apply event clustering to the traces by selecting `Event Patterns`, we can immediately see our cache issue with the `payment` service.
 
-
-```INSERT IMAGE```
-
+<Image img={step_12} alt="Step 12" size="lg"/>
 
 ### Explore infrastructure for a trace {#explore-infrastructure-for-a-trace}
 
-Switch to the results view by clicking on `Results table`. Filter to errors using the `StatusCode` filter and `Error` value. Select a `Error: Visa cache full: cannot add new item.` error, switch to the `Infrastructure` tab and widen the timespan to `1d`.
+Switch to the results view by clicking on `Results table`. Filter to errors using the `StatusCode` filter and `Error` value. 
 
+<Image img={step_13} alt="Step 13" size="lg"/>
 
-```INSERT IMAGE```
+Select a `Error: Visa cache full: cannot add new item.` error, switch to the `Infrastructure` tab and widen the timespan to `1d`.
 
+<Image img={step_14} alt="Step 14" size="lg"/>
 
-
-By correlating traces with metrics we can see that memory and CPU increased with the `payment` service - suggesting the cache issue cause resource issues. We can expect this has impacted payment completion times.
+By correlating traces with metrics we can see that memory and CPU increased with the `payment` service, before collapsing to `0` (we can attribute this to a pod restart) - suggesting the cache issue caused resource issues. We can expect this has impacted payment completion times.
 
 ### Event deltas for faster resolution {#event-deltas-for-faster-resolution} 
 
@@ -166,31 +175,21 @@ Event Deltas help surface anomalies by attributing changes in performance or err
 
 While we know that the `payment` service has a cache issue, causing an increase in resource consumption, we haven't fully identified the root cause.
 
-Return to the result table view and select the time period containing the errors to limit the data:
+Return to the result table view and select the time period containing the errors to limit the data. Ensure you select several hours to the left of the errors and after if possible (the issue may still be occuring):
 
-
-```INSERT IMAGE```
-
-
+<Image img={step_15} alt="Step 15" size="lg"/>
 
 Remove the errors filter and select `Event Deltas` from the left `Analysis Mode` menu.
 
-
-```INSERT IMAGE```
-
-
+<Image img={step_16} alt="Step 16" size="lg"/>
 
 The top panel shows the distribution of timings, with colors indicating event density (number of spans). The subset of events outside of the main concentation are typically those worth investigating.
 
-If we select the events with a duration greater than `100ms`, and apply the filter `Filter by selection`, we can limit our analysis to slower events:
+If we select the events with a duration greater than `200ms`, and apply the filter `Filter by selection`, we can limit our analysis to slower events:
 
-```INSERT IMAGE```
-
+<Image img={step_17} alt="Step 17" size="lg"/>
 
 With analysis performed on the subset of data, we can see most performance spikes are associated with `visa` transactions.
-
-
-```INSERT IMAGE```
 
 ### Using charts for more context {#using-charts-for-more-context}
 
@@ -213,13 +212,17 @@ Select `Chart Explorer` from the left menu. Complete the following values to cha
 - `Where`: `ServiceName: payment`
 - `Timespan`: `Last 1 day`
 
+<br/>
+
 Clicking `▶️` will show how the performance of payments degraded over time. 
 
-```INSERT IMAGE```
+<Image img={step_18} alt="Step 18" size="lg"/>
 
 If we set `Group By` to `SpanAttributes['app.payment.card_type']` (just type `card` for autocomplete) we can see how the performance of the service degraded for Visa transactions relative to Mastercard:
 
-```INSERT IMAGE```
+<Image img={step_19} alt="Step 19" size="lg"/>
+
+Note than once the error occurs responses return in `0s`.
 
 ### Exploring metrics more context {#exploring-metrics-for-more-context}
 
@@ -233,10 +236,9 @@ Complete the following values:
 - `Where`: `ServiceName: payment`
 - `Group By`: `<empty>`
 
-We can see how the cache size increased over a 4-5 hr period (likely after a software deployment) before reaching a maximum size of `100,000`. From the `Sample Matched Events` we can see our errors correlate with the cache reaching this limit, after which it is recorded as having a size of `0`.
+We can see how the cache size increased over a 4-5 hr period (likely after a software deployment) before reaching a maximum size of `100,000`. From the `Sample Matched Events` we can see our errors correlate with the cache reaching this limit and, after which it is recorded as having a size of `0` with responses also returning in `0s`.
 
-```INSERT IMAGE```
-
+<Image img={step_20} alt="Step 20" size="lg"/>
 
 In summary, by exploring logs, traces and finally metrics we have concluded:
 
@@ -252,22 +254,15 @@ Sessions allow us to replay the user experience, offering a visual account of ho
 
 In HyperDX, sessions are linked to traces and logs, providing a complete view of the underlying cause.
 
-For example, if the support team provides the email of a user who encountered a payment issue `someone@example.com` - it's often more effective to begin with their session rather than directly searching logs or traces.
+For example, if the support team provides the email of a user who encountered a payment issue `Coty60@gmail.com` - it's often more effective to begin with their session rather than directly searching logs or traces.
 
 Navigate to the `Client Sessions` tab from the left menu before ensuring the data source is set to `Sessions` and the time period is set to the `Last 1 day`:
 
+<Image img={step_21} alt="Step 21" size="lg"/>
 
+Search for `SpanAttributes.userEmail: Coty` to find our customer's session. Selecting the session will show the browser events and associated spans for the customer's session on the left, with the user's browser experience re-rendered to the right:
 
-```INSERT IMAGE```
-
-
-Search for `SpanAttributes.userEmail: someone` to find our customer's session. Selecting the session will show the browser events and associated spans for the customer's session on the left, with the user's browser experience re-rendered to the right:
-
-
-
-```INSERT IMAGE```
-
-
+<Image img={step_22} alt="Step 22" size="lg"/>
 
 ### Replaying sessions {#replaying-sessions} 
 
@@ -275,15 +270,11 @@ Sessions can be replayed by pressing the ▶️ button. Switching between `Highl
 
 If we scroll to the bottom of the spans we can see a `500` error associated with `/api/checkout`. Selecting the ▶️ button for this specific span moves the replay to this point in the session, allowing us to confirm the customer's experience - payment seems to simply not work with no error rendered.
 
-
-```INSERT IMAGE```
-
+<Image img={step_23} alt="Step 23" size="lg"/>
 
 Selecting the span we can confirm this was caused by an internal error. By clicking the `Trace` tab and scrolling though the connected spans, we are able to confirm the customer indeed was a victim of our cache issue.
 
-
-```INSERT IMAGE``
-
+<Image img={step_24} alt="Step 24" size="lg"/>
 
 </VerticalStepper>
 
