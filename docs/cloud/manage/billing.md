@@ -435,21 +435,18 @@ Let’s say your service is in Scale tier and has the following setup:
 ##### Monthly cost breakdown {#cost-breakdown}
 
 **Ingested Data (CDC)**:
+$$ 2 \text{ pipes} \times 500 \text{ GB} = 1,000 \text{ GB per month} $$
+$$ 1,000 \text{ GB} \times \$0.20/\text{GB} = \$200 $$
 
-$$ 2 pipes \times 500 GB \eq 1,000 GB per month
- 1,000 GB \times \$0.20/GB \eq \$200$$
-
- **Compute**:
-
- $$1 compute unit \times \$0.20/hr \times 730 hours (approximate month) = \$146$$
+**Compute**:
+$$1 \text{ compute unit} \times \$0.20/\text{hr} \times 730 \text{ hours (approximate month)} = \$146$$
 
 :::note
 Compute is shared across both pipes
 :::
 
 **Total Monthly Cost**:
-
- $$\$200 (ingest) + \$146 (compute) = \$346$$
+$$\$200 \text{ (ingest)} + \$146 \text{ (compute)} = \$346$$
  
 ### ClickPipes for streaming and object storage {#clickpipes-for-streaming-object-storage}
 
