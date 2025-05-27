@@ -1,14 +1,18 @@
 ---
-description: "MergeTree テーブルのデタッチされたパーツに関する情報を含むシステムテーブル"
-slug: /operations/system-tables/detached_parts
-title: "system.detached_parts"
-keywords: ["システムテーブル", "detached_parts"]
+'description': 'MergeTree テーブルのデタッチされたパーツに関する情報を含むシステムテーブル'
+'keywords':
+- 'system table'
+- 'detached_parts'
+'slug': '/operations/system-tables/detached_parts'
+'title': 'system.detached_parts'
 ---
 
-[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルのデタッチされたパーツに関する情報を含みます。`reason` カラムは、パーツがデタッチされた理由を指定します。
 
-ユーザーによってデタッチされたパーツの場合、理由は空です。このようなパーツは、[ALTER TABLE ATTACH PARTITION\|PART](/sql-reference/statements/alter/partition#attach-partitionpart) コマンドでアタッチできます。
 
-他のカラムの説明については、[system.parts](../../operations/system-tables/parts.md) を参照してください。
+Contains information about detached parts of [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) tables. The `reason` column specifies why the part was detached.
 
-パーツ名が無効な場合、いくつかのカラムの値は `NULL` になることがあります。このようなパーツは、[ALTER TABLE DROP DETACHED PART](/sql-reference/statements/alter/view) コマンドで削除できます。
+For user-detached parts, the reason is empty. Such parts can be attached with [ALTER TABLE ATTACH PARTITION\|PART](/sql-reference/statements/alter/partition#attach-partitionpart) command.
+
+For the description of other columns, see [system.parts](../../operations/system-tables/parts.md).
+
+If part name is invalid, values of some columns may be `NULL`. Such parts can be deleted with [ALTER TABLE DROP DETACHED PART](/sql-reference/statements/alter/view).

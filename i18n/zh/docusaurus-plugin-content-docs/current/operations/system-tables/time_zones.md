@@ -1,11 +1,16 @@
 ---
-description: '包含 ClickHouse 服务器支持的时区列表的系统表。'
-slug: /operations/system-tables/time_zones
-title: 'system.time_zones'
-keywords: ['system table', 'time_zones']
+'description': '系统表包含 ClickHouse 服务器支持的时区列表。'
+'keywords':
+- 'system table'
+- 'time_zones'
+'slug': '/operations/system-tables/time_zones'
+'title': 'system.time_zones'
 ---
 
-包含 ClickHouse 服务器支持的时区列表。此时区列表可能会因 ClickHouse 版本的不同而有所变化。
+
+# system.time_zones
+
+包含 ClickHouse 服务器支持的时区列表。此时区列表可能会根据 ClickHouse 的版本而有所不同。
 
 列：
 
@@ -13,11 +18,11 @@ keywords: ['system table', 'time_zones']
 
 **示例**
 
-``` sql
+```sql
 SELECT * FROM system.time_zones LIMIT 10
 ```
 
-``` text
+```text
 ┌─time_zone──────────┐
 │ Africa/Abidjan     │
 │ Africa/Accra       │

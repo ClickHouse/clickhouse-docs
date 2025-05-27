@@ -6,6 +6,8 @@ pagination_prev: null
 pagination_next: null
 description: 'In this guide, we will walk you through the steps to query
  your data in S3 buckets using ClickHouse and the AWS Glue Data Catalog.'
+keywords: ['Glue', 'Data Lake']
+show_related_blogs: true
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

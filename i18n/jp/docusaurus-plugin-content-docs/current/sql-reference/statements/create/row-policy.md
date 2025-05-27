@@ -1,19 +1,22 @@
 ---
-slug: /sql-reference/statements/create/row-policy
-sidebar_position: 41
-sidebar_label: ROW POLICY
-title: "CREATE ROW POLICY"
+'description': 'Documentation for Row Policy'
+'sidebar_label': 'ROW POLICY'
+'sidebar_position': 41
+'slug': '/sql-reference/statements/create/row-policy'
+'title': 'CREATE ROW POLICY'
 ---
 
-Creates a [row policy](../../../guides/sre/user-management/index.md#row-policy-management), i.e. a filter used to determine which 行 a user can read from a テーブル.
+
+
+Creates a [row policy](../../../guides/sre/user-management/index.md#row-policy-management), すなわち、ユーザーがテーブルから読み取ることのできる行を決定するために使用されるフィルター。
 
 :::tip
-Row policies make sense only for users with readonly access. If a user can modify a テーブル or copy パーティション between テーブル, it defeats the restrictions of row policies.
+行ポリシーは、読み取り専用アクセスを持つユーザーにのみ意味があります。ユーザーがテーブルを変更したり、テーブル間でパーティションをコピーできる場合、行ポリシーの制約は無効になります。
 :::
 
-Syntax:
+構文:
 
-``` sql
+```sql
 CREATE [ROW] POLICY [IF NOT EXISTS | OR REPLACE] policy_name1 [ON CLUSTER cluster_name1] ON [db1.]table1|db1.*
         [, policy_name2 [ON CLUSTER cluster_name2] ON [db2.]table2|db2.* ...]
     [IN access_storage_type]
@@ -24,74 +27,73 @@ CREATE [ROW] POLICY [IF NOT EXISTS | OR REPLACE] policy_name1 [ON CLUSTER cluste
 
 ## USING Clause {#using-clause}
 
-Allows specifying a condition to filter 行. A user will see a 行 if the condition is calculated to non-zero for the 行.
+行をフィルタリングする条件を指定できます。条件が行に対して非ゼロと計算される場合、ユーザーはその行を見ることができます。
 
 ## TO Clause {#to-clause}
 
-In the `TO` section you can provide a list of users and roles this policy should work for. For example, `CREATE ROW POLICY ... TO accountant, john@localhost`.
+`TO`セクションでは、このポリシーが適用されるユーザーやロールのリストを提供できます。例えば、`CREATE ROW POLICY ... TO accountant, john@localhost`。
 
-Keyword `ALL` means all the ClickHouse users, including current user. Keyword `ALL EXCEPT` allows excluding some users from the all users list, for example, `CREATE ROW POLICY ... TO ALL EXCEPT accountant, john@localhost`
+キーワード`ALL`は、現在のユーザーを含む全てのClickHouseユーザーを意味します。キーワード`ALL EXCEPT`は、全ユーザーリストから一部のユーザーを除外することを可能にします。例えば、`CREATE ROW POLICY ... TO ALL EXCEPT accountant, john@localhost`。
 
 :::note
-If there are no row policies defined for a テーブル, then any user can `SELECT` all the 行 from the テーブル. Defining one or more row policies for the テーブル makes access to the テーブル dependent on the row policies, no matter if those row policies are defined for the current user or not. For example, the following policy:
+テーブルに行ポリシーが定義されていない場合、任意のユーザーはテーブルからすべての行を`SELECT`できます。テーブルに1つ以上の行ポリシーを定義すると、テーブルへのアクセスは行ポリシーに依存し、現在のユーザーに対してこれらの行ポリシーが定義されているかどうかにかかわらず、その影響を受けます。例えば、次のポリシー：
 
 `CREATE ROW POLICY pol1 ON mydb.table1 USING b=1 TO mira, peter`
 
-forbids the users `mira` and `peter` from seeing the 行 with `b != 1`, and any non-mentioned user (e.g., the user `paul`) will see no 行 from `mydb.table1` at all.
+はユーザー`mira`および`peter`が`b != 1`の行を見ることを禁止し、非指定のユーザー（例：ユーザー`paul`）は`mydb.table1`の行を全く見ることができません。
 
-If that's not desirable, it can be fixed by adding one more row policy, like the following:
+それが望ましくない場合、次のようにもう1つの行ポリシーを追加することで修正できます：
 
 `CREATE ROW POLICY pol2 ON mydb.table1 USING 1 TO ALL EXCEPT mira, peter`
 :::
 
 ## AS Clause {#as-clause}
 
-It's allowed to have more than one policy enabled on the same テーブル for the same user at one time. So we need a way to combine the conditions from multiple policies.
+同じテーブルに対して同じユーザーに複数のポリシーを同時に有効にすることができます。したがって、複数のポリシーから条件を結合する方法が必要です。
 
-By default, policies are combined using the boolean `OR` operator. For example, the following policies:
+デフォルトでは、ポリシーはブール`OR`演算子を使用して結合されます。例えば、次のポリシー：
 
 ```sql
 CREATE ROW POLICY pol1 ON mydb.table1 USING b=1 TO mira, peter
 CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 TO peter, antonio
 ```
 
-enable the user `peter` to see 行 with either `b=1` or `c=2`.
+はユーザー`peter`が`b=1`または`c=2`のいずれかの行を見ることを可能にします。
 
-The `AS` clause specifies how policies should be combined with other policies. Policies can be either permissive or restrictive. By default, policies are permissive, which means they are combined using the boolean `OR` operator.
+`AS`句は、ポリシーを他のポリシーとどのように結合するかを指定します。ポリシーは許可型または制限型のいずれかとして定義できます。デフォルトでは、ポリシーは許可型であり、これはブール`OR`演算子を使用して結合されることを意味します。
 
-A policy can be defined as restrictive as an alternative. Restrictive policies are combined using the boolean `AND` operator.
+ポリシーは代わりに制限型として定義できます。制限型ポリシーはブール`AND`演算子を使用して結合されます。
 
-Here is the general formula:
+一般的な式は次のとおりです：
 
 ```text
 row_is_visible = (one or more of the permissive policies' conditions are non-zero) AND
                  (all of the restrictive policies's conditions are non-zero)
 ```
 
-For example, the following policies:
+例えば、次のポリシー：
 
 ```sql
 CREATE ROW POLICY pol1 ON mydb.table1 USING b=1 TO mira, peter
 CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 AS RESTRICTIVE TO peter, antonio
 ```
 
-enable the user `peter` to see 行 only if both `b=1` AND `c=2`.
+はユーザー`peter`が両方`b=1`および`c=2`の場合にのみ行を見ることを可能にします。
 
-Database policies are combined with テーブル policies.
+データベースポリシーはテーブルポリシーと組み合わされます。
 
-For example, the following policies:
+例えば、次のポリシー：
 
 ```sql
 CREATE ROW POLICY pol1 ON mydb.* USING b=1 TO mira, peter
 CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 AS RESTRICTIVE TO peter, antonio
 ```
 
-enable the user `peter` to see table1 行 only if both `b=1` AND `c=2`, although
-any other テーブル in mydb would have only `b=1` policy applied for the user.
+はユーザー`peter`がテーブル1の行を見ることを可能にするのは両方`b=1`および`c=2`である場合に限られますが、mydb内の他の任意のテーブルには、ユーザーに対して`b=1`ポリシーのみが適用されます。
 
 ## ON CLUSTER Clause {#on-cluster-clause}
 
-Allows creating row policies on a cluster, see [Distributed DDL](../../../sql-reference/distributed-ddl.md).
+クラスター上で行ポリシーを作成することを可能にします。[Distributed DDL](../../../sql-reference/distributed-ddl.md)を参照してください。
 
 ## Examples {#examples}
 

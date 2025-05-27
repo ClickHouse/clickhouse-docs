@@ -1,30 +1,33 @@
 ---
-description: "このデータセットのデータはCOVID-19パンデミック中の航空交通の発展を示すために、完全なOpenSkyデータセットから派生し、クリーンアップされたものです。"
-slug: /getting-started/example-datasets/opensky
-sidebar_label: 航空交通データ
-title: "The OpenSky Network 2020のクラウドソーシングによる航空交通データ"
+'description': 'The data in this dataset is derived and cleaned from the full OpenSky
+  dataset to illustrate the development of air traffic during the COVID-19 pandemic.'
+'sidebar_label': 'Air Traffic Data'
+'slug': '/getting-started/example-datasets/opensky'
+'title': 'Crowdsourced air traffic data from The OpenSky Network 2020'
 ---
 
-このデータセットのデータはCOVID-19パンデミック中の航空交通の発展を示すために、完全なOpenSkyデータセットから派生し、クリーンアップされたものです。2019年1月1日以降、ネットワークの2500人以上のメンバーによって観測されたすべてのフライトを含んでいます。COVID-19パンデミックの終了まで、定期的にデータがデータセットに追加されます。
 
-ソース: https://zenodo.org/records/5092942
+
+The data in this dataset is derived and cleaned from the full OpenSky dataset to illustrate the development of air traffic during the COVID-19 pandemic. It spans all flights seen by the network's more than 2500 members since 1 January 2019. More data will be periodically included in the dataset until the end of the COVID-19 pandemic.
+
+Source: https://zenodo.org/records/5092942
 
 Martin Strohmeier, Xavier Olive, Jannis Luebbe, Matthias Schaefer, and Vincent Lenders  
-"クラウドソーシングによる航空交通データ from the OpenSky Network 2019–2020"  
+"Crowdsourced air traffic data from the OpenSky Network 2019–2020"  
 Earth System Science Data 13(2), 2021  
 https://doi.org/10.5194/essd-13-357-2021
 
-## データセットのダウンロード {#download-dataset}
+## ダウンロードデータセット {#download-dataset}
 
-次のコマンドを実行します:
+コマンドを実行します：
 
 ```bash
 wget -O- https://zenodo.org/records/5092942 | grep -oE 'https://zenodo.org/records/5092942/files/flightlist_[0-9]+_[0-9]+\.csv\.gz' | xargs wget
 ```
 
-ダウンロードには良好なインターネット接続で約2分かかります。合計サイズは4.3GBの30ファイルがあります。
+ダウンロードには良好なインターネット接続で約2分かかります。合計サイズ4.3 GBの30ファイルがあります。
 
-## テーブルの作成 {#create-table}
+## テーブルを作成 {#create-table}
 
 ```sql
 CREATE TABLE opensky
@@ -48,25 +51,25 @@ CREATE TABLE opensky
 ) ENGINE = MergeTree ORDER BY (origin, destination, callsign);
 ```
 
-## データのインポート {#import-data}
+## データをインポート {#import-data}
 
-データをClickHouseに並行してアップロードします:
+ClickHouseにデータを並行してアップロードします：
 
 ```bash
 ls -1 flightlist_*.csv.gz | xargs -P100 -I{} bash -c 'gzip -c -d "{}" | clickhouse-client --date_time_input_format best_effort --query "INSERT INTO opensky FORMAT CSVWithNames"'
 ```
 
-- ここではファイルのリスト（`ls -1 flightlist_*.csv.gz`）を`xargs`に渡して並行処理します。  
-`xargs -P100`は最大100の並行ワーカーを使用することを指定しますが、ファイルは30のみなので、ワーカーの数は30になります。
-- 各ファイルについて、`xargs`は`bash -c`でスクリプトを実行します。スクリプトは`{}`の形式で置換があり、`xargs`コマンドがファイル名をそこに置き換えます（`-I{}`で`xargs`にリクエストしました）。
-- スクリプトはファイルを解凍します（`gzip -c -d "{}"`）して標準出力（`-c`パラメータ）に出力し、出力は`clickhouse-client`にリダイレクトされます。
-- また、[DateTime](../../sql-reference/data-types/datetime.md)フィールドを拡張パーサーで解析するよう要求しています（[--date_time_input_format best_effort](/operations/settings/formats#date_time_input_format)を使用）で、ISO-8601形式をタイムゾーンオフセットとして認識できます。
+- ここでは、ファイルのリスト（`ls -1 flightlist_*.csv.gz`）を並行処理のために`xargs`に渡します。
+`xargs -P100`は最大100の並行ワーカーを使用することを指定しますが、ファイルは30だけなので、ワーカーの数は30だけになります。
+- 各ファイルについて、`xargs`は`bash -c`でスクリプトを実行します。スクリプトでは`{}`の形の置換があり、`xargs`コマンドはファイル名をそれに置き換えます（`-I{}`で`xargs`に要求しています）。
+- スクリプトはファイルをデコンプレッションして（`gzip -c -d "{}"`）標準出力（`-c`パラメータ）に出力し、その出力を`clickhouse-client`にリダイレクトします。
+- また、ISO-8601形式のタイムゾーンオフセットを認識するために、[DateTime](../../sql-reference/data-types/datetime.md)フィールドを拡張パーサー（[--date_time_input_format best_effort](/operations/settings/formats#date_time_input_format)）で解析するように要求しました。
 
-最後に、`clickhouse-client`が挿入を行います。入力データは[CSVWithNames](../../interfaces/formats.md#csvwithnames)形式で読み込みます。
+最後に、`clickhouse-client`が挿入を行います。入力データは[CSVWithNames](../../interfaces/formats.md#csvwithnames)形式で読み取ります。
 
 並行アップロードには24秒かかります。
 
-並行アップロードが好みでない場合、こちらが順次のバリアントです:
+並行アップロードが好まれない場合は、こちらがシーケンシャルバリアントです：
 
 ```bash
 for file in flightlist_*.csv.gz; do gzip -c -d "$file" | clickhouse-client --date_time_input_format best_effort --query "INSERT INTO opensky FORMAT CSVWithNames"; done
@@ -74,13 +77,13 @@ for file in flightlist_*.csv.gz; do gzip -c -d "$file" | clickhouse-client --dat
 
 ## データの検証 {#validate-data}
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT count() FROM opensky;
 ```
 
-結果:
+結果：
 
 ```text
 ┌──count()─┐
@@ -88,15 +91,15 @@ SELECT count() FROM opensky;
 └──────────┘
 ```
 
-ClickHouse内のデータセットのサイズはわずか2.66 GiBです。確認してください。
+ClickHouseのデータセットサイズはわずか2.66 GiBです。確認してください。
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT formatReadableSize(total_bytes) FROM system.tables WHERE name = 'opensky';
 ```
 
-結果:
+結果：
 
 ```text
 ┌─formatReadableSize(total_bytes)─┐
@@ -104,17 +107,17 @@ SELECT formatReadableSize(total_bytes) FROM system.tables WHERE name = 'opensky'
 └─────────────────────────────────┘
 ```
 
-## クエリを実行する {#run-queries}
+## いくつかのクエリを実行 {#run-queries}
 
-移動した総距離は680億キロメートルです。
+総移動距離は680億キロメートルです。
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT formatReadableQuantity(sum(geoDistance(longitude_1, latitude_1, longitude_2, latitude_2)) / 1000) FROM opensky;
 ```
 
-結果:
+結果：
 
 ```text
 ┌─formatReadableQuantity(divide(sum(geoDistance(longitude_1, latitude_1, longitude_2, latitude_2)), 1000))─┐
@@ -122,15 +125,15 @@ SELECT formatReadableQuantity(sum(geoDistance(longitude_1, latitude_1, longitude
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-平均飛行距離は約1000 kmです。
+平均フライト距離は約1000 kmです。
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT round(avg(geoDistance(longitude_1, latitude_1, longitude_2, latitude_2)), 2) FROM opensky;
 ```
 
-結果:
+結果：
 
 ```text
    ┌─round(avg(geoDistance(longitude_1, latitude_1, longitude_2, latitude_2)), 2)─┐
@@ -138,9 +141,9 @@ SELECT round(avg(geoDistance(longitude_1, latitude_1, longitude_2, latitude_2)),
    └──────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### 最も混雑した発着空港と平均距離 {#busy-airports-average-distance}
+### 最も多忙な出発空港と平均距離 {#busy-airports-average-distance}
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -155,7 +158,7 @@ ORDER BY count() DESC
 LIMIT 100;
 ```
 
-結果:
+結果：
 
 ```text
      ┌─origin─┬─count()─┬─distance─┬─bar────────────────────────────────────┐
@@ -262,9 +265,9 @@ LIMIT 100;
      └────────┴─────────┴──────────┴────────────────────────────────────────┘
 ```
 
-### モスクワの三つの主要空港からのフライト数、週ごと {#flights-from-moscow}
+### 3つの主要なモスクワ空港からのフライト数、週別 {#flights-from-moscow}
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -277,7 +280,7 @@ GROUP BY k
 ORDER BY k ASC;
 ```
 
-結果:
+結果：
 
 ```text
      ┌──────────k─┬────c─┬─bar──────────────────────────────────────────────────────────────────────────┐
@@ -417,4 +420,4 @@ ORDER BY k ASC;
 
 ### オンラインプレイグラウンド {#playground}
 
-このデータセットに対して他のクエリを試すことができるインタラクティブリソース [オンラインプレイグラウンド](https://sql.clickhouse.com) を利用できます。たとえば、[このように](https://sql.clickhouse.com?query_id=BIPDVQNIGVEZFQYFEFQB7O)使用できます。ただし、一時テーブルを作成することはできないことに注意してください。
+このデータセットに対して他のクエリをテストするために、インタラクティブリソース[オンラインプレイグラウンド](https://sql.clickhouse.com)を使用できます。たとえば、[このように](https://sql.clickhouse.com?query_id=BIPDVQNIGVEZFQYFEFQB7O)。ただし、ここでは一時テーブルを作成することはできません。

@@ -1,17 +1,19 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/covarsamp
-sidebar_position: 124
-title: 'covarSamp'
-description: 'Calculates the value of `Σ((x - x̅)(y - y̅)) / (n - 1)`'
+'description': "Calculates the value of `\bar{x})(y - \bar{y})) / (n - 1)`"
+'sidebar_position': 124
+'slug': '/sql-reference/aggregate-functions/reference/covarsamp'
+'title': 'covarSamp'
 ---
+
+
 
 
 # covarSamp
 
-`Σ((x - x̅)(y - y̅)) / (n - 1)` の値を計算します。
+`Σ((x - x̅)(y - y̅)) / (n - 1)`の値を計算します。
 
 :::note
-この関数は数値的に不安定なアルゴリズムを使用しています。計算に [数値安定性](https://en.wikipedia.org/wiki/Numerical_stability) が必要な場合は、[`covarSampStable`](../reference/covarsamp.md) 関数を使用してください。動作は遅くなりますが、計算誤差は低くなります。
+この関数は数値的に不安定なアルゴリズムを使用しています。計算において[数値の安定性](https://en.wikipedia.org/wiki/Numerical_stability)が必要な場合は、[`covarSampStable`](../reference/covarsamp.md)関数を使用してください。動作は遅くなりますが、計算誤差が低くなります。
 :::
 
 **構文**
@@ -27,7 +29,7 @@ covarSamp(x, y)
 
 **返される値**
 
-- `x` と `y` のサンプル共分散。`n <= 1` の場合は `nan` が返されます。[Float64](../../data-types/float.md)。
+- `x`と`y`のサンプル共分散。`n <= 1`の場合は`nan`が返されます。[Float64](../../data-types/float.md)。
 
 **例**
 
@@ -69,6 +71,7 @@ FROM
         y_value
     FROM series LIMIT 1
 );
+
 ```
 
 結果:

@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/grouparraymovingsum
-sidebar_position: 144
-title: 'groupArrayMovingSum'
-description: '计算输入值的移动总和。'
+'description': '计算输入值的移动总和。'
+'sidebar_position': 144
+'slug': '/sql-reference/aggregate-functions/reference/grouparraymovingsum'
+'title': 'groupArrayMovingSum'
 ---
 
 
@@ -10,12 +10,12 @@ description: '计算输入值的移动总和。'
 
 计算输入值的移动总和。
 
-``` sql
+```sql
 groupArrayMovingSum(numbers_for_summing)
 groupArrayMovingSum(window_size)(numbers_for_summing)
 ```
 
-该函数可以将窗口大小作为参数。如果未指定，函数将使用列中行数作为窗口大小。
+该函数可以将窗口大小作为参数。如果未指定，则该函数将窗口大小设置为列中的行数。
 
 **参数**
 
@@ -30,7 +30,7 @@ groupArrayMovingSum(window_size)(numbers_for_summing)
 
 示例表：
 
-``` sql
+```sql
 CREATE TABLE t
 (
     `int` UInt8,
@@ -40,7 +40,7 @@ CREATE TABLE t
 ENGINE = TinyLog
 ```
 
-``` text
+```text
 ┌─int─┬─float─┬──dec─┐
 │   1 │   1.1 │ 1.10 │
 │   2 │   2.2 │ 2.20 │
@@ -51,7 +51,7 @@ ENGINE = TinyLog
 
 查询：
 
-``` sql
+```sql
 SELECT
     groupArrayMovingSum(int) AS I,
     groupArrayMovingSum(float) AS F,
@@ -59,13 +59,13 @@ SELECT
 FROM t
 ```
 
-``` text
+```text
 ┌─I──────────┬─F───────────────────────────────┬─D──────────────────────┐
 │ [1,3,7,14] │ [1.1,3.3000002,7.7000003,15.47] │ [1.10,3.30,7.70,15.47] │
 └────────────┴─────────────────────────────────┴────────────────────────┘
 ```
 
-``` sql
+```sql
 SELECT
     groupArrayMovingSum(2)(int) AS I,
     groupArrayMovingSum(2)(float) AS F,
@@ -73,7 +73,7 @@ SELECT
 FROM t
 ```
 
-``` text
+```text
 ┌─I──────────┬─F───────────────────────────────┬─D──────────────────────┐
 │ [1,3,6,11] │ [1.1,3.3000002,6.6000004,12.17] │ [1.10,3.30,6.60,12.17] │
 └────────────┴─────────────────────────────────┴────────────────────────┘

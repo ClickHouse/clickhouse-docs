@@ -1,31 +1,34 @@
 ---
-slug: /engines/table-engines/integrations/deltalake
-sidebar_position: 40
-sidebar_label: DeltaLake
-title: "DeltaLake テーブルエンジン"
-description: "このエンジンは、Amazon S3にある既存のDelta Lakeテーブルとの読み取り専用統合を提供します。"
+'description': 'This engine provides a read-only integration with existing Delta Lake
+  tables in Amazon S3.'
+'sidebar_label': 'DeltaLake'
+'sidebar_position': 40
+'slug': '/engines/table-engines/integrations/deltalake'
+'title': 'DeltaLake Table Engine'
 ---
+
+
 
 
 # DeltaLake テーブルエンジン
 
-このエンジンは、Amazon S3にある既存の [Delta Lake](https://github.com/delta-io/delta) テーブルとの読み取り専用統合を提供します。
+このエンジンは、Amazon S3 にある既存の [Delta Lake](https://github.com/delta-io/delta) テーブルとの読み取り専用統合を提供します。
 
-## テーブルの作成 {#create-table}
+## テーブル作成 {#create-table}
 
-Delta LakeテーブルはすでにS3に存在する必要があります。このコマンドは新しいテーブルを作成するためのDDLパラメータを取らないことに注意してください。
+Delta Lake テーブルは S3 に既に存在している必要があります。このコマンドは新しいテーブルを作成するための DDL パラメータを受け取りません。
 
-``` sql
+```sql
 CREATE TABLE deltalake
     ENGINE = DeltaLake(url, [aws_access_key_id, aws_secret_access_key,])
 ```
 
 **エンジンパラメータ**
 
-- `url` — 既存のDelta Lakeテーブルへのパスを含むバケットURL。
-- `aws_access_key_id`, `aws_secret_access_key` - [AWS](https://aws.amazon.com/) アカウントユーザーの長期的な認証情報。これらを使用してリクエストを認証できます。パラメータはオプションです。認証情報が指定されていない場合、設定ファイルから使用されます。
+- `url` — 既存の Delta Lake テーブルへのパスを含むバケット URL。
+- `aws_access_key_id`, `aws_secret_access_key` - [AWS](https://aws.amazon.com/) アカウントユーザーの長期認証情報。リクエストの認証に使用できます。このパラメータはオプションです。認証情報が指定されていない場合、設定ファイルから使用されます。
 
-エンジンパラメータは、[Named Collections](/operations/named-collections.md) を使用して指定できます。
+エンジンパラメータは [Named Collections](/operations/named-collections.md) を使用して指定できます。
 
 **例**
 
@@ -33,9 +36,9 @@ CREATE TABLE deltalake
 CREATE TABLE deltalake ENGINE=DeltaLake('http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/test_table/', 'ABC123', 'Abc+123')
 ```
 
-名前付きコレクションを使用する：
+名前付きコレクションを使用する場合:
 
-``` xml
+```xml
 <clickhouse>
     <named_collections>
         <deltalake_conf>
@@ -53,8 +56,8 @@ CREATE TABLE deltalake ENGINE=DeltaLake(deltalake_conf, filename = 'test_table')
 
 ### データキャッシュ {#data-cache}
 
-`Iceberg` テーブルエンジンおよびテーブル関数は、`S3`、`AzureBlobStorage`、`HDFS` ストレージと同様にデータキャッシングをサポートします。詳細は [こちら](../../../engines/table-engines/integrations/s3.md#data-cache) を参照してください。
+`Iceberg` テーブルエンジンとテーブル関数は、`S3`、`AzureBlobStorage`、`HDFS` ストレージと同様にデータキャッシュをサポートします。詳細は [こちら](../../../engines/table-engines/integrations/s3.md#data-cache) をご覧ください。
 
-## 関連項目 {#see-also}
+## 参照 {#see-also}
 
 - [deltaLake テーブル関数](../../../sql-reference/table-functions/deltalake.md)

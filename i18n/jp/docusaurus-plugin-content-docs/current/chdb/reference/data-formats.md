@@ -1,24 +1,28 @@
 ---
-title: データフォーマット
-sidebar_label: データフォーマット
-slug: /chdb/reference/data-formats
-description: chDBのデータフォーマット
-keywords: [chdb, data formats]
+'title': 'データ形式'
+'sidebar_label': 'データ形式'
+'slug': '/chdb/reference/data-formats'
+'description': 'chDBのデータ形式'
+'keywords':
+- 'chdb'
+- 'data formats'
 ---
 
-データフォーマットに関して、chDBはClickHouseと100%機能互換です。
 
-入力フォーマットは、`INSERT`および`SELECT`で提供されるデータを解析するために使用されます。ファイルに基づくテーブル（`File`、`URL`、または`S3`など）からデータを取得します。
-出力フォーマットは、`SELECT`の結果を整形し、ファイルに基づくテーブルへの`INSERT`を実行するために使用されます。
-ClickHouseがサポートするデータフォーマットに加えて、chDBは次のものもサポートします。
 
-- 出力フォーマットとして`ArrowTable`、タイプはPython `pyarrow.Table`
-- 入力および出力フォーマットとして`DataFrame`、タイプはPython `pandas.DataFrame`。例については[`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)を参照してください。
-- 出力形式として`Debug`（`CSV`のエイリアス）を使用しますが、ClickHouseからのデバッグ詳細出力を有効にします。
+When it comes to data formats, chDB is 100% feature compatible with ClickHouse.
 
-ClickHouseからサポートされているデータフォーマットは次のとおりです。
+Input formats are used to parse the data provided to `INSERT` and `SELECT` from a file-backed table such as `File`, `URL` or `S3`.
+Output formats are used to arrange the results of a `SELECT`, and to perform `INSERT`s into a file-backed table.
+As well as the data formats that ClickHouse supports, chDB also supports:
 
-| フォーマット                          | 入力 | 出力 |
+- `ArrowTable` as an output format, the type is Python `pyarrow.Table`
+- `DataFrame` as an input and output format, the type is Python `pandas.DataFrame`. For examples, see [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
+- `Debug` as ab output (as an alias of `CSV`), but with enabled debug verbose output from ClickHouse.
+
+The supported data formats from ClickHouse are:
+
+| Format                          | Input | Output |
 |---------------------------------|-------|--------|
 | TabSeparated                    | ✔     | ✔      |
 | TabSeparatedRaw                 | ✔     | ✔      |
@@ -97,4 +101,4 @@ ClickHouseからサポートされているデータフォーマットは次の�
 | MySQLDump                       | ✔     | ✗      |
 | Markdown                        | ✗     | ✔      |
 
-さらに情報や例については、[ClickHouseの入力および出力データ用フォーマット](/interfaces/formats)を参照してください。
+For further information and examples, see [ClickHouse formats for input and output data](/interfaces/formats).

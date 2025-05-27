@@ -1,19 +1,19 @@
 ---
-slug: /engines/table-engines/integrations/azure-queue
-sidebar_position: 181
-sidebar_label: AzureQueue
-title: 'AzureQueue 表引擎'
-description: '此引擎提供与 Azure Blob 存储生态系统的集成，允许流式数据导入。'
+'description': '该引擎与 Azure Blob Storage 生态系统提供集成，允许数据流导入。'
+'sidebar_label': 'AzureQueue'
+'sidebar_position': 181
+'slug': '/engines/table-engines/integrations/azure-queue'
+'title': 'AzureQueue 表引擎'
 ---
 
 
 # AzureQueue 表引擎
 
-此引擎提供与 [Azure Blob 存储](https://azure.microsoft.com/en-us/products/storage/blobs) 生态系统的集成，允许流式数据导入。
+此引擎提供与 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 生态系统的集成，允许流数据导入。
 
 ## 创建表 {#creating-a-table}
 
-``` sql
+```sql
 CREATE TABLE test (name String, value UInt32)
     ENGINE = AzureQueue(...)
     [SETTINGS]
@@ -25,9 +25,9 @@ CREATE TABLE test (name String, value UInt32)
 
 **引擎参数**
 
-`AzureQueue` 参数与 `AzureBlobStorage` 表引擎支持的参数相同。有关参数请参见 [这里](../../../engines/table-engines/integrations/azureBlobStorage.md)。
+`AzureQueue` 参数与 `AzureBlobStorage` 表引擎支持的参数相同。有关参数的详细信息，请参见 [这里](../../../engines/table-engines/integrations/azureBlobStorage.md)。
 
-与 [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage) 表引擎类似，用户可以使用 Azurite 模拟器进行本地 Azure 存储开发。更多详细信息请参见 [这里](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage)。
+与 [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage) 表引擎类似，用户可以使用 Azurite 模拟器进行本地 Azure 存储开发。详细信息见 [这里](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage)。
 
 **示例**
 
@@ -43,21 +43,22 @@ SETTINGS mode = 'unordered'
 
 ## 设置 {#settings}
 
-支持的设置集与 `S3Queue` 表引擎相同，但没有 `s3queue_` 前缀。请参见 [完整的设置列表](../../../engines/table-engines/integrations/s3queue.md#settings)。要获取表的配置设置列表，请使用 `system.azure_queue_settings` 表。从 `24.10` 开始可用。
+支持的设置集与 `S3Queue` 表引擎相同，但没有 `s3queue_` 前缀。请参见[设置的完整列表](../../../engines/table-engines/integrations/s3queue.md#settings)。
+要获取针对该表配置的设置列表，请使用 `system.azure_queue_settings` 表。从 `24.10` 起可用。
 
 ## 描述 {#description}
 
-`SELECT` 对于流式导入并不是特别有用（除非用于调试），因为每个文件只能导入一次。更实际的做法是使用 [物化视图](../../../sql-reference/statements/create/view.md) 创建实时线程。为此：
+`SELECT` 对于流式导入并不特别有用（除非用于调试），因为每个文件只能被导入一次。更实际的做法是使用 [物化视图](../../../sql-reference/statements/create/view.md) 创建实时线程。为此：
 
-1. 使用引擎根据指定路径在 S3 创建一个消费表，并将其视为数据流。
-2. 创建具有所需结构的表。
-3. 创建物化视图，将数据从引擎转换并放入先前创建的表中。
+1. 使用该引擎从 S3 中指定路径创建一个表，并将其视为数据流。
+2. 创建一个具有所需结构的表。
+3. 创建一个物化视图，将引擎中的数据转换并放入先前创建的表中。
 
-当 `MATERIALIZED VIEW` 连接到引擎时，它开始在后台收集数据。
+当 `MATERIALIZED VIEW` 加入引擎时，它开始在后台收集数据。
 
 示例：
 
-``` sql
+```sql
 CREATE TABLE azure_queue_engine_table (key UInt64, data String)
   ENGINE=AzureQueue('<endpoint>', 'CSV', 'gzip')
   SETTINGS
@@ -79,48 +80,48 @@ SELECT * FROM stats ORDER BY key;
 
 有关虚拟列的更多信息，请参见 [这里](../../../engines/table-engines/index.md#table_engines-virtual_columns)。
 
-## 自省 {#introspection}
+## 反演 {#introspection}
 
-通过表设置 `enable_logging_to_s3queue_log=1` 启用表的日志记录。
+通过表设置 `enable_logging_to_queue_log=1` 启用表的日志记录。
 
-自省功能与 [S3Queue 表引擎](/engines/table-engines/integrations/s3queue#introspection) 相同，但有一些明显的区别：
+反演能力与 [S3Queue 表引擎](/engines/table-engines/integrations/s3queue#introspection) 相同，但有几个显著的区别：
 
-1. 对于服务器版本 >= 25.1，使用 `system.azure_queue` 查看队列的内存状态。对于旧版本，使用 `system.s3queue`（它也包含 `azure` 表的信息）。
-2. 通过 ClickHouse 主配置启用 `system.azure_queue_log`，例如：
+1. 对于服务器版本 >= 25.1，使用 `system.azure_queue` 访问队列的内存状态。对于较早版本，使用 `system.s3queue`（它还包含 `azure` 表的信息）。
+2. 通过主 ClickHouse 配置启用 `system.azure_queue_log`，例如：
 
-  ```xml
-  <azure_queue_log>
-    <database>system</database>
-    <table>azure_queue_log</table>
-  </azure_queue_log>
-  ```
+```xml
+<azure_queue_log>
+  <database>system</database>
+  <table>azure_queue_log</table>
+</azure_queue_log>
+```
 
-这个持久化表具有与 `system.s3queue` 相同的信息，但针对处理和失败的文件。
+此持久表包含与 `system.s3queue` 相同的信息，但针对已处理和失败的文件。
 
-该表的结构如下：
+该表具有以下结构：
 
 ```sql
 
 CREATE TABLE system.azure_queue_log
 (
-    `hostname` LowCardinality(String) COMMENT '主机名',
-    `event_date` Date COMMENT '写入此日志行的事件日期',
-    `event_time` DateTime COMMENT '写入此日志行的事件时间',
-    `database` String COMMENT '当前 S3Queue 表所在数据库的名称。',
-    `table` String COMMENT 'S3Queue 表的名称。',
-    `uuid` String COMMENT 'S3Queue 表的 UUID',
-    `file_name` String COMMENT '正在处理的文件名',
-    `rows_processed` UInt64 COMMENT '处理的行数',
-    `status` Enum8('Processed' = 0, 'Failed' = 1) COMMENT '处理文件的状态',
-    `processing_start_time` Nullable(DateTime) COMMENT '处理文件开始的时间',
-    `processing_end_time` Nullable(DateTime) COMMENT '处理文件结束的时间',
-    `exception` String COMMENT '发生异常时的消息'
+    `hostname` LowCardinality(String) COMMENT 'Hostname',
+    `event_date` Date COMMENT 'Event date of writing this log row',
+    `event_time` DateTime COMMENT 'Event time of writing this log row',
+    `database` String COMMENT 'The name of a database where current S3Queue table lives.',
+    `table` String COMMENT 'The name of S3Queue table.',
+    `uuid` String COMMENT 'The UUID of S3Queue table',
+    `file_name` String COMMENT 'File name of the processing file',
+    `rows_processed` UInt64 COMMENT 'Number of processed rows',
+    `status` Enum8('Processed' = 0, 'Failed' = 1) COMMENT 'Status of the processing file',
+    `processing_start_time` Nullable(DateTime) COMMENT 'Time of the start of processing the file',
+    `processing_end_time` Nullable(DateTime) COMMENT 'Time of the end of processing the file',
+    `exception` String COMMENT 'Exception message if happened'
 )
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(event_date)
 ORDER BY (event_date, event_time)
 SETTINGS index_granularity = 8192
-COMMENT '包含由 S3Queue 引擎处理的文件的信息的日志条目。'
+COMMENT 'Contains logging entries with the information files processes by S3Queue engine.'
 
 ```
 

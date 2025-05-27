@@ -1,66 +1,66 @@
 ---
-slug: /sql-reference/table-functions/mongodb
-sidebar_position: 135
-sidebar_label: mongodb
-title: "mongodb"
-description: "リモートの MongoDB サーバーに保存されたデータに対して、`SELECT` クエリを実行できるようにします。"
+'description': 'Allows `SELECT` queries to be performed on data that is stored on
+  a remote MongoDB server.'
+'sidebar_label': 'mongodb'
+'sidebar_position': 135
+'slug': '/sql-reference/table-functions/mongodb'
+'title': 'mongodb'
 ---
+
+
 
 
 # mongodb テーブル関数
 
-リモートの MongoDB サーバーに保存されたデータに対して、`SELECT` クエリを実行できるようにします。
+リモートの MongoDB サーバーに保存されているデータに対して `SELECT` クエリを実行できるようにします。
 
-**構文**
+## 構文 {#syntax}
 
-``` sql
-mongodb(host:port, database, collection, user, password, structure [, options])
+```sql
+mongodb(host:port, database, collection, user, password, structure[, options[, oid_columns]])
 ```
 
-**引数**
+## 引数 {#arguments}
 
-- `host:port` — MongoDB サーバーのアドレス。
-
-- `database` — リモートデータベースの名前。
-
-- `collection` — リモートコレクションの名前。
-
-- `user` — MongoDB ユーザー。
-
-- `password` — ユーザーパスワード。
-
-- `structure` - この関数から返される ClickHouse テーブルのスキーマ。
-
-- `options` - MongoDB 接続文字列のオプション（オプションのパラメータ）。
+| 引数          | 説明                                                                                                   |
+|---------------|--------------------------------------------------------------------------------------------------------|
+| `host:port`   | MongoDB サーバーのアドレス。                                                                           |
+| `database`    | リモートデータベースの名前。                                                                           |
+| `collection`  | リモートコレクションの名前。                                                                           |
+| `user`        | MongoDB ユーザー。                                                                                     |
+| `password`    | ユーザーパスワード。                                                                                   |
+| `structure`   | この関数から返される ClickHouse テーブルのスキーマ。                                                  |
+| `options`     | MongoDB 接続文字列オプション（任意のパラメータ）。                                                    |
+| `oid_columns` | WHERE 句で `oid` として扱うべきカラムのカンマ区切りリスト。デフォルトでは `_id`。                     |
 
 :::tip
-MongoDB Atlas クラウドサービスを使用している場合は、次のオプションを追加してください：
+MongoDB Atlas クラウドオファリングを使用している場合は、次のオプションを追加してください：
 
 ```ini
 'connectTimeoutMS=10000&ssl=true&authSource=admin'
 ```
-
 :::
 
-また、URI を使用して接続することもできます：
-``` sql
-mongodb(uri, collection, structure)
+URI による接続も可能です：
+
+```sql
+mongodb(uri, collection, structure[, oid_columns])
 ```
-**引数**
 
-- `uri` — 接続文字列。
+| 引数          | 説明                                                                                                   |
+|---------------|--------------------------------------------------------------------------------------------------------|
+| `uri`         | 接続文字列。                                                                                          |
+| `collection`  | リモートコレクションの名前。                                                                           |
+| `structure`   | この関数から返される ClickHouse テーブルのスキーマ。                                                  |
+| `oid_columns` | WHERE 句で `oid` として扱うべきカラムのカンマ区切りリスト。デフォルトでは `_id`。                     |
 
-- `collection` — リモートコレクションの名前。
-
-- `structure` — この関数から返される ClickHouse テーブルのスキーマ。
-
-**返される値**
+## 戻り値 {#returned_value}
 
 元の MongoDB テーブルと同じカラムを持つテーブルオブジェクト。
 
-**例**
+## 例 {#examples}
 
-`test` という MongoDB データベースに `my_collection` というコレクションが定義されており、いくつかのドキュメントを挿入したとします：
+`test` という MongoDB データベースに `my_collection` というコレクションが定義されているとしましょう。いくつかのドキュメントを挿入します：
 
 ```sql
 db.createUser({user:"test_user",pwd:"password",roles:[{role:"readWrite",db:"test"}]})
@@ -100,7 +100,7 @@ SELECT * FROM mongodb(
 )
 ```
 
-**関連項目**
+## 関連 {#related}
 
 - [MongoDB テーブルエンジン](engines/table-engines/integrations/mongodb.md)
 - [MongoDB を辞書ソースとして使用する](sql-reference/dictionaries/index.md#mongodb)

@@ -3,6 +3,7 @@ title: 'Introduction'
 description: 'Using ClickHouse as an observability solution'
 slug: /use-cases/observability/introduction
 keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
+show_related_blogs: true
 ---
 
 import observability_1 from '@site/static/images/use-cases/observability/observability-1.png';

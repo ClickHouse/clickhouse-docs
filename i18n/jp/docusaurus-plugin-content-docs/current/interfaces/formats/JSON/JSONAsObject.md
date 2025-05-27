@@ -1,24 +1,28 @@
 ---
-title: 'JSONAsObject'
-slug: '/interfaces/formats/JSONAsObject'
-keywords: [JSONAsObject]
-input_format: true
-output_format: false
-alias: []
+'alias': []
+'description': 'JSONAsObjectフォーマットのドキュメント'
+'input_format': true
+'keywords':
+- 'JSONAsObject'
+'output_format': false
+'slug': '/interfaces/formats/JSONAsObject'
+'title': 'JSONAsObject'
 ---
+
+
 
 ## 説明 {#description}
 
-このフォーマットでは、単一の JSON オブジェクトが単一の [JSON](/sql-reference/data-types/newjson.md) 値として解釈されます。入力に複数の JSON オブジェクト（カンマ区切り）が含まれている場合、それらは別々の行として解釈されます。入力データが角括弧で囲まれている場合、それは JSON の配列として解釈されます。
+このフォーマットでは、単一のJSONオブジェクトが単一の [JSON](/sql-reference/data-types/newjson.md) 値として解釈されます。入力に複数のJSONオブジェクト（カンマ区切り）が含まれている場合、それらは別々の行として解釈されます。入力データが角括弧で囲まれている場合、それはJSONの配列として解釈されます。
 
-このフォーマットは、[JSON](/sql-reference/data-types/newjson.md) 型の単一フィールドを持つテーブルに対してのみ解析できます。他のカラムは [`DEFAULT`](/sql-reference/statements/create/table.md/#default) または [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) に設定する必要があります。
+このフォーマットは、[JSON](/sql-reference/data-types/newjson.md) タイプの単一フィールドを持つテーブルに対してのみ解析可能です。残りのカラムは [`DEFAULT`](/sql-reference/statements/create/table.md/#default) または [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) に設定する必要があります。
 
 ## 使用例 {#example-usage}
 
 ### 基本的な例 {#basic-example}
 
 ```sql title="Query"
-SET allow_experimental_json_type = 1;
+SET enable_json_type = 1;
 CREATE TABLE json_as_object (json JSON) ENGINE = Memory;
 INSERT INTO json_as_object (json) FORMAT JSONAsObject {"foo":{"bar":{"x":"y"},"baz":1}},{},{"any json stucture":1}
 SELECT * FROM json_as_object FORMAT JSONEachRow;
@@ -30,10 +34,10 @@ SELECT * FROM json_as_object FORMAT JSONEachRow;
 {"json":{"any json stucture":"1"}}
 ```
 
-### JSON オブジェクトの配列 {#an-array-of-json-objects}
+### JSONオブジェクトの配列 {#an-array-of-json-objects}
 
 ```sql title="Query"
-SET allow_experimental_json_type = 1;
+SET enable_json_type = 1;
 CREATE TABLE json_square_brackets (field JSON) ENGINE = Memory;
 INSERT INTO json_square_brackets FORMAT JSONAsObject [{"id": 1, "name": "name1"}, {"id": 2, "name": "name2"}];
 SELECT * FROM json_square_brackets FORMAT JSONEachRow;
@@ -47,7 +51,7 @@ SELECT * FROM json_square_brackets FORMAT JSONEachRow;
 ### デフォルト値を持つカラム {#columns-with-default-values}
 
 ```sql title="Query"
-SET allow_experimental_json_type = 1;
+SET enable_json_type = 1;
 CREATE TABLE json_as_object (json JSON, time DateTime MATERIALIZED now()) ENGINE = Memory;
 INSERT INTO json_as_object (json) FORMAT JSONAsObject {"foo":{"bar":{"x":"y"},"baz":1}};
 INSERT INTO json_as_object (json) FORMAT JSONAsObject {};

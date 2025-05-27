@@ -1,38 +1,41 @@
 ---
-slug: /sql-reference/table-functions/null
-sidebar_position: 140
-sidebar_label: null 関数
-title: 'null'
-description: "指定された構造の一時テーブルを Null テーブルエンジンで作成します。この関数は、テストの記述やデモンストレーションの便宜のために使用されます。"
+'description': 'Creates a temporary table of the specified structure with the Null
+  table engine. The function is used for the convenience of test writing and demonstrations.'
+'sidebar_label': 'null function'
+'sidebar_position': 140
+'slug': '/sql-reference/table-functions/null'
+'title': 'null'
 ---
+
+
 
 
 # null テーブル関数
 
-指定された構造の一時テーブルを [Null](../../engines/table-engines/special/null.md) テーブルエンジンで作成します。 `Null`エンジンのプロパティに従って、テーブルのデータは無視され、クエリ実行後すぐにテーブル自体が削除されます。この関数は、テストの記述やデモンストレーションの便宜のために使用されます。
+指定された構造の一時テーブルを [Null](../../engines/table-engines/special/null.md) テーブルエンジンで作成します。 `Null` エンジンの特性に従って、テーブルデータは無視され、クエリ実行後にテーブル自体は即座に削除されます。この関数は、テストの記述やデモの便宜のために使用されます。
 
-**構文**
+## 構文 {#syntax}
 
-``` sql
+```sql
 null('structure')
 ```
 
-**パラメータ**
+## 引数 {#argument}
 
 - `structure` — カラムとカラムタイプのリスト。 [String](../../sql-reference/data-types/string.md)。
 
-**返される値**
+## 戻り値 {#returned_value}
 
-指定された構造の一時 `Null`エンジンテーブル。
+指定された構造を持つ一時 `Null` エンジンテーブル。
 
-**例**
+## 例 {#example}
 
-`null` 関数を使ったクエリ：
+`null` 関数を使用したクエリ:
 
-``` sql
+```sql
 INSERT INTO function null('x UInt64') SELECT * FROM numbers_mt(1000000000);
 ```
-は、以下の三つのクエリを置き換えることができます：
+は、以下の3つのクエリを置き換えることができます:
 
 ```sql
 CREATE TABLE t (x UInt64) ENGINE = Null;
@@ -40,6 +43,6 @@ INSERT INTO t SELECT * FROM numbers_mt(1000000000);
 DROP TABLE IF EXISTS t;
 ```
 
-関連情報:
+## 関連 {#related}
 
 - [Null テーブルエンジン](../../engines/table-engines/special/null.md)

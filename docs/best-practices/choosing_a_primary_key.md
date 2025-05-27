@@ -4,6 +4,8 @@ sidebar_position: 10
 sidebar_label: 'Choosing a Primary Key'
 title: 'Choosing a Primary Key'
 description: 'Page describing how to choose a primary key in ClickHouse'
+keywords: ['primary key']
+show_related_blogs: true
 ---
 
 import Image from '@theme/IdealImage';

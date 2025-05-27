@@ -1,18 +1,20 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/skewsamp
-sidebar_position: 186
-title: "skewSamp"
-description: "サンプルの歪度を計算します。"
+'description': 'Computes the sample skewness of a sequence.'
+'sidebar_position': 186
+'slug': '/sql-reference/aggregate-functions/reference/skewsamp'
+'title': 'skewSamp'
 ---
+
+
 
 
 # skewSamp
 
-シーケンスの[サンプルの歪度](https://en.wikipedia.org/wiki/Skewness)を計算します。
+シーケンスの[サンプル歪度](https://en.wikipedia.org/wiki/Skewness)を計算します。
 
-これは、渡された値がそのサンプルを形成する場合にランダム変数の歪度の無偏推定値を表します。
+これは、渡された値がサンプルを形成する場合に、ランダム変数の歪度のバイアスのない推定値を表します。
 
-``` sql
+```sql
 skewSamp(expr)
 ```
 
@@ -22,10 +24,10 @@ skewSamp(expr)
 
 **返される値**
 
-指定された分布の歪度。型 — [Float64](../../../sql-reference/data-types/float.md)。`n <= 1`（`n`はサンプルのサイズ）の場合、関数は`nan`を返します。
+指定された分布の歪度。タイプ — [Float64](../../../sql-reference/data-types/float.md)。もし `n <= 1` （`n` はサンプルのサイズ）であれば、この関数は `nan` を返します。
 
 **例**
 
-``` sql
+```sql
 SELECT skewSamp(value) FROM series_with_value_column;
 ```

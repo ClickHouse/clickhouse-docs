@@ -1,16 +1,18 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/groupbitxor
-sidebar_position: 153
-title: "groupBitXor"
-description: "数値の系列に対してビット単位の `XOR` を適用します。"
+'description': 'Applies bit-wise `XOR` for series of numbers.'
+'sidebar_position': 153
+'slug': '/sql-reference/aggregate-functions/reference/groupbitxor'
+'title': 'groupBitXor'
 ---
+
+
 
 
 # groupBitXor
 
-数値の系列に対してビット単位の `XOR` を適用します。
+シリーズの数値に対してビット単位の `XOR` を適用します。
 
-``` sql
+```sql
 groupBitXor(expr)
 ```
 
@@ -26,7 +28,7 @@ groupBitXor(expr)
 
 テストデータ:
 
-``` text
+```text
 binary     decimal
 00101100 = 44
 00011100 = 28
@@ -36,7 +38,7 @@ binary     decimal
 
 クエリ:
 
-``` sql
+```sql
 SELECT groupBitXor(num) FROM t
 ```
 
@@ -44,7 +46,7 @@ SELECT groupBitXor(num) FROM t
 
 結果:
 
-``` text
+```text
 binary     decimal
 01101000 = 104
 ```

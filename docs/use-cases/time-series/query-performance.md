@@ -4,6 +4,7 @@ sidebar_label: 'Query performance'
 description: 'Improving time-series query performance'
 slug: /use-cases/time-series/query-performance
 keywords: ['time-series']
+show_related_blogs: true
 ---
 
 # Time-Series query performance

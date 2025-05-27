@@ -1,24 +1,26 @@
 ---
-slug: /sql-reference/statements/undrop
-sidebar_label: UNDROP
+'description': 'UNDROP TABLE 的文档'
+'sidebar_label': 'UNDROP'
+'slug': '/sql-reference/statements/undrop'
+'title': 'UNDROP TABLE'
 ---
 
 
-# UNDROP 表
+# UNDROP TABLE
 
-取消删除表的操作。
+取消对表的删除。
 
-从 ClickHouse 版本 23.3 开始，可以在发出 DROP TABLE 语句后的 `database_atomic_delay_before_drop_table_sec` （默认 8 分钟）内对原子数据库中的表进行 UNDROP。已删除的表会列在一个系统表 `system.dropped_tables` 中。
+从 ClickHouse 版本 23.3 开始，可以在发出 DROP TABLE 语句后的 `database_atomic_delay_before_drop_table_sec`（默认情况下为 8 分钟）内对 Atomic 数据库中的表进行 UNDROP。被删除的表会列在名为 `system.dropped_tables` 的系统表中。
 
-如果您有一个与已删除表关联的没有 `TO` 子句的物化视图，那么您还需要对该视图的内部表进行 UNDROP。
+如果您有一个没有 `TO` 子句与被删除表关联的物化视图，那么您还需要 UNDROP 那个视图的内部表。
 
 :::tip
-另见 [DROP TABLE](/sql-reference/statements/drop.md)
+另请参见 [DROP TABLE](/sql-reference/statements/drop.md)
 :::
 
 语法：
 
-``` sql
+```sql
 UNDROP TABLE [db.]name [UUID '<uuid>'] [ON CLUSTER cluster]
 ```
 
@@ -40,7 +42,7 @@ FORMAT Vertical;
 ```
 
 ```response
-行 1:
+Row 1:
 ──────
 index:                 0
 database:              default
@@ -50,7 +52,7 @@ engine:                MergeTree
 metadata_dropped_path: /var/lib/clickhouse/metadata_dropped/default.tab.aa696a1a-1d70-4e60-a841-4c80827706cc.sql
 table_dropped_time:    2023-04-05 14:12:12
 
-1 行在集合中。已耗时: 0.001 秒。 
+1 row in set. Elapsed: 0.001 sec. 
 ```
 
 ```sql
@@ -61,9 +63,9 @@ FROM system.dropped_tables
 FORMAT Vertical;
 
 ```response
-好的。
+Ok.
 
-0 行在集合中。已耗时: 0.001 秒。 
+0 rows in set. Elapsed: 0.001 sec. 
 ```
 
 ```sql
@@ -72,7 +74,7 @@ FORMAT Vertical;
 ```
 
 ```response
-行 1:
+Row 1:
 ──────
 name:               id
 type:               UInt8

@@ -1,4 +1,9 @@
-The table below shows all data types supported by the Apache Avro format, and their corresponding ClickHouse [data types](/sql-reference/data-types/index.md) in `INSERT` and `SELECT` queries.
+---
+null
+...
+---
+
+下面的表格显示了 Apache Avro 格式支持的所有数据类型，以及它们在 `INSERT` 和 `SELECT` 查询中的对应 ClickHouse [数据类型](/sql-reference/data-types/index.md)。
 
 | Avro 数据类型 `INSERT`                     | ClickHouse 数据类型                                                                                                          | Avro 数据类型 `SELECT`         |
 |---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
@@ -26,9 +31,10 @@ The table below shows all data types supported by the Apache Avro format, and th
 | `fixed(32)`                                 | [Int256/UInt256](/sql-reference/data-types/int-uint.md)                                                               | `fixed(32)`                     |
 | `record`                                    | [Tuple](/sql-reference/data-types/tuple.md)                                                                           | `record`                        |
 
-\* `bytes` 是默认值，通过设置 [`output_format_avro_string_column_pattern`](/operations/settings/settings-formats.md/#output_format_avro_string_column_pattern) 控制。
+\* `bytes` 是默认值，由设置 [`output_format_avro_string_column_pattern`](/operations/settings/settings-formats.md/#output_format_avro_string_column_pattern) 控制。
 
-\**  [Variant类型](/sql-reference/data-types/variant) 隐式接受 `null` 作为字段值，因此，例如 Avro `union(T1, T2, null)` 将转换为 `Variant(T1, T2)`。因此，在从 ClickHouse 生成 Avro 时，我们必须始终将 `null` 类型包含在 Avro `union` 类型集中，因为我们不知道在模式推理过程中任何值是否实际为 `null`。
+\**  [Variant 类型](/sql-reference/data-types/variant) 隐式接受 `null` 作为字段值，因此，例如 Avro `union(T1, T2, null)` 将被转换为 `Variant(T1, T2)`。
+因此，从 ClickHouse 生成 Avro 时，我们必须始终将 `null` 类型包括到 Avro `union` 类型集中，因为我们在模式推断过程中不知道任何值是否实际上为 `null`。
 
 \**\* [Avro 逻辑类型](https://avro.apache.org/docs/current/spec.html#Logical+Types)
 

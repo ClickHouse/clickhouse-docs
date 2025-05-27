@@ -1,33 +1,34 @@
 ---
-slug: /sql-reference/statements/attach
-sidebar_position: 40
-sidebar_label: ATTACH
-title: 'ATTACH 语句'
+'description': 'Attach 的文档'
+'sidebar_label': 'ATTACH'
+'sidebar_position': 40
+'slug': '/sql-reference/statements/attach'
+'title': 'ATTACH 语句'
 ---
 
-附加一个表或字典，例如，在将数据库移动到另一个服务器时。
+将表或字典附加到另一个服务器时，例如在移动数据库时。
 
 **语法**
 
-``` sql
+```sql
 ATTACH TABLE|DICTIONARY|DATABASE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster] ...
 ```
 
-该查询不会在磁盘上创建数据，而是假定数据已经在适当的位置，并仅将指定表、字典或数据库的信息添加到服务器。在执行 `ATTACH` 查询后，服务器将知道表、字典或数据库的存在。
+该查询不会在磁盘上创建数据，而是假设数据已经在适当的位置，只是将关于指定表、字典或数据库的信息添加到服务器。执行 `ATTACH` 查询后，服务器将知道表、字典或数据库的存在。
 
-如果一个表之前被分离（ [DETACH](../../sql-reference/statements/detach.md) 查询），意味着其结构是已知的，您可以使用简写而无需定义结构。
+如果一个表之前被分离（即 [DETACH](../../sql-reference/statements/detach.md) 查询），意味着它的结构已知，可以使用简写而无需定义结构。
 
 ## 附加现有表 {#attach-existing-table}
 
 **语法**
 
-``` sql
+```sql
 ATTACH TABLE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
 ```
 
-此查询在启动服务器时使用。服务器将表元数据作为文件存储，并在启动时简单地运行这些 `ATTACH` 查询（一些系统表除外，这些系统表是在服务器上显式创建的）。
+该查询在服务器启动时使用。服务器将表元数据作为 `ATTACH` 查询的文件存储，这些查询在启动时会简单地运行（某些系统表除外，这些表会在服务器上显式创建）。
 
-如果表被永久分离，服务器启动时不会重新附加。因此，您需要显式使用 `ATTACH` 查询。
+如果表被永久分离，则在服务器启动时不会重新附加，因此需要显式使用 `ATTACH` 查询。
 
 ## 创建新表并附加数据 {#create-new-table-and-attach-data}
 
@@ -72,11 +73,11 @@ ATTACH TABLE name UUID '<uuid>' (col1 Type1, ...)
 
 ## 将 MergeTree 表附加为 ReplicatedMergeTree {#attach-mergetree-table-as-replicatedmergetree}
 
-允许将非复制的 MergeTree 表附加为 ReplicatedMergeTree。 ReplicatedMergeTree 表将使用 `default_replica_path` 和 `default_replica_name` 设置的值创建。也可以将复制的表作为常规 MergeTree 附加。
+允许将非复制的 MergeTree 表附加为 ReplicatedMergeTree。ReplicatedMergeTree 表将使用 `default_replica_path` 和 `default_replica_name` 设置的值创建。也可以将复制表附加为常规的 MergeTree。
 
-注意，该查询不会影响 ZooKeeper 中表的数据。这意味着您必须在附加后使用 `SYSTEM RESTORE REPLICA` 添加 ZooKeeper 中的元数据，或使用 `SYSTEM DROP REPLICA ... FROM ZKPATH ...` 清除。
+请注意，此查询不会影响 ZooKeeper 中表的数据。这意味着您必须使用 `SYSTEM RESTORE REPLICA` 在 ZooKeeper 中添加元数据，或者在附加后使用 `SYSTEM DROP REPLICA ... FROM ZKPATH ...` 清除它。
 
-如果您尝试向现有的 ReplicatedMergeTree 表添加副本，请记住，转换后的 MergeTree 表中的所有本地数据将被分离。
+如果您试图向现有的 ReplicatedMergeTree 表添加副本，请记住，转换后的 MergeTree 表中的所有本地数据将被分离。
 
 **语法**
 
@@ -84,7 +85,7 @@ ATTACH TABLE name UUID '<uuid>' (col1 Type1, ...)
 ATTACH TABLE [db.]name AS [NOT] REPLICATED
 ```
 
-**将表转换为复制**
+**将表转换为复制的**
 
 ```sql
 DETACH TABLE test;
@@ -92,7 +93,7 @@ ATTACH TABLE test AS REPLICATED;
 SYSTEM RESTORE REPLICA test;
 ```
 
-**将表转换为非复制**
+**将表转换为非复制的**
 
 获取表的 ZooKeeper 路径和副本名称：
 
@@ -105,7 +106,7 @@ SELECT replica_name, zookeeper_path FROM system.replicas WHERE table='test';
 │ r1           │ /clickhouse/tables/401e6a1f-9bf2-41a3-a900-abb7e94dff98/s1 │
 └──────────────┴────────────────────────────────────────────────────────────┘
 ```
-将表附加为非复制并从 ZooKeeper 删除副本的数据：
+将表作为非复制附加，并从 ZooKeeper 中删除副本的数据：
 ```sql
 DETACH TABLE test;
 ATTACH TABLE test AS NOT REPLICATED;
@@ -114,20 +115,20 @@ SYSTEM DROP REPLICA 'r1' FROM ZKPATH '/clickhouse/tables/401e6a1f-9bf2-41a3-a900
 
 ## 附加现有字典 {#attach-existing-dictionary}
 
-附加一个之前分离的字典。
+附加之前分离的字典。
 
 **语法**
 
-``` sql
+```sql
 ATTACH DICTIONARY [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
 ```
 
 ## 附加现有数据库 {#attach-existing-database}
 
-附加一个之前分离的数据库。
+附加之前分离的数据库。
 
 **语法**
 
-``` sql
+```sql
 ATTACH DATABASE [IF NOT EXISTS] name [ENGINE=<database engine>] [ON CLUSTER cluster]
 ```

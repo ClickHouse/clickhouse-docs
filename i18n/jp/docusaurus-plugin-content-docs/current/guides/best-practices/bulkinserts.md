@@ -1,10 +1,10 @@
 ---
-slug: /optimize/bulk-inserts
-sidebar_label: 一括挿入
-title: 一括挿入
-description: より多くのデータを含む少量の挿入を送信することで、必要な書き込みの回数を減らすことができます。
+'slug': '/optimize/bulk-inserts'
+'sidebar_label': '一括挿入'
+'title': '一括挿入'
+'description': 'データ量が多い挿入を少なくすることで、必要なライティング数を減らすことができます。'
 ---
 
-import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/cloud/bestpractices/bulkinserts.md';
+import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_bulk_inserts.md';
 
 <Content />

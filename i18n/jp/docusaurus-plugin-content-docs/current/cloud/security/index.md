@@ -1,20 +1,25 @@
 ---
-slug: /cloud/security
-keywords: [Cloud, Security]
-title: 概要
-hide_title: true
+'slug': '/cloud/security'
+'keywords':
+- 'Cloud'
+- 'Security'
+'title': '概要'
+'hide_title': true
+'description': 'ClickHouseクラウドセキュリティのランディングページ'
 ---
 
 
-# ClickHouse Cloudセキュリティ
 
-このセクションでは、ClickHouse Cloudにおけるセキュリティについて詳述し、以下のページを含みます：
 
-| ページ                                                          | 説明                                                                                                                                                                                             |
-|---------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [共有責任モデル](shared-responsibility-model.md) | 各サービスタイプに提供されるセキュリティ機能に関する情報。                                                                                                                                      |
-| [クラウドアクセス管理](cloud-access-management/index.md)   | アクセス制御、認証、SSO設定、一般的なアクセス管理に関するクエリおよび新規ユーザーの招待方法に関する情報。                                                                                       |
-| [接続性](connectivity-overview.md)                      | IPフィルターの設定、プライベートネットワーキング、S3データの安全なアクセスおよびクラウドIPアドレスに関する情報。                                                                                   |
-| [強化された暗号化](cmek.md)                                | デフォルトでクラウドプロバイダー管理のAES 256キーを使用してデータが静止状態で暗号化されます。顧客はサービスデータに対する追加の保護層を提供するために透過的データ暗号化（TDE）を有効にできます。    |
-| [監査ログ](audit-logging.md)                             | ClickHouse Cloudにおける監査ログのガイド。                                                                                                                                                       |
-| [プライバシーとコンプライアンス](privacy-compliance-overview.md)      | ClickHouse Cloudのセキュリティおよびコンプライアンスに関する情報、自分の個人情報を確認して修正する方法に関するガイド。                                                                       |
+# ClickHouse Cloud Security
+
+このセクションでは、ClickHouse Cloud におけるセキュリティについて掘り下げており、以下のページが含まれています。
+
+| ページ                                                          | 説明                                                                                                                                                                                           |
+|---------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Shared Responsibility Model](shared-responsibility-model.md) | 各サービスタイプに提供されるセキュリティ機能に関する情報。                                                                                                                                   |
+| [Cloud Access Management](cloud-access-management/index.md)   | アクセス制御、認証、SSO の設定、一般的なアクセス管理のクエリ、および新規ユーザーの招待方法に関する情報。                                                                               |
+| [Connectivity](connectivity-overview.md)                      | IP フィルターの設定、プライベートネットワーキング、S3 データおよび Cloud IP アドレスへの安全なアクセスに関する情報。                                                                                               |
+| [Enhanced Encryption](cmek.md)                                | 静的データはデフォルトでクラウドプロバイダー管理の AES 256 キーを使用して暗号化されます。顧客はサービスデータの保護のために、透過的データ暗号化 (TDE) を有効にすることができます。 |
+| [Audit Logging](audit-logging.md)                             | ClickHouse Cloud における監査ログに関するガイド。                                                                                                                                                         |
+| [Privacy and Compliance](privacy-compliance-overview.md)      | ClickHouse Cloud のセキュリティとコンプライアンスに関する情報、個人情報を確認および修正する方法に関するガイド。                                                                             |

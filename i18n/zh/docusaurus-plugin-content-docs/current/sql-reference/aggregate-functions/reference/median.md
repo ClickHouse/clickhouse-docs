@@ -1,14 +1,14 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/median
-sidebar_position: 167
-title: 'median'
-description: 'The `median*` functions are the aliases for the corresponding `quantile*` functions. They calculate median of a numeric data sample.'
+'description': '`median*` 函数是相应的 `quantile*` 函数的别名。它们计算数值数据样本的 median。'
+'sidebar_position': 167
+'slug': '/sql-reference/aggregate-functions/reference/median'
+'title': 'median'
 ---
 
 
 # median
 
-`median*` 函数是对应 `quantile*` 函数的别名。它们计算数值数据样本的中位数。
+`median*` 函数是对应的 `quantile*` 函数的别名。它们计算数值数据样本的中位数。
 
 函数：
 
@@ -27,7 +27,7 @@ description: 'The `median*` functions are the aliases for the corresponding `qua
 
 输入表：
 
-``` text
+```text
 ┌─val─┐
 │   1 │
 │   1 │
@@ -38,13 +38,13 @@ description: 'The `median*` functions are the aliases for the corresponding `qua
 
 查询：
 
-``` sql
+```sql
 SELECT medianDeterministic(val, 1) FROM t;
 ```
 
 结果：
 
-``` text
+```text
 ┌─medianDeterministic(val, 1)─┐
 │                         1.5 │
 └─────────────────────────────┘

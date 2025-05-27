@@ -1,23 +1,25 @@
 ---
-title: ProtobufSingle
-slug: /interfaces/formats/ProtobufSingle
-keywords: [ProtobufSingle]
-input_format: true
-output_format: true
-alias: []
+'alias': []
+'description': 'ProtobufSingle 形式のドキュメント'
+'input_format': true
+'keywords':
+- 'ProtobufSingle'
+'output_format': true
+'slug': '/interfaces/formats/ProtobufSingle'
+'title': 'ProtobufSingle'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
-| 入力 | 出力 | エイリアス |
+| Input | Output | Alias |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-`ProtobufSingle` フォーマットは [`Protobuf`](./Protobuf.md) フォーマットと同じですが、長さ区切りなしで単一の Protobuf メッセージを保存/解析することを目的としています。
+`ProtobufSingle` フォーマットは、[`Protobuf`](./Protobuf.md) フォーマットと同じですが、長さ区切りなしで単一の Protobuf メッセージを保存または解析するために使用されます。
 
 ## 使用例 {#example-usage}
 

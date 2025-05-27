@@ -2,12 +2,13 @@
 slug: /guides/developer/mutations
 sidebar_label: 'Updating and Deleting Data'
 sidebar_position: 1
-keywords: ['update', 'delete', 'mutation']
+keywords: ['UPDATE', 'DELETE']
 title: 'Updating and deleting ClickHouse data'
 description: 'Describes how to perform update and delete operations in ClickHouse'
+show_related_blogs: false
 ---
 
-# Updating and Deleting ClickHouse Data
+# Updating and deleting ClickHouse data
 
 Although ClickHouse is geared toward high volume analytic workloads, it is possible in some situations to modify or delete existing data.  These operations are labeled "mutations" and are executed using the `ALTER TABLE` command. You can also `DELETE` a row using the lightweight
 delete capability of ClickHouse.
@@ -16,7 +17,7 @@ delete capability of ClickHouse.
 If you need to perform frequent updates, consider using [deduplication](../developer/deduplication.md) in ClickHouse, which allows you to update and/or delete rows without generating a mutation event.
 :::
 
-## Updating Data {#updating-data}
+## Updating data {#updating-data}
 
 Use the `ALTER TABLE...UPDATE` command to update rows in a table:
 
@@ -56,7 +57,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 It is not possible to update columns that are part of the primary or sorting key.
 :::
 
-## Deleting Data {#deleting-data}
+## Deleting data {#deleting-data}
 
 Use the `ALTER TABLE` command to delete rows:
 
@@ -84,7 +85,7 @@ To delete all of the data in a table, it is more efficient to use the command `T
 
 View the [`DELETE` statement](/sql-reference/statements/delete.md) docs page for more details.
 
-## Lightweight Deletes {#lightweight-deletes}
+## Lightweight deletes {#lightweight-deletes}
 
 Another option for deleting rows it to use the `DELETE FROM` command, which is referred to as a **lightweight delete**. The deleted rows are marked as deleted immediately and will be automatically filtered out of all subsequent queries, so you do not have to wait for a merging of parts or use the `FINAL` keyword. Cleanup of data happens asynchronously in the background.
 

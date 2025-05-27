@@ -1,9 +1,17 @@
 ---
-description: "すべてのテーブルに存在するプロジェクションに関する情報を含むシステムテーブル。"
-slug: /operations/system-tables/projections
-title: "system.processors_profile_log"
-keywords: ["システムテーブル", "プロジェクション"]
+'description': 'System table containing information about existing projections in
+  all tables.'
+'keywords':
+- 'system table'
+- 'projections'
+'slug': '/operations/system-tables/projections'
+'title': 'system.projections'
 ---
+
+
+
+
+# system.projections
 
 すべてのテーブルに存在するプロジェクションに関する情報を含みます。
 
@@ -13,7 +21,7 @@ keywords: ["システムテーブル", "プロジェクション"]
 - `table` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
 - `name` ([String](../../sql-reference/data-types/string.md)) — プロジェクション名。
 - `type` ([Enum](../../sql-reference/data-types/enum.md)) — プロジェクションタイプ ('Normal' = 0, 'Aggregate' = 1)。
-- `sorting_key` ([Array(String)](../../sql-reference/data-types/array.md)) — プロジェクションのソートキー。
+- `sorting_key` ([Array(String)](../../sql-reference/data-types/array.md)) — プロジェクションソートキー。
 - `query` ([String](../../sql-reference/data-types/string.md)) — プロジェクションクエリ。
 
 **例**
@@ -23,7 +31,7 @@ SELECT * FROM system.projections LIMIT 2 FORMAT Vertical;
 ```
 
 ```text
-行 1:
+Row 1:
 ──────
 database:    default
 table:       landing
@@ -32,7 +40,7 @@ type:        Normal
 sorting_key: ['user_id','date']
 query:       SELECT * ORDER BY user_id, date
 
-行 2:
+Row 2:
 ──────
 database:    default
 table:       landing

@@ -1101,7 +1101,3 @@ Additional configuration for the plugin is described [here](https://github.com/s
 ## Fivetran {#fivetran}
 
 The `dbt-clickhouse` connector is also available for use in [Fivetran transformations](https://fivetran.com/docs/transformations/dbt), allowing seamless integration and transformation capabilities directly within the Fivetran platform using `dbt`.
-
-## Related Content {#related-content}
-
-- Blog & Webinar: [ClickHouse and dbt - A Gift from the Community](https://clickhouse.com/blog/clickhouse-dbt-project-introduction-and-webinar)

@@ -1,28 +1,28 @@
 ---
-description: '该数据集中的数据来源于完整的 OpenSky 数据集，并经过清理，以展示 COVID-19 大流行期间空中交通的发展。'
-slug: /getting-started/example-datasets/opensky
-sidebar_label: 空中交通数据
-title: '来自 The OpenSky Network 2020 的众包空中交通数据'
+'description': '该数据集中的数据源自于完整的 OpenSky 数据集并经过清洗，以展示 COVID-19 大流行期间航空交通的发展。'
+'sidebar_label': '航空交通数据'
+'slug': '/getting-started/example-datasets/opensky'
+'title': '众包航空交通数据来自 The OpenSky Network 2020'
 ---
 
-该数据集中的数据来源于完整的 OpenSky 数据集，并经过清理，以展示 COVID-19 大流行期间空中交通的发展。数据涵盖自 2019 年 1 月 1 日以来网络中超过 2500 名成员观察到的所有航班。在 COVID-19 大流行结束之前，将定期向数据集中添加更多数据。
+该数据集中的数据来源于完整的 OpenSky 数据集，并经过清洗，以展示 COVID-19 大流行期间的航空交通发展。它涵盖了自 2019 年 1 月 1 日以来网络上超过 2500 名成员看到的所有航班。COVID-19 大流行结束之前，将定期向数据集中添加更多数据。
 
 来源: https://zenodo.org/records/5092942
 
-Martin Strohmeier, Xavier Olive, Jannis Luebbe, Matthias Schaefer 和 Vincent Lenders  
-"来自 OpenSky Network 的众包空中交通数据 2019–2020"  
-《地球系统科学数据》 13(2), 2021  
+Martin Strohmeier, Xavier Olive, Jannis Luebbe, Matthias Schaefer, 和 Vincent Lenders
+“2019-2020 年 OpenSky 网络的众包航空交通数据”
+《地球系统科学数据》 13(2), 2021
 https://doi.org/10.5194/essd-13-357-2021
 
 ## 下载数据集 {#download-dataset}
 
-运行命令:
+运行命令：
 
 ```bash
 wget -O- https://zenodo.org/records/5092942 | grep -oE 'https://zenodo.org/records/5092942/files/flightlist_[0-9]+_[0-9]+\.csv\.gz' | xargs wget
 ```
 
-下载将在良好的互联网连接下大约需要 2 分钟。共有 30 个文件，总大小为 4.3 GB。
+下载大约需要 2 分钟，条件是网络连接良好。共有 30 个文件，总大小为 4.3 GB。
 
 ## 创建表 {#create-table}
 
@@ -50,22 +50,23 @@ CREATE TABLE opensky
 
 ## 导入数据 {#import-data}
 
-并行上传数据到 ClickHouse:
+将数据并行上传到 ClickHouse：
 
 ```bash
 ls -1 flightlist_*.csv.gz | xargs -P100 -I{} bash -c 'gzip -c -d "{}" | clickhouse-client --date_time_input_format best_effort --query "INSERT INTO opensky FORMAT CSVWithNames"'
 ```
 
-- 在这里，我们将文件列表 (`ls -1 flightlist_*.csv.gz`) 传递给 `xargs` 以进行并行处理。 `xargs -P100` 指定使用最多 100 个并行工作者，但由于我们只有 30 个文件，因此实际的工作者数量仅为 30。
-- 对于每个文件，`xargs` 将使用 `bash -c` 运行一个脚本。该脚本中的替换形式为 `{}`，而 `xargs` 命令将用文件名替代它（我们已经请求的 `xargs` 使用 `-I{}`）。
-- 该脚本将解压文件 (`gzip -c -d "{}"`) 到标准输出 (使用 `-c` 参数)，并将输出重定向到 `clickhouse-client`。
-- 我们还要求解析 [DateTime](../../sql-reference/data-types/datetime.md) 字段，并使用扩展解析器 ([--date_time_input_format best_effort](/operations/settings/formats#date_time_input_format)) 以识别带时区偏移的 ISO-8601 格式。
+- 在这里，我们将文件列表 (`ls -1 flightlist_*.csv.gz`) 传递给 `xargs` 进行并行处理。
+`xargs -P100` 指定最多使用 100 个并行工作者，但由于我们只有 30 个文件，工作者的数量将仅为 30。
+- 对于每个文件，`xargs` 将使用 `bash -c` 运行一个脚本。该脚本的替代形式为 `{}`，`xargs` 命令将用文件名替代它（我们要求 `xargs` 使用 `-I{}`）。
+- 脚本将解压文件 (`gzip -c -d "{}"`) 到标准输出 (`-c` 参数)，输出被重定向到 `clickhouse-client`。
+- 我们还要求使用扩展解析器 ([--date_time_input_format best_effort](/operations/settings/formats#date_time_input_format)) 解析 [DateTime](../../sql-reference/data-types/datetime.md) 字段，以识别带有时区偏移的 ISO-8601 格式。
 
-最后，`clickhouse-client` 将执行数据插入。它将以 [CSVWithNames](../../interfaces/formats.md#csvwithnames) 格式读取输入数据。
+最后，`clickhouse-client` 将进行插入。它以 [CSVWithNames](../../interfaces/formats.md#csvwithnames) 格式读取输入数据。
 
 并行上传需要 24 秒。
 
-如果您不喜欢并行上传，可以使用顺序版本：
+如果您不喜欢并行上传，这里有一个顺序变体：
 
 ```bash
 for file in flightlist_*.csv.gz; do gzip -c -d "$file" | clickhouse-client --date_time_input_format best_effort --query "INSERT INTO opensky FORMAT CSVWithNames"; done
@@ -73,13 +74,13 @@ for file in flightlist_*.csv.gz; do gzip -c -d "$file" | clickhouse-client --dat
 
 ## 验证数据 {#validate-data}
 
-查询:
+查询：
 
 ```sql
 SELECT count() FROM opensky;
 ```
 
-结果:
+结果：
 
 ```text
 ┌──count()─┐
@@ -87,15 +88,15 @@ SELECT count() FROM opensky;
 └──────────┘
 ```
 
-ClickHouse 中数据集的大小为 2.66 GiB，请检查。
+ClickHouse 中数据集的大小仅为 2.66 GiB，请检查。
 
-查询:
+查询：
 
 ```sql
 SELECT formatReadableSize(total_bytes) FROM system.tables WHERE name = 'opensky';
 ```
 
-结果:
+结果：
 
 ```text
 ┌─formatReadableSize(total_bytes)─┐
@@ -105,15 +106,15 @@ SELECT formatReadableSize(total_bytes) FROM system.tables WHERE name = 'opensky'
 
 ## 执行一些查询 {#run-queries}
 
-总共旅行的距离为 680 亿公里。
+总行驶距离为 680 亿公里。
 
-查询:
+查询：
 
 ```sql
 SELECT formatReadableQuantity(sum(geoDistance(longitude_1, latitude_1, longitude_2, latitude_2)) / 1000) FROM opensky;
 ```
 
-结果:
+结果：
 
 ```text
 ┌─formatReadableQuantity(divide(sum(geoDistance(longitude_1, latitude_1, longitude_2, latitude_2)), 1000))─┐
@@ -123,13 +124,13 @@ SELECT formatReadableQuantity(sum(geoDistance(longitude_1, latitude_1, longitude
 
 平均航程约为 1000 公里。
 
-查询:
+查询：
 
 ```sql
 SELECT round(avg(geoDistance(longitude_1, latitude_1, longitude_2, latitude_2)), 2) FROM opensky;
 ```
 
-结果:
+结果：
 
 ```text
    ┌─round(avg(geoDistance(longitude_1, latitude_1, longitude_2, latitude_2)), 2)─┐
@@ -137,9 +138,9 @@ SELECT round(avg(geoDistance(longitude_1, latitude_1, longitude_2, latitude_2)),
    └──────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### 最繁忙的起点机场及其平均距离 {#busy-airports-average-distance}
+### 最繁忙的出发机场及平均航程 {#busy-airports-average-distance}
 
-查询:
+查询：
 
 ```sql
 SELECT
@@ -154,7 +155,7 @@ ORDER BY count() DESC
 LIMIT 100;
 ```
 
-结果:
+结果：
 
 ```text
      ┌─origin─┬─count()─┬─distance─┬─bar────────────────────────────────────┐
@@ -261,9 +262,9 @@ LIMIT 100;
      └────────┴─────────┴──────────┴────────────────────────────────────────┘
 ```
 
-### 来自三个主要莫斯科机场的航班数量，每周 {#flights-from-moscow}
+### 三个主要莫斯科机场每周航班数量 {#flights-from-moscow}
 
-查询:
+查询：
 
 ```sql
 SELECT
@@ -276,7 +277,7 @@ GROUP BY k
 ORDER BY k ASC;
 ```
 
-结果:
+结果：
 
 ```text
      ┌──────────k─┬────c─┬─bar──────────────────────────────────────────────────────────────────────────┐
@@ -414,6 +415,6 @@ ORDER BY k ASC;
      └────────────┴──────┴──────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### 在线播放平台 {#playground}
+### 在线演示 {#playground}
 
-您可以使用交互资源 [在线播放平台](https://sql.clickhouse.com) 测试对该数据集的其他查询。例如， [像这样](https://sql.clickhouse.com?query_id=BIPDVQNIGVEZFQYFEFQB7O)。但请注意，您无法在这里创建临时表。
+您可以使用互动资源 [在线演示](https://sql.clickhouse.com) 测试此数据集的其他查询。例如，[像这样](https://sql.clickhouse.com?query_id=BIPDVQNIGVEZFQYFEFQB7O)。但是，请注意，您无法在此处创建临时表。

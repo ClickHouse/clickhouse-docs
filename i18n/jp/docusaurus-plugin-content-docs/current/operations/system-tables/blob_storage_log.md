@@ -1,14 +1,18 @@
 ---
-description: "さまざまなブロブストレージ操作（アップロードや削除など）に関する情報を含むログエントリを持つシステムテーブル。"
-slug: /operations/system-tables/blob_storage_log
-title: "system.blob_storage_log"
-keywords: ["system table", "blob_storage_log"]
+'description': 'System table containing logging entries with information about various
+  blob storage operations such as uploads and deletes.'
+'keywords':
+- 'system table'
+- 'blob_storage_log'
+'slug': '/operations/system-tables/blob_storage_log'
+'title': 'system.blob_storage_log'
 ---
+
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-さまざまなブロブストレージ操作（アップロードや削除など）に関する情報を含むログエントリを持っています。
+さまざまなBlobストレージ操作（アップロードや削除など）に関する情報を含むログエントリです。
 
 カラム:
 
@@ -23,26 +27,26 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
     - `'MultiPartUploadWrite'`
     - `'MultiPartUploadComplete'`
     - `'MultiPartUploadAbort'`
-- `query_id` ([String](../../sql-reference/data-types/string.md)) — イベントに関連付けられたクエリの識別子（ある場合）。
+- `query_id` ([String](../../sql-reference/data-types/string.md)) — イベントに関連するクエリの識別子（ある場合）。
 - `thread_id` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 操作を実行しているスレッドの識別子。
 - `thread_name` ([String](../../sql-reference/data-types/string.md)) — 操作を実行しているスレッドの名前。
-- `disk_name` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — 関連付けられたディスクの名前。
+- `disk_name` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — 関連するディスクの名前。
 - `bucket` ([String](../../sql-reference/data-types/string.md)) — バケットの名前。
 - `remote_path` ([String](../../sql-reference/data-types/string.md)) — リモートリソースへのパス。
-- `local_path` ([String](../../sql-reference/data-types/string.md)) — リモートリソースを参照するローカルシステム上のメタデータファイルへのパス。
+- `local_path` ([String](../../sql-reference/data-types/string.md)) — ローカルシステム上のメタデータファイルへのパス（リモートリソースを参照）。
 - `data_size` ([UInt32](/sql-reference/data-types/int-uint#integer-ranges)) — アップロードイベントに関与するデータのサイズ。
-- `error` ([String](../../sql-reference/data-types/string.md)) — イベントに関連付けられたエラーメッセージ（ある場合）。
+- `error` ([String](../../sql-reference/data-types/string.md)) — イベントに関連するエラーメッセージ（ある場合）。
 
 **例**
 
-ブロブストレージ操作がファイルをアップロードし、イベントがログされるとします：
+Blobストレージ操作でファイルがアップロードされ、イベントがログに記録されるとします。
 
 ```sql
 SELECT * FROM system.blob_storage_log WHERE query_id = '7afe0450-504d-4e4b-9a80-cd9826047972' ORDER BY event_date, event_time_microseconds \G
 ```
 
 ```text
-行 1:
+Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2023-10-31
@@ -59,8 +63,8 @@ data_size:               259
 error:
 ```
 
-この例では、アップロード操作は、IDが `7afe0450-504d-4e4b-9a80-cd9826047972` の `INSERT` クエリに関連付けられました。ローカルメタデータファイル `store/654/6549e8b3-d753-4447-8047-d462df6e6dbe/tmp_insert_all_1_1_0/checksums.txt` は、ディスク `disk_s3` のバケット `bucket1` にあるリモートパス `rrr/kxo/tbnqtrghgtnxkzgtcrlutwuslgawe` を参照し、サイズは259バイトです。
+この例では、アップロード操作はクエリID `7afe0450-504d-4e4b-9a80-cd9826047972` に関連付けられています。ローカルメタデータファイル `store/654/6549e8b3-d753-4447-8047-d462df6e6dbe/tmp_insert_all_1_1_0/checksums.txt` は、ディスク `disk_s3` のバケット `bucket1` 内のリモートパス `rrr/kxo/tbnqtrghgtnxkzgtcrlutwuslgawe` を参照し、サイズは259バイトです。
 
-**関連情報**
+**関連項目**
 
 - [データを保存するための外部ディスク](../../operations/storing-data.md)

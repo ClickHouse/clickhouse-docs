@@ -1,9 +1,17 @@
 ---
-slug: /faq/general/
-sidebar_position: 1
-sidebar_label: ClickHouseに関する一般的な質問
-keywords: [clickhouse, faq, 質問, とは]
+'slug': '/faq/general/'
+'sidebar_position': 1
+'sidebar_label': 'ClickHouseに関する一般的な質問'
+'keywords':
+- 'clickhouse'
+- 'faq'
+- 'questions'
+- 'what is'
+'title': 'ClickHouseに関する一般的な質問'
+'description': 'ClickHouseに関する一般的な質問を一覧表示するインデックスページ'
 ---
+
+
 
 
 # ClickHouseに関する一般的な質問
@@ -15,10 +23,10 @@ keywords: [clickhouse, faq, 質問, とは]
 - [「Не тормозит」とは何を意味しますか？](../../faq/general/ne-tormozit.md)
 - [OLAPとは何ですか？](../../faq/general/olap.md)
 - [列指向データベースとは何ですか？](../../faq/general/columnar-database.md)
-- [主キーはどのように選ぶべきですか？](../../guides/best-practices/sparse-primary-indexes.md)
-- [なぜMapReduceのようなものを使用しないのですか？](../../faq/general/mapreduce.md)
-- [ClickHouseにコードを貢献するにはどうすればよいですか？](/knowledgebase/how-do-i-contribute-code-to-clickhouse)
+- [主キーをどのように選択しますか？](../../guides/best-practices/sparse-primary-indexes.md)
+- [MapReduceのようなものを使用しない理由は何ですか？](../../faq/general/mapreduce.md)
+- [どのようにClickHouseにコードを寄付できますか？](/knowledgebase/how-do-i-contribute-code-to-clickhouse)
 
-:::info ご希望の情報が見つかりませんか？
-私たちの[ナレッジベース](/knowledgebase/)をチェックし、ドキュメント内にある多くの有益な記事もご覧ください。
+:::info 探しているものが見つかりませんか？
+私たちの[ナレッジベース](/knowledgebase/)を確認し、ドキュメント内にある役立つ記事をブラウズしてみてください。
 :::

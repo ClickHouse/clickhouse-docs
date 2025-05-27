@@ -1,14 +1,17 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/covarsampstable
-sidebar_position: 126
-title: "covarSampStable"
-description: "covarSampに似ていますが、計算エラーが低くなる代わりに遅く動作します。"
+'description': 'Similar to covarSamp but works slower while providing a lower computational
+  error.'
+'sidebar_position': 126
+'slug': '/sql-reference/aggregate-functions/reference/covarsampstable'
+'title': 'covarSampStable'
 ---
+
+
 
 
 # covarSampStable
 
-`Σ((x - x̅)(y - y̅)) / (n - 1)` の値を計算します。 [covarSamp](../reference/covarsamp.md) に似ていますが、計算エラーが低くなる代わりに遅く動作します。
+`Σ((x - x̅)(y - y̅)) / (n - 1)` の値を計算します。 [covarSamp](../reference/covarsamp.md) に似ていますが、計算速度は遅くなりますが、計算誤差が低くなります。
 
 **構文**
 
@@ -18,12 +21,12 @@ covarSampStable(x, y)
 
 **引数**
 
-- `x` — 最初の変数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
-- `y` — 2番目の変数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+- `x` — 最初の変数。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
+- `y` — 2 番目の変数。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
 
 **返される値**
 
-- `x` と `y` の間のサンプル共分散。`n <= 1` の場合、`inf` が返されます。[Float64](../../data-types/float.md)。
+- `x` と `y` の間のサンプル共分散。`n <= 1` の場合は `inf` が返されます。[Float64](../../data-types/float.md)。
 
 **例**
 

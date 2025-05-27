@@ -1,15 +1,15 @@
 ---
-description: '包含航空公司航班准时表现的数据集'
-slug: /getting-started/example-datasets/ontime
-sidebar_label: OnTime 航空公司航班数据
-title: 'OnTime'
+'description': '数据集包含航空公司航班的准时表现'
+'sidebar_label': 'OnTime 航空公司航班数据'
+'slug': '/getting-started/example-datasets/ontime'
+'title': 'OnTime'
 ---
 
-此数据集包含来自运输统计局的数据。
+这个数据集包含来自运输统计局的数据。
 
 ## 创建表 {#creating-a-table}
 
-``` sql
+```sql
 CREATE TABLE `ontime`
 (
     `Year`                            UInt16,
@@ -129,33 +129,33 @@ CREATE TABLE `ontime`
 
 下载数据：
 
-``` bash
+```bash
 wget --no-check-certificate --continue https://transtats.bts.gov/PREZIP/On_Time_Reporting_Carrier_On_Time_Performance_1987_present_{1987..2022}_{1..12}.zip
 ```
 
-使用多线程加载数据：
+使用多个线程加载数据：
 
-``` bash
+```bash
 ls -1 *.zip | xargs -I{} -P $(nproc) bash -c "echo {}; unzip -cq {} '*.csv' | sed 's/\.00//g' | clickhouse-client --input_format_csv_empty_as_default 1 --query='INSERT INTO ontime FORMAT CSVWithNames'"
 ```
 
-（如果您在服务器上内存不足或遇到其他问题，请移除 `-P $(nproc)` 部分）
+（如果您的服务器内存不足或出现其他问题，请移除 `-P $(nproc)` 部分）
 
 ## 从保存的副本导入 {#import-from-a-saved-copy}
 
-或者，您可以通过以下查询从保存的副本导入数据：
+另外，您可以通过以下查询从保存的副本导入数据：
 
 ```sql
 INSERT INTO ontime SELECT * FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/ontime/csv_by_year/*.csv.gz', CSVWithNames) SETTINGS max_insert_threads = 40;
 ```
 
-该快照创建于 2022-05-29。
+快照创建于 2022-05-29。
 
 ## 查询 {#queries}
 
 Q0.
 
-``` sql
+```sql
 SELECT avg(c1)
 FROM
 (
@@ -167,7 +167,7 @@ FROM
 
 Q1. 2000年至2008年每天的航班数量
 
-``` sql
+```sql
 SELECT DayOfWeek, count(*) AS c
 FROM ontime
 WHERE Year>=2000 AND Year<=2008
@@ -175,9 +175,9 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q2. 2000年至2008年间延迟超过10分钟的航班数量，按星期几分组
+Q2. 2000-2008年按周几分组延误超过10分钟的航班数量
 
-``` sql
+```sql
 SELECT DayOfWeek, count(*) AS c
 FROM ontime
 WHERE DepDelay>10 AND Year>=2000 AND Year<=2008
@@ -185,9 +185,9 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q3. 2000年至2008年按机场统计的延误数量
+Q3. 2000-2008年按机场分组的延误数量
 
-``` sql
+```sql
 SELECT Origin, count(*) AS c
 FROM ontime
 WHERE DepDelay>10 AND Year>=2000 AND Year<=2008
@@ -196,9 +196,9 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Q4. 2007年按航空公司统计的延误数量
+Q4. 2007年按航空公司分组的延误数量
 
-``` sql
+```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, count(*)
 FROM ontime
 WHERE DepDelay>10 AND Year=2007
@@ -206,9 +206,9 @@ GROUP BY Carrier
 ORDER BY count(*) DESC;
 ```
 
-Q5. 2007年按航空公司统计的延误百分比
+Q5. 2007年按航空公司分组的延误百分比
 
-``` sql
+```sql
 SELECT Carrier, c, c2, c*100/c2 as c3
 FROM
 (
@@ -232,9 +232,9 @@ JOIN
 ORDER BY c3 DESC;
 ```
 
-更好的版本：
+同一查询的更好版本：
 
-``` sql
+```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
 FROM ontime
 WHERE Year=2007
@@ -242,9 +242,9 @@ GROUP BY Carrier
 ORDER BY c3 DESC
 ```
 
-Q6. 更广泛年份范围的前一个请求，2000-2008
+Q6. 对于更广泛年份范围（2000-2008）的先前请求
 
-``` sql
+```sql
 SELECT Carrier, c, c2, c*100/c2 as c3
 FROM
 (
@@ -268,9 +268,9 @@ JOIN
 ORDER BY c3 DESC;
 ```
 
-更好的版本：
+同一查询的更好版本：
 
-``` sql
+```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
 FROM ontime
 WHERE Year>=2000 AND Year<=2008
@@ -278,9 +278,9 @@ GROUP BY Carrier
 ORDER BY c3 DESC;
 ```
 
-Q7. 按年份统计延迟超过10分钟的航班百分比
+Q7. 按年份划分的延误超过10分钟的航班百分比
 
-``` sql
+```sql
 SELECT Year, c1/c2
 FROM
 (
@@ -302,18 +302,18 @@ JOIN
 ORDER BY Year;
 ```
 
-更好的版本：
+同一查询的更好版本：
 
-``` sql
+```sql
 SELECT Year, avg(DepDelay>10)*100
 FROM ontime
 GROUP BY Year
 ORDER BY Year;
 ```
 
-Q8. 按直接连接城市数量统计最受欢迎的目的地，适用于不同的年份范围
+Q8. 按连接城市数量划分的不同时期的最热门目的地
 
-``` sql
+```sql
 SELECT DestCityName, uniqExact(OriginCityName) AS u
 FROM ontime
 WHERE Year >= 2000 and Year <= 2010
@@ -323,7 +323,7 @@ ORDER BY u DESC LIMIT 10;
 
 Q9.
 
-``` sql
+```sql
 SELECT Year, count(*) AS c1
 FROM ontime
 GROUP BY Year;
@@ -331,7 +331,7 @@ GROUP BY Year;
 
 Q10.
 
-``` sql
+```sql
 SELECT
    min(Year), max(Year), IATA_CODE_Reporting_Airline AS Carrier, count(*) AS cnt,
    sum(ArrDelayMinutes>30) AS flights_delayed,
@@ -349,7 +349,7 @@ LIMIT 1000;
 
 奖励：
 
-``` sql
+```sql
 SELECT avg(cnt)
 FROM
 (
@@ -385,9 +385,9 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-您还可以在 Playground 中玩转数据，[示例](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K)。
+您还可以在 Playground 中玩数据，[示例](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K)。
 
-此性能测试由 Vadim Tkachenko 创建。参见：
+这个性能测试是由 Vadim Tkachenko 创建的。请参阅：
 
 - https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/
 - https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/

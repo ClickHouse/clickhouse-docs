@@ -1,22 +1,26 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/groupbitmapor
-sidebar_position: 150
-title: groupBitmapOr
-description: "ビットマップカラムのORを計算し、型UInt64の基数を返します。サフィックス-Stateを追加すると、ビットマップオブジェクトを返します。これは`groupBitmapMerge`と同等です。"
+'description': 'Calculations the OR of a bitmap column, return cardinality of type
+  UInt64, if add suffix -State, then return a bitmap object. This is equivalent to
+  `groupBitmapMerge`.'
+'sidebar_position': 150
+'slug': '/sql-reference/aggregate-functions/reference/groupbitmapor'
+'title': 'groupBitmapOr'
 ---
+
+
 
 
 # groupBitmapOr
 
-ビットマップカラムのORを計算し、型UInt64の基数を返します。サフィックス-Stateを追加すると、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md)を返します。これは`groupBitmapMerge`と同等です。
+bitmap カラムの OR を計算し、UInt64 型のカーディナリティを返します。サフィックス -State を追加すると、[bitmap オブジェクト](../../../sql-reference/functions/bitmap-functions.md)を返します。これは `groupBitmapMerge` と同等です。
 
-``` sql
+```sql
 groupBitmapOr(expr)
 ```
 
 **引数**
 
-`expr` – 結果が `AggregateFunction(groupBitmap, UInt*)` 型になる式。
+`expr` – `AggregateFunction(groupBitmap, UInt*)` 型の結果を返す式。
 
 **戻り値**
 
@@ -24,7 +28,7 @@ groupBitmapOr(expr)
 
 **例**
 
-``` sql
+```sql
 DROP TABLE IF EXISTS bitmap_column_expr_test2;
 CREATE TABLE bitmap_column_expr_test2
 (

@@ -1,7 +1,9 @@
 ---
-title: CustomSeparatedIgnoreSpacesWithNames
-slug: /interfaces/formats/CustomSeparatedIgnoreSpacesWithNames
-keywords: ['CustomSeparatedIgnoreSpacesWithNames']
+'description': 'CustomSeparatedIgnoreSpacesWithNames 格式的文档'
+'keywords':
+- 'CustomSeparatedIgnoreSpacesWithNames'
+'slug': '/interfaces/formats/CustomSeparatedIgnoreSpacesWithNames'
+'title': 'CustomSeparatedIgnoreSpacesWithNames'
 ---
 
 ## 描述 {#description}

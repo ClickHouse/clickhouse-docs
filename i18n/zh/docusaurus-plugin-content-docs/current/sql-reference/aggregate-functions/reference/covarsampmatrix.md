@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/covarsampmatrix
-sidebar_position: 125
-title: 'covarSampMatrix'
-description: '返回 N 个变量的样本协方差矩阵。'
+'description': '返回 N 个变量的样本协方差矩阵。'
+'sidebar_position': 125
+'slug': '/sql-reference/aggregate-functions/reference/covarsampmatrix'
+'title': 'covarSampMatrix'
 ---
 
 
@@ -18,7 +18,7 @@ covarSampMatrix(x[, ...])
 
 **参数**
 
-- `x` — 可变数量的参数。 [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
+- `x` — 变量数量的参数。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
 
 **返回值**
 

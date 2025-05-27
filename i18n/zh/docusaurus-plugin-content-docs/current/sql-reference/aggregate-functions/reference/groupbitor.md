@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/groupbitor
-sidebar_position: 152
-title: 'groupBitOr'
-description: '对一系列数字应用按位 `OR` 操作。'
+'description': '对一系列数字应用位运算 `OR`。'
+'sidebar_position': 152
+'slug': '/sql-reference/aggregate-functions/reference/groupbitor'
+'title': 'groupBitOr'
 ---
 
 
@@ -10,7 +10,7 @@ description: '对一系列数字应用按位 `OR` 操作。'
 
 对一系列数字应用按位 `OR` 操作。
 
-``` sql
+```sql
 groupBitOr(expr)
 ```
 
@@ -26,7 +26,7 @@ groupBitOr(expr)
 
 测试数据：
 
-``` text
+```text
 binary     decimal
 00101100 = 44
 00011100 = 28
@@ -36,7 +36,7 @@ binary     decimal
 
 查询：
 
-``` sql
+```sql
 SELECT groupBitOr(num) FROM t
 ```
 
@@ -44,7 +44,7 @@ SELECT groupBitOr(num) FROM t
 
 结果：
 
-``` text
+```text
 binary     decimal
 01111101 = 125
 ```

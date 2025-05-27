@@ -1,48 +1,51 @@
 ---
-slug: /sql-reference/statements/select/offset
-sidebar_label: OFFSET
-title: "OFFSET FETCH 句"
+'description': 'Documentation for Offset'
+'sidebar_label': 'OFFSET'
+'slug': '/sql-reference/statements/select/offset'
+'title': 'OFFSET FETCH Clause'
 ---
 
-`OFFSET` と `FETCH` を使うことで、データを部分的に取得することができます。これらは、1回のクエリで取得したい行のブロックを指定します。
 
-``` sql
+
+`OFFSET` と `FETCH` は、データを部分的に取得することを可能にします。これらは、一度のクエリで取得したい行のブロックを指定します。
+
+```sql
 OFFSET offset_row_count {ROW | ROWS}] [FETCH {FIRST | NEXT} fetch_row_count {ROW | ROWS} {ONLY | WITH TIES}]
 ```
 
-`offset_row_count` または `fetch_row_count` の値は、数字またはリテラル定数になります。 `fetch_row_count` は省略可能で、デフォルトでは 1 になります。
+`offset_row_count` または `fetch_row_count` の値は数値またはリテラル定数で指定できます。`fetch_row_count` は省略可能で、デフォルトでは 1 になります。
 
-`OFFSET` は、クエリの結果セットから行を返し始める前にスキップする行数を指定します。
+`OFFSET` は、クエリの結果セットから行を返す前にスキップする行数を指定します。
 
-`FETCH` は、クエリの結果に含まれる可能性がある最大行数を指定します。
+`FETCH` は、クエリの結果に含まれる最大行数を指定します。
 
-`ONLY` オプションは、`OFFSET` によって省略された行に直後の行を返すために使用されます。この場合、`FETCH` は [LIMIT](../../../sql-reference/statements/select/limit.md) 句の代替となります。例えば、次のクエリ
+`ONLY` オプションは、`OFFSET` によって省略された行の直後に続く行を返す際に使用されます。この場合、`FETCH` は [LIMIT](../../../sql-reference/statements/select/limit.md) 句の代替となります。例えば、以下のクエリは
 
-``` sql
+```sql
 SELECT * FROM test_fetch ORDER BY a OFFSET 1 ROW FETCH FIRST 3 ROWS ONLY;
 ```
 
-は次のクエリと同じです。
+以下のクエリと同じです。
 
-``` sql
+```sql
 SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 ```
 
-`WITH TIES` オプションは、`ORDER BY` 句に従って結果セット内の最後の場所で同点の追加行を返すために使用されます。例えば、`fetch_row_count` が 5 に設定されているが、5 行目の `ORDER BY` 列の値に一致する追加の行が 2 行ある場合、結果セットは 7 行になります。
+`WITH TIES` オプションは、`ORDER BY` 句に従って結果セットの最後の位置に結びつく追加の行も返すために使います。例えば、`fetch_row_count` が 5 に設定されている場合でも、5 行目の `ORDER BY` カラムと一致する行が2つあった場合、結果セットには7行が含まれます。
 
 :::note    
-標準に従って、両方が存在する場合、`OFFSET` 句は `FETCH` 句の前に来なければなりません。
+標準に従い、`OFFSET` 句は両方が存在する場合は `FETCH` 句の前に来る必要があります。
 :::
 
 :::note    
-実際のオフセットは [offset](../../../operations/settings/settings.md#offset) 設定にも依存する場合があります。
+実際のオフセットは、[offset](../../../operations/settings/settings.md#offset) 設定にも依存する可能性があります。
 :::
 
 ## 例 {#examples}
 
 入力テーブル:
 
-``` text
+```text
 ┌─a─┬─b─┐
 │ 1 │ 1 │
 │ 2 │ 1 │
@@ -54,15 +57,15 @@ SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 └───┴───┘
 ```
 
-`ONLY` オプションの使用例:
+`ONLY` オプションの使用:
 
-``` sql
+```sql
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;
 ```
 
 結果:
 
-``` text
+```text
 ┌─a─┬─b─┐
 │ 2 │ 1 │
 │ 3 │ 4 │
@@ -70,15 +73,15 @@ SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;
 └───┴───┘
 ```
 
-`WITH TIES` オプションの使用例:
+`WITH TIES` オプションの使用:
 
-``` sql
+```sql
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS WITH TIES;
 ```
 
 結果:
 
-``` text
+```text
 ┌─a─┬─b─┐
 │ 2 │ 1 │
 │ 3 │ 4 │

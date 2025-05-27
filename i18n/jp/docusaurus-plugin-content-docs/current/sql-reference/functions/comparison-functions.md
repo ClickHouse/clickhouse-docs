@@ -1,25 +1,29 @@
 ---
-slug: /sql-reference/functions/comparison-functions
-sidebar_position: 35
-sidebar_label: 比較
+'description': 'Documentation for Comparison Functions'
+'sidebar_label': 'Comparison'
+'sidebar_position': 35
+'slug': '/sql-reference/functions/comparison-functions'
+'title': 'Comparison Functions'
 ---
+
+
 
 
 # 比較関数
 
-以下の比較関数は、型 [UInt8](/sql-reference/data-types/int-uint) の `0` または `1` を返します。同じグループ内の値のみ比較可能です（例: `UInt16` と `UInt64`）が、グループ間での比較はできません（例: `UInt16` と `DateTime`）。数値と文字列の比較、文字列と日付の比較、日付と時刻の比較が可能です。タプルや配列の場合、比較は辞書式で行われ、左側と右側のタプル/配列の対応する要素ごとに比較が行われます。
+以下の比較関数は、型 [UInt8](/sql-reference/data-types/int-uint) の `0` または `1` を返します。同じグループ内の値のみが比較可能です（例: `UInt16` と `UInt64`）が、グループ間の比較はできません（例: `UInt16` と `DateTime`）。数値と文字列の比較は可能であり、文字列と日時、日時と時間の比較も可能です。タプルと配列については、辞書式比較が行われるため、左側と右側のタプル/配列の対応する要素ごとに比較されます。
 
-以下の型が比較可能です:
+比較可能な型は以下の通りです：
 - 数値と小数
-- 文字列と固定長文字列
+- 文字列と固定文字列
 - 日付
-- 時刻付きの日付
+- 時間付き日付
 - タプル（辞書式比較）
 - 配列（辞書式比較）
 
 :::note
-文字列はバイト単位で比較されます。これにより、文字列の1つがUTF-8エンコードされたマルチバイト文字を含む場合、予期しない結果が生じる可能性があります。
-文字列 S1 が別の文字列 S2 をプレフィックスとして持つ場合、S1 は S2 よりも長いと見なされます。
+文字列はバイトごとに比較されます。そのため、文字列の1つにUTF-8エンコードのマルチバイト文字が含まれている場合、予期しない結果になることがあります。
+文字列 S1 が別の文字列 S2 のプレフィックスである場合、S1 は S2 よりも長いと見なされます。
 :::
 
 ## equals, `=`, `==` 演算子 {#equals}
@@ -30,9 +34,9 @@ sidebar_label: 比較
 equals(a, b)
 ```
 
-エイリアス:
-- `a = b` (演算子)
-- `a == b` (演算子)
+エイリアス：
+- `a = b` （演算子）
+- `a == b` （演算子）
 
 ## notEquals, `!=`, `<>` 演算子 {#notequals}
 
@@ -42,9 +46,9 @@ equals(a, b)
 notEquals(a, b)
 ```
 
-エイリアス:
-- `a != b` (演算子)
-- `a <> b` (演算子)
+エイリアス：
+- `a != b` （演算子）
+- `a <> b` （演算子）
 
 ## less, `<` 演算子 {#less}
 
@@ -54,8 +58,8 @@ notEquals(a, b)
 less(a, b)
 ```
 
-エイリアス:
-- `a < b` (演算子)
+エイリアス：
+- `a < b` （演算子）
 
 ## greater, `>` 演算子 {#greater}
 
@@ -65,8 +69,8 @@ less(a, b)
 greater(a, b)
 ```
 
-エイリアス:
-- `a > b` (演算子)
+エイリアス：
+- `a > b` （演算子）
 
 ## lessOrEquals, `<=` 演算子 {#lessorequals}
 
@@ -76,8 +80,8 @@ greater(a, b)
 lessOrEquals(a, b)
 ```
 
-エイリアス:
-- `a <= b` (演算子)
+エイリアス：
+- `a <= b` （演算子）
 
 ## greaterOrEquals, `>=` 演算子 {#greaterorequals}
 
@@ -87,5 +91,5 @@ lessOrEquals(a, b)
 greaterOrEquals(a, b)
 ```
 
-エイリアス:
-- `a >= b` (演算子)
+エイリアス：
+- `a >= b` （演算子）
