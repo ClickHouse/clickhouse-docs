@@ -27,6 +27,7 @@ import hyperdx_16 from '@site/static/images/use-cases/observability/hyperdx-16.p
 import hyperdx_17 from '@site/static/images/use-cases/observability/hyperdx-17.png';
 import hyperdx_18 from '@site/static/images/use-cases/observability/hyperdx-18.png';
 import hyperdx_19 from '@site/static/images/use-cases/observability/hyperdx-19.png';
+import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
 
 # ClickStack - Sample logs, traces and metrics {#clickstack-sample-dataset}
 
@@ -55,90 +56,42 @@ curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
 
 This file contains example logs, metrics and traces from our public [OpenTelemetry demo](http://example.com) - a simple e-commerce store with microservices. Copy this file to a directory of your choosing.
 
+## Copy ingestion API key {#copy-ingestion-api-key}
+
+Navigate to `Team Settings` and copy the `Ingestion API Key` from the `API Keys` section. This API key ensure data ingestion through the OpenTelemetry collector is secure.
+
+<Image img={copy_api_key} alt="Copy API key" size="lg"/>
+
 ## Load sample data {#load-sample-data}
 
-To load this data, we simply send it to the HTTP endpoint of the deployed OpenTelemetry (OTel) collector:
+To load this data, we simply send it to the HTTP endpoint of the deployed OpenTelemetry (OTel) collector. 
+
+First export the API key copied above.
+
+```bash
+# export API key
+export CLICKSTACK_API_KEY=<YOUR_INGESTION_API_KEY>
+```
+
+Run the following command to send the data to the OTel collector:
 
 ```bash
 for filename in $(tar -tf sample.tar.gz); do
   endpoint="http://localhost:4318/v1/${filename%.json}"
   echo "loading ${filename%.json}"
   tar -xOf sample.tar.gz "$filename" | while read -r line; do
-    curl -s -o /dev/null -X POST "$endpoint" -H "Content-Type: application/json" --data "$line"
+    curl -s -o /dev/null -X POST "$endpoint" -H "Content-Type: application/json" -H "authorization: ${CLICKSTACK_API_KEY}" --data "$line"
   done
 done
 ```
 
 This simulates OLTP log, trace, and metric sources sending data to the OTel collector. In production, these sources may be language clients or even other OTel collectors.
 
-You should see data has started to load, with logs shown in the `Search` view:
+Returning to the `Search` view, you should see data has started to load:
 
 <Image img={hyperdx_10} alt="HyperDX search" size="lg"/>
 
 Data loading will take a few minutes. Allow for the load to complete before progressing to the next steps.
-
-## Create a metric source {#create-a-metric-source}
-
-By default, the `Logs` source will be pre-created. 
-
-Create a metrics source by clicking the `Logs` source, followed by `Create New Source`.
-
-<Image img={hyperdx_3} alt="Source dropdown" size="sm"/>
-
-Select `OTEL Metrics` for the `Source Data Type`. Complete the form with the following details before selecting `Save New Source`:
-
-- `Name` : `Metrics`
-- `Server Connection`: `Default`
-- `Database`: `Default`
-- `Gauge Table`: `otel_metrics_guage`
-- `Histogram Table`: `otel_metrics_histogram`
-- `Sum Table`: `otel_metrics_sum`
-- `Correlated Log Source`: `Logs`
-
-<Image img={hyperdx_4} alt="Metrics Source" size="md"/>
-
-## Create a traces source {#create-a-traces-source}
-
-Create a new source using the steps described for the `Metrics` source.
-
-Select `Trace` for the `Source Data Type`. Complete the following fields, leaving the default and automatically inferred values if not specified before clicking `Save New Source`:
-
-- `Name`: `Traces`
-- `Table`: `otel_traces`
-- `Correlated Log Source`: `Logs`
-- `Correlated Metric Source` : `Metrics`
-
-<Image img={hyperdx_5} alt="Trace source" size="md"/>
-
-## Create a sessions source {#create-a-sessions-source}
-
-Create a new source using the steps described for the `Metrics` source.
-
-Select `Sessions` for the `Source Data Type`. Complete the following fields, leaving the default and automatically inferred values if not specified before clicking `Save New Source`:
-
-- `Name`: `Sessions`
-- `Table`: `hyperdx_sessions`
-- `Correlated Trace Source`: `Traces`
-
-<Image img={hyperdx_6} alt="Sessions source" size="md"/>
-
-## Correlate sources {#correlate-sources}
-
-Correlating sources allows HyperDX to link logs, traces, metrics, and sessions - enabling rich context when navigating incidents and debugging issues.
-
-Select the `Traces` source from the source drop-down, followed by the edit button.
-
-<Image img={hyperdx_7} alt="Edit source" size="sm"/>
-
-Complete the `Correlated Session Source` field with the value `Sessions` before clicking `Save Source`.
-
-<Image img={hyperdx_8} alt="Traces Source update" size="md"/>
-
-Select the `Logs` source from the source drop-down, followed by the edit button.
-
-Select `Configure Optional Fields` and complete the `Correlated Metric Source` and `Correlated Trace Source` with the value `Metrics` and `Traces` respectively.
-
-<Image img={hyperdx_9} alt="Correlated logs" size="md"/>
 
 ## Explore sessions {#explore-sessions}
 

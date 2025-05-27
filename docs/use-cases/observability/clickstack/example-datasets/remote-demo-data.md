@@ -8,6 +8,7 @@ description: 'Getting started with ClickStack and a remote demo dataset'
 ---
 
 import Image from '@theme/IdealImage';
+import step_1a from '@site/static/images/use-cases/observability/hyperx-demo/step_1a.png';
 import step_2 from '@site/static/images/use-cases/observability/hyperx-demo/step_2.png';
 import step_3 from '@site/static/images/use-cases/observability/hyperx-demo/step_3.png';
 import step_4 from '@site/static/images/use-cases/observability/hyperx-demo/step_4.png';
@@ -32,6 +33,9 @@ import step_22 from '@site/static/images/use-cases/observability/hyperx-demo/ste
 import step_23 from '@site/static/images/use-cases/observability/hyperx-demo/step_23.png';
 import step_24 from '@site/static/images/use-cases/observability/hyperx-demo/step_24.png';
 import architecture from '@site/static/images/use-cases/observability/hyperx-demo/architecture.png';
+
+
+**The following guide assumes you have deployed ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) or [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) and completed initial user creation.**
 
 This getting started guide uses a dataset available on the demo server that users can access when first deploying HyperDX. The dataset is hosted on the public ClickHouse instance at sql.clickhouse.com.
 
@@ -67,11 +71,15 @@ Further details on the demo can be found in the [official OpenTelemetry document
 
 ### Connect to the demo server {#connect-to-the-demo-server}
 
-On starting HyperDX, connect to the demo server.
+Navigate to `Team Settings` and select `Add Connection`:
 
-```INSERT IMAGE```
+<Image img={step_1a} alt="Step 1a" size="lg"/>
 
-Sources for the dataset will be auto-created, and users will be directed to the search view for logs.
+Complete the following connection details for the demo server:
+
+- 
+
+
 
 ### Adjust the timeframe {#adjust-the-timeframe}
 

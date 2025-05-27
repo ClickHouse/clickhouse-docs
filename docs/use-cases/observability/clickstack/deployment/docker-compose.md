@@ -75,9 +75,7 @@ If prompted to create a source, retain all default values and complete the `Tabl
 
 <Image img={hyperdx_logs} alt="Create logs source" size="md"/>
 
-
 </VerticalStepper>
-
 
 ## Modifying compose settings {#modifying-settings}
 

@@ -35,7 +35,7 @@ In this mode, data ingestion is left entirely to the user. You can ingest data i
 Run the following command, modifying the `YOUR_MONGODB_URI` as required. 
 
 ```bash
-docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx:2-beta
+docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx:2-nightly
 ```
 
 ### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}

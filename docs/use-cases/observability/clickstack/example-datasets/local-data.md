@@ -15,24 +15,34 @@ import hyperdx_4 from '@site/static/images/use-cases/observability/hyperdx-4.png
 import hyperdx_21 from '@site/static/images/use-cases/observability/hyperdx-21.png';
 import hyperdx_22 from '@site/static/images/use-cases/observability/hyperdx-22.png';
 import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.png';
+import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
 
 This getting started guide allows you collect local logs and metrics from your system, sending them to ClickStack for visualization and analysis.
 
 **This example works on OSX and Linux systems only**
 
-The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) or a [ClickHouse Cloud instance](/use-cases/observability/clickstack/getting-started#complete-cloud-connection-details) and created the `Logs` source.
+The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) or a [ClickHouse Cloud instance](/use-cases/observability/clickstack/getting-started#complete-cloud-connection-details). In the case of the latter, you should also have [created sources](/use-cases/observability/clickstack/getting-started#create-a-logs-source).
 
 <VerticalStepper>
 
 ## Navigate to the HyperDX UI {#navigate-to-the-hyperdx-ui}
 
-Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI and ensure you've connected to the local instance by accepting the default settings and clicking `Create`.
+Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
+
+## Copy ingestion API key {#copy-ingestion-api-key}
+
+Navigate to `Team Settings` and copy the `Ingestion API Key` from the `API Keys` section. This API key ensure data ingestion through the OpenTelemetry collector is secure.
+
+<Image img={copy_api_key} alt="Copy API key" size="lg"/>
+
 
 <Image img={hyperdx} alt="HyperDX UI" size="lg"/>
 
 ## Create a local OpenTelemetry configuration {#create-otel-configuration}
 
-Create a `otel-file-collector.yaml` file with the following content:
+Create a `otel-file-collector.yaml` file with the following content.
+
+**Important**: Populate the value `<YOUR_INGESTION_API_KEY>` with your ingestion API key copied above.
 
 ```yml
 receivers:
@@ -81,6 +91,8 @@ receivers:
 exporters:
   otlp:
     endpoint: host.docker.internal:4317
+    headers:
+      authorization: <YOUR_INGESTION_API_KEY>
     tls:
       insecure: true
 
@@ -119,29 +131,9 @@ Navigate to the HyperDX UI. The search UI should be populated with local system 
 
 <Image img={hyperdx_20} alt="HyperDX Local logs" size="lg"/>
 
-## Create a metric source {#create-a-metric-source}
-
-The OTel collector was also configured to collect system metrics. To explore these metrics we need to create a new metrics source.
-
-Create a metrics source by clicking the `Logs` source, followed by `Create New Source`.
-
-<Image img={hyperdx_3} alt="Source dropdown" size="sm"/>
-
-Select `OTEL Metrics` for the `Source Data Type`. Complete the form with the following details before selecting `Save New Source`:
-
-- `Name` : `Metrics`
-- `Server Connection`: `Default`
-- `Database`: `Default`
-- `Gauge Table`: `otel_metrics_guage`
-- `Histogram Table`: `otel_metrics_histogram`
-- `Sum Table`: `otel_metrics_sum`
-- `Correlated Log Source`: `Logs`
-
-<Image img={hyperdx_4} alt="Metrics Source" size="md"/>
-
 ## Explore system metrics {#explore-system-metrics}
 
-We can explore these metrics using charts.
+We can explore our metrics using charts.
 
 Navigate to the Chart Explorer via the left menu. Select the source `Metrics` and `Maximum` as the aggregation type. 
 

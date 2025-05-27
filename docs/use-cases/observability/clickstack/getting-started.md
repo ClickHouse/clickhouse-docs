@@ -12,7 +12,13 @@ import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-lo
 import hyperdx from '@site/static/images/use-cases/observability/hyperdx-1.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
 import connect_cloud from '@site/static/images/use-cases/observability/connect-cloud-creds.png';
+import add_connection from '@site/static/images/use-cases/observability/add_connection.png';
 import hyperdx_cloud from '@site/static/images/use-cases/observability/hyperdx-cloud.png';
+import create_cloud_connection from '@site/static/images/use-cases/observability/create_cloud_connection.png';
+import delete_source from '@site/static/images/use-cases/observability/delete_source.png';
+import delete_connection from '@site/static/images/use-cases/observability/delete_connection.png';
+import created_sources from '@site/static/images/use-cases/observability/created_sources.png';
+
 
 # Getting started with ClickStack {#getting-started-with-clickstack}
 
@@ -42,37 +48,23 @@ docker run -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-a
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
-Create a user, providing a username and password which means the requirements. 
-
-On clicking `Register` you'll be prompted for connection details.
+Create a user, providing a username and password which meets the complexity requirements. 
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-### Complete connection details {#complete-connection-details}
-
-To use the in-built ClickHouse instance, simply click **Create** and accept the default settings.  
-
-If you prefer to connect to your own **external ClickHouse cluster**, you can manually enter your connection credentials.
-
-Alternatively, for a quick exploration of the product, you can also click **Connect to Demo Server** to access preloaded datasets and try ClickStack with no setup required.
-
-<Image img={hyperdx_2} alt="Credentials" size="md"/>
-
-If prompted to create a source, retain all default values and complete the `Table` field with the value `otel_logs`. All other settings should be auto-detected, allowing you to click `Save New Source`.
-
-<Image img={hyperdx_logs} alt="Create logs source" size="md"/>
+HyperDX will automatically connect to the local cluster and create data sources for the logs, traces, metrics and sessions - allowing you to explore the product immediately.
 
 ### Explore the product {#explore-the-product}
 
 With the stack deployed, try one of our same datasets.
 
-If you've connected to the local cluster:
+To continue using the local cluster:
 
 - [Example dataset](/use-cases/observability/clickstack/getting-started/sample-data) - Load an example dataset from our public demo. Diagnose a simple issue.
 - [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - Load local files and monitor system on OSX or Linux using a local OTel collector.
 
 <br/>
-Alternatively, if you've connected to the demo cluster, you can explore the dataset with the following guide: 
+Alternatively, you can connect to a demo cluster where can explore a larger dataset: 
 
 - [Remote demo dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data) - Explore a demo dataset in our demo ClickHouse service.
 
@@ -122,27 +114,116 @@ This will expose an OpenTelemetry collector (on port 4317 and 4318), and the Hyp
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
-Create a user, providing a username and password which means the requirements. 
+Create a user, providing a username and password which means the complexity requirements. 
 
-On clicking `Register` you'll be prompted for connection details.
+<Image img={hyperdx_login} alt="HyperDX Login" size="lg"/>
 
-<Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
+### Create a ClickHouse Cloud connection {#create-a-cloud-connection}
 
-### Complete connection details {#complete-cloud-connection-details}
+Navigate to `Team Settings` and click `Add Connection`:
 
-Using the copied Cloud credentials, complete the connection details and click `Create`.
+<Image img={add_connection} alt="Add Connection" size="lg"/>
 
-<Image img={hyperdx_cloud} alt="HyperDX Cloud" size="md"/>
+Complete the subsequent form with your ClickHouse Cloud service credentials before clicking `Create`:
 
-If prompted to create a source, retain all default values and complete the `Table` field with the value `otel_logs`. All other settings should be auto-detected, allowing you to click `Save New Source`.
+<Image img={create_cloud_connection} alt="Create Cloud connection" size="lg"/>
 
-<Image img={hyperdx_logs} alt="Create logs source" size="md"/>
+### Remove current sources {#remove-current-sources}
+
+We recommend removing current sources for logs, traces, metrics and sessions. Scroll up to `Sources`, select each source and click `Delete`.
+
+<Image img={delete_source} alt="Delete source" size="lg"/>
+
+Also remove the `Local ClickHouse` connection.
+
+<Image img={delete_connection} alt="Delete connection" size="lg"/>
+
+
+### Create sources {#create-sources}
+
+In order to view data we need to create a data source for each of our data types: logs, metrics, traces and sessions.
+
+Create a `Logs`, `Traces`, `Metrics` and `Sessions` source using the following details for each. If not specified, settings should be automatically infered from the schema.
+
+#### Logs {#logs}
+
+- `Name`: `Logs`
+- `Source Data Type`: `Log`
+- `Server Connection`: `Cloud`
+- `Database`: `Default`
+- `Table`: `otel_logs`
+
+<br/>
+
+#### Traces {#traces}
+
+- `Name`: `Traces`
+- `Source Data Type`: `Trace`
+- `Server Connection`: `Cloud`
+- `Database`: `Default`
+- `Table`: `otel_traces`
+- `Correlated Log Source`: `Logs`
+
+<br/>
+
+#### Metrics {#metrics}
+
+- `Name`: `Metrics`
+- `Source Data Type`: `OTEL Metrics`
+- `Server Connection`: `Cloud`
+- `Database`: `Default`
+- `Table`: `otel_traces`
+- `Gauge Table`: `otel_metrics_gauge`
+- `Histogram Table`: `otel_metrics_histogram`
+- `Sum Table`: `otel_metrics_sum`
+- `Summary Table`: `otel_metrics_summary`
+- `Exponential Histogram Table`: `otel_metrics_exponential_histogram`
+- `Correlated Log Source`: `Logs`
+
+<br/>
+
+#### Sessions {#sessions}
+
+- `Name`: `Sessions`
+- `Source Data Type`: `Session`
+- `Server Connection`: `Cloud`
+- `Database`: `Default`
+- `Table`: `hyperdx_sessions`
+- `Correlated Trace Source`: `Traces`
+
+<br/>
+
+When finished you should have a source for each data type:
+
+<Image img={created_sources} alt="Created sources" size="lg"/>
+
+### Correlate sources {#correlate-sources}
+
+Correlating sources allows HyperDX to link logs, traces, metrics, and sessions - enabling rich context when navigating incidents and debugging issues.
+
+Edit each source ensuring the following fields are completed for each source:
+
+#### Logs {#logs}
+
+To edit the `Logs` source you will need to select the source and click `Configure Optional Fields`.
+
+- `Name`: `Logs`
+- `Correlated Metric Source`: `Metrics`
+- `Correlated Trace Source`: `Traces`
+
+<br/>
+
+#### Traces {#traces}
+
+- `Name`: `Traces`
+- `Correlated Session Source`: `Sessions`
+- `Correlated Metric Source`: `Metrics`
+
+<br/>
 
 ### Explore the product {#explore-the-product-cloud}
 
 With the stack deployed, try one of our same datasets.
-
-If you've connected to the local cluster:
 
 - [Example dataset](/use-cases/observability/clickstack/getting-started/sample-data) - Load an example dataset from our public demo. Diagnose a simple issue.
 - [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - Load local files and monitor system on OSX or Linux using a local OTel collector.
