@@ -1,30 +1,32 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/uniqexact'
-sidebar_position: 207
-title: 'uniqExact'
-description: '異なる引数値の正確な数を計算します。'
+'description': '異なる引数値の正確な数を計算します。'
+'sidebar_position': 207
+'slug': '/sql-reference/aggregate-functions/reference/uniqexact'
+'title': 'uniqExact'
 ---
+
+
 
 
 # uniqExact
 
 異なる引数値の正確な数を計算します。
 
-``` sql
+```sql
 uniqExact(x[, ...])
 ```
 
-正確な結果が絶対に必要な場合は `uniqExact` 関数を使用してください。そうでなければ、[uniq](/sql-reference/aggregate-functions/reference/uniq) 関数を使用してください。
+正確な結果が絶対に必要な場合は、`uniqExact` 関数を使用してください。そうでなければ、[uniq](/sql-reference/aggregate-functions/reference/uniq) 関数を使用してください。
 
-`uniqExact` 関数は `uniq` に比べてより多くのメモリを使用します。なぜなら、異なる値の数が増えるにつれて状態のサイズが無限に成長するからです。
+`uniqExact` 関数は、異なる値の数が増加するにつれて状態のサイズが無制限に成長するため、`uniq` よりも多くのメモリを使用します。
 
 **引数**
 
-この関数は可変数のパラメータを取ります。パラメータは `Tuple`、`Array`、`Date`、`DateTime`、`String`、または数値型である必要があります。
+この関数は可変数のパラメータを受け取ります。パラメータは `Tuple`、`Array`、`Date`、`DateTime`、`String`、または数値型であることができます。
 
 **例**
 
-この例では、`uniqExact` 関数を使用して、[opensky データセット](https://sql.clickhouse.com?query=U0VMRUNUIHVuaXFFeGFjdCh0eXBlY29kZSkgRlJPTSBvcGVuc2t5Lm9wZW5za3k&)におけるユニークなタイプコード（航空機のタイプを示す短い識別子）の数を数えます。
+この例では、[opensky データセット](https://sql.clickhouse.com?query=U0VMRUNUIHVuaXFFeGFjdCh0eXBlY29kZSkgRlJPTSBvcGVuc2t5Lm9wZW5za3k&) のユニークなタイプコード（航空機のタイプの短い識別子）の数をカウントするために `uniqExact` 関数を使用します。
 
 ```sql title="クエリ"
 SELECT uniqExact(typecode) FROM opensky.opensky

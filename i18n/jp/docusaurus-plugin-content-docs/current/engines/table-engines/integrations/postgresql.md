@@ -1,24 +1,27 @@
 ---
-slug: /engines/table-engines/integrations/postgresql
-title: "PostgreSQL テーブルエンジン"
-sidebar_position: 160
-sidebar_label: PostgreSQL
-description: "PostgreSQLエンジンは、リモートのPostgreSQLサーバーに保存されたデータに対して、`SELECT`および`INSERT`クエリを使用することを許可します。"
+'description': 'The PostgreSQL engine allows `SELECT` and `INSERT` queries on data
+  stored on a remote PostgreSQL server.'
+'sidebar_label': 'PostgreSQL'
+'sidebar_position': 160
+'slug': '/engines/table-engines/integrations/postgresql'
+'title': 'PostgreSQL テーブルエンジン'
 ---
 
-PostgreSQLエンジンは、リモートのPostgreSQLサーバーに保存されたデータに対して、`SELECT`および`INSERT`クエリを使用することを許可します。
+
+
+The PostgreSQL engine allows `SELECT` and `INSERT` queries on data stored on a remote PostgreSQL server.
 
 :::note
-現在、サポートされているのはPostgreSQLバージョン12以降のみです。
+現在、PostgreSQLバージョン12以上のみがサポートされています。
 :::
 
-:::note Postgresデータの複製または移行にPeerDBを使用する
-> Postgresテーブルエンジンに加えて、ClickHouseの[PeerDB](https://docs.peerdb.io/introduction)を使用して、PostgresからClickHouseへの継続的なデータパイプラインを設定できます。PeerDBは、変更データキャプチャ（CDC）を使用してPostgresからClickHouseにデータを複製するために特別に設計されたツールです。
+:::note Replicating or migrating Postgres data with with PeerDB
+> Postgresテーブルエンジンに加えて、[PeerDB](https://docs.peerdb.io/introduction) by ClickHouseを使用して、PostgresからClickHouseへの継続的なデータパイプラインを設定できます。PeerDBは、PostgresからClickHouseへのデータを変更データキャプチャ（CDC）を使用して複製するために特別に設計されたツールです。
 :::
 
-## テーブルの作成 {#creating-a-table}
+## Creating a Table {#creating-a-table}
 
-``` sql
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
     name1 type1 [DEFAULT|MATERIALIZED|ALIAS expr1] [TTL expr1],
@@ -27,25 +30,25 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE = PostgreSQL({host:port, database, table, user, password[, schema, [, on_conflict]] | named_collection[, option=value [,..]]})
 ```
 
-[CREATE TABLE](/sql-reference/statements/create/table)クエリの詳細な説明を参照してください。
+[CREATE TABLE](/sql-reference/statements/create/table) クエリの詳細な説明を参照してください。
 
 テーブル構造は元のPostgreSQLテーブル構造と異なる場合があります：
 
-- カラム名は元のPostgreSQLテーブルと同じである必要がありますが、これらのカラムの一部のみを使用することができ、順序も任意です。
-- カラムタイプは元のPostgreSQLテーブルのものとは異なる場合があります。ClickHouseは値をClickHouseのデータ型に[キャスト](../../../engines/database-engines/postgresql.md#data_types-support)しようとします。
-- [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls)設定はNullableカラムの処理方法を定義します。デフォルト値は1です。0の場合、テーブル関数はNullableカラムを作成せず、nullの代わりにデフォルト値を挿入します。これは、配列内のNULL値にも適用されます。
+- カラム名は元のPostgreSQLテーブルと同じである必要がありますが、これらのカラムの一部のみを使用し、任意の順序で使用することができます。
+- カラムタイプは元のPostgreSQLテーブルのものと異なる場合があります。ClickHouseは値をClickHouseデータ型に[キャスト](../../../engines/database-engines/postgresql.md#data_types-support)しようとします。
+- [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls) 設定は、Nullableカラムの扱い方を定義します。デフォルト値：1。0の場合、テーブル関数はNullableカラムを作成せず、nullの代わりにデフォルト値を挿入します。これは、配列内のNULL値にも適用されます。
 
-**エンジンパラメータ**
+**Engine Parameters**
 
-- `host:port` — PostgreSQLサーバーのアドレス。
+- `host:port` — PostgreSQLサーバーアドレス。
 - `database` — リモートデータベース名。
 - `table` — リモートテーブル名。
 - `user` — PostgreSQLユーザー。
 - `password` — ユーザーパスワード。
-- `schema` — 非デフォルトのテーブルスキーマ。オプション。
-- `on_conflict` — コンフリクト解決戦略。例：`ON CONFLICT DO NOTHING`。オプション。注：このオプションを追加すると、挿入の効率が低下します。
+- `schema` — 非デフォルトテーブルスキーマ。オプション。
+- `on_conflict` — コンフリクト解決戦略。例：`ON CONFLICT DO NOTHING`。オプション。ただし、このオプションを追加すると、挿入効率が低下します。
 
-[Named collections](/operations/named-collections.md)（バージョン21.11以降利用可能）は、プロダクション環境での使用が推奨されます。以下はその例です：
+[Named collections](/operations/named-collections.md) （バージョン21.11以降で利用可能）は、プロダクション環境での使用を推奨します。以下はその例です：
 
 ```xml
 <named_collections>
@@ -59,36 +62,36 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 </named_collections>
 ```
 
-一部のパラメータはキー値引数で上書きできます：
-``` sql
+一部のパラメータはキー値引数として上書きできます：
+```sql
 SELECT * FROM postgresql(postgres_creds, table='table1');
 ```
 
-## 実装の詳細 {#implementation-details}
+## Implementation Details {#implementation-details}
 
-PostgreSQLサイドでの`SELECT`クエリは、読み取り専用のPostgreSQLトランザクション内で`COPY (SELECT ...) TO STDOUT`として実行され、各`SELECT`クエリの後にコミットされます。
+PostgreSQL側の`SELECT`クエリは、読み取り専用のPostgreSQLトランザクション内で`COPY (SELECT ...) TO STDOUT`として実行され、各`SELECT`クエリの後にコミットされます。
 
-`=`、`!=`、`>`、`>=`、`<`、`<=`、および`IN`のような単純な`WHERE`句は、PostgreSQLサーバーで実行されます。
+`=`, `!=`, `>`, `>=`, `<`, `<=`, `IN`などの単純な`WHERE`句は、PostgreSQLサーバーで実行されます。
 
-すべての結合、集約、ソート、`IN [ array ]`条件、および`LIMIT`サンプリング制約は、PostgreSQLへのクエリが終了した後にのみClickHouseで実行されます。
+すべての結合、集計、ソート、`IN [ array ]`条件、および`LIMIT`サンプリング制約は、PostgreSQLへのクエリが終了した後にClickHouse内でのみ実行されます。
 
-PostgreSQLサイドでの`INSERT`クエリは、PostgreSQLトランザクション内で`COPY "table_name" (field1, field2, ... fieldN) FROM STDIN`として実行され、各`INSERT`ステートメントの後に自動コミットされます。
+PostgreSQL側の`INSERT`クエリは、PostgreSQLトランザクション内で`COPY "table_name" (field1, field2, ... fieldN) FROM STDIN`として実行され、各`INSERT`ステートメントの後に自動コミットが行われます。
 
-PostgreSQLの`Array`タイプは、ClickHouseの配列に変換されます。
+PostgreSQLの`Array`タイプはClickHouseの配列に変換されます。
 
 :::note
-注意が必要です。PostgreSQLでは、`type_name[]`のように作成された配列データは、同じカラム内の異なるテーブル行で異なる次元の多次元配列を含む可能性があります。しかしClickHouseでは、すべてのテーブル行の同じカラム内で次元数が同じ多次元配列のみが許可されています。
+注意 - PostgreSQLでは、`type_name[]`のように作成された配列データは、同じカラムの異なるテーブル行で異なる次元の多次元配列を含むことができます。しかし、ClickHouseでは、同じカラムのすべてのテーブル行で同じ次元数の多次元配列のみが許可されています。
 :::
 
-複数のレプリカをサポートしており、`|`でリストする必要があります。例えば：
+複数のレプリカをサポートしており、`|`でリストにする必要があります。たとえば：
 
 ```sql
 CREATE TABLE test_replicas (id UInt32, name String) ENGINE = PostgreSQL(`postgres{2|3|4}:5432`, 'clickhouse', 'test_replicas', 'postgres', 'mysecretpassword');
 ```
 
-PostgreSQL辞書ソースに対するレプリカの優先度がサポートされています。マップ内の数が大きいほど、優先度は低くなります。最も高い優先度は`0`です。
+PostgreSQL辞書ソースのためのレプリカの優先度もサポートされています。地図中の番号が大きいほど、優先度は低くなります。最も高い優先度は`0`です。
 
-以下の例では、レプリカ`example01-1`が最も高い優先度を持っています：
+以下の例では、レプリカ`example01-1`が最高の優先度を持っています：
 
 ```xml
 <postgresql>
@@ -111,11 +114,11 @@ PostgreSQL辞書ソースに対するレプリカの優先度がサポートさ�
 </source>
 ```
 
-## 使用例 {#usage-example}
+## Usage Example {#usage-example}
 
-### PostgreSQLでのテーブル {#table-in-postgresql}
+### Table in PostgreSQL {#table-in-postgresql}
 
-``` text
+```text
 postgres=# CREATE TABLE "public"."test" (
 "int_id" SERIAL,
 "int_nullable" INT NULL DEFAULT NULL,
@@ -136,25 +139,25 @@ postgresql> SELECT * FROM test;
  (1 row)
 ```
 
-### ClickHouseでのテーブル作成と上記のPostgreSQLテーブルへの接続 {#creating-table-in-clickhouse-and-connecting-to--postgresql-table-created-above}
+### Creating Table in ClickHouse, and connecting to PostgreSQL table created above {#creating-table-in-clickhouse-and-connecting-to--postgresql-table-created-above}
 
-この例では、ClickHouseテーブルをPostgreSQLテーブルに接続し、PostgreSQLデータベースに対して`SELECT`および`INSERT`ステートメントの両方を使用するために[PostgreSQLテーブルエンジン](/engines/table-engines/integrations/postgresql.md)を使用します：
+この例では、[PostgreSQLテーブルエンジン](/engines/table-engines/integrations/postgresql.md)を使用して、ClickHouseテーブルが上記のPostgreSQLテーブルに接続され、SELECTとINSERTステートメントの両方をPostgreSQLデータベースに対して使用します：
 
-``` sql
+```sql
 CREATE TABLE default.postgresql_table
 (
     `float_nullable` Nullable(Float32),
     `str` String,
     `int_id` Int32
 )
-ENGINE = PostgreSQL('localhost:5432', 'public', 'test', 'postges_user', 'postgres_password');
+ENGINE = PostgreSQL('localhost:5432', 'public', 'test', 'postgres_user', 'postgres_password');
 ```
 
-### SELECTクエリを使用してPostgreSQLテーブルからClickHouseテーブルに初期データを挿入する {#inserting-initial-data-from-postgresql-table-into-clickhouse-table-using-a-select-query}
+### Inserting initial data from PostgreSQL table into ClickHouse table, using a SELECT query {#inserting-initial-data-from-postgresql-table-into-clickhouse-table-using-a-select-query}
 
-[postgresqlテーブル関数](/sql-reference/table-functions/postgresql.md)は、PostgreSQLからClickHouseにデータをコピーします。これは、PostgreSQLではなくClickHouseでデータをクエリしたり分析したりすることでデータのクエリ性能を改善するためによく使用され、またPostgreSQLからClickHouseへのデータ移行にも使用できます。PostgreSQLからClickHouseにデータをコピーするために、ClickHouseではMergeTreeテーブルエンジンを使用し、それをpostgresql_copyと呼びます：
+[postgresqlテーブル関数](/sql-reference/table-functions/postgresql.md)は、データをPostgreSQLからClickHouseにコピーします。これは、PostgreSQLではなくClickHouseでデータのクエリや分析を行うことでクエリパフォーマンスを向上させるためによく使用されるか、PostgreSQLからClickHouseへのデータ移行にも使用できます。PostgreSQLからClickHouseへデータをコピーするため、ClickHouseでMergeTreeテーブルエンジンを使用し、これをpostgresql_copyと呼びます：
 
-``` sql
+```sql
 CREATE TABLE default.postgresql_copy
 (
     `float_nullable` Nullable(Float32),
@@ -165,42 +168,42 @@ ENGINE = MergeTree
 ORDER BY (int_id);
 ```
 
-``` sql
+```sql
 INSERT INTO default.postgresql_copy
-SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postges_user', 'postgres_password');
+SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postgres_user', 'postgres_password');
 ```
 
-### PostgreSQLテーブルからClickHouseテーブルへのインクリメンタルデータを挿入する {#inserting-incremental-data-from-postgresql-table-into-clickhouse-table}
+### Inserting incremental data from PostgreSQL table into ClickHouse table {#inserting-incremental-data-from-postgresql-table-into-clickhouse-table}
 
-初期挿入後、PostgreSQLテーブルとClickHouseテーブルの間で継続的な同期を行う場合、ClickHouseでWHERE句を使用して、タイムスタンプまたは一意のシーケンスIDに基づいてPostgreSQLに追加されたデータのみを挿入できます。
+初期の挿入の後、PostgreSQLテーブルとClickHouseテーブルの間で継続的な同期を行う場合、ClickHouseでWHERE句を使用して、タイムスタンプまたはユニークなシーケンスIDに基づいてPostgreSQLに追加されたデータのみを挿入できます。
 
-このためには、以前に追加された最大IDまたはタイムスタンプを追跡する必要があります。以下のように：
+これには、以前に追加された最大IDまたはタイムスタンプを追跡する必要があります。たとえば、以下のようにします：
 
-``` sql
+```sql
 SELECT max(`int_id`) AS maxIntID FROM default.postgresql_copy;
 ```
 
-そして、最大より大きいPostgreSQLテーブルから値を挿入します。
+その後、最大より大きいPostgreSQLテーブルから値を挿入します。
 
-``` sql
+```sql
 INSERT INTO default.postgresql_copy
-SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postges_user', 'postgres_password')
+SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postges_user', 'postgres_password');
 WHERE int_id > maxIntID;
 ```
 
-### 結果として得られたClickHouseテーブルからデータを選択する {#selecting-data-from-the-resulting-clickhouse-table}
+### Selecting data from the resulting ClickHouse table {#selecting-data-from-the-resulting-clickhouse-table}
 
-``` sql
+```sql
 SELECT * FROM postgresql_copy WHERE str IN ('test');
 ```
 
-``` text
+```text
 ┌─float_nullable─┬─str──┬─int_id─┐
 │           ᴺᵁᴸᴸ │ test │      1 │
 └────────────────┴──────┴────────┘
 ```
 
-### 非デフォルトスキーマを使用する {#using-non-default-schema}
+### Using Non-default Schema {#using-non-default-schema}
 
 ```text
 postgres=# CREATE SCHEMA "nice.schema";
@@ -215,12 +218,12 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
         ENGINE PostgreSQL('localhost:5432', 'clickhouse', 'nice.table', 'postgrsql_user', 'password', 'nice.schema');
 ```
 
-**関連事項**
+**See Also**
 
-- [`postgresql`テーブル関数](../../../sql-reference/table-functions/postgresql.md)
-- [PostgreSQLを辞書ソースとして使用する](/sql-reference/dictionaries#mysql)
+- [The `postgresql` table function](../../../sql-reference/table-functions/postgresql.md)
+- [Using PostgreSQL as a dictionary source](/sql-reference/dictionaries#mysql)
 
-## 関連コンテンツ {#related-content}
+## Related content {#related-content}
 
-- ブログ: [ClickHouseとPostgreSQL - データの天国で生まれたマッチ - パート1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
-- ブログ: [ClickHouseとPostgreSQL - データの天国で生まれたマッチ - パート2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)
+- Blog: [ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
+- Blog: [ClickHouse and PostgreSQL - a Match Made in Data Heaven - part 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)

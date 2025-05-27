@@ -1,22 +1,24 @@
 ---
-title: PrettyCompactMonoBlock
-slug: /interfaces/formats/PrettyCompactMonoBlock
-keywords: [PrettyCompactMonoBlock]
-input_format: false
-output_format: true
-alias: []
+'alias': []
+'description': 'PrettyCompactMonoBlockフォーマットのドキュメント'
+'input_format': false
+'keywords':
+- 'PrettyCompactMonoBlock'
+'output_format': true
+'slug': '/interfaces/formats/PrettyCompactMonoBlock'
+'title': 'PrettyCompactMonoBlock'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| 入力 | 出力  | エイリアス |
+| Input | Output  | Alias |
 |-------|---------|-------|
 | ✗     | ✔       |       |
 
 ## 説明 {#description}
 
-[`PrettyCompact`](./PrettyCompact.md) フォーマットとの違いは、最大で `10,000` 行がバッファリングされ、 
-単一のテーブルとして出力される点であり、[ブロック](/development/architecture#block) ではありません。
+[`PrettyCompact`](./PrettyCompact.md) フォーマットと異なり、最大 `10,000` 行がバッファに格納され、 
+単一のテーブルとして出力されます。 [ブロック](/development/architecture#block) ではありません。
 
 ## 使用例 {#example-usage}
 

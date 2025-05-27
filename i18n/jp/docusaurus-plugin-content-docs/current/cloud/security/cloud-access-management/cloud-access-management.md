@@ -1,142 +1,128 @@
 ---
-sidebar_label: 概要
-slug: /cloud/security/cloud-access-management/overview
-title: クラウドアクセス管理
+'sidebar_label': 'Overview'
+'slug': '/cloud/security/cloud-access-management/overview'
+'title': 'Cloud access management'
+'description': 'Describes how access control in ClickHouse cloud works, including
+  information on role types'
 ---
 
+import Image from '@theme/IdealImage';
+import user_grant_permissions_options from '@site/static/images/cloud/security/cloud-access-management/user_grant_permissions_options.png';
 
-# ClickHouse Cloudにおけるアクセス制御
-ClickHouseは、コンソールとデータベースの2か所でユーザーアクセスを制御します。コンソールへのアクセスはclickhouse.cloudユーザーインターフェースを介して管理され、データベースへのアクセスはデータベースユーザーアカウントとロールを介して管理されます。さらに、コンソールユーザーは、私たちのSQLコンソールを介してデータベースと対話するために必要なロールをデータベース内に付与される可能性があります。
 
-## ロールの種類 {#types-of-roles}
-以下に、利用可能な異なる種類のロールについて説明します：
-- **コンソールロール**       clickhouse.cloudコンソールへのアクセスを有効にします
-- **データベースロール**      単一サービス内の権限の管理を有効にします
-- **SQLコンソールロール**   特別に名付けられたデータベースロールで、コンソールユーザーがSQLコンソールを介して割り当てられた権限を持つデータベースにアクセスできるようにします。
 
-## 事前定義されたロール {#predefined-roles}
-ClickHouse Cloudは、アクセス管理を可能にするために、限られた数の事前定義されたロールを提供します。追加のカスタムデータベースロールは、データベース内で[CREATE ROLE](/sql-reference/statements/create/role)および[GRANT](/sql-reference/statements/grant)コマンドを使用していつでも作成できます。
+# ClickHouse Cloudにおけるアクセス制御 {#access-control-in-clickhouse-cloud}
+ClickHouseは、コンソールとデータベースの2か所でユーザーアクセスを制御します。コンソールアクセスは、clickhouse.cloudユーザーインターフェイスを介して管理されます。データベースアクセスは、データベースユーザーアカウントとロールを介して管理されます。さらに、コンソールユーザーには、SQLコンソールを介してデータベースと対話するための権限を持つロールをデータベース内に付与することができます。
 
-| コンテキスト      | ロール名             | 説明                                                                                   |
-|--------------|-----------------------|-----------------------------------------------------------------------------------------------|
-| コンソール      | Admin                 | ClickHouse組織への完全アクセス                                                      |
-| コンソール      | Developer             | ClickHouse組織への読み取り専用アクセス                                               | 
-| コンソール      | Billing               | 課金および使用情報の表示、支払い方法と請求先の管理                                   |
-| SQLコンソール  | sql_console_admin     | データベースへの管理アクセス                                                           |
-| SQLコンソール  | sql_console_read_only | データベースへの読み取り専用アクセス                                                  |
-| データベース     | default               | データベースへの管理アクセス；サービス作成時に`default`ユーザーに自動的に付与されます |
+## コンソールユーザーとロール {#console-users-and-roles}
+コンソール > ユーザーとロールページで、組織およびサービスロールの割り当てを設定します。各サービスの設定ページでSQLコンソールロールの割り当てを設定します。
 
-## 初期設定 {#initial-settings}
-ClickHouse Cloudアカウントを設定する最初のユーザーには、コンソールで自動的にAdminロールが割り当てられます。このユーザーは他のユーザーを組織に招待し、AdminまたはDeveloperロールを付与することができます。
+ユーザーには組織レベルのロールが割り当てられる必要があり、一つまたは複数のサービスのためにサービスロールが任意で割り当てられることがあります。サービス設定ページで、ユーザーがSQLコンソールにアクセスするためのサービスロールが任意で設定されることがあります。
+- Organization Adminロールが割り当てられているユーザーには、デフォルトでService Adminが付与されます。
+- SAML統合を介して組織に追加されたユーザーには、メンバーのロールが自動的に割り当てられます。
+- Service AdminはデフォルトでSQLコンソール管理者ロールが付与されます。SQLコンソールの権限は、サービス設定ページで削除されることがあります。
 
-:::note
-コンソールでユーザーのロールを変更するには、左のユーザーメニューに移動し、ドロップダウンでユーザーのロールを変更します。
-:::
+| コンテキスト   | ロール                  | 説明                                            |
+|:---------------|:------------------------|:-------------------------------------------------|
+| 組織           | Admin                   | 組織のすべての管理活動を行い、すべての設定を制御します。デフォルトで組織内の最初のユーザーに割り当てられます。 |
+| 組織           | Developer               | サービスを除くすべての表示アクセス、読み取り専用APIキーを生成する能力。 |
+| 組織           | Billing                 | 使用状況および請求書を表示し、支払い方法を管理します。 |
+| 組織           | Member                  | サインインのみで、個人のプロフィール設定を管理する能力があります。デフォルトでSAML SSOユーザーに割り当てられます。 |
+| サービス       | Service Admin           | サービス設定を管理します。                        |
+| サービス       | Service Read Only       | サービスおよび設定を表示します。                     |
+| SQLコンソール   | SQLコンソール管理者   | サービス内のデータベースに対する管理アクセス（Defaultデータベースロールと同等）。 |
+| SQLコンソール   | SQLコンソール読み取り専用 | サービス内のデータベースに対する読み取り専用のアクセス。 |
+| SQLコンソール   | カスタム                | SQL [`GRANT`](/sql-reference/statements/grant)文を使用して設定します。SQLコンソールユーザーには、ユーザー名の後にロールを付けて割り当てます。 |
 
-データベースには、サービス作成時に自動的に追加され、default_roleが付与される`default`というアカウントがあります。サービスを作成するユーザーには、サービス作成時に`default`アカウントに割り当てられる自動生成されたランダムパスワードが表示されます。初期設定後にパスワードは表示されませんが、コンソール内でAdmin権限を持つユーザーが後で変更することができます。このアカウントまたはコンソール内でAdmin権限を持つアカウントは、いつでも他のデータベースユーザーやロールを設定することができます。
+SQLコンソールユーザーのためにカスタムロールを作成し、一般的なロールを付与するには、以下のコマンドを実行します。メールアドレスは、コンソール内のユーザーのメールアドレスと一致する必要があります。
 
-:::note
-コンソールで`default`アカウントに割り当てられたパスワードを変更するには、左のサービスメニューに移動し、サービスにアクセスし、設定タブに移動してパスワードリセットボタンをクリックします。
-:::
+1. database_developerロールを作成し、`SHOW`、`CREATE`、`ALTER`、および`DELETE`権限を付与します。
 
-新しいユーザーアカウントを個人に関連付けて作成し、そのユーザーにdefault_roleを付与することをお勧めします。これは、ユーザーが行ったアクティビティをそのユーザーIDに特定し、`default`アカウントが非常時用の活動に保存されるようにするためです。 
+    ```sql
+    CREATE ROLE OR REPLACE database_developer;
+    GRANT SHOW ON * TO database_developer;
+    GRANT CREATE ON * TO database_developer;
+    GRANT ALTER ON * TO database_developer;
+    GRANT DELETE ON * TO database_developer;
+    ```
 
-```sql
-CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
-GRANT default_role to userID;
-```
+2. SQLコンソールユーザーmy.user@domain.comのためのロールを作成し、database_developerロールを割り当てます。
 
-ユーザーは、SHA256ハッシュジェネレーターやPythonの`hashlib`のようなコード関数を使用して、適切な複雑さの12文字以上のパスワードをSHA256文字列に変換し、システム管理者にパスワードとして提供できます。これにより、管理者はプレーンテキストのパスワードを見ることも扱うこともありません。
+    ```sql
+    CREATE ROLE OR REPLACE `sql-console-role:my.user@domain.com`;
+    GRANT database_developer TO `sql-console-role:my.user@domain.com`;
+    ```
 
-## コンソールロール {#console-roles}
-コンソールユーザーにはロールが割り当てられ、AdminまたはDeveloperロールが付与される可能性があります。各ロールに関連付けられた権限は以下に示します。
+### SQLコンソールのパスワードレス認証 {#sql-console-passwordless-authentication}
+SQLコンソールユーザーは各セッションのために作成され、自動的に回転されるX.509証明書を使用して認証されます。ユーザーはセッション終了時に削除されます。監査のためのアクセスリストを生成する際は、コンソール内のサービスの設定タブに移動し、データベース内に存在するデータベースユーザーに加えてSQLコンソールアクセスを記録してください。カスタムロールが設定されている場合、ユーザーのアクセスは、ユーザー名で終わるロールにリストされます。
 
-| コンポーネント                         | 機能                    | Admin  | Developer | Billing |
-|-----------------------------------|----------------------------|--------|-----------|---------|
-| サービスの管理                  | サービスの表示               |   ✅   |    ✅     |    ❌   |
-|                                   | サービスの作成             |   ✅   |    ❌     |    ❌   |
-|                                   | サービスの削除             |   ✅   |    ❌     |    ❌   |
-|                                   | サービスの停止               |   ✅   |    ❌     |    ❌   |
-|                                   | サービスの再起動            |   ✅   |    ❌     |    ❌   |
-|                                   | サービスパスワードのリセット     |   ✅   |    ❌     |    ❌   |
-|                                   | サービストラッキングデータの表示 |   ✅   |    ✅     |    ❌   |
-| クラウドAPI                         | APIキー記録の表示       |   ✅   |    ✅     |    ❌   |
-|                                   | APIキーの作成             |   ✅   | 読み取り専用 |    ❌   |
-|                                   | APIキーの削除             |   ✅   | 自分のキー   |    ❌   |
-| コンソールユーザーの管理            | ユーザーの表示                 |   ✅   |    ✅     |    ❌   |
-|                                   | ユーザーの招待               |   ✅   |    ❌     |    ❌   |
-|                                   | ユーザーのロールの変更           |   ✅   |    ❌     |    ❌   |
-|                                   | ユーザーの削除               |   ✅   |    ❌     |    ❌   |
-| 請求、組織とサポート | 請求の表示               |   ✅   |    ✅     |    ✅   |
-|                                   | 請求の管理             |   ✅   |    ❌     |    ✅   |
-|                                   | 組織アクティビティの表示 |   ✅   |    ❌     |    ✅   |
-|                                   | サポートリクエストの提出    |   ✅   |    ✅     |    ✅   |
-|                                   | 統合の表示          |   ✅   |    ✅     |    ❌   |
+## データベース権限 {#database-permissions}
+以下をサービスとデータベース内でSQL [GRANT](/sql-reference/statements/grant)文を使用して設定します。
 
-## SQLコンソールロール {#sql-console-roles}
-私たちのコンソールには、パスワードなし認証を使用してデータベースと対話するためのSQLコンソールが含まれています。コンソールでAdmin権限を付与されたユーザーは、組織内のすべてのデータベースに対する管理アクセスを持ちます。Developerロールを付与されたユーザーはデフォルトではアクセスできませんが、コンソールから「フルアクセス」または「読み取り専用」データベース権限を付与される可能性があります。「読み取り専用」ロールは、最初にアカウントへの読み取り専用アクセスを付与します。しかし、読み取り専用アクセスが付与されると、SQLコンソールを介してデータベースに接続する際にそのユーザーに関連付けられる特定のカスタムロールが作成される可能性があります。
+| ロール                 | 説明                                                                                                      |
+|:------------------------|:-----------------------------------------------------------------------------------------------------------|
+| Default                 | サービスへのフル管理アクセス                                                                               |
+| Custom                  | SQL [`GRANT`](/sql-reference/statements/grant)文を使用して設定します                                      |
+
+- データベースロールは加算的です。これは、ユーザーが2つのロールのメンバーである場合、ユーザーは2つのロールで付与された最も多くのアクセスを持つことを意味します。ロールを追加してもアクセスを失いません。
+- データベースロールは、他のロールに付与することができ、階層構造を結果として持ちます。ロールは、メンバーであるロールのすべての権限を継承します。
+- データベースロールはサービスごとに固有であり、同じサービス内の複数のデータベースに適用される場合があります。
+
+以下の図は、ユーザーが権限を付与される異なる方法を示しています。
+
+<Image img={user_grant_permissions_options} alt='ユーザーが権限を付与される異なる方法を示す図' size="md" background="black"/>
+
+### 初期設定 {#initial-settings} 
+データベースには、`default`という名前のアカウントが自動的に追加され、サービス作成時にdefault_roleが付与されます。サービスを作成するユーザーには、サービスが作成されたときに`default`アカウントに割り当てられる自動生成されたランダムパスワードが提示されます。初期設定後はパスワードは表示されず、後でコンソール内でService Admin権限を持つユーザーが変更できます。このアカウントまたはコンソール内でService Admin権限を持つアカウントは、いつでも追加のデータベースユーザーとロールを設定できます。
 
 :::note
-コンソールでDeveloperロールを持つユーザーがSQLコンソールにアクセスできるようにするには、左のサービスメニューに移動し、サービスにアクセスし、設定をクリックし、SQLコンソールアクセスセクションで「フルアクセス」または「読み取り専用」を選択します。アクセスが付与されると、以下の***SQLコンソールロールの作成***で示されるプロセスを使用してカスタムロールを割り当てることができます。
+コンソール内の`default`アカウントに割り当てられたパスワードを変更するには、左側のサービスメニューに移動し、サービスにアクセスし、設定タブに移動してパスワードリセットボタンをクリックします。
 :::
 
-### パスワードなし認証についてさらに {#more-on-passwordless-authentication}
-SQLコンソールユーザーは各セッションのために作成され、自動的に回転するX.509証明書を使用して認証されます。セッションが終了するとユーザーは削除されます。監査用のアクセスリストを生成する際は、コンソールでサービスの設定タブに移動し、データベース内に存在するデータベースユーザーに加えてSQLコンソールアクセスを記録してください。カスタムロールが構成されている場合、ユーザーのアクセスはユーザー名で終わるロールにリストされます。
+新しいユーザーアカウントを作成し、そのユーザーにdefault_roleを付与することをお勧めします。これは、ユーザーによって実行された活動がそのユーザーIDに識別され、`default`アカウントは非常時対応の活動用に予約されるためです。
 
-## SQLコンソールロールの作成 {#creating-sql-console-roles}
-SQLコンソールユーザーに関連付けるカスタムロールを作成できます。SQLコンソールはユーザーが新しいセッションを開くたびに新しいユーザーアカウントを作成するため、システムは役割命名規則を使用してカスタムデータベースロールをユーザーに関連付けます。これは、各ユーザーに個別のロールが割り当てられることを意味します。個別のロールはその後、GRANT文を介して直接アクセスを割り当てることができ、ユーザーはdatabase_developerやsecurity_administratorのような新しい一般ロールを確立し、より一般的なロールを介して個々のユーザーロールにアクセスを割り当てることができます。
+  ```sql
+  CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
+  GRANT default_role to userID;
+  ```
 
-SQLコンソールユーザーのカスタムロールを作成し、一般ロールを付与するには、以下のコマンドを実行します。メールアドレスはコンソール内のユーザーのメールアドレスと一致する必要があります。 
-1. database_developerロールを作成し、SHOW、CREATE、ALTER、およびDELETE権限を付与します。
+ユーザーは、SHA256ハッシュジェネレーターやPythonの`hashlib`のようなコード関数を使用して、適切な複雑さを持つ12文字以上のパスワードをSHA256文字列に変換し、それをシステム管理者にパスワードとして提供することができます。これにより、管理者はクリアテキストのパスワードを見たり扱ったりしないことが保証されます。
 
-```sql
-CREATE ROLE OR REPLACE database_developer;
-GRANT SHOW ON * TO database_developer;
-GRANT CREATE ON * TO database_developer;
-GRANT ALTER ON * TO database_developer;
-GRANT DELETE ON * TO database_developer;
-```
+### SQLコンソールユーザーのデータベースアクセスリスト {#database-access-listings-with-sql-console-users}
+以下のプロセスを使用して、組織内のSQLコンソールとデータベース全体の完全なアクセスリストを生成できます。
 
-2. SQLコンソールユーザーmy.user@domain.comのためのロールを作成し、それにdatabase_developerロールを割り当てます。
+1. データベース内のすべてのグラントのリストを取得するには、以下のクエリを実行します。
 
-```sql
-CREATE ROLE OR REPLACE `sql-console-role:my.user@domain.com`;
-GRANT database_developer TO `sql-console-role:my.user@domain.com`;
-```
+    ```sql
+    SELECT grants.user_name,
+      grants.role_name,
+      users.name AS role_member,
+      grants.access_type,
+      grants.database,
+      grants.table
+    FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
+      LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
+    
+    UNION ALL
+    
+    SELECT grants.user_name,
+      grants.role_name,
+      role_grants.role_name AS role_member,
+      grants.access_type,
+      grants.database,
+      grants.table
+    FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
+    WHERE role_grants.user_name is null;
+    ```
 
-このロール構造を使用する際、ユーザーが存在しない場合、ユーザーアクセスを表示するためのクエリをロール間の権限付与を含むように修正する必要があります。
+2. このリストをSQLコンソールへのアクセスを持つコンソールユーザーに結びつけます。
+   
+    a. コンソールに移動します。
 
-```sql
-SELECT grants.user_name,
-  grants.role_name,
-  users.name AS role_member,
-  grants.access_type,
-  grants.database,
-  grants.table
-FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
-  LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
+    b. 該当するサービスを選択します。
 
-UNION ALL
+    c. 左側の設定を選択します。
 
-SELECT grants.user_name,
-  grants.role_name,
-  role_grants.role_name AS role_member,
-  grants.access_type,
-  grants.database,
-  grants.table
-FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
-WHERE role_grants.user_name is null;
-```
+    d. SQLコンソールアクセスセクションまでスクロールします。
 
-## データベースロール {#database-roles}
-ユーザーやカスタムロールは、CREATE User、CREATE Role、およびGRANT文を使用してデータベース内で直接作成することもできます。SQLコンソール用に作成されたロールを除き、これらのユーザーとロールはコンソールユーザーやロールとは独立しています。
-
-データベースロールは加算的です。つまり、ユーザーが2つのロールのメンバーである場合、そのユーザーは2つのロールに付与された最も多くのアクセスを持ちます。ロールを追加してもアクセスを失うことはありません。
-
-データベースロールは他のロールに付与することができ、階層構造を持つことができます。ロールはメンバーであるロールのすべての権限を継承します。
-
-データベースロールはサービスごとにユニークであり、同じサービス内の複数のデータベースにまたがって適用することができます。
-
-下のイラストは、ユーザーがどのように権限を付与されるかのさまざまな方法を示しています。
-
-![Screenshot 2024-01-18 at 5 14 41 PM](https://github.com/ClickHouse/clickhouse-docs/assets/110556185/94b45f98-48cc-4907-87d8-5eff1ac468e5)
+    e. データベースへのアクセスを持つユーザーの番号のリンク`There are # users with access to this service.`をクリックして、ユーザーリストを表示します。

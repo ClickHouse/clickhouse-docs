@@ -1,14 +1,14 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/cramersv
-sidebar_position: 127
-title: 'cramersV'
-description: 'The result of the `cramersV` function ranges from 0 (corresponding to no association between the variables) to 1 and can reach 1 only when each value is completely determined by the other. It may be viewed as the association between two variables as a percentage of their maximum possible variation.'
+'description': '`cramersV` 函数的结果范围从 0（对应于变量之间没有关联）到 1，并且仅当每个值完全由另一个值决定时才能达到 1。它可以被视为两个变量之间的关联作为其最大可能变化的百分比。'
+'sidebar_position': 127
+'slug': '/sql-reference/aggregate-functions/reference/cramersv'
+'title': 'cramersV'
 ---
 
 
 # cramersV
 
-[Cramer's V](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V)（有时称为 Cramer's phi）是用来衡量表中两个列之间关联性的指标。`cramersV` 函数的结果范围从 0（对应于变量之间没有关联）到 1，并且仅当每个值完全由另一个值决定时，结果才能达到 1。它可以被视为两个变量之间的关联程度，作为其最大可能变异的百分比。
+[Cramer's V](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V)（有时称为 Cramer's phi）是一个衡量表中两列之间关联性的指标。`cramersV` 函数的结果范围从 0（表示变量之间没有关联）到 1，只有当每个值完全由另一个值决定时，结果才能达到 1。它可以被视为两个变量之间的关联程度，占其最大可能变化的百分比。
 
 :::note
 有关 Cramer's V 的偏差修正版本，请参见：[cramersVBiasCorrected](./cramersvbiascorrected.md)
@@ -16,28 +16,28 @@ description: 'The result of the `cramersV` function ranges from 0 (corresponding
 
 **语法**
 
-``` sql
+```sql
 cramersV(column1, column2)
 ```
 
 **参数**
 
-- `column1`：要比较的第一列。
-- `column2`：要比较的第二列。
+- `column1`: 第一个要比较的列。
+- `column2`: 第二个要比较的列。
 
 **返回值**
 
-- 一个值介于 0（对应于列值之间没有关联）到 1（完全关联）之间。
+- 一个值在 0（对应于列值之间没有关联）到 1（完全关联）之间。
 
-类型：始终为 [Float64](../../../sql-reference/data-types/float.md)。
+类型：始终是 [Float64](../../../sql-reference/data-types/float.md)。
 
 **示例**
 
-以下两个进行比较的列之间没有关联，因此 `cramersV` 的结果为 0：
+下面比较的两个列之间没有关联，因此 `cramersV` 的结果为 0：
 
 查询：
 
-``` sql
+```sql
 SELECT
     cramersV(a, b)
 FROM
@@ -58,7 +58,7 @@ FROM
 └────────────────┘
 ```
 
-以下两个列之间有相当紧密的关联，因此 `cramersV` 的结果是一个较高的值：
+以下两个列之间的关联相当密切，因此 `cramersV` 的结果为较高的值：
 
 ```sql
 SELECT

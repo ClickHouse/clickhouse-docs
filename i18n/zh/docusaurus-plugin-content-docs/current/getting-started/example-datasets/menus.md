@@ -1,32 +1,32 @@
 ---
-description: '包含130万条历史数据的数据集，涉及酒店、餐厅和咖啡馆的菜单及其价格。'
-slug: /getting-started/example-datasets/menus
-sidebar_label: 纽约公共图书馆 "菜单上的内容？" 数据集
-title: '纽约公共图书馆 "菜单上的内容？" 数据集'
+'description': '数据集包含130万条酒店、餐厅和咖啡馆菜单的历史数据记录，及其菜品和价格。'
+'sidebar_label': '纽约公共图书馆 "菜单上有什么？" 数据集'
+'slug': '/getting-started/example-datasets/menus'
+'title': '纽约公共图书馆 "菜单上有什么？" 数据集'
 ---
 
-该数据集由纽约公共图书馆创建。它包含酒店、餐厅和咖啡馆的菜单历史数据，附有菜肴及其价格。
+数据集由纽约公共图书馆创建。它包含酒店、餐馆和咖啡馆菜单上菜肴及其价格的历史数据。
 
-来源: http://menus.nypl.org/data  
-数据属于公有领域。
+来源: [http://menus.nypl.org/data](http://menus.nypl.org/data)  
+数据属于公共领域。
 
-数据来自图书馆的档案，可能不完整并且难以进行统计分析。尽管如此，它还是非常美味的。  
-数据量仅为130万条关于菜单中菜肴的数据——对于ClickHouse而言，这是一个非常小的数据量，但仍然是一个很好的示例。
+数据来自图书馆的档案，可能不完整，难以进行统计分析。然而，这些数据也非常美味。  
+数据量仅为130万个记录，关于菜单中的菜肴——对于ClickHouse来说，这是一个非常小的数据量，但仍然是一个很好的例子。
 
 ## 下载数据集 {#download-dataset}
 
-运行以下命令：
+运行命令:
 
 ```bash
 wget https://s3.amazonaws.com/menusdata.nypl.org/gzips/2021_08_01_07_01_17_data.tgz
 
-# 选项：验证校验和
+# Option: Validate the checksum
 md5sum 2021_08_01_07_01_17_data.tgz
 
-# 校验和应等于： db6126724de939a5481e3160a2d67d15
+# Checksum should be equal to: db6126724de939a5481e3160a2d67d15
 ```
 
-如有需要，请将链接替换为 http://menus.nypl.org/data 上的最新链接。  
+如有需要，请将链接替换为 http://menus.nypl.org/data 中的最新链接。  
 下载大小约为35 MB。
 
 ## 解压数据集 {#unpack-dataset}
@@ -35,13 +35,13 @@ md5sum 2021_08_01_07_01_17_data.tgz
 tar xvf 2021_08_01_07_01_17_data.tgz
 ```
 
-解压后大小约为150 MB。
+解压后的大小约为150 MB。
 
-数据由四个表构成，规范化如下：
+数据被归一化，包含四个表:
 - `Menu` — 关于菜单的信息：餐厅名称、菜单查看日期等。
-- `Dish` — 关于菜肴的信息：菜肴名称及一些特性。
-- `MenuPage` — 关于菜单页的信息，因为每一页都属于某个菜单。
-- `MenuItem` — 菜单项。某个菜单页面上菜肴的价格：指向菜肴和菜单页面的链接。
+- `Dish` — 关于菜肴的信息：菜肴名称及一些特征。
+- `MenuPage` — 关于菜单中页面的信息，因为每个页面属于某个菜单。
+- `MenuItem` — 菜单中的一项。某个菜单页面上的菜肴及其价格：链接到菜肴和菜单页面。
 
 ## 创建表 {#create-tables}
 
@@ -112,7 +112,7 @@ CREATE TABLE menu_item
 
 ## 导入数据 {#import-data}
 
-上传数据到ClickHouse，运行：
+将数据上传到ClickHouse，运行：
 
 ```bash
 clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_default 0 --query "INSERT INTO dish FORMAT CSVWithNames" < Dish.csv
@@ -121,20 +121,20 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_default 0 --date_time_input_format best_effort --query "INSERT INTO menu_item FORMAT CSVWithNames" < MenuItem.csv
 ```
 
-我们使用 [CSVWithNames](../../interfaces/formats.md#csvwithnames) 格式，因为数据以带有标题的CSV形式表示。
+我们使用 [CSVWithNames](../../interfaces/formats.md#csvwithnames) 格式，因为数据以带有表头的CSV格式表示。
 
-我们禁用 `format_csv_allow_single_quotes`，因为数据字段中仅使用双引号，并且单引号可以出现在值中，不应干扰CSV解析器。
+我们禁用 `format_csv_allow_single_quotes`，因为数据字段仅使用双引号，单引号可以在值内部出现，并且不应混淆CSV解析器。
 
-我们禁用 [input_format_null_as_default](/operations/settings/formats#input_format_null_as_default)，因为我们的数据中没有 [NULL](/operations/settings/formats#input_format_null_as_default)。否则，ClickHouse会尝试解析 `\N` 序列，并可能会与数据中的 `\` 混淆。
+我们禁用 [input_format_null_as_default](/operations/settings/formats#input_format_null_as_default)，因为我们的数据没有 [NULL](/operations/settings/formats#input_format_null_as_default)。否则，ClickHouse将尝试解析 `\N` 序列，并可能会将其与数据中的 `\` 混淆。
 
-设置 [date_time_input_format best_effort](/operations/settings/formats#date_time_input_format) 允许解析 [DateTime](../../sql-reference/data-types/datetime.md) 字段的各种格式。例如，ISO-8601格式的时间字符串（如'2000-01-01 01:02'）将被识别。没有该设置时，仅允许固定的DateTime格式。
+设置 [date_time_input_format best_effort](/operations/settings/formats#date_time_input_format) 允许以多种格式解析 [DateTime](../../sql-reference/data-types/datetime.md) 字段。例如，没有秒的ISO-8601格式如 '2000-01-01 01:02' 将被识别。没有该设置，仅允许固定的DateTime格式。
 
 ## 反规范化数据 {#denormalize-data}
 
-数据以多张表的形式呈现，是 [规范化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms)。这意味着如果你想查询，例如菜单项中的菜肴名称，就必须执行 [JOIN](/sql-reference/statements/select/join)。  
-对于典型的分析任务，处理预先JOIN的数据效率更高，以避免每次都要执行 `JOIN`。这被称为“反规范化”数据。
+数据以 [规范化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms) 展示在多个表中。这意味着如果您想查询菜单项中的菜肴名称，您需要执行 [JOIN](/sql-reference/statements/select/join)。  
+对于典型的分析任务，处理预先参与的（pre-JOINed）数据更为高效，以避免每次都进行 `JOIN`。这被称为“反规范化”数据。
 
-我们将创建一个表 `menu_item_denorm`，其中包含所有连接在一起的数据：
+我们将创建一个名为 `menu_item_denorm` 的表，其中将包含所有连接在一起的数据：
 
 ```sql
 CREATE TABLE menu_item_denorm
@@ -197,7 +197,7 @@ SELECT count() FROM menu_item_denorm;
 └─────────┘
 ```
 
-## 执行一些查询 {#run-queries}
+## 运行一些查询 {#run-queries}
 
 ### 菜肴的平均历史价格 {#query-averaged-historical-prices}
 
@@ -239,7 +239,7 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴──────────────────────────────┘
 ```
 
-对此要保持审慎。
+对此请谨慎对待。
 
 ### 汉堡价格 {#query-burger-prices}
 
@@ -310,11 +310,11 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴─────────────────────────────┘
 ```
 
-要获取伏特加，我们必须写 `ILIKE '%vodka%'` ，这确实很关键。
+要获取伏特加，我们必须写 `ILIKE '%vodka%'`，这无疑是一个声明。
 
 ### 鱼子酱 {#query-caviar}
 
-让我们打印鱼子酱的价格，同时也打印名称任意带有鱼子酱的菜肴。
+让我们打印鱼子酱的价格。同时让我们打印任何包含鱼子酱的菜肴名称。
 
 查询：
 
@@ -357,4 +357,4 @@ ORDER BY d ASC;
 
 ## 在线游乐场 {#playground}
 
-数据已经上传到ClickHouse游乐场，[示例](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B)。
+数据已上传到ClickHouse Playground，[示例](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B)。

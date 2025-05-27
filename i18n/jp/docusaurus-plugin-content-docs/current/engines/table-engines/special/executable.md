@@ -1,46 +1,50 @@
 ---
-slug: /engines/table-engines/special/executable
-sidebar_position: 40
-sidebar_label:  実行可能
-title: "実行可能および ExecutablePool テーブルエンジン"
-description: "`Executable` および `ExecutablePool` テーブルエンジンは、定義したスクリプトの出力から行を生成するテーブルを定義することを可能にします（行を **stdout** に書き込むことによって）。"
+'description': 'The `Executable` and `ExecutablePool` table engines allow you to define
+  a table whose rows are generated from a script that you define (by writing rows
+  to **stdout**).'
+'sidebar_label': 'Executable'
+'sidebar_position': 40
+'slug': '/engines/table-engines/special/executable'
+'title': 'Executable and ExecutablePool Table Engines'
 ---
 
 
-# 実行可能および ExecutablePool テーブルエンジン
 
-`Executable` および `ExecutablePool` テーブルエンジンは、定義したスクリプトの出力から行を生成するテーブルを定義することを可能にします（行を **stdout** に書き込むことによって）。 実行可能なスクリプトは `users_scripts` ディレクトリに保存され、任意のソースからデータを読み取ることができます。
 
-- `Executable` テーブル: 各クエリでスクリプトが実行されます
-- `ExecutablePool` テーブル: 永続プロセスのプールを維持し、読み取りのためにプールからプロセスを取得します
+# 実行可能および実行プールテーブルエンジン
 
-オプションで、スクリプトが読み込むために **stdin** に結果をストリームする1つまたは複数の入力クエリを含めることができます。
+`Executable` および `ExecutablePool` テーブルエンジンを使用すると、あなたが定義したスクリプトから生成された行を持つテーブルを定義できます（**stdout** に行を書き込むことによって）。実行可能なスクリプトは `users_scripts` ディレクトリに保存され、任意のソースからデータを読み取ることができます。
+
+- `Executable` テーブル: 各クエリごとにスクリプトが実行されます
+- `ExecutablePool` テーブル: 永続的なプロセスのプールを維持し、プールからプロセスを取得して読み込みます
+
+オプションで、スクリプトが読み取るために結果を **stdin** にストリームする1つ以上の入力クエリを含めることができます。
 
 ## 実行可能テーブルの作成 {#creating-an-executable-table}
 
-`Executable` テーブルエンジンには、スクリプトの名前と受信データの形式という2つのパラメータが必要です。 オプションで1つまたは複数の入力クエリを渡すことができます：
+`Executable` テーブルエンジンには、スクリプトの名前と受信データの形式という2つのパラメータが必要です。オプションで、1つ以上の入力クエリを渡すことができます：
 
 ```sql
 Executable(script_name, format, [input_query...])
 ```
 
-`Executable` テーブルの関連設定は次のとおりです：
+`Executable` テーブルに関連する設定は以下の通りです：
 
 - `send_chunk_header`
-    - 説明: チャンクを処理に送信する前に、各チャンク内の行数を送信します。この設定は、リソースを事前に割り当てるためにスクリプトを書くのに役立ちます
+    - 説明: プロセスにチャンクを送信する前に、各チャンク内の行数を送信します。この設定は、リソースを事前に確保するためにスクリプトをより効率的に書くのに役立ちます
     - デフォルト値: false
 - `command_termination_timeout`
-    - 説明: コマンドの終了タイムアウト（秒）
+    - 説明: コマンド終了タイムアウト（秒単位）
     - デフォルト値: 10
 - `command_read_timeout`
-    - 説明: コマンドの stdout からデータを読み取るためのタイムアウト（ミリ秒）
+    - 説明: コマンド stdout からデータを読み取るためのタイムアウト（ミリ秒単位）
     - デフォルト値: 10000
 - `command_write_timeout`
-    - 説明: コマンドの stdin にデータを書くためのタイムアウト（ミリ秒）
+    - 説明: コマンド stdin にデータを書き込むためのタイムアウト（ミリ秒単位）
     - デフォルト値: 10000
 
 
-例を見てみましょう。次の Python スクリプトは `my_script.py` という名前で `user_scripts` フォルダーに保存されています。 数値 `i` を読み込み、i 個のランダムな文字列を出力し、それぞれの文字列の前にタブで区切られた数字が表示されます：
+例を見てみましょう。次の Python スクリプトは `my_script.py` という名で `user_scripts` フォルダに保存されています。このスクリプトは数値 `i` を読み取り、10個のランダムな文字列を出力します。各文字列の前にはタブで区切られた数字が付きます：
 
 ```python
 #!/usr/bin/python3
@@ -51,7 +55,7 @@ import random
 
 def main():
 
-    # 入力値を読み取る
+    # 入力値を読み込む
     for number in sys.stdin:
         i = int(number)
 
@@ -68,7 +72,7 @@ if __name__ == "__main__":
     main()
 ```
 
-次の `my_executable_table` は `my_script.py` の出力から構築され、`my_executable_table` から `SELECT` を実行するたびに 10 のランダムな文字列を生成します：
+次の `my_executable_table` は `my_script.py` の出力から構築されます。これにより、`my_executable_table` から `SELECT` を実行するたびに10個のランダムな文字列が生成されます：
 
 ```sql
 CREATE TABLE my_executable_table (
@@ -78,7 +82,7 @@ CREATE TABLE my_executable_table (
 ENGINE = Executable('my_script.py', TabSeparated, (SELECT 10))
 ```
 
-テーブルの作成はすぐに終了し、スクリプトは呼び出されません。 `my_executable_table` をクエリするとスクリプトが呼び出されます：
+テーブルの作成はすぐに戻り、スクリプトは呼び出されません。`my_executable_table` をクエリすると、スクリプトが呼び出されます：
 
 ```sql
 SELECT * FROM my_executable_table
@@ -99,11 +103,11 @@ SELECT * FROM my_executable_table
 └───┴────────────┘
 ```
 
-## 結果をスクリプトに渡す {#passing-query-results-to-a-script}
+## スクリプトにクエリ結果を渡す {#passing-query-results-to-a-script}
 
-Hacker News ウェブサイトのユーザーはコメントを残します。 Python には、コメントがポジティブ、ネガティブ、ニュートラルのいずれかを判断するための自然言語処理ツールキット（`nltk`）が含まれており、-1（非常にネガティブなコメント）から1（非常にポジティブなコメント）までの値を割り当てることができます。 Hacker News のコメントの感情を計算する `Executable` テーブルを作成してみましょう。
+Hacker News ウェブサイトのユーザーはコメントを残します。Python には、コメントがポジティブ、ネガティブ、またはニュートラルであるかを判断するための自然言語処理ツールキット（`nltk`）があり、-1（非常にネガティブなコメント）から1（非常にポジティブなコメント）までの値を割り当てることができます。それでは、`nltk` を使用して Hacker News コメントの感情を計算する `Executable` テーブルを作成しましょう。
 
-この例では、`hackernews` テーブルを使用しています。このテーブルについては [こちら](/engines/table-engines/mergetree-family/invertedindexes/#full-text-search-of-the-hacker-news-dataset) に記載されています。 `hackernews` テーブルには `UInt64` 型の `id` カラムと `comment` という名前の `String` カラムが含まれています。 `Executable` テーブルを定義してみましょう：
+この例では、[こちら](/engines/table-engines/mergetree-family/invertedindexes/#full-text-search-of-the-hacker-news-dataset)で説明されている `hackernews` テーブルを使用します。`hackernews` テーブルには、`UInt64` 型の `id` カラムと `String` 型の `comment` カラムが含まれています。それでは、`Executable` テーブルを定義して始めましょう：
 
 ```sql
 CREATE TABLE sentiment (
@@ -117,13 +121,13 @@ ENGINE = Executable(
 );
 ```
 
-`sentiment` テーブルに関するいくつかのコメント：
+`sentiment` テーブルについてのいくつかのコメント：
 
-- ファイル `sentiment.py` は `user_scripts` フォルダーに保存されています（これは `user_scripts_path` 設定のデフォルトフォルダーです）
-- `TabSeparated` 形式は、Python スクリプトがタブで区切られた値を含む生データの行を生成する必要があることを意味します
-- クエリは `hackernews` から2つのカラムを選択します。 Python スクリプトは、受信行からこれらのカラムの値を解析する必要があります
+- ファイル `sentiment.py` は `user_scripts` フォルダに保存されています（`user_scripts_path` 設定のデフォルトフォルダ）
+- `TabSeparated` 形式は、Python スクリプトがタブ区切りの値を含む生データの行を生成する必要があることを意味します
+- クエリは `hackernews` から2つのカラムを選択します。Python スクリプトは、受信行からそのカラム値を解析する必要があります
 
-以下は `sentiment.py` の定義です：
+以下が `sentiment.py` の定義です：
 
 ```python
 #!/usr/local/bin/python3.9
@@ -156,22 +160,22 @@ if __name__ == "__main__":
     main()
 ```
 
-私たちの Python スクリプトに関するいくつかのコメント：
+私たちの Python スクリプトについてのいくつかのコメント：
 
-- これを機能させるためには、`nltk.downloader.download('vader_lexicon')` を実行する必要があります。これはスクリプトに書くこともできましたが、その場合、`sentiment` テーブルにクエリが実行されるたびにダウンロードされてしまうので、効率的ではありません
+- これが機能するためには、`nltk.downloader.download('vader_lexicon')` を実行する必要があります。これはスクリプト内に置くこともできますが、そうすると `sentiment` テーブルのクエリが実行されるたびに毎回ダウンロードされてしまうため、効率的ではありません
 - `row` の各値は `SELECT id, comment FROM hackernews WHERE id > 0 AND comment != '' LIMIT 20` の結果セットの行になります
-- 受信行はタブで区切られているので、Python の `split` 関数を使用して `id` と `comment` を解析します
-- `polarity_scores` の結果は複数の値を持つ JSON オブジェクトです。 この JSON オブジェクトの `compound` 値だけを取得することにしました
-- ClickHouse の `sentiment` テーブルは `TabSeparated` 形式を使用し、2つのカラムを含んでいるため、`print` 関数はそれらのカラムをタブで区切ります
+- 受信行はタブ区切りであるため、Python の `split` 関数を使用して `id` と `comment` を解析します
+- `polarity_scores` の結果は多数の値を持つ JSON オブジェクトです。私たちはこの JSON オブジェクトの `compound` 値を取得することにしました
+- `sentiment` テーブルは ClickHouse で `TabSeparated` 形式を使用し、2つのカラムを含むため、私たちの `print` 関数はタブでカラムを区切ります
 
-`sentiment` テーブルから行を選択するクエリを毎回実行すると、`SELECT id, comment FROM hackernews WHERE id > 0 AND comment != '' LIMIT 20` のクエリが実行され、その結果が `sentiment.py` に渡されます。テストしてみましょう：
+`sentiment` テーブルから行を選択するクエリを実行するたびに、`SELECT id, comment FROM hackernews WHERE id > 0 AND comment != '' LIMIT 20` クエリが実行され、その結果が `sentiment.py` に渡されます。これをテストしてみましょう：
 
 ```sql
 SELECT *
 FROM sentiment
 ```
 
-応答は次のようになります：
+応答は以下のようになります：
 
 ```response
 ┌───────id─┬─sentiment─┐
@@ -198,16 +202,15 @@ FROM sentiment
 └──────────┴───────────┘
 ```
 
-
 ## ExecutablePool テーブルの作成 {#creating-an-executablepool-table}
 
-`ExecutablePool` の構文は `Executable` と似ていますが、`ExecutablePool` テーブルに固有のいくつかの関連設定があります：
+`ExecutablePool` の構文は `Executable` と似ていますが、`ExecutablePool` テーブル固有のいくつかの関連設定があります：
 
 - `pool_size`
-    - 説明: プロセスプールのサイズ。 サイズが 0 の場合、サイズ制限はありません
+    - 説明: プロセスプールのサイズ。サイズが0の場合、サイズの制限はありません
     - デフォルト値: 16
 - `max_command_execution_time`
-    - 説明: 最大コマンド実行時間（秒）
+    - 説明: 最大コマンド実行時間（秒単位）
     - デフォルト値: 10
 
 上記の `sentiment` テーブルを `Executable` の代わりに `ExecutablePool` を使用するように簡単に変換できます：
@@ -218,12 +221,12 @@ CREATE TABLE sentiment_pooled (
    sentiment Float32
 )
 ENGINE = ExecutablePool(
-	'sentiment.py',
-	TabSeparated,
-	(SELECT id, comment FROM hackernews WHERE id > 0 AND comment != '' LIMIT 20000)
+    'sentiment.py',
+    TabSeparated,
+    (SELECT id, comment FROM hackernews WHERE id > 0 AND comment != '' LIMIT 20000)
 )
 SETTINGS
-	pool_size = 4;
+    pool_size = 4;
 ```
 
-ClickHouse は、クライアントが `sentiment_pooled` テーブルをクエリする際に、オンデマンドで 4 つのプロセスを維持します。
+ClickHouse は、クライアントが `sentiment_pooled` テーブルをクエリする際に、オンデマンドで4つのプロセスを維持します。

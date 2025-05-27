@@ -1,16 +1,16 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/groupbitmapxor
-sidebar_position: 151
-title: groupBitmapXor
-description: "计算位图列的异或，并返回 UInt64 类型的基数，如果与后缀 -State 一起使用，则返回一个 [位图对象](../../../sql-reference/functions/bitmap-functions.md)"
+'description': '计算一个位图列的 XOR，并返回类型为 UInt64 的基数，如果使用后缀 -State，则返回一个位图对象'
+'sidebar_position': 151
+'slug': '/sql-reference/aggregate-functions/reference/groupbitmapxor'
+'title': 'groupBitmapXor'
 ---
 
 
 # groupBitmapXor
 
-`groupBitmapXor` 计算位图列的异或，并返回 UInt64 类型的基数，如果与后缀 -State 一起使用，则返回一个 [位图对象](../../../sql-reference/functions/bitmap-functions.md)。
+`groupBitmapXor` 计算位图列的 XOR，并返回 UInt64 类型的基数，如果与后缀 -State 一起使用，则返回一个 [bitmap object](../../../sql-reference/functions/bitmap-functions.md)。
 
-``` sql
+```sql
 groupBitmapOr(expr)
 ```
 
@@ -20,11 +20,11 @@ groupBitmapOr(expr)
 
 **返回值**
 
-`UInt64` 类型的值。
+UInt64 类型的值。
 
 **示例**
 
-``` sql
+```sql
 DROP TABLE IF EXISTS bitmap_column_expr_test2;
 CREATE TABLE bitmap_column_expr_test2
 (

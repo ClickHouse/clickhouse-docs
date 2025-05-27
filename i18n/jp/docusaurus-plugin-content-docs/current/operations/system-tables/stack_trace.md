@@ -1,44 +1,50 @@
 ---
-description: "サーバースレッドのすべてのスタックトレースを含むシステムテーブル。開発者がサーバーの状態を調査できるようにします。"
-slug: /operations/system-tables/stack_trace
-title: "system.stack_trace"
-keywords: ["system table", "stack_trace"]
+'description': 'System table which contains stack traces of all server threads. Allows
+  developers to introspect the server state.'
+'keywords':
+- 'system table'
+- 'stack_trace'
+'slug': '/operations/system-tables/stack_trace'
+'title': 'system.stack_trace'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+
+# system.stack_trace
+
 <SystemTableCloud/>
 
-すべてのサーバースレッドのスタックトレースを含みます。開発者がサーバーの状態を調査できるようにします。
+すべてのサーバースレッドのスタックトレースを含みます。開発者がサーバーの状態を調査するために使用できます。
 
-スタックフレームを分析するには、`addressToLine`、`addressToLineWithInlines`、`addressToSymbol`、および `demangle` の [イントロスペクション関数](../../sql-reference/functions/introspection.md) を使用します。
+スタックフレームを分析するには、`addressToLine`、`addressToLineWithInlines`、`addressToSymbol` および `demangle` の [イントロスペクション関数](../../sql-reference/functions/introspection.md) を使用します。
 
 カラム:
 
 - `thread_name` ([String](../../sql-reference/data-types/string.md)) — スレッド名。
 - `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — スレッド識別子。
-- `query_id` ([String](../../sql-reference/data-types/string.md)) — [query_log](../system-tables/query_log.md) システムテーブルから実行中のクエリに関する詳細を取得するために使用できるクエリ識別子。
-- `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 呼び出されたメソッドが格納されている物理アドレスのリストを表す [スタックトレース](https://en.wikipedia.org/wiki/Stack_trace)。
+- `query_id` ([String](../../sql-reference/data-types/string.md)) — 実行中のクエリの詳細を取得するために使用できるクエリ識別子で、[query_log](../system-tables/query_log.md) システムテーブルから取得できます。
+- `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 呼び出されたメソッドが保存されている物理アドレスのリストを表す [スタックトレース](https://en.wikipedia.org/wiki/Stack_trace)。
 
 :::tip
-便利なクエリについては、ナレッジベースをチェックしてください。特に、[現在実行中のスレッドを確認する方法](/knowledgebase/find-expensive-queries) や [トラブルシューティングのための便利なクエリ](/knowledgebase/useful-queries-for-troubleshooting) が含まれています。
+[現在実行中のスレッドを確認する方法](/knowledgebase/find-expensive-queries) や [トラブルシューティングに役立つクエリ](/knowledgebase/useful-queries-for-troubleshooting) を含む便利なクエリがある知識ベースをチェックしてください。
 :::
 
 **例**
 
 イントロスペクション関数を有効にする:
 
-``` sql
+```sql
 SET allow_introspection_functions = 1;
 ```
 
-ClickHouseのオブジェクトファイルからシンボルを取得する:
+ClickHouse オブジェクトファイルからシンボルを取得する:
 
-``` sql
+```sql
 WITH arrayMap(x -> demangle(addressToSymbol(x)), trace) AS all SELECT thread_name, thread_id, query_id, arrayStringConcat(all, '\n') AS res FROM system.stack_trace LIMIT 1 \G;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 thread_name: QueryPipelineEx
@@ -52,7 +58,7 @@ Allocator<true, true>::realloc(void*, unsigned long, unsigned long, unsigned lon
 HashTable<unsigned long, HashMapCell<unsigned long, char*, HashCRC32<unsigned long>, HashTableNoState, PairNoInit<unsigned long, char*>>, HashCRC32<unsigned long>, HashTableGrowerWithPrecalculation<8ul>, Allocator<true, true>>::resize(unsigned long, unsigned long)
 void DB::Aggregator::executeImplBatch<false, false, true, DB::AggregationMethodOneNumber<unsigned long, HashMapTable<unsigned long, HashMapCell<unsigned long, char*, HashCRC32<unsigned long>, HashTableNoState, PairNoInit<unsigned long, char*>>, HashCRC32<unsigned long>, HashTableGrowerWithPrecalculation<8ul>, Allocator<true, true>>, true, false>>(DB::AggregationMethodOneNumber<unsigned long, HashMapTable<unsigned long, HashMapCell<unsigned long, char*, HashCRC32<unsigned long>, HashTableNoState, PairNoInit<unsigned long, char*>>, HashCRC32<unsigned long>, HashTableGrowerWithPrecalculation<8ul>, Allocator<true, true>>, true, false>&, DB::AggregationMethodOneNumber<unsigned long, HashMapTable<unsigned long, HashMapCell<unsigned long, char*, HashCRC32<unsigned long>, HashTableNoState, PairNoInit<unsigned long, char*>>, HashCRC32<unsigned long>, HashTableGrowerWithPrecalculation<8ul>, Allocator<true, true>>, true, false>::State&, DB::Arena*, unsigned long, unsigned long, DB::Aggregator::AggregateFunctionInstruction*, bool, char*) const
 DB::Aggregator::executeImpl(DB::AggregatedDataVariants&, unsigned long, unsigned long, std::__1::vector<DB::IColumn const*, std::__1::allocator<DB::IColumn const*>>&, DB::Aggregator::AggregateFunctionInstruction*, bool, bool, char*) const
-DB::Aggregator::executeOnBlock(std::__1::vector<COW<DB::IColumn>::immutable_ptr<DB::IColumn>, std::__1::allocator<COW<DB::IColumn>::immutable_ptr<DB::IColumn>>>, unsigned long, unsigned long, DB::AggregatedDataVariants&, std::__1::vector<DB::IColumn const*, std::__1::allocator<DB::IColumn const*>>&, std::__1::vector<std::__1::vector<DB::IColumn const*, std::__1::allocator<DB::IColumn const*>>, std::__1::allocator<std::__1::vector<DB::IColumn const*, std::__1::allocator<DB::IColumn const*>>>>&, bool&) const
+DB::Aggregator::executeOnBlock(std::__1::vector<COW<DB::IColumn>::immutable_ptr<DB::IColumn>, std::__1::allocator<COW<DB::IColumn>::immutable_ptr<DB::IColumn>>>, unsigned long, unsigned long, DB::AggregatedDataVariants&, std::__1::vector<DB::IColumn const*, std::__1::allocator<DB::IColumn const*>>&, std::__1::vector<std::__1::vector<DB::IColumn const*, std::__1::allocator<DB::IColumn const*, std::__1::allocator<DB::IColumn const*>>, std::__1::allocator<std::__1::vector<DB::IColumn const*, std::__1::allocator<DB::IColumn const*>>>>&, bool&) const
 DB::AggregatingTransform::work()
 DB::ExecutionThreadContext::executeTask()
 DB::PipelineExecutor::executeStepImpl(unsigned long, std::__1::atomic<bool>*)
@@ -62,13 +68,13 @@ void std::__1::__function::__policy_invoker<void ()>::__call_impl<std::__1::__fu
 void* std::__1::__thread_proxy[abi:v15000]<std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void ThreadPoolImpl<std::__1::thread>::scheduleImpl<void>(std::__1::function<void ()>, Priority, std::__1::optional<unsigned long>, bool)::'lambda0'()>>(void*)
 ```
 
-ClickHouseソースコードのファイル名と行番号を取得する:
+ClickHouse ソースコードのファイル名と行番号を取得する:
 
-``` sql
+```sql
 WITH arrayMap(x -> addressToLine(x), trace) AS all, arrayFilter(x -> x LIKE '%/dbms/%', all) AS dbms SELECT thread_name, thread_id, query_id, arrayStringConcat(notEmpty(dbms) ? dbms : all, '\n') AS res FROM system.stack_trace LIMIT 1 \G;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 thread_name: clickhouse-serv
@@ -94,9 +100,9 @@ res:       /lib/x86_64-linux-gnu/libc-2.27.so
 /lib/x86_64-linux-gnu/libc-2.27.so
 ```
 
-**参照**
+**関連情報**
 
-- [イントロスペクション関数](../../sql-reference/functions/introspection.md) — 使用できるイントロスペクション関数とその使い方。
-- [system.trace_log](../system-tables/trace_log.md) — サンプリングクエリプロファイラーによって収集されたスタックトレースを含む。
+- [イントロスペクション関数](../../sql-reference/functions/introspection.md) — どのイントロスペクション関数が使用可能で、どのように使用するか。
+- [system.trace_log](../system-tables/trace_log.md) — サンプリングクエリプロファイラーによって収集されたスタックトレースを含みます。
 - [arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) — `arrayMap` 関数の説明と使用例。
 - [arrayFilter](/sql-reference/functions/array-functions#arrayfilterfunc-arr1-) — `arrayFilter` 関数の説明と使用例。

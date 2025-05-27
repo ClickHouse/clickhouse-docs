@@ -1,16 +1,20 @@
 ---
-title: リモートClickHouseサーバーへのクエリ方法
-sidebar_label: リモートClickHouseのクエリ
-slug: /chdb/guides/query-remote-clickhouse
-description: このガイドでは、chDBからリモートClickHouseサーバーへのクエリ方法を学びます。
-keywords: [chdb, clickhouse]
+'title': 'リモートClickHouseサーバーのクエリ方法'
+'sidebar_label': 'リモートClickHouseのクエリ'
+'slug': '/chdb/guides/query-remote-clickhouse'
+'description': 'このガイドでは、chDBからリモートClickHouseサーバーにクエリする方法について学びます。'
+'keywords':
+- 'chdb'
+- 'clickhouse'
 ---
 
-このガイドでは、chDBからリモートClickHouseサーバーへのクエリ方法を学びます。
 
-## セットアップ {#setup}
 
-まず、仮想環境を作成しましょう：
+In this guide, we're going to learn how to query a remote ClickHouse server from chDB.
+
+## Setup {#setup}
+
+まず、仮想環境を作成します。
 
 ```bash
 python -m venv .venv
@@ -18,7 +22,7 @@ source .venv/bin/activate
 ```
 
 次に、chDBをインストールします。
-バージョン2.0.2以上が必要です：
+バージョン2.0.2以上であることを確認してください：
 
 ```bash
 pip install "chdb>=2.0.2"
@@ -30,34 +34,34 @@ pip install "chdb>=2.0.2"
 pip install pandas ipython
 ```
 
-`ipython`を使用して、残りのガイドでコマンドを実行します。起動するには次のコマンドを実行してください：
+このガイドの残りの部分でコマンドを実行するために、`ipython`を使用します。これを起動するには、次のコマンドを実行します：
 
 ```bash
 ipython
 ```
 
-Pythonスクリプトやお気に入りのノートブックでコードを使用することもできます。
+コードをPythonスクリプトやお気に入りのノートブックで使用することもできます。
 
-## ClickPyの紹介 {#an-intro-to-clickpy}
+## An intro to ClickPy {#an-intro-to-clickpy}
 
-クエリを行うリモートClickHouseサーバーは[ClickPy](https://clickpy.clickhouse.com)です。
-ClickPyは、PyPIパッケージのすべてのダウンロードを追跡し、UIを通じてパッケージの統計を探索できるようにします。
-基盤となるデータベースは、`play`ユーザーを使用してクエリ可能です。
+私たちがクエリを実行するリモートClickHouseサーバーは[ClickPy](https://clickpy.clickhouse.com)です。
+ClickPyはPyPIパッケージのすべてのダウンロードを追跡し、UIを介してパッケージの統計を探索できます。
+基礎データベースは`play`ユーザーを使用してクエリが可能です。
 
-ClickPyの詳細については、[そのGitHubリポジトリ](https://github.com/ClickHouse/clickpy)を参照してください。
+ClickPyの詳細については、[GitHubリポジトリ](https://github.com/ClickHouse/clickpy)を参照してください。
 
-## ClickPy ClickHouseサービスへのクエリ {#querying-the-clickpy-clickhouse-service}
+## Querying the ClickPy ClickHouse service {#querying-the-clickpy-clickhouse-service}
 
-chDBをインポートしましょう：
+まずchDBをインポートします：
 
 ```python
 import chdb
 ```
 
-`remoteSecure`関数を使用してClickPyにクエリを投げます。
-この関数には、ホスト名、テーブル名、およびユーザー名を最低限指定する必要があります。
+`remoteSecure`関数を使ってClickPyにクエリを実行します。
+この関数は、ホスト名、テーブル名、ユーザー名を最低限必要とします。
 
-次のクエリを書いて、[`openai`パッケージ](https://clickpy.clickhouse.com/dashboard/openai)の日ごとのダウンロード数をPandasのDataFrameとして返します：
+次のクエリを記述して、[`openai`パッケージ](https://clickpy.clickhouse.com/dashboard/openai)の1日あたりのダウンロード数をPandas DataFrameとして返します：
 
 ```python
 query = """
@@ -92,7 +96,7 @@ openai_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-次に、[`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn)のダウンロード数を返すために同じことをしましょう：
+次に、[`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn)のダウンロード数を返すために同じことを行います：
 
 ```python
 query = """
@@ -127,9 +131,9 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-## Pandas DataFrameのマージ {#merging-pandas-dataframes}
+## Merging Pandas DataFrames {#merging-pandas-dataframes}
 
-現在、2つのDataFrameがあるので、次のように日付（`x`カラム）を基にマージできます：
+現在、2つのDataFrameができたので、日付（`x`列）に基づいてマージできます：
 
 ```python
 df = openai_df.merge(
@@ -149,7 +153,7 @@ df.head(n=5)
 4  2018-03-02         5      23842
 ```
 
-次に、Open AIのダウンロード数と`scikit-learn`のダウンロード数の比率を次のように計算できます：
+次に、Open AIのダウンロード数と`scikit-learn`のダウンロード数の比率を計算します：
 
 ```python
 df['ratio'] = df['y_openai'] / df['y_sklearn']
@@ -165,10 +169,10 @@ df.head(n=5)
 4  2018-03-02         5      23842  0.000210
 ```
 
-## Pandas DataFrameのクエリ {#querying-pandas-dataframes}
+## Querying Pandas DataFrames {#querying-pandas-dataframes}
 
-次に、最良および最悪の比率のある日付を見つけたいとしましょう。
-chDBに戻り、これらの値を計算できます：
+次に、最高と最低の比率の日付を見つけたいとしましょう。
+chDBに戻ってそれらの値を計算できます：
 
 ```python
 chdb.query("""
@@ -185,4 +189,4 @@ FROM Python(df)
 0   0.693855  2024-09-19    0.000003  2020-02-09
 ```
 
-Pandas DataFramesへのクエリの詳細を学びたい場合は、[Pandas DataFrames開発者ガイド](querying-pandas.md)をご覧ください。
+Pandas DataFramesのクエリについてさらに学ぶには、[Pandas DataFrames開発者ガイド](querying-pandas.md)を参照してください。

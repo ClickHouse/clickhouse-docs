@@ -1,7 +1,9 @@
 ---
-title: HiveText
-slug: /interfaces/formats/HiveText
-keywords: ['HiveText']
+'description': 'HiveText 格式的文档'
+'keywords':
+- 'HiveText'
+'slug': '/interfaces/formats/HiveText'
+'title': 'HiveText'
 ---
 
 ## 描述 {#description}

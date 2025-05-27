@@ -1,21 +1,25 @@
 ---
-title: LineAsStringWithNamesAndTypes
-slug: /interfaces/formats/LineAsStringWithNamesAndTypes
-keywords: [LineAsStringWithNamesAndTypes]
-input_format: false
-output_format: true
-alias: []
+'alias': []
+'description': 'LineAsStringWithNamesAndTypes フォーマットのドキュメント'
+'input_format': false
+'keywords':
+- 'LineAsStringWithNamesAndTypes'
+'output_format': true
+'slug': '/interfaces/formats/LineAsStringWithNamesAndTypes'
+'title': 'LineAsStringWithNamesAndTypes'
 ---
 
-| 入力 | 出力 | エイリアス |
+
+
+| Input | Output | Alias |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
 ## 説明 {#description}
 
-`LineAsStringWithNames`フォーマットは、[`LineAsString`](./LineAsString.md)フォーマットに似ていますが、カラム名のあるヘッダー行とタイプのあるヘッダー行の2行を出力します。
+`LineAsStringWithNames` フォーマットは、[`LineAsString`](./LineAsString.md) フォーマットに似ていますが、2つのヘッダ行を印刷します：1つはカラム名、もう1つはタイプです。
 
-## 使用例 {#example-usage}
+## 例の使用法 {#example-usage}
 
 ```sql
 CREATE TABLE example (
@@ -29,12 +33,12 @@ INSERT INTO example VALUES ('John', 30), ('Jane', 25), ('Peter', 35);
 SELECT * FROM example FORMAT LineAsStringWithNamesAndTypes;
 ```
 
-```response title="レスポンス"
-name	value
-String	Int32
-John	30
-Jane	25
-Peter	35
+```response title="応答"
+name    value
+String    Int32
+John    30
+Jane    25
+Peter    35
 ```
 
 ## フォーマット設定 {#format-settings}

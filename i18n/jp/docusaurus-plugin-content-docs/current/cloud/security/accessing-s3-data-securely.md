@@ -1,82 +1,84 @@
 ---
-slug: /cloud/security/secure-s3
-sidebar_label: S3データへの安全なアクセス
-title: S3データへの安全なアクセス
+'slug': '/cloud/security/secure-s3'
+'sidebar_label': 'Amazon Simple Storage Service(S3) データの安全なアクセス'
+'title': 'Amazon Simple Storage Service(S3) データの安全なアクセス'
+'description': 'この記事では、ClickHouse Cloud の顧客が、Amazon Simple Storage Service(S3) と認証するためにロールベースのアクセスを活用してデータに安全にアクセスする方法を示しています。'
 ---
 
+import Image from '@theme/IdealImage';
 import secure_s3 from '@site/static/images/cloud/security/secures3.jpg';
 import s3_info from '@site/static/images/cloud/security/secures3_arn.png';
 import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
-この記事では、ClickHouse Cloudの顧客が役割ベースのアクセスを利用して、Amazon Simple Storage Service(S3)に認証し、安全にデータにアクセスする方法を示します。
+This article demonstrates how ClickHouse Cloud customers can leverage role-based access to authenticate with Amazon Simple Storage Service(S3) and access their data securely.
 
-## はじめに {#introduction}
+## Introduction {#introduction}
 
-安全なS3アクセスの設定に入る前に、これがどのように機能するかを理解することが重要です。以下は、ClickHouseサービスが顧客のAWSアカウント内の役割に昇格することで、プライベートなS3バケットにアクセスできる方法の概要です。
+Before diving into the setup for secure S3 access, it is important to understand how this works. Below is an overview of how ClickHouse services can access private S3 buckets by assuming into a role within customers' AWS account.
 
-<img src={secure_s3} alt="ClickHouseによる安全なS3アクセスの概要" />
+<Image img={secure_s3} size="md" alt="Overview of Secure S3 Access with ClickHouse"/>
 
-このアプローチにより、顧客はすべてのS3バケットへのアクセスを一か所（昇格された役割のIAMポリシー）で管理でき、すべてのバケットポリシーを通過してアクセスを追加または削除する必要がなくなります。
+This approach allows customers to manage all access to their S3 buckets in a single place (the IAM policy of the assumed-role) without having to go through all of their bucket policies to add or remove access.
 
-## 設定 {#setup}
+## Setup {#setup}
 
-### ClickHouseサービスのIAMロールArnの取得 {#obtaining-the-clickhouse-service-iam-role-arn}
+### Obtaining the ClickHouse service IAM role Arn {#obtaining-the-clickhouse-service-iam-role-arn}
 
-1 - ClickHouse Cloudアカウントにログインします。
+1 - Login to your ClickHouse cloud account.
 
-2 - 統合を作成するClickHouseサービスを選択します。
+2 - Select the ClickHouse service you want to create the integration
 
-3 - **設定**タブを選択します。
+3 - Select the **Settings** tab
 
-4 - ページの下部にある**このサービスについて**セクションまでスクロールします。
+4 - Scroll down to the **Network security information** section at the bottom of the page
 
-5 - 下記のようにサービスに属する**IAMロール**の値をコピーします。
+5 - Copy the **Service role ID (IAM)** value belong to the service as shown below.
 
-<img src={s3_info} alt="ClickHouseサービスのIAMロールARNの取得" />
+<Image img={s3_info} size="lg" alt="Obtaining ClickHouse service IAM Role ARN" border />
 
-### IAMロールの設定 {#setting-up-iam-assume-role}
+### Setting up IAM assume role {#setting-up-iam-assume-role}
 
-#### オプション1: CloudFormationスタックによるデプロイ {#option-1-deploying-with-cloudformation-stack}
+#### Option 1: Deploying with CloudFormation stack {#option-1-deploying-with-cloudformation-stack}
 
-1 - IAMロールの作成と管理の権限を持つIAMユーザーで、ウェブブラウザからAWSアカウントにログインします。
+1 - Login to your AWS Account in the web browser with an IAM user that has permission to create & manage IAM role.
 
-2 - [このURL](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/secure-s3.yaml&stackName=ClickHouseSecureS3)を訪れてCloudFormationスタックを取得します。
+2 - Visit [このURL](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/secure-s3.yaml&stackName=ClickHouseSecureS3) to populate the CloudFormation stack.
 
-3 - ClickHouseサービスに属する**IAMロール**を入力（または貼り付け）します。
+3 - Enter (or paste) the **IAM Role** belong to the ClickHouse service
 
-4 - CloudFormationスタックを構成します。以下は、これらのパラメータに関する追加情報です。
+4 - Configure the CloudFormation stack. Below is additional information about these parameters.
 
-| パラメータ                | デフォルト値             | 説明                                                                                       |
-| :---                     |    :----:                | :----                                                                                     |
-| ロール名                 | ClickHouseAccess-001     | ClickHouse CloudがあなたのS3バケットにアクセスするために使用する新しいロールの名前       |
-| ロールセッション名       |      *                  | ロールセッション名は、バケットを更に保護するための共有秘密として使用できます。         |
-| ClickHouseインスタンスロール |                      | このSecure S3統合を使用できるClickHouseサービスのIAMロールのカンマ区切りリスト。       |
-| バケットアクセス          |    読み取り              | 提供されたバケットへのアクセスレベルを設定します。                                      |
-| バケット名               |                      | このロールがアクセスできる**バケット名**のカンマ区切りリスト。                         |
+| Parameter                 | Default Value        | Description                                                                                        |
+| :---                      |    :----:            | :----                                                                                              |
+| RoleName                  | ClickHouseAccess-001 | The name of the new role that ClickHouse Cloud will use to access your S3 bucket                   |
+| Role Session Name         |      *               | Role Session Name can be used as a shared secret to further protect your bucket.                   |
+| ClickHouse Instance Roles |                      | Comma separated list of ClickHouse service IAM roles that can use this Secure S3 integration.      |
+| Bucket Access             |    Read              | Sets the level of access for the provided buckets.                                                 |
+| Bucket Names              |                      | Comma separated list of **bucket names** that this role will have access to.                       |
 
-*注*: フルバケットArnは入力せず、バケット名のみを指定してください。
+*Note*: Do not put the full bucket Arn but instead just the bucket name only.
 
-5 - **AWS CloudFormationがカスタム名のIAMリソースを作成する可能性があることを理解しました。** チェックボックスを選択します。
+5 - Select the **I acknowledge that AWS CloudFormation might create IAM resources with custom names.** checkbox
 
-6 - 右下の**スタックを作成**ボタンをクリックします。
+6 - Click **Create stack** button at bottom right
 
-7 - CloudFormationスタックがエラーなしで完了することを確認します。
+7 - Make sure the CloudFormation stack completes with no error.
 
-8 - CloudFormationスタックの**出力**を選択します。
+8 - Select the **Outputs** of the CloudFormation stack
 
-9 - この統合のための**RoleArn**の値をコピーします。これがあなたのS3バケットにアクセスするために必要なものです。
+9 - Copy the **RoleArn** value for this integration. This is what needed to access your S3 bucket.
 
-<img src={s3_output} alt="IAMロールARNを示すCloudFormationスタックの出力" />
+<Image img={s3_output} size="lg" alt="CloudFormation stack output showing IAM Role ARN" border />
 
-#### オプション2: IAMロールを手動で作成する {#option-2-manually-create-iam-role}
+#### Option 2: Manually create IAM role. {#option-2-manually-create-iam-role}
 
-1 - IAMロールの作成と管理の権限を持つIAMユーザーで、ウェブブラウザからAWSアカウントにログインします。
+1 - Login to your AWS Account in the web browser with an IAM user that has permission to create & manage IAM role.
 
-2 - IAMサービスコンソールに移動します。
+2 - Browse to IAM Service Console
 
-3 - 以下のIAMポリシーとTrustポリシーを使用して新しいIAMロールを作成します。
+3 - Create a new IAM role with the following IAM & Trust policy.
 
-Trustポリシー（`{ClickHouse_IAM_ARN}`をあなたのClickHouseインスタンスに属するIAMロールarnで置き換えてください）:
+Trust policy  (Please replace `{ClickHouse_IAM_ARN}` with the IAM Role arn belong to your ClickHouse instance):
 
 ```json
 {
@@ -93,7 +95,7 @@ Trustポリシー（`{ClickHouse_IAM_ARN}`をあなたのClickHouseインスタ�
 }
 ```
 
-IAMポリシー（`{BUCKET_NAME}`をあなたのバケット名で置き換えてください）:
+IAM policy (Please replace `{BUCKET_NAME}` with your bucket name):
 
 ```json
 {
@@ -123,22 +125,22 @@ IAMポリシー（`{BUCKET_NAME}`をあなたのバケット名で置き換え�
 }
 ```
 
-4 - 作成後に新しい**IAMロールArn**をコピーします。これがあなたのS3バケットにアクセスするために必要なものです。
+4 - Copy the new **IAM Role Arn** after creation. This is what needed to access your S3 bucket.
 
-## ClickHouseAccessロールでS3バケットにアクセスする {#access-your-s3-bucket-with-the-clickhouseaccess-role}
+## Access your S3 bucket with the ClickHouseAccess Role {#access-your-s3-bucket-with-the-clickhouseaccess-role}
 
-ClickHouse Cloudには、S3テーブル関数の一部として`extra_credentials`を指定できる新機能があります。以下は、上記からコピーした新しく作成されたロールを使ってクエリを実行する方法の例です。
+ClickHouse Cloud has a new feature that allows you to specify `extra_credentials` as part of the S3 table function. Below is an example of how to run a query using the newly created role copied from above.
 
 ```sql
 DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWithNames',extra_credentials(role_arn = 'arn:aws:iam::111111111111:role/ClickHouseAccessRole-001'))
 ```
 
-以下は、`role_session_name`を共有秘密として使用してバケットからデータをクエリする例です。`role_session_name`が正しくない場合、この操作は失敗します。
+Below is an example query that uses the `role_session_name` as a shared secret to query data from a bucket. If the `role_session_name` is not correct, this operation will fail.
 
 ```sql
 DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWithNames',extra_credentials(role_arn = 'arn:aws:iam::111111111111:role/ClickHouseAccessRole-001', role_session_name = 'secret-role-name'))
 ```
 
 :::note
-データ転送料を削減するため、ソースのS3がClickHouse Cloudサービスと同じリージョンにあることをお勧めします。詳細については、[S3の料金]( https://aws.amazon.com/s3/pricing/)を参照してください。
+We recommend that your source S3 is in the same region as your ClickHouse Cloud Service to reduce on data transfer costs. For more information, refer to [S3 pricing]( https://aws.amazon.com/s3/pricing/)
 :::

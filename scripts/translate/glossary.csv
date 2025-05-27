@@ -1,0 +1,150 @@
+word,ru,jp,zh
+access control,контроль доступа,access control,access control
+access key,ключ доступа,access key,access key
+adaptive join algorithms,Адаптивные алгоритмы JOIN,adaptive join algorithms,adaptive join algorithms
+address sanitizer,санитайзер адресов,address sanitizer,address sanitizer
+aggregate functions,агрегатные функции,aggregate functions,aggregate functions
+aggregation,агрегация,aggregation,aggregation
+AggregatingMergeTree,AggregatingMergeTree,AggregatingMergeTree,AggregatingMergeTree
+approximating functions,аппроксимирующие функции,approximating functions,approximating functions
+asynchronous inserts,асинхронные вставки,asynchronous inserts,asynchronous inserts
+atomic databases,атомарные базы данных,atomic databases,atomic databases
+authentication,аутентификация,authentication,authentication
+batch loading,пакетная загрузка,batch loading,batch loading
+bit functions,битовые функции,bit functions,bit functions
+block cluster,блок кластер,block cluster,block cluster
+bloom filter,фильтр Блума,bloom filter,bloom filter
+bring your own cloud,bring your own cloud,bring your own cloud,bring your own cloud
+business intelligence,бизнес-аналитика,business intelligence,business intelligence
+bucket,корзина,bucket,bucket
+chunks,фрагменты,chunks,chunks
+clause,оператор,clause,clause
+codecs,кодеки,codecs,codecs
+CollapsingMergeTree,CollapsingMergeTree,CollapsingMergeTree,CollapsingMergeTree
+column,колонка,カラム,列
+columnar database,столбцовая база данных,columnar database,columnar database
+columnar format,столбцовый формат,列指向,列式
+common table expressions,общие табличные выражения,common table expressions,common table expressions
+configuration files,файлы конфигурации,configuration files,configuration files
+conversion functions,функции преобразования,conversion functions,conversion functions
+CPU performance,производительность CPU,CPU performance,CPU performance
+CTE,CTE,CTE,CTE
+data compression,сжатие данных,data compression,data compression
+data ingestion,прием данных,data ingestion,data ingestion
+data lake,ДатаЛэйк,データレイク,数据湖
+data parts,части данных,パーツ,分区片段
+data pipeline,конвейер данных,data pipeline,data pipeline
+data skipping index,индекс пропуска данных,データスキッピングインデックス,数据跳过索引
+data warehousing,хранилище данных,data warehousing,data warehousing
+deduplication,дедупликация,deduplication,deduplication
+delete mutations,мутации удаления,delete mutations,delete mutations
+denormalization,денормализация,denormalization,denormalization
+dictionary,словарь,Dictionary,字典
+disk I/O,ввод-вывод диска,disk I/O,disk I/O
+distributed DDL,распределенный DDL,distributed DDL,distributed DDL
+distributed joins,распределенные соединения,distributed joins,distributed joins
+distributed processing,распределенная обработка,distributed processing,distributed processing
+distributed queries,распределенные запросы,distributed queries,distributed queries
+distributed table,распределенная таблица,分散テーブル,分布式表
+ETL processes,процессы ETL,ETL processes,ETL processes
+experimental features,экспериментальные функции,experimental features,experimental features
+external dictionaries,внешние словари,external dictionaries,external dictionaries
+fault tolerance,отказоустойчивость,fault tolerance,fault tolerance
+functional tests,функциональные тесты,functional tests,functional tests
+GraphiteMergeTree,GraphiteMergeTree,GraphiteMergeTree,GraphiteMergeTree
+granules,гранулы,granules,granules
+hash table,хеш-таблица,hash table,hash table
+HTTP interface,HTTP интерфейс,HTTP interface,HTTP interface
+incremental backups,инкрементные резервные копии,incremental backups,incremental backups
+incremental materialized view,инкрементное материализованное представление,incremental materialized view,incremental materialized view
+Input/Output,ввод-вывод,Input/Output,Input/Output
+integration tests,интеграционные тесты,integration tests,integration tests
+joins,joins,joins,joins
+Kafka,Kafka,Kafka,Kafka
+Keeper,Keeper,Keeper,Keeper
+key-value pairs,пары ключ-значение,key-value pairs,key-value pairs
+lightweight delete,легковесное удаление,論理削除,轻量级删除
+live view,live-представление,live view,live view
+logging,логирование,logging,logging
+low cardinality,лоу кардиналити,low cardinality,low cardinality
+map,map,map,map
+mark files,файлы меток,mark files,mark files
+marks,метки,marks,marks
+materializable,материализуемый,materializable,materializable
+materialized columns,материализованные столбцы,materialized columns,materialized columns
+materialized expressions,материализованные выражения,materialized expressions,materialized expressions
+materialized view,материализованное представление,Materialized View,物化视图
+memory usage,использование памяти,memory usage,memory usage
+MergeTree,MergeTree,MergeTree,MergeTree
+MergeTree parts,части MergeTree,MergeTree parts,MergeTree parts
+modifier,модификатор,modifier,modifier
+multi-region replication,мультирегиональная репликация,multi-region replication,multi-region replication
+mutation queries,запросы мутации,mutation queries,mutation queries
+mutations,мутации,mutations,mutations
+network bandwidth,пропускная способность сети,network bandwidth,network bandwidth
+normalization,нормализация,normalization,normalization
+object storage,объектное хранилище,object storage,object storage
+observability,мониторинг,observability,observability
+OLAP,OLAP,OLAP,OLAP
+parallel processing,параллельная обработка,parallel processing,parallel processing
+Parquet,Parquet,Parquet,Parquet
+part log,журнал частей,part log,part log
+partial aggregation states,частичные состояния агрегации,partial aggregation states,partial aggregation states
+part merge,слияние частей,part merge,part merge
+partition,партиция,パーティション,分区
+partitioning key,ключ партиционирования,partitioning key,partitioning key
+primary indices,первичные индексы,主キー,主键
+projections,проекции,projections,projections
+queries,запросы,クエリ,查询
+query cache,кэш запросов,query cache,查询缓存
+query execution time,время выполнения запроса,query execution time,query execution time
+query log,журнал запросов,query log,查询日志
+query optimization,оптимизация запросов,query optimization,查询优化
+query planning,планирование запросов,query planning,查询规划
+query profiler,профилировщик запросов,query profiler,查询剖析器
+query routing,маршрутизация запросов,query routing,查询路由
+query settings,настройки запросов,query settings,查询设置
+query string,строка запроса,query string,查询字符串
+RBAC,RBAC,RBAC,RBAC
+reads,чтения,reads,reads
+real-time analytics,аналитика в реальном времени,real-time analytics,实时分析
+refreshable materialized view,обновляемое материализованное представление,refreshable materialized view,可刷新的物化视图
+replica,реплика,レプリカ,副本
+replication,репликация,レプリケーション,复制
+ReplacingMergeTree,ReplacingMergeTree,ReplacingMergeTree,ReplacingMergeTree
+Role-Based Access Control,контроль доступа на основе ролей,Role-Based Access Control,Role-Based Access Control
+rollup tables,сводные таблицы,rollup tables,rollup tables
+routine,процедура,routine,routine
+row,строка,行,行
+row-level security,безопасность на уровне строк,row-level security,row-level security
+s3 bucket,s3 корзина,s3 bucket,s3 bucket
+schema inference,вывод схемы,schema inference,schema inference
+self-managed clickhouse,самоуправляемый ClickHouse,セルフマネージド,自管理
+server settings,настройки сервера,server settings,server settings
+session settings,настройки сессии,session settings,session settings
+sharding key,ключ шардирования,sharding key,sharding key
+SIMD instructions,инструкции SIMD,SIMD instructions,SIMD instructions
+sorting key,ключ сортировки,sorting key,sorting key
+sparse index,разреженный индекс,スパース,稀疏
+storage engines,движки хранения,storage engines,storage engines
+storage policies,политики хранения,storage policies,storage policies
+SummingMergeTree,SummingMergeTree,SummingMergeTree,SummingMergeTree
+table engines,движки таблиц,table engines,table engines
+table function,табличная функция,table function,table function
+time series data,данные временных рядов,time series data,time series data
+transactional databases,транзакционные базы данных,transactional databases,transactional databases
+transactions,транзакции,transactions,transactions
+UDF,UDF,UDF,UDF
+update mutations,мутации обновления,update mutations,update mutations
+User-Defined Functions,пользовательские функции,User-Defined Functions,User-Defined Functions
+user quotas,пользовательские квоты,user quotas,user quotas
+vector search,векторный поиск,vector search,vector search
+vectorization,векторизация,vectorization,vectorization
+vectorized query execution,векторизованное выполнение запросов,vectorized query execution,vectorized query execution
+VersionedCollapsingMergeTree,VersionedCollapsingMergeTree,VersionedCollapsingMergeTree,VersionedCollapsingMergeTree
+vertical merge,вертикальное слияние,vertical merge,vertical merge
+virtual column,виртуальная колонка,virtual column,virtual column
+window functions,оконные функции,window functions,window functions
+writes,записи,writes,writes
+ZooKeeper,ZooKeeper,ZooKeeper,ZooKeeper
+Bitmap,Растровое изображение,Bitmap,Bitmap

@@ -1,33 +1,43 @@
 ---
-sidebar_label: Omni
-slug: /integrations/omni
-keywords: [clickhouse, Omni, connect, integrate, ui]
-description: Omniは、BI、データアプリケーション、埋め込み分析のための企業向けプラットフォームで、リアルタイムで洞察を探求し、共有するのを助けます。
+'sidebar_label': 'Omni'
+'slug': '/integrations/omni'
+'keywords':
+- 'clickhouse'
+- 'Omni'
+- 'connect'
+- 'integrate'
+- 'ui'
+'description': 'Omniは、BI、データアプリケーション、組み込みアナリティクス向けのエンタープライズプラットフォームであり、リアルタイムで洞察を探索し共有するのに役立ちます。'
+'title': 'Omni'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import Image from '@theme/IdealImage';
 import omni_01 from '@site/static/images/integrations/data-visualization/omni_01.png';
 import omni_02 from '@site/static/images/integrations/data-visualization/omni_02.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
 # Omni
 
-Omniは、公式のClickHouseデータソースを介してClickHouse Cloudまたはオンプレミスのデプロイメントに接続できます。
+<CommunityMaintainedBadge/>
 
-## 1. 接続情報を収集する {#1-gather-your-connection-details}
+Omniは、公式のClickHouseデータソースを介して、ClickHouse Cloudまたはオンプレミスのデプロイメントに接続できます。
+
+## 1. 接続情報を集める {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
 ## 2. ClickHouseデータソースを作成する {#2-create-a-clickhouse-data-source}
 
-管理者メニューに移動し -> 接続を選択し、右上隅の「接続を追加」ボタンをクリックします。
+「Admin」->「Connections」に移動し、右上隅の「Add Connection」ボタンをクリックします。
 
-<img src={omni_01} class="image" alt="新しい接続の追加" style={{width: '80%', 'background-color': 'transparent'}}/>
+<Image size="lg" img={omni_01} alt="Omniの管理インターフェースで、ConnectionsセクションのAdd Connectionボタンを表示" border />
 <br/>
 
-`ClickHouse`を選択し、フォームに資格情報を入力します。
+`ClickHouse`を選択します。フォームに認証情報を入力します。
 
-<img src={omni_02} class="image" alt="資格情報の指定" style={{width: '80%', 'background-color': 'transparent'}}/>
+<Image size="lg" img={omni_02} alt="ClickHouse用のOmni接続設定インターフェースで、認証情報フォームフィールドを表示" border />
 <br/>
 
-これで、OmniでClickHouseからデータをクエリし、可視化できるようになります。
+これで、OmniでClickHouseからデータをクエリおよび視覚化できるようになります。

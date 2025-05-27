@@ -1,16 +1,17 @@
 ---
-slug: /sql-reference/functions/geo/svg
-sidebar_label: SVG
-title: '从地理数据生成SVG图像的函数'
+'description': 'SVG的文档'
+'sidebar_label': 'SVG'
+'slug': '/sql-reference/functions/geo/svg'
+'title': '从地理数据生成SVG图像的函数'
 ---
 
 ## Svg {#svg}
 
-返回Geo数据中选择的SVG元素标签字符串。
+返回来自 Geo 数据的选择的 SVG 元素标签字符串。
 
 **语法**
 
-``` sql
+```sql
 Svg(geometry,[style])
 ```
 
@@ -18,13 +19,13 @@ Svg(geometry,[style])
 
 **参数**
 
-- `geometry` — 地理数据。 [Geo](../../data-types/geo).
-- `style` — 可选样式名称。 [String](../../data-types/string).
+- `geometry` — Geo 数据。 [Geo](../../data-types/geo).
+- `style` — 可选的样式名称。 [String](../../data-types/string).
 
 **返回值**
 
-- 几何图形的SVG表示。 [String](../../data-types/string).
-  - SVG 圆
+- 几何的 SVG 表示。 [String](../../data-types/string).
+  - SVG 圆形
   - SVG 多边形
   - SVG 路径
 

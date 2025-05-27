@@ -1,73 +1,72 @@
 ---
-slug: '/sql-reference/functions/introspection'
-sidebar_position: 100
-sidebar_label: '内部調査'
-keywords: 
-  - 'クリックハウス'
-  - '内部調査'
-  - '関数'
-description: 'この章では、クエリプロファイリングのために [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) および [DWARF](https://en.wikipedia.org/wiki/DWARF) を調査するための関数について説明します。'
+'description': 'Documentation for Introspection Functions'
+'sidebar_label': 'Introspection'
+'sidebar_position': 100
+'slug': '/sql-reference/functions/introspection'
+'title': 'Introspection Functions'
 ---
 
 
-# 内部調査関数
 
-この章で説明する関数を使用して、クエリプロファイリングのために [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) および [DWARF](https://en.wikipedia.org/wiki/DWARF) を調査できます。
+
+# Introspection Functions
+
+この章で説明する関数を使用して、クエリプロファイリングのために[ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format)および[DWARF](https://en.wikipedia.org/wiki/DWARF)を内部検査できます。
 
 :::note    
-これらの関数は遅く、セキュリティ上の考慮事項がある場合があります。
+これらの関数は遅く、セキュリティ上の考慮事項をもたらす可能性があります。
 :::
 
-内部調査関数を正しく操作するには：
+内部検査関数が正しく機能するためには：
 
-- `clickhouse-common-static-dbg` パッケージをインストールします。
+- `clickhouse-common-static-dbg`パッケージをインストールしてください。
 
-- [allow_introspection_functions](../../operations/settings/settings.md#allow_introspection_functions) 設定を 1 に設定します。
+- [allow_introspection_functions](../../operations/settings/settings.md#allow_introspection_functions)設定を1に設定してください。
 
-        セキュリティ上の理由から、内部調査関数はデフォルトで無効です。
+        セキュリティ上の理由から、内部検査関数はデフォルトで無効になっています。
 
-ClickHouse はプロファイラーレポートを [trace_log](/operations/system-tables/trace_log) システムテーブルに保存します。テーブルとプロファイラーが正しく構成されていることを確認してください。
+ClickHouseはプロファイラーレポートを[trace_log](/operations/system-tables/trace_log)システムテーブルに保存します。テーブルとプロファイラーが正しく設定されていることを確認してください。
 
 ## addressToLine {#addresstoline}
 
-ClickHouse サーバープロセス内の仮想メモリアドレスを、ClickHouse ソースコード内のファイル名と行番号に変換します。
+ClickHouseサーバープロセス内の仮想メモリアドレスを、ClickHouseソースコード内のファイル名と行番号に変換します。
 
-公式の ClickHouse パッケージを使用している場合、`clickhouse-common-static-dbg` パッケージをインストールする必要があります。
+公式のClickHouseパッケージを使用する場合は、`clickhouse-common-static-dbg`パッケージをインストールする必要があります。
 
 **構文**
 
-``` sql
+```sql
 addressToLine(address_of_binary_instruction)
 ```
 
 **引数**
 
-- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — 実行中のプロセス内の命令のアドレス。
+- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — 実行中のプロセスにおける命令のアドレス。
 
-**返される値**
+**戻り値**
 
 - コロンで区切られたソースコードのファイル名と行番号。
-        例えば、`/build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199` のように、`199` が行番号です。
-- デバッグ情報が見つからなかった場合のバイナリ名。
-- アドレスが無効な場合は空の文字列。
+        例えば、`/build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199`、ここで `199` は行番号です。
+- デバッグ情報が見つからなかった場合のバイナリの名前。
+- アドレスが無効である場合は空文字列。
 
 タイプ: [String](../../sql-reference/data-types/string.md)。
 
 **例**
 
-内部調査関数を有効にする：
+内部検査関数を有効にする：
 
-``` sql
+```sql
 SET allow_introspection_functions=1;
 ```
 
-`trace_log` システムテーブルから最初の文字列を選択します：
+`trace_log`システムテーブルから最初の文字列を選択する：
 
-``` sql
+```sql
 SELECT * FROM system.trace_log LIMIT 1 \G;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 event_date:              2019-11-19
@@ -79,23 +78,23 @@ query_id:                421b6855-1858-45a5-8f37-f383409d6d72
 trace:                   [140658411141617,94784174532828,94784076370703,94784076372094,94784076361020,94784175007680,140658411116251,140658403895439]
 ```
 
-`trace` フィールドには、サンプリング時のスタックトレースが含まれています。
+`trace`フィールドには、サンプリング時のスタックトレースが含まれています。
 
-単一アドレスのソースコードのファイル名と行番号を取得します：
+単一アドレスのソースコードファイル名と行番号を取得する：
 
-``` sql
+```sql
 SELECT addressToLine(94784076370703) \G;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 addressToLine(94784076370703): /build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199
 ```
 
-スタックトレース全体に関数を適用します：
+スタックトレース全体に関数を適用する：
 
-``` sql
+```sql
 SELECT
     arrayStringConcat(arrayMap(x -> addressToLine(x), trace), '\n') AS trace_source_code_lines
 FROM system.trace_log
@@ -103,9 +102,9 @@ LIMIT 1
 \G
 ```
 
-[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 関数は、`trace` 配列の各要素を `addressToLine` 関数で処理可能にします。この処理結果は出力の `trace_source_code_lines` 列に表示されます。
+[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-)関数は、`trace`配列の各個別の要素を`addressToLine`関数で処理することを可能にします。この処理の結果は出力の`trace_source_code_lines`カラムに表示されます。
 
-``` text
+```text
 Row 1:
 ──────
 trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
@@ -120,49 +119,49 @@ trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 
 ## addressToLineWithInlines {#addresstolinewithinlines}
 
-`addressToLine` と似ていますが、すべてのインライン関数を含む配列を返します。そのため、`addressToLine` よりも遅くなります。
+`addressToLine`に似ていますが、すべてのインライン関数を含む配列を返します。この結果、`addressToLine`よりも遅くなります。
 
 :::note
-公式の ClickHouse パッケージを使用している場合、`clickhouse-common-static-dbg` パッケージをインストールする必要があります。
+公式のClickHouseパッケージを使用する場合は、`clickhouse-common-static-dbg`パッケージをインストールする必要があります。
 :::
 
 **構文**
 
-``` sql
+```sql
 addressToLineWithInlines(address_of_binary_instruction)
 ```
 
 **引数**
 
-- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — 実行中のプロセス内の命令のアドレス。
+- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — 実行中のプロセスにおける命令のアドレス。
 
-**返される値**
+**戻り値**
 
-- 最初の要素がファイル名と行番号でコロンで区切られた配列。その後、インライン関数のソースコードファイル名、行番号、および関数名がリストされます。デバッグ情報が見つからなかった場合は、単一要素の配列がバイナリ名で返され、無効なアドレスの場合は空の配列が返されます。[Array(String)](../data-types/array.md)。
+- 最初の要素はコロンで区切られたソースコードファイル名と行番号で構成される配列。2番目の要素以降は、インライン関数のソースコードファイル名、行番号、および関数名がリストされます。デバッグ情報が見つからなかった場合はバイナリの名前と同じ要素を持つ単一要素の配列が返され、それ以外にアドレスが無効な場合は空の配列が返されます。[Array(String)](../data-types/array.md)。
 
 **例**
 
-内部調査関数を有効にする：
+内部検査関数を有効にする：
 
-``` sql
+```sql
 SET allow_introspection_functions=1;
 ```
 
-アドレスに関数を適用します。
+アドレスに対して関数を適用する。
 
 ```sql
 SELECT addressToLineWithInlines(531055181::UInt64);
 ```
 
-``` text
+```text
 ┌─addressToLineWithInlines(CAST('531055181', 'UInt64'))────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ ['./src/Functions/addressToLineWithInlines.cpp:98','./build_normal_debug/./src/Functions/addressToLineWithInlines.cpp:176:DB::(anonymous namespace)::FunctionAddressToLineWithInlines::implCached(unsigned long) const'] │
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-スタックトレース全体に関数を適用します：
+スタックトレース全体に関数を適用する：
 
-``` sql
+```sql
 SELECT
     ta, addressToLineWithInlines(arrayJoin(trace) as ta)
 FROM system.trace_log
@@ -170,9 +169,9 @@ WHERE
     query_id = '5e173544-2020-45de-b645-5deebe2aae54';
 ```
 
-[ arrayJoin](/sql-reference/functions/array-join) 関数が配列を行に分割します。
+[ arrayJoin](/sql-reference/functions/array-join)関数は配列を行に分割します。
 
-``` text
+```text
 ┌────────ta─┬─addressToLineWithInlines(arrayJoin(trace))───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ 365497529 │ ['./build_normal_debug/./contrib/libcxx/include/string_view:252']                                                                                                                                                        │
 │ 365593602 │ ['./build_normal_debug/./src/Common/Dwarf.cpp:191']                                                                                                                                                                      │
@@ -220,38 +219,38 @@ WHERE
 
 ## addressToSymbol {#addresstosymbol}
 
-ClickHouse サーバープロセス内の仮想メモリアドレスを、ClickHouse オブジェクトファイルからのシンボルに変換します。
+ClickHouseオブジェクトファイル内のシンボルに、ClickHouseサーバープロセス内の仮想メモリアドレスを変換します。
 
 **構文**
 
-``` sql
+```sql
 addressToSymbol(address_of_binary_instruction)
 ```
 
 **引数**
 
-- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — 実行中のプロセス内の命令のアドレス。
+- `address_of_binary_instruction` ([UInt64](../data-types/int-uint.md)) — 実行中のプロセスにおける命令のアドレス。
 
-**返される値**
+**戻り値**
 
-- ClickHouse オブジェクトファイルからのシンボル。[String](../data-types/string.md)。
-- アドレスが無効な場合は空の文字列。[String](../data-types/string.md)。
+- ClickHouseオブジェクトファイルのシンボル。[String](../data-types/string.md)。
+- アドレスが無効の場合は空文字列。[String](../data-types/string.md)。
 
 **例**
 
-内部調査関数を有効にする：
+内部検査関数を有効にする：
 
-``` sql
+```sql
 SET allow_introspection_functions=1;
 ```
 
-`trace_log` システムテーブルから最初の文字列を選択します：
+`trace_log`システムテーブルから最初の文字列を選択する：
 
-``` sql
+```sql
 SELECT * FROM system.trace_log LIMIT 1 \G;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 event_date:    2019-11-20
@@ -263,23 +262,23 @@ query_id:      724028bf-f550-45aa-910d-2af6212b94ac
 trace:         [94138803686098,94138815010911,94138815096522,94138815101224,94138815102091,94138814222988,94138806823642,94138814457211,94138806823642,94138814457211,94138806823642,94138806795179,94138806796144,94138753770094,94138753771646,94138753760572,94138852407232,140399185266395,140399178045583]
 ```
 
-`trace` フィールドには、サンプリング時のスタックトレースが含まれています。
+`trace`フィールドには、サンプリング時のスタックトレースが含まれています。
 
-単一アドレスのシンボルを取得します：
+単一アドレスのシンボルを取得する：
 
-``` sql
+```sql
 SELECT addressToSymbol(94138803686098) \G;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 addressToSymbol(94138803686098): _ZNK2DB24IAggregateFunctionHelperINS_20AggregateFunctionSumImmNS_24AggregateFunctionSumDataImEEEEE19addBatchSinglePlaceEmPcPPKNS_7IColumnEPNS_5ArenaE
 ```
 
-スタックトレース全体に関数を適用します：
+スタックトレース全体に関数を適用する：
 
-``` sql
+```sql
 SELECT
     arrayStringConcat(arrayMap(x -> addressToSymbol(x), trace), '\n') AS trace_symbols
 FROM system.trace_log
@@ -287,9 +286,9 @@ LIMIT 1
 \G
 ```
 
-[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 関数は、`trace` 配列の各要素を `addressToSymbols` 関数で処理可能にします。この処理結果は出力の `trace_symbols` 列に表示されます。
+[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-)関数は、`trace`配列の各個別の要素を`addressToSymbols`関数で処理します。この処理の結果は出力の`trace_symbols`カラムに表示されます。
 
-``` text
+```text
 Row 1:
 ──────
 trace_symbols: _ZNK2DB24IAggregateFunctionHelperINS_20AggregateFunctionSumImmNS_24AggregateFunctionSumDataImEEEEE19addBatchSinglePlaceEmPcPPKNS_7IColumnEPNS_5ArenaE
@@ -315,11 +314,11 @@ clone
 
 ## demangle {#demangle}
 
-`addressToSymbol` 関数を使用して取得したシンボルを、C++ 関数名に変換します。
+[ addressToSymbol](#addresstosymbol)関数を使用して取得したシンボルを、C++関数名に変換します。
 
 **構文**
 
-``` sql
+```sql
 demangle(symbol)
 ```
 
@@ -327,25 +326,25 @@ demangle(symbol)
 
 - `symbol` ([String](../data-types/string.md)) — オブジェクトファイルからのシンボル。
 
-**返される値**
+**戻り値**
 
-- C++ 関数の名前。シンボルが無効な場合は空の文字列。[String](../data-types/string.md)。
+- C++関数の名前、またはシンボルが無効な場合は空文字列。[String](../data-types/string.md)。
 
 **例**
 
-内部調査関数を有効にする：
+内部検査関数を有効にする：
 
-``` sql
+```sql
 SET allow_introspection_functions=1;
 ```
 
-`trace_log` システムテーブルから最初の文字列を選択します：
+`trace_log`システムテーブルから最初の文字列を選択する：
 
-``` sql
+```sql
 SELECT * FROM system.trace_log LIMIT 1 \G;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 event_date:    2019-11-20
@@ -357,23 +356,23 @@ query_id:      724028bf-f550-45aa-910d-2af6212b94ac
 trace:         [94138803686098,94138815010911,94138815096522,94138815101224,94138815102091,94138814222988,94138806823642,94138814457211,94138806823642,94138814457211,94138806823642,94138806795179,94138806796144,94138753770094,94138753771646,94138753760572,94138852407232,140399185266395,140399178045583]
 ```
 
-`trace` フィールドには、サンプリング時のスタックトレースが含まれています。
+`trace`フィールドには、サンプリング時のスタックトレースが含まれています。
 
-単一アドレスの関数名を取得します：
+単一アドレスの関数名を取得する：
 
-``` sql
+```sql
 SELECT demangle(addressToSymbol(94138803686098)) \G;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 demangle(addressToSymbol(94138803686098)): DB::IAggregateFunctionHelper<DB::AggregateFunctionSum<unsigned long, unsigned long, DB::AggregateFunctionSumData<unsigned long> > >::addBatchSinglePlace(unsigned long, char*, DB::IColumn const**, DB::Arena*) const
 ```
 
-スタックトレース全体に関数を適用します：
+スタックトレース全体に関数を適用する：
 
-``` sql
+```sql
 SELECT
     arrayStringConcat(arrayMap(x -> demangle(addressToSymbol(x)), trace), '\n') AS trace_functions
 FROM system.trace_log
@@ -381,9 +380,9 @@ LIMIT 1
 \G
 ```
 
-[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 関数は、`trace` 配列の各要素を `demangle` 関数で処理可能にします。この処理結果は出力の `trace_functions` 列に表示されます。
+[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-)関数は、`trace`配列の各個別の要素を`demangle`関数で処理します。この処理の結果は出力の`trace_functions`カラムに表示されます。
 
-``` text
+```text
 Row 1:
 ──────
 trace_functions: DB::IAggregateFunctionHelper<DB::AggregateFunctionSum<unsigned long, unsigned long, DB::AggregateFunctionSumData<unsigned long> > >::addBatchSinglePlace(unsigned long, char*, DB::IColumn const**, DB::Arena*) const
@@ -408,29 +407,29 @@ clone
 ```
 ## tid {#tid}
 
-現在の [Block](/development/architecture/#block) が処理されているスレッドの ID を返します。
+現在の[Block](/development/architecture/#block)が処理されているスレッドのIDを返します。
 
 **構文**
 
-``` sql
+```sql
 tid()
 ```
 
-**返される値**
+**戻り値**
 
-- 現在のスレッド ID。[Uint64](/sql-reference/data-types/int-uint#integer-ranges)。
+- 現在のスレッドID。[Uint64](/sql-reference/data-types/int-uint#integer-ranges)。
 
 **例**
 
 クエリ：
 
-``` sql
+```sql
 SELECT tid();
 ```
 
 結果：
 
-``` text
+```text
 ┌─tid()─┐
 │  3878 │
 └───────┘
@@ -438,33 +437,33 @@ SELECT tid();
 
 ## logTrace {#logtrace}
 
-各 [Block](/development/architecture/#block) のサーバーログにトレースログメッセージを出力します。
+各[Block](/development/architecture/#block)に対して、サーバーログにトレースログメッセージを出力します。
 
 **構文**
 
-``` sql
+```sql
 logTrace('message')
 ```
 
 **引数**
 
-- `message` — サーバーログに発信されるメッセージ。[String](/sql-reference/data-types/string)。
+- `message` — サーバーログに出力されるメッセージ。[String](/sql-reference/data-types/string)。
 
-**返される値**
+**戻り値**
 
-- 常に 0 を返します。
+- 常に0を返します。
 
 **例**
 
 クエリ：
 
-``` sql
+```sql
 SELECT logTrace('logTrace message');
 ```
 
 結果：
 
-``` text
+```text
 ┌─logTrace('logTrace message')─┐
 │                            0 │
 └──────────────────────────────┘

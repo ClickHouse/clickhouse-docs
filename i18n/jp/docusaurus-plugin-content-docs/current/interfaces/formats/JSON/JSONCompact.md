@@ -1,19 +1,23 @@
 ---
-title: JSONCompact
-slug: /interfaces/formats/JSONCompact
-keywords: [JSONCompact]
-input_format: true
-output_format: true
-alias: []
+'alias': []
+'description': 'JSONCompact形式のドキュメント'
+'input_format': true
+'keywords':
+- 'JSONCompact'
+'output_format': true
+'slug': '/interfaces/formats/JSONCompact'
+'title': 'JSONCompact'
 ---
 
-| 入力 | 出力 | エイリアス |
+
+
+| Input | Output | Alias |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-データ行がオブジェクトではなく配列として出力される点を除いて、[JSON](./JSON.md)とは異なります。
+データ行がオブジェクトではなく配列として出力される点が[JSON](./JSON.md)と異なります。
 
 ## 使用例 {#example-usage}
 

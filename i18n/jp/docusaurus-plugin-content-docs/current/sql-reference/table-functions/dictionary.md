@@ -1,63 +1,66 @@
 ---
-slug: '/sql-reference/table-functions/dictionary'
-sidebar_position: 47
-sidebar_label: 'dictionary'
-title: '辞書'
-description: 'ClickHouse テーブルとして辞書データを表示します。Dictionary エンジンと同様に機能します。'
+'description': 'Displays the dictionary data as a ClickHouse table. Works the same
+  way as the Dictionary engine.'
+'sidebar_label': '辞書'
+'sidebar_position': 47
+'slug': '/sql-reference/table-functions/dictionary'
+'title': 'dictionary'
 ---
 
 
-# 辞書テーブル関数
+
+
+# dictionary テーブル関数
 
 [dictionary](../../sql-reference/dictionaries/index.md) データを ClickHouse テーブルとして表示します。 [Dictionary](../../engines/table-engines/special/dictionary.md) エンジンと同じように機能します。
 
-**構文**
+## 構文 {#syntax}
 
-``` sql
+```sql
 dictionary('dict')
 ```
 
-**引数**
+## 引数 {#arguments}
 
-- `dict` — 辞書の名前。[String](../../sql-reference/data-types/string.md)。
+- `dict` — ディクショナリ名。 [String](../../sql-reference/data-types/string.md)。
 
-**返される値**
+## 返される値 {#returned_value}
 
 ClickHouse テーブル。
 
-**例**
+## 例 {#examples}
 
 入力テーブル `dictionary_source_table`:
 
-``` text
+```text
 ┌─id─┬─value─┐
 │  0 │     0 │
 │  1 │     1 │
 └────┴───────┘
 ```
 
-辞書を作成:
+ディクショナリを作成:
 
-``` sql
+```sql
 CREATE DICTIONARY new_dictionary(id UInt64, value UInt64 DEFAULT 0) PRIMARY KEY id
 SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() USER 'default' TABLE 'dictionary_source_table')) LAYOUT(DIRECT());
 ```
 
 クエリ:
 
-``` sql
+```sql
 SELECT * FROM dictionary('new_dictionary');
 ```
 
 結果:
 
-``` text
+```text
 ┌─id─┬─value─┐
 │  0 │     0 │
 │  1 │     1 │
 └────┴───────┘
 ```
 
-**関連項目**
+## 関連 {#related}
 
-- [Dictionary engine](/engines/table-engines/special/dictionary)
+- [Dictionary エンジン](/engines/table-engines/special/dictionary)

@@ -1,46 +1,48 @@
 ---
-slug: /sql-reference/table-functions/loop
-title: "loop"
-description: "ClickHouseのloopテーブル関数は、無限ループでクエリ結果を返すために使用されます。"
+'description': 'ClickHouseのループテーブル関数は、クエリの結果を無限ループで返すために使用されます。'
+'slug': '/sql-reference/table-functions/loop'
+'title': 'ループ'
 ---
+
+
 
 
 # loop テーブル関数
 
-**構文**
+## 構文 {#syntax}
 
-``` sql
+```sql
 SELECT ... FROM loop(database, table);
 SELECT ... FROM loop(database.table);
 SELECT ... FROM loop(table);
 SELECT ... FROM loop(other_table_function(...));
 ```
 
-**パラメータ**
+## 引数 {#arguments}
 
-- `database` — データベース名。
-- `table` — テーブル名。
-- `other_table_function(...)` — 他のテーブル関数。
-  例: `SELECT * FROM loop(numbers(10));`
-  ここでの `other_table_function(...)` は `numbers(10)` です。
+| 引数                        | 説明                                                                                                              |
+|-----------------------------|------------------------------------------------------------------------------------------------------------------|
+| `database`                  | データベース名。                                                                                                   |
+| `table`                     | テーブル名。                                                                                                      |
+| `other_table_function(...)` | 他のテーブル関数。例: `SELECT * FROM loop(numbers(10));` `other_table_function(...)` はここでは `numbers(10)` です。 |
 
-**返される値**
+## 戻り値 {#returned_values}
 
 クエリ結果を返す無限ループ。
 
-**例**
+## 例 {#examples}
 
-ClickHouseからデータを選択する:
+ClickHouse からデータを選択:
 
-``` sql
+```sql
 SELECT * FROM loop(test_database, test_table);
 SELECT * FROM loop(test_database.test_table);
 SELECT * FROM loop(test_table);
 ```
 
-または、他のテーブル関数を使用する:
+または、他のテーブル関数を使用:
 
-``` sql
+```sql
 SELECT * FROM loop(numbers(3)) LIMIT 7;
    ┌─number─┐
 1. │      0 │
@@ -56,7 +58,7 @@ SELECT * FROM loop(numbers(3)) LIMIT 7;
 7. │      0 │
    └────────┘
 ``` 
-``` sql
+```sql
 SELECT * FROM loop(mysql('localhost:3306', 'test', 'test', 'user', 'password'));
 ...
-```
+

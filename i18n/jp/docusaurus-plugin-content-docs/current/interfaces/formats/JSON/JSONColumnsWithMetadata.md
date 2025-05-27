@@ -1,27 +1,31 @@
 ---
-title: JSONColumnsWithMetadata
-slug: /interfaces/formats/JSONColumnsWithMetadata
-keywords: [JSONColumnsWithMetadata]
-input_format: true
-output_format: true
-alias: []
+'alias': []
+'description': 'JSONColumnsWithMetadata フォーマットのドキュメント'
+'input_format': true
+'keywords':
+- 'JSONColumnsWithMetadata'
+'output_format': true
+'slug': '/interfaces/formats/JSONColumnsWithMetadata'
+'title': 'JSONColumnsWithMetadata'
 ---
 
-| 入力 | 出力 | エイリアス |
+
+
+| Input | Output | Alias |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-[`JSONColumns`](./JSONColumns.md)フォーマットとは異なり、いくつかのメタデータと統計情報を含んでいます（[`JSON`](./JSON.md)フォーマットに類似しています）。
+[`JSONColumns`](./JSONColumns.md) フォーマットとは異なり、メタデータと統計情報も含まれており（[`JSON`](./JSON.md) フォーマットに似ています）、これが特徴です。
 
 :::note
-`JSONColumnsWithMetadata`フォーマットは、すべてのデータをメモリにバッファリングした後、1つのブロックとして出力するため、高いメモリ消費につながる可能性があります。
+`JSONColumnsWithMetadata` フォーマットは、すべてのデータをメモリにバッファし、その後単一のブロックとして出力するため、高いメモリ消費を引き起こす可能性があります。
 :::
 
 ## 使用例 {#example-usage}
 
-例:
+例：
 
 ```json
 {
@@ -62,6 +66,6 @@ alias: []
 }
 ```
 
-`JSONColumnsWithMetadata`入力フォーマットの場合、設定 [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) が `1` に設定されていると、入力データのメタデータにあるタイプがテーブルの対応するカラムのタイプと比較されます。
+`JSONColumnsWithMetadata` 入力フォーマットに対して、設定 [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) が `1` に設定されている場合、入力データのメタデータから取得したタイプが、テーブルの対応するカラムのタイプと比較されます。
 
 ## フォーマット設定 {#format-settings}

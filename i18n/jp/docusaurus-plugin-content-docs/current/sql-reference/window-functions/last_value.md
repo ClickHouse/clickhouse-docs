@@ -1,13 +1,17 @@
 ---
-slug: /sql-reference/window-functions/last_value
-sidebar_label: last_value
-sidebar_position: 4
+'description': '最後の値ウィンドウ関数のドキュメント'
+'sidebar_label': '最後の値'
+'sidebar_position': 4
+'slug': '/sql-reference/window-functions/last_value'
+'title': 'last_value'
 ---
+
+
 
 
 # last_value
 
-順序付けられたフレーム内で評価された最後の値を返します。デフォルトでは、NULL 引数はスキップされますが、`RESPECT NULLS` 修飾子を使用してこの動作をオーバーライドすることができます。
+指定された順序のフレーム内で評価された最後の値を返します。デフォルトでは、NULL 引数はスキップされますが、`RESPECT NULLS` 修飾子を使用するとこの動作を上書きできます。
 
 **構文**
 
@@ -19,24 +23,24 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-別名: `anyLast`.
+エイリアス: `anyLast`.
 
 :::note
-`first_value(column_name)` の後にオプションの修飾子 `RESPECT NULLS` を使用すると、`NULL` 引数がスキップされないことが保証されます。
-詳細については、[NULLの処理](../aggregate-functions/index.md/#null-processing)を参照してください。
+オプションの修飾子 `RESPECT NULLS` を `first_value(column_name)` の後に使用すると、`NULL` 引数がスキップされないことが保証されます。
+詳細については、[NULL 処理](../aggregate-functions/index.md/#null-processing)を参照してください。
 
-別名: `lastValueRespectNulls`
+エイリアス: `lastValueRespectNulls`
 :::
 
 ウィンドウ関数の構文の詳細については、[ウィンドウ関数 - 構文](./index.md/#syntax)を参照してください。
 
 **返される値**
 
-- 順序付けられたフレーム内で評価された最後の値です。
+- 指定された順序のフレーム内で評価された最後の値。
 
 **例**
 
-この例では、`last_value` 関数を使用して、プレミアリーグ選手の給与の架空のデータセットから最も低い給与を得ているサッカー選手を見つけます。
+この例では、`last_value` 関数を使用して、プレミアリーグのサッカー選手の給与の虚構データセットから最も低い給与の選手を見つけます。
 
 クエリ:
 

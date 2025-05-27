@@ -1,38 +1,40 @@
 ---
-slug: /sql-reference/table-functions/format
-sidebar_position: 65
-sidebar_label: format
-title: 'format'
-description: '引数から指定された入力形式に従ってデータを解析します。構造体引数が指定されていない場合、データから抽出されます。'
+'description': '構造引数が指定されていない場合、データから抽出された構造に従ってデータをパースします。'
+'slug': '/sql-reference/table-functions/format'
+'sidebar_position': 65
+'sidebar_label': 'フォーマット'
+'title': 'フォーマット'
 ---
+
+
 
 
 # format テーブル関数
 
-引数から指定された入力形式に従ってデータを解析します。構造体引数が指定されていない場合、データから抽出されます。
+指定された入力形式に従って引数からデータを解析します。構造引数が指定されていない場合、データから抽出されます。
 
-**構文**
+## 構文 {#syntax}
 
-``` sql
+```sql
 format(format_name, [structure], data)
 ```
 
-**パラメータ**
+## 引数 {#arguments}
 
-- `format_name` — データの[形式](/sql-reference/formats)。
-- `structure` - テーブルの構造。オプション。形式 'column1_name column1_type, column2_name column2_type, ...'。
-- `data` — 指定された形式のデータを含む文字列リテラルまたは定数式。
+- `format_name` — データの[フォーマット](/sql-reference/formats)。
+- `structure` - テーブルの構造。オプション。形式は 'column1_name column1_type, column2_name column2_type, ...'。
+- `data` — 指定された形式でデータを含む文字列リテラルまたは定数式。
 
-**返される値**
+## 戻り値 {#returned_value}
 
-指定された形式および指定されたまたは抽出された構造に従って、`data` 引数から解析されたデータを持つテーブル。
+指定された形式および指定または抽出された構造に従って `data` 引数から解析されたデータを持つテーブル。
 
-**例**
+## 例 {#examples}
 
-`structure` 引数なし:
+`structure` 引数なしの場合：
 
 **クエリ:**
-``` sql
+```sql
 SELECT * FROM format(JSONEachRow,
 $$
 {"a": "Hello", "b": 111}
@@ -73,7 +75,7 @@ $$)
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-`structure` 引数あり:
+`structure` 引数ありの場合：
 
 **クエリ:**
 ```sql
@@ -96,6 +98,6 @@ $$)
 └───────┴─────┘
 ```
 
-**関連情報**
+## 関連 {#related}
 
-- [Formats](../../interfaces/formats.md)
+- [フォーマット](../../interfaces/formats.md)

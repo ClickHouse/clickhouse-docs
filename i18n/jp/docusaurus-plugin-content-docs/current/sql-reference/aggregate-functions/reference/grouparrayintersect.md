@@ -1,18 +1,21 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/grouparrayintersect
-sidebar_position: 141
-title: "groupArrayIntersect"
-description: "与えられた配列の交差を返します（与えられたすべての配列に含まれる配列のすべてのアイテムを返します）。"
+'description': 'Return an intersection of given arrays (Return all items of arrays,
+  that are in all given arrays).'
+'sidebar_position': 141
+'slug': '/sql-reference/aggregate-functions/reference/grouparrayintersect'
+'title': 'groupArrayIntersect'
 ---
+
+
 
 
 # groupArrayIntersect
 
-与えられた配列の交差を返します（与えられたすべての配列に含まれる配列のすべてのアイテムを返します）。
+与えられた配列の交差を返します（すべての与えられた配列に含まれるすべての項目を返します）。
 
 **構文**
 
-``` sql
+```sql
 groupArrayIntersect(x)
 ```
 
@@ -20,7 +23,7 @@ groupArrayIntersect(x)
 
 - `x` — 引数（カラム名または式）。
 
-**返される値**
+**戻り値の型**
 
 - すべての配列に含まれる要素を含む配列。
 
@@ -28,9 +31,9 @@ groupArrayIntersect(x)
 
 **例**
 
-テーブル `numbers` を考えてみましょう：
+`numbers` テーブルを考えます：
 
-``` text
+```text
 ┌─a──────────────┐
 │ [1,2,4]        │
 │ [1,5,2,8,-1,0] │
@@ -38,9 +41,9 @@ groupArrayIntersect(x)
 └────────────────┘
 ```
 
-引数としてカラム名を用いたクエリ：
+カラム名を引数とするクエリ：
 
-``` sql
+```sql
 SELECT groupArrayIntersect(a) as intersection FROM numbers;
 ```
 
