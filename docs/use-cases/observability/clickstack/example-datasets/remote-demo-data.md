@@ -8,36 +8,37 @@ description: 'Getting started with ClickStack and a remote demo dataset'
 ---
 
 import Image from '@theme/IdealImage';
-import step_1a from '@site/static/images/use-cases/observability/hyperx-demo/step_1a.png';
-import step_2 from '@site/static/images/use-cases/observability/hyperx-demo/step_2.png';
-import step_3 from '@site/static/images/use-cases/observability/hyperx-demo/step_3.png';
-import step_4 from '@site/static/images/use-cases/observability/hyperx-demo/step_4.png';
-import step_5 from '@site/static/images/use-cases/observability/hyperx-demo/step_5.png';
-import step_6 from '@site/static/images/use-cases/observability/hyperx-demo/step_6.png';
-import step_7 from '@site/static/images/use-cases/observability/hyperx-demo/step_7.png';
-import step_8 from '@site/static/images/use-cases/observability/hyperx-demo/step_8.png';
-import step_9 from '@site/static/images/use-cases/observability/hyperx-demo/step_9.png';
-import step_10 from '@site/static/images/use-cases/observability/hyperx-demo/step_10.png';
-import step_11 from '@site/static/images/use-cases/observability/hyperx-demo/step_11.png';
-import step_12 from '@site/static/images/use-cases/observability/hyperx-demo/step_12.png';
-import step_13 from '@site/static/images/use-cases/observability/hyperx-demo/step_13.png';
-import step_14 from '@site/static/images/use-cases/observability/hyperx-demo/step_14.png';
-import step_15 from '@site/static/images/use-cases/observability/hyperx-demo/step_15.png';
-import step_16 from '@site/static/images/use-cases/observability/hyperx-demo/step_16.png';
-import step_17 from '@site/static/images/use-cases/observability/hyperx-demo/step_17.png';
-import step_18 from '@site/static/images/use-cases/observability/hyperx-demo/step_18.png';
-import step_19 from '@site/static/images/use-cases/observability/hyperx-demo/step_19.png';
-import step_20 from '@site/static/images/use-cases/observability/hyperx-demo/step_20.png';
-import step_21 from '@site/static/images/use-cases/observability/hyperx-demo/step_21.png';
-import step_22 from '@site/static/images/use-cases/observability/hyperx-demo/step_22.png';
-import step_23 from '@site/static/images/use-cases/observability/hyperx-demo/step_23.png';
-import step_24 from '@site/static/images/use-cases/observability/hyperx-demo/step_24.png';
-import architecture from '@site/static/images/use-cases/observability/hyperx-demo/architecture.png';
+import demo_connection from '@site/static/images/use-cases/observability/hyperdx-demo/demo_connection.png';
+import step_2 from '@site/static/images/use-cases/observability/hyperdx-demo/step_2.png';
+import step_3 from '@site/static/images/use-cases/observability/hyperdx-demo/step_3.png';
+import step_4 from '@site/static/images/use-cases/observability/hyperdx-demo/step_4.png';
+import step_5 from '@site/static/images/use-cases/observability/hyperdx-demo/step_5.png';
+import step_6 from '@site/static/images/use-cases/observability/hyperdx-demo/step_6.png';
+import step_7 from '@site/static/images/use-cases/observability/hyperdx-demo/step_7.png';
+import step_8 from '@site/static/images/use-cases/observability/hyperdx-demo/step_8.png';
+import step_9 from '@site/static/images/use-cases/observability/hyperdx-demo/step_9.png';
+import step_10 from '@site/static/images/use-cases/observability/hyperdx-demo/step_10.png';
+import step_11 from '@site/static/images/use-cases/observability/hyperdx-demo/step_11.png';
+import step_12 from '@site/static/images/use-cases/observability/hyperdx-demo/step_12.png';
+import step_13 from '@site/static/images/use-cases/observability/hyperdx-demo/step_13.png';
+import step_14 from '@site/static/images/use-cases/observability/hyperdx-demo/step_14.png';
+import step_15 from '@site/static/images/use-cases/observability/hyperdx-demo/step_15.png';
+import step_16 from '@site/static/images/use-cases/observability/hyperdx-demo/step_16.png';
+import step_17 from '@site/static/images/use-cases/observability/hyperdx-demo/step_17.png';
+import step_18 from '@site/static/images/use-cases/observability/hyperdx-demo/step_18.png';
+import step_19 from '@site/static/images/use-cases/observability/hyperdx-demo/step_19.png';
+import step_20 from '@site/static/images/use-cases/observability/hyperdx-demo/step_20.png';
+import step_21 from '@site/static/images/use-cases/observability/hyperdx-demo/step_21.png';
+import step_22 from '@site/static/images/use-cases/observability/hyperdx-demo/step_22.png';
+import step_23 from '@site/static/images/use-cases/observability/hyperdx-demo/step_23.png';
+import step_24 from '@site/static/images/use-cases/observability/hyperdx-demo/step_24.png';
+import architecture from '@site/static/images/use-cases/observability/hyperdx-demo/architecture.png';
+import demo_sources from '@site/static/images/use-cases/observability/hyperdx-demo//demo_sources.png';
 
 
 **The following guide assumes you have deployed ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) or [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) and completed initial user creation.**
 
-This getting started guide uses a dataset available on the demo server that users can access when first deploying HyperDX. The dataset is hosted on the public ClickHouse instance at sql.clickhouse.com.
+This getting started guide uses a dataset available on the demo server that users can access when first deploying HyperDX. The dataset is hosted on the public ClickHouse instance at [sql.clickhouse.com](https://sql.clickhouse.com).
 
 It contains approximately 36 hours of data captured from the ClickHouse version of the official OpenTelemetry (OTel) demo. The data is replayed nightly with timestamps adjusted to the current time window, allowing users to explore system behavior using HyperDX's integrated logs, traces, and metrics.
 
@@ -73,12 +74,96 @@ Further details on the demo can be found in the [official OpenTelemetry document
 
 Navigate to `Team Settings` and select `Add Connection`:
 
-<Image img={step_1a} alt="Step 1a" size="lg"/>
+<Image img={demo_connection} alt="Demo connection" size="lg"/>
 
 Complete the following connection details for the demo server:
 
-- 
+- `Connection Name`: `Demo`
+- `Host`: `https://sql-clickhouse.clickhouse.com`
+- `Username`: `demo`
+- `Password`: ``
 
+### Create sources {#create-sources}
+
+In order to view data we need to create a data source for each of our data types: logs, metrics, traces and sessions.
+
+Create a `Logs`, `Traces`, `Metrics` and `Sessions` source using the following details for each. If not specified, settings should be automatically infered from the schema.
+
+#### Logs {#logs}
+
+- `Name`: `Logs`
+- `Source Data Type`: `Log`
+- `Server Connection`: `Demo`
+- `Database`: `otel_v2`
+- `Table`: `otel_logs`
+
+<br/>
+
+#### Traces {#traces}
+
+- `Name`: `Traces`
+- `Source Data Type`: `Trace`
+- `Server Connection`: `Demo`
+- `Database`: `otel_v2`
+- `Table`: `otel_traces`
+- `Correlated Log Source`: `Logs`
+
+<br/>
+
+#### Metrics {#metrics}
+
+- `Name`: `Metrics`
+- `Source Data Type`: `OTEL Metrics`
+- `Server Connection`: `Demo`
+- `Database`: `otel_v2`
+- `Table`: `otel_traces`
+- `Gauge Table`: `otel_metrics_gauge`
+- `Histogram Table`: `otel_metrics_histogram`
+- `Sum Table`: `otel_metrics_sum`
+- `Summary Table`: `otel_metrics_summary`
+- `Exponential Histogram Table`: `otel_metrics_exponential_histogram`
+- `Correlated Log Source`: `Logs`
+
+<br/>
+
+#### Sessions {#sessions}
+
+- `Name`: `Sessions`
+- `Source Data Type`: `Session`
+- `Server Connection`: `Demo`
+- `Database`: `otel_v2`
+- `Table`: `hyperdx_sessions`
+- `Correlated Trace Source`: `Traces`
+
+<br/>
+
+When finished you should have a source for each data type:
+
+<Image img={demo_sources} alt="Created sources" size="lg"/>
+
+### Correlate sources {#correlate-sources}
+
+Correlating sources allows HyperDX to link logs, traces, metrics, and sessions - enabling rich context when navigating incidents and debugging issues.
+
+Edit each source ensuring the following fields are completed for each source:
+
+#### Logs {#logs}
+
+To edit the `Logs` source you will need to select the source and click `Configure Optional Fields`.
+
+- `Name`: `Logs`
+- `Correlated Metric Source`: `Metrics`
+- `Correlated Trace Source`: `Traces`
+
+<br/>
+
+#### Traces {#traces}
+
+- `Name`: `Traces`
+- `Correlated Session Source`: `Sessions`
+- `Correlated Metric Source`: `Metrics`
+
+<br/>
 
 
 ### Adjust the timeframe {#adjust-the-timeframe}

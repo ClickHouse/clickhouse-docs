@@ -35,9 +35,6 @@ Navigate to `Team Settings` and copy the `Ingestion API Key` from the `API Keys`
 
 <Image img={copy_api_key} alt="Copy API key" size="lg"/>
 
-
-<Image img={hyperdx} alt="HyperDX UI" size="lg"/>
-
 ## Create a local OpenTelemetry configuration {#create-otel-configuration}
 
 Create a `otel-file-collector.yaml` file with the following content.
