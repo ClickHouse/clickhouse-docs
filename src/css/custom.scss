@@ -208,7 +208,14 @@ article[itemprop="blogPost"] {
 }
 
 .adopters-table {
-  width: 1150px;
+  overflow-x: auto;
+  width: 100%;
+
+  th {
+    padding: 0;
+    padding-left: 0.7rem;
+    text-align: left;
+  }
 }
 
 /* the buttons on the hompage stack on cell phones - this seems to fix it */
