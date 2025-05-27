@@ -6,7 +6,7 @@ WITH array_functions AS (
         arguments,
         returned_value,
         examples
-    FROM system.functions WHERE categories='Array' ORDER BY name ASC
+    FROM system.functions WHERE categories='Arrays' ORDER BY name ASC
 )
 SELECT
     format(
@@ -14,7 +14,7 @@ SELECT
             '## ' || name || ' ' || printf('{#%s}', name) || '\n\n',
             'Introduced in: v'||introduced_in||'\n\n',
             '**Syntax**\n\n'||printf('```sql\n%s\n```', syntax)||'\n\n',
-            '**Arguments**\n\n'||arguments||'\n',
+            if(empty(arguments), '**Arguments**\n\n- None.\n', '**Arguments**\n\n'||arguments||'\n'),
             '**Returned value**\n\n'||trim(returned_value)||'\n\n',
             '**Examples**\n\n'||examples||'\n'
     )
