@@ -1,4 +1,4 @@
-WITH arithmetic_functions AS (
+WITH array_functions AS (
     SELECT
         name,
         introduced_in,
@@ -18,5 +18,5 @@ SELECT
             '**Returned value**\n\n'||trim(returned_value)||'\n\n',
             '**Examples**\n\n'||examples||'\n'
     )
-FROM arithmetic_functions
+FROM array_functions
     INTO OUTFILE 'array-functions.md' TRUNCATE FORMAT LineAsString
