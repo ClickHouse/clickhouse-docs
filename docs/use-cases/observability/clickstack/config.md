@@ -102,9 +102,9 @@ HyperDX relies on the user defining a source for each of the Observability data 
 - `Metrics`
 - `Sessions`
 
-This configuration can be performed inside the application, as shown below for logs:
+This configuration can be performed inside the application from `Team Settings -> Sources`, as shown below for logs:
 
-<Image img={hyperdx_25} alt="HyperDX Source configuration" size="md"/>
+<Image img={hyperdx_25} alt="HyperDX Source configuration" size="lg"/>
 
 Each of these sources require at least one table specified on creation as well as a set of columns which allow HyperDX to query the data.
 
