@@ -1,14 +1,14 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/corrmatrix
-sidebar_position: 118
-title: 'corrMatrix'
-description: '计算 N 个变量的相关矩阵。'
+'description': '计算 N 个变量的相关矩阵。'
+'sidebar_position': 118
+'slug': '/sql-reference/aggregate-functions/reference/corrmatrix'
+'title': 'corrMatrix'
 ---
 
 
 # corrMatrix
 
-计算 N 个变量的相关矩阵。
+计算 N 个变量的相关性矩阵。
 
 **语法**
 
@@ -18,11 +18,11 @@ corrMatrix(x[, ...])
 
 **参数**
 
-- `x` — 可变数量的参数。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
+- `x` — 变量数量的参数。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
 
 **返回值**
 
-- 相关矩阵。 [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md)))。
+- 相关性矩阵。 [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md)))。
 
 **示例**
 

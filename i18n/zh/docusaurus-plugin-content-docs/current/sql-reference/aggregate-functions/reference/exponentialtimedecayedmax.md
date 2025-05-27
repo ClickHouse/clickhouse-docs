@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedMax
-sidebar_position: 135
-title: 'exponentialTimeDecayedMax'
-description: '返回在时间索引 `t` 处计算的指数平滑移动平均值与 `t-1` 处的最大值。'
+'description': '返回在时间 `t` 计算出的指数平滑移动平均值与 `t-1` 处的最大值。'
+'sidebar_position': 135
+'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedMax'
+'title': 'exponentialTimeDecayedMax'
 ---
 
 ## exponentialTimeDecayedMax {#exponentialtimedecayedmax}
@@ -17,12 +17,12 @@ exponentialTimeDecayedMax(x)(value, timeunit)
 
 **参数**
 
-- `value` — 值。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md)或[小数](../../../sql-reference/data-types/decimal.md)。
-- `timeunit` — 时间单位。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md)或[小数](../../../sql-reference/data-types/decimal.md)、[日期时间](../../data-types/datetime.md)、[日期时间64](../../data-types/datetime64.md)。
+- `value` — 值。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)。
+- `timeunit` — 时间单位。[整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)，[日期时间](../../data-types/datetime.md)、[日期时间64](../../data-types/datetime64.md)。
 
 **参数**
 
-- `x` — 半衰期。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md)或[小数](../../../sql-reference/data-types/decimal.md)。
+- `x` — 半衰期。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)。
 
 **返回值**
 
@@ -30,7 +30,7 @@ exponentialTimeDecayedMax(x)(value, timeunit)
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT
@@ -48,7 +48,7 @@ FROM
     );
 ```
 
-结果:
+结果：
 
 ```response
     ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────┐

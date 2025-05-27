@@ -2,9 +2,10 @@
 sidebar_label: 'Superset'
 sidebar_position: 198
 slug: /integrations/superset
-keywords: ['clickhouse', 'superset', 'connect', 'integrate', 'ui']
+keywords: ['superset']
 description: 'Apache Superset is an open-source data exploration and visualization platform.'
 title: 'Connect Superset to ClickHouse'
+show_related_blogs: true
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -120,7 +121,3 @@ If you are familiar with Superset, then you will feel right at home with this ne
 
 <Image size="md" img={superset_12} alt="Completed Superset dashboard with multiple visualizations of UK property price data from ClickHouse" border />
 <br/>
-
-## Related Content {#related-content}
-
-- Blog: [Visualizing Data with ClickHouse - Part 2 - Superset](https://clickhouse.com/blog/visualizing-data-with-superset)

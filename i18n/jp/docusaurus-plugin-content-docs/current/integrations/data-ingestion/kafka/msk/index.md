@@ -1,14 +1,21 @@
 ---
-sidebar_label: Amazon MSK と Kafka コネクタ シンクの統合
-sidebar_position: 1
-slug: /integrations/kafka/cloud/amazon-msk/
-description: ClickHouse の公式 Kafka コネクタと Amazon MSK
-keywords: [integration, kafka, amazon msk, sink, connector]
+'sidebar_label': 'Amazon MSK with Kafka Connector Sink'
+'sidebar_position': 1
+'slug': '/integrations/kafka/cloud/amazon-msk/'
+'description': 'The official Kafka connector from ClickHouse with Amazon MSK'
+'keywords':
+- 'integration'
+- 'kafka'
+- 'amazon msk'
+- 'sink'
+- 'connector'
+'title': 'Amazon MSK with ClickHouse との統合'
 ---
+
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
-# Amazon MSK と ClickHouse の統合
+# Amazon MSKとClickHouseの統合
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/6lKI_WlQ3-s"
@@ -23,25 +30,24 @@ import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/curr
 </div>
 
 ## 前提条件 {#prerequisites}
-以下のことを前提とします：
-* [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)、Amazon MSK、および MSK コネクタに精通していること。Amazon MSK の [はじめにガイド](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) と [MSK Connect ガイド](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html) を推奨します。
-* MSK ブローカーが公開されていること。[パブリックアクセス](https://docs.aws.amazon.com/msk/latest/developerguide/public-access.html) のセクションを参照してください。
+以下を前提とします：
+* あなたは [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)、Amazon MSK、MSKコネクタに精通しているものとします。Amazon MSKの [はじめにガイド](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) と [MSK Connectガイド](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html) を推奨します。
+* MSKブローカーが公開アクセス可能であること。開発者ガイドの [公開アクセス](https://docs.aws.amazon.com/msk/latest/developerguide/public-access.html) セクションを参照してください。
 
-## Amazon MSK と ClickHouse の公式 Kafka コネクタ {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
+## ClickHouseの公式KafkaコネクタとAmazon MSK {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
 
-
-### 接続詳細を収集する {#gather-your-connection-details}
+### 接続の詳細を収集する {#gather-your-connection-details}
 
 <ConnectionDetails />
 
-### 手順 {#steps}
-1. [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md) に精通していることを確認します。
-1. [MSK インスタンスを作成する](https://docs.aws.amazon.com/msk/latest/developerguide/create-cluster.html)。
-1. [IAM ロールを作成して割り当てる](https://docs.aws.amazon.com/msk/latest/developerguide/create-client-iam-role.html)。
-1. ClickHouse Connect Sink の [リリースページ](https://github.com/ClickHouse/clickhouse-kafka-connect/releases) から `jar` ファイルをダウンロードします。
-1. Amazon MSK コンソールの [カスタムプラグインページ](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-plugins.html) にダウンロードした `jar` ファイルをインストールします。
-1. コネクタがパブリックな ClickHouse インスタンスと通信する場合は、[インターネットアクセスを有効にする](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-internet-access.html)。
-1. 設定でトピック名、ClickHouse インスタンスのホスト名、およびパスワードを提供します。
+### ステップ {#steps}
+1. [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)に精通していることを確認してください。
+1. [MSKインスタンスを作成](https://docs.aws.amazon.com/msk/latest/developerguide/create-cluster.html)します。
+1. [IAMロールを作成して割り当て](https://docs.aws.amazon.com/msk/latest/developerguide/create-client-iam-role.html)ます。
+1. ClickHouse Connect Sinkの [リリースページ](https://github.com/ClickHouse/clickhouse-kafka-connect/releases)から`jar`ファイルをダウンロードします。
+1. Amazon MSKコンソールの [カスタムプラグインページ](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-plugins.html)にダウンロードした`jar`ファイルをインストールします。
+1. コネクタが公開のClickHouseインスタンスと通信する場合、[インターネットアクセスを有効にします](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-internet-access.html)。
+1. 設定にトピック名、ClickHouseインスタンスのホスト名、およびパスワードを提供します。
 ```yml
 connector.class=com.clickhouse.kafka.connect.ClickHouseSinkConnector
 tasks.max=1
@@ -60,31 +66,31 @@ username=default
 schemas.enable=false
 ```
 
-## パフォーマンス調整 {#performance-tuning}
-パフォーマンスを向上させる方法の一つは、バッチサイズと Kafka から取得するレコード数を調整することです。次の設定を **worker** 構成に追加します。
+## パフォーマンスチューニング {#performance-tuning}
+パフォーマンスを向上させる方法の一つは、バッチサイズとKafkaから取得されるレコードの数を調整することです。以下を**worker**構成に追加します：
 ```yml
-consumer.max.poll.records=[NUMBER OF RECORDS]
-consumer.max.partition.fetch.bytes=[NUMBER OF RECORDS * RECORD SIZE IN BYTES]
+consumer.max.poll.records=[レコード数]
+consumer.max.partition.fetch.bytes=[レコード数 * バイト単位のレコードサイズ]
 ```
 
-使用する具体的な値は、希望するレコード数とレコードサイズによって異なります。例えば、デフォルト値は次の通りです。
+使用する具体的な値は、希望するレコード数やレコードサイズによって異なります。例えば、デフォルトの値は以下の通りです：
 
 ```yml
 consumer.max.poll.records=500
 consumer.max.partition.fetch.bytes=1048576
 ```
 
-詳細については、公式の [Kafka](https://kafka.apache.org/documentation/#consumerconfigs) および
-[Amazon MSK](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-workers.html#msk-connect-create-custom-worker-config) のドキュメントをご確認ください。
+詳細（実装やその他の考慮事項）は、公式の [Kafka](https://kafka.apache.org/documentation/#consumerconfigs) および 
+[Amazon MSK](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-workers.html#msk-connect-create-custom-worker-config) ドキュメントに記載されています。
 
-## MSK Connect 用のネットワーキングに関する注意事項 {#notes-on-networking-for-msk-connect}
+## MSK Connect用のネットワーキングに関する注意事項 {#notes-on-networking-for-msk-connect}
 
-MSK Connect が ClickHouse に接続するためには、MSK クラスターをプライベートサブネットに配置し、インターネットアクセス用のプライベート NAT を接続することを推奨します。以下にその設定方法を示します。パブリックサブネットもサポートされていますが、Elastic IP アドレスを ENI に常に割り当てる必要があるため推奨されません。[AWS からの詳細はこちら](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-internet-access.html)。
+MSK ConnectがClickHouseに接続するためには、MSKクラスターをプライベートサブネットに配置し、インターネットアクセスのためにプライベートNATを接続することを推奨します。設定手順は以下に示します。公共サブネットもサポートされていますが、ENIにElastic IPアドレスを常に割り当てる必要があるため推奨されません。詳細は[AWSがこちらで提供しています](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-internet-access.html)。
 
-1. **プライベートサブネットを作成する：** VPC 内に新しいサブネットを作成し、プライベートサブネットとして指定します。このサブネットにはインターネットへの直接アクセスは許可しません。
-1. **NAT ゲートウェイを作成する：** VPC のパブリックサブネットに NAT ゲートウェイを作成します。NAT ゲートウェイにより、プライベートサブネット内のインスタンスがインターネットまたは他の AWS サービスに接続できますが、インターネットからこれらのインスタンスに対する接続を防ぎます。
-1. **ルートテーブルを更新する：** インターネット行きのトラフィックを NAT ゲートウェイに向けるルートを追加します。
-1. **セキュリティグループとネットワーク ACL の設定を確認する：** [セキュリティグループ](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html) および [ネットワーク ACL (アクセスコントロールリスト)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html) を設定し、ClickHouse インスタンスへの関連トラフィックを許可します。
-   1. ClickHouse Cloud の場合は、9440 と 8443 番ポートでの受信トラフィックを許可するようセキュリティグループを設定します。
-   1. セルフホストされた ClickHouse の場合は、設定ファイルのポート（デフォルトは 8123）で受信トラフィックを許可するようにセキュリティグループを設定します。
-1. **MSK にセキュリティグループをアタッチする：** NAT ゲートウェイにルーティングされた新しいセキュリティグループが MSK クラスターにアタッチされていることを確認します。
+1. **プライベートサブネットを作成する:** VPC内に新しいサブネットを作成し、それをプライベートサブネットとして指定します。このサブネットはインターネットへの直接アクセスを持ってはいけません。
+1. **NATゲートウェイを作成する:** VPCの公共サブネット内にNATゲートウェイを作成します。NATゲートウェイは、プライベートサブネット内のインスタンスがインターネットまたは他のAWSサービスに接続できるようにしますが、インターネットがそれらのインスタンスに接続を開始することを防ぎます。
+1. **ルートテーブルを更新する:** インターネット向けのトラフィックをNATゲートウェイへ誘導するルートを追加します。
+1. **セキュリティグループおよびネットワークACLの構成を確認する:** [セキュリティグループ](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html)と[ネットワークACL（アクセス制御リスト）](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html)を設定して、ClickHouseインスタンスへの関連トラフィックを許可します。
+   1. ClickHouse Cloudの場合、9440および8443ポートでの着信トラフィックを許可するようセキュリティグループを設定します。 
+   1. セルフホスティングのClickHouseの場合、設定ファイルのポート（デフォルトは8123）での着信トラフィックを許可するようセキュリティグループを設定します。
+1. **MSKにセキュリティグループをアタッチする:** NATゲートウェイにルーティングされた新しいセキュリティグループがMSKクラスターにアタッチされていることを確認します。

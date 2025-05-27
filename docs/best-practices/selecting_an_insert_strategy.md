@@ -1,9 +1,11 @@
 ---
 slug: /best-practices/selecting-an-insert-strategy
 sidebar_position: 10
-sidebar_label: 'Selecting an Insert Strategy'
-title: 'Selecting an Insert Strategy'
+sidebar_label: 'Selecting an insert strategy'
+title: 'Selecting an insert strategy'
 description: 'Page describing how to choose an insert strategy in ClickHouse'
+keywords: ['INSERT', 'asynchronous inserts', 'compression', 'batch inserts']
+show_related_blogs: true
 ---
 
 import Image from '@theme/IdealImage';

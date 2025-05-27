@@ -1,21 +1,21 @@
 ---
-description: 'COVID-19 Open-Data 是一个大型的开源数据库，包含COVID-19流行病学数据和相关因素，如人口统计、经济和政府响应'
-slug: /getting-started/example-datasets/covid19
-sidebar_label: COVID-19 Open-Data
-title: 'COVID-19 Open-Data'
+'description': 'COVID-19 Open-Data 是一个大型的开源 DATABASE，包含 COVID-19 流行病学数据及相关因素，如人口统计、经济和政府响应。'
+'sidebar_label': 'COVID-19 Open-Data'
+'slug': '/getting-started/example-datasets/covid19'
+'title': 'COVID-19 Open-Data'
 ---
 
-COVID-19 Open-Data 旨在汇集最大的COVID-19流行病学数据库，并提供一套强大的扩展协变量。它包括与人口统计、经济、流行病学、地理、健康、住院、流动性、政府响应、天气等相关的开放、公共来源的许可数据。
+COVID-19 Open-Data 旨在构建最大的 Covid-19 流行病学数据库，并提供一套强大的广泛协变量。它包括来自公开渠道、已授权的数据，涉及人口统计、经济、流行病学、地理、健康、住院、流动性、政府响应、天气等多个方面。
 
-详细信息可在GitHub的[此处](https://github.com/GoogleCloudPlatform/covid-19-open-data)找到。
+详细信息可以在 GitHub [这里](https://github.com/GoogleCloudPlatform/covid-19-open-data) 查阅。
 
-将这些数据轻松插入ClickHouse...
+将这些数据插入 ClickHouse 非常简单...
 
 :::note
-以下命令是在[ClickHouse Cloud](https://clickhouse.cloud)的**生产**实例上执行的。您也可以轻松地在本地安装上运行它们。
+以下命令是在 [ClickHouse Cloud](https://clickhouse.cloud) 的 **Production** 实例上执行的。您也可以在本地安装的环境中轻松运行它们。
 :::
 
-1. 让我们看看数据是什么样子的：
+1. 让我们看看数据的样子：
 
 ```sql
 DESCRIBE url(
@@ -24,7 +24,7 @@ DESCRIBE url(
 );
 ```
 
-CSV文件有10列：
+CSV 文件有 10 列：
 
 ```response
 ┌─name─────────────────┬─type─────────────┐
@@ -51,7 +51,7 @@ FROM url('https://storage.googleapis.com/covid19-open-data/v3/epidemiology.csv')
 LIMIT 100;
 ```
 
-注意`url`函数可以轻松地从CSV文件中读取数据：
+注意 `url` 函数可以轻松从 CSV 文件中读取数据：
 
 ```response
 ┌─c1─────────┬─c2───────────┬─c3────────────┬─c4───────────┬─c5────────────┬─c6─────────┬─c7───────────────────┬─c8──────────────────┬─c9───────────────────┬─c10───────────────┐
@@ -65,7 +65,7 @@ LIMIT 100;
 └────────────┴──────────────┴───────────────┴──────────────┴───────────────┴────────────┴──────────────────────┴─────────────────────┴──────────────────────┴───────────────────┘
 ```
 
-3. 现在我们知道数据是什么样的，接下来创建一个表：
+3. 现在我们在了解数据的样子后，将创建一个表：
 
 ```sql
 CREATE TABLE covid19 (
@@ -84,7 +84,7 @@ ENGINE = MergeTree
 ORDER BY (location_key, date);
 ```
 
-4. 以下命令将整个数据集插入到`covid19`表中：
+4. 以下命令将整个数据集插入到 `covid19` 表中：
 
 ```sql
 INSERT INTO covid19
@@ -106,7 +106,7 @@ INSERT INTO covid19
     );
 ```
 
-5. 这个过程非常快速 - 让我们看看插入了多少行：
+5. 进行得很快 - 让我们看看插入了多少行：
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -119,7 +119,7 @@ FROM covid19;
 └─────────────────────────────────┘
 ```
 
-6. 让我们查看记录的Covid-19总病例数：
+6. 让我们看看记录了多少 Covid-19 的总病例：
 
 ```sql
 SELECT formatReadableQuantity(sum(new_confirmed))
@@ -132,7 +132,7 @@ FROM covid19;
 └────────────────────────────────────────────┘
 ```
 
-7. 您会注意到数据中有很多0，表示假期或每天未报告的数字。我们可以使用窗口函数来平滑每天新增病例的平均值：
+7. 您会注意到数据中很多日期的值为 0 - 要么是周末，要么是没有每天报告数字的日子。我们可以使用窗口函数来平滑新病例的每日平均值：
 
 ```sql
 SELECT
@@ -143,7 +143,7 @@ SELECT
 FROM covid19;
 ```
 
-8. 此查询确定每个位置的最新值。我们不能使用`max(date)`，因为并不是所有国家每天都报告，所以我们使用`ROW_NUMBER`抓取最后一行：
+8. 这个查询确定每个地点的最新值。我们不能使用 `max(date)`，因为并非所有国家每天都有报告，所以我们使用 `ROW_NUMBER` 获取最后一行：
 
 ```sql
 WITH latest_deaths_data AS
@@ -162,7 +162,7 @@ FROM latest_deaths_data
 WHERE rn=1;
 ```
 
-9. 我们可以使用`lagInFrame`来确定每天新病例的`LAG`。在这个查询中，我们按`US_DC`位置进行过滤：
+9. 我们可以使用 `lagInFrame` 来确定每天新病例的 `LAG`。在这个查询中，我们按 `US_DC` 位置过滤：
 
 ```sql
 SELECT
@@ -174,7 +174,7 @@ FROM covid19
 WHERE location_key = 'US_DC';
 ```
 
-响应如下所示：
+响应看起来像：
 
 ```response
 ┌─confirmed_cases_delta─┬─new_confirmed─┬─location_key─┬───────date─┐
@@ -196,7 +196,7 @@ WHERE location_key = 'US_DC';
 │                     3 │            21 │ US_DC        │ 2020-03-23 │
 ```
 
-10. 此查询计算每天新增病例的变化百分比，并在结果集中包括一个简单的`increase`或`decrease`列：
+10. 这个查询计算每天新病例的变化百分比，并在结果集中包含一个简单的 `increase` 或 `decrease` 列：
 
 ```sql
 WITH confirmed_lag AS (
@@ -227,7 +227,7 @@ FROM confirmed_percent_change
 WHERE location_key = 'US_DC';
 ```
 
-结果如下所示：
+结果看起来像
 
 ```response
 ┌───────date─┬─new_confirmed─┬─percent_change─┬─trend─────┐
@@ -261,5 +261,5 @@ WHERE location_key = 'US_DC';
 ```
 
 :::note
-如[GitHub 仓库](https://github.com/GoogleCloudPlatform/covid-19-open-data)中所述，数据集自2022年9月15日起不再更新。
+正如在 [GitHub repo](https://github.com/GoogleCloudPlatform/covid-19-open-data) 中提到的，该数据集自 2022 年 9 月 15 日起不再更新。
 :::

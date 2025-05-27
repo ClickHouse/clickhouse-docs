@@ -2,7 +2,8 @@
 title: 'Migrating from Rockset'
 slug: /migrations/rockset
 description: 'Migrating from Rockset to ClickHouse'
-keywords: ['migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'Rockset']
+keywords: ['Rockset']
+show_related_blogs: true
 ---
 
 # Migrating from Rockset

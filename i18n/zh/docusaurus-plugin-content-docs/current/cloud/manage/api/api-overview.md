@@ -1,6 +1,9 @@
 ---
-sidebar_label: '概述'
-sidebar_position: 1
+'sidebar_label': '概述'
+'sidebar_position': 1
+'title': 'ClickHouse Cloud API'
+'slug': '/cloud/manage/api/api-overview'
+'description': '了解 ClickHouse Cloud API'
 ---
 
 
@@ -8,13 +11,17 @@ sidebar_position: 1
 
 ## 概述 {#overview}
 
-ClickHouse Cloud API 是一个为开发者设计的 REST API，旨在简化对 ClickHouse Cloud 上组织和服务的管理。通过我们的 Cloud API，您可以创建和管理服务，提供 API 密钥，添加或移除组织中的成员等。
+ClickHouse Cloud API 是一个 REST API，旨在帮助开发者轻松管理 ClickHouse Cloud 上的组织和服务。使用我们的 Cloud API，您可以创建和管理服务、配置 API 密钥、添加或移除您组织中的成员等等。
 
 [了解如何创建您的第一个 API 密钥并开始使用 ClickHouse Cloud API.](/cloud/manage/openapi.md)
 
-## 接口速率限制 {#rate-limits}
+## Swagger (OpenAPI) 端点和 UI {#swagger-openapi-endpoint-and-ui}
 
-每个组织的开发者最多可以拥有 100 个 API 密钥。每个 API 密钥在 10 秒内的请求限制为 10 次。如果您希望增加您组织的 API 密钥数量或每 10 秒的请求次数，请联系 support@clickhouse.com
+ClickHouse Cloud API 基于开源的 [OpenAPI 规范](https://www.openapis.org/) 构建，以便于可预测的客户端消费。如果您需要以编程方式访问 ClickHouse Cloud API 文档，我们提供一个基于 JSON 的 Swagger 端点，网址为 https://api.clickhouse.cloud/v1。您还可以通过 [Swagger UI](https://clickhouse.com/docs/cloud/manage/api/swagger) 查找 API 文档。
+
+## 速率限制 {#rate-limits}
+
+每个组织的开发者最多可以拥有 100 个 API 密钥。每个 API 密钥在 10 秒内最多可以发起 10 次请求。如果您希望增加组织的 API 密钥数量或每 10 秒内的请求次数，请联系 support@clickhouse.com。
 
 ## Terraform 提供者 {#terraform-provider}
 
@@ -22,12 +29,8 @@ ClickHouse Cloud API 是一个为开发者设计的 REST API，旨在简化对 C
 
 您可以在 [Terraform 注册表](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) 中查看 Terraform 提供者文档。
 
-如果您想为 ClickHouse Terraform 提供者贡献代码，可以在 [GitHub 仓库](https://github.com/ClickHouse/terraform-provider-clickhouse) 中查看源代码。
-
-## Swagger (OpenAPI) 端点和 UI {#swagger-openapi-endpoint-and-ui}
-
-ClickHouse Cloud API 基于开源的 [OpenAPI 规范](https://www.openapis.org/) 构建，以便于预测性的客户端调用。如果您需要以编程方式访问 ClickHouse Cloud API 文档，我们提供一个基于 JSON 的 Swagger 端点，地址为 https://api.clickhouse.cloud/v1。我们的 API 参考文档也会自动从相同的端点生成。如果您更喜欢通过 Swagger UI 访问 API 文档，请点击 [这里](https://clickhouse.com/docs/cloud/manage/api/swagger)。
+如果您想为 ClickHouse Terraform 提供者做贡献，可以在 [GitHub 存储库](https://github.com/ClickHouse/terraform-provider-clickhouse) 中查看源代码。
 
 ## 支持 {#support}
 
-我们建议您首先访问 [我们的 Slack 渠道](https://clickhouse.com/slack)以获得快速支持。如果您需要额外的帮助或有关我们 API 及其功能的更多信息，请通过 https://console.clickhouse.cloud/support 联系 ClickHouse 支持团队。
+我们建议您首先访问 [我们的 Slack 频道](https://clickhouse.com/slack) 获取快速支持。如果您需要额外的帮助或有关我们 API 及其功能的更多信息，请联系 ClickHouse 支持，网址为 https://console.clickhouse.cloud/support

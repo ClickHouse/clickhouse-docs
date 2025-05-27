@@ -1,15 +1,23 @@
 ---
-description: "システムテーブルで、値0を含む単一の `dummy` UInt8 カラムを持つ単一の行が含まれます。他のDBMSで見られる `DUAL` テーブルに類似しています。"
-slug: /operations/system-tables/one
-title: "system.one"
-keywords: ["システムテーブル", "one"]
+'description': 'System table containing a single row with a single `dummy` UInt8 column
+  containing the value 0. Similar to the `DUAL` table found in other DBMSs.'
+'keywords':
+- 'system table'
+- 'one'
+'slug': '/operations/system-tables/one'
+'title': 'system.one'
 ---
 
-このテーブルは、値0を含む単一の `dummy` UInt8 カラムを持つ単一の行で構成されています。
+
+
+
+# system.one
+
+このテーブルは、値 0 を含む単一の `dummy` UInt8 カラムを持つ単一の行を含んでいます。
 
 このテーブルは、`SELECT` クエリが `FROM` 句を指定しない場合に使用されます。
 
-これは、他のDBMSで見られる `DUAL` テーブルに類似しています。
+これは、他の DBMS に見られる `DUAL` テーブルに類似しています。
 
 **例**
 

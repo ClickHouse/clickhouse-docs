@@ -16,6 +16,7 @@ import Translate from "@docusaurus/Translate";
 import IconClose from "@theme/Icon/Close";
 import {useLocation} from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import RelatedBlogs from "../../../components/RelatedBlogs/RelatedBlogs";
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
  */
@@ -36,10 +37,9 @@ function useDocTOC() {
   };
 }
 
-
 export default function DocItemLayout({children}) {
   const docTOC = useDocTOC();
-  const {metadata} = useDoc();
+  const {metadata, frontMatter} = useDoc();
   const {editUrl} = metadata;
 
   const location = useLocation();
@@ -107,6 +107,7 @@ export default function DocItemLayout({children}) {
             <DocItemContent>{children}</DocItemContent>
             <DocItemFooter />
           </article>
+          {frontMatter.show_related_blogs === true ? <RelatedBlogs frontMatter={frontMatter}/> : <></>}
           <DocItemPaginator />
         </div>
       </div>

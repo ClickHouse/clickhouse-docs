@@ -1,13 +1,13 @@
 ---
-title: 'varPopStable'
-slug: /sql-reference/aggregate-functions/reference/varpopstable
-sidebar_position: 211
-description: '返回总体方差。与 varPop 不同，该函数使用数值稳定算法。它的运行速度较慢，但提供更低的计算误差。'
+'description': '返回总体方差。与 varPop 不同，此函数使用数值稳定的算法。它运行较慢，但提供较低的计算错误。'
+'sidebar_position': 211
+'slug': '/sql-reference/aggregate-functions/reference/varpopstable'
+'title': 'varPopStable'
 ---
 
 ## varPopStable {#varpopstable}
 
-返回总体方差。与 [`varPop`](../reference/varpop.md) 不同，该函数使用一个 [数值稳定](https://en.wikipedia.org/wiki/Numerical_stability) 算法。它的运行速度较慢，但提供更低的计算误差。
+返回总体方差。与 [`varPop`](../reference/varpop.md) 不同，此函数使用 [数值稳定](https://en.wikipedia.org/wiki/Numerical_stability) 算法。它的运行速度较慢，但提供了更低的计算误差。
 
 **语法**
 
@@ -15,11 +15,11 @@ description: '返回总体方差。与 varPop 不同，该函数使用数值稳�
 varPopStable(x)
 ```
 
-别名: `VAR_POP_STABLE`。
+别名：`VAR_POP_STABLE`。
 
 **参数**
 
-- `x`: 要计算总体方差的值集合。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
+- `x`：要查找总体方差的值的总体。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md)。
 
 **返回值**
 
@@ -27,7 +27,7 @@ varPopStable(x)
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 DROP TABLE IF EXISTS test_data;
@@ -44,7 +44,7 @@ SELECT
 FROM test_data;
 ```
 
-结果:
+结果：
 
 ```response
 ┌─var_pop_stable─┐

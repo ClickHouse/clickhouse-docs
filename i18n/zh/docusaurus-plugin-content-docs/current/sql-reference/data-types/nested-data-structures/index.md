@@ -1,7 +1,9 @@
 ---
-slug: /sql-reference/data-types/nested-data-structures/nested
-sidebar_position: 57
-sidebar_label: 嵌套(Nested(Name1 Type1, Name2 Type2, ...))
+'description': '在 ClickHouse 中嵌套数据结构的概述'
+'sidebar_label': 'Nested(Name1 Type1, Name2 Type2, ...)'
+'sidebar_position': 57
+'slug': '/sql-reference/data-types/nested-data-structures/nested'
+'title': '嵌套'
 ---
 
 
@@ -9,11 +11,11 @@ sidebar_label: 嵌套(Nested(Name1 Type1, Name2 Type2, ...))
 
 ## Nested(name1 Type1, Name2 Type2, ...) {#nestedname1-type1-name2-type2-}
 
-嵌套数据结构就像是单元格中的一个表。嵌套数据结构的参数——列名和类型——以与 [CREATE TABLE](../../../sql-reference/statements/create/table.md) 查询相同的方式进行指定。每个表行可以对应嵌套数据结构中的任意数量的行。
+嵌套数据结构就像是单元格内的一个表。嵌套数据结构的参数——列名和类型——以与 [CREATE TABLE](../../../sql-reference/statements/create/table.md) 查询中相同的方式指定。每个表行可以对应嵌套数据结构中的任意数量行。
 
 示例：
 
-``` sql
+```sql
 CREATE TABLE test.visits
 (
     CounterID UInt32,
@@ -36,15 +38,15 @@ CREATE TABLE test.visits
 ) ENGINE = CollapsingMergeTree(StartDate, intHash32(UserID), (CounterID, StartDate, intHash32(UserID), VisitID), 8192, Sign)
 ```
 
-该示例声明了 `Goals` 嵌套数据结构，包含有关转换（达到的目标）的数据。“visits”表中的每一行可以对应零个或任意数量的转换。
+此示例声明了 `Goals` 嵌套数据结构，该结构包含有关转化（达成的目标）的数据。'visits' 表中的每一行可以对应零个或任意数量的转化。
 
-当 [flatten_nested](/operations/settings/settings#flatten_nested) 设置为 `0`（默认不是），则支持任意级别的嵌套。
+当 [flatten_nested](/operations/settings/settings#flatten_nested) 设置为 `0` （默认情况下不是这样），支持任意层级的嵌套。
 
-在大多数情况下，处理嵌套数据结构时，其列以点分隔的列名来指定。这些列组成了匹配类型的数组。单个嵌套数据结构的所有列数组具有相同的长度。
+在大多数情况下，处理嵌套数据结构时，其列以点号分隔的列名指定。这些列构成了相同类型的数组。单个嵌套数据结构的所有列数组具有相同的长度。
 
 示例：
 
-``` sql
+```sql
 SELECT
     Goals.ID,
     Goals.EventTime
@@ -53,7 +55,7 @@ WHERE CounterID = 101500 AND length(Goals.ID) < 5
 LIMIT 10
 ```
 
-``` text
+```text
 ┌─Goals.ID───────────────────────┬─Goals.EventTime───────────────────────────────────────────────────────────────────────────┐
 │ [1073752,591325,591325]        │ ['2014-03-17 16:38:10','2014-03-17 16:38:48','2014-03-17 16:42:27']                       │
 │ [1073752]                      │ ['2014-03-17 00:28:25']                                                                   │
@@ -68,11 +70,11 @@ LIMIT 10
 └────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-最简单的理解嵌套数据结构的方法是将其视为相同长度的多个列数组的集合。
+想象嵌套数据结构为多个同长度列数组的集合是最简单的。
 
-SELECT 查询中可以指定整个嵌套数据结构的名称的唯一地方是 ARRAY JOIN 子句。有关更多信息，请参见 “ARRAY JOIN 子句”。示例：
+SELECT 查询中唯一可以指定整个嵌套数据结构名称而不是单独列的地方是 ARRAY JOIN 子句。有关更多信息，请参见“ARRAY JOIN 子句”。示例：
 
-``` sql
+```sql
 SELECT
     Goal.ID,
     Goal.EventTime
@@ -82,7 +84,7 @@ WHERE CounterID = 101500 AND length(Goals.ID) < 5
 LIMIT 10
 ```
 
-``` text
+```text
 ┌─Goal.ID─┬──────Goal.EventTime─┐
 │ 1073752 │ 2014-03-17 16:38:10 │
 │  591325 │ 2014-03-17 16:38:48 │
@@ -97,10 +99,10 @@ LIMIT 10
 └─────────┴─────────────────────┘
 ```
 
-您无法对整个嵌套数据结构执行 SELECT。只能明确列出其所属的单独列。
+您不能对整个嵌套数据结构执行 SELECT。您只能显式列出其组成的单独列。
 
-对于 INSERT 查询，您应该分别传递嵌套数据结构的所有组件列数组（就像它们是单独的列数组一样）。在插入过程中，系统检查它们的长度是否相同。
+对于 INSERT 查询，您应该将嵌套数据结构的所有组件列数组单独传递（就像它们是单独的列数组一样）。在插入过程中，系统会检查它们的长度是否相同。
 
-对于 DESCRIBE 查询，嵌套数据结构中的列以相同方式分别列出。
+对于 DESCRIBE 查询，嵌套数据结构中的列以相同的方式单独列出。
 
-对嵌套数据结构中元素的 ALTER 查询存在限制。
+嵌套数据结构元素的 ALTER 查询具有一定的限制。

@@ -1,15 +1,19 @@
 ---
-title: S3バケット内のデータをクエリする方法
-sidebar_label: S3でのデータクエリ
-slug: /chdb/guides/querying-s3
-description: chDBを使ってS3バケット内のデータをクエリする方法を学びます。
-keywords: [chdb, s3]
+'title': 'S3 バケット内のデータのクエリ方法'
+'sidebar_label': 'S3 でのデータクエリ'
+'slug': '/chdb/guides/querying-s3'
+'description': 'chDB で S3 バケット内のデータをクエリする方法を学びます。'
+'keywords':
+- 'chdb'
+- 's3'
 ---
 
-世界中の多くのデータはAmazon S3バケット内に存在しています。
+
+
+A lot of the world's data lives in Amazon S3 buckets.  
 このガイドでは、chDBを使用してそのデータをクエリする方法を学びます。
 
-## セットアップ {#setup}
+## Setup {#setup}
 
 まずは仮想環境を作成しましょう：
 
@@ -18,37 +22,38 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-次に、chDBをインストールします。
+次にchDBをインストールします。  
 バージョン2.0.2以上であることを確認してください：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-次に、IPythonをインストールします：
+続いてIPythonをインストールします：
 
 ```bash
 pip install ipython
 ```
 
-ガイドの残りの部分ではコマンドを実行するために`ipython`を使用します。次のように実行して起動できます：
+`ipython`を使って、ガイドの残りのコマンドを実行します。  
+以下のコマンドで`ipython`を起動できます：
 
 ```bash
 ipython
 ```
 
-Pythonスクリプトやお気に入りのノートブックでコードを使うこともできます。
+または、Pythonスクリプトやお好みのノートブックでもこのコードを使用できます。
 
-## S3バケット内のファイルのリストを取得する {#listing-files-in-an-s3-bucket}
+## Listing files in an S3 bucket {#listing-files-in-an-s3-bucket}
 
-まずは、[Amazonレビューを含むS3バケット](/getting-started/example-datasets/amazon-reviews)内のすべてのファイルをリストアップします。
-これを行うために、[`s3`テーブル関数](/sql-reference/table-functions/s3)を使用し、ファイルのパスまたはファイルセットのワイルドカードを渡すことができます。
+最初に、[Amazonレビューを含むS3バケットの全ファイルをリストアップ](/getting-started/example-datasets/amazon-reviews)しましょう。  
+これを行うには、[`s3`テーブル関数](/sql-reference/table-functions/s3)を使用し、ファイルへのパスまたはワイルドカードを渡します。
 
 :::tip
-バケット名だけを渡すと例外が発生します。
+バケット名のみを渡すと、例外が発生します。
 :::
 
-また、`One`という入力フォーマットを使用して、ファイルを解析せず、ファイルごとに単一の行を返し、`_file`仮想カラムを通じてファイルにアクセスし、`_path`仮想カラムを通じてパスにアクセスできるようにします。
+また、[`One`](/interfaces/formats#data-format-one)入力フォーマットを使用して、ファイルが解析されず、ファイルごとに1行が返され、`_file`仮想カラムと`_path`仮想カラム経由でファイルやパスにアクセスできるようにします。
 
 ```python
 import chdb
@@ -75,12 +80,12 @@ SETTINGS output_format_pretty_row_numbers=0
 └─────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────┘
 ```
 
-このバケットにはParquetファイルのみが含まれています。
+このバケットには、Parquetファイルのみが含まれています。
 
-## S3バケット内のファイルをクエリする {#querying-files-in-an-s3-bucket}
+## Querying files in an S3 bucket {#querying-files-in-an-s3-bucket}
 
-次に、これらのファイルをクエリする方法を学びましょう。
-各ファイルの行数をカウントする場合、以下のクエリを実行します：
+次に、これらのファイルをクエリする方法を学びましょう。  
+これらのファイルの各行数を数えたい場合、以下のクエリを実行できます：
 
 ```python
 chdb.query("""
@@ -107,7 +112,7 @@ SETTINGS output_format_pretty_row_numbers=0
 └─────────────────────────────────────┴──────────┴─────────────────┘
 ```
 
-HTTP URIをS3バケットに渡すと、同じ結果が得られます：
+S3バケットのHTTP URIを渡すことでも同じ結果が得られます：
 
 ```python
 chdb.query("""
@@ -121,7 +126,7 @@ SETTINGS output_format_pretty_row_numbers=0
 """, 'PrettyCompact')
 ```
 
-`DESCRIBE`句を使ってこれらのParquetファイルのスキーマを確認してみましょう：
+`DESCRIBE`句を使用してこれらのParquetファイルのスキーマを確認しましょう：
 
 ```python
 chdb.query("""
@@ -150,7 +155,7 @@ SETTINGS describe_compact_output=1
     └───────────────────┴──────────────────┘
 ```
 
-レビュー数に基づいて主要な製品カテゴリを計算し、平均星評価を計算してみましょう：
+今、レビュー数に基づいてトップの製品カテゴリを計算し、平均星評価を計算しましょう：
 
 ```python
 chdb.query("""
@@ -176,9 +181,9 @@ LIMIT 10
     └──────────────────┴──────────┴──────┘
 ```
 
-## プライベートS3バケット内のファイルをクエリする {#querying-files-in-a-private-s3-bucket}
+## Querying files in a private S3 bucket {#querying-files-in-a-private-s3-bucket}
 
-プライベートS3バケット内のファイルをクエリする場合、アクセスキーとシークレットを渡す必要があります。
+プライベートS3バケットのファイルをクエリする場合、アクセスキーとシークレットを渡す必要があります。  
 これらの認証情報を`s3`テーブル関数に渡すことができます：
 
 ```python
@@ -191,7 +196,7 @@ LIMIT 10
 ```
 
 :::note
-このクエリは、パブリックバケットなので動作しません！
+このクエリは公開バケットのため、動作しません！
 :::
 
-別の方法として、[名前付きコレクション](/operations/named-collections)を使用することができますが、このアプローチはchDBではまだサポートされていません。
+別の方法は、[名前付きコレクション](/operations/named-collections)を使用することですが、このアプローチはまだchDBによってサポートされていません。

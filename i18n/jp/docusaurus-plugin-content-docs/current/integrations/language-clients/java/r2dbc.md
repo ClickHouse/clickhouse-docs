@@ -1,9 +1,15 @@
 ---
-sidebar_label: R2DBCドライバー
-sidebar_position: 5
-keywords: [clickhouse, java, driver, integrate, r2dbc]
-description: ClickHouse R2DBCドライバー
-slug: /integrations/java/r2dbc
+'sidebar_label': 'R2DBC ドライバ'
+'sidebar_position': 5
+'keywords':
+- 'clickhouse'
+- 'java'
+- 'driver'
+- 'integrate'
+- 'r2dbc'
+'description': 'ClickHouse R2DBC ドライバ'
+'slug': '/integrations/java/r2dbc'
+'title': 'R2DBC driver'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,10 +17,11 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 
+# R2DBCドライバ
 
-## R2DBCドライバー {#r2dbc-driver}
+## R2DBCドライバ {#r2dbc-driver}
 
-[R2DBC](https://r2dbc.io/) の ClickHouse 用の非同期 Java クライアントのラッパーです。
+[R2DBC](https://r2dbc.io/) は、ClickHouse用の非同期Javaクライアントのラッパーです。
 
 ### 環境要件 {#environment-requirements}
 
@@ -25,10 +32,10 @@ import CodeBlock from '@theme/CodeBlock';
 ```xml
 <dependency>
     <groupId>com.clickhouse</groupId>
-    <!-- SPI 0.9.1.RELEASE の場合は clickhouse-r2dbc_0.9.1 に変更 -->
+    <!-- SPI 0.9.1.RELEASE用にclickhouse-r2dbc_0.9.1に変更 -->
     <artifactId>clickhouse-r2dbc</artifactId>
     <version>0.7.1</version>
-    <!-- 全依存関係が含まれた uber jar を使用、サイズを小さくするために classifier を http または grpc に変更 -->
+    <!-- すべての依存関係を含むuber jarを使用、より小さいjarのためにはhttpまたはgrpcにクラスファイアを変更 -->
     <classifier>all</classifier>
     <exclusions>
         <exclusion>
@@ -39,7 +46,7 @@ import CodeBlock from '@theme/CodeBlock';
 </dependency>
 ```
 
-### ClickHouse に接続する {#connect-to-clickhouse}
+### ClickHouseに接続する {#connect-to-clickhouse}
 
 ```java showLineNumbers
 ConnectionFactory connectionFactory = ConnectionFactories
@@ -76,4 +83,3 @@ connection
     .bind("cdate", LocalDateTime.now())
     .bind("count", 1)
     .execute();
-```

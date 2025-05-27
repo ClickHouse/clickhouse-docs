@@ -1,23 +1,25 @@
 ---
-slug: /sql-reference/statements/alter/update
-sidebar_position: 40
-sidebar_label: 更新
+'description': 'ALTER TABLE ... UPDATE 语句的文档'
+'sidebar_label': 'UPDATE'
+'sidebar_position': 40
+'slug': '/sql-reference/statements/alter/update'
+'title': 'ALTER TABLE ... UPDATE 语句'
 ---
 
 
-# ALTER TABLE ... 更新语句
+# ALTER TABLE ... UPDATE 语句
 
-``` sql
-ALTER TABLE [db.]table [ON CLUSTER cluster] 更新 column1 = expr1 [, ...] [IN PARTITION partition_id] WHERE filter_expr
+```sql
+ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN PARTITION partition_id] WHERE filter_expr
 ```
 
-操作符合指定过滤表达式的数据。实现为 [mutation](/sql-reference/statements/alter/index.md#mutations)。
+操作与指定过滤表达式匹配的数据。实现为 [mutation](/sql-reference/statements/alter/index.md#mutations)。
 
 :::note    
-`ALTER TABLE` 前缀使得该语法与大多数支持 SQL 的其他系统不同。它意在表明，与 OLTP 数据库中的类似查询不同，这是一项重操作，不适合频繁使用。
+`ALTER TABLE` 前缀使得此语法与大多数其他支持 SQL 的系统不同。它旨在表明，与 OLTP 数据库中的类似查询不同，这是一项不设计为频繁使用的重操作。
 :::
 
-`filter_expr` 必须为 `UInt8` 类型。该查询将指定列的值更新为对应表达式在 `filter_expr` 取非零值的行中的值。值通过 `CAST` 运算符转换为列类型。不支持对用于计算主键或分区键的列进行更新。
+`filter_expr` 必须是 `UInt8` 类型。此查询将指定列的值更新为 `filter_expr` 取非零值的行中对应表达式的值。值使用 `CAST` 运算符转换为列类型。不支持更新在主键或分区键计算中使用的列。
 
 一个查询可以包含多个用逗号分隔的命令。
 
@@ -25,7 +27,7 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] 更新 column1 = expr1 [, ...] [IN P
 
 **另见**
 
-- [变更](/sql-reference/statements/alter/index.md#mutations)
+- [Mutations](/sql-reference/statements/alter/index.md#mutations)
 - [ALTER 查询的同步性](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
 - [mutations_sync](/operations/settings/settings.md/#mutations_sync) 设置
 

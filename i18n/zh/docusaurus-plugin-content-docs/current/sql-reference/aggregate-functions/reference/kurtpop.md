@@ -1,29 +1,29 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/kurtpop
-sidebar_position: 157
-title: 'kurtPop'
-description: '计算序列的峰度。'
+'description': '计算序列的kurtosis。'
+'sidebar_position': 157
+'slug': '/sql-reference/aggregate-functions/reference/kurtpop'
+'title': 'kurtPop'
 ---
 
 
 # kurtPop
 
-计算序列的 [峰度](https://en.wikipedia.org/wiki/Kurtosis)。
+计算一个序列的[kurtosis](https://en.wikipedia.org/wiki/Kurtosis)。
 
-``` sql
+```sql
 kurtPop(expr)
 ```
 
 **参数**
 
-`expr` — [表达式](/sql-reference/syntax#expressions) 返回一个数字。
+`expr` — [表达式](/sql-reference/syntax#expressions)，返回一个数字。
 
 **返回值**
 
-给定分布的峰度。类型 — [Float64](../../../sql-reference/data-types/float.md)
+给定分布的kurtosis。类型 — [Float64](../../../sql-reference/data-types/float.md)
 
 **示例**
 
-``` sql
+```sql
 SELECT kurtPop(value) FROM series_with_value_column;
 ```

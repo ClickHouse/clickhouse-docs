@@ -1,10 +1,12 @@
 ---
-sidebar_label: ダッシュボード
-slug: /cloud/manage/dashboards
-title: ダッシュボード
+'sidebar_label': 'ダッシュボード'
+'slug': '/cloud/manage/dashboards'
+'title': 'ダッシュボード'
+'description': 'SQLコンソールのダッシュボード機能を使用すると、保存されたクエリからの可視化情報を収集および共有できます。'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
 import dashboards_2 from '@site/static/images/cloud/dashboards/2_dashboards.png';
 import dashboards_3 from '@site/static/images/cloud/dashboards/3_dashboards.png';
 import dashboards_4 from '@site/static/images/cloud/dashboards/4_dashboards.png';
@@ -21,84 +23,84 @@ import dashboards_11 from '@site/static/images/cloud/dashboards/11_dashboards.pn
 
 <BetaBadge />
 
-SQLコンソールのダッシュボード機能を使うことで、保存したクエリからビジュアライゼーションを収集して共有できます。クエリを保存して可視化し、ダッシュボードにクエリのビジュアライゼーションを追加し、クエリパラメータを使ってダッシュボードをインタラクティブにすることから始めましょう。
+SQLコンソールのダッシュボード機能を使うと、保存されたクエリから視覚化を収集して共有できます。まずはクエリを保存して視覚化し、ダッシュボードにクエリの視覚化を追加し、クエリパラメータを使ってダッシュボードをインタラクティブにするところから始めましょう。
 
-## コア概念 {#core-concepts}
+## 基本概念 {#core-concepts}
 
 ### クエリの共有 {#query-sharing}
 
-同僚とダッシュボードを共有するには、基本となる保存したクエリも共有することを確認してください。ビジュアライゼーションを表示するには、ユーザーは基本となる保存したクエリに対して、最低限読み取り専用アクセスを持っている必要があります。
+ダッシュボードを同僚と共有するには、基盤となる保存されたクエリも共有してください。視覚化を表示するには、ユーザーは少なくとも基盤となる保存されたクエリに対して読み取り専用アクセス権を持っている必要があります。
 
-### インタラクティブ性 {#interactivity}
+### インタラクティビティ {#interactivity}
 
-[クエリパラメータ](/sql-reference/syntax#defining-and-using-query-parameters)を使用してダッシュボードをインタラクティブにします。例えば、`WHERE`句にクエリパラメータを追加してフィルタとして機能させることができます。
+[クエリパラメータ](/sql-reference/syntax#defining-and-using-query-parameters) を使用してダッシュボードをインタラクティブにします。たとえば、`WHERE`句にクエリパラメータを追加してフィルターとして機能させることができます。
 
-ビジュアライゼーション設定で「フィルタ」タイプを選択することにより、**グローバル**フィルタのサイドペインを介してクエリパラメータ入力を切り替えることができます。また、ダッシュボード上の別のオブジェクト（例えばテーブル）にリンクすることによってクエリパラメータ入力を切り替えることも可能です。以下のクイックスタートガイドの「[フィルタの設定](/cloud/manage/dashboards#configure-a-filter)」セクションを参照してください。
+視覚化設定で「フィルター」タイプを選択することで、**Global**フィルターサイドペインからクエリパラメータ入力を切り替えることができます。また、ダッシュボード上の別のオブジェクト（テーブルなど）とリンクすることでクエリパラメータ入力を切り替えることもできます。以下のクイックスタートガイドの「[フィルターを設定する](/cloud/manage/dashboards#configure-a-filter)」セクションもご覧ください。
 
 ## クイックスタート {#quick-start}
 
-[query_log](/operations/system-tables/query_log)システムテーブルを使用して、ClickHouseサービスを監視するダッシュボードを作成してみましょう。
+[query_log](/operations/system-tables/query_log) システムテーブルを使用して、ClickHouseサービスを監視するダッシュボードを作成しましょう。
 
 ## クイックスタート {#quick-start-1}
 
-### 保存されたクエリを作成 {#create-a-saved-query}
+### 保存されたクエリを作成する {#create-a-saved-query}
 
-既に可視化するための保存されたクエリがある場合は、このステップをスキップできます。
+視覚化するための保存されたクエリがすでにある場合は、このステップをスキップできます。
 
-新しいクエリタブを開きましょう。ClickHouseのシステムテーブルを使用して、日付ごとのクエリボリュームをカウントするクエリを書きます。
+新しいクエリタブを開いて、ClickHouseのシステムテーブルを使用してサービスごとの日毎にクエリボリュームをカウントするクエリを記述しましょう：
 
-<img src={dashboards_2} alt="Create a saved query"/>
+<Image img={dashboards_2} size="md" alt="保存されたクエリを作成する" border/>
 
-クエリの結果をテーブル形式で表示するか、チャートビューからビジュアライゼーションを開始できます。次のステップでは、クエリを`queries over time`として保存します。
+クエリの結果はテーブル形式で表示することもでき、チャートビューから視覚化を構築し始めることもできます。次のステップでは、クエリを `queries over time` として保存します：
 
-<img src={dashboards_3} alt="Save query"/>
+<Image img={dashboards_3} size="md" alt="クエリを保存" border/>
 
-保存されたクエリに関するさらなるドキュメントは、[クエリの保存セクション](/cloud/get-started/sql-console#saving-a-query)で確認できます。
+保存されたクエリに関する詳細なドキュメントは、[クエリを保存するセクション](/cloud/get-started/sql-console#saving-a-query)を参照してください。
 
-クエリの種類ごとにクエリの数をカウントするために、もう1つのクエリ`query count by query kind`を作成して保存します。以下は、SQLコンソールでのデータの棒グラフビジュアライゼーションです。
+別のクエリ `query count by query kind` を作成して、クエリの種類ごとのクエリ数をカウントすることもできます。以下は、SQLコンソールにおけるデータのバーグラフ視覚化です。
 
-<img src={dashboards_4} alt="A bar chart visualization of a query's results"/>
+<Image img={dashboards_4} size="md" alt="クエリ結果のバーグラフ視覚化" border/>
 
-2つのクエリがあるので、これらのクエリを可視化して集めるダッシュボードを作成しましょう。
+2つのクエリができたので、これらのクエリを視覚化し収集するダッシュボードを作成しましょう。
 
-### ダッシュボードを作成 {#create-a-dashboard}
+### ダッシュボードを作成する {#create-a-dashboard}
 
-ダッシュボードパネルに移動し、「新しいダッシュボード」をクリックします。名前を指定すると、初めてのダッシュボードが作成されます！
+ダッシュボードパネルに移動し、「新しいダッシュボード」をクリックします。名前を付けたら、最初のダッシュボードを正常に作成できました！
 
-<img src={dashboards_5} alt="Create a new dashboard"/>
+<Image img={dashboards_5} size="md" alt="新しいダッシュボードを作成" border/>
 
-### ビジュアライゼーションを追加 {#add-a-visualization}
+### 視覚化を追加する {#add-a-visualization}
 
-保存されたクエリは`queries over time`と`query count by query kind`の2つです。最初のクエリを折れ線グラフとして可視化しましょう。ビジュアライゼーションにタイトルとサブタイトルを付け、可視化するクエリを選択します。次に、「ライン」チャートタイプを選択し、x軸とy軸を指定します。
+保存された2つのクエリ、`queries over time` と `query count by query kind` があります。最初のクエリを折れ線グラフとして視覚化してみましょう。視覚化にタイトルとサブタイトルを付け、視覚化するクエリを選択します。次に、「ライン」チャートタイプを選択し、x軸とy軸を割り当てます。
 
-<img src={dashboards_6} alt="Add a visualization"/>
+<Image img={dashboards_6} size="md" alt="視覚化を追加" border/>
 
-ここで、数値フォーマット、凡例のレイアウト、軸ラベルなどのスタイルの変更も行えます。
+ここでは、数値フォーマット、凡例のレイアウト、および軸ラベルなど、さらにスタイルの変更を行うことができます。
 
-次に、2つ目のクエリをテーブルとして可視化し、折れ線グラフの下に配置しましょう。
+次に、2つ目のクエリをテーブルとして視覚化し、折れ線グラフの下に配置しましょう。
 
-<img src={dashboards_7} alt="Visualize query results as a table"/>
+<Image img={dashboards_7} size="md" alt="クエリ結果をテーブルとして視覚化" border/>
 
-これで、2つの保存されたクエリを可視化して、初めてのダッシュボードを作成しました！
+2つの保存されたクエリを視覚化することにより、最初のダッシュボードを作成しました！
 
-### フィルタを設定する {#configure-a-filter}
+### フィルターを設定する {#configure-a-filter}
 
-クエリの種類にフィルタを追加して、このダッシュボードをインタラクティブにしましょう。これにより、Insertクエリに関連するトレンドのみを表示できるようになります。このタスクは[クエリパラメータ](/sql-reference/syntax#defining-and-using-query-parameters)を使って達成します。
+クエリの種類に基づくフィルターを追加して、Insertクエリに関連するトレンドのみを表示できるように、このダッシュボードをインタラクティブにしましょう。この作業は、[クエリパラメータ](/sql-reference/syntax#defining-and-using-query-parameters)を使用して実現します。
 
-折れ線グラフの横にある3つのドットをクリックし、クエリの横にある鉛筆ボタンをクリックしてインラインクエリエディタを開きます。ここで、ダッシュボードから直接基になる保存クエリを編集できます。
+折れ線グラフの隣にある3つのドットをクリックし、クエリの横にあるペンのボタンをクリックしてインラインクエリエディタを開きます。ここで、ダッシュボードから直接基盤となる保存されたクエリを編集できます。
 
-<img src={dashboards_8} alt="Edit the underlying query"/>
+<Image img={dashboards_8} size="md" alt="基盤となるクエリを編集" border/>
 
-今、黄色の実行クエリボタンを押すと、前と同じクエリがInsertクエリのみにフィルタされて表示されます。クエリを更新するために保存ボタンをクリックします。チャート設定に戻ると、折れ線グラフをフィルタできます。
+今、黄色の実行クエリボタンを押すと、先ほどのクエリがInsertクエリのみにフィルタリングされて表示されます。クエリを更新するために保存ボタンをクリックしてください。チャート設定に戻ると、折れ線グラフをフィルタリングできるようになります。
 
-次に、上部リボンのグローバルフィルタを使用して入力を変更することでフィルタを切り替えられるようになります。
+今、上部のリボンにあるGlobal Filtersを使用して、入力を変更することでフィルターを切り替えることができます。
 
-<img src={dashboards_9} alt="Adjust global filters"/>
+<Image img={dashboards_9} size="md" alt="グローバルフィルターを調整" border/>
 
-折れ線グラフのフィルタをテーブルにリンクさせたい場合には、ビジュアライゼーション設定に戻って、`query_kind`クエリパラメータの値ソースをテーブルに変更し、リンクするフィールドとして`query_kind`カラムを選択します。 
+折れ線グラフのフィルターをテーブルにリンクしたい場合は、視覚化設定に戻り、`query_kind`クエリパラメータの値ソースをテーブルに変更し、リンクするフィールドとして`query_kind`カラムを選択します。
 
-<img src={dashboards_10} alt="Changing query parameter"/>
+<Image img={dashboards_10} size="md" alt="クエリパラメータを変更" border/>
 
-これで、クエリの種類テーブルから折れ線グラフのフィルタを直接制御でき、ダッシュボードがインタラクティブになります。
+これで、クエリの種類テーブルから折れ線グラフのフィルターを直接制御できるようになり、ダッシュボードをインタラクティブにできます。
 
-<img src={dashboards_11} alt="Control the filter on the line chart"/>
+<Image img={dashboards_11} size="md" alt="折れ線グラフのフィルターを制御" border/>

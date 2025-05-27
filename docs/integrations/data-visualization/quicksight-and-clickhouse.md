@@ -117,7 +117,7 @@ Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 
 ## Connecting QuickSight to ClickHouse {#connecting-quicksight-to-clickhouse}
 
-First of all, go to https://quicksight.aws.amazon.com, navigate to Datasets and click "New dataset":
+First of all, go to [https://quicksight.aws.amazon.com](https://quicksight.aws.amazon.com), navigate to Datasets and click "New dataset":
 
 <Image size="md" img={quicksight_01} alt="Amazon QuickSight dashboard showing the New dataset button in Datasets section" border />
 <br/>

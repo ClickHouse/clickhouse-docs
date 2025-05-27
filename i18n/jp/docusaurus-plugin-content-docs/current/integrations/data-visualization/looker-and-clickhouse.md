@@ -1,54 +1,65 @@
 ---
-sidebar_label: Looker
-slug: /integrations/looker
-keywords: [clickhouse, looker, connect, integrate, ui]
-description: Lookerは、BI、データアプリケーション、および組み込み分析のためのエンタープライズプラットフォームであり、リアルタイムで洞察を探求し、共有するのに役立ちます。
+'sidebar_label': 'Looker'
+'slug': '/integrations/looker'
+'keywords':
+- 'clickhouse'
+- 'looker'
+- 'connect'
+- 'integrate'
+- 'ui'
+'description': 'Looker is an enterprise platform for BI, data applications, and embedded
+  analytics that helps you explore and share insights in real time.'
+'title': 'Looker'
 ---
 
+import Image from '@theme/IdealImage';
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import looker_01 from '@site/static/images/integrations/data-visualization/looker_01.png';
 import looker_02 from '@site/static/images/integrations/data-visualization/looker_02.png';
 import looker_03 from '@site/static/images/integrations/data-visualization/looker_03.png';
 import looker_04 from '@site/static/images/integrations/data-visualization/looker_04.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
 # Looker
 
-Lookerは、公式のClickHouseデータソースを介して、ClickHouse Cloudまたはオンプレミスのデプロイメントに接続できます。
+<CommunityMaintainedBadge/>
+
+Lookerは、公式のClickHouseデータソースを介して、ClickHouse Cloudまたはオンプレミスの展開に接続できます。
 
 ## 1. 接続詳細を収集する {#1-gather-your-connection-details}
 <ConnectionDetails />
 
 ## 2. ClickHouseデータソースを作成する {#2-create-a-clickhouse-data-source}
 
-Admin -> Database -> Connectionsに移動し、右上隅の「Add Connection」ボタンをクリックします。
+管理者 -> データベース -> 接続に移動し、右上の「接続を追加」ボタンをクリックします。
 
-<img src={looker_01} class="image" alt="新しい接続を追加" style={{width: '80%', 'background-color': 'transparent'}}/>
+<Image size="md" img={looker_01} alt="Lookerのデータベース管理インターフェースに新しい接続を追加" border />
 <br/>
 
-データソースの名前を選択し、ダイアレクトのドロップダウンから`ClickHouse`を選択します。フォームに認証情報を入力します。
+データソースの名前を選択し、ダイアレクトのドロップダウンから`ClickHouse`を選択します。フォームに資格情報を入力します。
 
-<img src={looker_02} class="image" alt="認証情報を指定" style={{width: '80%', 'background-color': 'transparent'}}/>
+<Image size="md" img={looker_02} alt="Looker接続フォームにClickHouseの資格情報を指定" border />
 <br/>
 
-ClickHouse Cloudを使用している場合や、デプロイメントにSSLが必要な場合は、追加設定でSSLがオンになっていることを確認してください。
+ClickHouse Cloudを使用している場合や、デプロイがSSLを必要とする場合は、追加設定でSSLがオンになっていることを確認してください。
 
-<img src={looker_03} class="image" alt="SSLを有効にする" style={{width: '80%', 'background-color': 'transparent'}}/>
+<Image size="md" img={looker_03} alt="Looker設定でClickHouse接続のためにSSLを有効にする" border />
 <br/>
 
 まず接続をテストし、完了したら新しいClickHouseデータソースに接続します。
 
-<img src={looker_04} class="image" alt="SSLを有効にする" style={{width: '80%', 'background-color': 'transparent'}}/>
+<Image size="md" img={looker_04} alt="ClickHouseデータソースをテストして接続" border />
 <br/>
 
-これで、ClickHouseデータソースをLookerプロジェクトに添付できるようになります。
+これで、ClickHouseデータソースをLookerプロジェクトに接続できるようになるはずです。
 
-## 3. 既知の制限事項 {#3-known-limitations}
+## 3. 既知の制限 {#3-known-limitations}
 
-1. 次のデータ型はデフォルトで文字列として処理されます:
-   * Array - シリアル化はJDBCドライバーの制限により期待どおりに動作しません
-   * Decimal* - モデルで数値に変更できます
-   * LowCardinality(...) - モデルで適切な型に変更できます
+1. 次のデータ型はデフォルトで文字列として扱われます：
+   * Array - JDBCドライバの制限により、シリアル化が期待通りに機能しません
+   * Decimal* - モデル内で数値に変更可能です
+   * LowCardinality(...) - モデル内で適切な型に変更可能です
    * Enum8, Enum16
    * UUID
    * Tuple
@@ -56,10 +67,10 @@ ClickHouse Cloudを使用している場合や、デプロイメントにSSLが�
    * JSON
    * Nested
    * FixedString
-   * Geo types
+   * Geoタイプ
      * MultiPolygon
      * Polygon
      * Point
      * Ring
-2. [対称的集約機能](https://cloud.google.com/looker/docs/reference/param-explore-symmetric-aggregates)はサポートされていません
-3. [フル外部結合](https://cloud.google.com/looker/docs/reference/param-explore-join-type#full_outer)はまだドライバーに実装されていません
+2. [対称集約機能](https://cloud.google.com/looker/docs/reference/param-explore-symmetric-aggregates)はサポートされていません
+3. [フル外部結合](https://cloud.google.com/looker/docs/reference/param-explore-join-type#full_outer)はまだドライバに実装されていません

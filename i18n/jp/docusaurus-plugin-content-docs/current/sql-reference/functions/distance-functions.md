@@ -1,11 +1,15 @@
 ---
-slug: /sql-reference/functions/distance-functions
-sidebar_position: 55
-sidebar_label: 距離
+'description': 'Distance Functions のドキュメント'
+'sidebar_label': '距離'
+'sidebar_position': 55
+'slug': '/sql-reference/functions/distance-functions'
+'title': 'Distance Functions'
 ---
 
 
-# 距離関数
+
+
+# Distance Functions
 
 ## L1Norm {#l1norm}
 
@@ -21,11 +25,11 @@ L1Norm(vector)
 
 **引数**
 
-- `vector` — [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
+- `vector` — [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
 
 **返される値**
 
-- L1ノルムまたは [タクシー幾何学](https://en.wikipedia.org/wiki/Taxicab_geometry)距離。 [UInt](../data-types/int-uint.md)、 [Float](../data-types/float.md) または [Decimal](../data-types/decimal.md).
+- L1ノルムまたは [タクシー幾何学](https://en.wikipedia.org/wiki/Taxicab_geometry) 距離。 [UInt](../data-types/int-uint.md)、[Float](../data-types/float.md) または [Decimal](../data-types/decimal.md).
 
 **例**
 
@@ -45,7 +49,7 @@ SELECT L1Norm((1, 2));
 
 ## L2Norm {#l2norm}
 
-ベクトルの値の二乗和の平方根を計算します。
+ベクトル値の二乗和の平方根を計算します。
 
 **構文**
 
@@ -57,7 +61,7 @@ L2Norm(vector)
 
 **引数**
 
-- `vector` — [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
+- `vector` — [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
 
 **返される値**
 
@@ -81,7 +85,7 @@ SELECT L2Norm((1, 2));
 
 ## L2SquaredNorm {#l2squarednorm}
 
-ベクトルの値の二乗和の平方根（[L2Norm](#l2norm)）を二乗します。
+ベクトル値の二乗和の平方根（[L2Norm](#l2norm）の二乗）を計算します。
 
 **構文**
 
@@ -93,7 +97,7 @@ L2SquaredNorm(vector)
 
 **引数**
 
-- `vector` — [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
+- `vector` — [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
 
 **返される値**
 
@@ -117,7 +121,7 @@ SELECT L2SquaredNorm((1, 2));
 
 ## LinfNorm {#linfnorm}
 
-ベクトルの絶対値の最大値を計算します。
+ベクトルの絶対値の最大を計算します。
 
 **構文**
 
@@ -129,11 +133,11 @@ LinfNorm(vector)
 
 **引数**
 
-- `vector` — [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
+- `vector` — [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
 
 **返される値**
 
-- Linfノルムまたは最大絶対値。 [Float](../data-types/float.md).
+- Linfノルムまたは最大の絶対値。 [Float](../data-types/float.md).
 
 **例**
 
@@ -153,7 +157,7 @@ SELECT LinfNorm((1, -2));
 
 ## LpNorm {#lpnorm}
 
-ベクトルの絶対値の合計を `p` 乗したものの平方根を計算します。
+ベクトルの絶対値の合計の `p` 乗根を計算します。
 
 **構文**
 
@@ -165,12 +169,12 @@ LpNorm(vector, p)
 
 **引数**
 
-- `vector` — [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
-- `p` — 乗数。可能な値: `[1; inf)` の実数。 [UInt](../data-types/int-uint.md) または [Float](../data-types/float.md).
+- `vector` — [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
+- `p` — 指数。可能な値: 実数 `[1; inf)`。 [UInt](../data-types/int-uint.md) または [Float](../data-types/float.md).
 
 **返される値**
 
-- [Lpノルム](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)。 [Float](../data-types/float.md).
+- [Lp-norm](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)。 [Float](../data-types/float.md).
 
 **例**
 
@@ -190,7 +194,7 @@ SELECT LpNorm((1, -2), 2);
 
 ## L1Distance {#l1distance}
 
-二つの点の距離を計算します（ベクトルの値は座標です） `L1` 空間（1ノルム（[タクシー幾何学](https://en.wikipedia.org/wiki/Taxicab_geometry) 距離））で。
+`L1`空間内の2つの点の距離（ベクトルの値は座標）を計算します（1ノルム ([タクシー幾何学](https://en.wikipedia.org/wiki/Taxicab_geometry) 距離)）。
 
 **構文**
 
@@ -202,8 +206,8 @@ L1Distance(vector1, vector2)
 
 **引数**
 
-- `vector1` — 最初のベクトル。 [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
-- `vector2` — 二番目のベクトル。 [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
+- `vector1` — 最初のベクトル。 [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
+- `vector2` — 2番目のベクトル。 [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
 
 **返される値**
 
@@ -227,7 +231,7 @@ SELECT L1Distance((1, 2), (2, 3));
 
 ## L2Distance {#l2distance}
 
-二つの点の距離を計算します（ベクトルの値は座標です）ユークリッド空間（[ユークリッド距離](https://en.wikipedia.org/wiki/Euclidean_distance)）で。
+ユークリッド空間内の2つの点の距離（ベクトルの値は座標）を計算します ([ユークリッド距離](https://en.wikipedia.org/wiki/Euclidean_distance))。
 
 **構文**
 
@@ -239,8 +243,8 @@ L2Distance(vector1, vector2)
 
 **引数**
 
-- `vector1` — 最初のベクトル。 [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
-- `vector2` — 二番目のベクトル。 [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
+- `vector1` — 最初のベクトル。 [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
+- `vector2` — 2番目のベクトル。 [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
 
 **返される値**
 
@@ -264,7 +268,7 @@ SELECT L2Distance((1, 2), (2, 3));
 
 ## L2SquaredDistance {#l2squareddistance}
 
-二つのベクトルの対応する要素の差の二乗の合計を計算します。
+2つのベクトルの対応する要素の差の二乗の合計を計算します。
 
 **構文**
 
@@ -276,12 +280,12 @@ L2SquaredDistance(vector1, vector2)
 
 **引数**
 
-- `vector1` — 最初のベクトル。 [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
-- `vector2` — 二番目のベクトル。 [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
+- `vector1` — 最初のベクトル。 [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
+- `vector2` — 2番目のベクトル。 [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
 
 **返される値**
 
-- 二つのベクトルの対応する要素の差の二乗の合計。 [Float](../data-types/float.md).
+- 2つのベクトルの対応する要素の差の二乗の合計。 [Float](../data-types/float.md).
 
 **例**
 
@@ -301,7 +305,7 @@ SELECT L2SquaredDistance([1, 2, 3], [0, 0, 0])
 
 ## LinfDistance {#linfdistance}
 
-二つの点の距離を計算します（ベクトルの値は座標です） `L_{inf}` 空間（[最大ノルム](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm))）で。
+`L_{inf}`空間内の2つの点の距離（ベクトルの値は座標）を計算します ([最大ノルム](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm))）。
 
 **構文**
 
@@ -313,12 +317,12 @@ LinfDistance(vector1, vector2)
 
 **引数**
 
-- `vector1` — 最初のベクトル。 [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
-- `vector2` — 二番目のベクトル。 [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
+- `vector1` — 最初のベクトル。 [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
+- `vector1` — 2番目のベクトル。 [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
 
 **返される値**
 
-- 無限大ノルム距離。 [Float](../data-types/float.md).
+- 無限ノルム距離。 [Float](../data-types/float.md).
 
 **例**
 
@@ -338,7 +342,7 @@ SELECT LinfDistance((1, 2), (2, 3));
 
 ## LpDistance {#lpdistance}
 
-二つの点の距離を計算します（ベクトルの値は座標です） `Lp` 空間（[pノルム距離](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)）で。
+`Lp`空間内の2つの点の距離（ベクトルの値は座標）を計算します ([p-norm距離](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm))。
 
 **構文**
 
@@ -350,9 +354,9 @@ LpDistance(vector1, vector2, p)
 
 **引数**
 
-- `vector1` — 最初のベクトル。 [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
-- `vector2` — 二番目のベクトル。 [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
-- `p` — 乗数。可能な値: `[1; inf)` の実数。 [UInt](../data-types/int-uint.md) または [Float](../data-types/float.md).
+- `vector1` — 最初のベクトル。 [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
+- `vector2` — 2番目のベクトル。 [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
+- `p` — 指数。可能な値: 実数 `[1; inf)`。 [UInt](../data-types/int-uint.md) または [Float](../data-types/float.md).
 
 **返される値**
 
@@ -376,7 +380,7 @@ SELECT LpDistance((1, 2), (2, 3), 3);
 
 ## L1Normalize {#l1normalize}
 
-指定されたベクトルの単位ベクトルを計算します（タプルの値は座標です） `L1` 空間（[タクシー幾何学](https://en.wikipedia.org/wiki/Taxicab_geometry)）で。
+与えられたベクトルの単位ベクトルを計算します（タプルの値は座標） `L1` 空間内の [タクシー幾何学](https://en.wikipedia.org/wiki/Taxicab_geometry)。
 
 **構文**
 
@@ -388,11 +392,11 @@ L1Normalize(tuple)
 
 **引数**
 
-- `tuple` — [タプル](../data-types/tuple.md).
+- `tuple` — [Tuple](../data-types/tuple.md).
 
 **返される値**
 
-- 単位ベクトル。 [Float](../data-types/float.md) の [タプル](../data-types/tuple.md).
+- 単位ベクトル。 [Tuple](../data-types/tuple.md) の [Float](../data-types/float.md).
 
 **例**
 
@@ -412,7 +416,7 @@ SELECT L1Normalize((1, 2));
 
 ## L2Normalize {#l2normalize}
 
-指定されたベクトルの単位ベクトルを計算します（タプルの値は座標です）ユークリッド空間（[ユークリッド距離](https://en.wikipedia.org/wiki/Euclidean_distance)を使用）で。
+与えられたベクトルの単位ベクトルを計算します（タプルの値は座標）ユークリッド空間内で ([ユークリッド距離](https://en.wikipedia.org/wiki/Euclidean_distance) を使用)。
 
 **構文**
 
@@ -424,11 +428,11 @@ L2Normalize(tuple)
 
 **引数**
 
-- `tuple` — [タプル](../data-types/tuple.md).
+- `tuple` — [Tuple](../data-types/tuple.md).
 
 **返される値**
 
-- 単位ベクトル。 [Float](../data-types/float.md) の [タプル](../data-types/tuple.md).
+- 単位ベクトル。 [Tuple](../data-types/tuple.md) の [Float](../data-types/float.md).
 
 **例**
 
@@ -448,7 +452,7 @@ SELECT L2Normalize((3, 4));
 
 ## LinfNormalize {#linfnormalize}
 
-指定されたベクトルの単位ベクトルを計算します（タプルの値は座標です） `L_{inf}` 空間（[最大ノルム](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm)を使用）で。
+与えられたベクトルの単位ベクトルを計算します（タプルの値は座標） `L_{inf}` 空間内で ([最大ノルム](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm)) を使用)。
 
 **構文**
 
@@ -460,11 +464,11 @@ LinfNormalize(tuple)
 
 **引数**
 
-- `tuple` — [タプル](../data-types/tuple.md).
+- `tuple` — [Tuple](../data-types/tuple.md).
 
 **返される値**
 
-- 単位ベクトル。 [Float](../data-types/float.md) の [タプル](../data-types/tuple.md).
+- 単位ベクトル。 [Tuple](../data-types/tuple.md) の [Float](../data-types/float.md).
 
 **例**
 
@@ -484,7 +488,7 @@ SELECT LinfNormalize((3, 4));
 
 ## LpNormalize {#lpnormalize}
 
-指定されたベクトルの単位ベクトルを計算します（タプルの値は座標です） `Lp` 空間（[pノルム](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)を使用）で。
+与えられたベクトルの単位ベクトルを計算します（タプルの値は座標） `Lp` 空間内で ([p-norm](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm) を使用)。
 
 **構文**
 
@@ -496,12 +500,12 @@ LpNormalize(tuple, p)
 
 **引数**
 
-- `tuple` — [タプル](../data-types/tuple.md).
-- `p` — 乗数。可能な値: `[1;inf)` の任意の数。 [UInt](../data-types/int-uint.md) または [Float](../data-types/float.md).
+- `tuple` — [Tuple](../data-types/tuple.md).
+- `p` — 指数。可能な値: [1;inf) の任意の数字。 [UInt](../data-types/int-uint.md) または [Float](../data-types/float.md).
 
 **返される値**
 
-- 単位ベクトル。 [Float](../data-types/float.md) の [タプル](../data-types/tuple.md).
+- 単位ベクトル。 [Tuple](../data-types/tuple.md) の [Float](../data-types/float.md).
 
 **例**
 
@@ -521,7 +525,7 @@ SELECT LpNormalize((3, 4),5);
 
 ## cosineDistance {#cosinedistance}
 
-二つのベクトルのコサイン距離を計算します（タプルの値は座標です）。返される値が小さいほど、ベクトルは似ています。
+2つのベクトル間のコサイン距離を計算します（タプルの値は座標）。返される値が小さいほど、ベクトルはより類似しています。
 
 **構文**
 
@@ -531,12 +535,12 @@ cosineDistance(vector1, vector2)
 
 **引数**
 
-- `vector1` — 最初のタプル。 [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
-- `vector2` — 二番目のタプル。 [タプル](../data-types/tuple.md) または [配列](../data-types/array.md).
+- `vector1` — 最初のタプル。 [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
+- `vector2` — 2番目のタプル。 [Tuple](../data-types/tuple.md) または [Array](../data-types/array.md).
 
 **返される値**
 
-- 二つのベクトルの角度のコサインから1を引いた値。 [Float](../data-types/float.md).
+- 2つのベクトルの間の角度のコサインから1を引いた値。 [Float](../data-types/float.md).
 
 **例**
 

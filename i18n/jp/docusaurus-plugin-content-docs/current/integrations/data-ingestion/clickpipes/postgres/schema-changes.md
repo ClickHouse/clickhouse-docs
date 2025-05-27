@@ -1,12 +1,16 @@
 ---
-title: "ClickPipes for Postgres: スキーマ変更の伝播サポート"
-slug: /integrations/clickpipes/postgres/schema-changes
+'title': 'Schema Changes Propagation Support'
+'slug': '/integrations/clickpipes/postgres/schema-changes'
+'description': 'Page describing schema change types detectable by ClickPipes in the
+  source tables'
 ---
 
-ClickPipes for Postgres は、ソーステーブルにおけるスキーマ変更を検出できます。いくつかの変更は対応するデスティネーションテーブルにも伝播されます。各スキーマ変更の取り扱いについては以下に記載されています：
 
-| スキーマ変更タイプ                                                                  | 挙動                                   |
+
+ClickPipes for Postgresは、ソーステーブルのスキーマ変更を検出できます。また、これらの変更の一部を対応するデスティネーションテーブルにも伝播することができます。それぞれのスキーマ変更の扱いは、以下に文書化されています。
+
+| スキーマ変更タイプ                                                                  | 振る舞い                             |
 | ----------------------------------------------------------------------------------- | ------------------------------------- |
-| 新しいカラムの追加 (`ALTER TABLE ADD COLUMN ...`)                                  | 自動的に伝播され、変更後のすべての行にはすべてのカラムが埋まります。                                                                         |
-| デフォルト値を持つ新しいカラムの追加 (`ALTER TABLE ADD COLUMN ... DEFAULT ...`) | 自動的に伝播され、変更後のすべての行にはすべてのカラムが埋まりますが、既存の行は完全なテーブルリフレッシュがない限り DEFAULT 値を表示しません。 |
-| 既存のカラムの削除 (`ALTER TABLE DROP COLUMN ...`)                                 | 検出されますが、伝播されません。変更後のすべての行には削除されたカラムに対して NULL が設定されます。                                                                |
+| 新しいカラムの追加 (`ALTER TABLE ADD COLUMN ...`)                                  | 自動的に伝播され、変更後のすべての行はすべてのカラムが埋められます                                                                         |
+| デフォルト値を持つ新しいカラムの追加 (`ALTER TABLE ADD COLUMN ... DEFAULT ...`) | 自動的に伝播され、変更後のすべての行はすべてのカラムが埋められますが、既存の行はテーブル全体を再読み込みしない限りDEFAULT値を表示しません |
+| 既存のカラムの削除 (`ALTER TABLE DROP COLUMN ...`)                                 | 検出されますが、伝播はされません。変更後のすべての行は削除されたカラムに対してNULLを持ちます                                                                |

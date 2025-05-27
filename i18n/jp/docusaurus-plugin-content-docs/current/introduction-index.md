@@ -1,16 +1,18 @@
 ---
-slug: /introduction-clickhouse
-title: はじめに
-description: はじめにのランディングページ
-pagination_next: null
+'slug': '/introduction-clickhouse'
+'title': 'はじめに'
+'description': 'はじめにのランディングページ'
+'pagination_next': null
 ---
 
-ClickHouseへようこそ！以下のページをチェックして、最も高速でリソース効率の良いリアルタイムデータウェアハウス＆オープンソースデータベースであるClickHouseをすぐに使い始める方法を学びましょう。
 
-| ページ                                     | 説明                                                               |
-|-------------------------------------------|--------------------------------------------------------------------|
-| [ClickHouseとは？](about-us/intro.mdx)     | ClickHouseについてさらに知りましょう。                               |
-| [クイックスタート](quick-start.mdx)         | すぐに使い始めるためのクイックスタートガイドです。                  |           
-| [高度なチュートリアル](tutorial.md)        | 基本に慣れましたか？もう少し興味深いことをしましょう。                |
-| [インストール](getting-started/install.md)  | ClickHouseをインストールする様々な方法について学びましょう。         |
-| [デプロイメントモード](deployment-modes.md) | このガイドでは、ClickHouseをデプロイして使用するための4つの主な方法を探ります。 | 
+
+Welcome to ClickHouse! Check out the pages below to learn how to get up and running with ClickHouse - the fastest and most resource efficient real-time data warehouse and open-source database.
+
+| ページ                                            | 説明                                                              |
+|-------------------------------------------------|-------------------------------------------------------------------|
+| [What is ClickHouse?](about-us/intro.mdx)       | Learn more about what ClickHouse is.                              |
+| [Quick Start](quick-start.mdx)                  | Quick start guide to get you up and running in no time.           |           
+| [Advanced Tutorial](tutorial.md)                | Comfortable with the basics? Let's do something more interesting. |
+| [Install](getting-started/install/install.mdx)  | Learn about the various ways you can install ClickHouse.          |
+| [Deployment modes](deployment-modes.md)         | This guide explores the four main ways to deploy and use ClickHouse.|

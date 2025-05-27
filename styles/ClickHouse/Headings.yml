@@ -36,3 +36,10 @@ exceptions:
   - Azure Blob Storage
   - VPC
   - BYOC
+  - TiDB
+  - PlanetScale
+  - Vitess
+  - MySQL
+  - ClickPipe
+  - ClickPipes
+  - CDC

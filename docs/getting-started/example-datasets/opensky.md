@@ -415,7 +415,3 @@ Result:
 131. │ 2021-06-28 │ 2554 │ █████████████████████████▌                                                   │
      └────────────┴──────┴──────────────────────────────────────────────────────────────────────────────┘
 ```
-
-### Online Playground {#playground}
-
-You can test other queries to this data set using the interactive resource [Online Playground](https://sql.clickhouse.com). For example, [like this](https://sql.clickhouse.com?query_id=BIPDVQNIGVEZFQYFEFQB7O). However, please note that you cannot create temporary tables here.

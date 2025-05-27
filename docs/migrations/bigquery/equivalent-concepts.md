@@ -2,7 +2,8 @@
 title: 'BigQuery vs ClickHouse Cloud'
 slug: /migrations/bigquery/biquery-vs-clickhouse-cloud
 description: 'How BigQuery differs from ClickHouse Cloud'
-keywords: ['migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'BigQuery']
+keywords: ['BigQuery']
+show_related_blogs: true
 ---
 
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';

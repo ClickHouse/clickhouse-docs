@@ -1,29 +1,33 @@
 ---
-slug: /guides/sre/configuring-ssl
-sidebar_label: SSL-TLSの設定
-sidebar_position: 20
+'slug': '/guides/sre/configuring-ssl'
+'sidebar_label': 'SSL-TLSの設定'
+'sidebar_position': 20
+'title': 'SSL-TLSの設定'
+'description': 'このガイドでは、ClickHouseをOpenSSL証明書を使用して接続を検証するように構成するためのシンプルで最小限の設定を提供しています。'
 ---
+
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
+import Image from '@theme/IdealImage';
 
 
 # SSL-TLSの設定
 
 <SelfManaged />
 
-このガイドでは、ClickHouseをOpenSSL証明書を使用して接続を検証するために構成するための簡単かつ最小限の設定を提供します。このデモでは、自己署名の認証局 (CA) 証明書とキーを作成し、適切な設定で接続を確立するためのノード証明書を作成します。
+このガイドでは、ClickHouseを設定してOpenSSL証明書を使用して接続を検証するためのシンプルで最小限の設定を提供します。このデモでは、自己署名の証明書を用いた認証局（CA）証明書とキーを作成し、適切な設定で接続を行います。
 
 :::note
-TLSの実装は複雑であり、完全に安全で堅牢な展開を確保するために考慮すべきオプションが多数あります。これは基礎的なSSL/TLS設定の例を含む基本的なチュートリアルです。適切な証明書を生成するために、PKI/securityチームに相談してください。
+TLSの実装は複雑であり、完全に安全で堅牢な展開を確保するために考慮すべき多くのオプションがあります。これは、基本的なSSL/TLS設定の例を含む基本的なチュートリアルです。正しい証明書を生成するためにPKI/セキュリティチームに相談してください。
 
-証明書の使用に関する[基本的なチュートリアル](https://ubuntu.com/server/docs/security-certificates)を確認して、基本的な概要を把握してください。
+証明書の使用に関する[この基本的なチュートリアル](https://ubuntu.com/server/docs/security-certificates)を確認して、導入の概要を理解してください。
 :::
 
-## 1. ClickHouseのデプロイメントを作成 {#1-create-a-clickhouse-deployment}
+## 1. ClickHouseのデプロイメントを作成する {#1-create-a-clickhouse-deployment}
 
-このガイドは、Ubuntu 20.04および以下のホストにDEBパッケージ（aptを使用）でインストールされたClickHouseを使用して作成されました。ドメインは `marsnet.local` です:
+このガイドは、Ubuntu 20.04を使用し、次のホストにDEBパッケージ（aptを使用）でインストールされたClickHouseを使用して書かれました。ドメインは`marsnet.local`です。
 
-|Host |IP Address|
+|ホスト |IPアドレス|
 |--------|-------------|
 |`chnode1` |192.168.1.221|
 |`chnode2` |192.168.1.222|
@@ -31,73 +35,73 @@ TLSの実装は複雑であり、完全に安全で堅牢な展開を確保す�
 
 
 :::note
-ClickHouseのインストール方法に関する詳細は、[クイックスタート](/getting-started/install.md)を参照してください。
+ClickHouseのインストール方法についての詳細は、[クイックスタート](/getting-started/install/install.mdx)をご覧ください。
 :::
 
 
-## 2. SSL証明書を作成 {#2-create-ssl-certificates}
+## 2. SSL証明書を作成する {#2-create-ssl-certificates}
 :::note
-自己署名証明書の使用はデモンストレーション目的のみであり、本番環境では使用すべきではありません。証明書要求は、組織によって署名され、設定で構成されるCAチェーンによって検証されるべきです。ただし、これらの手順を使用して設定を構成およびテストし、その後、使用される実際の証明書に置き換えることができます。
+自己署名の証明書はデモ目的のみであり、本番環境で使用すべきではありません。証明書リクエストは、組織によって署名され、設定に構成されるCAチェーンを使用して検証されるように作成する必要があります。ただし、これらの手順は設定を構成してテストするために使用でき、その後、本番環境で使用される実際の証明書に置き換えることができます。
 :::
 
-1. 新しいCAに使用するキーを生成します:
+1. 新しいCA用のキーを生成します：
     ```bash
     openssl genrsa -out marsnet_ca.key 2048
     ```
 
-2. 新しい自己署名CA証明書を生成します。以下のコマンドは、CAキーを使用して他の証明書に署名するために使用される新しい証明書を作成します:
+2. 新しい自己署名CA証明書を生成します。以下は、CAキーを使用して他の証明書に署名するために使用される新しい証明書を作成します：
     ```bash
     openssl req -x509 -subj "/CN=marsnet.local CA" -nodes -key marsnet_ca.key -days 1095 -out marsnet_ca.crt
     ```
 
     :::note
-    キーとCA証明書をクラスター外の安全な場所にバックアップしてください。ノード証明書の生成後、キーはクラスターのノードから削除するべきです。
+    キーとCA証明書は、クラスター外の安全な場所にバックアップしてください。ノード証明書を生成した後、キーはクラスターのノードから削除する必要があります。
     :::
 
-3. 新しいCA証明書の内容を確認します:
+3. 新しいCA証明書の内容を確認します：
     ```bash
     openssl x509 -in marsnet_ca.crt -text
     ```
 
-4. 各ノード用の証明書要求 (CSR) を作成し、キーを生成します:
+4. 各ノード用に証明書リクエスト（CSR）を作成し、キーを生成します：
     ```bash
     openssl req -newkey rsa:2048 -nodes -subj "/CN=chnode1" -addext "subjectAltName = DNS:chnode1.marsnet.local,IP:192.168.1.221" -keyout chnode1.key -out chnode1.csr
     openssl req -newkey rsa:2048 -nodes -subj "/CN=chnode2" -addext "subjectAltName = DNS:chnode2.marsnet.local,IP:192.168.1.222" -keyout chnode2.key -out chnode2.csr
     openssl req -newkey rsa:2048 -nodes -subj "/CN=chnode3" -addext "subjectAltName = DNS:chnode3.marsnet.local,IP:192.168.1.223" -keyout chnode3.key -out chnode3.csr
     ```
 
-5. CSRおよびCAを使用して、新しい証明書とキーのペアを作成します:
+5. CSRとCAを使用して、新しい証明書とキーのペアを作成します：
     ```bash
     openssl x509 -req -in chnode1.csr -out chnode1.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365 -copy_extensions copy
     openssl x509 -req -in chnode2.csr -out chnode2.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365 -copy_extensions copy
     openssl x509 -req -in chnode3.csr -out chnode3.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365 -copy_extensions copy
     ```
 
-6. 主題と発行者を確認します:
+6. 主題と発行者について証明書を確認します：
     ```bash
     openssl x509 -in chnode1.crt -text -noout
     ```
 
-7. 新しい証明書がCA証明書に対して検証できるか確認します:
+7. 新しい証明書がCA証明書と一致することを確認します：
     ```bash
     openssl verify -CAfile marsnet_ca.crt chnode1.crt
     chnode1.crt: OK
     ```
 
-## 3. 証明書とキーを保存するためのディレクトリを作成し、構成します。 {#3-create-and-configure-a-directory-to-store-certificates-and-keys}
+## 3. 証明書とキーを保存するためのディレクトリを作成して構成する {#3-create-and-configure-a-directory-to-store-certificates-and-keys}
 
 :::note
-これは各ノードで実行する必要があります。各ホストで適切な証明書とキーを使用してください。
+これは各ノードで行う必要があります。各ホストに適切な証明書とキーを使用してください。
 :::
 
-1. 各ノードのClickHouseがアクセスできるディレクトリにフォルダーを作成します。デフォルトの設定ディレクトリ (例: `/etc/clickhouse-server`) を推奨します:
+1. 各ノードのClickHouseがアクセスできるディレクトリにフォルダーを作成します。デフォルトの構成ディレクトリ（例：`/etc/clickhouse-server`）を推奨します：
     ```bash
     mkdir /etc/clickhouse-server/certs
     ```
 
-2. 各ノードに対応するCA証明書、ノード証明書、およびキーを新しいcertsディレクトリにコピーします。
+2. 各ノードに対応するCA証明書、ノード証明書、キーを新しいcertsディレクトリにコピーします。
 
-3. ClickHouseが証明書を読み取れるように所有者と権限を更新します:
+3. ClickHouseが証明書を読み取れるように所有者と権限を更新します：
     ```bash
     chown clickhouse:clickhouse -R /etc/clickhouse-server/certs
     chmod 600 /etc/clickhouse-server/certs/*
@@ -114,22 +118,22 @@ ClickHouseのインストール方法に関する詳細は、[クイックスタ
     -rw------- 1 clickhouse clickhouse 1131 Apr 12 20:23 marsnet_ca.crt
     ```
 
-## 4. ClickHouse Keeperを使用して基本クラスターを用意し、環境を構成します {#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper}
+## 4. ClickHouse Keeperを使用して基本クラスターで環境を構成する {#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper}
 
-このデプロイメント環境では、各ノードで以下のClickHouse Keeper設定が使用されます。各サーバーには独自の `<server_id>` が必要です（例: ノード `chnode1` は `<server_id>1</server_id>` になります）。
+このデプロイメント環境では、以下のClickHouse Keeper設定が各ノードで使用されます。各サーバーにはそれぞれの`<server_id>`があります。（例えば、ノード`chnode1`のためには`<server_id>1</server_id>`など。）
 
 :::note
-ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポートは構成可能で、環境内の他のアプリケーションですでに使用されている場合は別のポートを設定できます。
+ClickHouse Keeperの推奨ポートは`9281`です。ただし、ポートは構成可能であり、このポートが環境内の他のアプリケーションによって既に使用されている場合は設定できます。
 
-すべてのオプションについての完全な説明は、https://clickhouse.com/docs/operations/clickhouse-keeper/ を訪れてください。
+すべてのオプションについて完全な説明が必要な場合は、https://clickhouse.com/docs/operations/clickhouse-keeper/をご覧ください。
 :::
 
 
-1. ClickHouseサーバーの `config.xml` の `<clickhouse>` タグ内に次の内容を追加します。
+1. ClickHouseサーバー`config.xml`の`<clickhouse>`タグ内に以下を追加します。
 
     :::note
-    本番環境では、`config.d` ディレクトリに別の `.xml` 設定ファイルを使用することを推奨します。
-    詳細については、https://clickhouse.com/docs/operations/configuration-files/ を訪れてください。
+    本番環境では、`config.d`ディレクトリに別の`.xml`構成ファイルを使用することが推奨されます。
+    詳細情報については、https://clickhouse.com/docs/operations/configuration-files/をご覧ください。
     :::
 
     ```xml
@@ -166,7 +170,7 @@ ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポー�
     </keeper_server>
     ```
 
-2. すべてのノードでkeeper設定のコメントを解除し、`<secure>` フラグを1に設定します:
+2. すべてのノードでkeeper設定のコメントを外し、`<secure>`フラグを1に設定します：
     ```xml
     <zookeeper>
         <node>
@@ -187,13 +191,13 @@ ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポー�
     </zookeeper>
     ```
 
-3. `chnode1` と `chnode2` に次のクラスター設定を更新し、追加します。 `chnode3` はClickHouse Keeperの過半数に使用されます。
+3. `chnode1`および`chnode2`の`<remote_servers>`セクションに次のクラスター設定を更新して追加します。`chnode3`はClickHouse Keeperの過半数として使用されます。
 
     :::note
-    この構成では、1つの例のクラスターしか構成されていません。テストサンプルクラスターは削除、コメント解除、またはテスト中の既存のクラスターがある場合はポートを更新し、 `<secure>` オプションを追加する必要があります。`<user>` と `<password>` は、デフォルトユーザーに初期設定時にパスワードが付与されている場合には設定する必要があります。
+    この構成では、1つの例としてクラスターが構成されています。テストサンプルクラスターは削除、コメントアウトするか、既存のクラスターがテスト中であればポートを更新し、`<secure>`オプションを追加する必要があります。デフォルトユーザーがインストール時または`users.xml`ファイルにパスワードを設定されている場合は、`<user>`と`<password>`を設定する必要があります。
     :::
 
-    次の内容は、2つのサーバーで1つのシャードレプリカを持つクラスターを作成します（各ノードに1つずつ）。
+    以下は、2つのサーバー（各ノードに1つ）のシャードレプリカを持つクラスターを作成します。
     ```xml
     <remote_servers>
         <cluster_1S_2R>
@@ -217,7 +221,7 @@ ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポー�
     </remote_servers>
     ```
 
-4. テストのためにReplicatedMergeTreeテーブルを作成できるようにマクロの値を定義します。 `chnode1` で:
+4. テスト用のReplicatedMergeTreeテーブルを作成できるようにマクロ値を定義します。`chnode1`では：
     ```xml
     <macros>
         <shard>1</shard>
@@ -225,7 +229,7 @@ ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポー�
     </macros>
     ```
 
-    `chnode2` で:
+    `chnode2`では：
     ```xml
     <macros>
         <shard>1</shard>
@@ -233,32 +237,32 @@ ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポー�
     </macros>
     ```
 
-## 5. ClickHouseノードのSSL-TLSインターフェイスを構成します {#5-configure-ssl-tls-interfaces-on-clickhouse-nodes}
-以下の設定は、ClickHouseサーバーの `config.xml` に構成されています。
+## 5. ClickHouseノードでSSL-TLSインターフェースを構成する {#5-configure-ssl-tls-interfaces-on-clickhouse-nodes}
+以下の設定は、ClickHouseサーバーの`config.xml`に構成されます。
 
-1. デプロイメントの表示名を設定します（任意）:
+1. デプロイメントの表示名を設定します（オプション）：
     ```xml
     <display_name>clickhouse</display_name>
     ```
 
-2. ClickHouseが外部ポートをリッスンするように設定します:
+2. ClickHouseが外部ポートでリッスンするように設定します：
     ```xml
     <listen_host>0.0.0.0</listen_host>
     ```
 
-3. 各ノードで `https` ポートを構成し、`http` ポートを無効にします:
+3. 各ノードの`https`ポートを構成し、`http`ポートを無効にします：
     ```xml
     <https_port>8443</https_port>
     <!--<http_port>8123</http_port>-->
     ```
 
-4. 各ノードでClickHouse Nativeの安全なTCPポートを構成し、デフォルトの非安全ポートを無効にします:
+4. 各ノードでClickHouse NativeセキュアTCPポートを構成し、デフォルトの非セキュアポートを無効にします：
     ```xml
     <tcp_port_secure>9440</tcp_port_secure>
     <!--<tcp_port>9000</tcp_port>-->
     ```
 
-5. 各ノードで `interserver https` ポートを構成し、デフォルトの非安全ポートを無効にします:
+5. 各ノードで`interserver https`ポートを構成し、デフォルトの非セキュアポートを無効にします：
     ```xml
     <interserver_https_port>9010</interserver_https_port>
     <!--<interserver_http_port>9009</interserver_http_port>-->
@@ -267,8 +271,8 @@ ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポー�
 6. OpenSSLを証明書とパスで構成します
 
     :::note
-    各ファイル名とパスは、設定されているノードに合わせて更新する必要があります。
-    たとえば、`chnode2` ホストで構成する際には、`<certificateFile>` のエントリを `chnode2.crt` に更新します。
+    各ファイル名とパスは、構成されるノードに合わせて更新する必要があります。
+    例えば、`chnode2`ホストで構成する際に`<certificateFile>`項目を`chnode2.crt`に更新します。
     :::
 
     ```xml
@@ -296,9 +300,9 @@ ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポー�
     </openSSL>
     ```
 
-    詳細については、https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-openssl を訪れてください。
+    詳細情報については、https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-opensslをご覧ください。
 
-7. 各ノードでgRPCをSSL用に構成します:
+7. 各ノードでSSL用にgRPCを構成します：
     ```xml
     <grpc>
         <enable_ssl>1</enable_ssl>
@@ -314,9 +318,9 @@ ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポー�
     </grpc>
     ```
 
-    詳細については、https://clickhouse.com/docs/interfaces/grpc/ を訪れてください。
+    詳細情報については、https://clickhouse.com/docs/interfaces/grpc/をご覧ください。
 
-8. 少なくとも1つのノードでClickHouseクライアントを構成し、`config.xml` ファイル（デフォルトは `/etc/clickhouse-client/`）で接続にSSLを使用させます:
+8. 少なくとも1つのノードのClickHouseクライアントをSSL接続を使用するように設定します（デフォルトでは`/etc/clickhouse-client/`にあります）：
     ```xml
     <openSSL>
         <client>
@@ -332,19 +336,19 @@ ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポー�
     </openSSL>
     ```
 
-9. MySQLおよびPostgreSQLのデフォルトエミュレーションポートを無効にします:
+6. MySQLおよびPostgreSQLのデフォルトエミュレーションポートを無効にします：
     ```xml
     <!--mysql_port>9004</mysql_port-->
     <!--postgresql_port>9005</postgresql_port-->
     ```
 
 ## 6. テスト {#6-testing}
-1. すべてのノードを1つずつ起動します:
+1. ノードを一つずつ起動します：
     ```bash
     service clickhouse-server start
     ```
 
-2. 安全なポートが起動してリッスンしているか確認し、各ノードで次のように表示されるはずです:
+2. セキュアポートが起動してリッスンしていることを確認します。各ノードでの出力は次のようになります：
     ```bash
     root@chnode1:/etc/clickhouse-server# netstat -ano | grep tcp
     ```
@@ -369,14 +373,14 @@ ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポー�
 
     |ClickHouseポート |説明|
     |--------|-------------|
-    |8443 | httpsインターフェイス|
+    |8443 | httpsインターフェース|
     |9010 | interserver httpsポート|
-    |9281 | ClickHouse Keeper安全ポート|
-    |9440 | 安全なNative TCPプロトコル|
+    |9281 | ClickHouse Keeperセキュアポート|
+    |9440 | セキュアNative TCPプロトコル|
     |9444 | ClickHouse Keeper Raftポート |
 
-3. ClickHouse Keeperの健康状態を確認します
-一般的な[4文字のコマンド (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands)は、TLSなしで`echo`を使用しては機能しません。ここでは、`openssl`を使用してコマンドを実行する方法を示します。
+3. ClickHouse Keeperのヘルスを確認します。
+通常の[4文字単語（4lW）](/guides/sre/keeper/index.md#four-letter-word-commands)コマンドは、TLSなしで`echo`を使用しても機能しません。以下は`openssl`を使用してコマンドを実行する方法です。
    - `openssl`でインタラクティブセッションを開始します
 
   ```bash
@@ -401,7 +405,7 @@ ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポー�
   ...
   ```
 
-   - opensslセッション内で4LWコマンドを送信します
+   - opensslセッションで4LWコマンドを送信します：
 
   ```bash
   mntr
@@ -438,7 +442,7 @@ ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポー�
   closed
   ```
 
-4. `--secure`フラグとSSLポートを使用してClickHouseクライアントを起動します:
+4. ClickHouseクライアントを`--secure`フラグとSSLポートを使用して起動します：
     ```bash
     root@chnode1:/etc/clickhouse-server# clickhouse-client --user default --password ClickHouse123! --port 9440 --secure --host chnode1.marsnet.local
     ClickHouse client version 22.3.3.44 (official build).
@@ -448,17 +452,16 @@ ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポー�
     clickhouse :)
     ```
 
-5. `https` インターフェイスを通して `https://chnode1.marsnet.local:8443/play` でPlay UIにログインします。
+5. `https`インターフェースを使用してPlay UIにログインします：`https://chnode1.marsnet.local:8443/play`。
 
-    <img src={configuringSsl01}
-      alt="SSLの設定" />
+    <Image img={configuringSsl01} alt="SSLの設定" size="md" border />
 
     :::note
-    ブラウザは信頼されていない証明書を表示します。これは、ワークステーションからアクセスされており、クライアントマシンのルートCAストアに証明書がないためです。
-    公的機関または企業CAから発行された証明書を使用する場合、信頼されていることを示すべきです。
+    ブラウザは信頼されていない証明書を表示します。これは、ワークステーションからアクセスされており、証明書がクライアントマシンのルートCAストアに存在しないためです。
+    公的な権威または企業CAから発行された証明書を使用すると、信頼されることになります。
     :::
 
-6. 複製テーブルを作成します:
+6. レプリケートテーブルを作成します：
     ```sql
     clickhouse :) CREATE TABLE repl_table ON CLUSTER cluster_1S_2R
                 (
@@ -477,7 +480,7 @@ ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポー�
     └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
     ```
 
-7. `chnode1` でいくつかの行を追加します:
+7. `chnode1`にいくつかの行を追加します：
     ```sql
     INSERT INTO repl_table
     (id, column1, column2)
@@ -486,7 +489,7 @@ ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポー�
     (2,'2022-04-02','def');
     ```
 
-8. `chnode2` で行を表示して複製を確認します:
+8. `chnode2`で行を表示してレプリケーションを確認します：
     ```sql
     SELECT * FROM repl_table
     ```
@@ -500,4 +503,4 @@ ClickHouse Keeperの推奨ポートは `9281` です。ただし、このポー�
 
 ## まとめ {#summary}
 
-この記事は、SSL/TLSで構成されたClickHouse環境のセットアップに焦点を当てました。本番環境での要件によって設定は異なります。たとえば、証明書の検証レベル、プロトコル、暗号などです。しかし、これで安全な接続の設定と実装に関する手順についての良い理解が得られるはずです。
+この記事では、SSL/TLSで構成されたClickHouse環境の設定に焦点を当てました。設定は本番環境での異なる要件に応じて異なります。たとえば、証明書の検証レベル、プロトコル、暗号などです。しかし、設定および安全な接続を実装するために関与するステップを理解できたと思います。

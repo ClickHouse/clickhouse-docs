@@ -1,17 +1,22 @@
 ---
-title: '备份策略'
-slug: '/cloud/manage/jan-2025-faq/backup'
-keywords: ['新层级', '计划', '定价', '备份']
-description: '新层级中的备份策略'
+'title': '备份策略'
+'slug': '/cloud/manage/jan-2025-faq/backup'
+'keywords':
+- 'new tiers'
+- 'plans'
+- 'pricing'
+- 'backups'
+'description': '新层中的备份策略'
 ---
 
-## 备份策略是什么？ {#what-is-the-backup-policy}
-在基础、标准和企业层级中，备份是计量的，且与存储费用分开计费。所有服务默认每日至少会创建一个备份，并可以通过云控制台的设置选项卡在标准层级及以上配置更多备份。每个备份至少会保留24小时。
+## 什么是备份策略？ {#what-is-the-backup-policy}
+在基本、规模和企业级别，备份是计量的，并且与存储分开收费。
+所有服务默认为每天进行一次备份，并可以在云控制台的设置选项卡中配置更多备份，从规模级别开始。每个备份至少保留24小时。
 
-## 当前用户设置的与默认备份分开的配置会发生什么？ {#what-happens-to-current-configurations-that-users-have-set-up-separate-from-default-backups}
+## 用户设置的当前配置与默认备份分开的情况会如何？ {#what-happens-to-current-configurations-that-users-have-set-up-separate-from-default-backups}
 
-客户特定的备份配置将会保留。用户可以根据需要在新层级中更改这些配置。
+客户特定的备份配置将会保留。用户可以根据需要在新的层次中更改这些配置。
 
-## 备份在不同层级的收费是否不同？ {#are-backups-charged-differently-across-tiers}
+## 各个层次的备份收费是否不同？ {#are-backups-charged-differently-across-tiers}
 
-所有层级的备份费用是相同的。
+所有层次的备份费用是相同的。

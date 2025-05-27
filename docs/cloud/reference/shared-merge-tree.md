@@ -119,7 +119,3 @@ Most of the time, you should not be using `select_sequential_consistency` or `SY
 2. If you write to one replica and read from another, you can use `SYSTEM SYNC REPLICA LIGHTWEIGHT` to force the replica to fetch the metadata from ClickHouse-Keeper.
 
 3. Use `select_sequential_consistency` as a setting as part of your query.
-
-## Related Content {#related-content}
-
-- [ClickHouse Cloud boosts performance with SharedMergeTree and Lightweight Updates](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates)

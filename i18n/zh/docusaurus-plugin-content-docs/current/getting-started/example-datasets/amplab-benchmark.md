@@ -1,17 +1,17 @@
 ---
-description: '用于比较数据仓库解决方案性能的基准数据集。'
-slug: /getting-started/example-datasets/amplab-benchmark
-sidebar_label: 'AMPLab 大数据基准'
-title: 'AMPLab 大数据基准'
+'description': '用于比较数据仓库解决方案性能的基准数据集。'
+'sidebar_label': 'AMPLab 大数据基准'
+'slug': '/getting-started/example-datasets/amplab-benchmark'
+'title': 'AMPLab 大数据基准'
 ---
 
-请参见 https://amplab.cs.berkeley.edu/benchmark/
+See https://amplab.cs.berkeley.edu/benchmark/
 
-在 https://aws.amazon.com 注册一个免费账户。需要一张信用卡、邮箱和手机号码。获取新访问密钥请访问 https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential
+在 https://aws.amazon.com 注册一个免费账户。需要提供信用卡、电子邮件和电话号码。在 https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential 获取一个新的访问密钥。
 
 在控制台中运行以下命令：
 
-``` bash
+```bash
 $ sudo apt-get install s3cmd
 $ mkdir tiny; cd tiny;
 $ s3cmd sync s3://big-data-benchmark/pavlo/text-deflate/tiny/ .
@@ -26,7 +26,7 @@ $ cd ..
 
 运行以下 ClickHouse 查询：
 
-``` sql
+```sql
 CREATE TABLE rankings_tiny
 (
     pageURL String,
@@ -90,7 +90,7 @@ CREATE TABLE uservisits_5nodes_on_single
 
 返回控制台：
 
-``` bash
+```bash
 $ for i in tiny/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO rankings_tiny FORMAT CSV"; done
 $ for i in tiny/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO uservisits_tiny FORMAT CSV"; done
 $ for i in 1node/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO rankings_1node FORMAT CSV"; done
@@ -101,7 +101,7 @@ $ for i in 5nodes/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i 
 
 获取数据样本的查询：
 
-``` sql
+```sql
 SELECT pageURL, pageRank FROM rankings_1node WHERE pageRank > 1000
 
 SELECT substring(sourceIP, 1, 8), sum(adRevenue) FROM uservisits_1node GROUP BY substring(sourceIP, 1, 8)

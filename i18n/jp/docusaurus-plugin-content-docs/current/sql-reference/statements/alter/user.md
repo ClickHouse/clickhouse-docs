@@ -1,15 +1,18 @@
 ---
-slug: /sql-reference/statements/alter/user
-sidebar_position: 45
-sidebar_label: USER
-title: "ALTER USER"
+'description': 'ユーザーのためのドキュメント'
+'sidebar_label': 'ユーザー'
+'sidebar_position': 45
+'slug': '/sql-reference/statements/alter/user'
+'title': 'ALTER USER'
 ---
 
-ClickHouse のユーザーアカウントを変更します。
 
-構文：
 
-``` sql
+Changes ClickHouse user accounts.
+
+Syntax:
+
+```sql
 ALTER USER [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]] 
     [ON CLUSTER cluster_name]
     [NOT IDENTIFIED | RESET AUTHENTICATION METHODS TO NEW | {IDENTIFIED | ADD IDENTIFIED} {[WITH {plaintext_password | sha256_password | sha256_hash | double_sha1_password | double_sha1_hash}] BY {'password' | 'hash'}} | WITH NO_PASSWORD | {WITH ldap SERVER 'server_name'} | {WITH kerberos [REALM 'realm']} | {WITH ssl_certificate CN 'common_name' | SAN 'TYPE:subject_alt_name'} | {WITH ssh_key BY KEY 'public_key' TYPE 'ssh-rsa|...'} | {WITH http SERVER 'server_name' [SCHEME 'Basic']} [VALID UNTIL datetime]
@@ -28,82 +31,83 @@ ALTER USER [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]]
 
 `ALTER USER` を使用するには、[ALTER USER](../../../sql-reference/statements/grant.md#access-management) 権限が必要です。
 
-## GRANTEES 句 {#grantees-clause}
+## GRANTEES Clause {#grantees-clause}
 
-このユーザーから特定のユーザーまたはロールに [特権](../../../sql-reference/statements/grant.md#privileges) を付与できることを指定します。このユーザーがすべての必要なアクセスを [GRANT OPTION](../../../sql-reference/statements/grant.md#granting-privilege-syntax) によって付与されていることが条件です。`GRANTEES` 句のオプション：
+このクエリを使用するユーザーが、[privileges](../../../sql-reference/statements/grant.md#privileges)を受け取ることを許可されたユーザーまたはロールを指定します。条件として、このユーザーには[GRANT OPTION](../../../sql-reference/statements/grant.md#granting-privilege-syntax)で必要なアクセス権がすべて与えられている必要があります。`GRANTEES` エクスプレスのオプション：
 
-- `user` — このユーザーが特権を付与できるユーザーを指定します。
-- `role` — このユーザーが特権を付与できるロールを指定します。
-- `ANY` — このユーザーは誰にでも特権を付与できます。これはデフォルトの設定です。
-- `NONE` — このユーザーは特権を付与できません。
+- `user` — このユーザーが権限を付与できるユーザーを指定します。
+- `role` — このユーザーが権限を付与できるロールを指定します。
+- `ANY` — このユーザーは誰にでも権限を付与できます。これはデフォルト設定です。
+- `NONE` — このユーザーは誰にも権限を付与できません。
 
-`EXCEPT` 式を使用して、任意のユーザーやロールを除外できます。たとえば、`ALTER USER user1 GRANTEES ANY EXCEPT user2` のように指定します。これは、`user1` が `GRANT OPTION` によって特権を付与されている場合、それを `user2` を除く誰にでも付与できることを意味します。
+`EXCEPT` 式を使用することで、任意のユーザーまたはロールを除外できます。例えば、`ALTER USER user1 GRANTEES ANY EXCEPT user2` という意味は、`user1`に権限が付与されていれば、`user2`を除く誰にでもその権限を付与できることを示します。
 
-## 例 {#examples}
+## Examples {#examples}
 
-割り当てられたロールをデフォルトに設定します：
+割り当てられたロールをデフォルトとして設定：
 
-``` sql
+```sql
 ALTER USER user DEFAULT ROLE role1, role2
 ```
 
-ロールが以前にユーザーに割り当てられていない場合、ClickHouse は例外をスローします。
+ユーザーにロールが以前に割り当てられていない場合、ClickHouseは例外をスローします。
 
-割り当てられたすべてのロールをデフォルトに設定します：
+すべての割り当てられたロールをデフォルトとして設定：
 
-``` sql
+```sql
 ALTER USER user DEFAULT ROLE ALL
 ```
 
-将来的にロールがユーザーに割り当てられた場合、それは自動的にデフォルトになります。
+将来的にロールがユーザーに割り当てられると、自動的にデフォルトになります。
 
-`role1` と `role2` を除いて、割り当てられたすべてのロールをデフォルトに設定します：
+`role1` と `role2` を除いてすべての割り当てられたロールをデフォルトとして設定：
 
-``` sql
+```sql
 ALTER USER user DEFAULT ROLE ALL EXCEPT role1, role2
 ```
 
-`john` アカウントを持つユーザーが `jack` アカウントを持つユーザーに自分の特権を付与できるようにします：
+`john` アカウントを持つユーザーが `jack` アカウントを持つユーザーに権限を付与できるようにします：
 
-``` sql
+```sql
 ALTER USER john GRANTEES jack;
 ```
 
-既存の認証方法を保持しながら、新しい認証方法をユーザーに追加します：
+既存の認証方法を保持しながら、新しい認証方法を追加：
 
-``` sql
+```sql
 ALTER USER user1 ADD IDENTIFIED WITH plaintext_password by '1', bcrypt_password by '2', plaintext_password by '3'
 ```
 
 注：
-1. 古いバージョンの ClickHouse は複数の認証方法の構文をサポートしていないかもしれません。そのため、ClickHouse サーバーがそのようなユーザーを含んでいて、サポートされていないバージョンにダウングレードされると、そのようなユーザーは無効になり、一部のユーザー関連の操作が壊れる可能性があります。ダウングレードをスムーズに行うには、ダウングレード前にすべてのユーザーが単一の認証方法を含むように設定する必要があります。あるいは、適切な手順を経ずにサーバーがダウングレードされた場合、故障したユーザーは削除されるべきです。
-2. `no_password` は他の認証方法と共存できないため、セキュリティ上の理由から、`no_password` 認証方法を `ADD` することはできません。以下のクエリはエラーをスローします：
+1. 以前のバージョンの ClickHouse は、複数の認証方法の構文をサポートしていない可能性があります。したがって、ClickHouse サーバーにそのようなユーザーが含まれている場合、サーバーをサポートされていないバージョンにダウングレードすると、そのようなユーザーは使えなくなり、一部のユーザー関連の操作が壊れます。適切にダウングレードするためには、ダウングレード前にすべてのユーザーが単一の認証方法を含むように設定する必要があります。あるいは、適切な手順なしでサーバーがダウングレードされた場合、問題のあるユーザーは削除する必要があります。
+2. `no_password` は、セキュリティ上の理由から他の認証方法と共存できません。そのため、`no_password` 認証方法を `ADD` することはできません。以下のクエリはエラーをスローします：
 
-``` sql
+```sql
 ALTER USER user1 ADD IDENTIFIED WITH no_password
 ```
 
-ユーザーの認証方法を削除して `no_password` に依存したい場合は、以下の置き換え形式で指定する必要があります。
+ユーザーの認証方法を削除し、`no_password` に依存したい場合は、以下の置換形式で指定する必要があります。
 
-認証方法をリセットし、クエリで指定されたものを追加します（`ADD` キーワードなしの先頭の IDENTIFIED の効果）：
+認証方法をリセットし、クエリで指定されたものを追加（`ADD` キーワードなしの先頭の IDENTIFIED の効果）：
 
-``` sql
+```sql
 ALTER USER user1 IDENTIFIED WITH plaintext_password by '1', bcrypt_password by '2', plaintext_password by '3'
 ```
 
-認証方法をリセットし、最近追加されたものを保持します：
-``` sql
+認証方法をリセットし、最新の追加された方法を保持：
+
+```sql
 ALTER USER user1 RESET AUTHENTICATION METHODS TO NEW
 ```
 
-## VALID UNTIL 句 {#valid-until-clause}
+## VALID UNTIL Clause {#valid-until-clause}
 
-認証方法の有効期限日およびオプションで時刻を指定できます。文字列をパラメータとして受け入れます。日時には `YYYY-MM-DD [hh:mm:ss] [timezone]` 形式の使用が推奨されます。デフォルトでは、このパラメータは `'infinity'` です。
-`VALID UNTIL` 句は、クエリで認証方法が指定されていない場合を除き、認証方法とともにのみ指定できます。このシナリオでは、`VALID UNTIL` 句はすべての既存の認証方法に適用されます。
+認証方法の有効期限を指定できるようにします。パラメータとして文字列を受け取ります。日付時刻には `YYYY-MM-DD [hh:mm:ss] [timezone]` フォーマットを使用することをお勧めします。デフォルトでは、このパラメータは `'infinity'` に等しくなります。
+`VALID UNTIL` 句は、認証方法と共にのみ指定可能であり、クエリ内に認証方法が指定されていない場合を除きます。このシナリオでは、`VALID UNTIL` 句がすべての既存の認証方法に適用されます。
 
 例：
 
 - `ALTER USER name1 VALID UNTIL '2025-01-01'`
 - `ALTER USER name1 VALID UNTIL '2025-01-01 12:00:00 UTC'`
 - `ALTER USER name1 VALID UNTIL 'infinity'`
-- `ALTER USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL'2025-01-01'`
+- `ALTER USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL'2025-01-01''`

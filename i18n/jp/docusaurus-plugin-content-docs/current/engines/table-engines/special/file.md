@@ -1,57 +1,60 @@
 ---
-slug: /engines/table-engines/special/file
-sidebar_position: 40
-sidebar_label:  ファイル
-title: "ファイル テーブル エンジン"
-description: "ファイル テーブル エンジンは、サポートされているファイル形式のいずれかでファイルにデータを保持します（`TabSeparated`、`Native`など）。"
+'description': 'The File table engine keeps the data in a file in one of the supported
+  file formats (`TabSeparated`, `Native`, etc.).'
+'sidebar_label': 'File'
+'sidebar_position': 40
+'slug': '/engines/table-engines/special/file'
+'title': 'File テーブルエンジン'
 ---
 
 
-# ファイル テーブル エンジン
 
-ファイル テーブル エンジンは、サポートされている [ファイル形式](/interfaces/formats#formats-overview) のいずれかでファイルにデータを保持します（`TabSeparated`、`Native`など）。
+
+# File Table Engine
+
+Fileテーブルエンジンは、サポートされている[ファイルフォーマット](/interfaces/formats#formats-overview)のいずれか（`TabSeparated`、`Native`など）でファイルにデータを保持します。
 
 使用シナリオ：
 
 - ClickHouseからファイルへのデータエクスポート。
-- データを1つの形式から別の形式に変換。
+- データを別のフォーマットに変換。
 - ディスク上のファイルを編集してClickHouseのデータを更新。
 
 :::note
-このエンジンは現在ClickHouse Cloudでは使用できませんので、[代わりにS3テーブル関数を使用してください](/sql-reference/table-functions/s3.md)。
+このエンジンは現在ClickHouse Cloudで使用できませんので、[S3テーブル関数を使用してください](/sql-reference/table-functions/s3.md)。
 :::
 
 ## ClickHouseサーバーでの使用 {#usage-in-clickhouse-server}
 
-``` sql
+```sql
 File(Format)
 ```
 
-`Format`パラメータは利用可能なファイル形式の1つを指定します。`SELECT` クエリを実行する場合、形式は入力に対してサポートされる必要があり、`INSERT` クエリを実行するには出力に対してサポートされている必要があります。利用可能な形式は、[Formats](/interfaces/formats#formats-overview) セクションにリストされています。
+`Format`パラメータは、利用可能なファイルフォーマットの1つを指定します。`SELECT`クエリを実行するには、フォーマットが入力をサポートしている必要があり、`INSERT`クエリを実行するには、出力をサポートしている必要があります。利用可能なフォーマットは、[Formats](/interfaces/formats#formats-overview)セクションにリストされています。
 
-ClickHouseでは、`File`のファイルシステムパスを指定することはできません。[path](../../../operations/server-configuration-parameters/settings.md)設定でサーバー構成に定義されたフォルダーが使用されます。
+ClickHouseは`File`のためにファイルシステムのパスを指定することを許可しません。サーバー設定の[path](../../../operations/server-configuration-parameters/settings.md)設定で定義されたフォルダーを使用します。
 
-`File(Format)`を使用してテーブルを作成すると、そのフォルダー内に空のサブディレクトリが作成されます。そのテーブルにデータが書き込まれると、そのサブディレクトリ内の`data.Format`ファイルに格納されます。
+`File(Format)`を使用してテーブルを作成すると、そのフォルダーに空のサブディレクトリが作成されます。そのテーブルにデータが書き込まれると、そのサブディレクトリ内の`data.Format`ファイルに配置されます。
 
-このサブフォルダーとファイルをサーバーファイルシステム内に手動で作成し、対応する名前でテーブル情報に[ATTACH](../../../sql-reference/statements/attach.md)することで、そのファイルからデータをクエリすることができます。
+このサブフォルダーとファイルを手動でサーバーファイルシステム内に作成し、対応する名前のテーブル情報に[ATTACH](../../../sql-reference/statements/attach.md)することで、そのファイルからデータをクエリすることができます。
 
 :::note
-この機能を使用する際は注意してください。ClickHouseはそのようなファイルに対する外部の変更を追跡しません。ClickHouseとClickHouse外での同時書き込みの結果は不定です。
+この機能には注意が必要です。ClickHouseはそのようなファイルへの外部変更を追跡しません。ClickHouse外部と同時に書き込みを行う結果は未定義です。
 :::
 
 ## 例 {#example}
 
-**1.** `file_engine_table` テーブルを設定します：
+**1.** `file_engine_table`テーブルを設定します：
 
-``` sql
+```sql
 CREATE TABLE file_engine_table (name String, value UInt32) ENGINE=File(TabSeparated)
 ```
 
-デフォルトでは、ClickHouseは `/var/lib/clickhouse/data/default/file_engine_table` フォルダーを作成します。
+デフォルトでは、ClickHouseはフォルダー`/var/lib/clickhouse/data/default/file_engine_table`を作成します。
 
-**2.** `data.TabSeparated` を含む `/var/lib/clickhouse/data/default/file_engine_table/data.TabSeparated` を手動で作成します：
+**2.** 手動で`/var/lib/clickhouse/data/default/file_engine_table/data.TabSeparated`を作成し、次の内容を含めます：
 
-``` bash
+```bash
 $ cat data.TabSeparated
 one 1
 two 2
@@ -59,11 +62,11 @@ two 2
 
 **3.** データをクエリします：
 
-``` sql
+```sql
 SELECT * FROM file_engine_table
 ```
 
-``` text
+```text
 ┌─name─┬─value─┐
 │ one  │     1 │
 │ two  │     2 │
@@ -72,19 +75,19 @@ SELECT * FROM file_engine_table
 
 ## ClickHouse-localでの使用 {#usage-in-clickhouse-local}
 
-[clickhouse-local](../../../operations/utilities/clickhouse-local.md) では、Fileエンジンは `Format`に加えてファイルパスを受け入れます。デフォルトの入出力ストリームは、`0`や`stdin`、`1`や`stdout`のような数値または人間が読み取れる名前で指定できます。追加のエンジンパラメータまたはファイル拡張子（`gz`、`br`、`xz`）に基づいて、圧縮ファイルを読み書きすることも可能です。
+[clickhouse-local](../../../operations/utilities/clickhouse-local.md)内で、Fileエンジンは`Format`に加えてファイルパスを受け付けます。デフォルトの入力/出力ストリームは、`0`や`stdin`、`1`や`stdout`のような数値または人間が読める名前を使用して指定できます。追加のエンジンパラメータまたはファイル拡張子（`gz`、`br`または`xz`）に基づいて圧縮ファイルを読み書きすることが可能です。
 
 **例：**
 
-``` bash
+```bash
 $ echo -e "1,2\n3,4" | clickhouse-local -q "CREATE TABLE table (a Int64, b Int64) ENGINE = File(CSV, stdin); SELECT a, b FROM table; DROP TABLE table"
 ```
 
 ## 実装の詳細 {#details-of-implementation}
 
-- 複数の `SELECT` クエリを同時に実行できますが、`INSERT` クエリは互いに待機します。
-- `INSERT` クエリによって新しいファイルを作成することがサポートされています。
-- ファイルが存在する場合、`INSERT` はそのファイルに新しい値を追加します。
+- 複数の`SELECT`クエリを同時に実行できますが、`INSERT`クエリは互いに待機します。
+- `INSERT`クエリで新しいファイルの作成がサポートされています。
+- ファイルが存在する場合、`INSERT`は新しい値を追加します。
 - サポートされていないもの：
     - `ALTER`
     - `SELECT ... SAMPLE`
@@ -93,21 +96,21 @@ $ echo -e "1,2\n3,4" | clickhouse-local -q "CREATE TABLE table (a Int64, b Int64
 
 ## PARTITION BY {#partition-by}
 
-`PARTITION BY` — オプションです。パーティションキーでデータをパーティション分割することによって、別々のファイルを作成できます。ほとんどの場合、パーティションキーは必要なく、必要な場合でも通常は月単位でのパーティションキーを使用することが推奨されます。パーティション分割は、クエリの速度を向上させることはありません（ORDER BY式とは対照的です）。過剰に細かいパーティション分割を行ってはいけません。クライアント識別子や名前でデータをパーティション分割しないでください（代わりに、クライアント識別子や名前をORDER BY式の最初のカラムにします）。
+`PARTITION BY` — オプションです。パーティションキーでデータをパーティション化し、別々のファイルを作成することが可能です。ほとんどの場合、パーティションキーは必要ありませんが、必要な場合でも月単位でのパーティションキー以上の粒度は一般的には必要ありません。パーティション化はクエリの速度を向上させません（ORDER BY式とは対照的です）。粒度が細かすぎるパーティション化は行わないでください。クライアント識別子や名前でデータをパーティション化しないでください（その代わりに、ORDER BY式の最初のカラムにクライアント識別子または名前を設定してください）。
 
-月単位のパーティション分割には、`toYYYYMM(date_column)` 式を使用します。ここで、`date_column` は [Date](/sql-reference/data-types/date.md) 型の日付を持つカラムです。パーティション名はここで `"YYYYMM"` 形式になります。
+月ごとにパーティション化するには、`toYYYYMM(date_column)`式を使用します。ここで`date_column`は[Date](/sql-reference/data-types/date.md)タイプの日付を持つカラムです。ここでのパーティション名は`"YYYYMM"`形式です。
 
 ## 仮想カラム {#virtual-columns}
 
-- `_path` — ファイルへのパス。型: `LowCardinality(String)`。
-- `_file` — ファイルの名前。型: `LowCardinality(String)`。
-- `_size` — ファイルのサイズ（バイト単位）。型: `Nullable(UInt64)`。サイズが不明な場合、値は `NULL` です。
-- `_time` — ファイルの最終変更時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` です。
+- `_path` — ファイルへのパス。タイプ: `LowCardinality(String)`。
+- `_file` — ファイル名。タイプ: `LowCardinality(String)`。
+- `_size` — バイト単位のファイルサイズ。タイプ: `Nullable(UInt64)`。サイズが不明な場合、値は`NULL`です。
+- `_time` — ファイルの最終変更時刻。タイプ: `Nullable(DateTime)`。時間が不明な場合、値は`NULL`です。
 
 ## 設定 {#settings}
 
 - [engine_file_empty_if_not_exists](/operations/settings/settings#engine_file_empty_if_not_exists) - 存在しないファイルから空のデータを選択できるようにします。デフォルトでは無効です。
-- [engine_file_truncate_on_insert](/operations/settings/settings#engine_file_truncate_on_insert) - 挿入前にファイルを切り詰めることを許可します。デフォルトでは無効です。
+- [engine_file_truncate_on_insert](/operations/settings/settings#engine_file_truncate_on_insert) - 挿入前にファイルを切り詰めることを可能にします。デフォルトでは無効です。
 - [engine_file_allow_create_multiple_files](/operations/settings/settings.md#engine_file_allow_create_multiple_files) - フォーマットにサフィックスがある場合、各挿入で新しいファイルを作成できるようにします。デフォルトでは無効です。
-- [engine_file_skip_empty_files](/operations/settings/settings.md#engine_file_skip_empty_files) - 読み取り時に空のファイルをスキップできるようにします。デフォルトでは無効です。
-- [storage_file_read_method](/operations/settings/settings#engine_file_empty_if_not_exists) - ストレージファイルからデータを読み取る方法。`read`、`pread`、`mmap` のいずれかです。mmapメソッドはclickhouse-serverには適用されません（clickhouse-local用です）。デフォルト値：clickhouse-serverの場合は`pread`、clickhouse-localの場合は`mmap`です。
+- [engine_file_skip_empty_files](/operations/settings/settings.md#engine_file_skip_empty_files) - 読み込み中に空のファイルをスキップできるようにします。デフォルトでは無効です。
+- [storage_file_read_method](/operations/settings/settings#engine_file_empty_if_not_exists) - ストレージファイルからデータを読み取る方法で、`read`、`pread`、`mmap`のいずれかです。mmap方法はclickhouse-serverには適用されません（clickhouse-local向けです）。デフォルト値：clickhouse-serverでは`pread`、clickhouse-localでは`mmap`です。

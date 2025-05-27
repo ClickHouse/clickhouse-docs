@@ -1,29 +1,34 @@
 ---
-description: '包含关于驻留在本地服务器的资源信息的系统表，每个资源对应一行。'
-slug: /operations/system-tables/resources
-title: 'system.system.resources'
-keywords: ['系统表', '资源']
+'description': '系统表包含有关本地服务器上资源的信息，每个资源有一行.'
+'keywords':
+- 'system table'
+- 'resources'
+'slug': '/operations/system-tables/resources'
+'title': 'system.resources'
 ---
 
-包含关于[资源](/operations/workload-scheduling.md#workload_entity_storage)的信息，这些资源驻留在本地服务器上。该表为每个资源包含一行。
+
+# system.resources
+
+包含有关位于本地服务器上的 [resources](/operations/workload-scheduling.md#workload_entity_storage) 的信息。该表为每个资源包含一行。
 
 示例：
 
-``` sql
+```sql
 SELECT *
 FROM system.resources
 FORMAT Vertical
 ```
 
-``` text
-行 1:
+```text
+Row 1:
 ──────
 name:         io_read
 read_disks:   ['s3']
 write_disks:  []
 create_query: CREATE RESOURCE io_read (READ DISK s3)
 
-行 2:
+Row 2:
 ──────
 name:         io_write
 read_disks:   []

@@ -4,6 +4,7 @@ sidebar_label: 'Basic operations'
 description: 'Basic time-series operations in ClickHouse.'
 slug: /use-cases/time-series/basic-operations
 keywords: ['time-series']
+show_related_blogs: true
 ---
 
 # Basic time-series operations
