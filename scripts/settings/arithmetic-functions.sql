@@ -6,7 +6,7 @@ WITH arithmetic_functions AS (
         arguments,
         returned_value,
         examples
-    FROM system.functions WHERE categories='Arithmetic'
+    FROM system.functions WHERE categories='Arithmetic' ORDER BY name ASC
 )
 SELECT
     format(
