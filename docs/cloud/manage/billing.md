@@ -424,7 +424,33 @@ organization’s tier:
 | **Basic Tier**               | 0.5 compute unit per service — $0.10 per hour |
 | **Scale or Enterprise Tier** | 1 compute unit per service — $0.20 per hour   |
 
+#### Example {#example}
 
+Let’s say your service is in Scale tier and has the following setup:
+
+- 2 Postgres ClickPipes running continuous replication
+- Each pipe ingests 500 GB of data changes (CDC) per month
+- When the first pipe is kicked off, the service provisions **1 compute unit under the Scale Tier** for Postgres CDC
+
+##### Monthly cost breakdown {#cost-breakdown}
+
+**Ingested Data (CDC)**:
+
+$$ 2 pipes \times 500 GB \eq 1,000 GB per month
+ 1,000 GB \times \$0.20/GB \eq \$200$$
+
+ **Compute**:
+
+ $$1 compute unit \times \$0.20/hr \times 730 hours (approximate month) = \$146$$
+
+:::note
+Compute is shared across both pipes
+:::
+
+**Total Monthly Cost**:
+
+ $$\$200 (ingest) + \$146 (compute) = \$346$$
+ 
 ### ClickPipes for streaming and object storage {#clickpipes-for-streaming-object-storage}
 
 This section outlines the pricing model of ClickPipes for streaming and object storage.
