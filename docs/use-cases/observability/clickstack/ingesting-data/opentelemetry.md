@@ -45,10 +45,6 @@ Note that we can overwrite the target ClickHouse instance with environment varia
 
 The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment and its OpAMP (Open Agent Management Protocol) endpoint at `/v1/opamp` e.g. `http://localhost:8080/v1/opamp`. This ensures the collectors OTLP interface is secured with the ingestion API key.
 
-See ["Configuring the collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector#configuring-the-collector) for details on modifying the configuration further.
-
-For further details on configuring the collector in these distributions see ["Configuring the collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector#configuring-the-collector).
-
 Users should use a user with the [appropriate credentials](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) in production.
 
 ## Sending OpenTelemetry data {#sending-otel-data}
@@ -75,7 +71,7 @@ For language SDKs, this can either be set by an `init` function or via an`OTEL_E
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
-Agents should likewise include this authorization header in any OTLP communication. For example, if deploying a [contrib distribution of the OTel collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) in the agent role, they can use the OTLP exporter. An example  agent config consuming this [structured log file](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz), is shown below. Note the need to specify an authorization key.
+Agents should likewise include this authorization header in any OTLP communication. For example, if deploying a [contrib distribution of the OTel collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) in the agent role, they can use the OTLP exporter. An example  agent config consuming this [structured log file](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz), is shown below. Note the need to specify an authorization key - see `<YOUR_API_INGESTION_KEY>`.
 
 
 ```yaml

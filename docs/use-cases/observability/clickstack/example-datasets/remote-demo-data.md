@@ -87,7 +87,7 @@ Rename the connection to `Demo` and complete the subsequent form with the follow
 
 <Image img={edit_demo_connection} alt="Edit Demo Connection" size="lg"/>
 
-### Adjust the timeframe {#adjust-the-timeframe}
+### Adjust the time frame {#adjust-the-timeframe}
 
 Adjust the time to show all data from the previous `1 day` using the time picker in the top right.
 
@@ -141,7 +141,7 @@ Select the `Instrastructure` tab to view the metrics associated with the underly
 
 <Image img={step_7} alt="Step 7" size="lg"/>
 
-The issue does not seem to infrasturcture related - no metrics have appreciably changed over the time period: either before or after the error. Close the infrastructure tab.
+The issue does not seem to infrastructure related - no metrics have appreciably changed over the time period: either before or after the error. Close the infrastructure tab.
 
 ### Explore a trace {#explore-a-trace}
 
@@ -151,7 +151,7 @@ Select `Trace` to visualize the associated trace. Scrolling down through the sub
 
 <Image img={step_8} alt="Step 8" size="lg"/>
 
-By scrolling to the bottom of the view we can see that the `payment` service is causing the error, which in turn propogates back up the call chain. 
+By scrolling to the bottom of the view we can see that the `payment` service is causing the error, which in turn propagates back up the call chain. 
 
 <Image img={step_9} alt="Step 9" size="lg"/>
 
@@ -189,7 +189,7 @@ Event Deltas help surface anomalies by attributing changes in performance or err
 
 While we know that the `payment` service has a cache issue, causing an increase in resource consumption, we haven't fully identified the root cause.
 
-Return to the result table view and select the time period containing the errors to limit the data. Ensure you select several hours to the left of the errors and after if possible (the issue may still be occuring):
+Return to the result table view and select the time period containing the errors to limit the data. Ensure you select several hours to the left of the errors and after if possible (the issue may still be occurring):
 
 <Image img={step_15} alt="Step 15" size="lg"/>
 
@@ -197,7 +197,7 @@ Remove the errors filter and select `Event Deltas` from the left `Analysis Mode`
 
 <Image img={step_16} alt="Step 16" size="lg"/>
 
-The top panel shows the distribution of timings, with colors indicating event density (number of spans). The subset of events outside of the main concentation are typically those worth investigating.
+The top panel shows the distribution of timings, with colors indicating event density (number of spans). The subset of events outside of the main concentration are typically those worth investigating.
 
 If we select the events with a duration greater than `200ms`, and apply the filter `Filter by selection`, we can limit our analysis to slower events:
 
@@ -214,7 +214,7 @@ We have established:
 - Our issue resides with the payment service
 - A cache is full
 - This caused increases in resource consumption
-- The issue prevented visa payments from completing - or atleast causing them to take a long time to complete.
+- The issue prevented visa payments from completing - or at least causing them to take a long time to complete.
 
 <br/>
 
@@ -268,13 +268,13 @@ Sessions allow us to replay the user experience, offering a visual account of ho
 
 In HyperDX, sessions are linked to traces and logs, providing a complete view of the underlying cause.
 
-For example, if the support team provides the email of a user who encountered a payment issue `Coty60@gmail.com` - it's often more effective to begin with their session rather than directly searching logs or traces.
+For example, if the support team provides the email of a user who encountered a payment issue `Braulio.Roberts23@hotmail.com` - it's often more effective to begin with their session rather than directly searching logs or traces.
 
 Navigate to the `Client Sessions` tab from the left menu before ensuring the data source is set to `Sessions` and the time period is set to the `Last 1 day`:
 
 <Image img={step_21} alt="Step 21" size="lg"/>
 
-Search for `SpanAttributes.userEmail: Coty` to find our customer's session. Selecting the session will show the browser events and associated spans for the customer's session on the left, with the user's browser experience re-rendered to the right:
+Search for `SpanAttributes.userEmail: Braulio` to find our customer's session. Selecting the session will show the browser events and associated spans for the customer's session on the left, with the user's browser experience re-rendered to the right:
 
 <Image img={step_22} alt="Step 22" size="lg"/>
 

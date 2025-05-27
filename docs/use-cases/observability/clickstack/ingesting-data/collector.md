@@ -9,6 +9,7 @@ title: 'ClickStack OpenTelemetry Collector'
 
 import Image from '@theme/IdealImage';
 import observability_6 from '@site/static/images/use-cases/observability/observability-6.png';
+import observability_8 from '@site/static/images/use-cases/observability/observability-8.png';
 import clickstack_with_gateways from '@site/static/images/use-cases/observability/clickstack-with-gateways.png';
 import clickstack_with_kafka from '@site/static/images/use-cases/observability/clickstack-with-kafka.png';
 import ingestion_key from '@site/static/images/use-cases/observability/ingestion-keys.png';
@@ -29,19 +30,9 @@ Users deploying OTel collectors in the agent role will typically use the [defaul
 
 ## Configuring the collector {#configuring-the-collector}
 
-The default ClickStack configuration for the OpenTelemetry (OTel) collector can be found [here](https://github.com/hyperdxio/hyperdx/blob/v2/docker/otel-collector/config.yaml). This configuration is located in all images under the same path: 
-
-`/etc/otelcol-contrib/config.yaml`.
-
-This collector exploits the ClickHouse exporter documented [here](/observability/integrating-opentelemetry#exporting-to-clickhouse) and [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
-
-### Configuration structure {#configuration-structure}
-
-For details on configuring OTel collectors, including [`receivers`](https://opentelemetry.io/docs/collector/transforming-telemetry/), [`operators`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md), and [`processors`](https://opentelemetry.io/docs/collector/configuration/#processors), we recommend the [official OpenTelemetry collector documentation](https://opentelemetry.io/docs/collector/configuration).
+If you are managing your own OpenTelemetry collector in a standalone deployment - such as when using the HyperDX only distribution - we [recommend still using the official ClickStack distribution of the collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) for the gateway role where possible, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 
 ### Modifying configuration {#modifying-otel-collector-configuration}
-
-If you are managing your own OpenTelemetry collector in a standalone deployment - such as when using the HyperDX only distribution - we [recommend still using the official ClickStack distribution of the collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) for the gateway role, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 
 #### Using docker {#using-docker}
 
@@ -60,27 +51,9 @@ docker run -e OPAMP_SERVER_URL=${HYPERDX_URL}/v1/opamp -e CLICKHOUSE_ENDPOINT=${
 
 The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment and its OpAMP (Open Agent Management Protocol) endpoint at `/v1/opamp` e.g. `http://localhost:8080/v1/opamp`. This ensures the collectors OTLP interface is secured with the ingestion API key. See [Securing the collector](#securing-the-collector).
 
+#### Docker Compose {#docker-compose-otel}
 
-All images have their configuration located at `/etc/otelcol-contrib/config.yaml`. To modify this:
-
-1. Copy the [default configuration](https://github.com/hyperdxio/hyperdx/blob/v2/docker/otel-collector/config.yaml) from the official repository.
-2. Modify it as needed.
-3. Mount your updated file into the container using the -v flag
-
-```bash
-docker run \
-  -v $(pwd)/config.yaml:/etc/otelcol-contrib/config.yaml \
-  -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4318:4318 \
-  hyperdx/hyperdx-all-in-one:2-beta.16
-```
-
-##### Docker Compose {#docker-compose-otel}
-
-With Docker Compose, there are several options for modifying the collector configuration:
-
-**Option 1 – Modify the environment variables**
-
-Environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD` allow the target ClickHouse cluster to be modified:
+With Docker Compose, modifying the collector configuration using the same environment variables as above:
 
 ```yaml
   otel-collector:
@@ -102,99 +75,16 @@ Environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_P
       - internal
 ```
 
-The `OPAMP_SERVER_URL` can also be modified with the URL of your HyperDX deployment.
+### Advanced configuration {#advanced-configuration}
 
-**Option 2 – Replace the default config**
+Currently the ClickStack distribution of the OTel collector does not support modification of its configuration file. If you need more complex configuration e.g. [configuring TLS](#securing-the-collector), or modifying the batch size, we recommend copying and modifying the [default configuration](https://github.com/hyperdxio/hyperdx/blob/v2/docker/otel-collector/config.yaml) and deploying your own version of the OTel collector using the ClickHouse exporter documented [here](/observability/integrating-opentelemetry#exporting-to-clickhouse) and [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
 
-Mount a custom file to replace the default config at `/etc/otelcol-contrib/config.yaml`.
+The default ClickStack configuration for the OpenTelemetry (OTel) collector can be found [here](https://github.com/hyperdxio/hyperdx/blob/v2/docker/otel-collector/config.yaml).
 
-```yaml
-  otel-collector:
-    image: ${OTEL_COLLECTOR_IMAGE_NAME}:${IMAGE_VERSION}
-    environment:
-      CLICKHOUSE_ENDPOINT: 'ch-server:9000'
-      HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
-      OPAMP_SERVER_URL: http://localhost:8080//v1/opamp
-    ports:
-      - '13133:13133'
-      - '24225:24225'
-      - '4317:4317'
-      - '4318:4318'
-      - '8888:8888'
-    volumes:
-      - ./config.yaml:/etc/otelcol-contrib/config.yaml
-```
+#### Configuration structure {#configuration-structure}
 
-**Option 3 – Merge in additional settings**
+For details on configuring OTel collectors, including [`receivers`](https://opentelemetry.io/docs/collector/transforming-telemetry/), [`operators`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md), and [`processors`](https://opentelemetry.io/docs/collector/configuration/#processors), we recommend the [official OpenTelemetry collector documentation](https://opentelemetry.io/docs/collector/configuration).
 
-Provide an additional file like `config-extras.yaml` that is merged into the base config. This file is listed second in the command array.
-
-```yaml
-  otel-collector:
-    image: ${OTEL_COLLECTOR_IMAGE_NAME}:${IMAGE_VERSION}
-    command: [
-      "--config=/etc/otelcol-contrib/config.yaml",
-      "--config=/etc/otelcol-contrib/config-extras.yaml"
-    ]
-    environment:
-      CLICKHOUSE_ENDPOINT: 'ch-server:9000'
-      HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
-      OPAMP_SERVER_URL: http://localhost:8080//v1/opamp
-    ports:
-      - '13133:13133'
-      - '24225:24225'
-      - '4317:4317'
-      - '4318:4318'
-      - '8888:8888'
-    volumes:
-      - ./config-extras.yaml:/etc/otelcol-contrib/config-extras.yaml
-```
-
-In this model, the contents of config-extras.yaml will be merged with the default. This is useful for appending exporters, modifying pipelines, or injecting additional behavior.
-
-```yaml
-service:
-  pipelines:
-    metrics:
-      receivers: [hostmetrics, docker_stats, httpcheck/frontend-proxy, otlp, prometheus, redis]
-      processors: [memory_limiter, batch]
-      exporters: [clickhouse, file/metrics]
-    traces:
-      receivers: [otlp]
-      processors: [memory_limiter, batch]
-      exporters: [clickhouse, file/traces]
-    logs/out-default:
-      receivers: [routing/logs]
-      processors: [memory_limiter, transform, batch]
-      exporters: [clickhouse, file/logs]
-    logs/out-rrweb:
-      receivers: [routing/logs]
-      processors: [memory_limiter, batch]
-      exporters: [clickhouse/rrweb, file/sessions]
-exporters:
-  file/logs:
-    path: /data/sample_logs.json
-    rotation:
-      max_megabytes: 10000
-      localtime: true
-  file/metrics:
-    path: /data/sample_metrics.json
-    rotation:
-      max_megabytes: 10000
-      localtime: true
-  file/traces:
-    path: /data/sample_traces.json
-    rotation:
-      max_megabytes: 10000
-      localtime: true
-  file/sessions:
-    path: /data/sample_sessions.json
-    rotation:
-      max_megabytes: 10000
-      localtime: true
-```
-
-This example adds file exporters alongside ClickHouse, writing out samples of logs, metrics, traces, and sessions. It's a useful pattern for debugging and local development.
 
 ## Securing the collector {#securing-the-collector}
 
@@ -206,9 +96,9 @@ This integration ensures that the OTLP endpoint is secured using an auto-generat
 
 To further secure your deployment, we recommend:
 
-- Enabling TLS for the OTLP endpoint, ensuring encrypted communication between SDKs/agents and the collector.
 - Configuring the collector to communicate with ClickHouse over HTTPS.
 - Create a dedicated user for ingestion with limited permissions - see below.
+- Enabling TLS for the OTLP endpoint, ensuring encrypted communication between SDKs/agents and the collector. **Currently this requires users to deploy a default distribution of the collector and manage the configuration themselves**. 
 
 ### Creating an ingestion user {#creating-an-ingestion-user}
 
@@ -224,7 +114,14 @@ This assumes the collector has been configured to use the database `otel`. This 
 
 ## Processing - filtering, transforming and enriching {#processing-filtering-transforming-enriching}
 
-Users will invariably want to filter, transform, and enrich event messages during ingestion. This can be achieved using a number of capabilities in OpenTelemetry:
+Users will invariably want to filter, transform, and enrich event messages during ingestion. Since the configuration for the ClickStack connector cannot be modified, we recommend users who need further event filtering and processing either:
+
+- Deploy their own version of the OTel collector performing filtering and processing, sending events to the ClickStack collector via OTLP for ingestion into ClickHouse.
+- Deploy their own version of the OTel collector and send events directly to ClickHouse using the ClickHouse exporter.
+
+If processing is done using the OTel collector, we recommend doing transformations at gateway instances and minimizing any work done at agent instances. This will ensure the resources required by agents at the edge, running on servers, are as minimal as possible. Typically, we see users only performing filtering (to minimize unnecessary network usage), timestamp setting (via operators), and enrichment, which requires context in agents. For example, if gateway instances reside in a different Kubernetes cluster, k8s enrichment will need to occur in the agent.
+
+OpenTelemetry supports the following processing and filtering features users can exploit:
 
 - **Processors** - Processors take the data collected by [receivers and modify or transform](https://opentelemetry.io/docs/collector/transforming-telemetry/) it before sending it to the exporters. Processors are applied in the order as configured in the `processors` section of the collector configuration. These are optional, but the minimal set is [typically recommended](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors). When using an OTel collector with ClickHouse, we recommend limiting processors to:
 
@@ -237,8 +134,6 @@ Users will invariably want to filter, transform, and enrich event messages durin
 - **Operators** - [Operators](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) provide the most basic unit of processing available at the receiver. Basic parsing is supported, allowing fields such as the Severity and Timestamp to be set. JSON and regex parsing are supported here along with event filtering and basic transformations. We recommend performing event filtering here.
 
 We recommend users avoid doing excessive event processing using operators or [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md). These can incur considerable memory and CPU overhead, especially JSON parsing.  It is possible to do all processing in ClickHouse at insert time with materialized views and columns with some exceptions - specifically, context-aware enrichment e.g. adding of k8s metadata. For more details see [Extracting structure with SQL](/use-cases/observability/schema-design#extracting-structure-with-sql).
-
-If processing is done using the OTel collector, we recommend doing transformations at the ClickStack collector (the gateway) instances and minimizing any work done at agent instances. This will ensure the resources required by agents at the edge, running on servers, are as minimal as possible. Typically, we see users only performing filtering (to minimize unnecessary network usage), timestamp setting (via operators), and enrichment, which requires context in agents. For example, if gateway instances reside in a different Kubernetes cluster, k8s enrichment will need to occur in the agent.
 
 ### Example {#example-processing}
 
@@ -355,10 +250,13 @@ However, ClickHouse can handle inserting data very quickly - millions of rows pe
 
 However, if you require high delivery guarantees or the ability to replay data (potentially to multiple sources), Kafka can be a useful architectural addition.
 
-<Image img={clickstack_with_kafka} alt="Adding kafka" size="lg"/>
+<Image img={observability_8} alt="Adding kafka" size="lg"/>
 
 In this case, OTel agents can be configured to send data to Kafka via the [Kafka exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/kafkaexporter/README.md). Gateway instances, in turn, consume messages using the [Kafka receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/kafkareceiver/README.md). We recommend the Confluent and OTel documentation for further details.
 
+:::note OTel collector configuration
+The ClickStack OpenTelemetry collector distribution cannot be used with Kafka as it requires a configuration modification. Users will need to deploy a default OTel collector using the ClickHouse exporter.
+:::
 
 ## Estimating resources {#estimating-resources}
 

@@ -9,6 +9,7 @@ description: 'Deploying ClickStack with Helm - The ClickHouse Observability Stac
 
 import Image from '@theme/IdealImage';
 import hyperdx_24 from '@site/static/images/use-cases/observability/hyperdx-24.png';
+import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 
 The helm chart for HyperDX can be found [here](https://github.com/hyperdxio/helm-charts) and is the **recommended** method for production deployments.
 
@@ -87,13 +88,14 @@ Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
 Create a user, providing a username and password which means the requirements. 
 
+<Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
+
+
 On clicking `Create` data sources will be created for the ClickHouse instance deployed with the Helm chart.
 
 :::note Overriding default connection
 You can override the default connection to the integrated ClickHouse instance. For details, see ["Using ClickHouse Cloud"](#using-clickhouse-cloud).
 :::
-
-<Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
 For an example of using an alternative ClickHouse instance, see ["Create a ClickHouse Cloud connection"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
@@ -197,10 +199,9 @@ If using ClickHouse Cloud users disable the ClickHouse instance deployed by the 
 
 ```bash
 helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false 
-
+# how to overwrite default connection
 TODO
 ```
-
 
 ## Production notes {#production-notes}
 
