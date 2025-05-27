@@ -14,7 +14,7 @@ Updates and deletes replicated from Postgres to ClickHouse result in duplicated 
 
 ### PostgreSQL logical decoding {#PostgreSQL-logical-decoding}
 
-ClickPipes uses [Postgres Logical Decoding](https://www.pgedge.com/blog/logical-replication-evolution-in-chronological-order-clustering-solution-built-around-logical-replication) to consume changes as they happen in Postgres. The Logical Decoding process in Postgres enables clients like ClickPipes to receive changes in a human-readable format, i.e., a series of INSERTs, UPDATEs, and DELETEs. 
+ClickPipes uses [Postgres Logical Decoding](https://www.pgedge.com/blog/logical-replication-evolution-in-chronological-order-clustering-solution-built-around-logical-replication) to consume changes as they happen in Postgres. The Logical Decoding process in Postgres enables clients like ClickPipes to receive changes in a human-readable format, i.e., a series of INSERTs, UPDATEs, and DELETEs.
 
 ### ReplacingMergeTree {#replacingmergetree}
 

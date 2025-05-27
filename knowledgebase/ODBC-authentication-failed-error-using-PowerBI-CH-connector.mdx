@@ -32,9 +32,11 @@ ClickHouse is installed.
 
 ## Answer {#answer}
 
-Check the password being used to see if the password contains a tilde `~`.  
+Update the ClickHouse ODBC Driver to version [1.4.1](https://github.com/ClickHouse/clickhouse-odbc/releases/tag/1.4.1.20250523).
 
-The recommendation is to use a dedicated user for the connection and set the password manually.  If using ClickHouse Cloud and the admin level of permissions with the `default` user is needed, then create a new user and and assign the `default_role`.
+If updating is not possible, check whether the password contains a tilde (~), as this can cause issues in versions prior to [1.4.1](https://github.com/ClickHouse/clickhouse-odbc/releases/tag/1.4.1.20250523).
+
+We recommend using a dedicated user for the connection and setting the password manually.  If you're using ClickHouse Cloud and require admin-level access equivalent of the `default` user, then create a new user and assign the `default_role` to it.
 
 For more information:  
 https://clickhouse.com/docs/operations/access-rights#user-account-management
