@@ -34,7 +34,7 @@ bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exp
 
 ### Configure OpenTelemetry + logger formatter {#configure-otel-logger-formatter}
 
-Next set up, you'll need to initialize the OpenTelemetry tracing instrumentation
+Next, you'll need to initialize the OpenTelemetry tracing instrumentation
 and configure the log message formatter for Rails logger so that logs can be
 tied back to traces automatically. Without the custom formatter, logs will not
 be automatically correlated together in ClickStack.
