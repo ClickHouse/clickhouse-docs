@@ -64,7 +64,7 @@ To continue using the local cluster:
 - [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - Load local files and monitor system on OSX or Linux using a local OTel collector.
 
 <br/>
-Alternatively, you can connect to a demo cluster where can explore a larger dataset: 
+Alternatively, you can connect to a demo cluster where you can explore a larger dataset: 
 
 - [Remote demo dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data) - Explore a demo dataset in our demo ClickHouse service.
 
