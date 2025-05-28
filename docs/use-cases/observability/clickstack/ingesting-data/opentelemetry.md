@@ -37,7 +37,7 @@ This allows users to benefit from standardized ingestion, enforced schemas, and 
 To deploy the connector run the following docker command:
 
 ```bash
-docker run -e OPAMP_SERVER_URL=${HYPERDX_URL}/v1/opamp -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-otel-collector:2-nightly
+docker run -e OPAMP_SERVER_URL=${HYPERDX_URL}/v1/opamp -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector:2-nightly
 
 ```
 

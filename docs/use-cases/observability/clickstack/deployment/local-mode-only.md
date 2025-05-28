@@ -33,7 +33,7 @@ It does not include a MongoDB instance, meaning dashboards, saved searches, and 
 Local mode deploys the HyperDX UI only, accessible on port 8080.
 
 ```bash
-docker run -p 8080:8080 hyperdx/hyperdx-local:2-beta.16-ui
+docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local:2-nightly
 ```
 
 ### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}

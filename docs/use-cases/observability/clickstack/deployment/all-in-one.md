@@ -35,7 +35,7 @@ This option includes authentication, enabling persistence of dashboards, alerts,
 The following will run an OpenTelemetry collector (on port 4317 and 4318), Clickhouse (on port 8123), and the HyperDX UI (on port 8080).
 
 ```bash
-docker run -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-all-in-one:2-beta.16
+docker run -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
 ```
 
 ### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
@@ -70,7 +70,7 @@ If you need to customize the app (8080) or api (8000) ports that HyperDX Local r
 Customizing the OpenTelemetry ports can simply be changed by modifying the port forwarding flags. Ex. Replacing `-p 4318:4318` with `-p 4999:4318` to change the OpenTelemetry HTTP port to 4999.
 
 ```bash
-docker run -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4999:4318 hyperdx/hyperdx-all-in-one:2-beta.16
+docker run -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4999:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
 ```
 
 ## Using ClickHouse Cloud {#using-clickhouse-cloud}
@@ -84,7 +84,7 @@ export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 
-docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-all-in-one:2-nightly
+docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
 ```
 
 The `CLICKHOUSE_ENDPOINT` should be the ClickHouse Cloud HTTPS endpoint, including the port `8443` e.g. `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`

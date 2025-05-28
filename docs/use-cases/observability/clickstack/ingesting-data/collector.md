@@ -46,7 +46,7 @@ export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 
-docker run -e OPAMP_SERVER_URL=${HYPERDX_URL}/v1/opamp -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 hyperdx/hyperdx-all-in-one:2-nightly
+docker run -e OPAMP_SERVER_URL=${HYPERDX_URL}/v1/opamp -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
 ```
 
 The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment and its OpAMP (Open Agent Management Protocol) endpoint at `/v1/opamp` e.g. `http://localhost:8080/v1/opamp`. This ensures the collectors OTLP interface is secured with the ingestion API key. See [Securing the collector](#securing-the-collector).
