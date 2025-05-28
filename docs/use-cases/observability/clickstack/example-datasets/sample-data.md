@@ -54,11 +54,11 @@ curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
 # wget https://storage.googleapis.com/hyperdx/sample.tar.gz
 ```
 
-This file contains example logs, metrics and traces from our public [OpenTelemetry demo](http://example.com) - a simple e-commerce store with microservices. Copy this file to a directory of your choosing.
+This file contains example logs, metrics, and traces from our public [OpenTelemetry demo](http://example.com) - a simple e-commerce store with microservices. Copy this file to a directory of your choosing.
 
 ## Copy ingestion API key {#copy-ingestion-api-key}
 
-Navigate to `Team Settings` and copy the `Ingestion API Key` from the `API Keys` section. This API key ensure data ingestion through the OpenTelemetry collector is secure.
+Navigate to [`Team Settings`](http://localhost:8080/team) and copy the `Ingestion API Key` from the `API Keys` section. This API key ensures data ingestion through the OpenTelemetry collector is secure.
 
 <Image img={copy_api_key} alt="Copy API key" size="lg"/>
 
@@ -66,7 +66,7 @@ Navigate to `Team Settings` and copy the `Ingestion API Key` from the `API Keys`
 
 To load this data, we simply send it to the HTTP endpoint of the deployed OpenTelemetry (OTel) collector. 
 
-First export the API key copied above.
+First, export the API key copied above.
 
 ```bash
 # export API key
@@ -91,7 +91,7 @@ Returning to the `Search` view, you should see data has started to load:
 
 <Image img={hyperdx_10} alt="HyperDX search" size="lg"/>
 
-Data loading will take a few minutes. Allow for the load to complete before progressing to the next steps.
+Data loading will take a few minutes. Allow for the load to be completed before progressing to the next steps.
 
 ## Explore sessions {#explore-sessions}
 
@@ -101,7 +101,7 @@ Select [`Client Sessions`](http://localhost:8080/sessions?from=1747312320000&to=
 
 <Image img={hyperdx_11} alt="Sessions" size="lg"/>
 
-This view allows us to see frontend sessions for our e-commerce store. Sessions remain Anonymous until users check out and try to complete a purchase.
+This view allows us to see front-end sessions for our e-commerce store. Sessions remain Anonymous until users check out and try to complete a purchase.
 
 Note that some sessions with emails have an associated error, potentially confirming reports of failed transactions.
 
@@ -119,7 +119,7 @@ The user was unable to place the order, with no obvious error. Scroll to the bot
 
 <Image img={hyperdx_13} alt="Error in session" size="lg"/>
 
-Select this `500` error. Neither the `Overview` or `Column Values` indicate the source of the issue, other than the fact the error is unexpected causing an `Internal Error`.
+Select this `500` error. Neither the `Overview` nor `Column Values` indicate the source of the issue, other than the fact the error is unexpected, causing an `Internal Error`.
 
 ## Explore traces {#explore-traces}
 
