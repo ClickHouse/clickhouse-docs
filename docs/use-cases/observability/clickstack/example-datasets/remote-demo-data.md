@@ -69,7 +69,7 @@ Further details on the demo can be found in the [official OpenTelemetry document
 
 ## Demo steps {#demo-steps}
 
-**We have instrumented this demo with [ClickStack SDKs](/use-cases/observability/clickstack/sdks), deploying the services in Kubernetes from which metrics and logs have also been collected.**
+**We have instrumented this demo with [ClickStack SDKs](/use-cases/observability/clickstack/sdks), deploying the services in Kubernetes, from which metrics and logs have also been collected.**
 
 <VerticalStepper headerLevel="h3">
 
@@ -90,7 +90,7 @@ Rename the connection to `Demo` and complete the subsequent form with the follow
 
 ### Modify the sources {#modify-sources}
 
-Scroll up to `Sources` and modify each of the sources - `Logs`, `Traces`, `Metrics` and `Sessions` - to use the `otel_v2` database. 
+Scroll up to `Sources` and modify each of the sources - `Logs`, `Traces`, `Metrics`, and `Sessions` - to use the `otel_v2` database. 
 
 <Image img={edit_demo_source} alt="Edit Demo Source" size="lg"/>
 
@@ -122,7 +122,7 @@ The error should be more apparent:
 
 With HyperDX's Clustering feature, you can automatically identify errors and group them into meaningful patterns. This accelerates user analysis when dealing with large volumes of log and traces. To use it, select `Event Patterns` from the `Analysis Mode` menu on the left panel.
 
-The error clusters reveal issues related to failed payments, including a named pattern `Failed to place order`. Additional clusters also indicate problems charging cards and cache's being full.
+The error clusters reveal issues related to failed payments, including a named pattern `Failed to place order`. Additional clusters also indicate problems charging cards and caches being full.
 
 <Image img={step_4} alt="Step 4" size="lg"/>
 
@@ -148,7 +148,7 @@ We've identified a cache-related error that's likely causing payment failures. W
 
 Given the cache issue, it makes sense to investigate the underlying infrastructure - potentially we have memory problem in the associated pods? In ClickStack, logs and metrics are unified and displayed in context, making it easier to uncover the root cause quickly.
 
-Select the `Instrastructure` tab to view the metrics associated with the underlying pods for the `frontend` service and widen the timespan to `1d`:
+Select the `Infrastructure` tab to view the metrics associated with the underlying pods for the `frontend` service and widen the timespan to `1d`:
 
 <Image img={step_7} alt="Step 7" size="lg"/>
 
@@ -229,7 +229,7 @@ We have established:
 
 <br/>
 
-Select `Chart Explorer` from the left menu. Complete the following values to chart time taken for payments to complete by chart type:
+Select `Chart Explorer` from the left menu. Complete the following values to chart the time taken for payments to complete by chart type:
 
 - `Data Source`: `Traces`
 - `Metric`: `Maximum`
