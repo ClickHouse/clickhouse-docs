@@ -94,6 +94,7 @@ preprocess_file() {
         | sed -E 's/<Image[^>]*\/?>//g' \
         | grep -Ev '(^[[:space:]]*(slug:|<img src=\{[^}]+\})|^import .* from .*)'
 }
+
 # List of files to ignore
 IGNORE_LIST=(
     "${ROOT_PATH}/docs/about-us/adopters.md"
