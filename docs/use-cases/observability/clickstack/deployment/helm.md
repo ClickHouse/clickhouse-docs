@@ -195,13 +195,40 @@ hyperdx:
 
 ## Using ClickHouse Cloud {#using-clickhouse-cloud}
 
-If using ClickHouse Cloud users disable the ClickHouse instance deployed by the Helm chart:
+If using ClickHouse Cloud users disable the ClickHouse instance deployed by the Helm chart and specify the Cloud Cloud credentials:
 
 ```bash
-helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false 
+# specify ClickHouse Cloud credentials
+export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # full https url
+export CLICKHOUSE_USER=<CLICKHOUSE_USER>
+export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
+
 # how to overwrite default connection
-TODO
+helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.clickhouseEndpoint=${CLICKHOUSE_URL} --set clickhouse.config.users.otelUser=${CLICKHOUSE_USER} --set clickhouse.config.users.otelUserPassword=${CLICKHOUSE_PASSWORD}
 ```
+
+Alternatively, use a `values.yaml` file:
+
+```yaml
+clickhouse:
+  enabled: false
+  persistence:
+    enabled: false
+  config:
+    users:
+      otelUser: ${CLICKHOUSE_USER}
+      otelUserPassword: ${CLICKHOUSE_PASSWORD}
+
+otel:
+  clickhouseEndpoint: ${CLICKHOUSE_URL}
+```
+
+```bash
+helm install my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
+# or if installed...
+# helm upgrade my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
+```
+
 
 ## Production notes {#production-notes}
 

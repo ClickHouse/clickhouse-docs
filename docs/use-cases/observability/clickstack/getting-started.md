@@ -1,6 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started
-title: 'Getting Started'
+title: 'Getting Started with ClickStack'
+sidebar_label: 'Getting Started'
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/example-datasets/index
 description: 'Getting started with ClickStack - The ClickHouse Observability Stack'
@@ -20,7 +21,6 @@ import delete_connection from '@site/static/images/use-cases/observability/delet
 import created_sources from '@site/static/images/use-cases/observability/created_sources.png';
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
 
-# Getting started with ClickStack {#getting-started-with-clickstack}
 
 Getting started with **ClickStack** is straightforward thanks to the availability of prebuilt Docker images. These images are based on the official ClickHouse Debian package and are available in multiple distributions to suit different use cases.
 
@@ -48,11 +48,11 @@ docker run -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4318:4318 docker.hyperdx.io
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
-Create a user, providing a username and password which meets the complexity requirements. 
+Create a user, providing a username and password that meets the complexity requirements. 
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-HyperDX will automatically connect to the local cluster and create data sources for the logs, traces, metrics and sessions - allowing you to explore the product immediately.
+HyperDX will automatically connect to the local cluster and create data sources for the logs, traces, metrics, and sessions - allowing you to explore the product immediately.
 
 ### Explore the product {#explore-the-product}
 
@@ -84,7 +84,7 @@ Follow the [getting started guide for ClickHouse Cloud](/cloud/get-started/cloud
 
 To find the connection details for HyperDX, navigate to the ClickHouse Cloud console and click the <b>Connect</b> button on the sidebar. 
 
-Copy the the HTTP connection details specifically the HTTPS endpoint (endpoint) and password.
+Copy the HTTP connection details, specifically the HTTPS endpoint (endpoint) and password.
 
 <Image img={connect_cloud} alt="Connect Cloud" size="md"/>
 

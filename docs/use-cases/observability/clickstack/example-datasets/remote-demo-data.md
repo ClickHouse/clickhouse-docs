@@ -10,6 +10,7 @@ description: 'Getting started with ClickStack and a remote demo dataset'
 import Image from '@theme/IdealImage';
 import demo_connection from '@site/static/images/use-cases/observability/hyperdx-demo/demo_connection.png';
 import edit_demo_connection from '@site/static/images/use-cases/observability/hyperdx-demo/edit_demo_connection.png';
+import edit_demo_source from '@site/static/images/use-cases/observability/hyperdx-demo/edit_demo_source.png';
 import step_2 from '@site/static/images/use-cases/observability/hyperdx-demo/step_2.png';
 import step_3 from '@site/static/images/use-cases/observability/hyperdx-demo/step_3.png';
 import step_4 from '@site/static/images/use-cases/observability/hyperdx-demo/step_4.png';
@@ -86,6 +87,16 @@ Rename the connection to `Demo` and complete the subsequent form with the follow
 - `Password`: Leave empty
 
 <Image img={edit_demo_connection} alt="Edit Demo Connection" size="lg"/>
+
+### Modify the sources {#modify-sources}
+
+Scroll up to `Sources` and modify each of the sources - `Logs`, `Traces`, `Metrics` and `Sessions` - to use the `otel_v2` database. 
+
+<Image img={edit_demo_source} alt="Edit Demo Source" size="lg"/>
+
+:::note
+You may need to reload the page to ensure the full list of databases is listed in each source.
+:::
 
 ### Adjust the time frame {#adjust-the-timeframe}
 
@@ -246,7 +257,7 @@ Complete the following values:
 
 - `Data Source`: `Metrics`
 - `Metric`: `Maximum`
-- `SQL Column`: `SpanAttributes['cache.size']` (just type `cache` for autocomplete)
+- `SQL Column`: `visa_validation_cache.size (gauge)` (just type `cache` for autocomplete)
 - `Where`: `ServiceName: payment`
 - `Group By`: `<empty>`
 
