@@ -32,7 +32,7 @@ In this mode, data ingestion is left entirely to the user. You can ingest data i
 
 ### Deploy with Docker {#deploy-hyperdx-with-docker}
 
-Run the following command, modifying the `YOUR_MONGODB_URI` as required. 
+Run the following command, modifying `YOUR_MONGODB_URI` as required. 
 
 ```bash
 docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx:2-nightly
@@ -42,7 +42,7 @@ docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.i
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
-Create a user, providing a username and password which means the requirements. 
+Create a user, providing a username and password which meets the requirements. 
 
 On clicking `Create` you'll be prompted for connection details.
 
@@ -68,7 +68,7 @@ Users can modify the [Docker Compose configuration](/use-cases/observability/cli
 
 ## ClickStack OpenTelemetry collector {#otel-collector}
 
-Even if managing your own OpenTelemetry collector, independent of the other components in the stack, we recommend using the ClickStack distribution of the collector. This ensures the default schema is used and best practices for ingestion applied.
+Even if you are managing your own OpenTelemetry collector, independent of the other components in the stack, we still recommend using the ClickStack distribution of the collector. This ensures the default schema is used and best practices for ingestion are applied.
 
 This image configuration can be found [here](https://github.com/hyperdxio/hyperdx/tree/v2/docker/otel-collector) and can be deployed with the following command:
 

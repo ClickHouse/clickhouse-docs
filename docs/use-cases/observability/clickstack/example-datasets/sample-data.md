@@ -87,7 +87,7 @@ done
 
 This simulates OLTP log, trace, and metric sources sending data to the OTel collector. In production, these sources may be language clients or even other OTel collectors.
 
-Returning to the `Search` view, you should see data has started to load:
+Returning to the `Search` view, you should see that data has started to load:
 
 <Image img={hyperdx_10} alt="HyperDX search" size="lg"/>
 

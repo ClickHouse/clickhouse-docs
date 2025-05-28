@@ -140,7 +140,7 @@ Press the run button to visualize your memory utilization over time.
 
 <Image img={hyperdx_21} alt="Memory over time" size="lg"/>
 
-Note the number is returned as a floating point `%`. To render more clearly, select `Set number format`. 
+Note the number is returned as a floating point `%`. To render it more clearly, select `Set number format`. 
 
 <Image img={hyperdx_22} alt="Number format" size="lg"/>
 

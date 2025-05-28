@@ -42,7 +42,7 @@ docker run -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4318:4318 docker.hyperdx.io
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
-Create a user, providing a username and password which means the requirements. 
+Create a user, providing a username and password which meets the requirements. 
 
 On clicking `Create` data sources will be created for the integrated ClickHouse instance.
 
@@ -60,14 +60,14 @@ To ingest data see ["Ingesting data"](/use-cases/observability/clickstack/ingest
 
 This option should not be deployed to production for the following reasons:
 
-- **Non-persistent storage:** All data is stored using the Docker native overlay filesystem. This setup does not support performance at scale and data will be lost if the container is removed or restarted.
+- **Non-persistent storage:** All data is stored using the Docker native overlay filesystem. This setup does not support performance at scale, and data will be lost if the container is removed or restarted.
 - **Lack of component isolation:** All components run within a single Docker container. This prevents independent scaling and monitoring and applies any `cgroup` limits globally to all processes. As a result, components may compete for CPU and memory.
 
 ## Customizing ports {#customizing-ports-deploy}
 
 If you need to customize the application (8080) or API (8000) ports that HyperDX Local runs on, you'll need to modify the `docker run` command to forward the appropriate ports and set a few environment variables.
 
-Customizing the OpenTelemetry ports can simply be changed by modifying the port forwarding flags. Ex. Replacing `-p 4318:4318` with `-p 4999:4318` to change the OpenTelemetry HTTP port to 4999.
+Customizing the OpenTelemetry ports can simply be changed by modifying the port forwarding flags. For example,  replacing `-p 4318:4318` with `-p 4999:4318` to change the OpenTelemetry HTTP port to 4999.
 
 ```bash
 docker run -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4999:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly

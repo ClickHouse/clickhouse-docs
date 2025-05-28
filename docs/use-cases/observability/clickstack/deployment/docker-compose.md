@@ -20,7 +20,7 @@ All ClickStack components are distributed separately as individual Docker images
 
 These images can be combined and deployed locally using Docker Compose.
 
-The Docker Compose exposes additional ports for observability and ingestion based on the default `otel-collector` setup:
+Docker Compose exposes additional ports for observability and ingestion based on the default `otel-collector` setup:
 
 - `13133`: Health check endpoint for the `health_check` extension
 - `24225`: Fluentd receiver for log ingestion
@@ -44,7 +44,7 @@ These ports enable integrations with a variety of telemetry sources and make the
 
 ### Clone the repo {#clone-the-repo}
 
-To deploy with Docker Compose clone the HyperDX repo, change in to the directory and run `docker-compose up`:
+To deploy with Docker Compose clone the HyperDX repo, change into the directory and run `docker-compose up`:
 
 ```bash
 git clone git@github.com:hyperdxio/hyperdx.git
@@ -58,7 +58,7 @@ docker compose up
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
-Create a user, providing a username and password which means the requirements. 
+Create a user, providing a username and password which meets the requirements. 
 
 On clicking `Create` data sources will be created for the ClickHouse instance deployed with the Helm chart.
 

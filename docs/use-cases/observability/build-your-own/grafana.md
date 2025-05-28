@@ -27,7 +27,7 @@ Part of this has been placing OpenTelemetry (OTel) at the core of the plugin, as
 
 ## OpenTelemetry Integration {#open-telemetry-integration}
 
-On configuring a Clickhouse datasource in Grafana, the plugin allows the users to specify a default database and table for logs and traces and whether these tables conform to the OTel schema. This allows the plugin to return the columns required for correct log and trace rendering in Grafana. If you've made changes to the default OTel schema and prefer to use your own column names, these can be specified. Usage of the default OTel column names for columns such as time (Timestamp), log level (SeverityText), or message body (Body) means no changes need to be made.
+On configuring a ClickHouse datasource in Grafana, the plugin allows the user to specify a default database and table for logs and traces and whether these tables conform to the OTel schema. This allows the plugin to return the columns required for correct log and trace rendering in Grafana. If you've made changes to the default OTel schema and prefer to use your own column names, these can be specified. Usage of the default OTel column names for columns such as time (`Timestamp`), log level (`SeverityText`), or message body (`Body`) means no changes need to be made.
 
 :::note HTTP or Native
 Users can connect Grafana to ClickHouse over either the HTTP or Native protocol. The latter offers marginal performance advantages which are unlikely to be appreciable in the aggregation queries issued by Grafana users. Conversely, the HTTP protocol is typically simpler for users to proxy and introspect.

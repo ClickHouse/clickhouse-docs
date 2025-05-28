@@ -101,12 +101,10 @@ For an example of using an alternative ClickHouse instance, see ["Create a Click
 
 ### Customizing values (Optional) {#customizing-values}
 
-You can customize settings by using `--set` flags e.g.
+You can customize settings by using `--set` flags. For example:
 
 ```bash
-```sh
 helm install my-hyperdx hyperdx/hdx-oss-v2 --set key=value
-```
 
 Alternatively, edit the `values.yaml`. To retrieve the default values:
 
@@ -180,7 +178,7 @@ kubectl create secret generic hyperdx-secret \
 
 #### Referencing a Secret {#referencing-a-secret}
 
-To reference a secret in `values.yaml`  
+To reference a secret in `values.yaml`:
 
 ```yaml
 hyperdx:
@@ -232,9 +230,9 @@ helm install my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 
 ## Production notes {#production-notes}
 
-By default, this chart also installs clickhouse and the OTel collector. However, for production, it is recommended that you manage the clickhouse and OTel collector separately.
+By default, this chart also installs ClickHouse and the OTel collector. However, for production, it is recommended that you manage ClickHouse and the OTel collector separately.
 
-To disable clickhouse and OTel collector, set the following values:
+To disable ClickHouse and the OTel collector, set the following values:
 
 ```bash
 helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.enabled=false
