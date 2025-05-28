@@ -38,7 +38,7 @@ This all-in-one image allows you to launch the full stack with a single command,
 
 ### Deploy stack with docker {#deploy-stack-with-docker}
 
-The following will run an OpenTelemetry collector (on port 4317 and 4318), Clickhouse (on port 8123), and the HyperDX UI (on port 8080).
+The following will run an OpenTelemetry collector (on port 4317 and 4318), ClickHouse (on port 8123), and the HyperDX UI (on port 8080).
 
 ```bash
 docker run -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
@@ -139,7 +139,7 @@ With the stack deployed, try one of our same datasets.
 
 ## Local mode {#local-mode}
 
-Local mode is a way to deploy HyperDX without a database or OTel collector. You can connect directly to a Clickhouse server from your browser directly, with configuration stored locally in your browser's local or session storage. This image **only** includes the HyperDX UI. 
+Local mode is a way to deploy HyperDX without a database or OTel collector. You can connect directly to a ClickHouse server from your browser directly, with configuration stored locally in your browser's local or session storage. This image **only** includes the HyperDX UI. 
 
 Authentication is not supported. 
 
@@ -155,7 +155,7 @@ You can use a hosted of version HyperDX in local mode available at [play.hyperdx
 
 ### Run with docker {#run-local-with-docker}
 
-The self-hosted local mode image comes with an OpenTelemetry collector and a Clickhouse server pre-configured as well. This makes it easy to consume telemetry data from your applications and visualize it in HyperDX with minimal external setup. To get started with the self-hosted version, simply run the Docker container with the appropriate ports forwarded:
+The self-hosted local mode image comes with an OpenTelemetry collector and a ClickHouse server pre-configured as well. This makes it easy to consume telemetry data from your applications and visualize it in HyperDX with minimal external setup. To get started with the self-hosted version, simply run the Docker container with the appropriate ports forwarded:
 
 ```bash
 docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local:2-nightly

@@ -91,7 +91,7 @@ For production deployments, we recommend using [ClickHouse Cloud](https://clickh
 
 #### HyperDX user {#hyperdx-user}
 
-The Clickhouse user for HyperDX only needs to be a `readonly` user with access to change the following settings:
+The ClickHouse user for HyperDX only needs to be a `readonly` user with access to change the following settings:
 
 - `max_rows_to_read` (at least up to 1 million)
 - `read_overflow_mode`
