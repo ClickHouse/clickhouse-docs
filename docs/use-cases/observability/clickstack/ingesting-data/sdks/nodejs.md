@@ -14,7 +14,7 @@ ClickStack uses the OpenTelemetry standard for collecting telemetry data (logs, 
 traces and exceptions). Traces are auto-generated with automatic instrumentation, so manual
 instrumentation isn't required to get value out of tracing.
 
-This Guide Integrates:
+This guide integrates:
 
 - **Logs**
 - **Metrics**
@@ -236,7 +236,7 @@ given request/trace (ex. as early in an Express middleware stack as possible).
 
 This is a convenient way to ensure all logs/spans are automatically tagged with
 the right identifiers to be searched on later, instead of needing to manually
-tagging and propagating identifiers yourself.
+tag and propagate identifiers yourself.
 
 `userId`, `userEmail`, `userName`, and `teamName` will populate the sessions UI
 with the corresponding values, but can be omitted. Any other additional values
@@ -356,7 +356,7 @@ To enable uncaught exception capturing, you'll need to set the `HDX_NODE_EXPERIM
 HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE=1
 ```
 
-Afterwards, to automatically capture exceptions from Express, Koa, or manually caught exceptions, follow the instructions in the  [Setup Error Collection](#setup-error-collection) section above.
+Afterwards, to automatically capture exceptions from Express, Koa, or to manually catch exceptions, follow the instructions in the [Setup Error Collection](#setup-error-collection) section above.
 
 ### Auto-instrumented libraries {#auto-instrumented-libraries-2}
 

@@ -7,7 +7,7 @@ description: 'Ruby on Rails SDK for ClickStack - The ClickHouse Observability St
 title: 'Ruby on Rails'
 ---
 
-This Guide Integrates:
+This guide integrates:
 
 <table>
   <tbody>

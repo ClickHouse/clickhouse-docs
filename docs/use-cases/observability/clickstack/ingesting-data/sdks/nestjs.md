@@ -10,7 +10,7 @@ title: 'NestJS'
 The ClickStack NestJS integration allows you to create a logger or use the default
 logger to send logs to ClickStack (powered by [nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme)).
 
-**This Guide Integrates:**
+**This guide integrates:**
 
 <table>
   <tbody>
@@ -46,7 +46,7 @@ import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
 export class AppModule {}
 ```
 
-Afterward, the winston instance will be available to inject across entire
+Afterward, the winston instance will be available to inject across the entire
 project using the `HDX_LOGGER_MODULE_PROVIDER` injection token:
 
 ```js
@@ -111,7 +111,7 @@ import { Logger, Module } from '@nestjs/common';
 export class AppModule {}
 ```
 
-Then inject the logger simply by type hinting it with Logger from `@nestjs/common`:
+Then inject the logger simply by type hinting it with the Logger from `@nestjs/common`:
 
 ```js
 import { Controller, Logger } from '@nestjs/common';

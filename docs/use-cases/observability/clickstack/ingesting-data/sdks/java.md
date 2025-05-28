@@ -11,7 +11,7 @@ ClickStack uses the OpenTelemetry standard for collecting telemetry data (logs a
 traces). Traces are auto-generated with automatic instrumentation, so manual
 instrumentation isn't required to get value out of tracing.
 
-**This Guide Integrates:**
+**This guide Integrates:**
 
 <table>
   <tbody>

@@ -20,7 +20,7 @@ This Guide Integrates:
 - **Traces**
 
 :::note
-If you're looking for session replay/browser-side monitoring, you'll want to install  the [Browser integration](/use-cases/observability/clickstack/sdks/browser) instead.
+If you're looking for session replay/browser-side monitoring, you'll want to install the [Browser integration](/use-cases/observability/clickstack/sdks/browser) instead.
 :::
 
 ## Installing {#installing}

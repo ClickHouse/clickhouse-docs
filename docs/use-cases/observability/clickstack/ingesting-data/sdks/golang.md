@@ -156,7 +156,6 @@ go get -u go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/o
 Refer to the commented sections to learn how to instrument your Go application.
 
 ```go
-Here is your Go code with all hard tabs removed and indentation preserved using spaces:
 
 package main
 
