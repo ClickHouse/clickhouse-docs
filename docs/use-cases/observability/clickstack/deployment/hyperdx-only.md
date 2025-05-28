@@ -82,7 +82,7 @@ For example,
 docker run -e OPAMP_SERVER_URL=http://localhost:4320 -e CLICKHOUSE_ENDPOINT=myhost:9000 -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=password -p 4317:4127 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector:2-nightly
 ```
 
-The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment e.g. `http://localhost:4320`. This runs an OpAMP (Open Agent Management Protocol) server endpoint at `/v1/opamp` on port 4320 by default. This ensures the collectors OTLP interface is secured with the ingestion API key. See [Securing the collector](#securing-the-collector). The `CLICKHOUSE_ENDPOINT` here should be the full ClickHouse endpoint including the protocol and port e.g. `http://localhost:8123`.
+The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment e.g. `http://localhost:4320`. This runs an OpAMP (Open Agent Management Protocol) server endpoint at `/v1/opamp` on port 4320 by default. This ensures the collectors OTLP interface is secured with the ingestion API key. See [Securing the collector](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector). The `CLICKHOUSE_ENDPOINT` here should be the full ClickHouse endpoint including the protocol and port e.g. `http://localhost:8123`.
 
 
 This command exposes an OTLP endpoint on ports 4317 (HTTP) and 4318 (gRPC) for users to send OTel events.
