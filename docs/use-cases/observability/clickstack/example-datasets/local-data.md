@@ -49,7 +49,7 @@ receivers:
       - /var/log/syslog
       - /var/log/messages
       - /private/var/log/*.log       # macOS
-    start_at: beginning
+    start_at: beginning # modify to collect new files only
 
   hostmetrics:
     collection_interval: 1s
@@ -104,6 +104,14 @@ service:
 ```
 
 This configuration collects system logs and metric for OSX and Linux systems, sending the results to ClickStack via the OTLP endpoint on port 4317.
+
+:::note Ingestion timestamps
+This configuration adjusts timestamps at ingest, assigning an updated time value to each event. Users should ideally [preprocess or parse timestamps](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching) using OTel processors or operators in their log files to ensure accurate event time is retained.
+
+With this example setup, if the receiver or file processor is configured to start at the beginning of the file, all existing log entries will be assigned the same adjusted timestamp - the time of processing rather than the original event time. Any new events appended to the file will receive timestamps approximating their actual generation time.
+
+To avoid this behavior, you can set the start position to `end` in the receiver configuration. This ensures only new entries are ingested and timestamped near their true arrival time.
+:::
 
 For more details on the OpenTelemetry (OTel) configuration structure, we recommend [the official guide](https://opentelemetry.io/docs/collector/configuration/).
 

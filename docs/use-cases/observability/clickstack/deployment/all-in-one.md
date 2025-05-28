@@ -32,10 +32,10 @@ This option includes authentication, enabling the persistence of dashboards, ale
 
 ### Deploy with Docker {#deploy-with-docker}
 
-The following will run an OpenTelemetry collector (on port 4317 and 4318), ClickHouse (on port 8123), and the HyperDX UI (on port 8080).
+The following will run an OpenTelemetry collector (on port 4317 and 4318) and the HyperDX UI (on port 8080).
 
 ```bash
-docker run -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
+docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
 ```
 
 ### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
@@ -66,7 +66,6 @@ mkdir -p .volumes/db .volumes/ch_data .volumes/ch_logs
 # modify command to mount paths
 docker run \
   -p 8080:8080 \
-  -p 8123:8123 \
   -p 4317:4317 \
   -p 4318:4318 \
   -v "$(pwd)/.volumes/db:/data/db" \
@@ -89,7 +88,7 @@ If you need to customize the application (8080) or API (8000) ports that HyperDX
 Customizing the OpenTelemetry ports can simply be changed by modifying the port forwarding flags. For example,  replacing `-p 4318:4318` with `-p 4999:4318` to change the OpenTelemetry HTTP port to 4999.
 
 ```bash
-docker run -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4999:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
+docker run -p 8080:8080 -p 4317:4317 -p 4999:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
 ```
 
 ## Using ClickHouse Cloud {#using-clickhouse-cloud}

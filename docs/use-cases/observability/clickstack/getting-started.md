@@ -38,10 +38,10 @@ This all-in-one image allows you to launch the full stack with a single command,
 
 ### Deploy stack with docker {#deploy-stack-with-docker}
 
-The following will run an OpenTelemetry collector (on port 4317 and 4318), ClickHouse (on port 8123), and the HyperDX UI (on port 8080).
+The following will run an OpenTelemetry collector (on port 4317 and 4318) and the HyperDX UI (on port 8080).
 
 ```bash
-docker run -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
+docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
 ```
 
 :::note Persisting data and settings
@@ -53,7 +53,6 @@ mkdir -p .volumes/db .volumes/ch_data .volumes/ch_logs
 # modify command to mount paths
 docker run \
   -p 8080:8080 \
-  -p 8123:8123 \
   -p 4317:4317 \
   -p 4318:4318 \
   -v "$(pwd)/.volumes/db:/data/db" \
