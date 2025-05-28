@@ -31,7 +31,7 @@ Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
 ## Copy ingestion API key {#copy-ingestion-api-key}
 
-Navigate to `Team Settings` and copy the `Ingestion API Key` from the `API Keys` section. This API key ensure data ingestion through the OpenTelemetry collector is secure.
+Navigate to [`Team Settings`](http://localhost:8080/team) and copy the `Ingestion API Key` from the `API Keys` section. This API key ensures data ingestion through the OpenTelemetry collector is secure.
 
 <Image img={copy_api_key} alt="Copy API key" size="lg"/>
 
