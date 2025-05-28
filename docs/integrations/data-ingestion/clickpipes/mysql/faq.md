@@ -25,7 +25,7 @@ When connecting to MySQL, you may encounter certificate errors like `x509: certi
 
 You have several options to resolve these issues:
 
-1. **Skip Certificate Verification** - For self-hosted MySQL or MariaDB, whose default configurations provision a self-signed certificate we can't validate ([MySQL](https://dev.mysql.com/doc/refman/8.4/en/creating-ssl-rsa-files-using-mysql.html#creating-ssl-rsa-files-using-mysql-automatic), [MariaDB](https://mariadb.com/kb/en/securing-connections-for-client-and-server/#enabling-tls-for-mariadb-server)). Relying on this certificate encrypts the data in transit but runs the risk of server impersonation. We recommend properly signed certificates for production environments, but this option is useful for testing on a one-off instance or connecting to legacy infrastructure.
+1. **Skip certificate verification** - For self-hosted MySQL or MariaDB, whose default configurations provision a self-signed certificate we can't validate ([MySQL](https://dev.mysql.com/doc/refman/8.4/en/creating-ssl-rsa-files-using-mysql.html#creating-ssl-rsa-files-using-mysql-automatic), [MariaDB](https://mariadb.com/kb/en/securing-connections-for-client-and-server/#enabling-tls-for-mariadb-server)). Relying on this certificate encrypts the data in transit but runs the risk of server impersonation. We recommend properly signed certificates for production environments, but this option is useful for testing on a one-off instance or connecting to legacy infrastructure.
 
 2. **Set the TLS Host field** - When the hostname in your connection differs from the certificate (common with AWS PrivateLink via Endpoint Service). Set "TLS Host (optional)" to match the certificate's Subject Alternative Name (SAN).
 
