@@ -23,7 +23,7 @@ The ClickStack OpenTelemetry collector is included in most ClickStack distributi
 
 ### Standalone {#standalone}
 
-The ClickStack OTel collector can also be deployed standalone independent of other components of the stack.
+The ClickStack OTel collector can also be deployed standalone, independent of other components of the stack.
 
 If you're using the [HyperDX-only](/use-cases/observability/clickstack/deployment/hyperdx-only) distribution, you are responsible for delivering data into ClickHouse yourself. This can be done by:
 
@@ -41,7 +41,7 @@ docker run -e OPAMP_SERVER_URL=${HYPERDX_URL}/v1/opamp -e CLICKHOUSE_ENDPOINT=${
 
 ```
 
-Note that we can overwrite the target ClickHouse instance with environment variables for `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD`. **These environment variables can be used with any of the docker distributions which include the connector.**
+Note that we can overwrite the target ClickHouse instance with environment variables for `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME`, and `CLICKHOUSE_PASSWORD`. **These environment variables can be used with any of the docker distributions which include the connector.**
 
 The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment and its OpAMP (Open Agent Management Protocol) endpoint at `/v1/opamp` e.g. `http://localhost:8080/v1/opamp`. This ensures the collectors OTLP interface is secured with the ingestion API key.
 
@@ -71,7 +71,7 @@ For language SDKs, this can either be set by an `init` function or via an`OTEL_E
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
-Agents should likewise include this authorization header in any OTLP communication. For example, if deploying a [contrib distribution of the OTel collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) in the agent role, they can use the OTLP exporter. An example  agent config consuming this [structured log file](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz), is shown below. Note the need to specify an authorization key - see `<YOUR_API_INGESTION_KEY>`.
+Agents should likewise include this authorization header in any OTLP communication. For example, if deploying a [contrib distribution of the OTel collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) in the agent role, they can use the OTLP exporter. An example agent config consuming this [structured log file](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz), is shown below. Note the need to specify an authorization key - see `<YOUR_API_INGESTION_KEY>`.
 
 
 ```yaml

@@ -6,10 +6,7 @@ description: 'Kubernetes integration for ClickStack - The ClickHouse Observabili
 title: 'Kubernetes'
 ---
 
-ClickStack uses the OpenTelemetry (OTel) collector to collect logs, metrics, and
-Kubernetes events from Kubernetes clusters and forward it to your account. We
-support the native OTel log format and require no additional
-vendor-specific configuration.
+ClickStack uses the OpenTelemetry (OTel) collector to collect logs, metrics, and Kubernetes events from Kubernetes clusters and forward them to ClickStack. We support the native OTel log format and require no additional vendor-specific configuration.
 
 This Guide Integrates:
 
@@ -26,7 +23,7 @@ To collect logs and metrics from both each node and the cluster itself, we'll ne
 
 ### Creating the DaemonSet configuration {#creating-the-daemonset-configuration}
 
-The DaemonSet will collect logs and metrics from each node in the cluster, but will not collect Kubernetes events or cluster-wide metrics.
+The DaemonSet will collect logs and metrics from each node in the cluster but will not collect Kubernetes events or cluster-wide metrics.
 
 Create a file called `daemonset.yaml` with the following contents:
 
@@ -126,7 +123,7 @@ Create a file called `deployment.yaml` with the following contents:
 # deployment.yaml
 mode: deployment
 
-# We only want one of these collectors - any more and we'd produce duplicate data
+# We only want one of these collectors - any more, and we'd produce duplicate data
 replicaCount: 1
 
 presets:
@@ -186,11 +183,11 @@ helm install my-opentelemetry-collector-daemonset open-telemetry/opentelemetry-c
 ```
 
 Now the metrics, logs and Kubernetes events from your Kubernetes cluster should
-now appear inside your HyperDX account.
+now appear inside HyperDX.
 
 ## Forwarding resource tags to pods (Recommended) {#forwarding-resouce-tags-to-pods}
 
-To correlate application-level logs, metrics and traces with Kubernetes metadata
+To correlate application-level logs, metrics, and traces with Kubernetes metadata
 (ex. pod name, namespace, etc.), you'll want to forward the Kubernetes metadata
 to your application using the `OTEL_RESOURCE_ATTRIBUTES` environment variable.
 

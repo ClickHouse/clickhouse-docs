@@ -40,13 +40,13 @@ docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local:2-nightly
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
-**You will not be prompted to create a user as authentication is not enabled in this deployment mode.**
+**You will not be prompted to create a user, as authentication is not enabled in this deployment mode.**
 
 Connect to your own external ClickHouse cluster e.g. ClickHouse Cloud.
 
 <Image img={hyperdx_2} alt="Create login" size="md"/>
 
-Create a source, retain all default values and complete the `Table` field with the value `otel_logs`. All other settings should be auto-detected, allowing you to click `Save New Source`.
+Create a source, retain all default values, and complete the `Table` field with the value `otel_logs`. All other settings should be auto-detected, allowing you to click `Save New Source`.
 
 <Image img={hyperdx_logs} alt="Create logs source" size="md"/>
 

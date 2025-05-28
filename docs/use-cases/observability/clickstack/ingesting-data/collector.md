@@ -24,19 +24,19 @@ OpenTelemetry collectors can be deployed in two principal roles:
 
 - **Gateway** - Gateway instances provide a standalone service (for example, a deployment in Kubernetes), typically per cluster, per data center, or per region. These receive events from applications (or other collectors as agents) via a single OTLP endpoint. Typically, a set of gateway instances are deployed, with an out-of-the-box load balancer used to distribute the load amongst them. If all agents and applications send their signals to this single endpoint, it is often referred to as a [Gateway deployment pattern](https://opentelemetry.io/docs/collector/deployment/gateway/). 
 
-**Important: The collector including in default distributions of ClickStack assume the [gateway role described below](#collector-roles), receiving data from agents or SDKs.**
+**Important: The collector, including in default distributions of ClickStack, assumes the [gateway role described below](#collector-roles), receiving data from agents or SDKs.**
 
-Users deploying OTel collectors in the agent role will typically use the [default contrib distribution of the collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) and not the ClickStack version, but are free to use other OTLP compatible technologies such as [Fluentd](https://www.fluentd.org/) and [Vector](https://vector.dev/).
+Users deploying OTel collectors in the agent role will typically use the [default contrib distribution of the collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) and not the ClickStack version but are free to use other OTLP compatible technologies such as [Fluentd](https://www.fluentd.org/) and [Vector](https://vector.dev/).
 
 ## Configuring the collector {#configuring-the-collector}
 
-If you are managing your own OpenTelemetry collector in a standalone deployment - such as when using the HyperDX only distribution - we [recommend still using the official ClickStack distribution of the collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) for the gateway role where possible, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
+If you are managing your own OpenTelemetry collector in a standalone deployment - such as when using the HyperDX-only distribution - we [recommend still using the official ClickStack distribution of the collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) for the gateway role where possible, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 
 ### Modifying configuration {#modifying-otel-collector-configuration}
 
 #### Using docker {#using-docker}
 
-All docker images which include the OpenTelemetry collector can be configured to use a clickhouse instance via the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD`:
+All docker images, which include the OpenTelemetry collector, can be configured to use a clickhouse instance via the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD`:
 
 For example for the all-in-one image:
 
@@ -53,7 +53,7 @@ The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment and its 
 
 #### Docker Compose {#docker-compose-otel}
 
-With Docker Compose, modifying the collector configuration using the same environment variables as above:
+With Docker Compose, modify the collector configuration using the same environment variables as above:
 
 ```yaml
   otel-collector:
@@ -77,7 +77,7 @@ With Docker Compose, modifying the collector configuration using the same enviro
 
 ### Advanced configuration {#advanced-configuration}
 
-Currently the ClickStack distribution of the OTel collector does not support modification of its configuration file. If you need more complex configuration e.g. [configuring TLS](#securing-the-collector), or modifying the batch size, we recommend copying and modifying the [default configuration](https://github.com/hyperdxio/hyperdx/blob/v2/docker/otel-collector/config.yaml) and deploying your own version of the OTel collector using the ClickHouse exporter documented [here](/observability/integrating-opentelemetry#exporting-to-clickhouse) and [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
+Currently, the ClickStack distribution of the OTel collector does not support modification of its configuration file. If you need a more complex configuration e.g. [configuring TLS](#securing-the-collector), or modifying the batch size, we recommend copying and modifying the [default configuration](https://github.com/hyperdxio/hyperdx/blob/v2/docker/otel-collector/config.yaml) and deploying your own version of the OTel collector using the ClickHouse exporter documented [here](/observability/integrating-opentelemetry#exporting-to-clickhouse) and [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
 
 The default ClickStack configuration for the OpenTelemetry (OTel) collector can be found [here](https://github.com/hyperdxio/hyperdx/blob/v2/docker/otel-collector/config.yaml).
 
@@ -98,7 +98,7 @@ To further secure your deployment, we recommend:
 
 - Configuring the collector to communicate with ClickHouse over HTTPS.
 - Create a dedicated user for ingestion with limited permissions - see below.
-- Enabling TLS for the OTLP endpoint, ensuring encrypted communication between SDKs/agents and the collector. **Currently this requires users to deploy a default distribution of the collector and manage the configuration themselves**. 
+- Enabling TLS for the OTLP endpoint, ensuring encrypted communication between SDKs/agents and the collector. **Currently, this requires users to deploy a default distribution of the collector and manage the configuration themselves**. 
 
 ### Creating an ingestion user {#creating-an-ingestion-user}
 
@@ -110,9 +110,9 @@ CREATE USER hyperdx_ingest IDENTIFIED WITH sha256_password BY 'ClickH0u3eRocks12
 GRANT SELECT, INSERT, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
 ```
 
-This assumes the collector has been configured to use the database `otel`. This can be controlled through the environment variable `CLICKHOUSE_DATABASE`. Pass this to the image hosting the collector [similar to other environment variables](#modifying-otel-collector-configuration).
+This assumes the collector has been configured to use the database `otel`. This can be controlled through the environment variable `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`. Pass this to the image hosting the collector [similar to other environment variables](#modifying-otel-collector-configuration).
 
-## Processing - filtering, transforming and enriching {#processing-filtering-transforming-enriching}
+## Processing - filtering, transforming, and enriching {#processing-filtering-transforming-enriching}
 
 Users will invariably want to filter, transform, and enrich event messages during ingestion. Since the configuration for the ClickStack connector cannot be modified, we recommend users who need further event filtering and processing either:
 
@@ -133,7 +133,7 @@ OpenTelemetry supports the following processing and filtering features users can
 
 - **Operators** - [Operators](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) provide the most basic unit of processing available at the receiver. Basic parsing is supported, allowing fields such as the Severity and Timestamp to be set. JSON and regex parsing are supported here along with event filtering and basic transformations. We recommend performing event filtering here.
 
-We recommend users avoid doing excessive event processing using operators or [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md). These can incur considerable memory and CPU overhead, especially JSON parsing.  It is possible to do all processing in ClickHouse at insert time with materialized views and columns with some exceptions - specifically, context-aware enrichment e.g. adding of k8s metadata. For more details see [Extracting structure with SQL](/use-cases/observability/schema-design#extracting-structure-with-sql).
+We recommend users avoid doing excessive event processing using operators or [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md). These can incur considerable memory and CPU overhead, especially JSON parsing.  It is possible to do all processing in ClickHouse at insert time with materialized views and columns with some exceptions - specifically, context-aware enrichment e.g. adding of k8s metadata. For more details, see [Extracting structure with SQL](/use-cases/observability/schema-design#extracting-structure-with-sql).
 
 ### Example {#example-processing}
 
@@ -191,7 +191,7 @@ service:
 
 Note the need to include an [authorization header containing your ingestion API key](#securing-the-collector) in any OTLP communication.
 
-For more advanced configuration we suggest the [OpenTelemetry collector documentation](https://opentelemetry.io/docs/collector/).
+For more advanced configuration, we suggest the [OpenTelemetry collector documentation](https://opentelemetry.io/docs/collector/).
 
 ## Optimizing inserts {#optimizing-inserts}
 
@@ -204,15 +204,15 @@ By default, each insert sent to ClickHouse causes ClickHouse to immediately crea
 By default, inserts into ClickHouse are synchronous and idempotent if identical. For tables of the merge tree engine family, ClickHouse will, by default, automatically [deduplicate inserts](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time). This means inserts are tolerant in cases like the following:
 
 - (1) If the node receiving the data has issues, the insert query will time out (or get a more specific error) and not receive an acknowledgment.
-- (2) If the data got written by the node, but the acknowledgement can't be returned to the sender of the query because of network interruptions, the sender will either get a time-out or a network error.
+- (2) If the data got written by the node, but the acknowledgement can't be returned to the sender of the query because of network interruptions, the sender will either get a timeout or a network error.
 
 From the collector's perspective, (1) and (2) can be hard to distinguish. However, in both cases, the unacknowledged insert can just immediately be retried. As long as the retried insert query contains the same data in the same order, ClickHouse will automatically ignore the retried insert if the (unacknowledged) original insert succeeded.
 
-For this reason the ClickStack distribution of the OTel collector uses the batch [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This ensures inserts are sent as consistent batches of rows satisfying the above requirements. If a collector is expected to have high throughput (events per second), and at least 5000 events can be sent in each insert, this is usually the only batching required in the pipeline. In this case the collector will flush batches before the batch processor's `timeout` is reached, ensuring the end-to-end latency of the pipeline remains low and batches are of a consistent size.
+For this reason, the ClickStack distribution of the OTel collector uses the batch [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This ensures inserts are sent as consistent batches of rows satisfying the above requirements. If a collector is expected to have high throughput (events per second), and at least 5000 events can be sent in each insert, this is usually the only batching required in the pipeline. In this case the collector will flush batches before the batch processor's `timeout` is reached, ensuring the end-to-end latency of the pipeline remains low and batches are of a consistent size.
 
 ### Use Asynchronous inserts {#use-asynchronous-inserts}
 
-Typically, users are forced to send smaller batches when the throughput of a collector is low, and yet they still expect data to reach ClickHouse within a minimum end-to-end latency. In this case, small batches are sent when the `timeout` of the batch processor expires. This can cause problems and is when asynchronous inserts are required. This issue is rare if users are sending data to the ClickStack collector acting as a Gateway - by acting as aggregators they alleviate this problem - see [Collector roles](#collector-roles).
+Typically, users are forced to send smaller batches when the throughput of a collector is low, and yet they still expect data to reach ClickHouse within a minimum end-to-end latency. In this case, small batches are sent when the `timeout` of the batch processor expires. This can cause problems and is when asynchronous inserts are required. This issue is rare if users are sending data to the ClickStack collector acting as a Gateway - by acting as aggregators, they alleviate this problem - see [Collector roles](#collector-roles).
 
 If large batches cannot be guaranteed, users can delegate batching to ClickHouse using [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts). With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later or asynchronously respectively.
 
@@ -222,7 +222,7 @@ With [enabled asynchronous inserts](/optimize/asynchronous-inserts#enabling-asyn
 
 To enable asynchronous inserts for the collector, add `async_insert=1` to the connection string. We recommend users use `wait_for_async_insert=1` (the default) to get delivery guarantees - see [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) for further details.
 
-Data from an async insert is inserted once the ClickHouse buffer is flushed. This occurs either after the [`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) is exceeded or after [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) milliseconds since the first INSERT query. If the `async_insert_stale_timeout_ms` is set to a non-zero value, the data is inserted after `async_insert_stale_timeout_ms milliseconds` since the last query. Users can tune these settings to control the end-to-end latency of their pipeline. Further settings which can be used to tune buffer flushing are documented [here](/operations/settings/settings#async_insert). Generally, defaults are appropriate.
+Data from an async insert is inserted once the ClickHouse buffer is flushed. This occurs either after the [`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) is exceeded or after [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) milliseconds since the first INSERT query. If the `async_insert_stale_timeout_ms` is set to a non-zero value, the data is inserted after `async_insert_stale_timeout_ms milliseconds` since the last query. Users can tune these settings to control the end-to-end latency of their pipeline. Further settings that can be used to tune buffer flushing are documented [here](/operations/settings/settings#async_insert). Generally, defaults are appropriate.
 
 :::note Consider Adaptive Asynchronous Inserts
 In cases where a low number of agents are in use, with low throughput but strict end-to-end latency requirements, [adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) may be useful. Generally, these are not applicable to high throughput Observability use cases, as seen with ClickHouse.

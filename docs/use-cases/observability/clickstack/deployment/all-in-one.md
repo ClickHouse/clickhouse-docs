@@ -18,7 +18,7 @@ This comprehensive Docker image bundles all ClickStack components:
 * **OpenTelemetry (OTel) collector** (exposing OTLP on ports `4317` and `4318`)
 * **MongoDB** (for persistent application state)
 
-This option includes authentication, enabling persistence of dashboards, alerts, and saved searches across sessions and users.
+This option includes authentication, enabling the persistence of dashboards, alerts, and saved searches across sessions and users.
 
 ### Suitable for {#suitable-for}
 
@@ -61,11 +61,11 @@ To ingest data see ["Ingesting data"](/use-cases/observability/clickstack/ingest
 This option should not be deployed to production for the following reasons:
 
 - **Non-persistent storage:** All data is stored using the Docker native overlay filesystem. This setup does not support performance at scale and data will be lost if the container is removed or restarted.
-- **Lack of component isolation:** All components run within a single Docker container. This prevents independent scaling and monitoring, and applies any cgroup limits globally to all processes. As a result, components may compete for CPU and memory,
+- **Lack of component isolation:** All components run within a single Docker container. This prevents independent scaling and monitoring and applies any `cgroup` limits globally to all processes. As a result, components may compete for CPU and memory.
 
 ## Customizing ports {#customizing-ports-deploy}
 
-If you need to customize the app (8080) or api (8000) ports that HyperDX Local runs on, you'll need to modify the `docker run` command to forward the appropriate ports and set a few environment variables.
+If you need to customize the application (8080) or API (8000) ports that HyperDX Local runs on, you'll need to modify the `docker run` command to forward the appropriate ports and set a few environment variables.
 
 Customizing the OpenTelemetry ports can simply be changed by modifying the port forwarding flags. Ex. Replacing `-p 4318:4318` with `-p 4999:4318` to change the OpenTelemetry HTTP port to 4999.
 
@@ -89,7 +89,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 The `CLICKHOUSE_ENDPOINT` should be the ClickHouse Cloud HTTPS endpoint, including the port `8443` e.g. `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 
-On connecting to the HyperDX UI, navigate to `Team Settings` and create a connection to your ClickHouse Cloud service - followed by required sources. For an example flow, see [here](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
+On connecting to the HyperDX UI, navigate to [`Team Settings`](http://localhost:8080/team) and create a connection to your ClickHouse Cloud service - followed by the required sources. For an example flow, see [here](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
 ## Configuring the OpenTelemetry collector {#configuring-collector}
 
