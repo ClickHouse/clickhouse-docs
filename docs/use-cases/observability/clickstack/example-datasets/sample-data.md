@@ -41,13 +41,19 @@ Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
 <Image img={hyperdx} alt="HyperDX UI" size="lg"/>
 
+## Copy ingestion API key {#copy-ingestion-api-key}
+
+Navigate to [`Team Settings`](http://localhost:8080/team) and copy the `Ingestion API Key` from the `API Keys` section. This API key ensures data ingestion through the OpenTelemetry collector is secure.
+
+<Image img={copy_api_key} alt="Copy API key" size="lg"/>
+
 ## Download sample data {#download-sample-data}
 
 In order to populate the UI with sample data, download the following file:
 
 [Sample data](https://storage.googleapis.com/hyperdx/sample.tar.gz)
 
-```bash
+```sh
 # curl
 curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
 # or
@@ -55,12 +61,6 @@ curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
 ```
 
 This file contains example logs, metrics, and traces from our public [OpenTelemetry demo](http://example.com) - a simple e-commerce store with microservices. Copy this file to a directory of your choosing.
-
-## Copy ingestion API key {#copy-ingestion-api-key}
-
-Navigate to [`Team Settings`](http://localhost:8080/team) and copy the `Ingestion API Key` from the `API Keys` section. This API key ensures data ingestion through the OpenTelemetry collector is secure.
-
-<Image img={copy_api_key} alt="Copy API key" size="lg"/>
 
 ## Load sample data {#load-sample-data}
 
@@ -155,7 +155,7 @@ We can see that while the issue is recent, the number of impacted payments is hi
 
 While an error has clearly been introduced in the code, we can use metrics to confirm the cache size. Navigate to the `Chart Explorer` view.
 
-Select `Metrics` as the data source. Complete the chart builder to plot the `Maximum` of `visa_validation_cache.size (Gauge)`. The cache was clearly increasing before reaching a maximum size, after which errors were generated.
+Select `Metrics` as the data source. Complete the chart builder to plot the `Maximum` of `visa_validation_cache.size (Gauge)` and press the play button. The cache was clearly increasing before reaching a maximum size, after which errors were generated.
 
 <Image img={hyperdx_19} alt="Metrics" size="lg"/>
 

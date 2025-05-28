@@ -373,7 +373,7 @@ See ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/i
   - **Default:** *None (required)* if standalone image. If All-in-one or Docker Compose distribution this points to the deployed HyperDX instance.
   - **Description:** URL of the OpAMP server used to manage the collector (e.g., HyperDX instance).  
   - **Guidance:**  
-    - Must point to the `/v1/opamp` endpoint of your HyperDX instance  
+    - Must point to your HyperDX instance  
     - Enables dynamic configuration and secure ingestion  
 
 - `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`  

@@ -38,18 +38,28 @@ If you are managing your own OpenTelemetry collector in a standalone deployment 
 
 All docker images, which include the OpenTelemetry collector, can be configured to use a clickhouse instance via the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD`:
 
-For example for the all-in-one image:
+Set these variables:
 
 ```bash
 export HYPERDX_URL=<HYPERDX_URL>
 export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
-
-docker run -e OPAMP_SERVER_URL=${HYPERDX_URL}/v1/opamp -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
 ```
 
-The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment and its OpAMP (Open Agent Management Protocol) endpoint at `/v1/opamp` e.g. `http://localhost:8080/v1/opamp`. This ensures the collectors OTLP interface is secured with the ingestion API key. See [Securing the collector](#securing-the-collector).
+For example the all-in-one image:
+
+```bash
+docker run -e OPAMP_SERVER_URL=${HYPERDX_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
+```
+
+Or the standalone image:
+
+```bash
+docker run -e OPAMP_SERVER_URL=${HYPERDX_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector:2-nightly
+```
+
+The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment so it can communicate with the OpAMP (Open Agent Management Protocol) endpoint at `/v1/opamp` e.g. `http://localhost:8080`. This ensures the collectors OTLP interface is secured with the ingestion API key. See [Securing the collector](#securing-the-collector).
 
 #### Docker Compose {#docker-compose-otel}
 
