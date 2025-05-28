@@ -178,7 +178,7 @@ Instructions for using ClickHouse Cloud with the Helm chart can be found [here](
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
-Create a user, providing a username and password which means the requirements. 
+Create a user, providing a username and password which meets the requirements. 
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
