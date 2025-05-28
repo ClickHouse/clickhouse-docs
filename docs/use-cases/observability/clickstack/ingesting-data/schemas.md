@@ -9,7 +9,7 @@ title: 'Tables and schemas used by ClickStack'
 
 The ClickStack OpenTelemetry (OTel) collector uses the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) to create tables in ClickHouse and insert data.
 
-The following tables are created for each data type in the `default` database. Users can change this target database by modifying the environment variable `CLICKHOUSE_DATABASE` for the image hosting the OTel collector.
+The following tables are created for each data type in the `default` database. Users can change this target database by modifying the environment variable `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` for the image hosting the OTel collector.
 
 ## Logs {#logs}
 

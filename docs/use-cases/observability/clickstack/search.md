@@ -10,10 +10,7 @@ description: 'Search with ClickStack'
 import Image from '@theme/IdealImage';
 import hyperdx_27 from '@site/static/images/use-cases/observability/hyperdx-27.png';
 
-ClickStack allows you to do full text search on your events (logs and traces). You
-can get started searching by just typing keywords that match your events. For
-example if your log contains "Error", you can find it by just typing in "Error"
-in the search bar.
+ClickStack allows you to do a full-text search on your events (logs and traces). You can get started searching by just typing keywords that match your events. For example, if your log contains "Error", you can find it by just typing in "Error" in the search bar.
 
 This same search syntax is used for filtering events with Dashboards and Charts
 as well.

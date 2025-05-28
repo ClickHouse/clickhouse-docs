@@ -24,9 +24,9 @@ docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 8123:8123 -p 4317:4317 
 
 ### Docker compose {#docker-compose}
 
-If using the [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) deployment guide, the [`.env`](https://github.com/hyperdxio/hyperdx/blob/v2/.env) file can be used to modify settings.
+If using the [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) deployment guide, the [`.env`](https://github.com/hyperdxio/hyperdx/blob/main/.env) file can be used to modify settings.
 
-Alternatively, explicitly overwrite settings in the [`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/v2/docker-compose.yml) file e.g.
+Alternatively, explicitly overwrite settings in the [`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/main/docker-compose.yml) file e.g.
 
 Example:
 ```yaml
@@ -264,29 +264,6 @@ For example, below is the Logs source configured with correlated sources:
     - Include authentication if required
     - Example: `mongodb://user:pass@host:port/db`
 
-- `CLICKHOUSE_HOST`
-    - **Default:** `ch-server`
-    - **Description:** ClickHouse server hostname.
-    - **Guidance:**
-    - Use default for local development with Docker
-    - Set to your ClickHouse server address in production
-
-- `CLICKHOUSE_USER`
-    - **Default:** `default`
-    - **Description:** ClickHouse username.
-    - **Guidance:**
-    - Use default for local development
-    - Set to a dedicated user in production
-    - Ensure user has necessary permissions
-
-- `CLICKHOUSE_PASSWORD`
-    - **Default:** None
-    - **Description:** ClickHouse password.
-    - **Guidance:**
-    - Required in production
-    - Use strong, unique password
-    - Store securely (e.g., in environment variables)
-
 - `MINER_API_URL`
     - **Default:** `http://miner:5123`
     - **Description:** URL for the log pattern mining service.
@@ -307,13 +284,14 @@ For example, below is the Logs source configured with correlated sources:
     - **Default:** `hdx-oss-api`
     - **Description:** Service name for OpenTelemetry instrumentation.
     - **Guidance:**
-    - Use descriptive name for your HyperDX service
+    - Use descriptive name for your HyperDX service. Applicable if HyperDX self-instruments.
     - Helps identify the HyperDX service in telemetry data
 
 - `NEXT_PUBLIC_OTEL_EXPORTER_OTLP_ENDPOINT`
     - **Default:** `http://localhost:4318`
     - **Description:** OpenTelemetry collector endpoint.
     - **Guidance:**
+    - Relevant of self-instrumenting HyperDX.
     - Use default for local development
     - Set to your collector URL in production
     - Must be accessible from your HyperDX service
@@ -361,7 +339,49 @@ For example, below is the Logs source configured with correlated sources:
 
 ## OpenTelemetry collector {#otel-collector}
 
-See ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector).
+See ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector) for more details.
+
+- `CLICKHOUSE_ENDPOINT`  
+  - **Default:** *None (required)* if standalone image. If All-in-one or Docker Compose distribution this is set to the integrated ClickHouse instance.
+  - **Description:** The HTTPS URL of the ClickHouse instance to export telemetry data to.  
+  - **Guidance:**  
+    - Must be a full HTTPS endpoint including port (e.g., `https://clickhouse.example.com:8443`)  
+    - Required for the collector to send data to ClickHouse  
+
+- `CLICKHOUSE_USER`  
+  - **Default:** `default`  
+  - **Description:** Username used to authenticate with the ClickHouse instance.  
+  - **Guidance:**  
+    - Ensure the user has `INSERT` and `CREATE TABLE` permissions  
+    - Recommended to create a dedicated user for ingestion  
+
+- `CLICKHOUSE_PASSWORD`  
+  - **Default:** *None (required if authentication is enabled)*  
+  - **Description:** Password for the specified ClickHouse user.  
+  - **Guidance:**  
+    - Required if the user account has a password set  
+    - Store securely via secrets in production deployments  
+
+- `HYPERDX_LOG_LEVEL`  
+  - **Default:** `info`  
+  - **Description:** Log verbosity level for the collector.  
+  - **Guidance:**  
+    - Accepts values like `debug`, `info`, `warn`, `error`  
+    - Use `debug` during troubleshooting  
+
+- `OPAMP_SERVER_URL`  
+  - **Default:** *None (required)* if standalone image. If All-in-one or Docker Compose distribution this points to the deployed HyperDX instance.
+  - **Description:** URL of the OpAMP server used to manage the collector (e.g., HyperDX instance).  
+  - **Guidance:**  
+    - Must point to your HyperDX instance  
+    - Enables dynamic configuration and secure ingestion  
+
+- `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`  
+  - **Default:** `default`  
+  - **Description:** ClickHouse database the collector writes telemetry data to.  
+  - **Guidance:**  
+    - Set if using a custom database name  
+    - Ensure the specified user has access to this database  
 
 ## ClickHouse {#clickhouse}
 

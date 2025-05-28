@@ -70,7 +70,7 @@ Verify the installation:
 kubectl get pods -l "app.kubernetes.io/name=hdx-oss-v2"
 ```
 
-When all pods are ready proceed.
+When all pods are ready, proceed.
 
 ### Forward ports {#forward-ports}
 
@@ -91,7 +91,7 @@ Create a user, providing a username and password which means the requirements.
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
 
-On clicking `Create` data sources will be created for the ClickHouse instance deployed with the Helm chart.
+On clicking `Create`, data sources will be created for the ClickHouse instance deployed with the Helm chart.
 
 :::note Overriding default connection
 You can override the default connection to the integrated ClickHouse instance. For details, see ["Using ClickHouse Cloud"](#using-clickhouse-cloud).
@@ -108,7 +108,7 @@ You can customize settings by using `--set` flags e.g.
 helm install my-hyperdx hyperdx/hdx-oss-v2 --set key=value
 ```
 
-Alternatively edit the `values.yaml`. To retrieve the default values:
+Alternatively, edit the `values.yaml`. To retrieve the default values:
 
 ```sh
 helm show values hyperdx/hdx-oss-v2 > values.yaml

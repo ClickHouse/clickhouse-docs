@@ -73,16 +73,16 @@ Even if managing your own OpenTelemetry collector, independent of the other comp
 This image configuration can be found [here](https://github.com/hyperdxio/hyperdx/tree/v2/docker/otel-collector) and can be deployed with the following command:
 
 ```bash
-docker run -e OPAMP_SERVER_URL=${HYPERDX_URL}/v1/opamp -e CLICKHOUSE_ENDPOINT=CLICKHOUSE_ENDPOINT -e CLICKHOUSE_USER=USER -e CLICKHOUSE_PASSWORD=PASSWORD -p 4317:4127 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector:2-nightly
+docker run -e OPAMP_SERVER_URL=${HYPERDX_URL} -e CLICKHOUSE_ENDPOINT=CLICKHOUSE_ENDPOINT -e CLICKHOUSE_USER=USER -e CLICKHOUSE_PASSWORD=PASSWORD -p 4317:4127 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector:2-nightly
 ```
 
 For example,
 
 ```bash
-docker run -e OPAMP_SERVER_URL=http://localhost:8080/v1/opamp -e CLICKHOUSE_ENDPOINT=myhost:9000 -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=password -p 4317:4127 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector:2-nightly
+docker run -e OPAMP_SERVER_URL=http://localhost:8080 -e CLICKHOUSE_ENDPOINT=myhost:9000 -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=password -p 4317:4127 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector:2-nightly
 ```
 
-The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment and its OpAMP (Open Agent Management Protocol) endpoint at `/v1/opamp` e.g. `http://localhost:8080/v1/opamp`. This ensures the collectors OTLP interface is secured with the ingestion API key.
+The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment so it can communicate with the OpAMP (Open Agent Management Protocol) endpoint at `/v1/opamp` e.g. `http://localhost:8080`. This ensures the collectors OTLP interface is secured with the ingestion API key.
 
 This command exposes an OTLP endpoint on ports 4317 (HTTP) and 4318 (gRPC) for users to send OTel events.
 

@@ -39,7 +39,7 @@ import demo_sources from '@site/static/images/use-cases/observability/hyperdx-de
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
 
 
-**The following guide assumes you have deployed ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) or [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) and completed initial user creation.**
+**The following guide assumes you have deployed ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started), or [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) and completed initial user creation.**
 
 This getting started guide uses a dataset available on the demo server that users can access when first deploying HyperDX. The dataset is hosted on the public ClickHouse instance at [sql.clickhouse.com](https://sql.clickhouse.com).
 
@@ -75,6 +75,8 @@ Further details on the demo can be found in the [official OpenTelemetry document
 
 ### Connect to the demo server {#connect-to-the-demo-server}
 
+**This step can be skipped if you clicked `Connect to Demo Server` when deploying in Local Mode.**
+
 Navigate to `Team Settings` and click `Edit` for the `Local Connection`:
 
 <Image img={edit_connection} alt="Edit Connection" size="lg"/>
@@ -89,6 +91,8 @@ Rename the connection to `Demo` and complete the subsequent form with the follow
 <Image img={edit_demo_connection} alt="Edit Demo Connection" size="lg"/>
 
 ### Modify the sources {#modify-sources}
+
+**This step can be skipped if you clicked `Connect to Demo Server` when deploying in Local Mode.**
 
 Scroll up to `Sources` and modify each of the sources - `Logs`, `Traces`, `Metrics`, and `Sessions` - to use the `otel_v2` database. 
 
