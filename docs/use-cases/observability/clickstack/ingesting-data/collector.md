@@ -47,6 +47,8 @@ export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 ```
 
+The `CLICKHOUSE_ENDPOINT` should be the full ClickHouse HTTP endpoint, including the protocol and port—for example, `http://localhost:8123`.
+
 For example the all-in-one image:
 
 ```bash
@@ -59,7 +61,11 @@ Or the standalone image:
 docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector:2-nightly
 ```
 
-The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment e.g. `http://localhost:4320`. This runs an OpAMP (Open Agent Management Protocol) server endpoint at `/v1/opamp` on port 4320 by default. This ensures the collectors OTLP interface is secured with the ingestion API key. See [Securing the collector](#securing-the-collector).
+The `OPAMP_SERVER_URL` should point to your HyperDX deployment - for example, `http://localhost:4320`. HyperDX exposes an OpAMP (Open Agent Management Protocol) server at `/v1/opamp` on port `4320` by default, ensuring the collector is configured securely to use the ingestion API key. For details, see [Securing the collector](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector).
+
+:::note Connecting to and exposing the OpAMP port
+For the collector to connect to the OpAMP port it must be exposed by the HyperDX container e.g. `-p 4320:4320`. For local testing, OSX users can then set `OPAMP_SERVER_URL=http://host.docker.internal:4320`. Linux users can start the collector container with `--network=host`.
+:::
 
 #### Docker Compose {#docker-compose-otel}
 

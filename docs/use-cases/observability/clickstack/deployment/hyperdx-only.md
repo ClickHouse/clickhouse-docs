@@ -70,21 +70,4 @@ Users can modify the [Docker Compose configuration](/use-cases/observability/cli
 
 Even if you are managing your own OpenTelemetry collector, independent of the other components in the stack, we still recommend using the ClickStack distribution of the collector. This ensures the default schema is used and best practices for ingestion are applied.
 
-This image configuration can be found [here](https://github.com/hyperdxio/hyperdx/tree/v2/docker/otel-collector) and can be deployed with the following command:
-
-```bash
-docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=CLICKHOUSE_ENDPOINT -e CLICKHOUSE_USER=USER -e CLICKHOUSE_PASSWORD=PASSWORD -p 4317:4127 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector:2-nightly
-```
-
-For example,
-
-```bash
-docker run -e OPAMP_SERVER_URL=http://localhost:4320 -e CLICKHOUSE_ENDPOINT=myhost:9000 -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=password -p 4317:4127 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector:2-nightly
-```
-
-The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment e.g. `http://localhost:4320`. This runs an OpAMP (Open Agent Management Protocol) server endpoint at `/v1/opamp` on port 4320 by default. This ensures the collectors OTLP interface is secured with the ingestion API key. See [Securing the collector](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector). The `CLICKHOUSE_ENDPOINT` here should be the full ClickHouse endpoint including the protocol and port e.g. `http://localhost:8123`.
-
-
-This command exposes an OTLP endpoint on ports 4317 (HTTP) and 4318 (gRPC) for users to send OTel events.
-
-For further details on deploying and configuring the collector see ["Ingesting with OpenTelemetry"](/use-cases/observability/clickstack/ingesting-data/opentelemetry) and ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector).
+For details on deploying and configuring a standalone collector see ["Ingesting with OpenTelemetry"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).

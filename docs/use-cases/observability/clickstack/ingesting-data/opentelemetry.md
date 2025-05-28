@@ -40,10 +40,11 @@ To deploy the connector, run the following docker command:
 docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector:2-nightly
 ```
 
-Note that we can overwrite the target ClickHouse instance with environment variables for `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME`, and `CLICKHOUSE_PASSWORD`. **These environment variables can be used with any of the docker distributions which include the connector.** The `CLICKHOUSE_ENDPOINT` here should be the full ClickHouse endpoint including the protocol and port e.g. `http://localhost:8123`.
+Note that we can overwrite the target ClickHouse instance with environment variables for `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME`, and `CLICKHOUSE_PASSWORD`. The `CLICKHOUSE_ENDPOINT` should be the full ClickHouse HTTP endpoint, including the protocol and port—for example, `http://localhost:8123`.
 
-The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment e.g. `http://localhost:4320`. This runs an OpAMP (Open Agent Management Protocol) server endpoint at `/v1/opamp` on port 4320 by default. This ensures the collectors OTLP interface is secured with the ingestion API key.
+**These environment variables can be used with any of the docker distributions which include the connector.** 
 
+The `OPAMP_SERVER_URL` should point to your HyperDX deployment - for example, `http://localhost:4320`. HyperDX exposes an OpAMP (Open Agent Management Protocol) server at `/v1/opamp` on port `4320` by default. Make sure to expose this port from the container running HyperDX (e.g., using `-p 4320:4320`).
 
 Users should use a user with the [appropriate credentials](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) in production.
 
@@ -65,7 +66,7 @@ In addition, an authorization header containing the API ingestion key is require
 <Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
 
 
-For language SDKs, this can either be set by an `init` function or via an`OTEL_EXPORTER_OTLP_HEADERS` environment variable:
+For language SDKs, this can either be set by an `init` function or via an`OTEL_EXPORTER_OTLP_HEADERS` environment variable e.g.:
 
 ```bash
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'

@@ -89,16 +89,17 @@ Users can modify settings for the stack, such as the version used, through the e
 ```bash
 user@example-host hyperdx % cat .env
 # Used by docker-compose.yml
+# Used by docker-compose.yml
+HDX_IMAGE_REPO=docker.hyperdx.io
 IMAGE_NAME=ghcr.io/hyperdxio/hyperdx
 IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx
-IMAGE_NAME_HDX=docker.hyperdx.io/hyperdx/hyperdx
 LOCAL_IMAGE_NAME=ghcr.io/hyperdxio/hyperdx-local
 LOCAL_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-local
 ALL_IN_ONE_IMAGE_NAME=ghcr.io/hyperdxio/hyperdx-all-in-one
 ALL_IN_ONE_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-all-in-one
 OTEL_COLLECTOR_IMAGE_NAME=ghcr.io/hyperdxio/hyperdx-otel-collector
 OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-otel-collector
-CHANGESET_TAG=2.0.0-beta.16
+CODE_VERSION=2.0.0-beta.16
 IMAGE_VERSION_SUB_TAG=.16
 IMAGE_VERSION=2-beta
 IMAGE_NIGHTLY_TAG=2-nightly
@@ -108,6 +109,10 @@ HYPERDX_API_PORT=8000 #optional (should not be taken by other services)
 HYPERDX_APP_PORT=8080
 HYPERDX_APP_URL=http://localhost
 HYPERDX_LOG_LEVEL=debug
+HYPERDX_OPAMP_PORT=4320
+
+# Otel/Clickhouse config
+HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 ```
 
 ### Configuring the OpenTelemetry collector {#configuring-collector}
@@ -128,7 +133,9 @@ This distribution can be used with ClickHouse Cloud. Users should:
           CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # https endpoint here
           CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
           CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
+          HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE: ${HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE}
           HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+          OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
         ports:
           - '13133:13133' # health_check extension
           - '24225:24225' # fluentd receiver
