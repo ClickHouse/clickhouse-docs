@@ -45,11 +45,11 @@ docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hype
 ```
 
 :::note Persisting data and settings
-To persist data and settings across restarts of the container, users can modify the above docker command to mount the paths `/data/db`, `/var/lib/clickhouse` and `/var/log/clickhouse-server`. For example:
+To persist data and settings across restarts of the container, users can modify the above docker command to mount the paths `/data/db`, `/var/lib/clickhouse` and `/var/log/clickhouse-server`. 
+
+For example:
 
 ```bash
-# ensure directories exist
-mkdir -p .volumes/db .volumes/ch_data .volumes/ch_logs
 # modify command to mount paths
 docker run \
   -p 8080:8080 \

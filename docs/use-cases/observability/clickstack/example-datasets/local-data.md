@@ -87,11 +87,15 @@ receivers:
 
 exporters:
   otlp:
-    endpoint: host.docker.internal:4317
+    endpoint: localhost:4317
     headers:
       authorization: <YOUR_INGESTION_API_KEY>
     tls:
       insecure: true
+    sending_queue:
+      enabled: true
+      num_consumers: 10
+      queue_size: 262144  # 262,144 items × ~8 KB per item ≈ 2 GB
 
 service:
   pipelines:
@@ -120,13 +124,18 @@ For more details on the OpenTelemetry (OTel) configuration structure, we recomme
 Run the following docker command to start an instance of the OTel collector.
 
 ```bash
-docker run --rm -it \
+docker run --network=host --rm -it \
+  --user 0:0 \
   -v "$(pwd)/otel-file-collector.yaml":/etc/otel/config.yaml \
   -v /var/log:/var/log:ro \
   -v /private/var/log:/private/var/log:ro \
   otel/opentelemetry-collector-contrib:latest \
   --config /etc/otel/config.yaml
 ```
+
+:::note Root user
+We run the collector as the root user to access all system logs—this is necessary to capture logs from protected paths on Linux-based systems. However, this approach is not recommended for production. In production environments, the OpenTelemetry Collector should be deployed as a local agent with only the minimal permissions required to access the intended log sources.
+:::
 
 The collector will immediately begin collecting local system logs and metrics.
 
