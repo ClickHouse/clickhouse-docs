@@ -56,11 +56,30 @@ To ingest data see ["Ingesting data"](/use-cases/observability/clickstack/ingest
 
 </VerticalStepper>
 
+## Persisting data and settings {#persisting-data-and-settings}
+
+To persist data and settings across restarts of the container, users can modify the above docker command to mount the paths `/data/db`, `/var/lib/clickhouse` and `/var/log/clickhouse-server`. For example:
+
+```bash
+# ensure directories exist
+mkdir -p .volumes/db .volumes/ch_data .volumes/ch_logs
+# modify command to mount paths
+docker run \
+  -p 8080:8080 \
+  -p 8123:8123 \
+  -p 4317:4317 \
+  -p 4318:4318 \
+  -v "$(pwd)/.volumes/db:/data/db" \
+  -v "$(pwd)/.volumes/ch_data:/var/lib/clickhouse" \
+  -v "$(pwd)/.volumes/ch_logs:/var/log/clickhouse-server" \
+  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
+```
+
 ## Deploying to production {#deploying-to-production}
 
 This option should not be deployed to production for the following reasons:
 
-- **Non-persistent storage:** All data is stored using the Docker native overlay filesystem. This setup does not support performance at scale, and data will be lost if the container is removed or restarted.
+- **Non-persistent storage:** All data is stored using the Docker native overlay filesystem. This setup does not support performance at scale, and data will be lost if the container is removed or restarted - unless users [mount the required file paths](#persisting-data-and-settings).
 - **Lack of component isolation:** All components run within a single Docker container. This prevents independent scaling and monitoring and applies any `cgroup` limits globally to all processes. As a result, components may compete for CPU and memory.
 
 ## Customizing ports {#customizing-ports-deploy}

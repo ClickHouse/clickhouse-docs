@@ -44,6 +44,25 @@ The following will run an OpenTelemetry collector (on port 4317 and 4318), Click
 docker run -p 8080:8080 -p 8123:8123 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
 ```
 
+:::note Persisting data and settings
+To persist data and settings across restarts of the container, users can modify the above docker command to mount the paths `/data/db`, `/var/lib/clickhouse` and `/var/log/clickhouse-server`. For example:
+
+```bash
+# ensure directories exist
+mkdir -p .volumes/db .volumes/ch_data .volumes/ch_logs
+# modify command to mount paths
+docker run \
+  -p 8080:8080 \
+  -p 8123:8123 \
+  -p 4317:4317 \
+  -p 4318:4318 \
+  -v "$(pwd)/.volumes/db:/data/db" \
+  -v "$(pwd)/.volumes/ch_data:/var/lib/clickhouse" \
+  -v "$(pwd)/.volumes/ch_logs:/var/log/clickhouse-server" \
+  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
+```
+:::
+
 ### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
