@@ -24,9 +24,9 @@ docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 8123:8123 -p 4317:4317 
 
 ### Docker compose {#docker-compose}
 
-If using the [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) deployment guide, the [`.env`](https://github.com/hyperdxio/hyperdx/blob/v2/.env) file can be used to modify settings.
+If using the [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) deployment guide, the [`.env`](https://github.com/hyperdxio/hyperdx/blob/main/.env) file can be used to modify settings.
 
-Alternatively, explicitly overwrite settings in the [`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/v2/docker-compose.yml) file e.g.
+Alternatively, explicitly overwrite settings in the [`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/main/docker-compose.yml) file e.g.
 
 Example:
 ```yaml

@@ -77,9 +77,9 @@ With Docker Compose, modify the collector configuration using the same environme
 
 ### Advanced configuration {#advanced-configuration}
 
-Currently, the ClickStack distribution of the OTel collector does not support modification of its configuration file. If you need a more complex configuration e.g. [configuring TLS](#securing-the-collector), or modifying the batch size, we recommend copying and modifying the [default configuration](https://github.com/hyperdxio/hyperdx/blob/v2/docker/otel-collector/config.yaml) and deploying your own version of the OTel collector using the ClickHouse exporter documented [here](/observability/integrating-opentelemetry#exporting-to-clickhouse) and [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
+Currently, the ClickStack distribution of the OTel collector does not support modification of its configuration file. If you need a more complex configuration e.g. [configuring TLS](#securing-the-collector), or modifying the batch size, we recommend copying and modifying the [default configuration](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml) and deploying your own version of the OTel collector using the ClickHouse exporter documented [here](/observability/integrating-opentelemetry#exporting-to-clickhouse) and [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
 
-The default ClickStack configuration for the OpenTelemetry (OTel) collector can be found [here](https://github.com/hyperdxio/hyperdx/blob/v2/docker/otel-collector/config.yaml).
+The default ClickStack configuration for the OpenTelemetry (OTel) collector can be found [here](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml).
 
 #### Configuration structure {#configuration-structure}
 
