@@ -43,7 +43,7 @@ import edit_connection from '@site/static/images/use-cases/observability/edit_co
 
 This getting started guide uses a dataset available on the demo server that users can access when first deploying HyperDX. The dataset is hosted on the public ClickHouse instance at [sql.clickhouse.com](https://sql.clickhouse.com).
 
-It contains approximately 36 hours of data captured from the ClickHouse version of the official OpenTelemetry (OTel) demo. The data is replayed nightly with timestamps adjusted to the current time window, allowing users to explore system behavior using HyperDX's integrated logs, traces, and metrics.
+It contains approximately 40 hours of data captured from the ClickHouse version of the official OpenTelemetry (OTel) demo. The data is replayed nightly with timestamps adjusted to the current time window, allowing users to explore system behavior using HyperDX's integrated logs, traces, and metrics.
 
 :::note Data variations
 Because the dataset is replayed from midnight each day, the exact visualizations may vary depending on when you explore the demo.
@@ -75,7 +75,9 @@ Further details on the demo can be found in the [official OpenTelemetry document
 
 ### Connect to the demo server {#connect-to-the-demo-server}
 
-**This step can be skipped if you clicked `Connect to Demo Server` when deploying in Local Mode.**
+:::note Local-Only mode
+This step can be skipped if you clicked `Connect to Demo Server` when deploying in Local Mode. If using this mode, sources will be prefixed with `Demo_` e.g. `Demo_Logs`
+:::
 
 Navigate to `Team Settings` and click `Edit` for the `Local Connection`:
 
@@ -92,7 +94,9 @@ Rename the connection to `Demo` and complete the subsequent form with the follow
 
 ### Modify the sources {#modify-sources}
 
-**This step can be skipped if you clicked `Connect to Demo Server` when deploying in Local Mode.**
+:::note Local-Only mode
+This step can be skipped if you clicked `Connect to Demo Server` when deploying in Local Mode. If using this mode, sources will be prefixed with `Demo_` e.g. `Demo_Logs`
+:::
 
 Scroll up to `Sources` and modify each of the sources - `Logs`, `Traces`, `Metrics`, and `Sessions` - to use the `otel_v2` database. 
 
