@@ -53,7 +53,7 @@ In order to populate the UI with sample data, download the following file:
 
 [Sample data](https://storage.googleapis.com/hyperdx/sample.tar.gz)
 
-```sh
+```bash
 # curl
 curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
 # or
