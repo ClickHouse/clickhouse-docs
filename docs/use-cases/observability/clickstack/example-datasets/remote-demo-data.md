@@ -83,7 +83,7 @@ Rename the connection to `Demo` and complete the subsequent form with the follow
 
 - `Connection Name`: `Demo`
 - `Host`: `https://sql-clickhouse.clickhouse.com`
-- `Username`: `demo`
+- `Username`: `otel_demo`
 - `Password`: Leave empty
 
 <Image img={edit_demo_connection} alt="Edit Demo Connection" size="lg"/>
