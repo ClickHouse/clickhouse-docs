@@ -47,7 +47,7 @@ ClickStack consists of three core components:
 
 These components can be deployed independently or together. A browser-hosted version of the HyperDX UI is also available, allowing users to connect to existing ClickHouse deployments without additional infrastructure.
 
-To get started, visit the [Getting Started guide](/use-cases/observability/clickstack/getting-started) before loading a [sample dataset](/use-cases/observability/clickstack/sample-datasets). You can also explore documentation on [deployment options](/use-cases/observability/clickstack/deployment) and [production best practices](/use-cases/observability/clickstack/production).
+To get started, visit the [Getting started guide](/use-cases/observability/clickstack/getting-started) before loading a [sample dataset](/use-cases/observability/clickstack/sample-datasets). You can also explore documentation on [deployment options](/use-cases/observability/clickstack/deployment) and [production best practices](/use-cases/observability/clickstack/production).
 
 ## Principles {#clickstack-principles}
 
