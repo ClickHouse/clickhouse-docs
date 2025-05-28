@@ -139,7 +139,7 @@ Scrolling up and returning to the trace, we can see logs are correlated with the
 
 <Image img={hyperdx_17} alt="Correlated log" size="lg"/>
 
-We've established that a cache is filling in the Payment service which is preventing payments from completing. 
+We've established that a cache is getting filled in the payment service, which is preventing payments from completing. 
 
 ## Explore logs {#explore-logs}
 
