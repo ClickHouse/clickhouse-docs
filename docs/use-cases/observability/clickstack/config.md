@@ -371,7 +371,7 @@ See ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/i
 
 - `OPAMP_SERVER_URL`  
   - **Default:** *None (required)* if standalone image. If All-in-one or Docker Compose distribution this points to the deployed HyperDX instance.
-  - **Description:** URL of the OpAMP server used to manage the collector (e.g., HyperDX instance).  
+  - **Description:** URL of the OpAMP server used to manage the collector (e.g., HyperDX instance). This is port `4320` by default.
   - **Guidance:**  
     - Must point to your HyperDX instance  
     - Enables dynamic configuration and secure ingestion  

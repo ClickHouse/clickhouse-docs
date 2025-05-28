@@ -41,7 +41,7 @@ All docker images, which include the OpenTelemetry collector, can be configured 
 Set these variables:
 
 ```bash
-export HYPERDX_URL=<HYPERDX_URL>
+export OPAMP_SERVER_URL=<OPAMP_SERVER_URL>
 export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
@@ -50,16 +50,16 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 For example the all-in-one image:
 
 ```bash
-docker run -e OPAMP_SERVER_URL=${HYPERDX_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
+docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
 ```
 
 Or the standalone image:
 
 ```bash
-docker run -e OPAMP_SERVER_URL=${HYPERDX_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector:2-nightly
+docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector:2-nightly
 ```
 
-The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment so it can communicate with the OpAMP (Open Agent Management Protocol) endpoint at `/v1/opamp` e.g. `http://localhost:8080`. This ensures the collectors OTLP interface is secured with the ingestion API key. See [Securing the collector](#securing-the-collector).
+The `OPAMP_SERVER_URL` variable should point to your HyperDX deployment e.g. `http://localhost:4320`. This runs an OpAMP (Open Agent Management Protocol) server endpoint at `/v1/opamp` on port 4320 by default. This ensures the collectors OTLP interface is secured with the ingestion API key. See [Securing the collector](#securing-the-collector).
 
 #### Docker Compose {#docker-compose-otel}
 
@@ -73,7 +73,7 @@ With Docker Compose, modify the collector configuration using the same environme
       HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
       CLICKHOUSE_USER: 'default'
       CLICKHOUSE_PASSWORD: 'password'
-      OPAMP_SERVER_URL: http://localhost:8080//v1/opamp
+      OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
     ports:
       - '13133:13133' # health_check extension
       - '24225:24225' # fluentd receiver
