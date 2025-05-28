@@ -18,7 +18,7 @@ Additionally, it'll automatically capture and correlate session replay data, so
 you can visually step through and debug what a user was seeing while using your
 application.
 
-This Guide Integrates:
+This guide integrates the following:
 
 - **Console Logs**
 - **Session Replays**
@@ -34,7 +34,7 @@ This Guide Integrates:
 
 **Install via package import (Recommended)**
 
-Use the following command to install the [Browser package](https://www.npmjs.com/package/@hyperdx/browser).
+Use the following command to install the [browser package](https://www.npmjs.com/package/@hyperdx/browser).
 
 ```bash
 npm install @hyperdx/browser

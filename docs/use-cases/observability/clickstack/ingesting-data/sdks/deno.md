@@ -7,7 +7,7 @@ description: 'Deno SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Deno'
 ---
 
-This Guide Integrates:
+This guide Integrates the following:
 
 - **Logs**
 

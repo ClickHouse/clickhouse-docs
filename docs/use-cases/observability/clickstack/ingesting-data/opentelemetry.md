@@ -34,7 +34,7 @@ If you're using the [HyperDX-only](/use-cases/observability/clickstack/deploymen
 This allows users to benefit from standardized ingestion, enforced schemas, and out-of-the-box compatibility with the HyperDX UI. Using the default schema enables automatic source detection and preconfigured column mappings.
 :::
 
-To deploy the connector run the following docker command:
+To deploy the connector, run the following docker command:
 
 ```bash
 docker run -e OPAMP_SERVER_URL=${HYPERDX_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector:2-nightly
@@ -60,7 +60,7 @@ For most [language SDKs](/use-cases/observability/clickstack/sdks) and telemetry
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
 
-In addition, an authorization header containing the API ingestion key is required.  You can find the key in the HyperDX app under `Team Settings → API Keys`.
+In addition, an authorization header containing the API ingestion key is required. You can find the key in the HyperDX app under `Team Settings → API Keys`.
 
 <Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
 

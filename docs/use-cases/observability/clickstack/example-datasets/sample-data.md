@@ -145,7 +145,7 @@ We've established that a cache is getting filled in the payment service, which i
 
 For further details, we can return to the [`Search` view](http://localhost:8080/search):
 
-Select `Logs` from the sources and apply a filter to the `payment` Service.
+Select `Logs` from the sources and apply a filter to the `payment` service.
 
 <Image img={hyperdx_18} alt="Logs" size="lg"/>
 

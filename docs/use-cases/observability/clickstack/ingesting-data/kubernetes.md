@@ -19,7 +19,7 @@ To send over application-level metrics or APM/traces, you'll need to add the cor
 
 ## Creating the OTel Helm Chart configuration files {#creating-the-otel-helm-chart-config-files}
 
-To collect logs and metrics from both each node and the cluster itself, we'll need to deploy two separate OpenTelemetry collectors. One will be deployed as a DaemonSet to collect logs and metrics from each node, and the other will be deployed as a Deployment to collect logs and metrics from the cluster itself.
+To collect logs and metrics from both each node and the cluster itself, we'll need to deploy two separate OpenTelemetry collectors. One will be deployed as a DaemonSet to collect logs and metrics from each node, and the other will be deployed as a deployment to collect logs and metrics from the cluster itself.
 
 ### Creating the DaemonSet configuration {#creating-the-daemonset-configuration}
 
@@ -49,7 +49,7 @@ presets:
     enabled: true
   # Configures the Kubernetes Processor to add Kubernetes metadata.
   # Adds the k8sattributes processor to all the pipelines and adds the necessary rules to ClusterRole.
-  # More Info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor
+  # More info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor
   kubernetesAttributes:
     enabled: true
     # When enabled the processor will extra all labels for an associated pod and add them as resource attributes.
@@ -115,7 +115,7 @@ config:
 
 ### Creating the Deployment Configuration {#creating-the-deployment-configuration}
 
-To collect Kubernetes events and cluster-wide metrics, we'll need to deploy a separate OpenTelemetry collector as a Deployment.
+To collect Kubernetes events and cluster-wide metrics, we'll need to deploy a separate OpenTelemetry collector as a deployment.
 
 Create a file called `deployment.yaml` with the following contents:
 
@@ -135,9 +135,9 @@ presets:
     # When enabled the processor will extra all annotations for an associated pod and add them as resource attributes.
     # The annotation's exact name will be the key.
     extractAllPodAnnotations: true
-  # Configures the collector to collect kubernetes events.
-  # Adds the k8sobject receiver to the logs pipeline and collects kubernetes events by default.
-  # More Info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-objects-receiver
+  # Configures the collector to collect Kubernetes events.
+  # Adds the k8sobject receiver to the logs pipeline and collects Kubernetes events by default.
+  # More info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-objects-receiver
   kubernetesEvents:
     enabled: true
   # Configures the Kubernetes Cluster Receiver to collect cluster-level metrics.

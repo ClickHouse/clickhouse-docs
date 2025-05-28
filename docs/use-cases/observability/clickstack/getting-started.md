@@ -84,7 +84,7 @@ Follow the [getting started guide for ClickHouse Cloud](/cloud/get-started/cloud
 
 To find the connection details for HyperDX, navigate to the ClickHouse Cloud console and click the <b>Connect</b> button on the sidebar. 
 
-Copy the HTTP connection details, specifically the HTTPS endpoint (endpoint) and password.
+Copy the HTTP connection details, specifically the HTTPS endpoint (`endpoint`) and password.
 
 <Image img={connect_cloud} alt="Connect Cloud" size="md"/>
 
@@ -114,7 +114,7 @@ This will expose an OpenTelemetry collector (on port 4317 and 4318), and the Hyp
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
-Create a user, providing a username and password which means the complexity requirements. 
+Create a user, providing a username and password which meets the complexity requirements. 
 
 <Image img={hyperdx_login} alt="HyperDX Login" size="lg"/>
 
@@ -133,7 +133,7 @@ Rename the connection to `Cloud` and complete the subsequent form with your Clic
 With the stack deployed, try one of our same datasets.
 
 - [Example dataset](/use-cases/observability/clickstack/getting-started/sample-data) - Load an example dataset from our public demo. Diagnose a simple issue.
-- [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - Load local files and monitor system on OSX or Linux using a local OTel collector.
+- [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - Load local files and monitor the system on OSX or Linux using a local OTel collector.
 
 </VerticalStepper>
 
@@ -143,11 +143,11 @@ Local mode is a way to deploy HyperDX without a database or OTel collector. You 
 
 Authentication is not supported. 
 
-This mode is is intended to be used for quick testing, development, demos and debugging use cases where deploying a full HyperDX instance is not necessary.
+This mode is intended to be used for quick testing, development, demos and debugging use cases where deploying a full HyperDX instance is not necessary.
 
 ### Hosted Version {#hosted-version}
 
-You can use a hosted of version HyperDX in local mode available at [play.hyperdx.io](https://play.hyperdx.io).
+You can use a hosted version of HyperDX in local mode available at [play.hyperdx.io](https://play.hyperdx.io).
 
 ### Self-Hosted Version {#self-hosted-version}
 
