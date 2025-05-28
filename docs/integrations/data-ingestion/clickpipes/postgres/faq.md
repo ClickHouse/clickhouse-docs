@@ -279,3 +279,15 @@ Postgres `NUMERIC`s have really high precision (up to 131072 digits before the d
 The system assumes that _usually_ the size would not get that high and does an optimistic cast for the same as source table can have large number of rows or the row can come in during the CDC phase.
 
 The current workaround would be to map the NUMERIC type to string on ClickHouse. To enable this please raise a ticket with the support team and this will be enabled for your ClickPipes.
+
+### Why am I getting a TLS certificate validation error when connecting to Postgres? {#tls-certificate-validation-error}
+
+If you see an error like `failed to verify certificate: x509: certificate is not valid for any names`, this occurs when the SSL/TLS certificate on your Postgres server doesn't include the connecting hostname (e.g., EC2 instance DNS name) in its list of valid names. ClickPipes enables TLS by default to provide secure encrypted connections.
+
+To resolve this issue, you have three options:
+1. Use the IP address instead of hostname in the connection settings, while leaving the "TLS Host (optional)" field empty. While this is the easiest solution, it's not the most secure as it bypasses hostname verification.
+2. Set the "TLS Host (optional)" field to match the actual hostname that's in the certificate's Subject Alternative Name (SAN) field - this maintains proper verification.
+3. Update your Postgres server's SSL certificate to include the actual hostname you're using to connect in its certificate.
+
+
+This is a common configuration issue with Postgres TLS certificates, particularly when connecting to databases self-hosted in cloud environments (or when using AWS Private Link via Endpoint Service) where the public DNS name differs from what's in the certificate.
