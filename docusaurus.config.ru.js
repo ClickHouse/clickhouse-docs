@@ -3,6 +3,8 @@ import math from "remark-math";
 import katex from "rehype-katex";
 import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
+import prismLight from "./src/utils/prismLight";
+import prismDark from "./src/utils/prismDark";
 const remarkCustomBlocks = require('./plugins/remark-custom-blocks');
 
 // Helper function to skip over index.md files.
@@ -260,9 +262,9 @@ const config = {
         copyright: `© 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc.`,
       },
       prism: {
-        theme: themes.darkTheme,
-        darkTheme: themes.darkTheme,
-        additionalLanguages: ["java", "cpp", "rust", "python", "javascript"],
+        theme: prismLight,
+        darkTheme: prismDark,
+        additionalLanguages: ["java", "cpp", "rust", "python", "javascript", "yaml", "bash", "docker"],
         magicComments: [
           // Remember to extend the default highlight class name as well!
           {
