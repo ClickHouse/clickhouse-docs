@@ -11,6 +11,8 @@ const { customParseFrontMatter } = require('./plugins/frontmatter-validation/cus
 const checkFloatingPages = require('./plugins/checkFloatingPages');
 const frontmatterValidator = require('./plugins/frontmatter-validation/frontmatterValidatorPlugin');
 import pluginLlmsTxt from './plugins/llms-txt-plugin.ts'
+import prismLight from "./src/utils/prismLight";
+import prismDark from "./src/utils/prismDark";
 
 // Helper function to skip over index.md files.
 function skipIndex(items) {
@@ -288,9 +290,9 @@ const config = {
         copyright: `© 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc.`,
       },
       prism: {
-        theme: require('prism-react-renderer').themes.github,
-        darkTheme: themes.darkTheme,
-        additionalLanguages: ["java", "cpp", "rust", "python", "javascript", "yaml"],
+        theme: prismLight,
+        darkTheme: prismDark,
+        additionalLanguages: ["java", "cpp", "rust", "python", "javascript", "yaml", "bash", "docker"],
         magicComments: [
           // Remember to extend the default highlight class name as well!
           {
