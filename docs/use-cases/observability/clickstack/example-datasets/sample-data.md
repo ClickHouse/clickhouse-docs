@@ -80,7 +80,10 @@ for filename in $(tar -tf sample.tar.gz); do
   endpoint="http://localhost:4318/v1/${filename%.json}"
   echo "loading ${filename%.json}"
   tar -xOf sample.tar.gz "$filename" | while read -r line; do
-    curl -s -o /dev/null -X POST "$endpoint" -H "Content-Type: application/json" -H "authorization: ${CLICKSTACK_API_KEY}" --data "$line"
+    echo "$line" | curl -s -o /dev/null -X POST "$endpoint" \
+    -H "Content-Type: application/json" \
+    -H "authorization: ${CLICKSTACK_API_KEY}" \
+    --data-binary @-
   done
 done
 ```
