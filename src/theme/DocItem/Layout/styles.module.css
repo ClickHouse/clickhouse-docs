@@ -19,13 +19,13 @@
   justify-content: space-between;
 }
 
-@media (min-width: 997px) {
+@media (min-width: var(--mobile-breakpoint)) {
   .docItemCol {
     max-width: 75% !important;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: var(--mobile-breakpoint)) {
   .docItemContainer {
     padding-bottom: none;
   }

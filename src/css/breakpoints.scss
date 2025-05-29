@@ -1,0 +1,7 @@
+/*
+Needed because we cannot import css into scss and use var(--some-variable)
+*/
+$mobile-breakpoint: 996px;
+$tablet-breakpoint: 1024px;
+$laptop-breakpoint: 1330px;
+$large-desktop-breakpoint: 1440px;

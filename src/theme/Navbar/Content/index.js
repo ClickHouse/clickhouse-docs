@@ -8,7 +8,7 @@ import {
 import NavbarItem from "@theme/NavbarItem";
 import NavbarMobileSidebarToggle from "@theme/Navbar/MobileSidebar/Toggle";
 import NavbarLogo from "@theme/Navbar/Logo";
-import styles from "./styles.module.css";
+import styles from "./styles.module.scss";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import ColorModeToggle from "../../../components/ColorModeToggler";
 import { usePluginData } from "@docusaurus/useGlobalData";

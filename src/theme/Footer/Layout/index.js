@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import ColorModeToggler from '@site/src/components/ColorModeToggler'
-import styles from './styles.module.css'
+import styles from './styles.module.scss'
 
 export default function FooterLayout({style, links, logo, copyright}) {
   return (

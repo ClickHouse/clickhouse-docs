@@ -1,5 +1,7 @@
+@import '../../css/breakpoints.scss';
+
 .docsNavBurger {
-    display: none;
+    display: flex;
 }
 
 .docsMobileMenu {
@@ -68,6 +70,7 @@
     margin-top: 1em;
     margin-bottom: 2em;
 }
+
 .docsMobileMenu_header{
     margin-top: 4rem;
     margin-bottom: 1rem;
@@ -77,12 +80,8 @@
     justify-content: space-between;
 }
 
-@media (max-width: 1400px) {
-
-}
-
-@media (max-width: 996px) {
+@media (min-width: $laptop-breakpoint) {
     .docsNavBurger {
-        display: flex;
+        display: none;
     }
 }
