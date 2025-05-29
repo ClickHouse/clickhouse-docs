@@ -1,6 +1,6 @@
-@import '../../css/breakpoints.scss';
+@use '../../css/breakpoints.scss' as breakpoints;
 
-$menu-breakpoint: $laptop-breakpoint;
+$menu-breakpoint: breakpoints.$laptop-breakpoint;
 
 :root {
   --ch-nav-v2-border-color: #dfdfdf;

@@ -1,4 +1,4 @@
-@import '../../../../css/breakpoints.scss';
+@use '../../../../css/breakpoints.scss' as breakpoints;
 
 .docsNavBurger {
     display: flex;
@@ -74,7 +74,7 @@
     justify-content: space-between;
 }
 
-@media (min-width: $laptop-breakpoint) {
+@media (min-width: breakpoints.$laptop-breakpoint) {
     .docsNavBurger {
         display: flex;
     }

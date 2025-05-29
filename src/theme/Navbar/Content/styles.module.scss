@@ -1,4 +1,4 @@
-@import '../../../css/breakpoints.scss';
+@use '../../../css/breakpoints.scss' as breakpoints;
 
 .navbarHeaderContainer {
   display: flex;
@@ -50,7 +50,7 @@
   color: var(--ifm-navbar-link-color);
 }
 
-@media screen and (min-width: $laptop-breakpoint) {
+@media screen and (min-width: breakpoints.$laptop-breakpoint) {
   .navRight {
     display: flex;
   }
@@ -61,7 +61,7 @@
 
 }
 
-@media screen and (min-width: $laptop-breakpoint) {
+@media screen and (min-width: breakpoints.$laptop-breakpoint) {
   .navRight {
     gap: 1.5rem;
   }
@@ -119,7 +119,7 @@
   white-space: wrap;
 }
 
-@media (max-width: $laptop-breakpoint) {
+@media (max-width: breakpoints.$laptop-breakpoint) {
   .navbarItemsList {
     display: none !important;
   }
@@ -129,7 +129,7 @@
   }
 }
 
-@media (max-width: $mobile-breakpoint) {
+@media (max-width: breakpoints.$mobile-breakpoint) {
   
   :global .navbar-color-toggle span {
     display: none;
@@ -150,26 +150,26 @@
   
 }
 
-@media (max-width: $mobile-breakpoint) {
+@media (max-width: breakpoints.$mobile-breakpoint) {
   .dropdownCategoriesContainer {
     display:inline-block;
   }
 }
 
-@media screen and (max-width: $mobile-breakpoint) {
+@media screen and (max-width: breakpoints.$mobile-breakpoint) {
   .navRight .githubStars {
     display: none;
   }
 }
 
-@media screen and (max-width: $mobile-breakpoint) {
+@media screen and (max-width: breakpoints.$mobile-breakpoint) {
     .secondaryMenu {
       gap:0;
     }
 }
 
-@media screen and (min-width: $large-desktop-breakpoint) {
+@media screen and (min-width: breakpoints.$large-desktop-breakpoint) {
   .dropdownCategoriesContainer {
-    max-width: $laptop-breakpoint;
+    max-width: breakpoints.$laptop-breakpoint;
   }
 }

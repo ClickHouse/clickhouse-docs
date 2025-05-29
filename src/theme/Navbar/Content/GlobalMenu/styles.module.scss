@@ -1,4 +1,4 @@
-@import '../../../../css/breakpoints.scss';
+@use '../../../../css/breakpoints.scss' as breakpoints;
 
 .linkStyle {
   display: block;
@@ -101,7 +101,7 @@
   font-weight: 500;
 }
 
-@media screen and (min-width: $mobile-breakpoint) {
+@media screen and (min-width: breakpoints.$mobile-breakpoint) {
   .menuItemContainer {
     min-width: 500px;
   }
@@ -110,7 +110,7 @@
   }
 }
 
-@media screen and (min-width: $tablet-breakpoint) {
+@media screen and (min-width: breakpoints.$tablet-breakpoint) {
   .subMenuItem {
     min-width: 9.5rem;
   }
@@ -188,7 +188,7 @@
  padding-bottom: 10px;
 }
 
-@media only screen and (min-width: $mobile-breakpoint) {
+@media only screen and (min-width: breakpoints.$mobile-breakpoint) {
   .navigationMenuContent {
     width: auto;
   }
@@ -220,7 +220,7 @@
   filter: drop-shadow(0px 2px 2px rgba(50, 50, 50, 0.1));
 }
 
-@media only screen and (min-width: $mobile-breakpoint) {
+@media only screen and (min-width: breakpoints.$mobile-breakpoint) {
   .navigationMenuViewport {
     width: var(--radix-navigation-menu-viewport-width);
   }

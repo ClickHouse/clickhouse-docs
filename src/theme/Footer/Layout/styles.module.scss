@@ -1,4 +1,4 @@
-@import '../../../css/breakpoints.scss';
+@use '../../../css/breakpoints.scss' as breakpoints;
 
 .footer {
   display: none;
@@ -27,7 +27,7 @@
   width: 2.5rem;
 }
 
-@media (min-width: $tablet-breakpoint) {
+@media (min-width: breakpoints.$tablet-breakpoint) {
   .footer {
     display: flex;
     /* padding: 32px 40px; */

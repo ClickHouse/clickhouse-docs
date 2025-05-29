@@ -1,4 +1,4 @@
-@import '../../css/breakpoints.scss';
+@use '../../css/breakpoints.scss' as breakpoints;
 
 .colorModeButton {
   display: flex;
