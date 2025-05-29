@@ -41,7 +41,7 @@ This all-in-one image allows you to launch the full stack with a single command,
 The following will run an OpenTelemetry collector (on port 4317 and 4318) and the HyperDX UI (on port 8080).
 
 ```bash
-docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
+docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
 :::note Persisting data and settings
@@ -58,7 +58,7 @@ docker run \
   -v "$(pwd)/.volumes/db:/data/db" \
   -v "$(pwd)/.volumes/ch_data:/var/lib/clickhouse" \
   -v "$(pwd)/.volumes/ch_logs:/var/log/clickhouse-server" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
+  docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 :::
 
@@ -123,7 +123,7 @@ export CLICKHOUSE_PASSWORD=<YOUR_PASSWORD>
 Run the following docker command:
 
 ```bash
-docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one:2-nightly
+docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
 This will expose an OpenTelemetry collector (on port 4317 and 4318), and the HyperDX UI (on port 8080).
@@ -176,7 +176,7 @@ You can use a hosted version of HyperDX in local mode available at [play.hyperdx
 The self-hosted local mode image comes with an OpenTelemetry collector and a ClickHouse server pre-configured as well. This makes it easy to consume telemetry data from your applications and visualize it in HyperDX with minimal external setup. To get started with the self-hosted version, simply run the Docker container with the appropriate ports forwarded:
 
 ```bash
-docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local:2-nightly
+docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
 ```
 
 You will not be promoted to create a user as local mode does not include authentication.
