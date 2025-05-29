@@ -46,6 +46,7 @@ npm install @hyperdx/browser
 import HyperDX from '@hyperdx/browser';
 
 HyperDX.init({
+    url: 'http://localhost:4318',
     apiKey: 'YOUR_INGESTION_API_KEY',
     service: 'my-frontend-app',
     tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
@@ -69,6 +70,7 @@ This is recommended if your site is not currently built using a bundler.
 <script src="//www.unpkg.com/@hyperdx/browser@0.21.0/build/index.js"></script>
 <script>
   window.HyperDX.init({
+    url: 'http://localhost:4318',
     apiKey: 'YOUR_INGESTION_API_KEY',
     service: 'my-frontend-app',
     tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
