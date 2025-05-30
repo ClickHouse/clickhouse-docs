@@ -27,8 +27,32 @@ import kafka_config from '@site/static/images/cloud/reference/june-13-kafka-conf
 import fast_releases from '@site/static/images/cloud/reference/june-13-fast-releases.png';
 import share_queries from '@site/static/images/cloud/reference/may-30-share-queries.png';
 import query_endpoints from '@site/static/images/cloud/reference/may-17-query-endpoints.png';
+import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.png';
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
+
+## May 30, 2025 {#may-30-2025}
+
+- Introduced new improvements to the SQL console dashboards:
+  - Sharing: You can share your dashboard with your team members. Four levels of access are supported, that can be adjusted both globally and on a per-user basis:
+    - _Write access_: Add/edit visualizations, refresh settings, interact with dashboards via filters.
+    - _Owner_: Share a dashboard, delete a dashboard, and all other permissions of a user with "write access".
+    - _Read-only access_: View and interact with dashboard via filters
+    - _No access_: Cannot view a dashboard
+  - For existing dashboards that have already been created, Organization Administrators can assign existing dashboards to themselves as owners.
+  - You can now add a table or chart from the SQL console to a dashboard from the query view.
+
+<Image img={dashboards} size="md" alt="Dashboards improvements" border />
+
+- We’re excited to announce general availability of **ClickPipes for Postgres CDC GA**
+  in ClickHouse Cloud. With just a few clicks, you can now replicate your Postgres
+  databases and unlock blazing-fast, real-time analytics. The connector delivers 
+  faster data synchronization, latency as low as a few seconds, automatic schema changes,
+  fully secure connectivity, and more. Refer to the 
+  [blog](https://clickhouse.com/blog/postgres-cdc-connector-clickpipes-ga) for 
+  more information. To get started, refer to the instructions [here](https://clickhouse.com/docs/integrations/clickpipes/postgres).
+- We are enlisting preview participants for [Distributed cache](https://clickhouse.com/cloud/distributed-cache-waitlist) 
+  for AWS and GCP. Read more in the [blog](https://clickhouse.com/blog/building-a-distributed-cache-for-s3).
 
 ## May 16, 2025 {#may-16-2025}
 
