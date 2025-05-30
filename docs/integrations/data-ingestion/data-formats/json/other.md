@@ -643,7 +643,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/document
 0 rows in set. Elapsed: 12.121 sec. Processed 10.00 million rows, 107.30 MB (825.01 thousand rows/s., 8.85 MB/s.)
 ```
 
-Querying this structure requires using the [`indexOf`](/sql-reference/functions/array-functions#indexofarr-x) function to identify the index of the required key (which should be consistent with the order of the values). This can be used to access the values array column i.e. `values[indexOf(keys, 'status')]`. We still require a JSON parsing method for the request column - in this case, `simpleJSONExtractString`.
+Querying this structure requires using the [`indexOf`](/sql-reference/functions/array-functions#indexOf) function to identify the index of the required key (which should be consistent with the order of the values). This can be used to access the values array column i.e. `values[indexOf(keys, 'status')]`. We still require a JSON parsing method for the request column - in this case, `simpleJSONExtractString`.
 
 ```sql
 SELECT toUInt16(values[indexOf(keys, 'status')])                           as status,
