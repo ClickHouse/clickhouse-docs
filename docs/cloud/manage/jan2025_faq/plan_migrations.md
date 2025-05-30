@@ -70,7 +70,7 @@ Your service has to be on version 24.8 or later and already migrated to SharedMe
 
 ### What is the migration experience for users of the current Development and Production services? Do users need to plan for a maintenance window where the service is unavailable? {#what-is-the-migration-experience-for-users-of-the-current-development-and-production-services-do-users-need-to-plan-for-a-maintenance-window-where-the-service-is-unavailable}
 
-Migrations of Development and Production services to the new pricing tiers may trigger a server restart. To migrate a Dedicated service, please contact [support](https://clickhouse.com/support/program).
+Migrations of Development and Production services to the new pricing tiers may trigger a rolling restart. To migrate a Dedicated service, please contact [support](https://clickhouse.com/support/program).
 
 ### What other actions should a user take after the migration? {#what-other-actions-should-a-user-take-after-the-migration}
 
