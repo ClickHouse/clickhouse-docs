@@ -54,7 +54,7 @@ function useWindowWidth() {
 export default function NavbarContent() {
 
   const width = useWindowWidth();
-  const LAPTOP_BREAKPOINT = 1300;
+  const LAPTOP_BREAKPOINT = 1330;
 
   const secondaryItems = useNavbarSecondaryItems();
   let items = [];
@@ -119,7 +119,7 @@ export default function NavbarContent() {
           >
             <button className="click-button primary-btn">Get started</button>
           </a>
-          {width < LAPTOP_BREAKPOINT && <div style={{background: 'red'}}>TOGGLE</div>}
+          {width < LAPTOP_BREAKPOINT && <NavbarMobileSidebarToggle />}
         </div>
       </div>
       <div className={clsx("secondary-nav--items", styles.secondaryMenu)}>
