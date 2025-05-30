@@ -44,7 +44,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 <Image img={dashboards} size="md" alt="Dashboards improvements" border />
 
-- We’re excited to announce general availablity of **ClickPipes for Postgres CDC GA**
+- We’re excited to announce general availability of **ClickPipes for Postgres CDC GA**
   in ClickHouse Cloud. With just a few clicks, you can now replicate your Postgres
   databases and unlock blazing-fast, real-time analytics. The connector delivers 
   faster data synchronization, latency as low as a few seconds, automatic schema changes,
