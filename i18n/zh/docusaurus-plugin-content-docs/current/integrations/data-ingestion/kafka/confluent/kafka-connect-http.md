@@ -6,7 +6,7 @@
 'title': 'Confluent HTTP Sink 连接器'
 ---
 
-import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import createHttpSink from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_http_sink.png';
 import httpAuth from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_auth.png';

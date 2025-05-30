@@ -6,6 +6,6 @@
 'description': '页面描述使用 MongoDB 引擎的集成'
 ---
 
-import MongoDBEngine from '@site/i18n/jp/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/mongodb.md';
+import MongoDBEngine from '@site/i18n/zh/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/mongodb.md';
 
 <MongoDBEngine/>

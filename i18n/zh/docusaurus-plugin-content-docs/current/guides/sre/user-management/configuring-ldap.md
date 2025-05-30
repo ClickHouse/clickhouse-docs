@@ -6,7 +6,7 @@
 'description': '描述如何配置 ClickHouse 以使用 LDAP 进行身份验证和角色映射'
 ---
 
-import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 
 # 配置 ClickHouse 使用 LDAP 进行身份验证和角色映射

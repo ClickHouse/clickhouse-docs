@@ -6,6 +6,6 @@
 'description': '页面描述 RocksDBTableEngine'
 ---
 
-import RocksDBTableEngine from '@site/i18n/jp/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/embedded-rocksdb.md';
+import RocksDBTableEngine from '@site/i18n/zh/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/embedded-rocksdb.md';
 
 <RocksDBTableEngine/>

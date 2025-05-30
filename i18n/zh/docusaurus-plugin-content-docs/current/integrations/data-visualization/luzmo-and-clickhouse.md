@@ -13,7 +13,7 @@
 'sidebar': 'integrations'
 ---
 
-import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import luzmo_01 from '@site/static/images/integrations/data-visualization/luzmo_01.png';
 import luzmo_02 from '@site/static/images/integrations/data-visualization/luzmo_02.png';

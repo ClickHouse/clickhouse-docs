@@ -5,7 +5,7 @@
 'description': '页面描述 Redis 表函数'
 ---
 
-import RedisFunction from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/table-functions/redis.md';
+import RedisFunction from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/table-functions/redis.md';
 
 
 # Redis 集成

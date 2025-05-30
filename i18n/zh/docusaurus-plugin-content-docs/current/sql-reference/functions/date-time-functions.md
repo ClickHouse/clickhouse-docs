@@ -7,9 +7,10 @@
 ---
 
 
+
 # 处理日期和时间的函数
 
-本节中的大多数函数接受一个可选的时区参数，例如 `Europe/Amsterdam`。在这种情况下，时区使用指定的值，而不是本地（默认）时区。
+本节中的大多数函数接受一个可选的时区参数，例如 `Europe/Amsterdam`。在这种情况下，时区是指定的，而不是本地（默认）时区。
 
 **示例**
 
@@ -28,9 +29,9 @@ SELECT
 ```
 ## makeDate {#makedate}
 
-从年、月和日参数创建一个 [Date](../data-types/date.md)
-- 从年、月和日参数，或
-- 从年和年中的天数参数。
+从年份、月份和日期参数创建一个 [Date](../data-types/date.md)
+- 从年份、月份和日期参数，或
+- 从年份和年份中的日期参数。
 
 **语法**
 
@@ -45,10 +46,10 @@ makeDate(year, day_of_year);
 
 **参数**
 
-- `year` — 年。 [Integer](../data-types/int-uint.md), [Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
-- `month` — 月。 [Integer](../data-types/int-uint.md), [Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
-- `day` — 日。 [Integer](../data-types/int-uint.md), [Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
-- `day_of_year` — 年中的天数。 [Integer](../data-types/int-uint.md), [Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
+- `year` — 年。 [Integer](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
+- `month` — 月。 [Integer](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
+- `day` — 日。 [Integer](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
+- `day_of_year` — 年中的日期。 [Integer](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
 
 **返回值**
 
@@ -56,7 +57,7 @@ makeDate(year, day_of_year);
 
 **示例**
 
-根据年、月和日创建日期：
+从年份、月份和日期创建一个日期：
 
 ```sql
 SELECT makeDate(2023, 2, 28) AS Date;
@@ -70,7 +71,7 @@ SELECT makeDate(2023, 2, 28) AS Date;
 └────────────┘
 ```
 
-根据年和年中的天数参数创建日期：
+从年份和年份中的日期参数创建一个日期：
 
 ```sql
 SELECT makeDate(2023, 42) AS Date;
@@ -85,7 +86,7 @@ SELECT makeDate(2023, 42) AS Date;
 ```
 ## makeDate32 {#makedate32}
 
-从年、月、日（或可选的年和天）创建 [Date32](../../sql-reference/data-types/date32.md) 类型的日期。
+从年份、月份、日（或可选的年份和一天）创建一个 [Date32](../../sql-reference/data-types/date32.md) 类型的值。
 
 **语法**
 
@@ -95,12 +96,12 @@ makeDate32(year, [month,] day)
 
 **参数**
 
-- `year` — 年。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
-- `month` — 月（可选）。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
-- `day` — 日。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
+- `year` — 年。 [Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
+- `month` — 月（可选）。 [Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
+- `day` — 日。 [Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
 
 :::note
-如果省略 `month`，则 `day` 应该取值在 `1` 到 `365` 之间；否则，`day` 应该取值在 `1` 到 `31` 之间。
+如果省略 `month`，则 `day` 应取值在 `1` 到 `365` 之间，否则它应取值在 `1` 到 `31` 之间。
 :::
 
 **返回值**
@@ -109,7 +110,7 @@ makeDate32(year, [month,] day)
 
 **示例**
 
-从年、月和日创建日期：
+从年份、月份和日期创建一个日期：
 
 查询：
 
@@ -123,7 +124,7 @@ SELECT makeDate32(2024, 1, 1);
 2024-01-01
 ```
 
-从年和年中的天数创建日期：
+从年份和年份中的日期创建一个日期：
 
 查询：
 
@@ -138,7 +139,7 @@ SELECT makeDate32(2024, 100);
 ```
 ## makeDateTime {#makedatetime}
 
-根据年、月、日、小时、分钟和秒参数创建一个 [DateTime](../data-types/datetime.md)。
+从年份、月份、日、小时、分钟和秒参数创建一个 [DateTime](../data-types/datetime.md)。
 
 **语法**
 
@@ -148,13 +149,13 @@ makeDateTime(year, month, day, hour, minute, second[, timezone])
 
 **参数**
 
-- `year` — 年。 [Integer](../data-types/int-uint.md), [Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
-- `month` — 月。 [Integer](../data-types/int-uint.md), [Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
-- `day` — 日。 [Integer](../data-types/int-uint.md), [Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
-- `hour` — 小时。 [Integer](../data-types/int-uint.md), [Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
-- `minute` — 分钟。 [Integer](../data-types/int-uint.md), [Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
-- `second` — 秒。 [Integer](../data-types/int-uint.md), [Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
-- `timezone` — 返回值的 [Timezone](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。
+- `year` — 年。 [Integer](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
+- `month` — 月。 [Integer](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
+- `day` — 日。 [Integer](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
+- `hour` — 时。 [Integer](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
+- `minute` — 分。 [Integer](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
+- `second` — 秒。 [Integer](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
+- `timezone` — [Timezone](../../operations/server-configuration-parameters/settings.md#timezone) 用于返回值（可选）。
 
 **返回值**
 
@@ -175,7 +176,7 @@ SELECT makeDateTime(2023, 2, 28, 17, 12, 33) AS DateTime;
 ```
 ## makeDateTime64 {#makedatetime64}
 
-从其组件（年、月、日、小时、分钟、秒）创建带有可选亚秒精度的 [DateTime64](../../sql-reference/data-types/datetime64.md) 数据类型值。
+从其组件（年、月、日、小时、分钟、秒）创建一个 [DateTime64](../../sql-reference/data-types/datetime64.md) 数据类型值。具有可选的亚秒精度。
 
 **语法**
 
@@ -185,13 +186,13 @@ makeDateTime64(year, month, day, hour, minute, second[, precision])
 
 **参数**
 
-- `year` — 年（0-9999）。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
-- `month` — 月（1-12）。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
-- `day` — 日（1-31）。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
-- `hour` — 小时（0-23）。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
-- `minute` — 分钟（0-59）。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
-- `second` — 秒（0-59）。 [Integer](../../sql-reference/data-types/int-uint.md), [Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
-- `precision` — 亚秒组件的可选精度（0-9）。 [Integer](../../sql-reference/data-types/int-uint.md)。
+- `year` — 年（0-9999）。 [Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
+- `month` — 月（1-12）。 [Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
+- `day` — 日（1-31）。 [Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
+- `hour` — 时（0-23）。 [Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
+- `minute` — 分（0-59）。 [Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
+- `second` — 秒（0-59）。 [Integer](../../sql-reference/data-types/int-uint.md)、[Float](../../sql-reference/data-types/float.md) 或 [Decimal](../../sql-reference/data-types/decimal.md)。
+- `precision` — 亚秒组成部分的可选精度（0-9）。 [Integer](../../sql-reference/data-types/int-uint.md)。
 
 **返回值**
 
@@ -210,7 +211,8 @@ SELECT makeDateTime64(2023, 5, 15, 10, 30, 45, 779, 5);
 ```
 ## timestamp {#timestamp}
 
-将第一个参数 'expr' 转换为类型 [DateTime64(6)](../data-types/datetime64.md)。如果提供了第二个参数 'expr_time'，则将指定时间添加到转换后的值。
+将第一个参数 'expr' 转换为 [DateTime64(6)](../data-types/datetime64.md) 类型。
+如果提供了第二个参数 'expr_time'，则将指定的时间添加到转换值。
 
 **语法**
 
@@ -218,12 +220,12 @@ SELECT makeDateTime64(2023, 5, 15, 10, 30, 45, 779, 5);
 timestamp(expr[, expr_time])
 ```
 
-别名：`TIMESTAMP`
+别名： `TIMESTAMP`
 
 **参数**
 
-- `expr` - 日期或带时间的日期。 [String](../data-types/string.md)。
-- `expr_time` - 可选参数。要添加的时间。 [String](../data-types/string.md)。
+- `expr` - 日期或日期时间。 [String](../data-types/string.md)。
+- `expr_time` - 可选参数。 要添加的时间。 [String](../data-types/string.md)。
 
 **示例**
 
@@ -256,7 +258,8 @@ SELECT timestamp('2023-12-31 12:00:00', '12:00:00.11') as ts;
 - [DateTime64](../data-types/datetime64.md)(6)
 ## timeZone {#timezone}
 
-返回当前会话的时区，即设置 [session_timezone](../../operations/settings/settings.md#session_timezone) 的值。如果在分布式表的上下文中执行函数，则生成与每个分片相关的正常列值，否则生成常量值。
+返回当前会话的时区，即设定值 [session_timezone](../../operations/settings/settings.md#session_timezone) 的值。
+如果在分布式表的上下文中执行此函数，则生成一个正常列，其值与每个分片相关，否则返回一个常量值。
 
 **语法**
 
@@ -264,7 +267,7 @@ SELECT timestamp('2023-12-31 12:00:00', '12:00:00.11') as ts;
 timeZone()
 ```
 
-别名：`timezone`。
+别名： `timezone`。
 
 **返回值**
 
@@ -284,12 +287,13 @@ SELECT timezone()
 └────────────────┘
 ```
 
-**另请参见**
+**另见**
 
 - [serverTimeZone](#servertimezone)
 ## serverTimeZone {#servertimezone}
 
-返回服务器的时区，即设置 [timezone](../../operations/server-configuration-parameters/settings.md#timezone) 的值。如果在分布式表的上下文中执行函数，则生成与每个分片相关的正常列值。否则，生成常量值。
+返回服务器的时区，即设定值 [timezone](../../operations/server-configuration-parameters/settings.md#timezone) 的值。
+如果在分布式表的上下文中执行此函数，则生成一个正常列，其值与每个分片相关。否则，返回一个常量值。
 
 **语法**
 
@@ -297,7 +301,7 @@ SELECT timezone()
 serverTimeZone()
 ```
 
-别名：`serverTimezone`。
+别名： `serverTimezone`。
 
 **返回值**
 
@@ -317,12 +321,12 @@ SELECT serverTimeZone()
 └──────────────────┘
 ```
 
-**另请参见**
+**另见**
 
 - [timeZone](#timezone)
 ## toTimeZone {#totimezone}
 
-将日期或带时间的日期转换为指定的时区。不会更改数据的内部值（Unix秒数），仅更改值的时区属性和字符串表示。
+将日期或日期时间转换为指定的时区。并不改变数据的内部值（unix秒数），只改变值的时区属性和字符串表示。
 
 **语法**
 
@@ -330,12 +334,12 @@ SELECT serverTimeZone()
 toTimezone(value, timezone)
 ```
 
-别名：`toTimezone`。
+别名： `toTimezone`。
 
 **参数**
 
 - `value` — 时间或日期和时间。 [DateTime64](../data-types/datetime64.md)。
-- `timezone` — 返回值的时区。 [String](../data-types/string.md)。此参数是常量，因为 `toTimezone` 更改列的时区（时区是 `DateTime*` 类型的属性）。
+- `timezone` — 返回值的时区。 [String](../data-types/string.md)。 这个参数是常量，因为 `toTimezone` 改变列的时区（timezone是 `DateTime*` 类型的属性）。
 
 **返回值**
 
@@ -372,7 +376,7 @@ type_samoa: DateTime('US/Samoa')
 int32samoa: 1546300800
 ```
 
-**另请参见**
+**另见**
 
 - [formatDateTime](#formatdatetime) - 支持非恒定时区。
 - [toString](type-conversion-functions.md#tostring) - 支持非恒定时区。
@@ -386,7 +390,7 @@ int32samoa: 1546300800
 timeZoneOf(value)
 ```
 
-别名：`timezoneOf`。
+别名： `timezoneOf`。
 
 **参数**
 
@@ -410,7 +414,9 @@ SELECT timezoneOf(now());
 ```
 ## timeZoneOffset {#timezoneoffset}
 
-返回与 [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) 的时区偏移（以秒为单位）。该函数考虑到在指定日期和时间的 [夏令时](https://en.wikipedia.org/wiki/Daylight_saving_time) 和历史时区变更。使用 [IANA 时区数据库](https://www.iana.org/time-zones) 来计算偏移。
+返回与 [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) 的时区偏移（以秒为单位）。
+该函数考虑了 [夏令时](https://en.wikipedia.org/wiki/Daylight_saving_time) 和指定日期时间的历史时区变化。
+使用 [IANA 时区数据库](https://www.iana.org/time-zones) 计算偏移。
 
 **语法**
 
@@ -418,7 +424,7 @@ SELECT timezoneOf(now());
 timeZoneOffset(value)
 ```
 
-别名：`timezoneOffset`。
+别名： `timezoneOffset`。
 
 **参数**
 
@@ -426,7 +432,7 @@ timeZoneOffset(value)
 
 **返回值**
 
-- 从 UTC 的偏差（以秒为单位）。 [Int32](../data-types/int-uint.md)。
+- 与 UTC 的偏移（以秒为单位）。 [Int32](../data-types/int-uint.md)。
 
 **示例**
 
@@ -444,7 +450,7 @@ SELECT toDateTime('2021-04-21 10:20:30', 'America/New_York') AS Time, toTypeName
 ```
 ## toYear {#toyear}
 
-返回日期或带时间的日期的年份组件（公元）。
+返回日期或日期时间的年份成分（公元）。
 
 **语法**
 
@@ -452,15 +458,15 @@ SELECT toDateTime('2021-04-21 10:20:30', 'America/New_York') AS Time, toTypeName
 toYear(value)
 ```
 
-别名：`YEAR`
+别名： `YEAR`
 
 **参数**
 
-- `value` - 一个 [Date](../data-types/date.md)， [Date32](../data-types/date32.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的年份。 [UInt16](../data-types/int-uint.md)。
+- 所给日期/时间的年份。 [UInt16](../data-types/int-uint.md)。
 
 **示例**
 
@@ -477,7 +483,7 @@ SELECT toYear(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toQuarter {#toquarter}
 
-返回日期或带时间的日期的季度（1-4）。
+返回日期或日期时间的季度（1-4）。
 
 **语法**
 
@@ -485,15 +491,15 @@ SELECT toYear(toDateTime('2023-04-21 10:20:30'))
 toQuarter(value)
 ```
 
-别名：`QUARTER`
+别名： `QUARTER`
 
 **参数**
 
-- `value` - 一个 [Date](../data-types/date.md)， [Date32](../data-types/date32.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的季度（1、2、3 或 4）。 [UInt8](../data-types/int-uint.md)。
+- 所给日期/时间的季度（1、2、3 或 4）。 [UInt8](../data-types/int-uint.md)。
 
 **示例**
 
@@ -510,7 +516,7 @@ SELECT toQuarter(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toMonth {#tomonth}
 
-返回日期或带时间的日期的月份组件（1-12）。
+返回日期或日期时间的月份成分（1-12）。
 
 **语法**
 
@@ -518,15 +524,15 @@ SELECT toQuarter(toDateTime('2023-04-21 10:20:30'))
 toMonth(value)
 ```
 
-别名：`MONTH`
+别名： `MONTH`
 
 **参数**
 
-- `value` - 一个 [Date](../data-types/date.md)， [Date32](../data-types/date32.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的月份（1 - 12）。 [UInt8](../data-types/int-uint.md)。
+- 所给日期/时间的月份（1 - 12）。 [UInt8](../data-types/int-uint.md)。
 
 **示例**
 
@@ -543,7 +549,7 @@ SELECT toMonth(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toDayOfYear {#todayofyear}
 
-返回一个日期或带时间的日期在年内的天数（1-366）。
+返回日期或日期时间在年内的天数（1-366）。
 
 **语法**
 
@@ -551,15 +557,15 @@ SELECT toMonth(toDateTime('2023-04-21 10:20:30'))
 toDayOfYear(value)
 ```
 
-别名：`DAYOFYEAR`
+别名： `DAYOFYEAR`
 
 **参数**
 
-- `value` - 一个 [Date](../data-types/date.md)， [Date32](../data-types/date32.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的年中的天数（1 - 366）。 [UInt16](../data-types/int-uint.md)。
+- 所给日期/时间的天数（1 - 366）。 [UInt16](../data-types/int-uint.md)。
 
 **示例**
 
@@ -576,7 +582,7 @@ SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toDayOfMonth {#todayofmonth}
 
-返回日期或带时间的日期在月份内的天数（1-31）。
+返回日期或日期时间在月份中的天数（1-31）。
 
 **语法**
 
@@ -584,15 +590,15 @@ SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
 toDayOfMonth(value)
 ```
 
-别名：`DAYOFMONTH`, `DAY`
+别名： `DAYOFMONTH`、`DAY`
 
 **参数**
 
-- `value` - 一个 [Date](../data-types/date.md)， [Date32](../data-types/date32.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的日期（1 - 31）。 [UInt8](../data-types/int-uint.md)。
+- 所给日期/时间的天数（1 - 31）。 [UInt8](../data-types/int-uint.md)。
 
 **示例**
 
@@ -609,16 +615,16 @@ SELECT toDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toDayOfWeek {#todayofweek}
 
-返回日期或带时间的日期在周内的天数。
+返回日期或日期时间在周内的天数。
 
-`toDayOfWeek()` 的两个参数形式使您能够指定一周是从星期一还是星期日开始，以及返回值是否应在范围 0 到 6 或 1 到 7。如果省略模式参数，则默认模式为 0。日期的时区可以作为第三个参数指定。
+`toDayOfWeek()` 的两个参数形式允许您指定一周的开始日是星期一还是星期天，以及返回值是否应在 0 到 6 或 1 到 7 的范围内。如果省略模式参数，默认模式为 0。日期的时区可以作为第三个参数指定。
 
 | 模式 | 一周的第一天 | 范围                                          |
-|------|-------------------|------------------------------------------------|
-| 0    | 星期一            | 1-7：星期一 = 1，星期二 = 2，...，星期日 = 7  |
-| 1    | 星期一            | 0-6：星期一 = 0，星期二 = 1，...，星期日 = 6  |
-| 2    | 星期日            | 0-6：星期日 = 0，星期一 = 1，...，星期六 = 6 |
-| 3    | 星期日            | 1-7：星期日 = 1，星期一 = 2，...，星期六 = 7 |
+|------|---------------|------------------------------------------------|
+| 0    | 星期一       | 1-7: 星期一 = 1，星期二 = 2，...，星期天 = 7  |
+| 1    | 星期一       | 0-6: 星期一 = 0，星期二 = 1，...，星期天 = 6  |
+| 2    | 星期天       | 0-6: 星期天 = 0，星期一 = 1，...，星期六 = 6 |
+| 3    | 星期天       | 1-7: 星期天 = 1，星期一 = 2，...，星期六 = 7 |
 
 **语法**
 
@@ -626,23 +632,23 @@ SELECT toDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 toDayOfWeek(t[, mode[, timezone]])
 ```
 
-别名：`DAYOFWEEK`。
+别名： `DAYOFWEEK`。
 
 **参数**
 
-- `t` - 一个 [Date](../data-types/date.md)， [Date32](../data-types/date32.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
-- `mode` - 决定一周的第一天。可能的值是 0、1、2 或 3。请查看上面的表格以了解差异。
-- `timezone` - 可选参数，它的行为与其他转换函数相同。
+- `t` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `mode` - 确定一周的第一天。可能的值为 0、1、2 或 3。请参见上表获取差异。
+- `timezone` - 可选参数，它的行为与其他任何转换函数相同
 
-第一个参数也可以作为 [String](../data-types/string.md) 指定，且支持 [parseDateTime64BestEffort()](type-conversion-functions.md#parsedatetime64besteffort) 支持的格式。仅因兼容某些第三方工具而存在字符串参数支持。由于字符串参数的支持可能在未来依赖于新的 MySQL 兼容性设置，并且字符串解析通常较慢，因此建议不要使用它。
+第一个参数也可以指定为 [String](../data-types/string.md)，以 [parseDateTime64BestEffort()](type-conversion-functions.md#parsedatetime64besteffort) 支持的格式。这种对字符串参数的支持仅出于与 MySQL 兼容的原因，某些第三方工具期待这样。由于字符串参数的支持可能在将来取决于新的 MySQL 兼容设置，并且字符串解析通常较慢，因此建议不要使用它。
 
 **返回值**
 
-- 给定日期/时间的星期几（1-7），具体取决于选择的模式。
+- 所给日期/时间的星期几（1-7），取决于所选模式
 
 **示例**
 
-以下日期为 2023 年 4 月 21 日，那是星期五：
+以下日期为 2023 年 4 月 21 日，为星期五：
 
 ```sql
 SELECT
@@ -659,9 +665,9 @@ SELECT
 ```
 ## toHour {#tohour}
 
-返回带时间的日期的小时组件（0-24）。
+返回带时间的日期的小时成分（0-24）。
 
-假定如果时钟向前移动，则增加一个小时，并发生在早上 2 点；如果时钟向后移动，则减少一个小时，并发生在早上 3 点。（这并不总是确切发生时刻 - 这取决于时区）。
+假设如果时钟向前移动，则为一小时，并发生在凌晨 2 点；如果时钟向后移动，则为一小时，并发生在凌晨 3 点（这并不总是确切发生 - 取决于时区）。
 
 **语法**
 
@@ -669,15 +675,15 @@ SELECT
 toHour(value)
 ```
 
-别名：`HOUR`
+别名： `HOUR`
 
 **参数**
 
-- `value` - 一个 [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的小时数（0 - 23）。 [UInt8](../data-types/int-uint.md)。
+- 所给日期/时间的小时（0 - 23）。 [UInt8](../data-types/int-uint.md)。
 
 **示例**
 
@@ -694,7 +700,7 @@ SELECT toHour(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toMinute {#tominute}
 
-返回带时间的日期的分钟组件（0-59）。
+返回带时间的日期的分钟成分（0-59）。
 
 **语法**
 
@@ -702,15 +708,15 @@ SELECT toHour(toDateTime('2023-04-21 10:20:30'))
 toMinute(value)
 ```
 
-别名：`MINUTE`
+别名： `MINUTE`
 
 **参数**
 
-- `value` - 一个 [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的分钟数（0 - 59）。 [UInt8](../data-types/int-uint.md)。
+- 所给日期/时间的分钟（0 - 59）。 [UInt8](../data-types/int-uint.md)。
 
 **示例**
 
@@ -727,7 +733,7 @@ SELECT toMinute(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toSecond {#tosecond}
 
-返回带时间的日期的秒组件（0-59）。不考虑闰秒。
+返回带时间的日期的秒成分（0-59）。不考虑闰秒。
 
 **语法**
 
@@ -735,15 +741,15 @@ SELECT toMinute(toDateTime('2023-04-21 10:20:30'))
 toSecond(value)
 ```
 
-别名：`SECOND`
+别名： `SECOND`
 
 **参数**
 
-- `value` - 一个 [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的秒数（0 - 59）。 [UInt8](../data-types/int-uint.md)。
+- 所给日期/时间的秒（0 - 59）。 [UInt8](../data-types/int-uint.md)。
 
 **示例**
 
@@ -760,7 +766,7 @@ SELECT toSecond(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toMillisecond {#tomillisecond}
 
-返回带时间的日期的毫秒组件（0-999）。
+返回带时间的日期的毫秒成分（0-999）。
 
 **语法**
 
@@ -772,7 +778,7 @@ toMillisecond(value)
 
 - `value` - [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
-别名：`MILLISECOND`
+别名： `MILLISECOND`
 
 ```sql
 SELECT toMillisecond(toDateTime64('2023-04-21 10:20:30.456', 3))
@@ -788,12 +794,12 @@ SELECT toMillisecond(toDateTime64('2023-04-21 10:20:30.456', 3))
 
 **返回值**
 
-- 给定日期/时间的毫秒数（0 - 999）。 [UInt16](../data-types/int-uint.md)。
+- 所给日期/时间的毫秒（0 - 59）。 [UInt16](../data-types/int-uint.md)。
 ## toUnixTimestamp {#tounixtimestamp}
 
-将字符串、日期或带时间的日期转换为 [Unix 时间戳](https://en.wikipedia.org/wiki/Unix_time) 的 `UInt32` 表示。
+将字符串、日期或带时间的日期转换为 `UInt32` 表示的 [Unix 时间戳](https://en.wikipedia.org/wiki/Unix_time)。
 
-如果使用字符串调用该函数，则接受一个可选的时区参数。
+如果该函数以字符串形式调用，则接受一个可选的时区参数。
 
 **语法**
 
@@ -837,17 +843,17 @@ from_date32:     1509840000
 :::note
 `toStartOf*`、`toLastDayOf*`、`toMonday`、`timeSlot` 函数的返回类型由配置参数 [enable_extended_results_for_datetime_functions](/operations/settings/settings#enable_extended_results_for_datetime_functions) 决定，默认值为 `0`。
 
-行为为
+行为如下：
 * `enable_extended_results_for_datetime_functions = 0`：
   * 函数 `toStartOfYear`、`toStartOfISOYear`、`toStartOfQuarter`、`toStartOfMonth`、`toStartOfWeek`、`toLastDayOfWeek`、`toLastDayOfMonth`、`toMonday` 返回 `Date` 或 `DateTime`。
-  * 函数 `toStartOfDay`、`toStartOfHour`、`toStartOfFifteenMinutes`、`toStartOfTenMinutes`、`toStartOfFiveMinutes`、`toStartOfMinute`、`timeSlot` 返回 `DateTime`。尽管这些函数可以接受扩展类型 `Date32` 和 `DateTime64` 的值作为参数，但传递超出正常范围的时间（1970 年到 2149 年的日期 / 2106 年的日期时间）将产生错误结果。
+  * 函数 `toStartOfDay`、`toStartOfHour`、`toStartOfFifteenMinutes`、`toStartOfTenMinutes`、`toStartOfFiveMinutes`、`toStartOfMinute`、`timeSlot` 返回 `DateTime`。尽管这些函数可以接受扩展类型 `Date32` 和 `DateTime64` 的值作为参数，但传递超出正常范围的时间（对于 `Date` 从1970年到2149年/对于 `DateTime` 为2106年）将产生错误结果。
 * `enable_extended_results_for_datetime_functions = 1`：
-  * 在参数是 `Date` 或 `DateTime` 的情况下，函数 `toStartOfYear`、`toStartOfISOYear`、`toStartOfQuarter`、`toStartOfMonth`、`toStartOfWeek`、`toLastDayOfWeek`、`toLastDayOfMonth`、`toMonday` 返回 `Date` 或 `DateTime`，在参数是 `Date32` 或 `DateTime64` 的情况下返回 `Date32` 或 `DateTime64`。
-  * 函数 `toStartOfDay`、`toStartOfHour`、`toStartOfFifteenMinutes`、`toStartOfTenMinutes`、`toStartOfFiveMinutes`、`toStartOfMinute`、`timeSlot` 在参数是 `Date` 或 `DateTime` 的情况下返回 `DateTime`，在参数是 `Date32` 或 `DateTime64` 的情况下返回 `DateTime64`。
+  * 函数 `toStartOfYear`、`toStartOfISOYear`、`toStartOfQuarter`、`toStartOfMonth`、`toStartOfWeek`、`toLastDayOfWeek`、`toLastDayOfMonth`、`toMonday` 返回 `Date` 或 `DateTime`（如果它们的参数是 `Date` 或 `DateTime`），并且如果参数是 `Date32` 或 `DateTime64`，则返回 `Date32` 或 `DateTime64`。
+  * 函数 `toStartOfDay`、`toStartOfHour`、`toStartOfFifteenMinutes`、`toStartOfTenMinutes`、`toStartOfFiveMinutes`、`toStartOfMinute`、`timeSlot` 返回 `DateTime` （如果它们的参数是 `Date` 或 `DateTime`），并且如果参数是 `Date32` 或 `DateTime64`，则返回 `DateTime64`。
 :::
 ## toStartOfYear {#tostartofyear}
 
-将日期或带时间的日期向下取整至该年的第一天。返回日期作为 `Date` 对象。
+将日期或日期时间向下取整到该年的第一天。返回值为 `Date` 对象。
 
 **语法**
 
@@ -857,11 +863,11 @@ toStartOfYear(value)
 
 **参数**
 
-- `value` - 一个 [Date](../data-types/date.md)， [Date32](../data-types/date32.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 输入日期/时间的年份的第一天。 [Date](../data-types/date.md)。
+- 输入日期/时间的第一天。 [Date](../data-types/date.md)。
 
 **示例**
 
@@ -878,7 +884,7 @@ SELECT toStartOfYear(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toStartOfISOYear {#tostartofisoyear}
 
-将日期或带时间的日期向下取整至 ISO 年的第一天，这可能与“常规”年不同。（请参见 [https://en.wikipedia.org/wiki/ISO_week_date](https://en.wikipedia.org/wiki/ISO_week_date)。）
+将日期或日期时间向下取整到 ISO 年的第一天，这可能与“常规”年份不同。（请参阅 [https://en.wikipedia.org/wiki/ISO_week_date](https://en.wikipedia.org/wiki/ISO_week_date)）。
 
 **语法**
 
@@ -888,11 +894,11 @@ toStartOfISOYear(value)
 
 **参数**
 
-- `value` - 一个 [Date](../data-types/date.md)， [Date32](../data-types/date32.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 输入日期/时间的年份的第一天。 [Date](../data-types/date.md)。
+- 输入日期/时间的第一天。 [Date](../data-types/date.md)。
 
 **示例**
 
@@ -909,7 +915,7 @@ SELECT toStartOfISOYear(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toStartOfQuarter {#tostartofquarter}
 
-将日期或带时间的日期向下取整至该季度的第一天。季度的第一天是 1 月 1 日、4 月 1 日、7 月 1 日或 10 月 1 日。
+将日期或日期时间向下取整到该季度的第一天。季度的第一天为 1 月 1 日、4 月 1 日、7 月 1 日或 10 月 1 日。
 返回日期。
 
 **语法**
@@ -920,11 +926,11 @@ toStartOfQuarter(value)
 
 **参数**
 
-- `value` - 一个 [Date](../data-types/date.md)， [Date32](../data-types/date32.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的季度的第一天。 [Date](../data-types/date.md)。
+- 所给日期/时间的季度的第一天。 [Date](../data-types/date.md)。
 
 **示例**
 
@@ -941,7 +947,7 @@ SELECT toStartOfQuarter(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toStartOfMonth {#tostartofmonth}
 
-将日期或带时间的日期向下取整至该月的第一天。返回日期。
+将日期或日期时间向下取整到该月的第一天。返回日期。
 
 **语法**
 
@@ -951,11 +957,11 @@ toStartOfMonth(value)
 
 **参数**
 
-- `value` - 一个 [Date](../data-types/date.md)， [Date32](../data-types/date32.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的月份的第一天。 [Date](../data-types/date.md)。
+- 所给日期/时间的月份的第一天。 [Date](../data-types/date.md)。
 
 **示例**
 
@@ -972,11 +978,11 @@ SELECT toStartOfMonth(toDateTime('2023-04-21 10:20:30'))
 ```
 
 :::note
-解析不正确日期的行为是实现特定的。 ClickHouse 可能返回零日期、引发异常，或进行“自然”溢出。
+解析不正确日期的行为是实现特定的。 ClickHouse 可能返回零日期，抛出异常，或执行“自然”溢出。
 :::
 ## toLastDayOfMonth {#tolastdayofmonth}
 
-将日期或带时间的日期向上取整至该月的最后一天。返回日期。
+将日期或日期时间向上取整到该月的最后一天。返回日期。
 
 **语法**
 
@@ -984,15 +990,15 @@ SELECT toStartOfMonth(toDateTime('2023-04-21 10:20:30'))
 toLastDayOfMonth(value)
 ```
 
-别名：`LAST_DAY`
+别名： `LAST_DAY`
 
 **参数**
 
-- `value` - 一个 [Date](../data-types/date.md)， [Date32](../data-types/date32.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的月份的最后一天。 [Date](../data-types/date.md)。
+- 所给日期/时间的月份的最后一天。 [Date](../data-types/date.md)。
 
 **示例**
 
@@ -1009,7 +1015,7 @@ SELECT toLastDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toMonday {#tomonday}
 
-将日期或带时间的日期向下取整至最近的星期一。返回日期。
+将日期或日期时间向下取整到最靠近的星期一。返回日期。
 
 **语法**
 
@@ -1019,11 +1025,11 @@ toMonday(value)
 
 **参数**
 
-- `value` - 一个 [Date](../data-types/date.md)， [Date32](../data-types/date32.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 对于给定日期的最近星期一的日期。 [Date](../data-types/date.md)。
+- 所给日期最靠近的星期一或之前的日期。 [Date](../data-types/date.md)。
 
 **示例**
 
@@ -1042,7 +1048,7 @@ SELECT
 ```
 ## toStartOfWeek {#tostartofweek}
 
-将日期或带时间的日期向下取整至最近的星期日或星期一。返回日期。模式参数的工作方式与函数 `toWeek()` 中的模式参数完全相同。如果没有指定模式，则默认为 0。
+将日期或日期时间向下取整到最靠近的星期天或星期一。返回日期。模式参数的工作方式与函数 `toWeek()` 中的模式参数完全相同。如果没有指定模式，则默认值为 0。
 
 **语法**
 
@@ -1052,13 +1058,13 @@ toStartOfWeek(t[, mode[, timezone]])
 
 **参数**
 
-- `t` - 一个 [Date](../data-types/date.md)， [Date32](../data-types/date32.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
-- `mode` - 决定一周的第一天，如 [toWeek()](#toweek) 函数所述
-- `timezone` - 可选参数，它的行为与其他转换函数相同
+- `t` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `mode` - 确定一周的第一天，如 [toWeek()](#toweek) 函数所述
+- `timezone` - 可选参数，它的行为与其他任何转换函数相同
 
 **返回值**
 
-- 对于给定日期的最近星期日或星期一的日期，具体取决于模式。 [Date](../data-types/date.md)。
+- 最靠近给定日期的星期天或星期一的日期，具体取决于模式。 [Date](../data-types/date.md)。
 
 **示例**
 
@@ -1083,7 +1089,8 @@ toStartOfWeek(toDate('2023-04-24'), 1):              2023-04-24
 ```
 ## toLastDayOfWeek {#tolastdayofweek}
 
-将日期或带时间的日期向上取整至最近的星期六或星期日。返回日期。模式参数的工作方式与函数 `toWeek()` 中的模式参数完全相同。如果没有指定模式，则默认模式为 0。
+将日期或日期时间向上取整到最靠近的星期六或星期天。返回日期。
+模式参数的工作方式与函数 `toWeek()` 中的模式参数完全相同。如果没有指定模式，则默认为 0。
 
 **语法**
 
@@ -1093,13 +1100,13 @@ toLastDayOfWeek(t[, mode[, timezone]])
 
 **参数**
 
-- `t` - 一个 [Date](../data-types/date.md)， [Date32](../data-types/date32.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
-- `mode` - 决定一周的最后一天，如 [toWeek](#toweek) 函数所述
-- `timezone` - 可选参数，它的行为与其他转换函数相同
+- `t` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `mode` - 确定一周的最后一天，如 [toWeek](#toweek) 函数所述
+- `timezone` - 可选参数，它的行为与其他任何转换函数相同
 
 **返回值**
 
-- 对于给定日期的最近星期日或星期一的日期，具体取决于模式。 [Date](../data-types/date.md)。
+- 最靠近给定日期的星期天或星期一，具体取决于模式。 [Date](../data-types/date.md)。
 
 **示例**
 
@@ -1124,7 +1131,7 @@ toLastDayOfWeek(toDate('2023-04-22'), 1):              2023-04-23
 ```
 ## toStartOfDay {#tostartofday}
 
-将带时间的日期向下取整至一天的开始。
+将带时间的日期向下取整到该天的开始。
 
 **语法**
 
@@ -1134,11 +1141,11 @@ toStartOfDay(value)
 
 **参数**
 
-- `value` - 一个 [Date](../data-types/date.md)， [Date32](../data-types/date32.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的一天的开始。 [DateTime](../data-types/datetime.md)。
+- 所给日期/时间的开始。 [DateTime](../data-types/datetime.md)。
 
 **示例**
 
@@ -1155,7 +1162,7 @@ SELECT toStartOfDay(toDateTime('2023-04-21 10:20:30'))
 ```
 ## toStartOfHour {#tostartofhour}
 
-将带时间的日期向下取整至小时的开始。
+将带时间的日期向下取整到该小时的开始。
 
 **语法**
 
@@ -1165,11 +1172,11 @@ toStartOfHour(value)
 
 **参数**
 
-- `value` - 一个 [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的小时的开始。 [DateTime](../data-types/datetime.md)。
+- 所给日期/时间的开始（小时）。 [DateTime](../data-types/datetime.md)。
 
 **示例**
 
@@ -1188,7 +1195,7 @@ SELECT
 ```
 ## toStartOfMinute {#tostartofminute}
 
-将带时间的日期向下取整至分钟的开始。
+将带时间的日期向下取整到该分钟的开始。
 
 **语法**
 
@@ -1198,11 +1205,11 @@ toStartOfMinute(value)
 
 **参数**
 
-- `value` - 一个 [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的分钟的开始。 [DateTime](../data-types/datetime.md)。
+- 所给日期/时间的开始（分钟）。 [DateTime](../data-types/datetime.md)。
 
 **示例**
 
@@ -1223,7 +1230,7 @@ toStartOfMinute(toDateTime64('2023-04-21 10:20:30.5300', 8)): 2023-04-21 10:20:0
 ```
 ## toStartOfSecond {#tostartofsecond}
 
-截短亚秒部分。
+截断亚秒。
 
 **语法**
 
@@ -1234,11 +1241,11 @@ toStartOfSecond(value, [timezone])
 **参数**
 
 - `value` — 日期和时间。 [DateTime64](../data-types/datetime64.md)。
-- `timezone` — 返回值的 [Timezone](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。如果未指定，函数将使用 `value` 参数的时区。 [String](../data-types/string.md)。
+- `timezone` — [Timezone](../../operations/server-configuration-parameters/settings.md#timezone) 用于返回值（可选）。如果未指定，函数使用 `value` 参数的时区。 [String](../data-types/string.md)。
 
 **返回值**
 
-- 没有亚秒部分的输入值。 [DateTime64](../data-types/datetime64.md)。
+- 不带亚秒的输入值。 [DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -1257,7 +1264,7 @@ SELECT toStartOfSecond(dt64);
 └─────────────────────────┘
 ```
 
-带有时区的查询：
+带时区的查询：
 
 ```sql
 WITH toDateTime64('2020-01-01 10:20:30.999', 3) AS dt64
@@ -1272,12 +1279,12 @@ SELECT toStartOfSecond(dt64, 'Asia/Istanbul');
 └────────────────────────────────────────┘
 ```
 
-**另请参见**
+**另见**
 
 - [Timezone](../../operations/server-configuration-parameters/settings.md#timezone) 服务器配置参数。
 ## toStartOfMillisecond {#tostartofmillisecond}
 
-将带时间的日期向下取整至毫秒的开始。
+将带时间的日期向下取整到毫秒的开始。
 
 **语法**
 
@@ -1288,11 +1295,11 @@ toStartOfMillisecond(value, [timezone])
 **参数**
 
 - `value` — 日期和时间。 [DateTime64](../../sql-reference/data-types/datetime64.md)。
-- `timezone` — 返回值的 [Timezone](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。如果未指定，函数将使用 `value` 参数的时区。 [String](../../sql-reference/data-types/string.md)。
+- `timezone` — [Timezone](../../operations/server-configuration-parameters/settings.md#timezone) 用于返回值（可选）。如果未指定，函数使用 `value` 参数的时区。 [String](../../sql-reference/data-types/string.md)。
 
 **返回值**
 
-- 输入值带有亚毫秒部分。 [DateTime64](../../sql-reference/data-types/datetime64.md)。
+- 输入值带亚毫秒。 [DateTime64](../../sql-reference/data-types/datetime64.md)。
 
 **示例**
 
@@ -1311,7 +1318,7 @@ SELECT toStartOfMillisecond(dt64);
 └───────────────────────────────┘
 ```
 
-带有时区的查询：
+带时区的查询：
 
 ```sql
 ┌─toStartOfMillisecond(dt64, 'Asia/Istanbul')─┐
@@ -1328,7 +1335,7 @@ SELECT toStartOfMillisecond(dt64);
 ```
 ## toStartOfMicrosecond {#tostartofmicrosecond}
 
-将带时间的日期向下取整至微秒的开始。
+将带时间的日期向下取整到微秒的开始。
 
 **语法**
 
@@ -1339,11 +1346,11 @@ toStartOfMicrosecond(value, [timezone])
 **参数**
 
 - `value` — 日期和时间。 [DateTime64](../../sql-reference/data-types/datetime64.md)。
-- `timezone` — 返回值的 [Timezone](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。如果未指定，函数将使用 `value` 参数的时区。 [String](../../sql-reference/data-types/string.md)。
+- `timezone` — [Timezone](../../operations/server-configuration-parameters/settings.md#timezone) 用于返回值（可选）。如果未指定，函数使用 `value` 参数的时区。 [String](../../sql-reference/data-types/string.md)。
 
 **返回值**
 
-- 输入值带有亚微秒部分。 [DateTime64](../../sql-reference/data-types/datetime64.md)。
+- 输入值带亚微秒。 [DateTime64](../../sql-reference/data-types/datetime64.md)。
 
 **示例**
 
@@ -1362,7 +1369,7 @@ SELECT toStartOfMicrosecond(dt64);
 └───────────────────────────────┘
 ```
 
-带有时区的查询：
+带时区的查询：
 
 ```sql
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -1377,12 +1384,12 @@ SELECT toStartOfMicrosecond(dt64, 'Asia/Istanbul');
 └─────────────────────────────────────────────┘
 ```
 
-**另请参见**
+**另见**
 
 - [Timezone](../../operations/server-configuration-parameters/settings.md#timezone) 服务器配置参数。
 ## toStartOfNanosecond {#tostartofnanosecond}
 
-将带时间的日期向下取整至纳秒的开始。
+将带时间的日期向下取整到纳秒的开始。
 
 **语法**
 
@@ -1393,11 +1400,11 @@ toStartOfNanosecond(value, [timezone])
 **参数**
 
 - `value` — 日期和时间。 [DateTime64](../../sql-reference/data-types/datetime64.md)。
-- `timezone` — 返回值的 [Timezone](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。如果未指定，函数将使用 `value` 参数的时区。 [String](../../sql-reference/data-types/string.md)。
+- `timezone` — [Timezone](../../operations/server-configuration-parameters/settings.md#timezone) 用于返回值（可选）。如果未指定，函数使用 `value` 参数的时区。 [String](../../sql-reference/data-types/string.md)。
 
 **返回值**
 
-- 输入值带有纳秒部分。 [DateTime64](../../sql-reference/data-types/datetime64.md)。
+- 输入值带纳秒。 [DateTime64](../../sql-reference/data-types/datetime64.md)。
 
 **示例**
 
@@ -1416,7 +1423,7 @@ SELECT toStartOfNanosecond(dt64);
 └───────────────────────────────┘
 ```
 
-带有时区的查询：
+带时区的查询：
 
 ```sql
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -1431,12 +1438,12 @@ SELECT toStartOfNanosecond(dt64, 'Asia/Istanbul');
 └────────────────────────────────────────────┘
 ```
 
-**另请参见**
+**另见**
 
 - [Timezone](../../operations/server-configuration-parameters/settings.md#timezone) 服务器配置参数。
 ## toStartOfFiveMinutes {#tostartoffiveminutes}
 
-将带时间的日期向下取整至五分钟间隔的开始。
+将带时间的日期向下取整到五分钟间隔的开始。
 
 **语法**
 
@@ -1446,11 +1453,11 @@ toStartOfFiveMinutes(value)
 
 **参数**
 
-- `value` - 一个 [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的五分钟间隔的开始。 [DateTime](../data-types/datetime.md)。
+- 所给日期时间的五分钟间隔的开始。 [DateTime](../data-types/datetime.md)。
 
 **示例**
 
@@ -1473,7 +1480,7 @@ toStartOfFiveMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 ```
 ## toStartOfTenMinutes {#tostartoftenminutes}
 
-将带时间的日期向下取整至十分钟间隔的开始。
+将带时间的日期向下取整到十分钟间隔的开始。
 
 **语法**
 
@@ -1483,11 +1490,11 @@ toStartOfTenMinutes(value)
 
 **参数**
 
-- `value` - 一个 [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的十分钟间隔的开始。 [DateTime](../data-types/datetime.md)。
+- 所给日期时间的十分钟间隔的开始。 [DateTime](../data-types/datetime.md)。
 
 **示例**
 
@@ -1510,7 +1517,7 @@ toStartOfTenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 ```
 ## toStartOfFifteenMinutes {#tostartoffifteenminutes}
 
-将带时间的日期向下取整至十五分钟间隔的开始。
+将带时间的日期取整到十五分钟间隔的开始。
 
 **语法**
 
@@ -1520,11 +1527,11 @@ toStartOfFifteenMinutes(value)
 
 **参数**
 
-- `value` - 一个 [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` - [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 给定日期/时间的十五分钟间隔的开始。 [DateTime](../data-types/datetime.md)。
+- 所给日期时间的十五分钟间隔的开始。 [DateTime](../data-types/datetime.md)。
 
 **示例**
 
@@ -1545,34 +1552,35 @@ toStartOfFifteenMinutes(toDateTime('2023-04-21 10:17:00')): 2023-04-21 10:15:00
 toStartOfFifteenMinutes(toDateTime('2023-04-21 10:20:00')): 2023-04-21 10:15:00
 toStartOfFifteenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:15:00
 ```
+
 ## toStartOfInterval {#tostartofinterval}
 
-此函数使用 `toStartOfInterval(date_or_date_with_time, INTERVAL x unit [, time_zone])` 语法对其他 `toStartOf*()` 函数进行了概括。
+此函数使用 `toStartOfInterval(date_or_date_with_time, INTERVAL x unit [, time_zone])` 语法概括了其他 `toStartOf*()` 函数。
 例如，
-- `toStartOfInterval(t, INTERVAL 1 YEAR)` 的返回值与 `toStartOfYear(t)` 相同，
-- `toStartOfInterval(t, INTERVAL 1 MONTH)` 的返回值与 `toStartOfMonth(t)` 相同，
-- `toStartOfInterval(t, INTERVAL 1 DAY)` 的返回值与 `toStartOfDay(t)` 相同，
-- `toStartOfInterval(t, INTERVAL 15 MINUTE)` 的返回值与 `toStartOfFifteenMinutes(t)` 相同。
+- `toStartOfInterval(t, INTERVAL 1 YEAR)` 返回与 `toStartOfYear(t)` 相同的结果，
+- `toStartOfInterval(t, INTERVAL 1 MONTH)` 返回与 `toStartOfMonth(t)` 相同的结果，
+- `toStartOfInterval(t, INTERVAL 1 DAY)` 返回与 `toStartOfDay(t)` 相同的结果，
+- `toStartOfInterval(t, INTERVAL 15 MINUTE)` 返回与 `toStartOfFifteenMinutes(t)` 相同的结果。
 
 计算是相对于特定时间点进行的：
 
-| 间隔     | 开始                       |
-|----------|---------------------------|
-| YEAR     | 年 0                      |
-| QUARTER  | 1900 年第一季度          |
-| MONTH    | 1900 年一月              |
-| WEEK     | 1970 年第一周 (01-05)    |
-| DAY      | 1970-01-01                |
-| HOUR     | (*)                       |
-| MINUTE   | 1970-01-01 00:00:00       |
-| SECOND   | 1970-01-01 00:00:00       |
+| Interval    | Start                  |
+|-------------|------------------------|
+| YEAR        | year 0                 |
+| QUARTER     | 1900 Q1                |
+| MONTH       | 1900 January           |
+| WEEK        | 1970, 1st week (01-05) |
+| DAY         | 1970-01-01             |
+| HOUR        | (*)                    |
+| MINUTE      | 1970-01-01 00:00:00    |
+| SECOND      | 1970-01-01 00:00:00    |
 | MILLISECOND | 1970-01-01 00:00:00    |
 | MICROSECOND | 1970-01-01 00:00:00    |
-| NANOSECOND | 1970-01-01 00:00:00      |
+| NANOSECOND  | 1970-01-01 00:00:00    |
 
-(*) 小时间隔是特殊的：计算始终相对于当天的 00:00:00 (午夜) 进行。因此，只有 1 到 23 之间的小时值是有用的。
+(*) 小时间隔是特殊的：计算始终相对于当天的 00:00:00（午夜）进行。因此，只有范围在 1 到 23 之间的小时值是有用的。
 
-如果指定了单位为 `WEEK`，`toStartOfInterval` 假定周的开始是星期一。请注意，这一行为与默认以星期天开始的 `toStartOfWeek` 函数不同。
+如果指定了单位 `WEEK`，则 `toStartOfInterval` 假定周一为一周的开始。请注意，这种行为与函数 `toStartOfWeek` 不同，在该函数中，周日为默认的一周开始。
 
 **语法**
 
@@ -1580,9 +1588,9 @@ toStartOfFifteenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:15:00
 toStartOfInterval(value, INTERVAL x unit[, time_zone])
 toStartOfInterval(value, INTERVAL x unit[, origin[, time_zone]])
 ```
-别名: `time_bucket`, `date_bin`.
+别名： `time_bucket`, `date_bin`。
 
-第二个重载模仿 TimescaleDB 的 `time_bucket()` 函数，以及 PostgreSQL 的 `date_bin()` 函数，例如：
+第二个重载模拟了 TimescaleDB 的 `time_bucket()` 函数，分别是 PostgreSQL 的 `date_bin()` 函数，例如：
 
 ```SQL
 SELECT toStartOfInterval(toDateTime('2023-01-01 14:45:00'), INTERVAL 1 MINUTE, toDateTime('2023-01-01 14:35:30'));
@@ -1596,31 +1604,31 @@ SELECT toStartOfInterval(toDateTime('2023-01-01 14:45:00'), INTERVAL 1 MINUTE, t
 └──────────────────────────┘
 ```
 
-**另见**
+**参见**
 - [date_trunc](#date_trunc)
-## toTimeWithFixedDate {#totimewithfixeddate}
+
+## toTime {#totime}
 
 将带时间的日期转换为某个固定日期，同时保留时间。
 
 **语法**
 
 ```sql
-toTimeWithFixedDate(date[,timezone])
+toTime(date[,timezone])
 ```
-
-别名: `toTime` - 仅在启用 `use_legacy_to_time` 设置时可以使用。
 
 **参数**
 
-- `date` — 要转换为时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
-- `timezone` (可选) — 返回值的时区。 [String](../data-types/string.md).
+- `date` — 要转换为时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `timezone` （可选） — 返回值的时区。 [String](../data-types/string.md)。
 
 **返回值**
 
-- DateTime，其中日期等于 `1970-01-02`，同时保留时间。 [DateTime](../data-types/datetime.md).
+- DateTime，日期等于 `1970-01-02`，同时保留时间。 [DateTime](../data-types/datetime.md)。
 
 :::note
-如果 `date` 输入参数包含子秒组件，它们将在返回的 `DateTime` 值中以秒为精度被舍弃。
+如果输入参数 `date` 包含小于一秒的组件，
+它们将在返回的 `DateTime` 值中以秒为精度被舍弃。
 :::
 
 **示例**
@@ -1638,9 +1646,10 @@ SELECT toTime(toDateTime64('1970-12-10 01:20:30.3000',3)) AS result, toTypeName(
 │ 1970-01-02 01:20:30 │ DateTime           │
 └─────────────────────┴────────────────────┘
 ```
+
 ## toRelativeYearNum {#torelativeyearnum}
 
-将日期或带时间的日期转换为自某一固定过去点以来经过的年数。
+将日期或带时间的日期转换为自某个过去固定时间点以来经过的年数。
 
 **语法**
 
@@ -1650,11 +1659,11 @@ toRelativeYearNum(date)
 
 **参数**
 
-- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
+- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **返回值**
 
-- 从过去某个固定参考点开始的年数。 [UInt16](../data-types/int-uint.md).
+- 从过去某个固定参考点计算的年数。 [UInt16](../data-types/int-uint.md)。
 
 **示例**
 
@@ -1673,9 +1682,10 @@ SELECT
 │ 2002 │ 2010 │
 └──────┴──────┘
 ```
+
 ## toRelativeQuarterNum {#torelativequarternum}
 
-将日期或带时间的日期转换为自某一固定过去点以来经过的季度数。
+将日期或带时间的日期转换为自某个过去固定时间点以来经过的季度数。
 
 **语法**
 
@@ -1685,11 +1695,11 @@ toRelativeQuarterNum(date)
 
 **参数**
 
-- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
+- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **返回值**
 
-- 从过去某个固定参考点开始的季度数。 [UInt32](../data-types/int-uint.md).
+- 从过去某个固定参考点计算的季度数。 [UInt32](../data-types/int-uint.md)。
 
 **示例**
 
@@ -1708,9 +1718,10 @@ SELECT
 │ 7975 │ 8020 │
 └──────┴──────┘
 ```
+
 ## toRelativeMonthNum {#torelativemonthnum}
 
-将日期或带时间的日期转换为自某一固定过去点以来经过的月数。
+将日期或带时间的日期转换为自某个过去固定时间点以来经过的月数。
 
 **语法**
 
@@ -1720,11 +1731,11 @@ toRelativeMonthNum(date)
 
 **参数**
 
-- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
+- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **返回值**
 
-- 从过去某个固定参考点开始的月数。 [UInt32](../data-types/int-uint.md).
+- 从过去某个固定参考点计算的月数。 [UInt32](../data-types/int-uint.md)。
 
 **示例**
 
@@ -1743,9 +1754,10 @@ SELECT
 │ 24016 │ 24115 │
 └───────┴───────┘
 ```
+
 ## toRelativeWeekNum {#torelativeweeknum}
 
-将日期或带时间的日期转换为自某一固定过去点以来经过的周数。
+将日期或带时间的日期转换为自某个过去固定时间点以来经过的周数。
 
 **语法**
 
@@ -1755,11 +1767,11 @@ toRelativeWeekNum(date)
 
 **参数**
 
-- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
+- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **返回值**
 
-- 从过去某个固定参考点开始的周数。 [UInt32](../data-types/int-uint.md).
+- 从过去某个固定参考点计算的周数。 [UInt32](../data-types/int-uint.md)。
 
 **示例**
 
@@ -1778,9 +1790,10 @@ SELECT
 │ 1574 │ 1619 │
 └──────┴──────┘
 ```
+
 ## toRelativeDayNum {#torelativedaynum}
 
-将日期或带时间的日期转换为自某一固定过去点以来经过的天数。
+将日期或带时间的日期转换为自某个过去固定时间点以来经过的天数。
 
 **语法**
 
@@ -1790,11 +1803,11 @@ toRelativeDayNum(date)
 
 **参数**
 
-- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
+- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **返回值**
 
-- 从过去某个固定参考点开始的天数。 [UInt32](../data-types/int-uint.md).
+- 从过去某个固定参考点计算的天数。 [UInt32](../data-types/int-uint.md)。
 
 **示例**
 
@@ -1813,9 +1826,10 @@ SELECT
 │ 8678 │ 11220 │
 └──────┴───────┘
 ```
+
 ## toRelativeHourNum {#torelativehournum}
 
-将日期或带时间的日期转换为自某一固定过去点以来经过的小时数。
+将日期或带时间的日期转换为自某个过去固定时间点以来经过的小时数。
 
 **语法**
 
@@ -1825,11 +1839,11 @@ toRelativeHourNum(date)
 
 **参数**
 
-- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
+- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **返回值**
 
-- 从过去某个固定参考点开始的小时数。 [UInt32](../data-types/int-uint.md).
+- 从过去某个固定参考点计算的小时数。 [UInt32](../data-types/int-uint.md)。
 
 **示例**
 
@@ -1848,9 +1862,10 @@ SELECT
 │ 208276 │ 269292 │
 └────────┴────────┘
 ```
+
 ## toRelativeMinuteNum {#torelativeminutenum}
 
-将日期或带时间的日期转换为自某一固定过去点以来经过的分钟数。
+将日期或带时间的日期转换为自某个过去固定时间点以来经过的分钟数。
 
 **语法**
 
@@ -1860,11 +1875,11 @@ toRelativeMinuteNum(date)
 
 **参数**
 
-- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
+- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **返回值**
 
-- 从过去某个固定参考点开始的分钟数。 [UInt32](../data-types/int-uint.md).
+- 从过去某个固定参考点计算的分钟数。 [UInt32](../data-types/int-uint.md)。
 
 **示例**
 
@@ -1883,9 +1898,10 @@ SELECT
 │ 12496580 │ 16157531 │
 └──────────┴──────────┘
 ```
+
 ## toRelativeSecondNum {#torelativesecondnum}
 
-将日期或带时间的日期转换为自某一固定过去点以来经过的秒数。
+将日期或带时间的日期转换为自某个过去固定时间点以来经过的秒数。
 
 **语法**
 
@@ -1895,11 +1911,11 @@ toRelativeSecondNum(date)
 
 **参数**
 
-- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md).
+- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **返回值**
 
-- 从过去某个固定参考点开始的秒数。 [UInt32](../data-types/int-uint.md).
+- 从过去某个固定参考点计算的秒数。 [UInt32](../data-types/int-uint.md)。
 
 **示例**
 
@@ -1918,9 +1934,10 @@ SELECT
 │ 749794836 │ 969451889 │
 └───────────┴───────────┘
 ```
+
 ## toISOYear {#toisoyear}
 
-将日期或带时间的日期转换为 ISO 年的 UInt16 数字。
+将日期或带时间的日期转换为 ISO 年，返回 UInt16 类型的数字。
 
 **语法**
 
@@ -1930,11 +1947,11 @@ toISOYear(value)
 
 **参数**
 
-- `value` — 带日期或带时间的值。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
+- `value` — 带日期或带时间的值。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)
 
 **返回值**
 
-- 输入值转换为 ISO 年数字。 [UInt16](../data-types/int-uint.md).
+- 输入值转换为 ISO 年的数字。 [UInt16](../data-types/int-uint.md)。
 
 **示例**
 
@@ -1953,9 +1970,10 @@ SELECT
 │  2024 │  2024 │
 └───────┴───────┘
 ```
+
 ## toISOWeek {#toisoweek}
 
-将日期或带时间的日期转换为包含 ISO 周序号的 UInt8 数字。
+将日期或带时间的日期转换为包含 ISO 周数的 UInt8 数字。
 
 **语法**
 
@@ -1969,7 +1987,7 @@ toISOWeek(value)
 
 **返回值**
 
-- `value` 转换为当前 ISO 周序号。 [UInt8](../data-types/int-uint.md).
+- `value` 转换为当前 ISO 周数。 [UInt8](../data-types/int-uint.md)。
 
 **示例**
 
@@ -1988,35 +2006,37 @@ SELECT
 │    40 │    40 │
 └───────┴───────┘
 ```
+
 ## toWeek {#toweek}
 
-此函数返回日期或日期时间的周序号。 `toWeek()` 的两个参数形式允许您指定周的开始是星期天还是星期一，返回值的范围是从 0 到 53 还是从 1 到 53。如果省略模式参数，则默认模式为 0。
+此函数返回日期或日期时间的周数。 `toWeek()` 的两参数形式允许您指定一周是从周日开始还是周一开始，以及返回值是否应在 0 到 53 或 1 到 53 的范围内。如果省略 mode 参数，默认模式为 0。
 
-`toISOWeek()` 是与 `toWeek(date,3)` 等价的兼容函数。
+`toISOWeek()` 是兼容函数，相当于 `toWeek(date,3)`。
 
-下表描述了模式参数的工作原理。
+以下表格描述了 mode 参数的工作方式。
 
-| 模式 | 周的第一天 | 范围 | 第 1 周是 ... 的第一周   |
-|------|------------|------|------------------------|
-| 0    | 星期日    | 0-53 | 这一年有星期日         |
-| 1    | 星期一    | 0-53 | 这一年有 4 天或更多    |
-| 2    | 星期日    | 1-53 | 这一年有星期日         |
-| 3    | 星期一    | 1-53 | 这一年有 4 天或更多    |
-| 4    | 星期日    | 0-53 | 这一年有 4 天或更多    |
-| 5    | 星期一    | 0-53 | 这一年有星期一         |
-| 6    | 星期日    | 1-53 | 这一年有 4 天或更多    |
-| 7    | 星期一    | 1-53 | 这一年有星期一         |
-| 8    | 星期日    | 1-53 | 包含 1 月 1 日         |
-| 9    | 星期一    | 1-53 | 包含 1 月 1 日         |
+| Mode | 一周的第一天 | 范围 | 第 1 周是这一年中的第一周 ...    |
+|------|---------------|-------|----------------------------------|
+| 0    | 周日          | 0-53  | 这一年内有一个周日                 |
+| 1    | 周一          | 0-53  | 这一年内有 4 天或更多天          |
+| 2    | 周日          | 1-53  | 这一年内有一个周日                 |
+| 3    | 周一          | 1-53  | 这一年内有 4 天或更多天          |
+| 4    | 周日          | 0-53  | 这一年内有 4 天或更多天          |
+| 5    | 周一          | 0-53  | 这一年内有一个周一               |
+| 6    | 周日          | 1-53  | 这一年内有 4 天或更多天          |
+| 7    | 周一          | 1-53  | 这一年内有一个周一               |
+| 8    | 周日          | 1-53  | 包含 1 月 1 日                     |
+| 9    | 周一          | 1-53  | 包含 1 月 1 日                     |
 
-对于具有“这一年有 4 天或更多”含义的模式值，周数依据 ISO 8601:1988 进行编号：
+适用于“这一年内有 4 天或更多天”模式的值，周按照 ISO 8601:1988 编号：
 
-- 如果包含 1 月 1 日的那一周在新年有 4 天或更多，则为第 1 周。
+- 如果包含 1 月 1 日的周在新的一年中有 4 天或更多天，则这一周为第 1 周。
 
-- 否则，它是前一年的最后一周，下一周为第 1 周。
+- 否则，它为前一年的最后一周，下一周为第 1 周。
 
-对于具有“包含 1 月 1 日”含义的模式值，包含 1 月 1 日的那一周为第 1 周。无论这一周在新年中包含多少天，甚至只包含一天。
-即如果 12 月的最后一周包含下一年的 1 月 1 日，它将是下一年的第一周。
+适用于“包含 1 月 1 日”模式的值，其包含 1 月 1 日的那一周为第 1 周。
+即使该周在新的一年中仅包含一天，结果也不影响。
+也就是说，如果 12 月的最后一周包含下一年的 1 月 1 日，则该周为下一年的第 1 周。
 
 **语法**
 
@@ -2024,15 +2044,15 @@ SELECT
 toWeek(t[, mode[, time_zone]])
 ```
 
-别名: `WEEK`
+别名： `WEEK`
 
 **参数**
 
 - `t` – 日期或日期时间。
-- `mode` – 可选参数，取值范围为 \[0,9\]，默认值为 0。
-- `Timezone` – 可选参数，其行为与其他转换函数相同。
+- `mode` – 可选参数，值的范围为 \[0,9\]，默认为 0。
+- `Timezone` – 可选参数，表现得像其他转换函数。
 
-第一个参数也可以指定为 [String](../data-types/string.md)，格式应符合 [parseDateTime64BestEffort()](type-conversion-functions.md#parsedatetime64besteffort) 所支持的格式。字符串参数的支持仅是为了与某些 3rd 方工具所期望的 MySQL 兼容。由于字符串参数支持未来可能依赖于新的 MySQL 兼容性设置，并且字符串解析一般比较慢，建议不要使用它。
+第一个参数也可以指定为 [String](../data-types/string.md)，格式由 [parseDateTime64BestEffort()](type-conversion-functions.md#parsedatetime64besteffort) 支持。仅出于与某些第三方工具的 MySQL 兼容理由而存在字符串参数支持。因为字符串参数的支持在将来可能会依赖于新的 MySQL 兼容设置，并且字符串解析通常比较慢，建议不要使用它。
 
 **示例**
 
@@ -2047,14 +2067,14 @@ SELECT toDate('2016-12-27') AS date, toWeek(date) AS week0, toWeek(date,1) AS we
 ```
 ## toYearWeek {#toyearweek}
 
-返回日期的年份和周数。结果中的年份可能与日期参数中的年份不同，尤其是在年的第一周和最后一周。
+返回日期的年份和周数。结果中的年份可能与日期参数中的年份不同，适用于年份的第一周和最后一周。
 
-模式参数的用法与 `toWeek()` 的模式参数相同。对于单参数语法，使用模式值 0。
+mode 参数的工作方式与 `toWeek()` 的 mode 参数相同。对于单参数语法，使用 0 的 mode 值。
 
-`toISOYear()` 是与 `intDiv(toYearWeek(date,3),100)` 等价的兼容函数。
+`toISOYear()` 是兼容函数，相当于 `intDiv(toYearWeek(date,3),100)`。
 
 :::warning
-`toYearWeek()` 返回的周数可能与 `toWeek()` 返回的周数不同。`toWeek()` 始终返回给定年份上下文中的周数，如果 `toWeek()` 返回 `0`，`toYearWeek()` 返回对应于上一年最后一周的值。请参阅下面示例中的 `prev_yearWeek`。
+`toYearWeek()` 返回的周数与 `toWeek()` 返回的周数可能不同。`toWeek()` 总是在给定年份的上下文中返回周数，如果 `toWeek()` 返回 `0`，则 `toYearWeek()` 返回对应于上一年最后一周的值。请参阅下面示例中的 `prev_yearWeek`。
 :::
 
 **语法**
@@ -2063,9 +2083,9 @@ SELECT toDate('2016-12-27') AS date, toWeek(date) AS week0, toWeek(date,1) AS we
 toYearWeek(t[, mode[, timezone]])
 ```
 
-别名: `YEARWEEK`
+别名： `YEARWEEK`
 
-第一个参数也可以指定为 [String](../data-types/string.md)，格式应符合 [parseDateTime64BestEffort()](type-conversion-functions.md#parsedatetime64besteffort) 所支持的格式。字符串参数的支持仅是为了与某些 3rd 方工具所期望的 MySQL 兼容。由于字符串参数支持未来可能依赖于新的 MySQL 兼容性设置，并且字符串解析一般比较慢，建议不要使用它。
+第一个参数也可以指定为 [String](../data-types/string.md)，格式由 [parseDateTime64BestEffort()](type-conversion-functions.md#parsedatetime64besteffort) 支持。仅出于与某些第三方工具的 MySQL 兼容理由而存在字符串参数支持。因为字符串参数的支持在将来可能会依赖于新的 MySQL 兼容设置，并且字符串解析通常比较慢，建议不要使用它。
 
 **示例**
 
@@ -2080,7 +2100,7 @@ SELECT toDate('2016-12-27') AS date, toYearWeek(date) AS yearWeek0, toYearWeek(d
 ```
 ## toDaysSinceYearZero {#todayssinceyearzero}
 
-返回给定日期以来在 [ISO 8601](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar) 称为 [1 January 0000](https://en.wikipedia.org/wiki/Year_zero) 的天数。这一计算与 MySQL 的 [`TO_DAYS()`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_to-days) 函数相同。
+在 [ISO 8601 定义的先行公历](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar) 中返回给定日期自 [公元 0000 年 1 月 1 日](https://en.wikipedia.org/wiki/Year_zero) 以来经过的天数。计算方式与 MySQL 的 [`TO_DAYS()`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_to-days) 函数相同。
 
 **语法**
 
@@ -2088,16 +2108,16 @@ SELECT toDate('2016-12-27') AS date, toYearWeek(date) AS yearWeek0, toYearWeek(d
 toDaysSinceYearZero(date[, time_zone])
 ```
 
-别名: `TO_DAYS`
+别名： `TO_DAYS`
 
 **参数**
 
-- `date` — 要计算自年份零以来经过的天数的日期。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md).
-- `time_zone` — 字符串类型的常量值或表示时区的表达式。 [String types](../data-types/string.md)
+- `date` — 计算自公元零年以来经过的天数的日期。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
+- `time_zone` — 字符串类型常量值或表示时区的表达式。 [String types](../data-types/string.md)
 
 **返回值**
 
-自 0000-01-01 日期以来经过的天数。 [UInt32](../data-types/int-uint.md).
+自日期 0000-01-01 以来经过的天数。 [UInt32](../data-types/int-uint.md)。
 
 **示例**
 
@@ -2113,14 +2133,15 @@ SELECT toDaysSinceYearZero(toDate('2023-09-08'));
 └────────────────────────────────────────────┘
 ```
 
-**另见**
+**参见**
 
 - [fromDaysSinceYearZero](#fromdayssinceyearzero)
+
 ## fromDaysSinceYearZero {#fromdayssinceyearzero}
 
-返回自 [1 January 0000](https://en.wikipedia.org/wiki/Year_zero) 以来经过的天数所对应的日期，计算遵循 [或荡Gregorian calendar](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar). 该计算与 MySQL 的 [`FROM_DAYS()`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_from-days) 函数相同。
+返回给定的自 [公元 0000 年 1 月 1 日](https://en.wikipedia.org/wiki/Year_zero) 以来经过的天数对应的日期，在 [ISO 8601 定义的先行公历](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar) 中。计算方式与 MySQL 的 [`FROM_DAYS()`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_from-days) 函数相同。
 
-如果结果无法在 [Date](../data-types/date.md) 类型的范围内表示，则结果为未定义。
+如果无法在 [Date](../data-types/date.md) 类型的范围内表示结果，则结果未定义。
 
 **语法**
 
@@ -2128,15 +2149,15 @@ SELECT toDaysSinceYearZero(toDate('2023-09-08'));
 fromDaysSinceYearZero(days)
 ```
 
-别名: `FROM_DAYS`
+别名： `FROM_DAYS`
 
 **参数**
 
-- `days` — 自年份零以来经过的天数。
+- `days` — 自公元零年以来经过的天数。
 
 **返回值**
 
-自年份零以来经过的天数对应的日期。 [Date](../data-types/date.md).
+与经过的天数相对应的日期。 [Date](../data-types/date.md)。
 
 **示例**
 
@@ -2152,18 +2173,20 @@ SELECT fromDaysSinceYearZero(739136), fromDaysSinceYearZero(toDaysSinceYearZero(
 └───────────────────────────────┴──────────────────────────────────────────────────────────────────┘
 ```
 
-**另见**
+**参见**
 
 - [toDaysSinceYearZero](#todayssinceyearzero)
+
 ## fromDaysSinceYearZero32 {#fromdayssinceyearzero32}
 
-像 [fromDaysSinceYearZero](#fromdayssinceyearzero) 但返回 [Date32](../data-types/date32.md)。
+类似于 [fromDaysSinceYearZero](#fromdayssinceyearzero)，但返回 [Date32](../data-types/date32.md)。
+
 ## age {#age}
 
-返回 `startdate` 和 `enddate` 之间的 `unit` 组件的差异。差异使用 1 纳秒的精度进行计算。
-例如，`2021-12-29` 和 `2022-01-01` 之间的差异在 `day` 单位下为 3 天，在 `month` 单位下为 0 个月，在 `year` 单位下为 0 年。
+返回 `startdate` 和 `enddate` 之间差异的 `unit` 组件。差异是使用 1 纳秒的精度计算的。
+例如，`2021-12-29` 和 `2022-01-01` 之间的差异在 `day` 单位上为 3 天，在 `month` 单位上为 0 个月，在 `year` 单位上为 0 年。
 
-有关 `age` 的替代方法，请参见函数 `date_diff`。
+有关 `age` 的替代方案，请参见函数 `date_diff`。
 
 **语法**
 
@@ -2173,7 +2196,7 @@ age('unit', startdate, enddate, [timezone])
 
 **参数**
 
-- `unit` — 结果的间隔类型。 [String](../data-types/string.md).
+- `unit` — 结果的时间间隔类型。 [String](../data-types/string.md)。
     可能的值：
 
     - `nanosecond`, `nanoseconds`, `ns`
@@ -2188,15 +2211,15 @@ age('unit', startdate, enddate, [timezone])
     - `quarter`, `quarters`, `qq`, `q`
     - `year`, `years`, `yyyy`, `yy`
 
-- `startdate` — 第一个要减去的时间值（被减数）。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md).
+- `startdate` — 第一个要相减的时间值（被减数）。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
 
-- `enddate` — 第二个要减去的时间值（减数）。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md).
+- `enddate` — 第二个时间值（被减数的减数）。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
 
-- `timezone` — [时区名称](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。如果指定，则适用于 `startdate` 和 `enddate`。如果未指定，则使用 `startdate` 和 `enddate` 的时区。如果它们不相同，则结果未定义。 [String](../data-types/string.md).
+- `timezone` — [时区名称](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。如果指定，则适用于 `startdate` 和 `enddate`。如果未指定，则使用 `startdate` 和 `enddate` 的时区。如果它们不相同，则结果未指定。 [String](../data-types/string.md)。
 
 **返回值**
 
-以 `unit` 表达的 `enddate` 和 `startdate` 之间的差异。 [Int](../data-types/int-uint.md).
+以 `unit` 表示的 `enddate` 和 `startdate` 之间的差异。 [Int](../data-types/int-uint.md)。
 
 **示例**
 
@@ -2228,14 +2251,15 @@ SELECT
 │ 2022-01-01 │ 2021-12-29 │       3 │          0 │        0 │
 └────────────┴────────────┴─────────┴────────────┴──────────┘
 ```
+
 ## date_diff {#date_diff}
 
-返回 `startdate` 与 `enddate` 之间跨越的指定 `unit` 边界的数量。
-差异使用相对单位进行计算，例如 `2021-12-29` 和 `2022-01-01` 之间的差异对于 `day` 单位为 3 天（见 [toRelativeDayNum](#torelativedaynum)），对于 `month` 单位为 1 个月（见 [toRelativeMonthNum](#torelativemonthnum)），对于 `year` 单位为 1 年（见 [toRelativeYearNum](#torelativeyearnum)）。
+返回在 `startdate` 和 `enddate` 之间跨越的指定 `unit` 边界的数量。
+差异是使用相对单位计算的，例如  `2021-12-29` 和 `2022-01-01` 之间的差异在 `day` 单位上是 3 天（见 [toRelativeDayNum](#torelativedaynum)），在 `month` 单位上是 1 月（见 [toRelativeMonthNum](#torelativemonthnum)），在 `year` 单位上是 1 年（见 [toRelativeYearNum](#torelativeyearnum)）。
 
-如果指定了 `unit` 为 `week`，则 `date_diff` 假定周的开始是星期一。请注意，这一行为与默认以星期天开始的 `toWeek()` 函数不同。
+如果指定了单位 `week`，则 `date_diff` 假定周一为一周的开始。注意，这种行为与函数 `toWeek()` 中默认的周日开始不同。
 
-有关 `date_diff` 的替代方法，请参见函数 `age`。
+有关 `date_diff` 的替代方案，请参见函数 `age`。
 
 **语法**
 
@@ -2243,11 +2267,11 @@ SELECT
 date_diff('unit', startdate, enddate, [timezone])
 ```
 
-别名: `dateDiff`, `DATE_DIFF`, `timestampDiff`, `timestamp_diff`, `TIMESTAMP_DIFF`.
+别名： `dateDiff`, `DATE_DIFF`, `timestampDiff`, `timestamp_diff`, `TIMESTAMP_DIFF`。
 
 **参数**
 
-- `unit` — 结果的间隔类型。 [String](../data-types/string.md).
+- `unit` — 结果的时间间隔类型。 [String](../data-types/string.md)。
     可能的值：
 
     - `nanosecond`, `nanoseconds`, `ns`
@@ -2262,15 +2286,15 @@ date_diff('unit', startdate, enddate, [timezone])
     - `quarter`, `quarters`, `qq`, `q`
     - `year`, `years`, `yyyy`, `yy`
 
-- `startdate` — 第一个要减去的时间值（被减数）。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md).
+- `startdate` — 第一个要相减的时间值（被减数）。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
 
-- `enddate` — 第二个要减去的时间值（减数）。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md).
+- `enddate` — 第二个时间值（被减数的减数）。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
 
-- `timezone` — [时区名称](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。如果指定，则适用于 `startdate` 和 `enddate`。如果未指定，则使用 `startdate` 和 `enddate` 的时区。如果它们不相同，则结果未定义。 [String](../data-types/string.md).
+- `timezone` — [时区名称](../../operations/server-configuration-parameters/settings.md#timezone) （可选）。如果指定，则适用于 `startdate` 和 `enddate`。如果未指定，则使用 `startdate` 和 `enddate` 的时区。如果它们不相同，则结果未指定。 [String](../data-types/string.md)。
 
 **返回值**
 
-以 `unit` 表达的 `enddate` 和 `startdate` 之间的差异。 [Int](../data-types/int-uint.md).
+以 `unit` 表示的 `enddate` 和 `startdate` 之间的差异。 [Int](../data-types/int-uint.md)。
 
 **示例**
 
@@ -2302,6 +2326,7 @@ SELECT
 │ 2022-01-01 │ 2021-12-29 │        3 │           1 │         1 │
 └────────────┴────────────┴──────────┴─────────────┴───────────┘
 ```
+
 ## date\_trunc {#date_trunc}
 
 将日期和时间数据截断到指定的日期部分。
@@ -2312,11 +2337,11 @@ SELECT
 date_trunc(unit, value[, timezone])
 ```
 
-别名: `dateTrunc`.
+别名： `dateTrunc`。
 
 **参数**
 
-- `unit` — 用于截断结果的时间间隔类型。 [String Literal](/sql-reference/syntax#string).
+- `unit` — 截断结果的时间间隔类型。 [String Literal](/sql-reference/syntax#string)。
     可能的值：
 
     - `nanosecond` - 仅与 DateTime64 兼容
@@ -2333,24 +2358,24 @@ date_trunc(unit, value[, timezone])
 
     `unit` 参数不区分大小写。
 
-- `value` — 日期和时间。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md).
-- `timezone` — 返回值的 [时区名称](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。如果未指定，函数将使用 `value` 参数的时区。 [String](../data-types/string.md).
+- `value` — 日期和时间。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
+- `timezone` — 返回值的 [时区名称](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。如果未指定，则函数使用 `value` 参数的时区。 [String](../data-types/string.md)。
 
 **返回值**
 
-如果 `unit` 参数为 Year、Quarter、Month 或 Week，
-- 且 `value` 参数为 Date32 或 DateTime64，则返回 [Date32](../data-types/date32.md)。
+如果 unit 参数为 Year、Quarter、Month 或 Week，
+- 且 value 参数为 Date32 或 DateTime64，则返回 [Date32](../data-types/date32.md)；
 - 否则返回 [Date](../data-types/date.md)。
 
-如果 `unit` 参数为 Day、Hour、Minute 或 Second，
-- 且 `value` 参数为 Date32 或 DateTime64，则返回 [DateTime64](../data-types/datetime64.md)。
+如果 unit 参数为 Day、Hour、Minute 或 Second，
+- 且 value 参数为 Date32 或 DateTime64，则返回 [DateTime64](../data-types/datetime64.md)；
 - 否则返回 [DateTime](../data-types/datetime.md)。
 
-如果 `unit` 参数为 Millisecond、Microsecond 或 Nanosecond，则返回 [DateTime64](../data-types/datetime64.md)，其级别为 3 或 6 或 9（取决于 `unit` 参数）。
+如果 unit 参数为 Millisecond、Microsecond 或 Nanosecond，则返回 [DateTime64](../data-types/datetime64.md)，其刻度为 3、6 或 9（取决于 unit 参数）。
 
 **示例**
 
-没有时区的查询：
+不带时区的查询：
 
 ```sql
 SELECT now(), date_trunc('hour', now());
@@ -2364,7 +2389,7 @@ SELECT now(), date_trunc('hour', now());
 └─────────────────────┴───────────────────────────┘
 ```
 
-指定时区的查询：
+带指定时区的查询：
 
 ```sql
 SELECT now(), date_trunc('hour', now(), 'Asia/Istanbul');
@@ -2378,14 +2403,15 @@ SELECT now(), date_trunc('hour', now(), 'Asia/Istanbul');
 └─────────────────────┴────────────────────────────────────────────┘
 ```
 
-**另见**
+**参见**
 
 - [toStartOfInterval](#tostartofinterval)
+
 ## date\_add {#date_add}
 
-将时间间隔或日期间隔添加到提供的日期或带时间的日期。
+将时间间隔或日期间隔加到提供的日期或带时间的日期上。
 
-如果添加后的值超出数据类型的范围，则结果未定义。
+如果加法结果超出数据类型的范围，则结果未定义。
 
 **语法**
 
@@ -2399,11 +2425,11 @@ date_add(unit, value, date)
 date_add(date, INTERVAL value unit)
 ```
 
-别名: `dateAdd`, `DATE_ADD`。
+别名： `dateAdd`, `DATE_ADD`。
 
 **参数**
 
-- `unit` — 要添加的间隔类型。注意：这不是一个 [String](../data-types/string.md)，因此不能加引号。
+- `unit` — 要加的时间间隔类型。注意：这不是 [String](../data-types/string.md)，因此不能加引号。
     可能的值：
 
     - `second`
@@ -2415,12 +2441,12 @@ date_add(date, INTERVAL value unit)
     - `quarter`
     - `year`
 
-- `value` — 要添加的间隔值。 [Int](../data-types/int-uint.md).
-- `date` — 要向其添加 `value` 的日期或带时间的日期。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md).
+- `value` — 要加的间隔的值。 [Int](../data-types/int-uint.md)。
+- `date` — 要将 `value` 加到的日期或带时间的日期。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
 
 **返回值**
 
-通过将 `value` 以 `unit` 的形式添加到 `date` 得到的日期或带时间的日期。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
+通过将以 `unit` 表达的 `value` 加到 `date` 上获得的日期或带时间的日期。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -2448,16 +2474,15 @@ SELECT date_add(toDate('2018-01-01'), INTERVAL 3 YEAR);
 └───────────────────────────────────────────────┘
 ```
 
-
-
-**另见**
+**参见**
 
 - [addDate](#adddate)
+
 ## date\_sub {#date_sub}
 
 从提供的日期或带时间的日期中减去时间间隔或日期间隔。
 
-如果减法后的值超出数据类型的范围，则结果未定义。
+如果减法结果超出数据类型的范围，则结果未定义。
 
 **语法**
 
@@ -2471,11 +2496,11 @@ date_sub(unit, value, date)
 date_sub(date, INTERVAL value unit)
 ```
 
-别名: `dateSub`, `DATE_SUB`。
+别名： `dateSub`, `DATE_SUB`。
 
 **参数**
 
-- `unit` — 要减去的间隔类型。注意：这不是一个 [String](../data-types/string.md)，因此不能加引号。
+- `unit` — 要减去的时间间隔类型。注意：这不是 [String](../data-types/string.md)，因此不能加引号。
 
     可能的值：
 
@@ -2488,12 +2513,12 @@ date_sub(date, INTERVAL value unit)
     - `quarter`
     - `year`
 
-- `value` — 要减去的间隔值。 [Int](../data-types/int-uint.md).
-- `date` — 要从中减去 `value` 的日期或带时间的日期。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md).
+- `value` — 要减去的间隔的值。 [Int](../data-types/int-uint.md)。
+- `date` — 要从中减去 `value` 的日期或带时间的日期。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
 
 **返回值**
 
-通过将 `value` 以 `unit` 的形式从 `date` 中减去得到的日期或带时间的日期。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
+通过将以 `unit` 表达的 `value` 从 `date` 中减去获得的日期或带时间的日期。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -2521,15 +2546,15 @@ SELECT date_sub(toDate('2018-01-01'), INTERVAL 3 YEAR);
 └────────────────────────────────────────────────┘
 ```
 
-
-**另见**
+**参见**
 
 - [subDate](#subdate)
+
 ## timestamp\_add {#timestamp_add}
 
-将指定的时间值添加到提供的日期或日期时间值中。
+将指定的时间值与提供的日期或日期时间值相加。
 
-如果添加后的值超出数据类型的范围，则结果未定义。
+如果加法结果超出数据类型的范围，则结果未定义。
 
 **语法**
 
@@ -2537,13 +2562,13 @@ SELECT date_sub(toDate('2018-01-01'), INTERVAL 3 YEAR);
 timestamp_add(date, INTERVAL value unit)
 ```
 
-别名: `timeStampAdd`, `TIMESTAMP_ADD`。
+别名： `timeStampAdd`, `TIMESTAMP_ADD`。
 
 **参数**
 
-- `date` — 日期或带时间的日期。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md).
-- `value` — 要添加的间隔值。 [Int](../data-types/int-uint.md).
-- `unit` — 要添加的间隔类型。 [String](../data-types/string.md).
+- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
+- `value` — 要加的间隔的值。 [Int](../data-types/int-uint.md)。
+- `unit` — 要加的时间间隔类型。 [String](../data-types/string.md)。
     可能的值：
 
     - `second`
@@ -2557,7 +2582,7 @@ timestamp_add(date, INTERVAL value unit)
 
 **返回值**
 
-带有指定的 `value` 以 `unit` 形式添加到 `date` 的日期或带时间的日期。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
+在指定的 `unit` 中运算后，日期或带时间的日期。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -2572,11 +2597,12 @@ select timestamp_add(toDate('2018-01-01'), INTERVAL 3 MONTH);
 │                                     2018-04-01 │
 └────────────────────────────────────────────────┘
 ```
+
 ## timestamp\_sub {#timestamp_sub}
 
 从提供的日期或带时间的日期中减去时间间隔。
 
-如果减法后的值超出数据类型的范围，则结果未定义。
+如果减法结果超出数据类型的范围，则结果未定义。
 
 **语法**
 
@@ -2584,11 +2610,11 @@ select timestamp_add(toDate('2018-01-01'), INTERVAL 3 MONTH);
 timestamp_sub(unit, value, date)
 ```
 
-别名: `timeStampSub`, `TIMESTAMP_SUB`。
+别名： `timeStampSub`, `TIMESTAMP_SUB`。
 
 **参数**
 
-- `unit` — 要减去的间隔类型。 [String](../data-types/string.md).
+- `unit` — 要减去的时间间隔类型。 [String](../data-types/string.md)。
     可能的值：
 
     - `second`
@@ -2600,12 +2626,12 @@ timestamp_sub(unit, value, date)
     - `quarter`
     - `year`
 
-- `value` — 要减去的间隔值。 [Int](../data-types/int-uint.md).
-- `date` — 日期或带时间的日期。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md).
+- `value` — 要减去的间隔的值。 [Int](../data-types/int-uint.md)。
+- `date` — 日期或带时间的日期。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
 
 **返回值**
 
-通过将 `value` 以 `unit` 形式从 `date` 中减去得到的日期或带时间的日期。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
+通过将以 `unit` 表达的 `value` 从 `date` 中减去获得的日期或带时间的日期。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -2620,11 +2646,12 @@ select timestamp_sub(MONTH, 5, toDateTime('2018-12-18 01:02:03'));
 │                                          2018-07-18 01:02:03 │
 └──────────────────────────────────────────────────────────────┘
 ```
+
 ## addDate {#adddate}
 
-将时间间隔添加到提供的日期、带时间的日期或以字符串编码的日期/带时间的日期中。
+将时间间隔加到提供的日期、日期时间或字符串编码的日期/日期时间上。
 
-如果添加后的值超出数据类型的范围，则结果未定义。
+如果加法结果超出数据类型的范围，则结果未定义。
 
 **语法**
 
@@ -2634,12 +2661,12 @@ addDate(date, interval)
 
 **参数**
 
-- `date` — 要向其添加 `interval` 的日期或带时间的日期。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md), [DateTime64](../data-types/datetime64.md)，或 [String](../data-types/string.md)
-- `interval` — 要添加的间隔。 [Interval](../data-types/special-data-types/interval.md).
+- `date` — 要加上 `interval` 的日期或带时间的日期。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、[DateTime64](../data-types/datetime64.md) 或 [String](../data-types/string.md)
+- `interval` — 要加的间隔。 [Interval](../data-types/special-data-types/interval.md)。
 
 **返回值**
 
-通过将 `interval` 添加到 `date` 得到的日期或带时间的日期。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
+通过将 `interval` 加到 `date` 上获得的日期或带时间的日期。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -2655,16 +2682,17 @@ SELECT addDate(toDate('2018-01-01'), INTERVAL 3 YEAR);
 └──────────────────────────────────────────────────┘
 ```
 
-别名: `ADDDATE`
+别名： `ADDDATE`
 
-**另见**
+**参见**
 
 - [date_add](#date_add)
+
 ## subDate {#subdate}
 
-从提供的日期、带时间的日期或以字符串编码的日期/带时间的日期中减去时间间隔。
+从提供的日期、带时间的日期或字符串编码的日期/日期时间中减去时间间隔。
 
-如果减法后的值超出数据类型的范围，则结果未定义。
+如果减法结果超出数据类型的范围，则结果未定义。
 
 **语法**
 
@@ -2674,12 +2702,12 @@ subDate(date, interval)
 
 **参数**
 
-- `date` — 要从中减去 `interval` 的日期或带时间的日期。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md), [DateTime64](../data-types/datetime64.md)，或 [String](../data-types/string.md)
-- `interval` — 要减去的间隔。 [Interval](../data-types/special-data-types/interval.md).
+- `date` — 要从中减去 `interval` 的日期或带时间的日期。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md)、[DateTime64](../data-types/datetime64.md) 或 [String](../data-types/string.md)
+- `interval` — 要减去的间隔。 [Interval](../data-types/special-data-types/interval.md)。
 
 **返回值**
 
-通过将 `interval` 从 `date` 中减去得到的日期或带时间的日期。 [Date](../data-types/date.md), [Date32](../data-types/date32.md), [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
+通过将 `interval` 从 `date` 中减去获得的日期或带时间的日期。 [Date](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -2695,16 +2723,17 @@ SELECT subDate(toDate('2018-01-01'), INTERVAL 3 YEAR);
 └──────────────────────────────────────────────────┘
 ```
 
-别名: `SUBDATE`
+别名： `SUBDATE`
 
-**另见**
+**参见**
 
 - [date_sub](#date_sub)
+
 ## now {#now}
 
-返回查询分析时的当前日期和时间。该函数为常量表达式。
+返回查询解析时当前的日期和时间。此函数是一个常量表达式。
 
-别名: `current_timestamp`。
+别名： `current_timestamp`。
 
 **语法**
 
@@ -2714,15 +2743,15 @@ now([timezone])
 
 **参数**
 
-- `timezone` — 返回值的 [时区名称](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。 [String](../data-types/string.md).
+- `timezone` — 返回值的 [时区名称](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。 [String](../data-types/string.md)。
 
 **返回值**
 
-- 当前日期和时间。 [DateTime](../data-types/datetime.md).
+- 当前的日期和时间。 [DateTime](../data-types/datetime.md)。
 
 **示例**
 
-没有时区的查询：
+不带时区的查询：
 
 ```sql
 SELECT now();
@@ -2736,7 +2765,7 @@ SELECT now();
 └─────────────────────┘
 ```
 
-指定时区的查询：
+带指定时区的查询：
 
 ```sql
 SELECT now('Asia/Istanbul');
@@ -2749,9 +2778,10 @@ SELECT now('Asia/Istanbul');
 │  2020-10-17 10:42:23 │
 └──────────────────────┘
 ```
+
 ## now64 {#now64}
 
-返回查询分析时的当前日期和时间，精度为子秒。该函数为常量表达式。
+返回查询解析时当前的日期和时间，带有子秒精度。此函数是一个常量表达式。
 
 **语法**
 
@@ -2761,12 +2791,12 @@ now64([scale], [timezone])
 
 **参数**
 
-- `scale` - 时钟刻度（精度）：10<sup>-precision</sup> 秒。有效范围：[ 0 : 9 ]。通常使用 - 3（默认）（毫秒），6（微秒），9（纳秒）。
-- `timezone` — 返回值的 [时区名称](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。 [String](../data-types/string.md).
+- `scale` - 时间戳精度: 10<sup>-precision</sup> 秒。有效范围：[ 0 : 9 ]。通常使用 - 3（默认）（毫秒）、6（微秒）、9（纳秒）。
+- `timezone` — 返回值的 [时区名称](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。 [String](../data-types/string.md)。
 
 **返回值**
 
-- 当前日期和时间，精度为子秒。 [DateTime64](../data-types/datetime64.md).
+- 当前日期和时间，带有子秒的精度。 [DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -2781,11 +2811,12 @@ SELECT now64(), now64(9, 'Asia/Istanbul');
 │ 2022-08-21 19:34:26.196 │ 2022-08-21 22:34:26.196542766 │
 └─────────────────────────┴───────────────────────────────┘
 ```
+
 ## nowInBlock {#nowInBlock}
 
-返回每个数据块处理时的当前日期和时间。与 [now](#now) 函数不同，它不是常量表达式，因此对于长时间运行的查询，不同的块返回的值会不同。
+返回在每个数据块处理时的当前日期和时间。与函数 [now](#now) 不同，它不是常量表达式，对于长时间运行的查询，不同的块返回的值可能不同。
 
-该函数适用于在长时间运行的 INSERT SELECT 查询中生成当前时间。
+在长时间运行的 INSERT SELECT 查询中生成当前时间时使用此函数是有意义的。
 
 **语法**
 
@@ -2795,11 +2826,11 @@ nowInBlock([timezone])
 
 **参数**
 
-- `timezone` — 返回值的 [时区名称](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。 [String](../data-types/string.md).
+- `timezone` — 返回值的 [时区名称](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。 [String](../data-types/string.md)。
 
 **返回值**
 
-- 每个数据块处理时的当前日期和时间。 [DateTime](../data-types/datetime.md).
+- 在每个数据块处理时的当前日期和时间。 [DateTime](../data-types/datetime.md)。
 
 **示例**
 
@@ -2822,9 +2853,10 @@ FORMAT PrettyCompactMonoBlock
 │ 2022-08-21 19:41:19 │ 2022-08-21 19:41:21 │        0 │
 └─────────────────────┴─────────────────────┴──────────┘
 ```
+
 ## today {#today}
 
-返回查询分析时的当前日期。它与 'toDate(now())' 相同，并且具有别名: `curdate`, `current_date`。
+返回查询解析时的当前日期。它与 'toDate(now())' 相同，并具有别名： `curdate`, `current_date`。
 
 **语法**
 
@@ -2838,7 +2870,7 @@ today()
 
 **返回值**
 
-- 当前日期。 [DateTime](../data-types/datetime.md).
+- 当前日期。 [DateTime](../data-types/datetime.md)。
 
 **示例**
 
@@ -2859,14 +2891,15 @@ SELECT today() AS today, curdate() AS curdate, current_date() AS current_date FO
 │ 2024-03-03 │ 2024-03-03 │   2024-03-03 │
 └────────────┴────────────┴──────────────┘
 ```
+
 ## yesterday {#yesterday}
 
-接受零个参数并在查询分析时返回昨天的日期。
+接受零个参数并返回查询解析时的昨天的日期。
 与 'today() - 1' 相同。
 
 ## timeSlot {#timeslot}
 
-将时间舍入到半小时长度区间的开始。
+将时间四舍五入到半小时长度区间的开始。
 
 **语法**
 
@@ -2876,16 +2909,16 @@ timeSlot(time[, time_zone])
 
 **参数**
 
-- `time` — 要舍入到半小时长度区间开始的时间。 [DateTime](../data-types/datetime.md)/[Date32](../data-types/date32.md)/[DateTime64](../data-types/datetime64.md)。
-- `time_zone` — 表示时区的字符串类型常量或表达式。 [String](../data-types/string.md)。
+- `time` — 要四舍五入到半小时长度区间开始的时间。 [DateTime](../data-types/datetime.md)/[Date32](../data-types/date32.md)/[DateTime64](../data-types/datetime64.md)。
+- `time_zone` — 表示时区的字符串类型常量值或表达式。 [String](../data-types/string.md)。
 
 :::note
-虽然此函数可以接受类型为 `Date32` 和 `DateTime64` 的扩展类型作为参数，但如果传入的时间超出了正常范围（1970年到2149年为 `Date` / 2106年为 `DateTime`），将会产生错误的结果。
+尽管此函数可以接受扩展类型 `Date32` 和 `DateTime64` 的值作为参数，但传递超出正常范围的时间（对于 `Date` 的年限为 1970 到 2149 / 对于 `DateTime` 为 2106）将会产生错误的结果。
 :::
 
 **返回类型**
 
-- 返回舍入到半小时长度区间开始的时间。 [DateTime](../data-types/datetime.md)。
+- 返回四舍五入到半小时长度区间开始的时间。 [DateTime](../data-types/datetime.md)。
 
 **示例**
 
@@ -2904,9 +2937,9 @@ SELECT timeSlot(toDateTime('2000-01-02 03:04:05', 'UTC'));
 ```
 ## toYYYYMM {#toyyyymm}
 
-将带有时间的日期转换为包含年份和月份数字的 UInt32 数字（YYYY * 100 + MM）。接受第二个可选的时区参数。如果提供，此时区必须是字符串常量。
+将日期或带时间的日期转换为一个包含年份和月份数字的 UInt32 数字（YYYY * 100 + MM）。接受第二个可选的时区参数。如果提供，那么时区必须是一个字符串常量。
 
-该函数是函数 `YYYYMMDDToDate()` 的反向操作。
+此函数是 `YYYYMMDDToDate()` 函数的反向操作。
 
 **示例**
 
@@ -2924,7 +2957,7 @@ SELECT
 ```
 ## toYYYYMMDD {#toyyyymmdd}
 
-将带有时间的日期转换为包含年份、月份和日期数字的 UInt32 数字（YYYY * 10000 + MM * 100 + DD）。接受第二个可选的时区参数。如果提供，此时区必须是字符串常量。
+将日期或带时间的日期转换为一个包含年份和月份数字的 UInt32 数字（YYYY * 10000 + MM * 100 + DD）。接受第二个可选的时区参数。如果提供，那么时区必须是一个字符串常量。
 
 **示例**
 
@@ -2941,7 +2974,7 @@ SELECT toYYYYMMDD(now(), 'US/Eastern')
 ```
 ## toYYYYMMDDhhmmss {#toyyyymmddhhmmss}
 
-将带有时间的日期转换为包含年份、月份、日期、小时、分钟和秒数字的 UInt64 数字（YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss）。接受第二个可选的时区参数。如果提供，此时区必须是字符串常量。
+将带时间的日期转换为一个 UInt64 数字，包含年份和月份数字（YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss）。接受第二个可选的时区参数。如果提供，那么时区必须是一个字符串常量。
 
 **示例**
 
@@ -2958,11 +2991,11 @@ SELECT toYYYYMMDDhhmmss(now(), 'US/Eastern')
 ```
 ## YYYYMMDDToDate {#yyyymmddtodate}
 
-将包含年份、月份和日期数字的数字转换为 [Date](../data-types/date.md)。
+将包含年份、月份和日期的数字转换为一个 [Date](../data-types/date.md)。
 
-该函数是函数 `toYYYYMMDD()` 的反向操作。
+此函数是 `toYYYYMMDD()` 函数的反向操作。
 
-如果输入不编码有效的 Date 值，则输出为未定义。
+如果输入未编码有效的 Date 值，输出将是未定义的。
 
 **语法**
 
@@ -2972,11 +3005,11 @@ YYYYMMDDToDate(yyyymmdd);
 
 **参数**
 
-- `yyyymmdd` - 表示年份、月份和日期的数字。 [Integer](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
+- `yyyymmdd` - 一个表示年份、月份和日期的数字。 [Integer](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
 
 **返回值**
 
-- 由参数创建的日期。 [Date](../data-types/date.md)。
+- 从参数创建的日期。 [Date](../data-types/date.md)。
 
 **示例**
 
@@ -2993,14 +3026,14 @@ SELECT YYYYMMDDToDate(20230911);
 ```
 ## YYYYMMDDToDate32 {#yyyymmddtodate32}
 
-类似于函数 `YYYYMMDDToDate()`，但生成 [Date32](../data-types/date32.md)。
+与 `YYYYMMDDToDate()` 函数类似，但生成一个 [Date32](../data-types/date32.md)。
 ## YYYYMMDDhhmmssToDateTime {#yyyymmddhhmmsstodatetime}
 
-将包含年份、月份、日期、小时、分钟和秒数字的数字转换为 [DateTime](../data-types/datetime.md)。
+将数字中包含的年份、月份、日期、小时、分钟和秒转换为一个 [DateTime](../data-types/datetime.md)。
 
-如果输入不编码有效的 DateTime 值，则输出为未定义。
+如果输入未编码有效的 DateTime 值，输出将是未定义的。
 
-该函数是函数 `toYYYYMMDDhhmmss()` 的反向操作。
+此函数是 `toYYYYMMDDhhmmss()` 函数的反向操作。
 
 **语法**
 
@@ -3010,12 +3043,12 @@ YYYYMMDDhhmmssToDateTime(yyyymmddhhmmss[, timezone]);
 
 **参数**
 
-- `yyyymmddhhmmss` - 表示年份、月份、日期的数字。 [Integer](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
+- `yyyymmddhhmmss` - 一个表示年份、月份和日期的数字。 [Integer](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
 - `timezone` - 返回值的 [Timezone](../../operations/server-configuration-parameters/settings.md#timezone)（可选）。
 
 **返回值**
 
-- 由参数创建的带有时间的日期。 [DateTime](../data-types/datetime.md)。
+- 从参数创建的带时间的日期。 [DateTime](../data-types/datetime.md)。
 
 **示例**
 
@@ -3032,12 +3065,12 @@ SELECT YYYYMMDDToDateTime(20230911131415);
 ```
 ## YYYYMMDDhhmmssToDateTime64 {#yyyymmddhhmmsstodatetime64}
 
-类似于函数 `YYYYMMDDhhmmssToDate()`，但生成 [DateTime64](../data-types/datetime64.md)。
+与 `YYYYMMDDhhmmssToDate()` 函数类似，但生成一个 [DateTime64](../data-types/datetime64.md)。
 
-在 `timezone` 参数后接受一个额外的可选的 `precision` 参数。
+在 `timezone` 参数后接受一个额外的可选 `precision` 参数。
 ## changeYear {#changeyear}
 
-更改日期或日期时间的年份成分。
+更改日期或带时间日期的年份组件。
 
 **语法**
 ```sql
@@ -3069,7 +3102,7 @@ SELECT changeYear(toDate('1999-01-01'), 2000), changeYear(toDateTime64('1999-01-
 ```
 ## changeMonth {#changemonth}
 
-更改日期或日期时间的月份成分。
+更改日期或带时间日期的月份组件。
 
 **语法**
 
@@ -3101,7 +3134,7 @@ SELECT changeMonth(toDate('1999-01-01'), 2), changeMonth(toDateTime64('1999-01-0
 ```
 ## changeDay {#changeday}
 
-更改日期或日期时间的日期成分。
+更改日期或带时间日期的日期组件。
 
 **语法**
 
@@ -3133,7 +3166,7 @@ SELECT changeDay(toDate('1999-01-01'), 5), changeDay(toDateTime64('1999-01-01 00
 ```
 ## changeHour {#changehour}
 
-更改日期或日期时间的小时成分。
+更改日期或带时间日期的小时组件。
 
 **语法**
 
@@ -3165,7 +3198,7 @@ SELECT changeHour(toDate('1999-01-01'), 14), changeHour(toDateTime64('1999-01-01
 ```
 ## changeMinute {#changeminute}
 
-更改日期或日期时间的分钟成分。
+更改日期或带时间日期的分钟组件。
 
 **语法**
 
@@ -3197,7 +3230,7 @@ SELECT changeMinute(toDate('1999-01-01'), 15), changeMinute(toDateTime64('1999-0
 ```
 ## changeSecond {#changesecond}
 
-更改日期或日期时间的秒成分。
+更改日期或带时间日期的秒组件。
 
 **语法**
 
@@ -3239,12 +3272,12 @@ addYears(date, num)
 
 **参数**
 
-- `date`: 要向其添加指定年份数量的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date`: 要增加指定年份的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要添加的年份数量。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
 
-- 返回 `date` 加 `num` 年。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- 返回 `date` 加上 `num` 年。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -3276,12 +3309,12 @@ addQuarters(date, num)
 
 **参数**
 
-- `date`: 要向其添加指定季度数量的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date`: 要增加指定季度的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要添加的季度数量。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
 
-- 返回 `date` 加 `num` 季度。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- 返回 `date` 加上 `num` 季度。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -3313,12 +3346,12 @@ addMonths(date, num)
 
 **参数**
 
-- `date`: 要向其添加指定月份数量的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date`: 要增加指定月份的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要添加的月份数量。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
 
-- 返回 `date` 加 `num` 个月。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- 返回 `date` 加上 `num` 月份。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -3350,12 +3383,12 @@ addWeeks(date, num)
 
 **参数**
 
-- `date`: 要向其添加指定周数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date`: 要增加指定周数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要添加的周数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
 
-- 返回 `date` 加 `num` 周。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- 返回 `date` 加上 `num` 周。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -3387,12 +3420,12 @@ addDays(date, num)
 
 **参数**
 
-- `date`: 要向其添加指定天数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date`: 要增加指定天数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要添加的天数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
 
-- 返回 `date` 加 `num` 天。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- 返回 `date` 加上 `num` 天。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -3424,12 +3457,12 @@ addHours(date, num)
 
 **参数**
 
-- `date`: 要向其添加指定小时数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date`: 要增加指定小时数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要添加的小时数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
 o
-- 返回 `date` 加 `num` 小时。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- 返回 `date` 加上 `num` 小时。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -3461,12 +3494,12 @@ addMinutes(date, num)
 
 **参数**
 
-- `date`: 要向其添加指定分钟数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date`: 要增加指定分钟数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要添加的分钟数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
 
-- 返回 `date` 加 `num` 分钟。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- 返回 `date` 加上 `num` 分钟。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -3498,12 +3531,12 @@ addSeconds(date, num)
 
 **参数**
 
-- `date`: 要向其添加指定秒数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date`: 要增加指定秒数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要添加的秒数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
 
-- 返回 `date` 加 `num` 秒。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- 返回 `date` 加上 `num` 秒。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -3535,12 +3568,12 @@ addMilliseconds(date_time, num)
 
 **参数**
 
-- `date_time`: 带时间的日期，添加指定数量的毫秒。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date_time`: 带时间的日期，增加指定数量的毫秒。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要添加的毫秒数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
 
-- 返回 `date_time` 加 `num` 毫秒。 [DateTime64](../data-types/datetime64.md)。
+- 返回 `date_time` 加上 `num` 毫秒。 [DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -3570,12 +3603,12 @@ addMicroseconds(date_time, num)
 
 **参数**
 
-- `date_time`: 带时间的日期，添加指定数量的微秒。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date_time`: 带时间的日期，增加指定数量的微秒。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要添加的微秒数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
 
-- 返回 `date_time` 加 `num` 微秒。 [DateTime64](../data-types/datetime64.md)。
+- 返回 `date_time` 加上 `num` 微秒。 [DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -3605,12 +3638,12 @@ addNanoseconds(date_time, num)
 
 **参数**
 
-- `date_time`: 带时间的日期，添加指定数量的纳秒。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date_time`: 带时间的日期，增加指定数量的纳秒。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要添加的纳秒数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
 
-- 返回 `date_time` 加 `num` 纳秒。 [DateTime64](../data-types/datetime64.md)。
+- 返回 `date_time` 加上 `num` 纳秒。 [DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -3630,7 +3663,7 @@ SELECT
 ```
 ## addInterval {#addinterval}
 
-向另一个间隔或间隔元组添加间隔。
+将一个区间添加到另一个区间或区间的元组中。
 
 **语法**
 
@@ -3640,15 +3673,15 @@ addInterval(interval_1, interval_2)
 
 **参数**
 
-- `interval_1`: 第一个间隔或间隔元组。 [interval](../data-types/special-data-types/interval.md)、 [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
-- `interval_2`: 要添加的第二个间隔。 [interval](../data-types/special-data-types/interval.md)。
+- `interval_1`: 第一个区间或区间的元组。 [interval](../data-types/special-data-types/interval.md)、[tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
+- `interval_2`: 要添加的第二个区间。 [interval](../data-types/special-data-types/interval.md)。
 
 **返回值**
 
-- 返回一个间隔元组。 [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
+- 返回一个区间的元组。 [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
 
 :::note
-相同类型的间隔将合并为一个间隔。例如，如果传入 `toIntervalDay(1)` 和 `toIntervalDay(2)`，则结果将是 `(3)` 而不是 `(1,1)`。
+同类型的区间将被组合成单个区间。例如，如果传递了 `toIntervalDay(1)` 和 `toIntervalDay(2)`，则结果将是 `(3)` 而不是 `(1,1)`。
 :::
 
 **示例**
@@ -3676,7 +3709,7 @@ SELECT addInterval(INTERVAL 2 DAY, INTERVAL 1 DAY);
 ```
 ## addTupleOfIntervals {#addtupleofintervals}
 
-连续向日期或日期时间添加间隔元组。
+将一个区间的元组连续地添加到 Date 或 DateTime。
 
 **语法**
 
@@ -3686,12 +3719,12 @@ addTupleOfIntervals(interval_1, interval_2)
 
 **参数**
 
-- `date`: 第一个间隔或间隔元组。 [date](../data-types/date.md)/[date32](../data-types/date32.md)/[datetime](../data-types/datetime.md)/[datetime64](../data-types/datetime64.md)。
-- `intervals`: 要添加到 `date` 的间隔元组。 [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
+- `date`: 第一个区间或区间的元组。 [date](../data-types/date.md)/[date32](../data-types/date32.md)/[datetime](../data-types/datetime.md)/[datetime64](../data-types/datetime64.md)。
+- `intervals`: 要添加到 `date` 的区间元组。 [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
 
 **返回值**
 
-- 返回增加了 `intervals` 的 `date`。 [date](../data-types/date.md)/[date32](../data-types/date32.md)/[datetime](../data-types/datetime.md)/[datetime64](../data-types/datetime64.md)。
+- 返回加上 `intervals` 的 `date`。 [date](../data-types/date.md)/[date32](../data-types/date32.md)/[datetime](../data-types/datetime.md)/[datetime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -3721,7 +3754,7 @@ subtractYears(date, num)
 
 **参数**
 
-- `date`: 要减去指定年份数量的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date`: 从中减去指定年份的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要减去的年份数量。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
@@ -3758,7 +3791,7 @@ subtractQuarters(date, num)
 
 **参数**
 
-- `date`: 要减去指定季度数量的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date`: 从中减去指定季度的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要减去的季度数量。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
@@ -3795,12 +3828,12 @@ subtractMonths(date, num)
 
 **参数**
 
-- `date`: 要减去指定月份数量的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date`: 从中减去指定月份的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要减去的月份数量。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
 
-- 返回 `date` 减去 `num` 个月。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- 返回 `date` 减去 `num` 月份。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -3832,7 +3865,7 @@ subtractWeeks(date, num)
 
 **参数**
 
-- `date`: 要减去指定周数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date`: 从中减去指定周数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要减去的周数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
@@ -3869,7 +3902,7 @@ subtractDays(date, num)
 
 **参数**
 
-- `date`: 要减去指定天数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date`: 从中减去指定天数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要减去的天数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
@@ -3906,12 +3939,12 @@ subtractHours(date, num)
 
 **参数**
 
-- `date`: 要减去指定小时数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[Datetime](../data-types/datetime.md)/[Datetime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date`: 从中减去指定小时数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[Datetime](../data-types/datetime.md)/[Datetime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要减去的小时数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
 
-- 返回 `date` 减去 `num` 小时。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[Datetime](../data-types/datetime.md)/[Datetime64](../data-types/datetime64.md)。
+- 返回 `date` 减去 `num` 小时。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[Datetime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
 
 **示例**
 
@@ -3945,7 +3978,7 @@ subtractMinutes(date, num)
 
 **参数**
 
-- `date`: 要减去指定分钟数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date`: 从中减去指定分钟数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要减去的分钟数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
@@ -3984,7 +4017,7 @@ subtractSeconds(date, num)
 
 **参数**
 
-- `date`: 要减去指定秒数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date`: 从中减去指定秒数的日期/带时间的日期。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要减去的秒数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
@@ -4023,7 +4056,7 @@ subtractMilliseconds(date_time, num)
 
 **参数**
 
-- `date_time`: 带时间的日期，减去指定数量的毫秒。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date_time`: 带时间的日期，从中减去指定数量的毫秒。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要减去的毫秒数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
@@ -4060,7 +4093,7 @@ subtractMicroseconds(date_time, num)
 
 **参数**
 
-- `date_time`: 带时间的日期，减去指定数量的微秒。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date_time`: 带时间的日期，从中减去指定数量的微秒。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要减去的微秒数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
@@ -4097,7 +4130,7 @@ subtractNanoseconds(date_time, num)
 
 **参数**
 
-- `date_time`: 带时间的日期，减去指定数量的纳秒。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)， [String](../data-types/string.md)。
+- `date_time`: 带时间的日期，从中减去指定数量的纳秒。 [DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)、[String](../data-types/string.md)。
 - `num`: 要减去的纳秒数。 [(U)Int*](../data-types/int-uint.md)、[Float*](../data-types/float.md)。
 
 **返回值**
@@ -4124,7 +4157,7 @@ SELECT
 ```
 ## subtractInterval {#subtractinterval}
 
-将否定间隔加到另一个间隔或间隔元组上。
+将负的区间添加到另一个区间或区间的元组中。
 
 **语法**
 
@@ -4134,15 +4167,15 @@ subtractInterval(interval_1, interval_2)
 
 **参数**
 
-- `interval_1`: 第一个间隔或间隔的元组。 [interval](../data-types/special-data-types/interval.md)、 [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
-- `interval_2`: 要否定的第二个间隔。 [interval](../data-types/special-data-types/interval.md)。
+- `interval_1`: 第一个区间或区间的元组。 [interval](../data-types/special-data-types/interval.md)、[tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
+- `interval_2`: 要取反的第二个区间。 [interval](../data-types/special-data-types/interval.md)。
 
 **返回值**
 
-- 返回一个间隔元组。 [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
+- 返回一个区间的元组。 [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
 
 :::note
-相同类型的间隔将合并为一个间隔。例如，如果传入 `toIntervalDay(2)` 和 `toIntervalDay(1)`，则结果将是 `(1)` 而不是 `(2,1)`
+同类型的区间将被组合成单个区间。例如，如果传递了 `toIntervalDay(2)` 和 `toIntervalDay(1)`，则结果将是 `(1)` 而不是 `(2,1)`
 :::
 
 **示例**
@@ -4170,7 +4203,7 @@ SELECT subtractInterval(INTERVAL 2 DAY, INTERVAL 1 DAY);
 ```
 ## subtractTupleOfIntervals {#subtracttupleofintervals}
 
-连续从日期或日期时间中减去间隔元组。
+连续地从 Date 或 DateTime 中减去区间的元组。
 
 **语法**
 
@@ -4180,8 +4213,8 @@ subtractTupleOfIntervals(interval_1, interval_2)
 
 **参数**
 
-- `date`: 第一个间隔或间隔的元组。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
-- `intervals`: 要从 `date` 中减去的间隔元组。 [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
+- `date`: 第一个区间或区间的元组。 [Date](../data-types/date.md)/[Date32](../data-types/date32.md)/[DateTime](../data-types/datetime.md)/[DateTime64](../data-types/datetime64.md)。
+- `intervals`: 要从 `date` 中减去的区间元组。 [tuple](../data-types/tuple.md)([interval](../data-types/special-data-types/interval.md))。
 
 **返回值**
 
@@ -4204,10 +4237,10 @@ WITH toDate('2018-01-01') AS date SELECT subtractTupleOfIntervals(date, (INTERVA
 ```
 ## timeSlots {#timeslots}
 
-对于从 'StartTime' 开始并持续 'Duration' 秒的时间间隔，它返回一个时间点的数组，这些点来自这个间隔并向下舍入到 'Size' 秒。 'Size' 是一个可选参数，默认设置为 1800（30分钟）。
-这是必要的，例如，在查找相应会话中的页面浏览量时。
-接受 DateTime 和 DateTime64 作为 'StartTime' 参数。对于 DateTime， 'Duration' 和 'Size' 参数必须是 `UInt32`。对于 'DateTime64'，它们必须是 `Decimal64`。
-返回一个 DateTime/DateTime64 数组（返回类型与 'StartTime' 的类型相匹配）。对于 DateTime64，返回值的比例可以与 'StartTime' 的比例不同 —— 所有给定参数中取最高比例。
+对于从 'StartTime' 开始并持续 'Duration' 秒的时间间隔，它返回一个时间点的数组，由此区间的点向下舍入到 'Size' 秒。'Size' 是一个可选参数，默认为 1800（30 分钟）。
+当搜索相应会话中的页面浏览量时，此功能非常必要。
+接受 DateTime 和 DateTime64 作为 'StartTime' 参数。对于 DateTime，'Duration' 和 'Size' 参数必须为 `UInt32`。对于 'DateTime64'，它们必须为 `Decimal64`。
+返回一组 DateTime/DateTime64（返回类型与 'StartTime' 的类型匹配）。对于 DateTime64，返回值的精度可能与 'StartTime' 的精度不同——所有给定参数中最高的精度将被采用。
 
 **语法**
 
@@ -4236,14 +4269,13 @@ SELECT timeSlots(toDateTime64('1980-12-12 21:01:02.1234', 4, 'UTC'), toDecimal64
 │ ['1980-12-12 20:56:13.0000','1980-12-12 21:01:12.0000','1980-12-12 21:06:11.0000']                        │
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 ## formatDateTime {#formatdatetime}
 
-根据给定的格式字符串格式化时间。格式是一个常量表达式，因此你不能为一个结果列使用多个格式。
+根据给定的格式字符串格式化时间。格式是常量表达式，因此无法为单个结果列设置多个格式。
 
-formatDateTime 使用 MySQL 日期时间格式样式，具体请参考 https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format。
+formatDateTime 使用 MySQL 日期时间格式样式，参见 https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format。
 
-此函数的反操作是 [parseDateTime](/sql-reference/functions/type-conversion-functions#parsedatetime)。
+该函数的相反操作是 [parseDateTime](/sql-reference/functions/type-conversion-functions#parsedatetime)。
 
 别名：`DATE_FORMAT`。
 
@@ -4259,57 +4291,57 @@ formatDateTime(Time, Format[, Timezone])
 
 **替换字段**
 
-使用替换字段，你可以定义生成字符串的模式。“示例”列显示 `2018-01-02 22:33:44` 的格式化结果。
+使用替换字段，您可以为结果字符串定义模式。“示例”列显示 `2018-01-02 22:33:44` 的格式化结果。
 
-| 占位符 | 描述                                                                                                                                              | 示例      |
-|-------|-------------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| %a    | 缩写的星期几名称 (周一-周日)                                                                                                                       | Mon     |
-| %b    | 缩写的月份名称 (一月-十二月)                                                                                                                      | Jan     |
-| %c    | 作为整数的月份 (01-12)，参见下面的“注释 4”                                                                                                            | 01      |
-| %C    | 年除以 100 并截断为整数 (00-99)                                                                                                                    | 20      |
-| %d    | 零填充的月份天数 (01-31)                                                                                                                            | 02      |
-| %D    | 短形式 MM/DD/YY 日期，相当于 %m/%d/%y                                                                                                            | 01/02/18|
-| %e    | 空格填充的月份天数 ( 1-31)，参见下面的“注释 5”                                                                                                         | &nbsp; 2|
-| %f    | 毫秒，参见下面的“注释 1”和“注释 2”                                                                                                                 | 123456  |
-| %F    | 短形式 YYYY-MM-DD 日期，相当于 %Y-%m-%d                                                                                                          | 2018-01-02 |
-| %g    | 两位数年份格式，符合 ISO 8601，从四位数表示法中缩写                                                                                                    | 18      |
-| %G    | ISO 周编号的四位数年份格式，从 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Week_dates) 标准定义的基于周的年份计算，通常与 %V 一起使用      | 2018    |
-| %h    | 12 小时格式的小时数 (01-12)                                                                                                                        | 09      |
-| %H    | 24 小时格式的小时数 (00-23)                                                                                                                        | 22      |
-| %i    | 分钟 (00-59)                                                                                                                                        | 33      |
-| %I    | 12 小时格式的小时数 (01-12)                                                                                                                        | 10      |
-| %j    | 一年的天数 (001-366)                                                                                                                                | 002     |
-| %k    | 24 小时格式的小时数 (00-23)，参见下面的“注释 4”                                                                                                      | 14      |
-| %l    | 12 小时格式的小时数 (01-12)，参见下面的“注释 4”                                                                                                      | 09      |
-| %m    | 作为整数的月份 (01-12)                                                                                                                              | 01      |
-| %M    | 完整的月份名称 (一月-十二月)，参见下面的“注释 3”                                                                                                      | January  |
-| %n    | 换行符 ('')                                                                                                                                           |         |
-| %p    | 上午或下午的表示                                                                                                                                      | PM      |
-| %Q    | 季度 (1-4)                                                                                                                                         | 1       |
-| %r    | 12 小时 HH:MM AM/PM 时间，相当于 %h:%i %p                                                                                                           | 10:30 PM|
-| %R    | 24 小时 HH:MM 时间，相当于 %H:%i                                                                                                                  | 22:33   |
-| %s    | 秒 (00-59)                                                                                                                                          | 44      |
-| %S    | 秒 (00-59)                                                                                                                                          | 44      |
-| %t    | 水平制表符字符 (')                                                                                                                                     |         |
-| %T    | ISO 8601 时间格式 (HH:MM:SS)，相当于 %H:%i:%S                                                                                                         | 22:33:44|
-| %u    | ISO 8601 周几的数字，周一为 1 (1-7)                                                                                                                    | 2       |
-| %V    | ISO 8601 周编号 (01-53)                                                                                                                             | 01      |
-| %w    | 星期几作为整数，周日为 0 (0-6)                                                                                                                        | 2       |
-| %W    | 完整的星期几名称 (周一-周日)                                                                                                                          | Monday   |
-| %y    | 年的最后两位数字 (00-99)                                                                                                                              | 18      |
-| %Y    | 年                                                                                                                                                 | 2018    |
-| %z    | UTC 的时间偏移量，以 +HHMM 或 -HHMM 的形式表示                                                                                                               | -0500   |
-| %%    | 百分号                                                                                                                                              | %       |
+| 占位符   | 描述                                                                                                                                                                                         | 示例     |
+|-------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|
+| %a    | 简写的星期几名称（周一-周日）                                                                                                                                                                   | Mon    |
+| %b    | 简写的月份名称（1月-12月）                                                                                                                                                                     | Jan    |
+| %c    | 作为整数（01-12）表示的月份，参见下面的“注释 4”                                                                                                                                              | 01     |
+| %C    | 年份除以 100 后向下取整（00-99）                                                                                                                                                               | 20     |
+| %d    | 零填充的月份中的日期（01-31）                                                                                                                                                                  | 02     |
+| %D    | 短格式 MM/DD/YY 日期，相当于 %m/%d/%y                                                                                                                                                         | 01/02/18|
+| %e    | 零填充的月份中的日期（ 1-31），参见下面的“注释 5”                                                                                                                                          | &nbsp; 2 |
+| %f    | 小数秒，参见下面的“注释 1”和“注释 2”                                                                                                                                                       | 123456 |
+| %F    | 短格式 YYYY-MM-DD 日期，相当于 %Y-%m-%d                                                                                                                                                        | 2018-01-02 |
+| %g    | 两位数字的年份格式，符合 ISO 8601，缩写自四位数字表示法                                                                                                                                        | 18     |
+| %G    | ISO 周号的四位数字年份格式，按照 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Week_dates) 标准计算的基于周的年份，通常仅与 %V 一起使用                                       | 2018   |
+| %h    | 12 小时制格式的小时（01-12）                                                                                                                                                                   | 09     |
+| %H    | 24 小时制格式的小时（00-23）                                                                                                                                                                   | 22     |
+| %i    | 分钟（00-59）                                                                                                                                                                               | 33     |
+| %I    | 12 小时制格式的小时（01-12）                                                                                                                                                                   | 10     |
+| %j    | 年中的天数（001-366）                                                                                                                                                                        | 002    |
+| %k    | 24 小时制格式的小时（00-23），参见下面的“注释 4”                                                                                                                                                | 14     |
+| %l    | 12 小时制格式的小时（01-12），参见下面的“注释 4”                                                                                                                                                | 09     |
+| %m    | 作为整数（01-12）表示的月份                                                                                                                                                                     | 01     |
+| %M    | 完整的月份名称（1月-12月），参见下面的“注释 3”                                                                                                                                           | January |
+| %n    | 换行符（'')                                                                                                                                                                                  |        |
+| %p    | AM 或 PM 的标志                                                                                                                                                                              | PM     |
+| %Q    | 季度（1-4）                                                                                                                                                                                 | 1      |
+| %r    | 12 小时制 HH:MM AM/PM 时间，相当于 %h:%i %p                                                                                                                                                   | 10:30 PM |
+| %R    | 24 小时制 HH:MM 时间，相当于 %H:%i                                                                                                                                                            | 22:33  |
+| %s    | 秒（00-59）                                                                                                                                                                                | 44     |
+| %S    | 秒（00-59）                                                                                                                                                                                | 44     |
+| %t    | 水平制表符（'）                                                                                                                                                                              |        |
+| %T    | ISO 8601 时间格式（HH:MM:SS），相当于 %H:%i:%S                                                                                                                                                    | 22:33:44 |
+| %u    | ISO 8601 星期几作为数字，周一为 1（1-7）                                                                                                                                                         | 2      |
+| %V    | ISO 8601 周号（01-53）                                                                                                                                                                       | 01     |
+| %w    | 星期几作为整数表示，周日为 0（0-6）                                                                                                                                                             | 2      |
+| %W    | 完整的星期几名称（周一-周日）                                                                                                                                                                   | Monday  |
+| %y    | 年，最后两位数字（00-99）                                                                                                                                                                       | 18     |
+| %Y    | 年                                                                                                                                                                                          | 2018   |
+| %z    | 相对于 UTC 的时间偏移，格式为 +HHMM 或 -HHMM                                                                                                                                                    | -0500  |
+| %%    | 一个 % 符号                                                                                                                                                                                   | %      |
 
-注释 1：在 ClickHouse 版本早于 v23.4 时，如果格式化值为没有小数秒的 Date、Date32 或 DateTime，或者为精度为 0 的 DateTime64，`%f` 将打印一个零 (0)。可以使用设置 `formatdatetime_f_prints_single_zero = 1` 恢复以前的行为。
+注释 1：在 ClickHouse v23.4 之前的版本中，如果格式化值为 Date，Date32 或 DateTime（没有小数秒）或 DateTime64 的精度为 0，则 `%f` 打印单个零（0）。可以通过设置 `formatdatetime_f_prints_single_zero = 1` 恢复以前的行为。
 
-注释 2：在 ClickHouse 版本早于 v25.1 时，`%f` 将根据 DateTime64 的缩放打印指定数量的数字，而不是固定的 6 位数字。可以使用设置 `formatdatetime_f_prints_scale_number_of_digits= 1` 恢复以前的行为。
+注释 2：在 ClickHouse v25.1 之前的版本中，`%f` 打印的位数由 DateTime64 的小数位数确定，而不是固定的 6 位数。可以通过设置 `formatdatetime_f_prints_scale_number_of_digits= 1` 恢复以前的行为。
 
-注释 3：在 ClickHouse 版本早于 v23.4 时，`%M` 打印分钟 (00-59)，而不是完整的月份名称 (一月-十二月)。可以使用设置 `formatdatetime_parsedatetime_m_is_month_name = 0` 恢复以前的行为。
+注释 3：在 ClickHouse v23.4 之前的版本中，`%M` 打印分钟（00-59）而不是完整的月份名称（1月-12月）。可以通过设置 `formatdatetime_parsedatetime_m_is_month_name = 0` 恢复以前的行为。
 
-注释 4：在 ClickHouse 版本早于 v23.11 时，函数 `parseDateTime` 要求格式化器 `%c` (月份) 和 `%l`/%`k` (小时) 有前导零，例如 `07`。在后来的版本中，可以省略前导零，例如 `7`。可以使用设置 `parsedatetime_parse_without_leading_zeros = 0` 恢复以前的行为。请注意，函数 `formatDateTime` 默认仍然会为 `%c` 和 `%l`/%`k` 打印前导零，以不打破现有用例。此行为可以通过设置 `formatdatetime_format_without_leading_zeros = 1` 更改。
+注释 4：在 ClickHouse v23.11 之前的版本中，`parseDateTime` 函数要求格式化器 `%c`（月份）和 `%l`/`%k`（小时）有前导零，例如 `07`。在后来的版本中，可以省略前导零，例如 `7`。可以通过设置 `parsedatetime_parse_without_leading_zeros = 0` 恢复以前的行为。请注意，函数 `formatDateTime` 默认仍然为 `%c` 和 `%l`/`%k` 打印前导零，以不破坏现有用例。可以通过设置 `formatdatetime_format_without_leading_zeros = 1` 更改此行为。
 
-注释 5：在 ClickHouse 版本早于 v25.5 时，函数 `parseDateTime` 对格式化器 `%e` 要求单个数字的天数填充空格，例如 ` 3`。在后来的版本中，可以选择填充空格，例如 `3` 和 ` 3` 均有效。要保留以前的行为，请设置 `parsedatetime_e_requires_space_padding = 1`。类似地，函数 `formatDateTime` 中的格式化器 `%e` 之前在单个印刷时无条件空格填充，而现在在不带前导空格的情况打印。要保留以前的行为，请设置 `formatdatetime_e_with_space_padding = 1`。
+注释 5：在 ClickHouse v25.5 之前的版本中，函数 `parseDateTime` 对于格式化器 `%e` 要求单数字天数进行空格填充，例如 ` 3`。在后来的版本中，空间填充是可选的，例如 `3` 和 ` 3` 都可以。要保留以前的行为，请设置 `parsedatetime_e_requires_space_padding = 1`。类似地，函数 `formatDateTime` 中的格式化器 `%e` 之前无条件地进行前导空格填充，而现在可以不带前导空格进行打印。要保留以前的行为，请设置 `formatdatetime_e_with_space_padding = 1`。
 
 **示例**
 
@@ -4337,7 +4369,7 @@ SELECT formatDateTime(toDateTime64('2010-01-04 12:34:56.123456', 7), '%f')
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-此外，`formatDateTime` 函数可以接受一个包含时区名称的第三个字符串参数。例如：`Asia/Istanbul`。在这种情况下，时间将根据指定的时区进行格式化。
+另外，`formatDateTime` 函数可以接受第三个字符串参数，包含时区的名称。例如：`Asia/Istanbul`。在这种情况下，时间将按照指定的时区格式化。
 
 **示例**
 
@@ -4367,41 +4399,42 @@ LIMIT 10
 **另请参见**
 
 - [formatDateTimeInJodaSyntax](#formatdatetimeinjodasyntax)
+
 ## formatDateTimeInJodaSyntax {#formatdatetimeinjodasyntax}
 
-与 formatDateTime 类似，不同之处在于它使用 Joda 风格格式化日期时间，而不是 MySQL 风格。请参考 https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html。
+与 formatDateTime 类似，除了以 Joda 风格格式化日期时间，而不是 MySQL 风格。参见 https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html。
 
-此函数的反操作是 [parseDateTimeInJodaSyntax](/sql-reference/functions/type-conversion-functions#parsedatetimeinjodasyntax)。
+该函数的相反操作是 [parseDateTimeInJodaSyntax](/sql-reference/functions/type-conversion-functions#parsedatetimeinjodasyntax)。
 
 **替换字段**
 
-使用替换字段，你可以定义生成字符串的模式。
+使用替换字段，您可以为结果字符串定义模式。
 
-| 占位符 | 描述                                      | 表示             | 示例                                |
-|-------|-----------------------------------------|----------------|-------------------------------------|
-| G     | 时代                                      | 文本            | AD                                  |
-| C     | 世纪 (>=0)                               | 数字            | 20                                  |
-| Y     | 时代的年份 (>=0)                         | 年               | 1996                                |
-| x     | 周年份 (尚不支持)                        | 年               | 1996                                |
-| w     | 周年份的周数 (尚不支持)                  | 数字            | 27                                  |
-| e     | 星期几                                     | 数字            | 2                                   |
-| E     | 星期几                                     | 文本            | Tuesday; Tue                        |
-| y     | 年                                         | 年               | 1996                                |
-| D     | 年中的天数                                 | 数字            | 189                                 |
-| M     | 年中的月份                                 | 月              | July; Jul; 07                       |
-| d     | 月中的天数                                 | 数字            | 10                                  |
-| a     | 半天的时间                                | 文本            | PM                                  |
-| K     | 半天中的小时 (0～11)                      | 数字            | 0                                   |
-| h     | 半天中的时钟小时 (1～12)                  | 数字            | 12                                  |
-| H     | 一天中的小时 (0～23)                      | 数字            | 0                                   |
-| k     | 一天中的时钟小时 (1～24)                  | 数字            | 24                                  |
-| m     | 小时中的分钟                               | 数字            | 30                                  |
-| s     | 分钟中的秒数                               | 数字            | 55                                  |
-| S     | 秒的分数                                 | 数字            | 978                                 |
-| z     | 时区                                       | 文本            | Eastern Standard Time; EST          |
-| Z     | 时区偏移                                   | 区域             | -0800; -0812                        |
-| '     | 文本的转义                                 | 分隔符          |                                     |
-| ''    | 单引号                                    | 字面量          | '                                   |
+| 占位符   | 描述                                  | 表现         | 示例                             |
+|-------|-------------------------------------|------------|----------------------------------|
+| G     | 时代                                  | 文本         | AD                               |
+| C     | 时代的世纪（>=0）                     | 数字         | 20                               |
+| Y     | 时代的年份（>=0）                     | 年           | 1996                             |
+| x     | 周年份（尚不支持）                    | 年           | 1996                             |
+| w     | 周年份的周（尚不支持）                 | 数字         | 27                               |
+| e     | 星期几                                | 数字         | 2                                |
+| E     | 星期几                                | 文本         | Tuesday; Tue                     |
+| y     | 年                                   | 年           | 1996                             |
+| D     | 年中的天数                            | 数字         | 189                              |
+| M     | 年中的月份                            | 月份         | July; Jul; 07                    |
+| d     | 当月的天数                           | 数字         | 10                               |
+| a     | 半天                               | 文本         | PM                               |
+| K     | 半天的小时（0~11）                   | 数字         | 0                                |
+| h     | 半天的时钟小时（1~12）                | 数字         | 12                               |
+| H     | 一天的小时（0~23）                   | 数字         | 0                                |
+| k     | 一天的时钟小时（1~24）                | 数字         | 24                               |
+| m     | 小时中的分钟                        | 数字         | 30                               |
+| s     | 分钟中的秒                          | 数字         | 55                               |
+| S     | 小数秒                             | 数字         | 978                              |
+| z     | 时区                               | 文本         | Eastern Standard Time; EST       |
+| Z     | 时区偏移                           | 区域         | -0800; -0812                     |
+| '     | 文本转义                          | 分隔符       |                                   |
+| ''    | 单引号                             | 字面        | '                                |
 
 **示例**
 
@@ -4416,6 +4449,7 @@ SELECT formatDateTimeInJodaSyntax(toDateTime('2010-01-04 12:34:56'), 'yyyy-MM-dd
 │ 2010-01-04 12:34:56                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
+
 ## dateName {#datename}
 
 返回指定的日期部分。
@@ -4428,13 +4462,13 @@ dateName(date_part, date)
 
 **参数**
 
-- `date_part` — 日期部分。可能的值：'year'，'quarter'，'month'，'week'，'dayofyear'，'day'，'weekday'，'hour'，'minute'，'second'。[字符串](../data-types/string.md)。
-- `date` — 日期。[日期](../data-types/date.md)，[Date32](../data-types/date32.md)，[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
+- `date_part` — 日期部分。可能的值：'year'，'quarter'，'month'，'week'，'dayofyear'，'day'，'weekday'，'hour'，'minute'，'second'。 [字符串](../data-types/string.md)。
+- `date` — 日期。[日期](../data-types/date.md)， [Date32](../data-types/date32.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
 - `timezone` — 时区。可选。[字符串](../data-types/string.md)。
 
 **返回值**
 
-- 指定的日期部分。[字符串](/sql-reference/data-types/string)
+- 日期的指定部分。[字符串](/sql-reference/data-types/string)
 
 **示例**
 
@@ -4453,9 +4487,10 @@ SELECT
 │ 2021                         │ April                         │ 14                          │
 └──────────────────────────────┴───────────────────────────────┴─────────────────────────────┘
 ```
+
 ## monthName {#monthname}
 
-返回月份的名称。
+返回月份名称。
 
 **语法**
 
@@ -4465,11 +4500,11 @@ monthName(date)
 
 **参数**
 
-- `date` — 日期或带时间的日期。[日期](../data-types/date.md)，[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
+- `date` — 日期或带时间的日期。[日期](../data-types/date.md)， [DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)。
 
 **返回值**
 
-- 月名。[字符串](/sql-reference/data-types/string)
+- 月份名称。[字符串](/sql-reference/data-types/string)
 
 **示例**
 
@@ -4485,13 +4520,14 @@ SELECT monthName(date_value);
 │ April                 │
 └───────────────────────┘
 ```
+
 ## fromUnixTimestamp {#fromunixtimestamp}
 
 此函数将 Unix 时间戳转换为日历日期和一天的时间。
 
-可以用两种方式调用：
+它可以以两种方式调用：
 
-当给定一个整数类型的单个参数时，它返回一个日期时间类型的值，即类似于 [toDateTime](../../sql-reference/functions/type-conversion-functions.md#todatetime)。
+当给定一个类型为 [整数](../data-types/int-uint.md) 的单个参数时，返回一个类型为 [DateTime](../data-types/datetime.md) 的值，即表现得像是 [toDateTime](../../sql-reference/functions/type-conversion-functions.md#todatetime)。
 
 别名：`FROM_UNIXTIME`。
 
@@ -4509,7 +4545,7 @@ SELECT fromUnixTimestamp(423543535);
 └──────────────────────────────┘
 ```
 
-当给定两个或三个参数，其中第一个参数是整数类型的值、[日期](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md)，第二个参数是常量格式字符串，第三个参数是可选的常量时区字符串时，该函数返回字符串类型的值，即它的行为类似于 [formatDateTime](#formatdatetime)。在这种情况下，使用 [MySQL 的日期时间格式样式](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format)。
+当给定两个或三个参数时，第一个参数是类型为 [整数](../data-types/int-uint.md)、[日期](../data-types/date.md)、[Date32](../data-types/date32.md)、[DateTime](../data-types/datetime.md) 或 [DateTime64](../data-types/datetime64.md) 的值，第二个参数是常量格式字符串，第三个参数是一个可选的常量时区字符串，该函数返回一个类型为 [字符串](/sql-reference/data-types/string) 的值，即它的表现像 [formatDateTime](#formatdatetime)。在这种情况下，使用 [MySQL 的日期时间格式样式](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format)。
 
 **示例：**
 
@@ -4528,9 +4564,10 @@ SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime;
 **另请参见**
 
 - [fromUnixTimestampInJodaSyntax](#fromunixtimestampinjodasyntax)
+
 ## fromUnixTimestampInJodaSyntax {#fromunixtimestampinjodasyntax}
 
-与 [fromUnixTimestamp](#fromunixtimestamp) 相同，但在第二种方式 (两个或三个参数) 被调用时，格式化使用 [Joda 风格](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)，而不是 MySQL 风格。
+与 [fromUnixTimestamp](#fromunixtimestamp) 相同，但当以第二种方式调用（两个或三个参数）时，格式化使用 [Joda 风格](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)，而不是 MySQL 风格。
 
 **示例：**
 
@@ -4545,9 +4582,10 @@ SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') A
 │ 2009-02-11 06:42:23 │
 └─────────────────────┘
 ```
+
 ## toModifiedJulianDay {#tomodifiedjulianday}
 
-将文本形式的 [先验格里历](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) 日期 `YYYY-MM-DD` 转换为 Int32 的 [修正 Julian 日](https://en.wikipedia.org/wiki/Julian_day#Variants) 数字。此函数支持从 `0000-01-01` 到 `9999-12-31` 的日期。如果参数不能被解析为日期或日期无效，将引发异常。
+将文本形式的 [先历格里历](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) 日期 `YYYY-MM-DD` 转换为 Int32 的 [修订过的 Julian Day](https://en.wikipedia.org/wiki/Julian_day#Variants) 数字。此函数支持从 `0000-01-01` 到 `9999-12-31` 的日期。如果参数无法解析为日期，或者该日期无效，则会引发异常。
 
 **语法**
 
@@ -4561,7 +4599,7 @@ toModifiedJulianDay(date)
 
 **返回值**
 
-- 修正 Julian 日数字。[Int32](../data-types/int-uint.md)。
+- 修订过的 Julian Day 数字。[Int32](../data-types/int-uint.md)。
 
 **示例**
 
@@ -4576,9 +4614,10 @@ SELECT toModifiedJulianDay('2020-01-01');
 │                             58849 │
 └───────────────────────────────────┘
 ```
+
 ## toModifiedJulianDayOrNull {#tomodifiedjuliandayornull}
 
-类似于 [toModifiedJulianDay()](#tomodifiedjulianday)，但不会引发异常，而是返回 `NULL`。
+类似于 [toModifiedJulianDay()](#tomodifiedjulianday)，但不引发异常，而是返回 `NULL`。
 
 **语法**
 
@@ -4592,7 +4631,7 @@ toModifiedJulianDayOrNull(date)
 
 **返回值**
 
-- 修正 Julian 日数字。[Nullable(Int32)](../data-types/int-uint.md)。
+- 修订过的 Julian Day 数字。[Nullable(Int32)](../data-types/int-uint.md)。
 
 **示例**
 
@@ -4607,9 +4646,10 @@ SELECT toModifiedJulianDayOrNull('2020-01-01');
 │                                   58849 │
 └─────────────────────────────────────────┘
 ```
+
 ## fromModifiedJulianDay {#frommodifiedjulianday}
 
-将 [修正 Julian 日](https://en.wikipedia.org/wiki/Julian_day#Variants) 数字转换为文本形式的 [先验格里历](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) 日期 `YYYY-MM-DD`。此函数支持范围从 `-678941` 到 `2973483` 的天数（分别表示 `0000-01-01` 和 `9999-12-31`）。如果天数超出了支持范围，将引发异常。
+将 [修订过的 Julian Day](https://en.wikipedia.org/wiki/Julian_day#Variants) 数字转换为文本形式的 [先历格里历](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) 日期 `YYYY-MM-DD`。此函数支持从 `-678941` 到 `2973483` 的天数（分别对应于 0000-01-01 和 9999-12-31）。如果天数超出支持的范围，则会引发异常。
 
 **语法**
 
@@ -4619,7 +4659,7 @@ fromModifiedJulianDay(day)
 
 **参数**
 
-- `day` — 修正 Julian 日数字。[任何整数类型](../data-types/int-uint.md)。
+- `day` — 修订过的 Julian Day 数字。[任何整型](../data-types/int-uint.md)。
 
 **返回值**
 
@@ -4638,9 +4678,10 @@ SELECT fromModifiedJulianDay(58849);
 │ 2020-01-01                   │
 └──────────────────────────────┘
 ```
+
 ## fromModifiedJulianDayOrNull {#frommodifiedjuliandayornull}
 
-类似于 [fromModifiedJulianDayOrNull()](#frommodifiedjuliandayornull)，但不会引发异常，而是返回 `NULL`。
+类似于 [fromModifiedJulianDayOrNull()](#frommodifiedjuliandayornull)，但不引发异常，而是返回 `NULL`。
 
 **语法**
 
@@ -4650,7 +4691,7 @@ fromModifiedJulianDayOrNull(day)
 
 **参数**
 
-- `day` — 修正 Julian 日数字。[任何整数类型](../data-types/int-uint.md)。
+- `day` — 修订过的 Julian Day 数字。[任何整型](../data-types/int-uint.md)。
 
 **返回值**
 
@@ -4669,9 +4710,10 @@ SELECT fromModifiedJulianDayOrNull(58849);
 │ 2020-01-01                         │
 └────────────────────────────────────┘
 ```
+
 ## toUTCTimestamp {#toutctimestamp}
 
-将 DateTime/DateTime64 类型的值从其他时区转换为 UTC 时区的时间戳。此函数主要是为了与 Apache Spark 和类似框架的兼容性。
+将 DateTime/DateTime64 类型的值从其他时区转换为 UTC 时区的时间戳。此函数主要用于与 Apache Spark 和类似框架的兼容性。
 
 **语法**
 
@@ -4682,7 +4724,7 @@ toUTCTimestamp(time_val, time_zone)
 **参数**
 
 - `time_val` — DateTime/DateTime64 类型的常量值或表达式。[DateTime/DateTime64 类型](../data-types/datetime.md)
-- `time_zone` — 代表时区的字符串类型常量值或表达式。[字符串类型](../data-types/string.md)
+- `time_zone` — 字符串类型的常量值或表示时区的表达式。[字符串类型](../data-types/string.md)
 
 **返回值**
 
@@ -4701,9 +4743,10 @@ SELECT toUTCTimestamp(toDateTime('2023-03-16'), 'Asia/Shanghai');
 │                                     2023-03-15 16:00:00 │
 └─────────────────────────────────────────────────────────┘
 ```
+
 ## fromUTCTimestamp {#fromutctimestamp}
 
-将 DateTime/DateTime64 类型的值从 UTC 时区转换为其他时区的时间戳。此函数主要是为了与 Apache Spark 和类似框架的兼容性。
+将 DateTime/DateTime64 类型的值从 UTC 时区转换为其他时区的时间戳。此函数主要用于与 Apache Spark 和类似框架的兼容性。
 
 **语法**
 
@@ -4714,7 +4757,7 @@ fromUTCTimestamp(time_val, time_zone)
 **参数**
 
 - `time_val` — DateTime/DateTime64 类型的常量值或表达式。[DateTime/DateTime64 类型](../data-types/datetime.md)
-- `time_zone` — 代表时区的字符串类型常量值或表达式。[字符串类型](../data-types/string.md)
+- `time_zone` — 字符串类型的常量值或表示时区的表达式。[字符串类型](../data-types/string.md)
 
 **返回值**
 
@@ -4733,12 +4776,13 @@ SELECT fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00', 3), 'Asia/Shanghai')
 │                                                 2023-03-16 18:00:00.000 │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
+
 ## UTCTimestamp {#utctimestamp}
 
-返回查询分析时的当前日期和时间。该函数是一个常量表达式。
+返回查询分析时的当前日期和时间。该函数是常量表达式。
 
 :::note
-此函数的结果与 `now('UTC')` 相同。它仅是为了支持 MySQL 而添加，[`now`](#now) 是首选用法。
+此函数提供的结果与 `now('UTC')` 相同。它仅为了支持 MySQL 而添加，而 [`now`](#now) 是首选用法。
 :::
 
 **语法**
@@ -4768,9 +4812,10 @@ SELECT UTCTimestamp();
 │ 2024-05-28 08:32:09 │
 └─────────────────────┘
 ```
+
 ## timeDiff {#timediff}
 
-返回两个日期或含时间值的日期之间的差异。差异以秒为单位计算。它与 `dateDiff` 相同，仅为 MySQL 支持而添加。首选使用 `dateDiff`。
+返回两个日期或日期时间值之间的差值。差值以秒为单位计算。它与 `dateDiff` 相同，仅用于支持 MySQL。`dateDiff` 更受欢迎。
 
 **语法**
 
@@ -4785,7 +4830,7 @@ timeDiff(first_datetime, second_datetime)
 
 **返回值**
 
-两个日期或含时间值的日期之间的差异（单位：秒）。
+两个日期或日期时间值之间的差值（以秒为单位）。
 
 **示例**
 
@@ -4802,6 +4847,16 @@ timeDiff(toDateTime64('1927-01-01 00:00:00', 3), toDate32('1927-01-02'));
 │                                                                    86400 │
 └──────────────────────────────────────────────────────────────────────────┘
 ```
+
 ## 相关内容 {#related-content}
 
 - 博客：[在 ClickHouse 中处理时间序列数据](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+
+<!-- 
+The inner content of the tags below are replaced at doc framework build time with 
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
+
+<!--AUTOGENERATED_START-->
+<!--AUTOGENERATED_END-->

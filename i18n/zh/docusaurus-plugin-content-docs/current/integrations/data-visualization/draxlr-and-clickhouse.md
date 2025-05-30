@@ -12,7 +12,7 @@
 'title': '将 Draxlr 连接到 ClickHouse'
 ---
 
-import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import draxlr_01 from '@site/static/images/integrations/data-visualization/draxlr_01.png';
 import draxlr_02 from '@site/static/images/integrations/data-visualization/draxlr_02.png';
 import draxlr_03 from '@site/static/images/integrations/data-visualization/draxlr_03.png';

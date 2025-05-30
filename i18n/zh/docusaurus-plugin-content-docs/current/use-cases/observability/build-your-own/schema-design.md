@@ -1,6 +1,6 @@
 ---
-'title': '架构设计'
-'description': '为可观测性设计架构设计'
+'title': '模式设计'
+'description': '为可观察性设计模式设计'
 'keywords':
 - 'observability'
 - 'logs'
@@ -10,6 +10,7 @@
 - 'Grafana'
 - 'OTel'
 'slug': '/use-cases/observability/schema-design'
+'show_related_blogs': true
 ---
 
 import observability_10 from '@site/static/images/use-cases/observability/observability-10.png';
@@ -19,31 +20,30 @@ import observability_13 from '@site/static/images/use-cases/observability/observ
 import Image from '@theme/IdealImage';
 
 
-# 设计可观测性的架构
+# 设计可观察性的模式
 
-我们建议用户始终为日志和追踪创建自己的模式，原因如下：
+我们建议用户始终创建自己的日志和跟踪的模式，原因如下：
 
-- **选择主键** - 默认模式使用 `ORDER BY`，该方式针对特定的访问模式进行了优化。您的访问模式不太可能与此对齐。
-- **提取结构** - 用户可能希望从现有列中提取新列，例如 `Body` 列。这可以通过物化列（在更复杂的情况下使用物化视图）来完成。这需要模式变更。
-- **优化映射** - 默认模式使用 Map 类型存储属性。这些列允许存储任意元数据。尽管这是一个基本功能，因为事件的元数据通常在预先定义时未知，无法在强类型数据库如 ClickHouse 中存储，访问映射键及其值的效率并不如访问普通列。我们通过修改模式并确保最常访问的映射键为顶层列来解决此问题 - 参见 ["使用 SQL 提取结构"](#extracting-structure-with-sql)。这需要模式变更。
-- **简化映射键访问** - 访问映射中的键需要更冗长的语法。用户可以通过别名来缓解这一点。参见 ["使用别名"](#using-aliases) 简化查询。
-- **二级索引** - 默认模式使用二级索引来加速对 Maps 的访问和加快文本查询。通常不需要这些，且会产生额外的磁盘空间开销。可以使用，但应进行测试以确保其必要性。参见 ["二级 / 数据跳过索引"](#secondarydata-skipping-indices)。
-- **使用编解码器** - 如果用户理解预期数据并有证据表明这会改善压缩，可能希望自定义列的编解码器。
+- **选择主键** - 默认模式使用针对特定访问模式优化的 `ORDER BY`。您的访问模式不太可能与此一致。
+- **提取结构** - 用户可能希望从现有列中提取新列，例如 `Body` 列。这可以使用物化列来实现（在更复杂的情况下使用物化视图）。这需要模式更改。
+- **优化映射** - 默认模式使用 Map 类型存储属性。这些列允许存储任意元数据。尽管这是一个基本功能，因为事件中的元数据通常没有预先定义，因此无法在类似 ClickHouse 的强类型数据库中存储，但访问 map 键及其值的效率不如访问普通列的效率。因此，我们通过修改模式来解决这个问题，并确保最常访问的 map 键是顶级列 - 见 ["使用 SQL 提取结构"](#extracting-structure-with-sql)。这也需要模式更改。
+- **简化 map 键访问** - 访问 map 中的键需要更详细的语法。用户可以通过别名来缓解此问题。见 ["使用别名"](#using-aliases) 以简化查询。
+- **二级索引** - 默认模式使用二级索引加速对 Maps 的访问并加速文本查询。这通常是不必要的，并且会增加额外的磁盘空间。可以使用，但应进行测试以确保需要。见 ["二级 / 数据跳过索引"](#secondarydata-skipping-indices)。
+- **使用编解码器** - 如果用户了解预期数据并有证据表明这可以改善压缩，可以自定义列的编解码器。
 
-_我们在下面详细描述上述每个用例。_
+_我们将在下面详细描述上述每个用例。_
 
-**重要提示：** 虽然鼓励用户扩展和修改其模式以实现最佳的压缩和查询性能，但应在可能的情况下遵循 OTel 模式命名以核心列。ClickHouse Grafana 插件假设存在一些基本的 OTel 列以协助查询构建，例如 Timestamp 和 SeverityText。日志和追踪所需的列在此处记录 [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) 和 [此处](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure)。您可以选择更改这些列名，覆盖插件配置中的默认值。
-
+**重要提示：** 虽然鼓励用户扩展和修改他们的模式以实现最佳压缩和查询性能，但他们应尽可能遵循核心列的 OTel 模式命名。ClickHouse Grafana 插件假定存在一些基本的 OTel 列以协助查询构建，例如 Timestamp 和 SeverityText。日志和跟踪所需的列在这里有文档记录 [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) 和 [这里](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure)。您可以选择更改这些列名，覆盖插件配置中的默认值。
 ## 使用 SQL 提取结构 {#extracting-structure-with-sql}
 
 无论是摄取结构化还是非结构化日志，用户通常需要具备以下能力：
 
-- **从字符串块中提取列**。查询这些列的速度会比在查询时间使用字符串操作更快。
-- **从映射中提取键**。默认模式将任意属性放置在 Map 类型的列中。该类型提供了无模式的功能，用户在定义日志和追踪时不需预先定义属性的列，这在从 Kubernetes 收集日志并希望保持 pod 标签以便后续搜索时通常不可行。访问映射键及其值的效率低于查询普通 ClickHouse 列。因此，将映射键提取到根表列通常是有利的。
+- **从字符串 blob 中提取列**。查询这些列将比在查询时使用字符串操作更快。
+- **从 maps 中提取键**。默认模式将任意属性放入 Map 类型的列中。此类型提供无模式的能力，具有用户在定义日志和跟踪时无需预定义属性列的优势 - 通常在从 Kubernetes 收集日志并希望确保 Pod 标签在以后搜索时保留时，这是不可能的。访问 map 键及其值的速度不如在普通 ClickHouse 列上查询。因此，从 maps 提取键到根表列通常是可取的。
 
 考虑以下查询：
 
-假设我们希望计算哪些 URL 路径接收最多的 POST 请求，使用结构化日志。JSON 块存储在 `Body` 列中作为字符串。此外，如果用户在收集器中启用了 json_parser，它也可以存储在 `LogAttributes` 列中作为 `Map(String, String)`。
+假设我们希望统计接收最多 POST 请求的网址路径，使用结构化日志。JSON blob 存储在 `Body` 列中作为字符串。此外，如果用户在收集器中启用了 json_parser，它也可能存储在 `LogAttributes` 列中作为 `Map(String, String)`。
 
 ```sql
 SELECT LogAttributes
@@ -57,7 +57,7 @@ Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","
 LogAttributes: {'status':'200','log.file.name':'access-structured.log','request_protocol':'HTTP/1.1','run_time':'0','time_local':'2019-01-22 00:26:14.000','size':'30577','user_agent':'Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)','referer':'-','remote_user':'-','request_type':'GET','request_path':'/filter/27|13 ,27|  5 ,p53','remote_addr':'54.36.149.41'}
 ```
 
-假设 `LogAttributes` 可用，查询计算网站的 URL 路径中接收到最多 POST 请求的查询为：
+假设 `LogAttributes` 可用，查询以统计网站接收最多 POST 请求的 URL 路径：
 
 ```sql
 SELECT path(LogAttributes['request_path']) AS path, count() AS c
@@ -79,12 +79,12 @@ LIMIT 5
 Peak memory usage: 153.71 MiB.
 ```
 
-注意这里的映射语法，例如 `LogAttributes['request_path']`，以及用于去除 URL 中查询参数的 [`path` 函数](/sql-reference/functions/url-functions#path)。
+请注意此处使用 map 语法，例如 `LogAttributes['request_path']` 和用于去除 URL 查询参数的 [`path` 函数](/sql-reference/functions/url-functions#path)。
 
-如果用户没有在收集器中启用 JSON 解析，则 `LogAttributes` 将为空，迫使我们使用 [JSON 函数](/sql-reference/functions/json-functions) 从字符串 `Body` 中提取列。
+如果用户在收集器中没有启用 JSON 解析，则 `LogAttributes` 将为空，迫使我们使用 [JSON 函数](/sql-reference/functions/json-functions) 从字符串 `Body` 中提取列。
 
-:::note 优先选择 ClickHouse 进行解析
-我们通常推荐用户在 ClickHouse 中解析结构化日志的 JSON。我们确信 ClickHouse 是速度最快的 JSON 解析实现。然而，我们认识到用户可能希望将日志发送到其他来源，而不希望这一逻辑驻留在 SQL 中。
+:::note 请优先考虑 ClickHouse 进行解析
+我们通常建议用户在 ClickHouse 中对结构化日志进行 JSON 解析。我们相信 ClickHouse 是最快的 JSON 解析实现。然而，我们认识到用户可能希望将日志发送到其他源，并且不希望此逻辑驻留在 SQL 中。
 :::
 
 ```sql
@@ -148,29 +148,29 @@ LIMIT 5
 5 rows in set. Elapsed: 1.953 sec. Processed 10.37 million rows, 3.59 GB (5.31 million rows/s., 1.84 GB/s.)
 ```
 
-解析非结构化日志的查询复杂性和成本增加（注意性能差异）是我们建议用户在可能的情况下始终使用结构化日志的原因。
+解析非结构化日志查询的复杂性和成本增加（注意性能差异）是我们建议用户始终在可能的情况下使用结构化日志的原因。
 
 :::note 考虑字典
-上述查询可以优化以利用正则表达式字典。有关详细信息，请参见 [使用字典](#using-dictionaries)。
+上述查询可以通过利用正则表达式字典进行优化。有关详细信息，请参见 [使用字典](#using-dictionaries)。
 :::
 
-这两种用例均可以通过将上述查询逻辑移动到插入时间来使用 ClickHouse 来满足。我们将在下面探讨几种方法，突出每种方法的适用时机。
+这两种用例都可以通过将上述查询逻辑移动到插入时来满足。我们在下面探讨几种方法，强调何时使用每种方法是合适的。
 
-:::note OTel 或 ClickHouse 进行处理？
-用户也可以使用 OTel Collector 处理器和操作符进行处理，具体描述见 [此处](/observability/integrating-opentelemetry#processing---filtering-transforming-and-enriching)。在大多数情况下，用户会发现 ClickHouse 相对于收集器的处理器更具资源效率和更快。在 SQL 中执行所有事件处理的主要缺点是您将解决方案与 ClickHouse 耦合。例如，用户可能希望将处理过的日志发送到 OTel 收集器的其他目标，例如 S3。
+:::note 使用 OTel 还是 ClickHouse 进行处理？
+用户还可以使用 OTel Collector 处理器和操作符进行处理，具体说明见 [此处](/observability/integrating-opentelemetry#processing---filtering-transforming-and-enriching)。在大多数情况下，用户会发现 ClickHouse 在资源效率和速度方面显著优于收集器的处理器。在 SQL 中执行所有事件处理的主要缺点是将您的解决方案与 ClickHouse 绑定在一起。例如，用户可能希望从 OTel 收集器发送处理后的日志到替代目的地，例如 S3。
 :::
-
 ### 物化列 {#materialized-columns}
 
-物化列提供了从其他列提取结构的最简单解决方案。这些列的值始终在插入时计算，无法在 INSERT 查询中指定。
+物化列提供了从其他列提取结构的最简单解决方案。这些列的值始终在插入时计算，并且无法在 INSERT 查询中指定。
 
-:::note 开销
-物化列会产生额外的存储开销，因为在插入时值被提取到磁盘的新列中。
+:::note 额外开销
+物化列会导致额外的存储开销，因为这些值在插入时被提取到新列中并存储在磁盘上。
 :::
 
-物化列支持任何 ClickHouse 表达式，并可以利用用于 [处理字符串](/sql-reference/functions/string-functions) 的任何分析函数（包括 [正则表达式和搜索](/sql-reference/functions/string-search-functions)）和 [URL](/sql-reference/functions/url-functions)，执行 [类型转换](/sql-reference/functions/type-conversion-functions)， [从 JSON 中提取值](/sql-reference/functions/json-functions) 或 [数学运算](/sql-reference/functions/math-functions)。
 
-我们推荐将物化列用于基本处理。它们尤其适用于从映射中提取值，提升至根列，并执行类型转换。在非常基本的模式中或与物化视图结合使用时，它们通常最有用。考虑以下从收集器提取到 `LogAttributes` 列的日志模式：
+物化列支持任何 ClickHouse 表达式，并可以利用任何用于 [处理字符串](/sql-reference/functions/string-functions)（包括 [正则表达式和搜索](/sql-reference/functions/string-search-functions)）和 [URL](/sql-reference/functions/url-functions) 的分析函数，执行 [类型转换](/sql-reference/functions/type-conversion-functions)、[从 JSON 中提取值](/sql-reference/functions/json-functions) 或 [数学运算](/sql-reference/functions/math-functions)。
+
+我们建议对基本处理使用物化列。它们对于从 maps 中提取值、将其提升为根列和进行类型转换非常有用。它们在非常基本的模式中或与物化视图结合使用时通常最有用。考虑以下从收集器提取 JSON 到 `LogAttributes` 列的日志模式：
 
 ```sql
 CREATE TABLE otel_logs
@@ -201,7 +201,7 @@ ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)
 
 使用 JSON 函数从字符串 `Body` 中提取的等效模式可以在 [这里](https://pastila.nl/?005cbb97/513b174a7d6114bf17ecc657428cf829#gqoOOiomEjIiG6zlWhE+Sg==) 找到。
 
-我们的三个物化视图列提取请求页面、请求类型和引荐域名。这些访问映射键并对其值应用函数。我们后续的查询速度显著更快：
+我们的三列物化视图提取请求页面、请求类型和引荐者域。这些访问 map 键并对其值应用函数。随后我们的查询显著更快：
 
 ```sql
 SELECT RequestPage AS path, count() AS c
@@ -224,26 +224,26 @@ Peak memory usage: 3.16 MiB.
 ```
 
 :::note
-物化列默认不会在 `SELECT *` 中返回。这是为了保持 `SELECT *` 的结果可以始终通过 INSERT 插回表中的不变性。通过设置 `asterisk_include_materialized_columns=1` 可以禁用此行为，并且可以在 Grafana 中启用（见数据源配置中的 `Additional Settings -> Custom Settings`）。
+物化列默认不会在 `SELECT *` 中返回。这是为了保持 `SELECT *` 的结果始终可以通过 INSERT 重新插入到表中的不变性。可以通过设置 `asterisk_include_materialized_columns=1` 禁用此行为，并可在 Grafana 中启用（请参见数据源配置中的 `Additional Settings -> Custom Settings`）。
 :::
-
 ## 物化视图 {#materialized-views}
 
-[物化视图](/materialized-views) 提供了一种更强大的方式用于对日志和追踪应用 SQL 过滤和转换。
+[物化视图](/materialized-views) 提供了一种更强大的方式将 SQL 过滤和转换应用于日志和跟踪。
 
-物化视图允许用户将计算成本从查询时间转移到插入时间。ClickHouse 物化视图仅是一个触发器，在数据块插入表时运行查询。该查询的结果将插入到第二个“目标”表中。
+物化视图允许用户将计算的成本从查询时间转移到插入时间。 ClickHouse 物化视图只是一个触发器，根据插入到表中的数据块运行查询。该查询的结果插入到第二个“目标”表中。
 
 <Image img={observability_10} alt="物化视图" size="md"/>
 
 :::note 实时更新
-ClickHouse 中的物化视图会实时更新，随着数据流入其基础的表，功能更像是不断更新的索引。相比之下，在其他数据库中，物化视图通常是查询的静态快照，必须刷新（类似于 ClickHouse 的可刷新的物化视图）。
+ClickHouse 中的物化视图在数据流入基础表时实时更新，功能更像是不断更新的索引。相比之下，在其他数据库中，物化视图通常是查询的静态快照，必须刷新（类似于 ClickHouse 可刷新的物化视图）。
 :::
 
-与物化视图相关的查询理论上可以是任何查询，包括聚合，尽管 [与 Join 的限制](/using-materialized-views-in-clickhouse#materialized-views-and-joins)存在。对于日志和追踪所需的转换和过滤工作负载，用户可以考虑任何 `SELECT` 语句都是可能的。
 
-用户应记住，查询只是一个触发器，在插入到表中的行（源表）上执行，结果发送到一个新表（目标表）。
+与物化视图相关的查询理论上可以是任何查询，包括聚合，尽管 [连接存在限制](https://clickhouse.com/blog/using-materialized-views-in-clickhouse#materialized-views-and-joins)。对于日志和跟踪所需的转换和过滤工作负载，用户可以考虑任何 `SELECT` 语句均可行。
 
-为了确保我们不将数据双重持久化（在源表和目标表中），我们可以将源表的表更改为 [Null 表引擎](/engines/table-engines/special/null)，保持原始模式。我们的 OTel 收集器将继续将数据发送到此表。例如，对于日志，`otel_logs` 表变为：
+用户应记住，查询只是对插入到表（源表）中的行执行的一个触发器，结果发送到一个新表（目标表）。
+
+为了确保我们不在源表和目标表中重复持久化数据，我们可以将源表的表引擎更改为 [Null 表引擎](/engines/table-engines/special/null)，保留原始模式。我们的 OTel 收集器将继续向该表发送数据。例如，对于日志，`otel_logs` 表变为：
 
 ```sql
 CREATE TABLE otel_logs
@@ -266,9 +266,9 @@ CREATE TABLE otel_logs
 ) ENGINE = Null
 ```
 
-Null 表引擎是一种强大的优化 - 可以将其视为 `/dev/null`。该表不会存储任何数据，但任何附加的物化视图仍将在插入的行上执行，然后被丢弃。
+Null 表引擎是一种强大的优化 - 想象它像是 `/dev/null`。此表不会存储任何数据，但任何附加的物化视图仍将在插入的行上执行，然后被丢弃。
 
-考虑以下查询。此查询将我们的行转化为所需的格式，提取所有来自 `LogAttributes` 的列（假设这是由收集器使用 `json_parser` 操作符设置的），并设置 `SeverityText` 和 `SeverityNumber`（基于某些简单条件和对 [这些列](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitytext) 的定义）。在这种情况下，我们还仅选择我们知道将被填充的列 - 忽略诸如 `TraceId`、`SpanId` 和 `TraceFlags` 类的列。
+考虑以下查询。这将我们的行转换为希望保留的格式，从 `LogAttributes` 中提取所有列（我们假设这已由使用 `json_parser` 操作符的收集器设置），设置 `SeverityText` 和 `SeverityNumber`（基于一些简单的条件和对 [这些列](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitytext) 的定义）。在这种情况下，我们还只选择我们知道会被填充的列 - 忽略 `TraceId`、`SpanId` 和 `TraceFlags` 等列。
 
 ```sql
 SELECT
@@ -316,13 +316,13 @@ SeverityNumber:  9
 1 row in set. Elapsed: 0.027 sec.
 ```
 
-我们还提取了上面的 `Body` 列 - 以防将来添加了额外属性且未被我们的 SQL 提取。这一列在 ClickHouse 中应具有良好的压缩率，并且不经常被访问，因此不会影响查询性能。最后，我们将时间戳减少为 DateTime（以节省空间 - 参见 ["优化类型"](#optimizing-types)）并进行类型转换。
+我们还提取了上面的 `Body` 列 - 以防后续添加未被 SQL 提取的额外属性。该列在 ClickHouse 中应压缩良好，并将很少被访问，因此不会影响查询性能。最后，我们将 Timestamp 减少为 DateTime（以节省空间 - 见 ["优化类型"](#optimizing-types)）进行类型转换。
 
 :::note 条件
-注意上述用于提取 `SeverityText` 和 `SeverityNumber` 的 [条件](https://sql-reference/functions/conditional-functions)。这些对于制定复杂条件和检查映射中值的设置非常有用 - 我们天真地假设所有键都存在于 `LogAttributes` 中。我们建议用户熟悉它们 - 除了处理 [null 值](/sql-reference/functions/functions-for-nulls) 之外，它们是您进行日志解析的得力助手！
+注意上面用于提取 `SeverityText` 和 `SeverityNumber` 的 [条件](https://sql-reference/functions/conditional-functions)。这些在制定复杂条件和检查 map 中的值是否设置时非常有用 - 我们天真地假设 `LogAttributes` 中的所有键都存在。我们建议用户熟悉它们 - 除了处理 [null 值](https://sql-reference/functions/functions-for-nulls) 的函数外，它们是日志解析中的好帮手！
 :::
 
-我们需要一个表来接收这些结果。以下目标表与上述查询匹配：
+我们需要一个表来接收这些结果。下面的目标表与上述查询匹配：
 
 ```sql
 CREATE TABLE otel_logs_v2
@@ -349,13 +349,14 @@ ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
 ```
 
-所选类型基于 ["优化类型"](#optimizing-types) 中讨论的优化。
+这里选择的类型基于 ["优化类型"](#optimizing-types) 中讨论的优化。
 
 :::note
-注意我们如何显著改变了我们的模式。实际上，用户可能还会有他们希望保留的 Trace 列以及 `ResourceAttributes` 列（这通常包含 Kubernetes 元数据）。Grafana 可以利用 Trace 列提供日志与追踪之间的链接功能 - 参见 ["使用 Grafana"](/observability/grafana)。
+请注意，我们显著改变了我们的模式。实际上，用户可能还希望保留跟踪列以及 `ResourceAttributes` 列（这通常包含 Kubernetes 元数据）。Grafana 可以利用跟踪列提供日志和跟踪之间的链接功能 - 见 ["使用 Grafana"](/observability/grafana)。
 :::
 
-下面，我们创建一个物化视图 `otel_logs_mv`，该视图对 `otel_logs` 表执行上述选择并将结果发送到 `otel_logs_v2`。
+
+下面，我们创建一个物化视图 `otel_logs_mv`，它在 `otel_logs` 表上执行上述选择，并将结果发送到 `otel_logs_v2`。
 
 ```sql
 CREATE MATERIALIZED VIEW otel_logs_mv TO otel_logs_v2 AS
@@ -380,11 +381,11 @@ SELECT
 FROM otel_logs
 ```
 
-以上内容如下图所示：
+上面的内容如下图所示：
 
 <Image img={observability_11} alt="Otel MV" size="md"/>
 
-如果我们现在重启在 ["导出到 ClickHouse"](/observability/integrating-opentelemetry#exporting-to-clickhouse) 中使用的收集器配置，数据将出现在 `otel_logs_v2` 中，格式为我们所需的格式。注意使用类型化的 JSON 提取函数。
+如果我们现在重新启动在 ["导出到 ClickHouse"](/observability/integrating-opentelemetry#exporting-to-clickhouse)中使用的收集器配置，数据将以我们期望的格式出现在 `otel_logs_v2` 中。请注意使用了带类型的 JSON 提取函数。
 
 ```sql
 SELECT *
@@ -415,7 +416,7 @@ SeverityNumber:  9
 1 row in set. Elapsed: 0.010 sec.
 ```
 
-一个等效的物化视图，依赖于使用 JSON 函数从 `Body` 列提取列，如下所示：
+一个等效的物化视图，通过使用 JSON 函数从 `Body` 列中提取列如下所示：
 
 ```sql
 CREATE MATERIALIZED VIEW otel_logs_mv TO otel_logs_v2 AS
@@ -438,43 +439,40 @@ SELECT  Body,
         multiIf(Status::UInt64 > 500, 20, Status::UInt64 > 400, 17, Status::UInt64 > 300, 13, 9) AS SeverityNumber
 FROM otel_logs
 ```
-
 ### 注意类型 {#beware-types}
 
-上述物化视图依赖于隐式类型转换 - 特别是在使用 `LogAttributes` 映射的情况下。ClickHouse 通常会将提取的值透明地转换为目标表类型，减少所需的语法。然而，我们建议用户始终通过仅使用 `SELECT` 语句和 [`INSERT INTO`](/sql-reference/statements/insert-into) 语句与具有相同模式的目标表来测试其视图。这应该确认类型是否正确处理。应特别注意以下情况：
+上述物化视图依赖于隐式转换 - 尤其是在使用 `LogAttributes` map 的情况下。ClickHouse 通常会透明地将提取的值转换为目标表类型，减少所需的语法。然而，我们建议用户在使用目标表与相同模式的 [`INSERT INTO`](/sql-reference/statements/insert-into) 语句的视图 `SELECT` 语句时始终测试他们的视图。这应确认类型正确处理。特别关注以下情况：
 
-- 如果映射中不存在键，将返回空字符串。在数字的情况下，用户需要将其映射到适当的值。这可以通过 [条件](https://sql-reference/functions/conditional-functions) 实现，例如 `if(LogAttributes['status'] = ", 200, LogAttributes['status'])` 或 [类型转换函数](/sql-reference/functions/type-conversion-functions)，如果默认值可以接受，例如 `toUInt8OrDefault(LogAttributes['status'] )`
-- 某些类型可能并不总是会被转换，例如，数字的字符串表示不会转换为枚举值。
-- 如果未找到值，JSON 提取函数将返回其类型的默认值。确保这些值是合理的！
+- 如果 map 中不存在某个键，将返回空字符串。在数值的情况下，用户需要将这些映射到适当的值。这可以通过 [条件](https://sql-reference/functions/conditional-functions) 实现，例如 `if(LogAttributes['status'] = ", 200, LogAttributes['status'])` 或 [类型转换函数](https://sql-reference/functions/type-conversion-functions)，如果默认值可以接受，例如 `toUInt8OrDefault(LogAttributes['status'] )`
+- 某些类型不会始终被转换，例如数值的字符串表示不会被转换为枚举值。
+- JSON 提取函数在找不到值时会返回其类型的默认值。确保这些值是合理的！
 
 :::note 避免 Nullable
-避免在 ClickHouse 中针对可观测性数据使用 [Nullable](/sql-reference/data-types/nullable)。在日志和追踪中，它很少需要区分空值和 null 值。此特性会造成额外的存储开销并对查询性能产生负面影响。有关详细信息，请见 [此处](/data-modeling/schema-design#optimizing-types)。
+避免在 Clickhouse 中使用 [Nullable](/sql-reference/data-types/nullable) 处理可观察性数据。在日志和跟踪中，通常不需要区分空和 null。此特性会导致额外的存储开销，并会对查询性能产生负面影响。有关详细信息，请参见 [这里](/data-modeling/schema-design#optimizing-types)。
 :::
-
 ## 选择主（排序）键 {#choosing-a-primary-ordering-key}
 
-一旦您提取了所需的列，就可以开始优化排序/主键。
+一旦您提取了所需的列，您就可以开始优化排序/主键。
 
-可以应用一些简单的规则来帮助选择排序键。以下规则有时可能会发生冲突，因此请按顺序考虑这些规则。用户可以从此过程中识别出一些键，通常 4-5 个即可满足需求：
+可以应用一些简单的规则来帮助选择排序键。以下项目有时可能会发生冲突，因此请按顺序考虑这些。用户可以从这一过程中识别出多个键，通常 4-5 个就足够：
 
-1. 选择与常用过滤器和访问模式相一致的列。如果用户通常通过特定列（例如 pod 名称）开始可观测性调查，则此列将频繁用于 `WHERE` 子句中。优先将这些列包含在您的键中，而不是使用频率较低的列。
-2. 优先选择能够在过滤时排除大量行的列，从而减少需要读取的数据量。服务名称和状态代码通常是不错的候选者 - 在后者的情况下，仅当用户过滤的值能够排除大多数行时，例如过滤 200 状态码，在大多数系统中将匹配大多数行，相比之下，500 错误将仅对应于小部分。
-3. 优先选择与表中其他列高度相关的列。这有助于确保这些值也以连续的方式存储，从而改善压缩。
-4. 对排序键列进行 `GROUP BY` 和 `ORDER BY` 操作时可以更有效地利用内存。
+1. 选择与常见过滤器和访问模式对齐的列。如果用户通常通过特定列筛选来开始可观察性调查，例如 Pod 名称，那么在 `WHERE` 子句中将频繁使用该列。优先包括这些列，而不是使用较少的列。
+2. 优先选择帮助在过滤时排除大量总行的列，从而减少需要读取的数据量。服务名称和状态代码通常是不错的候选者 - 在后者的情况下，仅当用户根据排除大多数行的值进行过滤时，例如，按 200 过滤在大多数系统中会匹配大多数行，而与 500 错误相对应的则是小子集。
+3. 优先选择可能与表中的其他列高度相关的列。这将帮助确保这些值也被连续存储，从而改善压缩。
+4. 对于排序键中列的 `GROUP BY` 和 `ORDER BY` 操作可以更有效地使用内存。
 
 <br />
 
-在识别排序键的列子集后，必须按特定顺序声明这些列。这个顺序可以显著影响查询中二级键列的过滤效率以及表数据文件的压缩比。一般来说，**最好按照基数的升序对键进行排序**。这应该与列在排序键中的出现顺序的过滤效率相平衡，出现在排序元组后面的列的过滤效率低于出现在元组前面的列。均衡这些行为并考虑您的访问模式。最重要的是，测试不同的变体。为了进一步了解排序键及其优化方式，建议阅读 [这篇文章](/guides/best-practices/sparse-primary-indexes)。
+在确定排序键的列子集后，必须按特定顺序进行声明。此顺序可能会显著影响查询中二级键列的过滤效率以及表的数据文件的压缩比。一般而言，**最好按基数的升序排列键**。这应该与在排序键中后面的列的过滤效率低于在元组中前面的列的过滤效率之间进行权衡。权衡这些行为并考虑访问模式。最重要的是，测试变体。欲了解排序键及其优化的进一步理解，我们推荐 [这篇文章](/guides/best-practices/sparse-primary-indexes)。
 
 :::note 结构优先
-我们建议在构建日志结构后再决定排序键。不要在属性映射或 JSON 提取表达式中使用键。确保将您的排序键设置为表中的根列。
+我们建议在结构化日志后决定您的排序键。不要在排序键或 JSON 提取表达式中使用属性 maps 的键。确保将排序键作为根列放在表中。
 :::
-
 ## 使用映射 {#using-maps}
 
-前面的示例展示了使用映射语法 `map['key']` 访问 `Map(String, String)` 列中的值。除了使用映射语法访问嵌套键，ClickHouse 还提供了专门的 [映射函数](/sql-reference/functions/tuple-map-functions#mapkeys)，用于过滤或选择这些列。
+早期示例显示了使用 map 语法 `map['key']` 访问 `Map(String, String)` 列中的值。除了使用 map 表示法访问嵌套键外，还有可用于过滤或选择这些列的专用 ClickHouse [map 函数](/sql-reference/functions/tuple-map-functions#mapkeys)。
 
-例如，以下查询使用 [`mapKeys` 函数](/sql-reference/functions/tuple-map-functions#mapkeys) 识别 `LogAttributes` 列中所有独特键，之后使用 [`groupArrayDistinctArray` 函数](/sql-reference/aggregate-functions/combinators) （组合器）。
+例如，以下查询使用 [`mapKeys` 函数](/sql-reference/functions/tuple-map-functions#mapkeys) 识别 `LogAttributes` 列中可用的所有唯一键，随后使用 [`groupArrayDistinctArray` 函数](/sql-reference/aggregate-functions/combinators)（一个组合器）。
 
 ```sql
 SELECT groupArrayDistinctArray(mapKeys(LogAttributes))
@@ -490,14 +488,13 @@ Peak memory usage: 71.90 MiB.
 ```
 
 :::note 避免使用点
-我们不建议在映射列名中使用点，并可能会弃用其使用。请使用下划线 `_`。
+我们不建议在 Map 列名中使用点，可能会弃用其用法。请使用 `_`。
 :::
-
 ## 使用别名 {#using-aliases}
 
-查询映射类型的速度低于正常列的速度 - 参见 ["加速查询"](#accelerating-queries)。此外，它的语法更加复杂，用户编写起来可能会感觉繁琐。为了解决这个问题，我们建议使用别名列。
+查询 map 类型的速度比查询普通列的速度慢 - 见 ["加速查询"](#accelerating-queries)。此外，语法更复杂，用户编写时可能会感到繁琐。为了解决这个后续问题，我们建议使用别名列。
 
-别名列在查询时间计算，并不存储在表中。因此，无法向这种类型的列插入值。使用别名，我们可以引用映射键并简化语法，透明地将映射条目暴露为普通列。考虑以下示例：
+别名列在查询时计算，并且不存储在表中。因此，不可能向这种类型的列中插入值。使用别名，我们可以引用 map 键并简化语法，将 map 项目透明地显示为普通列。考虑以下示例：
 
 ```sql
 CREATE TABLE otel_logs
@@ -527,7 +524,7 @@ PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, Timestamp)
 ```
 
-我们有几个物化列和一个 `ALIAS` 列 `RemoteAddr`，该列访问映射 `LogAttributes`。我们现在可以通过此列查询 `LogAttributes['remote_addr']` 值，从而简化我们的查询，如下所示：
+我们有几个物化列和一个 `ALIAS` 列 `RemoteAddr`，它访问 map `LogAttributes`。现在，我们可以通过这个列查询 `LogAttributes['remote_addr']` 的值，从而简化我们的查询，即：
 
 ```sql
 SELECT RemoteAddr
@@ -545,7 +542,7 @@ LIMIT 5
 5 rows in set. Elapsed: 0.011 sec.
 ```
 
-此外，通过 `ALTER TABLE` 命令添加 `ALIAS` 列很简单。这些列将立即可用，例如：
+此外，通过 `ALTER TABLE` 命令添加 `ALIAS` 非常简单。这些列立即可用，例如：
 
 ```sql
 ALTER TABLE default.otel_logs
@@ -566,59 +563,54 @@ LIMIT 5
 5 rows in set. Elapsed: 0.014 sec.
 ```
 
-:::note 默认为不包括别名
-默认情况下，`SELECT *` 排除别名列。可以通过设置 `asterisk_include_alias_columns=1` 禁用此行为。
+:::note 默认情况下不包括别名
+默认情况下，`SELECT *` 不包括 ALIAS 列。可以通过设置 `asterisk_include_alias_columns=1` 禁用此行为。
 :::
-
 ## 优化类型 {#optimizing-types}
 
-[Clickhouse 的一般最佳实践](/data-modeling/schema-design#optimizing-types) 适用于 ClickHouse 用例。
-
+[Clickhouse 的一般最佳实践](/data-modeling/schema-design#optimizing-types) 适用于 ClickHouse 的用例。
 ## 使用编解码器 {#using-codecs}
 
-除了类型优化，用户在尝试优化 ClickHouse 可观测性架构的压缩时，可以遵循 [编解码器的一般最佳实践](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec)。
+除了类型优化，用户在尝试优化 ClickHouse 可观察性模式的压缩时，可以遵循 [编解码器的通用最佳实践](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec)。
 
-一般来说，用户会发现 `ZSTD` 编解码器非常适合日志和追踪数据集。将压缩值从默认值 1 提高可能改善压缩。然而，这应进行测试，因为较高的值在插入时带来更大的 CPU 开销。通常，我们看到提高这个值的收益很小。
+一般而言，用户会发现 `ZSTD` 编解码器对日志和追踪数据集非常适用。将压缩值从默认值 1 增加可能会改善压缩。然而，这应进行测试，因为更高的值在插入时会增加 CPU 开销。通常，我们看到提高这个值的收益很小。
 
-此外，时间戳在压缩方面受益于增量编码，但如果该列用作主键/排序键，则会导致查询性能变慢。我们建议用户评估各自的压缩与查询性能的权衡。
-
+此外，虽然时间戳在压缩方面受益于增量编码，但如果该列用于主键/排序键，查询性能可能会变慢。我们建议用户权衡相应的压缩与查询性能之间的权衡。
 ## 使用字典 {#using-dictionaries}
 
-[字典](/sql-reference/dictionaries) 是 ClickHouse 的一个 [关键特性](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)，提供来自各种内部和外部 [源](/sql-reference/dictionaries#dictionary-sources) 的内存 [键值](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 表示，优化了超低延迟查找查询。
+[字典](/sql-reference/dictionaries) 是 ClickHouse 的一个 [关键特性](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)，提供来自各种内部和外部 [源](https://sql-reference/dictionaries#dictionary-sources) 的数据的内存中 [键值](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 表示，优化以获得超低延迟的查找查询。
 
-<Image img={observability_12} alt="可观测性与字典" size="md"/>
+<Image img={observability_12} alt="可观察性和字典" size="md"/>
 
-这在各种场景中都很方便，从实时丰富摄取数据而不降低摄取过程到改善查询性能，尤其是 JOIN 会特别受益。
-尽管在可观测性用例中通常不需要连接，但字典仍可以在插入和查询时间用于丰富目的。我们在下面提供两个示例。
+这在各种场景中都很方便，可以在不减慢摄取过程的情况下动态丰富摄取的数据，并提高查询的总体性能，尤其是连接查询受益匪浅。
+虽然在可观察性用例中很少需要连接，但字典仍可以在插入和查询时用于丰富目的。我们提供了以下两方面的示例。
 
 :::note 加速连接
-有兴趣通过字典加速连接的用户可以在 [此处](/dictionary) 找到进一步的详细信息。
+对加速连接感兴趣的用户可以在 [这里](https://dictionary) 查找更多详细信息。
 :::
+### 插入时间 vs 查询时间 {#insert-time-vs-query-time}
 
-### 插入时间与查询时间 {#insert-time-vs-query-time}
+字典可以在查询时间或插入时间用于丰富数据集。这些方法各有优缺点。总结：
 
-字典可以用于在查询时间或插入时间丰富数据集。每种方法都有其各自的优缺点。总结如下：
+- **插入时间** - 如果丰富值不变且存在于可以用来填充字典的外部源中，这通常是适当的。在这种情况下，在插入时间丰富行可以避免在查询时间查找字典。这样做的代价是插入性能以及额外的存储开销，因为丰富的值将被存储为列。
+- **查询时间** - 如果字典中的值经常变化，查询时间查找通常更为适用。这可以避免在映射值变化时更新列（和重写数据）。这种灵活性是以查询时间查找成本为代价的。当需要查找许多行时，例如在过滤子句中使用字典查找，该查询时间成本通常是显著的。对于结果丰富，即在 `SELECT` 中，通常不会感受到这种开销。
 
-- **插入时间** - 如果丰富的值不变并且存在于可用于填充字典的外部源中，通常适用。在这种情况下，在插入时丰富行可以避免查询时间对字典的查找。这会导致插入性能的成本以及额外的存储开销，因为丰富的值将被存储为列。
-- **查询时间** - 如果字典中的值频繁变化，则查询时间查找通常更合适。如果映射的值改变，则避免了需要更新列（并重写数据）。这种灵活性以查询时间查找成本为代价。如果需要在许多行中进行查找，例如在过滤子句中使用字典查找，这个查询时间成本通常是显著的。对于结果丰富，即在 `SELECT` 中，这些开销通常不显著。
+我们建议用户熟悉字典的基础知识。字典提供了一个内存中的查找表，可以使用专用 [专业函数](/sql-reference/functions/ext-dict-functions#dictgetall) 检索值。
 
-我们建议用户熟悉字典的基础知识。字典提供一个内存查找表，可以使用专用的 [专业函数](/sql-reference/functions/ext-dict-functions#dictgetall) 来检索值。
-
-有关简单丰富的示例，请参见字典的指南 [这里](/dictionary)。在下面，我们重点介绍常见的可观测性丰富任务。
-
+有关简单丰富示例，参见 [字典指南](https://dictionary)。在下面，我们重点介绍常见的可观察性丰富任务。
 ### 使用 IP 字典 {#using-ip-dictionaries}
 
-使用 IP 地址对日志和追踪进行地理丰富，包含经纬度值是可观测性中的一种常见需求。我们可以使用 `ip_trie` 结构字典来实现。
+使用 IP 地址将日志和跟踪的纬度和经度值进行地理丰富是一个常见的可观察性要求。我们可以使用 `ip_trie` 结构字典来实现这一点。
 
-我们使用公开可用的 [DB-IP 城市级数据集](https://github.com/sapics/ip-location-db#db-ip-database-update-monthly)，该数据集由 [DB-IP.com](https://db-ip.com/) 提供，受 [CC BY 4.0 许可证](https://creativecommons.org/licenses/by/4.0/) 的约束。
+我们使用公开可用的 [DB-IP 城市级数据集](https://github.com/sapics/ip-location-db#db-ip-database-update-monthly)，该数据集由 [DB-IP.com](https://db-ip.com/) 提供，遵循 [CC BY 4.0 许可](https://creativecommons.org/licenses/by/4.0/) 的条款。
 
-从 [自述文件](https://github.com/sapics/ip-location-db#csv-format) 中，我们可以看到数据的结构如下：
+从 [readme](https://github.com/sapics/ip-location-db#csv-format) 中，我们可以看到数据的结构如下：
 
 ```csv
 | ip_range_start | ip_range_end | country_code | state1 | state2 | city | postcode | latitude | longitude | timezone |
 ```
 
-考虑到这个结构，让我们开始使用 [url()](/sql-reference/table-functions/url) 表功能查看数据：
+根据该结构，让我们通过 [url()](/sql-reference/table-functions/url) 表函数快速查看数据：
 
 ```sql
 SELECT *
@@ -639,7 +631,7 @@ longitude:      153.017
 timezone:       ᴺᵁᴸᴸ
 ```
 
-为了方便起见，我们使用 [`URL()`](/engines/table-engines/special/url) 表引擎创建 ClickHouse 表对象，并确认总行数：
+为了简化操作，让我们使用 [`URL()`](/engines/table-engines/special/url) 表引擎创建一个 ClickHouse 表对象，带上我们的字段名，并确认总行数：
 
 ```sql
 CREATE TABLE geoip_url(
@@ -662,9 +654,9 @@ select count() from geoip_url;
 └─────────┘
 ```
 
-由于我们的 `ip_trie` 字典要求 IP 地址范围以 CIDR 表示，我们需要转换 `ip_range_start` 和 `ip_range_end`。
+由于我们的 `ip_trie` 字典要求使用 CIDR 表示 IP 地址范围，因此我们需要转换 `ip_range_start` 和 `ip_range_end`。
 
-对于每个范围，可以通过以下查询简洁计算其 CIDR：
+可以通过以下查询简洁地计算每个范围的 CIDR：
 
 ```sql
 with
@@ -691,10 +683,10 @@ limit 4;
 ```
 
 :::note
-上述查询中有很多内容。对感兴趣的人，阅读这个出色的 [解释](https://clickhouse.com/blog/geolocating-ips-in-clickhouse-and-grafana#using-bit-functions-to-convert-ip-ranges-to-cidr-notation)。否则请接受上述计算为 IP 范围计算 CIDR。
+在上述查询中发生了很多事情。那些感兴趣的人可以阅读这个精彩的 [解释](https://clickhouse.com/blog/geolocating-ips-in-clickhouse-and-grafana#using-bit-functions-to-convert-ip-ranges-to-cidr-notation)。否则请接受上述内容计算了 IP 范围的 CIDR。
 :::
 
-就我们的目的而言，我们只需要 IP 范围、国家代码和坐标，因此让我们创建一个新表并插入我们的 Geo IP 数据：
+为了我们的目的，我们只需要 IP 范围、国家代码和坐标，因此让我们创建一个新表并插入我们的 Geo IP 数据：
 
 ```sql
 CREATE TABLE geoip
@@ -721,7 +713,7 @@ SELECT
 FROM geoip_url
 ```
 
-为了在 ClickHouse 中执行低延迟的 IP 查找，我们将利用字典在内存中存储关键值 -> 属性映射，以便我们的 Geo IP 数据。ClickHouse 提供了一种 `ip_trie` [字典结构](/sql-reference/dictionaries#ip_trie)，用于将我们的网络前缀（CIDR 块）映射到坐标和国家代码。以下查询指定了使用这种布局的字典和上述表作为源。
+为了在 ClickHouse 中执行低延迟 IP 查找，我们将利用字典来存储我们在内存中进行 IP 数据的键 - 属性映射。 ClickHouse 提供了一个 `ip_trie` [字典结构](/sql-reference/dictionaries#ip_trie)，将我们的网络前缀（CIDR 块）映射到坐标和国家代码。以下查询指定了一个使用此布局和以上表作为源的字典。
 
 ```sql
 CREATE DICTIONARY ip_trie (
@@ -736,7 +728,7 @@ layout(ip_trie)
 lifetime(3600);
 ```
 
-我们可以从字典中选择行，并确认该数据集可用于查找：
+我们可以从字典中选择行并确认此数据集可供查询：
 
 ```sql
 SELECT * FROM ip_trie LIMIT 3
@@ -751,10 +743,10 @@ SELECT * FROM ip_trie LIMIT 3
 ```
 
 :::note 定期刷新
-ClickHouse 中的字典会基于底层表数据和上面使用的生存时间条款定期刷新。要更新时间 IP 字典以反映 DB-IP 数据集中的最新更改，我们只需从 geoip_url 远程表向我们的 `geoip` 表重新插入数据并应用转换。
+ClickHouse 中的字典会根据底层表数据和使用的生命周期子句进行定期刷新。要更新我们的 Geo IP 字典以反映 DB-IP 数据集中的最新更改，我们只需将数据从 geoip_url 远程表重新插入到我们的 `geoip` 表中，并应用转换。
 :::
 
-现在我们已经将 Geo IP 数据加载到我们的 `ip_trie` 字典中（方便起见也命名为 `ip_trie`），我们可以用于 IP 地理位置查找。可以使用 [`dictGet()` 函数](/sql-reference/functions/ext-dict-functions) 进行查找，如下所示：
+现在我们已经将 Geo IP 数据加载到我们的 `ip_trie` 字典中（也方便地命名为 `ip_trie`），我们可以用它进行 IP 地理定位。这可以使用 [`dictGet()` 函数](/sql-reference/functions/ext-dict-functions) 实现，如下所示：
 
 ```sql
 SELECT dictGet('ip_trie', ('country_code', 'latitude', 'longitude'), CAST('85.242.48.167', 'IPv4')) AS ip_details
@@ -766,9 +758,9 @@ SELECT dictGet('ip_trie', ('country_code', 'latitude', 'longitude'), CAST('85.24
 1 row in set. Elapsed: 0.003 sec.
 ```
 
-注意此处的检索速度。这使我们能够丰富日志。在此情况下，我们选择 **执行查询时间丰富**。
+请注意此处的检索速度。这使我们能够丰富日志。在这种情况下，我们选择**执行查询时间丰富**。
 
-回到原始日志数据集，我们可以使用上述内容按国家汇总我们的日志。以下假设我们使用的是来自我们之前物化视图的模式，该物化视图具有提取出的 `RemoteAddress` 列。
+回到最初的日志数据集，我们可以利用上述信息按国家聚合日志。以下假定我们使用早期物化视图的结果模式，该模式提取了 `RemoteAddress` 列。
 
 ```sql
 SELECT dictGet('ip_trie', 'country_code', tuple(RemoteAddress)) AS country,
@@ -791,7 +783,7 @@ LIMIT 5
 Peak memory usage: 1.16 MiB.
 ```
 
-由于 IP 到地理位置的映射可能会变化，用户可能希望了解到请求来源于请求发出时的地址 - 而不是当前同一地址的地理位置。因此，索引时间丰富在这里可能是优选的。这可以通过物化列进行，如下所示或在物化视图的选择中：
+由于 IP 到地理位置的映射可能会改变，用户可能希望在请求发出时了解请求来源，而不是当前同一地址的地理位置。因此，在这里可能更倾向于索引时间丰富。这可以使用物化列或在物化视图的选择中完成，如下所示：
 
 ```sql
 CREATE TABLE otel_logs_v2
@@ -822,19 +814,18 @@ ORDER BY (ServiceName, Timestamp)
 ```
 
 :::note 定期更新
-用户可能希望基于新数据定期更新 IP 丰富字典。这可以通过字典的 `LIFETIME` 条款实现，该条款将导致字典定期从底层表重新加载。要更新底层表，请参见 ["可刷新的物化视图"](/materialized-view/refreshable-materialized-view)。
+用户可能希望根据新数据定期更新 IP 丰富字典。这可以通过字典的 `LIFETIME` 子句来实现，这将导致字典定期从底层表重新加载。要更新底层表，请参见 ["可刷新的物化视图"](/materialized-view/refreshable-materialized-view)。
 :::
 
-上述国家和坐标提供超出按国家分组和过滤的可视化能力。获取灵感请参见 ["可视化地理数据"](/observability/grafana#visualizing-geo-data)。
-
+上述国家和坐标提供了超出按国家分组和过滤的可视化能力。有关启发，请参见 ["可视化地理数据"](/observability/grafana#visualizing-geo-data)。
 ### 使用正则表达式字典（用户代理解析） {#using-regex-dictionaries-user-agent-parsing}
 
-解析 [用户代理字符串](https://en.wikipedia.org/wiki/User_agent) 是一个经典的正则表达式问题，并在基于日志和追踪的数据集中是一个常见需求。ClickHouse 提供了高效的用户代理解析，使用正则表达式树字典。
+解析 [用户代理字符串](https://en.wikipedia.org/wiki/User_agent) 是经典的正则表达式问题，在基于日志和跟踪的数据集中是一个常见的需求。 ClickHouse 提供了使用正则表达式树字典高效解析用户代理。
 
-正则表达式树字典在 ClickHouse 开源中使用 YAMLRegExpTree 字典源类型定义，该类型提供包含正则表达式树的 YAML 文件的路径。如果您希望提供自己的正则表达式字典，可以在 [此处](https://sql-reference/dictionaries#use-regular-expression-tree-dictionary-in-clickhouse-open-source) 找到所需结构的详细信息。下面我们重点介绍使用 [uap-core](https://github.com/ua-parser/uap-core) 进行用户代理解析，并加载我们支持的 CSV 格式的字典。这种方法与 OSS 和 ClickHouse Cloud 兼容。
+正则表达式树字典在 ClickHouse 开源中使用 YAMLRegExpTree 字典源类型定义，提供了指向包含正则表达式树的 YAML 文件的路径。如果您希望提供自己的正则表达式字典，要求的结构细节可以在 [这里](/sql-reference/dictionaries#use-regular-expression-tree-dictionary-in-clickhouse-open-source) 找到。下面我们关注使用 [uap-core](https://github.com/ua-parser/uap-core) 进行用户代理解析，并加载我们的字典以支持 CSV 格式。此方法与 OSS 和 ClickHouse Cloud 兼容。
 
 :::note
-在下面的示例中，我们使用了 2024 年 6 月最新的 uap-core 正则表达式快照，用于用户代理解析。最新的文件（偶尔更新）可以在 [这里](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml) 找到。用户可以遵循 [这里](https://sql-reference/dictionaries#collecting-attribute-values) 中的步骤，将其加载入下面使用的 CSV 文件。
+在下面的示例中，我们使用 2024 年 6 月的最新 uap-core 用户代理解析的正则表达式快照。可以在 [这里](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml) 找到最新文件，该文件不定期更新。用户可以按照 [这里](https://sql-reference/dictionaries#collecting-attribute-values) 的步骤加载到下面使用的 CSV 文件中。
 :::
 
 创建以下内存表。这些表保存我们用于解析设备、浏览器和操作系统的正则表达式。
@@ -878,7 +869,7 @@ INSERT INTO regexp_device SELECT * FROM s3('https://datasets-documentation.s3.eu
 INSERT INTO regexp_browser SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/user_agent_regex/regexp_browser.csv', 'CSV', 'id UInt64, parent_id UInt64, regexp String, keys Array(String), values Array(String)')
 ```
 
-随着我们的内存表填充完毕，我们可以加载我们的正则表达式字典。请注意，我们需要将关键值指定为列 - 这些将是我们可以从用户代理中提取的属性。
+随着内存表的填充，我们可以加载我们的正则表达式字典。请注意，我们需要将键值指定为列 - 这些将是我们可以从用户代理中提取的属性。
 
 ```sql
 CREATE DICTIONARY regexp_os_dict
@@ -920,7 +911,7 @@ LIFETIME(0)
 LAYOUT(regexp_tree);
 ```
 
-加载这些字典后，我们可以提供一个示例用户代理并测试我们新的字典提取功能：
+加载完这些字典后，我们可以提供一个示例用户代理并测试我们新的字典提取能力：
 
 ```sql
 WITH 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:127.0) Gecko/20100101 Firefox/127.0' AS user_agent
@@ -936,7 +927,7 @@ SELECT
 1 row in set. Elapsed: 0.003 sec.
 ```
 
-由于围绕用户代理的规则几乎不会变，字典仅在响应新的浏览器、操作系统和设备时需要更新，因此在插入时执行此提取是有意义的。
+鉴于与用户代理相关的规则很少会变更，字典只需在响应新的浏览器、操作系统和设备时进行更新，因此在插入时间执行此提取是有意义的。
 
 我们可以使用物化列或物化视图来执行此操作。下面我们修改之前使用的物化视图：
 
@@ -966,7 +957,7 @@ AS SELECT
 FROM otel_logs
 ```
 
-这需要我们修改目标表 `otel_logs_v2` 的模式：
+这要求我们修改目标表 `otel_logs_v2` 的模式：
 
 ```sql
 CREATE TABLE default.otel_logs_v2
@@ -996,7 +987,7 @@ ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp, Status)
 ```
 
-在重启收集器并根据之前记录的步骤摄取结构化日志后，我们可以查询新提取的设备、浏览器和操作系统列。
+重新启动收集器并根据之前记录的步骤摄取结构化日志后，我们可以查询我们新提取的 Device、Browser 和 Os 列。
 
 ```sql
 SELECT Device, Browser, Os
@@ -1012,7 +1003,7 @@ Os:     ('Other','0','0','0')
 ```
 
 :::note 元组用于复杂结构
-注意这些用户代理列中使用了元组。元组建议用于已知层次结构的复杂结构。子列与常规列相比提供相同的性能（不同于映射键），同时允许异构类型。
+请注意这些用户代理列中使用的元组。对于已知层次的复杂结构，推荐使用元组。子列的性能与常规列相同（与 map 键不同），同时允许异构类型。
 :::
 ### 进一步阅读 {#further-reading}
 
@@ -1023,12 +1014,12 @@ Os:     ('Other','0','0','0')
 - [字典](/sql-reference/dictionaries)
 ## 加速查询 {#accelerating-queries}
 
-ClickHouse 支持多种加速查询性能的技术。以下内容应仅在选择适当的主键/排序键以优化最常用的访问模式并最大化压缩后进行考虑。这通常对性能的影响最大，而且付出的努力最少。
+ClickHouse 支持多种加速查询性能的技术。以下方法应仅在选择适当的主键/排序键，以优化最常见的访问模式并最大化压缩后考虑。这通常会对性能产生最大的影响，同时付出最少的努力。
 ### 使用物化视图（增量）进行聚合 {#using-materialized-views-incremental-for-aggregations}
 
-在前面的部分中，我们探讨了使用物化视图进行数据转换和过滤。然而，物化视图还可以用于在插入时预计算聚合并存储结果。该结果可以通过后续插入的结果进行更新，从而有效地允许在插入时预计算聚合。
+在前面的部分中，我们探讨了物化视图在数据转换和过滤中的使用。然而，物化视图也可以用于在插入时预计算聚合并存储结果。该结果可以与后续插入的结果进行更新，因此有效地允许在插入时预计算聚合。
 
-这里的主要思想是，结果通常会是原始数据的更小表示（在聚合的情况下是部分草图）。当结合使用更简单的查询从目标表读取结果时，查询时间会比在原始数据上执行相同计算时更快。
+这里的主要思想是，结果通常会是原始数据的较小表示（在聚合的情况下是部分草图）。当与更简单的查询结合以从目标表中读取结果时，查询时间将比对原始数据执行相同计算要快。
 
 考虑以下查询，我们使用结构化日志计算每小时的总流量：
 
@@ -1052,15 +1043,15 @@ LIMIT 5
 Peak memory usage: 1.40 MiB.
 ```
 
-我们可以想象这是用户使用 Grafana 绘制的常见折线图。这个查询确实非常快速——数据集仅有 1000 万行，而 ClickHouse 很快！然而，如果我们将此扩展到数十亿和数万亿行，我们理想情况下希望保持此查询性能。
+我们可以想象，这可能是用户在 Grafana 中绘制的常见折线图。这个查询无疑非常快——数据集只有 1000 万行，而 ClickHouse 很快速！然而，如果我们将其扩展到数十亿和万亿行，我们希望理想地保持这个查询性能。
 
 :::note
-如果我们使用 `otel_logs_v2` 表，该表的结果来自我们之前的物化视图，该视图从 `LogAttributes` 映射中提取大小键，那么这个查询会快 10 倍。我们在这里使用原始数据仅供说明，建议如果这是常见查询，则使用之前的视图。
+如果我们使用 `otel_logs_v2` 表，这个查询的速度将快 10 倍，该表源自我们之前的物化视图，它从 `LogAttributes` 映射中提取大小键。我们在这里使用原始数据仅用于说明，并建议在这是常见查询时使用之前的视图。
 :::
 
-如果我们希望在插入时使用物化视图计算该结果，则需要一个表来接收结果。该表每小时只应保留 1 行。如果接收到现有小时的更新，其他列应与现有小时的行进行合并。为了使增量状态的合并发生，必须存储其他列的部分状态。
+如果我们希望使用物化视图在插入时计算，需要一个表来接收结果。该表每小时只应保留 1 行。如果接收到现有小时的更新，则其他列应合并到现有小时的行中。为了使增量状态合并，必须为其他列存储部分状态。
 
-这在 ClickHouse 中需要一种特殊的引擎类型：SummingMergeTree。这将相同排序键的所有行替换为一行，其中包含数值列的总和。以下表格将合并任何具有相同日期的行，并对任何数值列进行求和。
+这需要 ClickHouse 中的一种特殊引擎：SummingMergeTree。它会将所有具有相同排序键的行替换为一个行，其中包含数值列的汇总值。以下表格将合并任何具有相同日期的行，对任何数值列进行求和。
 
 ```sql
 CREATE TABLE bytes_per_hour
@@ -1072,7 +1063,7 @@ ENGINE = SummingMergeTree
 ORDER BY Hour
 ```
 
-为了演示我们的物化视图，假设我们的 `bytes_per_hour` 表为空且尚未接收任何数据。我们的物化视图对插入到 `otel_logs` 中的数据执行上述 `SELECT`（这将在配置大小的块上执行），并将结果发送到 `bytes_per_hour`。语法如下所示：
+为了演示我们的物化视图，假设我们的 `bytes_per_hour` 表为空且尚未接收任何数据。我们的物化视图在插入到 `otel_logs` 时对数据执行上述 `SELECT`（这将在配置块的大小上执行），结果发送到 `bytes_per_hour`。语法如下所示：
 
 ```sql
 CREATE MATERIALIZED VIEW bytes_per_hour_mv TO bytes_per_hour AS
@@ -1082,9 +1073,9 @@ FROM otel_logs
 GROUP BY Hour
 ```
 
-这里的 `TO` 子句是关键，表示结果将发送到哪里，即 `bytes_per_hour`。
+这里的 `TO` 子句是关键，表示结果将发送到即 `bytes_per_hour`。
 
-如果我们重新启动 OTel Collector 并重新发送日志，`bytes_per_hour` 表将逐步填充上述查询结果。完成后，我们可以确认我们的 `bytes_per_hour` 的大小——我们每小时应该有 1 行：
+如果我们重启 OTel Collector 并重新发送日志，`bytes_per_hour` 表将逐步填充上述查询结果。完成后，我们可以确认 `bytes_per_hour` 的大小 - 每小时将有 1 行：
 
 ```sql
 SELECT count()
@@ -1098,14 +1089,14 @@ FINAL
 1 row in set. Elapsed: 0.039 sec.
 ```
 
-通过存储我们的查询结果，我们有效地将行数从 1000 万行（在 `otel_logs` 中）减少到 113 行。关键在于如果新的日志插入到 `otel_logs` 表中，新值将为其各自的小时发送到 `bytes_per_hour`，并将在后台异步自动合并——通过每小时仅保留一行，`bytes_per_hour` 将始终保持小且实时更新。
+通过存储查询的结果，我们有效地将行数从 1000 万（在 `otel_logs` 中）减少到 113。关键在于，如果新的日志插入到 `otel_logs` 表中，则新值将被发送到 `bytes_per_hour` 的相应小时，并将在后台异步自动合并——通过每小时只保留一行，`bytes_per_hour` 将始终保持小且最新。
 
-由于行的合并是异步的，当用户查询时，每小时可能会有多于一行。为了确保在查询时合并任何未完成的行，我们有两个选项：
+由于行的合并是异步的，当用户查询时每小时可能会有多行。为了确保在查询时合并所有未完成的行，我们有两个选择：
 
-- 在表名称上使用 [`FINAL` 修饰符](/sql-reference/statements/select/from#final-modifier)（如我们在上面的计数查询中所做）。
-- 按照我们最终表中使用的排序键进行聚合，即时间戳，汇总指标。
+- 在表名上使用 [`FINAL` 修饰符](/sql-reference/statements/select/from#final-modifier)（正如我们在上面的计数查询中所做）。
+- 按用于我们的最终表的排序键进行聚合，即时间戳并对指标进行求和。
 
-通常，第二种选择更有效和灵活（该表可以用于其他用途），但对于某些查询来说，第一种可能更简单。以下是我们展示的两种选择：
+通常，第二个选项效率更高且更灵活（该表可以用于其他用途），但第一个选项对某些查询更简单。我们下面展示了两者：
 
 ```sql
 SELECT
@@ -1145,16 +1136,16 @@ LIMIT 5
 5 rows in set. Elapsed: 0.005 sec.
 ```
 
-这将我们的查询从 0.6 秒加速到 0.008 秒——超过 75 倍！
+这将我们的查询速度从 0.6 秒提高到 0.008 秒，超过 75 倍！
 
 :::note
-在处理更大的数据集和更复杂的查询时，这些节省可能会更大。有关示例，请参见 [此处](https://github.com/ClickHouse/clickpy)。
+在更大数据集和更复杂的查询中，这些节省可能会更大。请参见 [这里](https://github.com/ClickHouse/clickpy) 以获取示例。
 :::
-#### 更复杂的示例 {#a-more-complex-example}
+#### 一个更复杂的示例 {#a-more-complex-example}
 
-上述示例使用 [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree) 汇总每小时的简单计数。超出简单总和的统计需要不同的目标表引擎：[AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree)。
+上述示例使用 [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree) 聚合每小时的简单计数。超出简单求和的统计需要不同的目标表引擎：[AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree)。
 
-假设我们希望计算每天独特的 IP 地址（或独特用户）数量。该查询为：
+假设我们希望计算每天的唯一 IP 地址数量（或唯一用户数量）。对此的查询如下：
 
 ```sql
 SELECT toStartOfHour(Timestamp) AS Hour, uniq(LogAttributes['remote_addr']) AS UniqueUsers
@@ -1170,7 +1161,7 @@ ORDER BY Hour DESC
 113 rows in set. Elapsed: 0.667 sec. Processed 10.37 million rows, 4.73 GB (15.53 million rows/s., 7.09 GB/s.)
 ```
 
-为了持久化增量更新的基数计数，需要 AggregatingMergeTree。
+为了保持增量更新的基数计算，需要使用 AggregatingMergeTree。
 
 ```sql
 CREATE TABLE unique_visitors_per_hour
@@ -1182,9 +1173,9 @@ ENGINE = AggregatingMergeTree
 ORDER BY Hour
 ```
 
-为了确保 ClickHouse 知道聚合状态将被存储，我们将 `UniqueUsers` 列定义为 [`AggregateFunction`](/sql-reference/data-types/aggregatefunction) 类型，指定部分状态的函数源（uniq）和源列的类型（IPv4）。与 SummingMergeTree 一样，具有相同 `ORDER BY` 键值的行将被合并（上述示例中的小时）。
+为了确保 ClickHouse 知道将存储汇总状态，我们将 `UniqueUsers` 列定义为类型 [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)，指定部分状态的函数源（uniq）和源列的类型（IPv4）。与 SummingMergeTree 一样，具有相同 `ORDER BY` 键值的行将被合并（上面的例子中的小时）。
 
-相关的物化视图使用之前的查询：
+相关的物化视图使用上面的查询：
 
 ```sql
 CREATE MATERIALIZED VIEW unique_visitors_per_hour_mv TO unique_visitors_per_hour AS
@@ -1195,9 +1186,9 @@ GROUP BY Hour
 ORDER BY Hour DESC
 ```
 
-注意我们在聚合函数末尾添加的后缀 `State`。这确保返回的是函数的聚合状态，而不是最终结果。这将包含额外的信息，以允许此部分状态与其他状态合并。
+注意我们在聚合函数的末尾添加了后缀 `State`。这确保返回函数的聚合状态而不是最终结果。这将包含额外的信息，以便允许该部分状态与其他状态合并。
 
-一旦数据通过 Collector 重启重新加载，我们可以确认在 `unique_visitors_per_hour` 表中有 113 行可用。
+一旦通过 Collector 重启重新加载数据，我们可以确认 `unique_visitors_per_hour` 表中可用 113 行。
 
 ```sql
 SELECT count()
@@ -1226,10 +1217,10 @@ ORDER BY Hour DESC
 113 rows in set. Elapsed: 0.027 sec.
 ```
 
-注意我们在这里使用 `GROUP BY` 而不是使用 `FINAL`。
+注意我们在此处使用 `GROUP BY` 而不是使用 `FINAL`。
 ### 使用物化视图（增量）进行快速查找 {#using-materialized-views-incremental--for-fast-lookups}
 
-用户在选择 ClickHouse 数组键时，应考虑其访问模式，包括在过滤和聚合子句中经常使用的列。在可观察性用例中，当用户拥有更多无法用一组列封装的多样化访问模式时，这可能会受到限制。这在内置于默认 OTel 架构的示例中得到最好的说明。考虑跟踪的默认架构：
+用户在选择 ClickHouse 排序键时应考虑他们的访问模式，以及在过滤和聚合子句中频繁使用的列。这在可观察性用例中可能是有限制的，因为用户有更多多样化的访问模式，无法在一组列中封装。这在默认 OTel 模式的内置示例中得到了很好的说明。考虑跟踪的默认模式：
 
 ```sql
 CREATE TABLE otel_traces
@@ -1268,9 +1259,9 @@ PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SpanName, toUnixTimestamp(Timestamp), TraceId)
 ```
 
-此架构经过优化，可以按 `ServiceName`、`SpanName` 和 `Timestamp` 进行过滤。在跟踪中，用户还需要按特定 `TraceId` 进行查找并检索相关追踪的段。虽然这一点出现在排序键中，但它在末尾的位置意味着 [过滤将不那么高效](/guides/best-practices/sparse-primary-indexes#ordering-key-columns-efficiently)，并且在检索单个追踪时，很可能会需要扫描大量数据。
+该模式针对按 `ServiceName`、`SpanName` 和 `Timestamp` 进行过滤进行了优化。在跟踪中，用户还需要能够通过特定的 `TraceId` 进行查找并检索相关跟踪的跨度。虽然这一点在排序键中存在，但它在末尾的位置意味着 [过滤效率将不如](https://guides/best-practices/sparse-primary-indexes#ordering-key-columns-efficiently)，并且在检索单个跟踪时可能需要扫描大量数据。
 
-OTel Collector 还安装了物化视图和相关表以应对这一挑战。表和视图如下所示：
+OTel 收集器还安装了一个物化视图和相关的表来解决这个问题。表和视图如下所示：
 
 ```sql
 CREATE TABLE otel_traces_trace_id_ts
@@ -1299,7 +1290,7 @@ WHERE TraceId != ''
 GROUP BY TraceId
 ```
 
-该视图有效地确保表 `otel_traces_trace_id_ts` 拥有追踪的最小和最大时间戳。该表按 `TraceId` 排序，从而可以有效检索这些时间戳。这些时间戳范围可以在查询主 `otel_traces` 表时使用。更具体地说，在通过 ID 检索追踪时，Grafana 使用以下查询：
+该视图有效确保表 `otel_traces_trace_id_ts` 具有跟踪的最小和最大时间戳。这个按 `TraceId` 排序的表允许高效检索这些时间戳。这些时间戳范围可以在查询主 `otel_traces` 表时使用。更具体地说，当通过其 ID 检索跟踪时，Grafana 使用以下查询：
 
 ```sql
 WITH 'ae9226c78d1d360601e6383928e4d22d' AS trace_id,
@@ -1328,28 +1319,28 @@ WHERE (traceID = trace_id) AND (startTime >= trace_start) AND (startTime <= trac
 LIMIT 1000
 ```
 
-CTE 在此处识别追踪 ID `ae9226c78d1d360601e6383928e4d22d` 的最小和最大时间戳，然后使用此信息过滤主 `otel_traces` 表以获取其关联的段。
+此处的 CTE 确定跟踪 ID `ae9226c78d1d360601e6383928e4d22d` 的最小和最大时间戳，然后使用此信息过滤主 `otel_traces` 的相关跨度。
 
-对于类似的访问模式，可以应用相同的方法。我们在数据建模中探讨了类似的示例 [此处](/materialized-view/incremental-materialized-view#lookup-table)。
+可以对类似的访问模式应用相同的方法。我们在数据建模 [这里](/materialized-view/incremental-materialized-view#lookup-table) 探讨了类似的示例。
 ### 使用投影 {#using-projections}
 
 ClickHouse 投影允许用户为表指定多个 `ORDER BY` 子句。
 
-在前面的部分中，我们探讨了如何在 ClickHouse 中使用物化视图预计算聚合、转换行以及优化可观察查询以适应不同的访问模式。
+在前面的部分中，我们探讨了物化视图如何在 ClickHouse 中用于预计算聚合、转换行以及优化可观察性查询以适应不同的访问模式。
 
-我们提供了一个示例，其中物化视图将行发送到与接收插入的原始表不同的排序键的目标表，以优化按追踪 ID 的查找。
+我们提供了一个示例，其中物化视图将行发送到目标表，该表的排序键不同于接收插入的原始表，以便在通过跟踪 ID 查找时优化。
 
-投影可以用来解决相同的问题，使用户能够针对不属于主键的列的查询进行优化。
+投影可用于解决相同的问题，使用户能够对不属于主键的列的查询进行优化。
 
-理论上，此能力可用于为表提供多个排序键，但有一个显著的缺点：数据重复。具体来说，数据需要按主要主键的顺序写入，还需按照为每个投影指定的顺序写入。这将减慢插入速度并消耗更多磁盘空间。
+理论上，这种能力可以用于为一个表提供多个排序键，具有一个显著的缺点：数据重复。具体而言，数据需要按照主主键的顺序写入，并且还需要按照每个投影指定的顺序写入。这将减慢插入速度，并消耗更多的磁盘空间。
 
-:::note 投影与物化视图
-投影提供了与物化视图许多相同的功能，但应谨慎使用，后者通常更受青睐。用户应理解缺点以及何时适合使用。例如，尽管投影可用于预计算聚合，我们建议用户为此使用物化视图。
+:::note 投影 vs 物化视图
+投影提供了许多与物化视图相同的功能，但应谨慎使用，后者通常更受偏爱。用户应了解缺点以及何时适用。例如，虽然可以使用投影进行预计算聚合，但我们建议用户使用物化视图来实现这一目标。
 :::
 
 <Image img={observability_13} alt="Observability and projections" size="md"/>
 
-考虑以下查询，它根据 500 错误代码过滤我们的 `otel_logs_v2` 表。这可能是日志记录用户希望按错误代码过滤的常见访问模式：
+考虑以下查询，它通过 500 错误码过滤我们的 `otel_logs_v2` 表。这可能是用户在记录中希望按错误代码过滤的常见访问模式：
 
 ```sql
 SELECT Timestamp, RequestPath, Status, RemoteAddress, UserAgent
@@ -1364,10 +1355,10 @@ Peak memory usage: 56.54 MiB.
 ```
 
 :::note 使用 Null 测量性能
-我们在这里不使用 `FORMAT Null` 打印结果。这会强制读取所有结果但不返回，从而防止由于 LIMIT 而导致查询提前终止。这只是为了显示扫描所有 1000 万行所需的时间。
+我们这里不使用 `FORMAT Null` 打印结果。这强制所有结果被读取但不返回，从而防止因 LIMIT 导致查询的提前终止。这仅仅是为了展示扫描 1000 万行所需的时间。
 :::
 
-上述查询需要使用我们选择的排序键 `(ServiceName, Timestamp)` 进行线性扫描。虽然我们可以将 `Status` 添加到排序键末尾，以提高上述查询的性能，但我们也可以添加一个投影。
+上述查询需要根据我们选择的排序键 `(ServiceName, Timestamp)` 进行线性扫描。虽然我们可以将 `Status` 添加到排序键的末尾，以提高上述查询的性能，但我们也可以添加一个投影。
 
 ```sql
 ALTER TABLE otel_logs_v2 (
@@ -1380,7 +1371,7 @@ ALTER TABLE otel_logs_v2 (
 ALTER TABLE otel_logs_v2 MATERIALIZE PROJECTION status
 ```
 
-注意，我们必须先创建投影，然后进行物化。此后者命令使数据在磁盘上以两种不同顺序存储两次。投影还可以在创建数据时定义，如下所示，并将在数据插入时自动维护。
+注意我们必须先创建投影，然后对其进行物化。后者的命令会导致数据在磁盘上以两种不同的顺序存储两次。如果在创建数据时定义投影，如下所示，将在插入时自动维护。
 
 ```sql
 CREATE TABLE otel_logs_v2
@@ -1412,7 +1403,7 @@ ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
 ```
 
-重要的是，如果通过 `ALTER` 创建投影，则在发出 `MATERIALIZE PROJECTION` 命令时，会异步创建该投影。用户可以通过以下查询确认此操作的进度，等待 `is_done=1`。
+重要的是，如果通过 `ALTER` 创建投影，则在发出 `MATERIALIZE PROJECTION` 命令时，它的创建是异步的。用户可以通过以下查询确认该操作的进度，等待 `is_done=1`。
 
 ```sql
 SELECT parts_to_do, is_done, latest_fail_reason
@@ -1426,7 +1417,7 @@ WHERE (`table` = 'otel_logs_v2') AND (command LIKE '%MATERIALIZE%')
 1 row in set. Elapsed: 0.008 sec.
 ```
 
-如果我们重复上述查询，可以看到性能显著改善，代价是额外存储（有关如何测量，请参见 ["测量表大小和压缩"](#measuring-table-size--compression)）。
+如果我们重复上述查询，可以看到性能在付出额外存储成本的情况下显著改善（有关如何测量这一点，请参见 ["测量表的大小和压缩"](#measuring-table-size--compression)）。
 
 ```sql
 SELECT Timestamp, RequestPath, Status, RemoteAddress, UserAgent
@@ -1438,21 +1429,21 @@ FORMAT `Null`
 Peak memory usage: 27.85 MiB.
 ```
 
-在上述示例中，我们在投影中指定了早期查询中使用的列。这将意味着只有这些指定的列将按状态的顺序作为投影的一部分存储在磁盘上。如果我们在这里使用 `SELECT *`，则所有列都会被存储。虽然这将允许更多查询（使用任何列的子集）受益于投影，但将产生额外存储。有关磁盘空间和压缩的测量，参见 ["测量表大小和压缩"](#measuring-table-size--compression)。
-### 次级/数据跳过索引 {#secondarydata-skipping-indices}
+在上面的示例中，我们在投影中指定了早期查询中使用的列。这意味着这些指定的列将按状态存储在磁盘上。如果我们在这里使用 `SELECT *`，则所有列都将被存储。虽然这会使更多查询（使用任何子集列）受益于投影，但将产生额外的存储成本。有关磁盘空间和压缩的测量，请参见 ["测量表的大小和压缩"](#measuring-table-size--compression)。
+### 二级/数据跳过索引 {#secondarydata-skipping-indices}
 
-无论 ClickHouse 的主键调优得多好，一些查询注定需要完整的表扫描。尽管可以通过使用物化视图（以及某些查询的投影）来减轻这种情况，但这些需要额外的维护，用户需要知道它们的可用性，以确保它们得到利用。虽然传统的关系数据库通过使用次级索引来解决此问题，但在像 ClickHouse 这样的列式数据库中，它们是无效的。相反，ClickHouse 使用“跳过”索引，这可以显著提升查询性能，让数据库跳过没有匹配值的大数据块。
+无论如何，如果在 ClickHouse 中主键的调优良好，一些查询不可避免地会需要全表扫描。虽然可以通过使用物化视图（以及对于某些查询使用投影）来减轻这一问题，但这些需要额外的维护，用户必须了解它们的可用性以确保它们被利用。虽然传统关系数据库通过二级索引解决了这一问题，但在列式数据库如 ClickHouse 中，这些是无效的。相反，ClickHouse 使用“跳过”索引，通过允许数据库跳过大量不匹配值的数据块，显著提高查询性能。
 
-默认的 OTel 架构使用次级索引，试图加速对映射的访问。尽管我们发现这些通常无效，并不推荐将它们复制到您的自定义架构，但跳过索引仍然可能有用。
+默认的 OTel 模式使用二级索引来加速对地图的访问。虽然我们发现这些通常无效，并不建议将它们复制到自定义模式中，但跳过索引仍然可以是有用的。
 
-用户应该在尝试应用它们之前阅读和理解 [次级索引指南](/optimize/skipping-indexes)。
+用户在尝试应用它们之前，应阅读并理解 [二级索引指南](/optimize/skipping-indexes)。
 
-**一般而言，当主键与目标的非主键列/表达式之间存在强相关性，并且用户正在查找稀有值时，即在许多粒度中不出现的值，它们将是有效的。**
+**通常，当主键与目标的非主列/表达式之间存在强相关性，并且用户查找稀有值时，即那些在许多粒度中不会出现的值，它们是有效的。**
 ### 文本搜索的布隆过滤器 {#bloom-filters-for-text-search}
 
-对于可观察性查询，当用户需要执行文本搜索时，次级索引可能会很有用。具体来说，基于 ngram 和基于 token 的布隆过滤器索引 [`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types) 和 [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types) 可用于加速对 String 列的搜索，配合操作符 `LIKE`、`IN` 和 hasToken。重要的是，基于 token 的索引使用非字母数字字符作为分隔符生成 token。这意味着在查询时只能匹配 token（或整个单词）。为了实现更细粒度的匹配，可以使用 [N-gram 布隆过滤器](/optimize/skipping-indexes#bloom-filter-types)。这将字符串分割为指定大小的 ngram，从而实现子词匹配。
+对于可观察性查询，当用户需要执行文本搜索时，二级索引会很有用。具体而言，基于 ngram 和 token 的布隆过滤器索引 [`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types) 和 [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types) 可用于加速对字符串列的搜索，使用操作符 `LIKE`、`IN` 和 hasToken。重要的是，基于 token 的索引使用非字母数字字符作为分隔符生成 token。这意味着在查询时只能匹配 token（或完整单词）。对于更细粒度的匹配，可以使用 [N-gram 布隆过滤器](/optimize/skipping-indexes#bloom-filter-types)。该过滤器将字符串拆分为指定大小的 ngram，从而允许子词匹配。
 
-为了评估将产生的 token 及其匹配，可以使用 `tokens` 函数：
+为了评估将要生成的 token 及其匹配，可以使用 `tokens` 函数：
 
 ```sql
 SELECT tokens('https://www.zanbil.ir/m/filter/b113')
@@ -1464,7 +1455,7 @@ SELECT tokens('https://www.zanbil.ir/m/filter/b113')
 1 row in set. Elapsed: 0.008 sec.
 ```
 
-`ngram` 函数提供类似的功能，其中 `ngram` 大小可以作为第二个参数指定：
+`ngram` 函数提供了类似的能力，其中可以将 `ngram` 大小指定为第二个参数：
 
 ```sql
 SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
@@ -1476,11 +1467,11 @@ SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
 1 row in set. Elapsed: 0.008 sec.
 ```
 
-:::note 倒排索引
-ClickHouse 还实验性地支持作为次级索引的倒排索引。目前我们不推荐将其用于日志数据集，但预期它们将在生产准备就绪时取代基于 token 的布隆过滤器。
+:::note 反向索引
+ClickHouse 还对反向索引作为二级索引提供实验性支持。我们目前不建议将其用于日志数据集，但预计它们将取代基于 token 的布隆过滤器，成为生产就绪状态。
 :::
 
-在本示例中，我们使用结构化日志数据集。假设我们希望统计 `Referer` 列包含 `ultra` 的日志。
+在这个示例中，我们使用结构化日志数据集。假设我们希望计算 `Referer` 列中包含 `ultra` 的日志数量。
 
 ```sql
 SELECT count()
@@ -1522,9 +1513,9 @@ ENGINE = MergeTree
 ORDER BY (Timestamp)
 ```
 
-索引 `ngrambf_v1(3, 10000, 3, 7)` 在此处包括四个参数。其中最后一个（值 7）表示种子。其他参数表示 ngram 大小（3）、值 `m`（过滤器大小）和哈希函数数量 `k`（7）。`k` 和 `m` 需要调优，并将基于唯一 ngram/token 的数量以及过滤器结果为真负的概率——从而确认某个值在粒度中不存在。我们建议使用 [这些函数](/engines/table-engines/mergetree-family/mergetree#bloom-filter) 来帮助确定这些值。
+索引 `ngrambf_v1(3, 10000, 3, 7)` 这里有四个参数。最后一个参数（值为 7）表示一个种子。其他参数表示 ngram 大小（3）、值 `m`（过滤器大小）以及哈希函数的数量 `k`（7）。`k` 和 `m` 需要调整，基于唯一 ngram/token 的数量和过滤器产生真实负值的概率 - 从而确认某个值不在某个粒度中。我们建议使用 [这些函数](/engines/table-engines/mergetree-family/mergetree#bloom-filter) 来帮助确定这些值。
 
-如果调优正确，这里的提速可能会显著：
+如果调整得当，这里的加速可能会非常显著：
 
 ```sql
 SELECT count()
@@ -1539,12 +1530,12 @@ Peak memory usage: 129.60 KiB.
 ```
 
 :::note 示例仅供参考
-以上仅供说明。我们建议用户在插入时从日志中提取结构，而不是尝试使用基于 token 的布隆过滤器来优化文本搜索。然而，确实存在某些情况下，用户拥有堆栈跟踪或其他大字符串，文本搜索可能由于结构不确定而有用。
+以上仅供说明。我们建议用户在插入时从日志中提取结构，而不是尝试使用基于 token 的布隆过滤器来优化文本搜索。然而，有些情况下用户可能会有堆栈跟踪或其他庞大的字符串，在这些情况下，文本搜索由于结构不确定性可能是有用的。
 :::
 
-关于使用布隆过滤器的一般指南：
+使用布隆过滤器的一些一般指导原则：
 
-布隆过滤器的目标是过滤 [粒度](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)，从而避免加载某列的所有值并执行线性扫描。可以使用 `EXPLAIN` 子句，带有参数 `indexes=1`，以识别跳过的粒度数量。请考虑以下原始表 `otel_logs_v2` 和具有 ngram 布隆过滤器的表 `otel_logs_bloom` 的响应。
+布隆的目标是过滤 [粒度](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)，从而避免加载某列的所有值并进行线性扫描。可以使用 `EXPLAIN` 子句，并设置参数 `indexes=1`，来识别已跳过的粒度数量。请考虑以下原始表 `otel_logs_v2` 和带有 ngram 布隆过滤器的表 `otel_logs_bloom` 的响应。
 
 ```sql
 EXPLAIN indexes = 1
@@ -1592,7 +1583,7 @@ WHERE Referer LIKE '%ultra%'
 └────────────────────────────────────────────────────────────────────┘
 ```
 
-布隆过滤器通常只有在比列本身更小时才会更快。如果它更大，则可能没有显著的性能收益。通过以下查询比较过滤器的大小和列的大小：
+布隆过滤器通常仅在其大小小于列本身时才能更快。如果它更大，那么在性能上可能几乎没有好处。通过以下查询比较过滤器和列的大小：
 
 ```sql
 SELECT
@@ -1626,20 +1617,20 @@ WHERE `table` = 'otel_logs_bloom'
 1 row in set. Elapsed: 0.004 sec.
 ```
 
-在上述示例中，我们可以看到次级布隆过滤器索引大小为 12MB——几乎是列本身压缩大小 56MB 的 5 倍。
+在上述示例中，我们可以看到二级布隆过滤器索引的大小为 12MB - 几乎是该列压缩大小 56MB 的五分之一。
 
-布隆过滤器可能需要显著调优。我们建议遵循 [此处](/engines/table-engines/mergetree-family/mergetree#bloom-filter) 的说明，这对于识别最佳设置可能是有用的。布隆过滤器在插入和合并时也可能很昂贵。用户在将布隆过滤器添加到生产中之前，应评估对插入性能的影响。
+布隆过滤器可能需要显著调整。我们建议遵循 [这里的说明](/engines/table-engines/mergetree-family/mergetree#bloom-filter)，这些说明在识别最佳设置时可能会很有用。布隆过滤器在插入和合并时也可能是昂贵的。用户在将布隆过滤器添加到生产之前，应评估其对插入性能的影响。
 
-有关次级跳过索引的更多详细信息，请参阅 [此处](/optimize/skipping-indexes#skip-index-functions)。
+有关二级跳过索引的更多详细信息，可以在 [这里](https://optimize/skipping-indexes#skip-index-functions) 找到。
 ### 从映射中提取 {#extracting-from-maps}
 
-在 OTel 架构中，Map 类型是普遍存在的。此类型要求值和键具有相同类型——足以用于如 Kubernetes 标签等元数据。请注意，当查询 Map 类型的子键时，会加载整个父列。如果映射包含多个键，则可能会因需要从磁盘读取的数据量比如果键存在于某列要多而导致显著的查询惩罚。
+Map 类型在 OTel 模式中普遍存在。此类型要求值和键具有相同的类型——对于 Kubernetes 标签等元数据来说足够。当查询 Map 类型的子键时，整个父列会被加载。如果映射中有许多键，这会产生显著的查询惩罚，因为需要从磁盘读取的数据比键作为列存在时要多。
 
-如果您经常查询特定键，请考虑将其移到根目录的专用列中。这通常是在响应常见访问模式后进行的任务，且在部署后进行，可能在生产之前难以预测。有关如何在部署后修改架构，请参见 ["管理架构更改"](/observability/managing-data#managing-schema-changes)。
-## 测量表大小和压缩 {#measuring-table-size--compression}
+如果您经常查询特定的键，请考虑将其移动到根部的专用列中。这通常是响应于常见访问模式和部署后进行的任务，可能在生产之前难以预测。有关如何在部署后修改架构，请参见 ["管理架构变化"](/observability/managing-data#managing-schema-changes)。
+## 测量表的大小和压缩 {#measuring-table-size--compression}
 
-ClickHouse 用于可观察性的主要原因之一是压缩。
+ClickHouse 被用于可观察性的一个主要原因是压缩。
 
-除了显著降低存储成本外，磁盘上的数据量减少意味着更少的 I/O 和更快的查询和插入。I/O 的减少将超过任何与 CPU 相关的压缩算法的开销。因此，改善数据的压缩应当是确保 ClickHouse 查询快速的首要任务。
+它不仅能显著降低存储成本，更少的数据在磁盘上意味着更少的 I/O 和更快的查询及插入。I/O 的减少将超出任何压缩算法与 CPU 的开销。因此，在确保 ClickHouse 查询快速时，数据压缩的改善应该是首要关注点。
 
-有关测量压缩的详细信息，请参见 [此处](/data-compression/compression-in-clickhouse)。
+有关测量压缩的详细信息，请参见 [这里](/data-compression/compression-in-clickhouse)。
