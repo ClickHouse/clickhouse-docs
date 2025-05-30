@@ -1,3 +1,5 @@
+@import '../../../../css/breakpoints.css';
+
 :root {
   --docusaurus-collapse-button-bg: transparent;
   --docusaurus-collapse-button-bg-hover: rgb(0 0 0 / 10%);
@@ -8,7 +10,7 @@
   --docusaurus-collapse-button-bg-hover: rgb(255 255 255 / 10%);
 }
 
-@media (min-width: 997px) {
+@media (min-width: var(--mobile-breakpoint)) {
   .collapseSidebarButton {
     display: block !important;
     background-color: var(--docusaurus-collapse-button-bg);

@@ -1,3 +1,5 @@
+@import '../../css/breakpoints.css';
+
 .docsNavDropdownContainer {
   padding: 8px;
   border-radius: 10px;
@@ -85,7 +87,7 @@
   transform: translateY(30px);
 }
 
-@media (max-width: 768px) {
+@media (max-width: var(--mobile-breakpoint)) {
   .docsNavDropdownMenu {
     position: absolute;
     min-width: 95%;
@@ -201,13 +203,13 @@
   font-size: 0.75rem;
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: var(--laptop-breakpoint)) {
   .docsNavDropdownContainer {
     padding: 0px;
   }
 
   [data-theme="dark"] .docsNavDropdownContainer {
-    background-color: #201c1c;
+
   }
 
   [data-theme="light"] .docsNavDropdownContainer {

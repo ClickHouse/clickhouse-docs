@@ -7,7 +7,7 @@ import SearchBar from "@theme/SearchBar";
 import clsx from 'clsx'
 import { ThemeClassNames } from '@docusaurus/theme-common'
 import { useNavbarSecondaryMenu } from '@docusaurus/theme-common/internal';
-import styles from './styles.module.css'
+import styles from './styles.module.scss'
 import DocSidebarItems from '@theme/DocSidebarItems'
 import sidebars from '../../../../../sidebars';
 
