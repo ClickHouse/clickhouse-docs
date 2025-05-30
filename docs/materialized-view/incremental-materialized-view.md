@@ -860,7 +860,7 @@ GROUP BY UserId
 1 row in set. Elapsed: 0.005 sec.
 ```
 
-Inserts into the `badges` table will trigger the view, causing `user_activity` to not receive updates:
+Inserts into the `badges` table will not trigger the view, causing `user_activity` to not receive updates:
 
 ```sql
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);

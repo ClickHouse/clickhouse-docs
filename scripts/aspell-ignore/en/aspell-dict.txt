@@ -190,6 +190,7 @@ ClickPipe
 ClickPipes
 ClickPipes's
 ClickPy
+ClickStack
 ClickVisual
 ClickableSquare
 CloudAvailableBadge
@@ -246,6 +247,7 @@ DDLs
 DECRYPT
 Decrypter
 DELETEs
+Deno
 DESC
 DIEs
 DOGEFI
@@ -414,6 +416,7 @@ Grafana
 GraphQL
 GraphiteMergeTree
 Greenwald
+Gunicorn
 HANA
 HDDs
 HHMM
@@ -442,6 +445,8 @@ Hostname
 HouseOps
 Hudi
 HudiCluster
+HyperDX
+HyperDX's
 HyperLogLog
 Hypertable
 Hypot
@@ -634,6 +639,7 @@ LowCardinality
 LpDistance
 LpNorm
 LpNormalize
+Lucene
 Luebbe
 Luzmo
 Lyft
@@ -661,6 +667,7 @@ MarkCacheBytes
 MarkCacheFiles
 MarksLoaderThreads
 MarksLoaderThreadsActive
+Mastercard
 MaterializedMySQL
 MaterializedPostgreSQL
 MaterializedView
@@ -750,6 +757,7 @@ Namenode
 NamesAndTypesList
 Nano
 Nesterov
+NestJS
 NetFlow
 NetworkReceive
 NetworkReceiveBytes
@@ -841,6 +849,7 @@ Ok
 Omni
 OnTime
 Ookla
+OpAMP
 OpenAI
 OpenAPI
 OpenCelliD
@@ -1285,6 +1294,7 @@ Vadim
 Valgrind
 Vectorization
 Vectorized
+Vercel
 VersionBadge
 VersionInteger
 VersionedCollapsingMergeTree
@@ -1295,6 +1305,7 @@ Vose
 WALs
 WSFG
 WarpStream
+Websocket
 Welch's
 Werror
 Wether
@@ -1479,6 +1490,7 @@ atomicity
 auth
 authenticator
 authenticators
+autocomplete
 autocompletion
 autodetect
 autodetected
@@ -1580,6 +1592,7 @@ bugfix
 buildId
 buildable
 builtins
+bundler
 burstable
 byteHammingDistance
 byteSize
@@ -1691,6 +1704,7 @@ const
 contrib
 convertCharset
 coroutines
+correlatable
 corrMatrix
 corrStable
 corrmatrix
@@ -2004,6 +2018,7 @@ fromModifiedJulianDayOrNull
 fromUTCTimestamp
 fromUnixTimestamp
 fromUnixTimestampInJodaSyntax
+frontend
 fsync
 func
 fuzzBits
@@ -2318,6 +2333,7 @@ libpq
 libpqxx
 librdkafka
 libs
+lifecycle
 libunwind
 libuv
 libvirt
@@ -2409,6 +2425,7 @@ metrica
 metroHash
 mfedotov
 mflix
+microservice
 microservices
 middleware
 minMap
@@ -2423,6 +2440,7 @@ minmap
 minmax
 mins
 misconfiguration
+misconfigurations
 misconfigured
 mispredictions
 mlock
@@ -3148,6 +3166,7 @@ throughputs
 throwIf
 throwif
 timeDiff
+timespan
 timeSeriesData
 timeSeriesMetrics
 timeSeriesTags
@@ -3389,6 +3408,7 @@ userver
 utils
 uuid
 uuidv
+uvicorn
 vCPU
 vCPUs
 varPop
@@ -3424,6 +3444,7 @@ vruntime
 walkthrough
 wchc
 wchs
+webhook
 webpage
 webserver
 weekyear
@@ -3435,6 +3456,7 @@ whitespace
 whitespaces
 wikistat
 windowFunnel
+winston
 wordShingleMinHash
 wordShingleMinHashArg
 wordShingleMinHashArgCaseInsensitive
