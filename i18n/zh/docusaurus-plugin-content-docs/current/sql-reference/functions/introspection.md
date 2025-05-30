@@ -1,34 +1,35 @@
 ---
 'description': 'Documentation for Introspection Functions'
-'sidebar_label': 'Introspection'
+'sidebar_label': '内省'
 'sidebar_position': 100
 'slug': '/sql-reference/functions/introspection'
 'title': '内省函数'
 ---
 
 
-# 反射函数
+# 自省函数
 
-您可以使用本章中描述的函数来反射 [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) 和 [DWARF](https://en.wikipedia.org/wiki/DWARF) 进行查询分析。
+您可以使用本章中描述的函数来自省 [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) 和 [DWARF](https://en.wikipedia.org/wiki/DWARF) 以进行查询分析。
 
-:::note    
-这些函数比较慢，并且可能涉及安全性考虑。
+:::note
+这些函数速度较慢，并可能存在安全隐患。
 :::
 
-为了正确操作反射函数：
+为了使自省函数正常工作：
 
 - 安装 `clickhouse-common-static-dbg` 包。
+
 - 将 [allow_introspection_functions](../../operations/settings/settings.md#allow_introspection_functions) 设置为 1。
 
-        出于安全原因，反射函数默认是禁用的。
+        出于安全原因，自省函数默认情况下被禁用。
 
-ClickHouse 将分析器报告保存到 [trace_log](/operations/system-tables/trace_log) 系统表中。请确保表和分析器配置正确。
+ClickHouse 将分析报告保存到 [trace_log](/operations/system-tables/trace_log) 系统表中。确保该表和分析器配置正确。
 
 ## addressToLine {#addresstoline}
 
 将 ClickHouse 服务器进程中的虚拟内存地址转换为 ClickHouse 源代码中的文件名和行号。
 
-如果使用官方的 ClickHouse 包，则需要安装 `clickhouse-common-static-dbg` 包。
+如果您使用官方 ClickHouse 软件包，则需要安装 `clickhouse-common-static-dbg` 包。
 
 **语法**
 
@@ -42,22 +43,22 @@ addressToLine(address_of_binary_instruction)
 
 **返回值**
 
-- 源代码文件名和在此文件中的行号，以冒号分隔。
-        例如 `/build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199`，其中 `199` 是行号。
-- 如果函数找不到调试信息，则返回二进制的名称。
+- 源代码文件名和该文件中的行号，用冒号分隔。
+        例如，`/build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199`，其中 `199` 是行号。
+- 如果函数找不到调试信息，则返回二进制文件的名称。
 - 如果地址无效，则返回空字符串。
 
 类型: [String](../../sql-reference/data-types/string.md)。
 
 **示例**
 
-启用反射函数：
+启用自省函数：
 
 ```sql
 SET allow_introspection_functions=1;
 ```
 
-从 `trace_log` 系统表中选择第一条记录：
+选择 `trace_log` 系统表中的第一条字符串：
 
 ```sql
 SELECT * FROM system.trace_log LIMIT 1 \G;
@@ -99,7 +100,7 @@ LIMIT 1
 \G
 ```
 
-[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 函数允许通过 `addressToLine` 函数处理 `trace` 数组中的每个单独元素。您可以在输出的 `trace_source_code_lines` 列中看到这一处理结果。
+[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 函数允许通过 `addressToLine` 函数处理 `trace` 数组中的每个单独元素。您可以在输出的 `trace_source_code_lines` 列中看到此处理的结果。
 
 ```text
 Row 1:
@@ -116,10 +117,10 @@ trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 
 ## addressToLineWithInlines {#addresstolinewithinlines}
 
-与 `addressToLine` 类似，但返回一个数组，其中包含所有内联函数。因此，它比 `addressToLine` 更慢。
+类似于 `addressToLine`，但返回一个包含所有内联函数的数组。因此，它比 `addressToLine` 更慢。
 
 :::note
-如果使用官方的 ClickHouse 包，则需要安装 `clickhouse-common-static-dbg` 包。
+如果您使用官方 ClickHouse 软件包，则需要安装 `clickhouse-common-static-dbg` 包。
 :::
 
 **语法**
@@ -134,17 +135,17 @@ addressToLineWithInlines(address_of_binary_instruction)
 
 **返回值**
 
-- 一个数组，第一个元素是源代码文件名和行号，以冒号分隔。从第二个元素开始，列出内联函数的源代码文件名、行号和函数名。如果函数找不到调试信息，则返回一个仅包含二进制名称的数组，否则如果地址无效，则返回空数组。 [Array(String)](../data-types/array.md)。
+- 数组的第一个元素是源代码文件名和文件中的行号，用冒号分隔。从第二个元素开始，列出了内联函数的源代码文件名、行号和函数名。如果函数找不到调试信息，则返回一个单元素数组，该元素等于二进制名称；如果地址无效，则返回空数组。[Array(String)](../data-types/array.md)。
 
 **示例**
 
-启用反射函数：
+启用自省函数：
 
 ```sql
 SET allow_introspection_functions=1;
 ```
 
-将该函数应用于地址。
+应用该函数到地址。
 
 ```sql
 SELECT addressToLineWithInlines(531055181::UInt64);
@@ -166,7 +167,7 @@ WHERE
     query_id = '5e173544-2020-45de-b645-5deebe2aae54';
 ```
 
-[ arrayJoin](/sql-reference/functions/array-join) 函数会将数组拆分为行。
+[ arrayJoin](/sql-reference/functions/array-join) 函数将数组拆分为行。
 
 ```text
 ┌────────ta─┬─addressToLineWithInlines(arrayJoin(trace))───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -214,7 +215,6 @@ WHERE
 
 ```
 
-
 ## addressToSymbol {#addresstosymbol}
 
 将 ClickHouse 服务器进程中的虚拟内存地址转换为 ClickHouse 对象文件中的符号。
@@ -231,18 +231,18 @@ addressToSymbol(address_of_binary_instruction)
 
 **返回值**
 
-- ClickHouse 对象文件中的符号。 [String](../data-types/string.md)。
-- 如果地址无效，则返回空字符串。 [String](../data-types/string.md)。
+- 来自 ClickHouse 对象文件的符号。[String](../data-types/string.md)。
+- 如果地址无效，则返回空字符串。[String](../data-types/string.md)。
 
 **示例**
 
-启用反射函数：
+启用自省函数：
 
 ```sql
 SET allow_introspection_functions=1;
 ```
 
-从 `trace_log` 系统表中选择第一条记录：
+选择 `trace_log` 系统表中的第一条字符串：
 
 ```sql
 SELECT * FROM system.trace_log LIMIT 1 \G;
@@ -284,7 +284,7 @@ LIMIT 1
 \G
 ```
 
-[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 函数允许通过 `addressToSymbols` 函数处理 `trace` 数组中的每个单独元素。您可以在输出的 `trace_symbols` 列中看到这一处理结果。
+[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 函数允许通过 `addressToSymbols` 函数处理 `trace` 数组中的每个单独元素。您可以在输出的 `trace_symbols` 列中看到此处理的结果。
 
 ```text
 Row 1:
@@ -312,7 +312,7 @@ clone
 
 ## demangle {#demangle}
 
-将您可以使用 [addressToSymbol](#addresstosymbol) 函数获取的符号转换为 C++ 函数名称。
+将您可以通过 [addressToSymbol](#addresstosymbol) 函数获取的符号转换为 C++ 函数名称。
 
 **语法**
 
@@ -322,21 +322,21 @@ demangle(symbol)
 
 **参数**
 
-- `symbol` ([String](../data-types/string.md)) — 对象文件中的符号。
+- `symbol` ([String](../data-types/string.md)) — 来自对象文件的符号。
 
 **返回值**
 
-- C++ 函数的名称，如果符号无效，则返回空字符串。 [String](../data-types/string.md)。
+- C++ 函数的名称，或者如果符号无效则返回空字符串。[String](../data-types/string.md)。
 
 **示例**
 
-启用反射函数：
+启用自省函数：
 
 ```sql
 SET allow_introspection_functions=1;
 ```
 
-从 `trace_log` 系统表中选择第一条记录：
+选择 `trace_log` 系统表中的第一条字符串：
 
 ```sql
 SELECT * FROM system.trace_log LIMIT 1 \G;
@@ -378,7 +378,7 @@ LIMIT 1
 \G
 ```
 
-[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 函数允许通过 `demangle` 函数处理 `trace` 数组中的每个单独元素。您可以在输出的 `trace_functions` 列中看到这一处理结果。
+[ arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) 函数允许通过 `demangle` 函数处理 `trace` 数组中的每个单独元素。您可以在输出的 `trace_functions` 列中看到此处理的结果。
 
 ```text
 Row 1:
@@ -406,7 +406,7 @@ clone
 
 ## tid {#tid}
 
-返回当前 [Block](/development/architecture/#block) 正在处理的线程的 ID。
+返回当前处理的 [Block](/development/architecture/#block) 的线程 id。
 
 **语法**
 
@@ -416,7 +416,7 @@ tid()
 
 **返回值**
 
-- 当前线程 ID。 [Uint64](/sql-reference/data-types/int-uint#integer-ranges)。
+- 当前线程 id。[Uint64](/sql-reference/data-types/int-uint#integer-ranges)。
 
 **示例**
 
@@ -436,7 +436,7 @@ SELECT tid();
 
 ## logTrace {#logtrace}
 
-为每个 [Block](/development/architecture/#block) 向服务器日志发出追踪日志消息。
+为每个 [Block](/development/architecture/#block) 向服务器日志发出trace日志消息。
 
 **语法**
 
@@ -446,7 +446,7 @@ logTrace('message')
 
 **参数**
 
-- `message` — 发送到服务器日志的消息。 [String](/sql-reference/data-types/string)。
+- `message` — 发往服务器日志的消息。[String](/sql-reference/data-types/string)。
 
 **返回值**
 
@@ -467,3 +467,86 @@ SELECT logTrace('logTrace message');
 │                            0 │
 └──────────────────────────────┘
 ```
+
+## mergeTreePartInfo {#mergetreepartinfo}
+
+函数帮助从 `MergeTree` 部件名称中提取有用值。
+
+**语法**
+
+```sql
+mergeTreePartInfo(part_name)
+```
+
+**参数**
+
+- `part_name` ([String](../data-types/string.md)) — 要解包的部分的名称。
+
+**返回值**
+
+- [Tuple](../data-types/tuple.md) 具有子列：
+  - `partition_id`
+  - `min_block`
+  - `max_block`
+  - `level`
+  - `mutation`
+
+**示例**
+
+查询：
+
+```sql
+WITH mergeTreePartInfo('all_12_25_7_4') AS info SELECT info.partition_id, info.min_block, info.max_block, info.level, info.mutation;
+```
+
+结果：
+
+```text
+┌─info.partition_id─┬─info.min_block─┬─info.max_block─┬─info.level─┬─info.mutation─┐
+│ all               │             12 │             25 │          7 │             4 │
+└───────────────────┴────────────────┴────────────────┴────────────┴───────────────┘
+```
+
+## isMergeTreePartCoveredBy {#ismergetreepartcoveredby}
+
+检查第一个参数的部分是否被第二个参数的部分覆盖的函数。
+
+**语法**
+
+```sql
+isMergeTreePartCoveredBy(nested_part, covering_part)
+```
+
+**参数**
+
+- `nested_part` ([String](../data-types/string.md)) — 预期嵌套部分的名称。
+- `covering_part` ([String](../data-types/string.md)) — 预期覆盖部分的名称。
+
+**返回值**
+
+- 如果它覆盖，则返回 1，否则返回 0。
+
+**示例**
+
+查询：
+
+```sql
+WITH 'all_12_25_7_4' AS lhs, 'all_7_100_10_20' AS rhs SELECT isMergeTreePartCoveredBy(rhs, lhs), isMergeTreePartCoveredBy(lhs, rhs);
+```
+
+结果：
+
+```text
+┌─isMergeTreeP⋯y(rhs, lhs)─┬─isMergeTreeP⋯y(lhs, rhs)─┐
+│                        0 │                        1 │
+└──────────────────────────┴──────────────────────────┘
+```
+
+<!--
+The inner content of the tags below are replaced at doc framework build time with
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
+
+<!--AUTOGENERATED_START-->
+<!--AUTOGENERATED_END-->

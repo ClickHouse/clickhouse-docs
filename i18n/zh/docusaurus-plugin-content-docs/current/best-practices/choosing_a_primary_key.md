@@ -4,32 +4,35 @@
 'sidebar_label': '选择主键'
 'title': '选择主键'
 'description': '页面描述如何在 ClickHouse 中选择主键'
+'keywords':
+- 'primary key'
+'show_related_blogs': true
 ---
 
 import Image from '@theme/IdealImage';
 import create_primary_key from '@site/static/images/bestpractices/create_primary_key.gif';
 import primary_key from '@site/static/images/bestpractices/primary_key.gif';
 
-> 我们在此页面中交替使用“ordering key”一词来指代“主键”。严格来说，[在 ClickHouse 中它们是不同的](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key)，但为了本文件的目的，读者可以将其互换使用，其中 ordering key 指的是在表 `ORDER BY` 中指定的列。
+> 我们在本页中互换使用“排序键（ordering key）”一词来指代“主键（primary key）”。严格来说，[在 ClickHouse 中它们有所不同](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key)，但为了本文档的目的，读者可以互换使用这两个术语，其中排序键指的是在表中指定的 `ORDER BY` 列。
 
-请注意，ClickHouse 主键与那些熟悉 OLTP 数据库（如 Postgres）中的类似术语的人有很大的不同，具体表现为[非常不同](/migrations/postgresql/data-modeling-techniques#primary-ordering-keys-in-clickhouse)。
+注意，ClickHouse 的主键与熟悉 OLTP 数据库（如 Postgres）中类似术语的用户 [非常不同](/migrations/postgresql/data-modeling-techniques#primary-ordering-keys-in-clickhouse)。
 
-在 ClickHouse 中选择有效的主键对于查询性能和存储效率至关重要。ClickHouse 将数据组织成多个部分，每个部分包含自己的稀疏主索引。这个索引通过减少扫描的数据量显著加速查询。另外，由于主键决定了磁盘上数据的物理顺序，因此它直接影响压缩效率。最佳排序的数据能更有效地压缩，进而通过减少 I/O 来进一步增强性能。
+在 ClickHouse 中选择有效的主键对于查询性能和存储效率至关重要。ClickHouse 将数据组织成分片，每个分片包含其自身的稀疏主索引。此索引通过减少扫描的数据量显著加快查询速度。此外，由于主键决定了磁盘上数据的物理顺序，它直接影响压缩效率。优化排序的数据可以更有效地压缩，从而通过减少 I/O 进一步提高性能。
 
-1. 在选择排序键时，优先考虑经常用于查询过滤器（即 `WHERE` 子句）的列，特别是那些排除大量行的列。
-2. 与表中其他数据高度相关的列也很有益，因为连续存储会在 `GROUP BY` 和 `ORDER BY` 操作期间改善压缩比和内存效率。
+1. 在选择排序键时，优先考虑在查询过滤器（即 `WHERE` 子句）中频繁使用的列，尤其是那些排除大量行的列。
+2. 与表中其他数据高度相关的列也是有益的，因为连续存储可提高压缩率和 `GROUP BY` 和 `ORDER BY` 操作期间的内存效率。
 <br/>
-可以应用一些简单规则来帮助选择排序键。以下规则有时可能会相互冲突，因此按顺序考虑这些规则。**用户可以从这个过程中识别出多个键，通常4-5个就足够了**：
+可以应用一些简单的规则来帮助选择排序键。以下规则有时可能会出现冲突，因此请按顺序考虑这些规则。**用户可以通过此过程识别多个键，通常 4-5 个即可**：
 
 :::note 重要
-排序键必须在创建表时定义，无法添加。可以通过一种称为投影的功能在（或之前）数据插入后向表添加额外的排序。请注意，这会导致数据重复。进一步详情请见 [这里](/sql-reference/statements/alter/projection)。
+排序键必须在表创建时定义，无法在之后添加。可以通过称为投影的功能在数据插入之后（或之前）向表中添加额外的排序键。请注意，这会导致数据重复。更多细节 [请参见这里](/sql-reference/statements/alter/projection)。
 :::
 
 ## 示例 {#example}
 
-考虑以下 `posts_unordered` 表。该表每行代表一个 Stack Overflow 帖子。
+考虑以下 `posts_unordered` 表。该表每行对应 Stack Overflow 的一篇帖子。
 
-该表没有主键 - 通过 `ORDER BY tuple()` 表示。
+该表没有主键 - 正如 `ORDER BY tuple()` 所指示的那样。
 
 ```sql
 CREATE TABLE posts_unordered
@@ -62,7 +65,7 @@ ENGINE = MergeTree
 ORDER BY tuple()
 ```
 
-假设用户希望计算 2024 年后提交的问题数量，这代表他们最常见的访问模式。
+假设用户希望计算 2024 年之后提交的问题数量，这代表了他们最常见的访问模式。
 
 ```sql
 SELECT count()
@@ -76,9 +79,9 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 1 row in set. Elapsed: 0.055 sec. Processed 59.82 million rows, 361.34 MB (1.09 billion rows/s., 6.61 GB/s.)
 ```
 
-注意此查询读取的行数和字节数。没有主键时，查询必须扫描整个数据集。
+请注意此查询读取的行数和字节数。没有主键，查询必须扫描整个数据集。
 
-使用 `EXPLAIN indexes=1` 确认了由于缺乏索引而导致全表扫描的情况。
+使用 `EXPLAIN indexes=1` 确认由于缺乏索引而导致的完整表扫描。
 
 ```sql
 EXPLAIN indexes = 1
@@ -97,7 +100,7 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 5 rows in set. Elapsed: 0.003 sec.
 ```
 
-假设定义了一个表 `posts_ordered`，该表包含相同的数据，`ORDER BY` 定义为 `(PostTypeId, toDate(CreationDate))`，即
+假设一个名为 `posts_ordered` 的表，包含相同数据，定义的 `ORDER BY` 为 `(PostTypeId, toDate(CreationDate))`，即
 
 ```sql
 CREATE TABLE posts_ordered
@@ -111,11 +114,11 @@ ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate))
 ```
 
-`PostTypeId` 的基数为 8，是我们排序键首个条目的合理选择。考虑到日期粒度过滤可能足够（它依然会从日期时间过滤中受益），因此我们使用 `toDate(CreationDate)` 作为键的第二个组成部分。这也将产生一个较小的索引，因为日期可以用 16 位表示，从而加速过滤。
+`PostTypeId` 的基数为 8，是排序键中第一个条目的逻辑选择。认识到日期粒度过滤可能是足够的（它仍然可以受益于日期时间过滤），因此我们使用 `toDate(CreationDate)` 作为我们的键的第二个组件。这也会产生更小的索引，因为日期可以用 16 位表示，从而加快过滤速度。
 
-以下动画展示了为 Stack Overflow 帖子表创建优化的稀疏主索引的过程。索引不再是针对单独的行，而是针对行的块：
+以下动画展示了如何为 Stack Overflow 帖子表创建一个优化的稀疏主索引。索引不是针对单独的行，而是针对行块：
 
-<Image img={create_primary_key} size="lg" alt="主键" />
+<Image img={create_primary_key} size="lg" alt="Primary key" />
 
 如果在具有此排序键的表上重复相同的查询：
 
@@ -131,9 +134,9 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 1 row in set. Elapsed: 0.013 sec. Processed 196.53 thousand rows, 1.77 MB (14.64 million rows/s., 131.78 MB/s.)
 ```
 
-此查询现在利用稀疏索引，显著减少读取的数据量，并将执行时间缩短了 4 倍 - 注意读取的行数和字节数减少。
+此查询现在利用稀疏索引，显著减少了读取的数据量，并将执行时间提高了 4 倍 - 请注意读取的行数和字节的减少。
 
-可以使用 `EXPLAIN indexes=1` 确认索引的使用。
+使用 `EXPLAIN indexes=1` 可以确认索引的使用。
 
 ```sql
 EXPLAIN indexes = 1
@@ -160,14 +163,14 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 13 rows in set. Elapsed: 0.004 sec.
 ```
 
-此外，我们可以可视化如何通过稀疏索引修剪出无法包含匹配项的所有行块：
+此外，我们可以可视化稀疏索引如何修剪所有不能包含匹配项的行块：
 
-<Image img={primary_key} size="lg" alt="主键" />
+<Image img={primary_key} size="lg" alt="Primary key" />
 
 :::note
-表中的所有列都将根据指定排序键的值进行排序，无论它们是否包括在键中。例如，如果 `CreationDate` 被用作键，则所有其他列中的值顺序将与 `CreationDate` 列中的值顺序相对应。可以指定多个排序键 - 这将按照与 `SELECT` 查询中的 `ORDER BY` 子句相同的语义进行排序。
+表中所有列将根据指定排序键的值进行排序，无论它们是否包含在键中。例如，如果将 `CreationDate` 用作键，则所有其他列中的值的顺序将与 `CreationDate` 列中的值的顺序相对应。可以指定多个排序键 - 这将与 `SELECT` 查询中的 `ORDER BY` 子句具有相同的语义进行排序。
 :::
 
-有关选择主键的完整高级指南，请参见 [这里](/guides/best-practices/sparse-primary-indexes)。
+关于选择主键的完整高级指南可以在 [这里](/guides/best-practices/sparse-primary-indexes) 找到。
 
-有关排序键如何改善压缩和进一步优化存储的深入见解，请查看官方指南 [ClickHouse 中的压缩](/data-compression/compression-in-clickhouse) 和 [列压缩编解码器](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec)。
+有关排序键如何改善压缩并进一步优化存储的更深入见解，请探索有关 [ClickHouse 中的压缩](/data-compression/compression-in-clickhouse) 和 [列压缩编解码器](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec) 的官方指南。

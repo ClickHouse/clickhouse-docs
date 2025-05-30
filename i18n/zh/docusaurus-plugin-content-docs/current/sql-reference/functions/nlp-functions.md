@@ -16,12 +16,12 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 <CloudNotSupportedBadge/>
 
 :::warning
-这是一个实验性功能，目前正在开发中，尚未准备好供一般使用。在未来的版本中，它将以不可预测的向后不兼容的方式发生变化。请设置 `allow_experimental_nlp_functions = 1` 以启用它。
+这是一个正在开发中的实验性功能，目前尚未准备好供一般使用。它将在未来的版本中以不可预测的向后不兼容方式进行更改。设置 `allow_experimental_nlp_functions = 1` 以启用它。
 :::
 
 ## detectCharset {#detectcharset}
 
-`detectCharset` 函数检测非 UTF8 编码输入字符串的字符集。
+`detectCharset` 函数用于检测非UTF8编码输入字符串的字符集。
 
 *语法*
 
@@ -31,11 +31,11 @@ detectCharset('text_to_be_analyzed')
 
 *参数*
 
-- `text_to_be_analyzed` — 需要分析的一系列字符串（或句子）。 [String](/sql-reference/data-types/string)。
+- `text_to_be_analyzed` — 要分析的字符串集合（或句子）。 [String](/sql-reference/data-types/string)。
 
 *返回值*
 
-- 一个包含检测到的字符集的代码的 `String`
+- 一个包含检测到的字符集代码的 `String`
 
 *示例*
 
@@ -55,9 +55,9 @@ SELECT detectCharset('Ich bleibe für ein paar Tage.');
 
 ## detectLanguage {#detectlanguage}
 
-检测 UTF8 编码输入字符串的语言。该函数使用 [CLD2 library](https://github.com/CLD2Owners/cld2) 进行检测，并返回 2 字母 ISO 语言代码。
+检测UTF8编码输入字符串的语言。该函数使用 [CLD2 library](https://github.com/CLD2Owners/cld2) 进行检测，并返回2字母的ISO语言代码。
 
-`detectLanguage` 函数在输入字符串提供超过 200 个字符时效果最佳。
+`detectLanguage` 函数在输入字符串中提供超过200个字符时效果最佳。
 
 *语法*
 
@@ -67,16 +67,16 @@ detectLanguage('text_to_be_analyzed')
 
 *参数*
 
-- `text_to_be_analyzed` — 需要分析的一系列字符串（或句子）。 [String](/sql-reference/data-types/string)。
+- `text_to_be_analyzed` — 要分析的字符串集合（或句子）。 [String](/sql-reference/data-types/string)。
 
 *返回值*
 
-- 检测到的语言的 2 字母 ISO 代码
+- 检测到的语言的2字母ISO代码
 
 其他可能的结果：
 
-- `un` = 未知，无法检测任何语言。
-- `other` = 检测到的语言没有 2 字母代码。
+- `un` = unknown，无法检测任何语言。
+- `other` = 检测到的语言没有2字母代码。
 
 *示例*
 
@@ -94,7 +94,7 @@ fr
 
 ## detectLanguageMixed {#detectlanguagemixed}
 
-与 `detectLanguage` 函数类似，但 `detectLanguageMixed` 返回一个 2 字母语言代码的 `Map`，该代码与文本中某种语言的百分比相映射。
+与 `detectLanguage` 函数类似，但 `detectLanguageMixed` 返回一个 `Map`，其中2字母语言代码映射到文本中特定语言的百分比。
 
 *语法*
 
@@ -104,11 +104,11 @@ detectLanguageMixed('text_to_be_analyzed')
 
 *参数*
 
-- `text_to_be_analyzed` — 需要分析的一系列字符串（或句子）。 [String](/sql-reference/data-types/string)。
+- `text_to_be_analyzed` — 要分析的字符串集合（或句子）。 [String](/sql-reference/data-types/string)。
 
 *返回值*
 
-- `Map(String, Float32)`：键是 2 字母 ISO 代码，值是该语言的文本百分比
+- `Map(String, Float32)`: 键是2字母ISO代码，值是文本中找到的该语言的百分比
 
 *示例*
 
@@ -128,8 +128,8 @@ SELECT detectLanguageMixed('二兎を追う者は一兎をも得ず二兎を追�
 
 ## detectProgrammingLanguage {#detectprogramminglanguage}
 
-从源代码中确定编程语言。计算源代码中的所有 unigram 和 bigram 命令。
-然后使用带权重的标记字典查找各种编程语言的 unigram 和 bigram 命令，以找到编程语言的最大权重并返回它。
+从源代码中确定编程语言。计算源代码中命令的所有单元组和双元组。 
+然后，使用带权重的各种编程语言的单元组和双元组标记字典，找到编程语言的最大权重并返回它。
 
 *语法*
 
@@ -139,7 +139,7 @@ detectProgrammingLanguage('source_code')
 
 *参数*
 
-- `source_code` — 需要分析的源代码的字符串表示。 [String](/sql-reference/data-types/string)。
+- `source_code` — 要分析的源代码的字符串表示。 [String](/sql-reference/data-types/string)。
 
 *返回值*
 
@@ -163,7 +163,7 @@ SELECT detectProgrammingLanguage('#include <iostream>');
 
 ## detectLanguageUnknown {#detectlanguageunknown}
 
-与 `detectLanguage` 函数类似，但 `detectLanguageUnknown` 函数处理非 UTF8 编码字符串。当字符集为 UTF-16 或 UTF-32 时，优先使用此版本。
+与 `detectLanguage` 函数类似，但 `detectLanguageUnknown` 函数处理非UTF8编码字符串。当你的字符集为UTF-16或UTF-32时，优先使用此版本。
 
 *语法*
 
@@ -173,16 +173,16 @@ detectLanguageUnknown('text_to_be_analyzed')
 
 *参数*
 
-- `text_to_be_analyzed` — 需要分析的一系列字符串（或句子）。 [String](/sql-reference/data-types/string)。
+- `text_to_be_analyzed` — 要分析的字符串集合（或句子）。 [String](/sql-reference/data-types/string)。
 
 *返回值*
 
-- 检测到的语言的 2 字母 ISO 代码
+- 检测到的语言的2字母ISO代码
 
 其他可能的结果：
 
-- `un` = 未知，无法检测任何语言。
-- `other` = 检测到的语言没有 2 字母代码。
+- `un` = unknown，无法检测任何语言。
+- `other` = 检测到的语言没有2字母代码。
 
 *示例*
 
@@ -202,11 +202,11 @@ SELECT detectLanguageUnknown('Ich bleibe für ein paar Tage.');
 
 ## detectTonality {#detecttonality}
 
-确定文本数据的情感。使用带标记的情感字典，其中每个单词的情感范围为 `-12` 到 `6`。
-对于每段文本，它计算其单词的平均情感值并返回该值，范围为 `[-1,1]`。
+确定文本数据的情感。使用标记的情感字典，其中每个单词的情感范围为 `-12` 到 `6`。
+对于每段文本，它计算其单词的平均情感值，并在 `[-1,1]` 范围内返回。
 
 :::note
-此函数在当前版本中受限。当前它使用嵌入式情感字典 `/contrib/nlp-data/tonality_ru.zst`，仅适用于俄语。
+此函数目前的形式受限。当前使用位于 `/contrib/nlp-data/tonality_ru.zst` 的嵌入式情感字典，仅适用于俄语。
 :::
 
 *语法*
@@ -217,7 +217,7 @@ detectTonality(text)
 
 *参数*
 
-- `text` — 需要分析的文本。 [String](/sql-reference/data-types/string)。
+- `text` — 要分析的文本。 [String](/sql-reference/data-types/string)。
 
 *返回值*
 
@@ -240,9 +240,10 @@ SELECT detectTonality('Шарик - хороший пёс'), -- Sharik is a good
 │                               0.44445 │                             0 │                                 -0.3 │
 └───────────────────────────────────────┴───────────────────────────────┴──────────────────────────────────────┘
 ```
+
 ## lemmatize {#lemmatize}
 
-对给定单词执行词形还原。需要字典才能操作，可以在 [这里](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) 获取。
+对给定单词进行词形还原。需要字典才能操作，可以在 [这里](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) 获得。
 
 *语法*
 
@@ -252,8 +253,8 @@ lemmatize('language', word)
 
 *参数*
 
-- `language` — 将应用于的语言规则。 [String](/sql-reference/data-types/string)。
-- `word` — 需要词形还原的单词。必须为小写。 [String](/sql-reference/data-types/string)。
+- `language` — 将适用规则的语言。 [String](/sql-reference/data-types/string)。
+- `word` — 需要进行词形还原的单词。必须是小写。 [String](/sql-reference/data-types/string)。
 
 *示例*
 
@@ -273,8 +274,7 @@ SELECT lemmatize('en', 'wolves');
 
 *配置*
 
-此配置指定应使用字典 `en.bin` 对英语 (`en`) 单词进行词形还原。 `.bin` 文件可以从
-[这里](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) 下载。
+此配置指定应使用字典 `en.bin` 进行英语（`en`）单词的词形还原。可以从 [这里](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) 下载 `.bin` 文件。
 
 ```xml
 <lemmatizers>
@@ -289,7 +289,7 @@ SELECT lemmatize('en', 'wolves');
 
 ## stem {#stem}
 
-对给定单词执行词干提取。
+对给定单词进行词干提取。
 
 *语法*
 
@@ -299,8 +299,8 @@ stem('language', word)
 
 *参数*
 
-- `language` — 将应用于的语言规则。使用两个字母的 [ISO 639-1 代码](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)。
-- `word` — 需要词干提取的单词。必须为小写。 [String](/sql-reference/data-types/string)。
+- `language` — 将适用规则的语言。使用两字母 [ISO 639-1 代码](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)。
+- `word` — 需要进行词干提取的单词。必须是小写。 [String](/sql-reference/data-types/string)。
 
 *示例*
 
@@ -317,10 +317,11 @@ SELECT arrayMap(x -> stem('en', x), ['I', 'think', 'it', 'is', 'a', 'blessing', 
 │ ['I','think','it','is','a','bless','in','disguis'] │
 └────────────────────────────────────────────────────┘
 ```
+
 *支持的语言用于 stem()*
 
 :::note
-stem() 函数使用 [Snowball stemming](https://snowballstem.org/) 库，请访问 Snowball 网站获取最新的语言等信息。
+stem() 函数使用 [Snowball stemming](https://snowballstem.org/) 库，请参阅 Snowball 网站以获取更新的语言等信息。
 :::
 
 - 阿拉伯语
@@ -336,13 +337,13 @@ stem() 函数使用 [Snowball stemming](https://snowballstem.org/) 库，请访�
 - 希腊语
 - 印地语
 - 匈牙利语
-- 印尼语
+- 印度尼西亚语
 - 爱尔兰语
 - 意大利语
 - 立陶宛语
 - 尼泊尔语
 - 挪威语
-- Porter
+- 波特
 - 葡萄牙语
 - 罗马尼亚语
 - 俄语
@@ -357,9 +358,9 @@ stem() 函数使用 [Snowball stemming](https://snowballstem.org/) 库，请访�
 
 查找给定单词的同义词。有两种类型的同义词扩展：`plain` 和 `wordnet`。
 
-使用 `plain` 扩展类型时，我们需要提供一个简单文本文件的路径，其中每一行对应某个同义词集合。此行中的单词必须用空格或制表符分隔。
+使用 `plain` 扩展类型时，我们需要提供一个简单文本文件的路径，其中每行对应某个同义词集。这行中的单词必须用空格或制表符分隔。
 
-使用 `wordnet` 扩展类型时，我们需要提供一个包含 WordNet 词库的目录的路径。词库必须包含 WordNet 词义索引。
+使用 `wordnet` 扩展类型时，我们需要提供一个包含WordNet词库的目录路径。词库必须包含WordNet感知索引。
 
 *语法*
 
@@ -369,7 +370,7 @@ synonyms('extension_name', word)
 
 *参数*
 
-- `extension_name` — 将执行搜索的扩展名称。 [String](/sql-reference/data-types/string)。
+- `extension_name` — 将执行搜索的扩展的名称。 [String](/sql-reference/data-types/string)。
 - `word` — 将在扩展中搜索的单词。 [String](/sql-reference/data-types/string)。
 
 *示例*
@@ -403,3 +404,12 @@ SELECT synonyms('list', 'important');
     </extension>
 </synonyms_extensions>
 ```
+
+<!-- 
+The inner content of the tags below are replaced at doc framework build time with 
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
+
+<!--AUTOGENERATED_START-->
+<!--AUTOGENERATED_END-->

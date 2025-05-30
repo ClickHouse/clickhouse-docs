@@ -265,7 +265,7 @@ def replaceSnippetImports(import_statements, lang_code):
     for i in range(len(import_statements)):
         import_statements[i] = import_statements[i].replace(
             "@site/docs/",
-            "@site/i18n/jp/docusaurus-plugin-content-docs/current/"
+            f"@site/i18n/{lang_code}/docusaurus-plugin-content-docs/current/"
         )
 
 def extract_import_statements(text):

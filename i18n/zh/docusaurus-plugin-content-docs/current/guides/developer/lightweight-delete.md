@@ -6,6 +6,6 @@
 'description': '提供关于ClickHouse中轻量级删除的概述'
 ---
 
-import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/statements/delete.md';
+import Content from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/statements/delete.md';
 
 <Content />

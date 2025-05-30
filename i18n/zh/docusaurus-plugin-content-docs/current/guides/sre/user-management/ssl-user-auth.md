@@ -6,7 +6,7 @@
 'description': '本指南提供简单和最低限度的设置，以使用 SSL 用户证书配置身份验证。'
 ---
 
-import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 
 # 配置 SSL 用户证书进行认证

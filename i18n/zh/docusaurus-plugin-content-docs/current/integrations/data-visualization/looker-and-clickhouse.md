@@ -12,7 +12,7 @@
 ---
 
 import Image from '@theme/IdealImage';
-import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import looker_01 from '@site/static/images/integrations/data-visualization/looker_01.png';
 import looker_02 from '@site/static/images/integrations/data-visualization/looker_02.png';
 import looker_03 from '@site/static/images/integrations/data-visualization/looker_03.png';

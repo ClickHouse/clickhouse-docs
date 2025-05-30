@@ -1,31 +1,29 @@
 ---
-'description': 'Json Functions 的文档'
+'description': 'JSON Functions 的文档'
 'sidebar_label': 'JSON'
 'sidebar_position': 105
 'slug': '/sql-reference/functions/json-functions'
 'title': 'JSON 函数'
 ---
 
-以下是对 ClickHouse 文档文本的中文翻译，遵循了提交时设置的所有规则：
-
-有两组用于解析 JSON 的函数：
-   - [`simpleJSON*` (`visitParam*`)](#simplejson-visitparam-functions) 专为快速解析有限子集的 JSON 而设计。
+There are two sets of functions to parse JSON:
+   - [`simpleJSON*` (`visitParam*`)](#simplejson-visitparam-functions) 用于快速解析受限子集的 JSON。
    - [`JSONExtract*`](#jsonextract-functions) 用于解析普通 JSON。
 
-## simpleJSON (visitParam) 函数 {#simplejson-visitparam-functions}
+## simpleJSON (visitParam) functions {#simplejson-visitparam-functions}
 
-ClickHouse 拥有用于简化 JSON 的特殊函数。所有这些 JSON 函数都是基于对 JSON 可能是什么的强假设。它们尽量做到尽可能少地处理，以便快速完成任务。
+ClickHouse 具有用于简化 JSON 的特殊函数。所有这些 JSON 函数都基于对 JSON 可能的强假设。它们尽量做最少的事情，以尽快完成工作。
 
-所做的假设如下：
+做出以下假设：
 
-1. 字段名（函数参数）必须是常量。
-2. 字段名以某种方式在 JSON 中规范编码。例如：`simpleJSONHas('{"abc":"def"}', 'abc') = 1`，但 `simpleJSONHas('{"\\u0061\\u0062\\u0063":"def"}', 'abc') = 0`
-3. 在任何嵌套级别不加区分地搜索字段。如果有多个匹配字段，则使用第一个出现的字段。
-4. JSON 中的字符串字面值外部不得有空格字符。
+1.  字段名称（函数参数）必须是常量。
+2.  字段名称以某种方式在 JSON 中以规范形式编码。例如： `simpleJSONHas('{"abc":"def"}', 'abc') = 1`，但 `simpleJSONHas('{"\\u0061\\u0062\\u0063":"def"}', 'abc') = 0`
+3.  在任意嵌套级别上，字段不加区分地进行搜索。如果存在多个匹配字段，则使用第一个匹配项。
+4.  JSON 的字符串文字外部没有空格字符。
 
 ### simpleJSONHas {#simplejsonhas}
 
-检查是否存在名为 `field_name` 的字段。结果为 `UInt8`。
+检查是否存在名为 `field_name` 的字段。结果是 `UInt8`。
 
 **语法**
 
@@ -33,16 +31,16 @@ ClickHouse 拥有用于简化 JSON 的特殊函数。所有这些 JSON 函数都
 simpleJSONHas(json, field_name)
 ```
 
-别名：`visitParamHas`。
+别名： `visitParamHas`。
 
 **参数**
 
 - `json` — 要搜索字段的 JSON。 [String](/sql-reference/data-types/string)
-- `field_name` — 要搜索的字段名。 [字符串字面量](/sql-reference/syntax#string)
+- `field_name` — 要搜索的字段的名称。 [String literal](/sql-reference/syntax#string)
 
 **返回值**
 
-- 如果字段存在，返回 `1`，否则返回 `0`。 [UInt8](../data-types/int-uint.md)。
+- 如果字段存在，则返回 `1`，否则返回 `0`。 [UInt8](../data-types/int-uint.md)。
 
 **示例**
 
@@ -70,7 +68,7 @@ SELECT simpleJSONHas(json, 'bar') FROM jsons;
 
 ### simpleJSONExtractUInt {#simplejsonextractuint}
 
-从名为 `field_name` 的字段的值中解析 `UInt64`。如果这是一个字符串字段，它会尝试从字符串的开头解析一个数字。如果字段不存在，或字段存在但不包含数字，则返回 `0`。
+从名为 `field_name` 的字段值解析 `UInt64`。如果这是一个字符串字段，它会尝试从字符串的开头解析一个数字。如果字段不存在，或者字段存在但不包含数字，则返回 `0`。
 
 **语法**
 
@@ -78,16 +76,16 @@ SELECT simpleJSONHas(json, 'bar') FROM jsons;
 simpleJSONExtractUInt(json, field_name)
 ```
 
-别名：`visitParamExtractUInt`。
+别名： `visitParamExtractUInt`。
 
 **参数**
 
 - `json` — 要搜索字段的 JSON。 [String](/sql-reference/data-types/string)
-- `field_name` — 要搜索的字段名。 [字符串字面量](/sql-reference/syntax#string)
+- `field_name` — 要搜索的字段的名称。 [String literal](/sql-reference/syntax#string)
 
 **返回值**
 
-- 如果字段存在且包含数字，则返回解析出的数字，其他情况返回 `0`。 [UInt64](../data-types/int-uint.md)。
+- 如果字段存在并且包含数字，则返回从字段解析出的数字， 否则返回 `0`。 [UInt64](../data-types/int-uint.md)。
 
 **示例**
 
@@ -121,7 +119,7 @@ SELECT simpleJSONExtractUInt(json, 'foo') FROM jsons ORDER BY json;
 
 ### simpleJSONExtractInt {#simplejsonextractint}
 
-从名为 `field_name` 的字段的值中解析 `Int64`。如果这是一个字符串字段，它会尝试从字符串的开头解析一个数字。如果字段不存在，或字段存在但不包含数字，则返回 `0`。
+从名为 `field_name` 的字段值解析 `Int64`。如果这是一个字符串字段，它会尝试从字符串的开头解析一个数字。如果字段不存在，或者字段存在但不包含数字，则返回 `0`。
 
 **语法**
 
@@ -129,16 +127,16 @@ SELECT simpleJSONExtractUInt(json, 'foo') FROM jsons ORDER BY json;
 simpleJSONExtractInt(json, field_name)
 ```
 
-别名：`visitParamExtractInt`。
+别名： `visitParamExtractInt`。
 
 **参数**
 
 - `json` — 要搜索字段的 JSON。 [String](/sql-reference/data-types/string)
-- `field_name` — 要搜索的字段名。 [字符串字面量](/sql-reference/syntax#string)
+- `field_name` — 要搜索的字段的名称。 [String literal](/sql-reference/syntax#string)
 
 **返回值**
 
-- 如果字段存在且包含数字，则返回解析出的数字，其他情况返回 `0`。 [Int64](../data-types/int-uint.md)。
+- 如果字段存在并且包含数字，则返回从字段解析出的数字， 否则返回 `0`。 [Int64](../data-types/int-uint.md)。
 
 **示例**
 
@@ -172,7 +170,7 @@ SELECT simpleJSONExtractInt(json, 'foo') FROM jsons ORDER BY json;
 
 ### simpleJSONExtractFloat {#simplejsonextractfloat}
 
-从名为 `field_name` 的字段的值中解析 `Float64`。如果这是一个字符串字段，它会尝试从字符串的开头解析一个数字。如果字段不存在，或字段存在但不包含数字，则返回 `0`。
+从名为 `field_name` 的字段值解析 `Float64`。如果这是一个字符串字段，它会尝试从字符串的开头解析一个数字。如果字段不存在，或者字段存在但不包含数字，则返回 `0`。
 
 **语法**
 
@@ -180,16 +178,16 @@ SELECT simpleJSONExtractInt(json, 'foo') FROM jsons ORDER BY json;
 simpleJSONExtractFloat(json, field_name)
 ```
 
-别名：`visitParamExtractFloat`。
+别名： `visitParamExtractFloat`。
 
 **参数**
 
 - `json` — 要搜索字段的 JSON。 [String](/sql-reference/data-types/string)
-- `field_name` — 要搜索的字段名。 [字符串字面量](/sql-reference/syntax#string)
+- `field_name` — 要搜索的字段的名称。 [String literal](/sql-reference/syntax#string)
 
 **返回值**
 
-- 如果字段存在且包含数字，则返回解析出的数字，其他情况返回 `0`。 [Float64](/sql-reference/data-types/float)。
+- 如果字段存在并且包含数字，则返回从字段解析出的数字， 否则返回 `0`。 [Float64](/sql-reference/data-types/float)。
 
 **示例**
 
@@ -223,7 +221,7 @@ SELECT simpleJSONExtractFloat(json, 'foo') FROM jsons ORDER BY json;
 
 ### simpleJSONExtractBool {#simplejsonextractbool}
 
-从名为 `field_name` 的字段的值中解析真/假值。结果为 `UInt8`。
+从名为 `field_name` 的字段值解析 true/false 值。结果为 `UInt8`。
 
 **语法**
 
@@ -231,19 +229,19 @@ SELECT simpleJSONExtractFloat(json, 'foo') FROM jsons ORDER BY json;
 simpleJSONExtractBool(json, field_name)
 ```
 
-别名：`visitParamExtractBool`。
+别名： `visitParamExtractBool`。
 
 **参数**
 
 - `json` — 要搜索字段的 JSON。 [String](/sql-reference/data-types/string)
-- `field_name` — 要搜索的字段名。 [字符串字面量](/sql-reference/syntax#string)
+- `field_name` — 要搜索的字段的名称。 [String literal](/sql-reference/syntax#string)
 
 **返回值**
 
-如果字段的值为 `true`，则返回 `1`，否则返回 `0`。这意味着此功能将返回 `0`，包括（而不仅仅是）以下情况：
- - 字段不存在。
- - 字段以字符串形式包含 `true`，例如：`{"field":"true"}`。
- - 字段以数值形式包含 `1`。
+如果字段的值为 `true`，则返回 `1`，否则返回 `0`。这意味着该函数将返回 `0` 包括（而不仅仅是在以下情况下）：
+ - 如果字段不存在。
+ - 如果字段包含的值为 “true” 的字符串，例如： `{"field":"true"}`。
+ - 如果字段包含的值为 `1` 的数值。
 
 **示例**
 
@@ -274,7 +272,7 @@ SELECT simpleJSONExtractBool(json, 'foo') FROM jsons ORDER BY json;
 
 ### simpleJSONExtractRaw {#simplejsonextractraw}
 
-将名为 `field_name` 的字段的值作为 `String` 返回，包括分隔符。
+返回名为 `field_name` 的字段的值作为 `String`，包括分隔符。
 
 **语法**
 
@@ -282,16 +280,16 @@ SELECT simpleJSONExtractBool(json, 'foo') FROM jsons ORDER BY json;
 simpleJSONExtractRaw(json, field_name)
 ```
 
-别名：`visitParamExtractRaw`。
+别名： `visitParamExtractRaw`。
 
 **参数**
 
 - `json` — 要搜索字段的 JSON。 [String](/sql-reference/data-types/string)
-- `field_name` — 要搜索的字段名。 [字符串字面量](/sql-reference/syntax#string)
+- `field_name` — 要搜索的字段的名称。 [String literal](/sql-reference/syntax#string)
 
 **返回值**
 
-- 如果字段存在，返回字段的值（包括分隔符）作为字符串，否则返回空字符串。 [`String`](/sql-reference/data-types/string)
+- 如果字段存在，则返回字段的值作为字符串，包括分隔符，否则返回空字符串。 [`String`](/sql-reference/data-types/string)
 
 **示例**
 
@@ -325,7 +323,7 @@ SELECT simpleJSONExtractRaw(json, 'foo') FROM jsons ORDER BY json;
 
 ### simpleJSONExtractString {#simplejsonextractstring}
 
-从名为 `field_name` 的字段的值中解析用双引号括起来的 `String`。
+从名为 `field_name` 的字段值中解析 `String`（用双引号括起来）。
 
 **语法**
 
@@ -333,20 +331,20 @@ SELECT simpleJSONExtractRaw(json, 'foo') FROM jsons ORDER BY json;
 simpleJSONExtractString(json, field_name)
 ```
 
-别名：`visitParamExtractString`。
+别名： `visitParamExtractString`。
 
 **参数**
 
 - `json` — 要搜索字段的 JSON。 [String](/sql-reference/data-types/string)
-- `field_name` — 要搜索的字段名。 [字符串字面量](/sql-reference/syntax#string)
+- `field_name` — 要搜索的字段的名称。 [String literal](/sql-reference/syntax#string)
 
 **返回值**
 
-- 返回字段的未转义值作为字符串，包括分隔符。如果字段不包含用双引号括起来的字符串、如果解转义失败，或字段不存在，则返回空字符串。 [String](../data-types/string.md)。
+- 返回字段的未转义值作为字符串，包括分隔符。如果字段不包含用双引号括起来的字符串，如果解码失败或字段不存在，则返回空字符串。 [String](../data-types/string.md)。
 
 **实现细节**
 
-当前不支持格式为 `\uXXXX\uYYYY` 的代码点，这些代码点不是来自基本多语言平面（它们被转换为 CESU-8，而不是 UTF-8）。
+目前不支持格式为 `\uXXXX\uYYYY` 的代码点，它们被转换为 CESU-8，而不是 UTF-8。
 
 **示例**
 
@@ -376,13 +374,13 @@ SELECT simpleJSONExtractString(json, 'foo') FROM jsons ORDER BY json;
 
 ```
 
-## JSONExtract 函数 {#jsonextract-functions}
+## JSONExtract functions {#jsonextract-functions}
 
-以下函数基于 [simdjson](https://github.com/lemire/simdjson)，旨在处理更复杂的 JSON 解析需求。
+以下函数基于 [simdjson](https://github.com/lemire/simdjson)，旨在满足更复杂的 JSON 解析要求。
 
 ### isValidJSON {#isvalidjson}
 
-检查传递的字符串是否有效 JSON。
+检查传递的字符串是否是有效 JSON。
 
 **语法**
 
@@ -399,7 +397,7 @@ SELECT isValidJSON('not a json') = 0
 
 ### JSONHas {#jsonhas}
 
-如果值存在于 JSON 文档中，将返回 `1`。如果值不存在，将返回 `0`。
+如果值在 JSON 文档中存在，将返回 `1`。如果值不存在，将返回 `0`。
 
 **语法**
 
@@ -410,16 +408,16 @@ JSONHas(json [, indices_or_keys]...)
 **参数**
 
 - `json` — 要解析的 JSON 字符串。 [String](../data-types/string.md)。
-- `indices_or_keys` — 一系列零个或多个参数，每一个参数可以是字符串或整数。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 一个零个或多个参数的列表，每个参数可以是字符串或整数。 [String](../data-types/string.md)， [Int*](../data-types/int-uint.md)。
 
 `indices_or_keys` 类型：
 - 字符串 = 通过键访问对象成员。
-- 正整数 = 从开头访问第 n 个成员/键。
-- 负整数 = 从末尾访问第 n 个成员/键。
+- 正整数 = 从头开始访问第 n 个成员/键。
+- 负整数 = 从尾部访问第 n 个成员/键。
 
 **返回值**
 
-- 如果值存在于 `json` 中，则返回 `1`，否则返回 `0`。 [UInt8](../data-types/int-uint.md)。
+- 如果值在 `json` 中存在，则返回 `1`，否则返回 `0`。 [UInt8](../data-types/int-uint.md)。
 
 **示例**
 
@@ -430,7 +428,7 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 1
 SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 4) = 0
 ```
 
-元素的最小索引为 1。因此，元素 0 不存在。您可以使用整数同时访问 JSON 数组和 JSON 对象。例如：
+元素的最小索引为 1。因此，元素 0 不存在。您可以使用整数访问 JSON 数组和 JSON 对象。例如：
 
 ```sql
 SELECT JSONExtractKey('{"a": "hello", "b": [-100, 200.0, 300]}', 1) = 'a'
@@ -442,7 +440,7 @@ SELECT JSONExtractString('{"a": "hello", "b": [-100, 200.0, 300]}', 1) = 'hello'
 
 ### JSONLength {#jsonlength}
 
-返回 JSON 数组或 JSON 对象的长度。如果值不存在或类型错误，将返回 `0`。
+返回 JSON 数组或 JSON 对象的长度。如果值不存在或类型不正确，将返回 `0`。
 
 **语法**
 
@@ -453,16 +451,16 @@ JSONLength(json [, indices_or_keys]...)
 **参数**
 
 - `json` — 要解析的 JSON 字符串。 [String](../data-types/string.md)。
-- `indices_or_keys` — 一系列零个或多个参数，每一个参数可以是字符串或整数。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 一个零个或多个参数的列表，每个参数可以是字符串或整数。 [String](../data-types/string.md)， [Int*](../data-types/int-uint.md)。
 
 `indices_or_keys` 类型：
 - 字符串 = 通过键访问对象成员。
-- 正整数 = 从开头访问第 n 个成员/键。
-- 负整数 = 从末尾访问第 n 个成员/键。
+- 正整数 = 从头开始访问第 n 个成员/键。
+- 负整数 = 从尾部访问第 n 个成员/键。
 
 **返回值**
 
-- 返回 JSON 数组或 JSON 对象的长度。如果值不存在或类型错误，返回 `0`。 [UInt64](../data-types/int-uint.md)。
+- 返回 JSON 数组或 JSON 对象的长度。如果值不存在或者类型不正确，则返回 `0`。 [UInt64](../data-types/int-uint.md)。
 
 **示例**
 
@@ -473,7 +471,7 @@ SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}') = 2
 
 ### JSONType {#jsontype}
 
-返回 JSON 值的类型。如果值不存在，返回 `Null=0`（不是通常的 [Null](../data-types/nullable.md)，而是 `Enum8('Null' = 0, 'String' = 34,...`）。
+返回 JSON 值的类型。如果值不存在，将返回 `Null=0`（不是通常的 [Null](../data-types/nullable.md)，而是 `Enum8('Null' = 0, 'String' = 34,...`)。
 
 **语法**
 
@@ -484,16 +482,16 @@ JSONType(json [, indices_or_keys]...)
 **参数**
 
 - `json` — 要解析的 JSON 字符串。 [String](../data-types/string.md)。
-- `indices_or_keys` — 一系列零个或多个参数，每一个参数可以是字符串或整数。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 一个零个或多个参数的列表，每个参数可以是字符串或整数。 [String](../data-types/string.md)， [Int*](../data-types/int-uint.md)。
 
 `indices_or_keys` 类型：
 - 字符串 = 通过键访问对象成员。
-- 正整数 = 从开头访问第 n 个成员/键。
-- 负整数 = 从末尾访问第 n 个成员/键。
+- 正整数 = 从头开始访问第 n 个成员/键。
+- 负整数 = 从尾部访问第 n 个成员/键。
 
 **返回值**
 
-- 将值的类型作为字符串返回，若值不存在，则返回 `Null=0`。 [Enum](../data-types/enum.md)。
+- 返回 JSON 值的类型作为字符串，如果值不存在则返回 `Null=0`。 [Enum](../data-types/enum.md)。
 
 **示例**
 
@@ -516,16 +514,16 @@ JSONExtractUInt(json [, indices_or_keys]...)
 **参数**
 
 - `json` — 要解析的 JSON 字符串。 [String](../data-types/string.md)。
-- `indices_or_keys` — 一系列零个或多个参数，每一个参数可以是字符串或整数。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 一个零个或多个参数的列表，每个参数可以是字符串或整数。 [String](../data-types/string.md)， [Int*](../data-types/int-uint.md)。
 
 `indices_or_keys` 类型：
 - 字符串 = 通过键访问对象成员。
-- 正整数 = 从开头访问第 n 个成员/键。
-- 负整数 = 从末尾访问第 n 个成员/键。
+- 正整数 = 从头开始访问第 n 个成员/键。
+- 负整数 = 从尾部访问第 n 个成员/键。
 
 **返回值**
 
-- 如果存在，则返回一个 UInt 值，否则返回 `0`。 [UInt64](../data-types/int-uint.md)。
+- 如果存在，则返回 UInt 值，否则返回 `0`。 [UInt64](../data-types/int-uint.md)。
 
 **示例**
 
@@ -556,12 +554,12 @@ JSONExtractInt(json [, indices_or_keys]...)
 **参数**
 
 - `json` — 要解析的 JSON 字符串。 [String](../data-types/string.md)。
-- `indices_or_keys` — 一系列零个或多个参数，每一个参数可以是字符串或整数。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 一个零个或多个参数的列表，每个参数可以是字符串或整数。 [String](../data-types/string.md)， [Int*](../data-types/int-uint.md)。
 
 `indices_or_keys` 类型：
 - 字符串 = 通过键访问对象成员。
-- 正整数 = 从开头访问第 n 个成员/键。
-- 负整数 = 从末尾访问第 n 个成员/键。
+- 正整数 = 从头开始访问第 n 个成员/键。
+- 负整数 = 从尾部访问第 n 个成员/键。
 
 **返回值**
 
@@ -596,12 +594,12 @@ JSONExtractFloat(json [, indices_or_keys]...)
 **参数**
 
 - `json` — 要解析的 JSON 字符串。 [String](../data-types/string.md)。
-- `indices_or_keys` — 一系列零个或多个参数，每一个参数可以是字符串或整数。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 一个零个或多个参数的列表，每个参数可以是字符串或整数。 [String](../data-types/string.md)， [Int*](../data-types/int-uint.md)。
 
 `indices_or_keys` 类型：
 - 字符串 = 通过键访问对象成员。
-- 正整数 = 从开头访问第 n 个成员/键。
-- 负整数 = 从末尾访问第 n 个成员/键。
+- 正整数 = 从头开始访问第 n 个成员/键。
+- 负整数 = 从尾部访问第 n 个成员/键。
 
 **返回值**
 
@@ -625,7 +623,7 @@ SELECT JSONExtractFloat('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 2) as x,
 
 ### JSONExtractBool {#jsonextractbool}
 
-解析 JSON 并提取布尔值。如果值不存在或类型错误，将返回 `0`。
+解析 JSON 并提取布尔值。如果值不存在或类型不正确，则返回 `0`。
 
 **语法**
 
@@ -636,16 +634,16 @@ JSONExtractBool(json\[, indices_or_keys\]...)
 **参数**
 
 - `json` — 要解析的 JSON 字符串。 [String](../data-types/string.md)。
-- `indices_or_keys` — 一系列零个或多个参数，每一个参数可以是字符串或整数。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 一个零个或多个参数的列表，每个参数可以是字符串或整数。 [String](../data-types/string.md)， [Int*](../data-types/int-uint.md)。
 
 `indices_or_keys` 类型：
 - 字符串 = 通过键访问对象成员。
-- 正整数 = 从开头访问第 n 个成员/键。
-- 负整数 = 从末尾访问第 n 个成员/键。
+- 正整数 = 从头开始访问第 n 个成员/键。
+- 负整数 = 从尾部访问第 n 个成员/键。
 
 **返回值**
 
-- 如果存在，则返回布尔值，否则返回 `0`。 [Bool](../data-types/boolean.md)。
+- 返回布尔值如果存在，否则返回 `0`。 [Bool](../data-types/boolean.md)。
 
 **示例**
 
@@ -665,7 +663,7 @@ SELECT JSONExtractBool('{"passed": true}', 'passed');
 
 ### JSONExtractString {#jsonextractstring}
 
-解析 JSON 并提取字符串。此函数类似于 [`visitParamExtractString`](#simplejsonextractstring) 函数。如果值不存在或类型错误，将返回空字符串。
+解析 JSON 并提取字符串。此函数与 [`visitParamExtractString`](#simplejsonextractstring) 函数类似。如果值不存在或类型不正确，将返回空字符串。
 
 **语法**
 
@@ -676,16 +674,16 @@ JSONExtractString(json [, indices_or_keys]...)
 **参数**
 
 - `json` — 要解析的 JSON 字符串。 [String](../data-types/string.md)。
-- `indices_or_keys` — 一系列零个或多个参数，每一个参数可以是字符串或整数。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 一个零个或多个参数的列表，每个参数可以是字符串或整数。 [String](../data-types/string.md)， [Int*](../data-types/int-uint.md)。
 
 `indices_or_keys` 类型：
 - 字符串 = 通过键访问对象成员。
-- 正整数 = 从开头访问第 n 个成员/键。
-- 负整数 = 从末尾访问第 n 个成员/键。
+- 正整数 = 从头开始访问第 n 个成员/键。
+- 负整数 = 从尾部访问第 n 个成员/键。
 
 **返回值**
 
-- 返回 `json` 中的未转义字符串。如果解转义失败、值不存在或类型错误，则返回空字符串。 [String](../data-types/string.md)。
+- 返回从 `json` 提取的未经转义的字符串。如果解码失败，如果值不存在或类型不正确，则返回空字符串。 [String](../data-types/string.md)。
 
 **示例**
 
@@ -699,10 +697,10 @@ SELECT JSONExtractString('{"abc":"hello}', 'abc') = ''
 
 ### JSONExtract {#jsonextract}
 
-解析 JSON 并提取给定 ClickHouse 数据类型的值。此函数是前面 `JSONExtract<type>` 函数的通用版本。意味着：
+解析 JSON 并提取指定 ClickHouse 数据类型的值。此函数是前面 `JSONExtract<type>` 函数的通用版本。含义：
 
-`JSONExtract(..., 'String')` 的返回结果与 `JSONExtractString()` 完全相同，
-`JSONExtract(..., 'Float64')` 的返回结果与 `JSONExtractFloat()` 完全相同。
+`JSONExtract(..., 'String')` 返回与 `JSONExtractString()` 完全相同，
+`JSONExtract(..., 'Float64')` 返回与 `JSONExtractFloat()` 完全相同。
 
 **语法**
 
@@ -713,21 +711,32 @@ JSONExtract(json [, indices_or_keys...], return_type)
 **参数**
 
 - `json` — 要解析的 JSON 字符串。 [String](../data-types/string.md)。
-- `indices_or_keys` — 一系列零个或多个参数，每一个参数可以是字符串或整数。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
-- `return_type` — 字符串，指定要提取的值的类型。 [String](../data-types/string.md)。 
+- `indices_or_keys` — 一个零个或多个参数的列表，每个参数可以是字符串或整数。 [String](../data-types/string.md)， [Int*](../data-types/int-uint.md)。
+- `return_type` — 指定要提取的值类型的字符串。 [String](../data-types/string.md)。 
 
 `indices_or_keys` 类型：
 - 字符串 = 通过键访问对象成员。
-- 正整数 = 从开头访问第 n 个成员/键。
-- 负整数 = 从末尾访问第 n 个成员/键。
+- 正整数 = 从头开始访问第 n 个成员/键。
+- 负整数 = 从尾部访问第 n 个成员/键。
 
 **返回值**
 
-- 如果存在，返回指定返回类型的值，否则返回 `0`、`Null` 或根据指定返回类型返回空字符串。 [UInt64](../data-types/int-uint.md)，[Int64](../data-types/int-uint.md)，[Float64](../data-types/float.md)，[Bool](../data-types/boolean.md) 或 [String](../data-types/string.md)。
+- 返回指定返回类型的值（如果存在），否则会根据指定的返回类型返回 `0`、`Null` 或空字符串。 [UInt64](../data-types/int-uint.md)、[Int64](../data-types/int-uint.md)、[Float64](../data-types/float.md)、[Bool](../data-types/boolean.md) 或 [String](../data-types/string.md)。
 
 **示例**
 
-引用通过多个 `indices_or_keys` 参数传递的嵌套值：
+```sql
+SELECT JSONExtract('{"a": "hello", "b": [-100, 200.0, 300]}', 'Tuple(String, Array(Float64))') = ('hello',[-100,200,300])
+SELECT JSONExtract('{"a": "hello", "b": [-100, 200.0, 300]}', 'Tuple(b Array(Float64), a String)') = ([-100,200,300],'hello')
+SELECT JSONExtract('{"a": "hello", "b": "world"}', 'Map(String, String)') = map('a',  'hello', 'b', 'world');
+SELECT JSONExtract('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 'Array(Nullable(Int8))') = [-100, NULL, NULL]
+SELECT JSONExtract('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 4, 'Nullable(Int64)') = NULL
+SELECT JSONExtract('{"passed": true}', 'passed', 'UInt8') = 1
+SELECT JSONExtract('{"day": "Thursday"}', 'day', 'Enum8(\'Sunday\' = 0, \'Monday\' = 1, \'Tuesday\' = 2, \'Wednesday\' = 3, \'Thursday\' = 4, \'Friday\' = 5, \'Saturday\' = 6)') = 'Thursday'
+SELECT JSONExtract('{"day": 5}', 'day', 'Enum8(\'Sunday\' = 0, \'Monday\' = 1, \'Tuesday\' = 2, \'Wednesday\' = 3, \'Thursday\' = 4, \'Friday\' = 5, \'Saturday\' = 6)') = 'Friday'
+```
+
+通过传递多个 indices_or_keys 参数引用嵌套值：
 ```sql
 SELECT JSONExtract('{"a":{"b":"hello","c":{"d":[1,2,3],"e":[1,3,7]}}}','a','c','Map(String, Array(UInt8))') AS val, toTypeName(val), val['d'];
 ```
@@ -740,7 +749,7 @@ SELECT JSONExtract('{"a":{"b":"hello","c":{"d":[1,2,3],"e":[1,3,7]}}}','a','c','
 
 ### JSONExtractKeysAndValues {#jsonextractkeysandvalues}
 
-解析 JSON 中的键值对，其中值为指定的 ClickHouse 数据类型。
+从 JSON 中解析键值对，其中值是指定的 ClickHouse 数据类型。
 
 **语法**
 
@@ -751,17 +760,17 @@ JSONExtractKeysAndValues(json [, indices_or_keys...], value_type)
 **参数**
 
 - `json` — 要解析的 JSON 字符串。 [String](../data-types/string.md)。
-- `indices_or_keys` — 一系列零个或多个参数，每一个参数可以是字符串或整数。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
-- `value_type` — 字符串，指定要提取的值的类型。 [String](../data-types/string.md)。 
+- `indices_or_keys` — 一个零个或多个参数的列表，每个参数可以是字符串或整数。 [String](../data-types/string.md)， [Int*](../data-types/int-uint.md)。
+- `value_type` — 指定要提取的值的类型的字符串。 [String](../data-types/string.md)。 
 
 `indices_or_keys` 类型：
 - 字符串 = 通过键访问对象成员。
-- 正整数 = 从开头访问第 n 个成员/键。
-- 负整数 = 从末尾访问第 n 个成员/键。
+- 正整数 = 从头开始访问第 n 个成员/键。
+- 负整数 = 从尾部访问第 n 个成员/键。
 
 **返回值**
 
-- 返回解析后的键值对数组。 [Array](../data-types/array.md)([Tuple](../data-types/tuple.md)(`value_type`)). 
+- 返回解析的键值对数组。 [Array](../data-types/array.md)([Tuple](../data-types/tuple.md)(`value_type`))。 
 
 **示例**
 
@@ -781,8 +790,8 @@ JSONExtractKeys(json[, a, b, c...])
 
 **参数**
 
-- `json` — [String](../data-types/string.md) 有效的 JSON。
-- `a, b, c...` — 指定路径到嵌套 JSON 对象中的内部字段的逗号分隔索引或键。每个参数可以是 [String](../data-types/string.md) 通过密钥获取字段或 [Integer](../data-types/int-uint.md) 以获取第 N 个字段（从 1 开始索引，负数从末尾计数）。如果未设置，则整个 JSON 被解析为顶级对象。可选参数。
+- `json` — [String](../data-types/string.md) 有效 JSON。
+- `a, b, c...` — 逗号分隔的索引或键，指定在嵌套 JSON 对象中内部字段的路径。每个参数可以是 [String](../data-types/string.md)通过键获取字段，或 [Integer](../data-types/int-uint.md) 获取第 N 个字段（从 1 开始索引，负整数从结尾计数）。如果未设置，则将整个 JSON 作为顶级对象解析。可选参数。
 
 **返回值**
 
@@ -806,7 +815,7 @@ SELECT JSONExtractKeys('{"a": "hello", "b": [-100, 200.0, 300]}');
 
 ### JSONExtractRaw {#jsonextractraw}
 
-将 JSON 的部分返回为未解析的字符串。如果该部分不存在或类型错误，则返回空字符串。
+将 JSON 的一部分作为未解析的字符串返回。如果该部分不存在或类型不正确，则返回空字符串。
 
 **语法**
 
@@ -817,16 +826,16 @@ JSONExtractRaw(json [, indices_or_keys]...)
 **参数**
 
 - `json` — 要解析的 JSON 字符串。 [String](../data-types/string.md)。
-- `indices_or_keys` — 一系列零个或多个参数，每一个参数可以是字符串或整数。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 一个零个或多个参数的列表，每个参数可以是字符串或整数。 [String](../data-types/string.md)， [Int*](../data-types/int-uint.md)。
 
 `indices_or_keys` 类型：
 - 字符串 = 通过键访问对象成员。
-- 正整数 = 从开头访问第 n 个成员/键。
-- 负整数 = 从末尾访问第 n 个成员/键。
+- 正整数 = 从头开始访问第 n 个成员/键。
+- 负整数 = 从尾部访问第 n 个成员/键。
 
 **返回值**
 
-- 将 JSON 的部分返回为未解析的字符串。如果该部分不存在或类型错误，则返回空字符串。 [String](../data-types/string.md)。
+- 将 JSON 的一部分作为未解析的字符串返回。如果该部分不存在或类型不正确，则返回空字符串。 [String](../data-types/string.md)。
 
 **示例**
 
@@ -836,7 +845,7 @@ SELECT JSONExtractRaw('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = '[-100, 
 
 ### JSONExtractArrayRaw {#jsonextractarrayraw}
 
-返回 JSON 数组的元素，每个元素作为未解析的字符串表示。如果该部分不存在或不是数组，则返回空数组。
+返回 JSON 数组的元素数组，每个元素表示为未解析的字符串。如果该部分不存在或不是数组，则返回空数组。
 
 **语法**
 
@@ -847,16 +856,16 @@ JSONExtractArrayRaw(json [, indices_or_keys...])
 **参数**
 
 - `json` — 要解析的 JSON 字符串。 [String](../data-types/string.md)。
-- `indices_or_keys` — 一系列零个或多个参数，每一个参数可以是字符串或整数。 [String](../data-types/string.md), [Int*](../data-types/int-uint.md)。
+- `indices_or_keys` — 一个零个或多个参数的列表，每个参数可以是字符串或整数。 [String](../data-types/string.md)， [Int*](../data-types/int-uint.md)。
 
 `indices_or_keys` 类型：
 - 字符串 = 通过键访问对象成员。
-- 正整数 = 从开头访问第 n 个成员/键。
-- 负整数 = 从末尾访问第 n 个成员/键。
+- 正整数 = 从头开始访问第 n 个成员/键。
+- 负整数 = 从尾部访问第 n 个成员/键。
 
 **返回值**
 
-- 返回数组，包含 JSON 数组的元素，每个元素都作为未解析的字符串表示。否则，如果该部分不存在或不是数组，则返回空数组。 [Array](../data-types/array.md)([String](../data-types/string.md))。
+- 返回 JSON 数组的元素数组，每个元素表示为未解析的字符串。否则，如果该部分不存在或不是数组，则返回空数组。 [Array](../data-types/array.md)([String](../data-types/string.md))。
 
 **示例**
 
@@ -876,12 +885,12 @@ JSONExtractKeysAndValuesRaw(json[, p, a, t, h])
 
 **参数**
 
-- `json` — [String](../data-types/string.md) 有效的 JSON。
-- `p, a, t, h` — 逗号分隔的索引或键，指定路径到嵌套 JSON 对象中的内部字段。每个参数可以是 [string](../data-types/string.md) 通过密钥获取字段或 [integer](../data-types/int-uint.md) 以获取第 N 个字段（从 1 开始索引，负数从末尾计数）。如果未设置，则整个 JSON 被解析为顶级对象。可选参数。
+- `json` — [String](../data-types/string.md) 有效 JSON。
+- `p, a, t, h` — 逗号分隔的索引或键，指定在嵌套 JSON 对象中内部字段的路径。每个参数可以是 [string](../data-types/string.md) 通过键获取字段，或 [integer](../data-types/int-uint.md) 获取第 N 个字段（从 1 开始索引，负整数从结尾计数）。如果未设置，则整个 JSON 作为顶级对象解析。可选参数。
 
 **返回值**
 
-- 包含 `('key', 'value')` 元组的数组。两个元组成员都是字符串。 [Array](../data-types/array.md)([Tuple](../data-types/tuple.md)([String](../data-types/string.md), [String](../data-types/string.md)))。
+- 返回 `('key', 'value')` 元组的数组。两个元组成员都为字符串。 [Array](../data-types/array.md)([Tuple](../data-types/tuple.md)([String](../data-types/string.md), [String](../data-types/string.md)))。
 - 如果请求的对象不存在，或输入 JSON 无效，则返回空数组。 [Array](../data-types/array.md)([Tuple](../data-types/tuple.md)([String](../data-types/string.md), [String](../data-types/string.md)))。
 
 **示例**
@@ -930,7 +939,7 @@ SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b":{"c": {"d": "hello"
 
 ### JSON_EXISTS {#json_exists}
 
-如果值存在于 JSON 文档中，将返回 `1`。如果值不存在，将返回 `0`。
+如果值在 JSON 文档中存在，则返回 `1`。如果值不存在，则返回 `0`。
 
 **语法**
 
@@ -944,12 +953,12 @@ JSON_EXISTS(json, path)
 - `path` — 表示路径的字符串。 [String](../data-types/string.md)。
 
 :::note
-在 21.11 版本之前，参数顺序是错误的，即 JSON_EXISTS(path, json)
+在 21.11 版本之前，参数的顺序是错误的，即 JSON_EXISTS(path, json)
 :::
 
 **返回值**
 
-- 如果值存在于 JSON 文档中，返回 `1`，否则返回 `0`。
+- 如果值存在于 JSON 文档中，则返回 `1`，否则返回 `0`。
 
 **示例**
 
@@ -962,7 +971,7 @@ SELECT JSON_EXISTS('{"hello":["world"]}', '$.hello[0]');
 
 ### JSON_QUERY {#json_query}
 
-解析 JSON 并提取值作为 JSON 数组或 JSON 对象。如果值不存在，将返回空字符串。
+解析 JSON 并将值提取为 JSON 数组或 JSON 对象。如果值不存在，则返回空字符串。
 
 **语法**
 
@@ -976,12 +985,12 @@ JSON_QUERY(json, path)
 - `path` — 表示路径的字符串。 [String](../data-types/string.md)。
 
 :::note
-在 21.11 版本之前，参数顺序是错误的，即 JSON_EXISTS(path, json)
+在 21.11 版本之前，参数的顺序是错误的，即 JSON_EXISTS(path, json)
 :::
 
 **返回值**
 
-- 将提取的值返回为 JSON 数组或 JSON 对象。否则，如果值不存在，则返回空字符串。 [String](../data-types/string.md)。
+- 返回提取的 JSON 数组或 JSON 对象的值。否则，如果值不存在，则返回空字符串。 [String](../data-types/string.md)。
 
 **示例**
 
@@ -1005,11 +1014,11 @@ String
 
 ### JSON_VALUE {#json_value}
 
-解析 JSON 并提取值作为 JSON 标量。如果值不存在，则默认返回空字符串。
+解析 JSON 并提取值作为 JSON 标量。如果值不存在，默认情况下返回空字符串。
 
 此函数受以下设置控制：
 
-- 通过 SET `function_json_value_return_type_allow_nullable` = `true`，将返回 `NULL`。如果值为复杂类型（例如：结构、数组、映射），则默认返回空字符串。
+- 通过 SET `function_json_value_return_type_allow_nullable` = `true`，将返回 `NULL`。如果值是复杂类型（例如：结构、数组、映射），将默认返回空字符串。
 - 通过 SET `function_json_value_return_type_allow_complex` = `true`，将返回复杂值。
 
 **语法**
@@ -1024,12 +1033,12 @@ JSON_VALUE(json, path)
 - `path` — 表示路径的字符串。 [String](../data-types/string.md)。
 
 :::note
-在 21.11 版本之前，参数顺序是错误的，即 JSON_EXISTS(path, json)
+在 21.11 版本之前，参数的顺序是错误的，即 JSON_EXISTS(path, json)
 :::
 
 **返回值**
 
-- 如果存在，则返回提取的值作为 JSON 标量，否则返回空字符串。 [String](../data-types/string.md)。
+- 如果值存在，则作为 JSON 标量返回提取的值，否则返回空字符串。 [String](../data-types/string.md)。
 
 **示例**
 
@@ -1055,10 +1064,10 @@ String
 
 ### toJSONString {#tojsonstring}
 
-将值序列化为其 JSON 表示形式。支持各种数据类型和嵌套结构。
-64 位 [整数](../data-types/int-uint.md) 或更大（如 `UInt64` 或 `Int128`）默认为带引号。 [output_format_json_quote_64bit_integers](/operations/settings/formats#output_format_json_quote_64bit_integers) 控制此行为。
-特殊值 `NaN` 和 `inf` 被替换为 `null`。启用 [output_format_json_quote_denormals](/operations/settings/formats#output_format_json_quote_denormals) 设置以显示它们。
-当序列化 [Enum](../data-types/enum.md) 值时，该函数输出其名称。
+将值序列化为 JSON 表示形式。支持各种数据类型和嵌套结构。
+64 位 [整数](../data-types/int-uint.md) 或更大（如 `UInt64` 或 `Int128`）默认用引号括起来。 [output_format_json_quote_64bit_integers](/operations/settings/formats#output_format_json_quote_64bit_integers) 控制此行为。
+特定值 `NaN` 和 `inf` 被替换为 `null`。启用 [output_format_json_quote_denormals](/operations/settings/formats#output_format_json_quote_denormals) 设置以显示它们。
+在序列化 [Enum](../data-types/enum.md) 值时，函数输出其名称。
 
 **语法**
 
@@ -1076,8 +1085,8 @@ toJSONString(value)
 
 **示例**
 
-第一个示例显示对 [Map](../data-types/map.md) 的序列化。
-第二个示例显示一些特殊值包装成 [Tuple](../data-types/tuple.md)。
+第一个示例显示了 [Map](../data-types/map.md) 的序列化。
+第二个示例显示了一些特殊值封装在 [Tuple](../data-types/tuple.md) 中。
 
 查询：
 
@@ -1098,9 +1107,10 @@ SELECT toJSONString(tuple(1.25, NULL, NaN, +inf, -inf, [])) SETTINGS output_form
 - [output_format_json_quote_64bit_integers](/operations/settings/formats#output_format_json_quote_64bit_integers)
 - [output_format_json_quote_denormals](/operations/settings/formats#output_format_json_quote_denormals)
 
+
 ### JSONArrayLength {#jsonarraylength}
 
-返回最外层 JSON 数组中的元素数量。如果输入 JSON 字符串无效，则该函数返回 NULL。
+返回最外层 JSON 数组中的元素数量。如果输入 JSON 字符串无效，则函数返回 NULL。
 
 **语法**
 
@@ -1108,11 +1118,11 @@ SELECT toJSONString(tuple(1.25, NULL, NaN, +inf, -inf, [])) SETTINGS output_form
 JSONArrayLength(json)
 ```
 
-别名：`JSON_ARRAY_LENGTH(json)`。
+别名： `JSON_ARRAY_LENGTH(json)`。
 
 **参数**
 
-- `json` — [String](../data-types/string.md) 有效的 JSON。
+- `json` — [String](../data-types/string.md) 有效 JSON。
 
 **返回值**
 
@@ -1130,9 +1140,10 @@ SELECT
 └─────────────────────┴────────────────────────────┘
 ```
 
+
 ### jsonMergePatch {#jsonmergepatch}
 
-返回通过合并多个 JSON 对象形成的合并后的 JSON 对象字符串。
+返回合并后的 JSON 对象字符串，合并多个 JSON 对象生成。
 
 **语法**
 
@@ -1142,11 +1153,11 @@ jsonMergePatch(json1, json2, ...)
 
 **参数**
 
-- `json` — [String](../data-types/string.md) 有效的 JSON。
+- `json` — [String](../data-types/string.md) 有效 JSON。
 
 **返回值**
 
-- 如果 JSON 对象字符串有效，则返回合并后的 JSON 对象字符串。 [String](../data-types/string.md)。
+- 如果 JSON 对象字符串有效，返回合并后的 JSON 对象字符串。 [String](../data-types/string.md)。
 
 **示例**
 
@@ -1160,7 +1171,7 @@ SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name"
 
 ### JSONAllPaths {#jsonallpaths}
 
-返回存储在每行 [JSON](../data-types/newjson.md) 列中的所有路径的列表。
+返回存储在每行的 [JSON](../data-types/newjson.md) 列中的所有路径列表。
 
 **语法**
 
@@ -1174,7 +1185,7 @@ JSONAllPaths(json)
 
 **返回值**
 
-- 一个路径的数组。 [Array(String)](../data-types/array.md)。
+- 路径数组。 [Array(String)](../data-types/array.md)。
 
 **示例**
 
@@ -1194,7 +1205,7 @@ SELECT json, JSONAllPaths(json) FROM test;
 
 ### JSONAllPathsWithTypes {#jsonallpathswithtypes}
 
-返回存储在每行 [JSON](../data-types/newjson.md) 列中的所有路径及其数据类型的映射。
+返回存储在每行的 [JSON](../data-types/newjson.md) 列中的所有路径及其数据类型的映射。
 
 **语法**
 
@@ -1208,7 +1219,7 @@ JSONAllPathsWithTypes(json)
 
 **返回值**
 
-- 一个路径的数组。 [Map(String, String)](../data-types/array.md)。
+- 路径数组。 [Map(String, String)](../data-types/array.md)。
 
 **示例**
 
@@ -1228,7 +1239,7 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 
 ### JSONDynamicPaths {#jsondynamicpaths}
 
-返回作为独立子列存储在 [JSON](../data-types/newjson.md) 列中的动态路径的列表。
+返回存储在 [JSON](../data-types/newjson.md) 列中作为单独子列的动态路径列表。
 
 **语法**
 
@@ -1242,7 +1253,7 @@ JSONDynamicPaths(json)
 
 **返回值**
 
-- 一个路径的数组。 [Array(String)](../data-types/array.md)。
+- 路径数组。 [Array(String)](../data-types/array.md)。
 
 **示例**
 
@@ -1262,7 +1273,7 @@ SELECT json, JSONDynamicPaths(json) FROM test;
 
 ### JSONDynamicPathsWithTypes {#jsondynamicpathswithtypes}
 
-返回存储为独立子列的动态路径及其类型的映射，在每行的 [JSON](../data-types/newjson.md) 列中。
+返回存储在 [JSON](../data-types/newjson.md) 列中作为单独子列的动态路径及其类型的映射。
 
 **语法**
 
@@ -1276,7 +1287,7 @@ JSONAllPathsWithTypes(json)
 
 **返回值**
 
-- 一个路径的数组。 [Map(String, String)](../data-types/array.md)。
+- 路径数组。 [Map(String, String)](../data-types/array.md)。
 
 **示例**
 
@@ -1296,7 +1307,7 @@ SELECT json, JSONDynamicPathsWithTypes(json) FROM test;
 
 ### JSONSharedDataPaths {#jsonshareddatapaths}
 
-返回存储在 [JSON](../data-types/newjson.md) 列中共享数据结构中的路径列表。
+返回存储在 [JSON](../data-types/newjson.md) 列中的共享数据结构中的路径列表。
 
 **语法**
 
@@ -1310,7 +1321,7 @@ JSONSharedDataPaths(json)
 
 **返回值**
 
-- 一个路径的数组。 [Array(String)](../data-types/array.md)。
+- 路径数组。 [Array(String)](../data-types/array.md)。
 
 **示例**
 
@@ -1330,7 +1341,7 @@ SELECT json, JSONSharedDataPaths(json) FROM test;
 
 ### JSONSharedDataPathsWithTypes {#jsonshareddatapathswithtypes}
 
-返回存储在共享数据结构中的路径及其类型的映射，在每行的 [JSON](../data-types/newjson.md) 列中。
+返回存储在 [JSON](../data-types/newjson.md) 列中共享数据结构及其类型的路径的映射。
 
 **语法**
 
@@ -1344,7 +1355,7 @@ JSONSharedDataPathsWithTypes(json)
 
 **返回值**
 
-- 一个路径的数组。 [Map(String, String)](../data-types/array.md)。
+- 路径数组。 [Map(String, String)](../data-types/array.md)。
 
 **示例**
 
@@ -1361,3 +1372,12 @@ SELECT json, JSONSharedDataPathsWithTypes(json) FROM test;
 │ {"a":["1","2","3"],"c":"2020-01-01"} │ {'c':'Date'}                       │
 └──────────────────────────────────────┴────────────────────────────────────┘
 ```
+
+<!-- 
+The inner content of the tags below are replaced at doc framework build time with 
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
+
+<!--AUTOGENERATED_START-->
+<!--AUTOGENERATED_END-->

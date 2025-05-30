@@ -1,6 +1,6 @@
 ---
-'description': '加密函数的文档'
-'sidebar_label': '加密'
+'description': '加密函数的 Documentation'
+'sidebar_label': 'Encryption'
 'sidebar_position': 70
 'slug': '/sql-reference/functions/encryption-functions'
 'title': '加密函数'
@@ -9,17 +9,17 @@
 
 # 加密函数
 
-这些函数实现了使用AES（高级加密标准）算法对数据进行加密和解密。
+这些函数使用 AES (高级加密标准) 算法实现数据的加密和解密。
 
-密钥长度取决于加密模式。对于 `-128-`、`-196-` 和 `-256-` 模式，它的长度分别为16、24和32字节。
+密钥长度取决于加密模式。对于 `-128-`、`-196-` 和 `-256-` 模式，长度分别为 16、24 和 32 字节。
 
-初始化向量长度始终为16字节（超过16字节的字节会被忽略）。
+初始化向量的长度始终为 16 字节（超出 16 字节的字节将被忽略）。
 
-请注意，这些函数在ClickHouse 21.1之前运行缓慢。
+请注意，这些函数在 ClickHouse 21.1 之前运行缓慢。
 
 ## encrypt {#encrypt}
 
-此函数使用以下模式加密数据：
+该函数使用以下模式加密数据：
 
 - aes-128-ecb, aes-192-ecb, aes-256-ecb
 - aes-128-cbc, aes-192-cbc, aes-256-cbc
@@ -36,15 +36,15 @@ encrypt('mode', 'plaintext', 'key' [, iv, aad])
 
 **参数**
 
-- `mode` — 加密模式。 [String](/sql-reference/data-types/string).
-- `plaintext` — 需要加密的文本。 [String](/sql-reference/data-types/string).
-- `key` — 加密密钥。 [String](/sql-reference/data-types/string).
-- `iv` — 初始化向量。 `-gcm` 模式必需，其他模式可选。 [String](/sql-reference/data-types/string).
-- `aad` — 附加认证数据。它不被加密，但会影响解密。仅在 `-gcm` 模式中有效，其他模式会抛出异常。 [String](/sql-reference/data-types/string).
+- `mode` — 加密模式。 [String](/sql-reference/data-types/string)。
+- `plaintext` — 需要加密的文本。 [String](/sql-reference/data-types/string)。
+- `key` — 加密密钥。 [String](/sql-reference/data-types/string)。
+- `iv` — 初始化向量。 对于 `-gcm` 模式是必需的，对于其他模式是可选的。 [String](/sql-reference/data-types/string)。
+- `aad` — 附加认证数据。它不被加密，但会影响解密。仅在 `-gcm` 模式下有效，对于其他模式会抛出异常。 [String](/sql-reference/data-types/string)。
 
 **返回值**
 
-- 密文二进制字符串。 [String](/sql-reference/data-types/string).
+- 密文二进制字符串。 [String](/sql-reference/data-types/string)。
 
 **示例**
 
@@ -61,7 +61,7 @@ CREATE TABLE encryption_test
 ENGINE = Memory;
 ```
 
-插入一些数据（请避免将密钥/初始化向量存储在数据库中，因为这会破坏加密的整体概念），同时存储'hints'也是不安全的，仅用于说明目的：
+插入一些数据（请避免将密钥/iv 存储在数据库中，因为这会破坏加密的整个概念）；同时存储“提示”也不安全，仅用于说明目的：
 
 查询：
 
@@ -111,9 +111,9 @@ SELECT comment, hex(secret) FROM encryption_test WHERE comment LIKE '%gcm%';
 
 ## aes_encrypt_mysql {#aes_encrypt_mysql}
 
-与mysql加密兼容，生成的密文可以使用 [AES_DECRYPT](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-decrypt) 函数解密。
+与 mysql 加密兼容，结果密文可用 [AES_DECRYPT](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-decrypt) 函数解密。
 
-在相同输入上将生成与 `encrypt` 相同的密文。但当 `key` 或 `iv` 超出正常长度时， `aes_encrypt_mysql` 将遵循MySQL的 `aes_encrypt` 的做法：'折叠' `key` 并忽略多余的 `iv` 位。
+在相同输入下将生成与 `encrypt` 相同的密文。但是当 `key` 或 `iv` 超过正常长度时，`aes_encrypt_mysql` 将遵循 MySQL 的 `aes_encrypt` 所做的：'折叠' `key` 并忽略 `iv` 的多余位。
 
 支持的加密模式：
 
@@ -129,18 +129,18 @@ aes_encrypt_mysql('mode', 'plaintext', 'key' [, iv])
 
 **参数**
 
-- `mode` — 加密模式。 [String](/sql-reference/data-types/string).
-- `plaintext` — 需要加密的文本。 [String](/sql-reference/data-types/string).
-- `key` — 加密密钥。如果密钥超过模式要求的长度，将执行MySQL特定的密钥折叠。 [String](/sql-reference/data-types/string).
-- `iv` — 初始化向量。可选，仅考虑前16个字节 [String](/sql-reference/data-types/string).
+- `mode` — 加密模式。 [String](/sql-reference/data-types/string)。
+- `plaintext` — 需要加密的文本。 [String](/sql-reference/data-types/string)。
+- `key` — 加密密钥。如果密钥超过模式所需长度，将执行 MySQL 特有的密钥折叠。 [String](/sql-reference/data-types/string)。
+- `iv` — 初始化向量。可选，仅考虑前 16 字节。 [String](/sql-reference/data-types/string)。
 
 **返回值**
 
-- 密文二进制字符串。 [String](/sql-reference/data-types/string).
+- 密文二进制字符串。 [String](/sql-reference/data-types/string)。
 
 **示例**
 
-给定相同的输入，`encrypt` 和 `aes_encrypt_mysql` 产生相同的密文：
+给定相同输入，`encrypt` 和 `aes_encrypt_mysql` 生成相同的密文：
 
 查询：
 
@@ -156,7 +156,7 @@ SELECT encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'ivi
 └───────────────────┘
 ```
 
-但当 `key` 或 `iv` 超出预期长度时， `encrypt` 会失败：
+但是当 `key` 或 `iv` 超过预期时，`encrypt` 会失败：
 
 查询：
 
@@ -187,7 +187,7 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 └──────────────┘
 ```
 
-注意，即使提供更长的 `IV` 也会产生相同的结果
+注意，即使提供更长的 `IV` 也会产生相同的结果。
 
 查询：
 
@@ -203,7 +203,7 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 └──────────────┘
 ```
 
-与 MySQL 在相同输入上的产生是二进制相等的：
+这与 MySQL 对相同输入生成的结果是二进制相等的：
 
 ```sql
 mysql> SET  block_encryption_mode='aes-256-ofb';
@@ -237,15 +237,15 @@ decrypt('mode', 'ciphertext', 'key' [, iv, aad])
 
 **参数**
 
-- `mode` — 解密模式。 [String](/sql-reference/data-types/string).
-- `ciphertext` — 需要解密的加密文本。 [String](/sql-reference/data-types/string).
-- `key` — 解密密钥。 [String](/sql-reference/data-types/string).
-- `iv` — 初始化向量。 `-gcm` 模式必需，其他模式可选。 [String](/sql-reference/data-types/string).
-- `aad` — 附加认证数据。如果此值不正确，将无法解密。仅在 `-gcm` 模式下有效，其他模式会抛出异常。 [String](/sql-reference/data-types/string).
+- `mode` — 解密模式。 [String](/sql-reference/data-types/string)。
+- `ciphertext` — 需要解密的加密文本。 [String](/sql-reference/data-types/string)。
+- `key` — 解密密钥。 [String](/sql-reference/data-types/string)。
+- `iv` — 初始化向量。对于 `-gcm` 模式是必需的，对于其他模式可选。 [String](/sql-reference/data-types/string)。
+- `aad` — 附加认证数据。如果该值不正确将无法解密。仅在 `-gcm` 模式下有效，对于其他模式会抛出异常。 [String](/sql-reference/data-types/string)。
 
 **返回值**
 
-- 解密后的字符串。 [String](/sql-reference/data-types/string).
+- 解密字符串。 [String](/sql-reference/data-types/string)。
 
 **示例**
 
@@ -272,7 +272,7 @@ SELECT comment, hex(secret) FROM encryption_test;
 └──────────────────────────────────┴──────────────────────────────────┘
 ```
 
-现在让我们尝试解密所有数据。
+现在让我们尝试解密所有这些数据。
 
 查询：
 
@@ -298,15 +298,15 @@ SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920
 └──────────────────────────────────┴───────────┘
 ```
 
-注意，只有一部分数据被正确解密，其余部分是乱码，因为在加密时 `mode`、`key` 或 `iv` 不同。
+请注意，只有一部分数据被正确解密，其余部分则是乱码，因为加密时 `mode`、`key` 或 `iv` 不同。
 
 ## tryDecrypt {#trydecrypt}
 
-类似于 `decrypt`，但如果解密失败因为使用了错误的密钥，则返回 NULL。
+与 `decrypt` 类似，但如果因使用错误的密钥而解密失败，则返回 NULL。
 
 **示例**
 
-让我们创建一个表，其中 `user_id` 是唯一用户ID，`encrypted` 是一个加密字符串字段，`iv` 是用于解密/加密的初始向量。假设用户知道他们的ID和解密加密字段的密钥：
+让我们创建一个表，其中 `user_id` 是唯一的用户 ID，`encrypted` 是加密字符串字段，`iv` 是解密/加密的初始向量。假设用户知道他们的 ID 和解密加密字段的密钥：
 
 ```sql
 CREATE TABLE decrypt_null (
@@ -349,9 +349,9 @@ ORDER BY user_id ASC
 
 ## aes_decrypt_mysql {#aes_decrypt_mysql}
 
-与mysql加密兼容，并解密使用 [AES_ENCRYPT](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-encrypt) 函数加密的数据。
+与 mysql 加密兼容，解密用 [AES_ENCRYPT](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-encrypt) 函数加密的数据。
 
-在相同输入下将产生与 `decrypt` 相同的明文。但当 `key` 或 `iv` 超出正常长度时， `aes_decrypt_mysql` 将遵循MySQL的 `aes_decrypt` 的做法：'折叠' `key` 并忽略多余的 `IV` 位。
+在相同输入下将产生与 `decrypt` 相同的明文。但是当 `key` 或 `iv` 超过正常长度时，`aes_decrypt_mysql` 将遵循 MySQL 的 `aes_decrypt` 所做的：'折叠' `key` 并忽略 `IV` 的多余位。
 
 支持的解密模式：
 
@@ -368,18 +368,18 @@ aes_decrypt_mysql('mode', 'ciphertext', 'key' [, iv])
 
 **参数**
 
-- `mode` — 解密模式。 [String](/sql-reference/data-types/string).
-- `ciphertext` — 需要解密的加密文本。 [String](/sql-reference/data-types/string).
-- `key` — 解密密钥。 [String](/sql-reference/data-types/string).
-- `iv` — 初始化向量。可选。 [String](/sql-reference/data-types/string).
+- `mode` — 解密模式。 [String](/sql-reference/data-types/string)。
+- `ciphertext` — 需要解密的加密文本。 [String](/sql-reference/data-types/string)。
+- `key` — 解密密钥。 [String](/sql-reference/data-types/string)。
+- `iv` — 初始化向量。可选。 [String](/sql-reference/data-types/string)。
 
 **返回值**
 
-- 解密后的字符串。 [String](/sql-reference/data-types/string).
+- 解密字符串。 [String](/sql-reference/data-types/string)。
 
 **示例**
 
-让我们解密之前用MySQL加密的数据：
+让我们解密之前用 MySQL 加密的数据：
 
 ```sql
 mysql> SET  block_encryption_mode='aes-256-ofb';
@@ -407,3 +407,12 @@ SELECT aes_decrypt_mysql('aes-256-ofb', unhex('24E9E4966469'), '1234567891012131
 │ Secret    │
 └───────────┘
 ```
+
+<!-- 
+The inner content of the tags below are replaced at doc framework build time with 
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
+
+<!--AUTOGENERATED_START-->
+<!--AUTOGENERATED_END-->

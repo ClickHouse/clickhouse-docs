@@ -5,7 +5,7 @@
 'description': '页面描述了IcebergFunction，它可以用来将ClickHouse与Iceberg表格式集成'
 ---
 
-import IcebergFunction from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/table-functions/iceberg.md';
+import IcebergFunction from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/table-functions/iceberg.md';
 
 
 # Iceberg 集成

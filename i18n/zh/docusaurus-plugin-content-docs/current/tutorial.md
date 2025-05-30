@@ -15,8 +15,8 @@
 - 'taxi'
 - 'new york'
 - 'nyc'
+'show_related_blogs': true
 ---
-
 
 
 # 高级教程
@@ -27,18 +27,17 @@
 
 ### 先决条件 {#prerequisites}
 
-您需要访问运行中的 ClickHouse 服务以完成本教程。有关说明，请参见 [快速入门](./quick-start.mdx) 指南。
+您需要访问正在运行的 ClickHouse 服务才能完成本教程。有关说明，请参见 [快速入门](./quick-start.mdx) 指南。
 
 <VerticalStepper>
 
 ## 创建新表 {#create-a-new-table}
 
-纽约市出租车数据集包含有关数百万次出租车的详细信息，列包括小费金额、过路费、支付类型等。创建一个表以存储这些数据。
+纽约市出租车数据集包含有关数百万次出租车乘车的详细信息，包括小费金额、过路费、支付类型等列。创建一个表以存储这些数据。
 
 1. 连接到 SQL 控制台：
-- 对于 ClickHouse Cloud，从下拉菜单中选择一个服务，然后在左侧导航菜单中选择 **SQL 控制台**。
-- 对于自管理的 ClickHouse，连接到 `https://_hostname_:8443/play` 上的 SQL 控制台。请与您的 ClickHouse 管理员确认详细信息。
-
+- 对于 ClickHouse Cloud，从下拉菜单中选择服务，然后从左侧导航菜单中选择 **SQL 控制台**。
+- 对于自管理的 ClickHouse，连接到 SQL 控制台，地址为 `https://_hostname_:8443/play`。请与您的 ClickHouse 管理员确认详细信息。
 
 2. 在 `default` 数据库中创建以下 `trips` 表：
 ```sql
@@ -97,9 +96,9 @@ ORDER BY pickup_datetime;
 
 ## 添加数据集 {#add-the-dataset}
 
-现在您已经创建了一个表，从 S3 中的 CSV 文件中添加纽约市出租车数据。
+现在您已创建一个表，请从 S3 中的 CSV 文件添加纽约市出租车数据。
 
-1. 以下命令从 S3 中的两个不同文件 `trips_1.tsv.gz` 和 `trips_2.tsv.gz` 将约 2,000,000 行插入到您的 `trips` 表中：
+1. 以下命令从 S3 中的两个不同文件 `trips_1.tsv.gz` 和 `trips_2.tsv.gz` 向您的 `trips` 表插入约 2,000,000 行：
 
 ```sql
 INSERT INTO trips
@@ -154,10 +153,9 @@ SELECT * FROM s3(
 ") SETTINGS input_format_try_infer_datetimes = 0
 ```
 
-2. 等待 `INSERT` 完成。150 MB 的数据下载可能需要一些时间。
+2. 等待 `INSERT` 完成。下载 150 MB 的数据可能需要一段时间。
 
-
-3. 插入完成后，验证是否成功：
+3. 插入完成后，验证其成功：
 ```sql
 SELECT count() FROM trips
 ```
@@ -185,7 +183,7 @@ SELECT round(avg(tip_amount), 2) FROM trips
     </p>
     </details>
 
-- 计算基于乘客数量的平均费用：
+- 根据乘客人数计算平均费用：
 ```sql
 SELECT
     passenger_count,
@@ -198,7 +196,7 @@ GROUP BY passenger_count
     <summary>预期输出</summary>
     <p>
 
-    `passenger_count` 范围从 0 到 9：
+    `passenger_count` 的范围从 0 到 9：
 
 ```response
 ┌─passenger_count─┬─average_total_amount─┐
@@ -218,7 +216,7 @@ GROUP BY passenger_count
     </p>
     </details>
 
-- 计算每个社区的每日接送数量：
+- 计算每个社区每天的接客数量：
 ```sql
 SELECT
     pickup_date,
@@ -249,7 +247,7 @@ ORDER BY pickup_date ASC
     </p>
     </details>
 
-- 计算每次旅程的长度（以分钟为单位），然后按旅程长度对结果进行分组：
+- 计算每次行程的时长（以分钟为单位），然后按行程时长对结果进行分组：
 ```sql
 SELECT
     avg(tip_amount) AS avg_tip,
@@ -279,7 +277,7 @@ ORDER BY trip_minutes DESC
     </p>
     </details>
 
-- 显示每个社区在一天中的每小时接送的数量：
+- 显示每个社区每小时的接客数量：
 ```sql
 SELECT
     pickup_ntaname,
@@ -335,8 +333,7 @@ ORDER BY pickup_ntaname, pickup_hour
     </p>
     </details>
 
-    
-7. 检索到拉瓜迪亚或JFK机场的乘车记录：
+7. 检索前往拉瓜地亚或约翰·F·肯尼迪机场的行程：
 ```sql
 SELECT
     pickup_datetime,
@@ -378,25 +375,24 @@ ORDER BY pickup_datetime
 
 ## 创建字典 {#create-a-dictionary}
 
-字典是存储在内存中的键值对映射。有关详细信息，请参见 [字典](/sql-reference/dictionaries/index.md)。
+字典是存储在内存中的键值对映射。有关详细信息，请参见 [字典](/sql-reference/dictionaries/index.md) 
 
-创建与 ClickHouse 服务中的表相关联的字典。
-该表和字典基于包含纽约市每个社区一行的 CSV 文件。
+创建一个与您的 ClickHouse 服务中的表关联的字典。
+该表和字典基于一个包含纽约市每个社区行的 CSV 文件。
 
-这些社区映射到纽约市五个区（布朗克斯，布鲁克林，曼哈顿，皇后区和斯塔滕岛）的名称，以及纽瓦克机场（EWR）。
+这些社区与五个纽约市区（布朗克斯、布鲁克林、曼哈顿、皇后区和斯塔滕岛）以及纽瓦克机场（EWR）的名称对应。
 
-以下是您在以表格格式使用的 CSV 文件的摘录。文件中的 `LocationID` 列映射到 `trips` 表中的 `pickup_nyct2010_gid` 和 `dropoff_nyct2010_gid` 列：
+以下是您正在使用的以表格格式展示的 CSV 文件摘录。文件中的 `LocationID` 列映射到您 `trips` 表中的 `pickup_nyct2010_gid` 和 `dropoff_nyct2010_gid` 列：
 
   | LocationID      | Borough |  Zone      | service_zone |
   | ----------- | ----------- |   ----------- | ----------- |
   | 1      | EWR       |  纽瓦克机场   | EWR        |
-  | 2    |   皇后区     |   牙买加湾   |      区域    |
-  | 3   |   布朗克斯     |  阿列顿/佩尔汉姆花园    |    区域     |
-  | 4     |    曼哈顿    |    字母城  |     黄区    |
+  | 2    |   皇后区     |   牙买加湾   |      区域     |
+  | 3   |   布朗克斯     |  阿勒顿/佩勒姆花园  |    区域     |
+  | 4     |    曼哈顿    |    字母城市  |     黄色区域    |
   | 5     |  斯塔滕岛      |   阿登高地   |    区域     |
 
-
-1. 运行以下 SQL 命令，该命令创建一个名为 `taxi_zone_dictionary` 的字典，并从 S3 的 CSV 文件中填充字典。文件的 URL 是 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`。
+1. 运行以下 SQL 命令，创建名为 `taxi_zone_dictionary` 的字典，并从 S3 中的 CSV 文件填充该字典。文件的 URL 为 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`。 
 ```sql
 CREATE DICTIONARY taxi_zone_dictionary
 (
@@ -412,22 +408,22 @@ LAYOUT(HASHED_ARRAY())
 ```
 
   :::note
-  将 `LIFETIME` 设置为 0 禁用自动更新，以避免不必要的流量到我们的 S3 存储桶。在其他情况下，您可以根据需要进行不同配置。有关详细信息，请参见 [使用 LIFETIME 刷新字典数据](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。
+  将 `LIFETIME` 设置为 0 禁用自动更新，以避免对我们 S3 存储桶产生不必要的流量。在其他情况下，您可能会以不同的方式进行配置。有关详细信息，请参见 [使用 LIFETIME 刷新字典数据](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。
   :::
 
-3. 验证它是否有效。以下查询应返回 265 行，也就是说每个社区一行：
+3. 验证其成功。以下查询应返回 265 行，或每个社区一行：
 ```sql
 SELECT * FROM taxi_zone_dictionary
 ```
 
-4. 使用 `dictGet` 函数（[或其变体](./sql-reference/functions/ext-dict-functions.md)）从字典中检索一个值。您需要传入字典名称、所需值和键（在本示例中是 `taxi_zone_dictionary` 的 `LocationID` 列）。
+4. 使用 `dictGet` 函数 ([或其变体](./sql-reference/functions/ext-dict-functions.md)) 从字典中检索值。您需要输入字典的名称、所需的值和键（在我们的示例中是 `taxi_zone_dictionary` 的 `LocationID` 列）。
 
-    例如，以下查询返回 `LocationID` 为 132 的 `Borough`，这对应于 JFK 机场：
+    例如，以下查询返回 `LocationID` 为 132 的 `Borough`，对应于 JFK 机场：
 ```sql
 SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
 ```
 
-    JFK 位于皇后区。请注意，检索值的时间几乎为 0：
+    JFK 位于皇后区。注意检索值的时间几乎为 0：
 ```response
 ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
 │ Queens                                          │
@@ -436,7 +432,7 @@ SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
 1 rows in set. Elapsed: 0.004 sec.
 ```
 
-5. 使用 `dictHas` 函数查看字典中是否存在某个键。例如，以下查询返回 `1`（在 ClickHouse 中表示“true”）：
+5. 使用 `dictHas` 函数查看字典中是否存在键。例如，以下查询返回 `1`（在 ClickHouse 中表示 "true"）：
 ```sql
 SELECT dictHas('taxi_zone_dictionary', 132)
 ```
@@ -446,7 +442,7 @@ SELECT dictHas('taxi_zone_dictionary', 132)
 SELECT dictHas('taxi_zone_dictionary', 4567)
 ```
 
-7. 使用 `dictGet` 函数在查询中检索一个区的名称。例如：
+7. 使用 `dictGet` 函数在查询中检索区域名称。例如：
 ```sql
 SELECT
     count(1) AS total,
@@ -457,7 +453,7 @@ GROUP BY borough_name
 ORDER BY total DESC
 ```
 
-    此查询对在拉瓜迪亚或 JFK 机场结束的每个区的出租车乘车数量进行汇总。结果看起来如下，并请注意有许多乘车记录的接送社区是未知的：
+    此查询计算结束于拉瓜地亚或 JFK 机场的每个区的出租车行程数量。结果如下所示，请注意有相当多的行程的接客社区未知：
 ```response
 ┌─total─┬─borough_name──┐
 │ 23683 │ Unknown       │
@@ -472,12 +468,11 @@ ORDER BY total DESC
 7 rows in set. Elapsed: 0.019 sec. Processed 2.00 million rows, 4.00 MB (105.70 million rows/s., 211.40 MB/s.)
 ```
 
-
 ## 执行连接 {#perform-a-join}
 
-编写一些查询，将 `taxi_zone_dictionary` 与您的 `trips` 表连接。
+编写一些将 `taxi_zone_dictionary` 与您的 `trips` 表连接的查询。
 
-1. 从一个简单的 `JOIN` 开始，其功能类似于上述机场查询：
+1. 从一个简单的 `JOIN` 开始，其行为类似于上面的机场查询：
 ```sql
 SELECT
     count(1) AS total,
@@ -489,7 +484,7 @@ GROUP BY Borough
 ORDER BY total DESC
 ```
 
-    响应看起来与使用 `dictGet` 的查询相同：
+    响应与使用 `dictGet` 查询的结果相同：
 ```response
 ┌─total─┬─Borough───────┐
 │  7053 │ Manhattan     │
@@ -504,10 +499,10 @@ ORDER BY total DESC
 ```
 
     :::note
-    请注意，上述 `JOIN` 查询的输出与使用 `dictGetOrDefault` 的查询相同（不同之处在于没有包含 `Unknown` 的值）。在后台，ClickHouse 实际上是在为 `taxi_zone_dictionary` 字典调用 `dictGet` 函数，但 `JOIN` 语法对 SQL 开发者来说更为熟悉。
+    请注意，上述 `JOIN` 查询的输出与使用 `dictGetOrDefault` 的查询具有相同的结果（只是 "未知" 值未包含）。在后台，ClickHouse 实际上为 `taxi_zone_dictionary` 字典调用 `dictGet` 函数，但 `JOIN` 语法对于 SQL 开发人员更加熟悉。
     :::
 
-2. 此查询返回 1000 次小费金额最高的乘车记录的行，然后对每行与字典执行内部连接：
+2. 此查询返回 1000 次最高小费的行程的行，然后将每一行与字典进行内连接：
 ```sql
 SELECT *
 FROM trips
@@ -518,16 +513,16 @@ ORDER BY tip_amount DESC
 LIMIT 1000
 ```
         :::note
-        通常，我们避免在 ClickHouse 中频繁使用 `SELECT *`。您应仅检索实际需要的列。然而，出于示例目的，此查询较慢。
+        一般来说，我们在 ClickHouse 中较少使用 `SELECT *`。您应仅检索实际需要的列。然而，对于本示例而言，该查询的速度较慢。
         :::
 
 </VerticalStepper>
 
 ## 后续步骤 {#next-steps}
 
-通过以下文档进一步了解 ClickHouse：
+通过以下文档了解更多有关 ClickHouse 的信息：
 
-- [ClickHouse 中的主索引介绍](./guides/best-practices/sparse-primary-indexes.md)：了解 ClickHouse 如何使用稀疏主索引来有效定位查询中的相关数据。
-- [集成外部数据源](/integrations/index.mdx)：回顾数据源集成选项，包括文件、Kafka、PostgreSQL、数据管道等。
-- [在 ClickHouse 中可视化数据](./integrations/data-visualization/index.md)：将您喜欢的 UI/BI 工具连接到 ClickHouse。
-- [SQL 参考](./sql-reference/index.md)：浏览 ClickHouse 中可用于转换、处理和分析数据的 SQL 函数。
+- [ClickHouse 中主索引的介绍](./guides/best-practices/sparse-primary-indexes.md)：了解 ClickHouse 如何使用稀疏主索引有效地在查询期间定位相关数据。
+- [集成外部数据源](/integrations/index.mdx)：查看数据源集成选项，包括文件、Kafka、PostgreSQL、数据管道等。
+- [在 ClickHouse 中可视化数据](./integrations/data-visualization/index.md)：将您最喜欢的 UI/BI 工具连接到 ClickHouse。
+- [SQL 参考](./sql-reference/index.md)：浏览 ClickHouse 中用于转换、处理和分析数据的 SQL 函数。
