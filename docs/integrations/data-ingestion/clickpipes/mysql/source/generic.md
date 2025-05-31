@@ -17,7 +17,7 @@ If you use one of the supported providers (in the sidebar), please refer to the 
 
 Binary logs contain information about data modifications made to a MySQL server instance and are required for replication.
 
-### MySQL 8.x and newer
+### MySQL 8.x and newer {#binlog-v8-x}
 
 To enable binary logging on your MySQL instance, ensure that the following settings are configured:
 
@@ -51,7 +51,7 @@ If you have changed the `log_bin` setting, you NEED to RESTART the MySQL instanc
 
 After changing the settings, continue on with [configuring a database user](#configure-database-user).
 
-### MySQL 5.7
+### MySQL 5.7 {#binlog-v5-x}
 
 To enable binary logging on your MySQL 5.7 instance, ensure that the following settings are configured:
 
