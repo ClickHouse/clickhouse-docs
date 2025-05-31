@@ -1,8 +1,6 @@
-@use '../../../css/breakpoints.scss' as breakpoints;
-
 .footer {
-  display: none;
   border: 1px solid var(--click-color-stroke);
+  display: flex;
   flex-direction: column-reverse;
   align-items: center;
   gap: 16px;
@@ -27,9 +25,8 @@
   width: 2.5rem;
 }
 
-@media (min-width: breakpoints.$tablet-breakpoint) {
+@media (min-width: 768px) {
   .footer {
-    display: flex;
     /* padding: 32px 40px; */
     padding: 0;
     flex-direction: row;
@@ -43,6 +40,10 @@
     justify-content: space-between;
     margin: 16px;
   }
+}
 
-
+@media (max-width: 768px) {
+  .footer {
+      display: none;
+  }
 }

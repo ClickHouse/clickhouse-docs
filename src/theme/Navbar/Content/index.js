@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import clsx from "clsx";
 import { useThemeConfig } from "@docusaurus/theme-common";
 import {
@@ -8,7 +8,7 @@ import {
 import NavbarItem from "@theme/NavbarItem";
 import NavbarMobileSidebarToggle from "@theme/Navbar/MobileSidebar/Toggle";
 import NavbarLogo from "@theme/Navbar/Logo";
-import styles from "./styles.module.scss";
+import styles from "./styles.module.css";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import ColorModeToggle from "../../../components/ColorModeToggler";
 import { usePluginData } from "@docusaurus/useGlobalData";
@@ -40,22 +40,8 @@ function NavbarItems({ items }) {
   );
 }
 
-function useWindowWidth() {
-  const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
-  useEffect(() => {
-    function handleResize() {
-      setWidth(window.innerWidth);
-    }
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return width;
-}
 export default function NavbarContent() {
-
-  const width = useWindowWidth();
-  const LAPTOP_BREAKPOINT = 1330;
-
+  const mobileSidebar = useNavbarMobileSidebar();
   const secondaryItems = useNavbarSecondaryItems();
   let items = [];
   try {
@@ -66,7 +52,6 @@ export default function NavbarContent() {
     github_stars,
     menuItems,
   } = usePluginData("ch-header-plugin");
-
 
   return (
     <div className={`${styles.navbarHeaderContainer} navbar-header`}>
@@ -119,7 +104,7 @@ export default function NavbarContent() {
           >
             <button className="click-button primary-btn">Get started</button>
           </a>
-          {width < LAPTOP_BREAKPOINT && <NavbarMobileSidebarToggle />}
+          {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
         </div>
       </div>
       <div className={clsx("secondary-nav--items", styles.secondaryMenu)}>
