@@ -296,6 +296,7 @@ DeprecatedBadge
 DestroyAggregatesThreads
 DestroyAggregatesThreadsActive
 DictCacheRequests
+DigiCert
 DiskAvailable
 DiskObjectStorage
 DiskObjectStorageAsyncThreads
