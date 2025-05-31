@@ -1,4 +1,4 @@
-@media (min-width: var(--mobile-breakpoint)) {
+@media (min-width: 997px) {
   .menu {
     flex-grow: 1;
     padding: 0 1rem 0.5rem;

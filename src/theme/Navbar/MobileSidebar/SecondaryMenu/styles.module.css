@@ -1,7 +1,5 @@
-@use '../../css/breakpoints.scss' as breakpoints;
-
 .docsNavBurger {
-    display: flex;
+    display: none;
 }
 
 .docsMobileMenu {
@@ -26,14 +24,9 @@
 }
 
 .docsMobileMenuHidden {
-    display: none;
     position:absolute;
     opacity: 0;
     transform: translate3d(-100%, 0, 0);
-}
-
-.docsMobileMenuBackdropInactive{
-
 }
 
 [data-theme="dark"] .docsMobileMenuBackdropActive{
@@ -70,7 +63,6 @@
     margin-top: 1em;
     margin-bottom: 2em;
 }
-
 .docsMobileMenu_header{
     margin-top: 4rem;
     margin-bottom: 1rem;
@@ -80,8 +72,8 @@
     justify-content: space-between;
 }
 
-@media (min-width: breakpoints.$laptop-breakpoint) {
+@media (max-width: 996px) {
     .docsNavBurger {
-        display: none;
+        display: flex;
     }
 }

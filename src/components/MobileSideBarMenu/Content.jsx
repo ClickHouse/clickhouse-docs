@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './styles.module.scss'
+import styles from './styles.module.css'
 import IconClose from '@theme/Icon/Close';
 import SearchBar from "@theme/SearchBar";
 import clsx from 'clsx'
