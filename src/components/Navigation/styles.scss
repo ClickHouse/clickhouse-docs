@@ -1,4 +1,6 @@
-$menu-breakpoint: 997px;
+@use '../../css/breakpoints.scss' as breakpoints;
+
+$menu-breakpoint: breakpoints.$laptop-breakpoint;
 
 :root {
   --ch-nav-v2-border-color: #dfdfdf;

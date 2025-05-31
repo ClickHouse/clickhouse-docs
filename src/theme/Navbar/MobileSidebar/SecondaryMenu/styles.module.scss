@@ -1,5 +1,7 @@
+@use '../../../../css/breakpoints.scss' as breakpoints;
+
 .docsNavBurger {
-    display: none;
+    display: flex;
 }
 
 .docsMobileMenu {
@@ -24,14 +26,9 @@
 }
 
 .docsMobileMenuHidden {
-    display: none;
     position:absolute;
     opacity: 0;
     transform: translate3d(-100%, 0, 0);
-}
-
-.docsMobileMenuBackdropInactive{
-
 }
 
 [data-theme="dark"] .docsMobileMenuBackdropActive{
@@ -77,11 +74,7 @@
     justify-content: space-between;
 }
 
-@media (max-width: 1400px) {
-
-}
-
-@media (max-width: 996px) {
+@media (min-width: breakpoints.$laptop-breakpoint) {
     .docsNavBurger {
         display: flex;
     }

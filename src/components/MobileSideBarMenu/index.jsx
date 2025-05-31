@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Hamburger from "./Hamburger";
 import MobileSideBarMenuContents from './Content';
-import styles from './styles.module.css';
+import styles from './styles.module.scss';
 
 const MobileSideBarMenu = ({sidebar}) => {
   const [currentMenuState, setMenuState] = useState(false);
