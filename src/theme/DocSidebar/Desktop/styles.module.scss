@@ -1,4 +1,7 @@
-@media (min-width: 997px) {
+@use '../../../css/breakpoints.scss' as breakpoints;
+
+@media (min-width: breakpoints.$mobile-breakpoint) {
+
   .sidebar {
     display: flex;
     flex-direction: column;

@@ -1,6 +1,6 @@
 import React from "react";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import styles from "./styles.module.css";
+import styles from "./styles.module.scss";
 
 const GlobalMenu = ({ items }) => {
   return (

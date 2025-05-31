@@ -1,4 +1,6 @@
-@media (min-width: 997px) {
+@use '../../../../css/breakpoints.scss' as breakpoints;
+
+@media (min-width: breakpoints.$mobile-breakpoint) {
   .menu {
     flex-grow: 1;
     padding: 0 1rem 0.5rem;

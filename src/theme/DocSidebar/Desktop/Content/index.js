@@ -7,7 +7,7 @@ import {
 } from '@docusaurus/theme-common/internal';
 import {translate} from '@docusaurus/Translate';
 import DocSidebarItems from '@theme/DocSidebarItems';
-import styles from './styles.module.css';
+import styles from './styles.module.scss';
 export default function DocSidebarDesktopContent({path, sidebar, className}) {
   return (
     <nav
@@ -21,7 +21,7 @@ export default function DocSidebarDesktopContent({path, sidebar, className}) {
         styles.menu,
         className,
       )}
-      style={{paddingTop: '1.75rem', overflowY: 'auto'}}
+      style={{paddingTop: '1.75rem', marginBottom: '3.5rem', overflowY: 'auto'}}
     >
       <ul className={clsx(ThemeClassNames.docs.docSidebarMenu, 'menu__list')}>
         <DocSidebarItems items={sidebar} activePath={path} level={1} />
