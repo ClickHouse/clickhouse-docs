@@ -1,3 +1,4 @@
+@use '../../../css/breakpoints.scss' as breakpoints;
 
 .docItemContainer header + *,
 .docItemContainer article > *:first-child {
@@ -19,15 +20,15 @@
   justify-content: space-between;
 }
 
-@media (min-width: var(--mobile-breakpoint)) {
+@media (min-width: breakpoints.$mobile-breakpoint) {
   .docItemCol {
     max-width: 75% !important;
+    padding-bottom: 2rem;
   }
 }
 
 @media (max-width: var(--mobile-breakpoint)) {
   .docItemContainer {
-    padding-bottom: none;
   }
 }
 
