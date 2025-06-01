@@ -11,7 +11,7 @@ import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filte
 
 ## Setting IP Filters {#setting-ip-filters}
 
-IP access lists filter traffic to your ClickHouse services by specifying which source addresses are permitted to connect to your ClickHouse service.  The lists are configurable for each service.  Lists can be configured during the deployment of a service, or afterward.  If you do not configure an IP access list during provisioning, or if you want to make changes to your initial list, then you can make those changes by selecting the service and then the **Security** tab.
+IP access lists filter traffic to ClickHouse services or API keys by specifying which source addresses are permitted to connect.  These lists are configurable for each service and each API key.  Lists can be configured during service or API key creation, or afterward.
 
 :::important
 If you skip the creation of the IP Access List for a ClickHouse Cloud service then no traffic will be permitted to the service.
@@ -24,17 +24,36 @@ Classless Inter-domain Routing (CIDR) notation, allows you to specify IP Address
 
 ## Create or modify an IP Access List {#create-or-modify-an-ip-access-list}
 
-From your ClickHouse Cloud services list select the service and then select **Settings**.  Under the **Security** section, you will find the IP access list. Click on the hyperlink where the text says: *You can connect to this service from* **(anywhere | x specific locations)**
+<details>
+  <summary>IP Access List for ClickHouse Services</summary>
 
-A sidebar will appear with options for you to configure:
+  When you create a ClickHouse service, the default setting for the IP allow list is 'Allow from nowhere.' 
+  
+  From your ClickHouse Cloud services list select the service and then select **Settings**.  Under the **Security** section, you will find the IP access list. Click on the Add IPs button.**
+  
+  A sidebar will appear with options for you to configure:
+  
+  - Allow incoming traffic from anywhere to the service
+  - Allow access from specific locations to the service
+  - Deny all access to the service
+  
+  This screenshot shows an access list which allows traffic from a range of IP Addresses, described as "NY Office range":
+  
+  <Image img={ip_filtering_after_provisioning} size="md" alt="Existing access list in ClickHouse Cloud" border/>
+  
+</details>
+<details>
+  <summary>IP Access List for API Key</summary>
 
-- Allow incoming traffic from anywhere to the service
-- Allow access from specific locations to the service
-- Deny all access to the service
+  When you create an API Key, the default setting for the IP allow list is 'Allow from anywhere.'
+  
+  From the API Key list, click the three dots next to the API key under the Actions column and select ***Edit***. At the bottom of the screen you will find the IP access list and options to configure:
 
-This screenshot shows an access list which allows traffic from a range of IP Addresses, described as "NY Office range":
-
-<Image img={ip_filtering_after_provisioning} size="md" alt="Existing access list in ClickHouse Cloud" border/>
+  - Allow incoming traffic from anywhere to the service
+  - Allow access from specific locations to the service
+  - Deny all access to the service
+  
+</details>
 
 ### Possible actions {#possible-actions}
 
@@ -60,7 +79,7 @@ To apply the changes you made, you must click **Save**.
 
 ## Verification {#verification}
 
-Once you create your filter confirm connectivity from within the range, and confirm that connections from outside the permitted range are denied.  A simple `curl` command can be used to verify:
+Once you create your filter confirm connectivity to a service from within the range, and confirm that connections from outside the permitted range are denied.  A simple `curl` command can be used to verify:
 ```bash title="Attempt rejected from outside the allow list"
 curl https://<HOSTNAME>.clickhouse.cloud:8443
 ```
