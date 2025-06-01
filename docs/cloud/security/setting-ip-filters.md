@@ -37,10 +37,6 @@ Classless Inter-domain Routing (CIDR) notation, allows you to specify IP Address
   - Allow access from specific locations to the service
   - Deny all access to the service
   
-  This screenshot shows an access list which allows traffic from a range of IP Addresses, described as "NY Office range":
-  
-  <Image img={ip_filtering_after_provisioning} size="md" alt="Existing access list in ClickHouse Cloud" border/>
-  
 </details>
 <details>
   <summary>IP Access List for API Key</summary>
@@ -54,6 +50,10 @@ Classless Inter-domain Routing (CIDR) notation, allows you to specify IP Address
   - Deny all access to the service
   
 </details>
+
+This screenshot shows an access list which allows traffic from a range of IP Addresses, described as "NY Office range":
+  
+<Image img={ip_filtering_after_provisioning} size="md" alt="Existing access list in ClickHouse Cloud" border/>
 
 ### Possible actions {#possible-actions}
 
