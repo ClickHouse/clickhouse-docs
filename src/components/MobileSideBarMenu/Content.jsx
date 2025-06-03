@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './styles.module.scss'
 import IconClose from '@theme/Icon/Close';
-import IconArrowLeft from '@theme/Icon/Arrow'; // You may need to import or create this
+import IconArrowLeft from '@theme/Icon/Arrow';
 import clsx from 'clsx'
 import DocSidebarItems from '@theme/DocSidebarItems'
 import { ThemeClassNames } from '@docusaurus/theme-common'
@@ -18,9 +18,9 @@ const MobileSideBarMenuContents = ({ className, onClick, sidebar, path, menu }) 
 
     // Find which top-level category we're currently in
     const getCurrentCategory = () => {
-        if (!menu?.dropdownCategories || !path) return null;
+        if (!menu || !path) return null;
 
-        return menu.dropdownCategories.find(category => {
+        return menu.find(category => {
             // Check if current path matches any of the category's items
             const matchesCategory = category.customProps?.href && path.startsWith(category.customProps.href);
             const matchesItems = category.items?.some(item =>
@@ -31,42 +31,6 @@ const MobileSideBarMenuContents = ({ className, onClick, sidebar, path, menu }) 
     };
 
     const currentCategory = getCurrentCategory();
-
-    // Helper function to transform menu items with translations
-    const transformMenuItems = (items) => {
-        return items?.map(item => {
-            const baseTranslationId = `sidebar.dropdownCategories.${item.label.replace(/\s+/g, '')}`;
-
-            return {
-                ...item,
-                label: (
-                    <Translate
-                        id={baseTranslationId}
-                        description={`Navigation label for ${item.label}`}
-                    >
-                        {item.label}
-                    </Translate>
-                ),
-                // Transform nested items if they exist
-                items: item.items ? transformSubItems(item.items, baseTranslationId) : undefined
-            };
-        });
-    };
-
-    // Helper function for transforming sub-items
-    const transformSubItems = (subItems, parentTranslationId) => {
-        return subItems?.map(subItem => ({
-            ...subItem,
-            label: (
-                <Translate
-                    id={`${parentTranslationId}.${subItem.label.replace(/\s+/g, '')}`}
-                    description={`Navigation sublabel for ${subItem.label}`}
-                >
-                    {subItem.label}
-                </Translate>
-            )
-        }));
-    };
 
     // Handle item click - close the mobile sidebar
     const handleItemClick = () => {
@@ -81,19 +45,18 @@ const MobileSideBarMenuContents = ({ className, onClick, sidebar, path, menu }) 
     };
 
     // Handle top-level category click
-    const handleCategoryClick = (category) => {
-        setShowTopLevel(false);
-        // Optionally navigate to the category's main page
-        if (category.customProps?.href) {
-            window.location.href = category.customProps.href;
+    const handleTopLevelItemClick = (item) => {
+        // If it's a category with items, go to the sidebar view
+        if (item.items && item.items.length > 0) {
+            setShowTopLevel(false);
+            return;
         }
+        // Otherwise close the sidebar (for direct links)
+        handleItemClick();
     };
 
-    // Render top-level menu
+    // Render top-level menu using DocSidebarItems
     const renderTopLevelMenu = () => {
-        const transformedMenuItems = menu?.dropdownCategories ?
-            transformMenuItems(menu.dropdownCategories) : [];
-
         return (
             <>
                 <div className={clsx("navbar-sidebar__brand", styles.docsMobileMenu_header)}>
@@ -107,24 +70,12 @@ const MobileSideBarMenuContents = ({ className, onClick, sidebar, path, menu }) 
                     'menu__list',
                     styles.docsMobileMenuItems
                 )}>
-                    {transformedMenuItems.map((category, index) => (
-                        <li key={index} className="menu__list-item">
-                            <div
-                                className={clsx(
-                                    'menu__link',
-                                    currentCategory?.label === category.label && 'menu__link--active'
-                                )}
-                                onClick={() => handleCategoryClick(category)}
-                            >
-                                {category.label}
-                                {category.description && (
-                                    <div className={styles.categoryDescription}>
-                                        {category.description}
-                                    </div>
-                                )}
-                            </div>
-                        </li>
-                    ))}
+                    <DocSidebarItems
+                        items={menu.dropdownCategories || []}
+                        activePath={path}
+                        level={1}
+                        onItemClick={handleTopLevelItemClick}
+                    />
                 </ul>
             </>
         );
