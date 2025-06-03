@@ -12,7 +12,7 @@ import Translate from "@docusaurus/Translate";
 import { useLocation } from '@docusaurus/router';
 
 
-const MobileSideBarMenuContents = ({ className, onClick, sidebar, path, menu }) => {
+const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path, menu }) => {
     const [showTopLevel, setShowTopLevel] = useState(false);
     const location = useLocation();
 
@@ -44,9 +44,15 @@ const MobileSideBarMenuContents = ({ className, onClick, sidebar, path, menu }) 
     const currentCategory = getCurrentCategory();
 
     // Handle item click - close the mobile sidebar
-    const handleItemClick = () => {
+    const handleItemClick = (item) => {
+        // Call the onClick handler from parent if provided
         if (onClick) {
-            onClick(); // Close the mobile sidebar
+            onClick(item);
+        }
+
+        // For non-collapsible items, close the menu
+        if (item && !item.collapsible && onClose) {
+            onClose();
         }
     };
 
@@ -58,12 +64,14 @@ const MobileSideBarMenuContents = ({ className, onClick, sidebar, path, menu }) 
     // Handle top-level category click
     const handleTopLevelItemClick = (item) => {
         // If it's a category with items, go to the sidebar view
-        if (item.items && item.items.length > 0) {
+        if (item && item.items && item.items.length > 0) {
             setShowTopLevel(false);
             return;
         }
         // Otherwise close the sidebar (for direct links)
-        handleItemClick();
+        if (onClose) {
+            onClose();
+        }
     };
 
     // Render top-level menu using DocSidebarItems
@@ -92,7 +100,7 @@ const MobileSideBarMenuContents = ({ className, onClick, sidebar, path, menu }) 
                     </div>
                     <div className={styles.headerActions}>
                         <ColorModeToggle/>
-                        <IconClose onClick={onClick} />
+                        <IconClose onClick={onClose || onClick} />
                     </div>
                 </div>
 
@@ -105,6 +113,7 @@ const MobileSideBarMenuContents = ({ className, onClick, sidebar, path, menu }) 
                         items={menu.dropdownCategories || []}
                         activePath={path}
                         level={1}
+                        onItemClick={handleItemClick}
                     />
                 </ul>
             </>
@@ -135,7 +144,7 @@ const MobileSideBarMenuContents = ({ className, onClick, sidebar, path, menu }) 
                     </div>
                     <div className={styles.headerActions}>
                         <ColorModeToggle/>
-                        <IconClose onClick={onClick} />
+                        <IconClose onClick={onClose || onClick} />
                     </div>
                 </div>
 
@@ -148,6 +157,7 @@ const MobileSideBarMenuContents = ({ className, onClick, sidebar, path, menu }) 
                         items={sidebar || []}
                         activePath={path}
                         level={1}
+                        onItemClick={handleItemClick}
                     />
                 </ul>
             </>

@@ -36,6 +36,12 @@
   gap: 1rem;
 }
 
+@media screen and (min-width: breakpoints.$mobile-breakpoint) {
+  .navRight .mobileSearchBar {
+    display: none;
+  }
+}
+
 @media screen and (min-width: breakpoints.$laptop-breakpoint) {
 
   .secondaryMenu {
@@ -50,10 +56,6 @@
 
   .navRight {
     display: flex;
-  }
-
-  .navRight .mobileSearchBar {
-    display: none;
   }
 
   .navRight .signUp {

@@ -5,7 +5,19 @@ import styles from './styles.module.scss';
 
 const MobileSideBarMenu = ({sidebar, menu}) => {
   const [currentMenuState, setMenuState] = useState(false);
-  return(
+
+    const handleMenuClose = () => {
+        setMenuState(false);
+    };
+
+    const handleItemClick = (item) => {
+        // Safely check if item exists and is not collapsible
+        if (item && !item.collapsible) {
+            handleMenuClose();
+        }
+    };
+
+    return(
     <>
       <Hamburger
         onClick={() => setMenuState(!currentMenuState)}
