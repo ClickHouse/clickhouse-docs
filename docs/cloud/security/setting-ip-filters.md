@@ -14,18 +14,18 @@ import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filte
 IP access lists filter traffic to ClickHouse services or API keys by specifying which source addresses are permitted to connect.  These lists are configurable for each service and each API key.  Lists can be configured during service or API key creation, or afterward.
 
 :::important
-If you skip the creation of the IP Access List for a ClickHouse Cloud service then no traffic will be permitted to the service.
+If you skip the creation of the IP access list for a ClickHouse Cloud service then no traffic will be permitted to the service.
 :::
 
 ## Prepare {#prepare}
-Before you begin, collect the IP Addresses or ranges that should be added to the access list.  Take into consideration remote workers, on-call locations, VPNs, etc. The IP Access List user interface accepts individual addresses and CIDR notation.
+Before you begin, collect the IP addresses or ranges that should be added to the access list.  Take into consideration remote workers, on-call locations, VPNs, etc. The IP access list user interface accepts individual addresses and CIDR notation.
 
-Classless Inter-domain Routing (CIDR) notation, allows you to specify IP Address ranges smaller than the traditional Class A, B, or C (8, 6, or 24) subnet mask sizes. [ARIN](https://account.arin.net/public/cidrCalculator) and several other organizations provide CIDR calculators if you need one, and if you would like more information on CIDR notation, please see the [Classless Inter-domain Routing (CIDR)](https://www.rfc-editor.org/rfc/rfc4632.html) RFC.
+Classless Inter-domain Routing (CIDR) notation, allows you to specify IP address ranges smaller than the traditional Class A, B, or C (8, 6, or 24) subnet mask sizes. [ARIN](https://account.arin.net/public/cidrCalculator) and several other organizations provide CIDR calculators if you need one, and if you would like more information on CIDR notation, please see the [Classless Inter-domain Routing (CIDR)](https://www.rfc-editor.org/rfc/rfc4632.html) RFC.
 
-## Create or modify an IP Access List {#create-or-modify-an-ip-access-list}
+## Create or modify an IP access list {#create-or-modify-an-ip-access-list}
 
 <details>
-  <summary>IP Access List for ClickHouse Services</summary>
+  <summary>IP access list for ClickHouse services</summary>
 
   When you create a ClickHouse service, the default setting for the IP allow list is 'Allow from nowhere.' 
   
@@ -39,11 +39,11 @@ Classless Inter-domain Routing (CIDR) notation, allows you to specify IP Address
   
 </details>
 <details>
-  <summary>IP Access List for API Key</summary>
+  <summary>IP access list for API keys</summary>
 
-  When you create an API Key, the default setting for the IP allow list is 'Allow from anywhere.'
+  When you create an API key, the default setting for the IP allow list is 'Allow from anywhere.'
   
-  From the API Key list, click the three dots next to the API key under the Actions column and select ***Edit***. At the bottom of the screen you will find the IP access list and options to configure:
+  From the API key list, click the three dots next to the API key under the Actions column and select ***Edit***. At the bottom of the screen you will find the IP access list and options to configure:
 
   - Allow incoming traffic from anywhere to the service
   - Allow access from specific locations to the service
@@ -51,7 +51,7 @@ Classless Inter-domain Routing (CIDR) notation, allows you to specify IP Address
   
 </details>
 
-This screenshot shows an access list which allows traffic from a range of IP Addresses, described as "NY Office range":
+This screenshot shows an access list which allows traffic from a range of IP addresses, described as "NY Office range":
   
 <Image img={ip_filtering_after_provisioning} size="md" alt="Existing access list in ClickHouse Cloud" border/>
 
@@ -100,4 +100,4 @@ Ok.
 
 ## Limitations {#limitations}
 
-- Currently, IP Access Lists support only IPv4
+- Currently, IP access lists support only IPv4
