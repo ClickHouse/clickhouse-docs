@@ -3,9 +3,8 @@ import Hamburger from "./Hamburger";
 import MobileSideBarMenuContents from './Content';
 import styles from './styles.module.scss';
 
-const MobileSideBarMenu = ({sidebar}) => {
+const MobileSideBarMenu = ({sidebar, menu}) => {
   const [currentMenuState, setMenuState] = useState(false);
-
   return(
     <>
       <Hamburger
@@ -18,7 +17,8 @@ const MobileSideBarMenu = ({sidebar}) => {
             setMenuState(!currentMenuState)
           }
         }}
-        sidebar={sidebar}
+        sidebar={sidebar} // Left sidebar items
+        menu={menu} // Top level menu items
         className={currentMenuState
           ? styles.docsMobileMenuActive
           : styles.docsMobileMenuHidden}
