@@ -4,7 +4,7 @@ import {useDoc} from '@docusaurus/plugin-content-docs/client';
 import TOC from '@theme/TOC';
 import clsx from "clsx";
 import IconClose from '@theme/Icon/Close';
-import styles from './styles.module.css'
+import styles from './styles.module.scss'
 import Feedback from '../../../../components/Feedback';
 
 const AD_DATA_ENDPOINT = 'https://cms.clickhouse-dev.com:1337/api/docs-ad'
@@ -89,7 +89,7 @@ export default function DocItemTOCDesktop() {
 
       {
         !isClosed && title && description && href && label && (
-          <div className={styles.docCloudCard}>
+          <div className={styles.docCloudCardAd}>
             <div className={styles.docCloudCardHeader}>
               <h6>{title}</h6>
               <button
