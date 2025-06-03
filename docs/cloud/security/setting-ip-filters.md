@@ -29,7 +29,7 @@ Classless Inter-domain Routing (CIDR) notation, allows you to specify IP address
 
   When you create a ClickHouse service, the default setting for the IP allow list is 'Allow from nowhere.' 
   
-  From your ClickHouse Cloud services list select the service and then select **Settings**.  Under the **Security** section, you will find the IP access list. Click on the Add IPs button.**
+  From your ClickHouse Cloud services list select the service and then select **Settings**.  Under the **Security** section, you will find the IP access list. Click on the Add IPs button.
   
   A sidebar will appear with options for you to configure:
   
@@ -43,7 +43,7 @@ Classless Inter-domain Routing (CIDR) notation, allows you to specify IP address
 
   When you create an API key, the default setting for the IP allow list is 'Allow from anywhere.'
   
-  From the API key list, click the three dots next to the API key under the Actions column and select ***Edit***. At the bottom of the screen you will find the IP access list and options to configure:
+  From the API key list, click the three dots next to the API key under the **Actions** column and select **Edit**. At the bottom of the screen you will find the IP access list and options to configure:
 
   - Allow incoming traffic from anywhere to the service
   - Allow access from specific locations to the service
