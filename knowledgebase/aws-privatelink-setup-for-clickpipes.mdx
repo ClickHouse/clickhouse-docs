@@ -58,6 +58,11 @@ RDS instances that require endpoint services (OR you may have different listener
     - If using Terraform, set the `enforce_security_group_inbound_rules_on_private_link_traffic` attribute to `off` for the NLB
     - This setting is **required** to allow traffic from the ClickPipes VPC to the NLB.
 
+7. **Optional**: Enable Cross-region support in case your database region is different from the ClickPipes region
+    - Under `Endpoint Services` in the VPC console, select your endpoint service.
+    - Click on the `Actions` button and select `Modify supported Regions`.
+    - Add the regions where you want to allow access to the endpoint service, [refer here](https://clickhouse.com/docs/integrations/clickpipes#list-of-static-ips) for the list of ClickPipes regions.
+
 ## Initiating connection {#initiating-connection}
 
 When it's done you can follow the guide to [initiate the connection](/integrations/clickpipes/aws-privatelink#creating-clickpipe)
