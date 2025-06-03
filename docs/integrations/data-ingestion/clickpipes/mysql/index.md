@@ -36,7 +36,11 @@ To get started, you first need to make sure that your MySQL database is set up c
 
 3. [Cloud SQL for MySQL](./mysql/source/gcp)
 
-4. [Amazon RDS MariaDB](./mysql/source/rds_maria)
+4. [Generic MySQL](./mysql/source/generic)
+
+5. [Amazon RDS MariaDB](./mysql/source/rds_maria)
+
+6. [Generic MariaDB](./mysql/source/generic_maria)
 
 Once your source MySQL database is set up, you can continue creating your ClickPipe.
 

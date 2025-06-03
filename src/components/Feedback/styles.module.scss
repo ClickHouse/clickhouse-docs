@@ -1,30 +1,46 @@
-.Button {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-right: 8px;
-  border: 1px solid;
-  background-color: transparent;
+@use '../../css/breakpoints.scss' as breakpoints;
 
-  &.dark {
-    border-color: #323232;
-    background-color: transparent;
-
-    &.selected {
-      background-color: #282828;
-    }
-  }
-
-  &.light {
-    border-color: #E6E7E9;
-    background-color: #fff;
-
-    &.selected {
-      background-color: #F6F7FA;
-    }
-  }
+.displayFeedback {
+  display: none;
 }
+
+@media screen and (min-width: breakpoints.$laptop-breakpoint) {
+
+    .displayFeedback {
+      display: flex;
+    }
+
+    .Button {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 8px;
+      border: 1px solid;
+      background-color: transparent;
+
+      &.dark {
+        border-color: #323232;
+        background-color: transparent;
+
+        &.selected {
+          background-color: #282828;
+        }
+      }
+
+      &.light {
+        border-color: #E6E7E9;
+        background-color: #fff;
+
+        &.selected {
+          background-color: #F6F7FA;
+        }
+      }
+    }
+}
+
+
+
