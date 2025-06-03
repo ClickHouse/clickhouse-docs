@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styles from './styles.module.scss'
 import IconClose from '@theme/Icon/Close';
-import IconArrowLeft from '@theme/Icon/Arrow';
+import IconArrowLeft from '@site/static/img/arrowleft.svg';
+import IconArrowRight from '@site/static/img/arrowright.svg';
 import clsx from 'clsx'
 import DocSidebarItems from '@theme/DocSidebarItems'
 import { ThemeClassNames } from '@docusaurus/theme-common'
@@ -60,9 +61,27 @@ const MobileSideBarMenuContents = ({ className, onClick, sidebar, path, menu }) 
         return (
             <>
                 <div className={clsx("navbar-sidebar__brand", styles.docsMobileMenu_header)}>
-                    <ClickHouseLogo width={150} />
-                    <ColorModeToggle/>
-                    <IconClose onClick={onClick} />
+                    <div className={styles.backNavigation}>
+                        <button
+                            className={styles.backButton}
+                            onClick={() => setShowTopLevel(false)}
+                            aria-label="Go to current sidebar"
+                        >
+                            <IconArrowLeft style={{ transform: 'rotate(180deg)' }} />
+                            <span>
+                                <Translate id="mobile.sidebar.current">Current sidebar</Translate>
+                            </span>
+                        </button>
+                        {currentCategory && (
+                            <span className={styles.currentCategoryTitle}>
+                                Top Level Navigation
+                            </span>
+                        )}
+                    </div>
+                    <div className={styles.headerActions}>
+                        <ColorModeToggle/>
+                        <IconClose onClick={onClick} />
+                    </div>
                 </div>
 
                 <ul className={clsx(
@@ -74,7 +93,6 @@ const MobileSideBarMenuContents = ({ className, onClick, sidebar, path, menu }) 
                         items={menu.dropdownCategories || []}
                         activePath={path}
                         level={1}
-                        onItemClick={handleTopLevelItemClick}
                     />
                 </ul>
             </>
@@ -94,7 +112,7 @@ const MobileSideBarMenuContents = ({ className, onClick, sidebar, path, menu }) 
                         >
                             <IconArrowLeft />
                             <span>
-                                <Translate id="mobile.sidebar.back">Back</Translate>
+                                <Translate id="mobile.sidebar.back">Main menu</Translate>
                             </span>
                         </button>
                         {currentCategory && (
@@ -118,7 +136,6 @@ const MobileSideBarMenuContents = ({ className, onClick, sidebar, path, menu }) 
                         items={sidebar || []}
                         activePath={path}
                         level={1}
-                        onItemClick={handleItemClick}
                     />
                 </ul>
             </>
