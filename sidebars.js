@@ -750,7 +750,7 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/mysql/source/gcp",
                 "integrations/data-ingestion/clickpipes/mysql/source/generic",
                 "integrations/data-ingestion/clickpipes/mysql/source/rds_maria",
-                "integrations/data-ingestion/clickpipes/mysql/source/generic_maria"
+                "integrations/data-ingestion/clickpipes/mysql/source/generic_maria",
               ],
             },
             "integrations/data-ingestion/clickpipes/mysql/datatypes"
