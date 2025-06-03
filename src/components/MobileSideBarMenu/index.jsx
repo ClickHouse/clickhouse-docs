@@ -6,6 +6,7 @@ import styles from './styles.module.scss';
 const MobileSideBarMenu = ({sidebar, menu}) => {
   const [currentMenuState, setMenuState] = useState(false);
 
+    // Function to handle menu close
     const handleMenuClose = () => {
         setMenuState(false);
     };

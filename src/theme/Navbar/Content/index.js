@@ -16,7 +16,6 @@ import SearchBar from "@theme/SearchBar";
 import {useNavbarMobileSidebar} from "@docusaurus/theme-common/internal";
 
 export default function NavbarContent() {
-
   let items = [];
   try {
     const sidebar = useDocsSidebar();

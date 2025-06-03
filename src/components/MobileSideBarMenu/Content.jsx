@@ -11,18 +11,16 @@ import ColorModeToggle from "../../components/ColorModeToggler";
 import Translate from "@docusaurus/Translate";
 import { useLocation } from '@docusaurus/router';
 
-
 const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path, menu }) => {
     const [showTopLevel, setShowTopLevel] = useState(false);
     const location = useLocation();
 
     console.log('Menu data:', menu);
     console.log('Sidebar data:', sidebar);
-    console.log('Current path:', path);
+    console.log('Current path:', location.pathname);
 
     // Check if we're on a docs root page (should show only top-level menu)
     const isDocsRootPage = () => {
-        console.log(location.pathname)
         const docsRootPaths = ['/docs/', '/docs/jp/', '/docs/ru/', '/docs/zh/'];
         return docsRootPaths.includes(location.pathname);
     };
@@ -155,7 +153,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
                 )}>
                     <DocSidebarItems
                         items={sidebar || []}
-                        activePath={path}
+                        activePath={location.pathname}
                         level={1}
                         onItemClick={handleItemClick}
                     />
